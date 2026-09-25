@@ -45,7 +45,7 @@ const T_CPENS = at("cow-3", "called the Cowpens"), T_BROAD = at("cow-3", "Broad 
 
 // ---------- places ----------
 const CHARLOTTE = G(35.227, -80.843), CHERAW = G(34.698, -79.883), WINNS = G(34.375, -81.087);
-const PACOLET = G(34.895, -81.635), COWPENS = G(35.135, -81.815), TCAMP = G(34.53, -81.55), NINETY6 = G(34.175, -82.024);
+const PACOLET = G(34.895, -81.635), COWPENS = G(35.135, -81.815), TCAMP = G(34.5, -81.72), NINETY6 = G(34.175, -82.024);
 
 // ---------- camera ----------
 B.camera([
@@ -56,9 +56,10 @@ B.camera([
   [S2 - 0.5, 1260, 880, 1.95],
   [T_TARL, 1215, 880, 2.35],
   [T_1100 + 2, 1195, 875, 2.4],
-  [T_FALL, 1160, 855, 2.75],
-  [T_CPENS, 1135, 830, 2.95],
-  [END, 1130, 815, 3.1],
+  [S3, 1175, 865, 2.6],
+  [T_FALL, 1140, 840, 3.1],
+  [T_CPENS, 1125, 818, 3.4],
+  [END, 1122, 812, 3.5],
 ]);
 
 // ---------- rivers and regions ----------
@@ -66,12 +67,12 @@ B.river(RIV.broad, 4.5); B.river(RIV.pacolet, 3.2); B.river(RIV.catawba, 4.5); B
 B.river(RIV.dan, 4); B.river(RIV.capefear, 4); B.river(RIV.deep, 3);
 const RL = (text, x, y, rot, t, size = 11, until) => B.label(text, x, y, { cls: "river", size, rot, t, until, anchor: [-50, -50] });
 RL("BROAD R.", 1152, 752, 22, 5.2);
-RL("PACOLET R.", 1085, 808, 38, T_WEST, 10);
+RL("PACOLET R.", 1046, 766, 30, T_WEST, 10);
 RL("CATAWBA R.", 1273, 690, 88, 5.4);
 RL("WATEREE R.", 1323, 1045, 86, 5.6);
 RL("PEE DEE R.", 1443, 740, 72, 5.8);
 B.label("SOUTH CAROLINA", ...G(33.95, -80.85), { cls: "country", size: 24, t: 1.0 });
-B.label("NORTH CAROLINA", ...G(35.72, -80.0), { cls: "country", size: 24, t: 1.3 });
+B.label("NORTH CAROLINA", ...G(35.5, -79.55), { cls: "country", size: 24, t: 1.3 });
 B.label("VIRGINIA", ...G(37.1, -79.3), { cls: "country", size: 24, t: 1.6 });
 B.label("ATLANTIC OCEAN", ...G(33.6, -77.6), { cls: "sea", size: 26, t: 1.8 });
 
@@ -85,12 +86,12 @@ B.date("16 JANUARY 1781", T_16, null, 38);
 CITY("CHARLOTTE", 35.227, -80.843, { t: 5.0 });
 CITY("CAMDEN", 34.247, -80.607, { t: 5.3 });
 CITY("CHERAW", 34.698, -79.883, { t: 5.6 });
-CITY("WINNSBORO", 34.375, -81.087, { t: 5.9, left: true });
+B.city("", ...WINNS, { size: 1, r: 3.5, t: 5.9 }); B.label("WINNSBORO", WINNS[0], WINNS[1] + 6, { cls: "city", size: 12, t: 5.9, anchor: [-50, 0] });
 CITY("CHARLESTON", 32.78, -79.93, { t: 6.2 });
 
 U({ id: "army", side: "carth", kind: "inf", x: CHARLOTTE[0] + 20, y: CHARLOTTE[1] + 20, w: 34, h: 22, label: "GREENE'S ARMY", fs: 10, t: T_SOUTH - 1.2 });
-const sMorgan = STK({ img: "assets/media/morgan_head.png", flag: "assets/media/us_flag_13star.png", name: "MORGAN", x: CHARLOTTE[0] - 26, y: CHARLOTTE[1] - 8, size: 0.42, t: T_SOUTH - 0.4 });
-const sGreene = STK({ img: "assets/media/greene_head.png", flag: "assets/media/us_flag_13star.png", name: "GREENE", x: CHARLOTTE[0] + 34, y: CHARLOTTE[1] - 8, size: 0.42, t: T_GREENE - 0.3 });
+const sMorgan = STK({ img: "assets/media/morgan_head.png", flag: "assets/media/us_flag_13star.png", name: "MORGAN", x: CHARLOTTE[0] - 22, y: CHARLOTTE[1] - 6, size: 0.32, t: T_SOUTH - 0.4 });
+const sGreene = STK({ img: "assets/media/greene_head.png", flag: "assets/media/us_flag_13star.png", name: "GREENE", x: CHARLOTTE[0] + 30, y: CHARLOTTE[1] - 6, size: 0.32, t: T_GREENE - 0.3 });
 
 // the split
 B.caption("GREENE SPLITS HIS ARMY IN TWO", T_SPLIT, S2 - 0.2, "carth");
@@ -101,52 +102,52 @@ moveStake(sGreene, T_SPLIT + 0.9, 3.4, CHERAW[0] + 2, CHERAW[1] - 6);
 B.arrow({ side: "carth", pts: [[CHARLOTTE[0] + 30, CHARLOTTE[1] + 26], [1370, 800], [CHERAW[0] - 6, CHERAW[1] - 4]], width: 6, t: T_SPLIT + 0.5, dur: 2.4, until: S3 - 0.5 });
 B.arrow({ side: "carth", pts: [[CHARLOTTE[0] - 6, CHARLOTTE[1] + 22], [1240, 790], [1180, 810], [PACOLET[0] + 12, PACOLET[1] - 4]], width: 6, t: T_WEST - 0.2, dur: 2.8, until: T_DAYS });
 B.move("morg", T_WEST, 3.4, PACOLET[0] + 2, PACOLET[1] + 16);
-moveStake(sMorgan, T_WEST, 3.4, PACOLET[0] - 18, PACOLET[1] - 4);
-B.label("CAMP AT GRINDAL SHOALS", PACOLET[0] + 22, PACOLET[1] - 22, { cls: "tg", size: 9, t: T_WEST + 3.2, until: T_FALL });
+moveStake(sMorgan, T_WEST, 3.4, PACOLET[0] - 24, PACOLET[1] + 12);
+// B.label("CAMP AT GRINDAL SHOALS", PACOLET[0] + 22, PACOLET[1] - 22, { cls: "tg", size: 9, t: T_WEST + 3.2, until: T_FALL });
 // British outposts
 CITY("NINETY SIX", 34.175, -82.024, { t: T_OUTPOST - 0.6, left: true });
-B.label("BRITISH OUTPOST", NINETY6[0] - 10, NINETY6[1] + 14, { cls: "tg", size: 8, t: T_OUTPOST - 0.4, anchor: [-100, 0], until: S3 });
-B.arrow({ side: "white", pts: [[PACOLET[0] - 8, PACOLET[1] + 26], [1105, 930], [NINETY6[0] + 14, NINETY6[1] - 14]], width: 3.5, dash: "7 5", t: T_OUTPOST, dur: 1.2, until: T_DAYS });
+B.label("BRITISH OUTPOST", NINETY6[0] - 8, NINETY6[1] + 10, { cls: "tg", size: 8, t: T_OUTPOST - 0.4, anchor: [-100, 0], until: S3 });
+B.arrow({ side: "white", pts: [[PACOLET[0] - 8, PACOLET[1] + 26], [1105, 930], [NINETY6[0] + 14, NINETY6[1] - 14]], width: 3.5, dash: "7 5", t: T_OUTPOST, dur: 1.2, until: S2 + 0.3 });
 
 // Cornwallis between them
-U({ id: "corn", side: "rome", kind: "inf", x: WINNS[0] + 20, y: WINNS[1] + 22, w: 34, h: 22, label: "CORNWALLIS", fs: 10, t: T_SPLIT - 0.6 });
+U({ id: "corn", side: "rome", kind: "inf", x: WINNS[0] + 34, y: WINNS[1] - 6, w: 34, h: 22, label: "MAIN ARMY", fs: 10, t: T_SPLIT - 0.6 });
 
 // ---------- cow-2: Cornwallis sends Tarleton ----------
-const sCorn = STK({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1707.png", name: "CORNWALLIS", side: "rome", x: WINNS[0] + 38, y: WINNS[1] - 6, size: 0.42, t: T_CORN - 0.2 });
+const sCorn = STK({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1707.png", name: "CORNWALLIS", side: "rome", x: WINNS[0] + 64, y: WINNS[1] + 22, size: 0.32, t: T_CORN - 0.2 });
 B.highlight([[PACOLET[0] - 14, PACOLET[1] + 14], [PACOLET[0] + 16, PACOLET[1] + 14]], T_FLANK - 0.4, null, 32);
 B.caption("AN AMERICAN FORCE ON HIS FLANK", T_FLANK - 0.6, T_TARL - 0.3, "rome");
-const sTarl = STK({ img: "assets/media/tarleton_head.png", flag: "assets/media/gb_flag_1707.png", name: "TARLETON", side: "rome", x: TCAMP[0] - 26, y: TCAMP[1] - 10, size: 0.42, t: T_TARL - 0.2 });
+const sTarl = STK({ img: "assets/media/tarleton_head.png", flag: "assets/media/gb_flag_1707.png", name: "TARLETON", side: "rome", x: TCAMP[0] - 34, y: TCAMP[1] + 30, size: 0.32, t: T_TARL - 0.2 });
 const tf = [
   { id: "legion", kind: "cav", dx: 0, dy: 0, label: "LEGION", t: T_LEG },
-  { id: "foot7", kind: "inf", dx: 30, dy: 0, label: "7TH FOOT", t: T_REG },
-  { id: "hl71", kind: "inf", dx: 30, dy: 28, label: "71ST", t: T_REG + 0.4 },
-  { id: "drag", kind: "cav", dx: 0, dy: 28, label: "DRAGOONS", t: T_DRAG },
+  { id: "foot7", kind: "inf", dx: 34, dy: 0, label: "7TH FOOT", t: T_REG },
+  { id: "hl71", kind: "inf", dx: 34, dy: 30, label: "71ST", t: T_REG + 0.4 },
+  { id: "drag", kind: "cav", dx: 0, dy: 30, label: "DRAGOONS", t: T_DRAG },
 ];
 tf.forEach((u) => U({ id: u.id, side: "rome", kind: u.kind, x: TCAMP[0] + u.dx, y: TCAMP[1] + u.dy, w: 22, h: 14, label: u.label, fs: 7.5, t: u.t }));
-B.arrow({ side: "rome", pts: [[WINNS[0] - 12, WINNS[1] - 4], [TCAMP[0] + 40, TCAMP[1] + 8]], width: 4, t: T_TARL + 0.2, dur: 1.0, until: T_1100 + 1 });
+B.arrow({ side: "rome", pts: [[WINNS[0] - 8, WINNS[1] - 6], [TCAMP[0] + 56, TCAMP[1] + 8]], width: 4, t: T_TARL + 0.2, dur: 1.0, until: T_1100 + 1 });
 B.caption("TARLETON · ~1,100 OF THE BEST TROOPS IN THE SOUTH", T_1100, S3 + 0.4, "rome");
 
 // Tarleton heads for Morgan
-const W1 = G(34.7, -81.62), W2 = G(34.86, -81.70), W3 = G(35.02, -81.77);
-tf.forEach((u, i) => {
-  B.move(u.id, T_1100 + 0.6 + i * 0.1, 5.0, W1[0] + u.dx - 10, W1[1] + u.dy - 10);
-  B.move(u.id, T_FALL - 0.5 + i * 0.1, 6.5, W2[0] + u.dx - 10, W2[1] + u.dy);
-  B.move(u.id, T_CPENS + 1.2 + i * 0.1, 5.0, W3[0] + u.dx - 18, W3[1] + u.dy - 2);
-});
-moveStake(sTarl, T_1100 + 0.6, 5.0, W1[0] - 34, W1[1] - 14);
-moveStake(sTarl, T_FALL - 0.5, 6.5, W2[0] - 34, W2[1] - 4);
-moveStake(sTarl, T_CPENS + 1.2, 5.0, W3[0] - 42, W3[1] - 6);
+const W1 = G(34.68, -81.64), REDEND = G(34.935, -81.70);
+tf.forEach((u, i) => B.move(u.id, T_1100 + 0.6 + i * 0.1, 4.6, W1[0] + u.dx - 17, W1[1] + u.dy - 15));
+moveStake(sTarl, T_1100 + 0.6, 4.6, W1[0] - 50, W1[1] + 16);
+B.hideUnits(tf.map((u) => u.id), S3 + 0.2, 0.6);
+B.tl.to([sTarl, sCorn], { autoAlpha: 0, duration: 0.6 }, S3 + 0.2);
+B.hideUnits(["corn"], T_FALL, 0.6);
 
 // ---------- cow-3: the chase to the Cowpens ----------
-B.arrow({ side: "rome", pts: [[TCAMP[0] + 14, TCAMP[1] - 16], [W1[0] + 12, W1[1] - 6], [W2[0] + 22, W2[1] - 8], [W3[0] + 18, W3[1] + 20]], width: 6, t: T_DAYS + 0.3, dur: 9.0, until: END + 1 });
+U({ id: "tarl", side: "rome", kind: "cav", x: W1[0], y: W1[1], w: 22, h: 14, label: "TARLETON", fs: 7 });
+B.show("tarl", S3 + 0.3);
+B.arrow({ side: "rome", pts: [[W1[0] + 2, W1[1] + 8], [W1[0] - 4, W1[1] - 16], [REDEND[0] + 4, REDEND[1] + 22]], width: 4.5, t: T_DAYS + 0.5, dur: 8.5, until: END + 1 });
+B.move("tarl", T_DAYS + 0.6, 9.5, REDEND[0] + 4, REDEND[1] + 32);
 B.caption("RAIN · SWOLLEN RIVERS · FORCED MARCHES", T_DAYS + 0.8, T_16 - 0.2);
-B.move("morg", T_FALL, 5.5, COWPENS[0] + 14, COWPENS[1] + 18);
-moveStake(sMorgan, T_FALL, 5.5, COWPENS[0] - 4, COWPENS[1] - 2);
-B.arrow({ side: "carth", pts: [[PACOLET[0] + 4, PACOLET[1] - 8], [PACOLET[0] - 4, PACOLET[1] - 30], [COWPENS[0] + 26, COWPENS[1] + 34]], width: 5, t: T_FALL + 0.2, dur: 4.2, until: END + 1 });
-B.label("THE COWPENS", COWPENS[0] + 16, COWPENS[1] - 6, { cls: "tg", size: 13, t: T_CPENS - 0.4, anchor: [0, -50] });
-B.city("", ...COWPENS, { size: 1, r: 4, t: T_CPENS - 0.4 });
+B.move("morg", T_FALL, 5.5, COWPENS[0] + 14, COWPENS[1] + 16);
+moveStake(sMorgan, T_FALL, 5.5, COWPENS[0] - 16, COWPENS[1] + 14);
+B.arrow({ side: "carth", pts: [[PACOLET[0] - 2, PACOLET[1] - 10], [PACOLET[0] - 8, PACOLET[1] - 32], [COWPENS[0] + 22, COWPENS[1] + 30]], width: 4.5, t: T_FALL + 0.2, dur: 4.2, until: END + 1 });
+B.label("THE COWPENS", COWPENS[0] + 8, COWPENS[1] - 5, { cls: "tg", size: 12, t: T_CPENS - 0.4, anchor: [0, -50] });
+B.city("", ...COWPENS, { size: 1, r: 3.5, t: T_CPENS - 0.4 });
 B.caption("OPEN PASTURE · CATTLE WINTERED HERE", T_CPENS + 1.2, T_BROAD - 0.3);
-B.highlight(RIV.broad.slice(6, 12), T_BROAD - 0.2, END, 12);
+B.highlight(RIV.broad.slice(6, 12), T_BROAD - 0.2, END, 10);
 B.caption("THE BROAD RIVER BEHIND HIM", T_BROAD + 0.2, T_FIGHT - 0.1, "carth");
-B.caption("HE DECIDES TO FIGHT", T_FIGHT, END + 1, "carth");
+B.caption("HE DECIDES TO FIGHT HERE", T_FIGHT, END + 1, "carth");
 fixDots();
