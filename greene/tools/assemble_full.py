@@ -25,8 +25,9 @@ starts = [0.0] + [p["start"] for p in P[1:]] + [total]
 os.makedirs("build/seg", exist_ok=True)
 enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-r", "30", "-an"]
 
+AUDIO_ONLY = os.environ.get("AUDIO_ONLY") == "1"
 segs, i, missing = [], 0, []
-while i < len(P):
+while i < len(P) and not AUDIO_ONLY:
     k = key(P[i])
     out = f"build/seg/{i:02d}.mp4"
     if kind(P[i]) == "ARCHIVE":
@@ -55,8 +56,9 @@ while i < len(P):
 if missing:
     print("MISSING map renders (black placeholders):", missing)
 
-open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video-only.mp4"], check=True)
+if not AUDIO_ONLY:
+    open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video-only.mp4"], check=True)
 
 
 def t_of(tag, phrase=None, off=0.0):
@@ -83,7 +85,7 @@ for bi, b in enumerate(MUSIC):
 mix = ["[vo]"]
 if beds:
     f.append(f"{''.join(beds)}amix=inputs={len(beds)}:normalize=0[mus]")
-    f.append("[mus][vokey]sidechaincompress=threshold=0.03:ratio=6:attack=30:release=500[musd]")
+    f.append("[mus][vokey]sidechaincompress=threshold=0.02:ratio=10:attack=20:release=600[musd]")
     mix.append("[musd]")
 for si, s in enumerate(SFX):
     t = t_of(s["tag"], s.get("phrase"), s.get("off", 0.0))
@@ -96,7 +98,8 @@ f.append(f"{''.join(mix)}amix=inputs={len(mix)}:normalize=0,atrim=0:{total:.2f},
 subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                 "-t", f"{total:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart",
                 "build/greene-full-1080p.mp4"], check=True)
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/greene-full-1080p.mp4", "-vf", "scale=1280:720", "-c:v", "libx264", "-crf", "30",
+if not AUDIO_ONLY:
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/greene-full-1080p.mp4", "-vf", "scale=1280:720", "-c:v", "libx264", "-crf", "30",
                 "-preset", "medium", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", "build/greene-preview-720p.mp4"], check=True)
 
 # chapters for the YouTube description
