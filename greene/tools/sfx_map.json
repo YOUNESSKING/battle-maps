@@ -72,6 +72,7 @@
  {
   "file": "fife_drum.wav",
   "tag": "continental_soldiers",
-  "vol": 0.22
+  "vol": 0.22,
+  "dur": 18
  }
 ]

@@ -80,7 +80,9 @@ if beds:
 for si, s in enumerate(SFX):
     t = t_of(s["tag"], s.get("phrase"), s.get("off", 0.0))
     inputs += ["-i", f"{M}/{s['file']}"]
-    f.append(f"[{n}:a]aresample=48000,aformat=channel_layouts=stereo,volume={s.get('vol', 0.5)},adelay={int(t * 1000)}|{int(t * 1000)}[s{si}]")
+    f.append(f"[{n}:a]aresample=48000,aformat=channel_layouts=stereo,"
+             + (f"atrim=0:{s['dur']},afade=t=out:st={s['dur'] - 2}:d=2," if s.get("dur") else "")
+             + f"volume={s.get('vol', 0.5)},adelay={int(t * 1000)}|{int(t * 1000)}[s{si}]")
     mix.append(f"[s{si}]"); n += 1
 f.append(f"{''.join(mix)}amix=inputs={len(mix)}:normalize=0,atrim=0:{total:.2f},loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
 subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
