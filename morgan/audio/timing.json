@@ -1,0 +1,1432 @@
+{
+ "voice": "am_michael",
+ "speed": 1.0,
+ "duration": 1101.22,
+ "paragraphs": [
+  {
+   "section": "HOOK",
+   "tag": "MAP: hook-1 | East map zooms to the Carolinas, 1780. Charleston falls (5,000+ CAPTURED), Camden: blue units shatter; red arrows sweep inland across South Carolina; date MAY \u2013 AUGUST 1780",
+   "start": 0.0,
+   "end": 34.27,
+   "text": "By the autumn of seventeen eighty, the American Revolution was being lost in the South. In May, Charleston had fallen, and more than five thousand American soldiers had marched into captivity, the worst American defeat of the entire war. In August, at Camden, a second American army was routed in a single morning, and its general did not stop riding until he was sixty miles away. British columns now moved freely across the Carolinas, and at their head rode the most feared cavalry commander in America.",
+   "sents": [
+    [
+     0,
+     0.0,
+     5.42
+    ],
+    [
+     88,
+     5.7,
+     15.75
+    ],
+    [
+     238,
+     16.03,
+     25.97
+    ],
+    [
+     382,
+     26.25,
+     34.27
+    ]
+   ]
+  },
+  {
+   "section": "HOOK",
+   "tag": "ARCHIVE: Reynolds portrait of Banastre Tarleton \u2014 slow push-in",
+   "start": 34.87,
+   "end": 59.62,
+   "text": "His name was Banastre Tarleton. He was twenty-six years old, brilliant, reckless, and utterly ruthless. His British Legion of dragoons and light infantry seemed unbeatable. After one of his fights, at a place called the Waxhaws, American soldiers trying to surrender were cut down anyway, and across the South, the words \"Tarleton's quarter\" came to mean no mercy at all.",
+   "sents": [
+    [
+     0,
+     34.87,
+     37.09
+    ],
+    [
+     32,
+     37.37,
+     41.74
+    ],
+    [
+     104,
+     42.02,
+     46.42
+    ],
+    [
+     173,
+     46.7,
+     59.62
+    ]
+   ]
+  },
+  {
+   "section": "HOOK",
+   "tag": "ARCHIVE: Battle of Cowpens painting (Ranney) \u2014 slow pan",
+   "start": 60.22,
+   "end": 79.11,
+   "text": "And then, on a cold January morning in seventeen eighty-one, on an open cattle pasture in South Carolina, Tarleton's command was wiped out. In less than an hour, almost nine out of every ten of his men were killed, wounded, or captured. The Americans lost around two dozen killed.",
+   "sents": [
+    [
+     0,
+     60.22,
+     69.89
+    ],
+    [
+     140,
+     70.17,
+     76.23
+    ],
+    [
+     237,
+     76.51,
+     79.11
+    ]
+   ]
+  },
+  {
+   "section": "HOOK",
+   "tag": "MAP: hook-2 | Dimmed map; full-length cut-out of Daniel Morgan (Peale portrait) + bio card, name DANIEL MORGAN in big red letters; rows: Brigadier General, Continental Army \u00b7 Born c. 1736, frontier Virginia \u00b7 \"The Old Wagoner\" \u00b7 499 lashes, 1756",
+   "start": 79.71,
+   "end": 107.69,
+   "text": "The man who did it was Brigadier General Daniel Morgan. He had almost no formal education. He had started out as a teamster, driving supply wagons on the Virginia frontier, and during the French and Indian War he struck a British officer and was sentenced to five hundred lashes. By his own telling, the drummer miscounted, and he only received four hundred and ninety-nine. He liked to say the British still owed him one.",
+   "sents": [
+    [
+     0,
+     79.71,
+     83.46
+    ],
+    [
+     56,
+     83.74,
+     86.33
+    ],
+    [
+     91,
+     86.61,
+     98.62
+    ],
+    [
+     280,
+     98.9,
+     104.98
+    ],
+    [
+     375,
+     105.26,
+     107.69
+    ]
+   ]
+  },
+  {
+   "section": "HOOK",
+   "tag": "MAP: hook-3 | East map: Morgan portrait stake under the 13-star flag in Virginia; three markers light up in turn: SARATOGA 1777, COWPENS 1781, GUILFORD COURTHOUSE 1781",
+   "start": 108.29,
+   "end": 139.12,
+   "text": "By seventeen eighty-one, he was forty-five years old and so crippled by arthritis and sciatica that some days he could barely sit on a horse. And yet the battle plan he drew up that January is still studied by army officers today as one of the finest tactical performances in American history. So how did a frontier wagon driver learn to beat the best troops in the British Empire? Let's take a closer look at Daniel Morgan's three greatest tactical moves.",
+   "sents": [
+    [
+     0,
+     108.29,
+     118.02
+    ],
+    [
+     142,
+     118.3,
+     128.64
+    ],
+    [
+     294,
+     128.92,
+     134.26
+    ],
+    [
+     382,
+     134.54,
+     139.12
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-1 | Hudson region; title card MOVE 1 \u00b7 SARATOGA \u00b7 SEPTEMBER 1777; red arrow from Canada down Lake Champlain past Fort Ticonderoga toward Albany; BURGOYNE \u00b7 ~7,000; dotted line splitting New England from the other colonies",
+   "start": 140.52,
+   "end": 161.65,
+   "text": "Summer, seventeen seventy-seven. A British army of around seven thousand men under General John Burgoyne comes down out of Canada, along Lake Champlain, toward the Hudson River. Its goal is Albany. If Burgoyne gets there, New England will be cut off from the rest of the colonies, and the rebellion could be split in two.",
+   "sents": [
+    [
+     0,
+     140.52,
+     142.63
+    ],
+    [
+     33,
+     142.91,
+     152.54
+    ],
+    [
+     178,
+     152.82,
+     154.37
+    ],
+    [
+     198,
+     154.65,
+     161.65
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "ARCHIVE: Reynolds portrait of General John Burgoyne",
+   "start": 162.25,
+   "end": 182.42,
+   "text": "Burgoyne is a confident, theatrical commander, a playwright in his spare time, and his campaign starts brilliantly. He takes Fort Ticonderoga almost without a fight. But the further south he marches, the thicker the forest becomes, and the harder it is to move an eighteenth-century European army through it.",
+   "sents": [
+    [
+     0,
+     162.25,
+     169.74
+    ],
+    [
+     116,
+     170.02,
+     173.18
+    ],
+    [
+     166,
+     173.46,
+     182.42
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-2 | Saratoga battlefield: Hudson River, American fortified line on Bemis Heights (plaque GATES); unit MORGAN'S RIFLE CORPS \u00b7 ~500 drops in with Morgan's stake",
+   "start": 183.02,
+   "end": 205.79,
+   "text": "Blocking his path, on the high ground at Bemis Heights above the Hudson, is an American army under General Horatio Gates. And with it is a special unit. Around five hundred picked marksmen, most of them frontiersmen from Virginia, Pennsylvania and Maryland, armed with long rifles. Their commander is Colonel Daniel Morgan.",
+   "sents": [
+    [
+     0,
+     183.02,
+     191.27
+    ],
+    [
+     122,
+     191.55,
+     193.51
+    ],
+    [
+     153,
+     193.79,
+     202.93
+    ],
+    [
+     282,
+     203.21,
+     205.79
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-2b | Close-up: two range rings from one point: MUSKET \u00b7 ~80 YARDS (small) vs LONG RIFLE \u00b7 200-300 YARDS (large); caption SLOW TO LOAD \u00b7 NO BAYONET",
+   "start": 206.39,
+   "end": 222.43,
+   "text": "The long rifle was a hunting weapon. It took much longer to load than the standard British musket, and it could not carry a bayonet. But in trained hands it could hit a man at two or three hundred yards, when a musket was little better than a guess beyond eighty.",
+   "sents": [
+    [
+     0,
+     206.39,
+     208.86
+    ],
+    [
+     37,
+     209.14,
+     214.82
+    ],
+    [
+     133,
+     215.1,
+     222.43
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-3 | Battlefield: three British columns advancing south through the woods toward Freeman's Farm; caption THE BRITISH WAY: LINES \u00b7 VOLLEYS \u00b7 BAYONETS",
+   "start": 223.03,
+   "end": 237.46,
+   "text": "The British believed they knew how this war would be decided. Stand in close-packed lines, fire volleys, and finish the job with the bayonet. American irregulars, they assumed, would never stand up to disciplined regulars.",
+   "sents": [
+    [
+     0,
+     223.03,
+     226.45
+    ],
+    [
+     62,
+     226.73,
+     232.02
+    ],
+    [
+     142,
+     232.3,
+     237.46
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-4 | Morgan's corps splits into many small blue dots scattered through the woods; target marks appear on the British officers in the column",
+   "start": 238.06,
+   "end": 257.29,
+   "text": "But Morgan saw something different. In these woods, a battle line was just a crowd of targets. And the most important targets in that crowd were easy to find: the officers, in their finer coats, standing upright to shout the orders. Take away the officers, and the whole machine would stop.",
+   "sents": [
+    [
+     0,
+     238.06,
+     240.0
+    ],
+    [
+     36,
+     240.28,
+     244.08
+    ],
+    [
+     95,
+     244.36,
+     253.49
+    ],
+    [
+     233,
+     253.77,
+     257.29
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-5 | 19 SEPTEMBER 1777; Freeman's Farm clearing highlighted; fire lines from the woods hit the British advance pickets; officer marks crossed out; caption NEARLY EVERY OFFICER HIT",
+   "start": 257.89,
+   "end": 278.91,
+   "text": "On the nineteenth of September, Burgoyne's army advanced in three columns through the woods. Around midday, near a clearing called Freeman's Farm, Morgan's riflemen struck the British advance guard. Firing from behind trees, they shot down almost every officer in the forward pickets within minutes. The survivors ran.",
+   "sents": [
+    [
+     0,
+     257.89,
+     263.37
+    ],
+    [
+     93,
+     263.65,
+     270.39
+    ],
+    [
+     199,
+     270.67,
+     277.22
+    ],
+    [
+     300,
+     277.5,
+     278.91
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-6 | Riflemen pursue too far, scatter against the main British column; caption TURKEY CALL gathers them; fighting surges back and forth across the clearing; stat: BRITISH ~600 LOST \u00b7 AMERICANS ~300",
+   "start": 279.51,
+   "end": 309.05,
+   "text": "The riflemen chased too far, ran straight into the main British column, and for a moment they were scattered through the forest. Morgan rallied them with a sound every hunter in the corps knew: a wooden turkey call. For the rest of the afternoon the fighting surged back and forth across the clearing. At nightfall the British still held the field, but they had lost around six hundred men, twice the American losses, and some regiments had lost most of their officers.",
+   "sents": [
+    [
+     0,
+     279.51,
+     287.28
+    ],
+    [
+     129,
+     287.56,
+     292.76
+    ],
+    [
+     216,
+     293.04,
+     297.93
+    ],
+    [
+     302,
+     298.21,
+     309.05
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-7 | 7 OCTOBER 1777; British reconnaissance in force (~1,500) in the wheat field; Morgan's riflemen loop far to the west through the woods onto the British right flank; other American brigades hit the British left",
+   "start": 309.65,
+   "end": 331.5,
+   "text": "Three weeks later, on the seventh of October, Burgoyne tried again. Running short of food, he sent around fifteen hundred men forward in a reconnaissance in force. The Americans hit them at both ends. While other brigades struck the British left, Morgan's riflemen swung wide to the west, through the woods, and fell on the British right flank.",
+   "sents": [
+    [
+     0,
+     309.65,
+     313.87
+    ],
+    [
+     68,
+     314.15,
+     319.91
+    ],
+    [
+     164,
+     320.19,
+     322.37
+    ],
+    [
+     201,
+     322.65,
+     331.5
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-8 | British line wavers; plaque BRIG. GEN. SIMON FRASER rides along it; a thin fire line from a tree (MURPHY) \u2014 Fraser plaque gets a MORTALLY WOUNDED tag",
+   "start": 332.1,
+   "end": 358.37,
+   "text": "The British line began to give way. One officer, riding back and forth to rally it, seemed to hold it together by sheer force of will: Brigadier General Simon Fraser, Burgoyne's best field commander. According to tradition, Morgan pointed him out to his riflemen. A marksman named Timothy Murphy climbed into a tree, and on his third shot, Fraser fell from his horse, mortally wounded.",
+   "sents": [
+    [
+     0,
+     332.1,
+     334.19
+    ],
+    [
+     36,
+     334.47,
+     345.63
+    ],
+    [
+     200,
+     345.91,
+     349.87
+    ],
+    [
+     264,
+     350.15,
+     358.37
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-9 | British line collapses back into its redoubts; one redoubt stormed; British withdraw north to Saratoga; stat card: 17 OCTOBER \u00b7 ~6,000 SURRENDER",
+   "start": 358.97,
+   "end": 380.01,
+   "text": "With Fraser down, the British line collapsed. The Americans chased it back into its fortifications and stormed one of them before dark. Burgoyne retreated north to the village of Saratoga, found himself surrounded, and on the seventeenth of October he surrendered his entire army. Nearly six thousand men laid down their arms.",
+   "sents": [
+    [
+     0,
+     358.97,
+     361.66
+    ],
+    [
+     46,
+     361.94,
+     367.5
+    ],
+    [
+     136,
+     367.78,
+     377.0
+    ],
+    [
+     281,
+     377.28,
+     380.01
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "MAP: sar-10 | Method card over the map: STRIKE THE OFFICERS \u00b7 BAIT THE ENEMY WITH WHAT HE EXPECTS \u00b7 SPRING THE TRAP (first line highlighted, the other two dimmed)",
+   "start": 380.61,
+   "end": 402.26,
+   "text": "This was the first part of Morgan's method. Strike the officers: an army is only as strong as the men who give its orders. Bait the enemy with what he expects to see. And when he takes the bait, spring the trap. At Saratoga, Morgan had shown only the first part. The rest would come three years later, and it would make him famous.",
+   "sents": [
+    [
+     0,
+     380.61,
+     383.0
+    ],
+    [
+     44,
+     383.28,
+     388.66
+    ],
+    [
+     123,
+     388.94,
+     391.54
+    ],
+    [
+     167,
+     391.82,
+     394.36
+    ],
+    [
+     212,
+     394.64,
+     398.31
+    ],
+    [
+     263,
+     398.59,
+     402.26
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "ARCHIVE: Trumbull, 'Surrender of General Burgoyne' \u2014 slow pan across the painting",
+   "start": 402.86,
+   "end": 419.89,
+   "text": "Saratoga was the turning point of the war. It convinced France that the Americans could actually win, and within months France entered the war as America's ally. Burgoyne himself is said to have told Morgan that he commanded the finest regiment in the world.",
+   "sents": [
+    [
+     0,
+     402.86,
+     405.69
+    ],
+    [
+     43,
+     405.97,
+     413.53
+    ],
+    [
+     162,
+     413.81,
+     419.89
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 1 \u2014 SARATOGA: THE RIFLEMEN IN THE WOODS",
+   "tag": "ARCHIVE: portrait of Daniel Morgan \u2014 slow push-in",
+   "start": 420.49,
+   "end": 439.92,
+   "text": "But after Saratoga, Morgan was passed over for promotion, and in seventeen seventy-nine, worn out and sick, he went home to Virginia. If you enjoy this kind of tactical breakdown, consider subscribing, because the war was about to call him back, for the most perfect battle of his life.",
+   "sents": [
+    [
+     0,
+     420.49,
+     429.79
+    ],
+    [
+     134,
+     430.07,
+     439.92
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-1 | Carolinas; title card MOVE 2 \u00b7 COWPENS \u00b7 JANUARY 1781; GREENE's army near Cheraw; blue arrow: Morgan's detachment (~1,000) splits off to the west; CORNWALLIS at Winnsboro between them",
+   "start": 441.32,
+   "end": 465.95,
+   "text": "December, seventeen eighty. After the disaster at Camden, Congress calls Morgan back, promotes him to brigadier general, and sends him south to serve under the new American commander, Nathanael Greene. Greene makes a bold and dangerous decision. He splits his small army in two, and sends Morgan west with around a thousand men to threaten the British outposts.",
+   "sents": [
+    [
+     0,
+     441.32,
+     443.11
+    ],
+    [
+     28,
+     443.39,
+     455.09
+    ],
+    [
+     202,
+     455.37,
+     458.22
+    ],
+    [
+     246,
+     458.5,
+     465.95
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-2 | Plaques CORNWALLIS and TARLETON; Tarleton's force (~1,100: LEGION, 7TH FOOT, 71ST HIGHLANDERS, DRAGOONS) leaves Cornwallis and heads for Morgan",
+   "start": 466.55,
+   "end": 487.57,
+   "text": "The British commander in the South, Lord Charles Cornwallis, cannot ignore an American force behind his flank. He sends his sharpest weapon to destroy it: Banastre Tarleton, with his British Legion, two battalions of regular infantry, and his dragoons. Around eleven hundred of the best troops in the South.",
+   "sents": [
+    [
+     0,
+     466.55,
+     473.8
+    ],
+    [
+     111,
+     474.08,
+     483.94
+    ],
+    [
+     253,
+     484.22,
+     487.57
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-3 | Red arrow chases the blue north-west over the Pacolet River; blue stops at THE COWPENS; Broad River a few miles behind",
+   "start": 488.17,
+   "end": 511.81,
+   "text": "For days, Tarleton drives his men hard through rain and across swollen rivers, and Morgan falls back in front of him. On the evening of the sixteenth of January, Morgan stops at a place the locals called the Cowpens, an open, lightly wooded pasture where farmers wintered their cattle, with the Broad River a few miles behind him. He decides to fight there.",
+   "sents": [
+    [
+     0,
+     488.17,
+     495.7
+    ],
+    [
+     118,
+     495.98,
+     509.78
+    ],
+    [
+     331,
+     510.06,
+     511.81
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-4 | Cowpens battlefield: gentle slope, two low rises; road from the south; arrow toward BROAD RIVER behind; captions OPEN GROUND \u00b7 OPEN FLANKS \u00b7 RIVER BEHIND",
+   "start": 512.41,
+   "end": 532.95,
+   "text": "On paper, it was a terrible position. Open ground, perfect for Tarleton's cavalry. No swamp or stream to protect the flanks. And a deep river at his back, so that if his army broke, there would be nowhere to run. Every military manual said it was a mistake. That was exactly how Morgan wanted it to look.",
+   "sents": [
+    [
+     0,
+     512.41,
+     514.95
+    ],
+    [
+     38,
+     515.23,
+     518.39
+    ],
+    [
+     83,
+     518.67,
+     521.35
+    ],
+    [
+     125,
+     521.63,
+     526.71
+    ],
+    [
+     213,
+     526.99,
+     529.91
+    ],
+    [
+     258,
+     530.19,
+     532.95
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-5 | Three lines form one by one: 1) SHARPSHOOTERS (front), 2) MILITIA \u00b7 PICKENS (about 150 yards back), 3) CONTINENTALS \u00b7 HOWARD on the crest; WASHINGTON'S CAVALRY hidden behind the second rise",
+   "start": 533.55,
+   "end": 560.38,
+   "text": "Because Morgan saw something different. He knew the militia were Tarleton's favorite prey, and he knew that militia ran. So he built his whole plan around it. In front, he placed a thin screen of sharpshooters. Behind them, the militia under Andrew Pickens. And behind them, on the crest of the rise, his veteran Continentals under John Eager Howard. Out of sight, behind the hill, waited William Washington's cavalry.",
+   "sents": [
+    [
+     0,
+     533.55,
+     535.7
+    ],
+    [
+     40,
+     535.98,
+     540.78
+    ],
+    [
+     121,
+     541.06,
+     543.22
+    ],
+    [
+     159,
+     543.5,
+     546.44
+    ],
+    [
+     211,
+     546.72,
+     549.73
+    ],
+    [
+     258,
+     550.01,
+     555.94
+    ],
+    [
+     351,
+     556.22,
+     560.38
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-6 | Caption on the militia line: TWO VOLLEYS \u2014 THEN RETIRE; dotted planned route curving around the American left to behind the hill",
+   "start": 560.98,
+   "end": 579.72,
+   "text": "Then he gave the militia an order no one had ever given them. Don't try to stand against the bayonets. Just give me two volleys, at killing range, and then you may retire, around our left flank, to the rear of the hill. Morgan wasn't hiding the militia's weakness. He was going to use it as bait.",
+   "sents": [
+    [
+     0,
+     560.98,
+     564.97
+    ],
+    [
+     62,
+     565.25,
+     567.34
+    ],
+    [
+     103,
+     567.62,
+     574.57
+    ],
+    [
+     220,
+     574.85,
+     577.52
+    ],
+    [
+     265,
+     577.8,
+     579.72
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "ARCHIVE: 18th-century soldiers around a winter campfire at night \u2014 slow push-in",
+   "start": 580.32,
+   "end": 599.29,
+   "text": "That night, Morgan limped from campfire to campfire, joking with the militiamen, explaining their part in the plan, and promising that the Old Wagoner would crack his whip over Tarleton in the morning. According to tradition, he even pulled up his shirt to show them the scars on his back from the British lash.",
+   "sents": [
+    [
+     0,
+     580.32,
+     592.8
+    ],
+    [
+     202,
+     593.08,
+     599.29
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-7 | Dawn, 17 JANUARY 1781; Tarleton plaque; red line forms: Legion infantry and 7th Foot in the center, 71st Highlanders in reserve, dragoons on both flanks; caption MARCHING SINCE 2 A.M.",
+   "start": 599.89,
+   "end": 616.49,
+   "text": "Tarleton's men had been marching since two in the morning. When they came out of the woods at dawn and saw the Americans drawn up across the pasture, Tarleton did not stop to rest them, or even to scout the position. He formed his line and ordered an immediate attack.",
+   "sents": [
+    [
+     0,
+     599.89,
+     603.13
+    ],
+    [
+     59,
+     603.41,
+     613.16
+    ],
+    [
+     217,
+     613.44,
+     616.49
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-8 | Sharpshooters fire; officer marks fall; sharpshooters fall back into the militia line; militia volley flashes twice",
+   "start": 617.09,
+   "end": 635.87,
+   "text": "The sharpshooters opened fire first, aiming, as Morgan had told them, for the men with epaulettes. Then they fell back into the militia line. The British came on, and at around fifty yards, the militia fired, and then fired again. Those volleys cut down a large share of the British officers.",
+   "sents": [
+    [
+     0,
+     617.09,
+     623.15
+    ],
+    [
+     99,
+     623.43,
+     625.75
+    ],
+    [
+     142,
+     626.03,
+     631.65
+    ],
+    [
+     231,
+     631.93,
+     635.87
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-9 | Militia retires around the American left behind the hill; red line surges forward; British dragoons chase the militia; Washington's cavalry bursts out from behind the hill and drives them off",
+   "start": 636.47,
+   "end": 659.84,
+   "text": "Then, just as planned, the militia turned and made for the rear, around the left of the hill. To the British it looked like every other battle in the South: the militia breaking in panic. They raised a cheer and rushed forward. Tarleton's dragoons galloped after the fleeing militia, straight into William Washington's cavalry, who came around the hill and cut them to pieces.",
+   "sents": [
+    [
+     0,
+     636.47,
+     641.95
+    ],
+    [
+     94,
+     642.23,
+     647.67
+    ],
+    [
+     188,
+     647.95,
+     650.28
+    ],
+    [
+     228,
+     650.56,
+     659.84
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-10 | Red line hits Howard's Continentals; 71ST HIGHLANDERS come around the American right; Howard's right company turns about; the whole blue line walks back in order",
+   "start": 660.44,
+   "end": 684.3,
+   "text": "Now the British reached the Continentals, and the real fight began. Tarleton threw in his reserve, the Scottish Highlanders of the seventy-first, around the American right. Howard ordered his right-flank company to turn and face them. But in the smoke and noise the order was misunderstood. The company turned about and began to walk to the rear, and the rest of the line followed.",
+   "sents": [
+    [
+     0,
+     660.44,
+     664.58
+    ],
+    [
+     68,
+     664.86,
+     671.49
+    ],
+    [
+     173,
+     671.77,
+     675.49
+    ],
+    [
+     235,
+     675.77,
+     679.11
+    ],
+    [
+     291,
+     679.39,
+     684.3
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-11 | Blue line withdraws in order; red units break formation and rush forward, spreading out; speech bubble from Morgan: \"FACE ABOUT, AND GIVE THEM ONE FIRE\"",
+   "start": 684.9,
+   "end": 703.83,
+   "text": "It could have been a disaster. But the Continentals were walking back in good order, and the British, certain the Americans were beaten, broke ranks and rushed after them in a disorganized crowd. Morgan rode up, picked a spot, and told Howard: when I give the word, face about, and give them one fire.",
+   "sents": [
+    [
+     0,
+     684.9,
+     686.59
+    ],
+    [
+     31,
+     686.87,
+     696.98
+    ],
+    [
+     196,
+     697.26,
+     703.83
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-12 | Blue line about-faces; volley flash at ~30 YARDS; red front ranks grey out; blue bayonet charge arrow",
+   "start": 704.43,
+   "end": 716.62,
+   "text": "The Continentals turned, and fired a volley straight into the British at thirty yards. The effect was devastating. Before the stunned British could recover, Howard's men charged with the bayonet.",
+   "sents": [
+    [
+     0,
+     704.43,
+     709.57
+    ],
+    [
+     87,
+     709.85,
+     711.6
+    ],
+    [
+     115,
+     711.88,
+     716.62
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-13 | Double envelopment: Washington's cavalry sweeps into the British right and rear; Pickens's rallied militia comes back around onto the British left; red units encircled and grey; caption DOUBLE ENVELOPMENT",
+   "start": 717.22,
+   "end": 744.3,
+   "text": "And at that moment, the trap closed. Washington's cavalry swept into the British right and rear. And the militia, who had rallied behind the hill, came back around and struck the British left. Morgan rode among them, shouting: \"Form, form, my brave fellows! Old Morgan was never beaten!\" Attacked from the front and on both flanks, the British line simply dissolved. Men threw down their muskets and fell to the ground.",
+   "sents": [
+    [
+     0,
+     717.22,
+     719.31
+    ],
+    [
+     37,
+     719.59,
+     723.26
+    ],
+    [
+     97,
+     723.54,
+     729.15
+    ],
+    [
+     193,
+     729.43,
+     733.86
+    ],
+    [
+     258,
+     734.14,
+     736.15
+    ],
+    [
+     288,
+     736.43,
+     741.19
+    ],
+    [
+     367,
+     741.47,
+     744.3
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-14 | Tarleton escapes with his last horsemen (red arrow off-map); stat card: BRITISH ~110 KILLED \u00b7 800+ CAPTURED (200+ WOUNDED) \u00b7 AMERICANS ~25 KILLED \u00b7 UNDER 1 HOUR",
+   "start": 744.9,
+   "end": 768.04,
+   "text": "Tarleton ordered his last reserve of dragoons to charge, but they refused. He escaped with a few hundred horsemen. Behind him, around a hundred and ten British soldiers lay dead, and more than eight hundred, over two hundred of them wounded, had been taken prisoner. The Americans lost around twenty-five killed. The whole battle had lasted less than an hour.",
+   "sents": [
+    [
+     0,
+     744.9,
+     749.85
+    ],
+    [
+     75,
+     750.13,
+     752.42
+    ],
+    [
+     115,
+     752.7,
+     762.17
+    ],
+    [
+     267,
+     762.45,
+     765.16
+    ],
+    [
+     313,
+     765.44,
+     768.04
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "MAP: cow-15 | Method card over the final positions; all three lines lit",
+   "start": 768.64,
+   "end": 791.75,
+   "text": "Strike the officers: the sharpshooters and the militia cut down the men who held the British line together. Bait the enemy with what he expects: Tarleton expected the militia to run, so Morgan ordered them to run. Spring the trap: fresh regulars in front, cavalry and militia on both flanks. Morgan's whole method, complete, on a single cattle pasture.",
+   "sents": [
+    [
+     0,
+     768.64,
+     774.91
+    ],
+    [
+     108,
+     775.19,
+     782.1
+    ],
+    [
+     214,
+     782.38,
+     787.7
+    ],
+    [
+     292,
+     787.98,
+     791.75
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 2 \u2014 COWPENS: THE TRAP ON THE CATTLE PASTURE",
+   "tag": "ARCHIVE: Congressional gold medal awarded to Morgan for Cowpens \u2014 slow push-in",
+   "start": 792.35,
+   "end": 810.85,
+   "text": "It was one of the very few true double envelopments in American military history, the same maneuver Hannibal had used at Cannae two thousand years before. A few days later, Morgan wrote to a friend that he had given Tarleton \"a devil of a whipping.\" Congress awarded him a gold medal.",
+   "sents": [
+    [
+     0,
+     792.35,
+     802.14
+    ],
+    [
+     155,
+     802.42,
+     808.23
+    ],
+    [
+     250,
+     808.51,
+     810.85
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-1 | Carolinas; title card MOVE 3 \u00b7 THE BLUEPRINT \u00b7 1781; Cornwallis's red arrow from Winnsboro north toward Morgan; Morgan's blue column with 600 PRISONERS marches north-east across the Broad and the Catawba",
+   "start": 812.25,
+   "end": 836.67,
+   "text": "But Morgan knew the danger was not over. Cornwallis, with the main British army, was only a day or two away, and he was furious. Instead of celebrating, Morgan gathered his men and his prisoners, and within hours of the battle he was marching north as fast as he could go. He crossed the Broad River and then the Catawba, just ahead of Cornwallis, and got his prisoners away.",
+   "sents": [
+    [
+     0,
+     812.25,
+     814.92
+    ],
+    [
+     41,
+     815.2,
+     821.0
+    ],
+    [
+     129,
+     821.28,
+     830.14
+    ],
+    [
+     273,
+     830.42,
+     836.67
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-2 | Greene's blue arrow joins Morgan; combined retreat north-east across the Yadkin to the Dan River into Virginia; red arrow follows; caption CORNWALLIS BURNS HIS BAGGAGE; caption THE RACE TO THE DAN",
+   "start": 837.27,
+   "end": 857.22,
+   "text": "Cornwallis was so determined to catch him that he burned his own baggage wagons to move faster. Greene rushed to join Morgan, and together they led the British on a long chase across North Carolina, all the way to the Dan River and into Virginia. Every mile dragged Cornwallis further from his supplies.",
+   "sents": [
+    [
+     0,
+     837.27,
+     843.52
+    ],
+    [
+     96,
+     843.8,
+     853.57
+    ],
+    [
+     247,
+     853.85,
+     857.22
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "ARCHIVE: Peale portrait of Nathanael Greene",
+   "start": 857.82,
+   "end": 874.62,
+   "text": "But Morgan's body finally gave out. His sciatica was so bad that he could no longer ride. In February, he was forced to leave the army and go home. Before he left, he sent Greene a letter. It was, in effect, a blueprint of how to fight Cornwallis.",
+   "sents": [
+    [
+     0,
+     857.82,
+     860.14
+    ],
+    [
+     36,
+     860.42,
+     864.11
+    ],
+    [
+     90,
+     864.39,
+     867.94
+    ],
+    [
+     148,
+     868.22,
+     870.61
+    ],
+    [
+     189,
+     870.89,
+     874.62
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "ARCHIVE: 18th-century handwritten letter / manuscript \u2014 slow pan",
+   "start": 875.22,
+   "end": 899.25,
+   "text": "Greene would soon have to fight, Morgan warned, and a great part of his army would be militia. Put the riflemen on the flanks, he advised, under officers who know that kind of fighting. Put the militia in the center, with picked troops behind them. And then he added a line that summed up everything he had learned: \"If they fight, you beat Cornwallis. If not, he will beat you.\"",
+   "sents": [
+    [
+     0,
+     875.22,
+     880.89
+    ],
+    [
+     95,
+     881.17,
+     886.93
+    ],
+    [
+     186,
+     887.21,
+     890.75
+    ],
+    [
+     249,
+     891.03,
+     897.31
+    ],
+    [
+     353,
+     897.59,
+     899.25
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-3 | Guilford battlefield; title strip GUILFORD COURTHOUSE \u00b7 15 MARCH 1781; Greene's three lines form: 1) North Carolina militia at the fence line, 2) Virginia militia in the woods, 3) Continentals on the hill by the courthouse; riflemen and cavalry on both flanks; forces: GREENE ~4,400 \u00b7 CORNWALLIS ~2,000",
+   "start": 899.85,
+   "end": 925.37,
+   "text": "On the fifteenth of March, seventeen eighty-one, Greene turned to fight at Guilford Courthouse, in North Carolina. He had around forty-four hundred men. Cornwallis had around two thousand, but they were among the finest regulars in the British army. And Greene laid out his army just as Morgan had advised: three lines, one behind the other, with riflemen and cavalry on the flanks.",
+   "sents": [
+    [
+     0,
+     899.85,
+     907.06
+    ],
+    [
+     115,
+     907.34,
+     910.01
+    ],
+    [
+     153,
+     910.29,
+     915.98
+    ],
+    [
+     250,
+     916.26,
+     925.37
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-4 | Red lines form in the open fields and advance toward the fence line; bubble from Cornwallis: \"COWPENS WAS A FLUKE\"",
+   "start": 925.97,
+   "end": 938.43,
+   "text": "Cornwallis believed Cowpens had been a fluke, the result of Tarleton's recklessness, not a system. He formed his regulars in the open fields and marched them straight at the first American line.",
+   "sents": [
+    [
+     0,
+     925.97,
+     932.35
+    ],
+    [
+     99,
+     932.63,
+     938.43
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-5 | North Carolina militia volley, then most withdraw; flank riflemen keep firing into the British flanks; British reach the second line in the woods; red units shrink",
+   "start": 939.03,
+   "end": 960.52,
+   "text": "Greene asked the North Carolina militia for exactly what Morgan had asked at Cowpens: two volleys, and then they could go. Most of them fired at least once, and then broke for the rear. But the riflemen on the flanks kept shooting into the British as they passed, and the second line, in thick woods, made them fight for every yard.",
+   "sents": [
+    [
+     0,
+     939.03,
+     947.08
+    ],
+    [
+     123,
+     947.36,
+     951.18
+    ],
+    [
+     186,
+     951.46,
+     960.52
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-6 | British come out of the woods disorganized; 1ST MARYLAND counterattack and Washington's cavalry hit the British Guards; caption GRAPESHOT INTO HIS OWN MEN",
+   "start": 961.12,
+   "end": 985.9,
+   "text": "By the time the British came out of the woods and reached the Continentals on the hill, they were exhausted and disorganized. The veteran First Maryland counterattacked with the bayonet, and William Washington's cavalry smashed into the British Guards. It was so desperate that Cornwallis ordered his guns to fire grapeshot into the struggling mass, killing some of his own men to stop the American attack.",
+   "sents": [
+    [
+     0,
+     961.12,
+     968.38
+    ],
+    [
+     126,
+     968.66,
+     976.27
+    ],
+    [
+     253,
+     976.55,
+     985.9
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-7 | Greene withdraws in good order (blue arrow north); red holds the field; stat card: BRITISH ~530 CASUALTIES \u00b7 MORE THAN 1 IN 4",
+   "start": 986.5,
+   "end": 1006.03,
+   "text": "Greene, unwilling to risk his army, withdrew in good order. Cornwallis held the field. On paper, it was a British victory. But he had lost more than a quarter of his army, men he could not replace. In London, one member of Parliament remarked that another such victory would ruin the British army.",
+   "sents": [
+    [
+     0,
+     986.5,
+     990.14
+    ],
+    [
+     60,
+     990.42,
+     992.07
+    ],
+    [
+     87,
+     992.35,
+     994.69
+    ],
+    [
+     123,
+     994.97,
+     999.54
+    ],
+    [
+     198,
+     999.82,
+     1006.03
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-8 | Carolinas / Virginia: Cornwallis's red arrow to Wilmington, then north into Virginia to YORKTOWN; French fleet off the coast; American and French armies close in; marker YORKTOWN \u00b7 OCTOBER 1781",
+   "start": 1006.63,
+   "end": 1028.27,
+   "text": "Cornwallis could not stay in the Carolinas. He fell back to the coast, and then marched north into Virginia, to a small tobacco port called Yorktown. There, in October seventeen eighty-one, trapped between an American and French army on land and a French fleet at sea, he surrendered. The war for independence was effectively over.",
+   "sents": [
+    [
+     0,
+     1006.63,
+     1009.25
+    ],
+    [
+     44,
+     1009.53,
+     1016.46
+    ],
+    [
+     150,
+     1016.74,
+     1024.91
+    ],
+    [
+     285,
+     1025.19,
+     1028.27
+    ]
+   ]
+  },
+  {
+   "section": "MOVE 3 \u2014 THE ESCAPE AND THE BLUEPRINT: GUILFORD COURTHOUSE",
+   "tag": "MAP: gui-9 | Method card over the map",
+   "start": 1028.87,
+   "end": 1049.51,
+   "text": "Morgan was not at Guilford Courthouse, but his method was. Strike the officers, with riflemen on the flanks. Bait the enemy with the militia he despises. And make him fight line after line, until he reaches your best troops too exhausted to win. The Old Wagoner had turned one morning at Cowpens into a system.",
+   "sents": [
+    [
+     0,
+     1028.87,
+     1032.73
+    ],
+    [
+     59,
+     1033.01,
+     1036.23
+    ],
+    [
+     109,
+     1036.51,
+     1039.47
+    ],
+    [
+     154,
+     1039.75,
+     1045.37
+    ],
+    [
+     246,
+     1045.65,
+     1049.51
+    ]
+   ]
+  },
+  {
+   "section": "ENDING",
+   "tag": "ARCHIVE: Trumbull, 'Surrender of Lord Cornwallis' \u2014 slow pan",
+   "start": 1050.91,
+   "end": 1060.62,
+   "text": "Four years earlier, Saratoga had brought France into the war. Now Yorktown ended it. And Daniel Morgan had helped to make both of them possible.",
+   "sents": [
+    [
+     0,
+     1050.91,
+     1054.87
+    ],
+    [
+     62,
+     1055.15,
+     1056.8
+    ],
+    [
+     85,
+     1057.08,
+     1060.62
+    ]
+   ]
+  },
+  {
+   "section": "ENDING",
+   "tag": "MAP: ending-1 | East map: Morgan portrait stake; the three markers light up again: SARATOGA 1777, COWPENS 1781, GUILFORD COURTHOUSE 1781; slow pull-out",
+   "start": 1061.22,
+   "end": 1086.57,
+   "text": "The wagon driver once whipped by the British army helped to beat it three times: in the woods at Saratoga, on a cattle pasture at Cowpens, and, through the letter of a sick man, at Guilford Courthouse. Military officers still study his plan at Cowpens today, not because it was complicated, but because it was simple. He looked at his weakest troops, and he saw exactly how to use them.",
+   "sents": [
+    [
+     0,
+     1061.22,
+     1074.19
+    ],
+    [
+     202,
+     1074.47,
+     1082.21
+    ],
+    [
+     318,
+     1082.49,
+     1086.57
+    ]
+   ]
+  },
+  {
+   "section": "ENDING",
+   "tag": "ARCHIVE: Battle of Cowpens painting \u2014 slow push-in, fade to black",
+   "start": 1087.17,
+   "end": 1099.82,
+   "text": "Which commander should we look at next? Let us know in the comments. And if you enjoyed this breakdown of Daniel Morgan's three greatest tactical moves, subscribe, so you don't miss the next one.",
+   "sents": [
+    [
+     0,
+     1087.17,
+     1089.37
+    ],
+    [
+     40,
+     1089.65,
+     1091.44
+    ],
+    [
+     69,
+     1091.72,
+     1099.82
+    ]
+   ]
+  }
+ ]
+}
