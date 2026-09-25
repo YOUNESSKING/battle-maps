@@ -26,8 +26,8 @@ B.camera([
   [T_MAY, 1460, 860, 0.74],
   [T_SURR + 1.5, 1480, 930, 0.95],
   [T_3M, 1420, 880, 0.9],
-  [T_DESTR, 1440, 700, 1.12],
-  [T_60 + 0.8, 1420, 650, 1.1],
+  [T_DESTR, 1440, 650, 1.12],
+  [T_60 + 0.8, 1420, 620, 1.1],
   [T_HELD + 0.5, 1360, 780, 0.8],
   [END, 1360, 740, 0.84],
 ]);
@@ -38,7 +38,7 @@ B.showDate(0.3);
 B.date("MAY 1780", 0.5, T_3M - 0.2);
 B.date("AUGUST 1780", T_3M + 0.1);
 B.label("VIRGINIA", ...G(37.05, -79.6), { cls: "country", size: 46, t: 1.0 });
-B.label("NORTH CAROLINA", ...G(35.75, -78.9), { cls: "country", size: 46, t: 1.3 });
+B.label("NORTH CAROLINA", ...G(35.5, -77.95), { cls: "country", size: 46, t: 1.3 });
 B.label("SOUTH CAROLINA", ...G(33.72, -80.55), { cls: "country", size: 42, t: 1.6 });
 B.label("GEORGIA", ...G(32.55, -83.25), { cls: "country", size: 46, t: 1.9 });
 B.label("ATLANTIC OCEAN", ...G(32.3, -77.0), { cls: "sea", size: 44, t: 2.2 });
@@ -51,7 +51,7 @@ B.city("CHARLESTON", ...PL.charleston, { size: 32, t: T_MAY - 0.6 });
 B.city("SAVANNAH", ...PL.savannah, { size: 28, t: 3.2 });
 
 // ---------- Charleston falls ----------
-B.unit({ id: "chsB", side: "carth", kind: "inf", x: PL.charleston[0] - 30, y: PL.charleston[1] - 40, w: 50, h: 40, label: "5,000+", t: T_MAY + 0.2 });
+B.unit({ id: "chsB", side: "carth", kind: "inf", x: PL.charleston[0] - 75, y: PL.charleston[1] - 85, w: 50, h: 40, label: "5,000+", t: T_MAY + 0.2 });
 B.arrow({ side: "rome", pts: [[1840, 1330], [1700, 1200], [1560, 1100]], width: 18, t: T_MAY + 0.6, dur: 1.6, until: T_3M });
 B.arrow({ side: "rome", pts: [[1330, 1190], [1400, 1140], [1455, 1100]], width: 16, t: T_MAY + 1.0, dur: 1.4, until: T_3M });
 B.grey(["chsB"], T_SURR + 0.2);
@@ -70,7 +70,7 @@ OUT.forEach(([k, name, side, d]) => {
 B.unit({ id: "o_sav", side: "rome", kind: "inf", x: PL.savannah[0], y: PL.savannah[1], w: 34, h: 34, t: T_SPREAD + 1.6 });
 
 // ---------- Camden ----------
-const C0 = [PL.hillsborough[0], PL.hillsborough[1] + 40], C1 = [PL.camden[0] + 20, PL.camden[1] - 70];
+const C0 = [PL.hillsborough[0] - 70, PL.hillsborough[1] + 50], C1 = [PL.camden[0] + 20, PL.camden[1] - 70];
 B.unit({ id: "gates", side: "carth", kind: "inf", x: C0[0], y: C0[1], w: 50, h: 40, label: "SOUTHERN ARMY", t: T_3M + 0.3 });
 B.arrow({ side: "carth", pts: [[C0[0] - 10, C0[1] + 40], [1560, 560], [C1[0] + 18, C1[1] - 30]], width: 18, t: T_MARCH - 0.4, dur: 2.6, until: T_DESTR + 0.4 });
 B.move("gates", T_MARCH - 0.2, 3.2, ...C1);
@@ -79,7 +79,7 @@ B.grey(["gates"], T_DESTR + 0.2, 0.6);
 B.caption("CAMDEN · 16 AUGUST 1780 · ARMY DESTROYED", T_DESTR + 0.4, T_60 + 0.2, "rome");
 B.hideUnits(["gates"], T_FLED - 0.2, 0.4);
 // the army scatters north
-[[-40, -150], [60, -210], [140, -120], [-100, -90]].forEach(([dx, dy], i) => {
+[[-90, -120], [80, -190], [150, -100], [-150, -60]].forEach(([dx, dy], i) => {
   const id = "sc_" + i;
   B.unit({ id, side: "carth", kind: "inf", x: C1[0] + (i - 1.5) * 18, y: C1[1], w: 22, h: 22, t: T_FLED - 0.3, alpha: 0.85 });
   B.move(id, T_FLED + i * 0.12, 3.0, C1[0] + dx, C1[1] + dy, "power2.out");
