@@ -87,7 +87,6 @@ CITY("CAMDEN", 34.247, -80.607, { t: 5.3 });
 CITY("CHERAW", 34.698, -79.883, { t: 5.6 });
 CITY("WINNSBORO", 34.375, -81.087, { t: 5.9, left: true });
 CITY("CHARLESTON", 32.78, -79.93, { t: 6.2 });
-B.label("✕", CAMDEN_X = G(34.247, -80.607)[0] + 4, G(34.247, -80.607)[1] + 12, { size: 14, t: 5.3, cls: "tg" });
 
 U({ id: "army", side: "carth", kind: "inf", x: CHARLOTTE[0] + 20, y: CHARLOTTE[1] + 20, w: 34, h: 22, label: "GREENE'S ARMY", fs: 10, t: T_SOUTH - 1.2 });
 const sMorgan = STK({ img: "assets/media/morgan_head.png", flag: "assets/media/us_flag_13star.png", name: "MORGAN", x: CHARLOTTE[0] - 26, y: CHARLOTTE[1] - 8, size: 0.42, t: T_SOUTH - 0.4 });
@@ -137,7 +136,6 @@ tf.forEach((u, i) => {
 moveStake(sTarl, T_1100 + 0.6, 5.0, W1[0] - 34, W1[1] - 14);
 moveStake(sTarl, T_FALL - 0.5, 6.5, W2[0] - 34, W2[1] - 4);
 moveStake(sTarl, T_CPENS + 1.2, 5.0, W3[0] - 42, W3[1] - 6);
-B.hideUnits([], 0);
 
 // ---------- cow-3: the chase to the Cowpens ----------
 B.arrow({ side: "rome", pts: [[TCAMP[0] + 14, TCAMP[1] - 16], [W1[0] + 12, W1[1] - 6], [W2[0] + 22, W2[1] - 8], [W3[0] + 18, W3[1] + 20]], width: 6, t: T_DAYS + 0.3, dur: 9.0, until: END + 1 });
