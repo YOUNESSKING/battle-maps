@@ -26,8 +26,8 @@ B.camera([
   [T_MAY, 1460, 860, 0.74],
   [T_SURR + 1.5, 1480, 930, 0.95],
   [T_3M, 1420, 880, 0.9],
-  [T_DESTR, 1440, 650, 1.12],
-  [T_60 + 0.8, 1420, 620, 1.1],
+  [T_DESTR, 1430, 830, 1.12],
+  [T_60 + 0.8, 1410, 810, 1.1],
   [T_HELD + 0.5, 1360, 780, 0.8],
   [END, 1360, 740, 0.84],
 ]);
@@ -38,9 +38,9 @@ B.showDate(0.3);
 B.date("MAY 1780", 0.5, T_3M - 0.2);
 B.date("AUGUST 1780", T_3M + 0.1);
 B.label("VIRGINIA", ...G(37.05, -79.6), { cls: "country", size: 46, t: 1.0 });
-B.label("NORTH CAROLINA", ...G(35.5, -77.95), { cls: "country", size: 46, t: 1.3 });
+B.label("NORTH CAROLINA", ...G(35.3, -77.55), { cls: "country", size: 46, t: 1.3 });
 B.label("SOUTH CAROLINA", ...G(33.72, -80.55), { cls: "country", size: 42, t: 1.6 });
-B.label("GEORGIA", ...G(32.55, -83.25), { cls: "country", size: 46, t: 1.9 });
+B.label("GEORGIA", ...G(32.75, -83.9), { cls: "country", size: 46, t: 1.9 });
 B.label("ATLANTIC OCEAN", ...G(32.3, -77.0), { cls: "sea", size: 44, t: 2.2 });
 
 // towns without garrisons
