@@ -109,9 +109,9 @@ B.label("OPEN FIELD", 640, 1150, { cls: "tg", size: 32, t: G2 + 2.6, anchor: [-5
 // British army in the western field
 const brit = [["b33", 400, 720], ["b23", 400, 805], ["b71", 400, 1010], ["bbo", 400, 1095], ["bg2", 250, 870], ["bg1", 250, 1050]];
 brit.forEach(([id, x, y], i) => B.unit({ id, side: "rome", x, y, w: 96, h: 44, t: G2 + 3.2 + i * 0.12 }));
-B.portraitStake({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1606.png", name: "CORNWALLIS", x: 640, y: 770, size: 1.4, t: at("guilford-2", "Cornwallis knew") + 0.3, until: G3 + 0.2 });
+B.portraitStake({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1606.png", name: "CORNWALLIS", x: 640, y: 820, size: 1.4, t: at("guilford-2", "Cornwallis knew") + 0.3, until: G3 + 0.2 });
 B.caption("AT CAMDEN, THE MILITIA RAN", at("guilford-2", "At Camden") + 0.3, at("guilford-2", "He believed") - 0.2, "rome");
-B.bubble("THE MILITIA WILL RUN", 730, 482, at("guilford-2", "He believed"), G3 + 0.2);
+B.bubble("THE MILITIA WILL RUN", 730, 530, at("guilford-2", "He believed"), G3 + 0.2);
 B.arrow({ side: "rome", pts: [[480, 900], [900, 866], [1350, 822], [1800, 776], [2150, 738]], width: 26, dash: "40 22", t: at("guilford-2", "single determined"), dur: 1.0, until: G3 + 0.4 });
 
 // ---- Greene's three lines ----
