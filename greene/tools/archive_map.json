@@ -40,7 +40,7 @@
    "otho_williams.jpg"
   ],
   "move": "up",
-  "credit": "Continental Army uniforms, H. A. Ogden"
+  "credit": "H. A. Ogden, Infantry: Continental Army, 1779-1783"
  },
  "guilford_battle": {
   "file": [
@@ -71,6 +71,7 @@
  },
  "eutaw_battle": {
   "file": [
+   "eutaw_springs_engraving.jpg",
    "eutaw_springs_chappel.jpg",
    "eutaw_battle.jpg",
    "eutaw.jpg",
@@ -87,7 +88,7 @@
    "cornwallis.jpg"
   ],
   "move": "left",
-  "credit": "John Trumbull, Surrender of Lord Cornwallis (1820)"
+  "credit": "Surrender of Lord Cornwallis at Yorktown, after John Trumbull (lithograph, 1840s)"
  },
  "greene_statue": {
   "file": [
@@ -97,6 +98,6 @@
    "greene.jpg"
   ],
   "move": "up",
-  "credit": "Nathanael Greene monument"
+  "credit": "Nathanael Greene statue, Washington, D.C. (photo: Carol M. Highsmith)"
  }
 }
