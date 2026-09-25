@@ -23,6 +23,18 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 
 ---
 
+## 0c. Next video: the cheap route (learned from the Greene video, 2026-09-25)
+Greene took ~4 h wall-clock (13:33-17:36): script + voice ~15 min, 4 Opus map agents in parallel ~2 h,
+image downloads ~1.5 h (Wikimedia rate limit, overlapped with maps), assembly + a bug fix + re-assembly + upload ~1 h.
+Helper agents used ~1.3M tokens; the long main conversation (many status check-ins) cost more on top. Target for the next one: ~2 h, 1/3-1/2 the usage.
+1. **Fresh session**, attach the Gemini file, say "Read HANDOVER.md. Make the full video. Report only at milestones." Don't chat mid-run: every message and agent notice re-reads the whole conversation.
+2. **Copy greene/ as the template** (`lib/ tools/ vendor/ assets/fonts assets/grain.png` + tools/assemble_full.py, kenburns.py, archive_map.json, music_map.json, sfx_map.json). Reuse its scene files as models: region map (hook-1, eutaw-1), bio card (hook-2), portrait stakes (hook-3), battlefield (guilford-4, eutaw-3), method card (method-1), ending (end-2).
+3. **2 map agents on Sonnet**, not 4 on Opus: agent A = hook + move 1 + ending, agent B = moves 2-3. Give them the Greene scene files as the pattern to copy. Renders go through `flock /tmp/greene-render.lock` (4 CPUs: one render at a time is fastest).
+4. **Images from the Library of Congress first** (no rate limit): `https://www.loc.gov/pictures/search/?q=QUERY&fo=json`; full-res TIFF at `https://tile.loc.gov/storage-services/master/pnp/<path>u.tif` (the `r.jpg` is only 1024 px). Crop borders/colour bars. Wikimedia only for what LoC lacks. Do it in the main session in a few minutes, not with a long-running agent. Portrait cut-outs: rembg (isnet-general-use).
+5. **Wait for all agents in one go**, stop finished agents with TaskStop (they keep sending notices otherwise), commit + push at milestones only.
+6. **Assemble once**: `cd <name> && python3 tools/assemble_full.py`; then check video duration == audio duration (ffprobe) and look at a frame grid before sending. Preview for chat must be <30 MB (640x360, ~185 kbps video).
+7. **Deliver the 1080p master** via GoFile (`curl -F "file=@build/NAME-full-1080p.mp4" https://upload.gofile.io/uploadfile` -> downloadPage link; anonymous, deleted after ~10 days of no downloads). MediaFire is blocked from the cloud machine and needs a login.
+
 ## 1. The plan (unchanged)
 - Niche: famous generals' top 3 tactical moves, modelled on **Tactical Genius** (@tacticalgeniuss). Copy the *structure*, not the look or words.
 - Format: 16-19 min, ~80% animated battle maps, ~20% archival (film for the 20th century; paintings, busts and coins for ancient generals), calm documentary voice.
