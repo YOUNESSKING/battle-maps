@@ -1,28 +1,88 @@
-"""Final test mix: map render + voice + ducked music + sfx -> build/ridgway-test.mp4"""
+"""Final mix: build/picture.mp4 + voice + music bed (ducked under the voice) + SFX cues -> build/morgan-1080p.mp4 (+ 720p preview).
+
+usage (from morgan/): python3 tools/mix.py
+Music: Kevin MacLeod (incompetech.com), CC BY — see assets/audio/CREDITS.md for the description lines.
+"""
 import json, os, subprocess
-T = json.load(open("audio/timing.json")); dur = T["duration"]
-P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"]}
-M = "assets/media"
-cues = [("sfx_whoosh.wav", P["shot-2"]["start"] - 0.4, 0.8), ("sfx_thud.wav", P["shot-3"]["start"] + 0.9, 1.0),
-        ("sfx_boom.wav", 12.0, 0.5)]
-cues = [c for c in cues if os.path.exists(f"{M}/{c[0]}")]
-inputs = ["-i", "scenes/test/renders/test.mp4", "-i", "audio/voice.wav"]
-has_music = os.path.exists(f"{M}/music.wav")
-if has_music: inputs += ["-i", f"{M}/music.wav"]
-for c in cues: inputs += ["-i", f"{M}/{c[0]}"]
-f, mixes, idx = [], ["[vo]"], 2
-f.append("[1:a]aresample=48000,volume=1.0,asplit=2[vo][vokey]")
-if has_music:
-    f.append(f"[2:a]aresample=48000,atrim=0:{dur + 1},volume=0.55,afade=t=out:st={dur - 2}:d=2[mus]")
-    f.append("[mus][vokey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]")
-    mixes.append("[musd]"); idx = 3
-else:
-    f[0] = "[1:a]aresample=48000,volume=1.0[vo]"
-for i, (name, t, vol) in enumerate(cues):
-    f.append(f"[{idx + i}:a]aresample=48000,volume={vol},adelay={int(t * 1000)}|{int(t * 1000)}[s{i}]"); mixes.append(f"[s{i}]")
-f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
+
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+os.chdir(ROOT)
+T = json.load(open("audio/timing.json"))
+DUR = T["duration"]
+P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"] if p["tag"].startswith("MAP")}
+A = "assets/audio"
+
+
+def at(key, phrase, off=0.0):
+    """absolute time a phrase is spoken (same maths as B.at in lib/battle.js)."""
+    p = P[key]; text = p["text"]; i = text.index(phrase); ss = p["sents"]
+    k = 0
+    while k + 1 < len(ss) and ss[k + 1][0] <= i:
+        k += 1
+    c0, c1 = ss[k][0], ss[k + 1][0] if k + 1 < len(ss) else len(text)
+    return ss[k][1] + (ss[k][2] - ss[k][1]) * (i - c0) / max(1, c1 - c0) + off
+
+
+S = lambda k: P[k]["start"]
+# (file, start, end, offset in track)
+MUSIC = [
+    ("music_01_heavy_heart.mp3", 0, S("sar-1"), 0),
+    ("music_02_clash_defiant.mp3", S("sar-1"), S("cow-1"), 0),
+    ("music_04_fife_and_drum.mp3", S("cow-1"), S("cow-1") + 57, 0),
+    ("music_01_heavy_heart.mp3", S("cow-1") + 55, S("cow-7"), 150),
+    ("music_03_ready_aim_fire.mp3", S("cow-7"), S("cow-14"), 0),
+    ("music_06_undaunted.mp3", S("cow-14"), S("gui-1"), 0),
+    ("music_05_crusade.mp3", S("gui-1"), S("gui-8"), 0),
+    ("music_06_undaunted.mp3", S("gui-8"), S("ending-1"), 70),
+    ("music_01_heavy_heart.mp3", S("ending-1"), DUR + 1, 236),
+]
+SFX = [  # (file, time, volume)
+    ("sfx_cannon.wav", at("hook-1", "Charleston had fallen"), 0.5),
+    ("sfx_whoosh.wav", S("hook-2") - 0.4, 0.7),
+    ("sfx_thud.wav", S("hook-3") + 0.9, 0.8),
+    ("sfx_drum_roll.wav", S("sar-1") - 0.3, 0.6), ("sfx_whoosh.wav", S("sar-1") + 0.2, 0.6),
+    ("sfx_musket_single.wav", at("sar-5", "Firing from behind trees"), 0.5),
+    ("sfx_musket_single.wav", at("sar-5", "Firing from behind trees", 1.3), 0.45),
+    ("sfx_musket_single.wav", at("sar-5", "they shot down"), 0.5),
+    ("sfx_musket_single.wav", at("sar-8", "on his third shot"), 0.6),
+    ("sfx_drum_roll.wav", S("cow-1") - 0.3, 0.6), ("sfx_whoosh.wav", S("cow-1") + 0.2, 0.6),
+    ("sfx_musket_single.wav", at("cow-8", "opened fire"), 0.5),
+    ("sfx_musket_single.wav", at("cow-8", "opened fire", 0.8), 0.45),
+    ("sfx_musket_volley.wav", at("cow-8", "the militia fired"), 0.55),
+    ("sfx_musket_volley.wav", at("cow-8", "fired again"), 0.55),
+    ("sfx_cheer.wav", at("cow-9", "raised a cheer"), 0.35),
+    ("sfx_cavalry.wav", at("cow-9", "straight into William"), 0.5),
+    ("sfx_musket_volley.wav", at("cow-12", "fired a volley"), 0.7),
+    ("sfx_cheer.wav", at("cow-12", "charged with the bayonet"), 0.4),
+    ("sfx_cavalry.wav", at("cow-13", "Washington's cavalry swept"), 0.5),
+    ("sfx_drum_roll.wav", S("gui-1") - 0.3, 0.6), ("sfx_whoosh.wav", S("gui-1") + 0.2, 0.6),
+    ("sfx_musket_volley.wav", at("gui-5", "fired at least once"), 0.5),
+    ("sfx_cavalry.wav", at("gui-6", "Washington's cavalry smashed"), 0.45),
+    ("sfx_cannon.wav", at("gui-6", "fire grapeshot"), 0.55),
+    ("sfx_cannon.wav", at("gui-8", "he surrendered", -1.0), 0.35),
+]
+inputs = ["-i", "build/picture.mp4", "-i", "audio/voice.wav"]
+f, idx = ["[1:a]aresample=48000,aformat=channel_layouts=stereo,asplit=2[vo][vokey]"], 2
+mus = []
+for n, (file, s, e, off) in enumerate(MUSIC):
+    inputs += ["-i", f"{A}/{file}"]
+    d = e - s + 1.5
+    f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,atrim={off}:{off + d},asetpts=PTS-STARTPTS,"
+             f"loudnorm=I=-21:TP=-3,afade=t=in:d={0.3 if n == 0 else 1.5},afade=t=out:st={d - 1.5}:d=1.5,"
+             f"adelay={int(s * 1000)}|{int(s * 1000)}[m{n}]")
+    mus.append(f"[m{n}]"); idx += 1
+f.append(f"{''.join(mus)}amix=inputs={len(mus)}:normalize=0,volume=0.85,afade=t=out:st={DUR - 3}:d=3[mus]")
+f.append("[mus][vokey]sidechaincompress=threshold=0.02:ratio=8:attack=30:release=600:makeup=1[musd]")
+mixes = ["[vo]", "[musd]"]
+for n, (file, t, vol) in enumerate(SFX):
+    inputs += ["-i", f"{A}/{file}"]
+    f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},adelay={int(t * 1000)}|{int(t * 1000)}[s{n}]")
+    mixes.append(f"[s{n}]"); idx += 1
+f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,atrim=0:{DUR},loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
 os.makedirs("build", exist_ok=True)
 subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
-                "-t", f"{dur:.2f}", "-c:v", "libx264", "-crf", "18", "-preset", "medium", "-pix_fmt", "yuv420p",
-                "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "build/ridgway-test.mp4"], check=True)
-print("ok", dur, "music" if has_music else "no music", [c[0] for c in cues])
+                "-t", f"{DUR:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart",
+                "build/morgan-1080p.mp4"], check=True)
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/morgan-1080p.mp4", "-vf", "scale=1280:720", "-c:v", "libx264",
+                "-crf", "30", "-preset", "medium", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", "build/morgan-720p-preview.mp4"], check=True)
+print("ok", DUR)
