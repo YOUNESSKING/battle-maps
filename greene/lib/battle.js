@@ -234,11 +234,13 @@
       reveal(el, t, { from: { y: 30 }, to: { y: 0 } }, 0.6); if (until != null) out(el, until, 0.4);
       return el;
     };
-    B.method = (t, until) => {
-      const el = screenEl(`<div class="inner"><div class="row">CHOOSE THE GROUND</div><div class="row">CHOOSE THE MOMENT</div><div class="row">TURN THE ENEMY'S STRENGTH AGAINST HIM</div></div>`, "card method");
+    // Greene's method card. rowT: [t1,t2,t3] when each line appears (default t+0.2, +1.1 ...); hi: 0-2 = line drawn in red
+    B.method = (t, until, o = {}) => {
+      const lines = ["MAKE THE LAND FIGHT FOR YOU", "MAKE EVERY VICTORY COST MORE THAN IT'S WORTH", "NEVER LOSE THE ARMY"];
+      const el = screenEl(`<div class="inner">${lines.map((l, i) => `<div class="row"${i === o.hi ? ' style="color:var(--rome)"' : ""}>${i + 1}. ${l}</div>`).join("")}</div>`, "card method");
       reveal(el, t, {}, 0.5);
       const rows = el.querySelectorAll(".row");
-      rows.forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, t + 0.2 + i * 1.1));
+      rows.forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, o.rowT ? o.rowT[i] : t + 0.2 + i * 1.1));
       if (until != null) out(el, until, 0.5);
       return el;
     };
