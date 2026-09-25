@@ -22,7 +22,7 @@ const PL = { // places
   irwin: G(36.70, -78.93), dix: G(36.60, -79.35), cheraw: G(34.70, -79.88), charlotte: G(35.23, -80.84),
   winnsboro: G(34.38, -81.09), salem: G(36.09, -80.24), sherrill: G(35.62, -80.99),
 };
-const HAS = {"greene_head": false, "cornwallis_head": false, "williams_head": false, "greene_full": false}; // media present at build time
+const HAS = {"greene_head": true, "cornwallis_head": true, "williams_head": true, "greene_full": true}; // media present at build time
 const US_FLAG = "assets/media/us_flag_13star.png", GB_FLAG = "assets/media/gb_flag_1606.png";
 const person = (key, o) => HAS[key + "_head"]
   ? B.portraitStake({ img: `assets/media/${key}_head.png`, flag: o.side === "rome" ? GB_FLAG : US_FLAG, name: o.name, x: o.x, y: o.y, size: o.size, t: o.t, until: o.until })
