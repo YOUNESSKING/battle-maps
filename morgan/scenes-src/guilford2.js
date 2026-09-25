@@ -132,14 +132,14 @@ B.caption("THREE LINES · RIFLEMEN AND CAVALRY ON THE FLANKS", T_3L + 0.4, S4 - 
 
 // ---------- British ----------
 const BR = {
-  r33: { p0: [36.1300, -79.8615], p: [36.1342, -79.8545], label: "33RD" },
-  r23: { p0: [36.1296, -79.8603], p: [36.1320, -79.8545], label: "23RD" },
-  r71: { p0: [36.1292, -79.8591], p: [36.1278, -79.8545], label: "71ST" },
-  bose: { p0: [36.1288, -79.8579], p: [36.1256, -79.8545], label: "VON BOSE" },
-  guards: { p0: [36.1303, -79.8633], p: [36.1304, -79.8574], label: "GUARDS", w: 70, h: 34 },
+  r33: { p0: [36.1286, -79.8606], p: [36.1342, -79.8545], label: "33RD" },
+  r23: { p0: [36.1289, -79.8595], p: [36.1320, -79.8545], label: "23RD" },
+  r71: { p0: [36.1292, -79.8583], p: [36.1278, -79.8545], label: "71ST" },
+  bose: { p0: [36.1295, -79.8571], p: [36.1256, -79.8545], label: "VON BOSE" },
+  guards: { p0: [36.1281, -79.8624], p: [36.1304, -79.8574], label: "GUARDS", w: 70, h: 34 },
 };
 Object.entries(BR).forEach(([id, u], i) => U({ id, side: "rome", kind: "inf", x: G(...u.p0)[0], y: G(...u.p0)[1], w: u.w || 30, h: u.h || 30, label: u.label, fs: 16, t: T_2000 + 0.2 + i * 0.15 }));
-U({ id: "guns", side: "rome", kind: "light", x: G(36.1289, -79.8580)[0], y: G(36.1289, -79.8580)[1], w: 30, h: 20, label: "GUNS", fs: 14, t: T_2000 + 1.0 });
+U({ id: "guns", side: "rome", kind: "light", x: G(36.1298, -79.8558)[0], y: G(36.1298, -79.8558)[1], w: 30, h: 20, label: "GUNS", fs: 14, t: T_2000 + 1.0 });
 // deploy into lines in the open fields (lines are north-south: tall blocks)
 Object.entries(BR).forEach(([id, u], i) => {
   const [x, y] = G(...u.p);
@@ -153,7 +153,7 @@ bub.style.fontSize = "24px";
 // advance to the fence line
 const ADV1 = { r33: [36.1342, -79.8515], r23: [36.1320, -79.8515], r71: [36.1278, -79.8515], bose: [36.1256, -79.8515], guards: [36.1305, -79.8548] };
 Object.entries(ADV1).forEach(([id, p], i) => B.move(id, T_MARCH + i * 0.1, S5 + 5.5 - T_MARCH, ...G(...p), "sine.inOut"));
-B.move("guns", T_MARCH + 0.3, 4, ...G(36.1305, -79.8520));
+B.move("guns", T_MARCH + 0.3, 4, ...G(36.1300, -79.8534));
 const redArrows1 = false &&  [[36.1331, -79.8538], [36.1267, -79.8538]].map(([la, lo], i) =>
   B.arrow({ side: "rome", pts: GL([[la, lo], [la, lo + 0.0019]]), width: 16, t: T_MARCH + 0.2 + i * 0.3, dur: 1.4, until: T_BROKE + 1 }));
 
@@ -184,7 +184,7 @@ const ADV2 = { r33: [36.1348, -79.8474], r23: [36.1322, -79.8474], r71: [36.1284
 Object.entries(ADV2).forEach(([id, p], i) => B.move(id, T_BROKE + 0.8 + i * 0.1, S6 - T_BROKE - 1.2, ...G(...p), "sine.inOut"));
 B.move("guns", T_BROKE + 1.0, 5, ...G(36.1310, -79.8495));
 // flank riflemen keep shooting into the British flanks, falling back slowly
-B.move("lynch", T_RIFLE, 8, ...G(36.1372, -79.8462)); B.move("wash", T_RIFLE, 8, ...G(36.1392, -79.8445));
+B.move("lynch", T_RIFLE, 8, ...G(36.1372, -79.8462)); B.move("wash", T_RIFLE, 8, ...G(36.1384, -79.8450));
 B.move("camp", T_RIFLE, 8, ...G(36.1246, -79.8462)); B.move("lee", T_RIFLE, 8, ...G(36.1230, -79.8448));
 [[T_RIFLE + 0.2, [36.1360, -79.8488], [36.1346, -79.8508]], [T_RIFLE + 0.5, [36.1262, -79.8487], [36.1266, -79.8508]],
  [T_RIFLE + 3.6, [36.1370, -79.8466], [36.1352, -79.8484]], [T_RIFLE + 3.9, [36.1248, -79.8466], [36.1258, -79.8484]]]
@@ -208,9 +208,9 @@ B.caption("EXHAUSTED AND DISORGANIZED", T_EXH - 0.2, T_MD - 0.1, "rome");
 // 1st Maryland counterattack with the bayonet; Washington's cavalry into the Guards
 B.arrow({ side: "carth", pts: GL([[36.1342, -79.8424], [36.1330, -79.8431], [36.1322, -79.8440]]), width: 16, t: T_MD, dur: 1.2, until: T_GRAPE });
 B.move("md1", T_MD + 0.3, 1.6, ...G(36.1330, -79.8432));
-B.move("wash", T_MD - 1.5, 2.0, ...G(36.1372, -79.8432));
-B.arrow({ side: "carth", pts: GL([[36.1368, -79.8432], [36.1345, -79.8438], [36.1326, -79.8442]]), width: 16, t: T_WASH + 0.3, dur: 1.3, until: T_GRAPE });
-B.move("wash", T_WASH + 0.4, 1.6, ...G(36.1334, -79.8442));
+B.move("wash", T_MD - 1.5, 2.0, ...G(36.1380, -79.8452));
+B.arrow({ side: "carth", pts: GL([[36.1374, -79.8454], [36.1352, -79.8457], [36.1330, -79.8452]]), width: 16, t: T_WASH + 0.3, dur: 1.3, until: T_GRAPE });
+B.move("wash", T_WASH + 0.4, 1.6, ...G(36.1336, -79.8452));
 lineFlash(36.1310, 36.1335, -79.8436, T_MD + 0.4, 3, 3);
 B.caption("1ST MARYLAND AND WASHINGTON'S CAVALRY HIT THE GUARDS", T_MD + 0.3, T_GRAPE - 0.3, "carth");
 shrink(["guards"], T_GUARDS, 0.72);

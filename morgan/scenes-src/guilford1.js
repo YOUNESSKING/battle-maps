@@ -69,7 +69,7 @@ RL("YADKIN R.", 1300, 518, -14, 1.0);
 RL("PEE DEE R.", 1443, 740, 72, 1.0);
 RL("DAN R.", 1516, 450, -20, T_CHASE - 1, 13);
 B.label("SOUTH CAROLINA", ...G(34.25, -81.55), { cls: "country", size: 22, t: 0.8, until: T_JOIN });
-B.label("NORTH CAROLINA", ...G(35.3, -79.3), { cls: "country", size: 24, t: T_JOIN });
+B.label("NORTH CAROLINA", ...G(35.22, -79.15), { cls: "country", size: 24, t: T_JOIN, until: T_CHASE });
 B.label("VIRGINIA", ...G(36.93, -79.55), { cls: "country", size: 26, t: T_CHASE });
 
 // ---------- title + date ----------
@@ -111,7 +111,7 @@ B.move("pris", T_BURN, 3.0, SALIS[0] + 30, SALIS[1] - 30);
 B.hideUnits(["pris"], T_BURN + 2.4, 0.8);
 B.caption("ACROSS THE BROAD · ACROSS THE CATAWBA", T_CROSS, T_BURN - 0.3, "carth");
 // B.label("ISLAND FORD", ISLAND[0] + 6, ISLAND[1] + 10, { cls: "tg", size: 8, t: T_CROSS, until: T_JOIN });
-B.label("SHERRALD'S FORD", SHERRALD[0] - 8, SHERRALD[1] + 12, { cls: "tg", size: 8, t: T_CAT, until: T_JOIN, anchor: [-100, 0] });
+// B.label("SHERRALD'S FORD", SHERRALD[0] - 8, SHERRALD[1] + 12, { cls: "tg", size: 8, t: T_CAT, until: T_JOIN, anchor: [-100, 0] });
 
 // Cornwallis in pursuit: Winnsboro - north-west to Ramsour's Mill
 const cPath = [[WINNS[0] - 6, WINNS[1] - 36], G(34.85, -81.3), G(35.2, -81.36), [RAMSOUR[0] + 2, RAMSOUR[1] + 12]];

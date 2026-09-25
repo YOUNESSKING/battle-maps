@@ -1,4 +1,4 @@
-window.COW_MEDIA = []; // set by build
+window.COW_MEDIA = ["burgoyne_head.png", "cornwallis_head.png", "gates_head.png", "gb_flag_1707.png", "greene_head.png", "howard_head.png", "morgan_full.png", "morgan_head.png", "pickens_head.png", "tarleton_head.png", "us_flag_13star.png"]; // set by build
 // Move 2 · Cowpens (1): the position, the three lines, the bait order. Basemap cowpens (z16, 1.95 m/px).
 // Americans = blue ("carth"), British = red ("rome"). Layout shared with cowpens3.js (keep in sync).
 const B = Battle();
@@ -225,7 +225,7 @@ const T4 = P("cow-4"), T5 = P("cow-5"), T6 = P("cow-6");
 B.camera([
   [0, 1500, 800, 0.72],
   [at("cow-4", "No swamp"), 1520, 830, 0.95],
-  [at("cow-4", "And a deep river"), 1480, 760, 0.95],
+  [at("cow-4", "And a deep river") + 0.8, 1470, 640, 0.95],
   [at("cow-4", "Every military manual"), 1500, 830, 1.05],
   [T5 + 1.0, 1560, 880, 1.25],
   [at("cow-5", "In front, he placed"), 1640, 920, 1.62],
@@ -265,13 +265,13 @@ B.caption("BY THE BOOK: A MISTAKE", at("cow-4", "Every military manual"), T5 - 0
 dashArrow([[2060, 1150], [1900, 1320], [1600, 1330], [1320, 1180], [1180, 1000]], { side: "white", width: 10, t: at("cow-4", "No swamp") + 0.2, dur: 2.2, until: at("cow-4", "And a deep river") + 0.4 });
 dashArrow([[2060, 900], [2020, 640], [1800, 470], [1560, 470], [1420, 560]], { side: "white", width: 10, t: at("cow-4", "No swamp") + 0.5, dur: 2.2, until: at("cow-4", "And a deep river") + 0.4 });
 // river behind: the Broad River lies ~6 miles to the north
-B.arrow({ side: "white", pts: [[1300, 640], [1275, 470], [1262, 300]], width: 18, t: at("cow-4", "And a deep river") + 0.1, dur: 1.4, until: T5 + 0.5 });
-B.label("BROAD RIVER ~6 MI", 1262, 245, { cls: "river", size: 34, t: at("cow-4", "And a deep river") + 0.6, until: T6 - 0.5, anchor: [-50, -50] });
+B.arrow({ side: "white", pts: [[1300, 640], [1280, 480], [1266, 340]], width: 18, t: at("cow-4", "And a deep river") + 0.1, dur: 1.4, until: T5 + 0.5 });
+B.label("BROAD RIVER ~6 MI", 1266, 295, { cls: "river", size: 34, t: at("cow-4", "And a deep river") + 0.6, until: T6 - 0.5, anchor: [-50, -50] });
 const noEsc = B.label("NOWHERE TO RUN", ...U(-420, -60), { cls: "tg", size: 26, t: at("cow-4", "nowhere to run") - 0.2, until: at("cow-4", "Every military manual") + 1.5, anchor: [-50, -50] });
 
 // Morgan's stake: "exactly how Morgan wanted it to look"
 const MOR = U(-205, 55);
-stake({ img: "morgan_head.png", name: "MORGAN", role: "Brig. Gen. · commanding", side: "carth", x: MOR[0], y: MOR[1], size: 0.52, t: at("cow-4", "That was exactly how") });
+stake({ img: "morgan_head.png", name: "MORGAN", role: "Brig. Gen. · commanding", side: "carth", x: MOR[0], y: MOR[1], size: 0.8, t: at("cow-4", "That was exactly how") });
 
 // ---------- cow-5: three lines, one after another ----------
 B.caption("MILITIA RUN — SO PLAN FOR IT", at("cow-5", "and he knew that militia ran"), at("cow-5", "In front, he placed") - 0.2, "carth");
@@ -282,12 +282,12 @@ pill("SHARPSHOOTERS · ~150", 1775, 800, "carth", tS + 0.7, T6 + 0.3);
 const tM = at("cow-5", "the militia under Andrew Pickens") - 0.3;
 [-150, -75, 0, 75, 150].forEach((b, i) => unit("mil" + i, "carth", "inf", A.mil, b, 62, 24, tM + i * 0.12));
 pill("MILITIA · ~1,000", 1665, 736, "carth", tM + 0.8, T6 + 0.3);
-stake({ img: "pickens_head.png", name: "PICKENS", role: "Militia", side: "carth", x: U(A.mil + 10, -220)[0], y: U(A.mil + 10, -220)[1], size: 0.46, t: at("cow-5", "Andrew Pickens"), until: T6 + 0.3 });
+stake({ img: "pickens_head.png", name: "PICKENS", role: "Militia", side: "carth", x: U(A.mil + 10, -220)[0], y: U(A.mil + 10, -220)[1], size: 0.68, t: at("cow-5", "Andrew Pickens"), until: T6 + 0.3 });
 
 const tH = at("cow-5", "his veteran Continentals") - 0.2;
 [-105, -35, 35, 105].forEach((b, i) => unit("how" + i, "carth", "inf", A.how, b, 64, 28, tH + i * 0.14));
 pill("CONTINENTALS · ~450", 1540, 690, "carth", tH + 0.7, T6 + 0.3);
-stake({ img: "howard_head.png", name: "HOWARD", role: "Continentals", side: "carth", x: U(A.how + 10, -185)[0], y: U(A.how + 10, -185)[1], size: 0.46, t: at("cow-5", "John Eager Howard"), until: T6 + 0.3 });
+stake({ img: "howard_head.png", name: "HOWARD", role: "Continentals", side: "carth", x: U(A.how + 10, -185)[0], y: U(A.how + 10, -185)[1], size: 0.68, t: at("cow-5", "John Eager Howard"), until: T6 + 0.3 });
 
 const tC = at("cow-5", "waited William Washington's cavalry") - 0.4;
 unit("cav", "carth", "cav", A.cav, 60, 70, 34, tC, { alpha: 0.5 });

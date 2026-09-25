@@ -34,7 +34,7 @@ B.title("MOVE 1", "SARATOGA", "September 1777", 0.3, T_ARMY + 0.4);
 B.showDate(0.5);
 B.date("SUMMER 1777", 0.7);
 
-B.label("BRITISH CANADA", 1720, 330, { cls: "country", size: 44, t: 1.2, until: T_CAN });
+B.label("BRITISH CANADA", 1720, 330, { cls: "country", size: 44, t: 1.2, until: T_BURG - 0.4 });
 B.city("MONTREAL", MTL[0], MTL[1], { left: true, size: 30, r: 8, t: 1.6, until: T_ALB });
 B.label("LAKE CHAMPLAIN", 1452, 690, { cls: "river", size: 26, rot: -90, t: T_LAKE - 0.8, until: T_NE, anchor: [-50, -50] });
 B.label("LAKE GEORGE", 1410, 880, { cls: "river", size: 18, rot: -62, t: T_HUD - 1.0, until: T_NE, anchor: [-50, -50] });
@@ -58,9 +58,9 @@ stops.forEach((p, k) => army.forEach(([dx], i) => {
 }));
 
 // commander: portrait stake if the image exists, else a plaque
-const hasHead = false, hasFlag = false; // set true once assets/media/burgoyne_head.png / gb_flag_1707.png exist
+const hasHead = true, hasFlag = true;
 if (hasHead) {
-  const st = B.portraitStake({ img: "assets/media/burgoyne_head.png", flag: hasFlag ? "assets/media/gb_flag_1707.png" : "", name: "BURGOYNE · ~7,000", x: STJ[0] + 150, y: STJ[1] + 40, size: 0.9, t: T_BURG - 0.2, until: T_HUD });
+  const st = B.portraitStake({ img: "assets/media/burgoyne_head.png", flag: hasFlag ? "assets/media/gb_flag_1707.png" : "", name: "BURGOYNE · ~7,000", x: STJ[0] + 150, y: STJ[1] + 130, size: 0.9, t: T_BURG - 0.2, until: T_HUD });
   st.querySelector(".face").style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
   st.querySelector(".nm").style.background = "#c4121f";
   if (!hasFlag) st.querySelector(".flag").remove();

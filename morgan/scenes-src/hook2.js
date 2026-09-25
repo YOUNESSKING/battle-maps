@@ -65,7 +65,7 @@ B.bio({
 
 // ---------- hook-3: Morgan in Virginia ----------
 B.date("1781", H3 + 0.3);
-B.label("VIRGINIA", ...G(37.9, -78.6), { cls: "country", size: 40, t: H3 + 0.4, until: T_HOW });
+B.label("VIRGINIA", ...G(37.9, -78.6), { cls: "country", size: 40, t: H3 + 0.4, until: T_45 });
 B.portraitStake({ img: "assets/media/morgan_head.png", flag: "assets/media/us_flag_13star.png", name: "DANIEL MORGAN", x: WIN[0], y: WIN[1], size: 1.0, t: H3 + 0.8 });
 B.city("WINCHESTER", WIN[0], WIN[1], { size: 24, r: 7, t: H3 + 1.4, dy: 10 });
 B.caption("AGE 45 · ARTHRITIS · SCIATICA", T_45 + 0.2, T_PLAN - 0.3, "carth");

@@ -66,7 +66,7 @@ RL("DAN R.", 1540, 446, -18, 0.6);
 B.label("NORTH CAROLINA", ...G(35.55, -78.6), { cls: "country", size: 24, t: 0.4 });
 B.label("VIRGINIA", ...G(37.55, -78.3), { cls: "country", size: 26, t: 0.6 });
 B.label("ATLANTIC OCEAN", ...G(35.0, -75.2), { cls: "sea", size: 28, t: 0.8 });
-B.label("CHESAPEAKE BAY", ...G(37.55, -76.12), { cls: "sea", size: 12, t: 1.0, rot: -70 });
+B.label("CHESAPEAKE BAY", ...G(37.75, -76.2), { cls: "sea", size: 12, t: 1.0, rot: -70 });
 
 // ---------- date ----------
 B.showDate(0.3);
@@ -89,8 +89,8 @@ B.move("corn", T_COAST, 3.2, WILM[0] + 18, WILM[1] - 22);
 B.tl.to(sCorn, { left: WILM[0] + 18 - parseFloat(sCorn.style.width) / 2, top: WILM[1] - 31 - parseFloat(sCorn.style.height), duration: 3.2, ease: "power1.inOut" }, T_COAST);
 const leg2 = [[WILM[0] + 14, WILM[1] - 36], G(35.3, -77.75), [HALIFAX[0] + 4, HALIFAX[1] + 8], G(36.8, -77.45), [PETE[0] + 6, PETE[1] + 12], G(37.3, -77.05), G(37.26, -76.78), [YORK[0] - 30, YORK[1] + 10]];
 B.arrow({ side: "rome", pts: leg2, width: 6, t: T_NORTH - 0.2, dur: 4.6, until: T_ARMY - 0.3 });
-B.move("corn", T_NORTH, 4.8, YORK[0] - 22, YORK[1] + 18);
-B.tl.to(sCorn, { left: YORK[0] - 22 - parseFloat(sCorn.style.width) / 2, top: YORK[1] + 9 - parseFloat(sCorn.style.height), duration: 4.8, ease: "power1.inOut" }, T_NORTH);
+B.move("corn", T_NORTH, 4.8, YORK[0] - 10, YORK[1] + 20);
+B.tl.to(sCorn, { left: YORK[0] - 10 - parseFloat(sCorn.style.width) / 2, top: YORK[1] + 11 - parseFloat(sCorn.style.height), duration: 4.8, ease: "power1.inOut" }, T_NORTH);
 B.caption("NORTH INTO VIRGINIA", T_NORTH + 0.4, T_OCT - 0.2, "rome");
 
 // ---------- Yorktown: trapped by land and sea ----------
@@ -107,10 +107,10 @@ U({ id: "usa", side: "carth", kind: "inf", x: WBURG[0] - 56, y: WBURG[1] - 20, w
 U({ id: "fra", side: "carth", kind: "inf", x: WBURG[0] - 56, y: WBURG[1] + 16, w: 26, h: 16, label: "FRENCH", fs: 8 });
 french(B.units.fra.el);
 B.show("usa", T_ARMY - 0.2); B.show("fra", T_ARMY);
-B.move("usa", T_ARMY + 0.2, 3.0, YORK[0] - 62, YORK[1] - 6);
+B.move("usa", T_ARMY + 0.2, 3.0, YORK[0] - 66, YORK[1] - 8);
 B.move("fra", T_ARMY + 0.4, 3.0, YORK[0] - 54, YORK[1] + 36);
-B.arrow({ side: "carth", pts: [[WBURG[0] - 44, WBURG[1] - 16], [YORK[0] - 76, YORK[1] - 8]], width: 4, t: T_ARMY, dur: 1.6, until: S9 + 0.5 });
-B.arrow({ side: "white", pts: [[WBURG[0] - 44, WBURG[1] + 18], [YORK[0] - 68, YORK[1] + 34]], width: 4, t: T_ARMY + 0.3, dur: 1.6, until: S9 + 0.5 });
+// B.arrow({ side: "carth", pts: [[WBURG[0] - 44, WBURG[1] - 16], [YORK[0] - 76, YORK[1] - 8]], width: 4, t: T_ARMY, dur: 1.6, until: S9 + 0.5 });
+// B.arrow({ side: "white", pts: [[WBURG[0] - 44, WBURG[1] + 18], [YORK[0] - 68, YORK[1] + 34]], width: 4, t: T_ARMY + 0.3, dur: 1.6, until: S9 + 0.5 });
 // French fleet off the Virginia capes
 const pinsEl = document.getElementById("pins");
 const ship = (x, y, t) => {

@@ -71,7 +71,7 @@ RL("PACOLET R.", 1046, 766, 30, T_WEST, 10);
 RL("CATAWBA R.", 1273, 690, 88, 5.4);
 RL("WATEREE R.", 1323, 1045, 86, 5.6);
 RL("PEE DEE R.", 1443, 740, 72, 5.8);
-B.label("SOUTH CAROLINA", ...G(33.95, -80.85), { cls: "country", size: 24, t: 1.0 });
+B.label("SOUTH CAROLINA", ...G(33.95, -80.85), { cls: "country", size: 24, t: 1.0, until: T_SPLIT - 0.4 });
 B.label("NORTH CAROLINA", ...G(35.5, -79.55), { cls: "country", size: 24, t: 1.3 });
 B.label("VIRGINIA", ...G(37.1, -79.3), { cls: "country", size: 24, t: 1.6 });
 B.label("ATLANTIC OCEAN", ...G(33.6, -77.6), { cls: "sea", size: 26, t: 1.8 });
@@ -110,13 +110,13 @@ B.label("BRITISH OUTPOST", NINETY6[0] - 8, NINETY6[1] + 10, { cls: "tg", size: 8
 B.arrow({ side: "white", pts: [[PACOLET[0] - 8, PACOLET[1] + 26], [1105, 930], [NINETY6[0] + 14, NINETY6[1] - 14]], width: 3.5, dash: "7 5", t: T_OUTPOST, dur: 1.2, until: S2 + 0.3 });
 
 // Cornwallis between them
-U({ id: "corn", side: "rome", kind: "inf", x: WINNS[0] + 34, y: WINNS[1] - 6, w: 34, h: 22, label: "MAIN ARMY", fs: 10, t: T_SPLIT - 0.6 });
+U({ id: "corn", side: "rome", kind: "inf", x: WINNS[0] + 32, y: WINNS[1] - 22, w: 34, h: 22, label: "MAIN ARMY", fs: 10, t: T_SPLIT - 0.6 });
 
 // ---------- cow-2: Cornwallis sends Tarleton ----------
-const sCorn = STK({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1707.png", name: "CORNWALLIS", side: "rome", x: WINNS[0] + 64, y: WINNS[1] + 22, size: 0.32, t: T_CORN - 0.2 });
+const sCorn = STK({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1707.png", name: "CORNWALLIS", side: "rome", x: WINNS[0] + 32, y: WINNS[1] - 32, size: 0.32, t: T_CORN - 0.2 });
 B.highlight([[PACOLET[0] - 14, PACOLET[1] + 14], [PACOLET[0] + 16, PACOLET[1] + 14]], T_FLANK - 0.4, null, 32);
 B.caption("AN AMERICAN FORCE ON HIS FLANK", T_FLANK - 0.6, T_TARL - 0.3, "rome");
-const sTarl = STK({ img: "assets/media/tarleton_head.png", flag: "assets/media/gb_flag_1707.png", name: "TARLETON", side: "rome", x: TCAMP[0] - 34, y: TCAMP[1] + 30, size: 0.32, t: T_TARL - 0.2 });
+const sTarl = STK({ img: "assets/media/tarleton_head.png", flag: "assets/media/gb_flag_1707.png", name: "TARLETON", side: "rome", x: TCAMP[0] - 46, y: TCAMP[1] + 30, size: 0.32, t: T_TARL - 0.2 });
 const tf = [
   { id: "legion", kind: "cav", dx: 0, dy: 0, label: "LEGION", t: T_LEG },
   { id: "foot7", kind: "inf", dx: 34, dy: 0, label: "7TH FOOT", t: T_REG },

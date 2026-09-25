@@ -1,4 +1,4 @@
-window.COW_MEDIA = []; // set by build
+window.COW_MEDIA = ["burgoyne_head.png", "cornwallis_head.png", "gates_head.png", "gb_flag_1707.png", "greene_head.png", "howard_head.png", "morgan_full.png", "morgan_head.png", "pickens_head.png", "tarleton_head.png", "us_flag_13star.png"]; // set by build
 // Move 2 · Cowpens (2): the battle, the double envelopment, stats, method. Basemap cowpens (z16, 1.95 m/px).
 // Americans = blue ("carth"), British = red ("rome"). Layout shared with cowpens3.js (keep in sync).
 const B = Battle();
@@ -240,7 +240,7 @@ MIL.forEach((b, i) => { unit("mil" + i, "carth", "inf", A.mil, b, 62, 24, null);
 HOW.forEach((b, i) => { unit("how" + i, "carth", "inf", A.how, b, 64, 28, null); vis("how" + i); });
 unit("cav", "carth", "cav", A.cav, 60, 70, 34, null); vis("cav", 0.5);
 const MOR0 = U(-205, 55);
-const morgan = stake({ img: "morgan_head.png", name: "MORGAN", role: "Brig. Gen.", side: "carth", x: MOR0[0], y: MOR0[1], size: 0.52, t: 0 });
+const morgan = stake({ img: "morgan_head.png", name: "MORGAN", role: "Brig. Gen.", side: "carth", x: MOR0[0], y: MOR0[1], size: 0.8, t: 0 });
 now(morgan);
 
 // ---------- camera ----------
@@ -307,7 +307,7 @@ B.label("FROM THICKETTY CREEK", 2560, 1235, { cls: "tg", size: 24, t: 1.2, until
 B.caption("MARCHING SINCE 2 A.M.", 0.6, at("cow-7", "When they came out") + 0.8, "rome");
 B.caption("NO REST · NO SCOUTING", at("cow-7", "Tarleton did not stop"), at("cow-7", "He formed his line") - 0.2, "rome");
 const TAR = U(575, 0);
-const tarleton = stake({ img: "tarleton_head.png", name: "TARLETON", role: "Lt. Col. · British Legion", side: "rome", x: TAR[0], y: TAR[1], size: 0.52, t: at("cow-7", "Tarleton did not stop") - 0.4 });
+const tarleton = stake({ img: "tarleton_head.png", name: "TARLETON", role: "Lt. Col. · British Legion", side: "rome", x: TAR[0], y: TAR[1], size: 0.8, t: at("cow-7", "Tarleton did not stop") - 0.4 });
 const tForm = at("cow-7", "He formed his line") + 2.2;
 const redTags = [
   pill("LIGHT INF.", ...U(A.red + 32, 110 + 26), "rome", tForm, T8 + 2.5),
@@ -423,7 +423,7 @@ CROWD.forEach(([a, b, r], i) => {
 B.caption("THE BRITISH BREAK RANKS", tBreak + 0.4, at("cow-11", "Morgan rode up") - 0.1, "rome");
 const tMorg = at("cow-11", "Morgan rode up");
 moveStake(morgan, tMorg, 2.2, ...U(-330, -60));
-const bub2 = B.bubble("“FACE ABOUT, AND GIVE THEM ONE FIRE!”", 880, 800, at("cow-11", "when I give the word") - 0.4, T12 + 3);
+const bub2 = B.bubble("“FACE ABOUT, AND GIVE THEM ONE FIRE!”", 820, 800, at("cow-11", "when I give the word") - 0.4, T12 + 3);
 bub2.style.fontSize = "19px";
 
 // ---------- cow-12: about face, one fire, bayonets ----------

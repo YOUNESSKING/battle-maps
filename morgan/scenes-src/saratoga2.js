@@ -13,7 +13,7 @@ const G = (lat, lon) => {
 };
 
 // portraits available at build time (set by hand after checking assets/media)
-const HAS = { gates: false, morgan: false, fraser: false };
+const HAS = { gates: true, morgan: true, fraser: false };
 const US_FLAG = "assets/media/us_flag_13star.png", GB_FLAG = "assets/media/gb_flag_1707.png";
 
 // ---------- local helpers (kept here, not in lib, to avoid conflicts) ----------
@@ -209,11 +209,11 @@ B.label("BEMIS HEIGHTS", 1250, 1085, { cls: "tg", size: 40, t: at("sar-2", "Bemi
 B.hideUnits(["am0", "am1", "am2", "am3"], S["sar-2b"] + 0.5);
 B.show("am0", S["sar-3"] + 1); B.show("am1", S["sar-3"] + 1.1); B.show("am2", S["sar-3"] + 1.2); B.show("am3", S["sar-3"] + 1.3);
 B.hideUnits(["am0", "am1", "am2", "am3"], S["sar-7"] - 0.2);
-if (HAS.gates) B.portraitStake({ img: "assets/media/gates_head.png", flag: US_FLAG, name: "GATES", x: 1560, y: 1520, size: 0.8, t: T_GATES, until: S["sar-2b"] });
+if (HAS.gates) B.portraitStake({ img: "assets/media/gates_head.png", flag: US_FLAG, name: "GATES", x: 1500, y: 1575, size: 1.0, t: T_GATES, until: S["sar-2b"] });
 else B.plaque({ name: "MAJ. GEN. HORATIO GATES", role: "American commander", side: "carth", x: 1250, y: 1560, t: T_GATES, until: T_500 + 1.5 });
 B.unit({ id: "morgan", side: "carth", kind: "light", x: 1000, y: 1010, w: 84, h: 50, label: "MORGAN'S RIFLE CORPS · ~500", t: T_500 });
 bigTags(["morgan"], 24);
-if (HAS.morgan) B.portraitStake({ img: "assets/media/morgan_head.png", flag: US_FLAG, name: "MORGAN", x: 780, y: 1150, size: 0.75, t: T_500 + 2.0, until: S["sar-2b"] + 0.3 });
+if (HAS.morgan) B.portraitStake({ img: "assets/media/morgan_head.png", flag: US_FLAG, name: "MORGAN", x: 755, y: 1150, size: 0.95, t: T_500 + 2.0, until: S["sar-2b"] + 0.3 });
 else B.plaque({ name: "COL. DANIEL MORGAN", role: "Rifle Corps", side: "carth", x: 480, y: 1230, t: T_500 + 2.0, until: S["sar-2b"] + 0.3 });
 B.caption("FRONTIERSMEN · LONG RIFLES", at("sar-2", "most of them frontiersmen"), T_MORGAN - 0.2, "carth");
 B.hideUnits(["morgan"], S["sar-2b"] + 0.3);
