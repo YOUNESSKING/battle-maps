@@ -28,7 +28,8 @@ const A = { how: -125, mil: 0, sharp: 120, cav: -300, red: 330, res: 480 };
 
 const unit = (id, side, kind, a, b, w, h, t, o = {}) => {
   const [x, y] = U(a, b);
-  const el = B.unit({ id, side, kind, x, y, w, h, rot: o.rot != null ? o.rot : ROT, t, alpha: o.alpha });
+  const el = B.unit({ id, side, kind, x, y, w, h, t, alpha: o.alpha });
+  gsap.set(el.querySelector(".blk"), { rotation: o.rot != null ? o.rot : ROT }); // via GSAP (it would wipe a CSS rotate)
   B.units[id].a = a; B.units[id].b = b;
   return el;
 };
@@ -63,12 +64,18 @@ const stake = (o) => { // portrait stake if the portrait exists, else a plaque
       el.querySelector(".face").style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
       el.querySelector(".nm").style.background = "#c4121f";
     }
+    el._foot = [o.x, o.y]; el._l0 = parseFloat(el.style.left); el._t0 = parseFloat(el.style.top);
     return el;
   }
   const el = B.plaque({ name: o.name, role: o.role, side: o.side, x: o.x, y: o.y + 60, t: o.t, until: o.until });
-  gsap.set(el, { scale: o.size ? o.size * 0.95 : 0.5, transformOrigin: "19px 240px" });
+  gsap.set(el, { scale: 0.62, transformOrigin: "19px 240px" });
+  el._foot = [o.x, o.y]; el._l0 = parseFloat(el.style.left); el._t0 = parseFloat(el.style.top);
   return el;
 };
+const moveStake = (el, t, dur, x, y, ease = "power2.inOut") => { // move a stake's foot to (x, y)
+  B.tl.to(el, { left: el._l0 + x - el._foot[0], top: el._t0 + y - el._foot[1], duration: dur, ease }, t);
+};
+const now = (el) => { B.tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0 }); return el; }; // visible from frame 0
 // soft glow marking a low rise
 const rise = (x, y, rx, ry, rot, t, until) => {
   const e = document.createElementNS(NS, "ellipse");
@@ -258,15 +265,8 @@ B.caption("BY THE BOOK: A MISTAKE", at("cow-4", "Every military manual"), T5 - 0
 dashArrow([[2060, 1150], [1900, 1320], [1600, 1330], [1320, 1180], [1180, 1000]], { side: "white", width: 10, t: at("cow-4", "No swamp") + 0.2, dur: 2.2, until: at("cow-4", "And a deep river") + 0.4 });
 dashArrow([[2060, 900], [2020, 640], [1800, 470], [1560, 470], [1420, 560]], { side: "white", width: 10, t: at("cow-4", "No swamp") + 0.5, dur: 2.2, until: at("cow-4", "And a deep river") + 0.4 });
 // river behind: the Broad River lies ~6 miles to the north
-B.arrow({ side: "white", pts: [[1300, 640], [1270, 420], [1250, 170]], width: 18, t: at("cow-4", "And a deep river") + 0.1, dur: 1.4, until: T5 + 0.5 });
-B.label("BROAD RIVER ~6 MI", 1250, 130, { cls: "river", size: 34, t: at("cow-4", "And a deep river") + 0.6, until: T6 - 0.5, anchor: [-50, -50] });
-const riverBar = document.createElementNS(NS, "path");
-riverBar.setAttribute("d", "M 860 40 C 1060 70, 1280 30, 1500 64 S 1860 50, 2020 30");
-Object.entries({ fill: "none", stroke: "var(--river)", "stroke-width": 16, "stroke-linecap": "round", opacity: 0.9 }).forEach(([k, v]) => riverBar.setAttribute(k, v));
-OV.insertBefore(riverBar, OV.firstChild.nextSibling);
-gsap.set(riverBar, { autoAlpha: 0 });
-B.tl.to(riverBar, { autoAlpha: 0.9, duration: 1 }, at("cow-4", "And a deep river") + 0.4);
-B.tl.to(riverBar, { autoAlpha: 0, duration: 1 }, T6 - 0.5);
+B.arrow({ side: "white", pts: [[1300, 640], [1275, 470], [1262, 300]], width: 18, t: at("cow-4", "And a deep river") + 0.1, dur: 1.4, until: T5 + 0.5 });
+B.label("BROAD RIVER ~6 MI", 1262, 245, { cls: "river", size: 34, t: at("cow-4", "And a deep river") + 0.6, until: T6 - 0.5, anchor: [-50, -50] });
 const noEsc = B.label("NOWHERE TO RUN", ...U(-420, -60), { cls: "tg", size: 26, t: at("cow-4", "nowhere to run") - 0.2, until: at("cow-4", "Every military manual") + 1.5, anchor: [-50, -50] });
 
 // Morgan's stake: "exactly how Morgan wanted it to look"
@@ -277,16 +277,16 @@ stake({ img: "morgan_head.png", name: "MORGAN", role: "Brig. Gen. · commanding"
 B.caption("MILITIA RUN — SO PLAN FOR IT", at("cow-5", "and he knew that militia ran"), at("cow-5", "In front, he placed") - 0.2, "carth");
 const tS = at("cow-5", "thin screen of sharpshooters") - 0.6;
 [-150, -75, 0, 75, 150].forEach((b, i) => unit("sh" + i, "carth", "light", A.sharp, b, 36, 22, tS + i * 0.12));
-pill("SHARPSHOOTERS · ~150", 1765, 790, "carth", tS + 0.7, T6 + 0.3);
+pill("SHARPSHOOTERS · ~150", 1775, 800, "carth", tS + 0.7, T6 + 0.3);
 
 const tM = at("cow-5", "the militia under Andrew Pickens") - 0.3;
 [-150, -75, 0, 75, 150].forEach((b, i) => unit("mil" + i, "carth", "inf", A.mil, b, 62, 24, tM + i * 0.12));
-pill("MILITIA · ~1,000", 1655, 722, "carth", tM + 0.8, T6 + 0.3);
+pill("MILITIA · ~1,000", 1665, 736, "carth", tM + 0.8, T6 + 0.3);
 stake({ img: "pickens_head.png", name: "PICKENS", role: "Militia", side: "carth", x: U(A.mil + 10, -220)[0], y: U(A.mil + 10, -220)[1], size: 0.46, t: at("cow-5", "Andrew Pickens"), until: T6 + 0.3 });
 
 const tH = at("cow-5", "his veteran Continentals") - 0.2;
 [-105, -35, 35, 105].forEach((b, i) => unit("how" + i, "carth", "inf", A.how, b, 64, 28, tH + i * 0.14));
-pill("CONTINENTALS · ~450", 1525, 672, "carth", tH + 0.7, T6 + 0.3);
+pill("CONTINENTALS · ~450", 1540, 690, "carth", tH + 0.7, T6 + 0.3);
 stake({ img: "howard_head.png", name: "HOWARD", role: "Continentals", side: "carth", x: U(A.how + 10, -185)[0], y: U(A.how + 10, -185)[1], size: 0.46, t: at("cow-5", "John Eager Howard"), until: T6 + 0.3 });
 
 const tC = at("cow-5", "waited William Washington's cavalry") - 0.4;

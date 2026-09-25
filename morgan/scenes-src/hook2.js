@@ -16,7 +16,7 @@ const marker = (num, name, year, lat, lon, t, o = {}) => {
   el.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:0;height:0;`;
   el.innerHTML = `<div class="mk-ring" style="position:absolute;left:${-r * 2}px;top:${-r * 2}px;width:${r * 4}px;height:${r * 4}px;border-radius:50%;border:${r * 0.22}px solid #f2c14e;box-shadow:0 0 ${r}px #f2c14e"></div>
     <div class="mk-disc" style="position:absolute;left:${-r}px;top:${-r}px;width:${r * 2}px;height:${r * 2}px;border-radius:50%;background:#1f4fc4;border:${r * 0.16}px solid #f7f3ea;box-shadow:0 0 ${r * 0.9}px 4px rgba(242,193,78,0.95),0 4px 8px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:${r * 1.15}px;line-height:1">${num}</div>
-    <div class="mk-lab place city" style="position:absolute;${o.left ? `right:${r + 12}px;text-align:right;` : `left:${r + 12}px;`}top:${-sz * 0.72}px;font-size:${sz}px;white-space:nowrap">${name} <span style="color:#f7d27a">${year}</span></div>`;
+    <div class="mk-lab place city" style="position:absolute;${o.left ? `right:${r + 12}px;text-align:right;` : `left:${r + 12}px;`}top:${-sz * 0.72}px;font-size:${sz}px;white-space:nowrap">${name} <span style="color:#ffd98a">${year}</span></div>`;
   document.getElementById("pins").appendChild(el);
   const ring = el.querySelector(".mk-ring"), disc = el.querySelector(".mk-disc"), lab = el.querySelector(".mk-lab");
   gsap.set([ring, disc, lab], { autoAlpha: 0 });

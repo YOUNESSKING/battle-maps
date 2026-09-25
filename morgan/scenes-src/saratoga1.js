@@ -34,10 +34,9 @@ B.title("MOVE 1", "SARATOGA", "September 1777", 0.3, T_ARMY + 0.4);
 B.showDate(0.5);
 B.date("SUMMER 1777", 0.7);
 
-B.label("CANADA", ...G(46.35, -74.9), { cls: "country", size: 56, t: 1.2, until: T_HUD });
-B.label("(BRITISH)", ...G(46.12, -74.9), { cls: "tg", size: 26, t: 1.4, until: T_HUD });
+B.label("BRITISH CANADA", 1720, 330, { cls: "country", size: 44, t: 1.2, until: T_CAN });
 B.city("MONTREAL", MTL[0], MTL[1], { left: true, size: 30, r: 8, t: 1.6, until: T_ALB });
-B.label("LAKE CHAMPLAIN", STJ[0] + 36, 690, { cls: "river", size: 26, rot: -90, t: T_LAKE - 0.8, until: T_NE });
+B.label("LAKE CHAMPLAIN", 1452, 690, { cls: "river", size: 26, rot: -90, t: T_LAKE - 0.8, until: T_NE, anchor: [-50, -50] });
 B.label("LAKE GEORGE", 1410, 880, { cls: "river", size: 18, rot: -62, t: T_HUD - 1.0, until: T_NE, anchor: [-50, -50] });
 B.label("HUDSON RIVER", 1396, 1210, { cls: "river", size: 22, rot: -84, t: T_HUD, anchor: [-50, -50] });
 
@@ -50,12 +49,12 @@ const army = [[-40, 0], [0, 0], [40, 0]];
 army.forEach(([dx, dy], i) => {
   B.unit({ id: "bg" + i, side: "rome", x: STJ[0] + dx + 30, y: STJ[1] - 30 + dy, w: 36, h: 24, t: T_7000 - 0.4 + i * 0.2 });
 });
-B.label("BURGOYNE · ~7,000", STJ[0] + 100, STJ[1] - 30, { cls: "tg", size: 22, t: T_7000 + 0.2, until: T_CAN + 1.0, anchor: [0, -50] });
+B.label("~7,000 MEN", STJ[0] + 100, STJ[1] - 30, { cls: "tg", size: 22, t: T_7000 + 0.2, until: T_BURG, anchor: [0, -50] });
 // the column slides down Lake Champlain and stops short of Albany, at Saratoga
 const stops = [[TIC[0] + 44, TIC[1] - 30], [FED[0] + 44, FED[1] - 10], [SAR[0] + 46, SAR[1]]];
 stops.forEach((p, k) => army.forEach(([dx], i) => {
-  const T0 = [T_CAN + 0.2, T_HUD, T_ALB][k] + i * 0.12;
-  B.move("bg" + i, T0, [T_HUD - T_CAN - 0.3, T_ALB - T_HUD - 0.2, 2.4][k], p[0] + (i - 1) * 14, p[1] + (i - 1) * 20);
+  const T0 = [T_CAN + 0.8, T_CAN + 3.4, T_CAN + 5.5][k] + i * 0.12;
+  B.move("bg" + i, T0, [2.4, 2.0, 2.0][k], p[0] + (i - 1) * 14, p[1] + (i - 1) * 20);
 }));
 
 // commander: portrait stake if the image exists, else a plaque
@@ -66,12 +65,12 @@ if (hasHead) {
   st.querySelector(".nm").style.background = "#c4121f";
   if (!hasFlag) st.querySelector(".flag").remove();
 } else {
-  B.plaque({ side: "rome", name: "GEN. JOHN BURGOYNE", role: "~7,000 British & German troops", x: STJ[0] + 90, y: STJ[1] + 60, t: T_BURG - 0.2, until: T_HUD });
+  B.plaque({ side: "rome", name: "GEN. JOHN BURGOYNE", role: "~7,000 British & German troops", x: STJ[0] + 110, y: STJ[1] + 200, t: T_BURG - 0.2, until: T_HUD });
 }
 
 // ---------- places along the way ----------
-B.city("FORT TICONDEROGA", TIC[0], TIC[1], { size: 24, r: 7, t: T_LAKE + 0.6, dy: 2 });
-B.city("SARATOGA", SAR[0], SAR[1], { left: true, size: 26, r: 7, t: T_HUD + 0.6 });
+B.city("FORT TICONDEROGA", TIC[0], TIC[1], { left: true, size: 24, r: 7, t: T_LAKE + 0.6, until: T_NE, dy: -14 });
+B.city("SARATOGA", SAR[0], SAR[1], { left: true, size: 30, r: 7, t: T_HUD + 0.6 });
 B.city("ALBANY", ALB[0], ALB[1], { left: true, size: 34, r: 10, t: T_ALB - 0.4 });
 // Albany: goal ring
 const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -85,8 +84,8 @@ B.caption("THE GOAL: ALBANY", T_ALB + 0.2, T_IF - 0.1, "rome");
 
 // ---------- New England cut off ----------
 B.image("assets/hudson_newengland.png", 0, 0, 2880, 1620, { t: T_NE - 0.3, dur: 1.0 });
-B.label("NEW ENGLAND", ...G(43.7, -71.5), { cls: "country", size: 52, t: T_NE });
-B.label("REST OF THE COLONIES", ...G(42.1, -75.9), { cls: "country", size: 40, t: T_NE + 1.0 });
+B.label("NEW ENGLAND", ...G(43.9, -71.4), { cls: "country", size: 52, t: T_NE });
+B.label("REST OF THE COLONIES", ...G(42.75, -76.2), { cls: "country", size: 40, t: T_NE + 1.0 });
 B.city("NEW YORK", ...G(40.71, -74.0), { left: true, size: 26, r: 7, t: T_NE + 0.4 });
 B.city("BOSTON", ...G(42.36, -71.06), { size: 26, r: 7, t: T_NE + 0.6 });
 // the cut: a red dashed line down the Champlain-Hudson corridor
