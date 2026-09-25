@@ -1,0 +1,18 @@
+{
+ "name": "greene_east",
+ "center": [
+  38.7,
+  -75.8
+ ],
+ "zoom": 8,
+ "origin_world_px": [
+  17529,
+  24306
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 477.23,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

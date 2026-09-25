@@ -1,0 +1,18 @@
+{
+ "name": "gf_region",
+ "center": [
+  36.35,
+  -79.2
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  35260,
+  50502
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 246.25,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

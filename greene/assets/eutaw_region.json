@@ -1,0 +1,18 @@
+{
+ "name": "eutaw_region",
+ "center": [
+  33.9,
+  -80.3
+ ],
+ "zoom": 8,
+ "origin_world_px": [
+  16709,
+  25391
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 507.55,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

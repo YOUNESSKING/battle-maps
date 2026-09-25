@@ -1,0 +1,80 @@
+[
+  {
+    "file": "music_bed_1.wav",
+    "title": "Crusade",
+    "mood": "ominous-building",
+    "duration": 198.74,
+    "licence": "CC BY 4.0 (Kevin MacLeod / incompetech.com)"
+  },
+  {
+    "file": "music_bed_2.wav",
+    "title": "Five Armies",
+    "mood": "tense-battle",
+    "duration": 155.85,
+    "licence": "CC BY 4.0 (Kevin MacLeod / incompetech.com)"
+  },
+  {
+    "file": "music_bed_3.wav",
+    "title": "Heroic Age",
+    "mood": "reflective-triumphant",
+    "duration": 97.46,
+    "licence": "CC BY 4.0 (Kevin MacLeod / incompetech.com)"
+  },
+  {
+    "file": "music_bed_4.wav",
+    "title": "Darkest Child",
+    "mood": "ominous-tense (alt)",
+    "duration": 238.68,
+    "licence": "CC BY 4.0 (Kevin MacLeod / incompetech.com)"
+  },
+  {
+    "file": "music_bed_5.wav",
+    "title": "Dark Walk",
+    "mood": "tense-ambient",
+    "duration": 85.84,
+    "licence": "CC BY 4.0 (Kevin MacLeod / incompetech.com)"
+  },
+  {
+    "file": "fife_drum.wav",
+    "title": "Brandywine Quickstep (US Army Old Guard Fife and Drum Corps)",
+    "mood": "period-flavour-sting",
+    "duration": null,
+    "licence": "CC0 / Public domain (Wikimedia Commons, US Army performance)"
+  },
+  {
+    "file": "sfx_musket_volley.wav",
+    "mood": "sfx-musket-volley",
+    "duration": 2.6,
+    "licence": "Original synthesized (numpy/scipy) — no restriction"
+  },
+  {
+    "file": "sfx_cannon.wav",
+    "mood": "sfx-cannon",
+    "duration": 2.6,
+    "licence": "Original synthesized (numpy/scipy) — no restriction"
+  },
+  {
+    "file": "sfx_drums_march.wav",
+    "mood": "sfx-drums-march",
+    "duration": 16.0,
+    "licence": "Original synthesized (numpy/scipy) — no restriction"
+  },
+  {
+    "file": "sfx_river.wav",
+    "mood": "sfx-river-ambience",
+    "duration": 18.0,
+    "licence": "Original synthesized (numpy/scipy) — no restriction"
+  },
+  {
+    "file": "sfx_whoosh.wav",
+    "mood": "sfx-transition",
+    "duration": 1.0,
+    "licence": "Original synthesized (numpy/scipy) — no restriction"
+  },
+  {
+    "file": "sfx_thud.wav",
+    "mood": "sfx-thud",
+    "duration": 0.5,
+    "licence": "Original synthesized (numpy/scipy) — no restriction"
+  }
+]
