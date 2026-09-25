@@ -5,7 +5,7 @@
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
-const HAVE_GREENE_HEAD = false, HAVE_STEWART_HEAD = false;
+const HAVE_GREENE_HEAD = true, HAVE_STEWART_HEAD = false;
 
 const NS = "http://www.w3.org/2000/svg", SVG = document.getElementById("overlay");
 function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

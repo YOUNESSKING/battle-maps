@@ -2,7 +2,7 @@
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
-const HAVE_GREENE_HEAD = false;
+const HAVE_GREENE_HEAD = true;
 
 // ---------- projection (assets/eutaw_region.json: zoom 8, origin 16709,25391) ----------
 const G = (lat, lon) => {
@@ -80,7 +80,7 @@ B.date("25 APRIL 1781", P2 + 0.3, T_MATTER + 0.5);
 B.date("MAY – JUNE 1781", T_MATTER + 0.8, null, 36);
 
 const STATES = [
-  ["VIRGINIA", 36.95, -79.9, 44], ["NORTH CAROLINA", 35.95, -81.2, 44], ["SOUTH CAROLINA", 34.1, -81.4, 44], ["GEORGIA", 32.9, -83.2, 44],
+  ["VIRGINIA", 36.95, -79.9, 44], ["NORTH CAROLINA", 35.95, -81.8, 44], ["SOUTH CAROLINA", 34.1, -81.4, 44], ["GEORGIA", 32.9, -83.2, 44],
 ];
 STATES.forEach(([n, la, lo, sz], i) => B.label(n, ...G(la, lo), { cls: "country", size: sz, t: 1.2 + i * 0.25, until: T_HELD }));
 B.label("ATLANTIC OCEAN", ...G(32.9, -77.6), { cls: "sea", size: 40, t: 2.4, until: T_HELD });
