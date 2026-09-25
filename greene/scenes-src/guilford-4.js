@@ -165,7 +165,7 @@ B.hideUnits(["bbo", "bg1", "lee"], G6 + 1.0, 1.0);
 const T_SLOPE = at("guilford-6", "up the slope"), T_BROKE = at("guilford-6", "broke a newly"), T_CAPT = at("guilford-6", "captured two cannon");
 const T_WHEEL = at("guilford-6", "First Maryland wheeled"), T_CAV = at("guilford-6", "cavalry crashed"), T_CUT = at("guilford-6", "cut to pieces");
 fadeOut(l3L, G6 + 2.0);
-B.move("bg2", T_SLOPE - 0.5, 2.5, 1870, 825);
+B.move("bg2", T_SLOPE - 0.5, 2.5, 1835, 828);
 B.move("b23", T_SLOPE, 2.2, 1850, 620); B.move("b33", T_SLOPE + 0.2, 2.2, 1850, 530);
 volley([[1942, 540], [1942, 610], [1942, 680], [1942, 520], [1942, 640]], T_SLOPE + 2.3);
 hit("b23", T_SLOPE + 2.5); hit("b33", T_SLOPE + 2.6);
