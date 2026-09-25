@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="vendor/gsap.min.js"></script>
+    <script src="vendor/milsymbol.js"></script>
+    <style>
+      @font-face { font-family: "Oswald"; font-weight: 500; src: url("assets/fonts/oswald-latin-500-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Oswald"; font-weight: 700; src: url("assets/fonts/oswald-latin-700-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Special Elite"; font-weight: 400; src: url("assets/fonts/special-elite-latin-400-normal.woff2") format("woff2"); }
+
+      :root {
+        --ink: #2a241b;
+        --paper: #efe3c4;
+        --paper-edge: #c9b48a;
+        --friendly: #2f5fa8;
+        --friendly-light: #9fc0ea;
+        --enemy: #b3261e;
+        --enemy-dark: #6e1510;
+        --neutral: #6b6b66;
+        --stake: #6b4a2b;
+        --label: #1f1b14;
+        --white: #f7f3ea;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #1b1812; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Oswald", sans-serif; }
+      #scene { position: absolute; inset: 0; overflow: hidden; }
+
+      /* ---------- world (camera target) ---------- */
+      #world { position: absolute; left: 0; top: 0; width: 2880px; height: 1620px; transform-origin: 0 0; }
+      #relief { position: absolute; left: 0; top: 0; width: 2880px; height: 1620px; display: block; }
+      #tint { position: absolute; inset: 0; background: #b9c6cf; mix-blend-mode: multiply; opacity: 0.28; }
+      #overlay { position: absolute; left: 0; top: 0; width: 2880px; height: 1620px; overflow: visible; }
+      #pins { position: absolute; left: 0; top: 0; width: 2880px; height: 1620px; }
+
+      .place { position: absolute; font-weight: 700; color: var(--label); letter-spacing: 0.14em; white-space: nowrap;
+               text-shadow: 0 0 6px rgba(239, 227, 196, 0.9), 0 0 2px rgba(239, 227, 196, 1); }
+      .place.big { font-size: 46px; }
+      .place.small { font-size: 30px; font-weight: 500; letter-spacing: 0.1em; }
+
+      .unit { position: absolute; width: 150px; margin-left: -75px; margin-top: -44px; display: flex; flex-direction: column; align-items: center; }
+      .unit .sym { height: 62px; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.35)); }
+      .unit .tag { margin-top: 4px; padding: 1px 10px; font-size: 22px; font-weight: 700; letter-spacing: 0.08em; color: var(--white); border-radius: 3px; white-space: nowrap; }
+      .unit.friendly .tag { background: var(--friendly); }
+      .unit.enemy .tag { background: var(--enemy); }
+
+      .stake { position: absolute; width: 300px; margin-left: -20px; margin-top: -250px; height: 250px; }
+      .stake .pole { position: absolute; left: 14px; top: 20px; width: 10px; height: 230px; background: linear-gradient(90deg, #4c3219, var(--stake), #4c3219); border-radius: 3px; }
+      .stake .board { position: absolute; left: 0; top: 0; width: 290px; padding: 14px 18px; background: var(--paper); border: 3px solid var(--stake);
+                      box-shadow: 0 8px 14px rgba(0,0,0,0.35); font-family: "Special Elite", monospace; color: var(--ink); }
+      .stake .board .name { font-size: 28px; line-height: 1.1; }
+      .stake .board .role { font-size: 19px; margin-top: 6px; opacity: 0.8; }
+
+      /* ---------- screen layers ---------- */
+      #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 52%, rgba(20,14,6,0.62) 100%); }
+      #grain { position: absolute; inset: 0; width: 1920px; height: 1080px; mix-blend-mode: overlay; opacity: 0.22; }
+
+      #date { position: absolute; left: 90px; top: 80px; width: 470px; height: 104px; }
+      #date .scroll { position: absolute; inset: 0; border-radius: 6px;
+                      background: linear-gradient(180deg, #f3e8cc 0%, var(--paper) 45%, #d9c79d 100%);
+                      box-shadow: 0 10px 20px rgba(0,0,0,0.4), inset 0 0 18px rgba(120, 90, 40, 0.35); }
+      #date .roll { position: absolute; top: -8px; width: 30px; height: 120px; border-radius: 15px;
+                    background: linear-gradient(90deg, #a88a57, #e6d5ae 45%, #9c7e4d); box-shadow: 0 6px 10px rgba(0,0,0,0.35); }
+      #date .roll.l { left: -14px; } #date .roll.r { right: -14px; }
+      #date .d { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+                 font-family: "Special Elite", monospace; font-size: 40px; color: var(--ink); letter-spacing: 0.04em; }
+
+      #ridgway { position: absolute; right: 90px; top: 80px; width: 470px; padding: 20px 26px; background: var(--paper); border-left: 10px solid var(--friendly);
+                 box-shadow: 0 10px 20px rgba(0,0,0,0.4); font-family: "Special Elite", monospace; color: var(--ink); }
+      #ridgway .who { font-size: 24px; opacity: 0.8; }
+      #ridgway .order { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 50px; letter-spacing: 0.06em; color: var(--friendly); margin-top: 4px; }
+      #ridgway .sub { font-size: 21px; margin-top: 2px; }
+
+      .caption { position: absolute; left: 0; right: 0; bottom: 110px; display: flex; justify-content: center; }
+      .caption span { padding: 12px 34px; background: rgba(24, 20, 14, 0.82); color: var(--white); font-size: 46px; font-weight: 700; letter-spacing: 0.1em;
+                      border-top: 4px solid var(--paper-edge); }
+      .caption.red span { border-top-color: var(--enemy); }
+      .caption.blue span { border-top-color: var(--friendly-light); }
+
+      #endcard { position: absolute; left: 0; right: 0; bottom: 96px; display: flex; justify-content: center; }
+      #endcard .card { padding: 22px 56px 26px; background: rgba(24, 20, 14, 0.86); border-top: 5px solid var(--friendly-light); text-align: center; color: var(--white); }
+      #endcard .h { font-size: 76px; font-weight: 700; letter-spacing: 0.16em; line-height: 1.05; }
+      #endcard .s { font-family: "Special Elite", monospace; font-size: 30px; margin-top: 10px; color: var(--paper); }
+
+      #credit { position: absolute; right: 90px; bottom: 36px; font-size: 16px; color: #ece8de; letter-spacing: 0.06em; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="28" data-width="1920" data-height="1080">
+      <div id="scene" class="clip" data-start="0" data-duration="28" data-track-index="0">
+        <div id="world">
+          <img id="relief" src="assets/relief.jpg" alt="" />
+          <div id="tint"></div>
+          <svg id="overlay" viewBox="0 0 2880 1620" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <mask id="encircle-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="2880" height="1620">
+                <path id="encircle-reveal" fill="none" stroke="#fff" stroke-width="40" />
+              </mask>
+            </defs>
+            <g id="encircle-g" mask="url(#encircle-mask)">
+              <path id="encircle" fill="none" stroke="var(--enemy)" stroke-width="12" stroke-dasharray="46 26" stroke-linecap="round" />
+            </g>
+            <path id="perim-fill" fill="var(--friendly)" opacity="0" />
+            <path id="perim" fill="none" stroke="var(--friendly)" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" />
+            <g id="ccf-arrows"></g>
+            <g id="tank-arrow-g">
+              <path id="tank-arrow-casing" fill="none" stroke="var(--friendly)" stroke-width="30" stroke-linecap="round"
+                    d="M 1590 1660 C 1560 1480, 1500 1380, 1490 1260 S 1452 1080, 1450 960" />
+              <path id="tank-arrow" fill="none" stroke="var(--white)" stroke-width="16" stroke-linecap="round"
+                    d="M 1590 1660 C 1560 1480, 1500 1380, 1490 1260 S 1452 1080, 1450 960" />
+              <polygon id="tank-head" points="-34,-4 34,-4 0,-58" fill="var(--white)" stroke="var(--friendly)" stroke-width="7" stroke-linejoin="round" />
+            </g>
+            <circle id="village-dot" cx="1440" cy="810" r="11" fill="var(--label)" stroke="var(--paper)" stroke-width="4" />
+            <g id="chutes"></g>
+            <g id="plane" opacity="0">
+              <!-- C-119 Flying Boxcar, top-down: pod fuselage, twin booms, tailplane between booms -->
+              <g transform="scale(1.8)" style="filter: drop-shadow(18px 26px 6px rgba(0,0,0,0.35))">
+                <path fill="#3a3f45" d="M -70 -9 C -72 -3, -72 3, -70 9 L 40 9 C 56 7, 64 3, 66 0 C 64 -3, 56 -7, 40 -9 Z" />
+                <path fill="#4a5058" d="M -4 -100 L 22 -100 L 26 100 L -8 100 Z" />
+                <rect x="-70" y="-38" width="84" height="7" rx="3" fill="#3a3f45" />
+                <rect x="-70" y="31" width="84" height="7" rx="3" fill="#3a3f45" />
+                <rect x="-78" y="-40" width="10" height="80" rx="3" fill="#4a5058" />
+                <rect x="-84" y="-50" width="12" height="20" rx="3" fill="#3a3f45" />
+                <rect x="-84" y="30" width="12" height="20" rx="3" fill="#3a3f45" />
+                <ellipse cx="12" cy="-34" rx="16" ry="7" fill="#2c3036" />
+                <ellipse cx="12" cy="34" rx="16" ry="7" fill="#2c3036" />
+              </g>
+            </g>
+          </svg>
+          <div id="pins">
+            <div class="place big" id="lbl-village" style="left: 1296px; top: 832px;">CHIPYONG-NI</div>
+            <div class="place small" id="lbl-yongmun" style="left: 470px; top: 900px;">&#9664; TO YONGMUN</div>
+            <div class="place small" id="lbl-koksuri" style="left: 1640px; top: 1340px;">TO KOKSU-RI &#9660;</div>
+            <div id="units"></div>
+            <div class="stake" id="stake-freeman" style="left: 960px; top: 1160px;">
+              <div class="pole"></div>
+              <div class="board"><div class="name">COL. PAUL FREEMAN</div><div class="role">23rd Infantry Regiment</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="vignette"></div>
+        <img id="grain" src="assets/grain.png" alt="" />
+
+        <div id="date">
+          <div class="scroll"></div>
+          <div class="roll l"></div><div class="roll r"></div>
+          <div class="d" id="date-13">13 FEBRUARY 1951</div>
+          <div class="d" id="date-15">15 FEBRUARY 1951</div>
+        </div>
+
+        <div id="ridgway">
+          <div class="who">GEN. MATTHEW RIDGWAY &middot; EIGHTH ARMY</div>
+          <div class="order">ORDER: HOLD</div>
+          <div class="sub">No withdrawal from Chipyong-ni.</div>
+        </div>
+
+        <div class="caption" id="cap-1"><span>4,500 MEN &middot; A ONE-MILE PERIMETER</span></div>
+        <div class="caption red" id="cap-2"><span>SURROUNDED BY 5 CHINESE DIVISIONS</span></div>
+        <div class="caption" id="cap-3"><span>RESUPPLIED FROM THE AIR</span></div>
+        <div class="caption blue" id="cap-4"><span>TASK FORCE CROMBEZ &middot; 23 TANKS BREAK THROUGH</span></div>
+
+        <div id="endcard">
+          <div class="card">
+            <div class="h">SIEGE BROKEN</div>
+            <div class="s">~5,000 Chinese casualties &middot; 52 defenders killed</div>
+          </div>
+        </div>
+
+        <div id="credit">Terrain: Mapzen / AWS Terrain Tiles (SRTM, open data)</div>
+      </div>
+    </div>
+
+    <script>
+      const W = 1920, H = 1080;
+      const C = { friendly: "#2f5fa8", enemy: "#b3261e", neutral: "#6b6b66", white: "#f7f3ea", ink: "#2a241b" };
+      const VILLAGE = [1440, 810];
+
+      // ---------- geometry helpers (deterministic) ----------
+      function smoothClosed(pts) {
+        // Catmull-Rom -> cubic Bezier, closed loop
+        let d = `M ${pts[0][0]} ${pts[0][1]}`;
+        for (let i = 0; i < pts.length; i++) {
+          const p0 = pts[(i - 1 + pts.length) % pts.length], p1 = pts[i], p2 = pts[(i + 1) % pts.length], p3 = pts[(i + 2) % pts.length];
+          const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+          const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+          d += ` C ${c1[0].toFixed(1)} ${c1[1].toFixed(1)}, ${c2[0].toFixed(1)} ${c2[1].toFixed(1)}, ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+        }
+        return d + " Z";
+      }
+      function ring(rx, ry, wobble, start) {
+        const pts = [];
+        for (let i = 0; i < 12; i++) {
+          const a = start + (i / 12) * Math.PI * 2;
+          const k = 1 + wobble[i % wobble.length];
+          pts.push([VILLAGE[0] + Math.cos(a) * rx * k, VILLAGE[1] + Math.sin(a) * ry * k]);
+        }
+        return smoothClosed(pts);
+      }
+
+      const perimD = ring(285, 235, [0.02, -0.05, 0.06, 0.0, -0.04, 0.05, -0.02, 0.04, -0.06, 0.03, 0.0, -0.03], -Math.PI / 2);
+      const encD = ring(420, 360, [0.03, 0.06, -0.02, 0.04, 0.0, -0.03, 0.05, 0.02, -0.04, 0.03, 0.06, -0.01], -Math.PI / 2);
+      document.getElementById("perim").setAttribute("d", perimD);
+      document.getElementById("perim-fill").setAttribute("d", perimD);
+      document.getElementById("encircle").setAttribute("d", encD);
+      document.getElementById("encircle-reveal").setAttribute("d", encD);
+
+      // ---------- NATO counters (milsymbol) ----------
+      function symbol(sidc, fill) {
+        return new ms.Symbol(sidc, { size: 44, fillColor: fill, frameColor: C.ink, iconColor: C.white, outlineWidth: 3, outlineColor: C.white }).asSVG();
+      }
+      const units = document.getElementById("units");
+      function addUnit(id, cls, sidc, fill, x, y, tag) {
+        const el = document.createElement("div");
+        el.className = `unit ${cls}`;
+        el.id = id;
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        el.innerHTML = `<div class="sym">${symbol(sidc, fill)}</div><div class="tag">${tag}</div>`;
+        units.appendChild(el);
+        return el;
+      }
+      const friendly = [
+        ["u-1-23", "SFGPUCI----F", 1440, 560, "1/23 INF"],
+        ["u-3-23", "SFGPUCI----F", 1740, 800, "3/23 INF"],
+        ["u-2-23", "SFGPUCI----F", 1310, 1020, "2/23 INF"],
+        ["u-fr", "SFGPUCI----F", 1140, 820, "FR BN"],
+        ["u-37fa", "SFGPUCF----F", 1590, 690, "37 FA"],
+      ].map(([id, sidc, x, y, t]) => addUnit(id, "friendly", sidc, C.friendly, x, y, t));
+
+      const ccfPos = [
+        ["c-n", 1440, 250, 1440, 440],
+        ["c-ne", 1880, 380, 1700, 560],
+        ["c-e", 2060, 830, 1840, 820],
+        ["c-se", 1900, 1230, 1720, 1060],
+        ["c-s", 1250, 1330, 1350, 1110],
+        ["c-sw", 960, 1180, 1140, 1020],
+        ["c-w", 800, 720, 1010, 780],
+        ["c-nw", 1010, 360, 1200, 560],
+      ];
+      const ccf = ccfPos.map(([id, x, y]) => addUnit(id, "enemy", "SHGPUCI----I", C.enemy, x, y, "CCF"));
+
+      // ---------- CCF attack arrows ----------
+      const arrowsG = document.getElementById("ccf-arrows");
+      const NS = "http://www.w3.org/2000/svg";
+      const ccfArrows = ccfPos.map(([id, x, y, tx, ty], i) => {
+        const sx = x + (tx - x) * 0.28, sy = y + (ty - y) * 0.28;
+        const mx = (sx + tx) / 2 + (ty - sy) * 0.12 * (i % 2 ? 1 : -1), my = (sy + ty) / 2 - (tx - sx) * 0.12 * (i % 2 ? 1 : -1);
+        const g = document.createElementNS(NS, "g");
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", `M ${sx} ${sy} Q ${mx} ${my} ${tx} ${ty}`);
+        p.setAttribute("fill", "none");
+        p.setAttribute("stroke", C.enemy);
+        p.setAttribute("stroke-width", "15");
+        p.setAttribute("stroke-linecap", "round");
+        const head = document.createElementNS(NS, "polygon");
+        head.setAttribute("points", "-26,-2 26,-2 0,-44");
+        head.setAttribute("fill", C.enemy);
+        const ang = Math.atan2(ty - my, tx - mx) * 180 / Math.PI + 90;
+        const hg = document.createElementNS(NS, "g");
+        hg.setAttribute("transform", `translate(${tx} ${ty}) rotate(${ang.toFixed(1)})`);
+        hg.appendChild(head);
+        g.appendChild(p);
+        g.appendChild(hg);
+        arrowsG.appendChild(g);
+        return { g, p, head };
+      });
+
+      // ---------- parachutes ----------
+      const chutesG = document.getElementById("chutes");
+      const chutes = [[1350, 760], [1450, 740], [1545, 800]].map(([x, y], i) => {
+        const g = document.createElementNS(NS, "g");
+        g.setAttribute("transform", `translate(${x} ${y})`);
+        g.innerHTML = `<g class="chute-body">
+          <path d="M -34 0 A 34 30 0 0 1 34 0 Z" fill="${C.white}" stroke="${C.ink}" stroke-width="3"/>
+          <path d="M -34 0 L 0 34 M 34 0 L 0 34 M -12 0 L 0 34 M 12 0 L 0 34" stroke="${C.ink}" stroke-width="2" fill="none"/>
+          <rect x="-10" y="32" width="20" height="16" fill="#8a6a3c" stroke="${C.ink}" stroke-width="2"/></g>`;
+        chutesG.appendChild(g);
+        return g.querySelector(".chute-body");
+      });
+
+      // ---------- timeline ----------
+      const tl = gsap.timeline({ paused: true });
+      const world = document.getElementById("world");
+      const cam = { cx: 1440, cy: 830, s: 0.68 };
+      const applyCam = () => gsap.set(world, { x: W / 2 - cam.cx * cam.s, y: H / 2 - cam.cy * cam.s, scale: cam.s });
+      applyCam();
+      const camKeys = [
+        [0, 1440, 830, 0.68], [3, 1440, 810, 0.86], [6.5, 1440, 800, 1.1], [9.5, 1440, 820, 0.88], [12.5, 1440, 810, 0.92],
+        [16, 1450, 830, 0.96], [20, 1460, 1000, 0.94], [28, 1440, 830, 1.12],
+      ];
+      for (let i = 1; i < camKeys.length; i++) {
+        const [t0] = camKeys[i - 1], [t1, cx, cy, s] = camKeys[i];
+        tl.to(cam, { cx, cy, s, duration: t1 - t0, ease: "sine.inOut", onUpdate: applyCam }, t0);
+      }
+
+      const draw = (el, len) => gsap.set(el, { strokeDasharray: `${len} ${len}`, strokeDashoffset: len });
+      const hidden = (sel) => gsap.set(sel, { autoAlpha: 0 });
+
+      // hidden initial states
+      hidden(["#lbl-village", "#lbl-yongmun", "#lbl-koksuri", "#village-dot", "#date", "#ridgway", "#cap-1", "#cap-2", "#cap-3", "#cap-4", "#endcard",
+              "#stake-freeman", "#date-15", "#tank-arrow-g", "#credit", ...friendly, ...ccf, ...ccfArrows.map((a) => a.g), ...chutes]);
+      const perimLen = document.getElementById("perim").getTotalLength();
+      draw("#perim", perimLen);
+      const encLen = document.getElementById("encircle-reveal").getTotalLength();
+      draw("#encircle-reveal", encLen);
+      ccfArrows.forEach((a) => { draw(a.p, a.p.getTotalLength()); gsap.set(a.head, { scale: 0, transformOrigin: "50% 100%" }); });
+      const tankPath = document.getElementById("tank-arrow");
+      const tankLen = tankPath.getTotalLength();
+      draw("#tank-arrow", tankLen);
+      draw("#tank-arrow-casing", tankLen);
+      gsap.set("#tank-head", { scale: 0, transformOrigin: "50% 100%" });
+
+      // 0-3s: establishing
+      tl.fromTo("#date", { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.7, ease: "power3.out" }, 0.3);
+      tl.fromTo("#credit", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.3);
+      tl.fromTo("#village-dot", { autoAlpha: 0, scale: 0, transformOrigin: "50% 50%" }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, 0.6);
+      tl.fromTo("#lbl-village", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.8);
+      tl.fromTo(["#lbl-yongmun", "#lbl-koksuri"], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.25 }, 1.3);
+
+      // 3-7s: perimeter + defenders + Freeman / Ridgway
+      tl.to("#perim", { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut" }, 3.0);
+      tl.to("#perim-fill", { opacity: 0.1, duration: 0.8 }, 4.0);
+      friendly.forEach((u, i) => tl.fromTo(u, { autoAlpha: 0, y: -50, scale: 1.25 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "bounce.out" }, 4.0 + i * 0.16));
+      tl.fromTo("#cap-1", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 3.5);
+      tl.to("#cap-1", { autoAlpha: 0, duration: 0.3 }, 6.7);
+      tl.fromTo("#stake-freeman", { autoAlpha: 0, y: -120 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "bounce.out" }, 5.0);
+      tl.fromTo("#ridgway", { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, 5.6);
+      tl.to("#ridgway", { autoAlpha: 0, x: 60, duration: 0.5, ease: "power2.in" }, 9.6);
+      tl.to("#stake-freeman", { autoAlpha: 0, duration: 0.4 }, 7.2);
+
+      // 7-12.5s: encirclement
+      ccf.forEach((u, i) => tl.fromTo(u, { autoAlpha: 0, y: -40, scale: 1.2 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.5, ease: "bounce.out" }, 7.0 + i * 0.12));
+      ccfArrows.forEach((a, i) => {
+        tl.to(a.g, { autoAlpha: 1, duration: 0.01 }, 7.9 + i * 0.12);
+        tl.to(a.p, { strokeDashoffset: 0, duration: 1.1, ease: "power2.in" }, 7.9 + i * 0.12);
+        tl.to(a.head, { scale: 1, duration: 0.25, ease: "back.out(2.5)" }, 9.0 + i * 0.12);
+      });
+      tl.to("#encircle-reveal", { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" }, 9.8);
+      tl.fromTo("#encircle", { strokeDashoffset: 0 }, { strokeDashoffset: -216, duration: 10.6, ease: "none" }, 11.4);
+      tl.fromTo("#cap-2", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 8.2);
+      tl.to("#cap-2", { autoAlpha: 0, duration: 0.3 }, 12.3);
+
+      // 12.5-16s: C-119 airdrop
+      const plane = { x: -200 };
+      const placePlane = () => document.getElementById("plane").setAttribute("transform", `translate(${plane.x.toFixed(1)} ${(660 + plane.x * 0.06).toFixed(1)}) rotate(3.4)`);
+      placePlane();
+      tl.to("#plane", { opacity: 1, duration: 0.01 }, 12.5);
+      tl.to(plane, { x: 3100, duration: 3.6, ease: "none", onUpdate: placePlane }, 12.5);
+      chutes.forEach((c, i) => {
+        tl.fromTo(c, { autoAlpha: 0, scale: 1.8, y: -40, transformOrigin: "50% 50%" }, { autoAlpha: 1, scale: 1, y: 0, duration: 1.3, ease: "power1.out" }, 13.6 + i * 0.28);
+      });
+      tl.fromTo("#cap-3", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 13.2);
+      tl.to("#cap-3", { autoAlpha: 0, duration: 0.3 }, 15.8);
+      tl.to(chutes, { autoAlpha: 0, duration: 0.6 }, 17.0);
+
+      // 16-22s: 15 FEB, Task Force Crombez
+      tl.to("#date-13", { autoAlpha: 0, y: -16, duration: 0.35 }, 16.0);
+      tl.fromTo("#date-15", { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.35 }, 16.2);
+      tl.to("#tank-arrow-g", { autoAlpha: 1, duration: 0.01 }, 16.6);
+      const tankProg = { p: 0 };
+      const tankUnit = addUnit("u-crombez", "friendly", "SFGPUCA----F", C.friendly, 1590, 1660, "TF CROMBEZ");
+      gsap.set(tankUnit, { autoAlpha: 0 });
+      // sample the path once at build time; the tween only interpolates these fixed points
+      const TANK_SAMPLES = 240;
+      const tankPts = Array.from({ length: TANK_SAMPLES + 1 }, (_, i) => {
+        const pt = tankPath.getPointAtLength((i / TANK_SAMPLES) * tankLen);
+        return [pt.x, pt.y];
+      });
+      const moveTank = () => {
+        const f = tankProg.p * TANK_SAMPLES, i = Math.min(Math.floor(f), TANK_SAMPLES - 1), r = f - i;
+        const [x0, y0] = tankPts[i], [x1, y1] = tankPts[i + 1];
+        tankUnit.style.left = (x0 + (x1 - x0) * r).toFixed(1) + "px";
+        tankUnit.style.top = (y0 + (y1 - y0) * r).toFixed(1) + "px";
+      };
+      moveTank();
+      tl.to(["#tank-arrow", "#tank-arrow-casing"], { strokeDashoffset: 0, duration: 3.2, ease: "power1.inOut" }, 16.6);
+      tl.to("#tank-head", { scale: 1, duration: 0.3, ease: "back.out(2.5)" }, 19.7);
+      tl.fromTo(tankUnit, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 16.7);
+      tl.to(tankProg, { p: 0.84, duration: 3.2, ease: "power1.inOut", onUpdate: moveTank }, 16.6);
+      tl.to("#encircle-g", { opacity: 0.35, duration: 0.8 }, 19.8);
+      tl.fromTo("#cap-4", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4 }, 17.4);
+      tl.to("#cap-4", { autoAlpha: 0, duration: 0.3 }, 21.7);
+
+      // 22-28s: siege broken
+      ccf.forEach((u) => {
+        tl.to(u.querySelector(".tag"), { backgroundColor: C.neutral, duration: 1.2 }, 22.0);
+        tl.to(u.querySelector(".sym"), { filter: "grayscale(1) brightness(0.9) drop-shadow(0 3px 3px rgba(0,0,0,0.35))", duration: 1.2 }, 22.0);
+        tl.to(u, { opacity: 0.55, duration: 1.2 }, 22.0);
+      });
+      tl.to(ccfArrows.map((a) => a.g), { opacity: 0, duration: 1.0, stagger: 0.06 }, 22.2);
+      tl.to("#encircle-g", { opacity: 0, duration: 1.0 }, 22.6);
+      tl.fromTo("#endcard", { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, 23.0);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "title": "Siege of Chipyong-ni (13-15 Feb 1951)",
+  "category": "maps",
+  "canvas": { "width": 1920, "height": 1080, "fps": 30, "duration": 28 },
+  "content": {
+    "lane": "basemap",
+    "basemap": "assets/relief.jpg (2880x1620, 7.58 m/px, 1 mile = 212 px, village at [1440, 810])",
+    "camera": [
+      { "t": 0,    "center": [1440, 830],  "scale": 0.68 },
+      { "t": 3,    "center": [1440, 810],  "scale": 0.86 },
+      { "t": 7,    "center": [1440, 810],  "scale": 1.12 },
+      { "t": 12.5, "center": [1440, 800],  "scale": 0.92 },
+      { "t": 16,   "center": [1450, 830],  "scale": 0.98 },
+      { "t": 20,   "center": [1460, 1010], "scale": 0.95 },
+      { "t": 28,   "center": [1440, 820],  "scale": 1.18 }
+    ]
+  },
+  "beats": [
+    { "t": [0, 3],     "what": "Establishing shot. Date scroll '13 FEBRUARY 1951'. Labels CHIPYONG-NI, TO YONGMUN, TO KOKSU-RI." },
+    { "t": [3, 7],     "what": "Blue ~1-mile perimeter draws on. Counters 1/23, 2/23, 3/23 INF, FR BN, 37 FA drop in. Stake plaques COL. PAUL FREEMAN and GEN. RIDGWAY ('ORDER: HOLD')." },
+    { "t": [7, 12.5],  "what": "8 CCF counters appear outside; red arrows draw inward; red dashed encirclement closes and pulses. Caption: SURROUNDED BY 5 CHINESE DIVISIONS." },
+    { "t": [12.5, 16], "what": "C-119 Flying Boxcar crosses west to east, drops 3 parachutes into the ring. Caption: RESUPPLIED FROM THE AIR." },
+    { "t": [16, 22],   "what": "Date flips to '15 FEBRUARY 1951'. TF CROMBEZ arrow pushes north from Koksu-ri road, tank counter follows it and breaks the ring. Caption: 23 TANKS BREAK THROUGH." },
+    { "t": [22, 28],   "what": "CCF counters fade to grey, arrows withdraw. End card: SIEGE BROKEN - ~5,000 Chinese casualties - 52 defenders killed." }
+  ],
+  "style": {
+    "terrain": "muted parchment/olive shaded relief with paper grain, cool winter tint, vignette",
+    "friendly": "#2f5fa8 blue NATO counters and perimeter",
+    "enemy": "#b3261e red NATO counters, arrows, dashed encirclement",
+    "arrows": "draw-on strokes with arrowheads that pop at the end",
+    "type": "Oswald (labels, captions), Special Elite (date scroll, plaques)",
+    "credit": "Terrain: Mapzen/AWS Terrain Tiles (SRTM, open data)"
+  }
+}

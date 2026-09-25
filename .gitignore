@@ -1,0 +1,12 @@
+*.wav
+*.mp4
+*.npy
+**/scenes/
+**/snapshots/
+**/renders/
+**/.tiles/
+**/build/seg/
+**/__pycache__/
+node_modules/
+tts/*.onnx
+tts/*.bin
