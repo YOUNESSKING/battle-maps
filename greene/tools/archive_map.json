@@ -1,0 +1,102 @@
+{
+ "camden": {
+  "file": [
+   "camden_chappel.jpg",
+   "camden.jpg",
+   "death_of_de_kalb.jpg",
+   "washington.jpg"
+  ],
+  "move": "in",
+  "credit": "The Battle of Camden, 16 August 1780"
+ },
+ "greene": {
+  "file": [
+   "greene.jpg"
+  ],
+  "move": "in",
+  "credit": "Nathanael Greene, by Charles Willson Peale (c. 1783)"
+ },
+ "winter_march": {
+  "file": [
+   "valley_forge_trego.jpg",
+   "winter_march.jpg",
+   "march_to_valley_forge.jpg",
+   "morgan.jpg"
+  ],
+  "move": "right",
+  "credit": "William B. T. Trego, The March to Valley Forge (1883)"
+ },
+ "cornwallis": {
+  "file": [
+   "cornwallis.jpg"
+  ],
+  "move": "in",
+  "credit": "Charles, Earl Cornwallis, by Thomas Gainsborough (1783)"
+ },
+ "continental_soldiers": {
+  "file": [
+   "continental_army_ogden.jpg",
+   "continental_soldiers.jpg",
+   "otho_williams.jpg"
+  ],
+  "move": "up",
+  "credit": "Continental Army uniforms, H. A. Ogden"
+ },
+ "guilford_battle": {
+  "file": [
+   "guilford_mcbarron.jpg",
+   "guilford_battle.jpg",
+   "guilford.jpg",
+   "guilford_map_1787.jpg",
+   "tarleton.jpg"
+  ],
+  "move": "left",
+  "credit": "The Battle of Guilford Courthouse, 15 March 1781"
+ },
+ "fox": {
+  "file": [
+   "fox.jpg"
+  ],
+  "move": "in",
+  "credit": "Charles James Fox"
+ },
+ "greene_quote": {
+  "file": [
+   "greene.jpg"
+  ],
+  "quote": [
+   "We fight, get beat, rise, and fight again.",
+   "Nathanael Greene, 1781"
+  ]
+ },
+ "eutaw_battle": {
+  "file": [
+   "eutaw_springs_chappel.jpg",
+   "eutaw_battle.jpg",
+   "eutaw.jpg",
+   "washington.jpg"
+  ],
+  "move": "right",
+  "credit": "The Battle of Eutaw Springs, 8 September 1781"
+ },
+ "yorktown": {
+  "file": [
+   "yorktown_trumbull.jpg",
+   "yorktown.jpg",
+   "surrender_of_cornwallis.jpg",
+   "cornwallis.jpg"
+  ],
+  "move": "left",
+  "credit": "John Trumbull, Surrender of Lord Cornwallis (1820)"
+ },
+ "greene_statue": {
+  "file": [
+   "greene_statue.jpg",
+   "greene_statue_guilford.jpg",
+   "greene_monument.jpg",
+   "greene.jpg"
+  ],
+  "move": "up",
+  "credit": "Nathanael Greene monument"
+ }
+}

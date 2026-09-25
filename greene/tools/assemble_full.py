@@ -14,6 +14,9 @@ ARCHIVE = json.load(open("tools/archive_map.json"))  # key -> {"file", "move", "
 MUSIC = json.load(open("tools/music_map.json"))      # [{"file", "from_tag", "vol"}]: bed starting at that paragraph
 SFX = json.load(open("tools/sfx_map.json"))          # [{"file", "tag", "phrase" | "off", "vol"}]
 
+FILE_CREDIT = {"washington.jpg": "George Washington, by Charles Willson Peale", "morgan.jpg": "Daniel Morgan, by Charles Willson Peale",
+               "otho_williams.jpg": "Otho Holland Williams, by Charles Willson Peale", "tarleton.jpg": "Banastre Tarleton, by Joshua Reynolds (1782)",
+               "cornwallis.jpg": "Charles, Earl Cornwallis, by Thomas Gainsborough (1783)", "greene.jpg": "Nathanael Greene, by Charles Willson Peale"}
 T = json.load(open("audio/timing.json"))
 P, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].split(":", 1)[1].strip()
@@ -28,7 +31,12 @@ while i < len(P):
     out = f"build/seg/{i:02d}.mp4"
     if kind(P[i]) == "ARCHIVE":
         dur = starts[i + 1] - starts[i]
-        a = ARCHIVE[k]
+        a = dict(ARCHIVE[k])
+        if isinstance(a["file"], list):
+            pick = next((x for x in a["file"] if os.path.exists(f"{M}/{x}")), a["file"][-1])
+            if pick != a["file"][0]:
+                a["credit"] = FILE_CREDIT.get(pick, "")
+            a["file"] = pick
         if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime("tools/archive_map.json"):
             kenburns(f"{M}/{a['file']}", out, dur, a.get("move", "in"), a.get("credit", ""), a.get("quote"))
         segs.append(out); i += 1
