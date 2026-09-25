@@ -52,12 +52,12 @@ git-ignored; an `.mp3` (192 kbps) copy of every file is committed instead.
 
 ## Period flavour sting
 
-### fife_drum.wav — "Brandywine Quickstep" (from "Celebrating 50 Years", trimmed to ~60-90 s)
-- **Title**: "Brandywine Quickstep from the Minstrel Boy Show"
-- **Author**: The United States Army Old Guard Fife and Drum Corps (a US Army unit; performance is a US federal government work)
-- **Licence**: CC0 / Public Domain Dedication (marked CC0 on Wikimedia Commons; also released via Free Music Archive)
-- **Source**: https://commons.wikimedia.org/wiki/File:The_United_States_Army_Old_Guard_Fife_and_Drum_Corps_-_10_-_Brandywine_Quickstep_from_the_Minstrel_Boy_Show.ogg
-- **Notes**: Period-appropriate (Battle of Brandywine, 1777, same war/era as Greene's campaigns) 18th-century-style fife & drum quickstep performed by a US Army corps. No attribution legally required under CC0, credited here anyway. Original file ~112 s; trimmed for use as a 30-90 s sting.
+### fife_drum.wav — "Boys of Bluehill" (50 s, used in full)
+- **Title**: "Boys of Bluehill" (fife & drum performance)
+- **Author/Performer**: Old Guard Fife and Drum Corps (U.S. Army, Continental-Army-era repertoire)
+- **Licence**: Public domain — the item's own rights statement: "All information on this site (The United States Army Old Guard Fife and Drum Corps) is considered public information (PUBLIC DOMAIN)... works created by U.S. Government employees are not eligible for copyright protection." The underlying 18th-century composition (pre-1820) is separately public domain by age.
+- **Source**: https://archive.org/details/BluehillFifeAndDrum (audio file `fife_and_drum_64kb.mp3`; licenceurl on the item: http://creativecommons.org/licenses/publicdomain/)
+- **Notes**: A companion Wikimedia Commons recording by the same corps, "Brandywine Quickstep" (CC0, https://commons.wikimedia.org/wiki/File:The_United_States_Army_Old_Guard_Fife_and_Drum_Corps_-_10_-_Brandywine_Quickstep_from_the_Minstrel_Boy_Show.ogg, ~112 s), is period- and battle-appropriate (Brandywine, 1777) and can be swapped in as an alternate/second sting — Wikimedia's upload servers were rate-limiting downloads (HTTP 429) repeatedly during this session even after long backoff, so it was not pulled down; the archive.org "Boys of Bluehill" recording by the same fife-and-drum corps was used instead, no attribution legally required either way (credited here anyway).
 
 ## SFX (synthesized — no licence restriction)
 

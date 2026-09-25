@@ -36,10 +36,10 @@
   },
   {
     "file": "fife_drum.wav",
-    "title": "Brandywine Quickstep (US Army Old Guard Fife and Drum Corps)",
+    "title": "Boys of Bluehill (Old Guard Fife and Drum Corps)",
     "mood": "period-flavour-sting",
-    "duration": null,
-    "licence": "CC0 / Public domain (Wikimedia Commons, US Army performance)"
+    "duration": 50.0,
+    "licence": "Public domain (archive.org, US Army performance / pre-1820 composition)"
   },
   {
     "file": "sfx_musket_volley.wav",

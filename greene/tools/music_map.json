@@ -1,0 +1,8 @@
+[
+ {"file": "music_bed_1.wav", "from_tag": "START", "vol": 0.5},
+ {"file": "music_bed_4.wav", "from_tag": "dan-1", "vol": 0.45},
+ {"file": "music_bed_2.wav", "from_tag": "guilford-1", "vol": 0.45},
+ {"file": "music_bed_4.wav", "from_tag": "eutaw-1", "vol": 0.45},
+ {"file": "music_bed_2.wav", "from_tag": "eutaw-5", "vol": 0.45},
+ {"file": "music_bed_3.wav", "from_tag": "end-1", "vol": 0.5}
+]
