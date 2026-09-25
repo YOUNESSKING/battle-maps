@@ -41,6 +41,7 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | PDF production guide (9 pages) | done | hannibal/build/Hannibal-production-guide.pdf |
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
+| **Greene video (#2), full 16:15 cut**: script, voice, 14 map scenes, 11 archive slots, music, SFX, chapters, description | done 2026-09-25 | greene/ (renders + mp4 not in git: rebuild scenes with build_scene.py + render, then `python3 tools/assemble_full.py`) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
 
 ## 3. What's next (in order)
@@ -87,6 +88,9 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - Background removal: rembg with isnet-general-use.onnx from GitHub releases works.
 - Tactical Genius's first minute (Ridgway video): 3 long map shots (31 s, 15 s, 19 s), a full-length commander photo cut-out with a bio card (big red name), and a portrait stake under a flag. No archive footage until 1:08.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
+
+- Wikimedia rate-limits the shared cloud IP hard (429s for hours). Use the **Library of Congress** first: `https://www.loc.gov/pictures/search/?q=...&fo=json`, full-res TIFF at `tile.loc.gov/storage-services/master/pnp/.../XXXXu.tif`.
+- Assembler: a map run must end where the next scene starts (fixed in greene/tools/assemble_full.py); always check video duration == audio duration.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
