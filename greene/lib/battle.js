@@ -359,7 +359,7 @@
     };
     B.portraitStake = (o) => { // wooden stake + round portrait + small flag, dropped in with a bounce. (x,y) = foot of the pole
       const s = o.size || 1, el = document.createElement("div");
-      el.className = "gstake";
+      el.className = "gstake" + (o.side === "rome" || /gb_flag/.test(o.flag || "") ? " rome" : "");
       const poleH = 120 * s, faceD = 84 * s, fpH = 64 * s, flagW = 46 * s, flagH = 28 * s;
       const W0 = Math.max(faceD, flagW * 2) + 20, H0 = poleH + faceD + fpH;
       el.style.cssText = `left:${o.x - W0 / 2}px;top:${o.y - H0}px;width:${W0}px;height:${H0}px;`;
