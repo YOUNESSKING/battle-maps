@@ -17,6 +17,28 @@ SFX = json.load(open("tools/sfx_map.json"))          # [{"file", "tag", "phrase"
 FILE_CREDIT = {"washington.jpg": "George Washington, by Charles Willson Peale", "morgan.jpg": "Daniel Morgan, by Charles Willson Peale",
                "otho_williams.jpg": "Otho Holland Williams, by Charles Willson Peale", "tarleton.jpg": "Banastre Tarleton, by Joshua Reynolds (1782)",
                "cornwallis.jpg": "Charles, Earl Cornwallis, by Thomas Gainsborough (1783)", "greene.jpg": "Nathanael Greene, by Charles Willson Peale"}
+SHOTS = json.load(open("tools/archive_shots.json"))  # key -> list of quick cuts (3-6 s each) replacing one long still
+
+
+def archive_shots(shots, out, dur):
+    """Cut one archive paragraph into several short shots: stills ({file, crop, move, credit}) or map clips ({video, ss, dur})."""
+    fixed = sum(s["dur"] for s in shots if "video" in s)
+    n_img = sum(1 for s in shots if "video" not in s)
+    per = (dur - fixed) / max(n_img, 1)
+    parts = []
+    for j, s in enumerate(shots):
+        part = f"{out[:-4]}_{j}.mp4"
+        d = s["dur"] if "video" in s else per
+        if "video" in s:
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(s["ss"]), "-i", s["video"], "-t", f"{d:.3f}", "-vf", "fps=30", *enc, part], check=True)
+        else:
+            kenburns(f"{M}/{s['file']}", part, d, s.get("move", "in"), s.get("credit", FILE_CREDIT.get(s["file"], "")), s.get("quote"),
+                     s.get("crop"), fade_in=j == 0, fade_out=j == len(shots) - 1)
+        parts.append(part)
+    open(out + ".txt", "w").write("".join(f"file '{os.path.abspath(p)}'\n" for p in parts))
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", out + ".txt", "-t", f"{dur:.3f}", *enc, out], check=True)
+
+
 T = json.load(open("audio/timing.json"))
 P, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].split(":", 1)[1].strip()
@@ -38,7 +60,11 @@ while i < len(P) and not AUDIO_ONLY:
             if pick != a["file"][0]:
                 a["credit"] = FILE_CREDIT.get(pick, "")
             a["file"] = pick
-        if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime("tools/archive_map.json"):
+        stale = not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime("tools/archive_map.json")
+        sk = k + "_end" if (k + "_end") in SHOTS and i > len(P) / 2 else k  # "greene" is used twice
+        if stale and SHOTS.get(sk):
+            archive_shots(SHOTS[sk], out, dur)
+        elif stale:
             kenburns(f"{M}/{a['file']}", out, dur, a.get("move", "in"), a.get("credit", ""), a.get("quote"))
         segs.append(out); i += 1
         continue

@@ -60,8 +60,12 @@ def _quote_layer(quote):
     return lay
 
 
-def kenburns(src, out, dur, move="in", credit="", quote=None):
+def kenburns(src, out, dur, move="in", credit="", quote=None, crop=None, fade_in=True, fade_out=True):
+    """crop: (x0, y0, x1, y1) as fractions of the source image, for close-ups of one painting."""
     img = Image.open(src).convert("RGB")
+    if crop:
+        W0, H0 = img.size
+        img = img.crop((int(crop[0] * W0), int(crop[1] * H0), int(crop[2] * W0), int(crop[3] * H0)))
     if quote:  # portrait on the left half
         iw, ih = img.size
         r = H * 1.1 / ih
@@ -114,7 +118,7 @@ def kenburns(src, out, dur, move="in", credit="", quote=None):
             a = over_a[..., 3:4] / 255
             fr = fr * (1 - a) + over_a[..., :3] * a
         fr += grain_rng.normal(0, 5, (H // 4, W // 4, 1)).repeat(4, 0).repeat(4, 1)
-        fade = min(1, i / 9, (n - 1 - i) / 9) if dur > 2 else 1
+        fade = min(1, i / 9 if fade_in else 1, (n - 1 - i) / 9 if fade_out else 1) if dur > 2 else 1
         ff.stdin.write(np.clip(fr * (0.35 + 0.65 * fade), 0, 255).astype(np.uint8).tobytes())
     ff.stdin.close(); ff.wait()
 
