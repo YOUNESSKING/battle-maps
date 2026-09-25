@@ -196,8 +196,8 @@ B.caption("THE GUARDS CUT TO PIECES", T_CUT, G7 - 0.3, "carth");
 const T_TRAD = at("guilford-7", "According to tradition"), T_GRAPE = at("guilford-7", "fire grapeshot"), T_OWN = at("guilford-7", "his own Guardsmen");
 const T_WORK = at("guilford-7", "It worked"), T_BREAK = at("guilford-7", "The melee broke");
 B.move("art", G6 + 2.0, 6.0, 1700, 806);
-B.portraitStake({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1606.png", name: "CORNWALLIS", x: 1560, y: 1040, size: 1.3, t: T_TRAD + 0.3, until: G8 + 1.0 });
-B.label("BRITISH GUNS", 1700, 770, { cls: "tg", size: 26, t: T_TRAD + 1.0, until: G8, anchor: [-50, -100] });
+B.portraitStake({ img: "assets/media/cornwallis_head.png", flag: "assets/media/gb_flag_1606.png", name: "CORNWALLIS", x: 1500, y: 1150, size: 1.3, t: T_TRAD + 0.3, until: G8 + 1.0 });
+B.label("BRITISH GUNS", 1700, 832, { cls: "tg", size: 26, t: T_TRAD + 1.0, until: G8, anchor: [-50, 0] });
 // the cone
 const defs = svgEl("defs", {});
 defs.innerHTML = `<radialGradient id="gfGrape" cx="0" cy="0.5" r="1"><stop offset="0" stop-color="#fff3c4" stop-opacity="0.95"/><stop offset="0.5" stop-color="#ffb347" stop-opacity="0.55"/><stop offset="1" stop-color="#ff6a00" stop-opacity="0"/></radialGradient>`;
@@ -234,7 +234,7 @@ const rf = B.label("REEDY FORK ROAD", 2040, 380, { cls: "tg", size: 30, t: T_RET
 gsap.set(rf, { rotation: -56 });
 [["va4", 2345, 490], ["va5", 2275, 390], ["md1", 2205, 290], ["wash", 2140, 195]].forEach(([id, x, y], i) => B.move(id, T_RET + 0.4 + i * 0.3, 3.2, x, y));
 tl.to(B.units.md1.el.querySelector(".tag"), { autoAlpha: 0, duration: 0.4 }, T_RET + 0.4);
-fadeOut(chLab, T_RET - 0.4); fadeOut(ch, T_RET - 0.4);
+fadeOut(chLab, T_RET - 0.4);
 B.caption("AN ORDERLY RETREAT", T_RET + 0.3, T_FIELD - 0.2, "carth");
 // the British hold the field
 B.move("b23", T_FIELD, 3.5, 2120, 640); B.move("b33", T_FIELD + 0.2, 3.5, 2020, 700); B.move("b71", T_FIELD + 0.4, 3.5, 2200, 770);
