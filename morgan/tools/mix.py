@@ -1,9 +1,9 @@
-"""Final mix: build/picture.mp4 + voice + music bed (ducked under the voice) + SFX cues -> build/morgan-1080p.mp4 (+ 720p preview).
+"""Final mix: build/picture.mp4 + voice + music bed (ducked under the voice) + SFX cues -> build/morgan-1080p.mp4 (+ 720p preview with --preview).
 
 usage (from morgan/): python3 tools/mix.py
 Music: Kevin MacLeod (incompetech.com), CC BY — see assets/audio/CREDITS.md for the description lines.
 """
-import json, os, subprocess
+import json, os, subprocess, sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
@@ -83,6 +83,7 @@ os.makedirs("build", exist_ok=True)
 subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                 "-t", f"{DUR:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart",
                 "build/morgan-1080p.mp4"], check=True)
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/morgan-1080p.mp4", "-vf", "scale=1280:720", "-c:v", "libx264",
+if "--preview" in sys.argv:
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/morgan-1080p.mp4", "-vf", "scale=1280:720", "-c:v", "libx264",
                 "-crf", "30", "-preset", "medium", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", "build/morgan-720p-preview.mp4"], check=True)
 print("ok", DUR)

@@ -42,6 +42,7 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
+| **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload text: morgan/YOUTUBE.md |
 
 ## 3. What's next (in order)
 1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
@@ -87,6 +88,11 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - Background removal: rembg with isnet-general-use.onnx from GitHub releases works.
 - Tactical Genius's first minute (Ridgway video): 3 long map shots (31 s, 15 s, 19 s), a full-length commander photo cut-out with a bio card (big red name), and a portrait stake under a flag. No archive footage until 1:08.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
+
+- (Morgan) `morgan/` is now the newest skeleton: narrate.py records **per-sentence timing** (B.at is sentence-accurate), pronunciation fixes via the SAY dict, bake.py supports zoom 16 (upsampled z15) and no fake snow on low hills, assemble.py handles archive Ken Burns + captions and any scene order (SCENES dict), mix.py = music plan + SFX cues keyed to spoken phrases.
+- (Morgan) Scenes must be contiguous runs of MAP paragraphs (no ARCHIVE inside), otherwise render time is wasted.
+- (Morgan) 5 agents in parallel (4 Opus map agents + Sonnet) hit the 5-hour session limit mid-way; they resume cleanly with SendMessage after the reset. Overpass (OSM geometry) fails through the proxy; Nominatim and Natural Earth work.
+- (Morgan) Archive Ken Burns via zoompan at 4K is slow (~20 min for the full assembly on 4 cores).
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
