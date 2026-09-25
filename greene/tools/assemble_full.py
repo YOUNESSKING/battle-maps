@@ -42,8 +42,8 @@ while i < len(P):
         segs.append(out); i += 1
         continue
     j = i
-    while j < len(P) and kind(P[j]) == "MAP":
-        j += 1
+    while j < len(P) and kind(P[j]) == "MAP" and (j == i or not os.path.isdir(f"scenes/{key(P[j])}")):
+        j += 1  # a run ends at the next archive paragraph or where the next scene starts
     dur = starts[j] - starts[i]
     src = f"scenes/{k}/renders/{k}.mp4"
     if not os.path.exists(src):
