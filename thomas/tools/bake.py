@@ -47,14 +47,22 @@ def blur(a, passes=1):
 def main(name, lat, lon, z, exaggeration):
     cx, cy = world_px(lat, lon, z)
     x0, y0 = int(cx - W / 2), int(cy - H / 2)
-    tx0, ty0, tx1, ty1 = x0 // 256, y0 // 256, (x0 + W) // 256, (y0 + H) // 256
-    mosaic = np.vstack([np.hstack([tile(z, tx, ty) for tx in range(tx0, tx1 + 1)]) for ty in range(ty0, ty1 + 1)])
-    elev = mosaic[y0 - ty0 * 256:y0 - ty0 * 256 + H, x0 - tx0 * 256:x0 - tx0 * 256 + W]
+    # zoom > 15 (no tiles there): fetch z15 and upsample the elevation by 2^(z-15)
+    zt = min(z, 15); f = 2 ** (z - zt)
+    wx0, wy0, ww, wh = x0 / f, y0 / f, W / f, H / f
+    tx0, ty0, tx1, ty1 = int(wx0) // 256, int(wy0) // 256, int(wx0 + ww) // 256, int(wy0 + wh) // 256
+    mosaic = np.vstack([np.hstack([tile(zt, tx, ty) for tx in range(tx0, tx1 + 1)]) for ty in range(ty0, ty1 + 1)])
+    if f == 1:
+        elev = mosaic[y0 - ty0 * 256:y0 - ty0 * 256 + H, x0 - tx0 * 256:x0 - tx0 * 256 + W]
+    else:
+        ox, oy = wx0 - tx0 * 256, wy0 - ty0 * 256
+        im = Image.fromarray(mosaic.astype(np.float32), mode="F")
+        elev = np.asarray(im.transform((W, H), Image.AFFINE, (1 / f, 0, ox, 0, 1 / f, oy), resample=Image.BICUBIC), float)
 
     mpp = 156543.03392 * math.cos(math.radians(lat)) / 2 ** z
     land = elev > 0.5
     land_elev = np.where(land, elev, 0)
-    smooth = blur(land_elev)
+    smooth = blur(land_elev, 4 if z >= 15 else 1)  # extra smoothing on battlefields hides modern roads and cuttings
     gy, gx = np.gradient(smooth * exaggeration, mpp)
     slope, aspect = np.arctan(np.hypot(gx, gy)), np.arctan2(-gx, gy)
 
@@ -63,8 +71,10 @@ def main(name, lat, lon, z, exaggeration):
         return np.clip(np.sin(alt) * np.cos(slope) + np.cos(alt) * np.sin(slope) * np.cos(az - aspect), 0, 1)
 
     hs = (0.6 * shade(315, 40) + 0.25 * shade(270, 50) + 0.15 * shade(0, 60))[..., None]
-    hi = max(np.percentile(land_elev[land], 99.5) if land.any() else 1, 1)
-    t = np.clip(land_elev / hi, 0, 1)[..., None]
+    lo = np.percentile(land_elev[land], 1) if (land.any() and z >= 12) else 0
+    hi = max(np.percentile(land_elev[land], 99.5) if land.any() else 1, lo + 1)
+    top = 1.0 if hi > 2200 else 0.68  # snowy peak colour only for real high mountains
+    t = (np.clip((blur(land_elev, 4 if z >= 15 else 0) - lo) / (hi - lo), 0, 1) * top)[..., None]
     base = np.where(t < 0.7, LOW * (1 - t / 0.7) + HIGH * (t / 0.7), HIGH * (1 - (t - 0.7) / 0.3) + PEAK * ((t - 0.7) / 0.3))
     rgb = base * (0.45 + 0.75 * hs)
     rgb = base * 0.3 + rgb * 0.7

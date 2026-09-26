@@ -1,18 +1,18 @@
 {
  "name": "nash",
  "center": [
-  36.1,
+  36.115,
   -86.8
  ],
- "zoom": 13,
+ "zoom": 14,
  "origin_world_px": [
-  541489,
-  821991
+  1084418,
+  1644575
  ],
  "size": [
   2880,
   1620
  ],
- "meters_per_px": 15.44,
+ "meters_per_px": 7.72,
  "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
 }

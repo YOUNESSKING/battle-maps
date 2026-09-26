@@ -50,10 +50,17 @@
       return p[0] + off;
     };
     B.end = (key, off = 0) => T.paras[key][1] + off;
-    // B.at("trebia-4", "stream bed") = estimated moment that phrase is spoken (proportional to text position)
+    // B.at("trebia-4", "stream bed") = estimated moment that phrase is spoken (sentence timing + proportional position inside the sentence)
     B.at = (key, phrase, off = 0) => {
       const [s0, s1] = T.paras[key], text = T.text[key], i = text.indexOf(phrase);
       if (i < 0) throw new Error(`phrase "${phrase}" not in ${key}`);
+      const ss = T.sents && T.sents[key]; // [[charStart, t0, t1], ...] per sentence (scene-relative)
+      if (ss && ss.length) {
+        let k = 0;
+        while (k + 1 < ss.length && ss[k + 1][0] <= i) k++;
+        const c0 = ss[k][0], c1 = k + 1 < ss.length ? ss[k + 1][0] : text.length;
+        return ss[k][1] + (ss[k][2] - ss[k][1]) * ((i - c0) / Math.max(1, c1 - c0)) + off;
+      }
       return s0 + (s1 - s0) * (i / text.length) + off;
     };
 
@@ -234,11 +241,13 @@
       reveal(el, t, { from: { y: 30 }, to: { y: 0 } }, 0.6); if (until != null) out(el, until, 0.4);
       return el;
     };
-    // rowT (optional): absolute time for each row; default = staggered 1.1 s apart after t
-    B.method = (t, until, rows = ["REFUSE TO BE HURRIED", "HOLD THE GROUND THAT MATTERS", "STRIKE TO DESTROY"], rowT) => {
-      const el = screenEl(`<div class="inner">${rows.map((r) => `<div class="row">${r}</div>`).join("")}</div>`, "card method");
+    // B.method(t, until, { rowT: [t1, t2, t3], dim: [1, 2] }): rows appear at rowT (default staggered); rows listed in dim stay at 35 %
+    B.METHOD = ["REFUSE TO BE HURRIED", "HOLD THE GROUND THAT MATTERS", "STRIKE TO DESTROY"];
+    B.method = (t, until, o = {}) => {
+      const el = screenEl(`<div class="inner">${B.METHOD.map((r) => `<div class="row">${r}</div>`).join("")}</div>`, "card method");
       reveal(el, t, {}, 0.5);
-      el.querySelectorAll(".row").forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, rowT && rowT[i] != null ? rowT[i] : t + 0.2 + i * 1.1));
+      const rows = el.querySelectorAll(".row");
+      rows.forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: (o.dim || []).includes(i) ? 0.35 : 1, x: 0, duration: 0.5, ease: "power3.out" }, o.rowT ? o.rowT[i] : t + 0.2 + i * 1.1));
       if (until != null) out(el, until, 0.5);
       return el;
     };

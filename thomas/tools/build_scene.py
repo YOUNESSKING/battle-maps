@@ -19,7 +19,8 @@ t_end = paras[i1 + 1]["start"] if i1 + 1 < len(paras) else timing["duration"]
 dur = round(t_end - t0, 2)
 scene_t = {"abs_start": t0, "duration": dur,
            "paras": {key(p): [round(p["start"] - t0, 2), round(p["end"] - t0, 2)] for p in paras[i0:i1 + 1]},
-           "text": {key(p): p["text"] for p in paras[i0:i1 + 1]}}
+           "text": {key(p): p["text"] for p in paras[i0:i1 + 1]},
+           "sents": {key(p): [[c, round(a - t0, 2), round(b - t0, 2)] for c, a, b in p.get("sents", [])] for p in paras[i0:i1 + 1]}}
 
 out = f"{ROOT}/scenes/{name}"
 os.makedirs(f"{out}/assets", exist_ok=True)

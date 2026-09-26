@@ -7,9 +7,9 @@ VOICE = sys.argv[1] if len(sys.argv) > 1 else "am_michael"
 SPEED = 1.0
 SCRIPT = "/home/user/battle-maps/thomas/script.md"
 OUT = "/home/user/battle-maps/thomas/audio"
-GAP_PARA, GAP_SECTION = 0.6, 0.8
-# spoken respellings (screen text keeps the real spelling)
-PRON = {"Cleburne": "Clayburn", "Rossville": "Rossvil", "William T. Sherman": "William Sherman"}
+GAP_PARA, GAP_SECTION, GAP_SENT = 0.6, 0.8, 0.28
+# pronunciation fixes (spoken only; timing.json keeps the script text)
+SAY = {"Cleburne": "Clayburn", "Rossville": "Rossvil"}
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
 text = open(SCRIPT).read()
@@ -22,12 +22,24 @@ for si, sec in enumerate(sections):
             continue
         tag = re.match(r"^\[([^\]]*)\]", p).group(1)
         spoken = re.sub(r"^\[[^\]]*\]\s*", "", p).strip()
-        say = spoken
-        for a, b in PRON.items():
-            say = say.replace(a, b)
-        audio, sr = k.create(say, voice=VOICE, speed=SPEED, lang="en-us")
+        # one clip per sentence -> sentence-level timing for B.at()
+        sents, pos, parts, pt = [], 0, [], 0.0
+        for m in re.finditer(r"[^.!?]+[.!?]+[\"']?\s*", spoken + " "):
+            sent = m.group(0).strip()
+            if not sent:
+                continue
+            say = sent
+            for a, b in SAY.items():
+                say = say.replace(a, b)
+            a_, sr = k.create(say, voice=VOICE, speed=SPEED, lang="en-us")
+            if parts:
+                parts.append(np.zeros(int(sr * GAP_SENT), dtype=a_.dtype)); pt += GAP_SENT
+            sents.append([spoken.index(sent, pos), round(t + pt, 2), round(t + pt + len(a_) / sr, 2)])
+            pos = sents[-1][0] + len(sent)
+            parts.append(a_); pt += len(a_) / sr
+        audio = np.concatenate(parts)
         dur = len(audio) / sr
-        timing.append({"section": name, "tag": tag, "start": round(t, 2), "end": round(t + dur, 2), "text": spoken})
+        timing.append({"section": name, "tag": tag, "start": round(t, 2), "end": round(t + dur, 2), "text": spoken, "sents": sents})
         chunks += [audio, np.zeros(int(sr * GAP_PARA), dtype=audio.dtype)]
         t += dur + GAP_PARA
         print(f"{t:7.1f}s  {tag[:60]}", flush=True)

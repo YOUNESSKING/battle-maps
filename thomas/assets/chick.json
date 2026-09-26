@@ -1,18 +1,18 @@
 {
  "name": "chick",
  "center": [
-  34.925,
-  -85.255
+  34.928,
+  -85.262
  ],
- "zoom": 14,
+ "zoom": 15,
  "origin_world_px": [
-  1102419,
-  1661610
+  2206115,
+  3323946
  ],
  "size": [
   2880,
   1620
  ],
- "meters_per_px": 7.83,
+ "meters_per_px": 3.92,
  "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
 }
