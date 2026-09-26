@@ -7,7 +7,7 @@
 | Path | What |
 |---|---|
 | `setup.sh`, `.claude/settings.json` | automatic tool install at session start (runs in background; wait for `/tmp/battle-maps-setup.done`) |
-| `research/` | GEMINI_BRIEF_v2.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
+| `research/` | GEMINI_BRIEF_v3.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
 | `chipyongni/` | first test map (hyperframes.json is reused by build_scene.py) |
@@ -15,10 +15,13 @@
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from `ridgway/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png` (use ridgway's engine, it is the newest).
-2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
-3. Voice: copy `ridgway/tools/narrate.py`, point SCRIPT/OUT at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`.
-4. Bake terrain per battle (`tools/bake.py`), build map scenes (agents in parallel), fill archive slots, mix, render. Commit + push after each milestone.
+1. `mkdir <name>` and copy the skeleton from **`morgan/`** (newest): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/audio/` (the music library + SFX are reusable; add the CC BY lines from assets/audio/CREDITS.md to the description). In tools/narrate.py point SCRIPT/OUT at the new folder and extend the SAY pronunciation dict; in tools/assemble.py set the SCENES dict.
+2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,600-2,800 words (≈18 min at speed 1.0). Scenes = contiguous runs of MAP paragraphs; write `<name>/SCENES.md` (see morgan/SCENES.md).
+3. Voice: `cd tts && python3 ../<name>/tools/narrate.py am_michael` (per-sentence timing). Bake terrain: `tools/bake.py` (region z7-8, battlefield z15-16).
+4. **Image agent first (Sonnet)**, so portraits exist before maps start: archive/aNN.jpg + slots.json + assets/media cut-outs + flags.
+5. **Map agents** with the brief in `templates/MAP_AGENT_BRIEF.md` (fill in <GENERAL>, <name> and each agent's scene list). Model choice to save usage: **Sonnet for simple regional/overview scenes** (hook, campaign maps, ending), **Opus only for the main battlefield scenes**. Run at most 3 agents at once. The brief limits snapshot reviews (one contact sheet per round, max 3 rounds), which was the biggest usage cost in the Morgan run.
+6. `python3 tools/assemble.py && python3 tools/mix.py` → build/<name>-1080p.mp4 (edit the MUSIC plan and SFX cues in mix.py). Write <name>/YOUTUBE.md. Commit + push after each milestone.
+To stay inside one 5-hour usage window, split big videos over two sessions: (1) script, voice, terrain, images, maps for hook + move 1; (2) moves 2-3, ending, assembly, mix.
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
 ---
@@ -42,6 +45,7 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
+| **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload text: morgan/YOUTUBE.md |
 
 ## 3. What's next (in order)
 1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
@@ -87,6 +91,35 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - Background removal: rembg with isnet-general-use.onnx from GitHub releases works.
 - Tactical Genius's first minute (Ridgway video): 3 long map shots (31 s, 15 s, 19 s), a full-length commander photo cut-out with a bio card (big red name), and a portrait stake under a flag. No archive footage until 1:08.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
+
+- (Morgan) `morgan/` is now the newest skeleton: narrate.py records **per-sentence timing** (B.at is sentence-accurate), pronunciation fixes via the SAY dict, bake.py supports zoom 16 (upsampled z15) and no fake snow on low hills, assemble.py handles archive Ken Burns + captions and any scene order (SCENES dict), mix.py = music plan + SFX cues keyed to spoken phrases.
+- (Morgan) Scenes must be contiguous runs of MAP paragraphs (no ARCHIVE inside), otherwise render time is wasted.
+- (Morgan) 5 agents in parallel (4 Opus map agents + Sonnet) hit the 5-hour session limit mid-way; they resume cleanly with SendMessage after the reset. Overpass (OSM geometry) fails through the proxy; Nominatim and Natural Earth work.
+- (Morgan) Archive Ken Burns via zoompan at 4K is slow (~20 min for the full assembly on 4 cores).
+
+## 8. Faster and cheaper without losing quality (lessons from the Morgan video)
+Morgan took ~2 h of real work (plus 2 h 15 min stuck on the usage limit). With the items below, a video should take ~1.5-2 h.
+**Already built in (templates/MAP_AGENT_BRIEF.md, morgan/tools):**
+1. Visual review via ONE contact sheet per round (tile all snapshots into one image), max 3 rounds per scene. Opening snapshots one by one was the biggest usage cost.
+2. Right model for the job: Sonnet for simple regional/overview scenes, Opus only for the main battlefield scenes. Max 3 agents at once.
+3. Image agent BEFORE map agents, so portraits exist at build time (no waiting, no rebuild + re-render).
+4. Per-sentence narration timing (narrate.py) so B.at() lands on the right word: fewer fix-and-re-render rounds and better sync.
+5. Scenes = contiguous runs of MAP paragraphs, so no render time is wasted behind archive slots.
+6. Reuse: bake.py, assemble.py, mix.py, the music library (licences already checked) and SFX, the SAY pronunciation dict.
+7. Check pronunciation without listening: `k.tokenizer.phonemize(word, "en-us")` in Kokoro; respell in SAY before recording.
+8. No 720p preview; archive zooms at 1.5x internal resolution (~10 min instead of 21); deliver the master through a file host (gofile.io: `curl -F "file=@X.mp4" https://upload.gofile.io/uploadfile`, then check the md5 in the reply) because the chat limit is 30 MB. The link is public to anyone who has it; gofile deletes files after a period without downloads.
+9. Network: Overpass (OSM geometry) fails through the proxy; Nominatim (places) and Natural Earth 10m (rivers, lakes) work.
+**Still to do (not built yet):**
+10. Promote the helpers the agents wrote locally (volley/muzzle-flash line, range ring, officer target + cross-out, glowing numbered marker, encirclement ring, stat rows timed to speech, water overlays) from morgan/scenes-src/*.js into lib/battle.js, so agents stop re-writing them and every video looks consistent.
+11. A render queue (one `hyperframes render` at a time). 4 parallel renders on 4 cores were no faster overall and one crashed ("FFmpeg cannot start") and had to be re-run.
+**Owner feedback on the Morgan video (fixed in morgan/tools, keep for every video):**
+14. Music was too loud: the bed was normalised to -21 LUFS, as loud as the Kokoro voice (~-24 LUFS). mix.py now sets `MUSIC_LUFS = -41` (~17 dB under the narration; -37 was still judged a bit loud) plus a gentle sidechain duck, and `SFX_DB = -3` trims all sound effects a notch. Never set the music bed within 15 dB of the voice.
+15. Archive images stayed on screen too long without change (one still with a slow 13 % zoom for 10-25 s). assemble.py now cuts every archive slot into ~6 s shots (full view → push-in on the main point → other images / details, stronger moves, 0.4 s dissolves). Each slot needs 2-3 images, and slots.json lists points of interest per image (`{"slot", "images": [{"file", "title", "points": [[fx, fy], ...]}]}`) — ask the image agent for this from the start. Rebuild only the archive slots with `python3 tools/assemble.py --archive`.
+
+**Research accuracy:**
+12. Use research/GEMINI_BRIEF_v3.md: it makes Gemini cite a source for every claim, label claims VERIFIED / SINGLE SOURCE / TRADITION / DISPUTED, and end with a fact-check list. The v2 Morgan research had errors I had to fix: Guilford called a "strategic victory" (it was a British tactical win), the Cowpens Continental withdrawal described as planned (it was a misunderstood order), the "devil of a whipping" letter given the wrong recipient, an unsourced "still taught at West Point", and a Morgan quote to Greene paraphrased inside quotation marks.
+**Sessions:**
+13. One fresh session per video. Each step in a long conversation costs more than the last.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
