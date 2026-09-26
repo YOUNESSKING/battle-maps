@@ -145,6 +145,8 @@ const stake = (o) => { // portrait stake if the photo exists, else a scaled plai
   }
   const el = B.plaque({ name: o.name, role: o.role, side: arg ? "rome" : "carth", x: o.x, y: o.y, t: o.t, until: o.until });
   el.classList.add("gg-plq");
+  const flag = arg ? "arg_flag.png" : "uk_flag.png";
+  if (HAVE[flag]) el.querySelector(".board").insertAdjacentHTML("afterbegin", `<img src="assets/media/${flag}" alt="" style="float:right;width:54px;height:32px;margin:2px 0 4px 10px;box-shadow:0 2px 4px rgba(0,0,0,0.4)">`);
   Object.assign(el.style, { scale: String(o.plqScale || 0.4), transformOrigin: "19px 240px" });
   return el;
 };
@@ -235,9 +237,9 @@ B.camera([
   [P10 + 3.5, 1360, 545, 2.0],
   [at("move2-10", "B Company swept"), 1360, 560, 2.0],
   [P11 + 0.5, 1440, 700, 1.5],
-  [P11 + 5, 1450, 870, 1.4],
-  [P12, 1450, 870, 1.4],
-  [END, 1460, 850, 1.55],
+  [P11 + 5, 1450, 900, 1.3],
+  [P12, 1450, 900, 1.3],
+  [END, 1460, 880, 1.45],
 ]);
 
 // ---------- static map furniture ----------
