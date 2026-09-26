@@ -1,92 +1,480 @@
 [
-  {
-    "slot": "a01",
+ {
+  "slot": "a01",
+  "title": "Banastre Tarleton (Sir Joshua Reynolds, 1782)",
+  "images": [
+   {
+    "file": "a01.jpg",
     "title": "Banastre Tarleton (Sir Joshua Reynolds, 1782)",
-    "images": [
-      {"file": "a01.jpg", "title": "Banastre Tarleton (Sir Joshua Reynolds, 1782)", "points": [[0.55, 0.13], [0.45, 0.55], [0.15, 0.4]]},
-      {"file": "a01_b.jpg", "title": "\"Buford's Defeat\" battlefield interpretive marker (Waxhaws, 1780)", "points": [[0.5, 0.12], [0.35, 0.42], [0.42, 0.85]]}
+    "points": [
+     [
+      0.53,
+      0.27
+     ],
+     [
+      0.45,
+      0.55
+     ],
+     [
+      0.15,
+      0.4
+     ]
     ]
-  },
-  {
-    "slot": "a02",
+   },
+   {
+    "file": "a01_b.jpg",
+    "title": "\"Buford's Defeat\" battlefield interpretive marker (Waxhaws, 1780)",
+    "points": [
+     [
+      0.5,
+      0.12
+     ],
+     [
+      0.35,
+      0.42
+     ],
+     [
+      0.42,
+      0.85
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a02",
+  "title": "The Battle of Cowpens (William Ranney, 1845)",
+  "images": [
+   {
+    "file": "a02.jpg",
     "title": "The Battle of Cowpens (William Ranney, 1845)",
-    "images": [
-      {"file": "a02.jpg", "title": "The Battle of Cowpens (William Ranney, 1845)", "points": [[0.45, 0.45], [0.75, 0.35], [0.15, 0.3]]},
-      {"file": "a02_b.jpg", "title": "Battle of the Cowpens, schematic troop-movement map", "points": [[0.5, 0.08], [0.45, 0.45], [0.7, 0.85]]},
-      {"file": "a02_c.jpg", "title": "The Battle of Cowpens (Frederick Kemmelmeyer, Yale University Art Gallery)", "points": [[0.45, 0.35], [0.75, 0.45], [0.15, 0.7]]}
+    "points": [
+     [
+      0.45,
+      0.45
+     ],
+     [
+      0.75,
+      0.35
+     ],
+     [
+      0.15,
+      0.3
+     ]
     ]
-  },
-  {
-    "slot": "a03",
-    "title": "General John Burgoyne (Sir Joshua Reynolds, c. 1766)",
-    "images": [
-      {"file": "a03.jpg", "title": "General John Burgoyne (Sir Joshua Reynolds, c. 1766)", "points": [[0.56, 0.18], [0.55, 0.55], [0.2, 0.15]]},
-      {"file": "a03_b.png", "title": "General John Burgoyne, preparatory study (John Graham, c. 1784)", "points": [[0.42, 0.22], [0.4, 0.5], [0.65, 0.6]]}
+   },
+   {
+    "file": "a02_b.jpg",
+    "title": "Battle of the Cowpens, schematic troop-movement map",
+    "points": [
+     [
+      0.5,
+      0.08
+     ],
+     [
+      0.45,
+      0.45
+     ],
+     [
+      0.7,
+      0.85
+     ]
     ]
-  },
-  {
-    "slot": "a04",
-    "title": "Surrender of General Burgoyne (John Trumbull, U.S. Capitol Rotunda)",
-    "images": [
-      {"file": "a04.jpg", "title": "Surrender of General Burgoyne (John Trumbull, U.S. Capitol Rotunda)", "points": [[0.5, 0.45], [0.62, 0.15], [0.15, 0.55]]},
-      {"file": "a04_b.jpg", "title": "The Burial of General Simon Fraser, after Saratoga (John Graham, after; National Army Museum)", "points": [[0.35, 0.55], [0.75, 0.35], [0.08, 0.65]]}
-    ]
-  },
-  {
-    "slot": "a05",
-    "title": "Daniel Morgan (18th-century engraved portrait, NARA)",
-    "images": [
-      {"file": "a05.jpg", "title": "Daniel Morgan (18th-century engraved portrait, NARA)", "points": [[0.62, 0.1], [0.35, 0.55], [0.55, 0.85]]},
-      {"file": "a05_b.jpg", "title": "Statue of General Daniel Morgan (1881), Spartanburg, SC", "points": [[0.45, 0.35], [0.35, 0.6], [0.5, 0.88]]}
-    ]
-  },
-  {
-    "slot": "a06",
-    "title": "The March to Valley Forge (William B. T. Trego, 1883)",
-    "images": [
-      {"file": "a06.jpg", "title": "The March to Valley Forge (William B. T. Trego, 1883)", "points": [[0.35, 0.35], [0.15, 0.55], [0.8, 0.55]]},
-      {"file": "a06_b.jpg", "title": "Washington at Valley Forge, winter encampment (American 19th-century painting, NGA)", "points": [[0.25, 0.55], [0.4, 0.4], [0.6, 0.75]]}
-    ]
-  },
-  {
-    "slot": "a07",
-    "title": "Congressional Gold Medal for Daniel Morgan, Cowpens (Augustin Dupre, 1789 / Met)",
-    "images": [
-      {"file": "a07.jpg", "title": "Congressional Gold Medal for Daniel Morgan, Cowpens — obverse (Augustin Dupre, 1789 / Met)", "points": [[0.5, 0.45], [0.35, 0.4], [0.5, 0.85]]},
-      {"file": "a07_b.jpg", "title": "Congressional Gold Medal for Daniel Morgan, Cowpens — reverse, battle scene (Augustin Dupre, 1789 / Met)", "points": [[0.5, 0.5], [0.5, 0.15]]}
-    ]
-  },
-  {
-    "slot": "a08",
-    "title": "Nathanael Greene (Charles Willson Peale)",
-    "images": [
-      {"file": "a08.jpg", "title": "Nathanael Greene (Charles Willson Peale)", "points": [[0.5, 0.35], [0.35, 0.65]]},
-      {"file": "a08_b.jpg", "title": "Nathanael Greene, full-length mezzotint (after Charles Willson Peale, by Valentine Green)", "points": [[0.42, 0.25], [0.42, 0.55], [0.75, 0.65]]}
-    ]
-  },
-  {
-    "slot": "a09",
-    "title": "Revolutionary War-era manuscript letter to Gen. Nathanael Greene (Internet Archive)",
-    "images": [
-      {"file": "a09.jpg", "title": "Revolutionary War-era manuscript letter to Gen. Nathanael Greene (Internet Archive)", "points": [[0.5, 0.4], [0.4, 0.08], [0.35, 0.9]]},
-      {"file": "a09_b.jpg", "title": "Nathanael Greene to General Andrew Pickens, 3 June 1781 (manuscript letter)", "points": [[0.2, 0.08], [0.2, 0.85]]}
-    ]
-  },
-  {
-    "slot": "a10",
-    "title": "Surrender of Lord Cornwallis (John Trumbull, U.S. Capitol Rotunda)",
-    "images": [
-      {"file": "a10.jpg", "title": "Surrender of Lord Cornwallis (John Trumbull, U.S. Capitol Rotunda)", "points": [[0.5, 0.4], [0.25, 0.12], [0.75, 0.12]]},
-      {"file": "a10_b.jpg", "title": "The Siege of Yorktown, 1781 (Auguste Couder)", "points": [[0.55, 0.5], [0.2, 0.35]]},
-      {"file": "a10_c.jpg", "title": "Charles Earl Cornwallis, engraved portrait, 1791", "points": [[0.5, 0.28], [0.5, 0.75]]}
-    ]
-  },
-  {
-    "slot": "a11",
+   },
+   {
+    "file": "a02_c.jpg",
     "title": "The Battle of Cowpens (Frederick Kemmelmeyer, Yale University Art Gallery)",
-    "images": [
-      {"file": "a11.jpg", "title": "The Battle of Cowpens (Frederick Kemmelmeyer, Yale University Art Gallery)", "points": [[0.45, 0.35], [0.75, 0.45], [0.15, 0.7]]},
-      {"file": "a11_b.jpg", "title": "The Battle of Cowpens (William Ranney, 1845)", "points": [[0.45, 0.45], [0.75, 0.35], [0.15, 0.3]]}
+    "points": [
+     [
+      0.45,
+      0.35
+     ],
+     [
+      0.75,
+      0.45
+     ],
+     [
+      0.15,
+      0.7
+     ]
     ]
-  }
+   }
+  ]
+ },
+ {
+  "slot": "a03",
+  "title": "General John Burgoyne (Sir Joshua Reynolds, c. 1766)",
+  "images": [
+   {
+    "file": "a03.jpg",
+    "title": "General John Burgoyne (Sir Joshua Reynolds, c. 1766)",
+    "points": [
+     [
+      0.56,
+      0.18
+     ],
+     [
+      0.55,
+      0.55
+     ],
+     [
+      0.2,
+      0.15
+     ]
+    ]
+   },
+   {
+    "file": "a03_b.png",
+    "title": "General John Burgoyne, preparatory study (John Graham, c. 1784)",
+    "points": [
+     [
+      0.42,
+      0.22
+     ],
+     [
+      0.4,
+      0.5
+     ],
+     [
+      0.65,
+      0.6
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a04",
+  "title": "Surrender of General Burgoyne (John Trumbull, U.S. Capitol Rotunda)",
+  "images": [
+   {
+    "file": "a04.jpg",
+    "title": "Surrender of General Burgoyne (John Trumbull, U.S. Capitol Rotunda)",
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.62,
+      0.15
+     ],
+     [
+      0.15,
+      0.55
+     ]
+    ]
+   },
+   {
+    "file": "a04_b.jpg",
+    "title": "The Burial of General Simon Fraser, after Saratoga (John Graham, after; National Army Museum)",
+    "points": [
+     [
+      0.35,
+      0.55
+     ],
+     [
+      0.75,
+      0.35
+     ],
+     [
+      0.08,
+      0.65
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a05",
+  "title": "Daniel Morgan (18th-century engraved portrait, NARA)",
+  "images": [
+   {
+    "file": "a05.jpg",
+    "title": "Daniel Morgan (18th-century engraved portrait, NARA)",
+    "points": [
+     [
+      0.62,
+      0.1
+     ],
+     [
+      0.35,
+      0.55
+     ],
+     [
+      0.55,
+      0.85
+     ]
+    ]
+   },
+   {
+    "file": "a05_b.jpg",
+    "title": "Statue of General Daniel Morgan (1881), Spartanburg, SC",
+    "points": [
+     [
+      0.45,
+      0.35
+     ],
+     [
+      0.35,
+      0.6
+     ],
+     [
+      0.5,
+      0.88
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a06",
+  "title": "The March to Valley Forge (William B. T. Trego, 1883)",
+  "images": [
+   {
+    "file": "a06.jpg",
+    "title": "The March to Valley Forge (William B. T. Trego, 1883)",
+    "points": [
+     [
+      0.35,
+      0.35
+     ],
+     [
+      0.15,
+      0.55
+     ],
+     [
+      0.8,
+      0.55
+     ]
+    ]
+   },
+   {
+    "file": "a06_b.jpg",
+    "title": "Washington at Valley Forge, winter encampment (American 19th-century painting, NGA)",
+    "points": [
+     [
+      0.25,
+      0.55
+     ],
+     [
+      0.4,
+      0.4
+     ],
+     [
+      0.6,
+      0.75
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a07",
+  "title": "Congressional Gold Medal for Daniel Morgan, Cowpens (Augustin Dupre, 1789 / Met)",
+  "images": [
+   {
+    "file": "a07.jpg",
+    "title": "Congressional Gold Medal for Daniel Morgan, Cowpens \u2014 obverse (Augustin Dupre, 1789 / Met)",
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.35,
+      0.4
+     ],
+     [
+      0.5,
+      0.85
+     ]
+    ]
+   },
+   {
+    "file": "a07_b.jpg",
+    "title": "Congressional Gold Medal for Daniel Morgan, Cowpens \u2014 reverse, battle scene (Augustin Dupre, 1789 / Met)",
+    "points": [
+     [
+      0.5,
+      0.5
+     ],
+     [
+      0.5,
+      0.15
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a08",
+  "title": "Nathanael Greene (Charles Willson Peale)",
+  "images": [
+   {
+    "file": "a08.jpg",
+    "title": "Nathanael Greene (Charles Willson Peale)",
+    "points": [
+     [
+      0.5,
+      0.35
+     ],
+     [
+      0.35,
+      0.65
+     ]
+    ]
+   },
+   {
+    "file": "a08_b.jpg",
+    "title": "Nathanael Greene, full-length mezzotint (after Charles Willson Peale, by Valentine Green)",
+    "points": [
+     [
+      0.42,
+      0.25
+     ],
+     [
+      0.42,
+      0.55
+     ],
+     [
+      0.75,
+      0.65
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a09",
+  "title": "Revolutionary War-era manuscript letter to Gen. Nathanael Greene (Internet Archive)",
+  "images": [
+   {
+    "file": "a09.jpg",
+    "title": "Revolutionary War-era manuscript letter to Gen. Nathanael Greene (Internet Archive)",
+    "points": [
+     [
+      0.5,
+      0.4
+     ],
+     [
+      0.4,
+      0.08
+     ],
+     [
+      0.35,
+      0.9
+     ]
+    ]
+   },
+   {
+    "file": "a09_b.jpg",
+    "title": "Nathanael Greene to General Andrew Pickens, 3 June 1781 (manuscript letter)",
+    "points": [
+     [
+      0.2,
+      0.08
+     ],
+     [
+      0.2,
+      0.85
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a10",
+  "title": "Surrender of Lord Cornwallis (John Trumbull, U.S. Capitol Rotunda)",
+  "images": [
+   {
+    "file": "a10.jpg",
+    "title": "Surrender of Lord Cornwallis (John Trumbull, U.S. Capitol Rotunda)",
+    "points": [
+     [
+      0.5,
+      0.4
+     ],
+     [
+      0.25,
+      0.12
+     ],
+     [
+      0.75,
+      0.12
+     ]
+    ]
+   },
+   {
+    "file": "a10_b.jpg",
+    "title": "The Siege of Yorktown, 1781 (Auguste Couder)",
+    "points": [
+     [
+      0.55,
+      0.5
+     ],
+     [
+      0.2,
+      0.35
+     ]
+    ]
+   },
+   {
+    "file": "a10_c.jpg",
+    "title": "Charles Earl Cornwallis, engraved portrait, 1791",
+    "points": [
+     [
+      0.5,
+      0.28
+     ],
+     [
+      0.5,
+      0.75
+     ]
+    ]
+   }
+  ]
+ },
+ {
+  "slot": "a11",
+  "title": "The Battle of Cowpens (Frederick Kemmelmeyer, Yale University Art Gallery)",
+  "images": [
+   {
+    "file": "a11.jpg",
+    "title": "The Battle of Cowpens (Frederick Kemmelmeyer, Yale University Art Gallery)",
+    "points": [
+     [
+      0.45,
+      0.35
+     ],
+     [
+      0.75,
+      0.45
+     ],
+     [
+      0.15,
+      0.7
+     ]
+    ]
+   },
+   {
+    "file": "a11_b.jpg",
+    "title": "The Battle of Cowpens (William Ranney, 1845)",
+    "points": [
+     [
+      0.45,
+      0.45
+     ],
+     [
+      0.75,
+      0.35
+     ],
+     [
+      0.15,
+      0.3
+     ]
+    ]
+   }
+  ]
+ }
 ]
