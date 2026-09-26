@@ -29,3 +29,11 @@ Music: "Fife and Drum" Kevin MacLeod (incompetech.com), Licensed under Creative 
 Music: "Heavy Heart" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
 Music: "Ready Aim Fire" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 4.0 License, http://creativecommons.org/licenses/by/4.0/
 Music: "Undaunted" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
+
+
+## Tags (paste into YouTube's tag box)
+Daniel Morgan, Battle of Cowpens, Cowpens 1781, American Revolution, Revolutionary War, Saratoga, Battle of Saratoga, Guilford Courthouse, Banastre Tarleton, Nathanael Greene, Cornwallis, double envelopment, military history, military tactics, tactical genius, battle maps, animated battle map, American Revolutionary War documentary, Old Wagoner, Timothy Murphy, Continental Army, British Army 1781, Southern Campaign, history documentary, top 3 tactical moves
+
+## Alternative titles
+- The Wagon Driver Who Destroyed Britain's Best in 1 Hour | Daniel Morgan
+- How Daniel Morgan Destroyed Tarleton's Legion in Under an Hour | Cowpens 1781
