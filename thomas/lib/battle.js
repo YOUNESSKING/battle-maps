@@ -377,6 +377,11 @@
         <div class="face" style="left:${cx - faceD / 2}px;top:${fpH}px;width:${faceD}px;height:${faceD}px;border-width:${4 * s}px"><img src="${o.img}" alt=""></div>
         ${o.name ? `<div class="nm" style="top:${fpH + faceD + 8 * s}px;font-size:${15 * s}px">${o.name}</div>` : ""}`;
       pins.appendChild(el);
+      if (o.side === "rome") { // Confederate/enemy commander: red ring + red name tag
+        const f = el.querySelector(".face"), n = el.querySelector(".nm");
+        if (f) f.style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
+        if (n) n.style.background = "#c4121f";
+      }
       hide(el);
       tl.fromTo(el, { autoAlpha: 0, y: -160 * s }, { autoAlpha: 1, y: 0, duration: 0.9, ease: "bounce.out" }, o.t);
       if (o.until != null) out(el, o.until);
@@ -408,6 +413,304 @@
       const box = document.getElementById("date");
       tl.to(box, { autoAlpha: 0, duration: 0.5 }, t);
       if (back != null) tl.to(box, { autoAlpha: 1, duration: 0.5 }, back);
+    };
+
+    // =====================================================================================================
+    // DETAILED MAP STYLE (owner-approved, HANDOVER §9; reference scene scenes-src/demo3.js)
+    // =====================================================================================================
+    const SIDE = { carth: "#1f4fc4", rome: "#c4121f" };
+    const SIDE_A = (side, a) => (side === "rome" ? `rgba(196,18,31,${a})` : `rgba(31,79,196,${a})`);
+    const OVL = svg, PINS = pins, SCENE = scene;
+
+    // ---- screen-space overlay element (HUD), hidden until revealed ----
+    B.hud = (html, css) => {
+      const e = document.createElement("div"); e.innerHTML = html; e.style.cssText = "position:absolute;" + css;
+      SCENE.insertBefore(e, document.getElementById("credit")); gsap.set(e, { autoAlpha: 0 }); return e;
+    };
+
+    // ---- 3D tilt: the map leans back like a sand table. keys = [[t, rotationX, scale, dur], ...] ----
+    B.tilt = (keys) => {
+      if (!B._tilt) {
+        const tw = document.createElement("div");
+        tw.style.cssText = "position:absolute;inset:0;transform-origin:50% 62%;";
+        SCENE.style.background = "#cdbf98"; // parchment behind the tilted plane: never black edges
+        SCENE.insertBefore(tw, world); tw.appendChild(world);
+        gsap.set(tw, { transformPerspective: 1700, rotationX: 0, scale: 1 });
+        B._tilt = tw;
+      }
+      keys.forEach(([t, rx, sc, dur]) => tl.to(B._tilt, { rotationX: rx, scale: sc, duration: dur || 3, ease: "sine.inOut" }, t));
+    };
+
+    // ---- battlefield ground: tree-symbol woods with farm fields cut out, ploughed fields, farmhouses ----
+    // fields: [{ name, rect: [x, y, w, h], label?: "KELLY FIELD" }]; o.density (px between trees, default 36)
+    B.terrain = (fields, o = {}) => {
+      let rs = o.seed || 20; const rnd = () => { rs = (rs * 16807) % 2147483647; return rs / 2147483647; };
+      const tree = (cx, cy, r, op) => `<g opacity="${op}"><ellipse cx="${cx}" cy="${cy + r * 1.05}" rx="${r * 0.9}" ry="${r * 0.3}" fill="rgba(40,36,20,0.22)"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="#6f7f48"/><circle cx="${cx - r * 0.3}" cy="${cy - r * 0.3}" r="${r * 0.45}" fill="#8c9a5c"/><path d="M${cx - r} ${cy} a${r} ${r} 0 0 0 ${2 * r} 0" fill="none" stroke="#3d4526" stroke-width="1.6"/></g>`;
+      const dx = o.density || 38, dy = Math.round(dx * 0.9);
+      let trees = "";
+      if (o.woods !== false) for (let y = 0; y < 1640; y += dy) for (let x = (y / dy) % 2 ? 0 : dx / 2; x < 2900; x += dx) trees += tree(x + rnd() * 14 - 7, y + rnd() * 12 - 6, 7 + rnd() * 4, 0.38 + rnd() * 0.25);
+      OVL.insertAdjacentHTML("afterbegin", `<defs>
+        <mask id="clear"><rect width="2880" height="1620" fill="#fff"/>${fields.map((f) => { const [x, y, w, h] = f.rect; return `<rect x="${x - 6}" y="${y - 6}" width="${w + 12}" height="${h + 12}" rx="22" fill="#000"/>`; }).join("")}</mask>
+        <pattern id="furrow" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><rect width="14" height="14" fill="#e6d49c"/><line x1="0" y1="0" x2="0" y2="14" stroke="#b9a266" stroke-width="3"/></pattern></defs>
+        <g id="woods" mask="url(#clear)">${trees}</g>
+        <g id="fields">${fields.map((f) => { const [x, y, w, h] = f.rect; return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="url(#furrow)" opacity="0.8" stroke="#6b5530" stroke-width="3.5" stroke-dasharray="3 7"/>`; }).join("")}</g>`);
+      fields.forEach((f) => {
+        const [x, y, w, h] = f.rect, hx = x + w * 0.5, hy = y + h * 0.35;
+        if (f.house !== false) PINS.insertAdjacentHTML("beforeend", `<div style="position:absolute;left:${hx - 10}px;top:${hy - 10}px;width:20px;height:16px;background:#5a3d22;border:2.5px solid #f3eee2;clip-path:polygon(50% 0,100% 40%,100% 100%,0 100%,0 40%)"></div>`);
+        if (f.name) B.label(f.label || f.name, hx, y + h - 14, { cls: "tg", size: o.labelSize || 17, t: o.t || 0.3, anchor: [-50, -50] });
+      });
+    };
+    // period road in ink (dash for tracks)
+    B.road = (pts, w = 10, dash) => {
+      const d = "M " + pts.map((p) => p.join(" ")).join(" L ");
+      const f = document.getElementById("fields");
+      const g = document.createElementNS(NS, "g");
+      g.innerHTML = `<path d="${d}" fill="none" stroke="#4d3520" stroke-width="${w + 7}" stroke-linejoin="round" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#efdfb4" stroke-width="${w}" ${dash ? `stroke-dasharray="${dash}"` : ""} stroke-linejoin="round" stroke-linecap="round"/>`;
+      if (f) f.after(g); else OVL.appendChild(g);
+      return g;
+    };
+
+    // ---- territory control: ground tinted by side; on a retreat the loser's colour FADES, then the winner's spreads ----
+    // line = polyline from top edge to bottom edge (extend 20 px past the map); o.west = side holding the ground west (left) of it
+    B.territory = (line, o = {}) => {
+      const west = o.west || "carth", east = west === "carth" ? "rome" : "carth", a = o.alpha || 0.2;
+      const curW = line.map((p) => p.slice()), curE = line.map((p) => p.slice()), L = line.length - 1;
+      const g = document.createElementNS(NS, "g");
+      g.innerHTML = `<path class="zg"/><path class="zw" fill="${SIDE_A(west, a)}"/><path class="ze" fill="${SIDE_A(east, a)}"/><path class="zl" fill="none" stroke="#f7f3ea" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.8"/>`;
+      const f = document.getElementById("fields"); if (f) f.after(g); else OVL.insertBefore(g, OVL.firstChild);
+      const zd = (pts) => "M " + pts.map((p) => p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" L ") + " Z";
+      const draw = () => {
+        g.querySelector(".zw").setAttribute("d", zd([[-20, -20], ...curW, [-20, 1640]]));
+        g.querySelector(".ze").setAttribute("d", zd([[curE[0][0], -20], [2900, -20], [2900, 1640], [curE[L][0], 1640], ...curE.slice().reverse()]));
+        g.querySelector(".zl").setAttribute("d", "M " + curE.map((p) => p.join(" ")).join(" L "));
+      };
+      draw(); gsap.set(g, { autoAlpha: 0 }); tl.to(g, { autoAlpha: 1, duration: 1.5 }, o.t || 1);
+      if (o.labels) o.labels.forEach(([txt, x, y, until]) => B.label(txt, x, y, { cls: "tg", size: 30, t: (o.t || 1) + 0.6, until, anchor: [-50, -50] }));
+      const api = { el: g, line: line.map((p) => p.slice()) };
+      // r = { to, loser, tFade, tSpread, spreadDur, lost: [text, x, y, until] }
+      api.retreat = (r) => {
+        const from = api.line.map((p) => p.slice()), to = r.to; api.line = to.map((p) => p.slice());
+        const ghost = g.querySelector(".zg");
+        const i0 = from.findIndex((p, i) => p[0] !== to[i][0] || p[1] !== to[i][1]), s = Math.max(0, i0 - 1);
+        const gh = document.createElementNS(NS, "path");
+        gh.setAttribute("d", zd([...from.slice(s), ...to.slice(s).reverse()])); gh.setAttribute("fill", SIDE_A(r.loser, a)); ghost.after(gh);
+        gsap.set(gh, { opacity: 0 });
+        const lerp = (arr, k) => arr.forEach((p, i) => { p[0] = from[i][0] + (to[i][0] - from[i][0]) * k; p[1] = from[i][1] + (to[i][1] - from[i][1]) * k; });
+        const loserArr = r.loser === west ? curW : curE, winnerArr = r.loser === west ? curE : curW;
+        const k1 = { k: 0 }, k2 = { k: 0 };
+        tl.set(gh, { opacity: 1 }, r.tFade);
+        tl.to(k1, { k: 1, duration: 0.6, onUpdate: () => { lerp(loserArr, k1.k); draw(); } }, r.tFade);
+        tl.to(gh, { opacity: 0, duration: r.fadeDur || 5, ease: "sine.inOut" }, r.tFade + 0.4);
+        tl.to(k2, { k: 1, duration: r.spreadDur || 7, ease: "power1.inOut", onUpdate: () => { lerp(winnerArr, k2.k); draw(); } }, r.tSpread);
+        if (r.lost) {
+          const lostP = document.createElementNS(NS, "path");
+          lostP.setAttribute("d", gh.getAttribute("d")); lostP.setAttribute("fill", SIDE_A(r.loser === "carth" ? "rome" : "carth", 0.35));
+          lostP.setAttribute("stroke", SIDE[r.loser === "carth" ? "rome" : "carth"]); lostP.setAttribute("stroke-width", "4");
+          g.after(lostP); gsap.set(lostP, { autoAlpha: 0 });
+          tl.to(lostP, { autoAlpha: 1, duration: 0.5, yoyo: true, repeat: 3 }, r.tSpread + 0.8);
+          const [txt, x, y, until] = r.lost;
+          const lab = B.label(txt, x, y, { cls: "tg", size: 34, t: r.tSpread + 1.0, until, anchor: [-50, -50] });
+          Object.assign(lab.style, { color: "#fff", background: SIDE[r.loser === "carth" ? "rome" : "carth"], padding: "2px 12px", textShadow: "none" });
+        }
+      };
+      return api;
+    };
+
+    // ---- brigade-level units: long thin block = in line, deep narrow block = in column ----
+    B.bdes = {};
+    B.brigade = (o) => { // { id, side, name, x, y, col, rot, t }
+      const w = o.col ? 34 : 74, h = o.col ? 30 : 17, col = SIDE[o.side] || SIDE.carth;
+      const el = document.createElement("div");
+      el.style.cssText = `position:absolute;left:${o.x}px;top:${o.y}px;width:0;height:0;`;
+      el.innerHTML = `<div class="b" style="position:absolute;left:${-w / 2}px;top:${-h / 2}px;width:${w}px;height:${h}px;background:${col};border:2.5px solid #1a1712;box-shadow:0 3px 5px rgba(0,0,0,.45);rotate:${o.rot || 0}deg;transform-origin:50% 50%">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><line x1="0" y1="0" x2="100" y2="100" stroke="#f7f3ea" stroke-width="7"/><line x1="100" y1="0" x2="0" y2="100" stroke="#f7f3ea" stroke-width="7"/></svg></div>
+        ${o.name ? `<div class="n" style="position:absolute;left:0;top:${h / 2 + 3}px;translate:-50% 0;font:700 13px Oswald,sans-serif;letter-spacing:.05em;color:#fff;background:${col};padding:0 5px;border-radius:2px;white-space:nowrap">${o.name}</div>` : ""}`;
+      PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
+      if (o.t != null) tl.fromTo(el, { autoAlpha: 0, y: -26 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "back.out(2)" }, o.t);
+      B.bdes[o.id] = { el, x: o.x, y: o.y };
+      return el;
+    };
+    B.march = (id, t, dur, x, y, ease = "power1.inOut") => { const u = B.bdes[id]; tl.to(u.el, { left: x, top: y, duration: dur, ease }, t); u.x = x; u.y = y; };
+    B.brigadeLoss = (id, t, k = 0.5) => { // casualties: block thins and greys
+      const u = B.bdes[id], n = u.el.querySelector(".n");
+      tl.to(u.el.querySelector(".b"), { scaleX: k, backgroundColor: "#77746c", duration: 1.2 }, t);
+      if (n) tl.to(n, { backgroundColor: "#77746c", duration: 1.2 }, t);
+    };
+    // faint dotted trail (where a unit came from / fled along)
+    B.trail = (pts, t, o = {}) => {
+      const p = document.createElementNS(NS, "path");
+      p.setAttribute("d", "M " + pts.map((q) => q.join(" ")).join(" L ")); p.setAttribute("fill", "none");
+      p.setAttribute("stroke", o.color || SIDE.carth); p.setAttribute("stroke-width", "5"); p.setAttribute("stroke-dasharray", "4 12"); p.setAttribute("stroke-linecap", "round");
+      OVL.appendChild(p); gsap.set(p, { opacity: 0 });
+      tl.to(p, { opacity: 0.8, duration: 1.2 }, t); tl.to(p, { opacity: 0, duration: 1 }, t + (o.life || 9));
+      return p;
+    };
+    // routed fragment: small greyed block running along pts, leaving a trail
+    B.flee = (pts, t, o = {}) => {
+      const seg = o.seg || 2.2, side = o.side || "carth";
+      const e = document.createElement("div");
+      e.style.cssText = `position:absolute;left:${pts[0][0] - 11}px;top:${pts[0][1] - 7}px;width:22px;height:14px;background:${side === "rome" ? "#b07a7e" : "#6b7fae"};border:2px solid #1a1712`;
+      PINS.appendChild(e); gsap.set(e, { autoAlpha: 0 });
+      tl.to(e, { autoAlpha: 1, duration: 0.3 }, t);
+      let tt = t; pts.slice(1).forEach((p) => { tl.to(e, { left: p[0] - 11, top: p[1] - 7, duration: seg, ease: "none" }, tt); tt += seg; });
+      tl.to(e, { autoAlpha: 0, duration: 0.6 }, tt);
+      B.trail(pts, t + 0.2, { color: SIDE[side] });
+    };
+
+    // ---- combat effects ----
+    B.puff = (x, y, t, r = 34, dur = 3.2) => {
+      const e = document.createElement("div");
+      e.style.cssText = `position:absolute;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;background:radial-gradient(circle,rgba(245,242,232,.85) 0%,rgba(225,220,205,.55) 45%,rgba(220,215,200,0) 72%)`;
+      PINS.appendChild(e); gsap.set(e, { autoAlpha: 0 });
+      tl.fromTo(e, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power2.out", immediateRender: false }, t);
+      tl.to(e, { autoAlpha: 0, scale: 1.9, x: 26, y: -18, duration: dur, ease: "sine.in" }, t + 0.5);
+    };
+    B.volley = (pts, t, reps = 3, gap = 0.9) => pts.forEach(([x, y], i) => {
+      for (let k = 0; k < reps; k++) {
+        const tt = t + k * gap + (i % 4) * 0.12;
+        const f = document.createElement("div");
+        f.style.cssText = `position:absolute;left:${x - 12}px;top:${y - 12}px;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle,#fffbe0 0%,#ffbe4a 40%,rgba(255,120,20,0) 72%)`;
+        PINS.appendChild(f); gsap.set(f, { autoAlpha: 0 });
+        tl.fromTo(f, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1.4, duration: 0.12, immediateRender: false }, tt);
+        tl.to(f, { autoAlpha: 0, duration: 0.35 }, tt + 0.12);
+        B.puff(x + 8, y - 6, tt + 0.1, 26, 2.6);
+      }
+    });
+    B.burst = (x, y, t) => {
+      const e = document.createElement("div");
+      e.style.cssText = `position:absolute;left:${x - 40}px;top:${y - 40}px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#fff 0%,#ffcf5a 25%,#ff7a1a 45%,rgba(90,60,40,.6) 60%,rgba(0,0,0,0) 72%)`;
+      PINS.appendChild(e); gsap.set(e, { autoAlpha: 0 });
+      tl.fromTo(e, { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1.2, duration: 0.18, immediateRender: false }, t);
+      tl.to(e, { autoAlpha: 0, scale: 1.6, duration: 0.6 }, t + 0.18);
+      B.puff(x, y - 10, t + 0.2, 46, 3.5);
+    };
+    B.cannonSvg = (fill, w = 40) => `<svg viewBox="0 0 40 24" style="width:${w}px;height:${w * 0.6}px;display:block"><rect x="4" y="6" width="28" height="6" rx="3" fill="#2a2016" transform="rotate(-8 18 9)"/><circle cx="12" cy="16" r="7" fill="none" stroke="${fill}" stroke-width="3"/><circle cx="12" cy="16" r="1.8" fill="${fill}"/></svg>`;
+    B.cannon = (x, y, side, t = 0.5) => {
+      const e = document.createElement("div"); e.style.cssText = `position:absolute;left:${x}px;top:${y}px`; e.innerHTML = B.cannonSvg(SIDE[side] || side);
+      PINS.appendChild(e); gsap.set(e, { autoAlpha: 0 }); tl.to(e, { autoAlpha: 1, duration: 0.5 }, t); return e;
+    };
+
+    // ---- HUD ----
+    // clock: keys [[t, "11:10"], ...] (first key = start); o.date line above; hides the date scroll
+    B.clock = (keys, o = {}) => {
+      gsap.set(document.getElementById("date"), { autoAlpha: 0 });
+      const e = B.hud(`<div style="font:700 15px Oswald;letter-spacing:.2em;color:#e9dcb8">${o.date || ""}</div><div class="t" style="font:700 54px Oswald;color:#fbfaf6;line-height:1">${keys[0][1]}</div>`,
+        "right:40px;top:30px;padding:10px 22px 12px;background:rgba(24,20,14,.82);border:2px solid #b89d68;text-align:right");
+      tl.to(e, { autoAlpha: 1, duration: 0.6 }, o.t != null ? o.t : keys[0][0]);
+      const toM = (s) => { const [h, m] = s.split(":").map(Number); return h * 60 + m; };
+      const c = { m: toM(keys[0][1]) }, tEl = e.querySelector(".t");
+      const upd = () => { const m = Math.round(c.m), h = Math.floor(m / 60), mm = m % 60, h12 = ((h + 11) % 12) + 1; tEl.textContent = `${h12}:${String(mm).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`; };
+      upd();
+      for (let i = 1; i < keys.length; i++) tl.to(c, { m: toM(keys[i][1]), duration: Math.max(0.01, keys[i][0] - keys[i - 1][0]), ease: "none", onUpdate: upd }, keys[i - 1][0]);
+      return e;
+    };
+    // locator minimap (image from tools/minimap.py or any picture); shows = [[t0, t1], ...]
+    B.minimap = (src, caption, shows, o = {}) => {
+      const e = B.hud(`<img src="${src}" style="display:block;width:${o.w || 384}px;height:${(o.w || 384) * 9 / 16}px"><div style="font:700 13px Oswald;letter-spacing:.18em;color:#e9dcb8;padding:4px 8px">${caption}</div>`,
+        "left:40px;bottom:40px;background:rgba(24,20,14,.85);border:3px solid #b89d68;box-shadow:0 8px 18px rgba(0,0,0,.5)");
+      shows.forEach(([a, b]) => { tl.to(e, { autoAlpha: 1, duration: 0.5 }, a); if (b != null) tl.to(e, { autoAlpha: 0, duration: 0.5 }, b); });
+      return e;
+    };
+    // strength bars: rows [[label, value, side]], bar length value * unit px
+    B.bars = (title, rows, t, until, o = {}) => {
+      const u = o.unit || 34;
+      const e = B.hud(`<div style="font:700 17px Oswald;letter-spacing:.16em;color:#e9dcb8;margin-bottom:8px">${title}</div>` +
+        rows.map(([l, v, s], i) => `<div style="display:flex;align-items:center;gap:10px;margin:6px 0"><div class="bar${i}" style="height:26px;width:0;background:${SIDE[s]};border:2px solid #fff"></div><span style="font:700 22px Oswald;color:#fff">${l}</span></div>`).join(""),
+        `right:40px;top:${o.top || 150}px;padding:14px 20px;background:rgba(24,20,14,.82);border:2px solid #b89d68`);
+      tl.to(e, { autoAlpha: 1, duration: 0.5 }, t);
+      rows.forEach(([, v], i) => tl.to(e.querySelector(".bar" + i), { width: v * u, duration: 1.2, ease: "power2.out" }, t + 0.4 + i * 0.4));
+      if (until != null) tl.to(e, { autoAlpha: 0, duration: 0.5 }, until);
+      return e;
+    };
+    // red card: what the enemy believed
+    B.belief = (title, quote, t, until) => {
+      const e = B.hud(`<div style="font:700 17px Oswald;letter-spacing:.2em;color:#f7c9c9">${title}</div><div style="font:700 38px Oswald;color:#fff;margin-top:6px">${quote}</div>`,
+        "left:50%;top:190px;translate:-50% 0;padding:16px 30px;background:rgba(150,14,24,.9);border:3px solid #fff;text-align:center;white-space:nowrap");
+      tl.fromTo(e, { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1, duration: 0.5 }, t); tl.to(e, { autoAlpha: 0, duration: 0.4 }, until);
+      return e;
+    };
+    // paper note (orders, telegrams)
+    B.note = (kicker, text, t, until) => {
+      const e = B.hud(`<div style="font-size:20px;letter-spacing:.3em;opacity:.8">${kicker}</div><div style="font-size:40px;margin-top:8px">${text}</div>`,
+        "left:50%;top:190px;translate:-50% 0;padding:16px 30px;background:#efe3c4;border:3px solid #6b4a2b;box-shadow:0 12px 24px rgba(0,0,0,.45);font-family:'Special Elite',monospace;color:#2a241b;text-align:center;white-space:nowrap");
+      tl.fromTo(e, { autoAlpha: 0, y: -30 }, { autoAlpha: 1, y: 0, duration: 0.6 }, t); tl.to(e, { autoAlpha: 0, duration: 0.4 }, until);
+      return e;
+    };
+    // picture inside the map: framed portrait / painting pops in top-left while the map keeps moving
+    B.pip = (src, title, t, until, o = {}) => {
+      const w = o.w || 300, h = o.h || 360;
+      const e = B.hud(`<div style="width:${w}px;height:${h}px;background:#2a241b url(${src}) center/${o.fit || "cover"} no-repeat;filter:sepia(.35) contrast(1.05)"></div>
+        <div style="font:700 17px Oswald;letter-spacing:.08em;color:#2a241b;margin-top:8px;text-align:center;max-width:${w}px">${title}</div>`,
+        `left:40px;top:40px;padding:12px 12px 10px;background:#efe3c4;border:3px solid #6b4a2b;box-shadow:0 14px 30px rgba(0,0,0,.55)`);
+      tl.fromTo(e, { autoAlpha: 0, rotation: -4, scale: 0.85, x: -30 }, { autoAlpha: 1, rotation: -1.5, scale: 1, x: 0, duration: 0.55, ease: "back.out(1.6)" }, t);
+      tl.to(e, { autoAlpha: 0, x: -30, duration: 0.4 }, until);
+      return e;
+    };
+    // cartography
+    B.compass = (t) => {
+      const e = B.hud(`<svg viewBox="-60 -60 120 120" width="120" height="120"><circle r="44" fill="rgba(239,227,196,.8)" stroke="#6b4a2b" stroke-width="3"/>
+        <circle r="36" fill="none" stroke="#6b4a2b" stroke-width="1" stroke-dasharray="3 4"/>
+        <path d="M0 -52 L9 0 L0 10 L-9 0 Z" fill="#c4121f" stroke="#2a241b" stroke-width="1.5"/><path d="M0 52 L9 0 L0 -10 L-9 0 Z" fill="#2a241b"/>
+        <path d="M-40 0 L0 6 L40 0 L0 -6 Z" fill="#6b4a2b" opacity=".7"/><text y="-30" x="-6" font-size="14" font-family="Oswald" fill="#fff" font-weight="700">N</text></svg>`, "right:44px;bottom:110px");
+      tl.to(e, { autoAlpha: 1, duration: 0.6 }, t); return e;
+    };
+    // scale bar drawn on the ground (tilts with the map). metersPerPx from assets/BASEMAP.json
+    B.scaleBar = (x, y, metersPerPx, o = {}) => {
+      const miles = o.miles || 1, L = miles * 1609 / metersPerPx, q = L / 4;
+      OVL.insertAdjacentHTML("beforeend", `<g transform="translate(${x} ${y})"><rect width="${L}" height="16" fill="#efe3c4" stroke="#2a241b" stroke-width="3"/>
+        <rect width="${q}" height="16" fill="#2a241b"/><rect x="${2 * q}" width="${q}" height="16" fill="#2a241b"/>
+        <text x="0" y="-10" font-family="Oswald" font-weight="700" font-size="26" fill="#2a241b">0</text><text x="${L - 40}" y="-10" font-family="Oswald" font-weight="700" font-size="26" fill="#2a241b">${miles} MILE${miles > 1 ? "S" : ""}</text></g>`);
+    };
+    // legend: items [[swatchHtml, label]]; B.legendItems() gives the standard set
+    B.legendItems = () => [
+      [`<div style="width:40px;height:12px;background:${SIDE.carth};border:2px solid #1a1712"></div>`, "UNION BRIGADE IN LINE"],
+      [`<div style="width:22px;height:20px;margin:0 9px;background:${SIDE.rome};border:2px solid #1a1712"></div>`, "CONFEDERATE BRIGADE IN COLUMN"],
+      [`<div style="width:40px">${B.cannonSvg("#e9dcb8")}</div>`, "ARTILLERY"],
+      [`<div style="width:40px;height:14px;background:repeating-linear-gradient(45deg,#e6d49c 0 4px,#b9a266 4px 7px);border:1px solid #6b5530"></div>`, "FARM FIELD · WOODS ELSEWHERE"]];
+    B.legend = (items, t, until) => {
+      const e = B.hud(`<div style="font:700 14px Oswald;letter-spacing:.2em;color:#e9dcb8;margin-bottom:6px">LEGEND</div>` +
+        items.map(([sw, l]) => `<div style="display:flex;align-items:center;gap:8px;margin:5px 0">${sw}<span style="font:700 16px Oswald;color:#fff">${l}</span></div>`).join(""),
+        "right:40px;bottom:250px;padding:10px 16px;background:rgba(24,20,14,.8);border:2px solid #b89d68");
+      tl.to(e, { autoAlpha: 1, duration: 0.6 }, t); if (until != null) tl.to(e, { autoAlpha: 0, duration: 0.5 }, until);
+      return e;
+    };
+    B.scorched = (t = 0) => {
+      const e = document.createElement("div");
+      e.style.cssText = "position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 90px 30px rgba(60,34,12,.55), inset 0 0 22px 6px rgba(30,16,6,.7);";
+      SCENE.insertBefore(e, document.getElementById("vignette")); gsap.set(e, { autoAlpha: 0 }); tl.to(e, { autoAlpha: 1, duration: 1.5 }, t);
+      return e;
+    };
+
+    // ---- satellite zoom-in opening (images from: python3 tools/sat.py --intro BASEMAP) ----
+    // o = { base: "chick", zoom: 15 (basemap zoom), cam: [cx, cy, s] (camera at t=0 — keep s <= ~1 so the satellite stays sharp),
+    //       title, sub, date }. Hides map overlays until ~3.9 s; returns the time the map is fully revealed (~4.7 s).
+    B.satIntro = (o) => {
+      const [cx, cy, s] = o.cam, D = 1920 / 2880; // images are 2880x1620 shown with background-size:cover
+      const org = (dz) => [960 + ((cx - 1440) / 2 ** dz) * D, 540 + ((cy - 810) / 2 ** dz) * D];
+      const layer = (src, dz, below) => {
+        const [ox, oy] = org(dz), e = document.createElement("div");
+        e.style.cssText = `position:absolute;inset:0;background:url(${src}) center/cover;transform-origin:${ox}px ${oy}px;`;
+        SCENE.insertBefore(e, below || fx); return e;
+      };
+      const satW = B.image(`assets/media/${o.base}_sat.jpg`, 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
+      world.insertBefore(satW, OVL);
+      gsap.set([OVL, PINS], { autoAlpha: 0 });
+      const satR = layer(`assets/media/${o.base}_sat_region.jpg`, 4);
+      const satM = layer(`assets/media/${o.base}_sat_mid.jpg`, 2, satR);
+      gsap.set(satM, { autoAlpha: 0 });
+      tl.fromTo(satR, { scale: 1 }, { scale: 4, duration: 1.8, ease: "power1.in", immediateRender: true }, 0.2);
+      tl.set(satM, { autoAlpha: 1 }, 1.5); tl.to(satR, { autoAlpha: 0, duration: 0.5 }, 1.5);
+      tl.fromTo(satM, { scale: 1 }, { scale: (s * 4) / D, duration: 1.8, ease: "power2.in", immediateRender: false }, 1.9);
+      tl.to(satM, { autoAlpha: 0, duration: 0.4 }, 3.55);
+      tl.to(satW, { autoAlpha: 0, duration: 1.0, ease: "sine.inOut" }, 3.7);
+      tl.to([OVL, PINS], { autoAlpha: 1, duration: 1.0 }, 3.9);
+      const lab = B.hud(`<div style="font:700 44px Oswald;letter-spacing:.12em;color:#fff;text-shadow:0 3px 10px #000">${o.title}</div><div style="font:400 22px 'Special Elite';color:#f3e6c2;text-shadow:0 2px 6px #000">${o.sub || "SATELLITE VIEW · TODAY"}</div>`, "left:50%;top:42%;translate:-50% -50%;text-align:center");
+      tl.to(lab, { autoAlpha: 1, duration: 0.5 }, 0.2); tl.to(lab, { autoAlpha: 0, duration: 0.5 }, 2.6);
+      if (o.date) {
+        const d = B.hud(`<div style="font:700 60px Oswald;letter-spacing:.2em;color:#2a241b">${o.date}</div>`, "left:50%;top:40%;translate:-50% -50%;padding:6px 26px;background:rgba(239,227,196,.85);border:3px solid #6b4a2b");
+        tl.to(d, { autoAlpha: 1, duration: 0.5 }, 4.3); tl.to(d, { autoAlpha: 0, duration: 0.5 }, 6.2);
+      }
+      return 4.7;
     };
 
     B.finish = () => {}; // registration happens in the page template

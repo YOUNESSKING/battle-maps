@@ -1,6 +1,8 @@
 """Satellite image aligned with a baked basemap (same 2880x1620 frame), or a free-standing one.
 
-usage: python3 tools/sat.py BASEMAP [OUT.jpg]            -> assets/BASEMAP_sat.jpg, same frame as assets/BASEMAP.jpg
+usage: python3 tools/sat.py --intro BASEMAP              -> assets/media/BASEMAP_sat.jpg (same frame as the basemap) + _sat_mid.jpg (2 zooms out)
+                                                            + _sat_region.jpg (4 zooms out), all centred on the basemap centre: inputs for B.satIntro()
+       python3 tools/sat.py BASEMAP [OUT.jpg]            -> assets/BASEMAP_sat.jpg, same frame as assets/BASEMAP.jpg
        python3 tools/sat.py --free LAT LON ZOOM OUT.jpg   -> 2880x1620 centred on LAT/LON at ZOOM
 Imagery: Sentinel-2 cloudless 2016 by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016), CC BY 4.0.
 Credit line for the video description: "Satellite imagery: Sentinel-2 cloudless (https://s2maps.eu) by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016), CC BY 4.0"
@@ -42,7 +44,14 @@ def render(x0, y0, z, out):
     print(out, f"z{z} (tiles z{zt})")
 
 
-if sys.argv[1] == "--free":
+if sys.argv[1] == "--intro":
+    b = sys.argv[2]; P = json.load(open(f"{ROOT}/assets/{b}.json")); z = P["zoom"]; x0, y0 = P["origin_world_px"]
+    os.makedirs(f"{ROOT}/assets/media", exist_ok=True)
+    render(x0, y0, z, f"{ROOT}/assets/media/{b}_sat.jpg")
+    for dz, tag in ((2, "mid"), (4, "region")):
+        cx, cy = (x0 + W / 2) / 2 ** dz, (y0 + H / 2) / 2 ** dz
+        render(int(cx - W / 2), int(cy - H / 2), z - dz, f"{ROOT}/assets/media/{b}_sat_{tag}.jpg")
+elif sys.argv[1] == "--free":
     lat, lon, z, out = float(sys.argv[2]), float(sys.argv[3]), int(sys.argv[4]), sys.argv[5]
     n = 256 * 2 ** z
     cx, cy = (lon + 180) / 360 * n, (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * n

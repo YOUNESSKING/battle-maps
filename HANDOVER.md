@@ -15,7 +15,7 @@
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from **`morgan/`** (newest): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/audio/` (the music library + SFX are reusable; add the CC BY lines from assets/audio/CREDITS.md to the description). In tools/narrate.py point SCRIPT/OUT at the new folder and extend the SAY pronunciation dict; in tools/assemble.py set the SCENES dict.
+1. `mkdir <name>` and copy the skeleton from **`thomas/`** (newest, has the detailed-style engine): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/audio/` (set `B.METHOD` in lib/battle.js to the new general's 3-part method) (the music library + SFX are reusable; add the CC BY lines from assets/audio/CREDITS.md to the description). In tools/narrate.py point SCRIPT/OUT at the new folder and extend the SAY pronunciation dict; in tools/assemble.py set the SCENES dict.
 2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,600-2,800 words (≈18 min at speed 1.0). Scenes = contiguous runs of MAP paragraphs; write `<name>/SCENES.md` (see morgan/SCENES.md).
 3. Voice: `cd tts && python3 ../<name>/tools/narrate.py am_michael` (per-sentence timing). Bake terrain: `tools/bake.py` (region z7-8, battlefield z15-16).
 4. **Image agent first (Sonnet)**, so portraits exist before maps start: archive/aNN.jpg + slots.json + assets/media cut-outs + flags.
@@ -144,7 +144,7 @@ Previews shared: v1 https://gofile.io/d/EVsnFEPG · v2 https://gofile.io/d/TugBL
 - Cartography: compass rose, 1-mile scale bar drawn on the ground, legend at the start, scorched paper edges.
 **Rejected by the owner:** soldier figures (little infantry silhouettes) instead of blocks.
 **Cost:** ~6× real time to render (v1 3-5×); a full video renders ~20-40 % longer.
-**Next step:** move these helpers from demo3.js into lib/battle.js (+ battle.css) as standard functions (tilt, woods/fields layer, territory zones, brigade blocks, smoke/volley/burst, clock/minimap/bars/pip/compass/scalebar/legend, satellite opening) and require them in templates/MAP_AGENT_BRIEF.md.
+**Now standard (2026-09-26):** all of the above are engine functions in thomas/lib/battle.js (B.satIntro, B.tilt, B.terrain, B.road, B.territory(...).retreat, B.brigade/march/brigadeLoss/flee/trail, B.volley/burst/puff/cannon, B.hud, B.clock, B.minimap, B.bars, B.note, B.belief, B.pip, B.compass, B.scaleBar, B.legend/legendItems, B.scorched; portraitStake side:"rome"), with tools/sat.py --intro BASEMAP and tools/minimap.py for the images. templates/MAP_AGENT_BRIEF.md makes them mandatory; thomas/scenes-src/demo3.js is the reference scene built only from them. The full Thomas video itself was made before this style (not re-rendered).
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
