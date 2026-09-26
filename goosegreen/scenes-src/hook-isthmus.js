@@ -13,6 +13,7 @@ const GG = (() => {
   css.textContent = `
     .unit .tag { font-size: 15px; padding: 0 6px; margin-top: 3px; }
     .gg-pin { position: absolute; left: 0; top: 0; }
+    #dim { background: rgba(8, 8, 10, 0.72); }
     .caption.r { justify-content: flex-end; padding-right: 70px; bottom: 70px; }
     .caption.r span { font-size: 38px; }
     .gg-lbl { position: absolute; white-space: nowrap; font-weight: 700; letter-spacing: 0.08em; color: #fbfaf6; text-shadow: 0 2px 4px rgba(0,0,0,0.9), 0 0 2px #000; }
@@ -171,6 +172,45 @@ const GG = (() => {
       : kind === "hq" ? `<rect x="0" y="0" width="100" height="100" fill="none"/><line x1="0" y1="0" x2="100" y2="100" stroke="#f7f3ea" stroke-width="7"/><line x1="100" y1="0" x2="0" y2="100" stroke="#f7f3ea" stroke-width="7"/>`
       : s.innerHTML;
   };
+
+  // typographic bio (no photo): flag + big NATO unit marker on one side, bio card on the other
+  G.bioT = (o) => {
+    const side = document.createElement("div");
+    side.style.cssText = `position:absolute;top:170px;${o.mirror ? "right:130px" : "left:150px"};width:600px;height:760px;`;
+    side.innerHTML = `<img src="${o.flag}" alt="" style="position:absolute;left:20px;top:0;width:560px;height:auto;box-shadow:0 14px 34px rgba(0,0,0,0.6);border:4px solid #f3eee2;transform:rotate(${o.mirror ? 3 : -3}deg)">
+      <svg viewBox="0 0 300 200" style="position:absolute;left:120px;top:400px;width:360px;height:240px;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.6))">
+        <rect x="6" y="6" width="288" height="188" fill="${o.color || "#1f4fc4"}" stroke="#f3eee2" stroke-width="8"/>
+        <line x1="6" y1="6" x2="294" y2="194" stroke="#f3eee2" stroke-width="9"/><line x1="294" y1="6" x2="6" y2="194" stroke="#f3eee2" stroke-width="9"/>
+        ${o.airborne !== false ? `<path d="M110 186 Q150 146 190 186" fill="none" stroke="#f3eee2" stroke-width="9"/>` : ""}
+      </svg>
+      <div style="position:absolute;left:0;right:0;top:660px;text-align:center;font-size:44px;font-weight:700;letter-spacing:0.2em;color:#f4f1ea;text-shadow:0 3px 8px rgba(0,0,0,0.8)">${o.unit || ""}</div>`;
+    scene.insertBefore(side, document.getElementById("credit")); hide(side);
+    const card = document.createElement("div");
+    card.className = "bio-card";
+    card.innerHTML = `<div class="h">${o.name}</div><div class="rule"></div>${o.rows.map((r) => `<div class="row">${r}</div>`).join("")}`;
+    if (o.mirror) Object.assign(card.style, { left: "110px", borderLeft: "none", borderRight: "10px solid var(--rome)" });
+    card.style.top = (o.top || 300) + "px";
+    scene.insertBefore(card, document.getElementById("credit")); hide(card);
+    const dx = o.mirror ? 1 : -1;
+    tl.fromTo(side, { autoAlpha: 0, x: 140 * dx }, { autoAlpha: 1, x: 0, duration: 1.0, ease: "power3.out" }, o.t);
+    tl.to(side, { x: -30 * dx, duration: o.until - o.t - 1.0, ease: "none" }, o.t + 1.0);
+    tl.fromTo(card, { autoAlpha: 0, x: -80 * dx }, { autoAlpha: 1, x: 0, duration: 0.9, ease: "power3.out" }, o.t + 0.4);
+    tl.to(card, { x: 30 * dx, duration: o.until - o.t - 1.3, ease: "none" }, o.t + 1.3);
+    card.querySelectorAll(".row").forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power2.out" }, o.rowT ? o.rowT[i] : o.t + 1 + i * 0.6));
+    tl.to([side, card], { autoAlpha: 0, duration: 0.7 }, o.until);
+    return { side, card };
+  };
+  // small name plaque on a stake (world coords, (x,y) = foot of the pole)
+  G.stake = (o) => {
+    const col = o.side === "rome" ? "#c4121f" : "#1f4fc4", s = o.size || 1;
+    const el = G.pin(`<div style="position:relative;width:${260 * s}px;height:${150 * s}px">
+      <div style="position:absolute;left:${24 * s}px;top:${30 * s}px;width:${8 * s}px;height:${120 * s}px;background:linear-gradient(90deg,#4c3219,#8a6238 50%,#4c3219);border-radius:2px;box-shadow:0 3px 5px rgba(0,0,0,0.4)"></div>
+      <div style="position:absolute;left:0;top:0;padding:${8 * s}px ${12 * s}px;background:var(--paper);border:${3 * s}px solid var(--stake);border-left:${9 * s}px solid ${col};box-shadow:0 6px 12px rgba(0,0,0,0.4);font-family:'Special Elite',monospace;color:var(--ink);white-space:nowrap">
+        <div style="font-size:${22 * s}px;line-height:1.1">${o.name}</div>${o.role ? `<div style="font-size:${15 * s}px;margin-top:${4 * s}px;opacity:0.85">${o.role}</div>` : ""}</div></div>`, o.x, o.y, { anchor: [-10, -100] });
+    tl.fromTo(el, { autoAlpha: 0, y: -80 * s }, { autoAlpha: 1, y: 0, duration: 0.8, ease: "bounce.out" }, o.t);
+    if (o.until != null) fadeOut(el, o.until);
+    return el;
+  };
   G.fadeIn = fadeIn; G.fadeOut = fadeOut; G.hide = hide;
   return G;
 })();
@@ -213,7 +253,7 @@ B.city("GOOSE GREEN", GOOSE[0], GOOSE[1], { size: 26, r: 8, t: 1.9 });
 GG.lbl("AIRFIELD", AIRF[0] - 30, AIRF[1] + 6, { size: 20, anchor: [-100, -50], t: 2.2 });
 GG.lbl("DARWIN HILL", DHILL[0] + 10, DHILL[1] - 38, { size: 20, anchor: [-50, -50], t: 2.4 });
 B.label("BRENTON LOCH", 1300, 870, { cls: "sea", size: 28, t: 2.6 });
-B.label("DARWIN HARBOUR", 1760, 1110, { cls: "sea", size: 24, t: 2.8 });
+B.label("DARWIN HARBOUR", 1760, 1085, { cls: "sea", size: 24, t: 2.8 });
 
 // ---------- 2 PARA ----------
 B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 46, w: 56, h: 38, label: "2 PARA", t: T_2PARA });
@@ -232,7 +272,7 @@ const RED = [
 ];
 RED.forEach(([id, x, y], i) => B.unit({ id, side: "rome", x, y, w: 34, h: 24, t: T_1000 + 0.2 + i * 0.12 }));
 GG.icon("d1", "aa"); GG.icon("d3", "gun");
-GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", GOOSE[0] + 60, GOOSE[1] + 46, "#c4121f", { size: 20, anchor: [0, -50], t: T_1000 + 1.2 });
+GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", 1500, 1250, "#c4121f", { size: 20, anchor: [-100, -50], t: T_1000 + 1.2 });
 B.caption("DUG IN ACROSS OPEN, TREELESS GROUND", T_DUG, T_ART - 0.2, "rome r");
 B.caption("+ ARTILLERY · ANTI-AIRCRAFT GUNS · AIRCRAFT ON CALL", T_ART, T_BBC - 0.3, "rome r");
 GG.lbl("AA GUNS", AIRF[0] + 36, AIRF[1] - 18, { size: 16, anchor: [0, -50], t: T_ART + 0.4, until: S2 });
@@ -250,8 +290,8 @@ B.caption("THANKS TO THE BBC, THEY KNEW WHO WAS COMING", T_BBC - 0.1, S2 - 0.2, 
 // ---------- hook-bio: H Jones ----------
 B.dim(S2 - 0.3, S3 - 0.3);
 B.dateBox(S2 - 0.3, null, S3);
-B.bio({
-  photo: "assets/media/jones_full.png",
+GG.bioT({
+  flag: "assets/media/uk_flag.png", unit: "2 PARA",
   name: "LT. COL. H. JONES",
   rows: ["Commanding Officer, 2 PARA", "Herbert 'H' Jones · 1940 – 1982", "Age 42 · fiercely driven", "Threatened to sue the BBC"],
   rowT: [S2 + 1.4, at(K2, "Lieutenant Colonel Herbert"), at(K2, "forty-two"), at(K2, "sue the BBC")],
@@ -259,21 +299,18 @@ B.bio({
 });
 
 // ---------- hook-bio-2: Jones falls, Keeble ----------
-B.portraitStake({ img: "assets/media/jones_head.png", flag: "assets/media/uk_flag.png", name: "H. JONES", x: CCH[0] + 120, y: CCH[1] + 100, size: 0.6, t: S3 + 0.3, until: T_KEEB });
-const cross = GG.pin(`<svg width="70" height="70" viewBox="0 0 10 10" style="display:block"><path d="M1 1 L9 9 M9 1 L1 9" stroke="#c4121f" stroke-width="1.6" stroke-linecap="round"/></svg>`, CCH[0] + 120, CCH[1] + 3, { t: T_DEAD + 0.6, until: T_KEEB, pop: true });
+const jst = GG.stake({ name: "LT. COL. H. JONES", role: "CO, 2 PARA", side: "carth", x: CCH[0] + 200, y: CCH[1] + 200, size: 0.9, t: S3 + 1.0, until: T_KEEB });
+B.tl.to(jst, { filter: "grayscale(1)", opacity: 0.75, duration: 0.8 }, T_DEAD + 0.6);
 B.caption("28 MAY 1982: H JONES KILLED IN ACTION", T_DEAD + 0.4, T_KEEB, "rome r");
 B.dim(T_KEEB - 0.2, T_YET + 0.3);
 B.dateBox(T_KEEB - 0.2, null, T_YET + 0.6);
-const keeble = B.bio({
-  photo: "assets/media/keeble_full.png",
+GG.bioT({
+  flag: "assets/media/uk_flag.png", unit: "2 PARA", mirror: true,
   name: "MAJ. CHRIS KEEBLE",
   rows: ["Second in Command, 2 PARA", "Took over the battle on 28 May", "Cold · exhausted · short of ammunition"],
   rowT: [at(K3, "second in command") + 0.3, at(K3, "would be leading"), at(K3, "cold, exhausted")],
   t: T_KEEB, until: T_YET + 0.1,
 });
-// mirror layout: photo on the right, card on the left
-Object.assign(keeble.photo.querySelector("img").style, { left: "auto", right: "90px", maskImage: "linear-gradient(to right, transparent 0, #000 9%)", webkitMaskImage: "linear-gradient(to right, transparent 0, #000 9%)" });
-Object.assign(keeble.card.style, { left: "110px", borderLeft: "none", borderRight: "10px solid var(--rome)" });
 
 // the surrender, and the three moves
 B.date("29 MAY 1982", T_YET + 0.6, null, 40);
