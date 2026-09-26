@@ -7,7 +7,7 @@
 | Path | What |
 |---|---|
 | `setup.sh`, `.claude/settings.json` | automatic tool install at session start (runs in background; wait for `/tmp/battle-maps-setup.done`) |
-| `research/` | GEMINI_BRIEF_v3.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
+| `research/` | GEMINI_BRIEF_v3.md (paste into Gemini), PACKAGING_GUIDE.md (titles, thumbnails, descriptions, chapters, tags), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
 | `chipyongni/` | first test map (hyperframes.json is reused by build_scene.py) |
@@ -20,7 +20,8 @@ Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as
 3. Voice: `cd tts && python3 ../<name>/tools/narrate.py am_michael` (per-sentence timing). Bake terrain: `tools/bake.py` (region z7-8, battlefield z15-16).
 4. **Image agent first (Sonnet)**, so portraits exist before maps start: archive/aNN.jpg + slots.json + assets/media cut-outs + flags.
 5. **Map agents** with the brief in `templates/MAP_AGENT_BRIEF.md` (fill in <GENERAL>, <name> and each agent's scene list). Model choice to save usage: **Sonnet for simple regional/overview scenes** (hook, campaign maps, ending), **Opus only for the main battlefield scenes**. Run at most 3 agents at once. The brief limits snapshot reviews (one contact sheet per round, max 3 rounds), which was the biggest usage cost in the Morgan run.
-6. `python3 tools/assemble.py && python3 tools/mix.py` → build/<name>-1080p.mp4 (edit the MUSIC plan and SFX cues in mix.py). Write <name>/YOUTUBE.md. Commit + push after each milestone.
+6. `python3 tools/assemble.py && python3 tools/mix.py` → build/<name>-1080p.mp4 (edit the MUSIC plan and SFX cues in mix.py). Commit + push after each milestone.
+7. **Packaging** (title, thumbnail, description, chapters, tags): follow `research/PACKAGING_GUIDE.md` exactly (vidIQ-scored title ≥ 85 with the hook in the first ~60 chars, thumbnail = same promise, description hook = script's opening, chapters from timing.json, 12-18 ordered tags). Output: `<name>/youtube/youtube_metadata.md`, `thumbnail.png` (1280x720) and the upload PDF (`python3 tools/make_upload_pdf.py "<General>" <Name>` → `<name>/youtube/<Name>-YouTube-upload.pdf`). Worked example: `morgan/youtube/`.
 To stay inside one 5-hour usage window, split big videos over two sessions: (1) script, voice, terrain, images, maps for hook + move 1; (2) moves 2-3, ending, assembly, mix.
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
@@ -45,7 +46,7 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
-| **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload text: morgan/YOUTUBE.md |
+| **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload package: morgan/youtube/ (metadata, thumbnail, PDF) |
 
 ## 3. What's next (in order)
 1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
@@ -115,6 +116,8 @@ Morgan took ~2 h of real work (plus 2 h 15 min stuck on the usage limit). With t
 **Owner feedback on the Morgan video (fixed in morgan/tools, keep for every video):**
 14. Music was too loud: the bed was normalised to -21 LUFS, as loud as the Kokoro voice (~-24 LUFS). mix.py now sets `MUSIC_LUFS = -41` (~17 dB under the narration; -37 was still judged a bit loud) plus a gentle sidechain duck, and `SFX_DB = -3` trims all sound effects a notch. Never set the music bed within 15 dB of the voice.
 15. Archive images stayed on screen too long without change (one still with a slow 13 % zoom for 10-25 s). assemble.py now cuts every archive slot into ~6 s shots (full view → push-in on the main point → other images / details, stronger moves, 0.4 s dissolves). Each slot needs 2-3 images, and slots.json lists points of interest per image (`{"slot", "images": [{"file", "title", "points": [[fx, fy], ...]}]}`) — ask the image agent for this from the start. Rebuild only the archive slots with `python3 tools/assemble.py --archive`.
+
+16. Packaging: the owner's packaging guide (from the sister channel) is adapted in `research/PACKAGING_GUIDE.md`. Morgan's title was re-scored with vidIQ (current 93, hook-first 95 locked, alternative 96) and its v1 thumbnail wording "Britain's Best" was unclear ("best what?") and overstated, so it became "Britain's Elite". Titles must be clear and true, not just punchy.
 
 **Research accuracy:**
 12. Use research/GEMINI_BRIEF_v3.md: it makes Gemini cite a source for every claim, label claims VERIFIED / SINGLE SOURCE / TRADITION / DISPUTED, and end with a fact-check list. The v2 Morgan research had errors I had to fix: Guilford called a "strategic victory" (it was a British tactical win), the Cowpens Continental withdrawal described as planned (it was a misunderstood order), the "devil of a whipping" letter given the wrong recipient, an unsourced "still taught at West Point", and a Morgan quote to Greene paraphrased inside quotation marks.
