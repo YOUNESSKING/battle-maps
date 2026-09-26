@@ -129,6 +129,23 @@ Morgan took ~2 h of real work (plus 2 h 15 min stuck on the usage limit). With t
 **Sessions:**
 13. One fresh session per video. Each step in a long conversation costs more than the last.
 
+## 9. Detailed map style (owner-approved direction, 2026-09-26)
+Tested on 1-minute demos of the Chickamauga breakthrough (chick-5 … chick-7): `thomas/scenes-src/demo.js` (v1), `demo2.js` (v2), **`demo3.js` = the reference: v2 without soldier figures**. Mix a demo with `python3 tools/mix_demo.py SCENE`.
+Previews shared: v1 https://gofile.io/d/EVsnFEPG · v2 https://gofile.io/d/TugBLEIr (links expire when unused).
+**Keep (use in every new video):**
+- 3D tilt of the whole map (CSS perspective + rotateX on a wrapper around #world, deepening at the key moment; parchment scene background so no black edges).
+- Ground detail on battlefields: tree-symbol woods with the farm fields cut out (ploughed-furrow pattern, farmhouse + name), period roads in ink, creeks.
+- Territory control: each side's ground tinted (blue/red ~20 %), a dotted front line; when a side retreats its colour FADES off the lost ground first (bare parchment), then the winner's colour spreads over it, with a short "GROUND LOST" flash. (Owner's idea.)
+- Brigade-level units as blocks: long thin blocks = in line, deep narrow blocks = in column; named; broken units shrink and turn grey; fragments flee with faint dotted trails.
+- Musket flashes + drifting smoke puffs, shell bursts, cannon icons for batteries.
+- HUD: clock that ticks and hits the exact narrated time, locator minimap, strength bars, red "what the enemy believed" card.
+- Satellite zoom-in opening for each battle: `tools/sat.py` (Sentinel-2 cloudless 2016 by EOX, CC BY 4.0; credit line in sat.py) at 3 scales (region z11 → z13 → battlefield), labelled "SATELLITE VIEW · TODAY", dissolving into the parchment map before it gets blurry (10 m imagery).
+- Pictures inside the map: framed portrait/painting pops up top-left when a person or painting is named, while the map keeps moving (replaces many archive cut-aways).
+- Cartography: compass rose, 1-mile scale bar drawn on the ground, legend at the start, scorched paper edges.
+**Rejected by the owner:** soldier figures (little infantry silhouettes) instead of blocks.
+**Cost:** ~6× real time to render (v1 3-5×); a full video renders ~20-40 % longer.
+**Next step:** move these helpers from demo3.js into lib/battle.js (+ battle.css) as standard functions (tilt, woods/fields layer, territory zones, brigade blocks, smoke/volley/burst, clock/minimap/bars/pip/compass/scalebar/legend, satellite opening) and require them in templates/MAP_AGENT_BRIEF.md.
+
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
 - The main cost driver is **conversation length**: late in the session each step re-read ~480K tokens. A fresh session re-reads ~30-60K.
