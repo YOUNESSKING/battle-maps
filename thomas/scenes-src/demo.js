@@ -89,6 +89,34 @@ B.label("DRY VALLEY ROAD", 860, 820, { cls: "tg", size: 20, rot: -62, t: 0.3, an
 B.label("TO McFARLAND'S GAP ▲", 700, 290, { cls: "tg", size: 22, t: 0.3, anchor: [-50, -50] });
 B.label("HORSESHOE RIDGE", 1150, 800, { cls: "tg", size: 22, rot: -8, t: 0.3, anchor: [-50, -50] });
 
+// ---------- 2b. TERRITORY CONTROL: each side's ground is tinted; when a line breaks, the colour floods over the lost ground ----------
+const B0 = [[1560, -20], [1600, 430], [1720, 560], [1700, 760], [1625, 820], [1615, 900], [1595, 1000], [1520, 1100], [1400, 1640]];
+const B1 = [[1560, -20], [1600, 430], [1720, 560], [1700, 760], [1560, 810], [1330, 880], [1090, 905], [880, 1040], [620, 1640]];
+const cur = B0.map((p) => p.slice());
+const zoneG = document.createElementNS(NS, "g");
+zoneG.innerHTML = `<path class="zu" fill="rgba(31,79,196,0.20)"/><path class="zr" fill="rgba(196,18,31,0.20)"/><path class="zl" fill="none" stroke="#f7f3ea" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.8"/>`;
+document.getElementById("fields").after(zoneG);
+const zd = (pts) => "M " + pts.map((p) => p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" L ") + " Z";
+const drawZones = () => {
+  const L = cur.length - 1;
+  zoneG.querySelector(".zu").setAttribute("d", zd([[-20, -20], ...cur, [-20, 1640]]));
+  zoneG.querySelector(".zr").setAttribute("d", zd([[cur[0][0], -20], [2900, -20], [2900, 1640], [cur[L][0], 1640], ...cur.slice().reverse()]));
+  zoneG.querySelector(".zl").setAttribute("d", "M " + cur.map((p) => p.join(" ")).join(" L "));
+};
+drawZones(); gsap.set(zoneG, { autoAlpha: 0 });
+tl.to(zoneG, { autoAlpha: 1, duration: 1.5 }, 1.0);
+const zst = { k: 0 };
+tl.to(zst, { k: 1, duration: 9, ease: "power1.inOut", onUpdate: () => { cur.forEach((p, i) => { p[0] = B0[i][0] + (B1[i][0] - B0[i][0]) * zst.k; p[1] = B0[i][1] + (B1[i][1] - B0[i][1]) * zst.k; }); drawZones(); } }, T_POUR + 0.5);
+// "ground lost" pulse over the area that changes hands
+const lost = document.createElementNS(NS, "path");
+lost.setAttribute("d", zd([...B0.slice(3), ...B1.slice(3).reverse()])); lost.setAttribute("fill", "rgba(196,18,31,0.35)"); lost.setAttribute("stroke", "#c4121f"); lost.setAttribute("stroke-width", "4");
+zoneG.after(lost); gsap.set(lost, { autoAlpha: 0 });
+tl.to(lost, { autoAlpha: 1, duration: 0.5, yoyo: true, repeat: 3 }, T_THIRD + 0.8);
+B.label("UNION-HELD", 1200, 520, { cls: "tg", size: 30, t: 1.6, until: T_POUR, anchor: [-50, -50] });
+B.label("CONFEDERATE-HELD", 2080, 1120, { cls: "tg", size: 30, t: 1.8, until: T_POUR, anchor: [-50, -50] });
+const lostLab = B.label("GROUND LOST", 1300, 960, { cls: "tg", size: 34, t: T_THIRD + 1.0, until: S7 + 2, anchor: [-50, -50] });
+Object.assign(lostLab.style, { color: "#fff", background: "#c4121f", padding: "2px 12px", textShadow: "none" });
+
 // ---------- 3. BRIGADE-LEVEL UNITS: lines are long and thin, columns deep ----------
 const units = {};
 const bde = (id, side, name, x, y, o = {}) => {
