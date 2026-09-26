@@ -1,5 +1,5 @@
-// Goose Green scene 'hook-isthmus' (isthmus basemap, paragraphs hook-isthmus .. hook-bio-2). Sides: British = blue ("carth"), Argentine = red ("rome").
-// Built with: python3 tools/build_scene.py hook-isthmus isthmus hook-isthmus hook-bio-2
+// Goose Green scene 'ending' (isthmus basemap, paragraphs end-1 .. end-2). Sides: British = blue ("carth"), Argentine = red ("rome").
+// Built with: python3 tools/build_scene.py ending isthmus end-1 end-2
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
@@ -222,108 +222,93 @@ const GG = (() => {
   return G;
 })();
 
+// Note: the scene spans end-1 .. end-2 including the two ARCHIVE paragraphs between them (assemble_full.py only cuts
+// the end-1 and end-2 windows out of this render); the map simply holds during the archive gap.
 // ---------- projection (assets/isthmus.json: zoom 13, origin_world_px 703494, 1401591) ----------
 const G = (lat, lon) => {
   const n = 256 * 2 ** 13, r = (lat * Math.PI) / 180;
   return [+((lon + 180) / 360 * n - 703494).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 1401591).toFixed(1)];
 };
-// Places (OpenStreetMap / Wikipedia coordinates, checked against the relief)
 const CCH = G(-51.7435, -58.962), BURNT = G(-51.7858, -58.9419), BOCA = G(-51.8009, -58.9847), DARWIN = G(-51.807, -58.9588);
 const GOOSE = G(-51.8277, -58.9728), AIRF = G(-51.8196, -58.9802), DHILL = G(-51.8035, -58.966), CORON = G(-51.800, -58.948);
 
-const K1 = "hook-isthmus", K2 = "hook-bio", K3 = "hook-bio-2";
-const S2 = P(K2), S3 = P(K3);
-const T_2PARA = at(K1, "Second Battalion"), T_500 = at(K1, "five hundred"), T_GUNS = at(K1, "three light guns");
-const T_1000 = at(K1, "a thousand Argentine"), T_DUG = at(K1, "dug in across"), T_ART = at(K1, "more artillery"), T_BBC = at(K1, "thanks to the BBC");
-const T_DEAD = at(K3, "H Jones would be dead"), T_KEEB = at(K3, "his quiet second") - 0.4, T_YET = at(K3, "And yet");
-const T_900 = at(K3, "more than nine hundred"), T_FIRST = at(K3, "first great land battle"), T_THREE = at(K3, "Let's take");
+const K1 = "end-1", K2 = "end-2", S2 = P(K2);
+const T_CHOOSE = at(K1, "choosing how"), T_DARK = at(K1, "First darkness"), T_HEAVY = at(K1, "Then heavy weapons"), T_WORDS = at(K1, "And finally words");
+const T_OWN = at(K2, "Own the dark"), T_MATCH = at(K2, "Match the weapon"), T_MIND = at(K2, "Attack the mind"), T_THREE = at(K2, "Three simple rules");
+const T_NEXT = at(K2, "which commander");
 
-// ---------- camera ----------
+// ---------- camera: the whole isthmus, then a slow push-in under the method card ----------
 B.camera([
-  [0, 1650, 560, 1.5],
-  [T_1000 - 1.6, 1640, 590, 1.55],
-  [T_1000 + 1.4, 1610, 1000, 1.5],
-  [S2 - 0.5, 1610, 990, 1.42],
-  [S3 - 0.3, 1610, 980, 1.4],
-  [S3 + 1.6, 1640, 830, 1.22],
-  [END, 1640, 830, 1.18],
+  [0, 1600, 900, 1.6],
+  [T_DARK, 1600, 880, 1.7],
+  [T_HEAVY, 1560, 950, 2.0],
+  [T_WORDS - 0.6, 1560, 955, 2.0],
+  [T_WORDS, 1545, 1120, 2.0],
+  [B.end(K1) + 0.5, 1560, 1100, 1.9],
+  [S2, 1560, 1100, 1.9],
+  [END, 1560, 1100, 2.1],
 ]);
 
-// ---------- places ----------
+// ---------- base: places and the Argentine layers ----------
 B.showDate(0.2);
-B.date("27 MAY 1982", 0.4, null, 40);
-B.city("CAMILLA CREEK HOUSE", ...CCH, { size: 26, r: 7, t: 0.6 });
-B.city("BURNTSIDE HOUSE", ...BURNT, { size: 24, r: 7, t: 1.0 });
-B.city("BOCA HOUSE", ...BOCA, { size: 24, r: 7, left: true, t: 1.3 });
-B.city("DARWIN", ...DARWIN, { size: 24, r: 7, t: 1.6 });
-B.city("GOOSE GREEN", GOOSE[0], GOOSE[1], { size: 26, r: 8, t: 1.9 });
-GG.lbl("AIRFIELD", AIRF[0] - 30, AIRF[1] + 6, { size: 20, anchor: [-100, -50], t: 2.2 });
-GG.lbl("DARWIN HILL", DHILL[0] + 10, DHILL[1] - 38, { size: 20, anchor: [-50, -50], t: 2.4 });
-B.label("BRENTON LOCH", 1300, 870, { cls: "sea", size: 28, t: 2.6 });
-B.label("DARWIN HARBOUR", 1760, 1085, { cls: "sea", size: 24, t: 2.8 });
+B.date("28 – 29 MAY 1982", 0.4, null, 36);
+B.city("BURNTSIDE HOUSE", ...BURNT, { size: 20, r: 6, t: 0.3 });
+B.city("BOCA HOUSE", ...BOCA, { size: 20, r: 6, left: true, t: 0.4 });
+B.city("DARWIN", ...DARWIN, { size: 20, r: 6, t: 0.5 });
+B.city("GOOSE GREEN", ...GOOSE, { size: 22, r: 7, t: 0.6 });
+GG.lbl("DARWIN HILL", 1562, 1034, { size: 16, t: 0.7 });
+GG.gorse([[BOCA[0] + 8, BOCA[1] + 8], [1520, 975], [1560, 992], [DHILL[0] + 14, DHILL[1] + 16], [1616, 1006]], 0.4);
+const FWD = [[1500, 872], [1560, 858], [1640, 846], [1700, 842], [1770, 848]];
+const MAIN = [[BOCA[0] + 6, BOCA[1] - 20], [1522, 956], [1570, 968], [1608, 982], [1628, 998]];
+const fwd = B.front({ pts: FWD, color: "var(--rome)", width: 7, t: T_CHOOSE, dur: 1.0, until: T_DARK + 1.8 });
+const main = B.front({ pts: MAIN, color: "var(--rome)", width: 9, t: T_CHOOSE + 0.4, dur: 1.0, until: T_HEAVY + 2.8 });
+const RED = { f1: [1540, 870], f2: [1628, 856], f3: [BURNT[0] + 30, BURNT[1] + 26], m1: [BOCA[0] + 26, BOCA[1] - 16], m2: [1532, 978], m3: [DHILL[0] + 6, DHILL[1] + 2],
+  g1: [GOOSE[0] - 34, GOOSE[1] - 30], g2: [GOOSE[0] + 30, GOOSE[1] - 34], g3: [AIRF[0] + 16, AIRF[1] - 20] };
+Object.entries(RED).forEach(([id, [x, y]], i) => B.unit({ id, side: "rome", x, y, w: 26, h: 18, t: T_CHOOSE + 0.2 + i * 0.1 }));
 
-// ---------- 2 PARA ----------
-B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 46, w: 56, h: 38, label: "2 PARA", t: T_2PARA });
-B.unit({ id: "guns", side: "carth", x: CCH[0] - 70, y: CCH[1] + 46, w: 40, h: 28, label: "3 GUNS", t: T_GUNS });
-GG.icon("guns", "gun");
-B.caption("2 PARA · ~500 FIGHTING MEN · 3 LIGHT GUNS", T_500 - 0.3, T_1000 - 0.3, "carth r");
+// ---------- 1: darkness ----------
+GG.night(T_DARK - 0.6, T_HEAVY - 0.3, { dur: 1.0, outDur: 1.2 });
+[[[1530, 740], [1515, 800], [1528, 850]], [[1590, 700], [1600, 790], [1610, 880]], [[1672, 758], [1712, 840], [1700, 915]]]
+  .forEach((pts, i) => B.arrow({ side: "carth", pts, width: 12, t: T_DARK + i * 0.3, dur: 1.2, until: T_HEAVY + 0.6 }));
+B.grey(["f1", "f2", "f3"], T_DARK + 1.2, 0.6);
+B.hideUnits(["f1", "f2", "f3"], T_DARK + 2.2, 0.6);
+const BLUE = { A: [1628, 935], B: [1492, 896], D: [1575, 900] };
+Object.entries(BLUE).forEach(([k, [x, y]], i) => B.unit({ id: "c" + k, side: "carth", x, y, w: 28, h: 20, label: k + " COY", t: T_DARK + 1.2 + i * 0.15 }));
+B.caption("1 · OWN THE DARK", T_DARK, T_HEAVY - 0.2, "carth r");
 
-// ---------- Task Force Mercedes ----------
-const RED = [
-  // forward screen
-  ["f1", 1545, 866], ["f2", 1625, 852], ["f3", BURNT[0] + 30, BURNT[1] + 24], ["f4", CORON[0], CORON[1]],
-  // main line along the gorse, Boca House -> Darwin Hill
-  ["m1", BOCA[0] + 22, BOCA[1] - 12], ["m2", 1526, 974], ["m3", DHILL[0] + 4, DHILL[1] + 4],
-  // depth: airfield and settlement
-  ["d1", AIRF[0] + 14, AIRF[1] - 18], ["d2", GOOSE[0] - 34, GOOSE[1] - 30], ["d3", GOOSE[0] + 26, GOOSE[1] - 36],
-];
-RED.forEach(([id, x, y], i) => B.unit({ id, side: "rome", x, y, w: 34, h: 24, t: T_1000 + 0.2 + i * 0.12 }));
-GG.icon("d1", "aa"); GG.icon("d3", "gun");
-GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", 1500, 1250, "#c4121f", { size: 20, anchor: [-100, -50], t: T_1000 + 1.2 });
-B.caption("DUG IN ACROSS OPEN, TREELESS GROUND", T_DUG, T_ART - 0.2, "rome r");
-B.caption("+ ARTILLERY · ANTI-AIRCRAFT GUNS · AIRCRAFT ON CALL", T_ART, T_BBC - 0.3, "rome r");
-GG.lbl("AA GUNS", AIRF[0] + 36, AIRF[1] - 18, { size: 16, anchor: [0, -50], t: T_ART + 0.4, until: S2 });
-GG.lbl("ARTILLERY", GOOSE[0] + 48, GOOSE[1] - 36, { size: 16, anchor: [0, -50], t: T_ART + 0.7, until: S2 });
-// the BBC warning: radio rings over the Argentine line
-const ring = (x, y, t) => {
-  for (let i = 0; i < 4; i++) {
-    const el = GG.pin(`<div style="width:120px;height:120px;border-radius:50%;border:5px solid rgba(255,235,200,0.9);box-shadow:0 0 10px rgba(0,0,0,0.4)"></div>`, x, y, {});
-    B.tl.fromTo(el, { autoAlpha: 0.9, scale: 0.15 }, { autoAlpha: 0, scale: 1.6, duration: 1.6, ease: "power1.out", immediateRender: false }, t + i * 0.55);
-  }
-};
-ring(1545, 960, T_BBC); ring(1545, 960, T_BBC + 2.4);
-B.caption("THANKS TO THE BBC, THEY KNEW WHO WAS COMING", T_BBC - 0.1, S2 - 0.2, "rome r");
+// ---------- 2: heavy weapons ----------
+for (let i = 0; i < 7; i++) {
+  const t = T_HEAVY + 0.1 + i * 0.35;
+  GG.flash(1640, 870, t, { r: 12, n: 1 });
+  GG.arc(1640, 870, 1560 + (i * 17) % 40, 975 + (i * 11) % 16, t + 0.05, { dur: 0.7, width: 2.5, h: 60 });
+}
+for (let i = 0; i < 4; i++) {           // MILAN: straight wire-guided shots into the Boca House positions
+  const t = T_HEAVY + 0.5 + i * 0.55;
+  GG.arc(1478, 866, BOCA[0] + 20 + (i % 2) * 14, BOCA[1] - 18 + (i % 3) * 6, t, { h: 0, color: "#fff8d0", width: 3, dur: 0.45, r: 16 });
+}
+GG.tagbox("MILAN", 1470, 846, "#1f4fc4", { size: 13, t: T_HEAVY + 0.3, until: T_WORDS });
+GG.tagbox("MORTARS", 1640, 852, "#1f4fc4", { size: 13, t: T_HEAVY + 0.1, until: T_WORDS });
+B.grey(["m1", "m2", "m3"], T_HEAVY + 2.2, 0.6);
+B.hideUnits(["m1", "m2", "m3"], T_WORDS, 0.6);
+B.move("cA", T_HEAVY + 2.6, 1.6, 1590, 1030);
+B.move("cB", T_HEAVY + 2.6, 1.6, 1490, 1010);
+B.move("cD", T_HEAVY + 2.8, 1.6, 1540, 1060);
+B.caption("2 · MATCH THE WEAPON TO THE WALL", T_HEAVY, T_WORDS - 0.2, "carth r");
 
-// ---------- hook-bio: H Jones ----------
-B.dim(S2 - 0.3, S3 - 0.3);
-B.dateBox(S2 - 0.3, null, S3);
-GG.bioT({
-  flag: "assets/media/uk_flag.png", unit: "2 PARA",
-  name: "LT. COL. H. JONES",
-  rows: ["Commanding Officer, 2 PARA", "Herbert 'H' Jones · 1940 – 1982", "Age 42 · fiercely driven", "Threatened to sue the BBC"],
-  rowT: [S2 + 1.4, at(K2, "Lieutenant Colonel Herbert"), at(K2, "forty-two"), at(K2, "sue the BBC")],
-  t: S2, until: B.end(K2) + 0.1,
-});
+// ---------- 3: words: the ring around Goose Green ----------
+const ringEl = GG.pin(`<svg width="330" height="250" viewBox="0 0 330 250" style="display:block;overflow:visible">
+  <ellipse cx="165" cy="125" rx="155" ry="112" fill="rgba(31,79,196,0.12)" stroke="#1f4fc4" stroke-width="9" stroke-dasharray="22 12"/></svg>`, GOOSE[0] - 10, GOOSE[1] - 50, { t: T_WORDS + 0.2 });
+B.move("cA", T_WORDS, 1.5, 1622, 1075);
+B.move("cB", T_WORDS, 1.5, 1418, 1200);
+B.move("cD", T_WORDS, 1.5, 1515, 1050);
+const flag = GG.pin(`<svg width="46" height="56" viewBox="0 0 46 56" style="display:block"><line x1="4" y1="2" x2="4" y2="56" stroke="#3a2a18" stroke-width="4"/><path d="M6 4 Q22 0 40 6 L40 26 Q22 20 6 26 Z" fill="#fbfaf6" stroke="#1b1812" stroke-width="2"/></svg>`, GOOSE[0], GOOSE[1] - 76, { t: T_WORDS + 1.8, pop: true });
+B.grey(["g1", "g2", "g3"], T_WORDS + 1.6, 0.8);
+B.caption("3 · ATTACK THE MIND, NOT THE MAN", T_WORDS, S2 - 0.3, "carth r");
 
-// ---------- hook-bio-2: Jones falls, Keeble ----------
-const jst = GG.stake({ name: "LT. COL. H. JONES", role: "CO, 2 PARA", side: "carth", x: CCH[0] + 190, y: CCH[1] + 230, size: 1.25, t: S3 + 1.0, until: T_KEEB });
-B.tl.to(jst, { filter: "grayscale(1)", opacity: 0.75, duration: 0.8 }, T_DEAD + 0.6);
-B.caption("28 MAY 1982: H JONES KILLED IN ACTION", T_DEAD + 0.4, T_KEEB, "rome r");
-B.dim(T_KEEB - 0.2, T_YET + 0.3);
-B.dateBox(T_KEEB - 0.2, null, T_YET + 0.6);
-GG.bioT({
-  flag: "assets/media/uk_flag.png", unit: "2 PARA", mirror: true,
-  name: "MAJ. CHRIS KEEBLE",
-  rows: ["Second in Command, 2 PARA", "Took over the battle on 28 May", "Cold · exhausted · short of ammunition"],
-  rowT: [at(K3, "second in command") + 0.3, at(K3, "would be leading"), at(K3, "cold, exhausted")],
-  t: T_KEEB, until: T_YET + 0.1,
-});
-
-// the surrender, and the three moves
-B.date("29 MAY 1982", T_YET + 0.6, null, 40);
-B.grey(RED.map((r) => r[0]), T_900, 1.2);
-B.caption("WITHIN 36 HOURS: 961 ARGENTINE PRISONERS", T_900 - 0.2, T_FIRST - 0.2, "carth r");
-B.caption("THE FIRST GREAT LAND BATTLE OF THE FALKLANDS WAR", T_FIRST, T_THREE - 0.3, "r");
-B.dim(T_THREE - 0.3, END + 1, 0.6);
-GG.card(`<div class="h">2 PARA · GOOSE GREEN</div><div class="row"><b>1</b>THE NIGHT ASSAULT</div><div class="row"><b>2</b>DARWIN HILL &amp; BOCA HOUSE</div><div class="row"><b>3</b>THE GOOSE GREEN BLUFF</div>`, "gg-list", 290, T_THREE, END + 1);
+// ---------- end-2: the method, all three lines ----------
+B.dim(S2 - 0.2, END + 1, 0.9);
+B.dateBox(S2 - 0.2);
+const card = GG.method(3, S2 + 0.1, END + 1, [T_OWN - 0.1, T_MATCH - 0.1, T_MIND - 0.1]);
+B.tl.fromTo(card.querySelector(".inner"), { scale: 1 }, { scale: 1.06, duration: END - S2, ease: "none" }, S2);
+B.caption("WHICH COMMANDER NEXT? TELL ME IN THE COMMENTS", T_NEXT - 0.3, END + 1, "");
 B.finish();

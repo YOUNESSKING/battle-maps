@@ -25,10 +25,10 @@ const GG = (() => {
     .gg-card { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
     .gg-card .inner { padding: 30px 70px 34px; background: rgba(18, 16, 12, 0.9); color: #f4f1ea; border-top: 6px solid #c9b48a; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
     .gg-method .k { font-size: 30px; letter-spacing: 0.4em; color: #c9b48a; text-align: center; margin-bottom: 14px; }
-    .gg-method .row { display: flex; align-items: center; gap: 28px; font-size: 58px; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; }
+    .gg-method .row { display: flex; align-items: center; gap: 28px; font-size: 66px; font-weight: 700; letter-spacing: 0.08em; line-height: 1.4; }
     .gg-method .n { width: 60px; height: 60px; border-radius: 50%; border: 4px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 36px; flex: none; }
     .gg-method .row.off { color: rgba(244,241,234,0.22); }
-    .gg-method .row.off .bar { width: 520px; height: 14px; background: rgba(244,241,234,0.14); border-radius: 7px; }
+    .gg-method .row.off .bar { width: 640px; height: 14px; background: rgba(244,241,234,0.14); border-radius: 7px; }
     .gg-method .row.lit { color: #fbfaf6; }
     .gg-list .row { font-size: 44px; font-weight: 700; letter-spacing: 0.08em; line-height: 1.5; }
     .gg-list .row b { color: #e3232f; margin-right: 18px; }
@@ -259,7 +259,7 @@ B.camera([
   [S[2] + 1.5, 1600, 900, 1.9],
   [T_WATER + 1.0, 1590, 910, 1.95],
   [T_LAYERS - 1.0, 1590, 960, 1.75],
-  [S[3] + 1.5, 1560, 1010, 1.8],
+  [S[3] + 1.5, 1600, 1030, 1.8],
   [S[4] + 1.0, 1600, 950, 2.0],
   [S[5] - 0.5, 1600, 950, 2.0],
   [S[5] + 3.0, 1620, 690, 1.6],
@@ -299,7 +299,7 @@ B.city("DARWIN", ...DARWIN, { size: 18, r: 6, t: S[2] + 1.3 });
 B.city("GOOSE GREEN", ...GOOSE, { size: 20, r: 7, t: S[2] + 1.6 });
 GG.lbl("AIRFIELD", AIRF[0] - 26, AIRF[1] + 6, { size: 16, anchor: [-100, -50], t: S[2] + 1.9 });
 const lochL = B.label("BRENTON LOCH", 1310, 800, { cls: "sea", size: 22, t: S[2] + 2.2 });
-const hbrL = B.label("DARWIN HARBOUR", 1800, 1040, { cls: "sea", size: 18, t: S[2] + 2.4 });
+const hbrL = B.label("DARWIN HARBOUR", 1810, 1150, { cls: "sea", size: 18, t: S[2] + 2.4 });
 B.tl.to([lochL, hbrL], { scale: 1.18, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_WATER);
 // the neck: measurement bar
 const neck = GG.pin(`<svg width="200" height="40" viewBox="0 0 200 40" style="display:block;overflow:visible">
@@ -320,9 +320,9 @@ B.front({ pts: MAIN, color: "var(--rome)", width: 9, t: T_LAYERS + 0.8, dur: 1.2
 B.front({ pts: DEPTH, color: "var(--rome)", width: 7, t: T_LAYERS + 1.6, dur: 1.2 });
 
 // ---------- move1-3: Piaggi and Task Force Mercedes ----------
-const pst = B.portraitStake({ img: "assets/media/piaggi_head.png", flag: "assets/media/arg_flag.png", name: "LT. COL. ÍTALO PIAGGI", x: 1700, y: 1235, size: 0.62, t: T_PIAG - 0.4, until: T_SAW });
+const pst = B.portraitStake({ img: "assets/media/piaggi_head.png", flag: "assets/media/arg_flag.png", name: "LT. COL. ÍTALO PIAGGI", x: 1748, y: 1190, size: 0.62, t: T_PIAG - 0.4, until: T_SAW });
 pst.classList.add("arg");
-GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", 1700, 1256, "#c4121f", { size: 14, t: T_TFM, until: T_SAW });
+GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", 1748, 1210, "#c4121f", { size: 14, t: T_TFM, until: T_SAW });
 const RED = {
   f1: [1540, 870, ""], f2: [1628, 856, ""], f3: [BURNT[0] + 30, BURNT[1] + 26, ""], f4: [CORON[0], CORON[1] + 2, ""],
   m1: [BOCA[0] + 26, BOCA[1] - 16, ""], m2: [1532, 978, "12th REGT"], m3: [DHILL[0] + 6, DHILL[1] + 2, ""],
@@ -332,7 +332,7 @@ const RT = { f: T_SCREEN, m: T_MAIN, d: T_BEHIND };
 Object.entries(RED).forEach(([id, [x, y, label]], i) => B.unit({ id, side: "rome", x, y, w: 26, h: 18, label: label || null, t: RT[id[0]] + 0.3 + (i % 4) * 0.25 }));
 GG.icon("d1", "aa"); GG.icon("d3", "gun");
 B.caption("A SCREEN OF OUTPOSTS FORWARD", T_SCREEN, T_MAIN - 0.2, "rome r");
-GG.lbl("DARWIN HILL", DHILL[0] + 12, DHILL[1] - 26, { size: 15, t: T_DH - 0.2 });
+GG.lbl("DARWIN HILL", 1562, 1034, { size: 15, t: T_DH - 0.2 });
 B.caption("MAIN LINE: DARWIN HILL TO BOCA HOUSE", T_MAIN + 0.4, T_BEHIND - 0.2, "rome r");
 [[1440, 990], [1500, 1000], [1560, 1010], [1470, 1030], [1540, 1040]].forEach(([x, y], i) => GG.arc(AIRF[0] + 16, AIRF[1] - 24, x, y, T_AA + 0.3 + i * 0.35, { h: 0, color: "#ff6a5a", dash: "10 7", width: 3, dur: 0.6, impact: false, until: T_IDEA + 1 }));
 B.caption("AA GUNS COULD FIRE ALONG THE GROUND", T_AA + 0.4, S[4] - 0.2, "rome r");
@@ -415,12 +415,12 @@ B.move("cB", T_DCOY + 1.8, 4.0, 1508, 900);
 B.move("cC", T_DCOY + 2.0, 4.0, 1600, 800);
 B.grey(["f4"], T_MORT, 1.0);
 B.hideUnits(["f4"], T_PEAT, 1.0);
-B.unit({ id: "mort", side: "carth", x: 1650, y: 780, w: 26, h: 18, label: "MORTARS", t: T_MORT - 0.6 });
+B.unit({ id: "mort", side: "carth", x: 1665, y: 718, w: 26, h: 18, label: "MORTARS", t: T_MORT - 0.6 });
 GG.icon("mort", "mortar");
 for (let i = 0; i < 8; i++) {
   const t = T_MORT + 0.2 + i * 0.8;
-  GG.flash(1650, 770, t, { r: 13, n: 1 });
-  GG.arc(1650, 770, 1540 + (i * 23) % 90, 950 + (i * 13) % 30, t + 0.05, { dur: 0.9, width: 2.5, h: 90 });
+  GG.flash(1665, 710, t, { r: 13, n: 1 });
+  GG.arc(1665, 710, 1540 + (i * 23) % 90, 950 + (i * 13) % 30, t + 0.05, { dur: 0.9, width: 2.5, h: 90 });
 }
 B.caption("MORTAR BASEPLATES DRIVEN DEEP INTO THE PEAT", T_PEAT - 1.2, T_GUNS - 0.2, "carth r");
 for (let i = 0; i < 7; i++) {
@@ -431,7 +431,7 @@ for (let i = 0; i < 7; i++) {
 B.caption("3 LIGHT GUNS · HUNDREDS OF ROUNDS", T_GUNS + 0.2, T_EMPTY - 0.2, "carth r");
 GG.tagbox("NEARLY EMPTY", GUNS[0], GUNS[1] + 44, "#8a877f", { size: 15, t: T_EMPTY, until: S[10] });
 B.caption("BY DAWN: NEARLY OUT OF SHELLS", T_EMPTY, S[9] - 0.2, "rome r");
-const bf = B.front({ pts: [[1500, 760], [1560, 752], [1610, 740], [1680, 752]], to: [[1500, 902], [1560, 878], [1612, 868], [1700, 900]], color: "var(--carth)", width: 7, t: T_DCOY + 0.2, dur: 1.2, moveT: T_DCOY + 1.4, moveDur: 4.5, until: S[10] });
+const bf = B.front({ pts: [[1500, 760], [1560, 752], [1610, 740], [1680, 752]], to: [[1500, 902], [1560, 878], [1612, 868], [1700, 900]], color: "var(--carth)", width: 7, t: T_DCOY + 0.2, dur: 1.2, moveT: T_DCOY + 1.4, moveDur: 4.5, until: T_SUN + 0.3 });
 
 // ---------- move1-9: first light ----------
 GG.dawn(T_LIGHT, S[10] + 4);
@@ -444,13 +444,13 @@ B.tl.to(arrowShip, { x: -120, y: -150, autoAlpha: 0, duration: 4.5, ease: "power
 B.caption("HMS ARROW LEAVES BEFORE DAWN", T_LEAVE, T_SUN - 0.2, "rome r");
 GG.sun(1790, 760, { s: 120, t: T_SUN + 1.0, until: S[10] });
 // A and B halted in the open, short of the gorse line
-B.move("cA", T_SUN + 0.5, 3.0, 1622, 942);
-B.move("cB", T_SUN + 0.5, 3.0, 1500, 912);
+B.move("cA", T_SUN + 0.5, 3.0, 1628, 935);
+B.move("cB", T_SUN + 0.5, 3.0, 1492, 896);
 B.move("cD", T_SUN + 0.8, 3.0, 1575, 900);
 B.hideUnits(["cC", "mort"], T_SUN + 0.5);
 B.caption("A AND B COMPANIES: IN THE OPEN, IN FRONT OF THE MAIN LINE", T_OPEN - 0.3, T_GONE - 0.2, "rome r");
-GG.pin(`<div style="width:70px;height:70px;border-radius:50%;border:5px solid #fff3c4;box-shadow:0 0 12px rgba(255,200,80,0.9)"></div>`, 1622, 942, { t: T_OPEN, until: S[10] });
-GG.pin(`<div style="width:70px;height:70px;border-radius:50%;border:5px solid #fff3c4;box-shadow:0 0 12px rgba(255,200,80,0.9)"></div>`, 1500, 912, { t: T_OPEN + 0.3, until: S[10] });
+GG.pin(`<div style="width:70px;height:70px;border-radius:50%;border:5px solid #fff3c4;box-shadow:0 0 12px rgba(255,200,80,0.9)"></div>`, 1628, 935, { t: T_OPEN, until: S[10] });
+GG.pin(`<div style="width:70px;height:70px;border-radius:50%;border:5px solid #fff3c4;box-shadow:0 0 12px rgba(255,200,80,0.9)"></div>`, 1492, 896, { t: T_OPEN + 0.3, until: S[10] });
 B.caption("THE DARKNESS WAS GONE", T_GONE, S[10] - 0.2, "rome r");
 
 // ---------- move1-10: method ----------
