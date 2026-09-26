@@ -234,11 +234,11 @@
       reveal(el, t, { from: { y: 30 }, to: { y: 0 } }, 0.6); if (until != null) out(el, until, 0.4);
       return el;
     };
-    B.method = (t, until, rows = ["REFUSE TO BE HURRIED", "HOLD THE GROUND THAT MATTERS", "STRIKE TO DESTROY"]) => {
+    // rowT (optional): absolute time for each row; default = staggered 1.1 s apart after t
+    B.method = (t, until, rows = ["REFUSE TO BE HURRIED", "HOLD THE GROUND THAT MATTERS", "STRIKE TO DESTROY"], rowT) => {
       const el = screenEl(`<div class="inner">${rows.map((r) => `<div class="row">${r}</div>`).join("")}</div>`, "card method");
       reveal(el, t, {}, 0.5);
-      const rows = el.querySelectorAll(".row");
-      rows.forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, t + 0.2 + i * 1.1));
+      el.querySelectorAll(".row").forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, rowT && rowT[i] != null ? rowT[i] : t + 0.2 + i * 1.1));
       if (until != null) out(el, until, 0.5);
       return el;
     };
