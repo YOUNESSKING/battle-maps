@@ -92,21 +92,31 @@ B.label("HORSESHOE RIDGE", 1150, 800, { cls: "tg", size: 22, rot: -8, t: 0.3, an
 // ---------- 2b. TERRITORY CONTROL: each side's ground is tinted; when a line breaks, the colour floods over the lost ground ----------
 const B0 = [[1560, -20], [1600, 430], [1720, 560], [1700, 760], [1625, 820], [1615, 900], [1595, 1000], [1520, 1100], [1400, 1640]];
 const B1 = [[1560, -20], [1600, 430], [1720, 560], [1700, 760], [1560, 810], [1330, 880], [1090, 905], [880, 1040], [620, 1640]];
-const cur = B0.map((p) => p.slice());
+const curB = B0.map((p) => p.slice()), curR = B0.map((p) => p.slice());
 const zoneG = document.createElementNS(NS, "g");
-zoneG.innerHTML = `<path class="zu" fill="rgba(31,79,196,0.20)"/><path class="zr" fill="rgba(196,18,31,0.20)"/><path class="zl" fill="none" stroke="#f7f3ea" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.8"/>`;
+zoneG.innerHTML = `<path class="zg" fill="rgba(31,79,196,0.20)"/><path class="zu" fill="rgba(31,79,196,0.20)"/><path class="zr" fill="rgba(196,18,31,0.20)"/><path class="zl" fill="none" stroke="#f7f3ea" stroke-width="5" stroke-dasharray="2 10" stroke-linecap="round" opacity="0.8"/>`;
 document.getElementById("fields").after(zoneG);
 const zd = (pts) => "M " + pts.map((p) => p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" L ") + " Z";
+const L = B0.length - 1;
 const drawZones = () => {
-  const L = cur.length - 1;
-  zoneG.querySelector(".zu").setAttribute("d", zd([[-20, -20], ...cur, [-20, 1640]]));
-  zoneG.querySelector(".zr").setAttribute("d", zd([[cur[0][0], -20], [2900, -20], [2900, 1640], [cur[L][0], 1640], ...cur.slice().reverse()]));
-  zoneG.querySelector(".zl").setAttribute("d", "M " + cur.map((p) => p.join(" ")).join(" L "));
+  zoneG.querySelector(".zu").setAttribute("d", zd([[-20, -20], ...curB, [-20, 1640]]));
+  zoneG.querySelector(".zr").setAttribute("d", zd([[curR[0][0], -20], [2900, -20], [2900, 1640], [curR[L][0], 1640], ...curR.slice().reverse()]));
+  zoneG.querySelector(".zl").setAttribute("d", "M " + curR.map((p) => p.join(" ")).join(" L "));
 };
+// ghost of the ground the Union is about to lose: stays blue, then FADES as the Union retreats
+const ghost = zoneG.querySelector(".zg");
+ghost.setAttribute("d", zd([...B0.slice(3), ...B1.slice(3).reverse()])); gsap.set(ghost, { opacity: 0 });
 drawZones(); gsap.set(zoneG, { autoAlpha: 0 });
 tl.to(zoneG, { autoAlpha: 1, duration: 1.5 }, 1.0);
-const zst = { k: 0 };
-tl.to(zst, { k: 1, duration: 9, ease: "power1.inOut", onUpdate: () => { cur.forEach((p, i) => { p[0] = B0[i][0] + (B1[i][0] - B0[i][0]) * zst.k; p[1] = B0[i][1] + (B1[i][1] - B0[i][1]) * zst.k; }); drawZones(); } }, T_POUR + 0.5);
+const lerp = (arr, k) => arr.forEach((p, i) => { p[0] = B0[i][0] + (B1[i][0] - B0[i][0]) * k; p[1] = B0[i][1] + (B1[i][1] - B0[i][1]) * k; });
+// 1) the Union line gives way: blue boundary pulls back, the abandoned ground keeps a blue ghost that FADES out
+const zb = { k: 0 };
+tl.set(ghost, { opacity: 1 }, T_POUR + 0.4);
+tl.to(zb, { k: 1, duration: 0.6, onUpdate: () => { lerp(curB, zb.k); drawZones(); } }, T_POUR + 0.4);
+tl.to(ghost, { opacity: 0, duration: 5, ease: "sine.inOut" }, T_POUR + 0.8);
+// 2) only then do the Confederates occupy it: red spreads slowly over the now-neutral ground
+const zr = { k: 0 };
+tl.to(zr, { k: 1, duration: 7, ease: "power1.inOut", onUpdate: () => { lerp(curR, zr.k); drawZones(); } }, T_THIRD);
 // "ground lost" pulse over the area that changes hands
 const lost = document.createElementNS(NS, "path");
 lost.setAttribute("d", zd([...B0.slice(3), ...B1.slice(3).reverse()])); lost.setAttribute("fill", "rgba(196,18,31,0.35)"); lost.setAttribute("stroke", "#c4121f"); lost.setAttribute("stroke-width", "4");
@@ -114,7 +124,7 @@ zoneG.after(lost); gsap.set(lost, { autoAlpha: 0 });
 tl.to(lost, { autoAlpha: 1, duration: 0.5, yoyo: true, repeat: 3 }, T_THIRD + 0.8);
 B.label("UNION-HELD", 1200, 520, { cls: "tg", size: 30, t: 1.6, until: T_POUR, anchor: [-50, -50] });
 B.label("CONFEDERATE-HELD", 2080, 1120, { cls: "tg", size: 30, t: 1.8, until: T_POUR, anchor: [-50, -50] });
-const lostLab = B.label("GROUND LOST", 1300, 960, { cls: "tg", size: 34, t: T_THIRD + 1.0, until: S7 + 2, anchor: [-50, -50] });
+const lostLab = B.label("GROUND LOST", 1060, 935, { cls: "tg", size: 34, t: T_THIRD + 1.0, until: S7 + 2, anchor: [-50, -50] });
 Object.assign(lostLab.style, { color: "#fff", background: "#c4121f", padding: "2px 12px", textShadow: "none" });
 
 // ---------- 3. BRIGADE-LEVEL UNITS: lines are long and thin, columns deep ----------
