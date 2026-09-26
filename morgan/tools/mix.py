@@ -11,6 +11,9 @@ T = json.load(open("audio/timing.json"))
 DUR = T["duration"]
 P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"] if p["tag"].startswith("MAP")}
 A = "assets/audio"
+# Music bed level in LUFS, before the final -14 LUFS normalisation. The narration is about -24 LUFS, so -37 keeps the music
+# ~13 dB under the voice, and the sidechain ducks it a few dB more while he speaks. (v1 used -21: music as loud as the voice.)
+MUSIC_LUFS = -37
 
 
 def at(key, phrase, off=0.0):
@@ -68,11 +71,11 @@ for n, (file, s, e, off) in enumerate(MUSIC):
     inputs += ["-i", f"{A}/{file}"]
     d = e - s + 1.5
     f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,atrim={off}:{off + d},asetpts=PTS-STARTPTS,"
-             f"loudnorm=I=-21:TP=-3,afade=t=in:d={0.3 if n == 0 else 1.5},afade=t=out:st={d - 1.5}:d=1.5,"
+             f"loudnorm=I=-21:TP=-3,volume={MUSIC_LUFS + 21}dB,afade=t=in:d={0.3 if n == 0 else 1.5},afade=t=out:st={d - 1.5}:d=1.5,"
              f"adelay={int(s * 1000)}|{int(s * 1000)}[m{n}]")
     mus.append(f"[m{n}]"); idx += 1
-f.append(f"{''.join(mus)}amix=inputs={len(mus)}:normalize=0,volume=0.85,afade=t=out:st={DUR - 3}:d=3[mus]")
-f.append("[mus][vokey]sidechaincompress=threshold=0.02:ratio=8:attack=30:release=600:makeup=1[musd]")
+f.append(f"{''.join(mus)}amix=inputs={len(mus)}:normalize=0,afade=t=out:st={DUR - 3}:d=3[mus]")
+f.append("[mus][vokey]sidechaincompress=threshold=0.015:ratio=4:attack=40:release=700:makeup=1[musd]")
 mixes = ["[vo]", "[musd]"]
 for n, (file, t, vol) in enumerate(SFX):
     inputs += ["-i", f"{A}/{file}"]
