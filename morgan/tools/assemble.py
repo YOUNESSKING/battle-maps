@@ -25,12 +25,12 @@ FONT = "tools/special-elite-latin-400-normal.ttf"
 
 
 def still(i, src, info):
-    """3840x2160 frame: blurred, darkened fill + the image fitted, warm grade + vignette."""
+    """2880x1620 frame (1.5x output: enough headroom for smooth zooms, ~2x faster than 4K): blurred, darkened fill + the image fitted, warm grade + vignette."""
     im = Image.open(src).convert("RGB")
-    W, H = 3840, 2160
+    W, H = 2880, 1620
     bg = im.resize((W, int(W * im.height / im.width)) if im.width / im.height < W / H else (int(H * im.width / im.height), H))
     bg = bg.crop(((bg.width - W) // 2, (bg.height - H) // 2, (bg.width - W) // 2 + W, (bg.height - H) // 2 + H))
-    bg = ImageEnhance.Brightness(bg.filter(ImageFilter.GaussianBlur(60))).enhance(0.45)
+    bg = ImageEnhance.Brightness(bg.filter(ImageFilter.GaussianBlur(45))).enhance(0.45)
     s = min(W / im.width, H / im.height)
     fg = im.resize((int(im.width * s), int(im.height * s)), Image.LANCZOS)
     bg.paste(fg, ((W - fg.width) // 2, (H - fg.height) // 2))
@@ -38,7 +38,7 @@ def still(i, src, info):
     out = Image.blend(bg, warm, 0.08)
     vig = Image.new("L", (W, H), 0)
     ImageDraw.Draw(vig).ellipse((-W * 0.25, -H * 0.3, W * 1.25, H * 1.3), fill=255)
-    vig = vig.filter(ImageFilter.GaussianBlur(300))
+    vig = vig.filter(ImageFilter.GaussianBlur(225))
     out = Image.composite(out, Image.new("RGB", (W, H), (0, 0, 0)), vig)
     path = f"build/seg/still{i:02d}.jpg"
     out.save(path, quality=93)
@@ -69,7 +69,7 @@ def archive_seg(i, n, dur, out):
     # centre drifts from the middle toward the focus point while zooming
     x = f"(iw-iw/zoom)*({0.5}+({fx}-0.5)*on/{frames})"
     y = f"(ih-ih/zoom)*({0.5}+({fy}-0.5)*on/{frames})"
-    vf = (f"[0:v]scale=3840:2160,zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s=1920x1080:fps={FPS}[kb];"
+    vf = (f"[0:v]scale=2880:1620,zoompan=z='{z}':x='{x}':y='{y}':d={frames}:s=1920x1080:fps={FPS}[kb];"
           f"[kb][1:v]overlay=0:0:enable='between(t,0.6,{max(dur - 0.8, 1)})'[v]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-framerate", str(FPS), "-i", path, "-i", cap,
                     "-filter_complex", vf, "-map", "[v]", "-t", f"{dur:.3f}", *ENC, out], check=True)

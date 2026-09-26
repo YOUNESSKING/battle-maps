@@ -15,10 +15,13 @@
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from `ridgway/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png` (use ridgway's engine, it is the newest).
-2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
-3. Voice: copy `ridgway/tools/narrate.py`, point SCRIPT/OUT at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`.
-4. Bake terrain per battle (`tools/bake.py`), build map scenes (agents in parallel), fill archive slots, mix, render. Commit + push after each milestone.
+1. `mkdir <name>` and copy the skeleton from **`morgan/`** (newest): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/audio/` (the music library + SFX are reusable; add the CC BY lines from assets/audio/CREDITS.md to the description). In tools/narrate.py point SCRIPT/OUT at the new folder and extend the SAY pronunciation dict; in tools/assemble.py set the SCENES dict.
+2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,600-2,800 words (≈18 min at speed 1.0). Scenes = contiguous runs of MAP paragraphs; write `<name>/SCENES.md` (see morgan/SCENES.md).
+3. Voice: `cd tts && python3 ../<name>/tools/narrate.py am_michael` (per-sentence timing). Bake terrain: `tools/bake.py` (region z7-8, battlefield z15-16).
+4. **Image agent first (Sonnet)**, so portraits exist before maps start: archive/aNN.jpg + slots.json + assets/media cut-outs + flags.
+5. **Map agents** with the brief in `templates/MAP_AGENT_BRIEF.md` (fill in <GENERAL>, <name> and each agent's scene list). Model choice to save usage: **Sonnet for simple regional/overview scenes** (hook, campaign maps, ending), **Opus only for the main battlefield scenes**. Run at most 3 agents at once. The brief limits snapshot reviews (one contact sheet per round, max 3 rounds), which was the biggest usage cost in the Morgan run.
+6. `python3 tools/assemble.py && python3 tools/mix.py` → build/<name>-1080p.mp4 (edit the MUSIC plan and SFX cues in mix.py). Write <name>/YOUTUBE.md. Commit + push after each milestone.
+To stay inside one 5-hour usage window, split big videos over two sessions: (1) script, voice, terrain, images, maps for hook + move 1; (2) moves 2-3, ending, assembly, mix.
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
 ---
