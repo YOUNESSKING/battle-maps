@@ -30,18 +30,21 @@ material was used.
 - **Author**: Mathew Brady, 1861
 - **Licence**: Public domain
 - **Source**: https://commons.wikimedia.org/wiki/File:William_S._Rosecrans_Brady_Portrait_1861.jpg
+- **Notes**: Source is a full-length photo; cropped to the head-and-shoulders region (top ~46% of the segmented figure) so the face fills the frame like the other cut-outs.
 
 ### bragg_head.png (~700px tall)
 - **Title**: "General Braxton Bragg, C.S.A."
 - **Author**: Mississippi Department of Archives and History (Flickr Commons)
 - **Licence**: No known copyright restrictions (Flickr Commons)
 - **Source**: https://commons.wikimedia.org/wiki/File:General_Braxton_Bragg,_C.S.A._(9238294863).jpg
+- **Notes**: Re-cropped tighter (alpha-threshold bounding box + small padding) to remove excess transparent margin.
 
 ### longstreet_head.png (~700px tall)
 - **Title**: "General James Longstreet, C.S.A., head-and-shoulders portrait, facing slightly right"
 - **Author**: Unknown, 1861; Library of Congress
 - **Licence**: Public domain / no known restrictions
 - **Source**: https://www.loc.gov/item/2004678556/ (downloaded via tile.loc.gov, 809x1024)
+- **Notes**: Original CDV scan has a small face on a large light-grey mount; pre-cropped to the face region before background removal so the head fills the frame.
 
 ### grant_head.png (~700px tall)
 - **Title**: "Portrait of Maj. Gen. Ulysses S. Grant, officer of the Federal Army"
@@ -62,10 +65,11 @@ material was used.
 - **Source**: https://commons.wikimedia.org/wiki/File:General_William_Sherman,_head-and-shoulders_portrait,_facing_right_LCCN90711519.jpg
 
 ### steedman_head.png (~700px tall)
-- **Title**: "James B. Steedman, Maj. Gen. Vols." (lithograph)
-- **Author**: Christian Inger (artist), P.S. Duval & Son (printer), c. 1864-1866; Library of Congress
-- **Licence**: Public domain
-- **Source**: https://commons.wikimedia.org/wiki/File:James_B._Steedman_Maj._Gen._Vols._-_C._Inger._LCCN2013650007.jpg
+- **Title**: "Portrait of Maj. Gen. James B. Steedman, officer of the Federal Army"
+- **Author**: Unknown, 1860s; Library of Congress (Civil War glass negative collection)
+- **Licence**: Public domain / no known restrictions
+- **Source**: https://www.loc.gov/item/2018666494/ (downloaded via tile.loc.gov, 657x1024)
+- **Notes**: Replaces an earlier attempt using the "Album Sketches of the Army of the Cumberland" oval lithograph (LCCN2013650007) — that sepia engraving's low-contrast tan background defeated both rembg and a colour-distance chroma key, leaving speckled non-transparent pixels, so a plain photographic Brady-type portrait was used instead for a clean cut-out.
 
 ### granger_head.png (~700px tall)
 - **Title**: "Gen. Gordon Granger"
