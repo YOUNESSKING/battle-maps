@@ -7,7 +7,7 @@
 | Path | What |
 |---|---|
 | `setup.sh`, `.claude/settings.json` | automatic tool install at session start (runs in background; wait for `/tmp/battle-maps-setup.done`) |
-| `research/` | GEMINI_BRIEF_v2.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
+| `research/` | GEMINI_BRIEF_v3.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
 | `chipyongni/` | first test map (hyperframes.json is reused by build_scene.py) |
@@ -96,6 +96,26 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - (Morgan) Scenes must be contiguous runs of MAP paragraphs (no ARCHIVE inside), otherwise render time is wasted.
 - (Morgan) 5 agents in parallel (4 Opus map agents + Sonnet) hit the 5-hour session limit mid-way; they resume cleanly with SendMessage after the reset. Overpass (OSM geometry) fails through the proxy; Nominatim and Natural Earth work.
 - (Morgan) Archive Ken Burns via zoompan at 4K is slow (~20 min for the full assembly on 4 cores).
+
+## 8. Faster and cheaper without losing quality (lessons from the Morgan video)
+Morgan took ~2 h of real work (plus 2 h 15 min stuck on the usage limit). With the items below, a video should take ~1.5-2 h.
+**Already built in (templates/MAP_AGENT_BRIEF.md, morgan/tools):**
+1. Visual review via ONE contact sheet per round (tile all snapshots into one image), max 3 rounds per scene. Opening snapshots one by one was the biggest usage cost.
+2. Right model for the job: Sonnet for simple regional/overview scenes, Opus only for the main battlefield scenes. Max 3 agents at once.
+3. Image agent BEFORE map agents, so portraits exist at build time (no waiting, no rebuild + re-render).
+4. Per-sentence narration timing (narrate.py) so B.at() lands on the right word: fewer fix-and-re-render rounds and better sync.
+5. Scenes = contiguous runs of MAP paragraphs, so no render time is wasted behind archive slots.
+6. Reuse: bake.py, assemble.py, mix.py, the music library (licences already checked) and SFX, the SAY pronunciation dict.
+7. Check pronunciation without listening: `k.tokenizer.phonemize(word, "en-us")` in Kokoro; respell in SAY before recording.
+8. No 720p preview; archive zooms at 1.5x internal resolution (~10 min instead of 21); deliver the master through a file host (gofile.io: `curl -F "file=@X.mp4" https://upload.gofile.io/uploadfile`, then check the md5 in the reply) because the chat limit is 30 MB. The link is public to anyone who has it; gofile deletes files after a period without downloads.
+9. Network: Overpass (OSM geometry) fails through the proxy; Nominatim (places) and Natural Earth 10m (rivers, lakes) work.
+**Still to do (not built yet):**
+10. Promote the helpers the agents wrote locally (volley/muzzle-flash line, range ring, officer target + cross-out, glowing numbered marker, encirclement ring, stat rows timed to speech, water overlays) from morgan/scenes-src/*.js into lib/battle.js, so agents stop re-writing them and every video looks consistent.
+11. A render queue (one `hyperframes render` at a time). 4 parallel renders on 4 cores were no faster overall and one crashed ("FFmpeg cannot start") and had to be re-run.
+**Research accuracy:**
+12. Use research/GEMINI_BRIEF_v3.md: it makes Gemini cite a source for every claim, label claims VERIFIED / SINGLE SOURCE / TRADITION / DISPUTED, and end with a fact-check list. The v2 Morgan research had errors I had to fix: Guilford called a "strategic victory" (it was a British tactical win), the Cowpens Continental withdrawal described as planned (it was a misunderstood order), the "devil of a whipping" letter given the wrong recipient, an unsourced "still taught at West Point", and a Morgan quote to Greene paraphrased inside quotation marks.
+**Sessions:**
+13. One fresh session per video. Each step in a long conversation costs more than the last.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
