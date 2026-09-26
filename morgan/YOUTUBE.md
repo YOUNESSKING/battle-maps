@@ -1,7 +1,7 @@
 # YouTube upload: Daniel Morgan
 
-**Title:** Daniel Morgan's Top 3 Legendary Tactical Moves | The General Who Destroyed Britain's Best in 1 Hour
-**Thumbnail text:** DESTROYED BRITAIN'S BEST IN 1 HOUR
+**Title:** Daniel Morgan's Top 3 Legendary Tactical Moves | The General Who Destroyed Britain's Elite in 1 Hour
+**Thumbnail text:** DESTROYED BRITAIN'S ELITE IN 1 HOUR
 
 ## Description
 
@@ -35,5 +35,5 @@ Music: "Undaunted" Kevin MacLeod (incompetech.com), Licensed under Creative Comm
 Daniel Morgan, Battle of Cowpens, Cowpens 1781, American Revolution, Revolutionary War, Saratoga, Battle of Saratoga, Guilford Courthouse, Banastre Tarleton, Nathanael Greene, Cornwallis, double envelopment, military history, military tactics, tactical genius, battle maps, animated battle map, American Revolutionary War documentary, Old Wagoner, Timothy Murphy, Continental Army, British Army 1781, Southern Campaign, history documentary, top 3 tactical moves
 
 ## Alternative titles
-- The Wagon Driver Who Destroyed Britain's Best in 1 Hour | Daniel Morgan
+- The Wagon Driver Who Destroyed Britain's Elite in 1 Hour | Daniel Morgan
 - How Daniel Morgan Destroyed Tarleton's Legion in Under an Hour | Cowpens 1781
