@@ -212,9 +212,9 @@ const redG = pr.part(`<g class="m">${MEN([[612, 204], [655, 170], [690, 146]], "
 tl.fromTo(blueG.querySelector(".m"), { x: -200, y: 50 }, { x: 0, y: 0, duration: T_SEE + 2 - 0.6, ease: "none", immediateRender: false }, 0.6);
 tl.fromTo(redG.querySelector(".m"), { x: -140, y: 90 }, { x: 0, y: 0, duration: 2.5, ease: "power1.out", immediateRender: false }, T_RETR - 0.2);
 pr.part(`${TRENCH(810, 110)}<g class="gun">${GUN(776, 100)}</g>${GUN(840, 100)}`, 0.5);
-pr.part(`<line x1="810" y1="90" x2="810" y2="36" stroke="#f7f3ea" stroke-width="3"/>${TXT(810, 30, 26, "MAIN TRENCH: THE VERY TOP (TOPOGRAPHIC CREST)", { stroke: "#2a241b" })}`, T_TOP + 0.3, { y: -10 });
-pr.part(`${TRENCH(692, 150, "#f7f3ea", "6 5")}<line x1="680" y1="138" x2="640" y2="98" stroke="#f7f3ea" stroke-width="3"/>
-  ${TXT(560, 80, 24, "MILITARY CREST: A LITTLE WAY DOWN", { stroke: "#2a241b" })}${TXT(560, 106, 20, "(COULD SEE THE WHOLE SLOPE — NOT USED)", { fill: "#e8dcc0", stroke: "#2a241b" })}`, T_INST + 0.2, { y: -10 });
+pr.part(`<line x1="810" y1="90" x2="810" y2="36" stroke="#f7f3ea" stroke-width="3"/>${TXT(985, 30, 26, "MAIN TRENCH: THE VERY TOP", { stroke: "#2a241b", anchor: "end" })}`, T_TOP + 0.3, { y: -10 });
+pr.part(`${TRENCH(692, 150, "#f7f3ea", "6 5")}<line x1="680" y1="138" x2="600" y2="112" stroke="#f7f3ea" stroke-width="3"/>
+  ${TXT(500, 80, 24, "MILITARY CREST: A LITTLE WAY DOWN", { stroke: "#2a241b" })}${TXT(500, 106, 20, "(COULD SEE THE WHOLE SLOPE — NOT USED)", { fill: "#e8dcc0", stroke: "#2a241b" })}`, T_INST + 0.2, { y: -10 });
 // line of sight + dead ground
 const DEAD = [[300, 370], [380, 358], [460, 325], [560, 260], [640, 190]];
 pr.part(`<polygon points="${DEAD.map((q) => q.join(",")).join(" ")}" fill="url(#pbhatch)"/>`, T_SEE + 1.5);
@@ -259,11 +259,11 @@ const rows = st.querySelectorAll(".row");
 rows.forEach((r) => gsap.set(r, { autoAlpha: 0 }));
 [T_LOSS + 0.2, T_CAPT, T_UNION, T_OPEN].forEach((t, i) => tl.fromTo(rows[i], { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.5, immediateRender: false }, t));
 tl.to(rows[3], { color: "#9fc0ea", duration: 0.3 }, T_OPEN);
-B.arrow({ side: "carth", pts: [[1900, 900], [2250, 1150], [2700, 1400]], width: 26, t: T_OPEN + 0.8, dur: 2.0, until: S9 + 2 });
-tag("THE ROAD INTO THE CONFEDERACY ►", 2450, 1480, T_OPEN + 1.8, S9 + 2, { bg: "#1f4fc4", size: 28 });
+B.arrow({ side: "carth", pts: [[1900, 900], [2200, 1100], [2560, 1300]], width: 26, t: T_OPEN + 0.8, dur: 2.0, until: S9 + 2 });
+tag("THE ROAD INTO THE CONFEDERACY ►", 2560, 1200, T_OPEN + 1.8, S9 + 2, { bg: "#1f4fc4", size: 28 });
 
 // ---------- ridge-9: the method ----------
-B.method(S9 + 0.4, END - 0.4, { rowT: [T_REF, T_HELD, T_BLOW] });
+B.method(T_REF - 0.6, END - 0.4, { rowT: [T_REF, T_HELD, T_BLOW] });
 pulse(...CHATT, T_HELD + 0.2, 90, "#9fc0ea", 2);
 
 B.finish();
