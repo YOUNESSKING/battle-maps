@@ -1,0 +1,25 @@
+You are building animated battle-map scenes for a faceless YouTube documentary: "George Thomas's Top 3 Legendary Tactical Moves" (Tactical Genius style: parchment shaded-relief maps, NATO-ish unit blocks, sweeping arrows, slow camera moves, plaques/portrait stakes, captions and stat cards). Project: /home/user/battle-maps/thomas (must stay at this absolute path).
+
+Read first:
+- /home/user/battle-maps/HANDOVER.md sections 5 and 6 (pipeline + lessons learned — follow them).
+- /home/user/battle-maps/thomas/SCENES.md (scene list, projection, colours, media) and thomas/script.md (the [MAP: id | notes] tag of each paragraph is the visual brief; the text after it is the narration).
+- The engine: thomas/lib/battle.js + battle.css (read fully; B.at(para, phrase) gives the time a phrase is spoken — now sentence-accurate; B.method(t, until, {rowT, dim}) shows the Thomas method card (REFUSE TO BE HURRIED · HOLD THE GROUND THAT MATTERS · STRIKE TO DESTROY)) and the reference scenes in morgan/scenes-src/ (reuse their helpers — copy, don't reinvent): hook2.js / ending.js (bio card, portrait stake, glowing markers), saratoga2.js (range ring, crosshair target, cross-out, muzzle-flash fire line, rifleman dots, redoubt, tree), cowpens2.js / cowpens3.js (battle lines, volleys, encirclement ring, stat rows timed to speech), cowpens1.js / guilford1.js (regional chases, rivers from Natural Earth), guilford2.js (three-line battlefield). Water overlays: morgan/assets/*_water.png.
+- Timing is in thomas/audio/timing.json (voice already recorded — do NOT regenerate it). Basemaps are already baked in thomas/assets/*.jpg + *.json — do not re-bake.
+
+Workflow per scene:
+1. Write thomas/scenes-src/SCENE.js.
+2. python3 tools/build_scene.py SCENE BASEMAP FIRST_TAG LAST_TAG (from thomas/).
+3. cd scenes/SCENE && hyperframes lint . ; then hyperframes snapshot . --at <one time per paragraph + key moments>. USAGE BUDGET: combine the snapshots into ONE contact sheet (ffmpeg/PIL tile, e.g. 4x3 at 640x360) and Read that single image instead of each snapshot; at most 3 review rounds per scene, then render. Only open a full-size snapshot to check a specific problem. Fix overlapping labels, units bunched together, things off-screen, black edges (camera must stay clamped inside the 2880x1620 map), text too small to read at 1080p, anything contradicting the narration. Iterate until it looks like a professional documentary map. Historical accuracy matters: place units, rivers and places at their real positions (use your knowledge; Nominatim works for place coordinates; Overpass FAILS through the proxy — use Natural Earth 10m rivers/lakes instead). Battlefield maps may exaggerate spacing slightly for readability.
+4. Render: cd scenes/SCENE && hyperframes render . -o renders/SCENE.mp4 (run it in the background, check the log for "Render complete"; other agents render at the same time on this 4-core machine, so run only ONE render at a time yourself). Rendering is ~3-5x real time. Then verify the mp4 duration with ffprobe matches the scene duration printed by build_scene, and extract 3-4 frames with ffmpeg to eyeball.
+
+Style rules: Union = side "carth" (blue), Confederate = side "rome" (red). Every paragraph should have motion (camera move, arrows, units moving) — no static 20-second holds. Captions/labels in CAPS, short. Title card at the start of each Move (B.title). Keep date scroll updated (B.date). Use portrait stakes (B.portraitStake with assets/media/*_head.png + flag us_flag_35star.png / csa_battle_flag.png) for commanders where the narration names them. Portraits and flags should already be in thomas/assets/media/ (the image agent runs BEFORE the map agents); if one is missing, use a plaque (B.plaque).
+You may add small generic helpers to lib/battle.js/css if truly needed, but other agents use the same files concurrently: only ADD new functions (never change existing signatures/behaviour), and re-read the file right before editing.
+
+Do NOT git commit or push (the main session does). Do not touch audio/, script.md, or other agents' scenes. When finished, reply briefly: scene → render path, duration, and anything you could not do.
+
+Keep helpers local to your scene JS rather than editing lib/battle.js. Keep your final report short (under 200 words).
+
+Project notes: the image agent is still delivering portraits into thomas/assets/media/ (should be there within ~20-30 min). Build geography, units and timing first; before your final snapshot round and render, `ls thomas/assets/media/` and rebuild so the stakes/bio use the real files. If a file is still missing at render time, use a plaque. Also check thomas/SCENES.md "Places" for approximate coordinates (verify them).
+Render queue: wrap every render as `flock /tmp/thomas-render.lock hyperframes render . -o renders/SCENE.mp4` so only one render runs at a time on the machine.
+
+YOUR SCENES:
