@@ -104,6 +104,22 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - Wikimedia rate-limits the shared cloud IP hard (429s for hours). Use the **Library of Congress** first: `https://www.loc.gov/pictures/search/?q=...&fo=json`, full-res TIFF at `tile.loc.gov/storage-services/master/pnp/.../XXXXu.tif`.
 - Assembler: a map run must end where the next scene starts (fixed in greene/tools/assemble_full.py); always check video duration == audio duration.
 
+### Owner feedback on the Greene video (apply to every new video)
+**Music level (was too loud twice).** Final settings in greene/tools: music_map.json bed volumes **0.15-0.17** (e.g. 0.165 for the hook bed, 0.149 for battle beds;
+beds are pre-normalised to about -18 LUFS), ducking under the voice `sidechaincompress=threshold=0.02:ratio=10:attack=20:release=600`,
+SFX volumes x0.7 (musket/cannon about 0.2-0.4, whoosh about 0.3). Total: music about 10 dB below the first mix; the voice must always sit clearly on top.
+Final loudnorm -14 LUFS. Copy greene/tools/music_map.json + sfx_map.json + assemble_full.py as the starting point; don't start from louder values.
+Sound-only changes: `AUDIO_ONLY=1 python3 tools/assemble_full.py` (about 3 min, reuses the picture).
+
+**Stills held too long (broke the Tactical Genius formula).** The first cut put ONE image on each archive paragraph, so stills sat on screen
+for 10-24 s (and 62 s of stills in a row at the end). Viewers drop off. Rules:
+- No archive in the first minute: maps only until ~1:00 (Tactical Genius opens with long map shots, bio card, portrait stake).
+- Every archive paragraph = several **3-6 s cuts** (2-4 images or close-up crops of the same painting: faces, flags, cavalry), with varied Ken Burns moves;
+  hard cuts inside a paragraph, fade only at its edges.
+- Never more than ~20 s of archive in a row; break long runs with a short clip from a map render (`{"video": ..., "ss": ..., "dur": ...}`).
+- Defined in greene/tools/archive_shots.json (key -> list of shots with file/crop/move/credit or video clips); assemble_full.py uses it automatically.
+- Check before delivering: sample frames every 5 s through each archive paragraph; no single shot longer than ~6 s.
+
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
 - The main cost driver is **conversation length**: late in the session each step re-read ~480K tokens. A fresh session re-reads ~30-60K.
