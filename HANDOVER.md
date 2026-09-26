@@ -1,7 +1,24 @@
-# HANDOVER v2: faceless military-history channel (Tactical Genius style)
+# HANDOVER v3: faceless military-history channel (Tactical Genius style)
 
-**Owner:** Youness Fakiri · **Updated:** 2026-09-25
+**Owner:** Youness Fakiri · **Updated:** 2026-09-26 (after the George Thomas video + detailed map style)
 **How to use:** start a new Claude Code cloud session on the repo `younessking/battle-maps` (environment with **Full** network access), attach the Gemini research file, and say: *"Read HANDOVER.md. Make the full video from this research."*
+
+## 0a. NEXT VIDEO — quick start (read this first)
+**Done so far:** Hannibal (partial test), Daniel Morgan (morgan/), Nathanael Greene (greene/, on branch `claude/elegant-hypatia-djpt4p`), George H. Thomas (thomas/). **Next in research/VIDEO_IDEAS_v2.md:** #3 Francis Marion ("The Swamp Fox"), then #5 Subutai, #6 Khalid ibn al-Walid, #7 Belisarius. Get the research with research/GEMINI_BRIEF_v3.md.
+**Owner's rules (all binding):**
+- Script formula (§1) checked BEFORE recording: hook (disaster → hero → "his three greatest tactical moves"), in every move: situation with numbers → what the enemy believed → "<General> saw something different" → execution → result as numbers; the 3-part method after every move; subscribe ask between moves 1 and 2; maps only in the first minute.
+- Fact-check the Gemini research and log every correction in `<name>/research/FACT_NOTES.md` (Thomas: 4 claims fixed, 2 dropped).
+- **Detailed map style is mandatory** (§9 + templates/MAP_AGENT_BRIEF.md): satellite zoom-in opening per battle, tilt, woods/fields/roads, territory colours that fade then change hands, brigade blocks (NO soldier figures), fire effects, clock/minimap/bars/legend/compass, pictures inside the map.
+- Archive: every image appears once (~6-7 s, one move), then cut; 2-3 images per slot; any slot > ~25 s becomes a map instead.
+- Music bed at MUSIC_LUFS -41, SFX_DB -3 (tools/mix.py); final -14 LUFS.
+- Report only at milestones; commit + push as you go; deliver the 1080p master via gofile.io (`curl -F "file=@X.mp4" https://upload.gofile.io/uploadfile`, check the md5).
+**Order of work (target ~2-2.5 h, one fresh session):**
+1. Skeleton from `thomas/` (§0b step 1). Write script + SCENES.md, check the formula, record the voice (write "Ulysses Grant", "Robert E Lee": no initials with periods — they split sentences).
+2. Bake basemaps (region z9 for theaters, z13-15 battlefields); for each battlefield `python3 tools/sat.py --intro BASEMAP`; `python3 tools/minimap.py BATTLE WIDER TOWN LAT LON`; `python3 tools/water.py BASEMAP LEVEL` where rivers are dammed/wide.
+3. Image agent (Sonnet) FIRST, **Library of Congress before Wikimedia** (Wikimedia 429s the cloud IP after ~1 h): portraits + flags within ~20 min, archive slots after.
+4. Map agents (max 3 at once): Opus for battlefields, Sonnet for regional maps — and review Sonnet's contact sheets yourself (Thomas: tiny labels, wrong placements). Renders one at a time (`flock`).
+5. `python3 tools/assemble.py && python3 tools/mix.py`, check duration + loudness + a frame grid, upload, write YOUTUBE.md (credits incl. satellite line from tools/sat.py).
+**Git:** `main` is out of date (still the first commit). Work continues on the newest branch; ask the owner to merge `claude/george-thomas-civil-war-2epkux` (has Morgan + Thomas + detailed style) and `claude/elegant-hypatia-djpt4p` (Greene + channel branding) into main so the next session starts with everything.
 
 ## 0. Repo layout (clone path must be /home/user/battle-maps)
 | Path | What |
@@ -11,6 +28,10 @@
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
 | `chipyongni/` | first test map (hyperframes.json is reused by build_scene.py) |
+| `morgan/` | Daniel Morgan video (18:21): per-sentence narration, music library + SFX (assets/audio), assemble.py/mix.py |
+| `thomas/` | George H. Thomas video (18:50) + **newest skeleton**: lib/battle.js with the detailed map style, tools/sat.py, minimap.py, water.py, mix_demo.py; scenes-src/demo3.js = detailed-style reference scene |
+| `templates/MAP_AGENT_BRIEF.md` | brief for map agents (fill <GENERAL>/<name>/scenes) |
+| `greene/`, `channel/` | Nathanael Greene video + channel branding — on branch `claude/elegant-hypatia-djpt4p` (not merged here) |
 | `tts/narrate.py` | Kokoro narration (model files downloaded by setup.sh) |
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
@@ -49,12 +70,10 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload text: morgan/YOUTUBE.md |
 
 ## 3. What's next (in order)
-1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
-2. Hannibal: put portrait cut-outs on the stakes (Hannibal bust, Scipio bust; coins for Sempronius and Mago, where no likeness exists). Re-render Trebia.
-3. Build the Trasimene and Cannae maps (2 agents in parallel; Sonnet for simple agents).
-4. Fill the ~20 [ARCHIVE] slots with public-domain paintings, busts and coins (list in the PDF guide) using slow zooms.
-5. Music: synthesized music is weak. Prefer a properly licensed track (YouTube Audio Library or Epidemic Sound, added by the owner in the edit) or a clearly CC BY / CC0 track.
-6. Assemble the full 16-min video with voice, music (ducked under the voice), SFX cues, and chapters. Final loudness -14 LUFS.
+1. Owner: merge the video branches into `main` (see §0a Git), upload Thomas (thomas/YOUTUBE.md; master link was on gofile).
+2. Next video: Francis Marion (#3), in the detailed map style (§0a, §9).
+3. Optional: re-render one older video's main battle in the detailed style for a comparison; Hannibal's Trasimene/Cannae maps are still unbuilt (hannibal/).
+4. Engine follow-ups: date scroll should auto-hide behind inset panels (ridge3 overlap); a smaller "detail lite" set for regional scenes if render time matters.
 
 ## 4. Cloud environment setup (now automatic via setup.sh; kept for reference)
 - **Network access: Full** (environment menu → gear → Network access). Needed for Wikimedia, archive.org, Hugging Face and ElevenLabs.
