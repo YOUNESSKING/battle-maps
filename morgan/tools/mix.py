@@ -12,8 +12,9 @@ DUR = T["duration"]
 P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"] if p["tag"].startswith("MAP")}
 A = "assets/audio"
 # Music bed level in LUFS, before the final -14 LUFS normalisation. The narration is about -24 LUFS, so -37 keeps the music
-# ~13 dB under the voice, and the sidechain ducks it a few dB more while he speaks. (v1 used -21: music as loud as the voice.)
-MUSIC_LUFS = -37
+# ~17 dB under the voice, and the sidechain ducks it a few dB more while he speaks. (v1 used -21: music as loud as the voice.)
+MUSIC_LUFS = -41  # v2 used -37; owner asked for a bit lower
+SFX_DB = -3       # global sound-effect trim on top of each cue's volume (owner: 'a notch lower')
 
 
 def at(key, phrase, off=0.0):
@@ -79,7 +80,7 @@ f.append("[mus][vokey]sidechaincompress=threshold=0.015:ratio=4:attack=40:releas
 mixes = ["[vo]", "[musd]"]
 for n, (file, t, vol) in enumerate(SFX):
     inputs += ["-i", f"{A}/{file}"]
-    f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},adelay={int(t * 1000)}|{int(t * 1000)}[s{n}]")
+    f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},volume={SFX_DB}dB,adelay={int(t * 1000)}|{int(t * 1000)}[s{n}]")
     mixes.append(f"[s{n}]"); idx += 1
 f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,atrim=0:{DUR},loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
 os.makedirs("build", exist_ok=True)
