@@ -163,3 +163,62 @@ For a monetized upload, include (at minimum):
 - Anonymous contributor (`archive_radio.jpg`) — CC BY-SA 4.0
 - MOD/Mike Weston ABIPP (`archive_vc_medal.jpg`) and IWM/Royal Navy official photographer (`archive_task_force_ships.jpg`) — OGL v1.0, "© Crown copyright"
 - All Public-domain-tagged files (Piaggi, Estévez, flags, HMS Arrow, Harrier, Argentine soldiers, Atlantic Conveyor replacement not used) need no attribution but a "Public domain, via Wikimedia Commons" credit is good practice.
+
+## Music
+
+All 4 tracks are by Kevin MacLeod (incompetech.com), licensed **CC BY 4.0**. Licence text and attribution format verified directly on incompetech.com's own licensing generator (incompetech.com/music/royalty-free/licenses/), which now issues CC BY 4.0 (not 3.0) for every track. No vocals in any of the four; all are restrained/ambient (drone strings, solo piano, harp/guitar), not epic-trailer material.
+
+### Tracks used
+
+1. **"Long Note One"** — Kevin MacLeod
+   - Licence: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+   - Source/track page: https://incompetech.com/music/royalty-free/music.html (download: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Long%20Note%20One.mp3)
+   - Local file: `music_src_long-note-one.mp3` (full length 7:20)
+   - Description on site: "Just a very long pad for use under dialog." Instruments: basses, violins (drone). Feel tags: Dark, Intense, Suspenseful, Unnerving.
+   - Position in bed: **0:00–6:40** (intro + night assault on Darwin/Camilla Creek), trimmed to its first 6:45 and crossfaded out.
+   - Attribution line: `"Long Note One" by Kevin MacLeod (incompetech.com) — Licensed under Creative Commons: By Attribution 4.0 — http://creativecommons.org/licenses/by/4.0/`
+
+2. **"Wounded"** — Kevin MacLeod
+   - Licence: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+   - Source/track page: https://incompetech.com/music/royalty-free/music.html (download: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Wounded.mp3)
+   - Local file: `music_src_wounded.mp3` (full length 3:21)
+   - Description on site: dark, funereal mood piece. Instruments: piano, strings. Feel tags: Dark, Somber, Unnerving.
+   - Position in bed: **~6:35–11:20** (Darwin Hill assault and Lt Col H. Jones's death) — the full 3:21 track plus its own final 90 s repeated (soft internal loop-extension, 6 s crossfade) to fill the section, then crossfaded into the next track.
+   - Attribution line: `"Wounded" by Kevin MacLeod (incompetech.com) — Licensed under Creative Commons: By Attribution 4.0 — http://creativecommons.org/licenses/by/4.0/`
+
+3. **"Long Note Two"** — Kevin MacLeod
+   - Licence: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+   - Source/track page: https://incompetech.com/music/royalty-free/music.html (download: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Long%20Note%20Two.mp3)
+   - Local file: `music_src_long-note-two.mp3` (full length 7:42)
+   - Description on site: "Heavy effects on an arhythmic piano, and very deep bass." Instruments: basses, violins, piano (drone). Feel tags: Dark, Eerie, Mysterious, Suspenseful, Unnerving.
+   - Position in bed: **~11:15–15:55** (the bluff and the surrender negotiation), trimmed to its first ~4:40 and quieter than the two preceding tracks.
+   - Attribution line: `"Long Note Two" by Kevin MacLeod (incompetech.com) — Licensed under Creative Commons: By Attribution 4.0 — http://creativecommons.org/licenses/by/4.0/`
+
+4. **"Anguish"** — Kevin MacLeod
+   - Licence: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+   - Source/track page: https://incompetech.com/music/royalty-free/music.html (download: https://incompetech.com/music/royalty-free/mp3-royaltyfree/Anguish.mp3)
+   - Local file: `music_src_anguish.mp3` (full length 3:59, trimmed to its opening 1:20)
+   - Description on site: "You want contemplative!? You GOT contemplative!" Instruments: harp, guitar, percussion. Feel tags: Calming, Dark, Somber.
+   - Position in bed: **~15:50–17:15** (reflective ending / legacy), fading to silence over the last 3 s.
+   - Attribution line: `"Anguish" by Kevin MacLeod (incompetech.com) — Licensed under Creative Commons: By Attribution 4.0 — http://creativecommons.org/licenses/by/4.0/`
+
+### Combined attribution block (paste into the YouTube description)
+
+```
+Music by Kevin MacLeod (incompetech.com):
+"Long Note One", "Wounded", "Long Note Two", "Anguish"
+Licensed under Creative Commons: By Attribution 4.0 Licence
+http://creativecommons.org/licenses/by/4.0/
+```
+
+### How the bed (`music.wav`) was built
+
+- 48 kHz / 16-bit / stereo PCM WAV, 1035.0 s (17:15.0) total.
+- Built with a single `ffmpeg` `filter_complex` pass: each source track trimmed/looped to its target length, resampled/formatted to 48 kHz stereo, chained with three `acrossfade` crossfades (5 s each, triangular curve — Wounded's internal loop-extension seam uses its own 6 s crossfade), loudness-normalized with `loudnorm` to **-20 LUFS integrated** (measured input -19.0 LUFS → output -20.0 LUFS, true peak -1.9 dBTP, LRA 12.5 LU), then a 3 s fade-out at the very end.
+- Segment map in the final bed:
+  - 0:00–6:40 — "Long Note One" (tense/dark, intro + night assault)
+  - 6:35–11:20 — "Wounded" (heavier/grimmer, Darwin Hill + Jones's death), internally extended with a soft repeat of its own last 90 s
+  - 11:15–15:55 — "Long Note Two" (quieter, suspenseful bluff/surrender)
+  - 15:50–17:15 — "Anguish" (reflective ending), fades to silence in the last 3 s
+- Crossfades (~5 s) sit at approximately 6:40, 11:20 and 15:55, matching the requested act breaks.
+- This bed is a "wet" mix meant to be ducked further under narration by the assembly script (`ridgway/tools/mix.py`-style sidechain), consistent with the rest of the project's pipeline.
