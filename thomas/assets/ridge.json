@@ -1,0 +1,18 @@
+{
+ "name": "ridge",
+ "center": [
+  35.02,
+  -85.265
+ ],
+ "zoom": 14,
+ "origin_world_px": [
+  1102302,
+  1660260
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 7.82,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

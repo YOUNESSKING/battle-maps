@@ -1,0 +1,163 @@
+# George Thomas's Top 3 Legendary Tactical Moves — Script v1
+
+Format: Tactical Genius formula. Target ~2,500 words, ~16-17 min, calm documentary voice.
+Each paragraph starts with a visual tag:
+- `[MAP: scene-id | what the map shows]` = animated map (HyperFrames engine in `lib/`)
+- `[ARCHIVE: what to show]` = public-domain photos, lithographs, paintings (slow zooms)
+Method line (repeat after every move): **Refuse to be hurried. Hold the ground that matters. Strike to destroy, not just to defeat.**
+Fact corrections vs the Gemini research: `research/FACT_NOTES.md`.
+
+---
+
+## HOOK
+
+[MAP: hook-1 | Chickamauga battlefield, Sept 20 1863, 11 AM. Long blue north-south line in the woods; one blue division slides out of line; a red column (LONGSTREET) smashes through the gap; the blue right wing dissolves and streams north-west toward CHATTANOOGA; slow push-in]
+September the twentieth, eighteen sixty-three. North-west Georgia, in the thick woods along Chickamauga Creek. At eleven o'clock in the morning, because of a single confusing order, an entire Union division marches out of the front line. At that exact moment, more than ten thousand Confederate soldiers, packed into a deep column, come charging out of the trees and straight into the gap.
+
+[MAP: hook-1b | The broken blue units stream back through McFarland's Gap toward Chattanooga; ROSECRANS plaque slides away with them; the remaining blue units cluster on a horseshoe-shaped ridge]
+The right half of the Union army simply ceases to exist. Thousands of men run for the rear. The army commander, William Rosecrans, is swept away with them and rides back to Chattanooga, convinced that his entire army has been destroyed. It looks like the worst Union disaster of the war in the west.
+
+[MAP: hook-2 | Full-length photo cut-out of George H. Thomas + bio card: GEORGE H. THOMAS · MAJOR GENERAL · BORN 1816, SOUTHAMPTON COUNTY, VIRGINIA · "THE ROCK OF CHICKAMAUGA"]
+But one general does not leave the field. He is a big, bearded, quiet man of forty-seven named George Henry Thomas. And the strangest thing about him is where he came from. George Thomas was a Virginian, a slave-owning planter's son from the same state as Robert E. Lee.
+
+[ARCHIVE: 1861 photo of Thomas in uniform; Virginia secession ordinance / Richmond 1861]
+In eighteen sixty-one, when Virginia left the Union, almost every officer from the South resigned and went home. Thomas stayed. Whichever way he turned the matter over in his mind, he told his wife, his oath of allegiance to his government always came uppermost. His own sisters turned his portrait to the wall and never spoke to him again.
+
+[MAP: hook-3 | Theater map: Tennessee, Kentucky, north Georgia; stars appear on CHICKAMAUGA, CHATTANOOGA (Missionary Ridge), NASHVILLE; Thomas portrait stake under a 34-star US flag]
+Northern politicians never fully trusted him, and his own superiors often underrated him. Yet it is often said that he never lost a battle in which he held command. In just fifteen months, he would save one Union army from annihilation, lead another up a mountain that could not be climbed, and wipe a third army, a Confederate one, off the map. So what exactly made this quiet Virginian so hard to beat? Let's take a closer look at George Thomas's three greatest tactical moves.
+
+---
+
+## MOVE 1 — CHICKAMAUGA: THE ROCK
+
+[MAP: chick-1 | Region map: middle Tennessee to north Georgia. Title card MOVE 1 · CHICKAMAUGA · SEPTEMBER 1863. Blue arrows: Rosecrans's army crosses the Tennessee River and the mountains, splitting into three columns; Chattanooga falls without a fight]
+Late summer, eighteen sixty-three. Rosecrans's Army of the Cumberland has just pulled off a brilliant campaign of manoeuvre. Without a major battle, it has forced the Confederates out of Chattanooga, the railroad gateway to the Deep South. Now Rosecrans pushes on into the mountains of north Georgia, his corps spread out across forty miles of rough country.
+
+[MAP: chick-2 | Red arrows: Confederate reinforcements arrive by rail from Virginia (LONGSTREET) and Mississippi; counters stack up near LaFayette. Stats: UNION ~60,000 · CONFEDERATE ~65,000. Plaque: BRAXTON BRAGG]
+But the Confederates had not run away. Braxton Bragg, commanding the Confederate Army of Tennessee, had pulled back to gather reinforcements, and for once the South moved men across the map faster than the North. Two divisions under James Longstreet came all the way from Lee's army in Virginia by rail. For the first time in the western war, a Confederate army would outnumber its enemy: some sixty-five thousand men against roughly sixty thousand.
+
+[MAP: chick-3 | Battlefield map: West Chickamauga Creek, LaFayette Road, Kelly Field, dense woods. Sept 19: red arrows cross the creek; blue units feed in piecemeal from the south; Thomas's corps (XIV CORPS · THOMAS) marches overnight to the Union left, across the road to Chattanooga]
+On the nineteenth of September, Bragg struck. His plan was to get around the Union left, cut the road to Chattanooga, and trap the whole Union army in the mountains. The fighting that day was savage and confused, regiments stumbling into each other in woods so dense that officers could barely see their own lines. Thomas's corps held the vital left flank, the one covering the road home.
+
+[MAP: chick-4 | Night: Thomas's line at Kelly Field bends into a salient; log breastworks drawn as a thick dark line; caption: BREASTWORKS BUILT OVERNIGHT]
+That night, while others waited for orders, Thomas's men cut down trees and built breastworks of logs and fence rails around Kelly Field. The next morning, Bragg's attacks against the Union left broke on those log walls again and again. Thomas kept sending for reinforcements, and Rosecrans kept shifting units north to help him.
+
+[MAP: chick-5 | Close-up: Union centre. Order text appears: "CLOSE UP ON REYNOLDS AS FAST AS POSSIBLE". WOOD's division pulls out of line; a quarter-mile gap opens (highlight); red column LONGSTREET · 8 BRIGADES hits the gap at 11:10]
+And that was when it went wrong. In the rush to shift troops, Rosecrans sent an order to one of his division commanders, Thomas Wood, to close up on the division next to him. But the division he named was not beside Wood. Another one stood in between. Wood obeyed the order to the letter and pulled his men out of the line, leaving a gap a quarter of a mile wide. Minutes later, Longstreet's column hit it.
+
+[MAP: chick-6 | Red arrows fan out through the gap; blue units on the right turn grey and flee north-west through McFarland's Gap; plaques ROSECRANS, McCOOK, CRITTENDEN slide off toward CHATTANOOGA; caption: 1/3 OF THE ARMY ROUTED]
+Longstreet himself could hardly have planned it better. His men poured through, wheeled to the right, and rolled up everything in their path. A third of the Union army collapsed. Rosecrans and two of his three corps commanders were carried away in the flood of fugitives, back toward Chattanooga, twelve miles away. As far as they knew, the battle, and perhaps the army, was lost.
+
+[MAP: chick-7 | Camera settles on Thomas's portrait stake at Kelly Field; the enemy's belief as a red caption over Bragg's plaque: "THE YANKEE ARMY IS BROKEN"]
+Bragg and Longstreet believed the same thing. The Union right was gone. All that remained was to swing around, crush Thomas's isolated wing from front and flank, and destroy what was left of the Army of the Cumberland before nightfall.
+
+[MAP: chick-8 | Camera rises to show Horseshoe Ridge / Snodgrass Hill west of the road; highlight the curved ridge; blue units from the broken right regroup on it; a horseshoe-shaped line forms, linked to the Kelly Field salient]
+But George Thomas saw something different. Just behind his broken right flank ran a curving line of hills, a spur later known as Horseshoe Ridge, crowned by a farm belonging to a man named Snodgrass. Thomas realised that the army did not have to run. If he could hold that high ground and the breastworks at Kelly Field, he could turn a rout into a fight, and a fight into an orderly retreat. So he gathered every unbroken regiment he could find, stragglers and fragments of shattered brigades, and fed them onto the ridge.
+
+[MAP: chick-9 | Red assault arrows climb Horseshoe Ridge again and again; each bounces back; flashes of musket fire; a counter labeled STEEDMAN · RESERVE CORPS marches in from the north and slots onto the right end of the ridge just as a red arrow wraps around it]
+All afternoon, wave after wave of Confederate infantry charged up those slopes. Each time they were thrown back. At the most dangerous moment, when the Confederates had worked their way around the right end of the ridge, a reserve division under James Steedman arrived, having marched to the sound of the guns without orders, and filled the gap just in time. Some regiments on the ridge ran out of ammunition and held the crest with bayonets.
+
+[ARCHIVE: Kurz & Allison chromolithograph 'Battle of Chickamauga' (1890) — slow pan across the Union line]
+James Garfield, Rosecrans's chief of staff and a future President of the United States, rode back from Chattanooga to find Thomas still fighting. His report back to headquarters gave the Virginian the name he would carry for the rest of his life. Thomas, he said, was standing like a rock.
+
+[MAP: chick-10 | Dusk: blue units peel off the ridge in sequence and march out through McFarland's Gap to ROSSVILLE; a few units left on the ridge turn grey (captured); stats card: UNION 16,170 CASUALTIES · CONFEDERATE 18,454 CASUALTIES]
+At dusk, under Thomas's orders, the army pulled back through McFarland's Gap to Rossville, unit by unit, and the next day into Chattanooga. A few regiments that did not get the order in time were captured on the ridge in the dark. Chickamauga was a Confederate victory, and the bloodiest battle of the war in the west: over sixteen thousand Union casualties, and more than eighteen thousand Confederate. But the Army of the Cumberland had survived.
+
+[MAP: chick-11 | Method card over the map: REFUSE TO BE HURRIED · HOLD THE GROUND THAT MATTERS · STRIKE TO DESTROY]
+This was Thomas's method under the heaviest pressure imaginable. He refused to be hurried: while his commander panicked, Thomas read the situation calmly and gave orders. He held the ground that mattered: one curved ridge and a line of log breastworks. And by holding it, he took away the prize the Confederates had paid eighteen thousand men for. They won the field, but they did not destroy the army.
+
+[ARCHIVE: photo of Chattanooga in 1863–64 from across the river, Lookout Mountain behind]
+Within weeks, though, that surviving army was trapped. Bragg's Confederates occupied the heights all around Chattanooga, and the Union troops inside began to starve. If you enjoy these kinds of tactical breakdowns, consider subscribing, because what happened next is one of the strangest moments of the entire Civil War.
+
+---
+
+## MOVE 2 — MISSIONARY RIDGE: THE CHARGE NOBODY ORDERED
+
+[MAP: ridge-1 | Chattanooga basin: Tennessee River loop, the town, Lookout Mountain to the south-west, Missionary Ridge along the east. Title card MOVE 2 · MISSIONARY RIDGE · NOVEMBER 1863. Red lines along the ridge and on Lookout; blue pocket around the town; red X on the supply roads]
+October, eighteen sixty-three. The Army of the Cumberland is under siege in Chattanooga. Confederate guns on Lookout Mountain close the river and the roads, and supplies come in only over a single mountain track, sixty miles long. Thousands of horses and mules starve to death. The men are down to a few crackers a day.
+
+[ARCHIVE: portrait of Thomas, 1863 (Brady studio) / Grant portrait]
+Rosecrans was removed, and Thomas was given command of the army. Ulysses S. Grant, the new overall commander in the west, telegraphed asking him to hold Chattanooga at all costs. Thomas's reply became famous: we will hold the town till we starve. He did more than that. With his engineers, he prepared a daring river operation that opened a new supply line, which the hungry soldiers nicknamed the Cracker Line.
+
+[MAP: ridge-2 | Blue reinforcements arrive: HOOKER from the west, SHERMAN from the north. Nov 23: blue arrow seizes ORCHARD KNOB. Nov 24: HOOKER takes LOOKOUT MOUNTAIN (fog particles). Nov 25: SHERMAN's arrows hit the north end of the ridge (TUNNEL HILL) and bounce back from CLEBURNE]
+By late November, Grant had gathered reinforcements, and the Union army was ready to break the siege. The plan gave the main role to William T. Sherman, Grant's favorite, who would attack the northern end of Missionary Ridge. Thomas's army, still considered shaken after Chickamauga, was expected to play a supporting part. But on the twenty-fifth of November, Sherman's attacks were stopped cold by a Confederate division under Patrick Cleburne.
+
+[MAP: ridge-3 | Profile inset: Missionary Ridge cross-section, ~400 ft; rifle pits at the base, a second line halfway, artillery at the crest; caption: 3 LINES · ~400 FT]
+In front of Thomas stood Missionary Ridge itself: a steep, rugged wall around four hundred feet high, broken by ravines. Bragg had lined its base with rifle pits, and its crest with artillery and a second line of trenches. Bragg was confident. No infantry in the world, he believed, could climb that slope under fire.
+
+[MAP: ridge-4 | Orchard Knob: GRANT and THOMAS plaques. Order text: "TAKE THE RIFLE PITS AT THE BASE — THEN HALT". Four blue divisions (BAIRD, WOOD, SHERIDAN, JOHNSON) ~23,000 MEN line up on a two-mile front; six signal-gun flashes]
+In the middle of the afternoon, to take pressure off Sherman, Grant ordered Thomas to send his men forward, but only as far as the rifle pits at the foot of the ridge. At around twenty to four, six signal guns fired, and four divisions, some twenty-three thousand men, stepped out across the open plain on a front two miles wide.
+
+[MAP: ridge-5 | Blue lines sweep across the plain; red rifle-pit line at the base breaks and runs uphill; blue halts in the pits; red fire from the crest rains down (artillery flashes, shell bursts on the blue line)]
+The Confederates in the rifle pits fired a volley or two and fell back up the hill. Thomas's men took the pits in minutes. And then they found themselves in a death trap. Bragg's artillery and infantry on the crest were pouring fire straight down into the trenches they had just captured. To stay there was to be slaughtered. To go back across the open plain would be just as bad.
+
+[MAP: ridge-6 | Camera close on the slope: blue units start climbing on their own in several places, in wedges, following the ravines; caption: NO ORDERS]
+And the soldiers of the Army of the Cumberland saw what their generals could not. Here and there, small groups began to climb, following the ravines and folds in the ground. Then whole regiments. Then entire brigades. Nobody had ordered it. The men were going up the mountain on their own.
+
+[ARCHIVE: 'Battle of Missionary Ridge' chromolithograph (Cosack & Co., McCormick Harvesting Machine Co.) — push-in on the climbing lines]
+On Orchard Knob, Grant watched in fury. He turned to Thomas and demanded to know who had ordered those men up the ridge. Thomas answered quietly: I don't know. I did not. One of his corps commanders, Gordon Granger, was blunter. When those fellows get started, he said, all hell can't stop them.
+
+[MAP: ridge-7 | Cross-section inset again: the crest trench sits on the true summit; a shaded dead zone appears on the slope below it; guns tilt but cannot aim down; retreating red men from the base mask the defenders' fire]
+The slope that looked impossible turned out to be the Confederates' weakness. Bragg's engineers had dug the main trenches along the very top of the ridge, instead of a little way down the forward slope. From up there, the defenders could not see, or shoot at, much of the ground just below them, and their cannon could not tilt down far enough. And the men retreating from the rifle pits were climbing in front of them, so the defenders could not fire without hitting their own comrades.
+
+[MAP: ridge-8 | Blue arrows break through the red crest line in six places almost at once; red units turn grey and flee east toward GEORGIA; stats card: ~4,000 CONFEDERATES CAPTURED · ~40 GUNS TAKEN · SIEGE OF CHATTANOOGA BROKEN]
+At about half past four, blue flags appeared on the crest in half a dozen places at once. Bragg's centre collapsed, and his army fled east into Georgia. In the fighting around Chattanooga, the Confederates lost some sixty-seven hundred men, over four thousand of them captured, and around forty cannon. The Union lost about fifty-eight hundred. The siege was broken, and the road into the heart of the Confederacy lay open.
+
+[MAP: ridge-9 | Method card: REFUSE TO BE HURRIED · HOLD THE GROUND THAT MATTERS · STRIKE TO DESTROY]
+Thomas never claimed credit for the charge, and he did not plan it. But it was his army. He had refused to be hurried into surrender while it starved, and had kept it fed. He had held the ground that mattered, Chattanooga itself, when giving it up would have been easier. And the men he had trained, the same men who had been written off after Chickamauga, struck the blow that destroyed Bragg's position in a single afternoon.
+
+[ARCHIVE: photo of Sherman, 1864; Atlanta campaign map or photo]
+In the spring of eighteen sixty-four, Grant went east to face Robert E. Lee, and Sherman led the western armies into Georgia, with Thomas's Army of the Cumberland as his largest force. But when Sherman set off on his famous march to the sea, he left Thomas behind, with a much harder job.
+
+---
+
+## MOVE 3 — NASHVILLE: THE HAMMER BLOW
+
+[MAP: nash-1 | Region map: Georgia to Tennessee. Title card MOVE 3 · NASHVILLE · DECEMBER 1864. Sherman's arrow heads south-east to the sea; HOOD's red arrow swings north-west into Tennessee toward NASHVILLE; blue scattered counters gather at Nashville]
+Autumn, eighteen sixty-four. While Sherman marches away to the sea, the Confederate Army of Tennessee, now led by the aggressive John Bell Hood, turns north to invade Tennessee. Hood's plan is bold: retake Nashville, march on into Kentucky, perhaps even reach the Ohio River. Thomas is left to stop him, with whatever troops he can scrape together.
+
+[MAP: nash-2 | FRANKLIN, Nov 30: red arrows smash into a blue arc and bounce; red counters thin out; caption: 6,000+ CONFEDERATE CASUALTIES · 6 GENERALS KILLED. Then red arrow advances to the hills south of NASHVILLE and digs in]
+On the thirtieth of November, at Franklin, Hood hurled his army in a massive frontal assault against part of Thomas's force under John Schofield. In five hours, the Confederates lost more than six thousand men, including six generals killed. Hood's army was badly bloodied, but it kept coming, and in early December it dug in on the hills just south of Nashville.
+
+[MAP: nash-3 | Nashville close-up: Cumberland River, city, Union fortification ring, Confederate line with 5 small redoubts on the left along the Hillsboro Pike. Stats: UNION ~55,000 · CONFEDERATE ~30,000. Plaques: THOMAS, HOOD]
+Inside the city, Thomas was building an army almost from scratch. A corps arrived from Missouri, garrison troops from Chattanooga, raw recruits, and a cavalry force that needed thousands of fresh horses. By mid-December he would have some fifty-five thousand men against about thirty thousand Confederates. But he refused to attack until everything was ready.
+
+[ARCHIVE: telegraph office / photo of Grant, 1864 / Stanton]
+In Washington and at Grant's headquarters, patience ran out. Telegrams arrived every day demanding that Thomas attack at once. Then, on the eighth of December, an ice storm covered Nashville. The hills turned to sheets of glass. Men could not stand, and horses could not climb. Thomas refused to move. Grant drew up an order removing him from command. Thomas replied that if they thought it necessary to relieve him, he would submit without a murmur. But he would not attack on ice.
+
+[MAP: nash-4 | Snow/ice particles on screen; caption: ICE STORM · DEC 8–14; a telegram card: "RELIEVED OF COMMAND" appears, then is stamped SUSPENDED; LOGAN's plaque travels west toward Nashville]
+The order was suspended, then prepared again. By the thirteenth, Grant had sent another general, John Logan, to take over at Nashville, and he was about to set out for Tennessee himself. Thomas had perhaps a day or two left. Then, on the fourteenth, the ice began to melt.
+
+[MAP: nash-5 | Hood's plaque with red caption: "THOMAS IS SLOW. HE WILL NOT ATTACK IN WINTER"; camera over the thin Confederate left: five detached redoubts]
+Hood believed he knew his opponent. He had been Thomas's student at West Point, where the cadets had nicknamed the cavalry instructor Slow Trot, because he never let them gallop the academy's worn-out horses. Hood was sure that the cautious, methodical Thomas would stay behind his walls, and that time was on the Confederate side. His line was long and thinly held, and its left flank rested on five small, isolated redoubts.
+
+[MAP: nash-6 | Dec 15 morning, fog: STEEDMAN's arrow (incl. U.S. COLORED TROOPS) strikes the Confederate right (east) — caption FEINT; Hood's reserves shift right; then the great blue wheel: SMITH, WOOD, WILSON (dismounted cavalry) swing like a door against the Confederate left]
+But Thomas saw something different. He did not need to attack Hood everywhere. On the foggy morning of the fifteenth of December, he opened with a feint against the Confederate right, led by Steedman, with brigades of U.S. Colored Troops among his men. As Hood looked east, Thomas's main blow fell on the other end of the line: a huge wheeling movement, infantry and dismounted cavalry together, swinging round like a door against the Confederate left.
+
+[MAP: nash-7 | The five redoubts fall one after another (flash + grey); red left flank crumbles; red units fall back 2 miles south to a new short line between PEACH ORCHARD HILL (east) and SHY'S HILL (west)]
+One by one, the redoubts were stormed. The Confederate left caved in, and by nightfall Hood had been driven back about two miles to a shorter line, anchored on two hills: Peach Orchard Hill on the right, and a steep knob on the left that would soon be known as Shy's Hill.
+
+[MAP: nash-8 | Dec 16: blue assault on PEACH ORCHARD HILL (east) is repulsed; meanwhile WILSON's cavalry arrow curls around behind SHY'S HILL into Hood's rear; artillery flashes pound Shy's Hill]
+On the sixteenth, Thomas did it again. An attack on Peach Orchard Hill was bloodily thrown back, but it pinned Hood's attention on his right. Meanwhile, on the left, the Union cavalry under James Wilson worked its way around Shy's Hill and into the rear of the Confederate army, while Union artillery pounded the hilltop from three sides.
+
+[MAP: nash-9 | ~4 PM: McARTHUR's blue arrow storms SHY'S HILL; red line cracks from the left and unravels eastward; red units turn grey and flee south down the Franklin Pike in rain; blue cavalry arrows pursue]
+At about four in the afternoon, a Union division stormed Shy's Hill from the front, while the cavalry fired into its defenders from behind. The hill fell in minutes, and the Confederate line unravelled from left to right. Hood's army broke and fled south in the rain, with Thomas's cavalry at its heels.
+
+[MAP: nash-10 | Stats card: UNION ~3,000 CASUALTIES · CONFEDERATE ~6,000 (4,400+ CAPTURED) · DOZENS OF GUNS. Red arrow retreats all the way to the Tennessee River; caption: ARMY OF TENNESSEE BROKEN]
+The pursuit lasted ten days, all the way to the Tennessee River. The Union lost about three thousand men at Nashville. The Confederates lost around six thousand, well over four thousand of them taken prisoner, along with dozens of cannon. Hood resigned his command a few weeks later. The army that had fought at Chickamauga and on Missionary Ridge would never again be a real threat. It was one of the most complete victories of the entire war.
+
+[MAP: nash-11 | Method card: REFUSE TO BE HURRIED · HOLD THE GROUND THAT MATTERS · STRIKE TO DESTROY]
+This was Thomas's method, all three parts at once. He refused to be hurried, even with his job on the line. He held the ground that mattered, Nashville, the great supply base of the west, while his army grew around him. And when he finally struck, he did not strike to push Hood back. He struck to destroy him, and he did.
+
+---
+
+## ENDING
+
+[ARCHIVE: Thomas portrait, late war; Thomas Circle equestrian statue, Washington DC]
+Remember that morning in the woods of north Georgia, when half of an army broke and ran? The general who stood firm there went on to break the siege of Chattanooga, and then to destroy the very army that had beaten him at Chickamauga. Congress thanked him, and the telegram relieving him of command was never used.
+
+[ARCHIVE: San Francisco 1870 / Thomas's grave, Troy, New York]
+But Thomas never became as famous as Grant or Sherman. He refused to write memoirs, and refused to promote himself. In March eighteen seventy, in San Francisco, he collapsed at his desk and died, aged fifty-three. His sisters in Virginia did not come to the funeral.
+
+[ARCHIVE: Thomas Circle statue at dusk, slow push-in — end screen]
+Refuse to be hurried. Hold the ground that matters. Strike to destroy, not just to defeat. Three simple rules from the Virginian who never lost a battle he commanded. What's your favorite of his three moves? And which commander should I cover next? Let me know in the comments.

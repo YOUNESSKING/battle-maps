@@ -1,0 +1,18 @@
+{
+ "name": "chatt",
+ "center": [
+  34.99,
+  -85.29
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  550285,
+  829938
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 15.66,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
