@@ -112,6 +112,10 @@ Morgan took ~2 h of real work (plus 2 h 15 min stuck on the usage limit). With t
 **Still to do (not built yet):**
 10. Promote the helpers the agents wrote locally (volley/muzzle-flash line, range ring, officer target + cross-out, glowing numbered marker, encirclement ring, stat rows timed to speech, water overlays) from morgan/scenes-src/*.js into lib/battle.js, so agents stop re-writing them and every video looks consistent.
 11. A render queue (one `hyperframes render` at a time). 4 parallel renders on 4 cores were no faster overall and one crashed ("FFmpeg cannot start") and had to be re-run.
+**Owner feedback on the Morgan video (fixed in morgan/tools, keep for every video):**
+14. Music was too loud: the bed was normalised to -21 LUFS, as loud as the Kokoro voice (~-24 LUFS). mix.py now sets `MUSIC_LUFS = -37` (~13 dB under the narration) plus a gentle sidechain duck. Never set the music bed within 10 dB of the voice.
+15. Archive images stayed on screen too long without change (one still with a slow 13 % zoom for 10-25 s). assemble.py now cuts every archive slot into ~6 s shots (full view → push-in on the main point → other images / details, stronger moves, 0.4 s dissolves). Each slot needs 2-3 images, and slots.json lists points of interest per image (`{"slot", "images": [{"file", "title", "points": [[fx, fy], ...]}]}`) — ask the image agent for this from the start. Rebuild only the archive slots with `python3 tools/assemble.py --archive`.
+
 **Research accuracy:**
 12. Use research/GEMINI_BRIEF_v3.md: it makes Gemini cite a source for every claim, label claims VERIFIED / SINGLE SOURCE / TRADITION / DISPUTED, and end with a fact-check list. The v2 Morgan research had errors I had to fix: Guilford called a "strategic victory" (it was a British tactical win), the Cowpens Continental withdrawal described as planned (it was a misunderstood order), the "devil of a whipping" letter given the wrong recipient, an unsourced "still taught at West Point", and a Morgan quote to Greene paraphrased inside quotation marks.
 **Sessions:**

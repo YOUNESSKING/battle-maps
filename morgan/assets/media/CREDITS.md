@@ -79,6 +79,82 @@ museum photo of a medal (3D object), used under its CC0 licence.
 - **Source**: https://commons.wikimedia.org/wiki/File:Frederick_Kemmelmeyer_-_Battle_of_Cowpen_-_1944.106_-_Yale_University_Art_Gallery.jpg
 - **Notes**: A different Cowpens painting from a02.jpg (Ranney), per the brief's "use a different image where a slot repeats a subject."
 
+## Archive (extra shots)
+
+Second/third images added per archive slot for multi-shot coverage (see archive/slots.json).
+
+### a01_b.jpg — "Buford's Defeat" interpretive marker
+- **Title**: "Buford's Defeat" (Waxhaws battlefield wayside sign, photo)
+- **Author**: Rogergrogg (Commons username), 2013
+- **Licence**: CC BY-SA 3.0
+- **Source**: https://commons.wikimedia.org/wiki/File:Waxhaw_Massacre,_Buford_Massacre,_Battle_of_the_Waxhaws14.jpg
+
+### a02_b.jpg — Battle of the Cowpens schematic map
+- **Title**: "Cowpens 1781" (schematic troop-movement map)
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:Cowpens_1781.jpg
+- **Notes**: Native resolution 892x1023 (below standard thumbnail widths); downloaded at native size.
+
+### a02_c.jpg — The Battle of Cowpens (Kemmelmeyer)
+- Same file as a11.jpg (Frederick Kemmelmeyer, 1809; Yale University Art Gallery), reused as a second shot for the a02 slot per the brief. See a11.jpg entry above for full credit.
+
+### a03_b.png — General John Burgoyne, preparatory study
+- **Title**: "General John Burgoyne, ca. 1784; preparatory painting for 'The Funeral of General Fraser at Saratoga'"
+- **Author**: John Graham (Scottish painter); National Army Museum
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:Painting_of_British_General_John_Burgoyne.png
+
+### a04_b.jpg — The Burial of General Simon Fraser
+- **Title**: "The Burial of General Simon Fraser (1729–1777), after the Battle of Saratoga, 1777"
+- **Author**: John Graham (after), c. 1800; National Army Museum (NAM. 1960-12-200)
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:John_Graham_(1755-1817)_(after)_-_The_Burial_of_General_Simon_Fraser_(1729%E2%80%931777),_after_the_Battle_of_Saratoga,_1777_-_NAM._1960-12-200_-_National_Army_Museum.jpg
+
+### a05_b.jpg — Statue of General Daniel Morgan, Spartanburg
+- **Title**: "Statue of General Daniel Morgan (1881) in Spartanburg, SC"
+- **Author**: Billy Hathorn (photo, 2012)
+- **Licence**: CC BY 3.0
+- **Source**: https://commons.wikimedia.org/wiki/File:Statue_of_General_Daniel_Morgan_(1881)_in_Spartanburg,_SC_IMG_4818.JPG
+
+### a06_b.jpg — Washington at Valley Forge (winter encampment)
+- **Title**: "Washington at Valley Forge", mid-19th century
+- **Author**: American 19th Century (unidentified); National Gallery of Art (NGA 52966)
+- **Licence**: CC0
+- **Source**: https://commons.wikimedia.org/wiki/File:American_19th_Century,_Washington_at_Valley_Forge,_mid_19th_century,_NGA_52966.jpg
+
+### a07_b.jpg — Daniel Morgan Congressional Gold Medal, reverse
+- **Title**: "Daniel Morgan, 1789, ND1103" (reverse side, battle scene)
+- **Author**: Augustin Dupre, 1789; Metropolitan Museum of Art
+- **Licence**: CC0
+- **Source**: https://commons.wikimedia.org/wiki/File:Daniel_Morgan,_1789,_ND1103(2).jpg
+
+### a08_b.jpg — Nathanael Greene, full-length mezzotint
+- **Title**: "Greene, Nathanael. Mezzotint (full length) by V. Green from painting by C.W. Peale"
+- **Author**: Valentine Green, after Charles Willson Peale
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:Nathanael_Greene_by_C.W._Peale.jpg
+
+### a09_b.jpg — Nathanael Greene to Andrew Pickens, 3 June 1781
+- **Title**: "Nathanael Greene to General Andrew Pickens, 3 June 1781" (manuscript letter)
+- **Author**: Nathanael Greene (1742–1786)
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:Nathanael_Greene_to_General_Andrew_Pickens,_3_June_1781_(420805c3-a402-420b-bf6b-5b3396a94fda).jpg
+
+### a10_b.jpg — The Siege of Yorktown
+- **Title**: "Bataille de Yorktown" (Siege of Yorktown, 1781)
+- **Author**: Auguste Couder
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:Bataille_de_Yorktown_by_Auguste_Couder.jpg
+
+### a10_c.jpg — Charles Earl Cornwallis, engraved portrait
+- **Title**: "Charles Earl Cornwallis" (engraved portrait, 1791)
+- **Author**: W. Grainger (British engraver)
+- **Licence**: Public domain
+- **Source**: https://commons.wikimedia.org/wiki/File:Charles_Earl_Cornwallis,_PA06790.jpg
+
+### a11_b.jpg — The Battle of Cowpens (Ranney)
+- Same file as a02.jpg (William Ranney, 1845), reused as a second shot for the a11 slot per the brief. See a02.jpg entry above for full credit.
+
 ## Cut-outs (assets/media/)
 
 All cut-outs: background removed with `rembg` (isnet-general-use model),

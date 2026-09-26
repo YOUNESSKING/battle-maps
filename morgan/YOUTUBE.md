@@ -21,6 +21,7 @@ Sources
 - Don Higginbotham, Daniel Morgan: Revolutionary Rifleman (1961)
 
 Images: public-domain paintings and engravings via Wikimedia Commons (Reynolds, Trumbull, Ranney, Kemmelmeyer, Peale and others); Congressional gold medal image: The Metropolitan Museum of Art (CC0). Terrain: Mapzen / AWS Terrain Tiles (open data); rivers: Natural Earth.
+Photos: "Buford's Defeat" marker by Rogergrogg, CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/); Statue of Daniel Morgan, Spartanburg, by Billy Hathorn, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/); via Wikimedia Commons.
 
 Music: "Clash Defiant" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
 Music: "Crusade" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
