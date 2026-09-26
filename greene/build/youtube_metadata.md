@@ -3,10 +3,12 @@
 ## Title (vidIQ score 93)
 He Lost His Battles and Won the War: Nathanael Greene's 3 Greatest Moves
 
+Series-style (matches Tactical Genius): Nathanael Greene's Top 3 Legendary Tactical Moves | The General Who Lost His Battles and Won the War
+
 Alternatives: "The General Who Lost Almost Every Battle and Still Beat the British" (90) · "Nathanael Greene's Top 3 Legendary Tactical Moves" (84)
 
 ## Thumbnail
-thumb/thumbnail.jpg (1280x720): "LOST THE BATTLES. WON THE WAR." + Greene over the Guilford Courthouse battle map
+thumb/thumbnail_ai_final.jpg (1280x720): AI Guilford battlefield with red/blue unit blocks and arrows, Greene (Peale likeness) on the right, red banner "ANOTHER SUCH VICTORY"
 
 ## Description
 Nathanael Greene lost almost every battle he fought in the American Revolution, and still drove the British army out of the entire American South. Here are his three greatest tactical moves: the Race to the Dan, the Battle of Guilford Courthouse, and the reconquest of the South at Eutaw Springs, the campaign that sent Cornwallis marching to his surrender at Yorktown.
