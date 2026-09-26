@@ -102,17 +102,21 @@ def archive_seg(i, n, dur, out):
     if not imgs:
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", f"color=c=0x2a241c:s=1920x1080:d={dur:.3f}", *ENC, out], check=True)
         return
-    count = max(2, round(dur / SHOT))
+    # owner feedback (Thomas video): every image appears ONCE, one move per image, then cut to the next image;
+    # slots are sized for ~6-7.5 s per image (long gaps are covered by maps instead of re-zooming the same photo)
+    count = len(imgs)
     d = (dur + XF * (count - 1)) / count  # shot length so the dissolves add up to exactly dur
     shots, seen = [], set()
-    for k, (img_i, kind, pt) in enumerate(plan_shots(imgs, count)):
+    for k, (img_i, kind, pt) in enumerate([(k, "fit", pts[0]) for k, (_, pts, _) in enumerate(imgs)]):
         path, _, title = imgs[img_i]
         im = Image.open(path).convert("RGB")
         if kind == "fit":
             canvas, (ox, oy, s) = fit_canvas(im)
             tx, ty = (ox + pt[0] * im.width * s) / W, (oy + pt[1] * im.height * s) / H
             # push in from the full view toward the point; narrow images (portraits) zoom further so they end up filling the frame
-            z0, z1, a, b = 1.0, min(1.5, max(1.2, 0.95 * W / (im.width * s))), (0.5, 0.5), (tx, ty)
+            z0, z1, a, b = 1.0, min(1.5, max(1.25, 0.95 * W / (im.width * s))), (0.5, 0.5), (tx, ty)
+            if k % 2:  # alternate: start close on the point and pull back to the whole picture
+                z0, z1, a, b = z1, z0, b, a
         else:
             canvas, (tx, ty) = detail_canvas(im, pt)
             if k % 2:  # alternate: slow pull-back / lateral drift

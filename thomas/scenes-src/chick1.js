@@ -8,7 +8,7 @@ const G = (lat, lon) => {
   const n = 256 * 2 ** 9, r = (lat * Math.PI) / 180;
   return [+((lon + 180) / 360 * n - 32857).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 50973).toFixed(1)];
 };
-const HAS = { bragg_head: false, csa_battle_flag: false };
+const HAS = { bragg_head: true, csa_battle_flag: true };
 
 const U = (o) => { // small regional unit block
   const el = B.unit(o);
@@ -18,7 +18,7 @@ const U = (o) => { // small regional unit block
   el.querySelector(".blk").style.boxShadow = "0 1px 3px rgba(0,0,0,0.4)";
   return el;
 };
-const CITY = (name, lat, lon, o = {}) => B.city(name, ...G(lat, lon), { size: 16, r: 5, ...o });
+const CITY = (name, lat, lon, o = {}) => B.city(name, ...G(lat, lon), { size: 26, r: 8, ...o });
 
 // ---------- river: Tennessee River (Knoxville area -> Chattanooga -> Muscle Shoals) ----------
 const TN_R = [[2040.9, 515.1], [1895.3, 573.5], [1786.1, 676.7], [1695.0, 810.7], [1640.4, 899.9],
@@ -45,11 +45,11 @@ const T_STATS = at("chick-2", "sixty-five thousand men");
 B.camera([
   [0, 1600, 900, 1.0],
   [S1 + 1.0, 1500, 950, 0.9],
-  [T_FORCED, 1620, 930, 1.15],
-  [T_MOUNTAINS, 1700, 1050, 1.0],
-  [T_SPREAD, 1700, 1070, 0.95],
-  [S2, 1700, 1050, 0.95],
-  [T_BRAGG, 1650, 1050, 1.05],
+  [T_FORCED, 1620, 960, 1.7],
+  [T_MOUNTAINS, 1680, 1030, 1.6],
+  [T_SPREAD, 1690, 1060, 1.5],
+  [S2, 1680, 1060, 1.45],
+  [T_BRAGG, 1640, 1060, 1.5],
   [T_LONGST, 1750, 750, 0.8],
   [T_STATS, 1700, 1030, 0.95],
   [END, 1700, 1020, 0.92],
@@ -57,7 +57,7 @@ B.camera([
 
 // ---------- geography ----------
 B.river(TN_R, 16);
-B.label("TENNESSEE R.", 1830, 660, { cls: "river", size: 22, rot: 42, t: 0.4 });
+B.label("TENNESSEE R.", 1830, 660, { cls: "river", size: 28, rot: 42, t: 0.4 });
 B.label("GEORGIA", 1877, 1330, { cls: "country", size: 32, t: 0.5, until: S2 - 0.2 });
 B.label("TENNESSEE", 1185, 460, { cls: "country", size: 32, t: 0.5, until: S2 - 0.2 });
 CITY("KNOXVILLE", 35.961, -83.921, { t: 0.6, dy: -8 });
@@ -68,9 +68,10 @@ CITY("ATLANTA", 33.749, -84.388, { t: 1.0, dy: -8, left: true });
 B.title("MOVE 1", "CHICKAMAUGA", "September 1863", 0.3, S1 + 1.6);
 B.showDate(0.4);
 B.date("LATE SUMMER 1863", 0.6, S2 + 0.4);
+B.date("SEPTEMBER 1863", S2 + 0.7);
 
 // ---------- chick-1: Rosecrans's three columns take Chattanooga, push into north Georgia ----------
-U({ id: "cUnion", side: "carth", kind: "inf", x: BRIDGE[0], y: BRIDGE[1] + 50, w: 32, h: 20, label: "ARMY OF THE CUMBERLAND", fs: 11, t: S1 + 0.6 });
+U({ id: "cUnion", side: "carth", kind: "inf", x: BRIDGE[0], y: BRIDGE[1] + 50, w: 60, h: 38, label: "ARMY OF THE CUMBERLAND", fs: 20, t: S1 + 0.6 });
 B.arrow({ side: "carth", pts: [[BRIDGE[0] - 10, BRIDGE[1] + 40], [CHATT[0] - 60, CHATT[1] + 40], [CHATT[0] + 10, CHATT[1] + 10]], width: 8, t: S1 + 0.9, dur: 1.8, until: T_FORCED + 1.5 });
 CITY("CHATTANOOGA", 35.046, -85.310, { t: T_FORCED - 0.4, dy: -10 });
 B.caption("CHATTANOOGA FALLS WITHOUT A FIGHT", T_FORCED, T_MOUNTAINS - 0.2, "carth");
@@ -83,7 +84,7 @@ const COL = [
   { id: "colS", label: "McCOOK", dlat: -0.12, dlon: -0.06 },
 ];
 COL.forEach((c, i) => {
-  U({ id: c.id, side: "carth", kind: "inf", x: CHATT[0] + 15, y: CHATT[1] + 10 + i * 4, w: 26, h: 17, label: c.label, fs: 9, t: T_MOUNTAINS + i * 0.15 });
+  U({ id: c.id, side: "carth", kind: "inf", x: CHATT[0] + 15, y: CHATT[1] + 10 + i * 4, w: 48, h: 30, label: c.label, fs: 18, t: T_MOUNTAINS + i * 0.15 });
   const dest = G(34.71 + c.dlat, -85.28 + c.dlon);
   B.arrow({ side: "carth", pts: [[CHATT[0] + 20, CHATT[1] + 20 + i * 10], [1650, 1000 + i * 30], [dest[0], dest[1] - 30 + i * 5]], width: 6, t: T_MOUNTAINS + 0.3 + i * 0.15, dur: 2.4, until: S2 + 1 });
   B.move(c.id, T_MOUNTAINS + 0.4 + i * 0.15, 2.4, dest[0], dest[1] - 20 + i * 25);
@@ -93,24 +94,24 @@ B.hideUnits(["colN", "colM", "colS"], S2 + 0.6, 0.6);
 
 // ---------- chick-2: Bragg pulls back, reinforcements arrive by rail from Virginia and Mississippi ----------
 CITY("LAFAYETTE", 34.705, -85.282, { t: T_RUN + 0.2, dy: 18 });
-const braggX = LAF[0] - 170, braggY = LAF[1] - 90;
+const braggX = LAF[0] + 170, braggY = LAF[1] + 50;
 if (HAS.bragg_head) {
-  B.portraitStake({ img: "assets/media/bragg_head.png", flag: HAS.csa_battle_flag ? "assets/media/csa_battle_flag.png" : "", name: "BRAXTON BRAGG", side: "rome", x: braggX, y: braggY, size: 0.7, t: T_BRAGG - 0.2 });
+  B.portraitStake({ img: "assets/media/bragg_head.png", flag: HAS.csa_battle_flag ? "assets/media/csa_battle_flag.png" : "", name: "BRAXTON BRAGG", side: "rome", x: braggX, y: braggY, size: 1.0, t: T_BRAGG - 0.2 });
 } else {
   B.plaque({ name: "BRAXTON BRAGG", role: "General, CSA", side: "rome", x: braggX, y: braggY + 60, t: T_BRAGG - 0.2 });
 }
-U({ id: "braggArmy", side: "rome", kind: "inf", x: LAF[0] + 50, y: LAF[1] + 70, w: 30, h: 19, label: "BRAGG", fs: 10, t: T_RECRUIT });
+U({ id: "braggArmy", side: "rome", kind: "inf", x: LAF[0] + 50, y: LAF[1] + 70, w: 56, h: 36, label: "BRAGG", fs: 20, t: T_RECRUIT });
 
 // rail arrow from Virginia (off the NE edge) — Longstreet
 B.arrow({ side: "rome", pts: [[2880, 60], [2400, 260], [1950, 520], [LAF[0] + 220, LAF[1] - 60]], width: 9, dash: "26 14", t: T_LONGST - 0.3, dur: 3.2, until: T_STATS + 1 });
-B.label("BY RAIL FROM VIRGINIA", 2500, 220, { cls: "tg", size: 22, t: T_LONGST, until: T_STATS, rot: 24 });
+B.label("BY RAIL FROM VIRGINIA", 2500, 220, { cls: "tg", size: 30, t: T_LONGST, until: T_STATS, rot: 24 });
 // reinforcements from Mississippi (off the west edge)
 B.arrow({ side: "rome", pts: [[0, 1150], [500, 1200], [1000, 1180], [LAF[0] - 200, LAF[1] + 40]], width: 8, dash: "22 12", t: T_RECRUIT + 0.6, dur: 2.6, until: T_STATS + 1 });
-B.label("FROM MISSISSIPPI", 1000, 1140, { cls: "tg", size: 20, t: T_RECRUIT + 0.8, until: T_STATS, anchor: [-50, -100] });
+B.label("FROM MISSISSIPPI", 1000, 1140, { cls: "tg", size: 30, t: T_RECRUIT + 0.8, until: T_STATS, anchor: [-50, -100] });
 
 // counters stack up near LaFayette
 [0, 0.4, 0.8].forEach((dt, i) => {
-  U({ id: "stack" + i, side: "rome", kind: "inf", x: LAF[0] + 90 + i * 34, y: LAF[1] - 40, w: 26, h: 17, t: T_LONGST + 1.6 + dt });
+  U({ id: "stack" + i, side: "rome", kind: "inf", x: LAF[0] + 90 + i * 34, y: LAF[1] - 40, w: 44, h: 28, t: T_LONGST + 1.6 + dt });
 });
 
 B.stat(["UNION ~60,000", "CONFEDERATE ~65,000"], T_STATS, END - 0.3, "rome");

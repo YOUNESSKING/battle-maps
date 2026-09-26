@@ -6,17 +6,56 @@
    {
     "file": "a01.jpg",
     "title": "Maj. General George H. Thomas, on horseback, 1861 (Library of Congress)",
-    "points": [[0.46, 0.33], [0.68, 0.42], [0.2, 0.42]]
+    "points": [
+     [
+      0.46,
+      0.33
+     ],
+     [
+      0.68,
+      0.42
+     ],
+     [
+      0.2,
+      0.42
+     ]
+    ]
    },
    {
     "file": "a01_b.jpg",
     "title": "The Virginia State Capitol, Richmond, Va. (Levy & Cohen, 1865)",
-    "points": [[0.62, 0.25], [0.62, 0.75], [0.15, 0.55]]
+    "points": [
+     [
+      0.62,
+      0.25
+     ],
+     [
+      0.62,
+      0.75
+     ],
+     [
+      0.15,
+      0.55
+     ]
+    ]
    },
    {
     "file": "a01_c.jpg",
     "title": "Portrait of Gen. Robert E. Lee, C.S.A., 1864",
-    "points": [[0.45, 0.28], [0.55, 0.42], [0.4, 0.65]]
+    "points": [
+     [
+      0.45,
+      0.28
+     ],
+     [
+      0.55,
+      0.42
+     ],
+     [
+      0.4,
+      0.65
+     ]
+    ]
    }
   ]
  },
@@ -27,17 +66,56 @@
    {
     "file": "a02.jpg",
     "title": "Battle of Chickamauga (Kurz & Allison, 1890)",
-    "points": [[0.4, 0.38], [0.62, 0.38], [0.3, 0.58]]
+    "points": [
+     [
+      0.4,
+      0.38
+     ],
+     [
+      0.62,
+      0.38
+     ],
+     [
+      0.3,
+      0.58
+     ]
+    ]
    },
    {
     "file": "a02_b.jpg",
     "title": "Major General James A. Garfield in uniform, 1861",
-    "points": [[0.42, 0.33], [0.28, 0.62], [0.75, 0.42]]
+    "points": [
+     [
+      0.42,
+      0.33
+     ],
+     [
+      0.28,
+      0.62
+     ],
+     [
+      0.75,
+      0.42
+     ]
+    ]
    },
    {
     "file": "a02_c.jpg",
     "title": "The Snodgrass House, Thomas' headquarters at Chickamauga (1902 photo)",
-    "points": [[0.42, 0.55], [0.32, 0.63], [0.65, 0.68]]
+    "points": [
+     [
+      0.42,
+      0.55
+     ],
+     [
+      0.32,
+      0.63
+     ],
+     [
+      0.65,
+      0.68
+     ]
+    ]
    }
   ]
  },
@@ -48,33 +126,56 @@
    {
     "file": "a03.jpg",
     "title": "Umbrella Rock, Lookout Mountain, 1863 (stereograph)",
-    "points": [[0.35, 0.35], [0.28, 0.58], [0.78, 0.35]]
+    "points": [
+     [
+      0.35,
+      0.35
+     ],
+     [
+      0.28,
+      0.58
+     ],
+     [
+      0.78,
+      0.35
+     ]
+    ]
    },
    {
     "file": "a03_b.jpg",
     "title": "View from a rebel battery at the foot of Lookout Mountain, looking towards Chattanooga, 1863",
-    "points": [[0.5, 0.45], [0.15, 0.35], [0.85, 0.3]]
-   }
-  ]
- },
- {
-  "slot": "a04",
-  "title": "Thomas, Grant, and the Cracker Line at Chattanooga, 1863-64",
-  "images": [
-   {
-    "file": "a04.jpg",
-    "title": "General George Thomas, U.S.A. (Brady-Handy)",
-    "points": [[0.42, 0.42], [0.72, 0.58], [0.42, 0.72]]
-   },
-   {
-    "file": "a04_b.jpg",
-    "title": "Portrait of Maj. Gen. Ulysses S. Grant, officer of the Federal Army",
-    "points": [[0.48, 0.28], [0.15, 0.52], [0.5, 0.6]]
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.15,
+      0.35
+     ],
+     [
+      0.85,
+      0.3
+     ]
+    ]
    },
    {
     "file": "a04_c.jpg",
     "title": "Chattanooga, Tenn., 1864: Lookout Mountain from near the rolling mill, camp of the Engineer's Brigade (Barnard)",
-    "points": [[0.5, 0.25], [0.5, 0.55], [0.75, 0.42]]
+    "points": [
+     [
+      0.5,
+      0.25
+     ],
+     [
+      0.5,
+      0.55
+     ],
+     [
+      0.75,
+      0.42
+     ]
+    ]
    }
   ]
  },
@@ -85,17 +186,56 @@
    {
     "file": "a05.jpg",
     "title": "Battle of Mission [Missionary] Ridge, Nov. 25th 1863 (Cosack & Co. lith.)",
-    "points": [[0.42, 0.35], [0.72, 0.62], [0.3, 0.68]]
+    "points": [
+     [
+      0.42,
+      0.35
+     ],
+     [
+      0.72,
+      0.62
+     ],
+     [
+      0.3,
+      0.68
+     ]
+    ]
    },
    {
     "file": "a05_b.jpg",
     "title": "Battle of Missionary Ridge (Kurz & Allison, 1886)",
-    "points": [[0.15, 0.68], [0.5, 0.55], [0.85, 0.35]]
+    "points": [
+     [
+      0.15,
+      0.68
+     ],
+     [
+      0.5,
+      0.55
+     ],
+     [
+      0.85,
+      0.35
+     ]
+    ]
    },
    {
     "file": "a05_c.jpg",
     "title": "Gen. Gordon Granger",
-    "points": [[0.42, 0.32], [0.72, 0.44], [0.42, 0.62]]
+    "points": [
+     [
+      0.42,
+      0.32
+     ],
+     [
+      0.72,
+      0.44
+     ],
+     [
+      0.42,
+      0.62
+     ]
+    ]
    }
   ]
  },
@@ -106,33 +246,56 @@
    {
     "file": "a06.jpg",
     "title": "Maj.-Gen. W.T. Sherman and horse, in the trenches before Atlanta, Ga., 1864",
-    "points": [[0.58, 0.42], [0.5, 0.68], [0.18, 0.58]]
+    "points": [
+     [
+      0.58,
+      0.42
+     ],
+     [
+      0.5,
+      0.68
+     ],
+     [
+      0.18,
+      0.58
+     ]
+    ]
    },
    {
     "file": "a06_b.jpg",
     "title": "Gen. Sherman's men destroying the railroad before the evacuation of Atlanta, 1864 (stereograph)",
-    "points": [[0.5, 0.45], [0.2, 0.65], [0.72, 0.6]]
-   }
-  ]
- },
- {
-  "slot": "a07",
-  "title": "Grant, Stanton, and the defense of Nashville, Dec. 1864",
-  "images": [
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.2,
+      0.65
+     ],
+     [
+      0.72,
+      0.6
+     ]
+    ]
+   },
    {
     "file": "a07.jpg",
     "title": "General U.S. Grant, City Point, Va., August 1864",
-    "points": [[0.55, 0.42], [0.42, 0.48], [0.22, 0.68]]
-   },
-   {
-    "file": "a07_b.jpg",
-    "title": "Secretary of War Edwin M. Stanton",
-    "points": [[0.48, 0.35], [0.48, 0.38], [0.48, 0.65]]
-   },
-   {
-    "file": "a07_c.jpg",
-    "title": "Nashville, Tenn., from Fort Negley looking northeast, 1864",
-    "points": [[0.2, 0.45], [0.32, 0.58], [0.75, 0.45]]
+    "points": [
+     [
+      0.55,
+      0.42
+     ],
+     [
+      0.42,
+      0.48
+     ],
+     [
+      0.22,
+      0.68
+     ]
+    ]
    }
   ]
  },
@@ -143,17 +306,56 @@
    {
     "file": "a08.jpg",
     "title": "Maj. Gen. Thomas (A.S. Morse, photographer, Dept. of the Cumberland, Nashville)",
-    "points": [[0.48, 0.33], [0.48, 0.62], [0.48, 0.9]]
+    "points": [
+     [
+      0.48,
+      0.33
+     ],
+     [
+      0.48,
+      0.62
+     ],
+     [
+      0.48,
+      0.9
+     ]
+    ]
    },
    {
     "file": "a08_b.jpg",
     "title": "Battle of Nashville (Kurz & Allison, 1891)",
-    "points": [[0.52, 0.28], [0.78, 0.42], [0.35, 0.62]]
+    "points": [
+     [
+      0.52,
+      0.28
+     ],
+     [
+      0.78,
+      0.42
+     ],
+     [
+      0.35,
+      0.62
+     ]
+    ]
    },
    {
     "file": "a08_c.jpg",
     "title": "Thomas Circle, Washington, D.C., 1906",
-    "points": [[0.47, 0.55], [0.5, 0.28], [0.15, 0.55]]
+    "points": [
+     [
+      0.47,
+      0.55
+     ],
+     [
+      0.5,
+      0.28
+     ],
+     [
+      0.15,
+      0.55
+     ]
+    ]
    }
   ]
  },
@@ -164,17 +366,52 @@
    {
     "file": "a09.jpg",
     "title": "George H. Thomas's grave, Oakwood Cemetery, Troy, N.Y. (photo: Matt Wade, CC BY-SA 3.0)",
-    "points": [[0.45, 0.18], [0.5, 0.52], [0.85, 0.78]]
+    "points": [
+     [
+      0.45,
+      0.18
+     ],
+     [
+      0.5,
+      0.52
+     ],
+     [
+      0.85,
+      0.78
+     ]
+    ]
    },
    {
     "file": "a09_b.jpg",
     "title": "San Francisco from Russian Hill, looking down Vallejo Street, 1866",
-    "points": [[0.42, 0.45], [0.65, 0.32], [0.5, 0.85]]
+    "points": [
+     [
+      0.42,
+      0.45
+     ],
+     [
+      0.65,
+      0.32
+     ],
+     [
+      0.5,
+      0.85
+     ]
+    ]
    },
    {
     "file": "a09_c.jpg",
     "title": "Gen. George H. Thomas, c. 1860-65 (NARA)",
-    "points": [[0.5, 0.28], [0.5, 0.55]]
+    "points": [
+     [
+      0.5,
+      0.28
+     ],
+     [
+      0.5,
+      0.55
+     ]
+    ]
    }
   ]
  },
@@ -185,12 +422,52 @@
    {
     "file": "a10.jpg",
     "title": "The Thomas Circle, Fourteenth St., Washington, D.C. (stereograph, Series of 1900)",
-    "points": [[0.38, 0.5], [0.42, 0.25], [0.85, 0.5]]
+    "points": [
+     [
+      0.38,
+      0.5
+     ],
+     [
+      0.42,
+      0.25
+     ],
+     [
+      0.85,
+      0.5
+     ]
+    ]
    },
    {
     "file": "a10_b.jpg",
     "title": "Gen. George H. Thomas, close portrait, c. 1860-65 (NARA)",
-    "points": [[0.5, 0.32], [0.5, 0.68]]
+    "points": [
+     [
+      0.5,
+      0.32
+     ],
+     [
+      0.5,
+      0.68
+     ]
+    ]
+   },
+   {
+    "file": "a04.jpg",
+    "title": "General George Thomas, U.S.A. (Brady-Handy)",
+    "points": [
+     [
+      0.42,
+      0.42
+     ],
+     [
+      0.72,
+      0.58
+     ],
+     [
+      0.42,
+      0.72
+     ]
+    ]
    }
   ]
  }

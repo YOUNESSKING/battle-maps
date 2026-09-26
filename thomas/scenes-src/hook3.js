@@ -11,7 +11,7 @@ const G = (lat, lon) => {
 };
 
 // ---------- media available at render time (checked by ls before final build; falls back to a plaque) ----------
-const HAS = { thomas_head: false, us_flag_35star: false };
+const HAS = { thomas_head: true, us_flag_35star: true };
 
 // glowing numbered battle marker: pulse ring + disc + label (world coords)
 const marker = (num, name, sub, lat, lon, t, o = {}) => {

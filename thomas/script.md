@@ -76,7 +76,7 @@ Within weeks, though, that surviving army was trapped. Bragg's Confederates occu
 [MAP: ridge-1 | Chattanooga basin: Tennessee River loop, the town, Lookout Mountain to the south-west, Missionary Ridge along the east. Title card MOVE 2 · MISSIONARY RIDGE · NOVEMBER 1863. Red lines along the ridge and on Lookout; blue pocket around the town; red X on the supply roads]
 October, eighteen sixty-three. The Army of the Cumberland is under siege in Chattanooga. Confederate guns on Lookout Mountain close the river and the roads, and supplies come in only over a single mountain track, sixty miles long. Thousands of horses and mules starve to death. The men are down to a few crackers a day.
 
-[ARCHIVE: portrait of Thomas, 1863 (Brady studio) / Grant portrait]
+[MAP: ridge-1b | Rosecrans removed; Thomas takes command (stake); Grant arrives; telegram card WE WILL HOLD THE TOWN TILL WE STARVE; Brown's Ferry night operation: pontoon boats float down the river around Moccasin Point, bridgehead at Brown's Ferry; Hooker from Bridgeport; dashed CRACKER LINE route Bridgeport → Kelley's Ferry → Brown's Ferry → Chattanooga]
 Rosecrans was removed, and Thomas was given command of the army. Ulysses Grant, the new overall commander in the west, telegraphed asking him to hold Chattanooga at all costs. Thomas's reply became famous: we will hold the town till we starve. He did more than that. With his engineers, he prepared a daring river operation that opened a new supply line, which the hungry soldiers nicknamed the Cracker Line.
 
 [MAP: ridge-2 | Blue reinforcements arrive: HOOKER from the west, SHERMAN from the north. Nov 23: blue arrow seizes ORCHARD KNOB. Nov 24: HOOKER takes LOOKOUT MOUNTAIN (fog particles). Nov 25: SHERMAN's arrows hit the north end of the ridge (TUNNEL HILL) and bounce back from CLEBURNE]
@@ -122,7 +122,7 @@ On the thirtieth of November, at Franklin, Hood hurled his army in a massive fro
 [MAP: nash-3 | Nashville close-up: Cumberland River, city, Union fortification ring, Confederate line with 5 small redoubts on the left along the Hillsboro Pike. Stats: UNION ~55,000 · CONFEDERATE ~30,000. Plaques: THOMAS, HOOD]
 Inside the city, Thomas was building an army almost from scratch. A corps arrived from Missouri, garrison troops from Chattanooga, raw recruits, and a cavalry force that needed thousands of fresh horses. By mid-December he would have some fifty-five thousand men against about thirty thousand Confederates. But he refused to attack until everything was ready.
 
-[ARCHIVE: telegraph office / photo of Grant, 1864 / Stanton]
+[MAP: nash-3b | Telegram cards fly into Nashville from Washington and Grant (ATTACK AT ONCE); ice storm Dec 8 (ice overlay, snow particles); order card RELIEVING THOMAS OF COMMAND; Thomas's reply caption: I WILL SUBMIT WITHOUT A MURMUR; caption NO ATTACK ON ICE]
 In Washington and at Grant's headquarters, patience ran out. Telegrams arrived every day demanding that Thomas attack at once. Then, on the eighth of December, an ice storm covered Nashville. The hills turned to sheets of glass. Men could not stand, and horses could not climb. Thomas refused to move. Grant drew up an order removing him from command. Thomas replied that if they thought it necessary to relieve him, he would submit without a murmur. But he would not attack on ice.
 
 [MAP: nash-4 | Snow/ice particles on screen; caption: ICE STORM · DEC 8–14; a telegram card: "RELIEVED OF COMMAND" appears, then is stamped SUSPENDED; LOGAN's plaque travels west toward Nashville]

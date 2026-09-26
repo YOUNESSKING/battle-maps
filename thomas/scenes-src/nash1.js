@@ -8,7 +8,7 @@ const G = (lat, lon) => {
   const n = 256 * 2 ** 9, r = (lat * Math.PI) / 180;
   return [+((lon + 180) / 360 * n - 32857).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 50973).toFixed(1)];
 };
-const HAS = { hood_head: false, csa_battle_flag: false };
+const HAS = { hood_head: true, csa_battle_flag: true };
 
 const U = (o) => {
   const el = B.unit(o);
@@ -18,7 +18,7 @@ const U = (o) => {
   el.querySelector(".blk").style.boxShadow = "0 1px 3px rgba(0,0,0,0.4)";
   return el;
 };
-const CITY = (name, lat, lon, o = {}) => B.city(name, ...G(lat, lon), { size: 16, r: 5, ...o });
+const CITY = (name, lat, lon, o = {}) => B.city(name, ...G(lat, lon), { size: 26, r: 8, ...o });
 
 // ---------- places ----------
 const ATL = G(33.749, -84.388), FLOR = G(34.80, -87.68), DECAT = G(34.606, -86.983);
@@ -41,39 +41,41 @@ const T_DUG = at("nash-2", "dug in on the hills");
 
 // ---------- camera ----------
 B.camera([
-  [0, ATL[0] - 40, ATL[1] - 60, 0.85],
-  [T_SHERMAN, ATL[0] + 40, ATL[1] + 20, 0.85],
+  [0, ATL[0] - 40, ATL[1] - 60, 1.3],
+  [T_SHERMAN, ATL[0] + 40, ATL[1] + 20, 1.2],
   [T_TURNS, (ATL[0] + FLOR[0]) / 2, (ATL[1] + FLOR[1]) / 2, 0.75],
   [T_BOLD, FLOR[0] + 40, FLOR[1] - 20, 0.9],
   [T_OHIO, NASH[0] + 40, NASH[1] + 60, 0.85],
-  [T_SCRAPE, NASH[0], NASH[1] + 80, 0.95],
-  [T_FRANK, FRANK[0] - 20, FRANK[1] + 10, 1.3],
-  [T_5HRS, FRANK[0], FRANK[1], 1.25],
-  [T_DUG, NASH[0] + 10, NASH[1] + 90, 1.05],
-  [END, NASH[0], NASH[1] + 80, 1.0],
+  [T_SCRAPE, NASH[0], NASH[1] + 80, 1.6],
+  [T_FRANK, FRANK[0] - 10, FRANK[1] - 10, 2.6],
+  [T_5HRS, FRANK[0], FRANK[1] - 10, 2.5],
+  [T_DUG, NASH[0] + 10, NASH[1] + 20, 2.4],
+  [END, NASH[0], NASH[1] + 20, 2.5],
 ]);
 
 // ---------- title ----------
 B.title("MOVE 3", "NASHVILLE", "December 1864", 0.3, T_SHERMAN);
 B.showDate(0.4);
 B.date("AUTUMN 1864", 0.6, T_FRANK - 0.3);
+B.date("30 NOV 1864", T_FRANK - 0.1, T_DUG - 0.3);
+B.date("DECEMBER 1864", T_DUG);
 
 // ---------- geography ----------
 B.label("GEORGIA", 1877, 1330, { cls: "country", size: 30, t: 0.5, until: T_TURNS });
 B.label("TENNESSEE", 1185, 560, { cls: "country", size: 30, t: 0.5, until: T_TURNS });
 CITY("ATLANTA", 33.749, -84.388, { t: 0.7, dy: -8 });
-CITY("NASHVILLE", 36.163, -86.782, { t: T_TURNS + 1.4, dy: -10 });
+CITY("NASHVILLE", 36.163, -86.782, { size: 18, r: 6, t: T_TURNS + 1.4, dy: -10 });
 
 // ---------- Sherman heads southeast to the sea (off-map) ----------
-U({ id: "sherman", side: "carth", kind: "inf", x: ATL[0] - 10, y: ATL[1] - 10, w: 30, h: 19, label: "SHERMAN", fs: 10, t: 0.6 });
+U({ id: "sherman", side: "carth", kind: "inf", x: ATL[0] - 10, y: ATL[1] - 10, w: 56, h: 36, label: "SHERMAN", fs: 20, t: 0.6 });
 B.arrow({ side: "carth", pts: [[ATL[0], ATL[1]], [2300, 1650], [2880, 1900]], width: 9, dash: "18 10", t: T_SHERMAN - 0.2, dur: 2.4, until: T_TURNS + 1 });
 B.caption("SHERMAN MARCHES AWAY TO THE SEA", T_SHERMAN, T_TURNS - 0.2, "carth");
 B.hideUnits(["sherman"], T_TURNS, 0.5);
 
 // ---------- Hood swings west into Alabama, then north into Tennessee ----------
-U({ id: "hood", side: "rome", kind: "inf", x: ATL[0] + 20, y: ATL[1] + 10, w: 30, h: 19, label: "HOOD", fs: 10, t: T_TURNS - 0.2 });
+U({ id: "hood", side: "rome", kind: "inf", x: ATL[0] + 20, y: ATL[1] + 10, w: 56, h: 36, label: "HOOD", fs: 20, t: T_TURNS - 0.2 });
 if (HAS.hood_head) {
-  B.portraitStake({ img: "assets/media/hood_head.png", flag: HAS.csa_battle_flag ? "assets/media/csa_battle_flag.png" : "", name: "JOHN BELL HOOD", side: "rome", x: ATL[0] + 40, y: ATL[1] - 40, size: 0.6, t: T_TURNS });
+  B.portraitStake({ img: "assets/media/hood_head.png", flag: HAS.csa_battle_flag ? "assets/media/csa_battle_flag.png" : "", name: "JOHN BELL HOOD", side: "rome", x: ATL[0] + 40, y: ATL[1] - 40, size: 1.0, t: T_TURNS });
 }
 const route = [[ATL[0], ATL[1]], [1560, 1280], [1180, 1150], [FLOR[0] + 10, FLOR[1] + 10], [880, 760], [FRANK[0] + 10, FRANK[1] + 20]];
 B.arrow({ side: "rome", pts: route, width: 10, t: T_TURNS, dur: 3.6, until: T_FRANK + 1 });
@@ -83,27 +85,27 @@ CITY("FLORENCE", 34.80, -87.68, { t: T_TURNS + 1.6, dy: 14, left: true });
 
 // ---------- Thomas scrapes together troops at Nashville ----------
 [0, 0.3, 0.6].forEach((dt, i) => {
-  U({ id: "scrap" + i, side: "carth", kind: "inf", x: NASH[0] - 30 + i * 30, y: NASH[1] + 50, w: 22, h: 14, t: T_SCRAPE + dt });
+  U({ id: "scrap" + i, side: "carth", kind: "inf", x: NASH[0] - 110 + i * 30, y: NASH[1] - 6, w: 26, h: 16, t: T_SCRAPE + dt });
 });
 B.caption("THOMAS SCRAPES TOGETHER WHATEVER HE CAN", T_SCRAPE, T_FRANK - 0.2, "carth");
 
 // ---------- Franklin: Hood's frontal assault breaks on Schofield's line ----------
-CITY("FRANKLIN", 35.925, -86.869, { t: T_FRANK - 0.3, dy: -12 });
+CITY("FRANKLIN", 35.925, -86.869, { size: 16, r: 5, t: T_FRANK - 0.3, dy: -12 });
 B.hideUnits(["hood"], T_FRANK, 0.4);
-const blueArc = [[FRANK[0] - 90, FRANK[1] - 50], [FRANK[0] - 10, FRANK[1] - 70], [FRANK[0] + 70, FRANK[1] - 40]];
+const blueArc = [[FRANK[0] - 55, FRANK[1] + 4], [FRANK[0] - 5, FRANK[1] + 24], [FRANK[0] + 45, FRANK[1] + 6]];
 B.front({ pts: blueArc, color: "var(--carth)", width: 9, t: T_FRANK, dur: 1.0 });
 [-70, 0, 70].forEach((dx, i) => {
-  B.arrow({ side: "rome", pts: [[FRANK[0] + dx, FRANK[1] + 120], [FRANK[0] + dx * 0.6, FRANK[1] + 10]], width: 10, t: T_ASSAULT + i * 0.15, dur: 1.0, until: T_5HRS });
+  B.arrow({ side: "rome", pts: [[FRANK[0] + dx * 0.7, FRANK[1] + 130], [FRANK[0] + dx * 0.5, FRANK[1] + 36]], width: 7, t: T_ASSAULT + i * 0.15, dur: 1.0, until: T_5HRS });
 });
 B.caption("A MASSIVE FRONTAL ASSAULT", T_ASSAULT, T_5HRS - 0.1, "rome");
 B.stat(["6,000+ CONFEDERATE CASUALTIES", "6 GENERALS KILLED"], T_5HRS, T_BLOODIED + 0.6, "rome");
 
 // ---------- Hood, bloodied, still advances and digs in south of Nashville ----------
-U({ id: "hood2", side: "rome", kind: "inf", x: FRANK[0], y: FRANK[1], w: 30, h: 19, label: "HOOD", fs: 10, t: T_BLOODIED });
-B.arrow({ side: "rome", pts: [[FRANK[0], FRANK[1]], [NASH[0] - 20, NASH[1] + 60]], width: 9, t: T_BLOODIED + 0.4, dur: 1.6, until: END });
-B.move("hood2", T_BLOODIED + 0.4, 1.6, NASH[0] - 20, NASH[1] + 60);
+U({ id: "hood2", side: "rome", kind: "inf", x: FRANK[0], y: FRANK[1], w: 34, h: 22, label: "HOOD", fs: 12, t: T_BLOODIED });
+B.arrow({ side: "rome", pts: [[FRANK[0], FRANK[1]], [NASH[0] - 10, NASH[1] + 50]], width: 7, t: T_BLOODIED + 0.4, dur: 1.6, until: END });
+B.move("hood2", T_BLOODIED + 0.4, 1.6, NASH[0] - 10, NASH[1] + 56);
 B.caption("BLOODIED, BUT STILL COMES ON", T_BLOODIED + 1.3, T_DUG - 0.1, "rome");
-B.front({ pts: [[NASH[0] - 90, NASH[1] + 30], [NASH[0] - 20, NASH[1] + 50], [NASH[0] + 60, NASH[1] + 40]], color: "var(--rome)", width: 8, t: T_DUG, dur: 1.2 });
+B.front({ pts: [[NASH[0] - 70, NASH[1] + 22], [NASH[0] - 10, NASH[1] + 38], [NASH[0] + 55, NASH[1] + 26]], color: "var(--rome)", width: 8, t: T_DUG, dur: 1.2 });
 B.caption("HOOD DIGS IN ON THE HILLS SOUTH OF NASHVILLE", T_DUG, END, "rome");
 
 B.finish();
