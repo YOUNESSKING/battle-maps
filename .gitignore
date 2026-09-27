@@ -10,3 +10,4 @@
 node_modules/
 tts/*.onnx
 tts/*.bin
+**/logs/
