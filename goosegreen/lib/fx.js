@@ -345,13 +345,13 @@
         return [p[0] - (dy / L) * d, p[1] + (dx / L) * d];
       });
       const band = (edge, k) => { // edge extended at both ends so the tint doesn't stop short
-        const e = [[edge[0][0] - (edge[1][0] - edge[0][0]) * 3, edge[0][1] - (edge[1][1] - edge[0][1]) * 3], ...edge,
-          [edge[edge.length - 1][0] + (edge[edge.length - 1][0] - edge[edge.length - 2][0]) * 3, edge[edge.length - 1][1] + (edge[edge.length - 1][1] - edge[edge.length - 2][1]) * 3]];
+        const ext = (a, b) => { const dx = a[0] - b[0], dy = a[1] - b[1], L = Math.hypot(dx, dy) || 1; return [a[0] + dx / L * 170, a[1] + dy / L * 170]; };
+        const e = [ext(edge[0], edge[1]), ...edge, ext(edge[edge.length - 1], edge[edge.length - 2])]; // run a little past the line ends
         return [...e, ...off(e, dir * depth * (k + 1) / n).reverse()];
       };
       const polys = [];
       for (let k = 0; k < n; k++) {
-        const pl = K.territory({ pts: band(o.pts, k), side: o.color || o.side, t: o.t, dur: o.dur, alpha: (o.alpha || 0.28) / n * 1.6, mask: o.mask, soft: o.soft || 10, until: o.until });
+        const pl = K.territory({ pts: band(o.pts, k), side: o.color || o.side, t: o.t, dur: o.dur, alpha: (o.alpha || 0.28) / n * 1.6, mask: o.mask, soft: o.soft || 24, until: o.until });
         if (o.to) K.shift(pl, band(o.to, k), o.moveT, o.moveDur || 2.5);
         polys.push(pl);
       }
