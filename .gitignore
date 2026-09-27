@@ -12,3 +12,4 @@ tts/*.onnx
 tts/*.bin
 **/logs/
 !goosegreen/assets/media/sfx/*.wav
+**/build/sfx_cues.json
