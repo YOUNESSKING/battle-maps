@@ -7,6 +7,7 @@ const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
 const tl = B.tl;
+const K = FXK(B);
 
 // ---------- projection (assets/darwin.json: zoom 14, origin_world_px) ----------
 const G = (lat, lon) => {
@@ -84,8 +85,8 @@ const shell = (from, to, t, o = {}) => { // ballistic arc (artillery / mortar) +
   tl.to(p, { opacity: 0.95, duration: 0.05 }, t);
   tl.to(p, { strokeDashoffset: -len, duration: dur, ease: "none" }, t);
   tl.to(p, { opacity: 0, duration: 0.05 }, t + dur);
-  SFX(o.snd || "mortar", t);
-  burst(x2, y2, t + dur * 0.93, o.r || 14);
+  SFX(o.snd === undefined ? "mortar" : o.snd, t);
+  if (o.burst !== false) burst(x2, y2, t + dur * 0.93, o.r || 14);
 };
 const missile = (from, to, t, dur = 1.1) => { // straight wire-guided missile: wire line + flare + impact
   const [x1, y1] = from, [x2, y2] = to;
@@ -102,7 +103,7 @@ const missile = (from, to, t, dur = 1.1) => { // straight wire-guided missile: w
   tl.to(c, { attr: { cx: x2, cy: y2 }, duration: dur, ease: "none" }, t);
   tl.to(g, { autoAlpha: 0, duration: 0.5 }, t + dur + 0.5);
   SFX("missile", t);
-  burst(x2, y2, t + dur - 0.05, 18, false);
+  K.impact(x2, y2, t + dur - 0.05, { r: 15 });
 };
 const cone = (x, y, ang, spread, len, t, until) => { // translucent field of fire from a trench
   const a0 = (ang - spread / 2) * Math.PI / 180, a1 = (ang + spread / 2) * Math.PI / 180;
@@ -207,6 +208,7 @@ const T1 = [1492, 686], T2 = [1535, 678];       // the trench Jones charged / th
 const RIDGE = [[1432, 678], [1463, 695], T1, [1562, 700], [1592, 716]]; // Argentine trenches on Darwin Ridge
 const BOCAPOS = [[1318, 624], [1348, 640], [1300, 652], [1372, 622]];   // Argentine positions around Boca House
 const BCOY = [1392, 540], SUPP = [1398, 446];
+const DCOY = [1318, 520], DCOY2 = [1282, 530];  // D Company behind B, then along the western shore onto Boca House
 
 // ---------- camera ----------
 const P1 = P("move2-1"), P2 = P("move2-2"), P3 = P("move2-3"), P4 = P("move2-4"), P5 = P("move2-5"), P6 = P("move2-6");
@@ -246,6 +248,7 @@ B.camera([
 ]);
 
 // ---------- static map furniture ----------
+K.grid(G, -51.855, -51.768, -59.099, -58.851, 0.01, 0.3);
 L("BRENTON LOCH", 1150, 520, { cls: "sea", size: 22, instant: true });
 L("DARWIN HARBOUR", 1668, 935, { cls: "sea", size: 20, instant: true });
 B.city("DARWIN", ...DARWIN, { size: 14, r: 5, t: 0.8 });
@@ -253,48 +256,73 @@ B.city("GOOSE GREEN", ...GG, { size: 19, r: 6, t: 1.0 });
 B.city("BOCA HOUSE", ...BOCA, { size: 12, r: 4, left: true, t: 1.2 });
 L("DARWIN HILL", 1498, 752, { size: 14, t: 1.4 });
 L("AIRFIELD", AIRF[0], AIRF[1] + 8, { size: 16, t: 1.6 });
+// FX helpers: a gun fires (quiet launch), the shell arcs over, the impact carries the boom
+const volley = (from, to, t, o = {}) => {
+  K.gun(from[0], from[1], t, { unit: o.unit, dx: o.dx || 0, dy: o.dy || -8, sfx: o.sfx });
+  const dur = o.dur || 1.1;
+  shell([from[0] + (o.dx || 0), from[1] + (o.dy || -8)], to, t + 0.05, { h: o.h, side: o.side, dur, burst: false, snd: false });
+  K.impact(to[0], to[1], t + 0.05 + dur * 0.93, { r: o.r || 13, shake: o.shake });
+};
+const DHILL = [1512, 700];                      // Darwin Hill objective (centre of the ridge trenches)
 
 // ---------- move2-1: pinned in the gully ----------
 B.title("MOVE 2", "DARWIN HILL", "Morning · 28 May 1982", 0.3, 6.2);
 B.showDate(0.5);
 B.date("28 MAY 1982 · MORNING", 0.7, at("move2-9", "quarter past one") - 0.3, 30);
-// red defensive line (the gorse line) from Boca House to Darwin Hill
+// the Argentine defensive line (the gorse line) from Boca House to Darwin Hill:
+// glowing two-colour band, British glow on the north-west side, Argentine glow on the south-east side
 const LINE = [[1318, 608], [1370, 628], [1420, 654], [1462, 680], [1500, 690], [1545, 684], [1592, 706]];
-const redLine = B.front({ pts: LINE, color: "var(--rome)", width: 4, t: 2.0, dur: 2.2 });
-L("GORSE LINE", 1395, 612, { size: 11, t: 3.6, until: P3 + 1 });
+const tBreak = at("move2-11", "broken from end to end") - 1.2;
+const band = K.front({ pts: LINE, sideA: "carth", sideB: "rome", width: 14, t: 2.0, dur: 2.2, until: tBreak + 2.2 });
+L("GORSE LINE", 1395, 604, { size: 11, t: 3.6, until: P3 + 1 });
+K.target(...DHILL, 1.6, { r: 34, until: at("move2-1", "A Company") });
 const gullyHi = B.highlight([[1530, 612], [1556, 626], [1580, 636]], at("move2-1", "gorse-filled gully"), P2, 16);
 tl.to(gullyHi, { opacity: 0, duration: 0.6 }, P3);
 L("GORSE GULLY", 1590, 652, { size: 10, t: at("move2-1", "gorse-filled gully"), until: P4 });
 U({ id: "acoy", side: "carth", x: GULLY[0], y: GULLY[1], w: 30, h: 20, label: "A COY · ~100", fs: 8, t: at("move2-1", "A Company") });
-RIDGE.forEach((p, i) => U({ id: "dr" + i, side: "rome", x: p[0], y: p[1], w: 20, h: 13, t: at("move2-1", "Argentine trenches") + i * 0.15 }));
+K.counter("acoy", { icon: "infantry", flag: "uk", size: "I" });
+RIDGE.forEach((p, i) => {
+  U({ id: "dr" + i, side: "rome", x: p[0], y: p[1], w: 20, h: 13, label: i === 4 ? "12th REGT" : undefined, fs: 7, t: at("move2-1", "Argentine trenches") + i * 0.15 });
+  K.counter("dr" + i, { icon: "infantry", flag: "arg" });
+});
 const cones = RIDGE.map((p, i) => cone(p[0], p[1], [-60, -55, -65, -95, -115][i], 50, 85, at("move2-1", "Heavy machine guns") + i * 0.2, P5));
 B.caption("EVERY YARD COVERED BY FIRE", at("move2-1", "covered every yard"), P2 - 0.2, "rome");
 
 // ---------- move2-2: Estévez ----------
 U({ id: "est", side: "rome", x: 1440, y: 880, w: 20, h: 13, label: "C COY 25th REGT", fs: 8, t: at("move2-2", "platoon led by") - 1.2 });
+K.counter("est", { icon: "infantry", flag: "arg", size: "•••" });
 B.move("est", at("move2-2", "moved up in the dark"), 3.2, 1410, 668);
 tl.to(B.units.est.el.querySelector(".tag"), { autoAlpha: 0, duration: 0.4 }, at("move2-2", "until he was killed"));
-const estStake = stake({ side: "arg", img: "estevez_head.png", name: "2nd LT. ROBERTO ESTÉVEZ", role: "C COY · 25th REGIMENT", x: 1318, y: 915, size: 0.9, fs: 11, plqScale: 0.7, t: at("move2-2", "Second Lieutenant") - 0.4, until: P3 + 0.3 });
-tl.to(estStake, { filter: "grayscale(1)", opacity: 0.7, duration: 1.2 }, at("move2-2", "until he was killed"));
-U({ id: "guns", side: "rome", x: GUNS[0], y: GUNS[1], w: 26, h: 18, label: "ARG. GUNS", fs: 9, t: at("move2-2", "directing artillery") - 1.4 });
+const estBadge = K.badge({ name: "2nd LT. ROBERTO ESTÉVEZ", role: "PLATOON · C COY · 25th REGT", photo: HAVE["estevez_head.png"] ? "assets/media/estevez_head.png" : null, initials: "RE",
+  flag: "arg", side: "rome", corner: "tr", t: at("move2-2", "Second Lieutenant") - 0.4, until: P3 + 0.3 });
+tl.to(estBadge, { filter: "grayscale(1)", duration: 1.2 }, at("move2-2", "until he was killed"));
+U({ id: "guns", side: "rome", x: GUNS[0], y: GUNS[1], w: 28, h: 19, label: "105 mm GUNS", fs: 8, t: at("move2-2", "directing artillery") - 1.4 });
+K.counter("guns", { icon: "artillery", flag: "arg", size: "I" });
 for (let i = 0; i < 7; i++) {
   const tx = GULLY[0] + [-18, 14, -4, 26, -26, 6, 18][i], ty = GULLY[1] + [-14, 10, -30, -6, 8, 18, -24][i];
-  shell([GUNS[0] + 4, GUNS[1] - 8], [tx, ty], at("move2-2", "directing artillery") + i * 0.55, { snd: "fire", h: 60 + (i % 3) * 25, side: i % 2 ? 1 : -1, dur: 1.3, r: 16 });
+  volley(GUNS, [tx, ty], at("move2-2", "directing artillery") + i * 0.55, { unit: "guns", dx: 6, dy: -10, h: 60 + (i % 3) * 25, side: i % 2 ? 1 : -1, dur: 1.3, r: 15 });
 }
 B.caption("HIS MEN HELD", at("move2-2", "His men held"), P3 + 0.2, "rome");
 B.hideUnits(["guns"], P3 + 0.5);
 
 // ---------- move2-3: B Company stopped at Boca House ----------
-BOCAPOS.forEach((p, i) => U({ id: "bh" + i, side: "rome", x: p[0], y: p[1], w: 20, h: 13, t: at("move2-3", "Argentine positions") + i * 0.15 }));
+BOCAPOS.forEach((p, i) => {
+  U({ id: "bh" + i, side: "rome", x: p[0], y: p[1], w: 20, h: 13, label: i === 2 ? "12th REGT" : undefined, fs: 7, t: at("move2-3", "Argentine positions") + i * 0.15 });
+  K.counter("bh" + i, { icon: "infantry", flag: "arg" });
+});
 BOCAPOS.forEach((p, i) => cone(p[0], p[1], [-50, -65, -55, -90][i], 50, 80, at("move2-3", "Argentine positions") + 0.4 + i * 0.15, P7));
+K.target(BOCA[0], BOCA[1], at("move2-3", "Boca House") - 0.3, { r: 30, until: P4 });
 U({ id: "bcoy", side: "carth", x: BCOY[0], y: BCOY[1], w: 30, h: 20, label: "B COY", fs: 9, t: at("move2-3", "B Company") });
+K.counter("bcoy", { icon: "infantry", flag: "uk", size: "I" });
+U({ id: "dcoy", side: "carth", x: DCOY[0], y: DCOY[1], w: 30, h: 20, label: "D COY", fs: 9, t: at("move2-3", "B Company") + 0.4 });
+K.counter("dcoy", { icon: "infantry", flag: "uk", size: "I" });
 B.caption("BOTH ATTACKS STOPPED", at("move2-3", "whole attack"), P4 - 0.2, "rome");
 
 // ---------- move2-4: the defender's view ----------
 const bub = B.bubble("THEY CANNOT CROSS THIS GROUND", 1330, 720, at("move2-4", "looked winnable") - 0.8, P5);
 Object.assign(bub.style, { fontSize: "17px", padding: "8px 14px", borderWidth: "3px", borderRadius: "14px" });
 B.stat(["NO NAVAL GUN", "ARTILLERY NEARLY OUT OF SHELLS", "JETS KEPT AWAY BY THE WEATHER"], at("move2-4", "The British had no"), at("move2-4", "The paratroopers could not") + 0.2, "rome");
-flicker(["acoy", "bcoy"], at("move2-4", "The paratroopers could not"), 11);
+flicker(["acoy", "bcoy", "dcoy"], at("move2-4", "The paratroopers could not"), 11);
 B.caption("LOSING MEN EVERY HOUR", at("move2-4", "every hour"), P5 - 0.2, "carth");
 
 // ---------- move2-5: Jones goes forward ----------
@@ -305,6 +333,7 @@ B.move("jones", tRun, 3.2, GULLY[0] + 16, GULLY[1] - 22);
 const fol = [[TACHQ[0] + 16, TACHQ[1] + 10], [TACHQ[0] - 14, TACHQ[1] + 8], [TACHQ[0] + 2, TACHQ[1] + 22]];
 fol.forEach((p, i) => { U({ id: "f" + i, side: "carth", x: p[0], y: p[1], w: 12, h: 9, t: P5 + 1.0 + i * 0.1 }); B.move("f" + i, tRun + 0.4 + i * 0.2, 3.2, GULLY[0] + [30, 4, 18][i], GULLY[1] - [8, 10, 30][i]); });
 const tCharge1 = at("move2-5", "up a small gully");
+const jBadge = K.badge({ name: "LT. COL. H. JONES", role: "COMMANDING 2 PARA", initials: "H", flag: "uk", side: "carth", corner: "tr", t: tCharge1 - 0.6, until: at("move2-6", "Over the radio") - 0.2 });
 B.move("jones", tCharge1, 1.6, 1532, 650);
 ["f0", "f1", "f2"].forEach((k, i) => B.move(k, tCharge1 + 0.15 * i, 1.6, 1540 + i * 10, 656 - i * 4));
 const a1 = B.arrow({ side: "carth", pts: [[1560, 636], [1545, 650], [1530, 668]], width: 5, t: tCharge1, dur: 1.2 });
@@ -321,44 +350,56 @@ const a2 = B.arrow({ side: "carth", pts: [[1510, 646], [1498, 660], [T1[0] + 1, 
 // ---------- move2-6: SUNRAY IS DOWN ----------
 const tHit = at("move2-6", "second trench") - 0.6;
 U({ id: "t2", side: "rome", x: T2[0], y: T2[1], w: 20, h: 13, t: tHit });
+K.counter("t2", { icon: "infantry", flag: "arg" });
 ring(T2[0], T2[1], 12, tHit + 0.2, 2);
 [0, 0.35, 0.7].forEach((d) => B.arrow({ side: "rome", pts: [[T2[0] - 10, T2[1] - 4], [JFALL[0] + 8, JFALL[1] - 8]], width: 2.5, head: false, t: tHit + 0.8 + d, dur: 0.25, until: tHit + 2.2 }));
 [0, 0.35].forEach((d) => B.arrow({ side: "rome", pts: [[T2[0] - 10, T2[1] - 4], [JFALL[0] + 8, JFALL[1] - 8]], width: 2.5, head: false, t: at("move2-6", "hit again") + d, dur: 0.2, until: at("move2-6", "hit again") + 1.3 }));
+SFX("mg", tHit + 0.8);
 tl.to(B.units.jones.el.querySelector(".gg-token"), { rotation: 70, duration: 0.3, ease: "power2.in" }, at("move2-6", "fell"));
 tl.to(B.units.jones.el.querySelector(".gg-token"), { rotation: 0, duration: 0.4 }, at("move2-6", "got up"));
 tl.to(B.units.jones.el.querySelector(".gg-token"), { rotation: 160, y: 4, duration: 0.3, ease: "power2.in" }, at("move2-6", "hit again") + 0.2);
 greyToken("jones", at("move2-6", "He died"));
+tl.to(jBadge, { filter: "grayscale(1)", duration: 1.0 }, at("move2-6", "He died"));
 const radio = screenBox(`<div class="inner"><div class="wave">${"<i></i>".repeat(18)}</div><div class="txt"><small>2 PARA RADIO NET · 28 MAY</small>"SUNRAY IS DOWN"</div></div>`, "gg-radio");
 const tRadio = at("move2-6", "Over the radio");
 tl.fromTo(radio, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6 }, tRadio);
 radio.querySelectorAll(".wave i").forEach((b, i) => tl.to(b, { scaleY: 0.3 + ((i * 7) % 11) / 12, duration: 0.18 + (i % 4) * 0.04, yoyo: true, repeat: 17, ease: "sine.inOut" }, tRadio + 0.3 + (i % 5) * 0.05));
 tl.to(radio, { autoAlpha: 0, duration: 0.5 }, at("move2-6", "A British helicopter") + 0.4);
 // the Scout sent to evacuate him is shot down by a Pucará
-const HELI = `<g fill="#1f4fc4" stroke="#f7f3ea" stroke-width="3"><ellipse cx="40" cy="36" rx="22" ry="13"/><rect x="58" y="31" width="36" height="7" rx="3"/><rect x="88" y="22" width="6" height="18"/></g><line x1="4" y1="18" x2="78" y2="18" stroke="#1b1812" stroke-width="4"/><line x1="40" y1="18" x2="40" y2="24" stroke="#1b1812" stroke-width="4"/><line x1="28" y1="52" x2="56" y2="52" stroke="#1b1812" stroke-width="3"/>`;
-const PLANE = `<g fill="#c4121f" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M50 4 L55 30 L96 46 L96 54 L55 50 L53 78 L66 88 L66 94 L50 90 L34 94 L34 88 L47 78 L45 50 L4 54 L4 46 L45 30 Z"/></g>`;
 const tHeli = at("move2-6", "A British helicopter");
-const heli = icon(HELI, 1660, 460, 64, 38, tHeli, null, "0 0 100 60");
-moveEl(heli, tHeli + 0.3, 3.6, 1592, 560, 64, 38, "power1.out");
-const plane = icon(PLANE, 1700, 700, 50, 50, at("move2-6", "Pucará") - 1.6, null);
-gsap.set(plane, { rotation: -40 });
-moveEl(plane, at("move2-6", "Pucará") - 1.4, 2.6, 1560, 520, 50, 50, "none");
-tl.to(plane, { autoAlpha: 0, duration: 0.5 }, at("move2-6", "Pucará") + 1.4);
-[0, 0.2, 0.4].forEach((d) => B.arrow({ side: "rome", pts: [[1640, 640], [1596, 566]], width: 2, head: false, t: at("move2-6", "shot down by") + 0.4 + d, dur: 0.2, until: at("move2-6", "shot down by") + 1.4 }));
-burst(1592, 560, at("move2-6", "shot down by") + 0.9, 20);
-tl.to(heli, { rotation: 120, y: 16, filter: "grayscale(1)", opacity: 0.55, duration: 1.2, ease: "power2.in" }, at("move2-6", "shot down by") + 0.9);
+const tDown = at("move2-6", "shot down by") + 0.6;
+const H0 = [1690, 430], H1 = [1600, 550], hDur = 4.6;
+const hf = (tDown - tHeli) / hDur, HP = [H0[0] + (H1[0] - H0[0]) * hf, H0[1] + (H1[1] - H0[1]) * hf]; // Scout position when hit
+K.aircraft({ kind: "heli", side: "carth", size: 40, alt: 14, pts: [H0, H1], t: tHeli, dur: hDur, down: tDown });
+L("SCOUT", H0[0] + 40, H0[1] + 24, { size: 9, t: tHeli + 0.4, until: tDown });
+// Pucará: runs in from the south-east, passes the Scout firing, pulls away north-west
+const PU = [[HP[0] + 400, HP[1] + 450], [HP[0] + 40, HP[1] + 45], [HP[0] - 200, HP[1] - 230]];
+const puDur = 4.1, puT = tDown - 0.3 - puDur * 542 / 907;
+K.aircraft({ kind: "turboprop", side: "rome", size: 44, alt: 16, pts: PU, t: puT, dur: puDur, until: puT + puDur });
+L("PUCARÁ", HP[0] + 150, HP[1] + 215, { size: 9, t: tDown - 1.6, until: tDown - 0.2 });
+[0, 0.18, 0.36].forEach((d) => { // cannon tracers from the Pucará into the Scout
+  const x1 = HP[0] + 70 - d * 60, y1 = HP[1] + 78 - d * 66, tr = document.createElementNS(NS, "line");
+  Object.entries({ x1, y1, x2: HP[0] + 4, y2: HP[1] + 4, stroke: "#ffd54a", "stroke-width": 1.8, "stroke-dasharray": "5 7", "stroke-linecap": "round" }).forEach(([k, v]) => tr.setAttribute(k, v));
+  OV.appendChild(tr); gsap.set(tr, { autoAlpha: 0 });
+  tl.to(tr, { autoAlpha: 1, duration: 0.05 }, tDown - 0.55 + d);
+  tl.fromTo(tr, { attr: { "stroke-dashoffset": 0 } }, { attr: { "stroke-dashoffset": -36 }, duration: 0.5, ease: "none", immediateRender: false }, tDown - 0.55 + d);
+  tl.to(tr, { autoAlpha: 0, duration: 0.2 }, tDown - 0.05 + d * 0.5);
+});
+SFX("mg", tDown - 0.55);
 B.caption("SCOUT HELICOPTER SHOT DOWN · PILOT KILLED", at("move2-6", "shot down by"), ARCH0 + 0.2, "rome");
 // ARCHIVE paragraph (ARCH0..ARCH1): map holds, only the slow camera drift above
 
 // ---------- move2-7: command passes to Keeble ----------
-tl.to(heli, { autoAlpha: 0, duration: 0.5 }, ARCH1 - 1);
 B.hideUnits(["f2"], ARCH1 - 1);
-const kStake = stake({ side: "uk", img: "keeble_head.png", name: "MAJ. CHRIS KEEBLE", role: "NOW COMMANDING 2 PARA", x: 1610, y: 500, size: 1.25, fs: 15, plqScale: 0.85, t: at("move2-7", "Major Chris Keeble") - 0.3, until: at("move2-8", "He let his company") });
+const kBadge = K.badge({ name: "MAJ. CHRIS KEEBLE", role: "NOW COMMANDING 2 PARA", initials: "CK", flag: "uk", side: "carth", corner: "tr", t: at("move2-7", "Major Chris Keeble") - 0.3, until: at("move2-8", "Keeble saw") + 0.1 });
 B.caption("SUNRAY: MAJOR CHRIS KEEBLE", at("move2-7", "Major Chris Keeble"), P8 - 0.1, "carth");
 
 // ---------- move2-8: key insight ----------
 insight(["TRENCHES WERE BUILT TO STOP BULLETS", "NOT MISSILES · NOT MASSED MORTARS"], at("move2-8", "Keeble saw") + 0.2, at("move2-8", "What cracked") + 0.6);
-U({ id: "mort", side: "carth", x: MORT[0], y: MORT[1], w: 26, h: 18, label: "MORTARS", fs: 9, t: at("move2-8", "concentrated firepower") - 1 });
-for (let i = 0; i < 6; i++) shell([MORT[0], MORT[1] + 6], [RIDGE[i % 5][0] + [-10, 8, 0, -6, 12, 4][i], RIDGE[i % 5][1] + [6, -8, 10, 4, -6, 0][i]], at("move2-8", "concentrated firepower") + 0.4 + i * 0.45, { h: 45, side: i % 2 ? 1 : -1, dur: 1.1 });
+U({ id: "mort", side: "carth", x: MORT[0], y: MORT[1], w: 28, h: 19, label: "MORTARS", fs: 9, t: at("move2-8", "concentrated firepower") - 1 });
+K.counter("mort", { icon: "artillery", flag: "uk", size: "•••" });
+for (let i = 0; i < 6; i++) volley(MORT, [RIDGE[i % 5][0] + [-10, 8, 0, -6, 12, 4][i], RIDGE[i % 5][1] + [6, -8, 10, 4, -6, 0][i]], at("move2-8", "concentrated firepower") + 0.4 + i * 0.45,
+  { unit: "mort", sfx: "mortar", h: 45, side: i % 2 ? 1 : -1, dur: 1.1, r: 12 });
 B.caption("COMPANY COMMANDERS RUN THEIR OWN FIGHTS", at("move2-8", "He let his company"), at("move2-8", "put his effort") + 0.3, "carth");
 B.caption("HEAVY WEAPONS TO THE POINTS THAT MATTER", at("move2-8", "put his effort") + 0.4, P9 - 0.2, "carth");
 
@@ -366,17 +407,19 @@ B.caption("HEAVY WEAPONS TO THE POINTS THAT MATTER", at("move2-8", "put his effo
 const tBar = P9 + 0.5;
 for (let i = 0; i < 16; i++) {
   const tgt = RIDGE[(i * 3) % 5];
-  shell([MORT[0] + (i % 3) * 6, MORT[1] + 6], [tgt[0] + ((i * 13) % 21) - 10, tgt[1] + ((i * 7) % 15) - 7], tBar + i * 0.62, { h: 30 + (i % 3) * 12, side: i % 2 ? 1 : -1, dur: 1.1, r: 12 });
+  volley(MORT, [tgt[0] + ((i * 13) % 21) - 10, tgt[1] + ((i * 7) % 15) - 7], tBar + i * 0.62,
+    { unit: "mort", dx: (i % 3) * 6, sfx: "mortar", h: 30 + (i % 3) * 12, side: i % 2 ? 1 : -1, dur: 1.1, r: 12, shake: i % 3 ? false : 3 });
 }
 B.caption("MORE THAN 1,000 MORTAR BOMBS", at("move2-9", "more than a thousand"), at("move2-9", "A Company worked") + 0.5, "carth");
 const tWork = at("move2-9", "one trench at a time");
+K.target(...DHILL, tWork - 1.0, { r: 34, until: at("move2-9", "reported Darwin Hill") });
 const order = [4, 3, 2, 1, 0];                 // east to west up the ridge
 const route = [[1590, 690], [1564, 682], [1520, 672], [1466, 682], [1436, 664]];
 B.move("acoy", tWork - 0.8, 1.2, 1580, 660);
 order.forEach((ri, k) => {
   const t0 = tWork + k * 1.7;
   B.move("acoy", t0, 1.2, route[k][0] + 4, route[k][1] - 30);
-  burst(RIDGE[ri][0], RIDGE[ri][1], t0 + 0.9, 13);
+  K.impact(RIDGE[ri][0], RIDGE[ri][1], t0 + 0.9, { r: 13 });
   B.grey(["dr" + ri], t0 + 1.0, 0.6);
   tl.to(cones[ri], { autoAlpha: 0, duration: 0.4 }, t0 + 1.0);
 });
@@ -390,6 +433,8 @@ B.caption("13:13 · DARWIN HILL TAKEN", at("move2-9", "reported Darwin Hill") - 
 
 // ---------- move2-10: MILAN at Boca House, 13:47 ----------
 U({ id: "supp", side: "carth", x: SUPP[0], y: SUPP[1], w: 30, h: 20, label: "SUPPORT COY · MILAN", fs: 8, t: at("move2-10", "MILAN teams") - 0.6 });
+K.counter("supp", { icon: "infantry", flag: "uk", size: "I" });
+K.target(BOCA[0], BOCA[1], at("move2-10", "no tanks at Boca House") - 0.3, { r: 30, until: at("move2-10", "Position after position") });
 B.caption("MILAN: A WIRE-GUIDED ANTI-TANK MISSILE", at("move2-10", "MILAN was"), at("move2-10", "There were no tanks") + 0.1, "carth");
 B.caption("NO TANKS AT BOCA HOUSE", at("move2-10", "There were no tanks") + 0.2, at("move2-10", "But from long range") + 0.6, "rome");
 const tMil = at("move2-10", "guided their missiles");
@@ -403,15 +448,15 @@ B.caption("POSITION AFTER POSITION SILENT", at("move2-10", "Position after posit
 const tSweep = at("move2-10", "B Company swept");
 B.arrow({ side: "carth", pts: [[BCOY[0] - 4, BCOY[1] + 14], [1360, 590], [1336, 640]], width: 7, t: tSweep, dur: 1.6, until: P11 + 2 });
 B.move("bcoy", tSweep + 0.3, 2.2, 1352, 660);
+B.move("dcoy", tSweep + 0.5, 2.4, DCOY2[0], DCOY2[1]);
 L("BOCA HILL", 1265, 690, { size: 11, t: tSweep + 0.8, until: END - 2 });
 clock("28 MAY · 13:47", at("move2-10", "Boca Hill fell"), END - 0.5);
 B.caption("13:47 · BOCA HILL FALLS", at("move2-10", "Boca Hill fell"), P11 - 0.1, "carth");
 
 // ---------- move2-11: the line broken end to end ----------
-const tBreak = at("move2-11", "broken from end to end") - 1.2;
+// the band loses its colour and fades while a grey "broken" line is drawn in its place
+tl.to(band.querySelectorAll("path"), { stroke: "#77746c", duration: 1.4 }, tBreak);
 B.front({ pts: LINE.slice().reverse(), color: "#8a877f", width: 5, t: tBreak, dur: 2.2 });
-tl.to(redLine, { autoAlpha: 0, duration: 0.3 }, tBreak + 2.3);
-
 B.caption("THE MAIN LINE IS BROKEN", tBreak + 0.6, P12 - 0.3, "carth");
 const tSouth = at("move2-11", "The way south");
 [[[1530, 715], [1500, 800], [1450, 900]], [[1352, 680], [1360, 780], [1372, 890]]].forEach((pts, i) =>

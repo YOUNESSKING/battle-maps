@@ -180,10 +180,11 @@ const G = (lat, lon) => {
   const n = 256 * 2 ** 7, r = (lat * Math.PI) / 180;
   return [+((lon + 180) / 360 * n - 9164).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 21178).toFixed(1)];
 };
-const K = "hook-falklands";
-const T_INV = at(K, "Argentina had invaded"), T_TERR = at(K, "a British territory"), T_TF = at(K, "Britain had sent");
-const T_SC = at(K, "The landings at San Carlos"), T_PRICE = at(K, "terrible price"), T_COV = at(K, "The destroyer Coventry");
-const T_AC = at(K, "Atlantic Conveyor"), T_HELI = at(K, "heavy helicopters");
+const KP = "hook-falklands";
+const K = FXK(B);
+const T_INV = at(KP, "Argentina had invaded"), T_TERR = at(KP, "a British territory"), T_TF = at(KP, "Britain had sent");
+const T_SC = at(KP, "The landings at San Carlos"), T_PRICE = at(KP, "terrible price"), T_COV = at(KP, "The destroyer Coventry");
+const T_AC = at(KP, "Atlantic Conveyor"), T_HELI = at(KP, "heavy helicopters");
 
 // Places (verified: OSM / Wikipedia) -> atlantic px
 const STANLEY = G(-51.693, -57.857), SANC = G(-51.505, -59.031), GG_ = G(-51.8277, -58.9728);
@@ -201,6 +202,7 @@ B.camera([
 ]);
 
 // ---------- wide: region ----------
+K.grid(G, -58, -46, -80, -47, 1, 0);
 B.showDate(0.2);
 B.date("APRIL – MAY 1982", 0.4, null, 38);
 B.label("ARGENTINA", 760, 470, { cls: "country", size: 64, t: T_INV - 0.3, until: T_SC });
@@ -218,25 +220,41 @@ B.image("assets/gg_eastfalkland.png", 0, 0, 2880, 1620, { t: T_SC + 1.2, dur: 1.
 GG.lbl("EAST FALKLAND", 1928, 690, { size: 17, t: T_SC + 2.2 });
 GG.lbl("WEST FALKLAND", 1720, 745, { size: 14, color: "#e9e4d6", t: T_SC + 2.4 });
 // San Carlos landings (21 May)
-B.arrow({ side: "carth", pts: [[1810, 626], [1829, 660], [1842, 688]], width: 5, t: T_SC + 2.4, dur: 1.2 });
+B.arrow({ side: "carth", pts: [[1832, 624], [1836, 660], [1842, 688]], width: 5, t: T_SC + 2.4, dur: 1.2 });
 GG.lbl("SAN CARLOS", SANC[0] - 6, SANC[1] + 4, { size: 12, anchor: [-100, -50], t: T_SC + 2.6 });
 GG.tagbox("LANDINGS · 21 MAY", SANC[0] - 6, SANC[1] + 18, "#1f4fc4", { size: 8, anchor: [-100, -50], t: T_SC + 3.0 });
 // Argentine garrisons
 B.unit({ id: "stanley", side: "rome", x: STANLEY[0], y: STANLEY[1], w: 14, h: 10, t: T_SC + 3.4 });
 B.unit({ id: "gg", side: "rome", x: GG_[0], y: GG_[1], w: 14, h: 10, t: T_SC + 3.7 });
+K.counter("stanley", { icon: "infantry", flag: "arg", size: "X" });
+K.counter("gg", { icon: "infantry", flag: "arg", size: "III" });
 GG.lbl("STANLEY", STANLEY[0], STANLEY[1] + 13, { size: 11, t: T_SC + 3.5 });
 GG.lbl("GOOSE GREEN", GG_[0], GG_[1] + 13, { size: 11, t: T_SC + 3.8 });
 GG.tagbox("ARGENTINE GARRISONS", STANLEY[0], STANLEY[1] + 29, "#c4121f", { size: 8, t: T_SC + 4.3 });
 
 // ---------- losses ----------
 const wreck = (x, y, name, lx, ly, t, anchor) => {
-  GG.flash(x, y, t, { r: 12, n: 2, gap: 0.45, sfx: "explosion" });
-  GG.pin(`<svg width="16" height="16" viewBox="0 0 10 10" style="display:block"><path d="M1 1 L9 9 M9 1 L1 9" stroke="#c4121f" stroke-width="2.6" stroke-linecap="round"/></svg>`, x, y, { t: t + 0.2, pop: true });
-  GG.ship(x, y - 13, { w: 26, color: "#1f4fc4", t: t - 0.6, until: t + 0.9 });
+  const ship = GG.ship(x, y - 8, { w: 40, color: "#1f4fc4", t: t - 2.2 });
+  K.impact(x - 4, y - 10, t, { r: 15, puffs: 3 });
+  K.impact(x + 8, y - 9, t + 0.45, { r: 11, puffs: 2, shake: false });
+  // the burning hull turns grey, lists and goes down under a smoke column
+  B.tl.to(ship, { filter: "grayscale(1) brightness(0.75)", rotation: -14, y: 4, duration: 2.2, ease: "power1.in" }, t + 0.5);
+  B.tl.to(ship, { autoAlpha: 0, duration: 1.2 }, t + 3.2);
+  for (let i = 0; i < 9; i++) K.smoke(x, y - 16, t + 0.9 + i * 1.1, { n: 1, r: 9, rise: 30, drift: 8, life: 3.0, alpha: 0.6 });
+  GG.pin(`<svg width="16" height="16" viewBox="0 0 10 10" style="display:block"><path d="M1 1 L9 9 M9 1 L1 9" stroke="#c4121f" stroke-width="2.6" stroke-linecap="round"/></svg>`, x, y, { t: t + 3.4, pop: true });
   GG.lbl(name, lx, ly, { size: 11, anchor, t: t + 0.3 });
   GG.tagbox("SUNK · 25 MAY", lx, ly + 12, "#c4121f", { size: 7, anchor, t: t + 0.6 });
 };
-wreck(COVENTRY[0], COVENTRY[1], "HMS COVENTRY", COVENTRY[0] - 10, COVENTRY[1] - 6, T_COV + 0.8, [-100, -50]);
+// Skyhawks bomb HMS Coventry north of Pebble Island
+[0, 1].forEach((i) => K.aircraft({ kind: "jet", side: "rome", size: 26, alt: 7, pts: [[1610 + i * 12, 690 + i * 16], [COVENTRY[0] - 2 + i * 6, COVENTRY[1] - 8 + i * 6], [1930 + i * 12, 562 + i * 16]],
+  t: T_COV - 0.9 + i * 0.25, dur: 2.3, until: T_COV + 2.2 }));
+GG.lbl("A-4 SKYHAWKS", 1640, 718, { size: 10, color: "#ffc4c4", t: T_COV - 0.8, until: T_COV + 2.2 });
+// an Exocet (Super Étendard) runs into Atlantic Conveyor
+const T_EXO = T_AC + 0.6 - 0.9;
+B.arrow({ side: "rome", pts: [[CONVEYOR[0] - 150, CONVEYOR[1] - 44], [CONVEYOR[0] - 70, CONVEYOR[1] - 18], [CONVEYOR[0] - 4, CONVEYOR[1] - 7]], width: 3, t: T_EXO, dur: 0.9, until: T_EXO + 1.8 });
+SFX("missile", T_EXO);
+GG.lbl("EXOCET", CONVEYOR[0] - 110, CONVEYOR[1] - 50, { size: 10, color: "#ffc4c4", t: T_EXO + 0.1, until: T_EXO + 2.2 });
+wreck(COVENTRY[0], COVENTRY[1], "HMS COVENTRY", COVENTRY[0] - 24, COVENTRY[1] - 4, T_COV + 0.8, [-100, -50]);
 wreck(CONVEYOR[0], CONVEYOR[1], "ATLANTIC CONVEYOR", CONVEYOR[0] - 12, CONVEYOR[1] + 4, T_AC + 0.6, [-100, -50]);
 B.caption("MOST OF THE HEAVY-LIFT HELICOPTERS LOST", T_HELI - 0.6, END + 1, "rome");
 B.finish();

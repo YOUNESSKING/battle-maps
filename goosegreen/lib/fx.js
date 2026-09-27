@@ -225,7 +225,8 @@
       ov.insertBefore(g, ov.children[1] || null);
       const paths = [...g.querySelectorAll("path")];
       const lens = paths.map((p) => p.getTotalLength() + w * 2);
-      paths.forEach((p, i) => gsap.set(p, { strokeDasharray: `${lens[i]} ${lens[i]}`, strokeDashoffset: lens[i] }));
+      // gap longer than the dash and offset past the start, so the round cap of the hidden dash never shows as a dot
+      paths.forEach((p, i) => gsap.set(p, { strokeDasharray: `${lens[i]} ${lens[i] + w * 2}`, strokeDashoffset: lens[i] + w }));
       tl.to(paths, { strokeDashoffset: 0, duration: o.dur || 2.0, ease: "power1.inOut" }, o.t);
       // gentle glow pulse
       tl.to(paths.slice(0, 2), { opacity: 0.8, duration: 1.2, yoyo: true, repeat: Math.max(1, Math.round(((o.until || o.t + 20) - o.t) / 1.2)), ease: "sine.inOut" }, o.t + (o.dur || 2));
@@ -283,7 +284,7 @@
       const r = o.r || 40, c = COL[o.side] || o.side || "#ffd54a";
       const els = [0, 1].map((k) => {
         const el = div("", x, y, r * 2, r * 2);
-        el.style.cssText += `border-radius:50%;border:${Math.max(2, r * 0.08)}px solid ${c};box-shadow:0 0 ${r * 0.4}px ${c};`;
+        el.style.cssText += `position:absolute;border-radius:50%;border:${Math.max(2, r * 0.08)}px solid ${c};box-shadow:0 0 ${r * 0.4}px ${c};`;
         tl.fromTo(el, { autoAlpha: 0.95, scale: 0.6 }, { autoAlpha: 0, scale: 1.6, duration: 1.6, repeat: Math.max(0, Math.round(((o.until || t + 6) - t) / 1.6) - 1), ease: "sine.out", immediateRender: false }, t + k * 0.8);
         return el;
       });

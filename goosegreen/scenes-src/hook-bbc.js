@@ -184,13 +184,14 @@ const G = (lat, lon) => {
 const CCH = G(-51.7435, -58.962), BOCA = G(-51.8009, -58.9847), DARWIN = G(-51.807, -58.9588);
 const GOOSE = G(-51.8277, -58.9728), DHILL = G(-51.8035, -58.966), BURNT = G(-51.7858, -58.9419);
 
-const K = "hook-bbc";
+const KP = "hook-bbc";
+const K = FXK(B);
 const AIRF = G(-51.8196, -58.9802);
-const T_1000 = at(K, "A thousand dug in"), T_KNEW = at(K, "the enemy knew"), T_27 = at(K, "On the twenty-seventh");
-const T_FARM = at(K, "in a farmhouse"), T_BBC = at(K, "BBC World Service"), T_WORLD = at(K, "the entire world");
-const T_POISED = at(K, "poised to attack"), T_GG = at(K, "Goose Green"), T_BN = at(K, "their battalion");
-const T_TGT = at(K, "their target"), T_SECRET = at(K, "supposed to be a secret"), T_36 = at(K, "Thirty-six hours later");
-const T_NEARLY = at(K, "nearly a thousand"), T_HALF = at(K, "half their size"), T_MAN = at(K, "the man who planned"), T_DEAD = at(K, "would be dead");
+const T_1000 = at(KP, "A thousand dug in"), T_KNEW = at(KP, "the enemy knew"), T_27 = at(KP, "On the twenty-seventh");
+const T_FARM = at(KP, "in a farmhouse"), T_BBC = at(KP, "BBC World Service"), T_WORLD = at(KP, "the entire world");
+const T_POISED = at(KP, "poised to attack"), T_GG = at(KP, "Goose Green"), T_BN = at(KP, "their battalion");
+const T_TGT = at(KP, "their target"), T_SECRET = at(KP, "supposed to be a secret"), T_36 = at(KP, "Thirty-six hours later");
+const T_NEARLY = at(KP, "nearly a thousand"), T_HALF = at(KP, "half their size"), T_MAN = at(KP, "the man who planned"), T_DEAD = at(KP, "would be dead");
 
 // ---------- camera: wide on both sides at once -> dive to the farmhouse -> broadcast pull-back -> south to the target -> flash-forward ----------
 B.camera([
@@ -207,13 +208,19 @@ B.camera([
   [END, 1520, 1130, 1.7],
 ]);
 GG.layer("background: radial-gradient(ellipse 75% 65% at 50% 45%, rgba(20,24,40,0.18), rgba(6,8,20,0.55));", 0, null, { dur: 0.01 });
+K.grid(G, -51.87, -51.69, -59.24, -58.74, 0.02, 0);
 
 // ---------- 0 s: the odds, on screen from the first frame ----------
 B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 44, w: 46, h: 32, label: "2 PARA", t: 0.05 });
+K.counter("para", { icon: "infantry", flag: "uk", size: "II" });
 SFX("hit", 0.1);
 const RED = [[DARWIN[0] - 34, DARWIN[1] - 30], [DHILL[0] - 10, DHILL[1] - 22], [BOCA[0] + 30, BOCA[1] - 8], [GOOSE[0] - 30, GOOSE[1] - 26],
   [GOOSE[0] + 34, GOOSE[1] - 40], [BURNT[0] - 40, BURNT[1] + 60], [AIRF[0] - 10, AIRF[1] + 14], [BOCA[0] + 80, BOCA[1] + 40]];
 RED.forEach(([x, y], i) => B.unit({ id: "r" + i, side: "rome", x, y, w: 26, h: 18, t: T_1000 + 0.1 + i * 0.07 }));
+// Task Force Mercedes: rifle companies, the 105 mm guns at Goose Green (r4) and the AA guns on the airfield (r6)
+RED.forEach((_, i) => K.counter("r" + i, i === 4 ? { icon: "artillery", flag: "arg", size: "I" } : i === 6 ? { icon: "aa", flag: "arg" } : { icon: "infantry", flag: "arg", size: "I" }));
+// the Argentine line across the isthmus: British (blue) glow to the north, Argentine (red) glow to the south
+K.front({ pts: [[1470, 884], [1545, 866], [1625, 852], [1705, 840], [1790, 826]], sideA: "carth", sideB: "rome", width: 24, t: T_1000 + 0.2, dur: 1.6, until: T_36 });
 SFX("hit", T_1000 + 0.1);
 const odds = GG.card(`<div style="display:flex;align-items:baseline;gap:34px;font-weight:700;letter-spacing:0.04em">
   <div style="text-align:center"><div style="font-size:120px;line-height:1;color:#6f9bff">500</div><div style="font-size:26px;letter-spacing:0.3em;color:#c9d6ff">PARATROOPERS</div></div>
@@ -264,6 +271,7 @@ const ret = GG.pin(`<svg width="150" height="150" viewBox="0 0 100 100" style="d
   <line x1="50" y1="0" x2="50" y2="28" stroke="#e3232f" stroke-width="4"/><line x1="50" y1="72" x2="50" y2="100" stroke="#e3232f" stroke-width="4"/>
   <line x1="0" y1="50" x2="28" y2="50" stroke="#e3232f" stroke-width="4"/><line x1="72" y1="50" x2="100" y2="50" stroke="#e3232f" stroke-width="4"/></svg>`,
   GOOSE[0], GOOSE[1] - 10, { t: T_TGT, pop: true, until: T_36 });
+K.target(GOOSE[0], GOOSE[1] - 10, T_TGT + 0.4, { r: 72, until: T_36 });
 SFX("tick", T_TGT);
 const stamp = GG.card(`<div style="font-size:64px;font-weight:700;letter-spacing:0.12em;color:#e3232f;border:6px solid #e3232f;padding:6px 30px;transform:rotate(-4deg)">SUPPOSED TO BE A SECRET</div>`, "gg-stamp", 850, T_SECRET, T_36 - 0.1);
 stamp.querySelector(".inner").style.cssText = "background:rgba(18,16,12,0.78);padding:18px 28px;border-top:none;";
@@ -296,4 +304,6 @@ GG.pin(`<div style="display:flex;align-items:center;gap:10px;padding:6px 14px;ba
   <svg width="26" height="26" viewBox="0 0 10 10"><path d="M1 1 L9 9 M9 1 L1 9" stroke="#e3232f" stroke-width="2.2" stroke-linecap="round"/></svg>LT. COL. H. JONES · KILLED 28 MAY</div>`,
   DHILL[0] + 10, DHILL[1] - 60, { t: T_MAN + 0.3, pop: true, anchor: [-50, -50] });
 SFX("hit", T_DEAD);
+const jb = K.badge({ name: "LT. COL. H. JONES", role: "CO · 2 PARA · PLANNED THE ATTACK", initials: "H", flag: "uk", side: "carth", corner: "bl", t: T_MAN, until: END + 1 });
+B.tl.to(jb, { filter: "grayscale(1) brightness(0.8)", duration: 0.6 }, T_DEAD);
 B.finish();
