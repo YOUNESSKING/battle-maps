@@ -496,9 +496,9 @@
         ? mk(`<path d="${d}" fill="none" stroke="#ffb347" stroke-width="30" stroke-linejoin="round" opacity="0.75" filter="url(#rkGlow)"/>
              <path d="${d}" fill="none" stroke="#ffd98a" stroke-width="10" stroke-linejoin="round"/>
              <path d="${d}" fill="none" stroke="#fff6dc" stroke-width="4" stroke-linejoin="round"/>`)
-        : mk(`<path d="${d}" fill="none" stroke="#f3e8cc" stroke-width="17" stroke-linejoin="round"/>
-             <path d="${d}" fill="none" stroke="#3b2f22" stroke-width="9" stroke-linejoin="round"/>
-             <path d="${d}" fill="none" stroke="#3b2f22" stroke-width="17" stroke-dasharray="5 26" stroke-linejoin="round"/>`);
+        : mk(`<path d="${d}" fill="none" stroke="#f3e8cc" stroke-width="${o.w ? o.w + 9 : 21}" stroke-linejoin="round"/>
+             <path d="${d}" fill="none" stroke="#3b2f22" stroke-width="${o.w || 12}" stroke-linejoin="round"/>
+             <path d="${d}" fill="none" stroke="#3b2f22" stroke-width="${o.w ? o.w + 9 : 21}" stroke-dasharray="6 28" stroke-linejoin="round"/>`);
       const paths = [...g.querySelectorAll("path")];
       const len = paths[0].getTotalLength();
       R.wallLen = len;

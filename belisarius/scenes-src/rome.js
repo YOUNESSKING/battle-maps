@@ -82,8 +82,8 @@ B.label("TOMB OF HADRIAN", G.hadrian[0], G.hadrian[1] - 34, { cls: "tg", size: 2
 B.showDate(0.2);
 B.date("MARCH 537 AD", 0.4, S5 + 0.2);
 stake(1470, 900, 1.15, 0.9, T_12 + 3.5);
-B.label("AURELIAN WALLS", 1480, 1215, { cls: "tg", size: 40, t: T_12 - 0.4, until: S3 + 0.5, anchor: [-50, -50] });
-B.label("12 MILES · 18 GATES", 1480, 1268, { cls: "tg", size: 34, t: T_18, until: S3 + 0.5, anchor: [-50, -50] });
+B.label("AURELIAN WALLS", 1480, 1215, { cls: "tg", size: 40, t: T_12 - 0.4, until: T_STARVE - 0.3, anchor: [-50, -50] });
+B.label("12 MILES · 18 GATES", 1480, 1268, { cls: "tg", size: 34, t: T_18, until: T_STARVE - 0.3, anchor: [-50, -50] });
 R.gates(T_18, { stagger: 0.07 });
 G.camps.forEach(([x, y], i) => R.camp(x, y, T_CAMPS + 0.2 + i * 0.45));
 B.label("PLAIN OF NERO", G.camps[6][0], G.camps[6][1] + 66, { cls: "tg", size: 24, t: T_CAMPS + 3.2, until: S3 + 0.5, anchor: [-50, 0] });
@@ -100,7 +100,7 @@ B.caption("STARVE IT — OR STORM IT", T_STARVE, S3 - 0.1, "rome");
 // ---------- rome-3: aqueducts cut, mills stop ----------
 const aqOrder = [4, 0, 1, 3, 2];
 const aqs = aqOrder.map((k, i) => R.aqueduct(G.aqueducts[k], S3 - 0.2 + i * 0.25, { dur: 1.5 }));
-B.label("AQUEDUCTS", 2600, 1180, { cls: "tg", size: 34, t: S3 + 0.8, until: T_MILLS, rot: 24, anchor: [-50, -50] });
+B.label("AQUEDUCTS", 2470, 1165, { cls: "tg", size: 34, t: S3 + 0.8, until: T_MILLS, rot: 24, anchor: [-50, -50] });
 aqOrder.forEach((k, i) => {
   const t = T_CUT + 0.9 + i * 0.35;
   R.cutX(G.cuts[k][0], G.cuts[k][1], t, 1.5);
@@ -115,7 +115,7 @@ mills.forEach((m) => {
   tl.to(m.wheel.querySelector("circle"), { fill: "#9a968c", duration: 0.8 }, T_STOP + 1.0);
   tl.to(m.g, { opacity: 0.75, duration: 0.8 }, T_STOP + 1.0);
 });
-B.label("GRAIN MILLS", 875, 1150, { cls: "tg", size: 26, t: T_MILLS + 0.6, until: S4 + 0.6, anchor: [-50, 0] });
+B.label("GRAIN MILLS", 945, 1018, { cls: "tg", size: 26, t: T_MILLS + 0.6, until: S4 + 0.6, anchor: [0, -50] });
 B.caption("NO WATER · NO MILLS · NO BREAD", T_BREAD - 0.6, S4 - 0.1, "rome");
 
 // ---------- rome-4: floating mills on the Tiber ----------
