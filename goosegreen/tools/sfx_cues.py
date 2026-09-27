@@ -18,6 +18,8 @@ archive = [(p["start"], p["end"] + 0.6) for p in paras if p["tag"].startswith("A
 cues = []
 for page in sorted(glob.glob("scenes/*/index.html")):
     name = page.split("/")[1]
+    if name.startswith("test"):  # test clips overlap real scenes in time; they use make_clip.py
+        continue
     tjs = open(f"scenes/{name}/timing.js").read()
     st = json.loads(tjs[tjs.index("=") + 1:].strip().rstrip(";"))
     dom = subprocess.run([CHROME, "--headless", "--no-sandbox", "--disable-gpu", "--allow-file-access-from-files",
