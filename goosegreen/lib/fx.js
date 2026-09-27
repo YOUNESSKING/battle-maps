@@ -221,7 +221,8 @@
       }
       const g = document.createElementNS(NS, "g");
       const layer = (d, col, sw, op, blur) => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}" ${blur ? 'filter="url(#fxk-blur)"' : ""}/>`;
-      const build = (pts) => [layer(dStr(off(pts, -w * 0.55)), A, w, 0.55, true), layer(dStr(off(pts, w * 0.55)), Bc, w, 0.55, true),
+      const gl = o.glow != null ? o.glow : 0.55; // glow strength (K&G-style muted look: ~0.3)
+      const build = (pts) => [layer(dStr(off(pts, -w * 0.55)), A, w, gl, true), layer(dStr(off(pts, w * 0.55)), Bc, w, gl, true),
         layer(dStr(pts), "rgba(20,16,10,0.55)", w * 0.3, 1, false), layer(dStr(off(pts, -w * 0.09)), A, w * 0.16, 1, false), layer(dStr(off(pts, w * 0.09)), Bc, w * 0.16, 1, false)];
       g.innerHTML = build(o.pts).join("");
       ov.insertBefore(g, ov.children[1] || null);
@@ -231,7 +232,7 @@
       paths.forEach((p, i) => gsap.set(p, { strokeDasharray: `${lens[i]} ${lens[i] + w * 2}`, strokeDashoffset: lens[i] + w }));
       tl.to(paths, { strokeDashoffset: 0, duration: o.dur || 2.0, ease: "power1.inOut" }, o.t);
       // gentle glow pulse
-      tl.to(paths.slice(0, 2), { opacity: 0.8, duration: 1.2, yoyo: true, repeat: Math.max(1, Math.round(((o.until || o.t + 20) - o.t) / 1.2)), ease: "sine.inOut" }, o.t + (o.dur || 2));
+      tl.to(paths.slice(0, 2), { opacity: Math.min(1, gl * 1.45), duration: 1.2, yoyo: true, repeat: Math.max(1, Math.round(((o.until || o.t + 20) - o.t) / 1.2)), ease: "sine.inOut" }, o.t + (o.dur || 2));
       if (o.to) {
         const nd = build(o.to).map((h) => h.match(/ d="([^"]*)"/)[1]);
         paths.forEach((p, i) => tl.to(p, { attr: { d: nd[i] }, duration: o.moveDur || 2, ease: "power1.inOut" }, o.moveT));
