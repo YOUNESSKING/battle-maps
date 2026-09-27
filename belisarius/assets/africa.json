@@ -1,0 +1,18 @@
+{
+ "name": "africa",
+ "center": [
+  36.1,
+  10.3
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  67846,
+  50615
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 247.04,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
