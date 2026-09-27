@@ -19,4 +19,14 @@ reproductions of public-domain works.
   "A2 Sassanide KavadI 1" (Flickr upload). License: CC BY 2.0.
   https://commons.wikimedia.org/wiki/File:A2_Sassanide_KavadI_1_(8194360056).jpg
 
+- **gelimer.png** — Vandal silver coin of Gelimer, Carthage mint ("AR 50 Denarii"), obverse
+  (king's diademed bust, legend GELIMER), circular crop.
+  Uploader: DrFO.Jr.Tn. License: Public domain.
+  https://commons.wikimedia.org/wiki/File:AR_50_Denarii_-_Vandals_-_Gelimer_-_Carthage.jpg
+
+- **tzazon.png** — Vandal silver denarius of King Hilderic (a different Vandal king/coin, per
+  brief), obverse (diademed bust, legend D N HILDI RIX REX), circular crop.
+  License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Vandal_Kingdom_Hilderic_Denarius.jpg
+
 (remaining entries added as files are produced)

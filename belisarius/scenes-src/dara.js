@@ -10,7 +10,7 @@ const pins = document.getElementById("pins");
 const scene = document.getElementById("scene");
 
 // portraits (assets/media) — set true only if the file exists at build time
-const HAS = { belisarius: false, perozes: false };
+const HAS = { belisarius: true, perozes: true };  // perozes.png is a Sasanian coin (Kavad I), used as the Persian emblem
 
 // ---------- scene styles: small tags for a close battlefield ----------
 const st = document.createElement("style");
@@ -44,6 +44,11 @@ const U = (o) => { // unit with optional tag above
 };
 const tagOff = (keys, t) => keys.forEach((k) => { const g = B.units[k].el.querySelector(".tag"); if (g) B.tl.to(g, { autoAlpha: 0, duration: 0.4 }, t); });
 const tagOn = (keys, t) => keys.forEach((k) => { const g = B.units[k].el.querySelector(".tag"); if (g) B.tl.to(g, { autoAlpha: 1, duration: 0.4 }, t); });
+const stakeRed = (el) => { // Persian stake: red ring + red name tag
+  el.querySelector(".face").style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
+  const nm = el.querySelector(".nm"); if (nm) nm.style.background = "#c4121f";
+  return el;
+};
 const plaque = (o, s = 0.6) => { // world plaque, scaled down for the close zoom
   const el = B.plaque(o);
   gsap.set(el, { scale: s, transformOrigin: "19px 240px" });
@@ -163,11 +168,11 @@ counter("<small>ROMANS</small>~25,000", "carth", 1240, 166, T_25K, D4);
 B.arrow({ side: "rome", pts: [[2200, 1100], [2040, 1010], [1890, 965]], width: 16, dash: "30 18", t: T_10K + 0.2, dur: 1.4, until: D3 + 0.5 });
 B.label("FROM NISIBIS", 2010, 935, { cls: "tg", size: 20, t: T_10K + 0.6, until: D3 + 0.5 });
 B.caption("MANY OF THEM RAW RECRUITS", T_RAW - 0.2, T_BEL - 0.1, "carth");
-if (HAS.perozes) B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1640, y: 1010, size: 0.9, t: D2 + 1.0, until: D3 });
+if (HAS.perozes) stakeRed(B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1660, y: 1010, size: 0.9, t: D2 + 1.0, until: D3 }));
 else plaque({ name: "PEROZES", role: "Persian commander", side: "rome", x: 1640, y: 1000, t: D2 + 1.0, until: D3 }, 0.75);
-if (HAS.belisarius) B.portraitStake({ img: "assets/media/belisarius.png", flag: "assets/flag_rome.png", name: "BELISARIUS · 25", x: 1300, y: 730, size: 0.9, t: T_BEL, until: D3 + 0.3 });
+if (HAS.belisarius) B.portraitStake({ img: "assets/media/belisarius.png", flag: "assets/flag_rome.png", name: "BELISARIUS · AGE 25", x: 1290, y: 740, size: 0.9, t: T_BEL, until: D3 + 0.3 });
 else plaque({ name: "BELISARIUS", role: "Age 25 · first great battle", side: "carth", x: 1300, y: 730, t: T_BEL, until: D3 + 0.3 }, 0.75);
-plaque({ name: "HERMOGENES", role: "Co-commander", side: "carth", x: 1330, y: 845, t: T_BEL + 1.6, until: D3 + 0.3 }, 0.6);
+plaque({ name: "HERMOGENES", role: "Co-commander", side: "carth", x: 1370, y: 860, t: T_BEL + 1.6, until: D3 + 0.3 }, 0.6);
 B.label("VS", 1545, 830, { cls: "country", size: 60, t: T_BEL + 0.8, until: D3 + 0.3 });
 
 // ---------- 3: the Persian army ----------
@@ -181,7 +186,8 @@ B.label("OPEN PLAIN", 1610, 790, { cls: "tg", size: 26, t: T_OPEN + 0.3, until: 
 B.caption("OPEN COUNTRY: CAVALRY COUNTRY", T_OPEN + 0.4, D4 - 0.2, "rome");
 
 // ---------- 4: Perozes: "prepare my bath" ----------
-plaque({ name: "PEROZES", role: "Sure of victory", side: "rome", x: 1560, y: 1160, t: D4 + 0.4, until: D5 + 0.4 }, 0.62);
+if (HAS.perozes) stakeRed(B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1640, y: 1170, size: 0.8, t: D4 + 0.4, until: D5 + 0.4 }));
+else plaque({ name: "PEROZES", role: "Sure of victory", side: "rome", x: 1560, y: 1160, t: D4 + 0.4, until: D5 + 0.4 }, 0.62);
 B.caption("THE ROMANS ARE DIGGING", T_DIG, T_MSG - 0.2, "carth");
 const bub = B.bubble("“PREPARE MY BATH IN DARA.”", 1760, 1025, T_MSG, D5 + 0.4);
 bub.style.fontSize = "20px"; bub.style.padding = "10px 16px"; bub.style.borderWidth = "3px";
@@ -315,7 +321,7 @@ tagOn(["HL", "HER"], D10 + 2.2);
 B.move("HER", D10 + 0.6, 2.2, 1800, 612);
 
 // ---------- 10: the Immortals shift to the Persian left ----------
-if (HAS.perozes) B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1060, y: 1110, size: 0.8, t: T_NOT - 0.8, until: T_THREW + 0.2 });
+if (HAS.perozes) stakeRed(B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1060, y: 1110, size: 0.8, t: T_NOT - 0.8, until: T_THREW + 0.2 }));
 else plaque({ name: "PEROZES", role: "Not finished yet", side: "rome", x: 1000, y: 1110, t: T_NOT - 0.8, until: T_THREW + 0.2 }, 0.62);
 B.arrow({ side: "rome", pts: [[1430, 1030], [1350, 1037], [1300, 1033]], width: 10, dash: "16 10", t: T_IMMS, dur: 1.4, until: T_THREW + 1 });
 B.move("IM", T_IMMS + 0.2, 2.4, 1265, 1025);
