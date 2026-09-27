@@ -66,7 +66,7 @@ function tintPortrait(el, side) { const f = el.querySelector(".face"); if (f) f.
 
 // ================= scene =================
 // Layout: Vandal camp west (left), Vandal line behind the stream, Roman cavalry east of it, Roman infantry far to the east (Carthage side).
-const IMG = { gelimer: false, tzazon: false, belisarius: true, john: false }; // set true when assets/media/NAME.png exists
+const IMG = { gelimer: true, tzazon: true, belisarius: true, john: true }; // set true when assets/media/NAME.png exists
 const K3 = "tricam-3", K4 = "tricam-4", K5 = "tricam-5", K6 = "tricam-6", K7 = "tricam-7", K8 = "tricam-8", K9 = "tricam-9", K10 = "tricam-10";
 let seed = 533; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
 
@@ -150,13 +150,13 @@ B.arrow({ side: "carth", pts: [[2880, 790], [2760, 785], [2650, 782]], width: 14
 B.caption("ROMAN INFANTRY: STILL MARCHING", T_INF + 0.6, P(K4, 0.2), "carth");
 
 // ---------- 4: what Gelimer believed ----------
-const gel = person({ name: "GELIMER", role: "King of the Vandals", side: "rome", img: IMG.gelimer && "assets/media/gelimer.png", size: 0.8, x: 400, y: 1230, t: P(K4, 0.4) });
+const gel = person({ name: "GELIMER", role: "King of the Vandals", side: "rome", img: IMG.gelimer && "assets/media/gelimer.png", crop: [1.25, 0.5, 0.42], size: IMG.gelimer ? 1.1 : 0.8, x: IMG.gelimer ? 420 : 400, y: IMG.gelimer ? 1180 : 1230, t: P(K4, 0.4) });
 if (IMG.gelimer) tintPortrait(gel, "rome");
 B.bubble("TIME IS ON MY SIDE.", 560, 1100, P(K4, 1.6), T_SANE - 0.2);
 B.caption("NO SANE GENERAL ATTACKS ACROSS A STREAM WITHOUT INFANTRY", T_SANE, T_SWORD - 0.3, "rome");
 B.highlight(STREAM, T_SANE + 0.4, P(K5), 50);
 B.bubble("SWORDS ONLY!", 560, 1100, T_SWORD, P(K5, 0.5));
-const tz = person({ name: "TZAZON", role: "Gelimer's brother · centre", side: "rome", img: IMG.tzazon && "assets/media/tzazon.png", size: 0.8, x: 770, y: 790, t: T_TZ });
+const tz = person({ name: "TZAZON", role: "Gelimer's brother · centre", side: "rome", img: IMG.tzazon && "assets/media/tzazon.png", crop: [1.25, 0.5, 0.42], size: IMG.tzazon ? 1.1 : 0.8, x: 770, y: 790, t: T_TZ });
 if (IMG.tzazon) tintPortrait(tz, "rome");
 B.tl.to(B.units.r3.el, { scale: 1.25, duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_TZ + 0.8);
 counter("SARDINIA VETERANS", 1150, 700, "rome", T_TZ + 1.0, P(K5, 0.2), 22);
@@ -164,7 +164,7 @@ counter("SARDINIA VETERANS", 1150, 700, "rome", T_TZ + 1.0, P(K5, 0.2), 22);
 // ---------- 5: one family, one army ----------
 const strings = [];
 RY.forEach((y, i) => {
-  const from = i < 4 ? [1071, 590] : [701, 1000];
+  const from = i < 4 ? (IMG.tzazon ? [818, 611] : [1071, 590]) : (IMG.gelimer ? [468, 1001] : [701, 1000]);
   const [x1, y1] = from, x2 = RX - 52, y2 = y, len = Math.hypot(x2 - x1, y2 - y1);
   const g = document.createElementNS(SVGNS, "g");
   g.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(0,0,0,0.5)" stroke-width="8" stroke-linecap="round"/>
@@ -175,13 +175,13 @@ RY.forEach((y, i) => {
   B.tl.to(ls, { strokeDashoffset: 0, duration: 0.9, ease: "power2.out" }, T_ONE + 0.3 + i * 0.18);
   strings.push(g);
 });
-[gel, tz].forEach((el, i) => B.tl.to(el, { scale: 1.08, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut", transformOrigin: "10% 100%" }, T_FAM + i * 0.2));
+[gel, tz].forEach((el, i) => B.tl.to(el, { scale: 1.08, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut", transformOrigin: "50% 100%" }, T_FAM + i * 0.2));
 B.caption("ONE FAMILY · ONE ARMY", T_ORDER - 0.4, P(K6, 0.2), "rome");
 B.tl.to(B.units.r3.el, { scale: 1.3, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut" }, T_HEAD);
 counter("STRIKE THE HEAD", 1150, 680, "carth", T_HEAD + 0.3, P(K6, 0.4), 24);
 
 // ---------- 6: charge 1 ----------
-const john = person({ name: "JOHN THE ARMENIAN", role: "Belisarius's officer", side: "carth", img: IMG.john && "assets/media/john.png", size: 0.7, x: 1760, y: 1180, t: T_JOHN - 0.3, until: T_C3 - 1.0 });
+const john = person({ name: "JOHN THE ARMENIAN", role: "Belisarius's officer", side: "carth", img: IMG.john && "assets/media/john.png", crop: [1.4, 0.5, 0.45], size: 1.0, x: 1760, y: 1180, t: T_JOHN - 0.3, until: T_C3 - 1.0 });
 B.tl.to(B.units.john.el, { scale: 1.3, duration: 0.3, yoyo: true, repeat: 1 }, T_JOHN);
 B.arrow({ side: "carth", pts: [[1510, 745], [1380, 740], [1250, 750]], width: 14, t: T_C1 - 0.2, dur: 1.0, until: T_BACK1 + 1.2 });
 B.move("john", T_C1, 1.1, 1235, 760, "power2.in");
@@ -198,7 +198,7 @@ B.move("john", T_C2, 1.1, 1260, 760, "power2.in");
 burst(1205, 760, T_C2 + 1.0, T_BACK2 + 0.3, 58);
 B.move("john", T_BACK2, 1.4, 1560, 760, "power2.out");
 B.caption("CHARGE 2", T_C2, T_FIRM - 0.2, "carth");
-B.tl.to(tz, { scale: 1.1, duration: 0.35, yoyo: true, repeat: 3, transformOrigin: "10% 100%" }, T_FIRM);
+B.tl.to(tz, { scale: 1.1, duration: 0.35, yoyo: true, repeat: 3, transformOrigin: "50% 100%" }, T_FIRM);
 B.caption("THE CENTRE HOLDS", T_FIRM + 0.3, P(K8, 0.1), "rome");
 
 // ---------- 8: charge 3 - Tzazon killed, the centre breaks ----------
@@ -214,7 +214,7 @@ B.move("g2", T_C3 + 0.5, 1.3, 1265, 830, "power2.in");
 B.caption("CHARGE 3 · THE WHOLE GUARD", T_C3 + 0.2, T_KILL - 0.2, "carth");
 burst(1195, 760, T_FIERCE, T_BROKE + 1.0, 80);
 B.tl.fromTo(tz, { filter: "grayscale(0)" }, { filter: "grayscale(1)", opacity: 0.55, duration: 0.8 }, T_KILL + 0.2);
-const killed = counter("KILLED", 911, 590, "ink", T_KILL + 0.4, T_FLED, 38); gsap.set(killed, { rotation: -8 });
+const killed = counter("KILLED", IMG.tzazon ? 770 : 911, IMG.tzazon ? 650 : 590, "ink", T_KILL + 0.4, T_FLED, 38); gsap.set(killed, { rotation: -8 });
 B.caption("TZAZON KILLED", T_KILL + 0.2, T_LINE, "rome");
 strings.forEach((g, i) => B.tl.to(g, { autoAlpha: 0, duration: 0.5 }, T_KILL + 0.4 + i * 0.08));
 const LINE_ARROWS = [540, 660, 860, 980].map((y, i) => B.arrow({ side: "carth", pts: [[1570, y], [1420, y + 4], [1270, y]], width: 18, t: T_LINE + i * 0.12, dur: 1.1, until: T_FLED + 0.5 }));

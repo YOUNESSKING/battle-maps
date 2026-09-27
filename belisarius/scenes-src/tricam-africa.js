@@ -67,7 +67,7 @@ function tintPortrait(el, side) { const f = el.querySelector(".face"); if (f) f.
 // ================= scene =================
 const G = mkG(9, 67846, 50615), GL = (a) => a.map(([la, lo]) => G(la, lo));
 const K = "tricam-2";
-const IMG = { gelimer: false, tzazon: false }; // set true when assets/media/NAME.png exists
+const IMG = { gelimer: true, tzazon: true }; // set true when assets/media/NAME.png exists
 const T_LAND = P(K, 0.3), T_MARCH = at(K, "marched on Carthage"), T_AD = at(K, "Ad Decimum"), T_DEF = at(K, "defeated the Vandal");
 const T_OPEN = at(K, "Carthage opened"), T_ESC = at(K, "But Gelimer escaped"), T_3M = at(K, "Over the next three months");
 const T_TZ = at(K, "called his brother Tzazon"), T_AGAIN = at(K, "marched on Carthage again");
@@ -103,7 +103,7 @@ B.city("CARTHAGE", ...CARTH, { size: 32, t: T_AD - 0.2 });
 B.unit({ id: "van1", side: "rome", kind: "cav", x: 1340, y: 575, w: 46, h: 32, t: T_AD + 0.2 });
 B.unit({ id: "van2", side: "rome", kind: "inf", x: 1390, y: 612, w: 46, h: 32, t: T_AD + 0.4 });
 burst(ADD[0] + 10, ADD[1] + 40, T_DEF, T_OPEN - 0.2, 38);
-const gel = person({ name: "GELIMER", role: "King of the Vandals", side: "rome", img: IMG.gelimer && "assets/media/gelimer.png", size: 0.7, x: 1050, y: 860, t: T_DEF - 0.4 });
+const gel = person({ name: "GELIMER", role: "King of the Vandals", side: "rome", img: IMG.gelimer && "assets/media/gelimer.png", crop: [1.25, 0.5, 0.42], size: 0.8, x: 1180, y: 800, t: T_DEF - 0.4 });
 if (IMG.gelimer) tintPortrait(gel, "rome");
 B.move("van1", T_DEF + 1.2, 1.4, 1250, 560);
 B.move("van2", T_DEF + 1.2, 1.4, 1290, 610);
@@ -117,7 +117,7 @@ B.caption("SEPTEMBER 533 · CARTHAGE TAKEN", T_OPEN, T_ESC + 1.8, "carth");
 // Gelimer escapes west and regroups
 B.city("BULLA REGIA", ...BULLA, { left: true, size: 26, t: T_ESC + 0.4 });
 B.arrow({ side: "rome", pts: [[1240, 700], [1120, 700], [990, 660], [935, 628]], width: 12, dash: "22 14", t: T_ESC, dur: 1.8 });
-B.tl.to(gel, { x: -150, y: 140, duration: 2.6, ease: "power2.inOut" }, T_ESC + 0.2);
+B.tl.to(gel, { x: IMG.gelimer ? -170 : -150, y: IMG.gelimer ? -50 : 140, duration: 2.6, ease: "power2.inOut" }, T_ESC + 0.2);
 const gather = [[720, 665], [800, 705], [870, 668], [715, 740], [800, 780], [640, 705]];
 gather.forEach(([x, y], i) => B.unit({ id: "g" + i, side: "rome", kind: i % 3 ? "inf" : "cav", x, y, w: 48, h: 32, t: T_3M + 0.3 + i * 0.35 }));
 counter("EVERY VANDAL WARRIOR", 720, 870, "rome", T_3M + 1.4, T_TZ + 0.2, 26);
