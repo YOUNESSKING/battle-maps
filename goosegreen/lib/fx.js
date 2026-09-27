@@ -201,6 +201,41 @@
       } else if (o.until != null) tl.to(wrap, { autoAlpha: 0, duration: 0.5 }, o.until);
       return wrap;
     };
+
+    // K&G-style front: crisp centre line with a soft glowing colour band on each side (sideA = left of travel
+    // direction, sideB = right), drawn on like an arrow; o.to (same point count) morphs it at o.moveT.
+    K.front = (o) => {
+      const w = o.width || 26, A = COL[o.sideA] || o.sideA || COL.carth, Bc = COL[o.sideB] || o.sideB || COL.rome;
+      const off = (pts, d) => pts.map((p, i) => { // offset each vertex along the averaged normal
+        const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+        const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+        return [p[0] - (dy / L) * d, p[1] + (dx / L) * d];
+      });
+      const dStr = (pts) => pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+      if (!document.getElementById("fxk-blur")) {
+        const defs = document.createElementNS(NS, "defs");
+        defs.innerHTML = `<filter id="fxk-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${w * 0.35}"/></filter>`;
+        ov.insertBefore(defs, ov.firstChild);
+      }
+      const g = document.createElementNS(NS, "g");
+      const layer = (d, col, sw, op, blur) => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}" ${blur ? 'filter="url(#fxk-blur)"' : ""}/>`;
+      const build = (pts) => [layer(dStr(off(pts, -w * 0.55)), A, w, 0.55, true), layer(dStr(off(pts, w * 0.55)), Bc, w, 0.55, true),
+        layer(dStr(pts), "rgba(20,16,10,0.55)", w * 0.3, 1, false), layer(dStr(off(pts, -w * 0.09)), A, w * 0.16, 1, false), layer(dStr(off(pts, w * 0.09)), Bc, w * 0.16, 1, false)];
+      g.innerHTML = build(o.pts).join("");
+      ov.insertBefore(g, ov.children[1] || null);
+      const paths = [...g.querySelectorAll("path")];
+      const lens = paths.map((p) => p.getTotalLength() + w * 2);
+      paths.forEach((p, i) => gsap.set(p, { strokeDasharray: `${lens[i]} ${lens[i]}`, strokeDashoffset: lens[i] }));
+      tl.to(paths, { strokeDashoffset: 0, duration: o.dur || 2.0, ease: "power1.inOut" }, o.t);
+      // gentle glow pulse
+      tl.to(paths.slice(0, 2), { opacity: 0.8, duration: 1.2, yoyo: true, repeat: Math.max(1, Math.round(((o.until || o.t + 20) - o.t) / 1.2)), ease: "sine.inOut" }, o.t + (o.dur || 2));
+      if (o.to) {
+        const nd = build(o.to).map((h) => h.match(/ d="([^"]*)"/)[1]);
+        paths.forEach((p, i) => tl.to(p, { attr: { d: nd[i] }, duration: o.moveDur || 2, ease: "power1.inOut" }, o.moveT));
+      }
+      if (o.until != null) tl.to(g, { opacity: 0, duration: 0.8 }, o.until);
+      return g;
+    };
     return K;
   };
 })();

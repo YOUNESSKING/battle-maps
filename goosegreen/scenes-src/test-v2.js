@@ -323,6 +323,9 @@ U({ id: "bcoy", side: "carth", x: 1300, y: 1060, w: 28, h: 19, label: "B COY", f
 K.counter("bcoy", { icon: "infantry", flag: "uk", size: "I" });
 B.move("dcoy", P2 + 0.8, 2.0, 1350, 948);
 B.move("ccoy", P2 + 0.8, 2.0, 1470, 955);
+// the ring around Goose Green: glowing two-colour front (British side north-west, Argentine side south-east)
+K.front({ pts: [[1235, 1175], [1300, 1102], [1362, 1038], [1422, 1012], [1482, 1006], [1536, 990]], sideA: "carth", sideB: "rome", width: 24,
+  t: at("move3-2", "surrounded") - 0.6, dur: 2.2 });
 B.caption("GOOSE GREEN SURROUNDED · NOT TAKEN", at("move3-2", "surrounded"), at("move3-2", "And just after dark") + 0.2, "carth");
 const tHeli = at("move3-2", "Argentine helicopters");
 [0, 1, 2].forEach((i) => K.aircraft({ kind: "heli", side: "rome", size: 76 - i * 6, alt: 26,
