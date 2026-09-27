@@ -155,6 +155,8 @@
         tl.to(pl, { opacity: 0.8, duration: 0.4 }, t0 - 0.4);
         tl.to(pl, { opacity: 0, duration: 0.6 }, (o.down || tEnd) + 0.6);
       }
+      // engine sound, timed so its loudest moment (about 2.3 s into the clip) falls mid-flight
+      if (window.SFX && o.sfx !== false) SFX(o.sfx || { jet: "jet", turboprop: "prop", heli: "heli" }[o.kind], Math.max(0, t0 + Math.min(dur, (o.down || tEnd) - t0) / 2 - 2.3));
       const wrap = document.createElement("div"); wrap.className = "fxk-air"; pins.appendChild(wrap); hide(wrap);
       const k = size / 100;
       const shadow = document.createElementNS(NS, "svg"), body = document.createElementNS(NS, "svg");
