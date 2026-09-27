@@ -13,6 +13,8 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
 PREVIEW = "--preview" in sys.argv
+AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only.mp4, only remix the sound (e.g. after a level change)
+MUSIC_VOL = 0.18  # music bed level before ducking (0.35 until 2026-09-27; owner asked for quieter music)
 W, H, FPS = (1280, 720, 30) if PREVIEW else (1920, 1080, 30)
 T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
@@ -71,6 +73,9 @@ def still(src, dur, out, n):
 
 
 segs, i = [], 0
+if AUDIO_ONLY:
+    assert os.path.exists("build/video_only.mp4"), "run once without --audio-only first"
+    i = len(paras)
 while i < len(paras):
     dur = starts[i + 1] - starts[i]
     out = f"build/seg/{i:02d}.mp4"
@@ -95,8 +100,9 @@ while i < len(paras):
     segs.append(out); i += 1
     print(f"{starts[i - 1]:7.1f}s  {tag[:60]}", flush=True)
 
-open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"], check=True)
+if not AUDIO_ONLY:
+    open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"], check=True)
 
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
@@ -107,7 +113,7 @@ f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]",
      "[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]"]
 if os.path.exists("assets/media/music.wav"):
     inputs += ["-stream_loop", "-1", "-i", "assets/media/music.wav"]
-    f += [f"[2:a]aresample=48000,atrim=0:{total},volume=0.35,afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
+    f += [f"[2:a]aresample=48000,atrim=0:{total},volume={MUSIC_VOL},afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
           "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
           "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
 else:
