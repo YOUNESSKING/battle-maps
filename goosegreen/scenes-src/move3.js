@@ -1,4 +1,4 @@
-// MOVE 3: the Goose Green bluff, 28-29 May 1982 (move3-1 .. move3-10, incl. one ARCHIVE paragraph after move3-9).
+// MOVE 3: the Goose Green bluff, 28-29 May 1982 (move3-1 .. move3-10, incl. the casualty paragraph move3-cas after move3-9).
 // Sides: British (2 PARA) = blue = engine side "carth"; Argentine = red = engine side "rome".
 // Basemap: assets/darwin.jpg (z14). G(lat, lon) -> map px. Places verified against OSM / Wikipedia:
 //   Goose Green -51.8277,-58.9728 · Darwin -51.8069,-58.9587 · Goose Green airfield -51.8196,-58.9802
@@ -7,6 +7,7 @@ const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
 const tl = B.tl;
+const K = FXK(B);
 
 // ---------- projection (assets/darwin.json: zoom 14, origin_world_px) ----------
 const G = (lat, lon) => {
@@ -84,8 +85,8 @@ const shell = (from, to, t, o = {}) => { // ballistic arc (artillery / mortar) +
   tl.to(p, { opacity: 0.95, duration: 0.05 }, t);
   tl.to(p, { strokeDashoffset: -len, duration: dur, ease: "none" }, t);
   tl.to(p, { opacity: 0, duration: 0.05 }, t + dur);
-  SFX(o.snd || "mortar", t);
-  burst(x2, y2, t + dur * 0.93, o.r || 14);
+  SFX(o.snd === undefined ? "mortar" : o.snd, t);
+  if (o.burst !== false) burst(x2, y2, t + dur * 0.93, o.r || 14);
 };
 const missile = (from, to, t, dur = 1.1) => { // straight wire-guided missile: wire line + flare + impact
   const [x1, y1] = from, [x2, y2] = to;
@@ -212,7 +213,7 @@ st3.textContent = `
 .gg-count .n { font-size: 110px; font-weight: 700; line-height: 1; letter-spacing: 0.02em; }
 .gg-count .l { font-size: 32px; font-weight: 700; letter-spacing: 0.3em; color: #e8a39c; }
 .gg-chip { position:absolute; white-space:nowrap; font-weight:700; letter-spacing:0.05em; color:#1b1812; background:#f7f3ea; border:2px solid #1f4fc4; border-radius: 3px; padding: 0 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
-.gg-hall { position:absolute; border: 3px solid #ffd54a; background: rgba(255,213,74,0.25); box-shadow: 0 0 10px rgba(255,213,74,0.9); }
+.gg-hall { position:absolute; border: 3px solid #e3232f; background: rgba(196,18,31,0.25); box-shadow: 0 0 10px rgba(227,35,47,0.9); }
 `;
 document.head.appendChild(st3);
 const FX = document.getElementById("fx");
@@ -236,14 +237,17 @@ const AA = [[1420, 1064], [1488, 1052]]; // Argentine anti-aircraft guns firing 
 
 // ---------- camera ----------
 const P1 = P("move3-1"), P2 = P("move3-2"), P3 = P("move3-3"), P4 = P("move3-4"), P5 = P("move3-5"), P6 = P("move3-6");
-const P7 = P("move3-7"), P8 = P("move3-8"), P9 = P("move3-9"), P10 = P("move3-10");
-const ARCH0 = B.end("move3-9"), ARCH1 = P10;
+const P7 = P("move3-7"), P8 = P("move3-8"), P9 = P("move3-9"), PC = P("move3-cas"), P10 = P("move3-10");
+const ARCH0 = B.end("move3-9");                  // end of the surrender paragraph; move3-cas (casualty card) follows
 B.camera([
   [0, 1450, 900, 1.2],
   [6.5, 1440, 960, 1.45],
   [at("move3-1", "The fighting was") , 1440, 990, 1.9],
   [P2, 1440, 1000, 1.9],
   [P2 + 3, 1420, 1060, 1.55],
+  [at("move3-2", "Argentine helicopters") - 1.5, 1460, 1250, 1.75],
+  [at("move3-2", "Argentine helicopters") + 4.5, 1420, 1220, 1.75],
+  [at("move3-2", "Inside the settlement"), 1420, 1100, 1.6],
   [P3 + 1, 1420, 1060, 1.55],
   [P3 + 4, 1440, 1010, 1.65],
   [P4 + 0.5, 1450, 1060, 1.9],
@@ -260,11 +264,13 @@ B.camera([
   [P9, 1450, 900, 1.3],
   [at("move3-9", "column after column") - 2, 1420, 1010, 2.0],
   [ARCH0, 1420, 1010, 2.1],
-  [ARCH1, 1430, 1000, 1.9],                        // archive covers this: slow calm drift
+  [PC + 2, 1470, 1020, 2.1],                       // casualty card on top, the freed hall below it
+  [P10, 1460, 1010, 2.0],
   [END, 1440, 980, 1.7],
 ]);
 
 // ---------- static map furniture ----------
+K.grid(G, -51.855, -51.768, -59.099, -58.851, 0.01, 0.3);
 L("BRENTON LOCH", 1150, 520, { cls: "sea", size: 22, instant: true });
 L("DARWIN HARBOUR", 1668, 935, { cls: "sea", size: 20, instant: true });
 L("CHOISEUL SOUND", 1700, 1330, { cls: "sea", size: 20, instant: true });
@@ -293,26 +299,38 @@ B.arrow({ side: "carth", pts: [[1345, 770], [1335, 840], [1330, 890]], width: 7,
 B.arrow({ side: "carth", pts: [[1510, 770], [1495, 850], [1486, 905]], width: 7, t: tPush + 0.4, dur: 2.2, until: P2 + 2 });
 U({ id: "gar", side: "rome", x: GG[0] - 36, y: GG[1] + 6, w: 30, h: 20, label: "GARRISON", fs: 9, t: 2.0 });
 AA.forEach((p, i) => U({ id: "aa" + i, side: "rome", x: p[0], y: p[1], w: 20, h: 13, label: "AA GUNS", fs: 7, t: at("move3-1", "Anti-aircraft") - 0.6 + i * 0.2 }));
+["dcoy", "ccoy", "acoy"].forEach((id) => K.counter(id, { icon: "infantry", flag: "uk", size: "I" }));
+K.counter("gar", { icon: "infantry", flag: "arg", size: "II" });
+[0, 1].forEach((i) => K.counter("aa" + i, { icon: "aa", flag: "arg" }));
+// Argentine 105 mm guns at Goose Green firing on the advancing companies
+const ARTY = [GG[0] + 30, GG[1] + 48];
+U({ id: "arty", side: "rome", x: ARTY[0], y: ARTY[1], w: 32, h: 22, label: "105 mm GUNS", fs: 7, t: at("move3-1", "The fighting was") - 1.2 });
+K.counter("arty", { icon: "artillery", flag: "arg", size: "I" });
+const tFierce = at("move3-1", "The fighting was");
+[[1336, 902], [1488, 925], [1350, 880], [1470, 900], [1320, 920]].forEach(([tx, ty], i) => {
+  const tf = tFierce + 0.3 + i * 0.9;
+  K.gun(ARTY[0], ARTY[1], tf, { unit: "arty", dx: -8, dy: -12 });
+  shell([ARTY[0] - 8, ARTY[1] - 12], [tx, ty], tf + 0.05, { h: 70, dur: 1.1, burst: false, snd: false });
+  K.impact(tx, ty, tf + 1.15, { r: 13 });
+});
 const tAA = at("move3-1", "fired flat");
 for (let k = 0; k < 3; k++) {
+  K.gun(AA[0][0] - 6, AA[0][1] - 10, tAA + k * 0.6, { dx: 0, dy: 0, sfx: "mg" }); K.gun(AA[1][0], AA[1][1] - 10, tAA + 0.3 + k * 0.6, { dx: 0, dy: 0, sfx: "mg" });
   B.arrow({ side: "rome", pts: [[AA[0][0] - 6, AA[0][1] - 10], [1350 + k * 8, 915]], width: 2.5, head: false, t: tAA + k * 0.6, dur: 0.35, until: tAA + k * 0.6 + 1.0 });
   B.arrow({ side: "rome", pts: [[AA[1][0], AA[1][1] - 10], [1480 + k * 6, 935]], width: 2.5, head: false, t: tAA + 0.3 + k * 0.6, dur: 0.35, until: tAA + 0.3 + k * 0.6 + 1.0 });
 }
 // the schoolhouse burns
 const FIRE = `<g><path d="M50 96 C20 96 14 70 26 52 C30 64 38 66 40 58 C36 40 46 22 58 6 C60 26 76 34 78 54 C84 48 84 40 82 34 C94 50 92 96 50 96 Z" fill="#e8491d" stroke="#fff3c4" stroke-width="4"/><path d="M50 92 C36 92 32 78 40 68 C44 74 50 72 50 64 C58 72 66 78 60 92 Z" fill="#ffd54a"/></g>`;
 const fire = icon(FIRE, SCHOOL[0] + 2, SCHOOL[1] - 10, 22, 22, at("move3-1", "burned") - 0.4, P2 + 6);
+for (let i = 0; i < 10; i++) K.smoke(SCHOOL[0] + 2, SCHOOL[1] - 18, at("move3-1", "burned") + i * 1.2, { n: 1, r: 9, rise: 40, life: 3.2, alpha: 0.65 });
 tl.to(fire, { scale: 1.15, duration: 0.35, yoyo: true, repeat: 17, ease: "sine.inOut" }, at("move3-1", "burned") + 0.2);
 // jets and Pucarás attack; two shot down
-const PLANE = `<g fill="#c4121f" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M50 4 L55 30 L96 46 L96 54 L55 50 L53 78 L66 88 L66 94 L50 90 L34 94 L34 88 L47 78 L45 50 L4 54 L4 46 L45 30 Z"/></g>`;
 const tJets = at("move3-1", "Argentine jets");
-[[1180, 1150, 1600, 760, 40], [1640, 1180, 1250, 800, -40]].forEach(([x0, y0, x1, y1, rot], i) => {
-  const pl = icon(PLANE, x0, y0, 40, 40, tJets + i * 0.8, null);
-  gsap.set(pl, { rotation: rot + (i ? -90 : 90) - 45 });
-  moveEl(pl, tJets + i * 0.8, 4.2, x1, y1, 40, 40, "none");
-  const hitT = at("move3-1", "Two of the aircraft") + 0.4 + i * 0.7;
-  burst(x0 + (x1 - x0) * 0.75, y0 + (y1 - y0) * 0.75, hitT, 22);
-  tl.to(pl, { autoAlpha: 0, duration: 0.3 }, hitT + 0.1);
-});
+const tDown = at("move3-1", "Two of the aircraft");
+K.aircraft({ kind: "jet", side: "rome", size: 84, pts: [[1080, 1250], [1330, 980], [1560, 760], [1760, 560]], t: tJets - 0.4, dur: 4.4, down: tDown + 0.4 });
+K.aircraft({ kind: "turboprop", side: "rome", size: 84, pts: [[1760, 1260], [1560, 1060], [1400, 930], [1250, 820]], t: tJets + 0.4, dur: 6.0, down: tDown + 1.1 });
+L("MB-339 JET", 1150, 1200, { size: 10, t: tJets, until: tJets + 3 });
+L("PUCARÁ", 1700, 1215, { size: 10, t: tJets + 0.8, until: tJets + 3.6 });
 B.caption("TWO ARGENTINE AIRCRAFT SHOT DOWN", at("move3-1", "Two of the aircraft"), P2 - 0.2, "carth");
 
 // ---------- move3-2: nightfall, reinforcements by helicopter ----------
@@ -320,17 +338,20 @@ const night = fxLayer("gg-night");
 tl.to(night, { autoAlpha: 1, duration: 3 }, at("move3-2", "By nightfall") - 0.5);
 B.date("28 MAY · NIGHTFALL", P2 + 1.3, at("move3-7", "soon after midnight"), 32);
 U({ id: "bcoy", side: "carth", x: 1300, y: 1060, w: 28, h: 19, label: "B COY", fs: 9, t: P2 + 0.6 });
+K.counter("bcoy", { icon: "infantry", flag: "uk", size: "I" });
 B.move("dcoy", P2 + 0.8, 2.0, 1350, 948);
 B.move("ccoy", P2 + 0.8, 2.0, 1470, 955);
+// the ring around Goose Green: glowing two-colour front (British side north-west, Argentine side south-east)
+K.front({ pts: [[1235, 1175], [1300, 1102], [1362, 1038], [1422, 1012], [1482, 1006], [1536, 990]], sideA: "carth", sideB: "rome", width: 24,
+  t: at("move3-2", "surrounded") - 0.6, dur: 2.2, until: at("move3-9", "column after column") - 1.2 });
 B.caption("GOOSE GREEN SURROUNDED · NOT TAKEN", at("move3-2", "surrounded"), at("move3-2", "And just after dark") + 0.2, "carth");
-const HELI = `<g fill="#c4121f" stroke="#f7f3ea" stroke-width="3"><ellipse cx="40" cy="36" rx="22" ry="13"/><rect x="58" y="31" width="36" height="7" rx="3"/><rect x="88" y="22" width="6" height="18"/></g><line x1="4" y1="18" x2="78" y2="18" stroke="#1b1812" stroke-width="4"/><line x1="40" y1="18" x2="40" y2="24" stroke="#1b1812" stroke-width="4"/><line x1="28" y1="52" x2="56" y2="52" stroke="#1b1812" stroke-width="3"/>`;
 const tHeli = at("move3-2", "Argentine helicopters");
-[0, 1, 2].forEach((i) => {
-  const h = icon(HELI, 1720 + i * 30, 1420 + i * 25, 46, 28, tHeli - 0.6 + i * 0.3, tHeli + 5.5, "0 0 100 60");
-  gsap.set(h, { scaleX: -1 });
-  moveEl(h, tHeli - 0.6 + i * 0.3, 3.4, LZ[0] + i * 26 - 20, LZ[1] - i * 16, 46, 28, "power2.out");
-});
-U({ id: "solari", side: "rome", x: LZ[0], y: LZ[1] + 20, w: 28, h: 19, label: "COMBAT TEAM SOLARI", fs: 8, t: tHeli + 3.0 });
+[0, 1, 2].forEach((i) => K.aircraft({ kind: "heli", side: "rome", size: 76 - i * 6, alt: 26,
+  pts: [[1760 + i * 40, 1480 + i * 20], [1560 + i * 20, 1360 + i * 10], [LZ[0] + i * 30 - 26, LZ[1] - i * 18]],
+  t: tHeli - 0.8 + i * 0.35, dur: 3.8, land: true, until: tHeli + 6.5 }));
+L("PUMA · CHINOOK · HUEYS", LZ[0] + 40, LZ[1] + 96, { size: 10, t: tHeli + 1.5, until: tHeli + 6.5 });
+U({ id: "solari", side: "rome", x: LZ[0] - 50, y: LZ[1] + 40, w: 28, h: 19, label: "COMBAT TEAM SOLARI", fs: 8, t: tHeli + 3.0 });
+K.counter("solari", { icon: "infantry", flag: "arg", size: "I" });
 B.move("solari", at("move3-2", "Inside the settlement"), 3.0, 1368, 1122);
 tl.to(B.units.solari.el.querySelector(".tag"), { autoAlpha: 0, duration: 0.4 }, at("move3-2", "Inside the settlement") + 2.6);
 B.caption("GARRISON: STILL ~1,000 STRONG", at("move3-2", "the garrison"), P3 - 0.2, "rome");
@@ -352,15 +373,17 @@ const hall = document.createElement("div"); hall.className = "gg-hall";
 Object.assign(hall.style, { left: HALL[0] - 12 + "px", top: HALL[1] - 8 + "px", width: "24px", height: "16px", borderWidth: "2px" });
 PINS.appendChild(hall); gsap.set(hall, { autoAlpha: 0 });
 tl.to(hall, { autoAlpha: 1, duration: 0.5 }, at("move3-4", "community hall") - 0.5);
-tl.to(hall, { boxShadow: "0 0 22px rgba(255,213,74,1)", duration: 0.6, yoyo: true, repeat: 9 }, at("move3-4", "community hall"));
+tl.to(hall, { boxShadow: "0 0 22px rgba(227,35,47,1)", duration: 0.6, yoyo: true, repeat: 9 }, at("move3-4", "community hall"));
 tl.to(hall, { autoAlpha: 0.5, duration: 0.6 }, P5 + 1);
 tl.to(hall, { autoAlpha: 0, duration: 0.6 }, P7);
+K.target(...HALL, at("move3-4", "community hall"), { r: 18, side: "rome", until: P5 });
 L("COMMUNITY HALL", HALL[0] + 16, HALL[1] + 1, { size: 8, t: at("move3-4", "community hall"), until: P5 + 1, anchor: [0, -50] });
 B.caption("114 CIVILIANS LOCKED INSIDE", at("move3-4", "one hundred and fourteen"), P5 - 0.2, "rome");
 B.caption("AN ASSAULT MIGHT KILL THEM", at("move3-4", "A full assault") , P5 - 0.2, "carth");
 
 // ---------- move3-5: what Piaggi imagined ----------
-const pStake = stake({ side: "arg", img: "piaggi_head.png", name: "LT. COL. ÍTALO PIAGGI", role: "TASK FORCE MERCEDES", x: 1575, y: 1290, size: 0.95, fs: 11, plqScale: 0.75, t: P5 + 0.8, until: P6 + 1 });
+K.badge({ name: "LT. COL. ÍTALO PIAGGI", role: "TASK FORCE MERCEDES", photo: HAVE["piaggi_head.png"] ? "assets/media/piaggi_head.png" : null, initials: "IP",
+  flag: "arg", side: "rome", corner: "tr", t: P5 + 0.8, until: P6 - 0.2 });
 const ghosts = [[1280, 860], [1440, 830], [1590, 900], [1215, 1000], [1330, 1268], [1665, 1000]];
 const tImag = at("move3-5", "He believed");
 ghosts.forEach((p, i) => {
@@ -370,20 +393,19 @@ ghosts.forEach((p, i) => {
 B.hideUnits(ghosts.map((_, i) => "g" + i), P6 + 1, 0.8);
 const bub = B.bubble("A BRIGADE IS OUTSIDE", 1215, 1172, tImag - 0.4, P6 + 0.5);
 Object.assign(bub.style, { fontSize: "19px", padding: "8px 14px", borderWidth: "3px", borderRadius: "14px" });
-const HARR = `<g fill="#1f4fc4" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M50 2 L56 34 L92 52 L92 60 L56 56 L54 80 L68 90 L68 96 L50 92 L32 96 L32 90 L46 80 L44 56 L8 60 L8 52 L44 34 Z"/></g>`;
+// the Harrier strike that afternoon: two RAF jets run in from the north-west and bomb the Argentine positions
 const tHar = at("move3-5", "Harrier jets");
-[0, 1].forEach((i) => {
-  const h = icon(HARR, 1200, 700 + i * 60, 44, 44, tHar - 0.8 + i * 0.4, null);
-  gsap.set(h, { rotation: 125 });
-  moveEl(h, tHar - 0.8 + i * 0.4, 3.0, 1700, 1300 + i * 40, 44, 44, "none");
-  tl.to(h, { autoAlpha: 0, duration: 0.3 }, tHar + 2.4 + i * 0.4);
-  burst(1440 + i * 30, 1060 + i * 20, tHar + 0.5 + i * 0.4, 20);
+[[[1110, 760], [GG[0], GG[1]], [1822, 1452]], [[1190, 690], [1510, 1060], [1830, 1430]]].forEach((pts, i) => {
+  const t0 = tHar - 1.2 + i * 0.5;
+  K.aircraft({ kind: "jet", side: "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
+  [[AA[i][0], AA[i][1]], i ? [ARTY[0], ARTY[1]] : [GG[0] - 30, GG[1] - 22]].forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k ? false : 5 }));
 });
+L("RAF HARRIERS", 1262, 868, { size: 11, t: tHar - 0.8, until: tHar + 2.2 });
 B.caption("HARRIER STRIKES THAT AFTERNOON", tHar, at("move3-5", "He believed") - 0.2, "carth");
 B.caption("NO RESCUE HE COULD COUNT ON", at("move3-5", "no rescue"), P6 - 0.2, "rome");
 
 // ---------- move3-6: Keeble's insight ----------
-const kStake = stake({ side: "uk", img: "keeble_head.png", name: "MAJ. CHRIS KEEBLE", role: "COMMANDING 2 PARA", x: 1690, y: 1200, size: 1.0, fs: 12, plqScale: 0.75, t: P6 + 0.3, until: P7 + 1 });
+K.badge({ name: "MAJ. CHRIS KEEBLE", role: "COMMANDING 2 PARA", initials: "CK", flag: "uk", side: "carth", corner: "tr", t: P6 + 0.3, until: at("move3-6", "It was the other man's mind") - 0.4 });
 insight(["HE CANNOT SEE MY EMPTY POUCHES"], at("move3-6", "It was the other man's mind") - 0.3, at("move3-6", "If Keeble") + 0.3);
 B.caption("MAKE HIM BELIEVE TOMORROW WILL BE WORSE", at("move3-6", "If Keeble") + 0.4, P7 - 0.2, "carth");
 
@@ -412,15 +434,17 @@ note.querySelectorAll(".ln").forEach((r, i) => tl.fromTo(r, { autoAlpha: 0 }, { 
 tl.to(note, { autoAlpha: 0, duration: 0.5 }, P8 - 0.2);
 
 // ---------- move3-8: not a pure bluff ----------
+// overnight: J Company 42 Commando, more guns and more mortars flown in by helicopter from the north
 const tFly = at("move3-8", "Through the night");
-const HELIB = HELI.replace('fill="#c4121f"', 'fill="#1f4fc4"');
-[0, 1, 2].forEach((i) => {
-  const h = icon(HELIB, 1400 + i * 70, 280, 50, 30, tFly - 0.6 + i * 0.35, tFly + 4.4, "0 0 100 60");
-  moveEl(h, tFly - 0.6 + i * 0.35, 3.4, 1440 + i * 60, 560 + i * 20, 50, 30, "power2.out");
-});
-U({ id: "jcoy", side: "carth", x: 1450, y: 590, w: 30, h: 20, label: "J COY 42 COMMANDO", fs: 9, t: tFly + 2.6 });
-U({ id: "guns2", side: "carth", x: 1540, y: 610, w: 24, h: 16, label: "MORE GUNS", fs: 8, t: tFly + 3.0 });
-U({ id: "mort2", side: "carth", x: 1600, y: 640, w: 24, h: 16, label: "MORE MORTARS", fs: 8, t: tFly + 3.3 });
+[0, 1, 2].forEach((i) => K.aircraft({ kind: "heli", side: "carth", size: 78 - i * 6, alt: 30,
+  pts: [[1380 + i * 70, 230], [1410 + i * 65, 420 + i * 10], [1430 + i * 62, 540 + i * 22]],
+  t: tFly - 0.6 + i * 0.35, dur: 3.4, land: true, until: tFly + 5.2 }));
+U({ id: "jcoy", side: "carth", x: 1450, y: 590, w: 30, h: 20, label: "J COY 42 COMMANDO", fs: 9, t: tFly + 2.8 });
+U({ id: "guns2", side: "carth", x: 1540, y: 612, w: 26, h: 18, label: "MORE GUNS", fs: 8, t: tFly + 3.1 });
+U({ id: "mort2", side: "carth", x: 1610, y: 640, w: 26, h: 18, label: "MORE MORTARS", fs: 8, t: tFly + 3.4 });
+K.counter("jcoy", { icon: "infantry", flag: "uk", size: "I" });
+K.counter("guns2", { icon: "artillery", flag: "uk", size: "I" });
+K.counter("mort2", { icon: "artillery", flag: "uk", size: "•••" });
 const tPlan = at("move3-8", "a plan to pound");
 const tgt = document.createElementNS(NS, "g");
 tgt.innerHTML = `<circle cx="${GG[0]}" cy="${GG[1]}" r="70" fill="rgba(196,18,31,0.12)" stroke="#c4121f" stroke-width="4" stroke-dasharray="12 8"/><line x1="${GG[0] - 90}" y1="${GG[1]}" x2="${GG[0] + 90}" y2="${GG[1]}" stroke="#c4121f" stroke-width="3"/><line x1="${GG[0]}" y1="${GG[1] - 90}" x2="${GG[0]}" y2="${GG[1] + 90}" stroke="#c4121f" stroke-width="3"/>`;
@@ -428,6 +452,7 @@ OV.appendChild(tgt); gsap.set(tgt, { autoAlpha: 0, svgOrigin: `${GG[0]} ${GG[1]}
 tl.to(tgt, { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power2.out" }, tPlan);
 tl.to(tgt, { rotation: 45, duration: 6, ease: "none" }, tPlan);
 tl.to(tgt, { autoAlpha: 0, duration: 0.6 }, P9 + 0.5);
+K.target(...GG, tPlan + 0.3, { r: 80, until: P9 + 0.5 });
 B.caption("PLAN B: FLATTEN GOOSE GREEN", tPlan + 0.4, at("move3-8", "But his men") + 0.2, "carth");
 B.caption("EVERYTHING DEPENDS ON WHAT PIAGGI BELIEVES", at("move3-8", "Everything depended") - 0.3, P9 - 0.2, "carth");
 B.hideUnits(["guns2", "mort2"], P9 + 1);
@@ -441,7 +466,7 @@ tl.to(dawn, { autoAlpha: 0, duration: 3 }, tDawn + 7);
 B.date("29 MAY 1982 · DAWN", P9 + 0.6, END - 0.4, 30);
 B.caption("ARGENTINE ARMY DAY · THE GARRISON SURRENDERS", at("move3-9", "the Argentine National Army Day") - 0.4, at("move3-9", "The paratroopers watched") + 0.4, "rome");
 B.caption("EXPECTED: A FEW HUNDRED", at("move3-9", "They had expected"), at("move3-9", "column after column") - 0.2, "carth");
-B.hideUnits(["gar", "solari", "aa0", "aa1"], at("move3-9", "column after column") - 1.2);
+B.hideUnits(["gar", "solari", "aa0", "aa1", "arty"], at("move3-9", "column after column") - 1.2);
 B.move("dcoy", P9 + 1, 2.0, 1288, 962);
 const tCol = at("move3-9", "column after column") - 1.0;
 const cols = 3, per = 7;
@@ -462,9 +487,25 @@ tl.fromTo(cnt, { autoAlpha: 0, y: -20 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 
 const cv = { v: 0 }, cn = cnt.querySelector(".n");
 tl.to(cv, { v: 961, duration: at("move3-9", "nine hundred and sixty-one") + 1.2 - tCnt, ease: "power1.inOut", onUpdate: () => { cn.textContent = String(Math.round(cv.v)); } }, tCnt);
 tl.to(cnt, { scale: 1.08, duration: 0.3, yoyo: true, repeat: 1 }, at("move3-9", "nine hundred and sixty-one") + 1.2);
-tl.to(cnt, { autoAlpha: 0, duration: 0.5 }, P10 - 0.3);
 B.stat(["2 PARA: ABOUT 1 IN 6 KILLED OR WOUNDED"], at("move3-9", "to a battalion that had lost"), ARCH0 + 0.3, "carth");
-// ARCHIVE paragraph (ARCH0..ARCH1): map holds, only the slow camera drift above
+
+// ---------- move3-cas: civilians freed; the cost of the battle ----------
+const tFree = PC + 0.3;
+tl.to(hall, { autoAlpha: 1, borderColor: "#ffd54a", backgroundColor: "rgba(255,213,74,0.3)", boxShadow: "0 0 18px rgba(255,213,74,1)", duration: 0.6 }, tFree);
+K.target(...HALL, tFree, { r: 22, until: P10 - 0.3 });
+const freed = chip("114 CIVILIANS FREED", HALL[0], HALL[1] + 30, tFree + 0.4, P10 - 0.3, 11);
+freed.style.borderColor = "#c9b48a";
+tl.to(hall, { autoAlpha: 0, duration: 0.5 }, P10 - 0.3);
+const tCard = at("move3-cas", "The cost of the battle") - 0.2;
+tl.to(cnt, { autoAlpha: 0, duration: 0.5 }, tCard - 0.5);
+const card = K.casualties({ rows: [["killed", "18", "45–55"], ["wounded", "64", "~100"], ["captured", "—", "961"]], t: tCard, until: P10 - 0.3 });
+// numbers land as they are spoken (the captured row was already told in move3-9)
+const cCols = card.firstElementChild.children;
+[[0, 0, at("move3-cas", "eighteen British")], [0, 1, at("move3-cas", "more than sixty")], [1, 0, at("move3-cas", "between forty-five")], [1, 1, at("move3-cas", "around a hundred")]].forEach(([c, r, tt]) => {
+  const v = cCols[c].children[1 + r].querySelector("span");
+  tl.fromTo(v, { autoAlpha: 0, x: -14 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, tt);
+  gsap.set(v, { autoAlpha: 0 });
+});
 
 // ---------- move3-10: the method ----------
 B.dim(P10 - 0.2, END, 0.6);

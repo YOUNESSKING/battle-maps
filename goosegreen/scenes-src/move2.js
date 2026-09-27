@@ -208,7 +208,7 @@ const T1 = [1492, 686], T2 = [1535, 678];       // the trench Jones charged / th
 const RIDGE = [[1432, 678], [1463, 695], T1, [1562, 700], [1592, 716]]; // Argentine trenches on Darwin Ridge
 const BOCAPOS = [[1318, 624], [1348, 640], [1300, 652], [1372, 622]];   // Argentine positions around Boca House
 const BCOY = [1392, 540], SUPP = [1398, 446];
-const DCOY = [1318, 520], DCOY2 = [1282, 530];  // D Company behind B, then along the western shore onto Boca House
+const DCOY = [1318, 520], DCOY2 = [1304, 536];  // D Company behind B, then along the western shore onto Boca House
 
 // ---------- camera ----------
 const P1 = P("move2-1"), P2 = P("move2-2"), P3 = P("move2-3"), P4 = P("move2-4"), P5 = P("move2-5"), P6 = P("move2-6");
