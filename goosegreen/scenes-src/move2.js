@@ -63,7 +63,8 @@ const U = (o) => { // unit with world-scaled tag
   return el;
 };
 const L = (text, x, y, o = {}) => B.label(text, x, y, { size: o.size || 13, t: o.t || 0, until: o.until, cls: o.cls || "", anchor: o.anchor || [-50, -50], instant: o.instant });
-const burst = (x, y, t, r = 14) => {
+const burst = (x, y, t, r = 14, snd) => {
+  SFX(snd === undefined ? (r >= 18 ? "explosion" : "impact") : snd, t);
   const el = document.createElement("div"); el.className = "gg-burst";
   Object.assign(el.style, { left: x - r + "px", top: y - r + "px", width: 2 * r + "px", height: 2 * r + "px" });
   PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
@@ -83,6 +84,7 @@ const shell = (from, to, t, o = {}) => { // ballistic arc (artillery / mortar) +
   tl.to(p, { opacity: 0.95, duration: 0.05 }, t);
   tl.to(p, { strokeDashoffset: -len, duration: dur, ease: "none" }, t);
   tl.to(p, { opacity: 0, duration: 0.05 }, t + dur);
+  SFX(o.snd || "mortar", t);
   burst(x2, y2, t + dur * 0.93, o.r || 14);
 };
 const missile = (from, to, t, dur = 1.1) => { // straight wire-guided missile: wire line + flare + impact
@@ -99,7 +101,8 @@ const missile = (from, to, t, dur = 1.1) => { // straight wire-guided missile: w
   tl.to(lines, { strokeDashoffset: 0, duration: dur, ease: "none" }, t);
   tl.to(c, { attr: { cx: x2, cy: y2 }, duration: dur, ease: "none" }, t);
   tl.to(g, { autoAlpha: 0, duration: 0.5 }, t + dur + 0.5);
-  burst(x2, y2, t + dur - 0.05, 18);
+  SFX("missile", t);
+  burst(x2, y2, t + dur - 0.05, 18, false);
 };
 const cone = (x, y, ang, spread, len, t, until) => { // translucent field of fire from a trench
   const a0 = (ang - spread / 2) * Math.PI / 180, a1 = (ang + spread / 2) * Math.PI / 180;
@@ -276,7 +279,7 @@ tl.to(estStake, { filter: "grayscale(1)", opacity: 0.7, duration: 1.2 }, at("mov
 U({ id: "guns", side: "rome", x: GUNS[0], y: GUNS[1], w: 26, h: 18, label: "ARG. GUNS", fs: 9, t: at("move2-2", "directing artillery") - 1.4 });
 for (let i = 0; i < 7; i++) {
   const tx = GULLY[0] + [-18, 14, -4, 26, -26, 6, 18][i], ty = GULLY[1] + [-14, 10, -30, -6, 8, 18, -24][i];
-  shell([GUNS[0] + 4, GUNS[1] - 8], [tx, ty], at("move2-2", "directing artillery") + i * 0.55, { h: 60 + (i % 3) * 25, side: i % 2 ? 1 : -1, dur: 1.3, r: 16 });
+  shell([GUNS[0] + 4, GUNS[1] - 8], [tx, ty], at("move2-2", "directing artillery") + i * 0.55, { snd: "fire", h: 60 + (i % 3) * 25, side: i % 2 ? 1 : -1, dur: 1.3, r: 16 });
 }
 B.caption("HIS MEN HELD", at("move2-2", "His men held"), P3 + 0.2, "rome");
 B.hideUnits(["guns"], P3 + 0.5);

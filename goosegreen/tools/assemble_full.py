@@ -99,16 +99,19 @@ open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" f
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"], check=True)
 
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
-inputs = ["-i", "audio/voice.wav"]
-f = []
+subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
+subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
+inputs = ["-i", "audio/voice.wav", "-i", "build/sfx.wav"]
+f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]",
+     "[1:a]aresample=48000[sfxin]",
+     "[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]"]
 if os.path.exists("assets/media/music.wav"):
     inputs += ["-stream_loop", "-1", "-i", "assets/media/music.wav"]
-    f += ["[0:a]aresample=48000,asplit=2[vo][key]",
-          f"[1:a]aresample=48000,atrim=0:{total},volume=0.35,afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
+    f += [f"[2:a]aresample=48000,atrim=0:{total},volume=0.35,afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
           "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
-          "[vo][musd]amix=inputs=2:normalize=0,alimiter=limit=0.5:level=false[aout]"]
+          "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
 else:
-    f += ["[0:a]aresample=48000,alimiter=limit=0.5:level=false[aout]"]
+    f += ["[key]anullsink", "[vo][sfx]amix=inputs=2:normalize=0,alimiter=limit=0.5:level=false[aout]"]
 subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "[aout]", "-t", f"{total:.2f}",
                 "-c:a", "pcm_s16le", "build/mix.wav"], check=True)
 LN = "loudnorm=I=-14:TP=-1.5:LRA=11"

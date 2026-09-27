@@ -60,6 +60,8 @@ const GG = (() => {
   };
   // muzzle flash / explosion pulses
   G.flash = (x, y, t, o = {}) => {
+    const snd = o.sfx === undefined ? "impact" : o.sfx;
+    for (let i = 0; i < (o.n || 3); i++) SFX(snd, t + i * (o.gap || 0.55));
     const r = o.r || 22, n = o.n || 3, gap = o.gap || 0.55;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;
@@ -228,7 +230,7 @@ GG.tagbox("ARGENTINE GARRISONS", STANLEY[0], STANLEY[1] + 29, "#c4121f", { size:
 
 // ---------- losses ----------
 const wreck = (x, y, name, lx, ly, t, anchor) => {
-  GG.flash(x, y, t, { r: 12, n: 2, gap: 0.45 });
+  GG.flash(x, y, t, { r: 12, n: 2, gap: 0.45, sfx: "explosion" });
   GG.pin(`<svg width="16" height="16" viewBox="0 0 10 10" style="display:block"><path d="M1 1 L9 9 M9 1 L1 9" stroke="#c4121f" stroke-width="2.6" stroke-linecap="round"/></svg>`, x, y, { t: t + 0.2, pop: true });
   GG.ship(x, y - 13, { w: 26, color: "#1f4fc4", t: t - 0.6, until: t + 0.9 });
   GG.lbl(name, lx, ly, { size: 11, anchor, t: t + 0.3 });

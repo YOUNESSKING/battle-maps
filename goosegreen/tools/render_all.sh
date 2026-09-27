@@ -29,7 +29,7 @@ ASSEMBLE=0
 if [ "${1:-}" = "--assemble" ]; then ASSEMBLE=1; shift; fi
 
 # Kill orphaned renders and wait loops from earlier (crashed or limit-stopped) sessions and agents.
-for pid in $(pgrep -f "hyperframes render|while pgrep" || true); do
+for pid in $(pgrep -f "[h]yperframes render|[w]hile pgrep" || true); do
   [ "$pid" != "$$" ] && kill "$pid" 2>/dev/null && echo "killed stale process $pid"
 done
 

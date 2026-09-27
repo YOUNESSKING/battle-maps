@@ -1,6 +1,13 @@
 // Battle-map engine for HyperFrames: one paused GSAP timeline, deterministic, no network.
 // A scene file calls Battle(opts) and then adds units, arrows, cards etc. at times taken
 // from the narration timing (window.SCENE_TIMING, written by tools/build_scene.py).
+// Sound cues: scenes call SFX(kind, t) for every blast/shot/stamp; tools/sfx_cues.py reads them back
+// (kinds: fire, mortar, impact, explosion, missile, mg, whoosh, hit, static, tick). No effect on the picture.
+window.SFX = (kind, t) => {
+  if (!kind || !(t >= 0)) return;
+  (window.SFX_CUES = window.SFX_CUES || []).push([kind, Math.round(t * 100) / 100]);
+  document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
+};
 (function () {
   const NS = "http://www.w3.org/2000/svg";
   const W = 1920, H = 1080;

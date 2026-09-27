@@ -67,6 +67,8 @@ const GG = (() => {
   };
   // muzzle flash / explosion pulses
   G.flash = (x, y, t, o = {}) => {
+    const snd = o.sfx === undefined ? "impact" : o.sfx;
+    for (let i = 0; i < (o.n || 3); i++) SFX(snd, t + i * (o.gap || 0.55));
     const r = o.r || 22, n = o.n || 3, gap = o.gap || 0.55;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;
@@ -233,10 +235,10 @@ const GOOSE = G(-51.8277, -58.9728), AIRF = G(-51.8196, -58.9802), DHILL = G(-51
 
 const K1 = "hook-isthmus", K2 = "hook-bio", K3 = "hook-bio-2";
 const S2 = P(K2), S3 = P(K3);
-const T_2PARA = at(K1, "Second Battalion"), T_500 = at(K1, "five hundred"), T_GUNS = at(K1, "three light guns");
-const T_1000 = at(K1, "a thousand Argentine"), T_DUG = at(K1, "dug in across"), T_ART = at(K1, "more artillery"), T_BBC = at(K1, "thanks to the BBC");
-const T_DEAD = at(K3, "H Jones would be dead"), T_KEEB = at(K3, "his quiet second") - 0.4, T_YET = at(K3, "And yet");
-const T_900 = at(K3, "more than nine hundred"), T_FIRST = at(K3, "first great land battle"), T_THREE = at(K3, "Let's take");
+const T_2PARA = at(K1, "Second Battalion"), T_500 = at(K1, "known as Two Para"), T_GUNS = at(K1, "three light guns");
+const T_1000 = at(K1, "Ahead of them"), T_DUG = at(K1, "open, treeless ground"), T_ART = at(K1, "more artillery"), T_BBC = at(K1, "thanks to the BBC");
+const T_DEAD = at(K3, "H Jones would be dead"), T_KEEB = at(K3, "his quiet second") - 0.4, T_YET = at(K3, "So how did");
+const T_900 = at(K3, "So how did") + 1.2, T_FIRST = at(K3, "first great land battle"), T_THREE = at(K3, "Let's take");
 
 // ---------- camera ----------
 B.camera([

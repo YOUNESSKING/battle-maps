@@ -67,6 +67,8 @@ const GG = (() => {
   };
   // muzzle flash / explosion pulses
   G.flash = (x, y, t, o = {}) => {
+    const snd = o.sfx === undefined ? "impact" : o.sfx;
+    for (let i = 0; i < (o.n || 3); i++) SFX(snd, t + i * (o.gap || 0.55));
     const r = o.r || 22, n = o.n || 3, gap = o.gap || 0.55;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;
@@ -279,7 +281,7 @@ B.caption("1 · OWN THE DARK", T_DARK, T_HEAVY - 0.2, "carth r");
 // ---------- 2: heavy weapons ----------
 for (let i = 0; i < 7; i++) {
   const t = T_HEAVY + 0.1 + i * 0.35;
-  GG.flash(1640, 870, t, { r: 12, n: 1 });
+  GG.flash(1640, 870, t, { r: 12, n: 1, sfx: "mortar" });
   GG.arc(1640, 870, 1560 + (i * 17) % 40, 975 + (i * 11) % 16, t + 0.05, { dur: 0.7, width: 2.5, h: 60 });
 }
 for (let i = 0; i < 4; i++) {           // MILAN: straight wire-guided shots into the Boca House positions

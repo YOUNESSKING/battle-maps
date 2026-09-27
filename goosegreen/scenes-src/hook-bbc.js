@@ -61,6 +61,8 @@ const GG = (() => {
   };
   // muzzle flash / explosion pulses
   G.flash = (x, y, t, o = {}) => {
+    const snd = o.sfx === undefined ? "impact" : o.sfx;
+    for (let i = 0; i < (o.n || 3); i++) SFX(snd, t + i * (o.gap || 0.55));
     const r = o.r || 22, n = o.n || 3, gap = o.gap || 0.55;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;
@@ -183,76 +185,115 @@ const CCH = G(-51.7435, -58.962), BOCA = G(-51.8009, -58.9847), DARWIN = G(-51.8
 const GOOSE = G(-51.8277, -58.9728), DHILL = G(-51.8035, -58.966), BURNT = G(-51.7858, -58.9419);
 
 const K = "hook-bbc";
-const T_PARAS = at(K, "British paratroopers"), T_RADIO = at(K, "around a radio"), T_FARM = at(K, "in a farmhouse");
-const T_BBC = at(K, "BBC World Service"), T_ANN = at(K, "the newsreader announce"), T_WORLD = at(K, "the entire world");
+const AIRF = G(-51.8196, -58.9802);
+const T_1000 = at(K, "A thousand dug in"), T_KNEW = at(K, "the enemy knew"), T_27 = at(K, "On the twenty-seventh");
+const T_FARM = at(K, "in a farmhouse"), T_BBC = at(K, "BBC World Service"), T_WORLD = at(K, "the entire world");
 const T_POISED = at(K, "poised to attack"), T_GG = at(K, "Goose Green"), T_BN = at(K, "their battalion");
-const T_TGT = at(K, "their target"), T_SECRET = at(K, "supposed to be a secret");
+const T_TGT = at(K, "their target"), T_SECRET = at(K, "supposed to be a secret"), T_36 = at(K, "Thirty-six hours later");
+const T_NEARLY = at(K, "nearly a thousand"), T_HALF = at(K, "half their size"), T_MAN = at(K, "the man who planned"), T_DEAD = at(K, "would be dead");
 
-// ---------- camera: open tight on the farmhouse, pull back as the broadcast spreads, then down the isthmus ----------
+// ---------- camera: wide on both sides at once -> dive to the farmhouse -> broadcast pull-back -> south to the target -> flash-forward ----------
 B.camera([
-  [0, CCH[0] + 20, CCH[1] + 40, 2.6],
+  [0, 1600, 830, 1.12],
+  [T_27 - 0.2, 1600, 800, 1.2],
+  [T_27 + 1.6, CCH[0] + 10, CCH[1] + 60, 2.4],
   [T_BBC, CCH[0] + 10, CCH[1] + 60, 2.3],
   [T_WORLD + 1.2, 1600, 720, 1.05],
   [T_POISED + 0.6, 1600, 780, 1.1],
   [T_GG + 1.4, 1590, 1000, 1.9],
-  [T_BN, 1590, 980, 1.85],
   [T_TGT + 0.3, 1560, 1215, 2.2],
-  [END, 1560, 1225, 2.3],
+  [T_36, 1560, 1225, 2.3],
+  [T_36 + 1.2, 1520, 1150, 1.75],
+  [END, 1520, 1130, 1.7],
 ]);
-
-// dusk tint over the whole map for mood
 GG.layer("background: radial-gradient(ellipse 75% 65% at 50% 45%, rgba(20,24,40,0.18), rgba(6,8,20,0.55));", 0, null, { dur: 0.01 });
 
-B.showDate(0.3);
-B.date("27 MAY 1982", 0.5, null, 38);
-GG.lbl("CAMILLA CREEK HOUSE", CCH[0] + 20, CCH[1] - 4, { size: 20, anchor: [0, -50], t: 0.3 });
-GG.pin(`<div style="width:14px;height:14px;border-radius:50%;background:#fbfaf6;border:3px solid #222"></div>`, CCH[0], CCH[1], { t: 0.2 });
-B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 44, w: 46, h: 32, label: "2 PARA", t: 0.4 });
+// ---------- 0 s: the odds, on screen from the first frame ----------
+B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 44, w: 46, h: 32, label: "2 PARA", t: 0.05 });
+SFX("hit", 0.1);
+const RED = [[DARWIN[0] - 34, DARWIN[1] - 30], [DHILL[0] - 10, DHILL[1] - 22], [BOCA[0] + 30, BOCA[1] - 8], [GOOSE[0] - 30, GOOSE[1] - 26],
+  [GOOSE[0] + 34, GOOSE[1] - 40], [BURNT[0] - 40, BURNT[1] + 60], [AIRF[0] - 10, AIRF[1] + 14], [BOCA[0] + 80, BOCA[1] + 40]];
+RED.forEach(([x, y], i) => B.unit({ id: "r" + i, side: "rome", x, y, w: 26, h: 18, t: T_1000 + 0.1 + i * 0.07 }));
+SFX("hit", T_1000 + 0.1);
+const odds = GG.card(`<div style="display:flex;align-items:baseline;gap:34px;font-weight:700;letter-spacing:0.04em">
+  <div style="text-align:center"><div style="font-size:120px;line-height:1;color:#6f9bff">500</div><div style="font-size:26px;letter-spacing:0.3em;color:#c9d6ff">PARATROOPERS</div></div>
+  <div class="vs" style="font-size:48px;color:#c9b48a">VS</div>
+  <div class="red" style="text-align:center"><div style="font-size:120px;line-height:1;color:#ff5b5b">~1,000</div><div style="font-size:26px;letter-spacing:0.3em;color:#ffc4c4">DUG IN</div></div></div>`,
+  "gg-odds", 820, 0.05, T_27 - 0.1);
+odds.querySelector(".inner").style.padding = "20px 60px 24px";
+[odds.querySelector(".vs"), odds.querySelector(".red")].forEach((el) => GG.hide(el));
+B.tl.fromTo(odds.querySelector(".vs"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, T_1000);
+B.tl.fromTo(odds.querySelector(".red"), { autoAlpha: 0, scale: 1.6 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "power4.in" }, T_1000);
+// "the enemy knew they were coming": the whole Argentine line flashes, radio static comes up
+RED.forEach(([x, y], i) => GG.flash(x, y, T_KNEW + 0.2 + i * 0.05, { r: 16, n: 2, gap: 0.35, sfx: false }));
+GG.tagbox("THEY KNEW", GOOSE[0] + 70, GOOSE[1] - 70, "#c4121f", { size: 24, t: T_KNEW + 0.4, until: T_27 + 0.4, pop: true });
+SFX("static", T_KNEW);
 
-// radio icon beside the farmhouse
+// ---------- the farmhouse and the broadcast ----------
+B.showDate(T_27);
+B.date("27 MAY 1982", T_27 + 0.2, T_36 - 0.1, 38);
+GG.pin(`<div style="width:14px;height:14px;border-radius:50%;background:#fbfaf6;border:3px solid #222"></div>`, CCH[0], CCH[1], { t: T_27 + 0.8 });
+GG.lbl("CAMILLA CREEK HOUSE", CCH[0] + 20, CCH[1] - 4, { size: 20, anchor: [0, -50], t: T_27 + 0.9 });
+SFX("whoosh", T_27 + 0.1);
 GG.pin(`<svg width="46" height="40" viewBox="0 0 46 40" style="display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.8))">
   <rect x="3" y="12" width="40" height="26" rx="4" fill="#2b2a26" stroke="#f3eee2" stroke-width="2.5"/>
   <circle cx="15" cy="25" r="7" fill="none" stroke="#f3eee2" stroke-width="2.5"/><rect x="27" y="19" width="11" height="3" fill="#f3eee2"/><rect x="27" y="26" width="11" height="3" fill="#f3eee2"/>
-  <line x1="33" y1="12" x2="41" y2="1" stroke="#f3eee2" stroke-width="2.5" stroke-linecap="round"/></svg>`, CCH[0] - 52, CCH[1] + 40, { t: 0.9, pop: true });
-
-// broadcast rings expanding out from the radio across the whole map
+  <line x1="33" y1="12" x2="41" y2="1" stroke="#f3eee2" stroke-width="2.5" stroke-linecap="round"/></svg>`, CCH[0] - 52, CCH[1] + 40, { t: T_FARM, pop: true });
 const ringsAt = (t0, n, maxR, gap) => {
   for (let i = 0; i < n; i++) {
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:${CCH[0] - 52 - 50}px;top:${CCH[1] + 40 - 50}px;width:100px;height:100px;border-radius:50%;border:5px solid rgba(255,214,90,0.9);box-shadow:0 0 18px rgba(255,200,60,0.6);`;
     document.getElementById("pins").appendChild(el); GG.hide(el);
-    const t = t0 + i * gap;
-    B.tl.fromTo(el, { autoAlpha: 0.95, scale: 0.2 }, { autoAlpha: 0, scale: maxR / 50, duration: 3.2, ease: "power1.out", immediateRender: false }, t);
+    B.tl.fromTo(el, { autoAlpha: 0.95, scale: 0.2 }, { autoAlpha: 0, scale: maxR / 50, duration: 3.2, ease: "power1.out", immediateRender: false }, t0 + i * gap);
   }
 };
-ringsAt(1.8, Math.floor((T_BBC - 1.8) / 1.3), 110, 1.3);
+ringsAt(T_FARM + 0.3, 3, 110, 1.0);
 ringsAt(T_BBC, 3, 160, 0.8);
-GG.flash(CCH[0], CCH[1] + 44, T_PARAS + 0.1, { r: 26, n: 1 });
 ringsAt(T_WORLD - 0.2, 6, 1400, 0.55);
+SFX("static", T_BBC - 0.3);
+SFX("whoosh", T_WORLD);
 B.caption("BBC WORLD SERVICE · LIVE TO THE WORLD", T_BBC + 0.3, T_POISED - 0.3, "r");
 
-// the target: Argentine garrison lights up as the news reaches it
+// ---------- the target ----------
 GG.lbl("DARWIN", DARWIN[0] + 16, DARWIN[1], { size: 22, anchor: [0, -50], t: T_POISED + 0.2 });
 GG.lbl("GOOSE GREEN", GOOSE[0] + 16, GOOSE[1] + 4, { size: 22, anchor: [0, -50], t: T_GG });
 GG.lbl("BOCA HOUSE", BOCA[0] - 16, BOCA[1], { size: 16, anchor: [-100, -50], color: "#e9e4d6", t: T_GG + 0.4 });
-const RED = [[DARWIN[0] - 34, DARWIN[1] - 30], [DHILL[0] - 10, DHILL[1] - 22], [BOCA[0] + 30, BOCA[1] - 8], [GOOSE[0] - 30, GOOSE[1] - 26],
-  [GOOSE[0] + 34, GOOSE[1] - 40], [BURNT[0] - 40, BURNT[1] + 60]];
-RED.forEach(([x, y], i) => {
-  B.unit({ id: "r" + i, side: "rome", x, y, w: 26, h: 18, t: T_POISED + 0.5 + i * 0.22 });
-  GG.flash(x, y, T_GG + 0.8 + i * 0.12, { r: 18, n: 1 });
-});
-GG.tagbox("ALERTED · ~1,000 MEN DUG IN", GOOSE[0], GOOSE[1] + 48, "#c4121f", { size: 15, t: T_GG + 1.4, until: T_SECRET - 0.3 });
-
-// "their battalion" pulse on 2 PARA, "their target" reticle on Goose Green
-GG.flash(CCH[0], CCH[1] + 44, T_BN + 0.1, { r: 30, n: 2, gap: 0.4 });
-GG.pin(`<svg width="150" height="150" viewBox="0 0 100 100" style="display:block;overflow:visible">
+GG.flash(CCH[0], CCH[1] + 44, T_BN + 0.1, { r: 30, n: 2, gap: 0.4, sfx: false });
+const ret = GG.pin(`<svg width="150" height="150" viewBox="0 0 100 100" style="display:block;overflow:visible">
   <circle cx="50" cy="50" r="40" fill="none" stroke="#e3232f" stroke-width="4"/><circle cx="50" cy="50" r="6" fill="#e3232f"/>
   <line x1="50" y1="0" x2="50" y2="28" stroke="#e3232f" stroke-width="4"/><line x1="50" y1="72" x2="50" y2="100" stroke="#e3232f" stroke-width="4"/>
   <line x1="0" y1="50" x2="28" y2="50" stroke="#e3232f" stroke-width="4"/><line x1="72" y1="50" x2="100" y2="50" stroke="#e3232f" stroke-width="4"/></svg>`,
-  GOOSE[0], GOOSE[1] - 10, { t: T_TGT, pop: true });
-
-// the stamp
-const stamp = GG.card(`<div style="font-size:64px;font-weight:700;letter-spacing:0.12em;color:#e3232f;border:6px solid #e3232f;padding:6px 30px;transform:rotate(-4deg)">SUPPOSED TO BE A SECRET</div>`, "gg-stamp", 850, T_SECRET, null);
+  GOOSE[0], GOOSE[1] - 10, { t: T_TGT, pop: true, until: T_36 });
+SFX("tick", T_TGT);
+const stamp = GG.card(`<div style="font-size:64px;font-weight:700;letter-spacing:0.12em;color:#e3232f;border:6px solid #e3232f;padding:6px 30px;transform:rotate(-4deg)">SUPPOSED TO BE A SECRET</div>`, "gg-stamp", 850, T_SECRET, T_36 - 0.1);
 stamp.querySelector(".inner").style.cssText = "background:rgba(18,16,12,0.78);padding:18px 28px;border-top:none;";
 B.tl.fromTo(stamp, { scale: 1.6 }, { scale: 1, duration: 0.35, ease: "power4.in" }, T_SECRET);
+SFX("hit", T_SECRET + 0.3);
+
+// ---------- flash-forward: 36 hours later ----------
+const white = document.createElement("div");
+white.style.cssText = "position:absolute;inset:0;background:#fffdf6;pointer-events:none;";
+document.getElementById("scene").insertBefore(white, document.getElementById("credit")); GG.hide(white);
+B.tl.fromTo(white, { autoAlpha: 0 }, { autoAlpha: 0.9, duration: 0.12 }, T_36);
+B.tl.to(white, { autoAlpha: 0, duration: 0.6 }, T_36 + 0.14);
+SFX("whoosh", T_36 - 0.2); SFX("hit", T_36 + 0.05);
+B.date("29 MAY 1982", T_36 + 0.2, null, 38);
+B.grey(RED.map((_, i) => "r" + i), T_36 + 0.2, 0.4);
+// grey columns marching out of Goose Green onto the airfield
+for (let c = 0; c < 3; c++) for (let k = 0; k < 6; k++) {
+  const el = GG.pin(`<div style="width:16px;height:11px;background:#77746c;border:2px solid #f3eee2"></div>`, GOOSE[0] - 10 - c * 14, GOOSE[1] - 16, { t: T_NEARLY - 0.6 + c * 0.35 + k * 0.22 });
+  B.tl.to(el, { x: (AIRF[0] - GOOSE[0]) - 40 + k * 18, y: (AIRF[1] - GOOSE[1]) + 26 + c * 16, duration: 2.6, ease: "power1.inOut" }, T_NEARLY - 0.6 + c * 0.35 + k * 0.22);
+}
+const cnt = GG.card(`<div style="text-align:center;font-weight:700"><div class="n" style="font-size:110px;line-height:1;color:#f7f3ea">0</div><div style="font-size:30px;letter-spacing:0.3em;color:#e8a39c">PRISONERS</div></div>`, "gg-cnt", 800, T_NEARLY - 0.2, null);
+cnt.style.justifyContent = "flex-end"; cnt.style.paddingRight = "90px";
+cnt.querySelector(".inner").style.cssText += "padding:14px 34px 16px;border-top:6px solid #e3232f;";
+const cv = { v: 0 }, cn = cnt.querySelector(".n");
+B.tl.to(cv, { v: 961, duration: T_HALF - T_NEARLY + 0.6, ease: "power1.inOut", onUpdate: () => { cn.textContent = String(Math.round(cv.v)); } }, T_NEARLY);
+for (let t = T_NEARLY; t < T_HALF + 0.6; t += 0.25) SFX("tick", t);
+GG.tagbox("2 PARA · HALF THEIR SIZE", CCH[0], CCH[1] + 80, "#1f4fc4", { size: 20, t: T_HALF });
+// the man who planned it: H. Jones's marker on Darwin Hill, greyed with a cross
+GG.pin(`<div style="display:flex;align-items:center;gap:10px;padding:6px 14px;background:rgba(18,16,12,0.88);border:2px solid #9a968c;color:#cfcac0;font-weight:700;letter-spacing:0.08em;font-size:22px;white-space:nowrap">
+  <svg width="26" height="26" viewBox="0 0 10 10"><path d="M1 1 L9 9 M9 1 L1 9" stroke="#e3232f" stroke-width="2.2" stroke-linecap="round"/></svg>LT. COL. H. JONES · KILLED 28 MAY</div>`,
+  DHILL[0] + 10, DHILL[1] - 60, { t: T_MAN + 0.3, pop: true, anchor: [-50, -50] });
+SFX("hit", T_DEAD);
 B.finish();

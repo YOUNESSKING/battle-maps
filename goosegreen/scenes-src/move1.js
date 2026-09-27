@@ -67,6 +67,8 @@ const GG = (() => {
   };
   // muzzle flash / explosion pulses
   G.flash = (x, y, t, o = {}) => {
+    const snd = o.sfx === undefined ? "impact" : o.sfx;
+    for (let i = 0; i < (o.n || 3); i++) SFX(snd, t + i * (o.gap || 0.55));
     const r = o.r || 22, n = o.n || 3, gap = o.gap || 0.55;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;
@@ -373,13 +375,13 @@ const arrowT = GG.tagbox("4.5-INCH GUN", ARROW[0], ARROW[1] + 62, "#1f4fc4", { s
 const TGT = [[RED.f1[0], RED.f1[1]], [RED.f3[0], RED.f3[1]], [RED.f2[0], RED.f2[1]], [RED.m1[0], RED.m1[1]]];
 for (let i = 0; i < 9; i++) {
   const t = T_ARROW + 0.5 + i * 1.5;
-  GG.flash(ARROW[0] + 40, ARROW[1] - 6, t, { r: 22, n: 1 });
+  GG.flash(ARROW[0] + 40, ARROW[1] - 6, t, { r: 22, n: 1, sfx: "fire" });
   const [tx, ty] = TGT[i % TGT.length];
   GG.arc(ARROW[0] + 40, ARROW[1] - 6, tx + ((i * 37) % 30) - 15, ty + ((i * 23) % 20) - 10, t + 0.05, { dur: 1.3, width: 3.5 });
 }
 for (let i = 0; i < 12; i++) {
   const t = T_THREE + 0.3 + i * 0.95;
-  GG.flash(GUNS[0], GUNS[1], t, { r: 16, n: 1 });
+  GG.flash(GUNS[0], GUNS[1], t, { r: 16, n: 1, sfx: "fire" });
   const [tx, ty] = TGT[(i + 1) % 3];
   GG.arc(GUNS[0], GUNS[1] - 8, tx + ((i * 29) % 36) - 18, ty + ((i * 17) % 24) - 12, t + 0.05, { dur: 1.1, width: 3, h: 120 });
 }
@@ -419,13 +421,13 @@ B.unit({ id: "mort", side: "carth", x: 1665, y: 718, w: 26, h: 18, label: "MORTA
 GG.icon("mort", "mortar");
 for (let i = 0; i < 8; i++) {
   const t = T_MORT + 0.2 + i * 0.8;
-  GG.flash(1665, 710, t, { r: 13, n: 1 });
+  GG.flash(1665, 710, t, { r: 13, n: 1, sfx: "mortar" });
   GG.arc(1665, 710, 1540 + (i * 23) % 90, 950 + (i * 13) % 30, t + 0.05, { dur: 0.9, width: 2.5, h: 90 });
 }
 B.caption("MORTAR BASEPLATES DRIVEN DEEP INTO THE PEAT", T_PEAT - 1.2, T_GUNS - 0.2, "carth r");
 for (let i = 0; i < 7; i++) {
   const t = T_GUNS + 0.2 + i * 0.9;
-  GG.flash(GUNS[0], GUNS[1], t, { r: 16, n: 1 });
+  GG.flash(GUNS[0], GUNS[1], t, { r: 16, n: 1, sfx: "fire" });
   GG.arc(GUNS[0], GUNS[1] - 8, 1500 + (i * 31) % 120, 940 + (i * 19) % 40, t + 0.05, { dur: 1.2, width: 3, h: 140 });
 }
 B.caption("3 LIGHT GUNS · HUNDREDS OF ROUNDS", T_GUNS + 0.2, T_EMPTY - 0.2, "carth r");

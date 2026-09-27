@@ -21,8 +21,8 @@ Fact-check notes (corrections to the Gemini research, checked against the Wikipe
 
 ## HOOK (0:00 – ~1:20)
 
-[MAP: hook-bbc | Cold open on the map: tight on Camilla Creek House at dusk, 2 PARA and a radio; broadcast rings spread across the isthmus; Argentine positions at Darwin and Goose Green light up; target reticle; stamp SUPPOSED TO BE A SECRET]
-On the twenty-seventh of May, nineteen eighty-two, a group of British paratroopers sat around a radio in a farmhouse on the Falkland Islands, eight thousand miles from home. They were listening to the BBC World Service. And then they heard the newsreader announce, to the entire world, that a parachute battalion was poised to attack Darwin and Goose Green. It was their battalion. It was their target. And it was supposed to be a secret.
+[MAP: hook-bbc | Cold open, stakes first: wide isthmus, 2 PARA ~500 vs ~1,000 red dug in (counter slams + hits); red units flash ALERTED; dive to Camilla Creek House, radio, BBC rings spread across the map; camera south to Darwin/Goose Green, target reticle, stamp SUPPOSED TO BE A SECRET; white flash-forward to 29 MAY: red units turn grey and march out, 961 counter, H. Jones plaque greyed with a cross]
+Five hundred men. A thousand dug in against them. And the enemy knew they were coming. On the twenty-seventh of May, nineteen eighty-two, British paratroopers in a farmhouse on the Falkland Islands heard the BBC World Service tell the entire world that a parachute battalion was poised to attack Darwin and Goose Green. It was their battalion. It was their target. And it was supposed to be a secret. Thirty-six hours later, nearly a thousand of those defenders would surrender to a battalion half their size. And the man who planned the attack would be dead.
 
 [MAP: hook-falklands | South Atlantic: Argentina coast, Falkland Islands; East Falkland highlighted; San Carlos landing arrow; red Argentine garrison markers at Stanley and Goose Green]
 Weeks earlier, Argentina had invaded the Falklands, a British territory in the South Atlantic. Britain had sent a task force across the ocean to take them back. The landings at San Carlos had succeeded, but the fleet was paying a terrible price. The destroyer Coventry and the container ship Atlantic Conveyor had just been sunk, and with the Conveyor went most of the heavy helicopters the army had been counting on.
@@ -30,14 +30,14 @@ Weeks earlier, Argentina had invaded the Falklands, a British territory in the S
 [ARCHIVE: Downing Street / House of Commons exterior 1982; newspaper front pages]
 In London, the government needed a victory, and it needed one quickly. So the nearest battalion was ordered south, to attack the Argentine garrison on a narrow strip of land called the Darwin isthmus.
 
-[MAP: hook-isthmus | Close terrain map of the Darwin isthmus: Camilla Creek House, Burntside House, Darwin Hill, Boca House, Darwin, Goose Green, airfield; blue 2 PARA counter north, red counters in lines across the isthmus: TASK FORCE MERCEDES ~1,000]
-That battalion was the Second Battalion of the Parachute Regiment, known as Two Para. Around five hundred fighting men, with just three light guns in support. Waiting for them were around a thousand Argentine soldiers, dug in across open, treeless ground, with more artillery, anti-aircraft guns, and ground-attack aircraft on call. And now, thanks to the BBC, they knew exactly who was coming.
+[MAP: hook-isthmus | Close terrain map of the Darwin isthmus: Camilla Creek House, Burntside House, Darwin Hill, Boca House, Darwin, Goose Green, airfield; blue 2 PARA counter north, three guns; red counters in lines across the isthmus: TASK FORCE MERCEDES ~1,000; AA guns, artillery]
+That battalion was the Second Battalion of the Parachute Regiment, known as Two Para. They would have just three light guns in support. Ahead of them lay open, treeless ground, and an enemy with trenches, more artillery, anti-aircraft guns, and ground-attack aircraft on call. And now, thanks to the BBC, that enemy knew exactly who was coming.
 
 [MAP: hook-bio | Photo cut-out of Lt Col H. Jones + bio card: LT. COL. HERBERT 'H' JONES · 1940 – 1982 · COMMANDING OFFICER, 2 PARA]
 Two Para's commander was Lieutenant Colonel Herbert Jones, known to everyone simply as "H". He was forty-two years old, fiercely driven, and furious. He told a reporter he would sue the BBC and the War Cabinet. Then he went back to planning the attack anyway.
 
-[MAP: hook-bio-2 | Photo cut-out of Major Chris Keeble + bio card: MAJOR CHRIS KEEBLE · SECOND IN COMMAND]
-By the end of the next day, H Jones would be dead, and his quiet second in command, Major Chris Keeble, would be leading a battalion that was cold, exhausted, and almost out of ammunition. And yet, within thirty-six hours, more than nine hundred Argentine soldiers would lay down their weapons in front of them. So how did an outnumbered battalion win the first great land battle of the Falklands War? Let's take a closer look at Two Para's three greatest tactical moves at Goose Green.
+[MAP: hook-bio-2 | Bio card: MAJOR CHRIS KEEBLE · SECOND IN COMMAND (no photo exists; typographic card with UK flag)]
+By the end of the next day, H Jones would be dead, and his quiet second in command, Major Chris Keeble, would be leading a battalion that was cold, exhausted, and almost out of ammunition. So how did an outnumbered battalion win the first great land battle of the Falklands War? Let's take a closer look at Two Para's three greatest tactical moves at Goose Green.
 
 ---
 
