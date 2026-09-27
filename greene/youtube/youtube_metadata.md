@@ -2,7 +2,7 @@
 
 **Video:** greene-full-1080p.mp4 (GoFile 0EWgGU7k) · 16:15 · 1080p · -14.6 LUFS
 **Locked title (vidIQ 93):** He Lost Almost Every Battle and Won the South: Nathanael Greene's Top 3 Tactical Moves
-**Thumbnails (Test & compare):** A thumbnail.png "ANOTHER SUCH VICTORY" (AI battlefield + Greene) · B thumbnail_B.png "ANOTHER SUCH VICTORY" (map-animation style)
+**Thumbnails (Test & compare):** A thumbnail.png "THEIR VICTORIES / RUINED THEM" (AI battlefield + Greene; red element = RUINED THEM) · B thumbnail_B.png "ANOTHER SUCH VICTORY" (map-animation style)
 
 ## Alternative titles (for Test & compare)
 - Nathanael Greene's Top 3 Legendary Tactical Moves | The General Who Lost His Battles and Won the War (vidIQ 94)
@@ -60,7 +60,7 @@ Category: Education · Made for kids: No · Language: English · Altered or synt
 - [x] Topic validated (research/VIDEO_IDEAS_v2.md lists Nathanael Greene as the top next candidate)
 - [x] Title scored ≥ 85 (93); hook in the first 46 characters; 86 characters; clear and true ("almost every battle")
 - [x] No negation in title or thumbnail
-- [x] Thumbnail makes the same promise as the title (costly "victories" for the British)
+- [x] Thumbnail makes the same promise as the title and completes it (title: lost the battles, won the South; thumbnail: their victories ruined them); 4 words, all caps, one red element, no negation, checked at 168x94
 - [x] 2 thumbnail options for Test & compare: thumbnail.png (A, main), thumbnail_B.png (B)
 - [x] Description line 1 = script hook; names and numbers are all in the voice
 - [x] Chapters from timing.json paragraph starts; start at 0:00; all ≥ 10 s
