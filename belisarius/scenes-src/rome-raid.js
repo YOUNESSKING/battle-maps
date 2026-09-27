@@ -27,13 +27,13 @@ B.date("MARCH 538 AD", T_MARCH + 0.1, null);
 B.label("ADRIATIC SEA", 1560, 470, { cls: "sea", size: 28, t: 0.3, rot: 38, anchor: [-50, -50] });
 B.city("ROME", ...ROME, { size: 30, left: true, dy: 16, t: 0.1 });
 B.city("RAVENNA", ...RAVENNA, { size: 28, left: true, t: 0.3 });
-B.label("GOTHIC CAPITAL", RAVENNA[0] - 18, RAVENNA[1] + 24, { cls: "tg", size: 18, t: 0.6, anchor: [-100, 0] });
+B.label("GOTHIC CAPITAL", RAVENNA[0] - 18, RAVENNA[1] - 22, { cls: "tg", size: 18, t: 0.6, anchor: [-100, -100] });
 
 // Gothic camps ring Rome
 const camps = [];
 for (let i = 0; i < 7; i++) {
-  const a = (-150 + i * 42) * Math.PI / 180; // north and east of the city
-  camps.push(R.camp(ROME[0] + Math.cos(a) * 44, ROME[1] + Math.sin(a) * 44, 0.2 + i * 0.12, { s: 0.3 }));
+  const a = (-140 + i * 30) * Math.PI / 180; // north and east of the city
+  camps.push(R.camp(ROME[0] + Math.cos(a) * 58, ROME[1] + Math.sin(a) * 58, 0.2 + i * 0.12, { s: 0.42 }));
 }
 const ring = document.createElementNS("http://www.w3.org/2000/svg", "g");
 ring.innerHTML = `<circle cx="${ROME[0]}" cy="${ROME[1]}" r="18" fill="rgba(31,79,196,0.35)" stroke="#1f4fc4" stroke-width="4"/>`;
@@ -42,7 +42,7 @@ document.getElementById("overlay").appendChild(ring);
 // John's cavalry raid up the Adriatic coast
 B.arrow({ side: "carth", pts: [[ROME[0] + 18, ROME[1] - 14], [1395, 600], [1452, 555], [1440, 495], [1398, 440], [1335, 388]], width: 16, t: T_FORCE, dur: 4.6 });
 B.label("JOHN'S CAVALRY", 1470, 600, { cls: "tg", size: 22, t: T_FORCE + 0.8, anchor: [0, -50] });
-B.label("PICENUM", 1462, 470, { cls: "country", size: 30, t: T_DEEP });
+B.label("PICENUM", 1318, 470, { cls: "country", size: 26, t: T_DEEP });
 B.city("RIMINI", ...RIMINI, { size: 22, r: 7, t: T_COAST });
 const thr = document.createElementNS("http://www.w3.org/2000/svg", "g");
 thr.innerHTML = `<circle cx="${RAVENNA[0]}" cy="${RAVENNA[1]}" r="30" fill="none" stroke="#1f4fc4" stroke-width="6"/>`;
@@ -62,7 +62,7 @@ camps.forEach((g, i) => {
   tl.to(f, { autoAlpha: 0, duration: 1.0 }, T_AWAY + 0.6 + i * 0.1);
   tl.to(g, { autoAlpha: 0, duration: 1.0 }, T_BURN + 0.6 + i * 0.12);
 });
-B.arrow({ side: "rome", pts: [[1296, 600], [1268, 530], [1256, 450], [1266, 380]], width: 26, t: T_AWAY, dur: 2.6 });
+B.arrow({ side: "rome", pts: [[1290, 580], [1262, 510], [1258, 425]], width: 26, t: T_AWAY, dur: 2.6 });
 B.caption("MARCH 538 · SIEGE LIFTED AFTER 1 YEAR AND 9 DAYS", T_YEAR, T_5K - 0.2, "carth");
 tl.fromTo(ring, { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.8, duration: 0.8, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_5K);
 B.caption("5,000 DEFENDERS HELD ROME", T_5K + 0.2, END - 0.1, "carth");

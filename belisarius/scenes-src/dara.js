@@ -116,10 +116,10 @@ B.camera([
   [0, 1490, 700, 1.05],
   [D2 + 6, 1520, 720, 1.6],
   [D3 - 0.5, 1520, 740, 1.6],
-  [T_WEAP + 1.5, 1490, 830, 1.9],
-  [T_OPEN, 1490, 810, 1.85],
-  [D4 + 1.5, 1620, 880, 1.8],
-  [D5 + 0.5, 1600, 860, 1.8],
+  [T_WEAP + 1.5, 1490, 900, 1.9],
+  [T_OPEN, 1490, 870, 1.8],
+  [D4 + 1.5, 1620, 960, 1.8],
+  [D5 + 0.5, 1600, 930, 1.8],
   [T_DUG - 0.5, 1480, 690, 2.2],
   [T_INF, 1480, 685, 2.25],
   [D6 + 1, 1500, 690, 2.1],
@@ -128,22 +128,22 @@ B.camera([
   [T_ANY, 1660, 690, 2.3],
   [T_XF, 1480, 730, 2.1],
   [D7, 1480, 750, 2.1],
-  [T_YOUNG + 0.5, 1485, 790, 3.0],
-  [T_ROAR, 1485, 785, 2.9],
+  [T_YOUNG + 0.5, 1480, 840, 2.6],
+  [T_ROAR, 1480, 835, 2.5],
   [D8 + 0.5, 1490, 820, 2.2],
-  [T_REIN + 1.5, 1520, 870, 1.7],
-  [T_CHG, 1620, 800, 1.9],
+  [T_REIN + 1.5, 1560, 900, 1.7],
+  [T_CHG, 1620, 840, 1.9],
   [T_HIT + 1, 1700, 740, 2.2],
   [T_HUNS2 + 1, 1710, 745, 2.25],
-  [T_FLED + 1, 1690, 790, 1.95],
-  [D10 + 0.5, 1560, 800, 1.8],
-  [T_THREW, 1330, 800, 2.0],
+  [T_FLED + 1, 1690, 820, 1.9],
+  [D10 + 0.5, 1560, 840, 1.8],
+  [T_THREW, 1330, 840, 1.9],
   [T_MOMENT, 1330, 760, 2.1],
   [D11 + 1, 1380, 700, 2.3],
   [T_SLAM, 1330, 730, 2.5],
   [T_COLL + 1.5, 1330, 740, 2.4],
-  [D12 + 1, 1470, 830, 1.7],
-  [T_STOP, 1480, 850, 1.6],
+  [D12 + 1, 1470, 860, 1.65],
+  [T_STOP, 1480, 850, 1.65],
   [D13, 1480, 790, 1.65],
   [T_SHAPE, 1480, 775, 1.7],
   [END, 1480, 770, 1.75],
@@ -171,19 +171,19 @@ plaque({ name: "HERMOGENES", role: "Co-commander", side: "carth", x: 1330, y: 84
 B.label("VS", 1545, 830, { cls: "country", size: 60, t: T_BEL + 0.8, until: D3 + 0.3 });
 
 // ---------- 3: the Persian army ----------
-U({ id: "PL", side: "rome", kind: "cav", x: 1270, y: 870, w: 100, h: 30, label: "CATAPHRACTS", t: T_WEAP + 0.2 });
-U({ id: "PC", side: "rome", kind: "inf", x: 1480, y: 875, w: 150, h: 30, label: "INFANTRY", t: T_WEAP + 0.5 });
-U({ id: "PR", side: "rome", kind: "cav", x: 1690, y: 870, w: 100, h: 30, label: "CATAPHRACTS", t: T_WEAP + 0.8 });
-U({ id: "IM", side: "rome", kind: "cav", x: 1480, y: 950, w: 90, h: 28, label: "IMMORTALS", t: T_IMM + 0.2 });
+U({ id: "PL", side: "rome", kind: "cav", x: 1270, y: 945, w: 100, h: 30, label: "CATAPHRACTS", t: T_WEAP + 0.2 });
+U({ id: "PC", side: "rome", kind: "inf", x: 1480, y: 950, w: 150, h: 30, label: "INFANTRY", t: T_WEAP + 0.5 });
+U({ id: "PR", side: "rome", kind: "cav", x: 1690, y: 945, w: 100, h: 30, label: "CATAPHRACTS", t: T_WEAP + 0.8 });
+U({ id: "IM", side: "rome", kind: "cav", x: 1480, y: 1025, w: 90, h: 28, label: "IMMORTALS", t: T_IMM + 0.2 });
 B.caption("CATAPHRACTS · IMMORTALS", T_ARM, T_OPEN - 0.3, "rome");
-const ghost = B.arrow({ side: "rome", pts: [[1480, 850], [1480, 760], [1480, 650]], width: 18, dash: "30 18", t: T_SMASH, dur: 1.4, until: D4 + 0.5 });
+const ghost = B.arrow({ side: "rome", pts: [[1480, 925], [1480, 800], [1480, 660]], width: 18, dash: "30 18", t: T_SMASH, dur: 1.4, until: D4 + 0.5 });
 B.label("OPEN PLAIN", 1610, 790, { cls: "tg", size: 26, t: T_OPEN + 0.3, until: D5 + 0.5 });
 B.caption("OPEN COUNTRY: CAVALRY COUNTRY", T_OPEN + 0.4, D4 - 0.2, "rome");
 
 // ---------- 4: Perozes: "prepare my bath" ----------
-plaque({ name: "PEROZES", role: "Sure of victory", side: "rome", x: 1560, y: 1085, t: D4 + 0.4, until: D5 + 0.4 }, 0.62);
+plaque({ name: "PEROZES", role: "Sure of victory", side: "rome", x: 1560, y: 1160, t: D4 + 0.4, until: D5 + 0.4 }, 0.62);
 B.caption("THE ROMANS ARE DIGGING", T_DIG, T_MSG - 0.2, "carth");
-const bub = B.bubble("“PREPARE MY BATH IN DARA.”", 1760, 950, T_MSG, D5 + 0.4);
+const bub = B.bubble("“PREPARE MY BATH IN DARA.”", 1760, 1025, T_MSG, D5 + 0.4);
 bub.style.fontSize = "20px"; bub.style.padding = "10px 16px"; bub.style.borderWidth = "3px";
 B.caption("— PEROZES TO BELISARIUS (PROCOPIUS)", T_MSG + 1.2, D5 - 0.2, "rome");
 
@@ -202,17 +202,17 @@ secs.forEach(([a, b]) => { const d = Math.hypot(b[0] - a[0], b[1] - a[1]) / 170;
 const FUNNEL = [[XR + 6, CY + 6], [XL - 6, CY + 6], [XL - 6, FY + 70], [XR + 6, FY + 70]];
 svgEl(`<polygon points="${FUNNEL.map((p) => p.join(",")).join(" ")}" fill="rgba(247,243,234,0.2)" stroke="rgba(247,243,234,0.7)" stroke-width="3" stroke-dasharray="10 8"/>`, T_BACK + 1.2, 0.8, D7);
 [1290, 1480, 1670].forEach((x, i) => B.label("▲", x, (i === 1 ? CY : FY) + 16, { cls: "tg", size: 14, anchor: [-50, 0], t: T_CROSS + i * 0.15, until: D6 }));
-B.label("CROSSINGS", 1290, FY + 34, { cls: "tg", size: 14, anchor: [-50, 0], t: T_CROSS + 0.3, until: D6 });
 const hl1 = B.highlight([[WR, FY], [XR, FY]], T_FWD, D6, 30);
 const hl2 = B.highlight([[XL, FY], [WL, FY]], T_FWD, D6, 30);
 B.label("FORWARD", 1715, FY + 30, { cls: "tg", size: 16, anchor: [-50, 0], t: T_FWD + 0.3, until: D6 });
 B.label("FORWARD", 1245, FY + 30, { cls: "tg", size: 16, anchor: [-50, 0], t: T_FWD + 0.4, until: D6 });
 const hl3 = B.highlight([[XR, CY], [XL, CY]], T_BACK, D6, 30);
 B.tl.to([hl1, hl2, hl3], { opacity: 0, duration: 0.8 }, D6 + 0.5);
-B.label("REFUSED CENTRE", 1480, CY + 40, { cls: "tg", size: 16, t: T_BACK + 0.4, until: D6 + 0.5 });
+B.label("REFUSED CENTRE", 1480, CY + 58, { cls: "tg", size: 16, t: T_BACK + 0.4, until: D6 + 0.5 });
 U({ id: "INF", side: "carth", kind: "inf", x: 1480, y: 600, w: 120, h: 24, label: "INFANTRY", t: T_INF + 0.8 });
 U({ id: "RC", side: "carth", kind: "cav", x: 1275, y: 682, w: 70, h: 26, label: "ROMAN CAVALRY", t: T_CAV + 0.6 });
 U({ id: "LC", side: "carth", kind: "cav", x: 1690, y: 682, w: 70, h: 26, label: "BOUZES · CAVALRY", t: T_CAV + 0.9 });
+B.caption("CROSSINGS LEFT OPEN", T_CROSS, T_FWD - 0.1, "carth");
 B.caption("WEAKEST TROOPS IN THE CENTRE", T_INF + 0.6, T_CAV + 2.4, "carth");
 
 // ---------- 6: Huns in the corners, Heruli behind the hill ----------
@@ -222,14 +222,17 @@ U({ id: "GUARD", side: "carth", kind: "cav", x: 1340, y: 590, w: 44, h: 22, labe
 B.caption("HUN HORSE ARCHERS · 600 IN EACH CORNER", T_HUNS, T_FAR - 0.2, "carth");
 [[[1385, 690], [1418, 670]], [[1360, 715], [1330, 745]], [[1575, 690], [1542, 670]], [[1600, 715], [1630, 745]]].forEach((pts, i) =>
   B.arrow({ side: "carth", pts, width: 6, t: T_LR + (i % 2) * 0.25, dur: 0.6, until: T_FAR }));
-svgEl(`<ellipse cx="${HILL[0]}" cy="${HILL[1]}" rx="62" ry="26" fill="rgba(107,74,43,0.42)" stroke="#4c3219" stroke-width="3.5"/>` +
-  [-40, -24, -8, 8, 24, 40].map((dx) => `<line x1="${HILL[0] + dx}" y1="${HILL[1] - 22 + Math.abs(dx) * 0.18}" x2="${HILL[0] + dx * 1.1}" y2="${HILL[1] - 8}" stroke="#4c3219" stroke-width="2.5"/>`).join(""), T_FAR, 0.8);
+svgEl(`<defs><radialGradient id="hillg" cx="50%" cy="45%" r="55%"><stop offset="0%" stop-color="rgba(92,64,34,0.62)"/><stop offset="70%" stop-color="rgba(107,74,43,0.35)"/><stop offset="100%" stop-color="rgba(107,74,43,0)"/></radialGradient></defs>
+  <ellipse cx="${HILL[0]}" cy="${HILL[1]}" rx="78" ry="36" fill="url(#hillg)"/>
+  <ellipse cx="${HILL[0]}" cy="${HILL[1]}" rx="62" ry="26" fill="none" stroke="rgba(76,50,25,0.75)" stroke-width="2.5"/>
+  <ellipse cx="${HILL[0] - 4}" cy="${HILL[1] - 3}" rx="38" ry="15" fill="none" stroke="rgba(76,50,25,0.75)" stroke-width="2.5"/>
+  <ellipse cx="${HILL[0] - 6}" cy="${HILL[1] - 5}" rx="15" ry="6" fill="rgba(76,50,25,0.5)" stroke="rgba(76,50,25,0.8)" stroke-width="2"/>`, T_FAR, 0.8);
 B.label("HILL", HILL[0], HILL[1] + 38, { cls: "tg", size: 16, t: T_FAR + 0.4, until: D8 });
-U({ id: "HER", side: "carth", kind: "cav", x: 1790, y: 612, w: 44, h: 22, label: "300 HERULI · PHARAS", t: T_HER + 0.2 });
+U({ id: "HER", side: "carth", kind: "cav", x: 1790, y: 612, w: 44, h: 22, label: "300 HERULI · PHARAS", up: true, t: T_HER + 0.2 });
 B.move("HER", T_HILL, 1.8, 1826, 666);
 B.tl.to(B.units.HER.el, { opacity: 0.45, duration: 1.0 }, T_HILL + 1.4);
 B.caption("300 HERULI · HIDDEN BEHIND THE HILL", T_HILL + 0.2, T_ANY - 0.2, "carth");
-B.arrow({ side: "rome", pts: [[1480, 860], [1480, 780], [1480, 680]], width: 16, dash: "26 16", t: T_ANY + 0.4, dur: 1.2, until: D7 });
+B.arrow({ side: "rome", pts: [[1480, 925], [1480, 800], [1480, 680]], width: 16, dash: "26 16", t: T_ANY + 0.4, dur: 1.2, until: D7 });
 [[[1392, 700], [1440, 700]], [[1568, 700], [1520, 700]], [[1455, 612], [1462, 655]], [[1505, 612], [1498, 655]]].forEach((pts, i) =>
   B.arrow({ side: "carth", pts, width: 7, t: T_XF + i * 0.12, dur: 0.5, until: D7 }));
 B.caption("A CHARGE INTO A CROSSFIRE", T_XF, D7 - 0.2, "carth");
@@ -238,21 +241,23 @@ B.caption("A CHARGE INTO A CROSSFIRE", T_XF, D7 - 0.2, "carth");
 B.date("DAY ONE", D7, D8 - 0.3);
 tagOff(["PL", "PC", "PR", "IM", "INF", "RC", "LC", "HR", "HL", "GUARD", "HER"], D7 + 0.2);
 B.caption("DAY ONE · CHAMPIONS", D7 + 0.3, T_ANSW - 0.2);
-swords(1480, 790, 22, T_YOUNG + 0.6, D8);
-U({ id: "CH1", side: "rome", kind: "cav", x: 1500, y: 858, w: 28, h: 18, label: "PERSIAN CHAMPION", t: T_YOUNG + 0.2 });
-B.move("CH1", T_YOUNG + 0.9, 1.6, 1528, 812);
+swords(1470, 768, 20, T_YOUNG + 0.6, D8);
+U({ id: "CH1", side: "rome", kind: "cav", x: 1560, y: 925, w: 28, h: 18, label: "PERSIAN CHAMPION", up: true, t: T_YOUNG + 0.2 });
+B.move("CH1", T_YOUNG + 0.9, 1.6, 1522, 812);
 U({ id: "AND", side: "carth", kind: "inf", x: 1478, y: 690, w: 26, h: 18, label: "ANDREAS", t: T_ANDR - 1.6 });
-B.move("AND", T_ANDR - 1.0, 1.8, 1438, 772);
+B.move("AND", T_ANDR - 1.0, 1.8, 1430, 800);
 B.caption("ANDREAS · A WRESTLING TRAINER FROM THE BATHS", T_ANSW + 0.3, T_TOO - 0.3, "carth");
-B.move("CH1", T_KNOCK - 0.6, 0.6, 1470, 786, "power2.in");
+tagOff(["CH1"], T_KNOCK - 0.8);
+B.move("CH1", T_KNOCK - 0.6, 0.6, 1456, 802, "power2.in");
 B.grey(["CH1"], T_KNOCK + 0.2, 0.5);
-B.move("CH1", T_KNOCK + 0.2, 0.5, 1505, 800);
+B.move("CH1", T_KNOCK + 0.2, 0.5, 1492, 824);
 B.hideUnits(["CH1"], T_KNOCK + 1.6, 0.6);
-U({ id: "CH2", side: "rome", kind: "cav", x: 1460, y: 858, w: 28, h: 18, label: "SECOND CHAMPION", t: T_SEC + 0.2 });
-B.move("CH2", T_SEC + 0.8, 1.4, 1528, 812);
-B.move("CH2", T_TOO - 0.8, 0.6, 1470, 786, "power2.in");
+U({ id: "CH2", side: "rome", kind: "cav", x: 1600, y: 925, w: 28, h: 18, label: "SECOND CHAMPION", up: true, t: T_SEC + 0.2 });
+B.move("CH2", T_SEC + 0.8, 1.4, 1522, 812);
+tagOff(["CH2"], T_TOO - 1.0);
+B.move("CH2", T_TOO - 0.8, 0.6, 1456, 802, "power2.in");
 B.grey(["CH2"], T_TOO + 0.1, 0.5);
-B.move("CH2", T_TOO + 0.1, 0.5, 1505, 800);
+B.move("CH2", T_TOO + 0.1, 0.5, 1492, 824);
 B.hideUnits(["CH2"], T_TOO + 1.6, 0.6);
 B.caption("THE ROMAN ARMY ROARS", T_ROAR, D8 - 0.2, "carth");
 B.tl.fromTo(B.units.INF.el, { scale: 1 }, { scale: 1.18, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_ROAR + 0.2);
@@ -261,8 +266,8 @@ B.hideUnits(["AND"], D8 + 0.2, 0.6);
 // ---------- 8: day two, the afternoon attack ----------
 B.date("DAY TWO", D8, D13 - 0.3);
 tagOn(["PL", "PC", "PR", "IM", "INF", "RC", "LC", "HR", "HL", "GUARD", "HER"], D8 + 0.4);
-U({ id: "R10", side: "rome", kind: "cav", x: 1480, y: 1030, w: 110, h: 28, label: "+10,000", t: T_REIN + 1.4 });
-B.arrow({ side: "rome", pts: [[2250, 1300], [2000, 1150], [1600, 1040]], width: 20, t: T_REIN, dur: 1.6, until: T_CHG });
+U({ id: "R10", side: "rome", kind: "cav", x: 1800, y: 1040, w: 110, h: 28, label: "+10,000", t: T_REIN + 1.4 });
+B.arrow({ side: "rome", pts: [[2260, 1300], [2080, 1160], [1880, 1070]], width: 20, t: T_REIN, dur: 1.6, until: T_CHG });
 { // sun: noon -> afternoon
   const box = document.createElement("div");
   box.className = "sunbox";
@@ -285,18 +290,20 @@ B.arrow({ side: "rome", pts: [[2250, 1300], [2000, 1150], [1600, 1040]], width: 
 B.caption("PERSIANS EAT LATE · ROMANS HUNGRY", T_EAT, T_CHG - 0.2, "rome");
 
 // ---------- 9: the Persian right wing, and the trap ----------
-const aPR = B.arrow({ side: "rome", pts: [[1690, 845], [1695, 790], [1700, 740]], width: 20, t: T_CHG + 0.3, dur: 1.6 });
+const aPR = B.arrow({ side: "rome", pts: [[1690, 920], [1695, 830], [1700, 740]], width: 20, t: T_CHG + 0.3, dur: 1.6 });
 B.move("PR", T_HIT - 0.4, 3.2, 1700, 708);
 B.move("LC", T_HIT + 0.4, 2.8, 1700, 608);
 B.caption("THE ROMAN LEFT IS PUSHED BACK", T_HIT + 0.5, T_SPRANG - 0.2, "rome");
 B.tl.to(B.units.HER.el, { opacity: 1, duration: 0.4 }, T_HERU);
-B.arrow({ side: "carth", pts: [[1850, 680], [1872, 740], [1840, 790], [1772, 770]], width: 14, t: T_HERU + 0.1, dur: 1.4, until: D10 + 0.5 });
-B.move("HER", T_HERU + 0.3, 1.6, 1795, 772);
+tagOff(["HER"], T_HERU);
+B.arrow({ side: "carth", pts: [[1830, 676], [1812, 722], [1778, 758], [1748, 766]], width: 14, t: T_HERU + 0.1, dur: 1.2, until: D10 + 0.5 });
+B.move("HER", T_HERU + 0.3, 1.4, 1782, 770);
 B.arrow({ side: "carth", pts: [[1602, 704], [1622, 706], [1640, 706]], width: 9, t: T_HUNS2 + 0.3, dur: 0.7, until: D10 + 0.5 });
-B.move("HL", T_HUNS2 + 0.5, 1.0, 1618, 735);
+tagOff(["HL"], T_HUNS2);
+B.move("HL", T_HUNS2 + 0.5, 1.0, 1622, 730);
 B.caption("THE TRAP SPRINGS", T_SPRANG, T_TWO - 0.2, "carth");
 B.caption("HIT FROM TWO DIRECTIONS", T_TWO, T_FLED + 0.1, "carth");
-B.move("PR", T_FLED, 3.6, 1800, 1060, "power2.in");
+B.move("PR", T_FLED, 3.6, 1800, 1120, "power2.in");
 B.grey(["PR"], T_FLED, 1.0);
 B.greyArrow(aPR, T_FLED, D10);
 B.hideUnits(["PR"], T_FLED + 3.2, 0.8);
@@ -304,23 +311,24 @@ B.caption("PERSIAN RIGHT WING BREAKS", T_FLED + 0.5, D10 - 0.2, "carth");
 // the Romans re-form on the left
 B.move("LC", D10 + 0.5, 2.0, 1690, 682);
 B.move("HL", D10 + 0.3, 1.6, 1588, 702);
+tagOn(["HL", "HER"], D10 + 2.2);
 B.move("HER", D10 + 0.6, 2.2, 1800, 612);
 
 // ---------- 10: the Immortals shift to the Persian left ----------
-if (HAS.perozes) B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1060, y: 1040, size: 0.8, t: T_NOT - 0.8, until: T_MOMENT });
-else plaque({ name: "PEROZES", role: "Not finished yet", side: "rome", x: 1000, y: 1040, t: T_NOT - 0.8, until: T_MOMENT }, 0.62);
-B.arrow({ side: "rome", pts: [[1430, 955], [1350, 962], [1300, 958]], width: 10, dash: "16 10", t: T_IMMS, dur: 1.4, until: T_THREW + 1 });
-B.move("IM", T_IMMS + 0.2, 2.4, 1265, 950);
-const aIM = B.arrow({ side: "rome", pts: [[1265, 930], [1262, 830], [1265, 740]], width: 24, t: T_THREW, dur: 1.8 });
+if (HAS.perozes) B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1060, y: 1110, size: 0.8, t: T_NOT - 0.8, until: T_THREW + 0.2 });
+else plaque({ name: "PEROZES", role: "Not finished yet", side: "rome", x: 1000, y: 1110, t: T_NOT - 0.8, until: T_THREW + 0.2 }, 0.62);
+B.arrow({ side: "rome", pts: [[1430, 1030], [1350, 1037], [1300, 1033]], width: 10, dash: "16 10", t: T_IMMS, dur: 1.4, until: T_THREW + 1 });
+B.move("IM", T_IMMS + 0.2, 2.4, 1265, 1025);
+const aIM = B.arrow({ side: "rome", pts: [[1265, 1000], [1262, 870], [1265, 740]], width: 24, t: T_THREW, dur: 1.8 });
 B.move("PL", T_THREW + 0.3, 3.0, 1265, 705);
 B.move("IM", T_THREW + 0.5, 3.0, 1265, 800);
-B.move("RC", T_DRIVEN - 0.3, 2.6, 1230, 592);
+B.move("RC", T_THREW + 1.2, 2.4, 1230, 592);
 B.caption("THE IMMORTALS HIT THE ROMAN RIGHT", T_THREW + 0.4, T_MOMENT - 0.2, "rome");
 B.caption("HAS THE BATTLE TURNED?", T_MOMENT, D11 - 0.2, "rome");
 
 // ---------- 11: the Huns cross behind the centre and cut the column ----------
 const route = B.arrow({ side: "carth", pts: [[1590, 688], [1592, 650], [1545, 627], [1430, 627], [1392, 650]], width: 9, dash: "14 9", t: T_SENT + 0.2, dur: 2.2, until: T_SLAM });
-tagOff(["HL", "HR", "GUARD"], T_SENT);
+tagOff(["HL", "HR", "GUARD", "INF"], T_SENT);
 B.move("HL", T_SENT + 0.3, 0.7, 1592, 648);
 B.move("HL", T_SENT + 1.0, 1.4, 1430, 627, "none");
 B.move("HL", T_SENT + 2.4, 0.8, 1392, 662);
@@ -341,15 +349,20 @@ B.caption("CUT IN TWO", T_TWO2, T_STD - 0.2, "carth");
 B.caption("STANDARD-BEARER KILLED", T_STD, D12 - 0.2, "carth");
 B.move("RC", T_TWO2 + 0.4, 1.8, 1230, 640);
 B.grey(["PL", "IM"], T_COLL, 1.2);
+B.greyArrow(aIM, T_COLL, D12 + 0.5);
 
 // ---------- 12: the rout, and no reckless pursuit ----------
 tagOff(["PL", "IM", "PC", "INF", "RC", "LC", "HER"], D12 + 0.2);
-B.move("PL", D12 + 0.4, 4.0, 1150, 1120, "power2.in");
-B.move("IM", D12 + 0.4, 4.0, 1230, 1150, "power2.in");
+B.move("PL", D12 + 0.4, 4.0, 1150, 1180, "power2.in");
+B.move("IM", D12 + 0.4, 4.0, 1230, 1210, "power2.in");
 B.hideUnits(["PL", "IM"], D12 + 3.8, 0.8);
+B.caption("THE PERSIAN LEFT COLLAPSES", D12 + 0.2, T_SHIELD - 0.5, "carth");
+[[[1250, 720], [1215, 900], [1170, 1080]], [[1270, 840], [1250, 980], [1230, 1120]]].forEach((pts, i) =>
+  B.arrow({ side: "rome", pts, width: 14, dash: "20 12", t: D12 + 0.5 + i * 0.3, dur: 1.6, until: T_STOP }));
+B.arrow({ side: "rome", pts: [[1480, 975], [1480, 1060], [1480, 1150]], width: 14, dash: "20 12", t: T_SHIELD + 0.2, dur: 1.4, until: T_STOP });
 B.grey(["PC", "R10"], T_SHIELD - 0.3, 1.0);
-B.move("PC", T_SHIELD, 4.0, 1480, 1110, "power2.in");
-B.move("R10", T_SHIELD, 4.0, 1560, 1190, "power2.in");
+B.move("PC", T_SHIELD, 4.0, 1480, 1180, "power2.in");
+B.move("R10", T_SHIELD, 4.0, 1900, 1260, "power2.in");
 B.hideUnits(["PC", "R10"], T_SHIELD + 3.6, 0.8);
 B.caption("THE PERSIAN CENTRE THROWS DOWN ITS SHIELDS", T_SHIELD - 0.2, T_5K - 0.2, "rome");
 B.stat(["~5,000 PERSIANS KILLED", "IN THE ROUT OF THE LEFT WING ALONE"], T_5K, T_STOP - 0.3, "rome");
@@ -363,12 +376,12 @@ B.dateBox(D13 - 0.2, null);
 B.hideUnits(["RC", "GUARD", "HR", "HL", "LC", "HER", "INF"], D13 + 0.2, 0.8);
 B.highlight([[WR, FY], [XR, FY], [XR, CY], [XL, CY], [XL, FY], [WL, FY]], T_SHAPE, D13 + 99, 34);
 svgEl(`<polygon points="${FUNNEL.map((p) => p.join(",")).join(" ")}" fill="rgba(196,18,31,0.22)" stroke="rgba(247,243,234,0.8)" stroke-width="3" stroke-dasharray="10 8"/>`, T_SHAPE + 0.4, 0.8);
-B.label("FUNNEL", 1480, 700, { cls: "tg", size: 22, t: T_SHAPE + 0.6 });
-B.arrow({ side: "rome", pts: [[1480, 860], [1480, 790], [1480, 740]], width: 14, dash: "22 14", t: T_SHAPE + 0.8, dur: 1.0 });
-B.arrow({ side: "carth", pts: [[1850, 680], [1872, 740], [1840, 790], [1772, 770]], width: 11, t: T_STRUCK, dur: 1.0 });
+B.label("FUNNEL", 1480, 668, { cls: "tg", size: 20, t: T_SHAPE + 0.6 });
+B.arrow({ side: "rome", pts: [[1480, 900], [1480, 820], [1480, 740]], width: 14, dash: "22 14", t: T_SHAPE + 0.8, dur: 1.0 });
+B.arrow({ side: "carth", pts: [[1830, 676], [1812, 722], [1778, 758], [1748, 766]], width: 11, t: T_STRUCK, dur: 1.0 });
 B.arrow({ side: "carth", pts: [[1600, 706], [1640, 706]], width: 8, t: T_STRUCK + 0.3, dur: 0.5 });
 B.arrow({ side: "carth", pts: [[1390, 700], [1350, 752], [1190, 758]], width: 14, t: T_STRUCK + 0.6, dur: 1.0 });
-B.label("RIGHT WING", 1740, 820, { cls: "tg", size: 16, t: T_STRUCK + 0.4, anchor: [-50, 0] });
+B.label("RIGHT WING", 1705, 782, { cls: "tg", size: 16, t: T_STRUCK + 0.4, anchor: [-50, 0] });
 B.label("STANDARD", 1210, 780, { cls: "tg", size: 16, t: T_STRUCK + 0.9, anchor: [-50, 0] });
 const card = B.method(T_SHAPE - 0.2, null, [T_SHAPE, T_STRUCK, T_TIME]);
 card.style.top = "640px";
