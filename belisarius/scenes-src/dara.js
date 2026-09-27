@@ -186,7 +186,7 @@ B.label("OPEN PLAIN", 1610, 790, { cls: "tg", size: 26, t: T_OPEN + 0.3, until: 
 B.caption("OPEN COUNTRY: CAVALRY COUNTRY", T_OPEN + 0.4, D4 - 0.2, "rome");
 
 // ---------- 4: Perozes: "prepare my bath" ----------
-if (HAS.perozes) stakeRed(B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1640, y: 1170, size: 0.8, t: D4 + 0.4, until: D5 + 0.4 }));
+if (HAS.perozes) stakeRed(B.portraitStake({ img: "assets/media/perozes.png", flag: "assets/flag_persia.png", name: "PEROZES", x: 1595, y: 1170, size: 0.8, t: D4 + 0.4, until: D5 + 0.4 }));
 else plaque({ name: "PEROZES", role: "Sure of victory", side: "rome", x: 1560, y: 1160, t: D4 + 0.4, until: D5 + 0.4 }, 0.62);
 B.caption("THE ROMANS ARE DIGGING", T_DIG, T_MSG - 0.2, "carth");
 const bub = B.bubble("“PREPARE MY BATH IN DARA.”", 1760, 1025, T_MSG, D5 + 0.4);
@@ -194,7 +194,9 @@ bub.style.fontSize = "20px"; bub.style.padding = "10px 16px"; bub.style.borderWi
 B.caption("— PEROZES TO BELISARIUS (PROCOPIUS)", T_MSG + 1.2, D5 - 0.2, "rome");
 
 // ---------- 5: the trench ----------
+B.caption("BUT BELISARIUS SAW SOMETHING DIFFERENT", D5 + 0.2, T_FUN - 0.5, "carth");
 B.caption("NOT A WALL · A FUNNEL", T_FUN - 0.2, T_DUG + 0.2, "carth");
+if (HAS.belisarius) B.portraitStake({ img: "assets/media/belisarius.png", flag: "assets/flag_rome.png", name: "BELISARIUS", x: 1650, y: 668, size: 0.7, t: D5 + 0.6, until: T_FWD });
 const G = 9; // half-width of the open crossings
 const secs = [
   [[WR, FY], [1290 - G, FY]], [[1290 + G, FY], [XR, FY]],
