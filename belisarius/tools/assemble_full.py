@@ -165,7 +165,7 @@ def mix():
     for k, (name, t, vol) in enumerate(cues):
         inputs += ["-i", f"{A}/{name}"]
         f.append(f"[{n}:a]aresample=48000,volume={vol},adelay={int(t * 1000)}|{int(t * 1000)}[s{k}]"); mixes.append(f"[s{k}]"); n += 1
-    f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
+    f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.82:level=false[aout]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                     "-t", f"{dur:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
                     "build/belisarius-1080p.mp4"], check=True)
