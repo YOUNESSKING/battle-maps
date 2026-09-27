@@ -92,6 +92,8 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 
 - **Music level (owner complaint on Belisarius v1: "music way too loud")**: royalty-free tracks are mastered 10+ dB apart (Kevin MacLeod tracks measured -8 to -16 LUFS vs the Kokoro voice at -24 LUFS), so a fixed `volume=` makes some tracks louder than the narration. `assemble_full.py` now levels every track to `MUSIC_LUFS` (-42, ~18 dB under the voice) and **fails the build** if the ducked music+SFX bed (written to build/bed.wav) is less than `MIN_GAP_DB` (15 dB) under the voice in any section. Never bypass that check; if the owner wants more music, raise MUSIC_LUFS a little and let the check guard it.
 
+- **Thumbnail formula (owner: v1 Belisarius thumbnail was 'too ambiguous')**: copy Tactical Genius's layout, see their channel via vidIQ `vidiq_channel_videos @tacticalgeniuss`: photoreal commander on the RIGHT looking off-frame; LEFT/centre a desaturated 3D bird's-eye battlefield with many small red/blue unit tokens, the **place named** on the map (BASTOGNE, MOSCOW, ROME), small framed **name-tag stakes** for the general and his opponent, white curved arrows; a 2-3 word phrase or quote in white condensed caps on a **red brush-stroke banner** bottom-left ("LET THEM COME", "AT THE GATES"). Generate with `vidiq_generate_thumbnail` passing 2-3 of their thumbnails as `referenceImages`. Title pattern: "Name's Top 3 Legendary Tactical Moves | The Man Who ...".
+
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
 - The main cost driver is **conversation length**: late in the session each step re-read ~480K tokens. A fresh session re-reads ~30-60K.

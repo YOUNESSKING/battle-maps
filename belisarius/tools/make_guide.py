@@ -133,9 +133,8 @@ story += [P("1 · What is finished", "h1"),
 
 # ---------------- 2. upload ----------------
 story += [P("2 · Upload to YouTube", "h1"),
-          P("Title", "h2"), P("<b>Belisarius's Top 3 Legendary Tactical Moves</b> (keeps the channel format)."),
-          P("Alternatives to A/B test later: <i>How 5,000 Men Held Rome Against 150,000</i> · <i>The General Who Rebuilt the Roman Empire</i> · "
-            "<i>The Trench Trap That Destroyed a Persian Army</i>."),
+          P("Title", "h2"), P("<b>Belisarius's Top 3 Legendary Tactical Moves | The Last of the Romans</b> (same pattern as Tactical Genius: name + format + a short tagline after the bar)."),
+          P("Tagline alternatives to A/B test: <i>| The Man Who Held Rome</i> · <i>| The General Justinian Feared</i> · <i>| Always Outnumbered</i>."),
           P("Chapters", "h2"), P(esc(chapters), "mono"),
           P("Tags", "h2"), P(tags),
           P("Settings", "h2")] + bullets([
