@@ -67,11 +67,11 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
-| **George H. Thomas full video (18:50)**: script, voice, 11 map scenes, 8 archive slots, music + SFX | done | thomas/ (master not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`). Upload text: thomas/YOUTUBE.md |
+| **George H. Thomas full video (18:50)**: script, voice, 11 map scenes, 8 archive slots, music + SFX | done | thomas/ (master not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`). Upload PDF, metadata + 3 thumbnails: thomas/youtube/ (packaging guide) |
 | **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload text: morgan/YOUTUBE.md |
 
 ## 3. What's next (in order)
-1. Owner: merge the video branches into `main` (see §0a Git), upload Thomas (thomas/YOUTUBE.md; master link was on gofile).
+1. Owner: merge the video branches into `main` (see §0a Git), upload Thomas (thomas/youtube/Thomas-YouTube-upload.pdf; master on gofile).
 2. Next video: Francis Marion (#3), in the detailed map style (§0a, §9).
 3. Optional: re-render one older video's main battle in the detailed style for a comparison; Hannibal's Trasimene/Cannae maps are still unbuilt (hannibal/).
 4. Engine follow-ups: date scroll should auto-hide behind inset panels (ridge3 overlap); a smaller "detail lite" set for regional scenes if render time matters.
