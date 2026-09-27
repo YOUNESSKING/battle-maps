@@ -1,4 +1,4 @@
-# Gemini Brief — Military History Channel (v3: research + script + shot plan)
+# Gemini Brief — Military History Channel (v3 DRAFT, being tested: research + script + shot plan)
 
 Paste this whole file into Gemini once, at the start of a chat (Deep Research mode for step 1 if your plan has it). Then run three steps, each as its own message, and save each answer as a file:
 1. **"research idea N"** → the research report (save as `research.md`).

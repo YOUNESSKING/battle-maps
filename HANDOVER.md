@@ -16,9 +16,9 @@ Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as
 
 ## 0b. Starting a NEW video from Gemini research
 1. `mkdir <name>` and copy the skeleton from `ridgway/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png` (use ridgway's engine, it is the newest).
-2. **Planning comes from Gemini (brief v3, `research/GEMINI_BRIEF_v3.md`)**: the owner attaches `research.md`, `script.md` and `shotplan.json`. Claude does NOT re-plan: one Sonnet agent fact-checks the script against Wikipedia and the cited sources (Gemini got dates, weapons and who-shot-whom wrong on Goose Green) and lists fixes; apply them, then save as `<name>/script.md` + `<name>/shotplan.json`. Only if Gemini's files are missing, write the script yourself (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`, ~2,400-2,700 words).
+2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
 3. Voice: copy `ridgway/tools/narrate.py`, point SCRIPT/OUT at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`.
-4. Bake terrain per battle (`tools/bake.py`), write map scenes from `shotplan.json` (try Sonnet agents first, Opus only for scenes that need it; agents only write + snapshot, they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). Copy `goosegreen/tools/assemble_full.py` and edit its SCENES/CHAPTERS. Commit + push after each milestone.
+4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). Copy `goosegreen/tools/assemble_full.py` and edit its SCENES/CHAPTERS. Commit + push after each milestone.
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
 ---
