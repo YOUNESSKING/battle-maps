@@ -331,9 +331,11 @@ const FWD = [[1500, 872], [1560, 858], [1640, 846], [1700, 842], [1770, 848]];
 const MAIN = [[BOCA[0] + 6, BOCA[1] - 20], [1522, 956], [1570, 968], [1608, 982], [1628, 998]];
 const DEPTH = [[1462, 1150], [1500, 1170], [1540, 1182], [1578, 1190]];
 // glowing two-colour fronts (drawn west -> east: sideA = north = British blue, sideB = south = Argentine red)
-K.front({ pts: FWD, sideA: "carth", sideB: "rome", width: 16, t: T_LAYERS, dur: 1.2, until: T_GAVE + 0.4 });
-K.front({ pts: MAIN, sideA: "carth", sideB: "rome", width: 18, t: T_LAYERS + 0.8, dur: 1.2, until: END + 1 });
-K.front({ pts: DEPTH, sideA: "carth", sideB: "rome", width: 16, t: T_LAYERS + 1.6, dur: 1.2, until: END + 1 });
+// ONE two-colour band = the real front line (where the two sides touch); lines behind it are red only.
+// When the forward line collapses, the two-colour band moves onto the next line.
+const FRONT = K.front({ pts: FWD, to: MAIN, sideA: "carth", sideB: "rome", width: 16, t: T_LAYERS, dur: 1.2, moveT: T_GAVE + 0.2, moveDur: 3.0, until: END + 1 });
+K.front({ pts: MAIN, sideA: "rome", sideB: "rome", width: 16, t: T_LAYERS + 0.8, dur: 1.2, until: T_GAVE + 2.6 });
+K.front({ pts: DEPTH, sideA: "rome", sideB: "rome", width: 14, t: T_LAYERS + 1.6, dur: 1.2, until: END + 1 });
 // ---------- TERRITORY TEST: each side's ground tinted; lost ground fades away ----------
 const MASK = "assets/isthmus_land.png";
 const BLUE0 = [[0, 150], [2880, 150], [2880, 852], [1770, 848], [1640, 846], [1560, 858], [1500, 872], [0, 884]];
@@ -344,9 +346,7 @@ const fwdZone = K.territory({ pts: [[0, 884], [1500, 872], [1560, 858], [1640, 8
 const mainZone = K.territory({ pts: [[1300, 960], [1522, 956], [1570, 968], [1628, 998], [1850, 975], [1700, 1100], [1660, 1300], [1560, 1420], [1380, 1400], [1300, 1250]], side: "rome", t: T_LAYERS + 0.9, alpha: 0.26, mask: MASK });
 // the forward positions give way: their ground fades, British ground moves in
 K.lose(fwdZone, T_GAVE - 0.3);
-K.shift(blueT, BLUE1, T_GAVE + 0.2, 3.0);
-// D Company leapfrogs through the centre: British ground reaches the gorse line
-K.shift(blueT, BLUE2, T_DCOY + 1.0, 3.5);
+K.shift(blueT, BLUE2, T_GAVE + 0.2, 3.0);
 
 
 // ---------- move1-3: Piaggi and Task Force Mercedes ----------
@@ -466,7 +466,7 @@ for (let i = 0; i < 7; i++) {
 B.caption("3 LIGHT GUNS · HUNDREDS OF ROUNDS", T_GUNS + 0.2, T_EMPTY - 0.2, "carth r");
 GG.tagbox("NEARLY EMPTY", GUNS[0], GUNS[1] + 44, "#8a877f", { size: 15, t: T_EMPTY, until: S[10] });
 B.caption("BY DAWN: NEARLY OUT OF SHELLS", T_EMPTY, S[9] - 0.2, "rome r");
-const bf = K.front({ pts: [[1500, 760], [1560, 752], [1610, 740], [1680, 752]], to: [[1500, 902], [1560, 878], [1612, 868], [1700, 900]], sideA: "carth", sideB: "rome", width: 16, t: T_DCOY + 0.2, dur: 1.2, moveT: T_DCOY + 1.4, moveDur: 4.5, until: T_SUN + 0.3 });
+// (British advancing line removed: only the front line carries both colours)
 
 // ---------- move1-9: first light ----------
 GG.dawn(T_LIGHT, S[10] + 4);
