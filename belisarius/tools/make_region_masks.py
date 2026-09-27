@@ -7,6 +7,7 @@ Region shapes are hand-drawn lat/lon polygons clipped to land, feathered, with a
 """
 import json, math, os
 import numpy as np
+from scipy import ndimage
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +30,11 @@ def load(name):
     tx0, ty0, tx1, ty1 = OX // 256, OY // 256, (OX + W) // 256, (OY + H) // 256
     mosaic = np.vstack([np.hstack([tile(tx, ty) for tx in range(tx0, tx1 + 1)]) for ty in range(ty0, ty1 + 1)])
     elev = mosaic[OY - ty0 * 256:OY - ty0 * 256 + H, OX - tx0 * 256:OX - tx0 * 256 + W]
-    return px, elev > 0.5, (W, H)
+    land = elev > 0.5
+    lab, n = ndimage.label(~land)  # low basins and lakes smaller than ~12k px count as land (no holes)
+    sizes = ndimage.sum(np.ones_like(lab), lab, range(1, n + 1))
+    small = np.isin(lab, [i + 1 for i, v in enumerate(sizes) if v < 12000])
+    return px, land | small, (W, H)
 
 
 def overlay(px, land, size, polys, rgb, alpha, name, feather=4):
@@ -62,12 +67,12 @@ FRONTIER = [(41.45, 42.0), (40.6, 42.3), (39.9, 42.0), (39.2, 41.9), (38.6, 41.6
 DAL = [(45.0, 19.9), (44.6, 19.4), (43.9, 19.5), (43.0, 19.3), (42.1, 19.3)]
 
 ROME = ([(45.25, 29.8), (44.2, 28.2), (43.75, 25.5), (43.95, 22.8), (44.7, 21.0)] + DAL +
-        [(41.5, 19.2), (39.8, 19.1), (37.2, 20.3), (33.8, 19.3), (30.3, 19.2), (29.0, 20.6), (28.6, 25.0),
-         (25.5, 29.5), (22.0, 31.0), (21.5, 35.8), (27.5, 34.6), (29.4, 35.1), (30.2, 36.5), (32.0, 37.6),
+        [(41.5, 19.2), (39.8, 19.1), (37.2, 20.3), (33.8, 19.3), (30.3, 19.2), (29.0, 20.6), (29.6, 25.0),
+         (27.5, 29.3), (24.0, 31.8), (22.0, 31.8), (22.0, 33.6), (24.0, 35.4), (27.5, 34.6), (29.4, 35.1), (30.2, 36.5), (32.0, 37.6),
          (34.3, 38.8), (35.1, 40.2)] + FRONTIER[::-1] +
         [(42.0, 41.5), (42.6, 39.0), (43.2, 34.0), (43.6, 30.0)])
 PERSIA = (FRONTIER + [(34.3, 41.1), (33.2, 42.3), (31.5, 44.0), (30.3, 46.0), (29.4, 47.6), (26.0, 50.0),
-                      (25.0, 57.0), (44.0, 57.0), (43.3, 47.0), (42.8, 44.5), (42.6, 43.0)])
+                      (25.0, 57.0), (37.8, 57.0), (38.5, 53.8), (42.0, 50.0), (43.0, 47.5), (42.8, 44.5), (42.6, 43.0)])
 VANDAL = [[(36.9, 0.9), (35.9, 1.0), (35.2, 5.0), (34.5, 7.4), (33.6, 9.6), (32.4, 11.2), (31.6, 13.6),
            (30.9, 16.0), (30.2, 18.8), (31.6, 19.3), (33.6, 15.6), (36.2, 12.6), (37.6, 11.3), (37.9, 9.9),
            (37.4, 5.0), (37.1, 1.0)],
