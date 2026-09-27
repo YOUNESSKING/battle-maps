@@ -1,4 +1,4 @@
-// Move 2 opener: the fleet sails from Constantinople to Africa, 533 AD. Romans = blue ("carth"), Vandals = red ("rome"). Basemap: med (z6).
+// Move 2 recap: the three charges across the stream into the Vandal centre + the method card. Basemap: tricamarum (schematic).
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
@@ -65,42 +65,44 @@ function person(o) { // portrait stake if the image exists (o.img), else a plain
 function tintPortrait(el, side) { const f = el.querySelector(".face"); if (f) f.style.boxShadow = `0 0 0 3px ${COL[side]}, 0 6px 12px rgba(0,0,0,0.5)`; const n = el.querySelector(".nm"); if (n) n.style.background = COL[side]; }
 
 // ================= scene =================
-const G = mkG(6, 7753, 5567), GL = (a) => a.map(([la, lo]) => G(la, lo));
-const K = "tricam-1";
-const T_FLEET = at(K, "A Roman fleet"), T_500 = at(K, "five hundred transports"), T_15 = at(K, "fifteen thousand");
-const T_VK = at(K, "Vandal kingdom"), T_CARTH = at(K, "seized Carthage"), T_RICH = at(K, "richest provinces");
+const K = "tricam-11";
+const T_SHAPE = at(K, "He shaped"), T_STRUCK = at(K, "He struck"), T_CENTRE = at(K, "but its center"), T_TIME = at(K, "And he made time"), T_NUM = at(K, "their numbers");
 
 B.camera([
-  [0, 1440, 810, 0.667],
-  [T_FLEET, 1420, 790, 0.72],
-  [T_15 + 1.0, 1300, 780, 0.9],
-  [T_VK + 0.5, 1120, 820, 1.1],
-  [END, 1000, 840, 1.38],
+  [0, 1180, 860, 0.86],
+  [T_STRUCK, 1150, 880, 0.92],
+  [END, 1130, 890, 0.96],
 ]);
+B.showDate(0.1);
+B.date("TRICAMARUM", 0.2);
 
-B.title("MOVE 2", "TRICAMARUM", "DECEMBER 533 AD", 0.2, T_FLEET - 0.3);
-B.showDate(0.3);
-B.date("533 AD", 0.5);
+const STREAM = [[1410, -20], [1372, 220], [1402, 440], [1342, 660], [1372, 870], [1322, 1080], [1362, 1300], [1332, 1640]];
+B.river(STREAM, 16);
+const campG = document.createElementNS(SVGNS, "g");
+campG.innerHTML = `<rect x="420" y="560" width="320" height="300" rx="18" fill="rgba(196,18,31,0.16)" stroke="#c4121f" stroke-width="9" stroke-dasharray="22 10"/>`;
+OV.appendChild(campG);
+B.label("VANDAL CAMP", 580, 545, { cls: "tg", size: 30, t: 0.3, anchor: [-50, -100] });
+const RY = [470, 590, 710, 830, 950];
+RY.forEach((y, i) => B.unit({ id: "r" + i, side: "rome", kind: "inf", x: 1150, y, w: 100, h: 58, t: 0.2 + i * 0.08 }));
+[520, 640, 780, 900].forEach((y, i) => B.unit({ id: "b" + i, side: "carth", kind: "cav", x: 1640, y, w: 90, h: 52, t: 0.3 + i * 0.08 }));
 
-B.label("MEDITERRANEAN SEA", ...G(34.2, 20.8), { cls: "sea", size: 40, t: 1.0, until: T_VK });
-B.city("CONSTANTINOPLE", ...G(41.01, 28.98), { size: 30, t: T_FLEET });
-B.label("PELOPONNESE", ...G(37.5, 22.3), { cls: "tg", size: 24, t: T_FLEET + 1.2 });
-B.label("SICILY", ...G(37.55, 14.2), { cls: "tg", size: 26, t: T_FLEET + 2.2 });
-B.label("NORTH AFRICA", ...G(32.4, 5.2), { cls: "country", size: 40, t: T_FLEET + 3.0, until: T_VK - 0.2 });
+// the three charges, each bigger than the last
+[[16, 690, 0.8], [26, 710, 1.6], [40, 730, 2.4]].forEach(([w, y, t], i) => {
+  B.arrow({ side: "carth", pts: [[1570, y + (i - 1) * 30], [1400, y + (i - 1) * 10], [1225, 710]], width: w, t, dur: 0.9 });
+  counter(String(i + 1), 1560, y + (i - 1) * 30 - 55 + i * 30, "carth", t + 0.5, null, 30);
+});
 
-// the fleet's route: Dardanelles, round the Peloponnese (Methone), Zakynthos, Sicily (Catania / Syracuse), Malta, Caput Vada
-const route = GL([[40.98, 28.7], [40.3, 26.5], [39.0, 25.6], [37.4, 24.4], [36.25, 23.2], [36.6, 21.5], [37.55, 20.55], [37.25, 18.0], [37.15, 15.6], [36.3, 14.9], [35.75, 13.3], [35.33, 11.85], [35.27, 11.5]]);
-B.arrow({ side: "carth", pts: route, width: 16, t: T_FLEET, dur: T_15 - T_FLEET + 0.6 });
-counter("500 TRANSPORTS", ...G(38.9, 19.9), "carth", T_500, T_VK, 26);
-B.city("CAPUT VADA", ...G(35.24, 11.15), { size: 26, t: T_15 - 0.4, dy: 26 });
-B.unit({ id: "army", side: "carth", kind: "inf", x: G(35.24, 11.15)[0] - 78, y: G(35.24, 11.15)[1] - 14, w: 58, h: 40, label: "~15,000", t: T_15 + 0.5 });
+// row 1: shaped the battlefield - the stream and the missing infantry did not decide
+B.highlight(STREAM, T_SHAPE + 0.2, T_STRUCK, 50);
+counter("NO WAITING FOR INFANTRY", 1900, 1000, "carth", T_SHAPE + 1.5, T_STRUCK + 0.5, 26);
+// row 2: struck what held them together - the centre and the royal brothers
+burst(1180, 710, T_CENTRE - 0.3, END - 0.4, 70);
+B.grey(["r0", "r1", "r3", "r4"], T_CENTRE + 0.6, 1.0);
+counter("THE ROYAL BROTHERS", 900, 710, "rome", T_STRUCK + 1.4, null, 26);
+// row 3: made time fight for him - struck before the numbers counted
+counter("VANDALS · 15,000–30,000?", 1150, 398, "rome", T_TIME + 0.4, null, 26);
+const numX = counter("NUMBERS NEVER USED", 1150, 1060, "ink", T_NUM - 0.2, null, 26);
 
-// the Vandal kingdom: North African coast + Sardinia
-const vk = GL([[36.55, 0.6], [36.85, 3.0], [37.1, 6.0], [37.35, 8.8], [37.4, 10.2], [37.2, 11.2], [36.4, 10.75], [35.8, 10.8], [35.45, 11.2], [34.7, 10.95], [33.9, 10.3], [33.75, 11.0], [32.95, 13.2], [32.55, 14.5], [32.2, 15.3],
-  [31.3, 15.2], [31.6, 12.5], [32.6, 9.8], [33.6, 7.4], [34.4, 4.5], [34.8, 1.8], [35.2, 0.4]]);
-region(vk, { side: "rome", t: T_VK - 0.3, op: 0.3 });
-region(GL([[41.25, 9.25], [40.9, 9.85], [39.2, 9.75], [38.85, 8.55], [39.9, 8.3], [40.95, 8.15]]), { side: "rome", t: T_VK + 0.1, op: 0.3, sw: 4 });
-B.label("VANDAL KINGDOM", ...G(34.0, 5.6), { cls: "country", size: 42, t: T_VK + 0.2 });
-B.label("SARDINIA", ...G(40.0, 10.1), { cls: "tg", size: 22, t: T_VK + 0.5, anchor: [0, -50] });
-B.city("CARTHAGE", ...G(36.85, 10.32), { left: true, size: 32, t: T_CARTH - 0.3 });
-B.caption("THE VANDAL KINGDOM · RICHEST PROVINCES OF THE WEST", T_RICH - 0.4, END - 0.2, "rome");
+const m = B.method(T_SHAPE - 0.7, END - 0.2, [T_SHAPE, T_STRUCK, T_TIME]);
+m.style.top = "auto"; m.style.bottom = "70px";
+m.querySelectorAll(".row").forEach((r) => (r.style.fontSize = "44px"));

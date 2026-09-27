@@ -92,5 +92,5 @@ overlay(px, land, size, [GOTH], RED, 0.36, "emp_goth")
 px, land, size = load("mesopotamia")
 W_EDGE = [(41.5, 30.0), (41.5, 38.0)] + [(la, lo) for la, lo in FRONTIER] + [(30.0, 40.45), (30.0, 30.0)]
 E_EDGE = [(41.5, 50.0), (41.5, 42.0)] + FRONTIER[1:] + [(30.0, 40.45), (30.0, 50.0)]
-overlay(px, land, size, [W_EDGE], BLUE, 0.22, "meso_rome", feather=3)
-overlay(px, land, size, [E_EDGE], RED, 0.22, "meso_persia", feather=3)
+overlay(px, land, size, [W_EDGE], BLUE, 0.30, "meso_rome", feather=3)
+overlay(px, land, size, [E_EDGE], RED, 0.20, "meso_persia", feather=3)

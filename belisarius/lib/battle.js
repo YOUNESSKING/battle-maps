@@ -406,3 +406,242 @@
     return B;
   };
 })();
+
+// ---------- RomeKit (Belisarius siege of Rome): shared geometry + icons for basemap assets/rome.jpg (z15) ----------
+// usage in a scene: const B = Battle(); const R = RomeKit(B); R.tiber(); R.walls({ t: 1, dur: 4 }); ...
+// Coordinates are map pixels: wall ring traced from real gate positions, Tiber traced on the relief channel.
+(function () {
+  const NS = "http://www.w3.org/2000/svg";
+  const sp = (pts, close) => { // Catmull-Rom -> cubic Bezier
+    let d = `M ${pts[0][0]} ${pts[0][1]}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[Math.max(i - 1, 0)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(i + 2, pts.length - 1)];
+      d += ` C ${(p1[0] + (p2[0] - p0[0]) / 6).toFixed(1)} ${(p1[1] + (p2[1] - p0[1]) / 6).toFixed(1)}, ${(p2[0] - (p3[0] - p1[0]) / 6).toFixed(1)} ${(p2[1] - (p3[1] - p1[1]) / 6).toFixed(1)}, ${p2[0]} ${p2[1]}`;
+    }
+    return d + (close ? " Z" : "");
+  };
+  const poly = (pts, close) => "M " + pts.map((p) => p.join(" ")).join(" L ") + (close ? " Z" : "");
+  const G = {
+    tiber: [[982, -30], [988, 100], [995, 200], [1020, 300], [1055, 390], [1050, 440], [1010, 490], [950, 510], [870, 535], [815, 585], [815, 640],
+      [845, 690], [900, 745], [960, 800], [1030, 850], [1100, 880], [1185, 915], [1195, 960], [1175, 1010], [1130, 1070], [1060, 1150], [1010, 1210],
+      [975, 1265], [980, 1350], [1000, 1440], [1040, 1530], [1075, 1650]],
+    // Aurelian Walls, clockwise from Porta Flaminia (incl. the Trastevere loop over the Janiculum and the river stretch)
+    wall: [[1123, 250], [1207, 231], [1300, 252], [1417, 319], [1520, 250], [1624, 206], [1703, 294], [1766, 331], [1848, 378], [1871, 497], [1940, 530],
+      [2013, 563], [2040, 700], [2030, 854], [2046, 967], [1894, 1089], [1766, 1217], [1708, 1371], [1687, 1418], [1600, 1440], [1522, 1443], [1380, 1390],
+      [1235, 1333], [1120, 1305], [997, 1275], [953, 1268], [930, 1215], [850, 1150], [781, 1076], [800, 970], [915, 850], [936, 806], [964, 774],
+      [914, 729], [863, 677], [837, 640], [837, 590], [882, 553], [955, 532], [1023, 508], [1072, 448], [1077, 386], [1041, 293], [1027, 250]],
+    gates: {
+      FLAMINIAN: [1123, 250], PINCIAN: [1417, 319], SALARIAN: [1624, 206], NOMENTAN: [1703, 294], CLAUSA: [1860, 440], TIBURTINE: [2013, 563],
+      PRAENESTINE: [2030, 854], ASINARIAN: [1894, 1089], METRONIAN: [1766, 1217], LATIN: [1708, 1371], APPIAN: [1687, 1418], ARDEATINE: [1522, 1443],
+      OSTIAN: [1235, 1333], PORTUENSIS: [930, 1215], AURELIAN: [781, 1076], SEPTIMIAN: [915, 850], "ST PETER": [882, 553], FLUMINEA: [1072, 448],
+    },
+    hadrian: [880, 478],
+    camps: [[1150, 100], [1445, 105], [1880, 150], [2190, 380], [2250, 650], [2200, 1100], [650, 370]], // 6 east of the river + Plain of Nero
+    aqueducts: [
+      [[2880, 1180], [2600, 1060], [2330, 950], [2040, 858]],
+      [[2880, 1360], [2560, 1180], [2300, 1000], [2046, 885]],
+      [[2880, 470], [2500, 380], [2200, 300], [1900, 240], [1690, 262]],
+      [[2880, 1520], [2400, 1360], [2100, 1200], [1900, 1095]],
+      [[-20, 1295], [300, 1230], [560, 1140], [781, 1076]],
+    ],
+    cuts: [[2520, 1027], [2380, 1055], [2330, 345], [2250, 1280], [420, 1188]],
+    mills: [[845, 1030], [900, 960], [910, 1090]],
+    bridge: [[1012, 880], [1048, 820]], // just above the floating mills
+    boatMills: [[1088, 877, 22], [1130, 892, 18], [1170, 908, 15]], // x, y, flow angle (deg)
+    chain: [[1052, 890], [1072, 838]],
+  };
+
+  window.RomeKit = function (B) {
+    const tl = B.tl, svg = document.getElementById("overlay"), scene = document.getElementById("scene");
+    const R = { G, camps: [] };
+    if (!document.getElementById("rk-style")) {
+      const st = document.createElement("style"); st.id = "rk-style";
+      st.textContent = `.rk-counter{position:absolute;right:90px;width:470px;padding:14px 24px 16px;background:rgba(20,17,12,0.86);color:#f7f3ea;border-left:12px solid #c4121f;box-shadow:0 10px 24px rgba(0,0,0,0.45);font-family:Oswald,sans-serif}
+.rk-counter.blue{border-left-color:#1f4fc4}.rk-counter .t{font-size:26px;letter-spacing:.28em;opacity:.85}.rk-counter .b{font-size:66px;font-weight:700;line-height:1.02;letter-spacing:.02em}
+.rk-counter .s{font-family:"Special Elite",monospace;font-size:24px;color:#efe3c4}.rk-counter .r2{font-size:38px;font-weight:700;margin-top:8px;line-height:1.1}.rk-counter .r2 span{font-family:"Special Elite",monospace;font-size:24px;font-weight:400;color:#efe3c4}`;
+      document.head.appendChild(st);
+    }
+    if (!document.getElementById("rk-defs")) {
+      const defs = document.createElementNS(NS, "defs"); defs.id = "rk-defs";
+      defs.innerHTML = `<filter id="rkGlow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter>
+        <filter id="rkGlowS" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>`;
+      svg.insertBefore(defs, svg.firstChild);
+    }
+    const mk = (html, parent = svg) => { const g = document.createElementNS(NS, "g"); g.innerHTML = html; parent.appendChild(g); return g; };
+    const pop = (g, t, s = 1, dur = 0.5) => {
+      gsap.set(g, { autoAlpha: 0 });
+      tl.fromTo(g, { autoAlpha: 0, scale: s * 1.8 }, { autoAlpha: 1, scale: s, duration: dur, ease: "back.out(2)" }, t);
+    };
+    const place = (g, x, y, s = 1, rot = 0) => gsap.set(g, { x, y, scale: s, rotation: rot, transformOrigin: "0px 0px" });
+    R.sp = sp;
+
+    // dark night wash over the relief (below everything drawn later)
+    R.night = (alpha = 0.62) => {
+      const g = mk(`<rect x="-50" y="-50" width="2980" height="1720" fill="rgb(6,12,26)" opacity="${alpha}"/>`);
+      svg.insertBefore(g, document.getElementById("rk-defs").nextSibling);
+      return g;
+    };
+    R.tiber = (o = {}) => {
+      const d = sp(G.tiber);
+      const g = mk(`${o.night ? `<path d="${d}" fill="none" stroke="#6fb7d8" stroke-width="44" opacity="0.35" filter="url(#rkGlow)"/>` : ""}
+        <path d="${d}" fill="none" stroke="${o.night ? "#1d3a4d" : "#e9dfc4"}" stroke-width="40" stroke-linecap="round" opacity="0.9"/>
+        <path d="${d}" fill="none" stroke="${o.night ? "#3f7d9c" : "#7fa3b3"}" stroke-width="30" stroke-linecap="round"/>`);
+      if (o.t != null) { gsap.set(g, { autoAlpha: 0 }); tl.to(g, { autoAlpha: 1, duration: 1.2 }, o.t); }
+      return g;
+    };
+    // Aurelian Walls ring drawn on at o.t over o.dur; night = glowing gold, day = dark stone with towers
+    R.walls = (o = {}) => {
+      const d = poly(G.wall, true);
+      const g = o.night
+        ? mk(`<path d="${d}" fill="none" stroke="#ffb347" stroke-width="30" stroke-linejoin="round" opacity="0.75" filter="url(#rkGlow)"/>
+             <path d="${d}" fill="none" stroke="#ffd98a" stroke-width="10" stroke-linejoin="round"/>
+             <path d="${d}" fill="none" stroke="#fff6dc" stroke-width="4" stroke-linejoin="round"/>`)
+        : mk(`<path d="${d}" fill="none" stroke="#f3e8cc" stroke-width="17" stroke-linejoin="round"/>
+             <path d="${d}" fill="none" stroke="#3b2f22" stroke-width="9" stroke-linejoin="round"/>
+             <path d="${d}" fill="none" stroke="#3b2f22" stroke-width="17" stroke-dasharray="5 26" stroke-linejoin="round"/>`);
+      const paths = [...g.querySelectorAll("path")];
+      const len = paths[0].getTotalLength();
+      R.wallLen = len;
+      if (o.t == null) return g;
+      paths.forEach((p) => { p.style.strokeDasharray = p.getAttribute("stroke-dasharray") || ""; });
+      const dashed = paths.filter((p) => p.getAttribute("stroke-dasharray"));
+      const solid = paths.filter((p) => !p.getAttribute("stroke-dasharray"));
+      gsap.set(solid, { strokeDasharray: `${len} ${len}`, strokeDashoffset: len });
+      tl.to(solid, { strokeDashoffset: 0, duration: o.dur || 4, ease: "power1.inOut" }, o.t);
+      if (dashed.length) { gsap.set(dashed, { opacity: 0 }); tl.to(dashed, { opacity: 1, duration: 0.8 }, o.t + (o.dur || 4) - 0.4); }
+      if (o.pulse) tl.fromTo(paths[0], { opacity: 0.75 }, { opacity: 0.35, duration: 1.6, yoyo: true, repeat: o.pulse, ease: "sine.inOut" }, o.t + (o.dur || 4));
+      return g;
+    };
+    R.gates = (t, o = {}) => Object.entries(G.gates).map(([n, [x, y]], i) => {
+      const g = mk(`<rect x="-9" y="-9" width="18" height="18" fill="${o.night ? "#fff1c8" : "#efe3c4"}" stroke="#1b1812" stroke-width="3"/>`);
+      place(g, x, y, o.s || 1); pop(g, t + i * (o.stagger ?? 0.08), o.s || 1, 0.35);
+      return g;
+    });
+    // Gothic camp: palisade ring + tents (+ fires at night)
+    R.camp = (x, y, t, o = {}) => {
+      const r = o.r || 52;
+      const g = mk(`${o.night ? `<circle r="${r + 16}" fill="#ff5a1f" opacity="0.38" filter="url(#rkGlow)"/>` : ""}
+        <circle r="${r}" fill="rgba(196,18,31,0.22)" stroke="#f7f3ea" stroke-width="12"/>
+        <circle r="${r}" fill="none" stroke="#c4121f" stroke-width="8" stroke-dasharray="14 7"/>
+        <g fill="#c4121f" stroke="#1b1812" stroke-width="2.5" stroke-linejoin="round">
+          <path d="M-26 8 L-14 -14 L-2 8 Z"/><path d="M4 12 L16 -10 L28 12 Z"/><path d="M-12 -12 L0 -32 L12 -12 Z"/><path d="M-8 32 L4 12 L16 32 Z"/></g>
+        ${o.night ? `<circle cx="-2" cy="-4" r="5" fill="#ffd36b"/><circle cx="20" cy="22" r="4" fill="#ffd36b"/>` : ""}`);
+      place(g, x, y, o.s || 1); pop(g, t, o.s || 1, 0.6);
+      R.camps.push(g);
+      return g;
+    };
+    R.aqueduct = (pts, t, o = {}) => {
+      const d = poly(pts);
+      const g = mk(`<path d="${d}" fill="none" stroke="${o.night ? "#1b1812" : "#f3e8cc"}" stroke-width="14" stroke-linecap="round"/>
+        <path d="${d}" fill="none" stroke="${o.night ? "#b9a987" : "#6b5b45"}" stroke-width="8" stroke-linecap="round"/>
+        <path d="${d}" fill="none" stroke="${o.night ? "#b9a987" : "#6b5b45"}" stroke-width="16" stroke-dasharray="3 14"/>
+        <path class="water" d="${d}" fill="none" stroke="#39a7ea" stroke-width="4.5" stroke-linecap="round"/>`);
+      const ps = [...g.querySelectorAll("path")], len = ps[0].getTotalLength();
+      gsap.set(ps, { strokeDasharray: `${len} ${len}`, strokeDashoffset: len });
+      tl.to(ps, { strokeDashoffset: 0, duration: o.dur || 1.6, ease: "power2.inOut" }, t);
+      tl.set(ps[2], { strokeDasharray: "3 14", strokeDashoffset: 0 }, t + (o.dur || 1.6));
+      g.water = ps[3];
+      return g;
+    };
+    R.cutX = (x, y, t, s = 1) => {
+      const g = mk(`<g stroke-linecap="round"><path d="M-18 -18 L18 18 M18 -18 L-18 18" stroke="#f7f3ea" stroke-width="16"/>
+        <path d="M-18 -18 L18 18 M18 -18 L-18 18" stroke="#c4121f" stroke-width="9"/></g>`);
+      place(g, x, y, s); pop(g, t, s, 0.4);
+      return g;
+    };
+    R.mill = (x, y, t, s = 1) => { // water wheel; returns {g, wheel}
+      const spokes = [0, 45, 90, 135].map((a) => `<line x1="-13" y1="0" x2="13" y2="0" transform="rotate(${a})"/>`).join("");
+      const g = mk(`<circle r="21" fill="#f7f3ea" stroke="#1b1812" stroke-width="3"/><g class="wh" stroke="#1f4fc4" stroke-width="3.5">
+        <circle r="14" fill="#cfe2f5"/>${spokes}</g>`);
+      place(g, x, y, s); pop(g, t, s, 0.45);
+      return { g, wheel: g.querySelector(".wh") };
+    };
+    R.spin = (wheel, t, dur, turns) => tl.fromTo(wheel, { rotation: 0 }, { rotation: 360 * (turns || dur / 2), duration: dur, ease: "none", transformOrigin: "50% 50%" }, t);
+    R.boatMill = (x, y, ang, t, s = 1) => {
+      const spokes = [0, 60, 120].map((a) => `<line x1="-8" y1="0" x2="8" y2="0" transform="rotate(${a})"/>`).join("");
+      const g = mk(`<g transform="rotate(${ang})"><ellipse cx="0" cy="-10" rx="15" ry="4.5" fill="#8a6238" stroke="#1b1812" stroke-width="1.8"/>
+        <ellipse cx="0" cy="10" rx="15" ry="4.5" fill="#8a6238" stroke="#1b1812" stroke-width="1.8"/>
+        <line x1="-6" y1="-10" x2="-6" y2="10" stroke="#1b1812" stroke-width="2"/><line x1="6" y1="-10" x2="6" y2="10" stroke="#1b1812" stroke-width="2"/>
+        <g class="wh" stroke="#1f4fc4" stroke-width="2"><circle r="8" fill="#f7f3ea" stroke="#1b1812"/>${spokes}</g></g>`);
+      place(g, x, y, s); pop(g, t, s, 0.45);
+      return { g, wheel: g.querySelector(".wh") };
+    };
+    R.tomb = (t) => { // Mausoleum of Hadrian: square base + drum
+      const [x, y] = G.hadrian;
+      const g = mk(`<rect x="-24" y="-24" width="48" height="48" fill="#efe6cf" stroke="#1b1812" stroke-width="3"/>
+        <circle r="17" fill="#d9ccab" stroke="#1b1812" stroke-width="3"/><circle r="6" fill="#b7a882" stroke="#1b1812" stroke-width="2"/>`);
+      place(g, x, y); if (t != null) pop(g, t); return g;
+    };
+    R.tower = (x, y, t, s = 1) => { // Gothic siege tower (seen from above-front) on wheels
+      const g = mk(`<g stroke="#1b1812" stroke-linejoin="round"><rect x="-17" y="-26" width="34" height="46" fill="#c4121f" stroke-width="3"/>
+        <line x1="-17" y1="-11" x2="17" y2="-11" stroke-width="2.5"/><line x1="-17" y1="4" x2="17" y2="4" stroke-width="2.5"/>
+        <rect x="-8" y="-22" width="16" height="8" fill="#6b1017" stroke-width="2"/>
+        <circle cx="-17" cy="20" r="6" fill="#4c3219" stroke-width="2.5"/><circle cx="17" cy="20" r="6" fill="#4c3219" stroke-width="2.5"/></g>`);
+      place(g, x, y, s); if (t != null) pop(g, t, s);
+      return g;
+    };
+    R.oxen = (x, y, t, s = 1) => { // a yoked pair seen from above, heads pointing down (+y)
+      const ox = (dx) => `<g transform="translate(${dx} 0)"><ellipse rx="6" ry="11" fill="#7a4e26" stroke="#1b1812" stroke-width="2"/>
+        <circle cx="0" cy="12" r="4.5" fill="#6a431f" stroke="#1b1812" stroke-width="1.8"/><path d="M-5 13 L-9 10 M5 13 L9 10" stroke="#f3e8cc" stroke-width="2"/></g>`;
+      const g = mk(`<g class="ox">${ox(-8)}${ox(8)}<line x1="-15" y1="4" x2="15" y2="4" stroke="#1b1812" stroke-width="2.5"/></g>`);
+      place(g, x, y, s); if (t != null) pop(g, t, s);
+      return g;
+    };
+    R.lock = (x, y, t, s = 1) => {
+      const g = mk(`<g class="lk"><path d="M-8 -2 L-8 -10 A8 8 0 0 1 8 -10 L8 -2" fill="none" stroke="#1b1812" stroke-width="4"/>
+        <rect x="-12" y="-3" width="24" height="19" rx="3" fill="#e0b441" stroke="#1b1812" stroke-width="2.5"/><circle cx="0" cy="5" r="3" fill="#1b1812"/></g>`);
+      place(g, x, y, s); pop(g, t, s, 0.4);
+      return g;
+    };
+    // projectile: a short line flying from a to b between t and t+dur, then fading
+    R.shot = (a, b, t, dur = 0.4, color = "#1f4fc4") => {
+      const ang = Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI;
+      const g = mk(`<line x1="-12" y1="0" x2="4" y2="0" stroke="#f7f3ea" stroke-width="6" stroke-linecap="round"/><line x1="-12" y1="0" x2="4" y2="0" stroke="${color}" stroke-width="3" stroke-linecap="round"/>`);
+      gsap.set(g, { x: a[0], y: a[1], rotation: ang, autoAlpha: 0, transformOrigin: "0px 0px" });
+      tl.set(g, { autoAlpha: 1 }, t);
+      tl.to(g, { x: b[0], y: b[1], duration: dur, ease: "none" }, t);
+      tl.to(g, { autoAlpha: 0, duration: 0.15 }, t + dur);
+      return g;
+    };
+    R.chain = (t) => {
+      const [[x1, y1], [x2, y2]] = G.chain;
+      const g = mk(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#f7f3ea" stroke-width="9" stroke-linecap="round"/>
+        <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2a241b" stroke-width="5" stroke-dasharray="6 3"/>`);
+      gsap.set(g, { autoAlpha: 0 }); tl.to(g, { autoAlpha: 1, duration: 0.5 }, t);
+      return g;
+    };
+    R.bridge = (t) => {
+      const [[x1, y1], [x2, y2]] = G.bridge;
+      const g = mk(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#1b1812" stroke-width="16" stroke-linecap="butt"/>
+        <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#d8ccae" stroke-width="10" stroke-linecap="butt"/>`);
+      if (t != null) { gsap.set(g, { autoAlpha: 0 }); tl.to(g, { autoAlpha: 1, duration: 0.5 }, t); }
+      return g;
+    };
+    R.dimCamps = (t, dur = 2, to = 0.35) => R.camps.forEach((g, i) => tl.to(g, { opacity: to, duration: dur }, t + i * 0.25));
+    // screen-space counter box (top right). side "red" | "blue"; returns el; R.counterRow(el, html, t) adds a row later
+    R.counter = (o) => {
+      const el = document.createElement("div");
+      el.className = "rk-counter " + (o.side || "red");
+      el.style.top = (o.top || 80) + "px";
+      if (o.left != null) { el.style.left = o.left + "px"; el.style.right = "auto"; }
+      if (o.width) el.style.width = o.width + "px";
+      el.innerHTML = `<div class="t">${o.title}</div><div class="b">${o.big}</div>${o.sub ? `<div class="s">${o.sub}</div>` : ""}`;
+      scene.insertBefore(el, document.getElementById("credit"));
+      gsap.set(el, { autoAlpha: 0 });
+      tl.fromTo(el, { autoAlpha: 0, x: o.left != null ? -60 : 60 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, o.t);
+      if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, o.until);
+      return el;
+    };
+    R.counterRow = (el, html, t) => {
+      const r = document.createElement("div"); r.className = "r2"; r.innerHTML = html; el.appendChild(r);
+      gsap.set(r, { autoAlpha: 0 });
+      tl.fromTo(r, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5 }, t);
+      return r;
+    };
+    // scale a world-space HTML element (plaque, bubble) so it reads at a given camera zoom
+    R.scale = (el, s, origin = "0% 100%") => { gsap.set(el, { scale: s, transformOrigin: origin }); return el; };
+    // small flag image for portrait stakes (data URI)
+    R.flag = (color) => "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="46" height="28"><rect width="46" height="28" fill="${color}"/><rect y="11" width="46" height="6" fill="#f3eee2"/></svg>`);
+    return R;
+  };
+})();

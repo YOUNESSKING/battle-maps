@@ -1,4 +1,4 @@
-// Move 2 opener: the fleet sails from Constantinople to Africa, 533 AD. Romans = blue ("carth"), Vandals = red ("rome"). Basemap: med (z6).
+// Move 2: landing, Ad Decimum, Carthage taken; Gelimer regroups with Tzazon. Basemap: africa (z9). Romans blue ("carth"), Vandals red ("rome").
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
@@ -65,42 +65,68 @@ function person(o) { // portrait stake if the image exists (o.img), else a plain
 function tintPortrait(el, side) { const f = el.querySelector(".face"); if (f) f.style.boxShadow = `0 0 0 3px ${COL[side]}, 0 6px 12px rgba(0,0,0,0.5)`; const n = el.querySelector(".nm"); if (n) n.style.background = COL[side]; }
 
 // ================= scene =================
-const G = mkG(6, 7753, 5567), GL = (a) => a.map(([la, lo]) => G(la, lo));
-const K = "tricam-1";
-const T_FLEET = at(K, "A Roman fleet"), T_500 = at(K, "five hundred transports"), T_15 = at(K, "fifteen thousand");
-const T_VK = at(K, "Vandal kingdom"), T_CARTH = at(K, "seized Carthage"), T_RICH = at(K, "richest provinces");
+const G = mkG(9, 67846, 50615), GL = (a) => a.map(([la, lo]) => G(la, lo));
+const K = "tricam-2";
+const IMG = { gelimer: false, tzazon: false }; // set true when assets/media/NAME.png exists
+const T_LAND = P(K, 0.3), T_MARCH = at(K, "marched on Carthage"), T_AD = at(K, "Ad Decimum"), T_DEF = at(K, "defeated the Vandal");
+const T_OPEN = at(K, "Carthage opened"), T_ESC = at(K, "But Gelimer escaped"), T_3M = at(K, "Over the next three months");
+const T_TZ = at(K, "called his brother Tzazon"), T_AGAIN = at(K, "marched on Carthage again");
+const CAPUT = G(35.24, 11.15), CARTH = G(36.85, 10.32), ADD = G(36.75, 10.2), BULLA = G(36.56, 8.75);
 
 B.camera([
-  [0, 1440, 810, 0.667],
-  [T_FLEET, 1420, 790, 0.72],
-  [T_15 + 1.0, 1300, 780, 0.9],
-  [T_VK + 0.5, 1120, 820, 1.1],
-  [END, 1000, 840, 1.38],
+  [0, 1560, 900, 0.95],
+  [T_MARCH + 0.4, 1520, 820, 1.0],
+  [T_AD + 0.3, 1400, 640, 1.45],
+  [T_OPEN + 1.2, 1400, 620, 1.5],
+  [T_ESC + 0.6, 1160, 560, 1.12],
+  [T_TZ + 0.2, 1120, 480, 1.15],
+  [END, 1150, 480, 1.22],
 ]);
 
-B.title("MOVE 2", "TRICAMARUM", "DECEMBER 533 AD", 0.2, T_FLEET - 0.3);
-B.showDate(0.3);
-B.date("533 AD", 0.5);
+B.showDate(0.2);
+B.date("SEPTEMBER 533", 0.3, T_3M);
+B.date("DECEMBER 533", T_3M + 0.35);
+B.label("AFRICA", 900, 1150, { cls: "country", size: 60, t: 0.6, until: T_AD });
+B.label("MEDITERRANEAN SEA", 2250, 700, { cls: "sea", size: 40, t: 0.8, until: T_AD });
 
-B.label("MEDITERRANEAN SEA", ...G(34.2, 20.8), { cls: "sea", size: 40, t: 1.0, until: T_VK });
-B.city("CONSTANTINOPLE", ...G(41.01, 28.98), { size: 30, t: T_FLEET });
-B.label("PELOPONNESE", ...G(37.5, 22.3), { cls: "tg", size: 24, t: T_FLEET + 1.2 });
-B.label("SICILY", ...G(37.55, 14.2), { cls: "tg", size: 26, t: T_FLEET + 2.2 });
-B.label("NORTH AFRICA", ...G(32.4, 5.2), { cls: "country", size: 40, t: T_FLEET + 3.0, until: T_VK - 0.2 });
+// landing and march up the coast
+B.city("CAPUT VADA", ...CAPUT, { left: true, size: 30, t: 0.4, until: T_ESC });
+B.unit({ id: "rom", side: "carth", kind: "inf", x: CAPUT[0] - 75, y: CAPUT[1] - 40, w: 54, h: 38, label: "~15,000", t: T_LAND });
+const march = [[1720, 1110], [1680, 1000], [1600, 900], [1540, 800], [1490, 700], [1455, 620], [1428, 560]];
+B.arrow({ side: "carth", pts: march, width: 18, t: T_MARCH, dur: T_AD - T_MARCH + 0.3, until: T_ESC + 0.5 });
+const segT = (T_AD - T_MARCH) / (march.length - 1);
+march.forEach(([x, y], i) => i > 0 && B.move("rom", T_MARCH + (i - 1) * segT, segT, x + 40, y + 10, "none"));
 
-// the fleet's route: Dardanelles, round the Peloponnese (Methone), Zakynthos, Sicily (Catania / Syracuse), Malta, Caput Vada
-const route = GL([[40.98, 28.7], [40.3, 26.5], [39.0, 25.6], [37.4, 24.4], [36.25, 23.2], [36.6, 21.5], [37.55, 20.55], [37.25, 18.0], [37.15, 15.6], [36.3, 14.9], [35.75, 13.3], [35.33, 11.85], [35.27, 11.5]]);
-B.arrow({ side: "carth", pts: route, width: 16, t: T_FLEET, dur: T_15 - T_FLEET + 0.6 });
-counter("500 TRANSPORTS", ...G(38.9, 19.9), "carth", T_500, T_VK, 26);
-B.city("CAPUT VADA", ...G(35.24, 11.15), { size: 26, t: T_15 - 0.4, dy: 26 });
-B.unit({ id: "army", side: "carth", kind: "inf", x: G(35.24, 11.15)[0] - 78, y: G(35.24, 11.15)[1] - 14, w: 58, h: 40, label: "~15,000", t: T_15 + 0.5 });
+// Ad Decimum
+B.city("AD DECIMUM", ...ADD, { left: true, size: 26, r: 7, t: T_AD - 0.4, until: T_ESC + 1.5 });
+B.city("CARTHAGE", ...CARTH, { size: 32, t: T_AD - 0.2 });
+B.unit({ id: "van1", side: "rome", kind: "cav", x: 1340, y: 575, w: 46, h: 32, t: T_AD + 0.2 });
+B.unit({ id: "van2", side: "rome", kind: "inf", x: 1390, y: 612, w: 46, h: 32, t: T_AD + 0.4 });
+burst(ADD[0] + 10, ADD[1] + 40, T_DEF, T_OPEN - 0.2, 38);
+const gel = person({ name: "GELIMER", role: "King of the Vandals", side: "rome", img: IMG.gelimer && "assets/media/gelimer.png", size: 0.7, x: 1050, y: 860, t: T_DEF - 0.4 });
+if (IMG.gelimer) tintPortrait(gel, "rome");
+B.move("van1", T_DEF + 1.2, 1.4, 1250, 560);
+B.move("van2", T_DEF + 1.2, 1.4, 1290, 610);
+B.hideUnits(["van1", "van2"], T_OPEN + 0.4);
 
-// the Vandal kingdom: North African coast + Sardinia
-const vk = GL([[36.55, 0.6], [36.85, 3.0], [37.1, 6.0], [37.35, 8.8], [37.4, 10.2], [37.2, 11.2], [36.4, 10.75], [35.8, 10.8], [35.45, 11.2], [34.7, 10.95], [33.9, 10.3], [33.75, 11.0], [32.95, 13.2], [32.55, 14.5], [32.2, 15.3],
-  [31.3, 15.2], [31.6, 12.5], [32.6, 9.8], [33.6, 7.4], [34.4, 4.5], [34.8, 1.8], [35.2, 0.4]]);
-region(vk, { side: "rome", t: T_VK - 0.3, op: 0.3 });
-region(GL([[41.25, 9.25], [40.9, 9.85], [39.2, 9.75], [38.85, 8.55], [39.9, 8.3], [40.95, 8.15]]), { side: "rome", t: T_VK + 0.1, op: 0.3, sw: 4 });
-B.label("VANDAL KINGDOM", ...G(34.0, 5.6), { cls: "country", size: 42, t: T_VK + 0.2 });
-B.label("SARDINIA", ...G(40.0, 10.1), { cls: "tg", size: 22, t: T_VK + 0.5, anchor: [0, -50] });
-B.city("CARTHAGE", ...G(36.85, 10.32), { left: true, size: 32, t: T_CARTH - 0.3 });
-B.caption("THE VANDAL KINGDOM · RICHEST PROVINCES OF THE WEST", T_RICH - 0.4, END - 0.2, "rome");
+// Carthage taken
+B.arrow({ side: "carth", pts: [[1428, 530], [1436, 500], [1442, 488]], width: 14, t: T_OPEN - 0.3, dur: 0.6, until: T_ESC + 0.5 });
+B.move("rom", T_OPEN, 1.2, 1440, 505);
+B.caption("SEPTEMBER 533 · CARTHAGE TAKEN", T_OPEN, T_ESC + 1.8, "carth");
+
+// Gelimer escapes west and regroups
+B.city("BULLA REGIA", ...BULLA, { left: true, size: 26, t: T_ESC + 0.4 });
+B.arrow({ side: "rome", pts: [[1240, 700], [1120, 700], [990, 660], [935, 628]], width: 12, dash: "22 14", t: T_ESC, dur: 1.8 });
+B.tl.to(gel, { x: -150, y: 140, duration: 2.6, ease: "power2.inOut" }, T_ESC + 0.2);
+const gather = [[720, 665], [800, 705], [870, 668], [715, 740], [800, 780], [640, 705]];
+gather.forEach(([x, y], i) => B.unit({ id: "g" + i, side: "rome", kind: i % 3 ? "inf" : "cav", x, y, w: 48, h: 32, t: T_3M + 0.3 + i * 0.35 }));
+counter("EVERY VANDAL WARRIOR", 720, 870, "rome", T_3M + 1.4, T_TZ + 0.2, 26);
+
+// Tzazon returns from Sardinia
+B.label("▲ SARDINIA", 1020, 60, { cls: "tg", size: 26, t: T_TZ - 0.6, anchor: [-50, 0] });
+B.arrow({ side: "rome", pts: [[1020, 120], [990, 260], [950, 420], [905, 575]], width: 18, t: T_TZ, dur: 2.0 });
+counter("TZAZON + HIS VETERANS", 1250, 230, "rome", T_TZ + 0.4, null, 26);
+B.unit({ id: "tz", side: "rome", kind: "inf", x: 950, y: 610, w: 52, h: 34, t: T_TZ + 2.0 });
+
+// marching on Carthage again
+B.arrow({ side: "rome", pts: [[960, 660], [1100, 650], [1220, 600], [1300, 560]], width: 22, t: T_AGAIN, dur: 1.8 });
