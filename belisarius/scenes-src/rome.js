@@ -49,7 +49,7 @@ const T_FOOD = at("rome-9", "ran out of food");
 
 // ---------- camera ----------
 B.camera([
-  [0, 1420, 760, 0.86],
+  [0, 1420, 660, 0.9],
   [5.0, 1450, 780, 0.78],
   [T_CAMPS, 1509, 771, 0.7],
   [S3 + 2.6, 1509, 771, 0.7],
@@ -59,10 +59,10 @@ B.camera([
   [T_LOGS - 1.5, 1080, 860, 2.55],
   [T_LOGS + 0.5, 1010, 815, 2.45],
   [S5, 1040, 830, 2.45],
-  [S5 + 3.0, 1630, 300, 1.9],
-  [T_TOWERS, 1640, 290, 2.1],
-  [T_ONE, 1640, 280, 2.3],
-  [S7, 1640, 290, 2.25],
+  [S5 + 3.0, 1600, 330, 1.6],
+  [T_TOWERS, 1600, 320, 1.7],
+  [T_ONE, 1610, 300, 1.8],
+  [S7, 1610, 305, 1.78],
   [T_HAD + 0.4, 900, 500, 2.0],
   [T_PRAE - 1.0, 880, 490, 2.1],
   [T_PRAE + 1.2, 2080, 740, 1.8],
@@ -78,7 +78,7 @@ R.tiber();
 B.label("TIBER", 1236, 1005, { cls: "river", size: 34, t: 0.4, rot: -72, anchor: [-50, -50] });
 R.walls({ t: 0.9, dur: 4.2 });
 R.tomb(2.4);
-B.label("TOMB OF HADRIAN", G.hadrian[0], G.hadrian[1] - 34, { cls: "tg", size: 24, t: 2.8, anchor: [-50, -100] });
+B.label("TOMB OF HADRIAN", G.hadrian[0] - 34, G.hadrian[1] + 4, { cls: "tg", size: 24, t: 2.8, anchor: [-100, -50] });
 B.showDate(0.2);
 B.date("MARCH 537 AD", 0.4, S5 + 0.2);
 stake(1470, 900, 1.15, 0.9, T_12 + 3.5);
@@ -115,6 +115,7 @@ mills.forEach((m) => {
   tl.to(m.wheel.querySelector("circle"), { fill: "#9a968c", duration: 0.8 }, T_STOP + 1.0);
   tl.to(m.g, { opacity: 0.75, duration: 0.8 }, T_STOP + 1.0);
 });
+mills.forEach((m) => fadeOut(m.g, S8 + 0.5, 1));
 B.label("GRAIN MILLS", 945, 1018, { cls: "tg", size: 26, t: T_MILLS + 0.6, until: S4 + 0.6, anchor: [0, -50] });
 B.caption("NO WATER · NO MILLS · NO BREAD", T_BREAD - 0.6, S4 - 0.1, "rome");
 
@@ -150,7 +151,7 @@ B.caption("IRON CHAINS ACROSS THE RIVER", T_CHAIN + 0.1, S5 - 0.1, "carth");
 // ---------- rome-5: day 18, the great assault on the Salarian Gate ----------
 B.date("DAY 18 OF THE SIEGE", S5 + 0.3, S8, 34);
 B.caption("DAY 18 · THE GREAT ASSAULT", S5 + 0.4, T_SAL + 3.5, "rome");
-B.label("SALARIAN GATE", 1640, 262, { cls: "tg", size: 22, t: T_SAL, until: S7 + 0.5, anchor: [-50, 0] });
+B.label("SALARIAN GATE", 1690, 380, { cls: "tg", size: 22, t: T_SAL, until: T_ONE - 0.2, anchor: [-50, 0] });
 tl.fromTo(svgG(`<circle cx="${GT.SALARIAN[0]}" cy="${GT.SALARIAN[1]}" r="30" fill="none" stroke="#f7f3ea" stroke-width="5"/>`), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, yoyo: true, repeat: 3 }, T_SAL);
 const TW = [[1560, 95], [1635, 80], [1708, 118], [1780, 150]];
 const towers = [], oxen = [];
@@ -165,8 +166,6 @@ TW.forEach(([x, y], i) => {
   });
   towers.push(tw); oxen.push(ox);
 });
-[[1520, 30], [1600, 20], [1680, 45], [1760, 65]].forEach(([x, y], i) => B.unit({ id: "gi" + i, side: "rome", kind: "inf", x, y: y - 40, w: 30, h: 30, t: T_TOWERS + 0.4 + i * 0.2 }));
-[0, 1, 2, 3].forEach((i) => B.move("gi" + i, T_TOWERS + 1.0, T_DOWN - T_TOWERS - 1.0, [1520, 1600, 1680, 1760][i], [30, 20, 45, 65][i] + 40, "none"));
 B.caption("SIEGE TOWERS PULLED BY OXEN", T_TOWERS + 0.3, T_IF, "rome");
 B.caption("IF THEY REACH THE WALL…", T_IF + 0.2, S6 + 1.0, "rome");
 
@@ -177,10 +176,10 @@ DEF.forEach(([x, y], i) => {
   tl.fromTo(B.units["d" + i].el, { x: -3 }, { x: 3, duration: 0.07, yoyo: true, repeat: 11, ease: "none" }, T_PANIC + i * 0.05);
   tl.set(B.units["d" + i].el, { x: 0 }, T_PANIC + 1.2);
 });
-stake(1552, 410, 0.55, T_LAUGH - 0.2, S7 + 0.4);
+stake(1490, 468, 0.8, T_LAUGH - 0.2, S7 + 0.4);
 B.caption("BELISARIUS LAUGHED", T_LAUGH + 0.2, T_HOLD - 0.1, "carth");
 B.caption("HOLD…", T_HOLD, T_ONE - 0.2, "carth");
-R.scale(B.bubble("SHOOT THE OXEN", 1585, 300, T_ONE, T_DEAD + 1.5), 0.5, "0% 0%");
+R.scale(B.bubble("SHOOT THE OXEN", 1528, 330, T_ONE, T_DEAD + 1.5), 0.5, "0% 0%");
 for (let v = 0; v < 3; v++) {
   DEF.forEach((d, i) => {
     const o = TW[i % 4];
@@ -191,6 +190,7 @@ oxen.forEach((g, i) => {
   tl.to(g, { rotation: 75, duration: 0.35, ease: "power2.in" }, T_DOWN + i * 0.12);
   tl.to(g.querySelectorAll("ellipse,circle"), { fill: "#77746c", duration: 0.5 }, T_DOWN + i * 0.12);
 });
+B.hideUnits(DEF.map((_, i) => "d" + i), S8 + 0.2);
 B.caption("STRANDED", T_DEAD, T_BURN - 0.6, "rome");
 towers.forEach((g, i) => tl.to(g.querySelectorAll("rect"), { fill: "#77746c", duration: 0.6 }, T_DEAD + 0.2 + i * 0.1));
 TW.forEach(([x, y], i) => {
@@ -199,15 +199,14 @@ TW.forEach(([x, y], i) => {
   tl.to(f, { autoAlpha: 1, duration: 0.5 }, T_BURN - 1.4 + i * 0.2);
   tl.to(f, { autoAlpha: 0, duration: 0.8 }, S8 - 1);
 });
-B.hideUnits(["gi0", "gi1", "gi2", "gi3"], T_DEAD + 1.5, 1.2);
 towers.concat(oxen).forEach((g) => fadeOut(g, S8 + 0.3, 1));
 
 // ---------- rome-7: Hadrian's tomb, the Vivarium ----------
 tl.fromTo(svgG(`<circle cx="${G.hadrian[0]}" cy="${G.hadrian[1]}" r="46" fill="none" stroke="#c4121f" stroke-width="7"/>`), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, yoyo: true, repeat: 5 }, T_HAD - 0.4);
-B.arrow({ side: "rome", pts: [[690, 400], [770, 440], [826, 466]], width: 14, t: T_HAD, dur: 1.0, until: T_PRAE });
-[[800, 420], [790, 470], [835, 415]].forEach(([x, y], i) => B.unit({ id: "h" + i, side: "rome", kind: "inf", x, y, w: 22, h: 22, t: T_HAD + 0.6 + i * 0.15 }));
+B.arrow({ side: "rome", pts: [[790, 300], [845, 360], [870, 425]], width: 14, t: T_HAD, dur: 1.0, until: T_PRAE });
+[[820, 390], [915, 400], [890, 360]].forEach(([x, y], i) => B.unit({ id: "h" + i, side: "rome", kind: "inf", x, y, w: 22, h: 22, t: T_HAD + 0.6 + i * 0.15 }));
 for (let k = 0; k < 10; k++) {
-  const tgt = [[800, 420], [790, 470], [835, 415]][k % 3];
+  const tgt = [[820, 390], [915, 400], [890, 360]][k % 3];
   R.shot([G.hadrian[0] - 10, G.hadrian[1] - 5], [tgt[0] + ((k * 7) % 11) - 5, tgt[1] + ((k * 5) % 9) - 4], T_MARBLE + k * 0.22, 0.35, "#f7f3ea");
 }
 B.grey(["h0", "h1", "h2"], T_MARBLE + 2.4);
@@ -216,7 +215,7 @@ B.caption("STATUES THROWN DOWN", T_MARBLE, T_PRAE - 0.4, "carth");
 // the Vivarium: an enclosure outside the wall near the Praenestine Gate
 const viv = svgG(`<rect x="2044" y="690" width="84" height="112" fill="rgba(239,227,196,0.35)" stroke="#3b2f22" stroke-width="6" stroke-dasharray="12 6"/>`);
 fadeIn(viv, T_PRAE);
-B.label("VIVARIUM", 2140, 748, { cls: "tg", size: 22, t: T_PRAE + 0.3, until: S8 + 0.4, anchor: [0, -50] });
+B.label("VIVARIUM", 2086, 812, { cls: "tg", size: 22, t: T_PRAE + 0.3, until: S8 + 0.4, anchor: [-50, 0] });
 B.label("PRAENESTINE GATE", 2005, 868, { cls: "tg", size: 20, t: T_PRAE, until: S8 + 0.4, anchor: [-100, -50] });
 B.arrow({ side: "rome", pts: [[2240, 700], [2170, 735], [2110, 748]], width: 14, t: T_BREACH - 0.3, dur: 1.0, until: T_OTHER + 1.4 });
 const breach = svgG(`<circle cx="2128" cy="748" r="24" fill="#c4121f" opacity="0.7" filter="url(#rkGlowS)"/>`);
@@ -235,7 +234,7 @@ const inward = (k, d) => { const [x, y] = GT[k], dx = 1450 - x, dy = 800 - y, n 
 const locks = LOCKG.map((k, i) => R.lock(...inward(k, 0), T_TRAITOR + 1.2 + i * 0.08, 1.9));
 const tr = svgG(`<circle cx="${GT.PINCIAN[0]}" cy="${GT.PINCIAN[1]}" r="48" fill="none" stroke="#c4121f" stroke-width="8"/>`);
 tl.fromTo(tr, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, yoyo: true, repeat: 3 }, T_TRAITOR - 0.2);
-B.label("TRAITOR?", GT.PINCIAN[0], GT.PINCIAN[1] - 70, { cls: "tg", size: 40, t: T_TRAITOR - 0.2, until: T_LOCKS + 0.2, anchor: [-50, -100] });
+B.label("TRAITOR?", GT.PINCIAN[0], GT.PINCIAN[1] - 70, { cls: "tg", size: 54, t: T_TRAITOR - 0.2, until: T_LOCKS + 0.2, anchor: [-50, -100] });
 [T_LOCKS + 0.3, T_TWICE + 0.3].forEach((t, n) => locks.forEach((g, i) => {
   tl.to(g, { rotation: `+=360`, duration: 0.6, ease: "back.inOut(1.6)" }, t + i * 0.05);
   tl.to(g.querySelector("rect"), { fill: n ? "#e0b441" : "#9fc0ea", duration: 0.3 }, t + 0.3 + i * 0.05);
@@ -258,7 +257,7 @@ SALLY.forEach(([k, f], i) => {
   const g0 = GT[k], t = T_HORSE + 0.8 + i * 0.6;
   B.unit({ id: "f" + i, side: "rome", kind: "inf", x: f[0], y: f[1], w: 40, h: 40, t: T_HORSE - 0.4 + i * 0.15 });
   const mid = [(g0[0] + f[0]) / 2 + (f[1] - g0[1]) * 0.12, (g0[1] + f[1]) / 2 - (f[0] - g0[0]) * 0.12];
-  B.arrow({ side: "carth", pts: [g0, mid, [g0[0] + (f[0] - g0[0]) * 0.86, g0[1] + (f[1] - g0[1]) * 0.86]], width: 16, t, dur: 1.2, until: T_BACK + 0.6 });
+  B.arrow({ side: "carth", pts: [g0, mid, [g0[0] + (f[0] - g0[0]) * 0.86, g0[1] + (f[1] - g0[1]) * 0.86]], width: 20, t, dur: 1.2, until: T_BACK + 0.6 });
   B.grey(["f" + i], t + 1.3, 0.6);
   B.hideUnits(["f" + i], T_BACK + 1.8, 0.8);
   const back = [g0[0] + (f[0] - g0[0]) * 0.8, g0[1] + (f[1] - g0[1]) * 0.8];
@@ -266,7 +265,7 @@ SALLY.forEach(([k, f], i) => {
 });
 B.caption("HORSE ARCHERS: HIT AND RUN", T_HORSE + 0.6, T_REINF - 0.2, "carth");
 B.arrow({ side: "carth", pts: [[2860, 880], [2560, 875], [2300, 862], [2080, 856]], width: 24, t: T_REINF, dur: 2.2 });
-B.label("REINFORCEMENTS", 2580, 830, { cls: "tg", size: 36, t: T_REINF + 0.8, until: T_FOOD, anchor: [-50, -100] });
+B.label("REINFORCEMENTS", 2480, 830, { cls: "tg", size: 36, t: T_REINF + 0.8, until: T_FOOD, anchor: [-50, -100] });
 R.dimCamps(T_SLOW + 1.5, 2.5, 0.32);
 B.caption("THE SIEGE TURNS INSIDE OUT", T_SLOW + 1.6, T_FOOD - 0.3, "carth");
 B.caption("GOTHS: FAMINE · PLAGUE", T_FOOD, END, "rome");
