@@ -150,7 +150,7 @@ It was not a pure bluff. Through the night, Royal Marines, more guns and more mo
 [MAP: move3-9 | Dawn, 29 May: long grey columns of red counters march out of GOOSE GREEN onto the airfield; weapons icons pile up; counter ticks up to 961 PRISONERS]
 Pee-AH-jee read the terms, and concluded that the British could simply sit out of range and destroy the settlement. On the morning of the twenty-ninth of May, the Argentine National Army Day, the garrison surrendered. The paratroopers watched in disbelief. They had expected a few hundred men. Instead, column after column marched out onto the airfield, and nine hundred and sixty-one soldiers laid down their weapons, to a battalion that had lost about a sixth of its fighting strength killed or wounded.
 
-[ARCHIVE: photo of Argentine prisoners at Goose Green, 1982; the settlement's civilians released from the community hall]
+[MAP: move3-cas | Casualty card (K.casualties) over the map: BRITISH vs ARGENTINE with flags; killed 18 vs 45–55, wounded 64 vs ~100, captured 0 vs 961; civilians freed from the community hall (hall ring turns gold, 114 FREED tag)]
 The civilians in the community hall walked out free. The cost of the battle was eighteen British dead and more than sixty wounded. On the Argentine side, between forty-five and fifty-five men were killed, and around a hundred wounded.
 
 [MAP: move3-10 | Method card, third line lit: ATTACK THE MIND, NOT THE MAN]
