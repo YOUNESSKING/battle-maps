@@ -23,13 +23,13 @@ SCENES = {"hook-rome": "hook-rome", "hook-empire": "hook-empire", "dara-1": "dar
 # archive paragraphs in order: list of shots (image, start box, end box); boxes = (cx, cy, zoom) in image fractions,
 # zoom 1 = the largest 16:9 crop that fits. A paragraph's time is split evenly between its shots.
 ARCHIVE = [
-    [("sanvitale.jpg", (0.5, 0.5, 1.0), (0.36, 0.35, 1.9))],                      # hook: San Vitale, push in on Belisarius
-    [("cataphract.jpg", (0.5, 0.5, 1.05), (0.5, 0.45, 1.3)),
-     ("justinian_coin.jpg", (0.5, 0.5, 1.0), (0.5, 0.5, 1.25))],                  # hook: cavalry + coin
-    [("skylitzes.jpg", (0.4, 0.5, 1.1), (0.6, 0.5, 1.3))],                         # after Dara
-    [("gelimer.jpg", (0.5, 0.5, 1.0), (0.5, 0.4, 1.35))],                          # Gelimer's surrender
-    [("david.jpg", (0.5, 0.5, 1.0), (0.42, 0.4, 1.5))],                            # David, Belisarius begging
-    [("sanvitale.jpg", (0.36, 0.33, 2.2), (0.36, 0.3, 2.8))],                      # San Vitale detail, slow fade
+    [("sanvitale.jpg", (0.5, 0.5, 1.0), (0.39, 0.27, 2.3))],                      # hook: San Vitale, push in on Belisarius
+    [("cataphract.jpg", (0.5, 0.5, 1.0), (0.5, 0.5, 1.12), "fit"),
+     ("justinian_coin.jpg", (0.5, 0.5, 1.0), (0.5, 0.5, 1.2), "fit")],           # hook: cavalry + coin
+    [("skylitzes.jpg", (0.5, 0.5, 1.0), (0.45, 0.5, 1.15), "fit")],                # after Dara
+    [("gelimer.jpg", (0.5, 0.5, 1.0), (0.5, 0.45, 1.15), "fit")],                  # Gelimer captured (Knackfuss)
+    [("david.jpg", (0.5, 0.5, 1.0), (0.66, 0.4, 1.6))],                            # David, Belisarius begging
+    [("sanvitale.jpg", (0.39, 0.25, 2.3), (0.39, 0.23, 2.7))],                     # San Vitale detail, slow drift
 ]
 ENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an"]
 
@@ -52,11 +52,14 @@ def kenburns(shots, dur, out):
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                           "-r", str(FPS), "-i", "-", *ENC, out], stdin=subprocess.PIPE)
     vign = np.asarray(Image.open("assets/vignette.png"), np.float32)[..., None] / 255 if os.path.exists("assets/vignette.png") else None
-    for (img, a, b), k in zip(shots, per):
+    for shot, k in zip(shots, per):
+        img, a, b = shot[:3]
         path = f"assets/archive/{img}"
         if not os.path.exists(path):
             card(f"[ARCHIVE]\n{img}", "build/tmp_card.png"); path = "build/tmp_card.png"
         im = Image.open(path).convert("RGB")
+        if len(shot) > 3 and shot[3] == "fit":
+            im = fit_canvas(im)
         iw, ih = im.size
         bw0 = min(iw, ih * W / H)  # largest 16:9 crop width
         for f in range(k):
@@ -71,6 +74,20 @@ def kenburns(shots, dur, out):
             fade = min(1.0, f / 6, (k - 1 - f) / 6) if len(shots) > 1 else 1.0
             p.stdin.write((fr * fade).clip(0, 255).astype(np.uint8).tobytes())
     p.stdin.close(); p.wait()
+
+
+def fit_canvas(im):
+    """Whole image on a blurred, darkened copy of itself (for small or oddly shaped images)."""
+    CW, CH = W * 2, H * 2
+    iw, ih = im.size
+    sc = max(CW / iw, CH / ih)
+    bg = im.resize((int(iw * sc) + 1, int(ih * sc) + 1), Image.BILINEAR)
+    bg = bg.crop(((bg.width - CW) // 2, (bg.height - CH) // 2, (bg.width - CW) // 2 + CW, (bg.height - CH) // 2 + CH))
+    bg = Image.eval(bg.filter(ImageFilter.GaussianBlur(40)), lambda v: int(v * 0.4))
+    sc = min(CW * 0.92 / iw, CH * 0.9 / ih)
+    fg = im.resize((int(iw * sc), int(ih * sc)), Image.LANCZOS)
+    bg.paste(fg, ((CW - fg.width) // 2, (CH - fg.height) // 2))
+    return bg
 
 
 def vignette():

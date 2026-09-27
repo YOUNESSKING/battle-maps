@@ -48,4 +48,15 @@ reproductions of public-domain works.
   License: Public domain.
   https://commons.wikimedia.org/wiki/File:Justinian_I_Solidus_LACMA_M.79.126.6_(2_of_2).jpg
 
-(remaining entries added as files are produced)
+- **david.jpg** — Jacques-Louis David, "Belisarius Begging for Alms" (Bélisaire demandant l'aumône). License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Belisaire_demandant_l%27aumone_Jacques-Louis_David.jpg
+
+- **gelimer.jpg** — Hermann Knackfuß, "King Gelimer captured by Belisarius, 534" (engraving). License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Hermann_Knackfu%C3%9F_-_King_Gelimer_captured_by_Belisarius,_534.jpg
+
+- **skylitzes.jpg** — Madrid Skylitzes, fighting between Byzantines and Arabs (manuscript miniature). License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Fighting_between_Byzantines_and_Arabs_Chronikon_of_Ioannis_Skylitzes,_end_of_13th_century..jpg
+
+- **cataphract.jpg** — Madrid Skylitzes, Basil II's cavalry vs the Georgians (cropped miniature). License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Skylitzes._Basil_II_vs_Georgians_cropped.jpg
+

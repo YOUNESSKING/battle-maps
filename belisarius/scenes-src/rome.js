@@ -86,7 +86,7 @@ B.label("AURELIAN WALLS", 1480, 1215, { cls: "tg", size: 40, t: T_12 - 0.4, unti
 B.label("12 MILES · 18 GATES", 1480, 1268, { cls: "tg", size: 34, t: T_18, until: T_STARVE - 0.3, anchor: [-50, -50] });
 R.gates(T_18, { stagger: 0.07 });
 G.camps.forEach(([x, y], i) => R.camp(x, y, T_CAMPS + 0.2 + i * 0.45));
-B.label("PLAIN OF NERO", G.camps[6][0], G.camps[6][1] + 66, { cls: "tg", size: 24, t: T_CAMPS + 3.2, until: S3 + 0.5, anchor: [-50, 0] });
+B.label("PLAIN OF NERO", G.camps[6][0], G.camps[6][1] - 64, { cls: "tg", size: 24, t: T_CAMPS + 3.2, until: S3 + 0.5, anchor: [-50, -100] });
 const red = R.counter({ side: "red", title: "GOTHS", big: "150,000?", sub: "Procopius, eyewitness", left: 40, width: 340, top: 470, t: T_CAMPS + 1.0, until: S3 - 0.2 });
 R.counterRow(red, "20,000–30,000 <span>(modern)</span>", T_CAMPS + 2.0);
 R.counter({ side: "blue", title: "ROMANS", big: "5,000", left: 40, width: 340, top: 745, t: T_CAMPS + 2.8, until: S3 - 0.2 });
