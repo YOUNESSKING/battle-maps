@@ -29,4 +29,23 @@ reproductions of public-domain works.
   License: Public domain.
   https://commons.wikimedia.org/wiki/File:Vandal_Kingdom_Hilderic_Denarius.jpg
 
+- **vitiges.png** — Ostrogothic quarter-siliqua of King Witigis (Vitiges), obverse (diademed
+  bust), circular crop.
+  License: CC BY-SA 2.5.
+  https://commons.wikimedia.org/wiki/File:Quarter_Siliqua_of_Witigis_cropped.jpg
+
+- **john.png** — gold solidus of Justinian I, obverse (diademed, cuirassed bust facing).
+  LACMA (M.79.126.6), photo by the Los Angeles County Museum of Art. License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Justinian_I_Solidus_LACMA_M.79.126.6_(2_of_2).jpg
+
+## Archive (assets/archive/)
+
+- **sanvitale.jpg** — full "Justinian and his court" mosaic, San Vitale, Ravenna (Meister von
+  San Vitale in Ravenna, Yorck Project reproduction). License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Meister_von_San_Vitale_in_Ravenna_003.jpg
+
+- **justinian_coin.jpg** — full gold solidus of Justinian I, obverse, LACMA M.79.126.6.
+  License: Public domain.
+  https://commons.wikimedia.org/wiki/File:Justinian_I_Solidus_LACMA_M.79.126.6_(2_of_2).jpg
+
 (remaining entries added as files are produced)
