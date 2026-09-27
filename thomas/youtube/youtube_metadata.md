@@ -2,7 +2,7 @@
 
 **Video:** thomas-1080p.mp4 · 18:50 · 1080p · -14.8 LUFS (master: https://gofile.io/d/7QPAmOoq)
 **Locked title (vidIQ 91):** Grant Almost Fired Him Days Before He Crushed an Army: George Thomas's Top 3 Tactical Moves
-**Thumbnails (Test & compare):** A thumbnail.png "ALMOST FIRED / ARMY CRUSHED" (matches the title) · B thumbnail_B.png "HALF THE ARMY RAN / HE STAYED" · C thumbnail_C.png "THE ROCK OF / CHICKAMAUGA"
+**Thumbnails (Test & compare):** made with vidIQ (generate_thumbnail, Tactical Genius style: 4 Tactical Genius thumbnails as style references + the public-domain Library of Congress portrait of Thomas, LC-DIG-cwpb-07196, as likeness reference). A thumbnail.png "“SLOW TROT”" over Nashville (blue blocks wrapping Hood's line; vidIQ 96) · B thumbnail_B.png "“THE ROCK”" over Horseshoe Ridge (vidIQ 93). Raw files: youtube/ai/.
 
 ## Alternative titles (for Test & compare)
 - The Union General Grant Almost Fired, Days Before He Destroyed an Entire Army (vidIQ 91)
@@ -65,8 +65,8 @@ Category: Education · Made for kids: No · Language: English · Altered or synt
 - [ ] Competitor refs saved in youtube/competitor_refs/ (not done for this video)
 - [x] Title scored ≥ 85 (91); hook in the first 54 characters; 91 characters; clear and true (relief order drafted Dec 9, battle Dec 15-16)
 - [x] No negation in title or thumbnail
-- [x] Thumbnail A makes the same promise as the title (ALMOST FIRED / ARMY CRUSHED)
-- [x] 3 thumbnail options for Test & compare: thumbnail.png (A, main), thumbnail_B.png (HE STAYED), thumbnail_C.png (THE ROCK OF CHICKAMAUGA)
+- [x] Thumbnail A completes the title: the "Slow Trot" nickname (why Grant nearly fired him) over the army he crushed at Nashville
+- [x] 2 thumbnail options for Test & compare: thumbnail.png (A, “SLOW TROT”), thumbnail_B.png (“THE ROCK”)
 - [x] Description line 1 = script hook; names and numbers are all in the voice
 - [x] Chapters from timing.json paragraph starts (final audio); start at 0:00; all ≥ 10 s (shortest 47 s)
 - [x] Credits + email placeholder + 3 hashtags
