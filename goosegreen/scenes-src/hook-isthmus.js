@@ -251,6 +251,9 @@ B.camera([
   [END, 1640, 830, 1.18],
 ]);
 
+const K = FXK(B);
+K.grid(G, -51.87, -51.69, -59.24, -58.74, 0.02, 0);
+
 // ---------- places ----------
 B.showDate(0.2);
 B.date("27 MAY 1982", 0.4, null, 40);
@@ -267,7 +270,8 @@ B.label("DARWIN HARBOUR", 1760, 1085, { cls: "sea", size: 24, t: 2.8 });
 // ---------- 2 PARA ----------
 B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 46, w: 56, h: 38, label: "2 PARA", t: T_2PARA });
 B.unit({ id: "guns", side: "carth", x: CCH[0] - 70, y: CCH[1] + 46, w: 40, h: 28, label: "3 GUNS", t: T_GUNS });
-GG.icon("guns", "gun");
+K.counter("para", { icon: "infantry", flag: "uk", size: "II" });
+K.counter("guns", { icon: "artillery", flag: "uk", size: "I" });
 B.caption("2 PARA · ~500 FIGHTING MEN · 3 LIGHT GUNS", T_500 - 0.3, T_1000 - 0.3, "carth r");
 
 // ---------- Task Force Mercedes ----------
@@ -280,12 +284,27 @@ const RED = [
   ["d1", AIRF[0] + 14, AIRF[1] - 18], ["d2", GOOSE[0] - 34, GOOSE[1] - 30], ["d3", GOOSE[0] + 26, GOOSE[1] - 36],
 ];
 RED.forEach(([id, x, y], i) => B.unit({ id, side: "rome", x, y, w: 34, h: 24, t: T_1000 + 0.2 + i * 0.12 }));
-GG.icon("d1", "aa"); GG.icon("d3", "gun");
+RED.forEach(([id]) => K.counter(id, id === "d1" ? { icon: "aa", flag: "arg" } : id === "d3" ? { icon: "artillery", flag: "arg", size: "I" } : { icon: "infantry", flag: "arg", size: "I" }));
+K.target(GOOSE[0], GOOSE[1] - 10, T_1000 + 1.4, { r: 64, until: T_ART });
+// the Argentine forward line across the isthmus: British (blue) glow to the north, Argentine (red) glow to the south
+K.front({ pts: [[1486, 842], [1540, 826], [1620, 814], [1700, 806], [1800, 796]], sideA: "carth", sideB: "rome", width: 24,
+  t: at(K1, "an enemy with trenches") - 0.2, dur: 1.6, until: T_900 });
 GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", 1500, 1250, "#c4121f", { size: 20, anchor: [-100, -50], t: T_1000 + 1.2 });
 B.caption("DUG IN ACROSS OPEN, TREELESS GROUND", T_DUG, T_ART - 0.2, "rome r");
 B.caption("+ ARTILLERY · ANTI-AIRCRAFT GUNS · AIRCRAFT ON CALL", T_ART, T_BBC - 0.3, "rome r");
 GG.lbl("AA GUNS", AIRF[0] + 36, AIRF[1] - 18, { size: 16, anchor: [0, -50], t: T_ART + 0.4, until: S2 });
 GG.lbl("ARTILLERY", GOOSE[0] + 48, GOOSE[1] - 36, { size: 16, anchor: [0, -50], t: T_ART + 0.7, until: S2 });
+// the 105 mm guns at Goose Green fire on the open ground in front of the line
+[[1560, 760], [1650, 742], [1480, 786]].forEach(([tx, ty], i) => {
+  const tf = T_ART + 0.2 + i * 0.7, gx = GOOSE[0] + 26, gy = GOOSE[1] - 36;
+  K.gun(gx, gy, tf, { unit: "d3", dx: 0, dy: -12 });
+  GG.arc(gx, gy - 12, tx, ty, tf + 0.05, { dur: 1.1, width: 2.5, h: 90, impact: false });
+  K.impact(tx, ty, tf + 1.15, { r: 16 });
+});
+// ground-attack aircraft on call: a Pucará lifts off from the airfield and sweeps north
+K.aircraft({ kind: "turboprop", side: "rome", size: 64, pts: [[AIRF[0] + 40, AIRF[1] + 20], [AIRF[0] - 30, AIRF[1] - 50], [1360, 1010], [1300, 860]],
+  t: at(K1, "ground-attack aircraft") - 0.3, dur: 4.2, until: at(K1, "ground-attack aircraft") + 4.0 });
+GG.lbl("PUCARÁ", 1290, 1070, { size: 16, color: "#ffc4c4", t: at(K1, "ground-attack aircraft") + 0.4, until: at(K1, "ground-attack aircraft") + 3.6 });
 // the BBC warning: radio rings over the Argentine line
 const ring = (x, y, t) => {
   for (let i = 0; i < 4; i++) {

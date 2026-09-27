@@ -251,6 +251,9 @@ B.camera([
   [END, 1560, 1100, 2.1],
 ]);
 
+const K = FXK(B);
+K.grid(G, -51.87, -51.69, -59.24, -58.74, 0.02, 0);
+
 // ---------- base: places and the Argentine layers ----------
 B.showDate(0.2);
 B.date("28 – 29 MAY 1982", 0.4, null, 36);
@@ -262,11 +265,17 @@ GG.lbl("DARWIN HILL", 1562, 1034, { size: 16, t: 0.7 });
 GG.gorse([[BOCA[0] + 8, BOCA[1] + 8], [1520, 975], [1560, 992], [DHILL[0] + 14, DHILL[1] + 16], [1616, 1006]], 0.4);
 const FWD = [[1500, 872], [1560, 858], [1640, 846], [1700, 842], [1770, 848]];
 const MAIN = [[BOCA[0] + 6, BOCA[1] - 20], [1522, 956], [1570, 968], [1608, 982], [1628, 998]];
-const fwd = B.front({ pts: FWD, color: "var(--rome)", width: 7, t: T_CHOOSE, dur: 1.0, until: T_DARK + 1.8 });
-const main = B.front({ pts: MAIN, color: "var(--rome)", width: 9, t: T_CHOOSE + 0.4, dur: 1.0, until: T_HEAVY + 2.8 });
+// glowing two-colour fronts (British blue glow north, Argentine red glow south): the forward line is pushed back
+// onto the gorse line in the dark, then broken by the heavy weapons, then becomes the ring around Goose Green
+const MAIN_N = MAIN.map(([x, y]) => [x, y - 14]);
+K.front({ pts: FWD.map(([x, y]) => [x, y - 24]), sideA: "carth", sideB: "rome", width: 20, t: T_CHOOSE, dur: 1.2, to: MAIN_N, moveT: T_DARK + 1.0, moveDur: 1.4, until: T_HEAVY + 2.4 });
+const SOUTH = [[1440, 1098], [1490, 1086], [1540, 1084], [1590, 1074], [1640, 1060]];
+K.front({ pts: SOUTH, sideA: "carth", sideB: "rome", width: 20, t: T_HEAVY + 2.5, dur: 1.2, until: T_WORDS + 0.4 });
 const RED = { f1: [1540, 870], f2: [1628, 856], f3: [BURNT[0] + 30, BURNT[1] + 26], m1: [BOCA[0] + 26, BOCA[1] - 16], m2: [1532, 978], m3: [DHILL[0] + 6, DHILL[1] + 2],
   g1: [GOOSE[0] - 34, GOOSE[1] - 30], g2: [GOOSE[0] + 30, GOOSE[1] - 34], g3: [AIRF[0] + 16, AIRF[1] - 20] };
 Object.entries(RED).forEach(([id, [x, y]], i) => B.unit({ id, side: "rome", x, y, w: 26, h: 18, t: T_CHOOSE + 0.2 + i * 0.1 }));
+Object.keys(RED).forEach((id) => K.counter(id, id === "g3" ? { icon: "aa", flag: "arg" } : id === "g2" ? { icon: "artillery", flag: "arg", size: "I" }
+  : { icon: "infantry", flag: "arg", size: id === "g1" ? "II" : "I" }));
 
 // ---------- 1: darkness ----------
 GG.night(T_DARK - 0.6, T_HEAVY - 0.3, { dur: 1.0, outDur: 1.2 });
@@ -276,20 +285,27 @@ B.grey(["f1", "f2", "f3"], T_DARK + 1.2, 0.6);
 B.hideUnits(["f1", "f2", "f3"], T_DARK + 2.2, 0.6);
 const BLUE = { A: [1628, 935], B: [1492, 896], D: [1575, 900] };
 Object.entries(BLUE).forEach(([k, [x, y]], i) => B.unit({ id: "c" + k, side: "carth", x, y, w: 28, h: 20, label: k + " COY", t: T_DARK + 1.2 + i * 0.15 }));
+Object.keys(BLUE).forEach((k) => K.counter("c" + k, { icon: "infantry", flag: "uk", size: "I" }));
 B.caption("1 · OWN THE DARK", T_DARK, T_HEAVY - 0.2, "carth r");
 
 // ---------- 2: heavy weapons ----------
-for (let i = 0; i < 7; i++) {
-  const t = T_HEAVY + 0.1 + i * 0.35;
-  GG.flash(1640, 870, t, { r: 12, n: 1, sfx: "mortar" });
-  GG.arc(1640, 870, 1560 + (i * 17) % 40, 975 + (i * 11) % 16, t + 0.05, { dur: 0.7, width: 2.5, h: 60 });
+B.unit({ id: "mor", side: "carth", x: 1640, y: 870, w: 26, h: 18, label: "MORTARS", t: T_HEAVY - 0.3 });
+K.counter("mor", { icon: "artillery", flag: "uk", size: "I" });
+K.target(DHILL[0], DHILL[1] - 4, T_HEAVY + 0.2, { r: 42, until: T_WORDS - 0.2 });
+K.target(BOCA[0] + 22, BOCA[1] - 12, T_HEAVY + 0.6, { r: 38, until: T_WORDS - 0.2 });
+for (let i = 0; i < 5; i++) {           // mortars: the tube fires, the bomb arcs over, the boom lands on the Darwin Hill trenches
+  const t = T_HEAVY + 0.1 + i * 0.45, tx = 1560 + (i * 17) % 40, ty = 975 + (i * 11) % 16;
+  K.gun(1640, 870, t, { unit: "mor", dx: 0, dy: -10, sfx: "mortar" });
+  GG.arc(1640, 860, tx, ty, t + 0.05, { dur: 0.7, width: 2.5, h: 60, impact: false });
+  K.impact(tx, ty, t + 0.75, { r: 12, shake: i % 2 ? false : 3 });
 }
 for (let i = 0; i < 4; i++) {           // MILAN: straight wire-guided shots into the Boca House positions
-  const t = T_HEAVY + 0.5 + i * 0.55;
-  GG.arc(1478, 866, BOCA[0] + 20 + (i % 2) * 14, BOCA[1] - 18 + (i % 3) * 6, t, { h: 0, color: "#fff8d0", width: 3, dur: 0.45, r: 16 });
+  const t = T_HEAVY + 0.5 + i * 0.55, tx = BOCA[0] + 20 + (i % 2) * 14, ty = BOCA[1] - 18 + (i % 3) * 6;
+  K.gun(1478, 866, t, { dx: 0, dy: 0, sfx: "missile" });
+  GG.arc(1478, 866, tx, ty, t, { h: 0, color: "#fff8d0", width: 3, dur: 0.45, impact: false });
+  K.impact(tx, ty, t + 0.45, { r: 15, shake: i % 2 ? false : 4 });
 }
 GG.tagbox("MILAN", 1470, 846, "#1f4fc4", { size: 13, t: T_HEAVY + 0.3, until: T_WORDS });
-GG.tagbox("MORTARS", 1640, 852, "#1f4fc4", { size: 13, t: T_HEAVY + 0.1, until: T_WORDS });
 B.grey(["m1", "m2", "m3"], T_HEAVY + 2.2, 0.6);
 B.hideUnits(["m1", "m2", "m3"], T_WORDS, 0.6);
 B.move("cA", T_HEAVY + 2.6, 1.6, 1590, 1030);
@@ -298,11 +314,13 @@ B.move("cD", T_HEAVY + 2.8, 1.6, 1540, 1060);
 B.caption("2 · MATCH THE WEAPON TO THE WALL", T_HEAVY, T_WORDS - 0.2, "carth r");
 
 // ---------- 3: words: the ring around Goose Green ----------
-const ringEl = GG.pin(`<svg width="330" height="250" viewBox="0 0 330 250" style="display:block;overflow:visible">
-  <ellipse cx="165" cy="125" rx="155" ry="112" fill="rgba(31,79,196,0.12)" stroke="#1f4fc4" stroke-width="9" stroke-dasharray="22 12"/></svg>`, GOOSE[0] - 10, GOOSE[1] - 50, { t: T_WORDS + 0.2 });
-B.move("cA", T_WORDS, 1.5, 1622, 1075);
-B.move("cB", T_WORDS, 1.5, 1418, 1200);
-B.move("cD", T_WORDS, 1.5, 1515, 1050);
+const RC = [1535, 1165], RING = [];
+for (let k = 0; k <= 12; k++) { const th = (150 + k * 22.5) * Math.PI / 180; RING.push([+(RC[0] + 132 * Math.cos(th)).toFixed(1), +(RC[1] + 102 * Math.sin(th)).toFixed(1)]); }
+K.front({ pts: RING, sideA: "carth", sideB: "rome", width: 20, t: T_WORDS + 0.2, dur: 1.8 }); // clockwise: blue glow outside, red inside
+K.target(GOOSE[0], GOOSE[1] - 10, T_WORDS + 0.8, { r: 46, until: S2 });
+B.move("cA", T_WORDS, 1.5, 1640, 1062);
+B.move("cB", T_WORDS, 1.5, 1392, 1205);
+B.move("cD", T_WORDS, 1.5, 1476, 1040);
 const flag = GG.pin(`<svg width="46" height="56" viewBox="0 0 46 56" style="display:block"><line x1="4" y1="2" x2="4" y2="56" stroke="#3a2a18" stroke-width="4"/><path d="M6 4 Q22 0 40 6 L40 26 Q22 20 6 26 Z" fill="#fbfaf6" stroke="#1b1812" stroke-width="2"/></svg>`, GOOSE[0], GOOSE[1] - 76, { t: T_WORDS + 1.8, pop: true });
 B.grey(["g1", "g2", "g3"], T_WORDS + 1.6, 0.8);
 B.caption("3 · ATTACK THE MIND, NOT THE MAN", T_WORDS, S2 - 0.3, "carth r");
