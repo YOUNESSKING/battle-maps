@@ -332,6 +332,30 @@
     // call once at the end of the scene: keeps the territory above night/dawn layers but under units and lines
     K.raiseTerritory = () => { const l = document.getElementById("fxk-terr"); if (l) document.getElementById("world").insertBefore(l, ov); };
     K.shift = (poly, pts, t, dur = 2.5) => tl.to(poly, { attr: { points: pts.map((q) => q.join(",")).join(" ") }, duration: dur, ease: "power1.inOut" }, t);
+
+    // FADE-FROM-THE-FRONT tint (K&G-style): colour strongest right behind a front edge, fading to nothing
+    // within `depth` px. dir = +1 tints the side to the right of the edge's travel direction, -1 the left.
+    // Stacked layers give the gradient; `to` + moveT/moveDur move it with the front; K.lose works per layer.
+    K.frontTint = (o) => {
+      const n = o.layers || 5, depth = o.depth || 140, dir = o.dir || 1;
+      const off = (pts, d) => pts.map((p, i) => {
+        const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+        const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+        return [p[0] - (dy / L) * d, p[1] + (dx / L) * d];
+      });
+      const band = (edge, k) => { // edge extended at both ends so the tint doesn't stop short
+        const e = [[edge[0][0] - (edge[1][0] - edge[0][0]) * 3, edge[0][1] - (edge[1][1] - edge[0][1]) * 3], ...edge,
+          [edge[edge.length - 1][0] + (edge[edge.length - 1][0] - edge[edge.length - 2][0]) * 3, edge[edge.length - 1][1] + (edge[edge.length - 1][1] - edge[edge.length - 2][1]) * 3]];
+        return [...e, ...off(e, dir * depth * (k + 1) / n).reverse()];
+      };
+      const polys = [];
+      for (let k = 0; k < n; k++) {
+        const pl = K.territory({ pts: band(o.pts, k), side: o.color || o.side, t: o.t, dur: o.dur, alpha: (o.alpha || 0.28) / n * 1.6, mask: o.mask, soft: o.soft || 10, until: o.until });
+        if (o.to) K.shift(pl, band(o.to, k), o.moveT, o.moveDur || 2.5);
+        polys.push(pl);
+      }
+      return polys;
+    };
     return K;
   };
 })();
