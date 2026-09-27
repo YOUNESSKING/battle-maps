@@ -98,16 +98,19 @@ story += [P("2. Title and thumbnail", "h1"), P("Title (recommended)", "h2"),
           *bullets(["2 Para's Top 3 Legendary Tactical Moves | 500 Men vs 1,000", "Goose Green: How 500 Paratroopers Beat 1,000 Dug-In Defenders",
                     "The Falklands' Top 3 Tactical Moves | The Battle the BBC Gave Away"]),
           P("Why this thumbnail", "h2"),
-          P("Tactical Genius's biggest hits (Ridgway 1.0M views, Patton 773k, Zhukov 585k; 10-25x their usual) all use the same formula: a realistic aerial "
-            "battlefield with red and blue unit blocks and big white arrows on the left, a realistic commander portrait on the right, and a 2-3 word punchline "
-            "on a red brush banner (often a quote). Our thumbnail follows that formula. No legal photo of H Jones exists, so the portrait is a generic 1982 "
-            "Parachute Regiment officer, not a likeness of a real person.")]
+          P("All 13 Tactical Genius thumbnails use the same picture (dark aerial battlefield with red/blue unit blocks and white arrows, commander portrait on the right, "
+            "red brush banner bottom-left). What decides the click is the <b>text</b>: the winners are 1-3 words that make sense with zero context and create tension: "
+            "the hero's defiance (LET THEM COME, 1.0M views), the enemy's contempt as a real quote (\"AMATEURS\", 773k) or ominous stakes (AT THE GATES, 585k, 24.7x). "
+            "The losers are nicknames that need background (\"DUGOUT DOUG\" 29k, \"SEPOY GENERAL\" 6k) and lines of 4+ words."),
+          P("Our main thumbnail uses the winning type 1: <b>SURRENDER OR ELSE</b> (Keeble's bluff, the payoff of the video; no quote marks because it paraphrases the ultimatum). "
+            "The portrait is a generic 1982 Parachute Regiment officer (no legal photo of H Jones or Keeble exists; never fake a real person's likeness). "
+            "The AI drew a wrong flag in the settlement; it was replaced with the real Argentine flag.")]
 if alts:
     story += [P("Alternative thumbnails (use one for YouTube's thumbnail A/B test)", "h2")]
     row = [img(a, 82) for a in alts[:2]]
     story += [Table([row], colWidths=[85 * mm] * len(row))]
-story += [P("<b>Accuracy note:</b> the thumbnails are AI-generated. On 'THEY KNEW' the two water labels are swapped (Brenton Loch is really on the west side), "
-            "and 'SUNRAY IS DOWN' shows a few tanks that were not at Goose Green. Most viewers won't notice; if you want them exact, fix the labels in any image editor.", "warn")]
+story += [P("<b>Alternatives:</b> THEY KNEW (type 3, ominous stakes) for the A/B test. SUNRAY IS DOWN is kept as a spare, but it needs context (a losing type). "
+            "AI slips on the alternatives: on THEY KNEW the two water labels are swapped (Brenton Loch is really on the west); SUNRAY IS DOWN shows tanks that were not at Goose Green.", "warn")]
 story += [P("<b>Before uploading:</b> check the thumbnail at small size on a phone. The banner text must be readable at 20% size.", "tip"), PageBreak()]
 
 story += [P("3. Description (copy and paste)", "h1"),
