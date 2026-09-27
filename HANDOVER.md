@@ -65,7 +65,7 @@ Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video m
 | PDF production guide (9 pages) | done | hannibal/build/Hannibal-production-guide.pdf |
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
-| Goose Green (video #4): fact-checked script, voice 17:08, 7 map scenes, 14 licensed archive stills, CC BY music, synthesized SFX on every blast, stakes-first hook | done, assembled; waiting for owner feedback | goosegreen/ (mp4s not in git; rebuild with `bash tools/render_all.sh --assemble ...`) |
+| Goose Green (video #4) v3: fact-checked script, voice 17:08, 7 map scenes remade in the LOCKED style (section 1b), 13 licensed archive stills, CC BY music, synthesized SFX (boom on impact), stakes-first hook, casualty card | done, assembled 2026-09-27; waiting for owner feedback | goosegreen/ (mp4s not in git; rebuild with `bash tools/render_all.sh --assemble ...`) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
 
 ## 3. What's next (in order)
