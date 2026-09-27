@@ -42,8 +42,10 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
+| **Belisarius video #2: full first cut (17:04)**: script, voice, 14 map scenes, 6 archive shots, music (Kevin MacLeod CC BY), synthesized SFX, mix -15.3 LUFS / -1.2 dBTP | done 2026-09-27 | belisarius/ (rebuild: re-render scenes, then `python3 tools/assemble_full.py` from belisarius/; mp4s not in git) |
 
 ## 3. What's next (in order)
+0. Belisarius: owner review of the first cut. Known nits: Dara scene clips the DARA fortress label at the top edge; a '300' label touches the right edge; rome.js has an unrendered label nudge (PLAIN OF NERO). Music credits (CC BY) must go in the YouTube description: see belisarius/assets/audio/CREDITS.md. Wikimedia API rate-limits this machine hard: build thumbnail URLs directly (md5 path) instead, see git log.
 1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
 2. Hannibal: put portrait cut-outs on the stakes (Hannibal bust, Scipio bust; coins for Sempronius and Mago, where no likeness exists). Re-render Trebia.
 3. Build the Trasimene and Cannae maps (2 agents in parallel; Sonnet for simple agents).
