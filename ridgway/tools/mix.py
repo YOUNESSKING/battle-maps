@@ -1,5 +1,10 @@
 """Final test mix: map render + voice + ducked music + sfx -> build/ridgway-test.mp4"""
 import json, os, subprocess
+
+
+def lufs(path):  # integrated loudness; music tracks are mastered 10+ dB apart, so never use a fixed volume
+    out = subprocess.run(["ffmpeg", "-i", path, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+    return float(out.rsplit("I:", 1)[1].split("LUFS")[0])
 T = json.load(open("audio/timing.json")); dur = T["duration"]
 P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"]}
 M = "assets/media"
@@ -13,7 +18,8 @@ for c in cues: inputs += ["-i", f"{M}/{c[0]}"]
 f, mixes, idx = [], ["[vo]"], 2
 f.append("[1:a]aresample=48000,volume=1.0,asplit=2[vo][vokey]")
 if has_music:
-    f.append(f"[2:a]aresample=48000,atrim=0:{dur + 1},volume=0.55,afade=t=out:st={dur - 2}:d=2[mus]")
+    music_gain = 10 ** ((lufs("audio/voice.wav") - 18 - lufs(f"{M}/music.wav")) / 20)  # music ~18 dB under the voice
+    f.append(f"[2:a]aresample=48000,atrim=0:{dur + 1},volume={music_gain:.4f},afade=t=out:st={dur - 2}:d=2[mus]")
     f.append("[mus][vokey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]")
     mixes.append("[musd]"); idx = 3
 else:

@@ -12,3 +12,4 @@ tts/*.onnx
 tts/*.bin
 belisarius/build/tmp_card.png
 belisarius/build/*.log
+belisarius/build/*.wav

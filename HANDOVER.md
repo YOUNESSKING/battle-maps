@@ -15,7 +15,7 @@
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from `ridgway/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png` (use ridgway's engine, it is the newest).
+1. `mkdir <name>` and copy the skeleton from `belisarius/` (newest): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/vignette.png`. Full-video build = `tools/assemble_full.py` (edit its SCENES/ARCHIVE tables and SFX cues).
 2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
 3. Voice: copy `ridgway/tools/narrate.py`, point SCRIPT/OUT at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`.
 4. Bake terrain per battle (`tools/bake.py`), build map scenes (agents in parallel), fill archive slots, mix, render. Commit + push after each milestone.
@@ -89,6 +89,8 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - Background removal: rembg with isnet-general-use.onnx from GitHub releases works.
 - Tactical Genius's first minute (Ridgway video): 3 long map shots (31 s, 15 s, 19 s), a full-length commander photo cut-out with a bio card (big red name), and a portrait stake under a flag. No archive footage until 1:08.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
+
+- **Music level (owner complaint on Belisarius v1: "music way too loud")**: royalty-free tracks are mastered 10+ dB apart (Kevin MacLeod tracks measured -8 to -16 LUFS vs the Kokoro voice at -24 LUFS), so a fixed `volume=` makes some tracks louder than the narration. `assemble_full.py` now levels every track to `MUSIC_LUFS` (-42, ~18 dB under the voice) and **fails the build** if the ducked music+SFX bed (written to build/bed.wav) is less than `MIN_GAP_DB` (15 dB) under the voice in any section. Never bypass that check; if the owner wants more music, raise MUSIC_LUFS a little and let the check guard it.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.

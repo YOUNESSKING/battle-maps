@@ -140,6 +140,28 @@ def lufs(path):
     return float(out.rsplit("I:", 1)[1].split("LUFS")[0])
 
 
+MIN_GAP_DB = 15.0  # the ducked music + SFX bed must sit at least this far under the voice in every section
+
+
+def check_balance(bed="build/bed.wav", voice="audio/voice.wav"):
+    """Fail the build if the music/SFX bed is too loud. The mix writes the ducked bed on its own to build/bed.wav,
+    so bed and voice are measured directly, per section (each section has its own music track)."""
+    def sec_lufs(f, a, b):
+        out = subprocess.run(["ffmpeg", "-ss", f"{a:.2f}", "-t", f"{b - a:.2f}", "-i", f, "-af", "ebur128", "-f", "null", "-"],
+                             capture_output=True, text=True).stderr
+        return float(out.rsplit("I:", 1)[1].split("LUFS")[0])
+    marks = [0, at("dara-1"), at("tricam-1"), at("rome-1"), at("ending-ravenna"), T["duration"]]
+    bad = []
+    for a, b in zip(marks, marks[1:]):
+        gap = sec_lufs(voice, a, b) - sec_lufs(bed, a, b)
+        print(f"balance {a:6.0f}-{b:6.0f}s: music/SFX bed is {gap:.1f} dB under the voice")
+        if gap < MIN_GAP_DB:
+            bad.append((round(a), round(b), round(gap, 1)))
+    if bad:
+        sys.exit(f"MUSIC TOO LOUD (bed less than {MIN_GAP_DB} dB under the voice) in sections {bad}: "
+                 "lower MUSIC_LUFS / SFX volumes and re-run with --mix-only")
+
+
 def mix():
     dur = T["duration"]
     A = "assets/audio"
@@ -174,10 +196,15 @@ def mix():
     for k, (name, t, vol) in enumerate(cues):
         inputs += ["-i", f"{A}/{name}"]
         f.append(f"[{n}:a]aresample=48000,volume={vol * 0.5},adelay={int(t * 1000)}|{int(t * 1000)}[s{k}]"); mixes.append(f"[s{k}]"); n += 1
-    f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.82:level=false[aout]")
+    beds = mixes[1:]
+    if not beds:
+        f.append("anullsrc=r=48000:cl=mono,atrim=0:1[silent]"); beds = ["[silent]"]
+    f.append(f"{''.join(beds)}amix=inputs={len(beds)}:normalize=0,asplit=2[bed][bedout]")
+    f.append(f"[vo][bed]amix=inputs=2:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.82:level=false[aout]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                     "-t", f"{dur:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
-                    "build/belisarius-1080p.mp4"], check=True)
+                    "build/belisarius-1080p.mp4", "-map", "[bedout]", "-t", f"{dur:.2f}", "build/bed.wav"], check=True)
+    check_balance()
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/belisarius-1080p.mp4", "-vf", "scale=1280:720",
                     "-c:v", "libx264", "-crf", "30", "-preset", "fast", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart",
                     "build/belisarius-720p.mp4"], check=True)
