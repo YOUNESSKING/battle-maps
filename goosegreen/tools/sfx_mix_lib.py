@@ -6,10 +6,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SR = 48000
 D = os.path.join(HERE, "..", "assets", "media", "sfx")
 KINDS = {  # kind: (clips, level dB, min gap between two cues of this kind in s)
-    "fire":      (["gun_fire.wav"], -13, 0.35),
-    "mortar":    (["mortar_thump.wav"], -15, 0.30),
-    "impact":    (["artillery_far_1.wav", "artillery_far_2.wav", "artillery_far_3.wav"], -12, 0.40),
-    "explosion": (["explosion_near_1.wav", "explosion_near_2.wav"], -7, 0.60),
+    "fire":      (["gun_fire.wav"], -24, 0.35),
+    "mortar":    (["mortar_thump.wav"], -24, 0.30),
+    "impact":    (["artillery_far_1.wav", "artillery_far_2.wav", "artillery_far_3.wav"], -7, 0.25),
+    "explosion": (["explosion_near_1.wav", "explosion_near_2.wav"], -4, 0.40),
     "missile":   (["missile_launch_hit.wav"], -9, 0.80),
     "mg":        (["mg_burst.wav"], -18, 1.00),
     "whoosh":    (["whoosh.wav"], -15, 0.50),
