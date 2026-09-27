@@ -300,6 +300,36 @@
       ov.insertBefore(g, ov.firstChild); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 1, duration: 1.5 }, t || 0);
       return g;
     };
+
+    // TERRITORY (K&G-style): soft translucent fill of the ground each side holds, clipped to land by a mask PNG
+    // (e.g. assets/isthmus_land.png, white = land). K.territory returns the polygon; K.lose fades it away
+    // (ground lost), K.shift moves its edge (same point count) to show an advance or retreat.
+    K.territory = (o) => {
+      let layer = document.getElementById("fxk-terr");
+      if (!layer) {
+        layer = document.createElement("div"); layer.id = "fxk-terr";
+        const m = o.mask ? `-webkit-mask-image:url(${o.mask});mask-image:url(${o.mask});-webkit-mask-size:2880px 1620px;mask-size:2880px 1620px;` : "";
+        layer.style.cssText = `position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;${m}`;
+        layer.innerHTML = `<svg viewBox="0 0 2880 1620" width="2880" height="1620" style="position:absolute;inset:0"><defs><filter id="fxk-soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${o.soft || 7}"/></filter></defs></svg>`;
+        document.getElementById("world").insertBefore(layer, ov);
+      }
+      const sv = layer.querySelector("svg");
+      const poly = document.createElementNS(NS, "polygon");
+      poly.setAttribute("points", o.pts.map((q) => q.join(",")).join(" "));
+      poly.setAttribute("fill", COL[o.side] || o.side); poly.setAttribute("filter", "url(#fxk-soft)"); poly.setAttribute("opacity", "0");
+      sv.appendChild(poly);
+      tl.to(poly, { opacity: o.alpha || 0.3, duration: o.dur || 1.5, ease: "sine.inOut" }, o.t);
+      if (o.until != null) tl.to(poly, { opacity: 0, duration: 1.2 }, o.until);
+      return poly;
+    };
+    K.lose = (poly, t, dur = 2.2) => { // ground lost: a short flicker, then the colour fades away
+      const a = +poly.getAttribute("opacity") || 0.3;
+      tl.to(poly, { opacity: 0.12, duration: 0.18, yoyo: true, repeat: 3, ease: "none" }, t);
+      tl.to(poly, { opacity: 0, duration: dur, ease: "sine.in" }, t + 0.75);
+    };
+    // call once at the end of the scene: keeps the territory above night/dawn layers but under units and lines
+    K.raiseTerritory = () => { const l = document.getElementById("fxk-terr"); if (l) document.getElementById("world").insertBefore(l, ov); };
+    K.shift = (poly, pts, t, dur = 2.5) => tl.to(poly, { attr: { points: pts.map((q) => q.join(",")).join(" ") }, duration: dur, ease: "power1.inOut" }, t);
     return K;
   };
 })();
