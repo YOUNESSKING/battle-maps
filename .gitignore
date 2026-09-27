@@ -10,3 +10,4 @@
 node_modules/
 tts/*.onnx
 tts/*.bin
+belisarius/build/tmp_card.png
