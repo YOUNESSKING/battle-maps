@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
 PREVIEW = "--preview" in sys.argv
-AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only.mp4, only remix the sound (e.g. after a level change)
+AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only_<height>p.mp4 (one per resolution), only remix the sound (e.g. after a level change)
 MUSIC_VOL = 0.18  # music bed level before ducking (0.35 until 2026-09-27; owner asked for quieter music)
 W, H, FPS = (1280, 720, 30) if PREVIEW else (1920, 1080, 30)
 T = json.load(open("audio/timing.json"))
@@ -74,7 +74,7 @@ def still(src, dur, out, n):
 
 segs, i = [], 0
 if AUDIO_ONLY:
-    assert os.path.exists("build/video_only.mp4"), "run once without --audio-only first"
+    assert os.path.exists("build/video_only_"+str(H)+"p.mp4"), "run once without --audio-only first"
     i = len(paras)
 while i < len(paras):
     dur = starts[i + 1] - starts[i]
@@ -102,7 +102,7 @@ while i < len(paras):
 
 if not AUDIO_ONLY:
     open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only_"+str(H)+"p.mp4"], check=True)
 
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
@@ -126,7 +126,7 @@ m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
 af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
       f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
 name = "build/goosegreen-720p.mp4" if PREVIEW else "build/goosegreen.mp4"
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/video_only.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/video_only_"+str(H)+"p.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
                 "-t", f"{total:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", name], check=True)
 mmss = lambda s: f"{int(s // 60)}:{int(s % 60):02d}"
 open("build/chapters.txt", "w").write("".join(f"{'0:00' if n == 0 else mmss(paras[idx[t]]['start'])} {title}\n" for n, (t, title) in enumerate(CHAPTERS)))

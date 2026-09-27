@@ -114,6 +114,7 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - The camera must be clamped inside the 2880x1620 map, or black edges appear.
 - Always look at snapshots: the first versions always had overlapping labels and units bunched in camps.
 - Rendering runs at ~3-5x real time on the cloud machine (a 4 min scene takes ~13 min). A render "failed" status can come from a later command; check the log for "Render complete".
+- `assemble_full.py` keeps one video track per resolution (`build/video_only_1080p.mp4` / `_720p.mp4`); before 2026-09-27 the 720p preview overwrote the shared track and an `--audio-only` remix silently turned the master into 720p. Always check the master with ffprobe (1920x1080) before delivering.
 - Render from ONE place only (`tools/render_all.sh`). Two things cost 30 min on Goose Green: (1) a render launched from a tool shell is killed (`render_cancelled_parent_exited`) when that shell exits, so it must be detached (setsid + nohup); (2) waiting with `pgrep -f "hyperframes render"` never ended because it matched another loop's command line. Wait on a PID or a done-marker file, never a pgrep pattern.
 - Subagents stopped by the usage limit leave their background loops running. Before rendering, check `pgrep -af "hyperframes|while"` and kill leftovers (render_all.sh does this).
 - Wikimedia: send a descriptive User-Agent, pause 2-3 s, retry on 429, and download only **standard thumbnail widths** (960/1280/1920) or you get long rate limits.
