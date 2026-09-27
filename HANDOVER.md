@@ -1,6 +1,6 @@
-# HANDOVER v2: faceless military-history channel (Tactical Genius style)
+# HANDOVER v3: faceless military-history channel (Tactical Genius style)
 
-**Owner:** Youness Fakiri · **Updated:** 2026-09-25
+**Owner:** Youness Fakiri · **Updated:** 2026-09-27
 **How to use:** start a new Claude Code cloud session on the repo `younessking/battle-maps` (environment with **Full** network access), attach the Gemini research file, and say: *"Read HANDOVER.md. Make the full video from this research."*
 
 ## 0. Repo layout (clone path must be /home/user/battle-maps)
@@ -10,15 +10,17 @@
 | `research/` | GEMINI_BRIEF_v2.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
+| `goosegreen/` | video #4 (Goose Green, 1982), **newest full pipeline: copy new videos from here**. lib/ (engine + `SFX()` sound cues), tools/ (`narrate.py`, `narrate_changed.py`, `bake.py`, `build_scene.py`, `render_all.sh`, `assemble_full.py`, `sfx_cues.py`, `sfx_mix.py`), assets/media/ (images + CREDITS.md, Kevin MacLeod music sources, `sfx/` synthesized sound library), archive.json |
 | `chipyongni/` | first test map (hyperframes.json is reused by build_scene.py) |
 | `tts/narrate.py` | Kokoro narration (model files downloaded by setup.sh) |
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from `ridgway/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png` (use ridgway's engine, it is the newest).
-2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
-3. Voice: copy `ridgway/tools/narrate.py`, point SCRIPT/OUT at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`.
-4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). Copy `goosegreen/tools/assemble_full.py` and edit its SCENES/CHAPTERS. Commit + push after each milestone.
+1. `mkdir <name>` and copy the skeleton from `goosegreen/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/media/sfx/` (goosegreen has the newest engine, tools and sound library). Edit SCENES/CHAPTERS in `tools/assemble_full.py`.
+2. Write `<name>/script.md` from the research (formula + **hook formula** in section 1; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
+3. Voice: point SCRIPT/OUT in `tools/narrate.py` at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`. After editing a few paragraphs, run `tools/narrate_changed.py` instead: it re-voices only changed paragraphs and reuses the rest (minutes instead of ~15 min).
+4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). `assemble_full.py` collects the sound cues from every scene (`sfx_cues.py`), renders the SFX track (`sfx_mix.py`), mixes voice + ducked music + ducked SFX, and normalizes to -14 LUFS in two passes. Music: put the bed at `assets/media/music.wav` (see goosegreen CREDITS.md for how it was built). Commit + push after each milestone.
+5. Preview for chat (30 MB limit): two 540p halves, e.g. `ffmpeg -ss 0 -t 515 -i build/<name>.mp4 -vf scale=960:540 -c:v libx264 -preset slow -b:v 360k -maxrate 600k -bufsize 1200k -c:a aac -b:a 64k part1.mp4` (and `-ss 514` for part 2).
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
 ---
@@ -27,6 +29,12 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 - Niche: famous generals' top 3 tactical moves, modelled on **Tactical Genius** (@tacticalgeniuss). Copy the *structure*, not the look or words.
 - Format: 16-19 min, ~80% animated battle maps, ~20% archival (film for the 20th century; paintings, busts and coins for ancient generals), calm documentary voice.
 - Script formula: hook (FIRST PARAGRAPH IS ALWAYS A [MAP] SHOT, never an archive photo; disaster, then the hero, then "his three greatest tactical moves") → 3 moves (situation with numbers → what the enemy believed → "X saw something different" → execution → result as a number) → the general's 3-part method repeated after every move → subscribe ask between moves 1 and 2 → ending (callback, legacy, "which commander next?").
+- **Hook formula (first ~40 s), from web research + owner feedback (Goose Green):**
+  - **Stakes before context.** Line 1 is the odds or the disaster in a few words ("Five hundred men. A thousand dug in against them. And the enemy knew they were coming."). No date/setting first, no channel intro.
+  - **Open a loop and preview the payoff** within ~30 s: flash-forward to the result ("Thirty-six hours later, nearly a thousand … would surrender to a battalion half their size. And the man who planned the attack would be dead.").
+  - **Visual:** first frame is a map with units already on screen (never a photo); a big on-screen odds card (500 VS ~1,000); something changes every 3-5 s (camera dive, rings, stamp, counter); one stamp punchline; a white-flash cut into the flash-forward with a counter ticking up.
+  - **Sound on every beat:** hit on each slam/stamp, whoosh on camera dives and the flash-forward, static under the radio moment, ticks on counters (`SFX("hit"|"whoosh"|"static"|"tick", t)` in the scene).
+  - The hero's bio cards come after the stakes (~1:00-2:00). Background (how the war started) comes after the hook, kept short. Target: keep ~65%+ of viewers at 30 s.
 - First video: **Hannibal** (Trebia, Lake Trasimene, Cannae). Next candidates: see research/VIDEO_IDEAS_v2.md (top: Nathanael Greene, Daniel Morgan, Francis Marion, George Thomas).
 
 ## 2. What's finished
@@ -41,9 +49,11 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | PDF production guide (9 pages) | done | hannibal/build/Hannibal-production-guide.pdf |
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
+| Goose Green (video #4): fact-checked script, voice 17:08, 7 map scenes, 14 licensed archive stills, CC BY music, synthesized SFX on every blast, stakes-first hook | done, assembled; waiting for owner feedback | goosegreen/ (mp4s not in git; rebuild with `bash tools/render_all.sh --assemble ...`) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
 
 ## 3. What's next (in order)
+0. **Goose Green:** get the owner's feedback on the preview (hook, SFX levels, pronunciation of Piaggi/Estévez, music level), fix, rebuild, and hand over the 1080p master (629 MB, lives only on the cloud machine: rebuild it with render_all.sh if the session is gone).
 1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
 2. Hannibal: put portrait cut-outs on the stakes (Hannibal bust, Scipio bust; coins for Sempronius and Mago, where no likeness exists). Re-render Trebia.
 3. Build the Trasimene and Cannae maps (2 agents in parallel; Sonnet for simple agents).
@@ -71,9 +81,9 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 2. **Script**: formula in section 1, every paragraph tagged `[MAP: scene-id | notes]` or `[ARCHIVE: description]`. ~2,400-2,700 words.
 3. **Voice**: `narrate.py VOICE` (Kokoro, per paragraph) → `audio/voice.wav` + `audio/timing.json` (start/end of every paragraph). Voice: **am_michael**, speed 0.95 (1.05 for faster pacing).
 4. **Terrain**: `tools/bake.py NAME LAT LON ZOOM EXAG` → 2880x1620 parchment shaded relief from open AWS Terrarium tiles (sea colored by depth). Zoom 7-8 = region, 12-13 = battlefield. Convert lat/lon to pixels with the formula in bake.py and the NAME.json origin.
-5. **Map scenes**: `scenes-src/NAME.js` using the engine; animations timed with `B.at("para-id", "spoken phrase")`. Build: `tools/build_scene.py NAME BASEMAP FIRST_TAG LAST_TAG`. Then `hyperframes lint .`, `hyperframes snapshot . --at ...`, look at every snapshot, fix, and render.
+5. **Map scenes** (every blast/shot/stamp calls `SFX(kind, t)`; `GG.flash`/`burst`/`shell`/`missile` do it automatically, pass `sfx: false` for silent highlight flashes; kinds: fire, mortar, impact, explosion, missile, mg, whoosh, hit, static, tick): `scenes-src/NAME.js` using the engine; animations timed with `B.at("para-id", "spoken phrase")`. Build: `tools/build_scene.py NAME BASEMAP FIRST_TAG LAST_TAG`. Then `hyperframes lint .`, `hyperframes snapshot . --at ...`, look at every snapshot, fix, and render.
 6. **Archive slots**: placeholder cards (assemble.py) until real images/footage replace them.
-7. **Assembly**: `tools/assemble.py` (cards + renders + voice) and `ridgway/tools/mix.py` (voice + music ducked with sidechain + SFX + loudnorm -14 LUFS).
+7. **Assembly** (current: `goosegreen/tools/render_all.sh --assemble` → `assemble_full.py` with SFX + two-pass loudness; older: `tools/assemble.py` (cards + renders + voice) and `ridgway/tools/mix.py` (voice + music ducked with sidechain + SFX + loudnorm -14 LUFS).)
 8. **Deliver**: chat file limit is 30 MB, so send a 720p preview; keep the 1080p master for YouTube.
 
 ## 6. Lessons learned (avoid repeating these)
