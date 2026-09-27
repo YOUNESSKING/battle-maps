@@ -5,7 +5,10 @@
 // Everything is placed on the one paused timeline (B.tl), so renders stay deterministic.
 (function () {
   const NS = "http://www.w3.org/2000/svg";
-  const COL = { carth: "#1f4fc4", rome: "#c4121f" }; // same as --carth / --rome in battle.css
+  const COL = { carth: "#1f4fc4", rome: "#c4121f" }; // same as --carth / --rome in battle.css (counters, aircraft, arrows)
+  // LOCKED territory/front palette (owner-approved 2026-09-27): day lines 30% muted, night lines + tint fully muted (E)
+  const LINE_DAY = { carth: "#2c57b7", rome: "#bc2528" }, LINE_NIGHT = { carth: "#4a6a9a", rome: "#a8503c" };
+  const TINT = { carth: "#4a6a9a", rome: "#a8503c" };
   const INK = "#f7f3ea";
 
   // ---- aircraft art: top-down, nose pointing +x, drawn around (0,0) in a -50..50 box ----
@@ -207,7 +210,7 @@
     // K&G-style front: crisp centre line with a soft glowing colour band on each side (sideA = left of travel
     // direction, sideB = right), drawn on like an arrow; o.to (same point count) morphs it at o.moveT.
     K.front = (o) => {
-      const w = o.width || 26, A = COL[o.sideA] || o.sideA || COL.carth, Bc = COL[o.sideB] || o.sideB || COL.rome;
+      const w = o.width || 15, A = LINE_DAY[o.sideA] || o.sideA || LINE_DAY.carth, Bc = LINE_DAY[o.sideB] || o.sideB || LINE_DAY.rome;
       const off = (pts, d) => pts.map((p, i) => { // offset each vertex along the averaged normal
         const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
         const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
@@ -221,7 +224,7 @@
       }
       const g = document.createElementNS(NS, "g");
       const layer = (d, col, sw, op, blur) => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}" ${blur ? 'filter="url(#fxk-blur)"' : ""}/>`;
-      const gl = o.glow != null ? o.glow : 0.55; // glow strength (K&G-style muted look: ~0.3)
+      const gl = o.glow != null ? o.glow : 0.47; // glow strength (K&G-style muted look: ~0.3)
       const build = (pts) => [layer(dStr(off(pts, -w * 0.55)), A, w, gl, true), layer(dStr(off(pts, w * 0.55)), Bc, w, gl, true),
         layer(dStr(pts), "rgba(20,16,10,0.55)", w * 0.3, 1, false), layer(dStr(off(pts, -w * 0.09)), A, w * 0.16, 1, false), layer(dStr(off(pts, w * 0.09)), Bc, w * 0.16, 1, false)];
       g.innerHTML = build(o.pts).join("");
@@ -351,11 +354,29 @@
       };
       const polys = [];
       for (let k = 0; k < n; k++) {
-        const pl = K.territory({ pts: band(o.pts, k), side: o.color || o.side, t: o.t, dur: o.dur, alpha: (o.alpha || 0.28) / n * 1.6, mask: o.mask, soft: o.soft || 24, until: o.until });
+        const pl = K.territory({ pts: band(o.pts, k), side: o.color || TINT[o.side] || o.side, t: o.t, dur: o.dur, alpha: (o.alpha || 0.28) / n * 1.6, mask: o.mask, soft: o.soft || 24, until: o.until });
         if (o.to) K.shift(pl, band(o.to, k), o.moveT, o.moveDur || 2.5);
         polys.push(pl);
       }
       return polys;
+    };
+
+    // NIGHT MODE (locked style): while a night overlay is up, front lines switch to the fully muted palette and
+    // lines + territory get a brightness boost so they stay readable; everything returns at dawn.
+    // K.night({ lines: [frontGroup, ...], tOn, tOff })  — call after the fronts/territory exist.
+    K.night = (o) => {
+      const toNight = {}; Object.keys(LINE_DAY).forEach((k) => { toNight[LINE_DAY[k]] = LINE_NIGHT[k]; });
+      (o.lines || []).forEach((g) => g.querySelectorAll("path").forEach((p, i) => {
+        const c = p.getAttribute("stroke"); if (!toNight[c]) return;
+        const on = { attr: { stroke: toNight[c] }, duration: 2.5 }, off = { attr: { stroke: c }, duration: 3 };
+        if (i < 2) { on.opacity = 0.3; off.opacity = +p.getAttribute("opacity"); }
+        tl.to(p, on, o.tOn); if (o.tOff != null) tl.to(p, off, o.tOff);
+      }));
+      const els = [document.getElementById("fxk-terr"), ...(o.lines || [])].filter(Boolean);
+      els.forEach((el) => {
+        tl.fromTo(el, { filter: "brightness(1) saturate(1)" }, { filter: "brightness(1.8) saturate(1.25)", duration: 2.5, immediateRender: false }, o.tOn);
+        if (o.tOff != null) tl.to(el, { filter: "brightness(1) saturate(1)", duration: 3 }, o.tOff);
+      });
     };
     return K;
   };
