@@ -3,7 +3,7 @@ const B = Battle();
 const R = RomeKit(B);
 const { P, at } = B;
 const END = B.T.duration;
-const HAS = { vitiges: false };
+const HAS = { vitiges: true };
 const G = R.G;
 
 const T_SUR = at("hook-rome", "surrounded"), T_KING = at("hook-rome", "king of"), T_150 = at("hook-rome", "a hundred and fifty");
@@ -40,7 +40,9 @@ const order = [0, 1, 2, 3, 4, 5, 6];
 order.forEach((k, i) => R.camp(G.camps[k][0], G.camps[k][1], T_SUR + 0.3 + i * 0.55, { night: true }));
 // war bands around the camps
 if (HAS.vitiges) {
-  B.portraitStake({ img: "assets/media/vitiges.png", flag: R.flag("#c4121f"), name: "VITIGES", x: 2400, y: 470, size: 1.6, t: T_KING, until: T_MOD + 3.5 });
+  const vs = B.portraitStake({ img: "assets/media/vitiges.png", flag: R.flag("#c4121f"), name: "VITIGES", x: 2400, y: 470, size: 1.6, t: T_KING, until: T_MOD + 3.5 });
+  vs.querySelector(".face").style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
+  vs.querySelector(".nm").style.background = "#c4121f";
 } else {
   R.scale(B.plaque({ side: "rome", name: "VITIGES", role: "King of the Ostrogoths", x: 2330, y: 470, t: T_KING, until: T_MOD + 3.5 }), 1.5);
 }

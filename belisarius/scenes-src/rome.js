@@ -3,7 +3,7 @@ const B = Battle();
 const R = RomeKit(B);
 const { P, at, tl } = B;
 const END = B.T.duration;
-const HAS = { belisarius: true, vitiges: false };
+const HAS = { belisarius: true, vitiges: true };
 const G = R.G;
 const GT = G.gates;
 
@@ -91,7 +91,9 @@ const red = R.counter({ side: "red", title: "GOTHS", big: "150,000?", sub: "Proc
 R.counterRow(red, "20,000–30,000 <span>(modern)</span>", T_CAMPS + 2.0);
 R.counter({ side: "blue", title: "ROMANS", big: "5,000", left: 40, width: 340, top: 745, t: T_CAMPS + 2.8, until: S3 - 0.2 });
 if (HAS.vitiges) {
-  B.portraitStake({ img: "assets/media/vitiges.png", flag: R.flag("#c4121f"), name: "VITIGES", x: 2400, y: 470, size: 1.6, t: T_VIT, until: S3 + 0.3 });
+  const vs = B.portraitStake({ img: "assets/media/vitiges.png", flag: R.flag("#c4121f"), name: "VITIGES", x: 2400, y: 470, size: 1.6, t: T_VIT, until: S3 + 0.3 });
+  vs.querySelector(".face").style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
+  vs.querySelector(".nm").style.background = "#c4121f";
 } else {
   R.scale(B.plaque({ side: "rome", name: "VITIGES", role: "King of the Goths", x: 2330, y: 470, t: T_VIT, until: S3 + 0.3 }), 1.5);
 }

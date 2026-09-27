@@ -3,7 +3,7 @@ const B = Battle();
 const R = RomeKit(B);
 const { P, at } = B;
 const END = B.T.duration;
-const HAS = { belisarius: true, vitiges: false };
+const HAS = { belisarius: true, vitiges: true };
 
 const G = (lat, lon) => { // assets/italy.json: zoom 7, origin 16218,11535
   const n = 256 * 2 ** 7, r = (lat * Math.PI) / 180;
@@ -49,7 +49,9 @@ B.label("OSTROGOTHIC KINGDOM", 1010, 300, { cls: "country", size: 42, t: T_KING 
 B.city("RAVENNA", ...RAVENNA, { size: 30, left: true, t: T_KING + 0.5 });
 B.label("CAPITAL", RAVENNA[0] - 18, RAVENNA[1] + 26, { cls: "tg", size: 20, t: T_KING + 0.9, anchor: [-100, 0] });
 if (HAS.vitiges) {
-  B.portraitStake({ img: "assets/media/vitiges.png", flag: R.flag("#c4121f"), name: "VITIGES", x: RAVENNA[0] + 90, y: RAVENNA[1] - 10, size: 0.72, t: T_KING + 1.0 });
+  const vs = B.portraitStake({ img: "assets/media/vitiges.png", flag: R.flag("#c4121f"), name: "VITIGES", x: RAVENNA[0] + 90, y: RAVENNA[1] - 10, size: 0.72, t: T_KING + 1.0 });
+  vs.querySelector(".face").style.boxShadow = "0 0 0 3px #c4121f, 0 6px 12px rgba(0,0,0,0.5)";
+  vs.querySelector(".nm").style.background = "#c4121f";
 } else {
   R.scale(B.plaque({ side: "rome", name: "VITIGES", role: "King of the Goths", x: RAVENNA[0] + 40, y: RAVENNA[1] + 20, t: T_KING + 1.0 }), 0.9);
 }
