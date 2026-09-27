@@ -67,7 +67,7 @@ Numbered list of every source used: ancient sources with book/chapter, modern hi
 Write the narration from your research report, following the **Channel rules** below. Target 2,400-2,700 spoken words (16-18 min). Calm documentary tone, short sentences, numbers written as words ("twenty-eighth of May, nineteen eighty-two"). Use only facts marked VERIFIED in your report; for disputed numbers say "around" or give the range. Spell hard names phonetically in the spoken text only if a text-to-speech voice would mangle them (e.g. "Pee-AH-jee").
 
 Structure (use these `## ` headings exactly; `---` between sections):
-- `## HOOK` (~1:20): the disaster or shocking fact, then the setting on a region map, then the hero with a bio shot, ending with "Let's take a closer look at [GENERAL]'s three greatest tactical moves."
+- `## HOOK` (~1:20): the FIRST paragraph must be a `[MAP: ...]` shot (never `[ARCHIVE]`) that shows the disaster or shocking fact on the map, then the setting on a region map, then the hero with a bio shot, ending with "Let's take a closer look at [GENERAL]'s three greatest tactical moves."
 - `## MOVE 1 — TITLE`, `## MOVE 2 — TITLE`, `## MOVE 3 — TITLE` (~4-5 min each): situation with numbers → what the enemy believed → "[GENERAL] saw something different" → execution, phase by phase → result as a number → the method line for this move. After move 1, add one paragraph asking viewers to subscribe.
 - `## ENDING` (~1:30): callback to the hook, legacy, the full method line, "which commander should I cover next?".
 

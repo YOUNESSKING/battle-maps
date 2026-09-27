@@ -26,7 +26,7 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 ## 1. The plan (unchanged)
 - Niche: famous generals' top 3 tactical moves, modelled on **Tactical Genius** (@tacticalgeniuss). Copy the *structure*, not the look or words.
 - Format: 16-19 min, ~80% animated battle maps, ~20% archival (film for the 20th century; paintings, busts and coins for ancient generals), calm documentary voice.
-- Script formula: hook (disaster, then the hero, then "his three greatest tactical moves") → 3 moves (situation with numbers → what the enemy believed → "X saw something different" → execution → result as a number) → the general's 3-part method repeated after every move → subscribe ask between moves 1 and 2 → ending (callback, legacy, "which commander next?").
+- Script formula: hook (FIRST PARAGRAPH IS ALWAYS A [MAP] SHOT, never an archive photo; disaster, then the hero, then "his three greatest tactical moves") → 3 moves (situation with numbers → what the enemy believed → "X saw something different" → execution → result as a number) → the general's 3-part method repeated after every move → subscribe ask between moves 1 and 2 → ending (callback, legacy, "which commander next?").
 - First video: **Hannibal** (Trebia, Lake Trasimene, Cannae). Next candidates: see research/VIDEO_IDEAS_v2.md (top: Nathanael Greene, Daniel Morgan, Francis Marion, George Thomas).
 
 ## 2. What's finished
