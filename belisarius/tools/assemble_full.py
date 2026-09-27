@@ -132,6 +132,14 @@ def at(tag, off=0.0):
     return next(p["start"] for p in P if key(p) == tag) + off
 
 
+MUSIC_LUFS = -42.0  # music bed level before ducking; the raw voice is about -24 LUFS, so the bed sits ~18 dB under it
+
+
+def lufs(path):
+    out = subprocess.run(["ffmpeg", "-i", path, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+    return float(out.rsplit("I:", 1)[1].split("LUFS")[0])
+
+
 def mix():
     dur = T["duration"]
     A = "assets/audio"
@@ -153,18 +161,19 @@ def mix():
     for k, (trk, s, e) in enumerate(bed):
         inputs += ["-stream_loop", "-1", "-i", f"{A}/{trk}"]
         d = e - s
-        f.append(f"[{n}:a]aresample=48000,atrim=0:{d:.2f},asetpts=PTS-STARTPTS,volume=0.35,afade=t=in:d=2,"
+        gain = 10 ** ((MUSIC_LUFS - lufs(f"{A}/{trk}")) / 20)
+        f.append(f"[{n}:a]aresample=48000,atrim=0:{d:.2f},asetpts=PTS-STARTPTS,volume={gain:.4f},afade=t=in:d=2,"
                  f"afade=t=out:st={d - 2.5:.2f}:d=2.5,adelay={int(s * 1000)}|{int(s * 1000)}[m{k}]")
         mus.append(f"[m{k}]"); n += 1
     if mus:
         f.append(f"{''.join(mus)}amix=inputs={len(mus)}:normalize=0[mus]")
-        f.append("[mus][vokey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=500[musd]")
+        f.append("[mus][vokey]sidechaincompress=threshold=0.02:ratio=4:attack=30:release=700[musd]")
         mixes.append("[musd]")
     else:
         f[0] = "[1:a]aresample=48000[vo]"
     for k, (name, t, vol) in enumerate(cues):
         inputs += ["-i", f"{A}/{name}"]
-        f.append(f"[{n}:a]aresample=48000,volume={vol},adelay={int(t * 1000)}|{int(t * 1000)}[s{k}]"); mixes.append(f"[s{k}]"); n += 1
+        f.append(f"[{n}:a]aresample=48000,volume={vol * 0.5},adelay={int(t * 1000)}|{int(t * 1000)}[s{k}]"); mixes.append(f"[s{k}]"); n += 1
     f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,alimiter=limit=0.82:level=false[aout]")
     subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                     "-t", f"{dur:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
