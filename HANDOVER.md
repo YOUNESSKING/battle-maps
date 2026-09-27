@@ -88,6 +88,7 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - Wikimedia: send a descriptive User-Agent, pause 2-3 s, retry on 429, and download only **standard thumbnail widths** (960/1280/1920) or you get long rate limits.
 - Background removal: rembg with isnet-general-use.onnx from GitHub releases works.
 - Tactical Genius's first minute (Ridgway video): 3 long map shots (31 s, 15 s, 19 s), a full-length commander photo cut-out with a bio card (big red name), and a portrait stake under a flag. No archive footage until 1:08.
+- **Owner feedback (Goose Green): never open on a photo.** The first shot of every video is an animated map that hooks at once (units on screen in the first second, movement, a stamp/caption punchline). Archive photos come later.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
 
 ## 7. Usage (subscription) notes
