@@ -1,0 +1,18 @@
+{
+ "name": "korea",
+ "center": [
+  38.3,
+  127.6
+ ],
+ "zoom": 8,
+ "origin_world_px": [
+  54556,
+  24399
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 479.89,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
