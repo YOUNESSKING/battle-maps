@@ -248,7 +248,7 @@
     K.badge = (o) => {
       const c = COL[o.side] || COL.carth, flag = o.flag === "arg" ? "assets/media/arg_flag.png" : "assets/media/uk_flag.png";
       const face = o.photo ? `<img src="${o.photo}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">`
-        : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:62px;font-weight:700;color:#f7f3ea;text-shadow:0 3px 6px rgba(0,0,0,0.8)">${o.initials || ""}</div>`;
+        : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.78) 0%, rgba(10,12,24,0.62) 60%, rgba(10,12,24,0.35) 100%);font-size:64px;font-weight:700;color:#f7f3ea;letter-spacing:0.04em;text-shadow:0 3px 6px rgba(0,0,0,0.9)">${o.initials || ""}</div>`;
       const pos = { tl: "left:60px;top:150px;", tr: "right:60px;top:110px;", bl: "left:60px;bottom:140px;", br: "right:60px;bottom:140px;" }[o.corner || "tr"];
       const el = screen(`<div style="display:flex;align-items:center;gap:18px;${o.corner && o.corner[1] === "l" ? "" : "flex-direction:row-reverse;"}">
         <div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px ${c},0 12px 26px rgba(0,0,0,0.6);background:url(${flag}) center/cover">${face}</div>
