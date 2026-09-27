@@ -5,7 +5,7 @@
 // Everything is placed on the one paused timeline (B.tl), so renders stay deterministic.
 (function () {
   const NS = "http://www.w3.org/2000/svg";
-  const COL = { carth: "#2455c9", rome: "#c4121f" };
+  const COL = { carth: "#1f4fc4", rome: "#c4121f" }; // same as --carth / --rome in battle.css
   const INK = "#f7f3ea";
 
   // ---- aircraft art: top-down, nose pointing +x, drawn around (0,0) in a -50..50 box ----
@@ -234,6 +234,69 @@
         paths.forEach((p, i) => tl.to(p, { attr: { d: nd[i] }, duration: o.moveDur || 2, ease: "power1.inOut" }, o.moveT));
       }
       if (o.until != null) tl.to(g, { opacity: 0, duration: 0.8 }, o.until);
+      return g;
+    };
+
+    // screen-space element helper (above the map, under the credit)
+    const screen = (html, style) => {
+      const el = document.createElement("div"); el.style.cssText = "position:absolute;" + style; el.innerHTML = html;
+      scene.insertBefore(el, document.getElementById("credit")); hide(el); return el;
+    };
+    // commander badge (K&G): round portrait (or initials) on the side's flag, name plate; slides in at a corner.
+    // o = { name, role, photo: "assets/media/x.png" | null, flag: "uk"|"arg", side, corner: "tl"|"tr"|"bl"|"br", t, until }
+    K.badge = (o) => {
+      const c = COL[o.side] || COL.carth, flag = o.flag === "arg" ? "assets/media/arg_flag.png" : "assets/media/uk_flag.png";
+      const face = o.photo ? `<img src="${o.photo}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">`
+        : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:62px;font-weight:700;color:#f7f3ea;text-shadow:0 3px 6px rgba(0,0,0,0.8)">${o.initials || ""}</div>`;
+      const pos = { tl: "left:60px;top:150px;", tr: "right:60px;top:110px;", bl: "left:60px;bottom:140px;", br: "right:60px;bottom:140px;" }[o.corner || "tr"];
+      const el = screen(`<div style="display:flex;align-items:center;gap:18px;${o.corner && o.corner[1] === "l" ? "" : "flex-direction:row-reverse;"}">
+        <div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px ${c},0 12px 26px rgba(0,0,0,0.6);background:url(${flag}) center/cover">${face}</div>
+        <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-${o.corner && o.corner[1] === "l" ? "left" : "right"}:6px solid ${c};color:#f7f3ea;font-weight:700">
+          <div style="font-size:34px;letter-spacing:0.06em;white-space:nowrap">${o.name}</div><div style="font-size:20px;letter-spacing:0.14em;color:#d8cfb8;white-space:nowrap">${o.role || ""}</div></div></div>`, pos);
+      const dx = o.corner && o.corner[1] === "l" ? -80 : 80;
+      tl.fromTo(el, { autoAlpha: 0, x: dx }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, o.t);
+      if (o.until != null) tl.to(el, { autoAlpha: 0, x: dx, duration: 0.5, ease: "power2.in" }, o.until);
+      if (window.SFX) SFX("whoosh", o.t);
+      return el;
+    };
+    // casualty card (K&G): two columns (sideA / sideB) of rows with pictograms. rows: [["killed", "18", "45–55"], ...]
+    const PICT = {
+      killed: `<svg width="34" height="34" viewBox="0 0 100 100"><path d="M50 8 C24 8 12 26 12 46 C12 60 20 68 28 72 L28 88 L72 88 L72 72 C80 68 88 60 88 46 C88 26 76 8 50 8 Z" fill="#f7f3ea"/><circle cx="35" cy="46" r="10" fill="#1b1812"/><circle cx="65" cy="46" r="10" fill="#1b1812"/><path d="M50 58 L44 68 L56 68 Z" fill="#1b1812"/></svg>`,
+      wounded: `<svg width="34" height="34" viewBox="0 0 100 100"><rect x="38" y="10" width="24" height="80" rx="6" fill="#f7f3ea"/><rect x="10" y="38" width="80" height="24" rx="6" fill="#f7f3ea"/><rect x="42" y="42" width="16" height="16" fill="#c4121f"/></svg>`,
+      captured: `<svg width="34" height="34" viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" rx="6" fill="none" stroke="#f7f3ea" stroke-width="8"/><g fill="#f7f3ea"><rect x="28" y="10" width="8" height="80"/><rect x="46" y="10" width="8" height="80"/><rect x="64" y="10" width="8" height="80"/></g></svg>`,
+      aircraft: `<svg width="34" height="34" viewBox="-50 -50 100 100"><path d="M40 0 L28 -5 L-24 -6 L-34 -4 L-34 4 L-24 6 L28 5 Z M12 -5 L-8 -34 L-18 -34 L-8 -5 Z M12 5 L-8 34 L-18 34 L-8 5 Z" fill="#f7f3ea"/></svg>`,
+    };
+    K.casualties = (o) => {
+      const col = (flag, head, c, vals) => `<div style="min-width:230px"><div style="display:flex;align-items:center;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:3px solid ${c}">
+          <img src="${flag}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:0.08em">${head}</div></div>
+          ${o.rows.map((r, i) => `<div style="display:flex;align-items:center;gap:14px;font-size:38px;line-height:1.5">${PICT[r[0]] || ""}<span>${vals[i]}</span></div>`).join("")}</div>`;
+      const el = screen(`<div style="display:flex;gap:60px;padding:28px 50px 30px;background:rgba(18,16,12,0.92);border-top:6px solid #c9b48a;color:#f7f3ea;font-weight:700;box-shadow:0 20px 40px rgba(0,0,0,0.55)">
+        ${col("assets/media/uk_flag.png", o.headA || "BRITISH", COL.carth, o.rows.map((r) => r[1]))}${col("assets/media/arg_flag.png", o.headB || "ARGENTINE", COL.rome, o.rows.map((r) => r[2]))}</div>`,
+        `left:0;right:0;top:${o.top || 250}px;display:flex;justify-content:center;`);
+      tl.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, o.t);
+      if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, o.until);
+      if (window.SFX) SFX("hit", o.t + 0.2);
+      return el;
+    };
+    // pulsing objective ring (world space)
+    K.target = (x, y, t, o = {}) => {
+      const r = o.r || 40, c = COL[o.side] || o.side || "#ffd54a";
+      const els = [0, 1].map((k) => {
+        const el = div("", x, y, r * 2, r * 2);
+        el.style.cssText += `border-radius:50%;border:${Math.max(2, r * 0.08)}px solid ${c};box-shadow:0 0 ${r * 0.4}px ${c};`;
+        tl.fromTo(el, { autoAlpha: 0.95, scale: 0.6 }, { autoAlpha: 0, scale: 1.6, duration: 1.6, repeat: Math.max(0, Math.round(((o.until || t + 6) - t) / 1.6) - 1), ease: "sine.out", immediateRender: false }, t + k * 0.8);
+        return el;
+      });
+      return els;
+    };
+    // faint lat/long grid over the map (world space); pass the scene's projection G and bounds
+    K.grid = (G, lat0, lat1, lon0, lon1, step, t) => {
+      const g = document.createElementNS(NS, "g");
+      let h = "";
+      for (let la = Math.ceil(lat0 / step) * step; la <= lat1; la += step) { const a = G(la, lon0), b = G(la, lon1); h += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/>`; }
+      for (let lo = Math.ceil(lon0 / step) * step; lo <= lon1; lo += step) { const a = G(lat0, lo), b = G(lat1, lo); h += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/>`; }
+      g.innerHTML = h; g.setAttribute("stroke", "rgba(60,50,30,0.22)"); g.setAttribute("stroke-width", "1.5"); g.setAttribute("stroke-dasharray", "6 8");
+      ov.insertBefore(g, ov.firstChild); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 1, duration: 1.5 }, t || 0);
       return g;
     };
     return K;

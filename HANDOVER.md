@@ -37,6 +37,22 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
   - The hero's bio cards come after the stakes (~1:00-2:00). Background (how the war started) comes after the hook, kept short. Target: keep ~65%+ of viewers at 30 s.
 - First video: **Hannibal** (Trebia, Lake Trasimene, Cannae). Next candidates: see research/VIDEO_IDEAS_v2.md (top: Nathanael Greene, Daniel Morgan, Francis Marion, George Thomas).
 
+## 1b. LOCKED VISUAL STYLE (owner-approved, Goose Green v3; use `lib/fx.js` = `const K = FXK(B)` in every scene)
+Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video must use all of these:
+- **Map:** parchment shaded relief (bake.py), faint dashed lat/long grid (`K.grid`), vignette + grain, date scroll top-left.
+- **Colours (fixed):** British/friendly/hero side **blue `#1f4fc4`**; enemy **red `#c4121f`**; neutral/destroyed grey `#77746c`; gold accents `#c9b48a`; text `#f7f3ea`. Same colours in fronts, counters, arrows, aircraft, badges and cards.
+- **Front lines:** always the **glowing two-colour band** (`K.front`): crisp centre line, soft blurred **blue glow on the hero's side and red glow on the enemy's side**, drawn on like an arrow, gentle pulse, can morph to a new position (`to`, `moveT`). No plain single-colour front lines any more.
+- **Unit counters:** coloured block + **flag badge** (uk/arg or the video's nations) + **size mark** above (I company, II battalion, III regiment) + icon: infantry X, **artillery = cannon silhouette**, AA = twin-barrel gun, HQ = flag (`K.counter(id, { icon, flag, size })`).
+- **Artillery & mortars:** the gun visibly fires (`K.gun`: muzzle flash, smoke, recoil), a shell arc flies, and the **impact** (`K.impact`: fireball, shock ring, rising smoke, small camera shake) carries the loud boom. Launch sounds are quiet; **the boom is always on the impact**.
+- **Aircraft:** detailed top-down art (`K.aircraft`, kinds `jet`, `turboprop`, `heli`) with ground shadow (altitude), spinning rotors/props, burner flicker, dotted flight path; helicopters' shadows close in when they land (`land: true`); shoot-downs trail smoke, spiral and crash in a fireball (`down: t`). Never simple flat icons.
+- **Ships:** side silhouettes with muzzle flashes when firing (GG.ship + K.gun).
+- **Smoke & fire:** burning places get a continuous smoke column (`K.smoke` repeated).
+- **Objectives:** pulsing target rings (`K.target`) on the key hill/house/town of each move.
+- **Commanders:** round **badge** with portrait (or initials if no legal photo) on the nation's flag, name plate, slides in at a corner (`K.badge`) whenever a commander is introduced or takes over.
+- **Casualties:** at the end of every move with losses, a **casualty card** with flags and pictograms (skull killed, cross wounded, bars captured, plane aircraft) (`K.casualties`).
+- **Text:** captions bottom-centre, stamps/punchline cards, stat counters; Oswald font.
+- **Sound:** every visual beat has its SFX (see sections 1 and 5); music ducked under the voice.
+
 ## 2. What's finished
 | Item | Status | Where (repo path) |
 |---|---|---|
