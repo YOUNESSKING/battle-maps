@@ -234,11 +234,12 @@
       reveal(el, t, { from: { y: 30 }, to: { y: 0 } }, 0.6); if (until != null) out(el, until, 0.4);
       return el;
     };
-    B.method = (t, until) => {
-      const el = screenEl(`<div class="inner"><div class="row">CHOOSE THE GROUND</div><div class="row">CHOOSE THE MOMENT</div><div class="row">TURN THE ENEMY'S STRENGTH AGAINST HIM</div></div>`, "card method");
+    B.METHOD = ["SHAPE THE BATTLEFIELD", "STRIKE WHAT HOLDS THEM TOGETHER", "MAKE TIME FIGHT FOR YOU"];
+    B.method = (t, until, rowTimes) => { // rowTimes (optional): absolute time for each row, e.g. from B.at(...)
+      const el = screenEl(`<div class="inner">${B.METHOD.map((r) => `<div class="row">${r}</div>`).join("")}</div>`, "card method");
       reveal(el, t, {}, 0.5);
       const rows = el.querySelectorAll(".row");
-      rows.forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, t + 0.2 + i * 1.1));
+      rows.forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out" }, rowTimes ? rowTimes[i] : t + 0.2 + i * 1.1));
       if (until != null) out(el, until, 0.5);
       return el;
     };
