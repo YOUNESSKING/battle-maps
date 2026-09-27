@@ -38,3 +38,10 @@ All files: 48 kHz, 16-bit PCM WAV, mono, trimmed to have no leading silence.
 no attribution, credit line, or licence notice is legally required for any of them.
 (If a future asset is later pulled in from Wikimedia Commons, Freesound CC0, or Kenney.nl,
 add its specific credit line here and, for CC BY items, into the video description.)
+
+## Real recordings in use (2026-09-27, owner-approved for testing)
+- `candidates/cand3_hit.wav` (shell impacts): "artillery distance" by 2887679652, CC BY 4.0, https://freesound.org/people/2887679652/sounds/171475/
+- `candidates/cand1_hit.wav` (shell impacts): "Cannon/Artillery distant gunshots" by Aegersum, CC BY 3.0, https://freesound.org/people/Aegersum/sounds/345844/
+- `candidates/cand2_hit.wav` (bombs/explosions): "Distant explosion" by juskiddink, CC BY 4.0, https://freesound.org/people/juskiddink/sounds/108640/
+- `candidates/cand4_hit.wav` (bombs/explosions): "Distant explosions" by Kostrava, CC0, https://freesound.org/people/Kostrava/sounds/320788/
+Video description credit: Sound effects: "artillery distance" by 2887679652 (CC BY 4.0), "Cannon Artillery distant gunshots" by Aegersum (CC BY 3.0), "Distant explosion" by juskiddink (CC BY 4.0), via freesound.org.
