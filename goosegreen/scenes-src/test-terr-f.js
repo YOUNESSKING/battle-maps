@@ -495,6 +495,14 @@ GG.method(1, T_METH + 0.2, END + 1, [T_OWN - 0.2]);
 K.raiseTerritory();
 // night boost: muted lines and tint brighten while the night overlay is up, so they stay readable
 const TERR = document.getElementById("fxk-terr");
+// lines: day = 30% muted (#2c57b7 / #bc2528, glow ~0.47); night = full E style (#4a6a9a / #a8503c, glow 0.3)
+const DAYC = { "#2c57b7": "#4a6a9a", "#bc2528": "#a8503c" };
+[FRONT, MAINL, DEPTHL].forEach((g) => g.querySelectorAll("path").forEach((p, i) => {
+  const c = p.getAttribute("stroke"); if (!DAYC[c]) return;
+  const toNight = { attr: { stroke: DAYC[c] }, duration: 2.5 }, toDay = { attr: { stroke: c }, duration: 3 };
+  if (i < 2) { toNight.opacity = 0.3; toDay.opacity = +p.getAttribute("opacity"); }
+  B.tl.to(p, toNight, T_SAW); B.tl.to(p, toDay, T_LIGHT + 0.5);
+}));
 [TERR, FRONT, MAINL, DEPTHL].forEach((el) => {
   B.tl.fromTo(el, { filter: "brightness(1) saturate(1)" }, { filter: "brightness(1.8) saturate(1.25)", duration: 2.5, immediateRender: false }, T_SAW);
   B.tl.to(el, { filter: "brightness(1) saturate(1)", duration: 3 }, T_LIGHT + 0.5);
