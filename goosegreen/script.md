@@ -21,7 +21,7 @@ Fact-check notes (corrections to the Gemini research, checked against the Wikipe
 
 ## HOOK (0:00 – ~1:20)
 
-[ARCHIVE: 1980s radio set / BBC World Service broadcast still, slow push-in; low static SFX]
+[MAP: hook-bbc | Cold open on the map: tight on Camilla Creek House at dusk, 2 PARA and a radio; broadcast rings spread across the isthmus; Argentine positions at Darwin and Goose Green light up; target reticle; stamp SUPPOSED TO BE A SECRET]
 On the twenty-seventh of May, nineteen eighty-two, a group of British paratroopers sat around a radio in a farmhouse on the Falkland Islands, eight thousand miles from home. They were listening to the BBC World Service. And then they heard the newsreader announce, to the entire world, that a parachute battalion was poised to attack Darwin and Goose Green. It was their battalion. It was their target. And it was supposed to be a secret.
 
 [MAP: hook-falklands | South Atlantic: Argentina coast, Falkland Islands; East Falkland highlighted; San Carlos landing arrow; red Argentine garrison markers at Stanley and Goose Green]

@@ -1,10 +1,31 @@
 {
- "0": ["archive_radio.jpg"],
- "2": ["archive_atlantic_conveyor.jpg", "archive_task_force_ships.jpg"],
- "16": ["archive_argentine_soldiers.jpg", "archive_argentine_positions.jpg"],
- "23": ["archive_vc_medal.jpg", "archive_ajax_bay_grave.jpg"],
- "39": ["archive_argentine_pows.jpg", "archive_goosegreen_settlement.jpg"],
- "41": ["archive_radio.jpg", "archive_darwin_terrain.jpg"],
- "43": ["archive_harrier.jpg", "archive_san_carlos_cemetery.jpg"],
- "44": ["archive_hms_arrow.jpg", "archive_pucara.jpg", "archive_milan.jpg"]
+ "2": [
+  "archive_atlantic_conveyor.jpg",
+  "archive_task_force_ships.jpg"
+ ],
+ "16": [
+  "archive_argentine_soldiers.jpg",
+  "archive_argentine_positions.jpg"
+ ],
+ "23": [
+  "archive_vc_medal.jpg",
+  "archive_ajax_bay_grave.jpg"
+ ],
+ "39": [
+  "archive_argentine_pows.jpg",
+  "archive_goosegreen_settlement.jpg"
+ ],
+ "41": [
+  "archive_radio.jpg",
+  "archive_darwin_terrain.jpg"
+ ],
+ "43": [
+  "archive_harrier.jpg",
+  "archive_san_carlos_cemetery.jpg"
+ ],
+ "44": [
+  "archive_hms_arrow.jpg",
+  "archive_pucara.jpg",
+  "archive_milan.jpg"
+ ]
 }

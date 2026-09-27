@@ -19,6 +19,7 @@ paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
+    "hook-bbc": ("hook-bbc", "hook-bbc"),
     "hook-atlantic": ("hook-falklands", "hook-falklands"),
     "hook-isthmus": ("hook-isthmus", "hook-bio-2"),
     "move1": ("move1-1", "move1-10"),
@@ -26,7 +27,7 @@ SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
     "move3": ("move3-1", "move3-10"),
     "ending": ("end-1", "end-2"),
 }
-CHAPTERS = [("hook-falklands", "Intro: the BBC leak"), ("move1-1", "Move 1: The Night Assault"),
+CHAPTERS = [("hook-bbc", "Intro: the BBC leak"), ("move1-1", "Move 1: The Night Assault"),
             ("move2-1", "Move 2: Darwin Hill and Boca House"), ("move3-1", "Move 3: The Goose Green Bluff"),
             ("end-1", "Legacy")]
 ARCH = json.load(open("archive.json")) if os.path.exists("archive.json") else {}
@@ -97,18 +98,26 @@ while i < len(paras):
 open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"], check=True)
 
-inputs = ["-i", "build/video_only.mp4", "-i", "audio/voice.wav"]
+# audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
+inputs = ["-i", "audio/voice.wav"]
 f = []
 if os.path.exists("assets/media/music.wav"):
     inputs += ["-stream_loop", "-1", "-i", "assets/media/music.wav"]
-    f += ["[1:a]aresample=48000,asplit=2[vo][key]",
-          f"[2:a]aresample=48000,atrim=0:{total},volume=0.35,afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
+    f += ["[0:a]aresample=48000,asplit=2[vo][key]",
+          f"[1:a]aresample=48000,atrim=0:{total},volume=0.35,afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
           "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
-          "[vo][musd]amix=inputs=2:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]"]
+          "[vo][musd]amix=inputs=2:normalize=0,alimiter=limit=0.5:level=false[aout]"]
 else:
-    f += ["[1:a]aresample=48000,loudnorm=I=-14:TP=-1.5:LRA=11[aout]"]
+    f += ["[0:a]aresample=48000,alimiter=limit=0.5:level=false[aout]"]
+subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "[aout]", "-t", f"{total:.2f}",
+                "-c:a", "pcm_s16le", "build/mix.wav"], check=True)
+LN = "loudnorm=I=-14:TP=-1.5:LRA=11"
+r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", LN + ":print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
+m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
+af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+      f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
 name = "build/goosegreen-720p.mp4" if PREVIEW else "build/goosegreen.mp4"
-subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/video_only.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
                 "-t", f"{total:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", name], check=True)
 mmss = lambda s: f"{int(s // 60)}:{int(s % 60):02d}"
 open("build/chapters.txt", "w").write("".join(f"{'0:00' if n == 0 else mmss(paras[idx[t]]['start'])} {title}\n" for n, (t, title) in enumerate(CHAPTERS)))
