@@ -166,7 +166,7 @@ def mix():
     dur = T["duration"]
     A = "assets/audio"
     # music bed per section: (track, start, end)
-    bed = [("music1.mp3", 0, at("tricam-1") - 1), ("music2.mp3", at("tricam-1") - 1, at("rome-1") - 1),
+    bed = [("music1.mp3", 0, at("tricam-1") - 1), ("music1.mp3", at("tricam-1") - 1, at("rome-1") - 1),
            ("music3.mp3", at("rome-1") - 1, dur + 1)]
     bed = [b for b in bed if os.path.exists(f"{A}/{b[0]}")]
     cues = [("sfx_drum.wav", 0.3, 0.5), ("sfx_whoosh.wav", at("dara-1") - 0.4, 0.4), ("sfx_drum.wav", at("dara-2") + 0.5, 0.35),

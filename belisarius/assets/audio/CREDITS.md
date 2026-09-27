@@ -1,3 +1,5 @@
+> Note: music2.mp3 (Killing Time) is NOT used in the final cut (owner preference); music1 (Crusade) plays under both Dara and Tricamarum.
+
 # Audio Credits — Belisarius Documentary
 
 ## Music
