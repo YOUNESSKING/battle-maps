@@ -3,6 +3,7 @@
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
+const K = FXK(B); // locked style FX kit (lib/fx.js)
 
 // ---------- Goose Green helpers (same block in hook-atlantic / hook-isthmus / move1 / ending) ----------
 const GG = (() => {
@@ -235,6 +236,17 @@ const GOOSE = G(-51.8277, -58.9728), AIRF = G(-51.8196, -58.9802), DHILL = G(-51
 const ARROW = [1215, 105];   // HMS Arrow, offshore to the north-west (towards Grantham Sound)
 const GUNS = [CCH[0] - 64, CCH[1] + 40];
 
+K.grid(G, -51.90, -51.66, -59.26, -58.72, 0.02, 0.3); // faint lat/long grid
+// artillery / naval / mortar shot: gun fires (quiet), shell arc flies, impact carries the boom
+const shoot = (from, to, t, o = {}) => {
+  K.gun(from[0], from[1], t, { unit: o.unit, dx: o.dx || 0, dy: o.dy || 0, sfx: o.sfx });
+  const dur = o.dur || 1.1;
+  GG.arc(from[0], from[1], to[0], to[1], t + 0.05, { dur, width: o.width || 3, h: o.h, impact: false });
+  K.impact(to[0], to[1], t + 0.05 + dur, { r: o.r || 13, shake: o.shake != null ? o.shake : 2, puffs: 2 });
+};
+// close-quarters night fighting (grenades, trench clearing): small spread-out blasts with smoke
+const melee = (x, y, t, pts, gap = 0.6) => pts.forEach(([dx, dy, r], i) => K.impact(x + dx, y + dy, t + i * gap, { r: r || 12, shake: false, puffs: 2, life: 2.0 }));
+
 const p = (n) => "move1-" + n;
 const S = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (n ? P(p(n)) : 0));
 
@@ -261,7 +273,7 @@ B.camera([
   [S[2] + 1.5, 1600, 900, 1.9],
   [T_WATER + 1.0, 1590, 910, 1.95],
   [T_LAYERS - 1.0, 1590, 960, 1.75],
-  [S[3] + 1.5, 1600, 1030, 1.8],
+  [S[3] + 1.5, 1600, 1060, 1.8],
   [S[4] + 1.0, 1600, 950, 2.0],
   [S[5] - 0.5, 1600, 950, 2.0],
   [S[5] + 3.0, 1620, 690, 1.6],
@@ -290,16 +302,17 @@ B.arrow({ side: "carth", pts: [[1720, -10], [1715, 120], [1680, 260], [1630, 380
 GG.lbl("▲ FROM SAN CARLOS", 1735, 40, { size: 22, anchor: [0, -50], t: T_WALK + 0.4, until: T_GIFT });
 GG.tagbox("13 MILES ON FOOT · WET PEAT", 1740, 200, "#1f4fc4", { size: 20, anchor: [0, -50], t: T_WALK + 1.4, until: T_GIFT });
 B.unit({ id: "para", side: "carth", x: CCH[0], y: CCH[1] + 46, w: 50, h: 34, label: "2 PARA", t: T_CCH });
+K.counter("para", { icon: "infantry", flag: "uk", size: "II" });
 B.caption("CARRYING EVERYTHING ON THEIR BACKS", at(p(1), "carrying everything"), T_SOUTH - 0.2, "carth r");
 B.unit({ id: "guns", side: "carth", x: GUNS[0], y: GUNS[1], w: 36, h: 26, label: "3 GUNS", t: T_SOUTH });
-GG.icon("guns", "gun");
+K.counter("guns", { icon: "artillery", flag: "uk" });
 
 // ---------- move1-2: the ground ----------
 B.city("BURNTSIDE HOUSE", ...BURNT, { size: 18, r: 6, t: S[2] + 0.6 });
 B.city("BOCA HOUSE", ...BOCA, { size: 18, r: 6, left: true, t: S[2] + 1.0 });
 B.city("DARWIN", ...DARWIN, { size: 18, r: 6, t: S[2] + 1.3 });
 B.city("GOOSE GREEN", ...GOOSE, { size: 20, r: 7, t: S[2] + 1.6 });
-GG.lbl("AIRFIELD", AIRF[0] - 26, AIRF[1] + 6, { size: 16, anchor: [-100, -50], t: S[2] + 1.9 });
+GG.lbl("AIRFIELD", AIRF[0] - 10, AIRF[1] - 50, { size: 16, anchor: [-50, -50], t: S[2] + 1.9 });
 const lochL = B.label("BRENTON LOCH", 1310, 800, { cls: "sea", size: 22, t: S[2] + 2.2 });
 const hbrL = B.label("DARWIN HARBOUR", 1810, 1150, { cls: "sea", size: 18, t: S[2] + 2.4 });
 B.tl.to([lochL, hbrL], { scale: 1.18, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_WATER);
@@ -317,14 +330,13 @@ B.caption("BOGGY GRASS · GULLIES · THICK GORSE", T_GORSE, T_LAYERS - 0.2, "r")
 const FWD = [[1500, 872], [1560, 858], [1640, 846], [1700, 842], [1770, 848]];
 const MAIN = [[BOCA[0] + 6, BOCA[1] - 20], [1522, 956], [1570, 968], [1608, 982], [1628, 998]];
 const DEPTH = [[1462, 1150], [1500, 1170], [1540, 1182], [1578, 1190]];
-B.front({ pts: FWD, color: "var(--rome)", width: 7, t: T_LAYERS, dur: 1.2, until: T_SAW + 3 });
-B.front({ pts: MAIN, color: "var(--rome)", width: 9, t: T_LAYERS + 0.8, dur: 1.2 });
-B.front({ pts: DEPTH, color: "var(--rome)", width: 7, t: T_LAYERS + 1.6, dur: 1.2 });
+// glowing two-colour fronts (drawn west -> east: sideA = north = British blue, sideB = south = Argentine red)
+K.front({ pts: FWD, sideA: "carth", sideB: "rome", width: 16, t: T_LAYERS, dur: 1.2, until: T_GAVE + 0.4 });
+K.front({ pts: MAIN, sideA: "carth", sideB: "rome", width: 18, t: T_LAYERS + 0.8, dur: 1.2, until: END + 1 });
+K.front({ pts: DEPTH, sideA: "carth", sideB: "rome", width: 16, t: T_LAYERS + 1.6, dur: 1.2, until: END + 1 });
 
 // ---------- move1-3: Piaggi and Task Force Mercedes ----------
-const pst = B.portraitStake({ img: "assets/media/piaggi_head.png", flag: "assets/media/arg_flag.png", name: "LT. COL. ÍTALO PIAGGI", x: 1748, y: 1190, size: 0.62, t: T_PIAG - 0.4, until: T_SAW });
-pst.classList.add("arg");
-GG.tagbox("TASK FORCE MERCEDES · ~1,000 MEN", 1748, 1210, "#c4121f", { size: 14, t: T_TFM, until: T_SAW });
+K.badge({ name: "LT. COL. ÍTALO PIAGGI", role: "TASK FORCE MERCEDES · ~1,000 MEN", photo: "assets/media/piaggi_head.png", flag: "arg", side: "rome", corner: "bl", t: T_PIAG - 0.3, until: T_BEHIND + 0.2 });
 const RED = {
   f1: [1540, 870, ""], f2: [1628, 856, ""], f3: [BURNT[0] + 30, BURNT[1] + 26, ""], f4: [CORON[0], CORON[1] + 2, ""],
   m1: [BOCA[0] + 26, BOCA[1] - 16, ""], m2: [1532, 978, "12th REGT"], m3: [DHILL[0] + 6, DHILL[1] + 2, ""],
@@ -332,10 +344,17 @@ const RED = {
 };
 const RT = { f: T_SCREEN, m: T_MAIN, d: T_BEHIND };
 Object.entries(RED).forEach(([id, [x, y, label]], i) => B.unit({ id, side: "rome", x, y, w: 26, h: 18, label: label || null, t: RT[id[0]] + 0.3 + (i % 4) * 0.25 }));
-GG.icon("d1", "aa"); GG.icon("d3", "gun");
+["f1", "f2", "f3", "f4"].forEach((id) => K.counter(id, { icon: "infantry", flag: "arg", size: "•••" }));
+K.counter("m1", { icon: "infantry", flag: "arg", size: "I" });
+K.counter("m2", { icon: "infantry", flag: "arg", size: "III" });
+K.counter("m3", { icon: "infantry", flag: "arg", size: "I" });
+K.counter("d1", { icon: "aa", flag: "arg" });
+K.counter("d2", { icon: "infantry", flag: "arg", size: "I" });
+K.counter("d3", { icon: "artillery", flag: "arg" });
 B.caption("A SCREEN OF OUTPOSTS FORWARD", T_SCREEN, T_MAIN - 0.2, "rome r");
 GG.lbl("DARWIN HILL", 1562, 1034, { size: 15, t: T_DH - 0.2 });
 B.caption("MAIN LINE: DARWIN HILL TO BOCA HOUSE", T_MAIN + 0.4, T_BEHIND - 0.2, "rome r");
+[[1440, 990], [1500, 1000], [1560, 1010], [1470, 1030], [1540, 1040]].forEach(([x, y], i) => K.gun(AIRF[0] + 16, AIRF[1] - 24, T_AA + 0.3 + i * 0.35, { dx: 0, dy: 0, sfx: "mg" }));
 [[1440, 990], [1500, 1000], [1560, 1010], [1470, 1030], [1540, 1040]].forEach(([x, y], i) => GG.arc(AIRF[0] + 16, AIRF[1] - 24, x, y, T_AA + 0.3 + i * 0.35, { h: 0, color: "#ff6a5a", dash: "10 7", width: 3, dur: 0.6, impact: false, until: T_IDEA + 1 }));
 B.caption("AA GUNS COULD FIRE ALONG THE GROUND", T_AA + 0.4, S[4] - 0.2, "rome r");
 
@@ -352,7 +371,7 @@ B.caption("ALERT AND WAITING", T_ALERT + 0.3, S[5] - 0.2, "rome r");
 // ---------- move1-5: night ----------
 GG.night(T_SAW, T_LIGHT + 0.5, { dur: 3.0, outDur: 4.0 });
 B.caption("BUT H JONES SAW SOMETHING DIFFERENT", T_SAW + 0.2, T_TRAIN - 0.2, "carth r");
-const jst = GG.stake({ name: "LT. COL. H. JONES", role: "CO, 2 PARA", side: "carth", x: CCH[0] + 90, y: CCH[1] + 190, size: 0.85, t: T_SAW + 2.5, until: T_335 + 1 });
+K.badge({ name: "LT. COL. H. JONES", role: "CO, 2 PARA", initials: "H", flag: "uk", side: "carth", corner: "tr", t: T_SAW + 0.2, until: S[6] - 0.4 });
 B.caption("2 PARA: TRAINED TO FIGHT AT NIGHT", T_TRAIN, T_CONS - 0.2, "carth r");
 B.caption("DEFENDERS: YOUNG CONSCRIPTS · COLD · POORLY SUPPLIED", T_CONS, T_DARK - 0.2, "rome r");
 B.caption("IN THE DARK: NO OBSERVATION · NO TARGETS", T_DARK, T_PLAN - 0.2, "carth r");
@@ -362,6 +381,7 @@ B.caption("6-PHASE NIGHT ATTACK · COMPANY LEAPFROGS COMPANY", T_SIX, S[6] - 0.3
 const CO = { A: [1668, 740], B: [1532, 742], C: [1606, 690], D: [1590, 628] };
 Object.entries(CO).forEach(([k, [x, y]], i) => {
   B.unit({ id: "c" + k, side: "carth", x: CCH[0], y: CCH[1] + 46, w: 28, h: 20, label: k + " COY", t: null });
+  K.counter("c" + k, { icon: "infantry", flag: "uk", size: "I" });
   B.show("c" + k, T_SIX - 0.2);
   B.move("c" + k, T_SIX + 0.2 + i * 0.3, 2.6, x, y);
 });
@@ -372,25 +392,25 @@ B.date("28 MAY · 03:35", T_335 + 0.2, T_LIGHT, 38);
 const arrowShip = GG.ship(ARROW[0], ARROW[1], { w: 110, t: T_ARROW - 0.8 });
 const arrowL = GG.lbl("HMS ARROW", ARROW[0], ARROW[1] + 34, { size: 22, t: T_ARROW - 0.6 });
 const arrowT = GG.tagbox("4.5-INCH GUN", ARROW[0], ARROW[1] + 62, "#1f4fc4", { size: 15, t: T_ARROW + 0.2 });
+const ARROW_GUN = [ARROW[0] - 48, ARROW[1] - 2]; // 4.5-inch gun on the bow
 const TGT = [[RED.f1[0], RED.f1[1]], [RED.f3[0], RED.f3[1]], [RED.f2[0], RED.f2[1]], [RED.m1[0], RED.m1[1]]];
 for (let i = 0; i < 9; i++) {
   const t = T_ARROW + 0.5 + i * 1.5;
-  GG.flash(ARROW[0] + 40, ARROW[1] - 6, t, { r: 22, n: 1, sfx: "fire" });
   const [tx, ty] = TGT[i % TGT.length];
-  GG.arc(ARROW[0] + 40, ARROW[1] - 6, tx + ((i * 37) % 30) - 15, ty + ((i * 23) % 20) - 10, t + 0.05, { dur: 1.3, width: 3.5 });
+  shoot(ARROW_GUN, [tx + ((i * 37) % 30) - 15, ty + ((i * 23) % 20) - 10], t, { dur: 1.3, width: 3.5, r: 16 });
 }
 for (let i = 0; i < 12; i++) {
   const t = T_THREE + 0.3 + i * 0.95;
-  GG.flash(GUNS[0], GUNS[1], t, { r: 16, n: 1, sfx: "fire" });
   const [tx, ty] = TGT[(i + 1) % 3];
-  GG.arc(GUNS[0], GUNS[1] - 8, tx + ((i * 29) % 36) - 18, ty + ((i * 17) % 24) - 12, t + 0.05, { dur: 1.1, width: 3, h: 120 });
+  shoot([GUNS[0], GUNS[1] - 8], [tx + ((i * 29) % 36) - 18, ty + ((i * 17) % 24) - 12], t, { unit: "guns", dur: 1.1, h: 120, r: 13 });
 }
 B.caption("HMS ARROW AND 3 LIGHT GUNS OPEN FIRE", T_ARROW + 1.0, T_ACOY - 0.2, "carth r");
 const aArrow1 = B.arrow({ side: "carth", pts: [[1672, 758], [1700, 785], [BURNT[0] + 4, BURNT[1] - 6]], width: 12, t: T_ACOY + 0.6, dur: 2.0, until: T_DCOY + 2 });
 B.move("cA", T_ACOY + 0.8, 3.5, BURNT[0] - 26, BURNT[1] - 22);
+K.target(BURNT[0], BURNT[1], T_ACOY + 0.4, { r: 38, until: T_CLEAR + 1.0 });
 
 // ---------- move1-7: Burntside House, west side ----------
-GG.flash(BURNT[0] + 30, BURNT[1] + 26, T_CLEAR - 1.0, { r: 22, n: 4, gap: 0.4 });
+melee(BURNT[0] + 30, BURNT[1] + 26, T_CLEAR - 1.6, [[-10, -8, 12], [12, 6, 11], [-4, 16, 13], [18, -10, 10]], 0.55);
 B.grey(["f3"], T_CLEAR + 0.5, 1.0);
 B.hideUnits(["f3"], T_FELL + 1.5, 1.0);
 B.caption("A COY: BURNTSIDE HOUSE CLEARED", T_CLEAR + 0.4, T_BCOY - 0.2, "carth r");
@@ -398,8 +418,8 @@ GG.lbl("BURNTSIDE HILL", 1500, 890, { size: 15, anchor: [-100, -50], t: T_BCOY -
 const bArrow1 = B.arrow({ side: "carth", pts: [[1530, 760], [1514, 805], [1528, 848]], width: 12, t: T_BCOY + 0.2, dur: 2.2, until: T_DCOY + 2 });
 B.move("cB", T_BCOY + 0.4, 3.5, 1520, 830);
 B.caption("TRENCH BY TRENCH · GRENADES AND RIFLES AT CLOSE RANGE", T_TBT, T_FELL - 0.2, "carth r");
-GG.flash(RED.f1[0], RED.f1[1], T_TBT - 0.5, { r: 20, n: 5, gap: 0.45 });
-GG.flash(RED.f2[0], RED.f2[1], T_TBT + 0.8, { r: 20, n: 4, gap: 0.5 });
+melee(RED.f1[0], RED.f1[1], T_TBT - 0.5, [[-14, -6, 12], [8, 10, 14], [16, -8, 11], [-4, 14, 12]], 0.7);
+melee(RED.f2[0], RED.f2[1], T_TBT + 0.85, [[10, -8, 12], [-12, 8, 13], [4, 14, 10]], 0.7);
 B.move("f2", T_FELL, 2.5, 1610, 918);          // some outposts fell back
 B.grey(["f1"], T_FELL + 0.3, 1.0);
 B.hideUnits(["f1"], T_GAVE + 1.0, 1.0);
@@ -419,21 +439,20 @@ B.grey(["f4"], T_MORT, 1.0);
 B.hideUnits(["f4"], T_PEAT, 1.0);
 B.unit({ id: "mort", side: "carth", x: 1665, y: 718, w: 26, h: 18, label: "MORTARS", t: T_MORT - 0.6 });
 GG.icon("mort", "mortar");
+K.counter("mort", { flag: "uk" });
 for (let i = 0; i < 8; i++) {
   const t = T_MORT + 0.2 + i * 0.8;
-  GG.flash(1665, 710, t, { r: 13, n: 1, sfx: "mortar" });
-  GG.arc(1665, 710, 1540 + (i * 23) % 90, 950 + (i * 13) % 30, t + 0.05, { dur: 0.9, width: 2.5, h: 90 });
+  shoot([1665, 710], [1540 + (i * 23) % 90, 950 + (i * 13) % 30], t, { unit: "mort", sfx: "mortar", dur: 0.9, width: 2.5, h: 90, r: 12 });
 }
 B.caption("MORTAR BASEPLATES DRIVEN DEEP INTO THE PEAT", T_PEAT - 1.2, T_GUNS - 0.2, "carth r");
 for (let i = 0; i < 7; i++) {
   const t = T_GUNS + 0.2 + i * 0.9;
-  GG.flash(GUNS[0], GUNS[1], t, { r: 16, n: 1, sfx: "fire" });
-  GG.arc(GUNS[0], GUNS[1] - 8, 1500 + (i * 31) % 120, 940 + (i * 19) % 40, t + 0.05, { dur: 1.2, width: 3, h: 140 });
+  shoot([GUNS[0], GUNS[1] - 8], [1500 + (i * 31) % 120, 940 + (i * 19) % 40], t, { unit: "guns", dur: 1.2, h: 140, r: 13 });
 }
 B.caption("3 LIGHT GUNS · HUNDREDS OF ROUNDS", T_GUNS + 0.2, T_EMPTY - 0.2, "carth r");
 GG.tagbox("NEARLY EMPTY", GUNS[0], GUNS[1] + 44, "#8a877f", { size: 15, t: T_EMPTY, until: S[10] });
 B.caption("BY DAWN: NEARLY OUT OF SHELLS", T_EMPTY, S[9] - 0.2, "rome r");
-const bf = B.front({ pts: [[1500, 760], [1560, 752], [1610, 740], [1680, 752]], to: [[1500, 902], [1560, 878], [1612, 868], [1700, 900]], color: "var(--carth)", width: 7, t: T_DCOY + 0.2, dur: 1.2, moveT: T_DCOY + 1.4, moveDur: 4.5, until: T_SUN + 0.3 });
+const bf = K.front({ pts: [[1500, 760], [1560, 752], [1610, 740], [1680, 752]], to: [[1500, 902], [1560, 878], [1612, 868], [1700, 900]], sideA: "carth", sideB: "rome", width: 16, t: T_DCOY + 0.2, dur: 1.2, moveT: T_DCOY + 1.4, moveDur: 4.5, until: T_SUN + 0.3 });
 
 // ---------- move1-9: first light ----------
 GG.dawn(T_LIGHT, S[10] + 4);
@@ -453,6 +472,7 @@ B.hideUnits(["cC", "mort"], T_SUN + 0.5);
 B.caption("A AND B COMPANIES: IN THE OPEN, IN FRONT OF THE MAIN LINE", T_OPEN - 0.3, T_GONE - 0.2, "rome r");
 GG.pin(`<div style="width:70px;height:70px;border-radius:50%;border:5px solid #fff3c4;box-shadow:0 0 12px rgba(255,200,80,0.9)"></div>`, 1628, 935, { t: T_OPEN, until: S[10] });
 GG.pin(`<div style="width:70px;height:70px;border-radius:50%;border:5px solid #fff3c4;box-shadow:0 0 12px rgba(255,200,80,0.9)"></div>`, 1492, 896, { t: T_OPEN + 0.3, until: S[10] });
+K.target(DHILL[0], DHILL[1] + 6, T_OPEN - 0.2, { r: 46, until: S[10] });
 B.caption("THE DARKNESS WAS GONE", T_GONE, S[10] - 0.2, "rome r");
 
 // ---------- move1-10: method ----------
