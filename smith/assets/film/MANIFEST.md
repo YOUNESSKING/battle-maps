@@ -47,7 +47,7 @@ no audio.
 | `chosin_snow_march_01.mp4` | D | 2:08–2:20 | Marine column marching through a snowbound mountain pass |
 | `chosin_snow_march_02.mp4` | H | 0:32–0:44 | Marine column marching through a snowy valley, trucks alongside |
 | `chosin_snow_march_03.mp4` | K | 9:28–9:40 | Marine column marching in snow, clean wide shot |
-| `chosin_cold_01.mp4` | H | 10:12–10:24 | Marines prone in the snow with rifles, hunkered down against the cold |
+| `chosin_cold_01.mp4` | H | 9:38–9:48 | Marines prone in the snow with rifles, hunkered down against the cold |
 | `chosin_cold_02.mp4` | D | 3:00–3:12 | Marines in heavy cold-weather gear, close-up |
 | `hagaru_airstrip_01.mp4` | J | 2:40–2:52 | C-119/C-47 transport taxiing on the packed-snow airstrip at Hagaru-ri |
 | `hagaru_airstrip_02.mp4` | J | 7:20–7:32 | Wounded Marine on a stretcher loaded through a transport plane's door |

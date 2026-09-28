@@ -69,7 +69,7 @@ cut 111-adc-8251.mp4 140  12 officers_01.mp4           # MacArthur and staff off
 cut 111-adc-8579.mp4 128  12 chosin_snow_march_01.mp4  # Marine column marching through snowy mountain pass
 cut ADC-10271.mp4     32  12 chosin_snow_march_02.mp4  # column marching in snowy valley
 cut hungnam_story.mp4 568 12 chosin_snow_march_03.mp4  # clean shot of Marine column marching
-cut ADC-10271.mp4    612  12 chosin_cold_01.mp4        # Marines prone in snow with rifles, hunkered down
+cut ADC-10271.mp4    578  10 chosin_cold_01.mp4        # Marines prone in snow with rifles, hunkered down
 cut 111-adc-8579.mp4 180  12 chosin_cold_02.mp4        # Marines close-up in cold weather gear
 cut ADC-9439.mp4     160  12 hagaru_airstrip_01.mp4    # C-119/C-47 taxiing on snow airstrip
 cut ADC-9439.mp4     440  12 hagaru_airstrip_02.mp4    # wounded on stretcher loaded into plane door
