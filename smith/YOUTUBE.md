@@ -30,7 +30,7 @@ Credits
 - Photographs: U.S. Marine Corps, U.S. Navy, U.S. Army and NARA, public domain, via Wikimedia Commons.
 - "Change of Command Ceremony, 1951" by USMC Archives from Quantico, USA, CC BY 2.0.
 - Terrain: Mapzen / AWS Terrain Tiles (open data).
-- Music: "Darkest Child" by Kevin MacLeod (incompetech.com), licensed under Creative Commons: By Attribution 4.0 (https://creativecommons.org/licenses/by/4.0/). Sound effects: CC0 (USC sound effect archive via Internet Archive) and original synthesis.
+- Music: original track (same as the Ridgway video). Sound effects: CC0 (USC sound effect archive via Internet Archive) and original synthesis.
 
 ## Pinned comment
 Which commander should I cover next? Ridgway, Puller, Nathanael Greene, Daniel Morgan…?
