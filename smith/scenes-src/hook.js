@@ -49,7 +49,7 @@ B.city("HAMHUNG", ...HAM, { size: 26, t: 2.6, until: H2 + 1.5 });
 B.label("NORTH KOREA", 820, 1000, { cls: "country", size: 60, t: 1.8, until: H2 });
 
 // blue Marines strung along the road
-const blueRoad = [YUD, [1170, 160], TOK, HAG, [1375, 420], KOTO, [1425, 580], CHIN, G(40.08, 127.40), [1680, 1080], HAM];
+const blueRoad = [YUD, [1170, 160], TOK, HAG, [1375, 420], KOTO, [1425, 580], CHIN, G(40.08, 127.40), [1680, 1080], [1712, 1138]];
 blueRoad.forEach(([x, y], i) => B.unit({ id: "b" + i, side: "carth", x, y, w: 34, h: 34, t: 3.8 + i * 0.22 }));
 
 // cold

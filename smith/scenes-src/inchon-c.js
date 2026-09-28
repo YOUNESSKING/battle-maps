@@ -58,13 +58,13 @@ const supEls = sup.map((pts, i) => B.line(pts, { color: "var(--rome)", dash: "22
   tl.to(X, { autoAlpha: 0, duration: 0.5 }, I9 + 0.5);
 });
 // the North Korean army in the south collapses and flees north
-const reds = [[1900, 1450], [2150, 1500], [2400, 1430], [2650, 1500], [1700, 1520]];
+const reds = [[1900, 1300], [2150, 1340], [2400, 1280], [2650, 1330], [1700, 1360]];
 reds.forEach(([x, y], i) => {
   B.unit({ id: "r" + i, side: "rome", x, y, w: 36, h: 36, t: T_SEOUL + 3.4 + i * 0.15 });
-  B.move("r" + i, T_CUT + 1.4 + i * 0.2, 4.5, x + 60 - i * 20, y - 330, "power1.in");
+  B.move("r" + i, T_CUT + 1.4 + i * 0.2, 4.5, x + 60 - i * 20, y - 260, "power1.in");
 });
 B.grey(reds.map((_, i) => "r" + i), T_CUT + 2.0, 1.4);
-B.label("NORTH KOREAN ARMY COLLAPSES", 2240, 1240, { cls: "tg", size: 36, t: T_CUT + 1.0, until: I9 + 0.3, anchor: [-50, -50] });
+B.label("NORTH KOREAN ARMY COLLAPSES", 2200, 1420, { cls: "tg", size: 36, t: T_CUT + 1.0, until: I9 + 0.3, anchor: [-50, -50] });
 B.caption("WITHIN A MONTH, THE WAR SEEMED WON", T_WON, I9 - 0.1, "carth");
 B.hideUnits(reds.map((_, i) => "r" + i), I9 + 0.3, 0.8);
 
@@ -95,9 +95,10 @@ const methodCard = (o) => { // o = { t, until, rowT: [t1,t2,t3], hi: index to hi
   return el;
 };
 B.dateBox(I9 - 0.2, null);
-B.dim(I9 - 0.2, T_NORTH - 0.2, 0.75);
-methodCard({ t: I9 + 0.2, until: T_NORTH - 0.6, rowT: [T_R1 - 0.3, T_R2 - 0.3, T_R3 - 0.1], hi: 2, hiT: T_TIDE - 0.4 });
+B.dim(T_R1 - 1.4, T_NORTH - 0.2, 0.75);
+B.caption("MACARTHUR'S VISION · SMITH'S PLANNING", I9 + 0.6, T_R1 - 1.6, "carth");
+methodCard({ t: T_R1 - 1.2, until: T_NORTH - 0.6, rowT: [T_R1 - 0.3, T_R2 - 0.3, T_R3 - 0.1], hi: 2, hiT: T_TIDE - 0.4 });
 // looking north: the next move
 B.arrow({ side: "carth", pts: [[1300, 880], [1420, 600], [1500, 330], [1540, 60]], width: 26, t: T_NORTH + 0.2, dur: 3.0 });
-B.label("NEXT: THE FROZEN NORTH", 1600, 300, { cls: "tg", size: 40, t: T_NORTH + 1.4 });
+B.label("NEXT: THE FROZEN NORTH", 1900, 260, { cls: "tg", size: 40, t: T_NORTH + 1.4 });
 B.finish();
