@@ -27,15 +27,15 @@ SCENES = {  # scene -> (first tag, last tag)
 }
 # archive slots, keyed by the index of the ARCHIVE paragraph in script order (0 = first archive paragraph)
 ARCHIVE = {
-    0: ["film:chosin_snow_march", "photo:chosin_column.jpg"],            # hook: marching out of the mountains
-    1: ["photo:macarthur_mckinley.jpg", "film:macarthur", "film:inchon_ships"],  # MacArthur / worst place to land
-    2: ["photo:lopez_seawall.jpg", "film:inchon_seawall"],               # Lopez at Red Beach
-    3: ["photo:almond.jpg"],                                            # Almond
-    4: ["film:hagaru_airstrip", "photo:hagaru_airstrip.jpg", "film:chosin_cold"],  # C-47s at Hagaru-ri
-    5: ["photo:smith_correspondents.jpg", "film:chosin_cold"],          # "attacking in another direction"
-    6: ["film:bridge", "photo:treadway_bridge.jpg", "film:vehicles_dead"],  # bridge, the dead, morphine
-    7: ["film:hungnam_ships", "photo:hungnam_ships.jpg", "film:hungnam_explosion", "photo:hungnam_explosion.jpg"],
-    8: ["photo:smith_later.jpg", "photo:smith_portrait.jpg"],           # ending portrait
+    0: ["film:chosin_snow_march_01", "photo:chosin_column.jpg", "film:chosin_snow_march_02"],  # marching out of the mountains
+    1: ["photo:macarthur_mckinley.jpg", "film:officers_01", "film:inchon_wolmido_01"],  # MacArthur / worst place to land
+    2: ["film:inchon_seawall_01", "photo:lopez_seawall.jpg"],                            # Lopez at Red Beach
+    3: ["photo:almond.jpg", "film:macarthur_02"],                                        # Almond
+    4: ["film:hagaru_airstrip_01", "film:hagaru_airstrip_02", "photo:hagaru_airstrip.jpg", "film:chosin_cold_01"],  # airlift, Yudam-ni
+    5: ["photo:smith_correspondents.jpg", "film:chosin_snow_march_03"],                  # "attacking in another direction"
+    6: ["photo:treadway_bridge.jpg", "film:vehicles_dead_01", "film:foxholes_snow_01"],  # bridge, the dead, morphine
+    7: ["film:hungnam_ships_01", "photo:hungnam_ships.jpg", "film:hungnam_explosion_02", "photo:hungnam_explosion.jpg"],
+    8: ["photo:smith_later.jpg", "photo:smith_portrait.jpg"],                             # ending portrait
 }
 
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
