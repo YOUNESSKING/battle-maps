@@ -47,6 +47,12 @@
     aa: `<g fill="${INK}"><rect x="46" y="16" width="7" height="46" rx="2" transform="rotate(28 50 62)"/><rect x="58" y="16" width="7" height="46" rx="2" transform="rotate(28 62 62)"/><path d="M22 84 L78 84 L70 64 L30 64 Z"/><circle cx="50" cy="64" r="9"/></g>`,
     infantry: `<line x1="4" y1="4" x2="96" y2="96" stroke="${INK}" stroke-width="8"/><line x1="96" y1="4" x2="4" y2="96" stroke="${INK}" stroke-width="8"/>`,
     hq: `<g fill="${INK}"><rect x="30" y="16" width="5" height="70"/><path d="M35 18 L78 30 L35 44 Z"/></g>`,
+    // --- candidates (owner to choose) ---
+    art_nato: `<circle cx="50" cy="50" r="19" fill="${INK}"/>`,
+    art_gun: `<g fill="${INK}"><rect x="40" y="31" width="56" height="8" rx="3" transform="rotate(-22 44 50)"/><path d="M30 42 L52 36 L56 52 L34 58 Z"/><circle cx="36" cy="66" r="13" fill="none" stroke="${INK}" stroke-width="6"/><circle cx="36" cy="66" r="3.5"/><path d="M33 60 L6 84 L12 89 L40 66 Z"/></g>`,
+    tank_nato: `<rect x="18" y="32" width="64" height="36" rx="18" fill="none" stroke="${INK}" stroke-width="8"/>`,
+    tank_sil: `<g fill="${INK}"><path d="M10 58 L90 58 L84 74 L16 74 Z"/><path d="M30 44 L64 44 L70 58 L26 58 Z"/><rect x="62" y="46" width="34" height="5" rx="2"/><g fill="#1b1812"><circle cx="24" cy="70" r="4"/><circle cx="37" cy="71" r="4"/><circle cx="50" cy="71" r="4"/><circle cx="63" cy="71" r="4"/><circle cx="76" cy="70" r="4"/></g></g>`,
+    mech_nato: `<line x1="4" y1="4" x2="96" y2="96" stroke="${INK}" stroke-width="7"/><line x1="96" y1="4" x2="4" y2="96" stroke="${INK}" stroke-width="7"/><rect x="24" y="36" width="52" height="28" rx="14" fill="none" stroke="${INK}" stroke-width="7"/>`,
   };
 
   window.FXK = function (B) {
@@ -116,7 +122,9 @@
     K.counter = (id, o = {}) => {
       const u = B.units[id]; if (!u) return;
       const blk = u.el.querySelector(".blk"), sv = blk.querySelector("svg");
-      if (o.icon && ICON[o.icon]) { sv.setAttribute("preserveAspectRatio", o.icon === "infantry" ? "none" : "xMidYMid meet"); sv.innerHTML = ICON[o.icon]; }
+      const VB = { art_nato: "14 14 72 72", art_gun: "2 18 96 78", tank_nato: "12 26 76 48", tank_sil: "6 38 92 42", artillery: "4 30 90 64" };
+      if (o.icon && VB[o.icon]) sv.setAttribute("viewBox", VB[o.icon]);
+      if (o.icon && ICON[o.icon]) { sv.setAttribute("preserveAspectRatio", (o.icon === "infantry" || o.icon === "mech_nato") ? "none" : "xMidYMid meet"); sv.innerHTML = ICON[o.icon]; }
       if (o.flag) {
         const img = document.createElement("img"); img.className = "fxk-flag";
         img.src = o.flag === "uk" ? "assets/media/uk_flag.png" : "assets/media/arg_flag.png";
