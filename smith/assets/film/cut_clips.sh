@@ -60,7 +60,7 @@ cut 111-adc-8289.mp4  54  12 inchon_wolmido_01.mp4     # destroyer firing on Inc
 cut 111-adc-8289.mp4 186  12 inchon_wolmido_02.mp4     # shell splashes / smoke, naval bombardment
 cut 111-adc-8289.mp4 206  12 inchon_ships_01.mp4       # LST beached, unloading beach materiel
 cut 111-adc-8328.mp4   6  12 inchon_seawall_01.mp4     # Marines climbing down cargo nets into landing craft
-cut 111-adc-8328.mp4 118  12 inchon_city_01.mp4        # flag ceremony, Seoul Capitol building, crowds
+cut 111-adc-8328.mp4 135  12 inchon_city_01.mp4        # flag ceremony, Seoul Capitol building, crowds
 cut 111-adc-8328.mp4 422  12 macarthur_01.mp4          # MacArthur/dignitaries at podium, Seoul turnover ceremony
 cut 111-adc-8251.mp4  60  12 macarthur_02.mp4          # MacArthur ashore meeting officers at Inchon
 cut 111-adc-8251.mp4 140  12 officers_01.mp4           # MacArthur and staff officers conferring outdoors
@@ -76,16 +76,17 @@ cut ADC-9439.mp4     440  12 hagaru_airstrip_02.mp4    # wounded on stretcher lo
 cut ADC-10271.mp4    168  12 hagaru_airstrip_03.mp4    # C-47 taxiing close-up on runway
 cut 111-adc-8328.mp4 448  12 corsair_01.mp4            # Corsair (VMF-212) taxi and takeoff, Kimpo airfield
 cut 111-adc-8328.mp4 466  12 corsair_02.mp4            # Corsairs parked close-up, props spinning, ground crew
-cut ADC-10271.mp4    352  12 airdrop_01.mp4            # C-119 crew at open cargo door, aerial resupply drop
+cut ADC-10271.mp4    335  12 airdrop_01.mp4            # C-119 crew at open cargo door, aerial resupply drop
 cut 111-adc-8580.mp4  24  12 vehicles_dead_01.mp4      # destroyed/wrecked vehicles buried in snow
-cut 111-adc-8632.mp4    8 12 artillery_snow_01.mp4     # howitzers firing in snow near buildings
-cut ADC-10271.mp4     96  12 foxholes_snow_01.mp4      # Marines in foxholes/trench positions
+cut 111-adc-8632.mp4   44 12 artillery_snow_01.mp4     # AA gun crew loading and working the gun, Hungnam perimeter
+cut ADC-10271.mp4     74  12 foxholes_snow_01.mp4      # Marines in foxholes/trench positions
+cut ADC-10271.mp4    185  12 hagaru_airstrip_04.mp4    # Marines boarding a transport plane, engine running
 
 # HUNGNAM
 cut ADC-9438.mp4      24  12 hungnam_ships_01.mp4      # transports/merchant ships at Hungnam harbor
 cut ADC-9438.mp4     200  12 hungnam_ships_02.mp4      # LVTs/amtracs moving at dockside, cargo
 cut 111-adc-8632.mp4 304  12 hungnam_explosion_01.mp4  # explosion/smoke plume, port demolition Dec 24-25
-cut 111-adc-8632.mp4 352  12 hungnam_explosion_02.mp4  # explosion clusters over harbor with ships
+cut 111-adc-8632.mp4 362  12 hungnam_explosion_02.mp4  # explosion clusters over harbor with ships
 cut 428-npc-173.mp4  248  12 hungnam_explosion_03.mp4  # mushroom-cloud explosion, bombardment of Hungnam Dec 9
 
 echo "done. clips written to clips/"
