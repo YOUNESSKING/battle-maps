@@ -157,8 +157,8 @@ f = ["[1:a]aresample=48000,asplit=2[vo][vokey]"]
 mix = ["[vo]"]
 if music:
     inputs += ["-stream_loop", "-1", "-i", music]
-    f.append(f"[2:a]aresample=48000,atrim=0:{DUR + 1},volume=0.35,afade=t=in:d=2,afade=t=out:st={DUR - 3}:d=3[mus]")
-    f.append("[mus][vokey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]")
+    f.append(f"[2:a]aresample=48000,atrim=0:{DUR + 1},volume=0.12,afade=t=in:d=2,afade=t=out:st={DUR - 3}:d=3[mus]")
+    f.append("[mus][vokey]sidechaincompress=threshold=0.02:ratio=10:attack=20:release=400[musd]")
     mix.append("[musd]")
 else:
     f[0] = "[1:a]aresample=48000[vo]"
