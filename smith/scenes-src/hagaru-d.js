@@ -44,7 +44,7 @@ const GAR = [[1560, 700], [1612, 752], [1545, 742], [1628, 706], [1600, 690]];
 GAR.forEach(([x, y], i) => B.unit({ id: "g" + i, side: "carth", x, y, w: 15, h: 15, t: 0.01 }));
 B.showDate(0.1);
 B.date("DECEMBER 1950", 0.2, null);
-B.dateBox(T_R1 - 1.6, T_FAILED + 0.4);
+B.dateBox(0.15, T_FAILED + 0.4);
 
 // ---------- method card ----------
 // (shared design, copied verbatim from inchon-c.js)
@@ -73,8 +73,8 @@ const methodCard = (o) => { // o = { t, until, rowT: [t1,t2,t3], hi: index to hi
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return el;
 };
-B.dim(T_R1 - 1.6, T_FAILED - 0.2, 0.75);
-const card = methodCard({ t: T_R1 - 1.3, until: T_FAILED - 0.5, rowT: [T_R1 - 0.3, T_R2 - 0.3, T_R3 - 0.2], hi: 0, hiT: T_TWO });
+B.dim(0, T_FAILED - 0.2, 0.75);
+const card = methodCard({ t: 0, until: T_FAILED - 0.5, rowT: [0.15, T_R2 - 0.3, T_R3 - 0.2], hi: 0, hiT: T_TWO });
 { // hagaru-9 highlights the first TWO rules (same highlight styling as the shared card)
   const r = card.querySelectorAll(".mrow")[1];
   tl.to(r, { opacity: 1, duration: 0.6 }, T_TWO + 0.9);
