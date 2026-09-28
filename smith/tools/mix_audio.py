@@ -115,7 +115,7 @@ def run(cmd, capture=False):
 
 
 sfx = lambda n: f"assets/sfx/{n}.wav"
-music = next(iter(sorted(glob.glob("assets/sfx/music.*") + glob.glob("assets/media/music.*"))), None)
+music = next(iter(sorted(glob.glob("assets/sfx/music.*")) + sorted(glob.glob("assets/media/music.*"))), None)
 missing = sorted({s for _, s, _ in C if not os.path.exists(sfx(s))} | {b[2] for b in BEDS if not os.path.exists(sfx(b[2]))})
 cues = [c for c in C if os.path.exists(sfx(c[1]))]
 beds = [b for b in BEDS if os.path.exists(sfx(b[2]))]
