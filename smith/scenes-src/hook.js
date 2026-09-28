@@ -18,23 +18,44 @@ const T_BUGLE = at("hook-1", "bugles"), T_120 = at("hook-1", "one hundred and tw
 const T_15 = at("hook-2", "fifteen thousand"), T_78 = at("hook-2", "seventy-eight miles"), T_CUT = at("hook-2", "that road was cut");
 const T_SURR = at("hook-2", "surrounded"), T_TOKYO = at("hook-2", "In Tokyo");
 
-// ---------- camera: wide push-in on the whole road, zoom on the reservoir, drift ----------
-B.camera([
-  [0, 1500, 790, 0.74],
-  [T_POUR, 1470, 740, 0.84],
-  [H2 - 0.4, 1430, 640, 0.9],
+// ---------- camera (log-space zoom so the hand-offs from/to hook-in / hook-out match) ----------
+// Built with --from 6.4 --to 55.5: 0-0.6 s = crossfade from hook-in, END-0.6..END = crossfade into hook-out.
+const logCamera = (keys) => { // keys [t, cx, cy, s, ease]
+  const world = document.getElementById("world"), W = 1920, H = 1080;
+  const cam = { cx: keys[0][1], cy: keys[0][2], ls: Math.log(keys[0][3]) };
+  const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+  const apply = () => {
+    const s = Math.max(Math.exp(cam.ls), W / 2880), cx = clamp(cam.cx, W / 2 / s, 2880 - W / 2 / s), cy = clamp(cam.cy, H / 2 / s, 1620 - H / 2 / s);
+    gsap.set(world, { x: W / 2 - cx * s, y: H / 2 - cy * s, scale: s });
+  };
+  apply();
+  for (let i = 1; i < keys.length; i++) {
+    const [t0] = keys[i - 1], [t1, cx, cy, s, ease] = keys[i];
+    tl.to(cam, { cx, cy, ls: Math.log(s), duration: Math.max(t1 - t0, 0.01), ease: ease || "sine.inOut", onUpdate: apply }, t0);
+  }
+};
+const TB = END - 0.6; // start of the crossfade into hook-out
+logCamera([
+  [0, 1440, 810, 0.667],
+  [0.6, 1470, 760, 0.82, "none"],
+  [3.6, 1480, 760, 0.9, "power3.out"],
+  [T_POUR, 1470, 740, 0.9],
+  [H2 - 0.4, 1430, 640, 0.92],
   [H2 + 3.6, 1275, 330, 1.75],
   [T_CUT, 1265, 320, 1.9],
   [T_TOKYO, 1270, 330, 1.95],
-  [H3 + 0.6, 1300, 380, 1.7],
-  [END, 1320, 420, 1.55],
+  [B.end("hook-2") - 0.4, 1275, 335, 1.9],
+  [TB, 1400, 700, 0.82, "power1.in"],
+  [END, 1440, 810, 0.667, "none"],
 ]);
 
 // ---------- base layers ----------
 B.image("assets/chosin_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
-B.snow(0.2, END - 0.3);
-B.showDate(0.3);
-B.date("27 NOVEMBER 1950", 0.5, null, 38);
+B.snow(0, END + 2);
+{ // date already on screen when the crossfade from hook-in starts
+  const d = document.createElement("div"); d.className = "d"; d.textContent = "27 NOVEMBER 1950"; d.style.fontSize = "38px";
+  document.getElementById("date").appendChild(d);
+}
 B.dateBox(H2 + 3.2, null);
 
 // the road (MSR)
@@ -50,10 +71,10 @@ B.label("NORTH KOREA", 820, 1000, { cls: "country", size: 60, t: 1.8, until: H2 
 
 // blue Marines strung along the road
 const blueRoad = [YUD, [1170, 160], TOK, HAG, [1375, 420], KOTO, [1425, 580], CHIN, G(40.08, 127.40), [1680, 1080], [1712, 1138]];
-blueRoad.forEach(([x, y], i) => B.unit({ id: "b" + i, side: "carth", x, y, w: 34, h: 34, t: 3.8 + i * 0.22 }));
+blueRoad.forEach(([x, y], i) => B.unit({ id: "b" + i, side: "carth", x, y, w: 34, h: 34, t: 1.6 + i * 0.2 }));
 
 // cold
-B.caption("−30°F", at("hook-1", "the temperature"), T_BUGLE - 0.2, "carth");
+B.caption("−30°F", 0.8, T_BUGLE - 0.2, "carth");
 
 // Chinese: counters appear on the ridges, then arrows pour down on the road
 const redRidge = [[980, 60], [1010, 270], [1110, 330], [1230, 380], [1180, 520], [1300, 620], [1260, 760], [1600, 170], [1560, 330], [1520, 470],
@@ -127,15 +148,4 @@ tl.fromTo(stamp, { autoAlpha: 0, scale: 2.4 }, { autoAlpha: 0.92, scale: 1, dura
 tl.to(stamp, { autoAlpha: 0, duration: 0.5 }, T_TOKYO + 1.2);
 B.caption("OUTNUMBERED · SURROUNDED · FREEZING", T_TOKYO + 1.3, H3 - 0.2, "rome");
 
-// ---------- hook-3: O.P. Smith ----------
-B.dim(H3 - 0.2, END + 1);
-const bio = B.bio({
-  photo: "assets/media/smith_full.png",
-  name: "OLIVER P. SMITH",
-  rows: ["Major General, U.S. Marine Corps", "Born 1893 · California", "Commander, 1st Marine Division", "Nickname: “The Professor”"],
-  rowT: [at("hook-3", "Major General"), at("hook-3", "fifty-seven"), at("hook-3", "Californian") + 0.6, at("hook-3", "the Professor") - 0.4],
-  t: H3 + 0.1,
-  until: END - 0.05,
-});
-Object.assign(bio.photo.querySelector("img").style, { height: "900px", left: "60px" });
 B.finish();

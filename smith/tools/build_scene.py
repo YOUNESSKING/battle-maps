@@ -4,6 +4,8 @@ usage: python3 build_scene.py SCENE_NAME BASEMAP FIRST_TAG LAST_TAG
 Takes the narration paragraphs FIRST_TAG..LAST_TAG from audio/timing.json, and writes
 scenes/SCENE_NAME/ with index.html (from scenes-src/SCENE_NAME.js), the engine, assets and timing.js.
 The scene runs from the start of FIRST_TAG to the start of the paragraph after LAST_TAG.
+Optional: --from ABS_SECONDS / --to ABS_SECONDS (narration timeline) override the scene start / end
+(paragraph times stay relative to the new start, so they may be negative).
 """
 import json, os, shutil, sys
 
@@ -16,6 +18,9 @@ i0 = next(i for i, p in enumerate(paras) if key(p) == first)
 i1 = next(i for i, p in enumerate(paras) if key(p) == last)
 t0 = paras[i0]["start"]
 t_end = paras[i1 + 1]["start"] if i1 + 1 < len(paras) else timing["duration"]
+opt = sys.argv[5:]
+if "--from" in opt: t0 = float(opt[opt.index("--from") + 1])
+if "--to" in opt: t_end = float(opt[opt.index("--to") + 1])
 dur = round(t_end - t0, 2)
 scene_t = {"abs_start": t0, "duration": dur,
            "paras": {key(p): [round(p["start"] - t0, 2), round(p["end"] - t0, 2)] for p in paras[i0:i1 + 1]},
