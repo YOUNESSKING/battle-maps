@@ -46,13 +46,15 @@ B.label("38TH PARALLEL", 1722, 880, { cls: "tg", size: 34, t: 2.8, until: T_PIN,
 B.showDate(4.6);
 B.date("JUNE 1950", 4.8, T_OVER - 0.3);
 B.date("AUGUST 1950", T_OVER, null);
+B.dateBox(T_SUP - 0.4, null);
 
-B.label("NORTH KOREA", ...G(39.75, 126.6), { cls: "country", size: 50, t: 4.8, until: T_SUP });
+B.label("NORTH KOREA", ...G(39.45, 126.9), { cls: "country", size: 50, t: 4.8, until: T_SUP });
 B.label("SOUTH KOREA", ...G(36.3, 127.9), { cls: "country", size: 50, t: 5.1, until: T_OVER });
-B.label("JAPAN", ...G(34.2, 132.2), { cls: "country", size: 56, t: 5.4 });
-B.label("YELLOW SEA", ...G(36.6, 124.6), { cls: "sea", size: 44, t: 5.6 });
-B.label("SEA OF JAPAN", ...G(38.2, 131.0), { cls: "sea", size: 44, t: 5.8 });
-B.city("PYONGYANG", ...PYONG, { left: true, size: 30, t: 5.0 });
+B.label("JAPAN", 2560, 1540, { cls: "country", size: 56, t: 5.4 });
+B.label("YELLOW SEA", 830, 1060, { cls: "sea", size: 44, t: 5.6 });
+B.label("SEA OF JAPAN", 1900, 760, { cls: "sea", size: 44, t: 5.8 });
+B.city("PYONGYANG", ...PYONG, { left: true, size: 30, t: 5.0, until: T_PIN });
+B.city("PYONGYANG", ...PYONG, { left: true, size: 30, t: T_SUP - 0.2 });
 B.city("SEOUL", ...SEOUL, { size: 30, t: 5.2 });
 B.city("PUSAN", ...PUSAN, { left: true, size: 30, t: T_PIN + 0.4 });
 
@@ -73,11 +75,11 @@ redPer.forEach(([la, lo], i) => {
 const bluePer = [[35.3, 128.55], [35.6, 128.62], [35.9, 128.7], [36.0, 129.05], [35.35, 128.95]];
 bluePer.forEach(([la, lo], i) => B.unit({ id: "b" + i, side: "carth", x: G(la, lo)[0], y: G(la, lo)[1], w: 40, h: 40, t: T_PIN + 0.6 + i * 0.15 }));
 B.front({ pts: GL([[35.02, 128.34], [35.45, 128.44], [35.95, 128.44], [36.14, 128.8], [36.3, 129.35]]), width: 11, t: T_PIN + 0.3, dur: 1.8 });
-B.caption("PUSAN PERIMETER", T_PIN + 1.0, I2 - 0.2, "carth");
+B.label("PUSAN PERIMETER", 1905, 1370, { cls: "tg", size: 38, t: T_PIN + 1.0, until: T_LAND + 0.8, anchor: [0, -50] });
 
 // ---------- inchon-2: MacArthur's plan ----------
 B.caption("MACARTHUR'S PLAN: LAND BEHIND THE ENEMY", T_MAC + 0.3, T_LAND + 3.0, "carth");
-B.label("OPERATION CHROMITE", 2050, 1330, { cls: "tg", size: 36, t: T_LAND + 1.4, until: T_SUP + 0.4, anchor: [-50, -50] });
+B.label("OPERATION CHROMITE", 2050, 1330, { cls: "tg", size: 36, t: T_LAND + 1.6, until: T_SUP + 0.4, anchor: [-50, -50] });
 const sea = B.arrow({ side: "carth", pts: [[2330, 1440], [2050, 1545], [1650, 1600], [1270, 1560], [1060, 1400], [1040, 1170], [1215, 1010]], width: 28, t: T_LAND - 0.2, dur: 4.2 });
 B.city("INCHON", ...INCH, { left: true, size: 34, t: T_INCH - 0.2 });
 // supply lines through Seoul
