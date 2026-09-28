@@ -140,8 +140,8 @@ const T_R1 = a8("Build the lifeline"), T_R2 = a8("Refuse to be"), T_R3 = a8("Kee
 B.camera([
   [0, 1660, 1080, 0.95],
   [T_BEHIND - 0.8, 1740, 1200, 1.05],
-  [T_BEHIND + 2.2, 1480, 700, 0.8],
-  [T_MONTHS + 1.5, 1470, 640, 0.86],
+  [T_BEHIND + 2.2, 1450, 600, 0.95],
+  [T_MONTHS + 1.5, 1450, 590, 1.0],
   [T_MAR, 1740, 1180, 1.0],
   [T_DIV + 1.5, 1830, 1290, 1.25],
   [S8 - 0.5, 1760, 1200, 1.05],
@@ -203,7 +203,5 @@ B.dim(T_R1 - 1.2, T_HOLD + 0.2, 0.75);
 methodCard({ t: T_R1 - 1.0, until: T_HOLD - 0.3, rowT: [T_R1 - 0.2, T_R2 - 0.2, T_R3 - 0.2], hi: 2, hiT: T_THIRD - 0.3 });
 // a retreat turned into an attack: the whole road lit in blue, the enemy wrecked on both sides
 const lit = road(MSR, { t: T_HOLD + 0.3, dur: 3.0, w: 14, color: "#2f63e0", casing: "#f7f3ea" });
-B.arrow({ side: "carth", pts: [posAt(MSR, MSR.len - 140).slice(0, 2), posAt(MSR, MSR.len - 60).slice(0, 2), [HUNG[0] + 60, HUNG[1] + 40]], width: 22, t: T_HOLD + 3.1, dur: 0.6 });
-reds.forEach((_, i) => { const el = B.units["r" + i].el; tl.to(el, { opacity: 0.35, duration: 0.8 }, T_RETREAT); });
 B.caption("A RETREAT TURNED INTO AN ATTACK", T_RETREAT - 0.4, END - 0.3, "carth");
 B.finish();
