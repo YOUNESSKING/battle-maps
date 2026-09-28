@@ -132,9 +132,9 @@ B.caption("3 WEEKS TO PLAN", T_3W - 0.3, T_PAC - 0.2, "carth");
 const fleet = [[730, 1185], [810, 1212], [890, 1182], [760, 1255], [850, 1265], [950, 1232], [700, 1240]];
 fleet.forEach(([x, y], i) => ship(x, y, I5 + 1.6 + i * 0.25, I6 - 0.5, 0.9));
 B.arrow({ side: "carth", pts: [[0, 1250], [300, 1262], [620, 1240]], width: 20, t: T_PAC - 0.4, dur: 1.6, until: I6 - 0.6 });
-B.label("1ST MARINES · FROM THE U.S.", 40, 1225, { cls: "tg", size: 26, t: T_PAC, until: I6 - 0.6 });
+B.label("1ST MARINES · FROM THE U.S.", 340, 1215, { cls: "tg", size: 26, t: T_PAC, until: I6 - 0.6 });
 B.arrow({ side: "carth", pts: [[900, 1620], [880, 1440], [835, 1300]], width: 20, t: T_PUS - 0.2, dur: 1.6, until: I6 - 0.6 });
-B.label("5TH MARINES · FROM PUSAN", 925, 1420, { cls: "tg", size: 26, t: T_PUS + 0.4, until: I6 - 0.6 });
+B.label("5TH MARINES · FROM PUSAN", 1130, 1440, { cls: "tg", size: 26, t: T_PUS + 0.4, until: I6 - 0.6 });
 B.caption("TURN THE TIDE INTO A TIMETABLE", T_NAVY + 0.8, T_TWO - 0.6, "carth");
 // the timetable: two high tides a day
 const tt = document.createElement("div");
