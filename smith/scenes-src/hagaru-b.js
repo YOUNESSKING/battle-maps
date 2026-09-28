@@ -60,15 +60,16 @@ B.label("FUNCHILIN PASS", FUN[0] + 34, FUN[1] + 4, { cls: "tg", size: 26, t: rea
 B.city("KOTO-RI", ...KOTO, { size: 30, r: 8, t: reach(...KOTO) - 0.3 });
 B.city("HAGARU-RI", ...HAG, { size: 32, r: 8, t: reach(...HAG) - 0.3 });
 B.city("YUDAM-NI", ...YUD, { left: true, size: 30, r: 8, t: reach(...YUD) - 0.2 });
-B.caption("ONE ROAD · 78 MILES", T_NOWAY + 0.2, END - 0.2, "rome");
+const one = B.label("ONE ROAD · 78 MILES", 1860, 910, { cls: "tg", size: 52, t: T_NOWAY + 0.2, anchor: [-50, -50] });
+B.dateBox(T_NOWAY - 0.2);
 
 // "no other way in, and no other way out": a pulse runs up and down the road
 B.highlight(ROAD, T_NOWAY + 0.3, null, 26);
 
 // ---------- ridges on both sides: perfect places to hide ----------
-const Q = [[1580, 1080], [1760, 1120], [1400, 860], [1560, 800], [1360, 640], [1530, 600], [1300, 470], [1470, 420], [1250, 330], [1420, 270], [1180, 250], [1080, 200]];
+const Q = [[1580, 1080], [1760, 1120], [1400, 860], [1560, 800], [1360, 640], [1530, 600], [1300, 470], [1470, 420], [1250, 330], [1455, 215], [1180, 250], [1080, 200]];
 Q.forEach(([x, y], i) => {
-  const q = B.label("?", x, y, { cls: "tg", size: 54, t: T_HIDE - 0.4 + i * 0.12, anchor: [-50, -50] });
+  const q = B.label("?", x, y, { cls: "tg", size: 62, t: T_HIDE - 0.4 + i * 0.12, anchor: [-50, -50] });
   q.style.color = "#e3232f";
 });
 B.finish();
