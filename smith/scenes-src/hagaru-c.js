@@ -291,7 +291,7 @@ svg.appendChild(strip);
 gsap.set(strip, { autoAlpha: 0 });
 tl.to(strip, { autoAlpha: 1, duration: 0.6 }, T_AIR);
 tl.to(strip.querySelector(".fill"), { attr: { width: STRIP.len * 0.42 }, duration: P6 - T_FROZEN - 1, ease: "none" }, T_FROZEN);
-const stripLbl = place("AIRSTRIP · 3,000+ FT", STRIP.x - 6, STRIP.y + 24, { cls: "tg", size: 11, nodot: true, anchor: [-50, 0], win: [[T_AIR + 0.5, T_SPRUNG - 1.2], [P8 - 0.4, T_4000 + 1.2]] });
+const stripLbl = place("AIRSTRIP · 3,000+ FT", STRIP.x - 6, STRIP.y + 24, { cls: "tg", size: 11, nodot: true, anchor: [-50, 0], win: [[T_AIR + 0.5, T_SPRUNG - 1.2], [P8 - 0.4, T_LAND - 0.3]] });
 // bulldozers working back and forth
 const rad = STRIP.rot * Math.PI / 180, along = (f) => [STRIP.x + Math.cos(rad) * STRIP.len * (f - 0.5), STRIP.y + Math.sin(rad) * STRIP.len * (f - 0.5)];
 const dozers = [0.12, 0.3].map((f, i) => {
