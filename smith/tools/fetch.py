@@ -1,4 +1,4 @@
-import json, re, time, urllib.request
+import json, re, time, urllib.request, urllib.error
 from search import api, UA
 
 OUT = "/home/user/battle-maps/smith/assets/media"
@@ -27,19 +27,40 @@ ITEMS = {
 strip = lambda s: re.sub("<[^>]+>", "", s or "").strip()
 
 
-def download(url, dest):
+def download(url, dest, retries=8):
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=90) as r:
-        data = r.read()
-    with open(dest, "wb") as f:
-        f.write(data)
-    return len(data)
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=90) as r:
+                data = r.read()
+            with open(dest, "wb") as f:
+                f.write(data)
+            return len(data)
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                wait = int(e.headers.get("retry-after", 20)) + 10 * attempt
+                print(f"429 on download, sleeping {wait}s")
+                time.sleep(wait)
+                continue
+            raise
+    raise SystemExit(f"rate limited downloading {url}")
 
 
 def main():
+    import os
     credits = []
     missing = []
+    prev = {}
+    if os.path.exists(f"{OUT}/_fetch_meta.json"):
+        prev_data = json.load(open(f"{OUT}/_fetch_meta.json"))
+        for c in prev_data.get("credits", []):
+            prev[c["key"]] = c
+        credits = prev_data.get("credits", [])
     for key, (title, width, ext) in ITEMS.items():
+        dest = f"{OUT}/{key}.{ext}"
+        if key in prev and os.path.exists(dest):
+            print(key, "already fetched, skipping")
+            continue
         params = {"action": "query", "titles": title, "prop": "imageinfo", "iiprop": "url|size|extmetadata"}
         if width:
             params["iiurlwidth"] = width

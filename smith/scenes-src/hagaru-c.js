@@ -24,7 +24,7 @@ const seg = (a, b) => ROAD.slice(a, b + 1);
 
 // key places
 const YUD = [1180, 352], TOK = [1381, 540], HAG = [1592, 706], KOTO = [1729, 1093], FUN = [1822, 1385], SUDONG = [1815, 1545];
-const EASTHILL = [1648, 694];
+const EASTHILL = [1655, 700];
 const STRIP = { x: 1553, y: 752, len: 78, w: 16, rot: -24 }; // exaggerated ~2x so it reads on screen
 
 // ---------- times ----------
@@ -66,7 +66,7 @@ st.textContent = `
 .callout .ph img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
 .callout .nm { position: absolute; right: -6px; bottom: -34px; width: 162px; text-align: center; background: var(--carth); color: #fff; font-weight: 700; font-size: 20px; letter-spacing: 0.08em; border: 2px solid #f3eee2; border-radius: 3px; }
 .callout .bub { position: relative; padding: 16px 26px; background: var(--white); border: 4px solid var(--ink); border-radius: 22px; font-family: "Special Elite", monospace; font-size: 34px; color: var(--ink); white-space: nowrap; box-shadow: 0 6px 12px rgba(0,0,0,0.3); }
-.letter { position: absolute; right: 110px; top: 250px; width: 600px; padding: 34px 40px 30px; background: linear-gradient(180deg, #f6eed8, #e9dcb8); color: #2a241b; font-family: "Special Elite", monospace;
+.letter { position: absolute; left: 90px; bottom: 120px; width: 560px; padding: 34px 40px 30px; background: linear-gradient(180deg, #f6eed8, #e9dcb8); color: #2a241b; font-family: "Special Elite", monospace;
           box-shadow: 0 18px 36px rgba(0,0,0,0.5); border: 1px solid #b9a579; rotate: 2deg; }
 .letter .hd { font-size: 22px; letter-spacing: 0.1em; opacity: 0.75; border-bottom: 2px solid rgba(42,36,27,0.35); padding-bottom: 10px; margin-bottom: 16px; }
 .letter .bd { font-size: 31px; line-height: 1.35; }
@@ -133,7 +133,7 @@ const CHUTE = `<svg viewBox="0 0 60 90"><path d="M4 30 Q30 -8 56 30 Z" fill="#f7
 // ---------- camera ----------
 const WIDE = [1480, 760, 0.72];
 const HAGC = [1590, 724, 2.5];
-B.camera([
+const CAM = [
   [0, ...WIDE],
   [T_SONG, 1440, 740, 0.78],
   [T_RACE, 1470, 760, 0.8],
@@ -159,7 +159,15 @@ B.camera([
   [T_4000 + 2.0, 1640, 800, 1.7],
   [T_WASTE, 1640, 790, 1.8],
   [END, 1610, 760, 2.1],
-]);
+];
+B.camera(CAM);
+// camera state at time t (same sine.inOut easing as the engine), for screen-space overlays that must follow the map
+const camAt = (t) => {
+  let i = 1; while (i < CAM.length - 1 && CAM[i][0] < t) i++;
+  const a = CAM[i - 1], b = CAM[i], u = Math.min(Math.max((t - a[0]) / Math.max(b[0] - a[0], 0.01), 0), 1), e = -(Math.cos(Math.PI * u) - 1) / 2;
+  return [a[1] + (b[1] - a[1]) * e, a[2] + (b[2] - a[2]) * e, a[3] + (b[3] - a[3]) * e];
+};
+const toScreen = (x, y, t) => { const [cx, cy, sc] = camAt(t); return [960 + (x - cx) * sc, 540 + (y - cy) * sc, sc]; };
 
 // ---------- base layers ----------
 B.image("assets/chosin_close_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
@@ -171,15 +179,15 @@ B.date("NOVEMBER 1950", 0.3, T_27 - 0.4);
 // wide / close label sets
 const W1 = [[0.2, T_TIP]], W2 = [[T_SPRUNG - 0.8, P7 + 0.4]], WIDEW = [...W1, ...W2];
 const C1 = [[T_TIP + 0.8, T_SPRUNG - 1.2]], C2 = [[P7 + 1.2, null]], CLOSEW = [...C1, ...C2];
-place("YUDAM-NI", ...YUD, { left: true, size: 34, r: 9, win: WIDEW });
+place("YUDAM-NI", ...YUD, { left: true, size: 34, r: 9, dy: -26, win: WIDEW });
 place("HAGARU-RI", ...HAG, { size: 36, r: 10, win: WIDEW });
 place("KOTO-RI", ...KOTO, { size: 34, r: 9, win: [[0.2, T_TIP]] });
 place("TOKTONG PASS", TOK[0] - 10, TOK[1] + 36, { cls: "tg", size: 26, nodot: true, anchor: [-50, 0], win: WIDEW });
 place("FUNCHILIN PASS", FUN[0] + 30, FUN[1], { cls: "tg", size: 28, nodot: true, win: [[0.2, T_STOCK]] });
 place("CHOSIN RESERVOIR", 1655, 250, { cls: "sea", size: 34, nodot: true, win: WIDEW });
 // close-up labels (Hagaru-ri)
-place("HAGARU-RI", HAG[0] + 14, HAG[1] - 12, { cls: "city", size: 15, nodot: true, win: CLOSEW });
-place("EAST HILL", EASTHILL[0] + 16, EASTHILL[1] - 22, { cls: "tg", size: 12, nodot: true, win: [[T_TIP + 0.8, T_SPRUNG - 1.2], [T_DIV, null]] });
+place("HAGARU-RI", HAG[0] - 6, HAG[1] - 46, { cls: "city", size: 15, nodot: true, anchor: [-50, -50], win: CLOSEW });
+place("EAST HILL", EASTHILL[0] + 12, EASTHILL[1] - 14, { cls: "tg", size: 12, nodot: true, win: [[T_TIP + 0.8, T_SPRUNG - 1.2], [T_DIV, null]] });
 place("TO YUDAM-NI", 1560, 596, { cls: "tg", size: 10, nodot: true, anchor: [-100, -50], win: CLOSEW });
 place("TO KOTO-RI", 1628, 822, { cls: "tg", size: 10, nodot: true, win: CLOSEW });
 
@@ -248,11 +256,11 @@ REGS.forEach((g, j) => {
   setTag(g.id, 16);
   for (let s = 1; s < g.path.length; s++) B.move(g.id, STEP_T0 + (s - 1) * STEP + j * 0.12, STEP * 0.55, ...R(g.path[s]), "power2.inOut");
 });
-B.caption("~ 1 MILE A DAY", T_MILE, T_STOCK - 0.2, "carth");
+B.label("~ 1 MILE A DAY", 1650, 1010, { cls: "tg", size: 44, t: T_MILE - 0.2, until: T_STOCK - 0.2, anchor: [-100, -50] });
 // supply dumps left at every stop
-const DUMPS = [[1692, 1112, 0], [1668, 1078, 0.3], [1612, 720, 1.4], [1570, 700, 1.7], [1606, 688, 2.0]];
+const DUMPS = [[1692, 1112, 0], [1668, 1078, 0.3], [1566, 704, 1.4], [1552, 722, 1.7], [1612, 742, 2.0]];
 const dumps = DUMPS.map(([x, y, d]) => {
-  const el = ico(CRATES, x, y, 34, 28);
+  const el = ico(CRATES, x, y, 22, 18);
   tl.fromTo(el, { autoAlpha: 0, y: -30 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "bounce.out" }, T_STOCK - 0.4 + d);
   return el;
 });
@@ -266,17 +274,18 @@ tl.to(letter, { autoAlpha: 0, duration: 0.5 }, P5 - 0.2);
 // =====================================================================================
 // hagaru-5: the airfield
 // =====================================================================================
+REDS.forEach((_, i) => B.show("h" + i, T_TIP - 0.4, 0));
 // Hagaru-ri perimeter (thin blue ring)
 const PER = [];
 for (let i = 0; i <= 24; i++) {
   const a = (i / 24) * Math.PI * 2, wob = 1 + 0.08 * Math.sin(a * 3 + 1);
-  PER.push([+(1585 + 72 * wob * Math.cos(a)).toFixed(1), +(724 + 50 * wob * Math.sin(a)).toFixed(1)]);
+  PER.push([+(1580 + 80 * wob * Math.cos(a)).toFixed(1), +(726 + 54 * wob * Math.sin(a)).toFixed(1)]);
 }
 B.front({ pts: PER, width: 3.5, color: "var(--carth)", t: T_TIP + 0.9, dur: 2.0 });
 // airstrip outline + progress fill
 const strip = document.createElementNS(NS, "g");
 strip.setAttribute("transform", `translate(${STRIP.x} ${STRIP.y}) rotate(${STRIP.rot})`);
-strip.innerHTML = `<rect x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="${STRIP.len}" height="${STRIP.w}" fill="rgba(247,243,234,0.18)" stroke="#f7f3ea" stroke-width="2.2" stroke-dasharray="5 3"/>
+strip.innerHTML = `<rect x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="${STRIP.len}" height="${STRIP.w}" fill="rgba(247,243,234,0.35)" stroke="#1b1812" stroke-width="5.5"/><rect x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="${STRIP.len}" height="${STRIP.w}" fill="none" stroke="#f7f3ea" stroke-width="3"/>
   <rect class="fill" x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="0" height="${STRIP.w}" fill="#d8cfb8" stroke="#1b1812" stroke-width="1"/>`;
 svg.appendChild(strip);
 gsap.set(strip, { autoAlpha: 0 });
@@ -299,13 +308,18 @@ tl.to(dozers, { rotation: 8, duration: 0.08, yoyo: true, repeat: 7 }, T_BLADES);
 B.caption("GROUND FROZEN ROCK-HARD", T_FROZEN + 0.3, T_FLOOD - 0.3);
 // day and night under floodlights
 const night5 = B.dim(T_FLOOD - 0.3, P6 - 0.4, 0.5);
-[[0.05, -14], [0.5, 14], [0.95, -14]].forEach(([f, off], i) => {
-  const [x, y] = along(f);
-  const g = ico("", x + off * Math.sin(-rad), y + off * Math.cos(rad), 70, 70, "glow");
+const lights = [[0.05, -14], [0.5, 14], [0.95, -14]].map(([f, off], i) => {
+  const [x, y] = along(f), wx = x + off * Math.sin(-rad), wy = y + off * Math.cos(rad);
+  const g = screenDiv("", "glow"); g.style.width = g.style.height = "100px";
   tl.to(g, { autoAlpha: 1, duration: 0.6 }, T_FLOOD + i * 0.25);
   tl.to(g, { autoAlpha: 0, duration: 0.6 }, P6 - 0.4);
+  return [g, wx, wy];
 });
-// the dim sits in screen space above the world, so bring the lights up in screen space too
+const followLights = { k: 0 };
+tl.to(followLights, { k: 1, duration: P6 - T_FLOOD + 0.3, ease: "none", onUpdate: () => {
+  const t = tl.time();
+  lights.forEach(([g, wx, wy]) => { const [sx, sy, sc] = toScreen(wx, wy, t); const d = 80 * sc; g.style.left = sx - d / 2 + "px"; g.style.top = sy - d / 2 + "px"; g.style.width = g.style.height = d + "px"; });
+} }, T_FLOOD - 0.1);
 B.caption("DAY AND NIGHT, UNDER FLOODLIGHTS", T_FLOOD + 0.2, T_PRESS - 0.2);
 almondCall("STOP DIGGING!", T_PRESS - 0.2, T_AGAIN + 0.6);
 almondCall("KEEP ATTACKING!", T_AGAIN + 0.8, P6 - 0.3);
@@ -321,16 +335,16 @@ ARMY.forEach(([x, y], i) => B.unit({ id: "a" + i, side: "carth", x, y, w: 32, h:
 setTag("a1", 16);
 REDS.forEach((_, i) => B.show("h" + i, T_SPRUNG + (i % 6) * 0.08, 1));
 [
-  [[930, 170], [1060, 260], [1150, 330]],
+  [[1000, 110], [1100, 220], [1165, 318]],
   [[1250, 110], [1215, 220], [1195, 320]],
-  [[950, 560], [1060, 460], [1150, 385]],
+  [[950, 560], [1070, 470], [1162, 392]],
   [[1420, 300], [1310, 330], [1225, 355]],
 ].forEach((pts, i) => B.arrow({ side: "rome", pts, width: 16, t: T_YUD + i * 0.3, dur: 1.3, until: P7 - 0.4 }));
 // road cut behind them
 [[12, 20], [40, 48], [60, 68]].forEach(([a, b], i) => {
   B.arrow({ side: "rome", pts: seg(a, b), width: 11, head: false, t: T_CUT + i * 0.35, dur: 0.7, until: P7 - 0.4 });
   const [x, y] = R((a + b) / 2);
-  B.label("✕", x, y, { cls: "tg", size: 40, t: T_CUT + 0.4 + i * 0.35, until: P7 - 0.4, anchor: [-50, -50] }).style.color = "#e3232f";
+  B.label("X", x, y, { cls: "tg", size: 40, t: T_CUT + 0.4 + i * 0.35, until: P7 - 0.4, anchor: [-50, -50] }).style.color = "#e3232f";
 });
 [
   [[1990, 250], [1880, 290], [1780, 325]],
@@ -385,7 +399,7 @@ B.caption("HAGARU-RI WAS FULL OF AMMUNITION", T_AMMO + 0.2, T_LOST - 0.3, "carth
 // East Hill lost, fought back, held
 B.unit({ id: "eh", side: "rome", x: EASTHILL[0], y: EASTHILL[1], w: 14, h: 14, t: T_LOST - 0.2 });
 B.arrow({ side: "carth", pts: [[1602, 720], [1622, 708], [1638, 698]], width: 5, t: T_BACK, dur: 0.9, until: P8 - 0.2 });
-B.move("eh", T_BACK + 0.6, 1.2, EASTHILL[0] + 26, EASTHILL[1] - 14);
+B.move("eh", T_BACK + 0.6, 1.2, EASTHILL[0] + 34, EASTHILL[1] + 22);
 B.grey(["eh"], T_BACK + 0.8, 0.6);
 B.grey(ATT.map((_, i) => "c" + i), T_HELD, 0.8);
 B.hideUnits([...ATT.map((_, i) => "c" + i), "eh"], P8 - 0.3, 0.6);
@@ -404,15 +418,15 @@ tl.to(land, { autoAlpha: 1, duration: 0.3 }, T_LAND - 0.4);
 tl.to(land, { left: sx0 - 17, top: sy0 - 17, scale: 1, duration: 1.6, ease: "power1.out" }, T_LAND - 0.4);
 tl.to(land, { left: sx1 - 17, top: sy1 - 17, duration: 1.2, ease: "power2.out" }, T_LAND + 1.2);
 tl.to(land, { autoAlpha: 0, duration: 0.4 }, T_4000);
-B.label("FIRST C-47 LANDS", sx0 - 6, sy0 + 28, { cls: "tg", size: 12, t: T_LAND + 1.0, until: T_4000, anchor: [-50, 0] });
+B.label("FIRST C-47 LANDS", sx0 - 12, sy0 - 4, { cls: "tg", size: 12, t: T_LAND + 1.0, until: T_4000, anchor: [-100, -50] });
 // planes shuttle out to the south-east, again and again
 const OUT = [[1700, 900], [1960, 1130], [2300, 1400]];
 for (let k = 0; k < 7; k++) {
-  const p = ico(PLANE_SVG, sx0, sy0, 30, 30), t0 = T_WEEK + k * 2.2;
+  const p = ico(PLANE_SVG, sx0, sy0, 40, 40), t0 = T_WEEK + k * 2.2;
   tl.set(p, { rotation: 140 }, 0);
   tl.to(p, { autoAlpha: 1, duration: 0.3 }, t0);
-  tl.to(p, { left: OUT[0][0] - 15, top: OUT[0][1] - 15, duration: 1.4, ease: "power1.in" }, t0);
-  tl.to(p, { left: OUT[2][0] - 15, top: OUT[2][1] - 15, scale: 1.4, duration: 2.6, ease: "none" }, t0 + 1.4);
+  tl.to(p, { left: OUT[0][0] - 20, top: OUT[0][1] - 20, duration: 1.4, ease: "power1.in" }, t0);
+  tl.to(p, { left: OUT[2][0] - 20, top: OUT[2][1] - 20, scale: 1.4, duration: 2.6, ease: "none" }, t0 + 1.4);
   tl.to(p, { autoAlpha: 0, duration: 0.4 }, t0 + 3.6);
 }
 B.line([[sx0, sy0], [1700, 900], [2000, 1160], [2300, 1400]], { dash: "14 10", width: 4, color: "var(--carth-light)", t: T_WEEK + 0.4, dur: 2.5 });
