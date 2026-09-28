@@ -169,23 +169,6 @@ while i < len(P):
 open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
 run(["-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"])
 
-# ---------- audio ----------
-music = next(iter(sorted(glob.glob("assets/media/music.*"))), None)
-inputs = ["-i", "build/video_only.mp4", "-i", "audio/voice.wav"]
-f = ["[1:a]aresample=48000,asplit=2[vo][vokey]"]
-mix = ["[vo]"]
-if music:
-    inputs += ["-stream_loop", "-1", "-i", music]
-    f.append(f"[2:a]aresample=48000,atrim=0:{DUR + 1},volume=0.12,afade=t=in:d=2,afade=t=out:st={DUR - 3}:d=3[mus]")
-    f.append("[mus][vokey]sidechaincompress=threshold=0.02:ratio=10:attack=20:release=400[musd]")
-    mix.append("[musd]")
-else:
-    f[0] = "[1:a]aresample=48000[vo]"
-f.append(f"{''.join(mix)}amix=inputs={len(mix)}:normalize=0,loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
-run([*inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]", "-t", f"{DUR:.2f}",
-     "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "build/smith-full.mp4"])
-kbps = int(27 * 8 * 1024 / DUR) - 96  # fit the preview under ~27 MB
-run(["-i", "build/smith-full.mp4", "-vf", "scale=1280:720", "-c:v", "libx264", "-preset", "medium", "-b:v", f"{kbps}k",
-     "-maxrate", f"{kbps * 2}k", "-bufsize", f"{kbps * 4}k", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", "build/smith-preview-720p.mp4"])
-print("wrote build/smith-full.mp4 + build/smith-preview-720p.mp4", round(DUR, 1), "s", "music" if music else "NO MUSIC")
-print("missing:", missing or "none")
+# ---------- audio: voice + music + SFX + loudness (tools/mix_audio.py) ----------
+subprocess.run([sys.executable, "tools/mix_audio.py"], check=True)
+print("missing video:", missing or "none")
