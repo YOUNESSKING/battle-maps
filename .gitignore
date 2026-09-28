@@ -10,3 +10,6 @@
 node_modules/
 tts/*.onnx
 tts/*.bin
+**/build/cards/
+**/build/seg/tmp.txt
+**/build/seg/list.txt
