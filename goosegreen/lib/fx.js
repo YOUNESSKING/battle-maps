@@ -122,7 +122,10 @@
     K.counter = (id, o = {}) => {
       const u = B.units[id]; if (!u) return;
       const blk = u.el.querySelector(".blk"), sv = blk.querySelector("svg");
-      const VB = { art_nato: "14 14 72 72", art_gun: "2 18 96 78", tank_nato: "12 26 76 48", tank_sil: "6 38 92 42", artillery: "4 30 90 64" };
+      // LOCKED symbols (owner-approved 2026-09-28): artillery = howitzer silhouette, tank = tank silhouette, mech = NATO mech (X + track)
+      const ALIAS = { artillery: "art_gun", tank: "tank_sil", armour: "tank_sil", mech: "mech_nato" };
+      if (o.icon && ALIAS[o.icon]) o = Object.assign({}, o, { icon: ALIAS[o.icon] });
+      const VB = { art_nato: "14 14 72 72", art_gun: "2 18 96 78", tank_nato: "12 26 76 48", tank_sil: "6 38 92 42" };
       if (o.icon && VB[o.icon]) sv.setAttribute("viewBox", VB[o.icon]);
       if (o.icon && ICON[o.icon]) { sv.setAttribute("preserveAspectRatio", (o.icon === "infantry" || o.icon === "mech_nato") ? "none" : "xMidYMid meet"); sv.innerHTML = ICON[o.icon]; }
       if (o.flag) {
