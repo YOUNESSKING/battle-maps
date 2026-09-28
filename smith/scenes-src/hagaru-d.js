@@ -15,8 +15,8 @@ const T_ROAD = at("hagaru-9", "the road to the sea"), T_SUB = at("hagaru-9", "If
 
 // ---------- camera: held perimeter under the card, then pull back to the mountains and the long road south ----------
 B.camera([
-  [0, 1590, 730, 1.9],
-  [T_FAILED - 0.4, 1560, 700, 1.7],
+  [0, 1590, 540, 1.9],
+  [T_FAILED - 0.4, 1580, 560, 1.8],
   [T_FAILED + 2.6, 1420, 620, 1.05],
   [T_ROAD, 1520, 880, 0.78],
   [T_SUB + 1.0, 1560, 960, 0.8],
@@ -98,9 +98,9 @@ REDS.forEach(([x, y], i) => B.unit({ id: "r" + i, side: "rome", x, y, w: 40, h: 
 B.caption("THE CHINESE STILL HELD THE MOUNTAINS", T_MTN, T_ROAD - 0.2, "rome");
 
 // ---------- 70 miles to the sea ----------
-B.arrow({ side: "carth", pts: ROAD.slice(35), width: 16, dash: "26 16", t: T_ROAD, dur: 2.0 });
+B.arrow({ side: "carth", pts: ROAD.slice(35), width: 10, dash: "22 14", t: T_ROAD, dur: 2.0 });
 B.label("KOTO-RI", KOTO[0] + 22, KOTO[1], { cls: "city", size: 34, t: T_ROAD + 0.4, anchor: [0, -50] });
-B.label("70 MILES TO THE SEA", 1300, 1400, { cls: "tg", size: 52, t: T_ROAD + 0.8, anchor: [-50, -50] });
+B.label("70 MILES TO THE SEA", 1330, 1250, { cls: "tg", size: 52, t: T_ROAD + 0.8, anchor: [-50, -50] });
 B.highlight(ROAD.slice(33), T_ROAD + 0.6, null, 30);
 B.caption("NEXT: GETTING OUT", T_OUT - 0.6, END, "carth");
 B.finish();
