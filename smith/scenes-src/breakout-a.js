@@ -178,7 +178,7 @@ glow.setAttribute("d", lineD(MSR.pts)); glow.setAttribute("fill", "none"); glow.
 glow.setAttribute("stroke-width", 30); glow.setAttribute("stroke-linecap", "round"); glow.setAttribute("opacity", 0);
 OV.insertBefore(glow, OV.firstChild);
 tl.to(glow, { opacity: 0.6, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_ROAD - 0.3);
-B.label("THE ONLY ROAD OUT", ...normAt(MSR, MSR.len * 0.2, 80), { cls: "tg", size: 26, t: T_ROAD, until: T_CUT + 0.2, anchor: [0, -50] });
+B.label("THE ONLY ROAD OUT", ...normAt(MSR, MSR.len * 0.3, -40), { cls: "tg", size: 26, t: T_ROAD, until: T_CUT + 0.2, anchor: [0, -50] });
 
 // the Chinese can cut the road anywhere
 const cuts = [0.12, 0.26, 0.42, 0.6];
@@ -189,6 +189,6 @@ cuts.forEach((f, i) => {
   flash(x1, y1, tt + 0.8, 70);
   cutX(x1, y1, tt + 0.85, END - 0.5, 16);
 });
-B.bubble("THEY MUST ABANDON EVERYTHING", ...normAt(MSR, MSR.len * 0.3, -250), T_LEAVE - 0.6, END - 0.2);
+B.bubble("THEY MUST ABANDON EVERYTHING", posAt(MSR, MSR.len * 0.33)[0] - 600, posAt(MSR, MSR.len * 0.33)[1] - 30, T_LEAVE - 0.6, END - 0.2);
 B.caption("A DIVISION WITHOUT ITS GUNS IS JUST A CROWD", T_CROWD, END - 0.3, "rome");
 B.finish();

@@ -34,8 +34,8 @@ B.camera([
 B.image("assets/chosin_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 B.snow(0.2, END - 0.3);
 B.showDate(0.3);
-B.date("27 NOVEMBER 1950", 0.5, H3 - 0.2, 38);
-B.dateBox(H3 - 0.4, null);
+B.date("27 NOVEMBER 1950", 0.5, null, 38);
+B.dateBox(H2 + 3.2, null);
 
 // the road (MSR)
 const ROAD = [HUNG, HAM, [1680, 1080], G(40.03, 127.43), G(40.08, 127.40), G(40.12, 127.39), CHIN, FUN, [1420, 570], KOTO, [1370, 400], HAG, TOK, YUD];
@@ -51,22 +51,27 @@ B.label("NORTH KOREA", 820, 1000, { cls: "country", size: 60, t: 1.8, until: H2 
 // blue Marines strung along the road
 const blueRoad = [YUD, [1170, 160], TOK, HAG, [1375, 420], KOTO, [1425, 580], CHIN, G(40.08, 127.40), [1680, 1080], HAM];
 blueRoad.forEach(([x, y], i) => B.unit({ id: "b" + i, side: "carth", x, y, w: 34, h: 34, t: 3.8 + i * 0.22 }));
-B.caption("1ST MARINE DIVISION · ONE ROAD", 5.2, 9.2, "carth");
 
 // cold
-B.caption("−30°F", at("hook-1", "thirty degrees") - 0.2, T_BUGLE - 0.2, "carth");
+B.caption("−30°F", at("hook-1", "the temperature"), T_BUGLE - 0.2, "carth");
 
 // Chinese: counters appear on the ridges, then arrows pour down on the road
 const redRidge = [[980, 60], [1010, 270], [1110, 330], [1230, 380], [1180, 520], [1300, 620], [1260, 760], [1600, 170], [1560, 330], [1520, 470],
   [1600, 560], [1330, 880], [1700, 740], [1760, 900], [1420, 1000], [1240, 90], [1080, 440], [1500, 40]];
 redRidge.forEach(([x, y], i) => B.unit({ id: "r" + i, side: "rome", x, y, w: 30, h: 30, t: T_BUGLE + 0.3 + (i % 9) * 0.18 + Math.floor(i / 9) * 0.09 }));
 B.caption("120,000 CHINESE SOLDIERS", T_120 - 0.1, T_POUR + 2.6, "rome");
+// counters creep down towards the road while the numbers are spoken
+redRidge.forEach(([x, y], i) => {
+  let best = blueRoad[0], bd = 1e9;
+  blueRoad.forEach(([bx, by]) => { const d = (bx - x) ** 2 + (by - y) ** 2; if (d < bd) { bd = d; best = [bx, by]; } });
+  B.move("r" + i, T_120 + 0.8 + (i % 5) * 0.2, T_POUR - T_120, x + (best[0] - x) * 0.45, y + (best[1] - y) * 0.45, "sine.inOut");
+});
 const pour = [
-  [[960, 40], [1060, 90], [1115, 118]], [[1010, 300], [1120, 240], [1195, 205]], [[1580, 150], [1450, 230], [1350, 290]],
-  [[1180, 540], [1300, 500], [1375, 480]], [[1560, 470], [1470, 470], [1415, 490]], [[1250, 780], [1360, 740], [1490, 705]],
-  [[1720, 720], [1620, 700], [1535, 712]], [[1300, 330], [1260, 280], [1240, 225]],
+  [[900, 60], [1020, 110], [1100, 128]], [[1000, 330], [1110, 260], [1190, 198]], [[1640, 130], [1480, 230], [1360, 292]],
+  [[1120, 560], [1260, 520], [1378, 478]], [[1640, 480], [1520, 500], [1428, 522]], [[1200, 820], [1360, 760], [1480, 720]],
+  [[1800, 700], [1660, 690], [1540, 712]],
 ];
-const pourArrows = pour.map((pts, i) => B.arrow({ side: "rome", pts, width: 14, t: T_POUR + (i % 4) * 0.3 + Math.floor(i / 4) * 0.15, dur: 1.3, until: H2 + 1.2 }));
+const pourArrows = pour.map((pts, i) => B.arrow({ side: "rome", pts, width: 18, t: T_POUR - 0.8 + (i % 4) * 0.3 + Math.floor(i / 4) * 0.15, dur: 1.3, until: H2 + 1.2 }));
 B.hideUnits(redRidge.map((_, i) => "r" + i), H2 + 0.8, 0.8);
 B.hideUnits(blueRoad.map((_, i) => "b" + i), H2 + 1.0, 0.8);
 
@@ -81,12 +86,12 @@ const ring = (x, y, r, t, until) => {
   if (until != null) tl.to(c, { autoAlpha: 0, duration: 0.5 }, until);
   return c;
 };
-const pockets = [["YUDAM-NI", YUD, 38, [12, -58]], ["HAGARU-RI", HAG, 34, [26, 8]], ["KOTO-RI", KOTO, 30, [26, 6]]];
+const pockets = [["YUDAM-NI", YUD, 38, [-44, 30]], ["HAGARU-RI", HAG, 34, [26, 8]], ["KOTO-RI", KOTO, 30, [26, 6]]];
 pockets.forEach(([name, [x, y], r, [dx, dy]], i) => {
   const t = T_15 - 0.6 + i * 0.35;
   ring(x, y, r, t, H3 + 0.2);
   B.unit({ id: "p" + i, side: "carth", x, y, w: 22, h: 22, t: t + 0.2 });
-  B.label(name, x + dx, y + dy, { cls: "city", size: 17, t: t + 0.3, until: H3 + 0.2, anchor: [0, -50] });
+  B.label(name, x + dx, y + dy, { cls: "city", size: 17, t: t + 0.3, until: H3 + 0.2, anchor: [i === 0 ? -100 : 0, -50] });
 });
 B.label("CHOSIN RESERVOIR", 1318, 150, { cls: "river", size: 15, t: H2 + 3.0, until: H3 + 0.2, rot: 62 });
 B.caption("15,000 MARINES", T_15 + 0.2, T_78 - 0.3, "carth");
@@ -109,13 +114,13 @@ cuts.forEach(([x, y], i) => {
 });
 // encircling red arrows
 [
-  [[1050, 60], [1060, 180], [1110, 225]], [[1210, 420], [1300, 420], [1335, 395]], [[1520, 250], [1420, 280], [1370, 290]],
-  [[1250, 560], [1330, 520], [1365, 505]], [[1540, 420], [1470, 430], [1425, 470]], [[1250, 60], [1210, 110], [1160, 140]],
+  [[1180, 15], [1160, 75], [1138, 108]], [[1080, 300], [1150, 262], [1198, 228]], [[1520, 250], [1420, 280], [1370, 290]],
+  [[1210, 420], [1300, 420], [1345, 382]], [[1250, 560], [1330, 520], [1375, 505]], [[1540, 420], [1470, 430], [1425, 470]],
 ].forEach((pts, i) => B.arrow({ side: "rome", pts, width: 9, t: T_SURR - 1.2 + i * 0.22, dur: 1.1, until: H3 + 0.2 }));
 // ENCIRCLED stamp (screen)
 const stamp = document.createElement("div");
 stamp.textContent = "ENCIRCLED";
-stamp.style.cssText = "position:absolute;left:50%;top:44%;translate:-50% -50%;padding:6px 34px;font-family:'Special Elite',monospace;font-size:120px;color:#c4121f;border:10px solid #c4121f;border-radius:12px;rotate:-8deg;opacity:0.9;letter-spacing:0.08em;background:rgba(239,227,196,0.25);mix-blend-mode:multiply;";
+stamp.style.cssText = "position:absolute;left:31%;top:64%;translate:-50% -50%;padding:6px 34px;font-family:'Special Elite',monospace;font-size:120px;color:#c4121f;border:10px solid #c4121f;border-radius:12px;rotate:-8deg;opacity:0.9;letter-spacing:0.08em;background:rgba(239,227,196,0.25);mix-blend-mode:multiply;";
 document.getElementById("scene").insertBefore(stamp, document.getElementById("credit"));
 gsap.set(stamp, { autoAlpha: 0 });
 tl.fromTo(stamp, { autoAlpha: 0, scale: 2.4 }, { autoAlpha: 0.92, scale: 1, duration: 0.3, ease: "power4.in" }, T_SURR + 0.2);

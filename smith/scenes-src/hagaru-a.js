@@ -11,7 +11,7 @@ const G = (lat, lon) => {
 };
 const GL = (arr) => arr.map(([la, lo]) => G(la, lo));
 
-const T_RACE = at("hagaru-1", "raced north"), T_YALU = at("hagaru-1", "Yalu River");
+const T_RACE = at("hagaru-1", "toward the Chinese border") - 0.7, T_YALU = at("hagaru-1", "Yalu River");
 const T_SMITH = at("hagaru-1", "Smith's division"), T_COAST = at("hagaru-1", "east coast");
 const T_MTN = at("hagaru-1", "ordered into the mountains"), T_LAKE = at("hagaru-1", "vast frozen lake");
 const T_CHOSIN = at("hagaru-1", "Chosin Reservoir");
@@ -26,7 +26,8 @@ B.camera([
 ]);
 
 // ---------- base layers ----------
-B.image("assets/korea_north.png", 0, 0, 2880, 1620, { t: 0.2, dur: 1.4, opacity: 0.7 });
+const kn = B.image("assets/korea_north.png", 0, 0, 2880, 1620, { t: 0.2, dur: 1.4 });
+B.tl.to(kn, { opacity: 0.6, duration: 1.5 }, 1.8);
 B.image("assets/korea_south.png", 0, 0, 2880, 1620, { t: 0.4, dur: 1.4 });
 // the Chosin Reservoir itself (water overlay of the chosin basemap, scaled from zoom 11 to zoom 8)
 B.image("assets/chosin_water.png", 446141 / 8 - 54556, 197446 / 8 - 24399, 360, 202.5, { t: 0.5, dur: 1.0 });
