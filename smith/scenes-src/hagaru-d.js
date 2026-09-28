@@ -42,9 +42,8 @@ svg().appendChild(strip);
 function svg() { return document.getElementById("overlay"); }
 const GAR = [[1560, 700], [1612, 752], [1545, 742], [1628, 706], [1600, 690]];
 GAR.forEach(([x, y], i) => B.unit({ id: "g" + i, side: "carth", x, y, w: 15, h: 15, t: 0.01 }));
-B.showDate(0.1);
-B.date("DECEMBER 1950", 0.2, null);
-B.dateBox(0.15, T_FAILED + 0.4);
+B.showDate(T_FAILED + 0.3);
+B.date("DECEMBER 1950", T_FAILED + 0.4, null);
 
 // ---------- method card ----------
 // (shared design, copied verbatim from inchon-c.js)
