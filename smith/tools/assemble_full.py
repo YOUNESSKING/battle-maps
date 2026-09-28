@@ -56,7 +56,26 @@ def run(cmd):
     subprocess.run(["ffmpeg", "-v", "error", "-y", *cmd], check=True)
 
 
+def hook_composite():
+    """hook-in (korea) -> hook (chosin) -> hook-out (korea), dissolves at the hand-offs (abs times from the hook agent)."""
+    parts = [render_of_dir(s) for s in ("hook-in", "hook", "hook-out")]
+    if not all(parts):
+        return None
+    out = "build/hook_composite.mp4"
+    run(["-i", parts[0], "-i", parts[1], "-i", parts[2], "-filter_complex",
+         "[0:v]settb=AVTB,fps=30[a];[1:v]settb=AVTB,fps=30[b];[2:v]settb=AVTB,fps=30[c];"
+         "[a][b]xfade=transition=fade:duration=0.6:offset=6.4[ab];[ab][c]xfade=transition=fade:duration=0.6:offset=54.9[v]",
+         "-map", "[v]", *ENC, out])
+    return out
+
+
 def render_of(scene):
+    if scene == "hook":
+        return hook_composite() or render_of_dir("hook")
+    return render_of_dir(scene)
+
+
+def render_of_dir(scene):
     c = sorted(glob.glob(f"scenes/{scene}/renders/*.mp4"), key=os.path.getmtime)
     return c[-1] if c else None
 
