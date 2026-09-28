@@ -44,14 +44,14 @@ no audio.
 | `macarthur_01.mp4` | C | 7:02–7:14 | MacArthur and Korean/US dignitaries at the podium, Seoul Capitol turnover ceremony (Sept 29 1950) |
 | `macarthur_02.mp4` | A | 1:00–1:12 | MacArthur ashore at Inchon, meeting Marine officers |
 | `officers_01.mp4` | A | 2:20–2:32 | MacArthur and staff officers conferring outdoors near the Inchon front |
-| `chosin_snow_march_01.mp4` | D | 2:08–2:20 | Marine column marching through a snowbound mountain pass |
+| `chosin_snow_march_01.mp4` | D | 2:58–3:10 | Large Marine column marching across open snowy terrain, mountains behind |
 | `chosin_snow_march_02.mp4` | H | 0:32–0:44 | Marine column marching through a snowy valley, trucks alongside |
 | `chosin_snow_march_03.mp4` | K | 9:28–9:40 | Marine column marching in snow, clean wide shot |
 | `chosin_cold_01.mp4` | H | 9:38–9:48 | Marines prone in the snow with rifles, hunkered down against the cold |
 | `chosin_cold_02.mp4` | D | 3:00–3:12 | Marines in heavy cold-weather gear, close-up |
-| `hagaru_airstrip_01.mp4` | J | 2:40–2:52 | C-119/C-47 transport taxiing on the packed-snow airstrip at Hagaru-ri |
+| `hagaru_airstrip_01.mp4` | J | 1:48–2:00 | C-119/C-47 transport taxiing on the packed-snow airstrip at Hagaru-ri |
 | `hagaru_airstrip_02.mp4` | J | 7:20–7:32 | Wounded Marine on a stretcher loaded through a transport plane's door |
-| `hagaru_airstrip_03.mp4` | H | 3:44–3:56 | C-47 taxiing, close-up, on the Hagaru-ri airstrip |
+| `hagaru_airstrip_03.mp4` | H | 2:48–3:00 | C-47 close-up, propeller spinning, another transport visible behind, Hagaru-ri airstrip |
 | `corsair_01.mp4` | C | 7:28–7:40 | F4U Corsair (VMF-212) taxiing and taking off at Kimpo airfield |
 | `corsair_02.mp4` | C | 7:46–7:58 | Corsairs parked close-up at Kimpo, propellers spinning, ground crew working |
 | `airdrop_01.mp4` | H | 5:52–6:04 | C-119 crew silhouetted at the open cargo door, preparing an aerial resupply drop over the Chosin perimeter |
@@ -60,7 +60,7 @@ no audio.
 | `foxholes_snow_01.mp4` | H | 1:36–1:48 | Marines in foxholes/trench positions in the snow |
 | `hungnam_ships_01.mp4` | I | 0:24–0:36 | Transport/merchant ships at anchor in Hungnam harbor during the evacuation |
 | `hungnam_ships_02.mp4` | I | 3:20–3:32 | LVTs/amtracs moving cargo at dockside, Hungnam |
-| `hungnam_explosion_01.mp4` | F | 5:00–5:12 | Explosion and smoke plume during the demolition of Hungnam port facilities (Dec 24-25 1950) |
+| `hungnam_explosion_01.mp4` | F | 5:04–5:16 | Dockside "DUNNAGE" storage building erupting in smoke and flame during the demolition of Hungnam port facilities (Dec 24-25 1950) |
 | `hungnam_explosion_02.mp4` | F | 5:52–6:04 | Cluster of explosions over the harbor near departing ships, Hungnam port demolition |
 | `hungnam_explosion_03.mp4` | G | 4:08–4:20 | Mushroom-cloud explosion during the naval bombardment covering the Hungnam perimeter (Dec 9 1950) |
 

@@ -66,14 +66,14 @@ cut 111-adc-8251.mp4  60  12 macarthur_02.mp4          # MacArthur ashore meetin
 cut 111-adc-8251.mp4 140  12 officers_01.mp4           # MacArthur and staff officers conferring outdoors
 
 # CHOSIN
-cut 111-adc-8579.mp4 128  12 chosin_snow_march_01.mp4  # Marine column marching through snowy mountain pass
+cut 111-adc-8579.mp4 178  12 chosin_snow_march_01.mp4  # Marine column marching through snowy mountain pass
 cut ADC-10271.mp4     32  12 chosin_snow_march_02.mp4  # column marching in snowy valley
 cut hungnam_story.mp4 568 12 chosin_snow_march_03.mp4  # clean shot of Marine column marching
 cut ADC-10271.mp4    578  10 chosin_cold_01.mp4        # Marines prone in snow with rifles, hunkered down
 cut 111-adc-8579.mp4 180  12 chosin_cold_02.mp4        # Marines close-up in cold weather gear
-cut ADC-9439.mp4     160  12 hagaru_airstrip_01.mp4    # C-119/C-47 taxiing on snow airstrip
+cut ADC-9439.mp4     108  12 hagaru_airstrip_01.mp4    # C-119/C-47 taxiing on snow airstrip
 cut ADC-9439.mp4     440  12 hagaru_airstrip_02.mp4    # wounded on stretcher loaded into plane door
-cut ADC-10271.mp4    224  12 hagaru_airstrip_03.mp4    # C-47 taxiing close-up on runway
+cut ADC-10271.mp4    168  12 hagaru_airstrip_03.mp4    # C-47 taxiing close-up on runway
 cut 111-adc-8328.mp4 448  12 corsair_01.mp4            # Corsair (VMF-212) taxi and takeoff, Kimpo airfield
 cut 111-adc-8328.mp4 466  12 corsair_02.mp4            # Corsairs parked close-up, props spinning, ground crew
 cut ADC-10271.mp4    352  12 airdrop_01.mp4            # C-119 crew at open cargo door, aerial resupply drop
@@ -84,7 +84,7 @@ cut ADC-10271.mp4     96  12 foxholes_snow_01.mp4      # Marines in foxholes/tre
 # HUNGNAM
 cut ADC-9438.mp4      24  12 hungnam_ships_01.mp4      # transports/merchant ships at Hungnam harbor
 cut ADC-9438.mp4     200  12 hungnam_ships_02.mp4      # LVTs/amtracs moving at dockside, cargo
-cut 111-adc-8632.mp4 300  12 hungnam_explosion_01.mp4  # explosion/smoke plume, port demolition Dec 24-25
+cut 111-adc-8632.mp4 304  12 hungnam_explosion_01.mp4  # explosion/smoke plume, port demolition Dec 24-25
 cut 111-adc-8632.mp4 352  12 hungnam_explosion_02.mp4  # explosion clusters over harbor with ships
 cut 428-npc-173.mp4  248  12 hungnam_explosion_03.mp4  # mushroom-cloud explosion, bombardment of Hungnam Dec 9
 

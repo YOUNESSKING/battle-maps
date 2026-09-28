@@ -129,7 +129,7 @@ B.caption("OUTNUMBERED · SURROUNDED · FREEZING", T_TOKYO + 1.3, H3 - 0.2, "rom
 
 // ---------- hook-3: O.P. Smith ----------
 B.dim(H3 - 0.2, END + 1);
-B.bio({
+const bio = B.bio({
   photo: "assets/media/smith_full.png",
   name: "OLIVER P. SMITH",
   rows: ["Major General, U.S. Marine Corps", "Born 1893 · California", "Commander, 1st Marine Division", "Nickname: “The Professor”"],
@@ -137,4 +137,5 @@ B.bio({
   t: H3 + 0.1,
   until: END - 0.05,
 });
+Object.assign(bio.photo.querySelector("img").style, { height: "900px", left: "60px" });
 B.finish();
