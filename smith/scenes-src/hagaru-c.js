@@ -13,8 +13,8 @@ const NS = "http://www.w3.org/2000/svg";
 // ---------- media ----------
 const SMITH_HEAD = "assets/media/smith_head.png";
 const ALMOND = "assets/media/almond.jpg";
-// song_shilun.jpg is still a grey placeholder silhouette (Commons download rate-limited): badge uses initials until a PD crop replaces it
-const SONG = null;
+// song_shilun.jpg = crop of Commons "Song Shilun.jpg" (PLA photo, public domain)
+const SONG = "assets/media/song_shilun.jpg";
 const MASK = "assets/chosin_close_land.png";
 
 // ---------- projection (assets/chosin_close.json: zoom 12) ----------
@@ -271,7 +271,7 @@ B.caption("THEY MOVED ONLY AT NIGHT", T_NIGHT + 0.4, T_SONG - 0.6, "rome");
 REDS.forEach((_, i) => B.show("h" + i, T_SONG + 0.3 + (i % 6) * 0.1, 1));
 
 // Song Shilun: commander badge + his army group counter in the western mountains
-K.badge({ name: "GEN. SONG SHILUN", role: "CHINESE 9TH ARMY GROUP", photo: SONG, initials: "SS", flag: "prc", side: "rome", corner: "tl", t: T_SONG - 0.3, until: P4 + 0.6 });
+K.badge({ name: "GEN. SONG SHILUN", role: "CHINESE 9TH ARMY GROUP", photo: SONG, initials: "SS", flag: "prc", side: "rome", corner: "bl", t: T_SONG - 0.3, until: P4 + 0.6 });
 U({ id: "ag9", side: "rome", x: 880, y: 800, w: 58, h: 58, label: "9TH ARMY GROUP", fs: 22, t: T_SONG + 0.2 }, { icon: "infantry", flag: "prc", size: "XXXX" });
 B.label("12 DIVISIONS", 880, 880, { cls: "tg", size: 28, t: T_SONG + 0.6, until: P4 + 1, anchor: [-50, 0] });
 B.hideUnits(["ag9"], P4 + 1);
@@ -285,7 +285,7 @@ const almond = (t, until, lines) => {
     tl.to(b, { autoAlpha: 0, duration: 0.3 }, t1);
   });
 };
-almond(T_ALMOND3 - 0.2, T_RACE + 0.4, [["“THE CHINESE WON'T COME. FASTER!”", T_ALMOND3 + 0.3, T_RACE + 0.3]]);
+almond(T_ALMOND3 - 0.2, T_RACE + 0.4, [["THE CHINESE WON'T COME. FASTER!", T_ALMOND3 + 0.3, T_RACE + 0.3]]);
 
 // Song's plan: Americans strung out along the road, cut into pockets
 const PLAN = [8, 22, 38, 54, 70];
