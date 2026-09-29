@@ -18,6 +18,10 @@ Branch: `claude/lucid-tesla-qugecc`. Project folder: `smith/` (video #6, Maj. Ge
 - Wants the front lines (locked `K.front` look).
 - Any render needs owner approval first -> snapshot sheets first (HANDOVER 0b step 5).
 
+## New owner rule (2026-09-29, after the audio redo)
+- **Sound library scope (owner, 2026-09-29):** the locked SFX library is ONLY for the map events it was made for (artillery/mortar impacts, bombs/explosions, gun launches, aircraft flybys, MG, whoosh/hit/tick/static on stamps, cards and camera moves). Don't force it onto anything else, and don't reuse the same few clips everywhere: it gets repetitive. For events the library doesn't cover (ships, trucks/columns, bugles/whistles, wind/blizzard, crowds, parachutes, bridges, trains, horses, etc.), source a fitting, correctly licensed sound (CC0/PD/CC BY, no NC/ND) for that specific moment, keep it at the library's levels (never louder than the voice), and add variants so repeated events don't sound identical. Test new sounds first (1-min clip, owner approval) per 0b step 5.
+Apply it in this remake: e.g. ships firing/moving, the C-119 parachute drop, the breakout column of trucks, Chinese bugles, blizzard wind need their own fitting sounds (tested first), and the library clips should not repeat identically.
+
 ## APPROVED work for this session (owner approved 1-6 on 2026-09-29)
 Remake the map scenes in the LOCKED visual style (copy `goosegreen/lib/fx.js`, `const K = FXK(B)`; reference scenes goosegreen/scenes-src/move3.js, test-terr-f.js, move1.js):
 1. **Inchon shown, not told:** destroyer/cruiser silhouettes firing (ship + `K.gun`) with `K.impact`s on Wolmi-do; Corsairs (`K.aircraft` kind turboprop/prop art) flying real bombing runs exactly like the Harrier strike (size 84, alt 30, dur 3.2, bombs = K.impact r 20 at t0+1.55+k*0.25); same for "Navy and Marine aircraft had pounded it" and every other named air/naval action (breakout-3 fighter-bombers on the ridges, C-47s landing at Hagaru-ri, C-119s dropping the bridge spans with parachutes).
