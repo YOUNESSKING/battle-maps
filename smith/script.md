@@ -1,4 +1,4 @@
-# O.P. Smith's Top 3 Legendary Tactical Moves — Script v1
+# O.P. Smith's Top 3 Legendary Tactical Moves — Script v2
 
 Format: Tactical Genius formula. Target ~2,600 words, ~17 min, calm documentary voice.
 Each paragraph starts with a visual tag:
@@ -19,17 +19,17 @@ Fact notes (corrections to the Gemini research, see research/gemini_research.md)
 
 ## HOOK
 
-[MAP: hook-1 | Northeast Korea in winter: Chosin Reservoir, single road (MSR) down to Hungnam; blue Marine units strung along the road; red Chinese arrows pour out of the mountains on all sides and close the ring; snow particles; caption -30°F]
-On the night of November twenty-seventh, nineteen fifty, in the frozen mountains of North Korea, the temperature fell to thirty degrees below zero. Out of the darkness, bugles and whistles sounded from every ridge. Some one hundred and twenty thousand Chinese soldiers, an entire army group that American intelligence insisted was not there, came pouring down the slopes.
+[MAP: hook-1 | Odds card 15,000 VS 120,000 + -30°F stamp on the first line; Northeast Korea in winter: Chosin Reservoir, single road (MSR) down to Hungnam; blue Marine units strung along the road; red Chinese arrows pour out of the mountains on all sides and close the ring; snow particles; caption -30°F]
+Fifteen thousand Marines. A hundred and twenty thousand Chinese. Thirty degrees below zero. On the night of November twenty-seventh, nineteen fifty, bugles sounded from every ridge around the Chosin Reservoir, and an army that American intelligence swore was not there came pouring down the slopes.
 
-[MAP: hook-2 | Zoom on the reservoir: blue pockets at Yudam-ni, Hagaru-ri, Koto-ri, cut off from each other; red blocks on the road between them; "ENCIRCLED" stamp]
-In their path stood about fifteen thousand men of the First Marine Division, spread along a single narrow mountain road, seventy-eight miles from the sea. Within hours, that road was cut in a dozen places. The division was surrounded, outnumbered many times over, and freezing. In Tokyo and Washington, commanders prepared themselves for the destruction of the most famous division in the United States Marine Corps.
+[MAP: hook-2 | Zoom on the reservoir: blue pockets at Yudam-ni, Hagaru-ri, Koto-ri, cut off from each other; red blocks on the road between them; "ENCIRCLED" stamp; white-flash flash-forward on "Two weeks later": column slides down to Hungnam, Chinese counters grey, stamp OUT OF THE WAR UNTIL SPRING]
+The First Marine Division was strung out along one narrow mountain road, seventy-eight miles from the sea. Within hours, that road was cut in a dozen places. In Tokyo, commanders braced for the destruction of the most famous division in the Marine Corps. Two weeks later, that division came down out of the mountains, not as a fleeing mob, but as a fighting column, carrying its wounded, its guns and its dead. And the Chinese army group that had trapped it would be out of the war until spring.
 
 [MAP: hook-3 | Full-length photo cut-out of O.P. Smith + bio card: OLIVER P. SMITH, Major General, USMC, born 1893, commander 1st Marine Division, "The Professor"]
 They did not know the man in command. Major General Oliver Prince Smith was fifty-seven years old, a quiet, pipe-smoking Californian so thoughtful and methodical that other officers called him the Professor. He did not shout. He did not pose for cameras. But for weeks he had been quietly preparing for exactly this moment, even when it meant defying his own commanding general.
 
 [ARCHIVE: Marines marching down the mountain road in snow, December 1950, slow push-in]
-Two weeks later, his division came down out of the mountains, not as a fleeing mob, but as a fighting column, carrying its wounded, its guns, and its dead. And the Chinese army that had surrounded it would be out of the war for months. So how did one soft-spoken general turn a death trap into one of the greatest fighting withdrawals in history? Let's take a closer look at O.P. Smith's three greatest tactical moves.
+So how did one soft-spoken general turn a death trap into one of the greatest fighting withdrawals in history? Let's take a closer look at O.P. Smith's three greatest tactical moves.
 
 ---
 
@@ -66,7 +66,7 @@ At Red Beach, there was no beach at all. There was only the seawall. The Marines
 By midnight, the beachhead was secure. The cost on the first day was around twenty Marines killed and under two hundred wounded, for a landing that experts had said could not be done. Two weeks later, Seoul was back in United Nations hands. With its supply lines cut, the North Korean army in the south collapsed. Within a month, the war seemed all but won.
 
 [MAP: inchon-9 | Method card: 1. BUILD THE LIFELINE FIRST · 2. REFUSE TO BE RUSHED · 3. KEEP THE DIVISION WHOLE, with line 3 highlighted]
-MacArthur had the vision. But it was Smith's planning that got the Marines over the seawall. And already, you can see the shape of his method. Build the lifeline first. Refuse to be rushed. And keep the division whole. At Inchon, he had used the tide itself as a schedule. In the mountains of the north, he was about to face a far deadlier enemy, and this time, his own commander would be pushing him into the trap.
+MacArthur had the vision. But it was Smith's planning that got the Marines over the seawall. And already, you can see the shape of his method. Build the lifeline first. Refuse to be rushed. And keep the division whole. At Inchon, he had used the tide itself as a schedule. If you're enjoying this breakdown, consider subscribing. Because in the mountains of the north, Smith was about to face a far deadlier enemy, and this time, his own commander would be pushing him into the trap.
 
 ---
 
@@ -103,7 +103,7 @@ On December first, with the airstrip less than half finished, the first transpor
 The Chinese plan had depended on catching the Marines strung out and starved. Instead, they found a division gathered around a fortress, with supplies, an airfield and a plan. The regiments at Yudam-ni were ordered to fight their way back to Hagaru-ri, and for four days and nights, they did exactly that, down fourteen miles of road, with Chinese troops on every ridge.
 
 [MAP: hagaru-9 | Method card: 1. BUILD THE LIFELINE FIRST (highlighted) · 2. REFUSE TO BE RUSHED (highlighted) · 3. KEEP THE DIVISION WHOLE]
-Build the lifeline first. Refuse to be rushed. Keep the division whole. At Hagaru-ri, the first two rules had saved his men. The Chinese had failed to break the Marines apart. But they still held the mountains, and the road to the sea was seventy miles long. If you're enjoying this breakdown, consider subscribing, because the hardest part of Smith's campaign was still ahead: getting out.
+Build the lifeline first. Refuse to be rushed. Keep the division whole. At Hagaru-ri, the first two rules had saved his men. The Chinese had failed to break the Marines apart. But they still held the mountains, and the road to the sea was seventy miles long. The hardest part of Smith's campaign was still ahead: getting out.
 
 ---
 
