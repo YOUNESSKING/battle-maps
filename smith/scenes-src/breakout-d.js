@@ -127,7 +127,7 @@ const ship = (x, y, o = {}) => {
       <path d="M30 22 L30 13 L46 13 L46 7 L56 7 L56 13 L66 13 L66 22 Z" fill="${col}" stroke="#f3eee2" stroke-width="2.5"/>
       <line x1="51" y1="7" x2="51" y2="0" stroke="#f3eee2" stroke-width="2.5"/><line x1="12" y1="22" x2="4" y2="17" stroke="#f3eee2" stroke-width="3"/></svg>`;
   PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
-  if (o.t != null) tl.fromTo(el, { autoAlpha: 0, x: o.dx || 40 }, { autoAlpha: 1, x: 0, duration: 1.2, ease: "power2.out" }, o.t);
+  if (o.t != null) tl.fromTo(el, { autoAlpha: 0, x: o.dx != null ? o.dx : 40 }, { autoAlpha: 1, x: 0, duration: 1.2, ease: "power2.out" }, o.t);
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return el;
 };
@@ -202,7 +202,7 @@ B.city("HUNGNAM", HUNG[0] + 4, HUNG[1], { size: 34, t: 0.6, dy: 36 });
 B.label("SEA OF JAPAN", 2380, 1180, { cls: "sea", size: 44, t: 0.8 });
 
 // the Hungnam perimeter: a blue line, not in contact (one colour), with blue ground behind it
-const PER = [[1650, 1470], [1672, 1330], [1760, 1215], [1900, 1190], [2010, 1260], [2060, 1340]];
+const PER = [[1680, 1440], [1688, 1320], [1770, 1222], [1890, 1196], [1962, 1250], [1990, 1312]];
 K.front({ pts: PER, sideA: "carth", sideB: "carth", t: 0.6, dur: 1.6, until: END + 1 });
 K.frontTint({ pts: PER, dir: 1, depth: 160, color: "#4a6a9a", t: 0.8, alpha: 0.34, mask: MASK });
 
@@ -243,7 +243,7 @@ const flake = `<svg width="34" height="34" viewBox="0 0 100 100"><g stroke="#9fc
 cols[0].children[3].insertAdjacentHTML("afterbegin", flake);
 cols[0].children[3].querySelector("span").insertAdjacentHTML("afterend", `<span style="font-size:22px;color:#d8cfb8;letter-spacing:0.06em">FROSTBITE</span>`);
 // the Chinese column: the script gives no exact figure, so it is said in words
-[1, 2, 3].forEach((r) => cols[1].children[r].remove());
+[3, 2, 1].forEach((r) => cols[1].children[r].remove());
 cols[1].insertAdjacentHTML("beforeend", `<div class="cn" style="padding-top:18px;max-width:330px"><div style="font-size:54px;line-height:1.05;color:#f7f3ea">TENS OF THOUSANDS</div>
   <div style="font-size:24px;letter-spacing:0.08em;color:#d8cfb8;margin-top:14px">KILLED · WOUNDED · FROZEN</div></div>`);
 // numbers land as they are spoken

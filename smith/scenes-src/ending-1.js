@@ -1,22 +1,24 @@
 // ending-1: the Marines back in the fight; Ridgway turns the war around (Korea, Dec 1950 - Mar 1951). UN = blue ("carth"), Chinese = red ("rome").
-const B = Battle();
-const { P, at } = B;
-const END = B.T.duration;
-// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
-const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
-const tl = B.tl;
-
+// Locked style: Hungnam -> Pusan by sea (a ship sails the route), the early-1951 front as a two-colour day front with "E"-look
+// territory (assets/korea_land.png) that moves north (to + moveT), Ridgway badge (K.badge), counters with flags + size marks.
 // ---------- projection (assets/korea.json: zoom 8) ----------
 const G = (lat, lon) => {
   const n = 256 * 2 ** 8, r = (lat * Math.PI) / 180;
   return [+((lon + 180) / 360 * n - 54556).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 24399).toFixed(1)];
 };
 const GL = (arr) => arr.map(([la, lo]) => G(la, lo));
+const B = Battle();
+const { P, at } = B;
+const END = B.T.duration;
+const tl = B.tl;
+const K = FXK(B);
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 
-// ---------- scene-local helpers (shared by the breakout/ending scenes; no engine change) ----------
+// ================= scene-local helpers (shared by the breakout / ending scenes; no engine change) =================
 const NS = "http://www.w3.org/2000/svg";
-const OV = document.getElementById("overlay"), PINS = document.getElementById("pins");
+const OV = document.getElementById("overlay"), PINS = document.getElementById("pins"), SCENE = document.getElementById("scene");
 const smooth = (pts, n = 12) => { // Catmull-Rom sampled into a dense polyline (pure math, build time)
   const out = [];
   for (let i = 0; i < pts.length - 1; i++) {
@@ -37,6 +39,9 @@ const posAt = (Q, d) => {
   return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, Math.atan2(b[1] - a[1], b[0] - a[0])];
 };
 const normAt = (Q, d, off) => { const [x, y, a] = posAt(Q, d); return [x - Math.sin(a) * off, y + Math.cos(a) * off]; };
+const dNear = (Q, pt) => { let b = 1e9, d = 0; Q.pts.forEach((p, i) => { const e = Math.hypot(p[0] - pt[0], p[1] - pt[1]); if (e < b) { b = e; d = Q.L[i]; } }); return d; };
+const sub = (Q, d0, d1) => poly(Q.pts.filter((_, i) => Q.L[i] >= d0 - 1e-6 && Q.L[i] <= d1 + 1e-6));
+const offLine = (Q, d0, d1, off, n = 7) => Array.from({ length: n }, (_, i) => normAt(Q, d0 + (d1 - d0) * i / (n - 1), off).map((v) => +v.toFixed(1)));
 const lineD = (pts) => "M " + pts.map((p) => p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" L ");
 let maskN = 0;
 const road = (Q, o = {}) => { // road drawn on along a dense polyline (mask reveal keeps dashes intact)
@@ -53,42 +58,10 @@ const follow = (id, Q, t, dur, d0, d1, ease = "power1.inOut") => { // unit rides
   const u = B.units[id], pr = { d: d0 };
   tl.to(pr, { d: d1, duration: dur, ease, onUpdate: () => { const [x, y] = posAt(Q, pr.d); gsap.set(u.el, { left: x - u.w / 2, top: y - u.h / 2 }); } }, t);
 };
-const ICON = {
-  armor: `<ellipse cx="50" cy="50" rx="33" ry="21" fill="none" stroke="#f7f3ea" stroke-width="9"/>`,
-  arty: `<circle cx="50" cy="50" r="15" fill="#f7f3ea"/>`,
-  truck: `<line x1="0" y1="0" x2="100" y2="100" stroke="#f7f3ea" stroke-width="7"/><line x1="100" y1="0" x2="0" y2="100" stroke="#f7f3ea" stroke-width="7"/><circle cx="30" cy="84" r="9" fill="#f7f3ea"/><circle cx="70" cy="84" r="9" fill="#f7f3ea"/>`,
-  eng: `<path d="M18 72 L18 34 L82 34 L82 72 M50 34 L50 72" fill="none" stroke="#f7f3ea" stroke-width="8"/>`,
-};
-const setIcon = (id, k) => { B.units[id].el.querySelector("svg").innerHTML = ICON[k]; };
-const PLANE = {
-  fighter: (c) => `<path d="M50 3 C54 3 56 10 56 20 L56 36 L97 46 L97 55 L56 52 L54 78 L70 86 L70 93 L50 90 L30 93 L30 86 L46 78 L44 52 L3 55 L3 46 L44 36 L44 20 C44 10 46 3 50 3 Z" fill="${c}" stroke="#f7f3ea" stroke-width="3.5" stroke-linejoin="round"/>`,
-  cargo: (c) => `<g fill="${c}" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M1 38 L99 38 L99 47 L1 47 Z"/><path d="M29 30 L35 30 L35 86 L29 86 Z M65 30 L71 30 L71 86 L65 86 Z"/><path d="M24 82 L76 82 L76 90 L24 90 Z"/><path d="M43 14 C43 8 57 8 57 14 L57 62 L43 62 Z"/></g>`,
-};
-const plane = (o) => { // o: pts (world), t, dur, size, kind, color; o.sfx: engine sound (default prop: Corsair / C-47 / C-119), false = silent
-  if (o.sfx !== false) SFX(o.sfx || "prop", Math.max(0, o.t + o.dur / 2 - 2.3)); // flyby clip is loudest mid-flight
-  const Q = poly(smooth(o.pts, 10)), s = o.size || 90, el = document.createElement("div");
-  el.style.cssText = `position:absolute;left:0;top:0;width:${s}px;height:${s}px;filter:drop-shadow(0 14px 8px rgba(0,0,0,0.45));`;
-  el.innerHTML = `<svg viewBox="0 0 100 100" style="width:100%;height:100%;overflow:visible">${PLANE[o.kind || "fighter"](o.color || "#1f3f8f")}</svg>`;
-  PINS.appendChild(el);
-  const pr = { d: 0 }, place = () => { const [x, y, a] = posAt(Q, pr.d); gsap.set(el, { x: x - s / 2, y: y - s / 2, rotation: a * 180 / Math.PI + 90 }); };
-  place(); gsap.set(el, { autoAlpha: 0 });
-  tl.to(el, { autoAlpha: 1, duration: 0.3 }, o.t);
-  tl.to(pr, { d: Q.len, duration: o.dur, ease: o.ease || "none", onUpdate: place }, o.t);
-  tl.to(el, { autoAlpha: 0, duration: 0.4 }, o.t + o.dur - 0.4);
-  return el;
-};
-const flash = (x, y, t, s = 90, sfx = "impact") => { // sfx: impact (shells), explosion (bombs / big blasts), hit, or false
-  if (sfx) SFX(sfx, t);
-  const el = document.createElement("div");
-  el.style.cssText = `position:absolute;left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle, #fffbe0 0, #ffc040 30%, rgba(235,80,20,0.85) 52%, rgba(235,80,20,0) 72%);`;
-  PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
-  tl.fromTo(el, { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1.2, duration: 0.18, ease: "power2.out" }, t);
-  tl.to(el, { autoAlpha: 0, scale: 1.7, duration: 0.55 }, t + 0.2);
-};
 const svgEl = (html, t, until, dur = 0.5) => { const g = document.createElementNS(NS, "g"); g.innerHTML = html; OV.appendChild(g); gsap.set(g, { autoAlpha: 0 }); tl.to(g, { autoAlpha: 1, duration: dur }, t); if (until != null) tl.to(g, { autoAlpha: 0, duration: 0.5 }, until); return g; };
-const cutX = (x, y, t, until, s = 26) => {
+const cutX = (x, y, t, until, s = 26) => { // red X: the road is cut here
   const d = `M ${x - s} ${y - s} L ${x + s} ${y + s} M ${x + s} ${y - s} L ${x - s} ${y + s}`;
-  const g = svgEl(`<path d="${d}" stroke="#f7f3ea" stroke-width="20" stroke-linecap="round"/><path d="${d}" stroke="var(--rome)" stroke-width="11" stroke-linecap="round"/>`, t, until, 0.01);
+  const g = svgEl(`<path d="${d}" stroke="#f7f3ea" stroke-width="${s * 0.75}" stroke-linecap="round"/><path d="${d}" stroke="var(--rome)" stroke-width="${s * 0.42}" stroke-linecap="round"/>`, t, until, 0.01);
   gsap.set(g, { svgOrigin: `${x} ${y}` });
   tl.fromTo(g, { scale: 2.2 }, { scale: 1, duration: 0.35, ease: "back.out(2)" }, t);
   return g;
@@ -96,8 +69,65 @@ const cutX = (x, y, t, until, s = 26) => {
 const trench = (x, y, ang, t, until, r = 34) => { // red dug-in arc facing the road
   const a0 = ang - 0.9, a1 = ang + 0.9, p = (a) => `${(x + Math.cos(a) * r).toFixed(1)} ${(y + Math.sin(a) * r).toFixed(1)}`;
   const d = `M ${p(a0)} A ${r} ${r} 0 0 1 ${p(a1)}`;
-  return svgEl(`<path d="${d}" fill="none" stroke="#f7f3ea" stroke-width="13" stroke-linecap="round"/><path d="${d}" fill="none" stroke="var(--rome)" stroke-width="7" stroke-linecap="round" stroke-dasharray="3 9"/>`, t, until);
+  return svgEl(`<path d="${d}" fill="none" stroke="#f7f3ea" stroke-width="${r * 0.36}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="var(--rome)" stroke-width="${r * 0.2}" stroke-linecap="round" stroke-dasharray="3 9"/>`, t, until);
 };
+// extra counter symbols the kit lacks (truck, engineers) drawn in the same white-on-colour style
+const XICON = {
+  truck: `<rect x="14" y="30" width="50" height="34" fill="none" stroke="#f7f3ea" stroke-width="8"/><path d="M64 42 L80 42 L88 54 L88 64 L64 64 Z" fill="none" stroke="#f7f3ea" stroke-width="8" stroke-linejoin="round"/><circle cx="30" cy="76" r="9" fill="#f7f3ea"/><circle cx="74" cy="76" r="9" fill="#f7f3ea"/>`,
+  eng: `<path d="M18 72 L18 34 L82 34 L82 72 M50 34 L50 72" fill="none" stroke="#f7f3ea" stroke-width="8"/>`,
+};
+// unit + locked counter styling (flag badge, size mark, symbol). o.icon: infantry | artillery | tank | truck | eng | hq
+const U = (o) => {
+  const el = B.unit(Object.assign({}, o, { label: o.label || null }));
+  if (XICON[o.icon]) { B.units[o.id].el.querySelector("svg").innerHTML = XICON[o.icon]; K.counter(o.id, { flag: o.flag, size: o.size }); }
+  else K.counter(o.id, { icon: o.icon || "infantry", flag: o.flag, size: o.size });
+  const tag = el.querySelector(".tag");
+  if (tag && o.fs) tag.style.fontSize = o.fs + "px";
+  return el;
+};
+// LOCKED bombing run (Harrier recipe from goosegreen move3.js): size 84, alt 30, dur 3.2; bombs just after the pass, 0.25 s apart
+const bombRun = (pts, t0, bombs, o = {}) => {
+  K.aircraft({ kind: o.kind || "prop", side: o.side || "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
+  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+};
+const runThrough = (x, y, ang, len = 900) => { const c = Math.cos(ang), s = Math.sin(ang); return [[x - c * len / 2, y - s * len / 2], [x, y], [x + c * len / 2, y + s * len / 2]]; };
+// continuous smoke column over a burning / bombed place
+const smokeCol = (x, y, t0, t1, o = {}) => { for (let t = t0; t < t1; t += o.gap || 1.1) K.smoke(x, y, t, { n: 1, r: o.r || 10, rise: o.rise || 42, life: 3.2, alpha: 0.62, drift: 14 }); };
+// closed perimeter ("pocket") as a ring of points, clockwise on screen (so K.front sideA = outside, sideB = inside)
+const ringPts = (cx, cy, rx, ry, n = 18, wob = 0.08, rot = 0) => {
+  const pts = [];
+  for (let i = 0; i <= n + 1; i++) { // one extra point: the band overlaps itself where it closes
+    const a = rot + (i % n) / n * Math.PI * 2, w = 1 + wob * Math.sin(i * 2.3 + cx * 0.01) * Math.cos(i * 1.1);
+    pts.push([+(cx + Math.cos(a) * rx * w).toFixed(1), +(cy + Math.sin(a) * ry * w).toFixed(1)]);
+  }
+  return pts;
+};
+// "E"-look tint for a pocket: colour strongest at the ring, fading within `depth` px inward (dir -1) or outward (dir +1)
+const ringTint = (pts, dir, depth, color, t, o = {}) => {
+  const n = 5, rp = pts.slice(0, -2), cx = rp.reduce((s, p) => s + p[0], 0) / rp.length, cy = rp.reduce((s, p) => s + p[1], 0) / rp.length;
+  const shift = (d) => pts.map(([x, y]) => { const L = Math.hypot(x - cx, y - cy) || 1; return [x + (x - cx) / L * d * dir, y + (y - cy) / L * d * dir]; });
+  const out = [];
+  for (let k = 0; k < n; k++) {
+    const pl = K.territory({ pts: [...pts, ...shift(depth * (k + 1) / n).reverse()], side: color, t, dur: o.dur, alpha: 0.34 / n * 1.6, mask: o.mask, soft: 24, until: o.until });
+    out.push(pl);
+  }
+  return out;
+};
+// ship silhouette (copied from goosegreen hook-atlantic G.ship), world coords; silent (stationary ships make no sound)
+const ship = (x, y, o = {}) => {
+  const w = o.w || 90, col = o.color || "#1f4fc4", el = document.createElement("div");
+  el.style.cssText = `position:absolute;left:${x - w / 2}px;top:${y - w * 0.18}px;width:${w}px;height:${w * 0.36}px;filter:drop-shadow(0 3px 3px rgba(0,0,0,0.45));`;
+  el.innerHTML = `<svg width="${w}" height="${w * 0.36}" viewBox="0 0 100 36" style="display:block;overflow:visible;${o.flip ? "transform:scaleX(-1)" : ""}">
+      <path d="M2 22 L96 22 L88 33 L10 33 Z" fill="${col}" stroke="#f3eee2" stroke-width="2.5"/>
+      <path d="M30 22 L30 13 L46 13 L46 7 L56 7 L56 13 L66 13 L66 22 Z" fill="${col}" stroke="#f3eee2" stroke-width="2.5"/>
+      <line x1="51" y1="7" x2="51" y2="0" stroke="#f3eee2" stroke-width="2.5"/><line x1="12" y1="22" x2="4" y2="17" stroke="#f3eee2" stroke-width="3"/></svg>`;
+  PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
+  if (o.t != null) tl.fromTo(el, { autoAlpha: 0, x: o.dx != null ? o.dx : 40 }, { autoAlpha: 1, x: 0, duration: 1.2, ease: "power2.out" }, o.t);
+  if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
+  return el;
+};
+const MAIN_COL = { carth: "#2c57b7", rome: "#bc2528" }; // locked day front colours (K.front defaults)
+const MASK = "assets/korea_land.png";
 
 const S = P("ending-1");
 const T_BACK = at("ending-1", "back in the fight"), T_WEEKS = at("ending-1", "Only weeks later"), T_RIDG = at("ending-1", "Matthew Ridgway"),
@@ -108,15 +138,14 @@ const HUNG = G(39.83, 127.62), PUSAN = G(35.1, 129.04);
 B.camera(camSfx([
   [0, 1460, 820, 0.7],
   [T_WEEKS, 1480, 900, 0.8],
-  [T_RIDG + 0.5, 1420, 960, 1.25],
-  [T_TURN + 3.0, 1440, 900, 1.3],
-  [T_BEST, 1480, 900, 1.45],
-  [END, 1490, 890, 1.55],
+  [T_RIDG + 0.5, 1420, 960, 1.2],
+  [T_TURN + 3.0, 1440, 900, 1.25],
+  [T_BEST, 1480, 900, 1.4],
+  [END, 1490, 890, 1.5],
 ]));
 
 // ---------- base ----------
-B.image("assets/korea_north.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
-B.image("assets/korea_south.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
+K.grid(G, 33, 43, 123, 132, 0.5, 0.1);
 B.showDate(0.2);
 B.date("DECEMBER 1950", 0.4, T_WEEKS, 38);
 B.date("JANUARY – MARCH 1951", T_WEEKS + 0.3, null, 32);
@@ -140,42 +169,46 @@ B.label("CHOSIN", route[0][0] - 20, route[0][1], { cls: "tg", size: 30, t: 0.6, 
 B.city("HUNGNAM", ...HUNG, { size: 26, t: 0.8, until: T_RIDG });
 B.city("PUSAN", ...PUSAN, { left: true, size: 26, t: 1.0, until: T_RIDG });
 
-// by sea to the south, then back into the line
-B.arrow({ side: "white", pts: [[HUNG[0] + 20, HUNG[1] + 10], [1640, 520], [1820, 760], [1860, 1120], [1800, 1430], [PUSAN[0] + 14, PUSAN[1] - 6]], width: 16, t: 0.9, dur: 3.0, until: T_RIDG });
+// by sea to the south: the route, and a transport sailing it
+const SEA = [[HUNG[0] + 20, HUNG[1] + 10], [1640, 520], [1820, 760], [1860, 1120], [1800, 1430], [PUSAN[0] + 14, PUSAN[1] - 6]];
+B.arrow({ side: "white", pts: SEA, width: 16, t: 0.9, dur: 3.0, until: T_RIDG });
+const SQ = poly(smooth(SEA, 10)), boat = ship(0, 0, { w: 64, color: "#1f4fc4", t: 1.0, until: T_RIDG - 0.3, dx: 0 });
+const bp = { d: 0 };
+tl.to(bp, { d: SQ.len * 0.97, duration: T_RIDG - 1.6, ease: "sine.inOut", onUpdate: () => { const [x, y] = posAt(SQ, bp.d); gsap.set(boat, { left: x - 32, top: y - 30 }); } }, 1.0);
+SFX("ship", 1.2); // transport sails from Hungnam to Pusan (visible, moving)
+SFX("whoosh", 0.9); // big arrow by sea
 B.label("BY SEA", 1900, 900, { cls: "tg", size: 30, t: 2.4, until: T_RIDG, anchor: [0, -50] });
 B.caption("THE 1ST MARINE DIVISION IS BACK IN THE FIGHT", T_BACK + 0.3, T_WEEKS + 0.6, "carth");
 
-// Ridgway takes over the battered UN army
-const frontA = [[36.98, 126.75], [37.02, 127.15], [37.1, 127.55], [37.25, 128.0], [37.4, 128.6], [37.5, 129.15]];
-const frontB = [[37.75, 126.6], [37.85, 127.0], [37.95, 127.45], [38.05, 127.9], [38.15, 128.3], [38.3, 128.62]];
-B.front({ pts: GL(frontA), to: GL(frontB), width: 10, t: T_WEEKS + 0.6, dur: 1.6, moveT: T_TURN + 0.4, moveDur: 4.2 });
-B.portraitStake({ img: "assets/media/ridgway_head.png", flag: "assets/media/us_flag_48star.png", name: "RIDGWAY", x: G(36.72, 127.3)[0], y: G(36.72, 127.3)[1], size: 0.62, t: T_RIDG - 0.4 });
+// Ridgway takes over the battered UN army; the front (two-colour: blue south, red north) moves north
+const frontA = GL([[36.98, 126.75], [37.02, 127.15], [37.1, 127.55], [37.25, 128.0], [37.4, 128.6], [37.5, 129.15]]);
+const frontB = GL([[37.75, 126.6], [37.85, 127.0], [37.95, 127.45], [38.05, 127.9], [38.15, 128.3], [38.3, 128.62]]);
+const TF = T_WEEKS + 0.6, TM = T_TURN + 0.4;
+K.front({ pts: frontA, to: frontB, sideA: "rome", sideB: "carth", t: TF, dur: 1.6, moveT: TM, moveDur: 3.0, until: END + 1 });
+K.frontTint({ pts: frontA, to: frontB, dir: 1, depth: 170, color: "#4a6a9a", t: TF, alpha: 0.34, mask: MASK, moveT: TM, moveDur: 3.0 });
+K.frontTint({ pts: frontA, to: frontB, dir: -1, depth: 170, color: "#a8503c", t: TF + 0.3, alpha: 0.34, mask: MASK, moveT: TM, moveDur: 3.0 });
+K.badge({ name: "LT. GEN. MATTHEW RIDGWAY", role: "EIGHTH ARMY · FROM DEC 1950", photo: "assets/media/ridgway_head.png", flag: "us", side: "carth", corner: "tr", t: T_RIDG - 0.3, until: T_SURV });
 B.city("SEOUL", ...G(37.57, 126.98), { size: 20, r: 6, t: T_WEEKS + 0.8 });
-const blue = [[36.93, 126.95], [37.02, 127.7], [37.12, 128.1], [37.27, 128.5], [37.4, 128.95]];
-const blueB = [[37.68, 126.8], [37.85, 127.6], [37.93, 127.95], [38.05, 128.3], [38.18, 128.52]];
+const blue = [[36.8, 126.95], [36.9, 127.7], [37.0, 128.1], [37.15, 128.5], [37.25, 128.95]];
+const blueB = [[37.45, 126.95], [37.6, 127.6], [37.7, 127.95], [37.82, 128.3], [37.95, 128.55]];
 blue.forEach(([la, lo], i) => {
-  B.unit({ id: "b" + i, side: "carth", x: G(la, lo)[0], y: G(la, lo)[1], w: 28, h: 26, label: i === 2 ? "1ST MARINE DIV" : null, t: T_WEEKS + 1.2 + i * 0.15 });
-  B.move("b" + i, T_TURN + 0.5 + i * 0.1, 4.0, ...G(...blueB[i]));
+  U({ id: "b" + i, side: "carth", x: G(la, lo)[0], y: G(la, lo)[1], w: 28, h: 24, icon: "infantry", flag: "us", size: i === 2 ? "XX" : "XXX", label: i === 2 ? "1ST MARINE DIV" : null, fs: 13, t: T_WEEKS + 1.2 + i * 0.15 });
+  B.move("b" + i, TM + 0.1 + i * 0.1, 3.0, ...G(...blueB[i]));
 });
-B.units.b2.el.querySelector(".tag").style.fontSize = "13px";
 gsap.set(B.units.b2.el, { zIndex: 3 });
-const red = [[37.5, 126.9], [37.45, 127.4], [37.55, 127.85], [37.62, 128.3], [37.75, 128.5]];
+const red = [[37.3, 126.9], [37.3, 127.4], [37.4, 127.85], [37.55, 128.3], [37.7, 128.8]];
 red.forEach(([la, lo], i) => {
-  B.unit({ id: "r" + i, side: "rome", x: G(la, lo)[0], y: G(la, lo)[1], w: 28, h: 26, t: T_WEEKS + 1.0 + i * 0.12 });
-  B.move("r" + i, T_TURN + 0.3 + i * 0.1, 4.0, ...G(la + 0.95, lo));
-  B.grey(["r" + i], T_TURN + 4.4, 0.8);
+  U({ id: "r" + i, side: "rome", x: G(la, lo)[0], y: G(la, lo)[1], w: 28, h: 24, icon: "infantry", flag: "prc", size: "XXX", t: T_WEEKS + 1.0 + i * 0.12 });
+  B.move("r" + i, TM + i * 0.1, 3.0, ...G(la + 0.9, lo));
 });
-[[[37.2, 126.85], [37.5, 126.82], [37.75, 126.78]], [[37.25, 127.8], [37.55, 127.77], [37.85, 127.75]], [[37.4, 128.3], [37.7, 128.3], [37.98, 128.33]]]
-  .forEach((pts, i) => B.arrow({ side: "carth", pts: GL(pts), width: 12, t: T_TURN + 0.5 + i * 0.3, dur: 2.4, until: T_BEST }));
+SFX("tick", T_WEEKS + 1.1); // counters drop in
+[[[37.0, 126.85], [37.3, 126.82], [37.55, 126.78]], [[37.05, 127.8], [37.35, 127.77], [37.62, 127.75]], [[37.2, 128.3], [37.5, 128.3], [37.8, 128.33]]]
+  .forEach((pts, i) => B.arrow({ side: "carth", pts: GL(pts), width: 12, t: TM + 0.1 + i * 0.3, dur: 2.4, until: T_BEST }));
+SFX("whoosh", TM + 0.1); // blue arrows push north
 B.caption("RIDGWAY TURNS THE WAR AROUND", T_TURN - 0.4, T_BEST - 0.3, "carth");
 // the Marines: among the best
 const mx = G(...blueB[2]);
-const ring = svgEl(`<circle cx="${mx[0]}" cy="${mx[1]}" r="34" fill="none" stroke="#f7f3ea" stroke-width="6"/><circle cx="${mx[0]}" cy="${mx[1]}" r="34" fill="none" stroke="var(--carth)" stroke-width="3"/>`, T_BEST + 0.2, null, 0.3);
-gsap.set(ring, { svgOrigin: `${mx[0]} ${mx[1]}` });
-tl.fromTo(ring, { scale: 2.2 }, { scale: 1, duration: 0.6, ease: "back.out(2)" }, T_BEST + 0.2);
+K.target(mx[0], mx[1], T_BEST + 0.2, { r: 30, side: "#f7f3ea", until: END });
 B.caption("1ST MARINE DIVISION · AMONG THE BEST", T_BEST + 0.2, END - 0.3, "carth");
-// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
-SFX("whoosh", 0.9);              // by sea: big arrow Hungnam -> Pusan
-SFX("hit", T_RIDG - 0.1);        // Ridgway stake drops in
-SFX("whoosh", T_TURN + 0.5);     // blue arrows push north
+K.raiseTerritory();
 B.finish();
