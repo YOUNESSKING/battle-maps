@@ -47,8 +47,11 @@ def _on(name):
 
 def _kinds():
     kinds = {k: (list(v[0]), v[1], v[2]) for k, v in KINDS.items()}
-    for f in sorted(glob.glob(f"{D}/new/*_[0-9]*.wav")):
-        kind = re.sub(r"_\d+$", "", os.path.basename(f)[:-4])
+    found = {}  # stem -> file; the .wav (git-ignored) if present, else the committed .flac copy
+    for f in sorted(glob.glob(f"{D}/new/*_[0-9]*.flac")) + sorted(glob.glob(f"{D}/new/*_[0-9]*.wav")):
+        found[os.path.splitext(os.path.basename(f))[0]] = f
+    for stem, f in sorted(found.items()):
+        kind = re.sub(r"_\d+$", "", stem)
         if not _on(kind):
             continue
         if kind in kinds:
