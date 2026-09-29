@@ -1,0 +1,11 @@
+# owner approved 2026-09-29 (all sheets + sound test: "approved, keep, go ahead")
+naval_gun
+bugle
+blizzard
+truck
+parachute
+bulldozer
+ship
+impact
+explosion
+vary
