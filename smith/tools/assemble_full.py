@@ -1,18 +1,23 @@
 """Assemble the full Smith video: map renders + archive film/photos + voice + music.
 
-usage (from smith/): python3 tools/assemble_full.py [--preview]
+usage (from smith/): python3 tools/assemble_full.py [--audio-only]
 - Map paragraphs are cut from scenes/<scene>/renders/*.mp4 (scene list = SCENES below, same as MAPS_BRIEF.md).
   A missing render becomes a placeholder card so the cut can still be reviewed.
 - Archive paragraphs use ARCHIVE[tag-number] = list of media: "film:NAME" (assets/film/clips/NAME.mp4)
   or "photo:FILE" (assets/media/FILE, slow Ken Burns). Duration is split evenly between the items.
-- Audio: voice + music bed (assets/media/music.* if present, ducked under the voice) -> loudnorm -14 LUFS.
-Writes build/smith-full.mp4 (1080p master) and build/smith-preview-720p.mp4 (< 30 MB for chat).
+- Audio (locked channel mix, same as goosegreen/tools/assemble_full.py): SFX cues from the scene pages (tools/sfx_cues.py)
+  -> build/sfx.wav (tools/sfx_mix.py) -> voice + SFX (lightly ducked) + music bed assets/media/music.wav
+  (tools/make_music_bed.py, MUSIC_VOL, ducked under the voice) -> limiter -> two-pass loudnorm -14 LUFS, AAC 192k.
+- --audio-only: reuse build/video_only.mp4 (1080p picture track) and only remix the sound (no re-render, no re-cut).
+Writes build/smith-full.mp4 (1080p master) + build/chapters.txt.
 """
 import glob, json, os, random, subprocess, sys
 from PIL import Image, ImageFilter, ImageDraw, ImageFont
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
+AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only.mp4, only remix the sound
+MUSIC_VOL = 0.18  # music bed level before ducking (locked, STYLE_LOCK.md section 5)
 T = json.load(open("audio/timing.json"))
 P, DUR = T["paragraphs"], T["duration"]
 FPS = 30
@@ -25,6 +30,8 @@ SCENES = {  # scene -> (first tag, last tag)
     "breakout-b": ("breakout-3", "breakout-3"), "breakout-c": ("breakout-4", "breakout-6"),
     "breakout-d": ("breakout-7", "breakout-8"), "ending-1": ("ending-1", "ending-1"), "ending-2": ("ending-2", "ending-2"),
 }
+CHAPTERS = [("hook-1", "Intro: trapped at the Chosin Reservoir"), ("inchon-1", "Move 1: Inchon"),
+            ("hagaru-1", "Move 2: Hagaru-ri"), ("breakout-1", "Move 3: The breakout"), ("ending-1", "Smith's legacy")]
 # archive slots, keyed by the index of the ARCHIVE paragraph in script order (0 = first archive paragraph)
 ARCHIVE = {
     0: ["film:chosin_snow_march_01", "photo:chosin_column.jpg", "film:chosin_snow_march_02"],  # marching out of the mountains
@@ -127,6 +134,9 @@ def film_segment(clip, dur, out):
 
 
 segs, i, ai, missing = [], 0, 0, []
+if AUDIO_ONLY:
+    assert os.path.exists("build/video_only.mp4"), "run once without --audio-only first"
+    i = len(P)
 while i < len(P):
     out = f"build/seg/{i:02d}.mp4"
     if P[i]["tag"].startswith("ARCHIVE"):
@@ -166,9 +176,37 @@ while i < len(P):
             run(["-loop", "1", "-i", f"build/cards/m{i}.png", "-t", f"{dur:.3f}", *ENC, out])
         segs.append(out); i = j
 
-open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
-run(["-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"])
+if not AUDIO_ONLY:
+    open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
+    run(["-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only.mp4"])
 
-# ---------- audio: voice + music + SFX + loudness (tools/mix_audio.py) ----------
-subprocess.run([sys.executable, "tools/mix_audio.py"], check=True)
+# ---------- audio (locked, copied from goosegreen/tools/assemble_full.py): voice + ducked SFX + ducked music -> -14 LUFS ----------
+total = DUR
+subprocess.run([sys.executable, "tools/sfx_cues.py"], check=True)
+subprocess.run([sys.executable, "tools/sfx_mix.py"], check=True)
+inputs = ["-i", "audio/voice.wav", "-i", "build/sfx.wav"]
+f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]",
+     "[1:a]aresample=48000[sfxin]",
+     "[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]"]
+if os.path.exists("assets/media/music.wav"):
+    inputs += ["-stream_loop", "-1", "-i", "assets/media/music.wav"]
+    f += [f"[2:a]aresample=48000,atrim=0:{total},volume={MUSIC_VOL},afade=t=in:d=2,afade=t=out:st={total - 3}:d=3[mus]",
+          "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
+          "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
+else:
+    f += ["[key]anullsink", "[vo][sfx]amix=inputs=2:normalize=0,alimiter=limit=0.5:level=false[aout]"]
+subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "[aout]", "-t", f"{total:.2f}",
+                "-c:a", "pcm_s16le", "build/mix.wav"], check=True)
+LN = "loudnorm=I=-14:TP=-1.5:LRA=11"
+r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", LN + ":print_format=json", "-f", "null", "-"], capture_output=True, text=True).stderr
+m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
+af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+      f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
+name = "build/smith-full.mp4"
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/video_only.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
+                "-t", f"{total:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", name], check=True)
+mmss = lambda s: f"{int(s // 60)}:{int(s % 60):02d}"
+cidx = {key(p): n for n, p in enumerate(P)}
+open("build/chapters.txt", "w").write("".join(f"{'0:00' if n == 0 else mmss(P[cidx[t]]['start'])} {title}\n" for n, (t, title) in enumerate(CHAPTERS)))
+print("wrote", name, round(total, 1), "s")
 print("missing video:", missing or "none")

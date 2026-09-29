@@ -116,7 +116,7 @@ const methodCard = (o) => { // o = { t, until, rowT: [t1,t2,t3], hi: index to hi
   el.querySelectorAll(".mrow").forEach((r, i) => {
     gsap.set(r, { autoAlpha: 0 });
     tl.fromTo(r, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.55, ease: "power3.out" }, o.rowT[i]);
-    SFX("hit", o.rowT[i] + 0.1); // each method line slams in
+    SFX("hit", Math.max(o.rowT[i] + 0.1, S8 + 0.1)); // each method line slams in (first line appears as the archive shot cuts back to the map)
   });
   if (o.hi >= 0) {
     const r = el.querySelectorAll(".mrow")[o.hi];

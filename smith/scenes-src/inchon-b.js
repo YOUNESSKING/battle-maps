@@ -78,8 +78,8 @@ const ship = (x, y, t, until, s = 1) => {
   if (until != null) tl.to(sh, { autoAlpha: 0, duration: 0.6 }, until);
   return g;
 };
-const flash = (x, y, t, r = 26) => { // bombardment burst (shell impact on Wolmi-do)
-  SFX("impact", t);
+const flash = (x, y, t, r = 26, sfx = true) => { // bombardment burst (shell impact on Wolmi-do); sfx false = no extra boom
+  if (sfx) SFX("impact", t);
   const c = document.createElementNS(NS, "circle");
   c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", r);
   c.setAttribute("fill", "#ffd76a"); c.setAttribute("stroke", "#e0441c"); c.setAttribute("stroke-width", 5);
@@ -169,8 +169,8 @@ B.date("15 SEPT · 06:33", I6 + 0.2, T_1730 - 0.2);
 B.label("WOLMI-DO", WOLMI[0] - 30, WOLMI[1] - 8, { cls: "city", size: 18, t: I6 + 1.5, until: END, anchor: [-100, -50] });
 B.label("GREEN BEACH", WOLMI[0] - 30, WOLMI[1] - 30, { cls: "tg", size: 14, t: T_STORM + 1.2, until: I7 + 1, anchor: [-100, -50] });
 B.line([[WOLMI[0] + 12, WOLMI[1] + 2], [1075, 905]], { color: "#e9dcb5", width: 5, t: I6 + 1.2, dur: 0.6 }); // causeway
-[[1048, 900], [1066, 912], [1058, 896], [1070, 902], [1052, 914], [1062, 904]].forEach(([x, y], i) => flash(x, y, I6 + 0.4 + i * 0.35, 14));
-[[1052, 902], [1068, 910], [1060, 895], [1056, 914]].forEach(([x, y], i) => flash(x, y, T_POUND + i * 0.4, 16));
+[[1048, 900], [1066, 912], [1058, 896], [1070, 902], [1052, 914], [1062, 904]].forEach(([x, y], i) => flash(x, y, I6 + 0.4 + i * 0.35, 14, i % 2 === 0)); // boom on every other burst so the salvo does not stack up
+[[1052, 902], [1068, 910], [1060, 895], [1056, 914]].forEach(([x, y], i) => flash(x, y, T_POUND + i * 0.4, 16, i % 2 === 0));
 B.arrow({ side: "white", pts: [[930, 830], [990, 862], [1040, 890]], width: 5, t: T_POUND - 0.2, dur: 1.2, until: T_POUND + 3 });
 B.arrow({ side: "white", pts: [[960, 1010], [1010, 965], [1045, 920]], width: 5, t: T_POUND + 0.3, dur: 1.2, until: T_POUND + 3 });
 B.unit({ id: "w", side: "carth", x: 960, y: 945, w: 22, h: 22, label: "3/5 MARINES", t: T_STORM - 1.4 });

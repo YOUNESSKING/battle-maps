@@ -30,7 +30,10 @@ Credits
 - Photographs: U.S. Marine Corps, U.S. Navy, U.S. Army and NARA, public domain, via Wikimedia Commons.
 - "Change of Command Ceremony, 1951" by USMC Archives from Quantico, USA, CC BY 2.0.
 - Terrain: Mapzen / AWS Terrain Tiles (open data).
-- Music: original track (same as the Ridgway video). Sound effects: CC0 (USC sound effect archive via Internet Archive) and original synthesis.
+- Music by Kevin MacLeod (incompetech.com): "Long Note One", "Wounded", "Long Note Two", "Anguish"
+  Licensed under Creative Commons: By Attribution 4.0 License
+  http://creativecommons.org/licenses/by/4.0/
+- Sound effects: "artillery distance" by 2887679652 (CC BY 4.0), "Cannon Artillery distant gunshots" by Aegersum (CC BY 3.0), "Distant explosion" by juskiddink (CC BY 4.0), "Distant explosions" by Kostrava (CC0), via freesound.org. Other sound effects: original.
 
 ## Pinned comment
 Which commander should I cover next? Ridgway, Puller, Nathanael Greene, Daniel Morgan…?
