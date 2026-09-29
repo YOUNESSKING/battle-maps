@@ -65,8 +65,8 @@ const FRONT = [[39.62, 125.14], [39.70, 125.5], [39.78, 125.9], [39.74, 126.3], 
 // X Corps' advance line in the north-east (7th Division on the Yalu at Hyesan): not in contact -> blue only
 const NE = [[40.53, 127.33], [40.8, 127.72], [41.15, 128.05], [41.42, 128.4], [41.62, 128.95]].map(([a, b]) => G(a, b));
 const MASK = "assets/korea_land.png";
-const fr = K.front({ pts: FRONT, sideA: "rome", sideB: "carth", t: 0, dur: 0.05, until: T_A - 1.6 });
-const ne = K.front({ pts: NE, sideA: "carth", sideB: "carth", t: 0, dur: 0.05, until: T_A - 1.6 });
+const fr = K.front({ pts: FRONT, sideA: "rome", sideB: "carth", t: 0, dur: 0.05, until: T_A - 1.0 });
+const ne = K.front({ pts: NE, sideA: "carth", sideB: "carth", t: 0, dur: 0.05, until: T_A - 1.0 });
 K.frontTint({ pts: FRONT, dir: -1, depth: 170, color: "#a8503c", t: 0, dur: 0.01, alpha: 0.34, mask: MASK, until: T_A - 2.0 });
 K.frontTint({ pts: [...FRONT, ...NE.slice(1)], dir: 1, depth: 170, color: "#4a6a9a", t: 0, dur: 0.01, alpha: 0.34, mask: MASK, until: T_A - 2.0 });
 
@@ -87,7 +87,7 @@ U.forEach(([id, side, x, y, size, icon, flag, label]) => {
   K.counter(id, { icon, flag, size });
   shown(B.units[id].el);
 });
-B.hideUnits(U.map((u) => u[0]), T_A - 1.8, 0.8);
+B.hideUnits(U.map((u) => u[0]), T_A - 1.3, 0.7);
 
 // ---------- labels ----------
 B.showDate(0.2);
@@ -128,7 +128,7 @@ tl.to(night, { autoAlpha: 1, duration: 2.2, ease: "sine.inOut" }, T_NIGHT);
 K.night({ lines: [fr, ne], tOn: T_NIGHT });
 [
   [G(40.45, 125.85), G(39.64, 126.08)], [G(40.55, 126.45), G(39.78, 126.6)], [G(41.0, 127.05), G(40.44, 127.2)],
-].forEach(([a, b], i) => B.arrow({ side: "rome", pts: [a, [(a[0] + b[0]) / 2 + 14, (a[1] + b[1]) / 2], b], width: 22, t: T_NIGHT + 0.5 + i * 0.3, dur: 1.2, until: T_A - 1.8 }));
+].forEach(([a, b], i) => B.arrow({ side: "rome", pts: [a, [(a[0] + b[0]) / 2 + 14, (a[1] + b[1]) / 2], b], width: 22, t: T_NIGHT + 0.5 + i * 0.3, dur: 1.2, until: T_A - 1.3 }));
 
 // ---------- target: Chosin ----------
 const CH = G(40.385, 127.253);

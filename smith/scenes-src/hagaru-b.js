@@ -52,6 +52,7 @@ B.camera(camSfx([
 B.image("assets/chosin_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 K.grid(G, 39.69, 40.55, 126.34, 128.32, 0.1, 0.3);
 B.snow(0, END + 1);
+SFX("blizzard", 0.2);            // cold wind bed for the snowy mountain road
 B.showDate(0.3);
 B.date("NOVEMBER 1950", 0.5, null);
 B.label("SEA OF JAPAN", 2380, 1360, { cls: "sea", size: 44, t: 0.8, until: T_RIDGE });

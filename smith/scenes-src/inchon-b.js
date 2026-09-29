@@ -1,8 +1,9 @@
-// Inchon B: the harbor, the plan, Wolmi-do at dawn, Red + Blue Beach at dusk. Basemap inchon (zoom 12).
+// Inchon B (locked style): the harbor, the plan, Wolmi-do at dawn, Red + Blue Beach at dusk. Basemap inchon (zoom 12).
 // Marines = blue ("carth"), North Koreans = red ("rome").
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
+const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
   if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
@@ -12,8 +13,8 @@ document.getElementById("overlay").appendChild(document.createElementNS(NS, "g")
 document.getElementById("overlay").appendChild(document.createElementNS(NS, "g"));
 
 // ---------- key places (pixels on assets/inchon.jpg) ----------
-const CITY = [1179, 921], WOLMI = [1060, 906], RED = [1100, 862], BLUE = [1212, 1044], SEOUL = [2192, 568], KIMPO = [1645, 598];
-const CHANNEL = [[0, 1330], [300, 1260], [560, 1150], [780, 1040], [930, 960], [1030, 915], [1058, 906]];
+const CITY = [1179, 921], WOLMI = [1085, 905], RED = [1100, 862], BLUE = [1212, 1044], SEOUL = [2192, 568], KIMPO = [1645, 598];
+const CHANNEL = [[0, 1330], [300, 1260], [560, 1150], [780, 1040], [930, 960], [1030, 912], [1068, 906]];
 
 const I3 = P("inchon-3"), I4 = P("inchon-4"), I5 = P("inchon-5"), I6 = P("inchon-6"), I7 = P("inchon-7");
 const T_CHAN = at("inchon-3", "single narrow channel"), T_TIDE = at("inchon-3", "The tides"), T_30 = at("inchon-3", "thirty feet");
@@ -37,8 +38,8 @@ B.camera(camSfx([
   [I5 + 1.0, 960, 1060, 1.0],
   [T_NAVY, 980, 1040, 1.02],
   [I6 - 0.6, 1000, 980, 1.25],
-  [I6 + 3.0, 1070, 920, 2.0],
-  [T_OUT, 1075, 930, 2.1],
+  [I6 + 3.0, 1010, 935, 2.0],
+  [T_OUT, 1050, 930, 2.1],
   [I7 + 2.0, 1110, 940, 1.6],
   [T_1730, 1130, 945, 1.75],
   [END, 1145, 950, 2.05],
@@ -67,26 +68,71 @@ gsap.set(gauge, { autoAlpha: 0 });
 const gaugeShow = (t, until) => { tl.fromTo(gauge, { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power2.out" }, t); tl.to(gauge, { autoAlpha: 0, duration: 0.5 }, until); };
 const level = (t, v, dur = 2.0) => tl.to(wl, { height: v * 100 + "%", duration: dur, ease: "sine.inOut" }, t);
 
-const ship = (x, y, t, until, s = 1) => {
-  const g = document.createElementNS(NS, "g");
-  g.setAttribute("transform", `translate(${x} ${y}) scale(${s})`);
-  g.innerHTML = `<g class="sh"><path d="M-34 0 L26 0 L36 -10 L-38 -10 Z" fill="#3a4556" stroke="#f7f3ea" stroke-width="3"/><rect x="-14" y="-20" width="18" height="10" fill="#3a4556" stroke="#f7f3ea" stroke-width="2.5"/></g>`;
-  document.getElementById("overlay").appendChild(g);
-  const sh = g.querySelector(".sh");
-  gsap.set(sh, { autoAlpha: 0 });
-  tl.fromTo(sh, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 1.0, ease: "power2.out" }, t);
-  if (until != null) tl.to(sh, { autoAlpha: 0, duration: 0.6 }, until);
-  return g;
+
+// ---------- locked-kit helpers (scene-local) ----------
+const PINS = document.getElementById("pins"), OVL = document.getElementById("overlay"), WORLD = document.getElementById("world");
+// projection (assets/inchon.json: zoom 12) for the faint lat/long grid
+const G = (lat, lon) => {
+  const n = 256 * 2 ** 12, r = (lat * Math.PI) / 180;
+  return [+((lon + 180) / 360 * n - 891946).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 405497).toFixed(1)];
 };
-const flash = (x, y, t, r = 26, sfx = true) => { // bombardment burst (shell impact on Wolmi-do); sfx false = no extra boom
-  if (sfx) SFX("impact", t);
-  const c = document.createElementNS(NS, "circle");
-  c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", r);
-  c.setAttribute("fill", "#ffd76a"); c.setAttribute("stroke", "#e0441c"); c.setAttribute("stroke-width", 5);
-  document.getElementById("overlay").appendChild(c);
-  gsap.set(c, { autoAlpha: 0, transformOrigin: "50% 50%" });
-  tl.set(c, { autoAlpha: 0.95, scale: 0.2 }, t);
-  tl.to(c, { autoAlpha: 0, scale: 1.6, duration: 0.7, ease: "power2.out" }, t + 0.01);
+K.grid(G, 37.2, 37.8, 126.2, 127.3, 0.1, 0.3);
+// world-space pin centred on (x, y)
+const pin = (html, x, y, o = {}) => {
+  const el = document.createElement("div");
+  el.style.cssText = `position:absolute;left:${x}px;top:${y}px;`; el.innerHTML = html; PINS.appendChild(el);
+  gsap.set(el, { xPercent: -50, yPercent: -50, autoAlpha: 0 });
+  if (o.t != null) tl.fromTo(el, { autoAlpha: 0, x: o.slide || 0 }, { autoAlpha: 1, x: 0, duration: o.slide ? 1.6 : 0.5, ease: "power2.out" }, o.t);
+  if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
+  return el;
+};
+// ship side silhouette (copied from goosegreen hook-atlantic G.ship); flip = bow to the right
+const ship = (x, y, o = {}) => {
+  const w = o.w || 60, col = o.color || "#1f4fc4";
+  return pin(`<svg width="${w}" height="${w * 0.36}" viewBox="0 0 100 36" style="display:block;overflow:visible;${o.flip ? "transform:scaleX(-1)" : ""}">
+    <path d="M2 22 L96 22 L88 33 L10 33 Z" fill="${col}" stroke="#f3eee2" stroke-width="2.5"/>
+    <path d="M30 22 L30 13 L46 13 L46 7 L56 7 L56 13 L66 13 L66 22 Z" fill="${col}" stroke="#f3eee2" stroke-width="2.5"/>
+    <line x1="51" y1="7" x2="51" y2="0" stroke="#f3eee2" stroke-width="2.5"/><line x1="12" y1="22" x2="4" y2="17" stroke="#f3eee2" stroke-width="3"/></svg>`, x, y, o);
+};
+// shell arc: dashed trail drawn from gun to target, then fades
+const arc = (a, b, t, dur = 0.8) => {
+  const p = document.createElementNS(NS, "path"), h = Math.hypot(b[0] - a[0], b[1] - a[1]) * 0.3;
+  p.setAttribute("d", `M ${a[0]} ${a[1]} Q ${(a[0] + b[0]) / 2} ${(a[1] + b[1]) / 2 - h} ${b[0]} ${b[1]}`);
+  p.setAttribute("fill", "none"); p.setAttribute("stroke", "#fff4c2"); p.setAttribute("stroke-width", 2.2); p.setAttribute("opacity", 0);
+  OVL.appendChild(p);
+  const L = p.getTotalLength();
+  gsap.set(p, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L });
+  tl.to(p, { opacity: 0.85, duration: 0.05 }, t);
+  tl.to(p, { strokeDashoffset: 0, duration: dur, ease: "none" }, t);
+  tl.to(p, { opacity: 0, duration: 0.4 }, t + dur);
+};
+// warship salvo: bow gun flash (no land-gun sound) + naval gun cue + shell arc + impact boom on land
+const salvo = (s, target, t, r = 15) => {
+  const g = [s.x + s.w * 0.4 * (s.flip ? 1 : -1), s.y - s.w * 0.05];
+  K.gun(g[0], g[1], t, { dx: 0, dy: 0, sfx: false });
+  SFX("naval_gun", t); // naval gun salvo (new kind, sourced later)
+  arc(g, target, t + 0.05, 0.8);
+  K.impact(target[0], target[1], t + 0.85, { r, shake: r >= 17 ? 3 : false });
+};
+// Corsair bombing run: exact Harrier recipe (size 84, alt 30, dur 3.2, stick of bombs 0.25 s apart just after the pass)
+const corsairRun = (pts, bombs, t0) => {
+  K.aircraft({ kind: "prop", side: "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
+  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+};
+const smokeColumn = (pts, t0, t1, gap = 1.1) => { for (let t = t0, i = 0; t < t1; t += gap, i++) { const p = pts[i % pts.length]; K.smoke(p[0], p[1], t, { n: 1, r: 9 + (i % 3), rise: 42, drift: 10, life: 3.2, alpha: 0.62 }); } };
+// full-map tint layer (dawn / dusk), under the overlay
+const layer = (style, t, until, o = {}) => {
+  const el = document.createElement("div");
+  el.style.cssText = `position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;${style}`;
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 });
+  tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: o.dur || 3, ease: "sine.inOut" }, t);
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: o.outDur || 3, ease: "sine.inOut" }, until);
+  return el;
+};
+const U = (id, side, x, y, t, o = {}) => { // counter with flag + size mark (+ small tag)
+  B.unit({ id, side, x, y, w: o.w || 28, h: o.h || 20, label: o.label, t });
+  if (o.label) B.units[id].el.querySelector(".tag").style.cssText += `font-size:${o.fs || 10}px;padding:0 4px;margin-top:2px;white-space:nowrap`;
+  K.counter(id, { icon: o.icon || "infantry", flag: side === "carth" ? "us" : "kpa", size: o.size });
 };
 
 // ---------- inchon-3: the harbor ----------
@@ -124,22 +170,29 @@ B.caption("STONE SEAWALLS · TALLER THAN TWO MEN", T_WALL + 0.8, I4 - 0.1);
 B.city("INCHON", ...CITY, { size: 22, t: I4 + 3.2, until: I7 + 1 });
 B.city("KIMPO", ...KIMPO, { size: 26, t: I4 + 3.6, until: I5 });
 const garrison = [[1150, 900], [1200, 950], [1160, 985], [WOLMI[0] + 4, WOLMI[1]]];
-garrison.forEach(([x, y], i) => B.unit({ id: "g" + i, side: "rome", x, y, w: 26, h: 26, t: T_2000 - 0.6 + i * 0.2 }));
+garrison.forEach(([x, y], i) => { B.unit({ id: "g" + i, side: "rome", x, y, w: 28, h: 20, t: T_2000 - 0.6 + i * 0.2 }); K.counter("g" + i, { icon: "infantry", flag: "kpa", size: "II" }); });
+SFX("tick", T_2000 - 0.6);        // garrison counters drop in
 B.bubble("NO ONE WILL LAND HERE", 1240, 760, T_SANE, I5 - 0.2);
 B.caption("~2,000 DEFENDERS", T_2000 + 0.3, T_SOUTH - 0.2, "rome");
 B.arrow({ side: "rome", pts: [[1500, 1080], [1540, 1300], [1560, 1560]], width: 22, t: T_SOUTH, dur: 1.6, until: I5 + 0.6 });
 B.label("MAIN ARMY: AT PUSAN, 300 KM SOUTH", 1620, 1480, { cls: "tg", size: 34, t: T_SOUTH + 0.8, until: I5 + 0.6 });
 
 // ---------- inchon-5: Smith plans ----------
-B.portraitStake({ img: "assets/media/smith_head.png", flag: "assets/media/us_flag_48star.png", name: "SMITH", x: 660, y: 1185, size: 0.9, t: I5 + 0.6, until: I6 - 0.6 });
+K.badge({ name: "MAJ. GEN. OLIVER P. SMITH", role: "1ST MARINE DIVISION", photo: "assets/media/smith_head.png", initials: "OPS", flag: "us", side: "carth", corner: "bl", t: I5 + 0.6, until: I6 - 0.6 });
 B.caption("3 WEEKS TO PLAN", T_3W - 0.3, T_PAC - 0.2, "carth");
-const fleet = [[730, 1185], [810, 1212], [890, 1182], [760, 1255], [850, 1265], [950, 1232], [700, 1240]];
-fleet.forEach(([x, y], i) => ship(x, y, I5 + 1.6 + i * 0.25, I6 - 0.5, 0.9));
-B.arrow({ side: "carth", pts: [[0, 1250], [300, 1262], [620, 1240]], width: 20, t: T_PAC - 0.4, dur: 1.6, until: I6 - 0.6 });
-B.label("1ST MARINES · FROM THE U.S.", 340, 1215, { cls: "tg", size: 26, t: T_PAC, until: I6 - 0.6 });
-B.arrow({ side: "carth", pts: [[900, 1620], [880, 1440], [835, 1300]], width: 20, t: T_PUS - 0.2, dur: 1.6, until: I6 - 0.6 });
-B.label("5TH MARINES · FROM PUSAN", 1130, 1440, { cls: "tg", size: 26, t: T_PUS + 0.4, until: I6 - 0.6 });
+const fleet = [[880, 1215], [975, 1182], [925, 1282], [1040, 1245], [1010, 1318]];
+fleet.forEach(([x, y], i) => ship(x, y, { w: 64, flip: true, t: I5 + 1.6 + i * 0.25, slide: -50, until: I6 - 0.5 }));
+SFX("ship", I5 + 1.6); // invasion fleet sails in (ships visibly move)
+B.arrow({ side: "carth", pts: [[0, 1180], [300, 1192], [640, 1185]], width: 20, t: T_PAC - 0.4, dur: 1.6, until: I6 - 0.6 });
+B.label("FROM THE U.S.", 300, 1140, { cls: "tg", size: 26, t: T_PAC, until: I6 - 0.6 });
+U("m1", "carth", 705, 1185, T_PAC + 1.0, { w: 44, h: 30, size: "III", label: "1ST MARINES", fs: 13 });
+B.arrow({ side: "carth", pts: [[900, 1620], [885, 1480], [860, 1395]], width: 20, t: T_PUS - 0.2, dur: 1.6, until: I6 - 0.6 });
+B.label("FROM PUSAN", 1010, 1470, { cls: "tg", size: 26, t: T_PUS + 0.4, until: I6 - 0.6 });
+U("m5", "carth", 852, 1352, T_PUS + 1.2, { w: 44, h: 30, size: "III", label: "5TH MARINES", fs: 13 });
+SFX("tick", T_PAC + 1.0); SFX("tick", T_PUS + 1.2); // regiment counters drop in
+B.hideUnits(["m1", "m5"], I6 - 0.6, 0.5);
 B.caption("TURN THE TIDE INTO A TIMETABLE", T_NAVY + 0.8, T_TWO - 0.6, "carth");
+
 // the timetable: two high tides a day
 const tt = document.createElement("div");
 tt.style.cssText = "position:absolute;right:90px;top:170px;width:848px;height:208px;background:rgba(20,18,14,0.8);border-top:5px solid #9fc0ea;box-shadow:0 12px 26px rgba(0,0,0,0.5);";
@@ -164,21 +217,35 @@ tl.to(tc, { strokeDashoffset: 0, duration: 2.4, ease: "none" }, T_TIME - 0.2);
 });
 tl.to(tt, { autoAlpha: 0, duration: 0.5 }, I6 - 0.4);
 
-// ---------- inchon-6: dawn, Wolmi-do ----------
+
+// ---------- inchon-6: dawn, Wolmi-do: bombardment, Corsair strikes, 3/5 Marines storm the island ----------
+layer("background: linear-gradient(to left, rgba(255,160,80,0.34), rgba(255,190,130,0.14) 55%, rgba(255,210,160,0.04));", I6 - 0.4, T_TAKEN + 2, { dur: 3, outDur: 4 });
 B.date("15 SEPT · 06:33", I6 + 0.2, T_1730 - 0.2);
-B.label("WOLMI-DO", WOLMI[0] - 30, WOLMI[1] - 8, { cls: "city", size: 18, t: I6 + 1.5, until: END, anchor: [-100, -50] });
-B.label("GREEN BEACH", WOLMI[0] - 30, WOLMI[1] - 30, { cls: "tg", size: 14, t: T_STORM + 1.2, until: I7 + 1, anchor: [-100, -50] });
-B.line([[WOLMI[0] + 12, WOLMI[1] + 2], [1075, 905]], { color: "#e9dcb5", width: 5, t: I6 + 1.2, dur: 0.6 }); // causeway
-[[1048, 900], [1066, 912], [1058, 896], [1070, 902], [1052, 914], [1062, 904]].forEach(([x, y], i) => flash(x, y, I6 + 0.4 + i * 0.35, 14, i % 2 === 0)); // boom on every other burst so the salvo does not stack up
-[[1052, 902], [1068, 910], [1060, 895], [1056, 914]].forEach(([x, y], i) => flash(x, y, T_POUND + i * 0.4, 16, i % 2 === 0));
-B.arrow({ side: "white", pts: [[930, 830], [990, 862], [1040, 890]], width: 5, t: T_POUND - 0.2, dur: 1.2, until: T_POUND + 3 });
-B.arrow({ side: "white", pts: [[960, 1010], [1010, 965], [1045, 920]], width: 5, t: T_POUND + 0.3, dur: 1.2, until: T_POUND + 3 });
-B.unit({ id: "w", side: "carth", x: 960, y: 945, w: 22, h: 22, label: "3/5 MARINES", t: T_STORM - 1.4 });
-B.units.w.el.querySelector(".tag").style.cssText += "font-size:11px;padding:0 5px;margin-top:2px";
-B.arrow({ side: "carth", pts: [[930, 955], [990, 935], [1044, 912]], width: 9, t: T_STORM - 0.4, dur: 1.2, until: I7 + 1 });
-B.move("w", T_STORM + 0.8, 1.4, WOLMI[0] - 6, WOLMI[1] + 4);
-B.grey(["g3"], T_TAKEN - 0.8, 1.0);
-B.hideUnits(["g3"], T_TAKEN + 1.5, 0.6);
+B.label("WOLMI-DO", WOLMI[0] - 36, WOLMI[1] - 10, { cls: "city", size: 18, t: I6 + 1.5, until: END, anchor: [-100, -50] });
+B.label("GREEN BEACH", WOLMI[0] - 36, WOLMI[1] - 32, { cls: "tg", size: 14, t: T_STORM + 1.2, until: I7 + 1, anchor: [-100, -50] });
+// fire-support group: one cruiser + two destroyers, bows toward the island
+const SHIPS = [{ x: 830, y: 1012, w: 66, flip: true }, { x: 905, y: 962, w: 46, flip: true }, { x: 905, y: 1082, w: 46, flip: true }];
+SHIPS.forEach((s, i) => ship(s.x, s.y, { w: s.w, flip: true, color: "#1f4fc4", t: I6 + 0.3 + i * 0.3, slide: -60 }));
+SFX("ship", I6 + 0.3); // cruiser + destroyers steam in (they visibly move)
+B.label("CRUISER", SHIPS[0].x, SHIPS[0].y + 22, { cls: "tg", size: 11, t: I6 + 1.4, until: T_STORM });
+B.label("DESTROYERS", SHIPS[2].x, SHIPS[2].y + 22, { cls: "tg", size: 11, t: I6 + 1.6, until: T_STORM });
+const WT = [[1082, 900], [1092, 912], [1078, 916], [1090, 896], [1084, 906]]; // targets on Wolmi-do
+[[1, I6 + 2.0, 14], [0, I6 + 3.3, 17], [2, I6 + 4.6, 15], [1, T_STORM - 0.4, 13], [0, T_POUND - 1.0, 16], [2, T_POUND - 0.2, 14], [1, T_POUND + 2.4, 15], [0, T_POUND + 3.2, 17]]
+  .forEach(([si, t, r], k) => salvo(SHIPS[si], WT[k % WT.length], t, r));
+K.target(...WOLMI, T_STORM - 0.2, { r: 30, side: "#ffd54a", until: T_TAKEN + 0.6 });
+// "The Navy and Marine aircraft had pounded it for days": two Corsair runs over the island
+corsairRun([[700, 690], [WOLMI[0], WOLMI[1]], [1470, 1120]], [[1080, 900], [1096, 910]], T_POUND - 1.2);
+corsairRun([[760, 1170], [WOLMI[0], WOLMI[1]], [1410, 640]], [[1078, 912], [1092, 897]], T_POUND + 0.3);
+B.label("MARINE CORSAIRS", 1250, 820, { cls: "tg", size: 14, t: T_POUND - 0.4, until: T_POUND + 3.2 });
+B.caption("NAVY GUNS + MARINE CORSAIRS POUND THE ISLAND", T_POUND - 0.2, T_TAKEN - 0.2, "carth");
+smokeColumn([[1084, 898], [1094, 910], [1076, 912]], T_POUND + 0.6, T_OUT + 5); // Wolmi-do burning
+// 3rd Battalion, 5th Marines storm Green Beach
+U("w", "carth", 985, 942, T_STORM - 0.8, { size: "II", label: "3/5 MARINES", fs: 10 });
+B.arrow({ side: "carth", pts: [[960, 950], [1020, 930], [1066, 912]], width: 8, t: T_STORM - 0.2, dur: 1.2, until: I7 + 1 });
+B.grey(["g3"], T_TAKEN - 1.4, 1.0);
+B.hideUnits(["g3"], T_TAKEN - 0.2, 0.5);
+B.move("w", T_TAKEN - 0.8, 1.2, WOLMI[0] + 2, WOLMI[1] + 16);
+SFX("mg", T_TAKEN - 1.2); // Marines close with the island garrison
 B.caption("WOLMI-DO TAKEN · NO MARINES KILLED", T_TAKEN + 0.2, T_OUT - 0.2, "carth");
 gaugeShow(T_OUT - 0.4, T_HIT + 1.5);
 level(T_OUT - 0.4, 1.0, 0.01);
@@ -187,24 +254,33 @@ mudTo(T_OUT + 0.4, 0.8, 3.0);
 B.caption("ALONE ON THE ISLAND, SURROUNDED BY MUD", T_OUT + 2.0, I7 - 0.1);
 
 // ---------- inchon-7: dusk, two beaches ----------
+layer("background: linear-gradient(to right, rgba(255,140,70,0.30), rgba(160,90,120,0.14) 60%, rgba(40,40,90,0.10));", T_1730 - 1.0, null, { dur: 3 });
 [[1300, 870], [1330, 960]].forEach(([x, y], i) => {
-  B.unit({ id: "rr" + i, side: "rome", x, y, w: 24, h: 24, t: T_KNEW + i * 0.3 });
+  U("rr" + i, "rome", x, y, T_KNEW + i * 0.3, { size: "II" });
   B.move("rr" + i, T_KNEW + 0.6, 3.0, x - 70, y + 5);
 });
+SFX("tick", T_KNEW);
 B.caption("THE TIDE LOCKS EVERYONE IN PLACE", T_REINF - 1.6, T_1730 - 0.2);
 B.date("15 SEPT · 17:30", T_1730, null);
 level(T_1730 - 0.2, 1.0, 2.6);
 mudTo(T_1730 - 0.2, 0, 2.6);
-B.label("RED BEACH", RED[0] + 14, RED[1] - 20, { cls: "tg", size: 18, t: T_HIT - 0.6, anchor: [0, -50] });
-B.label("BLUE BEACH", BLUE[0] + 16, BLUE[1] + 14, { cls: "tg", size: 18, t: T_HIT - 0.6, anchor: [0, -50] });
+// naval gunfire on the city front, then one Corsair run over Red Beach
+const CT = [[1110, 866], [1206, 1030], [1124, 880], [1196, 1040]];
+[[1, T_1730 - 0.6, 15], [2, T_1730 + 0.6, 14], [0, T_1730 + 2.0, 17], [2, T_1730 + 3.1, 13]].forEach(([si, t, r], k) => salvo(SHIPS[si], CT[k], t, r));
+corsairRun([[820, 690], [1140, 880], [1460, 1070]], [[1138, 878], [1156, 889]], T_1730 + 0.8);
+smokeColumn([[1150, 890], [1176, 906], [1136, 872], [1200, 1030]], T_1730 + 2.4, END, 0.9); // Inchon burning
+B.label("RED BEACH", 1062, 834, { cls: "tg", size: 18, t: T_HIT - 0.6, anchor: [-100, -50] });
+B.label("BLUE BEACH", 1215, 1068, { cls: "tg", size: 18, t: T_HIT - 0.6, anchor: [0, -50] });
 B.arrow({ side: "carth", pts: [[1072, 740], [1078, 800], [1098, 858]], width: 11, t: T_HIT - 0.4, dur: 1.4 });
 B.arrow({ side: "carth", pts: [[1010, 1120], [1120, 1100], [1205, 1052]], width: 11, t: T_HIT - 0.4, dur: 1.4 });
+U("l5", "carth", 1066, 760, T_HIT - 0.6, { size: "III", label: "5TH MAR", fs: 10 });
+U("l1", "carth", 1030, 1112, T_HIT - 0.6, { size: "III", label: "1ST MAR", fs: 10 });
+B.move("l5", T_HIT + 0.2, 1.4, 1132, 848);
+B.move("l1", T_HIT + 0.2, 1.4, 1240, 1012);
 B.caption("TWO BEACHES AT ONCE", T_HIT + 0.4, END - 0.2, "carth");
 // defenders scatter
-[0, 1, 2].forEach((i) => B.move("g" + i, T_HIT + 1.0 + i * 0.2, 2.6, garrison[i][0] + 110, garrison[i][1] - 20 + i * 20));
+[[1235, 800], [1320, 925], [1335, 1010]].forEach(([x, y], i) => B.move("g" + i, T_HIT + 1.0 + i * 0.2, 2.6, x, y));
 B.grey(["g0", "g1", "g2", "rr0", "rr1"], T_HIT + 1.6, 1.2);
-// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
-SFX("hit", I5 + 0.95);           // Smith portrait stake drops in
-SFX("mg", T_STORM + 1.6);        // 3/5 Marines reach Wolmi-do and fight the garrison
 SFX("mg", T_HIT + 1.0);          // landing craft hit Red and Blue Beach, defenders scatter
+K.raiseTerritory();
 B.finish();
