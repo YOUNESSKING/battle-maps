@@ -22,6 +22,20 @@ Branch: `claude/lucid-tesla-qugecc`. Project folder: `smith/` (video #6, Maj. Ge
 - **Sound library scope (owner, 2026-09-29):** keep using the locked SFX library in the right places, i.e. ONLY for the map events it was made for and only where its sound matches what is on screen (artillery/mortar impacts, bombs/explosions, gun launches, aircraft flybys, MG, whoosh/hit/tick/static on stamps, cards and camera moves). Don't force it onto anything else, and don't reuse the same few clips everywhere: it gets repetitive. For events the library doesn't cover (ships, trucks/columns, bugles/whistles, wind/blizzard, crowds, parachutes, bridges, trains, horses, etc.), source a fitting, correctly licensed sound (CC0/PD/CC BY, no NC/ND) for that specific moment, keep it at the library's levels (never louder than the voice), and add variants so repeated events don't sound identical. Test new sounds first (1-min clip, owner approval) per 0b step 5.
 Apply it in this remake: e.g. ships firing/moving, the C-119 parachute drop, the breakout column of trucks, Chinese bugles, blizzard wind need their own fitting sounds (tested first), and the library clips should not repeat identically.
 
+## Progress 2026-09-29 (remake session) — WAITING FOR OWNER APPROVAL
+- Done + pushed: locked fx.js in smith/lib (us/kpa/prc flags, Corsair `prop` + C-119 `cargo` art), land masks (`tools/make_land.py`),
+  stakes-first hook + subscribe ask moved to inchon-9 (5 paragraphs re-voiced, 16:09, music bed rebuilt), all 16 map scenes remade
+  (plan: SCENE_PLAN.md), hook hand-offs 9.8 / 56.2 s in assemble_full.py, description (build/youtube_description.txt), thumbnails A/B.
+- Sent to the owner for approval: build/sheet_hook.png, sheet_move1.png, sheet_move2.png, sheet_move3.png, and the sound test
+  build/sound_test_new_listen.mp3 (+ .txt cue list). NOTHING RENDERED YET.
+- New sounds: assets/media/sfx/new/ (FLAC in git, credits CREDITS_NEW.md; 3 CC BY lines to add to the description once approved).
+  Mixed only after approval: write the approved kind names (+ `vary`) into assets/media/sfx/new/APPROVED.txt.
+- After approval: 1-min in-context clip (`SFX_TEST=1 python3 tools/make_clip.py ...`) -> owner OK -> copy render_all.sh from goosegreen,
+  `bash tools/render_all.sh --assemble ...` (hook build commands are at the top of each hook scene file) -> ffprobe (1920x1080, -14 LUFS)
+  -> two 540p halves -> publishing PDF (make_publish_guide.py) -> Gofile upload.
+- To verify before publishing: Chosin casualty figures (Montross & Canzona vol. III, from memory), Almond helicopter + "12 divisions"
+  (from memory), 27 Nov 1950 front positions (approximate).
+
 ## APPROVED work for this session (owner approved 1-6 on 2026-09-29)
 Remake the map scenes in the LOCKED visual style (copy `goosegreen/lib/fx.js`, `const K = FXK(B)`; reference scenes goosegreen/scenes-src/move3.js, test-terr-f.js, move1.js):
 1. **Inchon shown, not told:** destroyer/cruiser silhouettes firing (ship + `K.gun`) with `K.impact`s on Wolmi-do; Corsairs (`K.aircraft` kind turboprop/prop art) flying real bombing runs exactly like the Harrier strike (size 84, alt 30, dur 3.2, bombs = K.impact r 20 at t0+1.55+k*0.25); same for "Navy and Marine aircraft had pounded it" and every other named air/naval action (breakout-3 fighter-bombers on the ridges, C-47s landing at Hagaru-ri, C-119s dropping the bridge spans with parachutes).
