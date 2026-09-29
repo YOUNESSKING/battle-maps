@@ -12,4 +12,5 @@ tts/*.onnx
 tts/*.bin
 **/logs/
 !goosegreen/assets/media/sfx/*.wav
+!goosegreen/assets/media/sfx/candidates/cand[1-4]_hit.wav
 **/build/sfx_cues.json

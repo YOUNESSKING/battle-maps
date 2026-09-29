@@ -16,12 +16,13 @@
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from `goosegreen/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/media/sfx/` (goosegreen has the newest engine, tools and sound library). Edit SCENES/CHAPTERS in `tools/assemble_full.py`.
+1. `mkdir <name>` and copy the skeleton from `goosegreen/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/media/sfx/ assets/media/music_src_*.mp3` (goosegreen has the newest engine, tools, **default sound library and default music**, see 1b "Default sound & music kit"). Edit SCENES/CHAPTERS in `tools/assemble_full.py`. Don't search for new music or sounds: the kit is approved.
 2. Write `<name>/script.md` from the research (formula + **hook formula** in section 1; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
 3. Voice: point SCRIPT/OUT in `tools/narrate.py` at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`. After editing a few paragraphs, run `tools/narrate_changed.py` instead: it re-voices only changed paragraphs and reuses the rest (minutes instead of ~15 min).
-4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). `assemble_full.py` collects the sound cues from every scene (`sfx_cues.py`), renders the SFX track (`sfx_mix.py`), mixes voice + ducked music + ducked SFX, and normalizes to -14 LUFS in two passes. Music: put the bed at `assets/media/music.wav` (see goosegreen CREDITS.md for how it was built). Commit + push after each milestone.
+4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). `assemble_full.py` collects the sound cues from every scene (`sfx_cues.py`), renders the SFX track (`sfx_mix.py`), mixes voice + ducked music + ducked SFX, and normalizes to -14 LUFS in two passes. Music: after the voice exists, run `python3 tools/make_music_bed.py` (builds `assets/media/music.wav` from the four default tracks, fitted to this video's length and chapters). Commit + push after each milestone.
 5. **Test before applying (owner rule):** any new look or sound is shown first as snapshots (`hyperframes snapshot . --at ...`, several options in ONE labelled sheet) and/or a 1-minute test clip (`python3 tools/make_clip.py SCENE --from PARA --to PARA`), and only applied to the video after approval. Sound-only changes never need a re-render: rebuild the scene pages (`build_scene.py`) and run `python3 tools/assemble_full.py --audio-only` (~5 min).
 6. Preview for chat (30 MB limit): two 540p halves, e.g. `ffmpeg -ss 0 -t 515 -i build/<name>.mp4 -vf scale=960:540 -c:v libx264 -preset slow -b:v 360k -maxrate 600k -bufsize 1200k -c:a aac -b:a 64k part1.mp4` (and `-ss 514` for part 2).
+7. **No-skip checklist (every video, in order):** research brief -> script (hook formula, first paragraph = `[MAP]`) -> voice (`narrate.py`) -> music bed (`make_music_bed.py`) -> terrain + land mask -> map scenes in the LOCKED style (1b: fx.js defaults, front lines, territory, night, symbols, aircraft, artillery, SFX on every beat) -> archive stills (licensed only, never before the hook) -> snapshot check -> `render_all.sh --assemble` -> check master with ffprobe (1920x1080, ~-14 LUFS) -> description (chapters + sources + music, SFX and image credits) -> thumbnail (formula in 1b) -> publishing PDF (`make_publish_guide.py`) -> upload (Gofile) -> commit + push.
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
 ---
@@ -66,6 +67,11 @@ Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video m
   - Make 2 variants of different text types for YouTube's A/B test; check the AI image for wrong geography, labels or equipment (e.g. tanks where there were none).
   - Goose Green used: SURRENDER OR ELSE (type 1, main), THEY KNEW (type 3, alternative).
 - **Sound (locked):** every visual beat has its SFX. **The boom is always on the impact** (launches are quiet). Shell impacts = real distant-artillery recordings, bombs/explosions = real distant explosions (sfx_mix_lib KINDS; credits in `assets/media/sfx/SFX_CREDITS.md`, copy the credit line into the video description). Every `K.aircraft` plays its engine sound (jet / propeller / helicopter flyby) mid-flight. Music bed at `MUSIC_VOL = 0.18` (quieter; owner request), ducked under the voice.
+- **Default sound & music kit (locked, owner-approved on Goose Green 2026-09-29: reuse on EVERY video, don't re-search):**
+  - **SFX library** = `goosegreen/assets/media/sfx/` with the levels in `tools/sfx_mix_lib.py` (KINDS): impact = real distant artillery (`candidates/cand3_hit.wav`, `cand1_hit.wav`), explosion/bomb = real distant explosions (`cand2_hit.wav`, `cand4_hit.wav`), aircraft = `jet_flyby` / `prop_flyby` / `heli_flyby`, plus gun fire, mortar, MG, whoosh, hit, radio static, counter tick. The `candidates/bombs/` clips were REJECTED by the owner: never use them.
+  - **Music** = Kevin MacLeod (CC BY 4.0), in this order: "Long Note One" (hook + move 1), "Wounded" (move 2), "Long Note Two" (move 3), "Anguish" (ending). Sources: `goosegreen/assets/media/music_src_*.mp3`; build the bed with `tools/make_music_bed.py` (loops/trims each track to its chapter, 5 s crossfades).
+  - **Effects** = everything in `lib/fx.js` at its defaults (front lines, territory, night, counters, artillery, aircraft, smoke, impacts, badges, casualty cards).
+  - **Credits to paste into every description** (copy from goosegreen/build/youtube_description.txt): the music credit (Kevin MacLeod, incompetech.com, the four titles, CC BY 4.0 link) and the SFX credit line from `SFX_CREDITS.md`.
 
 ## 2. What's finished
 | Item | Status | Where (repo path) |
@@ -88,7 +94,7 @@ Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video m
 2. Hannibal: put portrait cut-outs on the stakes (Hannibal bust, Scipio bust; coins for Sempronius and Mago, where no likeness exists). Re-render Trebia.
 3. Build the Trasimene and Cannae maps (2 agents in parallel; Sonnet for simple agents).
 4. Fill the ~20 [ARCHIVE] slots with public-domain paintings, busts and coins (list in the PDF guide) using slow zooms.
-5. Music: synthesized music is weak. Prefer a properly licensed track (YouTube Audio Library or Epidemic Sound, added by the owner in the edit) or a clearly CC BY / CC0 track.
+5. Music: DONE, use the default kit (section 1b, Kevin MacLeod, `make_music_bed.py`) for Hannibal too.
 6. Assemble the full 16-min video with voice, music (ducked under the voice), SFX cues, and chapters. Final loudness -14 LUFS.
 
 ## 4. Cloud environment setup (now automatic via setup.sh; kept for reference)
