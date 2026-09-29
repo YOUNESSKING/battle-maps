@@ -71,9 +71,9 @@ const beachB = [[1102, 842], [1210, 800], [1320, 860], [1350, 960], [1300, 1040]
 const T_PUSH = 1.6, PUSH = 3.0;
 const bfront = K.front({ pts: beachA, to: beachB, sideA: "rome", sideB: "carth", width: 15, t: 0.2, dur: 1.2, moveT: T_PUSH, moveDur: PUSH, until: T_SEOUL + 0.6 });
 K.frontTint({ pts: beachA, to: beachB, dir: 1, depth: 170, color: "#4a6a9a", alpha: 0.34, mask: MASK, t: 0.1, moveT: T_PUSH, moveDur: PUSH, until: T_SEOUL + 0.6 });
-const fwdRed = K.frontTint({ pts: beachA, dir: -1, depth: 95, color: "#a8503c", alpha: 0.34, mask: MASK, t: 0.3, until: T_SEOUL + 0.6 });
+const fwdRed = K.frontTint({ pts: beachA.slice(1, -1), dir: -1, depth: 95, color: "#a8503c", alpha: 0.34, mask: MASK, t: 0.3, until: T_SEOUL + 0.6 });
 fwdRed.forEach((pl) => K.lose(pl, T_PUSH - 0.3));
-K.frontTint({ pts: beachB, dir: -1, depth: 170, color: "#a8503c", alpha: 0.34, mask: MASK, t: T_PUSH + 1.2, until: T_SEOUL + 0.6 });
+K.frontTint({ pts: beachB.slice(1, -1), dir: -1, depth: 170, color: "#a8503c", alpha: 0.34, mask: MASK, t: T_PUSH + 1.2, until: T_SEOUL + 0.6 });
 K.night({ lines: [bfront], tOn: 0, tOff: T_DAWN });
 U("m5", "carth", 1160, 875, 0.6, { size: "III", label: "5TH MAR" });
 U("m1", "carth", 1205, 990, 0.8, { size: "III", label: "1ST MAR" });
@@ -118,14 +118,14 @@ const supEls = sup.map((pts, i) => B.line(pts, { color: "var(--rome)", dash: "22
   tl.to(X, { autoAlpha: 0, duration: 0.5 }, I9 + 0.5);
 });
 // the North Korean army in the south collapses and flees north
-const reds = [[1900, 1300], [2150, 1340], [2400, 1280], [2650, 1330], [1700, 1360]];
+const reds = [[1900, 1220], [2150, 1250], [2400, 1200], [2650, 1240], [1700, 1260]];
 reds.forEach(([x, y], i) => {
   B.unit({ id: "r" + i, side: "rome", x, y, w: 46, h: 32, t: T_SEOUL + 3.4 + i * 0.15 });
   K.counter("r" + i, { icon: "infantry", flag: "kpa", size: "XX" });
   B.move("r" + i, T_CUT + 1.4 + i * 0.2, 4.5, x + 60 - i * 20, y - 260, "power1.in");
 });
 B.grey(reds.map((_, i) => "r" + i), T_CUT + 2.0, 1.4);
-B.label("NORTH KOREAN ARMY COLLAPSES", 2200, 1420, { cls: "tg", size: 36, t: T_CUT + 1.0, until: I9 + 0.3, anchor: [-50, -50] });
+B.label("NORTH KOREAN ARMY COLLAPSES", 2200, 1340, { cls: "tg", size: 36, t: T_CUT + 1.0, until: I9 + 0.3, anchor: [-50, -50] });
 B.caption("WITHIN A MONTH, THE WAR SEEMED WON", T_WON, I9 - 0.1, "carth");
 B.hideUnits(reds.map((_, i) => "r" + i), I9 + 0.3, 0.8);
 
