@@ -1,0 +1,18 @@
+{
+ "name": "atlantic",
+ "center": [
+  -52.3,
+  -63.5
+ ],
+ "zoom": 7,
+ "origin_world_px": [
+  9164,
+  21178
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 747.89,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
