@@ -3,6 +3,9 @@
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 const NS = "http://www.w3.org/2000/svg";
 
 // ---------- media (placeholders are generated in the scene folder until the real files arrive) ----------
@@ -113,7 +116,8 @@ const place = (name, x, y, o = {}) => { // dot + label shown in windows
   return el;
 };
 const setTag = (id, px) => { const t = B.units[id].el.querySelector(".tag"); if (t) Object.assign(t.style, { fontSize: px + "px", padding: `0 ${px * 0.4}px`, marginTop: px * 0.25 + "px" }); };
-const boom = (x, y, t, size = 40) => {
+const boom = (x, y, t, size = 40, sfx = "impact") => {
+  if (sfx) SFX(sfx, t);
   const el = ico("", x, y, size, size, "boom");
   tl.fromTo(el, { autoAlpha: 0, scale: 0.2 }, { autoAlpha: 1, scale: 1.3, duration: 0.25, ease: "power2.out" }, t);
   tl.to(el, { autoAlpha: 0, scale: 1.8, duration: 0.5 }, t + 0.25);
@@ -160,7 +164,7 @@ const CAM = [
   [T_WASTE, 1640, 790, 1.8],
   [END, 1610, 760, 2.1],
 ];
-B.camera(CAM);
+B.camera(camSfx(CAM));
 // camera state at time t (same sine.inOut easing as the engine), for screen-space overlays that must follow the map
 const camAt = (t) => {
   let i = 1; while (i < CAM.length - 1 && CAM[i][0] < t) i++;
@@ -212,6 +216,7 @@ B.label("9TH ARMY GROUP", 880, 870, { cls: "tg", size: 28, t: T_SONG + 0.4, unti
 // Almond demands speed (screen call-out)
 const almondCall = (text, t, until) => {
   const el = screenDiv(`<div class="ph"><img src="${ALMOND}" alt=""></div><div class="nm">ALMOND</div><div class="bub">${text}</div>`, "callout");
+  SFX("whoosh", t); // badge slides in (same as the locked K.badge)
   tl.fromTo(el, { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, t);
   tl.to(el, { autoAlpha: 0, duration: 0.4 }, until);
   return el;
@@ -423,6 +428,7 @@ B.label("FIRST C-47 LANDS", sx0 - 12, sy0 - 4, { cls: "tg", size: 12, t: T_LAND 
 const OUT = [[1700, 900], [1960, 1130], [2300, 1400]];
 for (let k = 0; k < 7; k++) {
   const p = ico(PLANE_SVG, sx0, sy0, 40, 40), t0 = T_WEEK + k * 2.2;
+  SFX("prop", Math.max(0, t0 + 1.8 - 2.3)); // C-47 flies out (flight 3.6 s; clip loudest mid-flight)
   tl.set(p, { rotation: 140 }, 0);
   tl.to(p, { autoAlpha: 1, duration: 0.3 }, t0);
   tl.to(p, { left: OUT[0][0] - 20, top: OUT[0][1] - 20, duration: 1.4, ease: "power1.in" }, t0);
@@ -445,4 +451,13 @@ tl.to(cv, { v: 4312, duration: 5.5, ease: "power1.inOut", onUpdate: () => { cn.t
 // the lifeline
 B.highlight([[sx0, sy0], [1700, 900], [2000, 1160], [2300, 1400]], T_LIFE - 0.4, null, 18);
 B.caption("THE LIFELINE OF THE DIVISION", T_LIFE - 0.3, END, "carth");
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("hit", T_SONG);              // Song Shilun stake drops in
+SFX("hit", T_SMITH + 0.1);       // Smith stake drops in
+SFX("whoosh", T_YUD);            // the trap is sprung: red arrows strike Yudam-ni
+SFX("prop", Math.max(0, T_FLEW - 0.6 + 1.0 - 2.3)); // Almond's light plane flies in
+SFX("mg", T_NIGHT7 + 0.5);       // the Chinese division closes on the perimeter, fighting through the night
+SFX("mg", T_BACK + 0.6);         // East Hill counter-attack
+SFX("prop", Math.max(0, T_LAND - 0.4 + 1.4 - 2.3)); // first C-47 lands on the strip
+for (let t = T_4000 - 0.2; t < T_4000 + 5.3; t += 0.25) SFX("tick", t); // wounded counter counts up
 B.finish();

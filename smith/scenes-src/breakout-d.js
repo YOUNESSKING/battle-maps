@@ -3,6 +3,9 @@
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 const tl = B.tl;
 
 // ---------- projection (assets/chosin.json: zoom 11) ----------
@@ -62,7 +65,8 @@ const PLANE = {
   fighter: (c) => `<path d="M50 3 C54 3 56 10 56 20 L56 36 L97 46 L97 55 L56 52 L54 78 L70 86 L70 93 L50 90 L30 93 L30 86 L46 78 L44 52 L3 55 L3 46 L44 36 L44 20 C44 10 46 3 50 3 Z" fill="${c}" stroke="#f7f3ea" stroke-width="3.5" stroke-linejoin="round"/>`,
   cargo: (c) => `<g fill="${c}" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M1 38 L99 38 L99 47 L1 47 Z"/><path d="M29 30 L35 30 L35 86 L29 86 Z M65 30 L71 30 L71 86 L65 86 Z"/><path d="M24 82 L76 82 L76 90 L24 90 Z"/><path d="M43 14 C43 8 57 8 57 14 L57 62 L43 62 Z"/></g>`,
 };
-const plane = (o) => { // o: pts (world), t, dur, size, kind, color
+const plane = (o) => { // o: pts (world), t, dur, size, kind, color; o.sfx: engine sound (default prop: Corsair / C-47 / C-119), false = silent
+  if (o.sfx !== false) SFX(o.sfx || "prop", Math.max(0, o.t + o.dur / 2 - 2.3)); // flyby clip is loudest mid-flight
   const Q = poly(smooth(o.pts, 10)), s = o.size || 90, el = document.createElement("div");
   el.style.cssText = `position:absolute;left:0;top:0;width:${s}px;height:${s}px;filter:drop-shadow(0 14px 8px rgba(0,0,0,0.45));`;
   el.innerHTML = `<svg viewBox="0 0 100 100" style="width:100%;height:100%;overflow:visible">${PLANE[o.kind || "fighter"](o.color || "#1f3f8f")}</svg>`;
@@ -74,7 +78,8 @@ const plane = (o) => { // o: pts (world), t, dur, size, kind, color
   tl.to(el, { autoAlpha: 0, duration: 0.4 }, o.t + o.dur - 0.4);
   return el;
 };
-const flash = (x, y, t, s = 90) => {
+const flash = (x, y, t, s = 90, sfx = "impact") => { // sfx: impact (shells), explosion (bombs / big blasts), hit, or false
+  if (sfx) SFX(sfx, t);
   const el = document.createElement("div");
   el.style.cssText = `position:absolute;left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle, #fffbe0 0, #ffc040 30%, rgba(235,80,20,0.85) 52%, rgba(235,80,20,0) 72%);`;
   PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
@@ -111,6 +116,7 @@ const methodCard = (o) => { // o = { t, until, rowT: [t1,t2,t3], hi: index to hi
   el.querySelectorAll(".mrow").forEach((r, i) => {
     gsap.set(r, { autoAlpha: 0 });
     tl.fromTo(r, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.55, ease: "power3.out" }, o.rowT[i]);
+    SFX("hit", o.rowT[i] + 0.1); // each method line slams in
   });
   if (o.hi >= 0) {
     const r = el.querySelectorAll(".mrow")[o.hi];
@@ -137,7 +143,7 @@ const T_R1 = a8("Build the lifeline"), T_R2 = a8("Refuse to be"), T_R3 = a8("Kee
   T_HOLD = a8("By holding"), T_RETREAT = a8("turned a retreat");
 
 // ---------- camera ----------
-B.camera([
+B.camera(camSfx([
   [0, 1660, 1080, 0.95],
   [T_BEHIND - 0.8, 1740, 1200, 1.05],
   [T_BEHIND + 2.2, 1450, 600, 0.95],
@@ -147,7 +153,7 @@ B.camera([
   [S8 - 0.5, 1760, 1200, 1.05],
   [T_HOLD, 1580, 840, 0.72],
   [END, 1560, 820, 0.76],
-]);
+]));
 
 // ---------- base ----------
 B.image("assets/chosin_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });

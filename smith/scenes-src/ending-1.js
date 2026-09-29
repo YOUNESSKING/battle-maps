@@ -2,6 +2,9 @@
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 const tl = B.tl;
 
 // ---------- projection (assets/korea.json: zoom 8) ----------
@@ -61,7 +64,8 @@ const PLANE = {
   fighter: (c) => `<path d="M50 3 C54 3 56 10 56 20 L56 36 L97 46 L97 55 L56 52 L54 78 L70 86 L70 93 L50 90 L30 93 L30 86 L46 78 L44 52 L3 55 L3 46 L44 36 L44 20 C44 10 46 3 50 3 Z" fill="${c}" stroke="#f7f3ea" stroke-width="3.5" stroke-linejoin="round"/>`,
   cargo: (c) => `<g fill="${c}" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M1 38 L99 38 L99 47 L1 47 Z"/><path d="M29 30 L35 30 L35 86 L29 86 Z M65 30 L71 30 L71 86 L65 86 Z"/><path d="M24 82 L76 82 L76 90 L24 90 Z"/><path d="M43 14 C43 8 57 8 57 14 L57 62 L43 62 Z"/></g>`,
 };
-const plane = (o) => { // o: pts (world), t, dur, size, kind, color
+const plane = (o) => { // o: pts (world), t, dur, size, kind, color; o.sfx: engine sound (default prop: Corsair / C-47 / C-119), false = silent
+  if (o.sfx !== false) SFX(o.sfx || "prop", Math.max(0, o.t + o.dur / 2 - 2.3)); // flyby clip is loudest mid-flight
   const Q = poly(smooth(o.pts, 10)), s = o.size || 90, el = document.createElement("div");
   el.style.cssText = `position:absolute;left:0;top:0;width:${s}px;height:${s}px;filter:drop-shadow(0 14px 8px rgba(0,0,0,0.45));`;
   el.innerHTML = `<svg viewBox="0 0 100 100" style="width:100%;height:100%;overflow:visible">${PLANE[o.kind || "fighter"](o.color || "#1f3f8f")}</svg>`;
@@ -73,7 +77,8 @@ const plane = (o) => { // o: pts (world), t, dur, size, kind, color
   tl.to(el, { autoAlpha: 0, duration: 0.4 }, o.t + o.dur - 0.4);
   return el;
 };
-const flash = (x, y, t, s = 90) => {
+const flash = (x, y, t, s = 90, sfx = "impact") => { // sfx: impact (shells), explosion (bombs / big blasts), hit, or false
+  if (sfx) SFX(sfx, t);
   const el = document.createElement("div");
   el.style.cssText = `position:absolute;left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle, #fffbe0 0, #ffc040 30%, rgba(235,80,20,0.85) 52%, rgba(235,80,20,0) 72%);`;
   PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
@@ -100,14 +105,14 @@ const T_BACK = at("ending-1", "back in the fight"), T_WEEKS = at("ending-1", "On
 const HUNG = G(39.83, 127.62), PUSAN = G(35.1, 129.04);
 
 // ---------- camera ----------
-B.camera([
+B.camera(camSfx([
   [0, 1460, 820, 0.7],
   [T_WEEKS, 1480, 900, 0.8],
   [T_RIDG + 0.5, 1420, 960, 1.25],
   [T_TURN + 3.0, 1440, 900, 1.3],
   [T_BEST, 1480, 900, 1.45],
   [END, 1490, 890, 1.55],
-]);
+]));
 
 // ---------- base ----------
 B.image("assets/korea_north.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
@@ -169,4 +174,8 @@ const ring = svgEl(`<circle cx="${mx[0]}" cy="${mx[1]}" r="34" fill="none" strok
 gsap.set(ring, { svgOrigin: `${mx[0]} ${mx[1]}` });
 tl.fromTo(ring, { scale: 2.2 }, { scale: 1, duration: 0.6, ease: "back.out(2)" }, T_BEST + 0.2);
 B.caption("1ST MARINE DIVISION · AMONG THE BEST", T_BEST + 0.2, END - 0.3, "carth");
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("whoosh", 0.9);              // by sea: big arrow Hungnam -> Pusan
+SFX("hit", T_RIDG - 0.1);        // Ridgway stake drops in
+SFX("whoosh", T_TURN + 0.5);     // blue arrows push north
 B.finish();

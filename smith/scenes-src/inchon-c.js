@@ -2,6 +2,9 @@
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 
 const CITY = [1179, 921], WOLMI = [1060, 906], SEOUL = [2192, 568], KIMPO = [1645, 598];
 const I8 = P("inchon-8"), I9 = P("inchon-9");
@@ -11,7 +14,7 @@ const T_R1 = at("inchon-9", "Build the lifeline"), T_R2 = at("inchon-9", "Refuse
 const T_TIDE = at("inchon-9", "At Inchon, he"), T_NORTH = at("inchon-9", "In the mountains");
 
 // ---------- camera ----------
-B.camera([
+B.camera(camSfx([
   [0, 1150, 930, 1.75],
   [T_COST, 1180, 915, 1.55],
   [T_SEOUL, 1500, 820, 0.95],
@@ -19,7 +22,7 @@ B.camera([
   [I9, 1560, 860, 0.82],
   [T_NORTH, 1520, 840, 0.9],
   [END, 1500, 700, 0.95],
-]);
+]));
 
 // ---------- inchon-8: beachhead ----------
 B.showDate(0.2);
@@ -84,6 +87,7 @@ const methodCard = (o) => { // o = { t, until, rowT: [t1,t2,t3], hi: index to hi
   el.querySelectorAll(".mrow").forEach((r, i) => {
     gsap.set(r, { autoAlpha: 0 });
     tl.fromTo(r, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.55, ease: "power3.out" }, o.rowT[i]);
+    SFX("hit", o.rowT[i] + 0.1); // each method line slams in
   });
   if (o.hi >= 0) {
     const r = el.querySelectorAll(".mrow")[o.hi];
@@ -101,4 +105,9 @@ methodCard({ t: T_R1 - 1.2, until: T_NORTH - 0.6, rowT: [T_R1 - 0.3, T_R2 - 0.3,
 // looking north: the next move
 B.arrow({ side: "carth", pts: [[1300, 880], [1420, 600], [1500, 330], [1540, 60]], width: 26, t: T_NORTH + 0.2, dur: 3.0 });
 B.label("NEXT: THE FROZEN NORTH", 1900, 260, { cls: "tg", size: 40, t: T_NORTH + 1.4 });
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("hit", T_COST + 0.4);        // day-one casualty stat card
+SFX("whoosh", T_SEOUL + 0.6);    // big blue arrows sweep to Seoul
+SFX("hit", T_CUT + 0.55);        // first blue X lands on the supply lines
+SFX("whoosh", T_NORTH + 0.2);    // big arrow north: next move
 B.finish();

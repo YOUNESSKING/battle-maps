@@ -148,4 +148,10 @@ tl.fromTo(stamp, { autoAlpha: 0, scale: 2.4 }, { autoAlpha: 0.92, scale: 1, dura
 tl.to(stamp, { autoAlpha: 0, duration: 0.5 }, T_TOKYO + 1.2);
 B.caption("OUTNUMBERED · SURROUNDED · FREEZING", T_TOKYO + 1.3, H3 - 0.2, "rome");
 
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("whoosh", T_POUR - 0.8);            // seven red arrows pour down onto the road
+SFX("whoosh", H2 + 1.1);                // camera dives onto the reservoir pockets
+SFX("hit", T_CUT + 1.2);                // first red X slams onto the road
+SFX("whoosh", T_SURR - 1.2);            // encircling red arrows
+SFX("hit", T_SURR + 0.5);               // ENCIRCLED stamp lands
 B.finish();

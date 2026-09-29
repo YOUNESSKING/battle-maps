@@ -2,6 +2,9 @@
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 
 // projection (assets/chosin.json: zoom 11)
 const G = (lat, lon) => {
@@ -32,7 +35,7 @@ const reach = (x, y) => {
 const HUNG = G(39.83, 127.62), HAM = G(39.92, 127.54), FUN = [1450, 640], KOTO = G(40.285, 127.30), HAG = G(40.385, 127.253), YUD = G(40.48, 127.11);
 
 // ---------- camera: wide, then ride up the road, then pull back to show the whole trap ----------
-B.camera([
+B.camera(camSfx([
   [0, 1500, 760, 0.7],
   [T_HUNG, 1640, 1050, 1.05],
   [reach(...HAM), 1690, 1120, 1.3],
@@ -42,7 +45,7 @@ B.camera([
   [T_NOWAY + 1.8, 1470, 760, 0.8],
   [T_RIDGE + 0.4, 1470, 740, 0.84],
   [END, 1380, 560, 1.05],
-]);
+]));
 
 // ---------- base layers ----------
 B.image("assets/chosin_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });

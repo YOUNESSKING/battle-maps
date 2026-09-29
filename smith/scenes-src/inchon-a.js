@@ -2,6 +2,9 @@
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 
 const G = (lat, lon) => {
   const n = 256 * 2 ** 8, r = (lat * Math.PI) / 180;
@@ -17,7 +20,7 @@ const T_SUP = at("inchon-2", "Every North Korean"), T_CUT = at("inchon-2", "Cut 
 const SEOUL = G(37.566, 126.978), INCH = G(37.47, 126.63), PUSAN = G(35.10, 129.04), PYONG = G(39.03, 125.75);
 
 // ---------- camera ----------
-B.camera([
+B.camera(camSfx([
   [0, 1450, 880, 0.72],
   [T_INV, 1440, 900, 0.78],
   [T_PIN - 1.0, 1520, 1050, 0.95],
@@ -26,7 +29,7 @@ B.camera([
   [T_INCH + 1.4, 1600, 1150, 0.82],
   [T_SUP + 0.2, 1420, 1030, 1.1],
   [END, 1400, 1010, 1.25],
-]);
+]));
 
 // ---------- title card ----------
 B.dim(0, 4.6, 0.6);
@@ -97,4 +100,9 @@ gsap.set(X, { autoAlpha: 0 });
 tl.fromTo(X, { autoAlpha: 0, scale: 2.5 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power3.in" }, T_CUT + 0.1);
 redPer.forEach((_, i) => tl.to(B.units["r" + i].el, { scale: 0.85, opacity: 0.75, duration: 0.6, yoyo: true, repeat: 3 }, T_TRAP - 0.4));
 B.caption("THE WHOLE INVADING ARMY TRAPPED", T_TRAP - 0.6, END - 0.2, "carth");
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("hit", 0.5);                 // MOVE 1 title card
+SFX("whoosh", T_INV + 0.2);      // invasion arrows sweep south
+SFX("whoosh", T_LAND - 0.2);     // the big sea arrow round the peninsula
+SFX("hit", T_CUT + 0.45);        // blue X slams onto Seoul
 B.finish();

@@ -62,4 +62,6 @@ tl.to(ring, { attr: { "stroke-width": 1.2 }, duration: 3.0, ease: "power2.in" },
 tl.to(ring, { autoAlpha: 0, duration: 0.8 }, T_A - 1.2);
 B.label("CHOSIN RESERVOIR", CH[0] + 44, CH[1], { cls: "tg", size: 30, t: 1.5, until: 3.6, anchor: [0, -50] });
 B.snow(2.8, END + 2);
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("whoosh", T_A - 0.9); // accelerating dive onto the Chosin Reservoir (fastest at the hand-off)
 B.finish();

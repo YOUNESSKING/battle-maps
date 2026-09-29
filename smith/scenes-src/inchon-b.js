@@ -3,6 +3,9 @@
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 const NS = "http://www.w3.org/2000/svg";
 // B.highlight inserts after svg.firstChild: make sure the overlay is not empty
 document.getElementById("overlay").appendChild(document.createElementNS(NS, "g"));
@@ -22,7 +25,7 @@ const T_STORM = at("inchon-6", "stormed"), T_POUND = at("inchon-6", "The Navy an
 const T_KNEW = at("inchon-7", "now knew"), T_REINF = at("inchon-7", "reinforcements"), T_1730 = at("inchon-7", "At five thirty"), T_HIT = at("inchon-7", "landing craft hit");
 
 // ---------- camera ----------
-B.camera([
+B.camera(camSfx([
   [0, 1000, 1000, 0.78],
   [T_CHAN + 3.0, 820, 1080, 0.86],
   [T_TIDE + 1.5, 980, 990, 1.15],
@@ -39,7 +42,7 @@ B.camera([
   [I7 + 2.0, 1110, 940, 1.6],
   [T_1730, 1130, 945, 1.75],
   [END, 1145, 950, 2.05],
-]);
+]));
 
 // ---------- helpers ----------
 const mud = document.createElement("img");
@@ -75,7 +78,8 @@ const ship = (x, y, t, until, s = 1) => {
   if (until != null) tl.to(sh, { autoAlpha: 0, duration: 0.6 }, until);
   return g;
 };
-const flash = (x, y, t, r = 26) => { // bombardment burst
+const flash = (x, y, t, r = 26) => { // bombardment burst (shell impact on Wolmi-do)
+  SFX("impact", t);
   const c = document.createElementNS(NS, "circle");
   c.setAttribute("cx", x); c.setAttribute("cy", y); c.setAttribute("r", r);
   c.setAttribute("fill", "#ffd76a"); c.setAttribute("stroke", "#e0441c"); c.setAttribute("stroke-width", 5);
@@ -199,4 +203,8 @@ B.caption("TWO BEACHES AT ONCE", T_HIT + 0.4, END - 0.2, "carth");
 // defenders scatter
 [0, 1, 2].forEach((i) => B.move("g" + i, T_HIT + 1.0 + i * 0.2, 2.6, garrison[i][0] + 110, garrison[i][1] - 20 + i * 20));
 B.grey(["g0", "g1", "g2", "rr0", "rr1"], T_HIT + 1.6, 1.2);
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("hit", I5 + 0.95);           // Smith portrait stake drops in
+SFX("mg", T_STORM + 1.6);        // 3/5 Marines reach Wolmi-do and fight the garrison
+SFX("mg", T_HIT + 1.0);          // landing craft hit Red and Blue Beach, defenders scatter
 B.finish();

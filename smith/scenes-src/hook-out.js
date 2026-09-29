@@ -72,4 +72,7 @@ Object.assign(bio.photo.querySelector("img").style, { height: "860px", left: "10
 Object.assign(bio.card.style, { left: "1290px", top: "300px", width: "600px", padding: "32px 38px 38px" });
 bio.card.querySelector(".h").style.fontSize = "64px";
 bio.card.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "33px"; });
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("whoosh", 0.1);   // fast pull-back from Chosin to the whole peninsula (continues the hook zoom-out)
+SFX("hit", 3.4);      // Smith cut-out + bio card slam in
 B.finish();

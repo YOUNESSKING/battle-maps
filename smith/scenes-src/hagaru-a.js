@@ -3,6 +3,9 @@
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 
 // projection (assets/korea.json: zoom 8)
 const G = (lat, lon) => {
@@ -17,13 +20,13 @@ const T_MTN = at("hagaru-1", "ordered into the mountains"), T_LAKE = at("hagaru-
 const T_CHOSIN = at("hagaru-1", "Chosin Reservoir");
 
 // ---------- camera: wide peninsula, drift north with the armies, then push in on the east coast / Chosin ----------
-B.camera([
+B.camera(camSfx([
   [0, 1330, 760, 0.72],
   [T_RACE, 1300, 720, 0.8],
   [T_SMITH - 0.5, 1180, 640, 0.98],
   [T_MTN, 1420, 520, 1.45],
   [END, 1395, 400, 2.05],
-]);
+]));
 
 // ---------- base layers ----------
 const kn = B.image("assets/korea_north.png", 0, 0, 2880, 1620, { t: 0.2, dur: 1.4 });
@@ -86,4 +89,7 @@ document.getElementById("overlay").appendChild(ring);
 gsap.set(ring, { autoAlpha: 0, scale: 2.2, transformOrigin: "50% 50%" });
 B.tl.to(ring, { autoAlpha: 1, scale: 1, duration: 0.9, ease: "power3.out" }, T_LAKE);
 B.label("CHOSIN RESERVOIR", rx - 44, ry, { cls: "tg", size: 30, t: T_CHOSIN - 0.4, anchor: [-100, -50] });
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("hit", 0.45);                // MOVE 2 title card
+SFX("whoosh", T_RACE + 0.1);     // UN arrows race north
 B.finish();

@@ -2,6 +2,9 @@
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
+// sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
+const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
+  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
 const tl = B.tl;
 
 // ---------- projection (assets/funchilin.json: zoom 13) ----------
@@ -60,7 +63,8 @@ const PLANE = {
   fighter: (c) => `<path d="M50 3 C54 3 56 10 56 20 L56 36 L97 46 L97 55 L56 52 L54 78 L70 86 L70 93 L50 90 L30 93 L30 86 L46 78 L44 52 L3 55 L3 46 L44 36 L44 20 C44 10 46 3 50 3 Z" fill="${c}" stroke="#f7f3ea" stroke-width="3.5" stroke-linejoin="round"/>`,
   cargo: (c) => `<g fill="${c}" stroke="#f7f3ea" stroke-width="3" stroke-linejoin="round"><path d="M1 38 L99 38 L99 47 L1 47 Z"/><path d="M29 30 L35 30 L35 86 L29 86 Z M65 30 L71 30 L71 86 L65 86 Z"/><path d="M24 82 L76 82 L76 90 L24 90 Z"/><path d="M43 14 C43 8 57 8 57 14 L57 62 L43 62 Z"/></g>`,
 };
-const plane = (o) => { // o: pts (world), t, dur, size, kind, color
+const plane = (o) => { // o: pts (world), t, dur, size, kind, color; o.sfx: engine sound (default prop: Corsair / C-47 / C-119), false = silent
+  if (o.sfx !== false) SFX(o.sfx || "prop", Math.max(0, o.t + o.dur / 2 - 2.3)); // flyby clip is loudest mid-flight
   const Q = poly(smooth(o.pts, 10)), s = o.size || 90, el = document.createElement("div");
   el.style.cssText = `position:absolute;left:0;top:0;width:${s}px;height:${s}px;filter:drop-shadow(0 14px 8px rgba(0,0,0,0.45));`;
   el.innerHTML = `<svg viewBox="0 0 100 100" style="width:100%;height:100%;overflow:visible">${PLANE[o.kind || "fighter"](o.color || "#1f3f8f")}</svg>`;
@@ -72,7 +76,8 @@ const plane = (o) => { // o: pts (world), t, dur, size, kind, color
   tl.to(el, { autoAlpha: 0, duration: 0.4 }, o.t + o.dur - 0.4);
   return el;
 };
-const flash = (x, y, t, s = 90) => {
+const flash = (x, y, t, s = 90, sfx = "impact") => { // sfx: impact (shells), explosion (bombs / big blasts), hit, or false
+  if (sfx) SFX(sfx, t);
   const el = document.createElement("div");
   el.style.cssText = `position:absolute;left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle, #fffbe0 0, #ffc040 30%, rgba(235,80,20,0.85) 52%, rgba(235,80,20,0) 72%);`;
   PINS.appendChild(el); gsap.set(el, { autoAlpha: 0 });
@@ -132,7 +137,7 @@ const T_STORM = a6("While Marine infantry"), T_BLIZ = a6("in a blizzard"), T_HAU
   T_DONE = a6("It was finished"), T_NARROW = a6("It was so narrow"), T_INCH = a6("inches to spare"), T_NIGHT = a6("the crossing went on");
 
 // ---------- camera ----------
-B.camera([
+B.camera(camSfx([
   [0, 1440, 700, 0.74],
   [T_PASS, 1430, 660, 0.9],
   [T_CLIFF + 0.4, 1370, 580, 1.35],
@@ -155,7 +160,7 @@ B.camera([
   [T_INCH + 0.4, BX, BY, 3.1],
   [T_NIGHT + 0.2, BX + 10, BY + 10, 2.2],
   [END, 1470, 840, 1.55],
-]);
+]));
 
 // ---------- base ----------
 B.snow(0, END);
@@ -193,7 +198,7 @@ const brG = svgEl(`<g transform="translate(${BX} ${BY}) rotate(${BDEG})"><rect x
 gsap.set(brG, { svgOrigin: `${BX} ${BY}` });
 tl.fromTo(brG, { scale: 1.8 }, { scale: 1, duration: 0.5, ease: "back.out(2)" }, T_BRIDGE);
 B.label("THE BRIDGE", BX + 34, BY - 30, { cls: "tg", size: 18, t: T_BRIDGE + 0.3, until: T_BLOWN, anchor: [0, -100] });
-flash(BX, BY, T_BLOWN + 0.5, 110); flash(BX + 10, BY - 8, T_BLOWN + 0.75, 80); flash(BX - 8, BY + 6, T_BLOWN + 0.95, 70);
+flash(BX, BY, T_BLOWN + 0.5, 110, "explosion"); flash(BX + 10, BY - 8, T_BLOWN + 0.75, 80, "explosion"); flash(BX - 8, BY + 6, T_BLOWN + 0.95, 70, "explosion"); // the bridge is blown
 tl.to(brG, { autoAlpha: 0, duration: 0.15 }, T_BLOWN + 0.6);
 const gapG = svgEl(`<g transform="translate(${BX} ${BY}) rotate(${BDEG})"><path d="M -30 -20 L -22 -11 L -28 -2 L -20 7 L -27 20 L 28 20 L 21 10 L 29 1 L 20 -9 L 27 -20 Z" fill="#17130e" stroke="#c4121f" stroke-width="3.5" stroke-dasharray="7 4"/></g>`, T_BLOWN + 0.6, T_BUILT + 0.6, 0.2);
 // debris
@@ -255,6 +260,7 @@ B.arrow({ side: "carth", pts: [[CHIN[0] - 80, CHIN[1] - 30], [1480, 1010], [1300
 B.arrow({ side: "carth", pts: [[KOTO[0] - 40, KOTO[1] + 110], [1180, 450], [1180, 600], [1225, 665]], width: 16, t: T_STORM + 1.0, dur: 2.4, until: T_HAUL + 3 });
 B.arrow({ side: "carth", pts: [[1395, 600], [1480, 640], [1545, 690]], width: 14, t: T_STORM + 1.6, dur: 1.4, until: T_HAUL + 3 });
 B.grey(["r0", "r1", "r2", "r3"], T_BLIZ + 1.0, 0.8);
+SFX("mg", T_BLIZ + 0.6); // Marines storm the heights above the pass
 B.hideUnits(["r0", "r1", "r2", "r3"], T_HAUL + 2.5, 0.8);
 // engineers haul the spans down the road
 ["e0", "e1", "e2", "e3"].forEach((id, i) => {
@@ -270,7 +276,7 @@ const newBr = svgEl(`<g transform="translate(${BX} ${BY}) rotate(${BDEG})"><rect
   ${[-30, -18, -6, 6, 18, 30].map((x) => `<line x1="${x}" y1="-14" x2="${x}" y2="14" stroke="#1d1a14" stroke-width="1.5"/>`).join("")}</g>`, T_BUILT + 0.6, null, 0.2);
 gsap.set(newBr, { svgOrigin: `${BX} ${BY}` });
 tl.fromTo(newBr, { scale: 0.2 }, { scale: 1, duration: 0.7, ease: "back.out(1.8)" }, T_BUILT + 0.6);
-flash(BX, BY, T_BUILT + 0.6, 90);
+flash(BX, BY, T_BUILT + 0.6, 90, "hit"); // the new bridge slams into place (no blast)
 tl.to(roadS.querySelector(".rd"), { stroke: "#f4e9cb", duration: 0.8 }, T_BUILT + 0.8);
 tl.to(roadS, { opacity: 1, duration: 0.8 }, T_BUILT + 0.8);
 B.caption("DEC 9 · THE BRIDGE IS COMPLETE", T_DONE, T_NARROW - 0.2, "carth");
@@ -286,4 +292,6 @@ conv.forEach((k, i) => {
   follow(id, ROAD, T_INCH + 0.3 + i * 0.15, END - T_INCH - 0.3, d0, d0 + 330, "none");
 });
 B.caption("THE CROSSING GOES ON ALL NIGHT", T_NIGHT + 0.3, END - 0.3, "carth");
+// ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
+SFX("whoosh", T_SKY + 0.2);       // big arrow from Japan
 B.finish();
