@@ -1,7 +1,8 @@
-// hagaru-b: the Main Supply Route, Hungnam -> Funchilin Pass -> Koto-ri -> Hagaru-ri -> Yudam-ni (chosin basemap, zoom 11).
+// hagaru-b (locked style, const K = FXK(B)): the Main Supply Route, Hungnam -> Funchilin Pass -> Koto-ri -> Hagaru-ri -> Yudam-ni (chosin basemap, zoom 11).
 const B = Battle();
-const { P, at } = B;
+const { P, at, tl } = B;
 const END = B.T.duration;
+const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
   if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
@@ -49,6 +50,7 @@ B.camera(camSfx([
 
 // ---------- base layers ----------
 B.image("assets/chosin_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
+K.grid(G, 39.69, 40.55, 126.34, 128.32, 0.1, 0.3);
 B.snow(0, END + 1);
 B.showDate(0.3);
 B.date("NOVEMBER 1950", 0.5, null);
@@ -70,9 +72,21 @@ B.dateBox(T_NOWAY - 0.2);
 B.highlight(ROAD, T_NOWAY + 0.3, null, 26);
 
 // ---------- ridges on both sides: perfect places to hide ----------
-const Q = [[1580, 1080], [1760, 1120], [1400, 860], [1560, 800], [1360, 640], [1530, 600], [1300, 470], [1470, 420], [1250, 330], [1455, 215], [1180, 250], [1080, 200]];
+const Q = [[1580, 1080], [1760, 1120], [1400, 860], [1560, 800], [1360, 640], [1530, 600], [1245, 470], [1470, 420], [1195, 385], [1455, 215], [1180, 250], [1080, 200]];
 Q.forEach(([x, y], i) => {
   const q = B.label("?", x, y, { cls: "tg", size: 62, t: T_HIDE - 0.4 + i * 0.12, anchor: [-50, -50] });
   q.style.color = "#e3232f";
 });
+// ---------- the division on the road: 1st Marine Division (XX) at Hungnam, its regiments (III) strung out up the road ----------
+B.unit({ id: "div", side: "carth", x: HUNG[0] - 70, y: HUNG[1] - 40, w: 40, h: 40, label: "1ST MARINE DIV.", t: T_HUNG + 0.3 });
+K.counter("div", { icon: "infantry", flag: "us", size: "XX" });
+B.units.div.el.querySelector(".tag").style.fontSize = "15px";
+[["r1", "1ST MAR.", KOTO[0] - 62, KOTO[1] + 18], ["r7", "7TH MAR.", HAG[0] - 70, HAG[1] + 30], ["r5", "5TH MAR.", YUD[0] + 64, YUD[1] + 26]].forEach(([id, lbl, x, y]) => {
+  B.unit({ id, side: "carth", x, y, w: 34, h: 34, label: lbl, t: reach(x, y) + 0.2 });
+  K.counter(id, { icon: "infantry", flag: "us", size: "III" });
+  B.units[id].el.querySelector(".tag").style.fontSize = "14px";
+});
+
+// ---------- Almond, X Corps commander, slides in (he is introduced in the archive shot that follows) ----------
+K.badge({ name: "MAJ. GEN. EDWARD ALMOND", role: "X CORPS COMMANDER", photo: "assets/media/almond.jpg", flag: "us", side: "carth", corner: "tr", t: T_RIDGE + 0.6, until: END + 1 });
 B.finish();
