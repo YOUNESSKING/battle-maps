@@ -23,7 +23,7 @@ All from Wikimedia Commons. US government works (USMC, US Navy, US Army, NARA) a
 | usmc_flag.png | [Flag of the United States Marine Corps.svg](https://commons.wikimedia.org/wiki/File:Flag_of_the_United_States_Marine_Corps.svg) | Marine corps flag.gif: Himasaram derivative work: Mnmazur | Public domain |
 | us_flag_48star.png | copied from ridgway/assets/media | | Public domain |
 | ridgway_head.png | copied from ridgway/assets/media (see ridgway CREDITS.md) | | Public domain |
-| song_shilun.jpg | fetched by the Hagaru-ri map agent; verify source/licence before publishing | | ? |
+| song_shilun.jpg | fetched by the Hagaru-ri map agent, source not recorded. All three Commons photos of him are public domain ([Song Shilun.jpg](https://commons.wikimedia.org/wiki/File:Song_Shilun.jpg), PLA; Song Shilun1955.jpg; Song Shilun in Chosin Reservoir.jpg, PVA): before publishing, replace this file with a crop of Song Shilun.jpg (download was rate-limited 2026-09-29) | | Public domain (to confirm by replacing) |
 
 Derived files: smith_full.png / smith_head.png = rembg (isnet-general-use) cut-out of smith_portrait.jpg, mask cleaned by script.
 

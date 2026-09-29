@@ -6,15 +6,16 @@
 - How 15,000 Marines Broke Out of a 120,000-Man Chinese Trap (O.P. Smith)
 
 ## Description
+(Final text in the Goose Green layout: build/youtube_description.txt. Chapter times below match the re-voiced narration, 16:09.)
 
 November 1950. In the frozen mountains of North Korea, some 120,000 Chinese soldiers surrounded the 1st Marine Division at the Chosin Reservoir. Its commander, a quiet, pipe-smoking general the Marines called "the Professor", had been preparing for exactly this moment, even when it meant defying his own superior. These are Major General Oliver P. Smith's three greatest tactical moves: the Inchon landing, the slow advance and the airstrip at Hagaru-ri, and the breakout to the sea.
 
 Chapters
 0:00 Intro: trapped at the Chosin Reservoir
-1:48 Move 1: Inchon, over the seawall
-6:11 Move 2: Hagaru-ri, the slow advance
-11:00 Move 3: The breakout, attacking in another direction
-15:18 Smith's legacy
+1:36 Move 1: Inchon, over the seawall
+6:02 Move 2: Hagaru-ri, the slow advance
+10:48 Move 3: The breakout, attacking in another direction
+15:06 Smith's legacy
 
 Which commander should I cover next? Tell me in the comments.
 
