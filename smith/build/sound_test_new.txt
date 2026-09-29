@@ -1,0 +1,25 @@
+Cue list for sound_test_new.mp3 (mm:ss -> kind/variant, level vs. library table; 1.5 s gaps)
+00:01 -> naval_gun_1 (-9 dB), 4.5 s
+00:07 -> naval_gun_2 (-9 dB), 4.5 s
+00:13 -> naval_gun_3 (-9 dB), 4.5 s
+00:19 -> bugle_1 (-18 dB), 4.5 s
+00:25 -> bugle_2 (-18 dB), 4.5 s
+00:31 -> bugle_3 (-18 dB), 4.5 s
+00:37 -> parachute_1 (-14 dB), 3.5 s
+00:42 -> parachute_2 (-14 dB), 3.5 s
+00:47 -> parachute_3 (-14 dB), 1.9 s
+00:50 -> impact_1 (-7 dB), 1.2 s
+00:53 -> impact_2 (-7 dB), 3.0 s
+00:57 -> explosion_1 (-4 dB), 3.5 s
+01:02 -> explosion_2 (-4 dB), 3.5 s
+01:07 -> truck_1 (-20 dB), 3.0 s
+01:12 -> truck_2 (-20 dB), 3.0 s
+01:16 -> truck_3 (-20 dB), 3.0 s
+01:21 -> bulldozer_1 (-22 dB), 3.0 s
+01:25 -> bulldozer_2 (-22 dB), 3.0 s
+01:30 -> bulldozer_3 (-22 dB), 3.0 s
+01:34 -> ship_1 (-20 dB), 3.0 s
+01:39 -> ship_2 (-20 dB), 3.0 s
+01:43 -> ship_3 (-20 dB), 3.0 s
+00:36-01:06 -> blizzard_1 as low bed (-28 dB)
+01:12-01:48 -> blizzard_2 as low bed (-28 dB)
