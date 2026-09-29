@@ -1,7 +1,12 @@
 // Hook-out: reverse hand-off from "hook" (chosin) to the whole red/blue peninsula, then hook-3 (Smith cut-out + bio card)
 // over the zoomed-out map with a blue pulse on Chosin.
-// Build: python3 tools/build_scene.py hook-out korea hook-2 hook-3 --from 54.9   (crossfade window 54.9-55.5 s)
+// Same Nov-1950 front + territory as hook-in (day palette now), Smith badge on "the man in command", then the bio card.
+// HAND-OFF TIMES (abs, must match tools/assemble_full.py hook_composite() offsets 9.8 and 56.2):
+//   python3 tools/build_scene.py hook-in  korea  hook-1 hook-1 --to 10.4               (dissolve into "hook" 9.8-10.4 s)
+//   python3 tools/build_scene.py hook     chosin hook-1 hook-3 --from 9.8 --to 56.8    (dissolve into "hook-out" 56.2-56.8 s)
+//   python3 tools/build_scene.py hook-out korea  hook-2 hook-3 --from 56.2             (runs to the start of the archive paragraph)
 const B = Battle();
+const K = FXK(B);
 const { P, at, tl } = B;
 const END = B.T.duration;
 
@@ -24,17 +29,25 @@ const logCamera = (keys) => { // zoom interpolated in log space + per-segment ea
   }
 };
 const C2K = (x, y) => [(446141 + x) / 8 - 54556, (197446 + y) / 8 - 24399];
-const K2 = C2K(1400, 700), K1 = C2K(1440, 810);
+const K2 = C2K(1500, 800), K1 = C2K(1440, 810); // = the last two camera keys of "hook"
 logCamera([
   [0, K2[0], K2[1], 0.82 * 8],
   [0.6, K1[0], K1[1], 0.667 * 8, "none"],
-  [4.6, 1343, 800, 0.72, "power1.out"],
-  [END, 1343, 820, 0.7, "sine.inOut"],
+  [4.6, 1360, 690, 0.76, "power1.out"],
+  [END, 1360, 710, 0.74, "sine.inOut"],
 ]);
 
-// ---------- red / blue ----------
-B.image("assets/hook_red.png", 0, 0, 2880, 1620, { t: 0.6, dur: 1.8 });
-B.image("assets/hook_blue.png", 0, 0, 2880, 1620, { t: 0.6, dur: 1.8 });
+// ---------- the front of 27 Nov 1950 + territory (same as hook-in), fading in as the camera pulls out ----------
+K.grid(G, 33.5, 43.5, 121, 133, 0.5, 0.6);
+const FRONT = [[39.62, 125.14], [39.70, 125.5], [39.78, 125.9], [39.74, 126.3], [39.95, 126.62], [40.24, 126.92], [40.46, 127.07], [40.53, 127.33]].map(([a, b]) => G(a, b));
+const NE = [[40.53, 127.33], [40.8, 127.72], [41.15, 128.05], [41.42, 128.4], [41.62, 128.95]].map(([a, b]) => G(a, b));
+const MASK = "assets/korea_land.png";
+K.front({ pts: FRONT, sideA: "rome", sideB: "carth", t: 1.0, dur: 1.6, until: END + 1 });
+K.front({ pts: NE, sideA: "carth", sideB: "carth", t: 1.6, dur: 1.2, until: END + 1 });
+K.frontTint({ pts: FRONT, dir: -1, depth: 170, color: "#a8503c", t: 1.0, dur: 1.6, alpha: 0.34, mask: MASK });
+K.frontTint({ pts: [...FRONT, ...NE.slice(1)], dir: 1, depth: 170, color: "#4a6a9a", t: 1.0, dur: 1.6, alpha: 0.34, mask: MASK });
+B.label("CHINA", ...G(41.9, 123.8), { cls: "country", size: 66, t: 1.6, until: 3.2 });
+B.label("NORTH KOREA", ...G(38.95, 126.55), { cls: "country", size: 44, t: 1.8, until: 3.2 });
 B.snow(0, 3.5);
 gsap.set(document.getElementById("date"), { autoAlpha: 0 }); // no date scroll here
 
@@ -59,6 +72,8 @@ B.label("CHOSIN", CH[0] + 40, CH[1], { cls: "tg", size: 38, t: 2.0, anchor: [0, 
 
 // ---------- hook-3: O.P. Smith ----------
 const H3 = P("hook-3");
+const T_MAN = at("hook-3", "the man in command");
+K.badge({ name: "MAJ. GEN. O.P. SMITH", role: "1ST MARINE DIVISION", photo: "assets/media/smith_head.png", flag: "us", side: "carth", corner: "tr", t: T_MAN, until: 5.6 });
 B.dim(2.6, END + 1, 0.55);
 const bio = B.bio({
   photo: "assets/media/smith_full.png",
@@ -73,6 +88,7 @@ Object.assign(bio.card.style, { left: "1290px", top: "300px", width: "600px", pa
 bio.card.querySelector(".h").style.fontSize = "64px";
 bio.card.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "33px"; });
 // ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
-SFX("whoosh", 0.1);   // fast pull-back from Chosin to the whole peninsula (continues the hook zoom-out)
-SFX("hit", 3.4);      // Smith cut-out + bio card slam in
+SFX("whoosh", 0.4);   // fast pull-back from Chosin to the whole peninsula (continues the hook zoom-out)
+SFX("hit", 3.4);      // Smith cut-out + bio card slam in (the badge plays its own whoosh)
+K.raiseTerritory();
 B.finish();

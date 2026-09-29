@@ -64,14 +64,17 @@ def run(cmd):
 
 
 def hook_composite():
-    """hook-in (korea) -> hook (chosin) -> hook-out (korea), dissolves at the hand-offs (abs times from the hook agent)."""
+    """hook-in (korea) -> hook (chosin) -> hook-out (korea), 0.6 s dissolves at the hand-offs (abs times):
+    9.8 s (dive onto Chosin during "nineteen fifty", before "bugles") and 56.2 s (after "until spring", hook-3 starts 55.96).
+    Scene builds that match these offsets (also in the header of each hook scene file):
+      build_scene.py hook-in korea hook-1 hook-1 --to 10.4 / hook chosin hook-1 hook-3 --from 9.8 --to 56.8 / hook-out korea hook-2 hook-3 --from 56.2"""
     parts = [render_of_dir(s) for s in ("hook-in", "hook", "hook-out")]
     if not all(parts):
         return None
     out = "build/hook_composite.mp4"
     run(["-i", parts[0], "-i", parts[1], "-i", parts[2], "-filter_complex",
          "[0:v]settb=AVTB,fps=30[a];[1:v]settb=AVTB,fps=30[b];[2:v]settb=AVTB,fps=30[c];"
-         "[a][b]xfade=transition=fade:duration=0.6:offset=6.4[ab];[ab][c]xfade=transition=fade:duration=0.6:offset=54.9[v]",
+         "[a][b]xfade=transition=fade:duration=0.6:offset=9.8[ab];[ab][c]xfade=transition=fade:duration=0.6:offset=56.2[v]",
          "-map", "[v]", *ENC, out])
     return out
 

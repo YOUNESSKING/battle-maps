@@ -124,7 +124,7 @@ const road = B.line(ROAD.slice().reverse(), { color: "#e9dcb5", width: 6, t: 0.4
 B.label("CHOSIN RESERVOIR", 1262, 70, { cls: "river", size: 22, t: 1.0, until: TB, rot: 55 });
 B.label("SEA OF JAPAN", 2330, 1430, { cls: "sea", size: 44, t: 1.6, until: TB });
 B.city("HUNGNAM", ...HUNG, { size: 30, t: 1.8, until: TB });
-B.city("HAMHUNG", ...HAM, { size: 24, t: 2.0, until: TB });
+B.city("HAMHUNG", ...HAM, { size: 24, t: 2.0, until: T_DOWN + 2 });
 B.label("YUDAM-NI", YUD[0], YUD[1] + 78, { cls: "city", size: 19, t: 1.2, until: T_2W + 0.2, anchor: [-50, 0] });
 B.label("HAGARU-RI", HAG[0] + 58, HAG[1] + 4, { cls: "city", size: 19, t: 1.4, until: T_2W + 0.2 });
 B.label("KOTO-RI", KOTO[0] + 52, KOTO[1], { cls: "city", size: 19, t: 1.6, until: T_2W + 0.2 });
@@ -163,7 +163,8 @@ const pourArrows = POUR.map((pts, i) => B.arrow({ side: "rome", pts, width: 14, 
 B.caption("CHINESE 9TH ARMY GROUP · ABOUT 120,000 MEN", T_POUR + 0.2, H2 - 0.2, "rome");
 
 // ---------- hook-2: one road, 78 miles ----------
-B.highlight(ROAD.filter((_, i) => i % 4 === 0), H2 + 1.6, H2 + 5);
+const glowRoad = B.highlight(ROAD.filter((_, i) => i % 4 === 0), H2 + 1.6, H2 + 5, 40);
+tl.to(glowRoad, { opacity: 0, duration: 0.8 }, T_HRS - 0.4);
 B.caption("THE 1ST MARINE DIVISION: STRUNG OUT ALONG ONE ROAD", H2 + 0.3, T_78 - 0.2, "carth");
 const mid = ROAD[50];
 const tag78 = pin(`<div style="padding:2px 12px;background:#1f4fc4;border:3px solid #f3eee2;color:#fff;font-weight:700;letter-spacing:0.08em;font-size:34px;white-space:nowrap">78 MILES TO THE SEA</div>`, mid[0] + 190, mid[1] - 10);
