@@ -13,3 +13,4 @@ tts/*.bin
 **/build/cards/
 **/build/seg/tmp.txt
 **/build/seg/list.txt
+smith/logs/
