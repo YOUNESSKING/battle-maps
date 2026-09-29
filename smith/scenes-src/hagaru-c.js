@@ -13,7 +13,8 @@ const NS = "http://www.w3.org/2000/svg";
 // ---------- media ----------
 const SMITH_HEAD = "assets/media/smith_head.png";
 const ALMOND = "assets/media/almond.jpg";
-const SONG = "assets/media/song_shilun.jpg";
+// song_shilun.jpg is still a grey placeholder silhouette (Commons download rate-limited): badge uses initials until a PD crop replaces it
+const SONG = null;
 const MASK = "assets/chosin_close_land.png";
 
 // ---------- projection (assets/chosin_close.json: zoom 12) ----------
@@ -210,8 +211,8 @@ const CAM = [
   [T_TIP + 0.6, ...HAGC],
   [T_AIR + 0.8, 1575, 735, 2.75],
   [P6 - 0.6, 1580, 730, 2.9],
-  [T_SPRUNG, 1450, 620, 1.0],
-  [T_ARMY, 1470, 600, 1.02],
+  [T_SPRUNG, 1450, 590, 1.0],
+  [T_ARMY, 1470, 580, 1.02],
   [T_FLEW, 1560, 560, 1.12],
   [P7 - 0.5, 1540, 580, 1.08],
   [P7 + 2.2, 1600, 725, 2.3],
@@ -244,7 +245,7 @@ B.date("NOVEMBER 1950", 0.3, T_27 - 0.4);
 // wide / close label sets
 const W1 = [[0.2, T_TIP]], W2 = [[T_SPRUNG - 0.8, P7 + 0.4]], WIDEW = [...W1, ...W2];
 const C1 = [[T_TIP + 0.8, T_SPRUNG - 1.2]], C2 = [[P7 + 1.2, null]], CLOSEW = [...C1, ...C2];
-place("YUDAM-NI", ...YUD, { size: 34, r: 9, lab: [YUD[0] - 30, YUD[1] - 92], anchor: [-50, -50], win: WIDEW });
+place("YUDAM-NI", ...YUD, { size: 34, r: 9, lab: [YUD[0] - 84, YUD[1] + 4], anchor: [-100, -50], win: WIDEW });
 place("HAGARU-RI", ...HAG, { size: 36, r: 10, lab: [HAG[0] + 118, HAG[1] + 4], win: WIDEW });
 place("KOTO-RI", ...KOTO, { size: 34, r: 9, win: [[0.2, T_TIP]] });
 place("TOKTONG PASS", TOK[0] - 10, TOK[1] + 36, { cls: "tg", size: 26, nodot: true, anchor: [-50, 0], win: WIDEW });
@@ -252,7 +253,7 @@ place("FUNCHILIN PASS", FUN[0] + 30, FUN[1], { cls: "tg", size: 28, nodot: true,
 place("CHOSIN RESERVOIR", 1720, 170, { cls: "sea", size: 34, nodot: true, win: WIDEW });
 // close-up labels (Hagaru-ri)
 place("HAGARU-RI", HAG[0] - 10, HAG[1] - 86, { cls: "city", size: 15, nodot: true, anchor: [-50, -50], win: CLOSEW });
-place("EAST HILL", EASTHILL[0] + 20, EASTHILL[1] - 34, { cls: "tg", size: 12, nodot: true, win: [[T_TIP + 0.8, T_SPRUNG - 1.2], [T_DIV, null]] });
+place("EAST HILL", EASTHILL[0] - 6, EASTHILL[1] + 44, { cls: "tg", size: 12, nodot: true, win: [[T_TIP + 0.8, T_SPRUNG - 1.2], [T_DIV, null]] });
 place("TO YUDAM-NI", 1560, 610, { cls: "tg", size: 10, nodot: true, anchor: [-100, -50], win: CLOSEW });
 place("TO KOTO-RI", 1640, 830, { cls: "tg", size: 10, nodot: true, win: CLOSEW });
 
@@ -270,7 +271,7 @@ B.caption("THEY MOVED ONLY AT NIGHT", T_NIGHT + 0.4, T_SONG - 0.6, "rome");
 REDS.forEach((_, i) => B.show("h" + i, T_SONG + 0.3 + (i % 6) * 0.1, 1));
 
 // Song Shilun: commander badge + his army group counter in the western mountains
-K.badge({ name: "GEN. SONG SHILUN", role: "CHINESE 9TH ARMY GROUP", photo: SONG, flag: "prc", side: "rome", corner: "tl", t: T_SONG - 0.3, until: P4 + 0.6 });
+K.badge({ name: "GEN. SONG SHILUN", role: "CHINESE 9TH ARMY GROUP", photo: SONG, initials: "SS", flag: "prc", side: "rome", corner: "tl", t: T_SONG - 0.3, until: P4 + 0.6 });
 U({ id: "ag9", side: "rome", x: 880, y: 800, w: 58, h: 58, label: "9TH ARMY GROUP", fs: 22, t: T_SONG + 0.2 }, { icon: "infantry", flag: "prc", size: "XXXX" });
 B.label("12 DIVISIONS", 880, 880, { cls: "tg", size: 28, t: T_SONG + 0.6, until: P4 + 1, anchor: [-50, 0] });
 B.hideUnits(["ag9"], P4 + 1);
@@ -451,7 +452,7 @@ const GUNS = [[1580, 700], [1598, 748]];
 GUNS.forEach(([x, y], i) => U({ id: "g" + i, side: "carth", x, y, w: 18, h: 14, label: i ? null : "11TH MARINES", fs: 6.5, t: T_BATT + 0.4 + i * 0.2 }, { icon: "artillery", flag: "us", size: "I" }));
 B.caption("ONE BATTALION + ENGINEERS, DRIVERS, COOKS, CLERKS", T_BATT + 0.2, T_AMMO - 0.3, "carth");
 // the Chinese 58th Division closes in from the south-west and the east
-const ATT = [[1440, 830, 1478, 790, "II"], [1500, 870, 1522, 812, "XX"], [1600, 880, 1596, 822, "II"], [1780, 760, 1742, 742, "II"], [1790, 650, 1752, 672, "II"], [1740, 600, 1710, 640, "II"]];
+const ATT = [[1440, 830, 1478, 790, "II"], [1500, 870, 1522, 812, "XX"], [1600, 880, 1596, 822, "II"], [1790, 780, 1766, 764, "II"], [1790, 650, 1752, 672, "II"], [1740, 600, 1710, 640, "II"]];
 ATT.forEach(([x, y, x2, y2, sz], i) => {
   U({ id: "c" + i, side: "rome", x, y, w: 16, h: 16, label: i === 1 ? "58TH DIVISION" : null, fs: 6.5, t: T_DIV - 0.3 + i * 0.15 }, { icon: "infantry", flag: "prc", size: sz });
   B.move("c" + i, T_NIGHT7 - 1.5 + (i % 3) * 0.3, 2.5, x2, y2);
@@ -482,7 +483,7 @@ B.move("eh", T_BACK + 0.6, 1.4, EASTHILL[0] + 30, EASTHILL[1] + 16);
 B.grey(["eh"], T_BACK + 0.8, 0.6);
 SFX("mg", T_BACK + 0.6);         // East Hill counter-attack
 // Chinese mortars fire on the perimeter (quiet launch, boom on the impact; radii and gaps varied)
-const MORT = [[1470, 900], [1800, 690]];
+const MORT = [[1446, 758], [1800, 690]];
 MORT.forEach(([x, y], i) => U({ id: "m" + i, side: "rome", x, y, w: 18, h: 14, label: i ? null : "MORTARS", fs: 6.5, t: T_DIV + 0.2 + i * 0.3 }, { icon: "artillery", flag: "prc", size: "•••" }));
 [[0, [1520, 772], 9], [1, [1650, 742], 10], [0, [1552, 790], 8], [1, [1626, 690], 11], [0, [1506, 722], 9], [1, [1662, 714], 8], [0, [1580, 792], 10]].forEach(([m, tgt, r], k) => {
   const t0 = T_DIV + 1.6 + k * 0.85 + (k % 3) * 0.12, [x, y] = MORT[m];
@@ -518,16 +519,16 @@ K.night({ lines: [PERF, YF, AF, SWF, EAF], tOn: T_27, tOff: T_DAWN });
 B.date("1 DECEMBER 1950", P8 + 0.1, null, 34);
 B.caption("AIRSTRIP LESS THAN HALF FINISHED", T_HALF - 0.2, T_LAND + 1.2);
 // the first C-47 comes in from the south-west, touches down (shadow meets the plane) and rolls out
-K.aircraft({ kind: "turboprop", side: "carth", size: 44, alt: 20, pts: [along(-3.2), along(-0.8), along(0.1), along(0.38)], t: T_LAND - 1.6, dur: 3.6, land: true, until: T_WEEK - 0.2 });
+K.aircraft({ kind: "turboprop", side: "carth", size: 54, alt: 20, pts: [along(-3.2), along(-0.8), along(0.1), along(0.38)], t: T_LAND - 1.6, dur: 3.6, land: true, until: T_WEEK - 0.2 });
 B.label("FIRST C-47 LANDS", along(0)[0] - 16, along(0)[1] + 10, { cls: "tg", size: 12, t: T_LAND + 1.0, until: T_4000, anchor: [-100, -50] });
 // planes shuttle the wounded out to the south-east, one after another
 const OUT = [[1700, 900], [1960, 1130], [2300, 1400]];
 for (let k = 0; k < 4; k++) {
   const t0 = T_WEEK + k * 2.4;
-  K.aircraft({ kind: "turboprop", side: "carth", size: 44, alt: 10 + k, pts: [along(0.05), along(0.45), ...OUT], t: t0, dur: 5.2, until: t0 + 5.2 });
+  K.aircraft({ kind: "turboprop", side: "carth", size: 54, alt: 10 + k, pts: [along(0.05), along(0.45), ...OUT], t: t0, dur: 5.2, until: t0 + 5.2 });
 }
 B.line([along(0.45), [1700, 900], [2000, 1160], [2300, 1400]], { dash: "14 10", width: 4, color: "var(--carth-light)", t: T_WEEK + 0.4, dur: 2.5 });
-B.label("TO HAMHUNG / JAPAN", 1985, 1135, { cls: "tg", size: 22, t: T_WEEK + 2.0, anchor: [0, -50] });
+B.label("TO HAMHUNG / JAPAN", 1790, 960, { cls: "tg", size: 22, t: T_WEEK + 2.0, anchor: [0, -50] });
 // counter: wounded flown out
 const ctr = screenDiv(`<div class="n">0</div><div class="l">WOUNDED &amp; FROSTBITTEN FLOWN OUT</div>`, "counter");
 const cn = ctr.querySelector(".n"), cv = { v: 0 };
@@ -543,7 +544,7 @@ K.aircraft({ kind: "cargo", side: "carth", size: 56, alt: 34, pts: [[1380, 980],
   tl.to(c, { autoAlpha: 0, duration: 0.5 }, END - 0.6);
   if (i % 2 === 0) SFX("parachute", t0);  // parachute canopies open (every other one, spaced)
 });
-K.aircraft({ kind: "turboprop", side: "carth", size: 44, alt: 20, pts: [along(-3.2), along(-0.8), along(0.1), along(0.36)], t: T_REPL + 1.0, dur: 3.6, land: true, until: END + 1 });
+K.aircraft({ kind: "turboprop", side: "carth", size: 54, alt: 20, pts: [along(-3.2), along(-0.8), along(0.1), along(0.36)], t: T_REPL + 1.0, dur: 3.6, land: true, until: END + 1 });
 // the lifeline
 B.highlight([along(0.45), [1700, 900], [2000, 1160], [2300, 1400]], T_LIFE - 0.4, null, 18);
 B.caption("THE LIFELINE OF THE DIVISION", T_LIFE - 0.3, END, "carth");

@@ -1,8 +1,10 @@
-// hagaru-d: method card over the held Hagaru-ri perimeter; the Chinese still hold the mountains; 70 miles to the sea.
+// hagaru-d (locked style, const K = FXK(B)): method card over the held Hagaru-ri perimeter; the Chinese still hold the mountains; 70 miles to the sea.
 // chosin_close basemap (zoom 12). Marines = blue ("carth"), Chinese = red ("rome").
 const B = Battle();
 const { P, at, tl } = B;
 const END = B.T.duration;
+const K = FXK(B);
+const MASK = "assets/chosin_close_land.png";
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
   if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
@@ -14,7 +16,7 @@ const STRIP = { x: 1553, y: 752, len: 78, w: 16, rot: -24 };
 
 const T_R1 = at("hagaru-9", "Build the lifeline"), T_R2 = at("hagaru-9", "Refuse to be"), T_R3 = at("hagaru-9", "Keep the division");
 const T_TWO = at("hagaru-9", "At Hagaru-ri"), T_FAILED = at("hagaru-9", "The Chinese had failed"), T_MTN = at("hagaru-9", "still held the mountains");
-const T_ROAD = at("hagaru-9", "the road to the sea"), T_SUB = at("hagaru-9", "If you're enjoying"), T_OUT = at("hagaru-9", "getting out");
+const T_ROAD = at("hagaru-9", "the road to the sea"), T_OUT = at("hagaru-9", "getting out");
 
 // ---------- camera: held perimeter under the card, then pull back to the mountains and the long road south ----------
 B.camera(camSfx([
@@ -22,7 +24,7 @@ B.camera(camSfx([
   [T_FAILED - 0.4, 1580, 560, 1.8],
   [T_FAILED + 2.6, 1420, 620, 1.05],
   [T_ROAD, 1520, 880, 0.78],
-  [T_SUB + 1.0, 1560, 960, 0.8],
+  [T_OUT - 1.0, 1560, 960, 0.8],
   [END, 1620, 1080, 0.95],
 ]));
 
@@ -30,12 +32,28 @@ B.camera(camSfx([
 B.image("assets/chosin_close_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 B.arrow({ side: "white", pts: ROAD, width: 6, head: false, t: 0, dur: 0.01 });
 B.snow(0, END + 1);
-const PER = [];
-for (let i = 0; i <= 24; i++) {
-  const a = (i / 24) * Math.PI * 2, wob = 1 + 0.08 * Math.sin(a * 3 + 1);
-  PER.push([+(1580 + 80 * wob * Math.cos(a)).toFixed(1), +(726 + 54 * wob * Math.sin(a)).toFixed(1)]);
-}
-B.front({ pts: PER, width: 3.5, color: "var(--carth)", t: 0, dur: 0.01 });
+const G = (lat, lon) => {
+  const n = 256 * 2 ** 12, r = (lat * Math.PI) / 180;
+  return [+((lon + 180) / 360 * n - 893344).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 394786).toFixed(1)];
+};
+K.grid(G, 40.148, 40.572, 126.705, 127.694, 0.05, 0);
+SFX("blizzard", 0.2);            // cold wind bed under the held perimeter
+// the held perimeter (same ring as hagaru-c): real front, two-colour (Chinese all around), blue inside, red outside
+const arc = (c, rx, ry, a0, a1, step = 15, wob = 0.06) => {
+  const pts = [];
+  for (let a = a0; a <= a1 + 1e-6; a += step) { const r = (a * Math.PI) / 180, w = 1 + wob * Math.sin(r * 3 + 1); pts.push([+(c[0] + rx * w * Math.cos(r)).toFixed(1), +(c[1] + ry * w * Math.sin(r)).toFixed(1)]); }
+  return pts;
+};
+const fOff = (pts, d) => pts.map((p, i) => {
+  const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+  const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+  return [p[0] - (dy / L) * d, p[1] + (dx / L) * d];
+});
+const tint = (pts, depth, dir, color, t) => { for (let k = 0; k < 5; k++) K.territory({ pts: [...pts, ...fOff(pts, dir * depth * (k + 1) / 5).reverse()], side: color, t, dur: 0.01, alpha: 0.34 / 5 * 1.6, mask: MASK, soft: 10 }); };
+const PER = arc([1582, 726], 95, 66, 0, 360);
+const PERF = K.front({ pts: PER, sideA: "rome", sideB: "carth", width: 11, t: 0, dur: 0.01, until: END + 1 });
+tint(PER, 44, 1, "carth", 0);
+tint(PER, 95, -1, "rome", 0);
 const strip = document.createElementNS(NS, "g");
 strip.setAttribute("transform", `translate(${STRIP.x} ${STRIP.y}) rotate(${STRIP.rot})`);
 strip.innerHTML = `<rect x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="${STRIP.len}" height="${STRIP.w}" fill="rgba(247,243,234,0.35)" stroke="#1b1812" stroke-width="5.5"/>
@@ -43,8 +61,8 @@ strip.innerHTML = `<rect x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="${STRI
   <rect x="${-STRIP.len / 2}" y="${-STRIP.w / 2}" width="${STRIP.len * 0.45}" height="${STRIP.w}" fill="#d8cfb8" stroke="#1b1812" stroke-width="1"/>`;
 svg().appendChild(strip);
 function svg() { return document.getElementById("overlay"); }
-const GAR = [[1560, 700], [1612, 752], [1545, 742], [1628, 706], [1600, 690]];
-GAR.forEach(([x, y], i) => B.unit({ id: "g" + i, side: "carth", x, y, w: 15, h: 15, t: 0.01 }));
+[["g0", 1522, 690, "II"], ["g1", 1634, 698, "I"], ["g2", 1628, 764, "I"]].forEach(([id, x, y, sz]) => { B.unit({ id, side: "carth", x, y, w: 16, h: 16, t: 0.01 }); K.counter(id, { icon: "infantry", flag: "us", size: sz }); });
+[["g3", 1580, 700], ["g4", 1598, 748]].forEach(([id, x, y]) => { B.unit({ id, side: "carth", x, y, w: 18, h: 14, t: 0.01 }); K.counter(id, { icon: "artillery", flag: "us", size: "I" }); });
 B.showDate(T_FAILED + 0.3);
 B.date("DECEMBER 1950", T_FAILED + 0.4, null);
 
@@ -89,15 +107,16 @@ const card = methodCard({ t: 0, until: T_FAILED - 0.5, rowT: [0.15, T_R2 - 0.3, 
 B.arrow({ side: "carth", pts: ROAD.slice(0, 34), width: 14, t: T_FAILED - 0.2, dur: 2.4 });
 ["y0", "y1"].forEach((id, i) => {
   B.unit({ id, side: "carth", x: R(2 + i * 6)[0], y: R(2 + i * 6)[1], w: 34, h: 34, label: i ? "5TH MAR." : "7TH MAR.", t: T_FAILED - 0.4 });
-  B.move(id, T_FAILED + 0.2 + i * 0.2, 2.6, HAG[0] - 44 + i * 10, HAG[1] - 50 - i * 40);
+  K.counter(id, { icon: "infantry", flag: "us", size: "III" });
+  B.move(id, T_FAILED + 0.2 + i * 0.2, 2.6, i ? 1542 : 1478, i ? 610 : 646);
 });
 B.caption("THE MARINES STAYED TOGETHER", T_FAILED + 0.3, T_MTN - 0.3, "carth");
-B.label("HAGARU-RI", HAG[0] + 90, HAG[1], { cls: "city", size: 34, t: T_FAILED + 0.6, anchor: [0, -50] });
+B.label("HAGARU-RI", HAG[0] + 122, HAG[1], { cls: "city", size: 34, t: T_FAILED + 0.6, anchor: [0, -50] });
 
 // ---------- ...but the Chinese still held the mountains ----------
-const REDS = [[1320, 560], [1430, 470], [1480, 820], [1720, 600], [1790, 800], [1560, 1000], [1840, 1000], [1620, 1180], [1900, 1230],
+const REDS = [[1320, 560], [1430, 470], [1430, 870], [1740, 590], [1790, 800], [1560, 1000], [1840, 1000], [1620, 1180], [1900, 1230],
   [1680, 1330], [1960, 1420], [1730, 1500], [1990, 1560], [1400, 1100], [2050, 700]];
-REDS.forEach(([x, y], i) => B.unit({ id: "r" + i, side: "rome", x, y, w: 40, h: 40, t: T_MTN - 0.3 + i * 0.12 }));
+REDS.forEach(([x, y], i) => { B.unit({ id: "r" + i, side: "rome", x, y, w: 40, h: 40, t: T_MTN - 0.3 + i * 0.12 }); K.counter("r" + i, { icon: "infantry", flag: "prc", size: "XX" }); });
 B.caption("THE CHINESE STILL HELD THE MOUNTAINS", T_MTN, T_ROAD - 0.2, "rome");
 
 // ---------- 70 miles to the sea ----------
@@ -106,4 +125,5 @@ B.label("KOTO-RI", KOTO[0] + 22, KOTO[1], { cls: "city", size: 34, t: T_ROAD + 0
 B.label("70 MILES TO THE SEA", 1330, 1250, { cls: "tg", size: 52, t: T_ROAD + 0.8, anchor: [-50, -50] });
 B.highlight(ROAD.slice(33), T_ROAD + 0.6, null, 30);
 B.caption("NEXT: GETTING OUT", T_OUT - 0.6, END, "carth");
+K.raiseTerritory();
 B.finish();
