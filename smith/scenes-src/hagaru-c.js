@@ -254,7 +254,7 @@ place("CHOSIN RESERVOIR", 1720, 170, { cls: "sea", size: 34, nodot: true, win: W
 // close-up labels (Hagaru-ri)
 place("HAGARU-RI", HAG[0] - 10, HAG[1] - 86, { cls: "city", size: 15, nodot: true, anchor: [-50, -50], win: CLOSEW });
 place("EAST HILL", EASTHILL[0] - 6, EASTHILL[1] + 44, { cls: "tg", size: 12, nodot: true, win: [[T_TIP + 0.8, T_SPRUNG - 1.2], [T_DIV, null]] });
-place("TO YUDAM-NI", 1560, 610, { cls: "tg", size: 10, nodot: true, anchor: [-100, -50], win: CLOSEW });
+place("TO YUDAM-NI", 1548, 588, { cls: "tg", size: 10, nodot: true, anchor: [-100, -50], win: CLOSEW });
 place("TO KOTO-RI", 1640, 830, { cls: "tg", size: 10, nodot: true, win: CLOSEW });
 
 // =====================================================================================
