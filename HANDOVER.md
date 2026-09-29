@@ -39,6 +39,8 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
   - The hero's bio cards come after the stakes (~1:00-2:00). Background (how the war started) comes after the hook, kept short. Target: keep ~65%+ of viewers at 30 s.
 - First video: **Hannibal** (Trebia, Lake Trasimene, Cannae). Next candidates: see research/VIDEO_IDEAS_v2.md (top: Nathanael Greene, Daniel Morgan, Francis Marion, George Thomas).
 
+**All locked decisions with exact numbers (and what was rejected) are in one file: `STYLE_LOCK.md`.**
+
 ## 1b. LOCKED VISUAL STYLE (owner-approved, Goose Green v3; use `lib/fx.js` = `const K = FXK(B)` in every scene)
 Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video must use all of these:
 - **Map:** parchment shaded relief (bake.py), faint dashed lat/long grid (`K.grid`), vignette + grain, date scroll top-left.
