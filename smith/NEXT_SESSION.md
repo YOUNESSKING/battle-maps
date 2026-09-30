@@ -24,7 +24,7 @@ Apply it in this remake: e.g. ships firing/moving, the C-119 parachute drop, the
 
 ## DONE 2026-09-30 01:45 UTC: final video rendered + delivered
 - Owner approved all sheets + sounds. Master: build/smith-full.mp4 = build/OP-Smith-Top3-1080p.mp4 (1920x1080, 30 fps, 16:09, -15.0 LUFS, 1.63 GB),
-  uploaded to Gofile: https://gofile.io/d/3TLHn2QD (md5 84d5c245054ceeb48492966e53400981). 540p halves sent in chat.
+  uploaded to Gofile. v2 (2026-09-30, sound fix: music 0.12, SFX -6 dB, bombs/impacts = locked library clips only): https://gofile.io/d/RORRfxAV (md5 23149d5195f3adfc60351ecbaacdab4c). 540p halves sent in chat.
 - Publishing PDF: build/OP-Smith-publishing-guide.pdf (with the link). Renders/master are not in git (re-render with tools/render_all.sh).
 - Lesson: the cloud machine rebooted 4 times during the render (every ~30-60 min, also while active); finished renders survive,
   the running step dies. Keep steps short and resumable; relaunch only the missing scenes.

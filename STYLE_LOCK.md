@@ -31,6 +31,9 @@ Everything here is already the default in `goosegreen/` (copy it; see HANDOVER 0
 - **Also:** ship silhouettes with muzzle flashes, burning places with smoke columns (`K.smoke`), pulsing target rings on objectives (`K.target`), commander badge (`K.badge`, initials on dark tint if no legal photo), casualty card after every move with losses (`K.casualties`), captions bottom-centre.
 
 ## 3. Sound effects (locked files and levels)
+**Owner 2026-09-30 (O.P. Smith):** bombs/explosions and shell impacts use ONLY the locked library recordings below
+(explosion = `cand2_hit`/`cand4_hit`, impact = `cand3_hit`/`cand1_hit`), never extra variants and never pitch-shifted.
+Whole SFX track 6 dB quieter than the table (`SFX_TRIM_DB = -6` in sfx_mix_lib.py; SFX ~7 dB under the voice) and music `MUSIC_VOL = 0.12`.
 Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). Levels are dB in `sfx_mix_lib.py`:
 
 | Kind (`SFX(kind, t)`) | Sound | Level | Min gap |
@@ -58,7 +61,7 @@ Rule: every visual beat has a sound, and **the boom is always on the impact** (l
 - Build: `python3 tools/make_music_bed.py` (fits each track to its chapter, 5 s crossfades, -20 LUFS, 3 s fade-out).
 
 ## 5. Mix levels (locked, in assemble_full.py / make_clip.py)
-- Music `MUSIC_VOL = 0.18` (owner asked for quieter music), 2 s fade-in, 3 s fade-out.
+- Music `MUSIC_VOL = 0.12` (owner 2026-09-30; was 0.18, still too loud), 2 s fade-in, 3 s fade-out.
 - Music ducked under the voice: sidechain threshold 0.03, ratio 6, attack 20 ms, release 400 ms.
 - SFX ducked lightly under the voice: threshold 0.03, ratio 3, attack 10 ms, release 300 ms.
 - Limiter 0.5, then two-pass loudnorm to **-14 LUFS**, true peak -1.5 dB, LRA 11. Audio AAC 192k.

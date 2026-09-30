@@ -31,9 +31,14 @@ NEW_KINDS = {  # kind: (level dB, min gap s)
 }
 # no identical repeats: every cue gets a small random pitch shift (semitones, +/-) and never the same clip twice in a row.
 # Changes how library sounds play, so it is gated like a new sound: word "vary" in new/APPROVED.txt (or SFX_TEST=1).
-VARY = {"impact": 1.5, "explosion": 1.5, "fire": 1.5, "mortar": 1.5, "mg": 1.0, "missile": 1.0, "jet": 1.0, "prop": 1.0,
+VARY = {  # impact/explosion never varied: owner wants the approved recordings exactly (2026-09-30)
+        "fire": 1.5, "mortar": 1.5, "mg": 1.0, "missile": 1.0, "jet": 1.0, "prop": 1.0,
         "heli": 1.0, "hit": 0.5, "whoosh": 1.0, "naval_gun": 1.5, "bugle": 0.7, "truck": 1.0, "parachute": 1.5,
         "bulldozer": 1.0, "ship": 0.7}
+
+
+# Owner 2026-09-30: "sound effects too loud" -> whole SFX track trimmed (relative levels between kinds unchanged)
+SFX_TRIM_DB = -6.0
 
 
 def _approved():
@@ -100,7 +105,7 @@ def render(cues, total, out):
         else:  # locked behaviour: alternate the clips
             clip = clips[kind][(prev.get(kind, -1) + 1) % n_c]
             prev[kind] = (prev.get(kind, -1) + 1) % n_c
-        gain = 10 ** ((db + rng.uniform(-2.0, 1.0)) / 20)
+        gain = 10 ** ((db + SFX_TRIM_DB + rng.uniform(-2.0, 1.0)) / 20)
         i = int(t * SR)
         n = min(len(clip), len(out_arr) - i)
         out_arr[i:i + n] += clip[:n] * gain
