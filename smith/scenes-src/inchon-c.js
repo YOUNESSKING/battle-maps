@@ -6,7 +6,7 @@ const END = B.T.duration;
 const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
+  /* no zoom sound on ordinary camera moves (owner 2026-09-30: only the biggest moves) */ } return keys; };
 
 const CITY = [1179, 921], WOLMI = [1060, 906], SEOUL = [2192, 568], KIMPO = [1645, 598];
 const I8 = P("inchon-8"), I9 = P("inchon-9");
@@ -177,8 +177,6 @@ SFX("hit", T_SUBS - 0.1); // subscribe pill lands on the card
 B.arrow({ side: "carth", pts: [[1300, 880], [1420, 600], [1500, 330], [1540, 60]], width: 26, t: T_NORTH + 1.6, dur: 3.0 });
 B.label("NEXT: THE FROZEN NORTH", 1900, 260, { cls: "tg", size: 40, t: T_NORTH + 2.8 });
 // ---------- sound cues (locked kit, levels in tools/sfx_mix_lib.py): only on visible beats ----------
-SFX("whoosh", T_SEOUL + 0.6);    // big blue arrows sweep to Seoul
 SFX("hit", T_CUT + 0.55);        // first blue X lands on the supply lines
-SFX("whoosh", T_NORTH + 1.6);    // big arrow north: next move
 K.raiseTerritory();
 B.finish();

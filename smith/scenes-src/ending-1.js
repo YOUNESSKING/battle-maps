@@ -14,7 +14,7 @@ const tl = B.tl;
 const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
+  /* no zoom sound on ordinary camera moves (owner 2026-09-30: only the biggest moves) */ } return keys; };
 
 // ================= scene-local helpers (shared by the breakout / ending scenes; no engine change) =================
 const NS = "http://www.w3.org/2000/svg";
@@ -174,7 +174,6 @@ B.arrow({ side: "white", pts: SEA, width: 16, t: 0.9, dur: 3.0, until: T_RIDG })
 const SQ = poly(smooth(SEA, 10)), boat = ship(0, 0, { w: 64, color: "#1f4fc4", t: 1.0, until: T_RIDG - 0.3, dx: 0 });
 const bp = { d: 0 };
 tl.to(bp, { d: SQ.len * 0.97, duration: T_RIDG - 1.6, ease: "sine.inOut", onUpdate: () => { const [x, y] = posAt(SQ, bp.d); gsap.set(boat, { left: x - 32, top: y - 30 }); } }, 1.0);
-SFX("whoosh", 0.9); // big arrow by sea
 B.label("BY SEA", 1900, 900, { cls: "tg", size: 30, t: 2.4, until: T_RIDG, anchor: [0, -50] });
 B.caption("THE 1ST MARINE DIVISION IS BACK IN THE FIGHT", T_BACK + 0.3, T_WEEKS + 0.6, "carth");
 
@@ -202,7 +201,6 @@ red.forEach(([la, lo], i) => {
 SFX("tick", T_WEEKS + 1.1); // counters drop in
 [[[37.0, 126.85], [37.3, 126.82], [37.55, 126.78]], [[37.05, 127.8], [37.35, 127.77], [37.62, 127.75]], [[37.2, 128.3], [37.5, 128.3], [37.8, 128.33]]]
   .forEach((pts, i) => B.arrow({ side: "carth", pts: GL(pts), width: 12, t: TM + 0.1 + i * 0.3, dur: 2.4, until: T_BEST }));
-SFX("whoosh", TM + 0.1); // blue arrows push north
 B.caption("RIDGWAY TURNS THE WAR AROUND", T_TURN - 0.4, T_BEST - 0.3, "carth");
 // the Marines: among the best
 const mx = G(...blueB[2]);

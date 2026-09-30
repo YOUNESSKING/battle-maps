@@ -243,8 +243,6 @@ stampEl(`<div style="font-size:84px">OUT OF THE WAR</div><div style="font-size:8
 K.raiseTerritory();
 
 // ---------- sound cues: only where the sound matches the picture ----------
-SFX("whoosh", H2 + 0.1);           // camera pulls out along the whole road
-SFX("whoosh", T_HRS - 0.2);        // camera dives onto the reservoir pockets
 for (let k = 0; k < 12; k++) SFX("tick", T_CUT + 0.15 + k * 0.22); // ROADBLOCKS counter 1..12
 SFX("hit", T_CUT + 3.05);          // ENCIRCLED stamp lands
 SFX("static", T_TOK + 0.1);        // GHQ Tokyo message comes in

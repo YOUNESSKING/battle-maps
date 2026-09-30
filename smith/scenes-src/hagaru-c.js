@@ -7,7 +7,7 @@ const END = B.T.duration;
 const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
+  /* no zoom sound on ordinary camera moves (owner 2026-09-30: only the biggest moves) */ } return keys; };
 const NS = "http://www.w3.org/2000/svg";
 
 // ---------- media ----------
@@ -408,7 +408,6 @@ tint({ pts: YPER, depth: 95, dir: -1, color: "rome", t: T_YUD + 1.2, until: P7 +
   [[950, 560], [1060, 470], [1112, 408]],
   [[1420, 300], [1330, 330], [1262, 350]],
 ].forEach((pts, i) => B.arrow({ side: "rome", pts, width: 16, t: T_YUD + i * 0.3, dur: 1.3, until: P7 - 0.4 }));
-SFX("whoosh", T_YUD);            // the red arrows strike Yudam-ni
 // road cut behind them
 [[12, 20], [40, 48], [60, 68]].forEach(([a, b], i) => {
   B.arrow({ side: "rome", pts: seg(a, b), width: 11, head: false, t: T_CUT + i * 0.35, dur: 0.7, until: P7 - 0.4 });

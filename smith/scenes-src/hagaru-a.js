@@ -7,7 +7,7 @@ const END = B.T.duration;
 const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
+  /* no zoom sound on ordinary camera moves (owner 2026-09-30: only the biggest moves) */ } return keys; };
 
 // projection (assets/korea.json: zoom 8)
 const G = (lat, lon) => {
@@ -82,7 +82,6 @@ const racePaths = [
   [[37.85, 127.9], [38.7, 127.6], [39.4, 127.1], [39.85, 126.7]],
 ];
 racePaths.forEach((pts, i) => B.arrow({ side: "carth", pts: GL(pts), width: 18, t: T_RACE + 0.1 + i * 0.35, dur: 2.4, until: T_SMITH + 0.6 }));
-SFX("whoosh", T_RACE + 0.1);     // UN arrows race north
 const eighth = [[39.62, 125.35, "XXX"], [39.83, 125.95, "XXXX"], [39.95, 126.55, "XXX"]];
 eighth.forEach(([la, lo, sz], i) => {
   B.unit({ id: "e" + i, side: "carth", x: G(la, lo)[0], y: G(la, lo)[1], w: 38, h: 38, label: i === 1 ? "EIGHTH ARMY" : null, t: T_RACE + 2.6 + i * 0.2 });

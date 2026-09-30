@@ -15,7 +15,7 @@ const tl = B.tl;
 const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
+  /* no zoom sound on ordinary camera moves (owner 2026-09-30: only the biggest moves) */ } return keys; };
 
 // ================= scene-local helpers (shared by the breakout / ending scenes; no engine change) =================
 const NS = "http://www.w3.org/2000/svg";
@@ -269,7 +269,6 @@ B.caption("THE ROAD TO THE SEA IS CUT", T_GONE + 0.8, S5 - 0.1, "rome");
 
 // ---------- breakout-5: a bridge from the sky ----------
 B.arrow({ side: "carth", pts: [[2860, 1560], [2380, 1060], [1900, 640], [DZ[0] + 260, DZ[1] + 40]], width: 20, t: T_SKY + 0.2, dur: 2.2, until: T_C119 });
-SFX("whoosh", T_SKY + 0.2); // big arrow from Japan
 B.label("FROM JAPAN", 2250, 1160, { cls: "tg", size: 40, t: T_SKY + 1.2, until: T_C119, anchor: [-50, -50] });
 // three C-119 Flying Boxcars cross the drop zone; each pushes out spans as it passes over
 const drops = [[-60, -10], [40, -50], [110, 20], [-20, 80], [60, 105], [-90, 70], [130, 110], [-120, -40]];

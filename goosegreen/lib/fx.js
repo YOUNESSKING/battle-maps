@@ -274,8 +274,7 @@
       const dx = o.corner && o.corner[1] === "l" ? -80 : 80;
       tl.fromTo(el, { autoAlpha: 0, x: dx }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, o.t);
       if (o.until != null) tl.to(el, { autoAlpha: 0, x: dx, duration: 0.5, ease: "power2.in" }, o.until);
-      if (window.SFX) SFX("whoosh", o.t);
-      return el;
+      return el; // badges slide in silently (owner 2026-09-30: zoom sound only on the biggest moves)
     };
     // casualty card (K&G): two columns (sideA / sideB) of rows with pictograms. rows: [["killed", "18", "45–55"], ...]
     const PICT = {

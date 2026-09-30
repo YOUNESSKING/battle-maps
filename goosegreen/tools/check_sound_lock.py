@@ -74,10 +74,10 @@ def check(kinds=None):
     fx = open(os.path.join(ROOT, "lib", "fx.js")).read()
     errs += [f"lib/fx.js changed (locked sound/shake): {s}" for s in FX_JS if s not in fx]
     af = open(os.path.join(ROOT, "tools", "assemble_full.py")).read()
-    if not re.search(r"^MUSIC_VOL = 0\.18\b", af, re.M):
-        errs.append("MUSIC_VOL in assemble_full.py is not 0.18")
-    if "volume=0.18" not in open(os.path.join(ROOT, "tools", "make_clip.py")).read():
-        errs.append("music level in make_clip.py is not 0.18")
+    if not re.search(r"^MUSIC_VOL = 0\.08\b", af, re.M):
+        errs.append("MUSIC_VOL in assemble_full.py is not 0.08")
+    if "volume=0.08" not in open(os.path.join(ROOT, "tools", "make_clip.py")).read():
+        errs.append("music level in make_clip.py is not 0.08")
     if errs:
         print("\n" + "!" * 70 + "\nSOUND LOCK BROKEN: the owner-approved sounds were changed. Build stopped.\n" + "!" * 70)
         for e in errs:

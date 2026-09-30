@@ -7,7 +7,7 @@ const END = B.T.duration;
 const K = FXK(B);
 // sound: whoosh on big camera zooms (scale x1.6 or more within 6 s), at the fastest point of the move
 const camSfx = (keys) => { for (let i = 1; i < keys.length; i++) { const r = keys[i][3] / keys[i - 1][3], d = keys[i][0] - keys[i - 1][0];
-  if ((r >= 1.6 || r <= 1 / 1.6) && d <= 6) SFX("whoosh", Math.max(0, keys[i - 1][0] + d / 2 - 0.5)); } return keys; };
+  /* no zoom sound on ordinary camera moves (owner 2026-09-30: only the biggest moves) */ } return keys; };
 
 const G = (lat, lon) => {
   const n = 256 * 2 ** 8, r = (lat * Math.PI) / 180;
@@ -122,8 +122,6 @@ B.caption("THE WHOLE INVADING ARMY TRAPPED", T_TRAP - 0.6, END - 0.2, "carth");
 SFX("hit", 0.5);                 // MOVE 1 title card
 SFX("tick", 5.2);                // UN counters drop in
 SFX("tick", T_INV - 0.5);        // North Korean counters drop in
-SFX("whoosh", T_INV + 0.2);      // invasion arrows sweep south
-SFX("whoosh", T_LAND - 0.2);     // the big sea arrow round the peninsula
 SFX("hit", T_CUT + 0.45);        // blue X slams onto Seoul
 K.raiseTerritory();
 B.finish();
