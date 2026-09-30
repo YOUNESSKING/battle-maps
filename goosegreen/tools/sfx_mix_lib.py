@@ -23,6 +23,8 @@ KINDS = {  # kind: (clips, level dB, min gap between two cues of this kind in s)
 
 
 def render(cues, total, out):
+    import check_sound_lock  # stops the build if a locked sound, level or the music was changed (owner rule)
+    check_sound_lock.check(KINDS)
     clips = {}
     for kind, (files, _, _) in KINDS.items():
         arr = []
