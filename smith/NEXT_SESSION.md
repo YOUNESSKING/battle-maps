@@ -22,7 +22,14 @@ Branch: `claude/lucid-tesla-qugecc`. Project folder: `smith/` (video #6, Maj. Ge
 - **Sound library scope (owner, 2026-09-29):** keep using the locked SFX library in the right places, i.e. ONLY for the map events it was made for and only where its sound matches what is on screen (artillery/mortar impacts, bombs/explosions, gun launches, aircraft flybys, MG, whoosh/hit/tick/static on stamps, cards and camera moves). Don't force it onto anything else, and don't reuse the same few clips everywhere: it gets repetitive. For events the library doesn't cover (ships, trucks/columns, bugles/whistles, wind/blizzard, crowds, parachutes, bridges, trains, horses, etc.), source a fitting, correctly licensed sound (CC0/PD/CC BY, no NC/ND) for that specific moment, keep it at the library's levels (never louder than the voice), and add variants so repeated events don't sound identical. Test new sounds first (1-min clip, owner approval) per 0b step 5.
 Apply it in this remake: e.g. ships firing/moving, the C-119 parachute drop, the breakout column of trucks, Chinese bugles, blizzard wind need their own fitting sounds (tested first), and the library clips should not repeat identically.
 
-## Progress 2026-09-29 (remake session) — WAITING FOR OWNER APPROVAL
+## DONE 2026-09-30 01:45 UTC: final video rendered + delivered
+- Owner approved all sheets + sounds. Master: build/smith-full.mp4 = build/OP-Smith-Top3-1080p.mp4 (1920x1080, 30 fps, 16:09, -15.0 LUFS, 1.63 GB),
+  uploaded to Gofile: https://gofile.io/d/3TLHn2QD (md5 84d5c245054ceeb48492966e53400981). 540p halves sent in chat.
+- Publishing PDF: build/OP-Smith-publishing-guide.pdf (with the link). Renders/master are not in git (re-render with tools/render_all.sh).
+- Lesson: the cloud machine rebooted 4 times during the render (every ~30-60 min, also while active); finished renders survive,
+  the running step dies. Keep steps short and resumable; relaunch only the missing scenes.
+
+## Progress 2026-09-29 (remake session)
 - Done + pushed: locked fx.js in smith/lib (us/kpa/prc flags, Corsair `prop` + C-119 `cargo` art), land masks (`tools/make_land.py`),
   stakes-first hook + subscribe ask moved to inchon-9 (5 paragraphs re-voiced, 16:09, music bed rebuilt), all 16 map scenes remade
   (plan: SCENE_PLAN.md), hook hand-offs 9.8 / 56.2 s in assemble_full.py, description (build/youtube_description.txt), thumbnails A/B.

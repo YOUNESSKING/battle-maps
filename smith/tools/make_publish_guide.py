@@ -84,6 +84,7 @@ story += [PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
                  ["File", f"OP-Smith-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["Download", os.environ.get("GOFILE_LINK", "https://gofile.io/d/3TLHn2QD")],
                  ["Length", "about 16:09"],
                  ["Voice", "Kokoro (free AI voice)"],
                  ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice"],
