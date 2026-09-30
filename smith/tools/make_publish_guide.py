@@ -72,8 +72,8 @@ size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if
 if not os.path.exists("build/guide_frames.jpg") and os.path.exists("build/sheet_hook.png"):
     from PIL import Image as PI
     im = PI.open("build/sheet_hook.png").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
-thumbs = [p for p in ["build/thumbnail_A_not_retreating.png"] if os.path.exists(p)]
-alts = [p for p in ["build/thumbnail_B_surrounded.png"] if os.path.exists(p)]
+thumbs = [p for p in ["build/thumbnail_A2_not_retreating.png", "build/thumbnail_A_not_retreating.png"] if os.path.exists(p)]
+alts = [p for p in ["build/thumbnail_B2_surrounded.png", "build/thumbnail_B_surrounded.png"] if os.path.exists(p)]
 
 story = [Spacer(1, 18 * mm), P("O.P. SMITH", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm)]
@@ -88,7 +88,7 @@ story += [P("1. The finished video", "h1"),
                  ["Length", "about 16:09"],
                  ["Voice", "Kokoro (free AI voice)"],
                  ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice"],
-                 ["Sound effects", "Freesound recordings (CC BY / CC0) plus original effects"]],
+                 ["Sound effects", "Freesound recordings (CC BY / CC0), Mixkit transition, original effects"]],
                 [32, 138]),
           Spacer(1, 5 * mm), P("Structure and chapters", "h2"),
           table([["Chapter", "Starts", "What happens"],
@@ -116,10 +116,10 @@ story += [P("2. Title and thumbnail", "h1"), P("Title (recommended)", "h2"),
             "The portrait is a generic 1950 US Marine general (parka, cap, binoculars), not a likeness of a real person.")]
 if alts:
     story += [P("Alternative thumbnail (use it for YouTube's thumbnail A/B test)", "h2")]
-    story += [Table([[img(a, 82) for a in alts]], colWidths=[85 * mm])]
+    story += [Table([[img(a, 82) for a in alts[:1]]], colWidths=[85 * mm])]
 story += [P("<b>Alternative:</b> SURROUNDED (type 3, ominous stakes) for the A/B test. "
-            "AI slips: on SURROUNDED the AI misspelled the reservoir label as \"CHGSIN\"; this was fixed by hand and it now reads CHOSIN RESERVOIR. "
-            "On NOT RETREATING the red blocks form a thin dotted ridge line rather than many, and some trucks and prop planes appear (era-appropriate). Labels are correct.", "warn")]
+            "Checked (round 2): labels spelled right and in the right order (Chosin Reservoir, Hagaru-ri, Koto-ri, Hungnam), SMITH and SONG SHILUN name tags on the map, "
+            "dense red masses on the ridges, a generic 1950 Marine officer (not a likeness of Smith), only trucks and prop planes (era-appropriate).", "warn")]
 story += [P("<b>Before uploading:</b> check the thumbnail at small size on a phone. The banner text must be readable at 20% size.", "tip"), PageBreak()]
 
 story += [P("3. Description (copy and paste)", "h1"),
