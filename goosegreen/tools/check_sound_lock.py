@@ -41,6 +41,10 @@ FX_JS = [  # automatic sounds in lib/fx.js: the boom is on the impact, bombs are
     'SFX(o.sfx || (r >= 20 ? "explosion" : "impact"), t)',
     'SFX(o.sfx || "fire", t)',
     '{ jet: "jet", turboprop: "prop", heli: "heli" }[o.kind]',
+    # the SHAKE: explosions shake the screen (bombs 6, shells 3), and every bombing run shakes on its first bomb
+    'if (o.shake !== false) K.shake(t, o.shake || (r >= 20 ? 6 : 3));',
+    'K.shake = (t, amp = 5, dur = 0.35) =>',
+    'K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k ? false : 5 })',
 ]
 
 
@@ -68,7 +72,7 @@ def check(kinds=None):
         if not os.path.exists(p) or md5(p) != h:
             errs.append(f"locked music {f} missing or replaced")
     fx = open(os.path.join(ROOT, "lib", "fx.js")).read()
-    errs += [f"lib/fx.js no longer plays: {s}" for s in FX_JS if s not in fx]
+    errs += [f"lib/fx.js changed (locked sound/shake): {s}" for s in FX_JS if s not in fx]
     af = open(os.path.join(ROOT, "tools", "assemble_full.py")).read()
     if not re.search(r"^MUSIC_VOL = 0\.18\b", af, re.M):
         errs.append("MUSIC_VOL in assemble_full.py is not 0.18")
@@ -81,7 +85,7 @@ def check(kinds=None):
         print("Fix: restore goosegreen's files (see STYLE_LOCK.md, reference/style-reference-30s.mp4).\n"
               "Only the owner can change a locked sound (test clip -> approval -> update tools/check_sound_lock.py).")
         sys.exit(1)
-    print("SOUND LOCK OK: locked artillery / ship-gun / bomb / aircraft sounds, levels and music (see STYLE_LOCK.md)")
+    print("SOUND LOCK OK: locked artillery / ship-gun / bomb / aircraft sounds, bombing SHAKE, levels and music (see STYLE_LOCK.md)")
 
 
 if __name__ == "__main__":

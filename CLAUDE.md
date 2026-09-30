@@ -3,7 +3,7 @@
 Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical Moves", Tactical Genius style).
 **Read HANDOVER.md first**: it has the plan, the pipeline, the commands and the lessons learned.
 **Then read STYLE_LOCK.md**: the owner-approved look, sound effects, music and levels. Use it as-is on every video; never re-search or restyle.
-**SOUND LOCK:** the artillery, ship-gun, bombing and aircraft sounds + levels + music are locked and checked on every build (`tools/check_sound_lock.py`; reference `reference/style-reference-30s.mp4`). If it says SOUND LOCK BROKEN, restore goosegreen's files; never edit the lock without the owner's approval.
+**SOUND LOCK:** the artillery, ship-gun, bombing and aircraft sounds, the **screen shake on every bombing run** (`K.bombRun`), levels + music are locked and checked on every build (`tools/check_sound_lock.py`; reference `reference/style-reference-30s.mp4`). If it says SOUND LOCK BROKEN, restore goosegreen's files; never edit the lock without the owner's approval.
 
 - Setup runs automatically in the background at session start (`setup.sh`). Before voice or render steps, wait until `/tmp/battle-maps-setup.done` exists (log: `/tmp/battle-maps-setup.log`). If it's missing after ~10 min, run `bash setup.sh` in the foreground.
 - The repo must live at `/home/user/battle-maps` (scripts use absolute paths there).

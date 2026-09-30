@@ -66,10 +66,10 @@ Hear them in `reference/style-reference-30s.mp4`. Every session must use exactly
 | Field artillery / mortars firing | `K.gun` (or the scene's `shoot()` helper) | quiet launch thud (-24 dB), never a boom |
 | **Artillery shells landing** | `K.impact` r < 20 | **real distant-artillery boom** (cand3 / cand1, -7 dB) + fireball + smoke + small shake |
 | **Ships' guns firing** (e.g. HMS Arrow) | same `K.gun` -> arc -> `K.impact` from the ship's bow | quiet launch, **same real artillery boom on impact** |
-| **Planes bombing** | `K.aircraft` flies the run + `K.impact` r >= 20 per bomb, 0.25 s apart, first bomb `shake: 5` | jet roar with Doppler (-11 dB), then **real distant-explosion booms** (cand2 / cand4, -4 dB) + **camera shake** |
+| **Planes bombing** | **`K.bombRun({ pts, t, bombs: [[x,y], ...] })`** (one line: jet + bombs 0.25 s apart + **SCREEN SHAKE** on the first bomb) | jet roar with Doppler (-11 dB), then **real distant-explosion booms** (cand2 / cand4, -4 dB) + **camera shake** |
 | Jets / turboprops / helicopters | `K.aircraft` kind `jet` / `turboprop` / `heli` | engine flyby loudest mid-flight (-11 / -13 / -14 dB) |
 | Aircraft shot down | `K.aircraft({ down: t })` | engine sound, then crash fireball |
-Rule: **the boom is always on the impact.** Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
+Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen** (first bomb of every run, strength 5; every big explosion shakes 6, shells 3). Never set `shake: false` on a bombing run. Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
 ("the barrage"), bombing run `move3.js` ("the Harrier strike").
 
 ## 4. Music (locked)
