@@ -10,7 +10,7 @@ Everything here is already the default in `goosegreen/` (copy it; see HANDOVER 0
 artillery impacts, an Argentine jet + turboprop shot down by AA, helicopters, then the **Harrier bombing run with the camera
 shake**. Every new video must sound and look like this. Before the final assemble, build a test clip of the new video's
 busiest 30 s (`make_clip.py SCENE --from P --to P`) and compare it with this reference: same boom-on-impact, same aircraft
-sounds, same shake, same music level. If it differs, fix the new video, never the reference.
+sounds, same shake (music is now quieter: 0.08, section 5). If it differs, fix the new video, never the reference.
 Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, then cut 8.5-29.5 s + 87.5-96.5 s.
 
 ## 1. Where it lives (copy from goosegreen/ into every new video)
@@ -53,6 +53,10 @@ Rule: every visual beat has a sound, and **the boom is always on the impact** (l
 | missile | `missile_launch_hit` | -9 | 0.8 s |
 | hit | `hit` | -8 | 0.5 s |
 | whoosh | `whoosh` | -15 | 0.5 s |
+
+**Zoom / transition sound (owner 2026-09-30):** only on the BIGGEST camera moves (the hook dive, the flash-forward cut, the
+hook zoom-out). No zoom sound on ordinary camera moves, arrows or commander badges (badges slide in silently). The sound itself
+is being replaced (owner rejected the generic whoosh and 6 candidates); until a new one is approved the locked `whoosh` stays.
 | mg | `mg_burst` | -18 | 1.0 s |
 | tick (counters) | `counter_tick` | -20 | 0.12 s |
 | static (radio) | `radio_static` | -21 | 3.0 s |
@@ -77,7 +81,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Build: `python3 tools/make_music_bed.py` (fits each track to its chapter, 5 s crossfades, -20 LUFS, 3 s fade-out).
 
 ## 5. Mix levels (locked, in assemble_full.py / make_clip.py)
-- Music `MUSIC_VOL = 0.18` (owner asked for quieter music), 2 s fade-in, 3 s fade-out.
+- Music `MUSIC_VOL = 0.08` (owner 2026-09-30 chose option C of a 0.18 / 0.12 / 0.08 test; the reference clip still has the older 0.18 music), 2 s fade-in, 3 s fade-out.
 - Music ducked under the voice: sidechain threshold 0.03, ratio 6, attack 20 ms, release 400 ms.
 - SFX ducked lightly under the voice: threshold 0.03, ratio 3, attack 10 ms, release 300 ms.
 - Limiter 0.5, then two-pass loudnorm to **-14 LUFS**, true peak -1.5 dB, LRA 11. Audio AAC 192k.

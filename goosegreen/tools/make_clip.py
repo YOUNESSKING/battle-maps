@@ -36,7 +36,7 @@ inputs = ["-ss", f"{off:.2f}", "-i", f"scenes/{name}/renders/{name}.mp4", "-i", 
 f = ["[1:a]aresample=48000,asplit=3[vo][key][key2]", "[2:a]aresample=48000[sx]", "[sx][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]"]
 if os.path.exists("assets/media/music.wav"):
     inputs += ["-ss", f"{a0:.2f}", "-t", f"{dur:.2f}", "-i", "assets/media/music.wav"]
-    f += ["[3:a]aresample=48000,volume=0.18,afade=t=in:d=1.5[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
+    f += ["[3:a]aresample=48000,volume=0.08,afade=t=in:d=1.5[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
           "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false,loudnorm=I=-14:TP=-1.5:LRA=11[aout]"]
 else:
     f += ["[key]anullsink", "[vo][sfx]amix=inputs=2:normalize=0,alimiter=limit=0.5:level=false,loudnorm=I=-14:TP=-1.5:LRA=11[aout]"]

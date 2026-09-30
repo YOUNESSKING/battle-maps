@@ -14,7 +14,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
 PREVIEW = "--preview" in sys.argv
 AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only_<height>p.mp4 (one per resolution), only remix the sound (e.g. after a level change)
-MUSIC_VOL = 0.18  # music bed level before ducking (0.35 until 2026-09-27; owner asked for quieter music)
+MUSIC_VOL = 0.08  # music bed level before ducking (owner 2026-09-30: option C, quieter; was 0.18)
 W, H, FPS = (1280, 720, 30) if PREVIEW else (1920, 1080, 30)
 T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
