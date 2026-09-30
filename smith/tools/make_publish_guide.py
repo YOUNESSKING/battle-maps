@@ -1,7 +1,7 @@
 """Build the O.P. Smith publishing guide PDF: build/OP-Smith-publishing-guide.pdf
 
 usage (from the project folder): python3 tools/make_publish_guide.py
-Uses build/youtube_description.txt, build/thumbnail_*.png, build/guide_frames.jpg (made from build/sheet_hook.png if missing).
+Uses build/youtube_description.txt, build/thumbnail_*.png, build/guide_frames.jpg (8 frames from the final video).
 """
 import glob, os
 from reportlab.lib import colors
@@ -124,7 +124,7 @@ story += [P("<b>Before uploading:</b> check the thumbnail at small size on a pho
 
 story += [P("3. Description (copy and paste)", "h1"),
           P("Everything below is ready to paste into the YouTube description box (the first line is the title). The credit lines are required by the image, music and sound-effect licences: do not remove them.", "warn"),
-          Preformatted(desc, S["mono"]), PageBreak()]
+          Preformatted(desc, S["mono"], maxLineLength=100), PageBreak()]
 
 story += [P("4. Upload settings", "h1"),
           table([["Setting", "Value"],
