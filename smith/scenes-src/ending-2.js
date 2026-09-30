@@ -86,8 +86,7 @@ const U = (o) => {
 };
 // LOCKED bombing run (Harrier recipe from goosegreen move3.js): size 84, alt 30, dur 3.2; bombs just after the pass, 0.25 s apart
 const bombRun = (pts, t0, bombs, o = {}) => {
-  K.aircraft({ kind: o.kind || "prop", side: o.side || "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
-  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+  K.bombRun({ kind: o.kind || "prop", side: o.side || "carth", pts, t: t0, bombs }); // locked: jet/prop + bombs + SHAKE on the first bomb
 };
 const runThrough = (x, y, ang, len = 900) => { const c = Math.cos(ang), s = Math.sin(ang); return [[x - c * len / 2, y - s * len / 2], [x, y], [x + c * len / 2, y + s * len / 2]]; };
 // continuous smoke column over a burning / bombed place

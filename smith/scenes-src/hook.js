@@ -243,15 +243,12 @@ stampEl(`<div style="font-size:84px">OUT OF THE WAR</div><div style="font-size:8
 K.raiseTerritory();
 
 // ---------- sound cues: only where the sound matches the picture ----------
-SFX("bugle", T_BUG + 0.2);         // Chinese bugles from every ridge (new kind, sourced later)
 SFX("whoosh", H2 + 0.1);           // camera pulls out along the whole road
 SFX("whoosh", T_HRS - 0.2);        // camera dives onto the reservoir pockets
 for (let k = 0; k < 12; k++) SFX("tick", T_CUT + 0.15 + k * 0.22); // ROADBLOCKS counter 1..12
 SFX("hit", T_CUT + 3.05);          // ENCIRCLED stamp lands
 SFX("static", T_TOK + 0.1);        // GHQ Tokyo message comes in
 SFX("whoosh", T_2W - 0.2); SFX("hit", T_2W + 0.05); // white-flash cut into the flash-forward
-SFX("blizzard", T_2W + 0.4);       // cold wind bed under the snowy march out (new kind, sourced later)
-SFX("truck", T_DOWN);              // the column starts down the road (new kind, sourced later)
 for (let t = T_DOWN + 0.2; t < T_DOWN + D_COL; t += 0.3) SFX("tick", t); // MILES MARCHED counter
 SFX("hit", T_SPR + 0.3);           // OUT OF THE WAR UNTIL SPRING stamp
 B.finish();

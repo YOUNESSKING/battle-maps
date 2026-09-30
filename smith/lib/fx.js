@@ -191,7 +191,7 @@
         tl.to(pl, { opacity: 0, duration: 0.6 }, (o.down || tEnd) + 0.6);
       }
       // engine sound, timed so its loudest moment (about 2.3 s into the clip) falls mid-flight
-      if (window.SFX && o.sfx !== false) SFX(o.sfx || { jet: "jet", turboprop: "prop", prop: "prop", cargo: "prop", heli: "heli" }[o.kind], Math.max(0, t0 + Math.min(dur, (o.down || tEnd) - t0) / 2 - 2.3));
+      if (window.SFX && o.sfx !== false) SFX(o.sfx || { jet: "jet", turboprop: "prop", heli: "heli" }[o.kind] || "prop", Math.max(0, t0 + Math.min(dur, (o.down || tEnd) - t0) / 2 - 2.3));
       const wrap = document.createElement("div"); wrap.className = "fxk-air"; pins.appendChild(wrap); hide(wrap);
       const k = size / 100;
       const shadow = document.createElementNS(NS, "svg"), body = document.createElementNS(NS, "svg");
@@ -409,6 +409,14 @@
         tl.fromTo(el, { filter: "brightness(1) saturate(1)" }, { filter: "brightness(1.8) saturate(1.25)", duration: 2.5, immediateRender: false }, o.tOn);
         if (o.tOff != null) tl.to(el, { filter: "brightness(1) saturate(1)", duration: 3 }, o.tOff);
       });
+    };
+    // BOMBING RUN (locked, owner's favourite = the Goose Green Harrier strike): the jet flies the run with its roar, each
+    // bomb lands just after it passes (0.25 s apart) with fireball, smoke and the real explosion boom, and the SCREEN
+    // SHAKES on the first bomb. Use this for every air strike; don't hand-roll bombs. bombs: [[x, y], ...]
+    K.bombRun = (o) => {
+      const t0 = o.t, dur = o.dur || 3.2;
+      K.aircraft({ kind: o.kind || "jet", side: o.side || "carth", size: o.size || 84, alt: o.alt || 30, pts: o.pts, t: t0, dur, until: t0 + dur });
+      o.bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k ? false : 5 }));
     };
     return K;
   };

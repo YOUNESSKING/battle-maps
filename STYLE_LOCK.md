@@ -5,6 +5,14 @@ Every new video uses EXACTLY what is below. Don't search for new music or sounds
 anything on this page. Only NEW ideas go through "test before applying" (snapshots / 1-min clip, then owner approval).
 Everything here is already the default in `goosegreen/` (copy it; see HANDOVER 0b step 1), so doing nothing = locked style.
 
+## 0. The reference clip (hear and see it before any new video)
+`reference/style-reference-30s.mp4` (owner-approved 2026-09-30): Goose Green move 3, mixed with the locked sounds and levels:
+artillery impacts, an Argentine jet + turboprop shot down by AA, helicopters, then the **Harrier bombing run with the camera
+shake**. Every new video must sound and look like this. Before the final assemble, build a test clip of the new video's
+busiest 30 s (`make_clip.py SCENE --from P --to P`) and compare it with this reference: same boom-on-impact, same aircraft
+sounds, same shake, same music level. If it differs, fix the new video, never the reference.
+Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, then cut 8.5-29.5 s + 87.5-96.5 s.
+
 ## 1. Where it lives (copy from goosegreen/ into every new video)
 | What | File |
 |---|---|
@@ -31,9 +39,6 @@ Everything here is already the default in `goosegreen/` (copy it; see HANDOVER 0
 - **Also:** ship silhouettes with muzzle flashes, burning places with smoke columns (`K.smoke`), pulsing target rings on objectives (`K.target`), commander badge (`K.badge`, initials on dark tint if no legal photo), casualty card after every move with losses (`K.casualties`), captions bottom-centre.
 
 ## 3. Sound effects (locked files and levels)
-**Owner 2026-09-30 (O.P. Smith):** bombs/explosions and shell impacts use ONLY the locked library recordings below
-(explosion = `cand2_hit`/`cand4_hit`, impact = `cand3_hit`/`cand1_hit`), never extra variants and never pitch-shifted.
-Whole SFX track 6 dB quieter than the table (`SFX_TRIM_DB = -6` in sfx_mix_lib.py; SFX ~7 dB under the voice) and music `MUSIC_VOL = 0.12`.
 Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). Levels are dB in `sfx_mix_lib.py`:
 
 | Kind (`SFX(kind, t)`) | Sound | Level | Min gap |
@@ -52,16 +57,27 @@ Rule: every visual beat has a sound, and **the boom is always on the impact** (l
 | tick (counters) | `counter_tick` | -20 | 0.12 s |
 | static (radio) | `radio_static` | -21 | 3.0 s |
 
-**Scope (owner, 2026-09-29):** keep using the locked SFX library in the right places, i.e. ONLY for the map events it was made for and only where its sound matches what is on screen (artillery/mortar impacts, bombs/explosions, gun launches, aircraft flybys, MG, whoosh/hit/tick/static on stamps, cards and camera moves). Don't force it onto anything else, and don't reuse the same few clips everywhere: it gets repetitive. For events the library doesn't cover (ships, trucks/columns, bugles/whistles, wind/blizzard, crowds, parachutes, bridges, trains, horses, etc.), source a fitting, correctly licensed sound (CC0/PD/CC BY, no NC/ND) for that specific moment, keep it at the library's levels (never louder than the voice), and add variants so repeated events don't sound identical. Test new sounds first (1-min clip, owner approval) per 0b step 5.
-
 `K.impact`, `K.gun` and `K.aircraft` call `SFX()` automatically, so scenes get the right sound without extra code.
+
+## 3a. THE BATTLE SOUNDS (owner's favourites, locked 2026-09-30; enforced by `tools/check_sound_lock.py`)
+Hear them in `reference/style-reference-30s.mp4`. Every session must use exactly these; the build STOPS if they change.
+| On screen | Code (does the sound automatically) | What you hear |
+|---|---|---|
+| Field artillery / mortars firing | `K.gun` (or the scene's `shoot()` helper) | quiet launch thud (-24 dB), never a boom |
+| **Artillery shells landing** | `K.impact` r < 20 | **real distant-artillery boom** (cand3 / cand1, -7 dB) + fireball + smoke + small shake |
+| **Ships' guns firing** (e.g. HMS Arrow) | same `K.gun` -> arc -> `K.impact` from the ship's bow | quiet launch, **same real artillery boom on impact** |
+| **Planes bombing** | **`K.bombRun({ pts, t, bombs: [[x,y], ...] })`** (one line: jet + bombs 0.25 s apart + **SCREEN SHAKE** on the first bomb) | jet roar with Doppler (-11 dB), then **real distant-explosion booms** (cand2 / cand4, -4 dB) + **camera shake** |
+| Jets / turboprops / helicopters | `K.aircraft` kind `jet` / `turboprop` / `heli` | engine flyby loudest mid-flight (-11 / -13 / -14 dB) |
+| Aircraft shot down | `K.aircraft({ down: t })` | engine sound, then crash fireball |
+Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen** (first bomb of every run, strength 5; every big explosion shakes 6, shells 3). Never set `shake: false` on a bombing run. Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
+("the barrage"), bombing run `move3.js` ("the Harrier strike").
 
 ## 4. Music (locked)
 - Kevin MacLeod (incompetech.com, CC BY 4.0), in this order: **"Long Note One"** (hook + move 1) -> **"Wounded"** (move 2) -> **"Long Note Two"** (move 3) -> **"Anguish"** (ending).
 - Build: `python3 tools/make_music_bed.py` (fits each track to its chapter, 5 s crossfades, -20 LUFS, 3 s fade-out).
 
 ## 5. Mix levels (locked, in assemble_full.py / make_clip.py)
-- Music `MUSIC_VOL = 0.12` (owner 2026-09-30; was 0.18, still too loud), 2 s fade-in, 3 s fade-out.
+- Music `MUSIC_VOL = 0.18` (owner asked for quieter music), 2 s fade-in, 3 s fade-out.
 - Music ducked under the voice: sidechain threshold 0.03, ratio 6, attack 20 ms, release 400 ms.
 - SFX ducked lightly under the voice: threshold 0.03, ratio 3, attack 10 ms, release 300 ms.
 - Limiter 0.5, then two-pass loudnorm to **-14 LUFS**, true peak -1.5 dB, LRA 11. Audio AAC 192k.

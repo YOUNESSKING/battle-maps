@@ -87,8 +87,7 @@ const U = (o) => {
 };
 // LOCKED bombing run (Harrier recipe from goosegreen move3.js): size 84, alt 30, dur 3.2; bombs just after the pass, 0.25 s apart
 const bombRun = (pts, t0, bombs, o = {}) => {
-  K.aircraft({ kind: o.kind || "prop", side: o.side || "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
-  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+  K.bombRun({ kind: o.kind || "prop", side: o.side || "carth", pts, t: t0, bombs }); // locked: jet/prop + bombs + SHAKE on the first bomb
 };
 const runThrough = (x, y, ang, len = 900) => { const c = Math.cos(ang), s = Math.sin(ang); return [[x - c * len / 2, y - s * len / 2], [x, y], [x + c * len / 2, y + s * len / 2]]; };
 // continuous smoke column over a burning / bombed place
@@ -175,7 +174,6 @@ B.arrow({ side: "white", pts: SEA, width: 16, t: 0.9, dur: 3.0, until: T_RIDG })
 const SQ = poly(smooth(SEA, 10)), boat = ship(0, 0, { w: 64, color: "#1f4fc4", t: 1.0, until: T_RIDG - 0.3, dx: 0 });
 const bp = { d: 0 };
 tl.to(bp, { d: SQ.len * 0.97, duration: T_RIDG - 1.6, ease: "sine.inOut", onUpdate: () => { const [x, y] = posAt(SQ, bp.d); gsap.set(boat, { left: x - 32, top: y - 30 }); } }, 1.0);
-SFX("ship", 1.2); // transport sails from Hungnam to Pusan (visible, moving)
 SFX("whoosh", 0.9); // big arrow by sea
 B.label("BY SEA", 1900, 900, { cls: "tg", size: 30, t: 2.4, until: T_RIDG, anchor: [0, -50] });
 B.caption("THE 1ST MARINE DIVISION IS BACK IN THE FIGHT", T_BACK + 0.3, T_WEEKS + 0.6, "carth");

@@ -238,7 +238,6 @@ B.image("assets/chosin_close_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 K.grid(G, 40.148, 40.572, 126.705, 127.694, 0.05, 0.3);
 B.arrow({ side: "white", pts: ROAD, width: 6, head: false, t: 0, dur: 0.01 });
 B.snow(0, END + 1);
-SFX("blizzard", 0.2);            // cold wind bed for the snowbound reservoir scene
 B.showDate(0.2);
 B.date("NOVEMBER 1950", 0.3, T_27 - 0.4);
 
@@ -323,7 +322,6 @@ REGS.forEach((g, j) => {
   U({ id: g.id, side: "carth", x: x0, y: y0, w: 34, h: 34, label: g.label, fs: 16, t: T_HURRY - 0.4 + j * 0.2 }, { icon: "infantry", flag: "us", size: "III" });
   for (let s = 1; s < g.path.length; s++) B.move(g.id, STEP_T0 + (s - 1) * STEP + j * 0.12, STEP * 0.55, ...R(g.path[s]), "power2.inOut");
 });
-SFX("truck", STEP_T0);          // the division's column starts inching up the road
 B.label("~ 1 MILE A DAY", 1650, 1010, { cls: "tg", size: 44, t: T_MILE - 0.2, until: T_STOCK - 0.2, anchor: [-100, -50] });
 // supply dumps left at every stop (the last three sit inside the future Hagaru-ri perimeter)
 const DUMPS = [[1692, 1112, 0], [1668, 1078, 0.3], [1548, 724, 1.4], [1613, 724, 1.7], [1572, 774, 2.0]];
@@ -367,7 +365,6 @@ const dozers = [0.12, 0.3].map((f, i) => {
   tl.to(el, { autoAlpha: 0, duration: 0.4 }, T_SPRUNG - 1.2);
   return el;
 });
-SFX("bulldozer", T_AIR + 1.0);  // bulldozers start grading the airstrip
 // frozen ground: blades break (shake), then blasting (explosive charges = library explosions, sizes varied)
 tl.to(dozers, { rotation: 8, duration: 0.08, yoyo: true, repeat: 7 }, T_BLADES);
 [[0.2, 9], [0.45, 7], [0.35, 10], [0.6, 8]].forEach(([f, r], i) => { const [x, y] = along(f); K.impact(x + (i % 2 ? 5 : -5), y, T_BLAST + i * 0.52 + (i % 2) * 0.1, { r, shake: i ? false : 2 }); });
@@ -400,7 +397,6 @@ const dawn = layer("background: linear-gradient(to left, rgba(255,160,80,0.42), 
 const ARMYC = [1745, 425];
 [[1742, 360], [1752, 432], [1738, 500]].forEach(([x, y], i) => U({ id: "a" + i, side: "carth", x, y, w: 30, h: 30, label: i === 1 ? "U.S. ARMY" : null, fs: 15, t: T_SPRUNG - 0.6 + i * 0.15 }, { icon: "infantry", flag: "us", size: "II" }));
 REDS.forEach((_, i) => B.show("h" + i, T_SPRUNG + (i % 6) * 0.08, 1));
-SFX("bugle", T_SPRUNG);          // Chinese bugles and whistles: the night attack starts
 // Yudam-ni: the pocket becomes a real (two-colour) front
 const YPER = arc([1180, 360], 70, 56, 0, 360, 15);
 const YF = K.front({ pts: YPER, sideA: "rome", sideB: "carth", width: 13, t: T_YUD + 0.9, dur: 1.6, until: P7 + 0.4 });
@@ -457,7 +453,6 @@ ATT.forEach(([x, y, x2, y2, sz], i) => {
   U({ id: "c" + i, side: "rome", x, y, w: 16, h: 16, label: i === 1 ? "58TH DIVISION" : null, fs: 6.5, t: T_DIV - 0.3 + i * 0.15 }, { icon: "infantry", flag: "prc", size: sz });
   B.move("c" + i, T_NIGHT7 - 1.5 + (i % 3) * 0.3, 2.5, x2, y2);
 });
-SFX("bugle", T_DIV + 0.4);       // bugles as the Chinese division closes on Hagaru-ri
 [
   [[1420, 870], [1470, 830], [1505, 795]],
   [[1560, 910], [1575, 860], [1582, 808]],
@@ -542,7 +537,6 @@ K.aircraft({ kind: "cargo", side: "carth", size: 56, alt: 34, pts: [[1380, 980],
   const t0 = T_REPL + i * 0.45 + (i % 2) * 0.08;
   tl.fromTo(c, { autoAlpha: 0, y: -90 }, { autoAlpha: 1, y: 0, duration: 2.2, ease: "sine.out" }, t0);
   tl.to(c, { autoAlpha: 0, duration: 0.5 }, END - 0.6);
-  if (i % 2 === 0) SFX("parachute", t0);  // parachute canopies open (every other one, spaced)
 });
 K.aircraft({ kind: "turboprop", side: "carth", size: 54, alt: 20, pts: [along(-3.2), along(-0.8), along(0.1), along(0.36)], t: T_REPL + 1.0, dur: 3.6, land: true, until: END + 1 });
 // the lifeline

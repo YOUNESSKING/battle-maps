@@ -17,7 +17,7 @@ from PIL import Image, ImageFilter, ImageDraw, ImageFont
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
 AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only.mp4, only remix the sound
-MUSIC_VOL = 0.12  # music bed level before ducking (owner 2026-09-30: 0.18 still too loud)
+MUSIC_VOL = 0.18  # music bed level before ducking (locked, STYLE_LOCK.md section 5)
 T = json.load(open("audio/timing.json"))
 P, DUR = T["paragraphs"], T["duration"]
 FPS = 30

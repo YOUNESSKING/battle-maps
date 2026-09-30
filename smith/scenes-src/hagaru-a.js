@@ -108,8 +108,6 @@ B.caption("SMITH'S MARINES LAND ON THE EAST COAST", T_SMITH + 0.2, T_MTN - 0.2, 
 B.arrow({ side: "carth", pts: GL([[39.38, 127.58], [39.62, 127.58], [39.9, 127.5], [40.12, 127.38], [40.3, 127.3]]), width: 12, t: T_MTN + 0.2, dur: 2.8 });
 B.move("m1", T_MTN + 0.3, 3.4, ...G(40.12, 127.52), "power1.inOut");
 B.snow(T_MTN - 0.5, END + 1);
-SFX("blizzard", T_MTN - 0.5);   // cold wind bed as the snow starts over the mountains
-SFX("truck", T_MTN + 0.3);      // the division column moves up into the mountains
 const ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 const [rx, ry] = G(40.47, 127.24);
 ring.setAttribute("cx", rx); ring.setAttribute("cy", ry); ring.setAttribute("r", 34);

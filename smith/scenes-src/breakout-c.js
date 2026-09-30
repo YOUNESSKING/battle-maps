@@ -88,8 +88,7 @@ const U = (o) => {
 };
 // LOCKED bombing run (Harrier recipe from goosegreen move3.js): size 84, alt 30, dur 3.2; bombs just after the pass, 0.25 s apart
 const bombRun = (pts, t0, bombs, o = {}) => {
-  K.aircraft({ kind: o.kind || "prop", side: o.side || "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
-  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+  K.bombRun({ kind: o.kind || "prop", side: o.side || "carth", pts, t: t0, bombs }); // locked: jet/prop + bombs + SHAKE on the first bomb
 };
 const runThrough = (x, y, ang, len = 900) => { const c = Math.cos(ang), s = Math.sin(ang); return [[x - c * len / 2, y - s * len / 2], [x, y], [x + c * len / 2, y + s * len / 2]]; };
 // continuous smoke column over a burning / bombed place
@@ -199,7 +198,6 @@ B.camera(camSfx([
 // ---------- base ----------
 K.grid(G, 40.05, 40.4, 127.0, 127.7, 0.02, 0.2);
 B.snow(0, END);
-SFX("blizzard", 0.3); // cold wind bed: snowy mountain pass
 B.showDate(0.3);
 B.date("DECEMBER 7, 1950", 0.5, T_BLIZ - 0.2, 36);
 B.date("DECEMBER 9, 1950", T_BLIZ, null, 36);
@@ -286,7 +284,6 @@ const CH = [];
   mine.forEach((j, k) => {
     const f = 0.6 + k * 0.035, tr = Math.max(t0 + dur * f, T_PUSH + 0.2 + j * 0.15), from = lin(pts, f);
     CH[j] = chute(DZ[0] + drops[j][0], DZ[1] + drops[j][1], tr, { dur: 2.6, from });
-    if (k === 0) SFX("parachute", tr + 0.15); // chutes open as the spans leave the aircraft (one cue per aircraft, >= 0.4 s apart)
   });
 });
 B.label("C-119 FLYING BOXCARS", DZ[0] + 330, DZ[1] - 120, { cls: "tg", size: 26, t: T_C119 + 0.2, until: T_TONS, anchor: [0, -50] });
@@ -309,7 +306,6 @@ B.hideUnits(["rc"], S6, 0.5);
 
 // ---------- breakout-6: Hill 1081 in the snowstorm ----------
 B.fog(T_BLIZ - 0.4, T_BUILT, 0.45);
-SFX("blizzard", T_BLIZ - 0.4); // the snowstorm closes in over Hill 1081
 B.label("HILL 1081", H1081[0] - 50, H1081[1] - 40, { cls: "tg", size: 30, t: S6 + 0.2, until: T_BUILT, anchor: [-100, -50] });
 K.target(H1081[0], H1081[1], S6 + 0.4, { r: 70, until: T_HAUL + 1.5 });
 // the front on the height: blue attacking from the south, red holding the hill; it moves off the height when the hill falls
@@ -336,7 +332,6 @@ B.hideUnits(["r0", "r1", "r2", "r3"], T_HAUL + 2.5, 0.8);
   follow(id, ROAD, T_HAUL + 0.3 + i * 0.1, (T_BUILT - T_HAUL) + 0.6, d0, DB - 48 - i * 30, "power1.inOut");
   B.hideUnits([id], T_NARROW - 0.3, 0.5);
 });
-SFX("truck", T_HAUL + 0.4); // the engineers' trucks haul the spans down to the gap
 B.units.e0.el.querySelector(".tag").style.cssText += "font-size:14px;position:absolute;left:40px;top:-2px;margin:0;";
 const newBr = svgEl(`<g transform="translate(${BX} ${BY}) rotate(${BDEG})"><rect x="-40" y="-14" width="80" height="28" fill="#8d949a" stroke="#1d1a14" stroke-width="4"/>
   <rect x="-40" y="-11" width="80" height="8" fill="#5d646a"/><rect x="-40" y="3" width="80" height="8" fill="#5d646a"/>
@@ -358,7 +353,6 @@ conv.forEach((icon, i) => {
   U({ id, side: "carth", x, y, w: 24, h: 20, icon, flag: "us", t: T_NARROW + 0.2 + i * 0.1 });
   follow(id, ROAD, T_INCH + 0.3 + i * 0.15, END - T_INCH - 0.3, d0, d0 + 330, "none");
 });
-SFX("truck", T_INCH + 0.4); // the convoy starts across the new bridge
 B.caption("THE CROSSING GOES ON ALL NIGHT", T_NIGHT + 0.3, END - 0.3, "carth");
 K.raiseTerritory();
 B.finish();

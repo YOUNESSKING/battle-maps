@@ -141,6 +141,5 @@ SFX("hit", 0.1);            // odds card slams in
 SFX("hit", T_120 + 0.25);   // 120,000 slams in
 for (let t = 0.15; t < 1.3; t += 0.2) SFX("tick", t);             // 15,000 counting up
 for (let t = T_120 + 0.4; t < T_120 + 1.9; t += 0.2) SFX("tick", t); // 120,000 counting up
-SFX("blizzard", T_COLD);    // cold wind bed under the -30°F stamp and the snow (new kind, sourced later)
 SFX("whoosh", T_A - 0.9);   // accelerating dive onto the Chosin Reservoir (fastest at the hand-off)
 B.finish();

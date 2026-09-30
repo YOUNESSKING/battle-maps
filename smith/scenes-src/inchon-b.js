@@ -109,15 +109,13 @@ const arc = (a, b, t, dur = 0.8) => {
 // warship salvo: bow gun flash (no land-gun sound) + naval gun cue + shell arc + impact boom on land
 const salvo = (s, target, t, r = 15) => {
   const g = [s.x + s.w * 0.4 * (s.flip ? 1 : -1), s.y - s.w * 0.05];
-  K.gun(g[0], g[1], t, { dx: 0, dy: 0, sfx: false });
-  SFX("naval_gun", t); // naval gun salvo (new kind, sourced later)
+  K.gun(g[0], g[1], t, { dx: 0, dy: 0 }); // locked: ship guns = K.gun (quiet launch) -> K.impact (artillery boom)
   arc(g, target, t + 0.05, 0.8);
   K.impact(target[0], target[1], t + 0.85, { r, shake: r >= 17 ? 3 : false });
 };
 // Corsair bombing run: exact Harrier recipe (size 84, alt 30, dur 3.2, stick of bombs 0.25 s apart just after the pass)
 const corsairRun = (pts, bombs, t0) => {
-  K.aircraft({ kind: "prop", side: "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
-  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+  K.bombRun({ kind: "prop", pts, t: t0, bombs }); // locked: Corsair + bombs + SHAKE on the first bomb
 };
 const smokeColumn = (pts, t0, t1, gap = 1.1) => { for (let t = t0, i = 0; t < t1; t += gap, i++) { const p = pts[i % pts.length]; K.smoke(p[0], p[1], t, { n: 1, r: 9 + (i % 3), rise: 42, drift: 10, life: 3.2, alpha: 0.62 }); } };
 // full-map tint layer (dawn / dusk), under the overlay
@@ -182,7 +180,6 @@ K.badge({ name: "MAJ. GEN. OLIVER P. SMITH", role: "1ST MARINE DIVISION", photo:
 B.caption("3 WEEKS TO PLAN", T_3W - 0.3, T_PAC - 0.2, "carth");
 const fleet = [[880, 1215], [975, 1182], [925, 1282], [1040, 1245], [1010, 1318]];
 fleet.forEach(([x, y], i) => ship(x, y, { w: 64, flip: true, t: I5 + 1.6 + i * 0.25, slide: -50, until: I6 - 0.5 }));
-SFX("ship", I5 + 1.6); // invasion fleet sails in (ships visibly move)
 B.arrow({ side: "carth", pts: [[0, 1180], [300, 1192], [640, 1185]], width: 20, t: T_PAC - 0.4, dur: 1.6, until: I6 - 0.6 });
 B.label("FROM THE U.S.", 300, 1140, { cls: "tg", size: 26, t: T_PAC, until: I6 - 0.6 });
 U("m1", "carth", 705, 1185, T_PAC + 1.0, { w: 44, h: 30, size: "III", label: "1ST MARINES", fs: 13 });
@@ -226,7 +223,6 @@ B.label("GREEN BEACH", WOLMI[0] - 36, WOLMI[1] - 32, { cls: "tg", size: 14, t: T
 // fire-support group: one cruiser + two destroyers, bows toward the island
 const SHIPS = [{ x: 830, y: 1012, w: 66, flip: true }, { x: 905, y: 962, w: 46, flip: true }, { x: 905, y: 1082, w: 46, flip: true }];
 SHIPS.forEach((s, i) => ship(s.x, s.y, { w: s.w, flip: true, color: "#1f4fc4", t: I6 + 0.3 + i * 0.3, slide: -60 }));
-SFX("ship", I6 + 0.3); // cruiser + destroyers steam in (they visibly move)
 B.label("CRUISER", SHIPS[0].x, SHIPS[0].y + 22, { cls: "tg", size: 11, t: I6 + 1.4, until: T_STORM });
 B.label("DESTROYERS", SHIPS[2].x, SHIPS[2].y + 22, { cls: "tg", size: 11, t: I6 + 1.6, until: T_STORM });
 const WT = [[1082, 900], [1092, 912], [1078, 916], [1090, 896], [1084, 906]]; // targets on Wolmi-do

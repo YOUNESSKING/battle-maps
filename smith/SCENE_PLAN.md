@@ -92,12 +92,5 @@ re-read from timing.json. Then `make_music_bed.py` again (length changes).
 `hyperframes snapshot . --at ...` per scene, then one contact sheet per move (hook, Move 1, Move 2, Move 3 + ending), each frame labelled
 (scene, time, what the owner should check: aircraft bombing, ships firing, fronts, night, counters, badges, casualty card). Send, wait for approval.
 
-## E. Sound (owner rule 2026-09-29, HANDOVER 1b "Sound library scope")
-- Library only where it matches the picture: impacts/explosions (incl. naval shells landing), land guns + mortars, aircraft flybys, MG,
-  whoosh/hit/tick/static on camera dives, stamps, cards, counters. Ship guns use `sfx: false` on K.gun.
-- Everything else gets its own kind, cued in the scenes now: `naval_gun`, `bugle`, `blizzard`, `truck`, `parachute`, `bulldozer`, `ship`.
-  Sounds: sourced CC0/PD/CC BY into `assets/media/sfx/new/<kind>_<n>.wav` (2-3 variants each, credits in `new/CREDITS_NEW.md`).
-- No identical repeats: `tools/sfx_mix_lib.py` can vary pitch per cue and avoid back-to-back repeats (`vary`).
-- Gate: new kinds and `vary` are mixed ONLY when listed in `assets/media/sfx/new/APPROVED.txt` (one word per line). Until then the mix
-  is exactly the locked one. Owner test: `build/sound_test_new.mp3` (the sounds on their own) + a 1-min in-context clip
-  (`SFX_TEST=1 python3 tools/make_clip.py ...`, after the scenes are approved), then write APPROVED.txt.
+## E. Sound
+Superseded (2026-09-30): follow STYLE_LOCK.md section 3a (locked battle sounds, K.bombRun, check_sound_lock.py). No extra sourced sounds.

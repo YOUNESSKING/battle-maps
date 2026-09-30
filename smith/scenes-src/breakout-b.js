@@ -87,8 +87,7 @@ const U = (o) => {
 };
 // LOCKED bombing run (Harrier recipe from goosegreen move3.js): size 84, alt 30, dur 3.2; bombs just after the pass, 0.25 s apart
 const bombRun = (pts, t0, bombs, o = {}) => {
-  K.aircraft({ kind: o.kind || "prop", side: o.side || "carth", size: 84, alt: 30, pts, t: t0, dur: 3.2, until: t0 + 3.2 });
-  bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: 20, shake: k === 0 ? 5 : false }));
+  K.bombRun({ kind: o.kind || "prop", side: o.side || "carth", pts, t: t0, bombs }); // locked: jet/prop + bombs + SHAKE on the first bomb
 };
 const runThrough = (x, y, ang, len = 900) => { const c = Math.cos(ang), s = Math.sin(ang); return [[x - c * len / 2, y - s * len / 2], [x, y], [x + c * len / 2, y + s * len / 2]]; };
 // continuous smoke column over a burning / bombed place
@@ -166,7 +165,6 @@ B.camera(camSfx([
 B.image("assets/chosin_close_water.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 K.grid(G, 39.9, 40.8, 126.4, 128.0, 0.05, 0.2);
 B.snow(0, END);
-SFX("blizzard", 0.2); // cold wind bed: snowy mountain road
 road(ROAD, { t: 0.1, dur: 1.4, w: 10 });
 B.showDate(0.2);
 B.date("DECEMBER 6, 1950", 0.4, T_KOTO - 0.2, 36);
@@ -194,8 +192,6 @@ COL.forEach(([id, icon, size, label], i) => {
 B.units.c0.el.querySelector(".tag").style.cssText += "font-size:13px;position:absolute;left:32px;top:-2px;margin:0;";
 gsap.set(B.units.c0.el, { zIndex: 3 });
 LEG.forEach(([a, b], k) => COL.forEach((_, i) => follow("c" + i, ROAD, a + i * 0.05, b - a, HEAD[k] - i * GAP, HEAD[k + 1] - i * (k === 2 ? 14 : GAP), "power1.inOut")));
-SFX("truck", LEG[0][0] + 0.2); // the column starts to move
-SFX("truck", LEG[2][0] + 0.3); // the column moves off again after the air strikes
 
 // ---------- moving two-colour front on each flank (hops follow the column: to + moveT) ----------
 const OFF = 78, BACK = 300, AHEAD = 70;

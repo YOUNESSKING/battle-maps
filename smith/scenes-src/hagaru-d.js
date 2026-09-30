@@ -37,7 +37,6 @@ const G = (lat, lon) => {
   return [+((lon + 180) / 360 * n - 893344).toFixed(1), +((1 - Math.asinh(Math.tan(r)) / Math.PI) / 2 * n - 394786).toFixed(1)];
 };
 K.grid(G, 40.148, 40.572, 126.705, 127.694, 0.05, 0);
-SFX("blizzard", 0.2);            // cold wind bed under the held perimeter
 // the held perimeter (same ring as hagaru-c): real front, two-colour (Chinese all around), blue inside, red outside
 const arc = (c, rx, ry, a0, a1, step = 15, wob = 0.06) => {
   const pts = [];
