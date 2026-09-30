@@ -258,7 +258,7 @@ cuts.forEach((f, i) => {
   const d = MSR.len * f, side = i % 2 ? 1 : -1, [x0, y0] = normAt(MSR, d - 30, side * 190), [xm, ym] = normAt(MSR, d - 8, side * 95), [x1, y1] = posAt(MSR, d);
   const tt = T_CUT + 0.2 + i * 0.47;
   B.arrow({ side: "rome", pts: [[x0, y0], [xm, ym], [x1 + (xm - x1) * 0.4, y1 + (ym - y1) * 0.4]], width: 10, t: tt, dur: 0.8, until: END - 0.5 });
-  K.impact(x1, y1, tt + 0.8, { r: 13 + (i % 2) * 3, shake: i === 0 ? 3 : false });
+  K.impact(x1, y1, tt + 0.8, { r: 13 + (i % 2) * 3 });
   cutX(x1, y1, tt + 0.9, END - 0.5, 14);
 });
 const bp = posAt(MSR, MSR.len * 0.3);

@@ -129,7 +129,7 @@ const shell = (from, to, t, o = {}) => {
   tl.to(p, { opacity: 0.95, duration: 0.05 }, t);
   tl.to(p, { strokeDashoffset: -len, duration: dur, ease: "none" }, t);
   tl.to(p, { opacity: 0, duration: 0.05 }, t + dur);
-  K.impact(x2, y2, t + dur, { r: o.r || 10, shake: o.shake != null ? o.shake : 2 });
+  K.impact(x2, y2, t + dur, { r: o.r || 10, });
 };
 // front geometry, same formulas as K.front in lib/fx.js (for a back-and-forth morph the kit's single `to` can't do)
 const fOff = (pts, d) => pts.map((p, i) => {
@@ -308,7 +308,7 @@ REDS.forEach((_, i) => B.show("h" + i, P4 + 0.5, 0.3));
 // =====================================================================================
 K.badge({ name: "MAJ. GEN. O.P. SMITH", role: "1ST MARINE DIVISION", photo: SMITH_HEAD, flag: "us", side: "carth", corner: "tr", t: T_SMITH - 0.2, until: T_WROTE - 0.2 });
 // the first clashes (Sudong, early November)
-[[-20, 0, 14], [25, 20, 11], [0, -25, 16]].forEach(([dx, dy, r], i) => K.impact(SUDONG[0] + dx, SUDONG[1] + dy, T_CLASH + i * 0.38, { r, shake: i ? false : 3 }));
+[[-20, 0, 14], [25, 20, 11], [0, -25, 16]].forEach(([dx, dy, r], i) => K.impact(SUDONG[0] + dx, SUDONG[1] + dy, T_CLASH + i * 0.38, { r }));
 B.label("SUDONG · FIRST CLASHES · EARLY NOV.", SUDONG[0] - 50, SUDONG[1] - 40, { cls: "tg", size: 26, t: T_CLASH + 0.2, until: T_HURRY + 2.4, anchor: [-100, -50] });
 REDS.forEach((_, i) => tl.to(B.units["h" + i].el, { autoAlpha: 0.7, duration: 0.5, yoyo: true, repeat: 1 }, T_GONE + (i % 4) * 0.12));
 
@@ -367,7 +367,7 @@ const dozers = [0.12, 0.3].map((f, i) => {
 });
 // frozen ground: blades break (shake), then blasting (explosive charges = library explosions, sizes varied)
 tl.to(dozers, { rotation: 8, duration: 0.08, yoyo: true, repeat: 7 }, T_BLADES);
-[[0.2, 9], [0.45, 7], [0.35, 10], [0.6, 8]].forEach(([f, r], i) => { const [x, y] = along(f); K.impact(x + (i % 2 ? 5 : -5), y, T_BLAST + i * 0.52 + (i % 2) * 0.1, { r, shake: i ? false : 2 }); });
+[[0.2, 9], [0.45, 7], [0.35, 10], [0.6, 8]].forEach(([f, r], i) => { const [x, y] = along(f); K.impact(x + (i % 2 ? 5 : -5), y, T_BLAST + i * 0.52 + (i % 2) * 0.1, { r }); });
 B.caption("GROUND FROZEN ROCK-HARD", T_FROZEN + 0.3, T_FLOOD - 0.3);
 // day and night under floodlights
 B.dim(T_FLOOD - 0.3, P6 - 0.4, 0.5);
@@ -489,7 +489,7 @@ MORT.forEach(([x, y], i) => U({ id: "m" + i, side: "rome", x, y, w: 18, h: 14, l
 [[0, [1488, 820], 13], [1, [1760, 704], 12], [0, [1530, 845], 14], [1, [1740, 650], 13], [0, [1590, 862], 12], [1, [1488, 800], 14]].forEach(([g, tgt, r], k) => {
   const t0 = T_AMMO + 0.4 + k * 0.95 + (k % 2) * 0.15, [x, y] = GUNS[g];
   K.gun(x + 4, y - 4, t0, { unit: "g" + g, dx: 2, dy: -6 });
-  shell([x + 4, y - 8], tgt, t0 + 0.05, { r, dur: 1.05, h: 40, shake: k ? false : 3 });
+  shell([x + 4, y - 8], tgt, t0 + 0.05, { r, dur: 1.05, h: 40, });
 });
 B.caption("HAGARU-RI WAS FULL OF AMMUNITION", T_AMMO + 0.2, T_LOST - 0.3, "carth");
 // burning dumps and huts: fire + continuous smoke columns

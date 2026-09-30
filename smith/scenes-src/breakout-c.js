@@ -241,7 +241,7 @@ tl.fromTo(brG, { scale: 1.8 }, { scale: 1, duration: 0.5, ease: "back.out(2)" },
 B.label("THE BRIDGE", BX + 34, BY - 30, { cls: "tg", size: 18, t: T_BRIDGE + 0.3, until: T_BLOWN, anchor: [0, -100] });
 // the bridge is blown: three demolition blasts (varied size and spacing), then a smoke column
 const TB = T_BLOWN + 0.5;
-[[0, 0, 0, 22], [10, -8, 0.27, 17], [-8, 6, 0.6, 19]].forEach(([dx, dy, dt, r], k) => K.impact(BX + dx, BY + dy, TB + dt, { r, shake: k === 0 ? 6 : false, puffs: 4 }));
+[[0, 0, 0, 22], [10, -8, 0.27, 17], [-8, 6, 0.6, 19]].forEach(([dx, dy, dt, r], k) => K.impact(BX + dx, BY + dy, TB + dt, { r, puffs: 4 }));
 tl.to(brG, { autoAlpha: 0, duration: 0.15 }, TB + 0.1);
 smokeCol(BX + 4, BY - 4, TB + 0.8, T_GONE + 3, { r: 9, rise: 36 });
 const gapG = svgEl(`<g transform="translate(${BX} ${BY}) rotate(${BDEG})"><path d="M -30 -20 L -22 -11 L -28 -2 L -20 7 L -27 20 L 28 20 L 21 10 L 29 1 L 20 -9 L 27 -20 Z" fill="#17130e" stroke="#c4121f" stroke-width="3.5" stroke-dasharray="7 4"/></g>`, TB + 0.1, T_BUILT + 0.6, 0.2);
@@ -321,7 +321,7 @@ B.arrow({ side: "carth", pts: [[CHIN[0] - 90, CHIN[1] - 40], [1520, 1080], [1400
 B.arrow({ side: "carth", pts: [[KOTO[0] - 80, KOTO[1] + 190], [1160, 480], [1170, 600], [1205, 670]], width: 14, t: T_STORM + 1.0, dur: 2.4, until: T_HAUL + 3 });
 B.arrow({ side: "carth", pts: [[1395, 600], [1480, 640], [1545, 690]], width: 12, t: T_STORM + 1.6, dur: 1.4, until: T_HAUL + 3 });
 SFX("mg", T_BLIZ + 0.3); // Marines storm the heights above the pass
-[[H1081[0] - 30, H1081[1] - 20, 0, 13], [H1081[0] + 25, H1081[1] + 5, 0.45, 11], [1190, 690, 1.1, 12]].forEach(([x, y, dt, r]) => K.impact(x, y, T_BLIZ + 0.6 + dt, { r, shake: false })); // supporting mortar rounds on the heights
+[[H1081[0] - 30, H1081[1] - 20, 0, 13], [H1081[0] + 25, H1081[1] + 5, 0.45, 11], [1190, 690, 1.1, 12]].forEach(([x, y, dt, r]) => K.impact(x, y, T_BLIZ + 0.6 + dt, { r })); // supporting mortar rounds on the heights
 B.grey(["r0", "r1", "r2", "r3"], T_TAKE, 0.8);
 B.caption("HILL 1081 TAKEN IN A BLIZZARD", T_TAKE + 0.2, T_HAUL - 0.2, "carth");
 B.hideUnits(["r0", "r1", "r2", "r3"], T_HAUL + 2.5, 0.8);

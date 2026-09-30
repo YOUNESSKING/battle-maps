@@ -111,7 +111,7 @@ const salvo = (s, target, t, r = 15) => {
   const g = [s.x + s.w * 0.4 * (s.flip ? 1 : -1), s.y - s.w * 0.05];
   K.gun(g[0], g[1], t, { dx: 0, dy: 0 }); // locked: ship guns = K.gun (quiet launch) -> K.impact (artillery boom)
   arc(g, target, t + 0.05, 0.8);
-  K.impact(target[0], target[1], t + 0.85, { r, shake: r >= 17 ? 3 : false });
+  K.impact(target[0], target[1], t + 0.85, { r });
 };
 // Corsair bombing run: exact Harrier recipe (size 84, alt 30, dur 3.2, stick of bombs 0.25 s apart just after the pass)
 const corsairRun = (pts, bombs, t0) => {
