@@ -5,6 +5,14 @@ Every new video uses EXACTLY what is below. Don't search for new music or sounds
 anything on this page. Only NEW ideas go through "test before applying" (snapshots / 1-min clip, then owner approval).
 Everything here is already the default in `goosegreen/` (copy it; see HANDOVER 0b step 1), so doing nothing = locked style.
 
+## 0. The reference clip (hear and see it before any new video)
+`reference/style-reference-30s.mp4` (owner-approved 2026-09-30): Goose Green move 3, mixed with the locked sounds and levels:
+artillery impacts, an Argentine jet + turboprop shot down by AA, helicopters, then the **Harrier bombing run with the camera
+shake**. Every new video must sound and look like this. Before the final assemble, build a test clip of the new video's
+busiest 30 s (`make_clip.py SCENE --from P --to P`) and compare it with this reference: same boom-on-impact, same aircraft
+sounds, same shake, same music level. If it differs, fix the new video, never the reference.
+Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, then cut 8.5-29.5 s + 87.5-96.5 s.
+
 ## 1. Where it lives (copy from goosegreen/ into every new video)
 | What | File |
 |---|---|
