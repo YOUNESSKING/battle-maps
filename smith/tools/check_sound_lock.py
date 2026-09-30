@@ -21,6 +21,7 @@ FILES = {  # file: md5 (locked recordings / synths)
     "jet_flyby.wav": "4b73b86411c241c214d2ccc2c0bcb98d",
     "prop_flyby.wav": "7d1a245cce52e64133d2b14ab1424434",
     "heli_flyby.wav": "5e676f62c6416bed04ce54b7e59eb0d4",
+    "zoom_whoosh.wav": "38bfd2c2af2cf624366bb9a01e306d88",  # zoom sound on the biggest camera moves (owner pick 2026-09-30)
 }
 KINDS = {  # kind: (clips, dB, min gap)
     "fire": (["gun_fire.wav"], -24, 0.35),
@@ -30,6 +31,7 @@ KINDS = {  # kind: (clips, dB, min gap)
     "jet": (["jet_flyby.wav"], -11, 1.2),
     "prop": (["prop_flyby.wav"], -13, 1.5),
     "heli": (["heli_flyby.wav"], -14, 2.0),
+    "whoosh": (["zoom_whoosh.wav"], -12, 0.50),
 }
 MUSIC = {
     "music_src_long-note-one.mp3": "def03d2a1a998201a3e191a265961ae6",

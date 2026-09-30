@@ -12,7 +12,7 @@ KINDS = {  # kind: (clips, level dB, min gap between two cues of this kind in s)
     "explosion": (["candidates/cand2_hit.wav", "candidates/cand4_hit.wav"], -4, 0.20),  # real distant explosions (CC BY / CC0)
     "missile":   (["missile_launch_hit.wav"], -9, 0.80),
     "mg":        (["mg_burst.wav"], -18, 1.00),
-    "whoosh":    (["whoosh.wav"], -15, 0.50),
+    "whoosh":    (["zoom_whoosh.wav"], -12, 0.50),  # locked zoom sound (owner 2026-09-30): Mixkit "Cinematic tunnel reverb woosh", only on the biggest camera moves
     "hit":       (["hit.wav"], -8, 0.50),
     "static":    (["radio_static.wav"], -21, 3.00),
     "tick":      (["counter_tick.wav"], -20, 0.12),

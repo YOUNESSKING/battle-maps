@@ -28,6 +28,9 @@ shake switched off for most shells. Fixed in scenes-src (committed, NOT rendered
 `bash tools/render_all.sh --assemble "inchon-b inchon inchon-3 inchon-7" "hagaru-c chosin_close hagaru-3 hagaru-8" "breakout-a chosin breakout-1 breakout-2" "breakout-c funchilin breakout-4 breakout-6"`
 (stay in the turn watching it: the machine reboots when the session is idle).
 
+## v4 2026-09-30 (sound only): music 0.08, zoom sound = zoom_whoosh.wav (owner pick) on the 3 biggest moves only, badges silent.
+Master: https://gofile.io/d/zX2S9BTG (md5 159c05967ac782bac525b38deb9de2b3). The 4-scene shake re-render is still NOT done (owner: no re-render).
+
 ## DONE 2026-09-30 01:45 UTC: final video rendered + delivered
 - Owner approved all sheets + sounds. Master: build/smith-full.mp4 = build/OP-Smith-Top3-1080p.mp4 (1920x1080, 30 fps, 16:09, -15.0 LUFS, 1.63 GB),
   uploaded to Gofile. v3 (2026-09-30, sound redone to the other chat's STYLE_LOCK: locked battle sounds only, K.bombRun with shake, music 0.18, check_sound_lock OK, busiest 30 s within 0.5 dB of reference/style-reference-30s.mp4): https://gofile.io/d/yIZtGzqz (md5 ff374f98bc2102d3f96096341cd2dd02). The sourced sounds in assets/media/sfx/new/ are NOT used (rule removed).
