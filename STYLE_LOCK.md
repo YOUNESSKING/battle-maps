@@ -52,11 +52,11 @@ Rule: every visual beat has a sound, and **the boom is always on the impact** (l
 | heli | `heli_flyby` (rotor thumps) | -14 | 2.0 s |
 | missile | `missile_launch_hit` | -9 | 0.8 s |
 | hit | `hit` | -8 | 0.5 s |
-| whoosh | `whoosh` | -15 | 0.5 s |
+| whoosh (zoom) | `zoom_whoosh` (Mixkit "Cinematic tunnel reverb woosh", deep, reverb tail; owner pick 2026-09-30) | -12 | 0.5 s |
 
 **Zoom / transition sound (owner 2026-09-30):** only on the BIGGEST camera moves (the hook dive, the flash-forward cut, the
-hook zoom-out). No zoom sound on ordinary camera moves, arrows or commander badges (badges slide in silently). The sound itself
-is being replaced (owner rejected the generic whoosh and 6 candidates); until a new one is approved the locked `whoosh` stays.
+hook zoom-out). No zoom sound on ordinary camera moves, arrows or commander badges (badges slide in silently). The sound is
+`zoom_whoosh.wav` (owner picked it from 3 rounds of tests; Mixkit Sound Effects Free License, no credit needed), checked by the sound lock.
 | mg | `mg_burst` | -18 | 1.0 s |
 | tick (counters) | `counter_tick` | -20 | 0.12 s |
 | static (radio) | `radio_static` | -21 | 3.0 s |
