@@ -97,7 +97,7 @@ Narration voice: AI-generated (Kokoro TTS). Maps: original animations.
 | Name **only battles, people and numbers that are in the recorded script**. | Sister channel V4 cited researchers who were never in the voice. |
 | **Fact-check every name and number** before it goes in (and before voicing). Use the Gemini v3 fact-check list. | Morgan research had 5 errors (see HANDOVER §8.12). |
 | First line = the script's hook, not "In this video…". | The first ~2 lines are all most viewers see. |
-| Keep every CC BY / CC BY-SA credit line. | Licence requirement. |
+| Keep every CC BY / CC BY-SA credit line, but **write NO links (no URLs) anywhere in the description**: name the licence instead ("licensed under Creative Commons Attribution 4.0"). | Owner: YouTube treats links on new channels as possible spam. Naming the licence still satisfies the attribution. |
 | Exactly **3 hashtags**. | More than 3 looks spammy. |
 | Business email: `[email to fill in]` — **the owner must fill it in.** | |
 

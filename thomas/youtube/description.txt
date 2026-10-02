@@ -53,9 +53,9 @@ Chickamauga cost the Union about 16,170 casualties and the Confederates about 18
 CREDITS
 
 Images: public-domain photographs and lithographs from the Library of Congress, the National Archives and Wikimedia Commons (Mathew Brady studio, George N. Barnard, A. S. Morse, Kurz & Allison, Cosack & Co.). Terrain: Mapzen / AWS Terrain Tiles (open data).
-Photo: George H. Thomas's grave, Oakwood Cemetery, Troy NY, by Matt Wade, CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/), via Wikimedia Commons.
-Music: "Heavy Heart", "Clash Defiant", "Crusade", "Undaunted" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
-Music: "Ready Aim Fire" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 4.0 License, http://creativecommons.org/licenses/by/4.0/
+Photo: George H. Thomas's grave, Oakwood Cemetery, Troy NY, by Matt Wade, CC BY-SA 3.0 (Wikimedia Commons).
+Music: "Heavy Heart", "Clash Defiant", "Crusade", "Undaunted" by Kevin MacLeod (incompetech), licensed under Creative Commons Attribution 3.0
+Music: "Ready Aim Fire" by Kevin MacLeod (incompetech), licensed under Creative Commons Attribution 4.0
 Sound effects: original. Narration voice: AI-generated (Kokoro TTS). Maps: original animations.
 Business enquiries: [email to fill in]
 

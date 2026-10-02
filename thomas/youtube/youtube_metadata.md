@@ -65,9 +65,9 @@ Chickamauga cost the Union about 16,170 casualties and the Confederates about 18
 CREDITS
 
 Images: public-domain photographs and lithographs from the Library of Congress, the National Archives and Wikimedia Commons (Mathew Brady studio, George N. Barnard, A. S. Morse, Kurz & Allison, Cosack & Co.). Terrain: Mapzen / AWS Terrain Tiles (open data).
-Photo: George H. Thomas's grave, Oakwood Cemetery, Troy NY, by Matt Wade, CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/), via Wikimedia Commons.
-Music: "Heavy Heart", "Clash Defiant", "Crusade", "Undaunted" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
-Music: "Ready Aim Fire" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 4.0 License, http://creativecommons.org/licenses/by/4.0/
+Photo: George H. Thomas's grave, Oakwood Cemetery, Troy NY, by Matt Wade, CC BY-SA 3.0 (Wikimedia Commons).
+Music: "Heavy Heart", "Clash Defiant", "Crusade", "Undaunted" by Kevin MacLeod (incompetech), licensed under Creative Commons Attribution 3.0
+Music: "Ready Aim Fire" by Kevin MacLeod (incompetech), licensed under Creative Commons Attribution 4.0
 Sound effects: original. Narration voice: AI-generated (Kokoro TTS). Maps: original animations.
 Business enquiries: [email to fill in]
 
@@ -90,6 +90,7 @@ Category: Education · Made for kids: No · Language: English · Altered or synt
 - [x] No negation in title or thumbnail
 - [x] Thumbnail A completes the title: ONE DAY LEFT (before Grant replaced him) over the army he then crushed at Nashville
 - [x] 3 thumbnail options for Test & compare: A ONE DAY LEFT (type 3), B “WE WILL HOLD” (type 1, verbatim quote), C HOLD THE RIDGE (type 1); labels and tags checked: spelled right, geography plausible, no anachronistic equipment
+- [x] No links anywhere in the description (owner: links get new channels flagged as spam); licences named without URLs
 - [x] Description in the owner's long format (hook, story, moves, method, "what this episode covers", chapters, sources, note on the numbers, credits, comment questions); 4,805 of 5,000 characters; names and numbers are in the voice or in research/FACT_NOTES.md
 - [x] Chapters from timing.json paragraph starts (final audio); start at 0:00; all ≥ 10 s (shortest 47 s)
 - [x] Credits + email placeholder + 3 hashtags
