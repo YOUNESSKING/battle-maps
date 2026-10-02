@@ -2,7 +2,7 @@
 
 **Video:** thomas-1080p.mp4 · 18:50 · 1080p · -14.8 LUFS (master: https://gofile.io/d/7QPAmOoq)
 **Locked title (vidIQ 91):** Grant Almost Fired Him Days Before He Crushed an Army: George Thomas's Top 3 Tactical Moves
-**Thumbnails (Test & compare):** made with vidIQ (generate_thumbnail, Tactical Genius style: 4 Tactical Genius thumbnails as style references + the public-domain Library of Congress portrait of Thomas, LC-DIG-cwpb-07196, as likeness reference). A thumbnail.png "“SLOW TROT”" over Nashville (blue blocks wrapping Hood's line; vidIQ 96) · B thumbnail_B.png "“THE ROCK”" over Horseshoe Ridge (vidIQ 93). Raw files: youtube/ai/.
+**Thumbnails (Test & compare):** vidIQ generate_thumbnail with the LOCKED Tactical Genius formula (main HANDOVER §1b: refs tVpl949Nk0M / 5EoX2EYJ_WI / BvJN3pyPL6E + public-domain LoC likeness LC-DIG-cwpb-07196; 1-3 words, zero context, tension; no quote marks unless verbatim). A thumbnail.png ONE DAY LEFT (type 3, ominous stakes: the narration says Thomas had perhaps a day or two left before Grant replaced him; Nashville map, THOMAS/HOOD tags, SHY'S HILL; vidIQ 90) · B thumbnail_B.png HOLD THE RIDGE (type 1, the hero's decision; Horseshoe Ridge, THOMAS/LONGSTREET tags; vidIQ 87). Raw: youtube/ai/. Rejected: “SLOW TROT” / “THE ROCK” (nicknames that need background = the losing type).
 
 ## Alternative titles (for Test & compare)
 - The Union General Grant Almost Fired, Days Before He Destroyed an Entire Army (vidIQ 91)
@@ -65,8 +65,8 @@ Category: Education · Made for kids: No · Language: English · Altered or synt
 - [ ] Competitor refs saved in youtube/competitor_refs/ (not done for this video)
 - [x] Title scored ≥ 85 (91); hook in the first 54 characters; 91 characters; clear and true (relief order drafted Dec 9, battle Dec 15-16)
 - [x] No negation in title or thumbnail
-- [x] Thumbnail A completes the title: the "Slow Trot" nickname (why Grant nearly fired him) over the army he crushed at Nashville
-- [x] 2 thumbnail options for Test & compare: thumbnail.png (A, “SLOW TROT”), thumbnail_B.png (“THE ROCK”)
+- [x] Thumbnail A completes the title: ONE DAY LEFT (before Grant replaced him) over the army he then crushed at Nashville
+- [x] 2 thumbnail options of different text types for Test & compare: thumbnail.png (A, ONE DAY LEFT, type 3), thumbnail_B.png (B, HOLD THE RIDGE, type 1); labels and tags checked: spelled right, geography plausible, no anachronistic equipment
 - [x] Description line 1 = script hook; names and numbers are all in the voice
 - [x] Chapters from timing.json paragraph starts (final audio); start at 0:00; all ≥ 10 s (shortest 47 s)
 - [x] Credits + email placeholder + 3 hashtags
