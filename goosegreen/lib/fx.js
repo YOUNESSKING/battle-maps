@@ -10,6 +10,10 @@
   const LINE_DAY = { carth: "#2c57b7", rome: "#bc2528" }, LINE_NIGHT = { carth: "#4a6a9a", rome: "#a8503c" };
   const TINT = { carth: "#4a6a9a", rome: "#a8503c" };
   const INK = "#f7f3ea";
+  // flag badges per nation: pass flag/flagA/flagB = a key below; add the new video's nations + their files in assets/media/
+  const FLAGS = { us: "assets/media/us_flag_48star.png", usmc: "assets/media/usmc_flag.png", kpa: "assets/media/kpa_flag.png",
+    prc: "assets/media/pva_flag.png", pva: "assets/media/pva_flag.png", uk: "assets/media/uk_flag.png", arg: "assets/media/arg_flag.png" };
+  const flagSrc = (f, dflt) => FLAGS[f] || FLAGS[dflt];
 
   // ---- aircraft art: top-down, nose pointing +x, drawn around (0,0) in a -50..50 box ----
   const ART = {
@@ -40,6 +44,23 @@
       <ellipse cx="22" cy="0" rx="6.5" ry="2.3" fill="#bfe3ff"/>
       <g class="prop" transform="translate(19 -14)"><circle r="8.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-8.5" width="2" height="17" fill="#1b1812"/><rect x="-8.5" y="-1" width="17" height="2" fill="#1b1812"/></g></g>
       <g class="prop" transform="translate(19 14)"><circle r="8.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-8.5" width="2" height="17" fill="#1b1812"/><rect x="-8.5" y="-1" width="17" height="2" fill="#1b1812"/></g></g>`,
+    // single-engine fighter-bomber (WW2/Korea prop plane, e.g. F4U Corsair: long nose, wide wings, one big propeller)
+    prop: (c) => `
+      <path d="M30 0 C29 -3.4 24 -4 18 -4 L-28 -2.2 L-28 2.2 L18 4 C24 4 29 3.4 30 0 Z" fill="${c}" stroke="${INK}" stroke-width="1.5"/>
+      <path d="M12 -3.6 L6 -34 L-4 -34 L-2 -3.6 Z M12 3.6 L6 34 L-4 34 L-2 3.6 Z" fill="${c}" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M-20 -2.4 L-26 -12 L-31 -12 L-29 -2.2 Z M-20 2.4 L-26 12 L-31 12 L-29 2.2 Z" fill="${c}" stroke="${INK}" stroke-width="1.3" stroke-linejoin="round"/>
+      <ellipse cx="4" cy="0" rx="6" ry="2.4" fill="#bfe3ff"/>
+      <g class="prop" transform="translate(32 0)"><circle r="11" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-11" width="2" height="22" fill="#1b1812"/><rect x="-11" y="-1" width="22" height="2" fill="#1b1812"/></g></g>`,
+    // twin-boom cargo plane (C-119 Flying Boxcar: fat pod, two engines on booms joined by a tailplane)
+    cargo: (c) => `
+      <path d="M26 0 C25 -6 20 -7 12 -7 L-10 -6 L-10 6 L12 7 C20 7 25 6 26 0 Z" fill="${c}" stroke="${INK}" stroke-width="1.5"/>
+      <rect x="-4" y="-44" width="12" height="88" rx="3" fill="${c}" stroke="${INK}" stroke-width="1.5"/>
+      <rect x="-36" y="-17" width="46" height="5" rx="2" fill="${c}" stroke="${INK}" stroke-width="1.3"/>
+      <rect x="-36" y="12" width="46" height="5" rx="2" fill="${c}" stroke="${INK}" stroke-width="1.3"/>
+      <rect x="-40" y="-20" width="7" height="40" rx="2" fill="${c}" stroke="${INK}" stroke-width="1.3"/>
+      <ellipse cx="20" cy="0" rx="4" ry="3.4" fill="#bfe3ff"/>
+      <g class="prop" transform="translate(14 -14.5)"><circle r="9" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-9" width="2" height="18" fill="#1b1812"/><rect x="-9" y="-1" width="18" height="2" fill="#1b1812"/></g></g>
+      <g class="prop" transform="translate(14 14.5)"><circle r="9" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-9" width="2" height="18" fill="#1b1812"/><rect x="-9" y="-1" width="18" height="2" fill="#1b1812"/></g></g>`,
   };
   // ---- counter icons (side view silhouettes, like K&G counters) ----
   const ICON = {
@@ -130,7 +151,7 @@
       if (o.icon && ICON[o.icon]) { sv.setAttribute("preserveAspectRatio", (o.icon === "infantry" || o.icon === "mech_nato") ? "none" : "xMidYMid meet"); sv.innerHTML = ICON[o.icon]; }
       if (o.flag) {
         const img = document.createElement("img"); img.className = "fxk-flag";
-        img.src = o.flag === "uk" ? "assets/media/uk_flag.png" : "assets/media/arg_flag.png";
+        img.src = flagSrc(o.flag, "arg");
         Object.assign(img.style, { height: u.h * 0.55 + "px", left: -u.h * 0.35 + "px", top: -u.h * 0.3 + "px" });
         u.el.appendChild(img);
       }
@@ -141,7 +162,7 @@
       }
     };
 
-    // aircraft flying a polyline: o = { kind: heli|jet|turboprop, side, pts, t, dur, size, alt, path: true,
+    // aircraft flying a polyline: o = { kind: heli|jet|turboprop|prop|cargo, side, pts, t, dur, size, alt, path: true,
     //   until, down: time it is hit (smoke trail, spin, crash explosion), land: true (shadow meets the aircraft) }
     K.aircraft = (o) => {
       const size = o.size || 40, c = COL[o.side] || o.side, alt = o.alt != null ? o.alt : size * 0.35;
@@ -170,7 +191,7 @@
         tl.to(pl, { opacity: 0, duration: 0.6 }, (o.down || tEnd) + 0.6);
       }
       // engine sound, timed so its loudest moment (about 2.3 s into the clip) falls mid-flight
-      if (window.SFX && o.sfx !== false) SFX(o.sfx || { jet: "jet", turboprop: "prop", heli: "heli" }[o.kind], Math.max(0, t0 + Math.min(dur, (o.down || tEnd) - t0) / 2 - 2.3));
+      if (window.SFX && o.sfx !== false) SFX(o.sfx || { jet: "jet", turboprop: "prop", heli: "heli" }[o.kind] || "prop", Math.max(0, t0 + Math.min(dur, (o.down || tEnd) - t0) / 2 - 2.3));
       const wrap = document.createElement("div"); wrap.className = "fxk-air"; pins.appendChild(wrap); hide(wrap);
       const k = size / 100;
       const shadow = document.createElementNS(NS, "svg"), body = document.createElementNS(NS, "svg");
@@ -261,9 +282,9 @@
       scene.insertBefore(el, document.getElementById("credit")); hide(el); return el;
     };
     // commander badge (K&G): round portrait (or initials) on the side's flag, name plate; slides in at a corner.
-    // o = { name, role, photo: "assets/media/x.png" | null, flag: "uk"|"arg", side, corner: "tl"|"tr"|"bl"|"br", t, until }
+    // o = { name, role, photo: "assets/media/x.png" | null, flag: key of FLAGS (e.g. "uk"|"arg"|"us"|"prc"), side, corner: "tl"|"tr"|"bl"|"br", t, until }
     K.badge = (o) => {
-      const c = COL[o.side] || COL.carth, flag = o.flag === "arg" ? "assets/media/arg_flag.png" : "assets/media/uk_flag.png";
+      const c = COL[o.side] || COL.carth, flag = flagSrc(o.flag, "uk");
       const face = o.photo ? `<img src="${o.photo}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">`
         : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.78) 0%, rgba(10,12,24,0.62) 60%, rgba(10,12,24,0.35) 100%);font-size:64px;font-weight:700;color:#f7f3ea;letter-spacing:0.04em;text-shadow:0 3px 6px rgba(0,0,0,0.9)">${o.initials || ""}</div>`;
       const pos = { tl: "left:60px;top:150px;", tr: "right:60px;top:110px;", bl: "left:60px;bottom:140px;", br: "right:60px;bottom:140px;" }[o.corner || "tr"];
@@ -288,7 +309,7 @@
           <img src="${flag}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:0.08em">${head}</div></div>
           ${o.rows.map((r, i) => `<div style="display:flex;align-items:center;gap:14px;font-size:38px;line-height:1.5">${PICT[r[0]] || ""}<span>${vals[i]}</span></div>`).join("")}</div>`;
       const el = screen(`<div style="display:flex;gap:60px;padding:28px 50px 30px;background:rgba(18,16,12,0.92);border-top:6px solid #c9b48a;color:#f7f3ea;font-weight:700;box-shadow:0 20px 40px rgba(0,0,0,0.55)">
-        ${col("assets/media/uk_flag.png", o.headA || "BRITISH", COL.carth, o.rows.map((r) => r[1]))}${col("assets/media/arg_flag.png", o.headB || "ARGENTINE", COL.rome, o.rows.map((r) => r[2]))}</div>`,
+        ${col(flagSrc(o.flagA, "uk"), o.headA || "BRITISH", COL.carth, o.rows.map((r) => r[1]))}${col(flagSrc(o.flagB, "arg"), o.headB || "ARGENTINE", COL.rome, o.rows.map((r) => r[2]))}</div>`,
         `left:0;right:0;top:${o.top || 250}px;display:flex;justify-content:center;`);
       tl.fromTo(el, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, o.t);
       if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, o.until);

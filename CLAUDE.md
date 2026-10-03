@@ -7,7 +7,8 @@ Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical
 
 - Setup runs automatically in the background at session start (`setup.sh`). Before voice or render steps, wait until `/tmp/battle-maps-setup.done` exists (log: `/tmp/battle-maps-setup.log`). If it's missing after ~10 min, run `bash setup.sh` in the foreground.
 - The repo must live at `/home/user/battle-maps` (scripts use absolute paths there).
-- Research for new videos comes from Gemini (`research/GEMINI_BRIEF_v2.md`); the user attaches the result.
+- Research for new videos comes from Gemini (`research/GEMINI_BRIEF_v3.md`); the user attaches the result.
+- Packaging (title, thumbnail, description, tags): `research/PACKAGING_GUIDE.md`; **no links in descriptions**.
 - Keep the conversation lean: use subagents (Sonnet for search/download/sound, Opus for maps), and commit + push work as you go.
 - **Every video opens on an animated map, never a photo** (owner rule). The first script paragraph must be `[MAP: ...]` with units on screen in the first second; archive photos only after the hook.
 - Hooks follow the **hook formula** in HANDOVER.md section 1 (stakes-first line, flash-forward to the payoff, a change every 3-5 s, SFX on every beat). Every map blast calls `SFX(kind, t)` so the build adds its sound.
