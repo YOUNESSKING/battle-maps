@@ -91,7 +91,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Voice: Kokoro `am_michael` (`tools/narrate.py`).
 - Hook: formula in HANDOVER section 1 (stakes-first line, flash-forward, change every 3-5 s, SFX on every beat).
 - Thumbnail: formula in HANDOVER 1b (vidIQ + Tactical Genius references, 1-3 word text, generic officer).
-- Description: copy the layout of `goosegreen/build/youtube_description.txt` (chapters, sources, map/music/SFX/image credits).
+- Description: copy the layout of `goosegreen/build/youtube_description.txt` (chapters, sources, map/music/SFX/image credits), but with **NO links at all** (owner rule 2026-10: new channels get flagged as spam; write "licensed under Creative Commons Attribution 4.0" instead of the URL). Full rules: `research/PACKAGING_GUIDE.md`.
 
 ## 7. Tried and REJECTED (don't offer these again)
 - Opening on a photo.

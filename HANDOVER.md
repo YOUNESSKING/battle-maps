@@ -1,13 +1,24 @@
 # HANDOVER v3: faceless military-history channel (Tactical Genius style)
 
-**Owner:** Youness Fakiri · **Updated:** 2026-09-27
+**Owner:** Youness Fakiri · **Updated:** 2026-10-03 (after the O.P. Smith video)
 **How to use:** start a new Claude Code cloud session on the repo `younessking/battle-maps` (environment with **Full** network access), attach the Gemini research file, and say: *"Read HANDOVER.md. Make the full video from this research."*
+
+## 0a. NEXT VIDEO: quick start (read this first)
+**Videos done:** Hannibal (test), Daniel Morgan, Nathanael Greene, Goose Green (2 Para), Belisarius, **O.P. Smith (#6, branch `claude/lucid-tesla-qugecc`, folder `smith/`)**, George H. Thomas (branch `claude/george-thomas-civil-war-2epkux`). The owner picks the next topic.
+**Style = STYLE_LOCK.md, exactly** (the O.P. Smith / Goose Green look and sound: fx.js effects, front lines + territory, night, counters with flags, aircraft + `K.bombRun` with shake, locked battle sounds, music 0.08, zoom sound only on the 3 biggest moves). The George Thomas branch's "detailed map style" (demo3, thomas/lib) is NOT the channel style; don't use it.
+**Owner rules learned on Smith (binding):**
+- Follow the no-skip checklist (0b step 7) in order; send ONE labelled snapshot sheet per move and wait for approval; **never render without the owner's OK**.
+- Sound = the locked kit only. Don't source extra sounds, don't pitch-shift or swap the battle sounds, don't raise the music. `tools/check_sound_lock.py` must say OK.
+- Commander badges: real public-domain photo when one exists (crop it; Wikimedia blocks this machine's IP after a while: fetch through `https://images.weserv.nl/?url=upload.wikimedia.org/...` or use the Library of Congress API). Quote marks only on verbatim quotes, also in speech bubbles.
+- **The cloud machine reboots** (every ~30-60 min, and whenever the session goes idle): a running render or assembly dies, finished renders survive. Start renders detached (`render_all.sh`), stay in the turn watching them with <10-min foreground waits, relaunch only the missing scenes.
+- Research: use `research/GEMINI_BRIEF_v3.md` (sources + VERIFIED/DISPUTED labels); log every fact correction in `<name>/research/FACT_NOTES.md`; list any figure that is from memory in the publishing PDF's "facts to double-check" box.
+- Packaging: `research/PACKAGING_GUIDE.md` (vidIQ-scored title >= 85 with the hook in the first ~60 characters, thumbnail = same promise, chapters from timing.json, 12-18 tags). **Descriptions contain NO links at all** (new channels get flagged as spam): name licences in words. Thumbnail = HANDOVER 1b formula (2 variants, commander name tags on the map, check spelling/geography).
 
 ## 0. Repo layout (clone path must be /home/user/battle-maps)
 | Path | What |
 |---|---|
 | `setup.sh`, `.claude/settings.json` | automatic tool install at session start (runs in background; wait for `/tmp/battle-maps-setup.done`) |
-| `research/` | GEMINI_BRIEF_v2.md (paste into Gemini), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
+| `research/` | **GEMINI_BRIEF_v3.md** (paste into Gemini), **PACKAGING_GUIDE.md** (titles, thumbnails, descriptions, chapters, tags), TG_THUMBNAIL_TEXTS.md, NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
 | `goosegreen/` | video #4 (Goose Green, 1982), **newest full pipeline: copy new videos from here**. lib/ (engine + `SFX()` sound cues), tools/ (`narrate.py`, `narrate_changed.py`, `bake.py`, `build_scene.py`, `render_all.sh`, `assemble_full.py`, `sfx_cues.py`, `sfx_mix.py`), assets/media/ (images + CREDITS.md, Kevin MacLeod music sources, `sfx/` synthesized sound library), archive.json |
@@ -16,7 +27,7 @@
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from `goosegreen/`: `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/media/sfx/ assets/media/music_src_*.mp3` (goosegreen has the newest engine, tools, **default sound library and default music**, see 1b "Default sound & music kit"). Edit SCENES/CHAPTERS in `tools/assemble_full.py`. Don't search for new music or sounds: the kit is approved.
+1. `mkdir <name>` and copy the skeleton from `goosegreen/` (engine updated with the Smith improvements: any nation's flags via FLAGS in lib/fx.js, `prop` and `cargo` aircraft art, `K.bombRun`, `tools/make_land.py` land masks; the full Smith project is on branch `claude/lucid-tesla-qugecc` for reference): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/media/sfx/ assets/media/music_src_*.mp3` (goosegreen has the newest engine, tools, **default sound library and default music**, see 1b "Default sound & music kit"). Edit SCENES/CHAPTERS in `tools/assemble_full.py`. Don't search for new music or sounds: the kit is approved.
 2. Write `<name>/script.md` from the research (formula + **hook formula** in section 1; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
 3. Voice: point SCRIPT/OUT in `tools/narrate.py` at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`. After editing a few paragraphs, run `tools/narrate_changed.py` instead: it re-voices only changed paragraphs and reuses the rest (minutes instead of ~15 min).
 4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). `assemble_full.py` collects the sound cues from every scene (`sfx_cues.py`), renders the SFX track (`sfx_mix.py`), mixes voice + ducked music + ducked SFX, and normalizes to -14 LUFS in two passes. Music: after the voice exists, run `python3 tools/make_music_bed.py` (builds `assets/media/music.wav` from the four default tracks, fitted to this video's length and chapters). Commit + push after each milestone.
