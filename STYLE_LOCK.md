@@ -73,7 +73,7 @@ Hear them in `reference/style-reference-30s.mp4`. Every session must use exactly
 | **Planes bombing** | **`K.bombRun({ pts, t, bombs: [[x,y], ...] })`** (one line: jet + bombs 0.25 s apart + **SCREEN SHAKE** on the first bomb) | jet roar with Doppler (-11 dB), then **real distant-explosion booms** (cand2 / cand4, -4 dB) + **camera shake** |
 | Jets / turboprops / helicopters | `K.aircraft` kind `jet` / `turboprop` / `heli` | engine flyby loudest mid-flight (-11 / -13 / -14 dB) |
 | Aircraft shot down | `K.aircraft({ down: t })` | engine sound, then crash fireball |
-Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen** (first bomb of every run, strength 5; every big explosion shakes 6, shells 3). Never set `shake: false` on a bombing run. Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
+Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen** (first bomb of every run, strength 5; every big explosion shakes 6, shells 3). Never set `shake: false` on a bombing run, **and never switch the shake off on shell hits or explosions either** (owner 2026-10-03: every shell that lands shakes, also every shell of a volley; the O.P. Smith video lost it in 4 scenes this way). Leave `K.impact` at its default shake. Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
 ("the barrage"), bombing run `move3.js` ("the Harrier strike").
 
 ## 4. Music (locked)
