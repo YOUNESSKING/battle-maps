@@ -29,6 +29,7 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
 - **Colours:** counters/aircraft/arrows blue `#1f4fc4` (hero) / red `#c4121f` (enemy). Day front lines `#2c57b7` / `#bc2528` (30% muted from the counters). Night lines + territory tint `#4a6a9a` / `#a8503c`. Neutral grey `#77746c`, gold `#c9b48a`, text `#f7f3ea`, font Oswald.
 - **Front lines (`K.front`):** glowing band, width 15, glow 0.47, drawn on, gentle pulse.
   - Only the REAL front (where the sides touch) is two-coloured. Lines behind it are one colour.
+  - **Wide campaign maps** (a whole country or theatre: Korea, Sicily, Normandy, Holland): every front line between the two sides is **two-coloured, blue on our side and red on theirs, never one colour** (owner 2026-10-04). One-colour lines are only for reserve/depth lines on close-up battle maps.
   - When a front collapses, the two-colour band MOVES to the next line (`to` + `moveT`, moveDur 3.0).
 - **Territory ("E" look, `K.frontTint`):** alpha 0.34, depth 170 px behind the front (95 px for a forward zone that will be lost), soft 24, clipped to land with a land mask (`elev > 0.5`). Lost ground flickers then fades (`K.lose`). End every scene with `K.raiseTerritory()`.
 - **Night (`K.night`):** fully muted palette + brightness boost on lines and territory; normal at dawn.
@@ -73,7 +74,7 @@ Hear them in `reference/style-reference-30s.mp4`. Every session must use exactly
 | **Planes bombing** | **`K.bombRun({ pts, t, bombs: [[x,y], ...] })`** (one line: jet + bombs 0.25 s apart + **SCREEN SHAKE** on the first bomb) | jet roar with Doppler (-11 dB), then **real distant-explosion booms** (cand2 / cand4, -4 dB) + **camera shake** |
 | Jets / turboprops / helicopters | `K.aircraft` kind `jet` / `turboprop` / `heli` | engine flyby loudest mid-flight (-11 / -13 / -14 dB) |
 | Aircraft shot down | `K.aircraft({ down: t })` | engine sound, then crash fireball |
-Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen** (first bomb of every run, strength 5; every big explosion shakes 6, shells 3). Never set `shake: false` on a bombing run. Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
+Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen** (first bomb of every run, strength 5; every big explosion shakes 6, shells 3). Never set `shake: false` on a bombing run, **and never switch the shake off on shell hits or explosions either** (owner 2026-10-03: every shell that lands shakes, also every shell of a volley; the O.P. Smith video lost it in 4 scenes this way). Leave `K.impact` at its default shake. Examples to copy: ship + field-gun barrage `goosegreen/scenes-src/move1.js`
 ("the barrage"), bombing run `move3.js` ("the Harrier strike").
 
 ## 4. Music (locked)
