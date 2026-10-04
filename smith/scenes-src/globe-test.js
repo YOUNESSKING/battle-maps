@@ -11,9 +11,9 @@ const { at, tl } = B;
 const END = B.T.duration;
 const T_A = END - 0.6; // start of the dissolve into "hook" (abs 9.8)
 const K = FXK(B);
-// GLOBE OPENING TEST: start on the Earth (facing the Middle East), turn to Korea, dive in, dissolve into the map at the
-// camera's view at ~3.5 s (korea basemap z8: 65536/2pi / cos(38.67) * 0.79 = 10550 px per radian).
-GLOBE(B, { lat: 38.67, lon: 127.35, endScale: 10550, from: [18, 20], red: [408, 156], blue: [410], t: 0, turn: 1.7, zoom: 1.9, fade: 0.6 });
+// GLOBE OPENING TEST v3: hand-off at 3.0 s at the map camera view (1440,810, scale 0.667); during the 1 s dissolve
+// globe and map zoom together to (1405,745, 0.787), then the map eases on (px/radian = 65536/2pi / cos(lat) * scale).
+GLOBE(B, { from: [18, 20], lat: 38.29, lon: 127.59, endScale: 8866, lat2: 38.62, lon2: 127.40, endScale2: 10509, red: [408, 156], blue: [410], t: 0, turn: 1.4, zoom: 1.6, fade: 1.0, lift: 90 });
 
 const G = (lat, lon) => {
   const n = 256 * 2 ** 8, r = (lat * Math.PI) / 180;
@@ -41,8 +41,10 @@ const logCamera = (keys) => {
 const C2K = (x, y) => [(446141 + x) / 8 - 54556, (197446 + y) / 8 - 24399];
 const K1 = C2K(1440, 810), K2 = C2K(1470, 760);
 logCamera([
-  [0, 1400, 740, 0.76],
-  [1.5, 1395, 725, 0.79, "sine.inOut"],
+  [0, 1440, 810, 0.667],
+  [3.0, 1440, 810, 0.667, "none"],
+  [4.0, 1405, 745, 0.787, "none"],
+  [5.2, 1395, 725, 0.80, "sine.out"],
   [T_NIGHT + 0.6, 1395, 640, 0.98, "sine.inOut"],
   [T_A, K1[0], K1[1], 0.667 * 8, "power1.in"],
   [T_A + 0.6, K2[0], K2[1], 0.82 * 8, "none"],
