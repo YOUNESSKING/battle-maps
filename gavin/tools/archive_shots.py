@@ -36,6 +36,21 @@ def label_layer(text, W, H):
     return im
 
 
+def headline_layer(year, text, W, H):
+    """'Frontlines'-style date card: big gold year, a thin rule, the headline in spaced capitals (left third, over footage)"""
+    s = H / 1080
+    fy, ft = ImageFont.truetype(FONT, int(150 * s)), ImageFont.truetype(FONT, int(46 * s))
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    # soft dark gradient on the left so the type reads over any footage
+    g = np.zeros((H, W, 4), np.uint8); g[..., 3] = (np.clip(1 - np.linspace(0, 1, W) / 0.55, 0, 1) ** 1.5 * 170).astype(np.uint8)[None, :]
+    im = Image.alpha_composite(im, Image.fromarray(g)); d = ImageDraw.Draw(im)
+    x, y = int(120 * s), int(H * 0.36)
+    d.text((x, y), year, font=fy, fill=(214, 186, 120, 255))
+    d.rectangle([x, y + 190 * s, x + 520 * s, y + 194 * s], fill=(214, 186, 120, 255))
+    d.text((x, y + 212 * s), text, font=ft, fill=(247, 243, 234, 255), spacing=int(10 * s))
+    return im
+
+
 def cover(img, W, H, scale=1.0):
     """resize so the image covers W*scale x H*scale"""
     k = max(W * scale / img.width, H * scale / img.height)
@@ -55,6 +70,23 @@ def boxes(move, focus, iw, ih, W, H):
     if move == "out": return box(1.22, fx, fy), box(1.0, 0.5, 0.5)
     pan = {"left": (0.62, 0.38, 0.5, 0.5), "right": (0.38, 0.62, 0.5, 0.5), "up": (0.5, 0.5, 0.62, 0.38), "down": (0.5, 0.5, 0.38, 0.62)}[move]
     return box(1.14, pan[0], pan[2]), box(1.14, pan[1], pan[3])
+
+
+_depth_sess = None
+
+
+def depth_map(img):
+    """relative depth (1 = near) with Depth Anything V2 Small (Apache 2.0, ONNX, CPU ~0.6 s); smoothed for warping"""
+    global _depth_sess
+    import onnxruntime as ort
+    if _depth_sess is None:
+        so = ort.SessionOptions(); so.log_severity_level = 3
+        _depth_sess = ort.InferenceSession("/opt/models/depth_anything_v2_small.onnx", so, providers=["CPUExecutionProvider"])
+    x = np.asarray(img.convert("RGB").resize((518, 518)), np.float32) / 255
+    x = (x - [0.485, 0.456, 0.406]) / [0.229, 0.224, 0.225]
+    d = _depth_sess.run(None, {"pixel_values": x.transpose(2, 0, 1)[None].astype(np.float32)})[0][0]
+    d = (d - d.min()) / (d.max() - d.min() + 1e-6)
+    return Image.fromarray((d * 255).astype(np.uint8)).resize(img.size, Image.BICUBIC).filter(ImageFilter.GaussianBlur(max(2, img.width // 200)))
 
 
 def ease(t):
@@ -84,6 +116,8 @@ def photo_shot(sh, dur, out, W, H, enc):
         bg = Image.composite(hole, src, m).filter(ImageFilter.GaussianBlur(max(2, src.width // 500)))
         src = Image.blend(bg, Image.new("RGB", src.size, (20, 18, 14)), 0.2)
     lab = label_layer(sh["label"], W, H) if sh.get("label") else None
+    dep = depth_map(src) if sh.get("depth") else None
+    GY, GX = np.mgrid[0:H, 0:W].astype(np.float32)
     n = max(2, int(round(dur * FPS)))
     vig = vignette(W, H)
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
@@ -92,6 +126,13 @@ def photo_shot(sh, dur, out, W, H, enc):
         t = ease(k / (n - 1))
         x0, y0, w, h = b0 + (b1 - b0) * t
         frame = src.transform((W, H), Image.EXTENT, (x0, y0, x0 + w, y0 + h), Image.BICUBIC)
+        if dep is not None:  # 3D Ken Burns: near pixels zoom/slide further than far ones (inverse warp on the depth map)
+            import cv2
+            dm = np.asarray(dep.transform((W, H), Image.EXTENT, (x0, y0, x0 + w, y0 + h), Image.BICUBIC), np.float32) / 255
+            ez = 1 + 0.07 * t * dm
+            sx = {"left": -1, "right": 1}.get(move, 0) * 28 * t * (dm - 0.5); sy = {"up": -1, "down": 1}.get(move, 0) * 20 * t * (dm - 0.5)
+            mx = (W / 2 + (GX - W / 2) / (1.05 * ez) - sx).astype(np.float32); my = (H / 2 + (GY - H / 2) / (1.05 * ez) - sy).astype(np.float32)
+            frame = Image.fromarray(cv2.remap(np.asarray(frame), mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT))
         if fg is not None:  # foreground moves ~60 % further than the background: depth
             fx0, fy0, fw, fh = b0 + (b1 - b0) * t * 1.3
             layer = fg.transform((W, H), Image.EXTENT, (fx0, fy0, fx0 + fw, fy0 + fh), Image.BICUBIC)
@@ -113,13 +154,29 @@ def film_crop(path):
 
 
 def film_shot(sh, dur, out, W, H, enc):
-    """film fills the whole 16:9 frame (4:3 film is cropped top/bottom, never shown with black side bars)"""
+    """film fills the whole 16:9 frame (4:3 film is cropped top/bottom, never shown with black side bars).
+    "restored": true / "tint": true use the restore_film.py pass (cached in build/frontlines/); "headline": [year, text]."""
+    if sh.get("restored") or sh.get("tint"):
+        name = os.path.basename(sh["film"])[:-4]
+        rp = f"build/frontlines/r_{name}{'_tint' if sh.get('tint') else ''}.mp4"
+        if not os.path.exists(rp):
+            from restore_film import restore
+            os.makedirs("build/frontlines", exist_ok=True); restore(sh["film"], rp, tint=bool(sh.get("tint")))
+        sh = dict(sh, film=rp)
     c = film_crop(sh["film"])
     vf = ([f"crop={c}"] if c else []) + [f"scale={W}:{H}:force_original_aspect_ratio=increase", f"crop={W}:{H}",
           f"tpad=stop_mode=clone:stop_duration={dur:.2f}"]
     tmp = out + ".tmp.mp4"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{sh.get('ss', 0):.2f}", "-i", sh["film"], "-t", f"{dur:.3f}", "-vf", ",".join(vf),
                     "-t", f"{dur:.3f}", *enc, tmp], check=True)
+    if sh.get("headline"):
+        hp = out + ".head.png"; headline_layer(sh["headline"][0], sh["headline"][1], W, H).save(hp)
+        t2 = out + ".h.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-loop", "1", "-i", hp, "-filter_complex",
+                        f"[1:v]format=rgba,fade=t=in:st=0.15:d=0.5:alpha=1,fade=t=out:st={max(1.0, dur - 0.7):.2f}:d=0.5:alpha=1[h];"
+                        "[0:v][h]overlay=x='-40+40*min(1\\,t/0.7)':y=0:shortest=1",
+                        "-t", f"{dur:.3f}", *enc, t2], check=True)
+        os.replace(t2, tmp); os.remove(hp)
     if sh.get("label"):
         lp = out + ".label.png"; label_layer(sh["label"], W, H).save(lp)
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-loop", "1", "-i", lp, "-filter_complex",
