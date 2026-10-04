@@ -1,7 +1,11 @@
-=== 00:15:50 build biazza
-biazza: 69.31s  (abs 0.0-69.31)  paras: ['bz-1', 'bz-2', 'bz-3', 'bz-4', 'bz-5']
+=== 10:42:36 build hook
+hook: 30.45s  (abs 0.0-30.45)  paras: ['hook-1', 'hook-2']
 
-◇  0 error(s), 2 warning(s)
-=== 00:15:52 render biazza
-=== 00:30:31 OK biazza
-=== 00:30:31 finished, failed=0
+◇  0 error(s), 1 warning(s)
+=== 10:42:42 render hook
+=== 10:45:17 OK hook
+=== 10:45:17 build intro
+intro: 25.04s  (abs 30.45-55.49)  paras: ['hook-3']
+
+◇  0 error(s), 1 warning(s)
+=== 10:45:18 render intro
