@@ -249,7 +249,7 @@ const shoot = (from, to, t, o = {}) => {
   K.gun(from[0], from[1], t, { unit: o.unit, dx: o.dx || 0, dy: o.dy || 0, sfx: o.sfx });
   const dur = o.dur || 1.0;
   GG.arc(from[0], from[1], to[0], to[1], t + 0.05, { dur, width: o.width || 3, h: o.h, color: o.color, impact: false });
-  K.impact(to[0], to[1], t + 0.05 + dur, { r: o.r || 13, shake: o.shake != null ? o.shake : 2, puffs: 2 });
+  K.impact(to[0], to[1], t + 0.05 + dur, { r: o.r || 13, puffs: 2 });
 };
 const tracer = (from, to, t, col) => GG.arc(from[0], from[1], to[0], to[1], t, { h: 0, color: col || "#ff6a5a", dash: "10 7", width: 3, dur: 0.5, impact: false, until: t + 0.9 });
 
@@ -409,7 +409,7 @@ const redTint = K.frontTint({ pts: FRONT, side: "rome", dir: -1, depth: 95, alph
   const t = T_BAZ + 0.2 + i * 0.7;
   K.gun(x1, y1, t, { dx: 0, dy: -10, unit: u });
   tracer([x1, y1 - 10], [x2, y2 + 10], t + 0.02, "#fff3c4");
-  K.impact(x2, y2 + 8, t + 0.5, { r: 9, shake: false, puffs: 1 });
+  K.impact(x2, y2 + 8, t + 0.5, { r: 9, puffs: 1 });
 });
 B.caption("BAZOOKAS: BARELY A DENT IN THE TIGERS", T_BAZ, T_PACK - 0.2, "rome r");
 // two 75 mm pack howitzers fire over open sights
@@ -443,7 +443,7 @@ GG.lbl("US NAVY", 520, 1170 - 210, { size: 26, color: "#cfe0ff", t: T_WARSHIPS -
 const NTGT = [[1760, 584], [1610, 600], [1900, 548], [1470, 612], [2010, 520], [1760, 590], [1640, 596], [1880, 552], [1500, 600]];
 NTGT.forEach(([x, y], i) => {
   const [sx, sy] = SHIPS[i % 3];
-  shoot([sx + 40, sy - 14], [x + ((i * 19) % 24) - 12, y + ((i * 11) % 16) - 8], (i ? T_SHELLS - 0.4 + i * 0.55 : T_WARSHIPS + 0.2), { dur: 1.3, width: 5, h: 260, r: 17, shake: 3 });
+  shoot([sx + 40, sy - 14], [x + ((i * 19) % 24) - 12, y + ((i * 11) % 16) - 8], (i ? T_SHELLS - 0.4 + i * 0.55 : T_WARSHIPS + 0.2), { dur: 1.3, width: 5, h: 260, r: 17 });
 });
 B.caption("THE FLEET OFFSHORE OPENS FIRE", T_WARSHIPS + 0.4, T_SIX - 0.2, "carth r");
 B.grey(["t1"], T_SHELLS + 1.4, 0.8);
