@@ -1,7 +1,7 @@
-"""Build the Goose Green publishing guide PDF: build/Goose-Green-publishing-guide.pdf
+"""Build the James Gavin publishing guide PDF: build/Gavin-publishing-guide.pdf
 
 usage (from the project folder): python3 tools/make_publish_guide.py
-Uses build/youtube_description.txt, build/chapters.txt, build/thumbnail*.jpg, build/guide_frames.jpg.
+Uses build/youtube_description.txt, build/thumbnail_*.png, build/guide_frames.jpg (8 frames from the final video).
 """
 import glob, os
 from reportlab.lib import colors
@@ -53,106 +53,89 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "Goose Green: 2 Para's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "James Gavin's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
-LINK = os.environ.get("GOFILE_LINK", "https://gofile.io/d/zRVZggXV")
-chapters = open("build/chapters.txt").read().strip().splitlines()
-desc = open("build/youtube_description.txt").read().strip()
-thumbs = [p for p in ["build/thumbnail-final.jpg", "build/thumbnail.jpg"] if os.path.exists(p)]
-alts = sorted(glob.glob("build/thumbnail-alt*.jpg"))
+import re
+descr = open("youtube/youtube_title_and_description.txt").read().strip()
+desc = descr
+TITLE = desc.splitlines()[0].strip()
+# chapters: build/chapters.txt only if newer than audio/timing.json, else the chapter lines of the description
+chapters = None
+if os.path.exists("build/chapters.txt") and os.path.exists("audio/timing.json") and os.path.getmtime("build/chapters.txt") > os.path.getmtime("audio/timing.json"):
+    chapters = open("build/chapters.txt").read().strip().splitlines()
+if not chapters:
+    chapters = [l for l in desc.splitlines() if re.match(r"^\d+:\d\d\s", l)]
+mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
+size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
+if not os.path.exists("build/guide_frames.jpg") and os.path.exists("build/sheet_hook.png"):
+    from PIL import Image as PI
+    im = PI.open("build/sheet_hook.png").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
 
-story = [Spacer(1, 18 * mm), P("GOOSE GREEN", "cover"), P("2 PARA'S TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
-         P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm)]
-if thumbs:
-    story += [img(thumbs[0], 150), Spacer(1, 4 * mm), P("Main thumbnail (made with vidIQ, in the style of Tactical Genius's best performers)", "coversub")]
-story += [PageBreak()]
-
+TA = "youtube/thumb/gavin-thumb-A-no-retreat.jpg"; TB = "youtube/thumb/gavin-thumb-B-tigers-incoming.jpg"
+LEN = os.environ.get("VIDEO_LEN", "about 14:16")
+story = [Spacer(1, 18 * mm), P("JAMES M. GAVIN", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+         P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: NO RETREAT (battlefield made with vidIQ; Gavin's real public-domain US Army photo added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", "Goose-Green-2Para-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, 727 MB)"],
-                 ["Download", f'<link href="{LINK}"><u>{LINK}</u></link> (Gofile: save it soon, links expire after a period without downloads)'],
-                 ["Length", "17:08"],
-                 ["Loudness", "-15.1 LUFS integrated, true peak -1.2 dBTP (YouTube normalises to -14, it only turns louder videos down)"],
-                 ["Voice", "Kokoro am_michael (free AI voice)"],
-                 ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice"],
-                 ["Sound effects", "Real distant artillery and explosion recordings (Freesound, CC BY / CC0) plus original effects; aircraft engine sounds"]],
+                 ["File", f"Gavin-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
+                 ["Length", LEN],
+                 ["Voice", "Kokoro (free AI voice, am_michael)"],
+                 ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice (locked level 0.08)"],
+                 ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit zoom sound, original effects"]],
                 [32, 138]),
-          Spacer(1, 5 * mm), P("Structure and chapters", "h2"),
-          table([["Chapter", "Starts", "What happens"],
-                 ["Intro: the BBC leak", chapters[0].split()[0], "Stakes-first cold open on the map: 500 vs ~1,000, the BBC broadcast, flash-forward to the surrender"],
-                 ["Move 1: The Night Assault", chapters[1].split()[0], "Night attack down the isthmus, HMS Arrow and the guns, the forward line collapses"],
-                 ["Move 2: Darwin Hill and Boca House", chapters[2].split()[0], "A Company pinned, H Jones's charge and death, Keeble takes over, mortars and MILAN break the line"],
-                 ["Move 3: The Goose Green Bluff", chapters[3].split()[0], "Goose Green surrounded, Harrier strike, the ultimatum, 961 prisoners, casualty card"],
-                 ["Legacy", chapters[4].split()[0], "Callback, what happened next, the method, 'which commander next?'"]],
-                [52, 18, 100]),
+          Spacer(1, 5 * mm), P("Chapters", "h2"),
+          table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
           Spacer(1, 5 * mm), P("Key frames", "h2")]
 if os.path.exists("build/guide_frames.jpg"):
     story += [img("build/guide_frames.jpg", 170)]
 story += [PageBreak()]
-
-story += [P("2. Title and thumbnail", "h1"), P("Title (recommended)", "h2"),
-          P("<b>Goose Green: 2 Para's Top 3 Legendary Tactical Moves | The Battle Britain Wasn't Supposed To Win</b>"),
-          P("Alternatives to A/B test (YouTube 'Test & compare'):"),
-          *bullets(["2 Para's Top 3 Legendary Tactical Moves | 500 Men vs 1,000", "Goose Green: How 500 Paratroopers Beat 1,000 Dug-In Defenders",
-                    "The Falklands' Top 3 Tactical Moves | The Battle the BBC Gave Away"]),
+story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 93)", "h2"), P(f"<b>{TITLE}</b>"),
+          P("Alternatives (vidIQ scores):"),
+          *bullets(["The General Who Jumped Into Battle 4 Times: James Gavin's Top 3 Tactical Moves (90)",
+                    "The General Who Jumped First: James Gavin's Top 3 Legendary Tactical Moves (89)"]),
           P("Why this thumbnail", "h2"),
-          P("All 13 Tactical Genius thumbnails use the same picture (dark aerial battlefield with red/blue unit blocks and white arrows, commander portrait on the right, "
-            "red brush banner bottom-left). What decides the click is the <b>text</b>: the winners are 1-3 words that make sense with zero context and create tension: "
-            "the hero's defiance (LET THEM COME, 1.0M views), the enemy's contempt as a real quote (\"AMATEURS\", 773k) or ominous stakes (AT THE GATES, 585k, 24.7x). "
-            "The losers are nicknames that need background (\"DUGOUT DOUG\" 29k, \"SEPOY GENERAL\" 6k) and lines of 4+ words."),
-          P("Our main thumbnail uses the winning type 1: <b>SURRENDER OR ELSE</b> (Keeble's bluff, the payoff of the video; no quote marks because it paraphrases the ultimatum). "
-            "The portrait is a generic 1982 Parachute Regiment officer (no legal photo of H Jones or Keeble exists; never fake a real person's likeness). "
-            "The AI drew a wrong flag in the settlement; it was replaced with the real Argentine flag.")]
-if alts:
-    story += [P("Alternative thumbnails (use one for YouTube's thumbnail A/B test)", "h2")]
-    row = [img(a, 82) for a in alts[:2]]
-    story += [Table([row], colWidths=[85 * mm] * len(row))]
-story += [P("<b>Alternatives:</b> THEY KNEW (type 3, ominous stakes) for the A/B test. SUNRAY IS DOWN is kept as a spare, but it needs context (a losing type). "
-            "AI slips on the alternatives: on THEY KNEW the two water labels are swapped (Brenton Loch is really on the west); SUNRAY IS DOWN shows tanks that were not at Goose Green.", "warn")]
-story += [P("<b>Before uploading:</b> check the thumbnail at small size on a phone. The banner text must be readable at 20% size.", "tip"), PageBreak()]
-
+          P("Same picture formula as every Tactical Genius thumbnail: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
+            "and a red brush banner bottom-left. The text is what decides the click: 1-3 words, readable with zero context. "
+            "<b>NO RETREAT</b> is type 1 (the hero's defiance): Gavin's order on Biazza Ridge was that they were staying on the ridge no matter what "
+            "(no quote marks: it is not his exact wording). It makes the same promise as the title (paratroopers vs Tiger tanks)."),
+          P("Alternative for YouTube's Test &amp; compare: <b>TIGERS INCOMING</b> (type 3, ominous stakes).", "body"),
+          Table([[img(TB, 82)]], colWidths=[85 * mm]),
+          P("Checked: Biazza Ridge and Ponte Dirillo labels, Tiger tanks (correct: a Tiger company of the Hermann Göring Division was there), "
+            "blue paratrooper blocks on the ridge, red German blocks below. The portrait is Gavin's real US Army photo (public domain), not an AI likeness. "
+            "Note: the photo shows him later as a major general (two stars); at Biazza Ridge he was a colonel.", "warn"),
+          P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
-          P("Everything below is ready to paste into the YouTube description box. The credit lines are required by the image, music and sound-effect licences: do not remove them.", "warn"),
-          Preformatted(desc, S["mono"]), PageBreak()]
-
+          P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound and image licences require them.", "warn"),
+          Preformatted(desc, S["mono"], maxLineLength=100), PageBreak()]
 story += [P("4. Upload settings", "h1"),
           table([["Setting", "Value"],
-                 ["Tags", "Falklands War, Battle of Goose Green, 2 Para, Parachute Regiment, H Jones, Chris Keeble, Darwin Hill, Falklands 1982, military history, battle map, tactical genius, Argentina, Royal Marines, Harrier, military tactics"],
+                 ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Piaggi, Estévez, Keeble, Goose Green)"],
-                 ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail is AI-generated. Tick the disclosure box."],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Biazza, Ponte Dirillo, La Fière, Merderet, Cauquigny, Nijmegen, Waal, Julian Cook)"],
+                 ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail battlefield is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["End screen", "Last 15 s (from 16:53): 'which commander next?' - add a subscribe button and your best other video"],
-                 ["Cards", "At 6:41 (Move 2) and 11:18 (Move 3): link to the Hannibal video once it is published"],
-                 ["Schedule", "Your audience's peak time (check YouTube Studio > Analytics > Audience)"]],
+                 ["Pinned comment", "Which commander should we cover next? Ridgway, Puller, Rommel, Slim...?"],
+                 ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
-          *bullets(["Download the 1080p master from the Gofile link and play it through once (sound, sync, no black frames).",
-                    "Upload the master (not the 540p preview parts).",
-                    "Paste title, description and tags; upload the thumbnail (1280x720).",
-                    "Tick 'altered or synthetic content'.",
-                    "Add end screen and cards; set visibility and schedule.",
-                    "After 24-48 h: check click-through rate and 30-second retention in YouTube Studio; if CTR is under 4%, swap to an alternative thumbnail."]),
-          PageBreak()]
-
-story += [P("5. Accuracy notes", "h1"),
-          P("The Gemini research had several errors; the script was corrected against the Wikipedia article on the battle and its sources (Middlebrook, Fitz-Gibbon, Adkin, Freedman). If a commenter challenges a fact, these are the checked versions:"),
-          *bullets(["The battle ran 28-29 May 1982; H Jones was killed on the morning of 28 May; the surrender was the morning of 29 May.",
-                    "The BBC World Service report came on 27 May, the day before the attack.",
-                    "MILAN missiles were used at Boca House, not Darwin Hill; Darwin Hill fell to A Company (13:13 local).",
-                    "The Pucará shot down the British Scout helicopter sent to evacuate Jones (Lt Richard Nunn killed).",
-                    "2 Para was short of ammunition, water and food, but was reinforced overnight (J Company 42 Commando), so the surrender was partly a bluff.",
-                    "Casualties: British 18 killed, ~64 wounded; Argentine 45-55 killed, ~100 wounded, 961 prisoners.",
-                    "Not used: the 'sodding politician' quote (legend)."]),
-          P("6. What's next", "h1"),
-          *bullets(["The new locked style (muted front lines, territory fading from the front, night mode) is in the handover and will be used from the next video.",
-                    "Two labels are slightly cut at the top edge of the frame (about 1:24 and 16:26); fix them if the video is ever re-rendered.",
-                    "Next video: pick from research/VIDEO_IDEAS_v2.md and paste the Gemini brief."])]
-
-out = "build/Goose-Green-publishing-guide.pdf"
+          *bullets(["Play the 1080p master through once (sound, sync, no black frames).", "Upload the master.",
+                    "Paste title, description and tags; upload the thumbnail (1280x720).", "Fill in the business email in the description.",
+                    "Tick 'altered or synthetic content'.", "Add end screen and cards; set visibility and schedule.",
+                    "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 4%, switch to the alternative thumbnail."]),
+          P("<b>Facts to double-check before publishing</b> (single secondary source or disputed; see research/FACT_NOTES.md):<br/>"
+            "&bull; \"No other American general made four combat jumps\" (Wikipedia wording).<br/>"
+            "&bull; Gavin to Capt. Rae, \"All right, you've got to go.\" (HistoryNet; shown in quote marks).<br/>"
+            "&bull; Julian Cook praying \"Hail Mary, full of grace\" while paddling (Ryan / secondary sources).<br/>"
+            "&bull; \"None of the paratroopers had ever used one\" (the canvas boats).<br/>"
+            "&bull; Biazza Ridge casualties: Gavin's own count (about 50 dead, 100+ wounded); the Ponte Dirillo memorial lists 39 names.<br/>"
+            "&bull; Waal crossing wounded: shown as 100+ (sources give ~100 to 151).<br/>"
+            "&bull; Map positions (Biazza Ridge crest, the La Fière flood edge, the crossing point) are approximate, read from terrain.", "warn")]
+out = "build/Gavin-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="Goose Green - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="James Gavin - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print("wrote", out)

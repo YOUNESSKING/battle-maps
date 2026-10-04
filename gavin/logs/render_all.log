@@ -9,3 +9,15 @@ intro: 25.04s  (abs 30.45-55.49)  paras: ['hook-3']
 
 ◇  0 error(s), 1 warning(s)
 === 10:45:18 render intro
+=== 10:46:53 OK intro
+=== 10:46:53 build m1a
+m1a: 87.32s  (abs 116.72-204.04)  paras: ['move1-1', 'move1-2', 'move1-3']
+
+◇  0 error(s), 1 warning(s)
+=== 10:46:53 render m1a
+=== 10:51:51 OK m1a
+=== 10:51:51 build m1b
+m1b: 139.27s  (abs 204.04-343.31)  paras: ['move1-4', 'move1-5', 'move1-6', 'move1-7', 'move1-8']
+
+◇  0 error(s), 1 warning(s)
+=== 10:51:52 render m1b
