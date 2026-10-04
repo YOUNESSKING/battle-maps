@@ -13,7 +13,7 @@ const T_A = END - 0.6; // start of the dissolve into "hook" (abs 9.8)
 const K = FXK(B);
 // GLOBE OPENING TEST: start on the Earth (facing the Middle East), turn to Korea, dive in, dissolve into the map at the
 // camera's view at ~3.5 s (korea basemap z8: 65536/2pi / cos(38.67) * 0.79 = 10550 px per radian).
-GLOBE(B, { lat: 38.67, lon: 127.35, endScale: 10550, from: [24, 52], red: [408, 156], blue: [410], t: 0, turn: 1.7, zoom: 1.9, fade: 0.6 });
+GLOBE(B, { lat: 38.67, lon: 127.35, endScale: 10550, from: [18, 20], red: [408, 156], blue: [410], t: 0, turn: 1.7, zoom: 1.9, fade: 0.6 });
 
 const G = (lat, lon) => {
   const n = 256 * 2 ** 8, r = (lat * Math.PI) / 180;

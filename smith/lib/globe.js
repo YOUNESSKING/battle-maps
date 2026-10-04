@@ -67,8 +67,9 @@ window.WORLD50 = {"type":"Topology","objects":{"countries":{"type":"GeometryColl
     };
     draw();
     const t = o.t || 0, turn = o.turn || 1.6, zoom = o.zoom || 2.0, fade = o.fade || 0.6;
-    B.tl.to(st, { lon: o.lon, lat: o.lat, duration: turn, ease: "power2.inOut", onUpdate: draw }, t);
-    B.tl.to(st, { ls: Math.log(o.endScale), dy: 0, duration: zoom, ease: "power2.in", onUpdate: draw }, t + turn);
+    // the globe keeps turning WHILE it zooms (owner 2026-10-04): one spin over the whole opening, settling on the target at the hand-off
+    B.tl.to(st, { lon: o.lon, lat: o.lat, duration: turn + zoom, ease: "sine.inOut", onUpdate: draw }, t);
+    B.tl.to(st, { ls: Math.log(o.endScale), dy: 0, duration: zoom + turn * 0.5, ease: "power2.in", onUpdate: draw }, t + turn * 0.5);
     B.tl.to(svg, { opacity: 0, duration: fade, ease: "sine.inOut" }, t + turn + zoom - fade * 0.5);
     if (window.SFX && o.sfx !== false) SFX("whoosh", t + turn + zoom * 0.45); // the zoom sound: the dive from space is one of the biggest moves
     return { svg, end: t + turn + zoom + fade * 0.5 };
