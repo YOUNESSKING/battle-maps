@@ -14,3 +14,4 @@ tts/*.bin
 **/build/seg/tmp.txt
 **/build/seg/list.txt
 smith/logs/
+gavin/logs/
