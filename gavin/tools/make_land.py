@@ -21,7 +21,7 @@ def build(name):
     tx0, ty0, tx1, ty1 = x0 // 256, y0 // 256, (x0 + W) // 256, (y0 + H) // 256
     mosaic = np.vstack([np.hstack([tile(z, tx, ty) for tx in range(tx0, tx1 + 1)]) for ty in range(ty0, ty1 + 1)])
     elev = mosaic[y0 - ty0 * 256:y0 - ty0 * 256 + H, x0 - tx0 * 256:x0 - tx0 * 256 + W]
-    land = elev > 0.5
+    land = elev > P.get("sea_below", 0.5)  # same rule as bake.py (SEA_BELOW for polders)
     wp = f"{ASSETS}/{name}_water.png"
     if os.path.exists(wp):
         land &= np.asarray(Image.open(wp).convert("RGBA"))[..., 3] <= 40

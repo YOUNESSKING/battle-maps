@@ -14,5 +14,6 @@
   1620
  ],
  "meters_per_px": 94.79,
+ "sea_below": -7.5,
  "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
 }

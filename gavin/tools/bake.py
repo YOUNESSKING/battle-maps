@@ -52,7 +52,8 @@ def main(name, lat, lon, z, exaggeration):
     elev = mosaic[y0 - ty0 * 256:y0 - ty0 * 256 + H, x0 - tx0 * 256:x0 - tx0 * 256 + W]
 
     mpp = 156543.03392 * math.cos(math.radians(lat)) / 2 ** z
-    land = elev > 0.5
+    sea_below = float(os.environ.get("SEA_BELOW", 0.5))  # e.g. SEA_BELOW=-8 for the Dutch polders (land below sea level)
+    land = elev > sea_below
     land_elev = np.where(land, elev, 0)
     smooth = blur(land_elev)
     gy, gx = np.gradient(smooth * exaggeration, mpp)
@@ -85,7 +86,7 @@ def main(name, lat, lon, z, exaggeration):
     os.makedirs(ASSETS, exist_ok=True)
     Image.fromarray(rgb.clip(0, 255).astype(np.uint8)).save(os.path.join(ASSETS, f"{name}.jpg"), quality=90)
     json.dump({"name": name, "center": [lat, lon], "zoom": z, "origin_world_px": [x0, y0], "size": [W, H],
-               "meters_per_px": round(mpp, 2), "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"},
+               "meters_per_px": round(mpp, 2), "sea_below": sea_below, "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"},
               open(os.path.join(ASSETS, f"{name}.json"), "w"), indent=1)
     print(name, f"{mpp:.1f} m/px", f"elev {elev.min():.0f}..{elev.max():.0f}")
 
