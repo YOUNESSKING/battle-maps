@@ -8,6 +8,7 @@ usage (from goosegreen/): python3 tools/assemble_full.py [--preview]
 Writes build/gavin.mp4 (1080p master) or build/gavin-720p.mp4 (--preview) + build/chapters.txt.
 """
 import json, os, subprocess, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
@@ -84,7 +85,10 @@ while i < len(paras):
     tag = paras[i]["tag"]
     scene, t0 = scene_of(i)
     render = f"scenes/{scene}/renders/{scene}.mp4" if scene else None
-    if tag.startswith("ARCHIVE") and ARCH.get(str(i)):
+    if tag.startswith("ARCHIVE") and ARCH.get(str(i)) and isinstance(ARCH[str(i)][0], dict):  # shot lists: film + moving photos (archive_shots.py)
+        import archive_shots
+        archive_shots.build(ARCH[str(i)], dur, out, W, H, enc)
+    elif tag.startswith("ARCHIVE") and ARCH.get(str(i)):
         imgs = [f"assets/media/{f}" for f in ARCH[str(i)] if os.path.exists(f"assets/media/{f}")]
         parts = []
         for n, src in enumerate(imgs):

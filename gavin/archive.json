@@ -1,23 +1,206 @@
 {
  "3": [
-  "gavin_src.jpg",
-  "archive_gavin_1945.jpg"
+  {
+   "photo": "assets/media/gavin_src.jpg",
+   "parallax": true,
+   "move": "in",
+   "focus": [
+    0.5,
+    0.36
+   ],
+   "label": "JAMES MAURICE GAVIN \u00b7 BORN 1907"
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_02.mp4",
+   "ss": 0.5
+  },
+  {
+   "film": "assets/film/clips/airborne_training_03.mp4",
+   "ss": 0.5,
+   "label": "ENLISTED AT 17 \u00b7 1924"
+  },
+  {
+   "film": "assets/film/clips/airborne_training_07.mp4",
+   "ss": 0.5
+  },
+  {
+   "photo": "assets/media/archive_gavin_1945.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.28
+   ],
+   "label": "WEST POINT \u00b7 CLASS OF 1929"
+  }
  ],
  "4": [
-  "archive_airborne_benning_prep.jpg",
-  "archive_airborne_benning_descent.jpg"
+  {
+   "film": "assets/film/clips/airborne_training_02.mp4",
+   "ss": 0.5,
+   "label": "US PARACHUTE TROOPS \u00b7 1942",
+   "dur": 4.4
+  },
+  {
+   "photo": "assets/media/archive_airborne_benning_prep.jpg",
+   "move": "right",
+   "label": "FORT BENNING \u00b7 1942",
+   "dur": 4.4
+  },
+  {
+   "film": "assets/film/clips/airborne_training_05.mp4",
+   "ss": 0.5,
+   "dur": 4.2
+  },
+  {
+   "film": "assets/film/clips/airborne_training_12.mp4",
+   "ss": 0.5,
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/archive_airborne_benning_descent.jpg",
+   "move": "in",
+   "focus": [
+    0.62,
+    0.3
+   ],
+   "dur": 4.2
+  },
+  {
+   "film": "assets/film/clips/airborne_training_04.mp4",
+   "ss": 0.3,
+   "dur": 4.0
+  },
+  {
+   "film": "assets/film/clips/airborne_training_11.mp4",
+   "ss": 0.5,
+   "dur": 4.0
+  },
+  {
+   "film": "assets/film/clips/normandy_march_01.mp4",
+   "ss": 0.5,
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/gavin_src.jpg",
+   "parallax": true,
+   "move": "out",
+   "focus": [
+    0.5,
+    0.36
+   ],
+   "label": "COL. GAVIN \u00b7 505TH PARACHUTE INFANTRY"
+  }
  ],
  "13": [
-  "archive_sicily_ponte_olivo.jpg"
+  {
+   "film": "assets/film/clips/normandy_boarding_01.mp4",
+   "ss": 0.3,
+   "dur": 3.6
+  },
+  {
+   "film": "assets/film/clips/normandy_dusk_01.mp4",
+   "ss": 0.5,
+   "label": "ENGLAND \u00b7 5 JUNE 1944"
+  }
  ],
  "23": [
-  "archive_normandy_pathfinders.jpg",
-  "archive_normandy_sainte_marie_dumont.jpg"
+  {
+   "film": "assets/film/clips/sicily_smoke_02.mp4",
+   "ss": 0.5,
+   "label": "SICILY \u00b7 1943",
+   "dur": 2.5
+  },
+  {
+   "film": "assets/film/clips/normandy_amfreville_02.mp4",
+   "ss": 0.5,
+   "label": "NORMANDY \u00b7 1944",
+   "dur": 2.5
+  },
+  {
+   "film": "assets/film/clips/mg_flight_02.mp4",
+   "ss": 0.5,
+   "label": "HOLLAND \u00b7 SEPTEMBER 1944"
+  }
  ],
  "34": [
-  "archive_later_parade_nyc.jpg",
-  "archive_marketgarden_drop.jpg",
-  "archive_later_jfk_gavin.jpg",
-  "archive_nijmegen_bridge.jpg"
+  {
+   "film": "assets/film/clips/gavin_parade_01.mp4",
+   "ss": 0.3,
+   "label": "MAJ. GEN. GAVIN \u00b7 NEW YORK \u00b7 12 JAN 1946",
+   "dur": 4.6
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_04.mp4",
+   "ss": 0.5
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_07.mp4",
+   "ss": 2.0
+  },
+  {
+   "photo": "assets/media/archive_later_parade_nyc.jpg",
+   "move": "left",
+   "trim": [
+    0.03,
+    0.03,
+    0.07,
+    0.03
+   ]
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_02.mp4",
+   "ss": 0.5
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_13.mp4",
+   "ss": 0.5
+  },
+  {
+   "photo": "assets/media/archive_gavin_1945.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.28
+   ],
+   "label": "LIEUTENANT GENERAL \u00b7 RETIRED 1958"
+  },
+  {
+   "film": "assets/film/clips/airborne_training_10.mp4",
+   "ss": 0.5
+  },
+  {
+   "photo": "assets/media/archive_later_jfk_gavin.jpg",
+   "move": "in",
+   "focus": [
+    0.68,
+    0.38
+   ],
+   "label": "WITH PRESIDENT KENNEDY \u00b7 1962"
+  },
+  {
+   "photo": "assets/media/gavin_src.jpg",
+   "parallax": true,
+   "move": "in",
+   "focus": [
+    0.5,
+    0.36
+   ],
+   "label": "1907 \u2013 1990 \u00b7 BURIED AT WEST POINT"
+  },
+  {
+   "film": "assets/film/clips/normandy_amfreville_01.mp4",
+   "ss": 0.5,
+   "label": "LA FI\u00c8RE \u00b7 NORMANDY"
+  },
+  {
+   "film": "assets/film/clips/mg_drop_02.mp4",
+   "ss": 0.5,
+   "label": "HOLLAND \u00b7 SEPTEMBER 1944"
+  },
+  {
+   "photo": "assets/media/archive_nijmegen_bridge.jpg",
+   "move": "right",
+   "label": "NIJMEGEN \u00b7 THE WAAL BRIDGE"
+  }
  ]
 }

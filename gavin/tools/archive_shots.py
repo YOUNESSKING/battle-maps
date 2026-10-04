@@ -105,8 +105,17 @@ def photo_shot(sh, dur, out, W, H, enc):
     p.stdin.close(); p.wait()
 
 
+def film_crop(path):
+    """content box of a clip (drops the black pillar/letterbox bars the clips were padded with)"""
+    r = subprocess.run(["ffmpeg", "-ss", "1", "-t", "2", "-i", path, "-vf", "cropdetect=24:2:0", "-f", "null", "-"], capture_output=True, text=True).stderr
+    m = [l.split("crop=")[1].split()[0] for l in r.splitlines() if "crop=" in l]
+    return m[-1] if m else None
+
+
 def film_shot(sh, dur, out, W, H, enc):
-    vf = [f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2",
+    """film fills the whole 16:9 frame (4:3 film is cropped top/bottom, never shown with black side bars)"""
+    c = film_crop(sh["film"])
+    vf = ([f"crop={c}"] if c else []) + [f"scale={W}:{H}:force_original_aspect_ratio=increase", f"crop={W}:{H}",
           f"tpad=stop_mode=clone:stop_duration={dur:.2f}"]
     tmp = out + ".tmp.mp4"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{sh.get('ss', 0):.2f}", "-i", sh["film"], "-t", f"{dur:.3f}", "-vf", ",".join(vf),
