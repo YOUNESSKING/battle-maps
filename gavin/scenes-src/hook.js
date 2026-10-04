@@ -14,7 +14,7 @@ const bridge = (a, b, w) => GG.road([a, b], { w });
 bridge(RAIL_N, RAIL_S, 7); bridge(ROAD_N, ROAD_S, 10);
 GG.lbl("RAILWAY BRIDGE", RAIL_S[0] + 20, RAIL_S[1] + 30, { size: 18, anchor: [0, -50], t: 0 });
 GG.lbl("ROAD BRIDGE", ROAD_S[0] + 24, ROAD_S[1] + 26, { size: 22, color: "#fff6d8", anchor: [0, -50], t: 0 });
-B.label("THE WAAL", 1230, 640, { cls: "river", size: 34, rot: 28, t: 0, instant: true });
+B.label("THE WAAL", 930, 450, { cls: "river", size: 34, rot: 36, t: 0, instant: true });
 GG.lbl("NIJMEGEN", 1960, 1180, { size: 30, t: 0 });
 GG.lbl("LENT", 1560, 470, { size: 20, t: 0 });
 const p = (n) => "hook-" + n;
@@ -51,9 +51,17 @@ odds.querySelector(".inner").style.padding = "18px 54px 22px";
 B.tl.fromTo(odds.querySelector(".vs"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, T_GUNS - 0.3);
 B.tl.fromTo(odds.querySelector(".red"), { autoAlpha: 0, scale: 1.6 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "power4.in" }, T_GUNS - 0.1);
 SFX("hit", T_GUNS);
-// ~300 m of open water
-const bar = GG.pin(`<svg width="40" height="200" viewBox="0 0 40 200" style="display:block;overflow:visible;transform:rotate(-38deg)"><line x1="20" y1="4" x2="20" y2="196" stroke="#1b1812" stroke-width="7"/><line x1="20" y1="4" x2="20" y2="196" stroke="#fbfaf6" stroke-width="3.5" stroke-dasharray="10 6"/><line x1="6" y1="4" x2="34" y2="4" stroke="#fbfaf6" stroke-width="4"/><line x1="6" y1="196" x2="34" y2="196" stroke="#fbfaf6" stroke-width="4"/></svg>`, 1185, 545, { t: T_RIVER, until: T_PADDLE + 1 });
-GG.lbl("~300 M OF OPEN WATER", 1250, 520, { size: 18, anchor: [0, -50], t: T_RIVER + 0.2, until: T_PADDLE + 1 });
+// ~300 m of open water: bank-to-bank bar across the Waal, perpendicular to the flow (measured on the water mask at x=1260:
+// centre (1260, 680), flow 37.8 deg, banks 49 px / 53 px from the centre = ~300 m)
+const W1 = [1230, 719], W2 = [1292, 638], NX = 0.79, NY = 0.613; // banks; tick direction = along the flow
+const barG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+const tick = (q) => `<line x1="${q[0] - NX * 14}" y1="${q[1] - NY * 14}" x2="${q[0] + NX * 14}" y2="${q[1] + NY * 14}" stroke="#fbfaf6" stroke-width="4" stroke-linecap="round"/>`;
+barG.innerHTML = `<line x1="${W1[0]}" y1="${W1[1]}" x2="${W2[0]}" y2="${W2[1]}" stroke="#1b1812" stroke-width="7" stroke-linecap="round"/>
+  <line x1="${W1[0]}" y1="${W1[1]}" x2="${W2[0]}" y2="${W2[1]}" stroke="#fbfaf6" stroke-width="3.5" stroke-dasharray="9 6"/>${tick(W1)}${tick(W2)}`;
+document.getElementById("overlay").appendChild(barG); GG.hide(barG);
+B.tl.fromTo(barG, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5 }, T_RIVER);
+B.tl.to(barG, { autoAlpha: 0, duration: 0.5 }, T_PADDLE + 1);
+GG.lbl("~300 M OF OPEN WATER", W2[0] - 30, W2[1] - 26, { size: 18, anchor: [-100, -50], t: T_RIVER + 0.2, until: T_PADDLE + 1 });
 GG.sun(1460, 330, { s: 80, t: T_DAY, until: S2 });
 // the boats push off under fire: tracers, flak, shells in the water (boom + locked shake on every impact)
 BOATS.forEach(([el, x, y], i) => B.tl.to(el, { x: 120 + ((i * 17) % 40) - 20, y: -185 + ((i * 11) % 30) - 15, duration: 7.5, ease: "none" }, T_GUNS + 0.6 + (i % 13) * 0.12));
