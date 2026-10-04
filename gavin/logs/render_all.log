@@ -1,0 +1,7 @@
+=== 00:15:50 build biazza
+biazza: 69.31s  (abs 0.0-69.31)  paras: ['bz-1', 'bz-2', 'bz-3', 'bz-4', 'bz-5']
+
+◇  0 error(s), 2 warning(s)
+=== 00:15:52 render biazza
+=== 00:30:31 OK biazza
+=== 00:30:31 finished, failed=0
