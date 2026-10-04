@@ -1,0 +1,18 @@
+{
+ "name": "sicily",
+ "center": [
+  37.0,
+  14.6
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  140263,
+  101224
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 122.09,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

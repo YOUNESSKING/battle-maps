@@ -1,0 +1,18 @@
+{
+ "name": "lafiere",
+ "center": [
+  49.402,
+  -1.345
+ ],
+ "zoom": 15,
+ "origin_world_px": [
+  4161523,
+  2865687
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 3.11,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

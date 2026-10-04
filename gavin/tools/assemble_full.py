@@ -5,7 +5,7 @@ usage (from goosegreen/): python3 tools/assemble_full.py [--preview]
 - Archive paragraphs use the images listed in archive.json {"<para index>": ["archive_x.jpg", ...]} from
   assets/media/; images split the paragraph evenly, each with a slow zoom. Missing -> placeholder card.
 - Music: assets/media/music.wav (optional), ducked under the voice with a sidechain. Loudness -14 LUFS.
-Writes build/goosegreen.mp4 (1080p master) or build/goosegreen-720p.mp4 (--preview) + build/chapters.txt.
+Writes build/gavin.mp4 (1080p master) or build/gavin-720p.mp4 (--preview) + build/chapters.txt.
 """
 import json, os, subprocess, sys
 from PIL import Image, ImageDraw, ImageFont
@@ -18,19 +18,21 @@ MUSIC_VOL = 0.08  # music bed level before ducking (owner 2026-09-30: option C, 
 W, H, FPS = (1280, 720, 30) if PREVIEW else (1920, 1080, 30)
 T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
-key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").strip()
+key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
-    "hook-bbc": ("hook-bbc", "hook-bbc"),
-    "hook-atlantic": ("hook-falklands", "hook-falklands"),
-    "hook-isthmus": ("hook-isthmus", "hook-bio-2"),
-    "move1": ("move1-1", "move1-10"),
-    "move2": ("move2-1", "move2-12"),
-    "move3": ("move3-1", "move3-10"),
-    "ending": ("end-1", "end-2"),
+    "hook": ("hook-1", "hook-2"),
+    "intro": ("hook-3", "hook-3"),
+    "m1a": ("move1-1", "move1-3"),
+    "m1b": ("move1-4", "move1-8"),
+    "m2a": ("move2-1", "move2-1"),
+    "m2b": ("move2-2", "move2-9"),
+    "m3a": ("move3-1", "move3-2"),
+    "m3b": ("move3-3", "move3-10"),
+    "ending": ("end-2", "end-3"),
 }
-CHAPTERS = [("hook-bbc", "Intro: the BBC leak"), ("move1-1", "Move 1: The Night Assault"),
-            ("move2-1", "Move 2: Darwin Hill and Boca House"), ("move3-1", "Move 3: The Goose Green Bluff"),
+CHAPTERS = [("hook-1", "Intro: 26 boats"), ("move1-1", "Move 1: Biazza Ridge"),
+            ("move2-1", "Move 2: The La Fiere Causeway"), ("move3-1", "Move 3: The Waal Crossing"),
             ("end-1", "Legacy")]
 ARCH = json.load(open("archive.json")) if os.path.exists("archive.json") else {}
 starts = [p["start"] for p in paras] + [total]
@@ -125,7 +127,7 @@ r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", LN + ":p
 m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
 af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
       f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
-name = "build/goosegreen-720p.mp4" if PREVIEW else "build/goosegreen.mp4"
+name = "build/gavin-720p.mp4" if PREVIEW else "build/gavin.mp4"
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/video_only_"+str(H)+"p.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
                 "-t", f"{total:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", name], check=True)
 mmss = lambda s: f"{int(s // 60)}:{int(s % 60):02d}"

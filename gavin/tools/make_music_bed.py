@@ -21,7 +21,7 @@ TRACKS = ["music_src_long-note-one.mp3", "music_src_wounded.mp3", "music_src_lon
 XF = 5.0
 T = json.load(open("audio/timing.json"))
 total = T["duration"] + 6
-starts = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p["start"] for p in T["paragraphs"]}
+starts = {p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip(): p["start"] for p in T["paragraphs"]}
 chap = re.findall(r'\("([\w-]+)",\s*"[^"]*"\)', open("tools/assemble_full.py").read().split("CHAPTERS")[1].split("]")[0])
 # section boundaries: move 2 start, move 3 start, ending start (chapters 3, 4, 5 of 5)
 cuts = [starts[c] for c in chap[2:5]] if len(chap) >= 5 else [total * 0.4, total * 0.67, total * 0.92]

@@ -4,10 +4,14 @@ import numpy as np, soundfile as sf
 from kokoro_onnx import Kokoro
 
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "am_michael"
-SPEED = 1.08
-SCRIPT = "/home/user/battle-maps/gavin/script_test.md"
+SPEED = 1.0
+SCRIPT = "/home/user/battle-maps/gavin/script.md"
 OUT = "/home/user/battle-maps/gavin/audio"
 GAP_PARA, GAP_SECTION = 0.6, 0.8
+# how the TTS should say foreign names (the written script and timing.json keep the real spelling)
+PRON = {"Nijmegen": "Nymaygen", "La Fière": "La Fyair", "Merderet": "Mairderay", "Cauquigny": "Kokeenyee",
+        "Biazza": "Bee-atsa", "Waal": "Vahl", "Dirillo": "Deerillo", "Sainte-Mère-Église": "Sant Mair Aygleez",
+        "Cotentin": "Kotontan", "Gela": "Jella", "Goering": "Gurring", "Arnhem": "Arnem"}
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
 text = open(SCRIPT).read()
@@ -20,7 +24,10 @@ for si, sec in enumerate(sections):
             continue
         tag = re.match(r"^\[([^\]]*)\]", p).group(1)
         spoken = re.sub(r"^\[[^\]]*\]\s*", "", p).strip()
-        audio, sr = k.create(spoken, voice=VOICE, speed=SPEED, lang="en-us")
+        spoken_tts = spoken
+        for a, b in PRON.items():
+            spoken_tts = spoken_tts.replace(a, b)
+        audio, sr = k.create(spoken_tts, voice=VOICE, speed=SPEED, lang="en-us")
         dur = len(audio) / sr
         timing.append({"section": name, "tag": tag, "start": round(t, 2), "end": round(t + dur, 2), "text": spoken})
         chunks += [audio, np.zeros(int(sr * GAP_PARA), dtype=audio.dtype)]
