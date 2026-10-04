@@ -15,3 +15,6 @@ tts/*.bin
 **/build/seg/list.txt
 smith/logs/
 gavin/logs/
+gavin/assets/film/src/
+gavin/assets/film/clips/
+gavin/build/archtest/
