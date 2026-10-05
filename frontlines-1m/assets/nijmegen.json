@@ -1,0 +1,18 @@
+{
+ "name": "nijmegen",
+ "center": [
+  51.852,
+  5.855
+ ],
+ "zoom": 15,
+ "origin_world_px": [
+  4329295,
+  2775666
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 2.95,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
