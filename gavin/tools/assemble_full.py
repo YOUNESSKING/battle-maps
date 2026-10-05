@@ -35,10 +35,14 @@ SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
 CHAPTERS = [("hook-1", "Intro: 26 boats"), ("move1-1", "Move 1: Biazza Ridge"),
             ("move2-1", "Move 2: The La Fiere Causeway"), ("move3-1", "Move 3: The Waal Crossing"),
             ("end-1", "Legacy")]
-ARCH = json.load(open("archive.json")) if os.path.exists("archive.json") else {}
+ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
+ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}
+NAME = os.environ.get("NAME", "gavin")  # output name: build/<NAME>.mp4 (+ its own video-only track and segment folder)
+FLY = json.loads(os.environ.get("FLY", "{}"))  # {"move1-1": "scenes/fly1/renders/fly1.mp4", ...}: 3D flyover for the first 9.5 s, 1 s dissolve into the map
 starts = [p["start"] for p in paras] + [total]
 enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an"]
-os.makedirs("build/seg", exist_ok=True)
+SEG = "build/seg" if NAME == "gavin" else f"build/seg_{NAME}"
+os.makedirs(SEG, exist_ok=True)
 FONT = "tools/oswald-latin-700-normal.ttf"
 
 
@@ -75,13 +79,14 @@ def still(src, dur, out, n):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-i", src, "-vf", vf, "-frames:v", str(frames), *enc, out], check=True)
 
 
+VONLY = f"build/video_only_{H}p.mp4" if NAME == "gavin" else f"build/{NAME}_video_only_{H}p.mp4"
 segs, i = [], 0
 if AUDIO_ONLY:
-    assert os.path.exists("build/video_only_"+str(H)+"p.mp4"), "run once without --audio-only first"
+    assert os.path.exists(VONLY), "run once without --audio-only first"
     i = len(paras)
 while i < len(paras):
     dur = starts[i + 1] - starts[i]
-    out = f"build/seg/{i:02d}.mp4"
+    out = f"{SEG}/{i:02d}.mp4"
     tag = paras[i]["tag"]
     scene, t0 = scene_of(i)
     render = f"scenes/{scene}/renders/{scene}.mp4" if scene else None
@@ -92,23 +97,29 @@ while i < len(paras):
         imgs = [f"assets/media/{f}" for f in ARCH[str(i)] if os.path.exists(f"assets/media/{f}")]
         parts = []
         for n, src in enumerate(imgs):
-            part = f"build/seg/{i:02d}_{n}.mp4"
+            part = f"{SEG}/{i:02d}_{n}.mp4"
             still(src, dur / len(imgs), part, i + n); parts.append(part)
-        open("build/seg/p.txt", "w").write("".join(f"file '{os.path.abspath(p)}'\n" for p in parts))
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/p.txt", "-c", "copy", out], check=True)
+        open(f"{SEG}/p.txt", "w").write("".join(f"file '{os.path.abspath(p)}'\n" for p in parts))
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", f"{SEG}/p.txt", "-c", "copy", out], check=True)
     elif not tag.startswith("ARCHIVE") and render and os.path.exists(render):
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{starts[i] - t0:.3f}", "-i", render, "-t", f"{dur:.3f}",
                         "-vf", f"scale={W}:{H},tpad=stop_mode=clone:stop_duration=3", "-t", f"{dur:.3f}", *enc, out], check=True)
+        if key(paras[i]) in FLY and os.path.exists(FLY[key(paras[i])]):
+            tmp = out[:-4] + "_fly.mp4"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-t", "9.5", "-i", FLY[key(paras[i])], "-ss", "8.5", "-i", out, "-filter_complex",
+                            f"[0:v]scale={W}:{H},fps={FPS},format=yuv420p[a];[1:v]fps={FPS},format=yuv420p,setpts=PTS-STARTPTS[b];[a][b]xfade=transition=fade:duration=1.0:offset=8.5",
+                            "-t", f"{dur:.3f}", *enc, tmp], check=True)
+            os.replace(tmp, out)
     else:
-        png = f"build/seg/{i:02d}.png"
+        png = f"{SEG}/{i:02d}.png"
         card(("MAP " + key(paras[i]) + " (not rendered yet)") if not tag.startswith("ARCHIVE") else tag, png)
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-i", png, "-t", f"{dur:.3f}", *enc, out], check=True)
     segs.append(out); i += 1
     print(f"{starts[i - 1]:7.1f}s  {tag[:60]}", flush=True)
 
 if not AUDIO_ONLY:
-    open("build/seg/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "build/seg/list.txt", "-c", "copy", "build/video_only_"+str(H)+"p.mp4"], check=True)
+    open(f"{SEG}/list.txt", "w").write("".join(f"file '{os.path.abspath(s)}'\n" for s in segs))
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", f"{SEG}/list.txt", "-c", "copy", VONLY], check=True)
 
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
@@ -131,8 +142,8 @@ r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", LN + ":p
 m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
 af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
       f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
-name = "build/gavin-720p.mp4" if PREVIEW else "build/gavin.mp4"
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/video_only_"+str(H)+"p.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
+name = f"build/{NAME}-720p.mp4" if PREVIEW else f"build/{NAME}.mp4"
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", VONLY, "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
                 "-t", f"{total:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", name], check=True)
 mmss = lambda s: f"{int(s // 60)}:{int(s % 60):02d}"
 open("build/chapters.txt", "w").write("".join(f"{'0:00' if n == 0 else mmss(paras[idx[t]]['start'])} {title}\n" for n, (t, title) in enumerate(CHAPTERS)))
