@@ -16,14 +16,14 @@ CTL.forEach(([s, t], i) => B.image(`assets/media/europe_ctl_${s}.png`, 0, 0, 288
 // nation flags on the map (world px; camera 0.7, so 110 px = 77 px on screen)
 const flag = (src, name, lat, lon, t, until, w = 165) => { const [x, y] = G(lat, lon);
   return GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><img src="${src}" style="width:${w}px;display:block;border:2px solid #1a1712;box-shadow:0 3px 8px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:40px;color:#f7f3ea;text-shadow:0 2px 4px #000,0 0 10px rgba(0,0,0,0.8);letter-spacing:0.08em">${name}</div></div>`, x, y, { t, pop: true, until }); };
-flag("assets/media/ger_cross.png", "GERMANY", 49.0, 11.2, 0.8);
+flag("assets/media/ger_reich_flag.png", "GERMANY", 49.0, 11.2, 0.8);
 flag("assets/media/italy_flag.png", "ITALY", 43.0, 12.4, 1.1, T_SAL + 0.2);
 GG.tagbox("ITALY SURRENDERS · SEPT 1943", ...G(43.4, 12.2), "#3d3a34", { size: 32, t: T_SAL + 0.4, until: T_NOR });
 flag("assets/media/uk_flag.png", "BRITAIN", 52.4, -1.2, 1.4);
 flag("assets/media/ussr_flag.png", "USSR", 52.6, 35.9, 1.7, T_NOOTHER - 0.4);
 flag("assets/media/ussr_flag.png", "USSR", 52.6, 35.9, T_RIFLE + 0.2);
 [["NEUTRAL", 40.0, -3.8], ["NEUTRAL", 39.3, 33.0]].forEach(([n, la, lo]) => { const [x, y] = G(la, lo); GG.lbl(n, x, y, { size: 36, color: "#f2eee4", t: 2.0 }); });
-GG.card(`<div style="display:flex;gap:26px;font-size:24px;letter-spacing:0.08em;align-items:center"><span><b style="display:inline-block;width:22px;height:22px;background:#4a6a9a;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>ALLIES</span><span><b style="display:inline-block;width:22px;height:22px;background:#a8503c;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>AXIS</span><span><b style="display:inline-block;width:22px;height:22px;background:#77746c;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>NEUTRAL</span></div>`, "", 40, 0.9, T_NOOTHER - 0.4);
+GG.card(`<div style="display:flex;gap:26px;font-size:24px;letter-spacing:0.08em;align-items:center"><span><b style="display:inline-block;width:22px;height:22px;background:#2e5cb2;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>ALLIES</span><span><b style="display:inline-block;width:22px;height:22px;background:#be3a2a;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>AXIS</span><span><b style="display:inline-block;width:22px;height:22px;background:#807c72;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>NEUTRAL</span></div>`, "", 40, 0.9, T_NOOTHER - 0.4);
 B.showDate(0.1);
 B.date("1943 – 1944", 0.3, null, 38);
 K.badge({ name: "JAMES M. GAVIN", role: "82ND AIRBORNE DIVISION", photo: "assets/media/gavin_head.png", flag: "us", side: "carth", corner: "bl", t: T_NAME - 0.2, until: T_THREE });

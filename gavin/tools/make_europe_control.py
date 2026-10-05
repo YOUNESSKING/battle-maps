@@ -54,7 +54,7 @@ POCKETS = {
             (12.4, 43.95), (12.65, 43.98), (14.0, 42.8), (19, 40), (19, 36)]],                                                        # Gothic Line
 }
 SWITCH = {"sep44": {"Romania": "allied", "Bulgaria": "allied", "Finland": "neutral"}}  # Romania 23 Aug, Bulgaria 9 Sep, Finland ceasefire 4 Sep 1944
-COL = {"allied": (74, 106, 154), "axis": (168, 80, 60), "neutral": (119, 116, 108)}
+COL = {"allied": (46, 92, 178), "axis": (190, 58, 42), "neutral": (128, 124, 114)}  # owner 2026-10: stronger than the battle-map TINT
 LINE = {"allied": (44, 87, 183), "axis": (188, 37, 40)}
 
 def poly_mask(polys):
@@ -87,7 +87,7 @@ def build(state, feats, land):
     for side in ("neutral", "allied", "axis"):
         other = m["axis"] if side == "allied" else m["allied"] if side == "axis" else (m["axis"] | m["allied"])
         dist = ndimage.distance_transform_edt(~other) if side != "neutral" else np.full((H, W), 999.0)
-        a = (0.30 + 0.22 * np.exp(-dist / 60.0)) if side != "neutral" else np.full((H, W), 0.26)
+        a = (0.46 + 0.20 * np.exp(-dist / 60.0)) if side != "neutral" else np.full((H, W), 0.34)
         a = np.where(m[side] & land, a, 0).astype(np.float32)
         a = np.array(Image.fromarray((a * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(3)), np.float32) / 255
         c = np.array(COL[side], np.float32)
