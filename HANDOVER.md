@@ -1,6 +1,6 @@
 # HANDOVER v3: faceless military-history channel (Tactical Genius style)
 
-**Owner:** Youness Fakiri · **Updated:** 2026-09-26 (after the George Thomas video + detailed map style)
+**Owner:** Youness Fakiri · **Updated:** 2026-10-05 (first live YouTube numbers: title + first-minute rules, §10)
 **How to use:** start a new Claude Code cloud session on the repo `younessking/battle-maps` (environment with **Full** network access), attach the Gemini research file, and say: *"Read HANDOVER.md. Make the full video from this research."*
 
 ## 0a. NEXT VIDEO — quick start (read this first)
@@ -12,6 +12,7 @@
 - Archive: every image appears once (~6-7 s, one move), then cut; 2-3 images per slot; any slot > ~25 s becomes a map instead.
 - Music bed at MUSIC_LUFS -41, SFX_DB -3 (tools/mix.py); final -14 LUFS.
 - Report only at milestones; commit + push as you go; deliver the 1080p master via gofile.io (`curl -F "file=@X.mp4" https://upload.gofile.io/uploadfile`, check the md5).
+- **Title + first minute (§10, from the Thomas numbers: CTR 0.9 %):** title = `<Name>'s Top 3 Legendary Tactical Moves | The Man Who <huge result>` (name first, no "fired/almost" angles); line 1 of the script = stakes, never date + place; the title/thumbnail promise is paid within 30 s.
 **Order of work (target ~2-2.5 h, one fresh session):**
 1. Skeleton from `thomas/` (§0b step 1). Write script + SCENES.md, check the formula, record the voice (write "Ulysses Grant", "Robert E Lee": no initials with periods — they split sentences).
 2. Bake basemaps (region z9 for theaters, z13-15 battlefields); for each battlefield `python3 tools/sat.py --intro BASEMAP`; `python3 tools/minimap.py BATTLE WIDER TOWN LAT LON`; `python3 tools/water.py BASEMAP LEVEL` where rivers are dammed/wide.
@@ -169,6 +170,32 @@ Previews shared: v1 https://gofile.io/d/EVsnFEPG · v2 https://gofile.io/d/TugBL
 **Rejected by the owner:** soldier figures (little infantry silhouettes) instead of blocks.
 **Cost:** ~6× real time to render (v1 3-5×); a full video renders ~20-40 % longer.
 **Now standard (2026-09-26):** all of the above are engine functions in thomas/lib/battle.js (B.satIntro, B.tilt, B.terrain, B.road, B.territory(...).retreat, B.brigade/march/brigadeLoss/flee/trail, B.volley/burst/puff/cannon, B.hud, B.clock, B.minimap, B.bars, B.note, B.belief, B.pip, B.compass, B.scaleBar, B.legend/legendItems, B.scorched; portraitStake side:"rome"), with tools/sat.py --intro BASEMAP and tools/minimap.py for the images. templates/MAP_AGENT_BRIEF.md makes them mandatory; thomas/scenes-src/demo3.js is the reference scene built only from them. The full Thomas video itself was made before this style (not re-rendered).
+
+## 10. First live numbers: why nobody clicked and why viewers left (George Thomas, read 2026-10-05)
+Full study: `thomas/youtube/analytics_2026-10-05.md` (branch `claude/george-thomas-civil-war-2epkux`; copy on main in `research/ANALYTICS_THOMAS_2026-10-05.md`).
+**Numbers after 3 days:** 750 impressions (89 % from recommendations), **CTR 0.9 %**, 26 views, avg view 5:49 (31 %), retention ~65 % at 30 s and ~25 % at the end with no cliffs. People who get past the first minute stay; too few click, and too many leave in minute 1.
+
+**Title (binding from now on): copy Tactical Genius exactly.** Every TG title is `<Name>'s Top 3 Legendary Tactical Moves | <3-6 word subtitle>`: the famous name FIRST, then the series name, then a short subtitle.
+| TG subtitle | Views | Lesson |
+|---|---|---|
+| The Man Who Turned Korea Around (Ridgway) | 1.11M | "The Man Who <huge result>" is their winning wording |
+| (none) Patton | 866k | a famous name alone sells |
+| The Man Who Broke Hitler (Zhukov) | 629k | |
+| The Man Who Broke France (Manstein) | 238k | |
+| The General Better Than Montgomery (Slim) | 185k | a bold comparison/opinion also works |
+| The General Truman Fired (MacArthur) | 30k | **the "fired" angle flops** |
+| The Man Who Beat Napoleon (Wellington) / The Tiger of Malaya (Yamashita) | 7k / 6k | nicknames and old wars are weaker |
+- Our Thomas title broke all of it: a 54-character sentence first, the name at the end, and the "Grant almost fired him" angle (= MacArthur's flop). Replacement (vidIQ 86, owner to change in Studio): *George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army* (alternatives: "| The Man Who Destroyed Hood's Army" 90, "| The General Better Than Grant" 88).
+- Prefer "The Man Who <broke/saved/turned around> <something big and well known>"; avoid "fired / almost / nearly / forgotten / underrated" angles and nicknames. Still score with vidIQ (>= 85), but the pattern beats the score: never trade it away for a few points.
+- This **replaces** the older Morgan rule "hook first, series name after" in research/PACKAGING_GUIDE.md §2.
+
+**First minute (binding from now on):**
+- Line 1 = the stakes in plain words, never a date + place ("September the twentieth, eighteen sixty-three. North-west Georgia..." cost ~8 s before anything happened).
+- Within the first 30 s, pay the promise of the title AND the thumbnail with a flash-forward (e.g. "Fifteen months later, the general Grant was about to fire would destroy an entire army."). Thomas only paid "WE WILL HOLD" at 7:37 and the Grant story at 14:07: viewers who clicked for it saw a different battle and left.
+- Thumbnail scene = hook scene = title promise (one promise, see PACKAGING_GUIDE §3).
+- Check before recording the voice, together with the §1 formula check: "Does line 1 state stakes? Is the title/thumbnail promise paid by 0:30?"
+
+**After publishing:** run Studio Test & compare with 2-3 thumbnails; read CTR/retention at 3, 7 and 28 days; if CTR < 2 % after ~1,000 impressions, change the title to the TG pattern first, then the thumbnail. Save every read as `<name>/youtube/analytics_<date>.md`.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
