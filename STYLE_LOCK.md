@@ -32,6 +32,20 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
   - **Wide campaign maps** (a whole country or theatre: Korea, Sicily, Normandy, Holland): every front line between the two sides is **two-coloured, blue on our side and red on theirs, never one colour** (owner 2026-10-04). One-colour lines are only for reserve/depth lines on close-up battle maps.
   - When a front collapses, the two-colour band MOVES to the next line (`to` + `moveT`, moveDur 3.0).
 - **Territory ("E" look, `K.frontTint`):** alpha 0.34, depth 170 px behind the front (95 px for a forward zone that will be lost), soft 24, clipped to land with a land mask (`elev > 0.5`). Lost ground flickers then fades (`K.lose`). End every scene with `K.raiseTerritory()`.
+- **WHO CONTROLS THE GROUND + NATION FLAGS, ON EVERY MAP (owner 2026-10-05, Gavin):** every map scene, the overview maps AND
+  every battle map, shows which side holds which ground and whose flag it is:
+  - **Territory colours (strong, not faded):** Allies/hero `#2e5cb2`, Axis/enemy `#be3a2a`, neutral `#807c72`; alpha 0.46 inside,
+    up to 0.66 right at the border, clipped to land; a two-colour front band where the sides meet; thin country borders.
+    Generator: `gavin/tools/make_europe_control.py` (historical borders `world_1938.geojson` + front polylines per date ->
+    `assets/media/<map>_ctl_<date>.png`, placed with `B.image(...)` and cross-faded when the date changes).
+  - **The map changes with time:** one overlay per date the narration reaches (e.g. Jul 43 / Sep 43 / Jun 44 / Sep 44), cross-fade 1 s.
+  - **Nation flags on the map** with the name under them (flag ~115 px on screen, white Oswald name), one per power on screen;
+    "NEUTRAL" labels on neutral countries; legend card ALLIES / AXIS / NEUTRAL top-centre. Use the PERIOD national flags:
+    Germany 1933-45 = the red flag with the white disc and swastika (`ger_reich_flag.png`, owner's choice), Kingdom of Italy
+    with the Savoy shield (`italy_flag.png`), USSR 1936-55 (`ussr_flag.png`), UK, US 48-star. Unit counters keep their small flag chips.
+  - Battle maps: the same colours fill each side's ground behind its front (on top of the `K.front` lines), with the flags of
+    the nations fighting placed on their ground. Reference: `gavin/scenes-src/intro.js` (hook-3) and `ending.js`.
+  - Fact-check every front line per date and log it in FACT_NOTES ("control map").
 - **Night (`K.night`):** fully muted palette + brightness boost on lines and territory; normal at dawn.
 - **Unit symbols (`K.counter`):** infantry X · artillery = howitzer silhouette · tank/armour = tank silhouette · mech = X + track · AA = twin barrels · HQ = flag. Flag badge + size mark (••• platoon, I company, II battalion, III regiment).
 - **Artillery:** the gun fires (`K.gun`: flash, smoke, recoil), shell arc, **impact** (`K.impact`: fireball, shock ring, smoke, small shake).
@@ -99,7 +113,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Synthesized artillery booms (replaced by real recordings).
 - The `sfx/candidates/bombs/` clips (owner disliked them).
 - Loud gun-launch sounds / boom at launch instead of impact.
-- Bright, fully saturated front lines; flat territory fills over whole areas; tint spilling onto sea or distant land.
+- Bright, fully saturated front lines; tint spilling onto sea or distant land. (Faded territory is also out: since 2026-10-05 territory is strong, see section 2.)
 - Two-coloured lines behind the front.
 - Simple flat aircraft icons.
 - NATO dot/oval artillery and oval tank symbols (silhouettes chosen).
