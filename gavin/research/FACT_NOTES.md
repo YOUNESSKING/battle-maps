@@ -24,3 +24,10 @@ Checked 2026-10-03 with web search. Started with Biazza Ridge, for the 1-minute 
 | Men fell asleep in foxholes | No source found. | Not used |
 | "We're staying on this goddamned ridge, no matter what happens" | Found only in secondary sources (HistoryNet, Armchair General). | Paraphrased without quote marks |
 | Gavin's age and rank | Colonel, commanding the 505th PIR. Born 22 March 1907, so he was 36. He received the Distinguished Service Cross for the action. | colonel, 36 |
+
+## Europe control map (hook-3 test, owner request 2026-10: territory + flags)
+Borders: aourednik/historical-basemaps world_1938 (Germany incl. Austria). Fronts are approximate, drawn from standard WWII situation maps; they read at a glance, not to the km.
+- **Jul 1943 (Sicily, 10 Jul):** Axis holds France (all occupied since Nov 1942), Low Countries, Denmark, Norway, Poland, Czechoslovakia, Yugoslavia, Greece, Italy incl. Sicily/Sardinia/Corsica; Hungary, Romania, Bulgaria, Finland are Axis allies. Allies hold North Africa (Tunisia fell 13 May 1943). Eastern front just before/at Kursk: Leningrad besieged, Orel and Kursk salients, Mius river; Crimea German. Neutral: Spain, Portugal, Switzerland, Sweden, Turkey, Ireland.
+- **Sep 1943 (Salerno, 9 Sep):** Sicily taken (17 Aug); Allies in Calabria (3 Sep), Salerno and Taranto (9 Sep). Italy's armistice announced 8 Sep 1943; Germany occupies the rest of Italy. Soviets retook Orel (5 Aug), Kharkov (23 Aug), Stalino (8 Sep).
+- **Jun 1944 (Normandy, 6 Jun):** Rome fell 4 Jun; Sardinia and Corsica Allied (Sep/Oct 1943). Leningrad relieved (Jan 1944), Crimea retaken (May 1944); front from Narva past Vitebsk (the Belarus bulge before Bagration, 22 Jun) to the Romanian border at Iasi and the Dniester.
+- **Sep 1944 (Holland, 17 Sep):** France and Belgium largely liberated (Paris 25 Aug, Brussels 3 Sep, Antwerp 4 Sep), front near the German border; Italy at the Gothic Line (Pisa 2 Sep, Rimini fell 21 Sep). Romania switched sides 23 Aug; Bulgaria 9 Sep; Finland ceasefire 4 Sep (shown neutral). Soviets on the Vistula at Warsaw and in the Carpathians; Greece and Yugoslavia still German-held (Athens freed Oct 1944).
