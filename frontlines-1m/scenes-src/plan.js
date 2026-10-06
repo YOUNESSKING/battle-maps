@@ -33,7 +33,10 @@ const drop = (la, lo, t, n) => { const [x, y] = G(la, lo); for (let i = 0; i < n
 drop(49.40, -1.30, T_THREE, 7); drop(49.22, -0.25, T_THREE + 0.5, 5);
 GG.tagbox("US 82ND + 101ST AIRBORNE", ...G(49.33, -1.48), "#1f4fc4", { size: 24, t: T_THREE + 0.4, until: S2 + 0.3 });
 GG.tagbox("BRITISH 6TH AIRBORNE", ...G(49.16, -0.15), "#1f4fc4", { size: 24, t: T_THREE + 0.9, until: S2 + 0.3 });
-SFX("prop", T_THREE - 0.4); SFX("ref:whoosh", S2);
+// the transports are on screen whenever their engines are heard (owner 2026-10-06: no plane sound without a plane)
+[[49.40, -1.30], [49.22, -0.25], [49.36, -1.25]].forEach(([la, lo], i) => { const [x, y] = G(la, lo), t = T_THREE - 0.8 + i * 0.4;
+  K.aircraft({ kind: "cargo", side: "carth", size: 44, alt: 14, pts: [[x - 420, y - 60], [x + 260, y + 30]], t, dur: 3.2, until: t + 3.4, sfx: i ? false : undefined }); });
+SFX("ref:whoosh", S2);
 // behind Utah: the flooded fields (approximate), the narrow causeways, the town on the main road
 const water = { fill: "none", stroke: "#4f86d8", "stroke-width": 26, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.5 };
 [[[49.47, -1.215], [49.43, -1.205], [49.39, -1.195], [49.355, -1.19]], [[49.46, -1.385], [49.43, -1.365], [49.40, -1.352], [49.37, -1.34], [49.345, -1.325]], [[49.345, -1.325], [49.33, -1.29], [49.315, -1.255]]].forEach((L) => svgPath(L.map(([a, b]) => G(a, b)), water, T_FLOOD));
