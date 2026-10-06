@@ -21,3 +21,6 @@
 | largest seaborne invasion in history | standard description |
 | Utah H-Hour 06:30, 4th Infantry Division | VERIFIED. history.army.mil/books/wwii/utah |
 | Utah "about two hundred casualties", lightest of the five | VERIFIED: 197 (4th Div, D-Day; ~60 missing at sea), some say ~175, so "about". en.wikipedia.org/wiki/Utah_Beach |
+
+## Europe, 5 June 1944: eastern front fix (2026-10-06)
+- Everything east of the June 1944 front shown as Soviet-held (incl. pre-war eastern Poland / western Ukraine around Kovel, Rovno, Ternopil, and Crimea, retaken May 1944), not only pre-war USSR.

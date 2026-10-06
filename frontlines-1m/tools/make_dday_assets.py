@@ -12,6 +12,9 @@ EC.RETURN_MASKS = True
 feats = [f for f in json.load(open("assets/src/world_1938.geojson"))["features"] if f["geometry"]]
 eland = np.array(Image.open("assets/europe_land.png").convert("L")) > 127
 m = EC.build("jun5", feats, eland)
+# everything east of the June 1944 front was back in Soviet hands (incl. pre-war eastern Poland / western Ukraine): not only pre-war USSR
+east = ~EC.poly_mask([EC.EAST["jun5"] + [(-30, 30), (-30, 75)]]) & EC.poly_mask([[(15, 45.6), (45, 45.6), (45, 75), (15, 75)]])
+m["allied"] |= m["axis"] & east; m["axis"] &= ~east
 MA.grade("assets/europe.jpg", (~eland).astype(np.float32), "assets/europe_ref.jpg")
 MA.build("europe_ctlm_jun5", eland & ~m["neutral"], m["allied"])
 # Normandy (z10): all German-held on the night of 5 June; before dawn on 6 June, airborne pockets (approximate) around Sainte-Mere-Eglise
