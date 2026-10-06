@@ -10,6 +10,7 @@ Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical
 - Research for new videos comes from Gemini (`research/GEMINI_BRIEF_v3.md`); the user attaches the result.
 - Packaging (title, thumbnail, description, tags): `research/PACKAGING_GUIDE.md`; **no links in descriptions**.
 - Keep the conversation lean: use subagents (Sonnet for search/download/sound, Opus for maps), and commit + push work as you go.
+- **Every map shows who controls the ground (strong territory colours) + the period nation flags** (owner 2026-10-05; STYLE_LOCK section 2): overview maps AND battle maps, changing with the dates.
 - **Every video opens on an animated map, never a photo** (owner rule). The first script paragraph must be `[MAP: ...]` with units on screen in the first second; archive photos only after the hook.
 - Hooks follow the **hook formula** in HANDOVER.md section 1 (stakes-first line, flash-forward to the payoff, a change every 3-5 s, SFX on every beat). Every map blast calls `SFX(kind, t)` so the build adds its sound.
 - The visual + sound style is **locked** in HANDOVER.md section 1b (front lines, territory, night mode, real impact sounds, aircraft sounds, quiet music). Use the `lib/fx.js` defaults; don't restyle.

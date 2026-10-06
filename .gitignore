@@ -14,3 +14,11 @@ tts/*.bin
 **/build/seg/tmp.txt
 **/build/seg/list.txt
 smith/logs/
+gavin/logs/
+gavin/assets/film/src/
+gavin/assets/film/clips/
+gavin/build/archtest/
+gavin/build/frontlines/
+tts/cbx-venv/
+voice/
+reference/style2/

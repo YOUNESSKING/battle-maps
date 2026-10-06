@@ -32,15 +32,30 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
   - **Wide campaign maps** (a whole country or theatre: Korea, Sicily, Normandy, Holland): every front line between the two sides is **two-coloured, blue on our side and red on theirs, never one colour** (owner 2026-10-04). One-colour lines are only for reserve/depth lines on close-up battle maps.
   - When a front collapses, the two-colour band MOVES to the next line (`to` + `moveT`, moveDur 3.0).
 - **Territory ("E" look, `K.frontTint`):** alpha 0.34, depth 170 px behind the front (95 px for a forward zone that will be lost), soft 24, clipped to land with a land mask (`elev > 0.5`). Lost ground flickers then fades (`K.lose`). End every scene with `K.raiseTerritory()`.
+- **WHO CONTROLS THE GROUND + NATION FLAGS, ON EVERY MAP (owner 2026-10-05, Gavin):** every map scene, the overview maps AND
+  every battle map, shows which side holds which ground and whose flag it is:
+  - **Territory colours (strong, not faded):** Allies/hero `#2e5cb2`, Axis/enemy `#be3a2a`, neutral `#807c72`; alpha 0.46 inside,
+    up to 0.66 right at the border, clipped to land; a two-colour front band where the sides meet; thin country borders.
+    Generator: `gavin/tools/make_europe_control.py` (historical borders `world_1938.geojson` + front polylines per date ->
+    `assets/media/<map>_ctl_<date>.png`, placed with `B.image(...)` and cross-faded when the date changes).
+  - **The map changes with time:** one overlay per date the narration reaches (e.g. Jul 43 / Sep 43 / Jun 44 / Sep 44), cross-fade 1 s.
+  - **Nation flags on the map** with the name under them (flag ~115 px on screen, white Oswald name), one per power on screen;
+    "NEUTRAL" labels on neutral countries; legend card ALLIES / AXIS / NEUTRAL top-centre. Use the PERIOD national flags:
+    Germany 1933-45 = the red flag with the white disc and swastika (`ger_reich_flag.png`, owner's choice), Kingdom of Italy
+    with the Savoy shield (`italy_flag.png`), USSR 1936-55 (`ussr_flag.png`), UK, US 48-star. Unit counters keep their small flag chips.
+  - Battle maps: the same colours fill each side's ground behind its front (on top of the `K.front` lines), with the flags of
+    the nations fighting placed on their ground. Reference: `gavin/scenes-src/intro.js` (hook-3) and `ending.js`.
+  - Fact-check every front line per date and log it in FACT_NOTES ("control map").
 - **Night (`K.night`):** fully muted palette + brightness boost on lines and territory; normal at dawn.
 - **Unit symbols (`K.counter`):** infantry X · artillery = howitzer silhouette · tank/armour = tank silhouette · mech = X + track · AA = twin barrels · HQ = flag. Flag badge + size mark (••• platoon, I company, II battalion, III regiment).
 - **Artillery:** the gun fires (`K.gun`: flash, smoke, recoil), shell arc, **impact** (`K.impact`: fireball, shock ring, smoke, small shake).
 - **Aircraft (`K.aircraft`):** detailed top-down jets / turboprops / helicopters with ground shadow, spinning props/rotors, dotted flight path; shoot-downs smoke, spiral and crash; helicopters' shadows close in when they land.
+- **WW2 transport / plane symbol (locked, owner 2026-10-06): the glowing C-47, `K.aircraft({ kind: "c47g", side })`.** White body with a soft glow; the **outline and glow take the side colour: blue = Allies (`side: "carth"`), red = Germans/enemy (`side: "rome"`)**. Size ~30 on wide maps. Planes **fly in spaced out (few, not swarms), do their job (drop / bomb) and fly off the map**; never stop or fade in mid-air. Preview: `frontlines-1m/build/plane-glow-sides.png`; used in the 1-min D-Day test (`frontlines-1m/scenes-src/europe_hd.js`). The old twin-boom `cargo` and the striped `c47` icons were rejected (looked like drones / didn't convince).
 - **Bombing run (owner's favourite, copy exactly):** jet flies the run (size 84, alt 30, dur 3.2); each bomb is `K.impact(x, y, t0 + 1.55 + k * 0.25, { r: 20, shake: first ? 5 : false })`, i.e. just after the jet passes, sticks 0.25 s apart. Code: `goosegreen/scenes-src/move3.js` ("the Harrier strike").
 - **Also:** ship silhouettes with muzzle flashes, burning places with smoke columns (`K.smoke`), pulsing target rings on objectives (`K.target`), commander badge (`K.badge`, initials on dark tint if no legal photo), casualty card after every move with losses (`K.casualties`), captions bottom-centre.
 
 ## 3. Sound effects (locked files and levels)
-Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). Levels are dB in `sfx_mix_lib.py`:
+Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). **Aircraft sounds only when an aircraft is on screen** (owner 2026-10-06): never a plane/jet/heli sound over parachutes or an empty sky; give `K.aircraft` the sound (its default) or show the planes. Levels are dB in `sfx_mix_lib.py`:
 
 | Kind (`SFX(kind, t)`) | Sound | Level | Min gap |
 |---|---|---|---|
@@ -49,7 +64,7 @@ Rule: every visual beat has a sound, and **the boom is always on the impact** (l
 | fire (gun launch) | `gun_fire` | -24 | 0.35 s |
 | mortar (launch) | `mortar_thump` | -24 | 0.30 s |
 | jet | `jet_flyby` (roar + Doppler, loudest mid-flight) | -11 | 1.2 s |
-| prop (turboprop) | `prop_flyby` | -13 | 1.5 s |
+| prop (turboprop / transport) | `prop_flyby` = Mixkit "Low airplane flying over" (owner pick "sound B", 2026-10-06; replaced the old prop sound) | -13 | 1.5 s |
 | heli | `heli_flyby` (rotor thumps) | -14 | 2.0 s |
 | missile | `missile_launch_hit` | -9 | 0.8 s |
 | hit | `hit` | -8 | 0.5 s |
@@ -99,9 +114,9 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Synthesized artillery booms (replaced by real recordings).
 - The `sfx/candidates/bombs/` clips (owner disliked them).
 - Loud gun-launch sounds / boom at launch instead of impact.
-- Bright, fully saturated front lines; flat territory fills over whole areas; tint spilling onto sea or distant land.
+- Bright, fully saturated front lines; tint spilling onto sea or distant land. (Faded territory is also out: since 2026-10-05 territory is strong, see section 2.)
 - Two-coloured lines behind the front.
-- Simple flat aircraft icons.
+- Simple flat aircraft icons, drone-like twin-boom transports, planes that stop in mid-air (exception: the glowing C-47 `c47g` is the approved WW2 plane symbol).
 - NATO dot/oval artillery and oval tank symbols (silhouettes chosen).
 - Music at 0.35 (too loud).
 - Licences: no NonCommercial / NoDerivatives (no IWM Non-Commercial, no BBC SFX). Never a fake likeness of a real person.

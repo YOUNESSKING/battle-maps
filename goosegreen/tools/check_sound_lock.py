@@ -19,7 +19,7 @@ FILES = {  # file: md5 (locked recordings / synths)
     "gun_fire.wav": "22e2e9f43bdf56c6c4f947a41b0949f3",  # gun / ship gun firing (quiet)
     "mortar_thump.wav": "42af7d38e2c59ae0ec748f20ea1d3cee",
     "jet_flyby.wav": "4b73b86411c241c214d2ccc2c0bcb98d",
-    "prop_flyby.wav": "7d1a245cce52e64133d2b14ab1424434",
+    "prop_flyby.wav": "cdf6d13c8763630a0c50d86a26ba4510",  # owner 2026-10-06: Mixkit 'Low airplane flying over' (sound B)
     "heli_flyby.wav": "5e676f62c6416bed04ce54b7e59eb0d4",
     "zoom_whoosh.wav": "38bfd2c2af2cf624366bb9a01e306d88",  # zoom sound on the biggest camera moves (owner pick 2026-09-30)
 }
