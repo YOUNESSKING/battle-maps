@@ -1,0 +1,49 @@
+{
+ "voice": "am_michael",
+ "speed": 1.0,
+ "duration": 60.67,
+ "paragraphs": [
+  {
+   "section": "Test",
+   "tag": "MAP: e-1 | Europe, 5 June 1944: dark terrain, crimson occupied Europe, stamped emblem, white-box labels; Britain blue",
+   "start": 0.5,
+   "end": 9.46,
+   "text": "June, nineteen forty-four. For four years, Hitler's empire has held the coast of Europe. Now, from England, the Allies strike back."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: e-2 | push into Normandy: transport planes cross the Channel to the Cotentin's west coast at night",
+   "start": 10.36,
+   "end": 22.71,
+   "text": "Hours before the landings, about thirteen thousand American paratroopers take off in more than eight hundred planes. Their mission: jump behind the beaches in the dark, and seize the roads."
+  },
+  {
+   "section": "Test",
+   "tag": "ARCHIVE: a-1 | headline card; film in the projector frame; date card 6 JUNE 1944 \u00b7 NORMANDY, FRANCE",
+   "start": 23.61,
+   "end": 31.06,
+   "text": "Cloud and anti-aircraft fire break the formations apart. Most men land miles from their drop zones."
+  },
+  {
+   "section": "Test",
+   "tag": "ARCHIVE: a-2 | pathfinders photo (3D depth), film",
+   "start": 31.96,
+   "end": 41.62,
+   "text": "Some fall straight into the town of Sainte-M\u00e8re-\u00c9glise. One man's parachute catches on the church steeple. He hangs there for about two hours, playing dead."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: n-1 | Normandy: scattered chutes; small groups gather; blue grows around Sainte-Mere-Eglise; the road from Cherbourg is cut",
+   "start": 42.52,
+   "end": 51.69,
+   "text": "But small groups find each other. Before dawn, a battalion of the five hundred and fifth takes the town, and cuts the main road to Cherbourg."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: n-2 | the town turns blue; flag; end card",
+   "start": 52.59,
+   "end": 58.27,
+   "text": "Sainte-M\u00e8re-\u00c9glise is often called the first town freed in France. D-Day has begun."
+  }
+ ]
+}
