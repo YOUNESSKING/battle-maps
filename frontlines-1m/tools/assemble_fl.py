@@ -16,14 +16,21 @@ f1, f2 = st["f-1"], st["f-2"]
 cues += [[round(t, 2), k, "film"] for k, t in [("prop", f1 + 0.2), ("static", f1 + 1.0), ("impact", f1 + 6.4), ("impact", f1 + 7.6), ("mg", f2 + 8.0), ("impact", f2 + 9.6)]]
 json.dump(sorted(cues), open("build/sfx_cues.json", "w"))
 run(["python3", "tools/sfx_mix.py"])
-# 3. mix: voice (warm EQ + light compression + small room), music ducked by the voice, sfx; master to -14 LUFS
-fc = ("[0:a]aresample=48000,highpass=f=70,equalizer=f=180:t=q:w=1:g=2.5,equalizer=f=3500:t=q:w=1.2:g=1.5,acompressor=threshold=-20dB:ratio=3:attack=8:release=120,"
-      "aecho=0.8:0.5:28:0.12,volume=1.6,asplit=2[vo][sc];"
-      f"[1:a]aresample=48000,atrim=start=60,asetpts=PTS-STARTPTS,volume=0.17,afade=t=in:d=1.5,afade=t=out:st={END - 2.5}:d=2.5[mu];"
-      "[mu][sc]sidechaincompress=threshold=0.04:ratio=5:attack=40:release=600[mud];"
-      "[2:a]aresample=48000,volume=0.5[fx];"
-      f"[vo][mud][fx]amix=inputs=3:normalize=0,atrim=0:{END},loudnorm=I=-14:TP=-1.5:LRA=11[a]")
-run(["ffmpeg", "-v", "error", "-y", "-i", "audio/voice.wav", "-i", "assets/media/music_five_armies.mp3", "-i", "build/sfx.wav", "-filter_complex", fc, "-map", "[a]", "-c:a", "pcm_s16le", "build/mix.wav"])
+# 3. mix: EXACTLY the channel's locked chain (gavin/tools/assemble_full.py + finalize.sh): raw voice, SFX at the locked levels ducked
+#    under the voice, music at MUSIC_VOL 0.08 ducked, limiter 0.5; then the gain + limiter pass to ~-14 LUFS (gain measured, as in finalize)
+MUSIC_VOL = 0.08
+MATCH = 10 ** ((-19.7 - -11.8) / 20)  # bring Five Armies (-11.8 LUFS from 1:00) to the channel bed's loudness (gavin music.wav, -19.7 LUFS) first
+f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]", "[1:a]aresample=48000[sfxin]",
+     "[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]",
+     f"[2:a]aresample=48000,atrim=start=60,asetpts=PTS-STARTPTS,atrim=0:{END},volume={MUSIC_VOL * MATCH:.4f},afade=t=in:d=2,afade=t=out:st={END - 3}:d=3[mus]",
+     "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
+     "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]"]
+run(["ffmpeg", "-v", "error", "-y", "-i", "audio/voice.wav", "-i", "build/sfx.wav", "-i", "assets/media/music_five_armies.mp3", "-filter_complex", ";".join(f),
+     "-map", "[aout]", "-t", f"{END:.2f}", "-c:a", "pcm_s16le", "build/mix_raw.wav"])
+r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix_raw.wav", "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+I = float(r[r.rindex("I:"):].split()[1]); gain = round(-14.4 - I + 0.6, 1)  # +0.6: the limiter takes back ~0.6 dB
+run(["ffmpeg", "-v", "error", "-y", "-i", "build/mix_raw.wav", "-af", f"volume={gain}dB,alimiter=limit=0.8:attack=2:release=80:level=false,aresample=48000", "-c:a", "pcm_s16le", "build/mix.wav"])
+print("raw mix", I, "LUFS, gain", gain, "dB")
 run(["ffmpeg", "-v", "error", "-y", "-i", "build/video.mp4", "-i", "build/mix.wav", "-map", "0:v", "-map", "1:a", "-t", str(END), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
      "-movflags", "+faststart", "build/frontlines-1m-test.mp4"])
 print("wrote build/frontlines-1m-test.mp4", END)
