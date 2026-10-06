@@ -89,7 +89,7 @@ Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video m
   - **Effects** = everything in `lib/fx.js` at its defaults (front lines, territory, night, counters, artillery, aircraft, smoke, impacts, badges, casualty cards).
   - **Credits to paste into every description** (copy from goosegreen/build/youtube_description.txt): the music credit (Kevin MacLeod, incompetech.com, the four titles, CC BY 4.0 link) and the SFX credit line from `SFX_CREDITS.md`.
 
-- **Merged "Frontlines" look (owner-approved 2026-10-06):** detailed HD relief maps, big-towns-only geography layer with small 1944 labels, multiply territory, living map (clouds, river shimmer, scale bar, north arrow), emblem fixed on its country, every power's flag visible, glowing C-47s that drop and leave, Netflix-style archive (headline card, 3D-depth photos, film in a projector frame, headline date cards) and the Frontlines sound design. Full rules: STYLE_LOCK.md section 2a; reference build + tools: `frontlines-1m/` (D-Day 1-min test).
+- **Merged "Frontlines" look (owner-approved 2026-10-06):** detailed HD relief maps, big-towns-only geography layer with small 1944 labels, multiply territory, living map (clouds, river shimmer, scale bar, north arrow), emblem fixed on its country, every power's flag visible, glowing C-47s that drop and leave, Netflix-style archive (headline card, 3D-depth photos, film in a projector frame, headline date cards) and the Frontlines sound design. **Saved alternative "option 2"** = no territory fill, only the two-colour glowing front lines (use it when the owner says "option 2"). Full rules: STYLE_LOCK.md section 2a; reference build + tools: `frontlines-1m/` (D-Day 1-min test).
 
 ## 2. What's finished
 | Item | Status | Where (repo path) |
