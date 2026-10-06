@@ -58,6 +58,18 @@
       <ellipse cx="29" cy="0" rx="3.4" ry="2.6" fill="#bfe3ff"/>
       <g class="prop" transform="translate(24.5 -13)"><circle r="7.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-0.9" y="-7.5" width="1.8" height="15" fill="#1b1812"/><rect x="-7.5" y="-0.9" width="15" height="1.8" fill="#1b1812"/></g></g>
       <g class="prop" transform="translate(24.5 13)"><circle r="7.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-0.9" y="-7.5" width="1.8" height="15" fill="#1b1812"/><rect x="-7.5" y="-0.9" width="15" height="1.8" fill="#1b1812"/></g></g>`,
+    // glowing C-47 (owner pick 2026-10-06, option B): white body with a soft glow; outline + glow in the side's colour
+    // (blue = Allied, red = German) so friend and foe read at a glance
+    c47g: (c) => {
+      const g = { "#1f4fc4": "#6f9bff", "#c4121f": "#ff5a5a" }[c] || c;
+      const nac = (y) => `M25 ${y} C25 ${y - 2.6} 22 ${y - 3.6} 18 ${y - 3.6} L-2 ${y - 3} C-6 ${y - 2.2} -8 ${y - 1} -9 ${y} C-8 ${y + 1} -6 ${y + 2.2} -2 ${y + 3} L18 ${y + 3.6} C22 ${y + 3.6} 25 ${y + 2.6} 25 ${y} Z`;
+      const d = "M17 -4.6 L6.5 -45 C5.5 -48.6 2.6 -49.6 0.4 -48 L-6 -4.6 Z M17 4.6 L6.5 45 C5.5 48.6 2.6 49.6 0.4 48 L-6 4.6 Z " +
+        "M-24 -2 L-29 -15 C-30 -17.2 -33 -17.6 -34.6 -16 L-33.6 -2 Z M-24 2 L-29 15 C-30 17.2 -33 17.6 -34.6 16 L-33.6 2 Z " +
+        "M34 0 C34 -2.6 32 -4.6 27 -4.8 L-6 -4.6 C-16 -4 -26 -2.2 -33 -1 L-35.5 0 L-33 1 C-26 2.2 -16 4 -6 4.6 L27 4.8 C32 4.6 34 2.6 34 0 Z " + nac(-13) + " " + nac(13);
+      const prop = (y) => `<g class="prop" transform="translate(26.5 ${y})"><g class="blades"><rect x="-0.9" y="-7.5" width="1.8" height="15" fill="rgba(255,255,255,0.55)"/><rect x="-7.5" y="-0.9" width="15" height="1.8" fill="rgba(255,255,255,0.55)"/></g></g>`;
+      const part = (pd) => `<path d="${pd}" fill="#e9eef8" stroke="${c}" stroke-width="2" stroke-linejoin="round"/>`;
+      return `<g style="filter:drop-shadow(0 0 3px ${g}) drop-shadow(0 0 7px ${g})">${d.split(/ (?=M)/).reduce((a, x, i) => (i % 2 && i < 4 ? (a[a.length - 1] += " " + x) : a.push(x), a), []).map(part).join("")}</g>${prop(-13)}${prop(13)}`;
+    },
     // single-engine fighter-bomber (WW2/Korea prop plane, e.g. F4U Corsair: long nose, wide wings, one big propeller)
     prop: (c) => `
       <path d="M30 0 C29 -3.4 24 -4 18 -4 L-28 -2.2 L-28 2.2 L18 4 C24 4 29 3.4 30 0 Z" fill="${c}" stroke="${INK}" stroke-width="1.5"/>
@@ -210,7 +222,7 @@
       const k = size / 100;
       const shadow = document.createElementNS(NS, "svg"), body = document.createElementNS(NS, "svg");
       [shadow, body].forEach((s) => { s.setAttribute("viewBox", "-50 -50 100 100"); s.setAttribute("width", size); s.setAttribute("height", size); s.style.left = -size / 2 + "px"; s.style.top = -size / 2 + "px"; });
-      shadow.innerHTML = `<g fill="rgba(0,0,0,0.38)" stroke="none" style="filter:blur(1.2px)">${ART[o.kind](c).replace(/fill="[^"]*"/g, 'fill="rgba(0,0,0,0.38)"').replace(/stroke="[^"]*"/g, 'stroke="none"')}</g>`;
+      shadow.innerHTML = `<g fill="rgba(0,0,0,0.38)" stroke="none" style="filter:blur(1.2px)">${ART[o.kind](c).replace(/fill="[^"]*"/g, 'fill="rgba(0,0,0,0.38)"').replace(/stroke="[^"]*"/g, 'stroke="none"').replace(/style="[^"]*"/g, "")}</g>`;
       body.innerHTML = ART[o.kind](c);
       body.style.filter = "drop-shadow(0 1px 1.5px rgba(0,0,0,0.6))";
       wrap.appendChild(shadow); wrap.appendChild(body);
