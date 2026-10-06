@@ -1,6 +1,6 @@
 # HANDOVER v3: faceless military-history channel (Tactical Genius style)
 
-**Owner:** Youness Fakiri · **Updated:** 2026-10-03 (after the O.P. Smith video)
+**Owner:** Youness Fakiri · **Updated:** 2026-10-05 (after the O.P. Smith video; first live YouTube numbers: title + first-minute rules, §10)
 **How to use:** start a new Claude Code cloud session on the repo `younessking/battle-maps` (environment with **Full** network access), attach the Gemini research file, and say: *"Read HANDOVER.md. Make the full video from this research."*
 
 ## 0a. NEXT VIDEO: quick start (read this first)
@@ -12,7 +12,8 @@
 - Commander badges: real public-domain photo when one exists (crop it; Wikimedia blocks this machine's IP after a while: fetch through `https://images.weserv.nl/?url=upload.wikimedia.org/...` or use the Library of Congress API). Quote marks only on verbatim quotes, also in speech bubbles.
 - **The cloud machine reboots** (every ~30-60 min, and whenever the session goes idle): a running render or assembly dies, finished renders survive. Start renders detached (`render_all.sh`), stay in the turn watching them with <10-min foreground waits, relaunch only the missing scenes.
 - Research: use `research/GEMINI_BRIEF_v3.md` (sources + VERIFIED/DISPUTED labels); log every fact correction in `<name>/research/FACT_NOTES.md`; list any figure that is from memory in the publishing PDF's "facts to double-check" box.
-- Packaging: `research/PACKAGING_GUIDE.md` (vidIQ-scored title >= 85 with the hook in the first ~60 characters, thumbnail = same promise, chapters from timing.json, 12-18 tags). **Descriptions contain NO links at all** (new channels get flagged as spam): name licences in words. Thumbnail = HANDOVER 1b formula (2 variants, commander name tags on the map, check spelling/geography).
+- Packaging: `research/PACKAGING_GUIDE.md` (vidIQ-scored title >= 85 in the Tactical Genius pattern, see §10, thumbnail = same promise, chapters from timing.json, 12-18 tags). **Descriptions contain NO links at all** (new channels get flagged as spam): name licences in words. Thumbnail = HANDOVER 1b formula (2 variants, commander name tags on the map, check spelling/geography).
+- **Title + first minute (§10, from the Thomas numbers: CTR 0.9 %):** title = `<Name>'s Top 3 Legendary Tactical Moves | The Man Who <huge result>` (name first, no "fired/almost" angles); line 1 of the script = stakes, never date + place; the title/thumbnail promise is paid within 30 s.
 
 ## 0. Repo layout (clone path must be /home/user/battle-maps)
 | Path | What |
@@ -154,6 +155,32 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - **Gavin (#7) lessons:** (1) rename or move old test scenes out of `scenes/` (prefix `test-`): `sfx_cues.py` collects cues from every built scene, and the 1-minute test's explosions were mixed into the real hook until `scenes/biazza` was renamed `scenes/test-biazza`. (2) The two-pass linear loudnorm can stop at about -15 LUFS when the TTS voice is peaky (true peak caps it). Fix used: `volume=+11.8dB,alimiter=limit=0.8:attack=2:release=80` on `build/mix.wav`, then mux with the video-only track, which gives -14.4 LUFS (the approved test clip's level). Always measure the master with ebur128. (3) The Dutch polders are below sea level: bake Holland with `SEA_BELOW=-7.5` (bake.py/make_land.py), and draw the rivers by hand. Rivers and floods are not in the elevation tiles: build water masks from low elevation (gavin `assets/*_water.png`). (4) Shared map helpers now live in `gavin/lib/gg.js` (`const GG = GGK(B)`), not copied into every scene.
 - **Owner feedback (Goose Green): never open on a photo.** The first shot of every video is an animated map that hooks at once (units on screen in the first second, movement, a stamp/caption punchline). Archive photos come later.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
+
+## 10. First live numbers: why nobody clicked and why viewers left (George Thomas, read 2026-10-05)
+Full study: `thomas/youtube/analytics_2026-10-05.md` (branch `claude/george-thomas-civil-war-2epkux`; copy on main in `research/ANALYTICS_THOMAS_2026-10-05.md`).
+**Numbers after 3 days:** 750 impressions (89 % from recommendations), **CTR 0.9 %**, 26 views, avg view 5:49 (31 %), retention ~65 % at 30 s and ~25 % at the end with no cliffs. People who get past the first minute stay; too few click, and too many leave in minute 1.
+
+**Title (binding from now on): copy Tactical Genius exactly.** Every TG title is `<Name>'s Top 3 Legendary Tactical Moves | <3-6 word subtitle>`: the famous name FIRST, then the series name, then a short subtitle.
+| TG subtitle | Views | Lesson |
+|---|---|---|
+| The Man Who Turned Korea Around (Ridgway) | 1.11M | "The Man Who <huge result>" is their winning wording |
+| (none) Patton | 866k | a famous name alone sells |
+| The Man Who Broke Hitler (Zhukov) | 629k | |
+| The Man Who Broke France (Manstein) | 238k | |
+| The General Better Than Montgomery (Slim) | 185k | a bold comparison/opinion also works |
+| The General Truman Fired (MacArthur) | 30k | **the "fired" angle flops** |
+| The Man Who Beat Napoleon (Wellington) / The Tiger of Malaya (Yamashita) | 7k / 6k | nicknames and old wars are weaker |
+- Our Thomas title broke all of it: a 54-character sentence first, the name at the end, and the "Grant almost fired him" angle (= MacArthur's flop). Replacement (vidIQ 86, owner to change in Studio): *George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army* (alternatives: "| The Man Who Destroyed Hood's Army" 90, "| The General Better Than Grant" 88).
+- Prefer "The Man Who <broke/saved/turned around> <something big and well known>"; avoid "fired / almost / nearly / forgotten / underrated" angles and nicknames. Still score with vidIQ (>= 85), but the pattern beats the score: never trade it away for a few points.
+- This **replaces** the older Morgan rule "hook first, series name after" in research/PACKAGING_GUIDE.md §2.
+
+**First minute (binding from now on):**
+- Line 1 = the stakes in plain words, never a date + place ("September the twentieth, eighteen sixty-three. North-west Georgia..." cost ~8 s before anything happened).
+- Within the first 30 s, pay the promise of the title AND the thumbnail with a flash-forward (e.g. "Fifteen months later, the general Grant was about to fire would destroy an entire army."). Thomas only paid "WE WILL HOLD" at 7:37 and the Grant story at 14:07: viewers who clicked for it saw a different battle and left.
+- Thumbnail scene = hook scene = title promise (one promise, see PACKAGING_GUIDE §3).
+- Check before recording the voice, together with the §1 formula check: "Does line 1 state stakes? Is the title/thumbnail promise paid by 0:30?"
+
+**After publishing:** run Studio Test & compare with 2-3 thumbnails; read CTR/retention at 3, 7 and 28 days; if CTR < 2 % after ~1,000 impressions, change the title to the TG pattern first, then the thumbnail. Save every read as `<name>/youtube/analytics_<date>.md`.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.
