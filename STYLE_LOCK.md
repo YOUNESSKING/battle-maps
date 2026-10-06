@@ -54,7 +54,7 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
 - **Also:** ship silhouettes with muzzle flashes, burning places with smoke columns (`K.smoke`), pulsing target rings on objectives (`K.target`), commander badge (`K.badge`, initials on dark tint if no legal photo), casualty card after every move with losses (`K.casualties`), captions bottom-centre.
 
 ## 3. Sound effects (locked files and levels)
-Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). Levels are dB in `sfx_mix_lib.py`:
+Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). **Aircraft sounds only when an aircraft is on screen** (owner 2026-10-06): never a plane/jet/heli sound over parachutes or an empty sky; give `K.aircraft` the sound (its default) or show the planes. Levels are dB in `sfx_mix_lib.py`:
 
 | Kind (`SFX(kind, t)`) | Sound | Level | Min gap |
 |---|---|---|---|
@@ -63,7 +63,7 @@ Rule: every visual beat has a sound, and **the boom is always on the impact** (l
 | fire (gun launch) | `gun_fire` | -24 | 0.35 s |
 | mortar (launch) | `mortar_thump` | -24 | 0.30 s |
 | jet | `jet_flyby` (roar + Doppler, loudest mid-flight) | -11 | 1.2 s |
-| prop (turboprop) | `prop_flyby` | -13 | 1.5 s |
+| prop (turboprop / transport) | `prop_flyby` = Mixkit "Low airplane flying over" (owner pick "sound B", 2026-10-06; replaced the old prop sound) | -13 | 1.5 s |
 | heli | `heli_flyby` (rotor thumps) | -14 | 2.0 s |
 | missile | `missile_launch_hit` | -9 | 0.8 s |
 | hit | `hit` | -8 | 0.5 s |

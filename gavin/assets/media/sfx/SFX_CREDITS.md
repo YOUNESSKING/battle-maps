@@ -45,3 +45,5 @@ add its specific credit line here and, for CC BY items, into the video descripti
 - `candidates/cand2_hit.wav` (bombs/explosions): "Distant explosion" by juskiddink, CC BY 4.0, https://freesound.org/people/juskiddink/sounds/108640/
 - `candidates/cand4_hit.wav` (bombs/explosions): "Distant explosions" by Kostrava, CC0, https://freesound.org/people/Kostrava/sounds/320788/
 Video description credit: Sound effects: "artillery distance" by 2887679652 (CC BY 4.0), "Cannon Artillery distant gunshots" by Aegersum (CC BY 3.0), "Distant explosion" by juskiddink (CC BY 4.0), via freesound.org.
+
+- `prop_flyby.wav` (since 2026-10-06, owner pick "sound B"): Mixkit "Low airplane flying over" (https://mixkit.co/free-sound-effects/airplane/, item 1579), Mixkit Sound Effects Free License (commercial use, no attribution required); 6 s fly-past cut, levelled to -12.6 LUFS like the sound it replaced.
