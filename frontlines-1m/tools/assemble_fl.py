@@ -5,7 +5,7 @@ T = json.load(open("audio/timing.json")); P = T["paragraphs"]; END = P[-1]["end"
 st = {p["tag"].split("|")[0].split(":")[1].strip(): p["start"] for p in P}
 run = lambda a: subprocess.run(a, check=True)
 # 1. picture: globe (padded to start at 0), terrain, film f-1, f-2, river
-segs = ["scenes/globe/renders/globe.mp4", "scenes/corridor/renders/corridor.mp4", "build/f-1.mp4", "build/f-2.mp4", "scenes/river2d/renders/river2d.mp4"]
+segs = ["scenes/globe/renders/globe.mp4", "scenes/corridor_m/renders/corridor_m.mp4", "build/f-1.mp4", "build/f-2.mp4", "scenes/river_m/renders/river_m.mp4"]
 inp = sum([["-i", s] for s in segs], [])
 fc = f"[0:v]fps=30,format=yuv420p,tpad=start_duration={st['g-1']}:start_mode=clone[v0];" + "".join(f"[{i}:v]fps=30,format=yuv420p,setsar=1[v{i}];" for i in range(1, 5)) + "[v0][v1][v2][v3][v4]concat=n=5:v=1:a=0[v]"
 run(["ffmpeg", "-v", "error", "-y", *inp, "-filter_complex", fc, "-map", "[v]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "build/video.mp4"])
@@ -29,8 +29,13 @@ run(["ffmpeg", "-v", "error", "-y", "-i", "audio/voice.wav", "-i", "build/sfx.wa
      "-map", "[aout]", "-t", f"{END:.2f}", "-c:a", "pcm_s16le", "build/mix_raw.wav"])
 r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix_raw.wav", "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
 I = float(r[r.rindex("I:"):].split()[1]); gain = round(-14.4 - I + 0.6, 1)  # +0.6: the limiter takes back ~0.6 dB
-run(["ffmpeg", "-v", "error", "-y", "-i", "build/mix_raw.wav", "-af", f"volume={gain}dB,alimiter=limit=0.8:attack=2:release=80:level=false,aresample=48000", "-c:a", "pcm_s16le", "build/mix.wav"])
+for _ in range(3):  # the limiter eats a variable amount: measure the result and correct the gain until ~-14.3 LUFS
+    run(["ffmpeg", "-v", "error", "-y", "-i", "build/mix_raw.wav", "-af", f"volume={gain}dB,alimiter=limit=0.8:attack=2:release=80:level=false,aresample=48000", "-c:a", "pcm_s16le", "build/mix.wav"])
+    r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+    got = float(r[r.rindex("I:"):].split()[1])
+    if abs(got + 14.3) < 0.25: break
+    gain = round(gain + (-14.3 - got), 1)
 print("raw mix", I, "LUFS, gain", gain, "dB")
 run(["ffmpeg", "-v", "error", "-y", "-i", "build/video.mp4", "-i", "build/mix.wav", "-map", "0:v", "-map", "1:a", "-t", str(END), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
-     "-movflags", "+faststart", "build/frontlines-1m-test.mp4"])
-print("wrote build/frontlines-1m-test.mp4", END)
+     "-movflags", "+faststart", "build/merge-1m-test.mp4"])
+print("wrote build/merge-1m-test.mp4", END)

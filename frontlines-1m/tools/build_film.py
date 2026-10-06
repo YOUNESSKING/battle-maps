@@ -5,13 +5,13 @@ import archive_shots
 T = json.load(open("audio/timing.json")); P = T["paragraphs"]
 key = lambda p: p["tag"].split("|")[0].replace("ARCHIVE:", "").replace("MAP:", "").strip()
 enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", "30", "-an"]
-SHOTS = {
- "f-1": [{"film": "assets/film/clips/mg_drop_01.mp4", "ss": 0.3, "tint": True, "dur": 3.6, "headline": ["SEPTEMBER 1944", "NIJMEGEN\nTHE NETHERLANDS"]},
-         {"film": "assets/film/clips/mg_landing_03.mp4", "ss": 0.5, "tint": True, "dur": 2.6},
-         {"film": "assets/film/clips/mg_gun_01.mp4", "ss": 0.8, "tint": True}],
- "f-2": [{"photo": "assets/media/gavin_src.jpg", "move": "in", "focus": [0.5, 0.36], "label": "JAMES M. GAVIN · COMMANDER, 82ND AIRBORNE · AGE 37", "depth": True, "dur": 4.6},
-         {"film": "assets/film/clips/mg_paras_march_01.mp4", "ss": 0.5, "tint": True, "dur": 2.9},
-         {"film": "assets/film/clips/mg_boats_01.mp4", "ss": 0.3, "tint": True}],
+SHOTS = {  # merged style: newspaper headline card, film in the projector frame, date card (headline style), 3D-depth portrait
+ "f-1": [{"photo": "assets/media/headline_holland.jpg", "move": "in", "focus": [0.5, 0.42], "dur": 3.2},
+         {"film": "assets/film/clips/mg_drop_01.mp4", "ss": 0.3, "tint": True, "frame": True, "dur": 3.0, "headline": ["SEPTEMBER 1944", "NIJMEGEN\nTHE NETHERLANDS"]},
+         {"film": "assets/film/clips/mg_gun_01.mp4", "ss": 0.8, "tint": True, "frame": True}],
+ "f-2": [{"photo": "assets/media/gavin_src.jpg", "move": "in", "focus": [0.5, 0.36], "label": "JAMES M. GAVIN · COMMANDER, 82ND AIRBORNE · AGE 37", "depth": True, "dur": 4.4},
+         {"film": "assets/film/clips/mg_paras_march_01.mp4", "ss": 0.5, "tint": True, "frame": True, "dur": 2.8},
+         {"film": "assets/film/clips/mg_boats_01.mp4", "ss": 0.3, "tint": True, "frame": True}],
 }
 for i, p in enumerate(P):
     k = key(p)

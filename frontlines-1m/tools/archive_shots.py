@@ -169,6 +169,18 @@ def film_shot(sh, dur, out, W, H, enc):
     tmp = out + ".tmp.mp4"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{sh.get('ss', 0):.2f}", "-i", sh["film"], "-t", f"{dur:.3f}", "-vf", ",".join(vf),
                     "-t", f"{dur:.3f}", *enc, tmp], check=True)
+    if sh.get("frame"):  # merged-style test: film inside a rounded projector frame on a dark blurred copy, teal-orange grade
+        from PIL import Image as _I, ImageDraw as _D, ImageFilter as _F
+        fw, fh = int(W * 0.78) // 2 * 2, int(H * 0.78) // 2 * 2
+        mp = out + ".mask.png"; m = _I.new("L", (fw, fh), 0); _D.Draw(m).rounded_rectangle((6, 6, fw - 6, fh - 6), radius=int(fh * 0.06), fill=255)
+        m.filter(_F.GaussianBlur(3)).save(mp)
+        t2 = out + ".f.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-loop", "1", "-i", mp, "-filter_complex",
+                        f"[0:v]split[a][b];[b]scale={W}:{H},boxblur=40:2,eq=brightness=-0.32:saturation=0.35,colorbalance=bs=0.12:gs=0.04:rs=-0.06[bg];"
+                        f"[a]scale={fw}:{fh},colorbalance=rs=-0.06:gs=0.01:bs=0.09:rh=0.07:gh=0.02:bh=-0.05,eq=contrast=1.08:saturation=1.1[fg];"
+                        f"[1:v]format=gray[mk];[fg][mk]alphamerge[fgm];[bg][fgm]overlay=(W-w)/2:(H-h)/2:shortest=1,vignette=PI/4.5",
+                        "-t", f"{dur:.3f}", *enc, t2], check=True)
+        os.replace(t2, tmp); os.remove(mp)
     if sh.get("headline"):
         hp = out + ".head.png"; headline_layer(sh["headline"][0], sh["headline"][1], W, H).save(hp)
         t2 = out + ".h.mp4"
