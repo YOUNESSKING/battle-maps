@@ -54,6 +54,19 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
 - **Bombing run (owner's favourite, copy exactly):** jet flies the run (size 84, alt 30, dur 3.2); each bomb is `K.impact(x, y, t0 + 1.55 + k * 0.25, { r: 20, shake: first ? 5 : false })`, i.e. just after the jet passes, sticks 0.25 s apart. Code: `goosegreen/scenes-src/move3.js` ("the Harrier strike").
 - **Also:** ship silhouettes with muzzle flashes, burning places with smoke columns (`K.smoke`), pulsing target rings on objectives (`K.target`), commander badge (`K.badge`, initials on dark tint if no legal photo), casualty card after every move with losses (`K.casualties`), captions bottom-centre.
 
+## 2a. MERGED "FRONTLINES" LOOK (owner-approved 2026-10-06, the 1-min D-Day test; lessons from Netflix "WWII: From the Frontlines")
+Our locked style (sections 2-5) stays the base; these are ADDED on top. Reference build: `frontlines-1m/` (scenes `europe_hd`, `normandy_hd`, archive `a-1`/`a-2`; `ONEMIN=1 python3 tools/assemble_dday.py`); final test video https://gofile.io/d/YX3zQBqK.
+- **Open on a 2D map, no globe.** The owner dropped the globe/cloud dive: start straight on the dark 2D map with units moving in the first second (the 3D tilt is out too: maps stay flat).
+- **Detailed maps (HD relief):** `tools/bake_hd.py` = zoom+1 terrain tiles, 5760x3240 shown at 2880x1620, 4-direction hillshade + slope + ambient occlusion + fine texture. Rivers traced from the elevation data (`make_rivers_dem.py`), places from OSM (`fetch_osm.py`).
+- **Geography layer (`make_geo_layer.py BASE STYLE SKIP MAXV MINPOP`):** only BIG towns (population >= MINPOP, e.g. 8000; no villages, no suburbs), small labels, period names (1944 names, HIST dict), labels never collide. Put it ABOVE the territory layer (else it turns pink). Story places (e.g. Sainte-Mère-Église, Utah Beach) as small white-box labels; keep them small.
+- **Territory:** strong colours drawn with `mixBlendMode = "multiply"` (`_mx` overlays: axis (232,52,52) / allied (110,160,255)) so the relief shows through the colour.
+- **Living map (`lib/living.js`, `LivingK`):** drifting cloud shadows, shimmer on rivers, scale bar, north arrow. Always on.
+- **Flags + emblem:** the period national emblem sits ON its country's land (e.g. the Nazi emblem centred on Germany): never over the sea, over labels, or cut by the frame edge; it STAYS for the whole map (never fades). No country-name label next to it (the flag says it). Every power in the story has its flag visible (UK, USA, USSR...); widen the camera if one is off-screen.
+- **Planes:** the glowing C-47 (`c47g`, section 2), few and spaced out; they drop/bomb and then fly off the map.
+- **Archive sections (Netflix look, `tools/build_film_dday.py` + `archive_shots.py`):** (1) a **newspaper headline card** (`make_headline_dday.py`) with a paper-page sound; (2) **photos with 3D depth** (parallax, `"depth": True`) with a small caption (unit · place · date); (3) restored, tinted **film inside a projector frame** (`"frame": True`) with a quiet projector loop; (4) **date cards in headline style** ("6 JUNE 1944 / NORMANDY, FRANCE"). Never a slideshow.
+- **Sound design (Frontlines-style, mixed separately from the locked SFX, `assemble_dday.py`):** cinematic whoosh on camera moves (-14 dB), dry pop on labels (-20), big cinematic boom on key beats (-11), reverse riser into reveals (-17), newspaper page (-12), projector loop under film (-27), low tactical/tension drone bed (-30). The locked battle sounds (section 3a), plane sound B, music 0.08 + the locked mix chain are unchanged.
+- **Voice:** channel voice am_michael. **Music:** the channel bed; Kevin MacLeod "Five Armies" (CC BY 4.0, from 1:00) matched to the bed loudness is approved for this look.
+
 ## 3. Sound effects (locked files and levels)
 Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). **Aircraft sounds only when an aircraft is on screen** (owner 2026-10-06): never a plane/jet/heli sound over parachutes or an empty sky; give `K.aircraft` the sound (its default) or show the planes. Levels are dB in `sfx_mix_lib.py`:
 
@@ -116,6 +129,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Loud gun-launch sounds / boom at launch instead of impact.
 - Bright, fully saturated front lines; tint spilling onto sea or distant land. (Faded territory is also out: since 2026-10-05 territory is strong, see section 2.)
 - Two-coloured lines behind the front.
+- Globe / cloud-dive openings and 3D tilted maps (owner 2026-10-06: open on the flat 2D map). Village-level labels, big labels, modern merged town names, emblems over the sea or fading away.
 - Simple flat aircraft icons, drone-like twin-boom transports, planes that stop in mid-air (exception: the glowing C-47 `c47g` is the approved WW2 plane symbol).
 - NATO dot/oval artillery and oval tank symbols (silhouettes chosen).
 - Music at 0.35 (too loud).

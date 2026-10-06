@@ -1,4 +1,8 @@
-# Frontlines-style 1-minute test (owner request 2026-10-05)
+# Frontlines-1m: reference kit for the merged "Frontlines" look (LOCKED 2026-10-06, STYLE_LOCK section 2a)
+Approved build = the D-Day 1-min test: scenes-src/europe_hd.js + normandy_hd.js, archive a-1/a-2 (tools/build_film_dday.py), `ONEMIN=1 python3 tools/assemble_dday.py` -> build/dday-1m-hd.mp4.
+Detailed maps: tools/bake_hd.py, make_rivers_dem.py, fetch_osm.py, make_geo_layer.py; living map lib/living.js; glowing C-47 = `kind: "c47g"` in lib/fx.js.
+
+## History: first Frontlines test (Waal crossing, 2026-10-05; globe + 3D were later dropped)
 "WWII: From the Frontlines" (Netflix) style, made from scratch: new script (script.md), new voice (Kokoro bm_george, British, speed 0.9),
 new scenes, new music choice, Frontlines sound design.
 - `globe` (lib/globe.js): NASA Blue Marble Earth (Sept 2004, public domain) graded dark, clouds, atmosphere glow, series title, dive through the clouds.
