@@ -19,8 +19,8 @@ B.image("assets/media/normandy_geo_ref.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01
 B.camera([[0, SME[0] - 40, SME[1] - 20, 1.35], [T_DAWN, SME[0] - 10, SME[1] - 30, 1.7], [T_CUTS, SME[0] - 40, SME[1] - 60, 1.5], [END, SME[0] - 20, SME[1] - 30, 1.8]]);
 B.showDate(0.1); B.date("6 JUNE 1944 · 02:00", 0.2, T_DAWN, 30); B.date("6 JUNE 1944 · 04:30", T_DAWN, null, 30);
 GG.layer("background: rgba(4,8,22,0.40);", 0, T_TAKES + 2, { dur: 0.01 });
-const box = (txt, x, y, t, size = 22, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.3em;padding:4px 8px 4px 13px;font-size:${size}px;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-box("SAINTE-MÈRE-ÉGLISE", SME[0] - 190, SME[1] + 80, 0.6, 20); box("UTAH BEACH", UTAH[0] + 60, UTAH[1] - 40, 1.0, 16); box("CARENTAN", CAR[0], CAR[1] + 30, 1.3, 16);
+const box = (txt, x, y, t, size = 22, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.3em;padding:${Math.round(size * 0.2)}px ${Math.round(size * 0.35)}px ${Math.round(size * 0.2)}px ${Math.round(size * 0.6)}px;font-size:${size}px;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
+box("SAINTE-MÈRE-ÉGLISE", SME[0] - 125, SME[1] + 52, 0.6, 12); box("UTAH BEACH", UTAH[0] + 45, UTAH[1] - 30, 1.0, 10); box("CARENTAN", CAR[0], CAR[1] + 22, 1.3, 10);  // owner 2026-10-06: smaller
 B.city("", ...SME, { r: 7, t: 0.6 });
 // the main road from Cherbourg to Carentan (N13) through the town
 GG.road([CHB, VAL, [SME[0] - 18, SME[1] - 40], SME, [SME[0] + 20, SME[1] + 60], CAR], { w: 5, t: 0.4 });

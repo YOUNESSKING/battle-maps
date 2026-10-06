@@ -56,7 +56,7 @@ pl = []
 for el in O.get("places", []):
     nm = el.get("tags", {}).get("name", ""); nm = HIST.get(nm, nm)
     if not nm or nm.upper() in skip: continue
-    if nm.startswith(("St ", "Saint ")) and "-" not in nm: continue  # Channel Islands (English-style names), not part of the story
+    if (nm.startswith(("St ", "Saint ")) and "-" not in nm) or (el["lon"] < -1.9 and el["lat"] < 49.55): continue  # Channel Islands (Jersey, Guernsey...)  # Channel Islands (English-style names), not part of the story
     x, y = P(el["lat"], el["lon"])
     if 0 <= x < W and 0 <= y < H: pl.append((el.get("tags", {}).get("place") in ("city", "town"), popn(el), nm, x, y))
 pl.sort(key=lambda q: (not q[0], -q[1]))   # towns first, then villages by population
