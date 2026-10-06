@@ -1,49 +1,49 @@
 {
  "voice": "am_michael",
  "speed": 1.0,
- "duration": 56.94,
+ "duration": 60.67,
  "paragraphs": [
   {
    "section": "Test",
-   "tag": "MAP: g-1 | dark Earth in space turns to Europe; title WWII \u00b7 THE WAAL CROSSING",
+   "tag": "MAP: e-1 | Europe, 5 June 1944: dark terrain, crimson occupied Europe, stamped emblem, white-box labels; Britain blue",
    "start": 0.5,
-   "end": 10.33,
-   "text": "September, nineteen forty-four. Five years into the war, the Allies stake everything on one road through Holland, and on the bridges that carry it."
+   "end": 9.46,
+   "text": "June, nineteen forty-four. For four years, Hitler's empire has held the coast of Europe. Now, from England, the Allies strike back."
   },
   {
    "section": "Test",
-   "tag": "MAP: g-2 | camera dives through the clouds onto 3D Holland: the road glows north, Eindhoven, Nijmegen, Arnhem; Nijmegen bridge pulses red",
-   "start": 11.23,
-   "end": 19.55,
-   "text": "Sixty miles of road, running north to the Rhine. At Nijmegen, the great bridge over the Waal is still in German hands."
+   "tag": "MAP: e-2 | push into Normandy: transport planes cross the Channel to the Cotentin's west coast at night",
+   "start": 10.36,
+   "end": 22.71,
+   "text": "Hours before the landings, about thirteen thousand American paratroopers take off in more than eight hundred planes. Their mission: jump behind the beaches in the dark, and seize the roads."
   },
   {
    "section": "Test",
-   "tag": "ARCHIVE: f-1 | date card 20 SEPTEMBER 1944 \u00b7 NIJMEGEN, HOLLAND; restored film: gliders, paratroopers, guns",
-   "start": 20.45,
-   "end": 28.52,
-   "text": "For three days, the paratroopers of the eighty-second Airborne throw themselves at it. For three days, they are thrown back."
+   "tag": "ARCHIVE: a-1 | headline card; film in the projector frame; date card 6 JUNE 1944 \u00b7 NORMANDY, FRANCE",
+   "start": 23.61,
+   "end": 31.06,
+   "text": "Cloud and anti-aircraft fire break the formations apart. Most men land miles from their drop zones."
   },
   {
    "section": "Test",
-   "tag": "ARCHIVE: f-2 | Gavin portrait (depth move), name card; restored film: boats carried to the river",
-   "start": 29.42,
-   "end": 39.08,
-   "text": "Their commander, James Gavin, just thirty-seven years old, chooses the one way no one expects. Across the river. In daylight. In canvas boats."
+   "tag": "ARCHIVE: a-2 | pathfinders photo (3D depth), film",
+   "start": 31.96,
+   "end": 41.62,
+   "text": "Some fall straight into the town of Sainte-M\u00e8re-\u00c9glise. One man's parachute catches on the church steeple. He hangs there for about two hours, playing dead."
   },
   {
    "section": "Test",
-   "tag": "MAP: m-1 | dark 3D-lit tactical map: 26 boats push off from the south bank, German guns on the north bank fire, impacts in the water (shake), counter 26 BOATS \u00b7 260 MEN \u00b7 300 M OF OPEN WATER",
-   "start": 39.98,
-   "end": 47.19,
-   "text": "Twenty-six boats. Two hundred and sixty men. Three hundred metres of open water, under the German guns."
+   "tag": "MAP: n-1 | Normandy: scattered chutes; small groups gather; blue grows around Sainte-Mere-Eglise; the road from Cherbourg is cut",
+   "start": 42.52,
+   "end": 51.69,
+   "text": "But small groups find each other. Before dawn, a battalion of the five hundred and fifth takes the town, and cuts the main road to Cherbourg."
   },
   {
    "section": "Test",
-   "tag": "MAP: m-2 | about half the boats grey out; the rest reach the north bank; blue sweeps east to the bridge; bridge turns blue; end title",
-   "start": 48.09,
-   "end": 54.54,
-   "text": "Half of the boats never reach the far side. The rest do. And by nightfall, the bridge is theirs."
+   "tag": "MAP: n-2 | the town turns blue; flag; end card",
+   "start": 52.59,
+   "end": 58.27,
+   "text": "Sainte-M\u00e8re-\u00c9glise is often called the first town freed in France. D-Day has begun."
   }
  ]
 }

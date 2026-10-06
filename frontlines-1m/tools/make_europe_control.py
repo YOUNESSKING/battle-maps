@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFilter
 from scipy import ndimage
 
 Z, OX, OY, W, H = 6, 7093, 5051, 2880, 1620
+RETURN_MASKS = False
 def P(lon, lat):
     n = 256 * 2 ** Z; r = math.radians(lat)
     return ((lon + 180) / 360 * n - OX, (1 - math.asinh(math.tan(r)) / math.pi) / 2 * n - OY)
@@ -83,6 +84,7 @@ def build(state, feats, land):
     pk = poly_mask(POCKETS[state]) if POCKETS[state] else np.zeros((H, W), bool)
     m["allied"] |= pk & m["axis"]; m["axis"] &= ~pk
     m["allied"] &= ~m["axis"]; m["neutral"] &= ~(m["axis"] | m["allied"])
+    if RETURN_MASKS: return m
     out = np.zeros((H, W, 4), np.float32)
     for side in ("neutral", "allied", "axis"):
         other = m["axis"] if side == "allied" else m["allied"] if side == "axis" else (m["axis"] | m["allied"])

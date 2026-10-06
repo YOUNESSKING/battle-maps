@@ -2,3 +2,4 @@ build/
 scenes/
 logs/
 assets/src_*.jpg
+assets/media/sfx_ref/*.wav
