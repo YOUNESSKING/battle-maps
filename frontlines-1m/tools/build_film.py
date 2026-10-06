@@ -9,7 +9,7 @@ SHOTS = {
  "f-1": [{"film": "assets/film/clips/mg_drop_01.mp4", "ss": 0.3, "tint": True, "dur": 3.6, "headline": ["SEPTEMBER 1944", "NIJMEGEN\nTHE NETHERLANDS"]},
          {"film": "assets/film/clips/mg_landing_03.mp4", "ss": 0.5, "tint": True, "dur": 2.6},
          {"film": "assets/film/clips/mg_gun_01.mp4", "ss": 0.8, "tint": True}],
- "f-2": [{"photo": "assets/media/gavin_src.jpg", "move": "in", "focus": [0.5, 0.36], "label": "MAJ. GEN. JAMES M. GAVIN · 82ND AIRBORNE · AGE 37", "depth": True, "dur": 4.6},
+ "f-2": [{"photo": "assets/media/gavin_src.jpg", "move": "in", "focus": [0.5, 0.36], "label": "JAMES M. GAVIN · COMMANDER, 82ND AIRBORNE · AGE 37", "depth": True, "dur": 4.6},
          {"film": "assets/film/clips/mg_paras_march_01.mp4", "ss": 0.5, "tint": True, "dur": 2.9},
          {"film": "assets/film/clips/mg_boats_01.mp4", "ss": 0.3, "tint": True}],
 }
