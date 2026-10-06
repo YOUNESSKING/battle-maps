@@ -44,6 +44,20 @@
       <ellipse cx="22" cy="0" rx="6.5" ry="2.3" fill="#bfe3ff"/>
       <g class="prop" transform="translate(19 -14)"><circle r="8.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-8.5" width="2" height="17" fill="#1b1812"/><rect x="-8.5" y="-1" width="17" height="2" fill="#1b1812"/></g></g>
       <g class="prop" transform="translate(19 14)"><circle r="8.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-1" y="-8.5" width="2" height="17" fill="#1b1812"/><rect x="-8.5" y="-1" width="17" height="2" fill="#1b1812"/></g></g>`,
+    // C-47 Skytrain / Dakota (owner 2026-10-06: a convincing transport, not a drone-like icon): rounded nose, long broad tapered wings,
+    // two engine nacelles with propellers, tailplane, D-Day black-and-white invasion stripes on the wings and rear fuselage
+    c47: (c) => `
+      <path d="M18 -4 L6.5 -48 Q4.6 -50.8 1.6 -48.6 L-5 -4 Z M18 4 L6.5 48 Q4.6 50.8 1.6 48.6 L-5 4 Z" fill="${c}" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"/>
+      <path d="M14.2 -18.0 L13.4 -21.0 L-3.1 -21.0 L-3.4 -18.0 Z M14.2 18.0 L13.4 21.0 L-3.1 21.0 L-3.4 18.0 Z M12.5 -24.0 L11.7 -27.0 L-2.4 -27.0 L-2.7 -24.0 Z M12.5 24.0 L11.7 27.0 L-2.4 27.0 L-2.7 24.0 Z M10.9 -30.0 L10.1 -33.0 L-1.7 -33.0 L-2.0 -30.0 Z M10.9 30.0 L10.1 33.0 L-1.7 33.0 L-2.0 30.0 Z" fill="#f3eee2" opacity="0.9"/><path d="M13.4 -21.0 L12.5 -24.0 L-2.7 -24.0 L-3.1 -21.0 Z M13.4 21.0 L12.5 24.0 L-2.7 24.0 L-3.1 21.0 Z M11.7 -27.0 L10.9 -30.0 L-2.0 -30.0 L-2.4 -27.0 Z M11.7 27.0 L10.9 30.0 L-2.0 30.0 L-2.4 27.0 Z" fill="#1b1812" opacity="0.85"/>
+      <path d="M-25 -1.6 L-29.5 -17 L-34.5 -17 L-33 -1.4 Z M-25 1.6 L-29.5 17 L-34.5 17 L-33 1.4 Z" fill="${c}" stroke="${INK}" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="M34 0 C33.5 -3 31 -4.4 26 -4.4 L-8 -4.2 L-34 -1.4 L-34 1.4 L-8 4.2 L26 4.4 C31 4.4 33.5 3 34 0 Z" fill="${c}" stroke="${INK}" stroke-width="1.5"/>
+      <path d="M-16 -3.4 L-18.4 -3.4 L-18.4 3.4 L-16 3.4 Z M-21 -2.9 L-23.4 -2.9 L-23.4 2.9 L-21 2.9 Z" fill="#f3eee2" opacity="0.9"/><path d="M-18.4 -3.2 L-20.8 -3.2 L-20.8 3.2 L-18.4 3.2 Z" fill="#1b1812" opacity="0.85"/>
+      <rect x="-34" y="-0.7" width="9" height="1.4" fill="${INK}" opacity="0.7"/>
+      <rect x="-4" y="-16.2" width="27" height="6.4" rx="3" fill="${c}" stroke="${INK}" stroke-width="1.3"/>
+      <rect x="-4" y="9.8" width="27" height="6.4" rx="3" fill="${c}" stroke="${INK}" stroke-width="1.3"/>
+      <ellipse cx="29" cy="0" rx="3.4" ry="2.6" fill="#bfe3ff"/>
+      <g class="prop" transform="translate(24.5 -13)"><circle r="7.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-0.9" y="-7.5" width="1.8" height="15" fill="#1b1812"/><rect x="-7.5" y="-0.9" width="15" height="1.8" fill="#1b1812"/></g></g>
+      <g class="prop" transform="translate(24.5 13)"><circle r="7.5" fill="rgba(235,235,230,0.25)"/><g class="blades"><rect x="-0.9" y="-7.5" width="1.8" height="15" fill="#1b1812"/><rect x="-7.5" y="-0.9" width="15" height="1.8" fill="#1b1812"/></g></g>`,
     // single-engine fighter-bomber (WW2/Korea prop plane, e.g. F4U Corsair: long nose, wide wings, one big propeller)
     prop: (c) => `
       <path d="M30 0 C29 -3.4 24 -4 18 -4 L-28 -2.2 L-28 2.2 L18 4 C24 4 29 3.4 30 0 Z" fill="${c}" stroke="${INK}" stroke-width="1.5"/>

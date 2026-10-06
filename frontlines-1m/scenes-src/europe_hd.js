@@ -40,7 +40,7 @@ for (let i = 0; i < 5; i++) {  // owner: fewer planes, more space between them
   const y0 = ly + i * 12 - 24, t = T_HOURS + 0.4 + i * 0.6, jx = i * 6 - 12, jy = i * 7 - 14;
   const pts = [[lx - 20 + i * 10, y0], [nx - 50, ny - 30 + jy], [nx - 34, ny - 8 + jy], [nx - 8 + jx, ny - 6 + jy], [nx + 24 + jx, ny - 12 + jy], [nx + 34, ny - 70], [nx + 12, ny - 170]];
   const dur = 7.0;
-  K.aircraft({ kind: "cargo", side: "carth", size: 22, alt: 8, pts, t, dur, until: t + dur, sfx: i % 2 ? false : undefined });
+  K.aircraft({ kind: "c47", side: "carth", size: 30, alt: 9, pts, t, dur, until: t + dur, sfx: i % 2 ? false : undefined });
   const tDrop = t + dur * along(pts, 3);   // over the drop zone
   for (let c = 0; c < 3; c++) GG.chute(nx - 14 + jx + c * 6, ny - 4 + jy + (c % 2) * 4, tDrop - 0.25 + c * 0.2, { s: 9, until: END + 1 });
 }
