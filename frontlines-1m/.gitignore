@@ -4,3 +4,4 @@ logs/
 assets/src_*.jpg
 assets/media/sfx_ref/*.wav
 build/aud/
+assets/media/sfx_ref/plane_candidates/
