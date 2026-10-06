@@ -24,7 +24,6 @@ box("SAINTE-MÈRE-ÉGLISE", SME[0] - 125, SME[1] + 52, 0.6, 12); box("UTAH BEACH
 B.city("", ...SME, { r: 7, t: 0.6 });
 // the main road from Cherbourg to Carentan (N13) through the town
 GG.road([CHB, VAL, [SME[0] - 18, SME[1] - 40], SME, [SME[0] + 20, SME[1] + 60], CAR], { w: 5, t: 0.4 });
-GG.lbl("TO CHERBOURG", VAL[0] - 30, VAL[1] - 20, { size: 16, t: 0.8 });
 // scattered parachutes everywhere (most men far from their drop zones)
 const CH = [[-150, -90], [-120, 40], [-60, -140], [-30, 90], [20, -60], [60, 120], [110, -20], [150, 70], [-200, 10], [190, -110], [-90, 160], [40, 200], [230, 30], [-250, -60], [80, -170], [-170, 120]];
 CH.forEach(([dx, dy], i) => GG.chute(SME[0] + dx, SME[1] + dy, 0.3 + i * 0.12, { s: 20, until: T_SMALL + 1.6 }));

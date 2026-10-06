@@ -59,6 +59,9 @@ for el in O.get("places", []):
     if (nm.startswith(("St ", "Saint ")) and "-" not in nm) or (el["lon"] < -1.9 and el["lat"] < 49.55): continue  # Channel Islands (Jersey, Guernsey...)  # Channel Islands (English-style names), not part of the story
     x, y = P(el["lat"], el["lon"])
     if 0 <= x < W and 0 <= y < H: pl.append((el.get("tags", {}).get("place") in ("city", "town"), popn(el), nm, x, y))
+MINPOP = int(sys.argv[5]) if len(sys.argv) > 5 else 0   # owner 2026-10-06: "just the big towns" -> towns above MINPOP, no villages (MAXV 0)
+SUBURBS = {"Hérouville-Saint-Clair", "Ifs", "Mondeville", "Montivilliers"}
+pl = [q for q in pl if q[0] and q[1] >= MINPOP and q[2] not in SUBURBS] if MINPOP else pl
 pl.sort(key=lambda q: (not q[0], -q[1]))   # towns first, then villages by population
 taken, MAXV, nv = [], int(sys.argv[4]) if len(sys.argv) > 4 else 40, 0
 def free(b): return all(b[2] < a[0] or b[0] > a[2] or b[3] < a[1] or b[1] > a[3] for a in taken)

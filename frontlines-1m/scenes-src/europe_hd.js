@@ -21,7 +21,6 @@ B.showDate(0.2); B.date("5 JUNE 1944", 0.4, null, 34);
 B.image("assets/media/emblem_ger.png", ex - 190, ey - 190, 380, 380, { t: T_FOUR - 0.3, dur: 1.4, opacity: 0.8, until: T_ENG - 0.2 });
 SFX("ref:boom", T_FOUR - 0.3);
 const box = (txt, x, y, t, size = 26, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.32em;padding:${Math.round(size * 0.2)}px ${Math.round(size * 0.35)}px ${Math.round(size * 0.2)}px ${Math.round(size * 0.6)}px;font-size:${size}px;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-box("GERMANY", ...G(48.9, 11.0), T_FOUR + 0.6, 22, T_ENG - 0.2);
 box("OCCUPIED FRANCE", ...G(46.8, 2.4), T_COAST, 20, T_13);
 box("OCCUPIED NORWAY", ...G(61.0, 9.0), T_COAST + 0.4, 18, T_13);
 box("GREAT BRITAIN", ...G(53.2, -1.6), T_ENG - 0.2, 18, T_MISSION);
