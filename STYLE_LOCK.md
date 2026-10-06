@@ -50,6 +50,7 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
 - **Unit symbols (`K.counter`):** infantry X · artillery = howitzer silhouette · tank/armour = tank silhouette · mech = X + track · AA = twin barrels · HQ = flag. Flag badge + size mark (••• platoon, I company, II battalion, III regiment).
 - **Artillery:** the gun fires (`K.gun`: flash, smoke, recoil), shell arc, **impact** (`K.impact`: fireball, shock ring, smoke, small shake).
 - **Aircraft (`K.aircraft`):** detailed top-down jets / turboprops / helicopters with ground shadow, spinning props/rotors, dotted flight path; shoot-downs smoke, spiral and crash; helicopters' shadows close in when they land.
+- **WW2 transport / plane symbol (locked, owner 2026-10-06): the glowing C-47, `K.aircraft({ kind: "c47g", side })`.** White body with a soft glow; the **outline and glow take the side colour: blue = Allies (`side: "carth"`), red = Germans/enemy (`side: "rome"`)**. Size ~30 on wide maps. Planes **fly in spaced out (few, not swarms), do their job (drop / bomb) and fly off the map**; never stop or fade in mid-air. Preview: `frontlines-1m/build/plane-glow-sides.png`; used in the 1-min D-Day test (`frontlines-1m/scenes-src/europe_hd.js`). The old twin-boom `cargo` and the striped `c47` icons were rejected (looked like drones / didn't convince).
 - **Bombing run (owner's favourite, copy exactly):** jet flies the run (size 84, alt 30, dur 3.2); each bomb is `K.impact(x, y, t0 + 1.55 + k * 0.25, { r: 20, shake: first ? 5 : false })`, i.e. just after the jet passes, sticks 0.25 s apart. Code: `goosegreen/scenes-src/move3.js` ("the Harrier strike").
 - **Also:** ship silhouettes with muzzle flashes, burning places with smoke columns (`K.smoke`), pulsing target rings on objectives (`K.target`), commander badge (`K.badge`, initials on dark tint if no legal photo), casualty card after every move with losses (`K.casualties`), captions bottom-centre.
 
@@ -115,7 +116,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Loud gun-launch sounds / boom at launch instead of impact.
 - Bright, fully saturated front lines; tint spilling onto sea or distant land. (Faded territory is also out: since 2026-10-05 territory is strong, see section 2.)
 - Two-coloured lines behind the front.
-- Simple flat aircraft icons.
+- Simple flat aircraft icons, drone-like twin-boom transports, planes that stop in mid-air (exception: the glowing C-47 `c47g` is the approved WW2 plane symbol).
 - NATO dot/oval artillery and oval tank symbols (silhouettes chosen).
 - Music at 0.35 (too loud).
 - Licences: no NonCommercial / NoDerivatives (no IWM Non-Commercial, no BBC SFX). Never a fake likeness of a real person.
