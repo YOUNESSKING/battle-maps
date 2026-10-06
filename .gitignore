@@ -20,3 +20,4 @@ gavin/assets/film/clips/
 gavin/build/archtest/
 gavin/build/frontlines/
 tts/cbx-venv/
+voice/*.wav
