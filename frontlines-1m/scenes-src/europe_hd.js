@@ -31,9 +31,17 @@ SFX("ref:whoosh", T_ENG - 0.4);
 // night falls; the transport stream crosses the Channel and turns east over the Cotentin's west coast
 GG.layer("background: rgba(4,8,22,0.42);", T_HOURS, END + 1, { dur: 1.2 });
 SFX("ref:whoosh", T_13 - 0.3); SFX("ref:riser", T_MISSION - 1.8);
+// owner 2026-10-06: the transports fly over the drop zone, release their sticks of paratroopers as they pass, then carry on east over
+// the coast and turn back north for England, leaving the map (they never stop in mid-air)
+const along = (pts, k) => { let L = 0; const seg = []; for (let j = 1; j < pts.length; j++) { const d = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]); seg.push(d); L += d; }
+  return seg.slice(0, k).reduce((a, b) => a + b, 0) / L; };   // fraction of the flight at which point k is reached
 for (let i = 0; i < 9; i++) {
-  const y0 = ly + (i % 3) * 7 - 7, t = T_HOURS + 0.4 + i * 0.35;
-  K.aircraft({ kind: "cargo", side: "carth", size: 22, alt: 8, pts: [[lx - 20 + (i % 3) * 8, y0], [nx - 50, ny - 30 + (i % 3) * 6], [nx - 34, ny - 8 + (i % 4) * 4], [nx + 6, ny - 6 + (i % 4) * 4]], t, dur: 4.6, until: t + 4.8, sfx: i % 3 ? false : undefined });
+  const y0 = ly + (i % 3) * 7 - 7, t = T_HOURS + 0.4 + i * 0.35, jx = (i % 4) * 4, jy = (i % 3) * 5;
+  const pts = [[lx - 20 + (i % 3) * 8, y0], [nx - 50, ny - 30 + (i % 3) * 6], [nx - 34, ny - 8 + jy], [nx - 8 + jx, ny - 6 + jy], [nx + 24 + jx, ny - 12 + jy], [nx + 34, ny - 70], [nx + 12, ny - 170]];
+  const dur = 7.0;
+  K.aircraft({ kind: "cargo", side: "carth", size: 22, alt: 8, pts, t, dur, until: t + dur, sfx: i % 3 ? false : undefined });
+  const tDrop = t + dur * along(pts, 3);   // over the drop zone
+  for (let c = 0; c < 3; c++) GG.chute(nx - 12 + jx + c * 5, ny - 4 + jy + (c % 2) * 3, tDrop - 0.25 + c * 0.18, { s: 9, until: END + 1 });
 }
 const card = GG.card(`<div style="display:flex;align-items:center;gap:40px;font-weight:700;letter-spacing:0.04em"><div style="text-align:center"><div style="font-size:72px;line-height:1;color:#6f9bff">13,000</div><div style="font-size:20px;letter-spacing:0.3em;color:#c9d6ff">PARATROOPERS</div></div><div class="c2" style="text-align:center"><div style="font-size:72px;line-height:1;color:#6f9bff">800+</div><div style="font-size:20px;letter-spacing:0.3em;color:#c9d6ff">PLANES</div></div></div>`, "gg-odds", 820, T_13 - 0.2, T_DARK + 0.6);
 card.querySelector(".inner").style.padding = "16px 54px 20px"; GG.hide(card.querySelector(".c2"));
