@@ -5,9 +5,12 @@ T = json.load(open("audio/timing.json")); P = T["paragraphs"]; END = P[-1]["end"
 st = {p["tag"].split("|")[0].split(":")[1].strip(): p["start"] for p in P}
 run = lambda a: subprocess.run(a, check=True)
 # 1. picture: globe (padded to start at 0), terrain, film f-1, f-2, river
-segs = ["scenes/europe2/renders/europe2.mp4", "scenes/plan/renders/plan.mp4", "scenes/night/renders/night.mp4", "build/a-1.mp4", "build/a-2.mp4", "scenes/town/renders/town.mp4", "scenes/utah/renders/utah.mp4"]
+import os
+ONEMIN = bool(os.environ.get("ONEMIN"))
+segs = (["scenes/europe_hd/renders/europe_hd.mp4", "build/a-1.mp4", "build/a-2.mp4", "scenes/normandy_hd/renders/normandy_hd.mp4"] if ONEMIN else
+        ["scenes/europe2/renders/europe2.mp4", "scenes/plan/renders/plan.mp4", "scenes/night/renders/night.mp4", "build/a-1.mp4", "build/a-2.mp4", "scenes/town/renders/town.mp4", "scenes/utah/renders/utah.mp4"])
 inp = sum([["-i", s] for s in segs], [])
-fc = f"[0:v]fps=30,format=yuv420p,tpad=start_duration={st['e-1']}:start_mode=clone[v0];" + "".join(f"[{i}:v]fps=30,format=yuv420p,setsar=1[v{i}];" for i in range(1, 7)) + "[v0][v1][v2][v3][v4][v5][v6]concat=n=7:v=1:a=0[v]"
+fc = f"[0:v]fps=30,format=yuv420p,tpad=start_duration={st['e-1']}:start_mode=clone[v0];" + "".join(f"[{i}:v]fps=30,format=yuv420p,setsar=1[v{i}];" for i in range(1, len(segs))) + "".join(f"[v{i}]" for i in range(len(segs))) + f"concat=n={len(segs)}:v=1:a=0[v]"
 run(["ffmpeg", "-v", "error", "-y", *inp, "-filter_complex", fc, "-map", "[v]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "build/video.mp4"])
 # 2. sound effects: locked cues from the scenes (sfx_mix, locked levels) + the reference-style sound design on its own (kinds "ref:*",
 #    Mixkit free licence / Public Domain, assets/media/sfx_ref/CREDITS.md) added into the same SFX track so it ducks under the voice too
@@ -27,7 +30,7 @@ def place(name, t, db, dur=None, fade=0.4):
     s0 = int(t * sr); e = min(len(fx), s0 + len(a)); fx[s0:e] += a[:e - s0] * 10 ** (db / 20)
 LV = {"ref:whoosh": ("whoosh_cinematic_tunnel.wav", -14), "ref:pop": ("label_pop_dry.wav", -20), "ref:boom": ("boom_big_cinematic_impact.wav", -11), "ref:riser": ("riser_reverse_swell.wav", -17)}
 for t, k, _ in ref: place(LV[k][0], t, LV[k][1])
-a1, a2, n1 = st["a-1"], st["a-2"], st["n-1"]; p1, e3 = st["p-1"], st["e-3"]
+a1, a2, n1 = st["a-1"], st["a-2"], st["n-1"]; e3 = st.get("e-3", a1)
 place("paper_newspaper_big_page.wav", a1 - 0.1, -12)
 place("projector_loop.wav", a1 + 5.5, -27, dur=a2 - a1 - 5.5)
 place("projector_loop.wav", a2 + 4.4, -27, dur=n1 - a2 - 4.4)
@@ -55,5 +58,5 @@ for _ in range(3):  # the limiter eats a variable amount: measure the result and
     gain = round(gain + (-14.3 - got), 1)
 print("raw mix", I, "LUFS, gain", gain, "dB")
 run(["ffmpeg", "-v", "error", "-y", "-i", "build/video.mp4", "-i", "build/mix.wav", "-map", "0:v", "-map", "1:a", "-t", str(END), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
-     "-movflags", "+faststart", "build/dday-2m-test.mp4"])
-print("wrote build/dday-2m-test.mp4", END)
+     "-movflags", "+faststart", ("build/dday-1m-hd.mp4" if ONEMIN else "build/dday-2m-test.mp4")])
+print("wrote", "build/dday-1m-hd.mp4" if ONEMIN else "build/dday-2m-test.mp4", END)

@@ -14,6 +14,9 @@ SHOTS = {  # D-Day test: newspaper headline card, 3D-depth photos, film in the p
          {"film": "assets/film/clips/normandy_faces_01.mp4", "ss": 0.4, "tint": True, "frame": True, "dur": 3.0},
          {"film": "assets/film/clips/normandy_glider_wreck_02.mp4", "ss": 0.3, "tint": True, "frame": True}],
 }
+import os
+if os.environ.get("ONEMIN"):  # the 1-minute version has a shorter first block: no glider shot, the drop takes the rest
+    SHOTS["a-1"] = SHOTS["a-1"][:3]; SHOTS["a-1"][2] = {k: v for k, v in SHOTS["a-1"][2].items() if k != "dur"}
 for i, p in enumerate(P):
     k = key(p)
     if k in SHOTS:
