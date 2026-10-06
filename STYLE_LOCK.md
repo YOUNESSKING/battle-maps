@@ -70,7 +70,7 @@ Our locked style (sections 2-5) stays the base; these are ADDED on top. Referenc
 - **Planes:** the glowing C-47 (`c47g`, section 2), few and spaced out; they drop/bomb and then fly off the map.
 - **Archive sections (Netflix look, `tools/build_film_dday.py` + `archive_shots.py`):** (1) a **newspaper headline card** (`make_headline_dday.py`) with a paper-page sound; (2) **photos with 3D depth** (parallax, `"depth": True`) with a small caption (unit · place · date); (3) restored, tinted **film inside a projector frame** (`"frame": True`) with a quiet projector loop; (4) **date cards in headline style** ("6 JUNE 1944 / NORMANDY, FRANCE"). Never a slideshow.
 - **Sound design (Frontlines-style, mixed separately from the locked SFX, `assemble_dday.py`):** cinematic whoosh on camera moves (-14 dB), dry pop on labels (-20), big cinematic boom on key beats (-11), reverse riser into reveals (-17), newspaper page (-12), projector loop under film (-27), low tactical/tension drone bed (-30). The locked battle sounds (section 3a), plane sound B, music 0.08 + the locked mix chain are unchanged.
-- **Voice:** channel voice am_michael. **Music:** the channel bed; Kevin MacLeod "Five Armies" (CC BY 4.0, from 1:00) matched to the bed loudness is approved for this look.
+- **Voice:** voice A (section 6); option 2 = plain am_michael. **Music:** the channel bed; Kevin MacLeod "Five Armies" (CC BY 4.0, from 1:00) matched to the bed loudness is approved for this look.
 
 ## 3. Sound effects (locked files and levels)
 Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). **Aircraft sounds only when an aircraft is on screen** (owner 2026-10-06): never a plane/jet/heli sound over parachutes or an empty sky; give `K.aircraft` the sound (its default) or show the planes. Levels are dB in `sfx_mix_lib.py`:
@@ -122,12 +122,14 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Sound-only changes never need a re-render: `python3 tools/assemble_full.py --audio-only`.
 
 ## 6. Voice, hook, thumbnail, description
-- Voice: Kokoro `am_michael` (`tools/narrate.py`).
+- **Voice (DEFAULT, owner-locked 2026-10-06): voice A** = the Kokoro am_michael narration converted to the owner's reference voice with `tts/convert_voice.py` (ref `tts/voices/owner_ref.wav`, sample `tts/voices/test_A_chatterbox.mp3`; setup `bash tts/setup_clone.sh`). Same pacing and timestamps as the Kokoro take. **Option 2 (fallback only, or when the owner asks):** the plain Kokoro am_michael narration.
+  Steps: `tools/narrate.py` (am_michael) → `audio/voice.wav` + `timing.json` → `/home/user/cb-venv/bin/python /home/user/battle-maps/tts/convert_voice.py audio/voice.wav /home/user/battle-maps/tts/voices/owner_ref.wav audio/voice_owner.wav` (~15-20 min per 18 min) → mix `voice_owner.wav`.
 - Hook: formula in HANDOVER section 1 (stakes-first line, flash-forward, change every 3-5 s, SFX on every beat).
 - Thumbnail: formula in HANDOVER 1b (vidIQ + Tactical Genius references, 1-3 word text, generic officer).
 - Description: copy the layout of `goosegreen/build/youtube_description.txt` (chapters, sources, map/music/SFX/image credits), but with **NO links at all** (owner rule 2026-10: new channels get flagged as spam; write "licensed under Creative Commons Attribution 4.0" instead of the URL). Full rules: `research/PACKAGING_GUIDE.md`.
 
 ## 7. Tried and REJECTED (don't offer these again)
+- Voice: Chatterbox text-to-speech cloning (`tts/clone_voice.py`, pacing off); Seed-VC conversion (B: ~4 h per video on CPU, not preferred by ear).
 - Opening on a photo.
 - Synthesized artillery booms (replaced by real recordings).
 - The `sfx/candidates/bombs/` clips (owner disliked them).
