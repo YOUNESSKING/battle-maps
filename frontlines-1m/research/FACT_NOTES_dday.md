@@ -9,3 +9,15 @@
 | 3/505 PIR (Krause) took the town before dawn (~04:30), cut the N13 Cherbourg road | VERIFIED. d-dayrevisited, dday-overlord |
 | "often called the first town freed in France" | popular claim, so phrased "often called" |
 | Hitler's forces held the coast Norway to Spain for four years (France fell June 1940) | standard |
+
+## 2-minute version, extra claims (fact-check pass 2, 2026-10-06)
+| Claim | Verdict / source |
+|---|---|
+| five beaches: Utah, Omaha (US), Gold, Sword (UK), Juno (Canada) | VERIFIED. britannica.com/event/Normandy-landings |
+| three airborne divisions guard the flanks (US 82nd + 101st west behind Utah, British 6th east of the Orne) | VERIFIED. nationalww2museum.org (d-day airborne operations) |
+| Germans flooded the fields behind Utah; few causeways | VERIFIED. CMH "Utah Beach to Cherbourg" |
+| US airborne had to take the causeways and Sainte-Mere-Eglise (main road) | VERIFIED (101st causeways, 82nd SME + Merderet) |
+| Germans expected the main blow at the Pas-de-Calais | VERIFIED (standard; Operation Fortitude). britannica.com/event/D-Day |
+| largest seaborne invasion in history | standard description |
+| Utah H-Hour 06:30, 4th Infantry Division | VERIFIED. history.army.mil/books/wwii/utah |
+| Utah "about two hundred casualties", lightest of the five | VERIFIED: 197 (4th Div, D-Day; ~60 missing at sea), some say ~175, so "about". en.wikipedia.org/wiki/Utah_Beach |

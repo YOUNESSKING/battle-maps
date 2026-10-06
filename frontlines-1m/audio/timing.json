@@ -1,49 +1,70 @@
 {
  "voice": "am_michael",
  "speed": 1.0,
- "duration": 60.67,
+ "duration": 114.89,
  "paragraphs": [
   {
    "section": "Test",
-   "tag": "MAP: e-1 | Europe, 5 June 1944: dark terrain, crimson occupied Europe, stamped emblem, white-box labels; Britain blue",
+   "tag": "MAP: e-1 | Europe, June 1944: crimson occupied Europe, emblem stamped on Germany, white-box labels, flags on England",
    "start": 0.5,
-   "end": 9.46,
-   "text": "June, nineteen forty-four. For four years, Hitler's empire has held the coast of Europe. Now, from England, the Allies strike back."
+   "end": 15.82,
+   "text": "June, nineteen forty-four. For four years, Hitler's empire has held the coast of Europe, from Norway to the Spanish border. In England, the largest seaborne invasion in history is waiting for the order to cross the Channel."
   },
   {
    "section": "Test",
-   "tag": "MAP: e-2 | push into Normandy: transport planes cross the Channel to the Cotentin's west coast at night",
-   "start": 10.36,
-   "end": 22.71,
-   "text": "Hours before the landings, about thirteen thousand American paratroopers take off in more than eight hundred planes. Their mission: jump behind the beaches in the dark, and seize the roads."
+   "tag": "MAP: e-2 | push to the Channel: German units massed at the Pas-de-Calais; NORMANDY target pulses",
+   "start": 16.72,
+   "end": 25.91,
+   "text": "Its target is Normandy. And the Germans are watching the wrong place. They expect the blow at the Pas-de-Calais, where the Channel is narrowest."
   },
   {
    "section": "Test",
-   "tag": "ARCHIVE: a-1 | headline card; film in the projector frame; date card 6 JUNE 1944 \u00b7 NORMANDY, FRANCE",
-   "start": 23.61,
-   "end": 31.06,
-   "text": "Cloud and anti-aircraft fire break the formations apart. Most men land miles from their drop zones."
+   "tag": "MAP: p-1 | Normandy wide: the five beaches appear one by one with blue arrows; airborne drop zones on both flanks",
+   "start": 26.81,
+   "end": 41.57,
+   "text": "The plan: five beaches. Utah and Omaha for the Americans, Gold and Sword for the British, Juno for the Canadians. But first, in the dark, three airborne divisions will drop behind the coast to guard the flanks."
   },
   {
    "section": "Test",
-   "tag": "ARCHIVE: a-2 | pathfinders photo (3D depth), film",
-   "start": 31.96,
-   "end": 41.62,
+   "tag": "MAP: p-2 | behind Utah: the flooded fields glow, narrow causeways cross them; Sainte-Mere-Eglise on the main road",
+   "start": 42.47,
+   "end": 54.1,
+   "text": "Behind Utah Beach, the Germans have flooded the fields. Only a few narrow causeways cross the water. The Americans must take them, and the town that holds the main road."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: e-3 | night: the transport stream crosses the Cotentin from the west; flak bursts; card 13,000 / 800+",
+   "start": 55.0,
+   "end": 65.07,
+   "text": "Hours before the landings, about thirteen thousand American paratroopers take off in more than eight hundred planes, and head for the Cotentin Peninsula."
+  },
+  {
+   "section": "Test",
+   "tag": "ARCHIVE: a-1 | headline card; pathfinders photo (3D depth); film in the projector frame + date card",
+   "start": 65.97,
+   "end": 76.72,
+   "text": "Over Normandy, a bank of cloud and anti-aircraft fire break the formations apart. Most men land miles from their drop zones, alone, in the dark."
+  },
+  {
+   "section": "Test",
+   "tag": "ARCHIVE: a-2 | Sainte-Marie-du-Mont photo (3D depth); film",
+   "start": 77.62,
+   "end": 87.29,
    "text": "Some fall straight into the town of Sainte-M\u00e8re-\u00c9glise. One man's parachute catches on the church steeple. He hangs there for about two hours, playing dead."
   },
   {
    "section": "Test",
-   "tag": "MAP: n-1 | Normandy: scattered chutes; small groups gather; blue grows around Sainte-Mere-Eglise; the road from Cherbourg is cut",
-   "start": 42.52,
-   "end": 51.69,
+   "tag": "MAP: n-1 | Normandy: scattered chutes; small groups gather; the town is taken; the road is cut",
+   "start": 88.19,
+   "end": 97.36,
    "text": "But small groups find each other. Before dawn, a battalion of the five hundred and fifth takes the town, and cuts the main road to Cherbourg."
   },
   {
    "section": "Test",
-   "tag": "MAP: n-2 | the town turns blue; flag; end card",
-   "start": 52.59,
-   "end": 58.27,
-   "text": "Sainte-M\u00e8re-\u00c9glise is often called the first town freed in France. D-Day has begun."
+   "tag": "MAP: n-2 | dawn: landing craft reach Utah Beach; paratroopers hold the causeway exits; casualty card; end",
+   "start": 98.26,
+   "end": 112.49,
+   "text": "At six thirty, the first troops come ashore at Utah Beach. With paratroopers holding the causeways behind it, Utah costs about two hundred casualties, the lightest of all five beaches. D-Day has begun."
   }
  ]
 }

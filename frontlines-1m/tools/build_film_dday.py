@@ -8,7 +8,8 @@ enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420
 SHOTS = {  # D-Day test: newspaper headline card, 3D-depth photos, film in the projector frame, headline date card
  "a-1": [{"photo": "assets/media/headline_dday.jpg", "move": "in", "focus": [0.5, 0.42], "dur": 2.6},
          {"photo": "assets/media/archive_normandy_pathfinders.jpg", "move": "in", "focus": [0.5, 0.4], "label": "PATHFINDERS, 505TH PARACHUTE INFANTRY · ENGLAND, JUNE 1944", "depth": True, "dur": 2.9},
-         {"film": "assets/film/clips/normandy_drop_01.mp4", "ss": 0.3, "tint": True, "frame": True, "headline": ["6 JUNE 1944", "NORMANDY\nFRANCE"]}],
+         {"film": "assets/film/clips/normandy_drop_01.mp4", "ss": 0.3, "tint": True, "frame": True, "dur": 3.4, "headline": ["6 JUNE 1944", "NORMANDY\nFRANCE"]},
+         {"film": "assets/film/clips/normandy_gliders_air_02.mp4", "ss": 0.3, "tint": True, "frame": True}],
  "a-2": [{"photo": "assets/media/archive_normandy_sainte_marie_dumont.jpg", "move": "in", "focus": [0.5, 0.45], "label": "AIRBORNE TROOPS IN SAINTE-MARIE-DU-MONT · 7 JUNE 1944", "depth": True, "dur": 4.4},
          {"film": "assets/film/clips/normandy_faces_01.mp4", "ss": 0.4, "tint": True, "frame": True, "dur": 3.0},
          {"film": "assets/film/clips/normandy_glider_wreck_02.mp4", "ss": 0.3, "tint": True, "frame": True}],
