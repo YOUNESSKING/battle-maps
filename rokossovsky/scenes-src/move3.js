@@ -13,7 +13,7 @@ const GG = GGK(B);
 const PR = GG.proj(9, 74836, 41886);
 const L = (lat, lon) => PR(lat, lon);
 const USSR = "assets/media/ussr_flag.png", REICH = "assets/media/ger_reich_flag.png";
-const PHOTO = { roko: null, busch: null }; // TODO: assets/media/rokossovsky_head.png / busch_head.png when the photo agent delivers them
+const PHOTO = { roko: "assets/media/rokossovsky_head.png", busch: "assets/media/busch_head.png" }; // licensed head shots (assets/media/CREDITS.md)
 // ---------- helpers (same as hook-a.js) ----------
 const box = (txt, x, y, t, size = 16, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.28em;padding:${Math.round(size * 0.2)}px ${Math.round(size * 0.35)}px ${Math.round(size * 0.2)}px ${Math.round(size * 0.6)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
 const town = (txt, lat, lon, t, o = {}) => { const [x, y] = L(lat, lon); B.city("", x, y, { r: o.r || 5, t, until: o.until }); return box(txt, x + (o.dx || 0), y + (o.dy != null ? o.dy : -22), t, o.size || 13, o.until); };

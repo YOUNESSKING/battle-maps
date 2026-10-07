@@ -13,7 +13,7 @@ const GG = GGK(B);
 const PR = GG.proj(9, 74836, 41886);
 const L = (lat, lon) => PR(lat, lon);
 const USSR = "assets/media/ussr_flag.png", REICH = "assets/media/ger_reich_flag.png";
-const PHOTO_ROKO = null; // TODO: assets/media/rokossovsky_head.png when the photo agent delivers it (initials until then)
+const PHOTO_ROKO = "assets/media/rokossovsky_head.png"; // licensed head shot (credits: assets/media/CREDITS.md)
 // ---------- helpers (same in move3.js) ----------
 const box = (txt, x, y, t, size = 16, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.28em;padding:${Math.round(size * 0.2)}px ${Math.round(size * 0.35)}px ${Math.round(size * 0.2)}px ${Math.round(size * 0.6)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
 const town = (txt, lat, lon, t, o = {}) => { const [x, y] = L(lat, lon); B.city("", x, y, { r: 5, t }); return box(txt, x + (o.dx || 0), y + (o.dy != null ? o.dy : -22), t, o.size || 13, o.until); };
@@ -150,6 +150,9 @@ AGC.firstChild.style.position = "relative"; AGC.firstChild.appendChild(strike); 
 B.tl.to(strike, { scaleX: 1, duration: 0.35, ease: "power2.in" }, T_WORST); SFX("hit", T_WORST + 0.3);
 box("MINSK FREED · 3 JULY", ...L(53.78, 27.56), T_GATES - 0.2, 15, T_400 + 0.4);
 B.tl.to(FG, { x: -140, duration: 2.4, ease: "power1.in" }, T_WEEKS + 0.6);
+// German flag stays on German-held ground while any is on screen (4 July strip in the west), leaves with it at the end-of-summer cross-fade
+const FGW = flag(REICH, "GERMANY", ...L(52.72, 26.2), T_WEEKS + 1.0, T_400 - 0.1, 90);
+B.tl.to(FGW, { x: -220, duration: 1.0, ease: "power1.in" }, T_400 - 0.6);
 // big Soviet arrows sweep west across Belarus
 [[[53.45, 30.7], [53.45, 29.6], [53.55, 28.4], [53.68, 27.45]], [[53.10, 29.9], [53.12, 28.9], [53.12, 27.7], [53.02, 26.5]], [[52.62, 29.3], [52.70, 28.3], [52.62, 27.2], [52.40, 26.3]]].forEach((p, k) =>
   B.arrow({ pts: ringPts(p), side: "carth", t: T_WEEKS + 0.9 + k * 0.35, dur: 2.4, width: 26, until: S3 - 0.4 }));
