@@ -11,17 +11,17 @@ Territory look per shot (STYLE_LOCK 2a): option 1 (territory colours) on the wid
 
 ## HOOK (0:00 – ~1:25)
 
-[MAP: hook-1 | Belarus, June 1944, wide (option 1). First frame: red German counters dug in along the "balcony" front, blue Soviet counters facing them, flags USSR + Reich. Camera drifts south to the Pripyat marshes (dark green, river shimmer): stamp IMPASSABLE on the marsh (hit). Blue cavalry + tank counters slide INTO the marsh from the east; logs drawn as a dashed road under them; red rings flash ALERT too late]
-The Germans were certain that no army could cross these swamps. So they barely guarded them. In June nineteen forty-four, one Soviet general sent tanks, cavalry and infantry straight through them anyway.
+[MAP: hook-1 | HOOK v2 (owner 2026-10-07: v1 too slow). Frame 1 (0.0 s): the red Army Group Centre bulge across Belarus (option 1), long line of red counters + blue counters facing, flags; a BIG card slams in at 0.3 s (hit + shake) and ticks 0 -> 400,000 GERMAN LOSSES (ticks); 1.5 s beats: red counters crack and grey in waves (hit on each wave), stamp ONE SUMMER (hit); on "a swamp": hard zoom-whoosh DIVE (whoosh) down into the Pripyat marsh, stamp IMPASSABLE (hit)]
+Four hundred thousand German soldiers. Lost in a single summer. And it all began in a swamp the Germans were sure no army could cross.
 
-[MAP: hook-2 | White-flash cut. Two blue arrows (north from Rogachev, south through the marsh) close around Bobruisk; red counters inside turn grey; ring closes with a stamp TRAPPED; zoom out: the whole red bulge of Army Group Centre shatters, counter ticks up to ~400,000 GERMAN LOSSES (whole operation)]
-Three days later, a German army was trapped at Bobruisk. Within weeks, Army Group Centre, the force that had once reached the gates of Moscow, had lost around four hundred thousand men. It was one of the worst defeats in the history of the German army.
+[MAP: hook-2 | Change every 2-4 s, SFX on every beat: log roads draw across the bog (pop); blue tanks + cavalry burst OUT of the marsh (whoosh), red ALERT rings + MG fire + impacts (shake); white-flash cut -> 27 JUNE 1944: two blue arrows race around Bobruisk and the ring slams shut, stamp TRAPPED (boom + hit); zoom-out whoosh: the whole red bulge collapses west, ARMY GROUP CENTRE struck through (hit)]
+In June nineteen forty-four, one Soviet general sent his tanks and cavalry straight through it. Three days later, a whole German army was trapped at Bobruisk. Within weeks, the army group that had once reached the gates of Moscow had been torn apart.
 
-[MAP: hook-3 | Dark map, the red bulge greyed. Commander badge slides in: Rokossovsky photo on the USSR flag. A cell-bar overlay draws across the badge; date card AUGUST 1937 -> MARCH 1940 ticks (tick sfx); stamp ARRESTED (hit)]
-And the man who planned it had spent almost three years in a Soviet prison. Stalin's own secret police had arrested him, and, by his family's account, knocked out his teeth, broken his ribs and twice marched him out to a mock execution. He never signed a false confession.
+[MAP: hook-3 | Hard cut, dark: prison bars SLAM down over the map (hit + shake); Rokossovsky photo badge behind the bars; on each spoken beat a stamp hits (hit + small shake): 1937 ARRESTED / TEETH KNOCKED OUT / RIBS BROKEN / MOCK EXECUTION x2 ("by his family's account" small caption); last beat: NEVER SIGNED A FALSE CONFESSION (boom), bars lift (whoosh)]
+Seven years earlier, that general was in a prison cell. Stalin's own secret police had arrested him. By his family's account, they knocked out his teeth, broke his ribs, and twice marched him out to a mock execution. He never signed a false confession.
 
-[MAP: hook-4 | Eastern front overview (option 1, 1941 control): three target rings flash in turn on Moscow, Kursk and Bobruisk with labels 1941 / 1943 / 1944 (hit on each); title MOVES 1-2-3 on screen]
-His name was Konstantin Rokossovsky. In four years, he went from a prison cell to stopping the Germans outside Moscow, breaking their last great offensive at Kursk, and tearing open their strongest army group. Let's take a closer look at Rokossovsky's three greatest tactical moves.
+[MAP: hook-4 | Eastern front overview (option 1): the badge flies out of the cell onto the map; quick cuts (3 s each, whoosh + hit): ring MOSCOW 1941 with red arrows stopped, ring KURSK 1943 with red pincers broken, ring BOBRUISK 1944 with blue arrows bursting west; title card ROKOSSOVSKY'S 3 GREATEST TACTICAL MOVES (riser + boom)]
+His name was Konstantin Rokossovsky. In four years, he went from that cell to stopping the Germans outside Moscow, breaking their last great offensive at Kursk, and tearing apart their strongest army group. These are Rokossovsky's three greatest tactical moves.
 
 ---
 
