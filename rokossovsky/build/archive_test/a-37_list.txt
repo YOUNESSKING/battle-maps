@@ -1,0 +1,6 @@
+file '/home/user/battle-maps/rokossovsky/build/archive_test/a-37_0.mp4'
+file '/home/user/battle-maps/rokossovsky/build/archive_test/a-37_1.mp4'
+file '/home/user/battle-maps/rokossovsky/build/archive_test/a-37_2.mp4'
+file '/home/user/battle-maps/rokossovsky/build/archive_test/a-37_3.mp4'
+file '/home/user/battle-maps/rokossovsky/build/archive_test/a-37_4.mp4'
+file '/home/user/battle-maps/rokossovsky/build/archive_test/a-37_5.mp4'

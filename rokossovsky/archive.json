@@ -1,0 +1,171 @@
+{
+ "4": [
+  {
+   "film": "assets/film/clips/p4_wwi.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "label": "IMPERIAL RUSSIAN ARMY · 1914",
+   "dur": 4.2
+  },
+  {
+   "film": "assets/film/clips/p4_cav.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true,
+   "label": "RED ARMY CAVALRY",
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/rokossovsky_wide.jpg",
+   "move": "in",
+   "focus": [
+    0.7,
+    0.45
+   ],
+   "depth": true,
+   "label": "KONSTANTIN ROKOSSOVSKY · BORN 1896",
+   "dur": 4.8,
+   "trim": 0.0
+  },
+  {
+   "photo": "assets/media/headline_purge.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.42
+   ],
+   "dur": 3.2
+  },
+  {
+   "film": "assets/film/clips/p4_march.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "1937",
+    "THE GREAT PURGE"
+   ],
+   "dur": 5.3
+  },
+  {
+   "film": "assets/film/clips/p4_face.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "MARCH 1940",
+    "RELEASED"
+   ],
+   "dur": 4.0
+  },
+  {
+   "film": "assets/film/clips/p4_helmets.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 4.0
+  },
+  {
+   "photo": "assets/media/rokossovsky_wide.jpg",
+   "move": "out",
+   "focus": [
+    0.7,
+    0.45
+   ],
+   "label": "ROKOSSOVSKY, 1945",
+   "trim": 0.0,
+   "depth": true
+  }
+ ],
+ "37": [
+  {
+   "film": "assets/film/clips/p37_a.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "17 JULY 1944",
+    "MOSCOW"
+   ],
+   "dur": 3.8
+  },
+  {
+   "film": "assets/film/clips/p37_b.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 3.0
+  },
+  {
+   "film": "assets/film/clips/p37_c.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "label": "57,000 GERMAN PRISONERS",
+   "dur": 3.0
+  },
+  {
+   "film": "assets/film/clips/p37_d.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "label": "GERMAN OFFICERS LEAD THE COLUMN",
+   "dur": 3.2
+  },
+  {
+   "film": "assets/film/clips/p37_e.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 3.2
+  },
+  {
+   "film": "assets/film/clips/p37_f.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "label": "WATER TRUCKS WASH THE STREETS BEHIND THEM"
+  }
+ ],
+ "38": [
+  {
+   "film": "assets/film/clips/p38_card.mp4",
+   "ss": 0.0,
+   "headline": [
+    "24 JUNE 1945",
+    "RED SQUARE\nMOSCOW"
+   ],
+   "dur": 3.8
+  },
+  {
+   "photo": "assets/media/archive_vparade_rok.jpg",
+   "move": "in",
+   "focus": [
+    0.42,
+    0.5
+   ],
+   "depth": true,
+   "trim": 0.0,
+   "label": "MARSHAL ROKOSSOVSKY COMMANDS THE PARADE · 24 JUNE 1945",
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/archive_vparade_report.jpg",
+   "move": "in",
+   "focus": [
+    0.35,
+    0.45
+   ],
+   "depth": true,
+   "trim": 0.0,
+   "label": "ROKOSSOVSKY REPORTS TO ZHUKOV, WHO TOOK THE SALUTE",
+   "dur": 4.0
+  },
+  {
+   "photo": "assets/media/archive_vparade_rok.jpg",
+   "move": "left",
+   "trim": 0.0
+  }
+ ]
+}
