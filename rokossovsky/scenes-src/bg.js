@@ -31,8 +31,8 @@ const legend = (t, until) => {
 };
 // unit counter with its flag chip (FLAGS in lib/fx.js has no USSR key: patch the chip's src)
 const counter = (id, icon, side, size) => { K.counter(id, { icon, flag: "ger", size }); if (side === "carth") B.units[id].el.querySelector(".fxk-flag").src = FL.su; };
-// commander badge on the USSR flag (TODO: use assets/media/rokossovsky_head.png once the photo agent has a licensed cut-out)
-const badge = (o) => { const el = K.badge(Object.assign({ side: "carth", initials: "KR" }, o)); el.querySelector('div[style*="border-radius:50%"]').style.backgroundImage = `url(${FL.su})`; return el; };
+// commander badge on the USSR flag, licensed photo cut-out (assets/media/rokossovsky_head.png, see CREDITS.md)
+const badge = (o) => { const el = K.badge(Object.assign({ side: "carth", photo: "assets/media/rokossovsky_head.png" }, o)); el.querySelector('div[style*="border-radius:50%"]').style.backgroundImage = `url(${FL.su})`; return el; };
 // point a fraction f along a polyline (to drop each bomb right under the plane)
 const along = (pts, f) => { const seg = []; let L = 0; for (let j = 1; j < pts.length; j++) { const d = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]); seg.push(d); L += d; }
   let d = f * L; for (let j = 0; j < seg.length; j++) { if (d <= seg[j] || j === seg.length - 1) { const k = Math.min(1, d / seg[j]); return [pts[j][0] + (pts[j + 1][0] - pts[j][0]) * k, pts[j][1] + (pts[j + 1][1] - pts[j][1]) * k]; } d -= seg[j]; } };

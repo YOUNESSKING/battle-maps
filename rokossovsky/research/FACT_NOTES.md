@@ -18,6 +18,10 @@ Gemini's page numbers are invented; none of its [VERIFIED] labels were taken at 
 | Polish defence minister | OK: 6 Nov 1949 - 13 Nov 1956 | ending |
 | Victory Parade 24 June 1945 | Rokossovsky commanded the parade, Zhukov took the salute (standard; memory, double-check) | ending |
 
+## Background: Vyazma-Bryansk, October 1941
+- "More than half a million Soviet soldiers cut off" (script) / OVER HALF A MILLION ENCIRCLED (map): the Vyazma and Bryansk pockets cost the Red Army roughly 1 million men in total; the Germans claimed ~673,000 prisoners (commonly cited 600-670k captured). "Over half a million encircled" is conservative and safe. (Wikipedia, Battle of Moscow / Vyazma-Bryansk; double-check against Glantz.)
+- Overview maps: Finland shown Axis from 22 June 1941 (it entered the war 25-26 June); Romania shown Soviet-side on the Aug 1944 map (changed sides 23 Aug). Fronts per date: FACT_NOTES_east.md.
+
 ## Move 1: Volokolamsk highway, Oct-Dec 1941
 - 16th Army (2nd formation) formed 10 Aug 1941 near Yartsevo under Rokossovsky; after the Vyazma encirclement (Oct 1941) its HQ was sent to the Volokolamsk axis with scratch forces: 316th Rifle Division (Panfilov), Dovator's cavalry, Moscow military-school cadets, later Katukov's 4th Tank Brigade (= 1st Guards Tank Brigade from 11 Nov; its Mtsensk ambushes were early Oct, before it joined 16th Army).
 - Gemini "Oct-Nov": CORRECTED to mid-October to December. Volokolamsk fell 27 Oct; the German second-phase offensive started 15-16 Nov.
