@@ -51,7 +51,7 @@ B.showDate(0.2); B.date("1941 – 1944", 0.4, T_MOS - 0.3, 34); B.date("DECEMBER
 B.date("JUNE 1944", T_BEL + 0.05, T_AUG, 34); B.date("AUGUST 1944", T_AUG + 0.05, null, 34);
 legend(0.4, END + 1);
 flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.5); flag(FL.su, "USSR", ...G(55.0, 45.0), 0.7);
-neutral("SWEDEN", ...G(58.3, 14.8), 0.9);
+neutral("SWEDEN", ...G(56.35, 14.1), 0.9);
 // the commander, centred
 const bd = badge({ name: "KONSTANTIN ROKOSSOVSKY", role: "MARSHAL OF THE SOVIET UNION", corner: "tr", t: 0.4, until: T_MOS - 0.4 });
 Object.assign(bd.style, { right: "0px", left: "0px", top: "150px", display: "flex", justifyContent: "center" });

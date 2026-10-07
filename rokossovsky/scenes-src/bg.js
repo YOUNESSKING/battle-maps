@@ -54,7 +54,7 @@ B.showDate(0.2); B.date("22 JUNE 1941", 0.4, S2 + 0.2, 34); B.date("OCTOBER 1941
 legend(0.4, END + 1);
 // flags: wide shot, Dubno close-up, Moscow approaches (each pair sized for its camera)
 flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.5, T_LED + 0.3); flag(FL.su, "USSR", ...G(55.0, 45.0), 0.7, T_LED + 0.3);
-neutral("SWEDEN", ...G(58.3, 14.8), 0.9, T_LED + 0.3);
+neutral("SWEDEN", ...G(56.35, 14.1), 0.9, T_LED + 0.3);
 GG.lbl("FINLAND", ...G(61.6, 26.4), { size: 18, color: "#f0c8c0", t: T_INV + 0.6, until: T_LED + 0.3 });
 GG.lbl("ROMANIA", ...G(45.6, 24.6), { size: 18, color: "#f0c8c0", t: T_INV + 0.8, until: T_LED + 0.3 });
 GG.lbl("HUNGARY", ...G(47.0, 19.6), { size: 18, color: "#f0c8c0", t: T_INV + 1.0, until: T_LED + 0.3 });

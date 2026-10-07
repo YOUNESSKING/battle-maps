@@ -49,8 +49,8 @@ SFX("ref:whoosh", 0.05);
 B.showDate(0.2); B.date("1941", 0.4, T_MOS - 0.4, 34); B.date("DECEMBER 1941", T_MOS - 0.3, T_KUR, 30); B.date("JULY 1943", T_KUR + 0.05, T_BEL, 34); B.date("JUNE 1944", T_BEL + 0.05, null, 34);
 legend(0.4, END + 1);
 flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.5); flag(FL.su, "USSR", ...G(55.0, 45.0), 0.7);
-neutral("SWEDEN", ...G(58.3, 14.8), 0.9);
-badge({ name: "KONSTANTIN ROKOSSOVSKY", role: "SOVIET COMMANDER", corner: "bl", t: T_NAME + 0.2, until: T_MOS - 0.4 });
+neutral("SWEDEN", ...G(56.35, 14.1), 0.9);
+badge({ name: "KONSTANTIN ROKOSSOVSKY", role: "SOVIET COMMANDER", corner: "br", t: T_NAME + 0.2, until: T_MOS - 0.4 });
 B.caption("FROM A PRISON CELL...", T_PRISON - 0.3, T_MOS - 0.3, "carth");
 // the three moves: gold target ring + white-box place + date tag, a hit on each
 const ring = (p, name, date, n, t, dx) => {
