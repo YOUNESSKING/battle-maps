@@ -122,7 +122,7 @@ if not AUDIO_ONLY:
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
-inputs = ["-i", "audio/voice.wav", "-i", "build/sfx.wav"]
+inputs = ["-i", os.environ.get("VOICE", "audio/voice_owner.wav" if os.path.exists("audio/voice_owner.wav") else "audio/voice.wav"), "-i", "build/sfx.wav"]
 f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]",
      "[1:a]aresample=48000[sfxin]",
      "[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]"]
