@@ -1,0 +1,90 @@
+{
+ "title": "MOVE 1 \u00b7 Volokolamsk highway / Istra / Moscow (scene move1, basemap moscow_hd_ref, option 2 front lines)",
+ "note": "mm:ss = time in the full video (scene starts 2:39). Fronts per date: research/FACT_NOTES_moscow.md. Snapshots only, no render.",
+ "frames": [
+  [
+   "move1",
+   3,
+   "2:42",
+   "1-1 Title card, Oct front (option 2 lines), 316 Panfilov / Dovator / cadets vs 4th Pz Group, USSR+German flags, legend",
+   "ref:boom + label pops"
+  ],
+  [
+   "move1",
+   33,
+   "3:12",
+   "1-2 Hoepner's belief: probes, dashed pincers, ring on the line, Vyazma ghost, caption",
+   "hit on ring"
+  ],
+  [
+   "move1",
+   58,
+   "3:37",
+   "1-3 Rokossovsky badge, anti-tank strongpoints pop on junctions, hidden Katukov tanks + ambush arcs",
+   "ref:pop per strongpoint"
+  ],
+  [
+   "move1",
+   75.6,
+   "3:54",
+   "1-4 Katukov ambush: tanks out of the woods fire on the panzer column, tanks hit/greyed, then pull back",
+   "fire (quiet) + impact booms + small shake"
+  ],
+  [
+   "move1",
+   100,
+   "4:19",
+   "1-5 27 OCT: Volokolamsk lost (red flicker), band moves back intact, empty pocket ring; then mud + rain",
+   "hit + impacts"
+  ],
+  [
+   "move1",
+   124,
+   "4:43",
+   "1-6 16 NOV frost/snow: red surge at Dubosekovo (target ring), barrage; '28 Panfilov men' = propaganda card",
+   "impact booms x9, hit"
+  ],
+  [
+   "move1",
+   168.6,
+   "5:27",
+   "1-7 Istra reservoir: proposed dashed line + arrow back; REFUSED / APPROVED (Shaposhnikov) / CANCELLED (Zhukov)",
+   "hit on each stamp"
+  ],
+  [
+   "move1",
+   196.5,
+   "5:55",
+   "1-8 25 NOV-2 DEC: band falls back to Istra, Kryukovo, Krasnaya Polyana unbroken; Khimki recon, 30 KM",
+   "hit per town lost / 30 km"
+  ],
+  [
+   "move1",
+   220.1,
+   "6:19",
+   "1-9 5-6 DEC: blue arrows, band moves west, glowing c47g Soviet bombers hit retreating panzers",
+   "prop flyby, explosions + shake on 1st bomb, ref:boom"
+  ],
+  [
+   "move1",
+   226.6,
+   "6:25",
+   "1-9 Kryukovo (8 Dec) / Istra (11 Dec) retaken; Hoepner badge greyed + DISMISSED (8 Jan 1942)",
+   "hit on flips + stamp"
+  ],
+  [
+   "move1",
+   246.5,
+   "6:45",
+   "1-10 Result card: ~30 KM / NEVER ENCIRCLED / MOSCOW SAVED + method BEND, DON'T BREAK",
+   "hit per row"
+  ],
+  [
+   "move1",
+   252,
+   "6:51",
+   "move1-sub subscribe card with ringing bell, counters idle",
+   "ref:pop + ticks"
+  ]
+ ]
+}

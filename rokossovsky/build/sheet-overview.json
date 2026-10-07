@@ -1,0 +1,111 @@
+{
+ "title": "Rokossovsky #8 \u00b7 EAST OVERVIEW scenes (hook-b, bg, ending)",
+ "note": "option 1 territory (multiply), control maps jun41/oct41/dec41/jul43/jun44/aug44 cross-faded with the dates; flags USSR + Reich, emblem on Germany, legend top-centre",
+ "frames": [
+  [
+   "hook-b",
+   0.5,
+   "0:51",
+   "hook-4: Eastern Front Dec 1941 (option 1), emblem, flags, legend; Rokossovsky badge",
+   "ref:whoosh"
+  ],
+  [
+   "hook-b",
+   7.8,
+   "0:58",
+   "Ring 1 MOSCOW 1941 on the Dec 1941 control map",
+   "hit + pop"
+  ],
+  [
+   "hook-b",
+   12.6,
+   "1:03",
+   "Map now June 1944: rings 2 KURSK 1943, 3 BOBRUISK 1944",
+   "hit + pop on each"
+  ],
+  [
+   "hook-b",
+   18.5,
+   "1:09",
+   "Title: ROKOSSOVSKY'S 3 GREATEST TACTICAL MOVES / MOVES 1-2-3",
+   "ref:riser -> ref:boom"
+  ],
+  [
+   "bg",
+   4.0,
+   "1:50",
+   "bg-1: 22 June 1941 border; dawn barrage; Army Groups North/Centre/South",
+   "impacts (artillery boom + shake), ref:boom"
+  ],
+  [
+   "bg",
+   13.0,
+   "1:59",
+   "Dubno close-up: 9 MECH CORPS counter-attacks; Luftwaffe c47g bomb run; tanks 316 -> 64",
+   "prop flyby, explosions + shake, ticks"
+  ],
+  [
+   "bg",
+   15.6,
+   "2:02",
+   "Count lands on 64 (red), German guns finish the attack",
+   "impacts, hit"
+  ],
+  [
+   "bg",
+   25.5,
+   "2:12",
+   "Lesson: ambush guns fire into the panzers; AMBUSH IT \u00b7 WEAR IT DOWN \u00b7 MAKE IT BLEED",
+   "gun fire (quiet) + impacts"
+  ],
+  [
+   "bg",
+   34.6,
+   "2:21",
+   "bg-2: October 1941 map; Vyazma + Bryansk pockets, red rings, OVER HALF A MILLION ENCIRCLED",
+   "ref:whoosh, ref:boom, hits, stamp hit"
+  ],
+  [
+   "bg",
+   39.0,
+   "2:25",
+   "THE ROAD TO MOSCOW: ALMOST EMPTY - red arrows on Moscow and Tula",
+   "ref:whoosh, pop"
+  ],
+  [
+   "bg",
+   49.0,
+   "2:35",
+   "Rokossovsky HQ escapes to Volokolamsk; scratch force; highway to Moscow; ONE JOB caption",
+   "pop, hit"
+  ],
+  [
+   "ending",
+   3.0,
+   "15:11",
+   "end-1: Rokossovsky badge centred over the Dec 1941 map",
+   "-"
+  ],
+  [
+   "ending",
+   11.4,
+   "15:20",
+   "Rings replay: MOSCOW DEC 1941, KURSK JUL 1943 (map Jul 43); method lines 1-2",
+   "hit + pop"
+  ],
+  [
+   "ending",
+   16.9,
+   "15:25",
+   "BOBRUISK JUN 1944, map jumps to Aug 1944: blue arrow to Warsaw; method line 3",
+   "hit, ref:boom, pop"
+  ],
+  [
+   "ending",
+   25.5,
+   "15:34",
+   "end-2: WHICH COMMANDER NEXT? + SUBSCRIBE (map dimmed)",
+   "ref:boom, hit"
+  ]
+ ]
+}
