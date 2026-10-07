@@ -1,4 +1,4 @@
-"""Build the James Gavin publishing guide PDF: build/Gavin-publishing-guide.pdf
+"""Build the James Gavin publishing guide PDF: build/Rokossovsky-publishing-guide.pdf
 
 usage (from the project folder): python3 tools/make_publish_guide.py
 Uses build/youtube_description.txt, build/thumbnail_*.png, build/guide_frames.jpg (8 frames from the final video).
@@ -53,7 +53,7 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "James Gavin's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "Rokossovsky's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
@@ -69,73 +69,69 @@ if not chapters:
     chapters = [l for l in desc.splitlines() if re.match(r"^\d+:\d\d\s", l)]
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
-if not os.path.exists("build/guide_frames.jpg") and os.path.exists("build/sheet_hook.png"):
-    from PIL import Image as PI
-    im = PI.open("build/sheet_hook.png").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
 
-TA = "youtube/thumb/gavin-thumb-A-no-retreat.jpg"; TB = "youtube/thumb/gavin-thumb-B-tigers-incoming.jpg"
-LEN = os.environ.get("VIDEO_LEN", "about 14:16")
-story = [Spacer(1, 18 * mm), P("JAMES M. GAVIN", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+TA = "youtube/thumb/rokossovsky-thumb-A-impassable.jpg"; TB = "youtube/thumb/rokossovsky-thumb-B-two-blows.jpg"
+LEN = os.environ.get("VIDEO_LEN", "15:36")
+if not os.path.exists("build/guide_frames.jpg"):
+    from PIL import Image as PI
+    im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
+story = [Spacer(1, 18 * mm), P("KONSTANTIN ROKOSSOVSKY", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: NO RETREAT (battlefield made with vidIQ; Gavin's real public-domain US Army photo added on top)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: IMPASSABLE (battlefield made with vidIQ; Rokossovsky's real public-domain 1945 photo added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Gavin-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"Rokossovsky-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
-                 ["Voice", "Kokoro (free AI voice, am_michael)"],
+                 ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample, see note in chat)"],
                  ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice (locked level 0.08)"],
-                 ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit zoom sound, original effects"]],
+                 ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit sounds, original effects"]],
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
-          Spacer(1, 5 * mm), P("Key frames", "h2")]
-if os.path.exists("build/guide_frames.jpg"):
-    story += [img("build/guide_frames.jpg", 170)]
-story += [PageBreak()]
+          Spacer(1, 5 * mm), P("Key frames (the hook)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
 story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 93)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
-          *bullets(["The General Who Jumped Into Battle 4 Times: James Gavin's Top 3 Tactical Moves (90)",
-                    "The General Who Jumped First: James Gavin's Top 3 Legendary Tactical Moves (89)"]),
+          *bullets(["Rokossovsky's Top 3 Legendary Tactical Moves | The Man Who Broke Army Group Centre (89)",
+                    "Rokossovsky's Top 3 Legendary Tactical Moves | The General Better Than Zhukov (87)"]),
           P("Why this thumbnail", "h2"),
-          P("Same picture formula as every Tactical Genius thumbnail: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
-            "and a red brush banner bottom-left. The text is what decides the click: 1-3 words, readable with zero context. "
-            "<b>NO RETREAT</b> is type 1 (the hero's defiance): Gavin's order on Biazza Ridge was that they were staying on the ridge no matter what "
-            "(no quote marks: it is not his exact wording). It makes the same promise as the title (paratroopers vs Tiger tanks)."),
-          P("Alternative for YouTube's Test &amp; compare: <b>TIGERS INCOMING</b> (type 3, ominous stakes).", "body"),
+          P("Tactical Genius picture formula: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
+            "a red brush banner bottom-left. <b>IMPASSABLE</b> is type 3 (ominous stakes): the Germans' belief about the Belarus swamps, the same promise as the "
+            "hook and the title (the swamps no army could cross, Army Group Centre destroyed). No quote marks: it is not a verbatim quote."),
+          P("Alternative for YouTube's Test &amp; compare: <b>TWO BLOWS</b> (type 1, his decision against Stalin).", "body"),
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
-          P("Checked: Biazza Ridge and Ponte Dirillo labels, Tiger tanks (correct: a Tiger company of the Hermann Göring Division was there), "
-            "blue paratrooper blocks on the ridge, red German blocks below. The portrait is Gavin's real US Army photo (public domain), not an AI likeness. "
-            "Note: the photo shows him later as a major general (two stars); at Biazza Ridge he was a colonel.", "warn"),
+          P("Checked: Bobruisk and Parichi labels (the AI image's own labels were removed: it had Parichi in the wrong place), swamp, log road and birch "
+            "forest match Belarus 1944. The portrait is Rokossovsky's real 1945 photo (public domain), not an AI likeness; it shows him as a Marshal (he was "
+            "made Marshal on 29 June 1944, during the battle).", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
-          P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound and image licences require them.", "warn"),
+          P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound, archive and image licences require them.", "warn"),
           Preformatted(desc, S["mono"], maxLineLength=100), PageBreak()]
 story += [P("4. Upload settings", "h1"),
           table([["Setting", "Value"],
                  ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Biazza, Ponte Dirillo, La Fière, Merderet, Cauquigny, Nijmegen, Waal, Julian Cook)"],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Rokossovsky, Volokolamsk, Hoepner, Ponyri, Olkhovatka, Bobruisk, Bagration, Parichi, Rogachev, Shaposhnikov)"],
                  ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail battlefield is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["Pinned comment", "Which commander should we cover next? Ridgway, Puller, Rommel, Slim...?"],
+                 ["Pinned comment", "Which commander should we cover next? Zhukov, Konev, Manstein, Model...?"],
                  ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
           *bullets(["Play the 1080p master through once (sound, sync, no black frames).", "Upload the master.",
                     "Paste title, description and tags; upload the thumbnail (1280x720).", "Fill in the business email in the description.",
                     "Tick 'altered or synthetic content'.", "Add end screen and cards; set visibility and schedule.",
-                    "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 4%, switch to the alternative thumbnail."]),
-          P("<b>Facts to double-check before publishing</b> (single secondary source or disputed; see research/FACT_NOTES.md):<br/>"
-            "&bull; \"No other American general made four combat jumps\" (Wikipedia wording).<br/>"
-            "&bull; Gavin to Capt. Rae, \"All right, you've got to go.\" (HistoryNet; shown in quote marks).<br/>"
-            "&bull; Julian Cook praying \"Hail Mary, full of grace\" while paddling (Ryan / secondary sources).<br/>"
-            "&bull; \"None of the paratroopers had ever used one\" (the canvas boats).<br/>"
-            "&bull; Biazza Ridge casualties: Gavin's own count (about 50 dead, 100+ wounded); the Ponte Dirillo memorial lists 39 names.<br/>"
-            "&bull; Waal crossing wounded: shown as 100+ (sources give ~100 to 151).<br/>"
-            "&bull; Map positions (Biazza Ridge crest, the La Fière flood edge, the crossing point) are approximate, read from terrain.", "warn")]
-out = "build/Gavin-publishing-guide.pdf"
+                    "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 2% after ~1,000 impressions, switch to the alternative thumbnail."]),
+          P("<b>Facts to double-check before publishing</b> (single source, memoir-based or approximate; see research/FACT_NOTES.md):<br/>"
+            "&bull; The Istra-reservoir episode (Zhukov refused, Shaposhnikov approved, Zhukov cancelled) and the \"two blows\" meeting with Stalin both come from Rokossovsky's own memoirs; Zhukov disputed them (the script says so).<br/>"
+            "&bull; Torture details: from the family's account (teeth, ribs, two mock executions), worded as such.<br/>"
+            "&bull; Kryukovo / Istra retaken ~8 / ~11 December 1941 (map labels).<br/>"
+            "&bull; German 9th Army losses at Kursk shown as ~20,000-23,000 (Frieser / Zetterling range).<br/>"
+            "&bull; Bobruisk pocket ~50,000 killed and ~20,000 captured (Wikipedia, Bobruysk offensive); no reliable Soviet figure, shown as a dash.<br/>"
+            "&bull; ~400,000 German losses = whole Operation Bagration (Frieser 399,102), stated as such.<br/>"
+            "&bull; All front lines are approximate (logged per date in research/FACT_NOTES_*.md).", "warn")]
+out = "build/Rokossovsky-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="James Gavin - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="Konstantin Rokossovsky - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print("wrote", out)

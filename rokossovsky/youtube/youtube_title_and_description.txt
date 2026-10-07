@@ -1,20 +1,5 @@
-# Rokossovsky (#8): YouTube metadata
+Rokossovsky's Top 3 Legendary Tactical Moves | The Man Who Destroyed Hitler's Strongest Army
 
-## Title (locked, vidIQ 93)
-**Rokossovsky's Top 3 Legendary Tactical Moves | The Man Who Destroyed Hitler's Strongest Army**
-
-Alternatives (scored): "| The Man Who Broke Army Group Centre" (89), "| The General Better Than Zhukov" (87).
-The hook pays the promise by 0:31 (Bobruisk pocket + Army Group Centre's ~400,000 losses).
-
-## Thumbnail
-Same promise as the title: the Belarus swamp map with Soviet tank arrows bursting out of the marsh around Bobruisk, Rokossovsky
-(real PD photo, see assets/media/CREDITS.md) on the right third. Text options: **IMPASSABLE** (type 3, main) / **TWO BLOWS** (type 1, A/B).
-
-## Settings
-Category: Education · Altered or synthetic content: Yes (AI narration voice) · Language: English.
-
-## Description
-```
 The Germans were certain that no army could cross the swamps of Belarus. In June 1944, one Soviet general sent tanks, cavalry and infantry straight through them, and within weeks Army Group Centre had lost around 400,000 men.
 
 Konstantin Rokossovsky went from a Soviet prison cell to three of the greatest battles of the Second World War. In this video we break down his three greatest tactical moves: the elastic defence of the Volokolamsk highway before Moscow in 1941, the defence of the northern face of the Kursk salient at Ponyri and Olkhovatka in 1943, and the two-pronged breakthrough at Bobruisk during Operation Bagration in 1944.
@@ -65,7 +50,3 @@ Narration voice: AI-generated. Maps: original animations.
 📩 Business enquiries: [email to fill in]
 
 #Rokossovsky #OperationBagration #MilitaryHistory
-```
-
-## Tags (Education)
-military history, ww2 documentary, eastern front, Konstantin Rokossovsky, Rokossovsky, Operation Bagration, Battle of Kursk, Battle of Moscow, Bobruisk, Ponyri, Army Group Centre, Georgy Zhukov, Walther Model, Red Army, animated battle map, greatest military tactics, ww2 animated history
