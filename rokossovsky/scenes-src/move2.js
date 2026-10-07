@@ -177,7 +177,7 @@ B.tl.fromTo(c2, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration
 const countUp = (el, to, t, dur, prefix = "") => { const o = { v: 0 }; B.tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: () => { el.textContent = prefix + Math.round(o.v).toLocaleString("en-US"); } }, t); for (let k = 0; k < dur / 0.12; k++) SFX("tick", t + k * 0.12); };
 countUp(odds.querySelector(".n1"), 711575, T_700, 1.4); countUp(odds.querySelector(".n2"), 335000, T_335 + 0.1, 1.2, "~");
 SFX("hit", T_700); SFX("hit", T_335);
-badge({ name: "WALTHER MODEL", role: "9TH ARMY", photo: null, initials: "WM", side: "rome", corner: "br", t: T_MODEL - 0.2, until: T_FERD + 0.8, flagSrc: GFLAG });  // TODO: model_head.png when the licensed photo arrives
+badge({ name: "WALTHER MODEL", role: "9TH ARMY", photo: "assets/media/model_head.png", initials: "WM", side: "rome", corner: "br", t: T_MODEL - 0.2, until: T_FERD + 0.8, flagSrc: GFLAG });
 box("TIGERS · FERDINANDS", 1450, 640, T_TIGERS, 16, S2 + 1);
 
 // ======================= move2-2: the Citadel pincer =======================
@@ -191,7 +191,7 @@ const belief = GG.card(`<div style="font-size:20px;letter-spacing:0.4em;color:#f
 belief.querySelector(".inner").style.borderTopColor = "#c4121f"; SFX("hit", T_BELIEVED);
 
 // ======================= move2-3: reading the ground; the 40 km sector =======================
-badge({ name: "K. ROKOSSOVSKY", role: "CENTRAL FRONT", photo: null, initials: "KR", side: "carth", corner: "br", t: S3 + 0.2, until: T_GUESS + 1.5, flagSrc: SFLAG });  // TODO: rokossovsky_head.png
+badge({ name: "K. ROKOSSOVSKY", role: "CENTRAL FRONT", photo: "assets/media/rokossovsky_head.png", initials: "KR", side: "carth", corner: "br", t: S3 + 0.2, until: T_GUESS + 1.5, flagSrc: SFLAG });
 // his front glows (~300 km): the Central Front's part of the line, from the 48th Army's sector to the west face
 const CF = KD.wide.jul4.filter((q) => q[1] > 520 && q[1] < 1380);
 const cfGlow = B.highlight(CF, T_300, T_RAIL, 34); B.tl.to(cfGlow, { opacity: 0, duration: 0.8 }, T_RAIL + 0.6); SFX("ref:pop", T_300);
@@ -224,8 +224,8 @@ unit("c2ta", "carth", 1320, 945, T_PONYRI + 1.6, { icon: "tank", label: "2ND TAN
 // ---------- close-up geography (option 2) ----------
 legend("line", T_SWAP, T_OUT + 0.6);
 // two-colour sector front (jul4 -> jul7), then jul7 -> jul11
-const FS = K.front({ pts: KD.sector.jul4, to: KD.sector.jul7, moveT: T_BROKE, moveDur: 3.0, sideA: "carth", sideB: "rome", t: T_PUSH, dur: 1.4, width: 7, until: T_BARELY + 0.5 });
-const FS2 = K.front({ pts: KD.sector.jul7, to: KD.sector.jul11, moveT: T_BARELY, moveDur: 3.0, sideA: "carth", sideB: "rome", t: T_BARELY - 0.3, dur: 0.01, width: 7, until: T_OUT + 0.4 });
+const FS = K.front({ pts: KD.sector.jul4, to: KD.sector.jul7, moveT: T_BROKE, moveDur: 3.0, sideA: "carth", sideB: "rome", t: T_PUSH, dur: 1.4, width: 15, glow: 0.47, until: T_BARELY + 0.5 });
+const FS2 = K.front({ pts: KD.sector.jul7, to: KD.sector.jul11, moveT: T_BARELY, moveDur: 3.0, sideA: "carth", sideB: "rome", t: T_BARELY - 0.3, dur: 0.01, width: 15, glow: 0.47, until: T_OUT + 0.4 });
 // option 1 wide front of 11/12 July for the zoom-out
 const FW11 = K.front({ pts: KD.wide.jul11, sideA: "carth", sideB: "rome", t: T_OUT + 0.4, dur: 1.2, width: 15 });
 const CB = 6.4;  // close label size (map px)
@@ -244,7 +244,7 @@ const LL = (arr) => arr.map(([la, lo]) => G(la, lo));
 const BELT1 = LL([[52.48, 36.52], [52.44, 36.47], [52.40, 36.42], [52.386, 36.38], [52.386, 36.25], [52.386, 36.10], [52.386, 35.95], [52.381, 35.80], [52.371, 35.65]]);
 const BELT2 = LL([[52.36, 36.56], [52.32, 36.45], [52.30, 36.34], [52.285, 36.28], [52.258, 36.20], [52.25, 36.12], [52.245, 36.02], [52.256, 35.92], [52.29, 35.80], [52.31, 35.65]]);
 const BELT3 = LL([[52.25, 36.58], [52.20, 36.45], [52.17, 36.30], [52.15, 36.15], [52.14, 36.00], [52.16, 35.85], [52.19, 35.70]]);
-const belts = [BELT1, BELT2, BELT3].map((pts, i) => K.front({ pts, sideA: "carth", sideB: "carth", t: T_THREE + i * 0.7, dur: 1.6, width: 3.4, glow: 0.4, until: T_OUT }));
+const belts = [BELT1, BELT2, BELT3].map((pts, i) => K.front({ pts, sideA: "carth", sideB: "carth", t: T_THREE + i * 0.7, dur: 1.6, width: 15, glow: 0.47, until: T_OUT }));
 [[BELT1, "1ST BELT", 8], [BELT2, "2ND BELT", 9], [BELT3, "3RD BELT", 6]].forEach(([pts, lab, k], i) => { const q = pts[k]; box(lab, q[0] - 4, q[1] + 7, T_THREE + i * 0.7 + 0.5, 5, T_SAPPERS); SFX("ref:whoosh", T_THREE + i * 0.7); });
 const mf = (n, s_, lo0, lo1) => [G(n, lo0), G(n, lo1), G(s_, lo1), G(s_, lo0)];
 const MF = [mf(52.397, 52.389, 36.15, 36.36), mf(52.397, 52.389, 35.90, 36.10), mf(52.396, 52.388, 35.70, 35.86)];
