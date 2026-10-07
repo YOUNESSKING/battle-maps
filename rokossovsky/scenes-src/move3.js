@@ -284,7 +284,7 @@ for (let k = 0; k < 6; k++) K.impact(...L(53.04 + (k % 3) * 0.05, 29.40 + (k % 2
 B.caption("SOVIET BOMBERS CATCH THE COLUMNS", T_BOMB, T_TENS - 0.1, "carth r");
 B.grey(POCK, T_TENS, 0.8);
 B.caption("TENS OF THOUSANDS KILLED OR CAPTURED", T_TENS + 0.2, T_SACK - 0.1, "carth r");
-const busch2 = K.badge({ name: "BUSCH SACKED · 28 JUNE", role: "REPLACED BY MODEL", initials: "EB", photo: PHOTO.busch, flag: "ger", side: "rome", corner: "br", t: T_SACK - 0.2, until: T_29 + 0.4 });
+const busch2 = K.badge({ name: "BUSCH SACKED · 28 JUNE", role: "REPLACED BY MODEL", initials: "EB", photo: PHOTO.busch, flag: "ger", side: "rome", corner: "tr", t: T_SACK - 0.2, until: T_29 + 0.4 });
 busch2.querySelector("div[style*='border-radius:50%']").style.backgroundImage = `url(${REICH})`;
 B.tl.to(busch2, { filter: "grayscale(1) brightness(0.85)", duration: 0.6 }, T_SACK + 0.8); SFX("hit", T_SACK + 0.6);
 B.hideUnits(POCK, T_29, 0.8);
