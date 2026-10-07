@@ -4,24 +4,24 @@
  "frames": [
   [
    "move3",
-   2,
-   "11:06",
-   "move3-1 title MOVE 3 · OPERATION BAGRATION over the 22 Jun control map (option 1)",
-   "ref:boom"
+   8,
+   "11:12",
+   "move3-1 22 Jun control map (option 1), German bulge; Busch badge with licensed photo",
+   "ref:pop"
   ],
   [
    "move3",
    17,
    "11:21",
-   "Busch badge (earlier), panzers sent south to Army Group North Ukraine",
+   "panzers sent south to Army Group North Ukraine",
    "ref:whoosh, ref:pop"
   ],
   [
    "move3",
-   40,
-   "11:44",
-   "move3-2 close-up option 2: sector, 9th Army corps, Stavka 'one main blow' blocked, rivers + marsh glow",
-   "hit, ref:pop"
+   28,
+   "11:32",
+   "move3-2 close-up option 2: Rokossovsky badge (photo), 1st Belorussian Front vs German 9th Army corps",
+   "ref:riser, ref:pop"
   ],
   [
    "move3",
@@ -60,9 +60,16 @@
   ],
   [
    "move3",
-   158,
-   "13:42",
-   "29 June Bobruisk freed (flag), units gone; Marshal badge",
+   155.5,
+   "13:39",
+   "28 June: Busch badge (photo) BUSCH SACKED, greyed",
+   "hit"
+  ],
+  [
+   "move3",
+   160,
+   "13:44",
+   "29 June Bobruisk freed (USSR flag); Marshal badge (photo) slides in a second later",
    "ref:boom"
   ],
   [
@@ -74,16 +81,9 @@
   ],
   [
    "move3",
-   186,
-   "14:10",
-   "end of summer: whole map Soviet, counter ~400,000 (whole operation), to Warsaw",
-   "tick x n, hit"
-  ],
-  [
-   "move3",
    192,
    "14:16",
-   "move3-9 casualty card Bobruisk ~50,000 killed / ~20,000 captured (Soviet: no reliable figure); method card follows",
+   "move3-9 casualty card: Bobruisk ~50,000 killed / ~20,000 captured (Soviet: no reliable figure)",
    "hit"
   ]
  ]

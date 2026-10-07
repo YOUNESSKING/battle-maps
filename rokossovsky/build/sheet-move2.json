@@ -1,0 +1,90 @@
+{
+ "title": "MOVE 2 \u00b7 Northern face of Kursk (scene move2, kursk_hd_ref, 243 s)",
+ "note": "Wide = option 1 territory; close-up Ponyri battle = option 2 glowing lines. Fronts per date: research/FACT_NOTES_kursk.md",
+ "frames": [
+  [
+   "move2",
+   2,
+   "7:03",
+   "move2-1 title card, July 1943 control map (option 1): Soviet bulge, German Orel bulge, emblem + flags, armies on the line",
+   "ref:boom emblem, hit on title"
+  ],
+  [
+   "move2",
+   18,
+   "7:19",
+   "move2-1 odds 711,575 vs ~335,000 ticking up; Model badge; 9th Army corps facing the 13th Army",
+   "hit x2, tick on counters"
+  ],
+  [
+   "move2",
+   41,
+   "7:42",
+   "move2-2 Citadel pincers (north + from Belgorod off the bottom edge), ring on Kursk, belief card",
+   "ref:whoosh on arrows, hit on CITADEL stamp + card"
+  ],
+  [
+   "move2",
+   76.5,
+   "8:17",
+   "move2-3 push-in to Ponyri (option 2 lines): glowing Orel-Kursk railway, 40 KM bracket, artillery corps slides in, flanks thin",
+   "ref:riser + ref:whoosh on the push, hit on 40 KM, pops"
+  ],
+  [
+   "move2",
+   92,
+   "8:33",
+   "move2-4 three belts draw on, minefields, anti-tank strongpoints",
+   "ref:whoosh per belt, ref:pop per strongpoint"
+  ],
+  [
+   "move2",
+   123,
+   "9:04",
+   "move2-5 NIGHT, clock card 02:20, Soviet guns fire first, shells land on assembly areas (shake each)",
+   "fire (quiet), impact booms, hit on clock, static at sapper capture"
+  ],
+  [
+   "move2",
+   146,
+   "9:27",
+   "move2-6 DAWN 5 July: German barrage, tanks/Tigers/Ferdinands push south, mines go off, first belt bends (line moves)",
+   "impact booms, fire"
+  ],
+  [
+   "move2",
+   177,
+   "9:58",
+   "move2-7 Ponyri station flags swap + smoke; fire sack on the isolated Ferdinands from both flanks",
+   "mg, impact booms, fire"
+  ],
+  [
+   "move2",
+   198.5,
+   "10:19",
+   "move2-8 Olkhovatka heights hold, reserves shift in, line at furthest point (11 July), 10-15 KM bracket, STALLED",
+   "impact on the ridge, hit, pops"
+  ],
+  [
+   "move2",
+   214,
+   "10:35",
+   "move2-9 zoom out (option 1, 11/12 July): Operation Kutuzov arrows on the Orel bulge, 9th Army pulls back, CITADEL FAILED",
+   "ref:whoosh, impact booms, hit + ref:boom on stamp"
+  ],
+  [
+   "move2",
+   231,
+   "10:52",
+   "move2-10 casualty card: Central Front 15,336 killed/missing + 18,561 wounded = 33,897 | 9th Army ~20,000-23,000",
+   "hit x2"
+  ],
+  [
+   "move2",
+   241.5,
+   "11:02",
+   "move2-10 method card: 1 BEND, DON'T BREAK \u00b7 2 READ THE BLOW BEFORE IT LANDS",
+   "hit x2"
+  ]
+ ]
+}

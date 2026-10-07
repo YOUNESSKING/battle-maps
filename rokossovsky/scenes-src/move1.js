@@ -303,8 +303,8 @@ B.grey(["e1", "e2", "e3", "e4"], T_SPENT, 1.0);
 // ===== move1-9: 5-6 December, the counteroffensive; Kryukovo and Istra retaken; Hoepner sacked =====
 B.date("5 - 6 DECEMBER 1941", S["9"] + 0.3, T_THENISTRA + 2, 30);
 B.date("MID-DECEMBER 1941", T_THENISTRA + 2, null, 32);
-flagPair(...P(56.12, 37.62), ...P(55.98, 36.35), S["9"] + 0.4, END + 1, 90);
-["e1", "e2", "e3", "e4"].forEach((id, i) => B.move(id, T_STILL, 6, ...P([56.20, 56.02, 55.90, 56.32][i], [36.50, 36.52, 36.55, 36.45][i])));
+flagPair(...P(56.12, 37.62), ...P(55.84, 36.30), S["9"] + 0.4, END + 1, 90);
+["e1", "e2", "e3", "e4"].forEach((id, i) => B.move(id, T_STRUCK + 0.2, 3.4, ...P([56.20, 56.02, 55.90, 56.32][i], [36.50, 36.52, 36.55, 36.45][i])));
 ["e1", "e2", "e3", "e4"].forEach((id) => B.hideUnits([id], T_THENISTRA + 3, 1.0));
 const cA = [[P(56.30, 37.45), P(56.32, 37.10), KLIN], [P(56.12, 37.48), P(56.16, 37.20), SOL], [P(56.00, 37.30), KRY, P(55.97, 36.98), P(56.00, 36.85)], [P(55.86, 37.22), P(55.88, 37.00), ISTRA, P(55.93, 36.75)], [P(55.72, 37.00), P(55.74, 36.80)]];
 cA.forEach((pts, i) => B.arrow({ side: "carth", pts, t: T_STRUCK - 0.6 + i * 0.3, dur: 1.8, width: 18, until: S["10"] + 0.4 }));
@@ -322,8 +322,8 @@ B.move("r16", T_RETAKEN, 4, ...P(55.95, 36.80));
 const along = (pts, f) => { const L = []; let tot = 0; for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); L.push(d); tot += d; }
   let d = f * tot; for (let i = 0; i < L.length; i++) { if (d <= L[i]) { const k = d / L[i]; return [pts[i][0] + (pts[i + 1][0] - pts[i][0]) * k, pts[i][1] + (pts[i + 1][1] - pts[i][1]) * k]; } d -= L[i]; } return pts[pts.length - 1]; };
 const bomber = (pts, t, dur = 5.0) => K.bombRun({ kind: "c47g", side: "carth", size: 34, alt: 12, dur, pts, t, bombs: [0, 1, 2].map((k) => { const q = along(pts, (1.55 + k * 0.25) / dur); return [q[0] + 4, q[1] + 10]; }) });
-bomber([P(56.45, 37.40), P(56.17, 36.62), P(56.00, 35.60)], T_STILL - 0.5);
-bomber([P(55.62, 37.30), P(55.90, 36.64), P(56.10, 35.60)], T_STILL + 1.8);
+bomber([[2320, 560], [300, 660]], T_STILL - 0.5, 3.0);   // enter from the east edge, bomb the retreating panzers, leave west
+bomber([[2320, 930], [300, 840]], T_STILL + 2.0, 3.0);
 const hoep2 = badge({ name: "ERICH HOEPNER", role: "DISMISSED · 8 JAN 1942", initials: "EH", photo: "assets/media/hoepner_head.png", flagPng: GER, side: "rome", corner: "bl", t: T_SACKED - 0.3, until: S["10"] + 0.2 });
 tl.to(hoep2, { filter: "grayscale(1)", duration: 0.8 }, T_SACKED + 0.8);
 GG.stamp("DISMISSED", T_SACKED + 0.9, S["10"] + 0.2, { size: 44, top: 830, rot: -5 });

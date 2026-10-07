@@ -80,7 +80,7 @@ B.grey(["b0", "b1", "b2", "b3", "b4"], T_JUNE + 1.8, 0.8); B.hideUnits(["r0", "r
 // ---------- Dubno: the 9th Mechanized Corps counter-attacks into the panzers, the Luftwaffe hammers it ----------
 const DUB = PLACE.dubno;
 badge({ name: "ROKOSSOVSKY", role: "9TH MECHANIZED CORPS", corner: "bl", t: T_DUB - 0.2, until: T_LEARN - 0.2 });
-box("DUBNO", DUB[0] - 4, DUB[1] + 22, T_DUB - 0.2, 12);
+box("DUBNO", DUB[0] - 4, DUB[1] + 22, T_DUB - 0.2, 12, T_LEARN);
 const PZ = [G(50.78, 24.8), G(50.1, 24.9)];
 PZ.forEach(([x, y], i) => { B.unit({ id: "pz" + i, side: "rome", x, y, w: 28, h: 18, label: "PANZERS", t: T_DUB - 0.4 + i * 0.15 }); counter("pz" + i, "tank", "rome", "XX"); });
 const M9 = G(50.8, 27.35), M9b = G(50.52, 26.35);
@@ -138,8 +138,8 @@ B.unit({ id: "hq", side: "carth", x: HQ0[0], y: HQ0[1], w: 18, h: 12, label: "RO
 GG.icon("hq", "hq");
 B.move("hq", T_HQ + 0.6, 3.0, VOL[0] + 4, VOL[1] + 18);
 GG.road([VOL, G(55.97, 36.45), G(55.87, 36.95), G(55.8, 37.35), PLACE.moscow], { w: 3, t: T_SCRATCH - 0.2 });
-box("VOLOKOLAMSK", VOL[0] - 46, VOL[1] - 20, T_SCRATCH, 9, END + 1);
-[[56.22, 35.62], [55.86, 35.72], [56.12, 36.38]].forEach(([la, lo], i) => { const [x, y] = G(la, lo); B.unit({ id: "s" + i, side: "carth", x, y, w: 14, h: 10, t: T_SCRATCH + 0.4 + i * 0.25 }); counter("s" + i, i === 1 ? "tank" : "infantry", "carth"); });
+box("VOLOKOLAMSK", VOL[0] - 44, VOL[1] - 30, T_SCRATCH, 9, END + 1);
+[[55.85, 35.68], [55.93, 36.32], [56.2, 36.22]].forEach(([la, lo], i) => { const [x, y] = G(la, lo); B.unit({ id: "s" + i, side: "carth", x, y, w: 14, h: 10, t: T_SCRATCH + 0.4 + i * 0.25 }); counter("s" + i, i === 1 ? "tank" : "infantry", "carth"); });
 K.target(VOL[0], VOL[1], T_JOB, { r: 22, side: "carth", until: END + 1 }); SFX("hit", T_JOB + 0.1);
 B.arrow({ side: "rome", pts: [G(55.55, 35.2), G(55.7, 35.75), G(55.82, 36.25)], width: 6, t: T_HQ + 0.6, dur: 1.2, until: END + 1 });
 B.caption("ONE JOB: HOLD THE VOLOKOLAMSK HIGHWAY", T_JOB - 0.1, END + 1, "carth");
