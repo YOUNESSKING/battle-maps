@@ -1,0 +1,181 @@
+{
+ "title": "HOOK v2 (0:00-1:03) \u00b7 Rokossovsky #8 \u00b7 something new every 2-4 s",
+ "note": "mm:ss = video time; option 1 = territory colours (wide), option 2 = glowing two-colour front lines (close-up); zoom whoosh only on the 3 biggest moves",
+ "frames": [
+  [
+   "hook-a",
+   0,
+   "0:00",
+   "FIRST FRAME: Belarus Jun 44 (opt 1), red vs blue line, flags + legend up, blue already moving",
+   "gun launches (quiet)"
+  ],
+  [
+   "hook-a",
+   0.6,
+   "0:00",
+   "BIG card SLAMS in at 0.3 s, ticks 0 -> ~400,000 GERMAN SOLDIERS LOST (small: whole op.)",
+   "hit + shake, tick x14"
+  ],
+  [
+   "hook-a",
+   3.0,
+   "0:03",
+   "'Lost': wave 1, north red counters hit, crack and grey; blue counters push in",
+   "impact (shake), hit"
+  ],
+  [
+   "hook-a",
+   3.9,
+   "0:03",
+   "'single summer': IN ONE SUMMER stamp; wave 2 explodes in the centre",
+   "hit + shake, impact"
+  ],
+  [
+   "hook-a",
+   6.4,
+   "0:06",
+   "'a swamp': hard zoom DIVE into the Pripyat marsh; switch to option 2 glowing front line, close-up flags",
+   "whoosh (zoom #1)"
+  ],
+  [
+   "hook-a",
+   7.9,
+   "0:07",
+   "'sure no army': German screen pulses, IMPASSABLE slams on the marsh, German belief caption",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   10.6,
+   "0:10",
+   "'In June 1944': 24 JUNE date, log roads draw across the bog one by one",
+   "ref:pop x3"
+  ],
+  [
+   "hook-a",
+   13.9,
+   "0:13",
+   "'one Soviet general': mystery '?' badge (name withheld); 'tanks and cavalry' burst out along the roads",
+   "ref:pop, ref:whoosh"
+  ],
+  [
+   "hook-a",
+   15.6,
+   "0:15",
+   "'straight through': ALERT, target rings, MG fire on the screen, impacts, arrows north",
+   "mg, impact x3, ref:pop"
+  ],
+  [
+   "hook-a",
+   16.5,
+   "0:16",
+   "'Three days later': WHITE-FLASH cut into the flash-forward, 27 JUNE 1944, Bobruisk",
+   "whoosh (zoom #2) + hit"
+  ],
+  [
+   "hook-a",
+   19.3,
+   "0:19",
+   "two blue arrows race round Bobruisk, the ring SLAMS shut on 'trapped'",
+   "ref:whoosh, ref:boom + shake"
+  ],
+  [
+   "hook-a",
+   20.4,
+   "0:20",
+   "TRAPPED stamp, impacts inside the pocket, pocket units grey",
+   "hit + shake, impact x2"
+  ],
+  [
+   "hook-a",
+   21.8,
+   "0:21",
+   "'Within weeks': zoom-out; option 1 (4 July): only the Minsk pocket + far west still German",
+   "whoosh (zoom #3)"
+  ],
+  [
+   "hook-a",
+   24.4,
+   "0:24",
+   "big arrows sweep west; ARMY GROUP CENTRE; red ghost arrow '1941: AT THE GATES OF MOSCOW'",
+   "ref:whoosh, ref:pop"
+  ],
+  [
+   "hook-a",
+   26.6,
+   "0:26",
+   "'torn apart': explosions rip the remnants, ARMY GROUP CENTRE struck through",
+   "explosion x3 + shake, hit"
+  ],
+  [
+   "hook-a",
+   27.9,
+   "0:27",
+   "hook-3 HARD CUT to dark: 'SEVEN YEARS EARLIER' 1944 rolls back to 1937",
+   "hit, tick x7"
+  ],
+  [
+   "hook-a",
+   31.0,
+   "0:31",
+   "'prison cell': photo badge, prison bars SLAM down over the screen",
+   "hit + shake + red pulse"
+  ],
+  [
+   "hook-a",
+   33.8,
+   "0:33",
+   "NKVD card ('Stalin's secret police'), ARRESTED AUGUST 1937 stamp",
+   "ref:whoosh, hit + shake"
+  ],
+  [
+   "hook-a",
+   42.8,
+   "0:42",
+   "family caption; TEETH / RIBS / MOCK EXECUTION x2 (one per word); NEVER SIGNED... (boom)",
+   "hit x4 + shake, ref:boom; bars lift at 0:43.8 (ref:whoosh)"
+  ],
+  [
+   "hook-b",
+   1.4,
+   "0:46",
+   "hook-4: map lights up, badge out of the cell, KONSTANTIN ROKOSSOVSKY name SLAMS in",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   4.6,
+   "0:49",
+   "'In four years': badge flies to the corner; 'from that cell': MARCH 1940 RELEASED FROM PRISON",
+   "ref:whoosh, ref:pop"
+  ],
+  [
+   "hook-b",
+   7.5,
+   "0:52",
+   "CUT 1 Moscow, Dec 1941: red arrows driven in, stopped (impacts, greyed), ring MOSCOW 1941",
+   "ref:whoosh + hit, impact x3, ref:pop"
+  ],
+  [
+   "hook-b",
+   10.6,
+   "0:55",
+   "CUT 2 Kursk, Jul 1943: red pincers from Orel + Belgorod broken, ring KURSK 1943",
+   "ref:whoosh + hit, impact x4, ref:pop"
+  ],
+  [
+   "hook-b",
+   13.8,
+   "0:58",
+   "CUT 3 Bobruisk, Jun 44: blue arrows burst west, red ground torn away, ring BOBRUISK 1944",
+   "ref:whoosh + hit, impact x2, ref:pop"
+  ],
+  [
+   "hook-b",
+   16.4,
+   "1:01",
+   "pull-out to all three rings, title SLAMS: ROKOSSOVSKY'S 3 GREATEST TACTICAL MOVES",
+   "ref:whoosh, ref:riser, ref:boom + shake"
+  ]
+ ]
+}

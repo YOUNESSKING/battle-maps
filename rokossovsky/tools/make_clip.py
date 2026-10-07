@@ -29,7 +29,7 @@ os.makedirs("build", exist_ok=True)
 # reuse sfx_mix with this scene's cues and a scene-length timeline
 import sfx_mix_lib as M
 M.render(cues, dur, f"build/clip-{name}-sfx.wav")
-voice, sr = sf.read("audio/voice.wav", dtype="float32")
+voice, sr = sf.read("audio/voice_owner.wav" if os.path.exists("audio/voice_owner.wav") else "audio/voice.wav", dtype="float32")
 seg = voice[int(a0 * sr):int((a0 + dur) * sr)]
 sf.write(f"build/clip-{name}-voice.wav", seg, sr)
 inputs = ["-ss", f"{off:.2f}", "-i", f"scenes/{name}/renders/{name}.mp4", "-i", f"build/clip-{name}-voice.wav", "-i", f"build/clip-{name}-sfx.wav"]

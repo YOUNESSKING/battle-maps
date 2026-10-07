@@ -1,4 +1,5 @@
-// HOOK-B v2 (hook-4): Eastern Front overview, option 1 (territory per date), quick cuts Moscow 1941 / Kursk 1943 / Bobruisk 1944, title.
+// HOOK-B (hook-4): Eastern Front overview, option 1. Three target rings in turn, each with its date's control map:
+// Moscow (5 Dec 1941) -> Kursk (4 Jul 1943) -> Bobruisk (22 Jun 1944), a hit on each; then the title MOVES 1 · 2 · 3.
 // Built with: python3 tools/build_scene.py hook-b east_hd_ref hook-4 hook-4
 const RIVERS = [[[2707,-531],[2681,-502],[2682,-467],[2686,-426],[2693,-389],[2694,-340],[2676,-275],[2746,-274],[2786,-300],[2814,-346],[2872,-371],[2891,-333],[2889,-299],[2898,-272],[2908,-240],[2926,-214],[2935,-171],[2926,-149],[2926,-130],[2899,-107],[2870,-71],[2866,-46],[2855,-22],[2870,13],[2883,59],[2889,85],[2899,102],[2919,108],[2939,87],[2977,83],[3001,76],[3001,76]],[[2971,945],[2972,979],[2940,989],[2896,972],[2861,961],[2835,944],[2798,940],[2770,948],[2742,955],[2717,960],[2695,963],[2682,965],[2666,971],[2652,978],[2639,994],[2631,1011],[2631,1027],[2632,1051],[2639,1073],[2648,1090],[2661,1109],[2667,1130],[2665,1146],[2656,1169],[2652,1178],[2651,1190],[2654,1208],[2652,1228],[2664,1246],[2665,1267],[2657,1277]],[[2615,-157],[2606,-139],[2593,-131],[2575,-156],[2567,-158],[2561,-147],[2557,-142],[2550,-134],[2545,-125],[2544,-105],[2548,-91],[2552,-82],[2554,-65],[2544,-60],[2535,-60],[2521,-73],[2514,-90],[2505,-102],[2509,-123],[2514,-129],[2525,-136],[2524,-152],[2523,-159],[2513,-172],[2496,-178],[2480,-191],[2462,-206],[2456,-215],[2418,-220],[2382,-219],[2380,-227],[2374,-245],[2360,-258],[2347,-279],[2328,-292],[2314,-320]],[[1345,1122],[1350,1107],[1388,1103],[1403,1107],[1418,1122],[1430,1132],[1446,1141],[1451,1149],[1460,1148],[1470,1156],[1477,1160],[1489,1163],[1498,1170],[1515,1172],[1519,1166],[1527,1169],[1542,1168],[1553,1167],[1582,1187],[1593,1194],[1601,1198],[1606,1204],[1622,1230],[1630,1251],[1630,1266],[1638,1266],[1640,1278],[1649,1287],[1654,1293],[1661,1301],[1672,1312],[1682,1318],[1681,1319]],[[1763,538],[1773,549],[1768,569],[1764,581],[1763,597],[1747,609],[1737,608],[1730,616],[1736,640],[1723,643],[1709,655],[1685,666],[1662,676],[1646,687],[1635,677],[1628,671],[1624,660],[1602,650],[1577,638],[1573,627],[1539,622],[1529,623],[1521,622],[1510,624],[1502,601],[1495,590],[1489,577],[1468,565],[1455,564],[1427,551],[1407,541],[1398,524]],[[1086,1202],[1102,1217],[1127,1222],[1158,1218],[1173,1220],[1170,1244],[1162,1264],[1166,1278],[1166,1287],[1162,1298],[1163,1328],[1159,1345],[1161,1352],[1166,1361],[1166,1369],[1172,1371],[1169,1382],[1192,1388],[1206,1389],[1216,1393],[1228,1409],[1242,1419],[1263,1421],[1276,1416],[1293,1425],[1307,1433],[1322,1424],[1339,1433],[1329,1436],[1327,1442],[1347,1462],[1343,1476],[1364,1476]],[[1165,1072],[1173,1068],[1176,1063],[1187,1066],[1203,1069],[1214,1064],[1229,1060],[1246,1050],[1256,1046],[1267,1044],[1271,1038],[1289,1027],[1296,1002],[1296,993],[1298,976],[1297,959],[1286,951],[1278,939],[1270,924],[1268,915],[1254,896],[1226,894],[1200,884],[1168,870],[1154,850],[1131,833],[1153,815],[1159,794],[1161,783],[1164,756],[1166,744]],[[2412,200],[2421,179],[2423,164],[2421,147],[2403,126],[2372,105],[2364,94],[2355,76],[2343,56],[2320,48],[2300,39],[2284,20],[2243,-12],[2242,-18],[2219,-27],[2216,-43],[2217,-50],[2209,-70],[2210,-77],[2201,-84],[2188,-94],[2198,-107],[2198,-111],[2203,-124],[2202,-133],[2209,-136],[2209,-140],[2175,-157],[2148,-178],[2148,-178]],[[2017,1721],[1981,1729],[1962,1737],[1944,1756],[1935,1765],[1921,1770],[1907,1779],[1892,1788],[1867,1781],[1859,1773],[1843,1766],[1823,1749],[1826,1736],[1826,1726],[1824,1718],[1831,1702],[1834,1696],[1847,1692],[1856,1685],[1874,1676],[1883,1670],[1890,1662],[1889,1658],[1870,1646],[1887,1643],[1894,1634],[1903,1634],[1916,1634],[1931,1631],[1934,1626],[1938,1615]],[[1823,700],[1809,695],[1796,699],[1785,712],[1778,718],[1759,710],[1723,718],[1699,727],[1690,729],[1681,749],[1684,759],[1688,779],[1682,792],[1683,811],[1684,824],[1682,839],[1671,848],[1671,856],[1674,866],[1676,870],[1680,880],[1684,888],[1694,899],[1697,911],[1702,920],[1705,928],[1700,934],[1697,944],[1692,953],[1694,958],[1696,965],[1693,979],[1691,980]],[[2746,115],[2746,106],[2740,103],[2731,98],[2728,104],[2724,96],[2713,92],[2708,91],[2704,93],[2697,90],[2664,96],[2657,100],[2653,97],[2643,98],[2638,99],[2627,106],[2615,107],[2615,100],[2613,91],[2609,82],[2598,83],[2590,76],[2598,65],[2594,59],[2577,61],[2564,70],[2553,76],[2539,69],[2536,66],[2526,74],[2520,78],[2510,85],[2507,89],[2498,106],[2483,126],[2472,130],[2462,141],[2437,145],[2423,149],[2423,149]],[[1105,1086],[1121,1092],[1133,1079],[1133,1065],[1134,1054],[1134,1050],[1123,1036],[1121,1028],[1116,1014],[1105,1009],[1098,1004],[1088,993],[1081,989],[1069,977],[1055,979],[1052,971],[1053,958],[1047,950],[1033,946],[1026,943],[1020,939],[1021,929],[1017,924],[1003,919],[980,919],[972,907],[968,888],[958,869],[948,856],[958,837],[960,828],[965,819],[968,805],[967,803]],[[2747,428],[2744,415],[2743,410],[2737,401],[2738,395],[2732,385],[2729,378],[2724,365],[2725,352],[2722,348],[2718,343],[2711,326],[2710,320],[2703,310],[2698,306],[2697,298],[2700,293],[2709,287],[2711,278],[2713,276],[2725,268],[2736,260],[2747,255],[2754,250],[2761,238],[2778,242],[2810,252],[2818,248],[2838,225],[2858,234],[2859,243],[2858,251],[2864,259],[2865,266],[2868,276],[2868,276]],[[2322,842],[2333,851],[2322,869],[2314,877],[2306,878],[2284,891],[2275,905],[2273,922],[2280,928],[2277,940],[2268,946],[2257,957],[2246,952],[2239,966],[2230,977],[2215,972],[2203,976],[2198,988],[2204,996],[2208,1008],[2209,1014],[2210,1028],[2211,1034],[2211,1041],[2213,1047],[2232,1059],[2230,1074],[2239,1079],[2234,1089],[2229,1096],[2229,1096]],[[2285,1102],[2273,1111],[2261,1112],[2252,1105],[2250,1099],[2237,1097],[2210,1096],[2201,1094],[2184,1098],[2180,1088],[2166,1081],[2158,1070],[2151,1066],[2144,1056],[2136,1061],[2123,1060],[2123,1044],[2124,1034],[2120,1023],[2112,1013],[2114,999],[2090,998],[2084,993],[2090,986],[2086,974],[2082,970],[2078,962],[2079,956],[2079,944],[2083,926],[2082,922]],[[1985,997],[1974,1011],[1969,1026],[1978,1041],[1980,1050],[1981,1067],[1981,1081],[1968,1082],[1962,1089],[1956,1095],[1965,1102],[1975,1107],[1983,1109],[1992,1114],[1992,1117],[1984,1122],[1989,1125],[1998,1126],[2004,1129],[2009,1134],[2016,1136],[2015,1140],[2023,1144],[2032,1144],[2043,1141],[2044,1136],[2063,1154],[2075,1156],[2080,1162],[2088,1158],[2092,1154],[2095,1160],[2102,1166],[2117,1168],[2116,1172],[2120,1181],[2120,1181]],[[2129,732],[2136,739],[2142,743],[2148,738],[2158,746],[2163,745],[2164,739],[2171,728],[2170,724],[2170,720],[2170,716],[2169,710],[2174,705],[2181,697],[2186,698],[2197,710],[2205,711],[2208,714],[2208,707],[2204,697],[2206,678],[2212,671],[2214,666],[2220,657],[2218,650],[2220,644],[2222,636],[2232,630],[2249,615],[2264,605],[2267,599],[2280,595],[2293,596],[2304,585],[2304,585]],[[2218,1516],[2218,1502],[2220,1492],[2211,1486],[2211,1480],[2217,1452],[2212,1443],[2212,1430],[2206,1419],[2184,1412],[2174,1398],[2170,1392],[2170,1385],[2168,1378],[2157,1377],[2150,1378],[2146,1380],[2139,1382],[2131,1382],[2121,1386],[2116,1391],[2103,1393],[2093,1403],[2084,1406],[2077,1406],[2073,1402],[2069,1406],[2055,1399],[2045,1394],[2039,1396],[2030,1396],[2022,1395],[2004,1390],[2004,1385]],[[2115,312],[2132,317],[2135,328],[2136,332],[2152,330],[2156,324],[2169,322],[2193,321],[2207,316],[2212,307],[2231,299],[2244,282],[2248,274],[2258,271],[2266,265],[2284,256],[2303,246],[2308,240],[2312,235],[2318,230],[2325,226],[2341,223],[2376,213],[2385,205],[2394,205],[2399,204],[2402,204],[2411,200],[2412,200]],[[518,1239],[516,1228],[511,1216],[508,1209],[500,1197],[490,1188],[475,1170],[470,1168],[462,1172],[458,1174],[448,1177],[431,1179],[428,1176],[424,1170],[416,1166],[413,1152],[407,1144],[401,1146],[398,1138],[386,1139],[379,1132],[371,1131],[364,1124],[359,1122],[349,1117],[350,1108],[344,1104],[341,1110],[338,1102],[328,1105],[325,1103]],[[2381,1052],[2370,1063],[2367,1076],[2367,1082],[2360,1094],[2354,1106],[2351,1116],[2350,1123],[2343,1137],[2334,1154],[2326,1166],[2332,1170],[2339,1173],[2359,1175],[2369,1179],[2373,1174],[2384,1181],[2392,1184],[2396,1188],[2404,1195],[2402,1207],[2408,1214],[2413,1221],[2421,1224],[2424,1230],[2433,1242],[2446,1251],[2447,1260],[2460,1272],[2468,1275],[2468,1283],[2475,1283],[2480,1291],[2480,1291]],[[1422,1186],[1421,1178],[1436,1166],[1443,1173],[1465,1176],[1478,1181],[1494,1190],[1517,1188],[1527,1193],[1530,1196],[1536,1203],[1540,1208],[1542,1216],[1545,1223],[1552,1236],[1554,1241],[1557,1246],[1565,1255],[1568,1264],[1577,1271],[1583,1283],[1588,1302],[1588,1312],[1586,1319],[1582,1325],[1582,1336],[1583,1347],[1585,1364],[1585,1371],[1587,1376]],[[803,1033],[788,1035],[774,1018],[771,1010],[757,1006],[762,997],[768,995],[770,992],[774,990],[771,988],[766,985],[758,978],[756,974],[749,969],[742,964],[740,958],[738,950],[733,949],[731,942],[733,934],[734,928],[731,919],[725,911],[706,905],[712,893],[717,887],[718,879],[721,871],[722,864],[722,859],[721,854],[713,848],[705,843],[695,834],[690,821],[690,821]],[[1364,1476],[1379,1479],[1386,1480],[1412,1483],[1418,1481],[1439,1484],[1452,1487],[1457,1490],[1462,1490],[1466,1489],[1469,1488],[1471,1486],[1477,1484],[1480,1481],[1483,1477],[1490,1470],[1497,1467],[1516,1463],[1518,1462],[1522,1461],[1533,1457],[1542,1461],[1552,1460],[1554,1459],[1558,1456],[1565,1455],[1574,1452],[1580,1443],[1582,1440],[1582,1437],[1579,1436],[1578,1434],[1578,1431],[1579,1428],[1576,1425],[1573,1424],[1572,1420],[1570,1419],[1569,1417],[1571,1414],[1572,1410],[1572,1404],[1574,1400],[1575,1396],[1574,1391],[1578,1383],[1579,1379],[1581,1377],[1585,1378],[1586,1376],[1589,1376],[1591,1382],[1594,1385],[1604,1389],[1611,1390],[1611,1390]]];  // main rivers (map px) for the shimmer, from assets/media/east_rivers.json
 // ---------- EAST overview kit (same block in hook-b / bg / ending; basemap east_hd_ref, z6 origin 7889,4489) ----------
@@ -38,116 +39,32 @@ const along = (pts, f) => { const seg = []; let L = 0; for (let j = 1; j < pts.l
 const raid = (pts, t, n = 3, dur = 3.4) => K.bombRun({ kind: "c47g", side: "rome", size: 30, alt: 9, pts, t, dur, bombs: [...Array(n)].map((_, k) => along(pts, (1.55 + k * 0.25) / dur)) });
 const PLACE = { moscow: G(55.756, 37.617), kursk: G(51.73, 36.19), bobruisk: G(53.14, 29.22), dubno: G(50.42, 25.74), vyazma: G(55.21, 34.3), bryansk: G(53.25, 34.37),
   volok: G(56.03, 35.95), warsaw: G(52.23, 21.01) };
-// =====================================================================================================================
-// HOOK-B v2 timeline (owner 2026-10-07: v1 = slow rings on a static map). Badge flies out of the cell onto the overview,
-// then three quick cuts (camera snaps, ~3 s each): MOSCOW 1941 (red arrows stopped) -> KURSK 1943 (red pincers broken) ->
-// BOBRUISK 1944 (blue arrows burst west), pull-out to all three, title slam. v1 kept in scenes-src/old/hook-b_v1.js.
-// =====================================================================================================================
-const H = "hook-4", tl = B.tl, scene = document.getElementById("scene"), worldEl = document.getElementById("world");
-const T_KON = at(H, "Konstantin"), T_FOUR = at(H, "In four years"), T_CELL = at(H, "that cell"), T_STOP = at(H, "stopping the"), T_MOS = at(H, "outside Moscow");
-const T_BREAK = at(H, "breaking their"), T_KUR = at(H, "at Kursk"), T_TEAR = at(H, "tearing apart"), T_GROUP = at(H, "army group."), T_THESE = at(H, "These are"), T_THREE = at(H, "three greatest");
-// world image visible from frame 0, or faded in/out at given times (control overlays, option 1 multiply)
-const wimg = (src, tIn, dIn, tOut, mx = true) => {
-  const el = document.createElement("img"); el.className = "wimg"; el.src = src; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px" }); if (mx) el.style.mixBlendMode = "multiply";
-  worldEl.insertBefore(el, document.getElementById("overlay"));
-  if (tIn > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dIn, immediateRender: true }, tIn);
-  if (tOut != null) tl.to(el, { autoAlpha: 0, duration: 0.25 }, tOut);
-  return el;
-};
-const scr = (html, css) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; scene.insertBefore(el, document.getElementById("credit")); GG.hide(el); return el; };
-// camera with explicit eases (snap cuts)
-const CW = 1920, CH = 1080, cam = { cx: 1620, cy: 840, s: 0.86 };
-const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
-const applyCam = () => { const s = Math.max(cam.s, CW / 2880), cx = clamp(cam.cx, CW / 2 / s, 2880 - CW / 2 / s), cy = clamp(cam.cy, CH / 2 / s, 1620 - CH / 2 / s); gsap.set(worldEl, { x: CW / 2 - cx * s, y: CH / 2 - cy * s, scale: s }); };
-applyCam();
-const camTo = (t, dur, cx, cy, s, ease = "sine.inOut") => tl.to(cam, { cx, cy, s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
-// hard CUT: a 0.1 s black frame hides an instant camera jump (cinematic whoosh + hit)
-const CUTB = scr("", "inset:0;background:#030406;");
-const cut = (t, cx, cy, s, holdTo, drift = [30, 0, 1.06]) => {
-  tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, t + 0.04);
-  camTo(t, 0.01, cx, cy, s); camTo(t + 0.02, holdTo - t - 0.1, cx + drift[0], cy + drift[1], s * drift[2], "sine.out");
-  SFX("ref:whoosh", t - 0.2); SFX("hit", t + 0.02); K.shake(t + 0.02, 3, 0.25);
-};
-// ---------- map (option 1, period overlays per date) ----------
-const OV41 = wimg("assets/media/east_ctl_dec41_mx.png", 0, 0, T_BREAK);
+const H = "hook-4";
+const T_NAME = at(H, "His name was"), T_PRISON = at(H, "prison cell"), T_MOS = at(H, "outside Moscow"), T_KUR = at(H, "breaking their last"),
+  T_BEL = at(H, "tearing open"), T_LOOK = at(H, "Let's take a closer look"), T_MOVES = at(H, "three greatest tactical moves");
+ctl("dec41", 0, T_KUR); ctl("jul43", T_KUR, T_BEL); ctl("jun44", T_BEL);
 living(); emblem(); geo();
-legend(0.6, END + 1);
-const FG = flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.6); const FU = flag(FL.su, "USSR", ...G(55.0, 45.0), 0.75);
+B.camera([[0, 1600, 830, 0.86], [T_MOS - 0.5, 1615, 825, 0.9], [T_KUR, 1625, 840, 0.92], [T_BEL, 1620, 850, 0.93], [END, 1610, 845, 0.95]]);
+SFX("ref:whoosh", 0.05);
+B.showDate(0.2); B.date("1941", 0.4, T_MOS - 0.4, 34); B.date("DECEMBER 1941", T_MOS - 0.3, T_KUR, 30); B.date("JULY 1943", T_KUR + 0.05, T_BEL, 34); B.date("JUNE 1944", T_BEL + 0.05, null, 34);
+legend(0.4, END + 1);
+flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.5); flag(FL.su, "USSR", ...G(55.0, 45.0), 0.7);
 neutral("SWEDEN", ...G(56.35, 14.1), 0.9);
-SFX("ref:pop", 0.65);
-// dark at frame 0 (continuity with the cell in hook-a), lifting as the badge "flies out of the cell onto the map"
-const DK = scr("", "inset:0;background:#05070d;"); gsap.set(DK, { autoAlpha: 0.8 });
-tl.to(DK, { autoAlpha: 0, duration: 0.9, ease: "power2.out" }, 0.15);
-// the badge: same size/place as the end of hook-a, the name SLAMS in, then it flies to the corner
-const BDG = scr(`<div style="display:flex;flex-direction:column;align-items:center;gap:18px">
-  <div style="position:relative;width:380px;height:380px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 6px #1f4fc4,0 20px 40px rgba(0,0,0,0.75);background:url(${FL.su}) center/cover"><img src="assets/media/rokossovsky_head.png" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
-  <div class="pl" style="padding:12px 34px 14px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:56px;letter-spacing:0.08em;line-height:1.1">KONSTANTIN ROKOSSOVSKY</div><div style="font-size:22px;letter-spacing:0.22em;color:#d8cfb8">SOVIET GENERAL · LATER MARSHAL</div></div></div>`,
-  "left:0;right:0;top:290px;display:flex;justify-content:center;transform-origin:50% 25%;");
-gsap.set(BDG, { autoAlpha: 1, scale: 1.07 });
-const PL = BDG.querySelector(".pl"); gsap.set(PL, { autoAlpha: 0 });
-tl.fromTo(PL, { autoAlpha: 0, scale: 1.9 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in" }, T_KON);
-SFX("hit", T_KON + 0.2); K.shake(T_KON + 0.2, 5, 0.3);
-tl.to(BDG, { scale: 0.42, x: -560, y: 400, duration: 0.6, ease: "power3.inOut" }, T_FOUR);
-SFX("ref:whoosh", T_FOUR - 0.05);
-camTo(0, T_STOP - 0.1, 1640, 800, 1.0, "sine.inOut");
-B.showDate(T_FOUR + 0.1); B.date("1940", T_FOUR + 0.2, T_STOP, 34);
-const REL = scr(`<div style="font-family:Oswald;font-weight:700;padding:10px 24px 12px;background:rgba(18,16,12,0.92);border-left:7px solid #c9b48a;color:#f7f3ea"><div style="font-size:18px;letter-spacing:0.3em;color:#c9b48a">MARCH 1940</div><div style="font-size:36px;letter-spacing:0.1em">RELEASED FROM PRISON</div></div>`, "left:90px;top:230px;");
-tl.fromTo(REL, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "power3.out" }, T_CELL - 0.2); tl.to(REL, { autoAlpha: 0, duration: 0.1 }, T_STOP - 0.06);
-SFX("ref:pop", T_CELL - 0.15);
-// target ring + white-box place + numbered date tag (stays to the end)
-const ring = (p, name, date, n, t, dx, dy = -4) => {
-  K.target(p[0], p[1], t, { r: 34, until: END + 1 });
-  box(name, p[0] + dx, p[1] + dy, t + 0.1, 15);
-  GG.pin(`<div style="display:flex;align-items:center;gap:6px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000"><span style="display:inline-flex;width:24px;height:24px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:14px">${n}</span><span style="font-size:20px;letter-spacing:.1em">${date}</span></div>`, p[0] + dx, p[1] + dy + 28, { t: t + 0.25, pop: true });
+badge({ name: "KONSTANTIN ROKOSSOVSKY", role: "SOVIET COMMANDER", corner: "br", t: T_NAME + 0.2, until: T_MOS - 0.4 });
+B.caption("FROM A PRISON CELL...", T_PRISON - 0.3, T_MOS - 0.3, "carth");
+// the three moves: gold target ring + white-box place + date tag, a hit on each
+const ring = (p, name, date, n, t, dx) => {
+  K.target(p[0], p[1], t, { r: 46, until: END + 1 });
+  SFX("hit", t + 0.05);
+  box(name, p[0] + dx, p[1] - 4, t + 0.1, 15);
+  GG.pin(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000"><span style="display:inline-flex;width:30px;height:30px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:18px">${n}</span><span style="font-size:24px;letter-spacing:.1em">${date}</span></div>`, p[0] + dx, p[1] + 30, { t: t + 0.25, pop: true });
 };
-const strike = (pts, t, dur, until) => B.arrow({ pts, side: "rome", t, dur, width: 12, until });
-// the big overview flags step aside during the close cuts (each cut has its own pair), back for the pull-out
-tl.to([FG, FU], { autoAlpha: 0, duration: 0.05 }, T_STOP - 0.06); tl.to([FG, FU], { autoAlpha: 1, duration: 0.4 }, T_THESE + 0.3);
-// ---------- CUT 1: MOSCOW, December 1941: red arrows driven in and STOPPED ----------
-const M = PLACE.moscow;
-cut(T_STOP, M[0] - 60, M[1] + 10, 2.0, T_BREAK);
-B.date("DECEMBER 1941", T_STOP + 0.02, T_BREAK, 30);
-const fM = [flag(FL.de, "GERMANY", 1700, 690, T_STOP + 0.1, T_BREAK - 0.05, 52), flag(FL.su, "USSR", 2250, 520, T_STOP + 0.15, T_BREAK - 0.05, 52)];
-const AM = [strike([[1760, 650], [1850, 640], [1945, 628]], T_STOP + 0.2, 0.9, END + 1), strike([[1880, 505], [1925, 545], [1968, 586]], T_STOP + 0.35, 0.8, END + 1),
-  strike([[2060, 830], [2040, 770], [2025, 705]], T_STOP + 0.5, 0.8, END + 1)];
-[[1950, 628], [1972, 590], [2024, 700]].forEach((q, k) => K.impact(q[0], q[1], T_MOS - 0.2 + k * 0.18, { r: 12 }));
-AM.forEach((g) => B.greyArrow(g, T_MOS + 0.25));
-ring(M, "MOSCOW", "1941", 1, T_MOS + 0.15, 58, -6); SFX("ref:pop", T_MOS + 0.3);
-// ---------- CUT 2: KURSK, July 1943: the red pincers break ----------
-const KU = PLACE.kursk;
-cut(T_BREAK, KU[0] + 10, KU[1] - 20, 2.3, T_TEAR, [0, 10, 1.05]);
-const OV43 = wimg("assets/media/east_ctl_jul43_mx.png", T_BREAK - 0.05, 0.1, T_TEAR);
-B.date("JULY 1943", T_BREAK + 0.02, T_TEAR, 34);
-const fK = [flag(FL.de, "GERMANY", 1740, 930, T_BREAK + 0.1, T_TEAR - 0.05, 46), flag(FL.su, "USSR", 2200, 880, T_BREAK + 0.15, T_TEAR - 0.05, 46)];
-const AK = [strike([[1925, 770], [1945, 830], [1952, 885]], T_BREAK + 0.2, 1.0, END + 1), strike([[1990, 1115], [1975, 1050], [1965, 1000]], T_BREAK + 0.35, 1.0, END + 1)];
-[[1953, 888], [1948, 882], [1964, 997], [1968, 992]].forEach((q, k) => K.impact(q[0], q[1], T_KUR - 1.1 + k * 0.2, { r: 10 }));
-AK.forEach((g) => B.greyArrow(g, T_KUR - 0.5));
-ring(KU, "KURSK", "1943", 2, T_KUR - 0.3, 62, -2); SFX("ref:pop", T_KUR - 0.15);
-// ---------- CUT 3: BOBRUISK, June 1944: blue arrows burst west, the German ground is torn away ----------
-const BO = PLACE.bobruisk;
-cut(T_TEAR, 1600, 830, 1.75, T_THESE, [-40, 0, 1.04]);
-const OV44 = wimg("assets/media/east_ctl_jun44_mx.png", T_TEAR - 0.05, 0.1, T_GROUP + 0.2);
-const OV44b = wimg("assets/media/east_ctl_aug44_mx.png", T_GROUP - 0.9, 1.2, null);
-B.date("JUNE 1944", T_TEAR + 0.02, T_GROUP - 0.4, 34); B.date("AUGUST 1944", T_GROUP - 0.35, null, 34);
-const fB = [flag(FL.de, "GERMANY", 1180, 720, T_TEAR + 0.1, T_THESE + 0.2, 56), flag(FL.su, "USSR", 2060, 700, T_TEAR + 0.15, T_THESE + 0.2, 56)];
-const RB = ["rb1", "rb2"].map((id, k) => { const [x, y] = [[1640, 735], [1610, 880]][k]; B.unit({ id, side: "rome", x, y, w: 26, h: 18 }); K.counter(id, { icon: "infantry", flag: "ger" }); tl.fromTo(B.units[id].el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, T_TEAR); return id; });
-[[[1725, 700], [1620, 690], [1500, 680]], [[1720, 800], [1610, 800], [1480, 795]], [[1700, 900], [1600, 905], [1500, 930]]].forEach((p, k) =>
-  B.arrow({ pts: p, side: "carth", t: T_TEAR + 0.15 + k * 0.15, dur: 0.9, width: 16, until: END + 1 }));
-K.impact(1640, 735, T_TEAR + 0.75, { r: 14 }); K.impact(1610, 880, T_TEAR + 0.95, { r: 14 }); B.grey(RB, T_TEAR + 0.9, 0.3); B.hideUnits(RB, T_THESE - 0.3, 0.3);
-ring(BO, "BOBRUISK", "1944", 3, T_GROUP - 0.6, -78, -4); SFX("ref:pop", T_GROUP - 0.45);
-// ---------- pull out to all three, then the title ----------
-SFX("ref:whoosh", T_THESE - 0.1); SFX("ref:riser", T_THESE + 0.1);
-camTo(T_THESE, 0.9, 1800, 830, 1.1, "power3.inOut");
-camTo(T_THESE + 0.92, END - T_THESE - 0.9, 1800, 830, 1.16, "none");
-tl.to(BDG, { autoAlpha: 0, duration: 0.4 }, T_THREE - 0.6);
-const TDIM = scr("", "inset:0;background:linear-gradient(180deg,rgba(5,7,13,0) 35%,rgba(5,7,13,0.78) 75%);");
-tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THREE - 0.5);
-const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
-  <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">ROKOSSOVSKY'S</div>
-  <div style="font-size:84px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
-  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 MOSCOW · 2 KURSK · 3 BOBRUISK</div></div>`, "left:0;right:0;top:720px;display:flex;justify-content:center;");
-tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in" }, T_THREE - 0.26);
-SFX("ref:boom", T_THREE); K.shake(T_THREE, 6, 0.4);
+ring(PLACE.moscow, "MOSCOW", "1941", 1, T_MOS, 92);
+ring(PLACE.kursk, "KURSK", "1943", 2, T_KUR, 86);
+ring(PLACE.bobruisk, "BOBRUISK", "1944", 3, T_BEL, -100);
+// title: his three greatest tactical moves
+SFX("ref:riser", T_LOOK - 1.6); SFX("ref:boom", T_MOVES - 0.1);
+const title = GG.card(`<div style="text-align:center"><div style="font-size:26px;letter-spacing:0.4em;color:#c9b48a">ROKOSSOVSKY'S</div><div style="font-size:64px;font-weight:700;letter-spacing:0.08em;line-height:1.15">3 GREATEST TACTICAL MOVES</div><div style="font-size:34px;letter-spacing:0.5em;color:#ffd54a;margin-top:6px">MOVES 1 · 2 · 3</div></div>`, "", 770, T_MOVES - 0.15, END + 1);
+title.querySelector(".inner").style.padding = "18px 60px 22px";
 K.raiseTerritory();
 B.finish();
