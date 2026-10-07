@@ -1,0 +1,19 @@
+{
+ "name": "bobruisk",
+ "center": [
+  53.0,
+  29.5
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  74836,
+  41886
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 184.0,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

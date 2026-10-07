@@ -9,9 +9,11 @@ SCRIPT = "/home/user/battle-maps/rokossovsky/script.md"
 OUT = "/home/user/battle-maps/rokossovsky/audio"
 GAP_PARA, GAP_SECTION = 0.6, 0.8
 # how the TTS should say foreign names (the written script and timing.json keep the real spelling)
-PRON = {"Nijmegen": "Nymaygen", "La Fière": "La Fyair", "Merderet": "Mairderay", "Cauquigny": "Kokeenyee",
-        "Biazza": "Bee-atsa", "Waal": "Vahl", "Dirillo": "Deerillo", "Sainte-Mère-Église": "Sant Mair Aygleez",
-        "Cotentin": "Kotontan", "Gela": "Jella", "Goering": "Gurring", "Arnhem": "Arnem"}
+PRON = {"Rokossovsky": "Rocko-sovsky", "Volokolamsk": "Voloka-lamsk", "Hoepner": "Herpner", "Walther Model": "Valter Mohdel",
+        "Model": "Mohdel", "Ponyri": "Ponnyree", "Bagration": "Bagra-tee-on", "Bobruisk": "Bobroo-isk", "Pripyat": "Pree-pyat",
+        "Kryukovo": "Kroo-kovo", "Rogachev": "Rogga-choff", "Parichi": "Pa-reechy", "Dovator": "Do-vahtor", "Katukov": "Ka-tookov",
+        "Mtsensk": "M-tsensk", "Panfilov": "Pan-feelov", "Berezina": "Bereh-zeena", "Krasnaya Polyana": "Krasnaya Pol-yahna",
+        "Busch": "Bush", "Shaposhnikov": "Sha-poshnikov", "Olkhovatka": "Olko-vatka", "Vyazma": "Vyaz-ma"}
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
 text = open(SCRIPT).read()
