@@ -300,7 +300,7 @@ legend(S8 + 1.0, null, false);
 town("MINSK", 53.90, 27.56, S8 + 1.0, { size: 20, dy: -30 }); town("BOBRUISK", 53.14, 29.22, S8 + 1.2, { size: 20, dy: -30 }); town("MOGILEV", 53.90, 30.34, S8 + 1.3, { size: 20, dy: -30 });
 box("BAGRATION · 4 SOVIET FRONTS", ...L(52.30, 30.6), T_FOUR - 0.2, 24, T_HOLE + 0.5);
 box("↑ 1ST BALTIC FRONT (VITEBSK)", ...L(54.22, 31.15), T_FOUR, 20, T_HOLE + 1.2);
-[["3RD BELORUSSIAN", [[54.08, 31.4], [54.00, 30.3], [54.02, 29.1]]], ["2ND BELORUSSIAN", [[53.68, 31.3], [53.60, 30.1], [53.50, 29.1]]], ["1ST BELORUSSIAN", [[53.08, 30.3], [53.03, 28.9], [53.12, 27.9]]]].forEach(([nm, p], k) => {
+[["3RD BELORUSSIAN", [[53.95, 31.4], [53.86, 30.3], [53.88, 29.1]]], ["2ND BELORUSSIAN", [[53.55, 31.3], [53.45, 30.1], [53.36, 29.1]]], ["1ST BELORUSSIAN", [[53.08, 30.3], [53.03, 28.9], [53.12, 27.9]]]].forEach(([nm, p], k) => {
   B.arrow({ pts: LL(p), side: "carth", t: T_FOUR + 0.35 + k * 0.35, dur: 1.6, width: 24, until: T_SUMMER });
   const e = L(...p[p.length - 1]); box(nm, e[0] + 40, e[1] + 44, T_FOUR + 0.9 + k * 0.35, 20, T_HOLE + 1.2); });
 const MP = K.front({ pts: LL([[53.98, 27.78], [54.07, 28.20], [53.98, 28.75], [53.80, 28.95], [53.60, 28.70], [53.58, 28.20], [53.72, 27.85], [53.98, 27.78]]), sideA: "carth", sideB: "rome", t: T_JULY + 0.6, dur: 1.2, width: 15, until: T_SUMMER + 0.6 });

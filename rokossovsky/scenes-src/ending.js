@@ -81,9 +81,9 @@ M.querySelectorAll(".row").forEach((r, i) => { const t = [T_MOS, T_KUR, T_BEL][i
 // closing card
 GG.layer("background: rgba(6,8,12,0.45);", S2 - 0.1, null, { dur: 0.8 });
 SFX("ref:boom", T_NEXT + 0.1);
-const close = GG.card(`<div style="text-align:center"><div style="font-size:30px;letter-spacing:0.4em;color:#c9b48a">TELL US IN THE COMMENTS</div><div style="font-size:96px;font-weight:700;letter-spacing:0.06em;line-height:1.15">WHICH COMMANDER NEXT?</div></div>`, "", 330, T_NEXT + 0.1, END + 1);
+const close = GG.card(`<div style="text-align:center"><div style="font-size:30px;letter-spacing:0.4em;color:#c9b48a">TELL US IN THE COMMENTS</div><div style="font-size:96px;font-weight:700;letter-spacing:0.06em;line-height:1.15">WHICH COMMANDER NEXT?</div></div>`, "", 600, T_NEXT + 0.1, END + 1);
 close.querySelector(".inner").style.padding = "26px 70px 30px";
-const sub = GG.card(`<div style="display:flex;align-items:center;gap:16px;font-size:40px;font-weight:700;letter-spacing:0.12em"><span style="background:#c4121f;padding:10px 30px;border-radius:6px">SUBSCRIBE</span><svg width="44" height="44" viewBox="0 0 24 24"><path fill="#f4f1ea" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg></div>`, "", 640, T_SUB - 0.2, END + 1);
+const sub = GG.card(`<div style="display:flex;align-items:center;gap:16px;font-size:40px;font-weight:700;letter-spacing:0.12em"><span style="background:#c4121f;padding:10px 30px;border-radius:6px">SUBSCRIBE</span><svg width="44" height="44" viewBox="0 0 24 24"><path fill="#f4f1ea" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/></svg></div>`, "", 860, T_SUB - 0.2, END + 1);
 sub.querySelector(".inner").style.cssText += "background:transparent;box-shadow:none;border-top:none;padding:0;";
 SFX("hit", T_SUB);
 K.raiseTerritory();

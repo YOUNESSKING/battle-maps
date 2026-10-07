@@ -151,7 +151,7 @@ B.tl.to(strike, { scaleX: 1, duration: 0.35, ease: "power2.in" }, T_WORST); SFX(
 box("MINSK FREED · 3 JULY", ...L(53.78, 27.56), T_GATES - 0.2, 15, T_400 + 0.4);
 B.tl.to(FG, { x: -140, duration: 2.4, ease: "power1.in" }, T_WEEKS + 0.6);
 // big Soviet arrows sweep west across Belarus
-[[[53.45, 30.7], [53.45, 29.6], [53.55, 28.4], [53.80, 27.0]], [[53.10, 29.9], [53.12, 28.9], [53.12, 27.7], [53.02, 26.5]], [[52.62, 29.3], [52.70, 28.3], [52.62, 27.2], [52.40, 26.3]]].forEach((p, k) =>
+[[[53.45, 30.7], [53.45, 29.6], [53.55, 28.4], [53.68, 27.45]], [[53.10, 29.9], [53.12, 28.9], [53.12, 27.7], [53.02, 26.5]], [[52.62, 29.3], [52.70, 28.3], [52.62, 27.2], [52.40, 26.3]]].forEach((p, k) =>
   B.arrow({ pts: ringPts(p), side: "carth", t: T_WEEKS + 0.9 + k * 0.35, dur: 2.4, width: 26, until: S3 - 0.4 }));
 // the counter: ~400,000 German losses (WHOLE operation, Frieser 399,102)
 const cnt = GG.card(`<div style="text-align:center;font-weight:700"><div class="n" style="font-size:104px;line-height:1;color:#f7f3ea">0</div><div style="font-size:26px;letter-spacing:0.28em;color:#e8a39c">GERMAN LOSSES</div><div style="font-size:18px;letter-spacing:0.22em;color:#c9b48a;margin-top:6px">ARMY GROUP CENTRE · WHOLE OPERATION · SUMMER 1944</div></div>`, "gg-cnt", 650, T_LOST - 0.3, S3 - 0.3);

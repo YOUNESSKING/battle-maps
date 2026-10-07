@@ -41,51 +41,52 @@ const raid = (pts, t, n = 3, dur = 3.4) => K.bombRun({ kind: "c47g", side: "rome
 const PLACE = { moscow: G(55.756, 37.617), kursk: G(51.73, 36.19), bobruisk: G(53.14, 29.22), dubno: G(50.42, 25.74), vyazma: G(55.21, 34.3), bryansk: G(53.25, 34.37),
   volok: G(56.03, 35.95), warsaw: G(52.23, 21.01) };
 const B1 = "bg-1", B2 = "bg-2", S2 = PS(B2);
-const T_INV = at(B1, "Germany invaded"), T_LED = at(B1, "Rokossovsky led"), T_DUB = at(B1, "near Dubno"), T_TWO = at(B1, "Within two weeks"),
+const T_JUNE = at(B1, "twenty-second of June"), T_INV = at(B1, "Germany invaded"), T_LED = at(B1, "Rokossovsky led"), T_DUB = at(B1, "near Dubno"), T_TWO = at(B1, "Within two weeks"),
   T_64 = at(B1, "sixty-four"), T_LEARN = at(B1, "But he had learned"), T_AMB = at(B1, "It had to be ambushed");
 const T_DRIVE = at(B2, "driving on Moscow"), T_ENC = at(B2, "double encirclement"), T_HALF = at(B2, "more than half a million"),
   T_ROAD = at(B2, "The road to the capital"), T_HQ = at(B2, "headquarters escaped"), T_SCRATCH = at(B2, "scratch force"), T_JOB = at(B2, "hold the Volokolamsk highway");
 ctl("jun41", 0, S2 + 0.2); ctl("oct41", S2 + 0.2);
 living(); emblem(); geo();
-B.camera([[0, 1560, 860, 0.9], [T_INV + 2.6, 1545, 865, 0.95], [T_LED + 0.2, 1482, 1022, 2.1], [T_TWO, 1478, 1028, 2.3], [T_LEARN, 1488, 1020, 2.2],
-  [S2 - 0.2, 1490, 1018, 2.2], [S2 + 1.6, 1830, 742, 1.55], [T_ROAD, 1870, 722, 1.6], [T_HQ + 0.4, 1900, 680, 1.95], [END, 1918, 655, 2.25]]);
-SFX("ref:whoosh", T_LED - 0.2); SFX("ref:whoosh", S2 - 0.1);
+B.camera([[0, 1560, 860, 0.9], [T_LED + 0.3, 1545, 865, 0.95], [T_DUB - 0.3, 1484, 1030, 2.9], [T_TWO, 1482, 1032, 3.0], [T_LEARN, 1488, 1030, 3.0],
+  [S2 - 0.2, 1490, 1028, 2.9], [S2 + 1.6, 1830, 742, 1.55], [T_ROAD, 1870, 722, 1.6], [T_HQ + 0.4, 1930, 660, 2.4], [END, 1962, 632, 3.1]]);
+SFX("ref:whoosh", T_LED + 0.4); SFX("ref:whoosh", S2 - 0.1);
 B.showDate(0.2); B.date("22 JUNE 1941", 0.4, S2 + 0.2, 34); B.date("OCTOBER 1941", S2 + 0.3, null, 34);
 legend(0.4, END + 1);
 // flags: wide shot, Dubno close-up, Moscow approaches (each pair sized for its camera)
-flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.5, T_LED + 0.3); flag(FL.su, "USSR", ...G(55.0, 45.0), 0.7, T_LED + 0.3);
-neutral("SWEDEN", ...G(56.35, 14.1), 0.9, T_LED + 0.3);
-GG.lbl("FINLAND", ...G(61.6, 26.4), { size: 18, color: "#f0c8c0", t: T_INV + 0.6, until: T_LED + 0.3 });
-GG.lbl("ROMANIA", ...G(45.6, 24.6), { size: 18, color: "#f0c8c0", t: T_INV + 0.8, until: T_LED + 0.3 });
-GG.lbl("HUNGARY", ...G(47.0, 19.6), { size: 18, color: "#f0c8c0", t: T_INV + 1.0, until: T_LED + 0.3 });
-flag(FL.de, "GERMANY", ...G(51.25, 23.3), T_LED + 0.6, S2 + 0.4, 52); flag(FL.su, "USSR", ...G(51.15, 27.5), T_LED + 0.8, S2 + 0.4, 52);
-flag(FL.de, "GERMANY", ...G(55.25, 31.0), S2 + 1.2, END + 1, 62); flag(FL.su, "USSR", ...G(55.0, 39.2), S2 + 1.4, END + 1, 62);
+flag(FL.de, "GERMANY", ...G(53.4, 17.0), 0.5, T_LED + 1.2); flag(FL.su, "USSR", ...G(55.0, 45.0), 0.7, T_LED + 1.2);
+neutral("SWEDEN", ...G(56.35, 14.1), 0.9, T_LED + 1.2);
+GG.lbl("FINLAND", ...G(61.6, 26.4), { size: 18, color: "#f0c8c0", t: T_INV + 0.6, until: T_LED + 1.2 });
+GG.lbl("ROMANIA", ...G(45.6, 24.6), { size: 18, color: "#f0c8c0", t: T_INV + 0.8, until: T_LED + 1.2 });
+GG.lbl("HUNGARY", ...G(47.0, 19.6), { size: 18, color: "#f0c8c0", t: T_INV + 1.0, until: T_LED + 1.2 });
+flag(FL.de, "GERMANY", ...G(51.05, 23.2), T_DUB - 0.6, S2 + 0.4, 40); flag(FL.su, "USSR", ...G(51.0, 28.35), T_DUB - 0.4, S2 + 0.4, 40);
+flag(FL.de, "GERMANY", ...G(56.4, 30.6), S2 + 1.2, T_HQ + 0.3, 62); flag(FL.su, "USSR", ...G(55.0, 39.2), S2 + 1.4, T_HQ + 0.3, 62);
+flag(FL.de, "GERMANY", ...G(55.0, 35.15), T_HQ + 0.6, END + 1, 34); flag(FL.su, "USSR", ...G(56.3, 37.55), T_HQ + 0.8, END + 1, 34);
 // ---------- 22 June 1941: the border, the dawn barrage, three army groups ----------
 const RED0 = [[54.45, 21.9, "tank"], [53.0, 21.9, "infantry"], [52.15, 22.9, "tank"], [51.2, 23.2, "infantry"], [50.35, 23.5, "tank"], [49.6, 22.3, "infantry"]];
 const BLUE0 = [[55.1, 23.6], [53.4, 23.9], [52.0, 24.4], [50.9, 24.6], [49.9, 24.9]];
 RED0.forEach(([la, lo, ic], i) => { const [x, y] = G(la, lo); B.unit({ id: "r" + i, side: "rome", x, y, w: 38, h: 26, t: 0.15 + i * 0.08 }); counter("r" + i, ic, "rome", "XX"); });
 BLUE0.forEach(([la, lo], i) => { const [x, y] = G(la, lo); B.unit({ id: "b" + i, side: "carth", x, y, w: 38, h: 26, t: 0.25 + i * 0.08 }); counter("b" + i, "infantry", "carth", "XX"); });
-BLUE0.forEach(([la, lo], i) => { const [x, y] = G(la, lo); K.impact(x + 6, y - 4, T_INV - 0.5 + i * 0.32, { r: 14 }); });
-SFX("ref:boom", T_INV);
+BLUE0.forEach(([la, lo], i) => { const [x, y] = G(la, lo); K.impact(x + 6, y - 4, T_JUNE - 0.4 + i * 0.32, { r: 14 }); });
+SFX("ref:boom", T_JUNE + 0.2);
 const AG = [
   { pts: [G(54.6, 21.6), G(55.6, 24.3), G(57.3, 27.6), G(59.2, 29.6)], tag: "ARMY GROUP NORTH", at: G(55.15, 21.3) },
   { pts: [G(52.4, 23.3), G(53.6, 26.6), G(54.4, 29.6), G(54.75, 31.6)], tag: "ARMY GROUP CENTRE", at: G(52.75, 22.0) },
   { pts: [G(50.6, 23.6), G(50.5, 26.4), G(50.4, 29.4)], tag: "ARMY GROUP SOUTH", at: G(49.9, 22.3) },
 ];
-AG.forEach((a, i) => { B.arrow({ side: "rome", pts: a.pts, width: 24, t: T_INV + 0.15 + i * 0.4, dur: 1.7, until: T_LED + 0.4 });
-  GG.tagbox(a.tag, a.at[0], a.at[1], "#c4121f", { size: 17, t: T_INV + 0.7 + i * 0.4, until: T_LED + 0.4 }); });
-RED0.forEach((r, i) => B.move("r" + i, T_INV + 0.6, 2.4, B.units["r" + i].x + 70, B.units["r" + i].y + (i < 2 ? -20 : 0)));
-B.grey(["b0", "b1", "b2", "b3", "b4"], T_INV + 1.4, 0.8); B.hideUnits(["r0", "r1", "r2", "r3", "r4", "r5", "b0", "b1", "b2", "b3", "b4"], T_LED - 0.1, 0.5);
+AG.forEach((a, i) => { B.arrow({ side: "rome", pts: a.pts, width: 24, t: T_JUNE + 0.2 + i * 0.5, dur: 1.8, until: T_LED + 1.4 });
+  GG.tagbox(a.tag, a.at[0], a.at[1], "#c4121f", { size: 17, t: T_JUNE + 0.8 + i * 0.5, until: T_LED + 1.4 }); });
+RED0.forEach((r, i) => B.move("r" + i, T_JUNE + 0.8, 2.6, B.units["r" + i].x + 70, B.units["r" + i].y + (i < 2 ? -20 : 0)));
+B.grey(["b0", "b1", "b2", "b3", "b4"], T_JUNE + 1.8, 0.8); B.hideUnits(["r0", "r1", "r2", "r3", "r4", "r5", "b0", "b1", "b2", "b3", "b4"], T_LED + 0.9, 0.5);
 // ---------- Dubno: the 9th Mechanized Corps counter-attacks into the panzers, the Luftwaffe hammers it ----------
 const DUB = PLACE.dubno;
-badge({ name: "ROKOSSOVSKY", role: "9TH MECHANIZED CORPS", corner: "bl", t: T_LED + 0.3, until: T_LEARN - 0.2 });
+badge({ name: "ROKOSSOVSKY", role: "9TH MECHANIZED CORPS", corner: "bl", t: T_DUB - 0.2, until: T_LEARN - 0.2 });
 box("DUBNO", DUB[0] - 4, DUB[1] + 22, T_DUB - 0.2, 12);
-const PZ = [G(50.66, 25.05), G(50.27, 25.25)];
-PZ.forEach(([x, y], i) => { B.unit({ id: "pz" + i, side: "rome", x, y, w: 40, h: 26, label: "PANZERS", t: T_LED + 0.4 + i * 0.15 }); counter("pz" + i, "tank", "rome", "XX"); });
-const M9 = G(50.72, 26.75), M9b = G(50.52, 26.0);
-B.unit({ id: "m9", side: "carth", x: M9[0], y: M9[1], w: 46, h: 30, label: "9 MECH CORPS", t: T_LED + 0.5 }); counter("m9", "tank", "carth", "XXX");
+const PZ = [G(50.78, 24.8), G(50.1, 24.9)];
+PZ.forEach(([x, y], i) => { B.unit({ id: "pz" + i, side: "rome", x, y, w: 28, h: 18, label: "PANZERS", t: T_DUB - 0.4 + i * 0.15 }); counter("pz" + i, "tank", "rome", "XX"); });
+const M9 = G(50.8, 27.35), M9b = G(50.52, 26.35);
+B.unit({ id: "m9", side: "carth", x: M9[0], y: M9[1], w: 32, h: 21, label: "9 MECH CORPS", t: T_DUB - 0.3 }); counter("m9", "tank", "carth", "XXX");
 B.move("m9", T_DUB, 3.2, M9b[0], M9b[1]);
-B.arrow({ side: "carth", pts: [G(50.74, 26.85), G(50.62, 26.35), G(50.5, 25.95)], width: 12, t: T_DUB - 0.1, dur: 1.4, until: T_LEARN });
+B.arrow({ side: "carth", pts: [G(50.82, 27.2), G(50.64, 26.7), G(50.52, 26.1)], width: 9, t: T_DUB - 0.1, dur: 1.4, until: T_LEARN });
 raid([[M9b[0] - 230, M9b[1] - 260], [M9b[0] + 40, M9b[1] + 30], [M9b[0] + 300, M9b[1] + 320]], T_DUB + 0.6);
 raid([[M9b[0] + 340, M9b[1] - 230], [M9b[0] - 10, M9b[1] + 6], [M9b[0] - 330, M9b[1] + 250]], T_64 - 1.9);
 [0, 1, 2, 3].forEach((k) => K.impact(M9b[0] - 16 + k * 11, M9b[1] + (k % 2 ? 10 : -8), T_64 - 1.2 + k * 0.35, { r: 12 }));   // German guns finish the job
@@ -102,8 +103,8 @@ B.tl.to(B.units.m9.el, { opacity: 0.55, duration: 0.6 }, T_TWO + 0.4 + CD);
 B.move("pz0", T_LEARN + 0.3, 2.0, M9b[0] - 26, M9b[1] - 12); B.move("pz1", T_LEARN + 0.5, 2.0, M9b[0] - 22, M9b[1] + 16);
 [0, 1, 2].forEach((k) => K.impact(M9b[0] + 4 - k * 9, M9b[1] + (k - 1) * 9, T_LEARN + 1.9 + k * 0.4, { r: 12 }));
 B.grey(["m9"], T_LEARN + 2.2, 0.8); B.hideUnits(["m9"], T_AMB - 0.6, 0.5);
-const AMB = [G(50.82, 26.0), G(50.28, 26.05)];
-AMB.forEach(([x, y], i) => { B.unit({ id: "at" + i, side: "carth", x, y, w: 30, h: 20, t: T_AMB - 0.3 + i * 0.2 }); counter("at" + i, "artillery", "carth", "III"); });
+const AMB = [G(50.98, 26.75), G(50.05, 26.7)];
+AMB.forEach(([x, y], i) => { B.unit({ id: "at" + i, side: "carth", x, y, w: 22, h: 15, t: T_AMB - 0.3 + i * 0.2 }); counter("at" + i, "artillery", "carth", "III"); });
 for (let k = 0; k < 6; k++) {
   const [gx, gy] = AMB[k % 2], tg = [M9b[0] - 24 + (k % 3) * 8, M9b[1] - 10 + (k % 2) * 24], t = T_AMB + 0.6 + k * 0.7;
   K.gun(gx, gy, t, { unit: "at" + (k % 2), dx: 0, dy: -8 }); GG.arc(gx, gy - 6, tg[0], tg[1], t + 0.05, { dur: 0.6, width: 2, h: 30, impact: false });
@@ -115,31 +116,32 @@ B.caption("AMBUSH IT · WEAR IT DOWN · MAKE IT BLEED", T_AMB, S2 - 0.1, "carth"
 B.hideUnits(["pz0", "pz1", "at0", "at1"], S2 - 0.3, 0.5);
 // ---------- October 1941: Typhoon, the Vyazma + Bryansk pockets ----------
 const POCK = [[55.1, 33.8, "vy"], [53.62, 34.25, "bn"], [52.6, 33.35, "bs"]];
-POCK.forEach(([la, lo, id], i) => { const [x, y] = G(la, lo); B.unit({ id, side: "carth", x, y, w: 30, h: 20, t: S2 + 0.9 + i * 0.12 }); counter(id, "infantry", "carth", "XXXX"); });
-[[G(55.75, 32.0), G(55.55, 33.4), G(55.3, 34.2)], [G(54.1, 32.7), G(54.6, 33.7), G(55.05, 34.35)],
- [G(51.75, 33.9), G(52.5, 34.6), G(53.15, 34.5)], [G(53.95, 32.6), G(53.55, 33.7), G(53.32, 34.25)]]
-  .forEach((pts, i) => B.arrow({ side: "rome", pts, width: 16, t: T_DRIVE + 0.1 + i * 0.3, dur: 1.4, until: T_ROAD + 0.6 }));
+POCK.forEach(([la, lo, id], i) => { const [x, y] = G(la, lo); B.unit({ id, side: "carth", x, y, w: 28, h: 18, t: S2 + 0.9 + i * 0.12 }); counter(id, "infantry", "carth", "XXXX"); });
+[[G(55.95, 31.2), G(55.7, 33.0), G(55.32, 34.2)], [G(53.95, 32.2), G(54.5, 33.6), G(55.05, 34.35)],
+ [G(51.45, 33.6), G(52.35, 34.35), G(53.12, 34.55)], [G(54.15, 31.9), G(53.75, 33.4), G(53.38, 34.15)]]
+  .forEach((pts, i) => B.arrow({ side: "rome", pts, width: 14, t: T_DRIVE + 0.1 + i * 0.3, dur: 1.4, until: T_ROAD + 0.6 }));
 SFX("ref:boom", T_ENC);
-box("VYAZMA", PLACE.vyazma[0] + 50, PLACE.vyazma[1] - 26, T_ENC + 0.1, 13, END + 1);
-box("BRYANSK", PLACE.bryansk[0] + 58, PLACE.bryansk[1] - 2, T_ENC + 0.3, 13, END + 1);
+box("VYAZMA", PLACE.vyazma[0] + 50, PLACE.vyazma[1] - 26, T_ENC + 0.1, 13, T_HQ + 0.2);
+box("BRYANSK", PLACE.bryansk[0] + 58, PLACE.bryansk[1] - 2, T_ENC + 0.3, 13, T_HQ + 0.2);
 POCK.forEach(([la, lo], i) => { const [x, y] = G(la, lo); K.target(x, y, T_ENC + 0.2 + i * 0.25, { r: i ? 50 : 66, side: "rome", until: T_HQ + 0.5 }); SFX("hit", T_ENC + 0.2 + i * 0.25); });
 B.grey(["vy", "bn", "bs"], T_HALF, 0.8);
 const STAMP = GG.stamp("OVER HALF A MILLION ENCIRCLED", T_HALF + 0.1, T_ROAD + 1.0, { size: 54 });
 // the road to Moscow lies open
-box("MOSCOW", PLACE.moscow[0] + 66, PLACE.moscow[1] + 2, T_ROAD - 0.2, 14, END + 1);
-B.arrow({ side: "rome", pts: [G(55.25, 34.7), G(55.45, 35.8), G(55.62, 36.95)], width: 18, t: T_ROAD, dur: 1.6, until: END + 1 });
-B.arrow({ side: "rome", pts: [G(53.1, 36.25), G(53.75, 37.0), G(54.05, 37.45)], width: 16, t: T_ROAD + 0.4, dur: 1.4, until: END + 1 });
+box("MOSCOW", PLACE.moscow[0] + 48, PLACE.moscow[1] + 12, T_ROAD - 0.2, 10, END + 1);
+B.arrow({ side: "rome", pts: [G(55.25, 34.7), G(55.45, 35.8), G(55.62, 36.95)], width: 18, t: T_ROAD, dur: 1.6, until: T_HQ + 0.5 });
+B.arrow({ side: "rome", pts: [G(53.1, 36.25), G(53.75, 37.0), G(54.05, 37.45)], width: 16, t: T_ROAD + 0.4, dur: 1.4, until: T_HQ + 0.5 });
 SFX("ref:whoosh", T_ROAD);
 B.caption("THE ROAD TO MOSCOW: ALMOST EMPTY", T_ROAD + 0.3, T_HQ - 0.1, "rome");
 // Rokossovsky's HQ slips out and takes the Volokolamsk highway
 const HQ0 = G(55.15, 34.55), VOL = PLACE.volok;
-B.unit({ id: "hq", side: "carth", x: HQ0[0], y: HQ0[1], w: 30, h: 20, label: "ROKOSSOVSKY HQ", t: T_HQ }); counter("hq", null, "carth");
+B.unit({ id: "hq", side: "carth", x: HQ0[0], y: HQ0[1], w: 18, h: 12, label: "ROKOSSOVSKY HQ", t: T_HQ }); counter("hq", null, "carth");
 GG.icon("hq", "hq");
-B.move("hq", T_HQ + 0.6, 3.0, VOL[0] + 8, VOL[1] + 14);
-GG.road([VOL, G(55.97, 36.45), G(55.87, 36.95), G(55.8, 37.35), PLACE.moscow], { w: 4, t: T_SCRATCH - 0.2 });
-box("VOLOKOLAMSK", VOL[0] - 70, VOL[1] - 22, T_SCRATCH, 12, END + 1);
-[[56.12, 35.75], [55.93, 35.85], [56.05, 36.2]].forEach(([la, lo], i) => { const [x, y] = G(la, lo); B.unit({ id: "s" + i, side: "carth", x, y, w: 22, h: 15, t: T_SCRATCH + 0.4 + i * 0.25 }); counter("s" + i, i === 1 ? "tank" : "infantry", "carth"); });
-K.target(VOL[0], VOL[1], T_JOB, { r: 34, side: "carth", until: END + 1 }); SFX("hit", T_JOB + 0.1);
+B.move("hq", T_HQ + 0.6, 3.0, VOL[0] + 4, VOL[1] + 18);
+GG.road([VOL, G(55.97, 36.45), G(55.87, 36.95), G(55.8, 37.35), PLACE.moscow], { w: 3, t: T_SCRATCH - 0.2 });
+box("VOLOKOLAMSK", VOL[0] - 46, VOL[1] - 20, T_SCRATCH, 9, END + 1);
+[[56.22, 35.62], [55.86, 35.72], [56.12, 36.38]].forEach(([la, lo], i) => { const [x, y] = G(la, lo); B.unit({ id: "s" + i, side: "carth", x, y, w: 14, h: 10, t: T_SCRATCH + 0.4 + i * 0.25 }); counter("s" + i, i === 1 ? "tank" : "infantry", "carth"); });
+K.target(VOL[0], VOL[1], T_JOB, { r: 22, side: "carth", until: END + 1 }); SFX("hit", T_JOB + 0.1);
+B.arrow({ side: "rome", pts: [G(55.55, 35.2), G(55.7, 35.75), G(55.82, 36.25)], width: 6, t: T_HQ + 0.6, dur: 1.2, until: END + 1 });
 B.caption("ONE JOB: HOLD THE VOLOKOLAMSK HIGHWAY", T_JOB - 0.1, END + 1, "carth");
 K.raiseTerritory();
 B.finish();

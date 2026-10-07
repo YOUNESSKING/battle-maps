@@ -121,7 +121,7 @@ flagPair(...P(56.16, 36.52), ...P(55.95, 35.38), 1.0, S["4"], 90);
 // blue: thin along the line (316th astride the highway, Dovator on the flank, cadets behind)
 cnt("u316", "carth", P(56.02, 35.80), { t: 0.4, label: "316 RIFLE DIV (PANFILOV)", size: "XX" });
 cnt("udov", "carth", P(55.86, 35.90), { t: 0.6, label: "DOVATOR CAVALRY", icon: "mech", size: "XX" });
-cnt("ucad", "carth", P(56.24, 35.76), { t: 0.8, label: "MOSCOW CADETS", size: "III" });
+cnt("ucad", "carth", P(56.18, 35.80), { t: 0.8, label: "MOSCOW CADETS", size: "III" });
 cnt("u16", "carth", P(56.06, 36.30), { t: 1.0, icon: "hq", label: "16TH ARMY HQ" });
 [[T_PANF, "u316"], [T_DOV, "udov"], [T_CAD, "ucad"]].forEach(([t, id]) => { tl.fromTo(B.units[id].el, { scale: 1 }, { scale: 1.35, duration: 0.3, yoyo: true, repeat: 1 }, t); SFX("ref:pop", t); });
 // red: 4th Panzer Group masses to the west
@@ -242,7 +242,7 @@ surge.forEach((pts, i) => B.arrow({ side: "rome", pts, t: T_MIDNOV + 0.6 + i * 0
 for (let k = 0; k < 9; k++) K.impact(DUB[0] + ((k * 37) % 70) - 35, DUB[1] + ((k * 23) % 50) - 25, T_WEIGHT - 0.6 + k * 0.45, { r: 12 });
 B.caption("PANFILOV'S DIVISION TAKES THE FULL WEIGHT", T_WEIGHT - 0.4, T_KILLED - 0.2, "carth r");
 B.caption("GEN. PANFILOV KILLED · 18 NOV", T_KILLED, T_PAPERS - 0.3, "carth r");
-const myth = GG.card(`<div style="text-align:center;max-width:820px"><div style="font-size:22px;letter-spacing:0.36em;color:#c9b48a">THE "28 PANFILOV MEN"</div><div style="font-size:52px;font-weight:700;letter-spacing:0.08em;line-height:1.15;margin-top:6px">SOVIET PROPAGANDA</div><div style="font-size:24px;letter-spacing:0.18em;color:#d8cfb8;margin-top:8px">INVENTED BY A NEWSPAPER · THE FIGHT AT DUBOSEKOVO WAS REAL</div></div>`, "gg-myth", 650, T_PAPERS, S["7"] - 0.3);
+const myth = GG.card(`<div style="text-align:center;max-width:820px"><div style="font-size:22px;letter-spacing:0.36em;color:#c9b48a">THE "28 PANFILOV MEN"</div><div style="font-size:52px;font-weight:700;letter-spacing:0.08em;line-height:1.15;margin-top:6px">SOVIET PROPAGANDA</div><div style="font-size:24px;letter-spacing:0.18em;color:#d8cfb8;margin-top:8px">INVENTED BY A NEWSPAPER · THE FIGHT AT DUBOSEKOVO WAS REAL</div></div>`, "gg-myth", 740, T_PAPERS, S["7"] - 0.3);
 SFX("hit", T_FAB);
 tl.fromTo(myth.querySelector(".inner"), { borderTopColor: "#c9b48a" }, { borderTopColor: "#e3232f", duration: 0.3 }, T_FAB);
 
@@ -259,12 +259,12 @@ B.label("ISTRA R.", ...P(55.95, 36.885), { cls: "river", size: 13, t: T_RES + 0.
 const prop = B.line([P(56.15, 36.86), P(56.08, 36.87), P(56.02, 36.88), P(55.95, 36.89), P(55.88, 36.90), P(55.80, 36.88)], { t: T_PULLB, dur: 1.6, dash: "14 9", width: 6, color: "#6f9bff" });
 const back = B.arrow({ side: "carth", pts: [P(56.02, 36.32), P(56.03, 36.58), P(56.02, 36.80)], t: T_PULLB + 0.6, dur: 1.4, width: 14, dash: "16 10" });
 box("PROPOSED LINE", ...P(56.17, 36.95), T_PULLB + 1.2, 11, T_CANC + 1);
-badge({ name: "GEORGY ZHUKOV", role: "WESTERN FRONT", initials: "GZ", photo: "assets/media/zhukov_head.png", flagPng: USSR, side: "carth", corner: "tl", t: T_ZHU - 0.6, until: T_MEM });
+badge({ name: "GEORGY ZHUKOV", role: "WESTERN FRONT", initials: "GZ", photo: "assets/media/zhukov_head.png", flagPng: USSR, side: "carth", corner: "bl", t: T_ZHU - 0.6, until: T_MEM });
 GG.stamp("REFUSED", T_REF, T_MEM - 0.2, { top: 760 });
 B.caption("ACCORDING TO ROKOSSOVSKY'S MEMOIRS (ZHUKOV'S ACCOUNT DIFFERS)", T_MEM, T_SHAP - 0.3, "r");
-badge({ name: "B. SHAPOSHNIKOV", role: "CHIEF OF THE GENERAL STAFF", initials: "BS", photo: "assets/media/shaposhnikov_head.png", flagPng: USSR, side: "carth", corner: "tl", t: T_SHAP - 0.6, until: T_CANC - 0.2 });
+badge({ name: "B. SHAPOSHNIKOV", role: "CHIEF OF THE GENERAL STAFF", initials: "BS", photo: "assets/media/shaposhnikov_head.png", flagPng: USSR, side: "carth", corner: "bl", t: T_SHAP - 0.6, until: T_CANC - 0.2 });
 GG.stamp("APPROVED", T_APPR, T_CANC - 0.2, { top: 760, color: "#6f9bff", rot: 3 });
-badge({ name: "GEORGY ZHUKOV", role: "WESTERN FRONT", initials: "GZ", photo: "assets/media/zhukov_head.png", flagPng: USSR, side: "carth", corner: "tl", t: T_CANC - 0.1, until: S["8"] - 0.3 });
+badge({ name: "GEORGY ZHUKOV", role: "WESTERN FRONT", initials: "GZ", photo: "assets/media/zhukov_head.png", flagPng: USSR, side: "carth", corner: "bl", t: T_CANC - 0.1, until: S["8"] - 0.3 });
 GG.stamp("CANCELLED", T_CANC + 0.4, S["8"] - 0.3, { top: 760, rot: -6 });
 tl.to(prop, { opacity: 0.15, duration: 0.4 }, T_CANC + 0.7); B.greyArrow(back, T_CANC + 0.7, S["8"]); tl.to(prop, { opacity: 0, duration: 0.6 }, S["8"]);
 B.caption("EVERY MAN STANDS WHERE HE IS", T_STAND, S["8"] - 0.2, "carth r");
@@ -325,7 +325,7 @@ const bomber = (pts, t, dur = 5.0) => K.bombRun({ kind: "c47g", side: "carth", s
 bomber([P(56.45, 37.40), P(56.17, 36.62), P(56.00, 35.60)], T_STILL - 0.5);
 bomber([P(55.62, 37.30), P(55.90, 36.64), P(56.10, 35.60)], T_STILL + 1.8);
 const hoep2 = badge({ name: "ERICH HOEPNER", role: "DISMISSED · 8 JAN 1942", initials: "EH", photo: "assets/media/hoepner_head.png", flagPng: GER, side: "rome", corner: "bl", t: T_SACKED - 0.3, until: S["10"] + 0.2 });
-tl.to(hoep2, { filter: "grayscale(1) brightness(0.75)", duration: 0.8 }, T_SACKED + 0.8);
+tl.to(hoep2, { filter: "grayscale(1)", duration: 0.8 }, T_SACKED + 0.8);
 GG.stamp("DISMISSED", T_SACKED + 0.9, S["10"] + 0.2, { size: 44, top: 830, rot: -5 });
 
 // ===== move1-10: result card + method line =====

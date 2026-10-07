@@ -24,6 +24,12 @@ im.alpha_composite(fl.filter(ImageFilter.GaussianBlur(1.5)))
 for el in O.get("lakes", []):
     g = geom(el)
     if len(g) > 3: d.polygon(g, fill=C["water"])
+# Istra reservoir (OSM multipolygon could not be fetched: Overpass timeouts) drawn by hand from its centreline, approximate
+RES_CL = [(56.118, 36.715), (56.100, 36.745), (56.080, 36.780), (56.060, 36.810), (56.040, 36.825), (56.020, 36.838), (56.002, 36.848)]
+RES_W = [5, 7, 9, 11, 12, 11, 7]   # half-width in HD px
+pts = [P(a, b) for a, b in RES_CL]
+for (x, y), w in zip(pts, RES_W): d.ellipse((x - w * 2, y - w * 2, x + w * 2, y + w * 2), fill=C["water"])
+for i in range(len(pts) - 1): d.line([pts[i], pts[i + 1]], fill=C["water"], width=int(RES_W[i] * 3.6))
 rivers = []
 BIG = ("Москва", "Истра", "Руза", "Лама", "Озерна", "Малая Истра", "Сестра", "Яуза", "Клязьма", "Moskva", "Istra")
 if O.get("rivers"):
