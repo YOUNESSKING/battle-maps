@@ -23,8 +23,31 @@ Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, 
 | Final mix (levels, ducking, loudness) | `tools/assemble_full.py` (full video), `tools/make_clip.py` (tests) |
 | Reference scenes to copy from | `goosegreen/scenes-src/move3.js` (Harrier bombing run, helicopters, AA, casualty card), `test-terr-f.js` (fronts + territory, final look), `move1.js` (night attack) |
 
+## 1a. THE HOOK (LOCKED, owner 2026-10-09, Rokossovsky hook v2: "I do like it... I want all videos to have strong hooks like this")
+Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + music + SFX) and its beat sheet
+`reference/hook-reference-rokossovsky-v2-sheet.jpg`. Every video's first minute must match it. v1 of that hook was REJECTED as
+"boring, not visual": a belief as line 1, no card, 7-10 s with nothing new, an 18 s static badge. Never ship a hook like that again.
+**Script (first ~60 s, 4 paragraphs):**
+1. **Line 1 = a hard number + the disaster/stakes in 3 short sentences** ("Four hundred thousand German soldiers. Lost in a single summer.
+   And it all began in a swamp the Germans were sure no army could cross."). Never a date + place, never a belief or background first.
+2. **Flash-forward / payoff by ~0:20-0:25** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
+3. **The human twist as ACTION, not a portrait** (prison, wound, disgrace, odds against the man), every detail its own beat.
+4. **Name reveal + the three moves as quick cuts**, then "These are <Name>'s three greatest tactical moves." Hook total ~60-65 s.
+**Visuals + sound (check each on the snapshot sheet before rendering):**
+- Frame 0: map with units ALREADY MOVING (guns firing, counters advancing), flags + territory on screen.
+- **A big number card slams in within the first second** (hit + shake) and ticks up (ticks); a stamp on the punchline (hit + shake).
+- **A hard zoom-whoosh camera DIVE within the first ~6 s** onto the place of the story.
+- **Something new every 2-4 s, never more than 4 s without a change** (camera move, stamp, counter, units moving, impacts, cut).
+  Make the snapshot sheet every ~2.5 s for the first 30 s to prove it.
+- **White-flash cut into the flash-forward**; the trap/victory slams shut with boom + shake; zoom-out whoosh to the big picture.
+- **Twist sequence:** hard cut to dark, the year rolls back with ticks, an overlay that SLAMS (e.g. prison bars) over the real photo badge,
+  one stamp per spoken detail (hit + small shake + red pulse), caveats as a small caption ("by his family's account").
+- **Name slams in** (hit + shake), then 3 snap cuts (~3 s each, whoosh + hit) of the three battles, then the title card (riser + boom).
+- SFX on every beat; the zoom whoosh only on the 2-3 biggest camera moves (dive, flash-forward, zoom-out).
+**Source to copy:** `rokossovsky/scenes-src/hook-a.js` + `hook-b.js` on branch `claude/rokossovsky-video-8` (script: `rokossovsky/script.md` HOOK).
+
 ## 2. Visuals (locked)
-- **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook.
+- **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).
 - **Map:** parchment shaded relief (`bake.py`), faint dashed grid (`K.grid`), vignette + grain, date top-left. Flat, no 3D tilt.
 - **Colours:** counters/aircraft/arrows blue `#1f4fc4` (hero) / red `#c4121f` (enemy). Day front lines `#2c57b7` / `#bc2528` (30% muted from the counters). Night lines + territory tint `#4a6a9a` / `#a8503c`. Neutral grey `#77746c`, gold `#c9b48a`, text `#f7f3ea`, font Oswald.
 - **Front lines (`K.front`):** glowing band, width 15, glow 0.47, drawn on, gentle pulse.
