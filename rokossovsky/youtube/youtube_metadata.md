@@ -25,18 +25,18 @@ Which commander should we cover next? Let us know in the comments.
 
 CHAPTERS
 0:00 Intro: The Swamps No Army Could Cross
-1:46 Hitler Invades; the Road to Moscow
-2:39 Move 1: The Volokolamsk Highway (Moscow 1941)
-4:55 The Istra Reservoir: Rokossovsky vs Zhukov
-6:07 The Counter-Attack
-7:01 Move 2: The Northern Face of Kursk (1943)
-8:41 Firing First: the Counter-Barrage
-9:32 The Fight for Ponyri
-11:04 Move 3: Operation Bagration (1944)
-11:54 "Go and Think It Over": Two Blows
-12:43 Out of the Marshes: Bobruisk
-14:32 57,000 Prisoners in Moscow
-15:08 Legacy
+1:39 Hitler Invades; the Road to Moscow
+2:31 Move 1: The Volokolamsk Highway (Moscow 1941)
+4:48 The Istra Reservoir: Rokossovsky vs Zhukov
+6:00 The Counter-Attack
+6:53 Move 2: The Northern Face of Kursk (1943)
+8:33 Firing First: the Counter-Barrage
+9:25 The Fight for Ponyri
+10:57 Move 3: Operation Bagration (1944)
+11:47 "Go and Think It Over": Two Blows
+12:36 Out of the Marshes: Bobruisk
+14:25 57,000 Prisoners in Moscow
+15:01 Legacy
 
 SOURCES
 Konstantin Rokossovsky, A Soldier's Duty (memoirs, Progress Publishers)
