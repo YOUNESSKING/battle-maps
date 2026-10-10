@@ -12,8 +12,9 @@
   const INK = "#f7f3ea";
   // flag badges per nation: pass flag/flagA/flagB = a key below; add the new video's nations + their files in assets/media/
   const FLAGS = { us: "assets/media/us_flag_48star.png", usmc: "assets/media/usmc_flag.png", kpa: "assets/media/kpa_flag.png",
-    prc: "assets/media/pva_flag.png", pva: "assets/media/pva_flag.png", uk: "assets/media/uk_flag.png", arg: "assets/media/arg_flag.png", ger: "assets/media/ger_cross.png" };
-  const flagSrc = (f, dflt) => FLAGS[f] || FLAGS[dflt];
+    prc: "assets/media/pva_flag.png", pva: "assets/media/pva_flag.png", uk: "assets/media/uk_flag.png", arg: "assets/media/arg_flag.png", ger: "assets/media/ger_cross.png",
+    ussr: "assets/media/ussr_flag.png", reich: "assets/media/ger_reich_flag.png" };  // Rokossovsky #8: period USSR + Reich flags
+  const flagSrc = (f, dflt) => FLAGS[f] || (f && /[./]/.test(f) ? f : FLAGS[dflt]);  // a png path also works (Rokossovsky #8)
 
   // ---- aircraft art: top-down, nose pointing +x, drawn around (0,0) in a -50..50 box ----
   const ART = {

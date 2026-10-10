@@ -164,7 +164,7 @@ window.GGK = function (B) {
     const rows = G.METHOD.map((txt, i) => i < lit
       ? `<div class="row lit"><div class="n">${i + 1}</div><div>${txt}</div></div>`
       : `<div class="row off"><div class="n">${i + 1}</div><div class="bar"></div></div>`).join("");
-    const el = G.card(`<div class="k">GAVIN'S METHOD</div>${rows}`, "gg-method", lit === 3 ? 300 : 320, t, until);
+    const el = G.card(`<div class="k">${G.METHOD_TITLE || "THE METHOD"}</div>${rows}`, "gg-method", lit === 3 ? 300 : 320, t, until);
     el.querySelectorAll(".row.lit").forEach((r, i) => tl.fromTo(r, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, rowT[i] != null ? rowT[i] : t + 0.4 + i * 0.8));
     return el;
   };

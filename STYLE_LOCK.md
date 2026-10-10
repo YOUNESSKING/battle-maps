@@ -38,6 +38,27 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
     and check one bomb run frame vs sound** (the Rokossovsky remix fixed a 7 s drift).
   - Voice A (section 6). Thumbnail: vidIQ battlefield (left 2/3, labels checked/redone) + the commander's REAL photo cut out on the
     right third + red brush banner, 1-3 words (`rokossovsky/tools/make_thumb.py`). Title: vidIQ >= 85, TG pattern.
+- **NEW IN THIS VIDEO, EACH ONE LOCKED (owner 2026-10-10: "I do like it... the things that we changed"):**
+  1. **The hook v2** (section 1a): hard number + disaster as line 1, a big number card slamming in during the first second, a camera
+     dive into the battlefield by ~6 s, a beat every 2-4 s, white-flash cut to the payoff by ~0:22, the commander's name held back
+     (mystery "?" badge) until the twist, the prison-bars sequence with one stamp per detail, name slam + 3 snap cuts + title card.
+  2. **Dark HD maps everywhere** (`<map>_hd_ref`: the dark "Frontlines" grade of the HD relief) for overview AND battle maps.
+  3. **Wide -> close -> wide per move:** option-1 territory on the wide shot, push-in to option-2 glowing fronts for the fight,
+     zoom back out to option 1 for the result; the control overlay changes with every date the narration says.
+  4. **Real licensed photos in every commander badge** (Soviet PD-Russia, Bundesarchiv CC BY-SA with credit), never initials when a
+     licensed photo exists; overlays on the badge for story beats (prison bars, greyed + DISMISSED / SACKED stamps).
+  5. **Text-only "duel" cards for a dictator or a figure with no licensed likeness** (ONE BLOW vs TWO BLOWS, "go and think it over" x2).
+  6. **Night barrage beat** (`K.night` + rows of `K.gun` -> arc -> `K.impact`, shake on every impact), **tank-ambush beat** (tanks out
+     of the woods, fire from the flank, pull back), **fire-sack beat** (isolated heavy tanks under guns on both flanks).
+  7. **Casualty card when real numbers exist, otherwise a RESULT card** (never invent figures); **method card that lights one line per
+     move** (`GG.METHOD` + `GG.METHOD_TITLE = "<NAME>'S METHOD"`).
+  8. **Archive from US government film** (Capra's "The Battle of Russia", Army-Navy Screen Magazine / Signal Corps) + CC BY 4.0
+     stills, in the projector frame with headline date cards; a designed headline card (no real masthead) for events with no film.
+  9. **Thumbnail = vidIQ battlefield + the commander's REAL photo cut out + red banner** (`rokossovsky/tools/make_thumb.py`; check the
+     AI image's labels and redo wrong ones).
+  10. **Partial re-voice without re-recording everything:** `narrate_changed.py`, convert only the changed head with voice A and splice
+     it onto the old voice-A take; then `--audio-only` remix (sound sync is automatic now, `sfx_cues.py`).
+  11. **Engine (in `rokossovsky/lib`):** USSR + Reich flag keys (`flag: "ussr"` / `"reich"`, or any png path), method-card title.
 - **Per-move snapshot sheets before any render; the owner approves; never render without the OK** (HANDOVER 0b step 7).
 
 ## 1. Where it lives (copy from goosegreen/ into every new video)
