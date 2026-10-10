@@ -2,6 +2,7 @@
 
 Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical Moves", Tactical Genius style).
 **Read HANDOVER.md first**: it has the plan, the pipeline, the commands and the lessons learned.
+**THE LOCKED REFERENCE VIDEO is Rokossovsky #8 (owner 2026-10-10; STYLE_LOCK.md section 0b):** copy the skeleton from `rokossovsky/`, watch `reference/style-reference-rokossovsky-v8.mp4` and match it exactly.
 **Then read STYLE_LOCK.md**: the owner-approved look, sound effects, music and levels. Use it as-is on every video; never re-search or restyle.
 **SOUND LOCK:** the artillery, ship-gun, bombing and aircraft sounds, the **screen shake on every bombing run** (`K.bombRun`), levels + music are locked and checked on every build (`tools/check_sound_lock.py`; reference `reference/style-reference-30s.mp4`). If it says SOUND LOCK BROKEN, restore goosegreen's files; never edit the lock without the owner's approval.
 

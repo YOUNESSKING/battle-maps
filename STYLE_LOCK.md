@@ -13,6 +13,33 @@ busiest 30 s (`make_clip.py SCENE --from P --to P`) and compare it with this ref
 sounds, same shake (music is now quieter: 0.08, section 5). If it differs, fix the new video, never the reference.
 Rebuild recipe: `python3 tools/make_clip.py move3 --from move3-1 --to move3-5`, then cut 8.5-29.5 s + 87.5-96.5 s.
 
+## 0b. THE COMPLETE REFERENCE VIDEO (LOCKED, owner 2026-10-10: "perfect, make sure this style is locked"): Rokossovsky #8
+The finished Rokossovsky video is the channel's locked look + sound, end to end. Every new video copies it.
+- **Watch first:** `reference/style-reference-rokossovsky-v8.mp4` (~1:37: wide option-1 overview with the invasion arrows and a bomb run,
+  a tank ambush close-up, the night counter-barrage at Kursk, the bombing of the Bobruisk pocket, projector-frame archive film) and
+  `reference/hook-reference-rokossovsky-v2.mp4` (the locked hook, section 1a). Final master: https://gofile.io/d/nWvp2ksX (15:29).
+- **Skeleton to copy for every new video: `rokossovsky/`** (lib/, tools/, vendor/, assets/fonts, assets/grain.png, assets/media/sfx/,
+  music, flags, emblem). It has every fix: hook lock, sound sync (`sfx_cues.py` reads the current timing), voice-A mix
+  (`voice_owner.wav`), `make_clip.py` with voice A, archive builder, thumbnail compositor, publishing guide.
+- **What is locked in it (all from sections 1a-5; do exactly this):**
+  - Maps: HD dark relief (`bake.py` then `bake_hd.py` -> use `<map>_hd_ref`), 1941-44 names, big towns only, living map, both period
+    flags on every map shot, emblem only on German land and never fading, legend top-centre.
+  - Option 1 territory (multiply `_mx` control overlays, one per date, 1 s cross-fade) on wide shots; option 2 glowing two-colour fronts
+    (`K.front`, **width 15, glow 0.47**, never thinner) on close-up battles; one wide shot -> push-in -> close-up -> zoom-out per move.
+  - Units: silhouette counters with flag chips + size marks; commander badges with the REAL licensed photo (initials only if none);
+    Stalin-type figures as text cards, never a likeness.
+  - Action: `K.gun` -> arc -> `K.impact` (boom on impact, default shake); `K.bombRun` with glowing `c47g` planes (few, spaced, they
+    leave); night beats with `K.night`; stamps (hit + shake), counters (ticks), fire sacks, rings.
+  - Every move ends: casualty card (`K.casualties` style, real numbers only) or a RESULT card when no reliable figure exists, then the
+    method card that adds one line per move.
+  - Archive: Netflix look (headline card, 3D-depth photos, projector-frame film, headline date cards), licensed only: US government film
+    (Signal Corps, Capra "Why We Fight"), NARA CC0, Commons CC BY / CC BY-SA / PD stills with credits. Never untagged uploads.
+  - Sound: the locked kit (section 3/3a), music 0.08 (section 4-5), -14 LUFS; **after ANY timing change, `assemble_full.py --audio-only`
+    and check one bomb run frame vs sound** (the Rokossovsky remix fixed a 7 s drift).
+  - Voice A (section 6). Thumbnail: vidIQ battlefield (left 2/3, labels checked/redone) + the commander's REAL photo cut out on the
+    right third + red brush banner, 1-3 words (`rokossovsky/tools/make_thumb.py`). Title: vidIQ >= 85, TG pattern.
+- **Per-move snapshot sheets before any render; the owner approves; never render without the OK** (HANDOVER 0b step 7).
+
 ## 1. Where it lives (copy from goosegreen/ into every new video)
 | What | File |
 |---|---|
