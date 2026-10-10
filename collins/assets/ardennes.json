@@ -1,0 +1,19 @@
+{
+ "name": "ardennes",
+ "center": [
+  50.18,
+  5.25
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  133454,
+  87890
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 97.9,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
