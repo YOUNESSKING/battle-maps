@@ -22,6 +22,13 @@ for page in sorted(glob.glob("scenes/*/index.html")):
         continue
     tjs = open(f"scenes/{name}/timing.js").read()
     st = json.loads(tjs[tjs.index("=") + 1:].strip().rstrip(";"))
+    # take the scene's start from the CURRENT audio/timing.json (owner 2026-10-09: after the hook was re-voiced 7 s shorter, the
+    # scenes built earlier still carried the old abs_start and every bomb/gun/plane sound of moves 1-3 landed ~7 s late)
+    first = next(iter(st["paras"]))
+    cur = {p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip(): p["start"] for p in paras}
+    if first in cur and abs(cur[first] - st["abs_start"]) > 0.01:
+        print(f"{name:14s} start {st['abs_start']} -> {cur[first]} (timing.json changed since the scene was built)")
+        st["abs_start"] = cur[first]
     dom = subprocess.run([CHROME, "--headless", "--no-sandbox", "--disable-gpu", "--allow-file-access-from-files",
                           "--virtual-time-budget=3000", "--dump-dom", "file://" + os.path.abspath(page)],
                          capture_output=True, text=True, timeout=120).stdout
