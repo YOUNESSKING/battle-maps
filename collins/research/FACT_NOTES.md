@@ -37,3 +37,8 @@ Pursuit; Cole, The Ardennes: Battle of the Bulge; read via the HyperWar mirrors)
 Army Chief of Staff dates; "deepest penetration" wording; Celles losses range; Cobra box size; Kelly/Ogden units; Lightning Joe origin.
 
 ## Control maps (fronts per date; logged by the map agents in FACT_NOTES_<map>.md)
+
+## Added in script v1 (from memory, standard facts; double-check before publishing)
+- 90th Division commander (Brig. Gen. Jay MacKelvie) relieved ~13 June 1944 after the division stalled; Collins went forward constantly.
+- Sgt Curtis G. Culin's hedgerow cutter ("Rhino"), welded from German beach obstacles, fitted to hundreds of tanks before Cobra.
+- VII Corps reassembled ~21-23 Dec on the north flank near Marche with 2nd + 3rd Armored, 75th + 84th Infantry Divisions (Cole).

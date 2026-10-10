@@ -42,6 +42,9 @@ In mid-June, the Americans held a beachhead at the base of the peninsula. North 
 [MAP: move1-2 | Red belief card: "HOLD FOR MONTHS"; red counters fall back north into the fortress ring; ghost arrow of German reinforcements coming up the peninsula from the south]
 The Germans believed the fortress could hold out for weeks, perhaps months. Every week the Allies went without a port, their armies in France would be starved of supplies. And as long as the peninsula stayed open to the south, reinforcements could still reach the garrison.
 
+[MAP: move1-2b | Collins badge pops along the front from unit to unit (dotted path between division HQs, pops); a 90TH DIV counter flickers, its commander badge greyed: RELIEVED; the stalled front starts to move]
+Collins did not run his battle from a map table. He spent his days at the front, moving from one division headquarters to the next, pushing his commanders forward. When the Ninetieth Division stalled in its first battles, its commander was relieved within days. Collins wanted speed, and everyone under him knew it.
+
 [MAP: move1-3 | Collins badge. Blue 9th Division arrow drives WEST across the neck of the peninsula to the sea at Barneville (18 JUNE stamp); the two-colour front swings into a wall across the peninsula; the ghost reinforcement arrow is cut (hit); stamp CUT OFF]
 Collins saw that before he could take the port, he had to seal it off. So instead of driving straight north, he sent the Ninth Division west, straight across the neck of the peninsula. On the eighteenth of June, it reached the sea at Barneville. The Germans in the north were now cut off. No reinforcements could reach them, and none of them could escape.
 
@@ -72,6 +75,9 @@ If you're enjoying this breakdown, consider subscribing. It really helps the cha
 
 [MAP: move2-1 | Title card MOVE 2 · OPERATION COBRA · JULY 1944. Normandy wide (option 1, 24 July control): the Allied lodgement, British/Canadian sector at Caen, US sector to the west; front almost static; date ticks JUNE -> JULY with a casualties counter climbing; hedgerow texture overlay; stamp STALEMATE]
 By July, the Allied armies in Normandy were stuck. In the American sector, the country was divided into thousands of small fields, each one walled in by ancient hedgerows, the bocage. Every field was a fortress. The Americans were paying for every few hundred yards with thousands of casualties.
+
+[MAP: move2-1b | Close-up of a hedgerow field grid: a Sherman counter fitted with steel teeth (icon) punches through a hedge instead of climbing it; label HEDGEROW CUTTERS; counter ticks: more Shermans fitted]
+The Americans were learning. A sergeant named Curtis Culin came up with a simple idea: weld steel blades, cut from German beach obstacles, onto the front of a Sherman tank, so that it could smash through a hedgerow instead of rearing up over it and exposing its thin belly. Hundreds of tanks were fitted with the cutters before the next big attack.
 
 [MAP: move2-2 | Cobra close-up (option 2 glowing fronts): the Saint-Lo - Periers road glows; red Panzer Lehr counters (Bayerlein badge) dug in behind it; label ~2,200 COMBAT TROOPS · ~45 ARMOURED VEHICLES; red belief card: "BLEED THEM IN THE HEDGEROWS"]
 Across the road from Saint-Lô to Périers, the German line was held by the Panzer Lehr Division under General Fritz Bayerlein. After weeks of fighting, it was down to about two thousand two hundred combat troops and some forty-five tanks and assault guns. But in this country, that was enough. The Germans believed the hedgerows would let them bleed the Americans indefinitely.
@@ -106,6 +112,9 @@ On the sixteenth of December, Hitler launched his last great offensive in the we
 
 [MAP: move3-2 | Ardennes close-up (option 2): 2nd Panzer spearhead (Lüttwitz badge) at Foy-Notre-Dame / Celles; ring on the Dinant bridges; bracket 4-5 MILES; red fuel gauge icon drains to EMPTY; stamp OUT OF FUEL]
 By the twenty-third of December, the German Second Panzer Division had raced further west than any other German unit. Its spearhead reached Foy-Notre-Dame and Celles, just four or five miles from the bridges over the Meuse at Dinant. But it had outrun its supplies. Its tanks were almost out of fuel.
+
+[MAP: move3-2b | Ardennes overview: VII Corps arrows swing south from Aachen into the north flank of the Bulge; counters 2ND ARMORED · 3RD ARMORED · 75TH · 84TH INFANTRY assemble around Marche; Collins badge]
+Collins had been ordered to gather a fresh corps to hit back at the German offensive. In a matter of days, he assembled two armoured divisions and two infantry divisions on the northern flank of the bulge, near the town of Marche. He had planned to use them for a counter-offensive. Instead, the German spearhead was already racing past him toward the Meuse.
 
 [MAP: move3-3 | Collins badge; VII Corps arrives from the north (arrows), 2nd Armored (Harmon badge) on the German flank; Montgomery badge appears (UK flag): card from First Army: "GO ON THE DEFENSIVE · YOU MAY FALL BACK" with a dashed line back to ANDENNE - HOTTON - MANHAY]
 Collins's Seventh Corps had been rushed south to meet the offensive. Its Second Armored Division, under the fiery General Ernest Harmon, was now on the German flank. But on the evening of the twenty-fourth, a message reached Collins from First Army. Field Marshal Montgomery, who now commanded the northern half of the battle, and General Hodges had agreed that Seventh Corps should go on the defensive. If necessary, Collins was authorised to pull back.
