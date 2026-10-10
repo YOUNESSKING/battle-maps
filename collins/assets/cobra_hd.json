@@ -1,0 +1,20 @@
+{
+ "name": "cobra_hd",
+ "center": [
+  49.08,
+  -1.17
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  519440,
+  358938
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 25.03,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}
