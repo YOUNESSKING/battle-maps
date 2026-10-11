@@ -1,4 +1,4 @@
-"""Build the James Gavin publishing guide PDF: build/Rokossovsky-publishing-guide.pdf
+"""Build the Collins publishing guide PDF: build/Collins-publishing-guide.pdf
 
 usage (from the project folder): python3 tools/make_publish_guide.py
 Uses build/youtube_description.txt, build/thumbnail_*.png, build/guide_frames.jpg (8 frames from the final video).
@@ -53,7 +53,7 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "Rokossovsky's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "J. Lawton Collins's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
@@ -70,17 +70,17 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/rokossovsky-thumb-A-impassable.jpg"; TB = "youtube/thumb/rokossovsky-thumb-B-two-blows.jpg"
-LEN = os.environ.get("VIDEO_LEN", "15:36")
+TA = "youtube/thumb/collins-thumb-A-the-gamble.jpg"; TB = "youtube/thumb/collins-thumb-B-4000-tons.jpg"
+LEN = os.environ.get("VIDEO_LEN", "13:29")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
-story = [Spacer(1, 18 * mm), P("KONSTANTIN ROKOSSOVSKY", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+story = [Spacer(1, 18 * mm), P("J. LAWTON COLLINS", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: IMPASSABLE (battlefield made with vidIQ; Rokossovsky's real public-domain 1945 photo added on top)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAMBLE (battlefield made with vidIQ; Collins's real public-domain 1948 photo added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Rokossovsky-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"Collins-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
                  ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample, see note in chat)"],
@@ -89,20 +89,20 @@ story += [P("1. The finished video", "h1"),
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
-          Spacer(1, 5 * mm), P("Key frames (the hook)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 93)", "h2"), P(f"<b>{TITLE}</b>"),
+          Spacer(1, 5 * mm), P("Key frames (hook 0:01-0:47, carpet bombing 7:50, Celles 11:30)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
+story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 91)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
-          *bullets(["Rokossovsky's Top 3 Legendary Tactical Moves | The Man Who Broke Army Group Centre (89)",
-                    "Rokossovsky's Top 3 Legendary Tactical Moves | The General Better Than Zhukov (87)"]),
+          *bullets(["J. Lawton Collins's Top 3 Legendary Tactical Moves | The General Who Did What Patton Got Credit For (96; good A/B title)",
+                    "Lightning Joe Collins's Top 3 Legendary Tactical Moves | The Man Who Broke Hitler's Normandy Front (92)"]),
           P("Why this thumbnail", "h2"),
           P("Tactical Genius picture formula: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
-            "a red brush banner bottom-left. <b>IMPASSABLE</b> is type 3 (ominous stakes): the Germans' belief about the Belarus swamps, the same promise as the "
-            "hook and the title (the swamps no army could cross, Army Group Centre destroyed). No quote marks: it is not a verbatim quote."),
-          P("Alternative for YouTube's Test &amp; compare: <b>TWO BLOWS</b> (type 1, his decision against Stalin).", "body"),
+            "a red brush banner bottom-left. <b>THE GAMBLE</b> is type 1 (his decision): committing the armour before the breach was secure, the move "
+            "that broke open Normandy (title promise), shown over the Cobra carpet bombing of the hook."),
+          P("Alternative for YouTube's Test &amp; compare: <b>4,000 TONS</b> (type 3, ominous stakes: the carpet bombing of 25 July).", "body"),
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
-          P("Checked: Bobruisk and Parichi labels (the AI image's own labels were removed: it had Parichi in the wrong place), swamp, log road and birch "
-            "forest match Belarus 1944. The portrait is Rokossovsky's real 1945 photo (public domain), not an AI likeness; it shows him as a Marshal (he was "
-            "made Marshal on 29 June 1944, during the battle).", "warn"),
+          P("Checked: the AI image has no text of its own; we added SAINT-LO - PERIERS ROAD and PANZER LEHR. Hedgerow fields, the straight road and "
+            "four-engine heavy bombers match Normandy, 25 July 1944. The portrait is Collins's real 1948 US Army photo (public domain), not an AI "
+            "likeness; it shows him as a general after the war (he wore two stars in 1944).", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
           P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound, archive and image licences require them.", "warn"),
@@ -112,10 +112,10 @@ story += [P("4. Upload settings", "h1"),
                  ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Rokossovsky, Volokolamsk, Hoepner, Ponyri, Olkhovatka, Bobruisk, Bagration, Parichi, Rogachev, Shaposhnikov)"],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Collins, Schlieben, Cotentin, Barneville, Fort du Roule, Bayerlein, Panzer Lehr, Marigny, Coutances, Avranches, McNair, Celles, Foy-Notre-Dame, Dinant, Harmon)"],
                  ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail battlefield is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["Pinned comment", "Which commander should we cover next? Zhukov, Konev, Manstein, Model...?"],
+                 ["Pinned comment", "Which commander should we cover next? Ridgway, Bradley, Hodges, Harmon...?"],
                  ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
@@ -123,15 +123,15 @@ story += [P("4. Upload settings", "h1"),
                     "Paste title, description and tags; upload the thumbnail (1280x720).", "Fill in the business email in the description.",
                     "Tick 'altered or synthetic content'.", "Add end screen and cards; set visibility and schedule.",
                     "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 2% after ~1,000 impressions, switch to the alternative thumbnail."]),
-          P("<b>Facts to double-check before publishing</b> (single source, memoir-based or approximate; see research/FACT_NOTES.md):<br/>"
-            "&bull; The Istra-reservoir episode (Zhukov refused, Shaposhnikov approved, Zhukov cancelled) and the \"two blows\" meeting with Stalin both come from Rokossovsky's own memoirs; Zhukov disputed them (the script says so).<br/>"
-            "&bull; Torture details: from the family's account (teeth, ribs, two mock executions), worded as such.<br/>"
-            "&bull; Kryukovo / Istra retaken ~8 / ~11 December 1941 (map labels).<br/>"
-            "&bull; German 9th Army losses at Kursk shown as ~20,000-23,000 (Frieser / Zetterling range).<br/>"
-            "&bull; Bobruisk pocket ~50,000 killed and ~20,000 captured (Wikipedia, Bobruysk offensive); no reliable Soviet figure, shown as a dash.<br/>"
-            "&bull; ~400,000 German losses = whole Operation Bagration (Frieser 399,102), stated as such.<br/>"
-            "&bull; All front lines are approximate (logged per date in research/FACT_NOTES_*.md).", "warn")]
-out = "build/Rokossovsky-publishing-guide.pdf"
+          P("<b>Facts to double-check before publishing</b> (approximate, single-source or from memory; see research/FACT_NOTES*.md):<br/>"
+            "&bull; Collins as Army Chief of Staff 1949-53 (archive caption); the origin of the nickname Lightning Joe.<br/>"
+            "&bull; Cobra target box ~6,000 x 2,200 yards (said and shown as about 3.5 miles wide).<br/>"
+            "&bull; Celles losses: Cole's figures for the whole 2nd Armored operation 24-27 Dec (HistoryNet gives a wider range).<br/>"
+            "&bull; 'Deepest point' of the German offensive (standard wording).<br/>"
+            "&bull; Kelly and Ogden units; MacKelvie relieved ~13 June; Culin's hedgerow cutters (from memory, standard facts).<br/>"
+            "&bull; Harmon's 'the bastards are in the bag' is attributed via HistoryNet and said as 'reportedly'.<br/>"
+            "&bull; All front lines are approximate (logged per date in research/FACT_NOTES_*.md), esp. Cobra 27 July and the Bulge's south edge on 24 Dec.", "warn")]
+out = "build/Collins-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="Konstantin Rokossovsky - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="J. Lawton Collins - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print("wrote", out)
