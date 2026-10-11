@@ -306,7 +306,7 @@ B.grey(PZ.map((q) => q[0]), T_SURR - 0.3, 0.8);
 const RING = K.front({ pts: LL(POCKET), sideA: "carth", sideB: "rome", t: T_SURR - 0.5, dur: 1.4, width: 15, until: T_DESTR + 0.6 });
 const F27 = K.front({ pts: LLo([...NORTH, ...B27, ...SOUTH]), sideA: "rome", sideB: "carth", t: T_SURR - 0.1, dur: 1.4, width: 15, until: T_DEEP + 0.4 });
 SFX("ref:boom", T_SURR + 0.4);
-B.caption("HARMON (REPORTEDLY): \"THE BASTARDS ARE IN THE BAG\"", T_RADIO - 0.1, S6 - 0.2, "carth r");
+B.caption("HARMON (REPORTEDLY): \"THE BASTARDS ARE IN THE BAG\"", T_RADIO - 0.1, T_BAG - 0.4, "carth r");
 GG.stamp("IN THE BAG", T_BAG - 0.3, S6 + 0.6, { size: 62, top: 840 });
 // ============ move3-6: 26-27 Dec: relief attempts beaten off, the pocket destroyed; zoom out: the deepest point ============
 const ROC = L(50.162, 5.222);

@@ -42,8 +42,9 @@ B.camera([[0, 1190, 505, 2.15], [T_BUT, 1188, 505, 2.2], [S2, 1185, 505, 2.25], 
 B.showDate(0.2); B.date("SUMMER 1944", 0.4, T_PORT - 0.2, 34); B.date("JUNE 1944", T_PORT - 0.1, T_BROKE - 0.2, 34);
 B.date("JULY 1944", T_BROKE - 0.1, T_TIP - 0.2, 34); B.date("DECEMBER 1944", T_TIP - 0.1, null, 34);
 legend(0.4, END + 1);
-flag(FL.de, "GERMANY", ...G(52.05, 8.4), 0.5); flag(FL.uk, "BRITAIN", ...G(52.45, -1.7), 0.7); flag(FL.us, "USA", ...G(47.75, 0.9), 0.9);
-neutral("SWITZERLAND", ...G(46.85, 8.0), 1.0);
+flag(FL.de, "GERMANY", ...G(52.05, 8.4), 0.5); flag(FL.uk, "BRITAIN", ...G(51.25, -2.9), 0.7, null, 40);
+flag(FL.us, "USA", ...G(49.32, -0.45), 0.9, null, 34);   // on the Normandy lodgement (Allied ground in June and July too)
+neutral("SWITZERLAND", ...G(47.25, 7.6), 1.0);
 
 // ---------- Patton: the legend of the summer (Third Army's breakout from Avranches, the drive across France) ----------
 const pat = K.badge({ name: "LT. GEN. GEORGE S. PATTON", role: "THIRD ARMY · THE LEGEND OF 1944", photo: "assets/media/patton_head.png", flag: "us", side: "carth", corner: "tr", t: 0.2, until: T_BUT - 0.2 });
@@ -51,7 +52,7 @@ centre(pat, 150);
 const AVR = G(48.68, -1.36);
 arw({ pts: [AVR, G(48.3, 0.2), G(48.6, 1.6), G(48.75, 2.9)], side: "carth", width: 5, t: 0.3, dur: 2.4, until: T_BUT + 0.4 });
 arw({ pts: [G(48.3, 0.2), G(47.9, 1.9), G(48.3, 4.0)], side: "carth", width: 4, t: 1.0, dur: 2.2, until: T_BUT + 0.4 });
-box("PATTON'S THIRD ARMY", ...G(47.95, -0.2), 1.2, 7, T_BUT + 0.3);
+box("PATTON'S THIRD ARMY", ...G(47.85, 0.9), 1.2, 7, T_BUT + 0.3);
 
 // ---------- Collins, centre; the three moves replay as rings + dates ----------
 const col = K.badge({ name: "J. LAWTON COLLINS", role: "VII CORPS · \"LIGHTNING JOE\"", photo: "assets/media/collins_head.png", flag: "us", side: "carth", corner: "tr", t: T_BUT, until: T_CUT - 0.5 });
@@ -63,7 +64,7 @@ const ring = (p, name, date, n, t, dx, dy = -2) => {
 };
 const CHB = G(49.639, -1.616), STL = G(49.116, -1.09), CEL = G(50.233, 5.017);
 ring(CHB, "CHERBOURG", "JUN 1944", 1, T_PORT, -44, -6);
-ring(STL, "SAINT-LÔ", "JUL 1944", 2, T_BROKE, 34, 6);
+ring(STL, "SAINT-LÔ", "JUL 1944", 2, T_BROKE, -38, 8);
 arw({ pts: [[STL[0] - 2, STL[1] + 3], [STL[0] - 4, STL[1] + 16], [STL[0] - 3, STL[1] + 30]], side: "carth", width: 3.5, t: T_BROKE + 0.3, dur: 1.0, until: S2 + 0.5 });   // the Cobra breakout
 ring(CEL, "CELLES", "DEC 1944", 3, T_TIP, -40, 6);
 // the tip of the Bulge: 2nd Panzer's spearhead and the blow from the north that stopped it
