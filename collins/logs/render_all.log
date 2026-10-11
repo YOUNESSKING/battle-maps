@@ -1,0 +1,5 @@
+=== 11:03:21 build hook-a
+hook-a: 45.51s  (abs 0.0-45.51)  paras: ['hook-1', 'hook-2', 'hook-3']
+
+◇  0 error(s), 2 warning(s)
+=== 11:03:24 render hook-a

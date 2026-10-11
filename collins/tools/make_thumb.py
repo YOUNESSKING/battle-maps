@@ -1,5 +1,5 @@
-"""Thumbnail (HANDOVER 1b formula): vidIQ battlefield (left 2/3, labels redone with correct geography) + Rokossovsky's PD photo
-cut out on the right third + red brush banner bottom-left. usage: python3 tools/make_thumb.py -> youtube/thumb/rokossovsky-thumb-{A,B}.jpg"""
+"""Thumbnail (HANDOVER 1b formula): vidIQ battlefield (left 2/3, labels redone with correct geography) + Collins's PD photo (1948)
+cut out on the right third + red brush banner bottom-left. usage: python3 tools/make_thumb.py -> youtube/thumb/collins-thumb-{A,B}.jpg"""
 import io
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageEnhance
 from rembg import remove
@@ -7,20 +7,16 @@ from rembg import remove
 W, H = 1280, 720
 F = "tools/oswald-latin-700-normal.ttf"
 bg = Image.open("youtube/thumb/bg_vidiq.png").convert("RGB").resize((W, H), Image.LANCZOS)
-# hide the generated labels (Parichi is placed wrongly) by blurring their boxes, then add correct small labels
-for box in [(380, 122, 462, 156), (818, 120, 914, 154), (686, 212, 780, 246), (852, 388, 940, 420)]:
-    x0, y0, x1, y1 = box; src_box = (x0, y0 + 46, x1, y1 + 46)  # cover with the terrain just below (no blur box)
-    bg.paste(bg.crop(src_box).filter(ImageFilter.GaussianBlur(1.2)), box)
 d = ImageDraw.Draw(bg); f = ImageFont.truetype(F, 22)
 def tag(t, x, y):
     w = d.textlength(t, font=f); d.rectangle([x, y, x + w + 18, y + 32], fill=(18, 16, 12)); d.rectangle([x, y, x + w + 18, y + 32], outline=(201, 180, 138), width=2)
     d.text((x + 9, y + 2), t, font=f, fill=(247, 243, 234))
-tag("BOBRUISK", 686, 212); tag("PARICHI", 556, 448)
+tag("SAINT-LO - PERIERS ROAD", 110, 150); tag("PANZER LEHR", 150, 400)
 # right third: darken, then the photo cut-out (grayscale, contrast), looking toward the map
 bg = ImageEnhance.Brightness(bg).enhance(0.92)
-src = Image.open("assets/media/rokossovsky_src.jpg").convert("RGB")
+src = Image.open("assets/media/collins48_src.jpg").convert("RGB")
 cut = remove(src)  # RGBA
-cut = cut.crop(cut.getbbox())
+cut = cut.crop(cut.getbbox()); cut = cut.crop((0, 0, cut.width, int(cut.height * 0.96)))
 g = ImageEnhance.Contrast(cut.convert("LA").convert("RGBA")).enhance(1.25)
 g.putalpha(cut.split()[3])
 h = int(H * 1.02); w = int(g.width * h / g.height); g = g.resize((w, h), Image.LANCZOS)
@@ -39,5 +35,5 @@ def banner(text, out, size):
     dr.text((bx + 26, by + 4), text, font=ft, fill=(255, 255, 255), stroke_width=2, stroke_fill=(60, 0, 0))
     im.convert("RGB").save(out, quality=92); print(out)
 
-banner("IMPASSABLE", "youtube/thumb/rokossovsky-thumb-A-impassable.jpg", 118)
-banner("TWO BLOWS", "youtube/thumb/rokossovsky-thumb-B-two-blows.jpg", 128)
+banner("THE GAMBLE", "youtube/thumb/collins-thumb-A-the-gamble.jpg", 128)
+banner("4,000 TONS", "youtube/thumb/collins-thumb-B-4000-tons.jpg", 128)
