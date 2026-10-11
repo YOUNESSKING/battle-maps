@@ -113,7 +113,7 @@ box("SAINT-VAAST", PL.vaast[0] + 40, PL.vaast[1] - 6, T_NORTH + 0.6, 9, null);
 [PL.utah, PL.car, PL.sme, PL.val, PL.chb, PL.vaast].forEach((q, i) => B.city("", q[0], q[1], { r: 4, t: 0.9 + i * 0.2 }));
 // VII Corps counters (on screen from the first second) and the German garrison
 const US = [["d4", 1290, 650, "4TH"], ["d79", 1360, 655, "79TH"], ["d90", 1225, 705, "90TH"], ["d82", 1180, 760, "82ND ABN"], ["d9", 1250, 778, "9TH"]];
-US.forEach(([id, x, y, lab], i) => unit(id, "carth", x, y, 0.15 + i * 0.1, { label: lab, size: "XX" }));
+US.forEach(([id, x, y, lab], i) => unit(id, "carth", x, y, id === "d79" ? S4 - 0.6 : 0.15 + i * 0.1, { label: lab, size: "XX" }));   // the 79th entered the line ~19 June (FACT_NOTES_cotentin)
 const GE = [["g1", 1255, 600], ["g2", 1180, 660], ["g3", 1095, 700], ["g4", 1150, 545], ["g5", 1075, 470], ["g6", 1140, 860]];
 GE.forEach(([id, x, y], i) => unit(id, "rome", x, y, 0.35 + i * 0.1, { size: "XX" }));
 B.move("d4", 0.2, 3.0, 1282, 640); B.move("d90", 0.3, 3.0, 1215, 700); B.move("g1", 0.6, 3.0, 1262, 594);   // the front is alive from frame 0
