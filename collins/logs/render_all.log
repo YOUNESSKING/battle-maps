@@ -3,3 +3,9 @@ hook-a: 45.51s  (abs 0.0-45.51)  paras: ['hook-1', 'hook-2', 'hook-3']
 
 ◇  0 error(s), 2 warning(s)
 === 11:03:24 render hook-a
+=== 11:13:38 OK hook-a
+=== 11:13:38 build hook-b
+hook-b: 20.88s  (abs 45.51-66.39)  paras: ['hook-4']
+
+◇  0 error(s), 1 warning(s)
+=== 11:13:39 render hook-b
