@@ -1,4 +1,0 @@
-/home/user/cb-venv/lib/python3.13/site-packages/diffusers/models/lora.py:393: FutureWarning: `LoRACompatibleLinear` is deprecated and will be removed in version 1.0.0. Use of `LoRACompatibleLinear` is deprecated. Please switch to PEFT backend by installing PEFT: `pip install peft`.
-  deprecate("LoRACompatibleLinear", "1.0.0", deprecation_message)
-loaded PerthNet (Implicit) at step 250,000
-wrote audio/voice_owner.wav 809.38 s
