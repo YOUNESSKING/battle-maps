@@ -1,0 +1,125 @@
+{
+ "title": "Collins #9 \u00b7 MOVE 2 \u00b7 OPERATION COBRA (move2a + move2b + move2c, 5:57 - 9:43)",
+ "note": "move2a normandy_hd_ref (2-1) \u00b7 move2b cobra_hd_ref (2-1b..2-8, option 2 close-up) \u00b7 move2c normandy_hd_ref (2-9, option 1). Seamless camera hand-offs between the scenes.",
+ "frames": [
+  [
+   "move2a",
+   0.6,
+   "5:57",
+   "2-1 title MOVE 2 \u00b7 OPERATION COBRA; wide option 1 (24 Jul); date ticks to 24 JULY",
+   "ref:boom + ticks; gun launches + shell impacts"
+  ],
+  [
+   "move2a",
+   16.5,
+   "6:13",
+   "2-1 bocage over the US sector; STALEMATE \u00b7 EVERY FIELD A FORTRESS",
+   "hit + shake; artillery duels (impact)"
+  ],
+  [
+   "move2b",
+   13,
+   "6:31",
+   "2-1b hedgerow close-up: Culin card; cutter Sherman smashes through the hedge",
+   "hit + dust/shake on the breach; pops"
+  ],
+  [
+   "move2b",
+   38.5,
+   "6:57",
+   "2-2 road glows; Panzer Lehr dug in; Bayerlein; ~2,200 TROOPS \u00b7 ~45 ARMOURED",
+   "ticks on the counters; MG + mortar on US probes"
+  ],
+  [
+   "move2b",
+   44,
+   "7:02",
+   "2-2 belief card: BLEED THEM IN THE HEDGEROWS",
+   "pop + hit"
+  ],
+  [
+   "move2b",
+   65.5,
+   "7:24",
+   "2-3 Bradley + Collins; TARGET BOX ~6,000 x 2,200 YD; BREAK IN / BREAK OUT",
+   "pops, whoosh on the break-out arrows"
+  ],
+  [
+   "move2b",
+   78.2,
+   "7:36",
+   "2-4 24 JULY: RECALLED, short bombs on 30th Div: 25 KILLED \u00b7 131 WOUNDED",
+   "jet/plane flyby, radio static, bomb booms + shake, hit"
+  ],
+  [
+   "move2b",
+   91.5,
+   "7:50",
+   "2-5 25 JULY carpet: spaced c47g bomb runs; 1,500+ HEAVIES, 3,300+ -> ~4,000 T",
+   "plane flyby + explosion booms, SHAKE every run; ticks"
+  ],
+  [
+   "move2b",
+   118.5,
+   "8:17",
+   "2-6 short bombs again: 111 KILLED \u00b7 490 WOUNDED; McNair badge greys",
+   "bombs + shake, red pulse, hit"
+  ],
+  [
+   "move2b",
+   131,
+   "8:29",
+   "2-6 infantry into the craters, survivors fire; +1-2 MILES; THE INFANTRY STALL",
+   "MG bursts, impacts, hit + shake"
+  ],
+  [
+   "move2b",
+   154,
+   "8:52",
+   "2-7 dusk: WAIT (red plug the gap) vs COMMIT THE ARMOUR; tanks slam in",
+   "ticks (clock), pops, hit + shake"
+  ],
+  [
+   "move2b",
+   159,
+   "8:57",
+   "2-7 stamp THE GAMBLE",
+   "hit + ref:boom + shake"
+  ],
+  [
+   "move2b",
+   172.8,
+   "9:11",
+   "2-8 26-27 JULY: armour drives in, front band moves south; Marigny taken",
+   "whoosh, impacts, hit (THE LINE GIVES WAY)"
+  ],
+  [
+   "move2b",
+   177.5,
+   "9:16",
+   "2-8 Bayerlein greyed: ANNIHILATED; zoom-out seam into move2c",
+   "hit + shake, red pulse"
+  ],
+  [
+   "move2c",
+   14,
+   "9:31",
+   "2-9 24->31 Jul: Coutances 28 JUL, Avranches 30 JUL gateway; Patton 1 AUG",
+   "whoosh on the zoom-out + arrows, pops, hit on the gateway"
+  ],
+  [
+   "move2c",
+   18.5,
+   "9:35",
+   "2-9 RESULT card (no casualty card: no clean VII Corps figure)",
+   "hit + ticks"
+  ],
+  [
+   "move2c",
+   24.5,
+   "9:41",
+   "2-9 COLLINS'S METHOD, lines 1-2 lit",
+   "hit on each line"
+  ]
+ ]
+}

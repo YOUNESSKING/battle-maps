@@ -24,14 +24,18 @@ idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
     "hook-a": ("hook-1", "hook-3"),
     "hook-b": ("hook-4", "hook-4"),
-    "bg": ("bg-1", "bg-2"),
-    "move1": ("move1-1", "move1-sub"),
-    "move2": ("move2-1", "move2-10"),
-    "move3": ("move3-1", "move3-9"),
+    "bg": ("bg-1", "bg-1"),
+    "move1a": ("move1-1", "move1-4"),
+    "move1b": ("move1-5", "move1-sub"),
+    "move2a": ("move2-1", "move2-1"),
+    "move2b": ("move2-1b", "move2-8"),
+    "move2c": ("move2-9", "move2-9"),
+    "move3a": ("move3-1", "move3-1"),
+    "move3b": ("move3-2", "move3-7"),
     "ending": ("end-1", "end-2"),
 }
-CHAPTERS = [("hook-1", "Intro: The Swamps No Army Could Cross"), ("move1-1", "Move 1: The Volokolamsk Highway (Moscow 1941)"),
-            ("move2-1", "Move 2: The Northern Face of Kursk (1943)"), ("move3-1", "Move 3: Operation Bagration (1944)"),
+CHAPTERS = [("hook-1", "Intro: The Bombs That Fell Short"), ("move1-1", "Move 1: Cutting Off Cherbourg (June 1944)"),
+            ("move2-1", "Move 2: Operation Cobra (July 1944)"), ("move3-1", "Move 3: Celles, Battle of the Bulge (December 1944)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}

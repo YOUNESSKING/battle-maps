@@ -85,10 +85,13 @@ const slim = (pts, t, dur, w, until, col = "#1f4fc4") => { const NS = "http://ww
   tl.to(g, { autoAlpha: 1, duration: 0.01 }, t); tl.to(ps, { strokeDashoffset: 0, duration: dur, ease: "power2.inOut" }, t); tl.to(g.querySelector(".h"), { scale: 1, duration: 0.2 }, t + dur - 0.1);
   if (until != null) tl.to(g, { autoAlpha: 0, duration: 0.4 }, until); return g; };
 // top-down Sherman icon (gun pointing south = direction of travel); teeth = Culin's hedgerow cutter
-const TANKTD = (teeth, c = "#1f4fc4") => `<svg width="22" height="34" viewBox="0 0 30 46" style="display:block;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.75))">
-  <rect x="0" y="3" width="7" height="34" rx="2" fill="#2a2a2a" stroke="#f3eee2" stroke-width="1"/><rect x="23" y="3" width="7" height="34" rx="2" fill="#2a2a2a" stroke="#f3eee2" stroke-width="1"/>
-  <rect x="5" y="4" width="20" height="32" rx="3" fill="${c}" stroke="#f3eee2" stroke-width="1.6"/><circle cx="15" cy="18" r="7" fill="${c}" stroke="#f3eee2" stroke-width="1.6"/>
-  <rect x="13.6" y="20" width="2.8" height="20" fill="#f3eee2"/>${teeth ? `<g fill="#d9dde3" stroke="#3b3f45" stroke-width="0.8"><polygon points="1,37 5,37 3,45"/><polygon points="7,37 11,37 9,46"/><polygon points="13,38 17,38 15,46.5"/><polygon points="19,37 23,37 21,46"/><polygon points="25,37 29,37 27,45"/><rect x="0" y="36" width="30" height="2.6" rx="1"/></g>` : ""}</svg>`;
+const TANKTD = (teeth, c = "#1f4fc4") => `<svg width="26" height="44" viewBox="0 0 30 51" style="display:block;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.8))">
+  <g stroke="#f3eee2" stroke-width="0.9"><rect x="0" y="2" width="6.5" height="38" rx="2" fill="#26282a"/><rect x="23.5" y="2" width="6.5" height="38" rx="2" fill="#26282a"/></g>
+  <g stroke="#7d8084" stroke-width="1.6" stroke-dasharray="1 2.2"><line x1="3.2" y1="3" x2="3.2" y2="39"/><line x1="26.8" y1="3" x2="26.8" y2="39"/></g>
+  <polygon points="5.5,4 24.5,4 24.5,33 21.5,39 8.5,39 5.5,33" fill="${c}" stroke="#f3eee2" stroke-width="1.5"/>
+  <g stroke="rgba(243,238,226,0.45)" stroke-width="0.8"><line x1="8" y1="7" x2="22" y2="7"/><line x1="8" y1="10" x2="22" y2="10"/></g>
+  <rect x="8.5" y="14" width="13" height="15" rx="5" fill="${c}" stroke="#f3eee2" stroke-width="1.5"/><circle cx="12.5" cy="18" r="1.8" fill="none" stroke="#f3eee2" stroke-width="0.9"/>
+  <rect x="13.7" y="27" width="2.6" height="22.5" rx="1" fill="#f3eee2"/>${teeth ? `<g fill="#d9dde3" stroke="#3b3f45" stroke-width="0.7"><rect x="1" y="38.5" width="28" height="2.6" rx="1"/><polygon points="2,41 6,41 4,47.5"/><polygon points="7.5,41 11.5,41 9.5,48.5"/><polygon points="18.5,41 22.5,41 20.5,48.5"/><polygon points="24,41 28,41 26,47.5"/></g>` : ""}</svg>`;
 const tankTD = (x, y, t, teeth, o = {}) => { const el = GG.pin(TANKTD(teeth, o.c), x, y, { t, pop: true, until: o.until }); if (o.s) gsap.set(el.firstChild, { scale: o.s }); return el; };
 const moveEl = (el, t, dur, x, y, ease = "power1.inOut") => tl.to(el, { left: x, top: y, duration: dur, ease }, t);
 // a hedge drawn on top of the patch (bright crown), so the breach reads clearly
@@ -143,7 +146,7 @@ const F24 = smooth([[150, 105], [304, 125], [537, 178], [741, 254], [974, 339], 
 // evening 25 July: the infantry 1-2 miles into the box (south of the road between La Chapelle-en-Juger and Hebecrevon)
 const F25 = smooth([[150, 105], [304, 125], [537, 178], [741, 254], [974, 339], [1150, 450], [1250, 545], [1330, 585], [1420, 630], [1520, 660], [1640, 718], [1848, 744], [2081, 788], [2343, 766], [2547, 775], [2751, 677], [2950, 640]], 6);
 // evening 27 July: Marigny, St-Gilles, Canisy, Le Mesnil-Herman taken; the Germans pull back from Lessay - Periers
-const F27 = smooth([[150, 405], [304, 430], [537, 470], [741, 480], [930, 560], [1060, 690], [1140, 800], [1260, 830], [1380, 900], [1500, 975], [1600, 960], [1680, 870], [1740, 780], [1848, 750], [2081, 788], [2343, 766], [2547, 775], [2751, 677], [2950, 640]], 6);
+const F27 = smooth([[150, 405], [304, 430], [537, 470], [741, 480], [930, 560], [990, 700], [1060, 820], [1150, 860], [1260, 850], [1380, 900], [1500, 975], [1600, 960], [1680, 870], [1740, 780], [1848, 750], [2081, 788], [2343, 766], [2547, 775], [2751, 677], [2950, 640]], 6);
 // the target box: ~6,000 x 2,200 yd (~225 x 80 map px at 25 m/px), its north edge along the road
 const BOX = [[1225, 486], [1430, 580], [1397, 653], [1192, 559]];
 const BC = [(BOX[0][0] + BOX[2][0]) / 2, (BOX[0][1] + BOX[2][1]) / 2];
@@ -154,7 +157,7 @@ const LV = LivingK(B);
 LV.clouds({ n: 7, opacity: 0.2 });
 LV.shimmer(RIVERS, { width: 1.3 });
 LV.scaleBar(25.03); LV.north();
-const EMB = [2180, 1300];   // emblem on German-held ground (land, south-east of every front of this scene), fixed
+const EMB = [1000, 1250];   // emblem on German-held ground (land, south-east of every front of this scene), fixed
 B.image("assets/media/emblem_ger.png", EMB[0] - 90, EMB[1] - 90, 180, 180, { t: 0, dur: 0.6, opacity: 0.8 });
 wimg("assets/media/cob_geo_ref.png", 0, 0, null);
 // ---------- camera ----------
@@ -170,7 +173,8 @@ B.date("JULY 1944", 0.1, S4 - 0.3, 32); B.date("24 JULY 1944", S4 - 0.2, T_ANYWA
 B.date("25 JULY · AFTERNOON", S7 + 0.7, S8 - 0.2, 30); B.date("26 JULY 1944", S8 - 0.1, T_27 - 0.2, 32); B.date("27 JULY 1944", T_27 - 0.1, END + 1, 32);
 legend(0.3, END + 1);
 flag(US, "USA", 1050, 300, 0.4, END + 1, 46);
-flag(REICH, "GERMANY", 1515, 760, 0.5, T_WRECK, 46);
+flag(REICH, "GERMANY", 1010, 545, 0.5, S2 + 0.8, 40);
+flag(REICH, "GERMANY", 1090, 655, S2 + 1.0, T_WRECK, 46);
 flag(REICH, "GERMANY", 960, 860, T_WRECK + 0.2, END + 1, 46);
 const FRA = K.front({ pts: F24, to: F25, moveT: T_EVE - 0.4, moveDur: 3.0, sideA: "carth", sideB: "rome", t: 0.15, dur: 1.4, width: 15, glow: 0.47, until: T_GAVE + 0.3 });
 const FRB = K.front({ pts: F25, to: F27, moveT: T_GAVE + 0.2, moveDur: 3.0, sideA: "carth", sideB: "rome", t: T_GAVE - 0.1, dur: 0.01, width: 15, glow: 0.47, until: END + 1 });
@@ -181,19 +185,18 @@ gsap.set(FRB, { autoAlpha: 0 }); tl.to(FRB, { autoAlpha: 1, duration: 0.01 }, T_
 B.caption("THE BOCAGE: EVERY FIELD WALLED IN BY HEDGEROWS", 1.6, T_SGT - 0.1, "rome r");
 const CUL = scr(`<div style="display:flex;align-items:center;gap:20px;padding:14px 26px 16px;background:rgba(18,16,12,0.92);border-left:7px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">
   <div><div style="font-size:18px;letter-spacing:0.3em;color:#c9b48a">THE IDEA OF</div><div style="font-size:42px;letter-spacing:0.06em;line-height:1.1">SGT CURTIS G. CULIN</div><div style="font-size:17px;letter-spacing:0.22em;color:#d8cfb8">US ARMY · NORMANDY 1944</div></div>
-  <div class="hh" style="display:flex;align-items:center;gap:12px">
-    <svg width="96" height="80" viewBox="0 0 60 50"><g stroke="#9aa0a8" stroke-width="5" stroke-linecap="round"><line x1="8" y1="44" x2="52" y2="8"/><line x1="8" y1="8" x2="52" y2="44"/><line x1="30" y1="2" x2="30" y2="48"/></g></svg>
-    <div class="ar" style="font-size:44px;color:#c9b48a">→</div>
-    <svg class="bl" width="96" height="70" viewBox="0 0 60 40"><g fill="#d9dde3" stroke="#3b3f45" stroke-width="1"><rect x="2" y="2" width="56" height="7" rx="2"/><polygon points="5,9 13,9 9,36"/><polygon points="17,9 25,9 21,38"/><polygon points="29,9 37,9 33,38"/><polygon points="41,9 49,9 45,36"/></g></svg></div></div>
-  <div style="font-family:Oswald;font-weight:700;font-size:16px;letter-spacing:0.22em;color:#d8cfb8;margin-top:6px;display:flex;justify-content:flex-end;gap:90px;padding-right:20px"><span class="l1">GERMAN BEACH OBSTACLES</span><span class="l2">STEEL TEETH</span></div>`,
-  "left:110px;top:150px;");
-tl.fromTo(CUL, { autoAlpha: 0, x: -100 }, { autoAlpha: 1, x: 0, duration: 0.45, ease: "power3.out" }, T_SGT); SFX("ref:pop", T_SGT + 0.1);
+  <div class="hh" style="display:flex;align-items:flex-start;gap:10px">
+    <div style="text-align:center"><svg width="90" height="74" viewBox="0 0 60 50"><g stroke="#9aa0a8" stroke-width="5" stroke-linecap="round"><line x1="8" y1="44" x2="52" y2="8"/><line x1="8" y1="8" x2="52" y2="44"/><line x1="30" y1="2" x2="30" y2="48"/></g></svg><div class="l1" style="font-size:13px;letter-spacing:0.16em;color:#d8cfb8;line-height:1.2">GERMAN BEACH<br>OBSTACLES</div></div>
+    <div class="ar" style="font-size:44px;color:#c9b48a;margin-top:10px">→</div>
+    <div style="text-align:center"><svg class="bl" width="90" height="66" viewBox="0 0 60 40"><g fill="#d9dde3" stroke="#3b3f45" stroke-width="1"><rect x="2" y="2" width="56" height="7" rx="2"/><polygon points="5,9 13,9 9,36"/><polygon points="17,9 25,9 21,38"/><polygon points="29,9 37,9 33,38"/><polygon points="41,9 49,9 45,36"/></g></svg><div class="l2" style="font-size:13px;letter-spacing:0.16em;color:#d8cfb8;line-height:1.2;margin-top:8px">STEEL<br>TEETH</div></div></div></div>`,
+  "right:110px;top:230px;");
+tl.fromTo(CUL, { autoAlpha: 0, x: 100 }, { autoAlpha: 1, x: 0, duration: 0.45, ease: "power3.out" }, T_SGT); SFX("ref:pop", T_SGT + 0.1);
 const HH = CUL.querySelector(".hh"), AR = CUL.querySelector(".ar"), BL = CUL.querySelector(".bl"), L1 = CUL.querySelector(".l1"), L2 = CUL.querySelector(".l2");
 gsap.set([HH, L1, L2], { autoAlpha: 0 }); gsap.set([AR, BL], { autoAlpha: 0 });
 tl.to([HH, L1], { autoAlpha: 1, duration: 0.3 }, T_WELD - 0.2); tl.set(AR, { autoAlpha: 0 }, T_WELD - 0.2);
 tl.to([AR], { autoAlpha: 1, duration: 0.25 }, T_BEACH + 0.6); tl.fromTo(BL, { autoAlpha: 0, scale: 1.8 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in" }, T_BEACH + 0.8);
 tl.to(L2, { autoAlpha: 1, duration: 0.3 }, T_BEACH + 0.9); SFX("hit", T_BEACH + 1.0);
-tl.to(CUL, { autoAlpha: 0, x: -80, duration: 0.4 }, T_REAR - 0.3);
+tl.to(CUL, { autoAlpha: 0, x: 80, duration: 0.4 }, T_REAR - 0.3);
 // tank 1: the cutter. It crosses the long east-west hedge (y ~381 at x 1240) heading south and bursts through
 const H1 = hedge([[1212, 384.5], [1240, 381.5], [1268, 378]], T_FRONT - 0.6, S2 + 0.5);
 const T1 = tankTD(1240, 336, T_FRONT, true, { until: S2 + 0.6 });
@@ -210,7 +213,7 @@ const T2 = tankTD(1400, 408, T_FRONT + 0.3, false, { until: S2 + 0.6 });
 const ATG = unit("atg", "rome", 1402, 512, "artillery", { t: T_FRONT + 0.6, w: 22, h: 15, until: S2 + 0.4 });
 moveEl(T2, T_REAR - 0.7, 0.8, 1400, 438, "power1.in");
 tl.to(T2.firstChild, { rotation: 0, scaleY: 1.35, scaleX: 1.15, y: -6, duration: 0.5, ease: "power2.out", transformOrigin: "50% 100%" }, T_REAR + 0.1);
-const BELLY = GG.pin(`<div style="width:24px;height:16px;border-radius:50%;background:radial-gradient(circle, rgba(255,60,50,0.95), rgba(255,60,50,0) 70%)"></div>`, 1400, 446, { t: T_BELLY - 0.2 });
+const BELLY = GG.pin(`<div style="width:24px;height:16px;border-radius:50%;background:radial-gradient(circle, rgba(255,60,50,0.95), rgba(255,60,50,0) 70%)"></div>`, 1400, 446, { t: T_BELLY - 0.2, until: T_HUND + 0.5 });
 tl.to(BELLY, { autoAlpha: 0.35, duration: 0.25, yoyo: true, repeat: 5 }, T_BELLY);
 tag("THIN BELLY EXPOSED", 1452, 432, T_BELLY - 0.1, "#c4121f", 6, T_HUND);
 shoot(ux("atg"), [1400, 446], T_BELLY + 0.9, { unit: "atg", r: 6, h: 6, dur: 0.4 });
@@ -240,7 +243,7 @@ const BAY = badge({ name: "GEN. FRITZ BAYERLEIN", role: "PANZER LEHR DIVISION", 
 const STR = scr(`<div style="font-family:Oswald;font-weight:700;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:6px solid #c4121f;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6);text-align:center">
   <div style="font-size:16px;letter-spacing:0.3em;color:#ef8a82">PANZER LEHR · AFTER WEEKS OF FIGHTING</div>
   <div style="display:flex;gap:34px;align-items:baseline;justify-content:center;margin-top:4px"><div><span class="n1" style="font-size:64px;line-height:1">~0</span><div style="font-size:18px;letter-spacing:0.2em;color:#d8cfb8">COMBAT TROOPS</div></div>
-  <div class="c2"><span class="n2" style="font-size:64px;line-height:1">~0</span><div style="font-size:18px;letter-spacing:0.2em;color:#d8cfb8">ARMOURED VEHICLES</div></div></div></div>`, "left:110px;top:150px;");
+  <div class="c2"><span class="n2" style="font-size:64px;line-height:1">~0</span><div style="font-size:18px;letter-spacing:0.2em;color:#d8cfb8">ARMOURED VEHICLES</div></div></div></div>`, "left:110px;top:225px;");
 tl.fromTo(STR, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power3.out" }, T_WEEKS); SFX("hit", T_WEEKS + 0.2);
 const c1 = { v: 0 }, n1 = STR.querySelector(".n1"), c2 = { v: 0 }, n2 = STR.querySelector(".n2");
 tl.to(c1, { v: 2200, duration: 1.4, ease: "power2.out", onUpdate: () => { n1.textContent = "~" + (Math.round(c1.v / 50) * 50).toLocaleString("en-US"); } }, T_2200 - 0.3);
@@ -253,7 +256,7 @@ const USF = [["d9", 1150, 360, "9TH INF"], ["d4", 1300, 418, "4TH INF"], ["d30",
 USF.forEach(([id, x, y], k) => unit(id, "carth", x, y, "infantry", { t: S2 + 1.4 + k * 0.15, size: "XX" }));
 [[1185, 520, 1170, 420], [1300, 560, 1290, 470], [1405, 620, 1430, 520]].forEach(([x1, y1, x2, y2], k) => { const t = T_ENOUGH + 0.2 + k * 0.5;
   K.gun(x1, y1 - 4, t, { sfx: false, dx: 0, dy: -4 }); K.gun(x1, y1 - 4, t + 0.25, { sfx: false, dx: 0, dy: -4 }); SFX("mg", t); K.impact(x2, y2, t + 0.5, { r: 6, puffs: 2 }); });
-const BEL = scr(`<div style="font-family:Oswald;font-weight:700;padding:14px 30px 16px;background:rgba(18,16,12,0.94);border-left:8px solid #c4121f;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:19px;letter-spacing:0.3em;color:#ef8a82">WHAT THE GERMANS BELIEVED</div><div style="font-size:54px;letter-spacing:0.05em;line-height:1.1">"BLEED THEM IN THE HEDGEROWS"</div></div>`, "left:110px;top:150px;");
+const BEL = scr(`<div style="font-family:Oswald;font-weight:700;padding:14px 30px 16px;background:rgba(18,16,12,0.94);border-left:8px solid #c4121f;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:19px;letter-spacing:0.3em;color:#ef8a82">WHAT THE GERMANS BELIEVED</div><div style="font-size:54px;letter-spacing:0.05em;line-height:1.1">"BLEED THEM IN THE HEDGEROWS"</div></div>`, "left:110px;top:225px;");
 tl.fromTo(BEL, { autoAlpha: 0, x: -100 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out" }, T_BELIEVED); SFX("ref:pop", T_BELIEVED + 0.1); SFX("hit", T_BLEED + 0.2);
 tl.to(BEL, { autoAlpha: 0, duration: 0.4 }, S3 - 0.3);
 // =====================================================================================================================
@@ -312,7 +315,7 @@ const CNT = scr(`<div style="font-family:Oswald;font-weight:700;padding:12px 26p
   <div style="font-size:16px;letter-spacing:0.3em;color:#c9b48a">25 JULY 1944 · THE CARPET</div>
   <div style="display:flex;align-items:baseline;gap:14px"><span class="a" style="font-size:66px;line-height:1.05">0</span><span style="font-size:24px;letter-spacing:0.18em;color:#ef8a82">HEAVY BOMBERS</span></div>
   <div class="r2" style="font-size:22px;letter-spacing:0.14em;color:#d8cfb8">+380 MEDIUMS · +550 FIGHTER-BOMBERS</div>
-  <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid rgba(201,180,138,0.4);margin-top:6px;padding-top:4px"><span class="b" style="font-size:54px;line-height:1.05">0</span><span style="font-size:24px;letter-spacing:0.18em;color:#ef8a82">TONS OF BOMBS</span></div></div>`, "right:110px;top:150px;");
+  <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid rgba(201,180,138,0.4);margin-top:6px;padding-top:4px"><span class="b" style="font-size:54px;line-height:1.05">0</span><span style="font-size:24px;letter-spacing:0.18em;color:#ef8a82">TONS OF BOMBS</span></div></div>`, "right:110px;top:230px;");
 tl.fromTo(CNT, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out" }, T_1500 - 0.4); SFX("hit", T_1500 - 0.2);
 const ca = { v: 0 }, na = CNT.querySelector(".a"), cb = { v: 0 }, nb = CNT.querySelector(".b"), R2 = CNT.querySelector(".r2"); gsap.set(R2, { autoAlpha: 0 });
 tl.to(ca, { v: 1500, duration: 1.8, ease: "power2.out", onUpdate: () => { na.textContent = (Math.round(ca.v / 10) * 10).toLocaleString("en-US") + (ca.v >= 1495 ? "+" : ""); } }, T_1500 - 0.2);
@@ -348,11 +351,11 @@ jolt(["d4", "d30"], S6 + 0.8);
 pulse(S6 + 0.7); pulse(T_111 + 0.2);
 const K25 = scr(stampHTML("111 KILLED · 490 WOUNDED", "#e3232f", 64, -4, "25 JULY · AMERICANS HIT BY THEIR OWN BOMBS"), "left:0;right:0;top:640px;display:flex;justify-content:center;");
 slam(K25, T_111 + 0.1, { shake: 6 });
-tl.to(K25, { scale: 0.7, y: 210, duration: 0.45, ease: "power3.inOut" }, T_DEAD - 0.2); tl.to(K25, { autoAlpha: 0, duration: 0.35 }, T_SHAKEN - 0.2);
+tl.to(K25, { scale: 0.7, y: 150, duration: 0.45, ease: "power3.inOut" }, T_DEAD - 0.2); tl.to(K25, { autoAlpha: 0, duration: 0.35 }, T_SHAKEN - 0.2);
 const MC = scr(`<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
   <div class="ph" style="position:relative;width:220px;height:220px;border-radius:50%;overflow:hidden;border:7px solid #f3e7c4;box-shadow:0 0 0 5px #1f4fc4,0 18px 36px rgba(0,0,0,0.75);background:url(${US}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.8), rgba(10,12,24,0.45));font-family:Oswald;font-weight:700;font-size:70px;color:#f7f3ea">LJM</div><img src="${PHOTO.mcnair}" onerror="this.style.display='none'" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
   <div style="font-size:40px;line-height:1;color:#ffd54a;letter-spacing:0.2em;text-shadow:0 2px 6px #000">★★★</div>
-  <div style="padding:8px 24px 10px;background:rgba(18,16,12,0.94);border-top:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:0.08em">LT. GEN. LESLEY McNAIR</div><div style="font-size:16px;letter-spacing:0.22em;color:#d8cfb8">CAME FORWARD TO WATCH · KILLED 25 JULY</div></div></div>`, "left:120px;top:150px;");
+  <div style="padding:8px 24px 10px;background:rgba(18,16,12,0.94);border-top:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:0.08em">LT. GEN. LESLEY McNAIR</div><div style="font-size:16px;letter-spacing:0.22em;color:#d8cfb8">CAME FORWARD TO WATCH · KILLED 25 JULY</div></div></div>`, "left:120px;top:215px;");
 tl.fromTo(MC, { autoAlpha: 0, x: -120 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out" }, T_DEAD); SFX("ref:pop", T_DEAD + 0.1);
 tl.to(MC.querySelector(".ph"), { filter: "grayscale(1) brightness(0.7) contrast(0.9)", duration: 0.4 }, T_MCN + 0.6); SFX("hit", T_MCN + 0.7); pulse(T_MCN + 0.75, 0.6);
 tl.to(MC, { autoAlpha: 0, x: -80, duration: 0.4 }, T_SHAKEN - 0.2);
@@ -379,24 +382,24 @@ const DUSK = scr("", "inset:0;background:linear-gradient(180deg, rgba(14,18,40,0
 tl.fromTo(DUSK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, immediateRender: false }, S7 - 0.2); tl.to(DUSK, { autoAlpha: 0, duration: 1.0 }, S8 - 0.4);
 const CL2 = scr(`<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
   <div style="position:relative;width:230px;height:230px;border-radius:50%;overflow:hidden;border:7px solid #f3e7c4;box-shadow:0 0 0 5px #1f4fc4,0 18px 36px rgba(0,0,0,0.75);background:url(${US}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.8), rgba(10,12,24,0.45));font-family:Oswald;font-weight:700;font-size:70px;color:#f7f3ea">JLC</div><img src="${PHOTO.collins}" onerror="this.style.display='none'" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
-  <div style="padding:8px 24px 10px;background:rgba(18,16,12,0.94);border-top:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:0.08em">COLLINS MUST DECIDE</div><div style="font-size:16px;letter-spacing:0.22em;color:#d8cfb8">VII CORPS · AFTERNOON, 25 JULY 1944</div></div></div>`, "left:120px;top:160px;");
+  <div style="padding:8px 24px 10px;background:rgba(18,16,12,0.94);border-top:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:0.08em">COLLINS MUST DECIDE</div><div style="font-size:16px;letter-spacing:0.22em;color:#d8cfb8">VII CORPS · AFTERNOON, 25 JULY 1944</div></div></div>`, "left:120px;top:215px;");
 tl.fromTo(CL2, { autoAlpha: 0, x: -120 }, { autoAlpha: 1, x: 0, duration: 0.45, ease: "power3.out" }, S7 + 0.3);
 tl.to(CL2, { autoAlpha: 0, duration: 0.4 }, S8 - 0.4);
 // the two paths (screen cards, right side): WAIT (grey, clock) vs COMMIT THE ARMOUR (blue, tank)
 const CLOCK = `<svg width="54" height="54" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#c9c4b8" stroke-width="3.5"/><line class="hand" x1="20" y1="20" x2="20" y2="8" stroke="#c9c4b8" stroke-width="3" stroke-linecap="round"/><line x1="20" y1="20" x2="28" y2="20" stroke="#c9c4b8" stroke-width="3" stroke-linecap="round"/></svg>`;
 const TANKI = `<svg width="70" height="40" viewBox="6 38 92 42"><g fill="#f7f3ea"><rect x="12" y="58" width="78" height="14" rx="6"/><rect x="30" y="47" width="36" height="12" rx="3"/><rect x="64" y="50" width="32" height="4"/></g></svg>`;
 const OPT = (cls, c, icon, k, h, s) => `<div class="${cls}" style="display:flex;align-items:center;gap:18px;padding:14px 26px 16px;background:rgba(18,16,12,0.94);border-left:8px solid ${c};font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6);min-width:560px">${icon}<div><div style="font-size:16px;letter-spacing:0.3em;color:#c9b48a">${k}</div><div style="font-size:46px;letter-spacing:0.06em;line-height:1.05">${h}</div><div style="font-size:17px;letter-spacing:0.18em;color:#d8cfb8">${s}</div></div></div>`;
-const OW = scr(OPT("w", "#77746c", CLOCK, "THE CAUTIOUS CHOICE", "WAIT", "UNTIL THE INFANTRY CLEAR A CLEAN BREACH"), "right:110px;top:170px;");
-const OC = scr(OPT("c", "#1f4fc4", TANKI, "COLLINS'S CHOICE", "COMMIT THE ARMOUR", "SEND THE TANKS IN NEXT MORNING"), "right:110px;top:350px;");
+const OW = scr(OPT("w", "#77746c", CLOCK, "THE CAUTIOUS CHOICE", "WAIT", "UNTIL THE INFANTRY CLEAR A CLEAN BREACH"), "right:110px;top:240px;");
+const OC = scr(OPT("c", "#1f4fc4", TANKI, "COLLINS'S CHOICE", "COMMIT THE ARMOUR", "SEND THE TANKS IN NEXT MORNING"), "right:110px;top:420px;");
 tl.fromTo(OW, { autoAlpha: 0, x: 100 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out" }, T_CAUT); SFX("ref:pop", T_CAUT + 0.1);
 tl.to(OW.querySelector(".hand"), { rotation: 360, svgOrigin: "20 20", duration: 2.4, repeat: 3, ease: "none" }, T_CAUT + 0.2);
 for (let k = 0; k < 8; k++) SFX("tick", T_CAUT + 0.4 + k * 0.6);
 // "shattered, not yet broken": the grey survivors on the map; "if he waited ... plug the gap": ghost red counters slide in
 const SHB = scr(stampHTML("SHATTERED · NOT YET BROKEN", "#ffd54a", 46, -4), "left:0;right:0;top:700px;display:flex;justify-content:center;");
 slam(SHB, T_SHAT - 0.1, { shake: 3, until: T_PLUG + 0.5 });
-const GH = [["gh1", 1180, 760, 1225, 600], ["gh2", 1330, 790, 1330, 640], ["gh3", 1470, 770, 1440, 660]].map(([id, x, y, x2, y2], k) => { unit(id, "rome", x, y, k === 1 ? "tank" : "infantry", { t: T_IFW + k * 0.15, w: 22, h: 15 });
+const GH = [["gh1", 1180, 760, 1225, 600], ["gh2", 1330, 790, 1330, 640], ["gh3", 1470, 770, 1440, 660]].map(([id, x, y, x2, y2], k) => { unit(id, "rome", x, y, k === 1 ? "tank" : "infantry", { t: T_IFW + k * 0.15, w: 28, h: 19 });
   go(id, T_IFW + 0.6 + k * 0.15, 2.4, x2, y2, "power2.out"); return id; });
-const WAITA = slim([[1250, 790], [1260, 720], [1280, 650]], T_IFW + 0.5, 2.0, 3, S7 + 0.1 + (T_AFT - S7), "#c4121f");
+const WAITA = slim([[1250, 800], [1262, 720], [1285, 655]], T_IFW + 0.5, 2.0, 5, S7 + 0.1 + (T_AFT - S7), "#c4121f");
 B.caption("WAIT, AND THE SURVIVORS PLUG THE GAP", T_IFW + 0.2, T_AFT - 0.1, "rome r");
 B.hideUnits(GH, T_AFT - 0.1, 0.5);
 // the choice: WAIT greys out, COMMIT THE ARMOUR lights; tank counters appear poised north of the box
@@ -415,12 +418,12 @@ slam(GAM, T_GAMBLE - 0.1, { shake: 7, from: 2.6, until: S8 - 0.2 }); SFX("ref:bo
 B.hideUnits(["d9", "d4", "d30", "e1", "e3", "e2"], S8 - 0.3, 0.4);
 tl.to(boxEl, { opacity: 0, duration: 0.3 }, S8 - 0.3);
 // 1st Infantry + CCB 3rd Armored on Marigny (and on west toward Coutances); 2nd Armored through Saint-Gilles to Canisy and Le Mesnil-Herman
-const AW = B.arrow({ pts: [[1215, 450], [1235, 560], [1235, 660], [1225, 730]], side: "carth", t: T_1ID - 0.3, dur: 2.0, width: 12, until: END - 1.6 });
+const AW = B.arrow({ pts: [[1215, 450], [1235, 560], [1238, 640], [1232, 702]], side: "carth", t: T_1ID - 0.3, dur: 2.0, width: 12, until: END - 1.6 });
 const AE = B.arrow({ pts: [[1420, 525], [1415, 610], [1420, 700], [1440, 820], [1540, 930]], side: "carth", t: T_2AD - 0.2, dur: 2.4, width: 12, until: END - 1.6 });
-const AWW = B.arrow({ pts: [[1230, 740], [1150, 820], [1030, 880], [900, 920]], side: "carth", t: T_MARF + 0.3, dur: 2.0, width: 10, until: END - 1.6 });
+const AWW = B.arrow({ pts: [[1215, 760], [1150, 800], [1085, 815]], side: "carth", t: T_MARF + 0.3, dur: 1.4, width: 10, until: END - 1.6 });
 SFX("ref:whoosh", T_2AD - 0.2);
-go("tk3", T_2AD, 4.6, 1430, 800, "power1.in"); go("tk2", T_1ID - 0.1, 3.8, 1240, 700, "power1.in"); go("tk1", T_3AD, 4.0, 1185, 650, "power1.in");
-tag("2ND ARMD", 1500, 700, T_2AD + 0.4, "#1f4fc4", 9, END - 1.6);
+go("tk3", T_2AD, 4.6, 1430, 800, "power1.in"); go("tk2", T_1ID - 0.1, 3.8, 1250, 680, "power1.in"); go("tk1", T_3AD, 4.0, 1185, 650, "power1.in");
+tag("2ND ARMD", 1505, 628, T_2AD + 0.4, "#1f4fc4", 9, END - 1.6);
 tag("1ST INF + CCB 3RD ARMD", 1110, 600, T_1ID + 0.3, "#1f4fc4", 9, END - 1.6);
 // impacts on the wreckage of the German line, the survivors grey
 [[1262, 640], [1372, 676], [1300, 560], [1420, 700], [1235, 690]].forEach(([x, y], k) => K.impact(x, y, T_WRECK + k * 0.4, { r: 9, puffs: 2 }));
@@ -430,7 +433,7 @@ const GW = scr(stampHTML("THE LINE GIVES WAY", "#ffd54a", 54, -4), "left:0;right
 slam(GW, T_GAVE + 0.1, { shake: 5, until: T_27 + 0.2 });
 // 27 July: Marigny falls (ring, blue box), the 3rd Armored joins the drive west
 K.target(MAR[0], MAR[1], T_MARF - 0.3, { r: 26, side: "carth", until: END - 1.6 });
-box("MARIGNY · 27 JULY", MAR[0] - 70, MAR[1] + 30, T_MARF, 12, END - 1.6);
+tag("TAKEN 27 JULY", MAR[0] + 74, MAR[1] + 2, T_MARF, "#1f4fc4", 10, END - 1.6);
 town("CANISY", CAN[0], CAN[1], T_MARF + 0.4, { dx: 40, dy: 2, size: 10, until: END - 1.6 });
 town("COUTANCES", COU[0], COU[1], T_MARF + 0.6, { dy: -18, size: 12, until: END + 1 });
 B.caption("27 JULY: MARIGNY FALLS", T_27 + 0.1, T_BAYR - 0.1, "carth r");
