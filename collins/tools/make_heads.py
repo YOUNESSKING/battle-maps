@@ -6,7 +6,7 @@ from PIL import Image
 M = "/home/user/battle-maps/collins/assets/media/"
 BOXES = {
     "bradley":    ("bradley_src.jpg",    (180, 100, 840, 760)),
-    "montgomery": ("montgomery_src.jpg", (330, 230, 990, 890)),
+    "montgomery": ("montgomery_src.jpg", (500, 540, 900, 940)),
     "patton":     ("patton_src.jpg",     (680, 170, 1040, 530)),
     "schlieben":  ("schlieben_src.jpg",  (210, 50, 570, 410)),
     "white":      ("white_src.jpg",      (60, 10, 560, 510)),
