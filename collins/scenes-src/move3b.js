@@ -22,7 +22,7 @@ const L = (lat, lon) => PR(lat, lon);
 const FL = { us: "assets/media/us_flag_48star.png", uk: "assets/media/uk_flag.png", de: "assets/media/ger_reich_flag.png" };
 // commander photos: licensed head shots from the photo agent (assets/media/<name>_head.png, CREDITS.md); initials show if a file is missing
 const PHOTO = { collins: "assets/media/collins_head.png", harmon: "assets/media/harmon_head.png", monty: "assets/media/montgomery_head.png",
-  lutt: "assets/media/luttwitz_head.png", hodges: "assets/media/hodges_head.png" };
+  lutt: "assets/media/luttwitz_head.png", white: "assets/media/white_head.png", hodges: "assets/media/hodges_head.png" };
 // ---------- helpers (rokossovsky move3.js kit) ----------
 const box = (txt, x, y, t, size = 16, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.28em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.6).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
 const town = (txt, lat, lon, t, o = {}) => { const [x, y] = L(lat, lon); B.city("", x, y, { r: o.r || 4, t, until: o.until }); return box(txt, x + (o.dx || 0), y + (o.dy != null ? o.dy : -18), t, o.size || 11, o.until); };
@@ -150,7 +150,7 @@ B.date("25 DECEMBER 1944", T_AFT + 0.1, S6, 32); B.date("26 – 27 DECEMBER 1944
 // flags on each side's ground, per camera (~115 px on screen)
 flag(FL.us, "USA", ...L(50.50, 4.80), 0.3, T_SPEAR + 0.3, 140); flag(FL.de, "GERMANY", ...L(50.05, 6.55), 0.45, T_SPEAR + 0.3, 140);
 flag(FL.uk, "BRITAIN", ...L(50.33, 4.62), 0.6, T_SPEAR + 0.3, 110);
-const CLOSE = (t, until, deAt = [50.15, 5.17]) => { flag(FL.us, "USA", ...L(50.31, 5.20), t, until, 36); flag(FL.de, "GERMANY", ...L(...deAt), t + 0.1, until, 36); flag(FL.uk, "BRITAIN", ...L(50.20, 4.84), t + 0.2, until, 36); };
+const CLOSE = (t, until, deAt = [50.17, 5.27]) => { flag(FL.us, "USA", ...L(50.31, 5.20), t, until, 36); flag(FL.de, "GERMANY", ...L(...deAt), t + 0.1, until, 36); flag(FL.uk, "BRITAIN", ...L(50.20, 4.84), t + 0.2, until, 36); };
 CLOSE(T_SPEAR + 1.0, S2B - 0.3);
 flag(FL.us, "USA", ...L(50.62, 4.95), S2B + 1.0, S3 - 0.3, 105); flag(FL.de, "GERMANY", ...L(50.12, 6.10), S2B + 1.1, S3 - 0.3, 105); flag(FL.uk, "BRITAIN", ...L(50.32, 4.68), S2B + 1.2, S3 - 0.3, 90);
 flag(FL.us, "USA", ...L(50.40, 5.62), S3 + 0.9, S5 - 0.4, 66); flag(FL.de, "GERMANY", ...L(50.10, 5.55), S3 + 1.0, S5 - 0.4, 66); flag(FL.uk, "BRITAIN", ...L(50.31, 4.80), S3 + 1.1, S5 - 0.4, 60);
@@ -240,8 +240,8 @@ const monty = badge({ name: "FIELD MARSHAL MONTGOMERY", role: "COMMANDS THE NORT
 const hodg = badge({ name: "LT. GEN. COURTNEY HODGES", role: "US FIRST ARMY", initials: "CH", photo: PHOTO.hodges, flag: "us", side: "carth", corner: "bl", t: T_HODGES - 0.2, until: S4 + 0.3 });
 const FB = LL([[50.49, 5.09], [50.38, 5.27], [50.267, 5.446], [50.29, 5.67]]);
 const FBL = glowPath(FB, "#b9b4a6", 5, T_NEC + 0.6, S5 - 0.3, 2); FBL.setAttribute("stroke-dasharray", "14 10");
-town("ANDENNE", 50.49, 5.09, T_NEC + 0.8, { size: 12, dy: -20, until: S5 - 0.3 }); town("MANHAY", 50.29, 5.67, T_NEC + 1.0, { size: 12, dy: -20, until: S5 - 0.3 });
-box("FALL-BACK LINE", ...L(50.42, 5.40), T_NEC + 1.0, 12, S5 - 0.3);
+town("ANDENNE", 50.49, 5.09, T_NEC + 0.8, { size: 12, dx: -12, dy: 20, until: S5 - 0.3 }); town("MANHAY", 50.29, 5.67, T_NEC + 1.0, { size: 12, dy: -20, until: S5 - 0.3 });
+box("FALL-BACK LINE", ...L(50.37, 5.46), T_NEC + 1.0, 12, S5 - 0.3);
 // ============ move3-4: the choice (night, Christmas Eve) ============
 const PLAN = [arw({ pts: LL([[50.300, 5.10], [50.272, 4.995], [50.245, 4.965]]), side: "carth", t: T_PLAN + 0.2, dur: 1.3, width: 13, dash: "14 10", until: S5 + 0.2 }),
   arw({ pts: LL([[50.300, 5.13], [50.250, 5.085], [50.222, 5.040]]), side: "carth", t: T_PLAN + 0.6, dur: 1.3, width: 13, dash: "14 10", until: S5 + 0.2 })];
@@ -286,6 +286,7 @@ CCB.forEach(([id, la, lo, ic, lb], k) => unit(id, "carth", la, lo, ic, lb, { t: 
 const ENV = [arw({ pts: LL([[50.292, 5.090], [50.272, 4.995], [50.250, 4.962], [50.226, 4.990]]), side: "carth", t: T_SWEPT - 0.2, dur: 2.0, width: 16, until: T_DEEP }),
   arw({ pts: LL([[50.292, 5.120], [50.255, 5.095], [50.218, 5.075], [50.214, 5.035]]), side: "carth", t: T_SWEPT + 0.2, dur: 2.0, width: 16, until: T_DEEP })];
 SFX("ref:whoosh", T_SWEPT);
+badge({ name: "BRIG. GEN. ISAAC D. WHITE", role: "COMBAT COMMAND B · 2ND ARMORED", initials: "IDW", photo: PHOTO.white, flag: "us", side: "carth", corner: "bl", t: T_8 + 0.3, until: T_FIRST });
 go("b1", T_SWEPT, 4.0, 50.252, 4.966); go("b3", T_SWEPT + 0.2, 4.0, 50.236, 4.982); go("b2", T_SWEPT + 0.4, 4.0, 50.216, 5.060);
 B.caption("COMBAT COMMAND B: AROUND CELLES FROM TWO SIDES", T_SWEPT, T_BRIT - 0.1, "carth r");
 [[50.258, 4.920, "3RD RTR"], [50.244, 4.940, null]].forEach(([la, lo, lb], k) => unit("bt" + k, "carth", la, lo, "tank", lb, { t: T_BRIT + k * 0.25, flag: "uk", until: T_DEEP + 0.2, w: 17, h: 11.5, tag: 6.5 }));

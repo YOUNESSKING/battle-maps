@@ -59,7 +59,7 @@ const raid = (pts, t, n = 3, dur = 3.4) => K.bombRun({ kind: "c47g", side: "cart
 const shoot = (from, to, t, o = {}) => { K.gun(from[0], from[1], t, { unit: o.unit, dx: o.dx || 0, dy: o.dy || -3 });
   const dur = o.dur || 0.7; GG.arc(from[0], from[1], to[0], to[1], t + 0.05, { dur, width: o.width || 2, h: o.h || 12, impact: false }); K.impact(to[0], to[1], t + 0.05 + dur, { r: o.r || 8, puffs: 2 }); };
 const bunker = (x, y, t, until, s = 14) => GG.pin(`<svg width="${s}" height="${s}" viewBox="0 0 40 40" style="display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))"><path d="M4 30 L4 16 Q20 4 36 16 L36 30 Z" fill="#c4121f" stroke="#f3eee2" stroke-width="3.5"/><rect x="13" y="18" width="14" height="4" fill="#1a1712"/></svg>`, x, y, { t, pop: true, until });
-const medal = (x, y, t, s = 30) => { SFX("hit", t); return GG.pin(`<svg width="${s}" height="${s * 1.35}" viewBox="0 0 40 54" style="display:block;filter:drop-shadow(0 0 6px rgba(255,220,120,.8))"><path d="M10 0 L30 0 L26 16 L14 16 Z" fill="#7fb2e5" stroke="#f3eee2" stroke-width="1.5"/><circle cx="20" cy="18" r="2.5" fill="#f3eee2"/><path d="M20 20 L24.5 31 L36 31 L27 38 L30.5 50 L20 43 L9.5 50 L13 38 L4 31 L15.5 31 Z" fill="#e8c35a" stroke="#7a5a12" stroke-width="1.4"/></svg>`, x, y, { t, pop: true }); };
+const medal = (x, y, t, s = 30, until = null) => { SFX("hit", t); return GG.pin(`<svg width="${s}" height="${s * 1.35}" viewBox="0 0 40 54" style="display:block;filter:drop-shadow(0 0 6px rgba(255,220,120,.8))"><path d="M10 0 L30 0 L26 16 L14 16 Z" fill="#7fb2e5" stroke="#f3eee2" stroke-width="1.5"/><circle cx="20" cy="18" r="2.5" fill="#f3eee2"/><path d="M20 20 L24.5 31 L36 31 L27 38 L30.5 50 L20 43 L9.5 50 L13 38 L4 31 L15.5 31 Z" fill="#e8c35a" stroke="#7a5a12" stroke-width="1.4"/></svg>`, x, y, { t, pop: true, until }); };
 
 // ---------- layers ----------
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.2 }); LV.scaleBar(24.77); LV.north();
@@ -67,12 +67,13 @@ const T_OUT = S8 + 0.3;    // zoom back out: option 1 again
 ctl("jun26", T_OUT, T_PEN + 1.4, 1.2); ctl("jul1", T_PEN + 0.6, null, 1.2);
 const EMB = G(49.705, -1.90);   // emblem on the German-held Hague tip (land), shown only on the option-1 zoom-out
 const emb = B.image("assets/media/emblem_ger.png", EMB[0] - 60, EMB[1] - 60, 120, 120, { t: 0, dur: 0.6, opacity: 0.8 });
+B.tl.to(emb, { opacity: 0, duration: 1.2 }, T_PEN + 0.6);   // the Hague falls (1 July): no German land left on this map
 
 // ---------- camera ----------
 const CITY = [1450, 720, 1.35], ROULE = [1452, 690, 2.9], TUN = [1395, 670, 3.0];
 B.camera([[0, 1440, 700, 1.25], [T_1240, ...CITY], [T_TWO, 1440, 740, 1.3], [T_EVERY, 1450, 730, 1.4], [S6 + 0.5, 1450, 720, 1.5], [T_KEY, 1455, 700, 2.2],
   [T_25, ...ROULE], [T_NIGHT, 1450, 688, 2.95], [S7 + 0.4, 1440, 685, 2.9], [T_TUNNELS, ...TUN], [T_OFFER, 1400, 668, 3.0], [T_STRONG, 1420, 650, 2.2],
-  [T_ARSENAL, 1420, 630, 2.4], [T_OUT + 2.2, 1250, 640, 0.85], [T_WRECK, 1260, 640, 0.86], [T_CARGO, 1430, 625, 2.0], [T_HAD + 0.5, 1430, 625, 2.05],
+  [T_ARSENAL, 1420, 630, 2.4], [T_OUT + 2.2, 1250, 640, 0.85], [T_PEN + 1.4, 1260, 640, 0.86], [T_WRECK + 0.2, 1450, 585, 2.5], [T_HAD + 0.5, 1450, 590, 2.55],
   [S9 + 1.5, 1300, 700, 0.9], [END, 1300, 710, 0.95]]);
 SFX("ref:whoosh", T_KEY); SFX("ref:whoosh", T_OUT + 0.2);
 
@@ -84,16 +85,16 @@ B.date("27 JUNE 1944", T_LOUD, S8, 32); B.date("1 JULY 1944", S8, T_CARGO, 32); 
 
 // ======================= move1-5: 22 June, the deadline passes; air attack 12:40; ground attack 14:00 =======================
 legend("line", 0.3, T_OUT + 0.4);
-const FR = K.front({ pts: CD.c.jun21, to: CD.c.jun24, moveT: S6 + 1, moveDur: T_KEY - S6 - 1, sideA: "carth", sideB: "rome", t: 0, dur: 1.4, width: 15, glow: 0.47, until: T_STRONG + 0.6 });
+const FR = K.front({ pts: CD.c.jun21, to: CD.c.jun24, moveT: S6 + 1, moveDur: T_KEY - S6 - 1, sideA: "carth", sideB: "rome", t: 0, dur: 1.4, width: 15, glow: 0.47, until: S7 + 0.4 });
 box("CHERBOURG", PL.chb[0] + 6, PL.chb[1] - 34, 0.4, 16, T_OUT + 2);
 B.city("", PL.chb[0], PL.chb[1], { r: 5, t: 0.4, until: T_OUT + 2 });
-box("OCTEVILLE", PL.oct[0] - 52, PL.oct[1] + 10, 0.6, 10, T_OUT);
+box("OCTEVILLE", PL.oct[0] - 14, PL.oct[1] + 30, 0.6, 10, S7);
 box("FORT DU ROULE", PL.roule[0] + 62, PL.roule[1] + 2, T_KEY - 0.2, 10, T_OUT);
 flag(FL.de, "GERMANY", 1150, 560, 0.5, T_OUT, 54, 11);
 flag(FL.us, "USA", 1700, 960, 0.7, T_OUT, 54, 11);
 // forts along the ring (bunker marks), German garrison counters behind it
 const FORTS = [[1215, 770], [1330, 805], [1440, 815], [1560, 780], [1690, 760], [1830, 770], [1120, 720]];
-FORTS.forEach(([x, y], i) => bunker(x, y, 0.3 + i * 0.12, T_STRONG + 0.4, 18));
+FORTS.forEach(([x, y], i) => bunker(x, y, 0.3 + i * 0.12, T_KEY - 0.4, 18));
 const GR = [["r1", 1250, 740], ["r2", 1390, 770], ["r3", 1520, 745], ["r4", 1660, 730], ["r5", 1140, 690]];
 GR.forEach(([id, x, y], i) => unit(id, "rome", x, y, 0.2 + i * 0.1, { size: "III" }));
 const BL = [["u9", 1180, 905, "9TH"], ["u79", 1440, 960, "79TH"], ["u4", 1760, 880, "4TH"]];
@@ -116,13 +117,14 @@ B.caption("NO SIEGE: HIT THE FORTRESS EVERYWHERE AT ONCE", T_SIEGE, S6 - 0.2, "c
 
 // ======================= move1-6: three days of pillboxes; Fort du Roule, 25 June; Kelly + Ogden =======================
 for (let k = 0; k < 6; k++) { const f = FORTS[k % 5]; K.impact(f[0] + 6, f[1] - 4, T_PILL - 0.4 + k * 0.55, { r: 8, puffs: 2 }); SFX("mg", T_PILL + k * 0.55); }
-B.move("u9", S6 + 1.5, 4.0, 1265, 760); B.move("u79", S6 + 1.5, 4.0, 1455, 735); B.move("u4", S6 + 1.5, 4.0, 1580, 690);
-B.move("r1", S6 + 1.5, 4.0, 1300, 705); B.move("r2", S6 + 1.5, 4.0, 1390, 715); B.move("r3", S6 + 1.5, 4.0, 1510, 680); B.move("r4", S6 + 1.5, 4.0, 1600, 620);
+B.move("u9", S6 + 1.5, 4.0, 1250, 785); B.move("u79", S6 + 1.5, 4.0, 1455, 735); B.move("u4", S6 + 1.5, 4.0, 1580, 690);
+B.move("r1", S6 + 1.5, 4.0, 1282, 722); B.move("r2", S6 + 1.5, 4.0, 1390, 715); B.move("r3", S6 + 1.5, 4.0, 1510, 680); B.move("r4", S6 + 1.5, 4.0, 1600, 620);
 B.hideUnits(["r5"], S6 + 1.5);
 // Fort du Roule on its ridge
 const RO = PL.roule;
 const roRing = K.target(RO[0], RO[1], T_KEY, { r: 26, side: "rome", until: T_NIGHT + 0.4 });
 const ridge = B.highlight([[RO[0] - 20, RO[1] + 12], [RO[0], RO[1]], [RO[0] + 20, RO[1] - 14]], T_RIDGE, T_25, 10);
+B.tl.to(ridge, { opacity: 0, duration: 0.5 }, Math.max(T_25, T_RIDGE + 3.2));
 bunker(RO[0] - 4, RO[1] - 2, T_KEY + 0.2, T_NIGHT + 0.6, 12);
 // 25 June: infantry climb the slope; pole charges at the embrasures (impacts + shake)
 B.hideUnits(["r2", "r3"], T_25 - 0.6, 0.5);
@@ -130,64 +132,67 @@ B.move("u79", T_25 - 1.2, 1.2, RO[0] + 6, RO[1] + 40);
 unit("k1", "carth", RO[0] + 18, RO[1] + 30, T_KELLY - 0.4, { w: 12, h: 8, size: "I" }); unit("k2", "carth", RO[0] - 14, RO[1] + 30, T_KELLY - 0.2, { w: 12, h: 8 });
 B.move("k1", T_KELLY, T_PORTS - T_KELLY, RO[0] + 6, RO[1] + 9); B.move("k2", T_KELLY + 0.3, T_PORTS - T_KELLY, RO[0] - 8, RO[1] + 10);
 [T_AGAIN - 0.2, T_AGAIN + 1.0, T_PORTS + 0.2].forEach((t, k) => { K.impact(RO[0] - 4 + k * 4, RO[1] - 1 + (k % 2) * 3, t, { r: 7, puffs: 2 }); });
-box("CPL JOHN D. KELLY · POLE CHARGES", RO[0] + 60, RO[1] + 30, T_KELLY, 6, T_OGDEN + 0.4);
-medal(RO[0] + 22, RO[1] + 17, T_MOH, 9);
-box("1ST LT CARLOS C. OGDEN", RO[0] - 55, RO[1] - 22, T_OGDEN, 6, T_NIGHT + 1);
+box("CPL JOHN D. KELLY", RO[0] + 72, RO[1] + 72, T_KELLY, 8.5, S7);
+B.caption("CPL KELLY: POLE CHARGES INTO THE GUN PORTS, AGAIN AND AGAIN", T_KELLY + 0.3, T_OGDEN - 0.1, "carth");
+medal(RO[0] + 128, RO[1] + 70, T_MOH, 14, S7);
+box("1ST LT CARLOS C. OGDEN", RO[0] - 78, RO[1] - 26, T_OGDEN, 8.5, S7);
+B.caption("LT OGDEN, WOUNDED: ONE GUN AND TWO MACHINE GUNS KNOCKED OUT", T_OGDEN + 0.3, T_MOH - 0.1, "carth");
 shoot([RO[0] - 30, RO[1] - 16], [RO[0] - 16, RO[1] - 6], T_GUN, { h: 4, dur: 0.4, r: 6, width: 0.8 });
-medal(RO[0] - 30, RO[1] - 36, T_MOH + 0.4, 9);
-box("MEDAL OF HONOR", RO[0], RO[1] - 52, T_MOH + 0.2, 6.5, T_NIGHT + 1);
+medal(RO[0] - 150, RO[1] - 28, T_MOH + 0.4, 14, S7);
+B.caption("BOTH RECEIVED THE MEDAL OF HONOR", T_MOH + 0.3, T_NIGHT - 0.1, "carth");
 // the fort flips blue
 const flipB = GG.pin(`<div style="width:40px;height:40px;border-radius:50%;background:rgba(110,160,255,0.55);box-shadow:0 0 16px #6f9bff"></div>`, RO[0], RO[1], { t: T_NIGHT + 0.2, until: T_OUT });
 B.tl.to(flipB, { opacity: 0.3, duration: 0.18, yoyo: true, repeat: 5 }, T_NIGHT + 0.4); SFX("hit", T_NIGHT + 0.3);
 const usf = GG.pin(`<img src="${FL.us}" style="width:16px;display:block;border:0.6px solid #1a1712">`, RO[0] + 2, RO[1] - 14, { t: T_NIGHT + 0.5, until: T_OUT, pop: true });
-box("UPPER FORT TAKEN", RO[0] + 52, RO[1] - 8, T_NIGHT + 0.6, 6.5, S7 + 1);
+B.caption("BY NIGHTFALL: THE UPPER FORT IS AMERICAN", T_NIGHT + 0.4, S7 - 0.1, "carth");
 B.hideUnits(["k1", "k2"], S7 + 0.5);
 
 // ======================= move1-7: 26 June, the tunnels at Saint-Sauveur (Octeville); Schlieben refuses; the arsenal (27 June) =======================
 const TU = PL.tunnel;
 const glow = GG.pin(`<div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#ffd77a 0%,rgba(255,150,60,.7) 45%,rgba(255,120,40,0) 72%)"></div>`, TU[0], TU[1], { t: S7 + 0.2, until: T_CAME + 1 });
 B.tl.to(glow, { scale: 1.5, duration: 0.6, yoyo: true, repeat: 9, ease: "sine.inOut" }, S7 + 0.4);
-box("SCHLIEBEN'S TUNNELS · SAINT-SAUVEUR", TU[0] - 4, TU[1] + 17, S7 + 0.3, 5.6, T_OFFER);
+box("SCHLIEBEN'S HQ TUNNELS", TU[0] - 4, TU[1] + 48, S7 + 0.3, 8, T_800 - 0.2);
 unit("td1", "carth", TU[0] + 38, TU[1] + 22, S7 + 0.2, { w: 13, h: 8.5, icon: "tank" }); unit("td2", "carth", TU[0] - 30, TU[1] + 26, S7 + 0.4, { w: 13, h: 8.5, icon: "tank" });
-box("TANK DESTROYERS", TU[0] + 46, TU[1] + 34, T_TD, 4.6, T_CAME);
+B.caption("TANK DESTROYERS FIRE INTO THE TUNNEL ENTRANCES", T_TD, T_CAME - 0.1, "carth");
 [[0, T_TD + 0.2], [1, T_TD + 0.9], [0, T_TUNNELS + 0.2], [1, T_TUNNELS + 0.8]].forEach(([i, t], k) => shoot(i ? [TU[0] - 30, TU[1] + 22] : [TU[0] + 38, TU[1] + 18], [TU[0] + (k % 2 ? -3 : 3), TU[1]], t, { unit: i ? "td2" : "td1", h: 4, dur: 0.35, r: 5, width: 0.7 }));
 const wf = GG.pin(`<svg width="14" height="16" viewBox="0 0 28 32"><line x1="3" y1="2" x2="3" y2="31" stroke="#d8cfb8" stroke-width="2.5"/><path d="M4 3 Q14 0 26 4 L26 15 Q14 12 4 15 Z" fill="#f7f3ea" stroke="#999" stroke-width="1"/></svg>`, TU[0] + 3, TU[1] - 11, { t: T_CAME - 0.3, pop: true, until: T_STRONG });
 SFX("hit", T_CAME);
 for (let k = 0; k < 5; k++) { const id = "pw" + k; unit(id, "rome", TU[0], TU[1], T_CAME + k * 0.3, { w: 9, h: 6 }); B.grey([id], T_CAME + k * 0.3, 0.1); B.move(id, T_CAME + 0.1 + k * 0.3, 1.6, TU[0] - 10 + k * 7, TU[1] + 34 + (k % 2) * 6); }
-box("~800 MEN SURRENDER", TU[0], TU[1] + 50, T_800, 6, T_STRONG);
+box("~800 MEN SURRENDER", TU[0], TU[1] + 64, T_800, 8, T_STRONG);
 const sch = badge({ name: "K.-W. VON SCHLIEBEN", role: "SURRENDERED · 26 JUNE", photo: PH.schlieben, initials: "KS", side: "rome", corner: "tr", t: T_CAME, until: T_STRONG, flagSrc: FL.de });
 B.tl.to(sch, { filter: "grayscale(1) brightness(0.75)", duration: 0.6 }, T_800);
 GG.stamp("SURRENDERED", T_800 + 0.3, T_OFFER - 0.1, { size: 48, top: 840 });
-badge({ name: "J. LAWTON COLLINS", role: "VII CORPS", photo: PH.collins, initials: "JLC", side: "carth", corner: "tl", t: T_OFFER - 0.3, until: T_STRONG, flagSrc: FL.us });
+badge({ name: "J. LAWTON COLLINS", role: "VII CORPS", photo: PH.collins, initials: "JLC", side: "carth", corner: "bl", t: T_OFFER - 0.3, until: T_STRONG, flagSrc: FL.us });
 const offer = GG.card(`<div style="text-align:center"><div style="font-size:20px;letter-spacing:0.4em;color:#9fc0ea">COLLINS'S OFFER</div><div style="font-size:48px;font-weight:700;letter-spacing:0.06em">ORDER A GENERAL SURRENDER?</div></div>`, "", 420, T_OFFER, T_STRONG - 0.2);
 offer.querySelector(".inner").style.borderTopColor = "#2c57b7"; SFX("static", T_OFFER);
 GG.stamp("REFUSED", T_REFUSED + 0.1, T_STRONG - 0.2, { size: 64, top: 600 });
 // strongpoint by strongpoint; the arsenal pocket + the Hague line
-const ARS = K.front({ pts: CD.c.arsenal, sideA: "carth", sideB: "rome", t: T_STRONG, dur: 1.0, width: 9, glow: 0.47, until: T_ARSENAL + 1.4 });
-const HAG = K.front({ pts: CD.c.hague, sideA: "carth", sideB: "rome", t: T_STRONG + 0.3, dur: 1.2, width: 15, glow: 0.47, until: T_PEN + 1.0 });
+const ARS = K.front({ pts: CD.c.arsenal, sideA: "carth", sideB: "rome", t: S7 + 0.4, dur: 1.0, width: 15, glow: 0.47, until: T_ARSENAL + 1.4 });
+const HAG = K.front({ pts: CD.c.hague, sideA: "carth", sideB: "rome", t: S7 + 0.6, dur: 1.2, width: 15, glow: 0.47, until: T_PEN + 1.0 });
 [[1430, 650], [1470, 640], [1385, 640], [1510, 625], [1350, 655]].forEach(([x, y], k) => K.impact(x, y, T_STRONG + 0.3 + k * 0.5, { r: 6, puffs: 2 }));
-box("ARSENAL", PL.arsenal[0] - 4, PL.arsenal[1] - 14, T_LOUD - 0.6, 7, S8 + 1);
+box("ARSENAL", PL.arsenal[0] - 4, PL.arsenal[1] - 20, T_LOUD - 0.6, 9, S8 + 1);
 const spk = GG.pin(`<svg width="16" height="16" viewBox="0 0 40 40" style="display:block;filter:drop-shadow(0 0 5px #6f9bff)"><circle cx="20" cy="20" r="18" fill="#1f4fc4" stroke="#f3eee2" stroke-width="3"/><path d="M10 16 L16 16 L24 9 L24 31 L16 24 L10 24 Z" fill="#f3eee2"/><path d="M28 14 Q32 20 28 26" fill="none" stroke="#f3eee2" stroke-width="2.5"/></svg>`, PL.arsenal[0] + 16, PL.arsenal[1] + 24, { t: T_LOUD, pop: true, until: S8 + 1 });
 B.bubble("SURRENDER!", PL.arsenal[0] + 30, PL.arsenal[1] + 26, T_LOUD + 0.4, T_ARSENAL + 1.6);
-document.querySelectorAll(".bubble").forEach((b) => { b.style.fontSize = "8px"; b.style.padding = "3px 6px"; });
+document.querySelectorAll(".bubble").forEach((b) => { b.style.fontSize = "12px"; b.style.padding = "4px 8px"; });
 SFX("static", T_LOUD + 0.2);
 const arsF = GG.pin(`<div style="width:30px;height:30px;border-radius:50%;background:rgba(110,160,255,0.55);box-shadow:0 0 14px #6f9bff"></div>`, PL.arsenal[0], PL.arsenal[1] + 4, { t: T_ARSENAL + 0.3, until: T_OUT + 1 });
 SFX("hit", T_ARSENAL + 0.4);
-B.hideUnits(["u9", "u79", "u4", "r1", "r4", "td1", "td2", "pw0", "pw1", "pw2", "pw3", "pw4"], T_STRONG + 0.2, 0.6);
+B.hideUnits(["r1", "r4"], S7 + 0.2, 0.6);
+B.hideUnits(["u9", "u79", "u4", "td1", "td2", "pw0", "pw1", "pw2", "pw3", "pw4"], T_STRONG + 0.2, 0.6);
 unit("c1", "carth", 1470, 680, T_STRONG + 0.4, { w: 16, h: 11 }); unit("c2", "carth", 1360, 670, T_STRONG + 0.6, { w: 16, h: 11 }); unit("c3", "carth", 1540, 640, T_STRONG + 0.8, { w: 16, h: 11 });
 B.move("c2", T_LOUD, 2, 1395, 625);
 
 // ======================= move1-8: 1 July, the whole peninsula; the wrecked harbour; 16 July first cargo =======================
 legend("fill", T_OUT + 0.6, null);
 B.hideUnits(["c1", "c2", "c3"], T_OUT, 0.5);
-flag(FL.us, "USA", 1700, 760, T_OUT + 0.8, null, 120, 22);
-flag(FL.de, "GERMANY", PL.hague[0] + 120, PL.hague[1] + 70, T_OUT + 1.0, T_PEN + 1.2, 110, 20);
+flag(FL.us, "USA", 1700, 760, T_OUT + 0.8, T_WRECK, 120, 22);
+flag(FL.us, "USA", 1700, 800, S9 + 1.2, null, 110, 22);
+flag(FL.de, "GERMANY", 660, 560, T_OUT + 1.0, T_PEN + 1.2, 100, 20);
 box("CAP DE LA HAGUE", PL.hague[0] + 80, PL.hague[1] - 40, T_OUT + 0.6, 16, S9);
 box("SAINT-VAAST", PL.vaast[0] - 20, PL.vaast[1] + 36, T_OUT + 0.9, 14, S9);
 box("VALOGNES", PL.val[0] + 10, PL.val[1] + 34, T_OUT + 1.0, 14, S9);
 [PL.hague, PL.vaast, PL.val].forEach((q) => B.city("", q[0], q[1], { r: 7, t: T_OUT + 0.6, until: S9 }));
-B.tl.to(emb, { opacity: 0.8, duration: 0.01 }, 0.7);
-const headline = (top, sub, t, until) => { const c = GG.card(`<div style="text-align:center;font-family:'Special Elite',monospace;color:#1b1812"><div style="font-size:64px;letter-spacing:0.08em">${top}</div><div style="font-size:30px;letter-spacing:0.18em;margin-top:4px">${sub}</div></div>`, "", 150, t, until);
+const headline = (top, sub, t, until) => { const c = GG.card(`<div style="text-align:center;font-family:'Special Elite',monospace;color:#1b1812"><div style="font-size:64px;letter-spacing:0.08em">${top}</div><div style="font-size:30px;letter-spacing:0.18em;margin-top:4px">${sub}</div></div>`, "", 760, t, until);
   c.querySelector(".inner").style.cssText += "background:#e9e1cc;border-top:6px solid #1b1812;padding:18px 60px 20px;"; SFX("hit", t + 0.1); return c; };
 headline("1 JULY 1944", "CAP DE LA HAGUE CLEARED · THE COTENTIN IS AMERICAN", T_PEN - 0.6, T_WRECK - 0.2);
 SFX("ref:boom", T_PEN);

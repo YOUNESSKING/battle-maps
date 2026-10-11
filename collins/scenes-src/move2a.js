@@ -62,7 +62,7 @@ const LV = LivingK(B);
 LV.clouds({ n: 7, opacity: 0.22 });
 LV.shimmer(RIVERS, { width: 1.4 });
 LV.scaleBar(99.63); LV.north();
-const EMB = [2130, 1310];   // emblem on German-held ground (land, south-east of the front), fixed for the whole scene
+const EMB = [2040, 1300];   // emblem on German-held ground (land, south-east of the front), fixed for the whole scene
 B.image("assets/media/emblem_ger.png", EMB[0] - 100, EMB[1] - 100, 200, 200, { t: 0, dur: 0.6, opacity: 0.8 });
 wimg("assets/media/nor_geo_ref.png", 0, 0, null);
 // ---------- camera: wide -> slow push on the American sector -> push in on the Cobra sector (= move2b's opening frame) ----------

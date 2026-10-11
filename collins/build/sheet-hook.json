@@ -1,0 +1,125 @@
+{
+ "title": "HOOK (0:00-0:30) · Collins #9 · a new beat every 2-4 s",
+ "note": "mm:ss = video time; option 1 territory on wide shots, option 2 glowing fronts on close-ups; zoom whoosh only on dive / flash-forward / zoom-out",
+ "frames": [
+  [
+   "hook-a",
+   0.0,
+   "0:00",
+   "FRAME 0: Normandy 25 Jul 44 (option 1), counters both sides, US/UK/German flags, blue C-47 heavies streaming in",
+   "guns firing (quiet), prop flyby"
+  ],
+  [
+   "hook-a",
+   1.0,
+   "0:01",
+   "BIG card slams at 0.3 s, ticks 0 -> 1,500 HEAVY BOMBERS",
+   "hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   2.5,
+   "0:02",
+   "second line slams: TONS OF BOMBS ticks to 3,300+",
+   "hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   5.0,
+   "0:05",
+   "'dropped on': hard zoom DIVE onto the Cobra box (switch to HD close-up, option 2)",
+   "whoosh (zoom #1)"
+  ],
+  [
+   "hook-a",
+   6.5,
+   "0:06",
+   "glowing front on the St-Lo - Periers road, TARGET BOX, Panzer Lehr, first bomb run",
+   "ref:pop, prop, explosion + shake"
+  ],
+  [
+   "hook-a",
+   7.8,
+   "0:07",
+   "carpet walks across the box; 3.5 MILES WIDE stamp",
+   "explosions + shake, hit"
+  ],
+  [
+   "hook-a",
+   10.0,
+   "0:10",
+   "'And some...': last sticks fall SHORT on the US line north of the road",
+   "explosions + shake, red pulse"
+  ],
+  [
+   "hook-a",
+   11.8,
+   "0:11",
+   "FRIENDLY FIRE stamp",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   13.8,
+   "0:13",
+   "WHITE-FLASH cut to the flash-forward",
+   "whoosh (zoom #2) + hit"
+  ],
+  [
+   "hook-a",
+   15.5,
+   "0:15",
+   "31 JULY: US armour arrows burst south, German line hit",
+   "ref:whoosh, impacts"
+  ],
+  [
+   "hook-a",
+   17.2,
+   "0:17",
+   "'torn open': FRONT TORN OPEN stamp, red counters grey",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   20.0,
+   "0:20",
+   "ZOOM-OUT to all Normandy (option 1, 31 Jul overlay): arrows pour south, ring AVRANCHES 31 JULY",
+   "whoosh (zoom #3), ref:whoosh"
+  ],
+  [
+   "hook-a",
+   22.5,
+   "0:22",
+   "Patton badge (real photo), date 1 AUGUST 1944",
+   "ref:pop"
+  ],
+  [
+   "hook-a",
+   25.0,
+   "0:25",
+   "arrows race INTO BRITTANY / INTO FRANCE; big red ? slams",
+   "ref:whoosh, hit + shake"
+  ],
+  [
+   "hook-a",
+   27.3,
+   "0:27",
+   "badge greys, NOT PATTON stamp",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   28.7,
+   "0:28",
+   "hard cut to dark: date rolls back 1 AUGUST -> 25 JULY",
+   "hit, ticks x7"
+  ],
+  [
+   "hook-a",
+   30.0,
+   "0:30",
+   "back on the morning of 25 July, close-up, short bombs replay on the US line",
+   "explosions + shake"
+  ]
+ ]
+}

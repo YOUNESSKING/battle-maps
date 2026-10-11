@@ -46,12 +46,14 @@ const cut = (t, cx, cy, s, holdTo, drift = [6, 0, 1.06]) => {
 const PLACE = { cherbourg: G(49.64, -1.62), stlo: G(49.115, -1.09), avranches: G(48.684, -1.357), celles: G(50.23, 4.94), dinant: G(50.26, 4.91),
   namur: G(50.47, 4.87), givet: G(50.14, 4.83), marche: G(50.23, 5.35), paris: G(48.86, 2.35), london: G(51.5, -0.12), berlin: G(52.52, 13.4), brussels: G(50.85, 4.35) };
 // ---------- map (option 1, period overlays per date) ----------
-const OV6 = wimg("assets/media/hooknorm_eu_ctl_jun26_mx.png", 0, 0, T_BROKE);
+// opening + pull-out = the end state (24 Dec 1944: France and Belgium freed, the Bulge), so the US flag stands on Allied ground
+const OV0 = wimg("assets/media/hooknorm_eu_ctl_dec24_mx.png", 0, 0, T_TOOK);
+const OV6 = wimg("assets/media/hooknorm_eu_ctl_jun26_mx.png", T_TOOK - 0.05, 0.1, T_BROKE);
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.22 }); LV.scaleBar(1714.41); LV.north();
 const EMB = G(51.1, 10.4);   // centred on Germany, 190 px: clear of the sea, the flags and the labels
 B.image("assets/media/emblem_ger.png", EMB[0] - 95, EMB[1] - 95, 190, 190, { t: 0, dur: 0.6, opacity: 0.8 });
 legend(0.6, END + 1);
-const FG = flag(FL.de, "GERMANY", ...G(53.2, 13.6), 0.6, null, 64), FU = flag(FL.us, "USA", ...G(47.2, 1.2), 0.7, null, 64), FB = flag(FL.uk, "BRITAIN", ...G(52.6, -1.7), 0.8, null, 60);
+const FG = flag(FL.de, "GERMANY", ...G(50.9, 14.2), 0.6, null, 64), FU = flag(FL.us, "USA", ...G(49.6, 4.1), 0.7, null, 56), FB = flag(FL.uk, "BRITAIN", ...G(51.95, -1.7), 0.8, null, 60);
 neutral("SWITZERLAND", ...G(46.75, 8.1), 0.9, null, 11); neutral("SPAIN", ...G(40.6, -3.8), 0.9, null, 13);
 [["PARIS", PLACE.paris, 0, -12], ["LONDON", PLACE.london, 0, -12], ["BERLIN", PLACE.berlin, 0, -12], ["BRUSSELS", PLACE.brussels, 0, -12]].forEach(([n, p, dx, dy]) => {
   B.city("", p[0], p[1], { r: 2.4, t: 0.5 }); box(n, p[0] + dx, p[1] + dy, 0.5, 8, null, false); });
@@ -116,10 +118,10 @@ const fS = [flag(FL.us, "USA", ...G(49.36, -0.6), T_BROKE + 0.1, T_DEST - 0.05, 
 ring(SL, "SAINT-LÔ", "JULY 1944", 2, T_NORM - 0.3, 24, -4); SFX("ref:pop", T_NORM - 0.15);
 // ---------- CUT 3: CELLES, December 1944: the panzer spearhead stopped short of the Meuse, the ring closes ----------
 const CE = PLACE.celles;
-cut(T_DEST, CE[0] + 14, CE[1] - 2, 3.8, T_THESE, [-4, 0, 1.05]);
+cut(T_DEST, CE[0] - 58, CE[1] - 2, 4.6, T_THESE, [-4, 0, 1.05]);   // emblem (Germany) stays fully off the right edge
 const OV12 = wimg("assets/media/hooknorm_eu_ctl_dec24_mx.png", T_DEST - 0.05, 0.1, null);
 B.date("DECEMBER 1944", T_DEST + 0.02, null, 34);
-const fE = [flag(FL.uk, "BRITAIN", ...G(50.42, 4.35), T_DEST + 0.12, T_THESE + 0.2, 13), flag(FL.us, "USA", ...G(50.62, 5.25), T_DEST + 0.1, T_THESE + 0.2, 13),
+const fE = [flag(FL.uk, "BRITAIN", ...G(50.45, 4.1), T_DEST + 0.12, T_THESE + 0.2, 13), flag(FL.us, "USA", ...G(50.62, 5.25), T_DEST + 0.1, T_THESE + 0.2, 13),
   flag(FL.de, "GERMANY", ...G(50.05, 5.95), T_DEST + 0.15, T_THESE + 0.2, 13)];
 // the Meuse (Namur - Dinant - Givet), glowing
 const MEU = [[1320.6, 466], [1320.6, 472.1], [1321.6, 480], [1322.5, 487.1], [1320.8, 492], [1318.8, 495.6], [1318, 501]];
@@ -146,8 +148,8 @@ const FEW = box("STOPPED 4-5 MILES FROM THE MEUSE", CE[0] + 2, CE[1] + 11, T_MEU
 ring(CE, "CELLES", "DECEMBER 1944", 3, T_MEUSE + 0.15, 26, -6); SFX("ref:pop", T_MEUSE + 0.3);
 // ---------- pull out to all three, then the title ----------
 SFX("ref:whoosh", T_THESE - 0.1); SFX("ref:riser", T_THESE + 0.1);
-camTo(T_THESE, 0.9, 1190, 520, 1.85, "power3.inOut");
-camTo(T_THESE + 0.92, END - T_THESE - 0.9, 1190, 522, 1.95, "none");
+camTo(T_THESE, 0.9, 1300, 520, 1.6, "power3.inOut");
+camTo(T_THESE + 0.92, END - T_THESE - 0.9, 1300, 522, 1.66, "none");
 tl.to(BDG, { autoAlpha: 0, duration: 0.4 }, T_THREE - 0.6);
 const TDIM = scr("", "inset:0;background:linear-gradient(180deg,rgba(5,7,13,0) 35%,rgba(5,7,13,0.78) 75%);");
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THREE - 0.5);
