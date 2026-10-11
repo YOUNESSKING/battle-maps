@@ -97,8 +97,15 @@ if __name__ == "__main__":
                "places": {k: P(*v) for k, v in PLACES.items()}}
     # cherbourg (z12): land from the HD elevation (> 0.5 m, like bake.py with sea_below 0.5), downsampled 2x
     P = proj("cherbourg")
-    e = np.load("assets/src/cherbourg_hd_elev.npy")
-    land = np.array(Image.fromarray(((e > 0.5) * 255).astype(np.uint8)).resize((2880, 1620), Image.BILINEAR)) > 127
+    if os.path.exists("assets/src/cherbourg_hd_elev.npy"):
+        e = np.load("assets/src/cherbourg_hd_elev.npy")
+        land = np.array(Image.fromarray(((e > 0.5) * 255).astype(np.uint8)).resize((2880, 1620), Image.BILINEAR)) > 127
+    else:  # no HD cache (not in git): same rule from the z12 Terrarium tiles (bake.tile, cached in tools/.tiles)
+        import sys; sys.path.insert(0, "tools"); from bake import tile
+        J = json.load(open("assets/cherbourg.json")); z, (x0, y0), (W0, H0) = J["zoom"], J["origin_world_px"], J["size"]
+        tx0, ty0, tx1, ty1 = x0 // 256, y0 // 256, (x0 + W0) // 256, (y0 + H0) // 256
+        mos = np.vstack([np.hstack([tile(z, tx, ty) for tx in range(tx0, tx1 + 1)]) for ty in range(ty0, ty1 + 1)])
+        land = mos[y0 - ty0 * 256:y0 - ty0 * 256 + H0, x0 - tx0 * 256:x0 - tx0 * 256 + W0] > J.get("sea_below", 0.5)
     H, W = land.shape
     for s in ("jun21", "jul1"): overlay(f"cbg_ctl_{s}_mx", mask(P, allied_poly(s), W, H), land)
     # a 26 June overlay for the zoom-out: city taken, arsenal + Hague still German

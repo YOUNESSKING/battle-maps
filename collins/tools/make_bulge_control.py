@@ -7,7 +7,7 @@ usage (from collins/): python3 tools/make_bulge_control.py
 -> assets/media/bulge_eu_<state>_mx.png    europe map (z6): jun44 (26 Jun, Cherbourg), jul44 (25 Jul, Cobra), dec16, dec24
 Colours: Axis (232,52,52) strongest at the front with a light red rim, Allied (110,160,255), neutrals uncoloured; draw with
 mixBlendMode = "multiply". Borders: world_1938 (aourednik/historical-basemaps, GPL-3, assets/src/world_1938.geojson).
-Every front line and its sources: research/FACT_NOTES_bulge.md (approximate, a few km on the ardennes map, ~10-20 km on europe)."""
+Every front line and its sources: research/FACT_NOTES_ardennes.md (approximate, a few km on the ardennes map, ~10-20 km on europe)."""
 import json, math
 import numpy as np
 from PIL import Image, ImageDraw
@@ -87,13 +87,13 @@ def countries(M, feats, state):
             if len(ring) > 2: dr[s].polygon(ring, fill=255)
     return {k: np.array(v) > 0 for k, v in side.items()}
 
-def save(M, path, axis, al):
+def save(M, path, axis, al, rim_it=3, rim_sig=6):   # europe: a thin rim (rim_it 1, rim_sig 2) so the narrow Bulge reads solid red
     land = M.land; axis &= land; al &= land & ~axis
     d_ax = ndimage.distance_transform_edt(~al) if al.any() else np.full(axis.shape, 1e9)
     out = np.zeros((M.H, M.W, 4), np.float32)
     out[axis, :3] = AX; out[axis, 3] = (0.36 + 0.24 * np.exp(-d_ax / 40.0))[axis]
     out[al, :3] = SO; out[al, 3] = 0.30
-    rim = np.clip(ndimage.gaussian_filter((axis & ndimage.binary_dilation(al, iterations=3)).astype(np.float32), 6) * 3.0, 0, 1) * land
+    rim = np.clip(ndimage.gaussian_filter((axis & ndimage.binary_dilation(al, iterations=rim_it)).astype(np.float32), rim_sig) * 3.0, 0, 1) * land
     sel = rim > 0.02
     out[sel, :3] = out[sel, :3] * (1 - rim[sel, None]) + np.array(RIM, np.float32) * rim[sel, None]
     out[sel, 3] = np.maximum(out[sel, 3], rim[sel] * 0.9)
@@ -119,7 +119,7 @@ def europe(feats):
         if key == "jul44": axis &= ~M.poly([NORM_JUL])
         axis &= M.poly([[(-12, 36.2), (40, 36.2), (40, 75), (-12, 75)]])   # not North Africa
         al = M.land & ~axis & ~c["neutral"]
-        save(M, f"assets/media/bulge_eu_{state}_mx.png", axis, al)
+        save(M, f"assets/media/bulge_eu_{state}_mx.png", axis, al, 1, 2)
 
 def ardennes():
     M = Map("ardennes")

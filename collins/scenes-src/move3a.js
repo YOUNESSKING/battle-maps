@@ -2,7 +2,7 @@
 // territory `_mx` overlays from tools/make_bulge_control.py: 16 Dec start line -> 24 Dec, the Bulge at its deepest, Bastogne ringed).
 // Western Front overview -> camera dive onto the Ardennes; the German offensive arrows (6th SS Pz Army, 5th Pz Army, 7th Army),
 // the opening barrage on the thin American line, the goal: the Meuse, then Antwerp, splitting the Allies (British north, US south);
-// the 2nd Panzer spearhead arrow toward Dinant; UK flag on the Meuse; snow (winter). Fronts + sources: research/FACT_NOTES_bulge.md.
+// the 2nd Panzer spearhead arrow toward Dinant; UK flag on the Meuse; snow (winter). Fronts + sources: research/FACT_NOTES_ardennes.md.
 // Built with: python3 tools/build_scene.py move3a europe_hd_ref move3-1 move3-1
 const B = Battle();
 const { at, P: PS } = B;
@@ -111,7 +111,7 @@ gl(MEUSE, "#8fd0ff", 1.6, T_MEUSE - 0.2, END + 1); SFX("ref:pop", T_MEUSE);
 box("RIVER MEUSE", ...G(50.62, 4.55), T_MEUSE, 5, END + 1);
 flag(FL.uk, "BRITISH", ...G(50.12, 4.40), T_MEUSE + 0.3, END + 1, 18);   // British XXX Corps sent to guard the Meuse crossings
 K.target(...G(50.0, 5.716), T_GOAL + 0.8, { r: 6, side: "carth", until: END + 1 });
-box("BASTOGNE · SURROUNDED", ...G(49.94, 5.73), T_GOAL + 1.0, 5, END + 1);
+box("BASTOGNE · SURROUNDED", ...G(49.86, 5.95), T_GOAL + 1.0, 4.4, END + 1);
 const ANT = G(51.22, 4.40);
 arw({ pts: [G(50.48, 4.95), G(50.80, 4.70), [ANT[0] + 1, ANT[1] + 4]], side: "rome", t: T_ANT - 0.2, dur: 1.4, width: 3.2, dash: "5 3", until: END + 1 });
 K.target(...ANT, T_ANT + 0.8, { r: 7, until: END + 1 }); box("ANTWERP · THE ALLIES' PORT", ANT[0] - 2, ANT[1] - 8, T_ANT + 0.6, 5, END + 1);
@@ -121,6 +121,6 @@ box("BRITISH + CANADIANS", ...G(51.50, 5.75), T_SPLIT - 0.1, 5, END + 1); box("A
 GG.stamp("SPLIT THE ALLIES IN TWO", T_SPLIT + 0.5, END + 1, { size: 50, top: 860 });
 // 2nd Panzer: the spearhead races for the Meuse at Dinant (the next scene picks it up on 23 Dec)
 arw({ pts: [G(50.08, 5.80), G(50.14, 5.45), G(50.22, 5.15), [G(50.235, 4.99)[0], G(50.235, 4.99)[1]]], side: "rome", t: T_MEUSE + 0.4, dur: 1.8, width: 3.6, until: END + 1 });
-box("2ND PANZER DIVISION", ...G(50.36, 5.62), T_MEUSE + 1.4, 5, END + 1);
+box("2ND PANZER DIVISION", ...G(50.07, 5.02), T_MEUSE + 1.4, 4.6, END + 1);
 K.raiseTerritory();
 B.finish();

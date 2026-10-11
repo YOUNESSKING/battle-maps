@@ -10,7 +10,7 @@
 //            P-38s + Typhoons (glowing c47g symbol, locked K.bombRun with shake), the ring closes: IN THE BAG
 //   move3-6  26-27 Dec: relief attacks from Rochefort beaten off, pocket destroyed; zoom out (option 1, 27 Dec): THE DEEPEST POINT
 //   move3-7  casualty card (Cole, 2nd Armored 24-27 Dec) + COLLINS'S METHOD complete (3 lines)
-// Fronts per date + sources: research/FACT_NOTES_bulge.md; overlays + lines: tools/make_bulge_control.py (keep BULGE24/27 in sync).
+// Fronts per date + sources: research/FACT_NOTES_ardennes.md; overlays + lines: tools/make_bulge_control.py (keep BULGE24/27 in sync).
 // Built with: python3 tools/build_scene.py move3b ardennes_hd_ref move3-2 move3-7
 const B = Battle();
 const { at, P: PS } = B;
@@ -21,7 +21,8 @@ const PR = GG.proj(10, 133454, 87890);
 const L = (lat, lon) => PR(lat, lon);
 const FL = { us: "assets/media/us_flag_48star.png", uk: "assets/media/uk_flag.png", de: "assets/media/ger_reich_flag.png" };
 // commander photos: licensed head shots from the photo agent (assets/media/<name>_head.png, CREDITS.md); initials show if a file is missing
-const PHOTO = { collins: "assets/media/collins_head.png", harmon: "assets/media/harmon_head.png", monty: "assets/media/montgomery_head.png" };
+const PHOTO = { collins: "assets/media/collins_head.png", harmon: "assets/media/harmon_head.png", monty: "assets/media/montgomery_head.png",
+  lutt: "assets/media/luttwitz_head.png", hodges: "assets/media/hodges_head.png" };
 // ---------- helpers (rokossovsky move3.js kit) ----------
 const box = (txt, x, y, t, size = 16, until) => { SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.28em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.6).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
 const town = (txt, lat, lon, t, o = {}) => { const [x, y] = L(lat, lon); B.city("", x, y, { r: o.r || 4, t, until: o.until }); return box(txt, x + (o.dx || 0), y + (o.dy != null ? o.dy : -18), t, o.size || 11, o.until); };
@@ -120,7 +121,7 @@ const S5 = PS("move3-5"), T_8 = at("move3-5", "At eight o'clock"), T_SWEPT = at(
   T_AFT = at("move3-5", "By the afternoon"), T_SURR = at("move3-5", "was surrounded"), T_RADIO = at("move3-5", "Harmon reportedly"), T_BAG = at("move3-5", "in the bag");
 const S6 = PS("move3-6"), T_2D = at("move3-6", "Over the next two days"), T_ATT = at("move3-6", "German attempts"), T_BEAT = at("move3-6", "were beaten off"),
   T_DESTR = at("move3-6", "the pocket was destroyed"), T_DEEP = at("move3-6", "It was the deepest point"), T_HERE = at("move3-6", "From here");
-const S7 = PS("move3-7"), T_FIGHT = at("move3-7", "In the fighting"), T_OWN = at("move3-7", "Its own losses"), T_CUT = at("move3-7", "Cut them off"), T_THROW = at("move3-7", "Throw the tanks"),
+const S7K = "move3-7", S7 = PS("move3-7"), T_FIGHT = at("move3-7", "In the fighting"), T_OWN = at("move3-7", "Its own losses"), T_CUT = at("move3-7", "Cut them off"), T_THROW = at("move3-7", "Throw the tanks"),
   T_HIT = at("move3-7", "Hit the spearhead");
 // ---------- map layers ----------
 const C24 = ctl("dec24", 0, T_SPEAR + 0.6, 0.01);                    // option 1 (wide), 24 Dec
@@ -128,7 +129,7 @@ const C24b = ctl("dec24", S2B + 0.4, S3 - 0.2, 1.0);                  // option 
 const C27 = ctl("dec27", T_DEEP - 0.2, null, 1.2);                    // option 1, 27 Dec, the zoom-out
 GG.layer("background:rgba(225,236,248,0.12);", 0, null, { dur: 0.01 });   // cold winter grade (under the geography)
 B.image("assets/media/ard_geo_ref.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
-const EMB = L(50.33, 6.86);   // on German soil (the Eifel), clear of the labels; stays (only on screen in the wide shots)
+const EMB = L(50.30, 6.50);   // on German soil (the Eifel), clear of the labels; stays (only on screen in the wide shots)
 B.image("assets/media/emblem_ger.png", EMB[0] - 105, EMB[1] - 105, 210, 210, { t: 0, dur: 0.6, opacity: 0.8 });
 const LV = LivingK(B);
 LV.clouds({ n: 7, opacity: 0.22 });
@@ -138,23 +139,23 @@ LV.scaleBar(97.9); LV.north();
 B.snow(0.1, T_SKY);                                                   // snow until the skies clear on Christmas Day
 const MEUSE = window.ARD_MEUSE || [];
 // ---------- camera: wide -> close -> mid -> close -> wide ----------
-B.camera([[0, 1540, 700, 0.8], [T_RACED, 1500, 710, 0.86], [T_SPEAR - 0.4, 1470, 720, 0.95], [T_SPEAR + 1.2, 1262, 742, 2.5], [T_OUTRUN, 1258, 740, 2.55], [S2B - 0.5, 1262, 738, 2.5],
+B.camera([[0, 1540, 700, 0.8], [T_RACED, 1500, 710, 0.86], [T_SPEAR - 0.4, 1470, 720, 0.95], [T_SPEAR + 1.2, 1290, 752, 3.3], [T_OUTRUN, 1288, 752, 3.36], [S2B - 0.5, 1290, 752, 3.3],
   [S2B + 1.3, 1600, 560, 1.05], [T_PLANNED, 1580, 570, 1.08], [S3 - 0.6, 1560, 590, 1.12],
-  [S3 + 1.0, 1440, 640, 1.7], [T_EVE, 1430, 640, 1.72], [S4 - 0.4, 1420, 650, 1.75], [T_PANZ, 1360, 690, 2.0], [S5 - 0.6, 1330, 710, 2.15],
-  [S5 + 0.8, 1262, 742, 2.6], [T_AFT, 1260, 742, 2.62], [S6 - 0.3, 1270, 750, 2.5], [S6 + 1.0, 1330, 790, 2.2], [T_DESTR, 1320, 780, 2.25],
+  [S3 + 1.0, 1440, 640, 1.7], [T_EVE, 1430, 640, 1.72], [S4 - 0.4, 1420, 650, 1.75], [T_PANZ, 1405, 660, 1.82], [S5 - 0.6, 1395, 668, 1.85],
+  [S5 + 0.8, 1290, 760, 3.3], [T_AFT, 1290, 760, 3.32], [S6 - 0.3, 1300, 765, 3.1], [S6 + 1.0, 1345, 790, 2.6], [T_DESTR, 1340, 788, 2.65],
   [T_DEEP + 1.4, 1560, 700, 0.82], [S7, 1560, 700, 0.8], [END, 1560, 700, 0.8]]);
 B.showDate(0.1);
 B.date("23 DECEMBER 1944", 0.2, S3 + 0.4, 32); B.date("24 DECEMBER · EVENING", S3 + 0.5, S5 - 0.2, 30); B.date("25 DECEMBER · 08:00", S5 - 0.1, T_AFT, 30);
 B.date("25 DECEMBER 1944", T_AFT + 0.1, S6, 32); B.date("26 – 27 DECEMBER 1944", S6 + 0.1, null, 30);
 // flags on each side's ground, per camera (~115 px on screen)
-flag(FL.us, "USA", ...L(50.62, 4.55), 0.3, T_SPEAR + 0.3, 140); flag(FL.de, "GERMANY", ...L(50.05, 6.55), 0.45, T_SPEAR + 0.3, 140);
+flag(FL.us, "USA", ...L(50.50, 4.80), 0.3, T_SPEAR + 0.3, 140); flag(FL.de, "GERMANY", ...L(50.05, 6.55), 0.45, T_SPEAR + 0.3, 140);
 flag(FL.uk, "BRITAIN", ...L(50.33, 4.62), 0.6, T_SPEAR + 0.3, 110);
-const CLOSE = (t, until) => { flag(FL.us, "USA", ...L(50.335, 5.21), t, until, 46); flag(FL.de, "GERMANY", ...L(50.175, 5.135), t + 0.1, until, 46); flag(FL.uk, "BRITAIN", ...L(50.205, 4.835), t + 0.2, until, 46); };
+const CLOSE = (t, until, deAt = [50.15, 5.17]) => { flag(FL.us, "USA", ...L(50.31, 5.20), t, until, 36); flag(FL.de, "GERMANY", ...L(...deAt), t + 0.1, until, 36); flag(FL.uk, "BRITAIN", ...L(50.20, 4.84), t + 0.2, until, 36); };
 CLOSE(T_SPEAR + 1.0, S2B - 0.3);
 flag(FL.us, "USA", ...L(50.62, 4.95), S2B + 1.0, S3 - 0.3, 105); flag(FL.de, "GERMANY", ...L(50.12, 6.10), S2B + 1.1, S3 - 0.3, 105); flag(FL.uk, "BRITAIN", ...L(50.32, 4.68), S2B + 1.2, S3 - 0.3, 90);
 flag(FL.us, "USA", ...L(50.40, 5.62), S3 + 0.9, S5 - 0.4, 66); flag(FL.de, "GERMANY", ...L(50.10, 5.55), S3 + 1.0, S5 - 0.4, 66); flag(FL.uk, "BRITAIN", ...L(50.31, 4.80), S3 + 1.1, S5 - 0.4, 60);
-CLOSE(S5 + 0.6, T_DEEP + 0.3);
-flag(FL.us, "USA", ...L(50.62, 4.55), T_DEEP + 1.0, END + 1, 140); flag(FL.de, "GERMANY", ...L(50.05, 6.55), T_DEEP + 1.1, END + 1, 140); flag(FL.uk, "BRITAIN", ...L(50.33, 4.62), T_DEEP + 1.2, END + 1, 110);
+CLOSE(S5 + 0.6, S6 + 0.2); CLOSE(S6 + 0.3, T_DEEP + 0.3, [50.10, 5.33]);
+flag(FL.us, "USA", ...L(50.50, 4.80), T_DEEP + 1.0, END + 1, 140); flag(FL.de, "GERMANY", ...L(50.05, 6.55), T_DEEP + 1.1, END + 1, 140); flag(FL.uk, "BRITAIN", ...L(50.33, 4.62), T_DEEP + 1.2, END + 1, 110);
 // ============ move3-2: 23 Dec, the Bulge at its deepest; 2nd Panzer's spearhead (wide, option 1 -> close, option 2) ============
 legend(0.3, T_SPEAR + 0.4, false);
 town("BASTOGNE", 50.0, 5.716, 0.5, { size: 20, dy: -30, until: T_SPEAR + 0.3 }); town("DINANT", 50.26, 4.912, 0.7, { size: 20, dy: -30, until: T_SPEAR + 0.3 });
@@ -171,22 +172,22 @@ B.caption("23 DECEMBER: FURTHER WEST THAN ANY GERMAN UNIT", T_RACED, T_SPEAR + 0
 // push-in: option 2 (two-colour glowing fronts only)
 legend(T_SPEAR + 0.6, S2B + 0.2, true);
 const F24 = K.front({ pts: LLo([...NORTH, ...B24, ...SOUTH]), sideA: "rome", sideB: "carth", t: T_SPEAR + 0.4, dur: 1.4, width: 15, until: S2B + 0.3 });
-const CL = (t, until) => { // close-up story labels (small white boxes)
-  town("DINANT", 50.26, 4.912, t, { size: 11, dx: -46, dy: -4, until }); town("CELLES", 50.233, 5.017, t + 0.1, { size: 10, dx: 8, dy: 20, until });
-  town("FOY-NOTRE-DAME", 50.233, 4.983, t + 0.2, { size: 9, dx: -52, dy: -22, until }); town("CONNEUX", 50.252, 5.067, t + 0.3, { size: 9, dx: 22, dy: -16, until });
-  town("CINEY", 50.294, 5.10, t + 0.4, { size: 10, dy: -18, until }); town("MARCHE", 50.227, 5.344, t + 0.5, { size: 10, dy: -18, until });
-  town("ROCHEFORT", 50.162, 5.222, t + 0.6, { size: 10, dy: 20, until });
-  B.label("MEUSE", ...L(50.30, 4.885), { cls: "river", size: 13, t: t + 0.6, rot: -80, until });
+const CL = (t, until) => { // close-up story labels (small white boxes, ~22 px on screen at camera 3.3)
+  town("DINANT", 50.26, 4.912, t, { size: 7, r: 2.5, dx: -30, dy: -2, until }); town("CELLES", 50.233, 5.017, t + 0.1, { size: 7, r: 2.5, dx: 10, dy: 24, until });
+  town("FOY-NOTRE-DAME", 50.233, 4.983, t + 0.2, { size: 6, r: 2.5, dx: -34, dy: 24, until }); town("CONNEUX", 50.252, 5.067, t + 0.3, { size: 6, r: 2.5, dx: 18, dy: -12, until });
+  town("CINEY", 50.294, 5.10, t + 0.4, { size: 7, r: 2.5, dy: -13, until }); town("MARCHE", 50.227, 5.344, t + 0.5, { size: 7, r: 2.5, dy: -13, until });
+  town("ROCHEFORT", 50.162, 5.222, t + 0.6, { size: 7, r: 2.5, dy: 14, until });
+  B.label("MEUSE", ...L(50.31, 4.888), { cls: "river", size: 9, t: t + 0.6, rot: -80, until });
 };
 CL(T_SPEAR + 0.8, S2B - 0.3);
 const PZ = [["pz1", 50.238, 4.990, "tank", "2ND PZ"], ["pz2", 50.226, 5.030, "tank", null], ["pz3", 50.246, 5.060, "mech", null], ["pz4", 50.200, 5.120, "tank", null]];
-PZ.forEach(([id, la, lo, ic, lb], k) => unit(id, "rome", la, lo, ic, lb, { t: T_SPEAR + 1.0 + k * 0.15 }));
-const lutt = badge({ name: "GEN. HEINRICH VON LÜTTWITZ", role: "XLVII PANZER CORPS", initials: "HvL", photo: null, flag: "reich", side: "rome", corner: "br", t: T_SPEAR + 0.6, until: T_FUEL + 1.2 });
+PZ.forEach(([id, la, lo, ic, lb], k) => unit(id, "rome", la, lo, ic, lb, { t: T_SPEAR + 1.0 + k * 0.15, w: 17, h: 11.5, tag: 6.5 }));
+const lutt = badge({ name: "GEN. HEINRICH VON LÜTTWITZ", role: "XLVII PANZER CORPS", initials: "HvL", photo: PHOTO.lutt, flag: "reich", side: "rome", corner: "br", t: T_SPEAR + 0.6, until: T_FUEL + 1.2 });
 const DB = L(50.262, 4.913);
-K.target(...DB, T_BRIDGES - 0.3, { r: 20, until: S2B - 0.3 }); box("MEUSE BRIDGES", DB[0] - 58, DB[1] + 26, T_BRIDGES, 10, S2B - 0.3);
+K.target(...DB, T_BRIDGES - 0.3, { r: 14, until: S2B - 0.3 }); box("MEUSE BRIDGES", DB[0] - 8, DB[1] - 22, T_BRIDGES, 7, S2B - 0.3);
 glowPath(MEUSE, "#8fd0ff", 4, T_BRIDGES - 0.4, S2B - 0.3);
-dimLine(L(50.236, 5.004), L(50.258, 4.922), T_MILES - 0.2, S2B - 0.3, "4–5 MILES", 11);
-const GA = gauge(...L(50.205, 5.065), T_OUTRUN - 0.3, T_FUEL + 0.4, S2B - 0.3, 1.0);
+dimLine(L(50.243, 5.004), L(50.262, 4.924), T_MILES - 0.2, S2B - 0.3, "4–5 MILES", 8);
+const GA = gauge(...L(50.205, 5.115), T_OUTRUN - 0.3, T_FUEL + 0.4, S2B - 0.3, 0.6);
 GG.stamp("OUT OF FUEL", T_FUEL + 0.3, S2B - 0.2, { size: 58, top: 860 });
 // ============ move3-2b: VII Corps assembles on the north flank near Marche (mid-wide, option 1) ============
 legend(S2B + 0.6, S3 - 0.2, false);
@@ -196,8 +197,8 @@ const col = badge({ name: "MAJ. GEN. J. LAWTON COLLINS", role: "VII CORPS", init
 const VII = LL([[50.72, 6.00], [50.60, 5.80], [50.45, 5.55], [50.32, 5.42]]);
 arw({ pts: VII, side: "carth", t: T_ORD + 0.4, dur: 2.0, width: 24, dash: "26 16", until: S3 - 0.3 });
 box("VII CORPS FROM AACHEN", ...L(50.66, 5.55), T_ORD + 1.2, 15, S3 - 0.3);
-const VC = [["ad2", 50.33, 5.18, "tank", "2ND ARMORED"], ["ad3", 50.30, 5.60, "tank", "3RD ARMORED"], ["id84", 50.25, 5.38, "infantry", "84TH INF"], ["id75", 50.38, 5.45, "infantry", "75TH INF"]];
-VC.forEach(([id, la, lo, ic, lb], k) => { unit(id, "carth", la + 0.12, lo + 0.18, ic, lb, { t: T_DAYS + k * 0.25, w: 32, h: 21, tag: 12, until: S3 - 0.3 }); go(id, T_DAYS + 0.3 + k * 0.25, 2.2, la, lo, "power2.out"); });
+const VC = [["ad2", 50.34, 5.14, "tank", "2ND ARMORED"], ["ad3", 50.31, 5.64, "tank", "3RD ARMORED"], ["id84", 50.33, 5.34, "infantry", "84TH INF"], ["id75", 50.42, 5.48, "infantry", "75TH INF"]];
+VC.forEach(([id, la, lo, ic, lb], k) => { unit(id, "carth", la + 0.12, lo + 0.18, ic, lb, { t: T_DAYS + k * 0.25, w: 44, h: 30, tag: 16, until: S3 - 0.3 }); go(id, T_DAYS + 0.3 + k * 0.25, 2.2, la, lo, "power2.out"); });
 box("2 ARMORED + 2 INFANTRY DIVISIONS", ...L(50.47, 5.10), T_TWO, 15, S3 - 0.3);
 K.target(...L(50.227, 5.344), T_MARCHE, { r: 34, side: "carth", until: T_PLANNED + 2 });
 B.caption("VII CORPS GATHERS ON THE NORTH FLANK", T_ORD + 0.2, T_PLANNED, "carth r");
@@ -236,7 +237,7 @@ const MSG = scr(`<div style="width:820px;padding:20px 34px 24px;background:rgba(
   "left:0;right:0;top:150px;display:flex;justify-content:center;", T_MSG, S4 + 0.4);
 [["m0", T_MONTY - 0.2], ["m1", T_DEF - 0.1], ["m2", T_NEC], ["m3", T_NEC + 1.2]].forEach(([c, t]) => { B.tl.fromTo(MSG.querySelector("." + c), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.25 }, t); SFX(c === "m1" || c === "m2" ? "hit" : "tick", t); });
 const monty = badge({ name: "FIELD MARSHAL MONTGOMERY", role: "COMMANDS THE NORTHERN HALF", initials: "BLM", photo: PHOTO.monty, flag: "uk", side: "carth", corner: "br", t: T_MONTY - 0.2, until: S4 + 0.3 });
-const hodg = badge({ name: "LT. GEN. COURTNEY HODGES", role: "US FIRST ARMY", initials: "CH", photo: null, flag: "us", side: "carth", corner: "bl", t: T_HODGES - 0.2, until: S4 + 0.3 });
+const hodg = badge({ name: "LT. GEN. COURTNEY HODGES", role: "US FIRST ARMY", initials: "CH", photo: PHOTO.hodges, flag: "us", side: "carth", corner: "bl", t: T_HODGES - 0.2, until: S4 + 0.3 });
 const FB = LL([[50.49, 5.09], [50.38, 5.27], [50.267, 5.446], [50.29, 5.67]]);
 const FBL = glowPath(FB, "#b9b4a6", 5, T_NEC + 0.6, S5 - 0.3, 2); FBL.setAttribute("stroke-dasharray", "14 10");
 town("ANDENNE", 50.49, 5.09, T_NEC + 0.8, { size: 12, dy: -20, until: S5 - 0.3 }); town("MANHAY", 50.29, 5.67, T_NEC + 1.0, { size: 12, dy: -20, until: S5 - 0.3 });
@@ -244,10 +245,10 @@ box("FALL-BACK LINE", ...L(50.42, 5.40), T_NEC + 1.0, 12, S5 - 0.3);
 // ============ move3-4: the choice (night, Christmas Eve) ============
 const PLAN = [arw({ pts: LL([[50.300, 5.10], [50.272, 4.995], [50.245, 4.965]]), side: "carth", t: T_PLAN + 0.2, dur: 1.3, width: 13, dash: "14 10", until: S5 + 0.2 }),
   arw({ pts: LL([[50.300, 5.13], [50.250, 5.085], [50.222, 5.040]]), side: "carth", t: T_PLAN + 0.6, dur: 1.3, width: 13, dash: "14 10", until: S5 + 0.2 })];
-box("HARMON'S PLAN", ...L(50.31, 5.02), T_PLAN + 1.0, 11, T_IFBACK);
+box("HARMON'S PLAN", ...L(50.325, 4.96), T_PLAN + 1.0, 11, T_IFBACK);
 const CLK = scr(`<div style="display:flex;align-items:center;gap:14px;padding:10px 20px;background:rgba(18,16,12,0.9);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea">
   <svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#f1eee6" stroke="#c9b48a" stroke-width="4"/><line class="hh" x1="32" y1="32" x2="32" y2="17" stroke="#1a1712" stroke-width="5" stroke-linecap="round"/><line class="mh" x1="32" y1="32" x2="32" y2="9" stroke="#c4121f" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="32" r="3" fill="#1a1712"/></svg>
-  <div style="font-size:30px;letter-spacing:.14em">CHRISTMAS EVE</div></div>`, "right:60px;top:150px;", T_LOOK - 0.2, T_CHOSE + 0.6);
+  <div style="font-size:30px;letter-spacing:.14em">CHRISTMAS EVE</div></div>`, "left:60px;top:220px;", T_LOOK - 0.2, T_CHOSE + 0.6);
 gsap.set(CLK.querySelector(".mh"), { svgOrigin: "32 32", rotation: 0 }); gsap.set(CLK.querySelector(".hh"), { svgOrigin: "32 32", rotation: 300 });
 B.tl.to(CLK.querySelector(".mh"), { rotation: 1080, duration: T_CHOSE - T_LOOK, ease: "none" }, T_LOOK); B.tl.to(CLK.querySelector(".hh"), { rotation: 390, duration: T_CHOSE - T_LOOK, ease: "none" }, T_LOOK);
 for (let t = T_LOOK + 0.2; t < T_CHOSE - 0.3; t += 1.0) SFX("tick", t);
@@ -281,22 +282,22 @@ GG.dawn(S5 - 0.4, T_SKY + 1.0);
 CL(S5 + 0.6, T_DEEP + 0.3);
 B.hideUnits(["cca", "ccb"], S5 + 0.2);
 const CCB = [["b1", 50.300, 5.105, "tank", "CCB"], ["b2", 50.296, 5.125, "tank", null], ["b3", 50.290, 5.090, "mech", null]];
-CCB.forEach(([id, la, lo, ic, lb], k) => unit(id, "carth", la, lo, ic, lb, { t: S5 + 0.4 + k * 0.15 }));
+CCB.forEach(([id, la, lo, ic, lb], k) => unit(id, "carth", la, lo, ic, lb, { t: S5 + 0.4 + k * 0.15, w: 17, h: 11.5, tag: 6.5 }));
 const ENV = [arw({ pts: LL([[50.292, 5.090], [50.272, 4.995], [50.250, 4.962], [50.226, 4.990]]), side: "carth", t: T_SWEPT - 0.2, dur: 2.0, width: 16, until: T_DEEP }),
   arw({ pts: LL([[50.292, 5.120], [50.255, 5.095], [50.218, 5.075], [50.214, 5.035]]), side: "carth", t: T_SWEPT + 0.2, dur: 2.0, width: 16, until: T_DEEP })];
 SFX("ref:whoosh", T_SWEPT);
 go("b1", T_SWEPT, 4.0, 50.252, 4.966); go("b3", T_SWEPT + 0.2, 4.0, 50.236, 4.982); go("b2", T_SWEPT + 0.4, 4.0, 50.216, 5.060);
 B.caption("COMBAT COMMAND B: AROUND CELLES FROM TWO SIDES", T_SWEPT, T_BRIT - 0.1, "carth r");
-[[50.258, 4.920, "3RD RTR"], [50.244, 4.940, null]].forEach(([la, lo, lb], k) => unit("bt" + k, "carth", la, lo, "tank", lb, { t: T_BRIT + k * 0.25, flag: "uk", until: T_DEEP + 0.2 }));
-box("BRITISH TANKS HOLD THE MEUSE", ...L(50.282, 4.880), T_BRIT + 0.3, 10, T_FIRST + 1.5);
+[[50.258, 4.920, "3RD RTR"], [50.244, 4.940, null]].forEach(([la, lo, lb], k) => unit("bt" + k, "carth", la, lo, "tank", lb, { t: T_BRIT + k * 0.25, flag: "uk", until: T_DEEP + 0.2, w: 17, h: 11.5, tag: 6.5 }));
+box("BRITISH TANKS HOLD THE MEUSE", ...L(50.288, 4.900), T_BRIT + 0.3, 7, T_FIRST + 1.5);
 // tank fire into the stalled columns (shells land with boom + shake)
 const SH = [["b1", [50.240, 4.990]], ["bt0", [50.236, 4.985]], ["b2", [50.226, 5.030]], ["b3", [50.230, 5.000]]];
 SH.forEach(([id, p], k) => { const u = B.units[id], t = T_BRIT + 0.8 + k * 0.55, [tx, ty] = L(...p); K.gun(u.x, u.y, t, { unit: id, dx: 6, dy: -4 }); K.impact(tx + (k % 2 ? 4 : -4), ty, t + 0.5, { r: 10 }); });
 B.caption("CLEAR SKIES AT LAST: THE FIGHTER-BOMBERS COME", T_FIRST + 0.2, T_AFT - 0.1, "carth r");
 bomber(LL([[50.36, 4.86], [50.26, 4.99], [50.21, 5.05], [50.12, 5.16]]), T_P38 - 1.4, 4, 4.0);
-box("P-38 LIGHTNINGS", ...L(50.33, 4.96), T_P38, 10, T_TYPH + 1.0);
+box("P-38 LIGHTNINGS", ...L(50.30, 4.97), T_P38, 7, T_TYPH + 1.0);
 bomber(LL([[50.32, 5.20], [50.24, 5.07], [50.22, 5.00], [50.17, 4.86]]), T_TYPH - 0.6, 4, 4.0);
-box("RAF TYPHOONS", ...L(50.30, 5.19), T_TYPH + 0.3, 10, T_AFT + 0.8);
+box("RAF TYPHOONS", ...L(50.275, 5.17), T_TYPH + 0.3, 7, T_AFT + 0.8);
 bomber(LL([[50.30, 4.90], [50.235, 5.02], [50.205, 5.10], [50.15, 5.25]]), T_AFT - 1.0, 3, 4.0);
 [[50.238, 4.99], [50.226, 5.03], [50.246, 5.06]].forEach(([la, lo], j) => { for (let k = 0; k < 6; k++) K.smoke(...L(la, lo), T_P38 + 0.6 + j * 1.2 + k * 0.9, { n: 2, r: 7, rise: 26, drift: 12, alpha: 0.6 }); });
 go("pz4", T_SWEPT, 3, 50.214, 5.085);
@@ -310,7 +311,7 @@ GG.stamp("IN THE BAG", T_BAG - 0.3, S6 + 0.6, { size: 62, top: 840 });
 const ROC = L(50.162, 5.222);
 const REL = [arw({ pts: LL([[50.150, 5.235], [50.175, 5.140], [50.205, 5.090]]), side: "rome", t: T_ATT - 0.2, dur: 1.4, width: 15, until: T_DESTR }),
   arw({ pts: LL([[50.170, 5.260], [50.200, 5.200], [50.212, 5.150]]), side: "rome", t: T_ATT + 0.3, dur: 1.4, width: 13, until: T_DESTR })];
-box("RELIEF ATTACKS FROM ROCHEFORT", ROC[0] + 10, ROC[1] + 46, T_ATT + 0.2, 11, T_DESTR);
+box("RELIEF ATTACKS FROM ROCHEFORT", ROC[0] + 6, ROC[1] + 34, T_ATT + 0.2, 8, T_DESTR);
 const UG = [["ug1", 50.268, 5.20], ["ug2", 50.255, 5.25]].map(([id, la, lo], k) => unit(id, "carth", la, lo, "artillery", null, { t: T_2D + k * 0.2, w: 20, h: 14, until: T_DEEP }));
 const RT = [[50.178, 5.142], [50.196, 5.100], [50.203, 5.196], [50.188, 5.168]];
 for (let v = 0; v < 2; v++) UG.forEach((id, k) => { const u = B.units[id], t = T_ATT + 1.0 + v * 1.0 + k * 0.3, [tx, ty] = L(...RT[(v * 2 + k) % 4]);
@@ -323,8 +324,8 @@ for (let k = 0; k < 5; k++) K.impact(...L(50.215 + (k % 3) * 0.015, 4.99 + (k % 
 B.caption("THE POCKET IS DESTROYED", T_DESTR, T_DEEP - 0.1, "carth r");
 // zoom out (option 1, 27 Dec): the tip of the Bulge, stopped short of the Meuse
 legend(T_DEEP + 0.6, END + 1, false);
-town("DINANT", 50.26, 4.912, T_DEEP + 1.0, { size: 20, dy: -30, until: S7 + 0.4 }); town("CELLES", 50.233, 5.017, T_DEEP + 1.1, { size: 18, dy: 30, until: S7 + 0.4 });
-town("BASTOGNE", 50.0, 5.716, T_DEEP + 1.2, { size: 20, dy: -30, until: S7 + 0.4 });
+town("DINANT", 50.26, 4.912, T_DEEP + 1.0, { size: 24, dx: -60, dy: -26, until: S7 + 0.4 }); town("CELLES", 50.233, 5.017, T_DEEP + 1.1, { size: 22, dy: 66, until: S7 + 0.4 });
+town("BASTOGNE", 50.0, 5.716, T_DEEP + 1.2, { size: 24, dy: -32, until: S7 + 0.4 });
 K.target(...L(50.233, 5.017), T_DEEP + 1.0, { r: 46, until: END + 1 });
 glowPath(MEUSE, "#8fd0ff", 7, T_DEEP + 1.0, END + 1, 2);
 GG.stamp("THE DEEPEST POINT", T_DEEP + 0.4, S7 + 0.2, { size: 62, top: 840 });
@@ -347,7 +348,9 @@ const CAS = scr(`<div style="padding:26px 46px 26px;background:rgba(18,16,12,0.9
   ${colm(FL.us, "US 2ND ARMORED", "#1f4fc4", [row(TANK, "27", "TANKS"), row(P.killed, "17", "KILLED"), row(P.missing, "26", "MISSING"), row(P.wounded, "201", "WOUNDED")])}</div>
   <div style="font-size:16px;letter-spacing:.16em;color:#a9a294;text-align:center;margin-top:14px">SOURCE: H. M. COLE, THE ARDENNES: BATTLE OF THE BULGE (US ARMY)</div></div>`,
   "left:0;right:0;top:170px;display:flex;justify-content:center;", S7 + 0.1, T_CUT - 0.7);
-CAS.querySelectorAll(".cr").forEach((r, i) => { const t = (i < 4 ? T_FIGHT + 0.3 : T_OWN - 0.2) + (i % 4) * 0.45; B.tl.fromTo(r, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.35 }, t); SFX("tick", t); });
+const CT = [at(S7K, "eighty-two") - 0.1, at(S7K, "eighty-three guns") - 0.1, at(S7K, "over four hundred") - 0.1, at(S7K, "more than twelve") - 0.1,   // each row on its spoken number
+  T_OWN - 0.2, at(S7K, "seventeen killed") - 0.1, at(S7K, "seventeen killed") + 0.35, at(S7K, "around two hundred") - 0.1];
+CAS.querySelectorAll(".cr").forEach((r, i) => { const t = CT[i]; B.tl.fromTo(r, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.35 }, t); SFX("tick", t); });
 SFX("hit", S7 + 0.3);
 GG.METHOD = ["CUT THEM OFF, THEN NEVER LET THEM DIG IN", "THROW THE TANKS INTO THE CHAOS", "HIT THE SPEARHEAD WHEN IT RUNS DRY"];
 GG.METHOD_TITLE = "COLLINS'S METHOD";

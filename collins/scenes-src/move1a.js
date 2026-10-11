@@ -11,7 +11,7 @@ const GG = GGK(B);
 const G = GG.proj(10, 128794, 88848);
 const p = (n) => "move1-" + n;
 const FL = { us: "assets/media/us_flag_48star.png", de: "assets/media/ger_reich_flag.png" };
-const PH = { collins: null, schlieben: null };   // TODO: assets/media/collins_head.png / schlieben_head.png when the photo agent delivers them
+const PH = { collins: "assets/media/collins_head.png", schlieben: "assets/media/schlieben_head.png" };
 const PL = CD.n.places;
 
 // ---------- beats (spoken words) ----------
@@ -104,8 +104,8 @@ B.tl.to(FN, { opacity: 0, duration: 0.01 }, T_NECK);
 flag(FL.us, "USA", PL.car[0] + 130, PL.car[1] - 15, 0.6, null, 72, 13);
 flag(FL.de, "GERMANY", 975, 430, 0.8, null, 72, 13);
 // story places (small white boxes)
-box("UTAH BEACH", PL.utah[0] + 64, PL.utah[1] - 4, 0.9, 11, null);
-box("CARENTAN", PL.car[0] + 4, PL.car[1] + 22, 1.1, 11, null);
+box("UTAH BEACH", PL.utah[0] + 64, PL.utah[1] - 4, 0.9, 11, T_BACK);
+box("CARENTAN", PL.car[0] + 4, PL.car[1] + 22, 1.1, 11, T_BACK);
 box("SAINTE-MÈRE-ÉGLISE", PL.sme[0] + 18, PL.sme[1] + 22, 1.3, 9, S3);
 box("VALOGNES", PL.val[0] + 4, PL.val[1] + 18, T_NORTH, 11, null);
 box("CHERBOURG", PL.chb[0] + 4, PL.chb[1] - 22, T_RING - 0.6, 13, null);
@@ -163,7 +163,7 @@ GG.stamp("SEAL IT OFF FIRST", T_SEAL + 0.1, T_WEST - 0.2, { size: 48, color: "#8
 B.move("d9", T_INSTEAD, 2.0, 1185, 745); B.move("d82", T_INSTEAD, 2.0, 1160, 790);
 const A9 = B.arrow({ side: "carth", pts: [[1180, 745], [1120, 742], [1060, 748], [PL.barn[0] + 18, PL.barn[1] - 2]], width: 18, t: T_WEST, dur: T_SEA - T_WEST, until: S4 + 1 });
 B.move("d9", T_WEST + 0.3, T_SEA - T_WEST, PL.barn[0] + 50, PL.barn[1] - 6);
-box("BARNEVILLE", PL.barn[0] - 6, PL.barn[1] - 22, T_NECK, 11, null);
+box("BARNEVILLE", PL.barn[0] - 6, PL.barn[1] - 22, T_NECK, 11, T_BACK);
 B.city("", PL.barn[0], PL.barn[1], { r: 4, t: T_NECK });
 SFX("ref:boom", T_SEA);
 GG.stamp("18 JUNE · THE SEA", T_SEA + 0.1, T_CUT - 0.1, { size: 50, color: "#8fb4ff", top: 170 });

@@ -76,10 +76,16 @@ const along = (pts, f) => { const seg = []; let tot = 0; for (let j = 1; j < pts
   let d = f * tot; for (let j = 0; j < seg.length; j++) { if (d <= seg[j] || j === seg.length - 1) { const k = Math.min(1, d / seg[j]), a = pts[j], b = pts[j + 1]; return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]; } d -= seg[j]; } };
 // locked bombing run (K.bombRun: shake on the first bomb, real explosion booms) with the glowing blue C-47 symbol, sized for the zoom.
 // The bombs land 1.55 s + k*0.25 s after the run starts, so the plane path is laid out to pass over each bomb at that moment.
+// zBombRun = K.bombRun line for line (plane, bombs 1.55 s + k*0.25 s after the run starts, SHAKE 5 on the first bomb, real
+// "explosion" boom on every bomb), only the fireball radius is scaled for the 4x close-up (K.bombRun's fixed r 20 = 86 px on screen
+// at this zoom, which hid the whole target box). Engine gap: K.bombRun has no r option.
+const zBombRun = (o) => { const t0 = o.t, dur = o.dur || 3.2;
+  K.aircraft({ kind: o.kind || "c47g", side: o.side || "carth", size: o.size || 84, alt: o.alt || 30, pts: o.pts, t: t0, dur, until: t0 + dur });
+  o.bombs.forEach((b, k) => K.impact(b[0], b[1], t0 + 1.55 + k * 0.25, { r: o.r || 9, shake: k ? false : 5, sfx: "explosion" })); };
 const V = 80;   // plane speed (map px / s) at the close-up zoom
 const run = (x, yT, t, n = 3, o = {}) => { const yTop = yT - 1.55 * V, len = o.len || 390, dur = len / V;
   const bombs = [...Array(n)].map((_, k) => [x + (o.jit ? o.jit[k] || 0 : (k % 2 ? 2 : -2)), yT + k * 0.25 * V]);
-  K.bombRun({ kind: "c47g", side: "carth", size: o.size || 11, alt: o.alt || 4, pts: [[x, yTop], [x, yTop + len]], t, dur, bombs }); return bombs; };
+  zBombRun({ kind: "c47g", side: "carth", size: o.size || 11, alt: o.alt || 4, pts: [[x, yTop], [x, yTop + len]], t, dur, bombs }); return bombs; };
 // slim arrow for the 4x close-ups (blue body, thin white casing, head), drawn on along the path
 const slim = (pts, t, dur, w, until) => { const NS = "http://www.w3.org/2000/svg", g = document.createElementNS(NS, "g"), d = "M" + pts.map((q) => q.join(" ")).join(" L");
   const [x2, y2] = pts[pts.length - 1], [x1, y1] = pts[pts.length - 2], ang = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI + 90;
@@ -123,7 +129,7 @@ const fadeTo = (el, t, a, d = 0.4) => tl.to(el, { autoAlpha: a, duration: d }, t
 // =====================================================================================================================
 date0("25 JULY 1944", S2 + 0.05);
 legend(0, T_DROP + 0.1, false);
-const FUS = flag(US, "USA", 1185, 690, 0, T_DROP, 100), FUK = flag(UK, "BRITAIN", 1905, 905, 0, T_DROP, 80), FGE = flag(REICH, "GERMANY", 1720, 1330, 0, T_DROP, 100);
+const FUS = flag(US, "USA", 1255, 735, 0, T_DROP, 90), FUK = flag(UK, "BRITAIN", 1905, 905, 0, T_DROP, 80), FGE = flag(REICH, "GERMANY", 1810, 1300, 0, T_DROP, 100);
 // a line of counters on both sides of the front (west of Caumont = American, east = British)
 const FR = [0.04, 0.12, 0.2, 0.28, 0.36, 0.46, 0.56, 0.66, 0.76];
 const nrm = (pts, f) => { const a = along(pts, Math.max(0, f - 0.01)), b = along(pts, Math.min(1, f + 0.01)); const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dy / l, -dx / l]; };  // points to the Allied (north) side
@@ -136,7 +142,7 @@ FR.forEach((f, i) => { const [x, y] = along(F24, f), [nx, ny] = nrm(F24, f);
 [0.2, 0.6, 1.0, 1.4].forEach((t, k) => { const f = 0.18 + k * 0.17, [x, y] = along(F24, f), [nx, ny] = nrm(F24, f); K.gun(x + nx * 120, y + ny * 120, t); });
 // the heavies: glowing blue C-47 symbols streaming south from the Channel, already in the air at frame 0
 const STREAM = [[1330, 360], [1395, 250], [1450, 420], [1365, 520], [1425, 600]];
-const WIDEPL = STREAM.map(([x, y], k) => { const w = K.aircraft({ kind: "c47g", side: "carth", size: 30, alt: 10, pts: [[x, y], [x + 8, y + 700]], t: 0, dur: 6.5 + k * 0.3, until: T_DROP - 0.5, sfx: k === 1 ? undefined : false });
+const WIDEPL = STREAM.map(([x, y], k) => { const w = K.aircraft({ kind: "c47g", side: "carth", size: 40, alt: 10, pts: [[x, y], [x + 8, y + 700]], t: 0, dur: 6.5 + k * 0.3, until: T_DROP - 0.5, sfx: k === 1 ? undefined : false });
   gsap.set(w, { autoAlpha: 1 }); return w; });
 // the BIG card: slams in at 0.3 s and ticks 0 -> 1,500, then the tonnage ticks to 3,300+
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
@@ -144,7 +150,7 @@ const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:70
   <div style="font-size:40px;letter-spacing:0.26em;color:#ef8a82;margin-top:2px">HEAVY BOMBERS</div>
   <div class="t2" style="margin-top:12px;padding-top:10px;border-top:2px solid rgba(201,180,138,0.45)"><span class="n2" style="font-size:84px;line-height:1;color:#f7f3ea">0</span><span style="font-size:40px;letter-spacing:0.2em;color:#ef8a82;margin-left:16px">TONS OF BOMBS</span></div>
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">25 JULY 1944 · HEAVY BOMBERS ALONE · NORMANDY</div></div>`,
-  "left:90px;top:200px;transform-origin:50% 40%;");
+  "left:40px;top:200px;transform-origin:50% 40%;");
 slam(BIG, 0.3, { from: 1.9, dur: 0.22, shake: 6 });
 const T2 = BIG.querySelector(".t2"); gsap.set(T2, { autoAlpha: 0 });
 const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = 0.55, T_C1 = T_BOMBERS + 0.6;
@@ -165,7 +171,7 @@ B.hideUnits([...WR, ...WB], T_DROP - 0.1, 0.3);
 fadeTo(C24, T_DROP - 0.1, 0, 0.5); fadeTo(GEO, T_DROP - 0.1, 0, 0.5); fadeTo(DET, T_DROP - 0.25, 1, 0.5);
 const FL24 = K.front({ pts: F24C, sideA: "carth", sideB: "rome", t: T_DROP + 0.1, dur: 0.8, width: 15, until: S2 - 0.05 });
 legend(T_DROP + 0.4, S2 - 0.1, true);
-flag(US, "USA", ...L(49.19, -1.31), T_DROP + 0.35, S2 - 0.05, 26); flag(REICH, "GERMANY", ...L(49.07, -1.31), T_DROP + 0.45, S2 - 0.05, 26);
+flag(US, "USA", ...L(49.19, -1.31), T_DROP + 0.35, S2 - 0.05, 26); flag(REICH, "GERMANY", ...L(49.10, -1.36), T_DROP + 0.45, S2 - 0.05, 26);
 const roadEl = (() => { const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", "M" + ROAD.map((q) => q.join(" ")).join(" L"));
   p.setAttribute("fill", "none"); p.setAttribute("stroke", "#e9e2cf"); p.setAttribute("stroke-width", "1.6"); p.setAttribute("stroke-dasharray", "5 2.5"); p.setAttribute("opacity", "0");
   document.getElementById("overlay").appendChild(p); return p; })();
@@ -181,7 +187,7 @@ const boxEl = (() => { const p = document.createElementNS("http://www.w3.org/200
 tl.to(boxEl, { opacity: 1, duration: 0.3 }, T_STRIP - 0.2); tl.to(boxEl, { opacity: 0.0, duration: 0.4 }, S2 - 0.1);
 SFX("ref:pop", T_STRIP - 0.15);
 GG.tagbox("TARGET BOX", BOX[3][0] - 2, BOX[3][1] + 7, "#8a6d12", { size: 4.4, t: T_STRIP, until: T_HALF + 0.2 });
-const DIM = slam(scr(stampHTML("3.5 MILES WIDE", "#ffd54a", 60, -3, "THE TARGET: A STRIP OF NORMANDY"), "left:0;right:0;top:760px;display:flex;justify-content:center;"), T_HALF + 0.05, { shake: 4, until: T_SOME + 0.3 });
+const DIM = slam(scr(stampHTML("3.5 MILES WIDE", "#ffd54a", 60, -3, "THE TARGET: A STRIP OF NORMANDY"), "left:0;right:0;top:850px;display:flex;justify-content:center;"), T_HALF + 0.05, { shake: 4, until: T_SOME + 0.3 });
 // German defenders in the box (Panzer Lehr) + the Americans just north of the road
 const BR = [unit("br1", "rome", 49.136, -1.225, "infantry", null, { w: 11, h: 7.5, t: T_DROP + 0.5 }), unit("br2", "rome", 49.128, -1.20, "tank", null, { w: 11, h: 7.5, t: T_DROP + 0.6 }),
   unit("br3", "rome", 49.122, -1.178, "infantry", null, { w: 11, h: 7.5, t: T_DROP + 0.7 }), unit("br4", "rome", 49.112, -1.215, "tank", null, { w: 11, h: 7.5, t: T_DROP + 0.8 })];
@@ -210,7 +216,7 @@ NB.forEach((id, k) => tl.to(B.units[id].el, { rotation: k % 2 ? 12 : -12, durati
 const REDP = scr("", "inset:0;background:radial-gradient(ellipse at center, rgba(200,20,30,0) 40%, rgba(200,20,30,0.5) 100%);");
 const pulse = (t, a = 1) => { tl.fromTo(REDP, { autoAlpha: 0 }, { autoAlpha: a, duration: 0.06, immediateRender: false }, t); tl.to(REDP, { autoAlpha: 0, duration: 0.6 }, t + 0.1); };
 pulse(T_SHORT + 1.7); pulse(T_AMER + 0.35);
-const FF = scr(stampHTML("FRIENDLY FIRE", "#e3232f", 72, -5, "BOMBS FALL SHORT ON AMERICAN TROOPS"), "left:0;right:0;top:700px;display:flex;justify-content:center;");
+const FF = scr(stampHTML("FRIENDLY FIRE", "#e3232f", 72, -5, "BOMBS FALL SHORT ON AMERICAN TROOPS"), "left:0;right:0;top:840px;display:flex;justify-content:center;");
 slam(FF, T_AMER + 0.55, { shake: 6, until: S2 - 0.2 });
 // =====================================================================================================================
 // hook-2 (13.34 - 27.76): smoke over the craters -> WHITE-FLASH -> 31 July, the front torn open -> zoom-out -> NOT PATTON
@@ -226,7 +232,7 @@ fadeTo(DET, TF + 0.08, 0, 0.05); fadeTo(GEO, TF + 0.08, 1, 0.05);
 B.date("31 JULY 1944", TF + 0.1, T_PATTON - 0.1, 32);
 legend(TF + 0.15, T_TANKS - 0.1, true);
 const FL24b = K.front({ pts: F24C, sideA: "carth", sideB: "rome", t: TF + 0.1, dur: 0.35, width: 15, until: T_TANKS - 0.2 });
-flag(US, "USA", 1260, 880, TF + 0.2, T_TANKS - 0.1, 48); flag(REICH, "GERMANY", 1610, 1190, TF + 0.25, T_TANKS - 0.1, 48);
+flag(US, "USA", 1185, 872, TF + 0.2, T_TANKS - 0.1, 44); flag(REICH, "GERMANY", 1610, 1190, TF + 0.25, T_TANKS - 0.1, 48);
 // the German line at the gap, and the US armour poised north of it
 const GR = [unitXY("g1", "rome", 1243, 962, "infantry", null, { w: 26, h: 18, t: TF + 0.15 }), unitXY("g2", "rome", 1320, 1004, "tank", null, { w: 26, h: 18, t: TF + 0.2 }),
   unitXY("g3", "rome", 1395, 1032, "infantry", null, { w: 26, h: 18, t: TF + 0.25 }), unitXY("g4", "rome", 1460, 1068, "tank", null, { w: 26, h: 18, t: TF + 0.3 })];
@@ -248,7 +254,7 @@ B.hideUnits([...GR, ...GA], T_TANKS - 0.1, 0.3);
 // ---- zoom-out whoosh: all of Normandy (option 1, 31 July): the armour pours south to Avranches ----
 SFX("whoosh", T_TANKS - 0.25);
 camTo(T_TANKS, 0.9, 1440, 840, 0.69, "power3.inOut");
-camTo(T_TANKS + 0.95, S3 - T_TANKS - 1.0, 1440, 845, 0.72, "sine.inOut");
+camTo(T_TANKS + 0.95, S3 - T_TANKS - 1.0, 1440, 826, 0.68, "sine.inOut");
 fadeTo(C24, T_TANKS + 0.05, 1, 0.3); fadeTo(GEO, T_TANKS + 0.05, 1, 0.3); fadeTo(C31, T_POURED - 0.4, 1, 2.2); fadeTo(C24, T_POURED + 1.9, 0, 0.4);
 legend(T_TANKS + 0.4, S3 - 0.1, false);
 const FUS2 = flag(US, "USA", 1180, 640, T_TANKS + 0.5, S3 - 0.1, 100), FUK2 = flag(UK, "BRITAIN", 1900, 910, T_TANKS + 0.55, S3 - 0.1, 76);
@@ -263,11 +269,11 @@ B.date("1 AUGUST 1944", T_PATTON - 0.05, S3 - 0.1, 32);
 const PB = K.badge({ name: "GEORGE S. PATTON", role: "US THIRD ARMY", photo: null, initials: "GSP", flag: "us", side: "carth", corner: "tr", t: T_PATTON + 0.15, until: S3 - 0.2 });
 const PBf = PB.querySelector('div[style*="border-radius:50%"]'); if (PBf) PBf.insertAdjacentHTML("beforeend", `<img src="${PHOTO_PATTON}" onerror="this.style.display='none'" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">`);
 SFX("ref:pop", T_PATTON + 0.2);
-const PA = [B.arrow({ pts: [[1270, 1520], [1180, 1575], [1040, 1600], [900, 1590]], side: "carth", t: T_RACED - 0.25, dur: 1.1, width: 22, until: S3 - 0.1 }),
-  B.arrow({ pts: [[1320, 1525], [1500, 1585], [1750, 1598], [2000, 1590]], side: "carth", t: T_RACED + 0.1, dur: 1.2, width: 22, until: S3 - 0.1 })];
+const PA = [B.arrow({ pts: [[1265, 1500], [1180, 1540], [1060, 1556], [930, 1550]], side: "carth", t: T_RACED - 0.25, dur: 1.1, width: 22, until: S3 - 0.1 }),
+  B.arrow({ pts: [[1330, 1505], [1480, 1545], [1700, 1556], [1930, 1540]], side: "carth", t: T_RACED + 0.1, dur: 1.2, width: 22, until: S3 - 0.1 })];
 SFX("ref:whoosh", T_RACED - 0.2);
-box("INTO BRITTANY", 960, 1500, T_RACED + 0.7, 18, S3 - 0.1);
-box("INTO FRANCE", 1900, 1500, T_BEHIND - 0.3, 18, S3 - 0.1);
+box("INTO BRITTANY", 990, 1505, T_RACED + 0.7, 18, S3 - 0.1);
+box("INTO FRANCE", 1860, 1500, T_BEHIND - 0.3, 18, S3 - 0.1);
 // "But the man who broke that front was not Patton": a big red ? slams over the arrows, the badge greys, NOT PATTON
 const Q = GG.pin(`<div style="font-family:Oswald;font-weight:700;font-size:260px;line-height:1;color:#e3232f;text-shadow:0 0 30px rgba(227,35,47,0.6),0 8px 20px #000">?</div>`, 1400, 1230);
 slam(Q, T_BUT + 0.2, { from: 2.4, shake: 5, until: S3 - 0.15 });
@@ -328,7 +334,7 @@ const MC = scr(`<div style="display:flex;flex-direction:column;align-items:cente
   "left:130px;top:170px;");
 tl.fromTo(MC, { autoAlpha: 0, x: -120 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out" }, T_AMONG + 0.1);
 tl.to(MC.querySelector(".ph"), { filter: "grayscale(1) brightness(0.78) contrast(0.9)", duration: 0.35 }, T_STAR + 0.45);
-const GD = scr(stampHTML("A GENERAL AMONG THE DEAD", "#e3232f", 46, -6), "left:90px;top:520px;");
+const GD = scr(stampHTML("A GENERAL AMONG THE DEAD", "#e3232f", 46, -6), "left:90px;top:610px;");
 slam(GD, T_STAR + 0.4, { shake: 5 }); pulse(T_STAR + 0.62);
 tl.to([MC, GD, KW], { autoAlpha: 0, duration: 0.35 }, T_INF - 0.25);
 tl.to(BLK, { autoAlpha: 0.2, duration: 0.5 }, T_INF - 0.25);
@@ -343,7 +349,7 @@ UXY.forEach(([x, y], k) => K.impact(x - 1 + (k % 2) * 3, y + 19, T_CRAT + 0.6 + 
 const STL = wstamp("STALLED", BC[0] + 34, BC[1] - 30, T_STALL + 0.05, { size: 13, rot: -6, shake: 4, until: T_THREW - 0.2 });
 B.caption("NO BREAKTHROUGH YET", T_STALL + 0.1, T_INSTEAD + 0.1, "rome r"); SFX("static", T_STALL + 0.1);
 // "instead of waiting": WAIT FOR THE INFANTRY? is struck out
-const WT = scr(`<div style="position:relative;font-family:Oswald;font-weight:700;padding:12px 28px 14px;background:rgba(18,16,12,0.94);border-left:8px solid #c9b48a;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:20px;letter-spacing:0.3em;color:#c9b48a">THE CAUTIOUS CHOICE</div><div style="font-size:52px;letter-spacing:0.1em;line-height:1.05">WAIT FOR THE INFANTRY?</div><div class="sk" style="position:absolute;left:-3%;top:58%;width:106%;height:9px;background:#e3232f;box-shadow:0 0 8px #e3232f;transform-origin:0 50%"></div></div>`, "left:120px;top:330px;");
+const WT = scr(`<div style="position:relative;font-family:Oswald;font-weight:700;padding:12px 28px 14px;background:rgba(18,16,12,0.94);border-left:8px solid #c9b48a;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:20px;letter-spacing:0.3em;color:#c9b48a">THE CAUTIOUS CHOICE</div><div style="font-size:52px;letter-spacing:0.1em;line-height:1.05">WAIT FOR THE INFANTRY?</div><div class="sk" style="position:absolute;left:-3%;top:58%;width:106%;height:9px;background:#e3232f;box-shadow:0 0 8px #e3232f;transform-origin:0 50%"></div></div>`, "left:120px;top:560px;");
 const SK = WT.querySelector(".sk"); gsap.set(SK, { scaleX: 0 });
 tl.fromTo(WT, { autoAlpha: 0, x: -120 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "power3.out" }, T_INSTEAD); SFX("ref:pop", T_INSTEAD + 0.05);
 tl.to(SK, { scaleX: 1, duration: 0.2, ease: "power2.in" }, T_INSTEAD + 0.9); SFX("hit", T_INSTEAD + 1.1); K.shake(T_INSTEAD + 1.1, 3, 0.25);
