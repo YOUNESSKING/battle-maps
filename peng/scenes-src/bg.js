@@ -16,7 +16,7 @@ const GG = GGK(B);
 { const _arrow = B.arrow; B.arrow = (o) => { const g = _arrow(o); if ((o.width || 22) < 8) { const ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke-width", (o.width * 1.45 + 1).toFixed(1)); const pg = g.querySelector("polygon"); if (pg) pg.setAttribute("stroke-width", 0.8); } return g; }; }   // thin casing on small-map arrows (collins arrowT)
 const L = GG.proj(7, 26503, 11759);
 const FL = { prc: "assets/media/prc_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png", un: "assets/media/un_flag.png", nk: "assets/media/nk_flag.png" };
-const PHOTO_PENG = "assets/media/peng_head.png", PHOTO_MAC = "assets/media/macarthur_head_cut.png";
+const PHOTO_PENG = "assets/media/peng_head.png", PHOTO_MAC = "assets/media/macarthur_head.png";
 const tl = B.tl, scene = document.getElementById("scene"), worldEl = document.getElementById("world");
 // ---------- helpers (Rokossovsky hook kit) ----------
 const box = (txt, x, y, t, size = 16, until, pop = true) => { if (pop) SFX("ref:pop", t); return GG.pin(`<div style="background:#f1eee6;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.28em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.6).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };

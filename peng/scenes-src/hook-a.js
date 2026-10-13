@@ -139,7 +139,7 @@ SFX("ref:pop", T_AND);
 CR.forEach(([id, la, lo, la2, lo2], i) => B.arrow({ pts: [L(la, lo), L((la + la2) / 2 + 0.04, (lo + lo2) / 2), L(la2 + 0.09, lo2 + 0.02)], side: "rome", t: T_WALK + i * 0.12, dur: 1.2, width: 6, until: END + 1 }));
 // "believed the war was almost over": MacArthur's communique (24 Nov), verbatim words
 const MAC = scr(`<div style="display:flex;align-items:center;gap:20px;padding:14px 30px 16px 16px;background:rgba(18,16,12,0.93);border-left:8px solid #c4121f;box-shadow:0 18px 36px rgba(0,0,0,.6);font-family:Oswald;font-weight:700;color:#f7f3ea">
-  <div style="position:relative;width:118px;height:118px;border-radius:50%;overflow:hidden;border:5px solid #f3e7c4;box-shadow:0 0 0 3px #c4121f;background:url(${FL.us}) center/cover"><img src="assets/media/macarthur_head_cut.png" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
+  <div style="position:relative;width:118px;height:118px;border-radius:50%;overflow:hidden;border:5px solid #f3e7c4;box-shadow:0 0 0 3px #c4121f;background:url(${FL.us}) center/cover"><img src="assets/media/macarthur_head.png" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
   <div><div style="font-size:20px;letter-spacing:0.28em;color:#ef8a82">MACARTHUR · 24 NOV 1950</div><div style="font-size:50px;letter-spacing:0.05em;line-height:1.08">"FOR ALL PRACTICAL PURPOSES<br>END THE WAR"</div></div></div>`,
   "right:90px;top:170px;transform-origin:80% 40%;");
 slam(MAC, T_BEL - 0.1, { from: 1.6, shake: 4 });

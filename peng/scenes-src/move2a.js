@@ -112,9 +112,9 @@ const C24 = wimg("assets/media/nwk2_ctl_nov24_mx.png", 0, 0, T_NOON + 0.6, { mx:
 const C26 = wimg("assets/media/nwk2_ctl_nov26_mx.png", T_NOON + 0.4, 1.0, T_28 + 0.3, { mx: true, outDur: 1.0 });
 const C28 = wimg("assets/media/nwk2_ctl_nov28_mx.png", T_28 + 0.1, 1.0, END - 1.5, { mx: true, outDur: 1.0 });
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.2 }); LV.shimmer(NW.rivers || [], { width: 1.4 }); LV.scaleBar(234.56); LV.north();
-const EM = L(40.80, 124.95);   // PRC emblem on Manchuria (north of the Yalu), fixed for the whole scene
+const EM = L(40.38, 124.45);   // PRC emblem on Manchuria (north of the Yalu), fixed for the whole scene
 const EMB = document.createElement("img"); EMB.className = "wimg"; EMB.src = "assets/media/emblem_prc.png"; EMB.alt = ""; EMB.onerror = () => { EMB.style.display = "none"; };
-Object.assign(EMB.style, { left: EM[0] - 85 + "px", top: EM[1] - 85 + "px", width: "170px", height: "170px", opacity: 0.8 }); worldEl.insertBefore(EMB, document.getElementById("overlay"));
+Object.assign(EMB.style, { left: EM[0] - 45 + "px", top: EM[1] - 45 + "px", width: "90px", height: "90px", opacity: 0.8 }); worldEl.insertBefore(EMB, document.getElementById("overlay"));
 wimg("assets/media/nwkorea_geo_ref.png", 0, 0, null);
 // ---------- camera ----------
 camTo(0, S2 - 0.5, 1415, 845, 1.36);
@@ -133,7 +133,7 @@ B.date("MID-NOVEMBER 1950", 0.1, T_FREE - 0.3, 32); B.date("22 NOVEMBER 1950", T
 B.date("24 NOVEMBER 1950", T_24 - 0.1, S4 - 0.2, 32); B.date("25 NOVEMBER 1950", S4 - 0.1, T_NIGHT - 0.2, 32); B.date("25 NOVEMBER · NIGHT", T_NIGHT - 0.1, T_NOON - 0.2, 30);
 B.date("26 NOVEMBER · NOON", T_NOON - 0.1, S5 - 0.2, 30); B.date("27 NOVEMBER 1950", S5 - 0.1, T_28 - 0.2, 32); B.date("28 NOVEMBER 1950", T_28 - 0.1, END + 1, 32);
 legend(0.2, END - 1.4);
-const WIDEF = [flag(FL.prc, "CHINA", ...L(40.45, 124.62), 0.3, S3 + 0.6, 70), flag(FL.nk, "NORTH KOREA", ...L(40.25, 126.95), 0.35, S3 + 0.6, 60),
+const WIDEF = [flag(FL.prc, "CHINA", ...L(40.42, 124.78), 0.3, S3 + 0.6, 56), flag(FL.nk, "NORTH KOREA", ...L(40.25, 126.95), 0.35, S3 + 0.6, 60),
   flag(FL.us, "USA", ...L(39.30, 126.05), 0.4, S3 + 0.6, 70), flag(FL.rok, "SOUTH KOREA", ...L(39.32, 125.45), 0.45, S3 + 0.6, 60),
   flag(FL.un, "UNITED NATIONS", ...L(39.55, 127.55), 0.5, S3 + 0.6, 60)];
 // close set (from the push-in): both sides' flags on their own ground
@@ -218,7 +218,7 @@ tl.to([CHOS], { autoAlpha: 0, duration: 0.4 }, S3 + 0.6);
 // =====================================================================================================================
 // move2-3: Peng's plan: the XIII Army Group in a great arc; main blow on the 2nd Division; the open flank
 // =====================================================================================================================
-badge({ name: "PENG DEHUAI", role: "CHINESE PEOPLE'S VOLUNTEERS", photoSrc: "assets/media/peng_head.png", initials: "PD", flag: "prc", side: "carth", corner: "tl", t: S3 + 0.3, until: T_HEAVY - 0.2 });
+badge({ name: "PENG DEHUAI", role: "CHINESE PEOPLE'S VOLUNTEERS", photoSrc: "assets/media/peng_head.png", initials: "PD", flag: FL.prc, side: "carth", corner: "tl", t: S3 + 0.3, until: T_HEAVY - 0.2 });
 // the ghosts wake up and move forward into a great arc in the mountains (just north of the UN line)
 const ARC = [["b50", 39.86, 125.33], ["b66", 39.99, 125.58], ["b39", 40.04, 125.84], ["b40", 40.10, 126.06], ["b38", 40.01, 126.36], ["b42", 39.80, 126.66]];
 unghost(BL.map((b) => b[0]), T_200 - 0.3);
@@ -276,7 +276,7 @@ CA.forEach(([, p], i) => arr(p, "carth", T_ALONG + i * 0.2, { w: 12, dur: 1.0, u
   for (let k = 0; k < 4; k++) mg([A[0] + (k % 2) * 6, A[1] + 8], [Bp[0] + ((k * 5) % 7) - 3, Bp[1] - 4], T_CENTRE - 0.6 + i * 0.5 + k * 1.3, 4);
   for (let k = 0; k < 4; k++) shoot([A[0] + 10, A[1] - 8], [Bp[0] + ((k * 9) % 15) - 7, Bp[1] + ((k * 5) % 9) - 4], T_BUGLE + 0.2 + i * 0.35 + k * 0.9, { r: 8, h: 14 }); });
 jolt(["u25", "u2"], T_CENTRE + 0.6);
-const C3940 = tag("39TH + 40TH ARMIES", ...L(40.07, 125.96), T_CENTRE - 0.2, "#1f4fc4", 12, T_NOON);
+const C3940 = tag("39TH + 40TH ARMIES", ...L(40.17, 125.66), T_CENTRE - 0.2, "#1f4fc4", 12, T_NOON);
 // the right: 38th + 42nd Armies smash into the ROK II Corps at Tokchon
 arr([[40.01, 126.36], [39.90, 126.30], [39.82, 126.24]], "carth", T_TWO - 0.3, { w: 13, dur: 1.0, until: T_NOON + 2.0 });
 arr([[39.80, 126.66], [39.76, 126.52], [39.74, 126.40]], "carth", T_TWO - 0.1, { w: 13, dur: 1.0, until: T_NOON + 2.0 });
@@ -310,9 +310,9 @@ const WAW = town("WAWON", 39.721, 126.069, T_TURK - 0.4, { dx: 26, dy: -14 });
   mg([A[0] + 6, A[1]], [W[0], W[1]], T_HARD - 0.2, 5); }
 B.grey(["tur"], T_PUSHED, 0.6); go("tur", T_PUSHED - 0.1, 1.6, 39.71, 125.98, "power2.out");
 // 28 Nov: withdrawal arrows south (I Corps to the Chongchon, the IX Corps divisions toward Kunu-ri and the roads south)
-RD.slice(0, 4).forEach(([id], i) => go(id, T_RETREAT + i * 0.08, 2.0, ...[[39.62, 125.32], [39.72, 125.55], [39.80, 125.84], [39.76, 125.96]][i]));
+RD.slice(0, 4).forEach(([id], i) => go(id, T_28 + 0.3 + i * 0.08, 2.0, ...[[39.62, 125.32], [39.72, 125.55], [39.80, 125.84], [39.76, 125.96]][i]));
 [[[39.70, 125.30], [39.60, 125.36], [39.52, 125.42]], [[39.80, 125.52], [39.70, 125.58], [39.62, 125.62]], [[39.86, 125.84], [39.78, 125.86], [39.72, 125.87]],
-  [[39.84, 126.02], [39.76, 125.98], [39.68, 125.94], [39.56, 125.93]]].forEach((p, i) => arr(p, "rome", T_RETREAT + 0.1 + i * 0.12, { w: 7, dur: 1.2, until: END - 1.4, dash: "10 7" }));
+  [[39.84, 126.02], [39.76, 125.98], [39.68, 125.94], [39.56, 125.93]]].forEach((p, i) => arr(p, "rome", T_28 + 0.4 + i * 0.12, { w: 7, dur: 1.2, until: END - 1.1, dash: "10 7" }));
 sstamp("ENVELOPMENT", 690, T_28 - 0.6, { size: 64, sub: "THE CHINESE BEHIND THE EIGHTH ARMY", until: END - 1.5 });
 // lead-in to move2b: counters, labels and the fill clear as the camera dives onto Kunu-ri
 B.hideUnits([...BL.map((b) => b[0]).filter((x) => x !== "b20"), ...RD.map((r) => r[0]), "tur"], END - 1.6, 0.5);
