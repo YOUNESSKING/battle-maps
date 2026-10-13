@@ -21,7 +21,7 @@ T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
-SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py (provisional until the map agents report)
+SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
     "hook-a": ("hook-1", "hook-1"),
     "hook-b": ("hook-2", "hook-4"),
     "bg": ("bg-1", "bg-2"),
@@ -31,9 +31,11 @@ SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py 
     "move2a": ("move2-1", "move2-5"),
     "move2b": ("move2-6", "move2-7"),
     "move2c": ("move2-8", "move2-9"),
-    "move3a": ("move3-1", "move3-1"),
-    "move3b": ("move3-2", "move3-8"),
-    "ending": ("end-1", "end-3"),
+    "move3a": ("move3-1", "move3-2"),
+    "move3b": ("move3-3", "move3-6"),
+    "move3c": ("move3-7", "move3-8"),
+    "ending-a": ("end-1", "end-1"),
+    "ending-b": ("end-2", "end-3"),
 }
 CHAPTERS = [("hook-1", "Intro: 300,000 Men No One Saw"), ("move1-1", "Move 1: The Night Ambush at Unsan (Nov 1950)"),
             ("move2-1", "Move 2: The Trap on the Chongchon (Nov 1950)"), ("move3-1", "Move 3: The Fall of Seoul (Jan 1951)"),
