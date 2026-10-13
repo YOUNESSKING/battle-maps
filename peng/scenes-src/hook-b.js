@@ -76,7 +76,7 @@ const S3 = PS(H3), T_PLAN = at(H3, "planned it"), T_AIR = at(H3, "no air force")
   T_SHOES = at(H3, "thin cloth shoes"), T_WINTER = at(H3, "bitter Korean winter"), T_AGAINST = at(H3, "Against the most");
 const S4 = PS(H4), T_PENG = at(H4, "Peng Dehuai."), T_TEN = at(H4, "In ten weeks"), T_AMB = at(H4, "ambushed"), T_UNSAN = at(H4, "at Unsan"), T_SHAT = at(H4, "shattered"),
   T_CHONG = at(H4, "Chongchon River"), T_TOOK = at(H4, "took Seoul"), T_THESE = at(H4, "These are"), T_THREE = at(H4, "three greatest");
-const P = { unsan: L(39.96, 125.83), tokchon: L(39.75, 126.30), kunuri: L(39.50, 125.93), pyong: L(39.02, 125.75), seoul: L(37.57, 126.98), hungnam: L(39.83, 127.62),
+const P = { unsan: L(39.96, 125.83), tokchon: L(39.75, 126.30), kunuri: L(39.70, 125.90), pyong: L(39.02, 125.75), seoul: L(37.57, 126.98), hungnam: L(39.83, 127.62),
   chosin: L(40.45, 127.10), anju: L(39.62, 125.66) };
 // =====================================================================================================================
 // map layers
@@ -98,7 +98,7 @@ K.night({ lines: [F1], tOn: 0 });
 B.showDate(0); B.date("NIGHT · 25 NOVEMBER 1950", 0.1, T_MONTH, 30);
 const L1 = legend(0.2, T_MONTH, true);
 town("UNSAN", 39.96, 125.83, 0.3, { dx: -14, dy: -8, until: T_MONTH }); town("TOKCHON", 39.75, 126.30, 0.35, { dx: 18, dy: 8, until: T_MONTH });
-town("KUNU-RI", 39.50, 125.93, 0.4, { dy: 8, until: T_MONTH });
+town("KUNU-RI", 39.70, 125.90, 0.4, { dy: 8, until: T_MONTH });
 flag(FL.prc, "CHINA", ...L(40.30, 125.90), 0.5, T_MONTH, 18); flag(FL.us, "USA", ...L(39.30, 126.30), 0.55, T_MONTH, 18); flag(FL.rok, "SOUTH KOREA", ...L(39.35, 125.45), 0.6, T_MONTH, 18);
 // the red columns (the 24 Nov positions), still walking north
 const RC = [["r1", 39.70, 125.28, FL.us], ["r2", 39.86, 125.68, FL.rok], ["r3", 39.80, 125.95, FL.us], ["r4", 39.68, 126.10, FL.us], ["r5", 39.66, 126.34, FL.rok], ["r6", 39.62, 125.80, FL.us]];

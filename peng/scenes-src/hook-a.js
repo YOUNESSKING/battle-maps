@@ -117,7 +117,7 @@ B.hideUnits([...RED.map((r) => r[0]), ...BLUE.map((b) => b[0]), ...NEWB], TD + 0
 tl.to([...WF, ...WT, YALU], { autoAlpha: 0, duration: 0.25 }, TD + 0.05);
 B.date("24 NOVEMBER 1950", TD + 0.45, null, 32);
 // close set: towns, the river, both sides' flags on their own ground
-town("UNSAN", 39.96, 125.83, TD + 0.6, { size: 11, r: 4, dx: -40, dy: -16 }); town("KUNU-RI", 39.50, 125.93, TD + 0.65, { size: 11, r: 4, dy: 18 });
+town("UNSAN", 39.96, 125.83, TD + 0.6, { size: 11, r: 4, dx: -40, dy: -16 }); town("KUNU-RI", 39.70, 125.90, TD + 0.65, { size: 11, r: 4, dy: 18 });
 town("TOKCHON", 39.75, 126.30, TD + 0.7, { size: 11, r: 4, dx: 52, dy: -16 });
 flag(FL.us, "USA", ...L(39.40, 126.18), TD + 0.8, null, 46); flag(FL.rok, "SOUTH KOREA", ...L(39.42, 125.60), TD + 0.85, null, 46);
 flag(FL.prc, "CHINA", ...L(40.08, 126.75), TD + 0.9, null, 46);
