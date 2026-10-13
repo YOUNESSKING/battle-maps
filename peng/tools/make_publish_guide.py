@@ -53,7 +53,7 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "J. Lawton Collins's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "Peng Dehuai's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
@@ -70,39 +70,39 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/collins-thumb-A-the-gamble.jpg"; TB = "youtube/thumb/collins-thumb-B-4000-tons.jpg"
-LEN = os.environ.get("VIDEO_LEN", "13:29")
+TA = "youtube/thumb/peng-thumb-A-the-gauntlet.jpg"; TB = "youtube/thumb/peng-thumb-B-never-seen.jpg"
+LEN = os.environ.get("VIDEO_LEN", "16:48")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
-story = [Spacer(1, 18 * mm), P("J. LAWTON COLLINS", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+story = [Spacer(1, 18 * mm), P("PENG DEHUAI", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAMBLE (battlefield made with vidIQ; Collins's real public-domain 1948 photo added on top)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAUNTLET (battlefield made with vidIQ; Peng's public-domain portrait added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Collins-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"Peng-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
-                 ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample, see note in chat)"],
+                 ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample)"],
                  ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice (locked level 0.08)"],
                  ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit sounds, original effects"]],
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
-          Spacer(1, 5 * mm), P("Key frames (hook 0:01-0:47, carpet bombing 7:50, Celles 11:30)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 91)", "h2"), P(f"<b>{TITLE}</b>"),
+          Spacer(1, 5 * mm), P("Key frames: the hook (0:00-1:01)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
+story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 92)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
-          *bullets(["J. Lawton Collins's Top 3 Legendary Tactical Moves | The General Who Did What Patton Got Credit For (96; good A/B title)",
-                    "Lightning Joe Collins's Top 3 Legendary Tactical Moves | The Man Who Broke Hitler's Normandy Front (92)"]),
+          *bullets(["Peng Dehuai's Top 3 Legendary Tactical Moves | The Man Who Turned Korea Around (87)",
+                    "Peng Dehuai's Top 3 Legendary Tactical Moves | The Man Who Ambushed the US Army (86)"]),
           P("Why this thumbnail", "h2"),
           P("Tactical Genius picture formula: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
-            "a red brush banner bottom-left. <b>THE GAMBLE</b> is type 1 (his decision): committing the armour before the breach was secure, the move "
-            "that broke open Normandy (title promise), shown over the Cobra carpet bombing of the hook."),
-          P("Alternative for YouTube's Test &amp; compare: <b>4,000 TONS</b> (type 3, ominous stakes: the carpet bombing of 25 July).", "body"),
+            "a red brush banner bottom-left. <b>THE GAUNTLET</b> is type 3 (ominous stakes): the US 2nd Division's column trapped on the Kunu-ri - Sunchon road, "
+            "30 November 1950, the moment that sent the Eighth Army out of North Korea (title promise)."),
+          P("Alternative for YouTube's Test &amp; compare: <b>NEVER SEEN</b> (type 3: 300,000 men no aircraft spotted, the hook's opening).", "body"),
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
-          P("Checked: the AI image has no text of its own; we added SAINT-LO - PERIERS ROAD and PANZER LEHR. Hedgerow fields, the straight road and "
-            "four-engine heavy bombers match Normandy, 25 July 1944. The portrait is Collins's real 1948 US Army photo (public domain), not an AI "
-            "likeness; it shows him as a general after the war (he wore two stars in 1944).", "warn"),
+          P("Checked: the AI image has no text of its own; we added KUNU-RI - SUNCHON ROAD and US 2ND INFANTRY DIVISION. Snowy ridges, a truck column on a "
+            "valley road and infantry on the ridges match the Gauntlet (no tanks or aircraft shown). The portrait is Peng's real 1955 marshal portrait "
+            "(public domain on Wikimedia Commons), not an AI likeness; in 1950 he wore a plain uniform without rank.", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
           P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound, archive and image licences require them.", "warn"),
@@ -112,10 +112,10 @@ story += [P("4. Upload settings", "h1"),
                  ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Collins, Schlieben, Cotentin, Barneville, Fort du Roule, Bayerlein, Panzer Lehr, Marigny, Coutances, Avranches, McNair, Celles, Foy-Notre-Dame, Dinant, Harmon)"],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Peng Dehuai, Unsan, Chongchon, Kunu-ri, Sunchon, Tokchon, Chosan, Onjong, Pyongyang, Imjin, Uijongbu, Mao Anying, Hobart Gay, Walton Walker, Ridgway)"],
                  ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail battlefield is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["Pinned comment", "Which commander should we cover next? Ridgway, Bradley, Hodges, Harmon...?"],
+                 ["Pinned comment", "Which commander should we cover next? Ridgway, Walker, MacArthur, Lin Biao...?"],
                  ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
@@ -124,14 +124,14 @@ story += [P("4. Upload settings", "h1"),
                     "Tick 'altered or synthetic content'.", "Add end screen and cards; set visibility and schedule.",
                     "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 2% after ~1,000 impressions, switch to the alternative thumbnail."]),
           P("<b>Facts to double-check before publishing</b> (approximate, single-source or from memory; see research/FACT_NOTES*.md):<br/>"
-            "&bull; Collins as Army Chief of Staff 1949-53 (archive caption); the origin of the nickname Lightning Joe.<br/>"
-            "&bull; Cobra target box ~6,000 x 2,200 yards (said and shown as about 3.5 miles wide).<br/>"
-            "&bull; Celles losses: Cole's figures for the whole 2nd Armored operation 24-27 Dec (HistoryNet gives a wider range).<br/>"
-            "&bull; 'Deepest point' of the German offensive (standard wording).<br/>"
-            "&bull; Kelly and Ogden units; MacKelvie relieved ~13 June; Culin's hedgerow cutters (from memory, standard facts).<br/>"
-            "&bull; Harmon's 'the bastards are in the bag' is attributed via HistoryNet and said as 'reportedly'.<br/>"
-            "&bull; All front lines are approximate (logged per date in research/FACT_NOTES_*.md), esp. Cobra 27 July and the Bulge's south edge on 24 Dec.", "warn")]
-out = "build/Collins-publishing-guide.pdf"
+            "&bull; 'Longest retreat in US military history' = the Eighth Army's own official wording (said as 'what the US Army itself calls').<br/>"
+            "&bull; Unsan losses (Appleman: over 1,000 missing at first, ~600 after stragglers returned); Gauntlet ~6 miles (Appleman 1989 via Wikipedia).<br/>"
+            "&bull; Seoul retaken 14 vs 15 March 1951 (said as 'in March'); Ch'osan reached 26 Oct (standard accounts).<br/>"
+            "&bull; Long March 18,000 -> ~3,000; 'Old Chief Peng'; Lin Biao declining the command; Mao Anying on Peng's staff (Wikipedia).<br/>"
+            "&bull; Third Phase: whether the Chinese deliberately aimed at the ROK divisions (Mossman: by design or coincidence; Chinese sources: planned).<br/>"
+            "&bull; Peng's death 'denied proper medical care' (Domes / Shambaugh via Wikipedia).<br/>"
+            "&bull; All front lines are approximate (logged per date in research/FACT_NOTES_*.md).", "warn")]
+out = "build/Peng-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="J. Lawton Collins - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="Peng Dehuai - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print("wrote", out)
