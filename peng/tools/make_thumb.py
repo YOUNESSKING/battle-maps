@@ -11,7 +11,7 @@ d = ImageDraw.Draw(bg); f = ImageFont.truetype(F, 22)
 def tag(t, x, y):
     w = d.textlength(t, font=f); d.rectangle([x, y, x + w + 18, y + 32], fill=(18, 16, 12)); d.rectangle([x, y, x + w + 18, y + 32], outline=(201, 180, 138), width=2)
     d.text((x + 9, y + 2), t, font=f, fill=(247, 243, 234))
-tag("KUNU-RI - SUNCHON ROAD", 300, 40); tag("US 2ND INFANTRY DIVISION", 330, 640)
+tag("KUNU-RI - SUNCHON ROAD", 300, 40); tag("US 2ND INFANTRY DIVISION", 470, 440)
 # right third: darken, then the photo cut-out (grayscale, contrast), looking toward the map
 bg = ImageEnhance.Brightness(bg).enhance(0.92)
 src = Image.open("assets/media/peng_src.jpg").convert("RGB")

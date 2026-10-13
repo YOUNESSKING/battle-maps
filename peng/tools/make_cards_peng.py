@@ -34,18 +34,29 @@ def datecard(photo, year, text, out, box=None):
     im = Image.open(photo).convert("RGB")
     W, H = 1920, 1080
     k = max(W / im.width, H / im.height); im = im.resize((int(im.width * k), int(im.height * k)), Image.LANCZOS)
-    fx = 0.72  # subject to the right, text on the left
-    x0 = int(min(max(im.width * fx - W / 2, 0), im.width - W)); y0 = int(min(max(im.height * 0.35 - H / 2, 0), im.height - H))
+    x0 = (im.width - W) // 2; y0 = int(min(max(im.height * 0.35 - H / 2, 0), im.height - H))
     im = im.crop((x0, y0, x0 + W, y0 + H))
     a = np.asarray(im, np.float32) * 0.5; im = Image.fromarray(a.astype(np.uint8)).convert("RGBA")
     im = Image.alpha_composite(im, headline_layer(year, text, W, H)).convert("RGB")
     im.save(out, quality=92)
 
 M = "assets/media/"
+
+def wide(src, out, W=1920, H=1080, fx=0.5):
+    """portrait photo centred (fx) at full height over a blurred, darkened copy of itself: 16:9 without a face-band crop"""
+    im = Image.open(src).convert("RGB")
+    k = max(W / im.width, H / im.height); bg = im.resize((int(im.width * k), int(im.height * k)), Image.LANCZOS)
+    bg = bg.crop(((bg.width - W) // 2, (bg.height - H) // 3, (bg.width - W) // 2 + W, (bg.height - H) // 3 + H)).filter(ImageFilter.GaussianBlur(40))
+    bg = Image.fromarray((np.asarray(bg, np.float32) * 0.45).astype(np.uint8))
+    h = H; w = int(im.width * h / im.height); fg = im.resize((w, h), Image.LANCZOS)
+    bg.paste(fg, (int(W * fx - w / 2), 0)); bg.save(out, quality=93)
+
+wide(M + "peng_src.jpg", M + "peng_wide.jpg")
+wide(M + "peng_src.jpg", M + "peng_wide_right.jpg", fx=0.72)
 newspaper(["CHINESE ARMIES", "CROSS THE YALU"], "THE KOREAN WAR  ·  WAR EDITION  ·  OCTOBER 1950", "Some two hundred thousand men march into Korea by night", M + "headline_peng.jpg")
 newspaper(["PENG WRITES", "TO MAO"], "LUSHAN CONFERENCE  ·  JULY 1959", "A private letter on the Great Leap Forward", M + "headline_lushan.jpg")
 datecard(M + "peng37_src.jpg", "1928", "HUNAN, CHINA", M + "card_1928_hunan.jpg")
-datecard(M + "peng_src.jpg", "1959", "LUSHAN", M + "card_1959_lushan.jpg")
-datecard(M + "peng_src.jpg", "1966", "RED GUARDS", M + "card_1966_redguards.jpg")
-datecard(M + "peng_src.jpg", "1974", "BEIJING", M + "card_1974_beijing.jpg")
+datecard(M + "peng_wide_right.jpg", "1959", "LUSHAN", M + "card_1959_lushan.jpg")
+datecard(M + "peng_wide_right.jpg", "1966", "RED GUARDS", M + "card_1966_redguards.jpg")
+datecard(M + "peng_wide_right.jpg", "1974", "BEIJING", M + "card_1974_beijing.jpg")
 print("cards ok")
