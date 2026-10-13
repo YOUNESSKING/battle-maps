@@ -123,7 +123,7 @@ camTo(END - 2.2, 2.18, 1440, 810, 0.667, "power2.inOut");         // zoom out fo
 B.showDate(0.05); B.date("29 NOVEMBER 1950", 0.1, S7 - 0.2, 32); B.date("30 NOVEMBER 1950", S7 - 0.1, END + 1, 32);
 legend(0.3, END + 1);
 const KUN = PLC.kunuri || ROAD[0], SUN = PLC.sunchon || ROAD[ROAD.length - 1], ANJ = PLC.anju || [656, 367];
-town("KUNU-RI", KUN[0], KUN[1], 0.5, { dx: -48, dy: 6 });
+town("KUNU-RI", KUN[0], KUN[1], 0.5, { dx: 56, dy: 16 });
 town("SUNCHON", SUN[0], SUN[1], 0.6, { dx: 46, dy: 4 });
 town("ANJU", ANJ[0], ANJ[1], 0.7, { dy: -16 });
 if (PLC.sinanju) town("SINANJU", PLC.sinanju[0], PLC.sinanju[1], 0.75, { dy: 16, size: 10 });
@@ -169,7 +169,7 @@ const BRK = (() => { const NS = "http://www.w3.org/2000/svg", g = document.creat
   g.innerHTML = `<path d="M${a.join(" ")} L${l[0].join(" ")} ${l.map((q) => "L" + q.join(" ")).join(" ")} L${c.join(" ")}" fill="none" stroke="#f7f3ea" stroke-width="2.5" stroke-linejoin="round"/>`;
   document.getElementById("overlay").appendChild(g); GG.hide(g); tl.to(g, { autoAlpha: 1, duration: 0.4 }, T_SIX - 0.2); tl.to(g, { autoAlpha: 0, duration: 0.5 }, S7 + 1.5); return g; })();
 const SIXT = tag("~6 MILES OF FIRE", ...beside((M0 + M1) / 2, 104).map((v, i) => v + (i ? 0 : 52)), T_SIX, "#3d3a33", 13, S7 + 1.5);
-const FB = box("THE ELONGATED FIRE BLOCK", ...beside(5.2, 0).map((v, i) => v + (i ? -18 : 120)), T_BLOCK, 12, S7 - 0.2);
+const FB = box("THE ELONGATED FIRE BLOCK", ...beside(6.0, -150), T_BLOCK, 12, S7 - 0.2);
 // the heaviest fire: the pass (blue block + ring)
 const PS_ = KU.pass || atMi(10.8);
 const PB = unit("pblk", "carth", PS_[0] + 40, PS_[1] - 4, "infantry", { t: T_PASS - 0.1, size: "III", w: 30, h: 20 });
@@ -230,8 +230,12 @@ const wAt = (d) => { let j = 1; while (j < wcum.length - 1 && wcum[j] < d) j++; 
 const WARR = WPTS.slice(0, Math.max(3, Math.round(WPTS.length * 0.55)));
 B.arrow({ pts: WARR, side: "rome", t: T_WESTW - 0.4, dur: 2.0, width: 8, dash: "12 8", until: END - 1.0 });
 { const u = B.units[R23]; tl.to(W23, { k: wcum[WARR.length - 1], duration: 4.2, ease: "power1.inOut", onUpdate: () => { const p = wAt(W23.k); u.el.style.left = p[0] - u.w / 2 + "px"; u.el.style.top = p[1] - u.h / 2 + "px"; } }, T_WESTW - 0.2); }
-const T23 = tag("23RD INFANTRY · WEST VIA ANJU · GETS OUT", ANJ[0] + 150, ANJ[1] - 46, T_WESTW + 0.4, "#c4121f", 12, END - 1.0);
+const T23 = tag("23RD INFANTRY · WEST VIA ANJU · GETS OUT", ANJ[0] + 330, ANJ[1] - 44, T_WESTW + 0.4, "#c4121f", 12, END - 1.0);
 sstamp("THE GAUNTLET", 160, T_GAUNT - 0.2, { size: 84, sub: "KUNU-RI → SUNCHON · 30 NOV 1950", shake: 6, until: END - 0.6 });
 B.hideUnits([...RIDGE, ...NB, "pblk", "rg1", "rg2", "rgA", R23], END - 1.4, 0.6);
+// flag fallbacks while the period flags are still being fetched (the scene shows the real file as soon as it exists)
+const TURK_SVG = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="20" fill="#e30a17"/><circle cx="11.25" cy="10" r="5" fill="#fff"/><circle cx="12.5" cy="10" r="4" fill="#e30a17"/><polygon points="16.5,10 19.9,8.9 17.8,11.8 17.8,8.2 19.9,11.1" fill="#fff"/></svg>');
+const FBK = { "prc_flag.png": "assets/media/nwkorea_tmp_prc_flag.png", "rok_flag_1949.png": "assets/media/nwkorea_tmp_rok_flag.png", "un_flag.png": "assets/media/nwkorea_tmp_un_flag.png", "turkey_flag.png": TURK_SVG };
+document.querySelectorAll("img").forEach((im) => { const f = (im.getAttribute("src") || "").split("/").pop(); if (FBK[f]) im.addEventListener("error", () => { im.src = FBK[f]; }, { once: true }); });
 K.raiseTerritory();
 B.finish();

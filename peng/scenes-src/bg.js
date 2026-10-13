@@ -60,7 +60,7 @@ const CUTB = scr("", "inset:0;background:#030406;");
 const glowLine = (pts, t, until, c = "#ffd54a", w = 4) => K.front({ pts, sideA: c, sideB: c, t, dur: 1.0, width: w, until });
 const pBadge = (o) => { const el = K.badge(Object.assign({ side: "carth", flag: FL.prc }, o)); const im = el.querySelector("img"); if (im) im.onerror = () => { im.style.display = "none"; }; return el; };
 const textCard = (kicker, big, sub, css, t, until, col = "#2e5cb2") => { const el = scr(`<div style="font-family:Oswald;font-weight:700;padding:12px 28px 14px;background:rgba(18,16,12,0.93);border-left:8px solid ${col};color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:19px;letter-spacing:0.3em;color:#c9b48a">${kicker}</div><div style="font-size:46px;letter-spacing:0.08em;line-height:1.08">${big}</div>${sub ? `<div style="font-size:20px;letter-spacing:0.2em;color:#d8cfb8;margin-top:4px">${sub}</div>` : ""}</div>`, css);
-  tl.fromTo(el, { autoAlpha: 0, x: -70 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, t); SFX("ref:pop", t + 0.05);
+  tl.fromTo(el, { autoAlpha: 0, x: 70 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, t); SFX("ref:pop", t + 0.05);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 const BORDER = [[39.80, 124.20], [39.86, 124.35], [40.10, 124.40], [40.30, 124.70], [40.46, 124.96], [40.62, 125.35], [40.83, 125.78], [41.15, 126.29], [41.45, 126.55], [41.78, 126.88], [41.65, 127.30], [41.45, 127.80], [41.40, 128.18], [41.75, 128.30], [42.00, 128.06], [42.10, 128.70], [42.23, 129.20], [42.44, 129.75], [42.95, 129.98], [42.75, 130.25], [42.50, 130.45], [42.29, 130.66]].map(([a, b]) => L(a, b));
 const P38 = [[1222, 881], [1591, 881]];
@@ -146,15 +146,15 @@ tl.to(F0[0], { scale: 1.3, duration: 0.25, yoyo: true, repeat: 1 }, T_BORDER); S
 // =====================================================================================================================
 // bg-2: China warns; Mao sends an army; Peng; NIGHT on the Yalu, 18 October; Pyongyang falls 19 October; ~200,000 in the dark
 // =====================================================================================================================
-const W1 = textCard("OCTOBER 1950", "CHINA WARNS", "IT WILL NOT STAND BY", "left:90px;top:200px;", S2 + 0.1, T_MAO - 0.1, "#2e5cb2");
+const W1 = textCard("OCTOBER 1950", "CHINA WARNS", "IT WILL NOT STAND BY", "right:90px;top:200px;", S2 + 0.1, T_MAO - 0.1, "#2e5cb2");
 tl.to(F0[0], { scale: 1.3, duration: 0.25, yoyo: true, repeat: 1 }, T_STAND); SFX("hit", T_STAND + 0.1); K.shake(T_STAND + 0.1, 3, 0.25);
-const W2 = textCard("BEIJING · MAO ZEDONG", "SEND AN ARMY INTO KOREA", null, "left:90px;top:200px;", T_MAO, T_FIRST - 0.1, "#c9b48a");
-const W3 = textCard("HIS FIRST CHOICE OF COMMANDER", "TURNS IT DOWN", "PLEADING ILL HEALTH", "left:90px;top:200px;", T_FIRST, T_GAVE - 0.1, "#77746c");
-const PB = pBadge({ name: "PENG DEHUAI", role: "COMMANDER · CHINESE PEOPLE'S VOLUNTEERS", photo: PHOTO_PENG, corner: "tl", t: T_GAVE, until: END + 1 });
-PB.style.top = "190px"; SFX("ref:pop", T_GAVE + 0.1);
+const W2 = textCard("BEIJING · MAO ZEDONG", "SEND AN ARMY INTO KOREA", null, "right:90px;top:200px;", T_MAO, T_FIRST - 0.1, "#c9b48a");
+const W3 = textCard("HIS FIRST CHOICE OF COMMANDER", "TURNS IT DOWN", "PLEADING ILL HEALTH", "right:90px;top:200px;", T_FIRST, T_GAVE - 0.1, "#77746c");
+const PB = pBadge({ name: "PENG DEHUAI", role: "COMMANDER · CHINESE PEOPLE'S VOLUNTEERS", photo: PHOTO_PENG, corner: "bl", t: T_GAVE, until: END + 1 });
+ SFX("ref:pop", T_GAVE + 0.1);
 // NIGHT + push in on the Yalu (dusk, 18 October)
 GG.night(T_DUSK - 0.6, END + 1, { dur: 1.6 });
-flag(FL.prc, "CHINA", ...L(41.55, 125.05), T_DUSK + 0.3, END + 1, 22);
+flag(FL.prc, "CHINA", ...L(40.62, 124.0), T_DUSK + 0.3, END + 1, 22);
 B.date("18 OCTOBER 1950 · DUSK", T_DUSK - 0.2, T_NEXT, 30);
 SFX("whoosh", T_DUSK - 0.5);
 camTo(T_DUSK - 0.4, 1.3, 1290, 610, 2.9, "power3.inOut");

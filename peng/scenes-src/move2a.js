@@ -317,5 +317,9 @@ sstamp("ENVELOPMENT", 690, T_28 - 0.6, { size: 64, sub: "THE CHINESE BEHIND THE 
 // lead-in to move2b: counters, labels and the fill clear as the camera dives onto Kunu-ri
 B.hideUnits([...BL.map((b) => b[0]).filter((x) => x !== "b20"), ...RD.map((r) => r[0]), "tur"], END - 1.6, 0.5);
 tl.to([...CLOSEF, ...PL, WAW, T38, T42], { autoAlpha: 0, duration: 0.4 }, END - 1.5);
+// flag fallbacks while the period flags are still being fetched (the scene shows the real file as soon as it exists)
+const TURK_SVG = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20"><rect width="30" height="20" fill="#e30a17"/><circle cx="11.25" cy="10" r="5" fill="#fff"/><circle cx="12.5" cy="10" r="4" fill="#e30a17"/><polygon points="16.5,10 19.9,8.9 17.8,11.8 17.8,8.2 19.9,11.1" fill="#fff"/></svg>');
+const FBK = { "prc_flag.png": "assets/media/nwkorea_tmp_prc_flag.png", "rok_flag_1949.png": "assets/media/nwkorea_tmp_rok_flag.png", "un_flag.png": "assets/media/nwkorea_tmp_un_flag.png", "turkey_flag.png": TURK_SVG };
+document.querySelectorAll("img").forEach((im) => { const f = (im.getAttribute("src") || "").split("/").pop(); if (FBK[f]) im.addEventListener("error", () => { im.src = FBK[f]; }, { once: true }); });
 K.raiseTerritory();
 B.finish();

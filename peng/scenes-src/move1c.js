@@ -50,7 +50,7 @@ const LV = LivingK(B);
 LV.clouds({ n: 8, opacity: 0.22 });
 LV.shimmer(Object.values(R), { width: 1.6 });
 LV.scaleBar(234.56); LV.north();
-B.image(EMBLEM, 860, 440, 150, 150, { t: 0.4, dur: 0.6, opacity: 0.8 });
+if (window.HAS_EMBLEM) B.image(EMBLEM, 860, 440, 150, 150, { t: 0.4, dur: 0.6, opacity: 0.8 });   // TODO: emblem_prc.png missing
 wimg("assets/media/nwkorea_geo_ref.png", 0, 0.01, null);
 
 // ---------- camera: from the Unsan close-up back out to the theatre ----------
@@ -62,7 +62,7 @@ B.date("6 NOVEMBER 1950", T_BACK, null, 32);
 legend(1.4, END + 1);
 flag(FL.prc, "CHINA", 1150, 392, 1.5, END + 1, 84); flag(FL.nk, "NORTH KOREA", 1790, 470, 1.6, END + 1, 80);
 flag(FL.un, "UN COMMAND", 1170, 1075, 1.7, END + 1, 80); flag(FL.us, "USA", 1580, 1060, 1.8, END + 1, 80); flag(FL.rok, "SOUTH KOREA", 1770, 1060, 1.9, END + 1, 80);
-[["UNSAN", PL.unsan, -46, -4], ["KUNU-RI", PL.kunuri, 46, 6], ["ANJU", PL.anju, -36, 4], ["ONJONG", PL.onjong, -12, 24]].forEach(([n, q, dx, dy], i) => {
+[["UNSAN", PL.unsan, -46, -4], ["KUNU-RI", PL.kunuri, 30, 30], ["ANJU", PL.anju, -36, 4], ["ONJONG", PL.onjong, -12, 24]].forEach(([n, q, dx, dy], i) => {
   B.city("", q[0], q[1], { r: 5, t: 1.2 + i * 0.1 }); box(n, q[0] + dx, q[1] + dy, 1.2 + i * 0.1, 13, null, { pop: false }); });
 
 // ---------- the front: 1 Nov line -> back to the Chongchon (6 Nov) ----------

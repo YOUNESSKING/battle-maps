@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""Square face crops (400x400 RGB, like rokossovsky/collins heads) from collins/assets/media/<name>_src.jpg.
-Box = (left, top, right, bottom) in source pixels. Run: python3 collins/tools/make_heads.py [name ...]"""
+"""Square face crops (400x400 RGB) from peng/assets/media/<name>_src.jpg.
+Box = (left, top, right, bottom) in source pixels. Run: python3 peng/tools/make_heads.py [name ...]"""
 import sys
 from PIL import Image
 M = "/home/user/battle-maps/peng/assets/media/"
 BOXES = {
-    "bradley":    ("bradley_src.jpg",    (180, 100, 840, 760)),
-    "montgomery": ("montgomery_src.jpg", (500, 540, 900, 940)),
-    "patton":     ("patton_src.jpg",     (680, 170, 1040, 530)),
-    "schlieben":  ("schlieben_src.jpg",  (210, 50, 570, 410)),
-    "white":      ("white_src.jpg",      (60, 10, 560, 510)),
-    "collins48":  ("collins48_src.jpg",  (200, 60, 800, 660)),
+    "peng":      ("peng_src.jpg",      (50, 40, 320, 310)),
+    "walker":    ("walker_src.jpg",    (60, 10, 440, 390)),
+    "keiser":    ("keiser_src.jpg",    (180, 230, 780, 830)),
+    "macarthur": ("macarthur_src.jpg", (600, 580, 860, 840)),
+    "peng53":    ("peng53_src.jpg",    (300, 100, 560, 360)),
 }
 for k in (sys.argv[1:] or BOXES):
     f, box = BOXES[k]

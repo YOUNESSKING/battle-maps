@@ -104,7 +104,7 @@ const LV = LivingK(B);
 LV.clouds({ n: 8, opacity: 0.22 });
 LV.shimmer(Object.values(R), { width: 1.6 });
 LV.scaleBar(234.56); LV.north();
-B.image(EMBLEM, 860, 440, 150, 150, { t: 0, dur: 0.6, opacity: 0.8 });   // emblem on Manchuria, fixed for the whole scene
+if (window.HAS_EMBLEM) B.image(EMBLEM, 860, 440, 150, 150, { t: 0, dur: 0.6, opacity: 0.8 });   // TODO: emblem_prc.png missing   // emblem on Manchuria, fixed for the whole scene
 wimg("assets/media/nwkorea_geo_ref.png", 0, 0, null);
 
 // ---------- camera ----------
@@ -180,7 +180,7 @@ const NIGHT2 = GG.night(T_NIGHTS - 0.8, S4 - 0.3, { dur: 1.2, outDur: 1.4 });
 K.badge({ name: "PENG DEHUAI", role: "COMMANDER · CHINESE VOLUNTEERS", photo: HEAD.peng, flag: FL.prc, side: "carth", corner: "tr", t: S3 + 0.2, until: T_TYPICAL });
 B.caption("THE AMERICANS RULED THE SKY AND THE ROADS", T_SKY, T_NEITHER - 0.1, "rome r");
 B.caption("SO HIS MEN WOULD USE NEITHER", T_NEITHER, T_TYPICAL + 0.4, "carth r");
-const moon = scr(`<svg width="90" height="90" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 14px rgba(220,230,255,0.8))"><path d="M62 10 A42 42 0 1 0 90 66 A34 34 0 1 1 62 10 Z" fill="#eef2ff"/></svg>`, "left:610px;top:78px;");
+const moon = scr(`<svg width="90" height="90" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 14px rgba(220,230,255,0.8))"><path d="M62 10 A42 42 0 1 0 90 66 A34 34 0 1 1 62 10 Z" fill="#eef2ff"/></svg>`, "right:150px;top:130px;");
 tl.fromTo(moon, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.0, immediateRender: false }, T_SKY + 0.6); tl.to(moon, { autoAlpha: 0, duration: 0.6 }, T_CAUGHT - 0.4);
 const clock = GG.card(`<div style="text-align:center"><div style="font-size:20px;letter-spacing:0.4em;color:#9fc0ea">THE MARCH</div><div class="ck" style="font-size:86px;font-weight:700;line-height:1;letter-spacing:0.06em">19:00</div><div class="cs" style="font-size:20px;letter-spacing:0.3em;color:#d8cfb8">MARCH AFTER DARK</div></div>`, "tl", 220, T_SEVEN - 0.4, T_CAUGHT - 0.3);
 clock.querySelector(".inner").style.borderTopColor = "#2c57b7"; SFX("hit", T_SEVEN - 0.3);
@@ -250,7 +250,7 @@ B.grey(["rok6", "rok6b"], T_SIXTH + 0.3);
 K.shake(T_SIXTH + 0.3, 4, 0.3); SFX("hit", T_SIXTH + 0.3);
 // the ROK II Corps routed: the right flank of Eighth Army collapses -> control 1 Nov (the line pivots south at Kunu-ri)
 const F1 = D.nov1.base;
-const FN1 = K.front({ pts: F1, sideA: "carth", sideB: "rome", t: T_IICORPS + 0.2, dur: 2.0, width: 15, until: END - 0.6 });
+const FN1 = K.front({ pts: F1, sideA: "carth", sideB: "rome", t: T_IICORPS + 0.2, dur: 2.0, width: 15, until: T_DIVE + 0.2 });
 arrow("carth", [[1560, 760], [1520, 840], [1470, 900]], T_IICORPS + 0.3, { dur: 1.2, w: 13, until: T_DIVE });
 arrow("carth", [[1600, 820], [1560, 900], [1520, 960]], T_IICORPS + 0.6, { dur: 1.2, w: 13, until: T_DIVE });
 B.grey(["rok8"], T_ROUTED);
