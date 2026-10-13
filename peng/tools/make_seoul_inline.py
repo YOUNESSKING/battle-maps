@@ -9,9 +9,7 @@ KIT = r'''
 // ---------- move-3 kit (tools/make_seoul_inline.py) ----------
 const FL = { prc: "assets/media/prc_flag.png", nk: "assets/media/nk_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png",
   un: "assets/media/un_flag.png", uk: "assets/media/uk_flag.png", tr: "assets/media/turkey_flag.png" };
-// stand-ins while the flag/photo agent is still fetching (TODO: drop once the real files exist)
-const FALLBACK = { "prc_flag.png": "smith_pva_flag.png", "rok_flag_1949.png": "us_flag_48star.png", "un_flag.png": "us_flag_48star.png",
-  "turkey_flag.png": "us_flag_48star.png", "ridgway_head.png": "smith_ridgway_head.png", "emblem_prc.png": "" };
+const FALLBACK = {};   // real flag/photo files in place (stand-ins dropped)
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => im.addEventListener("error", () => {
   const f = (im.getAttribute("src") || "").split("/").pop(); if (!(f in FALLBACK)) return;
   if (FALLBACK[f]) im.src = "assets/media/" + FALLBACK[f]; else im.style.display = "none"; }, { once: true }));

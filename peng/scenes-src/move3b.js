@@ -23,9 +23,7 @@ const LL = (pts) => pts.map(([la, lo]) => L(la, lo));
 // ---------- move-3 kit (tools/make_seoul_inline.py) ----------
 const FL = { prc: "assets/media/prc_flag.png", nk: "assets/media/nk_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png",
   un: "assets/media/un_flag.png", uk: "assets/media/uk_flag.png", tr: "assets/media/turkey_flag.png" };
-// stand-ins while the flag/photo agent is still fetching (TODO: drop once the real files exist)
-const FALLBACK = { "prc_flag.png": "smith_pva_flag.png", "rok_flag_1949.png": "us_flag_48star.png", "un_flag.png": "us_flag_48star.png",
-  "turkey_flag.png": "us_flag_48star.png", "ridgway_head.png": "smith_ridgway_head.png", "emblem_prc.png": "" };
+const FALLBACK = {};   // real flag/photo files in place (stand-ins dropped)
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => im.addEventListener("error", () => {
   const f = (im.getAttribute("src") || "").split("/").pop(); if (!(f in FALLBACK)) return;
   if (FALLBACK[f]) im.src = "assets/media/" + FALLBACK[f]; else im.style.display = "none"; }, { once: true }));
@@ -174,8 +172,8 @@ const BEL = scr(`<div style="padding:14px 34px 16px;background:rgba(18,16,12,0.9
   <div style="font-size:20px;letter-spacing:.34em;color:#e8a9a2">THE UN COMMAND'S PLAN</div><div style="font-size:52px;letter-spacing:.08em">HOLD NORTH OF SEOUL</div></div>`,
   "left:0;right:0;top:150px;display:flex;justify-content:center;", T_SOLID - 0.2, T_WHO + 1.4);
 SFX("hit", T_SOLID);
-box("I CORPS", ...L(37.70, 126.83), T_WHO + 0.2, 13, S4 + 0.4); box("IX CORPS", ...L(37.82, 127.20), T_WHO + 0.4, 13, S4 + 0.4);
-box("ROK III CORPS", ...L(37.83, 127.60), T_WHO + 0.6, 13, S4 + 0.4);
+box("I CORPS", ...L(37.70, 126.83), T_WHO + 0.2, 17, S4 + 0.4); box("IX CORPS", ...L(37.82, 127.20), T_WHO + 0.4, 17, S4 + 0.4);
+box("ROK III CORPS", ...L(37.83, 127.60), T_WHO + 0.6, 17, S4 + 0.4);
 // the Americans: tanks, artillery, air support
 const UT = [["t25", 37.765, 126.88, "tank"], ["a25", 37.745, 126.76, "artillery"], ["t24", 37.885, 127.315, "tank"], ["a24", 37.88, 127.19, "artillery"]];
 UT.forEach(([id, la, lo, ic], k) => unit(id, "rome", L(la, lo), ic, null, { t: T_AM + 0.2 + k * 0.2, w: 28, h: 19, flag: FL.us, until: S5 + 0.4 }));
@@ -202,7 +200,8 @@ GG.night(S4 - 0.3, S5 + 0.3, { dur: 2.0, outDur: 3.0 });
 K.night({ lines: [FA], tOn: S4 - 0.3, tOff: S5 + 0.3 });
 GG.stamp("NEW YEAR'S EVE", T_EVE + 0.3, T_GUNS + 0.4, { size: 56, top: 840, color: "#e9d9a8" });
 // Chinese guns north of the Imjin: the 30-minute barrage on the ROK 1st Div sector (every impact booms + shakes)
-const GUNS = [["g1", 38.075, 126.84], ["g2", 38.095, 126.96], ["g3", 38.08, 127.03]];
+B.hideUnits(["c39"], S4 + 0.4);   // at night the 116th Div stands for the 39th Army (keeps the close-up clear)
+const GUNS = [["g1", 38.115, 126.83], ["g2", 38.135, 126.95], ["g3", 38.115, 127.02]];
 GUNS.forEach(([id, la, lo], k) => unit(id, "carth", L(la, lo), "artillery", null, { t: S4 + 0.8 + k * 0.15, w: 24, h: 16, until: T_DAWN }));
 const TG1 = [[37.93, 126.90], [37.915, 126.95], [37.905, 126.99], [37.935, 126.93], [37.92, 126.97], [37.90, 126.92]];
 for (let k = 0; k < 14; k++) { const gi = k % 3, g = B.units[GUNS[gi][0]], tg = L(...TG1[(k * 5) % 6]), t = T_GUNS - 0.2 + k * 0.33;
