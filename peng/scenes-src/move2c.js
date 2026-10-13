@@ -64,9 +64,9 @@ const S9 = PS(P9), T_WINTER = at(P9, "brutal winter"), T_COLD = at(P9, "lost to 
 const C24 = wimg("assets/media/korea_ctl_nov24_mx.png", 0, 0, T_MID + 0.4, { mx: true });
 const C15 = wimg("assets/media/korea_ctl_dec15_mx.png", T_MID, 1.0, null, { mx: true });
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.2 }); LV.shimmer(KR.rivers || [], { width: 1.0 }); LV.scaleBar(955.79); LV.north();
-const EM = L(42.30, 125.60);   // PRC emblem on Manchuria, clear of the Yalu and the sea, fixed
+const EM = L(40.75, 123.95);   // PRC emblem on Manchuria, clear of the Yalu and the sea, fixed
 const EMB = document.createElement("img"); EMB.className = "wimg"; EMB.src = "assets/media/emblem_prc.png"; EMB.alt = ""; EMB.onerror = () => { EMB.style.display = "none"; };
-Object.assign(EMB.style, { left: EM[0] - 70 + "px", top: EM[1] - 70 + "px", width: "140px", height: "140px", opacity: 0.8 }); worldEl.insertBefore(EMB, document.getElementById("overlay"));
+Object.assign(EMB.style, { left: EM[0] - 50 + "px", top: EM[1] - 50 + "px", width: "100px", height: "100px", opacity: 0.8 }); worldEl.insertBefore(EMB, document.getElementById("overlay"));
 wimg("assets/media/korea_geo_ref.png", 0, 0, null);
 // the 38th parallel: thin dashed labelled line
 const P38 = (() => { const NS = "http://www.w3.org/2000/svg", g = document.createElementNS(NS, "g"), p = KR.p38 || [L(38, 124.5), L(38, 129)];
@@ -85,7 +85,7 @@ B.showDate(0.05);
 B.date("30 NOVEMBER 1950", 0.1, T_5DEC - 0.2, 32); B.date("5 DECEMBER 1950", T_5DEC - 0.1, T_MID - 0.2, 32); B.date("MID-DECEMBER 1950", T_MID - 0.1, T_XMAS - 0.2, 32);
 B.date("23 DECEMBER 1950", T_XMAS - 0.1, S9 - 0.2, 32); B.date("DECEMBER 1950", S9 - 0.1, END + 1, 32);
 legend(0.3, END + 1);
-flag(FL.prc, "CHINA", ...L(41.15, 123.95), 0.6, END + 1, 40); flag(FL.nk, "NORTH KOREA", ...L(40.55, 126.55), 0.7, END + 1, 32);
+flag(FL.prc, "CHINA", ...L(40.12, 122.85), 0.6, END + 1, 40); flag(FL.nk, "NORTH KOREA", ...L(40.55, 126.55), 0.7, END + 1, 32);
 flag(FL.us, "USA", ...L(36.60, 127.60), 0.8, END + 1, 36); flag(FL.rok, "SOUTH KOREA", ...L(35.90, 128.40), 0.9, END + 1, 32);
 flag(FL.un, "UNITED NATIONS", ...L(36.80, 126.60), 1.0, END + 1, 32);
 town("KUNU-RI", 39.70, 125.90, 0.4, { dx: 24, dy: -9 }); town("SEOUL", 37.57, 126.98, 0.6, { dx: 22, dy: 8 });

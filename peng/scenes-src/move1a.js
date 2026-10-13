@@ -182,7 +182,7 @@ B.caption("THE AMERICANS RULED THE SKY AND THE ROADS", T_SKY, T_NEITHER - 0.1, "
 B.caption("SO HIS MEN WOULD USE NEITHER", T_NEITHER, T_TYPICAL + 0.4, "carth r");
 const moon = scr(`<svg width="90" height="90" viewBox="0 0 100 100" style="filter:drop-shadow(0 0 14px rgba(220,230,255,0.8))"><path d="M62 10 A42 42 0 1 0 90 66 A34 34 0 1 1 62 10 Z" fill="#eef2ff"/></svg>`, "right:150px;top:130px;");
 tl.fromTo(moon, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.0, immediateRender: false }, T_SKY + 0.6); tl.to(moon, { autoAlpha: 0, duration: 0.6 }, T_CAUGHT - 0.4);
-const clock = GG.card(`<div style="text-align:center"><div style="font-size:20px;letter-spacing:0.4em;color:#9fc0ea">THE MARCH</div><div class="ck" style="font-size:86px;font-weight:700;line-height:1;letter-spacing:0.06em">19:00</div><div class="cs" style="font-size:20px;letter-spacing:0.3em;color:#d8cfb8">MARCH AFTER DARK</div></div>`, "tl", 220, T_SEVEN - 0.4, T_CAUGHT - 0.3);
+const clock = GG.card(`<div style="text-align:center"><div style="font-size:20px;letter-spacing:0.4em;color:#9fc0ea">THE MARCH</div><div class="ck" style="font-size:86px;font-weight:700;line-height:1;letter-spacing:0.06em">19:00</div><div class="cs" style="font-size:20px;letter-spacing:0.3em;color:#d8cfb8">MARCH AFTER DARK</div></div>`, "tl", 600, T_SEVEN - 0.4, T_CAUGHT - 0.3);
 clock.querySelector(".inner").style.borderTopColor = "#2c57b7"; SFX("hit", T_SEVEN - 0.3);
 const CK = clock.querySelector(".ck"), CS = clock.querySelector(".cs"), hh = { v: 19 };
 tl.to(hh, { v: 27, duration: T_THREE - T_SEVEN, ease: "none", onUpdate: () => { CK.textContent = String(Math.floor(hh.v) % 24).padStart(2, "0") + ":00"; } }, T_SEVEN);

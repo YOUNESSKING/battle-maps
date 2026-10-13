@@ -1,6 +1,6 @@
 {
  "title": "Peng #10 \u00b7 MOVE 3 (Third Phase, Seoul) \u00b7 snapshot sheet",
- "note": "move3a korea_hd_ref move3-1..2 \u00b7 move3b seoul_hd_ref move3-3..6 \u00b7 move3c korea_hd_ref move3-7..8 (mm:ss = video time). Flags/photos pending = stand-ins",
+ "note": "move3a korea_hd_ref move3-1..2 \u00b7 move3b seoul_hd_ref move3-3..6 \u00b7 move3c korea_hd_ref move3-7..8 (mm:ss = video time) \u00b7 real flags + photos",
  "frames": [
   [
    "move3a",
@@ -24,18 +24,18 @@
    "plane flyby, bomb booms + shake"
   ],
   [
-   "move3a",
-   41,
-   "11:59",
-   "move3-2 duel card (text only): PENG 3 MONTHS vs MAO ATTACK; then stamp A LIMITED BLOW",
-   "hits, whoosh"
-  ],
-  [
    "move3b",
    31,
    "12:37",
    "move3-3 UN line (opt 2): US vs thin ROK counters, plan arrows on the ROK; THE SEAM glows; Peng THE SEAMS",
    "pops, plane flyby (air support)"
+  ],
+  [
+   "move3b",
+   41,
+   "12:47",
+   "move3-4 NIGHT 31 Dec: the 30-minute barrage on the ROK 1st Div (guns north of the Imjin)",
+   "gun thuds, impacts + shake"
   ],
   [
    "move3b",

@@ -104,7 +104,7 @@ const T_3M = at(M8, "In less than three months"), T_YALU = at(M8, "from the Yalu
 ctlImg("assets/media/korea_ctl_jan7_mx.png", 0, null, 0.01);
 GG.layer("background:rgba(225,236,248,0.10);", 0, null, { dur: 0.01 });
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.22 }); LV.scaleBar(955.79); LV.north();
-const EM = L(42.6, 124.6);
+const EM = L(40.85, 123.6);   // on Chinese land (Liaoning), clear of the date box and legend
 B.image("assets/media/emblem_prc.png", EM[0] - 45, EM[1] - 45, 90, 90, { t: 0, dur: 0.6, opacity: 0.85 });
 B.snow(0.1, END + 1);
 const P38 = [L(38, 124.6), L(38, 128.7)];
@@ -123,7 +123,7 @@ legend(0.2, S8 + 0.2, false);
 const CLU = T_SUP + 0.4;
 flag(FL.prc, "CHINA", ...L(37.62, 127.45), 0.3, CLU, 28); flag(FL.us, "USA", ...L(36.72, 127.15), 0.4, CLU, 26);
 flag(FL.rok, "SOUTH KOREA", ...L(36.72, 127.75), 0.5, CLU, 26);
-flag(FL.prc, "CHINA", ...L(41.05, 125.35), T_SUP + 1.2, END + 1, 46); flag(FL.nk, "NORTH KOREA", ...L(39.7, 127.0), T_SUP + 1.3, END + 1, 42);
+flag(FL.prc, "CHINA", ...L(40.62, 124.55), T_SUP + 1.2, END + 1, 46); flag(FL.nk, "NORTH KOREA", ...L(39.7, 127.0), T_SUP + 1.3, END + 1, 42);
 flag(FL.un, "UN COMMAND", ...L(36.4, 128.15), T_SUP + 1.4, END + 1, 40); flag(FL.us, "USA", ...L(35.75, 127.4), T_SUP + 1.5, END + 1, 38);
 // the UN on Line D, the Chinese below Seoul
 const UD = [["d1", 36.93, 126.95, FL.us], ["d2", 36.96, 127.25, FL.rok], ["d3", 37.07, 127.6, FL.us], ["d4", 37.24, 127.92, FL.us]];

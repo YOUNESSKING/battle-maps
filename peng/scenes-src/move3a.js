@@ -104,7 +104,7 @@ const T_PENG = at(M2, "Peng's own army"), T_WORN = at(M2, "His men were worn out
 ctlImg("assets/media/korea_ctl_dec26_mx.png", 0, null, 0.01);
 GG.layer("background:rgba(225,236,248,0.10);", 0, null, { dur: 0.01 });   // cold winter grade
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.22 }); LV.scaleBar(955.79); LV.north();
-const EM = L(42.6, 124.6);   // the PRC emblem on Manchuria (Chinese land, clear of the sea and the labels); stays the whole scene
+const EM = L(41.45, 126.0);   // the PRC emblem on Manchuria (Chinese land, clear of the sea and the labels); stays the whole scene
 B.image("assets/media/emblem_prc.png", EM[0] - 45, EM[1] - 45, 90, 90, { t: 0, dur: 0.6, opacity: 0.85 });
 B.snow(0.1, END + 1);
 // the 38th parallel (thin dashed, labelled)
