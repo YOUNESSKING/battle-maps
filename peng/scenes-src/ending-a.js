@@ -9,6 +9,7 @@ const { at, P: PS } = B;
 const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
+{ const _arrow = B.arrow; B.arrow = (o) => { const g = _arrow(o); if ((o.width || 22) < 8) { const ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke-width", (o.width * 1.45 + 1).toFixed(1)); const pg = g.querySelector("polygon"); if (pg) pg.setAttribute("stroke-width", 0.8); } return g; }; }   // thin casing on small-map arrows (collins arrowT)
 const L = GG.proj(7, 26503, 11759);
 const FL = { prc: "assets/media/prc_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png", un: "assets/media/un_flag.png", nk: "assets/media/nk_flag.png" };
 const PHOTO_PENG = "assets/media/peng_head.png", PHOTO_MAC = "assets/media/macarthur_head_cut.png";
@@ -77,12 +78,12 @@ camTo(T_SPRING, T_STALE - T_SPRING, 1440, 905, 1.6, "sine.inOut");
 camTo(T_STALE, END - T_STALE, 1430, 870, 1.42, "sine.inOut");
 B.showDate(0.1); B.date("JANUARY 1951", 0.2, T_MARCH, 32);
 legend(0.3, END + 1, false);
-flag(FL.prc, "CHINA", ...L(40.75, 123.45), 0.4, null, 60); flag(FL.un, "UN COMMAND", ...L(36.2, 128.55), 0.5, null, 52);
+flag(FL.prc, "CHINA", ...L(40.05, 122.85), 0.4, null, 60); flag(FL.un, "UN COMMAND", ...L(36.2, 128.55), 0.5, null, 52);
 flag(FL.nk, "NORTH KOREA", ...L(40.15, 126.95), 0.6, null, 42); flag(FL.rok, "SOUTH KOREA", ...L(36.25, 127.55), 0.7, null, 42);
 const PAR = B.arrow({ pts: [[1205, 881], [1400, 881], [1605, 881]], side: "white", t: 0.2, dur: 0.8, width: 2.4, dash: "8 6", until: END + 1 }); const ph = PAR.querySelector("polygon"); if (ph) ph.style.display = "none";
 box("38TH PARALLEL", 1262, 868, 0.5, 12, END + 1);
 // "His halt proved right": the blue tide stops at Line D
-const LD = K.front({ pts: FRONT.jan7, sideA: "carth", sideB: "rome", t: 0.1, dur: 1.0, width: 5, until: T_MARCH + 0.6 });
+const LD = K.front({ pts: FRONT.jan7, sideA: "carth", sideB: "rome", t: 0.1, dur: 1.0, width: 8, until: T_MARCH + 0.6 });
 wstamp("THE HALT", ...L(37.30, 126.20), T_HALT + 0.4, { size: 15, sub: "LINE D · 7 JAN 1951", color: "#9fc0ea", until: T_RID, shake: 3 });
 // "Within weeks, Ridgway struck back ... in March the UN retook Seoul"
 usBadge({ name: "MATTHEW RIDGWAY", role: "EIGHTH ARMY", photo: "assets/media/ridgway_head.png", corner: "tr", t: T_RID - 0.3, until: T_SPRING });
@@ -106,7 +107,7 @@ SA.forEach((g) => B.greyArrow(g, T_LOST));
 wstamp("HEAVY LOSSES", ...L(38.35, 128.35), T_LOST + 0.1, { size: 14, sub: "SPRING OFFENSIVES 1951", until: T_STALE + 0.4, shake: 4 });
 // "The war settled into a stalemate near the Thirty-Eighth Parallel ... July 1953 ... Peng signed the armistice"
 B.date("1951 - 1953 · STALEMATE", T_STALE + 0.2, T_JULY, 30);
-const AL = K.front({ pts: FRONT.jul53, sideA: "carth", sideB: "rome", t: T_STALE + 0.4, dur: 1.4, width: 5, until: END + 1 });
+const AL = K.front({ pts: FRONT.jul53, sideA: "carth", sideB: "rome", t: T_STALE + 0.4, dur: 1.4, width: 8, until: END + 1 });
 tl.to(PAR.querySelectorAll("path"), { attr: { stroke: "#ffd54a" }, duration: 0.3, yoyo: true, repeat: 3 }, T_PAR); SFX("hit", T_PAR + 0.2);
 B.date("27 JULY 1953", T_JULY, null, 32);
 box("PANMUNJOM", P.panmun[0] - 58, P.panmun[1] + 10, T_JULY + 0.2, 10, END + 1); K.target(...P.panmun, T_JULY + 0.2, { r: 8, until: END + 1 });

@@ -62,6 +62,7 @@ const T_SOLD = at(H1, "soldiers."), T_MARCH = at(H1, "Marched"), T_SECRET = at(H
   T_AIR = at(H1, "from the air"), T_AND = at(H1, "And the Americans"), T_WALK = at(H1, "walking into"), T_BEL = at(H1, "believed"), T_OVER = at(H1, "almost over");
 // ---------- map layers (option 1, 24 Nov 1950) ----------
 img0("assets/media/hknw_ctl_nov24_mx.png", null, true);
+img0("assets/media/nwkorea_geo_ref.png");   // rivers + big towns (move 1 agent's nwkorea geo layer, read-only)
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.2 }); LV.scaleBar(234.56); LV.north();
 const EM = L(41.50, 125.20);   // PRC emblem on Manchuria, clear of the Yalu and the sea
 const EMB = document.createElement("img"); EMB.className = "wimg"; EMB.src = "assets/media/emblem_prc.png"; EMB.alt = ""; EMB.onerror = () => { EMB.style.display = "none"; };
@@ -72,9 +73,8 @@ date0("NOVEMBER 1950", T_SPOT - 0.35);
 legend(0, null);
 const WF = [flag(FL.prc, "CHINA", ...L(40.80, 124.25), 0, T_AND - 0.2, 150), flag(FL.us, "USA", ...L(39.32, 126.55), 0, T_AND - 0.2, 120),
   flag(FL.rok, "SOUTH KOREA", ...L(39.10, 125.30), 0, T_AND - 0.2, 120), flag(FL.un, "UNITED NATIONS", ...L(40.30, 128.25), 0, T_AND - 0.2, 120)];
-const WT = [town("PYONGYANG", 39.02, 125.75, 0, { size: 22, r: 8, dy: 34, until: T_AND - 0.2 }), town("SINUIJU", 40.10, 124.40, 0, { size: 18, r: 7, dx: -40, dy: 32, until: T_AND - 0.2 }),
-  town("HAMHUNG", 39.92, 127.54, 0, { size: 18, r: 7, dy: 32, until: T_AND - 0.2 })];
-const YALU = GG.lbl("YALU RIVER", ...L(40.62, 125.05), { size: 22, color: "#a9cdea" }); gsap.set(YALU, { autoAlpha: 1, rotation: -28 }); tl.to(YALU, { autoAlpha: 0, duration: 0.3 }, T_AND - 0.2);
+const WT = [];   // towns + rivers come from nwkorea_geo_ref.png
+const YALU = document.createElement("div");
 // red UN columns strung out on the valley roads, marching north from frame 0
 const RED = [["r1", 39.60, 125.18, 39.80, 125.26, "infantry", FL.us], ["r2", 39.78, 125.62, 39.95, 125.72, "infantry", FL.rok], ["r3", 39.70, 125.92, 39.88, 125.99, "infantry", FL.us],
   ["r4", 39.58, 126.08, 39.76, 126.16, "tank", FL.us], ["r5", 39.62, 126.34, 39.78, 126.42, "infantry", FL.rok], ["r6", 40.20, 127.10, 40.40, 127.10, "infantry", FL.us],
@@ -119,7 +119,6 @@ B.date("24 NOVEMBER 1950", TD + 0.45, null, 32);
 // close set: towns, the river, both sides' flags on their own ground
 town("UNSAN", 39.96, 125.83, TD + 0.6, { size: 11, r: 4, dx: -40, dy: -16 }); town("KUNU-RI", 39.50, 125.93, TD + 0.65, { size: 11, r: 4, dy: 18 });
 town("TOKCHON", 39.75, 126.30, TD + 0.7, { size: 11, r: 4, dx: 52, dy: -16 });
-const CH_ = GG.lbl("CHONGCHON RIVER", ...L(39.66, 125.84), { size: 12, color: "#a9cdea", t: TD + 0.75 }); tl.set(CH_, { rotation: -32 }, TD + 0.7);
 flag(FL.us, "USA", ...L(39.40, 126.18), TD + 0.8, null, 46); flag(FL.rok, "SOUTH KOREA", ...L(39.42, 125.60), TD + 0.85, null, 46);
 flag(FL.prc, "CHINA", ...L(40.08, 126.75), TD + 0.9, null, 46);
 // the Chinese in the ridges, frozen as the plane passes: ghosts

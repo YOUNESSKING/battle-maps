@@ -30,7 +30,7 @@ ang = math.degrees(math.atan2(2, 3))  # the diagonal
 big = Image.new("RGBA", (W, H), (0, 0, 0, 0)); bd = ImageDraw.Draw(big)
 bd.pieslice((cx - r, cy - r, cx + r, cy + r), 180, 360, fill=red); bd.pieslice((cx - r, cy - r, cx + r, cy + r), 0, 180, fill=blue)
 bd.ellipse((cx - r, cy - r / 2 - r / 2, cx, cy + r / 2 - r / 2), fill=red) if False else None
-bd.ellipse((cx - r, cy - r / 2, cx, cy + r / 2), fill=blue); bd.ellipse((cx, cy - r / 2, cx + r, cy + r / 2), fill=red)
+bd.ellipse((cx - r, cy - r / 2, cx, cy + r / 2), fill=red); bd.ellipse((cx, cy - r / 2, cx + r, cy + r / 2), fill=blue)
 big = big.rotate(-ang + 0, center=(cx, cy), resample=Image.BICUBIC)
 im.paste(big, (0, 0), big)
 def trigram(cx0, cy0, rot, pattern):  # pattern: 3 bars, True = solid

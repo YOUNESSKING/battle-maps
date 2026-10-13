@@ -125,7 +125,7 @@ legend(0.2, S8 + 0.2, false);
 const CLU = T_SUP + 0.4;
 flag(FL.prc, "CHINA", ...L(37.62, 127.45), 0.3, CLU, 28); flag(FL.us, "USA", ...L(36.72, 127.15), 0.4, CLU, 26);
 flag(FL.rok, "SOUTH KOREA", ...L(36.72, 127.75), 0.5, CLU, 26);
-flag(FL.prc, "CHINA", ...L(40.35, 124.05), T_SUP + 1.2, END + 1, 46); flag(FL.nk, "NORTH KOREA", ...L(39.7, 127.0), T_SUP + 1.3, END + 1, 42);
+flag(FL.prc, "CHINA", ...L(41.05, 125.35), T_SUP + 1.2, END + 1, 46); flag(FL.nk, "NORTH KOREA", ...L(39.7, 127.0), T_SUP + 1.3, END + 1, 42);
 flag(FL.un, "UN COMMAND", ...L(36.4, 128.15), T_SUP + 1.4, END + 1, 40); flag(FL.us, "USA", ...L(35.75, 127.4), T_SUP + 1.5, END + 1, 38);
 // the UN on Line D, the Chinese below Seoul
 const UD = [["d1", 36.93, 126.95, FL.us], ["d2", 36.96, 127.25, FL.rok], ["d3", 37.07, 127.6, FL.us], ["d4", 37.24, 127.92, FL.us]];
@@ -143,7 +143,7 @@ GG.stamp("HALT · 7 – 8 JAN", T_STOP + 0.3, T_CHASE + 1.2, { size: 62, top: 84
 const GH = [[[37.1, 127.05], [36.6, 127.25], [36.3, 127.4]], [[37.1, 127.6], [36.6, 127.95], [36.2, 128.3]]].map((p, k) =>
   arw({ pts: LL(p), side: "carth", t: T_CHASE + k * 0.3, dur: 1.2, width: 4, dash: "8 6", until: T_KNEW + 0.6 }));
 GH.forEach((g) => B.tl.set(g, { opacity: 0.45 }, T_CHASE));
-box("CHASE THEM SOUTH?", ...L(36.45, 126.75), T_EXP - 0.3, 5.5, T_KNEW + 0.6);
+box("CHASE THEM SOUTH?", ...L(36.45, 126.65), T_EXP - 0.3, 7.5, T_KNEW + 0.6);
 B.caption("MANY EXPECTED HIM TO KEEP GOING", T_EXP, T_KNEW - 0.1, "carth r");
 badge({ name: "PENG DEHUAI", role: "KNEW HIS OWN MEN", initials: "PDH", photo: PHOTO.peng, flag: FL.prc, side: "carth", corner: "bl", t: T_KNEW - 0.3, until: T_REST + 0.4 });
 // Peng's memoir card: strength reduced by nearly half (verbatim quote, FACT_NOTES move 3)
@@ -169,7 +169,7 @@ box("SUPPLY LINES AT BREAKING POINT", ...L(39.55, 124.5), T_SUP + 1.0, 6.5, T_LA
 const SH = [GG.ship(...L(37.35, 125.55), { w: 26, color: "#c4121f", t: T_LAND, pop: true, until: T_PUSH + 0.6 }), GG.ship(...L(37.6, 125.4), { w: 22, color: "#c4121f", t: T_LAND + 0.2, pop: true, until: T_PUSH + 0.6 })];
 const LND = arw({ pts: LL([[37.4, 125.8], [37.45, 126.2], [37.47, 126.58]]), side: "rome", t: T_LAND + 0.3, dur: 1.2, width: 4, dash: "8 6", until: T_PUSH + 0.6 });
 B.tl.set(LND, { opacity: 0.75 }, T_LAND + 0.3);
-const IN = L(37.47, 126.63); K.target(IN[0], IN[1], T_INCH - 0.2, { r: 9, until: T_PUSH + 0.6 }); box("ANOTHER INCHON?", IN[0] - 8, IN[1] + 12, T_INCH, 6, T_PUSH + 0.6);
+const IN = L(37.47, 126.63); K.target(IN[0], IN[1], T_INCH - 0.2, { r: 9, until: T_PUSH + 0.6 }); box("ANOTHER INCHON?", IN[0] - 8, IN[1] + 13, T_INCH, 8, T_PUSH + 0.6);
 // pushed back, not beaten
 B.tl.to(UD.map(([id]) => B.units[id].el), { scale: 1.6, duration: 0.35, yoyo: true, repeat: 3 }, T_PUSH + 0.2);
 B.caption("THE AMERICANS: PUSHED BACK, NOT BEATEN", T_PUSH, T_REST - 0.1, "rome r");

@@ -18,6 +18,7 @@ const { at, P: PS } = B;
 const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
+{ const _arrow = B.arrow; B.arrow = (o) => { const g = _arrow(o); if ((o.width || 22) < 8) { const ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke-width", (o.width * 1.45 + 1).toFixed(1)); const pg = g.querySelector("polygon"); if (pg) pg.setAttribute("stroke-width", 0.8); } return g; }; }   // thin casing on small-map arrows (collins arrowT)
 const L = GG.proj(7, 26503, 11759);
 const FL = { prc: "assets/media/prc_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png", un: "assets/media/un_flag.png" };
 const PHOTO_PENG = "assets/media/peng_head.png";
@@ -125,7 +126,7 @@ camTo(TF + 1.06, S3 - TF - 1.1, 1420, 870, 1.38, "sine.inOut");
 B.hideUnits([...RC.map((r) => r[0]), ...BIDS], TF + 0.05, 0.05);
 B.date("DECEMBER 1950", TF + 0.15, S3 - 0.05, 32);
 legend(TF + 0.3, S3 - 0.05, false);
-const WF = [flag(FL.prc, "CHINA", ...L(41.15, 124.35), TF + 0.4, S3 - 0.05, 70), flag(FL.un, "UN COMMAND", ...L(36.3, 128.35), TF + 0.5, S3 - 0.05, 60),
+const WF = [flag(FL.prc, "CHINA", ...L(40.05, 122.85), TF + 0.4, S3 - 0.05, 70), flag(FL.un, "UN COMMAND", ...L(36.3, 128.35), TF + 0.5, S3 - 0.05, 60),
   flag(FL.us, "USA", ...L(35.6, 127.3), TF + 0.55, S3 - 0.05, 52), flag(FL.rok, "SOUTH KOREA", ...L(36.9, 127.6), TF + 0.6, S3 - 0.05, 52)];
 // red arrows stream south past Pyongyang to the parallel
 [[[1300, 690], [1310, 760], [1340, 850]], [[1365, 705], [1385, 790], [1410, 860]], [[1410, 690], [1440, 780], [1460, 862]]].forEach((p, k) =>
@@ -214,7 +215,7 @@ SFX("ref:whoosh", T_TEN - 0.05);
 const OVO = wimg("assets/media/korea_ctl_oct24_mx.png", S4, 0.3, T_SHAT);
 B.date("OCTOBER 1950 - JANUARY 1951", T_TEN + 0.1, T_AMB, 28);
 legend(T_TEN + 0.2, END + 1, false);
-const fW = [flag(FL.prc, "CHINA", ...L(41.0, 123.7), T_TEN + 0.3, T_AMB - 0.05, 70), flag(FL.un, "UN COMMAND", ...L(36.3, 128.35), T_TEN + 0.35, T_AMB - 0.05, 60)];
+const fW = [flag(FL.prc, "CHINA", ...L(40.05, 122.85), T_TEN + 0.3, T_AMB - 0.05, 70), flag(FL.un, "UN COMMAND", ...L(36.3, 128.35), T_TEN + 0.35, T_AMB - 0.05, 60)];
 // numbered ring + date tag (stays to the end)
 const ring = (p, name, date, n, t, dx, dy = -2) => {
   K.target(p[0], p[1], t, { r: 9, until: END + 1 });
@@ -233,7 +234,7 @@ SFX("mg", T_AMB + 0.5);
 K.front({ pts: [[1334, 641], [1342, 644], [1345, 652], [1342, 660], [1334, 663], [1326, 660], [1323, 652], [1326, 644], [1334, 641]], sideA: "carth", sideB: "rome", t: T_UNSAN - 0.4, dur: 0.45, width: 2.2, until: T_SHAT });
 SFX("ref:boom", T_UNSAN); K.shake(T_UNSAN, 5, 0.35);
 K.impact(1332, 650, T_UNSAN + 0.2, { r: 4 }); K.impact(1337, 655, T_UNSAN + 0.45, { r: 4 });
-ring(P.unsan, "UNSAN", "NOV 1950", 1, T_UNSAN + 0.3, -22, -8);
+ring(P.unsan, "UNSAN", "NOV 1950", 1, T_UNSAN + 0.3, -34, -16);
 // ---------- CUT 2: THE CHONGCHON, November 1950: blue arrows pour through the broken right flank ----------
 cut(T_SHAT, 1352, 690, 3.4, T_TOOK, [-4, 0, 1.05]);
 const OVN = wimg("assets/media/korea_ctl_nov24_mx.png", T_SHAT - 0.05, 0.1, T_TOOK);

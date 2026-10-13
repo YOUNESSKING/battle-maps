@@ -13,6 +13,7 @@ const { at, P: PS } = B;
 const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
+{ const _arrow = B.arrow; B.arrow = (o) => { const g = _arrow(o); if ((o.width || 22) < 8) { const ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke-width", (o.width * 1.45 + 1).toFixed(1)); const pg = g.querySelector("polygon"); if (pg) pg.setAttribute("stroke-width", 0.8); } return g; }; }   // thin casing on small-map arrows (collins arrowT)
 const L = GG.proj(7, 26503, 11759);
 const FL = { prc: "assets/media/prc_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png", un: "assets/media/un_flag.png", nk: "assets/media/nk_flag.png" };
 const PHOTO_PENG = "assets/media/peng_head.png", PHOTO_MAC = "assets/media/macarthur_head_cut.png";
@@ -94,7 +95,7 @@ B.showDate(0.1); B.date("25 JUNE 1950", 0.25, T_WEEKS + 0.6, 32);
 legend(0.3, END + 1, false);
 const PAR = B.arrow({ pts: [[1205, 881], [1400, 881], [1605, 881]], side: "white", t: 0.2, dur: 0.8, width: 2.4, dash: "8 6", until: END + 1 }); const ph = PAR.querySelector("polygon"); if (ph) ph.style.display = "none";
 box("38TH PARALLEL", 1262, 868, 0.5, 12, S2 + 2);
-const F0 = [flag(FL.prc, "CHINA", ...L(40.75, 123.45), 0.4, T_DUSK - 0.4, 60), flag(FL.nk, "NORTH KOREA", ...L(40.15, 126.95), 0.5, T_COLL + 0.5, 48),
+const F0 = [flag(FL.prc, "CHINA", ...L(40.05, 122.85), 0.4, T_DUSK - 0.4, 60), flag(FL.nk, "NORTH KOREA", ...L(40.15, 126.95), 0.5, T_COLL + 0.5, 48),
   flag(FL.rok, "SOUTH KOREA", ...L(36.25, 127.75), 0.6, null, 48)];
 // the invasion: blue (KPA) arrows over the parallel, tanks rolling south
 const KA = [[[1330, 845], [1385, 925], [1430, 990]], [[1440, 850], [1470, 935], [1490, 1010]], [[1530, 860], [1560, 940], [1590, 1010]]].map((p, k) =>

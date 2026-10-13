@@ -9,6 +9,7 @@ const { at, P: PS } = B;
 const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
+{ const _arrow = B.arrow; B.arrow = (o) => { const g = _arrow(o); if ((o.width || 22) < 8) { const ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke-width", (o.width * 1.45 + 1).toFixed(1)); const pg = g.querySelector("polygon"); if (pg) pg.setAttribute("stroke-width", 0.8); } return g; }; }   // thin casing on small-map arrows (collins arrowT)
 const L = GG.proj(7, 26503, 11759);
 const FL = { prc: "assets/media/prc_flag.png", us: "assets/media/us_flag_48star.png", rok: "assets/media/rok_flag_1949.png", un: "assets/media/un_flag.png", nk: "assets/media/nk_flag.png" };
 const PHOTO_PENG = "assets/media/peng_head.png", PHOTO_MAC = "assets/media/macarthur_head_cut.png";
@@ -67,12 +68,12 @@ const EM = L(42.75, 124.6);
 const EMB = document.createElement("img"); EMB.className = "wimg"; EMB.src = "assets/media/emblem_prc.png"; EMB.alt = ""; EMB.onerror = () => { EMB.style.display = "none"; };
 Object.assign(EMB.style, { left: EM[0] - 75 + "px", top: EM[1] - 75 + "px", width: "150px", height: "150px", opacity: 0.8 }); worldEl.insertBefore(EMB, document.getElementById("overlay"));
 wimg("assets/media/korea_geo_ref.png", 0, 0, null, false);
-K.front({ pts: FRONT.jul53, sideA: "carth", sideB: "rome", t: 0.1, dur: 0.01, width: 5, until: END + 1 });
+K.front({ pts: FRONT.jul53, sideA: "carth", sideB: "rome", t: 0.1, dur: 0.01, width: 7, until: END + 1 });
 camTo(0, T_OWN - 0.3, 1450, 830, 1.34, "sine.inOut");
 camTo(T_OWN - 0.3, S3 - T_OWN, 1395, 790, 1.62, "sine.inOut");
 B.showDate(0.1); B.date("1950 - 1951", 0.2, null, 32);
 legend(0.3, S3, false);
-flag(FL.prc, "CHINA", ...L(40.75, 123.45), 0.4, S3, 60); flag(FL.un, "UN COMMAND", ...L(36.2, 128.55), 0.5, S3, 52);
+flag(FL.prc, "CHINA", ...L(40.05, 122.85), 0.4, S3, 60); flag(FL.un, "UN COMMAND", ...L(36.2, 128.55), 0.5, S3, 52);
 // Peng badge, centre-left
 const BD = scr(`<div style="display:flex;flex-direction:column;align-items:center;gap:14px"><div style="position:relative;width:250px;height:250px;border-radius:50%;overflow:hidden;border:8px solid #f3e7c4;box-shadow:0 0 0 5px #1f4fc4,0 18px 36px rgba(0,0,0,0.7);background:url(${FL.prc}) center/cover">
   <img src="assets/media/peng_head.png" onerror="this.style.display='none'" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
@@ -108,11 +109,11 @@ document.getElementById("scene").insertBefore(M, document.getElementById("credit
 GG.hide(M); GG.fadeIn(M, T_OWN - 0.4, 0.5); GG.fadeOut(M, S3 - 0.1, 0.5);
 M.querySelectorAll(".row").forEach((r, i) => { const t = [T_OWN, T_BAIT, T_SEAMS][i] + 0.1; B.tl.fromTo(r, { autoAlpha: 0, x: -40 }, { autoAlpha: 1, x: 0, duration: 0.6, ease: "power3.out" }, t); SFX("ref:pop", t); });
 // 1953: Peng's words (paraphrased, no quote marks: FACT_NOTES), then "he had made his point"
-const Q = scr(`<div style="max-width:880px;font-family:Oswald;font-weight:700;padding:16px 30px 18px;background:rgba(18,16,12,0.93);border-left:8px solid #2e5cb2;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:19px;letter-spacing:0.3em;color:#9fc0ea">PENG DEHUAI · REPORT OF SEPTEMBER 1953</div><div style="font-size:36px;letter-spacing:0.04em;line-height:1.18;margin-top:4px">THE DAYS HAVE GONE WHEN A WESTERN POWER COULD OCCUPY A COUNTRY IN THE EAST WITH A FEW CANNONS ON ITS COAST</div></div>`, "left:90px;top:190px;");
+const Q = scr(`<div style="max-width:760px;font-family:Oswald;font-weight:700;padding:16px 30px 18px;background:rgba(18,16,12,0.93);border-left:8px solid #2e5cb2;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:19px;letter-spacing:0.3em;color:#9fc0ea">PENG DEHUAI · REPORT OF SEPTEMBER 1953</div><div style="font-size:36px;letter-spacing:0.04em;line-height:1.18;margin-top:4px">THE DAYS HAVE GONE WHEN A WESTERN POWER COULD OCCUPY A COUNTRY IN THE EAST WITH A FEW CANNONS ON ITS COAST</div></div>`, "left:90px;top:650px;");
 tl.fromTo(Q, { autoAlpha: 0, x: -70 }, { autoAlpha: 1, x: 0, duration: 0.45, ease: "power3.out", immediateRender: false }, T_1953 + 0.1); SFX("ref:pop", T_1953 + 0.15);
 tl.to(Q, { autoAlpha: 0, duration: 0.4 }, T_WHAT + 0.2);
 GG.ship(1335, 975, { w: 22, t: T_CANNON - 0.3, color: "#c4121f", pop: true, until: T_WHAT + 0.2 }); GG.ship(1352, 990, { w: 22, t: T_CANNON - 0.1, color: "#c4121f", pop: true, until: T_WHAT + 0.2 });
-const POINT = scr(stampHTML("HE HAD MADE HIS POINT", "#ffd54a", 52, -3), "left:90px;top:240px;");
+const POINT = scr(stampHTML("HE HAD MADE HIS POINT", "#ffd54a", 52, -3), "left:110px;top:720px;");
 slam(POINT, T_POINT - 0.2, { sfx: "ref:boom", shake: 5, until: S3 - 0.1 });
 // ---------- closing card ----------
 GG.layer("background: rgba(6,8,12,0.45);", S3 - 0.1, null, { dur: 0.8 });
