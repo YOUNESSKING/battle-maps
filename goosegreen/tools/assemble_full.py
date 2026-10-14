@@ -14,7 +14,8 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
 PREVIEW = "--preview" in sys.argv
 AUDIO_ONLY = "--audio-only" in sys.argv  # reuse build/video_only_<height>p.mp4 (one per resolution), only remix the sound (e.g. after a level change)
-MUSIC_VOL = 0.18  # music bed level before ducking (0.35 until 2026-09-27; owner asked for quieter music)
+SFX_VOL = 0.63  # all sound effects together, -4 dB (owner 2026-10-14: "sound effects are kind of loud"); per-kind balance stays in sfx_mix_lib
+MUSIC_VOL = 0.08  # music bed level before ducking (owner 2026-09-30: option C, quieter; was 0.18)
 W, H, FPS = (1280, 720, 30) if PREVIEW else (1920, 1080, 30)
 T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
@@ -109,7 +110,7 @@ subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
 inputs = ["-i", "audio/voice.wav", "-i", "build/sfx.wav"]
 f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]",
-     "[1:a]aresample=48000[sfxin]",
+     f"[1:a]aresample=48000,volume={SFX_VOL}[sfxin]",
      "[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]"]
 if os.path.exists("assets/media/music.wav"):
     inputs += ["-stream_loop", "-1", "-i", "assets/media/music.wav"]

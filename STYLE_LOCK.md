@@ -77,6 +77,10 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Build: `python3 tools/make_music_bed.py` (fits each track to its chapter, 5 s crossfades, -20 LUFS, 3 s fade-out).
 
 ## 5. Mix levels (locked, in assemble_full.py / make_clip.py)
+- **Owner 2026-10-14 (Goose Green sound update, checked by the sound lock):** all sound effects together at `SFX_VOL = 0.63`
+  (-4 dB; "sound effects are kind of loud"; the per-kind balance in the table above is unchanged), radio static = a **1 s crackle**
+  (`radio_static_short.wav`; the 6 s static was "long and annoying"). Newer approved sounds also in goosegreen now: zoom whoosh
+  (only the 2-3 biggest camera moves, badges silent), propeller "sound B", music 0.08.
 - Music `MUSIC_VOL = 0.18` (owner asked for quieter music), 2 s fade-in, 3 s fade-out.
 - Music ducked under the voice: sidechain threshold 0.03, ratio 6, attack 20 ms, release 400 ms.
 - SFX ducked lightly under the voice: threshold 0.03, ratio 3, attack 10 ms, release 300 ms.
