@@ -60,6 +60,8 @@ def page(c, d):
 LINK = os.environ.get("GOFILE_LINK", "https://gofile.io/d/zRVZggXV")
 chapters = open("build/chapters.txt").read().strip().splitlines()
 desc = open("build/youtube_description.txt").read().strip()
+if desc.split("\n", 1)[0].startswith("2 Para's Top 3"):  # line 1 of the file is the title, not part of the description
+    desc = desc.split("\n", 1)[1].strip()
 thumbs = [p for p in ["build/thumbnail-final.jpg", "build/thumbnail.jpg"] if os.path.exists(p)]
 alts = sorted(glob.glob("build/thumbnail-alt*.jpg"))
 
@@ -93,10 +95,11 @@ if os.path.exists("build/guide_frames.jpg"):
 story += [PageBreak()]
 
 story += [P("2. Title and thumbnail", "h1"), P("Title (recommended)", "h2"),
-          P("<b>Goose Green: 2 Para's Top 3 Legendary Tactical Moves | The Battle Britain Wasn't Supposed To Win</b>"),
-          P("Alternatives to A/B test (YouTube 'Test & compare'):"),
-          *bullets(["2 Para's Top 3 Legendary Tactical Moves | 500 Men vs 1,000", "Goose Green: How 500 Paratroopers Beat 1,000 Dug-In Defenders",
-                    "The Falklands' Top 3 Tactical Moves | The Battle the BBC Gave Away"]),
+          P("<b>2 Para's Top 3 Legendary Tactical Moves | The Bluff That Won the Falklands' First Land Battle</b> (vidIQ score 88)"),
+          P("Channel title pattern (Tactical Genius): name first, then the result. No negation in the hook."),
+          P("Alternatives to A/B test (YouTube 'Test & compare'), with vidIQ scores:"),
+          *bullets(["2 Para's Top 3 Legendary Tactical Moves | The Battle Argentina Thought It Couldn't Lose (94, but the hook is a negation)",
+                    "2 Para's Top 3 Legendary Tactical Moves | 500 Paratroopers vs 1,000 Defenders (86)"]),
           P("Why this thumbnail", "h2"),
           P("All 13 Tactical Genius thumbnails use the same picture (dark aerial battlefield with red/blue unit blocks and white arrows, commander portrait on the right, "
             "red brush banner bottom-left). What decides the click is the <b>text</b>: the winners are 1-3 words that make sense with zero context and create tension: "

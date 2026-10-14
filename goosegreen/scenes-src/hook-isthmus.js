@@ -247,8 +247,8 @@ B.camera([
   [T_1000 + 1.4, 1610, 1000, 1.5],
   [S2 - 0.5, 1610, 990, 1.42],
   [S3 - 0.3, 1610, 980, 1.4],
-  [S3 + 1.6, 1640, 830, 1.22],
-  [END, 1640, 830, 1.18],
+  [S3 + 1.6, 1640, 815, 1.15],  // framed so Camilla Creek House (top) and Goose Green (bottom) both fit (was 830 / 1.22)
+  [END, 1640, 810, 1.12],
 ]);
 
 const K = FXK(B);
