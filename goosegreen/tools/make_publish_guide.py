@@ -57,7 +57,7 @@ def page(c, d):
     c.restoreState()
 
 
-LINK = os.environ.get("GOFILE_LINK", "https://gofile.io/d/zRVZggXV")
+LINK = os.environ.get("GOFILE_LINK", "https://gofile.io/d/ZtPgbINK")
 chapters = open("build/chapters.txt").read().strip().splitlines()
 desc = open("build/youtube_description.txt").read().strip()
 if desc.split("\n", 1)[0].startswith("2 Para's Top 3"):  # line 1 of the file is the title, not part of the description
