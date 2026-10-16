@@ -37,6 +37,9 @@ FAILED=0
 for spec in "$@"; do
   set -- $spec
   name=$1
+  if [ -z "${FORCE:-}" ] && [ -s "scenes/$name/renders/$name.mp4" ] && grep -q "Render complete" "scenes/$name/render.log" 2>/dev/null; then
+    echo "=== $(date -u +%T) skip $name (already rendered; FORCE=1 to redo)"; continue
+  fi
   echo "=== $(date -u +%T) build $name"
   python3 tools/build_scene.py "$@" || { echo "BUILD FAILED $name"; FAILED=1; continue; }
   (cd "scenes/$name" && hyperframes lint . 2>&1 | tail -2)
