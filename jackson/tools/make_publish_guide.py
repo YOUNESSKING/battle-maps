@@ -53,7 +53,7 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "Peng Dehuai's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "Stonewall Jackson's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
@@ -70,52 +70,53 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/peng-thumb-A-the-gauntlet.jpg"; TB = "youtube/thumb/peng-thumb-B-never-seen.jpg"
-LEN = os.environ.get("VIDEO_LEN", "16:48")
+TA = "youtube/thumb/jackson-thumb-A-3-armies-beaten.jpg"; TB = "youtube/thumb/jackson-thumb-B-vanished.jpg"
+LEN = os.environ.get("VIDEO_LEN", "16:53")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
-story = [Spacer(1, 18 * mm), P("PENG DEHUAI", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+story = [Spacer(1, 18 * mm), P("STONEWALL JACKSON", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAUNTLET (battlefield made with vidIQ; Peng's public-domain portrait added on top)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: 3 ARMIES BEATEN (battlefield made with vidIQ; Jackson's public-domain 1862 portrait added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Peng-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"Jackson-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
                  ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample)"],
                  ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice (locked level 0.08)"],
-                 ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit sounds, original effects"]],
+                 ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit sounds, original effects"],
+                 ["Flags", "Owner's pick A1: US 34-star flag + Confederate First National ('Stars and Bars'); never the battle flag"]],
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
-          Spacer(1, 5 * mm), P("Key frames: the hook (0:00-1:01)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 92)", "h2"), P(f"<b>{TITLE}</b>"),
+          Spacer(1, 5 * mm), P("Key frames: the hook (0:00-1:14)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
+story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 90)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
-          *bullets(["Peng Dehuai's Top 3 Legendary Tactical Moves | The Man Who Turned Korea Around (87)",
-                    "Peng Dehuai's Top 3 Legendary Tactical Moves | The Man Who Ambushed the US Army (86)"]),
+          *bullets(["Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Humiliated the Union Army (89)",
+                    "Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Routed Twice His Numbers (88)",
+                    "Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Beat Three Union Armies (87)"]),
           P("Why this thumbnail", "h2"),
           P("Tactical Genius picture formula: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
-            "a red brush banner bottom-left. <b>THE GAUNTLET</b> is type 3 (ominous stakes): the US 2nd Division's column trapped on the Kunu-ri - Sunchon road, "
-            "30 November 1950, the moment that sent the Eighth Army out of North Korea (title promise)."),
-          P("Alternative for YouTube's Test &amp; compare: <b>NEVER SEEN</b> (type 3: 300,000 men no aircraft spotted, the hook's opening).", "body"),
+            "a red brush banner bottom-left. <b>3 ARMIES BEATEN</b> is type 3 (stakes): the Valley Campaign, where Jackson's ~17,000 men hid behind the "
+            "Massanutten Mountain and beat the forces of Banks, Frémont and Shields one at a time, the hook and the title promise."),
+          P("Alternative for YouTube's Test &amp; compare: <b>VANISHED</b> (type 1: the move behind the mountain / around Pope, the video's core idea).", "body"),
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
-          P("Checked: the AI image has no text of its own; we added KUNU-RI - SUNCHON ROAD and US 2ND INFANTRY DIVISION. Snowy ridges, a truck column on a "
-            "valley road and infantry on the ridges match the Gauntlet (no tanks or aircraft shown). The portrait is Peng's real 1955 marshal portrait "
-            "(public domain on Wikimedia Commons), not an AI likeness; in 1950 he wore a plain uniform without rank.", "warn"),
+          P("Checked: the AI image has no text or flags of its own; we added MASSANUTTEN MOUNTAIN, JACKSON and BANKS. Infantry blocks, guns and smoke only "
+            "(no tanks, aircraft or modern vehicles). The portrait is Jackson's real 1862 Winchester photograph (public domain), not an AI likeness.", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
-          P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound, archive and image licences require them.", "warn"),
+          P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound and image licences require them.", "warn"),
           Preformatted(desc, S["mono"], maxLineLength=100), PageBreak()]
 story += [P("4. Upload settings", "h1"),
           table([["Setting", "Value"],
                  ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Peng Dehuai, Unsan, Chongchon, Kunu-ri, Sunchon, Tokchon, Chosan, Onjong, Pyongyang, Imjin, Uijongbu, Mao Anying, Hobart Gay, Walton Walker, Ridgway)"],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Shenandoah, Massanutten, Kernstown, Front Royal, Strasburg, Port Republic, Frémont, Shields, Ewell, Manassas, Bristoe, Thoroughfare Gap, Brawner, Longstreet, Rappahannock, Rapidan, Chancellorsville, Hooker, Rodes, Hunter McGuire, Imboden)"],
                  ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail battlefield is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["Pinned comment", "Which commander should we cover next? Ridgway, Walker, MacArthur, Lin Biao...?"],
+                 ["Pinned comment", "Which was Jackson's greatest move: 1, 2 or 3? And which commander should we cover next?"],
                  ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
@@ -123,15 +124,16 @@ story += [P("4. Upload settings", "h1"),
                     "Paste title, description and tags; upload the thumbnail (1280x720).", "Fill in the business email in the description.",
                     "Tick 'altered or synthetic content'.", "Add end screen and cards; set visibility and schedule.",
                     "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 2% after ~1,000 impressions, switch to the alternative thumbnail."]),
-          P("<b>Facts to double-check before publishing</b> (approximate, single-source or from memory; see research/FACT_NOTES*.md):<br/>"
-            "&bull; 'Longest retreat in US military history' = the Eighth Army's own official wording (said as 'what the US Army itself calls').<br/>"
-            "&bull; Unsan losses (Appleman: over 1,000 missing at first, ~600 after stragglers returned); Gauntlet ~6 miles (Appleman 1989 via Wikipedia).<br/>"
-            "&bull; Seoul retaken 14 vs 15 March 1951 (said as 'in March'); Ch'osan reached 26 Oct (standard accounts).<br/>"
-            "&bull; Long March 18,000 -> ~3,000; 'Old Chief Peng'; Lin Biao declining the command; Mao Anying on Peng's staff (Wikipedia).<br/>"
-            "&bull; Third Phase: whether the Chinese deliberately aimed at the ROK divisions (Mossman: by design or coincidence; Chinese sources: planned).<br/>"
-            "&bull; Peng's death 'denied proper medical care' (Domes / Shambaugh via Wikipedia).<br/>"
-            "&bull; All front lines are approximate (logged per date in research/FACT_NOTES_*.md).", "warn")]
-out = "build/Peng-publishing-guide.pdf"
+          P("<b>Facts to double-check before publishing</b> (approximate, single-source or second-hand; see research/FACT_NOTES*.md):<br/>"
+            "&bull; Stanton's 'the enemy in great force are marching on Washington' and 'thirteen States' calling out militia: Henderson (1898), not read in the Official Records.<br/>"
+            "&bull; Pope's 30 Aug dispatch ('retreating towards the mountains') and the 2 May 4:10 pm 'fleeing' dispatch (signed by an aide for Hooker): Henderson's printing of the OR.<br/>"
+            "&bull; Valley mileage ~650 (Wikipedia 646 'in 48 days of marching'); Valley losses Union ~5,400 / Confederate ~2,800 = sum of NPS battle boxes.<br/>"
+            "&bull; Which South Fork bridges were burned in early June 1862; the 18th North Carolina as the regiment that fired; Front Royal losses (773 vs 904).<br/>"
+            "&bull; Second Manassas casualties are ABT's campaign figures (Union return 16 Aug-2 Sep).<br/>"
+            "&bull; 'The largest simultaneous mass assault of the war' is the National Park Service's wording (said as such).<br/>"
+            "&bull; Deer and rabbits before the flank attack: park historians' account, no named eyewitness.<br/>"
+            "&bull; All front lines and some positions (Brawner Farm, Deep Cut, Dowdall's Tavern, the wounding site) are approximate (research/FACT_NOTES_*.md).", "warn")]
+out = "build/Jackson-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="Peng Dehuai - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="Stonewall Jackson - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print("wrote", out)
