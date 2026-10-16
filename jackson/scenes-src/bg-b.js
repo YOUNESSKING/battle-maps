@@ -95,8 +95,8 @@ const Q2 = qcard(`<div style="font-size:46px;letter-spacing:0.03em;line-height:1
 // stamps on the key words
 const MY = scr(stampHTML("MYSTIFY", "#e8c66a", 40, -6), "left:1460px;top:340px;"); slam(MY, T_SURP - 0.3, { shake: 3 });
 const WK = scr(stampHTML("THE WEAKEST PART", "#e8c66a", 40, 4), "left:1330px;top:830px;"); slam(WK, T_WEAK + 0.1, { shake: 4 });
-tl.to([Q1, Q2, MY, WK], { autoAlpha: 0, y: -20, duration: 0.4 }, END - 3.2);
+tl.to([Q1, Q2, MY, WK], { autoAlpha: 0, y: -20, duration: 0.3 }, END - 1.35);
 // the method card appears, still empty: JACKSON'S METHOD (one line per move later)
-const MC = GG.method(0, END - 2.9, null); SFX("ref:boom", END - 2.7);
+const MC = GG.method(0, END - 1.2, null); SFX("ref:boom", END - 1.0);
 K.raiseTerritory();
 B.finish();

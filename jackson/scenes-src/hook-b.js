@@ -135,13 +135,13 @@ cut(T_VAN, 1610, 745, S2c, T_MARCH, [10, 0, 1.05]);
 const OV2 = ctl("aug62", T_VAN - 0.05, T_MARCH); gsap.set(OV2, { autoAlpha: 0 }); tl.set(OV2, { autoAlpha: 1 }, T_VAN - 0.05);
 B.date("AUGUST 1862", T_VAN + 0.02, T_MARCH, 30);
 const F2 = flags(S2c, [1700, 640], [1520, 860], T_VAN + 0.1, T_MARCH - 0.05);
-const R2 = [red("p1", 1565, 805, T_VAN + 0.1, "POPE", S2c), red("p2", 1600, 790, T_VAN + 0.15, null, S2c), red("p3", 1530, 815, T_VAN + 0.2, null, S2c)];
+const R2 = [red("p1", 1590, 806, T_VAN + 0.1, "POPE", S2c), red("p2", 1612, 790, T_VAN + 0.15, null, S2c), red("p3", 1572, 826, T_VAN + 0.2, null, S2c)];
 B.arrow({ pts: [[1530, 775], [1545, 730], [1560, 700], [1600, 680], [1636, 696], [1660, 726], [1684, 720]], side: "carth", t: T_VAN + 0.2, dur: 1.6, width: 4, dash: "7 6", until: T_MARCH });
 SFX("ref:whoosh", T_VAN + 0.3);
 box("MANASSAS JUNCTION", 1700, 700, T_WRECK - 0.3, 6);
 [0, 0.25, 0.5].forEach((d, k) => K.impact(1684 + k * 3, 718 - k * 2, T_WRECK + d, { r: 6 }));
 for (let t = T_WRECK + 0.3; t < T_MARCH; t += 0.5) K.smoke(1686, 714, t, { n: 2, r: 6, rise: 22, life: 2.4 });
-ring([1686, 717], "MANASSAS", "AUG 1862", 2, T_MAN, -66, 30, S2c);
+ring([1686, 717], "MANASSAS", "AUG 1862", 2, T_MAN, 6, 18, S2c);
 B.hideUnits(R2, T_MARCH - 0.06, 0.05);
 tl.to(GEO, { autoAlpha: 0, duration: 0.05 }, T_MARCH - 0.06); tl.to(GEO, { autoAlpha: 1, duration: 0.4 }, T_THESE + 0.1);
 // ---------- CUT 3: CHANCELLORSVILLE, MAY 1863: across the front of a force twice his size, onto the open flank ----------

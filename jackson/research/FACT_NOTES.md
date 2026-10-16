@@ -138,6 +138,7 @@ Jackson's slave ownership wording (EVA/Robertson); Stanton's "marching on Washin
 Pope's 30 Aug dispatch and the 4:10 pm dispatch (OR vol. XII pt 2 / XXV pt 2 pages); bridge-burning on the South Fork (June 1862);
 Front Royal losses (773 vs 904); Valley mileage (~650); Henderson at Camberley; "18th North Carolina"; Jackson slow in the Seven Days (standard: Sears/Robertson);
 Hooker's 1 May pull-back surprising his generals (Couch, B&L III); Jackson's attack front ~2 miles wide; Pope relieved 12 Sep 1862.
+On-screen extras from the map agents: Jackson brigadier general (promoted 17 Jun 1861); Bee died 22 Jul 1861; "~20,000 Union men drawn south" (NPS FRSP); Stanton card text via Henderson.
 
 ## Script added from standard sources (not in Gemini)
 Seven Days (Jun-Jul 1862); McClellan >100,000 on the Peninsula; Pope relieved within two weeks; Bee mortally wounded (d. 22 Jul 1861);
