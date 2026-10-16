@@ -45,6 +45,8 @@ PATTERSON_61 = [(39.60, -77.82), (39.53, -77.83), (39.46, -77.99), (39.29, -77.9
 EASTERN_SHORE = [(38.05, -75.95), (38.05, -75.20), (36.90, -75.70), (37.05, -76.20), (37.70, -76.20)]       # Union from Nov 1861
 LOWER_PEN = [(37.30, -76.80), (37.33, -76.62), (37.25, -76.42), (37.10, -76.25), (36.98, -76.27), (36.98, -76.45), (37.10, -76.55), (37.20, -76.74)]  # Williamsburg-Yorktown-Fort Monroe
 NORFOLK = [(36.99, -76.45), (36.95, -76.25), (36.93, -75.95), (36.70, -75.90), (36.70, -76.65), (36.88, -76.60)]          # Norfolk/Portsmouth/Suffolk (May 1862 on)
+LOWER_VALLEY_62 = [(39.33, -77.73), (39.15, -77.85), (39.08, -78.10), (39.06, -78.45), (39.10, -78.80), (39.05, -79.00), (39.00, -79.80),
+                   (39.60, -79.80), (39.60, -77.70)]   # White at Winchester, Miles at Harpers Ferry (= nova LOWER_VALLEY)
 GLOUCESTER = [(37.25, -76.42), (37.30, -76.55), (37.40, -76.48), (37.35, -76.35)]
 
 # northern Virginia front lines (lat, lon), travel so that Confederate ground is on the LEFT (K.front sideA = carth)
@@ -64,9 +66,11 @@ FRONT = {
     # ~12 Jun 1862: Union on the Rappahannock (Fredericksburg occupied 18 Apr), Shields at Luray, Frémont at Mount Jackson
     "jun62": [(38.18, -77.20), (38.29, -77.44), (38.36, -77.62), (38.48, -77.88), (38.56, -78.10), (38.62, -78.30), (38.66, -78.46),
               (38.72, -78.62), (38.78, -78.82), (38.80, -79.20)],
-    # 25 Aug 1862: Pope's line on the Rappahannock (Rappahannock Station - Waterloo); Burnside at Falmouth; Winchester garrison
-    "aug62": [(38.18, -77.20), (38.29, -77.44), (38.40, -77.62), (38.53, -77.81), (38.63, -77.90), (38.72, -77.98), (38.85, -78.10),
-              (38.98, -78.25), (39.06, -78.45), (39.10, -78.80), (39.05, -78.95)],
+    # 25 Aug 1862: Pope's line on the Rappahannock (Kelly's Ford - Rappahannock Station - Waterloo), then the east foot of the Bull Run
+    # Mountains to the Potomac; Burnside at Falmouth; lower Valley = separate Union pocket (LOWER_VALLEY_62). Same as tools/make_nova_control.py
+    "aug62": [(38.18, -77.20), (38.27, -77.40), (38.285, -77.47), (38.33, -77.53), (38.40, -77.63), (38.46, -77.73), (38.479, -77.781),
+              (38.534, -77.808), (38.58, -77.84), (38.62, -77.855), (38.66, -77.865), (38.696, -77.906), (38.74, -77.84), (38.785, -77.755),
+              (38.83, -77.70), (38.90, -77.665), (38.975, -77.64), (39.10, -77.60), (39.27, -77.55)],   # = nova_ctl_aug25 (move-2 agent)
     # ~5 Sep 1862: only Washington's defences + Harpers Ferry left to the Union in northern Virginia
     "sep62": [(38.70, -77.06), (38.75, -77.18), (38.84, -77.30), (38.93, -77.27), (38.98, -77.24)],
     # 2 May 1863: Hooker's base north of the Rappahannock (Falmouth), Fairfax/Centreville; Milroy at Winchester
@@ -91,7 +95,7 @@ UNION_VA = {
               # McClellan on the Chickahominy, 6 miles from Richmond; base at White House on the Pamunkey
               [(37.60, -77.30), (37.52, -77.27), (37.40, -77.20), (37.30, -77.05), (37.20, -76.74), (37.10, -76.55), (36.98, -76.45),
                (36.98, -76.27), (37.10, -76.25), (37.25, -76.42), (37.53, -76.79), (37.62, -77.02), (37.66, -77.18)]],
-    "aug62": [front_zone(FRONT["aug62"], [(39.8, -79.0), (39.8, -76.3), (38.18, -76.6)]), EASTERN_SHORE, NW_62, NORFOLK, LOWER_PEN, GLOUCESTER],
+    "aug62": [front_zone(FRONT["aug62"], [(39.60, -77.55), (39.8, -76.3), (38.18, -76.6)]), LOWER_VALLEY_62, EASTERN_SHORE, NW_62, NORFOLK, LOWER_PEN, GLOUCESTER],
     "sep62": [[(38.70, -77.06), (38.75, -77.18), (38.84, -77.30), (38.93, -77.27), (38.98, -77.24), (38.93, -77.12), (38.80, -77.03)],
               [(39.33, -77.76), (39.28, -77.80), (39.27, -77.70), (39.32, -77.68)],                 # Harpers Ferry (surrendered 15 Sep)
               EASTERN_SHORE, NW_62, NORFOLK, LOWER_PEN, GLOUCESTER],
