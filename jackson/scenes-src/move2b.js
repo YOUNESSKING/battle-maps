@@ -208,7 +208,7 @@ ATT.forEach(([a, b, k, lb], i) => { const A = L(...a), Bp = L(...b), t0 = TA[i];
   for (let j = 0; j < 3; j++) mg([Bp[0] - 6, Bp[1] - 6], [A[0] + (Bp[0] - A[0]) * 0.6, A[1] + (Bp[1] - A[1]) * 0.6], t0 + 0.6 + j * 0.5, 4);
   for (let j = 0; j < 2; j++) K.impact(A[0] + (Bp[0] - A[0]) * 0.55 + (j ? 5 : -4), A[1] + (Bp[1] - A[1]) * 0.55 + (j ? -3 : 3), t0 + 0.9 + j * 0.45, { r: 5 });
   go(id, t0 + 1.9, 1.0, A, "power2.in"); B.grey([id], t0 + 1.9, 0.6);
-  if (i < 3) wstamp("REPULSED", Bp[0] + 18, Bp[1] + 14, t0 + 2.0, i === 2 ? T_NOON - 0.5 : t0 + 3.4);
+  if (i < 3) wstamp("REPULSED", Bp[0] + 18, Bp[1] + 14, t0 + 2.0, Math.min(t0 + 3.4, T_NOON - 0.5));
   B.hideUnits([id], T_NOON - 0.5); });
 // NOON: Longstreet's column through Thoroughfare Gap, along the turnpike, deploying on Jackson's right (one-colour line: not yet in contact)
 const WL = [town("THOROUGHFARE GAP", "thoroughfare_gap", T_NOON + 0.2, { dx: 0, dy: -18, size: 13, until: T_SOME - 0.4 }), town("HAYMARKET", "haymarket", T_NOON + 0.3, { dx: 0, dy: -18, size: 11, until: T_SOME - 0.4 })];
@@ -273,9 +273,9 @@ const lv = { v: 0 }, ln = L25.querySelector(".n"); tl.to(lv, { v: 25000, duratio
 for (let t = T_25 - 0.1; t < T_25 + 1.1; t += 0.14) SFX("tick", t);
 const UF = [["f1", 38.8085, -77.5440, "McDOWELL"], ["f2", 38.8095, -77.5350, ""], ["f3", 38.8030, -77.5390, ""]];
 UF.forEach(([id, la, lo, lb], i) => unit(id, "rome", ...L(la, lo), "infantry", { t: T_FOUR - 0.4 + i * 0.1, size: "XX", label: lb }));
-tArrow(LL([[38.8040, -77.5800], [38.8010, -77.5650], [38.8020, -77.5480], [38.8080, -77.5340]]), "#1f4fc4", T_SWEPT - 0.4, T_DARK, 6, 2.4);
-tArrow(LL([[38.7960, -77.5820], [38.7930, -77.5660], [38.7960, -77.5470], [38.8020, -77.5320]]), "#1f4fc4", T_SWEPT - 0.1, T_DARK, 5, 2.4);
-LSU.forEach(([id], i) => go(id, T_SWEPT + i * 0.15, 4.0, L(38.8050 - i * 0.004, -77.5440 + i * 0.002), "power1.inOut"));
+B.arrow({ pts: LL([[38.8120, -77.5790], [38.8060, -77.5660], [38.8060, -77.5500], [38.8110, -77.5370]]), side: "carth", t: T_SWEPT - 0.4, dur: 2.2, width: 9, until: T_DARK });
+B.arrow({ pts: LL([[38.7950, -77.5840], [38.7930, -77.5680], [38.7965, -77.5500], [38.8030, -77.5340]]), side: "carth", t: T_SWEPT - 0.1, dur: 2.2, width: 9, until: T_DARK });
+LSU.forEach(([id], i) => go(id, T_SWEPT + i * 0.15, 4.0, L(38.8100 - i * 0.005, -77.5420 + i * 0.002), "power1.inOut"));
 // gun rows -> impacts on the Union flank (shake every impact)
 const GR = [L(38.8120, -77.5650), L(38.8070, -77.5670), L(38.8020, -77.5690)];
 GR.forEach((g, i) => { for (let k = 0; k < 4; k++) shoot(g, L(38.8060 + (k % 2) * 0.004, -77.5420 + ((k + i) % 3) * 0.004), T_SWEPT + 0.2 + i * 0.25 + k * 0.8, { r: 6, h: 10 }); });
@@ -292,7 +292,7 @@ const SB = PL.stone_bridge || [1769, 740], CV = PL.centreville || [2188, 633];
 tArrow([L(38.8100, -77.5300), [SB[0] - 20, SB[1] + 20], SB, [SB[0] + 120, SB[1] - 40], [CV[0] - 40, CV[1]]], "#c4121f", T_FELL, END - 1.2, 3.4, 2.4);
 tArrow([L(38.8050, -77.5250), L(38.8000, -77.5050), L(38.8150, -77.4800), [CV[0] - 40, CV[1] + 14]], "#c4121f", T_FELL + 0.3, END - 1.2, 2.8, 2.4);
 const SBL = town("STONE BRIDGE", "stone_bridge", T_FELL - 0.4, { dx: 0, dy: -10, size: 9 }), CVL = town("CENTREVILLE", "centreville", T_FELL, { dx: 0, dy: -12, size: 10 });
-GG.night(T_FELL + 0.4, null, { dur: 2.4 });
+GG.night(T_FELL + 0.4, END + 5, { dur: 2.4 });
 K.night({ lines: [FR29], tOn: T_FELL + 0.4 });
 sstamp("RETREAT", 700, T_DARK - 0.2, { size: 64, sub: "POPE'S ARMY ACROSS BULL RUN · NIGHT 30 AUGUST", until: END - 1.2 });
 K.raiseTerritory();
