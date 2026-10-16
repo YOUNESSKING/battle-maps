@@ -4,15 +4,15 @@ usage (from jackson/): python3 tools/make_nova_osm.py [nova|bullrun]
  -> assets/src/nova_osm.json    {rivers (named big rivers), rail}
  -> assets/src/bullrun_osm.json {rivers, streams, roads, rail}"""
 import json, math, os, sys, time, urllib.parse, urllib.request
-URLS = ["https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass-api.de/api/interpreter", "https://overpass.private.coffee/api/interpreter"]
+URLS = ["https://overpass.kumi.systems/api/interpreter", "https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass-api.de/api/interpreter", "https://overpass.private.coffee/api/interpreter"]
 MAPS = {"nova": (38.60, -77.70, 10), "bullrun": (38.815, -77.56, 13)}
 W, H = 2880, 1620
 def q(body):
     for k in range(9):
         url = URLS[k % len(URLS)]
         try:
-            data = urllib.parse.urlencode({"data": "[out:json][timeout:170];" + body}).encode()
-            return json.load(urllib.request.urlopen(urllib.request.Request(url, data=data, headers={"User-Agent": "battle-maps/1.0 (history video maps)"}), timeout=190))["elements"]
+            data = urllib.parse.urlencode({"data": "[out:json][timeout:90];" + body}).encode()
+            return json.load(urllib.request.urlopen(urllib.request.Request(url, data=data, headers={"User-Agent": "battle-maps/1.0 (history video maps)"}), timeout=120))["elements"]
         except Exception as ex:
             print("retry", k, url, ex, flush=True); time.sleep(4)
     raise SystemExit("overpass failed")
@@ -32,8 +32,12 @@ for name in (sys.argv[1:] or list(MAPS)):
         JOBS = {"rivers": [f'way["waterway"="river"]["name"~"^({RIV})$"]({BB});out geom;', f'way["waterway"="stream"]["name"~"^(Bull Run|Broad Run)$"]({BB});out geom;'],
                 "rail": [f'way["railway"="rail"]["usage"="main"]({BB});out geom;']}
     else:
-        JOBS = {"rivers": [f'way["waterway"~"^(river|stream)$"]({BB});out geom;'],
-                "roads": [f'way["highway"~"^(trunk|primary|secondary|tertiary)$"]({BB});out geom;'],
+        def tiles(nx, ny):
+            for i in range(nx):
+                for j in range(ny):
+                    yield f"{S + (N - S) * j / ny:.4f},{Wl + (E - Wl) * i / nx:.4f},{S + (N - S) * (j + 1) / ny:.4f},{Wl + (E - Wl) * (i + 1) / nx:.4f}"
+        JOBS = {"rivers": [f'way["waterway"~"^(river|stream)$"]["name"]({b});out geom;' for b in tiles(2, 2)],
+                "roads": [f'way["highway"~"^(trunk|primary|secondary|tertiary)$"]({b});out geom;' for b in tiles(2, 2)],
                 "rail": [f'way["railway"="rail"]({BB});out geom;']}
     for k, bodies in JOBS.items():
         if k in out and out[k]: continue
