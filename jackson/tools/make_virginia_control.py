@@ -46,7 +46,7 @@ EASTERN_SHORE = [(38.05, -75.95), (38.05, -75.20), (36.90, -75.70), (37.05, -76.
 LOWER_PEN = [(37.30, -76.80), (37.33, -76.62), (37.25, -76.42), (37.10, -76.25), (36.98, -76.27), (36.98, -76.45), (37.10, -76.55), (37.20, -76.74)]  # Williamsburg-Yorktown-Fort Monroe
 NORFOLK = [(36.99, -76.45), (36.95, -76.25), (36.93, -75.95), (36.70, -75.90), (36.70, -76.65), (36.88, -76.60)]          # Norfolk/Portsmouth/Suffolk (May 1862 on)
 LOWER_VALLEY_62 = [(39.33, -77.73), (39.15, -77.85), (39.08, -78.10), (39.06, -78.45), (39.10, -78.80), (39.05, -79.00), (39.00, -79.80),
-                   (39.60, -79.80), (39.60, -77.70)]   # White at Winchester, Miles at Harpers Ferry (= nova LOWER_VALLEY)
+                   (39.85, -79.80), (39.85, -77.70)]   # White at Winchester, Miles at Harpers Ferry (= nova LOWER_VALLEY)
 GLOUCESTER = [(37.25, -76.42), (37.30, -76.55), (37.40, -76.48), (37.35, -76.35)]
 
 # northern Virginia front lines (lat, lon), travel so that Confederate ground is on the LEFT (K.front sideA = carth)
