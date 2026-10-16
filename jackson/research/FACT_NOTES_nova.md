@@ -62,3 +62,15 @@ Pope's Rappahannock positions approximate (corps not placed individually beyond 
   across the turnpike towards the Manassas Gap RR, angled forward (the "jaw") (NPS).
 - 30 Aug ~3 pm: Porter's attack (~6,000-8,000) across the Groveton/Dogan fields at the Deep Cut; ~4 pm Longstreet's ~25,000 east across
   the turnpike to Chinn Ridge and Henry Hill; dusk: Union rear guard on Henry Hill, retreat over Bull Run (Stone Bridge) to Centreville.
+
+## On-screen items in move2a/b/c (where from)
+- Union corps labels on the Rappahannock (SIGEL, McDOWELL, BANKS, RENO, BURNSIDE at Falmouth) and King's brigades (GIBBON, DOUBLEDAY,
+  HATCH), the 29 Aug attackers (SIGEL, HOOKER, KEARNY, RENO), PORTER, McDOWELL, Longstreet's divisions (HOOD, KEMPER, JONES, WILCOX):
+  standard order of battle (NPS/ABT); positions approximate. Trains wrecked at Bristoe the evening of 26 Aug (NPS/Henderson; no numbers shown).
+- "POPE BELIEVES: JACKSON IS HEADED FOR THE SHENANDOAH VALLEY" = paraphrase card (no quote marks), as the narration.
+- "BAG THE WHOLE CROWD" (phrase only, quoted), Pope to Halleck "THE ENEMY IS RETREATING TOWARDS THE MOUNTAINS" (Henderson's OR text; on
+  the double-check list), eyewitness lobster quote (NPS), Worsham's list shown without quote marks ("A CONFEDERATE OF THE 21ST VIRGINIA").
+- Brawner's Farm: "NEARLY ONE THIRD OF 7,000 ENGAGED HIT" (NPS). Porter "6,000+" (NPS 6,000-8,000). Longstreet "~25,000" (narration).
+- Pope "REMOVED FROM COMMAND · WITHIN TWO WEEKS · SEPTEMBER 1862" (12 Sep date not shown: on the double-check list).
+- Casualty card: UNION ~14,500 (incl. ~4,300 missing) · CONFEDERATE ~7,400 (campaign, ABT), FACT_NOTES.
+- Mileage counter: scaled to the drawn route, ends at 55 (NPS "about 55 miles in two days").

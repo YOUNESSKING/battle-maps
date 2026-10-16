@@ -1,0 +1,104 @@
+{
+ "title": "Jackson #11 \u00b7 MOVE 2 \u00b7 MANASSAS (move2a + move2b + move2c, 6:47 - 11:01)",
+ "note": "move2a nova_hd_ref (2-1..2-5, option 1 + night) \u00b7 move2b bullrun_hd_ref (2-6..2-8, option 2 close-up) \u00b7 move2c nova_hd_ref (2-9, option 1). Seamless dives 2a->2b->2c.",
+ "frames": [
+  [
+   "move2a",
+   25,
+   "7:12",
+   "2-1 title; Pope on the Rappahannock; O&A RR to Manassas; ships; ~70,000 vs ~55,000",
+   "boom, pops, hit+shake, ticks"
+  ],
+  [
+   "move2a",
+   46,
+   "7:33",
+   "2-2 HE SPLIT HIS ARMY; Longstreet holds the river; Jackson ~24,000; plan arc via the Gap",
+   "impacts+shake, hit, ticks"
+  ],
+  [
+   "move2a",
+   64,
+   "7:51",
+   "2-3 the march via Salem (night) + Thoroughfare Gap; scouts; POPE BELIEVES; mileage counter",
+   "ticks, hit+shake, pops"
+  ],
+  [
+   "move2a",
+   84,
+   "8:11",
+   "2-4 night: train wrecked at Bristoe; Trimble + Stuart (cavalry icon) take the Junction",
+   "impacts+shake, mg, hit+shake"
+  ],
+  [
+   "move2a",
+   104,
+   "8:31",
+   "2-4 27 Aug: depot + trains; food card (21st Va.); eyewitness quote (NPS)",
+   "pops"
+  ],
+  [
+   "move2a",
+   112,
+   "8:39",
+   "2-4 night 27: the depot burns (fire + smoke columns)",
+   "impacts+shake, hit"
+  ],
+  [
+   "move2a",
+   134,
+   "9:01",
+   "2-5 BAG THE WHOLE CROWD / EMPTY; ghost trail to Stony Ridge + unfinished RR",
+   "pops, hit+shake; dive whoosh"
+  ],
+  [
+   "move2b",
+   26,
+   "9:33",
+   "2-6 Brawner's Farm at dusk (option 2): guns, fire line; ONE THIRD OF 7,000 HIT",
+   "impacts+shake, mg, hit, ticks"
+  ],
+  [
+   "move2b",
+   41,
+   "9:48",
+   "2-7 29 Aug: attacks one at a time on the railroad line; REPULSED x3",
+   "mg, impacts+shake, hit+shake x3"
+  ],
+  [
+   "move2b",
+   51,
+   "9:58",
+   "2-7 noon wide: Longstreet through Thoroughfare Gap = THE JAW; then NOBODY TELLS POPE",
+   "pops, hit+shake"
+  ],
+  [
+   "move2b",
+   73,
+   "10:20",
+   "2-8 3 PM: Porter 6,000+ at the Deep Cut; guns -> impacts; ROCKS",
+   "ticks, guns, impacts+shake, mg"
+  ],
+  [
+   "move2b",
+   88.386,
+   "10:36",
+   "2-8 4 PM: the jaw shuts (NPS quote, ~25,000); retreat over Stone Bridge; RETREAT",
+   "impacts+shake, boom, hit+shake; whoosh"
+  ],
+  [
+   "move2c",
+   8,
+   "10:46",
+   "2-9 zoom out (sep02); CASUALTY card UNION ~14,500 \u00b7 CONFEDERATE ~7,400 (ABT)",
+   "whoosh, hit+shake, hit"
+  ],
+  [
+   "move2c",
+   22.4,
+   "11:01",
+   "2-9 Pope REMOVED; INTO MARYLAND; METHOD: MOVE FAST \u00b7 MYSTIFY",
+   "hit+shake, pops, hit x2"
+  ]
+ ]
+}

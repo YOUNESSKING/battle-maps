@@ -133,13 +133,12 @@ B.camera([[0, 1500, 1060, 3.6], [T_DAYS - 0.3, 1500, 1055, 3.4], [T_DAYS + 1.6, 
 B.showDate(0.1); B.date("3 MAY 1863", 0.2, T_DAYS - 0.1, 32); B.date("6 MAY 1863", T_DAYS, null, 32);
 legend(0.2, END + 1, false);
 flag(FL.us, "UNITED STATES", ...L(38.43, -77.47), 0.3, END + 1, 40);
-flag(FL.cs, "CONFEDERATE STATES", ...L(38.22, -77.78), 0.4, END + 1, 40);
+flag(FL.cs, "CONFEDERATE STATES", ...L(38.265, -77.72), 0.4, END + 1, 40);
 const CH = L(38.3095, -77.634), FB = L(38.3032, -77.4605);
 const F30 = NF_APR30.map((pts, k) => K.front({ pts, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: 5, until: T_DAYS + 0.8 }));
 const F6 = K.front({ pts: NF_APR28[0], sideA: "rome", sideB: "carth", t: T_DAYS + 0.6, dur: 1.4, width: 5, until: END + 1 });
 B.city("", CH[0], CH[1], { r: 2, t: 0 }); box("CHANCELLORSVILLE", CH[0] + 2, CH[1] + 9, 0.1, 6.5, END + 1, { sfx: false });
 // dawn 3 May: Stuart (Jackson's corps) from the west, Lee from the south-east, converge on Chancellorsville
-GG.dawn(0, 6);
 unit("hk", "rome", [CH[0] + 4, CH[1] - 12], "infantry", "HOOKER", { t: 0.1, w: 16, h: 11, tag: 5, size: "XXXX" });
 unit("stu", "carth", L(38.315, -77.70), "cavalry", "STUART", { t: 0.2, w: 14, h: 9, tag: 5, size: "XXX" });
 unit("lee", "carth", L(38.285, -77.58), "infantry", "LEE", { t: 0.3, w: 14, h: 9, tag: 5, size: "XXX" });
@@ -169,7 +168,7 @@ B.tl.fromTo(CC.querySelector(".c1"), { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x:
 B.tl.fromTo(CC.querySelector(".pc"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_FIFTH);
 SFX("hit", T_LOST); SFX("hit", T_LEE); SFX("tick", T_FIFTH);
 // one man he could not replace
-const JB = badge({ name: "STONEWALL JACKSON", role: "ONE MAN LEE COULD NOT REPLACE", initials: "TJJ", photo: PHOTO.jackson, flag: FL.cs, side: "carth", corner: "bl", t: T_ONE - 0.2, until: END + 1 });
+const JB = badge({ name: "STONEWALL JACKSON", role: "ONE MAN LEE COULD NOT REPLACE", initials: "TJJ", photo: PHOTO.jackson, flag: FL.cs, side: "carth", corner: "br", t: T_ONE - 0.2, until: END + 1 });
 B.tl.to(JB.querySelector("img"), { filter: "grayscale(1) brightness(0.55)", duration: 0.8 }, T_ONE + 0.4);
 // the method, line 3
 GG.METHOD = ["MOVE FAST", "MYSTIFY", "HIT THE WEAKEST PART"];

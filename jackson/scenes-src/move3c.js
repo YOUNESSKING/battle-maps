@@ -174,7 +174,7 @@ flags(0.2, T_SMASH + 0.6, 33, [38.3279, -77.6822], [38.3060, -77.7280]);
 flags(T_2MI + 1.2, T_TANG + 0.6, 56, [38.3290, -77.6200], [38.2950, -77.7150]);
 flags(T_TANG + 1.2, T_RODE + 0.8, 40, [38.3230, -77.6330], [38.2985, -77.6690]);
 flags(T_RODE + 1.4, END + 1, 36, [38.3150, -77.6330], [38.3010, -77.6640]);
-box("CHANCELLORSVILLE", CH[0] + 10, CH[1] + 30, T_2MI + 1.0, 9, END + 1, { sfx: false });
+box("CHANCELLORSVILLE", CH[0] + 62, CH[1] + 12, T_2MI + 1.0, 9, END + 1, { sfx: false });
 B.city("", CH[0], CH[1], { r: 5, t: 0.1 });
 
 // ---------- the state at 5 pm (as move3b ended) ----------
@@ -192,7 +192,7 @@ unit("aph", "carth", L(38.3245, -77.7160), "infantry", "A.P. HILL", { t: 0, w: 1
 [0, 1].forEach((k) => unit("jg" + k, "carth", L(38.3215 - k * 0.0012, -77.7045 + k * 0.0012), "artillery", null, { t: 0, w: 12, h: 8 }));
 // other Union corps (east)
 const UH = (id, la, lo, lbl, o = {}) => unit(id, "rome", L(la, lo), o.icon || "infantry", lbl, { t: o.t != null ? o.t : 0, w: o.w || 30, h: o.h || 20, tag: 10, size: o.size || "XXX", until: o.until });
-UH("u12", 38.2990, -77.6420, "XII CORPS", { w: 20, h: 13 }); UH("u2", 38.3070, -77.6230, "II CORPS", { w: 20, h: 13 }); UH("hq", 38.3085, -77.6343, "HOOKER", { icon: "hq", size: "XXXX", w: 18, h: 12 });
+UH("u12", 38.2990, -77.6420, "XII CORPS", { w: 20, h: 13 }); UH("u2", 38.3125, -77.6215, "II CORPS", { w: 20, h: 13 }); UH("hq", 38.3085, -77.6343, "HOOKER", { icon: "hq", size: "XXXX", w: 18, h: 12 });
 B.move("hq", 0, 0.01, CH[0] - 18, CH[1] - 22);
 
 // ============ move3-6: ~5:15 pm: "you can go forward then"; deer and rabbits; the flank attack; ROUTED ============
@@ -243,7 +243,7 @@ GG.night(T_SUNSET, END + 1, { dur: 2.5 });
 const FE = K.front({ pts: CF_MAY2E.contact, sideA: "carth", sideB: "rome", t: T_TANG, dur: 1.4, width: 15, until: END + 1 });
 K.night({ lines: [FC, FN, FX, FE, SWP], tOn: T_SUNSET, tOff: null });
 // the tangled brigades on the halt line (jumbled counters)
-const TY = [690, 705, 722, 738, 800, 815, 830, 846, 712, 822, 698];
+const TY = [680, 692, 704, 716, 728, 840, 852, 864, 698, 858, 686];
 JF.concat(JS).forEach((id, k) => B.move(id, T_TANG - 0.2, 1.4, 1476 + ((k * 13) % 22), TY[k], "power2.out"));
 B.tl.to(JF.concat(JS).map((id) => B.units[id].el), { rotation: (i) => [-14, 9, -6, 12, -10, 5, 15, -8, 7, -12, 10][i % 11], duration: 0.6 }, T_TANG);
 box("HALT ~7:15 PM · A MILE SHORT OF CHANCELLORSVILLE", ...L(38.3260, -77.6620), T_MILE - 0.2, 7, T_NINE + 0.4);
@@ -281,7 +281,7 @@ const RP = GG.pin(`<div style="width:30px;height:30px;border-radius:50%;border:2
 B.tl.fromTo(RP, { scale: 0.6 }, { scale: 1.5, duration: 0.5, yoyo: true, repeat: 3, immediateRender: false }, T_HIT3);
 GG.stamp("THREE BULLETS", T_HIT3 + 0.1, T_CARRY - 0.2, { size: 64, top: 830 });
 B.caption("TWO IN THE LEFT ARM · ONE IN THE RIGHT HAND", T_LEFT - 0.2, T_CARRY - 0.1, "carth");
-box("JACKSON WOUNDED · ~9 – 9:30 PM", JW[0] + 6, JW[1] + 26, T_HIT3 + 0.4, 6, END + 1);
+box("JACKSON WOUNDED · ~9 – 9:30 PM", JW[0] - 50, JW[1] + 30, T_HIT3 + 0.4, 6, END + 1);
 badge({ name: "STONEWALL JACKSON", role: "SHOT BY HIS OWN MEN", initials: "TJJ", photo: PHOTO.jackson, flag: FL.cs, side: "carth", corner: "bl", t: T_HIT3 - 0.1, until: T_SURG + 0.2 });
 // carried back on a litter along the Plank Road; Union guns at Fairview sweep the road (every impact booms + shakes)
 const LIT = GG.pin(`<svg width="18" height="10" viewBox="0 0 24 14"><rect x="2" y="5" width="20" height="4" fill="#d8d0bc"/><circle cx="4" cy="7" r="3" fill="#f7f3ea"/><circle cx="20" cy="7" r="3" fill="#f7f3ea"/></svg>`, JW[0], JW[1] + 3, { t: T_CARRY - 0.2, pop: true, until: T_SURG });
@@ -291,7 +291,7 @@ B.tl.to(LIT, { left: RD[1][0], top: RD[1][1], duration: T_DROP - T_CARRY, ease: 
 UH("ufv", 38.3072, -77.6431, null, { icon: "artillery", w: 16, h: 10, size: "", t: T_ART - 0.8 });
 const GUN = L(38.3072, -77.6431);
 for (let k = 0; k < 6; k++) { const tg = [RD[k % 3][0] + ((k * 5) % 7) - 3, RD[k % 3][1] + ((k * 3) % 5) - 2]; shoot([GUN[0] - 4, GUN[1] - 2], tg, T_ART + k * 0.42, { unit: "ufv", h: 6, dur: 0.6, r: 4, width: 0.8 }); }
-box("UNION GUNS · FAIRVIEW", GUN[0] + 10, GUN[1] + 16, T_ART, 6, T_SURG + 0.6);
+box("UNION GUNS · FAIRVIEW", GUN[0] - 30, GUN[1] + 28, T_ART, 6, T_SURG + 0.6);
 B.caption("UNION ARTILLERY SWEEPS THE ROAD", T_ART, T_BEARER - 0.1, "rome");
 xMark(RD[1][0] + 3, RD[1][1] - 3, T_BEARER + 0.2, T_SURG, 8);
 B.tl.to(LIT, { rotation: 35, y: 3, duration: 0.2, ease: "power3.in" }, T_DROP - 0.1); SFX("hit", T_DROP);

@@ -1,0 +1,104 @@
+{
+ "title": "Stonewall Jackson #11 \u00b7 MOVE 3 (Chancellorsville) \u00b7 snapshot sheet",
+ "note": "move3a nova_hd_ref move3-1 \u00b7 move3b chanc_hd_ref move3-2..5 \u00b7 move3c chanc_hd_ref move3-6..8 \u00b7 move3d nova_hd_ref move3-9 (mm:ss = video time) \u00b7 cavalry = move-1 TEST icon",
+ "frames": [
+  [
+   "move3a",
+   26,
+   "11:28",
+   "move3-1 30 Apr (opt 1): Hooker swings over the rivers behind Lee; Sedgwick stays",
+   "pops, (title boom at 0:00)"
+  ],
+  [
+   "move3b",
+   20.5,
+   "11:51",
+   "move3-2 NIGHT 1 May: Union arc (opt 2), Stuart (cavalry) rides in; XI Corps flank glows: \"IN THE AIR\"",
+   "pops, hit (stamp)"
+  ],
+  [
+   "move3b",
+   52,
+   "12:23",
+   "move3-3 E.decide: WHAT WOULD YOU DO? A lights blue on 'Jackson chose'",
+   "hit, pops, 3 ticks, hit"
+  ],
+  [
+   "move3b",
+   59.5,
+   "12:30",
+   "move3-3 before dawn: Lee + Jackson at the campfire (cracker boxes ~3:30 am); \"WITH MY WHOLE CORPS\" (Hotchkiss)",
+   "hit"
+  ],
+  [
+   "move3b",
+   72,
+   "12:43",
+   "move3-4 the march (Furnace Rd, furnace, Jackson Trail, Brock Rd); 12+ MILES; Hazel Grove eye",
+   "ticks, pops"
+  ],
+  [
+   "move3b",
+   90.5,
+   "13:01",
+   "move3-4 Sickles hits the tail at the furnace: 23RD GEORGIA CAPTURED; ~20,000 drawn south",
+   "impacts + shake, MG, hit"
+  ],
+  [
+   "move3b",
+   126,
+   "13:37",
+   "move3-5 Jackson's 2 lines astride the Turnpike; XI Corps facing south (chevrons); only 2 regts + 2 guns face west",
+   "pops, (4:10 pm dispatch: static + hit)"
+  ],
+  [
+   "move3c",
+   16.5,
+   "13:55",
+   "move3-6 ~5:15 pm low sun: deer + rabbits burst into the Union camps (after \"YOU CAN GO FORWARD THEN.\")",
+   "pops, hit"
+  ],
+  [
+   "move3c",
+   29.5,
+   "14:08",
+   "move3-6 the flank attack: front band sweeps east, guns -> impacts, XI Corps greys + streams east: ROUTED; 2+ MILES",
+   "gun thuds, impacts + shake, MG, hit, ticks"
+  ],
+  [
+   "move3c",
+   50.5,
+   "14:29",
+   "move3-7 NIGHT: halt ~7:15 pm, brigades tangled; ~9 pm Jackson + staff ride out on the Mountain Road",
+   "pops"
+  ],
+  [
+   "move3c",
+   68,
+   "14:47",
+   "move3-8 18th NC fires into the dark: Jackson hit, red pulse: THREE BULLETS",
+   "MG, impacts + shake, hit"
+  ],
+  [
+   "move3c",
+   76,
+   "14:55",
+   "move3-8 Union guns at Fairview sweep the Plank Road; bearer hit -> DROPPED (then McGuire amputation card)",
+   "gun thuds, impacts + shake, hit"
+  ],
+  [
+   "move3d",
+   14,
+   "15:18",
+   "move3-9 Hooker retreats over US Ford (opt 1, 6 May); CASUALTIES 17,304 / 13,460 (~22%)",
+   "hits, tick"
+  ],
+  [
+   "move3d",
+   21.4,
+   "15:25",
+   "move3-9 JACKSON'S METHOD line 3 HIT THE WEAKEST PART; Jackson badge greyed",
+   "boom"
+  ]
+ ]
+}

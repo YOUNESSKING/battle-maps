@@ -159,16 +159,15 @@ badge({ name: "JOSEPH HOOKER", role: "ARMY OF THE POTOMAC · SPRING 1863", initi
 const cnt = (n, lbl, col, css, t, until) => ticker(lbl, n, "", css, t, 1.4, until, 6);
 cnt(130000, "UNION · ARMY OF THE POTOMAC", "#c4121f", "left:0;right:0;top:150px;display:flex;justify-content:center;", T_130 - 0.2, T_LONG - 0.2);
 B.caption("THE BIGGEST UNION ARMY YET IN VIRGINIA", T_BIG, T_LEE - 0.2, "rome");
-cnt(60000, "CONFEDERATE · LEE", "#1f4fc4", "left:0;right:0;top:150px;display:flex;justify-content:center;", T_LEE - 0.1, T_PART - 0.3);
-GG.stamp("OUTNUMBERED 2 TO 1", T_LEE + 1.5, T_PART - 0.3, { size: 50, top: 840, color: "#8fb2ff" });
+cnt(60000, "CONFEDERATE · LEE · OUTNUMBERED 2 TO 1", "#1f4fc4", "left:0;right:0;top:150px;display:flex;justify-content:center;", T_LEE - 0.1, T_PART - 0.3);
 // Longstreet away with two divisions near Suffolk (off the map to the south-east)
 const LG = arw({ pts: LL([[38.22, -77.47], [38.12, -77.36], [38.02, -77.22]]), side: "white", t: T_LONG, dur: 1.2, width: 7, until: T_SWING });
 B.tl.set(LG, { opacity: 0.7 }, T_LONG);
 box("LONGSTREET · 2 DIVISIONS · TO SUFFOLK", ...L(38.10, -77.06), T_LONG + 0.4, 13, T_SWING, { bg: "#d8d4c8" });
 badge({ name: "LONGSTREET", role: "AWAY IN SOUTHERN VIRGINIA", initials: "JL", photo: PHOTO.longstreet, flag: FL.cs, side: "carth", corner: "bl", t: T_LONG - 0.1, until: T_PART + 0.2 });
 // Hooker leaves part of the army facing Fredericksburg (Sedgwick: crosses below the town, 29 Apr)
-unit("sed", "rome", [FAL[0] + 6, FAL[1] - 6], "infantry", "SEDGWICK", { t: T_PART, w: 24, h: 16, tag: 8, size: "XXX" });
-arw({ pts: LL([[38.30, -77.43], [38.275, -77.425]]), side: "rome", t: T_PART + 0.5, dur: 0.8, width: 4, until: END + 1 });
+unit("sed", "rome", L(38.345, -77.43), "infantry", "SEDGWICK", { t: T_PART, w: 24, h: 16, tag: 8, size: "XXX" });
+arw({ pts: LL([[38.33, -77.43], [38.29, -77.425], [38.272, -77.425]]), side: "rome", t: T_PART + 0.5, dur: 0.8, width: 2.6, until: END + 1 });
 box("PART OF THE ARMY STAYS", ...L(38.40, -77.40), T_PART + 0.3, 9, T_SWING + 1.0);
 // the swing: upriver to Kelly's Ford, over the Rappahannock, over the Rapidan (Germanna, Ely's), down to Chancellorsville; II Corps via US Ford
 B.move("hk", T_SWING, 0.6, FAL[0] - 30, FAL[1] - 18);
@@ -193,7 +192,7 @@ B.move("lee", T_SWING + 0.4, 1.0, FB[0] - 6, FB[1] + 16);
 B.tl.to(B.units.lee.el, { scale: 0.34, duration: 1.0 }, T_SWING + 0.4);
 B.tl.to(B.units.hk.el, { scale: 0.34, duration: 1.0 }, T_SWING + 0.4);
 flag(FL.us, "UNITED STATES", ...L(38.42, -77.45), T_SWING + 1.0, END + 1, 36);
-flag(FL.cs, "CONFEDERATE STATES", ...L(38.26, -77.80), T_SWING + 1.2, END + 1, 36);
+flag(FL.cs, "CONFEDERATE STATES", ...L(38.29, -77.82), T_SWING + 1.2, END + 1, 36);
 B.caption("30 APRIL: THE UNION ARMY BEHIND LEE", T_CROSS - 0.1, END + 1, "rome");
 fixImgs();
 K.raiseTerritory();

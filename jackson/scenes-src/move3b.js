@@ -221,7 +221,7 @@ badge({ name: "JOSEPH HOOKER", role: "PULLS BACK · TO HIS GENERALS' SURPRISE", 
 SFX("hit", T_PULL);
 // the Wilderness: the texture glows in, label
 GG.lbl("THE WILDERNESS", ...L(38.2930, -77.6800), { size: 30, t: T_WILD - 0.3, color: "#cfe3c4", until: S4 + 0.4 });
-GG.lbl("THE WILDERNESS", ...L(38.3330, -77.7400), { size: 22, t: S4 + 0.6, color: "#cfe3c4" });
+GG.lbl("THE WILDERNESS", ...L(38.2900, -77.7350), { size: 22, t: S4 + 0.6, color: "#cfe3c4" });
 B.caption("DENSE SECOND-GROWTH FOREST: THE WILDERNESS", T_WILD - 0.2, T_NIGHT - 0.1, "rome");
 // the Union arc (red); where it touches Lee's men it is two-coloured
 const FC = K.front({ pts: CF_MAY1N.contact, sideA: "carth", sideB: "rome", t: T_PULL + 0.3, dur: 1.8, width: 15, until: END + 1 });
@@ -337,7 +337,7 @@ box("XI CORPS · ~11,000", ...L(38.3245, -77.6720), T_XI, 10, END + 1);
 const CHEV = [0.08, 0.2, 0.33, 0.46, 0.58, 0.7, 0.82].map((f, k) => { const p = posOn(XIP, f);
   return GG.pin(`<svg width="16" height="14" viewBox="0 0 16 14"><path d="M2 2 L8 11 L14 2" fill="none" stroke="#ff8c80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`, p[0], p[1] + 22, { t: T_FS - 0.2 + k * 0.08, pop: true, until: END + 1 }); });
 B.caption("NEARLY ALL OF THEM FACING SOUTH", T_FS, T_ONLY - 0.2, "rome");
-badge({ name: "OLIVER O. HOWARD", role: "XI CORPS · ~11,000 MEN", initials: "OOH", photo: PHOTO.howard, flag: FL.us, side: "rome", corner: "br", t: T_XI - 0.2, until: END + 1 });
+badge({ name: "OLIVER O. HOWARD", role: "XI CORPS · ~11,000 MEN", initials: "OOH", photo: PHOTO.howard, flag: FL.us, side: "rome", corner: "tr", t: T_XI - 0.2, until: END + 1 });
 // only two small regiments + two guns face west (von Gilsa's flank, Talley farm)
 const VG = [L(38.3205, -77.6925), L(38.3168, -77.6927)];
 VG.forEach((p, k) => unit("vg" + k, "rome", p, "infantry", null, { t: T_ONLY + 0.1 + k * 0.2, w: 14, h: 9, size: "III" }));

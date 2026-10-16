@@ -101,12 +101,13 @@ tl.fromTo(GH, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, eas
 const NOB = scr(stampHTML("NOBODY CAN KNOW", "#e8c66a", 46, -3), "left:240px;top:860px;"); slam(NOB, T_NOB, { shake: 3 });
 tl.to([GH, NOB], { autoAlpha: 0, duration: 0.4 }, S2 - 0.2);
 // ---------- end-2: what he did: the three moves light in turn, the method card fills ----------
-camTo(S2 - 0.3, 1.2, 1560, 780, 1.15, "power2.inOut");
+camTo(S2 - 0.3, 1.2, 1700, 640, 1.15, "power2.inOut");
+B.hideUnits(["lee", "meade"], S2 - 0.3, 0.3); tl.to(OV, { autoAlpha: 0, duration: 1.0 }, S2 - 0.2);
 const OV2 = ctl("may63", S2 - 0.2, null);
 B.date("1862 - 1863", S2 + 0.1, S3, 32);
-const F2 = flags(1.15, [1880, 430], [1250, 1000], S2 + 0.2, S3);
+const F2 = flags(1.15, [2050, 760], [1330, 960], S2 + 0.2, S3);
 const MC = GG.method(3, S2 + 0.2, S3 - 0.1, [T_VAL + 0.1, T_MAN + 0.1, T_CH + 0.1]);
-MC.style.justifyContent = "flex-end"; MC.style.paddingRight = "70px"; MC.style.top = "560px";
+MC.style.justifyContent = "flex-end"; MC.style.paddingRight = "70px"; MC.style.top = "160px";
 tl.to(MC, { autoAlpha: 0, duration: 0.3 }, T_CONF - 0.25); tl.to(MC, { autoAlpha: 1, duration: 0.4 }, T_TACT);
 [T_VAL, T_MAN, T_CH].forEach((t) => SFX("ref:pop", t + 0.15));
 const ring = (p, name, date, n, t, dx, dy) => { K.target(p[0], p[1], t, { r: 26, until: S3 }); SFX("hit", t + 0.05);
@@ -128,7 +129,7 @@ tl.fromTo(CD, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: 
 scene.insertBefore(CC, document.getElementById("credit"));
 tl.fromTo(CC, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, T_CONF - 0.1); tl.to(CC, { autoAlpha: 0, duration: 0.4 }, T_TACT - 0.1);
 const ST = scr(stampHTML("STILL STUDIED TODAY", "#e8c66a", 46, -3, "AS A TACTICIAN"), "left:0;right:0;top:860px;display:flex;justify-content:center;");
-slam(ST, T_TACT + 0.3, { shake: 3, until: S3 - 0.1 }); ST.style.justifyContent = "flex-start"; ST.style.paddingLeft = "160px";
+slam(ST, T_TACT + 0.3, { shake: 3, until: S3 - 0.1 }); ST.style.justifyContent = "flex-end"; ST.style.paddingRight = "110px"; ST.style.top = "870px";
 // ---------- end-3: the final question (E.final), 19th-century war: "which commander next" instead of the family line ----------
 const EF = E.final({ moves: [["THE SHENANDOAH VALLEY", "1862"], ["THE MARCH TO MANASSAS", "1862"], ["CHANCELLORSVILLE", "1863"]], tShow: S3 - 0.1,
   tNums: [T_ONE, T_TWO3, T_THR], tAsk: T_TELL - 0.6, tFamily: T_NEXT - 0.3, tSub: T_SUB - 0.6, until: END - 0.2 });
