@@ -5,12 +5,17 @@ import sys
 from PIL import Image
 M = "/home/user/battle-maps/jackson/assets/media/"
 BOXES = {
-    "peng":      ("peng_src.jpg",      (50, 40, 320, 310)),
-    "walker":    ("walker_src.jpg",    (60, 10, 440, 390)),
-    "keiser":    ("keiser_src.jpg",    (0, 40, 1000, 1040)),
-    "macarthur": ("macarthur_src.jpg", (600, 580, 860, 840)),
-    "gay":       ("gay_src.jpg",       (105, 10, 275, 180)),
-    "peng53":    ("peng53_src.jpg",    (250, 150, 480, 380)),
+    "jackson":    ("jackson_src.jpg",    (180, 80, 1000, 900)),
+    "banks":      ("banks_src.jpg",      (318, 200, 482, 364)),
+    "fremont":    ("fremont_src.jpg",    (110, 190, 390, 470)),
+    "shields":    ("shields_src.jpg",    (277, 300, 444, 466)),
+    "pope":       ("pope_src.jpg",       (218, 141, 397, 320)),
+    "hooker":     ("hooker_src.jpg",     (281, 204, 447, 370)),
+    "howard":     ("howard_src.jpg",     (192, 230, 448, 486)),
+    "lee":        ("lee_src.jpg",        (205, 154, 486, 435)),
+    "longstreet": ("longstreet_src.jpg", (270, 351, 540, 621)),
+    "mcdowell":   ("mcdowell_src.jpg",   (390, 284, 646, 540)),
+    "lincoln":    ("lincoln_src.jpg",    (197, 243, 376, 422)),
 }
 for k in (sys.argv[1:] or BOXES):
     f, box = BOXES[k]

@@ -26,3 +26,4 @@ pope_src.jpg | [Portrait of Brig. Gen. John Pope, officer of the Federal Army (M
 shields_src.jpg | Shields, General James (not in uniform) Senator from Ill. & Missouri | None | [between 1865 and 1880] | https://www.loc.gov/item/2017895012/ | Public domain (LoC: no known restrictions on publication); 832px longest-ish side
 
 Note: LoC portrait scans (banks/fremont/hooker/howard/mcdowell/pope/lee/longstreet/lincoln/shields) are max 1024 px on the long side and include card mounts/borders; crop before use.
+heads: rembg cut-outs (isnet-general-use) except banks/pope/hooker/lincoln = flat crops

@@ -9,9 +9,10 @@ SCRIPT = "/home/user/battle-maps/jackson/script.md"
 OUT = "/home/user/battle-maps/jackson/audio"
 GAP_PARA, GAP_SECTION = 0.6, 0.8
 # how the TTS should say foreign names (the written script and timing.json keep the real spelling)
-PRON = {"Peng Dehuai": "Pung Duh-hwhy", "Dehuai": "Duh-hwhy", "Peng": "Pung", "Unsan": "Oon-sahn", "Chongchon": "Chong-chon",
-        "Kunu-ri": "Koo-noo-ree", "Yalu": "Yah-loo", "Kuryong": "Koo-ryong", "Tokchon": "Tok-chon", "Sunchon": "Soon-chon",
-        "Pyongyang": "Pyong-yahng", "Uijongbu": "Wee-jong-boo", "Wawon": "Wah-won", "Anju": "Ahn-joo", "Mao Zedong": "Mao Dzuh-dong"}
+PRON = {"Shenandoah": "Shenan-doah", "Massanutten": "Massa-nutten", "Manassas": "Muh-nassus", "Frémont": "Free-mont",
+        "Brawner": "Braw-ner", "Rappahannock": "Rappa-hannock", "Rapidan": "Rappi-dan", "Imboden": "Im-boh-den",
+        "Ewell": "You-ell", "Kernstown": "Kerns-town", "Rodes": "Roads", "Bristoe": "Bris-toe", "Chancellorsville": "Chancellors-ville",
+        "Strasburg": "Strass-burg", "McGuire": "Mc-Gwire", "Guinea": "Ginny"}
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
 text = open(SCRIPT).read()

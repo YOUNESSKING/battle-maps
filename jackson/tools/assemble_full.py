@@ -21,7 +21,7 @@ T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
-SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
+SCENES = {  # TODO(jackson): set from the map agents' scenes. scene name -> (first tag, last tag), as built with build_scene.py
     "hook-a": ("hook-1", "hook-1"),
     "hook-b": ("hook-2", "hook-4"),
     "bg": ("bg-1", "bg-2"),
@@ -37,8 +37,8 @@ SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
     "ending-a": ("end-1", "end-1"),
     "ending-b": ("end-2", "end-3"),
 }
-CHAPTERS = [("hook-1", "Intro: 300,000 Men No One Saw"), ("move1-1", "Move 1: The Night Ambush at Unsan (Nov 1950)"),
-            ("move2-1", "Move 2: The Trap on the Chongchon (Nov 1950)"), ("move3-1", "Move 3: The Fall of Seoul (Jan 1951)"),
+CHAPTERS = [("hook-1", "Intro: The Man Who Terrified Washington"), ("move1-1", "Move 1: The Shenandoah Valley (1862)"),
+            ("move2-1", "Move 2: The March to Manassas (Aug 1862)"), ("move3-1", "Move 3: Chancellorsville (May 1863)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}
