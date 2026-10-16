@@ -79,10 +79,10 @@ const P = { gett: L(39.83, -77.233), fred: L(38.303, -77.461), culp: L(38.473, -
 const OV = ctl("jul63", 0, null);
 const GEO = wimg("assets/media/virginia_geo_ref.png", 0, 0, null, false);
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.22 }); try { LV.shimmer(window.VA_RIVERS || [], { width: 2 }); } catch (e) {} LV.scaleBar(239.11); LV.north();
-camTo(0, 0.01, 1560, 640, 1.2); camTo(0.02, S2 - 0.3, 1600, 560, 1.32, "sine.inOut");
+camTo(0, 0.01, 1580, 600, 0.95); camTo(0.02, S2 - 0.3, 1600, 580, 1.02, "sine.inOut");
 B.showDate(0.1); B.date("JUNE - JULY 1863", 0.2, S2, 32);
 legend(0.3, null, false);
-const F1 = flags(1.3, [1960, 330], [1360, 900], 0.4, S2);
+const F1 = flags(1.0, [1990, 420], [1330, 880], 0.4, S2);
 // Lee's army: from Fredericksburg / Culpeper down the Valley over the Potomac into Pennsylvania (arrows only: no fill in PA)
 const LA = unitXY("lee", "carth", ...P.culp, "infantry", { w: 26, h: 18, label: "LEE", tag: 10, t: 0.3 });
 go("lee", T_INV - 0.4, 2.6, P.gett[0] - 20, P.gett[1] + 14, "power1.inOut");
@@ -101,11 +101,13 @@ tl.fromTo(GH, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, eas
 const NOB = scr(stampHTML("NOBODY CAN KNOW", "#e8c66a", 46, -3), "left:240px;top:860px;"); slam(NOB, T_NOB, { shake: 3 });
 tl.to([GH, NOB], { autoAlpha: 0, duration: 0.4 }, S2 - 0.2);
 // ---------- end-2: what he did: the three moves light in turn, the method card fills ----------
-camTo(S2 - 0.3, 1.2, 1460, 760, 1.15, "power2.inOut");
+camTo(S2 - 0.3, 1.2, 1560, 780, 1.15, "power2.inOut");
 const OV2 = ctl("may63", S2 - 0.2, null);
 B.date("1862 - 1863", S2 + 0.1, S3, 32);
 const F2 = flags(1.15, [1880, 430], [1250, 1000], S2 + 0.2, S3);
 const MC = GG.method(3, S2 + 0.2, S3 - 0.1, [T_VAL + 0.1, T_MAN + 0.1, T_CH + 0.1]);
+MC.style.justifyContent = "flex-end"; MC.style.paddingRight = "70px"; MC.style.top = "560px";
+tl.to(MC, { autoAlpha: 0, duration: 0.3 }, T_CONF - 0.25); tl.to(MC, { autoAlpha: 1, duration: 0.4 }, T_TACT);
 [T_VAL, T_MAN, T_CH].forEach((t) => SFX("ref:pop", t + 0.15));
 const ring = (p, name, date, n, t, dx, dy) => { K.target(p[0], p[1], t, { r: 26, until: S3 }); SFX("hit", t + 0.05);
   box(name, p[0] + dx, p[1] + dy, t + 0.1, 13, S3);
@@ -126,11 +128,10 @@ tl.fromTo(CD, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: 
 scene.insertBefore(CC, document.getElementById("credit"));
 tl.fromTo(CC, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, T_CONF - 0.1); tl.to(CC, { autoAlpha: 0, duration: 0.4 }, T_TACT - 0.1);
 const ST = scr(stampHTML("STILL STUDIED TODAY", "#e8c66a", 46, -3, "AS A TACTICIAN"), "left:0;right:0;top:860px;display:flex;justify-content:center;");
-slam(ST, T_TACT + 0.3, { shake: 3, until: S3 - 0.1 });
+slam(ST, T_TACT + 0.3, { shake: 3, until: S3 - 0.1 }); ST.style.justifyContent = "flex-start"; ST.style.paddingLeft = "160px";
 // ---------- end-3: the final question (E.final), 19th-century war: "which commander next" instead of the family line ----------
 const EF = E.final({ moves: [["THE SHENANDOAH VALLEY", "1862"], ["THE MARCH TO MANASSAS", "1862"], ["CHANCELLORSVILLE", "1863"]], tShow: S3 - 0.1,
   tNums: [T_ONE, T_TWO3, T_THR], tAsk: T_TELL - 0.6, tFamily: T_NEXT - 0.3, tSub: T_SUB - 0.6, until: END - 0.2 });
-EF.querySelector(".q").textContent = "WHICH WAS JACKSON'S GREATEST MOVE?";
-EF.querySelector(".fam").innerHTML = `TELL US WHICH COMMANDER WE SHOULD COVER NEXT <span style="color:#c9b48a">· WE READ EVERY ONE</span>`;
+EF.querySelector(".fam").innerHTML = `TELL US WHICH COMMANDER WE SHOULD COVER NEXT<div style="font-size:22px;letter-spacing:0.3em;color:#c9b48a;margin-top:4px">WE READ EVERY ONE</div>`;
 K.raiseTerritory();
 B.finish();

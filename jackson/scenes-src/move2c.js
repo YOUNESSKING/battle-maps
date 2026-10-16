@@ -128,8 +128,8 @@ camTo(T_MD - 0.6, 3.0, 1620, 470, 1.35);
 B.showDate(0.05);
 B.date("EARLY SEPTEMBER 1862", 0.1, T_MD - 0.3, 30); B.date("SEPTEMBER 1862", T_MD - 0.2, END + 1, 32);
 legend(0.3, END - 0.4);
-flag(FL.csa, "CONFEDERATE STATES", ...L(38.62, -77.95), 0.6, END, 80); flag(FL.us, "UNITED STATES", ...L(39.30, -77.10), 0.65, END, 80);
-town("WASHINGTON DEFENCES", "alexandria", 1.2, { dx: 70, dy: 18, size: 10 }); town("MANASSAS", "manassas_jct", 1.0, { dx: 0, dy: -12, size: 10 });
+flag(FL.csa, "CONFEDERATE STATES", ...L(38.62, -77.95), 2.2, END, 80); flag(FL.us, "UNITED STATES", ...L(39.30, -77.10), 2.25, END, 80);
+town("WASHINGTON DEFENCES", "alexandria", 2.4, { dx: 70, dy: 18, size: 10 }); town("MANASSAS", "manassas_jct", 2.3, { dx: 0, dy: -12, size: 10 });
 // Sep 1862 front: only the Washington defences are Union in northern Virginia
 K.front({ pts: NV.f02 || [[1830, 600], [1900, 520]], sideA: "carth", sideB: "rome", t: 2.4, dur: 1.4, width: 15, glow: 0.47, until: END + 1 });
 // Pope's army back into Washington's defences
@@ -149,8 +149,8 @@ const PB = K.badge({ name: "JOHN POPE", role: "ARMY OF VIRGINIA", photo: "assets
 tl.to(PB, { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_REM);
 sstamp("REMOVED FROM COMMAND", 300, T_REM, { size: 44, sub: "WITHIN TWO WEEKS · SEPTEMBER 1862", until: T_DIS, left: 1180 });
 // Lee's army north into Maryland (White's Ford)
-arr([L(38.86, -77.62), L(39.00, -77.58), PL.whites_ford, L(39.30, -77.45)], "carth", T_MD - 0.3, { w: 12, dur: 2.2, until: END + 1 });
-tag("INTO MARYLAND · SEPTEMBER 1862", ...L(39.36, -77.62), T_MD + 0.6, "#1f4fc4", 14, END + 1);
+arr([L(38.86, -77.62), L(39.00, -77.58), PL.whites_ford, L(39.26, -77.43)], "carth", T_MD - 0.3, { w: 12, dur: 2.2, until: END + 1 });
+tag("INTO MARYLAND · SEPTEMBER 1862", ...L(39.20, -77.28), T_MD + 0.6, "#1f4fc4", 14, END + 1);
 // the method card: line 2 lights on "Mystify"
 GG.METHOD = ["MOVE FAST", "MYSTIFY", "HIT THE WEAKEST PART"]; GG.METHOD_TITLE = "JACKSON'S METHOD";
 GG.method(2, T_HELD - 0.4, END + 1, [T_HELD - 0.1, T_MYS - 0.1]); SFX("hit", T_HELD); SFX("hit", T_MYS);

@@ -113,6 +113,7 @@ const S7 = PS(P7), T_HURL = at(P7, "hurled attack after attack"), T_ONE = at(P7,
 const S8 = PS(P8), T_BIG = at(P8, "biggest attack of all"), T_6000 = at(P8, "six thousand men"), T_DEEP = at(P8, "called the Deep Cut"), T_CLOSE8 = at(P8, "so close"),
   T_ROCKS = at(P8, "threw rocks"), T_FOUR = at(P8, "four o'clock"), T_25 = at(P8, "twenty-five thousand"), T_SWEPT = at(P8, "swept forward"),
   T_LARGEST = at(P8, "largest simultaneous"), T_FELL = at(P8, "fell back across Bull Run"), T_DARK = at(P8, "in the dark");
+const T_RET = Math.min(T_FELL - 0.5, T_LARGEST + 2.4);   // the collapse starts while the quote is up, so the retreat reads before the cut
 // ---------- map layers: living map + geography (option 2: no territory fill) ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.shimmer(BR.rivers || [], { width: 1.0 }); LV.scaleBar(14.89); LV.north();
 wimg("assets/media/bullrun_geo_ref.png", 0, 0, null);
@@ -125,7 +126,7 @@ camTo(T_NOON - 0.5, 2.2, 1130, 800, 1.15);                              // wide:
 camTo(T_SOME - 0.6, 2.0, 1470, 780, 2.2);                               // the jaw
 camTo(S8 - 0.2, 2.0, 1500, 760, 2.7);                                   // 30 Aug: the Deep Cut
 camTo(T_FOUR - 0.5, 2.4, 1560, 800, 2.0);                               // Longstreet's attack
-camTo(T_FELL - 0.6, 2.6, 1800, 760, 1.55);                              // the retreat over Bull Run
+camTo(T_RET - 0.4, 2.6, 1800, 760, 1.55);                              // the retreat over Bull Run
 const KM = [1440, 810];
 camTo(END - 1.3, 1.25, KM[0], KM[1], 0.667, "power2.in");             // = move2c (nova) opening frame at s 5.333
 SFX("whoosh", END - 1.1);
@@ -133,12 +134,12 @@ SFX("whoosh", END - 1.1);
 B.showDate(0.05);
 B.date("28 AUGUST · EVENING", 0.1, T_DUSK - 0.2, 30); B.date("28 AUGUST · DUSK", T_DUSK - 0.1, S7 - 0.2, 30); B.date("29 AUGUST 1862", S7 - 0.1, T_NOON - 0.2, 32);
 B.date("29 AUGUST · NOON", T_NOON - 0.1, T_MORN - 0.2, 30); B.date("30 AUGUST · DAWN", T_MORN - 0.1, S8 - 0.2, 30); B.date("30 AUGUST · 3 PM", S8 - 0.1, T_FOUR - 0.2, 30);
-B.date("30 AUGUST · 4 PM", T_FOUR - 0.1, T_FELL - 0.2, 30); B.date("30 AUGUST · NIGHT", T_FELL - 0.1, END + 1, 30);
+B.date("30 AUGUST · 4 PM", T_FOUR - 0.1, T_RET + 0.4, 30); B.date("30 AUGUST · NIGHT", T_RET + 0.5, END + 1, 30);
 legend(0.3, END - 1.2);
 const FLC = [flag(FL.csa, "CONFEDERATE STATES", ...L(38.845, -77.600), 0.6, T_NOON - 0.4, 44), flag(FL.us, "UNITED STATES", ...L(38.795, -77.520), 0.65, T_NOON - 0.4, 44)];
 const FLW = [flag(FL.csa, "CONFEDERATE STATES", ...L(38.865, -77.700), T_NOON + 1.2, T_SOME - 0.4, 96), flag(FL.us, "UNITED STATES", ...L(38.775, -77.470), T_NOON + 1.25, T_SOME - 0.4, 96)];
-const FL2 = [flag(FL.csa, "CONFEDERATE STATES", ...L(38.845, -77.595), T_SOME + 1.0, T_FELL - 0.4, 44), flag(FL.us, "UNITED STATES", ...L(38.800, -77.505), T_SOME + 1.05, T_FELL - 0.4, 44)];
-const FL3 = [flag(FL.csa, "CONFEDERATE STATES", ...L(38.835, -77.600), T_FELL + 1.0, END - 1.3, 72), flag(FL.us, "UNITED STATES", ...L(38.855, -77.450), T_FELL + 1.05, END - 1.3, 72)];
+const FL2 = [flag(FL.csa, "CONFEDERATE STATES", ...L(38.845, -77.595), T_SOME + 1.0, T_RET, 44), flag(FL.us, "UNITED STATES", ...L(38.800, -77.505), T_SOME + 1.05, T_RET, 44)];
+const FL3 = [flag(FL.csa, "CONFEDERATE STATES", ...L(38.835, -77.600), T_RET + 1.4, END - 1.3, 60), flag(FL.us, "UNITED STATES", ...L(38.855, -77.450), T_RET + 1.45, END - 1.3, 60)];
 const PLS = [town("BRAWNER FARM", "brawner", 0.9, { dx: -2, dy: 9 }), town("GROVETON", "groveton", 1.0, { dx: 6, dy: 9 }), town("GAINESVILLE", "gainesville", 1.1, { dx: 0, dy: -9 }),
   town("STONE HOUSE", "stone_house", 1.2, { dx: 0, dy: 9 }), town("SUDLEY CHURCH", "sudley_church", 1.3, { dx: 26, dy: -6 })];
 const SRL = box("STONY RIDGE", ...L(38.836, -77.598), 1.4, 6, null, false);
@@ -200,7 +201,7 @@ const RRT = tag("THE UNFINISHED RAILROAD", ...L(38.8335, -77.5640), S7 + 0.6, "#
 JB.forEach(([id], i) => go(id, S7 - 0.2 + i * 0.1, 1.6, [RRL[Math.round((i + 0.5) * (RRL.length - 1) / 3)][0] - 8, RRL[Math.round((i + 0.5) * (RRL.length - 1) / 3)][1] - 12]));
 // the Union attacks, one division at a time (SE -> NW), each thrown back
 const ATT = [[[38.8180, -77.5380], [38.8270, -77.5420], 0, "SIGEL"], [[38.8130, -77.5470], [38.8235, -77.5545], 1, "HOOKER"], [[38.8250, -77.5310], [38.8350, -77.5395], 2, "KEARNY"], [[38.8100, -77.5570], [38.8210, -77.5640], 3, "RENO"]];
-const TA = [T_HURL - 0.4, T_ONE - 0.2, T_ONE + 2.6, T_BACKW - 0.2];
+const TA = [T_HURL - 0.4, T_ONE - 0.2, T_ONE + 1.6, T_BACKW - 0.2];
 ATT.forEach(([a, b, k, lb], i) => { const A = L(...a), Bp = L(...b), t0 = TA[i]; const id = "u" + i;
   unit(id, "rome", A[0], A[1], "infantry", { t: t0 - 0.5, size: "XX", label: lb });
   tArrow([A, [(A[0] + Bp[0]) / 2, (A[1] + Bp[1]) / 2 + 3], Bp], "#c4121f", t0, t0 + 3.0, 2.4, 1.0);
@@ -208,7 +209,7 @@ ATT.forEach(([a, b, k, lb], i) => { const A = L(...a), Bp = L(...b), t0 = TA[i];
   for (let j = 0; j < 3; j++) mg([Bp[0] - 6, Bp[1] - 6], [A[0] + (Bp[0] - A[0]) * 0.6, A[1] + (Bp[1] - A[1]) * 0.6], t0 + 0.6 + j * 0.5, 4);
   for (let j = 0; j < 2; j++) K.impact(A[0] + (Bp[0] - A[0]) * 0.55 + (j ? 5 : -4), A[1] + (Bp[1] - A[1]) * 0.55 + (j ? -3 : 3), t0 + 0.9 + j * 0.45, { r: 5 });
   go(id, t0 + 1.9, 1.0, A, "power2.in"); B.grey([id], t0 + 1.9, 0.6);
-  if (i < 3) wstamp("REPULSED", Bp[0] + 18, Bp[1] + 14, t0 + 2.0, Math.min(t0 + 3.4, T_NOON - 0.5));
+  if (i < 3) wstamp("REPULSED", Bp[0] + 18, Bp[1] + 14, t0 + 2.0, t0 + 3.4);
   B.hideUnits([id], T_NOON - 0.5); });
 // NOON: Longstreet's column through Thoroughfare Gap, along the turnpike, deploying on Jackson's right (one-colour line: not yet in contact)
 const WL = [town("THOROUGHFARE GAP", "thoroughfare_gap", T_NOON + 0.2, { dx: 0, dy: -18, size: 13, until: T_SOME - 0.4 }), town("HAYMARKET", "haymarket", T_NOON + 0.3, { dx: 0, dy: -18, size: 11, until: T_SOME - 0.4 })];
@@ -283,17 +284,17 @@ for (let k = 0; k < 4; k++) mg(L(38.8040, -77.5520 + k * 0.002), L(38.8075, -77.
 const NPSQ = scr(`<div style="max-width:1000px;padding:16px 30px 18px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 18px 36px rgba(0,0,0,.6)">
   <div style="font-size:17px;letter-spacing:0.3em;color:#9fc0ea">NATIONAL PARK SERVICE</div><div style="font-size:44px;letter-spacing:0.04em;line-height:1.1">"THE LARGEST SIMULTANEOUS MASS ASSAULT OF THE WAR"</div></div>`, "left:0;right:0;margin:auto;width:1000px;top:660px;");
 tl.fromTo(NPSQ, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power3.out" }, T_LARGEST - 0.2); SFX("ref:boom", T_LARGEST); K.shake(T_LARGEST + 0.1, 5, 0.4);
-tl.to(NPSQ, { autoAlpha: 0, duration: 0.4 }, T_FELL - 0.2);
+tl.to(NPSQ, { autoAlpha: 0, duration: 0.4 }, T_FELL - 0.4);
 const CHN = town("CHINN RIDGE", "chinn_ridge", T_SWEPT + 1.0, { dx: 0, dy: 10 }), HEN = town("HENRY HILL", "henry_hill", T_SWEPT + 1.4, { dx: 20, dy: 9 });
 // the Union lines collapse back over Bull Run (Stone Bridge) in the dark
-B.grey(["f1", "f2", "f3", "p1", "p2", "p3"], T_FELL - 0.4, 0.6);
+B.grey(["f1", "f2", "f3", "p1", "p2", "p3"], T_RET - 0.4, 0.6);
 const SB = PL.stone_bridge || [1769, 740], CV = PL.centreville || [2188, 633];
-["f1", "f2", "f3", "p1", "p2", "p3"].forEach((id, i) => { go(id, T_FELL - 0.2 + i * 0.12, 2.2, [SB[0] - 10 + (i % 3) * 8, SB[1] + 6 - (i % 2) * 8]); go(id, T_FELL + 2.2 + i * 0.12, 2.0, [CV[0] - 30 + (i % 3) * 14, CV[1] + 8 - (i % 2) * 12]); });
-tArrow([L(38.8100, -77.5300), [SB[0] - 20, SB[1] + 20], SB, [SB[0] + 120, SB[1] - 40], [CV[0] - 40, CV[1]]], "#c4121f", T_FELL, END - 1.2, 3.4, 2.4);
-tArrow([L(38.8050, -77.5250), L(38.8000, -77.5050), L(38.8150, -77.4800), [CV[0] - 40, CV[1] + 14]], "#c4121f", T_FELL + 0.3, END - 1.2, 2.8, 2.4);
-const SBL = town("STONE BRIDGE", "stone_bridge", T_FELL - 0.4, { dx: 0, dy: -10, size: 9 }), CVL = town("CENTREVILLE", "centreville", T_FELL, { dx: 0, dy: -12, size: 10 });
-GG.night(T_FELL + 0.4, END + 5, { dur: 2.4 });
-K.night({ lines: [FR29], tOn: T_FELL + 0.4 });
-sstamp("RETREAT", 700, T_DARK - 0.2, { size: 64, sub: "POPE'S ARMY ACROSS BULL RUN · NIGHT 30 AUGUST", until: END - 1.2 });
+["f1", "f2", "f3", "p1", "p2", "p3"].forEach((id, i) => { go(id, T_RET - 0.2 + i * 0.12, 2.2, [SB[0] - 10 + (i % 3) * 8, SB[1] + 6 - (i % 2) * 8]); go(id, T_RET + 2.0 + i * 0.12, 2.0, [CV[0] - 30 + (i % 3) * 14, CV[1] + 8 - (i % 2) * 12]); });
+tArrow([L(38.8100, -77.5300), [SB[0] - 20, SB[1] + 20], SB, [SB[0] + 120, SB[1] - 40], [CV[0] - 40, CV[1]]], "#c4121f", T_RET, END - 1.2, 3.4, 2.4);
+tArrow([L(38.8050, -77.5250), L(38.8000, -77.5050), L(38.8150, -77.4800), [CV[0] - 40, CV[1] + 14]], "#c4121f", T_RET + 0.3, END - 1.2, 2.8, 2.4);
+const SBL = town("STONE BRIDGE", "stone_bridge", T_RET - 0.4, { dx: 0, dy: -10, size: 9 }), CVL = town("CENTREVILLE", "centreville", T_RET, { dx: 0, dy: -12, size: 10 });
+GG.night(T_RET + 0.6, END + 5, { dur: 2.4 });
+K.night({ lines: [FR29], tOn: T_RET + 0.6 });
+sstamp("RETREAT", 700, T_FELL - 0.2, { size: 64, sub: "POPE'S ARMY ACROSS BULL RUN · NIGHT 30 AUGUST", until: END - 1.2 });
 K.raiseTerritory();
 B.finish();
