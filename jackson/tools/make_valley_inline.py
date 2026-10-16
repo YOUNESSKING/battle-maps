@@ -4,8 +4,7 @@
 usage (from jackson/): python3 tools/make_valley_inline.py"""
 import json, re
 kit = open("scenes-src/move1_kit.js").read() + open("scenes-src/cavalry_icon.js").read()
-for n in "abcde":
-    sp = f"scenes-src/move1{n}.js"
+for sp in [f"scenes-src/move1{n}.js" for n in "abcde"] + ["scenes-src/test-cav.js"]:
     try: s = open(sp).read()
     except FileNotFoundError: continue
     s = re.sub(r"// @kit-begin\n.*?// @kit-end\n", lambda m: "// @kit-begin\n" + kit + "// @kit-end\n", s, flags=re.S)

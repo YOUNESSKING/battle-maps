@@ -94,7 +94,7 @@ slam(STW, T_STONE - 0.25, { sfx: "ref:boom", shake: 7, dur: 0.26, until: T_FOUR 
 tl.to(BDG, { scale: 0.42, x: -650, y: 470, duration: 0.6, ease: "power3.inOut" }, T_FOUR);
 SFX("ref:whoosh", T_FOUR - 0.05);
 B.showDate(T_FOUR + 0.1); B.date("MARCH 1862 - MAY 1863", T_FOUR + 0.2, T_RAN, 30);
-legend(T_FOUR + 0.2, null, false);
+legend(T_FOUR + 0.2, T_MARCH - 0.06, false); legend(T_THESE + 0.2, null, false);
 const WFL = flags(1.0, [1150, 430], L(38.05, -78.45), T_FOUR + 0.3, T_RAN - 0.06);
 const MO = scr(`<div style="font-family:Oswald;font-weight:700;padding:10px 24px 12px;background:rgba(18,16,12,0.92);border-left:7px solid #c9b48a;color:#f7f3ea"><div style="font-size:18px;letter-spacing:0.3em;color:#c9b48a">IN</div><div style="font-size:44px;letter-spacing:0.1em">14 MONTHS</div></div>`, "right:110px;top:190px;");
 tl.fromTo(MO, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, T_FOUR + 0.2); tl.to(MO, { autoAlpha: 0, duration: 0.1 }, T_RAN - 0.06);
@@ -145,21 +145,22 @@ ring([1686, 717], "MANASSAS", "AUG 1862", 2, T_MAN, -66, 30, S2c);
 B.hideUnits(R2, T_MARCH - 0.06, 0.05);
 tl.to(GEO, { autoAlpha: 0, duration: 0.05 }, T_MARCH - 0.06); tl.to(GEO, { autoAlpha: 1, duration: 0.4 }, T_THESE + 0.1);
 // ---------- CUT 3: CHANCELLORSVILLE, MAY 1863: across the front of a force twice his size, onto the open flank ----------
-const S3c = 4.5;
-cut(T_MARCH, 1620, 924, S3c, T_THESE, [0, 0, 1.04]);
-const OV3 = ctl("may63", T_MARCH - 0.05, T_THESE + 0.1); gsap.set(OV3, { autoAlpha: 0 }); tl.set(OV3, { autoAlpha: 1 }, T_MARCH - 0.05);
+const S3c = 7.5;
+cut(T_MARCH, 1622, 924, S3c, T_THESE, [0, 0, 1.04]);
+// close-up = option 2 (glowing fronts only, no fill)
+legend(T_MARCH + 0.05, T_THESE + 0.05, true);
 B.date("2 MAY 1863", T_MARCH + 0.02, T_THESE, 30);
-const F3 = flags(S3c, [1650, 898], [1592, 948], T_MARCH + 0.1, T_THESE - 0.05);
+const F3 = flags(S3c, [1657, 893], [1596, 947], T_MARCH + 0.1, T_THESE - 0.05);
 // Hooker's line around Chancellorsville, the right flank (XI Corps) facing south on the turnpike
 K.front({ pts: [[1597, 922], [1610, 921.5], [1622, 920], [1630, 915], [1640, 912], [1652, 915]], sideA: "rome", sideB: "carth", t: T_MARCH + 0.1, dur: 0.6, width: 3.3, until: T_THESE + 0.1 });
-box("CATHARINE FURNACE", 1627, 940, T_MARCH + 0.5, 2.6, T_THESE); box("ORANGE TURNPIKE", 1586, 914, T_MARCH + 0.5, 2.6, T_THESE);
-const R3 = [red("h1", 1603, 917, T_MARCH + 0.15, "XI CORPS", S3c), red("h2", 1630, 910, T_MARCH + 0.2, "HOOKER", S3c), red("h3", 1646, 905, T_MARCH + 0.25, null, S3c)];
-B.arrow({ pts: [[1640, 932], [1627, 934], [1612, 941], [1600, 936], [1594, 926]], side: "carth", t: T_MARCH + 0.3, dur: 1.4, width: 3, dash: "6 5", until: T_THESE + 0.1 });
+box("CATHARINE FURNACE", 1636, 944, T_MARCH + 0.5, 2.6, T_THESE); box("ORANGE TURNPIKE", 1586, 914, T_MARCH + 0.5, 2.6, T_THESE);
+const R3 = [red("h1", 1603, 917, T_MARCH + 0.15, "XI CORPS", S3c), red("h2", 1630, 910, T_MARCH + 0.2, "HOOKER", S3c), red("h3", 1641, 907, T_MARCH + 0.25, null, S3c)];
+B.arrow({ pts: [[1640, 932], [1627, 934], [1612, 941], [1600, 936], [1594, 926]], side: "carth", t: T_MARCH + 0.3, dur: 1.4, width: 2, dash: "4 3", until: T_THESE + 0.1 });
 const C2X = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 22px 10px;background:rgba(18,16,12,0.9);border-left:7px solid #c4121f;color:#f7f3ea"><div style="font-size:18px;letter-spacing:0.3em;color:#ef8a82">HOOKER</div><div style="font-size:44px;letter-spacing:0.06em">2 : 1</div></div>`, "right:150px;top:200px;");
 tl.fromTo(C2X, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, T_TWICE); tl.to(C2X, { autoAlpha: 0, duration: 0.1 }, T_THESE - 0.06); SFX("ref:pop", T_TWICE + 0.05);
-B.arrow({ pts: [[1590, 921], [1600, 919.5], [1612, 918.5]], side: "carth", t: T_CHANC - 0.2, dur: 0.6, width: 5, until: T_THESE + 0.1 });
+B.arrow({ pts: [[1588, 923], [1598, 921.5], [1610, 920.5]], side: "carth", t: T_CHANC - 0.2, dur: 0.6, width: 3.2, until: T_THESE + 0.1 });
 K.impact(1603, 917, T_CHANC + 0.3, { r: 4 }); B.grey(["h1"], T_CHANC + 0.4, 0.3);
-ring([1622, 922], "CHANCELLORSVILLE", "MAY 1863", 3, T_CHANC + 0.1, 16, -12, S3c);
+ring([1622, 922], "CHANCELLORSVILLE", "MAY 1863", 3, T_CHANC + 0.1, 0, -24, S3c);
 // ---------- pull out to all three, then the title ----------
 SFX("ref:whoosh", T_THESE - 0.1); SFX("ref:riser", T_THESE + 0.1);
 const OV4 = ctl("may63", T_THESE - 0.05, null);

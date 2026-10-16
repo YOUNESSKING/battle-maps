@@ -185,7 +185,7 @@ arrow("carth", [[1548, 660], [1544, 646], [1556, 634], [1572, 626]], T_KERN + 0.
 SFX("mg", T_KERN + 1.4);
 arrow("carth", [[1560, 648], [1552, 672], [1540, 696], [1528, 714]], T_BEATEN, { dur: 1.0, w: 5, until: T_FRIGHT - 0.3 });
 walk("k_c1", [[1556, 668], [1546, 690], [1536, 706]], T_BEATEN + 0.1, 1.4); walk("k_c2", [[1600, 668], [1590, 696]], T_BEATEN + 0.3, 1.2);
-stamp("DEFEAT", T_BEATEN + 0.2, T_FRIGHT - 0.5, { sub: "KERNSTOWN · 23 MARCH 1862", size: 80, top: 640 });
+stamp("DEFEAT", T_BEATEN + 0.2, T_FRIGHT - 0.5, { sub: "KERNSTOWN · 23 MARCH 1862", size: 76, top: 790 });
 // wide: Washington takes fright; McDowell's corps held back
 flag(FL.us, "UNITED STATES", 2120, 560, T_FRIGHT - 0.3, T_WEST, 124); flag(FL.csa, "CONFEDERATE STATES", 1580, 1230, T_FRIGHT - 0.2, T_WEST, 124);
 box("WASHINGTON", PL.washington[0] - 30, PL.washington[1] + 34, T_FRIGHT - 0.2, 18, T_WEST, { bg: "#ffe9a8" });
@@ -274,7 +274,7 @@ SFX("mg", T_GARR); SFX("mg", T_OVERRUN);
 K.target(1592, 828, T_GARR - 0.2, { r: 22, until: T_CAPT + 1.4, side: "rome" });
 box("~1,000 MEN", 1552, 822, T_1000 - 0.2, 9, T_FAST, { bg: "#ffd7d2" });
 B.grey(["fr1"], T_OVERRUN + 0.2);
-stamp("CAPTURED", T_CAPT - 0.3, T_FAST - 0.1, { sub: "FRONT ROYAL · 23 MAY 1862 · MOST OF THE GARRISON TAKEN", size: 76, top: 640 });
+stamp("CAPTURED", T_CAPT - 0.3, T_FAST - 0.1, { sub: "FRONT ROYAL · 23 MAY 1862 · MOST OF THE GARRISON TAKEN", size: 72, top: 790 });
 // Banks's flank turned: alarm at Strasburg
 K.target(PL.strasburg[0], PL.strasburg[1], T_FLANK, { r: 30, until: END, side: "rome" });
 arrow("carth", [[1572, 850], [1536, 812], [1500, 790]], T_FLANK + 0.2, { dur: 1.0, w: 8, dash: true, until: END + 1 });

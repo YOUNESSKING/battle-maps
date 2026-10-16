@@ -140,7 +140,7 @@ const S6 = PS(p(6)), T_THREE = at(p(6), "three Union forces"), T_FREM = at(p(6),
 // ---------- map layers ----------
 const OV = (d, t, dIn, tOut) => wimg(`assets/media/valley_ctl_${d}_mx.png`, t, dIn, tOut, { mx: true, outDur: 1.2 });
 OV("may23", 0, 0, T_DAWN + 0.2);
-OV("may26", T_POT - 0.4, 1.0, T_JUNE + 0.6);
+OV("may26", T_FLED + 0.4, 1.0, T_JUNE + 0.6);
 OV("jun1", T_JUNE - 0.4, 1.0, T_CAV + 0.4);
 OV("jun7", T_CAV - 0.6, 1.2, null);
 const LV = LivingK(B);
@@ -151,9 +151,9 @@ wimg("assets/media/valley_geo_ref.png", 0, 0, null);
 const DAWN = GG.dawn(T_DAWN - 0.6, T_FLED + 0.6);
 
 // ---------- camera ----------
-B.camera([[0, 1500, 860, 1.35], [T_RACED + 0.4, 1545, 700, 1.25], [T_CHASED + 1.2, 1560, 690, 1.3], [T_DAWN + 0.2, 1604, 612, 2.3],
-  [T_BROKE + 0.8, 1604, 606, 2.35], [T_FLED + 0.6, 1720, 520, 1.08], [T_COMM - 0.6, 1690, 520, 1.12], [T_PANIC + 0.4, 1680, 800, 0.82],
-  [T_TRAP + 0.4, 1680, 820, 0.82], [S6 + 0.4, 1380, 820, 1.0], [T_JUNE - 0.2, 1460, 790, 1.35], [T_JAWS + 0.4, 1440, 820, 1.25],
+B.camera([[0, 1500, 860, 1.35], [T_RACED + 0.4, 1545, 700, 1.25], [T_CHASED + 1.2, 1560, 690, 1.3], [T_DAWN + 0.2, 1610, 624, 3.0],
+  [T_BROKE + 0.8, 1610, 616, 3.05], [T_FLED + 0.6, 1720, 520, 1.08], [T_COMM - 0.6, 1690, 520, 1.12], [T_PANIC + 0.4, 1680, 900, 0.82],
+  [T_TRAP + 0.4, 1680, 910, 0.82], [S6 + 0.4, 1380, 820, 1.0], [T_JUNE - 0.2, 1460, 790, 1.35], [T_JAWS + 0.4, 1440, 820, 1.25],
   [T_RETR + 0.2, 1330, 1000, 0.95], [T_OTHER + 0.4, 1290, 1120, 1.05], [T_CAV + 0.4, 1300, 1180, 1.25], [END - 0.02, 1210, 1300, 1.5]]);
 
 // ---------- dates ----------
@@ -187,28 +187,28 @@ walk("c1", [[1590, 870], [1599, 774], [1604, 690]], T_CHASED, T_DAWN - T_CHASED 
 box("FLANK HIT AT MIDDLETOWN", 1470, 715, T_CHASED + 1.2, 10, T_DAWN, { bg: "#cfe0ff" });
 B.hideUnits(["b3", "c2"], T_DAWN - 0.3);
 // 25 May dawn: First Winchester (option 2)
-flag(FL.us, "UNITED STATES", 1660, 560, T_DAWN - 0.2, T_FLED + 0.3, 36); flag(FL.csa, "CONFEDERATE STATES", 1545, 670, T_DAWN - 0.2, T_FLED + 0.3, 36);
-const WF0 = [[1660, 618], [1634, 620], [1608, 622], [1582, 625], [1556, 630]], WF1 = WF0.map((q) => [q[0], q[1] - 44]);
+flag(FL.us, "UNITED STATES", 1680, 580, T_DAWN - 0.2, T_FLED + 0.3, 28); flag(FL.csa, "CONFEDERATE STATES", 1536, 672, T_DAWN - 0.2, T_FLED + 0.3, 28);
+const WF0 = [[1664, 630], [1638, 631], [1612, 632], [1586, 634], [1560, 637]], WF1 = WF0.map((q) => [q[0], q[1] - 40]);
 K.front({ pts: WF0, sideA: "carth", sideB: "rome", t: T_DAWN - 0.2, dur: 1.2, width: 7, to: WF1, moveT: T_BROKE + 0.2, moveDur: 2.2, until: T_FLED + 0.4 });
-const WU = [["w1", 1590, 602, "infantry", "BANKS"], ["w2", 1624, 600, "artillery", ""], ["w3", 1566, 606, "infantry", ""], ["w4", 1648, 604, "infantry", ""]];
-WU.forEach(([id, x, y, ic, lab], i) => unit(id, "rome", x, y, ic, { t: T_DAWN + i * 0.15, size: ic === "infantry" ? "XX" : "", label: lab || undefined, ts: 7, w: 20, h: 13 }));
-B.move("b1", T_DAWN - 0.4, 0.4, 1590, 602); B.hideUnits(["b1", "b2"], T_DAWN);
-const WC = [["x1", 1572, 648, "infantry", "JACKSON"], ["x2", 1604, 652, "artillery", ""], ["x3", 1636, 646, "infantry", "EWELL"], ["x4", 1550, 654, "artillery", ""]];
-WC.forEach(([id, x, y, ic, lab], i) => unit(id, "carth", x, y, ic, { t: T_DAWN + 0.2 + i * 0.15, size: ic === "infantry" ? "XX" : "", label: lab || undefined, ts: 7, w: 20, h: 13 }));
-B.move("c1", T_DAWN - 0.4, 0.4, 1572, 648); B.hideUnits(["c1"], T_DAWN);
+const WU = [["w1", 1600, 614, "infantry", "BANKS"], ["w2", 1628, 612, "artillery", ""], ["w3", 1572, 617, "infantry", ""], ["w4", 1654, 614, "infantry", ""]];
+WU.forEach(([id, x, y, ic, lab], i) => unit(id, "rome", x, y, ic, { t: T_DAWN + i * 0.15, size: ic === "infantry" ? "XX" : "", label: lab || undefined, ts: 5, w: 15, h: 10 }));
+B.move("b1", T_DAWN - 0.4, 0.4, 1600, 614); B.hideUnits(["b1", "b2"], T_DAWN);
+const WC = [["x1", 1580, 652, "infantry", "JACKSON"], ["x2", 1610, 656, "artillery", ""], ["x3", 1640, 652, "infantry", "EWELL"], ["x4", 1556, 658, "artillery", ""]];
+WC.forEach(([id, x, y, ic, lab], i) => unit(id, "carth", x, y, ic, { t: T_DAWN + 0.2 + i * 0.15, size: ic === "infantry" ? "XX" : "", label: lab || undefined, ts: 5, w: 15, h: 10 }));
+B.move("c1", T_DAWN - 0.4, 0.4, 1580, 652); B.hideUnits(["c1"], T_DAWN);
 const cc = countCard([["CONFEDERATES", "~16,000", "#9fc0ea"], ["UNION", "~6,500", "#ff8a8a"]], T_16K - 0.3, T_FLED, 230, "tr");
 gsap.set(cc.querySelector(".nv1"), { autoAlpha: 0 }); tl.to(cc.querySelector(".nv1"), { autoAlpha: 1, duration: 0.3 }, T_6500 - 0.2); SFX("hit", T_6500);
-for (let k = 0; k < 6; k++) { shoot([1604, 652], [1580 + (k % 3) * 22, 600 + (k % 2) * 6], T_DAWN + 1.0 + k * 0.55, { unit: "x2", r: 6, h: 12, dur: 0.45 });
-  shoot([1550, 654], [1568 + (k % 2) * 30, 606], T_DAWN + 1.25 + k * 0.6, { unit: "x4", r: 6, h: 12, dur: 0.45 }); }
-[0, 1, 2].forEach((k) => shoot([1624, 600], [1600 + k * 18, 646], T_DAWN + 1.6 + k * 0.9, { unit: "w2", r: 5, h: 12, dur: 0.45 }));
+for (let k = 0; k < 6; k++) { shoot([1610, 656], [1584 + (k % 3) * 24, 614 + (k % 2) * 5], T_DAWN + 1.0 + k * 0.55, { unit: "x2", r: 6, h: 12, dur: 0.45 });
+  shoot([1556, 658], [1572 + (k % 2) * 32, 618], T_DAWN + 1.25 + k * 0.6, { unit: "x4", r: 6, h: 12, dur: 0.45 }); }
+[0, 1, 2].forEach((k) => shoot([1628, 612], [1590 + k * 22, 650], T_DAWN + 1.6 + k * 0.9, { unit: "w2", r: 5, h: 12, dur: 0.45 }));
 SFX("mg", T_16K + 0.4); SFX("mg", T_BROKE - 0.4);
-arrow("carth", [[1572, 640], [1576, 615], [1584, 590]], T_BROKE - 0.6, { dur: 0.8, w: 6, until: T_FLED });
-arrow("carth", [[1636, 638], [1630, 612], [1626, 588]], T_BROKE - 0.4, { dur: 0.8, w: 6, until: T_FLED });
+arrow("carth", [[1580, 644], [1584, 622], [1590, 600]], T_BROKE - 0.6, { dur: 0.8, w: 6, until: T_FLED });
+arrow("carth", [[1640, 644], [1636, 622], [1632, 600]], T_BROKE - 0.4, { dur: 0.8, w: 6, until: T_FLED });
 WU.forEach(([id, x, y], i) => B.move(id, T_BROKE + 0.3 + i * 0.1, 1.6, x + 6, y - 50));
-stamp("BROKEN", T_BROKE + 0.1, T_FLED + 0.2, { sub: "FIRST WINCHESTER · 25 MAY 1862", size: 80, top: 640 });
+stamp("BROKEN", T_BROKE + 0.1, T_FLED + 0.2, { sub: "FIRST WINCHESTER · 25 MAY 1862", size: 76, top: 790 });
 // 35 miles to the Potomac
 WU.forEach(([id]) => B.hideUnits([id], T_FLED + 0.4)); WC.forEach(([id]) => B.hideUnits([id], T_FLED + 0.4));
-flag(FL.us, "UNITED STATES", 2050, 210, T_FLED, T_PANIC, 90); flag(FL.csa, "CONFEDERATE STATES", 1480, 700, T_FLED, T_PANIC, 90);
+flag(FL.us, "UNITED STATES", 2080, 370, T_FLED, T_PANIC, 90); flag(FL.csa, "CONFEDERATE STATES", 1480, 700, T_FLED, T_PANIC, 90);
 const RUN = [[1615, 575], [1690, 455], [1758, 335], [1815, 262], [1862, 205], [1880, 170]];
 arrow("rome", RUN, T_FLED, { dur: T_POT - T_FLED + 0.4, w: 13, dash: true, until: T_PANIC - 0.2 });
 unit("bk", "rome", 1615, 575, "infantry", { t: T_FLED, size: "XX", label: "BANKS", ts: 14, w: 30, h: 20, until: T_PANIC });
@@ -216,7 +216,7 @@ walk("bk", RUN.slice(0, 5), T_FLED + 0.1, T_POT - T_FLED + 0.3);
 const MI = countCard([["BANKS'S FLIGHT", "0 MILES", "#ff8a8a"]], T_FLED, T_COMM - 0.2, 230, "tr");
 tickUp(MI.querySelector(".nv0"), 0, 3500, T_FLED + 0.1, T_POT, (v) => Math.round(v / 100) + " MILES");
 box("WILLIAMSPORT", PL.williamsport[0] - 70, PL.williamsport[1] + 10, T_POT - 0.6, 12, T_PANIC);
-box("ACROSS THE POTOMAC", 1930, 250, T_POT, 13, T_PANIC, { bg: "#ffd7d2" });
+box("ACROSS THE POTOMAC", 1985, 240, T_POT, 13, T_PANIC, { bg: "#ffd7d2" });
 // Commissary Banks: the depots at Winchester
 const CRATE = `<svg width="34" height="26" viewBox="0 0 34 26"><g stroke="#1a1712" stroke-width="1.6"><rect x="1" y="9" width="14" height="14" fill="#c9a46a"/><rect x="17" y="9" width="14" height="14" fill="#b88d52"/><rect x="9" y="1" width="14" height="10" fill="#d8b47a"/></g><path d="M1 9 L15 23 M17 9 L31 23" stroke="#1a1712" stroke-width="1"/></svg>`;
 [[1600, 600], [1628, 592], [1612, 616]].forEach(([x, y], i) => GG.pin(CRATE, x, y, { t: T_SUPP - 0.3 + i * 0.25, until: T_PANIC, pop: true }));
@@ -230,16 +230,16 @@ K.target(PL.washington[0], PL.washington[1], T_PANIC, { r: 60, until: S6, side: 
 K.target(PL.washington[0], PL.washington[1], T_PANIC + 0.5, { r: 100, until: T_ORDER, side: "rome" });
 stamp("13 STATES CALL OUT THEIR MILITIA", T_PANIC + 0.6, T_ORDER, { sub: "TO DEFEND WASHINGTON", size: 58, top: 620, rot: -3 });
 badge({ name: "ABRAHAM LINCOLN", role: "PRESIDENT", photo: HEAD.lincoln, side: "rome", corner: "tr", t: T_ORDER - 0.3, until: T_TRAP + 0.6 });
-unit("mc", "rome", PL.fredericksburg[0], PL.fredericksburg[1] - 20, "infantry", { t: T_ORDER, size: "XXX", label: "McDOWELL", ts: 22, w: 44, h: 29, until: S6 + 0.4 });
-arrow("rome", [[2125, 1440], [2125, 1530], [2120, 1600]], T_ORDER + 0.3, { dur: 0.8, w: 16, dash: true, until: T_ASIDE + 0.9 });
-const XX = box("✕", 2120, 1550, T_ASIDE + 0.2, 34, T_20K, { bg: "#1a1712", col: "#ff6a5a" });
+unit("mc", "rome", PL.fredericksburg[0], PL.fredericksburg[1] - 40, "infantry", { t: T_ORDER, size: "XXX", label: "McDOWELL", ts: 22, w: 44, h: 29, until: S6 + 0.4 });
+arrow("rome", [[2125, 1400], [2140, 1470], [2150, 1530]], T_ORDER + 0.3, { dur: 0.8, w: 16, dash: true, until: T_ASIDE + 0.9 });
+const XX = box("✕", 2150, 1500, T_ASIDE + 0.2, 34, T_20K, { bg: "#1a1712", col: "#ff6a5a" });
 arrow("rome", [[2100, 1385], [1990, 1210], [1840, 1030], [1690, 890]], T_20K - 0.2, { dur: 2.0, w: 18, until: S6 + 1.4 });
 box("20,000 MEN", 1900, 1080, T_20K + 0.6, 18, S6 + 1.2, { bg: "#ffd7d2" });
 B.caption("LINCOLN: LAY ASIDE THE MARCH ON RICHMOND", T_ASIDE - 0.3, T_20K + 0.6, "rome r");
 B.caption("SEND 20,000 MEN TO TRAP JACKSON", T_20K + 0.6, S6 + 0.2, "rome r");
 
 // ======================= move1-6: the trap at Strasburg =======================
-flag(FL.us, "UNITED STATES", 1250, 560, S6, T_RETR + 0.6, 80); flag(FL.csa, "CONFEDERATE STATES", 1240, 960, S6, T_RETR + 0.6, 80);
+flag(FL.us, "UNITED STATES", 1240, 640, S6, T_RETR + 0.6, 80); flag(FL.csa, "CONFEDERATE STATES", 1240, 960, S6, T_RETR + 0.6, 80);
 town("STRASBURG", PL.strasburg, S6 + 0.2, { dx: -58, dy: 12, size: 10, r: 4, until: T_RETR + 1, pop: false });
 town("FRONT ROYAL", PL.frontroyal, S6 + 0.3, { dx: 54, dy: 14, size: 10, r: 4, until: T_RETR + 1, pop: false });
 badge({ name: "JOHN FRÉMONT", role: "FROM THE WEST", photo: HEAD.fremont, side: "rome", corner: "tr", t: T_FREM - 0.5, until: T_SHI - 0.2 });

@@ -22,16 +22,20 @@ VA = POT + [(37.80, -76.00), (37.60, -75.60), (37.00, -75.60), (37.00, -80.20), 
 
 FRONT = {
     # 25 Aug 1862: Pope's Army of Virginia on the Rappahannock from Kelly's Ford / Rappahannock Station up to Sulphur Springs and
-    # Waterloo; Burnside's troops at Falmouth + Fredericksburg (town held, evacuated 31 Aug); above Waterloo the line bends north
-    # along the Blue Ridge side (as virginia_ctl_aug62: Union cavalry screen, Winchester garrison under White).
+    # Waterloo (his right flank); Burnside's troops at Falmouth + Fredericksburg (town held, evacuated 31 Aug). Above Waterloo no Union
+    # troops held the country between the Blue Ridge and the Bull Run Mountains (Jackson's route): the line follows the east foot of the
+    # Bull Run Mountains north to the Potomac (Union rear area: Warrenton - Manassas - Washington). Lower Valley: separate Union pocket
+    # (White at Winchester, Miles at Harpers Ferry). NOTE: deliberately differs from virginia_ctl_aug62 (Blue Ridge line) north of Waterloo.
     "aug25": [(38.18, -77.20), (38.27, -77.40), (38.285, -77.47), (38.33, -77.53), (38.40, -77.63), (38.46, -77.73), (38.479, -77.781),
-              (38.534, -77.808), (38.58, -77.84), (38.62, -77.855), (38.66, -77.865), (38.696, -77.906), (38.72, -77.96), (38.85, -78.10),
-              (38.98, -78.25), (39.06, -78.45), (39.10, -78.80), (39.05, -79.00), (39.00, -79.80)],
+              (38.534, -77.808), (38.58, -77.84), (38.62, -77.855), (38.66, -77.865), (38.696, -77.906), (38.74, -77.84), (38.785, -77.755),
+              (38.83, -77.70), (38.90, -77.665), (38.975, -77.64), (39.10, -77.60), (39.27, -77.55)],
     # ~2 Sep 1862 (after Chantilly, 1 Sep): Pope inside the Washington defences (Arlington - Alexandria line); Fredericksburg evacuated
     # 31 Aug, Winchester 2 Sep; Harpers Ferry still Union (surrendered 15 Sep) = virginia_ctl_sep62.
     "sep02": [(38.70, -77.06), (38.75, -77.18), (38.84, -77.30), (38.93, -77.27), (38.98, -77.24)],
 }
-AUG_BACK = [(39.60, -79.80), (39.60, -75.50), (38.18, -75.50)]
+AUG_BACK = [(39.60, -77.55), (39.60, -75.50), (38.18, -75.50)]
+LOWER_VALLEY = [(39.33, -77.73), (39.15, -77.85), (39.08, -78.10), (39.06, -78.45), (39.10, -78.80), (39.05, -79.00), (39.00, -79.80),
+                (39.60, -79.80), (39.60, -77.70)]
 JACKSON_27 = MARCH[2:]          # Hinson's Mill -> Bristoe: the corridor Jackson's wing held on 26-27 Aug
 POCKET_27 = [(38.700, -77.560), (38.705, -77.505), (38.735, -77.440), (38.770, -77.430), (38.790, -77.470), (38.785, -77.540),
              (38.770, -77.600), (38.735, -77.600)]   # Bristoe Station - Manassas Junction (Ewell at Bristoe, Jackson + Hill at the Junction)
@@ -58,9 +62,9 @@ if __name__ == "__main__":
     va = mask_poly([VA], W, H)
     east = mask_poly([V.EASTERN_SHORE], W, H)
     WDC = V.UNION_VA["sep62"][0]; HF = V.UNION_VA["sep62"][1]
-    un = {"aug25": mask_poly([FRONT["aug25"] + AUG_BACK], W, H),
-          "aug27": mask_poly([FRONT["aug25"] + AUG_BACK], W, H) & ~mask_line(JACKSON_27, 7, W, H) & ~mask_poly([POCKET_27], W, H),
-          "aug28": mask_poly([FRONT["aug25"] + AUG_BACK], W, H) & ~mask_line(JACKSON_28, 7, W, H) & ~mask_poly([STONY_28], W, H),
+    un = {"aug25": mask_poly([FRONT["aug25"] + AUG_BACK, LOWER_VALLEY], W, H),
+          "aug27": mask_poly([FRONT["aug25"] + AUG_BACK, LOWER_VALLEY], W, H) & ~mask_line(JACKSON_27, 7, W, H) & ~mask_poly([POCKET_27], W, H),
+          "aug28": mask_poly([FRONT["aug25"] + AUG_BACK, LOWER_VALLEY], W, H) & ~mask_line(JACKSON_28, 7, W, H) & ~mask_poly([STONY_28], W, H),
           "sep02": mask_poly([WDC, HF], W, H)}
     for date, m in un.items():
         u = ((land & ~va) | (m & land) | (east & land))

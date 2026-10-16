@@ -38,7 +38,7 @@ def quotecard(photo, lines, credit, out, fx=0.78):
 
 wide(M + "jackson_src.jpg", M + "jackson_wide.jpg")
 datecard(M + "archive_jackson_portrait1864.jpg", "1824", "CLARKSBURG, VIRGINIA", M + "card_1824_clarksburg.jpg")
-datecard(M + "archive_jackson_stereo1861.jpg", "1851", "LEXINGTON, VIRGINIA", M + "card_1851_lexington.jpg")
+datecard(M + "archive_jackson_stereo_l.jpg", "1851", "LEXINGTON, VIRGINIA", M + "card_1851_lexington.jpg")
 datecard(M + "archive_guinea_house.jpg", "10 MAY 1863", "GUINEA STATION, VIRGINIA", M + "card_1863_guinea.jpg")
 quotecard(M + "lee_crop.jpg", ["“He has lost his left arm;", "but I have lost my right arm.”"],
           "ROBERT E. LEE, AS REPORTED BY JACKSON'S CHAPLAIN", M + "quote_lee_rightarm.jpg")
