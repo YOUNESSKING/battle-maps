@@ -38,3 +38,6 @@ New title options (vidIQ): George Thomas's Top 3 Legendary Tactical Moves | The 
 - Line 1 is date + place ("September the twentieth, eighteen sixty-three. North-west Georgia, in the thick woods...") — ~8 s before anything happens.
 - The promise of the title/thumbnail is never paid in the first minute: the title says Grant almost fired him (not until 14:07); the live thumbnail says "WE WILL HOLD" (Chattanooga, 7:37+). Viewers who clicked for that see a different battle and leave.
 - Fix for every next video: line 1 = the stakes in plain words; within 30 s a flash-forward that pays the title + thumbnail promise ("Fifteen months later, the general Grant was about to fire would destroy an entire army"); thumbnail scene = hook scene.
+
+## Update 2026-10-16 (owner)
+**George Thomas reached ~27,000 views and is still climbing** on a brand-new channel. The Civil War works for us; neither Tactical Genius nor WarfareGenius has a Civil War video (open lane). Next video chosen: **#21 Stonewall Jackson** (research/GEMINI_IDEAS_16-25.md); backup #17 Walton Walker (Korea). Plan: about half Civil War, half WWII/Korea. Still to record: which title/thumbnail is live now and the current CTR, to keep as the packaging template.
