@@ -175,7 +175,7 @@ B.camera([[0, 1632, 1112, 7.0], [T_TOWN - 0.4, 1630, 1105, 6.4], [T_WAVE + 0.4, 
   [T_SHOWN, 1620, 1098, 5.6], [T_ONLY + 0.6, 1640, 1060, 3.4], [T_SIX, 1680, 960, 2.0], [END, 1700, 900, 1.6]]);
 B.showDate(0.1); B.date("13 DECEMBER 1862", 0.2, T_ONLY, 32); B.date("16 DECEMBER 1862", T_ONLY + 0.1, null, 32);
 legend(0.2, END + 1, false);
-const USF = L(38.318, -77.392), CSF = L(38.262, -77.535);
+const USF = L(38.312, -77.352), CSF = L(38.262, -77.535);
 flag(FL.us, "UNITED STATES", USF[0], USF[1], 0.3, T_ONLY + 1.0, 17);
 flag(FL.cs, "CONFEDERATE STATES", CSF[0], CSF[1], 0.4, T_ONLY + 1.0, 17);
 flag(FL.us, "UNITED STATES", ...L(38.43, -77.30), T_ONLY + 1.2, END + 1, 56);

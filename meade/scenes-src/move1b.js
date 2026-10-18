@@ -255,7 +255,7 @@ const fpos = (f, d) => { const q = posOn(UF, f); return [q[0] + NE[0] * d, q[1] 
 const FR = [[0.12, 34], [0.26, 50], [0.38, 30], [0.5, 52], [0.62, 32], [0.74, 52], [0.86, 34], [0.98, 50], [0.32, 74], [0.56, 76], [0.8, 74]];
 FR.forEach(([f, d], k) => unit("f" + k, "carth", fpos(f, d), "infantry", null, { t: T_FLANK + 0.3 + k * 0.12, w: 13, h: 8.5, size: "XX" }));
 box("FRANKLIN · LEFT GRAND DIVISION", ...fpos(0.62, 104), T_60, 7, T_START, { bg: "#dcecf8" });
-ticker("FRANKLIN'S MEN ON THE PLAIN", 60000, "", "right:60px;top:150px;", T_60 - 0.1, 1.4, T_ONE + 0.2, 6, { pre: "~", col: "#2f6fe0" });
+ticker("FRANKLIN · ON THE PLAIN", 60000, "", "right:60px;top:150px;", T_60 - 0.1, 1.4, T_ONE + 0.2, 6, { pre: "~", col: "#2f6fe0" });
 badge({ name: "WILLIAM FRANKLIN", role: "LEFT GRAND DIVISION", initials: "WF", photo: PHOTO.franklin, flag: FL.us, side: "carth", corner: "bl", t: T_FRANK - 0.2, until: T_VAGUE + 0.4 });
 // Burnside's vague order
 const ORD = scr(`<div style="max-width:980px;padding:18px 40px 18px;background:rgba(236,228,206,0.96);color:#1b1812;font-family:Oswald;border-top:6px solid #1f4fc4;box-shadow:0 18px 40px rgba(0,0,0,.6);text-align:center">

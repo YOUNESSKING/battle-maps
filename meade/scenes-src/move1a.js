@@ -201,12 +201,12 @@ badge({ name: "ROBERT E. LEE", role: "ARMY OF NORTHERN VIRGINIA", initials: "REL
 const LEE1 = L(38.2790, -77.4920); B.move("lee", T_LEE, 1.6, LEE1[0], LEE1[1]);
 tl.to(B.units.lee.el, { scale: 0.24, duration: 1.6 }, T_LEE);
 tl.to(B.units.bu.el, { scale: 0.24, duration: 1.6 }, T_LEE);
-const BU1 = L(38.3370, -77.4560); B.move("bu", T_LEE, 1.6, BU1[0], BU1[1]);
+const BU1 = L(38.3460, -77.4640); B.move("bu", T_LEE, 1.6, BU1[0], BU1[1]);
 glowPath(RIDGE, "#e34a3a", 2.2, T_HILLS, END + 1, 3, 0.9);
 const RH = [["MARYE'S HEIGHTS", 38.2948, -77.4728, -16, -2], ["PROSPECT HILL", 38.2481, -77.4357, -12, 6], ["HAMILTON'S CROSSING", 38.2462, -77.4318, 18, 3.5]];
 RH.forEach(([nm, la, lo, dx, dy], k) => { const p = L(la, lo); box(nm, p[0] + dx * 1.5, p[1] + dy * 1.6, T_HILLS + 0.3 + k * 0.4, 3.8, END + 1); });
 // close flags on each side's ground (flag ~115 px on screen at scale ~5.5)
-const USF = L(38.318, -77.392), CSF = L(38.262, -77.535);
+const USF = L(38.312, -77.352), CSF = L(38.262, -77.535);
 flag(FL.us, "UNITED STATES", USF[0], USF[1], T_LEE + 1.4, END + 1, 21);
 flag(FL.cs, "CONFEDERATE STATES", CSF[0], CSF[1], T_LEE + 1.6, END + 1, 21);
 // Burnside crosses: pontoon bridges (three at the town, two below Deep Run), the 13 Dec bridgeheads

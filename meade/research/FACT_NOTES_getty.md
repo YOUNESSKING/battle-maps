@@ -50,3 +50,11 @@ streets). Railroad: only the Gettysburg Railroad east of the depot (the line thr
 - `jul3` (~1 pm): lower Culp's Hill retaken by the XII Corps in the morning fight; the south = `jul2pm`.
 Accuracy ~100-200 m; the exact skirmish zone is a drawing choice. Not checked line-by-line against the Bachelder map image (TODO if
 the owner wants regiment-level precision).
+
+## move2a opening overlay (penn): `assets/media/move2a_ctl_may63_mx.png` (tools/make_move2a_control.py)
+May 1863, after Chancellorsville and before the Second Battle of Winchester (13-15 Jun): Lee's army south of the Rappahannock
+(Fredericksburg - Culpeper). Union: northern Virginia north of the Rappahannock / east of the Blue Ridge (Hooker at Falmouth, Aquia,
+Washington's defences; Loudoun/Fauquier contested, drawn Union), the lower Shenandoah Valley north of Strasburg (Milroy at Winchester,
+Berryville, Martinsburg), Harpers Ferry, Union West Virginia + the coastal pockets (shared make_virginia_control polygons). Upper
+Valley (Strasburg/New Market south) and the Northern Neck east of Fredericksburg = Confederate. ~5 km. Cross-fades to penn_ctl_jun63
+when Lee's army crosses the Potomac in the narration.

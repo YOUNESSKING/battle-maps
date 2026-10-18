@@ -1,8 +1,8 @@
 // MOVE 2a (move2-1), George G. Meade #12: Lee invades the North, Meade takes command (28 Jun 1863), the armies converge on Gettysburg.
 // Basemap penn_hd_ref (z9, HD dark). Built with: python3 tools/build_scene.py move2a penn_hd_ref move2-1 move2-1
 // Source: assets/src/move2a_body.js + move2_kit.js, assembled by tools/make_move2_scenes.py (edit those, not scenes-src/move2a.js).
-// WIDE, option 1: penn control overlays (HOOK agent, read-only): penn_ctl_jul63_mx (Virginia only: stands in for May 1863, before the
-// invasion) -> penn_ctl_jun63_mx (~28 Jun: Lee's army in the Valley, Maryland and Pennsylvania). Union = blue (carth), Confederate = red (rome).
+// WIDE, option 1: move2a_ctl_may63_mx (tools/make_move2a_control.py: May 1863, Union lower Valley + north of the Rappahannock) ->
+// penn_ctl_jun63_mx (HOOK agent, read-only) (~28 Jun: Lee's army in the Valley, Maryland and Pennsylvania). Union = blue (carth), Confederate = red (rome).
 // Facts: research/FACT_NOTES.md (Move 2; ABT strengths 93,921 vs 71,699 -> "~94,000" / "~72,000"), research/FACT_NOTES_penn.md.
 // ==== BODY
 const L = GG.proj(9, 35842, 49095);
@@ -12,7 +12,7 @@ const T_MAY = at(P1, "In May"), T_CHANC = at(P1, "at Chancellorsville"), T_NORTH
   T_HOOK = at(P1, "Joseph Hooker"), T_MEADE = at(P1, "with Meade"), T_94 = at(P1, "ninety-four thousand"), T_SPREAD = at(P1, "spread out across Maryland"),
   T_NOTIME = at(P1, "no time to learn"), T_3D = at(P1, "Three days later"), T_COLL = at(P1, "collided"), T_GB = at(P1, "called Gettysburg");
 // ---------- layers ----------
-const C0 = wimg("assets/media/penn_ctl_jul63_mx.png", 0, 0, T_POT + 0.4, { mx: true, outDur: 1.2 });
+const C0 = wimg("assets/media/move2a_ctl_may63_mx.png", 0, 0, T_POT + 0.4, { mx: true, outDur: 1.2 });
 const C1 = wimg("assets/media/penn_ctl_jun63_mx.png", T_POT, 1.2, null, { mx: true });
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.18 }); LV.shimmer(GD.rivers || [], { width: 1.2 }); LV.scaleBar(236.26); LV.north();
 wimg("assets/media/penn_geo_ref.png", 0, 0, null);
@@ -44,7 +44,7 @@ unit("hil", "rome", ...L(38.25, -77.62), "infantry", { t: 0.56, size: "XXX", lab
 unit("aop", "carth", ...L(38.46, -77.42), "infantry", { t: 0.5, size: "XXXX", label: "ARMY OF THE POTOMAC", w: 44, h: 30, fs: 10 });
 // Chancellorsville: a burst and the tag
 K.impact(CHV[0], CHV[1], T_CHANC - 0.2, { r: 12, puffs: 3 }); K.impact(CHV[0] + 14, CHV[1] - 6, T_CHANC + 0.15, { r: 9, puffs: 2 });
-const CHT = tag("CHANCELLORSVILLE · LEE WINS AGAIN", CHV[0] + 10, CHV[1] - 36, T_CHANC, RED, 11, T_NORTH + 1.2);
+const CHT = tag("CHANCELLORSVILLE · LEE WINS AGAIN", CHV[0] - 90, CHV[1] - 96, T_CHANC, RED, 11, T_NORTH + 1.2);
 // the march north: down the Shenandoah, across the Potomac at Williamsport, into Pennsylvania
 const ROUTE = [L(38.47, -78.00), L(38.80, -78.20), L(39.10, -78.10), L(39.45, -77.92), L(39.60, -77.80), L(39.75, -77.70), L(39.94, -77.66)];
 arr(ROUTE, "rome", T_NORTH - 0.2, { w: 11, dur: 3.2, until: T_3D });
