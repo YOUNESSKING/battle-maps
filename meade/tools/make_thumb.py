@@ -1,5 +1,5 @@
-"""Thumbnail (HANDOVER 1b formula): vidIQ battlefield (left 2/3, labels redone with correct geography) + Stonewall Jackson's photo
-cut out on the right third + red brush banner bottom-left. usage: python3 tools/make_thumb.py -> youtube/thumb/jackson-thumb-{A,B}.jpg"""
+"""Thumbnail (HANDOVER 1b formula): vidIQ battlefield (left 2/3, labels redone with correct geography) + George Meade's photo
+cut out on the right third + red brush banner bottom-left. usage: python3 tools/make_thumb.py -> youtube/thumb/meade-thumb-{A,B}.jpg"""
 import io
 from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageEnhance
 from rembg import remove
@@ -11,10 +11,10 @@ d = ImageDraw.Draw(bg); f = ImageFont.truetype(F, 22)
 def tag(t, x, y):
     w = d.textlength(t, font=f); d.rectangle([x, y, x + w + 18, y + 32], fill=(18, 16, 12)); d.rectangle([x, y, x + w + 18, y + 32], outline=(201, 180, 138), width=2)
     d.text((x + 9, y + 2), t, font=f, fill=(247, 243, 234))
-tag("MASSANUTTEN MOUNTAIN", 330, 30); tag("BANKS", 600, 250); tag("JACKSON", 150, 200)
+tag("CEMETERY RIDGE", 640, 150); tag("MEADE", 790, 395); tag("PICKETT", 255, 455); tag("SEMINARY RIDGE", 40, 130)
 # right third: darken, then the photo cut-out (grayscale, contrast), looking toward the map
 bg = ImageEnhance.Brightness(bg).enhance(0.92)
-src = Image.open("assets/media/jackson_src.jpg").convert("RGB")
+src = Image.open("assets/media/meade_hires.jpg").convert("RGB")
 cut = remove(src)  # RGBA
 cut = cut.crop(cut.getbbox()); cut = cut.crop((0, 0, cut.width, int(cut.height * 0.96)))
 g = ImageEnhance.Contrast(cut.convert("LA").convert("RGBA")).enhance(1.25)
@@ -35,5 +35,5 @@ def banner(text, out, size):
     dr.text((bx + 26, by + 4), text, font=ft, fill=(255, 255, 255), stroke_width=2, stroke_fill=(60, 0, 0))
     im.convert("RGB").save(out, quality=92); print(out)
 
-banner("3 ARMIES BEATEN", "youtube/thumb/jackson-thumb-A-3-armies-beaten.jpg", 112)
-banner("VANISHED", "youtube/thumb/jackson-thumb-B-vanished.jpg", 128)
+banner("STAY AND FIGHT", "youtube/thumb/meade-thumb-A-stay-and-fight.jpg", 112)
+banner("\u201cMY FAULT\u201d", "youtube/thumb/meade-thumb-B-my-fault.jpg", 128)
