@@ -27,9 +27,9 @@ const K0 = L(39.7990, -77.2420); camSet(K0[0], K0[1], 1.35);              // = m
 camTo(0.2, T_FAR - 0.6, K0[0] - 10, K0[1] + 20, 1.5);                      // the salient under attack
 camTo(T_FAR - 0.5, 2.2, 1470, 1150, 2.2);                                  // Little Round Top
 camTo(T_WARREN - 0.5, 2.0, 1500, 860, 1.3);                                // Warren rides from HQ to the hill
-camTo(S6 - 0.2, 2.6, 1600, 800, 1.2);                                      // the whole inside of the hook
+camTo(S6 - 0.2, 2.6, 1600, 765, 1.2);                                      // the whole inside of the hook
 camTo(T_TOP - 1.4, 1.8, 1460, 1170, 2.3);                                  // Vincent on Little Round Top
-camTo(T_II - 0.6, 2.2, 1600, 790, 1.2);                                    // Caldwell, XII Corps, VI Corps
+camTo(T_II - 0.6, 2.2, 1600, 765, 1.2);                                    // Caldwell, XII Corps, VI Corps
 camTo(S7 - 0.2, 2.6, 1430, 790, 2.0);                                      // the Plum Run gap
 const KE = L(39.8040, -77.2380);                                           // = move2d opening frame (getty at s 1.2)
 camTo(END - 2.6, 2.4, KE[0], KE[1], 2.4);
@@ -38,7 +38,7 @@ B.showDate(0.05);
 B.date("2 JULY · AFTER 4 PM", 0.1, S7 - 0.2, 30); B.date("2 JULY · EVENING", S7 - 0.1, END + 1, 30);
 legend(0.2, END - 0.6, true);
 flag(FL.csa, "CONFEDERATE STATES", ...L(39.7905, -77.2560), 0.3, T_FAR - 0.4, 76); flag(FL.us, "UNITED STATES", ...L(39.7990, -77.2300), 0.35, T_FAR - 0.4, 76);
-flag(FL.csa, "CONFEDERATE STATES", ...L(39.8020, -77.2560), T_WARREN, S7 - 0.4, 92); flag(FL.us, "UNITED STATES", ...L(39.8150, -77.2240), T_WARREN + 0.05, S7 - 0.4, 92);
+flag(FL.csa, "CONFEDERATE STATES", ...L(39.8055, -77.2625), T_WARREN, S7 - 0.4, 92); flag(FL.us, "UNITED STATES", ...L(39.8150, -77.2240), T_WARREN + 0.05, S7 - 0.4, 92);
 flag(FL.csa, "CONFEDERATE STATES", ...L(39.8070, -77.2520), S7 + 0.4, END - 2.4, 56); flag(FL.us, "UNITED STATES", ...L(39.8085, -77.2300), S7 + 0.45, END - 2.4, 56);
 // the front around Sickles's salient (two-coloured), moves back to Plum Run in move2-7
 const FR = K.front({ pts: GD.fronts.jul2s, sideA: "carth", sideB: "rome", t: 0.1, dur: 1.4, width: 15, glow: 0.47, to: GD.fronts.jul2pm, moveT: T_BROKE - 0.2, moveDur: 3.6, until: END + 1 });
@@ -81,7 +81,7 @@ const SIG = [[-10, -6], [6, -12], [16, 2]].map(([dx, dy], k) => GG.pin(SIGF, LRT
 badge({ name: "GOUVERNEUR K. WARREN", role: "CHIEF ENGINEER", photo: "assets/media/warren_head.png", flag: FL.us, side: "carth", corner: "tr", t: T_WARREN - 0.4, until: T_QUIET });
 const LH = PX("leister");
 GG.pin(HQF, LH[0], LH[1], { t: 0.2, until: END + 1 });
-tArrow([LH, L(39.8060, -77.2335), L(39.7990, -77.2350), [LRT[0] + 2, LRT[1] - 14]], BLUE, T_WARREN - 0.2, T_V, 2.0, { dash: "5 6", dur: 2.4 });
+tArrow([LH, L(39.8060, -77.2335), L(39.7990, -77.2350), [LRT[0] + 2, LRT[1] - 14]], BLUE, T_WARREN - 0.2, T_V, 3.0, { dash: "7 6", dur: 2.4 });
 const WR = GG.pin(`<div style="width:12px;height:12px;border-radius:50%;background:${BLUE};border:2px solid #f3eee2;box-shadow:0 0 8px #7fb0ff"></div>`, LH[0], LH[1], { t: T_WARREN - 0.2, until: S6 + 1 });
 tl.to(WR, { left: LRT[0] + 2, top: LRT[1] - 14, duration: 2.6, ease: "power1.inOut" }, T_WARREN - 0.1);
 B.caption("WARREN FINDS ONLY A FEW SIGNALMEN", T_SIG - 0.2, S6 - 0.1, "carth");
@@ -150,8 +150,9 @@ badge({ name: "GEORGE G. MEADE", role: "AT THE HEAD OF A BRIGADE", photo: "asset
 const MM = GG.pin(HQF, ...L(39.8045, -77.2290), { t: T_FAM - 0.2, until: END + 1 });
 const MP = L(39.8034, -77.2375); tl.to(MM, { left: MP[0], top: MP[1] - 22, duration: 2.6, ease: "power1.inOut" }, T_HEAD - 0.2);
 B.caption("BY HIS FAMILY'S ACCOUNT", T_FAM - 0.2, T_BALDY - 0.3, "carth");
-const HP = GG.pin(HORSE, MP[0] + 30, MP[1] - 30, { t: T_BALDY - 0.2, pop: true, until: END });
-mstamp("OLD BALDY HIT", MP[0] + 46, MP[1] - 62, T_BALDY + 0.2, { size: 12, until: END });
+const HP = GG.pin(HORSE, MP[0] + 34, MP[1] - 26, { t: T_BALDY - 0.2, pop: true, until: END });
+B.hideUnits(["u12"], T_HEAD - 0.4);
+mstamp("OLD BALDY HIT", MP[0] + 92, MP[1] + 6, T_BALDY + 0.2, { size: 12, until: END });
 B.caption("THE BULLET PASSED WITHIN HALF AN INCH OF MEADE'S LEG", T_INCH - 0.4, END + 1, "carth");
 // the red tide stops at Plum Run; dusk
 const PRL = glowLine(GD.lines.plum_run_line, "#4f86ff", 2.6, T_GAP - 0.2, END + 1, { dur: 1.2, pulse: 3 });
