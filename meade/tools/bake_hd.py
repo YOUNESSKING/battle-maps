@@ -13,12 +13,15 @@ base = sys.argv[1]; exag = float(sys.argv[2]) if len(sys.argv) > 2 else 2.0
 J = json.load(open(f"assets/{base}.json")); z = J["zoom"] + 1; S = 2
 W, H = J["size"][0] * S, J["size"][1] * S
 x0, y0 = J["origin_world_px"][0] * S, J["origin_world_px"][1] * S
-tx0, ty0, tx1, ty1 = x0 // 256, y0 // 256, (x0 + W) // 256, (y0 + H) // 256
-print("tiles", (tx1 - tx0 + 1) * (ty1 - ty0 + 1), "at z", z, flush=True)
+ZT = min(z, 15); F = 2 ** (z - ZT)  # terrain tiles stop at z15: above it, fetch z15 and upsample (meade getty15)
+tx0, ty0, tx1, ty1 = x0 // F // 256, y0 // F // 256, (x0 + W) // F // 256, (y0 + H) // F // 256
+print("tiles", (tx1 - tx0 + 1) * (ty1 - ty0 + 1), "at z", ZT, flush=True)
 rows = []
 for ty in range(ty0, ty1 + 1):
-    rows.append(np.hstack([tile(z, tx, ty).astype(np.float32) for tx in range(tx0, tx1 + 1)]))
-mosaic = np.vstack(rows); elev = mosaic[y0 - ty0 * 256:y0 - ty0 * 256 + H, x0 - tx0 * 256:x0 - tx0 * 256 + W]
+    rows.append(np.hstack([tile(ZT, tx, ty).astype(np.float32) for tx in range(tx0, tx1 + 1)]))
+mosaic = np.vstack(rows)
+if F > 1: mosaic = ndimage.zoom(mosaic, F, order=3)
+elev = mosaic[y0 - ty0 * 256 * F:y0 - ty0 * 256 * F + H, x0 - tx0 * 256 * F:x0 - tx0 * 256 * F + W]
 np.save(f"assets/src/{base}_hd_elev.npy", elev.astype(np.float32))
 lat = J["center"][0]; mpp = 156543.03392 * math.cos(math.radians(lat)) / 2 ** z
 sea_below = J.get("sea_below", 0.5); land = elev > sea_below
