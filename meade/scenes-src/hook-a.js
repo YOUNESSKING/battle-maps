@@ -105,14 +105,14 @@ const C0 = wimg("assets/media/hook_getty_ctl_jul2_mx.png", 0, 0, null, true);
 tl.to(C0, { autoAlpha: 0, duration: 1.0 }, S2 + 0.2);
 const ROADS = wimg("assets/media/hook_getty_roads.png", 0, 0, null, false);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.18 }); const SB = LV.scaleBar(7.34), NA = LV.north();
-const SC0 = 0.667; cam.cx = 1440; cam.cy = 760; cam.s = SC0; applyCam();
+const SC0 = 0.8; cam.cx = 1640; cam.cy = 760; cam.s = SC0; applyCam();
 // =====================================================================================================================
 // hook-1 (0 - 10.97): WIDE (whole Gettysburg map), option 1; columns already marching in on the road spokes, guns firing
 // =====================================================================================================================
 date0("1 - 3 JULY 1863", S2 + 0.05);
 const LG1 = legend(0, S2 + 0.1, false);
 const WF = flags(SC0, [2120, 1180], [760, 470], 0, at(H1, "the general") + 0.1);
-const WT = [box("GETTYSBURG", P.town[0] - 150, P.town[1] - 30, 0, 22, T_GEN + 0.1)];
+const WT = [box("GETTYSBURG", P.town[0] - 170, P.town[1] - 10, 0, 22, T_GEN + 0.1)];
 B.city("", P.town[0], P.town[1], { r: 7, t: 0.01, until: T_GEN + 0.1 });
 const WU = { w: 66, h: 44, tag: 22 };
 const RW = [unitXY("rh", "rome", 900, 220, "infantry", { ...WU, label: "A.P. HILL" }), unitXY("rh2", "rome", 720, 120, "infantry", { ...WU, w: 52, h: 35 }),
@@ -131,9 +131,9 @@ shell(1300, 900, 1450, 900, 3.4, { r: 14, fly: 0.7, w: 4 });
 // the BIG card: slams in at 0.3 s, ticks 0 -> 51,000 (ABT: "as many as 51,000 ... killed, wounded, captured or missing")
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:150px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
-  <div style="font-size:34px;letter-spacing:0.18em;margin-top:4px;color:#6e675c"><span class="w0">KILLED</span> · <span class="w1">WOUNDED</span> · <span class="w2">CAPTURED</span> · <span class="w3">MISSING</span></div>
+  <div style="font-size:30px;letter-spacing:0.14em;margin-top:4px;color:#6e675c"><span class="w0">KILLED</span> · <span class="w1">WOUNDED</span> · <span class="w2">CAPTURED</span> · <span class="w3">MISSING</span></div>
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">BOTH ARMIES · GETTYSBURG, PENNSYLVANIA · 1-3 JULY 1863</div></div>`,
-  "right:90px;top:150px;transform-origin:50% 40%;");
+  "right:60px;top:150px;transform-origin:50% 40%;");
 slam(BIG, 0.3, { from: 1.9, dur: 0.22, shake: 6 });
 tick(BIG, ".n", 51000, 0.55, T_MISS + 0.4, (v) => (Math.round(v / 1000) * 1000).toLocaleString("en-US"));
 [T_KILL, T_WOUN, T_CAPT, T_MISS].forEach((t, k) => { tl.to(BIG.querySelector(".w" + k), { color: "#ef8a82", duration: 0.15 }, t); SFX("ref:pop", t + 0.02); });
@@ -143,7 +143,7 @@ tl.to([BIG, S3D], { autoAlpha: 0, y: -40, duration: 0.3, ease: "power2.in" }, T_
 // ---------- hard zoom-whoosh DIVE onto the fishhook (~5.3 s) ----------
 const TD = T_GEN - 0.15, SC = 2.25;
 SFX("whoosh", TD - 0.05);
-camTo(0, TD, 1450, 780, 0.74, "sine.inOut");
+camTo(0, TD, 1600, 770, 0.86, "sine.inOut");
 camTo(TD, 0.85, 1450, 830, SC, "expo.inOut");
 camTo(TD + 0.87, S2 + 0.3 - TD - 0.87, 1440, 835, SC * 1.06, "sine.inOut");
 B.hideUnits([...RW, ...BW], TD + 0.05, 0.3);
@@ -169,9 +169,9 @@ const CL = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700
   <div class="n" style="font-size:100px;line-height:1;color:#f7f3ea">72,000</div><div style="font-size:30px;letter-spacing:0.24em;color:#ef8a82">ROBERT E. LEE</div></div>`, "left:110px;top:640px;transform-origin:50% 40%;");
 slam(CL, T_LEE - 0.1, { from: 1.9, shake: 5, until: S2 - 0.2 });
 const CU = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:12px 40px 14px;background:rgba(14,12,10,0.88);border-top:8px solid #2e5cb2;box-shadow:0 22px 44px rgba(0,0,0,.6)">
-  <div class="n" style="font-size:100px;line-height:1;color:#f7f3ea">94,000</div><div style="font-size:30px;letter-spacing:0.24em;color:#9fc0ea">ITS GENERAL: ?</div></div>`, "right:110px;top:640px;transform-origin:50% 40%;");
+  <div class="n" style="font-size:100px;line-height:1;color:#f7f3ea">94,000</div><div style="font-size:30px;letter-spacing:0.24em;color:#9fc0ea">ITS GENERAL: ?</div></div>`, "right:110px;top:400px;transform-origin:50% 40%;");
 slam(CU, T_CMD - 0.5, { from: 1.9, shake: 5, until: S2 - 0.2 });
-const S3C = scr(stampHTML("IN COMMAND: 3 DAYS", "#e8c66a", 46, -4), "right:120px;top:880px;");
+const S3C = scr(stampHTML("IN COMMAND: 3 DAYS", "#e8c66a", 46, -4), "right:120px;top:640px;");
 slam(S3C, T_JUST - 0.05, { shake: 4, until: S2 - 0.2 });
 // =====================================================================================================================
 // hook-2 (11.57 - 29.59): 3 JULY, 3 PM: Pickett's Charge (option 2 close-up), REPULSED by ~0:22, white flash, Lee's words
@@ -189,7 +189,7 @@ const FW = ridge(WALL, "carth", S2 + 0.3, SP, { dur: 0.8, until: S3 - 0.1 });
 const SEMR = [P.semN, P.sem, L(39.8100, -77.2480), P.semS, L(39.7990, -77.2505)];
 const FS = ridge(SEMR, "rome", S2 + 0.4, SP, { dur: 0.8, until: S3 - 0.1 });
 const LS2 = 14 / SP;
-box("SEMINARY RIDGE", 1255, 700, S2 + 0.6, LS2, T_AND - 0.1); box("CEMETERY RIDGE", 1478, 860, S2 + 0.7, LS2, T_AND - 0.1);
+box("SEMINARY RIDGE", 1258, 770, S2 + 0.6, LS2, T_AND - 0.1); box("CEMETERY RIDGE", 1478, 860, S2 + 0.7, LS2, T_AND - 0.1);
 box("EMMITSBURG ROAD", 1378, 880, S2 + 0.8, LS2 * 0.8, T_AND - 0.1);
 // the guns of Cemetery Ridge (Hunt's 77 on the II Corps front: a few shown)
 const BG = [[1447, 760], [1446, 790], [1444, 822], [1442, 852], [1441, 885]].map((p, k) => unitXY("bg" + k, "carth", p[0], p[1], "artillery", { w: 12, h: 8, t: S2 + 0.5 + k * 0.05 }));
@@ -305,7 +305,7 @@ SFX("ref:whoosh", T_WALK + 0.5);
 // the mystery general: a "?" badge on the US flag (the name comes in hook-4)
 const BD = scr(`<div class="bd" style="position:relative;width:240px;height:240px;border-radius:50%;overflow:hidden;border:8px solid #f3e7c4;box-shadow:0 0 0 6px #1f4fc4,0 20px 40px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover">
   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.82), rgba(10,12,24,0.55));font-family:Oswald;font-weight:700;font-size:140px;color:#f7f3ea">?</div></div>`,
-  "left:840px;top:150px;transform-origin:50% 50%;");
+  "left:840px;top:235px;transform-origin:50% 50%;");
 tl.fromTo(BD, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, T_GTENT);
 SFX("ref:pop", T_GTENT + 0.05);
 tl.to(CAMP.querySelector(".tent"), { y: 60, scale: 0.85, duration: 0.5, ease: "power2.out" }, T_GTENT);
@@ -313,7 +313,7 @@ tl.to(CAMP.querySelector(".tent"), { y: 60, scale: 0.85, duration: 0.5, ease: "p
 const STAMPS = [];
 const sst = (txt, css, t, rot, size = 52, sub, c = "#e3232f") => { pulse(t + 0.22); return STAMPS[STAMPS.length] = slam(scr(stampHTML(txt, c, size, rot, sub), css), t, { shake: 4 }); };
 sst("WOKEN AT 3 A.M.", "left:90px;top:190px;", T_WOKE, -6, 66, "28 JUNE 1863");
-sst(`"HE HAD COME TO GIVE ME TROUBLE"`, "left:60px;top:430px;", T_TROUB + 0.1, -3, 46, null, "#e8c66a");
+sst(`"HE HAD COME TO GIVE ME TROUBLE"`, "left:60px;top:500px;", T_TROUB + 0.1, -3, 46, null, "#e8c66a");
 const SRC = scr(`<div style="font-family:Oswald;font-weight:700;font-size:20px;letter-spacing:0.28em;color:#c9b48a;text-align:center">FROM HIS LETTER TO HIS WIFE, 29 JUNE 1863</div>`, "left:0;right:0;bottom:70px;display:flex;justify-content:center;");
 tl.fromTo(SRC, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, T_TROUB + 0.4);
 tl.to(BD, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.inOut" }, T_THOUGHT); SFX("ref:pop", T_THOUGHT + 0.05);

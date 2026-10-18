@@ -93,7 +93,7 @@ const OV = wimg("assets/media/penn_ctl_jul63_mx.png", 0, 0, null, true);
 const GEO = wimg("assets/media/penn_geo_ref.png", 0, 0, null, false);
 let RIV = []; try { RIV = window.PENN_RIVERS || []; } catch (e) {}
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.2 }); const SB = LV.scaleBar(236.26), NA = LV.north(); gsap.set([SB, NA], { autoAlpha: 0 });
-const OVC = [1540, 965], OVS = 1.0;
+const OVC = [1540, 930], OVS = 1.0;
 cam.cx = OVC[0]; cam.cy = OVC[1]; cam.s = OVS; applyCam();
 // ---------- the three snap-cut insets: crops of the close basemaps placed at the real places (tools/make_hook_insets.py) ----------
 const INS = { fred: { z: 14, ox: 1193563, oy: 1613231, x0: 1022.37, y0: 781.92, w: 1000, at: P.fred },
@@ -150,7 +150,7 @@ const F = INS.fred;
 cut(T_BROKE, F, T_HELD);
 legend(T_BROKE + 0.05, T_HELD - 0.05, true);
 B.date("13 DECEMBER 1862", T_BROKE + 0.02, T_HELD, 30);
-flags(SI, F.P(38.2535, -77.4070), F.P(38.2275, -77.4500), T_BROKE + 0.1, T_HELD - 0.05);
+flags(SI, F.P(38.2535, -77.4070), F.P(38.2500, -77.4560), T_BROKE + 0.1, T_HELD - 0.05);
 // Jackson's line on the railroad below the wooded ridge (RF&P, OSM alignment), with the 600-yard gap at the tongue of woods
 const JN = [F.P(38.2600, -77.4500), F.P(38.2520, -77.4380), F.P(38.2450, -77.4340), F.P(38.2405, -77.4362)];
 const JS = [F.P(38.2350, -77.4395), F.P(38.2300, -77.4426), F.P(38.2240, -77.4420), F.P(38.2180, -77.4400)];
@@ -174,7 +174,7 @@ ring(GAP, "FREDERICKSBURG", "DEC 1862", 1, T_FRED, T_HELD, 54);
 const G = INS.getty;
 cut(T_HELD, G, T_CALLED);
 B.date("2 JULY 1863", T_HELD + 0.02, T_CALLED, 30);
-flags(SI, G.P(39.8000, -77.2180), G.P(39.8200, -77.2600), T_HELD + 0.1, T_CALLED - 0.05);
+flags(SI, G.P(39.8000, -77.2180), G.P(39.8120, -77.2620), T_HELD + 0.1, T_CALLED - 0.05);
 const HOOK = [G.P(39.8150, -77.2120), G.P(39.8195, -77.2190), G.P(39.8225, -77.2235), G.P(39.8215, -77.2290), G.P(39.8180, -77.2335), G.P(39.8126, -77.2361), G.P(39.8060, -77.2365), G.P(39.7990, -77.2370), G.P(39.7917, -77.2367)];
 ridge(HOOK, "carth", T_HELD + 0.05, SI, { dur: 0.4, until: T_CALLED + 0.1 });
 const OUT2 = [G.P(39.8280, -77.2130), G.P(39.8310, -77.2230), G.P(39.8300, -77.2350), G.P(39.8250, -77.2445), G.P(39.8150, -77.2470), G.P(39.8040, -77.2495), G.P(39.7950, -77.2530)];
@@ -193,7 +193,7 @@ ring(G.P(39.8040, -77.2345), "GETTYSBURG", "2 JULY 1863", 2, T_GETT, T_CALLED, -
 const A = INS.angle;
 cut(T_CALLED, A, T_THESE);
 B.date("3 JULY 1863", T_CALLED + 0.02, T_THESE, 30);
-flags(SI, A.P(39.8170, -77.2310), A.P(39.8070, -77.2480), T_CALLED + 0.1, T_THESE - 0.05);
+flags(SI, A.P(39.8170, -77.2310), A.P(39.8165, -77.2475), T_CALLED + 0.1, T_THESE - 0.05);
 const WALL = [A.P(39.8190, -77.2335), A.P(39.8150, -77.2348), A.P(39.8126, -77.2361), A.P(39.8115, -77.2356), A.P(39.8070, -77.2364)];
 ridge(WALL, "carth", T_CALLED + 0.05, SI, { dur: 0.4, until: T_THESE + 0.1 });
 ib("THE STONE WALL", A.P(39.8140, -77.2310), T_CALLED + 0.2, T_THESE, 17); ib("THE COPSE OF TREES", A.P(39.8105, -77.2318), T_CALLED + 0.25, T_THESE, 17);
@@ -223,7 +223,7 @@ const ringO = (p, lines, n, t, dx, dy) => { K.target(p[0], p[1], t, { r: 26, unt
   GG.pin(`<div style="display:flex;flex-direction:column;gap:4px">${lines.map((l, i) => `<div style="display:flex;align-items:center;gap:6px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000"><span style="display:inline-flex;width:22px;height:22px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:13px">${n + i}</span><span style="font-size:18px;letter-spacing:.1em;white-space:nowrap">${l}</span></div>`).join("")}</div>`, p[0] + dx, p[1] + dy, { t: t + 0.15, pop: true }); };
 B.city("", P.gett[0], P.gett[1], { r: 4, t: T_THESE + 0.3 }); B.city("", P.fred[0], P.fred[1], { r: 4, t: T_THESE + 0.3 });
 ringO(P.fred, ["FREDERICKSBURG · DEC 1862"], 1, T_THESE + 0.25, 150, 0);
-ringO(P.gett, ["GETTYSBURG · 2 JULY 1863", "GETTYSBURG · 3 JULY 1863"], 2, T_THESE + 0.45, 160, 0);
+ringO(P.gett, ["GETTYSBURG · 2 JULY 1863", "GETTYSBURG · 3 JULY 1863"], 2, T_THESE + 0.45, 250, 10);
 tl.to(BDG, { autoAlpha: 0, duration: 0.4 }, T_THREE - 0.6);
 const TDIM = scr("", "inset:0;background:linear-gradient(180deg,rgba(5,7,13,0) 35%,rgba(5,7,13,0.78) 75%);");
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THREE - 0.5);
