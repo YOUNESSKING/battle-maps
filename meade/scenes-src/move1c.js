@@ -171,7 +171,7 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.18 }); LV.scaleBar(119.47); 
 const FB = L(38.3032, -77.4605), MH = L(38.2948, -77.4728), SW = L(38.2955, -77.4685), PH = L(38.2481, -77.4357);
 
 // ---------- camera: Prospect Hill -> the town and Marye's Heights -> wide (Rappahannock) ----------
-B.camera([[0, 1632, 1112, 7.0], [T_TOWN - 0.4, 1630, 1105, 6.4], [T_WAVE + 0.4, 1612, 1090, 7.6], [T_NIGHT + 0.6, 1616, 1070, 6.6],
+B.camera([[0, 1632, 1112, 7.0], [T_TOWN - 0.4, 1630, 1105, 6.4], [T_WAVE + 0.4, 1610, 1092, 9.0], [T_NIGHT + 0.6, 1616, 1070, 6.6],
   [T_SHOWN, 1620, 1098, 5.6], [T_ONLY + 0.6, 1640, 1060, 3.4], [T_SIX, 1680, 960, 2.0], [END, 1700, 900, 1.6]]);
 B.showDate(0.1); B.date("13 DECEMBER 1862", 0.2, T_ONLY, 32); B.date("16 DECEMBER 1862", T_ONLY + 0.1, null, 32);
 legend(0.2, END + 1, false);
@@ -201,14 +201,12 @@ const CC2 = CARD(ROW("r1", FL.us, "#1f4fc4", "UNION ARMY", "12,653") + ROW("r2",
 tl.fromTo(CC2.querySelector(".r2"), { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.4 }, T_TWICE - 0.1);
 SFX("hit", T_LOST); SFX("tick", T_TEN); SFX("hit", T_NIGHT); SFX("hit", T_TWICE);
 // Marye's Heights: wave after wave breaks against the stone wall (card moves up: the map shows below it)
-const WAVES = [0, 1, 2, 3].map((k) => { const a = L(38.3020 - k * 0.0012, -77.4615), b = L(38.2965 - k * 0.0010, -77.4672); return [a, b]; });
+const WAVES = [0, 1, 2, 3].map((k) => { const a = L(38.3040 - k * 0.0016, -77.4555), b = L(38.2990 - k * 0.0014, -77.4668); return [a, b]; });
 WAVES.forEach(([a, b], k) => {
   const t = T_WAVE + k * 0.9;
   arw({ pts: [a, b], side: "carth", t, dur: 0.6, width: 1.7, until: t + 1.8 });
   K.impact(b[0] + (k % 2) * 0.6, b[1] + 0.4, t + 0.6, { r: 3, puffs: 2 });
 });
-for (let k = 0; k < 4; k++) unit("w" + k, "carth", L(38.2985 - k * 0.0010, -77.4652 + (k % 2) * 0.0012), "infantry", null, { t: T_WAVE + 0.4 + k * 0.6, w: 4.6, h: 3.1 });
-B.grey(["w0", "w1", "w2", "w3"], T_WALL + 0.3, 0.6);
 unit("cb", "rome", L(38.2945, -77.4712), "infantry", null, { t: T_TOWN, w: 4.6, h: 3.1 });
 glowPath(LL([[38.2985, -77.4690], [38.2955, -77.4685], [38.2925, -77.4692]]), "#ff5a48", 1.4, T_TOWN + 0.2, T_SHOWN, 4, 0.95);
 box("STONE WALL", ...L(38.2925, -77.4745), T_WALL, 3.2, T_SHOWN, { bg: "#f3d6d0" });
