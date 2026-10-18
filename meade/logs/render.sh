@@ -1,0 +1,2 @@
+cd /home/user/battle-maps/meade
+bash tools/render_all.sh "hook-a getty_hd_ref hook-1 hook-3" "hook-b penn_hd_ref hook-4 hook-4" "bg-a virginia_hd_ref bg-1 bg-1" "move1a nova_hd_ref move1-1 move1-1" "move1b prospect_hd_ref move1-2 move1-7" "move1c nova_hd_ref move1-8 move1-sub" "move2a penn_hd_ref move2-1 move2-1" "move2b getty_hd_ref move2-2 move2-4" "move2c getty15_hd_ref move2-5 move2-7" "move2d getty_hd_ref move2-8 move2-8" "move3a getty_hd_ref move3-1 move3-3" "move3b getty15_hd_ref move3-4 move3-7" "move3c getty_hd_ref move3-8 move3-8" "ending penn_hd_ref end-1 end-3"
