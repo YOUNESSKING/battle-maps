@@ -179,7 +179,7 @@ const USF = L(38.312, -77.352), CSF = L(38.262, -77.535);
 flag(FL.us, "UNITED STATES", USF[0], USF[1], 0.3, T_ONLY + 1.0, 17);
 flag(FL.cs, "CONFEDERATE STATES", CSF[0], CSF[1], 0.4, T_ONLY + 1.0, 17);
 flag(FL.us, "UNITED STATES", ...L(38.43, -77.30), T_ONLY + 1.2, END + 1, 56);
-flag(FL.cs, "CONFEDERATE STATES", ...L(38.10, -77.70), T_ONLY + 1.4, END + 1, 56);
+flag(FL.cs, "CONFEDERATE STATES", ...L(38.225, -77.700), T_ONLY + 1.4, END + 1, 56);
 const FB13 = NF_B.map((pts, k) => K.front({ pts, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: 2.6, until: T_ONLY + 0.6 }));
 const FA = NF_A.map((pts) => K.front({ pts, sideA: "rome", sideB: "carth", t: T_ONLY + 0.4, dur: 1.4, width: 6, until: END + 1 }));
 const RH = [["FREDERICKSBURG", 38.3032, -77.4605, 18, -6], ["MARYE'S HEIGHTS", 38.2948, -77.4728, -30, 5], ["PROSPECT HILL", 38.2481, -77.4357, -16, 5]];

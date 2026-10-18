@@ -115,7 +115,7 @@ camTo(0, T_NIGHT, 1355, 726, SW, "sine.inOut");
 B.showDate(0.1); B.date("7 - 13 JULY 1863", 0.2, T_NIGHT - 0.1, 32);
 legend(0.3, S2 - 0.2, false);
 const F1 = flags(SW, [1410, 650], [1290, 790], 0.4, S2 - 0.3);
-box("HAGERSTOWN", P.hag[0] + 18, P.hag[1] - 6, 0.6, 5, S2 - 0.3, false); B.city("", P.hag[0], P.hag[1], { r: 1.6, t: 0.6, until: S2 - 0.3 });
+box("HAGERSTOWN", P.hag[0] + 14, P.hag[1] - 12, 0.6, 5, S2 - 0.3, false); B.city("", P.hag[0], P.hag[1], { r: 1.6, t: 0.6, until: S2 - 0.3 });
 const WB = box("WILLIAMSPORT", P.wport[0] - 22, P.wport[1] - 8, 0.6, 5, S2 - 0.3); B.city("", P.wport[0], P.wport[1], { r: 1.6, t: 0.6, until: S2 - 0.3 });
 // Lee's entrenched line, back to the river (two-colour front where the armies face each other)
 const TR = [L(39.545, -77.800), L(39.555, -77.765), L(39.585, -77.742), L(39.620, -77.738), L(39.645, -77.742), L(39.672, -77.800)];
@@ -173,7 +173,7 @@ tl.to([HAL, ASK, REF], { autoAlpha: 0, duration: 0.35 }, S2 - 0.1);
 // =====================================================================================================================
 // end-2: zoom out: he kept the army; Grant; the three moves light in turn while MEADE'S METHOD fills; Thanks of Congress
 // =====================================================================================================================
-camTo(S2 - 0.4, 1.4, 1560, 900, 1.0, "power2.inOut");
+camTo(S2 - 0.4, 1.4, 1400, 900, 1.0, "power2.inOut");
 B.hideUnits([...RL, ...BL], S2 - 0.4, 0.3);
 B.date("1863 - 1865", S2 + 0.1, null, 32);
 legend(S2 + 0.2, S3, false);
@@ -187,7 +187,7 @@ const HIS = scr(stampHTML("HISTORY REMEMBERED GRANT", "#b9b1a0", 50, -3), "right
 slam(HIS, T_HIST + 0.2, { shake: 3 });
 tl.to([KEPT, TRV, HIS], { autoAlpha: 0, duration: 0.3 }, T_FRED - 0.3);
 const MC = GG.method(3, T_FRED - 0.2, S3 - 0.1, [T_FRED + 0.1, T_SEC + 0.2, T_THIRD + 0.2]);
-MC.style.justifyContent = "flex-start"; MC.style.paddingLeft = "60px"; MC.style.top = "150px";
+MC.style.justifyContent = "flex-start"; MC.style.paddingLeft = "60px"; MC.style.top = "235px";
 [T_FRED, T_SEC, T_THIRD].forEach((t) => SFX("ref:pop", t + 0.25));
 const ringE = (p, name, n, t, dx, dy) => { K.target(p[0], p[1], t, { r: 26, until: S3 }); SFX("hit", t + 0.05);
   GG.pin(`<div style="display:flex;align-items:center;gap:6px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000"><span style="display:inline-flex;width:24px;height:24px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:14px">${n}</span><span style="font-size:19px;letter-spacing:.1em;white-space:nowrap">${name}</span></div>`, p[0] + dx, p[1] + dy, { t: t + 0.15, pop: true, until: S3 }); };

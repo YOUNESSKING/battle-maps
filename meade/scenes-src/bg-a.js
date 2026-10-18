@@ -120,7 +120,7 @@ const LG2 = legend(T_GLEN + 0.1, T_BACK, true);
 const FG = flags(SG, [P.glen[0] + 30, P.glen[1] - 20], [P.glen[0] - 32, P.glen[1] + 14], T_GLEN + 0.2, T_BACK);
 box("GLENDALE", P.glen[0] + 4, P.glen[1] - 15, T_GLEN + 0.05, 20 / SG, T_BACK); B.city("", P.glen[0], P.glen[1], { r: 1.2, t: T_GLEN, until: T_BACK });
 tl.to(GEO, { autoAlpha: 0, duration: 0.4 }, TG + 0.5); tl.to(GEO, { autoAlpha: 1, duration: 0.6 }, T_BACK + 1.3);
-box("RICHMOND", P.rich[0], P.rich[1] - 12, T_RICH, 14 / SG, T_BACK); B.city("", P.rich[0], P.rich[1], { r: 1.6, t: T_RICH, until: T_BACK });
+box("RICHMOND", P.rich[0] + 14, P.rich[1], T_RICH, 16 / SG, T_BACK); B.city("", P.rich[0], P.rich[1], { r: 1.6, t: T_RICH, until: T_BACK });
 // the front where the two armies touch (two-colour band), Meade's brigade on it
 const FR = [[P.glen[0] - 6, P.glen[1] - 14], [P.glen[0] - 7, P.glen[1] - 4], [P.glen[0] - 6, P.glen[1] + 6], [P.glen[0] - 5, P.glen[1] + 15]];
 const FF = K.front({ pts: FR, sideA: "rome", sideB: "carth", t: T_GLEN + 0.2, dur: 0.8, width: 15 / SG, until: T_BACK });
@@ -133,7 +133,7 @@ const RC = [unitXY("rc1", "rome", P.glen[0] - 16, P.glen[1] - 6, "infantry", { .
 [0, 0.35, 0.7, 1.05, 1.5].forEach((d, k) => shell(P.glen[0] - 18, P.glen[1] - 8 + k * 4, P.glen[0] - 2 + (k % 2), P.glen[1] - 8 + k * 4, T_RICH + 0.3 + d, { r: 2.2, fly: 0.45, w: 0.35, h: 3 }));
 SFX("mg", T_SHOT - 0.4);
 // WOUNDED: shot through the arm and through the body (red pulse)
-const WD = scr(stampHTML("WOUNDED", "#e3232f", 84, -6, "SHOT IN THE ARM AND THROUGH THE BODY"), "right:120px;top:220px;");
+const WD = scr(stampHTML("WOUNDED", "#e3232f", 84, -6, "SHOT IN THE ARM AND THROUGH THE BODY"), "left:0;right:0;top:770px;display:flex;justify-content:center;");
 slam(WD, T_SHOT + 0.1, { shake: 6 }); pulse(T_BODY);
 const SAD = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 24px 10px;background:rgba(18,16,12,0.9);border-left:8px solid #2e5cb2;color:#f7f3ea;font-size:34px;letter-spacing:0.08em">STAYED IN THE SADDLE</div>`, "left:100px;top:200px;");
 tl.fromTo(SAD, { autoAlpha: 0, x: -70 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_SADDLE); SFX("ref:pop", T_SADDLE + 0.05);
@@ -141,7 +141,7 @@ const BLD = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 24px
 tl.fromTo(BLD, { autoAlpha: 0, x: -70 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_BLOOD); SFX("ref:pop", T_BLOOD + 0.05);
 B.grey(["mb"], T_OFF, 0.6);
 const BW = scr(stampHTML("BACK WITHIN WEEKS", "#9fc0ea", 60, -4), "left:0;right:0;top:820px;display:flex;justify-content:center;");
-slam(BW, T_BACK, { shake: 4, until: T_SHOW + 0.4 });
+slam(BW, T_BACK, { shake: 4, until: T_SHOW - 0.2 });
 tl.to([WD, SAD, BLD], { autoAlpha: 0, duration: 0.3 }, T_BACK - 0.1);
 // ---------- zoom out: the man (real photo badge), careful / stubborn / professional, an engineer's eye for ground ----------
 const WZ = [1450, 760], SZ = 0.75;
@@ -149,7 +149,7 @@ camTo(T_BACK + 0.2, 1.4, WZ[0], WZ[1], SZ, "power2.inOut");
 camTo(T_BACK + 1.62, END - T_BACK - 1.6, WZ[0], WZ[1] - 10, SZ * 1.04, "sine.inOut");
 B.hideUnits(["mb", "mb2", "mb3", "rc1", "rc2"], T_BACK + 0.1, 0.3);
 B.date("1862", T_BACK + 0.2, null, 32);
-flags(SZ, [1650, 560], [1380, 1180], T_BACK + 0.4, null);
+flags(SZ, [1300, 520], [1380, 1180], T_BACK + 0.4, null);
 const MBD = K.badge({ name: "GEORGE G. MEADE", role: "BRIGADIER GENERAL · PENNSYLVANIA RESERVES", photo: "assets/media/meade_head.png", flag: FL.us, side: "carth", corner: "bl", t: T_SHOW, until: null });
 const NSH = scr(stampHTML("NOT A SHOWMAN", "#b9b1a0", 40, -3), "right:120px;top:200px;");
 slam(NSH, T_SHOW + 0.6, { shake: 3, until: T_READ - 0.1 });
