@@ -24,3 +24,10 @@ and Culpeper near the bottom, Richmond just off the bottom edge). Projection in 
   NW Virginia) but McClellan's pocket redrawn for 30 Jun: north bank of the Chickahominy and White House abandoned after Gaines' Mill
   (27 Jun); the army between White Oak Swamp, Glendale (Frayser's Farm) and Malvern Hill, falling back to the James (Harrison's
   Landing 1-2 Jul); lower Peninsula (Williamsburg - Fort Monroe) Union. Sources: NPS Richmond NB (Glendale, Malvern Hill), ABT Seven Days.
+
+## Hook-only layers (hook agent; hook_ prefix, the getty_* layers stay the move-2 agent's)
+- `hook_getty_roads.png` (OSM ways with the 1863 road names + the Gettysburg RR east of town), `hook_getty_ctl_jul2_mx.png` /
+  `hook_getty_ctl_jul3_mx.png` (tools/make_hook_getty.py): Union = the fishhook and the ground south-east of it; boundary drawn between
+  the lines along the Emmitsburg Road, north of Cemetery Hill / Culp's Hill and along Rock Creek (plain, approximate).
+- `hook_inset_fred/getty/angle.jpg` + `hook_insets.json` (tools/make_hook_insets.py): snap-cut crops for hook-b. The Fredericksburg cut
+  puts Jackson's line on the OSM RF&P alignment with the gap at ~38.238N 77.438W (preview only; the move-1 agent owns the exact place).

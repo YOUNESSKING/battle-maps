@@ -51,3 +51,4 @@ archive_fred_stonewall_marye.jpg | Stone wall below Marye's Heights, May 3, 1863
 archive_waud_fred_from_falmouth.jpg | Fredericksburg from Falmouth | Alfred R. Waud | Nov 1862 | https://www.loc.gov/item/2004660892/ | Public domain (LoC: no known restrictions on publication)
 archive_waud_fred_dec1862.jpg | [Fredericksburg, Va.] | Alfred R. Waud | Dec 1862 | https://www.loc.gov/item/2004660494/ | Public domain (LoC: no known restrictions on publication)
 archive_waud_cemetery_artillery.jpg | Near the cemetery, Gettysburg retiring disabled artillery | Alfred R. Waud | 1-3 Jul 1863 | https://www.loc.gov/item/2004660254/ | Public domain (LoC: no known restrictions on publication)
+grant_src.jpg | [Portrait of Maj. Gen. Ulysses S. Grant, officer of the Federal Army] | Brady's National Photographic Portrait Galleries | [between 1860 and 1865] | https://www.loc.gov/item/2018666428/ | Public domain (LoC: no known restrictions on publication); head = rembg cut-out

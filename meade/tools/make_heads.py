@@ -5,6 +5,7 @@ import sys
 from PIL import Image
 M = "/home/user/battle-maps/meade/assets/media/"
 BOXES = {
+    "grant":      ("grant_src.jpg",      (195, 170, 475, 450)),
     "jackson":    ("jackson_src.jpg",    (180, 80, 1000, 900)),
     "banks":      ("banks_src.jpg",      (318, 200, 482, 364)),
     "fremont":    ("fremont_src.jpg",    (110, 190, 390, 470)),
