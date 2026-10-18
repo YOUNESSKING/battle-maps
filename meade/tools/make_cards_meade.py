@@ -1,5 +1,5 @@
-"""Designed archive cards for the Jackson video (our own artwork): date cards (headline style), quote cards, wide portraits.
-run from meade/:  python3 tools/make_cards_jackson.py"""
+"""Designed archive cards for the Meade video (our own artwork): date cards (headline style), quote cards, wide portraits.
+run from meade/:  python3 tools/make_cards_meade.py"""
 import sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -36,12 +36,22 @@ def quotecard(photo, lines, credit, out, fx=0.78):
     d.line((140, y + 30, 520, y + 30), fill=(201, 180, 138), width=4)
     d.text((140, y + 50), credit, font=ImageFont.truetype(OS, 40), fill=(201, 180, 138)); bg.save(out, quality=93)
 
-wide(M + "jackson_src.jpg", M + "jackson_wide.jpg")
-datecard(M + "archive_jackson_portrait1864.jpg", "1824", "CLARKSBURG, VIRGINIA", M + "card_1824_clarksburg.jpg")
-datecard(M + "archive_jackson_stereo_l.jpg", "1851", "LEXINGTON, VIRGINIA", M + "card_1851_lexington.jpg")
-datecard(M + "archive_guinea_house.jpg", "10 MAY 1863", "GUINEA STATION, VIRGINIA", M + "card_1863_guinea.jpg")
-quotecard(M + "lee_crop.jpg", ["“He has lost his left arm;", "but I have lost my right arm.”"],
-          "ROBERT E. LEE, AS REPORTED BY JACKSON'S CHAPLAIN", M + "quote_lee_rightarm.jpg")
-quotecard(M + "jackson_src.jpg", ["“Let us cross over the river,", "and rest under the shade", "of the trees.”"],
-          "JACKSON'S LAST WORDS, RECORDED BY DR. HUNTER McGUIRE", M + "quote_jackson_lastwords.jpg")
+def crop(src, out, box):
+    """box = fractions (l, t, r, b) of the source"""
+    im = Image.open(src).convert("RGB"); w, h = im.size
+    im.crop((int(box[0] * w), int(box[1] * h), int(box[2] * w), int(box[3] * h))).save(out, quality=93)
+
+crop(M + "archive_meade_brady1855.jpg", M + "archive_meade_brady1855_c.jpg", (0.2, 0.03, 0.8, 0.97))
+crop(M + "archive_meade_portrait1860.jpg", M + "archive_meade_portrait1860_c.jpg", (0.06, 0.06, 1, 1))
+crop(M + "archive_leister_cemetery_ridge.jpg", M + "archive_leister_c.jpg", (0.08, 0, 1, 0.92))
+crop(M + "archive_littleroundtop_breastworks.jpg", M + "archive_lrt_c.jpg", (0.03, 0.03, 0.97, 0.97))
+crop(M + "archive_trostle_bigelow_horses.jpg", M + "archive_trostle_c.jpg", (0.02, 0.02, 0.98, 0.98))
+crop(M + "archive_gettysburg_town_cemhill.jpg", M + "archive_town_c.jpg", (0.02, 0.02, 1, 1))
+crop(M + "archive_meade_wallack_steps.jpg", M + "archive_meade_staff_c.jpg", (0.03, 0.03, 0.97, 0.97))
+wide(M + "meade_src.jpg", M + "meade_wide.jpg")
+wide(M + "archive_meade_brady1855_c.jpg", M + "archive_meade_brady1855_w.jpg")
+wide(M + "archive_meade_portrait1860_c.jpg", M + "archive_meade_portrait1860_w.jpg")
+datecard(M + "archive_meade_brady1855_c.jpg", "1815", "CADIZ, SPAIN", M + "card_1815_cadiz.jpg")
+datecard(M + "archive_leister_c.jpg", "4 JULY 1863", "GETTYSBURG, PENNSYLVANIA", M + "card_1863_gettysburg.jpg")
+datecard(M + "archive_town_c.jpg", "4 JULY 1863", "VICKSBURG SURRENDERS TO GRANT", M + "card_1863_vicksburg.jpg")
 print("cards ok")

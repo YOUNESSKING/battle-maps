@@ -1,4 +1,4 @@
-"""Jackson archive test: builds a-4, a-34 from archive.json -> build/archive_test/a-<i>.mp4 (1280x720) + build/sheet-archive.jpg
+"""Meade archive test: builds a-4, a-34 from archive.json -> build/archive_test/a-<i>.mp4 (1280x720) + build/sheet-archive.jpg
 usage: python3 tools/build_archive_peng.py [index ...]   (run from meade/)"""
 import json, os, subprocess, sys
 sys.path.insert(0, "tools")
@@ -7,14 +7,14 @@ from PIL import Image, ImageDraw, ImageFont
 T = json.load(open("audio/timing.json"))["paragraphs"]; A = json.load(open("archive.json"))
 W, H = 1280, 720; OUT = "build/archive_test"; os.makedirs(OUT, exist_ok=True)
 enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", "30", "-an"]
-idx = [int(a) for a in sys.argv[1:]] or [4, 34]
+idx = [int(a) for a in sys.argv[1:]] or [4, 31]
 for i in idx:
     dur = round(T[i + 1]["start"] - T[i]["start"], 3) if i + 1 < len(T) else round(T[i]["end"] - T[i]["start"], 3)
     out = f"{OUT}/a-{i}.mp4"; archive_shots.build(A[str(i)], dur, out, W, H, enc); print(i, dur)
 # contact sheet: 5 frames per section, labelled
 F = ImageFont.truetype("tools/oswald-latin-700-normal.ttf", 26); tw, th = 384, 216
 rows = []
-for i in [4, 34]:
+for i in [4, 31]:
     p = f"{OUT}/a-{i}.mp4"
     if not os.path.exists(p): continue
     d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", p], capture_output=True, text=True).stdout)
