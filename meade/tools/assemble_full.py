@@ -21,27 +21,24 @@ T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
-SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
+SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py (provisional: map agents may split differently)
     "hook-a": ("hook-1", "hook-3"),
     "hook-b": ("hook-4", "hook-4"),
     "bg-a": ("bg-1", "bg-1"),
-    "bg-b": ("bg-2", "bg-2"),
     "move1a": ("move1-1", "move1-1"),
-    "move1b": ("move1-2", "move1-4"),
-    "move1c": ("move1-5", "move1-6"),
-    "move1d": ("move1-7", "move1-7"),
-    "move1e": ("move1-8", "move1-sub"),
-    "move2a": ("move2-1", "move2-5"),
-    "move2b": ("move2-6", "move2-8"),
-    "move2c": ("move2-9", "move2-9"),
-    "move3a": ("move3-1", "move3-1"),
-    "move3b": ("move3-2", "move3-5"),
-    "move3c": ("move3-6", "move3-8"),
-    "move3d": ("move3-9", "move3-9"),
+    "move1b": ("move1-2", "move1-7"),
+    "move1c": ("move1-8", "move1-sub"),
+    "move2a": ("move2-1", "move2-1"),
+    "move2b": ("move2-2", "move2-4"),
+    "move2c": ("move2-5", "move2-7"),
+    "move2d": ("move2-8", "move2-8"),
+    "move3a": ("move3-1", "move3-3"),
+    "move3b": ("move3-4", "move3-7"),
+    "move3c": ("move3-8", "move3-8"),
     "ending": ("end-1", "end-3"),
 }
-CHAPTERS = [("hook-1", "Intro: The Man Who Terrified Washington"), ("move1-1", "Move 1: The Shenandoah Valley (1862)"),
-            ("move2-1", "Move 2: The March to Manassas (Aug 1862)"), ("move3-1", "Move 3: Chancellorsville (May 1863)"),
+CHAPTERS = [("hook-1", "Intro: The Man Who Beat Lee at Gettysburg"), ("move1-1", "Move 1: The Breakthrough at Fredericksburg (Dec 1862)"),
+            ("move2-1", "Move 2: Holding the Line at Gettysburg (2 Jul 1863)"), ("move3-1", "Move 3: Stopping Pickett's Charge (3 Jul 1863)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}
