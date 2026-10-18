@@ -217,8 +217,8 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.scaleBar(7.34); LV
 // the 3 July lines: the two-colour front where Union ground meets Confederate ground + the Confederate line (one colour)
 const FRN = GF ? GF.fronts.jul2pm.getty : LL(UNION_LL), FRD = GF ? GF.fronts.jul3.getty : LL(UNION_LL);
 const CSL = GF && GF.lines.csa_arc_jul2 ? GF.lines.csa_arc_jul2.getty : LL(CONF_LL);
-const FU = K.front({ pts: FRN, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 8, until: END + 1, to: FRN.length === FRD.length ? FRD : null, moveT: S3, moveDur: 1.5 });
-const FC = K.front({ pts: CSL, sideA: "rome", sideB: "rome", t: 0, dur: 0.01, width: 6, until: END + 1 });
+const FU = K.front({ pts: FRN, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 15, until: END + 1, to: FRN.length === FRD.length ? FRD : null, moveT: S3, moveDur: 1.5 });
+const FC = K.front({ pts: CSL, sideA: "rome", sideB: "rome", t: 0, dur: 0.01, width: 15, until: END + 1 });
 
 // ---------- camera: wide fishhook -> the Leister House -> wide (Meade's place) -> the centre -> both ridges ----------
 B.camera([[0, 1440, 840, 1.3], [T_CALLED + 0.2, 1440, 840, 1.3], [T_TWELVE - 0.3, 1450, 790, 3.0], [T_PUT - 0.2, 1452, 795, 3.1],

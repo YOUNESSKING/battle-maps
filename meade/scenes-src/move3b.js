@@ -219,8 +219,8 @@ B.image("assets/media/getty15_geo_ref.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.scaleBar(3.67); LV.north();
 const FRD = GF ? GF.fronts.jul3.getty15 : LL(UNION_LL);
 const CSL = GF && GF.lines.csa_arc_jul2 ? GF.lines.csa_arc_jul2.getty15 : LL(CONF_LL);
-const FU = K.front({ pts: FRD, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 10, until: END + 1 });
-const FC = K.front({ pts: CSL, sideA: "rome", sideB: "rome", t: 0, dur: 0.01, width: 7, until: T_MARCH + 4 });
+const FU = K.front({ pts: FRD, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 15, until: END + 1 });
+const FC = K.front({ pts: CSL, sideA: "rome", sideB: "rome", t: 0, dur: 0.01, width: 15, until: T_MARCH + 4 });
 
 // ---------- camera ----------
 const AX = P.angle[0], AY = P.angle[1];

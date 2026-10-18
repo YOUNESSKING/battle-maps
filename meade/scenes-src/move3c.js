@@ -195,8 +195,8 @@ B.image("assets/media/getty_geo_ref.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 })
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.scaleBar(7.34); LV.north();
 const FRD = GF ? GF.fronts.jul3.getty : LL(UNION_LL);
 const CSL = GF && GF.lines.csa_arc_jul2 ? GF.lines.csa_arc_jul2.getty : LL(CONF_LL);
-K.front({ pts: FRD, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 8, until: END + 1 });
-K.front({ pts: CSL, sideA: "rome", sideB: "rome", t: 0, dur: 0.01, width: 6, until: END + 1 });
+K.front({ pts: FRD, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 15, until: END + 1 });
+K.front({ pts: CSL, sideA: "rome", sideB: "rome", t: 0, dur: 0.01, width: 15, until: END + 1 });
 
 // camera: hand-off from move3b (getty15 1420,640 @2.0 = getty 1395,846 @1.0), slow pull to the whole field
 B.camera([[0, 1395, 846, 1.0], [T_LEE, 1400, 840, 1.08], [T_3D, 1420, 840, 1.15], [END, 1430, 840, 1.2]]);
