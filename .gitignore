@@ -31,3 +31,7 @@ jackson/logs/*.log
 jackson/logs/*.done
 jackson/assets/film/src/
 jackson/assets/film/clips/
+meade/logs/*.log
+meade/logs/*.done
+meade/assets/film/src/
+meade/assets/film/clips/
