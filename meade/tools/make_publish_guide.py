@@ -53,7 +53,7 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "Stonewall Jackson's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "George Meade's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
@@ -70,40 +70,41 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/jackson-thumb-A-3-armies-beaten.jpg"; TB = "youtube/thumb/jackson-thumb-B-vanished.jpg"
-LEN = os.environ.get("VIDEO_LEN", "16:53")
+TA = "youtube/thumb/meade-thumb-A-stay-and-fight.jpg"; TB = "youtube/thumb/meade-thumb-B-my-fault.jpg"
+LEN = os.environ.get("VIDEO_LEN", "16:18")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
-story = [Spacer(1, 18 * mm), P("STONEWALL JACKSON", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+story = [Spacer(1, 18 * mm), P("GEORGE G. MEADE", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: 3 ARMIES BEATEN (battlefield made with vidIQ; Jackson's public-domain 1862 portrait added on top)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: STAY AND FIGHT (battlefield made with vidIQ; Meade's public-domain Brady portrait added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Jackson-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"Meade-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
                  ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample)"],
                  ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice (locked level 0.08)"],
                  ["Sound effects", "The channel's locked kit: Freesound recordings (CC BY / CC0), Mixkit sounds, original effects"],
-                 ["Flags", "Owner's pick A1: US 34-star flag + Confederate First National ('Stars and Bars'); never the battle flag"]],
+                 ["Flags", "Owner's pick A1 (also for Gettysburg): US 34-star flag + Confederate First National ('Stars and Bars'); never the battle flag"]],
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
           Spacer(1, 5 * mm), P("Key frames: the hook (0:00-1:14)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 90)", "h2"), P(f"<b>{TITLE}</b>"),
+story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 88)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
-          *bullets(["Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Humiliated the Union Army (89)",
-                    "Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Routed Twice His Numbers (88)",
-                    "Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Beat Three Union Armies (87)"]),
+          *bullets(["George Meade's Top 3 Legendary Tactical Moves | The Man Who Stopped Pickett's Charge (87)",
+                    "George Meade's Top 3 Legendary Tactical Moves | The Man Who Saved the Union at Gettysburg (87)",
+                    "George Meade's Top 3 Legendary Tactical Moves | The Man Who Won Gettysburg (87)"]),
           P("Why this thumbnail", "h2"),
           P("Tactical Genius picture formula: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
-            "a red brush banner bottom-left. <b>3 ARMIES BEATEN</b> is type 3 (stakes): the Valley Campaign, where Jackson's ~17,000 men hid behind the "
-            "Massanutten Mountain and beat the forces of Banks, Frémont and Shields one at a time, the hook and the title promise."),
-          P("Alternative for YouTube's Test &amp; compare: <b>VANISHED</b> (type 1: the move behind the mountain / around Pope, the video's core idea).", "body"),
+            "a red brush banner bottom-left. <b>STAY AND FIGHT</b> is type 1 (the hero's decision in plain words): the council of war on the night of "
+            "2 July, the video's 'What would you do?' moment, and the reason Lee's charge hit a line that was waiting for it."),
+          P("Alternative for YouTube's Test &amp; compare: <b>\u201cMY FAULT\u201d</b> (type 2: the enemy's own words; Lee to General Wilcox after Pickett's Charge, as Fremantle wrote it down: 'all this has been my fault').", "body"),
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
-          P("Checked: the AI image has no text or flags of its own; we added MASSANUTTEN MOUNTAIN, JACKSON and BANKS. Infantry blocks, guns and smoke only "
-            "(no tanks, aircraft or modern vehicles). The portrait is Jackson's real 1862 Winchester photograph (public domain), not an AI likeness.", "warn"),
+          P("Checked: the AI image drew small red flags in the Confederate lines; they were painted out (no battle flag anywhere). We added SEMINARY RIDGE, "
+            "CEMETERY RIDGE, PICKETT and MEADE. Infantry, guns and smoke only (no tanks, aircraft or modern vehicles). The portrait is Meade's real Brady "
+            "photograph (Library of Congress, public domain), not an AI likeness.", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
           P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound and image licences require them.", "warn"),
@@ -113,10 +114,10 @@ story += [P("4. Upload settings", "h1"),
                  ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Shenandoah, Massanutten, Kernstown, Front Royal, Strasburg, Port Republic, Frémont, Shields, Ewell, Manassas, Bristoe, Thoroughfare Gap, Brawner, Longstreet, Rappahannock, Rapidan, Chancellorsville, Hooker, Rodes, Hunter McGuire, Imboden)"],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Meade, Fredericksburg, Rappahannock, Franklin, Birney, Gibbon, Maxcy Gregg, Gettysburg, Sickles, Gouverneur Warren, Culp's Hill, Hancock, Leister, Hunt, Pickett, Pettigrew, Trimble, Armistead, Emmitsburg Road, Fremantle, Vicksburg)"],
                  ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail battlefield is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["Pinned comment", "Which was Jackson's greatest move: 1, 2 or 3? And which commander should we cover next?"],
+                 ["Pinned comment", "Which was Meade's greatest move: 1, 2 or 3? And which commander should we cover next?"],
                  ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
@@ -125,15 +126,16 @@ story += [P("4. Upload settings", "h1"),
                     "Tick 'altered or synthetic content'.", "Add end screen and cards; set visibility and schedule.",
                     "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 2% after ~1,000 impressions, switch to the alternative thumbnail."]),
           P("<b>Facts to double-check before publishing</b> (approximate, single-source or second-hand; see research/FACT_NOTES*.md):<br/>"
-            "&bull; Stanton's 'the enemy in great force are marching on Washington' and 'thirteen States' calling out militia: Henderson (1898), not read in the Official Records.<br/>"
-            "&bull; Pope's 30 Aug dispatch ('retreating towards the mountains') and the 2 May 4:10 pm 'fleeing' dispatch (signed by an aide for Hooker): Henderson's printing of the OR.<br/>"
-            "&bull; Valley mileage ~650 (Wikipedia 646 'in 48 days of marching'); Valley losses Union ~5,400 / Confederate ~2,800 = sum of NPS battle boxes.<br/>"
-            "&bull; Which South Fork bridges were burned in early June 1862; the 18th North Carolina as the regiment that fired; Front Royal losses (773 vs 904).<br/>"
-            "&bull; Second Manassas casualties are ABT's campaign figures (Union return 16 Aug-2 Sep).<br/>"
-            "&bull; 'The largest simultaneous mass assault of the war' is the National Park Service's wording (said as such).<br/>"
-            "&bull; Deer and rabbits before the flank attack: park historians' account, no named eyewitness.<br/>"
-            "&bull; All front lines and some positions (Brawner Farm, Deep Cut, Dowdall's Tavern, the wounding site) are approximate (research/FACT_NOTES_*.md).", "warn")]
-out = "build/Jackson-publishing-guide.pdf"
+            "&bull; Meade's division losses at Fredericksburg: report 1,770 (40%); revised OR return ~1,853 (OCR, check page image); script says 'about eighteen hundred'.<br/>"
+            "&bull; Confederate losses at Fredericksburg (Lee's return ~5,300 vs ABT ~6,000); army sizes ~120,000 / ~78,000 (ABT 123,000 / 78,000).<br/>"
+            "&bull; Birney episode ('almost made the stones creep'): Sears via a secondary site; 'Walker's guns' label; pontoon dates 11-12 Dec.<br/>"
+            "&bull; Pickett's Charge losses: ABT 6,555 vs NPS ~5,500; Union ~1,500 (ABT) / ~1,700 (NPS). Battle totals are ABT's (Confederate 28,063; other counts ~23,000).<br/>"
+            "&bull; Meade at the head of Lockwood's brigade and Baldy hit on 2 July: the family narrative in Life and Letters (said 'by his family's account').<br/>"
+            "&bull; Gibbon's 'in your front' quote: his own recollection (1887); Lydia Leister's seventeen horses: her 1865 account.<br/>"
+            "&bull; Sickles's move 'around 2 pm'; Vincent 'minutes ahead'; Hancock ordering the 1st Minnesota; Sickles lost a leg; rain on the night of 4 July; brigade names on the 2 July attack arrows.<br/>"
+            "&bull; Thanks of Congress 28 Jan 1864; Meade's death 6 Nov 1872 (Philadelphia); Great Lakes survey; 'Old Snapping Turtle' (NPS, no 1863 source).<br/>"
+            "&bull; All front lines, control areas and some positions are approximate (research/FACT_NOTES_*.md).", "warn")]
+out = "build/Meade-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="Stonewall Jackson - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="George Meade - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print("wrote", out)
