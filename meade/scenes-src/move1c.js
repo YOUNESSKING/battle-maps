@@ -171,7 +171,7 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.18 }); LV.scaleBar(119.47); 
 const FB = L(38.3032, -77.4605), MH = L(38.2948, -77.4728), SW = L(38.2955, -77.4685), PH = L(38.2481, -77.4357);
 
 // ---------- camera: Prospect Hill -> the town and Marye's Heights -> wide (Rappahannock) ----------
-B.camera([[0, 1632, 1112, 7.0], [T_TOWN - 0.4, 1630, 1105, 6.4], [T_WAVE + 0.4, 1612, 1092, 7.6], [T_NIGHT + 0.6, 1616, 1096, 6.6],
+B.camera([[0, 1632, 1112, 7.0], [T_TOWN - 0.4, 1630, 1105, 6.4], [T_WAVE + 0.4, 1612, 1090, 7.6], [T_NIGHT + 0.6, 1616, 1070, 6.6],
   [T_SHOWN, 1620, 1098, 5.6], [T_ONLY + 0.6, 1640, 1060, 3.4], [T_SIX, 1680, 960, 2.0], [END, 1700, 900, 1.6]]);
 B.showDate(0.1); B.date("13 DECEMBER 1862", 0.2, T_ONLY, 32); B.date("16 DECEMBER 1862", T_ONLY + 0.1, null, 32);
 legend(0.2, END + 1, false);
@@ -182,36 +182,36 @@ flag(FL.us, "UNITED STATES", ...L(38.43, -77.30), T_ONLY + 1.2, END + 1, 56);
 flag(FL.cs, "CONFEDERATE STATES", ...L(38.10, -77.70), T_ONLY + 1.4, END + 1, 56);
 const FB13 = NF_B.map((pts, k) => K.front({ pts, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: 2.6, until: T_ONLY + 0.6 }));
 const FA = NF_A.map((pts) => K.front({ pts, sideA: "rome", sideB: "carth", t: T_ONLY + 0.4, dur: 1.4, width: 6, until: END + 1 }));
-const RH = [["FREDERICKSBURG", 38.3032, -77.4605, 18, -6], ["MARYE'S HEIGHTS", 38.2948, -77.4728, -18, -2], ["PROSPECT HILL", 38.2481, -77.4357, -16, 5]];
+const RH = [["FREDERICKSBURG", 38.3032, -77.4605, 18, -6], ["MARYE'S HEIGHTS", 38.2948, -77.4728, -30, 5], ["PROSPECT HILL", 38.2481, -77.4357, -16, 5]];
 RH.forEach(([nm, la, lo, dx, dy]) => { const p = L(la, lo); box(nm, p[0] + dx, p[1] + dy, 0.2, 3.4, T_ONLY + 0.8, { sfx: false }); });
 glowPath(LL([[38.3070, -77.4750], [38.2948, -77.4728], [38.2850, -77.4763], [38.2720, -77.4560], [38.2600, -77.4440], [38.2481, -77.4357]]), "#e34a3a", 1.6, 0, T_ONLY + 0.6, 2, 0.75);
 
 // ---------- move1-8: the losses; the stone wall; the promotion; FIND THE GAP ----------
 unit("md", "carth", L(38.2610, -77.4180), "infantry", "MEADE", { t: 0.2, w: 7, h: 4.8, tag: 2.4, size: "XX" });
 B.grey(["md"], T_LOST + 0.4, 0.6); tl.to(B.units.md.el, { opacity: 0.85, duration: 0.3 }, T_LOST + 1.1);
-// the casualty card (real numbers only: FACT_NOTES / OR / ABT)
-const CC = scr(`<div style="padding:22px 48px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:12px">CASUALTIES · FREDERICKSBURG · 13 DEC 1862</div>
-  <div class="r0" style="display:flex;align-items:center;gap:16px;border-bottom:2px solid #1f4fc4;padding-bottom:8px"><img src="${FL.us}" style="height:30px;border:1px solid #f7f3ea"><div style="font-size:26px;letter-spacing:.08em;min-width:330px">MEADE'S DIVISION</div><div style="font-size:52px">~1,800 <span style="font-size:28px;color:#c9c2b0">OF 4,500</span></div><div class="pc" style="font-size:46px;color:#7fb0ff;margin-left:14px">40%</div></div>
-  <div class="r1" style="display:flex;align-items:center;gap:16px;border-bottom:2px solid #1f4fc4;padding:8px 0"><img src="${FL.us}" style="height:30px;border:1px solid #f7f3ea"><div style="font-size:26px;letter-spacing:.08em;min-width:330px">UNION ARMY</div><div style="font-size:52px">12,653</div></div>
-  <div class="r2" style="display:flex;align-items:center;gap:16px;border-bottom:2px solid #c4121f;padding:8px 0"><img src="${FL.cs}" style="height:30px;border:1px solid #f7f3ea"><div style="font-size:26px;letter-spacing:.08em;min-width:330px">CONFEDERATE</div><div style="font-size:52px">~5,300-6,000</div></div>
+// the casualty card (real numbers only: FACT_NOTES / OR / ABT), in two steps around the stone-wall beat
+const ROW = (cls, fl, c, name, val) => `<div class="${cls}" style="display:flex;align-items:center;gap:16px;border-bottom:2px solid ${c};padding:8px 0"><img src="${fl}" style="height:30px;border:1px solid #f7f3ea"><div style="font-size:26px;letter-spacing:.08em;min-width:330px">${name}</div><div style="font-size:52px">${val}</div></div>`;
+const CARD = (rows, t, until) => scr(`<div style="padding:22px 48px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+  <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:6px">CASUALTIES · FREDERICKSBURG · 13 DEC 1862</div>${rows}
   <div style="font-size:14px;letter-spacing:.2em;color:#a8a294;text-align:center;margin-top:10px">KILLED, WOUNDED, MISSING · SOURCES: OFFICIAL RECORDS, AMERICAN BATTLEFIELD TRUST</div></div>`,
-  "left:0;right:0;top:170px;display:flex;justify-content:center;", T_LOST - 0.2, T_SHOWN - 0.2);
-tl.fromTo(CC.querySelector(".pc"), { autoAlpha: 0, scale: 1.6 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_TEN);
-tl.fromTo(CC.querySelector(".r1"), { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, T_NIGHT - 0.1);
-tl.fromTo(CC.querySelector(".r2"), { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, T_TWICE - 0.1);
+  "left:0;right:0;top:150px;display:flex;justify-content:center;", t, until);
+const CC = CARD(ROW("r0", FL.us, "#1f4fc4", "MEADE'S DIVISION", `~1,800 <span style="font-size:28px;color:#c9c2b0">OF 4,500</span> <span class="pc" style="font-size:46px;color:#7fb0ff;margin-left:14px">40%</span>`), T_LOST - 0.2, T_TOWN - 0.2);
+tl.fromTo(CC.querySelector(".pc"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, T_TEN);
+const CC2 = CARD(ROW("r1", FL.us, "#1f4fc4", "UNION ARMY", "12,653") + ROW("r2", FL.cs, "#c4121f", "CONFEDERATE", "~5,300-6,000"), T_NIGHT - 0.2, T_SHOWN - 0.2);
+tl.fromTo(CC2.querySelector(".r2"), { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.4 }, T_TWICE - 0.1);
 SFX("hit", T_LOST); SFX("tick", T_TEN); SFX("hit", T_NIGHT); SFX("hit", T_TWICE);
 // Marye's Heights: wave after wave breaks against the stone wall (card moves up: the map shows below it)
-tl.to(CC, { y: -20, duration: 0.3 }, T_TOWN);
 const WAVES = [0, 1, 2, 3].map((k) => { const a = L(38.3020 - k * 0.0012, -77.4615), b = L(38.2965 - k * 0.0010, -77.4672); return [a, b]; });
 WAVES.forEach(([a, b], k) => {
   const t = T_WAVE + k * 0.9;
-  arw({ pts: [a, b], side: "carth", t, dur: 0.6, width: 0.9, until: t + 1.6 });
-  K.impact(b[0] + (k % 2) * 0.6, b[1] + 0.4, t + 0.6, { r: 1.6, puffs: 1 });
+  arw({ pts: [a, b], side: "carth", t, dur: 0.6, width: 1.7, until: t + 1.8 });
+  K.impact(b[0] + (k % 2) * 0.6, b[1] + 0.4, t + 0.6, { r: 3, puffs: 2 });
 });
-for (let k = 0; k < 4; k++) unit("w" + k, "carth", L(38.2985 - k * 0.0010, -77.4652 + (k % 2) * 0.0012), "infantry", null, { t: T_WAVE + 0.4 + k * 0.6, w: 3.4, h: 2.3 });
+for (let k = 0; k < 4; k++) unit("w" + k, "carth", L(38.2985 - k * 0.0010, -77.4652 + (k % 2) * 0.0012), "infantry", null, { t: T_WAVE + 0.4 + k * 0.6, w: 4.6, h: 3.1 });
 B.grey(["w0", "w1", "w2", "w3"], T_WALL + 0.3, 0.6);
-unit("cb", "rome", L(38.2950, -77.4700), "infantry", "STONE WALL", { t: T_TOWN, w: 3.6, h: 2.4, tag: 1.3 });
+unit("cb", "rome", L(38.2945, -77.4712), "infantry", null, { t: T_TOWN, w: 4.6, h: 3.1 });
+glowPath(LL([[38.2985, -77.4690], [38.2955, -77.4685], [38.2925, -77.4692]]), "#ff5a48", 1.4, T_TOWN + 0.2, T_SHOWN, 4, 0.95);
+box("STONE WALL", ...L(38.2925, -77.4745), T_WALL, 3.2, T_SHOWN, { bg: "#f3d6d0" });
 B.caption("THE STONE WALL BELOW MARYE'S HEIGHTS", T_WALL - 0.3, T_NIGHT - 0.1, "rome");
 // Meade promoted: V Corps (order ~23-25 Dec 1862)
 const MB = badge({ name: "GEORGE G. MEADE", role: "PROMOTED: V CORPS", initials: "GGM", photo: PHOTO.meade, flag: FL.us, side: "carth", corner: "tr", t: T_SHOWN - 0.2, until: T_ONLY - 0.2 });
@@ -231,8 +231,8 @@ arw({ pts: LL([[38.296, -77.448], [38.312, -77.440], [38.330, -77.438]]), side: 
 B.caption("15-16 DECEMBER: BACK ACROSS THE RAPPAHANNOCK", T_ONLY + 0.3, T_SUBS + 1.0, "carth");
 const E = EngageK(B); E.subscribe(T_BRK - 0.3, T_SIX + 0.2);
 // NEXT: Gettysburg (off the top of the map, up the road north)
-arw({ pts: LL([[38.40, -77.42], [38.75, -77.33], [39.10, -77.28], [39.45, -77.25]]), side: "carth", t: T_SIX, dur: 2.2, width: 10, dash: "18 12", until: END + 1 });
-box("NEXT: GETTYSBURG ↑", ...L(39.40, -77.18), T_WHOLE - 0.3, 18, END + 1, { bg: "#dcecf8" });
+arw({ pts: LL([[38.40, -77.42], [38.58, -77.40], [38.78, -77.42]]), side: "carth", t: T_SIX, dur: 2.0, width: 10, dash: "18 12", until: END + 1 });
+box("NEXT: GETTYSBURG ↑", ...L(38.62, -77.62), T_WHOLE - 0.3, 18, END + 1, { bg: "#dcecf8" });
 B.caption("NEXT: GETTYSBURG", T_WHOLE, END + 0.5, "carth");
 B.move("an", T_LEEC, 2.0, ...L(38.45, -77.62));
 fixImgs();
