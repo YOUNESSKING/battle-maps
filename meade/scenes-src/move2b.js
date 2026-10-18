@@ -159,10 +159,10 @@ wimg("assets/media/getty_geo_ref.png", 0, 0, null);
 // ---------- camera ----------
 camSet(1400, 520, 1.3);
 camTo(0.1, T_HILLS - 0.3, 1420, 560, 1.38);                                  // day 1: west + north of town
-camTo(T_HILLS - 0.2, 2.6, 1450, 840, 1.42);                                  // wide: the whole fishhook
-camTo(S3 + 0.2, 6.0, 1440, 820, 1.48);
+camTo(T_HILLS - 0.2, 2.6, 1450, 825, 1.40);                                  // wide: the whole fishhook
+camTo(S3 + 0.2, 6.0, 1440, 822, 1.42);
 camTo(T_HQ - 0.4, 2.0, 1460, 800, 1.9);                                      // the Leister house
-camTo(S4 - 0.2, 2.2, 1440, 860, 1.42);                                       // Lee's plan: both ends
+camTo(S4 - 0.2, 2.2, 1440, 830, 1.40);                                       // Lee's plan: both ends
 camTo(T_SICK - 0.6, 2.4, 1385, 975, 2.25);                                   // the southern end
 const KM = L(39.7990, -77.2420);                                             // = move2c opening frame (getty15 at s 1.35)
 camTo(END - 2.6, 2.5, KM[0], KM[1], 2.7, "power1.inOut");
@@ -171,8 +171,8 @@ B.showDate(0.05);
 B.date("1 JULY 1863", 0.1, T_ARR - 0.3, 32); B.date("NIGHT · 1-2 JULY", T_ARR - 0.2, S3 - 0.2, 30); B.date("2 JULY · MORNING", S3 - 0.1, S4 - 0.2, 30);
 B.date("2 JULY · AFTERNOON", S4 - 0.1, T_3PM - 0.3, 30); B.date("2 JULY · ~3 PM", T_3PM - 0.2, END + 1, 30);
 legend(0.2, END - 1.0);
-flag(FL.csa, "CONFEDERATE STATES", ...L(39.852, -77.282), 0.3, T_HILLS - 0.3, 82); flag(FL.us, "UNITED STATES", ...L(39.812, -77.190), 0.35, T_HILLS - 0.3, 82);
-flag(FL.csa, "CONFEDERATE STATES", ...L(39.812, -77.275), T_HILLS, T_SICK - 0.6, 80); flag(FL.us, "UNITED STATES", ...L(39.800, -77.205), T_HILLS + 0.05, T_SICK - 0.6, 80);
+flag(FL.csa, "CONFEDERATE STATES", ...L(39.826, -77.290), 0.3, T_HILLS - 0.3, 82); flag(FL.us, "UNITED STATES", ...L(39.812, -77.190), 0.35, T_HILLS - 0.3, 82);
+flag(FL.csa, "CONFEDERATE STATES", ...L(39.810, -77.263), T_HILLS, T_SICK - 0.6, 80); flag(FL.us, "UNITED STATES", ...L(39.800, -77.205), T_HILLS + 0.05, T_SICK - 0.6, 80);
 flag(FL.csa, "CONFEDERATE STATES", ...L(39.7925, -77.2605), T_SICK, END - 2.4, 50); flag(FL.us, "UNITED STATES", ...L(39.8040, -77.2265), T_SICK + 0.05, END - 2.4, 50);
 // ---------- move2-2: day 1 ----------
 // units in the first second: Buford's cavalry on McPherson's Ridge, Heth coming down the Chambersburg Pike
@@ -218,7 +218,7 @@ badge({ name: "GEORGE G. MEADE", role: "ARMY OF THE POTOMAC", photo: "assets/med
 B.hideUnits(["ic", "xi"], T_HOOK - 0.4);
 const HOOK = glowLine(GD.lines.union_hook_jul2, "#4f86ff", 3.2, T_HOOK - 0.3, S4 - 0.3, { dur: 2.2, pulse: 4 });
 const UN = [["u12", 39.8170, -77.2190, "XII"], ["u1", 39.8212, -77.2232, "I"], ["u11", 39.8228, -77.2310, "XI"], ["u2", 39.8115, -77.2352, "II"], ["u3", 39.7995, -77.2352, "III"], ["u5", 39.8085, -77.2205, "V"]];
-UN.forEach(([id, la, lo, lb], i) => unit(id, "carth", ...L(la, lo), "infantry", { t: T_HOOK + 0.2 + i * 0.12, size: "XXX", label: lb + " CORPS", fs: 7 }));
+UN.forEach(([id, la, lo, lb], i) => unit(id, "carth", ...L(la, lo), "infantry", { t: T_HOOK + 0.2 + i * 0.12, size: "XXX", label: lb + " CORPS", fs: 8 }));
 const FH = tag("THE FISHHOOK", ...L(39.8040, -77.2230), T_HOOK + 0.3, BLUE, 14, S3 + 2.0);
 place("culps_hill", T_BARB, { dx: 48, dy: -2, until: S4 - 0.3 });
 K.target(...PX("culps_hill"), T_BARB, { r: 18, side: "#7fb0ff", until: T_SHANK });
@@ -230,7 +230,7 @@ place("little_round_top", T_RT - 0.3, { dx: 60, dy: 0 }); place("big_round_top",
 GG.dawn(S3 - 0.2, S3 + 3.0);
 const CS = [["j", 39.8200, -77.2115, "JOHNSON"], ["e", 39.8268, -77.2262, "EARLY"], ["r", 39.8276, -77.2372, "RODES"], ["p", 39.8215, -77.2470, "PENDER"], ["a", 39.8095, -77.2515, "ANDERSON"], ["h", 39.8310, -77.2540, "HETH"]];
 B.hideUnits(["rod", "ear", "heth", "pend"], T_OUT - 0.4);
-CS.forEach(([id, la, lo, lb], i) => unit("cs" + id, "rome", ...L(la, lo), "infantry", { t: T_OUT - 0.3 + i * 0.1, size: "XX", label: lb, fs: 7 }));
+CS.forEach(([id, la, lo, lb], i) => unit("cs" + id, "rome", ...L(la, lo), "infantry", { t: T_OUT - 0.3 + i * 0.1, size: "XX", label: lb, fs: 8 }));
 const ARC = glowLine(GD.lines.csa_arc_jul2, "#ff5a4f", 3.0, T_ARC - 0.4, T_FLANK + 1.0, { dur: 2.4, core: "#ffe0d8", pulse: 2 });
 const OUTT = tag("LEE: THE OUTSIDE OF THE HOOK", ...L(39.8150, -77.2700), T_ARC, RED, 11, T_FLANK + 0.8);
 const INT = tag("MEADE: THE INSIDE", ...L(39.8090, -77.2275), T_IN, BLUE, 11, T_FLANK + 0.8);
@@ -273,9 +273,9 @@ B.hideUnits(["u3"], T_WO - 0.3);
 unit("bir", "carth", ...L(39.7975, -77.2356), "infantry", { t: T_WO - 0.4, size: "XX", label: "BIRNEY", fs: 7 });
 unit("hum", "carth", ...L(39.8040, -77.2360), "infantry", { t: T_WO - 0.35, size: "XX", label: "HUMPHREYS", fs: 7 });
 const RS = glowLine(GD.lines.ridge_south, "#8fb8ff", 2.2, T_LOW - 0.2, T_WO + 0.4, { dur: 1.0 });
-place("peach_orchard", T_LOW, { dx: -62, dy: -14, until: END + 1 }); place("wheatfield", T_LOW + 0.2, { dx: -56, dy: 10, until: END + 1 }); place("devils_den", T_LOW + 0.4, { dx: -48, dy: 10, until: END + 1 });
-go("bir", T_WO, 2.6, L(39.7960, -77.2462)); go("hum", T_WO + 0.15, 2.6, L(39.8068, -77.2462));
-tArrow([L(39.7975, -77.2370), L(39.7968, -77.2420), L(39.7962, -77.2448)], BLUE, T_WO, T_RODE, 2.6);
+place("peach_orchard", T_LOW, { dx: 58, dy: 14, until: END + 1 }); place("wheatfield", T_LOW + 0.2, { dx: 54, dy: -6, until: END + 1 }); place("devils_den", T_LOW + 0.4, { dx: -48, dy: 10, until: END + 1 });
+go("bir", T_WO, 2.6, L(39.7932, -77.2448)); go("hum", T_WO + 0.15, 2.6, L(39.8068, -77.2462));
+tArrow([L(39.7975, -77.2370), L(39.7955, -77.2410), L(39.7938, -77.2438)], BLUE, T_WO, T_RODE, 2.6);
 tArrow([L(39.8040, -77.2372), L(39.8055, -77.2420), L(39.8065, -77.2448)], BLUE, T_WO + 0.15, T_RODE, 2.6);
 const SL = glowLine(GD.lines.sickles_jul2, "#4f86ff", 2.6, T_WO + 1.4, END + 1, { dur: 1.6, pulse: 6 });
 sstamp("WITHOUT ORDERS", 760, T_WO + 0.1, { size: 54, rot: -5, until: T_PEACH + 0.6 });

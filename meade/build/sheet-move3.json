@@ -1,20 +1,111 @@
 {
- "title": "George G. Meade #12 · MOVE 3 (Gettysburg, 3 July 1863) · snapshot sheet",
- "note": "move3a getty_hd_ref move3-1..3 (opt 1, night -> dawn) · move3b getty15_hd_ref move3-4..7 (opt 2) · move3c getty_hd_ref move3-8 (opt 1) · mm:ss = video time",
+ "title": "George G. Meade #12 \u00b7 MOVE 3 (Gettysburg, 3 July 1863) \u00b7 snapshot sheet",
+ "note": "move3a getty_hd_ref move3-1..3 (opt 1, night -> dawn) \u00b7 move3b getty15_hd_ref move3-4..7 (opt 2) \u00b7 move3c getty_hd_ref move3-8 (opt 1) \u00b7 mm:ss = video time \u00b7 fronts width 15, glow 0.47",
  "frames": [
-  ["move3a", 6.5, "10:32", "move3-1 NIGHT: Leister House lamp; COUNCIL OF WAR 12 officers (Gibbon quote); Butterfield's minutes Q1", "title boom, pops, ticks"],
-  ["move3a", 28, "10:54", "move3-1 E.decide: STAY ON THE HILLS vs FALL BACK; TELL US IN THE COMMENTS (A lights on 'every general')", "hit, pops, 3 ticks, hit on reveal"],
-  ["move3a", 56, "11:22", "move3-2 Gibbon quote card (2 lines, 1887); red pulses on both flanks -> FAILED; ring on the centre next", "hit"],
-  ["move3a", 71.5, "11:37", "move3-3 3 July morning: red guns roll into line on Seminary + Emmitsburg Rd ridges; ~150 counter", "ticks"],
-  ["move3a", 87, "11:53", "move3-3 Hunt badge; Union gun row on the II Corps front; 77 GUNS vs NEARLY 150 (Hunt)", "ticks, hit"],
-  ["move3b", 9, "12:04", "move3-4 1 PM bombardment: red K.gun -> arcs -> impacts mostly BEHIND Cemetery Ridge (overshoot zone)", "gun fire, impact booms + shake each"],
-  ["move3b", 17.5, "12:12", "move3-4 Leister House hit; BUTTERFIELD WOUNDED; 17 horses fall; Lydia Leister quote card", "impacts, hit (stamp), ticks"],
-  ["move3b", 42, "12:37", "move3-5 Union batteries silent (grey dots), ammo chests FULL; red belief card: UNION GUNS KNOCKED OUT", "hit, last impacts"],
-  ["move3b", 57, "12:52", "move3-6 ~3 PM: Pickett/Pettigrew/Trimble step out of the woods; ~12,500 counter; badges", "ticks"],
-  ["move3b", 90, "13:25", "move3-7 the Angle: Emmitsburg Rd fences, volleys from the wall, CANISTER (flat blasts, big impacts)", "mg, gun fire, impact booms + shake"],
-  ["move3b", 101, "13:36", "move3-7 ~200 follow Armistead over the wall at THE ANGLE (ring); Stannard on the flank", "mg, impacts, hit"],
-  ["move3c", 1, "13:50", "move3-8 zoom out (opt 1): survivors stream back; CASUALTIES (charge) CONF ~6,000 ABOUT HALF · UNION ~1,500", "hits"],
-  ["move3c", 20, "14:09", "move3-8 Lee rides out; quote 'NEVER MIND, GENERAL, ALL THIS HAS BEEN MY FAULT.' (Fremantle)", "hit"],
-  ["move3c", 32.5, "14:22", "move3-8 battle card shown 21-27 s (23,049 / 28,063 ABT); MEADE'S METHOD: READ THE NEXT BLOW", "boom"]
+  [
+   "move3a",
+   6.5,
+   "10:32",
+   "move3-1 NIGHT: Leister House lamp; COUNCIL OF WAR 12 officers (Gibbon quote); Butterfield's minutes Q1",
+   "title boom, pops, ticks"
+  ],
+  [
+   "move3a",
+   28,
+   "10:54",
+   "move3-1 E.decide: STAY ON THE HILLS vs FALL BACK; TELL US IN THE COMMENTS (A lights on 'every general')",
+   "hit, pops, 3 ticks, hit on reveal"
+  ],
+  [
+   "move3a",
+   56,
+   "11:22",
+   "move3-2 Gibbon quote card (2 lines, 1887); red pulses on both flanks -> FAILED; ring on the centre next",
+   "hit"
+  ],
+  [
+   "move3a",
+   71.5,
+   "11:37",
+   "move3-3 3 July morning: red guns roll into line on Seminary + Emmitsburg Rd ridges; ~150 counter",
+   "ticks"
+  ],
+  [
+   "move3a",
+   87,
+   "11:53",
+   "move3-3 Hunt badge; Union gun row on the II Corps front; 77 GUNS vs NEARLY 150 (Hunt)",
+   "ticks, hit"
+  ],
+  [
+   "move3b",
+   9,
+   "12:04",
+   "move3-4 1 PM bombardment: red K.gun -> arcs -> impacts mostly BEHIND Cemetery Ridge (overshoot zone)",
+   "gun fire, impact booms + shake each"
+  ],
+  [
+   "move3b",
+   17.5,
+   "12:12",
+   "move3-4 Leister House hit; BUTTERFIELD WOUNDED; 17 horses fall; Lydia Leister quote card",
+   "impacts, hit (stamp), ticks"
+  ],
+  [
+   "move3b",
+   42,
+   "12:37",
+   "move3-5 Union batteries silent (grey dots), ammo chests FULL; red belief card: UNION GUNS KNOCKED OUT",
+   "hit, last impacts"
+  ],
+  [
+   "move3b",
+   57,
+   "12:52",
+   "move3-6 ~3 PM: Pickett/Pettigrew/Trimble step out of the woods; ~12,500 counter; badges",
+   "ticks"
+  ],
+  [
+   "move3b",
+   90,
+   "13:25",
+   "move3-7 the Angle: Emmitsburg Rd fences, volleys from the wall, CANISTER (flat blasts, big impacts)",
+   "mg, gun fire, impact booms + shake"
+  ],
+  [
+   "move3b",
+   101,
+   "13:36",
+   "move3-7 ~200 follow Armistead over the wall at THE ANGLE (ring); Stannard on the flank",
+   "mg, impacts, hit"
+  ],
+  [
+   "move3c",
+   1,
+   "13:50",
+   "move3-8 zoom out (opt 1): survivors stream back; CASUALTIES (charge) CONF ~6,000 ABOUT HALF \u00b7 UNION ~1,500",
+   "hits"
+  ],
+  [
+   "move3c",
+   20,
+   "14:09",
+   "move3-8 Lee rides out; quote 'NEVER MIND, GENERAL, ALL THIS HAS BEEN MY FAULT.' (Fremantle)",
+   "hit"
+  ],
+  [
+   "move3c",
+   25,
+   "14:14",
+   "move3-8 battle card GETTYSBURG 1-3 JULY \u00b7 UNION 23,049 \u00b7 CONFEDERATE 28,063 (ABT) \u00b7 ABOUT 51,000",
+   "hits"
+  ],
+  [
+   "move3c",
+   32.5,
+   "14:22",
+   "move3-8 MEADE'S METHOD complete: line 3 READ THE NEXT BLOW lights",
+   "boom"
+  ]
  ]
 }

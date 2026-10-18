@@ -219,7 +219,7 @@ B.date("13 DEC · MIDDAY", T4A + 0.1, T_ONEPM - 0.1, 30); B.date("13 DEC · 1 PM
 // ---------- flags on each side's ground ----------
 flag(FL.us, "UNITED STATES", 1600, 760, 0.4, T4A, 46);
 flag(FL.cs, "CONFEDERATE STATES", 1150, 975, 0.55, T4A, 46);
-flag(FL.us, "UNITED STATES", 1455, 830, T4A + 0.6, T_AIM + 0.6, 27);
+flag(FL.us, "UNITED STATES", 1500, 965, T4A + 0.6, T_AIM + 0.6, 27);
 flag(FL.cs, "CONFEDERATE STATES", 1205, 925, T4A + 0.7, T_AIM + 0.6, 27);
 flag(FL.us, "UNITED STATES", 1560, 790, T_AIM + 0.8, END + 1, 40);
 flag(FL.cs, "CONFEDERATE STATES", 1170, 965, T_AIM + 0.9, END + 1, 40);
@@ -240,7 +240,7 @@ K.front({ pts: CSF, sideA: "rome", sideB: "carth", t: T_ACROSS + 0.3, dur: 1.6, 
 K.front({ pts: LN.us_franklin, sideA: "carth", sideB: "carth", t: T_PLAIN + 1.2, dur: 1.4, width: 15, until: END + 1 });
 
 // ---------- move1-2: Franklin's 60,000 on the plain, Jackson's 38,000 on the ridge, the order, one division steps forward ----------
-B.fog(0.1, T_LIFT + 0.8, 0.62);
+B.fog(0.1, T_LIFT + 0.8, 0.8);
 // Confederates on the ridge (A.P. Hill's front line, Gregg behind, Jackson's corps)
 unit("ar", "rome", add(mid(LN.archer), -14, 4), "infantry", "ARCHER", { t: 0.5, w: 14, h: 9.5, tag: 5, size: "X" });
 unit("la", "rome", add(mid(LN.lane), -12, 8), "infantry", "LANE", { t: 0.6, w: 14, h: 9.5, tag: 5, size: "X" });
@@ -248,7 +248,7 @@ unit("gr", "rome", add(mid(LN.gregg), 0, -12), "infantry", "GREGG (S.C.)", { t: 
 unit("pd", "rome", add(LN.cs_front[near([1160, 690])], -16, 6), "infantry", "PENDER", { t: 0.8, w: 14, h: 9.5, tag: 5, size: "X" });
 unit("jx", "rome", [1290, 1000], "infantry", "JACKSON", { t: 0.9, w: 22, h: 15, tag: 7, size: "XXX" });
 unit("lg", "rome", [1040, 470], "infantry", "LONGSTREET", { t: 1.0, w: 22, h: 15, tag: 7, size: "XXX", until: T_FLANK + 3.6 });
-ticker("JACKSON'S CORPS ON THE RIDGE", 38000, "", "left:60px;top:150px;", 1.0, 1.4, T_60 - 0.3, 6, { pre: "~", col: "#e3232f" });
+ticker("JACKSON'S CORPS ON THE RIDGE", 38000, "", "left:0;right:0;top:150px;display:flex;justify-content:center;", 0.6, 1.2, T_60 - 0.2, 6, { pre: "~", col: "#e3232f" });
 // Franklin's grand division on the plain (between the Stage Road and the river)
 const UF = LN.us_franklin, NE = [0.85, -0.53];
 const fpos = (f, d) => { const q = posOn(UF, f); return [q[0] + NE[0] * d, q[1] + NE[1] * d]; };
@@ -320,11 +320,11 @@ B.caption("AN HOUR-LONG ARTILLERY DUEL", T_ART + 0.4, T4A - 0.2, "");
 // ---------- move1-4: the terrain beat: Lane - the tongue of woods - Archer; the gap ----------
 B.caption("JACKSON'S LINE HAD A HOLE", T_HOLE, T_TONGUE + 0.6, "rome");
 const TGG = B.image("assets/media/prospect_tongue.png", 0, 0, 2880, 1620, { t: T_TONGUE, dur: 0.6, until: T_ONEPM });
-TGG.style.filter = "brightness(2.2) saturate(1.4) drop-shadow(0 0 6px #ffd54a)";
-tl.fromTo(TGG, { opacity: 1 }, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, T_TONGUE + 0.6);
+TGG.style.filter = "brightness(1.5) saturate(1.2) drop-shadow(0 0 4px #ffd54a)";
+tl.fromTo(TGG, { opacity: 0.75 }, { opacity: 0.3, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut", immediateRender: false }, T_TONGUE + 0.6);
 box("TONGUE OF SWAMPY WOODS", ...add(PL.pyramid, 34, -10), T_TONGUE + 0.3, 4.6, T_ONEPM, { bg: "#d8ecd6" });
-box("LANE", ...add(mid(LN.lane), -26, -10), T_TONGUE - 0.6, 4.4, T_ONEPM, { bg: "#f3d6d0" });
-box("ARCHER", ...add(mid(LN.archer), -28, 2), T_TWOB + 0.1, 4.4, T_ONEPM, { bg: "#f3d6d0" });
+tl.to(B.units.la.el, { scale: 1.35, duration: 0.3, yoyo: true, repeat: 3 }, T_TONGUE - 0.6); SFX("ref:pop", T_TONGUE - 0.6);
+tl.to(B.units.ar.el, { scale: 1.35, duration: 0.3, yoyo: true, repeat: 3 }, T_TWOB + 0.1); SFX("ref:pop", T_TWOB + 0.1);
 const GAPL = glowPath(LN.gap, "#ffd54a", 2.6, T_GAP, T_ONEPM, 5, 0.95);
 ruler(add(LN.gap[0], 13, -6), add(LN.gap[LN.gap.length - 1], 13, -8), "600 YARDS", T_GAP + 0.3, T_AIM, { size: 4.4, tick: 4.5, w: 1.4, lo: 3.4 });
 const BEL = scr(`<div style="display:flex;align-items:center;gap:18px;padding:14px 30px 16px;background:rgba(18,16,12,0.92);border-top:6px solid #e3232f;font-family:Oswald;font-weight:700;color:#f7f3ea">
@@ -380,7 +380,7 @@ B.grey(["gr"], T_MORT + 0.3, 0.6);
 B.move("cj", T_HALF, 1.6, 1236, 868); B.move("si", T_HALF + 0.1, 1.6, 1262, 900);
 ruler(add(PL.pyramid, 0, 14), [1232, 884], "OVER HALF A MILE", T_HALF + 0.3, T_GIB, { size: 5, tick: 4, w: 1.6, lo: 5 });
 ticker("PRISONERS", 300, "", "right:60px;top:150px;", T_300 - 0.2, 1.2, T_SUPP, 6, { pre: "OVER ", col: "#2f6fe0", sub: "AND SEVERAL STANDARDS (MEADE'S REPORT)" });
-glowPath(PD.roads.military.flat().length ? PD.roads.military.reduce((a, g) => (g.length > a.length ? g : a), []) : LN.gregg, "#7fb0ff", 2.4, T_ROAD, T_SUPP + 1, 3, 0.85);
+glowPath(LN.gregg, "#7fb0ff", 2.4, T_ROAD, T_SUPP + 1, 3, 0.85);
 box("THE MILITARY ROAD", 1190, 902, T_ROAD + 0.2, 5, T_SUPP + 1, { bg: "#dcecf8" });
 // Gibbon's division fighting on the right (north), against Lane at the railroad embankment
 unit("gb", "carth", [1392, 728], "infantry", "GIBBON", { t: T_GIB - 0.6, w: 16, h: 11, tag: 6, size: "XX" });
