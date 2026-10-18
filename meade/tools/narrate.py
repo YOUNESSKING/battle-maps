@@ -9,10 +9,11 @@ SCRIPT = "/home/user/battle-maps/meade/script.md"
 OUT = "/home/user/battle-maps/meade/audio"
 GAP_PARA, GAP_SECTION = 0.6, 0.8
 # how the TTS should say foreign names (the written script and timing.json keep the real spelling)
-PRON = {"Shenandoah": "Shenan-doah", "Massanutten": "Massa-nutten", "Manassas": "Muh-nassus", "Frémont": "Free-mont",
-        "Brawner": "Braw-ner", "Rappahannock": "Rappa-hannock", "Rapidan": "Rappi-dan", "Imboden": "Im-boh-den",
-        "Ewell": "You-ell", "Kernstown": "Kerns-town", "Rodes": "Roads", "Bristoe": "Bris-toe", "Chancellorsville": "Chancellors-ville",
-        "Strasburg": "Strass-burg", "McGuire": "Mc-Gwire", "Guinea": "Ginny"}
+PRON = {"Meade": "Meed", "Gettysburg": "Gettys-burg", "Leister": "Lie-ster", "Rappahannock": "Rappa-hannock", "Cadiz": "Kuh-diz",
+        "Fremantle": "Free-mantle", "Armistead": "Armi-sted", "Emmitsburg": "Emmits-burg", "Gouverneur": "Guvver-neer",
+        "Maxcy": "Max-ee", "Birney": "Bur-nee", "Culp's": "Culps", "Sickles": "Sickles", "Pettigrew": "Petti-grew",
+        "Frederick": "Fredrick", "Fredericksburg": "Fredericks-burg", "Hancock": "Han-cock", "Longstreet": "Long-street",
+        "Chancellorsville": "Chancellors-ville", "Vicksburg": "Vicks-burg", "Potomac": "Puh-toe-mac", "Lane": "Lane"}
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
 text = open(SCRIPT).read()

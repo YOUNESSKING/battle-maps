@@ -184,7 +184,7 @@ used instead); the OR casualty tables only as OCR (garbled; double-check list).
 - "Meade won by luck": handled by the content (moves 2-3), no claim about "modern historians" in the voice.
 - Gemini "Meade was solely responsible for the victory": CORRECTED (Hunt, Hancock, Warren, Gibbon etc. named in the script).
 
-## Flags (owner decision pending; see build/flag-options.jpg)
+## Flags (OWNER CHOSE A1 on 2026-10-18: First National everywhere; see build/flag-options.jpg)
 - US 34-star flag for both battles (35 stars only from 4 Jul 1863).
 - Confederate: First National (13 stars) for Dec 1862; for Jul 1863 the Second National (Act of 1 May 1863) was the official national
   flag, but its canton is the battle-flag cross. Option A1 (First National everywhere) vs A2 (Second National for Gettysburg).
