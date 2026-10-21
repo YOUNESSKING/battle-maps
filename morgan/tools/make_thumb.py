@@ -1,72 +1,94 @@
-"""Thumbnail (HANDOVER 1b / STYLE_LOCK 0b formula): vidIQ battlefield (left 2/3; its wrong-way arrows inpainted out and
-redrawn as the real double envelopment) + Morgan's real portrait (Peale, PD) cut out on the right third + red brush banner.
-usage (from morgan/): python3 tools/make_thumb.py -> youtube/thumb/morgan-thumb-{A,B}.jpg"""
+"""Thumbnail in the Tactical Genius style (HANDOVER 1b / STYLE_LOCK 0b): vidIQ battlefield (dense 3D unit counters,
+gritty, desaturated; references = TG Ridgway / Patton / Zhukov) on the left 2/3, Morgan's real portrait (Charles Willson
+Peale, public domain) emerging from the dark on the right third, small photo name tags on the map, red brush banner bottom-left.
+usage (from morgan/): python3 tools/make_thumb.py -> youtube/thumb/morgan-thumb-{A,B}.jpg/.png"""
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageEnhance
-from rembg import remove, new_session
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageEnhance, ImageOps
 
 W, H = 1280, 720
 F = "tools/oswald-latin-700-normal.ttf"
-bg = Image.open("youtube/thumb/bg_clean.png").convert("RGB").resize((W, H), Image.LANCZOS)
+rng = np.random.default_rng(3)
+
+# 1) battlefield, shifted left so the British mass + both envelopment arrows stay clear of the portrait
+bg = Image.open("youtube/thumb/bg_vidiq2.png").convert("RGB").resize((W, H), Image.LANCZOS)
+SHIFT = -215
+canvas = Image.new("RGB", (W, H), (14, 14, 14)); canvas.paste(bg, (SHIFT, 0))
+canvas = ImageEnhance.Color(canvas).enhance(0.85); canvas = ImageEnhance.Contrast(canvas).enhance(1.08)
+base = canvas.convert("RGBA")
+
+# 2) dark right third (TG: the commander stands in shadow at the edge of the map)
+shade = Image.new("L", (W, H), 0); sd = ImageDraw.Draw(shade)
+for i in range(520):
+    sd.line([(W - 520 + i, 0), (W - 520 + i, H)], fill=int(235 * min(1, (i / 520) ** 0.8)))
+base.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 10)] * 3, shade)))
+
+# 3) Morgan: real portrait, desaturated + contrast (gritty), its dark painted background fades into the shadow
+src = Image.open("assets/media/morgan_peale_src.jpg").convert("RGB")
+oval = Image.new("L", src.size, 0)  # the painting is an oval on a white scan: keep only the inside (shrunk), black outside
+ImageDraw.Draw(oval).ellipse([src.width * 0.035, src.height * 0.03, src.width * 0.965, src.height * 0.985], fill=255)
+oval = oval.filter(ImageFilter.GaussianBlur(14))
+src = Image.composite(src, Image.new("RGB", src.size, (12, 12, 12)), oval)
+src = src.crop((40, 30, src.width - 20, src.height))                       # chest-up, keep the epaulettes
+g = ImageEnhance.Color(src).enhance(0.55); g = ImageEnhance.Contrast(g).enhance(1.25); g = ImageEnhance.Brightness(g).enhance(0.95)
+h = 790; w = int(g.width * h / g.height); g = g.resize((w, h), Image.LANCZOS)
+yy, xx = np.mgrid[0:h, 0:w]
+m = np.clip(1.25 - np.sqrt(((xx - w * 0.52) / (w * 0.55)) ** 2 + ((yy - h * 0.42) / (h * 0.62)) ** 2), 0, 1) ** 0.9
+m = np.minimum(m * 1.6, 1) * np.clip(xx / (w * 0.25), 0, 1)                # soft left edge toward the map
+mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(10))
+# darken the painted background (not the figure) so the oval edge disappears into the shadow
+dk = np.clip(1.15 - np.sqrt(((xx - w * 0.5) / (w * 0.5)) ** 2 + ((yy - h * 0.55) / (h * 0.62)) ** 2), 0, 1)
+lum = np.asarray(g.convert("L"), np.float32) / 255
+keep = np.clip(dk * 1.8, 0, 1) * 0.75 + np.clip((lum - 0.35) * 2.5, 0, 1) * 0.25          # bright figure parts stay lit
+g = Image.fromarray((np.asarray(g, np.float32) * (0.18 + 0.82 * keep[..., None])).clip(0, 255).astype(np.uint8))
+port = g.convert("RGBA"); port.putalpha(mask)
+grain = Image.fromarray(rng.normal(0, 14, (h, w, 1)).repeat(3, 2).clip(-40, 40).astype(np.int16).__add__(128).astype(np.uint8))
+port = Image.composite(Image.blend(port.convert("RGB"), grain, 0.06).convert("RGBA"), port, mask); port.putalpha(mask)
+base.alpha_composite(port, (W - w + 40, H - h + 40))
+
+# 4) TG name tags: small square photo + dark plate under it
+d = ImageDraw.Draw(base); ft = ImageFont.truetype(F, 18)
 
 
-def bez(p0, c, p1, n=60):
-    return [((1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * c[0] + t * t * p1[0], (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * c[1] + t * t * p1[1])
-            for t in np.linspace(0, 1, n)]
+def photo_tag(img, name, x, y, col):
+    p = Image.open(img).convert("RGBA"); p = ImageOps.fit(p, (64, 72), centering=(0.5, 0.25))
+    frame = Image.new("RGBA", (70, 78), (20, 18, 14, 255)); frame.alpha_composite(p, (3, 3))
+    ImageDraw.Draw(frame).rectangle([0, 0, 69, 77], outline=col, width=3)
+    base.alpha_composite(frame, (x, y))
+    tw = d.textlength(name, font=ft); d.rectangle([x + 35 - tw / 2 - 8, y + 80, x + 35 + tw / 2 + 8, y + 106], fill=(18, 16, 12))
+    d.text((x + 35 - tw / 2, y + 81), name, font=ft, fill=(240, 236, 226))
 
 
-def arrow(layer, p0, c, p1, w=30):
-    pts = bez(p0, c, p1)
-    d = ImageDraw.Draw(layer)
-    (x1, y1), (x2, y2) = pts[-6], pts[-1]
-    v = np.array([x2 - x1, y2 - y1]); v = v / np.linalg.norm(v); nrm = np.array([-v[1], v[0]])
-    tip = np.array([x2, y2]) + v * 26
-    head = [tuple(tip), tuple(np.array([x2, y2]) + nrm * w * 1.25), tuple(np.array([x2, y2]) - nrm * w * 1.25)]
-    dense = bez(p0, c, p1, 400)[:-8]
-    for col, ww, hd in (((25, 20, 15, 230), w + 8, 6), ((250, 250, 250, 255), w, 0)):
-        for (x, y) in dense:  # smooth stroke: overlapping discs (PIL wide polylines show segment joints)
-            d.ellipse([x - ww / 2, y - ww / 2, x + ww / 2, y + ww / 2], fill=col)
-        hh = [tuple(tip + v * hd)] + [tuple(np.array(p) + (np.array(p) - np.array([x2, y2])) * (hd / 40)) for p in head[1:]]
-        d.polygon(hh, fill=col)
+def place(t, x, y):
+    tw = d.textlength(t, font=ft); d.rectangle([x, y, x + tw + 16, y + 28], fill=(18, 16, 12)); d.rectangle([x, y, x + tw + 16, y + 28], outline=(200, 196, 186), width=1)
+    d.text((x + 8, y + 2), t, font=ft, fill=(240, 236, 226))
 
 
-lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-arrow(lay, (235, 350), (215, 545), (455, 575))       # American left (militia + cavalry) around the British right
-arrow(lay, (590, 268), (770, 240), (800, 345))       # American right around the British left
-base = bg.convert("RGBA"); base.alpha_composite(lay.filter(ImageFilter.GaussianBlur(0.6)))
-d = ImageDraw.Draw(base); f = ImageFont.truetype(F, 24)
+photo_tag("assets/media/morgan_head.png", "MORGAN", 150, 130, (70, 110, 220))
+photo_tag("assets/media/tarleton_head.png", "TARLETON", 520, 355, (210, 45, 45))
+place("COWPENS", 300, 40)
 
 
-def tag(t, x, y, col):
-    w = d.textlength(t, font=f); d.rectangle([x, y, x + w + 20, y + 34], fill=(18, 16, 12)); d.rectangle([x, y, x + w + 20, y + 34], outline=col, width=3)
-    d.text((x + 10, y + 2), t, font=f, fill=(247, 243, 234))
-
-
-tag("MORGAN", 96, 236, (60, 110, 230)); tag("TARLETON", 640, 610, (210, 40, 40)); tag("COWPENS · 1781", 560, 196, (201, 180, 138))
-# right third: shade + Morgan cut-out (Peale portrait, background removed), looking toward the map
-shade = Image.new("RGBA", (W, H), (0, 0, 0, 0)); sd = ImageDraw.Draw(shade)
-for i in range(460):
-    sd.line([(W - 460 + i, 0), (W - 460 + i, H)], fill=(0, 0, 0, int(170 * i / 460)))
-base.alpha_composite(shade)
-src = Image.open("assets/media/morgan_head.png").convert("RGBA")
-flat = Image.new("RGB", src.size, (40, 40, 40)); flat.paste(src, mask=src.split()[3])
-cut = remove(flat, session=new_session("isnet-general-use")); cut = cut.crop(cut.getbbox())
-g = ImageEnhance.Contrast(cut).enhance(1.12); g.putalpha(cut.split()[3])
-h = int(H * 0.98); w = int(g.width * h / g.height); g = g.resize((w, h), Image.LANCZOS)
-glow = Image.new("RGBA", g.size, (255, 210, 140, 0)); glow.putalpha(g.split()[3].filter(ImageFilter.GaussianBlur(14)).point(lambda v: int(v * 0.45)))
-x0 = W - w + int(w * 0.06)
-base.alpha_composite(glow, (x0, H - h)); base.alpha_composite(g, (x0, H - h))
-
-
+# 5) red brush banner (rough edges), bottom-left, overlapping the map
 def banner(text, out, size):
-    im = base.copy(); dr = ImageDraw.Draw(im); ft = ImageFont.truetype(F, size)
-    tw = dr.textlength(text, font=ft); bx, by = 34, 40  # top-left over the empty sky: bottom-left would hide the British line
-    brush = Image.new("RGBA", (W, H), (0, 0, 0, 0)); bd = ImageDraw.Draw(brush)
-    bd.polygon([(bx - 10, by + 14), (bx + tw + 60, by - 4), (bx + tw + 74, by + size + 40), (bx + 6, by + size + 54)], fill=(176, 18, 26, 240))
-    im.alpha_composite(brush.filter(ImageFilter.GaussianBlur(1.2)))
-    dr.text((bx + 26, by + 4), text, font=ft, fill=(255, 255, 255), stroke_width=2, stroke_fill=(60, 0, 0))
-    im.convert("RGB").save(out, quality=92); im.convert("RGB").save(out[:-4] + ".png"); print(out)
+    im = base.copy(); dr = ImageDraw.Draw(im); fnt = ImageFont.truetype(F, size)
+    tw = dr.textlength(text, font=fnt); x0, y0 = 22, H - size - 70; x1, y1 = x0 + tw + 70, H - 26
+    m = Image.new("L", (W, H), 0); md = ImageDraw.Draw(m)
+    top = [(x, y0 + 10 + rng.normal(0, 4)) for x in np.linspace(x0 + 14, x1 - 20, 40)]
+    bot = [(x, y1 - 6 + rng.normal(0, 5)) for x in np.linspace(x1 - 10, x0 + 4, 40)]
+    md.polygon(top + [(x1 + 8, (y0 + y1) / 2)] + bot + [(x0 - 6, (y0 + y1) / 2 + 6)], fill=255)
+    for _ in range(90):  # dry-brush streaks at the ends
+        yy0 = rng.uniform(y0 + 12, y1 - 10); L = rng.uniform(20, 70); th = rng.uniform(2, 6)
+        xe = x1 + rng.uniform(-30, 10) if rng.random() < 0.6 else x0 + rng.uniform(-10, 25)
+        md.line([(xe, yy0), (xe + (L if xe > x0 + 40 else -L), yy0 + rng.normal(0, 2))], fill=int(rng.uniform(120, 255)), width=int(th))
+    m = m.filter(ImageFilter.GaussianBlur(1.1))
+    tex = (np.asarray(Image.new("RGB", (W, H), (178, 20, 26)), np.float32) * (0.82 + 0.18 * rng.random((H, W, 1)))).clip(0, 255).astype(np.uint8)
+    red = Image.fromarray(tex).convert("RGBA"); red.putalpha(m)
+    im.alpha_composite(red)
+    shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(shadow).text((x0 + 40, y0 + 2), text, font=fnt, fill=(0, 0, 0, 200))
+    im.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(4)), (4, 6))
+    dr = ImageDraw.Draw(im); dr.text((x0 + 36, y0 - 2), text, font=fnt, fill=(255, 255, 255))
+    im = im.convert("RGB"); im.save(out, quality=93); im.save(out[:-4] + ".png"); print(out)
 
 
-banner("LET THEM RUN", "youtube/thumb/morgan-thumb-A-let-them-run.jpg", 118)
-banner("ONE HOUR", "youtube/thumb/morgan-thumb-B-one-hour.jpg", 128)
+banner("LET THEM RUN", "youtube/thumb/morgan-thumb-A-let-them-run.jpg", 112)
+banner("ONE HOUR", "youtube/thumb/morgan-thumb-B-one-hour.jpg", 124)

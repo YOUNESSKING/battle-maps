@@ -9,7 +9,7 @@
 ## Thumbnails (Test & compare, HANDOVER 1b formula)
 - A (main): youtube/thumb/morgan-thumb-A-let-them-run.png, "LET THEM RUN" (type 1: the hero's decision: he ordered the militia to run)
 - B: youtube/thumb/morgan-thumb-B-one-hour.png, "ONE HOUR" (type 3: stakes)
-Battlefield: vidIQ-generated Cowpens (its wrong-way arrows removed and redrawn as the real double envelopment), name tags MORGAN / TARLETON / COWPENS 1781; Morgan's portrait (Charles Willson Peale, public domain) on the right third.
+Tactical Genius style: vidIQ-generated Cowpens battlefield with dense 3D unit counters and the double-envelopment arrows (TG references Ridgway, Patton, Zhukov), photo name tags MORGAN / TARLETON, Morgan's real portrait (Charles Willson Peale, public domain) emerging from the shadow on the right third, red brush banner bottom-left.
 
 ## Description
 By 1780, the American Revolution was being lost in the South. Then, on a cold January morning, a crippled frontier wagon driver wiped out Britain's most feared legion in less than an hour.
