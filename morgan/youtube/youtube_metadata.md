@@ -1,6 +1,6 @@
 # YouTube metadata: Daniel Morgan v4 (HANDOVER §10 title pattern, STYLE_LOCK §6 description: NO links)
 
-**Video:** Daniel-Morgan-Top-3-Tactical-Moves-1080p-v5.mp4 · 17:39 · 1080p · -14 LUFS
+**Video:** Daniel-Morgan-Top-3-Tactical-Moves-1080p-v6.mp4 · 17:39 · 1080p · -14 LUFS
 **Locked title (vidIQ 94):** Daniel Morgan's Top 3 Legendary Tactical Moves | The Man Who Destroyed Britain's Elite in 1 Hour
 
 ## Alternative titles (for Test & compare)

@@ -26,3 +26,14 @@ Master: https://gofile.io/d/7p1ggtrK (17:39, -14.2 LUFS; folder also has both th
   still studied..."), writes timing_cut.json; music bed, SFX cues and chapters follow (`CUT=1` for make_music_bed.py / mix.py).
 - Full rebuild: `bash build/run_v5.sh` (assemble --v5 -> cut -> CUT=1 music bed -> CUT=1 mix).
 Rule for every future video: never reuse an image; a 20 s archive paragraph needs 4-5 different images; keep the hook <= ~65-100 s.
+
+## v6 (2026-10-21, owner: "low-quality images; replace the white ones; don't zoom on every image / zoomed at the start, not clear; music still loud")
+Master: https://gofile.io/d/GJbziotm (17:39, -14.2 LUFS; folder also has both thumbnails and the PDF).
+- HD: every archive image >= 1500 px; 14 low-res ones upscaled with Real-ESRGAN x4plus (`tools/upscale.py`, originals in archive/orig/)
+  because Wikimedia blocked downloads (429 for 35+ min); The Met API (v1.1 search, CC0, full-size originals) works as a source.
+- White images out: schematic map + Declaration line-art dropped, second letter + Guilford plan replaced (Met: Leutze "Washington
+  Crossing the Delaware", Müller after Trumbull "Battle of Bunker's Hill"), medal cut onto dark, the one letter toned darker.
+- Moves (`archive_shots.boxes`): every shot STARTS on the whole image; mix of push-in (15 %), gentle pan, near-still drift; tall /
+  square images shown whole on a dark blurred fill (`fit`), never cropped. 35 shots, 0 repeats.
+- Music: MUSIC_VOL 0.045 (owner: "still loud"; the locked 0.08 was too loud for this video).
+Rule for future videos: >= 1500 px images only (upscale if needed), no white/bright scans, no shot that starts zoomed in, music <= 0.05.
