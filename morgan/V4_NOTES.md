@@ -1,0 +1,18 @@
+# Morgan v4 (2026-10-21): brought up to STYLE_LOCK / HANDOVER v3 without re-rendering any map scene
+
+Master: https://gofile.io/d/dsJbx5Io (18:21, 1080p, -14.2 LUFS). Voice and script unchanged (owner's choice).
+
+Done (no re-render):
+- Music: the locked Kevin MacLeod bed (Long Note One / Wounded / Long Note Two / Anguish, `tools/make_music_bed.py`), MUSIC_VOL 0.08, locked ducking.
+- Sound: the locked kit (`assets/media/sfx/` from goosegreen, `tools/sfx_mix_lib.py`, `tools/check_sound_lock.py` = OK): real distant-artillery
+  booms for cannon, zoom whoosh only on the 3 biggest camera moves, hit on title/casualty cards; Morgan's own musket / cavalry / cheer
+  sounds kept (no 18th-century equivalent in the kit). Locked mix chain: SFX ducking, limiter 0.5, two-pass loudnorm -14. `tools/mix.py`.
+- Archive: Netflix look with `tools/archive_shots.py` (3D depth photos, ~4 s shots, lower-third labels, headline date cards for Cowpens,
+  Saratoga, Yorktown). Owner: portraits were held too long -> each portrait at most 4.5 s once per segment, then event images
+  (`archive/slots.json`); the 29 s bio card is cut after 8 s to wagon / Braddock cutaways (`archive/hook_cutaways.json`).
+  Build: `python3 tools/assemble.py --v4` (resumable via build/seg/*.v4 markers), then `python3 tools/mix.py`.
+- Packaging: TG title pattern (vidIQ 94), locked-formula thumbnails (`tools/make_thumb.py`, A "LET THEM RUN", B "ONE HOUR"),
+  link-free description, facts-to-check box, PDF (`tools/make_upload_pdf.py "Daniel Morgan" Morgan`).
+
+Not done (would need a re-render or a re-voice): hook v2, dark HD maps, territory/front-line looks, silhouette counters, photo badges,
+impact/bomb effects, new casualty/method cards, voice A, a stakes-first line 1.
