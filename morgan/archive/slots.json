@@ -116,6 +116,42 @@
       0.7
      ]
     ]
+   },
+   {
+    "file": "a02_n1.jpg",
+    "title": "The combat between Colonels Washington and Tarleton at the Battle of Cowpens (19th-c. engraving)",
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.35,
+      0.75
+     ],
+     [
+      0.65,
+      0.2
+     ]
+    ]
+   },
+   {
+    "file": "a02_n2.jpg",
+    "title": "Col. William Washington at the Battle of Cowpens (19th-c. print)",
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.3,
+      0.3
+     ],
+     [
+      0.75,
+      0.6
+     ]
+    ]
    }
   ]
  },
@@ -194,6 +230,24 @@
       0.6
      ]
     ]
+   },
+   {
+    "file": "a03_n1.jpg",
+    "title": "General Burgoyne (engraved portrait, Murray's History of the American War)",
+    "points": [
+     [
+      0.5,
+      0.3
+     ],
+     [
+      0.5,
+      0.8
+     ],
+     [
+      0.5,
+      0.55
+     ]
+    ]
    }
   ]
  },
@@ -234,6 +288,42 @@
      [
       0.08,
       0.65
+     ]
+    ]
+   },
+   {
+    "file": "a04_n1.jpg",
+    "title": "Franklin's reception at the court of France, 1778 (19th-c. print after Anthony Hosmer?)",
+    "points": [
+     [
+      0.5,
+      0.5
+     ],
+     [
+      0.2,
+      0.5
+     ],
+     [
+      0.8,
+      0.5
+     ]
+    ]
+   },
+   {
+    "file": "a04_n2.jpg",
+    "title": "Battle of Saratoga: Gen. Arnold wounded in the attack on the Hessian redoubt (print)",
+    "points": [
+     [
+      0.4,
+      0.55
+     ],
+     [
+      0.2,
+      0.4
+     ],
+     [
+      0.75,
+      0.45
      ]
     ]
    }
@@ -314,6 +404,24 @@
       0.2
      ]
     ]
+   },
+   {
+    "file": "a05_n1.jpg",
+    "title": "Home of General Daniel Morgan, Winchester, Va. (postcard)",
+    "points": [
+     [
+      0.45,
+      0.5
+     ],
+     [
+      0.25,
+      0.3
+     ],
+     [
+      0.7,
+      0.6
+     ]
+    ]
    }
   ]
  },
@@ -356,6 +464,24 @@
       0.75
      ]
     ]
+   },
+   {
+    "file": "a06_n1.jpg",
+    "title": "Gen. Marion and the British officer (19th-c. engraving: militia partisans at a campfire)",
+    "points": [
+     [
+      0.5,
+      0.5
+     ],
+     [
+      0.3,
+      0.65
+     ],
+     [
+      0.75,
+      0.55
+     ]
+    ]
    }
   ]
  },
@@ -392,6 +518,42 @@
      [
       0.5,
       0.15
+     ]
+    ]
+   },
+   {
+    "file": "a07_n1.jpg",
+    "title": "Hannibal on the Alps (Annibale arrivato alla cima delle Alpi, print)",
+    "points": [
+     [
+      0.5,
+      0.4
+     ],
+     [
+      0.3,
+      0.5
+     ],
+     [
+      0.75,
+      0.55
+     ]
+    ]
+   },
+   {
+    "file": "a07_n2.jpg",
+    "title": "Declaration of Independence in Congress, Independence Hall, July 4th 1776 (print)",
+    "points": [
+     [
+      0.5,
+      0.35
+     ],
+     [
+      0.25,
+      0.4
+     ],
+     [
+      0.75,
+      0.4
      ]
     ]
    }
@@ -468,6 +630,42 @@
       0.75
      ]
     ]
+   },
+   {
+    "file": "a08_n1.jpg",
+    "title": "Marion's Brigade crossing the Pedee River, S.C., 1778 (19th-c. print)",
+    "points": [
+     [
+      0.5,
+      0.4
+     ],
+     [
+      0.3,
+      0.55
+     ],
+     [
+      0.75,
+      0.45
+     ]
+    ]
+   },
+   {
+    "file": "a08_n2.jpg",
+    "title": "The Deeds of Marion's Men (c1860 sheet-music vignette: river crossing)",
+    "points": [
+     [
+      0.5,
+      0.5
+     ],
+     [
+      0.25,
+      0.45
+     ],
+     [
+      0.75,
+      0.4
+     ]
+    ]
    }
   ]
  },
@@ -503,6 +701,42 @@
      ],
      [
       0.2,
+      0.85
+     ]
+    ]
+   },
+   {
+    "file": "a09_n1.jpg",
+    "title": "Battle of Guildford, fought on the 15th of March 1781 (London, 1787 plan)",
+    "points": [
+     [
+      0.45,
+      0.25
+     ],
+     [
+      0.5,
+      0.55
+     ],
+     [
+      0.5,
+      0.85
+     ]
+    ]
+   },
+   {
+    "file": "a09_n2.jpg",
+    "title": "Lord Cornwallis (engraved portrait)",
+    "points": [
+     [
+      0.5,
+      0.3
+     ],
+     [
+      0.5,
+      0.6
+     ],
+     [
+      0.5,
       0.85
      ]
     ]
@@ -584,6 +818,24 @@
     ]
    },
    {
+    "file": "a05_b.jpg",
+    "title": "Statue of General Daniel Morgan (1881), Spartanburg, SC",
+    "points": [
+     [
+      0.45,
+      0.35
+     ],
+     [
+      0.35,
+      0.6
+     ],
+     [
+      0.5,
+      0.88
+     ]
+    ]
+   },
+   {
     "file": "a11_b.jpg",
     "title": "The Battle of Cowpens (William Ranney, 1845)",
     "points": [
@@ -598,6 +850,42 @@
      [
       0.15,
       0.3
+     ]
+    ]
+   },
+   {
+    "file": "a11_n1.jpg",
+    "title": "Morgan Monument, Spartanburg, S.C. (linen postcard)",
+    "points": [
+     [
+      0.5,
+      0.3
+     ],
+     [
+      0.5,
+      0.7
+     ],
+     [
+      0.8,
+      0.5
+     ]
+    ]
+   },
+   {
+    "file": "a11_n2.jpg",
+    "title": "Statue of General Daniel Morgan (1881), Spartanburg, SC (photo)",
+    "points": [
+     [
+      0.5,
+      0.4
+     ],
+     [
+      0.5,
+      0.15
+     ],
+     [
+      0.5,
+      0.75
      ]
     ]
    }

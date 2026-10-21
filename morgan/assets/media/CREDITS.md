@@ -243,3 +243,21 @@ All via Wikimedia Commons, 960px thumbnails. Licence for all: Public domain (US 
 - hook_e1: "Conestoga Wagon 1883" - painting, 1883 - PD - https://commons.wikimedia.org/wiki/File:Conestoga_Wagon_1883.jpg
 - hook_e2: "Defeat of General Braddock..." - John Andrew (engraver), 1855 (LoC) - PD - https://commons.wikimedia.org/wiki/File:Defeat_of_General_Braddock,_in_the_French_and_Indian_War,_in_Virginia_in_1755_-_John_Andrew,_sc._LCCN2006691550.jpg
 - hook_e3: "Fall of Braddock" - engraving (NYPL scan, cropped) - PD - https://commons.wikimedia.org/wiki/File:Fall_of_Braddock_(NYPL_Hades-254416-429642).jpg
+
+## Archive (unique images, v5)
+
+- a02_n1.jpg: "The combat between Colonels Washington and Tarleton at the Battle of Cowpens (19th-c. engraving)" - [1830s-1850s] - Public domain (no known restrictions) - LoC 2006682733 - https://www.loc.gov/pictures/item/2006682733/
+- a02_n2.jpg: "Col. William Washington at the Battle of Cowpens (19th-c. print)" - [19th c.] - Public domain (no known restrictions) - LoC 2004674937 - https://www.loc.gov/pictures/item/2004674937/
+- a03_n1.jpg: "General Burgoyne (engraved portrait, Murray's History of the American War)" - 1778 - Public domain (no known restrictions) - LoC 2001697119 - https://www.loc.gov/pictures/item/2001697119/
+- a04_n1.jpg: "Franklin's reception at the court of France, 1778 (19th-c. print after Anthony Hosmer?)" - 19th c. - Public domain (no known restrictions) - LoC 2024665598 - https://www.loc.gov/pictures/item/2024665598/
+- a04_n2.jpg: "Battle of Saratoga: Gen. Arnold wounded in the attack on the Hessian redoubt (print)" - 1858 - Public domain (no known restrictions) - LoC 2021650969 - https://www.loc.gov/pictures/item/2021650969/
+- a05_n1.jpg: "Home of General Daniel Morgan, Winchester, Va. (postcard)" - 1905 - Public domain (no known restrictions) - LoC 2025676687 - https://www.loc.gov/pictures/item/2025676687/
+- a06_n1.jpg: "Gen. Marion and the British officer (19th-c. engraving: militia partisans at a campfire)" - [186-?] - Public domain (no known restrictions) - LoC 2004674545 - https://www.loc.gov/pictures/item/2004674545/
+- a07_n1.jpg: "Hannibal on the Alps (Annibale arrivato alla cima delle Alpi, print)" - 1819 - Public domain (no known restrictions) - LoC 95521873 - https://www.loc.gov/pictures/item/95521873/
+- a07_n2.jpg: "Declaration of Independence in Congress, Independence Hall, July 4th 1776 (print)" - 19th c. - Public domain (no known restrictions) - LoC 2021652647 - https://www.loc.gov/pictures/item/2021652647/
+- a08_n1.jpg: "Marion's Brigade crossing the Pedee River, S.C., 1778 (19th-c. print)" - [1840-1900] - Public domain (no known restrictions) - LoC 2006691581 - https://www.loc.gov/pictures/item/2006691581/
+- a08_n2.jpg: "The Deeds of Marion's Men (c1860 sheet-music vignette: river crossing)" - c1860 - Public domain (no known restrictions) - LoC 2001701599 - https://www.loc.gov/pictures/item/2001701599/
+- a09_n1.jpg: "Battle of Guildford, fought on the 15th of March 1781 (London, 1787 plan)" - 1787 - Public domain (no known restrictions) - LoC 2006687273 - https://www.loc.gov/pictures/item/2006687273/
+- a09_n2.jpg: "Lord Cornwallis (engraved portrait)" - 1786 - Public domain (no known restrictions) - LoC 2001699809 - https://www.loc.gov/pictures/item/2001699809/
+- a11_n1.jpg: "Morgan Monument, Spartanburg, S.C. (linen postcard)" - c1940s - Public domain (per Commons) - Wikimedia Commons File:Spartanburg - Morgan Monument.jpg - https://commons.wikimedia.org/wiki/File:Spartanburg_-_Morgan_Monument.jpg
+- a11_n2.jpg: "Statue of General Daniel Morgan (1881), Spartanburg, SC (photo)" - 2010s - CC BY 3.0 (photographer per Commons file page) - Wikimedia Commons File:Statue of General Daniel Morgan (1881) in Spartanburg, SC IMG 4818.JPG - https://commons.wikimedia.org/wiki/File:Statue_of_General_Daniel_Morgan_(1881)_in_Spartanburg,_SC_IMG_4818.JPG

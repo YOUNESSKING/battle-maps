@@ -1,6 +1,6 @@
 # YouTube metadata: Daniel Morgan v4 (HANDOVER §10 title pattern, STYLE_LOCK §6 description: NO links)
 
-**Video:** Daniel-Morgan-Top-3-Tactical-Moves-1080p-v4.mp4 · 18:21 · 1080p · -14 LUFS
+**Video:** Daniel-Morgan-Top-3-Tactical-Moves-1080p-v5.mp4 · 17:39 · 1080p · -14 LUFS
 **Locked title (vidIQ 94):** Daniel Morgan's Top 3 Legendary Tactical Moves | The Man Who Destroyed Britain's Elite in 1 Hour
 
 ## Alternative titles (for Test & compare)
@@ -22,17 +22,17 @@ Which commander should we cover next? Let us know in the comments.
 
 CHAPTERS
 0:00 The South is being lost
-1:19 The Old Wagoner: 499 lashes
-2:20 Move 1: Burgoyne marches on Albany
-4:17 Freeman's Farm: shoot the officers
-5:09 Bemis Heights and the fall of Simon Fraser
-7:21 Move 2: Tarleton hunts Morgan
-8:53 The trap: three lines and a bait
-9:59 The Battle of Cowpens
-11:57 The double envelopment
-13:32 Move 3: the escape and the race to the Dan
-14:59 Guilford Courthouse: Morgan's blueprint
-16:46 Yorktown and Morgan's legacy
+0:54 The Old Wagoner: 499 lashes
+1:38 Move 1: Burgoyne marches on Albany
+3:36 Freeman's Farm: shoot the officers
+4:27 Bemis Heights and the fall of Simon Fraser
+6:39 Move 2: Tarleton hunts Morgan
+8:11 The trap: three lines and a bait
+9:18 The Battle of Cowpens
+11:15 The double envelopment
+12:50 Move 3: the escape and the race to the Dan
+14:17 Guilford Courthouse: Morgan's blueprint
+16:04 Yorktown and Morgan's legacy
 
 SOURCES
 - Lawrence E. Babits, A Devil of a Whipping: The Battle of Cowpens (1998)
@@ -69,6 +69,6 @@ Category: Education · Made for kids: No · Language: English · Altered or synt
 - [x] No negation in title or thumbnail
 - [x] Thumbnail = same promise as the title (the Cowpens trap), 2 variants of different text types
 - [x] Description: NO links at all, licences named in words; line 1 = script hook
-- [x] Chapters from timing.json on the final audio; start at 0:00; all ≥ 10 s
+- [x] Chapters from timing_cut.json (the shortened v5 timeline) on the final audio; start at 0:00; all ≥ 10 s
 - [x] 18 tags, 354 characters; category Education; synthetic content = Yes
 - [ ] Business email: the owner must fill it in (or delete the line)
