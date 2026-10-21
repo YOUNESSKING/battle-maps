@@ -226,7 +226,10 @@ while i < len(paras):
     if paras[i]["tag"].startswith("ARCHIVE"):
         dur = starts[i + 1] - starts[i]
         if "--v4" in sys.argv:
-            if not os.path.exists(out + ".v4"):
+            only = os.environ.get("ONLY")  # e.g. ONLY=a02,a04 -> build just those slots (others reused / skipped)
+            if only and slots[n_arch].get("slot") not in only.split(","):
+                pass
+            elif not os.path.exists(out + ".v4"):
                 archive_seg_v4(i, n_arch, dur, out); print(f"{starts[i]:7.1f}s archive a{n_arch + 1:02d} v4 {dur:.1f}s", flush=True)
         elif not (preview and os.path.exists(out)) or "--archive" in sys.argv:
             archive_seg(i, n_arch, dur, out)
@@ -237,7 +240,9 @@ while i < len(paras):
         while j < len(paras) and paras[j]["tag"].startswith("MAP") and key(paras[j]) not in SCENES:
             j += 1
         dur = starts[j] - starts[i]
-        if "--v4" in sys.argv and scene == "hook2" and os.path.exists("archive/hook_cutaways.json"):
+        if "--v4" in sys.argv and os.environ.get("ONLY"):
+            pass
+        elif "--v4" in sys.argv and scene == "hook2" and os.path.exists("archive/hook_cutaways.json"):
             if not os.path.exists(out + ".v4"):
                 hook2_seg(dur, out)
         elif not ((preview or "--archive" in sys.argv or "--v4" in sys.argv) and os.path.exists(out)):
