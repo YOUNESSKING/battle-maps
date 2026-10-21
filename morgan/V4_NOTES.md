@@ -16,3 +16,13 @@ Done (no re-render):
 
 Not done (would need a re-render or a re-voice): hook v2, dark HD maps, territory/front-line looks, silhouette counters, photo badges,
 impact/bomb effects, new casualty/method cards, voice A, a stakes-first line 1.
+
+## v5 (2026-10-21, owner: "images and portraits kept repeating back and forth, the introduction was way too long")
+Master: https://gofile.io/d/7p1ggtrK (17:39, -14.2 LUFS; folder also has both thumbnails and the upload PDF).
+- **No image twice in the whole video:** one shot per image, never back to an earlier image, one portrait per person (<= 4.5 s);
+  `assemble.py` USED / DROP sets, 37 archive shots, 0 duplicates (checked from build/seg/*.v5). 15 new LoC / Commons images (`*_n*.jpg`).
+- **Intro 2:20 -> 1:38 without re-recording:** `tools/cut.py` removes whole sentences/paragraphs from picture + voice at the same
+  points (the Tarleton portrait paragraph, "He had almost no formal education.", "He liked to say...", "And yet the battle plan...
+  still studied..."), writes timing_cut.json; music bed, SFX cues and chapters follow (`CUT=1` for make_music_bed.py / mix.py).
+- Full rebuild: `bash build/run_v5.sh` (assemble --v5 -> cut -> CUT=1 music bed -> CUT=1 mix).
+Rule for every future video: never reuse an image; a 20 s archive paragraph needs 4-5 different images; keep the hook <= ~65-100 s.
