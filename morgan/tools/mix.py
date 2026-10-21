@@ -15,7 +15,8 @@ os.chdir(ROOT)
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import sfx_mix_lib
 
-T = json.load(open("audio/timing.json"))
+CUT = os.environ.get("CUT") == "1"  # tools/cut.py output (shortened intro)
+T = json.load(open("audio/timing_cut.json" if CUT else "audio/timing.json"))
 DUR = T["duration"]
 P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"] if p["tag"].startswith("MAP")}
 A = "assets/audio"
@@ -67,7 +68,7 @@ LEGACY = [  # (file, time, volume)
 os.makedirs("build", exist_ok=True)
 n = sfx_mix_lib.render(sorted(KIT), DUR, "build/sfx_kit.wav")  # runs check_sound_lock first
 print("kit cues:", n)
-inputs = ["-i", "audio/voice.wav", "-i", "build/sfx_kit.wav", "-i", "assets/media/music.wav"]
+inputs = ["-i", "audio/voice_cut.wav" if CUT else "audio/voice.wav", "-i", "build/sfx_kit.wav", "-i", "assets/media/music.wav"]
 f = ["[0:a]aresample=48000,aformat=channel_layouts=stereo,asplit=3[vo][key][key2]",
      f"[2:a]aresample=48000,atrim=0:{DUR},volume={MUSIC_VOL},afade=t=in:d=2,afade=t=out:st={DUR - 3}:d=3[mus]",
      "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]"]
@@ -90,7 +91,7 @@ r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", LN + ":p
 m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
 af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
       f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/picture.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/picture_cut.mp4" if CUT else "build/picture.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
                 "-t", f"{DUR:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
                 "build/morgan-1080p.mp4"], check=True)
 if "--preview" in sys.argv:

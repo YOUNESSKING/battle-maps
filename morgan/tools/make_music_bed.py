@@ -19,7 +19,8 @@ os.chdir(ROOT)
 M = "assets/media"
 TRACKS = ["music_src_long-note-one.mp3", "music_src_wounded.mp3", "music_src_long-note-two.mp3", "music_src_anguish.mp3"]
 XF = 5.0
-T = json.load(open("audio/timing.json"))
+CUT = os.environ.get("CUT") == "1"  # tools/cut.py output (shortened intro)
+T = json.load(open("audio/timing_cut.json" if CUT else "audio/timing.json"))
 total = T["duration"] + 6
 starts = {p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip(): p["start"] for p in T["paragraphs"]}
 # section boundaries: move 2 start, move 3 start, ending start (first paragraph of those script sections)
