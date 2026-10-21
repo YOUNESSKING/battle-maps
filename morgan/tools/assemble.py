@@ -5,6 +5,8 @@ usage: python3 tools/assemble.py [--preview | --archive]     (run from morgan/)
 - ARCHIVE slots (script order): archive/slots.json [{"slot", "images": [{"file", "title", "points": [[fx, fy], ...]}]}];
   each slot is cut into ~6 s shots (full view + push-ins/pans on the points, cycling through the images) joined by dissolves.
 Writes build/picture.mp4 (1920x1080, 30 fps, no audio). --preview = only rebuild missing segments; --archive = rebuild archive slots only (reuse map segments).
+--v4 = Netflix-style archive (archive_shots.py, 3D depth, ~4 s shots, portraits <= 4.5 s once per slot) + hook2 bio-card cutaways;
+       resumable: a segment is rebuilt only if its .v4 marker is missing (the cloud machine reboots).
 """
 import json, os, re, subprocess, sys
 from PIL import Image, ImageFilter, ImageDraw, ImageFont, ImageEnhance
@@ -143,6 +145,69 @@ def archive_seg(i, n, dur, out):
                     "-t", f"{dur:.3f}", *ENC, out], check=True)
 
 
+# ---------- v4: Netflix-style archive (STYLE_LOCK 2a) with archive_shots.py: 3D-depth photos, ~4 s shots, labels, date cards ----------
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import archive_shots
+PORTRAITS = {"a01.jpg", "a03.jpg", "a03_b.png", "a05.jpg", "a05_b.jpg", "a08.jpg", "a08_b.jpg", "a10_c.jpg"}
+HEADLINES = {"a02": ["1781", "COWPENS\nSOUTH CAROLINA"], "a04": ["1777", "SARATOGA\nNEW YORK"], "a10": ["1781", "YORKTOWN\nVIRGINIA"]}
+MOVES = ["in", "right", "out", "left", "up", "in", "down"]
+SHOT_S = 4.0       # target shot length (style lock: a change every 2-4 s; paintings ~4 s)
+PORTRAIT_S = 4.5   # a portrait is on screen once per slot, at most this long (owner: portraits were held too long)
+
+
+def netflix_shots(images, dur, slot=None):
+    imgs = [(f"archive/{e['file']}", e.get("points") or [[0.5, 0.42]], e.get("title", "")) for e in images
+            if os.path.exists(f"archive/{e['file']}")]
+    port = [x for x in imgs if os.path.basename(x[0]) in PORTRAITS]
+    other = [x for x in imgs if os.path.basename(x[0]) not in PORTRAITS] or port
+    count = max(2, round(dur / SHOT_S))
+    shots, seen = [], set()
+    if port and other is not port:
+        f, pts, title = port[0]
+        shots.append({"photo": f, "focus": pts[0], "move": "in", "depth": True, "label": title, "dur": min(PORTRAIT_S, dur / count)})
+        seen.add(f)
+    queue = []
+    for r in range(4):  # round-robin: each image's main point first, then its other points
+        for f, pts, title in other:
+            if r < len(pts):
+                queue.append((f, pts[r], title))
+    k = 0
+    while len(shots) < count and queue:
+        f, pt, title = queue.pop(0)
+        shots.append({"photo": f, "focus": pt, "move": MOVES[(len(shots) + k) % len(MOVES)], "depth": True,
+                      "label": title if f not in seen else None})
+        seen.add(f)
+    if slot in HEADLINES:
+        shots[0]["headline"] = HEADLINES[slot]
+    for sh in shots:
+        if sh.get("label") is None:
+            sh.pop("label", None)
+    return shots
+
+
+def archive_seg_v4(i, n, dur, out):
+    info = slots[n]
+    shots = netflix_shots(info["images"], dur, info.get("slot"))
+    archive_shots.build(shots, dur, out, 1920, 1080, ENC)
+    open(out + ".v4", "w").write(json.dumps(shots))
+
+
+def hook2_seg(dur, out):
+    """hook-2 + hook-3 render, but the 29 s bio card is cut after 8 s to event cutaways until hook-3 (owner: portraits held too long)"""
+    src = "scenes/hook2/renders/hook2.mp4"
+    p2 = next(p for p in paras if key(p) == "hook-2"); p3 = next(p for p in paras if key(p) == "hook-3")
+    c0, c1 = 8.0, p3["start"] - p2["start"]
+    cut = json.load(open("archive/hook_cutaways.json"))
+    tmp = "build/seg/hook2"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-t", f"{c0:.3f}", "-vf", f"scale=1920:1080,fps={FPS}", *ENC, tmp + "_a.mp4"], check=True)
+    archive_shots.build(netflix_shots(cut, c1 - c0), c1 - c0, tmp + "_b.mp4", 1920, 1080, ENC)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{c1:.3f}", "-i", src, "-vf", f"scale=1920:1080,fps={FPS},tpad=stop_mode=clone:stop_duration=3",
+                    "-t", f"{dur - c1:.3f}", *ENC, tmp + "_c.mp4"], check=True)
+    open(tmp + "_list.txt", "w").write("".join(f"file '{os.path.abspath(tmp + x)}'\n" for x in ("_a.mp4", "_b.mp4", "_c.mp4")))
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", tmp + "_list.txt", "-c", "copy", out], check=True)
+    open(out + ".v4", "w").write("hook2")
+
+
 def map_seg(scene, dur, out):
     src = f"scenes/{scene}/renders/{scene}.mp4"
     if not os.path.exists(src):
@@ -160,7 +225,10 @@ while i < len(paras):
     out = f"build/seg/{i:02d}.mp4"
     if paras[i]["tag"].startswith("ARCHIVE"):
         dur = starts[i + 1] - starts[i]
-        if not (preview and os.path.exists(out)) or "--archive" in sys.argv:
+        if "--v4" in sys.argv:
+            if not os.path.exists(out + ".v4"):
+                archive_seg_v4(i, n_arch, dur, out); print(f"{starts[i]:7.1f}s archive a{n_arch + 1:02d} v4 {dur:.1f}s", flush=True)
+        elif not (preview and os.path.exists(out)) or "--archive" in sys.argv:
             archive_seg(i, n_arch, dur, out)
         n_arch += 1; segs.append(out); i += 1
     else:
@@ -169,7 +237,10 @@ while i < len(paras):
         while j < len(paras) and paras[j]["tag"].startswith("MAP") and key(paras[j]) not in SCENES:
             j += 1
         dur = starts[j] - starts[i]
-        if not ((preview or "--archive" in sys.argv) and os.path.exists(out)):
+        if "--v4" in sys.argv and scene == "hook2" and os.path.exists("archive/hook_cutaways.json"):
+            if not os.path.exists(out + ".v4"):
+                hook2_seg(dur, out)
+        elif not ((preview or "--archive" in sys.argv or "--v4" in sys.argv) and os.path.exists(out)):
             map_seg(scene, dur, out)
         print(f"{starts[i]:7.1f}s {scene} {dur:.1f}s")
         segs.append(out); i = j

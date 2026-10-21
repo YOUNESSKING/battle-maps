@@ -1,20 +1,26 @@
-"""Final mix: build/picture.mp4 + voice + music bed (ducked under the voice) + SFX cues -> build/morgan-1080p.mp4 (+ 720p preview with --preview).
+"""Final mix in the LOCKED chain (STYLE_LOCK §3-5): build/picture.mp4 + voice + locked music bed + locked SFX -> build/morgan-1080p.mp4
 
-usage (from morgan/): python3 tools/mix.py
-Music: Kevin MacLeod (incompetech.com), CC BY — see assets/audio/CREDITS.md for the description lines.
+usage (from morgan/): python3 tools/make_music_bed.py   (once: assets/media/music.wav, the locked Kevin MacLeod bed)
+                      python3 tools/mix.py [--preview]
+- Music: assets/media/music.wav at MUSIC_VOL 0.08, ducked under the voice (threshold 0.03, ratio 6, attack 20, release 400).
+- SFX: the locked kit (assets/media/sfx/, levels in sfx_mix_lib.KINDS, checked by check_sound_lock.py) + Morgan's own
+  musket / cavalry / cheer sounds (assets/audio/, 18th-century sounds the locked kit doesn't have); the SFX bus is ducked
+  lightly under the voice (threshold 0.03, ratio 3, attack 10, release 300).
+- Limiter 0.5, then two-pass loudnorm to -14 LUFS, true peak -1.5, LRA 11, AAC 192k.
 """
 import json, os, subprocess, sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(ROOT)
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+import sfx_mix_lib
+
 T = json.load(open("audio/timing.json"))
 DUR = T["duration"]
 P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"] if p["tag"].startswith("MAP")}
 A = "assets/audio"
-# Music bed level in LUFS, before the final -14 LUFS normalisation. The narration is about -24 LUFS, so -37 keeps the music
-# ~17 dB under the voice, and the sidechain ducks it a few dB more while he speaks. (v1 used -21: music as loud as the voice.)
-MUSIC_LUFS = -41  # v2 used -37; owner asked for a bit lower
-SFX_DB = -3       # global sound-effect trim on top of each cue's volume (owner: 'a notch lower')
+MUSIC_VOL = 0.08  # locked (STYLE_LOCK §5); Morgan v1-v3 used its own tracks at -21 / -37 / -41 LUFS
+LEGACY_DB = -3    # Morgan's own musket / cavalry / cheer sounds, trimmed a notch (owner, v3)
 
 
 def at(key, phrase, off=0.0):
@@ -28,28 +34,24 @@ def at(key, phrase, off=0.0):
 
 
 S = lambda k: P[k]["start"]
-# (file, start, end, offset in track)
-MUSIC = [
-    ("music_01_heavy_heart.mp3", 0, S("sar-1"), 0),
-    ("music_02_clash_defiant.mp3", S("sar-1"), S("cow-1"), 0),
-    ("music_04_fife_and_drum.mp3", S("cow-1"), S("cow-1") + 57, 0),
-    ("music_01_heavy_heart.mp3", S("cow-1") + 55, S("cow-7"), 150),
-    ("music_03_ready_aim_fire.mp3", S("cow-7"), S("cow-14"), 0),
-    ("music_06_undaunted.mp3", S("cow-14"), S("gui-1"), 0),
-    ("music_05_crusade.mp3", S("gui-1"), S("gui-8"), 0),
-    ("music_06_undaunted.mp3", S("gui-8"), S("ending-1"), 70),
-    ("music_01_heavy_heart.mp3", S("ending-1"), DUR + 1, 236),
+# locked kit cues [t, kind, scene]: whoosh only on the 3 biggest camera moves, hit on title cards, real booms for cannon
+KIT = [
+    [0.4, "whoosh", "hook1"],                                   # opening push-in to the Carolinas
+    [at("hook-1", "Charleston had fallen"), "impact", "hook1"],
+    [at("hook-1", "Charleston had fallen", 0.5), "impact", "hook1"],
+    [S("hook-2") - 0.3, "hit", "hook2"],                         # bio card slams in
+    [S("hook-3") + 0.4, "whoosh", "hook2"],                      # zoom-out to the three battles
+    [S("sar-1") + 0.2, "hit", "saratoga1"], [S("cow-1") + 0.2, "hit", "cowpens1"], [S("gui-1") + 0.2, "hit", "guilford1"],
+    [at("cow-14", "a hundred and ten"), "hit", "cowpens3"],     # casualty card
+    [at("gui-6", "fire grapeshot"), "impact", "guilford2"], [at("gui-6", "fire grapeshot", 0.4), "impact", "guilford2"],
+    [at("gui-8", "he surrendered", -1.0), "impact", "guilford3"],
+    [S("ending-1") + 0.3, "whoosh", "ending"],                  # final pull-out
 ]
-SFX = [  # (file, time, volume)
-    ("sfx_cannon.wav", at("hook-1", "Charleston had fallen"), 0.5),
-    ("sfx_whoosh.wav", S("hook-2") - 0.4, 0.7),
-    ("sfx_thud.wav", S("hook-3") + 0.9, 0.8),
-    ("sfx_drum_roll.wav", S("sar-1") - 0.3, 0.6), ("sfx_whoosh.wav", S("sar-1") + 0.2, 0.6),
+LEGACY = [  # (file, time, volume)
     ("sfx_musket_single.wav", at("sar-5", "Firing from behind trees"), 0.5),
     ("sfx_musket_single.wav", at("sar-5", "Firing from behind trees", 1.3), 0.45),
     ("sfx_musket_single.wav", at("sar-5", "they shot down"), 0.5),
     ("sfx_musket_single.wav", at("sar-8", "on his third shot"), 0.6),
-    ("sfx_drum_roll.wav", S("cow-1") - 0.3, 0.6), ("sfx_whoosh.wav", S("cow-1") + 0.2, 0.6),
     ("sfx_musket_single.wav", at("cow-8", "opened fire"), 0.5),
     ("sfx_musket_single.wav", at("cow-8", "opened fire", 0.8), 0.45),
     ("sfx_musket_volley.wav", at("cow-8", "the militia fired"), 0.55),
@@ -59,35 +61,40 @@ SFX = [  # (file, time, volume)
     ("sfx_musket_volley.wav", at("cow-12", "fired a volley"), 0.7),
     ("sfx_cheer.wav", at("cow-12", "charged with the bayonet"), 0.4),
     ("sfx_cavalry.wav", at("cow-13", "Washington's cavalry swept"), 0.5),
-    ("sfx_drum_roll.wav", S("gui-1") - 0.3, 0.6), ("sfx_whoosh.wav", S("gui-1") + 0.2, 0.6),
     ("sfx_musket_volley.wav", at("gui-5", "fired at least once"), 0.5),
     ("sfx_cavalry.wav", at("gui-6", "Washington's cavalry smashed"), 0.45),
-    ("sfx_cannon.wav", at("gui-6", "fire grapeshot"), 0.55),
-    ("sfx_cannon.wav", at("gui-8", "he surrendered", -1.0), 0.35),
 ]
-inputs = ["-i", "build/picture.mp4", "-i", "audio/voice.wav"]
-f, idx = ["[1:a]aresample=48000,aformat=channel_layouts=stereo,asplit=2[vo][vokey]"], 2
-mus = []
-for n, (file, s, e, off) in enumerate(MUSIC):
-    inputs += ["-i", f"{A}/{file}"]
-    d = e - s + 1.5
-    f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,atrim={off}:{off + d},asetpts=PTS-STARTPTS,"
-             f"loudnorm=I=-21:TP=-3,volume={MUSIC_LUFS + 21}dB,afade=t=in:d={0.3 if n == 0 else 1.5},afade=t=out:st={d - 1.5}:d=1.5,"
-             f"adelay={int(s * 1000)}|{int(s * 1000)}[m{n}]")
-    mus.append(f"[m{n}]"); idx += 1
-f.append(f"{''.join(mus)}amix=inputs={len(mus)}:normalize=0,afade=t=out:st={DUR - 3}:d=3[mus]")
-f.append("[mus][vokey]sidechaincompress=threshold=0.015:ratio=4:attack=40:release=700:makeup=1[musd]")
-mixes = ["[vo]", "[musd]"]
-for n, (file, t, vol) in enumerate(SFX):
-    inputs += ["-i", f"{A}/{file}"]
-    f.append(f"[{idx}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},volume={SFX_DB}dB,adelay={int(t * 1000)}|{int(t * 1000)}[s{n}]")
-    mixes.append(f"[s{n}]"); idx += 1
-f.append(f"{''.join(mixes)}amix=inputs={len(mixes)}:normalize=0,atrim=0:{DUR},loudnorm=I=-14:TP=-1.5:LRA=11[aout]")
 os.makedirs("build", exist_ok=True)
-subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
-                "-t", f"{DUR:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart",
+n = sfx_mix_lib.render(sorted(KIT), DUR, "build/sfx_kit.wav")  # runs check_sound_lock first
+print("kit cues:", n)
+inputs = ["-i", "audio/voice.wav", "-i", "build/sfx_kit.wav", "-i", "assets/media/music.wav"]
+f = ["[0:a]aresample=48000,aformat=channel_layouts=stereo,asplit=3[vo][key][key2]",
+     f"[2:a]aresample=48000,atrim=0:{DUR},volume={MUSIC_VOL},afade=t=in:d=2,afade=t=out:st={DUR - 3}:d=3[mus]",
+     "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]"]
+legs = ["[1:a]aresample=48000,aformat=channel_layouts=stereo[kit]"]
+lab = ["[kit]"]
+for i, (file, t, vol) in enumerate(LEGACY):
+    inputs += ["-i", f"{A}/{file}"]
+    legs.append(f"[{3 + i}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vol},volume={LEGACY_DB}dB,"
+                f"adelay={int(t * 1000)}|{int(t * 1000)}[l{i}]")
+    lab.append(f"[l{i}]")
+f += legs
+f.append(f"{''.join(lab)}amix=inputs={len(lab)}:normalize=0,atrim=0:{DUR}[sfxin]")
+f.append("[sfxin][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]")
+f.append("[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false[aout]")
+subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "[aout]", "-t", f"{DUR:.2f}",
+                "-c:a", "pcm_s16le", "build/mix.wav"], check=True)
+LN = "loudnorm=I=-14:TP=-1.5:LRA=11"
+r = subprocess.run(["ffmpeg", "-nostats", "-i", "build/mix.wav", "-af", LN + ":print_format=json", "-f", "null", "-"],
+                   capture_output=True, text=True).stderr
+m = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
+af = (f"{LN}:measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}"
+      f":measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true,aresample=48000")
+subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/picture.mp4", "-i", "build/mix.wav", "-af", af, "-map", "0:v", "-map", "1:a",
+                "-t", f"{DUR:.2f}", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
                 "build/morgan-1080p.mp4"], check=True)
 if "--preview" in sys.argv:
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", "build/morgan-1080p.mp4", "-vf", "scale=1280:720", "-c:v", "libx264",
-                "-crf", "30", "-preset", "medium", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart", "build/morgan-720p-preview.mp4"], check=True)
+                    "-crf", "30", "-preset", "medium", "-c:a", "aac", "-b:a", "96k", "-movflags", "+faststart",
+                    "build/morgan-720p-preview.mp4"], check=True)
 print("ok", DUR)
