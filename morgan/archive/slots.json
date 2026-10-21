@@ -38,6 +38,24 @@
       0.85
      ]
     ]
+   },
+   {
+    "file": "a01_e1.jpg",
+    "title": "Peter Francisco's gallant action with nine of Tarleton's cavalry (Warrell/Webster, c. 1831)",
+    "points": [
+     [
+      0.5,
+      0.45
+     ],
+     [
+      0.28,
+      0.55
+     ],
+     [
+      0.8,
+      0.5
+     ]
+    ]
    }
   ]
  },
@@ -140,6 +158,42 @@
       0.6
      ]
     ]
+   },
+   {
+    "file": "a03_e1.jpg",
+    "title": "A View of the Fort of Ticonderoga from South Bay (unknown, 1759)",
+    "points": [
+     [
+      0.55,
+      0.3
+     ],
+     [
+      0.3,
+      0.45
+     ],
+     [
+      0.8,
+      0.4
+     ]
+    ]
+   },
+   {
+    "file": "a03_e2.jpg",
+    "title": "Riflemen at Saratoga (H. Charles McBarron, 1975)",
+    "points": [
+     [
+      0.5,
+      0.4
+     ],
+     [
+      0.2,
+      0.7
+     ],
+     [
+      0.75,
+      0.6
+     ]
+    ]
    }
   ]
  },
@@ -222,6 +276,42 @@
      [
       0.5,
       0.88
+     ]
+    ]
+   },
+   {
+    "file": "a05_e1.jpg",
+    "title": "Battle of Saratoga, Sept. 19, 1777 (German print, c. 1777)",
+    "points": [
+     [
+      0.4,
+      0.4
+     ],
+     [
+      0.7,
+      0.7
+     ],
+     [
+      0.2,
+      0.55
+     ]
+    ]
+   },
+   {
+    "file": "a05_e2.jpg",
+    "title": "Washington at Valley Forge (Percy Moran, 1911)",
+    "points": [
+     [
+      0.5,
+      0.55
+     ],
+     [
+      0.15,
+      0.7
+     ],
+     [
+      0.3,
+      0.2
      ]
     ]
    }
@@ -340,6 +430,42 @@
      [
       0.75,
       0.65
+     ]
+    ]
+   },
+   {
+    "file": "a08_e1.jpg",
+    "title": "Battle of Guilford Courthouse (H. Charles McBarron)",
+    "points": [
+     [
+      0.4,
+      0.45
+     ],
+     [
+      0.2,
+      0.3
+     ],
+     [
+      0.9,
+      0.2
+     ]
+    ]
+   },
+   {
+    "file": "a06_b.jpg",
+    "title": "Washington at Valley Forge, winter encampment (American 19th-century painting, NGA)",
+    "points": [
+     [
+      0.25,
+      0.55
+     ],
+     [
+      0.4,
+      0.4
+     ],
+     [
+      0.6,
+      0.75
      ]
     ]
    }

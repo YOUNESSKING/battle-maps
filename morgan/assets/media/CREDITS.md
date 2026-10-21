@@ -228,3 +228,18 @@ tightly to the figure/head, and resized to the target height.
 
 - **fraser_head.png** (Simon Fraser, 1729–1777): skipped. The only Commons candidate, "British School – General Simon (possibly General Simon Fraser of Balnain, 1729–1777)", carries an explicit "possibly" attribution and risks confusion with the unrelated Simon Fraser of Lovat, so it was not used as a confirmed likeness of Burgoyne's Simon Fraser.
 - **washington_w_head.png** (William Washington): skipped. No clean PD head/shoulders portrait of William Washington was found on Commons; the only period image, an 1830s NARA copy print of "Colonel (William Augustine) Washington at the Battle of Cowpens," is a busy multi-figure cavalry-action engraving, not a bust portrait, and did not crop cleanly to a round-stake head.
+
+## Archive (event cutaways)
+
+All via Wikimedia Commons, 960px thumbnails. Licence for all: Public domain (US Gov / pre-1900 / CC0 where noted).
+
+- a01_e1: "Peter Francisco's gallant action with nine of Tarleton's cavalry..." - James Warrell / James Webster (LoC), c. 1831 - PD - https://commons.wikimedia.org/wiki/File:Peter_Francisco%27s_gallant_action_with_nine_of_Tarleton%27s_cavalry_in_sight_of_a_troop_of_four_hundred_men_LCCN2006681072.jpg
+- a03_e1: "A View of the Fort of Ticonderoga" - unknown, 1759 (LoC) - PD - https://commons.wikimedia.org/wiki/File:Fort_ticonderoga_1759.jpg
+- a03_e2: "Riflemen at Saratoga" - H. Charles McBarron Jr., 1975 (US Army / GPO) - PD - https://commons.wikimedia.org/wiki/File:Riflemen_at_Saratoga.jpg
+- a05_e1: "Battle of Saratoga (September 19, 1777)" - German print, c. 1777 (MET DP876929) - CC0 - https://commons.wikimedia.org/wiki/File:Battle_of_Saratoga_(September_19,_1777)_MET_DP876929.jpg
+- a05_e2: "Washington at Valley Forge" - E. Percy Moran, 1911 (LoC) - PD - https://commons.wikimedia.org/wiki/File:Washington_at_Valley_Forge)_-_E._Percy_Moran_LCCN92506172.jpg
+- a08_e1: "Battle of Guilford Courthouse, 15 March 1781" - H. Charles McBarron Jr. (US Army) - PD - https://commons.wikimedia.org/wiki/File:Battle_of_Guilford_Courthouse_15_March_1781.jpg
+- a08_e2: "The American Soldier, 1776" - H. Charles McBarron Jr. (US Army) - PD - https://commons.wikimedia.org/wiki/File:The_American_Soldier,_1776.jpg
+- hook_e1: "Conestoga Wagon 1883" - painting, 1883 - PD - https://commons.wikimedia.org/wiki/File:Conestoga_Wagon_1883.jpg
+- hook_e2: "Defeat of General Braddock..." - John Andrew (engraver), 1855 (LoC) - PD - https://commons.wikimedia.org/wiki/File:Defeat_of_General_Braddock,_in_the_French_and_Indian_War,_in_Virginia_in_1755_-_John_Andrew,_sc._LCCN2006691550.jpg
+- hook_e3: "Fall of Braddock" - engraving (NYPL scan, cropped) - PD - https://commons.wikimedia.org/wiki/File:Fall_of_Braddock_(NYPL_Hades-254416-429642).jpg

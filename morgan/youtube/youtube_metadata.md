@@ -1,20 +1,24 @@
-# YouTube metadata: Daniel Morgan (follows research/PACKAGING_GUIDE.md)
+# YouTube metadata: Daniel Morgan v4 (HANDOVER §10 title pattern, STYLE_LOCK §6 description: NO links)
 
-**Video:** Daniel-Morgan-Top-3-Tactical-Moves-1080p-v3.mp4 · 18:21 · 1080p · -14.7 LUFS
-**Locked title (vidIQ 95):** He Destroyed Britain's Elite in 1 Hour: Daniel Morgan's Top 3 Tactical Moves
-**Thumbnails (Test & compare):** A thumbnail.png "DESTROYED BRITAIN'S ELITE / IN 1 HOUR" · B thumbnail_B.png "THE MILITIA RAN ON PURPOSE / THE TRAP" · C thumbnail_C.png "9 OUT OF 10 OF TARLETON'S MEN / GONE"
+**Video:** Daniel-Morgan-Top-3-Tactical-Moves-1080p-v4.mp4 · 18:21 · 1080p · -14 LUFS
+**Locked title (vidIQ 94):** Daniel Morgan's Top 3 Legendary Tactical Moves | The Man Who Destroyed Britain's Elite in 1 Hour
 
 ## Alternative titles (for Test & compare)
-- How a Crippled Wagon Driver Wiped Out Britain's Elite in Under an Hour (vidIQ 96)
-- Daniel Morgan's Top 3 Legendary Tactical Moves | The General Who Destroyed Britain's Elite in 1 Hour (vidIQ 93)
-- The Wagon Driver Who Destroyed Britain's Elite in 1 Hour | Daniel Morgan (vidIQ 93)
+- Daniel Morgan's Top 3 Legendary Tactical Moves | The Man Who Broke Tarleton's Legion (vidIQ 88)
+
+## Thumbnails (Test & compare, HANDOVER 1b formula)
+- A (main): youtube/thumb/morgan-thumb-A-let-them-run.png, "LET THEM RUN" (type 1: the hero's decision: he ordered the militia to run)
+- B: youtube/thumb/morgan-thumb-B-one-hour.png, "ONE HOUR" (type 3: stakes)
+Battlefield: vidIQ-generated Cowpens (its wrong-way arrows removed and redrawn as the real double envelopment), name tags MORGAN / TARLETON / COWPENS 1781; Morgan's portrait (Charles Willson Peale, public domain) on the right third.
 
 ## Description
 By 1780, the American Revolution was being lost in the South. Then, on a cold January morning, a crippled frontier wagon driver wiped out Britain's most feared legion in less than an hour.
 
 In this video we break down Daniel Morgan's three greatest tactical moves: the riflemen who shot down Burgoyne's officers at Saratoga, the trap at Cowpens that destroyed Banastre Tarleton's command, and the blueprint he left Nathanael Greene before Guilford Courthouse, the road that led Cornwallis to Yorktown.
 
-He looked at his weakest troops, and he saw exactly how to use them.
+Strike the officers. Bait the enemy with what he expects. Spring the trap.
+
+Which commander should we cover next? Let us know in the comments.
 
 CHAPTERS
 0:00 The South is being lost
@@ -37,18 +41,12 @@ SOURCES
 - Don Higginbotham, Daniel Morgan: Revolutionary Rifleman (1961)
 
 CREDITS
-Images: public-domain paintings and engravings via Wikimedia Commons (Reynolds, Trumbull, Ranney, Kemmelmeyer, Peale and others); Congressional gold medal image: The Metropolitan Museum of Art (CC0). Terrain: Mapzen / AWS Terrain Tiles (open data); rivers: Natural Earth.
-Photos: "Buford's Defeat" marker by Rogergrogg, CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/); Statue of Daniel Morgan, Spartanburg, by Billy Hathorn, CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/); via Wikimedia Commons.
-
-Music: "Clash Defiant" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
-Music: "Crusade" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
-Music: "Fife and Drum" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 4.0 License, http://creativecommons.org/licenses/by/4.0/
-Music: "Heavy Heart" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
-Music: "Ready Aim Fire" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 4.0 License, http://creativecommons.org/licenses/by/4.0/
-Music: "Undaunted" Kevin MacLeod (incompetech.com), Licensed under Creative Commons: By Attribution 3.0 License, http://creativecommons.org/licenses/by/3.0/
-
-Narration voice: AI-generated (Kokoro TTS). Maps: original animations.
-📩 Business enquiries: [email to fill in]
+Images: public-domain paintings, engravings and prints via Wikimedia Commons, the Library of Congress, the U.S. Army Center of Military History (H. Charles McBarron Jr.), The Metropolitan Museum of Art (CC0) and the National Gallery of Art (CC0): Reynolds, Trumbull, Ranney, Kemmelmeyer, Peale, Couder, Graham, Moran and others. "Buford's Defeat" battlefield marker photo by Rogergrogg, licensed under Creative Commons Attribution-ShareAlike 3.0, via Wikimedia Commons.
+Maps: original animations; terrain from Mapzen / AWS Terrain Tiles (open data); rivers from Natural Earth (public domain).
+Music by Kevin MacLeod (incompetech.com): "Long Note One", "Wounded", "Long Note Two", "Anguish". Licensed under Creative Commons: By Attribution 4.0.
+Sound effects: "artillery distance" by 2887679652 (Creative Commons Attribution 4.0) and "Cannon Artillery distant gunshots" by Aegersum (Creative Commons Attribution 3.0), via freesound.org. Transition sound: Mixkit (Mixkit Sound Effects Free License). Other sound effects: original.
+Narration voice: AI-generated (Kokoro TTS).
+Business enquiries: [email to fill in]
 
 #DanielMorgan #Cowpens #AmericanRevolution
 
@@ -58,14 +56,19 @@ military history, history documentary, American Revolution, Revolutionary War, B
 ## Settings
 Category: Education · Made for kids: No · Language: English · Altered or synthetic content: Yes (AI narration voice) · Licence: Standard YouTube
 
-## Checklist (research/PACKAGING_GUIDE.md §7)
-- [x] Topic validated (research/VIDEO_IDEAS_v2.md: 123x outlier on this exact topic)
-- [x] Title scored ≥ 85 (95); hook in the first 38 characters; 76 characters; clear and true
+## Facts to double-check (told as tradition or from a single source in the script)
+- "499 lashes": Morgan's own telling (he said the drummer miscounted).
+- Timothy Murphy's shot that killed Simon Fraser: tradition ("according to tradition" in the voice).
+- Morgan showing his whip scars at the campfires the night before Cowpens: tradition.
+- Burgoyne telling Morgan he commanded "the finest regiment in the world": "is said to" in the voice.
+- Cowpens losses: British ~110 killed, 800+ captured (200+ of them wounded); Americans ~25 killed (Babits gives slightly different totals).
+- Guilford Courthouse: Greene ~4,400 vs Cornwallis ~2,000; British ~530 casualties.
+
+## Checklist (research/PACKAGING_GUIDE.md §7 + HANDOVER §10 + STYLE_LOCK §6)
+- [x] Title in the binding TG pattern "<Name>'s Top 3 Legendary Tactical Moves | The Man Who ..." (vidIQ 94, 96 characters)
 - [x] No negation in title or thumbnail
-- [x] Thumbnail makes the same promise as the title
-- [x] 3 thumbnail options for Test & compare: thumbnail.png (A, main), thumbnail_B.png (THE TRAP), thumbnail_C.png (9 OUT OF 10 GONE)
-- [x] Description line 1 = script hook; names and numbers are all in the voice
-- [x] Chapters from timing.json paragraph starts; start at 0:00; all ≥ 10 s
-- [x] Credits + email placeholder + 3 hashtags
-- [x] 18 tags, 354 characters; category Education
-- [ ] Business email: the owner must fill it in
+- [x] Thumbnail = same promise as the title (the Cowpens trap), 2 variants of different text types
+- [x] Description: NO links at all, licences named in words; line 1 = script hook
+- [x] Chapters from timing.json on the final audio; start at 0:00; all ≥ 10 s
+- [x] 18 tags, 354 characters; category Education; synthetic content = Yes
+- [ ] Business email: the owner must fill it in (or delete the line)

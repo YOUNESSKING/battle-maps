@@ -19,6 +19,7 @@ alts = [l[2:] for l in s.split("## Alternative titles (for Test & compare)\n", 1
 desc = s.split("## Description\n", 1)[1].split("\n## Tags", 1)[0].strip().replace("📩 ", "")
 tagline = s.split("## Tags (paste into YouTube's tag box)\n", 1)[1].split("\n", 1)[0]
 checklist = [l for l in s.split("## Checklist", 1)[1].split("\n") if l.startswith("- [")]
+facts = [l[2:] for l in s.split("## Facts to double-check", 1)[1].split("\n## ", 1)[0].split("\n") if l.startswith("- ")] if "## Facts to double-check" in s else []
 video = re.search(r"\*\*Video:\*\* (.+)", s)
 
 ss = getSampleStyleSheet()
@@ -38,15 +39,16 @@ def grid(rows, widths):
     return t
 
 
-thumbs = sorted(glob.glob("youtube/thumbnail*.jpg"))
+thumbs = sorted(glob.glob("youtube/thumb/*-thumb-*.jpg")) or sorted(glob.glob("youtube/thumbnail*.jpg"))
 w = min(56, 170 / max(1, len(thumbs)) - 2) * mm
-labels = ["A (main)" if f.endswith("thumbnail.jpg") else f.split("_")[-1][0] for f in thumbs]
+labels = [("A (main)" if "-thumb-A" in f or f.endswith("thumbnail.jpg") else f.split("-thumb-")[-1][0] if "-thumb-" in f else f.split("_")[-1][0]) for f in thumbs]
 tt = Table([[Image(f, w, w * 9 / 16) for f in thumbs],
             [Paragraph(f"{l}: {f.split('/')[-1].replace('.jpg', '.png')}", SM) for l, f in zip(labels, thumbs)]],
            colWidths=[w + 2 * mm] * len(thumbs))
 settings = [["Category", "Education"], ["Audience", "No, it's not made for kids"], ["Language", "English"],
             ["Altered or synthetic content", "Yes: AI-generated narration voice (Kokoro TTS). Maps are animations; paintings are real historical artworks."],
             ["Licence", "Standard YouTube Licence"], ["Thumbnail test", "Studio → Test & compare: upload all thumbnail options"],
+            ["Links", "None in the description (new channels get flagged as spam); licences are named in words"],
             ["Business email", "Replace [email to fill in] in the description before publishing"]]
 st = [Paragraph(f"YouTube upload sheet: {general}", H1),
       Paragraph((video.group(1) + " · " if video else "") + "written with research/PACKAGING_GUIDE.md", B), Spacer(1, 6),
@@ -58,7 +60,8 @@ st = [Paragraph(f"YouTube upload sheet: {general}", H1),
       Paragraph("Tags (paste into YouTube's tag box)", H2), box(tagline),
       Paragraph(f"{len(tagline.split(', '))} tags · {len(tagline)} of 500 characters.", B),
       Paragraph("Checklist (packaging guide §7)", H2)] + \
-     [Paragraph(escape(l.replace("- [x]", "DONE ·").replace("- [ ]", "TO DO ·")), B) for l in checklist]
+     [Paragraph(escape(l.replace("- [x]", "DONE ·").replace("- [ ]", "TO DO ·")), B) for l in checklist] + \
+     ([Paragraph("Facts to double-check before publishing", H2), box("\n".join("• " + x for x in facts))] if facts else [])
 out = f"youtube/{short}-YouTube-upload.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=14 * mm, bottomMargin=14 * mm,
                   title=f"YouTube upload sheet: {general}", author="battle-maps").build(st)
