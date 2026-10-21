@@ -693,33 +693,37 @@
    },
    {
     "file": "a09_b.jpg",
-    "title": "Nathanael Greene to General Andrew Pickens, 3 June 1781 (manuscript letter)",
+    "title": "Washington Crossing the Delaware (Emanuel Leutze, 1851, The Met)",
     "points": [
      [
-      0.2,
-      0.08
+      0.42,
+      0.4
+     ],
+     [
+      0.7,
+      0.45
      ],
      [
       0.2,
-      0.85
+      0.6
      ]
     ]
    },
    {
     "file": "a09_n1.jpg",
-    "title": "Battle of Guildford, fought on the 15th of March 1781 (London, 1787 plan)",
+    "title": "The Battle of Bunker's Hill (J. G. M\u00fcller after John Trumbull, 1788-98, The Met)",
     "points": [
      [
-      0.45,
-      0.25
+      0.5,
+      0.45
      ],
      [
-      0.5,
-      0.55
+      0.25,
+      0.5
      ],
      [
-      0.5,
-      0.85
+      0.75,
+      0.4
      ]
     ]
    },

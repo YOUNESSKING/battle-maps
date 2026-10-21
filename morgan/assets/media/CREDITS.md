@@ -261,3 +261,11 @@ All via Wikimedia Commons, 960px thumbnails. Licence for all: Public domain (US 
 - a09_n2.jpg: "Lord Cornwallis (engraved portrait)" - 1786 - Public domain (no known restrictions) - LoC 2001699809 - https://www.loc.gov/pictures/item/2001699809/
 - a11_n1.jpg: "Morgan Monument, Spartanburg, S.C. (linen postcard)" - c1940s - Public domain (per Commons) - Wikimedia Commons File:Spartanburg - Morgan Monument.jpg - https://commons.wikimedia.org/wiki/File:Spartanburg_-_Morgan_Monument.jpg
 - a11_n2.jpg: "Statue of General Daniel Morgan (1881), Spartanburg, SC (photo)" - 2010s - CC BY 3.0 (photographer per Commons file page) - Wikimedia Commons File:Statue of General Daniel Morgan (1881) in Spartanburg, SC IMG 4818.JPG - https://commons.wikimedia.org/wiki/File:Statue_of_General_Daniel_Morgan_(1881)_in_Spartanburg,_SC_IMG_4818.JPG
+
+## Archive (v6: HD + replacements for the white images)
+- a09_b.jpg: "Washington Crossing the Delaware", Emanuel Leutze, 1851. The Metropolitan Museum of Art, 97.34 (Open Access, CC0). https://www.metmuseum.org/art/collection/search/11417
+- a09_n1.jpg: "The Battle of Bunker's Hill (June 17, 1775)", Johann Gotthard Müller after John Trumbull, 1788-98. The Metropolitan Museum of Art (Open Access, CC0). https://www.metmuseum.org/art/collection/search/388573
+- a07_b.jpg: the same Met medal photo (CC0), cut out of its white studio background onto dark (owner: no white images).
+- a09.jpg: the same letter scan, toned darker/warmer.
+- Upscaled with Real-ESRGAN x4plus (BSD-3, ONNX build by bukuroo on Hugging Face) where no larger original could be fetched: see tools/upscale.py (originals in archive/orig/).
+- Dropped as white: a02_b (schematic map). Replaced as white: the second letter (a09_b) and the 1787 Guilford plan (a09_n1).

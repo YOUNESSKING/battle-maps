@@ -41,7 +41,7 @@ SOURCES
 - Don Higginbotham, Daniel Morgan: Revolutionary Rifleman (1961)
 
 CREDITS
-Images: public-domain paintings, engravings and prints via Wikimedia Commons, the Library of Congress, the U.S. Army Center of Military History (H. Charles McBarron Jr.), The Metropolitan Museum of Art (CC0) and the National Gallery of Art (CC0): Reynolds, Trumbull, Ranney, Kemmelmeyer, Peale, Couder, Graham, Moran and others. "Buford's Defeat" battlefield marker photo by Rogergrogg, licensed under Creative Commons Attribution-ShareAlike 3.0, via Wikimedia Commons.
+Images: public-domain paintings, engravings and prints via Wikimedia Commons, the Library of Congress, the U.S. Army Center of Military History (H. Charles McBarron Jr.), The Metropolitan Museum of Art (CC0, incl. Leutze and Müller after Trumbull) and the National Gallery of Art (CC0): Reynolds, Trumbull, Ranney, Kemmelmeyer, Peale, Couder, Graham, Moran and others. "Buford's Defeat" battlefield marker photo by Rogergrogg, licensed under Creative Commons Attribution-ShareAlike 3.0, via Wikimedia Commons.
 Maps: original animations; terrain from Mapzen / AWS Terrain Tiles (open data); rivers from Natural Earth (public domain).
 Music by Kevin MacLeod (incompetech.com): "Long Note One", "Wounded", "Long Note Two", "Anguish". Licensed under Creative Commons: By Attribution 4.0.
 Sound effects: "artillery distance" by 2887679652 (Creative Commons Attribution 4.0) and "Cannon Artillery distant gunshots" by Aegersum (Creative Commons Attribution 3.0), via freesound.org. Transition sound: Mixkit (Mixkit Sound Effects Free License). Other sound effects: original.

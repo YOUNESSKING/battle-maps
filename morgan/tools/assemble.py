@@ -160,6 +160,7 @@ CUT_SLOTS = {"a01"}  # paragraphs removed by tools/cut.py (owner: intro too long
 USED = set()  # v5 (owner): no image is ever shown twice in the video, and a segment never goes back to an earlier image
 DROP = {"a02_c.jpg", "a11_b.jpg",               # copies of the Kemmelmeyer / Ranney Cowpens paintings used in the other segment
         "a03_b.png", "a08_b.jpg", "a03_n1.jpg", "a10_c.jpg",  # second likenesses of the same man (one portrait per person)
+        "a02_b.jpg",   # white schematic map (owner: replace the white ones)
         "a08_n2.jpg",  # sheet-music cover with modern text (weak)
         "a11_n2.jpg"}  # statue photo without a known photographer (CC BY needs the credit); a05_b (credited) is used in a11 instead
 
