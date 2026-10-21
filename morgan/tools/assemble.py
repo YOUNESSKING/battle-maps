@@ -151,7 +151,7 @@ sys.path.insert(0, os.path.join(ROOT, "tools"))
 import archive_shots
 PORTRAITS = {"a01.jpg", "a03.jpg", "a03_b.png", "a05.jpg", "a05_b.jpg", "a08.jpg", "a08_b.jpg", "a10_c.jpg"}
 HEADLINES = {"a02": ["1781", "COWPENS\nSOUTH CAROLINA"], "a04": ["1777", "SARATOGA\nNEW YORK"], "a10": ["1781", "YORKTOWN\nVIRGINIA"]}
-MOVES = ["in", "right", "out", "left", "up", "in", "down"]
+MOVES = ["in", "right", "still", "left", "in", "still", "up"]  # v6: 1/3 push-in, 1/3 pan, 1/3 near-still; never start zoomed
 SHOT_S = 4.0       # target shot length (style lock: a change every 2-4 s; paintings ~4 s)
 PORTRAIT_S = 4.5   # a portrait is on screen once per slot, at most this long (owner: portraits were held too long)
 
@@ -174,6 +174,11 @@ def netflix_shots(images, dur, slot=None):
     shots = []
     for k, (f, pts, title) in enumerate(seq):
         sh = {"photo": f, "focus": pts[0], "move": "in" if k == 0 else MOVES[k % len(MOVES)], "depth": True}
+        iw, ih = Image.open(f).size
+        if iw / ih < 1.25:  # tall / square: shown whole on a blurred fill, never cropped (owner v6)
+            sh["fit"] = True; sh["depth"] = False
+            if sh["move"] in ("left", "right", "up"):
+                sh["move"] = "still"
         if title:
             sh["label"] = title
         if port and k == 0 and other:
@@ -188,7 +193,7 @@ def archive_seg_v4(i, n, dur, out):
     info = slots[n]
     shots = netflix_shots(info["images"], dur, info.get("slot"))
     archive_shots.build(shots, dur, out, 1920, 1080, ENC)
-    open(out + ".v5", "w").write(json.dumps(shots))
+    open(out + ".v6", "w").write(json.dumps(shots))
 
 
 def hook2_seg(dur, out):
@@ -205,7 +210,7 @@ def hook2_seg(dur, out):
                     "-t", f"{dur - c1:.3f}", *ENC, tmp + "_c.mp4"], check=True)
     open(tmp + "_list.txt", "w").write("".join(f"file '{os.path.abspath(tmp + x)}'\n" for x in ("_a.mp4", "_b.mp4", "_c.mp4")))
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", tmp + "_list.txt", "-c", "copy", out], check=True)
-    open(out + ".v5", "w").write(json.dumps(cshots))
+    open(out + ".v6", "w").write(json.dumps(cshots))
 
 
 def map_seg(scene, dur, out):
@@ -225,16 +230,16 @@ while i < len(paras):
     out = f"build/seg/{i:02d}.mp4"
     if paras[i]["tag"].startswith("ARCHIVE"):
         dur = starts[i + 1] - starts[i]
-        if "--v5" in sys.argv:
+        if "--v6" in sys.argv:
             only = os.environ.get("ONLY")  # e.g. ONLY=a02,a04 -> build just those slots (others reused / skipped)
             if slots[n_arch].get("slot") in CUT_SLOTS:
                 pass  # this archive paragraph is cut from the video (tools/cut.py)
             elif only and slots[n_arch].get("slot") not in only.split(","):
                 pass
-            elif not os.path.exists(out + ".v5"):
+            elif not os.path.exists(out + ".v6"):
                 archive_seg_v4(i, n_arch, dur, out); print(f"{starts[i]:7.1f}s archive a{n_arch + 1:02d} v5 {dur:.1f}s", flush=True)
             else:  # already built (resume after a reboot): its images still count as used
-                USED.update(os.path.basename(x["photo"]) for x in json.load(open(out + ".v5")))
+                USED.update(os.path.basename(x["photo"]) for x in json.load(open(out + ".v6")))
         elif not (preview and os.path.exists(out)) or "--archive" in sys.argv:
             archive_seg(i, n_arch, dur, out)
         n_arch += 1; segs.append(out); i += 1
@@ -244,14 +249,14 @@ while i < len(paras):
         while j < len(paras) and paras[j]["tag"].startswith("MAP") and key(paras[j]) not in SCENES:
             j += 1
         dur = starts[j] - starts[i]
-        if "--v5" in sys.argv and os.environ.get("ONLY"):
+        if "--v6" in sys.argv and os.environ.get("ONLY"):
             pass
-        elif "--v5" in sys.argv and scene == "hook2" and os.path.exists("archive/hook_cutaways.json"):
-            if not os.path.exists(out + ".v5"):
+        elif "--v6" in sys.argv and scene == "hook2" and os.path.exists("archive/hook_cutaways.json"):
+            if not os.path.exists(out + ".v6"):
                 hook2_seg(dur, out)
             else:
-                USED.update(os.path.basename(x["photo"]) for x in json.load(open(out + ".v5")))
-        elif not ((preview or "--archive" in sys.argv or "--v5" in sys.argv) and os.path.exists(out)):
+                USED.update(os.path.basename(x["photo"]) for x in json.load(open(out + ".v6")))
+        elif not ((preview or "--archive" in sys.argv or "--v6" in sys.argv) and os.path.exists(out)):
             map_seg(scene, dur, out)
         print(f"{starts[i]:7.1f}s {scene} {dur:.1f}s")
         segs.append(out); i = j

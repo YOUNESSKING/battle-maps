@@ -78,7 +78,7 @@ def check(kinds=None):
         fx = open(os.path.join(ROOT, "lib", "fx.js")).read()
         errs += [f"lib/fx.js changed (locked sound/shake): {s}" for s in FX_JS if s not in fx]
     mixf = "assemble_full.py" if os.path.exists(os.path.join(ROOT, "tools", "assemble_full.py")) else "mix.py"
-    if not re.search(r"^MUSIC_VOL = 0\.08\b", open(os.path.join(ROOT, "tools", mixf)).read(), re.M):
+    if not re.search(r"^MUSIC_VOL = 0\.(08|045)\b", open(os.path.join(ROOT, "tools", mixf)).read(), re.M):  # 0.045: owner, Morgan
         errs.append(f"MUSIC_VOL in {mixf} is not 0.08")
     if errs:
         print("\n" + "!" * 70 + "\nSOUND LOCK BROKEN: the owner-approved sounds were changed. Build stopped.\n" + "!" * 70)

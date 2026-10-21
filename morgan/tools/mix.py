@@ -20,7 +20,7 @@ T = json.load(open("audio/timing_cut.json" if CUT else "audio/timing.json"))
 DUR = T["duration"]
 P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in T["paragraphs"] if p["tag"].startswith("MAP")}
 A = "assets/audio"
-MUSIC_VOL = 0.08  # locked (STYLE_LOCK §5); Morgan v1-v3 used its own tracks at -21 / -37 / -41 LUFS
+MUSIC_VOL = 0.045  # owner 2026-10-21: "the music is still loud" (locked 0.08 -> ~5 dB lower, Morgan only)
 LEGACY_DB = -3    # Morgan's own musket / cavalry / cheer sounds, trimmed a notch (owner, v3)
 
 

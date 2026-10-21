@@ -66,10 +66,12 @@ def boxes(move, focus, iw, ih, W, H):
         w, h = w_full / zoom, h_full / zoom
         x0 = min(max(cx * iw - w / 2, 0), iw - w); y0 = min(max(cy * ih - h / 2, 0), ih - h)
         return np.array([x0, y0, w, h], float)
-    if move == "in":  return box(1.0, 0.5, 0.5), box(1.22, fx, fy)
-    if move == "out": return box(1.22, fx, fy), box(1.0, 0.5, 0.5)
-    pan = {"left": (0.62, 0.38, 0.5, 0.5), "right": (0.38, 0.62, 0.5, 0.5), "up": (0.5, 0.5, 0.62, 0.38), "down": (0.5, 0.5, 0.38, 0.62)}[move]
-    return box(1.14, pan[0], pan[2]), box(1.14, pan[1], pan[3])
+    # Morgan v6 (owner: "zoomed at the beginning, not clear what it is; not every one should be a zoom"):
+    # every move STARTS on the whole image; push-ins are gentler (15 %); pans barely zoom; "still" only drifts
+    if move in ("in", "out"): return box(1.0, 0.5, 0.5), box(1.15, fx, fy)
+    if move == "still": return box(1.0, 0.5, 0.5), box(1.04, 0.5 + (fx - 0.5) * 0.3, 0.5 + (fy - 0.5) * 0.3)
+    pan = {"left": (0.56, 0.44, 0.5, 0.5), "right": (0.44, 0.56, 0.5, 0.5), "up": (0.5, 0.5, 0.56, 0.44), "down": (0.5, 0.5, 0.44, 0.56)}[move]
+    return box(1.06, pan[0], pan[2]), box(1.06, pan[1], pan[3])
 
 
 _depth_sess = None
@@ -101,6 +103,14 @@ def photo_shot(sh, dur, out, W, H, enc):
     if src.width < W * 1.25:  # upscale small photos once so sub-pixel crops stay smooth
         src = src.resize((int(src.width * W * 1.25 / src.width), int(src.height * W * 1.25 / src.width)), Image.LANCZOS)
     move, focus = sh.get("move", "in"), sh.get("focus", [0.5, 0.42])
+    if sh.get("fit"):  # tall / square image: show it WHOLE on a dark blurred fill instead of cropping it (owner v6)
+        CW, CH = int(W * 1.25), int(H * 1.25)
+        k = min(CW * 0.98 / src.width, CH * 0.96 / src.height)
+        fg = src.resize((int(src.width * k), int(src.height * k)), Image.LANCZOS)
+        bgc = cover(src, CW, CH).crop((0, 0, CW, CH)).filter(ImageFilter.GaussianBlur(CW // 40))
+        bgc = Image.blend(bgc, Image.new("RGB", (CW, CH), (12, 10, 8)), 0.55)
+        ox, oy = (CW - fg.width) // 2, (CH - fg.height) // 2
+        bgc.paste(fg, (ox, oy)); focus = [(ox + focus[0] * fg.width) / CW, (oy + focus[1] * fg.height) / CH]; src = bgc
     b0, b1 = boxes(move, focus, src.width, src.height, W, H)
     fg = None
     if sh.get("parallax"):
@@ -130,9 +140,9 @@ def photo_shot(sh, dur, out, W, H, enc):
         if dep is not None:  # 3D Ken Burns: near pixels zoom/slide further than far ones (inverse warp on the depth map)
             import cv2
             dm = np.asarray(dep.transform((W, H), Image.EXTENT, (x0, y0, x0 + w, y0 + h), Image.BICUBIC), np.float32) / 255
-            ez = 1 + 0.07 * t * dm
+            ez = 1 + 0.05 * t * dm
             sx = {"left": -1, "right": 1}.get(move, 0) * 28 * t * (dm - 0.5); sy = {"up": -1, "down": 1}.get(move, 0) * 20 * t * (dm - 0.5)
-            mx = (W / 2 + (GX - W / 2) / (1.05 * ez) - sx).astype(np.float32); my = (H / 2 + (GY - H / 2) / (1.05 * ez) - sy).astype(np.float32)
+            mx = (W / 2 + (GX - W / 2) / (1.02 * ez) - sx).astype(np.float32); my = (H / 2 + (GY - H / 2) / (1.02 * ez) - sy).astype(np.float32)
             frame = Image.fromarray(cv2.remap(np.asarray(frame), mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT))
         if fg is not None:  # foreground moves ~60 % further than the background: depth
             fx0, fy0, fw, fh = b0 + (b1 - b0) * t * 1.3
