@@ -22,28 +22,16 @@ for i in range(520):
     sd.line([(W - 520 + i, 0), (W - 520 + i, H)], fill=int(235 * min(1, (i / 520) ** 0.8)))
 base.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 10)] * 3, shade)))
 
-# 3) Morgan: real portrait, desaturated + contrast (gritty), its dark painted background fades into the shadow
-src = Image.open("assets/media/morgan_peale_src.jpg").convert("RGB")
-oval = Image.new("L", src.size, 0)  # the painting is an oval on a white scan: keep only the inside (shrunk), black outside
-ImageDraw.Draw(oval).ellipse([src.width * 0.035, src.height * 0.03, src.width * 0.965, src.height * 0.985], fill=255)
-oval = oval.filter(ImageFilter.GaussianBlur(14))
-src = Image.composite(src, Image.new("RGB", src.size, (12, 12, 12)), oval)
-src = src.crop((40, 30, src.width - 20, src.height))                       # chest-up, keep the epaulettes
-g = ImageEnhance.Color(src).enhance(0.55); g = ImageEnhance.Contrast(g).enhance(1.25); g = ImageEnhance.Brightness(g).enhance(0.95)
-h = 790; w = int(g.width * h / g.height); g = g.resize((w, h), Image.LANCZOS)
-yy, xx = np.mgrid[0:h, 0:w]
-m = np.clip(1.25 - np.sqrt(((xx - w * 0.52) / (w * 0.55)) ** 2 + ((yy - h * 0.42) / (h * 0.62)) ** 2), 0, 1) ** 0.9
-m = np.minimum(m * 1.6, 1) * np.clip(xx / (w * 0.25), 0, 1)                # soft left edge toward the map
-mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(10))
-# darken the painted background (not the figure) so the oval edge disappears into the shadow
-dk = np.clip(1.15 - np.sqrt(((xx - w * 0.5) / (w * 0.5)) ** 2 + ((yy - h * 0.55) / (h * 0.62)) ** 2), 0, 1)
-lum = np.asarray(g.convert("L"), np.float32) / 255
-keep = np.clip(dk * 1.8, 0, 1) * 0.75 + np.clip((lum - 0.35) * 2.5, 0, 1) * 0.25          # bright figure parts stay lit
-g = Image.fromarray((np.asarray(g, np.float32) * (0.18 + 0.82 * keep[..., None])).clip(0, 255).astype(np.uint8))
-port = g.convert("RGBA"); port.putalpha(mask)
-grain = Image.fromarray(rng.normal(0, 14, (h, w, 1)).repeat(3, 2).clip(-40, 40).astype(np.int16).__add__(128).astype(np.uint8))
-port = Image.composite(Image.blend(port.convert("RGB"), grain, 0.06).convert("RGBA"), port, mask); port.putalpha(mask)
-base.alpha_composite(port, (W - w + 40, H - h + 40))
+# 3) Morgan: real portrait (Peale, PD) CUT OUT cleanly (rembg birefnet-portrait on the inside of the painted oval, so no dark
+#    painted background / halo around him - owner v6), desaturated + contrast (gritty), bleeding off the bottom/right edges
+cut = Image.open("assets/media/morgan_peale_cut.png").convert("RGBA")
+alpha = cut.split()[3]
+g = ImageEnhance.Color(cut.convert("RGB")).enhance(0.6); g = ImageEnhance.Contrast(g).enhance(1.2)
+h = 800; w = int(cut.width * h / cut.height)
+g = g.resize((w, h), Image.LANCZOS); alpha = alpha.resize((w, h), Image.LANCZOS).point(lambda v: 0 if v < 40 else min(255, int((v - 40) * 1.2)))
+port = g.convert("RGBA"); port.putalpha(alpha.filter(ImageFilter.GaussianBlur(0.8)))
+px, py = W - w + 70, H - h + 60
+base.alpha_composite(port, (px, py))
 
 # 4) TG name tags: small square photo + dark plate under it
 d = ImageDraw.Draw(base); ft = ImageFont.truetype(F, 18)
