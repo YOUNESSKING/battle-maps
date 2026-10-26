@@ -42,10 +42,26 @@ GG.lbl("LA FIÈRE", LAF[0] - 14, LAF[1] + 4, { size: 14, color: "#fff6d8", ancho
 B.arrow({ side: "carth", pts: [[UTAH[0] - 10, UTAH[1] + 4], [SME[0] + 20, SME[1] + 6], [LAF[0] - 20, LAF[1] + 4], [1150, 760], [BARNE[0] + 20, BARNE[1]]], width: 12, t: T_UTAH - 0.4, dur: 3.0 });
 B.caption("HOLD THE MERDERET CROSSINGS · CUT THE PENINSULA IN TWO", T_CUT - 0.6, END + 1, "carth r");
 // ---------- sub-1: woven subscribe line on the wide map (STYLE_LOCK 1b engagement beats) ----------
+// daylight overview while sub-1 plays: who holds the ground (German-held Normandy in the locked red, clipped to land),
+// period flags + small labels. All of it fades under the MOVE 2 title dimmer, so nothing from move2-1 on changes.
+const OUT = S2 + 0.3;
+K.territory({ pts: [[0, 0], [2880, 0], [2880, 1620], [0, 1620]], side: "#a8503c", alpha: 0.34, mask: "assets/normandy_land.png", t: 0.1, dur: 1.0, until: OUT });
+// the Channel side (Allied sea, England beyond) in the locked blue: sea only (land mask excluded), strongest to the north
+GG.layer("background:linear-gradient(to bottom, rgba(46,92,178,0.55), rgba(46,92,178,0.18) 55%, rgba(46,92,178,0.08));-webkit-mask-image:url(assets/normandy_land.png),linear-gradient(#000,#000);mask-image:url(assets/normandy_land.png),linear-gradient(#000,#000);-webkit-mask-size:2880px 1620px;mask-size:2880px 1620px;-webkit-mask-composite:xor;mask-composite:exclude;", 0.1, OUT, { dur: 1.0, outDur: 0.8 });
+const nflag = (src, name, x, y, t, color) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:5px"><img src="${src}" style="width:104px;display:block;border:2px solid #1a1712;box-shadow:0 3px 8px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:24px;color:${color};text-shadow:0 2px 4px #000,0 0 10px rgba(0,0,0,0.8);letter-spacing:0.12em">${name}</div></div>`, x, y, { t, pop: true, until: OUT });
+nflag("assets/media/us_flag_48star.png", "ALLIES ▲ ENGLAND", 1150, 330, 0.4, "#cfe0ff");
+nflag("assets/media/ger_reich_flag.png", "GERMAN-HELD FRANCE", 980, 1110, 0.6, "#ffd9cf");
+B.label("ENGLISH CHANNEL", 1500, 420, { cls: "sea", size: 34, t: 0.8, until: OUT });
+B.label("COTENTIN PENINSULA", 1180, 560, { cls: "country", size: 30, t: 0.8, until: OUT });
+B.city("CHERBOURG", ...CHERB, { size: 24, r: 8, t: 1.0, until: OUT });
+B.city("CARENTAN", ...CARENTAN, { size: 20, r: 7, t: 1.2, until: OUT });
+B.city("BAYEUX", ...BAYEUX, { size: 20, r: 7, t: 1.4, until: OUT });
+GG.tagbox("UTAH BEACH", UTAH[0] + 70, UTAH[1] - 10, "#1f4fc4", { size: 18, anchor: [0, -50], t: 1.6, until: OUT });
+GG.tagbox("OMAHA BEACH", OMAHA[0] + 20, OMAHA[1] + 40, "#1f4fc4", { size: 18, anchor: [0, -50], t: 1.8, until: OUT });
 const E = EngageK(B);
 const T_SUBC = at("sub-1", "exactly what subscribing"), T_NEXT = at("sub-1", "Because on D-Day");
 const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.pop !== false) SFX("ref:pop", t); return GG.pin(`<div style="background:${o.bg || "#f1eee6"};color:#111;font-family:Oswald;font-weight:500;letter-spacing:.24em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.6).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 ${size * 0.1}px ${size * 0.4}px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
 E.subscribe(T_SUBC - 1.25, T_NEXT + 0.6);   // the click (t + 1.25) lands on "exactly what subscribing"
 K.target(LAF[0], LAF[1], T_NEXT, { r: 30, until: S2 - 0.1 });
-box("NEXT: THE LA FIÈRE CAUSEWAY", LAF[0], LAF[1] + 80, T_NEXT, 30, S2 - 0.1, { bg: "#cfe0ff" });
+box("NEXT: THE LA FIÈRE CAUSEWAY", LAF[0] - 340, LAF[1], T_NEXT, 30, S2 - 0.1, { bg: "#cfe0ff" });
 B.finish();

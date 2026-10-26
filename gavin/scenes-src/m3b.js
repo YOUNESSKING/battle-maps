@@ -74,7 +74,7 @@ B.highlight([[1000, 500], [1200, 640], [1400, 760], [1600, 820], [1800, 840]], T
 const D4 = "move3-4d", T_DEC = P(D4) + 0.1, T_TELL = at(D4, "Tell us in the comments");
 B.bubble("THEY WILL COME FROM THE SOUTH", 1250, 330, T_NOONE - 0.6, T_DEC + 0.3);
 const E = EngageK(B);
-E.decide({ sub: "GAVIN'S DECISION", a: "ATTACK THE BRIDGE HEAD-ON", b: "CROSS THE RIVER", real: 1, t: T_DEC, tCount: T_TELL, tReveal: S[5], until: S[5] + 1.6 });
+E.decide({ sub: "GAVIN'S DECISION", a: 'ATTACK <span style="white-space:nowrap">HEAD-ON</span>', b: "CROSS THE RIVER", real: 1, t: T_DEC, tCount: T_TELL, tReveal: S[5], until: S[5] + 1.6 });
 // ---------- move3-5: take it from both ends ----------
 K.badge({ name: "BRIG. GEN. JAMES M. GAVIN", role: "COMMANDER · 82ND AIRBORNE", photo: "assets/media/gavin_head.png", flag: "us", side: "carth", corner: "tr", t: T_SAW - 0.2, until: S[6] });
 B.caption("GAVIN SAW SOMETHING DIFFERENT", T_SAW + 0.2, T_BOTH - 0.2, "carth r");
