@@ -1,4 +1,4 @@
-// MOVE 3b: the Waal crossing, Nijmegen, 18-20 September 1944 (move3-3 .. move3-10). Basemap: nijmegen (z15) + water mask (the Waal).
+// MOVE 3b: the Waal crossing, Nijmegen, 18-20 September 1944 (move3-3 .. move3-10, with move3-4d = WHAT WOULD YOU DO? beat). Basemap: nijmegen (z15) + water mask (the Waal).
 // Sides: US / British = blue, German = red. Facts: research/FACT_NOTES.md (26 boats, ~260 men, ~15:00, 48 killed, tanks over at ~19:00).
 const B = Battle();
 const { P, at } = B;
@@ -70,7 +70,11 @@ const redTint = K.frontTint({ pts: FR, side: "rome", dir: -1, depth: 95, alpha: 
 B.caption("THE RIVER GUARDS THE NORTH END", T_GUARD, T_300 - 0.2, "rome r");
 GG.lbl("~300 M OF OPEN WATER", 1250, 520, { size: 18, anchor: [0, -50], t: T_300, until: S[5] + 1 });
 B.highlight([[1000, 500], [1200, 640], [1400, 760], [1600, 820], [1800, 840]], T_300, null, 30);
-B.bubble("THEY WILL COME FROM THE SOUTH", 1250, 330, T_NOONE - 0.6, S[5] + 0.4);
+// ---------- move3-4d: "what would you do?" decision card (STYLE_LOCK 1b engagement beats); the map stays, dimmed behind the card ----------
+const D4 = "move3-4d", T_DEC = P(D4) + 0.1, T_TELL = at(D4, "Tell us in the comments");
+B.bubble("THEY WILL COME FROM THE SOUTH", 1250, 330, T_NOONE - 0.6, T_DEC + 0.3);
+const E = EngageK(B);
+E.decide({ sub: "GAVIN'S DECISION", a: "ATTACK THE BRIDGE HEAD-ON", b: "CROSS THE RIVER", real: 1, t: T_DEC, tCount: T_TELL, tReveal: S[5], until: S[5] + 1.6 });
 // ---------- move3-5: take it from both ends ----------
 K.badge({ name: "BRIG. GEN. JAMES M. GAVIN", role: "COMMANDER · 82ND AIRBORNE", photo: "assets/media/gavin_head.png", flag: "us", side: "carth", corner: "tr", t: T_SAW - 0.2, until: S[6] });
 B.caption("GAVIN SAW SOMETHING DIFFERENT", T_SAW + 0.2, T_BOTH - 0.2, "carth r");

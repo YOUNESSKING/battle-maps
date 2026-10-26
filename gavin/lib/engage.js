@@ -52,7 +52,7 @@ function EngageK(B) {
     return el;
   };
   // final question: the three moves as numbered cards, "1, 2 OR 3?", family-story line, small subscribe button.
-  E.final = ({ moves, tShow, tNums = [], tAsk, tFamily, tSub, until }) => {
+  E.final = ({ moves, tShow, tNums = [], tAsk, tFamily, tSub, until, family = "FAMILY SERVED IN KOREA?" }) => {
     const card = (m, i) => `<div class="m m${i}" style="width:330px;text-align:center;background:rgba(14,16,22,0.88);border:2px solid rgba(201,180,138,0.6);border-radius:12px;padding:16px 10px">
       <div style="width:84px;height:84px;margin:0 auto 8px;border-radius:50%;border:4px solid #c9b48a;font-size:56px;font-weight:700;line-height:76px">${i + 1}</div>
       <div style="font-size:34px;font-weight:700;letter-spacing:0.06em">${m[0]}</div><div style="font-size:22px;letter-spacing:0.25em;color:#c9b48a">${m[1]}</div></div>`;
@@ -60,7 +60,7 @@ function EngageK(B) {
       <div class="q" style="text-align:center;font-size:84px;font-weight:700;letter-spacing:0.05em;margin:2px 0 22px">WHICH WAS HIS GREATEST MOVE?</div>
       <div style="display:flex;gap:34px;justify-content:center">${moves.map(card).join("")}</div>
       <div class="ans" style="text-align:center;font-size:58px;font-weight:700;letter-spacing:0.12em;margin-top:20px;color:#ffd54a">1, 2 OR 3?</div>
-      <div class="fam" style="text-align:center;font-size:30px;letter-spacing:0.12em;margin-top:14px">FAMILY SERVED IN KOREA? <span style="color:#c9b48a">TELL US THEIR STORY · WE READ EVERY ONE</span></div>`,
+      <div class="fam" style="text-align:center;font-size:30px;letter-spacing:0.12em;margin-top:14px">${family} <span style="color:#c9b48a">TELL US THEIR STORY · WE READ EVERY ONE</span></div>`,
       "left:50%;top:150px;width:1300px;margin-left:-650px;");
     const back = mk("", "left:0;top:0;width:1920px;height:1080px;background:rgba(6,8,12,0.6);");
     scene.insertBefore(back, el);
