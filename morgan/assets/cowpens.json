@@ -1,0 +1,18 @@
+{
+ "name": "cowpens",
+ "center": [
+  35.135,
+  -81.815
+ ],
+ "zoom": 16,
+ "origin_world_px": [
+  4574312,
+  6636922
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 1.95,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

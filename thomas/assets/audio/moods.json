@@ -1,0 +1,86 @@
+[
+  {
+    "file": "music_01_heavy_heart.mp3",
+    "duration": 296.70,
+    "mood": "solemn",
+    "notes": "Slow, melancholy-hopeful piano/strings piece. Use for the cold open / hook and for reflective narration (Morgan's hard early years, the wagoner's lash, the long road to Cowpens)."
+  },
+  {
+    "file": "music_02_clash_defiant.mp3",
+    "duration": 375.59,
+    "mood": "tense",
+    "notes": "Long-form driving orchestral build with strings and drums, defiant character. Use as a tension bed for the Saratoga riflemen sequence and for extended build-ups before a battle turn."
+  },
+  {
+    "file": "music_03_ready_aim_fire.mp3",
+    "duration": 216.95,
+    "mood": "battle",
+    "notes": "Hard-driving percussion-forward war theme ('War' mood tag on incompetech). Use under the musket-volley / firing-line action beats and the Cowpens double envelopment."
+  },
+  {
+    "file": "music_04_fife_and_drum.mp3",
+    "duration": 58.93,
+    "mood": "tense",
+    "notes": "Short colonial-era fife-and-drum-corps motif. Use as a period-flavored marching/interlude cue (militia forming up, camp scenes, chapter-break bumper) — good for a 1-minute chapter card."
+  },
+  {
+    "file": "music_05_crusade.mp3",
+    "duration": 198.74,
+    "mood": "tense",
+    "notes": "Epic building orchestral piece with a choral brass swell near its climax. Use as the tension-to-climax cue for the Cowpens 'come get us' feigned retreat and the final charge."
+  },
+  {
+    "file": "music_06_undaunted.mp3",
+    "duration": 212.53,
+    "mood": "heroic",
+    "notes": "Big dramatic cinematic drums, triumphant character. Use for the Cowpens victory beat and Morgan's promotion/legacy segment."
+  },
+  {
+    "file": "sfx_musket_volley.wav",
+    "duration": 2.60,
+    "mood": "battle",
+    "notes": "Massed ragged musket volley (26 staggered shots + low rumble bed), synthesized. For firing-line volley shots."
+  },
+  {
+    "file": "sfx_musket_single.wav",
+    "duration": 1.20,
+    "mood": "battle",
+    "notes": "Single rifle/musket crack with faint echo tail, synthesized. For sniper/skirmisher single-shot beats (e.g. Timothy Murphy at Saratoga)."
+  },
+  {
+    "file": "sfx_cannon.wav",
+    "duration": 3.50,
+    "mood": "battle",
+    "notes": "Cannon blast: sub-bass boom + noise crack + rumbling tail, synthesized."
+  },
+  {
+    "file": "sfx_drum_roll.wav",
+    "duration": 3.20,
+    "mood": "tense",
+    "notes": "Accelerating military snare roll into a final accent hit, synthesized. For countdown-to-battle / reveal beats."
+  },
+  {
+    "file": "sfx_whoosh.wav",
+    "duration": 1.10,
+    "mood": "tense",
+    "notes": "Bandpass-swept noise transition swoosh, synthesized. For title cards and chapter transitions."
+  },
+  {
+    "file": "sfx_thud.wav",
+    "duration": 0.60,
+    "mood": "solemn",
+    "notes": "Low resonant thud with a knock transient, synthesized. For a stake/flag/musket-butt hitting the ground."
+  },
+  {
+    "file": "sfx_cavalry.wav",
+    "duration": 4.50,
+    "mood": "battle",
+    "notes": "Four-beat accelerating horse-gallop pattern (dragoon/cavalry charge), synthesized. For Washington's/Tarleton's cavalry at Cowpens."
+  },
+  {
+    "file": "sfx_cheer.wav",
+    "duration": 2.80,
+    "mood": "heroic",
+    "notes": "Layered multi-voice shout/cheer swell, synthesized. Optional — for the Cowpens victory moment."
+  }
+]

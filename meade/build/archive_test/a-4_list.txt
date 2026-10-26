@@ -1,0 +1,6 @@
+file '/home/user/battle-maps/meade/build/archive_test/a-4_0.mp4'
+file '/home/user/battle-maps/meade/build/archive_test/a-4_1.mp4'
+file '/home/user/battle-maps/meade/build/archive_test/a-4_2.mp4'
+file '/home/user/battle-maps/meade/build/archive_test/a-4_3.mp4'
+file '/home/user/battle-maps/meade/build/archive_test/a-4_4.mp4'
+file '/home/user/battle-maps/meade/build/archive_test/a-4_5.mp4'

@@ -1,0 +1,49 @@
+{
+ "voice": "am_michael",
+ "speed": 1.0,
+ "duration": 56.94,
+ "paragraphs": [
+  {
+   "section": "Test",
+   "tag": "MAP: g-1 | dark Earth in space turns to Europe; title WWII \u00b7 THE WAAL CROSSING",
+   "start": 0.5,
+   "end": 10.33,
+   "text": "September, nineteen forty-four. Five years into the war, the Allies stake everything on one road through Holland, and on the bridges that carry it."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: g-2 | camera dives through the clouds onto 3D Holland: the road glows north, Eindhoven, Nijmegen, Arnhem; Nijmegen bridge pulses red",
+   "start": 11.23,
+   "end": 19.55,
+   "text": "Sixty miles of road, running north to the Rhine. At Nijmegen, the great bridge over the Waal is still in German hands."
+  },
+  {
+   "section": "Test",
+   "tag": "ARCHIVE: f-1 | date card 20 SEPTEMBER 1944 \u00b7 NIJMEGEN, HOLLAND; restored film: gliders, paratroopers, guns",
+   "start": 20.45,
+   "end": 28.52,
+   "text": "For three days, the paratroopers of the eighty-second Airborne throw themselves at it. For three days, they are thrown back."
+  },
+  {
+   "section": "Test",
+   "tag": "ARCHIVE: f-2 | Gavin portrait (depth move), name card; restored film: boats carried to the river",
+   "start": 29.42,
+   "end": 39.08,
+   "text": "Their commander, James Gavin, just thirty-seven years old, chooses the one way no one expects. Across the river. In daylight. In canvas boats."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: m-1 | dark 3D-lit tactical map: 26 boats push off from the south bank, German guns on the north bank fire, impacts in the water (shake), counter 26 BOATS \u00b7 260 MEN \u00b7 300 M OF OPEN WATER",
+   "start": 39.98,
+   "end": 47.19,
+   "text": "Twenty-six boats. Two hundred and sixty men. Three hundred metres of open water, under the German guns."
+  },
+  {
+   "section": "Test",
+   "tag": "MAP: m-2 | about half the boats grey out; the rest reach the north bank; blue sweeps east to the bridge; bridge turns blue; end title",
+   "start": 48.09,
+   "end": 54.54,
+   "text": "Half of the boats never reach the far side. The rest do. And by nightfall, the bridge is theirs."
+  }
+ ]
+}

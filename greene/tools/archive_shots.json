@@ -1,0 +1,365 @@
+{
+ "camden": [
+  {
+   "file": "camden_plan_1780.jpg",
+   "crop": [
+    0.05,
+    0.05,
+    0.95,
+    0.6
+   ],
+   "move": "up",
+   "credit": "Plan of the Battle near Camden, 1780"
+  },
+  {
+   "file": "camden_chappel.jpg",
+   "crop": [
+    0,
+    0,
+    0.55,
+    0.85
+   ],
+   "move": "right",
+   "credit": "The Battle of Camden, 16 August 1780 (Alonzo Chappel)"
+  },
+  {
+   "file": "camden_chappel.jpg",
+   "crop": [
+    0.45,
+    0,
+    1,
+    0.85
+   ],
+   "move": "left",
+   "credit": "The Battle of Camden, 16 August 1780 (Alonzo Chappel)"
+  },
+  {
+   "file": "camden_plan_1780.jpg",
+   "crop": [
+    0.3,
+    0.55,
+    1,
+    0.95
+   ],
+   "move": "in",
+   "credit": "Plan of the Battle near Camden, 1780"
+  },
+  {
+   "file": "camden_chappel.jpg",
+   "move": "out",
+   "credit": "The Battle of Camden, 16 August 1780 (Alonzo Chappel)"
+  }
+ ],
+ "greene": [
+  {
+   "file": "washington.jpg",
+   "move": "in"
+  },
+  {
+   "file": "greene.jpg",
+   "crop": [
+    0.15,
+    0.05,
+    0.85,
+    0.6
+   ],
+   "move": "in",
+   "credit": "Nathanael Greene, by Charles Willson Peale (c. 1783)"
+  },
+  {
+   "file": "greene.jpg",
+   "move": "out",
+   "credit": "Nathanael Greene, by Charles Willson Peale (c. 1783)"
+  }
+ ],
+ "winter_march": [
+  {
+   "file": "valley_forge_trego.jpg",
+   "move": "right",
+   "credit": "William B. T. Trego, The March to Valley Forge (1883)"
+  },
+  {
+   "file": "valley_forge_trego.jpg",
+   "crop": [
+    0.25,
+    0.3,
+    0.62,
+    0.95
+   ],
+   "move": "in",
+   "credit": "William B. T. Trego, The March to Valley Forge (1883)"
+  },
+  {
+   "file": "valley_forge_trego.jpg",
+   "crop": [
+    0.55,
+    0.35,
+    1,
+    1
+   ],
+   "move": "left",
+   "credit": "William B. T. Trego, The March to Valley Forge (1883)"
+  }
+ ],
+ "cornwallis": [
+  {
+   "file": "cornwallis.jpg",
+   "move": "in",
+   "credit": "Charles, Earl Cornwallis, by Thomas Gainsborough (1783)"
+  },
+  {
+   "file": "cornwallis.jpg",
+   "crop": [
+    0.15,
+    0.05,
+    0.85,
+    0.55
+   ],
+   "move": "in",
+   "credit": "Charles, Earl Cornwallis, by Thomas Gainsborough (1783)"
+  },
+  {
+   "video": "scenes/dan-6/renders/dan-6.mp4",
+   "ss": 86,
+   "dur": 5.5
+  }
+ ],
+ "continental_soldiers": [
+  {
+   "file": "continental_army_ogden.jpg",
+   "move": "up",
+   "credit": "H. A. Ogden, Infantry: Continental Army, 1779-1783"
+  },
+  {
+   "file": "continental_army_ogden.jpg",
+   "crop": [
+    0.0,
+    0.1,
+    0.6,
+    0.9
+   ],
+   "move": "right",
+   "credit": "H. A. Ogden, Infantry: Continental Army, 1779-1783"
+  },
+  {
+   "file": "guilford_mcbarron.jpg",
+   "crop": [
+    0,
+    0.15,
+    0.55,
+    0.85
+   ],
+   "move": "left",
+   "credit": "H. Charles McBarron, The Battle of Guilford Courthouse (U.S. Army)"
+  },
+  {
+   "file": "cowpens_ranney.jpg",
+   "move": "in",
+   "credit": "William Ranney, The Battle of Cowpens (1845)"
+  }
+ ],
+ "guilford_battle": [
+  {
+   "file": "guilford_mcbarron.jpg",
+   "move": "left",
+   "credit": "H. Charles McBarron, The Battle of Guilford Courthouse (U.S. Army)"
+  },
+  {
+   "file": "guilford_mcbarron.jpg",
+   "crop": [
+    0.45,
+    0.05,
+    1,
+    0.6
+   ],
+   "move": "in",
+   "credit": "H. Charles McBarron, The Battle of Guilford Courthouse (U.S. Army)"
+  },
+  {
+   "file": "guilford_plan_1781.jpg",
+   "crop": [
+    0.1,
+    0.3,
+    0.9,
+    0.85
+   ],
+   "move": "in",
+   "credit": "Plan of the Battle of Guilford, 1781"
+  }
+ ],
+ "fox": [
+  {
+   "file": "fox.jpg",
+   "move": "in"
+  },
+  {
+   "file": "fox.jpg",
+   "crop": [
+    0.15,
+    0.05,
+    0.85,
+    0.55
+   ],
+   "move": "in"
+  },
+  {
+   "file": "guilford_mcbarron.jpg",
+   "crop": [
+    0.25,
+    0.45,
+    0.85,
+    1
+   ],
+   "move": "right",
+   "credit": "H. Charles McBarron, The Battle of Guilford Courthouse (U.S. Army)"
+  }
+ ],
+ "eutaw_battle": [
+  {
+   "file": "eutaw_springs_engraving.jpg",
+   "move": "right",
+   "credit": "The Battle of Eutaw Springs, 8 September 1781"
+  },
+  {
+   "file": "eutaw_springs_engraving.jpg",
+   "crop": [
+    0.25,
+    0.2,
+    0.75,
+    0.75
+   ],
+   "move": "in",
+   "credit": "The Battle of Eutaw Springs, 8 September 1781"
+  },
+  {
+   "file": "cowpens_wm_washington.jpg",
+   "crop": [
+    0.15,
+    0.05,
+    0.7,
+    0.85
+   ],
+   "move": "in",
+   "credit": "William Washington in battle (19th-c. engraving)"
+  },
+  {
+   "file": "eutaw_springs_engraving.jpg",
+   "crop": [
+    0.55,
+    0.15,
+    1,
+    0.65
+   ],
+   "move": "left",
+   "credit": "The Battle of Eutaw Springs, 8 September 1781"
+  }
+ ],
+ "yorktown": [
+  {
+   "video": "scenes/end-1/renders/end-1.mp4",
+   "ss": 12.5,
+   "dur": 5
+  },
+  {
+   "file": "yorktown_trumbull.jpg",
+   "move": "left",
+   "credit": "Surrender of Lord Cornwallis at Yorktown, after John Trumbull"
+  },
+  {
+   "file": "yorktown_trumbull.jpg",
+   "crop": [
+    0.3,
+    0.15,
+    0.72,
+    0.85
+   ],
+   "move": "in",
+   "credit": "Surrender of Lord Cornwallis at Yorktown, after John Trumbull"
+  },
+  {
+   "file": "yorktown_trumbull.jpg",
+   "crop": [
+    0,
+    0.2,
+    0.45,
+    0.9
+   ],
+   "move": "right",
+   "credit": "Surrender of Lord Cornwallis at Yorktown, after John Trumbull"
+  }
+ ],
+ "greene_statue": [
+  {
+   "file": "greene_statue.jpg",
+   "move": "up",
+   "credit": "Nathanael Greene statue, Washington, D.C. (photo: Carol M. Highsmith)"
+  },
+  {
+   "video": "scenes/eutaw-8/renders/eutaw-8.mp4",
+   "ss": 31,
+   "dur": 6
+  },
+  {
+   "file": "greene_statue.jpg",
+   "crop": [
+    0.25,
+    0.02,
+    0.8,
+    0.5
+   ],
+   "move": "in",
+   "credit": "Nathanael Greene statue, Washington, D.C. (photo: Carol M. Highsmith)"
+  },
+  {
+   "file": "continental_army_ogden.jpg",
+   "crop": [
+    0.3,
+    0.05,
+    1,
+    0.75
+   ],
+   "move": "left",
+   "credit": "H. A. Ogden, Infantry: Continental Army, 1779-1783"
+  }
+ ],
+ "greene_end": [
+  {
+   "file": "greene.jpg",
+   "crop": [
+    0.15,
+    0.05,
+    0.85,
+    0.6
+   ],
+   "move": "in",
+   "credit": "Nathanael Greene, by Charles Willson Peale (c. 1783)"
+  },
+  {
+   "file": "greene_statue.jpg",
+   "crop": [
+    0.1,
+    0.3,
+    0.9,
+    1
+   ],
+   "move": "up",
+   "credit": "Nathanael Greene statue, Washington, D.C. (photo: Carol M. Highsmith)"
+  },
+  {
+   "file": "cornwallis.jpg",
+   "crop": [
+    0.15,
+    0.05,
+    0.85,
+    0.55
+   ],
+   "move": "in",
+   "credit": "Charles, Earl Cornwallis, by Thomas Gainsborough (1783)"
+  },
+  {
+   "file": "greene.jpg",
+   "move": "in",
+   "credit": "Nathanael Greene, by Charles Willson Peale (c. 1783)"
+  }
+ ]
+}

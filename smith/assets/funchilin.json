@@ -1,0 +1,18 @@
+{
+ "name": "funchilin",
+ "center": [
+  40.21,
+  127.33
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  1788887,
+  791528
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 14.59,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

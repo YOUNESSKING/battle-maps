@@ -1,0 +1,230 @@
+{
+ "title": "Meade #12 - HOOK (hook-a getty_hd_ref hook-1..3 + hook-b penn_hd_ref hook-4), 0:00-1:14",
+ "note": "Locked hook: card at 0.3 s, dive 5.3 s, a beat every 2-4 s (frames every ~2.5 s to 0:28), REPULSED ~0:23, white flash, twist stamps, name slam + 3 snap cuts + title. Union blue / Confederate red; US 34-star + First National.",
+ "frames": [
+  [
+   "hook-a",
+   0.5,
+   "0:00.5",
+   "Frame 0: Gettysburg wide, option 1 (night 1-2 Jul), red columns on the road spokes (A.P. HILL, EWELL), blue corps from Maryland, both flags + legend; BIG card slams in",
+   "gun launches + impacts (shake), hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   2.5,
+   "0:02.5",
+   "51,000 ticks; KILLED / WOUNDED / CAPTURED light as spoken; shells land on both ridges",
+   "ticks, pops, impact + shake"
+  ],
+  [
+   "hook-a",
+   5.0,
+   "0:05.0",
+   "IN 3 DAYS stamp; cards lift off",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   6.3,
+   "0:06.3",
+   "Zoom-whoosh DIVE onto the fishhook: blue line glows on Cemetery Ridge, red wraps the outside; close counters",
+   "whoosh (zoom #1), pops"
+  ],
+  [
+   "hook-a",
+   8.0,
+   "0:08.0",
+   "72,000 ROBERT E. LEE card slams; ridge labels",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   9.9,
+   "0:09.9",
+   "94,000 ITS GENERAL: ? card; IN COMMAND: 3 DAYS stamp",
+   "hit + shake x2"
+  ],
+  [
+   "hook-a",
+   12.6,
+   "0:12.6",
+   "3 JULY 3 PM, option 2: Pettigrew + Pickett step out of the woods on Seminary Ridge; 12,500 counter",
+   "pop, ticks"
+  ],
+  [
+   "hook-a",
+   15.0,
+   "0:15.0",
+   "12,500 MEN; the lines march east (arrows), 3/4 MILE ruler",
+   "ref:whoosh, pop"
+  ],
+  [
+   "hook-a",
+   17.4,
+   "0:17.4",
+   "COPSE OF TREES ring; blue guns -> arcs -> impacts in the red lines",
+   "fire (quiet), impact + shake per shell"
+  ],
+  [
+   "hook-a",
+   19.9,
+   "0:19.9",
+   "Rifle volleys from the stone wall; counters grey; IN LESS THAN AN HOUR card",
+   "mg, impacts + shake, pop"
+  ],
+  [
+   "hook-a",
+   22.7,
+   "0:22.7",
+   "ABOUT HALF bar; REPULSED slams (payoff ~0:23)",
+   "ticks, ref:boom + shake"
+  ],
+  [
+   "hook-a",
+   25.2,
+   "0:25.2",
+   "WHITE FLASH zoom-out: survivors fall back (dotted), Lee badge + rider",
+   "whoosh (zoom #2) + hit"
+  ],
+  [
+   "hook-a",
+   28.3,
+   "0:28.3",
+   "\"ALL THIS HAS BEEN MY FAULT\" card (Lee, as written down by Fremantle)",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   31.3,
+   "0:31.3",
+   "Hard cut to dark: FIVE DAYS EARLIER, 3 JULY rolls back to 28 JUNE",
+   "hit, ticks"
+  ],
+  [
+   "hook-a",
+   33.0,
+   "0:33.0",
+   "3:00 A.M. clock slams, hand spins back; NEAR FREDERICK, MARYLAND",
+   "hit + shake, ticks, pop"
+  ],
+  [
+   "hook-a",
+   36.9,
+   "0:36.9",
+   "Camp at night, one lit tent; the officer from Washington walked in; '?' badge",
+   "ref:whoosh, pop"
+  ],
+  [
+   "hook-a",
+   39.0,
+   "0:39.0",
+   "WOKEN AT 3 A.M. stamp + red pulse",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   41.6,
+   "0:41.6",
+   "\"HE HAD COME TO GIVE ME TROUBLE\"; FROM HIS LETTER TO HIS WIFE, 29 JUNE 1863",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   45.2,
+   "0:45.2",
+   "RELIEVED? stamp + red pulse",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   47.3,
+   "0:47.3",
+   "ARRESTED? stamp",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   49.6,
+   "0:49.6",
+   "COMMAND OF THE ARMY OF THE POTOMAC slams; 94,000 MEN ticks",
+   "ref:boom + shake, ticks"
+  ],
+  [
+   "hook-a",
+   52.6,
+   "0:52.6",
+   "LEE: ALREADY IN PENNSYLVANIA + red pulse",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   1.6,
+   "0:56.1",
+   "'?' turns into the real photo: GEORGE G. MEADE slams in",
+   "white flash, ref:whoosh, hit + shake"
+  ],
+  [
+   "hook-b",
+   2.8,
+   "0:57.3",
+   "Badge to the corner; overview Fredericksburg -> Gettysburg (option 1), IN 7 MONTHS",
+   "ref:whoosh, pop"
+  ],
+  [
+   "hook-b",
+   4.6,
+   "0:59.1",
+   "CUT 1 Fredericksburg 13 Dec 1862 (fog, option 2): THE GAP in Jackson's railroad line",
+   "ref:whoosh + hit"
+  ],
+  [
+   "hook-b",
+   6.6,
+   "1:01.1",
+   "Blue column through the gap, impacts; ring 1 FREDERICKSBURG",
+   "impact + shake, pop"
+  ],
+  [
+   "hook-b",
+   8.6,
+   "1:03.1",
+   "CUT 2 Gettysburg 2 July: blue arrows race along the inside of the fishhook",
+   "ref:whoosh + hit, whooshes"
+  ],
+  [
+   "hook-b",
+   11.0,
+   "1:05.5",
+   "Longstreet hits the left, impacts; ring 2 GETTYSBURG 2 JULY",
+   "impact + shake, pop"
+  ],
+  [
+   "hook-b",
+   12.6,
+   "1:07.1",
+   "CUT 3 Gettysburg 3 July: red lines advance on the stone wall, guns -> arcs -> impacts",
+   "ref:whoosh + hit, impacts"
+  ],
+  [
+   "hook-b",
+   14.2,
+   "1:08.7",
+   "THE NIGHT BEFORE, HE CALLED IT; volleys",
+   "hit + shake, mg"
+  ],
+  [
+   "hook-b",
+   16.5,
+   "1:11.0",
+   "Red lines break, ring 3; pull-out to the overview with the numbered rings",
+   "impact, ref:whoosh, ref:riser"
+  ],
+  [
+   "hook-b",
+   18.6,
+   "1:13.1",
+   "Title card GEORGE MEADE'S 3 GREATEST TACTICAL MOVES",
+   "ref:boom + shake"
+  ]
+ ]
+}

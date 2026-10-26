@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f /tmp/battle-maps-setup.done ] || (nohup bash \"$CLAUDE_PROJECT_DIR/setup.sh\" > /tmp/battle-maps-setup.log 2>&1 &) ; echo 'battle-maps setup running in background: check /tmp/battle-maps-setup.done before rendering'"
+          }
+        ]
+      }
+    ]
+  }
+}

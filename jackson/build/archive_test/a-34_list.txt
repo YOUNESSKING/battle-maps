@@ -1,0 +1,7 @@
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_0.mp4'
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_1.mp4'
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_2.mp4'
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_3.mp4'
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_4.mp4'
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_5.mp4'
+file '/home/user/battle-maps/jackson/build/archive_test/a-34_6.mp4'

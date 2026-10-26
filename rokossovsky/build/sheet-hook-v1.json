@@ -1,0 +1,90 @@
+{
+ "title": "HOOK (hook-1..3) · Rokossovsky #8 · bobruisk map",
+ "note": "mm:ss = time in the video; option 1 = territory colours (wide), option 2 = glowing two-colour front lines (close-up)",
+ "frames": [
+  [
+   "hook-a",
+   0,
+   "0:00",
+   "hook-1 FIRST FRAME: Belarus Jun 44 (option 1), units already on the map, blue cavalry/tanks/infantry start moving",
+   "none (narration starts)"
+  ],
+  [
+   "hook-a",
+   3.8,
+   "0:03",
+   "IMPASSABLE stamp slams onto the marsh; German belief caption",
+   "hit"
+  ],
+  [
+   "hook-a",
+   10.5,
+   "0:10",
+   "log roads drawn across the bog; tanks, cavalry, infantry slide into the swamp",
+   "ref:whoosh, ref:pop"
+  ],
+  [
+   "hook-a",
+   12.6,
+   "0:12",
+   "ALERT rings on the thin German screen, too late; MG fire, impacts (shake)",
+   "mg, impact"
+  ],
+  [
+   "hook-a",
+   14.6,
+   "0:14",
+   "hook-2 WHITE-FLASH cut into the flash-forward: 27 JUNE 1944",
+   "whoosh (zoom) + hit"
+  ],
+  [
+   "hook-a",
+   17.6,
+   "0:17",
+   "two arrows close the ring at Bobruisk (option 2 glow ring): TRAPPED",
+   "ref:boom, hit"
+  ],
+  [
+   "hook-a",
+   21.5,
+   "0:21",
+   "zoom out: German ground collapses (22 Jun -> 4 Jul), German flag on the remaining western strip, arrows sweep west",
+   "whoosh (zoom)"
+  ],
+  [
+   "hook-a",
+   26.5,
+   "0:26",
+   "counter ticking to ~400,000 GERMAN LOSSES (whole operation)",
+   "tick x n, hit"
+  ],
+  [
+   "hook-a",
+   28.6,
+   "0:28",
+   "ARMY GROUP CENTRE struck through ('one of the worst defeats')",
+   "hit"
+  ],
+  [
+   "hook-a",
+   36.8,
+   "0:36",
+   "hook-3 dark map: Rokossovsky badge (licensed photo) behind prison bars, AUG 1937 -> MAR 1940 ticker",
+   "hit, ticks"
+  ],
+  [
+   "hook-a",
+   43.5,
+   "0:43",
+   "ARRESTED stamp; 'by his family's account' rows appear",
+   "hit, ref:pop"
+  ],
+  [
+   "hook-a",
+   49.0,
+   "0:49",
+   "NEVER SIGNED A FALSE CONFESSION stamp",
+   "hit"
+  ]
+ ]
+}

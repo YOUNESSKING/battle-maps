@@ -1,0 +1,20 @@
+{
+ "name": "virginia_hd_ref",
+ "center": [
+  38.55,
+  -78.15
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  35642,
+  49493
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 239.11,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}
