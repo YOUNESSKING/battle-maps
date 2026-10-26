@@ -68,7 +68,8 @@ if os.path.exists("build/chapters.txt") and os.path.exists("audio/timing.json") 
 if not chapters:
     chapters = [l for l in desc.splitlines() if re.match(r"^\d+:\d\d\s", l)]
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
-size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
+VIDEO = os.environ.get("VIDEO_PATH") or (max(mp4s, key=os.path.getsize) if mp4s else None)  # the file that is actually posted (not simply the biggest mp4)
+size = "%d MB" % round(os.path.getsize(VIDEO) / 1e6) if VIDEO else "size: see final render"
 if not os.path.exists("build/guide_frames.jpg") and os.path.exists("build/sheet_hook.png"):
     from PIL import Image as PI
     im = PI.open("build/sheet_hook.png").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
@@ -80,7 +81,7 @@ story = [Spacer(1, 18 * mm), P("JAMES M. GAVIN", "cover"), P("TOP 3 LEGENDARY TA
          img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: NO RETREAT (battlefield made with vidIQ; Gavin's real public-domain US Army photo added on top)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Gavin-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"{os.environ.get('VIDEO_NAME', 'Gavin-Top3-1080p.mp4')} (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
                  ["Voice", "Kokoro (free AI voice, am_michael)"],
