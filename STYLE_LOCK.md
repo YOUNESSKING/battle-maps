@@ -219,6 +219,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Music `MUSIC_VOL = 0.08` (owner 2026-09-30 chose option C of a 0.18 / 0.12 / 0.08 test; the reference clip still has the older 0.18 music), 2 s fade-in, 3 s fade-out.
 - Music ducked under the voice: sidechain threshold 0.03, ratio 6, attack 20 ms, release 400 ms.
 - SFX ducked lightly under the voice: threshold 0.03, ratio 3, attack 10 ms, release 300 ms.
+- **Sound effects at FULL level** (no overall SFX volume cut), as in the newest videos (Rokossovsky #8 to Meade #12). Owner 2026-10-26: "use the option the newest session is using". The -4 dB cut (`SFX_VOL = 0.63`, owner 2026-10-14) applies to the **Goose Green remix only** and stays in `goosegreen/tools/` and its sound check; don't copy it into new videos.
 - Limiter 0.5, then two-pass loudnorm to **-14 LUFS**, true peak -1.5 dB, LRA 11. Audio AAC 192k.
 - Sound-only changes never need a re-render: `python3 tools/assemble_full.py --audio-only`.
 
