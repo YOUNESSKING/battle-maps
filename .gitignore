@@ -12,6 +12,7 @@ tts/*.onnx
 tts/*.bin
 morgan/build/
 
+
 **/build/cards/
 **/build/seg/tmp.txt
 **/build/seg/list.txt
@@ -44,3 +45,4 @@ gavin/build/remix.log
 !goosegreen/assets/media/sfx/*.wav
 !goosegreen/assets/media/sfx/candidates/cand[1-4]_hit.wav
 **/build/sfx_cues.json
+

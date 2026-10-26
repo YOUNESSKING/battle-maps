@@ -1,0 +1,18 @@
+{
+ "name": "chosin_close",
+ "center": [
+  40.36,
+  127.2
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  893344,
+  394786
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 29.12,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
