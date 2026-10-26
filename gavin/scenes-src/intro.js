@@ -135,7 +135,7 @@ B.date("JULY 1943", T_C1 + 0.02, T_C2, 34);
 tag(1, "SICILY", "JULY 1943 · MOVE 1", T_C1, T_C2 - 0.05);
 flagPair([[US, "USA"]], [[REICH, "GERMANY"], [ITA, "ITALY"]], T_C1 + 0.1, T_C2 - 0.05);
 [[37.35, 14.20], [37.12, 14.62], [37.28, 14.88], [36.92, 14.95], [37.48, 14.55]].forEach(([la, lo], k) => chute(la, lo, T_C1 + 0.15 + k * 0.12, 12, T_C2));
-const AS = strike([P(37.40, 14.46), P(37.24, 14.40), P(37.12, 14.34)], T_C1 + 0.25, 0.7, "rome", 4);
+const AS = strike([P(37.55, 14.50), P(37.32, 14.42), P(37.12, 14.34)], T_C1 + 0.25, 0.7, "rome", 3);
 K.impact(...P(37.12, 14.34), T_C1 + 1.0, { r: 6 }); K.impact(...P(37.17, 14.37), T_C1 + 1.2, { r: 5, shake: false, sfx: false });
 B.greyArrow(AS, T_C1 + 1.15);
 K.target(...S, T_C1 + 1.0, { r: 12, until: END + 1 });
@@ -148,7 +148,7 @@ B.date("JUNE 1944", T_C2 + 0.02, T_C3, 34);
 tag(2, "NORMANDY", "JUNE 1944 · MOVE 2", T_C2, T_C3 - 0.05);
 flagPair([[US, "USA"]], [[REICH, "GERMANY"]], T_C2 + 0.1, T_C3 - 0.05);
 [[49.47, -1.20], [49.32, -1.45], [49.58, -1.38], [49.28, -1.18], [49.50, -1.55]].forEach(([la, lo], k) => chute(la, lo, T_C2 + 0.15 + k * 0.12, 12, T_C3));
-const AN = strike([P(49.37, -1.72), P(49.39, -1.56), P(49.40, -1.41)], T_C2 + 0.25, 0.7, "rome", 4);
+const AN = strike([P(49.36, -1.78), P(49.38, -1.60), P(49.40, -1.42)], T_C2 + 0.25, 0.7, "rome", 3);
 K.impact(...P(49.40, -1.42), T_C2 + 1.0, { r: 6 }); K.impact(...P(49.39, -1.47), T_C2 + 1.2, { r: 5, shake: false, sfx: false });
 B.greyArrow(AN, T_C2 + 1.15);
 K.target(...N, T_C2 + 1.0, { r: 12, until: END + 1 });
@@ -159,7 +159,7 @@ B.date("SEPTEMBER 1944", T_C3 + 0.02, T_THESE + 0.2, 30);
 tag(3, "HOLLAND", "SEPTEMBER 1944 · MOVE 3", T_C3, T_THESE);
 flagPair([[US, "USA"], [UK, "BRITAIN"]], [[REICH, "GERMANY"]], T_C3 + 0.1, T_THESE - 0.05);
 [[51.76, 5.98], [51.68, 5.84], [51.79, 6.10], [51.62, 6.02], [51.72, 5.72]].forEach(([la, lo], k) => chute(la, lo, T_C3 + 0.15 + k * 0.12, 12, T_THESE));
-strike([P(51.74, 5.86), P(51.82, 5.86), P(51.92, 5.86)], T_C3 + 0.3, 0.6, "carth", 4);
+strike([P(51.70, 5.86), P(51.81, 5.86), P(51.93, 5.86)], T_C3 + 0.3, 0.6, "carth", 3);
 ["h1", "h2"].forEach((id, k) => { const [x, y] = P(51.93 + k * 0.02, 5.76 + k * 0.2); B.unit({ id, side: "rome", x, y, w: 12, h: 8 }); K.counter(id, { icon: "infantry", flag: "ger" }); tl.fromTo(B.units[id].el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, T_C3); });
 K.impact(...P(51.93, 5.76), T_C3 + 0.95, { r: 6 }); K.impact(...P(51.95, 5.96), T_C3 + 1.15, { r: 6, shake: false, sfx: false });
 B.grey(["h1", "h2"], T_C3 + 1.1, 0.3); B.hideUnits(["h1", "h2"], T_THESE - 0.1, 0.2);
@@ -175,7 +175,7 @@ const TDIM = scr("", "inset:0;background:linear-gradient(200deg,rgba(5,7,13,0) 4
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THESE + 0.4);
 const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">JAMES GAVIN'S</div>
-  <div style="font-size:84px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
-  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 SICILY · 2 NORMANDY · 3 HOLLAND</div></div>`, "left:70px;top:700px;transform-origin:30% 50%;");
+  <div style="font-size:66px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
+  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 SICILY · 2 NORMANDY · 3 HOLLAND</div></div>`, "left:70px;top:740px;transform-origin:30% 50%;");
 slam(TITLE, T_THESE + 0.95, { from: 1.7, dur: 0.26, shake: 6, boom: true });
 B.finish();
