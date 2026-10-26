@@ -192,7 +192,7 @@ applyE();
 const eTo = (t, dur, cx, cy, s, ease = "sine.inOut") => tl.to(ecam, { cx, cy, s, duration: dur, ease, onUpdate: applyE }, t);
 const epin = (html, lat, lon, t, o = {}) => { const [x, y] = PR(lat, lon); const el = document.createElement("div"); el.style.cssText = `position:absolute;left:${x + (o.dx || 0)}px;top:${y + (o.dy || 0)}px;`; el.innerHTML = html; EUW.appendChild(el);
   gsap.set(el, { xPercent: o.anchor ? o.anchor[0] : -50, yPercent: o.anchor ? o.anchor[1] : -50 }); GG.hide(el);
-  tl.fromTo(el, { autoAlpha: 0, scale: o.pop ? 0.3 : 1 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: o.pop ? "back.out(2.2)" : "power2.out" }, t); return el; };
+  if (t != null) tl.fromTo(el, { autoAlpha: 0, scale: o.pop ? 0.3 : 1 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: o.pop ? "back.out(2.2)" : "power2.out" }, t); return el; };
 const T_ZO = T_GEN - 0.3;
 SFX("whoosh", T_ZO - 0.15);
 camTo(T_ZO - 0.1, 0.45, 1740, 790, 0.7, "expo.in");                 // the Nijmegen map rushes away ...
@@ -212,7 +212,7 @@ const ring = (lat, lon, n, txt, sub, t, side) => {
   const lab = epin(`<div style="display:flex;align-items:center;gap:12px;padding:8px 18px 10px;background:rgba(18,16,12,0.92);border-left:7px solid #ffd54a;font-family:Oswald;font-weight:700;color:#f7f3ea;white-space:nowrap;box-shadow:0 8px 20px rgba(0,0,0,.6)">
     <span style="display:inline-flex;width:40px;height:40px;border-radius:50%;border:4px solid #ffd54a;align-items:center;justify-content:center;font-size:24px;color:#ffd54a">${n}</span>
     <div><div style="font-size:34px;letter-spacing:0.08em;line-height:1.1">${txt}</div><div style="font-size:19px;letter-spacing:0.22em;color:#d8cfb8"><img src="${US}" style="height:15px;vertical-align:-2px;margin-right:8px;border:1px solid #f7f3ea">${sub}</div></div></div>`,
-    lat, lon, t + 0.15, side);
+    lat, lon, null, side);
   slam(lab, t + 0.15, { from: 1.8, dur: 0.22, shake: 4 });
   return lab;
 };
