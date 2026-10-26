@@ -37,7 +37,7 @@ judged instead of followed blindly. Worked example: `morgan/youtube/youtube_meta
 | Rule | Why |
 |---|---|
 | **Score every option with `vidiq_score_title`** (type `long`, 5 credits each). Target **≥ 85**. | Don't lock an unscored title. Morgan: 93 / 95 / 93 / 96. |
-| Put the hook in the **first ~60 characters**. | Phones cut titles around 60 characters. The series name ("X's Top 3 Tactical Moves") goes after the hook. |
+| **Use the Tactical Genius pattern: `<Name>'s Top 3 Legendary Tactical Moves \| <3-6 word subtitle>`**, name first; best subtitle = "The Man Who <huge, well-known result>". Avoid "fired / almost" angles and nicknames. | Thomas (2026-10-05): a hook-first title got CTR 0.9 %. TG's "The Man Who…" titles reach 238k-1.1M views; their "The General Truman Fired" got 30k. See HANDOVER §10. (Replaces the old Morgan rule "hook first, series name after".) |
 | **No negation as the hook** ("He wasn't a genius…"). | Sister channel video 2: the brain reads the strong word before the negation; the promise flips. |
 | Be **clear and accurate**: every claim must be true and self-explanatory. | Morgan v1 "Destroyed Britain's Best" confused the owner ("Britain's best what?") and overstated it; "Britain's Elite" is clear and true. |
 | Match the **emotional register** of the competitor hits (underdog, "the general who never lost", enemy's arrogance). | See `research/NICHE_ANALYSIS.md`. |
@@ -45,6 +45,9 @@ judged instead of followed blindly. Worked example: `morgan/youtube/youtube_meta
 | ≤ 100 characters (YouTube limit). | |
 
 ### Pattern that worked
+**Current (2026-10-05):** `George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army` (vidIQ 86), modelled on TG's Ridgway 1.11M / Zhukov 629k / Manstein 238k.
+
+Older (Morgan, before the Thomas CTR data, no longer the model):
 `[Hook: the most shocking true fact]: [General]'s Top 3 Tactical Moves`
 - Morgan (95, locked): *He Destroyed Britain's Elite in 1 Hour: Daniel Morgan's Top 3 Tactical Moves*
 - Morgan A/B alternative (96): *How a Crippled Wagon Driver Wiped Out Britain's Elite in Under an Hour*
@@ -97,7 +100,7 @@ Narration voice: AI-generated (Kokoro TTS). Maps: original animations.
 | Name **only battles, people and numbers that are in the recorded script**. | Sister channel V4 cited researchers who were never in the voice. |
 | **Fact-check every name and number** before it goes in (and before voicing). Use the Gemini v3 fact-check list. | Morgan research had 5 errors (see HANDOVER §8.12). |
 | First line = the script's hook, not "In this video…". | The first ~2 lines are all most viewers see. |
-| Keep every CC BY / CC BY-SA credit line. | Licence requirement. |
+| Keep every CC BY / CC BY-SA credit line, but **write NO links (no URLs) anywhere in the description**: name the licence instead ("licensed under Creative Commons Attribution 4.0"). | Owner: YouTube treats links on new channels as possible spam. Naming the licence still satisfies the attribution. |
 | Exactly **3 hashtags**. | More than 3 looks spammy. |
 | Business email: `[email to fill in]` — **the owner must fill it in.** | |
 

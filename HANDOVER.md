@@ -1,28 +1,43 @@
-# HANDOVER v2: faceless military-history channel (Tactical Genius style)
+# HANDOVER v3: faceless military-history channel (Tactical Genius style)
 
-**Owner:** Youness Fakiri · **Updated:** 2026-09-25
+**Owner:** Youness Fakiri · **Updated:** 2026-10-05 (after the O.P. Smith video; first live YouTube numbers: title + first-minute rules, §10)
 **How to use:** start a new Claude Code cloud session on the repo `younessking/battle-maps` (environment with **Full** network access), attach the Gemini research file, and say: *"Read HANDOVER.md. Make the full video from this research."*
+
+## 0a. NEXT VIDEO: quick start (read this first)
+**Videos done:** Hannibal (test), Daniel Morgan, Nathanael Greene, Goose Green (2 Para), Belisarius, **O.P. Smith (#6, branch `claude/lucid-tesla-qugecc`, folder `smith/`)**, George H. Thomas (branch `claude/george-thomas-civil-war-2epkux`), **James M. Gavin (#7, branch `claude/gavin-video-7`, folder `gavin/`)**, **Konstantin Rokossovsky (#8, folder `rokossovsky/`, on main: THE LOCKED REFERENCE VIDEO, STYLE_LOCK 0b)**. The owner picks the next topic.
+**Start every new video from `rokossovsky/` (STYLE_LOCK 0b): copy its skeleton, watch `reference/style-reference-rokossovsky-v8.mp4` + `reference/hook-reference-rokossovsky-v2.mp4`, and match them.**
+**Style = STYLE_LOCK.md, exactly** (the O.P. Smith / Goose Green look and sound: fx.js effects, front lines + territory, night, counters with flags, aircraft + `K.bombRun` with shake, locked battle sounds, music 0.08, zoom sound only on the 3 biggest moves). The George Thomas branch's "detailed map style" (demo3, thomas/lib) is NOT the channel style; don't use it.
+**Owner rules learned on Smith (binding):**
+- Follow the no-skip checklist (0b step 7) in order; send ONE labelled snapshot sheet per move and wait for approval; **never render without the owner's OK**.
+- Sound = the locked kit only. Don't source extra sounds, don't pitch-shift or swap the battle sounds, don't raise the music. `tools/check_sound_lock.py` must say OK.
+- Commander badges: real public-domain photo when one exists (crop it; Wikimedia blocks this machine's IP after a while: fetch through `https://images.weserv.nl/?url=upload.wikimedia.org/...` or use the Library of Congress API). Quote marks only on verbatim quotes, also in speech bubbles.
+- **The cloud machine reboots** (every ~30-60 min, and whenever the session goes idle): a running render or assembly dies, finished renders survive. Start renders detached (`render_all.sh`), stay in the turn watching them with <10-min foreground waits, relaunch only the missing scenes.
+- Research: use `research/GEMINI_BRIEF_v3.md` (sources + VERIFIED/DISPUTED labels); log every fact correction in `<name>/research/FACT_NOTES.md`; list any figure that is from memory in the publishing PDF's "facts to double-check" box.
+- Packaging: `research/PACKAGING_GUIDE.md` (vidIQ-scored title >= 85 in the Tactical Genius pattern, see §10, thumbnail = same promise, chapters from timing.json, 12-18 tags). **Descriptions contain NO links at all** (new channels get flagged as spam): name licences in words. Thumbnail = HANDOVER 1b formula (2 variants, commander name tags on the map, check spelling/geography).
+- **Narration voice = A, the DEFAULT (owner-locked 2026-10-06, STYLE_LOCK §6); option 2 = the plain Kokoro am_michael narration (fallback only):** record the narration with Kokoro as usual (am_michael, speed 1.0, timing.json from it), then convert it: `bash tts/setup_clone.sh` (once per session, ~4 min, own venv) and `/home/user/cb-venv/bin/python tts/convert_voice.py audio/voice.wav /home/user/battle-maps/tts/voices/owner_ref.wav audio/voice_owner.wav` (Chatterbox VC; ~15-20 min for 18 min of speech). Pacing and every timestamp stay identical, so timing.json and the scenes still fit; mix voice_owner.wav instead of voice.wav. Approved sample: `tts/voices/test_A_chatterbox.mp3`. Rejected: Chatterbox text-to-speech cloning (`tts/clone_voice.py`, pacing off), Seed-VC (B, closer score 0.95 vs 0.92 but ~4 h per video on CPU and not preferred by ear).
+- **Voice A reference:** `tts/voices/owner_ref.wav` is not in git (`*.wav` is ignored), so Rokossovsky used the approved sample `tts/voices/test_A_chatterbox.mp3` as the reference. If the owner sends owner_ref.wav, commit it with `git add -f`.
+- **Title + first minute (§10, from the Thomas numbers: CTR 0.9 %):** title = `<Name>'s Top 3 Legendary Tactical Moves | The Man Who <huge result>` (name first, no "fired/almost" angles); line 1 of the script = stakes, never date + place; the title/thumbnail promise is paid within 30 s.
 
 ## 0. Repo layout (clone path must be /home/user/battle-maps)
 | Path | What |
 |---|---|
 | `setup.sh`, `.claude/settings.json` | automatic tool install at session start (runs in background; wait for `/tmp/battle-maps-setup.done`) |
-| `research/` | GEMINI_BRIEF_v3.md (paste into Gemini), PACKAGING_GUIDE.md (titles, thumbnails, descriptions, chapters, tags), NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
+| `research/` | **GEMINI_BRIEF_v3.md** (paste into Gemini), **PACKAGING_GUIDE.md** (titles, thumbnails, descriptions, chapters, tags), TG_THUMBNAIL_TEXTS.md, NICHE_ANALYSIS.md, VIDEO_IDEAS_v2.md, COMPETITOR_ANALYSIS.md |
 | `hannibal/` | video #1: script.md, audio/ (voice.mp3 + timing.json), scenes-src/ (hook-march.js, trebia.js), assets/ (terrain), portraits/, build/ (PDF guide, narration.txt), tools/ |
 | `ridgway/` | 1-min style-match test. **Newest engine** in `ridgway/lib/` (portrait stakes, bio card, front lines, image layers, region overlays), `tools/mix.py` (voice + ducked music + SFX), `tools/make_masks.py`, assets/media/ (Ridgway photos, flag, synthesized music/SFX) |
+| `goosegreen/` | video #4 (Goose Green, 1982), **newest full pipeline: copy new videos from here**. lib/ (engine + `SFX()` sound cues), tools/ (`narrate.py`, `narrate_changed.py`, `bake.py`, `build_scene.py`, `render_all.sh`, `assemble_full.py`, `sfx_cues.py`, `sfx_mix.py`), assets/media/ (images + CREDITS.md, Kevin MacLeod music sources, `sfx/` synthesized sound library), archive.json |
 | `chipyongni/` | first test map (hyperframes.json is reused by build_scene.py) |
 | `tts/narrate.py` | Kokoro narration (model files downloaded by setup.sh) |
 Renders, .wav files and terrain tile caches are not in git: re-render/re-bake as needed.
 
 ## 0b. Starting a NEW video from Gemini research
-1. `mkdir <name>` and copy the skeleton from **`morgan/`** (newest): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/audio/` (the music library + SFX are reusable; add the CC BY lines from assets/audio/CREDITS.md to the description). In tools/narrate.py point SCRIPT/OUT at the new folder and extend the SAY pronunciation dict; in tools/assemble.py set the SCENES dict.
-2. Write `<name>/script.md` from the research (formula below; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,600-2,800 words (≈18 min at speed 1.0). Scenes = contiguous runs of MAP paragraphs; write `<name>/SCENES.md` (see morgan/SCENES.md).
-3. Voice: `cd tts && python3 ../<name>/tools/narrate.py am_michael` (per-sentence timing). Bake terrain: `tools/bake.py` (region z7-8, battlefield z15-16).
-4. **Image agent first (Sonnet)**, so portraits exist before maps start: archive/aNN.jpg + slots.json + assets/media cut-outs + flags.
-5. **Map agents** with the brief in `templates/MAP_AGENT_BRIEF.md` (fill in <GENERAL>, <name> and each agent's scene list). Model choice to save usage: **Sonnet for simple regional/overview scenes** (hook, campaign maps, ending), **Opus only for the main battlefield scenes**. Run at most 3 agents at once. The brief limits snapshot reviews (one contact sheet per round, max 3 rounds), which was the biggest usage cost in the Morgan run.
-6. `python3 tools/assemble.py && python3 tools/mix.py` → build/<name>-1080p.mp4 (edit the MUSIC plan and SFX cues in mix.py). Commit + push after each milestone.
-7. **Packaging** (title, thumbnail, description, chapters, tags): follow `research/PACKAGING_GUIDE.md` exactly (vidIQ-scored title ≥ 85 with the hook in the first ~60 chars, thumbnail = same promise, description hook = script's opening, chapters from timing.json, 12-18 ordered tags). Output: `<name>/youtube/youtube_metadata.md`, `thumbnail.png` (1280x720) and the upload PDF (`python3 tools/make_upload_pdf.py "<General>" <Name>` → `<name>/youtube/<Name>-YouTube-upload.pdf`). Worked example: `morgan/youtube/`.
-To stay inside one 5-hour usage window, split big videos over two sessions: (1) script, voice, terrain, images, maps for hook + move 1; (2) moves 2-3, ending, assembly, mix.
+1. `mkdir <name>` and copy the skeleton from **`rokossovsky/`** (locked reference video, STYLE_LOCK 0b; was `goosegreen/`) (engine updated with the Smith improvements: any nation's flags via FLAGS in lib/fx.js, `prop` and `cargo` aircraft art, `K.bombRun`, `tools/make_land.py` land masks; the full Smith project is on branch `claude/lucid-tesla-qugecc` for reference): `lib/ tools/ vendor/ assets/fonts assets/grain.png assets/media/sfx/ assets/media/music_src_*.mp3` (goosegreen has the newest engine, tools, **default sound library and default music**, see 1b "Default sound & music kit"). Edit SCENES/CHAPTERS in `tools/assemble_full.py`. Don't search for new music or sounds: the kit is approved.
+2. Write `<name>/script.md` from the research (formula + **hook formula** in section 1; tags `[MAP: id | notes]` / `[ARCHIVE: notes]`), ~2,400-2,700 words.
+3. Voice: point SCRIPT/OUT in `tools/narrate.py` at the new folder, run it from `/home/user/battle-maps/tts` → `audio/voice.wav` + `timing.json`. After editing a few paragraphs, run `tools/narrate_changed.py` instead: it re-voices only changed paragraphs and reuses the rest (minutes instead of ~15 min).
+4. Bake terrain per battle (`tools/bake.py`), write map scenes (agents in parallel, but agents only write + snapshot; they don't render), fill archive slots (`archive.json`), then render ALL scenes + assemble with ONE command: `bash tools/render_all.sh --assemble "SCENE BASEMAP FIRST LAST" ...` (detached, sequential; wait for `logs/render_all.done`). `assemble_full.py` collects the sound cues from every scene (`sfx_cues.py`), renders the SFX track (`sfx_mix.py`), mixes voice + ducked music + ducked SFX, and normalizes to -14 LUFS in two passes. Music: after the voice exists, run `python3 tools/make_music_bed.py` (builds `assets/media/music.wav` from the four default tracks, fitted to this video's length and chapters). Commit + push after each milestone.
+5. **Test before applying (owner rule):** any new look or sound is shown first as snapshots (`hyperframes snapshot . --at ...`, several options in ONE labelled sheet) and/or a 1-minute test clip (`python3 tools/make_clip.py SCENE --from PARA --to PARA`), and only applied to the video after approval. Sound-only changes never need a re-render: rebuild the scene pages (`build_scene.py`) and run `python3 tools/assemble_full.py --audio-only` (~5 min).
+6. Preview for chat (30 MB limit): two 540p halves, e.g. `ffmpeg -ss 0 -t 515 -i build/<name>.mp4 -vf scale=960:540 -c:v libx264 -preset slow -b:v 360k -maxrate 600k -bufsize 1200k -c:a aac -b:a 64k part1.mp4` (and `-ss 514` for part 2).
+7. **No-skip checklist (every video, in order):** research brief -> script (hook formula, first paragraph = `[MAP]`) -> voice (`narrate.py`) -> music bed (`make_music_bed.py`) -> terrain + land mask -> map scenes in the LOCKED style (1b: fx.js defaults, front lines, territory, night, symbols, aircraft, artillery, SFX on every beat) -> archive stills (licensed only, never before the hook) -> snapshot check (hook: a sheet every ~2.5 s for the first 30 s, compared with the STYLE_LOCK 1a reference) -> `render_all.sh --assemble` -> check master with ffprobe (1920x1080, ~-14 LUFS) -> description (chapters + sources + music, SFX and image credits) -> thumbnail (formula in 1b) -> publishing PDF (`make_publish_guide.py`) -> upload (Gofile) -> commit + push.
 Use a fresh session for each video: it uses 5-10x less of your plan's usage than one long conversation.
 
 ---
@@ -30,8 +45,55 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 ## 1. The plan (unchanged)
 - Niche: famous generals' top 3 tactical moves, modelled on **Tactical Genius** (@tacticalgeniuss). Copy the *structure*, not the look or words.
 - Format: 16-19 min, ~80% animated battle maps, ~20% archival (film for the 20th century; paintings, busts and coins for ancient generals), calm documentary voice.
-- Script formula: hook (disaster, then the hero, then "his three greatest tactical moves") → 3 moves (situation with numbers → what the enemy believed → "X saw something different" → execution → result as a number) → the general's 3-part method repeated after every move → subscribe ask between moves 1 and 2 → ending (callback, legacy, "which commander next?").
+- Script formula: hook (FIRST PARAGRAPH IS ALWAYS A [MAP] SHOT, never an archive photo; disaster, then the hero, then "his three greatest tactical moves") → 3 moves (situation with numbers → what the enemy believed → "X saw something different" → execution → result as a number) → the general's 3-part method repeated after every move → subscribe ask between moves 1 and 2 → ending (callback, legacy, "which commander next?").
+- **THE HOOK IS LOCKED (owner 2026-10-09): follow STYLE_LOCK.md section 1a exactly** (reference clip `reference/hook-reference-rokossovsky-v2.mp4`): number + disaster in line 1, big card in the first second, camera dive in ~6 s, a change every 2-4 s, payoff by ~0:22, twist as action, name slam + 3 snap cuts. The older notes below still apply.
+- **Hook formula (first ~40 s), from web research + owner feedback (Goose Green):**
+  - **Stakes before context.** Line 1 is the odds or the disaster in a few words ("Five hundred men. A thousand dug in against them. And the enemy knew they were coming."). No date/setting first, no channel intro.
+  - **Open a loop and preview the payoff** within ~30 s: flash-forward to the result ("Thirty-six hours later, nearly a thousand … would surrender to a battalion half their size. And the man who planned the attack would be dead.").
+  - **Visual:** first frame is a map with units already on screen (never a photo); a big on-screen odds card (500 VS ~1,000); something changes every 3-5 s (camera dive, rings, stamp, counter); one stamp punchline; a white-flash cut into the flash-forward with a counter ticking up.
+  - **Sound on every beat:** hit on each slam/stamp, whoosh on camera dives and the flash-forward, static under the radio moment, ticks on counters (`SFX("hit"|"whoosh"|"static"|"tick", t)` in the scene).
+  - The hero's bio cards come after the stakes (~1:00-2:00). Background (how the war started) comes after the hook, kept short. Target: keep ~65%+ of viewers at 30 s.
 - First video: **Hannibal** (Trebia, Lake Trasimene, Cannae). Next candidates: see research/VIDEO_IDEAS_v2.md (top: Nathanael Greene, Daniel Morgan, Francis Marion, George Thomas).
+
+**All locked decisions with exact numbers (and what was rejected) are in one file: `STYLE_LOCK.md`.**
+
+## 1b. LOCKED VISUAL STYLE (owner-approved, Goose Green v3; use `lib/fx.js` = `const K = FXK(B)` in every scene)
+Inspired by Kings and Generals, kept flat (no 3D camera tilt). Every new video must use all of these:
+- **Map:** parchment shaded relief (bake.py), faint dashed lat/long grid (`K.grid`), vignette + grain, date scroll top-left.
+- **Colours (fixed):** counters/aircraft/arrows: British/hero **blue `#1f4fc4`**, enemy **red `#c4121f`**; neutral/destroyed grey `#77746c`; gold `#c9b48a`; text `#f7f3ea`. **Front lines (day): blue `#2c57b7` / red `#bc2528`** (30% muted); **front lines at night + territory tint: slate `#4a6a9a` / brick `#a8503c`** (fully muted). These are the defaults in `lib/fx.js` (LINE_DAY, LINE_NIGHT, TINT): don't override them.
+- **Front lines (`K.front`, defaults = locked look):** glowing band, width ~15, glow ~0.47, drawn on like an arrow, gentle pulse.
+  - **Only the REAL front line (where the two sides touch) is two-coloured** (blue glow on the hero's side, red on the enemy's). Lines behind a front (reserve / depth / main lines not yet in contact) are **one colour only** (sideA = sideB = that side).
+  - **When a front collapses, the two-colour band MOVES to the next line** (`to` + `moveT`), replacing that line's one-colour band; the ground in between is lost (see Territory).
+- **Territory (locked "E" look):** `K.frontTint` = muted colour strongest right behind each front edge, fading out within ~100-170 px (NOT flat fills over whole areas). Clip it to land with a land mask (`assets/<map>_land.png`, built from the elevation tiles with the same `elev > 0.5` rule as bake.py; see goosegreen/assets/isthmus_land.png). Lost ground: `K.lose` (flicker then fade); advancing ground: `to`/`moveT`. Call `K.raiseTerritory()` at the end of the scene.
+- **Control map + flags (owner 2026-10-05):** on EVERY map (overview and battle maps), strong territory colours for who holds the ground (Allies `#2e5cb2` / Axis `#be3a2a` / neutral `#807c72`), changing with the dates, plus the period nation flags (German 1933-45 national flag, etc.) and a legend. Details + generator: STYLE_LOCK section 2, `gavin/tools/make_europe_control.py`.
+- **Night (locked):** at night the lines switch to the fully muted palette and lines + territory get a brightness boost so they stay readable (`K.night({ lines: [...fronts], tOn, tOff })`); daytime returns at dawn.
+- **Unit counters (locked symbols, owner-approved 2026-09-28):** coloured block + **flag badge** (uk/arg or the video's nations) + **size mark** above (••• platoon, I company, II battalion, III regiment) + a symbol that fills the counter (`K.counter(id, { icon, flag, size })`):
+  - **infantry** = X (NATO) · **artillery** = side-view **howitzer silhouette** (barrel, shield, wheel, trail) · **tank / armour** = side-view **tank silhouette** (hull, turret, gun, road wheels) · **mech** (mechanised infantry) = X + track outline · **aa** = twin-barrel AA gun · **hq** = flag.
+  - Silhouettes (Kings and Generals style) were chosen over the NATO dot/oval because anyone can read them without military knowledge. Comparison sheet: goosegreen/build/symbol-options.png.
+- **Artillery & mortars:** the gun visibly fires (`K.gun`: muzzle flash, smoke, recoil), a shell arc flies, and the **impact** (`K.impact`: fireball, shock ring, rising smoke, small camera shake) carries the loud boom. Launch sounds are quiet; **the boom is always on the impact**.
+- **Aircraft:** detailed top-down art (`K.aircraft`, kinds `jet`, `turboprop`, `heli`) with ground shadow (altitude), spinning rotors/props, burner flicker, dotted flight path; helicopters' shadows close in when they land (`land: true`); shoot-downs trail smoke, spiral and crash in a fireball (`down: t`). Never simple flat icons.
+  - **WW2 plane symbol (locked 2026-10-06):** the glowing C-47, `kind: "c47g"`: white body, outline + glow in the side colour (blue Allies, red Germans). Few planes, spaced out; they drop/bomb and then fly off the map. In `lib/fx.js` of goosegreen (skeleton), gavin and frontlines-1m.
+  - **Engine sound on every aircraft (locked):** each `K.aircraft` automatically plays its flyby sound, loudest mid-flight: `jet` = jet roar with Doppler sweep, `turboprop` = propeller drone, `heli` = rotor thumps (sfx kinds jet / prop / heli).
+  - **Bombing runs (locked):** use `K.bombRun({ pts, t, bombs })` (it SHAKES the screen on the first bomb). Same as: jets fly the run with `K.aircraft`; each bomb is a `K.impact` (r ~20) at its target, timed just after the jet passes. **No sound on release; the bomb's boom plays on impact** (real distant-explosion recordings) with fireball, smoke and camera shake. Sticks / cluster bombs = several impacts 0.2-0.3 s apart (the mixer lets explosions through 0.2 s apart). Example: the Harrier strike in goosegreen/scenes-src/move3.js.
+- **Ships:** side silhouettes with muzzle flashes when firing (GG.ship + K.gun).
+- **Smoke & fire:** burning places get a continuous smoke column (`K.smoke` repeated).
+- **Objectives:** pulsing target rings (`K.target`) on the key hill/house/town of each move.
+- **Commanders:** round **badge** with portrait (or initials if no legal photo) on the nation's flag, name plate, slides in at a corner (`K.badge`) whenever a commander is introduced or takes over.
+- **Casualties:** at the end of every move with losses, a **casualty card** with flags and pictograms (skull killed, cross wounded, bars captured, plane aircraft) (`K.casualties`).
+- **Text:** captions bottom-centre, stamps/punchline cards, stat counters; Oswald font.
+- **Thumbnail (locked formula, from all 13 Tactical Genius videos, studied 2026-09-27):**
+  - **Picture (identical on every TG thumbnail):** dark, desaturated, moody realistic aerial battlefield on the left 2/3 (red/blue unit blocks, big curved white arrows, fires + black smoke, small place labels and commander name tags on the map); realistic commander portrait on the right 1/3 (3/4 view, looking toward the map, binoculars, stern); red brush-stroke banner bottom-left with big white text. Make it with vidIQ `vidiq_generate_thumbnail`, passing 2-3 of TG's top thumbnails as `referenceImages` (Ridgway tVpl949Nk0M, Patton 5EoX2EYJ_WI, Zhukov BvJN3pyPL6E: `https://i.ytimg.com/vi/<id>/maxresdefault.jpg`). No legal photo -> a generic officer of the right unit/era, never a fake likeness of a real person.
+  - **Text = what decides the click.** Winners: 1-3 words, understandable with ZERO context, creating tension. Three winning types: (1) the hero's defiance/decision in plain words, "LET THEM COME" (Ridgway 1.0M, 9.9x); (2) the enemy's contempt as a real quote, "AMATEURS" (Patton 773k, 11.9x); (3) ominous stakes, "AT THE GATES" (Zhukov 585k, 24.7x). Losers: nicknames/insults about the general that need background ("DUGOUT DOUG" 29k, "SEPOY GENERAL" 6k, "NOT A SUPERMAN" 23k) and lines of 4+ words ("THE SWINE ISN'T ATTACKING" 111k, 1.7x). Quote marks ONLY on verbatim quotes.
+  - Make 2 variants of different text types for YouTube's A/B test; check the AI image for wrong geography, labels or equipment (e.g. tanks where there were none).
+  - Goose Green used: SURRENDER OR ELSE (type 1, main), THEY KNEW (type 3, alternative).
+- **Sound (locked):** every visual beat has its SFX. **The boom is always on the impact** (launches are quiet). Shell impacts = real distant-artillery recordings, bombs/explosions = real distant explosions (sfx_mix_lib KINDS; credits in `assets/media/sfx/SFX_CREDITS.md`, copy the credit line into the video description). Every `K.aircraft` plays its engine sound (jet / propeller / helicopter flyby) mid-flight. Music bed at `MUSIC_VOL = 0.08` (owner 2026-09-30, option C), ducked under the voice.
+- **Default sound & music kit (locked, owner-approved on Goose Green 2026-09-29: reuse on EVERY video, don't re-search):**
+  - **SFX library** = `goosegreen/assets/media/sfx/` with the levels in `tools/sfx_mix_lib.py` (KINDS): impact = real distant artillery (`candidates/cand3_hit.wav`, `cand1_hit.wav`), explosion/bomb = real distant explosions (`cand2_hit.wav`, `cand4_hit.wav`), aircraft = `jet_flyby` / `prop_flyby` (since 2026-10-06 Mixkit "Low airplane flying over", owner's pick) / `heli_flyby`, heard only when the aircraft is on screen, plus gun fire, mortar, MG, whoosh, hit, radio static, counter tick. The `candidates/bombs/` clips were REJECTED by the owner: never use them.
+  - **Music** = Kevin MacLeod (CC BY 4.0), in this order: "Long Note One" (hook + move 1), "Wounded" (move 2), "Long Note Two" (move 3), "Anguish" (ending). Sources: `goosegreen/assets/media/music_src_*.mp3`; build the bed with `tools/make_music_bed.py` (loops/trims each track to its chapter, 5 s crossfades).
+  - **Effects** = everything in `lib/fx.js` at its defaults (front lines, territory, night, counters, artillery, aircraft, smoke, impacts, badges, casualty cards).
+  - **Credits to paste into every description** (copy from goosegreen/build/youtube_description.txt): the music credit (Kevin MacLeod, incompetech.com, the four titles, CC BY 4.0 link) and the SFX credit line from `SFX_CREDITS.md`.
+
+- **Merged "Frontlines" look (owner-approved 2026-10-06):** detailed HD relief maps, big-towns-only geography layer with small 1944 labels, multiply territory, living map (clouds, river shimmer, scale bar, north arrow), emblem fixed on its country, every power's flag visible, glowing C-47s that drop and leave, Netflix-style archive (headline card, 3D-depth photos, film in a projector frame, headline date cards) and the Frontlines sound design. **Two territory looks, both locked and kept (never delete either):** option 1 = territory colours for overhead/wide shots; option 2 = only the two-colour glowing front lines (no fill) for close-up battle maps; judge each shot by eye, a video can mix both. Full rules: STYLE_LOCK.md section 2a; reference build + tools: `frontlines-1m/` (D-Day 1-min test).
 
 ## 2. What's finished
 | Item | Status | Where (repo path) |
@@ -45,15 +107,17 @@ Use a fresh session for each video: it uses 5-10x less of your plan's usage than
 | PDF production guide (9 pages) | done | hannibal/build/Hannibal-production-guide.pdf |
 | Ridgway style-match test (1:10: maps, photo cut-out, bio card, portrait stake, music, SFX) | done | ridgway/ (mp4 not in git; re-render scene 'test' + tools/mix.py) |
 | Hannibal and Scipio portraits (public domain / CC BY-SA) | downloaded, not placed | hannibal/portraits/ (*.src.jpg) |
+| Goose Green (video #4) v3: fact-checked script, voice 17:08, 7 map scenes remade in the LOCKED style (section 1b), 13 licensed archive stills, CC BY music, synthesized SFX (boom on impact), stakes-first hook, casualty card | done, assembled 2026-09-27; waiting for owner feedback | goosegreen/ (mp4s not in git; rebuild with `bash tools/render_all.sh --assemble ...`) |
 | Competitor + niche analysis, 30 ranked ideas, Gemini brief v2 | done | research/ |
 | **Daniel Morgan full video (18:21)**: script, voice, 11 map scenes, 11 archive slots, licensed music + SFX, mix at -14 LUFS | done | morgan/ (master build/morgan-1080p.mp4 is not in git; rebuild: `python3 tools/assemble.py && python3 tools/mix.py`, after re-rendering scenes). Upload package: morgan/youtube/ (metadata, thumbnail, PDF) |
 
 ## 3. What's next (in order)
+0. **Goose Green:** get the owner's feedback on the preview (hook, SFX levels, pronunciation of Piaggi/Estévez, music level), fix, rebuild, and hand over the 1080p master (629 MB, lives only on the cloud machine: rebuild it with render_all.sh if the session is gone).
 1. Collect the owner's feedback on the Ridgway test and the Hannibal test (map look, pacing, voice, music).
 2. Hannibal: put portrait cut-outs on the stakes (Hannibal bust, Scipio bust; coins for Sempronius and Mago, where no likeness exists). Re-render Trebia.
 3. Build the Trasimene and Cannae maps (2 agents in parallel; Sonnet for simple agents).
 4. Fill the ~20 [ARCHIVE] slots with public-domain paintings, busts and coins (list in the PDF guide) using slow zooms.
-5. Music: synthesized music is weak. Prefer a properly licensed track (YouTube Audio Library or Epidemic Sound, added by the owner in the edit) or a clearly CC BY / CC0 track.
+5. Music: DONE, use the default kit (section 1b, Kevin MacLeod, `make_music_bed.py`) for Hannibal too.
 6. Assemble the full 16-min video with voice, music (ducked under the voice), SFX cues, and chapters. Final loudness -14 LUFS.
 
 ## 4. Cloud environment setup (now automatic via setup.sh; kept for reference)
@@ -74,11 +138,11 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 ## 5. Pipeline (how a video is made)
 1. **Research**: Gemini (see GEMINI_PROMPT.md) or web search. Verify numbers; ancient sources disagree, so give ranges.
 2. **Script**: formula in section 1, every paragraph tagged `[MAP: scene-id | notes]` or `[ARCHIVE: description]`. ~2,400-2,700 words.
-3. **Voice**: `narrate.py VOICE` (Kokoro, per paragraph) → `audio/voice.wav` + `audio/timing.json` (start/end of every paragraph). Voice: **am_michael**, speed 0.95 (1.05 for faster pacing).
+3. **Voice**: `narrate.py VOICE` (Kokoro, per paragraph) → `audio/voice.wav` + `audio/timing.json` (start/end of every paragraph). Voice: **am_michael**, speed 0.95 (1.05 for faster pacing), then **convert to voice A** with `tts/convert_voice.py` (default, STYLE_LOCK §6); the plain am_michael take is option 2.
 4. **Terrain**: `tools/bake.py NAME LAT LON ZOOM EXAG` → 2880x1620 parchment shaded relief from open AWS Terrarium tiles (sea colored by depth). Zoom 7-8 = region, 12-13 = battlefield. Convert lat/lon to pixels with the formula in bake.py and the NAME.json origin.
-5. **Map scenes**: `scenes-src/NAME.js` using the engine; animations timed with `B.at("para-id", "spoken phrase")`. Build: `tools/build_scene.py NAME BASEMAP FIRST_TAG LAST_TAG`. Then `hyperframes lint .`, `hyperframes snapshot . --at ...`, look at every snapshot, fix, and render.
+5. **Map scenes** (every blast/shot/stamp calls `SFX(kind, t)`; `GG.flash`/`burst`/`shell`/`missile` do it automatically, pass `sfx: false` for silent highlight flashes; kinds: fire, mortar, impact, explosion, missile, mg, whoosh, hit, static, tick): `scenes-src/NAME.js` using the engine; animations timed with `B.at("para-id", "spoken phrase")`. Build: `tools/build_scene.py NAME BASEMAP FIRST_TAG LAST_TAG`. Then `hyperframes lint .`, `hyperframes snapshot . --at ...`, look at every snapshot, fix, and render.
 6. **Archive slots**: placeholder cards (assemble.py) until real images/footage replace them.
-7. **Assembly**: `tools/assemble.py` (cards + renders + voice) and `ridgway/tools/mix.py` (voice + music ducked with sidechain + SFX + loudnorm -14 LUFS).
+7. **Assembly** (current: `goosegreen/tools/render_all.sh --assemble` → `assemble_full.py` with SFX + two-pass loudness; older: `tools/assemble.py` (cards + renders + voice) and `ridgway/tools/mix.py` (voice + music ducked with sidechain + SFX + loudnorm -14 LUFS).)
 8. **Deliver**: chat file limit is 30 MB, so send a 720p preview; keep the 1080p master for YouTube.
 
 ## 6. Lessons learned (avoid repeating these)
@@ -88,9 +152,16 @@ mkdir -p /opt/kokoro && cd /opt/kokoro && for f in kokoro-v1.0.onnx voices-v1.0.
 - The camera must be clamped inside the 2880x1620 map, or black edges appear.
 - Always look at snapshots: the first versions always had overlapping labels and units bunched in camps.
 - Rendering runs at ~3-5x real time on the cloud machine (a 4 min scene takes ~13 min). A render "failed" status can come from a later command; check the log for "Render complete".
+- `assemble_full.py` keeps one video track per resolution (`build/video_only_1080p.mp4` / `_720p.mp4`); before 2026-09-27 the 720p preview overwrote the shared track and an `--audio-only` remix silently turned the master into 720p. Always check the master with ffprobe (1920x1080) before delivering.
+- Render from ONE place only (`tools/render_all.sh`). Two things cost 30 min on Goose Green: (1) a render launched from a tool shell is killed (`render_cancelled_parent_exited`) when that shell exits, so it must be detached (setsid + nohup); (2) waiting with `pgrep -f "hyperframes render"` never ended because it matched another loop's command line. Wait on a PID or a done-marker file, never a pgrep pattern.
+- Subagents stopped by the usage limit leave their background loops running. Before rendering, check `pgrep -af "hyperframes|while"` and kill leftovers (render_all.sh does this).
 - Wikimedia: send a descriptive User-Agent, pause 2-3 s, retry on 429, and download only **standard thumbnail widths** (960/1280/1920) or you get long rate limits.
 - Background removal: rembg with isnet-general-use.onnx from GitHub releases works.
 - Tactical Genius's first minute (Ridgway video): 3 long map shots (31 s, 15 s, 19 s), a full-length commander photo cut-out with a bio card (big red name), and a portrait stake under a flag. No archive footage until 1:08.
+- **Owner feedback (Gavin, binding): archive sections must never be a slideshow.** Use real public-domain FILM for 20th-century subjects (NARA / Signal Corps / OWI / Universal newsreels via archive.org; recipe: `gavin/assets/film/cut_clips.sh` + MANIFEST.md). Change the picture every ~3-5 s. Every photo MOVES (clear push-in or pan, ~15-20 %). Portraits get a 2.5D parallax (rembg cut-out over a blurred plate). Film FILLS 16:9 (crop 4:3, no black bars). A short place/date label goes on new shots. Tool: `gavin/tools/archive_shots.py` (shot lists in archive.json; assemble_full.py uses it). Show a 1-min archive test first.
+- **Gavin (#7) lessons:** (1) rename or move old test scenes out of `scenes/` (prefix `test-`): `sfx_cues.py` collects cues from every built scene, and the 1-minute test's explosions were mixed into the real hook until `scenes/biazza` was renamed `scenes/test-biazza`. (2) The two-pass linear loudnorm can stop at about -15 LUFS when the TTS voice is peaky (true peak caps it). Fix used: `volume=+11.8dB,alimiter=limit=0.8:attack=2:release=80` on `build/mix.wav`, then mux with the video-only track, which gives -14.4 LUFS (the approved test clip's level). Always measure the master with ebur128. (3) The Dutch polders are below sea level: bake Holland with `SEA_BELOW=-7.5` (bake.py/make_land.py), and draw the rivers by hand. Rivers and floods are not in the elevation tiles: build water masks from low elevation (gavin `assets/*_water.png`). (4) Shared map helpers now live in `gavin/lib/gg.js` (`const GG = GGK(B)`), not copied into every scene.
+- **Rokossovsky (#8) lesson, sound sync:** after re-voicing part of the script (e.g. a shorter hook), every LATER scene keeps its old start time in `scenes/<name>/timing.js`, so its bombs/guns/planes were mixed ~7 s late. `tools/sfx_cues.py` now takes each scene's start from the current `audio/timing.json` (fixed in goosegreen/, frontlines-1m/ and rokossovsky/ tools). After any timing change: `assemble_full.py --audio-only` and spot-check one bomb run (frame vs sound) before delivering.
+- **Owner feedback (Goose Green): never open on a photo.** The first shot of every video is an animated map that hooks at once (units on screen in the first second, movement, a stamp/caption punchline). Archive photos come later.
 - A photo of a flat public-domain painting is free to use; a photo of a 3D object (bust, coin) belongs to the photographer, so use CC-licensed ones and credit them. Avoid NC and ND licences.
 
 - (Morgan) `morgan/` is now the newest skeleton: narrate.py records **per-sentence timing** (B.at is sentence-accurate), pronunciation fixes via the SAY dict, bake.py supports zoom 16 (upsampled z15) and no fake snow on low hills, assemble.py handles archive Ken Burns + captions and any scene order (SCENES dict), mix.py = music plan + SFX cues keyed to spoken phrases.
@@ -123,6 +194,32 @@ Morgan took ~2 h of real work (plus 2 h 15 min stuck on the usage limit). With t
 12. Use research/GEMINI_BRIEF_v3.md: it makes Gemini cite a source for every claim, label claims VERIFIED / SINGLE SOURCE / TRADITION / DISPUTED, and end with a fact-check list. The v2 Morgan research had errors I had to fix: Guilford called a "strategic victory" (it was a British tactical win), the Cowpens Continental withdrawal described as planned (it was a misunderstood order), the "devil of a whipping" letter given the wrong recipient, an unsourced "still taught at West Point", and a Morgan quote to Greene paraphrased inside quotation marks.
 **Sessions:**
 13. One fresh session per video. Each step in a long conversation costs more than the last.
+
+## 10. First live numbers: why nobody clicked and why viewers left (George Thomas, read 2026-10-05)
+Full study: `thomas/youtube/analytics_2026-10-05.md` (branch `claude/george-thomas-civil-war-2epkux`; copy on main in `research/ANALYTICS_THOMAS_2026-10-05.md`).
+**Numbers after 3 days:** 750 impressions (89 % from recommendations), **CTR 0.9 %**, 26 views, avg view 5:49 (31 %), retention ~65 % at 30 s and ~25 % at the end with no cliffs. People who get past the first minute stay; too few click, and too many leave in minute 1.
+
+**Title (binding from now on): copy Tactical Genius exactly.** Every TG title is `<Name>'s Top 3 Legendary Tactical Moves | <3-6 word subtitle>`: the famous name FIRST, then the series name, then a short subtitle.
+| TG subtitle | Views | Lesson |
+|---|---|---|
+| The Man Who Turned Korea Around (Ridgway) | 1.11M | "The Man Who <huge result>" is their winning wording |
+| (none) Patton | 866k | a famous name alone sells |
+| The Man Who Broke Hitler (Zhukov) | 629k | |
+| The Man Who Broke France (Manstein) | 238k | |
+| The General Better Than Montgomery (Slim) | 185k | a bold comparison/opinion also works |
+| The General Truman Fired (MacArthur) | 30k | **the "fired" angle flops** |
+| The Man Who Beat Napoleon (Wellington) / The Tiger of Malaya (Yamashita) | 7k / 6k | nicknames and old wars are weaker |
+- Our Thomas title broke all of it: a 54-character sentence first, the name at the end, and the "Grant almost fired him" angle (= MacArthur's flop). Replacement (vidIQ 86, owner to change in Studio): *George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army* (alternatives: "| The Man Who Destroyed Hood's Army" 90, "| The General Better Than Grant" 88).
+- Prefer "The Man Who <broke/saved/turned around> <something big and well known>"; avoid "fired / almost / nearly / forgotten / underrated" angles and nicknames. Still score with vidIQ (>= 85), but the pattern beats the score: never trade it away for a few points.
+- This **replaces** the older Morgan rule "hook first, series name after" in research/PACKAGING_GUIDE.md §2.
+
+**First minute (binding from now on):**
+- Line 1 = the stakes in plain words, never a date + place ("September the twentieth, eighteen sixty-three. North-west Georgia..." cost ~8 s before anything happened).
+- Within the first 30 s, pay the promise of the title AND the thumbnail with a flash-forward (e.g. "Fifteen months later, the general Grant was about to fire would destroy an entire army."). Thomas only paid "WE WILL HOLD" at 7:37 and the Grant story at 14:07: viewers who clicked for it saw a different battle and left.
+- Thumbnail scene = hook scene = title promise (one promise, see PACKAGING_GUIDE §3).
+- Check before recording the voice, together with the §1 formula check: "Does line 1 state stakes? Is the title/thumbnail promise paid by 0:30?"
+
+**After publishing:** run Studio Test & compare with 2-3 thumbnails; read CTR/retention at 3, 7 and 28 days; if CTR < 2 % after ~1,000 impressions, change the title to the TG pattern first, then the thumbnail. Save every read as `<name>/youtube/analytics_<date>.md`.
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.

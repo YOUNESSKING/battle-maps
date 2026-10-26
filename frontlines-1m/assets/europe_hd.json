@@ -1,0 +1,19 @@
+{
+ "name": "europe_hd",
+ "center": [
+  45.5,
+  7.5
+ ],
+ "zoom": 6,
+ "origin_world_px": [
+  7093,
+  5051
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 1714.41,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}
