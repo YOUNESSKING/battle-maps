@@ -2,6 +2,7 @@
 
 Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical Moves", Tactical Genius style).
 **Read HANDOVER.md first**: it has the plan, the pipeline, the commands and the lessons learned.
+**THE LOCKED REFERENCE VIDEO is Rokossovsky #8 (owner 2026-10-10; STYLE_LOCK.md section 0b):** copy the skeleton from `rokossovsky/`, watch `reference/style-reference-rokossovsky-v8.mp4` and match it exactly.
 **Then read STYLE_LOCK.md**: the owner-approved look, sound effects, music and levels. Use it as-is on every video; never re-search or restyle.
 **SOUND LOCK:** the artillery, ship-gun, bombing and aircraft sounds, the **screen shake on every bombing run** (`K.bombRun`), levels + music are locked and checked on every build (`tools/check_sound_lock.py`; reference `reference/style-reference-30s.mp4`). If it says SOUND LOCK BROKEN, restore goosegreen's files; never edit the lock without the owner's approval.
 
@@ -13,6 +14,6 @@ Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical
 - Keep the conversation lean: use subagents (Sonnet for search/download/sound, Opus for maps), and commit + push work as you go.
 - **Every map shows who controls the ground (strong territory colours) + the period nation flags** (owner 2026-10-05; STYLE_LOCK section 2): overview maps AND battle maps, changing with the dates.
 - **Every video opens on an animated map, never a photo** (owner rule). The first script paragraph must be `[MAP: ...]` with units on screen in the first second; archive photos only after the hook.
-- Hooks follow the **hook formula** in HANDOVER.md section 1 (stakes-first line, flash-forward to the payoff, a change every 3-5 s, SFX on every beat). Every map blast calls `SFX(kind, t)` so the build adds its sound.
+- **HOOK LOCK (owner 2026-10-09): every hook follows STYLE_LOCK.md section 1a** (reference `reference/hook-reference-rokossovsky-v2.mp4`): line 1 = a hard number + the disaster, a big card in the first second, a camera dive within ~6 s, something new every 2-4 s, payoff by ~0:22, the twist shown as action, name slam + 3 snap cuts. A slow or static hook is a rejected hook. Every map blast calls `SFX(kind, t)` so the build adds its sound.
 - The visual + sound style is **locked** in HANDOVER.md section 1b (front lines, territory, night mode, real impact sounds, aircraft sounds, quiet music). Use the `lib/fx.js` defaults; don't restyle.
 - **Test before applying**: show any new look/sound as snapshots or a 1-minute clip first; apply only after the owner approves. Sound-only changes: `assemble_full.py --audio-only`, never a re-render.
