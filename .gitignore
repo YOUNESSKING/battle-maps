@@ -27,3 +27,13 @@ reference/style2/
 rokossovsky/logs/
 rokossovsky/assets/film/src/
 rokossovsky/assets/film/clips/
+peng/logs/*.log
+peng/logs/*.done
+jackson/logs/*.log
+jackson/logs/*.done
+jackson/assets/film/src/
+jackson/assets/film/clips/
+meade/logs/*.log
+meade/logs/*.done
+meade/assets/film/src/
+meade/assets/film/clips/

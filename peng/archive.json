@@ -1,0 +1,242 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/peng_wide.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "label": "PENG DEHUAI · BORN 1898 · HUNAN",
+   "dur": 4.4,
+   "trim": 0.0
+  },
+  {
+   "photo": "assets/media/card_1928_hunan.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.2,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/peng37_src.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "depth": true,
+   "label": "PENG DEHUAI · 1937",
+   "dur": 3.6,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/longmarch_src.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "RED ARMY · 1930s",
+   "dur": 3.4,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/grp38_src.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "depth": true,
+   "label": "CHINA · 1938",
+   "dur": 3.4,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/hundred_src.jpg",
+   "move": "in",
+   "focus": [
+    0.55,
+    0.55
+   ],
+   "depth": true,
+   "label": "HUNDRED REGIMENTS OFFENSIVE · 1940",
+   "dur": 3.6,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/peng_wide.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "label": "“OLD CHIEF PENG”",
+   "dur": 3.4,
+   "trim": 0.0
+  },
+  {
+   "photo": "assets/media/pow_oct1950_src.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "depth": true,
+   "label": "CHINESE PRISONERS · OCTOBER 1950",
+   "dur": 3.4,
+   "trim": 0.03
+  },
+  {
+   "film": "assets/film/clips/pg_pow_faces.mp4",
+   "ss": 0.2,
+   "tint": true,
+   "frame": true,
+   "label": "CHINESE PRISONERS · NOVEMBER 1950",
+   "dur": 3.0
+  },
+  {
+   "film": "assets/film/clips/pg_pow_column.mp4",
+   "ss": 0.2,
+   "tint": true,
+   "frame": true,
+   "dur": 3.2
+  },
+  {
+   "photo": "assets/media/headline_peng.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.42
+   ],
+   "dur": 2.6,
+   "trim": 0
+  },
+  {
+   "film": "assets/film/clips/pg_snow_hills.mp4",
+   "ss": 0.2,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "18 OCTOBER 1950",
+    "THE YALU RIVER"
+   ]
+  }
+ ],
+ "34": [
+  {
+   "photo": "assets/media/peng53_src.jpg",
+   "move": "in",
+   "focus": [
+    0.6,
+    0.6
+   ],
+   "depth": true,
+   "label": "THE ARMISTICE · JULY 1953",
+   "dur": 3.8,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/peng_wide.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "label": "PENG DEHUAI · MARSHAL OF CHINA · 1955",
+   "dur": 3.8,
+   "trim": 0.0
+  },
+  {
+   "photo": "assets/media/peng55_marshals_src.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "depth": true,
+   "label": "BEIJING · SEPTEMBER 1955",
+   "dur": 3.6,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/peng58_src.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "depth": true,
+   "label": "WITH KHRUSHCHEV AND BULGANIN · 1958",
+   "dur": 3.8,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/peng53_src.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 3.2,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/headline_lushan.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.42
+   ],
+   "dur": 3.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1959_lushan.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1966_redguards.jpg",
+   "move": "left",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/peng37_src.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "depth": true,
+   "dur": 3.4,
+   "trim": 0.03
+  },
+  {
+   "photo": "assets/media/card_1974_beijing.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "trim": 0
+  }
+ ]
+}

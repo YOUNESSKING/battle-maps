@@ -1,0 +1,202 @@
+{
+ "title": "Jackson #11 - BACKGROUND (bg-a bullrun, bg-b virginia) + ENDING (ending virginia)",
+ "note": "bg-1 1:54-2:22, bg-2 2:22-2:48, ending 15:53-16:53. Option 2 fronts on the Henry Hill close-up, option 1 territory per date on overviews; E.final with the 'which commander next' line (19th-century war).",
+ "frames": [
+  [
+   "bg-a",
+   1.5,
+   "1:55.7",
+   "bg-1: 21 JULY 1861, Bull Run (bullrun map, option 2): Union columns round the left (Sudley, Stone Bridge), thin line on Matthews Hill",
+   "pops"
+  ],
+  [
+   "bg-a",
+   5.0,
+   "1:59.2",
+   "Locator inset WASHINGTON - MANASSAS - RICHMOND (~100 MILES, July 1861 control); Jackson photo badge",
+   "pop"
+  ],
+  [
+   "bg-a",
+   8.5,
+   "2:02.7",
+   "Push-in: HENRY HILL / MATTHEWS HILL / STONE BRIDGE; JACKSON'S BRIGADE holds (ring)",
+   "pops"
+  ],
+  [
+   "bg-a",
+   11.5,
+   "2:05.7",
+   "Union guns -> arcs -> impacts on Matthews Hill: the line BREAKS and streams back past Henry Hill",
+   "gun launches, impacts + shake, hit"
+  ],
+  [
+   "bg-a",
+   14.5,
+   "2:08.7",
+   "Front moves to Henry Hill; Union guns on the plateau; BARNARD BEE initials badge",
+   "pop"
+  ],
+  [
+   "bg-a",
+   17.8,
+   "2:12.0",
+   "Charleston Mercury card (verbatim, 25 Jul 1861, first printed version); Bee points",
+   "whoosh, hit + shake"
+  ],
+  [
+   "bg-a",
+   20.5,
+   "2:14.7",
+   "Union shells on Jackson's line, it holds; MORTALLY WOUNDED (Bee)",
+   "impacts + shake, hit"
+  ],
+  [
+   "bg-a",
+   23.0,
+   "2:17.2",
+   "STONEWALL stamp on Henry Hill",
+   "boom + shake"
+  ],
+  [
+   "bg-a",
+   26.5,
+   "2:20.7",
+   "Pull-out: THE MOST MISLEADING NICKNAME OF THE WAR?",
+   "hit"
+  ],
+  [
+   "bg-b",
+   1.5,
+   "2:23.5",
+   "bg-2: Virginia overview (jul61): A WALL",
+   "hit + shake"
+  ],
+  [
+   "bg-b",
+   3.6,
+   "2:25.6",
+   "Struck through; A HAMMER slams",
+   "hit, boom + shake"
+  ],
+  [
+   "bg-b",
+   6.5,
+   "2:28.5",
+   "Map dims; JOHN IMBODEN initials badge (recalled 1887)",
+   "-"
+  ],
+  [
+   "bg-b",
+   12.0,
+   "2:34.0",
+   "Quote 1 verbatim: ALWAYS MYSTIFY, MISLEAD, AND SURPRISE THE ENEMY, IF POSSIBLE",
+   "pop"
+  ],
+  [
+   "bg-b",
+   24.0,
+   "2:46.0",
+   "Quote 2 verbatim: HURL YOUR OWN FORCE ON ONLY A PART... + MYSTIFY / THE WEAKEST PART stamps",
+   "pop, hit + shake"
+  ],
+  [
+   "bg-b",
+   25.8,
+   "2:47.8",
+   "The empty method card: JACKSON'S METHOD (1-2-3 blank)",
+   "boom"
+  ],
+  [
+   "ending",
+   2.5,
+   "15:55.3",
+   "end-1: JUNE-JULY 1863 (jul63): Lee's arrow down the Valley over the Potomac toward GETTYSBURG",
+   "whoosh"
+  ],
+  [
+   "ending",
+   5.0,
+   "15:57.8",
+   "Gettysburg ring; Meade's guns -> arcs -> impacts; the arrow greys; DEFEAT",
+   "impacts + shake, hit"
+  ],
+  [
+   "ending",
+   9.0,
+   "16:01.8",
+   "Dashed ? badge: IF JACKSON HAD BEEN THERE (a counterfactual)",
+   "pop"
+  ],
+  [
+   "ending",
+   12.5,
+   "16:05.3",
+   "NOBODY CAN KNOW",
+   "hit + shake"
+  ],
+  [
+   "ending",
+   17.0,
+   "16:09.8",
+   "end-2 (may63): ring 1 THE VALLEY + arrows; method line 1 MOVE FAST",
+   "hit, pop"
+  ],
+  [
+   "ending",
+   22.0,
+   "16:14.8",
+   "Ring 2 MANASSAS (march + smoke); MYSTIFY",
+   "hit, pop"
+  ],
+  [
+   "ending",
+   27.0,
+   "16:19.8",
+   "Ring 3 CHANCELLORSVILLE; HIT THE WEAKEST PART",
+   "hit, pop"
+  ],
+  [
+   "ending",
+   33.0,
+   "16:25.8",
+   "Cause line: plain dark caption card, no flag (OWNER TO APPROVE wording)",
+   "-"
+  ],
+  [
+   "ending",
+   38.0,
+   "16:30.8",
+   "STILL STUDIED TODAY (as a tactician)",
+   "hit + shake"
+  ],
+  [
+   "ending",
+   44.0,
+   "16:36.8",
+   "end-3: E.final, 3 cards pop as each move is named",
+   "boom, hits"
+  ],
+  [
+   "ending",
+   50.0,
+   "16:42.8",
+   "1, 2 OR 3?",
+   "hit"
+  ],
+  [
+   "ending",
+   56.5,
+   "16:49.3",
+   "TELL US WHICH COMMANDER WE SHOULD COVER NEXT \u00b7 WE READ EVERY ONE; subscribe button clicked",
+   "pop, ticks"
+  ],
+  [
+   "ending",
+   59.5,
+   "16:52.3",
+   "SUBSCRIBED, bell",
+   "ticks"
+  ]
+ ]
+}

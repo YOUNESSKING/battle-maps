@@ -1,0 +1,111 @@
+{
+ "title": "Collins #9 · BG-1 + MOVE 1 (Cherbourg) · snapshot sheet",
+ "note": "scenes bg (europe_hd_ref, option 1) · move1a (normandy_hd_ref, option 1 + moving front) · move1b (cherbourg_hd_ref, option 2 close-up -> option 1 zoom-out)",
+ "frames": [
+  [
+   "bg",
+   1.2,
+   "1:36",
+   "bg-1: Western Front 6 Jun 1944, flags US/UK/Reich, emblem on Germany, neutrals, units moving",
+   "whoosh on the push-in"
+  ],
+  [
+   "bg",
+   24,
+   "1:59",
+   "bg-1: ships pile up off the beaches; Cherbourg ring, guns fire; stamp FORTRESS",
+   "ticks per ship · gun fire + artillery impacts · hit"
+  ],
+  [
+   "move1a",
+   1.2,
+   "2:01",
+   "move1-1: title MOVE 1 · CHERBOURG; 14 Jun control (option 1), VII Corps counters already moving",
+   "hit · impacts on the front"
+  ],
+  [
+   "move1a",
+   22,
+   "2:22",
+   "move1-2: belief card \"WEEKS, PERHAPS MONTHS\"; garrison into the ring of forts",
+   "hit"
+  ],
+  [
+   "move1a",
+   50,
+   "2:50",
+   "move1-2b: Collins badge (photo) hops HQ to HQ; 90th flickers, MacKelvie RELIEVED; ghost reinforcement arrow",
+   "pops · hit on stamp"
+  ],
+  [
+   "move1a",
+   76,
+   "3:16",
+   "move1-3: 9th Div arrow to Barneville, 18 Jun overlay, front swings across; reinforcement arrow cut; stamp CUT OFF",
+   "whoosh · boom · hit · impacts"
+  ],
+  [
+   "move1a",
+   98,
+   "3:38",
+   "move1-4: 4th/79th/9th race north (21 Jun overlay); ultimatum card 09:00 22 JUNE, clock ticks",
+   "whoosh · impacts · static · ticks"
+  ],
+  [
+   "move1b",
+   8,
+   "3:46",
+   "move1-5: option 2 fronts; 12:40 card; glowing c47g bomb runs on the forts (K.bombRun)",
+   "plane flyby · explosions + shake"
+  ],
+  [
+   "move1b",
+   46,
+   "4:24",
+   "move1-6: Fort du Roule 25 Jun; Kelly pole charges + Ogden (Medal of Honor icons), captions",
+   "impacts + shake · mg · hit"
+  ],
+  [
+   "move1b",
+   72,
+   "4:50",
+   "move1-7: tunnels, ~800 surrender, Schlieben badge greyed; Collins offer ORDER A GENERAL SURRENDER? -> REFUSED",
+   "gun fire + impacts · hit · static"
+  ],
+  [
+   "move1b",
+   79,
+   "4:57",
+   "move1-7: arsenal pocket front, loudspeaker SURRENDER! (27 Jun); Hague front",
+   "static · impacts · hit"
+  ],
+  [
+   "move1b",
+   92,
+   "5:10",
+   "move1-8: zoom back out (option 1, 26 Jun -> 1 Jul); harbour demolished, sunken ships, mines; 16 JULY first cargo",
+   "boom · explosions + ticks · hit"
+  ],
+  [
+   "move1b",
+   110,
+   "5:28",
+   "move1-9: casualty card COTENTIN CAMPAIGN · 6 JUNE - 1 JULY 1944 (FACT_NOTES numbers)",
+   "hit x2"
+  ],
+  [
+   "move1b",
+   124.6,
+   "5:43",
+   "move1-9: COLLINS'S METHOD, line 1 CUT THEM OFF, THEN NEVER LET THEM DIG IN",
+   "hit"
+  ],
+  [
+   "move1b",
+   130,
+   "5:48",
+   "move1-sub: subscribe card with bell over the map, idle counters",
+   "pop · ticks"
+  ]
+ ]
+}
