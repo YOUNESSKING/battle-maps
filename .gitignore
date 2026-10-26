@@ -39,3 +39,8 @@ meade/assets/film/src/
 meade/assets/film/clips/
 
 gavin/build/remix.log
+
+**/logs/
+!goosegreen/assets/media/sfx/*.wav
+!goosegreen/assets/media/sfx/candidates/cand[1-4]_hit.wav
+**/build/sfx_cues.json

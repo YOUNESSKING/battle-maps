@@ -21,6 +21,7 @@ FILES = {  # file: md5 (locked recordings / synths)
     "jet_flyby.wav": "4b73b86411c241c214d2ccc2c0bcb98d",
     "prop_flyby.wav": "cdf6d13c8763630a0c50d86a26ba4510",  # owner 2026-10-06: Mixkit 'Low airplane flying over' (sound B)
     "heli_flyby.wav": "5e676f62c6416bed04ce54b7e59eb0d4",
+    "radio_static_short.wav": "1eb68478a6f6bd66b1504daaca5f25aa",  # owner 2026-10-14: 1 s radio crackle (the 6 s static was too long)
     "zoom_whoosh.wav": "38bfd2c2af2cf624366bb9a01e306d88",  # zoom sound on the biggest camera moves (owner pick 2026-09-30)
 }
 KINDS = {  # kind: (clips, dB, min gap)
@@ -32,6 +33,7 @@ KINDS = {  # kind: (clips, dB, min gap)
     "prop": (["prop_flyby.wav"], -13, 1.5),
     "heli": (["heli_flyby.wav"], -14, 2.0),
     "whoosh": (["zoom_whoosh.wav"], -12, 0.50),
+    "static": (["radio_static_short.wav"], -21, 3.00),
 }
 MUSIC = {
     "music_src_long-note-one.mp3": "def03d2a1a998201a3e191a265961ae6",
@@ -78,6 +80,10 @@ def check(kinds=None):
     af = open(os.path.join(ROOT, "tools", "assemble_full.py")).read()
     if not re.search(r"^MUSIC_VOL = 0\.08\b", af, re.M):
         errs.append("MUSIC_VOL in assemble_full.py is not 0.08")
+    if not re.search(r"^SFX_VOL = 0\.63\b", af, re.M):
+        errs.append("SFX_VOL in assemble_full.py is not 0.63 (owner 2026-10-14: all sound effects -4 dB)")
+    if "volume=0.63" not in open(os.path.join(ROOT, "tools", "make_clip.py")).read():
+        errs.append("sound-effects level in make_clip.py is not 0.63")
     if "volume=0.08" not in open(os.path.join(ROOT, "tools", "make_clip.py")).read():
         errs.append("music level in make_clip.py is not 0.08")
     if errs:
