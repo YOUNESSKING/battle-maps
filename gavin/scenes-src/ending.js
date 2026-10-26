@@ -6,7 +6,7 @@ const K = FXK(B);
 const GG = GGK(B);
 const G = GG.proj(6, 7093, 5051);
 const T_RIDGE = at("end-2", "A ridge"), T_CAUSE = at("end-2", "a causeway"), T_RIVER = at("end-2", "a river"), T_THREE = at("end-2", "Three times");
-const T_LEAD = at("end-2", "Lead from the front"), T_TAKE = at("end-2", "Take the ground"), T_ATTACK = at("end-2", "And attack"), S3 = P("end-3");
+const T_LEAD = at("end-2", "Lead from the front"), T_TAKE = at("end-2", "Take the ground"), T_ATTACK = at("end-2", "Attack where"), S3 = P("end-3");
 K.grid(G, 32, 60, -22, 40, 5, 0);
 B.camera([[0, 1500, 800, 0.7], [END, 1500, 800, 0.72]]);
 // who controls Europe by September 1944 (tools/make_europe_control.py) + nation flags (STYLE_LOCK 2026-10-05)
@@ -33,7 +33,7 @@ GG.method(3, T_LEAD - 0.2, S3 - 0.1, [T_LEAD, T_TAKE, T_ATTACK]);
 const E3 = "end-3", E = EngageK(B);
 FLAGS.forEach((el) => GG.fadeOut(el, S3 - 0.1, 0.5));   // world pins sit above the card layer: clear them for the final card
 const FIN = E.final({ moves: [["BIAZZA RIDGE", "JULY 1943"], ["LA FIÈRE CAUSEWAY", "JUNE 1944"], ["THE WAAL CROSSING", "SEPT 1944"]], tShow: S3 + 0.1,
-  tNums: [at(E3, "One, the stand"), at(E3, "Two, the causeway"), at(E3, "Or three")], tAsk: at(E3, "Tell us in the comments"),
+  tNums: [at(E3, "One, Biazza Ridge"), at(E3, "Two, La Fière"), at(E3, "Or three")], tAsk: at(E3, "Tell us in the comments"),
   tFamily: at(E3, "if someone in your family"), tSub: at(E3, "Subscribe, so you") - 0.6, until: END - 0.2, family: "FAMILY SERVED IN WORLD WAR II?" });
 FIN.querySelectorAll(".m").forEach((c) => B.tl.set(c, { autoAlpha: 0 }, 0));   // each move card waits for its spoken number
 B.finish();
