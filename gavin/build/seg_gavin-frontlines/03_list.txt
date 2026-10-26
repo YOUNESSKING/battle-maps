@@ -1,0 +1,5 @@
+file '/home/user/battle-maps/gavin/build/seg_gavin-frontlines/03_0.mp4'
+file '/home/user/battle-maps/gavin/build/seg_gavin-frontlines/03_1.mp4'
+file '/home/user/battle-maps/gavin/build/seg_gavin-frontlines/03_2.mp4'
+file '/home/user/battle-maps/gavin/build/seg_gavin-frontlines/03_3.mp4'
+file '/home/user/battle-maps/gavin/build/seg_gavin-frontlines/03_4.mp4'

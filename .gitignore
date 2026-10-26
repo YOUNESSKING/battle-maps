@@ -37,3 +37,5 @@ meade/logs/*.log
 meade/logs/*.done
 meade/assets/film/src/
 meade/assets/film/clips/
+
+gavin/build/remix.log

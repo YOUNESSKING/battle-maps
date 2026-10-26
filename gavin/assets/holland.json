@@ -1,0 +1,19 @@
+{
+ "name": "holland",
+ "center": [
+  51.68,
+  5.65
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  133746,
+  86157
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 94.79,
+ "sea_below": -7.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
