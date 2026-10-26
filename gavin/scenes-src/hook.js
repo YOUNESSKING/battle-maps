@@ -55,7 +55,7 @@ const T_HALF = at(H1, "Half"), T_NEVER = at(H1, "never reached"), T_FAR = at(H1,
 const S2 = PS(H2), T_ROLLED = at(H2, "rolled"), T_GREAT = at(H2, "great bridge"), T_NIJ = at(H2, "Nijmegen"), T_GEN = at(H2, "And the general"), T_ALREADY = at(H2, "had already");
 const T_STOP = at(H2, "stopped"), T_TIGER = at(H2, "Tiger"), T_WITHP = at(H2, "with paratroopers"), T_HELD = at(H2, "and held"), T_CAUSE = at(H2, "causeway");
 // ---------- the map: water, grid, bridges, labels ----------
-GG.water("assets/nijmegen_water.png", 0, { alpha: 0.85 });
+const WATER = GG.water("assets/nijmegen_water.png", 0, { alpha: 0.9 });
 K.grid(GG.proj(15, 4329295, 2775666), 51.83, 51.875, 5.80, 5.93, 0.01, 0);
 const RAIL_N = [1382, 690], RAIL_S = [1400, 818], ROAD_N = [1744, 752], ROAD_S = [1760, 912];
 GG.road([RAIL_N, RAIL_S], { w: 7 }); GG.road([ROAD_N, ROAD_S], { w: 10 });
@@ -85,7 +85,7 @@ RED.forEach(([id, x, y, icon, lab]) => unit0(id, "rome", x, y, icon, "ger", { la
 // 26 canvas boats: two rows along the south bank, ALREADY pushing off at frame 0
 const sEdge = (x) => { for (let i = 1; i < SB.length; i++) if (x <= SB[i][0]) { const a = SB[i - 1], b = SB[i]; return a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]); } return 0; };
 const boatSVG = `<svg width="26" height="14" viewBox="0 0 30 16" style="display:block;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,0.6))"><path d="M1 3 L29 3 L24 14 L6 14 Z" fill="#1f4fc4" stroke="#f3eee2" stroke-width="2"/></svg>`;
-const PERP = [0.82, -0.57], T_LAND = T_TOOK - 0.3;   // across the Waal (perpendicular to the flow); boats land just before "they took"
+const PERP = [0.6, -0.8], T_LAND = T_TOOK - 0.3;   // across the Waal (perpendicular to the flow); boats land just before "they took"
 const BOATS = [];
 for (let r = 0; r < 2; r++) for (let j = 0; j < 13; j++) {
   const x = 1090 + j * 20 + r * 10, y = sEdge(x) + 16 + r * 26, L = 175 + r * 26;
@@ -141,8 +141,8 @@ camTo(T_PAD + 0.37, T_BUT - T_PAD - 0.4, 1320, 625, 2.3, "sine.inOut");         
 camTo(T_BUT - 0.05, 1.0, 1440, 680, 1.3, "power2.inOut");                                // pull back: both bridges in view
 camTo(T_BUT + 1.0, S2 - T_BUT - 1.05, 1450, 690, 1.36, "none");
 // stamps on the punchlines
-const PAD = sstamp("NOT ENOUGH PADDLES", "left:0;right:0;top:150px;display:flex;justify-content:center;", T_PAD + 0.3, { size: 58, rot: -4, shake: 5, until: T_RIFLE - 0.2 });
-sstamp("ROWING WITH RIFLES", "left:0;right:0;top:770px;display:flex;justify-content:center;", T_RIFLE - 0.05, { size: 58, rot: 3, shake: 5, until: T_HALF + 0.05 });
+const PAD = sstamp("NOT ENOUGH PADDLES", "left:0;right:0;top:800px;display:flex;justify-content:center;", T_PAD + 0.3, { size: 58, rot: -4, shake: 5, until: T_RIFLE - 0.2 });
+sstamp("ROWING WITH RIFLES", "left:520px;right:0;top:210px;display:flex;justify-content:center;", T_RIFLE - 0.05, { size: 58, rot: 3, shake: 5, until: T_HALF + 0.05 });
 B.caption("HALF THE BOATS NEVER REACHED THE FAR BANK", T_HALF + 0.05, T_BUT - 0.1, "rome r");
 // ---------- "they took the bridge": the boats hit the north bank, the paratroopers push along it to both bridges ----------
 const LANDX = [1300, 560];
@@ -163,19 +163,19 @@ GG.layer("background: linear-gradient(to left, rgba(255,140,60,0.34), rgba(120,6
 B.date("20 SEPT 1944 · EVENING", S2 + 0.05, T_GEN + 0.3, 30);
 BOATS.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.05 }, S2));
 // the north end of the road bridge turns blue
-const NORTHEND = K.territory({ pts: [[1560, 600], [1700, 560], [1880, 600], [1930, 700], [1860, 770], [1740, 760], [1610, 740], [1540, 680]], side: "#2e5cb2", alpha: 0.62, t: S2 + 0.1, dur: 0.5, soft: 14 });
+const NORTHEND = K.territory({ pts: [[1560, 600], [1700, 560], [1880, 600], [1930, 700], [1860, 770], [1740, 760], [1610, 740], [1540, 680]], side: "#2e5cb2", alpha: 0.5, t: S2 + 0.1, dur: 0.5, soft: 14 });
 tl.to(NORTHEND, { opacity: 0.25, duration: 0.15, yoyo: true, repeat: 3 }, S2 + 0.65);
 unit0("pn", "carth", ROAD_N[0] - 6, ROAD_N[1] - 46, "infantry", "us", { w: 38, h: 26, label: "US PARATROOPERS", tag: 15, size: "II", t: S2 + 0.25 });
 K.target(ROAD_N[0], ROAD_N[1] + 6, S2 + 0.3, { r: 44, side: "carth", until: T_GEN });
 const FUK = flag(UK, "BRITAIN", 1960, 990, S2 + 0.4, T_GEN - 0.1, 70);
-const FUS2 = flag(US, "USA", 1560, 630, S2 + 0.45, T_GEN - 0.1, 70);
+const FUS2 = flag(US, "USA", 1910, 690, S2 + 0.45, T_GEN - 0.1, 70);
 // British tanks roll across the great bridge
 ["tk1", "tk2", "tk3"].forEach((id, i) => {
   unit0(id, "carth", ROAD_S[0] + 4, ROAD_S[1] + 70 + i * 34, "tank", "uk", { w: 38, h: 24, label: i ? null : "BRITISH TANKS", tag: 15, t: S2 + 0.2 + i * 0.12 });
   B.move(id, T_ROLLED - 0.2 + i * 0.5, 2.6, ROAD_N[0] + 30 + i * 4, ROAD_N[1] - 90 - i * 32, "power1.inOut");
 });
 B.highlight([ROAD_S, ROAD_N], T_GREAT - 0.2, null, 36);
-sstamp("BEFORE DARK", "left:0;right:0;top:820px;display:flex;justify-content:center;", T_ROLLED + 0.55, { size: 70, rot: -4, shake: 6, boom: true, until: T_GEN - 0.15 });
+sstamp("BEFORE DARK", "left:150px;top:640px;", T_ROLLED + 0.55, { size: 70, rot: -4, shake: 6, boom: true, until: T_GEN - 0.15 });
 const NIJ = GG.tagbox("THE NIJMEGEN ROAD BRIDGE", ROAD_N[0] + 70, ROAD_N[1] + 60, "#1f4fc4", { size: 22, t: T_NIJ - 0.25, until: T_GEN - 0.1, anchor: [0, -50] });
 SFX("hit", T_NIJ - 0.1);
 // =====================================================================================================================
@@ -197,12 +197,12 @@ const T_ZO = T_GEN - 0.3;
 SFX("whoosh", T_ZO - 0.15);
 camTo(T_ZO - 0.1, 0.45, 1740, 790, 0.7, "expo.in");                 // the Nijmegen map rushes away ...
 tl.fromTo(EU, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_ZO + 0.15);
-eTo(T_ZO + 0.15, 1.0, 1400, 820, 0.9, "expo.out");                   // ... and the Europe map pulls back from Nijmegen to the whole theatre
-eTo(T_ZO + 1.17, END - T_ZO - 1.2, 1400, 830, 0.95, "none");
+eTo(T_ZO + 0.15, 1.0, 1400, 850, 0.75, "expo.out");                   // ... and the Europe map pulls back from Nijmegen to the whole theatre
+eTo(T_ZO + 1.17, END - T_ZO - 1.2, 1400, 850, 0.79, "none");
 legend([["#2e5cb2", "ALLIES"], ["#be3a2a", "AXIS"], ["#807c72", "NEUTRAL"]], T_ZO + 0.6, null);
 B.date("1943 – 1944", T_GEN + 0.35, null, 36);
 const eflag = (src, name, lat, lon, t, w = 120) => epin(`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><img src="${src}" style="width:${w}px;display:block;border:2px solid #1a1712;box-shadow:0 3px 8px rgba(0,0,0,0.55)"><div style="font-family:Oswald;font-weight:700;font-size:${Math.round(w * 0.22)}px;color:#f7f3ea;text-shadow:0 2px 4px #000;letter-spacing:0.08em">${name}</div></div>`, lat, lon, t, { pop: true });
-eflag(REICH, "GERMANY", 50.6, 11.8, T_ZO + 0.7); eflag(UK, "BRITAIN", 52.6, -1.6, T_ZO + 0.8);
+eflag(REICH, "GERMANY", 49.0, 13.5, T_ZO + 0.7); eflag(UK, "BRITAIN", 51.8, -1.0, T_ZO + 0.8);
 // ring: pulsing circle + parachute + label with a US flag chip (Gavin's paratroopers)
 const ring = (lat, lon, n, txt, sub, t, side) => {
   const [x, y] = PR(lat, lon);
@@ -216,7 +216,7 @@ const ring = (lat, lon, n, txt, sub, t, side) => {
   slam(lab, t + 0.15, { from: 1.8, dur: 0.22, shake: 4 });
   return lab;
 };
-ring(51.84, 5.86, 3, "THE BRIDGE TAKEN", "HOLLAND · SEPT 1944", T_ZO + 1.05, { dx: 70, dy: -70, anchor: [0, -50] });
+ring(51.84, 5.86, 3, "THE BRIDGE TAKEN", "HOLLAND · SEPT 1944", T_ZO + 1.05, { dx: 70, dy: 0, anchor: [0, -50] });
 // Sicily: German tanks driven at the beaches and stopped (red arrow, impacts, greyed)
 const [sx, sy] = PR(37.05, 14.30);
 const ARW = document.createElementNS("http://www.w3.org/2000/svg", "svg"); ARW.setAttribute("width", "2880"); ARW.setAttribute("height", "1620"); ARW.style.cssText = "position:absolute;left:0;top:0;overflow:visible";
@@ -239,11 +239,12 @@ blast(sx + 22, sy - 18, T_STOP + 0.25, true); blast(sx + 40, sy - 34, T_STOP + 0
 stopIt(AS, T_STOP + 0.5);
 ring(37.05, 14.30, 1, "TIGER TANKS STOPPED", "SICILY · JULY 1943", T_TIGER + 0.05, { dx: 80, dy: 10, anchor: [0, -50] });
 // "with paratroopers": parachutes pop over Sicily
-[[37.25, 14.55], [37.10, 14.75], [37.30, 14.15], [36.98, 14.55]].forEach(([la, lo], k) => { epin(`<svg width="30" height="30" viewBox="0 0 40 40" style="display:block;overflow:visible"><path d="M4 18 Q20 -4 36 18 Z" fill="#1f4fc4" stroke="#f3eee2" stroke-width="2.5"/><line x1="5" y1="18" x2="20" y2="34" stroke="#f3eee2" stroke-width="1.6"/><line x1="35" y1="18" x2="20" y2="34" stroke="#f3eee2" stroke-width="1.6"/><circle cx="20" cy="35" r="3.2" fill="#f3eee2"/></svg>`, la, lo, T_WITHP + k * 0.15, { pop: true }); SFX("tick", T_WITHP + k * 0.15); });
+[[37.55, 14.05], [37.45, 14.65], [37.75, 13.6], [37.3, 13.5]].forEach(([la, lo], k) => { epin(`<svg width="46" height="46" viewBox="0 0 40 40" style="display:block;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,0.6))"><path d="M4 18 Q20 -4 36 18 Z" fill="#1f4fc4" stroke="#f3eee2" stroke-width="2.5"/><line x1="5" y1="18" x2="20" y2="34" stroke="#f3eee2" stroke-width="1.6"/><line x1="35" y1="18" x2="20" y2="34" stroke="#f3eee2" stroke-width="1.6"/><circle cx="20" cy="35" r="3.2" fill="#f3eee2"/></svg>`, la, lo, T_WITHP + k * 0.15, { pop: true }); SFX("tick", T_WITHP + k * 0.15); });
 // Normandy: the German attack on the causeway is held (red arrow from the west, stopped)
 const [nx, ny] = PR(49.40, -1.37);
 const AN = earrow([[nx - 130, ny + 20], [nx - 60, ny + 6], [nx - 16, ny]], T_HELD - 0.3, 0.6, "#c4121f");
 blast(nx - 14, ny, T_HELD + 0.35, true); stopIt(AN, T_HELD + 0.45);
 ring(49.40, -1.37, 2, "THE CAUSEWAY HELD", "NORMANDY · JUNE 1944", T_CAUSE - 0.05, { dx: -80, dy: 30, anchor: [-100, -50] });
-K.raiseTerritory();
+// keep the water crisp ABOVE the territory tint (the tint is soft-edged and would wash over the river)
+worldEl.insertBefore(WATER, document.getElementById("overlay"));
 B.finish();
