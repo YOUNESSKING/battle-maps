@@ -18,6 +18,7 @@
 - **Narration voice = A, the DEFAULT (owner-locked 2026-10-06, STYLE_LOCK §6); option 2 = the plain Kokoro am_michael narration (fallback only):** record the narration with Kokoro as usual (am_michael, speed 1.0, timing.json from it), then convert it: `bash tts/setup_clone.sh` (once per session, ~4 min, own venv) and `/home/user/cb-venv/bin/python tts/convert_voice.py audio/voice.wav /home/user/battle-maps/tts/voices/owner_ref.wav audio/voice_owner.wav` (Chatterbox VC; ~15-20 min for 18 min of speech). Pacing and every timestamp stay identical, so timing.json and the scenes still fit; mix voice_owner.wav instead of voice.wav. Approved sample: `tts/voices/test_A_chatterbox.mp3`. Rejected: Chatterbox text-to-speech cloning (`tts/clone_voice.py`, pacing off), Seed-VC (B, closer score 0.95 vs 0.92 but ~4 h per video on CPU and not preferred by ear).
 - **Voice A reference:** `tts/voices/owner_ref.wav` is not in git (`*.wav` is ignored), so Rokossovsky used the approved sample `tts/voices/test_A_chatterbox.mp3` as the reference. If the owner sends owner_ref.wav, commit it with `git add -f`.
 - **Engagement (owner 2026-10-14, STYLE_LOCK 1b):** every script has the 3 locked engagement beats: the woven subscribe line after move 1 (no stop-and-ask paragraph), one "What would you do?" card at the biggest decision, and the final 1-2-3 question with the family-story line. Copy `lib/engage.js` with the skeleton.
+- **Latest data rules (§10, Thomas read 2026-10-26):** hero + his paradox on screen within 15 s, name by 0:30; no "If you enjoy... consider subscribing" wording; ending ≤ 45 s after the last result, then pitch one named next video over a 20 s end screen; thumbnail face pop. Targets: ≥ 65 % at 0:30, ≥ 55 % at 1:00, CTR ≥ 4 %, ending loss ≤ 3 pts.
 - **Title + first minute (§10, from the Thomas numbers: CTR 0.9 %):** title = `<Name>'s Top 3 Legendary Tactical Moves | The Man Who <huge result>` (name first, no "fired/almost" angles); line 1 of the script = stakes, never date + place; the title/thumbnail promise is paid within 30 s.
 
 ## 0. Repo layout (clone path must be /home/user/battle-maps)
@@ -230,11 +231,14 @@ Full study: `thomas/youtube/analytics_2026-10-05.md` (branch `claude/george-thom
 
 **Morgan numbers (4 days, read 2026-10-25; full study `morgan/youtube/analytics_2026-10-25.md`):** 101,336 impressions (97 % browse), **CTR 4.21 %**, 19,857 views, avg view 5:57 (33.8 %). The TG title + thumbnail rules above are confirmed (CTR 0.9 % → 4.21 %). Maps hold viewers: flat 38-39 % from 2:00 to 6:30. The loss is the opening: 70 % at 0:21 → 47 % at 0:42, because line 1 was a date + background and the promise came at 0:35 (the script predates the hook lock). New rules in STYLE_LOCK 1a (promise in 10 s, moves previewed by 0:45) and `tts/PRONUNCIATION.md` (viewers noticed "Nathanael Greene" mispronounced).
 
+**Thomas second read (2026-10-26; full study `thomas/youtube/analytics_2026-10-26.md`):** only the title changed (to the TG pattern) and CTR went **0.9 % → 3.84 %**, impressions **750 → 612,400+** (85 % Home, 12.7 % Up Next): the title rule is our biggest lever. Losses: 94.4 % → 51.2 % by 0:45 (the hero appeared at 0:47), the woven subscribe ask at 7:25 (-2.5 pts), and the 81 s ending (-6.4 pts, no next video offered). New rules: hero + paradox within 15 s and name by 0:30 (STYLE_LOCK 1a); no "If you enjoy / consider subscribing" wording, ending ≤ 45 s after the last result, then a pitch for one named next video over a 20 s end screen (STYLE_LOCK 1b); face pop on thumbnails (STYLE_LOCK 6). **Targets added: CTR ≥ 4 %, ending loss ≤ 3 points.**
+
 **Scorecard (owner rule 2026-10-26): add one row for every analytics read and check it against the targets: ≥ 65 % at 0:30, ≥ 55 % at 1:00.**
 | Video | Read (days live) | Views | Impressions | CTR | Avg view % | Ret. 0:30 | Ret. 1:00 | Biggest drop |
 |---|---|---|---|---|---|---|---|---|
 | George Thomas | 2026-10-05 (3) | 26 | 750 | 0.9 % | 31 % | ~65 % | n/a | minute 1 (no cliff) |
 | Daniel Morgan | 2026-10-25 (4) | 19,857 | 101,336 | 4.21 % | 33.8 % | ~60 % | ~44 % | 0:10-0:42 (-40 pts); 6:35 subscribe ask (-4.7 pts) |
+| George Thomas (TG title) | 2026-10-26 | n/a | 612,400+ | 3.84 % | n/a | n/a (51.2 % at 0:45) | n/a | 0:00-0:45 (-43 pts); 7:25 subscribe (-2.5); ending 17:20-end (-6.4) |
 
 ## 7. Usage (subscription) notes
 - This whole first session: ~63M tokens (97% cache re-reads) over two 5-hour windows, and it never hit the limit.

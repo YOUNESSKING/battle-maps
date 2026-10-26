@@ -99,6 +99,12 @@ a date + background and named the promise only at 0:35: 44 % of viewers were gon
 - **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise.**
 - **The three moves are previewed by 0:45** (name slam + 3 snap cuts finished by then): tighten the twist rather than drop beats.
 - Targets: **≥ 65 % retention at 0:30 and ≥ 55 % at 1:00** (HANDOVER §10). Check the script against them before voicing.
+**Proved again (George Thomas 2nd read 2026-10-26, `thomas/youtube/analytics_2026-10-26.md`):** 94.4 % → 51.2 % by 0:45, and in BOTH
+videos the curve bottoms just before the hero appears (Thomas at 0:47, Morgan at 0:54); the report calls Thomas's entrance (a Southern
+officer keeping his oath) the best moment of the video. So:
+- **The hero enters as a person, with his paradox, within the first 15 s** (unnamed is fine: "One general, a Virginian, refused to
+  run."). His badge/portrait inside the map, never a full-screen photo. **The name slam comes no later than 0:30.**
+- Script check before voicing: mark the second the man first appears and the second his name is spoken; > 15 s / > 30 s = rewrite.
 **Source to copy:** `rokossovsky/scenes-src/hook-a.js` + `hook-b.js` on branch `claude/rokossovsky-video-8` (script: `rokossovsky/script.md` HOOK).
 
 ## 1b. ENGAGEMENT BEATS (LOCKED, owner 2026-10-14: "I do like them... make it official")
@@ -122,7 +128,18 @@ policy (asking to like, comment or subscribe is allowed; never rewards, coercion
    `E.final({ moves: [[NAME, DATE] x3], tShow, tNums, tAsk, tFamily, tSub, until })` = three numbered cards popping in as each move is
    named, 1, 2 OR 3? (gold), the family-story line, and the corner subscribe button. For wars with no living families (ancient,
    18th-19th century) replace the family line with "and tell us which commander we should cover next".
-Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in the reference. Time each beat with `B.at` on the spoken words.
+Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in the reference.
+**Data rules for these beats (Thomas 2nd read 2026-10-26: the woven ask at 7:25 still lost 2.5 points, Morgan's 4.7; the 81 s ending lost
+6.4 points with no next video offered):**
+- **Never the stock words "If you enjoy..." / "consider subscribing"** (viewers hear a chapter break). The spoken ask is ≤ ~8 words inside
+  the cliffhanger sentence ("...and subscribing gets you the next one. Because what Thomas did next..."), and the next move's first
+  image/map is already on screen while it is spoken. If the next video still dips ≥ 2 points there, propose the visual-only button
+  (`E.subscribe` with no spoken ask) to the owner.
+- **The ending is ≤ 45 s after the final battle result**: method recap + callback merged into one paragraph (≤ 20 s), legacy in ≤ 2
+  sentences or cut, then the final question (beat 3, ≤ 15 s).
+- **Then a spoken pitch for ONE specific next video** (same war or same kind of move, named: "Next, watch how Stonewall Jackson
+  fooled three Union armies at once, right here."), over a **20 s end screen** (map stays on screen, space for YouTube's end-screen
+  video + subscribe elements). Set the YouTube end screen to that video in Studio. Target: ≤ 3 points lost in the ending. Time each beat with `B.at` on the spoken words.
 
 ## 2. Visuals (locked)
 - **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).
@@ -227,7 +244,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - **Voice (DEFAULT, owner-locked 2026-10-06): voice A** = the Kokoro am_michael narration converted to the owner's reference voice with `tts/convert_voice.py` (ref `tts/voices/owner_ref.wav`, sample `tts/voices/test_A_chatterbox.mp3`; setup `bash tts/setup_clone.sh`). Same pacing and timestamps as the Kokoro take. **Option 2 (fallback only, or when the owner asks):** the plain Kokoro am_michael narration.
   Steps: `tools/narrate.py` (am_michael) → `audio/voice.wav` + `timing.json` → `/home/user/cb-venv/bin/python /home/user/battle-maps/tts/convert_voice.py audio/voice.wav /home/user/battle-maps/tts/voices/owner_ref.wav audio/voice_owner.wav` (~15-20 min per 18 min) → mix `voice_owner.wav`.
 - Hook: formula in HANDOVER section 1 (stakes-first line, flash-forward, change every 3-5 s, SFX on every beat).
-- Thumbnail: formula in HANDOVER 1b (vidIQ + Tactical Genius references, 1-3 word text, generic officer).
+- Thumbnail: formula in HANDOVER 1b (vidIQ + Tactical Genius references, 1-3 word text, generic officer). **Face pop (Thomas read 2026-10-26):** the portrait's face gets extra contrast + saturation (and a light rim against the map) so the expression reads at 168×94; text stays 1-3 words in high contrast.
 - Description: copy the layout of `goosegreen/build/youtube_description.txt` (chapters, sources, map/music/SFX/image credits), but with **NO links at all** (owner rule 2026-10: new channels get flagged as spam; write "licensed under Creative Commons Attribution 4.0" instead of the URL). Full rules: `research/PACKAGING_GUIDE.md`.
 
 ## 7. Tried and REJECTED (don't offer these again)

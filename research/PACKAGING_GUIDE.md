@@ -62,6 +62,9 @@ Older (Morgan, before the Thomas CTR data, no longer the model):
   *Why (sister channel):* video 2 had CTR 1.7 % while its live thumbnail said the opposite of its title.
 - The thumbnail completes the title, it doesn't repeat it word for word when possible.
 - Make 2–3 options and use Studio → **Test & compare**.
+- **Face pop (Thomas, 2026-10-26):** boost contrast + saturation on the general's face (light rim against the map) so the expression reads at phone size.
+- **End screen:** every video's last 20 s carries an end screen pointing to ONE named video (the one the narration pitches) + subscribe; 12.7 % of Thomas's traffic came from Up Next.
+- **Proof the title matters most:** Thomas with only the title changed to the TG pattern: CTR 0.9 % → 3.84 %, impressions 750 → 612K.
 
 ---
 
