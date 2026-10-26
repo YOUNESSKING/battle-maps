@@ -2,26 +2,35 @@
  "4": [
   {
    "photo": "assets/media/gavin_src.jpg",
-   "parallax": true,
    "move": "in",
    "focus": [
     0.5,
     0.36
    ],
-   "label": "JAMES MAURICE GAVIN \u00b7 BORN 1907"
+   "label": "JAMES MAURICE GAVIN \u00b7 BORN 1907",
+   "depth": true
   },
   {
    "film": "assets/film/clips/gavin_parade_02.mp4",
-   "ss": 0.5
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/airborne_training_03.mp4",
    "ss": 0.5,
-   "label": "ENLISTED AT 17 \u00b7 1924"
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "1924",
+    "ENLISTED AT 17"
+   ]
   },
   {
    "film": "assets/film/clips/airborne_training_07.mp4",
-   "ss": 0.5
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archive_gavin_1945.jpg",
@@ -30,31 +39,42 @@
     0.5,
     0.28
    ],
-   "label": "WEST POINT \u00b7 CLASS OF 1929"
+   "label": "WEST POINT \u00b7 CLASS OF 1929",
+   "depth": true
   }
  ],
  "5": [
   {
    "film": "assets/film/clips/airborne_training_02.mp4",
    "ss": 0.5,
-   "label": "US PARACHUTE TROOPS \u00b7 1942",
-   "dur": 4.4
+   "dur": 4.4,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "1942",
+    "US PARACHUTE TROOPS"
+   ]
   },
   {
    "photo": "assets/media/archive_airborne_benning_prep.jpg",
    "move": "right",
    "label": "FORT BENNING \u00b7 1942",
-   "dur": 4.4
+   "dur": 4.4,
+   "depth": true
   },
   {
    "film": "assets/film/clips/airborne_training_05.mp4",
    "ss": 0.5,
-   "dur": 4.2
+   "dur": 4.2,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/airborne_training_12.mp4",
    "ss": 0.5,
-   "dur": 4.2
+   "dur": 4.2,
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archive_airborne_benning_descent.jpg",
@@ -63,32 +83,39 @@
     0.62,
     0.3
    ],
-   "dur": 4.2
+   "dur": 4.2,
+   "depth": true
   },
   {
    "film": "assets/film/clips/airborne_training_04.mp4",
    "ss": 0.3,
-   "dur": 4.0
+   "dur": 4.0,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/airborne_training_11.mp4",
    "ss": 0.5,
-   "dur": 4.0
+   "dur": 4.0,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/normandy_march_01.mp4",
    "ss": 0.5,
-   "dur": 4.2
+   "dur": 4.2,
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/gavin_src.jpg",
-   "parallax": true,
    "move": "out",
    "focus": [
     0.5,
     0.36
    ],
-   "label": "COL. GAVIN \u00b7 505TH PARACHUTE INFANTRY"
+   "label": "COL. GAVIN \u00b7 505TH PARACHUTE INFANTRY",
+   "depth": true
   }
  ],
  "24": [
@@ -96,34 +123,49 @@
    "film": "assets/film/clips/sicily_smoke_02.mp4",
    "ss": 0.5,
    "label": "SICILY \u00b7 1943",
-   "dur": 2.5
+   "dur": 2.5,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/normandy_amfreville_02.mp4",
    "ss": 0.5,
    "label": "NORMANDY \u00b7 1944",
-   "dur": 2.5
+   "dur": 2.5,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/mg_flight_02.mp4",
    "ss": 0.5,
-   "label": "HOLLAND \u00b7 SEPTEMBER 1944"
+   "label": "HOLLAND \u00b7 SEPTEMBER 1944",
+   "tint": true,
+   "frame": true
   }
  ],
  "36": [
   {
    "film": "assets/film/clips/gavin_parade_01.mp4",
    "ss": 0.3,
-   "label": "MAJ. GEN. GAVIN \u00b7 NEW YORK \u00b7 12 JAN 1946",
-   "dur": 4.6
+   "dur": 4.6,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "12 JANUARY 1946",
+    "NEW YORK"
+   ]
   },
   {
    "film": "assets/film/clips/gavin_parade_04.mp4",
-   "ss": 0.5
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/gavin_parade_07.mp4",
-   "ss": 2.0
+   "ss": 2.0,
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archive_later_parade_nyc.jpg",
@@ -133,15 +175,20 @@
     0.03,
     0.07,
     0.03
-   ]
+   ],
+   "depth": true
   },
   {
    "film": "assets/film/clips/gavin_parade_02.mp4",
-   "ss": 0.5
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/gavin_parade_13.mp4",
-   "ss": 0.5
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archive_gavin_1945.jpg",
@@ -150,11 +197,14 @@
     0.5,
     0.28
    ],
-   "label": "LEFT THE ARMY \u00b7 1958"
+   "label": "LEFT THE ARMY \u00b7 1958",
+   "depth": true
   },
   {
    "film": "assets/film/clips/airborne_training_10.mp4",
-   "ss": 0.5
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archive_later_jfk_gavin.jpg",
@@ -163,32 +213,38 @@
     0.68,
     0.38
    ],
-   "label": "WITH PRESIDENT KENNEDY \u00b7 1962"
+   "label": "WITH PRESIDENT KENNEDY \u00b7 1962",
+   "depth": true
   },
   {
    "photo": "assets/media/gavin_src.jpg",
-   "parallax": true,
    "move": "in",
    "focus": [
     0.5,
     0.36
    ],
-   "label": "1907 \u2013 1990 \u00b7 BURIED AT WEST POINT"
+   "label": "1907 \u2013 1990 \u00b7 BURIED AT WEST POINT",
+   "depth": true
   },
   {
    "film": "assets/film/clips/normandy_amfreville_01.mp4",
    "ss": 0.5,
-   "label": "LA FI\u00c8RE \u00b7 NORMANDY"
+   "label": "LA FI\u00c8RE \u00b7 NORMANDY",
+   "tint": true,
+   "frame": true
   },
   {
    "film": "assets/film/clips/mg_drop_02.mp4",
    "ss": 0.5,
-   "label": "HOLLAND \u00b7 SEPTEMBER 1944"
+   "label": "HOLLAND \u00b7 SEPTEMBER 1944",
+   "tint": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archive_nijmegen_bridge.jpg",
    "move": "right",
-   "label": "NIJMEGEN \u00b7 THE WAAL BRIDGE"
+   "label": "NIJMEGEN \u00b7 THE WAAL BRIDGE",
+   "depth": true
   }
  ]
 }
