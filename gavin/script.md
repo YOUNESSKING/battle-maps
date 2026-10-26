@@ -1,14 +1,21 @@
-# Gavin's Top 3 Legendary Tactical Moves (script v1)
+# Gavin's Top 3 Legendary Tactical Moves (script v1; hook v2 from 2026-10-26)
 
 Facts: research/FACT_NOTES.md. Voice: Kokoro am_michael, speed 1.08. Tags: [MAP: id | notes] / [ARCHIVE: id | notes].
 
 ## Hook
 
-[MAP: hook-1 | Nijmegen close map, first frame: 26 blue boat counters on the south bank of the Waal, red guns + MG nests on the north bank and the bridges; odds card 260 MEN · 26 CANVAS BOATS vs GUNS ON THE FAR BANK; boats push off, tracers, impacts in the water (shake)] Twenty-six canvas boats. Two hundred and sixty men. A river three hundred metres wide, in broad daylight, with German guns waiting on the far bank. There were not enough paddles, so some of the men rowed with the butts of their rifles.
+[MAP: hook-1 | Frame 0 (0.0 s): Nijmegen close map, 26 blue boat counters ALREADY pushing off the south bank, red guns + MG nests on the north bank, flags + territory; BIG card slams in at 0.3 s (hit + shake) and ticks 0 -> 260 PARATROOPERS (ticks), second line 26 CANVAS BOATS; 1.5 s beats: tracers, impacts in the water (shake); on "paddles": hard zoom-whoosh DIVE onto the river, stamp NOT ENOUGH PADDLES (hit); on "rifle butts": stamp ROWING WITH RIFLES (hit); on "Half": boat counters grey out in waves (hit each); on "took the bridge": counters hit the north bank, stamp THEY TOOK THE BRIDGE (boom + hit)]
+Two hundred and sixty paratroopers. Twenty-six canvas boats. Not enough paddles, so some men rowed with their rifle butts. Half the boats never reached the far bank. But before dark, they took the bridge.
 
-[MAP: hook-2 | white flash-forward (the one zoom sound): north end of the road bridge turns blue, British tank counters roll across the bridge, stamp BEFORE DARK: THE BRIDGE WAS THEIRS] The general who sent them knew exactly what he was asking. Before dark that evening, British tanks were rolling across the great bridge at Nijmegen, the bridge his division had been fighting for since the day they landed.
+[MAP: hook-2 | WHITE-FLASH cut (the one zoom sound): north end of the road bridge turns blue, British tank counters roll across the bridge (rumble), stamp BEFORE DARK (boom + hit); zoom-out whoosh to the Sicily/Normandy/Holland map, three rings pop (pop x3): TIGER TANKS STOPPED (Sicily), THE CAUSEWAY HELD (Normandy), THE BRIDGE TAKEN (Holland)]
+British tanks rolled across the great bridge at Nijmegen. And the general who sent those boats had already stopped German Tiger tanks with paratroopers, and held a causeway in Normandy.
 
-[MAP: hook-3 | Europe map: four parachute marks pop in one after another: SICILY JUL 1943, SALERNO SEP 1943, NORMANDY JUN 1944, HOLLAND SEP 1944; Gavin badge; caption 4 COMBAT JUMPS IN 14 MONTHS; then the three move titles] His name was James Gavin. In fourteen months he jumped into battle four times: Sicily, Salerno, Normandy and Holland. No other American general made four combat jumps in the war. He carried an M1 rifle, like a private. And three times, when a battle was slipping away, he turned it around. These are James Gavin's three greatest tactical moves.
+[MAP: hook-3 | Hard cut to dark; Gavin's real photo badge with a mystery "?" instead of the name; a stamp on each spoken beat (hit + small shake + red pulse): ORPHAN / PRIVATE AT 17 / RIFLE IN HAND (boom on the last)]
+He was an orphan. At seventeen, he joined the army as a private, with little schooling. Twenty years later he was a general, and he still carried a rifle, like a private.
+
+[MAP: hook-4 | Name SLAMS in over the badge (hit + shake); 3 snap cuts (~3 s each, whoosh + hit): parachute mark SICILY JUL 1943, NORMANDY JUN 1944, HOLLAND SEP 1944; caption 4 COMBAT JUMPS IN 14 MONTHS (ticks); title card JAMES GAVIN'S 3 GREATEST TACTICAL MOVES (riser + boom) finished by ~0:45]
+His name was James Gavin. Four combat jumps in fourteen months. And three times, when a battle was slipping away, he turned it around. These are James Gavin's three greatest tactical moves.
+
 
 ## Who he was
 
@@ -34,7 +41,7 @@ Facts: research/FACT_NOTES.md. Voice: Kokoro am_michael, speed 1.08. Tags: [MAP:
 
 [MAP: move1-8 | casualty card US ~50 killed / 100+ wounded, German unknown; THE RIDGE HELD; method card line 1 lit: LEAD FROM THE FRONT] The ridge held. It cost about fifty dead and more than a hundred wounded, but that German column never reached the beaches. Gavin's first lesson: lead from the front. He was on that ridge, rifle in hand, from the first shot to the last, and he was awarded the Distinguished Service Cross for it.
 
-[ARCHIVE: sub-1 | 82nd Airborne paratroopers in Sicily 1943 (public domain)] If you're enjoying the story, take a second to subscribe. It helps the channel more than you'd think. Now, Normandy.
+[MAP: sub-1 | Normandy wide map already on screen (scene m2a): small SUBSCRIBE button bottom-right, a cursor clicks it (SUBSCRIBED, bell rings), slides out; then label NEXT: THE LA FIÈRE CAUSEWAY] The ridge held, but Sicily was only the beginning. Breakdowns like this, move by move on the map, are exactly what subscribing keeps bringing you. Because on D-Day, Gavin's next fight would be over a flooded river in Normandy, and a single narrow causeway.
 
 ## Move 2
 
@@ -68,6 +75,8 @@ Facts: research/FACT_NOTES.md. Voice: Kokoro am_michael, speed 1.08. Tags: [MAP:
 
 [MAP: move3-4 | red guns on the north bank; the river highlights ~300 M OF OPEN WATER; speech bubble THEY WILL COME FROM THE SOUTH (no quote marks)] The Germans expected the attacks to keep coming from the south. The river guarded the northern end. Three hundred metres of open water, in daylight, under their guns. No one would try to cross that.
 
+[MAP: move3-4d | dimmed map: WHAT WOULD YOU DO? card, A ATTACK THE BRIDGE HEAD-ON / B CROSS THE RIVER, 3 ticks, TELL US IN THE COMMENTS; on "Gavin saw something different" B lights blue and A greys] Now stop for a moment, and put yourself in Gavin's place. The bridge is out of reach from the south, and the only other way is across three hundred metres of open water, under German guns. Do you keep attacking the bridge head-on, or do you cross the river, in daylight, in whatever boats you can find? Tell us in the comments what you would have done. And then...
+
 [MAP: move3-5 | Gavin badge; dotted blue arrow: cross downstream (west), land on the north bank, swing east to the bridges; caption TAKE IT FROM BOTH ENDS] Gavin saw something different. If he could not take the bridge from the front, he would take it from both ends. His paratroopers would cross the river downstream, land on the north bank, and storm the bridge from behind.
 
 [MAP: move3-6 | 26 boat counters arrive late at the power station; 3/504 (Maj. Julian Cook) counter; date 20 SEPT · 15:00] The boats were British canvas assault boats, and they arrived at the last minute. Twenty-six of them, flimsy things of plywood and canvas, with three paddles each. None of the paratroopers had ever used one. Each boat would carry about ten paratroopers and three engineers to paddle it. At about three in the afternoon on the twentieth of September, the third battalion of the five hundred and fourth, led by Major Julian Cook, carried them down to the water.
@@ -86,4 +95,4 @@ Facts: research/FACT_NOTES.md. Voice: Kokoro am_michael, speed 1.08. Tags: [MAP:
 
 [MAP: end-2 | Europe map: the three moves replay (ridge, causeway, river); method card, all three lines lit] A ridge in Sicily, a causeway in Normandy, a river in Holland. Three times the plan fell apart, and three times Gavin was there at the front, with a rifle in his hands. Lead from the front. Take the ground that decides the battle. And attack where the enemy is sure you cannot.
 
-[MAP: end-3 | method card stays; caption WHICH COMMANDER NEXT?] Which commander should we cover next? Tell us in the comments, and subscribe so you don't miss the next battle.
+[MAP: end-3 | method card fades; E.final: three numbered cards pop in as each move is named, 1, 2 OR 3? (gold), the family-story line, corner subscribe button] So which was Gavin's greatest move? One, the stand at Biazza Ridge. Two, the causeway at La Fière. Or three, the crossing of the Waal? Tell us in the comments. And if someone in your family served in the Second World War, on either side, tell us their story. We read every one. Subscribe, so you don't miss the next commander.
