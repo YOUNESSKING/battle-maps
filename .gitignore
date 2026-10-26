@@ -48,3 +48,7 @@ gavin/build/remix.log
 
 
 **/.sattiles/
+
+belisarius/build/tmp_card.png
+belisarius/build/*.log
+belisarius/build/*.wav

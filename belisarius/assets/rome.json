@@ -1,0 +1,18 @@
+{
+ "name": "rome",
+ "center": [
+  41.893,
+  12.49
+ ],
+ "zoom": 15,
+ "origin_world_px": [
+  4483902,
+  3116536
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 3.56,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
