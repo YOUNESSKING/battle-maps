@@ -75,6 +75,10 @@ K.front({ pts: RIVER_C, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: 1
 // flags + legend + date, all up at frame 0
 const FUS = flag(US, "USA", 930, 900, 0, T_PAD - 0.3);
 const FDE = flag(REICH, "GERMANY", 1420, 400, 0, T_PAD - 0.3);
+// small period flags inside the dive framing (one per bank), up while the big pair is away; the big pair comes back for the pull-back
+const FDEs = flag(REICH, "GERMANY", 1650, 600, T_PAD - 0.3, T_BUT + 0.25, 38);
+const FUSs = flag(US, "USA", 1050, 780, T_PAD - 0.25, T_BUT + 0.25, 38);
+tl.to([FUS, FDE], { autoAlpha: 1, duration: 0.4 }, T_BUT + 0.05); tl.to([FUS, FDE], { autoAlpha: 0, duration: 0.05 }, S2 - 0.05);
 const LEG = legend([["#2e5cb2", "ALLIES"], ["#be3a2a", "GERMANS"]], 0, T_GEN + 0.3);
 date0("20 SEPTEMBER 1944", S2 + 0.05);
 // ---------- units at frame 0 ----------
@@ -176,8 +180,8 @@ const FDE2 = flag(REICH, "GERMANY", 1950, 545, S2 + 0.5, T_GEN - 0.1, 70);
   B.move(id, T_ROLLED - 0.2 + i * 0.5, 2.6, ROAD_N[0] + 30 + i * 4, ROAD_N[1] - 90 - i * 32, "power1.inOut");
 });
 B.highlight([ROAD_S, ROAD_N], T_GREAT - 0.2, null, 36);
-sstamp("BEFORE DARK", "left:150px;top:640px;", T_ROLLED + 0.55, { size: 70, rot: -4, shake: 6, boom: true, until: T_GEN - 0.15 });
-const NIJ = GG.tagbox("THE NIJMEGEN ROAD BRIDGE", ROAD_N[0] + 70, ROAD_N[1] + 60, "#1f4fc4", { size: 22, t: T_NIJ - 0.25, until: T_GEN - 0.1, anchor: [0, -50] });
+sstamp("BEFORE DARK", "left:150px;top:640px;", T_ROLLED + 0.55, { size: 70, rot: -4, shake: 6, boom: true, until: T_GEN - 0.5 });
+const NIJ = GG.tagbox("THE NIJMEGEN ROAD BRIDGE", ROAD_N[0] + 70, ROAD_N[1] + 60, "#1f4fc4", { size: 22, t: T_NIJ - 0.25, until: T_GEN - 0.65, anchor: [0, -50] });
 SFX("hit", T_NIJ - 0.1);
 // =====================================================================================================================
 // zoom-out whoosh to the wide Europe map (own layer: relief + Sept 1944 control map, flags, three rings)
@@ -197,8 +201,8 @@ const epin = (html, lat, lon, t, o = {}) => { const [x, y] = PR(lat, lon); const
 const T_ZO = T_GEN - 0.3;
 SFX("whoosh", T_ZO - 0.15);
 camTo(T_ZO - 0.1, 0.45, 1740, 790, 0.7, "expo.in");                 // the Nijmegen map rushes away ...
-tl.fromTo(EU, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_ZO + 0.15);
-eTo(T_ZO + 0.15, 1.0, 1400, 850, 0.75, "expo.out");                   // ... and the Europe map pulls back from Nijmegen to the whole theatre
+tl.fromTo(EU, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, immediateRender: false }, T_ZO - 0.02);
+eTo(T_ZO - 0.02, 1.17, 1400, 850, 0.75, "expo.out");                   // ... and the Europe map pulls back from Nijmegen to the whole theatre
 eTo(T_ZO + 1.17, END - T_ZO - 1.2, 1400, 850, 0.79, "none");
 legend([["#2e5cb2", "ALLIES"], ["#be3a2a", "AXIS"], ["#807c72", "NEUTRAL"]], T_ZO + 0.6, null);
 B.date("1943 – 1944", T_GEN + 0.35, null, 36);
