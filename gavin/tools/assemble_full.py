@@ -23,10 +23,10 @@ key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
     "hook": ("hook-1", "hook-2"),
-    "intro": ("hook-3", "hook-3"),
+    "intro": ("hook-3", "hook-4"),
     "m1a": ("move1-1", "move1-3"),
     "m1b": ("move1-4", "move1-8"),
-    "m2a": ("move2-1", "move2-1"),
+    "m2a": ("sub-1", "move2-1"),
     "m2b": ("move2-2", "move2-9"),
     "m3a": ("move3-1", "move3-2"),
     "m3b": ("move3-3", "move3-10"),

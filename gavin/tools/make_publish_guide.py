@@ -94,10 +94,10 @@ story += [P("1. The finished video", "h1"),
 if os.path.exists("build/guide_frames.jpg"):
     story += [img("build/guide_frames.jpg", 170)]
 story += [PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 93)", "h2"), P(f"<b>{TITLE}</b>"),
+story += [P("2. Title and thumbnail", "h1"), P("Title (Tactical Genius pattern: name first, series name, subtitle; vidIQ score 89)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
-          *bullets(["The General Who Jumped Into Battle 4 Times: James Gavin's Top 3 Tactical Moves (90)",
-                    "The General Who Jumped First: James Gavin's Top 3 Legendary Tactical Moves (89)"]),
+          *bullets(["James Gavin's Top 3 Legendary Tactical Moves | The Man Who Jumped First (90)",
+                    "James Gavin's Top 3 Legendary Tactical Moves | The General Who Jumped First (89)"]),
           P("Why this thumbnail", "h2"),
           P("Same picture formula as every Tactical Genius thumbnail: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
             "and a red brush banner bottom-left. The text is what decides the click: 1-3 words, readable with zero context. "

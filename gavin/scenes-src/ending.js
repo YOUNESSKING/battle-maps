@@ -1,4 +1,4 @@
-// ENDING: the three moves replay on the Europe map, the method, the question (end-2 .. end-3). Basemap: europe (z6).
+// ENDING: the three moves replay on the Europe map, the method (end-2), then the FINAL QUESTION card E.final (end-3). Basemap: europe (z6).
 const B = Battle();
 const { P, at } = B;
 const END = B.T.duration;
@@ -6,17 +6,17 @@ const K = FXK(B);
 const GG = GGK(B);
 const G = GG.proj(6, 7093, 5051);
 const T_RIDGE = at("end-2", "A ridge"), T_CAUSE = at("end-2", "a causeway"), T_RIVER = at("end-2", "a river"), T_THREE = at("end-2", "Three times");
-const T_LEAD = at("end-2", "Lead from the front"), T_TAKE = at("end-2", "Take the ground"), T_ATTACK = at("end-2", "And attack"), S3 = P("end-3");
+const T_LEAD = at("end-2", "Lead from the front"), T_TAKE = at("end-2", "Take the ground"), T_ATTACK = at("end-2", "Attack where"), S3 = P("end-3");
 K.grid(G, 32, 60, -22, 40, 5, 0);
 B.camera([[0, 1500, 800, 0.7], [END, 1500, 800, 0.72]]);
 // who controls Europe by September 1944 (tools/make_europe_control.py) + nation flags (STYLE_LOCK 2026-10-05)
 B.image("assets/media/europe_ctl_sep44.png", 0, 0, 2880, 1620, { t: 0.1, dur: 1.0 });
 const flag = (src, name, lat, lon, t, w = 165) => { const [x, y] = G(lat, lon);
   return GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><img src="${src}" style="width:${w}px;display:block;border:2px solid #1a1712;box-shadow:0 3px 8px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:40px;color:#f7f3ea;text-shadow:0 2px 4px #000,0 0 10px rgba(0,0,0,0.8);letter-spacing:0.08em">${name}</div></div>`, x, y, { t, pop: true }); };
-flag("assets/media/ger_reich_flag.png", "GERMANY", 49.6, 12.6, 0.4);
-flag("assets/media/uk_flag.png", "BRITAIN", 52.4, -1.2, 0.6);
-flag("assets/media/ussr_flag.png", "USSR", 52.6, 35.9, 0.8);
-[["NEUTRAL", 40.0, -3.8], ["NEUTRAL", 39.3, 33.0]].forEach(([n, la, lo]) => { const [x, y] = G(la, lo); GG.lbl(n, x, y, { size: 36, color: "#f2eee4", t: 1.0 }); });
+const FLAGS = [flag("assets/media/ger_reich_flag.png", "GERMANY", 49.6, 12.6, 0.4),
+  flag("assets/media/uk_flag.png", "BRITAIN", 52.4, -1.2, 0.6),
+  flag("assets/media/ussr_flag.png", "USSR", 52.6, 35.9, 0.8)];
+[["NEUTRAL", 40.0, -3.8], ["NEUTRAL", 39.3, 33.0]].forEach(([n, la, lo]) => { const [x, y] = G(la, lo); FLAGS.push(GG.lbl(n, x, y, { size: 36, color: "#f2eee4", t: 1.0 })); });
 GG.card(`<div style="display:flex;gap:26px;font-size:24px;letter-spacing:0.08em;align-items:center"><span><b style="display:inline-block;width:22px;height:22px;background:#2e5cb2;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>ALLIES</span><span><b style="display:inline-block;width:22px;height:22px;background:#be3a2a;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>AXIS</span><span><b style="display:inline-block;width:22px;height:22px;background:#807c72;vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>NEUTRAL</span></div>`, "", 40, 0.5, T_LEAD - 0.4);
 B.showDate(0.1);
 B.date("1943 – 1944", 0.3, T_LEAD - 0.4, 38);
@@ -26,8 +26,14 @@ B.date("1943 – 1944", 0.3, T_LEAD - 0.4, 38);
   SFX("hit", t + 0.1);
 });
 B.caption("THREE TIMES THE PLAN FELL APART · THREE TIMES GAVIN WAS AT THE FRONT", T_THREE, T_LEAD - 0.4, "carth r");
-B.dim(T_LEAD - 0.4, END + 1, 0.7);
+B.dim(T_LEAD - 0.4, S3 + 0.5, 0.7);
 B.dateBox(T_LEAD - 0.4);
-GG.method(3, T_LEAD - 0.2, END + 1, [T_LEAD, T_TAKE, T_ATTACK]);
-B.caption("WHICH COMMANDER SHOULD WE COVER NEXT?", S3 + 0.2, END + 1, "r");
+GG.method(3, T_LEAD - 0.2, S3 - 0.1, [T_LEAD, T_TAKE, T_ATTACK]);
+// ---------- end-3: final question (STYLE_LOCK 1b engagement beats) ----------
+const E3 = "end-3", E = EngageK(B);
+FLAGS.forEach((el) => GG.fadeOut(el, S3 - 0.1, 0.5));   // world pins sit above the card layer: clear them for the final card
+const FIN = E.final({ moves: [["BIAZZA RIDGE", "JULY 1943"], ["LA FIÈRE CAUSEWAY", "JUNE 1944"], ["THE WAAL CROSSING", "SEPT 1944"]], tShow: S3 + 0.1,
+  tNums: [at(E3, "One, Biazza Ridge"), at(E3, "Two, La Fière"), at(E3, "Or three")], tAsk: at(E3, "Tell us in the comments"),
+  tFamily: at(E3, "if someone in your family"), tSub: at(E3, "Subscribe, so you") - 0.6, until: END - 0.2, family: "FAMILY SERVED IN WORLD WAR II?" });
+FIN.querySelectorAll(".m").forEach((c) => B.tl.set(c, { autoAlpha: 0 }, 0));   // each move card waits for its spoken number
 B.finish();
