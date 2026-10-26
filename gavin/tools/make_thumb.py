@@ -1,4 +1,5 @@
-"""Gavin thumbnails, Tactical Genius formula (HANDOVER 1b + face pop STYLE_LOCK 6), redone 2026-10-26 after the owner rejected the first version:
+"""SUPERSEDED (owner 2026-10-26: the portrait must be in COLOUR and the thumbnail generated whole by vidIQ; the final Gavin thumbnails are bg_vidiq_full_A/B.png). Kept only as the old composing approach.
+Gavin thumbnails, Tactical Genius formula (HANDOVER 1b + face pop STYLE_LOCK 6), redone 2026-10-26 after the owner rejected the first version:
 vidIQ battlefield (dark aerial, Waal crossing = the hook scene = the title promise) on the left 2/3, Gavin's REAL PD photo cut out on the right third
 (fades into the dark edge, NO glow; a mild face pop: contrast + a thin faint rim), rough red brush-stroke banner bottom-left, 1-3 words.
 Wrong/ambiguous AI labels are inpainted; the AI 'GAVIN' tag portrait is replaced by the real photo (never a fake likeness).
