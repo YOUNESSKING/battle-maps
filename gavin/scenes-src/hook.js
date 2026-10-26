@@ -136,8 +136,8 @@ tl.to(BIG, { autoAlpha: 0, y: -40, duration: 0.3, ease: "power2.in" }, T_PAD - 0
 // ---------- camera: slow push from frame 0, hard zoom-whoosh DIVE onto the river on "paddles" ----------
 camTo(0, T_PAD - 0.35, 1240, 630, 1.45);
 SFX("whoosh", T_PAD - 0.4);
-camTo(T_PAD - 0.35, 0.7, 1280, 660, 2.5, "expo.inOut");
-camTo(T_PAD + 0.37, T_BUT - T_PAD - 0.4, 1320, 625, 2.3, "sine.inOut");                 // drift with the boats
+camTo(T_PAD - 0.35, 0.7, 1300, 690, 2.5, "expo.inOut");
+camTo(T_PAD + 0.37, T_BUT - T_PAD - 0.4, 1330, 650, 2.3, "sine.inOut");                 // drift with the boats
 camTo(T_BUT - 0.05, 1.0, 1440, 680, 1.3, "power2.inOut");                                // pull back: both bridges in view
 camTo(T_BUT + 1.0, S2 - T_BUT - 1.05, 1450, 690, 1.36, "none");
 // stamps on the punchlines
@@ -163,12 +163,13 @@ GG.layer("background: linear-gradient(to left, rgba(255,140,60,0.34), rgba(120,6
 B.date("20 SEPT 1944 · EVENING", S2 + 0.05, T_GEN + 0.3, 30);
 BOATS.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.05 }, S2));
 // the north end of the road bridge turns blue
-const NORTHEND = K.territory({ pts: [[1560, 600], [1700, 560], [1880, 600], [1930, 700], [1860, 770], [1740, 760], [1610, 740], [1540, 680]], side: "#2e5cb2", alpha: 0.5, t: S2 + 0.1, dur: 0.5, soft: 14 });
+const NORTHEND = K.territory({ pts: [[1560, 600], [1700, 560], [1880, 600], [1930, 700], [1860, 770], [1740, 760], [1610, 740], [1540, 680]], side: "#3f74e0", alpha: 0.68, t: S2 + 0.1, dur: 0.5, soft: 14 });
 tl.to(NORTHEND, { opacity: 0.25, duration: 0.15, yoyo: true, repeat: 3 }, S2 + 0.65);
 unit0("pn", "carth", ROAD_N[0] - 6, ROAD_N[1] - 46, "infantry", "us", { w: 38, h: 26, label: "US PARATROOPERS", tag: 15, size: "II", t: S2 + 0.25 });
 K.target(ROAD_N[0], ROAD_N[1] + 6, S2 + 0.3, { r: 44, side: "carth", until: T_GEN });
 const FUK = flag(UK, "BRITAIN", 1960, 990, S2 + 0.4, T_GEN - 0.1, 70);
 const FUS2 = flag(US, "USA", 1910, 690, S2 + 0.45, T_GEN - 0.1, 70);
+const FDE2 = flag(REICH, "GERMANY", 1950, 545, S2 + 0.5, T_GEN - 0.1, 70);
 // British tanks roll across the great bridge
 ["tk1", "tk2", "tk3"].forEach((id, i) => {
   unit0(id, "carth", ROAD_S[0] + 4, ROAD_S[1] + 70 + i * 34, "tank", "uk", { w: 38, h: 24, label: i ? null : "BRITISH TANKS", tag: 15, t: S2 + 0.2 + i * 0.12 });
