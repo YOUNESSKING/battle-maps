@@ -1,0 +1,167 @@
+{
+ "title": "Peng #10 - HOOK (hook-a nwkorea + hook-b korea), 0:00-1:01",
+ "note": "Locked hook (STYLE_LOCK 1a): a beat every 2-4 s; first 30 s sampled every ~2.5 s. Option 1 territory on wide shots, option 2 glowing front on the night close-up.",
+ "frames": [
+  [
+   "hook-a",
+   0.3,
+   "0:00.3",
+   "Frame 0: NW Korea at night, option 1 (24 Nov), units moving, 4 flags; BIG card slams",
+   "hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   2.5,
+   "0:02.5",
+   "Card ticks to 300,000 CHINESE SOLDIERS; dotted march trails over the Yalu",
+   "ticks, whoosh"
+  ],
+  [
+   "hook-a",
+   5.0,
+   "0:05.0",
+   "IN SECRET stamp; dawn: red recon C-47 sweeps in, blue columns freeze to ghosts, snow",
+   "hit + shake, prop flyby"
+  ],
+  [
+   "hook-a",
+   7.5,
+   "0:07.5",
+   "zoom-whoosh DIVE (~6 s) onto the Chongchon valley; NEVER SEEN stamp; ghosts in the ridges",
+   "whoosh, hit + shake"
+  ],
+  [
+   "hook-a",
+   10.0,
+   "0:10.0",
+   "red columns (24th, ROK 1st, 25th, 2nd, ROK II Corps) walk north between the ghosts",
+   "pops"
+  ],
+  [
+   "hook-a",
+   12.5,
+   "0:12.5",
+   "MacArthur card (real photo): 'FOR ALL PRACTICAL PURPOSES END THE WAR' (24 Nov communique); ghosts stir",
+   "hit + shake, pop"
+  ],
+  [
+   "hook-b",
+   0.77,
+   "0:15.0",
+   "hard cut: NIGHT 25 NOV, option 2 glowing front, ghosts in the hills",
+   "night bed"
+  ],
+  [
+   "hook-b",
+   3.27,
+   "0:17.5",
+   "the mountains come alive: blue counters light up at once, BUGLES IN THE DARK, arrows, impacts on the columns",
+   "hit + boom + shake, static, MG, impacts"
+  ],
+  [
+   "hook-b",
+   5.77,
+   "0:20.0",
+   "WHITE FLASH -> DECEMBER 1950: zoom-out whoosh to all Korea (option 1 nov24->dec15), red arrows stream south",
+   "whoosh, hit"
+  ],
+  [
+   "hook-b",
+   8.27,
+   "0:22.5",
+   "Pyongyang ring flips blue, ABANDONED 5 DEC; 38th parallel line draws",
+   "hit + shake, pop"
+  ],
+  [
+   "hook-b",
+   10.77,
+   "0:25.0",
+   "OUT OF NORTH KOREA stamp; X Corps ships out of Hungnam (dashed sea arrow)",
+   "hit + shake, pops"
+  ],
+  [
+   "hook-b",
+   13.27,
+   "0:27.5",
+   "caption: LONGEST RETREAT IN US MILITARY HISTORY (Eighth Army's own history)",
+   "hit"
+  ],
+  [
+   "hook-b",
+   15.77,
+   "0:30.0",
+   "hard cut to dark: mystery ? badge on the PRC flag, THE MAN WHO PLANNED IT",
+   "hit, pop"
+  ],
+  [
+   "hook-b",
+   18.77,
+   "0:33.0",
+   "NO AIR FORCE stamp + a red jet streaks over",
+   "hit + shake + red pulse, jet"
+  ],
+  [
+   "hook-b",
+   21.77,
+   "0:36.0",
+   "FEW TRUCKS / FEW RADIOS stamps (one per word)",
+   "hit + shake x2"
+  ],
+  [
+   "hook-b",
+   24.77,
+   "0:39.0",
+   "ON FOOT: blue dotted trails over the mountains; frost on the edges",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   27.77,
+   "0:42.0",
+   "THIN CLOTH SHOES / A BITTER WINTER (snow); giant red counter slams: MOST POWERFUL MILITARY ON EARTH",
+   "hit + shake x3"
+  ],
+  [
+   "hook-b",
+   30.77,
+   "0:45.0",
+   "the giant counter cracks",
+   "boom + shake"
+  ],
+  [
+   "hook-b",
+   33.27,
+   "0:47.5",
+   "NAME SLAM: PENG DEHUAI (real photo), badge flies to the corner over the overview",
+   "hit + shake, whoosh"
+  ],
+  [
+   "hook-b",
+   36.27,
+   "0:50.5",
+   "snap cut 1: UNSAN NOV 1950, ring closes on the 8th Cavalry",
+   "whoosh + hit, MG, boom"
+  ],
+  [
+   "hook-b",
+   39.27,
+   "0:53.5",
+   "snap cut 2: THE CHONGCHON NOV 1950, blue arrows through the broken right flank",
+   "whoosh + hit, impact"
+  ],
+  [
+   "hook-b",
+   41.77,
+   "0:56.0",
+   "snap cut 3: SEOUL JAN 1951, arrows over the Han, Seoul ring flips blue (jan7 overlay)",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   45.27,
+   "0:59.5",
+   "pull-out + title card PENG DEHUAI'S 3 GREATEST TACTICAL MOVES",
+   "whoosh, riser, boom + shake"
+  ]
+ ]
+}

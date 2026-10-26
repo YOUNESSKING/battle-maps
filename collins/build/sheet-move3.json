@@ -1,0 +1,125 @@
+{
+ "title": "Collins #9 · MOVE 3 (Celles) + ENDING · snapshot sheet",
+ "note": "move3a europe_hd_ref move3-1 · move3b ardennes_hd_ref move3-2..move3-7 · ending europe_hd_ref end-1..end-2 (mm:ss = video time)",
+ "frames": [
+  [
+   "move3a",
+   0.5,
+   "9:43",
+   "move3-1 MOVE 3 · CELLES title, Western Front 16 Dec (opt 1), units on screen",
+   "boom + pops"
+  ],
+  [
+   "move3a",
+   9,
+   "9:52",
+   "move3-1 dive to the Ardennes: German barrage on the thin US line",
+   "whoosh, gun thuds, impacts + shake"
+  ],
+  [
+   "move3a",
+   16,
+   "9:59",
+   "move3-1 Bulge 16->24 Dec, Meuse, Bastogne ringed, Antwerp goal, 2nd Pz to Dinant, UK on Meuse, snow",
+   "pops"
+  ],
+  [
+   "move3b",
+   17.5,
+   "10:19",
+   "move3-2 close (opt 2): Foy/Celles, Meuse bridges ring, 4-5 MILES, fuel gauge drains; Luttwitz",
+   "hit, ticks"
+  ],
+  [
+   "move3b",
+   19.5,
+   "10:21",
+   "move3-2 stamp OUT OF FUEL",
+   "hit + shake"
+  ],
+  [
+   "move3b",
+   39.5,
+   "10:41",
+   "move3-2b VII Corps from Aachen: 2nd+3rd Armd, 75th+84th Inf near Marche; spearhead races past",
+   "pops, whoosh"
+  ],
+  [
+   "move3b",
+   69.5,
+   "11:11",
+   "move3-3 night 24 Dec: First Army message (Monty + Hodges): GO ON THE DEFENSIVE / MAY FALL BACK",
+   "radio static, hits"
+  ],
+  [
+   "move3b",
+   93,
+   "11:34",
+   "move3-4 FALL BACK vs ATTACK, Christmas Eve clock; stamp ATTACK AT DAWN",
+   "clock ticks, hit + shake"
+  ],
+  [
+   "move3b",
+   104,
+   "11:45",
+   "move3-5 25 Dec 08:00 CCB (White) double envelopment, British tanks on the Meuse, tank fire",
+   "whoosh, gun thuds, impacts"
+  ],
+  [
+   "move3b",
+   110.2,
+   "11:51",
+   "move3-5 clear skies: P-38s + Typhoons (c47g, K.bombRun) on the stalled columns",
+   "plane flyby, bomb booms + shake"
+  ],
+  [
+   "move3b",
+   120.6,
+   "12:02",
+   "move3-5 pocket closed, panzers grey; stamp IN THE BAG",
+   "boom, hit + shake"
+  ],
+  [
+   "move3b",
+   131.5,
+   "12:13",
+   "move3-6 relief from Rochefort beaten off -> zoom out (opt 1, 27 Dec): THE DEEPEST POINT",
+   "impacts, hit + shake"
+  ],
+  [
+   "move3b",
+   154,
+   "12:35",
+   "move3-7 casualty card (Cole, 2nd Armd 24-27 Dec), rows on the spoken numbers",
+   "ticks"
+  ],
+  [
+   "move3b",
+   161,
+   "12:42",
+   "move3-7 COLLINS'S METHOD complete (3 lines)",
+   "hits"
+  ],
+  [
+   "ending",
+   13.6,
+   "13:10",
+   "end-1 overview: Patton badge -> Collins; rings Cherbourg JUN / Saint-Lo JUL / Celles DEC, map moves with dates",
+   "hits, boom"
+  ],
+  [
+   "ending",
+   21,
+   "13:17",
+   "end-1 the method lights line by line",
+   "pops"
+  ],
+  [
+   "ending",
+   31,
+   "13:27",
+   "end-2 WHICH COMMANDER NEXT? + subscribe",
+   "boom, hit"
+  ]
+ ]
+}

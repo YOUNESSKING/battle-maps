@@ -1,0 +1,18 @@
+{
+ "name": "mesopotamia",
+ "center": [
+  37.15,
+  41.05
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  79041,
+  50138
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 243.7,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

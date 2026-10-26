@@ -1,0 +1,104 @@
+{
+ "title": "Jackson #11 · MOVE 1 · THE SHENANDOAH VALLEY (move1a-e, 2:48 - 6:48) + NEW cavalry icon test",
+ "note": "move1a/e virginia_hd_ref (option 1, may62 / jun62) · move1b/c valley_hd_ref (option 1 wide: mar23 / may20 / may23 / may26 / jun1 / jun7; option 2 close-ups) · move1d portrep_hd_ref (option 2) · last frame = TEST, owner to approve",
+ "frames": [
+  [
+   "move1a",
+   28,
+   "3:16",
+   "1-1 McClellan + McDowell converge on Richmond; the Valley points at Washington",
+   "ref:boom (title), hit, pops"
+  ],
+  [
+   "move1b",
+   5.5,
+   "3:24",
+   "1-2 23 Mar KERNSTOWN (option 2): blue attack fails -> DEFEAT",
+   "gun fire + impacts (shake), mg, hit"
+  ],
+  [
+   "move1b",
+   24,
+   "3:42",
+   "1-2 8 May McDOWELL: Frémont's vanguard thrown back north",
+   "impacts (shake), mg, pop"
+  ],
+  [
+   "move1b",
+   47,
+   "4:05",
+   "1-3 Banks at Strasburg; MASSANUTTEN glows; the only road; ~17,000",
+   "pops, hit on belief + count cards"
+  ],
+  [
+   "move1b",
+   58,
+   "4:16",
+   "1-4 the column vanishes behind the mountain (ghosts), north up Luray valley",
+   "pops (quiet march)"
+  ],
+  [
+   "move1b",
+   73,
+   "4:31",
+   "1-4 23 May FRONT ROYAL (option 2): ~1,000 MEN, CAPTURED; Banks outflanked",
+   "guns + impacts (shake), mg, hit + shake"
+  ],
+  [
+   "move1c",
+   10.5,
+   "4:48",
+   "1-5 25 May dawn WINCHESTER: ~16,000 vs ~6,500, guns -> impacts",
+   "guns + impacts (shake), mg, hit"
+  ],
+  [
+   "move1c",
+   25,
+   "5:02",
+   "1-5 Washington alarm: 13 STATES CALL OUT THEIR MILITIA (Lincoln next)",
+   "hit + shake; miles ticks before"
+  ],
+  [
+   "move1c",
+   60,
+   "5:37",
+   "1-6 Frémont W / Shields E of the mountain; NEW cavalry burns S Fork bridges",
+   "ref:boom on the fire, smoke"
+  ],
+  [
+   "move1d",
+   10.5,
+   "5:51",
+   "1-7 8 Jun CROSS KEYS: ~5,800 vs ~11,500, REPULSED",
+   "guns + impacts (shake), mg, hit"
+  ],
+  [
+   "move1d",
+   23.5,
+   "6:04",
+   "1-7 9 Jun PORT REPUBLIC: Tyler broken, BRIDGE BURNED, Frémont TOO LATE",
+   "impacts, ref:boom fire, hit + shake"
+  ],
+  [
+   "move1e",
+   14,
+   "6:20",
+   "1-8 RESULT: 6 battles · ~650 miles · Union ~5,400 · Confed. ~2,800 (NPS)",
+   "hit + tick per row"
+  ],
+  [
+   "move1e",
+   29,
+   "6:35",
+   "1-8/sub ~40,000 NEVER ARRIVED; to Lee at Richmond; E.subscribe; NEXT: MANASSAS",
+   "pop, click tick, bell ticks"
+  ],
+  [
+   "test-cav",
+   2,
+   "TEST",
+   "NEW: cavalry icon (test, owner to approve), both sides, big + scene size",
+   "-"
+  ]
+ ]
+}

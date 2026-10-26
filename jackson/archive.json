@@ -1,0 +1,162 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/jackson_wide.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "depth": true,
+   "label": "THOMAS J. JACKSON \u00b7 1824-1863",
+   "dur": 4.6,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1824_clarksburg.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/archive_chapultepec_b.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "STORMING OF CHAPULTEPEC \u00b7 MEXICO \u00b7 1847",
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/archive_chapultepec_a.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "MEXICO CITY \u00b7 SEPTEMBER 1847",
+   "dur": 3.8
+  },
+  {
+   "photo": "assets/media/card_1851_lexington.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/archive_jackson_stereo_l.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "depth": true,
+   "label": "PROFESSOR, VIRGINIA MILITARY INSTITUTE",
+   "dur": 4.4
+  },
+  {
+   "photo": "assets/media/archive_jackson_portrait1864.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "depth": true,
+   "label": "\"TOM FOOL\" TO HIS CADETS",
+   "dur": 4.4
+  },
+  {
+   "photo": "assets/media/jackson_wide.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "depth": true,
+   "label": "\"OLD JACK\" TO HIS SOLDIERS",
+   "dur": 5.0
+  }
+ ],
+ "34": [
+  {
+   "photo": "assets/media/archive_waud_chancellorsville_may1.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "CHANCELLORSVILLE \u00b7 MAY 1863 \u00b7 SKETCH BY ALFRED WAUD",
+   "dur": 3.6,
+   "trim": 0.06
+  },
+  {
+   "photo": "assets/media/quote_lee_rightarm.jpg",
+   "move": "in",
+   "focus": [
+    0.4,
+    0.5
+   ],
+   "dur": 4.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1863_guinea.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.4,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/archive_guinea_house.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "WHERE JACKSON DIED \u00b7 GUINEA STATION",
+   "dur": 3.8
+  },
+  {
+   "photo": "assets/media/archive_funeral_flowers.jpg",
+   "move": "up",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "FLOWERS FROM HIS COFFIN \u00b7 RICHMOND \u00b7 MAY 1863",
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/quote_jackson_lastwords.jpg",
+   "move": "in",
+   "focus": [
+    0.4,
+    0.5
+   ],
+   "dur": 5.0,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/archive_grave_photo1863.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "JACKSON'S GRAVE \u00b7 LEXINGTON, VIRGINIA",
+   "dur": 3.4
+  }
+ ]
+}

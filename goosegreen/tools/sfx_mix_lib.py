@@ -14,7 +14,7 @@ KINDS = {  # kind: (clips, level dB, min gap between two cues of this kind in s)
     "mg":        (["mg_burst.wav"], -18, 1.00),
     "whoosh":    (["zoom_whoosh.wav"], -12, 0.50),  # locked zoom sound (owner 2026-09-30): Mixkit "Cinematic tunnel reverb woosh", only on the biggest camera moves
     "hit":       (["hit.wav"], -8, 0.50),
-    "static":    (["radio_static.wav"], -21, 3.00),
+    "static":    (["radio_static_short.wav"], -21, 3.00),  # owner 2026-10-14: 1 s crackle (the 6 s static was too long)
     "tick":      (["counter_tick.wav"], -20, 0.12),
     "jet":       (["jet_flyby.wav"], -11, 1.2),
     "prop":      (["prop_flyby.wav"], -13, 1.5),

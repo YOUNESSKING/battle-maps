@@ -1,0 +1,20 @@
+{
+ "name": "nova_hd_ref",
+ "center": [
+  38.6,
+  -77.7
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  73052,
+  99749
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 119.47,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

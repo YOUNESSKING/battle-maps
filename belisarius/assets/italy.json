@@ -1,0 +1,18 @@
+{
+ "name": "italy",
+ "center": [
+  40.5,
+  14.0
+ ],
+ "zoom": 7,
+ "origin_world_px": [
+  16218,
+  11535
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 929.97,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

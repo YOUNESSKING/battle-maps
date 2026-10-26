@@ -4,8 +4,6 @@ How to write the YouTube packaging for every video. Adapted from the owner's pac
 (Psycho Décodé, videos 1–4) to this English military-history channel. Each rule says **why**, so edge cases can be
 judged instead of followed blindly. Worked example: `morgan/youtube/youtube_metadata.md` (+ the PDF next to it).
 
-
-> **On `main` (2026-10-03):** the `morgan/` example and `tools/make_upload_pdf.py` live on branch `claude/george-thomas-civil-war-2epkux`. On main, build the upload PDF with the video's `tools/make_publish_guide.py` (copied from goosegreen; the O.P. Smith version on branch `claude/lucid-tesla-qugecc` is the newest), and follow STYLE_LOCK.md for the look and sound.
 ---
 
 ## 0. Order of work

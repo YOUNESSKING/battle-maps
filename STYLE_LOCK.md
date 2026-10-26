@@ -92,7 +92,37 @@ Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + mus
   one stamp per spoken detail (hit + small shake + red pulse), caveats as a small caption ("by his family's account").
 - **Name slams in** (hit + shake), then 3 snap cuts (~3 s each, whoosh + hit) of the three battles, then the title card (riser + boom).
 - SFX on every beat; the zoom whoosh only on the 2-3 biggest camera moves (dive, flash-forward, zoom-out).
+**Proved by data (Morgan analytics 2026-10-25, owner-approved 2026-10-26; `morgan/youtube/analytics_2026-10-25.md`):** Morgan opened on
+a date + background and named the promise only at 0:35: 44 % of viewers were gone by 0:42. So, on top of the rules above:
+- **The title's promise is spoken as a result within the first 10 s** (e.g. "In under an hour, one crippled wagon driver wiped out
+  Britain's most feared legion."). Holding back the hero's NAME for the slam is fine; holding back the PROMISE is not.
+- **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise.**
+- **The three moves are previewed by 0:45** (name slam + 3 snap cuts finished by then): tighten the twist rather than drop beats.
+- Targets: **≥ 65 % retention at 0:30 and ≥ 55 % at 1:00** (HANDOVER §10). Check the script against them before voicing.
 **Source to copy:** `rokossovsky/scenes-src/hook-a.js` + `hook-b.js` on branch `claude/rokossovsky-video-8` (script: `rokossovsky/script.md` HOOK).
+
+## 1b. ENGAGEMENT BEATS (LOCKED, owner 2026-10-14: "I do like them... make it official")
+Reference: `reference/engagement-test-peng.mp4` (1:04, Peng #10 test). Code: `lib/engage.js` (`const E = EngageK(B)`, loaded by
+`tools/scene_template.html`; in `rokossovsky/` and `peng/`). Worked examples: `reference/engagement-examples/` (subscribe-move1c.js,
+decide-move3c.js, final-ending-b.js). Studied from Tactical Genius (Ridgway transcript + top comments) and YouTube's spam / fake-engagement
+policy (asking to like, comment or subscribe is allowed; never rewards, coercion or repeated comments). Every video has exactly these three:
+1. **Woven subscribe line after move 1** (replaces the old stop-and-ask "If you're enjoying this breakdown..." paragraph). One sentence that
+   bridges into move 2, no pause, e.g. "But Unsan was only the warning shot. Breakdowns like this, move by move on the map, are exactly
+   what subscribing keeps bringing you. Because the trap Peng set next, on the Chongchon River, would send an entire American army into
+   retreat." Visual: `E.subscribe(t, until)` = small SUBSCRIBE button bottom-right, a cursor clicks it (SUBSCRIBED, bell rings), slides
+   out; then the NEXT: <move 2> label. Never a full-screen subscribe card.
+2. **One "What would you do?" card per video**, at the move's biggest decision, BEFORE the narration reveals the real choice:
+   "Now stop for a moment, and put yourself in <Name>'s place. <situation in 2 short sentences>. Do you <A>, or do you <B>? Tell us in the
+   comments what you would have done. And then..." Visual: `E.decide({ sub, a, b, real, t, tCount, tReveal, until })` = dimmed map,
+   WHAT WOULD YOU DO? + two option boxes (A / B) + TELL US IN THE COMMENTS with 3 ticks; on the reveal the real choice lights blue and
+   the other greys (hit). Only once per video (more gets repetitive).
+3. **The final question (last paragraph, replaces "Which commander should we cover next?")**: "So which was <Name>'s greatest move?
+   One, <move 1>. Two, <move 2>. Or three, <move 3>? Tell us in the comments. And if someone in your family served in <war/place>, on
+   either side, tell us their story. We read every one. Subscribe, so you don't miss the next commander." Visual:
+   `E.final({ moves: [[NAME, DATE] x3], tShow, tNums, tAsk, tFamily, tSub, until })` = three numbered cards popping in as each move is
+   named, 1, 2 OR 3? (gold), the family-story line, and the corner subscribe button. For wars with no living families (ancient,
+   18th-19th century) replace the family line with "and tell us which commander we should cover next".
+Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in the reference. Time each beat with `B.at` on the spoken words.
 
 ## 2. Visuals (locked)
 - **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).
