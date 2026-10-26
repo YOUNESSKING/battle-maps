@@ -92,6 +92,13 @@ Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + mus
   one stamp per spoken detail (hit + small shake + red pulse), caveats as a small caption ("by his family's account").
 - **Name slams in** (hit + shake), then 3 snap cuts (~3 s each, whoosh + hit) of the three battles, then the title card (riser + boom).
 - SFX on every beat; the zoom whoosh only on the 2-3 biggest camera moves (dive, flash-forward, zoom-out).
+**Proved by data (Morgan analytics 2026-10-25, owner-approved 2026-10-26; `morgan/youtube/analytics_2026-10-25.md`):** Morgan opened on
+a date + background and named the promise only at 0:35: 44 % of viewers were gone by 0:42. So, on top of the rules above:
+- **The title's promise is spoken as a result within the first 10 s** (e.g. "In under an hour, one crippled wagon driver wiped out
+  Britain's most feared legion."). Holding back the hero's NAME for the slam is fine; holding back the PROMISE is not.
+- **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise.**
+- **The three moves are previewed by 0:45** (name slam + 3 snap cuts finished by then): tighten the twist rather than drop beats.
+- Targets: **≥ 65 % retention at 0:30 and ≥ 55 % at 1:00** (HANDOVER §10). Check the script against them before voicing.
 **Source to copy:** `rokossovsky/scenes-src/hook-a.js` + `hook-b.js` on branch `claude/rokossovsky-video-8` (script: `rokossovsky/script.md` HOOK).
 
 ## 2. Visuals (locked)
