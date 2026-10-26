@@ -99,12 +99,7 @@ a date + background and named the promise only at 0:35: 44 % of viewers were gon
 - **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise.**
 - **The three moves are previewed by 0:45** (name slam + 3 snap cuts finished by then): tighten the twist rather than drop beats.
 - Targets: **≥ 65 % retention at 0:30 and ≥ 55 % at 1:00** (HANDOVER §10). Check the script against them before voicing.
-**Proved again (George Thomas 2nd read 2026-10-26, `thomas/youtube/analytics_2026-10-26.md`):** 94.4 % → 51.2 % by 0:45, and in BOTH
-videos the curve bottoms just before the hero appears (Thomas at 0:47, Morgan at 0:54); the report calls Thomas's entrance (a Southern
-officer keeping his oath) the best moment of the video. So:
-- **The hero enters as a person, with his paradox, within the first 15 s** (unnamed is fine: "One general, a Virginian, refused to
-  run."). His badge/portrait inside the map, never a full-screen photo. **The name slam comes no later than 0:30.**
-- Script check before voicing: mark the second the man first appears and the second his name is spoken; > 15 s / > 30 s = rewrite.
+**Confirmed again (George Thomas 2nd read 2026-10-26):** 94.4 % → 51.2 % by 0:45; the old Thomas hook (date + place first) shows the curve bottoming just before the hero appears (0:47). No new rule: the hook above already fixes this.
 **Source to copy:** `rokossovsky/scenes-src/hook-a.js` + `hook-b.js` on branch `claude/rokossovsky-video-8` (script: `rokossovsky/script.md` HOOK).
 
 ## 1b. ENGAGEMENT BEATS (LOCKED, owner 2026-10-14: "I do like them... make it official")
@@ -129,17 +124,10 @@ policy (asking to like, comment or subscribe is allowed; never rewards, coercion
    named, 1, 2 OR 3? (gold), the family-story line, and the corner subscribe button. For wars with no living families (ancient,
    18th-19th century) replace the family line with "and tell us which commander we should cover next".
 Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in the reference.
-**Data rules for these beats (Thomas 2nd read 2026-10-26: the woven ask at 7:25 still lost 2.5 points, Morgan's 4.7; the 81 s ending lost
-6.4 points with no next video offered):**
-- **Never the stock words "If you enjoy..." / "consider subscribing"** (viewers hear a chapter break). The spoken ask is ≤ ~8 words inside
-  the cliffhanger sentence ("...and subscribing gets you the next one. Because what Thomas did next..."), and the next move's first
-  image/map is already on screen while it is spoken. If the next video still dips ≥ 2 points there, propose the visual-only button
-  (`E.subscribe` with no spoken ask) to the owner.
-- **The ending is ≤ 45 s after the final battle result**: method recap + callback merged into one paragraph (≤ 20 s), legacy in ≤ 2
-  sentences or cut, then the final question (beat 3, ≤ 15 s).
-- **Then a spoken pitch for ONE specific next video** (same war or same kind of move, named: "Next, watch how Stonewall Jackson
-  fooled three Union armies at once, right here."), over a **20 s end screen** (map stays on screen, space for YouTube's end-screen
-  video + subscribe elements). Set the YouTube end screen to that video in Studio. Target: ≤ 3 points lost in the ending. Time each beat with `B.at` on the spoken words.
+**Ending rules (Thomas 2nd read 2026-10-26: the 81 s ending lost 6.4 points with no next video offered; the 7:25 subscribe dip used the old wording, made before this section, so beat 1 stays as it is):**
+- **The ending is ≤ 45 s after the final battle result**: method recap + callback in one short paragraph, legacy kept to 1-2 sentences, then the final question (beat 3).
+- **Inside the final-question paragraph, just before its "Subscribe..." line, pitch ONE specific next video by name** (same war or same kind of move: "And next, watch how Stonewall Jackson fooled three Union armies at once."). The final question stays the last paragraph.
+- The last ~20 s leave room for **YouTube's end screen** (map stays on screen; set that same video + subscribe in Studio). Target: ≤ 3 points lost in the ending. Time each beat with `B.at` on the spoken words.
 
 ## 2. Visuals (locked)
 - **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).

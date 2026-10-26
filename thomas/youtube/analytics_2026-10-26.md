@@ -29,15 +29,11 @@ Video: *George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the U
    rules + question 19 s) and loses 6.4 points with no next video offered. 12.7 % of traffic is Up Next: an end screen pointing to a
    specific video would keep these viewers on the channel.
 
-## Rules adopted (owner request 2026-10-26: "drive new improvements to add as rules"; written into STYLE_LOCK 1a/1b/1c, HANDOVER §10, PACKAGING_GUIDE §3)
-- Hook: **the hero enters as a person with his paradox within the first 15 s** (unnamed is fine: "one general, a Virginian, refused to
-  run"); the name slam no later than 0:30.
-- Mid-video subscribe: **never the stock words "If you enjoy..." / "consider subscribing"**; the ask is at most ~8 words inside the
-  cliffhanger sentence, and the next move's first image is on screen while it is spoken. If the next video still dips ≥ 2 points there,
-  propose the visual-only button to the owner.
-- Ending: **≤ 45 s after the final battle result**, then a spoken pitch for one specific next video + a 20 s end screen.
-- Thumbnail: the portrait's face gets extra contrast and saturation so the expression reads at phone size.
-- Targets: CTR ≥ 4 %; ending loss ≤ 3 points.
+## Rules adopted (owner-approved 2026-10-26, after a duplicate/conflict check)
+- Ending ≤ 45 s after the final battle result; one named next video pitched inside the final-question paragraph; room for YouTube's end screen (STYLE_LOCK 1b).
+- Thumbnail face pop: extra contrast + saturation on the general's face (STYLE_LOCK 6, PACKAGING_GUIDE §3).
+- Targets: CTR ≥ 4 %; ending loss ≤ 3 points (HANDOVER §10).
+- Not added (already covered): hook fixes (STYLE_LOCK 1a: promise in 10 s, hero unnamed in line 2, name slam at the twist) and the subscribe wording (STYLE_LOCK 1b woven line). Thomas was made before both.
 
 ---
 
