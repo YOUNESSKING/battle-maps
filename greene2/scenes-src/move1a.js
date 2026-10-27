@@ -299,10 +299,10 @@ const flags = (t0, t1, s, us, gb) => { const w = 115 / s; flag(FL.us, "UNITED ST
 flags(0.5, T_17 + 0.6, 0.95, L(35.62, -79.15), L(34.62, -82.15));
 flags(T_COWP + 0.8, T_TARL + 1.6, 2.6, L(35.42, -81.52), L(34.97, -82.06));
 flags(T_RAMS + 0.6, T_RUN + 0.6, 4.6, L(35.56, -81.15), L(35.40, -81.36));
-flags(T_GEO + 1.5, T_DESTROY + 0.6, 1.25, L(36.95, -78.35), L(34.55, -81.85));
-flags(T_WEEKS + 0.6, T_SHIELD + 0.6, 4.4, L(36.80, -78.80), L(36.53, -79.02));
-flags(T_RODE + 1.0, T_FEB1 + 0.3, 1.7, L(35.82, -80.12), L(34.74, -81.40));
-flags(T_COWAN + 0.7, T_KILL + 1.0, 6.0, L(35.478, -80.905), L(35.405, -81.012));
+flags(T_GEO + 1.5, T_DESTROY + 0.6, 1.25, L(36.35, -79.00), L(34.55, -81.85));
+flags(T_WEEKS + 0.6, T_SHIELD + 0.6, 4.4, L(36.80, -78.80), L(36.55, -79.25));
+flags(T_RODE + 1.0, T_FEB1 + 0.3, 1.7, L(35.62, -80.30), L(34.74, -81.40));
+flags(T_COWAN + 0.7, T_KILL + 1.0, 6.0, [COWAN.p[0] + 95, COWAN.p[1] - 45], [COWAN.p[0] - 95, COWAN.p[1] + 40]);
 flags(T_TWO + 1.3, END + 1, 5.3, L(35.775, -80.285), L(35.625, -80.405));
 
 // ---------- dan-1: the three rivers, the split, Cowpens ----------
@@ -370,7 +370,7 @@ B.caption("ALL SWOLLEN WITH WINTER RAIN", T_SWOL - 0.1, T_SOME - 0.1);
 const U3 = U(1.25);
 unit("co3", "rome", L(35.60, -81.05), "infantry", "CORNWALLIS", { t: T_GEO + 1.4, ...U3, size: "XX" });
 unit("gm3", "carth", L(35.62, -80.80), "infantry", "MORGAN", { t: T_GEO + 1.5, ...U(1.25, 0.85), size: "X" });
-unit("gr3", "carth", L(35.25, -79.98), "infantry", "GREENE", { t: T_GEO + 1.6, ...U3, size: "XX" });
+unit("gr3", "carth", L(35.42, -79.95), "infantry", "GREENE", { t: T_GEO + 1.6, ...U3, size: "XX" });
 arw({ pts: LL([[35.66, -80.98], [35.90, -80.55], [36.20, -80.05], [36.48, -79.55]]), side: "rome", t: T_BACK - 0.6, dur: 1.6, width: 8, dash: "18 12", until: T_DIFF + 0.4 });
 RV.forEach(([nm, t, pts]) => glowPath(pts, "#ff5a48", 5.5, T_DESTROY - 0.3, T_DIFF + 0.6, 1, 0.9));
 B.caption("CAUGHT WITH HIS BACK TO A FLOODED RIVER", T_BACK - 0.2, T_DIFF - 0.1, "rome");

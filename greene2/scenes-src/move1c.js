@@ -262,7 +262,7 @@ B.camera([[0, 1880, 560, 1.35], [T_ESC, 1890, 540, 1.45], [T_BEC, 1860, 560, 1.6
 const LV = baseLayers([["feb81c", 0, null]]);
 B.showDate(0.1); B.date("FEBRUARY 1781", 0.2, null, 34);
 legend(0.3, END + 1, false);
-flag(FL.us, "UNITED STATES", ...L(36.93, -79.50), 0.4, END + 1, 115 / 1.5);
+flag(FL.us, "UNITED STATES", ...L(36.72, -79.45), 0.4, END + 1, 115 / 1.5);
 flag(FL.gb, "GREAT BRITAIN", HILLS[0], HILLS[1] - 22, 0.55, END + 1, 115 / 1.5);
 glowPath(rivPart("DAN", [36.50, -79.70], [36.72, -78.60]), "#4f8bff", 3.0, 0.2, END + 1, 0, 0.8);
 
@@ -276,7 +276,6 @@ methodCard(1, [T_L1 - 0.1, T_L2 - 0.1, T_L3 - 0.1], T_FIRST - 0.2, T_ESC - 0.1, 
 const U1 = U(1.45);
 unit("gr", "carth", HALCH, "infantry", "GREENE'S ARMY", { t: 0.3, ...U1, size: "XX" });
 unit("co", "rome", [HILLS[0], HILLS[1] + 34], "infantry", "CORNWALLIS", { t: 0.4, ...U1, size: "XX" });
-box("HILLSBOROUGH", HILLS[0] + 70, HILLS[1] + 30, 0.5, 10, END + 1, { sfx: false });
 box("VIRGINIA", HALCH[0] + 70, HALCH[1] - 50, T_ESC + 0.2, 10, END + 1, { bg: "#dcecf8" });
 B.caption("ESCAPED, WITHOUT FIGHTING A BATTLE", T_ESC, T_BRK + 0.6, "carth");
 // reinforcements flow in from Virginia (militia + Continental recruits): arrows from the north and north-east

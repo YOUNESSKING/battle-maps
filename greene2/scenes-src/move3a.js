@@ -207,17 +207,17 @@ camTo(S2 - 0.3, 1.2, PL.cam[0] - 10, PL.cam[1] - 20, SH, "power2.inOut");
 camTo(S2 + 0.92, T_MATT - S2 - 0.8, PL.cam[0] - 12, PL.cam[1] - 22, SH * 1.04, "sine.inOut");
 geoClose(M, S2 - 0.3, T_MATT + 0.4);
 B.date("25 APRIL 1781", T_APR, T_MATT + 0.3, 32);
-flags(SH, [PL.cam[0] + 60, PL.cam[1] - 60], [PL.cam[0] - 50, PL.cam[1] + 30], S2 + 0.3, T_MATT + 0.2);
+flags(SH, [PL.cam[0] + 60, PL.cam[1] - 60], [PL.cam[0] - 70, PL.cam[1] + 42], S2 + 0.3, T_MATT + 0.2);
 box("CAMDEN", PL.cam[0] + 18, PL.cam[1] + 12, S2 + 0.2, 14 * kH, T_MATT + 0.2, false);
-box("HOBKIRK'S HILL", PL.hob[0] - 24, PL.hob[1] - 12, S2 + 0.4, 14 * kH, T_MATT + 0.2);
-go("gg", S2 - 0.2, 0.8, PL.hob[0] + 2, PL.hob[1] - 6, "power2.out");
+box("HOBKIRK'S HILL", PL.hob[0] - 44, PL.hob[1] - 16, S2 + 0.4, 14 * kH, T_MATT + 0.2);
+go("gg", S2 - 0.2, 0.8, PL.hob[0] + 2, PL.hob[1] - 20, "power2.out");
 K.badge({ name: "LORD RAWDON", role: "BRITISH COMMANDER, CAMDEN", photo: "assets/media/rawdon_head.png", flag: FL.gb, side: "rome", corner: "br", t: T_RAW - 0.4, until: T_PIN });
-const RA = B.arrow({ pts: [[PL.cam[0] + 6, PL.cam[1] + 2], [PL.cam[0] + 10, PL.cam[1] - 6], [PL.hob[0] + 4, PL.hob[1] - 3]], side: "rome", t: T_HOB - 0.6, dur: 0.6, width: 6 * kH, until: T_MATT + 0.2 });
-[0, 0.15, 0.3, 0.5, 0.65].forEach((d, k) => mflash(PL.hob[0] + 1 + (k % 2) * 2, PL.hob[1] - 4 + k, T_HOB + d, kH * 2)); SFX("mg", T_HOB + 0.05);
-shell(PL.cam[0] + 4, PL.cam[1] + 4, PL.hob[0] + 2, PL.hob[1] - 7, T_HOB - 0.3, { r: 9 * kH, fly: 0.4, w: 2 * kH, h: 4 });
-go("gg", T_BACK, 1.6, PL.hob[0] + 3, PL.hob[1] - 34, "power2.out");
-B.arrow({ pts: [[PL.hob[0] + 3, PL.hob[1] - 10], [PL.hob[0] + 4, PL.hob[1] - 22], [PL.hob[0] + 3, PL.hob[1] - 34]], side: "carth", t: T_BACK, dur: 0.8, width: 5 * kH, dash: "6 5", until: T_MATT + 0.2 });
-xmark(PL.hob[0] - 4, PL.hob[1] - 2, T_BACK + 0.2, 34 * kH, T_MATT + 0.6);
+const RA = B.arrow({ pts: [[PL.cam[0] + 6, PL.cam[1] + 2], [PL.cam[0] + 10, PL.cam[1] - 6], [PL.hob[0] + 3, PL.hob[1] - 12]], side: "rome", t: T_HOB - 0.6, dur: 0.6, width: 6 * kH, until: T_MATT + 0.2 });
+[0, 0.15, 0.3, 0.5, 0.65].forEach((d, k) => mflash(PL.hob[0] + 1 + (k % 2) * 2, PL.hob[1] - 12 + k, T_HOB + d, kH * 2)); SFX("mg", T_HOB + 0.05);
+shell(PL.cam[0] + 4, PL.cam[1] + 4, PL.hob[0] + 2, PL.hob[1] - 16, T_HOB - 0.3, { r: 9 * kH, fly: 0.4, w: 2 * kH, h: 4 });
+go("gg", T_BACK, 1.6, PL.hob[0] + 3, PL.hob[1] - 44, "power2.out");
+B.arrow({ pts: [[PL.hob[0] + 3, PL.hob[1] - 22], [PL.hob[0] + 4, PL.hob[1] - 32], [PL.hob[0] + 3, PL.hob[1] - 44]], side: "carth", t: T_BACK, dur: 0.8, width: 5 * kH, dash: "6 5", until: T_MATT + 0.2 });
+xmark(PL.hob[0] - 2, PL.hob[1] - 14, T_BACK + 0.2, 34 * kH, T_MATT + 0.6);
 const DM = scr(stampHTML("IT DIDN'T MATTER", "#9fc0ea", 56, -4), "left:0;right:0;top:760px;display:flex;justify-content:center;");
 slam(DM, T_MATT, { shake: 3, until: T_PIN - 0.2 });
 // Greene pins the garrisons; the partisans fan out to the small posts
@@ -246,7 +246,8 @@ tl.to(NA, { autoAlpha: 0, duration: 0.2 }, T_MAR - 0.3); tl.to(NA, { autoAlpha: 
 // =====================================================================================================================
 // eutaw-2b (39.77 - 64.64): Fort Watson's log tower; the posts fall one by one; Ninety Six
 // =====================================================================================================================
-camTo(S3 - 0.2, 1.0, PL.wat[0] - 140, PL.wat[1] - 10, 2.4, "power2.inOut");
+camTo(S3 - 0.2, 1.0, PL.wat[0] + 150, PL.wat[1] - 10, 2.4, "power2.inOut");
+K.target(PL.wat[0], PL.wat[1], S3 + 0.3, { r: 30 / 2.4, until: T_MOTTE - 0.3 });
 // Fort Watson inset panel (drawing, not to scale): the stockade on its mound, the Maham tower rising beside it
 const logs = [...Array(9)].map((_, i) => `<g class="lg" opacity="0"><rect x="60" y="${330 - i * 26}" width="96" height="11" rx="5" fill="#8a6a44" stroke="#2a1d10" stroke-width="2"/><rect x="${i % 2 ? 60 : 145}" y="${318 - i * 26}" width="11" height="24" rx="4" fill="#7a5c3a" stroke="#2a1d10" stroke-width="2"/><rect x="${i % 2 ? 145 : 60}" y="${318 - i * 26}" width="11" height="24" rx="4" fill="#7a5c3a" stroke="#2a1d10" stroke-width="2"/></g>`).join("");
 const stakes = [...Array(22)].map((_, i) => `<path d="M${262 + i * 13} 300 L${262 + i * 13} 232 L${268 + i * 13} 222 L${274 + i * 13} 232 L${274 + i * 13} 300 Z" fill="#6b5236" stroke="#2a1d10" stroke-width="1.6"/>`).join("");
@@ -267,7 +268,7 @@ const NC = FW.querySelector(".nc"); gsap.set(NC, { opacity: 0 }); tl.to(NC, { op
 tl.to(NC, { opacity: 0, duration: 0.3 }, T_TOWER);
 FW.querySelectorAll(".lg").forEach((g, i) => { tl.to(g, { opacity: 1, duration: 0.12 }, T_TOWER + 0.1 + i * 0.25); SFX("tick", T_TOWER + 0.1 + i * 0.25); });
 tl.to(FW.querySelector(".plat"), { opacity: 1, duration: 0.15 }, T_TALL + 0.1); tl.to(FW.querySelector(".rf"), { opacity: 1, duration: 0.2 }, T_TALL + 0.3);
-box("TALLER THAN THE WALLS", PL.wat[0] - 140, PL.wat[1] - 60, T_TALL, 14 / 2.4, T_MOTTE);
+box("TALLER THAN THE WALLS", PL.wat[0], PL.wat[1] - 34, T_TALL, 14 / 2.4, T_MOTTE - 0.3);
 const SHT = FW.querySelector(".sh"), FX = FW.querySelector(".fx");
 [0, 0.35, 0.7, 1.05, 1.4].forEach((d) => { tl.to(FX, { opacity: 1, duration: 0.04 }, T_FIRED + d); tl.to(FX, { opacity: 0, duration: 0.15 }, T_FIRED + d + 0.06); tl.to(SHT, { opacity: 1, duration: 0.04 }, T_FIRED + d); tl.to(SHT, { opacity: 0, duration: 0.2 }, T_FIRED + d + 0.1); });
 SFX("mg", T_FIRED + 0.02);
@@ -293,18 +294,19 @@ furn(box("CAMDEN EVACUATED · 10 MAY", PL.cam[0] + 120 * kP, PL.cam[1] - 26 * kP
 SFX("ref:pop", T_CAMD + 0.25);
 // Ninety Six: the star fort, the zig-zag siege trenches, the failed assault
 const S96 = 4.0, k9 = 1 / S96;
-furnHide(T_96 - 0.3, T_SUMMER + 0.2);
+furnHide(T_96 - 0.3, T_SUMMER + 0.2); B.hideUnits(["gg"], T_96 - 0.3, 0.3); tl.to(B.units.gg.el, { autoAlpha: 1, duration: 0.4 }, T_SUMMER + 0.2);
 camTo(T_96 - 0.3, 1.1, PL.n96[0] + 8, PL.n96[1] + 4, S96, "power2.inOut");
 camTo(T_96 + 0.82, T_SUMMER - T_96 - 0.8, PL.n96[0] + 9, PL.n96[1] + 4, S96 * 1.04, "sine.inOut");
 geoClose(M, T_96 - 0.3, T_SUMMER + 0.3);
 B.date("22 MAY - 19 JUNE 1781", T_96, T_SUMMER, 32);
-flags(S96, [PL.n96[0] + 44, PL.n96[1] + 20], [PL.n96[0] - 30, PL.n96[1] - 12], T_96 + 0.3, T_SUMMER + 0.2);
+flags(S96, [PL.n96[0] + 44, PL.n96[1] + 20], [PL.n96[0] - 34, PL.n96[1] + 16], T_96 + 0.3, T_SUMMER + 0.2);
 const STAR = GG.pin(`<svg width="${46 * k9 * 1.6}" height="${46 * k9 * 1.6}" viewBox="-50 -50 100 100" style="display:block;overflow:visible;filter:drop-shadow(0 0 6px rgba(255,90,70,.8))"><path d="${[...Array(16)].map((_, i) => { const r = i % 2 ? 22 : 44, a = (i * Math.PI) / 8 - Math.PI / 2; return (i ? "L" : "M") + (r * Math.cos(a)).toFixed(1) + " " + (r * Math.sin(a)).toFixed(1); }).join(" ")} Z" fill="#c4121f" stroke="#f3eee2" stroke-width="4"/></svg>`, PL.n96[0], PL.n96[1], { t: T_96 + 0.1, pop: true });
 SFX("ref:pop", T_96 + 0.15);
 box("NINETY SIX · STAR FORT", PL.n96[0], PL.n96[1] - 14, T_STAR, 14 * k9, T_SUMMER + 0.2);
 B.hideUnits(["p_n96"], T_96 - 0.2, 0.2);
 const ZZ = [[PL.n96[0] + 26, PL.n96[1] - 2], [PL.n96[0] + 22, PL.n96[1] - 5], [PL.n96[0] + 18, PL.n96[1] - 1], [PL.n96[0] + 14, PL.n96[1] - 4], [PL.n96[0] + 10, PL.n96[1] - 1], [PL.n96[0] + 7, PL.n96[1] - 3]];
-B.line(ZZ, { t: T_STAR, dur: T_FAIL - T_STAR - 0.3, color: "#9fc0ea", width: 1.6 * k9 * 2, until: T_SUMMER + 0.6 });
+B.line(ZZ, { t: T_STAR, dur: T_FAIL - T_STAR - 0.3, color: "#bcd6ff", width: 5 * k9, until: T_SUMMER + 0.6 });
+box("SIEGE TRENCHES", PL.n96[0] + 17, PL.n96[1] - 10, T_STAR + 0.6, 12 * k9, T_SUMMER + 0.2);
 unitXY("g96", "carth", PL.n96[0] + 30, PL.n96[1] + 2, "infantry", { w: 46 * k9, h: 31 * k9, tag: 13 * k9, label: "GREENE", t: T_96 + 0.2 });
 const C4 = sideCard(180, "DAYS OF SIEGE", "#2e5cb2", "left");
 tl.fromTo(C4, { autoAlpha: 0, x: -70 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, T_WEEKS - 0.3);
@@ -324,7 +326,7 @@ camTo(T_SUMMER, 1.4, 1200, 1060, 1.45, "power2.inOut");
 B.hideUnits(["g96"], T_SUMMER, 0.3);
 ctlTo("jul81", T_GAVE - 0.2, 1.0); SFX("ref:boom", T_GAVE + 0.3);
 B.date("JULY 1781", T_SUMMER + 0.2, null, 32);
-flags(1.45, [1300, 830], [1360, 1200], T_SUMMER + 0.6, null);
+flags(1.45, [1140, 870], [1360, 1200], T_SUMMER + 0.6, null);
 flip("n96", T_GAVE + 0.4, "GIVEN UP · JULY");
 K.raiseTerritory();
 B.finish();

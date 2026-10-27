@@ -1,0 +1,20 @@
+{
+ "title": "Greene #2 · MOVE 1 · THE RACE TO THE DAN, JAN-FEB 1781 (move1a-c, 1:12 - 5:49)",
+ "note": "carolinas_hd_ref · option 1 (jan81 -> feb81a -> feb81b -> feb81d -> feb81c) · Americans BLUE / British RED · US 13-star + Union flag 1606 · rivers traced from the DEM",
+ "frames": [
+  ["move1a", 3, "1:15", "dan-1 title MOVE 1 · THE RACE TO THE DAN; wide, Jan 1781 control; Catawba/Yadkin/Dan glow; Greene badge, armies on screen", "ref:boom (title)"],
+  ["move1a", 29.2, "1:41", "dan-1 Cowpens 17 JAN: Tarleton badge greys (DEFEATED), stamp TARLETON DESTROYED", "gun -> impact boom + shake, mg volley, hit + shake"],
+  ["move1a", 46.5, "1:59", "dan-2 Ramsour's Mill 25 JAN: the baggage train burns; ~2,500 BRITISH REGULARS ticker; arrow north", "hit (burn), ticks"],
+  ["move1a", 63, "2:15", "dan-3 TRAP THEM AGAINST THE RIVERS (bubble, paraphrase); Catawba/Yadkin/Dan pulse in turn; rain", "pops (river boxes)"],
+  ["move1a", 83.5, "2:36", "dan-4 Dan close-up: boats pop at IRWIN'S + BOYD'S FERRY; stamp EVERY BOAT ON THE DAN; then red (anvil) -> blue (shield)", "pops (boats), hit + shake"],
+  ["move1a", 117.5, "3:10", "dan-5 1 FEB dawn, Cowan's Ford: redcoats wade, militia volleys + splashes; Davidson (initials) killed (feb81a)", "mg x2, hit (badge greys)"],
+  ["move1a", 136, "3:28", "dan-5b 3 FEB Trading Ford: Americans across by boat, rain, river widens; British guns fire across", "gun -> impact booms + shake x6"],
+  ["move1b", 22, "4:03", "dan-6 9 FEB reunion at Guilford Courthouse; NO BATTLE stamp; Williams badge; light corps ~700 between the armies (feb81b)", "hit + shake (stamp)"],
+  ["move1b", 36, "4:17", "dan-7 Williams draws Cornwallis toward Dix's Ferry (red arrow), skirmish pops; main army unseen (dashed) to the lower ferries", "mg x3 (sparse)"],
+  ["move1b", 67, "4:48", "dan-8 dawn 15 FEB: British at the south bank, far bank lined blue, NO BOATS (after 14 FEB crossing + night)", "pops (boats), hit + shake"],
+  ["move1b", 86, "5:07", "dan-9 pull back: chase trail, arrow back to HILLSBOROUGH; RESULT card (~200 MILES · 0 BATTLES · NO TENTS · TURNS BACK)", "ticks + hit (rows)"],
+  ["move1c", 6, "5:29", "method-1 GREENE'S METHOD: lines appear as spoken, line 1 lights up (dimmed map)", "ref:boom (line 1)"],
+  ["move1c", 17, "5:40", "move1-sub reinforcements from Virginia; E.subscribe corner button (click, bell)", "pop, ticks"],
+  ["move1c", 24.5, "5:47", "move1-sub NEXT: GUILFORD COURTHOUSE; blue arrow turns back south over the Dan (feb81c: Cornwallis at Hillsborough)", "hit"]
+ ]
+}

@@ -18,8 +18,8 @@ const { SB, NA } = M;
 const S0 = 1.0; cam.cx = 1380; cam.cy = 760; cam.s = S0; applyCam();
 date0("DECEMBER 1781", null);
 legend(0, null, false);
-flags(S0, [1650, 600], [1290, 1250], 0, null);
-camTo(0, T_LOST - 0.2, 1370, 770, S0 * 1.04, "sine.inOut");
+flags(S0, [1650, 600], [1300, 1180], 0, null);
+camTo(0, T_LOST - 0.2, 1370, 800, S0 * 1.04, "sine.inOut");
 K.badge({ name: "NATHANAEL GREENE", role: "THE RECONQUEST OF THE SOUTH", photo: GREENE, flag: FL.us, side: "carth", corner: "bl", t: 0.3, until: S2 - 0.4 });
 // the three moves as numbered rings
 const R1 = [ringN(PL.boyd, 1, "THE DAN · FEB 1781", 0.25, S2 - 0.2, 1, 150, 0, 26), ringN(PL.gui, 2, "GUILFORD · MAR 1781", 0.55, S2 - 0.2, 1, -150, 0, 26),
@@ -34,7 +34,7 @@ const MC = GG.method(3, T_M1 - 0.6, T_LOST - 0.25, [T_M1 + 0.1, T_M2 + 0.1, T_M3
 // ... and took back the entire South: the 1780 red ghosts in, then drains away
 ctlTo("aug80", T_BACK - 0.6, 0.4);
 ctlTo("dec81", T_BACK + 0.2, 1.4); SFX("ref:boom", T_BACK + 0.6); K.shake(T_BACK + 0.6, 4, 0.35);
-const RT = scr(stampHTML("THE SOUTH RETAKEN", "#9fc0ea", 70, -4, "1780 → 1781"), "right:120px;top:190px;");
+const RT = scr(stampHTML("THE SOUTH RETAKEN", "#9fc0ea", 70, -4, "1780 → 1781"), "right:90px;top:560px;");
 slam(RT, T_BACK + 0.5, { shake: 3, sfx: false, until: S2 - 0.2 });
 // =====================================================================================================================
 // end-2 (16.54 - 42.37): the final question, the next video, calm map for the end screen
@@ -44,8 +44,8 @@ const EF = E.final({ moves: [["THE RACE TO THE DAN", "FEB 1781"], ["GUILFORD COU
 EF.querySelector(".fam").innerHTML = `TELL US WHICH COMMANDER WE SHOULD COVER NEXT<div style="font-size:22px;letter-spacing:0.3em;color:#c9b48a;margin-top:4px">WE READ EVERY ONE</div>`;
 tl.to([EF, EF.previousElementSibling], { autoAlpha: 0, duration: 0.5 }, T_NEXT - 0.2);
 // next: Daniel Morgan at the Cowpens (the map glides to the Cowpens and stays calm)
-camTo(T_NEXT - 0.2, 2.0, 1180, 760, 1.25, "power2.inOut");
-ringN(PL.cow, 0, "THE COWPENS · 17 JAN 1781", T_COW - 0.2, null, 0.8, 0, 36, 26);
+camTo(T_NEXT - 0.2, 2.0, 1250, 850, 1.1, "power2.inOut");
+ringN(PL.cow, 0, "THE COWPENS · 17 JAN 1781", T_COW - 0.2, null, 0.9, 0, 36, 26);
 const NX = scr(`<div style="display:flex;align-items:center;gap:22px;padding:16px 30px 18px 18px;background:rgba(14,12,10,0.92);border-top:7px solid #c9b48a;box-shadow:0 22px 44px rgba(0,0,0,.6);font-family:Oswald;font-weight:700;color:#f7f3ea">
   <div style="position:relative;width:150px;height:150px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4;background:url(${FL.us}) center/cover"><img src="assets/media/morgan_head.png" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
   <div><div style="font-size:24px;letter-spacing:0.36em;color:#ffd54a">NEXT</div><div style="font-size:54px;letter-spacing:0.05em;line-height:1.1">DANIEL MORGAN</div><div style="font-size:30px;letter-spacing:0.16em;color:#d8cfb8">AT THE COWPENS</div></div></div>`, "left:0;right:0;top:180px;display:flex;justify-content:center;");

@@ -261,7 +261,7 @@ const LV = baseLayers([["mar81", 0, T_WILM + 1.4], ["apr81", T_WILM + 0.4, null]
 B.showDate(0.1); B.date("MARCH 1781", 0.2, T_WILM - 0.1, 34); B.date("7 APRIL 1781", T_WILM, T_NORTH - 0.1, 34); B.date("APRIL - MAY 1781", T_NORTH, null, 34);
 legend(0.3, END + 1, false);
 flag(FL.us, "UNITED STATES", ...L(36.30, -79.30), 0.4, T_COAST + 0.4, 115 / 1.4);
-flag(FL.gb, "GREAT BRITAIN", ...L(35.975, -79.975), 0.55, T_COAST + 0.4, 115 / 1.4);
+flag(FL.gb, "GREAT BRITAIN", ...L(35.90, -80.06), 0.55, T_COAST + 0.4, 115 / 1.4);
 flag(FL.us, "UNITED STATES", ...L(36.05, -79.05), T_COAST + 0.6, END + 1, 115 / 0.75);
 flag(FL.gb, "GREAT BRITAIN", ...L(34.45, -80.20), T_COAST + 0.75, END + 1, 115 / 0.75);
 
@@ -281,6 +281,7 @@ box("WILMINGTON", WILM[0] - 70, WILM[1] + 34, T_WILM, 15, END + 1);
 const VA = [[WILM[0] + 10, WILM[1] - 30], L(35.25, -77.70), [HALIFAX[0] - 6, HALIFAX[1] + 20], L(36.85, -77.50), [PETE[0] - 4, PETE[1] + 26]];
 arw({ pts: VA, side: "rome", t: T_NORTH - 0.1, dur: 2.2, width: 9, until: END + 1 });
 along("co", VA, T_NORTH + 0.2, 2.4);
+tl.to(B.units.co.el, { scale: 2.0, duration: 1.2 }, T_NORTH);
 box("VIRGINIA", 2500, 330, T_NORTH + 0.8, 16, END + 1, { bg: "#dcecf8" });
 arw({ pts: [[PETE[0] + 16, PETE[1] + 4], [(PETE[0] + YORK[0]) / 2, PETE[1] - 26], [YORK[0] - 24, YORK[1] + 6]], side: "rome", t: T_NORTH + 2.2, dur: 1.4, width: 6, dash: "4 12", until: END + 1 });
 K.target(YORK[0], YORK[1], T_NORTH + 3.4, { r: 34, until: END + 1, side: "#ffd54a" });

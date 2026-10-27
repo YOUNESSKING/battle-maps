@@ -292,7 +292,7 @@ B.caption("BACK INTO NORTH CAROLINA", T_BACKNC - 0.1, T_CHOSE - 0.1, "carth");
 B.move("gr", T_BACKNC + 0.4, 2.4, GUIL[0] + 22, GUIL[1] - 22);
 tl.to(B.units.gr.el, { scale: 1, duration: 1.0 }, T_CHOSE);
 B.hideUnits(["gr", "co"], T_PICK - 0.6);
-box("GUILFORD COURTHOUSE", GUIL[0], GUIL[1] - 16, T_CHOSE + 0.3, 5.2, END + 1);
+box("GUILFORD COURTHOUSE", GUIL[0], GUIL[1] - 26, T_CHOSE + 0.3, 5.2, END + 1);
 K.target(GUIL[0], GUIL[1], T_CHOSE + 0.4, { r: 10, until: T_PICK + 2, side: "#ffd54a" });
 B.caption("THE SAME VILLAGE HE HAD MARCHED THROUGH A MONTH BEFORE", T_SAME - 0.1, T_PICK - 0.1, "carth");
 // close: Greene's army on its chosen field, the British coming up the road from the Deep River

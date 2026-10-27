@@ -281,9 +281,9 @@ const LV = baseLayers([["feb81b", 0, T_MORN + 1.4], ["feb81d", T_MORN + 0.4, T_T
 B.showDate(0.1); B.date("9 FEBRUARY 1781", 0.2, T_FOUR - 0.1, 34); B.date("10-13 FEBRUARY 1781", T_FOUR, T_14 - 0.1, 34);
 B.date("14 FEBRUARY 1781", T_14, T_MORN - 0.1, 34); B.date("15 FEBRUARY 1781", T_MORN, T_TURN - 0.1, 34); B.date("FEBRUARY 1781", T_TURN, null, 34);
 legend(0.3, END + 1, false);
-flags(0.4, T_14 + 0.4, 1.7, L(35.78, -79.30), L(36.10, -80.12));
+flags(0.4, T_14 + 0.4, 1.7, L(35.78, -79.30), L(35.88, -80.50));
 flags(T_14 + 0.8, T_NOBOAT + 1.8, 4.4, L(36.79, -78.76), L(36.605, -79.00));
-flags(T_200 + 0.8, END + 1, 1.2, L(36.95, -77.95), L(36.38, -79.62));
+flags(T_200 + 0.8, END + 1, 1.2, L(36.95, -79.20), L(36.38, -79.62));
 
 // ---------- dan-6: the reunion at Guilford Courthouse; the light corps ----------
 const U1 = U(1.6);
