@@ -304,7 +304,7 @@ B.caption("HE PICKED THE FIELD, AND KNEW EVERY FENCE AND CLEARING", T_PICK - 0.1
 unit("br", "rome", [DEEPQ[0] - 4, DEEPQ[1] - 4], "infantry", "CORNWALLIS", { t: T_2000 - 0.6, ...U(4.0, 0.8), size: "XX" });
 B.move("br", T_2000, 3.6, GUIL[0] - 54, GUIL[1] + 40);
 arw({ pts: [[DEEPQ[0] + 4, DEEPQ[1] - 8], L(36.07, -79.92), [GUIL[0] - 46, GUIL[1] + 32]], side: "rome", t: T_2000 - 0.2, dur: 2.4, width: 2.8, until: END + 1 });
-const TK2 = ticker("CORNWALLIS'S ARMY", 2000, "", "right:80px;top:300px;", T_2000 - 0.2, 1.4, END + 0.4, 7, { pre: "~", sub: "BRITISH REGULARS", col: "#e36a5a" });
+const TK2 = ticker("CORNWALLIS'S ARMY", 2000, "", "right:80px;top:300px;", T_2000 - 0.2, 1.4, END - 2.5, 7, { pre: "~", sub: "BRITISH REGULARS", col: "#e36a5a" });
 B.caption("SOME OF THE BEST SOLDIERS IN THE WORLD", T_BEST - 0.1, T_HALF - 0.1, "rome");
 // more than half militia: the two militia counters pulse
 [["nm", 0], ["vm", 0.25]].forEach(([id, d]) => tl.fromTo(B.units[id].el, { scale: 1 }, { scale: 1.3, duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, T_HALF + d));
