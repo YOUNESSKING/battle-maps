@@ -24,7 +24,6 @@ idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
     "hook-a": ("hook-1", "hook-2"),
     "hook-b": ("hook-3", "hook-4"),
-    "bg": ("bg-1", "bg-1"),
     "move1a": ("dan-1", "dan-5b"),
     "move1b": ("dan-6", "dan-9"),
     "move1c": ("method-1", "move1-sub"),

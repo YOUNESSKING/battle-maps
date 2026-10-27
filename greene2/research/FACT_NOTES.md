@@ -16,6 +16,7 @@ Items marked **(memory)** are from general knowledge, not the Gemini file: list 
 | "The only major general in history who lost virtually every battle" | Overstated; script says "lost almost every battle he fought" (Guilford, Hobkirk's Hill, Ninety Six assault, Eutaw a tactical draw / British field) | hook-1 |
 
 ## Hook claims
+- Hook v2 (owner 2026-10-27: "match the new rules"): line 1 "Five thousand American soldiers, surrendered in one day" = the Charleston capitulation, 12 May 1780 (siege 29 Mar - 12 May; the surrender itself was one day). Twist = odds as action: ~1,500 fit for duty (Buchanan: 1,482) vs ~8,000 British + loyalists in the South (Buchanan via Gemini); "many without shoes" (Greene's letters on his naked, barefoot army, Dec 1780) **(memory)**; "refused a commission because he limped" = Kentish Guards 1774 (below).
 - "Two American armies, wiped out in three months": Charleston surrendered 12 May 1780 (Lincoln's army, ~5,000+ captured, often given as 5,266 incl. militia/sailors **(memory)**); Camden 16 Aug 1780, Gates's army routed. 12 May -> 16 Aug = ~3 months. "Wiped out" = captured / routed.
 - "Two-hundred-mile chase": Gemini (Buchanan) "some two hundred miles" from the Catawba region to the Dan.
 - "Cost them more than a quarter of their army": Guilford British losses 532 of ~1,924-2,000 (~27 %).

@@ -58,7 +58,7 @@ phrase exists in the paragraph text (a missing phrase silently breaks the scene)
 ## Basemaps (baked: `assets/<name>.json`, `<name>_hd.jpg`, dark `<name>_hd_ref.jpg` = USE THIS; `assets/src/<name>_hd_elev.npy`)
 | name | centre, zoom | covers | used by |
 |---|---|---|---|
-| `south` | 34.70N 79.60W, z8 | Georgia (Savannah, Augusta) - both Carolinas - Virginia to Yorktown/Chesapeake | hook-a, hook-b, bg, move3a, move3d, ending |
+| `south` | 34.70N 79.60W, z8 | Georgia (Savannah, Augusta) - both Carolinas - Virginia to Yorktown/Chesapeake | hook-a, hook-b, move3a, move3d, ending |
 | `carolinas` | 35.80N 80.20W, z9 | Cowpens/Ramsour's Mill - Charlotte - Cheraw (bottom) - Yadkin - Guilford - Dan ferries - Hillsborough; Wilmington at the bottom-right edge, Petersburg near the top | move1a, move1b, move1c, move2a, move2d |
 | `guilford` | 36.131N 79.846W, z15 | Guilford Courthouse battlefield (~11 x 6 km frame) | move2b, move2c |
 | `eutaw` | 33.405N 80.290W, z15 | Eutaw Springs battlefield (very flat coastal plain: draw woods, creek, road, the brick house + garden yourself) | move3b, move3c |
@@ -70,7 +70,7 @@ Land masks: `python3 tools/make_land.py <name>` if you need one (check usage in 
 - `guilford` + `eutaw` geography (roads, clearings, woods, creek, courthouse, brick house): BATTLEFIELD agent.
 
 ## Scenes (must match `tools/assemble_full.py` SCENES; a scene has ONE basemap; match camera hand-offs)
-hook-a (hook-1..hook-2, south) · hook-b (hook-3..hook-4, south) · bg (bg-1, south) · move1a (dan-1..dan-5b, carolinas) · move1b (dan-6..dan-9,
+hook-a (hook-1..hook-2, south) · hook-b (hook-3..hook-4, south) · move1a (dan-1..dan-5b, carolinas) · move1b (dan-6..dan-9,
 carolinas) · move1c (method-1..move1-sub, carolinas) · move2a (guilford-1, carolinas) · move2b (guilford-2..guilford-3, guilford) ·
 move2c (guilford-4..guilford-8, incl. move2-decide, guilford) · move2d (guilford-9, carolinas) · move3a (eutaw-1..eutaw-2b, south) ·
 move3b (eutaw-3..eutaw-7, eutaw) · move3c (eutaw-8, eutaw) · move3d (eutaw-9, south) · ending (end-1..end-2, south).

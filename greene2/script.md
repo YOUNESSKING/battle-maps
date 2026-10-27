@@ -6,35 +6,31 @@ Format: Tactical Genius formula, ~2,450 words, ~16 min. Voice A (Kokoro am_micha
 Each paragraph starts with a visual tag: `[MAP: scene-id | what the map shows]` or `[ARCHIVE: what to show]`. Facts: research/FACT_NOTES.md.
 Method line (repeat after every move): **Make the land fight for you. Make every victory cost more than it's worth. And never lose the army.**
 Territory per shot (STYLE_LOCK 2a): option 1 (territory colours, one control overlay per date) on the wide South / Carolinas maps; option 2 (two-colour glowing fronts only) on the Guilford and Eutaw battlefields.
+Hook check (STYLE_LOCK 1a, Kokoro timing test): promise "drove the British out" ends ~0:09; Yorktown payoff ~0:23; twist as action (1,500 vs 8,000, the limp); name + 3 moves done by ~0:42; background one ~17 s archive paragraph.
 Engagement beats (STYLE_LOCK 1b): woven subscribe line = move1-sub; WHAT WOULD YOU DO = move2-decide (Greene's retreat decision at Guilford); final question = end-2 (pitches the Daniel Morgan video).
 
 ---
 
 ## HOOK
 
-[MAP: hook-1 | Frame 0: the South (option 1, Aug 1780 control: SC + GA red, NC/VA blue), red counters already marching north from Camden, US 13-star + Union flags, legend; 0.3 s BIG card slams in (hit + shake): 2 AMERICAN ARMIES DESTROYED, ticks 0 -> 2; stamps CHARLESTON 5,000 CAPTURED / CAMDEN ROUTED on the two rings (hit); on "owned the South" the red tint floods north (pop); ~5 s hard zoom-whoosh DIVE onto the Carolinas (whoosh); stamp "LOST ALMOST EVERY BATTLE" with three red X marks GUILFORD / HOBKIRK'S HILL / EUTAW (hit each), then on "drove them out" the red ground drains back to two coastal dots (boom)]
-Two American armies, wiped out in three months. The British owned the South. Then one general lost almost every battle he fought, and drove them out anyway.
+[MAP: hook-1 | Frame 0: the South (option 1, May 1780 control: SC + GA red, NC/VA blue), red counters already closing on CHARLESTON (guns firing, impacts), US 13-star + Union flags, legend; 0.3 s BIG card slams in (hit + shake) and ticks 0 -> 5,000 AMERICANS SURRENDERED (ticks); stamp IN ONE DAY (hit); on "The South was lost" the red tint floods north over SC + GA (pop) and stamp THE SOUTH IS LOST (hit + shake); ~5 s hard zoom-whoosh DIVE onto the Carolinas (whoosh); three red X marks slam on GUILFORD / HOBKIRK'S HILL / EUTAW as "lost almost every battle" (hit each), then on "drove the British out" the red ground drains back to two coastal dots (boom)]
+Five thousand American soldiers, surrendered in one day. The South was lost. Then one general lost almost every battle, and drove the British out anyway.
 
 [MAP: hook-2 | Change every 2-4 s: a red column chases a blue one north across NC (dotted trail, mileage counter ticks 0 -> 200 MILES); blue reaches the Dan, boats slide to the north bank, red arrow slams into the water: stamp NO BOATS (hit + shake); white-flash cut -> GUILFORD: red blocks greyed one by one, counter 0 -> 27 % OF HIS ARMY (ticks), stamp VICTORY? (hit); zoom-out whoosh to the seaboard: arrow to YORKTOWN, ring slams shut (boom + shake), stamp SURRENDER · 19 OCT 1781]
-He led Britain's best soldiers on a two-hundred-mile chase, to a flooded river with no boats. He let them win a battle that cost them more than a quarter of their army. Seven months later, that army surrendered at Yorktown.
+He led Britain's best soldiers on a two-hundred-mile chase, to a river with no boats. He let them win a battle that cost them more than a quarter of their army. Seven months later, that army surrendered at Yorktown.
 
-[MAP: hook-3 | Hard cut, dark map: year rolls back 1781 -> 1774 (ticks); Greene's real Peale portrait badge slams in greyed, a private's plain coat overlay (no epaulettes); one stamp per spoken detail (hit + small shake + red pulse): PRIVATE / NO COMMISSION: HE LIMPED / EXPELLED BY THE QUAKERS / NEVER SEEN A BATTLE; small caption "Kentish Guards, Rhode Island, 1774"]
-Six years earlier, he was a private. His company wouldn't make him an officer, because he limped. The Quakers had thrown him out. And he had never seen a battle.
+[MAP: hook-3 | Twist as ACTION, hard cut to the dark map at CHARLOTTE, DEC 1780: a thin ragged blue column limps in (counter ticks 0 -> 1,500, stamp STARVING, hit), bare-footprint trail draws behind it (stamp NO SHOES, hit + small shake); a huge red mass slams in across SC (counter 8,000, boom + shake, red pulse); then the year rolls back 1780 -> 1774 (ticks), Greene's real Peale badge slams in greyed with a private's plain coat, stamp PRIVATE (hit), stamp REFUSED A COMMISSION: HE LIMPED (hit + small shake); small caption "Kentish Guards, Rhode Island, 1774"]
+When he took command, he had fifteen hundred starving men, many without shoes, against eight thousand British. Six years earlier, he'd been a private, refused a commission because he limped.
 
-[MAP: hook-4 | The badge regains colour and flies onto the South map; NATHANAEL GREENE slams in (hit + shake); 3 snap cuts (~3 s each, whoosh + hit): ring THE DAN 1781 with boats, ring GUILFORD with three lines, ring EUTAW SPRINGS with the brick house; title card GREENE'S 3 GREATEST TACTICAL MOVES (riser + boom)]
+[MAP: hook-4 | The badge regains colour and flies onto the South map; NATHANAEL GREENE slams in (hit + shake); 3 snap cuts (~1.5-2 s each, whoosh + hit): ring THE DAN 1781 with boats, ring GUILFORD with three lines, ring EUTAW SPRINGS with the brick house; title card GREENE'S 3 GREATEST TACTICAL MOVES (riser + boom)]
 His name was Nathanael Greene. The race to the Dan. Guilford Courthouse. The reconquest of the South. These are Nathanael Greene's three greatest tactical moves.
 
 ---
 
 ## BACKGROUND
 
-[ARCHIVE: headline card "12 MAY 1780 / CHARLESTON SURRENDERS"; Chappel's Battle of Camden (3D depth, push-in on de Kalb); date card "16 AUGUST 1780 / CAMDEN, SOUTH CAROLINA"; Camden plan 1780 (pan)]
-In May, seventeen eighty, Charleston had surrendered with more than five thousand men. In August, at Camden, a second American army was routed in a single morning, and its commander fled sixty miles on horseback before he stopped.
-
-[MAP: bg-1 | South map (option 1, Dec 1780 control): bio card with the Greene cut-out (greene_full.png), name in big red letters NATHANAEL GREENE; rows: MAJOR GENERAL · BORN 1742, RHODE ISLAND · QUAKER IRONMASTER'S SON · SELF-TAUGHT; then Greene badge at CHARLOTTE: counter ~1,500 FIT FOR DUTY (ticks) vs Cornwallis badge at WINNSBORO: ~8,000 BRITISH & LOYALISTS IN THE SOUTH; red outposts glow: CAMDEN, NINETY SIX, AUGUSTA, GEORGETOWN]
-George Washington chose Greene to save what was left. He was thirty-eight, the son of a Quaker ironmaster from Rhode Island, and he had taught himself war from books. When he took command at Charlotte in December, he found about fifteen hundred men fit for duty, starving and half-naked. Against them, the British had more than eight thousand regulars and loyalists in the South, under one of their finest generals, Lord Charles Cornwallis.
-
----
+[ARCHIVE: background, max ~18 s (STYLE_LOCK 1a): date card "16 AUGUST 1780 / CAMDEN, SOUTH CAROLINA" over Chappel's Battle of Camden (3D depth, push-in on de Kalb); headline card "WASHINGTON PICKS GREENE" with the Peale portrait of Greene (3D depth, push to the eyes; small caption MAJOR GENERAL · BORN 1742, RHODE ISLAND · QUAKER IRONMASTER'S SON); Gainsborough's Cornwallis (3D depth, push-in) with label LORD CHARLES CORNWALLIS]
+At Camden, a second American army had just been routed in a single morning. So George Washington sent Greene: a thirty-eight-year-old Quaker ironmaster's son from Rhode Island, who had taught himself war from books, against one of Britain's finest generals, Lord Charles Cornwallis.
 
 ## MOVE 1 — THE RACE TO THE DAN
 
