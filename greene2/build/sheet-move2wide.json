@@ -1,0 +1,14 @@
+{
+ "title": "Greene #2 · MOVE 2 wide shots · GUILFORD (move2a 5:49 - 6:24, move2d 9:49 - 10:09)",
+ "note": "carolinas_hd_ref · option 1 (feb81c -> mar81; mar81 -> apr81) · Americans BLUE / British RED · move2a ends close on Guilford Courthouse (hand-off to move2b)",
+ "frames": [
+  ["move2a", 2.5, "5:52", "guilford-1 title MOVE 2 · GUILFORD COURTHOUSE · 15 MARCH 1781; Greene recrosses the Dan", "ref:boom (title)"],
+  ["move2a", 7, "5:56", "guilford-1 militia arrows join from Virginia + North Carolina; ~4,400 AMERICANS ticker (mar81)", "pop, ticks"],
+  ["move2a", 13, "6:02", "guilford-1 push in: the same village; Greene at Guilford Courthouse, Cornwallis at the Deep River", "-"],
+  ["move2a", 24, "6:13", "guilford-1 he picked the field: Continentals / VA militia / NC militia; British come up the road; ~2,000 BRITISH ticker", "ticks"],
+  ["move2a", 34, "6:23", "guilford-1 more than half militia (militia counters pulse); 15 MARCH 1781; end close on the courthouse", "ticks"],
+  ["move2d", 3, "9:52", "guilford-9 CORNWALLIS CAN NO LONGER HOLD NORTH CAROLINA", "-"],
+  ["move2d", 8, "9:57", "guilford-9 to Wilmington (7 APR), then north into Virginia (apr81)", "pop"],
+  ["move2d", 16, "10:05", "guilford-9 dotted arrow to YORKTOWN + pulsing ring; GREENE'S METHOD, line 2 lights up", "ref:boom (line 2)"]
+ ]
+}

@@ -1,0 +1,167 @@
+{
+ "title": "HOOK (0:00-0:51) \u00b7 Greene \u00b7 locked hook (STYLE_LOCK 1a)",
+ "note": "frame every ~2.5 s for the first 30 s; option 1 wide, option 2 lines in the insets; zoom whoosh only on dive / flash cut / zoom-out",
+ "frames": [
+  [
+   "hook-a",
+   0.1,
+   "0:00",
+   "FRAME 0: the South May 1780 (opt 1, may80), siege of Charleston already firing, flags + legend",
+   "fire (quiet) -> impact boom + shake"
+  ],
+  [
+   "hook-a",
+   2.5,
+   "0:02",
+   "5,000 card slammed in at 0.3 s, ticked up; Lincoln's army greys (surrendered)",
+   "hit + shake, ticks x15, impacts"
+  ],
+  [
+   "hook-a",
+   5.0,
+   "0:05",
+   "'The South was lost': aug80 red floods SC, red arrows inland, THE SOUTH IS LOST",
+   "pop, hit + shake, red pulse"
+  ],
+  [
+   "hook-a",
+   7.6,
+   "0:08",
+   "zoom DIVE (5.1 s) onto the Carolinas, '?' ONE AMERICAN GENERAL, red X on Guilford / Hobkirk / Eutaw",
+   "whoosh (zoom #1), hit x3"
+  ],
+  [
+   "hook-a",
+   10.0,
+   "0:10",
+   "'drove the British out': red drains to Charleston + Savannah (dec81), blue arrows south, ONLY 2 CITIES LEFT",
+   "ref:boom + shake, hit"
+  ],
+  [
+   "hook-a",
+   12.5,
+   "0:12",
+   "JAN-FEB 1781: Cornwallis (badge) chases Greene north, dotted trail, MILES counter",
+   "ref:pop, ticks"
+  ],
+  [
+   "hook-a",
+   15.0,
+   "0:15",
+   "200 MILES, the Dan glows blue, boats cross to the north bank",
+   "ticks, ref:pop"
+  ],
+  [
+   "hook-a",
+   16.4,
+   "0:16",
+   "red arrow hits the water: NO BOATS (15 FEB 1781)",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   18.0,
+   "0:18",
+   "WHITE FLASH -> Guilford relief inset: 3 blue lines, British attack, volley + gun",
+   "whoosh (zoom #2) + hit, mg, impact"
+  ],
+  [
+   "hook-a",
+   20.8,
+   "0:21",
+   "red counters grey one by one, 27 % OF CORNWALLIS'S ARMY LOST, VICTORY?",
+   "ticks, hit"
+  ],
+  [
+   "hook-a",
+   23.0,
+   "0:23",
+   "zoom-out to the seaboard (apr81): Cornwallis's route Guilford-Wilmington-Virginia",
+   "whoosh (zoom #3)"
+  ],
+  [
+   "hook-a",
+   25.0,
+   "0:25",
+   "Yorktown ring slams shut (allies + French fleet), SURRENDER \u00b7 19 OCT 1781",
+   "ref:boom + shake, hit"
+  ],
+  [
+   "hook-b",
+   1.0,
+   "0:27",
+   "hard cut to the DARK map, Charlotte Dec 1780: ragged column limps in, 0 -> 1,500",
+   "hit, ticks"
+  ],
+  [
+   "hook-b",
+   4.3,
+   "0:30",
+   "STARVING, bare footprints behind the column, NO SHOES",
+   "hit + pulse, pops, hit + small shake"
+  ],
+  [
+   "hook-b",
+   5.6,
+   "0:32",
+   "red counters slam onto every post, 8,000 BRITISH vs 1,500",
+   "ref:boom + shake + pulse, ticks"
+  ],
+  [
+   "hook-b",
+   8.0,
+   "0:34",
+   "full dark: SIX YEARS EARLIER 1780 -> 1774",
+   "hit, ticks x6"
+  ],
+  [
+   "hook-b",
+   9.6,
+   "0:36",
+   "Greene's real Peale badge, greyed, PRIVATE; caption Kentish Guards 1774",
+   "hit + shake, pop, hit"
+  ],
+  [
+   "hook-b",
+   11.4,
+   "0:37",
+   "REFUSED A COMMISSION: / HE LIMPED",
+   "hit + small shake + pulse, hit"
+  ],
+  [
+   "hook-b",
+   13.9,
+   "0:40",
+   "badge regains colour, NATHANAEL GREENE slams in",
+   "white flash, ref:whoosh, hit + shake"
+  ],
+  [
+   "hook-b",
+   15.6,
+   "0:42",
+   "snap cut 1: THE DAN, Boyd's Ferry, boats on the north bank",
+   "ref:whoosh + hit"
+  ],
+  [
+   "hook-b",
+   17.2,
+   "0:43",
+   "snap cut 2: GUILFORD (relief inset), three lines",
+   "ref:whoosh + hit, mg"
+  ],
+  [
+   "hook-b",
+   18.8,
+   "0:45",
+   "snap cut 3: EUTAW SPRINGS (relief inset), the brick house",
+   "ref:whoosh + hit"
+  ],
+  [
+   "hook-b",
+   23.4,
+   "0:49",
+   "pull-out to the three rings, title card",
+   "whoosh, ref:riser, ref:boom + shake"
+  ]
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "title": "ENDING (13:55-14:38) \u00b7 south map, dec81",
+ "note": "last ~20 s calm: no slams after the NEXT card",
+ "frames": [
+  [
+   "ending",
+   1.2,
+   "13:57",
+   "end-1: Dec 1781 South, rings 1 THE DAN / 2 GUILFORD / 3 EUTAW, Greene badge",
+   "ref:pop x3"
+  ],
+  [
+   "ending",
+   6.0,
+   "14:01",
+   "GREENE'S METHOD lights line by line",
+   "ref:pop per line"
+  ],
+  [
+   "ending",
+   11.5,
+   "14:07",
+   "line 3, then GUILFORD / HOBKIRK'S HILL / EUTAW: LOST (red X)",
+   "hit x3"
+  ],
+  [
+   "ending",
+   15.5,
+   "14:11",
+   "'took back the entire South': 1780 red ghosts in, drains; THE SOUTH RETAKEN",
+   "ref:boom + shake"
+  ],
+  [
+   "ending",
+   19.0,
+   "14:14",
+   "end-2: E.final, 3 numbered cards",
+   "ref:boom, hit per number"
+  ],
+  [
+   "ending",
+   26.0,
+   "14:21",
+   "1, 2 OR 3? / TELL US WHICH COMMANDER WE SHOULD COVER NEXT",
+   "hit, pop"
+  ],
+  [
+   "ending",
+   31.0,
+   "14:26",
+   "NEXT: DANIEL MORGAN AT THE COWPENS (real portrait), ring on the Cowpens",
+   "ref:pop"
+  ],
+  [
+   "ending",
+   37.0,
+   "14:32",
+   "calm map for the end screen",
+   "-"
+  ],
+  [
+   "ending",
+   42.0,
+   "14:37",
+   "corner SUBSCRIBE (bell); map stays",
+   "E.subscribe sounds"
+  ]
+ ]
+}
