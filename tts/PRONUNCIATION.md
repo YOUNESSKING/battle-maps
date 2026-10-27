@@ -8,7 +8,7 @@ Owner rule (2026-10-26, after the Morgan comments about "Nathanael Greene"): **c
    ```
    python3 -c "from kokoro_onnx import Kokoro; k=Kokoro('kokoro-v1.0.onnx','voices-v1.0.bin'); [print(w,'->',k.tokenizer.phonemize(w,'en-us')) for w in ['Nathanael Greene','Tarleton']]"
    ```
-3. Anything wrong or unsure: find a respelling that phonemizes right, add it to the table below AND to the `SAY` dict in the video's `tools/narrate.py` (the script text stays correct; only the spoken text changes).
+3. **Check the STRESS mark (ˈ), not only the sounds**: the primary stress must sit on the right syllable (Cornwallis was respelled to the right vowel but kept the stress on CORN). Anything wrong or unsure: find a respelling that phonemizes right, add it to the table below AND to the `SAY` dict in the video's `tools/narrate.py` (the script text stays correct; only the spoken text changes).
 4. Voice a **20-second names clip** (each name said once, in a short sentence) and send it to the owner. Record the full narration only after the owner approves it.
 
 ## Dictionary
@@ -19,6 +19,7 @@ Owner rule (2026-10-26, after the Morgan comments about "Nathanael Greene"): **c
 | Banastre | Bannister | `bˈænæstɚ` → `bˈænɪstɚ` | Morgan |
 | Bemis (Heights) | Beemis | → "BEE-mis" | Morgan |
 | Burgoyne | (as written) | `bˈɜːɡɔɪn`, fine | Morgan |
+| **Cornwallis** | no respelling works: every spelling keeps the stress on CORN. Use exact phonemes `kɔːɹnwˈɑːlɪs` (possessive `kɔːɹnwˈɑːlɪsᵻz`) via `k.create(..., is_phonemes=True)`; tool: `greene2/tools/revoice_name.py` | `kˈɔːɹnwɔliz` (CORN-wallis, wrong) → `kɔːɹnwˈɑːlɪs` (korn-WAH-lis) | Greene remake (owner caught it, 2026-10-27) |
 | Cowpens, Saratoga | (as written) | `kˈaʊpənz`, `sˌæɹɐtˈoʊɡə`, fine | Morgan |
 
 Add new rows for every video. Names from earlier videos with known fixes: see each video's `tools/narrate.py` `SAY` dict (e.g. Goose Green: Piaggi, Estévez).
