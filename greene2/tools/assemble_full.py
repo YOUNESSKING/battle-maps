@@ -22,17 +22,25 @@ paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py
-    "hook-a": ("hook-1", "hook-3"),
-    "hook-b": ("hook-4", "hook-4"),
-    "bg": ("bg-1", "bg-2"),
-    "move1": ("move1-1", "move1-sub"),
-    "move2": ("move2-1", "move2-10"),
-    "move3": ("move3-1", "move3-9"),
+    "hook-a": ("hook-1", "hook-2"),
+    "hook-b": ("hook-3", "hook-4"),
+    "bg": ("bg-1", "bg-1"),
+    "move1a": ("dan-1", "dan-5b"),
+    "move1b": ("dan-6", "dan-9"),
+    "move1c": ("method-1", "move1-sub"),
+    "move2a": ("guilford-1", "guilford-1"),
+    "move2b": ("guilford-2", "guilford-3"),
+    "move2c": ("guilford-4", "guilford-8"),
+    "move2d": ("guilford-9", "guilford-9"),
+    "move3a": ("eutaw-1", "eutaw-2b"),
+    "move3b": ("eutaw-3", "eutaw-7"),
+    "move3c": ("eutaw-8", "eutaw-8"),
+    "move3d": ("eutaw-9", "eutaw-9"),
     "ending": ("end-1", "end-2"),
 }
-CHAPTERS = [("hook-1", "Intro: The Swamps No Army Could Cross"), ("move1-1", "Move 1: The Volokolamsk Highway (Moscow 1941)"),
-            ("move2-1", "Move 2: The Northern Face of Kursk (1943)"), ("move3-1", "Move 3: Operation Bagration (1944)"),
-            ("end-1", "Legacy")]
+CHAPTERS = [("hook-1", "Intro: The General Who Lost His Battles and Won the South"), ("dan-1", "Move 1: The Race to the Dan (1781)"),
+            ("guilford-1", "Move 2: Guilford Courthouse (March 1781)"), ("eutaw-1", "Move 3: The Reconquest of the South (1781)"),
+            ("end-1", "Greene's Method")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}
 NAME = os.environ.get("NAME", "greene2")  # output name: build/<NAME>.mp4 (+ its own video-only track and segment folder)
