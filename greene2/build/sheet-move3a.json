@@ -1,0 +1,132 @@
+{
+ "title": "MOVE 3 wide shots \u00b7 move3a (10:09-11:14) + move3d (13:38-13:55) \u00b7 south map, option 1",
+ "note": "control apr81 -> jul81 -> dec81 (research/FACT_NOTES_south.md)",
+ "frames": [
+  [
+   "move3a",
+   2.0,
+   "10:11",
+   "title MOVE 3 \u00b7 THE RECONQUEST OF THE SOUTH (apr81), Cornwallis marches to Virginia",
+   "ref:boom"
+  ],
+  [
+   "move3a",
+   7.0,
+   "10:16",
+   "the expected blue arrow north greys; Greene (badge) turns SOUTH",
+   "ref:whoosh"
+  ],
+  [
+   "move3a",
+   11.0,
+   "10:20",
+   "SOUTH, INTO SOUTH CAROLINA",
+   "hit + shake"
+  ],
+  [
+   "move3a",
+   18.5,
+   "10:28",
+   "push-in: the web of red posts glows (Camden, Ninety Six, Augusta, Watson, Motte, Orangeburg, Charleston)",
+   "ref:pop each"
+  ],
+  [
+   "move3a",
+   25.5,
+   "10:35",
+   "25 APRIL 1781: Rawdon (badge) attacks Greene at Hobkirk's Hill",
+   "gun -> impact, mg"
+  ],
+  [
+   "move3a",
+   30.5,
+   "10:40",
+   "Greene pulls back (red X), IT DIDN'T MATTER",
+   "hit x2"
+  ],
+  [
+   "move3a",
+   36.5,
+   "10:46",
+   "Greene pins Camden; MARION, SUMTER, LEE arrows to the small posts; leaders' portraits",
+   "ref:whoosh x4"
+  ],
+  [
+   "move3a",
+   46.5,
+   "10:56",
+   "FORT WATSON drawing: the log tower rises beside the stockade (NO CANNON before)",
+   "hit, ticks per log"
+  ],
+  [
+   "move3a",
+   49.5,
+   "10:59",
+   "rifles fire down, flag drops, SURRENDERED 23 APR",
+   "mg, hit + shake"
+  ],
+  [
+   "move3a",
+   53.0,
+   "11:02",
+   "Fort Motte, Orangeburg, Augusta flip blue; Camden evacuated (10 May)",
+   "hit each, ref:pop"
+  ],
+  [
+   "move3a",
+   58.0,
+   "11:07",
+   "NINETY SIX star fort, zig-zag siege trenches, 28 DAYS OF SIEGE",
+   "ref:pop, ticks"
+  ],
+  [
+   "move3a",
+   61.0,
+   "11:10",
+   "the assault bounces: red X, ASSAULT FAILED 18 JUNE",
+   "mg, impact, hit + shake"
+  ],
+  [
+   "move3a",
+   64.5,
+   "11:14",
+   "British give up Ninety Six: apr81 -> jul81, JULY 1781",
+   "ref:boom, hit"
+  ],
+  [
+   "move3d",
+   1.0,
+   "13:39",
+   "eutaw-9: SIX WEEKS LATER (jul81)",
+   "ref:pop"
+  ],
+  [
+   "move3d",
+   3.5,
+   "13:41",
+   "Cornwallis's worn-down 1781 route glows to Yorktown",
+   "-"
+  ],
+  [
+   "move3d",
+   5.5,
+   "13:43",
+   "push to the Chesapeake: allies + French fleet, ring slams, CORNWALLIS SURRENDERS",
+   "whoosh, impacts, ref:boom + shake"
+  ],
+  [
+   "move3d",
+   10.5,
+   "13:48",
+   "zoom out: ONCE: GEORGIA + BOTH CAROLINAS (1780 red ghost)",
+   "whoosh, hit"
+  ],
+  [
+   "move3d",
+   16.5,
+   "13:54",
+   "drains to dec81: 2 COASTAL CITIES, Charleston + Savannah rings",
+   "ref:boom + shake, hit x3"
+  ]
+ ]
+}
