@@ -52,7 +52,7 @@ done
 
 if [ "$ASSEMBLE" = 1 ] && [ "$FAILED" = 0 ]; then
   echo "=== $(date -u +%T) assemble 1080p + 720p preview"
-  python3 tools/assemble_full.py && python3 tools/assemble_full.py --preview || FAILED=1
+  python3 tools/assemble_full.py || FAILED=1
 fi
 echo "=== $(date -u +%T) finished, failed=$FAILED"
 echo "failed=$FAILED" > logs/render_all.done
