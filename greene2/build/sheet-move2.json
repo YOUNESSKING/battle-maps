@@ -1,0 +1,104 @@
+{
+ "title": "Nathanael Greene #13 \u00b7 MOVE 2 battlefield (Guilford Courthouse, 15 March 1781) \u00b7 snapshot sheet",
+ "note": "move2b guilford_hd_ref guilford-2..3 \u00b7 move2c guilford_hd_ref guilford-4..8 (incl. move2-decide) \u00b7 option 2 (fronts width 15, glow 0.47) \u00b7 mm:ss = video time",
+ "frames": [
+  [
+   "move2b",
+   2.5,
+   "6:26",
+   "guilford-2 dawn: Lee vs Tarleton near New Garden meeting house (Lee + Tarleton badges); wide road W->E",
+   "hit, mg"
+  ],
+  [
+   "move2b",
+   14.5,
+   "6:38",
+   "British deploy at the Hoskins farm (71st, 23rd, 33rd, von Bose, Guards, j\u00e4gers, RA, Tarleton); Cornwallis; ~2,000",
+   "pops, ticks"
+  ],
+  [
+   "move2b",
+   23.5,
+   "6:47",
+   "ghost of Camden; belief card THE MILITIA WILL RUN; ONE HARD CHARGE arrow; ghost Continentals left alone",
+   "pop, hit"
+  ],
+  [
+   "move2b",
+   49.5,
+   "7:13",
+   "guilford-3: three lines drawn (rail fence / woods / rise by the courthouse), ~400 YARDS brackets, flanks",
+   "pops"
+  ],
+  [
+   "move2b",
+   55.0,
+   "7:19",
+   "TWO VOLLEYS, THEN FALL BACK (1-2 markers on the militia, fall-back arrows); map holds into the archive",
+   "ticks"
+  ],
+  [
+   "move2c",
+   1.8,
+   "7:34",
+   "guilford-4: two volleys from the rail fence, two-colour front at the fence, red counters hit + grey edges",
+   "mg x2, ticks"
+  ],
+  [
+   "move2c",
+   12.0,
+   "7:44",
+   "quote card (Dugald Stuart) gone; militia fall back, some keep running; front moves to the 2nd line; guns back",
+   "-"
+  ],
+  [
+   "move2c",
+   28.5,
+   "8:00",
+   "guilford-5: the red line breaks into 3 separate fights (north / centre / south), smoke tree to tree",
+   "mg x2"
+  ],
+  [
+   "move2c",
+   47.8,
+   "8:20",
+   "guilford-6: 2nd Guards break the 2nd Maryland, 2 guns flip red; front bends",
+   "hit"
+  ],
+  [
+   "move2c",
+   61.0,
+   "8:33",
+   "1st Maryland into the flank + Washington's dragoons from behind; GUARDS CUT TO PIECES",
+   "hit + shake"
+  ],
+  [
+   "move2c",
+   70.0,
+   "8:42",
+   "guilford-7: ACCORDING TO TRADITION; British guns on the road fire grapeshot into the melee (both sides hit)",
+   "gun + impact boom + shake each"
+  ],
+  [
+   "move2c",
+   101.0,
+   "9:13",
+   "move2-decide: WHAT WOULD YOU DO? B = RETREAT AND SAVE THE ARMY lights blue on 'Greene did'",
+   "hit, pops, 3 ticks, hit"
+  ],
+  [
+   "move2c",
+   108.5,
+   "9:20",
+   "guilford-8: column up the Reedy Fork road in good order; THE BRITISH HOLD THE FIELD",
+   "-"
+  ],
+  [
+   "move2c",
+   114.5,
+   "9:26",
+   "casualty card US 79/185/+militia home | GB 93/413/26 + 532 = 27 %; then wounded left at New Garden, zoom out",
+   "hit, hit"
+  ]
+ ]
+}
