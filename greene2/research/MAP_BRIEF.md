@@ -26,9 +26,9 @@ phrase exists in the paragraph text (a missing phrase silently breaks the scene)
 - **FLAGS (period, on EVERY map):** US 13-star `assets/media/us_flag_13star.png` (name under it: UNITED STATES) and the British
   Union flag of 1606-1801 `assets/media/gb_flag_1606.png` (GREAT BRITAIN; no St Patrick's saltire: never the modern Union Jack).
   ~115 px on screen, on each side's ground. No emblem. Counter chips use the same two flags.
-- Badges (`K.badge`): real licensed portraits `assets/media/<name>_head.png` (greene, cornwallis, williams, tarleton, morgan, + rawdon,
-  lee, wwashington, fox if the image agent made them: see `assets/media/CREDITS.md`, `build/sheet-images.jpg`). Initials/name plates
-  only for anyone without a portrait (Stewart, Marjoribanks, Davidson, Marion...). Never a fake face.
+- Badges (`K.badge`): real licensed portraits `assets/media/<name>_head.png` (greene, cornwallis, williams, tarleton, morgan, rawdon,
+  lee, william_washington, sumter, fox; see `assets/media/CREDITS.md`, `build/sheet-images.jpg`). Initials/name plates
+  only for anyone without a portrait (Stewart, Marjoribanks, Davidson, Marion). Never a fake face.
 - **NO AIRCRAFT, NO TANKS (1780-81).** No planes, no `K.bombRun`, no c47g, no jet/prop sounds. Artillery = `K.gun` -> arc -> `K.impact`
   (boom on impact, default shake on EVERY impact, never `shake: false`); grapeshot/canister = short flat arcs, several small close
   impacts. Musket volleys = muzzle-flash lines + smoke puffs with the `mg` sound, sparingly (one per volley beat, not per flash).

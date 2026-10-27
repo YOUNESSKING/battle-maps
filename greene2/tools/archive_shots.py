@@ -116,6 +116,7 @@ def photo_shot(sh, dur, out, W, H, enc):
         bg = Image.composite(hole, src, m).filter(ImageFilter.GaussianBlur(max(2, src.width // 500)))
         src = Image.blend(bg, Image.new("RGB", src.size, (20, 18, 14)), 0.2)
     lab = label_layer(sh["label"], W, H) if sh.get("label") else None
+    hl = headline_layer(sh["headline"][0], sh["headline"][1], W, H) if sh.get("headline") else None  # date card on a photo (greene2)
     dep = depth_map(src) if sh.get("depth") else None
     GY, GX = np.mgrid[0:H, 0:W].astype(np.float32)
     n = max(2, int(round(dur * FPS)))
@@ -141,6 +142,10 @@ def photo_shot(sh, dur, out, W, H, enc):
             a = min(1, k / 9) * (1 if k / FPS < 2.4 else max(0, 1 - (k / FPS - 2.4) / 0.4))
             if a > 0:
                 fr = frame.convert("RGBA"); l2 = lab.copy(); l2.putalpha(l2.split()[3].point(lambda v: int(v * a))); fr.alpha_composite(l2); frame = fr.convert("RGB")
+        if hl is not None:
+            ts = k / FPS; a = min(1, max(0, (ts - 0.15) / 0.5)) * min(1, max(0, (dur - 0.2 - ts) / 0.5))
+            if a > 0:
+                fr = frame.convert("RGBA"); h2 = hl.copy(); h2.putalpha(h2.split()[3].point(lambda v: int(v * a))); fr.alpha_composite(h2); frame = fr.convert("RGB")
         arr = (np.asarray(frame, float) * vig).clip(0, 255).astype(np.uint8)
         p.stdin.write(arr.tobytes())
     p.stdin.close(); p.wait()

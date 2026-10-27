@@ -1,0 +1,169 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/camden_chappel.jpg",
+   "move": "in",
+   "depth": true,
+   "headline": [
+    "16 AUGUST 1780",
+    "CAMDEN, SOUTH CAROLINA"
+   ],
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/headline_greene.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "dur": 4.2,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/greene.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.3
+   ],
+   "depth": true,
+   "label": "NATHANAEL GREENE \u00b7 BORN 1742, RHODE ISLAND",
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/cornwallis.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.3
+   ],
+   "depth": true,
+   "label": "LORD CHARLES CORNWALLIS"
+  }
+ ],
+ "11": [
+  {
+   "photo": "assets/media/valley_forge_trego.jpg",
+   "move": "right",
+   "depth": true,
+   "headline": [
+    "FEBRUARY 1781",
+    "NORTH CAROLINA"
+   ],
+   "dur": 5.5
+  },
+  {
+   "photo": "assets/media/continental_army_ogden.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ]
+  }
+ ],
+ "16": [
+  {
+   "photo": "assets/media/carolinas_map_mouzon.jpg",
+   "move": "right",
+   "focus": [
+    0.45,
+    0.5
+   ],
+   "label": "THE CAROLINAS \u00b7 MOUZON MAP, 1775",
+   "dur": 4.4
+  },
+  {
+   "photo": "assets/media/sc_map_faden.jpg",
+   "move": "in",
+   "focus": [
+    0.45,
+    0.4
+   ],
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/headline_ohara.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "trim": 0
+  }
+ ],
+ "22": [
+  {
+   "photo": "assets/media/guilford_mcbarron.jpg",
+   "move": "in",
+   "depth": true,
+   "headline": [
+    "15 MARCH 1781",
+    "GUILFORD COURTHOUSE"
+   ],
+   "dur": 5.6
+  },
+  {
+   "photo": "assets/media/guilford_plan_1781.jpg",
+   "move": "right",
+   "label": "PLAN OF THE BATTLE \u00b7 1781"
+  }
+ ],
+ "29": [
+  {
+   "photo": "assets/media/fox.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.3
+   ],
+   "depth": true,
+   "label": "CHARLES JAMES FOX",
+   "dur": 4.4
+  },
+  {
+   "photo": "assets/media/headline_fox.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "trim": 0
+  }
+ ],
+ "34": [
+  {
+   "photo": "assets/media/headline_fight.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.35
+   ],
+   "trim": 0,
+   "dur": 4.3
+  },
+  {
+   "photo": "assets/media/hobkirks_hill_charge.jpg",
+   "move": "in",
+   "depth": true,
+   "label": "HOBKIRK'S HILL \u00b7 25 APRIL 1781"
+  }
+ ],
+ "40": [
+  {
+   "photo": "assets/media/eutaw_springs_chappel_loc.jpg",
+   "move": "in",
+   "depth": true,
+   "headline": [
+    "8 SEPTEMBER 1781",
+    "EUTAW SPRINGS, SOUTH CAROLINA"
+   ],
+   "dur": 4.3
+  },
+  {
+   "photo": "assets/media/eutaw_springs_engraving.jpg",
+   "move": "right",
+   "depth": true
+  }
+ ]
+}
