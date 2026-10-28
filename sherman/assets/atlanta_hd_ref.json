@@ -1,0 +1,20 @@
+{
+ "name": "atlanta_hd_ref",
+ "center": [
+  33.64,
+  -84.42
+ ],
+ "zoom": 11,
+ "origin_world_px": [
+  137758,
+  209257
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 63.64,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}
