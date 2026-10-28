@@ -114,3 +114,19 @@ Seoul retaken date (14 vs 15 Mar 1951); Peng's death cause wording; "Old Chief P
 Long March 18,000 -> 3,000; Mao Anying's role on the staff.
 
 ## Control maps (fronts per date; logged by the map agents in FACT_NOTES_<map>.md)
+
+## Hook stakes opening (2026-10-28, STYLE_LOCK 1a UPDATED): candidate lines, fact-checked
+- A (stake: the UN at China's border / North Korea gone): "In the autumn of nineteen fifty, American-led armies were racing north through
+  Korea toward China's border. If nothing stopped them, North Korea would disappear, and American troops would be standing on the banks of
+  the Yalu River." Sources: Appleman ch. XXXIII (24 Oct 1950 MacArthur "removed all restrictions on the use of U.N. ground forces south of
+  the border, and instructed his commanders to press forward to the northern limits of Korea"); Appleman (Chonggo-dong, 1 Nov = "high-water
+  mark of Eighth Army's effort to reach the Manchurian border and consolidate all of Korea for a unified government"); UN troops entered
+  Pyongyang 19 Oct (Appleman ch. XIX); ROK patrol reached the Yalu at Ch'osan (Appleman). OK.
+- B (stake: the war about to be won/ended by the UN): "By late November nineteen fifty, the war in Korea looked as good as won. One last
+  American offensive was meant to end it, on the Chongchon River." Sources: Mossman ch. IV (MacArthur 24 Nov: the attack "should for all
+  practical purposes end the war"; Eighth Army step-off 24 Nov from the Chongchon line). OK.
+- C (stake: China itself, Peng's own argument, name held back): "In October nineteen fifty, one Chinese general warned his leaders that
+  the Americans could invade China whenever they chose, once their troops stood on the Yalu River." Source: Peng, Memoirs of a Chinese
+  Marshal (FLP 1984) p. 473-474, Politburo meeting 5 Oct 1950: "The U.S. will find a pretext at any time to invade China if its troops
+  are poised on the bank of the Yalu River and in Taiwan." Paraphrased (no quote marks). OK.
+- Swap test: none of the three fits another video with the names swapped (Korea / China's border / Yalu / Chongchon specific).
