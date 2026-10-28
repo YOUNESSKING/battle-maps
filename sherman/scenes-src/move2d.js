@@ -251,8 +251,8 @@ const RF = [[32.06, -81.155, 70, 34], [32.02, -81.175, 64, 30], [31.985, -81.20,
 const water = RF.map(([la, lo, w, h], k) => { const q = L(la, lo); const el = GG.pin(`<div style="width:${w * 2}px;height:${h * 2}px;border-radius:50%;background:radial-gradient(ellipse, rgba(120,165,200,0.62) 0%, rgba(110,150,190,0.38) 55%, rgba(110,150,190,0) 72%);transform:rotate(-55deg)"></div>`, q[0], q[1], { t: T_RICE - 0.3 + k * 0.15, until: T8 + 0.5 });
   tl.to(el, { opacity: 0.7, duration: 0.9, yoyo: true, repeat: 9, ease: "sine.inOut" }, T_RICE + 0.6); return el; });
 box("FLOODED RICE FIELDS", ...L(32.00, -81.115), T_RICE, 12, T8, false);
-const CW = [[[32.07, -81.24], [32.075, -81.12]], [[32.02, -81.26], [32.04, -81.13]], [[32.11, -81.21], [32.10, -81.12]]];
-CW.forEach(([a, b], k) => { const g = svgG(`<path d="${dOf([L(...a), L(...b)])}" fill="none" stroke="#efe6cf" stroke-width="2.4" stroke-dasharray="6 4"/>`); GG.hide(g); tl.to(g, { autoAlpha: 1, duration: 0.4 }, T_CAUSE - 0.3 + k * 0.2); tl.to(g, { autoAlpha: 0, duration: 0.5 }, T8); });
+const CWY = [[[32.07, -81.24], [32.075, -81.12]], [[32.02, -81.26], [32.04, -81.13]], [[32.11, -81.21], [32.10, -81.12]]];
+CWY.forEach(([a, b], k) => { const g = svgG(`<path d="${dOf([L(...a), L(...b)])}" fill="none" stroke="#efe6cf" stroke-width="2.4" stroke-dasharray="6 4"/>`); GG.hide(g); tl.to(g, { autoAlpha: 1, duration: 0.4 }, T_CAUSE - 0.3 + k * 0.2); tl.to(g, { autoAlpha: 0, duration: 0.5 }, T8); });
 tag("NARROW CAUSEWAYS ONLY", ...L(32.135, -81.28), T_CAUSE, BLUE, 12, T8);
 const HL = [[32.131, -81.132], [32.10, -81.160], [32.05, -81.180], [32.00, -81.200], [31.955, -81.235]].map((q) => L(...q));
 K.front({ pts: HL, sideA: "carth", sideB: "rome", t: T_HARD - 0.3, dur: 1.6, until: T8 + 0.6 });

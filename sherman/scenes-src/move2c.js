@@ -198,6 +198,9 @@ const resultCard = (head, l1, l2, l3, t, until, w = 1100) => slam(scr(`<div styl
   <div style="font-size:30px;letter-spacing:0.08em;color:#f7f3ea;margin-top:4px">${l2}</div>
   ${l3 ? `<div style="font-size:66px;letter-spacing:0.04em;color:#ffd54a;line-height:1.1">${l3}</div>` : ""}</div>`, `left:0;right:0;margin:auto;width:${w}px;top:220px;`), t, { from: 1.4, shake: 4, until });
 const flagsBoth = (cs, us, t, until, w = 100) => [flag(FL.csa, "CONFEDERATE STATES", cs[0], cs[1], t, until, w), flag(FL.us, "UNITED STATES", us[0], us[1], t + 0.05, until, w)];
+// move any world pin (ship, icon) along a path
+const follow2 = (el, pts, t, dur, ease = "power1.inOut") => { const cum = cumOf(pts), p = { d: 0 };
+  tl.to(p, { d: cum[cum.length - 1], duration: dur, ease, onUpdate: () => { const q = atLen(pts, cum, p.d); el.style.left = q[0] + "px"; el.style.top = q[1] + "px"; } }, t); };
 
 // ==== BODY
 const L = GG.proj(9, 33985, 52007);
@@ -250,7 +253,7 @@ camTo(T_ENG - 0.4, 3.0, ATL[0], ATL[1] + 4, 3.0);                               
 camTo(T_62 - 0.6, 2.4, ATL[0] + 90, ATL[1] + 60, 1.9);                               // the army marches out
 camTo(T4 + 0.2, 3.2, 1260, 650, 1.12);                                               // WIDE: Atlanta - Macon - Augusta
 camTo(T_SWUNG - 0.4, 2.6, MIL[0] + 10, MIL[1] - 10, 1.7);                            // the empty middle
-camTo(T5 + 0.2, 2.8, GC[0] - 2, GC[1] + 4, 4.6);                                   // Griswoldville push-in
+camTo(T5 + 0.2, 2.8, GC[0] - 4, GC[1] + 6, 6.0);                                   // Griswoldville push-in
 camTo(T6 - 0.2, 3.0, 1440, 800, 0.95);                                               // WIDE again: the band to the sea
 camTo(T_EBEN - 0.5, 2.6, EBN[0] - 40, EBN[1] - 20, 2.0);                             // Ebenezer Creek
 camTo(T_NORTH - 0.2, 2.6, 1440, 800, 0.95);                                          // nobody knew where he was
@@ -262,7 +265,7 @@ B.date("6 DECEMBER 1864", T_NORTH - 0.2, END + 1, 32);
 legend(0.2, T5 + 0.4); legend(T5 + 0.5, T6 - 0.3, true); legend(T6 - 0.2, END + 1);
 flagsBoth(L(33.62, -84.62), L(33.86, -84.22), 0.2, T4 - 0.2, 46);                    // close on Atlanta (s 2.5-3)
 flagsBoth(L(32.40, -83.90), L(33.95, -84.25), T4 - 0.1, T5 + 0.2, 80);                 // wide
-flagsBoth(gp(-62, 30), gp(48, 26), T5 + 0.3, T6 - 0.3, 22);               // Griswoldville (s 4.6)
+flagsBoth(gp(-62, 26), gp(46, 24), T5 + 0.3, T6 - 0.3, 18);               // Griswoldville (s 4.6)
 flagsBoth(L(31.75, -83.55), L(32.24, -80.70), T6 - 0.2, END + 1, 80);                 // wide (US on the coast posts)
 // ---------- move2-3: wires cut, railroad wrecked, Atlanta burns, the army marches out ----------
 unit("arm", "carth", ATL[0] + 14, ATL[1] + 16, "infantry", { t: 0.25, size: "XXXX", label: "SHERMAN", w: 22, h: 15, fs: 6 });
@@ -332,7 +335,7 @@ slide(scr(`<div style="padding:10px 18px 12px;background:rgba(14,12,10,0.92);bor
 // ---------- move2-5: Griswoldville (22 Nov), option 2 ----------
 // SCHEMATIC close-up on the z9 georgia map: the 1-mile fight is drawn ~4x enlarged around the real spot (Walcutt's line on the rise east of
 // the station, militia attacking from the west across open fields; ABT). TODO main session: a z13 close-up bake would make it true to scale.
-const FW = 15 * 1.3 / 4.6;   // K.front width in world px so the band reads ~20 px on screen at s 4.6 (same on-screen look as width 15 at s 1.3)
+const FW = 15 * 1.3 / 6.0;   // K.front width in world px so the band reads ~20 px on screen at s 6.0 (same on-screen look as width 15 at s 1.3)
 B.city("", ...gp(-7, -2), { r: 0.9, t: T5 + 0.6, until: T6 });
 box("GRISWOLDVILLE", ...gp(-24, 10), T5 + 0.6, 4.2, T6, false);
 const BAR = [gp(12, -22), gp(10, -8), gp(10, 8), gp(12, 22)];
@@ -355,7 +358,7 @@ box("CHARGED 3 TIMES", ...gp(-42, -30), T_THREE, 4.6, T6, false);
 const cas = scr(`<div style="display:flex;gap:46px;padding:20px 40px 22px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="text-align:center"><div style="display:flex;gap:10px;align-items:center;justify-content:center;border-bottom:3px solid ${RED};padding-bottom:8px"><img src="${FL.csa}" style="height:30px;border:1px solid #f7f3ea"><span style="font-size:26px;letter-spacing:0.1em">CONFEDERATE</span></div><div style="font-size:60px;margin-top:6px">523-1,100</div></div>
   <div style="text-align:center"><div style="display:flex;gap:10px;align-items:center;justify-content:center;border-bottom:3px solid ${BLUE};padding-bottom:8px"><img src="${FL.us}" style="height:30px;border:1px solid #f7f3ea"><span style="font-size:26px;letter-spacing:0.1em">UNION</span></div><div style="font-size:60px;margin-top:6px">94</div></div></div>
-  <div style="text-align:center;font-family:Oswald;font-weight:700;font-size:16px;letter-spacing:0.24em;color:#c9b48a;margin-top:6px">CASUALTIES · GRISWOLDVILLE, 22 NOV 1864 · SCAIFE &amp; BRAGG / ABT</div>`, "left:0;right:0;margin:auto;width:700px;top:640px;");
+  <div style="text-align:center;font-family:Oswald;font-weight:700;font-size:16px;letter-spacing:0.24em;color:#c9b48a;margin-top:6px">CASUALTIES · GRISWOLDVILLE, 22 NOV 1864 · SCAIFE &amp; BRAGG / ABT</div>`, "left:0;right:0;margin:auto;width:700px;top:770px;");
 slam(cas, T_500 - 0.3, { from: 1.4, shake: 3, until: T6 + 0.4 });
 // ---------- move2-6: the band, bummers, burning, freed people, Ebenezer, Lincoln ----------
 const MID = [ATL, L(33.35, -83.75), MIL, L(32.95, -82.55), MLN, L(32.45, -81.50), SAV];
