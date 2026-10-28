@@ -72,23 +72,32 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
 | Reference scenes to copy from | `goosegreen/scenes-src/move3.js` (Harrier bombing run, helicopters, AA, casualty card), `test-terr-f.js` (fronts + territory, final look), `move1.js` (night attack) |
 
 ## 1a. THE HOOK (LOCKED, owner 2026-10-09, Rokossovsky hook v2: "I do like it... I want all videos to have strong hooks like this")
-**UPDATED 2026-10-28 (owner, Meade #12: "Approve, now make it a rule and add it to the pipeline"): THE OPENING = STAKES FRAME -> CONTINUOUS ZOOM -> NUMBER.**
+**UPDATED 2026-10-28 (owner, Meade #12), REVISED same day: THE OPENING = THE STAKES OF THIS STORY -> CONTINUOUS ZOOM -> NUMBER.**
 Reference for the opening: `reference/hook-reference-meade-v3.mp4` (0:00-1:03) + `reference/hook-reference-meade-v3-sheet.jpg`
-(scene source `meade/scenes-src/hook-a.js`). Why: the owner felt "Fifty-one thousand men..." as line 1 jumped in with no context; the old
-Greene opening ("the American Revolution was dying in the South") set the stakes first. The rest of the hook below is unchanged.
-- **Script, before the number (~8 s, 2 short sentences):** (1) the enemy's run of success in plain words, (2) "And now he marches into
-  <region>, to a small town called <place>." The place name is the LAST word before the number, so the number lands on that place.
-  Meade: "Robert E. Lee had beaten the Union army again and again. And now he marches into Pennsylvania, to a small town called Gettysburg.
-  Fifty-one thousand men. Killed, wounded, captured or missing in three days..." Still never a date first and never background/biography:
-  it is a stakes line. The number + disaster sentences follow unchanged.
-- **Visual:** frame 0 = the wide overview map with the enemy's columns already moving, both flags, territory, the enemy commander's real-photo
-  badge; **a stamp within the first second** (each past defeat as its own stamp, hit + shake, then one summary stamp, e.g. BEATEN AGAIN AND
-  AGAIN); on "marches into <region>" the territory switches to that date and arrows cross the border line (stamp MARCHING INTO <REGION>);
-  on "to a small town called <place>" **ONE continuous geographic zoom** (zoom whoosh) from the overview straight down onto the place,
-  arriving on the spoken place name: both maps driven by the same camera at true position and scale, the overview cross-faded out between
-  ~6x and ~14x with feathered edges, **never a cut or a white flash** (owner: the cut "is not seamless").
-- **The big number card slams on its own words** (no longer at 0.3 s), then ticks; the other cards on their words as before.
-- **Timing:** payoff (title promise) by **~0:30** (was ~0:22; Meade: REPULSED at 0:32); dive by ~6-8 s; a beat every 2-4 s throughout.
+(scene source `meade/scenes-src/hook-a.js`). Why: "Fifty-one thousand men..." as line 1 jumped in with no context; the old Greene opening
+("the American Revolution was dying in the South") set the stakes first. The rest of the hook below is unchanged.
+- **Script, before the number (~6-10 s, 1-2 short sentences): the STAKES of this particular story, written fresh every time.**
+  Ask: *what was about to be lost or won if this commander failed?* The war, the capital, the revolution, the whole army, the South,
+  the empire... Say THAT in plain, dramatic words, then bring the viewer to the place where it was decided, ending on the place name so the
+  number lands there. Examples (each a different stake, each worded differently; NOT templates):
+  - Meade: "Robert E. Lee had beaten the Union army again and again. And now he marches into Pennsylvania, to a small town called
+    Gettysburg." (stake: an unbeaten enemy on Northern soil)
+  - Greene: "In the summer of seventeen eighty, the American Revolution was dying in the South." (stake: the cause itself)
+  - Possible others: "If Moscow fell, the Soviet Union fell with it." / "One more defeat, and there would be no army left to lose." /
+    "The war was supposed to be over by Christmas. Then..."
+- **NEVER reuse another video's stakes sentence with the names swapped** (owner 2026-10-28: a session copied "had beaten ... again and again.
+  And now he marches into..." onto another general). Check before voicing: *"Could this line open a different video if I swapped the names?
+  If yes, rewrite it from this video's research."* The stakes come from the Gemini brief's "stakes" section and FACT_NOTES.
+- **The stakes must be true and sourced** (log in FACT_NOTES): no "the war was about to be lost" unless sources say so; concrete stakes
+  (a capital, an army, a deadline, a cause) beat vague ones.
+- **Visual = the stakes shown as action, chosen to fit the line:** frame 0 = a wide map with units already moving, both flags, territory,
+  the key commander's real-photo badge; **a stamp within the first second**; then whatever shows THIS stake: past defeats as one stamp each
+  (Meade), a capital ring pulsing under arrows (a capital about to fall), territory shrinking date by date (a cause dying), a countdown...
+  Then **ONE continuous geographic zoom** (zoom whoosh) from the overview straight down onto the place, arriving on the spoken place name:
+  both maps driven by the same camera at true position and scale, the overview cross-faded out between ~6x and ~14x with feathered edges,
+  **never a cut or a white flash** (owner: the cut "is not seamless").
+- **The big number card slams on its own words**, then ticks; the other cards on their words as before.
+- **Timing:** payoff (title promise) by **~0:30** (Meade: REPULSED at 0:32); dive by ~6-8 s; a beat every 2-4 s throughout.
 - **Rule of the hook below (line 1 = number) now applies to the sentence AFTER the stakes frame.**
 Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + music + SFX) and its beat sheet
 `reference/hook-reference-rokossovsky-v2-sheet.jpg`. Every video's first minute must match it. v1 of that hook was REJECTED as
