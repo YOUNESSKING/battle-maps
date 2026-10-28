@@ -264,9 +264,11 @@ B.date("22 NOVEMBER 1864", T5 - 0.1, T6 - 0.2, 32); B.date("NOV - DEC 1864", T6 
 B.date("6 DECEMBER 1864", T_NORTH - 0.2, END + 1, 32);
 legend(0.2, T5 + 0.4); legend(T5 + 0.5, T6 - 0.3, true); legend(T6 - 0.2, END + 1);
 flagsBoth(L(33.62, -84.62), L(33.86, -84.22), 0.2, T4 - 0.2, 46);                    // close on Atlanta (s 2.5-3)
-flagsBoth(L(32.40, -83.90), L(33.95, -84.25), T4 - 0.1, T5 + 0.2, 80);                 // wide
+flagsBoth(L(32.40, -83.90), L(33.95, -84.25), T4 - 0.1, T_SWUNG - 0.3, 80);
+flagsBoth(L(32.75, -82.90), L(33.35, -83.55), T_SWUNG - 0.2, T5 + 0.2, 64);   // Milledgeville push-in                 // wide
 flagsBoth(gp(-62, 26), gp(46, 24), T5 + 0.3, T6 - 0.3, 18);               // Griswoldville (s 4.6)
-flagsBoth(L(31.75, -83.55), L(32.24, -80.70), T6 - 0.2, END + 1, 80);                 // wide (US on the coast posts)
+flagsBoth(L(31.75, -83.55), L(32.24, -80.70), T6 - 0.2, END + 1, 80);
+flag(FL.csa, "CONFEDERATE STATES", ...L(32.55, -80.95), T_EBEN - 0.4, T_NORTH, 48);   // Ebenezer push-in (S. Carolina side)                 // wide (US on the coast posts)
 // ---------- move2-3: wires cut, railroad wrecked, Atlanta burns, the army marches out ----------
 unit("arm", "carth", ATL[0] + 14, ATL[1] + 16, "infantry", { t: 0.25, size: "XXXX", label: "SHERMAN", w: 22, h: 15, fs: 6 });
 badge({ name: "WILLIAM T. SHERMAN", role: "62,204 MEN · 65 GUNS", photo: "assets/media/sherman_head.png", flag: FL.us, side: "carth", corner: "tr", t: 0.4, until: T4 + 1.5 });
@@ -321,11 +323,12 @@ mstamp("HELD", MAC[0] + 54, MAC[1] - 4, T_WAIT, { size: 12, until: T_SWUNG + 1.2
 // the empty middle glows gold (the gap), then both wings swing in
 const GAP = GG.pin(`<div style="width:190px;height:190px;border-radius:50%;background:radial-gradient(circle, rgba(255,214,90,0.55) 0%, rgba(255,200,60,0.22) 45%, rgba(255,200,60,0) 70%)"></div>`, MIL[0], MIL[1], { t: T_NOMEN + 2.2, until: T_CENSUS });
 tl.to(GAP, { scale: 1.18, duration: 0.7, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_NOMEN + 2.6);
+LMIL.parentNode.appendChild(LMIL);   // label above the glow
 const EMPTY = tag("EMPTY", MIL[0] + 4, MIL[1] + 26, T_WAIT + 0.8, "#8a6d1c", 11, T_MILL);
 tl.to(LMIL, { scale: 1.3, duration: 0.4, ease: "back.out(2)" }, T_NEITHER); tl.to(LMIL, { scale: 1, autoAlpha: 0, duration: 0.4 }, T5 + 0.2); tl.to(LMIL, { autoAlpha: 1, duration: 0.4 }, T6); SFX("ref:pop", T_NEITHER + 0.1);
 arr([L(33.596, -83.468), L(33.33, -83.39), L(33.11, -83.26)], "carth", T_SWUNG - 0.2, { w: 9, dur: 1.4, until: T5 });
 arr([L(32.96, -83.40), L(32.90, -83.33), L(33.05, -83.25)], "carth", T_SWUNG, { w: 9, dur: 1.2, until: T5 });
-go("c20", T_SWUNG, 1.6, [MIL[0] + 6, MIL[1] - 14]); go("c14", T_SWUNG + 0.1, 1.6, [MIL[0] - 14, MIL[1] - 22]);
+go("c20", T_SWUNG, 1.6, [MIL[0] + 14, MIL[1] + 20]); go("c14", T_SWUNG + 0.1, 1.6, [MIL[0] - 16, MIL[1] + 22]);
 go("c17", T_SWUNG + 0.2, 1.6, [GRS[0] + 26, GRS[1] - 10]); go("c15", T_SWUNG + 0.3, 1.6, [GRS[0] + 50, GRS[1] - 2]);
 mstamp("MILLEDGEVILLE TAKEN", MIL[0] + 4, MIL[1] + 58, T_MILL, { size: 12, color: "#5b8fe8", sub: "STATE CAPITAL · 23 NOV · NO FIGHT", until: T5 - 0.2 });
 // the census tables (small card)
@@ -337,7 +340,7 @@ slide(scr(`<div style="padding:10px 18px 12px;background:rgba(14,12,10,0.92);bor
 // the station, militia attacking from the west across open fields; ABT). TODO main session: a z13 close-up bake would make it true to scale.
 const FW = 15 * 1.3 / 6.0;   // K.front width in world px so the band reads ~20 px on screen at s 6.0 (same on-screen look as width 15 at s 1.3)
 B.city("", ...gp(-7, -2), { r: 0.9, t: T5 + 0.6, until: T6 });
-box("GRISWOLDVILLE", ...gp(-24, 10), T5 + 0.6, 4.2, T6, false);
+box("GRISWOLDVILLE", ...gp(-8, 36), T5 + 0.6, 4.2, T6, false);
 const BAR = [gp(12, -22), gp(10, -8), gp(10, 8), gp(12, 22)];
 const BRG = svgG(`<path d="${dOf(BAR)}" fill="none" stroke="#b08a58" stroke-width="2.2" stroke-dasharray="2.2 1.1"/>`); GG.hide(BRG);
 tl.to(BRG, { autoAlpha: 1, duration: 0.5 }, T_RAILS - 0.2); tl.to(BRG, { autoAlpha: 0, duration: 0.5 }, T6);
@@ -346,7 +349,8 @@ unit("wal", "carth", ...gp(22, 0), "infantry", { t: T5 + 0.8, size: "X", label: 
 K.front({ pts: [gp(6, -26), gp(4, -9), gp(4, 9), gp(6, 26)], sideA: "rome", sideB: "carth", width: FW, t: T_MIL - 0.3, dur: 1.4, until: T6 - 0.2 });
 B.hideUnits(["c15", "c17", "c14", "c20", "kil", "dm1", "dm2", "dm3", "da1", "da2", "da3"], T5 + 0.3);
 const MILS = [["m1", -16], ["m2", 0], ["m3", 16]];
-MILS.forEach(([id, dy], k) => unit(id, "rome", ...gp(-44, dy), "infantry", { t: T_MIL - 0.4 + k * 0.1, size: "X", label: k === 1 ? "GEORGIA MILITIA" : "", w: 12, h: 8, fs: 3.2, until: T6 }));
+MILS.forEach(([id, dy], k) => unit(id, "rome", ...gp(-44, dy), "infantry", { t: T_MIL - 0.4 + k * 0.1, size: "X", label: "", w: 12, h: 8, fs: 3.2, until: T6 }));
+tag("GEORGIA MILITIA", ...gp(-70, 0), T_MIL - 0.2, RED, 4.2, T6);
 // three charges: forward, volleys + guns, thrown back
 [T_MIL + 0.6, T_THREE - 0.2, T_CUTD - 0.1].forEach((tc, c) => {
   MILS.forEach(([id, dy], k) => { go(id, tc + k * 0.08, 1.2, gp(-6, dy * 0.9), "power1.in"); go(id, tc + 2.0 + k * 0.08, 0.9, gp(-38 + c * 3, dy), "power2.out"); });

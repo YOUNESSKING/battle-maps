@@ -45,3 +45,16 @@ Shared, read-only for the move agents. Built by `tools/make_south_geo.py` + `too
 - Atlanta 33.749N 84.388W; Jonesboro 33.521N 84.354W (Macon & Western RR); Petersburg 37.228N 77.402W; Chattanooga 35.046N 85.310W;
   Savannah 32.081N 81.091W; Bennett Place 36.03N 78.98W (Durham's Station); Columbus OH (ending caption only, off-map);
   Louisville KY (Sherman's HQ, Oct 1861; 38.25N 85.76W: just off the top edge -> hook-3 uses a Kentucky outline locator, no town dot).
+
+## Hook-only files (hook agent; others may reuse read-only)
+- `assets/media/hook_atl_ctl_{aug64,sep64}_mx.png` (tools/make_hook_atl_control.py): coarse Atlanta-area control on the `atlanta` map.
+  aug64 (~23-25 Aug): Union lines arc N + W of the city from the Georgia RR side (NE, ~33.80N 84.27W) to Utoy Creek (SW, ~33.69N
+  84.50W), the city + East Point + the Macon & Western south Confederate. sep64: Atlanta + East Point Union, Hood at Lovejoy's.
+  The move-1 agent's atlanta_* overlays are the detailed ones; swap them in if they differ.
+- `assets/media/hook_south_hd_ref.jpg` = copy of `assets/south_hd_ref.jpg` (build_scene copies only media/ images) for hook-a's two-map
+  zoom; `hook_inset_{atl,ga,sc}.jpg` + `hook_insets.json` (tools/make_hook_insets.py; NE rivers drawn); `hook_ky_{base,fill}.png`
+  (tools/make_hook_ky.py: Kentucky glows GOLD, not a side colour, since Kentucky stayed in the Union).
+- Railroads drawn in the hook scenes (approximate 1864 alignments, through the towns): W&A Chattanooga-Ringgold-Tunnel Hill-Dalton-
+  Resaca-Calhoun-Adairsville-Kingston-Cartersville-Allatoona-Acworth-Big Shanty-Marietta-Vinings-Atlanta; Macon & Western Atlanta-East
+  Point-Rough and Ready-Jonesboro-Lovejoy's; Atlanta & West Point East Point-Fairburn; Georgia RR Atlanta-Decatur-Stone Mountain.
+- Petersburg front on the theatre map (hook-1) is a symbolic ~40 km line east of the city (true siege line is ~15 km, too small at z8).

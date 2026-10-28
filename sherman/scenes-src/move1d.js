@@ -258,8 +258,8 @@ const cht = LN.river.CHATTAHOOCHEE.reduce((a, p) => (p.length > a.length ? p : a
 // ---------- map layers ----------
 ctlImg("assets/media/atlanta_ctl_jul03_mx.png", 0, T_GONE + 1.2, 0.01);
 ctlImg("assets/media/atlanta_ctl_jul10_mx.png", T_GONE, T_ONCE + 1.2, 1.0);
-ctlImg("assets/media/atlanta_ctl_jul22_mx.png", T_ONCE, T_AUG + 1.2, 1.0);
-ctlImg("assets/media/atlanta_ctl_aug64_mx.png", T_AUG, T_WRONG + 1.0, 1.0);
+ctlImg("assets/media/atlanta_ctl_jul22_mx.png", T_ONCE, T_EZRA + 1.0, 1.0);
+ctlImg("assets/media/atlanta_ctl_aug64_mx.png", T_EZRA - 0.2, T_WRONG + 1.0, 1.0);
 ctlImg("assets/media/atlanta_ctl_sep64_mx.png", T_2SEP + 1.0, null, 1.2);
 B.image("assets/media/atlanta_geo_ref.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.shimmer(LN.river.CHATTAHOOCHEE.concat(LN.river.FLINT)); LV.scaleBar(63.64); LV.north();
@@ -270,9 +270,9 @@ const S0 = L(33.90, -84.53), MID = L(33.79, -84.40), JC = L(33.528, -84.362);
 B.camera([[0, S0[0] - 20, S0[1] - 15, 0.7], [T_CROSS - 0.4, S0[0] + 30, S0[1] + 10, 1.3], [T_GONE + 0.8, S0[0] + 60, S0[1] + 30, 1.4],
   [T_ONCE - 0.4, MID[0], MID[1] + 20, 1.6], [T_PEACH + 0.2, MID[0] - 10, MID[1] + 10, 3.0], [T_EZRA + 0.6, MID[0] - 10, MID[1] + 30, 2.8],
   [T_EACH, MID[0], MID[1] + 40, 2.4], [T_AUG + 0.4, ATL[0], ATL[1] + 10, 2.6], [T_ONE + 0.6, ATL[0], ATL[1] + 20, 2.4],
-  [T_SWUNG - 0.2, ATL[0] - 30, ATL[1] + 60, 1.9], [T_WEST + 1.6, 1460, 820, 1.25], [T_JON + 0.6, 1470, 840, 1.25],
+  [T_PULLED, ATL[0] - 30, ATL[1] - 20, 2.1], [T_SWUNG - 0.2, ATL[0] - 40, ATL[1] - 30, 2.0], [T_WEST + 1.6, 1460, 820, 1.25], [T_JON + 0.6, 1470, 840, 1.25],
   [T_WRONG + 1.0, JC[0], JC[1], 4.4], [T_THROWN + 0.6, JC[0], JC[1], 4.6], [T_NECK, JC[0], JC[1] + 4, 4.4], [T_THAT - 0.2, JC[0], JC[1], 4.2],
-  [T_THAT + 1.6, ATL[0] + 10, (ATL[1] + JC[1]) / 2 - 60, 1.7], [T_ABAND + 1.0, ATL[0] + 10, ATL[1] + 60, 2.0],
+  [T_THAT + 1.6, ATL[0] + 20, ATL[1] + 30, 2.4], [T_ABAND + 1.0, ATL[0] + 20, ATL[1] + 50, 2.3],
   [T_2SEP + 0.4, ATL[0], ATL[1] + 20, 2.4], [T_OURS + 2.0, ATL[0], ATL[1] + 20, 2.5], [T_COST + 1.4, 1440, 760, 0.8],
   [T_HIT, 1440, 780, 0.75], [END, 1440, 790, 0.72]]);
 B.showDate(0.1);
@@ -283,11 +283,11 @@ B.date("1 SEPTEMBER 1864", T_NEXT, T_2SEP - 0.1, 34); B.date("2 SEPTEMBER 1864",
 
 // ---------- flags (on each side's ground, per shot) ----------
 flag(FL.us, "UNITED STATES", ...L(33.99, -84.62), 0.2, T_ONCE, 70); flag(FL.cs, "CONFEDERATE STATES", ...L(33.76, -84.47), 0.3, T_ONCE, 70);
-flag(FL.us, "UNITED STATES", ...L(33.865, -84.43), T_ONCE + 0.2, T_SWUNG, 38); flag(FL.cs, "CONFEDERATE STATES", ...L(33.725, -84.395), T_ONCE + 0.3, T_SWUNG, 38);
+flag(FL.us, "UNITED STATES", ...L(33.865, -84.43), T_ONCE + 0.2, T_SWUNG, 38); flag(FL.cs, "CONFEDERATE STATES", ...L(33.715, -84.425), T_ONCE + 0.3, T_SWUNG, 38);
 flag(FL.us, "UNITED STATES", ...L(33.86, -84.62), T_SWUNG + 0.6, T_WRONG + 0.6, 80); flag(FL.cs, "CONFEDERATE STATES", ...L(33.46, -84.18), T_SWUNG + 0.7, T_WRONG + 0.6, 80);
 flag(FL.us, "UNITED STATES", ...L(33.525, -84.395), T_WRONG + 0.8, T_THAT + 0.6, 24); flag(FL.cs, "CONFEDERATE STATES", ...L(33.505, -84.335), T_WRONG + 0.9, T_THAT + 0.6, 24);
-flag(FL.us, "UNITED STATES", ...L(33.84, -84.48), T_THAT + 0.8, T_COST + 0.6, 56); flag(FL.cs, "CONFEDERATE STATES", ...L(33.56, -84.27), T_THAT + 0.9, T_COST + 0.6, 56);
-flag(FL.us, "UNITED STATES", ...L(33.95, -84.80), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.30, -83.85), T_COST + 0.9, END + 1, 150);
+flag(FL.us, "UNITED STATES", ...L(33.79, -84.47), T_THAT + 0.8, T_COST + 0.6, 48); flag(FL.cs, "CONFEDERATE STATES", ...L(33.69, -84.31), T_THAT + 0.9, T_COST + 0.6, 48);
+flag(FL.us, "UNITED STATES", ...L(33.90, -84.62), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.40, -83.95), T_COST + 0.9, END + 1, 150);
 
 // ---------- move1-6: the Chattahoochee; Hood; three attacks ----------
 const F0 = K.front({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });
@@ -308,7 +308,7 @@ B.move("jo", T_GONE, 2.0, ...L(33.800, -84.420)); B.move("th", T_GONE + 0.1, 2.0
 const F1 = K.front({ pts: FR.jul10, sideA: "carth", sideB: "rome", t: T_GONE + 0.4, dur: 0.01, width: FW(1.4), until: T_ONCE + 0.6, to: FR.jul22, moveT: T_ONCE - 0.2, moveDur: 2.0 });
 tl.to(F0, { opacity: 0, duration: 0.3 }, T_GONE + 0.4);
 // Davis replaces Johnston with Hood
-badge({ name: "JEFFERSON DAVIS", role: "CONFEDERATE PRESIDENT", initials: "JD", photo: PHOTO.davis, flag: FL.cs, side: "rome", corner: "tl", t: T_DAVIS - 0.2, until: T_HOOD + 0.4 });
+badge({ name: "JEFFERSON DAVIS", role: "CONFEDERATE PRESIDENT", initials: "JD", photo: PHOTO.davis, flag: FL.cs, side: "rome", corner: "bl", t: T_DAVIS - 0.2, until: T_HOOD + 0.4 });
 const JB = badge({ name: "JOSEPH E. JOHNSTON", role: "CONFEDERATE ARMY OF TENNESSEE", initials: "JEJ", photo: PHOTO.johnston, flag: FL.cs, side: "rome", corner: "tr", t: T_DAVIS + 0.4, until: T_HOOD - 0.1 });
 badgeStamp(JB, "RELIEVED", T_REPL + 0.5, { size: 26 });
 const HB = badge({ name: "JOHN BELL HOOD", role: "TAKES COMMAND, 18 JULY", initials: "JBH", photo: PHOTO.hood, flag: FL.cs, side: "rome", corner: "tr", t: T_HOOD - 0.05, until: T_EACH });
@@ -336,7 +336,7 @@ unit("ho", "carth", L(33.758, -84.452), "infantry", "HOWARD", { t: T_EZRA - 0.4,
 glowPath(LL([[33.770, -84.455], [33.760, -84.447], [33.752, -84.440], [33.744, -84.436]]), "#7fb0ff", 2.4, T_EZRA - 0.2, T_EACH + 2.0, 0, 0.95);
 attack([33.742, -84.418], [33.750, -84.437], T_EZRA, 0); attack([33.735, -84.430], [33.744, -84.440], T_EZRA + 0.35, 1);
 box("EZRA CHURCH · 28 JULY", ...L(33.745, -84.478), T_EZRA, 5.6, T_ELEVEN + 1.0);
-const MB = badge({ name: "JAMES McPHERSON", role: "ARMY OF THE TENNESSEE", initials: "JM", photo: PHOTO.mcpherson, flag: FL.us, side: "carth", corner: "tl", t: T_MCP - 0.4, until: T_EACH + 0.4 });
+const MB = badge({ name: "JAMES McPHERSON", role: "ARMY OF THE TENNESSEE", initials: "JM", photo: PHOTO.mcpherson, flag: FL.us, side: "carth", corner: "bl", t: T_MCP - 0.4, until: T_EACH + 0.4 });
 badgeStamp(MB, "KILLED", T_MCP + 0.3, { size: 26, color: "#ff8a80" });
 wstamp("McPHERSON KILLED", BALD[0] + 2, BALD[1] - 10, T_MCP + 0.3, T_EACH + 1.0, "#e3232f", 3.6);
 B.caption("EACH ATTACK BREAKS ON THE UNION BREASTWORKS", T_EACH, T_ELEVEN + 2.6, "carth");
@@ -373,7 +373,8 @@ arw({ pts: ARC2, side: "carth", t: T_SWUNG + 0.5, dur: 2.0, width: 7, until: T_W
 unit("ar", "carth", ARC1[0], "infantry", "SHERMAN", { t: T_SWUNG, w: 26, h: 17.6, tag: 7, size: "XXXX", until: T_WRONG + 0.3 });
 along("ar", ARC1, T_SWUNG + 0.2, T_JON - T_SWUNG + 0.2, 24);
 B.caption("A WIDE ARC AROUND THE WEST SIDE OF THE CITY", T_WEST - 0.3, T_LASTRR - 0.1, "carth");
-glowPath(sub(MW, 0, 0.62, 40), "#ff5a48", 5, T_LASTRR - 0.1, T_THAT, 3, 1, { draw: 1.2, top: true });
+glowPath(sub(MW, 0, 0.62, 40), "#ff5a48", 5, T_LASTRR - 0.1, T_WRONG + 0.4, 3, 1, { draw: 1.2, top: true });
+glowPath(sub(MW, 0.40, 0.80, 30), "#ff5a48", 1.6, T_WRONG + 0.5, T_TORE - 0.2, 0, 0.8, { top: true });
 box("MACON & WESTERN RR: THE LAST LINE IN", ...L(33.640, -84.290), T_LASTRR, 12, T_WRONG, { bg: "#f3d6d0" });
 box("JONESBORO", JON[0] + 54, JON[1] + 6, T_JON - 0.2, 12, T_WRONG + 0.6);
 K.target(JON[0], JON[1], T_JON, { r: 20, until: T_WRONG + 1.0 });
@@ -382,10 +383,10 @@ K.target(JON[0], JON[1], T_JON, { r: 20, until: T_WRONG + 1.0 });
 const F31 = K.front({ pts: FR.jon31, sideA: "carth", sideB: "rome", t: T_WRONG + 0.6, dur: 1.0, width: FW(4.5), until: T_THAT + 0.4, to: FR.jon01, moveT: T_NEXT + 0.6, moveDur: 1.6 });
 box("JONESBORO", JON[0] + 9, JON[1] + 3, T_WRONG + 0.8, 2.8, T_THAT + 0.4, { sfx: false });
 box("FLINT RIVER", ...L(33.512, -84.388), T_WRONG + 1.0, 2.4, T_THAT + 0.4, { bg: "#dcecf8", sfx: false });
-unit("hw", "carth", L(33.520, -84.380), "infantry", "HOWARD", { t: T_WRONG + 0.6, w: 4.6, h: 3.1, tag: 1.5, size: "XXXX" });
-unit("dv", "carth", L(33.548, -84.372), "infantry", "XIV CORPS", { t: T_WRONG + 0.7, w: 4.0, h: 2.7, tag: 1.4, size: "XXX" });
-unit("hd", "rome", L(33.515, -84.346), "infantry", "HARDEE", { t: T_WRONG + 0.7, w: 4.6, h: 3.1, tag: 1.5, size: "XXX" });
-unit("le", "rome", L(33.530, -84.344), "infantry", "LEE", { t: T_WRONG + 0.8, w: 4.0, h: 2.7, tag: 1.4, size: "XXX" });
+unit("hw", "carth", L(33.520, -84.382), "infantry", "HOWARD", { t: T_WRONG + 0.6, w: 7, h: 4.7, tag: 2.1, size: "XXXX" });
+unit("dv", "carth", L(33.550, -84.374), "infantry", "XIV CORPS", { t: T_WRONG + 0.7, w: 6.2, h: 4.2, tag: 1.9, size: "XXX" });
+unit("hd", "rome", L(33.515, -84.344), "infantry", "HARDEE", { t: T_WRONG + 0.7, w: 7, h: 4.7, tag: 2.1, size: "XXX" });
+unit("le", "rome", L(33.532, -84.342), "infantry", "LEE", { t: T_WRONG + 0.8, w: 6.2, h: 4.2, tag: 1.9, size: "XXX" });
 badge({ name: "WILLIAM J. HARDEE", role: "ATTACKS AT JONESBORO", initials: "WJH", photo: PHOTO.hardee, flag: FL.cs, side: "rome", corner: "tr", t: T_31 - 0.3, until: T_NEXT });
 belief("THE BLOW WILL FALL ON ATLANTA", "WHAT HOOD THOUGHT", T_THOUGHT - 0.2, T_31 - 0.2);
 // a corps pulled back toward the city (night of 31 Aug, ABT)
@@ -411,14 +412,14 @@ const NT = [0.665, 0.69, 0.715, 0.74, 0.765, 0.79].map((f) => posOn(MW, f));
 const fJ = nearestF(MW, JON);
 const NK = [fJ + 0.020, fJ + 0.032, fJ + 0.044, fJ - 0.022, fJ - 0.034, fJ - 0.046].map((f) => posOn(MW, f));
 glowPath(sub(MW, fJ - 0.05, fJ + 0.05, 16), "#ffb347", 1.4, T_TORE - 0.2, T_THAT + 0.4, 2, 0.9, { top: true });
-NK.forEach((p, k) => { bonfire(p[0] + 1.2, p[1], T_HEAT + k * 0.2, T_THAT + 0.4, 2.4); necktie(p[0] - 0.6, p[1] - 1.6, T_TWIST + k * 0.28, T_THAT + 0.4, 1.8); });
+NK.forEach((p, k) => { bonfire(p[0] + 2.4, p[1], T_HEAT + k * 0.2, T_THAT + 0.4, 4.2); necktie(p[0] - 1.2, p[1] - 3.0, T_TWIST + k * 0.28, T_THAT + 0.4, 3.6); });
 B.caption("RAILS HEATED OVER BONFIRES, TWISTED AROUND TREES", T_TORE, T_NECK - 0.1, "carth");
 sstamp("SHERMAN'S NECKTIES", 760, T_NECK - 0.1, { size: 58, color: "#ffb347", until: T_THAT + 0.2 });
 // night of 1 September: Atlanta lights up: Hood blows up his ammunition trains and leaves
 nightWash(T_THAT - 0.1, T_2SEP + 0.6, 0.55);
-const BOOM = [[33.758, -84.366], [33.756, -84.371], [33.760, -84.361], [33.754, -84.376], [33.761, -84.357], [33.757, -84.369], [33.753, -84.363], [33.759, -84.374]];
-BOOM.forEach(([la, lo], k) => { const p = L(la, lo); K.impact(p[0], p[1], T_BLEW - 0.3 + k * 0.42, { r: 20 + (k % 3) * 4, puffs: 4 }); });
-fireGlow(...L(33.757, -84.367), 34, T_BLEW - 0.2, T_OURS + 1.0);
+const BOOM = [[33.758, -84.366], [33.756, -84.371], [33.760, -84.361], [33.754, -84.376], [33.761, -84.357], [33.757, -84.369], [33.753, -84.363], [33.759, -84.374], [33.755, -84.359], [33.762, -84.368]];
+BOOM.forEach(([la, lo], k) => { const p = L(la, lo); K.impact(p[0], p[1], T_THAT + 1.2 + k * 0.38, { r: 20 + (k % 3) * 5, puffs: 4 }); });
+fireGlow(...L(33.757, -84.367), 40, T_THAT + 0.8, T_OURS + 1.0);
 [0, 1, 2, 3, 4, 5].forEach((k) => K.smoke(...L(33.757 + (k % 2) * 0.002, -84.369 + (k % 3) * 0.003), T_BLEW + 0.5 + k * 0.6, { n: 4, r: 10, rise: 40, life: 3.2 }));
 B.caption("1 SEPTEMBER, NIGHT: HOOD BLOWS UP HIS AMMUNITION TRAINS", T_BLEW - 0.4, T_2SEP - 0.1, "rome");
 unit("hood", "rome", L(33.745, -84.375), "infantry", "HOOD", { t: T_THAT + 0.6, w: 10, h: 6.8, tag: 3, size: "XXXX", until: T_2SEP + 0.6 });

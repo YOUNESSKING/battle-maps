@@ -238,9 +238,9 @@ B.showDate(0.05);
 B.date("10 DECEMBER 1864", 0.1, T8 - 0.2, 32); B.date("13 DECEMBER 1864", T8 - 0.1, T_WEEK - 0.4, 32);
 B.date("20 DECEMBER 1864 · NIGHT", T_WEEK - 0.3, T_IN - 0.3, 32); B.date("21 DECEMBER 1864", T_IN - 0.2, END + 1, 32);
 legend(0.2, T8 + 0.4); legend(T8 + 0.5, T_NIGHT + 0.2, true); legend(T_NIGHT + 0.3, END + 1);
-flagsBoth(L(31.84, -81.40), L(32.20, -81.47), 0.2, T8 + 0.3, 76);
+flagsBoth(L(31.84, -81.40), L(32.08, -81.56), 0.2, T8 + 0.3, 76);
 flagsBoth(L(31.865, -81.135), L(31.925, -81.300), T8 + 0.4, T_NIGHT + 0.3, 30);
-flagsBoth(L(32.24, -80.98), L(32.08, -81.35), T_NIGHT + 0.4, END + 1, 62);
+flagsBoth(L(32.17, -81.00), L(32.08, -81.35), T_NIGHT + 0.4, END + 1, 62);
 // ---------- move2-7: the army arrives, Hardee behind the rice fields ----------
 const ARMY = [["s15", [32.03, -81.32], "XV"], ["s17", [32.10, -81.27], "XVII"], ["s14", [32.20, -81.24], "XIV"], ["s20", [32.15, -81.22], "XX"]];
 ARMY.forEach(([id, q, lb], i) => { unit(id, "carth", ...L(q[0] + 0.12, q[1] - 0.18), "infantry", { t: 0.3 + i * 0.1, size: "XXX", label: lb, w: 30, h: 20, fs: 8 }); go(id, T_REACH - 0.6 + i * 0.12, 2.4, L(...q), "power2.out"); });
