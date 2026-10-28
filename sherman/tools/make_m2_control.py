@@ -30,6 +30,9 @@ COAST_POSTS = [  # land inside these polygons = Union (since 1861-62)
     [(32.72, -80.00), (32.72, -79.86), (32.62, -79.86), (32.62, -80.00)],                           # Folly + Morris Is. (Charleston siege)
 ]
 CHATT_DALTON = [(35.10, -85.45), (35.10, -85.05), (34.93, -85.05), (34.90, -85.25), (35.0, -85.45)]   # Chattanooga's fringe (as south_ctl_dec64)
+# the army's ~60-mile band (OR 44: "thirty miles on either side of a line from Atlanta to Savannah"), by stage
+MARCH_MID = [(33.749, -84.388), (33.35, -83.75), (33.080, -83.232), (32.95, -82.55), (32.804, -81.949), (32.45, -81.50), (32.20, -81.33)]
+BAND_STAGES = {"band1": 3, "band2": 5, "band3": 7}     # vertices included: to Milledgeville (23 Nov), to Millen (~3 Dec), to Savannah's lines (10 Dec)
 SAVANNAH_DEC21 = [(32.20, -81.20), (32.20, -80.85), (31.95, -80.85), (31.88, -81.10), (31.86, -81.30), (32.05, -81.30)]
 
 def proj(base):
@@ -89,6 +92,12 @@ def main(which):
     if "georgia" in which:
         P, mpp = proj("georgia"); land = load_land("georgia")
         for dt in ("oct64", "nov64", "dec64"): render(land, corridor_like("georgia", P, mpp, 2880, 1620, dt), f"georgia_ctl_{dt}_mx.png")
+        r = km(mpp, 48.3)                                   # 30 miles
+        for nm, n in BAND_STAGES.items():
+            pts = MARCH_MID[:n]
+            un = corridor_like("georgia", P, mpp, 2880, 1620, "nov64") | mask(P, 2880, 1620, lines=[(pts, 2 * r)], circles=[(q, r) for q in pts[:-1]])
+            if n == 7: un &= ~mask(P, 2880, 1620, circles=[((32.081, -81.091), km(mpp, 18))])
+            render(land, un, f"georgia_ctl_{nm}_mx.png")
     if "savannah" in which and os.path.exists("assets/savannah_land.png"):
         import make_m2_savannah_ctl as SV
         P, mpp = proj("savannah"); land = load_land("savannah")

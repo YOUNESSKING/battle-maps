@@ -22,3 +22,4 @@ dahlgren_src.jpg | [Portrait of Rear Adm. John A. Dahlgren, officer of the Feder
 
 grant_src.jpg, lincoln_src.jpg, *_head*.png for grant/lincoln: copied from meade/assets/media (see meade/assets/media/CREDITS.md for sources; LoC, public domain)
 *_head_flat.png = square 400x400 crop of the _src; *_head.png = rembg (isnet-general-use) cut-out of the flat crop. Flags (us34/us35/csa*) are copied from meade and Wikimedia (public domain as tagged).
+archive_sherman_fort7.jpg | [Atlanta, Ga. Gen. William T. Sherman on horseback at Federal Fort No. 7] | George N. Barnard | 1864 | https://www.loc.gov/item/2018666106/ | Public domain (LoC: no known restrictions on publication); cwpb 03628

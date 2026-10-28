@@ -189,3 +189,6 @@ const resultCard = (head, l1, l2, l3, t, until, w = 1100) => slam(scr(`<div styl
   <div style="font-size:30px;letter-spacing:0.08em;color:#f7f3ea;margin-top:4px">${l2}</div>
   ${l3 ? `<div style="font-size:66px;letter-spacing:0.04em;color:#ffd54a;line-height:1.1">${l3}</div>` : ""}</div>`, `left:0;right:0;margin:auto;width:${w}px;top:220px;`), t, { from: 1.4, shake: 4, until });
 const flagsBoth = (cs, us, t, until, w = 100) => [flag(FL.csa, "CONFEDERATE STATES", cs[0], cs[1], t, until, w), flag(FL.us, "UNITED STATES", us[0], us[1], t + 0.05, until, w)];
+// move any world pin (ship, icon) along a path
+const follow2 = (el, pts, t, dur, ease = "power1.inOut") => { const cum = cumOf(pts), p = { d: 0 };
+  tl.to(p, { d: cum[cum.length - 1], duration: dur, ease, onUpdate: () => { const q = atLen(pts, cum, p.d); el.style.left = q[0] + "px"; el.style.top = q[1] + "px"; } }, t); };
