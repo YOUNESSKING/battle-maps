@@ -2,7 +2,7 @@
 // Built with: python3 tools/build_scene.py hook-a getty_hd_ref hook-1 hook-3
 // hook-1 (v2 opening, owner 2026-10-28): frame 0 = Potomac-Pennsylvania overview (baked inset, option 1), red columns moving north,
 //         Lee badge; defeat stamps SEVEN DAYS / SECOND MANASSAS / FREDERICKSBURG / CHANCELLORSVILLE + BEATEN AGAIN AND AGAIN; "And now
-//         now he marches into Pennsylvania": territory flips to 28 June, Mason-Dixon line lights, red arrows over it, NOW: INTO PENNSYLVANIA;
+//         now he marches into Pennsylvania": territory flips to 28 June, Mason-Dixon line lights, red arrows over it, MARCHING INTO PENNSYLVANIA;
 //         ONE continuous zoom-whoosh DIVE (v3, no cut) from the overview into the Gettysburg map (~6.4-8.2 s, lands on "Gettysburg", penn fades 6x-14x),
 //         columns on the road spokes, guns; 51,000 slams on its words,
 //         IN 3 DAYS; push-in to the fishhook (blue line glows); 72,000 LEE vs 94,000 "ITS GENERAL: ?", IN COMMAND: 3 DAYS.
@@ -89,7 +89,7 @@ const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration
 const L = GG.proj(14, 1195859, 1589921);
 // =====================================================================================================================
 const H1 = "hook-1", H2 = "hook-2", H3 = "hook-3";
-const T_LEE0 = at(H1, "Robert E. Lee"), T_AGAIN = at(H1, "again and again"), T_NOW = at(H1, "And now he marches"), T_PA = at(H1, "Pennsylvania,"), T_TOWN = at(H1, "a small town"), T_FIFTY = at(H1, "Fifty-one"),
+const T_LEE0 = at(H1, "Robert E. Lee"), T_AGAIN = at(H1, "again and again"), T_NOW = at(H1, "And now he marches"), T_PA = at(H1, "Pennsylvania,"), T_TOWN = at(H1, "a small town"), T_MARCHES = at(H1, "marches into"), T_GBURG = at(H1, "Gettysburg."), T_FIFTY = at(H1, "Fifty-one"),
   T_KILL = at(H1, "Killed,"), T_WOUN = at(H1, "wounded,"), T_CAPT = at(H1, "captured"), T_MISS = at(H1, "missing"), T_3D = at(H1, "in three days"),
   T_GEN = at(H1, "the general"), T_STOP = at(H1, "stop him"), T_CMD = at(H1, "in command"), T_JUST = at(H1, "just three");
 const S2 = PS(H2), T_12 = at(H2, "twelve and"), T_MARCH = at(H2, "marched across"), T_OPEN = at(H2, "open fields"), T_STR = at(H2, "straight at"),
@@ -175,15 +175,15 @@ const MDL = IP(39.722, -76.55);
 box("MASON-DIXON LINE", MDL[0], MDL[1] - O(14), T_NOW + 0.2, O(15), TOV);
 box("PENNSYLVANIA", ...IP(39.95, -76.40), T_NOW + 0.3, O(19), TOV); box("MARYLAND", ...IP(39.57, -77.10), T_NOW + 0.35, O(16), TOV, false);
 [[IP(39.55, -77.86), IP(39.80, -77.70), IP(40.02, -77.45)], [IP(39.60, -77.80), IP(39.78, -77.45), IP(39.83, -77.25)], [IP(39.62, -77.76), IP(39.80, -77.20), IP(39.93, -76.85)]].forEach((pts, k) =>
-  B.arrow({ pts, side: "rome", t: T_NOW + 0.1 + k * 0.25, dur: 0.9, width: O(10), until: TOV }));
-SFX("ref:whoosh", T_NOW + 0.1);
+  B.arrow({ pts, side: "rome", t: T_MARCHES - 0.1 + k * 0.25, dur: 0.9, width: O(10), until: TOV }));
+SFX("ref:whoosh", T_MARCHES - 0.1);
 const GI = IP(39.8309, -77.2311);
-K.target(...GI, T_TOWN - 0.4, { r: O(22), until: TZ0 - 0.8 }); box("GETTYSBURG", GI[0] + O(64), GI[1] + O(18), T_TOWN - 0.3, O(16), TOV);
-const NOW = scr(stampHTML("NOW: INTO PENNSYLVANIA", "#e3232f", 60, -4, "JUNE 1863"), "right:110px;top:640px;");
+GG.pin(`<div style="width:${O(40)}px;height:${O(40)}px;border-radius:50%;border:${O(3)}px solid #ffd54a;box-shadow:0 0 ${O(10)}px #ffd54a"></div>`, ...GI, { t: T_TOWN - 0.5, pop: true, until: TOV }); SFX("ref:pop", T_TOWN - 0.45); box("GETTYSBURG", GI[0] + O(64), GI[1] + O(18), T_TOWN - 0.3, O(16), TOV);
+const NOW = scr(stampHTML("MARCHING INTO PENNSYLVANIA", "#e3232f", 56, -4, "JUNE 1863"), "right:110px;top:640px;");
 slam(NOW, T_PA, { shake: 5, until: TZ0 + 0.9 });
 const SC0 = 0.8;
 const WF = flags(SC0, [2120, 1180], [760, 470], T0, T_GEN + 0.1);
-const WT = [box("GETTYSBURG", P.town[0] - 170, P.town[1] - 10, T0 + 0.1, 22, T_GEN + 0.1)];
+const WT = [box("GETTYSBURG", P.town[0] - 170, P.town[1] - 10, T_GBURG - 0.05, 22, T_GEN + 0.1)];
 B.city("", P.town[0], P.town[1], { r: 7, t: T0 + 0.05, until: T_GEN + 0.1 });
 const WU = { w: 66, h: 44, tag: 22 };
 const RW = [unitXY("rh", "rome", 900, 220, "infantry", { ...WU, label: "A.P. HILL", t: T0 }), unitXY("rh2", "rome", 720, 120, "infantry", { ...WU, w: 52, h: 35, t: T0 }),
