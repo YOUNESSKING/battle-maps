@@ -3,8 +3,8 @@ to map px; D8 flow with pysheds), copied from greene2/tools/make_carolinas_river
 checked point on its upper course, and cut by name at its checked confluence.
   carolinas (z9, 34.25N 79.90W): the six rivers across Sherman's path in the order he met them (SAVANNAH, SALKEHATCHIE (-> COMBAHEE),
     EDISTO (North Fork, Orangeburg), CONGAREE (Broad above Columbia -> Congaree -> Santee), PEE DEE (Cheraw), CAPE FEAR (Fayetteville))
-    + LYNCHES, WATEREE, NEUSE, LUMBER for context.
-  bentonville (z13, 35.30N 78.32W): MILL CREEK (the bridge behind Johnston), NEUSE, HANNAH CREEK.
+    + WATEREE, NEUSE for context.
+  bentonville (z13, 35.30N 78.32W): MILL CREEK (start = OSM/Nominatim stream head 35.2918N 78.4053W; the bridge behind Johnston), NEUSE, FALLING CREEK.
 -> assets/src/<base>_m3_rivers.json  {"named": {name: [[x, y], ...] map px}, "net": [{"o": 1|2, "pts": [...]}]}
 usage (from sherman/): python3 tools/make_m3_rivers.py [carolinas|bentonville]"""
 import json, math, sys
@@ -23,11 +23,10 @@ CFG = {
                ("CONGAREE", (34.30, -81.20), [(33.80, -80.63, "SANTEE")]),                  # Broad above Columbia -> Congaree -> Santee
                ("PEE DEE", (35.15, -80.06), []),                                           # below the Uwharrie mouth -> Cheraw -> sea
                ("CAPE FEAR", (35.62, -79.06), []),                                         # Deep River mouth -> Fayetteville -> sea
-               ("NEUSE", (35.95, -78.70), []), ("LUMBER", (35.05, -79.30), []), ("LYNCHES", (34.85, -80.40), []),
-               ("WATEREE", (34.33, -80.70), [])],
+               ("NEUSE", (35.95, -78.70), []), ("WATEREE", (34.33, -80.70), [])],
         tribs=[], thr=((1, 4000), (2, 20000)), down=2),
     "bentonville": dict(
-        mains=[("NEUSE", (35.414, -78.30), []), ("MILL CREEK", (35.41, -78.36), []), ("HANNAH CREEK", (35.41, -78.33), [])],
+        mains=[("NEUSE", (35.412, -78.24), []), ("MILL CREEK", (35.2918, -78.4053), []), ("FALLING CREEK", (35.2614, -78.2768), [])],
         tribs=[], thr=((1, 3000), (2, 15000)), down=2),
 }
 D8 = {64: (-1, 0), 128: (-1, 1), 1: (0, 1), 2: (1, 1), 4: (1, 0), 8: (1, -1), 16: (0, -1), 32: (-1, -1)}

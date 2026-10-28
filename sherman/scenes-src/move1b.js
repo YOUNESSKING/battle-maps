@@ -282,7 +282,7 @@ const geoLbl = [["DALTON", DAL, 30, 8, 0], ["RESACA", RES, 26, 7, 0]];
 const FCL = [[L(34.86, -85.17), L(34.70, -84.90)], [L(34.66, -85.20), L(34.70, -84.86)]];
 flag(FL.us, "UNITED STATES", ...FCL[0][0], 0.2, T_WA + 0.6, 36); flag(FL.cs, "CONFEDERATE STATES", ...FCL[0][1], 0.3, T_WA + 0.6, 36);
 flag(FL.us, "UNITED STATES", ...L(34.80, -86.20), T_WA + 0.8, T_WAIT + 0.4, 130); flag(FL.cs, "CONFEDERATE STATES", ...L(34.05, -83.75), T_WA + 0.9, T_WAIT + 0.4, 150);
-flag(FL.us, "UNITED STATES", ...FCL[0][0], T_WAIT + 1.0, T_EVERY + 0.4, 36); flag(FL.cs, "CONFEDERATE STATES", ...FCL[0][1], T_WAIT + 1.1, T_EVERY + 0.4, 36);
+flag(FL.us, "UNITED STATES", ...L(34.785, -85.17), T_WAIT + 1.0, T_EVERY + 0.4, 36); flag(FL.cs, "CONFEDERATE STATES", ...FCL[0][1], T_WAIT + 1.1, T_EVERY + 0.4, 36);
 flag(FL.us, "UNITED STATES", ...L(34.95, -85.70), T_EVERY + 1.0, T_SAW + 1.0, 110); flag(FL.cs, "CONFEDERATE STATES", ...L(34.20, -84.30), T_EVERY + 1.1, T_SAW + 1.0, 110);
 flag(FL.us, "UNITED STATES", ...FCL[1][0], T_SAW + 1.4, T_PATTERN + 1.0, 42); flag(FL.cs, "CONFEDERATE STATES", ...FCL[1][1], T_SAW + 1.5, T_PATTERN + 1.0, 42);
 flag(FL.us, "UNITED STATES", ...L(34.66, -85.16), T_PATTERN + 1.2, T_FELL + 0.4, 52); flag(FL.cs, "CONFEDERATE STATES", ...L(34.48, -84.80), T_PATTERN + 1.3, T_FELL + 0.4, 52);

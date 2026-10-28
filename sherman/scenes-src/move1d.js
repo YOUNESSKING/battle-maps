@@ -294,7 +294,7 @@ flag(FL.us, "UNITED STATES", ...L(33.835, -84.46), T_ONCE + 0.2, T_SWUNG, 38); f
 flag(FL.us, "UNITED STATES", ...L(33.86, -84.62), T_SWUNG + 0.6, T_WRONG + 0.6, 80); flag(FL.cs, "CONFEDERATE STATES", ...L(33.46, -84.18), T_SWUNG + 0.7, T_WRONG + 0.6, 80);
 flag(FL.us, "UNITED STATES", ...L(33.525, -84.395), T_WRONG + 0.8, T_THAT + 0.6, 24); flag(FL.cs, "CONFEDERATE STATES", ...L(33.505, -84.335), T_WRONG + 0.9, T_THAT + 0.6, 24);
 flag(FL.us, "UNITED STATES", ...L(33.79, -84.47), T_THAT + 0.8, T_COST + 0.6, 48); flag(FL.cs, "CONFEDERATE STATES", ...L(33.69, -84.31), T_THAT + 0.9, T_COST + 0.6, 48);
-flag(FL.us, "UNITED STATES", ...L(33.62, -84.55), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), T_COST + 0.9, END + 1, 150);
+flag(FL.us, "UNITED STATES", ...L(33.52, -84.42), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), T_COST + 0.9, END + 1, 150);
 
 // ---------- move1-6: the Chattahoochee; Hood; three attacks ----------
 const F0 = frontS({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });

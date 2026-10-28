@@ -238,7 +238,7 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.shimmer(LN.river.C
 legend(0.1, END + 1, false);
 B.camera([[0, 1440, 790, 0.72], [T_BRK, 1460, 760, 0.78], [T_BEC, 1500, 740, 0.85], [END, 1560, 760, 0.9]]);
 B.showDate(0.1); B.date("SEPTEMBER 1864", 0.2, null, 34);
-flag(FL.us, "UNITED STATES", ...L(33.62, -84.55), 0, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), 0, END + 1, 150);
+flag(FL.us, "UNITED STATES", ...L(33.52, -84.42), 0, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), 0, END + 1, 150);
 frontS({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 12.5, until: END + 1 });
 // the blue army in the city; Hood to the south
 unit("ua", "carth", L(33.755, -84.392), "infantry", "SHERMAN", { t: 0, w: 34, h: 23, tag: 9, size: "XXXX" });
