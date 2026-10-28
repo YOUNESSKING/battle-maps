@@ -57,8 +57,24 @@ def fred_lines(P):
             out.append(([P(a, b) for a, b in g], (10, 20, 26, 0), (96, 150, 190, 200), 3))
     return out
 
+def penn_overview(name="penn", cx=1500, cy=760, wpx=1100, ctl="jun63"):
+    """hook-1 opening (v2): the Potomac - Pennsylvania overview with the 28 June 1863 control overlay (multiply) and the geo layer
+    baked in (one image, so the scene can show it full-frame over the Gettysburg map for the first ~5 s)."""
+    from PIL import ImageChops
+    J = json.load(open("assets/penn.json")); hpx = wpx * 9 / 16; x0, y0 = cx - wpx / 2, cy - hpx / 2
+    box2 = (round(x0 * 2), round(y0 * 2), round((x0 + wpx) * 2), round((y0 + hpx) * 2))
+    base = Image.open("assets/penn_hd_ref.jpg").convert("RGB").crop(box2)
+    ov = Image.open(f"assets/media/penn_ctl_{ctl}_mx.png").convert("RGBA").resize((5760, 3240)).crop(box2)
+    white = Image.new("RGB", base.size, (255, 255, 255)); white.paste(ov, (0, 0), ov)
+    img = ImageChops.multiply(base, white).convert("RGBA")
+    geo = Image.open("assets/media/penn_geo_ref.png").convert("RGBA").crop(box2); img.alpha_composite(geo)
+    img.convert("RGB").resize((2880, 1620), Image.LANCZOS).save(f"assets/media/hook_inset_{name}.jpg", quality=88)
+    return {"z": J["zoom"], "ox": J["origin_world_px"][0], "oy": J["origin_world_px"][1], "x0": x0, "y0": y0, "w": wpx, "h": hpx}
+
 if __name__ == "__main__":
     M = {}
+    M["penn"] = penn_overview()                        # 28 June 1863: Lee in Pennsylvania
+    penn_overview("penn0", ctl="jul63")               # before the invasion (Virginia only), same crop
     M["fred"] = inset("fred", "prospect", (38.2410, -77.4250), 1000, fred_lines)       # Prospect Hill, the gap, the plain to the Stage Road
     M["getty"] = inset("getty", "getty", (39.8075, -77.2345), 1150, getty_lines)       # the whole fishhook + Seminary Ridge
     M["angle"] = inset("angle", "getty15", (39.8125, -77.2395), 900, getty_lines)      # the Angle, the Copse of Trees, the field to Seminary Ridge
