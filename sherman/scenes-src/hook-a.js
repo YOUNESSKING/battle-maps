@@ -144,10 +144,11 @@ const necktie = (x, y, t, k, until) => { const el = GG.pin(`<svg width="${26 * k
   SFX("hit", t + 0.05); return el; };
 // =====================================================================================================================
 const H1 = "hook-1", H2 = "hook-2", H3 = "hook-3";
-const T_LIN = at(H1, "Abraham Lincoln"), T_EXP = at(H1, "expected to lose"), T_ELEC = at(H1, "the election"), T_HOPE = at(H1, "any hope"),
-  T_SAVE = at(H1, "saving the Union"), T_EVERY = at(H1, "Everything now"), T_RAIL = at(H1, "one railroad city"), T_GA = at(H1, "in Georgia"),
-  T_ATL = at(H1, "Atlanta.");
-const S2 = PS(H2), T_UNION = at(H2, "Union soldiers"), T_FOUR = at(H2, "four months"), T_HELD = at(H2, "the city still held"), T_THEN = at(H2, "Then their general"),
+// hook-1 re-voiced 2026-10-28 (8.75 s): the stakes beats are compressed onto the new words
+const T_LIN = at(H1, "Abraham Lincoln"), T_EXP = at(H1, "expected to lose"), T_ELEC = at(H1, "the election"), T_UWI = at(H1, "the Union with it"),
+  T_HUNG = at(H1, "Everything hung"), T_ATL = at(H1, "Atlanta.");
+const T_HOPE = T_ELEC + 0.45, T_SAVE = T_UWI - 0.05, T_EVERY = T_UWI + 0.45, T_RAIL = T_HUNG - 0.45;   // fold, SIGNED UNREAD, rail glow, zoom start
+const S2 = PS(H2), T_UNION = at(H2, "Union soldiers"), T_ONEG = at(H2, "one general"), T_BREAK = at(H2, "break the Confederacy"), T_YEAR = at(H2, "within a year"), T_END = at(H2, "At the end of August"), T_FOUR = at(H2, "four months"), T_HELD = at(H2, "the city still held"), T_THEN = at(H2, "Then their general"),
   T_SWUNG = at(H2, "swung almost"), T_AROUND = at(H2, "around it"), T_LAST = at(H2, "its last railroad"), T_WITHIN = at(H2, "Within days"),
   T_FELL = at(H2, "Atlanta fell"), T_WON = at(H2, "and Lincoln won"), T_NOT = at(H2, "did not stop"), T_CUT = at(H2, "He cut his own"),
   T_MARCH = at(H2, "marched through"), T_SEA = at(H2, "to the sea"), T_NORTH = at(H2, "north through"), T_LARG = at(H2, "the largest surrender");
@@ -220,7 +221,7 @@ tl.set(MEMO, { autoAlpha: 0 }, T_HOPE + 0.36);
 tl.fromTo(NOTE.querySelector(".seal"), { scale: 0 }, { scale: 1, duration: 0.2, ease: "back.out(2.5)", immediateRender: false }, T_HOPE + 0.55); SFX("hit", T_HOPE + 0.6);
 const UNREAD = scr(stampHTML("SIGNED UNREAD", "#e3232f", 58, -6, "BY HIS CABINET"), "right:250px;top:470px;");
 slam(UNREAD, T_SAVE - 0.05, { shake: 5 }); pulse(T_SAVE + 0.2);
-tl.to([NOTE, UNREAD], { autoAlpha: 0, y: -30, duration: 0.3 }, T_EVERY + 0.2);
+tl.to([NOTE, UNREAD], { autoAlpha: 0, y: -30, duration: 0.3 }, T_RAIL + 0.1);
 // "everything now hung on one railroad city": the W&A glows Chattanooga -> Atlanta, the city ring turns gold
 const WAT = rail(WA_T, T_EVERY - 0.3, K0 * 1.2, T_RAIL + 0.75, { glow: "#ffd54a" }); WAT.glow(T_EVERY, T_RAIL + 0.6, 0.95);
 box("CHATTANOOGA", P.chatt[0] - 140 * K0, P.chatt[1] - 6 * K0, T_EVERY + 0.1, 12 * K0, T_RAIL + 0.4, false);
@@ -260,7 +261,7 @@ const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:70
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">PRESENT FOR DUTY · 1 MAY 1864 · SHERMAN'S MEMOIRS</div></div>`,
   "right:70px;top:150px;transform-origin:50% 40%;");
 slam(BIG, S2 - 0.05, { from: 1.9, dur: 0.22, shake: 6 });
-tick(BIG, ".n", 98797, S2 + 0.2, T_FOUR - 0.1);
+tick(BIG, ".n", 98797, S2 + 0.2, Math.min(T_ONEG - 0.1, S2 + 2.6));
 const S4M = scr(stampHTML("4 MONTHS", "#e8c66a", 70, -5, "MAY - AUGUST 1864"), "right:290px;top:500px;");
 slam(S4M, T_FOUR - 0.05, { shake: 5 });
 camTo(TZ1 + 0.02, T_THEN - TZ1 - 0.1, CL[0] - 6, CL[1] + 10, SL * 1.04, "sine.inOut");
@@ -274,7 +275,11 @@ function ux(id) { return [B.units[id].x, B.units[id].y]; }
 // "their general": the mystery badge (the name comes in hook-4)
 const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.us}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.85), rgba(10,12,24,0.6));font-family:Oswald;font-weight:700;font-size:110px;color:#f7f3ea">?</div></div>
   <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THEIR GENERAL</div><div style="font-size:20px;letter-spacing:0.14em;color:#d8cfb8">COMMANDING THE UNION ARMIES IN THE WEST</div></div></div>`, "left:60px;bottom:140px;");
-tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_THEN);
+tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_ONEG - 0.1); SFX("ref:pop", T_ONEG);
+// "one general who would break the Confederacy within a year": the promise, spoken as a result (STYLE_LOCK 1a, 2026-10-28)
+const SBRK = scr(stampHTML("BREAKS THE CONFEDERACY", "#9fc0ea", 64, -4, "WITHIN A YEAR · 1864 - 1865"), "left:0;right:0;top:800px;display:flex;justify-content:center;");
+slam(SBRK, T_BREAK - 0.05, { shake: 6, sfx: "ref:boom", until: T_END - 0.1 });
+tl.to(QB, { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1, transformOrigin: "0% 100%" }, T_YEAR); SFX("hit", T_YEAR + 0.05);
 tl.to(QB, { autoAlpha: 0, x: -80, duration: 0.4 }, T_NOT + 0.2);
 // THE SWING: pull back (whoosh) to show Jonesboro; the trenches empty, the army swings round the WEST side of the city
 const SW = 0.98, CWg = [1440, 830];
