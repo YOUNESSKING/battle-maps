@@ -1,0 +1,165 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/gavin_src.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.36
+   ],
+   "label": "JAMES MAURICE GAVIN \u00b7 BORN 1907",
+   "depth": true
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_02.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "film": "assets/film/clips/airborne_training_03.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "1924",
+    "ENLISTED AT 17"
+   ]
+  },
+  {
+   "film": "assets/film/clips/airborne_training_07.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/archive_gavin_1945.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.28
+   ],
+   "label": "WEST POINT \u00b7 CLASS OF 1929",
+   "depth": true
+  }
+ ],
+ "5": [
+  {
+   "film": "assets/film/clips/airborne_training_02.mp4",
+   "ss": 0.5,
+   "dur": 4.4,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "1942",
+    "US PARACHUTE TROOPS"
+   ]
+  },
+  {
+   "photo": "assets/media/archive_airborne_benning_prep.jpg",
+   "move": "right",
+   "label": "FORT BENNING \u00b7 1942",
+   "dur": 4.4,
+   "depth": true
+  },
+  {
+   "film": "assets/film/clips/airborne_training_05.mp4",
+   "ss": 0.5,
+   "dur": 4.2,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "film": "assets/film/clips/airborne_training_12.mp4",
+   "ss": 0.5,
+   "dur": 4.2,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/archive_airborne_benning_descent.jpg",
+   "move": "in",
+   "focus": [
+    0.62,
+    0.3
+   ],
+   "dur": 4.2,
+   "depth": true
+  },
+  {
+   "film": "assets/film/clips/airborne_training_04.mp4",
+   "ss": 0.3,
+   "dur": 4.0,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "film": "assets/film/clips/airborne_training_11.mp4",
+   "ss": 0.5,
+   "dur": 4.0,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "film": "assets/film/clips/normandy_march_01.mp4",
+   "ss": 0.5,
+   "dur": 4.2,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/gavin_src.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.36
+   ],
+   "label": "COL. GAVIN \u00b7 505TH PARACHUTE INFANTRY",
+   "depth": true
+  }
+ ],
+ "24": [
+  {
+   "film": "assets/film/clips/sicily_smoke_02.mp4",
+   "ss": 0.5,
+   "label": "SICILY \u00b7 1943",
+   "dur": 2.5,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "film": "assets/film/clips/normandy_amfreville_02.mp4",
+   "ss": 0.5,
+   "label": "NORMANDY \u00b7 1944",
+   "dur": 2.5,
+   "tint": true,
+   "frame": true
+  },
+  {
+   "film": "assets/film/clips/mg_flight_02.mp4",
+   "ss": 0.5,
+   "label": "HOLLAND \u00b7 SEPTEMBER 1944",
+   "tint": true,
+   "frame": true
+  }
+ ],
+ "36": [
+  {
+   "film": "assets/film/clips/gavin_parade_01.mp4",
+   "ss": 0.3,
+   "dur": 3.4,
+   "tint": true,
+   "frame": true,
+   "headline": [
+    "12 JANUARY 1946",
+    "NEW YORK"
+   ]
+  },
+  {
+   "film": "assets/film/clips/gavin_parade_04.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true
+  }
+ ]
+}

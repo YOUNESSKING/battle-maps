@@ -72,18 +72,45 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
 | Reference scenes to copy from | `goosegreen/scenes-src/move3.js` (Harrier bombing run, helicopters, AA, casualty card), `test-terr-f.js` (fronts + territory, final look), `move1.js` (night attack) |
 
 ## 1a. THE HOOK (LOCKED, owner 2026-10-09, Rokossovsky hook v2: "I do like it... I want all videos to have strong hooks like this")
+**UPDATED 2026-10-28 (owner, Meade #12), REVISED same day: THE OPENING = THE STAKES OF THIS STORY -> CONTINUOUS ZOOM -> NUMBER.**
+Reference for the opening: `reference/hook-reference-meade-v3.mp4` (0:00-1:03) + `reference/hook-reference-meade-v3-sheet.jpg`
+(scene source `meade/scenes-src/hook-a.js`). Why: "Fifty-one thousand men..." as line 1 jumped in with no context; the old Greene opening
+("the American Revolution was dying in the South") set the stakes first. The rest of the hook below is unchanged.
+- **Script, before the number (~6-10 s, 1-2 short sentences): the STAKES of this particular story, written fresh every time.**
+  Ask: *what was about to be lost or won if this commander failed?* The war, the capital, the revolution, the whole army, the South,
+  the empire... Say THAT in plain, dramatic words, then bring the viewer to the place where it was decided, ending on the place name so the
+  number lands there. Examples (each a different stake, each worded differently; NOT templates):
+  - Meade: "Robert E. Lee had beaten the Union army again and again. And now he marches into Pennsylvania, to a small town called
+    Gettysburg." (stake: an unbeaten enemy on Northern soil)
+  - Greene: "In the summer of seventeen eighty, the American Revolution was dying in the South." (stake: the cause itself)
+  - Possible others: "If Moscow fell, the Soviet Union fell with it." / "One more defeat, and there would be no army left to lose." /
+    "The war was supposed to be over by Christmas. Then..."
+- **NEVER reuse another video's stakes sentence with the names swapped** (owner 2026-10-28: a session copied "had beaten ... again and again.
+  And now he marches into..." onto another general). Check before voicing: *"Could this line open a different video if I swapped the names?
+  If yes, rewrite it from this video's research."* The stakes come from the Gemini brief's "stakes" section and FACT_NOTES.
+- **The stakes must be true and sourced** (log in FACT_NOTES): no "the war was about to be lost" unless sources say so; concrete stakes
+  (a capital, an army, a deadline, a cause) beat vague ones.
+- **Visual = the stakes shown as action, chosen to fit the line:** frame 0 = a wide map with units already moving, both flags, territory,
+  the key commander's real-photo badge; **a stamp within the first second**; then whatever shows THIS stake: past defeats as one stamp each
+  (Meade), a capital ring pulsing under arrows (a capital about to fall), territory shrinking date by date (a cause dying), a countdown...
+  Then **ONE continuous geographic zoom** (zoom whoosh) from the overview straight down onto the place, arriving on the spoken place name:
+  both maps driven by the same camera at true position and scale, the overview cross-faded out between ~6x and ~14x with feathered edges,
+  **never a cut or a white flash** (owner: the cut "is not seamless").
+- **The big number card slams on its own words**, then ticks; the other cards on their words as before.
+- **Timing:** payoff (title promise) by **~0:30** (Meade: REPULSED at 0:32); dive by ~6-8 s; a beat every 2-4 s throughout.
+- **Rule of the hook below (line 1 = number) now applies to the sentence AFTER the stakes frame.**
 Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + music + SFX) and its beat sheet
 `reference/hook-reference-rokossovsky-v2-sheet.jpg`. Every video's first minute must match it. v1 of that hook was REJECTED as
 "boring, not visual": a belief as line 1, no card, 7-10 s with nothing new, an 18 s static badge. Never ship a hook like that again.
 **Script (first ~60 s, 4 paragraphs):**
-1. **Line 1 = a hard number + the disaster/stakes in 3 short sentences** ("Four hundred thousand German soldiers. Lost in a single summer.
+1. **After the stakes frame (see UPDATED above): a hard number + the disaster/stakes in 3 short sentences** ("Four hundred thousand German soldiers. Lost in a single summer.
    And it all began in a swamp the Germans were sure no army could cross."). Never a date + place, never a belief or background first.
-2. **Flash-forward / payoff by ~0:20-0:25** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
+2. **Flash-forward / payoff by ~0:25-0:32** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
 3. **The human twist as ACTION, not a portrait** (prison, wound, disgrace, odds against the man), every detail its own beat.
 4. **Name reveal + the three moves as quick cuts**, then "These are <Name>'s three greatest tactical moves." Hook total ~60-65 s.
 **Visuals + sound (check each on the snapshot sheet before rendering):**
 - Frame 0: map with units ALREADY MOVING (guns firing, counters advancing), flags + territory on screen.
-- **A big number card slams in within the first second** (hit + shake) and ticks up (ticks); a stamp on the punchline (hit + shake).
+- **A stamp slams in within the first second** (stakes frame), and **the big number card slams in on the number's words** (hit + shake) and ticks up (ticks); a stamp on the punchline (hit + shake).
 - **A hard zoom-whoosh camera DIVE within the first ~6 s** onto the place of the story.
 - **Something new every 2-4 s, never more than 4 s without a change** (camera move, stamp, counter, units moving, impacts, cut).
   Make the snapshot sheet every ~2.5 s for the first 30 s to prove it.
@@ -92,6 +119,14 @@ Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + mus
   one stamp per spoken detail (hit + small shake + red pulse), caveats as a small caption ("by his family's account").
 - **Name slams in** (hit + shake), then 3 snap cuts (~3 s each, whoosh + hit) of the three battles, then the title card (riser + boom).
 - SFX on every beat; the zoom whoosh only on the 2-3 biggest camera moves (dive, flash-forward, zoom-out).
+**Proved by data (Morgan analytics 2026-10-25, owner-approved 2026-10-26; `morgan/youtube/analytics_2026-10-25.md`):** Morgan opened on
+a date + background and named the promise only at 0:35: 44 % of viewers were gone by 0:42. So, on top of the rules above:
+- **The title's promise is spoken as a result within the first 10 s** (e.g. "In under an hour, one crippled wagon driver wiped out
+  Britain's most feared legion."). Holding back the hero's NAME for the slam is fine; holding back the PROMISE is not.
+- **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise.**
+- **The three moves are previewed by 0:45** (name slam + 3 snap cuts finished by then): tighten the twist rather than drop beats.
+- Targets: **≥ 65 % retention at 0:30 and ≥ 55 % at 1:00** (HANDOVER §10). Check the script against them before voicing.
+**Confirmed again (George Thomas 2nd read 2026-10-26):** 94.4 % → 51.2 % by 0:45; the old Thomas hook (date + place first) shows the curve bottoming just before the hero appears (0:47). No new rule: the hook above already fixes this.
 **Source to copy:** `rokossovsky/scenes-src/hook-a.js` + `hook-b.js` on branch `claude/rokossovsky-video-8` (script: `rokossovsky/script.md` HOOK).
 
 ## 1b. ENGAGEMENT BEATS (LOCKED, owner 2026-10-14: "I do like them... make it official")
@@ -115,7 +150,11 @@ policy (asking to like, comment or subscribe is allowed; never rewards, coercion
    `E.final({ moves: [[NAME, DATE] x3], tShow, tNums, tAsk, tFamily, tSub, until })` = three numbered cards popping in as each move is
    named, 1, 2 OR 3? (gold), the family-story line, and the corner subscribe button. For wars with no living families (ancient,
    18th-19th century) replace the family line with "and tell us which commander we should cover next".
-Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in the reference. Time each beat with `B.at` on the spoken words.
+Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in the reference.
+**Ending rules (Thomas 2nd read 2026-10-26: the 81 s ending lost 6.4 points with no next video offered; the 7:25 subscribe dip used the old wording, made before this section, so beat 1 stays as it is):**
+- **The ending is ≤ 45 s after the final battle result**: method recap + callback in one short paragraph, legacy kept to 1-2 sentences, then the final question (beat 3).
+- **Inside the final-question paragraph, just before its "Subscribe..." line, pitch ONE specific next video by name** (same war or same kind of move: "And next, watch how Stonewall Jackson fooled three Union armies at once."). The final question stays the last paragraph.
+- The last ~20 s leave room for **YouTube's end screen** (map stays on screen; set that same video + subscribe in Studio). Target: ≤ 3 points lost in the ending. Time each beat with `B.at` on the spoken words.
 
 ## 2. Visuals (locked)
 - **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).
@@ -212,6 +251,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Music `MUSIC_VOL = 0.08` (owner 2026-09-30 chose option C of a 0.18 / 0.12 / 0.08 test; the reference clip still has the older 0.18 music), 2 s fade-in, 3 s fade-out.
 - Music ducked under the voice: sidechain threshold 0.03, ratio 6, attack 20 ms, release 400 ms.
 - SFX ducked lightly under the voice: threshold 0.03, ratio 3, attack 10 ms, release 300 ms.
+- **Sound effects at FULL level** (no overall SFX volume cut), as in the newest videos (Rokossovsky #8 to Meade #12). Owner 2026-10-26: "use the option the newest session is using". The -4 dB cut (`SFX_VOL = 0.63`, owner 2026-10-14) applies to the **Goose Green remix only** and stays in `goosegreen/tools/` and its sound check; don't copy it into new videos.
 - Limiter 0.5, then two-pass loudnorm to **-14 LUFS**, true peak -1.5 dB, LRA 11. Audio AAC 192k.
 - Sound-only changes never need a re-render: `python3 tools/assemble_full.py --audio-only`.
 
@@ -219,7 +259,7 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - **Voice (DEFAULT, owner-locked 2026-10-06): voice A** = the Kokoro am_michael narration converted to the owner's reference voice with `tts/convert_voice.py` (ref `tts/voices/owner_ref.wav`, sample `tts/voices/test_A_chatterbox.mp3`; setup `bash tts/setup_clone.sh`). Same pacing and timestamps as the Kokoro take. **Option 2 (fallback only, or when the owner asks):** the plain Kokoro am_michael narration.
   Steps: `tools/narrate.py` (am_michael) → `audio/voice.wav` + `timing.json` → `/home/user/cb-venv/bin/python /home/user/battle-maps/tts/convert_voice.py audio/voice.wav /home/user/battle-maps/tts/voices/owner_ref.wav audio/voice_owner.wav` (~15-20 min per 18 min) → mix `voice_owner.wav`.
 - Hook: formula in HANDOVER section 1 (stakes-first line, flash-forward, change every 3-5 s, SFX on every beat).
-- Thumbnail: formula in HANDOVER 1b (vidIQ + Tactical Genius references, 1-3 word text, generic officer).
+- Thumbnail: formula in HANDOVER 1b (vidIQ + Tactical Genius references, 1-3 word text, generic officer). **Face pop (Thomas read 2026-10-26):** the portrait's face gets extra contrast + saturation (and a light rim against the map) so the expression reads at 168×94; text stays 1-3 words in high contrast.
 - Description: copy the layout of `goosegreen/build/youtube_description.txt` (chapters, sources, map/music/SFX/image credits), but with **NO links at all** (owner rule 2026-10: new channels get flagged as spam; write "licensed under Creative Commons Attribution 4.0" instead of the URL). Full rules: `research/PACKAGING_GUIDE.md`.
 
 ## 7. Tried and REJECTED (don't offer these again)

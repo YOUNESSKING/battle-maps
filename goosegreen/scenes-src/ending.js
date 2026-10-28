@@ -245,10 +245,10 @@ B.camera([
   [T_DARK, 1600, 880, 1.7],
   [T_HEAVY, 1560, 950, 2.0],
   [T_WORDS - 0.6, 1560, 955, 2.0],
-  [T_WORDS, 1545, 1120, 2.0],
-  [B.end(K1) + 0.5, 1560, 1100, 1.9],
-  [S2, 1560, 1100, 1.9],
-  [END, 1560, 1100, 2.1],
+  [T_WORDS, 1545, 1040, 2.0],  // raised so the Burntside House label is not cut at the top (was 1120 / 1100)
+  [B.end(K1) + 0.5, 1560, 1050, 1.9],
+  [S2, 1560, 1050, 1.9],
+  [END, 1560, 1020, 2.1],
 ]);
 
 const K = FXK(B);

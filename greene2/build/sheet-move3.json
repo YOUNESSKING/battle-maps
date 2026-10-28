@@ -1,0 +1,104 @@
+{
+ "title": "Nathanael Greene #13 \u00b7 MOVE 3 battlefield (Eutaw Springs, 8 September 1781) \u00b7 snapshot sheet",
+ "note": "move3b eutaw_hd_ref eutaw-3..7 \u00b7 move3c eutaw_hd_ref eutaw-8 \u00b7 option 2 \u00b7 night -> dawn in eutaw-4 \u00b7 mm:ss = video time",
+ "frames": [
+  [
+   "move3b",
+   12.0,
+   "11:35",
+   "eutaw-3 wide: 8 SEPTEMBER 1781, Stewart's camp at Eutaw Springs (Santee, River road), BRITISH ~2,000",
+   "ticks"
+  ],
+  [
+   "move3b",
+   21.0,
+   "11:44",
+   "push in: camp tents, EUTAW HOUSE (brick), walled garden, springs, Eutaw Creek, blackjack thicket",
+   "pops"
+  ],
+  [
+   "move3b",
+   33.0,
+   "11:56",
+   "eutaw-4 NIGHT (K.night): the American column marches east on the River road",
+   "-"
+  ],
+  [
+   "move3b",
+   37.8,
+   "12:00",
+   "rooting party digging sweet potatoes taken (rings); dawn follows",
+   "hit"
+  ],
+  [
+   "move3b",
+   61.0,
+   "12:24",
+   "eutaw-5: militia in front, Continentals behind; volleys both ways; ROUNDS FIRED -> 17; THE MILITIA HOLDS",
+   "mg x2, 17 ticks"
+  ],
+  [
+   "move3b",
+   70.0,
+   "12:33",
+   "eutaw-6: the Maryland + Virginia bayonet charge (Otho Williams badge)",
+   "-"
+  ],
+  [
+   "move3b",
+   76.5,
+   "12:39",
+   "THE BRITISH LINE BREAKS (stamp + shake): Stewart's army flees through its own camp",
+   "hit + shake"
+  ],
+  [
+   "move3b",
+   87.0,
+   "12:50",
+   "eutaw-7: Americans stop in the tents (counters scatter + tilt, food/rum): THE CAMP IS PLUNDERED",
+   "pops"
+  ],
+  [
+   "move3b",
+   99.0,
+   "13:02",
+   "New York Volunteers (Maj. Sheridan, initials) barricaded in the brick house, fire from the windows",
+   "mg"
+  ],
+  [
+   "move3b",
+   104.0,
+   "13:07",
+   "Marjoribanks (initials badge) holds the blackjack thicket; map holds into the archive",
+   "mg, pop"
+  ],
+  [
+   "move3c",
+   1.5,
+   "13:18",
+   "eutaw-8: Greene's light guns fire at the brick house; the walls hold",
+   "gun + impact boom + shake each"
+  ],
+  [
+   "move3c",
+   5.0,
+   "13:22",
+   "Greene withdraws west in good order; the British hold the field",
+   "-"
+  ],
+  [
+   "move3c",
+   12.5,
+   "13:29",
+   "casualty card US 139/375/8 (~522) | GB 85/351/257 (~693, more than a third)",
+   "hit, hit"
+  ],
+  [
+   "move3c",
+   19.8,
+   "13:37",
+   "9 SEPTEMBER: Stewart falls back toward CHARLESTON; zoom out (hand-off to move3d)",
+   "-"
+  ]
+ ]
+}

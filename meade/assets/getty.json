@@ -1,0 +1,19 @@
+{
+ "name": "getty",
+ "center": [
+  39.812,
+  -77.235
+ ],
+ "zoom": 14,
+ "origin_world_px": [
+  1195859,
+  1589921
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 7.34,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
