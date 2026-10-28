@@ -1,9 +1,10 @@
 // HOOK-A (hook-1 .. hook-3), George G. Meade #12. Basemap getty_hd_ref (z14, 39.812N 77.235W, dark HD relief). THE LOCKED HOOK (STYLE_LOCK 1a).
 // Built with: python3 tools/build_scene.py hook-a getty_hd_ref hook-1 hook-3
-// hook-1: frame 0 = the whole Gettysburg map, option 1 (hook_getty_ctl_jul2), red columns on the road spokes (A.P. HILL, EWELL), blue
-//         corps coming up from Maryland, guns firing on both ridges; 0.3 s BIG card 51,000 ticks (words light as spoken), IN 3 DAYS stamp;
-//         zoom-whoosh DIVE onto the fishhook (~5.3 s): blue line glows on Cemetery Ridge, red wraps the outside; 72,000 LEE vs
-//         94,000 "ITS GENERAL: ?", IN COMMAND: 3 DAYS.
+// hook-1 (v2 opening, owner 2026-10-28): frame 0 = Potomac-Pennsylvania overview (baked inset, option 1), red columns moving north,
+//         Lee badge; defeat stamps SEVEN DAYS / SECOND MANASSAS / FREDERICKSBURG / CHANCELLORSVILLE + BEATEN AGAIN AND AGAIN; "Now he
+//         was in Pennsylvania": territory flips to 28 June, Mason-Dixon line lights, red arrows over it, NOW: IN PENNSYLVANIA;
+//         zoom-whoosh DIVE + white flash into the Gettysburg map (~5.4 s), columns on the road spokes, guns; 51,000 slams on its words,
+//         IN 3 DAYS; push-in to the fishhook (blue line glows); 72,000 LEE vs 94,000 "ITS GENERAL: ?", IN COMMAND: 3 DAYS.
 // hook-2: 3 JULY 3 PM, option 2: Pickett's Charge, 12,500 ticks, 3/4 MILE ruler, the Copse of Trees ring, blue guns -> arcs -> impacts,
 //         rifle volleys from the wall, counters grey, ABOUT HALF bar, REPULSED (~0:23, boom); WHITE FLASH zoom-out: survivors fall back,
 //         Lee badge + rider, quote card "ALL THIS HAS BEEN MY FAULT" (Fremantle).
@@ -87,8 +88,9 @@ const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration
 const L = GG.proj(14, 1195859, 1589921);
 // =====================================================================================================================
 const H1 = "hook-1", H2 = "hook-2", H3 = "hook-3";
-const T_THOU = at(H1, "thousand"), T_KILL = at(H1, "Killed,"), T_WOUN = at(H1, "wounded,"), T_CAPT = at(H1, "captured"), T_MISS = at(H1, "missing"),
-  T_3D = at(H1, "three days."), T_GEN = at(H1, "the general"), T_LEE = at(H1, "Robert E. Lee"), T_CMD = at(H1, "in command"), T_JUST = at(H1, "just three");
+const T_LEE0 = at(H1, "Robert E. Lee"), T_AGAIN = at(H1, "again and again"), T_NOW = at(H1, "Now he was"), T_PA = at(H1, "Pennsylvania."), T_FIFTY = at(H1, "Fifty-one"),
+  T_KILL = at(H1, "Killed,"), T_WOUN = at(H1, "wounded,"), T_CAPT = at(H1, "captured"), T_MISS = at(H1, "missing"), T_3D = at(H1, "in three days"),
+  T_GEN = at(H1, "the general"), T_STOP = at(H1, "stop him"), T_CMD = at(H1, "in command"), T_JUST = at(H1, "just three");
 const S2 = PS(H2), T_12 = at(H2, "twelve and"), T_MARCH = at(H2, "marched across"), T_OPEN = at(H2, "open fields"), T_STR = at(H2, "straight at"),
   T_LESS = at(H2, "In less"), T_HALF = at(H2, "about half"), T_KWC = at(H2, "killed, wounded or captured"), T_AND = at(H2, "And Lee rode"),
   T_SURV = at(H2, "survivors"), T_TELL = at(H2, "telling"), T_FAULT = at(H2, "all this");
@@ -105,45 +107,89 @@ const C0 = wimg("assets/media/hook_getty_ctl_jul2_mx.png", 0, 0, null, true);
 tl.to(C0, { autoAlpha: 0, duration: 1.0 }, S2 + 0.2);
 const ROADS = wimg("assets/media/hook_getty_roads.png", 0, 0, null, false);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.18 }); const SB = LV.scaleBar(7.34), NA = LV.north();
-const SC0 = 0.8; cam.cx = 1640; cam.cy = 760; cam.s = SC0; applyCam();
 // =====================================================================================================================
-// hook-1 (0 - 10.97): WIDE (whole Gettysburg map), option 1; columns already marching in on the road spokes, guns firing
+// hook-1 v2 (0 - 16.34): "Robert E. Lee had beaten the Union army again and again. Now he was in Pennsylvania." on an overview
+// (penn crop baked into one image, tools/make_hook_insets.py: hook_inset_penn0 = before the invasion, hook_inset_penn = 28 June 1863),
+// defeat stamps, red columns over the Mason-Dixon line; zoom-whoosh DIVE to Gettysburg (~5.3 s); 51,000 on its words; push-in to
+// the fishhook on "And the general"; 72,000 / 94,000 / IN COMMAND: 3 DAYS on their words.
 // =====================================================================================================================
-date0("1 - 3 JULY 1863", S2 + 0.05);
+const INSP = GG.proj(9, 35842, 49095), IK = 2880 / 1100;
+const IP = (lat, lon) => { const [x, y] = INSP(lat, lon); return [(x - 950) * IK, (y - 450.625) * IK]; };
+const TSW = T_FIFTY - 0.25;                                 // the cut from the overview to the Gettysburg map (inside the dive)
+cam.cx = 1440; cam.cy = 810; cam.s = 0.667; applyCam();
+camTo(0, T_PA + 0.3, 1480, 760, 0.74, "sine.inOut");
+const IA = wimg("assets/media/hook_inset_penn0.jpg", 0, 0, null, false, 0.6, [0, 0, 2880, 1620]);
+const IB = wimg("assets/media/hook_inset_penn.jpg", T_NOW, 0.9, null, false, 0.6, [0, 0, 2880, 1620]);
+tl.set([IA, IB], { autoAlpha: 0 }, TSW);
+date0("1862 - 1863", T_NOW);
+B.date("JUNE 1863", T_NOW + 0.05, TSW, 32);
+B.date("1 - 3 JULY 1863", TSW + 0.02, S2, 32);
 const LG1 = legend(0, S2 + 0.1, false);
-const WF = flags(SC0, [2120, 1180], [760, 470], 0, at(H1, "the general") + 0.1);
-const WT = [box("GETTYSBURG", P.town[0] - 170, P.town[1] - 10, 0, 22, T_GEN + 0.1)];
-B.city("", P.town[0], P.town[1], { r: 7, t: 0.01, until: T_GEN + 0.1 });
+gsap.set(SB, { autoAlpha: 0 }); tl.to(SB, { autoAlpha: 1, duration: 0.3 }, TSW + 0.1);   // the scale bar would read the Gettysburg scale on the overview
+const OS = 0.7, OU = { w: 50, h: 34, tag: 17 };
+const OF = flags(OS, IP(39.55, -76.90), IP(39.40, -78.32), 0, TSW);
+const OVU = [unitXY("o1", "rome", ...IP(39.50, -77.86), "infantry", { ...OU, label: "LEE" }), unitXY("o2", "rome", ...IP(39.38, -77.95), "infantry", { ...OU, w: 40, h: 27 }),
+  unitXY("o3", "rome", ...IP(39.30, -78.05), "artillery", { ...OU, w: 40, h: 27 }),
+  unitXY("o4", "carth", ...IP(39.05, -77.25), "infantry", { ...OU, label: "ARMY OF THE POTOMAC" }), unitXY("o5", "carth", ...IP(38.98, -77.35), "infantry", { ...OU, w: 40, h: 27 })];
+go("o1", 0, T_NOW + 0.8, ...IP(39.80, -77.70), "power1.inOut"); go("o2", 0, T_NOW + 1.0, ...IP(39.66, -77.76), "power1.inOut"); go("o3", 0, T_NOW + 1.2, ...IP(39.52, -77.84), "power1.inOut");
+go("o4", 0, TSW, ...IP(39.33, -77.38), "power1.inOut"); go("o5", 0, TSW, ...IP(39.22, -77.42), "power1.inOut");
+B.hideUnits(OVU, TSW, 0.05);
+K.badge({ name: "ROBERT E. LEE", role: "ARMY OF NORTHERN VIRGINIA", photo: "assets/media/lee_head.png", flag: FL.csa, side: "rome", corner: "bl", t: 0.1, until: TSW - 0.1 });
+// "had beaten the Union army again and again": the defeats as quick stamps (hit + shake each), then the summary stamp
+const DEF = [["SEVEN DAYS", "1862"], ["SECOND MANASSAS", "1862"], ["FREDERICKSBURG", "1862"], ["CHANCELLORSVILLE", "1863"]].map(([n, y], k) =>
+  slam(scr(stampHTML(n, "#e3232f", 40, k % 2 ? 3 : -4, y), `left:${110 + (k % 2) * 60}px;top:${190 + k * 105}px;`), 0.3 + k * 0.6, { shake: 3 }));
+const AGN = scr(stampHTML("BEATEN AGAIN AND AGAIN", "#e8c66a", 64, -3, "THE UNION ARMY · 1862 - 1863"), "right:110px;top:300px;");
+slam(AGN, T_AGAIN - 0.1, { shake: 5, sfx: "ref:boom" });
+tl.to([...DEF, AGN], { autoAlpha: 0, duration: 0.25 }, T_NOW - 0.2);
+// "Now he was in Pennsylvania": the Mason-Dixon line lights up, red columns cross it toward Chambersburg, Gettysburg and York
+const MDX = [IP(39.722, -79.0), IP(39.722, -75.9)];
+B.line(MDX, { t: T_NOW - 0.1, dur: 0.6, color: "#ffd54a", width: 5, dash: "16 10", until: TSW });
+box("MASON-DIXON LINE", IP(39.722, -76.55)[0], IP(39.722, -76.55)[1] - 26, T_NOW + 0.2, 20, TSW);
+box("PENNSYLVANIA", ...IP(39.95, -76.40), T_NOW + 0.3, 26, TSW); box("MARYLAND", ...IP(39.57, -77.10), T_NOW + 0.35, 22, TSW, false);
+[[IP(39.55, -77.86), IP(39.80, -77.70), IP(40.02, -77.45)], [IP(39.60, -77.80), IP(39.78, -77.45), IP(39.83, -77.25)], [IP(39.62, -77.76), IP(39.80, -77.20), IP(39.93, -76.85)]].forEach((pts, k) =>
+  B.arrow({ pts, side: "rome", t: T_NOW + 0.1 + k * 0.25, dur: 0.9, width: 14, until: TSW }));
+SFX("ref:whoosh", T_NOW + 0.1);
+const GI = IP(39.8309, -77.2311);
+K.target(...GI, T_PA - 0.4, { r: 30, until: TSW }); box("GETTYSBURG", GI[0] + 120, GI[1] + 34, T_PA - 0.3, 22, TSW);
+const NOW = scr(stampHTML("NOW: IN PENNSYLVANIA", "#e3232f", 60, -4, "JUNE 1863"), "right:110px;top:640px;");
+slam(NOW, T_PA, { shake: 5, until: TSW - 0.1 });
+// ---------- hard zoom-whoosh DIVE: from the overview into Gettysburg (white flash hides the cut to the close map) ----------
+SFX("whoosh", T_PA + 0.3);
+camTo(T_PA + 0.32, TSW - T_PA - 0.34, GI[0], GI[1], 2.6, "expo.in");
+GG.whiteFlash(TSW - 0.08); SFX("hit", TSW);
+const SC0 = 0.8;
+camTo(TSW, 0.01, 1640, 760, SC0 * 1.25); camTo(TSW + 0.02, 0.6, 1640, 760, SC0, "power3.out");
+// ---------- Gettysburg wide (option 1): columns on the road spokes, guns firing on both ridges ----------
+const T0 = TSW + 0.02;
+const WF = flags(SC0, [2120, 1180], [760, 470], T0, T_GEN + 0.1);
+const WT = [box("GETTYSBURG", P.town[0] - 170, P.town[1] - 10, T0 + 0.1, 22, T_GEN + 0.1)];
+B.city("", P.town[0], P.town[1], { r: 7, t: T0 + 0.05, until: T_GEN + 0.1 });
 const WU = { w: 66, h: 44, tag: 22 };
-const RW = [unitXY("rh", "rome", 900, 220, "infantry", { ...WU, label: "A.P. HILL" }), unitXY("rh2", "rome", 720, 120, "infantry", { ...WU, w: 52, h: 35 }),
-  unitXY("re", "rome", 1440, 150, "infantry", { ...WU, label: "EWELL" }), unitXY("re2", "rome", 1680, 150, "infantry", { ...WU, w: 52, h: 35 }),
-  unitXY("rl", "rome", 560, 80, "artillery", { ...WU, w: 52, h: 35 })];
-go("rh", 0, 5.0, 1180, 380, "none"); go("rh2", 0, 5.0, 950, 250, "none"); go("re", 0, 5.0, 1484, 340, "none"); go("re2", 0, 5.0, 1590, 300, "none"); go("rl", 0, 5.0, 760, 160, "none");
-const BW = [unitXY("bb", "carth", 2299, 1354, "infantry", { ...WU, label: "XII CORPS" }), unitXY("bt", "carth", 1500, 1560, "infantry", { ...WU, label: "II CORPS" }),
-  unitXY("bm", "carth", 970, 1565, "infantry", { ...WU, label: "III CORPS" }), unitXY("bb2", "carth", 2500, 1500, "artillery", { ...WU, w: 52, h: 35 })];
-go("bb", 0, 5.0, 1968, 1131, "none"); go("bt", 0, 5.0, 1505, 1306, "none"); go("bm", 0, 5.0, 1182, 1222, "none"); go("bb2", 0, 5.0, 2299, 1354, "none");
-// guns already firing on both ridges from frame 0 (quiet launch, boom + shake on every impact)
-shell(1290, 700, 1500, 690, 0.15, { r: 14, fly: 0.7, w: 4 });
-shell(1520, 680, 1300, 760, 0.9, { r: 14, fly: 0.7, w: 4 });
-shell(1295, 840, 1460, 800, 1.7, { r: 14, fly: 0.7, w: 4 });
-shell(1515, 700, 1290, 640, 2.6, { r: 14, fly: 0.7, w: 4 });
-shell(1300, 900, 1450, 900, 3.4, { r: 14, fly: 0.7, w: 4 });
-// the BIG card: slams in at 0.3 s, ticks 0 -> 51,000 (ABT: "as many as 51,000 ... killed, wounded, captured or missing")
+const RW = [unitXY("rh", "rome", 900, 220, "infantry", { ...WU, label: "A.P. HILL", t: T0 }), unitXY("rh2", "rome", 720, 120, "infantry", { ...WU, w: 52, h: 35, t: T0 }),
+  unitXY("re", "rome", 1440, 150, "infantry", { ...WU, label: "EWELL", t: T0 }), unitXY("re2", "rome", 1680, 150, "infantry", { ...WU, w: 52, h: 35, t: T0 }),
+  unitXY("rl", "rome", 560, 80, "artillery", { ...WU, w: 52, h: 35, t: T0 })];
+go("rh", T0, 5.0, 1180, 380, "none"); go("rh2", T0, 5.0, 950, 250, "none"); go("re", T0, 5.0, 1484, 340, "none"); go("re2", T0, 5.0, 1590, 300, "none"); go("rl", T0, 5.0, 760, 160, "none");
+const BW = [unitXY("bb", "carth", 2299, 1354, "infantry", { ...WU, label: "XII CORPS", t: T0 }), unitXY("bt", "carth", 1500, 1560, "infantry", { ...WU, label: "II CORPS", t: T0 }),
+  unitXY("bm", "carth", 970, 1565, "infantry", { ...WU, label: "III CORPS", t: T0 }), unitXY("bb2", "carth", 2500, 1500, "artillery", { ...WU, w: 52, h: 35, t: T0 })];
+go("bb", T0, 5.0, 1968, 1131, "none"); go("bt", T0, 5.0, 1505, 1306, "none"); go("bm", T0, 5.0, 1182, 1222, "none"); go("bb2", T0, 5.0, 2299, 1354, "none");
+// guns firing on both ridges (quiet launch, boom + shake on every impact)
+[[1290, 700, 1500, 690], [1520, 680, 1300, 760], [1295, 840, 1460, 800], [1515, 700, 1290, 640], [1300, 900, 1450, 900]].forEach(([a, b, c, d], k) => shell(a, b, c, d, T0 + 0.3 + k * 0.85, { r: 14, fly: 0.7, w: 4 }));
+// the BIG card: slams in on "Fifty-one thousand", ticks 0 -> 51,000 (ABT: "as many as 51,000 ... killed, wounded, captured or missing")
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:150px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
   <div style="font-size:30px;letter-spacing:0.14em;margin-top:4px;color:#6e675c"><span class="w0">KILLED</span> · <span class="w1">WOUNDED</span> · <span class="w2">CAPTURED</span> · <span class="w3">MISSING</span></div>
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">BOTH ARMIES · GETTYSBURG, PENNSYLVANIA · 1-3 JULY 1863</div></div>`,
   "right:60px;top:150px;transform-origin:50% 40%;");
-slam(BIG, 0.3, { from: 1.9, dur: 0.22, shake: 6 });
-tick(BIG, ".n", 51000, 0.55, T_MISS + 0.4, (v) => (Math.round(v / 1000) * 1000).toLocaleString("en-US"));
+slam(BIG, T_FIFTY - 0.1, { from: 1.9, dur: 0.22, shake: 6 });
+tick(BIG, ".n", 51000, T_FIFTY + 0.15, T_MISS + 0.4, (v) => (Math.round(v / 1000) * 1000).toLocaleString("en-US"));
 [T_KILL, T_WOUN, T_CAPT, T_MISS].forEach((t, k) => { tl.to(BIG.querySelector(".w" + k), { color: "#ef8a82", duration: 0.15 }, t); SFX("ref:pop", t + 0.02); });
 const S3D = scr(stampHTML("IN 3 DAYS", "#e3232f", 72, -5), "right:330px;top:520px;");
 slam(S3D, T_3D - 0.05, { shake: 5 });
 tl.to([BIG, S3D], { autoAlpha: 0, y: -40, duration: 0.3, ease: "power2.in" }, T_GEN - 0.25);
-// ---------- hard zoom-whoosh DIVE onto the fishhook (~5.3 s) ----------
+// ---------- push in onto the fishhook ("And the general who had to stop him") ----------
 const TD = T_GEN - 0.15, SC = 2.25;
-SFX("whoosh", TD - 0.05);
-camTo(0, TD, 1600, 770, 0.86, "sine.inOut");
+SFX("ref:whoosh", TD - 0.05);
+camTo(TSW + 0.65, TD - TSW - 0.65, 1600, 770, 0.86, "sine.inOut");
 camTo(TD, 0.85, 1450, 830, SC, "expo.inOut");
 camTo(TD + 0.87, S2 + 0.3 - TD - 0.87, 1440, 835, SC * 1.06, "sine.inOut");
 B.hideUnits([...RW, ...BW], TD + 0.05, 0.3);
@@ -167,7 +213,7 @@ SFX("ref:pop", TD + 0.7);
 // the count cards: LEE 72,000 (red) vs the Union army 94,000 (blue) whose general is still a "?"
 const CL = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:12px 40px 14px;background:rgba(14,12,10,0.88);border-top:8px solid #be3a2a;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:100px;line-height:1;color:#f7f3ea">72,000</div><div style="font-size:30px;letter-spacing:0.24em;color:#ef8a82">ROBERT E. LEE</div></div>`, "left:110px;top:640px;transform-origin:50% 40%;");
-slam(CL, T_LEE - 0.1, { from: 1.9, shake: 5, until: S2 - 0.2 });
+slam(CL, T_STOP - 0.1, { from: 1.9, shake: 5, until: S2 - 0.2 });
 const CU = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:12px 40px 14px;background:rgba(14,12,10,0.88);border-top:8px solid #2e5cb2;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:100px;line-height:1;color:#f7f3ea">94,000</div><div style="font-size:30px;letter-spacing:0.24em;color:#9fc0ea">ITS GENERAL: ?</div></div>`, "right:110px;top:400px;transform-origin:50% 40%;");
 slam(CU, T_CMD - 0.5, { from: 1.9, shake: 5, until: S2 - 0.2 });
