@@ -54,3 +54,7 @@ belisarius/build/*.log
 belisarius/build/*.wav
 greene2/logs/
 greene2/assets/film/
+sherman/logs/*.log
+sherman/logs/*.done
+sherman/assets/film/src/
+sherman/assets/film/clips/

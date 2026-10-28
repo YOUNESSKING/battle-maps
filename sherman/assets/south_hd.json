@@ -1,0 +1,20 @@
+{
+ "name": "south_hd",
+ "center": [
+  34.5,
+  -81.5
+ ],
+ "zoom": 8,
+ "origin_world_px": [
+  16491,
+  25259
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 503.95,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}
