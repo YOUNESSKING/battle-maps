@@ -72,18 +72,36 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
 | Reference scenes to copy from | `goosegreen/scenes-src/move3.js` (Harrier bombing run, helicopters, AA, casualty card), `test-terr-f.js` (fronts + territory, final look), `move1.js` (night attack) |
 
 ## 1a. THE HOOK (LOCKED, owner 2026-10-09, Rokossovsky hook v2: "I do like it... I want all videos to have strong hooks like this")
+**UPDATED 2026-10-28 (owner, Meade #12: "Approve, now make it a rule and add it to the pipeline"): THE OPENING = STAKES FRAME -> CONTINUOUS ZOOM -> NUMBER.**
+Reference for the opening: `reference/hook-reference-meade-v3.mp4` (0:00-1:03) + `reference/hook-reference-meade-v3-sheet.jpg`
+(scene source `meade/scenes-src/hook-a.js`). Why: the owner felt "Fifty-one thousand men..." as line 1 jumped in with no context; the old
+Greene opening ("the American Revolution was dying in the South") set the stakes first. The rest of the hook below is unchanged.
+- **Script, before the number (~8 s, 2 short sentences):** (1) the enemy's run of success in plain words, (2) "And now he marches into
+  <region>, to a small town called <place>." The place name is the LAST word before the number, so the number lands on that place.
+  Meade: "Robert E. Lee had beaten the Union army again and again. And now he marches into Pennsylvania, to a small town called Gettysburg.
+  Fifty-one thousand men. Killed, wounded, captured or missing in three days..." Still never a date first and never background/biography:
+  it is a stakes line. The number + disaster sentences follow unchanged.
+- **Visual:** frame 0 = the wide overview map with the enemy's columns already moving, both flags, territory, the enemy commander's real-photo
+  badge; **a stamp within the first second** (each past defeat as its own stamp, hit + shake, then one summary stamp, e.g. BEATEN AGAIN AND
+  AGAIN); on "marches into <region>" the territory switches to that date and arrows cross the border line (stamp MARCHING INTO <REGION>);
+  on "to a small town called <place>" **ONE continuous geographic zoom** (zoom whoosh) from the overview straight down onto the place,
+  arriving on the spoken place name: both maps driven by the same camera at true position and scale, the overview cross-faded out between
+  ~6x and ~14x with feathered edges, **never a cut or a white flash** (owner: the cut "is not seamless").
+- **The big number card slams on its own words** (no longer at 0.3 s), then ticks; the other cards on their words as before.
+- **Timing:** payoff (title promise) by **~0:30** (was ~0:22; Meade: REPULSED at 0:32); dive by ~6-8 s; a beat every 2-4 s throughout.
+- **Rule of the hook below (line 1 = number) now applies to the sentence AFTER the stakes frame.**
 Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + music + SFX) and its beat sheet
 `reference/hook-reference-rokossovsky-v2-sheet.jpg`. Every video's first minute must match it. v1 of that hook was REJECTED as
 "boring, not visual": a belief as line 1, no card, 7-10 s with nothing new, an 18 s static badge. Never ship a hook like that again.
 **Script (first ~60 s, 4 paragraphs):**
-1. **Line 1 = a hard number + the disaster/stakes in 3 short sentences** ("Four hundred thousand German soldiers. Lost in a single summer.
+1. **After the stakes frame (see UPDATED above): a hard number + the disaster/stakes in 3 short sentences** ("Four hundred thousand German soldiers. Lost in a single summer.
    And it all began in a swamp the Germans were sure no army could cross."). Never a date + place, never a belief or background first.
-2. **Flash-forward / payoff by ~0:20-0:25** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
+2. **Flash-forward / payoff by ~0:25-0:32** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
 3. **The human twist as ACTION, not a portrait** (prison, wound, disgrace, odds against the man), every detail its own beat.
 4. **Name reveal + the three moves as quick cuts**, then "These are <Name>'s three greatest tactical moves." Hook total ~60-65 s.
 **Visuals + sound (check each on the snapshot sheet before rendering):**
 - Frame 0: map with units ALREADY MOVING (guns firing, counters advancing), flags + territory on screen.
-- **A big number card slams in within the first second** (hit + shake) and ticks up (ticks); a stamp on the punchline (hit + shake).
+- **A stamp slams in within the first second** (stakes frame), and **the big number card slams in on the number's words** (hit + shake) and ticks up (ticks); a stamp on the punchline (hit + shake).
 - **A hard zoom-whoosh camera DIVE within the first ~6 s** onto the place of the story.
 - **Something new every 2-4 s, never more than 4 s without a change** (camera move, stamp, counter, units moving, impacts, cut).
   Make the snapshot sheet every ~2.5 s for the first 30 s to prove it.

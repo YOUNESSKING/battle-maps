@@ -22,6 +22,7 @@ Produce a Markdown report with exactly these sections:
 
 ### 1. Hook material
 - 3-5 candidate opening facts: a disaster, a shocking number, or the enemy's arrogance. Each with its source.
+- **Stakes frame for the first 8 seconds (channel rule since 2026-10-28):** the enemy's run of success before the first battle of the video (e.g. "Lee had beaten the Union army again and again": list those victories with dates and sources) and where he was striking now (the region he marched into and the small town/place where the fighting happened), so the script can say "And now he marches into <region>, to a small town called <place>." before the hard number.
 - Nickname(s) of the general and 2-3 famous quotes. For each quote: exact wording, who recorded it, and whether it is **verified or doubtful/apocryphal**.
 - One-line biography: birth/death years, age at each battle, rank/role.
 
