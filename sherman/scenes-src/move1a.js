@@ -63,8 +63,8 @@ const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
   tl.to(ring, { filter: "grayscale(1) brightness(0.6)", duration: 0.4 }, t);
   const st = document.createElement("div"); st.innerHTML = stampHTML(txt, o.color || "#e3232f", o.size || 30, -8);
-  st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5"; ring.parentElement.style.position = "relative";
-  ring.parentElement.appendChild(st);
+  st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5";
+  ring.appendChild(st);
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
@@ -252,7 +252,7 @@ legend(0.4, END + 1, false);
 
 // ---------- the powers + the armies on screen from the first second ----------
 const WIDE_UNTIL = T_DALT + 0.8;
-flag(FL.us, "UNITED STATES", ...L(35.03, -85.52), 0.5, WIDE_UNTIL, 140);
+flag(FL.us, "UNITED STATES", ...L(34.80, -86.20), 0.5, WIDE_UNTIL, 140);
 flag(FL.cs, "CONFEDERATE STATES", ...L(34.05, -83.75), 0.65, WIDE_UNTIL, 150);
 // the Western & Atlantic: one thin line, Chattanooga -> Atlanta, with a train on it
 glowPath(WA, "#ffd27a", 4.5, 0.4, END + 1, 4, 0.85, { draw: 2.6, top: false });

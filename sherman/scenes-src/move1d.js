@@ -72,8 +72,8 @@ const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
   tl.to(ring, { filter: "grayscale(1) brightness(0.6)", duration: 0.4 }, t);
   const st = document.createElement("div"); st.innerHTML = stampHTML(txt, o.color || "#e3232f", o.size || 30, -8);
-  st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5"; ring.parentElement.style.position = "relative";
-  ring.parentElement.appendChild(st);
+  st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5";
+  ring.appendChild(st);
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
@@ -290,11 +290,11 @@ B.date("1 SEPTEMBER 1864", T_NEXT, T_2SEP - 0.1, 34); B.date("2 SEPTEMBER 1864",
 
 // ---------- flags (on each side's ground, per shot) ----------
 flag(FL.us, "UNITED STATES", ...L(33.99, -84.62), 0.2, T_ONCE, 70); flag(FL.cs, "CONFEDERATE STATES", ...L(33.76, -84.47), 0.3, T_ONCE, 70);
-flag(FL.us, "UNITED STATES", ...L(33.865, -84.43), T_ONCE + 0.2, T_SWUNG, 38); flag(FL.cs, "CONFEDERATE STATES", ...L(33.715, -84.425), T_ONCE + 0.3, T_SWUNG, 38);
+flag(FL.us, "UNITED STATES", ...L(33.835, -84.46), T_ONCE + 0.2, T_SWUNG, 38); flag(FL.cs, "CONFEDERATE STATES", ...L(33.715, -84.425), T_ONCE + 0.3, T_SWUNG, 38);
 flag(FL.us, "UNITED STATES", ...L(33.86, -84.62), T_SWUNG + 0.6, T_WRONG + 0.6, 80); flag(FL.cs, "CONFEDERATE STATES", ...L(33.46, -84.18), T_SWUNG + 0.7, T_WRONG + 0.6, 80);
 flag(FL.us, "UNITED STATES", ...L(33.525, -84.395), T_WRONG + 0.8, T_THAT + 0.6, 24); flag(FL.cs, "CONFEDERATE STATES", ...L(33.505, -84.335), T_WRONG + 0.9, T_THAT + 0.6, 24);
 flag(FL.us, "UNITED STATES", ...L(33.79, -84.47), T_THAT + 0.8, T_COST + 0.6, 48); flag(FL.cs, "CONFEDERATE STATES", ...L(33.69, -84.31), T_THAT + 0.9, T_COST + 0.6, 48);
-flag(FL.us, "UNITED STATES", ...L(33.90, -84.62), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), T_COST + 0.9, END + 1, 150);
+flag(FL.us, "UNITED STATES", ...L(33.62, -84.55), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), T_COST + 0.9, END + 1, 150);
 
 // ---------- move1-6: the Chattahoochee; Hood; three attacks ----------
 const F0 = frontS({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });
@@ -423,10 +423,11 @@ NK.forEach((p, k) => { bonfire(p[0] + 2.4, p[1], T_HEAT + k * 0.2, T_THAT + 0.4,
 B.caption("RAILS HEATED OVER BONFIRES, TWISTED AROUND TREES", T_TORE, T_NECK - 0.1, "carth");
 sstamp("SHERMAN'S NECKTIES", 760, T_NECK - 0.1, { size: 58, color: "#ffb347", until: T_THAT + 0.2 });
 // night of 1 September: Atlanta lights up: Hood blows up his ammunition trains and leaves
-nightWash(T_THAT - 0.1, T_2SEP + 0.6, 0.34);
+nightWash(T_THAT - 0.1, T_2SEP + 0.6, 0.24);
 const BOOM = [[33.758, -84.366], [33.756, -84.371], [33.760, -84.361], [33.754, -84.376], [33.761, -84.357], [33.757, -84.369], [33.753, -84.363], [33.759, -84.374], [33.755, -84.359], [33.762, -84.368]];
 BOOM.forEach(([la, lo], k) => { const p = L(la, lo); K.impact(p[0], p[1], T_THAT + 1.2 + k * 0.38, { r: 20 + (k % 3) * 5, puffs: 4 }); });
-fireGlow(...L(33.757, -84.367), 60, T_THAT + 1.2, T_OURS + 1.0);
+fireGlow(...L(33.757, -84.367), 70, T_THAT + 1.2, T_OURS + 1.0);
+fireGlow(...L(33.759, -84.372), 40, T_THAT + 1.6, T_OURS + 1.0);
 [0, 1, 2, 3, 4, 5].forEach((k) => K.smoke(...L(33.757 + (k % 2) * 0.002, -84.369 + (k % 3) * 0.003), T_BLEW + 0.5 + k * 0.6, { n: 4, r: 10, rise: 40, life: 3.2 }));
 B.caption("1 SEPTEMBER, NIGHT: HOOD BLOWS UP HIS AMMUNITION TRAINS", T_BLEW - 0.4, T_2SEP - 0.1, "rome");
 unit("hood", "rome", L(33.745, -84.375), "infantry", "HOOD", { t: T_THAT + 0.6, w: 10, h: 6.8, tag: 3, size: "XXXX", until: T_2SEP + 0.6 });

@@ -66,8 +66,8 @@ const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
   tl.to(ring, { filter: "grayscale(1) brightness(0.6)", duration: 0.4 }, t);
   const st = document.createElement("div"); st.innerHTML = stampHTML(txt, o.color || "#e3232f", o.size || 30, -8);
-  st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5"; ring.parentElement.style.position = "relative";
-  ring.parentElement.appendChild(st);
+  st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5";
+  ring.appendChild(st);
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
