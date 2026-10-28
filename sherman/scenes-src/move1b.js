@@ -221,6 +221,13 @@ const CARD = (head, rows, foot, t, until, top = 150) => scr(`<div style="padding
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:6px">${head}</div>${rows}
   <div style="font-size:14px;letter-spacing:.2em;color:#a8a294;text-align:center;margin-top:10px">${foot}</div></div>`,
   `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+// K.front with its OWN blur filter (lib/fx.js shares one filter sized by the first front: later fronts at other camera scales lose
+// their glow). Use this for every front so each looks like the locked width 15 / glow 0.47 on screen (width = 15 / camera scale).
+let __FID = 0;
+const frontS = (o) => { const g = K.front(o), id = "m1blur" + (++__FID), f = document.createElementNS(NS, "filter"), ov = document.getElementById("overlay");
+  f.setAttribute("id", id); f.setAttribute("x", "-20%"); f.setAttribute("y", "-20%"); f.setAttribute("width", "140%"); f.setAttribute("height", "140%");
+  f.innerHTML = `<feGaussianBlur stdDeviation="${((o.width || 15) * 0.35).toFixed(2)}"/>`; ov.querySelector("defs").appendChild(f);
+  g.querySelectorAll("[filter]").forEach((p) => p.setAttribute("filter", `url(#${id})`)); return g; };
 // ---------- end of kit ----------
 // @@END-KIT
 // @@DATA
@@ -305,7 +312,7 @@ unit("shw", "carth", L(34.98, -85.18), "infantry", "SHERMAN", { t: T_FEDS - 0.2,
 unit("jow", "rome", L(34.62, -84.84), "infantry", "JOHNSTON", { t: T_FEDJ - 0.2, w: 48, h: 32, tag: 13, size: "XXXX", until: T_WAIT + 0.2 });
 // back on the ridge: option 2 = the two-colour glowing front on the crest; guns in Mill Creek Gap; the belief
 const FW = (s) => +(15 / s).toFixed(2);    // the locked ~15 px band on screen at camera scale s
-const F64 = K.front({ pts: FR.may64, sideA: "carth", sideB: "rome", t: T_WAIT + 0.6, dur: 1.4, width: FW(3.0), until: T_PATTERN + 1.4 });
+const F64 = frontS({ pts: FR.may64, sideA: "carth", sideB: "rome", t: T_WAIT + 0.6, dur: 1.4, width: FW(3.0), until: T_PATTERN + 1.4 });
 unit("gun", "rome", L(34.792, -84.998), "artillery", null, { t: T_WAIT + 1.2, w: 9, h: 6.4 });
 box("MILL CREEK GAP", MCG[0] + 34, MCG[1] - 4, T_WAIT + 1.0, 4.0, T_EVERY + 0.4);
 belief("LET THEM ATTACK THE RIDGE", "WHAT JOHNSTON EXPECTED", T_WAIT + 0.4, T_EVERY - 0.1);
@@ -374,7 +381,7 @@ B.hideUnits(["gun"], T_SLIP + 0.4);
 quote("“SUCH AN OPPORTUNITY DOES NOT OCCUR TWICE IN A SINGLE LIFE”", "WILLIAM T. SHERMAN, MEMOIRS (1875)", T_WROTE - 0.1, T_PATTERN - 0.2, { size: 40, mw: 1600 });
 B.caption("McPHERSON HAD FOLLOWED HIS ORDERS", T_ADMIT, T_PATTERN - 0.1, "carth");
 // the pattern: the front band moves south with every flanking step
-const FB1 = K.front({ pts: FR.may64, sideA: "carth", sideB: "rome", t: T_PATTERN - 0.4, dur: 0.01, width: FW(2.4), until: T_FELL + 0.2, to: FR.may13, moveT: T_PATTERN - 0.3, moveDur: 1.6 });
+const FB1 = frontS({ pts: FR.may64, sideA: "carth", sideB: "rome", t: T_PATTERN - 0.4, dur: 0.01, width: FW(2.4), until: T_FELL + 0.2, to: FR.may13, moveT: T_PATTERN - 0.3, moveDur: 1.6 });
 tl.to(F64, { opacity: 0, duration: 0.3 }, T_PATTERN - 0.4);
 [["th", 34.640, -84.990], ["sc", 34.660, -84.930], ["mc", 34.620, -85.010]].forEach(([id, la, lo]) => B.move(id, T_PATTERN - 0.2, 1.6, ...L(la, lo)));
 B.move("jo", T_PATTERN - 0.2, 1.4, ...L(34.570, -84.925));
@@ -387,7 +394,7 @@ arw({ pts: LL([[34.556, -85.012], [34.538, -84.988], [34.524, -84.958]]), side: 
 box("OOSTANAULA RIVER", ...L(34.525, -85.04), T_DIV + 0.3, 5.0, T_ALLA, { bg: "#dcecf8" });
 B.caption("15 MAY: A DIVISION ACROSS THE OOSTANAULA, AROUND THE FLANK", T_DIV, T_FELL - 0.1, "carth");
 // Johnston falls back (Calhoun - Adairsville - Cassville, 16-19 May): the band moves south; camera opens out (option 1)
-const FB2 = K.front({ pts: FR.may13, sideA: "carth", sideB: "rome", t: T_FELL + 0.2, dur: 0.01, width: FW(1.25), until: T_AGAIN + 0.6, to: FR.may19, moveT: T_FELL + 0.25, moveDur: 2.2 });
+const FB2 = frontS({ pts: FR.may13, sideA: "carth", sideB: "rome", t: T_FELL + 0.2, dur: 0.01, width: FW(1.25), until: T_AGAIN + 0.6, to: FR.may19, moveT: T_FELL + 0.25, moveDur: 2.2 });
 tl.to(FB1, { opacity: 0, duration: 0.2 }, T_FELL + 0.2);
 B.move("jo", T_FELL, 2.2, ...L(34.255, -84.815));
 tl.to(B.units.jo.el, { scale: 2.0, duration: 1.4 }, T_FELL); tl.to([B.units.th.el, B.units.sc.el, B.units.mc.el], { scale: 2.0, duration: 1.4 }, T_FELL);
@@ -407,7 +414,7 @@ box("DALLAS", DLS[0] - 70, DLS[1] + 14, T_SWUNG + 1.0, 11, END + 1);
 box("NEW HOPE CHURCH", NHC[0] + 120, NHC[1] - 6, T_SWUNG + 1.4, 11, END + 1);
 B.caption("SHERMAN LEAVES THE RAILROAD AND SWINGS WEST", T_LEFT, T_AGAIN - 0.1, "carth");
 // Johnston has to fall back again, to Dallas - New Hope Church (25 May - early June)
-const FB3 = K.front({ pts: FR.may19, sideA: "carth", sideB: "rome", t: T_AGAIN + 0.5, dur: 0.01, width: FW(1.25), until: END + 1, to: FR.may25, moveT: T_AGAIN + 0.55, moveDur: 2.0 });
+const FB3 = frontS({ pts: FR.may19, sideA: "carth", sideB: "rome", t: T_AGAIN + 0.5, dur: 0.01, width: FW(1.25), until: END + 1, to: FR.may25, moveT: T_AGAIN + 0.55, moveDur: 2.0 });
 tl.to(FB2, { opacity: 0, duration: 0.2 }, T_AGAIN + 0.5);
 along("jo", LL([[34.115, -84.70], [34.03, -84.73], [33.965, -84.770]]), T_AGAIN, 2.0, 10);
 arw({ pts: LL([[34.10, -84.71], [34.02, -84.74], [33.975, -84.765]]), side: "rome", t: T_AGAIN, dur: 1.4, width: 6, until: T_RIDGE + 0.6 });

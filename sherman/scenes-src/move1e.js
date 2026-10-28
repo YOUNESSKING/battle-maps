@@ -212,6 +212,13 @@ const CARD = (head, rows, foot, t, until, top = 150) => scr(`<div style="padding
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:6px">${head}</div>${rows}
   <div style="font-size:14px;letter-spacing:.2em;color:#a8a294;text-align:center;margin-top:10px">${foot}</div></div>`,
   `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+// K.front with its OWN blur filter (lib/fx.js shares one filter sized by the first front: later fronts at other camera scales lose
+// their glow). Use this for every front so each looks like the locked width 15 / glow 0.47 on screen (width = 15 / camera scale).
+let __FID = 0;
+const frontS = (o) => { const g = K.front(o), id = "m1blur" + (++__FID), f = document.createElementNS(NS, "filter"), ov = document.getElementById("overlay");
+  f.setAttribute("id", id); f.setAttribute("x", "-20%"); f.setAttribute("y", "-20%"); f.setAttribute("width", "140%"); f.setAttribute("height", "140%");
+  f.innerHTML = `<feGaussianBlur stdDeviation="${((o.width || 15) * 0.35).toFixed(2)}"/>`; ov.querySelector("defs").appendChild(f);
+  g.querySelectorAll("[filter]").forEach((p) => p.setAttribute("filter", `url(#${id})`)); return g; };
 // ---------- end of kit ----------
 // @@END-KIT
 // @@DATA
@@ -232,7 +239,7 @@ legend(0.1, END + 1, false);
 B.camera([[0, 1440, 790, 0.72], [T_BRK, 1460, 760, 0.78], [T_BEC, 1500, 740, 0.85], [END, 1560, 760, 0.9]]);
 B.showDate(0.1); B.date("SEPTEMBER 1864", 0.2, null, 34);
 flag(FL.us, "UNITED STATES", ...L(33.90, -84.62), 0, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), 0, END + 1, 150);
-K.front({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 12.5, until: END + 1 });
+frontS({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: 12.5, until: END + 1 });
 // the blue army in the city; Hood to the south
 unit("ua", "carth", L(33.755, -84.392), "infantry", "SHERMAN", { t: 0, w: 34, h: 23, tag: 9, size: "XXXX" });
 unit("hl", "rome", L(33.430, -84.300), "infantry", "HOOD", { t: 0, w: 30, h: 20, tag: 8, size: "XXXX" });

@@ -223,6 +223,13 @@ const CARD = (head, rows, foot, t, until, top = 150) => scr(`<div style="padding
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:6px">${head}</div>${rows}
   <div style="font-size:14px;letter-spacing:.2em;color:#a8a294;text-align:center;margin-top:10px">${foot}</div></div>`,
   `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+// K.front with its OWN blur filter (lib/fx.js shares one filter sized by the first front: later fronts at other camera scales lose
+// their glow). Use this for every front so each looks like the locked width 15 / glow 0.47 on screen (width = 15 / camera scale).
+let __FID = 0;
+const frontS = (o) => { const g = K.front(o), id = "m1blur" + (++__FID), f = document.createElementNS(NS, "filter"), ov = document.getElementById("overlay");
+  f.setAttribute("id", id); f.setAttribute("x", "-20%"); f.setAttribute("y", "-20%"); f.setAttribute("width", "140%"); f.setAttribute("height", "140%");
+  f.innerHTML = `<feGaussianBlur stdDeviation="${((o.width || 15) * 0.35).toFixed(2)}"/>`; ov.querySelector("defs").appendChild(f);
+  g.querySelectorAll("[filter]").forEach((p) => p.setAttribute("filter", `url(#${id})`)); return g; };
 // ---------- end of kit ----------
 // @@END-KIT
 // @@DATA
@@ -270,7 +277,7 @@ const S0 = L(33.90, -84.53), MID = L(33.79, -84.40), JC = L(33.528, -84.362);
 B.camera([[0, S0[0] - 20, S0[1] - 15, 0.7], [T_CROSS - 0.4, S0[0] + 30, S0[1] + 10, 1.3], [T_GONE + 0.8, S0[0] + 60, S0[1] + 30, 1.4],
   [T_ONCE - 0.4, MID[0], MID[1] + 20, 1.6], [T_PEACH + 0.2, MID[0] - 10, MID[1] + 10, 3.0], [T_EZRA + 0.6, MID[0] - 10, MID[1] + 30, 2.8],
   [T_EACH, MID[0], MID[1] + 40, 2.4], [T_AUG + 0.4, ATL[0], ATL[1] + 10, 2.6], [T_ONE + 0.6, ATL[0], ATL[1] + 20, 2.4],
-  [T_PULLED, ATL[0] - 30, ATL[1] - 20, 2.1], [T_SWUNG - 0.2, ATL[0] - 40, ATL[1] - 30, 2.0], [T_WEST + 1.6, 1460, 820, 1.25], [T_JON + 0.6, 1470, 840, 1.25],
+  [T_PULLED, ATL[0] - 30, ATL[1] - 70, 2.0], [T_SWUNG - 0.2, ATL[0] - 40, ATL[1] - 70, 1.95], [T_WEST + 1.6, 1460, 820, 1.25], [T_JON + 0.6, 1470, 840, 1.25],
   [T_WRONG + 1.0, JC[0], JC[1], 4.4], [T_THROWN + 0.6, JC[0], JC[1], 4.6], [T_NECK, JC[0], JC[1] + 4, 4.4], [T_THAT - 0.2, JC[0], JC[1], 4.2],
   [T_THAT + 1.6, ATL[0] + 20, ATL[1] + 30, 2.4], [T_ABAND + 1.0, ATL[0] + 20, ATL[1] + 50, 2.3],
   [T_2SEP + 0.4, ATL[0], ATL[1] + 20, 2.4], [T_OURS + 2.0, ATL[0], ATL[1] + 20, 2.5], [T_COST + 1.4, 1440, 760, 0.8],
@@ -290,7 +297,7 @@ flag(FL.us, "UNITED STATES", ...L(33.79, -84.47), T_THAT + 0.8, T_COST + 0.6, 48
 flag(FL.us, "UNITED STATES", ...L(33.90, -84.62), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), T_COST + 0.9, END + 1, 150);
 
 // ---------- move1-6: the Chattahoochee; Hood; three attacks ----------
-const F0 = K.front({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });
+const F0 = frontS({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });
 unit("sc", "carth", L(33.935, -84.480), "infantry", "SCHOFIELD", { t: 0.1, w: 26, h: 17.6, tag: 7, size: "XXXX" });
 unit("th", "carth", L(33.900, -84.560), "infantry", "THOMAS", { t: 0.15, w: 26, h: 17.6, tag: 7, size: "XXXX" });
 unit("mc", "carth", L(33.870, -84.600), "infantry", "McPHERSON", { t: 0.2, w: 26, h: 17.6, tag: 7, size: "XXXX" });
@@ -305,7 +312,7 @@ wstamp("SURPRISE CROSSING", SOPE[0] + 26, SOPE[1] - 22, T_CROSS + 1.0, T_DAVIS +
 B.caption("8-9 JULY: UNION TROOPS CROSS THE CHATTAHOOCHEE UPSTREAM", T_CROSS, T_DAVIS - 0.1, "carth");
 // the river line collapses: Johnston back toward Atlanta, the band moves
 B.move("jo", T_GONE, 2.0, ...L(33.800, -84.420)); B.move("th", T_GONE + 0.1, 2.0, ...L(33.855, -84.470)); B.move("mc", T_GONE + 0.2, 2.0, ...L(33.905, -84.380));
-const F1 = K.front({ pts: FR.jul10, sideA: "carth", sideB: "rome", t: T_GONE + 0.4, dur: 0.01, width: FW(1.4), until: T_ONCE + 0.6, to: FR.jul22, moveT: T_ONCE - 0.2, moveDur: 2.0 });
+const F1 = frontS({ pts: FR.jul10, sideA: "carth", sideB: "rome", t: T_GONE + 0.4, dur: 0.01, width: FW(1.4), until: T_ONCE + 0.6, to: FR.jul22, moveT: T_ONCE - 0.2, moveDur: 2.0 });
 tl.to(F0, { opacity: 0, duration: 0.3 }, T_GONE + 0.4);
 // Davis replaces Johnston with Hood
 badge({ name: "JEFFERSON DAVIS", role: "CONFEDERATE PRESIDENT", initials: "JD", photo: PHOTO.davis, flag: FL.cs, side: "rome", corner: "bl", t: T_DAVIS - 0.2, until: T_HOOD + 0.4 });
@@ -344,7 +351,7 @@ ticker("HOOD'S LOSSES · 20-28 JULY", 11000, "", "right:70px;top:120px;", T_ELEV
 B.hideUnits(["ho"], T_AUG);
 
 // ---------- move1-7: the siege; the night swing west to Jonesboro ----------
-const FA = K.front({ pts: FR.aug64, sideA: "carth", sideB: "rome", t: T_AUG, dur: 1.4, width: FW(2.6), until: T_SWUNG + 0.6 });
+const FA = frontS({ pts: FR.aug64, sideA: "carth", sideB: "rome", t: T_AUG, dur: 1.4, width: FW(2.6), until: T_SWUNG + 0.6 });
 tl.to(F1, { opacity: 0, duration: 0.4 }, T_AUG);
 const FORTS = [...Array(12)].map((_, k) => { const a = (k / 12) * Math.PI * 2; return [33.755 + 0.020 * Math.sin(a), -84.390 + 0.024 * Math.cos(a)]; });
 FORTS.forEach(([la, lo], k) => fort(...L(la, lo), T_AUG + 0.2 + k * 0.08, T_WRONG + 0.6, 3.2));
@@ -361,9 +368,9 @@ B.hideUnits(["th", "sc", "mc"], T_AUG + 0.2);
 nightWash(T_NIGHT - 0.2, T_WRONG + 0.4, 0.45);
 K.night({ lines: [FA], tOn: T_NIGHT - 0.2, tOff: T_WRONG + 0.4 });
 SIEGE.forEach(([id], k) => { tl.to(B.units[id].el, { autoAlpha: 0, scale: 0.6, duration: 0.35 }, T_PULLED + k * 0.32); SFX("tick", T_PULLED + k * 0.32); });
-unit("xx", "carth", BRG, "infantry", "XX CORPS", { t: T_SINGLE - 0.1, w: 9, h: 6, tag: 3.2, size: "XXX" });
+unit("xx", "carth", BRG, "infantry", "XX CORPS", { t: T_SINGLE - 0.1, w: 14, h: 9.4, tag: 4.6, size: "XXX" });
 K.target(BRG[0], BRG[1], T_SINGLE, { r: 9, side: "carth", until: T_LASTRR + 1 });
-box("CHATTAHOOCHEE BRIDGE", BRG[0] - 44, BRG[1] - 10, T_SINGLE + 0.2, 4.2, T_WRONG);
+box("CHATTAHOOCHEE BRIDGE", BRG[0] - 70, BRG[1] + 4, T_SINGLE + 0.2, 7, T_WRONG);
 B.caption("ONE CORPS LEFT TO GUARD THE RIVER CROSSING", T_SINGLE, T_SWUNG - 0.1, "carth");
 // the wide arc west of the city, onto the Atlanta & West Point (28 Aug) and on to Jonesboro (30-31 Aug)
 const ARC1 = LL([[33.745, -84.475], [33.690, -84.540], [33.620, -84.560], [33.575, -84.520], [33.545, -84.440], [33.528, -84.385]]);
@@ -380,7 +387,7 @@ box("JONESBORO", JON[0] + 54, JON[1] + 6, T_JON - 0.2, 12, T_WRONG + 0.6);
 K.target(JON[0], JON[1], T_JON, { r: 20, until: T_WRONG + 1.0 });
 
 // ---------- move1-8: Jonesboro (option 2: front lines only) ----------
-const F31 = K.front({ pts: FR.jon31, sideA: "carth", sideB: "rome", t: T_WRONG + 0.6, dur: 1.0, width: FW(4.5), until: T_THAT + 0.4, to: FR.jon01, moveT: T_NEXT + 0.6, moveDur: 1.6 });
+const F31 = frontS({ pts: FR.jon31, sideA: "carth", sideB: "rome", t: T_WRONG + 0.6, dur: 1.0, width: FW(4.5), until: T_THAT + 0.4, to: FR.jon01, moveT: T_NEXT + 0.6, moveDur: 1.6 });
 box("JONESBORO", JON[0] + 9, JON[1] + 3, T_WRONG + 0.8, 2.8, T_THAT + 0.4, { sfx: false });
 box("FLINT RIVER", ...L(33.512, -84.388), T_WRONG + 1.0, 2.4, T_THAT + 0.4, { bg: "#dcecf8", sfx: false });
 unit("hw", "carth", L(33.520, -84.382), "infantry", "HOWARD", { t: T_WRONG + 0.6, w: 7, h: 4.7, tag: 2.1, size: "XXXX" });
@@ -416,10 +423,10 @@ NK.forEach((p, k) => { bonfire(p[0] + 2.4, p[1], T_HEAT + k * 0.2, T_THAT + 0.4,
 B.caption("RAILS HEATED OVER BONFIRES, TWISTED AROUND TREES", T_TORE, T_NECK - 0.1, "carth");
 sstamp("SHERMAN'S NECKTIES", 760, T_NECK - 0.1, { size: 58, color: "#ffb347", until: T_THAT + 0.2 });
 // night of 1 September: Atlanta lights up: Hood blows up his ammunition trains and leaves
-nightWash(T_THAT - 0.1, T_2SEP + 0.6, 0.55);
+nightWash(T_THAT - 0.1, T_2SEP + 0.6, 0.34);
 const BOOM = [[33.758, -84.366], [33.756, -84.371], [33.760, -84.361], [33.754, -84.376], [33.761, -84.357], [33.757, -84.369], [33.753, -84.363], [33.759, -84.374], [33.755, -84.359], [33.762, -84.368]];
 BOOM.forEach(([la, lo], k) => { const p = L(la, lo); K.impact(p[0], p[1], T_THAT + 1.2 + k * 0.38, { r: 20 + (k % 3) * 5, puffs: 4 }); });
-fireGlow(...L(33.757, -84.367), 40, T_THAT + 0.8, T_OURS + 1.0);
+fireGlow(...L(33.757, -84.367), 60, T_THAT + 1.2, T_OURS + 1.0);
 [0, 1, 2, 3, 4, 5].forEach((k) => K.smoke(...L(33.757 + (k % 2) * 0.002, -84.369 + (k % 3) * 0.003), T_BLEW + 0.5 + k * 0.6, { n: 4, r: 10, rise: 40, life: 3.2 }));
 B.caption("1 SEPTEMBER, NIGHT: HOOD BLOWS UP HIS AMMUNITION TRAINS", T_BLEW - 0.4, T_2SEP - 0.1, "rome");
 unit("hood", "rome", L(33.745, -84.375), "infantry", "HOOD", { t: T_THAT + 0.6, w: 10, h: 6.8, tag: 3, size: "XXXX", until: T_2SEP + 0.6 });
@@ -428,7 +435,7 @@ along("hood", OUT, T_ABAND, 3.2, 16);
 arw({ pts: OUT, side: "rome", t: T_ABAND - 0.1, dur: 2.0, width: 4, dash: "8 4", until: T_2SEP + 0.8 });
 
 // ---------- move1-9: Atlanta is ours ----------
-const F9 = K.front({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: T_2SEP + 1.0, dur: 1.2, width: FW(1.2), until: END + 1 });
+const F9 = frontS({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: T_2SEP + 1.0, dur: 1.2, width: FW(1.2), until: END + 1 });
 const IN = LL([[33.838, -84.455], [33.805, -84.430], [33.775, -84.405], [33.757, -84.393]]);
 unit("in", "carth", IN[0], "infantry", "XX CORPS", { t: T_2SEP - 0.2, w: 9, h: 6, tag: 3, size: "XXX" });
 along("in", IN, T_2SEP, 2.4, 14);

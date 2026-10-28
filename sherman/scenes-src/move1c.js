@@ -217,6 +217,13 @@ const CARD = (head, rows, foot, t, until, top = 150) => scr(`<div style="padding
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:6px">${head}</div>${rows}
   <div style="font-size:14px;letter-spacing:.2em;color:#a8a294;text-align:center;margin-top:10px">${foot}</div></div>`,
   `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+// K.front with its OWN blur filter (lib/fx.js shares one filter sized by the first front: later fronts at other camera scales lose
+// their glow). Use this for every front so each looks like the locked width 15 / glow 0.47 on screen (width = 15 / camera scale).
+let __FID = 0;
+const frontS = (o) => { const g = K.front(o), id = "m1blur" + (++__FID), f = document.createElementNS(NS, "filter"), ov = document.getElementById("overlay");
+  f.setAttribute("id", id); f.setAttribute("x", "-20%"); f.setAttribute("y", "-20%"); f.setAttribute("width", "140%"); f.setAttribute("height", "140%");
+  f.innerHTML = `<feGaussianBlur stdDeviation="${((o.width || 15) * 0.35).toFixed(2)}"/>`; ov.querySelector("defs").appendChild(f);
+  g.querySelectorAll("[filter]").forEach((p) => p.setAttribute("filter", `url(#${id})`)); return g; };
 // ---------- end of kit ----------
 // @@END-KIT
 // @@DATA
@@ -263,7 +270,7 @@ unit("mc", "carth", L(34.045, -84.665), "infantry", "McPHERSON", { t: 0.1, w: 22
 unit("th", "carth", L(34.000, -84.715), "infantry", "THOMAS", { t: 0.15, w: 22, h: 14.8, tag: 6, size: "XXXX" });
 unit("sc", "carth", L(33.945, -84.770), "infantry", "SCHOFIELD", { t: 0.2, w: 22, h: 14.8, tag: 6, size: "XXXX" });
 unit("jo", "rome", L(33.985, -84.615), "infantry", "JOHNSTON", { t: 0.25, w: 22, h: 14.8, tag: 6, size: "XXXX" });
-const F1 = K.front({ pts: FR.jun15, sideA: "carth", sideB: "rome", t: 0.1, dur: 1.2, width: FW(1.25), until: T_PAT + 0.6, to: FR.jun27, moveT: T_KEN, moveDur: 2.2 });
+const F1 = frontS({ pts: FR.jun15, sideA: "carth", sideB: "rome", t: 0.1, dur: 1.2, width: FW(1.25), until: T_PAT + 0.6, to: FR.jun27, moveT: T_KEN, moveDur: 2.2 });
 box("PINE MOUNTAIN", PINE[0] + 2, PINE[1] - 22, 0.6, 9, T_HALT + 1.0, { bg: "#f3d6d0" });
 box("LOST MOUNTAIN", LOST[0] - 10, LOST[1] + 22, 0.9, 8, T_HALT + 1.0, { sfx: false });
 // 14 June: Union guns on Pine Mountain; the third round kills Leonidas Polk
@@ -283,7 +290,7 @@ box("KENNESAW MOUNTAIN", BIGK[0] + 70, BIGK[1] + 10, T_KEN + 0.3, 10, T_PAT + 0.
 B.caption("THE RAIN, AND A HALT IN FRONT OF KENNESAW MOUNTAIN", T_KEN + 0.6, T_27 - 0.1, "");
 
 // ---------- 27 June: the frontal assault (option 2: the two-colour front on the trench line) ----------
-const F2 = K.front({ pts: FR.jun27, sideA: "carth", sideB: "rome", t: T_PAT + 0.4, dur: 0.6, width: FW(2.65), until: T_WEEK + 0.3 });
+const F2 = frontS({ pts: FR.jun27, sideA: "carth", sideB: "rome", t: T_PAT + 0.4, dur: 0.6, width: FW(2.65), until: T_WEEK + 0.3 });
 tl.to(F1, { opacity: 0, duration: 0.4 }, T_PAT + 0.4);
 tl.to([B.units.mc.el, B.units.th.el, B.units.sc.el, B.units.jo.el], { scale: 0.55, duration: 1.2 }, T_PAT);
 badge({ name: "WILLIAM T. SHERMAN", role: "ORDERS A FRONTAL ASSAULT", initials: "WTS", photo: PHOTO.sherman, flag: FL.us, side: "carth", corner: "tr", t: T_PAT - 0.2, until: T_NOON - 0.3 });
@@ -314,7 +321,7 @@ quote("“FAILURE AS IT WAS, AND FOR WHICH I ASSUME THE ENTIRE RESPONSIBILITY”
 
 // ---------- within a week: back to the method, around the mountain (Johnston leaves Kennesaw the night of 2 July) ----------
 tl.to([B.units.mc.el, B.units.th.el, B.units.sc.el, B.units.jo.el], { scale: 1, duration: 1.2 }, T_WEEK);
-const F3 = K.front({ pts: FR.jun27, sideA: "carth", sideB: "rome", t: T_WEEK + 0.3, dur: 0.01, width: FW(1.45), until: END + 1, to: FR.jul03, moveT: T_SWUNG - 0.4, moveDur: 2.0 });
+const F3 = frontS({ pts: FR.jun27, sideA: "carth", sideB: "rome", t: T_WEEK + 0.3, dur: 0.01, width: FW(1.45), until: END + 1, to: FR.jul03, moveT: T_SWUNG - 0.4, moveDur: 2.0 });
 tl.to(F2, { opacity: 0, duration: 0.3 }, T_WEEK + 0.3);
 const AROUND = LL([[33.995, -84.640], [33.960, -84.665], [33.915, -84.668], [33.880, -84.630], [33.858, -84.580]]);
 arw({ pts: AROUND, side: "carth", t: T_METH - 0.2, dur: 2.0, width: 5, until: END + 1 });
