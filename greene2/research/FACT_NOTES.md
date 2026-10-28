@@ -16,6 +16,18 @@ Items marked **(memory)** are from general knowledge, not the Gemini file: list 
 | "The only major general in history who lost virtually every battle" | Overstated; script says "lost almost every battle he fought" (Guilford, Hobkirk's Hill, Ninety Six assault, Eutaw a tactical draw / British field) | hook-1 |
 
 ## Hook claims
+- **Hook v3 stakes frame (STYLE_LOCK 1a, REVISED 2026-10-28). The first proposal ("had beaten the Americans again and again. And now it
+  marches into ...") was REJECTED by the owner as a copy of the Meade line with names swapped.** Alternatives sent 2026-10-28; **owner chose B** (first C, then changed to B):
+  - A (the strategy): "Britain had a new plan to win the war: take the South, one colony at a time. It began with the largest city in the
+    South, Charleston." Sources: Buchanan, *The Road to Guilford Courthouse* ch. 1-3 and Ferling, *Winning Independence* (the "southern
+    strategy": Georgia retaken Dec 1778-Jan 1779, then Clinton's 1780 expedition against South Carolina, counting on loyalist support);
+    Charleston = the largest city and port south of Philadelphia (pop. ~12,000 in 1775) **(memory)**.
+  - B (the army): "In the spring of seventeen eighty, the whole American army in the South was trapped inside one city: Charleston."
+    Sources: Buchanan; Ferling. Benjamin Lincoln's Southern Department army (Continentals of NC, VA, SC + militia) was besieged
+    29 Mar - 12 May 1780 and surrendered entire (~5,000+, often 5,266 incl. militia and sailors) = the largest American surrender of the war
+    **(memory: figures)**.
+  - C (the cause): "In seventeen eighty, the Revolution was dying in the South, and the first blow fell on its greatest city, Charleston."
+    Sources: Buchanan; Golway, *Washington's General* (the South "lost" after Charleston + Camden); same Charleston facts as A.
 - Hook v2 (owner 2026-10-27: "match the new rules"): line 1 "Five thousand American soldiers, surrendered in one day" = the Charleston capitulation, 12 May 1780 (siege 29 Mar - 12 May; the surrender itself was one day). Twist = odds as action: ~1,500 fit for duty (Buchanan: 1,482) vs ~8,000 British + loyalists in the South (Buchanan via Gemini); "many without shoes" (Greene's letters on his naked, barefoot army, Dec 1780) **(memory)**; "refused a commission because he limped" = Kentish Guards 1774 (below).
 - "Two American armies, wiped out in three months": Charleston surrendered 12 May 1780 (Lincoln's army, ~5,000+ captured, often given as 5,266 incl. militia/sailors **(memory)**); Camden 16 Aug 1780, Gates's army routed. 12 May -> 16 Aug = ~3 months. "Wiped out" = captured / routed.
 - "Two-hundred-mile chase": Gemini (Buchanan) "some two hundred miles" from the Catawba region to the Dan.
