@@ -65,7 +65,7 @@ const wimg = (src, tIn, dIn, tOut, mx = true, dOut = 0.6) => {
 const ctl = (date, tIn, tOut) => wimg(`assets/media/virginia_ctl_${date}_mx.png`, tIn, 1.0, tOut, true, 1.0);
 const date0 = (text, until) => { const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px";
   document.getElementById("date").appendChild(d); if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.3 }, until); };
-const CW = 1920, CH = 1080, cam = { cx: 1450, cy: 720, s: 1.0 };
+const CW = 1920, CH = 1080, cam = { cx: 1508, cy: 849, s: 0.70 };   // stakes frame: all of Virginia
 const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 const applyCam = () => { const s = Math.max(cam.s, CW / 2880), cx = clamp(cam.cx, CW / 2 / s, 2880 - CW / 2 / s), cy = clamp(cam.cy, CH / 2 / s, 1620 - CH / 2 / s); gsap.set(worldEl, { x: CW / 2 - cx * s, y: CH / 2 - cy * s, scale: s }); };
 applyCam();
@@ -82,8 +82,12 @@ const S2 = PS(H2), T_CAME = at(H2, "came out"), T_BEHIND = at(H2, "behind a moun
 const S3 = PS(H3), T_MAN = at(H3, "The man who"), T_PHYS = at(H3, "physics teacher"), T_SCHOOL = at(H3, "military school"), T_CADETS = at(H3, "His cadets"),
   T_LAUGH = at(H3, "laughed"), T_TOM = at(H3, "Tom Fool"), T_LESS = at(H3, "And less than"), T_NIGHT = at(H3, "on the night"), T_VICT = at(H3, "greatest victory"),
   T_SHOT = at(H3, "shot down"), T_DARK = at(H3, "in the dark"), T_OWN = at(H3, "by his own men");
+// stakes opening (STYLE_LOCK 1a UPDATED 2026-10-28; owner picked stake B): the number beat now starts at T0
+const T_LINC0 = at(H1, "Abraham Lincoln"), T_HELD = at(H1, "held forty"), T_MARCH = at(H1, "the march on Richmond"), T_GUARD = at(H1, "to guard"),
+  T_ONE = at(H1, "against one place"), T_SV = at(H1, "the Shenandoah Valley"), T0 = at(H1, "More than fifty");
 // ---------- map layers (option 1, May 1862) ----------
-const C0 = ctl("may62", 0, T_POT + 0.2);
+const C00 = ctl("mar62", 0, T0 - 0.4);
+const C0 = ctl("may62", T0 - 0.7, T_POT + 0.2);
 const C1 = ctl("may62b", T_POT - 0.3, S3 - 0.05);
 const GEO = wimg("assets/media/virginia_geo_ref.png", 0, 0, null, false);
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.22 }); try { LV.shimmer(window.VA_RIVERS || [], { width: 2 }); } catch (e) {}
@@ -93,29 +97,29 @@ const P = { stras: L(38.989, -78.358), fr: L(38.918, -78.194), win: L(39.186, -7
 // =====================================================================================================================
 // hook-1 (0 - 9.75): WIDE, option 1, three red armies marching in from frame 0
 // =====================================================================================================================
-date0("MAY 1862", S2 + 0.05);
+date0("SPRING 1862", S2 + 0.05);
 legend(0, S3 - 0.05, false);
 const WF = flags(1.0, [1150, 430], L(38.05, -78.45), 0, T_SENT + 0.1);
-const WT = [box("SHENANDOAH VALLEY", 1160, 700, 0, 14, T_SENT + 0.1)];
+const WT = [box("SHENANDOAH VALLEY", 1160, 700, T_SV, 14, T_SENT + 0.1)];
 // the three Union armies, moving from frame 0 (labels = commanders)
 const RW = [unitXY("rb", "rome", 1395, 575, "infantry", { label: "BANKS", w: 40, h: 27, tag: 13 }), unitXY("rf", "rome", 960, 760, "infantry", { label: "FREMONT", w: 40, h: 27, tag: 13 }),
   unitXY("rm", "rome", 1745, 905, "infantry", { label: "McDOWELL", w: 40, h: 27, tag: 13 }), unitXY("rb2", "rome", 1440, 540, "artillery", { w: 30, h: 20 }),
   unitXY("rm2", "rome", 1790, 870, "infantry", { w: 30, h: 20 }), unitXY("rf2", "rome", 925, 800, "infantry", { w: 30, h: 20 })];
-go("rb", 0, 4.6, 1368, 600, "power1.out"); go("rb2", 0, 4.6, 1405, 585, "power1.out");
-go("rf", 0, 4.6, 1010, 768, "power1.out"); go("rf2", 0, 4.6, 975, 805, "power1.out");
-go("rm", 0, 4.6, 1700, 912, "power1.out"); go("rm2", 0, 4.6, 1735, 880, "power1.out");
+go("rb", T0, 4.6, 1368, 600, "power1.out"); go("rb2", T0, 4.6, 1405, 585, "power1.out");
+go("rf", T0, 4.6, 1010, 768, "power1.out"); go("rf2", T0, 4.6, 975, 805, "power1.out");
+go("rm", T0, 4.6, 1700, 912, "power1.out"); go("rm2", T0, 4.6, 1735, 880, "power1.out");
 const BW = [unitXY("bj", "carth", 1205, 800, "infantry", { label: "JACKSON", w: 34, h: 23, tag: 12 })];
-go("bj", 0, 4.6, 1240, 770, "power1.inOut");
+go("bj", T0, 4.6, 1240, 770, "power1.inOut");
 // guns already flashing on the Union side (quiet launches, no impacts yet)
-[0.2, 0.9, 1.6].forEach((t, k) => K.gun(1410 + k * 6, 590 + k * 8, t));
+[0.2, 0.9, 1.6].forEach((t, k) => K.gun(1410 + k * 6, 590 + k * 8, T0 + t));
 // the BIG card: slams in at 0.3 s and ticks 0 -> 50,000 (ABT "no less than 50,000": shown as 50,000+)
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:150px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
   <div style="font-size:40px;letter-spacing:0.26em;color:#ef8a82;margin-top:2px">UNION SOLDIERS</div>
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">THREE ARMIES · SHENANDOAH VALLEY · MAY-JUNE 1862</div></div>`,
   "right:80px;top:150px;transform-origin:50% 40%;");
-slam(BIG, 0.3, { from: 1.9, dur: 0.22, shake: 6 });
-const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = 0.55, T_C1 = T_SOLD + 0.3;
+slam(BIG, T0 + 0.1, { from: 1.9, dur: 0.22, shake: 6 });
+const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = T0 + 0.35, T_C1 = T_SOLD + 0.3;
 tl.to(cv, { v: 50000, duration: T_C1 - T_C0, ease: "power2.out", onUpdate: () => { cn.textContent = (Math.round(cv.v / 1000) * 1000).toLocaleString("en-US") + (cv.v >= 49900 ? "+" : ""); } }, T_C0);
 for (let t = T_C0; t < T_C1 - 0.1; t += 0.14) SFX("tick", t);
 // "Three separate armies": three red arrows close on the Valley, 3 ARMIES stamp
@@ -128,7 +132,32 @@ slam(S3A, T_THREE + 0.5, { shake: 4 });
 tl.to([BIG, S3A], { autoAlpha: 0, y: -40, duration: 0.35, ease: "power2.in" }, T_SENT - 0.05);
 // ---------- hard zoom-whoosh DIVE down the Massanutten (~5 s) ----------
 const TD = T_SENT + 0.15;
-camTo(0, TD, 1420, 715, 1.08, "sine.inOut");
+// ---------- STAKES FRAME (0 - T0): Lincoln holds McDowell's 40,000 back to guard Washington against the Valley ----------
+const RICH = L(37.541, -77.436), PEN = L(37.24, -76.51);
+const MC = unitXY("rmc", "rome", PEN[0] - 20, PEN[1] - 10, "infantry", { label: "McCLELLAN", w: 46, h: 30, tag: 15 });
+const MC2 = unitXY("rmc2", "rome", PEN[0] + 30, PEN[1] + 25, "infantry", { w: 34, h: 22 });
+go("rmc", 0, T0, PEN[0] - 150, PEN[1] - 70, "sine.inOut"); go("rmc2", 0, T0, PEN[0] - 110, PEN[1] - 40, "sine.inOut");
+B.arrow({ pts: [[PEN[0] - 40, PEN[1] - 30], [PEN[0] - 160, PEN[1] - 90], [RICH[0] + 30, RICH[1] + 20]], side: "rome", t: 0.15, dur: 2.2, width: 16, until: T0 - 0.2 });
+K.target(...RICH, 0.3, { r: 80, side: "carth", until: T0 - 0.2 });
+const RT = box("RICHMOND", RICH[0] - 10, RICH[1] + 34, 0, 12, T0 - 0.2);
+// stamp in the first second = the spoken words ("In the spring of eighteen sixty-two")
+const ST1 = slam(scr(stampHTML("SPRING 1862", "#e3232f", 56, -5, "VIRGINIA"), "right:120px;top:690px;"), 0.4, { shake: 4, until: T_HELD - 0.1 });
+// "the march on Richmond": stamp on its own words (no unspoken numbers)
+const ST1b = slam(scr(stampHTML("THE MARCH ON RICHMOND", "#e3232f", 42, -4, "McCLELLAN"), "right:90px;top:800px;"), T_MARCH + 0.1, { shake: 3, until: T_ONE - 0.1 });
+const LB0 = K.badge({ name: "ABRAHAM LINCOLN", role: "PRESIDENT", photo: "assets/media/lincoln_head.png", flag: FL.us, side: "rome", corner: "bl", t: T_LINC0 - 0.3, until: T0 - 0.3 });
+// McDowell's corps starts south from Fredericksburg ... and is held back to cover Washington
+const MDA = B.arrow({ pts: [[1745, 935], [1735, 1060], [RICH[0] + 15, RICH[1] - 60]], side: "rome", t: 0.6, dur: 1.8, width: 14, until: T_HELD + 0.25 });
+const ST2 = slam(scr(stampHTML("40,000 HELD BACK", "#e3232f", 58, -5, "McDOWELL'S CORPS · 3 APRIL 1862"), "right:110px;top:560px;"), T_HELD + 0.15, { shake: 5, until: T_ONE - 0.1 });
+B.arrow({ pts: [[1760, 890], [1800, 790], [P.wash[0] - 10, P.wash[1] + 40]], side: "rome", t: T_MARCH, dur: 1.2, width: 14, until: T0 - 0.2 });
+K.target(...P.wash, T_GUARD, { r: 80, side: "rome", until: T0 - 0.2 });
+const ST3 = slam(scr(stampHTML("GUARD THE CAPITAL", "#e3232f", 40, -4, "WASHINGTON · APRIL 1862"), "right:150px;top:150px;"), T_GUARD + 0.2, { shake: 3, until: T_ONE + 0.3 });
+// (Washington is already labelled by the geo layer)
+// the threat: the Valley lights up, then ONE continuous zoom (whoosh) onto it, landing on "the Shenandoah Valley"
+SFX("whoosh", T_ONE - 0.05);
+camTo(0, T_ONE, 1500, 840, 0.74, "sine.inOut");
+camTo(T_ONE, T_SV + 0.9 - T_ONE, 1330, 720, 1.35, "power2.inOut");
+camTo(T_SV + 0.9, TD - T_SV - 0.9, 1340, 712, 1.45, "sine.inOut");
+B.hideUnits(["rmc", "rmc2"], T0 - 0.3, 0.3);
 SFX("whoosh", TD - 0.05);
 camTo(TD, 0.8, 1330, 720, 2.55, "expo.inOut");
 camTo(TD + 0.82, S2 + 1.0 - TD - 0.82, 1325, 712, 2.65, "sine.inOut");

@@ -90,7 +90,7 @@ story += [P("1. The finished video", "h1"),
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
-          Spacer(1, 5 * mm), P("Key frames: the hook (0:00-1:14)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
+          Spacer(1, 5 * mm), P("Key frames: the hook v2 (stakes opening, 0:00-0:12)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
 story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 90)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives (vidIQ scores):"),
           *bullets(["Stonewall Jackson's Top 3 Legendary Tactical Moves | The Man Who Humiliated the Union Army (89)",
