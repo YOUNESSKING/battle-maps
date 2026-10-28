@@ -56,7 +56,7 @@ cam.cx = C0[0]; cam.cy = C0[1]; cam.s = S0 * 0.97; applyCam();
 camTo(0, S2, C0[0] + 20, C0[1] - 10, S0, "sine.inOut");
 B.showDate(0.05); B.date("1864 - 1865", 0.1, null, 32);
 legend(0, null);
-flags(S0, L(35.95, -85.0), L(33.55, -85.35), 0, null);
+flags(S0, L(35.6, -77.6), L(34.35, -82.2), 0, null);
 const SB = K.badge({ name: "WILLIAM T. SHERMAN", role: "1864 - 1865", photo: "assets/media/sherman_head.png", flag: FL.us, side: "carth", corner: "bl", t: 0.1, until: T_YEARS - 0.2 });
 // the man a newspaper had called insane: the 1861 headline as a greyed ghost
 const GH = scr(`<div style="width:520px;background:linear-gradient(180deg,#d9d2c0,#bfb59c);color:#2a251c;padding:10px 18px 12px;transform:rotate(-3deg);font-family:Oswald;box-shadow:0 14px 30px rgba(0,0,0,.6);filter:grayscale(1)"><div style="font-family:'Special Elite',monospace;font-size:12px;border-bottom:2px double #3b3224">CINCINNATI · DECEMBER 11, 1861</div><div style="font-weight:700;font-size:44px;line-height:1.05;text-align:center;margin-top:6px">GEN. WILLIAM T. SHERMAN INSANE</div></div>`, "right:110px;top:170px;");
@@ -69,8 +69,8 @@ const UNTIL = T_YEARS - 0.2;
 // 1: the swing round the west side of Atlanta onto the railroad at Jonesboro
 B.arrow({ pts: [L(33.95, -84.55), L(33.72, -84.75), L(33.50, -84.55), L(33.47, -84.38)], side: "carth", t: T_ATL - 0.2, dur: 0.9, width: 9, until: UNTIL });
 const R1 = ringE(P.atl, "HIT THE RAILROAD, NOT THE WALL", 1, T_ATL, -40, -56, UNTIL);
-const LW = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 22px 10px;background:rgba(18,16,12,0.9);border-left:7px solid #2e5cb2;color:#f7f3ea"><div style="font-size:18px;letter-spacing:0.3em;color:#9fc0ea">8 NOVEMBER 1864</div><div style="font-size:30px;letter-spacing:0.06em">LINCOLN RE-ELECTED · 212 TO 21</div></div>`, "right:110px;top:180px;");
-tl.fromTo(LW, { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_ELEC); SFX("ref:pop", T_ELEC + 0.05);
+const LW = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 22px 10px;background:rgba(18,16,12,0.9);border-left:7px solid #2e5cb2;color:#f7f3ea"><div style="font-size:18px;letter-spacing:0.3em;color:#9fc0ea">8 NOVEMBER 1864</div><div style="font-size:30px;letter-spacing:0.06em">LINCOLN RE-ELECTED · 212 TO 21</div></div>`, "left:90px;top:210px;");
+tl.fromTo(LW, { autoAlpha: 0, x: -60 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_ELEC); SFX("ref:pop", T_ELEC + 0.05);
 tl.to(LW, { autoAlpha: 0, duration: 0.3 }, T_NEVER - 0.2);
 // 2: two wings across Georgia to the sea
 B.arrow({ pts: [L(33.70, -84.25), L(33.05, -83.60), L(32.55, -82.40), L(32.15, -81.25)], side: "carth", t: T_MARCH - 0.2, dur: 1.0, width: 9, until: UNTIL });
@@ -88,7 +88,7 @@ const glow = (p, t, r, until) => { const el = GG.pin(`<div style="width:${r * 2}
   tl.fromTo(el, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.5, immediateRender: false }, t); tl.to(el, { scale: 1.15, duration: 0.4, yoyo: true, repeat: 8, ease: "sine.inOut" }, t + 0.5); tl.to(el, { autoAlpha: 0, duration: 0.6 }, until); };
 [[P.atl, 0], [P.mill, 0.35], [L(32.7, -82.3), 0.6], [P.colum, 0.85], [L(34.7, -79.88), 1.1]].forEach(([p, d]) => { glow(p, T_NEVER + d, 40, UNTIL); K.smoke(p[0], p[1] - 6, T_NEVER + d + 0.1, { n: 5, r: 14, rise: 70, life: 3.2, alpha: 0.8 }); });
 SFX("ref:boom", T_NEVER + 0.2);
-const NF = scr(stampHTML("NEVER FORGIVEN", "#d8cfb8", 50, -3, "IN THE SOUTH"), "right:150px;top:200px;");
+const NF = scr(stampHTML("NEVER FORGIVEN", "#d8cfb8", 56, -3, "IN THE SOUTH"), "left:0;right:0;top:850px;display:flex;justify-content:center;");
 slam(NF, T_DEST - 0.1, { shake: 3, until: T_YEARS - 0.2 });
 // SHERMAN'S METHOD, full; then the reported line (no quote marks), COLUMBUS, OHIO, 1880 · AS REPORTED
 GG.METHOD = ["HIT THE RAILROAD, NOT THE WALL", "THREATEN TWO PLACES AT ONCE", "GO WHERE THEY SAY NO ARMY CAN"]; GG.METHOD_TITLE = "SHERMAN'S METHOD";

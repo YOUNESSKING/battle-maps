@@ -24,14 +24,14 @@ const GEO = GD.geo ? wimg(GD.geo, 0, 0, null) : null;
 rail([[32.311, -81.391], [32.20, -81.25], [32.12, -81.15], [32.081, -81.10]].map((q) => L(...q)), null, null, { w: 2.2 });
 rail([[32.081, -81.10], [32.10, -81.12], [32.20, -81.10], [32.286, -81.080], [32.45, -81.02]].map((q) => L(...q)), null, null, { w: 2.2 });
 // ---------- places ----------
-const SAV = L(32.081, -81.091), MCA = L(31.890, -81.190), MILL = L(31.915, -81.225), FLT = L(31.80, -80.98), HDV = L(32.286, -81.080);
+const SAV = L(32.081, -81.091), MCA = L(31.890, -81.190), MILL = L(31.915, -81.225), FLT = L(31.845, -81.005), HDV = L(32.286, -81.080);
 const lab = (txt, q, t, o = {}) => { if (o.dot !== false) B.city("", q[0], q[1], { r: o.r || 3, t, until: o.until }); return box(txt, q[0] + (o.dx || 0), q[1] + (o.dy != null ? o.dy : -14), t, o.size || 12, o.until, false); };
 lab("OGEECHEE R.", L(31.985, -81.36), 0.3, { dot: false, size: 11 });
 lab("SAVANNAH R.", L(32.30, -81.17), 0.3, { dot: false, size: 11 });
 lab("HARDEEVILLE", HDV, 0.4, { dx: 50, dy: 0, size: 11 });
 // ---------- camera ----------
 camSet(1460, 700, 1.25);
-camTo(0.3, T_RIVER - 0.6, 1440, 790, 1.4);
+camTo(0.3, T_RIVER - 0.6, 1470, 800, 1.4);
 camTo(T_RIVER - 0.4, 2.6, MCA[0] - 20, MCA[1] - 30, 2.4);                            // to the fort
 camTo(T8 + 0.2, 2.6, MCA[0] - 40, MCA[1] - 14, 3.4);                                 // close-up: the assault
 camTo(T_NIGHT - 0.3, 3.0, 1470, 760, 1.5);                                            // the fleet + the city
@@ -42,7 +42,7 @@ B.showDate(0.05);
 B.date("10 DECEMBER 1864", 0.1, T8 - 0.2, 32); B.date("13 DECEMBER 1864", T8 - 0.1, T_WEEK - 0.4, 32);
 B.date("20 DECEMBER 1864 · NIGHT", T_WEEK - 0.3, T_IN - 0.3, 32); B.date("21 DECEMBER 1864", T_IN - 0.2, END + 1, 32);
 legend(0.2, T8 + 0.4); legend(T8 + 0.5, T_NIGHT + 0.2, true); legend(T_NIGHT + 0.3, END + 1);
-flagsBoth(L(31.70, -81.55), L(32.20, -81.60), 0.2, T8 + 0.3, 76);
+flagsBoth(L(31.84, -81.40), L(32.20, -81.47), 0.2, T8 + 0.3, 76);
 flagsBoth(L(31.865, -81.135), L(31.925, -81.300), T8 + 0.4, T_NIGHT + 0.3, 30);
 flagsBoth(L(32.24, -80.98), L(32.08, -81.35), T_NIGHT + 0.4, END + 1, 62);
 // ---------- move2-7: the army arrives, Hardee behind the rice fields ----------
@@ -70,12 +70,12 @@ slide(RB, T_WAG - 0.3, T_RIVER + 0.4, -80);
 tl.to(RB.querySelector(".bar"), { width: "8%", backgroundColor: "#c4121f", duration: 2.4, ease: "power1.in" }, T_WAG + 0.2);
 for (let k = 0; k < 6; k++) SFX("tick", T_WAG + 0.3 + k * 0.35);
 // the fleet offshore (blue ship silhouettes, Dahlgren)
-const SH = [[31.80, -80.98], [31.77, -80.93], [31.83, -80.92]].map(([la, lo], k) => { const q = L(la, lo); return GG.ship(q[0], q[1], { w: 46 - k * 6, color: BLUE, t: T_FLEET - 0.2 + k * 0.2, flip: true, until: null }); });
+const SH = [[31.845, -81.005], [31.825, -80.965], [31.86, -80.955]].map(([la, lo], k) => { const q = L(la, lo); return GG.ship(q[0], q[1], { w: 64 - k * 8, color: BLUE, t: T_FLEET - 0.2 + k * 0.2, flip: true, until: null }); });
 badge({ name: "JOHN A. DAHLGREN", role: "U.S. NAVY · SOUTH ATLANTIC SQUADRON", photo: "assets/media/dahlgren_head.png", flag: FL.us, side: "carth", corner: "tr", t: T_FLEET, until: T_RIVER + 0.2 });
-tag("UNION FLEET · FOOD", FLT[0] + 10, FLT[1] - 44, T_FLEET + 0.4, BLUE, 12, T_NIGHT + 3);
+tag("UNION FLEET · FOOD", FLT[0] - 20, FLT[1] - 44, T_FLEET + 0.4, BLUE, 12, T_NIGHT + 3);
 // Fort McAllister: the red earthwork that blocks the Ogeechee
 const FORT = GG.pin(`<svg width="34" height="34" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px rgba(0,0,0,.8))"><path d="M0 -15 L5 -6 L15 -5 L8 3 L10 14 L0 9 L-10 14 L-8 3 L-15 -5 L-5 -6 Z" fill="${RED}" stroke="#f3eee2" stroke-width="2"/></svg>`, MCA[0], MCA[1], { t: T_RIVER, until: null, pop: true });
-const FTL = lab("FORT McALLISTER", MCA, T_RIVER + 0.2, { dot: false, dx: 0, dy: 26, size: 11 });
+const FTL = lab("FORT McALLISTER", MCA, T_RIVER + 0.2, { dot: false, dx: 44, dy: 30, size: 11 });
 K.target(MCA[0], MCA[1], T_RIVER + 0.3, { r: 26, side: "#ff3b30", until: T_OVER });
 const BLK = svgG(`<path d="${dOf([L(31.875, -81.161), L(31.892, -81.203)])}" stroke="#ff3b30" stroke-width="5" stroke-linecap="round"/>`); GG.hide(BLK);
 tl.to(BLK, { autoAlpha: 1, duration: 0.3 }, T_FORT - 0.4); tl.to(BLK, { autoAlpha: 0, duration: 0.4 }, T_OVER + 0.6);
@@ -100,11 +100,11 @@ K.front({ pts: [L(31.902, -81.200), L(31.893, -81.201), L(31.884, -81.198)], sid
 [[31.891, -81.205], [31.886, -81.207], [31.896, -81.204]].forEach((q, k) => { const p = L(...q); K.impact(p[0], p[1], T_MINES - 0.2 + k * 0.35, { r: 3, puffs: 2 }); });
 mg(L(31.890, -81.200), L(31.890, -81.192), T_MINES + 0.5, 4);
 clockCard("~15 MINUTES", "left:110px;top:200px;", T_OVER - 0.8, T_NIGHT + 0.2);
-mstamp("FORT McALLISTER TAKEN", MCA[0] + 6, MCA[1] + 40, T_OVER + 0.2, { size: 10, color: "#5b8fe8", until: T_NIGHT + 1.2 });
+mstamp("FORT McALLISTER TAKEN", MCA[0] + 10, MCA[1] - 46, T_OVER + 0.2, { size: 10, color: "#5b8fe8", until: T_NIGHT + 1.2 });
 tl.to(FORT.querySelector("path"), { attr: { fill: BLUE }, duration: 0.3 }, T_OVER + 0.3);
 // that night: Sherman rowed out to the fleet; a gunboat steams up the Ogeechee: the supply line opens
 const GBP = [L(31.79, -80.99), L(31.82, -81.06), L(31.845, -81.11), L(31.872, -81.16), L(31.892, -81.205), L(31.93, -81.255)];
-const GB = GG.ship(GBP[0][0], GBP[0][1], { w: 30, color: BLUE, t: T_NIGHT - 0.2, until: T_WEEK + 0.5, flip: true });
+const GB = GG.ship(GBP[0][0], GBP[0][1], { w: 44, color: BLUE, t: T_NIGHT - 0.2, until: T_WEEK + 0.5, flip: true });
 follow2(GB, GBP, T_NIGHT, 4.0);
 glowLine(GBP, "#5b8fe8", 2.2, T_NIGHT + 0.6, END + 1, { dur: 3.4 });
 tag("SUPPLY LINE OPEN · FOOD AGAIN", ...L(31.835, -81.20), T_FOOD - 0.4, BLUE, 12, T_WEEK + 0.6);
@@ -120,6 +120,6 @@ tArrow([PB[0], ...PB.slice(1), L(32.16, -81.06), L(32.27, -81.08)], RED, T_BOATS
 // 21 Dec: Union troops march in
 go("s17", T_IN - 0.3, 1.6, [SAV[0] - 18, SAV[1] + 8]); go("s15", T_IN - 0.2, 1.6, [SAV[0] - 4, SAV[1] + 22]);
 K.target(SAV[0], SAV[1], T_IN, { r: 30, side: "#5b8fe8", until: END + 1 });
-mstamp("SAVANNAH · 21 DEC", SAV[0] + 30, SAV[1] - 40, T_IN + 0.3, { size: 11, color: "#5b8fe8", until: END + 1 });
+mstamp("SAVANNAH · 21 DEC", SAV[0] + 60, SAV[1] - 52, T_IN + 0.3, { size: 11, color: "#5b8fe8", until: END + 1 });
 K.raiseTerritory();
 B.finish();
