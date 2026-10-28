@@ -1,0 +1,118 @@
+{
+ "title": "Sherman #13 \u00b7 MOVE 3 \u00b7 THE CAROLINAS, FEB - APR 1865 (move3a-c, 11:28 - 14:58)",
+ "note": "move3a carolinas (opt 1 + swath stages; Rivers' Bridge opt 2; Columbia night) \u00b7 move3b bentonville (opt 2 fronts; nights) \u00b7 move3c south (opt 1 mar23 -> apr65) \u00b7 US 35-star + CSA First National",
+ "frames": [
+  [
+   "move3a",
+   11.5,
+   "11:39",
+   "3-1 title done; BY SEA? -> BY LAND (Sherman's route); count 60,079 MEN \u00b7 68 GUNS (Memoirs)",
+   "ticks, pop"
+  ],
+  [
+   "move3a",
+   24,
+   "11:52",
+   "3-1 rivers glow one by one + flooded swamp; Salkehatchie A MILE WIDE; IMPASSABLE? (Memoirs)",
+   "pops, hit + shake"
+  ],
+  [
+   "move3a",
+   32.8,
+   "12:00",
+   "3-2 feint again: wings at CHARLESTON + AUGUSTA, HE IS COMING HERE x2, HELD; Hardee",
+   "hits + shake, pops"
+  ],
+  [
+   "move3a",
+   49.5,
+   "12:17",
+   "3-2 RIVERS' BRIDGE 3 FEB (schematic, opt 2): 2 divisions wade the swamp onto the flank; LINE BROKEN",
+   "gun thuds, impacts + shake, mg, hit"
+  ],
+  [
+   "move3a",
+   62,
+   "12:30",
+   "3-3 CORDUROY ROADS laid log by log ahead of 4 corps (axes, felled trees) + close-up card",
+   "log ticks, hits, pop"
+  ],
+  [
+   "move3a",
+   75,
+   "12:43",
+   "3-3 wagons + guns follow; Johnston; NO SUCH ARMY ... JULIUS CAESAR - ATTRIBUTED TO J. E. JOHNSTON",
+   "pop"
+  ],
+  [
+   "move3a",
+   86,
+   "12:54",
+   "3-4 COLUMBIA TAKEN 17 FEB; NIGHT: fire spreads, wind; ABOUT ONE-THIRD OF THE CITY BURNED (SC Enc.)",
+   "fire, hit + shake"
+  ],
+  [
+   "move3a",
+   101.5,
+   "13:09",
+   "3-4 same night: Hardee out north, CHARLESTON GIVEN UP \u00b7 WITHOUT A FIGHT; Fort Sumter 1861",
+   "hit + shake, pop"
+  ],
+  [
+   "move3a",
+   125.5,
+   "13:33",
+   "3-5 Fayetteville, Johnston BACK IN COMMAND, Averasboro, wings FAR APART; ~20,000 at BENTONVILLE",
+   "gun thuds, impacts, ticks"
+  ],
+  [
+   "move3b",
+   9,
+   "13:43",
+   "3-6 19 MAR: XIV Corps into the hook (TRAP); afternoon attack drives the Union left back (opt 2 front)",
+   "impacts + shake, mg, hit"
+  ],
+  [
+   "move3b",
+   22.5,
+   "13:57",
+   "3-6 held until dark; NIGHT: couriers to Sherman, the right wing marches all night",
+   "pop"
+  ],
+  [
+   "move3b",
+   36.6,
+   "14:11",
+   "3-7 21 MAR: 3 sides, ONLY BRIDGE; Mower through the swamp, HQ OVERRUN; PULL BACK",
+   "impacts + shake, mg, hits"
+  ],
+  [
+   "move3b",
+   46.8,
+   "14:21",
+   "3-7 quote card (Memoirs 1875) before; NIGHT: Johnston over Mill Creek; CASUALTIES 1,527 / 2,606",
+   "hit + shake"
+  ],
+  [
+   "move3c",
+   17.5,
+   "14:39",
+   "3-8 Goldsboro 88,948 + LEE SURRENDERS before; 17 APR Bennett Place: telegram, Lincoln greys, ASSASSINATED",
+   "hits + shake"
+  ],
+  [
+   "move3c",
+   30.5,
+   "14:52",
+   "3-8 26 APR SURRENDER; 89,270 (CAROLINAS \u00b7 GEORGIA \u00b7 FLORIDA) vs Appomattox 28,231 (bars)",
+   "hit, ticks, pop"
+  ],
+  [
+   "move3c",
+   34.5,
+   "14:56",
+   "3-8 method card line 3: GO WHERE THEY SAY NO ARMY CAN",
+   "hit"
+  ]
+ ]
+}
