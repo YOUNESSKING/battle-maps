@@ -15,7 +15,7 @@ Category: Education · Altered or synthetic content: Yes (AI narration voice) ·
 
 ## Description
 ```
-The Germans were certain that no army could cross the swamps of Belarus. In June 1944, one Soviet general sent tanks, cavalry and infantry straight through them, and within weeks Army Group Centre had lost around 400,000 men.
+About one in four people in Belarus would not survive the German occupation. In June 1944, the Red Army came to drive the occupiers out, and in a single summer Army Group Centre lost around 400,000 men. It began in swamps the Germans were sure no army could cross.
 
 Konstantin Rokossovsky went from a Soviet prison cell to three of the greatest battles of the Second World War. In this video we break down his three greatest tactical moves: the elastic defence of the Volokolamsk highway before Moscow in 1941, the defence of the northern face of the Kursk salient at Ponyri and Olkhovatka in 1943, and the two-pronged breakthrough at Bobruisk during Operation Bagration in 1944.
 
@@ -25,18 +25,18 @@ Which commander should we cover next? Let us know in the comments.
 
 CHAPTERS
 0:00 Intro: The Swamps No Army Could Cross
-1:39 Hitler Invades; the Road to Moscow
-2:31 Move 1: The Volokolamsk Highway (Moscow 1941)
-4:48 The Istra Reservoir: Rokossovsky vs Zhukov
-6:00 The Counter-Attack
-6:53 Move 2: The Northern Face of Kursk (1943)
-8:33 Firing First: the Counter-Barrage
-9:25 The Fight for Ponyri
-10:57 Move 3: Operation Bagration (1944)
-11:47 "Go and Think It Over": Two Blows
-12:36 Out of the Marshes: Bobruisk
-14:25 57,000 Prisoners in Moscow
-15:01 Legacy
+1:53 Hitler Invades; the Road to Moscow
+2:45 Move 1: The Volokolamsk Highway (Moscow 1941)
+5:01 The Istra Reservoir: Rokossovsky vs Zhukov
+6:13 The Counter-Attack
+7:07 Move 2: The Northern Face of Kursk (1943)
+8:47 Firing First: the Counter-Barrage
+9:38 The Fight for Ponyri
+11:10 Move 3: Operation Bagration (1944)
+12:00 "Go and Think It Over": Two Blows
+12:50 Out of the Marshes: Bobruisk
+14:38 57,000 Prisoners in Moscow
+15:15 Legacy
 
 SOURCES
 Konstantin Rokossovsky, A Soldier's Duty (memoirs, Progress Publishers)
