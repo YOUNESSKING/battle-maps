@@ -140,7 +140,10 @@ go("rmc", 0, T0, PEN[0] - 150, PEN[1] - 70, "sine.inOut"); go("rmc2", 0, T0, PEN
 B.arrow({ pts: [[PEN[0] - 40, PEN[1] - 30], [PEN[0] - 160, PEN[1] - 90], [RICH[0] + 30, RICH[1] + 20]], side: "rome", t: 0.15, dur: 2.2, width: 16, until: T0 - 0.2 });
 K.target(...RICH, 0.3, { r: 80, side: "carth", until: T0 - 0.2 });
 const RT = box("RICHMOND", RICH[0] - 10, RICH[1] + 34, 0, 12, T0 - 0.2);
-const ST1 = slam(scr(stampHTML("100,000 MARCH ON RICHMOND", "#e3232f", 46, -5, "McCLELLAN · SPRING 1862"), "right:90px;top:690px;"), 0.5, { shake: 4, until: T_HELD - 0.1 });
+// stamp in the first second = the spoken words ("In the spring of eighteen sixty-two")
+const ST1 = slam(scr(stampHTML("SPRING 1862", "#e3232f", 56, -5, "VIRGINIA"), "right:120px;top:690px;"), 0.4, { shake: 4, until: T_HELD - 0.1 });
+// "the march on Richmond": stamp on its own words (no unspoken numbers)
+const ST1b = slam(scr(stampHTML("THE MARCH ON RICHMOND", "#e3232f", 42, -4, "McCLELLAN"), "right:90px;top:800px;"), T_MARCH + 0.1, { shake: 3, until: T_ONE - 0.1 });
 const LB0 = K.badge({ name: "ABRAHAM LINCOLN", role: "PRESIDENT", photo: "assets/media/lincoln_head.png", flag: FL.us, side: "rome", corner: "bl", t: T_LINC0 - 0.3, until: T0 - 0.3 });
 // McDowell's corps starts south from Fredericksburg ... and is held back to cover Washington
 const MDA = B.arrow({ pts: [[1745, 935], [1735, 1060], [RICH[0] + 15, RICH[1] - 60]], side: "rome", t: 0.6, dur: 1.8, width: 14, until: T_HELD + 0.25 });
