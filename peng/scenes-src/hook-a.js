@@ -58,39 +58,113 @@ const ghost = (ids, t) => ids.forEach((id, k) => { const el = B.units[id].el;
   tl.to(el, { opacity: 0.3, filter: "grayscale(1) brightness(1.7)", duration: 0.5, ease: "power2.out" }, t + k * 0.06); });
 // ---------- times (from the spoken words) ----------
 const H1 = "hook-1";
+// STAKES OPENING (STYLE_LOCK 1a UPDATED 2026-10-28, owner chose option B): "By late November nineteen fifty, the war in Korea looked as good
+// as won. One last American offensive was meant to end it, on the Chongchon River." Overview = the whole of Korea (option 1, territory
+// growing north Sep -> Oct -> Nov), MacArthur badge, stamps INCHON / PYONGYANG / THE YALU / AS GOOD AS WON, then ONE continuous zoom
+// (no cut, no flash) into the nwkorea map landing on "Chongchon River". The 300,000 card slams on its own words.
+const T_KOREA = at(H1, "the war in Korea"), T_WON = at(H1, "as good as won"), T_LAST = at(H1, "One last American"), T_MEANT = at(H1, "meant to end it"),
+  T_CHR = at(H1, "on the Chongchon River"), T_300 = at(H1, "Three hundred thousand");
+const TZ0 = T_MEANT - 0.1, TZ1 = T_CHR + 1.2, T0 = TZ0 + 0.55 * (TZ1 - TZ0);   // the dive; the nwkorea layers come in at T0
 const T_SOLD = at(H1, "soldiers."), T_MARCH = at(H1, "Marched"), T_SECRET = at(H1, "in secret"), T_NOT = at(H1, "not one unit"), T_SPOT = at(H1, "spotted"),
   T_AIR = at(H1, "from the air"), T_AND = at(H1, "And the Americans"), T_WALK = at(H1, "walking into"), T_BEL = at(H1, "believed"), T_OVER = at(H1, "almost over");
 // ---------- map layers (option 1, 24 Nov 1950) ----------
 img0("assets/media/hknw_ctl_nov24_mx.png", null, true);
 img0("assets/media/nwkorea_geo_ref.png");   // rivers + big towns (move 1 agent's nwkorea geo layer, read-only)
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.2 }); LV.scaleBar(234.56); LV.north();
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.2 }); const SB = LV.scaleBar(234.56); LV.north();
+if (SB) { gsap.set(SB, { autoAlpha: 0 }); tl.to(SB, { autoAlpha: 1, duration: 0.3 }, TZ1); }
 const EM = L(41.50, 125.20);   // PRC emblem on Manchuria, clear of the Yalu and the sea
 const EMB = document.createElement("img"); EMB.className = "wimg"; EMB.src = "assets/media/emblem_prc.png"; EMB.alt = ""; EMB.onerror = () => { EMB.style.display = "none"; };
 Object.assign(EMB.style, { left: EM[0] - 130 + "px", top: EM[1] - 130 + "px", width: "260px", height: "260px", opacity: 0.8 }); worldEl.insertBefore(EMB, document.getElementById("overlay"));
+// =====================================================================================================================
+// STAKES OPENING: the whole of Korea sits IN the nwkorea world at its true place and scale (korea z7 -> nwkorea z9: 1 korea px =
+// 4 nwkorea px; korea origin 26503,11759 x4 - nwkorea origin 109971,48858 = -3959,-1822), so ONE camera drives both: the camera
+// zooms from the overview (s 0.257) to the nwkorea frame (s 0.667) and the overview fades out between 1.4x and 2.4x; the nwkorea
+// layers are edge-feathered during the zoom with a korea copy underneath, so no map edge shows. tools/make_hook_overview.py bakes
+// hook_ov_<date>.jpg (relief + option-1 control + geo layer).
+// =====================================================================================================================
+const KR = [-3959, -1822, 11520, 6480];
+const KP = (kx, ky) => [kx * 4 - 3959, ky * 4 - 1822];
+const imgIn = (src, parent) => { const el = document.createElement("img"); el.src = src; el.alt = ""; Object.assign(el.style, { position: "absolute", left: "0", top: "0", width: "100%", height: "100%", display: "block" }); parent.appendChild(el); return el; };
+const box4 = (el) => Object.assign(el.style, { position: "absolute", left: KR[0] + "px", top: KR[1] + "px", width: KR[2] + "px", height: KR[3] + "px" });
+const KU = document.createElement("div"); box4(KU); imgIn("assets/media/hook_ov_nov24.jpg", KU); worldEl.insertBefore(KU, document.getElementById("relief"));
+const KW = document.createElement("div"); box4(KW); worldEl.insertBefore(KW, document.getElementById("overlay"));
+const KA = imgIn("assets/media/hook_ov_sep15.jpg", KW), KB = imgIn("assets/media/hook_ov_oct24.jpg", KW), KC = imgIn("assets/media/hook_ov_nov24.jpg", KW);
+tl.fromTo(KB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9, immediateRender: true }, T_KOREA - 0.6);
+tl.fromTo(KC, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9, immediateRender: true }, T_WON - 0.6);
+const FEATHER = "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%)";
+const GL = () => [document.getElementById("relief"), ...worldEl.querySelectorAll("img.wimg")].filter((el) => el !== EMB);
+const setMask = (on) => GL().forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; });
+const OVS = 0.257, OC0 = KP(1450, 905), OC1 = KP(1425, 860);
+const setCam = (cx, cy, sc) => { cam.cx = cx; cam.cy = cy; cam.s = sc; gsap.set(worldEl, { x: CW / 2 - cx * sc, y: CH / 2 - cy * sc, scale: sc }); };
+setCam(OC0[0], OC0[1], OVS); setMask(true);
+const dr = { u: 0 };
+tl.to(dr, { u: 1, duration: TZ0, ease: "sine.inOut", onUpdate: () => setCam(OC0[0] + (OC1[0] - OC0[0]) * dr.u, OC0[1] + (OC1[1] - OC0[1]) * dr.u, OVS * Math.pow(1.08, dr.u)) }, 0);
+// the zoom: log-scale, the Chongchon (target) moving on a straight screen path to its final screen position
+const OVS1 = OVS * 1.08, E1 = { cx: 1440, cy: 810, s: 0.667 }, CHW = L(39.62, 125.85);
+const g0 = [CW / 2 + (CHW[0] - OC1[0]) * OVS1, CH / 2 + (CHW[1] - OC1[1]) * OVS1], g1 = [CW / 2 + (CHW[0] - E1.cx) * E1.s, CH / 2 + (CHW[1] - E1.cy) * E1.s];
+const zm = { u: 0 };
+tl.to(zm, { u: 1, duration: TZ1 - TZ0, ease: "power2.inOut", onUpdate: () => {
+  const u = zm.u, sc = OVS1 * Math.pow(E1.s / OVS1, u), gx = g0[0] + (g1[0] - g0[0]) * u, gy = g0[1] + (g1[1] - g0[1]) * u;
+  setCam(CHW[0] - (gx - CW / 2) / sc, CHW[1] - (gy - CH / 2) / sc, sc);
+  const z = sc / OVS1, op = z <= 1.4 ? 1 : z >= 2.4 ? 0 : 1 - Math.log(z / 1.4) / Math.log(2.4 / 1.4);
+  KW.style.opacity = op; setMask(u < 0.999);
+} }, TZ0);
+SFX("whoosh", TZ0 - 0.05);
+const TOV = TZ0 + 0.35;   // overview labels / arrows / units fade early in the zoom
+const O = (px) => px / OVS1;   // n screen px at overview scale
+// both sides' flags on their own ground + the UN, MacArthur's real-photo badge
+const OF = [flag(FL.prc, "CHINA", ...L(41.55, 123.2), 0, TOV, O(96)), flag(FL.us, "USA", ...L(35.9, 128.4), 0, TOV, O(80)),
+  flag(FL.un, "UNITED NATIONS", ...L(36.5, 126.0), 0, TOV, O(80)), flag(FL.rok, "SOUTH KOREA", ...L(35.4, 127.3), 0, TOV, O(70))];
+K.badge({ name: "DOUGLAS MACARTHUR", role: "UN COMMANDER", photo: "assets/media/macarthur_head.png", flag: FL.us, side: "rome", corner: "bl", t: 0.1, until: TZ0 + 0.3 });
+// UN units already moving north from frame 0
+const OU = { w: O(46), h: O(31), tag: O(12) };
+const OVU = [["o1", 35.8, 128.9, 37.6, 127.2, FL.us], ["o2", 37.4, 126.7, 39.0, 125.8, FL.us], ["o3", 36.9, 127.6, 38.6, 126.9, FL.rok], ["o4", 37.7, 128.6, 39.4, 127.4, FL.rok]];
+OVU.forEach(([id, la, lo, la2, lo2, f], i) => { unit(id, "rome", la, lo, i === 1 ? "tank" : "infantry", f, OU); go(id, 0, T_WON, la2, lo2, "none"); });
+const OCH = [["p1", 41.3, 125.1, 40.9, 125.2], ["p2", 41.6, 126.5, 41.25, 126.6]];
+OCH.forEach(([id, la, lo, la2, lo2]) => { unit(id, "carth", la, lo, "infantry", FL.prc, OU); go(id, 0, TZ0, la2, lo2, "power1.out"); });
+B.hideUnits([...OVU.map((o) => o[0]), ...OCH.map((o) => o[0])], TZ0 + 0.15, 0.35);
+// red arrows race north, date by date
+[[[35.3, 129.0], [36.6, 128.6], [37.7, 127.6]], [[37.47, 126.6], [38.4, 126.5], [39.0, 125.75]], [[39.05, 125.75], [39.9, 125.6], [40.75, 125.9]], [[38.6, 127.3], [39.8, 127.6], [40.9, 128.2]]].forEach((p, k) =>
+  B.arrow({ pts: p.map(([a, b]) => L(a, b)), side: "rome", t: [0.1, T_KOREA - 0.5, T_KOREA + 0.6, T_WON - 0.4][k], dur: 1.0, width: O(12), until: TOV }));
+// the stakes as stamps: a stamp in the first second, one per date
+const STP = [["INCHON", "15 SEPTEMBER 1950", 0.25], ["PYONGYANG TAKEN", "19 OCTOBER 1950", T_KOREA - 0.35], ["TO THE YALU", "26 OCTOBER 1950", T_KOREA + 0.75]].map(([n, d, t], k) =>
+  slam(scr(stampHTML(n, "#e3232f", 40, k % 2 ? 3 : -4, d), `left:${120 + (k % 2) * 60}px;top:${200 + k * 110}px;`), t, { shake: 3 }));
+const WON = scr(stampHTML("AS GOOD AS WON", "#e8c66a", 66, -3, "THE KOREAN WAR · NOVEMBER 1950"), "right:110px;top:250px;");
+slam(WON, T_WON - 0.05, { shake: 5 });
+tl.to([...STP, WON], { autoAlpha: 0, duration: 0.25 }, T_LAST - 0.1);
+// "One last American offensive": the final offensive line glows on the Chongchon, arrows point north from it, a ring on the river
+const CHL = [L(39.62, 124.95), L(39.68, 125.55), L(39.72, 126.05), L(39.80, 126.55)];
+B.line(CHL, { t: T_LAST - 0.1, dur: 0.6, color: "#ff6a5a", width: O(5), until: TOV + 0.3 });
+[[39.66, 125.2], [39.72, 125.8], [39.80, 126.4]].forEach(([a, b], k) => B.arrow({ pts: [L(a, b), L(a + 0.55, b + 0.05), L(a + 1.0, b + 0.15)], side: "rome", t: T_LAST + k * 0.2, dur: 0.8, width: O(10), until: TOV }));
+SFX("ref:whoosh", T_LAST);
+const LAST = scr(stampHTML("THE FINAL OFFENSIVE", "#e3232f", 52, -4, "24 NOVEMBER 1950 · TO END THE WAR"), "right:110px;top:640px;");
+slam(LAST, T_LAST + 0.35, { shake: 4, until: TZ0 + 0.5 });
+GG.pin(`<div style="width:${O(46)}px;height:${O(46)}px;border-radius:50%;border:${O(3.5)}px solid #ffd54a;box-shadow:0 0 ${O(12)}px #ffd54a"></div>`, ...CHW, { t: T_LAST + 0.5, pop: true, until: TZ1 - 0.2 });
+const CHB = box("CHONGCHON RIVER", CHW[0] - 330, CHW[1] + 70, T_CHR - 0.3, 30, TZ1 + 0.2);
 // NIGHT at frame 0 (the Chinese march by night), dawn on "not one unit was spotted"
-const NIGHT = GG.night(0, T_NOT - 0.6, { dur: 0.01, outDur: 1.2 }); tl.set(NIGHT, { opacity: 0.62 }, 0.02);
-date0("NOVEMBER 1950", T_SPOT - 0.35);
+const NIGHT = GG.night(T0, T_NOT - 0.6, { dur: 1.0, outDur: 1.2 }); tl.to(NIGHT, { opacity: 0.62, duration: 0.4 }, T0 + 1.0);
+B.date("SEPTEMBER 1950", 0.05, T_KOREA - 0.6, 32); B.date("OCTOBER 1950", T_KOREA - 0.55, T_WON - 0.6, 32); B.date("NOVEMBER 1950", T_WON - 0.55, T_SPOT - 0.35, 32);
 legend(0, null);
-const WF = [flag(FL.prc, "CHINA", ...L(40.80, 124.25), 0, T_AND - 0.2, 150), flag(FL.us, "USA", ...L(39.32, 126.55), 0, T_AND - 0.2, 120),
-  flag(FL.rok, "SOUTH KOREA", ...L(39.10, 125.30), 0, T_AND - 0.2, 120), flag(FL.un, "UNITED NATIONS", ...L(40.30, 128.25), 0, T_AND - 0.2, 120)];
+const WF = [flag(FL.prc, "CHINA", ...L(40.80, 124.25), T0, T_AND - 0.2, 150), flag(FL.us, "USA", ...L(39.32, 126.55), T0 + 0.05, T_AND - 0.2, 120),
+  flag(FL.rok, "SOUTH KOREA", ...L(39.10, 125.30), T0 + 0.1, T_AND - 0.2, 120), flag(FL.un, "UNITED NATIONS", ...L(40.30, 128.25), T0 + 0.15, T_AND - 0.2, 120)];
 const WT = [];   // towns + rivers come from nwkorea_geo_ref.png
 const YALU = document.createElement("div");
 // red UN columns strung out on the valley roads, marching north from frame 0
 const RED = [["r1", 39.60, 125.18, 39.80, 125.26, "infantry", FL.us], ["r2", 39.78, 125.62, 39.95, 125.72, "infantry", FL.rok], ["r3", 39.70, 125.92, 39.88, 125.99, "infantry", FL.us],
   ["r4", 39.58, 126.08, 39.76, 126.16, "tank", FL.us], ["r5", 39.62, 126.34, 39.78, 126.42, "infantry", FL.rok], ["r6", 40.20, 127.10, 40.40, 127.10, "infantry", FL.us],
   ["r7", 40.75, 127.55, 41.00, 127.85, "infantry", FL.us]];
-RED.forEach(([id, la, lo, la2, lo2, ic, f], i) => { unit(id, "rome", la, lo, ic, f, { w: 64, h: 43 }); go(id, 0, 7.0 + (i % 3) * 0.6, la2, lo2, "none"); });
+RED.forEach(([id, la, lo, la2, lo2, ic, f], i) => { unit(id, "rome", la, lo, ic, f, { w: 64, h: 43, t: T0 + i * 0.04 }); go(id, T0, T_SPOT - T0 + (i % 3) * 0.6, la2, lo2, "none"); });
 // blue counters already in the mountains, sliding forward through the dark
 const BLUE = [["b1", 40.30, 125.40, 40.12, 125.50], ["b2", 40.35, 125.95, 40.16, 125.98], ["b3", 40.30, 126.40, 40.10, 126.38], ["b4", 40.05, 126.85, 39.92, 126.65],
   ["b5", 40.55, 126.80, 40.40, 126.92], ["b6", 40.80, 127.20, 40.62, 127.30], ["b7", 40.05, 125.05, 39.95, 125.18]];
-BLUE.forEach(([id, la, lo, la2, lo2], i) => { unit(id, "carth", la, lo, i % 3 === 1 ? "mech" : "infantry", FL.prc, { w: 64, h: 43 }); go(id, 0, T_NOT - 0.8, la2, lo2, "power1.out"); });
+BLUE.forEach(([id, la, lo, la2, lo2], i) => { unit(id, "carth", la, lo, i % 3 === 1 ? "mech" : "infantry", FL.prc, { w: 64, h: 43, t: T0 + 0.1 + i * 0.04 }); go(id, T0, T_NOT - 0.8 - T0, la2, lo2, "power1.out"); });
 // ---------- 0.3 s: the BIG card slams in and ticks to 300,000 ----------
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #2e5cb2;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:150px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
   <div style="font-size:40px;letter-spacing:0.26em;color:#9fc0ea;margin-top:2px">CHINESE SOLDIERS</div>
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">OCTOBER - NOVEMBER 1950 · INTO NORTH KOREA</div></div>`, "right:90px;top:560px;transform-origin:50% 40%;");
-slam(BIG, 0.3, { from: 1.9, dur: 0.22, shake: 6 });
-const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = 0.55, T_C1 = T_SOLD + 0.45;
+slam(BIG, T_300 - 0.15, { from: 1.9, dur: 0.22, shake: 6 });
+const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = T_300 + 0.1, T_C1 = T_SOLD + 0.45;
 tl.to(cv, { v: 300000, duration: T_C1 - T_C0, ease: "power2.out", onUpdate: () => { cn.textContent = (Math.round(cv.v / 1000) * 1000).toLocaleString("en-US"); } }, T_C0);
 for (let t = T_C0; t < T_C1 - 0.1; t += 0.14) SFX("tick", t);
 // "Marched into North Korea in secret": dotted march trails over the Yalu (Sinuiju, Chosan, Manpojin), new columns at their ends
@@ -109,7 +183,7 @@ B.snow(T_NOT, END + 1);
 tl.to([BIG, SEC], { autoAlpha: 0, y: -40, duration: 0.35, ease: "power2.in" }, T_SPOT - 0.6);
 // ---------- hard zoom-whoosh DIVE onto the Chongchon valley (~6 s) ----------
 const TD = T_SPOT - 0.45;
-camTo(0, TD, 1440, 790, 0.74, "sine.inOut");
+camTo(TZ1, TD - TZ1, 1440, 790, 0.74, "sine.inOut");
 SFX("whoosh", TD - 0.05);
 camTo(TD, 0.75, 1450, 875, 1.95, "expo.inOut");
 camTo(TD + 0.76, END - TD - 0.76, 1462, 868, 2.12, "sine.inOut");

@@ -67,3 +67,13 @@ Gemini's page numbers are invented; none of its [VERIFIED] labels were taken at 
 
 ## Facts to double-check (for the publishing PDF box)
 Victory Parade role; Kryukovo/Istra retaken dates; Marshal promotion 29 June 1944; 9th Army Kursk casualty range; Bobruisk prongs' first-day results; Soviet Bagration losses.
+
+## Hook opening: stakes options (STYLE_LOCK 1a UPDATED 2026-10-28), checked 2026-10-28
+Each ends on the place name; the existing number line ("Four hundred thousand German soldiers...") follows unchanged.
+- **A (the people of Belarus):** "About one in four people in Belarus would not survive the German occupation. In June nineteen forty-four, after three years of it, the Red Army came to drive the occupiers out of Belarus."
+  Sources: Belarus lost about a quarter of its pre-war population (~2-2.5 million of ~8-9 million; estimates vary, "one in four" is the most consistent figure): Wikipedia "German occupation of Byelorussia during World War II" / "Byelorussia in World War II"; Belarusian State Museum of the History of the Great Patriotic War; National Archives of Belarus (209 of 270 towns and 9,200 villages destroyed). Occupation summer 1941 - summer 1944 (three years).
+- **B (the promise to the Allies):** "Two weeks earlier, the Western Allies had landed in Normandy, and Stalin had promised them a great blow in the East, to pin Hitler's armies down. He aimed it at the heart of the German front, in Belarus."
+  Sources: at the Tehran Conference (Nov-Dec 1943) Stalin pledged a major offensive timed with Overlord to stop Germany moving forces west (Tehran Conference records; Warfare History Network, Lunde, "Operation Bagration: Soviet Triumph in the East"); Overlord 6 June, Bagration opened 22 June 1944 ("just over two weeks" later, Wikipedia Operation Bagration); its target was Army Group Centre in Belarus.
+- **C (three years to the day):** "On the twenty-second of June, nineteen forty-one, Hitler's armies poured into the Soviet Union. Three years later to the day, the Red Army struck back at the heart of the German front, in Belarus."
+  Sources: Barbarossa began 22 June 1941; Bagration opened 22 June 1944 (reconnaissance in force; main assaults 23-24 June): Wikipedia Operation Bagration (22 June - 19 August 1944). The date match is a fact; the script does NOT claim it was chosen on purpose.
+Swap test: each line depends on facts unique to this story (Belarus's losses / the Tehran pledge / the Barbarossa date), so none can open another video with the names swapped.
