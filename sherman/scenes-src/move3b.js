@@ -412,7 +412,7 @@ mg([Q.JHQ[0] + 40, Q.JHQ[1] - 8], [Q.JHQ[0] - 4, Q.JHQ[1] + 2], T_HQ + 0.1, 5);
 // Hardee's countercharge near the village (OSM marker "Hardee's Countercharge")
 arr([[Q.VIL[0] - 80, Q.VIL[1] - 40], [Q.JHQ[0] + 10, Q.JHQ[1] - 40]], "rome", T_CLOSE + 0.2, { w: 8, dur: 1.0, until: T_BIG + 0.6 });
 badge({ name: "WILLIAM T. SHERMAN", role: "CALLS MOWER BACK", photo: "assets/media/sherman_head.png", flag: FL.us, side: "carth", corner: "tr", t: T_CALL - 0.3, until: T_YEARS + 0.4 });
-sstamp("PULL BACK", 360, T_CALL + 0.1, { size: 74, color: "#9fc0ea", sub: "SHERMAN · 21 MARCH 1865", until: T_YEARS - 0.2 });
+sstamp("PULL BACK", 320, T_CALL + 0.1, { size: 38, left: 1330, color: "#9fc0ea", sub: "SHERMAN · 21 MARCH 1865", until: T_YEARS - 0.2 });   // beside Sherman's badge, clear of the labels
 const BACKP = [[Q.BR[0] + 22, Q.BR[1] + 26], [Q.JHQ[0] + 110, Q.JHQ[1] - 20], [Q.SHQ[0] + 60, Q.SHQ[1] - 60]];
 tArrow(BACKP, BLUE, T_CALL + 0.4, END + 0.5, 5, { dur: 1.2, dash: "9 7" }); follow("mow", BACKP, T_CALL + 0.5, 1.8, "power1.inOut");
 B.caption("NOT A BIG BATTLE BEFORE HIS REINFORCEMENTS ARRIVED", T_BIG - 0.1, T_YEARS - 0.1);

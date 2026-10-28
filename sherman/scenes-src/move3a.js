@@ -462,16 +462,17 @@ mstamp("COLUMBIA TAKEN", CCOL[0] + 30, CCOL[1] + 52, T_CAP, { size: 9, color: "#
 const NT = GG.night(T_NIGHT - 0.4, T5 - 0.6, { dur: 1.6, outDur: 1.6 });
 [[0, 0], [6, -4], [-7, 3], [3, 7], [-4, -7], [9, 4], [-10, -3], [1, -10], [11, -6], [-8, 9], [5, 11], [-12, 7]].forEach(([dx, dy], k) => fire(CCOL[0] + dx, CCOL[1] + dy, T_NIGHT + 0.2 + k * 0.3, T_SAME + 3, 4.6, 0.8));
 SFX("fire", T_NIGHT + 0.3);
+box("COLUMBIA", CCOL[0] - 34, CCOL[1] - 30, T_NIGHT - 0.3, 9, T_SAME + 0.4, false);   // keeps the town name readable above the fire
 [[[-30, -14], [-10, -8], [8, -10]], [[-30, 4], [-10, 8], [10, 4]], [[-28, 18], [-8, 20], [10, 16]]].forEach((p, k) => tArrow(p.map(([dx, dy]) => [CCOL[0] + dx, CCOL[1] + dy]), "#e8eef5", T_WIND - 0.2 + k * 0.2, T_SAME + 0.3, 0.9, { dur: 0.9 }));
 const THIRD = scr(`<div style="padding:12px 30px 14px;background:rgba(14,12,10,0.92);border-top:6px solid #ff8a3c;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 16px 32px rgba(0,0,0,.6)">
   <div style="font-size:46px;letter-spacing:0.06em;line-height:1.1">ABOUT ONE-THIRD OF THE CITY BURNED</div><div style="font-size:16px;letter-spacing:0.24em;color:#d8cfb8">17-18 FEB 1865 · SOUTH CAROLINA ENCYCLOPEDIA</div></div>`, "left:0;right:0;margin:auto;width:1000px;top:190px;");
-slam(THIRD, T_THIRD - 0.2, { from: 1.4, shake: 3, until: T_WHO + 0.2 });
-const WHO = scr(`<div style="padding:12px 26px 14px;background:rgba(14,12,10,0.92);border-left:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 16px 32px rgba(0,0,0,.6)">
-  <div style="font-size:30px;letter-spacing:0.1em">WHO STARTED IT IS STILL DISPUTED</div>
-  <div style="display:flex;gap:12px;margin-top:10px;font-size:20px;letter-spacing:0.14em">${["BURNING COTTON", "HIGH WIND", "DRUNKEN SOLDIERS"].map((s, k) => `<span class="ch" style="padding:4px 12px;border:1.5px solid #c9b48a;background:rgba(201,180,138,0.12)">${s}</span>`).join("")}</div></div>`, "left:110px;top:760px;");
+slam(THIRD, T_THIRD - 0.2, { from: 1.4, shake: 3, until: T_SAME - 0.2 });
+const WHO = scr(`<div style="padding:14px 30px 16px;background:rgba(241,238,230,0.96);border-left:8px solid #ff8a3c;font-family:Oswald;font-weight:700;color:#14110c;box-shadow:0 16px 32px rgba(0,0,0,.7);text-align:center">
+  <div style="font-size:34px;letter-spacing:0.1em">WHO STARTED IT IS STILL DISPUTED</div>
+  <div style="display:flex;gap:14px;justify-content:center;margin-top:10px;font-size:24px;letter-spacing:0.12em">${["BURNING COTTON", "HIGH WIND", "DRUNKEN SOLDIERS"].map((s, k) => `<span class="ch" style="padding:4px 14px;border:2px solid #14110c;background:#ffd9a8">${s}</span>`).join("<span style='align-self:center'>·</span>")}</div></div>`, "left:0;right:0;margin:auto;width:900px;bottom:110px;");
 slide(WHO, T_WHO - 0.2, T_SAME + 0.2, -90);
-const CHP = [...WHO.querySelectorAll(".ch")]; gsap.set(CHP, { opacity: 0 });
-[T_COT, T_WIND, T_DRUNK].forEach((tt, k) => { tl.fromTo(CHP[k], { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, immediateRender: false }, tt - 0.1); SFX("ref:pop", tt); });
+const CHP = [...WHO.querySelectorAll(".ch")]; gsap.set(CHP, { opacity: 0.45 });
+[T_COT, T_WIND, T_DRUNK].forEach((tt, k) => { tl.fromTo(CHP[k], { opacity: 0.45, scale: 1 }, { opacity: 1, scale: 1.08, duration: 0.3, immediateRender: false }, tt - 0.1); SFX("ref:pop", tt); });
 // the same night: Charleston given up (Hardee out north), the city where the war began
 lab("CHARLESTON", Q.CHS, T_SAME - 0.2, { dx: 46, dy: 0, size: 11, until: T5 });
 unit("hard2", "rome", Q.CHS[0] - 10, Q.CHS[1] - 16, "infantry", { t: T_SAME - 0.2, size: "XXX", label: "HARDEE", w: 22, h: 15, fs: 6, until: T5 - 0.2 });
@@ -484,7 +485,7 @@ box("FORT SUMTER · APRIL 1861", SUMQ[0] + 40, SUMQ[1] + 40, T_BEGUN - 0.1, 11, 
 lab("CHERAW", Q.CHE, T5 - 0.1, { dx: -36, dy: 0, size: 10, until: END + 1 });
 lab("FAYETTEVILLE", Q.FAY, T5 + 0.2, { dx: -54, dy: 4, size: 10, until: END + 1 });
 lab("GOLDSBORO", Q.GOL, T5 + 0.2, { dx: 42, dy: -6, size: 10, until: END + 1 });
-const LBEN = lab("BENTONVILLE", Q.BEN, T5 + 0.2, { dx: 0, dy: -34, size: 10, until: END + 1 });
+const LBEN = lab("BENTONVILLE", Q.BEN, T5 + 0.2, { dx: -10, dy: -52, size: 10, until: END + 1 });
 lab("SMITHFIELD", Q.SMI, T_BACK, { dx: 38, dy: -4, size: 8, until: END + 1 });
 fire(Q.FAY[0] + 4, Q.FAY[1] + 2, T_NC + 0.4, T_FAR + 1, 6, 0.9);
 mstamp("FAYETTEVILLE TAKEN", Q.FAY[0] - 10, Q.FAY[1] + 40, T_NC + 0.3, { size: 10, color: "#5b8fe8", sub: "11 MAR · ARSENAL DESTROYED", until: T_ROADS });
@@ -509,7 +510,7 @@ go("hard3", T_CATCH, 2.0, [Q.BEN[0] - 18, Q.BEN[1] - 4]);
   go(id, T_CATCH + 0.3 + k * 0.2, 2.2, [Q.BEN[0] + 6 + k * 14, Q.BEN[1] - 14 + k * 10]); });
 countCard("JOHNSTON GATHERS", "MEN · NEAR BENTONVILLE (NCPEDIA / ABT)", RED, "left:110px;top:200px;", T_20K - 0.1, 0, 20000, 1.3, END + 1, { fs: 60, pre: "~", round: 100 });
 K.target(Q.BEN[0], Q.BEN[1], T_BV - 0.2, { r: 30, side: "#ff3b30", until: END + 1 });
-tag("HIDDEN IN THE WOODS", Q.BEN[0] - 4, Q.BEN[1] + 34, T_BV + 0.3, RED, 8, END + 1);
+tag("HIDDEN IN THE WOODS", Q.BEN[0] - 20, Q.BEN[1] + 52, T_BV + 0.3, RED, 8, END + 1);
 tl.to(LBEN, { scale: 1.4, duration: 0.4, ease: "back.out(2)" }, T_BV); SFX("ref:pop", T_BV + 0.1);
 K.raiseTerritory();
 B.finish();
