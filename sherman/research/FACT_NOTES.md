@@ -17,7 +17,8 @@ Bradley / Marszalek page-level text (no previews reached; ABT/NCpedia/NC Histori
   Union between the election and the inauguration; as he will have secured his election on such ground that he can not possibly save it
   afterwards." Folded and pasted shut; cabinet signed the outside "sight unseen" (LoC); opened 11 Nov 1864 (Hay's diary). OK.
 - CORRECTED: Gemini "nine days later" -> 23 Aug to 2 Sep = TEN days. Script: "late in August ... within days" (no count spoken).
-- Script stake wording: Lincoln "expected to lose" (memo: "exceedingly probable"; NOT "was sure"), and feared the winner "could never save
+- Hook v2 (2026-10-28, new 10-15 s promise rule): "expected to lose the election, and the Union with it" = the memo's own logic (the winner "can not possibly save it"); "one general who would break the Confederacy within a year" = the title's promise (Atlanta Sep 1864 -> the largest surrender Apr 1865, < 12 months after May 1864).
+- Script stake wording (v1): Lincoln "expected to lose" (memo: "exceedingly probable"; NOT "was sure"), and feared the winner "could never save
   the Union" (memo: "can not possibly save it afterwards"). Democratic platform (30 Aug 1864) "immediate efforts be made for a cessation of
   hostilities" (LoC blog) = background only.
 - Atlanta's fall "all but assuring" / "helped ensure" Lincoln's re-election (ABT twice); Lincoln told Sherman he "had previously felt in doubt"
