@@ -1,9 +1,10 @@
 // HOOK-A (hook-1 .. hook-3), George G. Meade #12. Basemap getty_hd_ref (z14, 39.812N 77.235W, dark HD relief). THE LOCKED HOOK (STYLE_LOCK 1a).
 // Built with: python3 tools/build_scene.py hook-a getty_hd_ref hook-1 hook-3
 // hook-1 (v2 opening, owner 2026-10-28): frame 0 = Potomac-Pennsylvania overview (baked inset, option 1), red columns moving north,
-//         Lee badge; defeat stamps SEVEN DAYS / SECOND MANASSAS / FREDERICKSBURG / CHANCELLORSVILLE + BEATEN AGAIN AND AGAIN; "Now he
-//         was in Pennsylvania": territory flips to 28 June, Mason-Dixon line lights, red arrows over it, NOW: IN PENNSYLVANIA;
-//         zoom-whoosh DIVE + white flash into the Gettysburg map (~5.4 s), columns on the road spokes, guns; 51,000 slams on its words,
+//         Lee badge; defeat stamps SEVEN DAYS / SECOND MANASSAS / FREDERICKSBURG / CHANCELLORSVILLE + BEATEN AGAIN AND AGAIN; "And now
+//         now he marches into Pennsylvania": territory flips to 28 June, Mason-Dixon line lights, red arrows over it, NOW: INTO PENNSYLVANIA;
+//         ONE continuous zoom-whoosh DIVE (v3, no cut) from the overview into the Gettysburg map (~6.4-8.2 s, lands on "Gettysburg", penn fades 6x-14x),
+//         columns on the road spokes, guns; 51,000 slams on its words,
 //         IN 3 DAYS; push-in to the fishhook (blue line glows); 72,000 LEE vs 94,000 "ITS GENERAL: ?", IN COMMAND: 3 DAYS.
 // hook-2: 3 JULY 3 PM, option 2: Pickett's Charge, 12,500 ticks, 3/4 MILE ruler, the Copse of Trees ring, blue guns -> arcs -> impacts,
 //         rifle volleys from the wall, counters grey, ABOUT HALF bar, REPULSED (~0:23, boom); WHITE FLASH zoom-out: survivors fall back,
@@ -88,7 +89,7 @@ const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration
 const L = GG.proj(14, 1195859, 1589921);
 // =====================================================================================================================
 const H1 = "hook-1", H2 = "hook-2", H3 = "hook-3";
-const T_LEE0 = at(H1, "Robert E. Lee"), T_AGAIN = at(H1, "again and again"), T_NOW = at(H1, "Now he was"), T_PA = at(H1, "Pennsylvania."), T_FIFTY = at(H1, "Fifty-one"),
+const T_LEE0 = at(H1, "Robert E. Lee"), T_AGAIN = at(H1, "again and again"), T_NOW = at(H1, "And now he marches"), T_PA = at(H1, "Pennsylvania,"), T_TOWN = at(H1, "a small town"), T_FIFTY = at(H1, "Fifty-one"),
   T_KILL = at(H1, "Killed,"), T_WOUN = at(H1, "wounded,"), T_CAPT = at(H1, "captured"), T_MISS = at(H1, "missing"), T_3D = at(H1, "in three days"),
   T_GEN = at(H1, "the general"), T_STOP = at(H1, "stop him"), T_CMD = at(H1, "in command"), T_JUST = at(H1, "just three");
 const S2 = PS(H2), T_12 = at(H2, "twelve and"), T_MARCH = at(H2, "marched across"), T_OPEN = at(H2, "open fields"), T_STR = at(H2, "straight at"),
@@ -108,33 +109,59 @@ tl.to(C0, { autoAlpha: 0, duration: 1.0 }, S2 + 0.2);
 const ROADS = wimg("assets/media/hook_getty_roads.png", 0, 0, null, false);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.18 }); const SB = LV.scaleBar(7.34), NA = LV.north();
 // =====================================================================================================================
-// hook-1 v2 (0 - 16.34): "Robert E. Lee had beaten the Union army again and again. Now he was in Pennsylvania." on an overview
-// (penn crop baked into one image, tools/make_hook_insets.py: hook_inset_penn0 = before the invasion, hook_inset_penn = 28 June 1863),
-// defeat stamps, red columns over the Mason-Dixon line; zoom-whoosh DIVE to Gettysburg (~5.3 s); 51,000 on its words; push-in to
-// the fishhook on "And the general"; 72,000 / 94,000 / IN COMMAND: 3 DAYS on their words.
+// hook-1 v3 (0 - 19.35): ONE continuous geographic zoom (owner 2026-10-28: the v2 white-flash cut read as a join).
+// The penn overview (z9 crop baked with its overlay + geo layer, tools/make_hook_insets.py: hook_inset_penn0 = before the invasion,
+// hook_inset_penn = 28 June 1863) sits IN the Gettysburg world at its true place and scale (1 penn px = 32 getty px, placed from
+// the two JSON origins), so one camera drives both: Gettysburg keeps its exact pixel position while the camera zooms from the
+// overview (s 0.055) to the Gettysburg map (s 0.8); penn fades out between 6x and 14x (the getty layers are edge-feathered during
+// the zoom, with a penn copy underneath, so no map edge shows). Defeat stamps, Mason-Dixon line, red columns over it; 51,000 on its
+// words; push-in to the fishhook on "And the general"; 72,000 / 94,000 / IN COMMAND: 3 DAYS on their words.
 // =====================================================================================================================
-const INSP = GG.proj(9, 35842, 49095), IK = 2880 / 1100;
-const IP = (lat, lon) => { const [x, y] = INSP(lat, lon); return [(x - 950) * IK, (y - 450.625) * IK]; };
-const TSW = T_FIFTY - 0.25;                                 // the cut from the overview to the Gettysburg map (inside the dive)
-cam.cx = 1440; cam.cy = 810; cam.s = 0.667; applyCam();
-camTo(0, T_PA + 0.3, 1480, 760, 0.74, "sine.inOut");
-const IA = wimg("assets/media/hook_inset_penn0.jpg", 0, 0, null, false, 0.6, [0, 0, 2880, 1620]);
-const IB = wimg("assets/media/hook_inset_penn.jpg", T_NOW, 0.9, null, false, 0.6, [0, 0, 2880, 1620]);
-tl.set([IA, IB], { autoAlpha: 0 }, TSW);
+const PP = (px, py) => [(35842 + px) * 32 - 1195859, (49095 + py) * 32 - 1589921];   // penn map px -> getty world px
+const PR = [...PP(950, 450.625), 1100 * 32, 618.75 * 32];                            // the overview crop in getty world px
+const IP = (lat, lon) => L(lat, lon);                                                // the getty projection extends to the whole overview
+const OVS = CW / PR[2], OVS1 = OVS * 1.11, O = (px) => px / OVS1;                     // overview scale; O(n) = n screen px at that scale
+const TZ0 = T_TOWN - 0.3, TZ1 = TZ0 + 1.8, T0 = TZ0 + 1.3;                             // the dive; the Gettysburg layers come in at T0
+const imgIn = (src, parent) => { const el = document.createElement("img"); el.src = src; el.alt = ""; Object.assign(el.style, { position: "absolute", left: "0", top: "0", width: "100%", height: "100%", display: "block" }); parent.appendChild(el); return el; };
+const box4 = (el) => Object.assign(el.style, { position: "absolute", left: PR[0] + "px", top: PR[1] + "px", width: PR[2] + "px", height: PR[3] + "px" });
+// a penn copy UNDER the Gettysburg relief (shows only beyond the feathered map edge during the zoom) + the fading penn layer on top
+const PU = document.createElement("div"); box4(PU); imgIn("assets/media/hook_inset_penn.jpg", PU); worldEl.insertBefore(PU, document.getElementById("relief"));
+const PW = document.createElement("div"); box4(PW); worldEl.insertBefore(PW, document.getElementById("overlay"));
+const IA = imgIn("assets/media/hook_inset_penn0.jpg", PW), IB = imgIn("assets/media/hook_inset_penn.jpg", PW);
+tl.fromTo(IB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9, immediateRender: true }, T_NOW);
+const FEATHER = "linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)";
+const GL = [document.getElementById("relief"), C0, ROADS];
+const setMask = (on) => GL.forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; });
+// the camera: overview drift, then the log-scale zoom with Gettysburg moving on a straight screen path
+const GTW = P.town, OC0 = [PR[0] + PR[2] / 2, PR[1] + PR[3] / 2], OC1 = [OC0[0] + (GTW[0] - OC0[0]) * 0.25, OC0[1] + (GTW[1] - OC0[1]) * 0.25];
+const setCam = (cx, cy, s) => { cam.cx = cx; cam.cy = cy; cam.s = s; gsap.set(worldEl, { x: CW / 2 - cx * s, y: CH / 2 - cy * s, scale: s }); };
+setCam(OC0[0], OC0[1], OVS);
+const dr = { u: 0 };
+tl.to(dr, { u: 1, duration: TZ0, ease: "sine.inOut", onUpdate: () => setCam(OC0[0] + (OC1[0] - OC0[0]) * dr.u, OC0[1] + (OC1[1] - OC0[1]) * dr.u, OVS * Math.pow(1.11, dr.u)) }, 0);
+const E1 = { cx: 1640, cy: 760, s: 0.8 }, g0 = [CW / 2 + (GTW[0] - OC1[0]) * OVS1, CH / 2 + (GTW[1] - OC1[1]) * OVS1], g1 = [CW / 2 + (GTW[0] - E1.cx) * E1.s, CH / 2 + (GTW[1] - E1.cy) * E1.s];
+const zm = { u: 0 };
+tl.to(zm, { u: 1, duration: TZ1 - TZ0, ease: "power2.inOut", onUpdate: () => {
+  const u = zm.u, s = OVS1 * Math.pow(E1.s / OVS1, u), gx = g0[0] + (g1[0] - g0[0]) * u, gy = g0[1] + (g1[1] - g0[1]) * u;
+  setCam(GTW[0] - (gx - CW / 2) / s, GTW[1] - (gy - CH / 2) / s, s);
+  const z = s / OVS1, op = z <= 6 ? 1 : z >= 14 ? 0 : 1 - (Math.log(z / 6) / Math.log(14 / 6));
+  PW.style.opacity = op; setMask(u < 0.999);
+} }, TZ0);
+SFX("whoosh", TZ0 - 0.05);
 date0("1862 - 1863", T_NOW);
-B.date("JUNE 1863", T_NOW + 0.05, TSW, 32);
-B.date("1 - 3 JULY 1863", TSW + 0.02, S2, 32);
+B.date("JUNE 1863", T_NOW + 0.05, T0, 32);
+B.date("1 - 3 JULY 1863", T0 + 0.02, S2, 32);
 const LG1 = legend(0, S2 + 0.1, false);
-gsap.set(SB, { autoAlpha: 0 }); tl.to(SB, { autoAlpha: 1, duration: 0.3 }, TSW + 0.1);   // the scale bar would read the Gettysburg scale on the overview
-const OS = 0.7, OU = { w: 50, h: 34, tag: 17 };
-const OF = flags(OS, IP(39.55, -76.90), IP(39.40, -78.32), 0, TSW);
-const OVU = [unitXY("o1", "rome", ...IP(39.50, -77.86), "infantry", { ...OU, label: "LEE" }), unitXY("o2", "rome", ...IP(39.38, -77.95), "infantry", { ...OU, w: 40, h: 27 }),
-  unitXY("o3", "rome", ...IP(39.30, -78.05), "artillery", { ...OU, w: 40, h: 27 }),
-  unitXY("o4", "carth", ...IP(39.05, -77.25), "infantry", { ...OU, label: "ARMY OF THE POTOMAC" }), unitXY("o5", "carth", ...IP(38.98, -77.35), "infantry", { ...OU, w: 40, h: 27 })];
+gsap.set(SB, { autoAlpha: 0 }); tl.to(SB, { autoAlpha: 1, duration: 0.3 }, TZ1);   // the scale bar would read the Gettysburg scale on the overview
+const TOV = TZ0 + 0.25;                                                              // overview labels/arrows fade in the first half of the zoom
+const OU = { w: O(33), h: O(22), tag: O(11) };
+const OF = flags(OVS1, IP(39.55, -76.90), IP(39.40, -78.32), 0, TOV);
+const OVU = [unitXY("o1", "rome", ...IP(39.50, -77.86), "infantry", { ...OU, label: "LEE" }), unitXY("o2", "rome", ...IP(39.38, -77.95), "infantry", { ...OU, w: O(27), h: O(18) }),
+  unitXY("o3", "rome", ...IP(39.30, -78.05), "artillery", { ...OU, w: O(27), h: O(18) }),
+  unitXY("o4", "carth", ...IP(39.05, -77.25), "infantry", { ...OU, label: "ARMY OF THE POTOMAC" }), unitXY("o5", "carth", ...IP(38.98, -77.35), "infantry", { ...OU, w: O(27), h: O(18) })];
 go("o1", 0, T_NOW + 0.8, ...IP(39.80, -77.70), "power1.inOut"); go("o2", 0, T_NOW + 1.0, ...IP(39.66, -77.76), "power1.inOut"); go("o3", 0, T_NOW + 1.2, ...IP(39.52, -77.84), "power1.inOut");
-go("o4", 0, TSW, ...IP(39.33, -77.38), "power1.inOut"); go("o5", 0, TSW, ...IP(39.22, -77.42), "power1.inOut");
-B.hideUnits(OVU, TSW, 0.05);
-K.badge({ name: "ROBERT E. LEE", role: "ARMY OF NORTHERN VIRGINIA", photo: "assets/media/lee_head.png", flag: FL.csa, side: "rome", corner: "bl", t: 0.1, until: TSW - 0.1 });
+go("o4", 0, TZ1, ...IP(39.33, -77.38), "power1.inOut"); go("o5", 0, TZ1, ...IP(39.22, -77.42), "power1.inOut");
+B.hideUnits(OVU, TZ0 + 0.2, 0.4);
+K.badge({ name: "ROBERT E. LEE", role: "ARMY OF NORTHERN VIRGINIA", photo: "assets/media/lee_head.png", flag: FL.csa, side: "rome", corner: "bl", t: 0.1, until: TZ0 + 0.3 });
 // "had beaten the Union army again and again": the defeats as quick stamps (hit + shake each), then the summary stamp
 const DEF = [["SEVEN DAYS", "1862"], ["SECOND MANASSAS", "1862"], ["FREDERICKSBURG", "1862"], ["CHANCELLORSVILLE", "1863"]].map(([n, y], k) =>
   slam(scr(stampHTML(n, "#e3232f", 40, k % 2 ? 3 : -4, y), `left:${110 + (k % 2) * 60}px;top:${190 + k * 105}px;`), 0.3 + k * 0.6, { shake: 3 }));
@@ -143,24 +170,18 @@ slam(AGN, T_AGAIN - 0.1, { shake: 5, sfx: "ref:boom" });
 tl.to([...DEF, AGN], { autoAlpha: 0, duration: 0.25 }, T_NOW - 0.2);
 // "Now he was in Pennsylvania": the Mason-Dixon line lights up, red columns cross it toward Chambersburg, Gettysburg and York
 const MDX = [IP(39.722, -79.0), IP(39.722, -75.9)];
-B.line(MDX, { t: T_NOW - 0.1, dur: 0.6, color: "#ffd54a", width: 5, dash: "16 10", until: TSW });
-box("MASON-DIXON LINE", IP(39.722, -76.55)[0], IP(39.722, -76.55)[1] - 26, T_NOW + 0.2, 20, TSW);
-box("PENNSYLVANIA", ...IP(39.95, -76.40), T_NOW + 0.3, 26, TSW); box("MARYLAND", ...IP(39.57, -77.10), T_NOW + 0.35, 22, TSW, false);
+B.line(MDX, { t: T_NOW - 0.1, dur: 0.6, color: "#ffd54a", width: O(2.5), dash: `${O(8)} ${O(5)}`, until: TOV });
+const MDL = IP(39.722, -76.55);
+box("MASON-DIXON LINE", MDL[0], MDL[1] - O(14), T_NOW + 0.2, O(15), TOV);
+box("PENNSYLVANIA", ...IP(39.95, -76.40), T_NOW + 0.3, O(19), TOV); box("MARYLAND", ...IP(39.57, -77.10), T_NOW + 0.35, O(16), TOV, false);
 [[IP(39.55, -77.86), IP(39.80, -77.70), IP(40.02, -77.45)], [IP(39.60, -77.80), IP(39.78, -77.45), IP(39.83, -77.25)], [IP(39.62, -77.76), IP(39.80, -77.20), IP(39.93, -76.85)]].forEach((pts, k) =>
-  B.arrow({ pts, side: "rome", t: T_NOW + 0.1 + k * 0.25, dur: 0.9, width: 14, until: TSW }));
+  B.arrow({ pts, side: "rome", t: T_NOW + 0.1 + k * 0.25, dur: 0.9, width: O(10), until: TOV }));
 SFX("ref:whoosh", T_NOW + 0.1);
 const GI = IP(39.8309, -77.2311);
-K.target(...GI, T_PA - 0.4, { r: 30, until: TSW }); box("GETTYSBURG", GI[0] + 120, GI[1] + 34, T_PA - 0.3, 22, TSW);
-const NOW = scr(stampHTML("NOW: IN PENNSYLVANIA", "#e3232f", 60, -4, "JUNE 1863"), "right:110px;top:640px;");
-slam(NOW, T_PA, { shake: 5, until: TSW - 0.1 });
-// ---------- hard zoom-whoosh DIVE: from the overview into Gettysburg (white flash hides the cut to the close map) ----------
-SFX("whoosh", T_PA + 0.3);
-camTo(T_PA + 0.32, TSW - T_PA - 0.34, GI[0], GI[1], 2.6, "expo.in");
-GG.whiteFlash(TSW - 0.08); SFX("hit", TSW);
+K.target(...GI, T_TOWN - 0.4, { r: O(22), until: TZ0 - 0.8 }); box("GETTYSBURG", GI[0] + O(64), GI[1] + O(18), T_TOWN - 0.3, O(16), TOV);
+const NOW = scr(stampHTML("NOW: INTO PENNSYLVANIA", "#e3232f", 60, -4, "JUNE 1863"), "right:110px;top:640px;");
+slam(NOW, T_PA, { shake: 5, until: TZ0 + 0.9 });
 const SC0 = 0.8;
-camTo(TSW, 0.01, 1640, 760, SC0 * 1.25); camTo(TSW + 0.02, 0.6, 1640, 760, SC0, "power3.out");
-// ---------- Gettysburg wide (option 1): columns on the road spokes, guns firing on both ridges ----------
-const T0 = TSW + 0.02;
 const WF = flags(SC0, [2120, 1180], [760, 470], T0, T_GEN + 0.1);
 const WT = [box("GETTYSBURG", P.town[0] - 170, P.town[1] - 10, T0 + 0.1, 22, T_GEN + 0.1)];
 B.city("", P.town[0], P.town[1], { r: 7, t: T0 + 0.05, until: T_GEN + 0.1 });
@@ -189,7 +210,7 @@ tl.to([BIG, S3D], { autoAlpha: 0, y: -40, duration: 0.3, ease: "power2.in" }, T_
 // ---------- push in onto the fishhook ("And the general who had to stop him") ----------
 const TD = T_GEN - 0.15, SC = 2.25;
 SFX("ref:whoosh", TD - 0.05);
-camTo(TSW + 0.65, TD - TSW - 0.65, 1600, 770, 0.86, "sine.inOut");
+camTo(TZ1 + 0.02, TD - TZ1 - 0.02, 1600, 770, 0.86, "sine.inOut");
 camTo(TD, 0.85, 1450, 830, SC, "expo.inOut");
 camTo(TD + 0.87, S2 + 0.3 - TD - 0.87, 1440, 835, SC * 1.06, "sine.inOut");
 B.hideUnits([...RW, ...BW], TD + 0.05, 0.3);

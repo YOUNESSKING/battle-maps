@@ -53,7 +53,7 @@ used instead); the OR casualty tables only as OCR (garbled; double-check list).
   invaders from our soil" (OR): not needed.
 
 ## Hook
-- NEW OPENING (owner approved 2026-10-28): "Robert E. Lee had beaten the Union army again and again. Now he was in Pennsylvania." OK in substance:
+- NEW OPENING (owner approved 2026-10-28): "Robert E. Lee had beaten the Union army again and again. And now he marches into Pennsylvania, to a small town called Gettysburg." (v2 wording, owner 2026-10-28) OK in substance:
   Lee's army beat the Army of the Potomac / Union armies in Virginia at the Seven Days (1862), Second Manassas (Aug 1862), Fredericksburg
   (Dec 1862, this video's move 1) and Chancellorsville (May 1863) (standard; Antietam Sep 1862 was a drawn battle, Lee withdrew, so
   "again and again", not "every time"). Lee's army in Pennsylvania by late June 1863 (Chambersburg, York, Carlisle): standard, matches move2-1.
