@@ -1,0 +1,20 @@
+{
+ "name": "corridor_hd",
+ "center": [
+  34.3,
+  -84.85
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  67846,
+  103644
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 126.29,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

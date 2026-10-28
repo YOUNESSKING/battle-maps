@@ -2,7 +2,7 @@
 PRON = plain respellings; PHON = exact Kokoro phonemes for names no respelling can stress right (as Cornwallis on the Greene remake)."""
 import re
 PRON = {"Macon": "Maykon"}
-PHON = {"Tecumseh": "təkˈʌmsə", "Appomattox": "ˌæpəmˈæɾəks", "Oostanaula": "ˌuːstənˈɔːlə",
+PHON = {"Tecumseh": "təkˈʌmsə", "Appomattox": "ˌæpəmˈæɾəks", "Oostanaula": "ˌuːstənˈɑːlə",
         "Chattahoochee": "tʃˌæɾəhˈuːtʃiː", "Salkehatchie": "sˌɔːlkɪhˈætʃi"}
 
 

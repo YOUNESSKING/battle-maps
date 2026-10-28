@@ -204,7 +204,7 @@ Bradley / Marszalek page-level text (no previews reached; ABT/NCpedia/NC Histori
   looting, Griswoldville, Ebenezer Creek and the destruction plainly; Gemini "fewer than 500 combat deaths" = not checked, not used.
 - Bennett Place vs Appomattox: 89,270 vs 28,231 (both sourced); script "the largest surrender of the war" (NC Historic Sites wording).
 
-## Flags (owner to pick: build/flag-options.jpg)
+## Flags (OWNER CHOSE A1 on 2026-10-28: US 35-star + Confederate First National everywhere; see build/flag-options.jpg)
 - US flag 35 stars for the whole video (35th star 4 Jul 1863; 36th 4 Jul 1865). Confederate national flag: Second National (1 May 1863) and
   Third National (4 Mar 1865); both have the battle-flag cross as canton. Options A1 / A2 / B.
 
