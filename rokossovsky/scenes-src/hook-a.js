@@ -1,3 +1,6 @@
+// HOOK-A v3 OPENING (owner 2026-10-28, STYLE_LOCK 1a UPDATED): hook-1 now opens with the STAKES (Belarus: one in four would not
+// survive the occupation) on a wide overview, then ONE continuous geographic zoom onto Belarus landing on the spoken "Belarus", then the
+// v2 beats (number card on its own words...). v2 kept in scenes-src/old/hook-a_v2.js.
 // HOOK-A v2 (hook-1 .. hook-3), Rokossovsky #8. Basemap bobruisk_hd_ref (Belarus z9, HD relief, dark Frontlines grade).
 // Owner 2026-10-07: v1 too slow -> something new every 2-4 s, SFX on every beat, beats timed to the words (B.at).
 // hook-1: wide Belarus (option 1), long red line vs blue line, units moving at frame 0; BIG card slams in at 0.3 s and ticks to
@@ -83,7 +86,7 @@ const date0 = (text, until) => {     // date scroll already showing at frame 0
 // camera with per-move eases (B.camera only does sine.inOut): hard dives, instant cuts
 const CW = 1920, CH = 1080, cam = { cx: 1450, cy: 800, s: 0.8 };
 const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
-const applyCam = () => { const s = Math.max(cam.s, CW / 2880), cx = clamp(cam.cx, CW / 2 / s, 2880 - CW / 2 / s), cy = clamp(cam.cy, CH / 2 / s, 1620 - CH / 2 / s); gsap.set(worldEl, { x: CW / 2 - cx * s, y: CH / 2 - cy * s, scale: s }); };
+const applyCam = () => { const free = cam.s < 0.8, s = free ? cam.s : Math.max(cam.s, CW / 2880), cx = free ? cam.cx : clamp(cam.cx, CW / 2 / s, 2880 - CW / 2 / s), cy = free ? cam.cy : clamp(cam.cy, CH / 2 / s, 1620 - CH / 2 / s); gsap.set(worldEl, { x: CW / 2 - cx * s, y: CH / 2 - cy * s, scale: s }); };
 applyCam();
 const camTo = (t, dur, cx, cy, s, ease = "sine.inOut") => tl.to(cam, { cx, cy, s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 // along a polyline: point at fraction f + unit normal pointing to the Soviet side (same side K.front puts the blue glow)
@@ -94,6 +97,7 @@ const along = (pts, f) => {
 };
 // ---------- times (all from the spoken words) ----------
 const H1 = "hook-1", H2 = "hook-2", H3 = "hook-3";
+const T_ONE4 = at(H1, "one in four"), T_SURV = at(H1, "would not survive"), T_JUNE = at(H1, "In June"), T_AFTER = at(H1, "after three years"), T_DRIVE = at(H1, "the Red Army came"), T_BEL = at(H1, "Belarus. Four") + 0.45;
 const T_FOUR = at(H1, "Four hundred"), T_SOLD = at(H1, "soldiers"), T_LOST = at(H1, "Lost in"), T_SUMMER = at(H1, "single summer"), T_AND = at(H1, "And it all");
 const T_SWAMP = at(H1, "a swamp"), T_GERM = at(H1, "the Germans were"), T_SURE = at(H1, "sure no"), T_CROSS = at(H1, "could cross");
 const S2 = PS(H2), T_GEN = at(H2, "one Soviet general"), T_TANKS = at(H2, "sent his tanks"), T_THROUGH = at(H2, "straight through"), T_THREE = at(H2, "Three days later");
@@ -114,12 +118,62 @@ const F22 = [[2005, -81], [1987, 75], [1932, 211], [1907, 322], [1848, 433], [17
 // =====================================================================================================================
 // hook-1 (0 - 9.15): WIDE, option 1, units on the map and moving at frame 0
 // =====================================================================================================================
-date0("JUNE 1944", S2 + 0.05);
+// ---------- STAKES FRAME (v3): wide overview of Belarus under occupation, then ONE continuous zoom onto it ----------
+// overview = east_hd_ref (z6) cropped (assets/media/hookov_*), placed UNDER this z9 map at its true position and scale (x8);
+// the z9 layers get feathered edges so the two maps blend; the camera never cuts (STYLE_LOCK 1a: no cut, no white flash).
+const OV = { x: -3476, y: -3110, w: 9464, h: 7320 };
+const ovImg = (src, mx) => { const el = document.createElement("img"); el.src = src; el.alt = "";
+  Object.assign(el.style, { position: "absolute", left: OV.x + "px", top: OV.y + "px", width: OV.w + "px", height: OV.h + "px" }); if (mx) el.style.mixBlendMode = "multiply";
+  worldEl.insertBefore(el, document.getElementById("relief")); return el; };
+ovImg("assets/media/hookov_relief.jpg"); ovImg("assets/media/hookov_ctl_jun44_mx.png", true);
+const FEATHER = "linear-gradient(to right, transparent 0, #000 160px, #000 calc(100% - 160px), transparent 100%), linear-gradient(to bottom, transparent 0, #000 160px, #000 calc(100% - 160px), transparent 100%)";
+[document.getElementById("relief"), ...worldEl.querySelectorAll("img.wimg")].forEach((el) => { el.style.webkitMaskImage = FEATHER; el.style.maskImage = FEATHER;
+  el.style.webkitMaskComposite = "source-in"; el.style.maskComposite = "intersect"; });
+const OVC = L(53.75, 28.0);
+cam.cx = OVC[0]; cam.cy = OVC[1]; cam.s = 0.34; applyCam();
+camTo(0, T_AFTER - 0.3, OVC[0] + 60, OVC[1] + 30, 0.37, "sine.inOut");                 // slow drift on the overview
+SFX("whoosh", T_AFTER - 0.35);
+camTo(T_AFTER - 0.3, T_BEL - T_AFTER + 0.3, 1450, 800, 0.8, "power2.inOut");         // ONE continuous zoom, lands on "Belarus"
+// big overview labels (hidden as the zoom lands)
+const ovLbl = (txt, lat, lon, size, col) => { const [x, y] = L(lat, lon); return GG.lbl(txt, x, y, { size, t: 0, color: col || "#f1eee6", until: T_BEL - 0.8 }); };
+ovLbl("BELARUS", 53.95, 27.2, 92, "#f7f3ea"); ovLbl("MINSK", 53.70, 27.56, 46); ovLbl("VITEBSK", 55.19, 30.20, 44); ovLbl("GOMEL", 52.44, 31.0, 44);
+ovLbl("BREST", 52.10, 23.70, 44); ovLbl("SMOLENSK", 54.78, 32.05, 44); ovLbl("VILNIUS", 54.69, 25.28, 44);
+const ovFlag = (src, name, lat, lon, until) => { const [x, y] = L(lat, lon); return flag(src, name, x, y, 0, until, 260); };
+ovFlag(REICH, "GERMANY", 52.9, 25.0, T_AFTER + 1.6); ovFlag(USSR, "USSR", 54.4, 33.6, T_AFTER + 1.6);
+// the commander on the other side: Busch, Army Group Centre (real photo)
+const BUS0 = K.badge({ name: "FIELD MARSHAL ERNST BUSCH", role: "ARMY GROUP CENTRE · BELARUS", initials: "EB", photo: "assets/media/busch_head.png", side: "rome", corner: "bl", t: 0.15, until: T_FOUR - 0.4 });
+BUS0.querySelector('div[style*="border-radius:50%"]').style.backgroundImage = `url(${REICH})`;
+// units already moving at frame 0: overview counters along the June 1944 front, blue pressing west
+const OVU = [[55.2, 30.6], [54.6, 31.0], [53.9, 31.1], [53.1, 30.6], [52.5, 29.6]];
+OVU.forEach(([la, lo], i) => { unit("ovr" + i, "rome", la, lo - 0.45, i % 2 ? "tank" : "infantry", null, { w: 110, h: 74 });
+  unit("ovb" + i, "carth", la, lo + 0.9, i % 2 ? "infantry" : "tank", null, { w: 110, h: 74 }); go("ovb" + i, 0, 3.0 + i * 0.2, la, lo + 0.45, "power1.out"); });
+const T_X0 = T_AFTER + 1.4, T_X1 = T_BEL - 0.6;   // cross-fade window: overview out, detailed z9 map in (during the zoom)
+B.hideUnits(OVU.map((_, i) => "ovr" + i).concat(OVU.map((_, i) => "ovb" + i)), T_X0 + 0.6, 0.8);
+// OCCUPIED SINCE 1941 on "German occupation" (the 1 IN 4 card below is the stamp in the first second)
+const OCC = scr(stampHTML("OCCUPIED SINCE 1941", "#e3232f", 46, -5), "left:1180px;top:170px;");
+slam(OCC, at(H1, "German occupation"), { shake: 5, until: T_JUNE + 0.1 });
+// burning villages spread across the occupied land (one marker each, staggered), quiet
+const VIL = [[54.9, 28.4], [54.3, 26.6], [53.6, 26.0], [53.0, 27.3], [52.6, 25.2], [54.1, 29.4], [53.5, 28.6], [52.9, 28.9], [54.6, 27.4], [53.2, 25.8], [52.3, 27.6], [54.0, 24.9]];
+VIL.forEach(([la, lo], k) => { const [x, y] = L(la, lo), t = 0.9 + k * 0.32;
+  const f = GG.pin(`<div style="width:70px;height:70px;border-radius:50%;background:radial-gradient(circle, rgba(255,190,90,0.95) 0 18%, rgba(240,90,30,0.75) 32%, rgba(200,40,20,0) 70%)"></div>`, x, y, { t, until: T_BEL - 0.4 });
+  tl.fromTo(f, { scale: 0.85 }, { scale: 1.15, duration: 0.45, yoyo: true, repeat: 9, ease: "sine.inOut" }, t + 0.3); });
+// "one in four": the card
+const ONE4 = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:12px 46px 14px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
+  <div style="font-size:132px;line-height:1;color:#f7f3ea">1 IN 4</div>
+  <div style="font-size:30px;letter-spacing:0.22em;color:#ef8a82;margin-top:4px">WOULD NOT SURVIVE THE OCCUPATION</div>
+  <div style="font-size:16px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">BELARUS · 1941 – 1944 · ABOUT A QUARTER OF ITS PEOPLE</div></div>`, "left:120px;top:250px;transform-origin:50% 40%;");
+slam(ONE4, Math.max(0.3, T_ONE4 - 0.1), { from: 1.8, dur: 0.22, shake: 5, until: T_JUNE + 0.2 });   // the stamp in the first second
+// "In June 1944 ... the Red Army came": blue arrows push into the red from the east (quiet whoosh)
+const OVA = [[[55.0, 33.2], [54.9, 31.6], [54.7, 30.2]], [[53.7, 33.4], [53.7, 31.8], [53.6, 30.4]], [[52.6, 32.2], [52.6, 30.6], [52.7, 29.4]]];
+OVA.forEach((pts, k) => B.arrow({ pts: ringPts(pts), side: "carth", t: T_JUNE + 0.2 + k * 0.35, dur: 1.0, width: 34, until: T_BEL - 0.5 }));
+SFX("hit", T_JUNE + 0.25);
+date0("1941 – 1944", T_JUNE);
+B.date("JUNE 1944", T_JUNE + 0.05, S2 + 0.05, 32);
 legend(0, T_SWAMP + 0.2, false);
-const FU = flag(USSR, "USSR", 2180, 960, 0, T_SWAMP, 110);
-const FG = flag(REICH, "GERMANY", 640, 1130, 0, T_SWAMP, 110);
-town("BOBRUISK", 53.14, 29.22, 0.1, { dx: -64, dy: 18, until: T_SWAMP }); town("MOGILEV", 53.90, 30.34, 0.1, { until: T_SWAMP }); town("MINSK", 53.90, 27.56, 0.1, { until: T_SWAMP });
-town("ROGACHEV", 53.09, 30.05, 0.1, { dx: 50, dy: 24, until: T_SWAMP });
+const FU = flag(USSR, "USSR", 2180, 960, T_BEL - 0.6, T_SWAMP, 110);
+const FG = flag(REICH, "GERMANY", 640, 1130, T_BEL - 0.6, T_SWAMP, 110);
+town("BOBRUISK", 53.14, 29.22, T_BEL - 0.4, { dx: -64, dy: 18, until: T_SWAMP }); town("MOGILEV", 53.90, 30.34, T_BEL - 0.4, { until: T_SWAMP }); town("MINSK", 53.90, 27.56, T_BEL - 0.4, { until: T_SWAMP });
+town("ROGACHEV", 53.09, 30.05, T_BEL - 0.4, { dx: 50, dy: 24, until: T_SWAMP });
 // a long line of counters on both sides of the front (red = German, blue = Soviet), grouped north / centre / south for the waves
 const FR = [0.07, 0.13, 0.19, 0.26, 0.33, 0.40, 0.47, 0.545, 0.62, 0.69];
 const REDW = [], BLUEW = [];
@@ -130,15 +184,15 @@ FR.forEach((f, i) => {
   goXY("wb" + i, 0, 2.6 + (i % 3) * 0.3, x + nx * dB, y + ny * dB, "power1.out");        // blue line closes up from frame 0
 });
 // guns flashing behind the blue line from the first second (quiet launches)
-[0.15, 0.55, 0.95, 1.35].forEach((t, k) => { const [x, y, nx, ny] = along(F22, 0.16 + k * 0.14); K.gun(x + nx * 130, y + ny * 130, t); });
+[0.15, 0.55, 0.95, 1.35, T_FOUR - 0.6, T_FOUR - 0.2].forEach((t, k) => { const [x, y, nx, ny] = along(F22, 0.16 + k * 0.14); K.gun(x + nx * 130, y + ny * 130, t); });
 // the BIG card: slams in at 0.3 s, ticks 0 -> ~400,000 (WHOLE operation, Frieser 399,102)
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div class="n" style="font-size:150px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
   <div style="font-size:40px;letter-spacing:0.26em;color:#ef8a82;margin-top:2px">GERMAN SOLDIERS LOST</div>
   <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">ARMY GROUP CENTRE · WHOLE OPERATION · KILLED, WOUNDED, CAPTURED</div></div>`,
   "left:100px;top:215px;transform-origin:50% 40%;");
-slam(BIG, 0.3, { from: 1.9, dur: 0.22, shake: 6 });
-const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = 0.55, T_C1 = T_SOLD + 0.4;
+slam(BIG, T_FOUR - 0.2, { from: 1.9, dur: 0.22, shake: 6 });
+const cv = { v: 0 }, cn = BIG.querySelector(".n"), T_C0 = T_FOUR + 0.05, T_C1 = T_SOLD + 0.4;
 tl.to(cv, { v: 400000, duration: T_C1 - T_C0, ease: "power2.out", onUpdate: () => { cn.textContent = (cv.v >= 399500 ? "~" : "") + (Math.round(cv.v / 1000) * 1000).toLocaleString("en-US"); } }, T_C0);
 for (let t = T_C0; t < T_C1 - 0.1; t += 0.14) SFX("tick", t);
 // "lost in a single summer": red counters crack and grey in waves (north -> centre -> south), the blue line pushes in
@@ -158,7 +212,7 @@ slam(ONE, T_SUMMER + 0.15, { shake: 4 });
 tl.to([BIG, ONE], { autoAlpha: 0, y: -40, duration: 0.35, ease: "power2.in" }, T_AND + 0.55);
 // camera: slow push from frame 0, then the hard zoom-whoosh DIVE into the marsh on "a swamp"
 const MARSH = L(52.70, 29.22);
-camTo(0, T_SWAMP - 0.3, 1430, 860, 0.9, "sine.inOut");
+camTo(T_BEL, T_SWAMP - 0.3 - T_BEL, 1430, 860, 0.9, "sine.inOut");
 SFX("whoosh", T_SWAMP - 0.35);
 camTo(T_SWAMP - 0.3, 0.75, 1335, 985, 2.5, "expo.inOut");
 camTo(T_SWAMP + 0.45, S2 - T_SWAMP + 0.2, 1330, 975, 2.6, "sine.inOut");
@@ -320,3 +374,7 @@ tl.to(BARS, { yPercent: -105, duration: 0.5, ease: "power3.in" }, OUT); SFX("ref
 tl.to([NK, FAM, X2, NV, YR, ...STAMPS], { autoAlpha: 0, duration: 0.4 }, OUT + 0.1);
 K.raiseTerritory();
 B.finish();
+
+// ---------- v3: the detailed z9 layers + their units cross-fade IN during the zoom (no visible rectangle on the overview) ----------
+[document.getElementById("relief"), ...worldEl.querySelectorAll("img.wimg")].forEach((el) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: T_X1 - T_X0, ease: "sine.inOut" }, T_X0));
+[...REDW, ...BLUEW].forEach((id) => tl.fromTo(B.units[id].el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, T_X0 + 0.8));
