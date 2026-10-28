@@ -143,3 +143,22 @@ On-screen extras from the map agents: Jackson brigadier general (promoted 17 Jun
 ## Script added from standard sources (not in Gemini)
 Seven Days (Jun-Jul 1862); McClellan >100,000 on the Peninsula; Pope relieved within two weeks; Bee mortally wounded (d. 22 Jul 1861);
 Gettysburg 1-3 Jul 1863. Ending cause line wording: OWNER TO APPROVE (see script end-2).
+
+## Hook remake 2026-10-28: stakes-opening candidates (STYLE_LOCK 1a UPDATED), owner to pick one
+A (Richmond, the Confederate capital): "In the spring of eighteen sixty-two, two Union armies were closing in on Richmond, and if they
+  joined hands, the Confederate capital would probably fall. The fight to keep them apart was waged far to the north-west, in the
+  Shenandoah Valley."
+  - McClellan >100,000 on the Peninsula, McDowell's corps (~40,000) at Fredericksburg ordered to join him: OK (EVA Valley Campaign;
+    Henderson). "Probably fall" = interpretation, kept hedged (same wording the script already uses in move1-1). Valley = NW of Richmond: OK.
+B (Washington, the Union capital; Lincoln's fear): "In the spring of eighteen sixty-two, Abraham Lincoln held forty thousand soldiers back
+  from the march on Richmond, to guard his own capital against one place: the Shenandoah Valley."
+  - EVA: "On April 3 ... Lincoln countermanded the embarkation of 40,000 troops under Union general Irvin McDowell for the Peninsula",
+    after Jackson's attack at Kernstown, to cover Washington: OK (FACT_CHECK_RAW claim 5; Henderson). "one place" = rhetorical, the threat
+    came from Jackson in the Valley: fair.
+C (the war nearly won; Northern confidence): "In April eighteen sixty-two, the Union was so sure the war was almost won that it stopped
+  recruiting soldiers. Within weeks, that confidence began to crack in the Shenandoah Valley."
+  - War Department General Orders No. 33, 3 Apr 1862 (Stanton): "the Recruiting Service for Volunteers will be discontinued in every
+    State from this date": OK (House Divided, Dickinson College; OR Series III vol. 2). The "sure the war was almost won" motive is the
+    historians' reading (House Divided: the force in the field "deemed amply sufficient for the suppression of the rebellion"): say it as
+    such. Recruiting was reopened in June 1862 after the Valley defeats and the Peninsula fighting: OK ("began to crack": fair, not "died").
+Swap test: B and C name events unique to Jackson's Valley story; A could only fit another 1862 Richmond story (weaker).

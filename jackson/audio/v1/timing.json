@@ -1,0 +1,273 @@
+{
+ "voice": "am_michael",
+ "speed": 1.0,
+ "duration": 1013.31,
+ "paragraphs": [
+  {
+   "section": "HOOK (0:00 \u2013 ~1:05)",
+   "tag": "MAP: hook-1 | LOCKED HOOK. Frame 0: Shenandoah Valley wide (option 1, territory May 1862), day: three red Union army groups already marching in (BANKS at Strasburg, FR\u00c9MONT from the west mountains, McDOWELL/SHIELDS from the east), one small blue force in the middle of the valley. 0.3 s: BIG card slams (hit + shake) and ticks 0 -> 50,000+ UNION SOLDIERS (ticks); second card 17,000 (blue) slams under it; three red arrows close on the blue counter; camera DIVE (zoom whoosh) down the Massanutten ridge to Front Royal",
+   "start": 0.0,
+   "end": 9.75,
+   "text": "More than fifty thousand Union soldiers. Three separate armies. Sent into one Virginia valley to crush a force of seventeen thousand men."
+  },
+  {
+   "section": "HOOK (0:00 \u2013 ~1:05)",
+   "tag": "MAP: hook-2 | Beat every 2-4 s: 23 MAY: blue column bursts out from behind the Massanutten at Front Royal (impacts, red garrison counter greys, stamp CAPTURED); 25 MAY Winchester: guns fire -> impacts (shake), red BANKS counter breaks north, dotted retreat 35 MILES to the Potomac (ticks); white-flash cut -> zoom-out whoosh to the Washington area: red alarm pulse on WASHINGTON, caption card \"THE ENEMY IN GREAT FORCE ARE MARCHING ON WASHINGTON\" - STANTON (small source line); 13 STATES CALL OUT MILITIA (stamp, hit + shake); a red arrow of 20,000 MEN turns away from Richmond toward the valley",
+   "start": 10.35,
+   "end": 32.66,
+   "text": "Instead, that small force came out from behind a mountain, smashed a Union army at Winchester, and chased it all the way across the Potomac. In Washington, the Secretary of War warned that the enemy was marching on the capital. Thirteen states called out their militia. And Lincoln pulled twenty thousand men off the road to Richmond."
+  },
+  {
+   "section": "HOOK (0:00 \u2013 ~1:05)",
+   "tag": "MAP: hook-3 | Twist as action, hard cut, dark: mystery \"?\" badge on the colour chip/flag; the year rolls back with ticks to 1851: one stamp per spoken detail (hit + small shake + red pulse): PHYSICS TEACHER / \"TOM FOOL\" (cadets' nickname); then hard cut forward: NIGHT, 2 MAY 1863, dark woods: muzzle flashes from his OWN blue line (MG), the \"?\" badge cracks (boom), caption SHOT BY HIS OWN MEN",
+   "start": 33.26,
+   "end": 48.43,
+   "text": "The man who did it had been a physics teacher at a military school. His cadets laughed at him behind his back and called him Tom Fool. And less than a year later, on the night of his greatest victory, he would be shot down in the dark by his own men."
+  },
+  {
+   "section": "HOOK (0:00 \u2013 ~1:05)",
+   "tag": "MAP: hook-4 | Name slam: STONEWALL JACKSON (real photo badge, hit + shake); three snap cuts (~3 s each, whoosh + hit): THE SHENANDOAH VALLEY 1862 (blue arrows weave around the Massanutten), MANASSAS AUGUST 1862 (depot burning behind the Union army), CHANCELLORSVILLE MAY 1863 (blue column bursts out of the woods onto an open flank); title card STONEWALL JACKSON'S 3 GREATEST TACTICAL MOVES (riser + boom)",
+   "start": 49.03,
+   "end": 72.84,
+   "text": "His name was Thomas Jackson. History calls him Stonewall. In fourteen months, he ran rings around three Union armies in the Shenandoah Valley, vanished behind an entire Union army to wreck its supply base at Manassas, and marched across the front of a force twice his size at Chancellorsville. These are Stonewall Jackson's three greatest tactical moves."
+  },
+  {
+   "section": "BACKGROUND (~1:05 \u2013 ~2:40)",
+   "tag": "ARCHIVE: Jackson's 1862 Winchester portrait (LoC/Commons PD, 3D depth); headline date card \"1824 / CLARKSBURG, VIRGINIA\"; VMI-era date card \"1851 / LEXINGTON, VIRGINIA\"; never a slideshow",
+   "start": 74.24,
+   "end": 113.55,
+   "text": "Jackson was born in eighteen twenty-four, in the mountains of western Virginia. By the age of seven, he had lost both his parents. He went to West Point with almost no schooling, worked harder than anyone around him, and graduated seventeenth in his class. In Mexico he won promotion for bravery under fire. Then he became a professor at the Virginia Military Institute, teaching what was then called natural philosophy, which we would call physics. He was stiff, awkward and deeply religious, and some of his cadets mocked him as Tom Fool. His soldiers would later call him Old Jack."
+  },
+  {
+   "section": "BACKGROUND (~1:05 \u2013 ~2:40)",
+   "tag": "MAP: bg-1 | Virginia overview (option 1, Jul 1861 territory): WASHINGTON and RICHMOND rings, 100 miles apart; 21 JUL 1861 MANASSAS: red Union arrows hit a blue line on Henry Hill; one blue brigade counter holds firm (ring), caption card THERE IS JACKSON STANDING LIKE A STONE-WALL - CHARLESTON MERCURY, 25 JULY 1861 (first printed version); stamp STONEWALL",
+   "start": 114.15,
+   "end": 141.44,
+   "text": "When Virginia left the Union in eighteen sixty-one, Jackson went with it. At the first big battle of the Civil War, at Bull Run near Manassas, his brigade held a hilltop while the line around it was breaking. A Confederate general, Barnard Bee, is said to have pointed to him and shouted that there stood Jackson, like a stone wall. Bee was mortally wounded soon afterwards, and the name stuck. But it may be the most misleading nickname of the whole war."
+  },
+  {
+   "section": "BACKGROUND (~1:05 \u2013 ~2:40)",
+   "tag": "MAP: bg-2 | Imboden quote card over the map: \"ALWAYS MYSTIFY, MISLEAD, AND SURPRISE THE ENEMY, IF POSSIBLE\" - JACKSON, AS RECALLED BY JOHN IMBODEN (1887); second line \"HURL YOUR OWN FORCE ON ONLY A PART, AND THAT THE WEAKEST PART, OF YOUR ENEMY\"; method card frame appears empty: JACKSON'S METHOD",
+   "start": 142.04,
+   "end": 166.85,
+   "text": "Because Jackson was not a wall. He was a hammer. As his fellow officer John Imboden later remembered it, Jackson said there were rules a commander must never forget. Always mystify, mislead, and surprise the enemy, if possible. And never fight against heavy odds if, by any possible manoeuvring, you can hurl your own force on only a part, and that the weakest part, of your enemy."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-1 | Title card MOVE 1 \u00b7 THE SHENANDOAH VALLEY \u00b7 MARCH-JUNE 1862. Virginia wide (option 1, spring 1862): McCLELLAN's huge red army (ships) on the Peninsula, red arrow toward RICHMOND; McDOWELL's red corps at Fredericksburg (40,000) with a dotted arrow toward Richmond; the Shenandoah Valley lights up as a corridor pointing at Washington; small blue JACKSON counter at its bottom",
+   "start": 168.25,
+   "end": 197.62,
+   "text": "In the spring of eighteen sixty-two, the Union was closing in on Richmond, the Confederate capital. General George McClellan had brought more than a hundred thousand men by sea to the peninsula east of the city, and another army corps under Irvin McDowell, some forty thousand men, was ready to march down from the north and join him. If they met, Richmond would probably fall. Jackson's job was to stop that from happening, with one small army in the Shenandoah Valley."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-2 | Valley close (option 2 glowing fronts): 23 MAR KERNSTOWN: blue attacks, red holds, blue pulls back (stamp DEFEAT, honest); then a red McDOWELL arrow toward Richmond stops and turns back to guard WASHINGTON (stamp HELD BACK); 8 MAY McDOWELL (the village, west): blue counters climb the mountains and push red Fr\u00e9mont's vanguard back (impacts)",
+   "start": 198.22,
+   "end": 224.4,
+   "text": "He started with a defeat. In March, Jackson attacked a Union force at Kernstown, near Winchester, and was beaten. But the attack frightened Washington so much that Lincoln held McDowell's corps back to protect the capital. Even when Jackson lost, he was winning. In early May, he marched west into the mountains, and at the village of McDowell he threw back the leading troops of a second Union army, under John Fr\u00e9mont."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-3 | Terrain beat: camera glides along the MASSANUTTEN MOUNTAIN (ridge glows, label 50 MILES), two valleys either side; the single road over it NEW MARKET -> LURAY highlighted; red BANKS counters dug in at STRASBURG facing south (works icon) on the Valley Pike; red belief card: BANKS EXPECTS JACKSON HERE (arrow up the Pike); blue counters merge: JACKSON + EWELL = 17,000",
+   "start": 225.0,
+   "end": 250.36,
+   "text": "Now he turned on the main Union army in the Valley, under Nathaniel Banks. Banks had dug in at Strasburg, facing south, sure that Jackson would come straight up the main road. But down the middle of the Valley ran a wall of rock fifty miles long, the Massanutten Mountain, with only one road across it. With a fresh division under Richard Ewell, Jackson had some seventeen thousand men."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-4 | Jackson badge (real photo). Blue column vanishes behind the Massanutten (ghost outline), crosses at New Market (dotted trail), runs north up the hidden eastern valley (clock ticks, \"FOOT CAVALRY\" caption); 23 MAY: bursts out at FRONT ROYAL: guns fire -> impacts (shake), the red 1ST MARYLAND counter (~1,000) is ringed, stamp CAPTURED; red Strasburg counters now outflanked: red alarm pulse",
+   "start": 250.96,
+   "end": 276.44,
+   "text": "Jackson saw what Banks did not. He marched his army over that single road, out of sight behind the mountain, and then north up the hidden valley on the other side. On the twenty-third of May, he burst out at Front Royal, behind Banks's flank. The Union garrison there, about a thousand men, was overrun, and most of them were captured. His infantry marched so fast that they became known as the foot cavalry."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-5 | 24-25 MAY: red Banks column races north on the Valley Pike to WINCHESTER, blue arrows chase and strike its flank (impacts); 25 MAY dawn WINCHESTER: blue 16,000 vs red 6,500 (count cards), rows of K.gun -> arc -> K.impact (shake), red line breaks, red arrow runs 35 MILES north to the POTOMAC (dotted, ticks); depot icons at Winchester left behind: caption \"COMMISSARY BANKS\"; zoom whoosh up to Washington: alarm pulse, 13 STATES CALL OUT MILITIA, 20,000 MEN (red arrow) turn from Fredericksburg toward the valley",
+   "start": 277.04,
+   "end": 310.25,
+   "text": "Banks raced north for Winchester, and Jackson chased him. At dawn on the twenty-fifth of May, about sixteen thousand Confederates struck some sixty-five hundred Union troops and broke them. Banks fled thirty-five miles in a day and crossed the Potomac. He left so many supplies behind that Jackson's men nicknamed him Commissary Banks. In Washington, the panic was real. Lincoln ordered McDowell to lay aside the march on Richmond and send twenty thousand men into the Valley to trap Jackson."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-6 | The trap: red FR\u00c9MONT arrow from the west, red SHIELDS arrow from the east, both aimed at STRASBURG behind Jackson; red belief card: THE TRAP CLOSES; 1 JUNE: the blue column slips south through Strasburg between the two arrow tips (timer ticks, near miss), then up the Valley; Fr\u00e9mont follows on the Pike (west of the mountain), Shields in the eastern valley; the MASSANUTTEN between them; blue cavalry (new icon) burns the bridges on the South Fork (fire + smoke)",
+   "start": 310.85,
+   "end": 339.75,
+   "text": "Now three Union forces were converging on him. Fr\u00e9mont came from the west, and James Shields from the east, both aiming for Strasburg, right behind Jackson. On the first of June, Jackson's long column slipped south through Strasburg just ahead of the closing jaws. And as he retreated up the Valley, the mountain did his work for him again. Fr\u00e9mont followed on one side of the Massanutten, Shields on the other, and Jackson's cavalry burned the bridges so they could not join."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-7 | Port Republic close (option 2): blue holds the bridge town; 8 JUN CROSS KEYS: blue EWELL ~5,800 vs red FR\u00c9MONT ~11,500 (count cards): red attacks, impacts, red falls back (stamp REPULSED); 9 JUN PORT REPUBLIC: blue crosses the river and strikes red TYLER (~3,000) of Shields's division on the plain, guns -> impacts (shake), red breaks; blue burns the bridge behind (fire), red Fr\u00e9mont arrives on the far bank too late (stamp TOO LATE)",
+   "start": 340.35,
+   "end": 365.25,
+   "text": "At the town of Port Republic, where the two valleys met, he turned. On the eighth of June, at Cross Keys, Ewell's fifty-eight hundred men threw back Fr\u00e9mont's eleven and a half thousand. The next morning, Jackson crossed the river and smashed the leading brigades of Shields's division. Then he burned the bridge behind him. Fr\u00e9mont arrived on the far bank in time to watch, unable to cross."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-8 | Zoom out to Virginia (option 1, June 1862): RESULT card: 6 BATTLES \u00b7 ~650 MILES MARCHED \u00b7 UNION ~5,400 \u00b7 CONFEDERATE ~2,800 (NPS); McDOWELL's ~40,000 never reach McClellan (grey arrow); blue arrow: JACKSON TO RICHMOND (17 JUNE); method card line 1: MOVE FAST",
+   "start": 365.85,
+   "end": 389.72,
+   "text": "In less than three months, Jackson's men had marched some six hundred and fifty miles and fought six battles against three Union armies, losing only the first. The Union lost about fifty-four hundred men, the Confederates about twenty-eight hundred. And McDowell's forty thousand never reached McClellan. Then Jackson slipped away to join Lee outside Richmond. Move fast."
+  },
+  {
+   "section": "MOVE 1 \u2014 MOVE FAST: THE SHENANDOAH VALLEY (~2:40 \u2013 ~7:30)",
+   "tag": "MAP: move1-sub | Woven subscribe (E.subscribe): small SUBSCRIBE button bottom-right, cursor clicks (SUBSCRIBED, bell), slides out; then NEXT: MANASSAS label; map idles on Virginia with the blue column moving toward Richmond",
+   "start": 390.32,
+   "end": 406.45,
+   "text": "But the Valley was only the beginning. Breakdowns like this, move by move on the map, are exactly what subscribing keeps bringing you. Because two months later, Jackson would vanish with half of Lee's army, and reappear behind the Union army itself."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-1 | Title card MOVE 2 \u00b7 MANASSAS \u00b7 AUGUST 1862. Northern Virginia wide (option 1, Aug 1862): red POPE (Army of Virginia) along the RAPPAHANNOCK; behind him the O&A RAILROAD glows back to MANASSAS JUNCTION (depot icon) and Washington; red McCLELLAN corps arriving by water at Aquia/Alexandria (ships, arrows) to join Pope; count card: POPE + McCLELLAN = ~70,000; blue LEE ~55,000 south of the river; Pope badge",
+   "start": 407.85,
+   "end": 433.98,
+   "text": "That summer, Lee drove McClellan back from Richmond in the Seven Days battles, where Jackson himself was oddly slow and exhausted. Now a new Union army, under John Pope, stood on the Rappahannock River in northern Virginia, and McClellan's troops were coming north by sea to join it. Together they would have some seventy thousand men. Lee had about fifty-five thousand. He could not wait for them to combine."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-2 | Red belief beat: Pope's supply line, the ORANGE & ALEXANDRIA RAILROAD, pulses from Manassas to the front; Lee + Jackson badges; Lee's plan drawn as a dotted blue arc: JACKSON (24,000) far around Pope's right, through THOROUGHFARE GAP in the Bull Run Mountains, to the railroad behind him; LONGSTREET stays to hold Pope's attention (blue counters on the river)",
+   "start": 434.58,
+   "end": 455.38,
+   "text": "Lee's answer broke one of the oldest rules of war. In the face of a stronger enemy, he split his army. Longstreet's wing would stay on the river and keep Pope busy. Jackson, with about twenty-four thousand men, would march far around Pope's right flank and get behind him, onto the railroad that fed his whole army."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-3 | 25 AUG dawn: blue column leaves JEFFERSONTON, marches north-west then north behind the BULL RUN MOUNTAINS (screened, ghost outline), via AMISSVILLE, ORLEAN to SALEM (night 25, moon icon, clock), 26 AUG through THOROUGHFARE GAP (ring), GAINESVILLE, to BRISTOE STATION at sunset; counter ticks 0 -> 55 MILES \u00b7 2 DAYS; red Pope counters stay facing the river (a red scout sees dust: caption POPE: THEY ARE HEADED FOR THE VALLEY)",
+   "start": 455.98,
+   "end": 484.63,
+   "text": "On the twenty-fifth of August, Jackson's men set off at dawn with almost no wagons and little more than what they carried. They marched north, hidden behind a range of hills, slept a few hours at Salem, and turned east through Thoroughfare Gap. Union scouts saw the dust, but Pope thought Jackson was heading off toward the Shenandoah. By sunset on the twenty-sixth, after some fifty-five miles in two days, Jackson's men were on Pope's railroad at Bristoe Station."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-4 | NIGHT 26-27 AUG: blue cut the railroad at BRISTOE (train icon derails, impacts); TRIMBLE's two regiments + STUART's cavalry (cavalry icon) seize MANASSAS JUNCTION (ring flips blue, ~300 PRISONERS stamp); 27 AUG: depot icons (warehouses, trains) everywhere; caption card \"TO SEE A STARVING MAN EATING LOBSTER SALAD & DRINKING RHINE WINE, BAREFOOTED & IN TATTERS WAS CURIOUS\" - CONFEDERATE EYEWITNESS (NPS); NIGHT 27: the depot burns (fire + smoke columns, K.smoke)",
+   "start": 485.23,
+   "end": 519.38,
+   "text": "That night, two of his regiments and Jeb Stuart's cavalry seized Manassas Junction, Pope's main supply base, and some three hundred prisoners. The next day, hungry, ragged men who had marched for two days on almost nothing walked into warehouses stacked with food. One Confederate wrote of men eating potted ham, lobster, tongue, candy and cakes. Another eyewitness described a starving man, barefoot and in tatters, eating lobster salad and drinking Rhine wine. What they could not carry, they burned."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-5 | Pope badge, red: card POPE: \"BAG THE WHOLE CROWD\"; red Union columns converge on Manassas from all sides (arrows) and find only smoke (stamp EMPTY); the blue column has vanished north in the night (ghost dotted trail) to STONY RIDGE behind the UNFINISHED RAILROAD near GROVETON (the cut glows); blue counters hidden in the woods; red columns wander (dotted, question marks)",
+   "start": 519.98,
+   "end": 547.03,
+   "text": "Pope turned his whole army around to catch him. He told his generals that if they moved fast, they would bag the whole crowd. But when the Union columns reached Manassas, they found only smoking ruins. Jackson had vanished again. During the night he had moved north, to a wooded ridge behind the cut of an unfinished railroad, near the old Bull Run battlefield. And there he waited, while Pope's army marched back and forth looking for him."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-6 | Brawner's Farm close (option 2), 28 AUG evening (low sun): red KING's division column marches east on the WARRENTON TURNPIKE across Jackson's front; Jackson badge; blue guns fire -> impacts (shake); blue lines come down to the farm, close-range fire line (MG), dusk falls; caption NEARLY ONE THIRD OF 7,000 ENGAGED HIT (NPS); stamp EWELL LOSES A LEG (small)",
+   "start": 547.63,
+   "end": 579.95,
+   "text": "He did not wait to be found. On the evening of the twenty-eighth, a Union division came marching along the turnpike right across his front, unaware he was there. Jackson attacked it on purpose, at Brawner's Farm, to make sure Pope could not slip away before Lee arrived. In the dusk, the two lines stood and fired at each other at close range. Nearly a third of the seven thousand men engaged were hit, and Ewell lost his leg. But now Pope knew where Jackson was, and he took the bait."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-7 | 29 AUG: red attacks, one after another, hit the blue line on the unfinished railroad (impacts, MG, each repulsed, stamps REPULSED x3 quick); NOON: blue LONGSTREET column pours through THOROUGHFARE GAP and deploys on Jackson's right (glow), angled like an open jaw; caption NOBODY TELLS POPE; 30 AUG dawn: card POPE TO HALLECK: \"THE ENEMY IS RETREATING TOWARDS THE MOUNTAINS\"",
+   "start": 580.55,
+   "end": 608.26,
+   "text": "On the twenty-ninth, Pope hurled attack after attack at Jackson's line along the railroad cut, one division at a time, and every one was thrown back. Around noon, Longstreet's wing arrived through Thoroughfare Gap and quietly took position on Jackson's right, like the other half of a jaw. Some Union officers knew, but nobody told Pope. The next morning, he even reported to Washington that the enemy was retreating towards the mountains."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-8 | 30 AUG 3 PM: red PORTER's 6,000+ men cross the open field to the DEEP CUT (arrows), blue line fires (MG, impacts, shake); caption OUT OF AMMUNITION: ROCKS (rock icons fly); 4 PM: the blue LONGSTREET jaw swings shut on the red flank (huge arrow, gun rows -> impacts, shake), caption THE LARGEST SIMULTANEOUS MASS ASSAULT OF THE WAR - NPS; red lines collapse back to BULL RUN, dusk, stamp RETREAT",
+   "start": 608.86,
+   "end": 638.15,
+   "text": "That afternoon, Pope launched his biggest attack of all, more than six thousand men against a section of the railroad called the Deep Cut. The fighting was so close that some Confederates, out of ammunition, threw rocks over the embankment. Then, at about four o'clock, Longstreet's twenty-five thousand men swept forward against the open Union flank, in what the Park Service calls the largest simultaneous mass assault of the war. Pope's army fell back across Bull Run in the dark."
+  },
+  {
+   "section": "MOVE 2 \u2014 MYSTIFY: THE MARCH TO MANASSAS (~8:00 \u2013 ~12:30)",
+   "tag": "MAP: move2-9 | Zoom out (option 1, Sep 1862): red retreats to WASHINGTON's defences; CASUALTY card (campaign, ABT): UNION ~14,500 (incl. ~4,300 missing) \u00b7 CONFEDERATE ~7,400; blue arrow north into MARYLAND (SEPT 1862); method card line 2: MYSTIFY",
+   "start": 638.75,
+   "end": 660.34,
+   "text": "The Union army lost about fourteen and a half thousand men, the Confederates about seventy-four hundred. Within two weeks Pope had been removed from command, and Lee's army was marching north into Maryland. Jackson had disappeared from under the eyes of a whole army, and then held it in place until the trap was ready. Mystify."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-1 | Title card MOVE 3 \u00b7 CHANCELLORSVILLE \u00b7 MAY 1863. Rappahannock wide (option 1, 30 Apr 1863): blue LEE ~60,000 at FREDERICKSBURG; red HOOKER ~130,000: part demonstrates at Fredericksburg, the main body swings far upriver, crosses the RAPPAHANNOCK and RAPIDAN, and comes down behind Lee to CHANCELLORSVILLE (dotted arrows); count cards 130,000 vs 60,000; LONGSTREET's 2 divisions away near SUFFOLK (grey arrow off-map); Hooker badge",
+   "start": 661.74,
+   "end": 690.22,
+   "text": "By the spring of eighteen sixty-three, the Union had a new commander, Joseph Hooker, and the biggest army it had ever put in Virginia, about a hundred and thirty thousand men. Lee had some sixty thousand, because Longstreet was away in southern Virginia with two divisions. Hooker left part of his army facing Lee at Fredericksburg, and swung the rest far upriver, across the Rappahannock and the Rapidan, and down behind Lee, to a crossroads called Chancellorsville."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-2 | Chancellorsville close (option 2), 1 MAY: THE WILDERNESS texture (dark tangled woods glow), blue Lee attacks east, red Hooker pulls back into the Wilderness (arrows reverse); red line drawn as an arc around Chancellorsville; NIGHT 1 MAY: Stuart (cavalry icon) rides in, the red RIGHT FLANK on the Orange Turnpike glows: caption \"IN THE AIR\" (open flank, no anchor)",
+   "start": 690.82,
+   "end": 712.11,
+   "text": "On the first of May, Lee marched straight at him, and Hooker, to the surprise of his own generals, pulled back into a dense tangle of second-growth forest that locals called the Wilderness. That night, Jeb Stuart brought news. Several miles to the west, the right end of the Union line was hanging in the air, with nothing to protect it."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-3 | Before dawn 2 MAY: Lee + Jackson badges by a campfire (cracker-box caption, ~3:30 AM, per Hotchkiss); dotted arc of the proposed march across the Union front to the open flank; then E.decide: dimmed map, WHAT WOULD YOU DO? A: SPLIT THE ARMY AGAIN, SEND 28,000 AROUND THE ENEMY'S FRONT \u00b7 B: KEEP THE ARMY TOGETHER AND FIGHT WHERE YOU STAND; TELL US IN THE COMMENTS (3 ticks); on \"Jackson chose\" A lights blue, B greys (hit)",
+   "start": 712.71,
+   "end": 750.1,
+   "text": "Now stop for a moment, and put yourself in Jackson's place. You are outnumbered more than two to one, with an enemy army in front of you and another behind you at Fredericksburg. Do you take most of the army on a long march right across the enemy's front, to hit that open flank, and leave Lee with barely thirteen thousand men to face Hooker? Or do you keep the army together and fight where you stand? Tell us in the comments what you would have done. And then hear what Jackson chose. Before dawn, Lee asked him how many men he would take. According to Jackson's mapmaker, he answered: my whole corps."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-4 | 2 MAY 7-8 AM: blue column (28,000) leaves, CATHARINE FURNACE (ring), turns south then west onto the BROCK ROAD, north to the ORANGE TURNPIKE (dotted trail, clock ticks, 12+ MILES); 9:30 AM: red HAZEL GROVE lookouts spot it (eye icon); caption HOOKER TO HOWARD 9:30 AM: \"WE HAVE GOOD REASON TO SUPPOSE THE ENEMY IS MOVING TO OUR RIGHT\"; red SICKLES lunges south at the furnace (arrows), captures the 23RD GEORGIA at the column's tail (stamp), drawing ~20,000 Union men away",
+   "start": 750.7,
+   "end": 788.63,
+   "text": "At about eight in the morning, some twenty-eight thousand men set off on narrow forest roads, first south, away from the enemy, then west and north, a march of more than twelve miles. Union lookouts saw part of the column passing a clearing near an old iron furnace. At nine thirty, Hooker warned the commander of his right flank, Oliver Howard, that the enemy seemed to be moving to his right. Then a Union corps attacked the tail of the column and captured most of a Georgia regiment, and Hooker drew the conclusion he wanted. The Confederates were heading south. They were retreating."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-5 | 4:10 PM: card HOOKER'S HEADQUARTERS, 4:10 P.M.: \"WE KNOW THAT THE ENEMY IS FLEEING, TRYING TO SAVE HIS TRAINS\" (small: signed by an aide for Hooker); camera cuts west: red XI CORPS (~11,000, HOWARD badge) camped along the Orange Turnpike facing SOUTH; only 2 SMALL REGIMENTS + 2 GUNS face west (tiny counters, ring); 3 PM-5 PM: blue lines deploy in the woods across the turnpike, a mile wide, two lines deep (counters slide in silently)",
+   "start": 789.23,
+   "end": 818.22,
+   "text": "A little after four in the afternoon, a dispatch from Hooker's headquarters announced it: we know that the enemy is fleeing, trying to save his trains. At that moment, Jackson's men were forming up in the woods west of the Union army, astride the turnpike, in lines nearly two miles wide. In front of them sat Howard's Eleventh Corps, about eleven thousand men, nearly all of them facing south. Only two small regiments and a pair of guns faced west, toward Jackson."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-6 | ~5:15-5:30 PM (low sun): Jackson badge: caption \"ARE YOU READY, GENERAL RODES?\" \"YOU CAN GO FORWARD THEN.\"; deer + rabbit silhouettes burst out of the woods ahead of the blue line into the red camps (small icons scatter); blue wave rolls east along the turnpike (arrows, guns -> impacts, MG, shake), red XI Corps counters flip and stream east (grey), stamp ROUTED; ticks: 2+ MILES",
+   "start": 818.82,
+   "end": 853.5,
+   "text": "A little after five, Jackson turned to the general in charge of his front line, Robert Rodes, and, according to the story, asked whether he was ready. Rodes said he was. You can go forward then, said Jackson. The park's historians tell how deer and rabbits came bursting out of the woods into the Union camps, and the soldiers laughed, until they saw what was coming behind them. Jackson's lines smashed into the flank of the Eleventh Corps, and it collapsed. For more than two miles, the Confederates rolled the Union right flank back through the woods."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-7 | NIGHT (K.night) ~7:15 PM: blue advance halts a mile west of CHANCELLORSVILLE, lines tangled (counters jumbled); ~9 PM: Jackson's small party (tiny badge icon) rides forward past the blue line on the MOUNTAIN ROAD to scout for a NIGHT ATTACK (dotted path, moon); red line beyond (silent)",
+   "start": 854.1,
+   "end": 875.65,
+   "text": "By sunset, the attack had run out of daylight and order. The brigades were tangled together in the dark woods, about a mile short of Chancellorsville. Jackson would not stop. Around nine o'clock, he rode out beyond his own front line with a few officers, looking for a road that would let him cut Hooker off from the river in a night attack."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-8 | NIGHT: the party turns back toward the blue line; a North Carolina regiment (18TH NC, blue counter) sees riders coming out of the dark: muzzle flashes from the BLUE line (MG, impacts), the badge icon falls (hit, red pulse); captions THREE BULLETS \u00b7 TWO IN THE LEFT ARM \u00b7 ONE IN THE RIGHT HAND; Union artillery opens (K.gun -> arc -> K.impact, shake), a litter bearer hit, caption DROPPED; stamp A.P. HILL WOUNDED -> STUART TAKES COMMAND",
+   "start": 876.25,
+   "end": 903.42,
+   "text": "As the party rode back toward its own lines, North Carolina troops, expecting Union cavalry, heard horses coming out of the darkness and opened fire. Jackson was hit three times, twice in the left arm and once in the right hand. As his men carried him back, Union artillery swept the road, one of the bearers was hit, and Jackson was dropped to the ground. That night a surgeon, Hunter McGuire, amputated his left arm."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "MAP: move3-9 | Dawn 3 MAY -> 6 MAY (option 1): blue Stuart attacks, blue Lee reunites at CHANCELLORSVILLE (ring flips blue), red Hooker withdraws north over the river (arrows, stamp RETREAT); CASUALTY card (campaign, ABT): UNION 17,304 \u00b7 CONFEDERATE 13,460 (~22% OF LEE'S ARMY); method card line 3: HIT THE WEAKEST PART",
+   "start": 904.02,
+   "end": 925.21,
+   "text": "The next day, the Confederates drove Hooker out of Chancellorsville, and within days his whole army retreated back across the river. The Union lost more than seventeen thousand men in the campaign. Lee lost about thirteen and a half thousand, more than a fifth of his army, and one man he could not replace. Hit the weakest part."
+  },
+  {
+   "section": "MOVE 3 \u2014 HIT THE WEAKEST PART: CHANCELLORSVILLE (~12:30 \u2013 ~17:00)",
+   "tag": "ARCHIVE: Kurz & Allison \"Battle of Chancellorsville\" (LoC, PD) in the projector frame; headline date card \"10 MAY 1863 / GUINEA STATION, VIRGINIA\"; quote cards: \"HE HAS LOST HIS LEFT ARM; BUT I HAVE LOST MY RIGHT ARM\" - LEE, AS REPORTED BY JACKSON'S CHAPLAIN; \"LET US CROSS OVER THE RIVER, AND REST UNDER THE SHADE OF THE TREES\" - RECORDED BY DR. HUNTER McGUIRE",
+   "start": 925.81,
+   "end": 951.37,
+   "text": "Lee sent word through Jackson's chaplain. He has lost his left arm, Lee said, but I have lost my right arm. For a few days Jackson seemed to recover. Then pneumonia set in. On Sunday, the tenth of May, eighteen sixty-three, at a plantation office near Guinea Station, he died. He was thirty-nine. His doctor wrote down his last words: let us cross over the river, and rest under the shade of the trees."
+  },
+  {
+   "section": "ENDING (~17:00 \u2013 ~18:10)",
+   "tag": "MAP: end-1 | Virginia -> Pennsylvania wide (option 1, Jul 1863): blue arrow north to GETTYSBURG (ring, JULY 1863), a dashed \"?\" badge where Jackson's would be; caption \"IF JACKSON HAD BEEN THERE\" - A COUNTERFACTUAL",
+   "start": 952.77,
+   "end": 967.25,
+   "text": "Two months later, Lee invaded the North again and lost at Gettysburg. People have argued ever since that it would have ended differently if Jackson had been there. Nobody can know that. What we do know is what he did while he lived."
+  },
+  {
+   "section": "ENDING (~17:00 \u2013 ~18:10)",
+   "tag": "MAP: end-2 | Method card full: JACKSON'S METHOD: MOVE FAST \u00b7 MYSTIFY \u00b7 HIT THE WEAKEST PART; the three moves light in turn on a Virginia overview (Valley arc, Manassas arc, Chancellorsville arc); then a plain dark caption card (no flag) for the cause line",
+   "start": 967.85,
+   "end": 992.7,
+   "text": "In the Valley, he moved faster than three armies could think. At Manassas, he vanished, and turned up where it hurt most. At Chancellorsville, he found the one open flank of the largest army in Virginia and hit it with nearly everything Lee had. And he did it for the Confederacy, in a war fought over slavery, a cause he served to the end. But as a tactician, he is still studied today."
+  },
+  {
+   "section": "ENDING (~17:00 \u2013 ~18:10)",
+   "tag": "MAP: end-3 | E.final: three numbered cards pop in as each move is named: 1 THE SHENANDOAH VALLEY \u00b7 1862 / 2 THE MARCH TO MANASSAS \u00b7 1862 / 3 CHANCELLORSVILLE \u00b7 1863; 1, 2 OR 3? (gold); line \"TELL US WHICH COMMANDER WE SHOULD COVER NEXT\"; corner subscribe button",
+   "start": 993.3,
+   "end": 1011.91,
+   "text": "So which was Stonewall Jackson's greatest move? One, the Shenandoah Valley. Two, the march to Manassas. Or three, the flank attack at Chancellorsville? Tell us in the comments, and tell us which commander we should cover next. We read every one. Subscribe, so you don't miss the next commander."
+  }
+ ]
+}
