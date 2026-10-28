@@ -186,7 +186,7 @@ frontS({ pts: PF, sideA: "carth", sideB: "rome", t: 0.05, dur: 0.6, width: 15 * 
 const UO = { w: 52 * K0, h: 35 * K0, tag: 17 * K0 };
 const GRANT = unitXY("ug", "carth", ...L(37.30, -76.98), "infantry", { ...UO, label: "GRANT" });
 const LEE = unitXY("rl", "rome", ...L(37.32, -77.86), "infantry", { ...UO, label: "LEE" });
-[0.15, 1.0, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3].forEach((t, k) => { const e = k % 2 === 0;
+[0.15, 1.0, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3].filter((t) => t < T_RAIL - 0.7).forEach((t, k) => { const e = k % 2 === 0;
   const a = e ? L(37.30 - k * 0.03, -77.05) : L(37.32 - k * 0.025, -77.80), b = e ? L(37.40 - k * 0.035, -77.44) : L(37.42 - k * 0.04, -77.30);
   shell(a[0], a[1], b[0], b[1], t, K0, { r: 7 * K0, fly: 0.55 }); });
 const STALL = scr(stampHTML("STALLED", "#9fc0ea", 46, -4, "GRANT BEFORE PETERSBURG · SINCE JUNE"), "right:150px;top:300px;");
@@ -199,7 +199,7 @@ const ATR = K.target(...P.atl, 0.2, { r: 26 * K0, side: "rome", until: T_RAIL + 
 [[[34.15, -84.85], [33.95, -84.62], [33.83, -84.48]], [[34.25, -84.40], [34.05, -84.39], [33.86, -84.39]], [[34.05, -83.95], [33.92, -84.12], [33.80, -84.30]]]
   .forEach((q, k) => B.arrow({ pts: q.map((v) => L(...v)), side: "carth", t: 0.4 + k * 0.25, dur: 1.4, width: 14 * K0, until: T_RAIL + 0.3 }));
 SFX("ref:whoosh", 0.5);
-[0.9, 2.2, 3.5, 4.8, 6.1, 7.4, 8.6].forEach((t, k) => K.impact(...L(33.80 + (k % 3) * 0.03 - 0.03, -84.45 + (k % 4) * 0.04), t, { r: 8 * K0 }));
+[0.9, 2.2, 3.5, 4.8, 6.1, 7.4, 8.6].filter((t) => t < T_RAIL - 0.6).forEach((t, k) => K.impact(...L(33.80 + (k % 3) * 0.03 - 0.03, -84.45 + (k % 4) * 0.04), t, { r: 8 * K0 }));
 // --- Lincoln (real photo) and his sealed memorandum ---
 const LB = K.badge({ name: "ABRAHAM LINCOLN", role: "PRESIDENT · RE-ELECTION: NOVEMBER 1864", photo: "assets/media/lincoln_head.png", flag: FL.us, side: "carth", corner: "bl", t: T_LIN - 0.2, until: T_ATL - 0.6 });
 const MEMO = scr(`<div class="paper" style="width:760px;font-family:'Special Elite',monospace;padding:26px 34px 24px;background:linear-gradient(180deg,#f4ecd6,#e6d9b8);color:#1b1812;box-shadow:0 22px 44px rgba(0,0,0,.65);border:1px solid #b9a77e;transform-origin:50% 0%">
@@ -277,7 +277,7 @@ const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style
   <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THEIR GENERAL</div><div style="font-size:20px;letter-spacing:0.14em;color:#d8cfb8">COMMANDING THE UNION ARMIES IN THE WEST</div></div></div>`, "left:60px;bottom:140px;");
 tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_ONEG - 0.1); SFX("ref:pop", T_ONEG);
 // "one general who would break the Confederacy within a year": the promise, spoken as a result (STYLE_LOCK 1a, 2026-10-28)
-const SBRK = scr(stampHTML("BREAKS THE CONFEDERACY", "#9fc0ea", 64, -4, "WITHIN A YEAR · 1864 - 1865"), "left:0;right:0;top:800px;display:flex;justify-content:center;");
+const SBRK = scr(stampHTML("BREAKS THE CONFEDERACY", "#9fc0ea", 64, -4, "WITHIN A YEAR · 1864 - 1865"), "right:110px;top:560px;");
 slam(SBRK, T_BREAK - 0.05, { shake: 6, sfx: "ref:boom", until: T_END - 0.1 });
 tl.to(QB, { scale: 1.08, duration: 0.2, yoyo: true, repeat: 1, transformOrigin: "0% 100%" }, T_YEAR); SFX("hit", T_YEAR + 0.05);
 tl.to(QB, { autoAlpha: 0, x: -80, duration: 0.4 }, T_NOT + 0.2);
