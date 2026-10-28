@@ -77,7 +77,7 @@ const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.18 }); const SB = LV.scaleBa
 const OVC = [1330, 830], OVS = 0.80;
 cam.cx = OVC[0]; cam.cy = OVC[1]; cam.s = OVS; applyCam();
 // ---------- the three insets (crops of the close basemaps at their real places; tools/make_hook_insets.py) ----------
-const IJ = { atl: { z: 11, ox: 137758, oy: 209257, x0: 815.46, y0: 354.05, w: 1250, h: 703.12 }, ga: { z: 9, ox: 33985, oy: 52007, x0: 630.85, y0: 367.85, w: 1620, h: 911.25 },
+const IJ = { atl: { z: 11, ox: 137758, oy: 209257, x0: 740.46, y0: 416.86, w: 1400, h: 787.5 }, ga: { z: 9, ox: 33985, oy: 52007, x0: 630.85, y0: 367.85, w: 1620, h: 911.25 },
   sc: { z: 9, ox: 35005, oy: 51439, x0: 738.0, y0: 1111.59, w: 640, h: 360.0 } };
 const INS = {};
 Object.entries(IJ).forEach(([k, o]) => { const f = 2 ** (o.z - 8), sp = GG.proj(o.z, o.ox, o.oy);
@@ -142,9 +142,8 @@ rail([[33.749, -84.395], [33.715, -84.418], [33.679, -84.44], [33.640, -84.425],
 rail([[33.749, -84.392], [33.785, -84.425], [33.83, -84.455], [33.865, -84.47]].map((q) => A.P(...q)), T_TWO, kA * 1.5, T_VAN);
 const RINGP = []; for (let a = 0; a <= 360; a += 24) RINGP.push(A.P(33.749 + 0.03 * Math.sin((a * Math.PI) / 180) * 0.85, -84.388 + 0.03 * Math.cos((a * Math.PI) / 180)));
 ridge(RINGP, "rome", T_TWO + 0.05, kA, { until: T_VAN + 0.1 });
-B.city("", ...A.P(33.749, -84.388), { r: 5 * kA, t: T_TWO + 0.05, until: T_VAN });
 ib("ATLANTA", A.P(33.775, -84.388), T_TWO + 0.15, T_VAN, 20); ib("JONESBORO", A.P(33.515, -84.30), T_TWO + 0.25, T_VAN, 18);
-iu("ah", "rome", A.P(33.745, -84.40), T_TWO + 0.1, "HOOD");
+GG.pin(`<div style="font-family:Oswald;font-weight:700;font-size:${20 * kA}px;letter-spacing:0.12em;color:#fff;background:#c4121f;padding:0 ${8 * kA}px;box-shadow:0 ${2 * kA}px ${6 * kA}px rgba(0,0,0,.6)">HOOD</div>`, ...A.P(33.728, -84.388), { t: T_TWO + 0.15, pop: true, until: T_VAN });
 // the two Confederate commanders he outmanoeuvred (name plates; Johnston relieved in July, Hood in Atlanta)
 const OUTM = scr(`<div style="display:flex;gap:14px">${[["JOSEPH E. JOHNSTON", "RELIEVED · JULY 1864", "johnston"], ["JOHN BELL HOOD", "LOSES ATLANTA · SEPT 1864", "hood"]].map(([n, r, f]) => `<div style="display:flex;align-items:center;gap:10px;padding:6px 16px 6px 6px;background:rgba(18,16,12,0.92);border-left:6px solid #c4121f"><div style="width:64px;height:64px;border-radius:50%;overflow:hidden;position:relative;border:3px solid #f3e7c4;background:url(${FL.csa}) center/cover"><img src="assets/media/${f}_head.png" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div><div style="font-family:Oswald;font-weight:700;color:#f7f3ea"><div style="font-size:22px;letter-spacing:0.06em">${n}</div><div style="font-size:14px;letter-spacing:0.18em;color:#ef8a82">${r}</div></div></div>`).join("")}</div>`, "right:90px;bottom:130px;");
 tl.fromTo(OUTM, { autoAlpha: 0, y: -20 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_TWO + 0.3); tl.to(OUTM, { autoAlpha: 0, duration: 0.1 }, T_VAN - 0.06); SFX("ref:pop", T_TWO + 0.35);

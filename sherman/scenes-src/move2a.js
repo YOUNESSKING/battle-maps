@@ -233,7 +233,6 @@ legend(0.2, END + 1);
 const fl1 = flagsBoth(L(33.55, -85.00), L(33.66, -84.17), 0.3, T_OCT - 0.5, 92);
 const fl2 = flagsBoth(L(33.70, -85.70), L(33.66, -84.17), T_OCT - 0.3, END + 1, 150);
 const lab = (txt, la, lo, t, o = {}) => { const q = L(la, lo); if (o.dot !== false) B.city("", q[0], q[1], { r: o.r || 3, t }); return box(txt, q[0] + (o.dx || 0), q[1] + (o.dy != null ? o.dy : -14), t, o.size || 18, o.until, false); };
-lab("ATLANTA", 33.749, -84.388, 0.2, { size: 22, dx: -70, dy: -6 });
 lab("CHATTANOOGA", 35.046, -85.310, 0.2, { size: 18, dx: 90, dy: 4 });
 lab("DALTON", 34.770, -84.970, 0.3, { dx: 56, dy: 0 });
 lab("RESACA", 34.580, -84.944, 0.3, { dx: 56, dy: 0 });
@@ -262,9 +261,9 @@ railGlow(WA.slice(9, 14), "#ff5a3c", T_RR - 0.2, T_CHASE + 1.5, 3);
 tag("RAILROAD CUT", ...L(34.04, -84.44), T_TEAR + 0.3, RED, 16, T_CHASE + 1.2);
 // Allatoona 5 Oct: guns, impacts, REPULSED
 const AP = L(34.10, -84.77);
-for (let k = 0; k < 5; k++) shoot([AP[0] - 30 + k * 6, AP[1] + 30 - k * 3], [ALL[0] + ((k * 7) % 11) - 5, ALL[1] + ((k * 5) % 9) - 4], T_TEAR + 1.4 + k * 0.32, { r: 7, h: 18 });
-arr([L(34.06, -84.78), L(34.11, -84.73)], "rome", T_TEAR + 1.2, { w: 7, dur: 0.8, until: T_CHASE + 0.8 });
-mstamp("ALLATOONA · 5 OCT · REPULSED", ALL[0] + 60, ALL[1] - 46, T_TEAR + 3.4, { size: 20, color: "#5b8fe8", until: T_WEST + 0.5 });
+for (let k = 0; k < 5; k++) shoot([AP[0] - 30 + k * 6, AP[1] + 30 - k * 3], [ALL[0] + ((k * 7) % 11) - 5, ALL[1] + ((k * 5) % 9) - 4], T_RR + 0.4 + k * 0.3, { r: 7, h: 18 });
+arr([L(34.06, -84.78), L(34.11, -84.73)], "rome", T_RR + 0.2, { w: 7, dur: 0.8, until: T_CHASE + 0.8 });
+mstamp("ALLATOONA · 5 OCT · REPULSED", ALL[0] + 60, ALL[1] - 46, T_TEAR + 0.5, { size: 20, color: "#5b8fe8", until: T_WEST + 1.5 });
 // Sherman chases north (dotted blue), Hood runs up the railroad to Resaca-Dalton, more rail cut
 unit("cha", "carth", ...L(33.95, -84.53), "infantry", { t: T_CHASE - 0.6, size: "XXXX", label: "SHERMAN", w: 40, h: 27, fs: 10 });
 B.hideUnits(["shr"], T_CHASE - 0.6);

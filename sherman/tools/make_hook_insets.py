@@ -35,7 +35,7 @@ def inset(name, base, center, wpx):
 
 if __name__ == "__main__":
     M = {}
-    M["atl"] = inset("atl", "atlanta", (33.70, -84.42), 1250)        # Atlanta, the swing round the west side, Jonesboro
+    M["atl"] = inset("atl", "atlanta", (33.64, -84.42), 1400)        # Atlanta, the swing round the west side, Jonesboro
     M["ga"] = inset("ga", "georgia", (32.92, -82.70), 1620)           # Atlanta - Macon - Milledgeville - Augusta - Savannah
     M["sc"] = inset("sc", "carolinas", (33.15, -80.95), 640)          # Salkehatchie / Combahee / Edisto swamps
     json.dump(M, open("assets/media/hook_insets.json", "w"), indent=1)

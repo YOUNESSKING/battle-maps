@@ -72,7 +72,7 @@ for (let k = 0; k < 6; k++) SFX("tick", T_WAG + 0.3 + k * 0.35);
 // the fleet offshore (blue ship silhouettes, Dahlgren)
 const SH = [[31.845, -81.005], [31.825, -80.965], [31.86, -80.955]].map(([la, lo], k) => { const q = L(la, lo); return GG.ship(q[0], q[1], { w: 64 - k * 8, color: BLUE, t: T_FLEET - 0.2 + k * 0.2, flip: true, until: null }); });
 badge({ name: "JOHN A. DAHLGREN", role: "U.S. NAVY · SOUTH ATLANTIC SQUADRON", photo: "assets/media/dahlgren_head.png", flag: FL.us, side: "carth", corner: "tr", t: T_FLEET, until: T_RIVER + 0.2 });
-tag("UNION FLEET · FOOD", FLT[0] - 20, FLT[1] - 44, T_FLEET + 0.4, BLUE, 12, T_NIGHT + 3);
+tag("UNION FLEET · FOOD", FLT[0] - 20, FLT[1] - 44, T_FLEET + 0.4, BLUE, 12, T_RIVER + 0.2);
 // Fort McAllister: the red earthwork that blocks the Ogeechee
 const FORT = GG.pin(`<svg width="34" height="34" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px rgba(0,0,0,.8))"><path d="M0 -15 L5 -6 L15 -5 L8 3 L10 14 L0 9 L-10 14 L-8 3 L-15 -5 L-5 -6 Z" fill="${RED}" stroke="#f3eee2" stroke-width="2"/></svg>`, MCA[0], MCA[1], { t: T_RIVER, until: null, pop: true });
 const FTL = lab("FORT McALLISTER", MCA, T_RIVER + 0.2, { dot: false, dx: 44, dy: 30, size: 11 });
@@ -100,7 +100,7 @@ K.front({ pts: [L(31.902, -81.200), L(31.893, -81.201), L(31.884, -81.198)], sid
 [[31.891, -81.205], [31.886, -81.207], [31.896, -81.204]].forEach((q, k) => { const p = L(...q); K.impact(p[0], p[1], T_MINES - 0.2 + k * 0.35, { r: 3, puffs: 2 }); });
 mg(L(31.890, -81.200), L(31.890, -81.192), T_MINES + 0.5, 4);
 clockCard("~15 MINUTES", "left:110px;top:200px;", T_OVER - 0.8, T_NIGHT + 0.2);
-mstamp("FORT McALLISTER TAKEN", MCA[0] + 10, MCA[1] - 46, T_OVER + 0.2, { size: 10, color: "#5b8fe8", until: T_NIGHT + 1.2 });
+mstamp("FORT McALLISTER TAKEN", MCA[0] + 70, MCA[1] + 64, T_OVER + 0.2, { size: 10, color: "#5b8fe8", until: T_NIGHT + 1.2 });
 tl.to(FORT.querySelector("path"), { attr: { fill: BLUE }, duration: 0.3 }, T_OVER + 0.3);
 // that night: Sherman rowed out to the fleet; a gunboat steams up the Ogeechee: the supply line opens
 const GBP = [L(31.79, -80.99), L(31.82, -81.06), L(31.845, -81.11), L(31.872, -81.16), L(31.892, -81.205), L(31.93, -81.255)];

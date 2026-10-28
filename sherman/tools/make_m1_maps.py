@@ -138,7 +138,7 @@ FRONT = {
 }
 DATES = {"corridor": ["may64", "may13", "may19", "may25", "jun15", "jun27", "jul10", "aug64", "sep64"],
          "kennesaw": ["jun15", "jun27", "jul03"],
-         "atlanta": ["jul10", "jul22", "aug64", "sep64"]}
+         "atlanta": ["jul03", "jul10", "jul22", "aug64", "sep64"]}
 
 
 class Map:

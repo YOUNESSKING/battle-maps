@@ -306,12 +306,12 @@ B.arrow({ pts: [L(33.73, -84.37), L(33.66, -84.28), L(33.60, -84.20)], side: "ro
 tl.to(AC.aug64, { autoAlpha: 0, duration: 1.0 }, T_FELL); tl.to(AC.sep64, { autoAlpha: 1, duration: 1.0 }, T_FELL);
 tl.to(SC.aug64, { autoAlpha: 0, duration: 1.0 }, T_FELL); tl.to(SC.sep64, { autoAlpha: 1, duration: 1.0 }, T_FELL);
 go("b5", T_FELL + 0.1, 1.4, P.atl[0] - 6, P.atl[1] - 10, "power1.inOut");
-const SFALL = scr(stampHTML("ATLANTA FALLS", "#9fc0ea", 92, -5, "2 SEPTEMBER 1864"), "right:110px;top:200px;");
+const SFALL = scr(stampHTML("ATLANTA FALLS", "#9fc0ea", 92, -5, "2 SEPTEMBER 1864"), "right:90px;top:300px;");
 slam(SFALL, T_FELL + 0.05, { shake: 7, sfx: "ref:boom", until: T_NOT + 0.1 });
 B.date("2 SEPTEMBER 1864", T_FELL, T_NOT, 30);
 const LWIN = scr(`<div style="display:flex;align-items:center;gap:22px;font-family:Oswald;font-weight:700;padding:12px 34px 14px 14px;background:rgba(14,12,10,0.9);border-top:7px solid #2e5cb2;box-shadow:0 18px 40px rgba(0,0,0,.6)">
   <div style="width:110px;height:110px;border-radius:50%;overflow:hidden;border:4px solid #f3e7c4;background:url(${FL.us}) center/cover;position:relative"><img src="assets/media/lincoln_head.png" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)"></div>
-  <div><div style="font-size:22px;letter-spacing:0.3em;color:#9fc0ea">8 NOVEMBER 1864</div><div style="font-size:58px;letter-spacing:0.05em;line-height:1.05;color:#f7f3ea">LINCOLN RE-ELECTED</div><div style="font-size:30px;letter-spacing:0.16em;color:#ffd54a">212 ELECTORAL VOTES TO 21</div></div></div>`, "right:110px;top:470px;transform-origin:50% 50%;");
+  <div><div style="font-size:22px;letter-spacing:0.3em;color:#9fc0ea">8 NOVEMBER 1864</div><div style="font-size:58px;letter-spacing:0.05em;line-height:1.05;color:#f7f3ea">LINCOLN RE-ELECTED</div><div style="font-size:30px;letter-spacing:0.16em;color:#ffd54a">212 ELECTORAL VOTES TO 21</div></div></div>`, "right:90px;top:600px;transform-origin:50% 50%;");
 slam(LWIN, T_WON - 0.1, { from: 1.6, shake: 5 });
 tl.to(LWIN, { autoAlpha: 0, duration: 0.3 }, T_CUT - 0.2);
 // ---------- the general did not stop: ONE continuous zoom-out (whoosh) back to the theatre ----------
@@ -321,11 +321,11 @@ zoom(TO0, TO1 - TO0, [CWg[0] + 10, CWg[1] + 5], SW * 1.04, CT, ST, P.atl, "power
 camTo(TO1 + 0.02, END - TO1 - 0.1, CT[0] + 60, CT[1] - 30, ST * 1.05, "sine.inOut");
 B.hideUnits(["b1", "b2", "b3", "b4", "b5", "h1", "h2", "h3"], TO0 + 0.2, 0.4);
 tl.to([...FA, ATLB, ...RLS], { autoAlpha: 0, duration: 0.4 }, TO0 + 0.3);
-const TF = flags(ST, L(35.85, -84.75), L(34.95, -81.15), TO1 - 0.3, S3 - 0.1);
+const TF = flags(ST, L(35.55, -83.85), L(34.95, -81.15), TO1 - 0.3, S3 - 0.1);
 // he cut his own supply line: the W&A flickers red and breaks
 const WAT2 = rail(WA_T, TO1 - 0.4, KT * 1.2, S3 - 0.1, { glow: "#ff4a3a" }); WAT2.glow(T_CUT, T_MARCH + 0.5, 0.95);
 [[34.77, -84.97], [34.235, -84.94], [33.953, -84.55]].forEach((q, k) => { const [x, y] = L(...q); const X = GG.pin(`<div style="font-family:Oswald;font-weight:700;font-size:${34 * KT}px;line-height:1;color:#ff4a3a;text-shadow:0 0 ${6 * KT}px #000">✕</div>`, x, y, { t: T_CUT + 0.2 + k * 0.18, pop: true, until: S3 - 0.1 }); SFX("hit", T_CUT + 0.25 + k * 0.18); });
-const SNOS = scr(stampHTML("NO SUPPLY LINE", "#e3232f", 60, -4, "NOVEMBER 1864"), "left:110px;top:200px;");
+const SNOS = scr(stampHTML("NO SUPPLY LINE", "#e3232f", 60, -4, "NOVEMBER 1864"), "right:110px;top:600px;");
 slam(SNOS, T_CUT + 0.6, { shake: 5, until: T_NORTH + 0.2 }); pulse(T_CUT + 0.85);
 B.date("NOV 1864 - APRIL 1865", T_CUT, S3, 30);
 // marched through the heart of Georgia to the sea
@@ -377,7 +377,7 @@ SFX("ref:pop", S3 + 0.65);
 const CMD = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 24px 10px;background:rgba(18,16,12,0.9);border-left:8px solid #2e5cb2;color:#f7f3ea"><div style="font-size:19px;letter-spacing:0.3em;color:#9fc0ea">OCTOBER 1861</div><div style="font-size:38px;letter-spacing:0.06em">IN COMMAND IN KENTUCKY</div></div>`, "left:380px;top:690px;");
 tl.fromTo(CMD, { autoAlpha: 0, x: -60 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_KY + 0.2); SFX("ref:pop", T_KY + 0.25);
 tl.to(CMD, { autoAlpha: 0, duration: 0.3 }, T_SEC - 0.2);
-const SECW = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 24px 10px;background:rgba(18,16,12,0.9);border-left:8px solid #c9b48a;color:#f7f3ea"><div style="font-size:19px;letter-spacing:0.3em;color:#c9b48a">TO THE SECRETARY OF WAR</div><div style="font-size:34px;letter-spacing:0.06em">"I WILL NEED ..."</div></div>`, "left:380px;top:690px;");
+const SECW = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 24px 10px;background:rgba(18,16,12,0.9);border-left:8px solid #c9b48a;color:#f7f3ea"><div style="font-size:19px;letter-spacing:0.3em;color:#c9b48a">SIMON CAMERON · OCTOBER 1861</div><div style="font-size:34px;letter-spacing:0.06em">TO THE SECRETARY OF WAR</div></div>`, "left:380px;top:690px;");
 tl.fromTo(SECW, { autoAlpha: 0, x: -60 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_SEC); SFX("ref:pop", T_SEC + 0.05);
 // one stamp per spoken detail (hit + small shake + red pulse)
 const STAMPS = [];

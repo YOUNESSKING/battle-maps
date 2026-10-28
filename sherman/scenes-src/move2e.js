@@ -215,7 +215,7 @@ camTo(T_TWICE - 0.4, 2.0, 1220, 1110, 1.35);
 // ---------- date, legend, flags ----------
 B.showDate(0.05); B.date("22 DECEMBER 1864", 0.1, END + 1, 32);
 legend(0.2, END + 1);
-flagsBoth(L(32.15, -83.85), L(32.32, -80.62), 0.2, END + 1, 70);
+flagsBoth(L(32.45, -82.55), L(32.32, -80.62), 0.2, END + 1, 70);
 // the march line Atlanta -> Savannah glows (the army's band, now finished)
 const MARCH = [ATL, L(33.35, -83.75), MIL, L(32.95, -82.55), MLN, L(32.45, -81.50), SAV];
 glowLine(MARCH, "#5b8fe8", 3.4, 0.3, END + 1, { dur: 2.6, pulse: 6 });
@@ -234,8 +234,8 @@ const WST = scr(`<div style="font-family:Oswald;font-weight:700;font-size:22px;l
 tl.fromTo(WST, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, T_WASTE - 0.2); tl.to(WST, { autoAlpha: 0, duration: 0.35 }, T_TWICE - 0.2);
 // twice they guessed wrong: Macon, Augusta
 [MAC, AUG].forEach((q, k) => { K.target(q[0], q[1], T_TWICE + k * 0.5, { r: 24, side: "#ff3b30", until: END + 1 });
-  belief("HE IS COMING HERE", q[0] + (k ? 10 : -10), q[1] + (k ? -34 : 34), T_TWICE + k * 0.5, END + 1, 10); });
-mstamp("WRONG", MAC[0] + 48, MAC[1] - 4, T_WRONG - 0.3, { size: 12, until: END + 1 }); mstamp("WRONG", AUG[0] + 48, AUG[1] + 14, T_WRONG + 0.1, { size: 12, until: END + 1 });
+  belief("HE IS COMING HERE", q[0] + (k ? 10 : -10), q[1] + (k ? -34 : 34), T_TWICE + k * 0.5, END + 1, 14); });
+mstamp("WRONG", MAC[0] + 48, MAC[1] - 4, T_WRONG - 0.3, { size: 20, until: END + 1 }); mstamp("WRONG", AUG[0] + 48, AUG[1] + 14, T_WRONG + 0.1, { size: 20, until: END + 1 });
 // method card line 2
 GG.METHOD = ["HIT THE RAILROAD, NOT THE WALL", "THREATEN TWO PLACES AT ONCE", "GO WHERE THEY SAY NO ARMY CAN"]; GG.METHOD_TITLE = "SHERMAN'S METHOD";
 GG.method(2, T_METH - 0.5, END + 1, [T_METH - 0.45, T_METH - 0.1]); SFX("hit", T_METH);

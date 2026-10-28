@@ -74,7 +74,7 @@ box("SHILOH · 1862", P.shi[0] + 22, P.shi[1] - 44, T_SHI, 19, T_MAR);
 const WD = scr(stampHTML("WOUNDED", "#e3232f", 40, -6), `left:${Math.round((P.shi[0] - C0[0]) * S0 + 960) - 20}px;top:${Math.round((P.shi[1] - C0[1]) * S0 + 540) + 30}px;`);
 slam(WD, T_SHI + 0.35, { shake: 3, until: T_VIC + 0.6 }); pulse(T_SHI + 0.55);
 const VK = L(32.35, -90.88);
-const VIC = GG.pin(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700"><div style="width:0;height:0;border-top:16px solid transparent;border-bottom:16px solid transparent;border-right:24px solid #ffd54a;filter:drop-shadow(0 2px 3px #000)"></div><div style="background:#f1eee6;color:#111;padding:3px 10px;font-size:19px;letter-spacing:0.24em;box-shadow:0 2px 8px rgba(0,0,0,.6)">VICKSBURG · 1863</div></div>`, 120, VK[1], { t: T_VIC - 0.05, pop: true, until: T_MAR });
+const VIC = GG.pin(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700"><div style="width:0;height:0;border-top:16px solid transparent;border-bottom:16px solid transparent;border-right:24px solid #ffd54a;filter:drop-shadow(0 2px 3px #000)"></div><div style="background:#f1eee6;color:#111;padding:3px 10px;font-size:19px;letter-spacing:0.24em;box-shadow:0 2px 8px rgba(0,0,0,.6)">VICKSBURG · 1863</div></div>`, 150, VK[1] - 140, { t: T_VIC - 0.05, pop: true, until: T_MAR });   // off the map to the west (32.35N 90.88W)
 SFX("hit", T_VIC);
 K.target(...P.cha, T_CHA, { r: 30, until: T_MAR });
 box("CHATTANOOGA · 1863", P.cha[0] + 10, P.cha[1] - 46, T_CHA + 0.05, 19, T_MAR);
