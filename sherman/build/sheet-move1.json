@@ -1,0 +1,118 @@
+{
+ "title": "Sherman #13 \u00b7 MOVE 1 \u00b7 THE ATLANTA CAMPAIGN, MAY - SEPT 1864 (move1a-e, 2:12 - 6:58)",
+ "note": "move1a+b corridor_hd_ref (option 1 wide / option 2 on the ridge) \u00b7 move1c kennesaw_hd_ref \u00b7 move1d+e atlanta_hd_ref (option 2 at Jonesboro) \u00b7 Union BLUE / Confederate RED \u00b7 flags A1 (US 35-star / CSA 1st National)",
+ "frames": [
+  [
+   "move1a",
+   1.2,
+   "2:13",
+   "1-1 title; W&A glows + train; 3 armies march south (98,797); Johnston ~54,000 at Dalton",
+   "ref:boom (title), ticks, pops"
+  ],
+  [
+   "move1b",
+   9.5,
+   "2:47",
+   "1-2 ONE TRACK FEEDS BOTH ARMIES: blue half (Sherman) + red half (Johnston)",
+   "pops"
+  ],
+  [
+   "move1b",
+   14,
+   "2:52",
+   "1-2 Rocky Face (option 2 front), guns in Mill Creek Gap; LET THEM ATTACK THE RIDGE",
+   "gun fire + impacts (shake)"
+  ],
+  [
+   "move1b",
+   42.5,
+   "3:20",
+   "1-3 THE ANVIL on the ridge / THE HAMMER: McPherson through SNAKE CREEK GAP",
+   "impacts, mg, hit on stamp"
+  ],
+  [
+   "move1b",
+   55,
+   "3:33",
+   "1-4 9 May Resaca held, pull back; night: Johnston slips south; Memoirs quote",
+   "impacts, hit"
+  ],
+  [
+   "move1b",
+   74,
+   "3:52",
+   "1-4 option 1: band moves south (Resaca -> Cassville); Allatoona BYPASSED, swing west",
+   "hit, pops"
+  ],
+  [
+   "move1c",
+   2.5,
+   "4:05",
+   "1-5 rain; 14 June Pine Mountain: guns -> impact on summit, POLK KILLED",
+   "gun fire + impacts (shake), hit"
+  ],
+  [
+   "move1c",
+   17.4,
+   "4:20",
+   "1-5 27 June Kennesaw: up the slopes, HIS MISTAKE; then ~3,000 / ~1,000 + quote card",
+   "impacts, mg, hit + shake"
+  ],
+  [
+   "move1d",
+   24.5,
+   "5:02",
+   "1-6 Hood's 3 attacks: Peachtree Ck, Atlanta (McPHERSON KILLED), Ezra Church; ~11,000",
+   "impacts, mg, hit, ticks"
+  ],
+  [
+   "move1d",
+   51,
+   "5:29",
+   "1-7 siege + forts; NIGHT 25-26 Aug: trenches emptied, XX CORPS left at the bridge",
+   "impacts, ticks"
+  ],
+  [
+   "move1d",
+   74,
+   "5:52",
+   "1-8 Jonesboro (option 2): HOOD GUESSED WRONG; 31 Aug Hardee thrown back",
+   "impacts, mg, hit"
+  ],
+  [
+   "move1d",
+   84,
+   "6:02",
+   "1-8 1 Sep: line broken; bonfires + twisted rails: SHERMAN'S NECKTIES",
+   "impacts, hit per necktie, hit + shake"
+  ],
+  [
+   "move1d",
+   88.2,
+   "6:06",
+   "1-8 night 1 Sep: Atlanta explodes (ripple, fire, smoke), Hood leaves SE",
+   "explosions (r >= 20, shake)"
+  ],
+  [
+   "move1d",
+   101,
+   "6:19",
+   "1-9 ATLANTA IS OURS + telegram; casualties 31,687-37,081 / ~35,000; then 212 TO 21",
+   "hit, ticks"
+  ],
+  [
+   "move1d",
+   124.5,
+   "6:42",
+   "1-9 railroads glow; SHERMAN'S METHOD 1: HIT THE RAILROAD, NOT THE WALL",
+   "ref:boom"
+  ],
+  [
+   "move1e",
+   4.2,
+   "6:48",
+   "1-sub E.subscribe (SUBSCRIBED + bell); NO SUPPLY LINE + NEXT: THE MARCH TO THE SEA",
+   "pop, ticks"
+  ]
+ ]
+}
