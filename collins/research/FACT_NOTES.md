@@ -42,3 +42,28 @@ Army Chief of Staff dates; "deepest penetration" wording; Celles losses range; C
 - 90th Division commander (Brig. Gen. Jay MacKelvie) relieved ~13 June 1944 after the division stalled; Collins went forward constantly.
 - Sgt Curtis G. Culin's hedgerow cutter ("Rhino"), welded from German beach obstacles, fitted to hundreds of tanks before Cobra.
 - VII Corps reassembled ~21-23 Dec on the north flank near Marche with 2nd + 3rd Armored, 75th + 84th Infantry Divisions (Cole).
+
+## Hook remake 2026-10-28: stakes opening (STYLE_LOCK 1a UPDATED), candidates for the owner
+Source checked: Martin Blumenson, *Breakout and Pursuit* (CMH Pub 7-5-1), full text archive.org item `CMHPub751BreakoutAndPursuit`.
+- Ch. I (p. 3-4): "According to the planners' calculations, the Allies at the end of June should have held virtually all of Normandy ...
+  in actuality, they occupied an area scarcely one fifth that size." / "The disparity between plans and reality prompted speculation as to
+  whether the Allies had lost their momentum, whether a military stalemate had already been reached, and whether trench warfare similar to
+  that of World War I was to recur." -> supports "stalled", "a fifth of what they should have held", "the trenches of the First World War".
+- Ch. VI end (p. 175): "With twelve divisions, the First Army in seventeen days had advanced only about seven miles ... the First Army had
+  sustained approximately 40,000 casualties during July, of which 90 percent were infantrymen. A rifle company after a week of combat often
+  numbered less than one hundred men; sometimes it resembled a reinforced platoon." -> supports "seven miles in seventeen days", "companies
+  the size of platoons".
+- Ch. VI (p. 120): Eisenhower to Montgomery, 7 Jul: "We must use all possible energy in a determined effort to prevent a stalemate".
+- Ch. X: Bradley "began to consider that a powerful attack on a very narrow front might dissolve the hedgerow stalemate"; the attack went
+  in from the Periers - St-Lo highway (target box just south of it, west of Saint-Lo). D-Day 6 June -> Cobra 25 July = 7 weeks.
+Candidates (owner picks one; each ends on the place name, then the existing line "Fifteen hundred heavy bombers..." follows):
+  A (stake: the First World War's trenches coming back): "Seven weeks after D-Day, the invasion of France had stalled in the hedgerows of
+    Normandy, and people were asking if the trench war of nineteen fourteen had come back. The answer came on a straight road outside
+    Saint-Lô."
+  B (stake: the American infantry bleeding away): "In July nineteen forty-four, the American army in Normandy was bleeding to death in the
+    hedgerows. In seventeen days it advanced seven miles, and whole rifle companies shrank to the size of platoons. Then its generals chose
+    one road, west of Saint-Lô."
+  C (stake: the invasion's timetable): "By the end of June, the Allies had planned to hold almost all of Normandy. They held barely a
+    fifth of it. A month later they were still stuck, and everything came down to one road, west of Saint-Lô."
+  Wording checks: no "the war was about to be lost"; C's "everything came down to" is a dramatisation of Bradley's single narrow-front
+  attack (Ch. X), flag if the owner wants it stricter ("The plan to break out came down to one road...").
