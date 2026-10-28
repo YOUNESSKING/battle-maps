@@ -286,7 +286,7 @@ flag(FL.us, "UNITED STATES", ...FCL[0][0], T_WAIT + 1.0, T_EVERY + 0.4, 36); fla
 flag(FL.us, "UNITED STATES", ...L(34.95, -85.70), T_EVERY + 1.0, T_SAW + 1.0, 110); flag(FL.cs, "CONFEDERATE STATES", ...L(34.20, -84.30), T_EVERY + 1.1, T_SAW + 1.0, 110);
 flag(FL.us, "UNITED STATES", ...FCL[1][0], T_SAW + 1.4, T_PATTERN + 1.0, 42); flag(FL.cs, "CONFEDERATE STATES", ...FCL[1][1], T_SAW + 1.5, T_PATTERN + 1.0, 42);
 flag(FL.us, "UNITED STATES", ...L(34.66, -85.16), T_PATTERN + 1.2, T_FELL + 0.4, 52); flag(FL.cs, "CONFEDERATE STATES", ...L(34.48, -84.80), T_PATTERN + 1.3, T_FELL + 0.4, 52);
-flag(FL.us, "UNITED STATES", ...L(34.45, -85.12), T_FELL + 0.6, END - 1.6, 92); flag(FL.cs, "CONFEDERATE STATES", ...L(33.86, -84.30), T_FELL + 0.7, END - 1.6, 92);
+flag(FL.us, "UNITED STATES", ...L(34.45, -85.12), T_FELL + 0.6, END - 1.6, 92); flag(FL.cs, "CONFEDERATE STATES", ...L(33.95, -84.40), T_FELL + 0.7, END - 1.6, 92);
 flag(FL.us, "UNITED STATES", ...L(34.05, -84.86), END - 1.5, END + 1, 40); flag(FL.cs, "CONFEDERATE STATES", ...L(33.90, -84.66), END - 1.4, END + 1, 40);
 // units (close-up size) carried over from move1a
 unit("th", "carth", L(34.835, -85.05), "infantry", "THOMAS", { t: 0, w: 20, h: 13.4, tag: 5.4, size: "XXXX" });
@@ -411,7 +411,7 @@ const SWING = LL([[34.30, -84.97], [34.20, -84.99], [34.08, -84.95], [33.99, -84
 arw({ pts: SWING, side: "carth", t: T_LEFT, dur: 2.2, width: 7, until: T_RIDGE + 0.6 });
 [["th", 33.960, -84.850], ["sc", 34.000, -84.800], ["mc", 33.915, -84.880]].forEach(([id, la, lo], k) => along(id, SWING.concat([L(la, lo)]), T_SWUNG + k * 0.2, 2.6, 16));
 box("DALLAS", DLS[0] - 70, DLS[1] + 14, T_SWUNG + 1.0, 11, END + 1);
-box("NEW HOPE CHURCH", NHC[0] + 120, NHC[1] - 6, T_SWUNG + 1.4, 11, END + 1);
+box("NEW HOPE CHURCH", NHC[0] + 70, NHC[1] + 34, T_SWUNG + 1.4, 11, END + 1);
 B.caption("SHERMAN LEAVES THE RAILROAD AND SWINGS WEST", T_LEFT, T_AGAIN - 0.1, "carth");
 // Johnston has to fall back again, to Dallas - New Hope Church (25 May - early June)
 const FB3 = frontS({ pts: FR.may19, sideA: "carth", sideB: "rome", t: T_AGAIN + 0.5, dur: 0.01, width: FW(1.25), until: END + 1, to: FR.may25, moveT: T_AGAIN + 0.55, moveDur: 2.0 });
