@@ -28,10 +28,19 @@ def world_px(lat, lon, z):
 def tile(z, x, y):
     os.makedirs(CACHE, exist_ok=True)
     path = os.path.join(CACHE, f"{z}_{x}_{y}.png")
-    if not os.path.exists(path):
-        with urllib.request.urlopen(URL.format(z=z, x=x, y=y)) as r:
-            open(path, "wb").write(r.read())
-    a = np.asarray(Image.open(path).convert("RGB"), float)
+    for attempt in range(6):  # the proxy drops a connection now and then: retry, never cache a broken tile
+        try:
+            if not os.path.exists(path):
+                with urllib.request.urlopen(URL.format(z=z, x=x, y=y), timeout=60) as r:
+                    open(path + ".part", "wb").write(r.read())
+                Image.open(path + ".part").verify(); os.replace(path + ".part", path)
+            a = np.asarray(Image.open(path).convert("RGB"), float)
+            break
+        except Exception:
+            for f in (path, path + ".part"):
+                if os.path.exists(f): os.remove(f)
+            if attempt == 5: raise
+            import time; time.sleep(3 * (attempt + 1))
     return a[..., 0] * 256 + a[..., 1] + a[..., 2] / 256 - 32768
 
 

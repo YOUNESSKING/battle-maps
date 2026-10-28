@@ -1,0 +1,104 @@
+{
+ "title": "Sherman #13 - HOOK v2 (re-voiced hook-1 + hook-2), hook-a atlanta_hd_ref hook-1..3, 0:00-0:20",
+ "note": "Stakes 0-8.75 s; ONE continuous zoom lands on 'Atlanta.' at 8.2 s; number slams 9.3 s; the title's promise (breaks the Confederacy within a year) spoken + stamped at 13.9 s. hook-3 on: unchanged beats, shifted +2.4 s.",
+ "frames": [
+  [
+   "hook-a",
+   0.4,
+   "0:00.4",
+   "Frame 0: theatre Aug 1864 (option 1), flags, legend; GRANT/LEE at Petersburg, 3 UNION ARMIES on ATLANTA",
+   "gun launches + impacts (shake), whoosh"
+  ],
+  [
+   "hook-a",
+   2.0,
+   "0:02.0",
+   "AUGUST 1864 stamp (0.3 s); STALLED (Petersburg); Lincoln badge (real photo) slides in",
+   "hit + shake x2"
+  ],
+  [
+   "hook-a",
+   4.0,
+   "0:04.0",
+   "'expected to lose': Lincoln's memorandum card (verbatim, 23 Aug 1864)",
+   "pop, impacts + shake"
+  ],
+  [
+   "hook-a",
+   5.2,
+   "0:05.2",
+   "'the election': the paper folds shut, sealed note + paste seal",
+   "hit"
+  ],
+  [
+   "hook-a",
+   6.2,
+   "0:06.2",
+   "'the Union with it': SIGNED UNREAD \u00b7 BY HIS CABINET; the W&A glows Chattanooga -> Atlanta",
+   "hit + shake + red pulse, pop"
+  ],
+  [
+   "hook-a",
+   7.0,
+   "0:07.0",
+   "'Everything hung': gold ring on Atlanta; ONE continuous zoom starts (6.6 s)",
+   "hit, WHOOSH (zoom #1)"
+  ],
+  [
+   "hook-a",
+   7.6,
+   "0:07.6",
+   "Mid-zoom: south map fading, atlanta map fading in (feathered, same camera, no cut)",
+   "(whoosh tail)"
+  ],
+  [
+   "hook-a",
+   8.3,
+   "0:08.3",
+   "Lands on 'Atlanta.' (8.2 s): atlanta map, railroads, Union corps on the siege lines",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   10.0,
+   "0:10.0",
+   "'Nearly a hundred thousand': BIG card slams (9.3 s), ticks to 98,797 UNION SOLDIERS",
+   "hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   12.0,
+   "0:12.0",
+   "Ticks done (98,797); front + red fort ring round the city",
+   "ticks"
+  ],
+  [
+   "hook-a",
+   14.2,
+   "0:14.2",
+   "'one general' (? badge slides in, 12.4 s); 'break the Confederacy': BREAKS THE CONFEDERACY \u00b7 WITHIN A YEAR",
+   "pop, ref:boom + shake"
+  ],
+  [
+   "hook-a",
+   16.0,
+   "0:16.0",
+   "'within a year': the ? badge pulses",
+   "hit"
+  ],
+  [
+   "hook-a",
+   18.0,
+   "0:18.0",
+   "'At the end of August': the promise stamp clears; the siege holds",
+   "-"
+  ],
+  [
+   "hook-a",
+   20.0,
+   "0:20.0",
+   "'four months': 4 MONTHS stamp (then STILL HOLDING at 19.8 s)",
+   "hit + shake"
+  ]
+ ]
+}

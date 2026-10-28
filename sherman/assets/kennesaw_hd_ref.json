@@ -1,0 +1,20 @@
+{
+ "name": "kennesaw_hd_ref",
+ "center": [
+  33.95,
+  -84.58
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  276490,
+  418238
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 31.7,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

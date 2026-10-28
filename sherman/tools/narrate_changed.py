@@ -14,7 +14,7 @@ by_text = {p["text"]: wav[int(p["start"] * sr):int(p["end"] * sr)] for p in old[
 VOICE, SPEED, GAP_PARA, GAP_SECTION = old["voice"], old["speed"], 0.6, 0.8
 k = None
 import ast
-PRON = ast.literal_eval(re.search(r"PRON = (\{.*?\})", open(f"{ROOT}/tools/narrate.py").read(), re.S).group(1))  # same TTS spellings as narrate.py
+import sys; sys.path.insert(0, f"{ROOT}/tools"); from tts_names import speak  # same names as narrate.py
 sections = open(f"{ROOT}/script.md").read().split("\n## ")[1:]
 chunks, timing, t, redone = [], [], 0.0, 0
 for sec in sections:
@@ -28,7 +28,7 @@ for sec in sections:
             audio = by_text[spoken]
         else:
             k = k or Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
-            audio, sr2 = k.create(__import__("functools").reduce(lambda a, kv: a.replace(*kv), PRON.items(), spoken), voice=VOICE, speed=SPEED, lang="en-us")
+            audio, sr2 = speak(k, spoken, VOICE, SPEED)
             assert sr2 == sr
             audio = audio.astype("float32"); redone += 1
             print("re-voiced:", tag[:50], flush=True)

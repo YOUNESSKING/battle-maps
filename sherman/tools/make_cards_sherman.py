@@ -1,4 +1,4 @@
-"""Designed archive cards for the Meade video (our own artwork): date cards (headline style), quote cards, wide portraits.
+"""Designed archive cards for the Sherman video (our own artwork): date cards (headline style), quote cards, wide portraits.
 run from sherman/:  python3 tools/make_cards_sherman.py"""
 import sys
 import numpy as np
@@ -41,17 +41,10 @@ def crop(src, out, box):
     im = Image.open(src).convert("RGB"); w, h = im.size
     im.crop((int(box[0] * w), int(box[1] * h), int(box[2] * w), int(box[3] * h))).save(out, quality=93)
 
-crop(M + "archive_meade_brady1855.jpg", M + "archive_meade_brady1855_c.jpg", (0.2, 0.03, 0.8, 0.97))
-crop(M + "archive_meade_portrait1860.jpg", M + "archive_meade_portrait1860_c.jpg", (0.06, 0.06, 1, 1))
-crop(M + "archive_leister_cemetery_ridge.jpg", M + "archive_leister_c.jpg", (0.08, 0, 1, 0.92))
-crop(M + "archive_littleroundtop_breastworks.jpg", M + "archive_lrt_c.jpg", (0.03, 0.03, 0.97, 0.97))
-crop(M + "archive_trostle_bigelow_horses.jpg", M + "archive_trostle_c.jpg", (0.02, 0.02, 0.98, 0.98))
-crop(M + "archive_gettysburg_town_cemhill.jpg", M + "archive_town_c.jpg", (0.02, 0.02, 1, 1))
-crop(M + "archive_meade_wallack_steps.jpg", M + "archive_meade_staff_c.jpg", (0.03, 0.03, 0.97, 0.97))
-wide(M + "meade_src.jpg", M + "meade_wide.jpg")
-wide(M + "archive_meade_brady1855_c.jpg", M + "archive_meade_brady1855_w.jpg")
-wide(M + "archive_meade_portrait1860_c.jpg", M + "archive_meade_portrait1860_w.jpg")
-datecard(M + "archive_meade_brady1855_c.jpg", "1815", "CADIZ, SPAIN", M + "card_1815_cadiz.jpg")
-datecard(M + "archive_leister_c.jpg", "4 JULY 1863", "GETTYSBURG, PENNSYLVANIA", M + "card_1863_gettysburg.jpg")
-datecard(M + "archive_town_c.jpg", "4 JULY 1863", "VICKSBURG SURRENDERS TO GRANT", M + "card_1863_vicksburg.jpg")
+crop(M + "archive_sherman_fort7.jpg", M + "archive_sherman_fort7_c.jpg", (0.03, 0.02, 0.97, 0.97))
+crop(M + "sherman_hires.jpg", M + "sherman_hires_c.jpg", (0.07, 0.035, 0.93, 0.95))  # drop the white card border
+wide(M + "sherman_hires_c.jpg", M + "sherman_wide.jpg")
+wide(M + "archive_sherman_fort7_c.jpg", M + "archive_sherman_fort7_w.jpg")
+datecard(M + "sherman_hires_c.jpg", "1820", "LANCASTER, OHIO", M + "card_1820_lancaster.jpg")
+datecard(M + "archive_sherman_fort7_c.jpg", "1861", "LOUISIANA LEAVES THE UNION", M + "card_1861_louisiana.jpg")
 print("cards ok")

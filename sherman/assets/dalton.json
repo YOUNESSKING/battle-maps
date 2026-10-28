@@ -1,0 +1,19 @@
+{
+ "name": "dalton",
+ "center": [
+  34.68,
+  -85.0
+ ],
+ "zoom": 11,
+ "origin_world_px": [
+  136913,
+  207427
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 62.86,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

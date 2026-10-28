@@ -1,0 +1,244 @@
+{
+ "title": "Sherman #13 - HOOK (hook-a atlanta_hd_ref hook-1..3 incl. the south map in the same world; hook-b south_hd_ref hook-4), 0:00-1:22",
+ "note": "Stakes (Lincoln's memorandum) -> ONE continuous zoom onto ATLANTA on the word (12.5 s), number slams 13.6 s, ATLANTA FALLS 0:27, LARGEST SURRENDER 0:38; a beat every 2-4 s. Union blue / Confederate red; US 35-star + First National.",
+ "frames": [
+  [
+   "hook-a",
+   0.4,
+   "0:00.4",
+   "Frame 0: theatre Aug 1864 (option 1), flags, legend; GRANT/LEE at Petersburg, 3 UNION ARMIES on ATLANTA",
+   "gun launches + impacts (shake), whoosh"
+  ],
+  [
+   "hook-a",
+   2.5,
+   "0:02.5",
+   "AUGUST 1864 stamp (0.3 s); STALLED (Petersburg); Lincoln badge (real photo)",
+   "hit + shake x2, impacts"
+  ],
+  [
+   "hook-a",
+   5.0,
+   "0:05.0",
+   "'expected to lose the election': Lincoln's memorandum card (verbatim, 23 Aug 1864)",
+   "pop, impacts + shake"
+  ],
+  [
+   "hook-a",
+   8.0,
+   "0:08.0",
+   "'any hope': the paper folds shut, sealed note + paste seal; 'saving the Union': SIGNED UNREAD \u00b7 BY HIS CABINET",
+   "hit; hit + shake + red pulse"
+  ],
+  [
+   "hook-a",
+   10.0,
+   "0:10.0",
+   "'Everything now hung...': the W&A railroad glows Chattanooga -> Atlanta, gold ring on Atlanta",
+   "pop, hit"
+  ],
+  [
+   "hook-a",
+   11.4,
+   "0:11.4",
+   "ONE continuous zoom theatre -> Atlanta, one camera; atlanta map fades in (feathered) ~5x-11x",
+   "WHOOSH (zoom #1)"
+  ],
+  [
+   "hook-a",
+   12.6,
+   "0:12.6",
+   "Lands on 'Atlanta': atlanta map, railroads, Union corps on the siege lines (option 1)",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   15.0,
+   "0:15.0",
+   "BIG card slams on 'Nearly a hundred thousand' (13.6 s), ticks to 98,797; front + fort ring",
+   "hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   17.5,
+   "0:17.5",
+   "Ticks finish; 4 MONTHS stamp on 'four months'",
+   "ticks, hit + shake"
+  ],
+  [
+   "hook-a",
+   20.0,
+   "0:20.0",
+   "'the city still held': forts glow, guns -> impacts on the ring, STILL HOLDING",
+   "impacts + shake, hit + red pulse"
+  ],
+  [
+   "hook-a",
+   22.5,
+   "0:22.5",
+   "'Then their general' (? badge): pull back, the army swings round the WEST side",
+   "whoosh, ref:whoosh"
+  ],
+  [
+   "hook-a",
+   25.0,
+   "0:25.0",
+   "'its last railroad': MACON & WESTERN glows, JONESBORO ring, impacts, neckties",
+   "impacts + shake, mg, hits"
+  ],
+  [
+   "hook-a",
+   27.6,
+   "0:27.6",
+   "Ammunition trains explode, sep64 territory; ATLANTA FALLS; LINCOLN RE-ELECTED 212 TO 21",
+   "explosions + shake, ref:boom, hit"
+  ],
+  [
+   "hook-a",
+   30.0,
+   "0:30.0",
+   "'did not stop': ONE continuous zoom-out back to the theatre (atlanta map fades out the same way)",
+   "WHOOSH (zoom #2)"
+  ],
+  [
+   "hook-a",
+   32.5,
+   "0:32.5",
+   "'cut his own supply line': W&A flickers red, three X cuts, NO SUPPLY LINE; dec64 territory; arrow to the sea",
+   "hits, hit + shake + red pulse, ref:whoosh"
+  ],
+  [
+   "hook-a",
+   35.0,
+   "0:35.0",
+   "SAVANNAH \u00b7 DEC 1864 ring; 'north through the Carolinas': apr65 territory",
+   "pop, ref:whoosh"
+  ],
+  [
+   "hook-a",
+   38.3,
+   "0:38.3",
+   "BENNETT PLACE ring; LARGEST SURRENDER OF THE WAR \u00b7 26 APRIL 1865 \u00b7 89,270 MEN",
+   "ref:boom + shake"
+  ],
+  [
+   "hook-a",
+   42.0,
+   "0:42.0",
+   "HARD CUT TO DARK (40.5 s): the year rolls back 1864 -> 1861, mystery '?' badge",
+   "hit, ticks, pop"
+  ],
+  [
+   "hook-a",
+   45.5,
+   "0:45.5",
+   "'in command in Kentucky': Kentucky locator (gold), LOUISVILLE HQ \u00b7 OCT 1861",
+   "pop"
+  ],
+  [
+   "hook-a",
+   48.5,
+   "0:48.5",
+   "'the Secretary of War' card; '200,000 MEN' stamp ticks",
+   "hit + shake + red pulse, ticks"
+  ],
+  [
+   "hook-a",
+   53.2,
+   "0:53.2",
+   "LEAKED \u00b7 TO THE NEWSPAPERS; COMMAND LOST \u00b7 SENT HOME \u00b7 1861",
+   "hit + shake + red pulse x2"
+  ],
+  [
+   "hook-a",
+   56.5,
+   "0:56.5",
+   "'printed': the designed headline spins in (no real masthead): GEN. WILLIAM T. SHERMAN ____",
+   "ref:whoosh, hit"
+  ],
+  [
+   "hook-a",
+   59.8,
+   "0:59.8",
+   "'insane': INSANE stamps in red; source line CINCINNATI DAILY COMMERCIAL, 11 DEC 1861",
+   "ref:boom + shake + red pulse"
+  ],
+  [
+   "hook-b",
+   0.3,
+   "1:00.6",
+   "hook-4 frame 0 = hook-3's last frame (headline + '?' badge); the headline flies off",
+   "ref:whoosh"
+  ],
+  [
+   "hook-b",
+   1.3,
+   "1:01.6",
+   "'William Tecumseh Sherman': '?' turns into the real photo, name plate slams",
+   "ref:whoosh, hit + shake"
+  ],
+  [
+   "hook-b",
+   3.2,
+   "1:03.5",
+   "'In less than a year': badge to the corner, theatre (apr65, option 1), flags, LESS THAN A YEAR",
+   "ref:whoosh, pop"
+  ],
+  [
+   "hook-b",
+   5.8,
+   "1:06.1",
+   "SNAP CUT 1 ATLANTA 1864 (inset at true place, option 2): Johnston + Hood plates, the swing",
+   "black cut, ref:whoosh + hit + shake"
+  ],
+  [
+   "hook-b",
+   7.4,
+   "1:07.7",
+   "Macon & Western glows, impacts at Jonesboro, ring 1 ATLANTA \u00b7 1864",
+   "impacts + shake, pop"
+  ],
+  [
+   "hook-b",
+   9.0,
+   "1:09.3",
+   "SNAP CUT 2 MARCH TO THE SEA (georgia inset): red rings at MACON + AUGUSTA, two wings fan out",
+   "black cut, whoosh + hit"
+  ],
+  [
+   "hook-b",
+   10.6,
+   "1:10.9",
+   "on to SAVANNAH; ring 2 MARCH TO THE SEA \u00b7 1864",
+   "ref:whoosh, pop"
+  ],
+  [
+   "hook-b",
+   12.6,
+   "1:12.9",
+   "SNAP CUT 3 THE CAROLINAS (carolinas inset): two wings in the flooded swamp, SALKEHATCHIE",
+   "black cut, whoosh + hit"
+  ],
+  [
+   "hook-b",
+   14.6,
+   "1:14.9",
+   "corduroy log roads laid ahead of the columns; IMPASSABLE? \u00b7 IN THE MIDDLE OF WINTER",
+   "pops, hit + shake"
+  ],
+  [
+   "hook-b",
+   17.2,
+   "1:17.5",
+   "'These are...': pull-out to the theatre, rings 1-2-3, both arrows",
+   "ref:whoosh, ref:riser"
+  ],
+  [
+   "hook-b",
+   19.6,
+   "1:19.9",
+   "Title card WILLIAM T. SHERMAN'S 3 GREATEST TACTICAL MOVES",
+   "ref:boom + shake"
+  ]
+ ]
+}

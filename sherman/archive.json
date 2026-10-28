@@ -1,0 +1,57 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/sherman_wide.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.38
+   ],
+   "label": "WILLIAM TECUMSEH SHERMAN \u00b7 1820-1891",
+   "dur": 5.0,
+   "depth": true,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1820_lancaster.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.8,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1861_louisiana.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/archive_sherman_fort7_w.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.55
+   ],
+   "label": "SHERMAN AT ATLANTA, 1864 \u00b7 PHOTO: GEORGE N. BARNARD",
+   "dur": 5.0,
+   "depth": true
+  },
+  {
+   "photo": "assets/media/sherman_wide.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.38
+   ],
+   "label": "\"CUMP\" TO HIS FAMILY",
+   "dur": 4.05,
+   "depth": true
+  }
+ ]
+}

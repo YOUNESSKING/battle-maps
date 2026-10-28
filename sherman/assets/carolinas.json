@@ -1,0 +1,19 @@
+{
+ "name": "carolinas",
+ "center": [
+  34.25,
+  -79.9
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  35005,
+  51439
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 252.73,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
