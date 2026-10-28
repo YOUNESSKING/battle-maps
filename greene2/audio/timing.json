@@ -1,321 +1,321 @@
 {
  "voice": "am_michael",
  "speed": 1.0,
- "duration": 877.75,
+ "duration": 885.11,
  "paragraphs": [
   {
    "section": "HOOK",
-   "tag": "MAP: hook-1 | Frame 0: the South (option 1, May 1780 control: SC + GA red, NC/VA blue), red counters already closing on CHARLESTON (guns firing, impacts), US 13-star + Union flags, legend; 0.3 s BIG card slams in (hit + shake) and ticks 0 -> 5,000 AMERICANS SURRENDERED (ticks); stamp IN ONE DAY (hit); on \"The South was lost\" the red tint floods north over SC + GA (pop) and stamp THE SOUTH IS LOST (hit + shake); ~5 s hard zoom-whoosh DIVE onto the Carolinas (whoosh); three red X marks slam on GUILFORD / HOBKIRK'S HILL / EUTAW as \"lost almost every battle\" (hit each), then on \"drove the British out\" the red ground drains back to two coastal dots (boom)",
+   "tag": "MAP: hook-1 | HOOK v3 STAKES FRAME (STYLE_LOCK 1a revised 2026-10-28, owner chose B): frame 0 = the South (option 1) with blue counters streaming into CHARLESTON + Clinton's real-portrait badge; stamp THE ONLY ARMY IN THE SOUTH in the first second; red ships close the harbour and siege lines ring the land side, stamp TRAPPED; ONE continuous zoom (whoosh) onto CHARLESTON arriving on the word; THEN the old frame 0: the South (option 1, May 1780 control: SC + GA red, NC/VA blue), red counters already closing on CHARLESTON (guns firing, impacts), US 13-star + Union flags, legend; 0.3 s BIG card slams in (hit + shake) and ticks 0 -> 5,000 AMERICANS SURRENDERED (ticks); stamp IN ONE DAY (hit); on \"The South was lost\" the red tint floods north over SC + GA (pop) and stamp THE SOUTH IS LOST (hit + shake); ~5 s hard zoom-whoosh DIVE onto the Carolinas (whoosh); three red X marks slam on GUILFORD / HOBKIRK'S HILL / EUTAW as \"lost almost every battle\" (hit each), then on \"drove the British out\" the red ground drains back to two coastal dots (boom)",
    "start": 0.0,
-   "end": 10.6,
-   "text": "Five thousand American soldiers, surrendered in one day. The South was lost. Then one general lost almost every battle, and drove the British out anyway."
+   "end": 17.96,
+   "text": "In the spring of seventeen eighty, the whole American army in the South was trapped inside one city: Charleston. Five thousand American soldiers, surrendered in one day. The South was lost. Then one general lost almost every battle, and drove the British out anyway."
   },
   {
    "section": "HOOK",
    "tag": "MAP: hook-2 | Change every 2-4 s: a red column chases a blue one north across NC (dotted trail, mileage counter ticks 0 -> 200 MILES); blue reaches the Dan, boats slide to the north bank, red arrow slams into the water: stamp NO BOATS (hit + shake); white-flash cut -> GUILFORD: red blocks greyed one by one, counter 0 -> 27 % OF HIS ARMY (ticks), stamp VICTORY? (hit); zoom-out whoosh to the seaboard: arrow to YORKTOWN, ring slams shut (boom + shake), stamp SURRENDER \u00b7 19 OCT 1781",
-   "start": 11.2,
-   "end": 25.37,
+   "start": 18.56,
+   "end": 32.73,
    "text": "He led Britain's best soldiers on a two-hundred-mile chase, to a river with no boats. He let them win a battle that cost them more than a quarter of their army. Seven months later, that army surrendered at Yorktown."
   },
   {
    "section": "HOOK",
    "tag": "MAP: hook-3 | Twist as ACTION, hard cut to the dark map at CHARLOTTE, DEC 1780: a thin ragged blue column limps in (counter ticks 0 -> 1,500, stamp STARVING, hit), bare-footprint trail draws behind it (stamp NO SHOES, hit + small shake); a huge red mass slams in across SC (counter 8,000, boom + shake, red pulse); then the year rolls back 1780 -> 1774 (ticks), Greene's real Peale badge slams in greyed with a private's plain coat, stamp PRIVATE (hit), stamp REFUSED A COMMISSION: HE LIMPED (hit + small shake); small caption \"Kentish Guards, Rhode Island, 1774\"",
-   "start": 25.97,
-   "end": 38.04,
+   "start": 33.33,
+   "end": 45.4,
    "text": "When he took command, he had fifteen hundred starving men, many without shoes, against eight thousand British. Six years earlier, he'd been a private, refused a commission because he limped."
   },
   {
    "section": "HOOK",
    "tag": "MAP: hook-4 | The badge regains colour and flies onto the South map; NATHANAEL GREENE slams in (hit + shake); 3 snap cuts (~1.5-2 s each, whoosh + hit): ring THE DAN 1781 with boats, ring GUILFORD with three lines, ring EUTAW SPRINGS with the brick house; title card GREENE'S 3 GREATEST TACTICAL MOVES (riser + boom)",
-   "start": 38.64,
-   "end": 50.1,
+   "start": 46.0,
+   "end": 57.46,
    "text": "His name was Nathanael Greene. The race to the Dan. Guilford Courthouse. The reconquest of the South. These are Nathanael Greene's three greatest tactical moves."
   },
   {
    "section": "BACKGROUND",
    "tag": "ARCHIVE: background, max ~18 s (STYLE_LOCK 1a): date card \"16 AUGUST 1780 / CAMDEN, SOUTH CAROLINA\" over Chappel's Battle of Camden (3D depth, push-in on de Kalb); headline card \"WASHINGTON PICKS GREENE\" with the Peale portrait of Greene (3D depth, push to the eyes; small caption MAJOR GENERAL \u00b7 BORN 1742, RHODE ISLAND \u00b7 QUAKER IRONMASTER'S SON); Gainsborough's Cornwallis (3D depth, push-in) with label LORD CHARLES CORNWALLIS",
-   "start": 51.5,
-   "end": 70.72,
+   "start": 58.86,
+   "end": 78.08,
    "text": "At Camden, a second American army had just been routed in a single morning. So George Washington sent Greene: a thirty-eight-year-old Quaker ironmaster's son from Rhode Island, who had taught himself war from books, against one of Britain's finest generals, Lord Charles Cornwallis."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-1 | Title card MOVE 1 \u00b7 THE RACE TO THE DAN \u00b7 JANUARY-FEBRUARY 1781. Carolinas map (option 1, Jan 1781 control); rivers CATAWBA, YADKIN, DAN glow; Greene splits his army: Greene east to CHERAW, Morgan west (Morgan badge); COWPENS flash 17 JAN, Tarleton badge greys out; stamp TARLETON DESTROYED",
-   "start": 72.12,
-   "end": 101.22,
+   "start": 79.48,
+   "end": 108.58,
    "text": "Greene began by breaking the oldest rule in the book. Facing a stronger enemy, he split his small army in two, and sent one wing west under Daniel Morgan. The country was too poor to feed one army in one place, and a divided American army forced Cornwallis to divide his own. On the seventeenth of January, seventeen eighty-one, at a cattle pasture called the Cowpens, Morgan destroyed the British light troops of the feared cavalry commander Banastre Tarleton."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-2 | Cornwallis badge; British army at RAMSOUR'S MILL; baggage wagons burn (fire + smoke); caption BAGGAGE, TENTS, RUM: BURNED; counter ~2,500 BRITISH REGULARS; arrow aims north",
-   "start": 101.82,
-   "end": 124.15,
+   "start": 109.18,
+   "end": 131.51,
    "text": "Cornwallis was furious. He decided to hunt Greene and Morgan down before they could unite, and to do it, he made one of the most extraordinary decisions of the war. At Ramsour's Mill, he burned his own baggage train. Tents, wagons, spare clothing, even the army's rum. Around two and a half thousand British regulars were now stripped down to run."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-3 | Cornwallis badge with speech bubble TRAP THEM AGAINST THE RIVERS (no quote marks: paraphrase); the three rivers pulse in turn; red arrow aims at the Dan; rain overlay",
-   "start": 124.75,
-   "end": 144.38,
+   "start": 132.11,
+   "end": 151.74,
    "text": "Cornwallis believed the geography was on his side. Between the Americans and safety in Virginia lay three great rivers, the Catawba, the Yadkin and the Dan, all swollen with winter rain. Somewhere, Greene would be caught with his back to a flooded river, and there, the British would destroy him."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-4 | Greene badge; camera pushes to the Dan; boat icons pop one by one along the north bank at BOYD'S FERRY and IRWIN'S FERRY; caption EVERY BOAT ON THE DAN; the river turns from red-glow (anvil) to blue-glow (shield)",
-   "start": 144.98,
-   "end": 166.53,
+   "start": 152.34,
+   "end": 173.89,
    "text": "But Greene saw something different. Weeks earlier, before the chase had even begun, he had sent officers to survey the rivers and to find every boat on the Dan. He ordered those boats gathered and kept ready, and he planned his marches around them. To Cornwallis, the rivers were an anvil. To Greene, if he held the crossings, they were a shield."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-5 | Morgan's column crosses the CATAWBA; Greene badge rides in from the east with a few dragoons (dotted trail); 1 FEB dawn at COWAN'S FORD: red counters wade the swollen river (shimmer), militia musket flashes from the far bank, impacts in the water; Davidson badge (initials) greys out; caption THE BRITISH FORCE THE CATAWBA",
-   "start": 167.13,
-   "end": 194.82,
+   "start": 174.49,
+   "end": 202.18,
    "text": "The race began. Greene himself rode a hundred miles through enemy country, with only a handful of dragoons, to join Morgan's wing. Morgan's men crossed the Catawba, and behind them, the rain kept falling. On the first of February, Cornwallis forced his way over at Cowan's Ford, his men wading through the freezing, chest-deep current under fire from the militia on the far bank. Their commander, General William Lee Davidson, was killed."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-5b | 3 FEB: the Americans cross the YADKIN at TRADING FORD by boat; rain; the river widens (shimmer); red arrow stops on the south bank; British guns fire across the water (K.gun -> impacts on the far bank); caption THE RIVER RISES",
-   "start": 195.42,
-   "end": 208.97,
+   "start": 202.78,
+   "end": 216.33,
    "text": "Two days later, the Americans crossed the Yadkin by boat. When the British reached it, the river had risen, and the Americans had taken the boats with them. Cornwallis could only fire his cannon across the water."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "ARCHIVE: winter march: Trego \"The March to Valley Forge\" (3D depth, push-in on the bare feet), Continental soldiers plate (Ogden), date card \"FEBRUARY 1781 / NORTH CAROLINA\"",
-   "start": 209.57,
-   "end": 220.38,
+   "start": 216.93,
+   "end": 227.74,
    "text": "It was winter, the roads were rivers of freezing mud, and many of Greene's men had no shoes. Witnesses remembered the bloody footprints they left on the frozen ground."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-6 | The two American columns reunite at GUILFORD COURTHOUSE (date 9 FEB 1781); Williams badge; Otho Williams's light corps (blue light-infantry + cavalry counters, ~700) peels off and takes position between the armies; Greene's main army arrow toward the lower Dan ferries",
-   "start": 220.98,
-   "end": 246.05,
+   "start": 228.34,
+   "end": 253.41,
    "text": "In early February, Greene's two wings reunited at a village called Guilford Courthouse. His army was still too weak to fight, and his officers voted, to a man, against risking a battle. So Greene formed a rearguard of about seven hundred of his best light troops and cavalry under Colonel Otho Williams, and gave it one task: stand between the two armies, and make Cornwallis look the wrong way."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-7 | Williams's corps skirmishes in front of the British (MG-less musket pops, small flashes), drifting north-west toward the upper fords (DIX'S FERRY); red arrow follows it; the main American army slides north-east, half transparent (unseen); counter 40 MILES IN 24 HOURS (ticks)",
-   "start": 246.65,
-   "end": 268.3,
+   "start": 254.01,
+   "end": 275.66,
    "text": "For four days, Williams danced in front of the British army, close enough to be seen, never close enough to be caught. He drew Cornwallis toward the upper fords of the Dan, while Greene's main army marched hard for the lower ferries, far to the east. The light corps slept six hours in forty-eight, and on the last day, it marched forty miles."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-8 | Date 14 FEB: Greene's army crosses at the ferries; NIGHT (K.night): Williams breaks contact and crosses; boats pull to the north bank; dawn 15 FEB: red arrow arrives at the south bank, stamp NO BOATS (hit + shake); blue counters line the far bank",
-   "start": 268.9,
-   "end": 289.15,
+   "start": 276.26,
+   "end": 296.51,
    "text": "On the fourteenth of February, the last of Greene's army crossed the Dan into Virginia, and that night Williams's exhausted rearguard followed. The next morning, the British reached the river. The water was high and fast, the far bank was lined with American troops, and there was not a single boat on the southern shore."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: dan-9 | Pull back to the Carolinas (option 1): red army stranded; arrow back to HILLSBOROUGH; RESULT card: ~200 MILES \u00b7 0 BATTLES \u00b7 NO TENTS, NO FOOD \u00b7 CORNWALLIS TURNS BACK",
-   "start": 289.75,
-   "end": 308.69,
+   "start": 297.11,
+   "end": 316.05,
    "text": "Cornwallis had chased Greene some two hundred miles, burned his own supplies to do it, and had nothing to show for it. His army was exhausted, far from its bases, and without tents in the middle of winter. He turned back to Hillsborough. Greene hadn't fought a battle, but he had crippled the British army."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "ARCHIVE: Gainsborough-school portrait of Cornwallis (3D depth, push-in on the face), headline card \"THE MOST BARREN, INHOSPITABLE PART OF NORTH AMERICA\" (O'Hara, verbatim words only), date card \"SPRING 1781\"",
-   "start": 309.29,
-   "end": 322.18,
+   "start": 316.65,
+   "end": 329.54,
    "text": "One of Cornwallis's own generals, Charles O'Hara, wrote that the army had reached the river without baggage or provisions of any sort, in the most barren, inhospitable part of North America."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: method-1 | Method card (GG.METHOD, GREENE'S METHOD): three lines appear one by one: 1. MAKE THE LAND FIGHT FOR YOU 2. MAKE EVERY VICTORY COST MORE THAN IT'S WORTH 3. NEVER LOSE THE ARMY; line 1 lights up",
-   "start": 322.78,
-   "end": 331.82,
+   "start": 330.14,
+   "end": 339.18,
    "text": "This was the first part of Greene's method. Make the land fight for you. Make every victory cost more than it's worth. And never lose the army."
   },
   {
    "section": "MOVE 1 \u2014 THE RACE TO THE DAN",
    "tag": "MAP: move1-sub | Carolinas map, Greene's army resting north of the Dan, reinforcements flowing in from Virginia; E.subscribe: small SUBSCRIBE button bottom-right, cursor clicks (SUBSCRIBED, bell), slides out; then label NEXT: GUILFORD COURTHOUSE; a blue arrow turns back south over the Dan",
-   "start": 332.42,
-   "end": 347.78,
+   "start": 339.78,
+   "end": 355.14,
    "text": "Greene had escaped without fighting a battle. Breakdowns like this, move by move on the map, are exactly what subscribing keeps bringing you. Because a few weeks later, Greene did something nobody expected. He turned around and came back."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-1 | Title card MOVE 2 \u00b7 GUILFORD COURTHOUSE \u00b7 15 MARCH 1781. Carolinas map (option 1, Mar 1781 control): Greene recrosses the Dan; militia arrows join from Virginia and North Carolina; counters tick US ~4,400 vs BRITISH ~2,000",
-   "start": 349.18,
-   "end": 383.71,
+   "start": 356.54,
+   "end": 391.07,
    "text": "By March, fresh militia and Continental troops had swelled Greene's army to around four thousand four hundred men. He crossed back into North Carolina and chose his ground near Guilford Courthouse, the same village he had marched through a month before. This time, he had picked the field himself, and he knew every fence and clearing on it. Cornwallis had only about two thousand men. But they were some of the best soldiers in the world, and more than half of Greene's army were militia, farmers who had never faced a British bayonet charge."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-2 | Battlefield (option 2, glowing fronts only): the Great Salisbury road running west to east up a gentle slope to the COURTHOUSE; three clearings; woods; Cornwallis badge, belief card THE MILITIA WILL RUN; ghost of the Camden rout flickers",
-   "start": 384.31,
-   "end": 411.71,
+   "start": 391.67,
+   "end": 419.07,
    "text": "That morning, Henry Lee's cavalry clashed with Tarleton's dragoons a few miles down the road, at a Quaker meeting house called New Garden, so Greene knew exactly where the British were coming from. And Cornwallis knew what militia usually did in a pitched battle. At Camden, they had thrown away their muskets and run before firing a shot. One hard charge would sweep them away, and the Continentals behind them would be left alone, outnumbered and beaten."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-3 | Greene badge; three blue lines draw on one after another, ~400 YARDS apart (bracket): 1ST LINE N. CAROLINA MILITIA at the rail fence, 2ND LINE VIRGINIA MILITIA in the woods, 3RD LINE CONTINENTALS on the rise by the courthouse; Lee's and Washington's horse + riflemen on the flanks; caption TWO VOLLEYS, THEN FALL BACK",
-   "start": 412.31,
-   "end": 440.4,
+   "start": 419.67,
+   "end": 447.76,
    "text": "But Greene saw something different. He took the idea Morgan had used at the Cowpens, and made it deeper. Instead of one line, he built three, each a few hundred yards behind the last. The North Carolina militia held a rail fence at the edge of the woods. Behind them, in the trees, stood the Virginia militia. And on the rise near the courthouse waited his Continental regulars. Greene didn't ask the militia to win. He asked them to fire two volleys, and then fall back."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "ARCHIVE: Guilford Courthouse painting (McBarron / period print, 3D depth, push-in on the British line), Guilford plan 1781 (pan along the road), date card \"15 MARCH 1781 / GUILFORD COURTHOUSE\"",
-   "start": 441.0,
-   "end": 451.86,
+   "start": 448.36,
+   "end": 459.22,
    "text": "The British attacked shortly after noon, across a muddy open field, in long scarlet lines with bayonets fixed. At the fence, the North Carolinians waited."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-4 | Red lines advance east across the first clearing; volley flashes ripple along the fence (two volleys, smoke); red counters lose strength (grey edges), counter ticks; caption ONE HALF OF THE HIGHLANDERS DROPPED (small, attributed: a British officer); militia fall back into the woods",
-   "start": 452.46,
-   "end": 472.83,
+   "start": 459.82,
+   "end": 480.19,
    "text": "Then, at close range, they fired. The volley tore into the British line. One British officer later wrote that half of the Highlanders dropped on the spot. Most of the militia fell back through the woods, and some never stopped running. But they had done what Greene asked. The British had paid heavily just to reach the trees."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-5 | In the woods: the second line; the red front band breaks into separate clusters wheeling right and left (Guards, Hessians, 71st, 23rd pulled apart); caption FIGHT IN THE WOODS; smoke puffs tree to tree",
-   "start": 473.43,
-   "end": 491.08,
+   "start": 480.79,
+   "end": 498.44,
    "text": "In the woods, the battle broke into pieces. The Virginians fought from tree to tree, and the neat British lines were pulled apart into separate battalions, each fighting its own battle in the undergrowth. When they came out on the far side, they were bloodied, exhausted and scattered."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-6 | Third clearing: 2ND GUARDS break the 2ND MARYLAND, capture 2 guns (gun icons flip red); then 1ST MARYLAND wheels into their flank and WASHINGTON'S DRAGOONS charge from behind (cavalry icon); the 2nd Guards counter shatters (grey), stamp GUARDS CUT TO PIECES (hit)",
-   "start": 491.68,
-   "end": 514.03,
+   "start": 499.04,
+   "end": 521.39,
    "text": "Now they came up the slope toward the Continentals. The Second Battalion of the Guards broke a newly raised Maryland regiment and captured two cannon. But the veteran First Maryland wheeled into its flank, and Colonel William Washington's cavalry crashed into it from behind. The Guards, the most elite soldiers in the British army, were cut to pieces."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-7 | British guns on the road (K.gun); grapeshot cones fired into the melee, impacts hit blue AND red counters; small caption ACCORDING TO TRADITION; the melee breaks apart",
-   "start": 514.63,
-   "end": 530.78,
+   "start": 521.99,
+   "end": 538.14,
    "text": "According to tradition, Cornwallis then gave one of the most terrible orders of his career. He had his guns fire grapeshot into the struggling mass of men, knowing it would kill his own Guardsmen along with the Americans. The melee broke apart."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: move2-decide | E.decide: dimmed battlefield; WHAT WOULD YOU DO?; sub: YOUR CONTINENTALS ARE THE LAST REGULAR ARMY IN THE SOUTH; A = THROW IN EVERYTHING FOR THE VICTORY \u00b7 B = RETREAT AND SAVE THE ARMY; TELL US IN THE COMMENTS (3 ticks); on \"Greene\" reveal: B lights blue, A greys (hit)",
-   "start": 531.38,
-   "end": 553.55,
+   "start": 538.74,
+   "end": 560.91,
    "text": "Now stop for a moment, and put yourself in Greene's place. The Guards are broken, and the British are firing into their own men. But your Continentals are the only regular army left in the South. Do you throw in everything for the victory, or do you retreat and save the army? Tell us in the comments what you would have done. And then watch what Greene did."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-8 | Greene orders the withdrawal: Continentals pull back north-west in good order along the Reedy Fork road; British hold the field; casualty card (US 13-star / Union flag): BRITISH 93 KILLED \u00b7 413 WOUNDED \u00b7 26 MISSING = 532 (27 %) | AMERICAN 79 KILLED \u00b7 185 WOUNDED (+ militia gone home)",
-   "start": 554.15,
-   "end": 579.02,
+   "start": 561.51,
+   "end": 586.38,
    "text": "He looked at the one thing he could never replace, his Continental army, and ordered a retreat. He left the field to the British. On paper, Cornwallis had won. But he had lost more than a quarter of his army, over five hundred men, and he could not replace a single one. His army was out of food, too battered to follow, and many of his worst wounded had to be left behind at a Quaker meeting house."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "ARCHIVE: Charles James Fox portrait (3D depth), headline card \"ANOTHER SUCH VICTORY WOULD RUIN THE BRITISH ARMY\" (paper sound), date card \"LONDON \u00b7 1781\"",
-   "start": 579.62,
-   "end": 588.54,
+   "start": 586.98,
+   "end": 595.9,
    "text": "When the news reached London, the opposition leader Charles James Fox told Parliament that another such victory would ruin the British army."
   },
   {
    "section": "MOVE 2 \u2014 GUILFORD COURTHOUSE",
    "tag": "MAP: guilford-9 | Carolinas -> seaboard (option 1, Apr 1781 control): Cornwallis marches east to WILMINGTON, then north into VIRGINIA; dotted arrow ends at YORKTOWN with a pulsing ring; method card, line 2 lights up",
-   "start": 589.14,
-   "end": 607.66,
+   "start": 596.5,
+   "end": 615.02,
    "text": "He was right. Cornwallis could no longer hold North Carolina. He retreated to the coast at Wilmington, and then marched north into Virginia. This was the second part of Greene's method. Make the land fight for you. Make every victory cost more than it's worth. And never lose the army."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-1 | Title card MOVE 3 \u00b7 THE RECONQUEST OF THE SOUTH \u00b7 APRIL-SEPTEMBER 1781. South map (option 1, Apr 1781 control): Cornwallis's arrow heads north to Virginia; Greene's arrow turns SOUTH into South Carolina; red outposts glow: CAMDEN, NINETY SIX, FORT WATSON, FORT MOTTE, ORANGEBURG, AUGUSTA, CHARLESTON; Rawdon badge (initials) at Camden; counter ~8,000 BRITISH TROOPS IN SC + GA",
-   "start": 609.06,
-   "end": 630.65,
+   "start": 616.42,
+   "end": 638.01,
    "text": "When Cornwallis marched away into Virginia, everyone expected Greene to follow him. Instead, he turned his back on the British field army and marched south, into South Carolina. The British still held the state with a web of fortified posts, from Camden to Ninety Six to Augusta, with some eight thousand troops spread across them."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-2 | 25 APR: Rawdon's red arrow hits Greene at HOBKIRK'S HILL, blue pulls back (red X); Greene's army sits north of Camden pinning it; partisan arrows MARION, SUMTER, LEE fan out toward the small posts (FORT WATSON, FORT MOTTE, ORANGEBURG, AUGUSTA glow)",
-   "start": 631.25,
-   "end": 648.23,
+   "start": 638.61,
+   "end": 655.59,
    "text": "In April, near Camden, the British commander Lord Rawdon attacked Greene at Hobkirk's Hill and drove him back. It didn't matter. While Greene's army kept the British garrisons pinned in place, Francis Marion, Thomas Sumter and Henry Lee went after the smaller posts."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-2b | FORT WATSON close-up inset: a log tower rises beside the stockade (draws up in steps), rifle flashes fire DOWN into the fort, red flag drops, stamp SURRENDERED (hit); back to the South map: FORT MOTTE, ORANGEBURG, AUGUSTA flip blue (hit each); CAMDEN evacuated (red fades); NINETY SIX star fort: blue siege trenches zig-zag toward it, assault arrow bounces (red X), then the red fades in July; control overlay cross-fades Apr -> Jul 1781",
-   "start": 648.83,
-   "end": 673.7,
+   "start": 656.19,
+   "end": 681.06,
    "text": "At Fort Watson, they had no cannon to break the stockade. So they built a tower of logs, taller than the walls, and fired down into the fort until it surrendered. Fort Motte fell. Orangeburg and Augusta surrendered. Rawdon abandoned Camden. At Ninety Six, Greene besieged a star-shaped fort for four weeks, and his final assault failed. But that summer, the British gave up Ninety Six as well."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "ARCHIVE: Peale portrait of Greene (3D depth, slow push to the eyes), headline card \"WE FIGHT, GET BEAT, RISE, AND FIGHT AGAIN\" (verbatim, Greene to La Luzerne, 1781), Hobkirk's Hill sketch (pan)",
-   "start": 674.3,
-   "end": 682.54,
+   "start": 681.66,
+   "end": 689.9,
    "text": "Greene summed up his whole campaign in one sentence, in a letter to the French minister. We fight, get beat, rise, and fight again."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-3 | Battlefield EUTAW SPRINGS (option 2), date 8 SEPTEMBER 1781: river road from the west; the British camp clearing with tents; the brick EUTAW HOUSE with its walled garden on the east side; blackjack thicket by the creek; Stewart badge (initials); counters US ~2,200 vs BRITISH ~2,000",
-   "start": 683.14,
-   "end": 710.89,
+   "start": 690.5,
+   "end": 718.25,
    "text": "Greene spent the worst of the summer heat resting and rebuilding his army in the High Hills of Santee. By September, only one British field army was left in the interior, about two thousand men under Lieutenant Colonel Alexander Stewart, camped at Eutaw Springs, some fifty miles from Charleston. Their camp stood in a clearing beside a large brick house, with a high-walled garden behind it. Greene came for them with around twenty-two hundred men."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-4 | Pre-dawn (K.night, then dawn): American columns march east along the road; small red ROOTING PARTY counters (digging sweet potatoes) surprised and captured (rings, hit); British hurry into line in front of the camp",
-   "start": 711.49,
-   "end": 725.91,
+   "start": 718.85,
+   "end": 733.27,
    "text": "He marched before dawn. On the road, his advance guard stumbled on a British foraging party, out in the woods digging sweet potatoes, and scooped it up. Stewart barely had time to form his line in front of the camp."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-5 | Two American lines: militia first, Continentals second; volley flashes trade back and forth (counter: 17 ROUNDS ticks); caption THE MILITIA HOLDS; then the militia give way",
-   "start": 726.51,
-   "end": 748.3,
+   "start": 733.87,
+   "end": 755.66,
    "text": "Greene attacked in two lines, militia in front and Continentals behind, the same idea he had used at Guilford. And this time, the militia astonished everyone. They stood in the open and traded volley after volley with British regulars, firing, by Greene's own account, as many as seventeen rounds before they gave way."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-6 | Continentals charge with the bayonet (big blue arrows); the red front band collapses and is driven east through its own camp; blue arrows sweep through the tents; stamp THE BRITISH LINE BREAKS (hit + shake)",
-   "start": 748.9,
-   "end": 765.09,
+   "start": 756.26,
+   "end": 772.45,
    "text": "Then Greene sent in his Continentals. The Maryland and Virginia regiments charged with the bayonet, and the British line collapsed. Stewart's army fled back through its own camp. For a few minutes, Greene had the victory that had escaped him for a year."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-7 | Blue counters stop in the tents and scatter (formation lost); caption THE CAMP IS PLUNDERED; red counters fill the BRICK HOUSE, musket flashes from the windows hit the blue counters; Marjoribanks's red unit holds the THICKET (initials badge)",
-   "start": 765.69,
-   "end": 788.02,
+   "start": 773.05,
+   "end": 795.38,
    "text": "And then it slipped away. His starving soldiers burst into a camp full of food and rum, and discipline collapsed. Men stopped to eat and drink in the middle of the battle. Meanwhile, British troops barricaded themselves inside the brick house and fired down from the upper windows, and on the flank, Major John Marjoribanks held a thicket of blackjack oak."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "ARCHIVE: Eutaw Springs engraving (3D depth, push-in on the cavalry), date card \"8 SEPTEMBER 1781 / EUTAW SPRINGS, SOUTH CAROLINA\"",
-   "start": 788.62,
-   "end": 796.86,
+   "start": 795.98,
+   "end": 804.22,
    "text": "Greene's cavalry charged the thicket and was shot to pieces. Its commander, William Washington, was wounded and taken prisoner."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-8 | Greene's light guns fire at the house (K.gun -> impacts bounce off the walls, no damage); Greene withdraws west in good order; casualty card: AMERICAN 139 KILLED \u00b7 375 WOUNDED \u00b7 8 MISSING (~522) | BRITISH 85 KILLED \u00b7 351 WOUNDED \u00b7 257 MISSING (~693, over a third); next day the red army retreats toward CHARLESTON (arrow)",
-   "start": 797.46,
-   "end": 817.21,
+   "start": 804.82,
+   "end": 824.57,
    "text": "Greene's cannon were too light to break the brick walls. He gathered his army and withdrew. Once again, the British held the field. And once again, it didn't matter. Stewart had lost around seven hundred men, more than a third of his army. The next day, he abandoned Eutaw Springs and fell back toward Charleston."
   },
   {
    "section": "MOVE 3 \u2014 THE RECONQUEST OF THE SOUTH",
    "tag": "MAP: eutaw-9 | South map -> seaboard (option 1): 19 OCT 1781 YORKTOWN ring slams shut (French fleet arrows + Washington/Rochambeau arrows), stamp CORNWALLIS SURRENDERS (boom + shake); then the control overlay cross-fades to Dec 1781: red shrinks to CHARLESTON and SAVANNAH only; date DECEMBER 1781",
-   "start": 817.81,
-   "end": 833.98,
+   "start": 825.17,
+   "end": 841.34,
    "text": "Six weeks later, the army Greene had worn down across the Carolinas surrendered at Yorktown. And by the end of the year, a British force that had once owned Georgia and both Carolinas held nothing but two coastal cities, Charleston and Savannah."
   },
   {
    "section": "ENDING",
    "tag": "MAP: end-1 | South map, Dec 1781 control: the three moves replay as rings (THE DAN \u00b7 GUILFORD \u00b7 EUTAW) with their dates; method card, line 3 lights up, then all three; Greene badge",
-   "start": 835.38,
-   "end": 851.32,
+   "start": 842.74,
+   "end": 858.68,
    "text": "That was the third part of Greene's method. Make the land fight for you. Make every victory cost more than it's worth. And never lose the army. Greene lost at Guilford, at Hobkirk's Hill and at Eutaw Springs, and he took back the entire South."
   },
   {
    "section": "ENDING",
    "tag": "MAP: end-2 | E.final: three numbered cards pop in as each move is named (1 THE RACE TO THE DAN \u00b7 FEB 1781 / 2 GUILFORD COURTHOUSE \u00b7 MAR 1781 / 3 THE RECONQUEST \u00b7 SEP 1781), 1, 2 OR 3? (gold), line TELL US WHICH COMMANDER NEXT, NEXT: DANIEL MORGAN AT THE COWPENS card, corner subscribe button; map stays on screen for the end screen",
-   "start": 851.92,
-   "end": 876.35,
+   "start": 859.28,
+   "end": 883.71,
    "text": "So which was Nathanael Greene's greatest move? One, the race to the Dan. Two, Guilford Courthouse. Or three, the reconquest of the South? Tell us in the comments, and tell us which commander we should cover next. And next, watch how Greene's own wing commander, Daniel Morgan, wiped out Tarleton's legion in under an hour at the Cowpens. Subscribe, so you don't miss the next commander."
   }
  ]

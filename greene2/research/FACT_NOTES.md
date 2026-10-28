@@ -17,7 +17,7 @@ Items marked **(memory)** are from general knowledge, not the Gemini file: list 
 
 ## Hook claims
 - **Hook v3 stakes frame (STYLE_LOCK 1a, REVISED 2026-10-28). The first proposal ("had beaten the Americans again and again. And now it
-  marches into ...") was REJECTED by the owner as a copy of the Meade line with names swapped.** Alternatives sent 2026-10-28 (owner picks):
+  marches into ...") was REJECTED by the owner as a copy of the Meade line with names swapped.** Alternatives sent 2026-10-28; **owner chose B** (first C, then changed to B):
   - A (the strategy): "Britain had a new plan to win the war: take the South, one colony at a time. It began with the largest city in the
     South, Charleston." Sources: Buchanan, *The Road to Guilford Courthouse* ch. 1-3 and Ferling, *Winning Independence* (the "southern
     strategy": Georgia retaken Dec 1778-Jan 1779, then Clinton's 1780 expedition against South Carolina, counting on loyalist support);

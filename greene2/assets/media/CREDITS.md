@@ -248,3 +248,8 @@ Fetched via Wikimedia Special:FilePath standard thumbnails with Retry-After back
 - `cowpens_kemmelmeyer.jpg`, `cowpens_ranney.jpg`, `cowpens_wm_washington.jpg` — copied from /home/user/battle-maps/greene/assets/media (credits above / in that folder's CREDITS.md).
 - Licence note: `guilford_mcbarron.jpg` is H. Charles McBarron's US Army (Center of Military History) painting; US-government commission, treated as public domain on Commons, but the exact Commons licence template was not re-checked here.
 - Not found: British Foot Guards print (no usable PD image located), Fort Motte / Maham tower print (only a 610 px John Blake White painting "Mrs. Motte directing Generals Marion and Lee to burn her mansion", not downloaded).
+
+### clinton_head.png / clinton_head_flat.png / clinton_src.jpg (hook v3, 2026-10-28)
+- **Title**: "Sir Henry Clinton, 1738?-1795, bust portrait, facing right" (18th-c. engraving)
+- **Licence**: Public domain (Library of Congress Prints and Photographs, no known restrictions)
+- **Source**: https://www.loc.gov/pictures/item/2005689386/ (LC-USZ62-45550 / cph 3b01550)
