@@ -97,7 +97,10 @@ Reference for the opening: `reference/hook-reference-meade-v3.mp4` (0:00-1:03) +
   both maps driven by the same camera at true position and scale, the overview cross-faded out between ~6x and ~14x with feathered edges,
   **never a cut or a white flash** (owner: the cut "is not seamless").
 - **The big number card slams on its own words**, then ticks; the other cards on their words as before.
-- **Timing:** payoff (title promise) by **~0:30** (Meade: REPULSED at 0:32); dive by ~6-8 s; a beat every 2-4 s throughout.
+- **Timing (owner 2026-10-28): keep the stakes frame SHORT (1-2 sentences, ~8 s) and SPEAK THE TITLE'S PROMISE AS A RESULT BY 10-15 s**, right after it
+  (e.g. the number sentence itself says the result: "...in three days, and Lee lost."). The stakes frame is the ONLY thing allowed before the
+  promise; it is not "background". The visual payoff on the map (the battle won) can land by ~0:25-0:30; dive by ~6-8 s; a beat every 2-4 s.
+  (Meade v3 speaks the result only at ~0:32: new videos must say it by 10-15 s.)
 - **Rule of the hook below (line 1 = number) now applies to the sentence AFTER the stakes frame.**
 Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + music + SFX) and its beat sheet
 `reference/hook-reference-rokossovsky-v2-sheet.jpg`. Every video's first minute must match it. v1 of that hook was REJECTED as
@@ -105,7 +108,7 @@ Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + mus
 **Script (first ~60 s, 4 paragraphs):**
 1. **After the stakes frame (see UPDATED above): a hard number + the disaster/stakes in 3 short sentences** ("Four hundred thousand German soldiers. Lost in a single summer.
    And it all began in a swamp the Germans were sure no army could cross."). Never a date + place, never a belief or background first.
-2. **Flash-forward / payoff by ~0:25-0:32** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
+2. **The promise SPOKEN by 10-15 s; the visual flash-forward / payoff by ~0:25-0:30** (the title + thumbnail promise paid: "Three days later, a whole German army was trapped...").
 3. **The human twist as ACTION, not a portrait** (prison, wound, disgrace, odds against the man), every detail its own beat.
 4. **Name reveal + the three moves as quick cuts**, then "These are <Name>'s three greatest tactical moves." Hook total ~60-65 s.
 **Visuals + sound (check each on the snapshot sheet before rendering):**
@@ -121,9 +124,9 @@ Reference: `reference/hook-reference-rokossovsky-v2.mp4` (0:00-1:04, voice + mus
 - SFX on every beat; the zoom whoosh only on the 2-3 biggest camera moves (dive, flash-forward, zoom-out).
 **Proved by data (Morgan analytics 2026-10-25, owner-approved 2026-10-26; `morgan/youtube/analytics_2026-10-25.md`):** Morgan opened on
 a date + background and named the promise only at 0:35: 44 % of viewers were gone by 0:42. So, on top of the rules above:
-- **The title's promise is spoken as a result within the first 10 s** (e.g. "In under an hour, one crippled wagon driver wiped out
+- **The title's promise is spoken as a result within the first 10-15 s** (owner 2026-10-28: only the short stakes frame may come before it) (e.g. "In under an hour, one crippled wagon driver wiped out
   Britain's most feared legion."). Holding back the hero's NAME for the slam is fine; holding back the PROMISE is not.
-- **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise.**
+- **Background (dates, earlier defeats, the war so far) gets at most 15-20 s, and only after the promise** (the 1-2 sentence stakes frame at the very start is not background).
 - **The three moves are previewed by 0:45** (name slam + 3 snap cuts finished by then): tighten the twist rather than drop beats.
 - Targets: **≥ 65 % retention at 0:30 and ≥ 55 % at 1:00** (HANDOVER §10). Check the script against them before voicing.
 **Confirmed again (George Thomas 2nd read 2026-10-26):** 94.4 % → 51.2 % by 0:45; the old Thomas hook (date + place first) shows the curve bottoming just before the hero appears (0:47). No new rule: the hook above already fixes this.
