@@ -87,7 +87,7 @@ const SW = 0.70, CWd = [1500, 800];
 camTo(T_MAR - 0.15, 1.1, CWd[0], CWd[1], SW, "power2.inOut"); SFX("ref:whoosh", T_MAR - 0.1);
 camTo(T_MAR + 0.97, END - T_MAR - 1.0, CWd[0] - 20, CWd[1], SW * 1.03, "sine.inOut");
 B.date("MARCH 1864", T_MAR + 0.05, T_PLAN, 32); B.date("MAY 1864", T_PLAN + 0.05, null, 32);
-flags(SW, L(36.25, -85.3), L(33.4, -82.3), T_MAR + 0.3, null);
+flags(SW, L(37.25, -83.75), L(33.4, -82.3), T_MAR + 0.3, null);   // US flag on Kentucky, clear of the left cards
 const GP = facePin("assets/media/grant_head.png", "GRANT", P.cha[0] + 40, P.cha[1] - 70, T_MAR + 0.2);
 const SP = facePin("assets/media/sherman_head.png", "SHERMAN", P.cha[0] - 50, P.cha[1] + 50, T_MAR + 0.3);
 SFX("ref:pop", T_MAR + 0.25);

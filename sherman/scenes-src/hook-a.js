@@ -385,7 +385,7 @@ const sst = (txt, css, t, rot, size = 60, sub, c = "#e3232f") => { pulse(t + 0.2
 const S200 = sst(`<span class="n">0</span> MEN`, "right:130px;top:200px;", T_200 - 0.1, -5, 84, "FOR KENTUCKY ALONE");
 tick(S200, ".n", 200000, T_200 + 0.1, T_200 + 1.1);
 sst("LEAKED", "right:230px;top:430px;", T_LEAK + 0.05, 4, 76, "TO THE NEWSPAPERS");
-sst("COMMAND LOST", "right:120px;top:640px;", T_LOST + 0.1, -3, 70, "SENT HOME · NOVEMBER 1861");
+sst("COMMAND LOST", "right:120px;top:640px;", T_LOST + 0.1, -3, 70, "SENT HOME · 1861");
 tl.to(SECW, { autoAlpha: 0, duration: 0.3 }, T_LOST);
 // "And one newspaper printed ... that he was insane": the designed headline card SLAMS over the badge (boom)
 tl.to([...STAMPS, LOU, KYL], { autoAlpha: 0, duration: 0.3 }, T_ONE);

@@ -254,7 +254,7 @@ B.showDate(0.1); B.date("14 JUNE 1864", 0.2, T_KEN, 34); B.date("JUNE 1864", T_K
 B.date("2-3 JULY 1864", T_WEEK + 0.1, null, 34);
 rain(0, T_27 + 1.0, { n: 240 });
 // flags on each side's ground (wide, close, wide)
-flag(FL.us, "UNITED STATES", ...L(34.10, -84.85), 0.3, T_PAT + 0.4, 92); flag(FL.cs, "CONFEDERATE STATES", ...L(33.84, -84.42), 0.4, T_PAT + 0.4, 92);
+flag(FL.us, "UNITED STATES", ...L(34.05, -84.75), 0.3, T_PAT + 0.4, 92); flag(FL.cs, "CONFEDERATE STATES", ...L(33.84, -84.42), 0.4, T_PAT + 0.4, 92);
 flag(FL.us, "UNITED STATES", ...L(33.928, -84.668), T_PAT + 0.6, T_WEEK + 0.4, 42); flag(FL.cs, "CONFEDERATE STATES", ...L(33.935, -84.565), T_PAT + 0.7, T_WEEK + 0.4, 42);
 flag(FL.us, "UNITED STATES", ...L(33.99, -84.70), T_WEEK + 0.6, END + 1, 74); flag(FL.cs, "CONFEDERATE STATES", ...L(33.80, -84.42), T_WEEK + 0.7, END + 1, 74);
 

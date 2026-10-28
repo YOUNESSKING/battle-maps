@@ -255,16 +255,16 @@ box("ATLANTA", ATL[0] - 120, ATL[1] + 40, 1.0, 22, T_DALT);
 box("CHATTANOOGA", CHT[0] - 150, CHT[1] - 34, T_CHATT - 0.1, 22, T_DALT);
 K.target(CHT[0], CHT[1], T_CHATT, { r: 40, side: "carth", until: T_THREE + 1 });
 // Sherman's three armies march south out of Chattanooga
-unit("th", "carth", L(35.02, -85.30), "infantry", "THOMAS", { t: 0.2, w: 66, h: 44, tag: 18, size: "XXXX" });
-unit("mc", "carth", L(35.04, -85.42), "infantry", "McPHERSON", { t: 0.3, w: 66, h: 44, tag: 18, size: "XXXX" });
-unit("sc", "carth", L(35.10, -85.12), "infantry", "SCHOFIELD", { t: 0.4, w: 66, h: 44, tag: 18, size: "XXXX" });
+unit("th", "carth", L(34.89, -85.18), "infantry", "THOMAS", { t: 0.2, w: 66, h: 44, tag: 18, size: "XXXX" });
+unit("mc", "carth", L(34.86, -85.36), "infantry", "McPHERSON", { t: 0.3, w: 66, h: 44, tag: 18, size: "XXXX" });
+unit("sc", "carth", L(34.91, -85.00), "infantry", "SCHOFIELD", { t: 0.4, w: 66, h: 44, tag: 18, size: "XXXX" });
 const TH1 = L(34.90, -85.13), MC1 = L(34.74, -85.33), SC1 = L(34.98, -84.93);
-along("th", LL([[35.02, -85.30], [34.97, -85.20], [34.90, -85.13]]), 0.8, T_THREE + 1.2 - 0.8);
-along("mc", LL([[35.04, -85.42], [34.92, -85.38], [34.74, -85.33]]), 0.9, T_THREE + 1.6 - 0.9);
-along("sc", LL([[35.10, -85.12], [35.06, -85.00], [34.98, -84.93]]), 1.0, T_THREE + 1.4 - 1.0);
-arw({ pts: LL([[35.00, -85.28], [34.94, -85.18]]), side: "carth", t: 0.9, dur: 1.6, width: 9, until: T_FACE });
-arw({ pts: LL([[35.00, -85.44], [34.80, -85.36]]), side: "carth", t: 1.1, dur: 1.8, width: 9, until: T_FACE });
-arw({ pts: LL([[35.08, -85.08], [35.00, -84.96]]), side: "carth", t: 1.3, dur: 1.6, width: 9, until: T_FACE });
+along("th", LL([[34.89, -85.18], [34.87, -85.12]]), 0.8, T_THREE + 1.2 - 0.8);
+along("mc", LL([[34.86, -85.36], [34.74, -85.33]]), 0.9, T_THREE + 1.6 - 0.9);
+along("sc", LL([[34.91, -85.00], [34.93, -84.94]]), 1.0, T_THREE + 1.4 - 1.0);
+arw({ pts: LL([[35.02, -85.28], [34.93, -85.20]]), side: "carth", t: 0.9, dur: 1.6, width: 9, until: T_FACE });
+arw({ pts: LL([[34.98, -85.40], [34.80, -85.36]]), side: "carth", t: 1.1, dur: 1.8, width: 9, until: T_FACE });
+arw({ pts: LL([[35.03, -85.12], [34.94, -85.02]]), side: "carth", t: 1.3, dur: 1.6, width: 9, until: T_FACE });
 B.caption("SHERMAN MARCHES SOUTH FROM CHATTANOOGA", T_CHATT, T_THREE + 2.0, "carth");
 const TK = ticker("SHERMAN'S THREE ARMIES · 1 MAY 1864", 98797, "", "left:70px;top:230px;", T_HUND - 0.2, 1.6, T_FACE, 8, { col: "#7fb0ff", sub: "PRESENT FOR DUTY · SHERMAN'S MEMOIRS" });
 // the three army commanders, one badge each, on their names
