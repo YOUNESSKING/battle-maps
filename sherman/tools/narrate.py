@@ -2,18 +2,14 @@
 import json, re, sys
 import numpy as np, soundfile as sf
 from kokoro_onnx import Kokoro
+sys.path.insert(0, "/home/user/battle-maps/sherman/tools")
+from tts_names import speak  # names: tools/tts_names.py
 
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "am_michael"
 SPEED = 1.0
 SCRIPT = "/home/user/battle-maps/sherman/script.md"
 OUT = "/home/user/battle-maps/sherman/audio"
 GAP_PARA, GAP_SECTION = 0.6, 0.8
-# how the TTS should say foreign names (the written script and timing.json keep the real spelling)
-PRON = {"Meade": "Meed", "Gettysburg": "Gettys-burg", "Leister": "Lie-ster", "Rappahannock": "Rappa-hannock", "Cadiz": "Kuh-diz",
-        "Fremantle": "Free-mantle", "Armistead": "Armi-sted", "Emmitsburg": "Emmits-burg", "Gouverneur": "Guvver-neer",
-        "Maxcy": "Max-ee", "Birney": "Bur-nee", "Culp's": "Culps", "Sickles": "Sickles", "Pettigrew": "Petti-grew",
-        "Frederick": "Fredrick", "Fredericksburg": "Fredericks-burg", "Hancock": "Han-cock", "Longstreet": "Long-street",
-        "Chancellorsville": "Chancellors-ville", "Vicksburg": "Vicks-burg", "Potomac": "Puh-toe-mac", "Lane": "Lane"}
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")
 text = open(SCRIPT).read()
@@ -26,10 +22,7 @@ for si, sec in enumerate(sections):
             continue
         tag = re.match(r"^\[([^\]]*)\]", p).group(1)
         spoken = re.sub(r"^\[[^\]]*\]\s*", "", p).strip()
-        spoken_tts = spoken
-        for a, b in PRON.items():
-            spoken_tts = spoken_tts.replace(a, b)
-        audio, sr = k.create(spoken_tts, voice=VOICE, speed=SPEED, lang="en-us")
+        audio, sr = speak(k, spoken, VOICE, SPEED)
         dur = len(audio) / sr
         timing.append({"section": name, "tag": tag, "start": round(t, 2), "end": round(t + dur, 2), "text": spoken})
         chunks += [audio, np.zeros(int(sr * GAP_PARA), dtype=audio.dtype)]

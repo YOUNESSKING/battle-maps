@@ -23,3 +23,10 @@ Owner rule (2026-10-26, after the Morgan comments about "Nathanael Greene"): **c
 | Cowpens, Saratoga | (as written) | `kˈaʊpənz`, `sˌæɹɐtˈoʊɡə`, fine | Morgan |
 
 Add new rows for every video. Names from earlier videos with known fixes: see each video's `tools/narrate.py` `SAY` dict (e.g. Goose Green: Piaggi, Estévez).
+| Tecumseh | exact phonemes `təkˈʌmsə` (sherman/tools/tts_names.py PHON) | `tˈɛkəmsˌeɪ` (TEK-um-say) → `təkˈʌmsə` (tuh-KUM-suh) | Sherman |
+| Appomattox | exact phonemes `ˌæpəmˈæɾəks` | `ɐpˈɑːmɐtˌɑːks` (a-POM-a-tox) → `ˌæpəmˈæɾəks` (ap-uh-MAT-ux) | Sherman |
+| Oostanaula | exact phonemes `ˌuːstənˈɔːlə` | `ˈuːstɐnˌɔːlə` (OO-stan-awla) → `ˌuːstənˈɔːlə` (oo-stuh-NAW-luh) | Sherman |
+| Chattahoochee | exact phonemes `tʃˌæɾəhˈuːtʃiː` | `tʃˈæɾɐhˌuːtʃiː` (CHAT-a-hoochee) → `tʃˌæɾəhˈuːtʃiː` (chat-uh-HOO-chee) | Sherman |
+| Salkehatchie | exact phonemes `sˌɔːlkɪhˈætʃi` | `sˈælkɪhˌætʃi` (SAL-ki-hatchie) → `sˌɔːlkɪhˈætʃi` (sawl-kee-HATCH-ee) | Sherman |
+| Macon (Georgia) | Maykon | `mˈækən` (MACK-en) → `mˈeɪkən` (MAY-kun) | Sherman |
+| Kennesaw, Resaca, Allatoona, Milledgeville, Griswoldville, Hardee, Schofield, Slocum, Jonesboro, Durham | (as written) | `kˈɛnɪsˌɔː`, `ɹᵻsˈɑːkə`, `ˌælɐtˈuːnə`, `mˈɪlɪdʒvˌɪl`, ... fine | Sherman |
