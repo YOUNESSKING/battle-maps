@@ -1,0 +1,131 @@
+{
+ "title": "Sherman #13 - TESTS C1 / C2 / C3 (CURRENT = shipped scene | TEST = new scene on the approved C1 grade)",
+ "blocks": [
+  {
+   "title": "C1 \u00b7 STAKES STAMP IN THE FIRST SECOND (test-C1-stamp)",
+   "note": "The 0.3 s stamp states the stakes (LINCOLN EXPECTS TO LOSE \u00b7 THE 1864 ELECTION \u00b7 THE UNION AT STAKE); AUGUST 1864 stays in the date scroll. Sound unchanged (hit + shake).",
+   "pairs": [
+    [
+     "test-current-hook-a",
+     "test-C1-stamp",
+     0.3,
+     "0.3 s: the stamp slams in"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C1-stamp",
+     0.8,
+     "0.8 s: stamp readable (first text seen muted)"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C1-stamp",
+     2.0,
+     "2 s: STALLED + Lincoln badge"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C1-stamp",
+     4.0,
+     "4 s: memorandum card"
+    ]
+   ]
+  },
+  {
+   "title": "C2 \u00b7 ONE BIG TEXT BLOCK AT A TIME IN THE HOOK (test-C2-onetext)",
+   "note": "Each new card/stamp replaces the previous one (number card, ONE GENERAL badge, BREAKS THE CONFEDERACY, 4 MONTHS, STILL HOLDING, ATLANTA FALLS, LINCOLN RE-ELECTED, NO SUPPLY LINE). Map labels, date and legend stay.",
+   "pairs": [
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     12.5,
+     "'one general': CURRENT number card + badge | TEST badge only"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     15.0,
+     "BREAKS THE CONFEDERACY: TEST hides the number card + badge"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     17.5,
+     "between stamps: TEST has no big text"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     20.0,
+     "4 MONTHS -> STILL HOLDING (TEST replaces, CURRENT stacks 4)"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     22.5,
+     "the swing: TEST badge returns alone"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     25.0,
+     "last railroad"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     27.5,
+     "ATLANTA FALLS -> LINCOLN RE-ELECTED: TEST one card"
+    ],
+    [
+     "test-current-hook-a",
+     "test-C2-onetext",
+     30.0,
+     "zoom-out to the theatre"
+    ]
+   ]
+  },
+  {
+   "title": "C3 \u00b7 END-SCREEN SPACE (test-C3-endscreen)",
+   "note": "Yellow box = approx. YouTube end-screen zone, drawn on frames in the last 20 s (from 24.8 s). TEST keeps text + chips in the top band; the map stays, the three moves redraw, rings pulse, smoke drifts.",
+   "pairs": [
+    [
+     "test-current-ending",
+     "test-C3-endscreen",
+     15.0,
+     "end-1: WAR IS ALL HELL (unchanged)"
+    ],
+    [
+     "test-current-ending",
+     "test-C3-endscreen",
+     20.0,
+     "end-2 starts 20.4 s: the question lands full-size (before the last 20 s)"
+    ],
+    [
+     "test-current-ending",
+     "test-C3-endscreen",
+     25.5,
+     "last 20 s from 24.8 s: TEST card shrinks to the top band, dimmer off, map alive"
+    ],
+    [
+     "test-current-ending",
+     "test-C3-endscreen",
+     30.0,
+     "numbers pop in the compact card; moves redraw on the map"
+    ],
+    [
+     "test-current-ending",
+     "test-C3-endscreen",
+     36.0,
+     "NEXT: GEORGE THOMAS chip top-left (TEST)"
+    ],
+    [
+     "test-current-ending",
+     "test-C3-endscreen",
+     42.0,
+     "subscribe pill top-right (TEST); zones clear"
+    ]
+   ]
+  }
+ ]
+}
