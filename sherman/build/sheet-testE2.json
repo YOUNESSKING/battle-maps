@@ -1,0 +1,3 @@
+{"title": "Sherman #13 · TEST E2 · the ground about to be lost turns paler first, then Union (test-E2-lose) vs CURRENT (test-E2-current = move1d + E1 tone)",
+ "note": "Loss 1: Chattahoochee, 8-9 July (cue 'crossed the Chattahoochee' 2.1 s -> paler by 3.4 s -> front moves 5.1 s). t=16 = loss 2 (the advance on Atlanta) mid-paling. Both on atlanta_hd_lift + saturate(0.8).",
+ "frames": [[1.5, "before"], [3.5, "paling (TEST: lost ground at 40 % red)"], [5.6, "front moving"], [7, "after"], [16, "loss 2: paling before the advance on Atlanta"]]}

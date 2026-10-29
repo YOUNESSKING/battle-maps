@@ -269,8 +269,10 @@ const cht = LN.river.CHATTAHOOCHEE.reduce((a, p) => (p.length > a.length ? p : a
 // ---------- map layers ----------
 // E2: the ground about to be lost first turns paler (its multiply layer fades to 40 %), then turns Union as the front moves.
 // Layers per loss (tools: scratchpad mk_e2.py): rest (unchanged ground), lostR (the lost ground, before colour), lostB (after colour).
-const lay = (file, on, off) => { const el = B.image(file, 0, 0, 2880, 1620, { t: 0, dur: 0.01 }); el.style.mixBlendMode = "multiply";
-  tl.set(el, { autoAlpha: 0 }, 0); tl.set(el, { autoAlpha: 1 }, on); if (off != null) tl.set(el, { autoAlpha: 0 }, off); return el; };
+const lay = (file, on, off) => { const el = document.createElement("img"); el.className = "wimg"; el.src = file; el.alt = "";
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  const w = document.getElementById("world"); w.insertBefore(el, document.getElementById("overlay")); gsap.set(el, { autoAlpha: 0 });
+  tl.set(el, { autoAlpha: 1 }, on); if (off != null) tl.set(el, { autoAlpha: 0 }, off); return el; };
 const loss = (before, after, cue, move, offAfter, beforeOn = 0.001) => {
   if (beforeOn != null) lay(`assets/media/atlanta_ctl_${before}_mx.png`, beforeOn, cue);            // whole BEFORE map until the cue (identical pixels after the swap)
   lay(`assets/media/test_E2_${before}_rest_mx.png`, cue, move + 1.2);
