@@ -100,3 +100,7 @@ html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; backgro
 .bio-card .rule { height: 4px; width: 140px; background: #f4f1ea; margin: 22px 0 22px; opacity: 0.85; }
 .bio-card .row { font-size: 42px; font-weight: 500; line-height: 1.45; letter-spacing: 0.02em; }
 .bio-card .row b { color: #e3232f; margin-right: 16px; }
+
+/* E1 (owner approved 2026-10-29): on the lifted maps (<map>_hd_lift) the territory colours read ~20 % stronger;
+   tone every multiply territory layer back to the old perceived strength. Never make territory more saturated. */
+img[style*="multiply"] { filter: saturate(0.8); }
