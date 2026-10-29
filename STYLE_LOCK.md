@@ -170,11 +170,17 @@ Reference: `reference/engagement-test-peng.mp4` (1:04, Peng #10 test). Code: `li
 `tools/scene_template.html`; in `rokossovsky/` and `peng/`). Worked examples: `reference/engagement-examples/` (subscribe-move1c.js,
 decide-move3c.js, final-ending-b.js). Studied from Tactical Genius (Ridgway transcript + top comments) and YouTube's spam / fake-engagement
 policy (asking to like, comment or subscribe is allowed; never rewards, coercion or repeated comments). Every video has exactly these three:
-1. **Woven subscribe line after move 1** (replaces the old stop-and-ask "If you're enjoying this breakdown..." paragraph). One sentence that
-   bridges into move 2, no pause, e.g. "But Unsan was only the warning shot. Breakdowns like this, move by move on the map, are exactly
-   what subscribing keeps bringing you. Because the trap Peng set next, on the Chongchon River, would send an entire American army into
-   retreat." Visual: `E.subscribe(t, until)` = small SUBSCRIBE button bottom-right, a cursor clicks it (SUBSCRIBED, bell rings), slides
-   out; then the NEXT: <move 2> label. Never a full-screen subscribe card.
+1. **Woven subscribe line after move 1 = the "D2" pattern (owner 2026-10-29; replaces the older "...exactly what subscribing keeps
+   bringing you" wording, which sounded like an order).** Never an order ("Subscribe!", "hit subscribe"); the ask is stated as what
+   subscribing does, inside a bridge that keeps the story moving. Write it FRESH for each video, fitted to its topic (never copy the
+   example word for word), in 4 beats with no pause:
+   (1) close move 1 ("<move 1 place> was only the beginning."); (2) the hard QUESTION that move 2 answers, in the story's own terms;
+   (3) one short clause saying this channel answers questions like that and that subscribing is how you catch the next one;
+   (4) straight back into the story ("Here's how <Name> did it.").
+   Example (Sherman #13): "Atlanta was only the beginning. So how do you march an army across a whole state with no supply line?
+   That's the kind of question we answer here, and subscribing is how you catch the next one. Here's how Sherman did it."
+   Visual: `E.subscribe(t, until)` = small SUBSCRIBE button bottom-right, a cursor clicks it (SUBSCRIBED, bell rings), slides
+   out, timed on the subscribing clause; then the NEXT: <move 2> label. Never a full-screen subscribe card.
 2. **One "What would you do?" card per video**, at the move's biggest decision, BEFORE the narration reveals the real choice:
    "Now stop for a moment, and put yourself in <Name>'s place. <situation in 2 short sentences>. Do you <A>, or do you <B>? Tell us in the
    comments what you would have done. And then..." Visual: `E.decide({ sub, a, b, real, t, tCount, tReveal, until })` = dimmed map,
