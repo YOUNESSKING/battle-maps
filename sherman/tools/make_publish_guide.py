@@ -80,7 +80,7 @@ THUMB_WAIT = P("<b>Thumbnail: not made yet.</b> Owner's choice (28 Oct): wait fo
                "tools/make_thumb.py (vidIQ battlefield = the hook scene + Sherman's real LoC photo + red brush banner).", "warn")
 story = [Spacer(1, 18 * mm), P("WILLIAM T. SHERMAN", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         (img(TA, 150) if HAVE_T else THUMB_WAIT), PageBreak()]
+         (img(TA, 150) if HAVE_T else THUMB_WAIT), Spacer(1, 3 * mm), P("Main thumbnail: \u201cMAKE GEORGIA HOWL\u201d (INTERIM: our own map frame from the hook + Sherman's real LoC photo; replace with the vidIQ battlefield version after 22 Nov)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
                  ["File", f"Sherman-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
