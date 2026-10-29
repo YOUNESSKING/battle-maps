@@ -1,0 +1,13 @@
+{"title": "Sherman #13 · TEST B (move 2): B1 no red fill · B2 overview framing · B3 decide card that keeps moving",
+ "note": "CURRENT = shipped scene (copied to scenes/test-cur-*), TEST = scenes/test-B*. Same basemaps (_hd_ref) for a fair comparison; nothing shipped was changed.",
+ "tests": [
+  {"name": "B1 · test-B1-march (move2c, georgia)", "what": "No Confederate fill: Union ground + the army's band in blue, faint red glow only where the sides touch, red CONFEDERATE GEORGIA / -HELD labels",
+   "cur": "test-cur-move2c", "test": "test-B1-march", "times": [51, 99, 112], "phone": 99,
+   "labels": ["8:55 Milledgeville taken (band stage 1)", "9:43 the ~60-mile band, bummers, burning gins", "9:56 Ebenezer Creek push-in"]},
+  {"name": "B2 · test-B2-frame (move2e, south)", "what": "Pulled out to the whole theatre: blue 21 % / red 53 % / sea 26 % (shipped: blue 2 % / red 83-86 %). 35-45 % blue is impossible with Atlanta + Savannah in frame (max 26 %, Dec 1864 control)",
+   "cur": "test-cur-move2e", "test": "test-B2-frame", "times": [4, 14, 21], "phone": 21,
+   "labels": ["11:15 Christmas-gift telegram", "11:25 RESULT card", "11:32 Macon + Augusta: WRONG x2"]},
+  {"name": "B3 · test-B3-decide (move2b, south)", "what": "Under a lighter dim: slow camera push, Hood's arrow keeps drawing toward Nashville, supply line flickers + cut pulse every 2.4 s; option boxes pulse on their words (beat every <= 2.5 s)",
+   "cur": "test-cur-move2b", "test": "test-B3-decide", "times": [16, 18, 20, 22, 24, 26], "phone": 22,
+   "labels": ["'all the way back' -> A pulses", "'let him go' -> B pulses, cut pulse", "'cut loose' -> B pulses", "'march the other way' -> B pulses", "'Tell us' ticks, Hood nearing Nashville", "'what you would have done' / 'And then hear' -> pulses"]}
+ ]}

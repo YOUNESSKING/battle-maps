@@ -1,0 +1,40 @@
+{
+ "title": "Sherman #13 \u00b7 TESTS A1-A5 (owner approval one by one) \u00b7 CURRENT = shipped scene \u00b7 TEST = on the lifted C1 basemaps",
+ "rows": [
+  [
+   "A1 BIGGER UNITS + CORPS COUNTERS (test-A1-units, corridor_hd_lift; old counter look, no dark layer): counters ~54 px, names 19 px",
+   "scenes/move1b/cmp",
+   "scenes/test-A1-units/cmp",
+   45,
+   15
+  ],
+  [
+   "A2 BIGGER MAP LABELS (test-A2-labels = A1 + town labels ~36 px constant on screen, story-place labels ~32 px); t=9.5 = the wide shot with the towns",
+   "scenes/test-A2-labels/current",
+   "scenes/test-A2-labels/cmp",
+   9.5,
+   15
+  ],
+  [
+   "A3 LEGEND CHIPS = ON-MAP TERRITORY COLOURS (test-A3-legend, atlanta_hd_lift): Union (95,119,138), Confederate (130,63,58)",
+   "scenes/test-A3-legend/current",
+   "scenes/test-A3-legend/cmp",
+   106,
+   6
+  ],
+  [
+   "A4 LIGHTER RED TERRITORY (test-A4-red, atlanta_hd_lift): Confederate multiply (232,52,52) -> (240,105,95)",
+   "scenes/test-A3-legend/current",
+   "scenes/test-A4-red/cmp",
+   6,
+   106
+  ],
+  [
+   "A5 DARK EDGE ON THE RED FRONT BAND (test-A5-front, Jonesboro close-up; glow kept)",
+   "scenes/test-A3-legend/current",
+   "scenes/test-A5-front/cmp",
+   70,
+   82
+  ]
+ ]
+}
