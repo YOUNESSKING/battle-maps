@@ -43,6 +43,12 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
      dive into the battlefield by ~6 s, a beat every 2-4 s, white-flash cut to the payoff by ~0:22, the commander's name held back
      (mystery "?" badge) until the twist, the prison-bars sequence with one stamp per detail, name slam + 3 snap cuts + title card.
   2. **Dark HD maps everywhere** (`<map>_hd_ref`: the dark "Frontlines" grade of the HD relief) for overview AND battle maps.
+     **UPDATED 2026-10-29 (owner approved the C1 test, Sherman #13): bake every map with `LIFT=1 python3 tools/bake_hd.py <map>` and use
+     `<map>_hd_lift`**: the SAME grey-green hue, land ramp (24,31,31)->(190,202,184), every map normalised to land median 0.70 (ridge maps
+     no longer come out dark), sea (18,33,44), softer fine texture on close-ups (zoom >= 11: smoothing 1.6, fine 0.04). Day close-ups land at
+     luma ~110-118 like the reference's day close-ups. **Never navy/blue on day shots: blue-muted = night** (owner 2026-10-29). Night (`K.night` /
+     `GG.night`) unchanged. **Unit counters keep the old look** (no cream keyline: owner 2026-10-29). Test: `sherman/build/test-c1-compare.mp4`,
+     study: `research/MAP_COLOUR_REVIEW.md`. `bake_hd.py` with LIFT=1 is in `sherman/tools/` (copy it into new skeletons).
   3. **Wide -> close -> wide per move:** option-1 territory on the wide shot, push-in to option-2 glowing fronts for the fight,
      zoom back out to option 1 for the result; the control overlay changes with every date the narration says.
   4. **Real licensed photos in every commander badge** (Soviet PD-Russia, Bundesarchiv CC BY-SA with credit), never initials when a
@@ -193,7 +199,7 @@ Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in 
 ## 2a. MERGED "FRONTLINES" LOOK (owner-approved 2026-10-06, the 1-min D-Day test; lessons from Netflix "WWII: From the Frontlines")
 Our locked style (sections 2-5) stays the base; these are ADDED on top. Reference build: `frontlines-1m/` (scenes `europe_hd`, `normandy_hd`, archive `a-1`/`a-2`; `ONEMIN=1 python3 tools/assemble_dday.py`); final test video https://gofile.io/d/YX3zQBqK.
 - **Open on a 2D map, no globe.** The owner dropped the globe/cloud dive: start straight on the dark 2D map with units moving in the first second (the 3D tilt is out too: maps stay flat).
-- **Detailed maps (HD relief):** `tools/bake_hd.py` = zoom+1 terrain tiles, 5760x3240 shown at 2880x1620, 4-direction hillshade + slope + ambient occlusion + fine texture. Rivers traced from the elevation data (`make_rivers_dem.py`), places from OSM (`fetch_osm.py`).
+- **Detailed maps (HD relief):** `tools/bake_hd.py` = zoom+1 terrain tiles, 5760x3240 shown at 2880x1620, 4-direction hillshade + slope + ambient occlusion + fine texture (since 2026-10-29: `LIFT=1` -> `<map>_hd_lift`, the default basemap, see 0b item 2). Rivers traced from the elevation data (`make_rivers_dem.py`), places from OSM (`fetch_osm.py`).
 - **Geography layer (`make_geo_layer.py BASE STYLE SKIP MAXV MINPOP`):** only BIG towns (population >= MINPOP, e.g. 8000; no villages, no suburbs), small labels, period names (1944 names, HIST dict), labels never collide. Put it ABOVE the territory layer (else it turns pink). Story places (e.g. Sainte-Mère-Église, Utah Beach) as small white-box labels; keep them small.
 - **Territory:** strong colours drawn with `mixBlendMode = "multiply"` (`_mx` overlays: axis (232,52,52) / allied (110,160,255)) so the relief shows through the colour.
 - **Living map (`lib/living.js`, `LivingK`):** drifting cloud shadows, shimmer on rivers, scale bar, north arrow. Always on.
