@@ -58,3 +58,4 @@ sherman/logs/*.log
 sherman/logs/*.done
 sherman/assets/film/src/
 sherman/assets/film/clips/
+sherman/build/thumbpick/
