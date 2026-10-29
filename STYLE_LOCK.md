@@ -41,6 +41,9 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
     turns PALER (its territory layer fades to 40 % over ~1.3 s on the narration cue), then cross-fades to the winner's colour over ~1 s
     as the front moves. Never stronger/more saturated colour to show a loss. Layers: `sherman/tools/make_loss_layers.py`; scene
     pattern: `sherman/scenes-src/test-E2-lose.js` (`lay` / `loss` helpers).
+    **TERRITORY TONED DOWN (owner 2026-10-29, test E1 approved):** with the lifted maps, every multiply territory layer gets
+    `filter: saturate(0.8)` (in `sherman/lib/battle.css`; copy it into new skeletons) so red and blue look as strong as before, not
+    stronger. Never raise territory saturation.
   - Sound: the locked kit (section 3/3a), music 0.08 (section 4-5), -14 LUFS; **after ANY timing change, `assemble_full.py --audio-only`
     and check one bomb run frame vs sound** (the Rokossovsky remix fixed a 7 s drift).
   - Voice A (section 6). Thumbnail: vidIQ battlefield (left 2/3, labels checked/redone) + the commander's REAL photo cut out on the
