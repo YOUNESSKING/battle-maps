@@ -1,0 +1,41 @@
+{
+ "title": "Sherman #13 \u00b7 TEST F \u00b7 the reference look (sepia base, one-sided wash, burst + flood capture; locked two-colour fronts)",
+ "note": "CURRENT = test-E2-current (move1d on atlanta_hd_lift) \u00b7 F1 = Union ground filled (muted blue ~50 %), Confederate plain \u00b7 F2 = Confederate ground filled (crimson #8B2515 ~50 %), Union plain \u00b7 base atlanta_hd_tg",
+ "cols": [
+  [
+   "CURRENT",
+   "scenes/test-F1-ref/current"
+  ],
+  [
+   "F1",
+   "scenes/test-F1-ref/cmp"
+  ],
+  [
+   "F2",
+   "scenes/test-F2-ref/cmp"
+  ]
+ ],
+ "frames": [
+  [
+   1.5,
+   "before the first capture"
+  ],
+  [
+   5.7,
+   "capture 1 mid-flood (Chattahoochee: burst at Sope Creek 4.95 s, flood 5.1-6.5 s)"
+  ],
+  [
+   7,
+   "after capture 1"
+  ],
+  [
+   17.0,
+   "capture 2 mid-flood (the advance on Atlanta: burst 16.25 s, flood 16.4-17.8 s)"
+  ],
+  [
+   106,
+   "2 Sep 1864, wide (sep64)"
+  ]
+ ],
+ "phone": 5.7
+}
