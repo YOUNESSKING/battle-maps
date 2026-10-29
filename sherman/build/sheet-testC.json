@@ -56,8 +56,8 @@
     [
      "test-current-hook-a",
      "test-C2-onetext",
-     20.0,
-     "4 MONTHS -> STILL HOLDING (TEST replaces, CURRENT stacks 4)"
+     20.4,
+     "STILL HOLDING: TEST shows it alone, CURRENT stacks 4 text blocks"
     ],
     [
      "test-current-hook-a",
@@ -75,13 +75,13 @@
      "test-current-hook-a",
      "test-C2-onetext",
      27.5,
-     "ATLANTA FALLS -> LINCOLN RE-ELECTED: TEST one card"
+     "the explosions: TEST badge clears for ATLANTA FALLS"
     ],
     [
      "test-current-hook-a",
      "test-C2-onetext",
      30.0,
-     "zoom-out to the theatre"
+     "TEST: LINCOLN RE-ELECTED replaces ATLANTA FALLS (CURRENT: 3 blocks)"
     ]
    ]
   },
@@ -98,8 +98,8 @@
     [
      "test-current-ending",
      "test-C3-endscreen",
-     20.0,
-     "end-2 starts 20.4 s: the question lands full-size (before the last 20 s)"
+     22.0,
+     "end-2 (20.4 s): the question lands full-size before the last 20 s"
     ],
     [
      "test-current-ending",
