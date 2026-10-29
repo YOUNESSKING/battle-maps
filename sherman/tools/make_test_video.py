@@ -14,6 +14,8 @@ SETS = {
         ("B1 · March to the Sea: no red fill", "test-B1-march", 95, 16),
         ("B2 · wider overview of the South", "test-B2-frame", 0, 22),
         ("C3 · room for the YouTube end screen", "test-C3-endscreen", 18, 26)],
+ "O": [(f"{lab}", sc, t, d) for lab, sc in (("O2 EMBER · every capture", "test-O2-ember"), ("O3 BURN LINE · once per move", "test-O3-burnline"))
+       for t, d in ((3.0, 7.0), (14.5, 7.0))] + [("O5 TIDE · wide maps", "test-O5-tide", 98.5, 9.0)],
  "F": [("F1 · Union coloured, Confederate plain", "test-F1-ref", 0, 20),
        ("F1 · Union coloured, Confederate plain", "test-F1-ref", 98, 12),
        ("F2 · Confederate coloured, Union plain", "test-F2-ref", 0, 20),
