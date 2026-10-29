@@ -1,5 +1,5 @@
 // TEST-F1-REF (owner 2026-10-29: copy the reference video's map colours + capture effect; test only): move1d on the sepia basemap
-// atlanta_hd_tg (tools/test_F_bake.py), layers from tools/test_F_layers.py, three-layer fronts, burst + flood captures on the two
+// atlanta_hd_tg (tools/test_F_bake.py), layers from tools/test_F_layers.py, locked two-colour fronts (owner), burst + flood captures on the two
 // losses of test-E2-lose (Chattahoochee, the advance on Atlanta). Variant F1: Union ground filled, Confederate plain.
 // Built with: python3 tools/build_scene.py test-F1-ref atlanta_hd_tg move1-6 move1-9
 // MOVE 1d (move1-6 .. move1-9), Sherman #13: the Chattahoochee, Hood's three attacks, the swing to Jonesboro, Atlanta falls (Jul - Sep 1864).
@@ -310,7 +310,7 @@ const capture = (layer, lostMask, x, y, rmax, t, dur, hole) => {
 // ---------- map layers (TEST F1: Union ground filled (muted blue wash ~50 %), Confederate ground plain) ----------
 const L1M = T_GONE, L2M = T_ONCE - 0.2, FD = 1.4;
 fl("assets/media/test_F1_jul03.png", 0.001, L1M + FD);
-capture(fl("assets/media/test_F1_jul10_flood.png", L1M, L1M + FD), "assets/media/test_F_lost_jul03.png", 1411.3, 311.2, 1172, L1M, FD, false);
+capture(fl("assets/media/test_F1_jul10_flood.png", L1M, L1M + FD), "assets/media/test_F_lost_jul03.png", 1411.3, 311.2, 780, L1M, FD, false);
 fl("assets/media/test_F1_jul10.png", L1M + FD, L2M + FD);
 capture(fl("assets/media/test_F1_jul22_flood.png", L2M, L2M + FD), "assets/media/test_F_lost_jul10.png", 1440.5, 477.9, 553, L2M, FD, false);
 fl("assets/media/test_F1_jul22.png", L2M + FD, T_EZRA, { fadeOut: 0.6 });
@@ -318,7 +318,7 @@ fl("assets/media/test_F1_aug64.png", T_EZRA, T_WRONG + 1.0, { fade: 0.6, fadeOut
 fl("assets/media/test_F1_sep64.png", T_2SEP + 1.0, null, { fade: 1.2 });
 B.image("assets/media/test_F_atlanta_geo.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.shimmer(LN.river.CHATTAHOOCHEE.concat(LN.river.FLINT)); LV.scaleBar(63.64); LV.north();
-const legendF = (t, until) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["rgb(63,74,97)", "UNION"], ["rgb(74,63,53)", "CONFEDERATE"]].map(([sq, nm]) => `<span><b style="display:inline-block;width:20px;height:20px;background:${sq};vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}<span><b style="display:inline-block;width:26px;height:6px;background:#FFCC00;box-shadow:0 0 8px #FF4500;vertical-align:4px;margin-right:8px;border-top:2px solid #E61A1A"></b>FRONT</span></div>`, "", 34, t, until);
+const legendF = (t, until) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["rgb(63,74,97)", "UNION"], ["rgb(74,63,53)", "CONFEDERATE"]].map(([sq, nm]) => `<span><b style="display:inline-block;width:20px;height:20px;background:${sq};vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}</div>`, "", 34, t, until);
 legendF(0.1, END + 1);
 
 // ---------- camera ----------
@@ -346,7 +346,7 @@ flag(FL.us, "UNITED STATES", ...L(33.79, -84.47), T_THAT + 0.8, T_COST + 0.6, 48
 flag(FL.us, "UNITED STATES", ...L(33.52, -84.42), T_COST + 0.8, END + 1, 150); flag(FL.cs, "CONFEDERATE STATES", ...L(33.42, -84.62), T_COST + 0.9, END + 1, 150);
 
 // ---------- move1-6: the Chattahoochee; Hood; three attacks ----------
-const F0 = frontF({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });
+const F0 = frontS({ pts: FR.jul03, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FW(1.3), until: T_GONE + 0.4, to: FR.jul10, moveT: T_GONE, moveDur: 1.8 });
 unit("sc", "carth", L(33.935, -84.480), "infantry", "SCHOFIELD", { t: 0.1, w: 26, h: 17.6, tag: 7, size: "XXXX" });
 unit("th", "carth", L(33.900, -84.560), "infantry", "THOMAS", { t: 0.15, w: 26, h: 17.6, tag: 7, size: "XXXX" });
 unit("mc", "carth", L(33.870, -84.600), "infantry", "McPHERSON", { t: 0.2, w: 26, h: 17.6, tag: 7, size: "XXXX" });
@@ -361,7 +361,7 @@ wstamp("SURPRISE CROSSING", SOPE[0] + 26, SOPE[1] - 22, T_CROSS + 1.0, T_DAVIS +
 B.caption("8-9 JULY: UNION TROOPS CROSS THE CHATTAHOOCHEE UPSTREAM", T_CROSS, T_DAVIS - 0.1, "carth");
 // the river line collapses: Johnston back toward Atlanta, the band moves
 B.move("jo", T_GONE, 2.0, ...L(33.800, -84.420)); B.move("th", T_GONE + 0.1, 2.0, ...L(33.855, -84.470)); B.move("mc", T_GONE + 0.2, 2.0, ...L(33.905, -84.380));
-const F1 = frontF({ pts: FR.jul10, sideA: "carth", sideB: "rome", t: T_GONE + 0.4, dur: 0.01, width: FW(1.4), until: T_ONCE + 0.6, to: FR.jul22, moveT: T_ONCE - 0.2, moveDur: 2.0 });
+const F1 = frontS({ pts: FR.jul10, sideA: "carth", sideB: "rome", t: T_GONE + 0.4, dur: 0.01, width: FW(1.4), until: T_ONCE + 0.6, to: FR.jul22, moveT: T_ONCE - 0.2, moveDur: 2.0 });
 tl.to(F0, { opacity: 0, duration: 0.3 }, T_GONE + 0.4);
 // Davis replaces Johnston with Hood
 badge({ name: "JEFFERSON DAVIS", role: "CONFEDERATE PRESIDENT", initials: "JD", photo: PHOTO.davis, flag: FL.cs, side: "rome", corner: "bl", t: T_DAVIS - 0.2, until: T_HOOD + 0.4 });
@@ -400,7 +400,7 @@ ticker("HOOD'S LOSSES · 20-28 JULY", 11000, "", "right:70px;top:120px;", T_ELEV
 B.hideUnits(["ho"], T_AUG);
 
 // ---------- move1-7: the siege; the night swing west to Jonesboro ----------
-const FA = frontF({ pts: FR.aug64, sideA: "carth", sideB: "rome", t: T_AUG, dur: 1.4, width: FW(2.6), until: T_SWUNG + 0.6 });
+const FA = frontS({ pts: FR.aug64, sideA: "carth", sideB: "rome", t: T_AUG, dur: 1.4, width: FW(2.6), until: T_SWUNG + 0.6 });
 tl.to(F1, { opacity: 0, duration: 0.4 }, T_AUG);
 const FORTS = [...Array(12)].map((_, k) => { const a = (k / 12) * Math.PI * 2; return [33.755 + 0.020 * Math.sin(a), -84.390 + 0.024 * Math.cos(a)]; });
 FORTS.forEach(([la, lo], k) => fort(...L(la, lo), T_AUG + 0.2 + k * 0.08, T_WRONG + 0.6, 3.2));
@@ -436,7 +436,7 @@ box("JONESBORO", JON[0] + 54, JON[1] + 6, T_JON - 0.2, 12, T_WRONG + 0.6);
 K.target(JON[0], JON[1], T_JON, { r: 20, until: T_WRONG + 1.0 });
 
 // ---------- move1-8: Jonesboro (option 2: front lines only) ----------
-const F31 = frontF({ pts: FR.jon31, sideA: "carth", sideB: "rome", t: T_WRONG + 0.6, dur: 1.0, width: FW(4.5), until: T_THAT + 0.4, to: FR.jon01, moveT: T_NEXT + 0.6, moveDur: 1.6 });
+const F31 = frontS({ pts: FR.jon31, sideA: "carth", sideB: "rome", t: T_WRONG + 0.6, dur: 1.0, width: FW(4.5), until: T_THAT + 0.4, to: FR.jon01, moveT: T_NEXT + 0.6, moveDur: 1.6 });
 box("JONESBORO", JON[0] + 9, JON[1] + 3, T_WRONG + 0.8, 2.8, T_THAT + 0.4, { sfx: false });
 box("FLINT RIVER", ...L(33.512, -84.388), T_WRONG + 1.0, 2.4, T_THAT + 0.4, { bg: "#dcecf8", sfx: false });
 unit("hw", "carth", L(33.520, -84.382), "infantry", "HOWARD", { t: T_WRONG + 0.6, w: 7, h: 4.7, tag: 2.1, size: "XXXX" });
@@ -485,7 +485,7 @@ along("hood", OUT, T_ABAND, 3.2, 16);
 arw({ pts: OUT, side: "rome", t: T_ABAND - 0.1, dur: 2.0, width: 4, dash: "8 4", until: T_2SEP + 0.8 });
 
 // ---------- move1-9: Atlanta is ours ----------
-const F9 = frontF({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: T_2SEP + 1.0, dur: 1.2, width: FW(1.2), until: END + 1 });
+const F9 = frontS({ pts: FR.sep64, sideA: "carth", sideB: "rome", t: T_2SEP + 1.0, dur: 1.2, width: FW(1.2), until: END + 1 });
 const IN = LL([[33.838, -84.455], [33.805, -84.430], [33.775, -84.405], [33.757, -84.393]]);
 unit("in", "carth", IN[0], "infantry", "XX CORPS", { t: T_2SEP - 0.2, w: 9, h: 6, tag: 3, size: "XXX" });
 along("in", IN, T_2SEP, 2.4, 14);
