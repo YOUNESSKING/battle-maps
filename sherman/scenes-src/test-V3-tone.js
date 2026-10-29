@@ -1,5 +1,5 @@
-// TEST T3 (owner 2026-10-29: colours feel strong): territory saturate(0.65), opacity 0.75. Test only.
-{ const st = document.createElement("style"); st.textContent = 'img.terr{filter:saturate(0.65) !important;opacity:0.75}'; document.head.appendChild(st); }
+// TEST V3 (owner 2026-10-29: territory colours too strong): img.terr filter saturate(0.5) opacity(0.5) (filter, so GSAP's inline opacity can't override it). Test only.
+{ const st = document.createElement("style"); st.textContent = 'img.terr{filter:saturate(0.5) opacity(0.5) !important}'; document.head.appendChild(st); }
 // TEST-E2-CURRENT: move1d unchanged except the E1 tone line (territory saturate 0.8), on atlanta_hd_lift: the baseline for test-E2-lose.
 // Built with: python3 tools/build_scene.py test-E2-current atlanta_hd_lift move1-6 move1-9
 { const st = document.createElement("style"); st.textContent = 'img.terr{filter:saturate(0.8)}'; document.head.appendChild(st); }
