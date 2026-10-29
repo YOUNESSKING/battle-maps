@@ -241,6 +241,8 @@ for (let k = 0; k < 6; k++) tl.to(SUP, { opacity: k % 2 ? 1 : 0.25, duration: 0.
 const DEC = E.decide({ sub: "OCTOBER 1864 · YOU ARE SHERMAN", a: "CHASE HOOD BACK TO TENNESSEE", b: "CUT LOOSE AND MARCH TO THE SEA", real: 1,
   t: T_DO - 0.4, tCount: T_TELL, tReveal: T_BOTH, until: T_GRANT - 0.2 });
 const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
+// owner 2026-10-29 (B3 approved): black outline on the white text so it reads over the moving map
+DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 OA.querySelectorAll("div")[1].style.fontSize = "52px"; OB.querySelectorAll("div")[1].style.fontSize = "52px";
 const half = document.createElement("div");
 half.style.cssText = "font-size:30px;font-weight:700;letter-spacing:0.12em;color:#9fc0ea;margin-top:8px"; half.textContent = "THOMAS TO NASHVILLE";
