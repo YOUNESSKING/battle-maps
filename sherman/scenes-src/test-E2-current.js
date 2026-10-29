@@ -1,6 +1,6 @@
 // TEST-E2-CURRENT: move1d unchanged except the E1 tone line (territory saturate 0.8), on atlanta_hd_lift: the baseline for test-E2-lose.
 // Built with: python3 tools/build_scene.py test-E2-current atlanta_hd_lift move1-6 move1-9
-{ const st = document.createElement("style"); st.textContent = 'img[style*="multiply"]{filter:saturate(0.8)}'; document.head.appendChild(st); }
+{ const st = document.createElement("style"); st.textContent = 'img.terr{filter:saturate(0.8)}'; document.head.appendChild(st); }
 // MOVE 1d (move1-6 .. move1-9), Sherman #13: the Chattahoochee, Hood's three attacks, the swing to Jonesboro, Atlanta falls (Jul - Sep 1864).
 // Basemap atlanta_hd_ref (z11, 33.64N 84.42W; starts where move1c ends: Smyrna at half move1c's scale). Option 1 (atlanta_ctl_jul03 ->
 // jul10 -> jul22 -> aug64 -> sep64) on the wide / medium shots; option 2 (glowing two-colour fronts only) on the Jonesboro close-up.

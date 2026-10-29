@@ -103,4 +103,5 @@ html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; backgro
 
 /* E1 (owner approved 2026-10-29): on the lifted maps (<map>_hd_lift) the territory colours read ~20 % stronger;
    tone every multiply territory layer back to the old perceived strength. Never make territory more saturated. */
-img[style*="multiply"] { filter: saturate(0.8); }
+/* Tagged by tools/scene_template.html (class "terr" on every multiply image): an attribute selector on style made renders ~10x slower. */
+img.terr { filter: saturate(0.8); }

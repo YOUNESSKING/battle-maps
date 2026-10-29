@@ -38,6 +38,7 @@
     </div>
     <script>
 {{SCENE_JS}}
+      document.querySelectorAll("img").forEach((i) => { if (i.style.mixBlendMode === "multiply") i.classList.add("terr"); }); // E1 tone-down (battle.css)
       window.__timelines["main"] = B.tl;
       B.tl.seek(0);
     </script>

@@ -1,5 +1,5 @@
 // TEST E1 (owner 2026-10-29): C1 lifted base, territory toned back to the old perceived strength (the brighter base made it look more red/blue).
-{ const st = document.createElement("style"); st.textContent = 'img[style*="multiply"]{filter:saturate(0.8)}'; document.head.appendChild(st); }
+{ const st = document.createElement("style"); st.textContent = 'img.terr{filter:saturate(0.8)}'; document.head.appendChild(st); }
 // MOVE 1d (move1-6 .. move1-9), Sherman #13: the Chattahoochee, Hood's three attacks, the swing to Jonesboro, Atlanta falls (Jul - Sep 1864).
 // Basemap atlanta_hd_ref (z11, 33.64N 84.42W; starts where move1c ends: Smyrna at half move1c's scale). Option 1 (atlanta_ctl_jul03 ->
 // jul10 -> jul22 -> aug64 -> sep64) on the wide / medium shots; option 2 (glowing two-colour fronts only) on the Jonesboro close-up.

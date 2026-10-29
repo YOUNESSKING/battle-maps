@@ -1,7 +1,7 @@
 // TEST-E2-LOSE (owner idea, 2026-10-29): = test-E2-current + the paler-before-loss beat on two real losses (Chattahoochee 8-9 Jul,
 // the advance to Atlanta mid-July), from the difference of the before/after control overlays. Owner rule: test files only.
 // Built with: python3 tools/build_scene.py test-E2-lose atlanta_hd_lift move1-6 move1-9
-{ const st = document.createElement("style"); st.textContent = 'img[style*="multiply"]{filter:saturate(0.8)}'; document.head.appendChild(st); }
+{ const st = document.createElement("style"); st.textContent = 'img.terr{filter:saturate(0.8)}'; document.head.appendChild(st); }
 // MOVE 1d (move1-6 .. move1-9), Sherman #13: the Chattahoochee, Hood's three attacks, the swing to Jonesboro, Atlanta falls (Jul - Sep 1864).
 // Basemap atlanta_hd_ref (z11, 33.64N 84.42W; starts where move1c ends: Smyrna at half move1c's scale). Option 1 (atlanta_ctl_jul03 ->
 // jul10 -> jul22 -> aug64 -> sep64) on the wide / medium shots; option 2 (glowing two-colour fronts only) on the Jonesboro close-up.
