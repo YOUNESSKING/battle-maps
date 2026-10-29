@@ -34,6 +34,9 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
     method card that adds one line per move.
   - Archive: Netflix look (headline card, 3D-depth photos, projector-frame film, headline date cards), licensed only: US government film
     (Signal Corps, Capra "Why We Fight"), NARA CC0, Commons CC BY / CC BY-SA / PD stills with credits. Never untagged uploads.
+    **ARCHIVE LENGTH (owner 2026-10-29, Sherman #13 review): moderate and quick.** The archive LOOK is untouchable (never restyle it);
+    only the amount is set: the background block after the hook as now, plus at most 3 short blocks of ~10 s (one where each move
+    ends), cuts every 2.5-3 s, about 30 s of archive in total besides the background block. Long archive stretches lose viewers.
   - Sound: the locked kit (section 3/3a), music 0.08 (section 4-5), -14 LUFS; **after ANY timing change, `assemble_full.py --audio-only`
     and check one bomb run frame vs sound** (the Rokossovsky remix fixed a 7 s drift).
   - Voice A (section 6). Thumbnail: vidIQ battlefield (left 2/3, labels checked/redone) + the commander's REAL photo cut out on the
