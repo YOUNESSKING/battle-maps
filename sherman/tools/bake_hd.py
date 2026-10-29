@@ -26,7 +26,9 @@ np.save(f"assets/src/{base}_hd_elev.npy", elev.astype(np.float32))
 lat = J["center"][0]; mpp = 156543.03392 * math.cos(math.radians(lat)) / 2 ** z
 sea_below = J.get("sea_below", 0.5); land = elev > sea_below
 le = np.where(land, elev, 0).astype(np.float32)
-sm = ndimage.gaussian_filter(le, 1.0)
+LIFT = os.environ.get("LIFT") == "1"  # C1 'lifted Frontlines' TEST grade (research/MAP_COLOUR_REVIEW.md): writes only <map>_hd_lift
+SOFT = LIFT and z >= 11                 # P6: calmer close-up texture (smoothing 1.6, fine 0.04)
+sm = ndimage.gaussian_filter(le, 1.6 if SOFT else 1.0)
 gy, gx = np.gradient(sm * exag, mpp)
 slope, aspect = np.arctan(np.hypot(gx, gy)), np.arctan2(-gx, gy)
 def shade(az, alt):
@@ -36,7 +38,7 @@ hs = 0.45 * shade(315, 38) + 0.25 * shade(260, 45) + 0.18 * shade(15, 50) + 0.12
 sl = np.clip(np.degrees(slope) / 25, 0, 1)                                                            # slope darkening
 ao = np.clip((ndimage.gaussian_filter(le, 18) - le) / 40, -1, 1)                                      # >0 in valleys, <0 on ridges
 fine = np.clip((le - ndimage.gaussian_filter(le, 2.5)) * exag / 6, -1, 1)                             # fine terrain texture
-light = np.clip(0.42 + 0.72 * hs - 0.16 * sl - 0.18 * np.clip(ao, 0, 1) + 0.08 * np.clip(-ao, 0, 1) + 0.10 * fine, 0, 1.25)
+light = np.clip(0.42 + 0.72 * hs - 0.16 * sl - 0.18 * np.clip(ao, 0, 1) + 0.08 * np.clip(-ao, 0, 1) + (0.04 if SOFT else 0.10) * fine, 0, 1.25)
 hi = max(np.percentile(le[land], 99.5) if land.any() else 1, 1); t = np.clip(le / hi, 0, 1)[..., None]
 coast = ndimage.gaussian_filter(land.astype(np.float32), 2.0)[..., None]
 rng = np.random.default_rng(218)
@@ -44,6 +46,13 @@ def finish(rgb, out):
     g = np.asarray(Image.fromarray(rng.normal(128, 40, (H // 2, W // 2)).clip(0, 255).astype(np.uint8)).resize((W, H), Image.BILINEAR), np.float32)
     rgb = rgb + (g[..., None] - 128) * 0.07
     Image.fromarray(rgb.clip(0, 255).astype(np.uint8)).save(out, quality=90); print("wrote", out, flush=True)
+if LIFT:  # C1: same grey-green hue, exposure normalised per map (land median 0.70), sea (18,33,44)
+    a = np.clip(light * 0.85 + t[..., 0] * 0.12, 0, 1) ** 1.15
+    med = float(np.median(a[land])) if land.any() else 0.5; an = a ** (np.log(0.70) / np.log(max(min(med, 0.99), 0.01)))
+    rgb = np.array([24, 31, 31.]) + (np.array([190, 202, 184.]) - np.array([24, 31, 31.])) * an[..., None]
+    rgb = np.array([18, 33, 44.]) * (1 - coast) + rgb * coast
+    finish(rgb, f"assets/{base}_hd_lift.jpg"); json.dump(dict(J, name=base + "_hd_lift", hd_scale=S), open(f"assets/{base}_hd_lift.json", "w"), indent=1)
+    sys.exit(0)
 # 1) locked parchment palette (bake.py colours), HD shading
 basec = np.where(t < 0.7, LOW * (1 - t / 0.7) + HIGH * (t / 0.7), HIGH * (1 - (t - 0.7) / 0.3) + PEAK * ((t - 0.7) / 0.3))
 rgb = basec * 0.3 + basec * (0.45 + 0.75 * light[..., None]) * 0.7
