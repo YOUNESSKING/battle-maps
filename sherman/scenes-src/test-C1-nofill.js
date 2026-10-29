@@ -1,5 +1,5 @@
-// TEST R2 (owner 2026-10-29, competitor study): flat muted translucent territory (normal blend, no multiply, no CSS filter). Test only.
-{ const st = document.createElement("style"); st.textContent = 'img.terr{mix-blend-mode:normal !important;filter:none !important}'; document.head.appendChild(st); }
+// TEST C1 (competitor study: Tactical Genius / Operations Room close-ups): NO territory fill, fronts + flags + units only. Test only.
+{ const st = document.createElement("style"); st.textContent = 'img.terr{display:none !important}'; document.head.appendChild(st); }
 // TEST-E2-CURRENT: move1d unchanged except the E1 tone line (territory saturate 0.8), on atlanta_hd_lift: the baseline for test-E2-lose.
 // Built with: python3 tools/build_scene.py test-E2-current atlanta_hd_lift move1-6 move1-9
 // MOVE 1d (move1-6 .. move1-9), Sherman #13: the Chattahoochee, Hood's three attacks, the swing to Jonesboro, Atlanta falls (Jul - Sep 1864).
@@ -267,11 +267,11 @@ const FW = (s) => +(15 / s).toFixed(2);
 const cht = LN.river.CHATTAHOOCHEE.reduce((a, p) => (p.length > a.length ? p : a), []);
 
 // ---------- map layers ----------
-ctlImg("assets/media/test_R2_atlanta_ctl_jul03_mx.png", 0, T_GONE + 1.2, 0.01);
-ctlImg("assets/media/test_R2_atlanta_ctl_jul10_mx.png", T_GONE, T_ONCE + 1.2, 1.0);
-ctlImg("assets/media/test_R2_atlanta_ctl_jul22_mx.png", T_ONCE, T_EZRA + 1.0, 1.0);
-ctlImg("assets/media/test_R2_atlanta_ctl_aug64_mx.png", T_EZRA - 0.2, T_WRONG + 1.0, 1.0);
-ctlImg("assets/media/test_R2_atlanta_ctl_sep64_mx.png", T_2SEP + 1.0, null, 1.2);
+ctlImg("assets/media/atlanta_ctl_jul03_mx.png", 0, T_GONE + 1.2, 0.01);
+ctlImg("assets/media/atlanta_ctl_jul10_mx.png", T_GONE, T_ONCE + 1.2, 1.0);
+ctlImg("assets/media/atlanta_ctl_jul22_mx.png", T_ONCE, T_EZRA + 1.0, 1.0);
+ctlImg("assets/media/atlanta_ctl_aug64_mx.png", T_EZRA - 0.2, T_WRONG + 1.0, 1.0);
+ctlImg("assets/media/atlanta_ctl_sep64_mx.png", T_2SEP + 1.0, null, 1.2);
 B.image("assets/media/atlanta_geo_ref.png", 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.shimmer(LN.river.CHATTAHOOCHEE.concat(LN.river.FLINT)); LV.scaleBar(63.64); LV.north();
 legend(0.1, T_WRONG + 0.9, false); legend(T_WRONG + 1.0, T_2SEP + 1.0, true); legend(T_2SEP + 1.1, END + 1, false);
