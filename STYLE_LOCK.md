@@ -30,7 +30,7 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
     Stalin-type figures as text cards, never a likeness.
   - Action: `K.gun` -> arc -> `K.impact` (boom on impact, default shake); `K.bombRun` with glowing `c47g` planes (few, spaced, they
     leave); night beats with `K.night`; stamps (hit + shake), counters (ticks), fire sacks, rings.
-  - Every move ends: casualty card (`K.casualties` style, real numbers only) or a RESULT card when no reliable figure exists, then the
+  - Every move ends: casualty card (the OLD clean `K.casualties` card from `lib/fx.js`, real numbers only; owner 2026-10-29: NOT the Meade/Sherman-style ranges card) or a RESULT card when no reliable figure exists, then the
     method card that adds one line per move.
   - Archive: Netflix look (headline card, 3D-depth photos, projector-frame film, headline date cards), licensed only: US government film
     (Signal Corps, Capra "Why We Fight"), NARA CC0, Commons CC BY / CC BY-SA / PD stills with credits. Never untagged uploads.

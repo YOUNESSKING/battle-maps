@@ -1,0 +1,8 @@
+{"title": "THE ORANGE EFFECT (under consideration)",
+ "note": "CURRENT = test-E2-lose (E2 pale stage + 1 s cross-fade) · O2 EMBER (default, every capture) · O3 BURN LINE (once per move) · O5 TIDE (wide shots). All on atlanta_hd_lift, our colours + two-colour fronts; E2 pale stage kept, the cross-fade runs under the flood.",
+ "cols": [["CURRENT", "scenes/test-O2-ember/current"], ["O2 EMBER", "scenes/test-O2-ember/cmp"], ["O3 BURN LINE", "scenes/test-O3-burnline/cmp"], ["O5 TIDE", "scenes/test-O5-tide/cmp"]],
+ "captures": [
+  ["Capture 1 · Chattahoochee, 8-9 July (burst on the Sope Creek crossing at 5.1 s)", 5.1, [5.3, 5.7, 6.1, 6.7, 8], [0, 1, 2]],
+  ["Capture 2 · the advance on Atlanta, mid-July (burst on Decatur at 16.4 s)", 16.4, [16.6, 17, 17.4, 18, 19.5], [0, 1, 2]],
+  ["Capture 3 · 2 Sep 1864, wide map (row of impacts on the old front, burst on Atlanta at 101.1 s, 3.5 s tide)", 101.1, [101.3, 101.7, 102.1, 102.7, 106], [0, 3]]],
+ "phone": [[0, 6.1], [1, 6.1], [2, 6.1], [3, 102.1]]}
