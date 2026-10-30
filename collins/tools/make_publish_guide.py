@@ -70,14 +70,14 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/collins-thumb-colour-A-the-gamble.jpg"; TB = "youtube/thumb/collins-thumb-colour-B-4000-tons.jpg"
+TA = "youtube/thumb/collins-thumb-A-the-gamble.jpg"; TB = "youtube/thumb/collins-thumb-B-4000-tons.jpg"
 LEN = os.environ.get("VIDEO_LEN", "13:29")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
 story = [Spacer(1, 18 * mm), P("J. LAWTON COLLINS", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAMBLE (full colour, made entirely with vidIQ: battlefield + a generic US major general, not a likeness)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAMBLE (made with vidIQ: dark battlefield + a generic US major general in colour, not a likeness)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
                  ["File", f"Collins-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
@@ -95,7 +95,7 @@ story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 91)",
           *bullets(["J. Lawton Collins's Top 3 Legendary Tactical Moves | The General Who Did What Patton Got Credit For (96; good A/B title)",
                     "Lightning Joe Collins's Top 3 Legendary Tactical Moves | The Man Who Broke Hitler's Normandy Front (92)"]),
           P("Why this thumbnail", "h2"),
-          P("Tactical Genius picture formula, in full colour (owner 2026-10-30): an aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
+          P("Tactical Genius picture formula: a dark, desaturated aerial battlefield with red/blue unit blocks and white arrows on the left, the commander in COLOUR on the right (owner 2026-10-30: only the general is in colour), "
             "a red brush banner bottom-left. <b>THE GAMBLE</b> is type 1 (his decision): committing the armour before the breach was secure, the move "
             "that broke open Normandy (title promise), shown over the Cobra carpet bombing of the hook."),
           P("Alternative for YouTube's Test &amp; compare: <b>4,000 TONS</b> (type 3, ominous stakes: the carpet bombing of 25 July).", "body"),
