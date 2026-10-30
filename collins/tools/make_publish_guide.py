@@ -102,7 +102,7 @@ story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 91)",
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
           P("Checked: the only text is the banner (spelling correct). Hedgerow fields, the straight road and "
             "four-engine heavy bombers match Normandy, 25 July 1944. The portrait is an AI-generated generic US Army major general of 1944 "
-            "(two stars on helmet and collar, correct rank for Collins in 1944); it is not presented as a photo or likeness of Collins.", "warn"),
+            "(bareheaded, two stars on the collar, correct rank for Collins in 1944); it is not presented as a photo or likeness of Collins.", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
           P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound, archive and image licences require them.", "warn"),
