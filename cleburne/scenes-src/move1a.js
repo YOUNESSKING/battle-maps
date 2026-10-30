@@ -359,7 +359,7 @@ B.title("MOVE 1", "TUNNEL HILL", "25 NOVEMBER 1863", 0.3, T_CROSS - 0.3); SFX("r
 
 // ---------- flags (both on every map frame; repositioned with the camera) ----------
 flagS(FL.us, "UNITED STATES", 880, 470, 0.2, T_NOBODY + 0.3); flagS(FL.cs, "CONFEDERATE STATES", 1950, 1060, 0.3, T_NOBODY + 0.3);
-flagS(FL.us, "UNITED STATES", 1150, 650, T_NOBODY + 0.4, T_ARR + 0.6); flagS(FL.cs, "CONFEDERATE STATES", 1950, 1000, T_NOBODY + 0.5, T_ARR + 0.6);
+flagS(FL.us, "UNITED STATES", 1190, 735, T_NOBODY + 0.4, T_ARR + 0.6); flagS(FL.cs, "CONFEDERATE STATES", 1950, 1000, T_NOBODY + 0.5, T_ARR + 0.6);
 flagS(FL.us, "UNITED STATES", 1290, 758, T_ARR + 0.7, T_WHILE - 0.2); flagS(FL.cs, "CONFEDERATE STATES", 1650, 880, T_ARR + 0.8, T_WHILE - 0.2);
 flagS(FL.us, "UNITED STATES", 1150, 920, T_WHILE - 0.1, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1880, 1010, T_WHILE, END + 1);
 

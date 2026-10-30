@@ -303,14 +303,14 @@ legend(0.1, END + 1, false);
 camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 745, 1.45], [END, 1440, 792, 1.9]]);   // under the card the action sits low in the frame
 B.showDate(0.05); B.date("27 NOVEMBER 1863", 0.1, null, 34);
 flagS(FL.us, "UNITED STATES", 1150, 760, 0, T_DO - 0.3); flagS(FL.cs, "CONFEDERATE STATES", 1700, 1100, 0.05, T_DO - 0.3);
-flagS(FL.us, "UNITED STATES", 1200, 960, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1640, 1000, T_DO - 0.2, END + 1);   // below the card
+flagS(FL.us, "UNITED STATES", 1200, 960, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1690, 1025, T_DO - 0.2, END + 1);   // below the card
 // ---------- the ground: the ridges either side of the gap, the railroad + creek through it ----------
 glowPath(RN, "#6f9bff", 3.4, 0.2, END + 1, 2, 0.8, { draw: 1.0 }); glowPath(RS, "#6f9bff", 3.4, 0.3, END + 1, 2, 0.8, { draw: 1.0 });
 const RR = [[1200, 860], [1300, 890], [1392, 918], [1440, 960], [1478, 982], [1530, 992], [1600, 1010]];
 glowPath(RR, "#ffd27a", 2.4, 0.2, END + 1, 2, 0.85, { draw: 1.2 });
 boxS("THE GAP", GAP[0] + 95, GAP[1] - 12, 0.4, END + 1, { size: 24, bg: "#dcecf8", sfx: false });
 boxS("TAYLOR'S RIDGE", 1360, 1150, 0.5, END + 1, { size: 22, bg: "#dcecf8", sfx: false });
-boxS("WHITE OAK MOUNTAIN", 1560, 760, 0.6, END + 1, { size: 22, bg: "#dcecf8", sfx: false });
+boxS("WHITE OAK MOUNTAIN", 1560, 760, 0.6, T_DO - 0.3, { size: 22, bg: "#dcecf8", sfx: false });
 // ---------- Cleburne at the gap, two guns at its mouth ----------
 unitS("cle", "carth", [GAP[0] + 22, GAP[1] + 2], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0);
 unitS("g1", "carth", [MOUTH[0] - 4, MOUTH[1] - 18], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g1.el, { autoAlpha: 1 }, 0);

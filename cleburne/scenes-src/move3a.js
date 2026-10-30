@@ -321,7 +321,6 @@ sstamp("TO WIN THE WAR", 300, T_NOT - 0.2, { size: 60, color: "#4f8bff", until: 
 sstamp("NOT TO END SLAVERY", 420, T_NOT + 0.5, { size: 60, until: T_SAVE - 0.1 });
 B.caption("TO SAVE A GOVERNMENT BUILT ON SLAVERY", T_SAVE, T_MOST - 0.2, "");
 badge({ name: "W. H. T. WALKER", role: "FELLOW GENERAL · SENT IT TO DAVIS", photo: null, flag: FL.cs, side: "carth", corner: "bl", initials: "WHTW", t: T_MOST - 0.3, until: T_MAY - 0.3 });
-B.caption("MOST OF HIS FELLOW OFFICERS WERE APPALLED", T_MOST, T_DAVIS - 0.2, "");
 const dv = badge({ name: "JEFFERSON DAVIS", role: "CONFEDERATE PRESIDENT", photo: PHOTO("davis"), flag: FL.cs, side: "carth", corner: "tl", initials: "JD", t: T_DAVIS - 0.4, until: T_MAY - 0.2 });
 sstamp("SUPPRESSED", 420, T_SUPP + 0.2, { size: 72, until: T_MAY - 0.1 });
 const rk = scr(`<div style="padding:6px 16px;background:rgba(14,12,10,.9);border:2px solid #c9b48a;font-family:Oswald;font-weight:700;font-size:20px;letter-spacing:.2em;color:#c9b48a">RANK STAYS: DIVISION</div>`, "right:120px;top:300px;", T_SUPP + 0.6, T_MAY - 0.2);

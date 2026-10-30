@@ -282,7 +282,7 @@ B.date("28 MAY 1864", T_TRY - 0.1, END + 1, 32);
 legend(0.2, END + 1, true);
 
 // ---------- flags (both, every shot) ----------
-const FS = [[0, T_WORSE + 0.8, [1250, 640], [1720, 1160]], [T_WORSE + 1.0, T_WOOD - 0.3, [1525, 790], [1560, 960]], [T_WOOD - 0.1, T_WLOST - 0.1, [1660, 800], [1572, 940]],
+const FS = [[0, T_WORSE + 0.8, [1530, 772], [1700, 990]], [T_WORSE + 1.0, T_WOOD - 0.3, [1525, 790], [1560, 960]], [T_WOOD - 0.1, T_WLOST - 0.1, [1660, 800], [1572, 940]],
   [T_WLOST + 0.1, END + 1, [1500, 770], [1540, 980]]];
 FS.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0.2), t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0.3), t1); });
 

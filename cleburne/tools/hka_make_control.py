@@ -20,6 +20,7 @@ from scipy import ndimage
 STATES = "/home/user/battle-maps/sherman/assets/src/south_ne_states.geojson"
 GA_CROP = (900, 300, 2100, 975)
 MAPS = {m: json.load(open(f"assets/{m}_hd_lift.json")) for m in ("ga", "chatt", "tunnel", "ringgold")}
+MAPS["gafull"] = MAPS["ga"]
 
 def proj(m):
     J = MAPS[m]; Z = J["zoom"]; OX, OY = J["origin_world_px"]
@@ -73,7 +74,7 @@ def poly_mask(P, polys, W, H):
 
 def build(m, date):
     P = proj(m)
-    land = np.array(Image.open(f"assets/{m}_land.png").convert("L")) > 127
+    land = np.array(Image.open(f"assets/{m.replace('full', '')}_land.png").convert("L")) > 127
     if m == "ga": land = land[GA_CROP[1]:GA_CROP[3], GA_CROP[0]:GA_CROP[2]]
     H, W = land.shape
     SM = {f["properties"]["name"]: poly_mask(P, [[(la, lo) for lo, la in r] for r in rings(f["geometry"])], W, H) for f in json.load(open(STATES))["features"]}
