@@ -318,7 +318,7 @@ const T_TWO = at(P4, "At two in the afternoon"), T_EITHER = at(P4, "could not br
   T_REINF = at(P4, "sent Cleburne reinforcements"), T_FRESH = at(P4, "bring fresh troops"), T_FOUR = at(P4, "By about four o'clock"),
   T_EXH = at(P4, "exhausted and short of ammunition"), T_CHOSE = at(P4, "Cleburne chose that moment"), T_DOWN = at(P4, "His men came down off the hill"),
   T_COLL = at(P4, "the Union attack collapsed"), T_SURR = at(P4, "Hundreds of Federals surrendered"), T_RAN = at(P4, "the rest ran back"),
-  T_PUT = at(P4, "Colonel Putnam"), T_MORT = at(P4, "Colonel Matthies was mortally wounded");
+  T_PUT = at(P4, "Colonel Putnam"), T_MORT = at(P4, "Colonel Matthies was wounded");
 const T_WHILE = at(P5, "While Cleburne held the hill"), T_CENTRE = at(P5, "Thomas's men had broken the centre"), T_SOUTH = at(P5, "two miles to the south"),
   T_FLIGHT = at(P5, "Bragg's army was in flight"), T_NIGHT = at(P5, "That night"), T_REAR = at(P5, "became its rear guard"),
   T_COST = at(P5, "Sherman's attack on Tunnel Hill had cost"), T_LOST = at(P5, "Cleburne's division had lost"), T_METH = at(P5, "Let them tire on the hill");
@@ -541,7 +541,7 @@ pinS(GG.pin(BARS("HUNDREDS SURRENDER"), 1395, 812, { t: T_SURR, pop: true, until
   arw({ pts, side: "rome", t: T_RAN + k * 0.25, dur: 1.0, width: AW(3.3, 10), dash: "7 5", until: T_WHILE }));
 B.caption("THE REST RUN BACK ACROSS THE FIELDS", T_RAN, T_PUT - 0.1, "rome");
 wstampS("COL. PUTNAM KILLED", 1322, 838, T_PUT + 0.2, T_WHILE - 0.2, "#e3232f", 18);
-wstampS("MATTHIES HIT", 1318, 892, T_MORT + 0.3, T_WHILE - 0.2, "#e3232f", 18);
+wstampS("MATTHIES WOUNDED", 1318, 892, T_MORT + 0.3, T_WHILE - 0.2, "#e3232f", 18);
 B.caption("93RD ILLINOIS · COLONEL PUTNAM KILLED ON THE SLOPE", T_PUT, T_WHILE - 0.1, "rome");
 
 // =================== move1-5: the centre breaks; the rear guard; the cost; the method ===================
