@@ -1,0 +1,9 @@
+# Judge 2 refine (TOUCH THE IDEA): F and G from candidate E
+Script: tools/judge2_refine.py (copy of make_detail_layers.py logic, windowed 1920x1080 + 60 px margin, cache build/judge2_cache/*.pkl). Layers: assets/media/<map>_judge2_{F,G}_{riv,tree,swamp}.png (window size). Crops: build/detail-hq/<map>_F.jpg, _G.jpg (same centres as E).
+3 rounds: R1 water+forest+swamp wash; R2 hatch too loud (60% of Bentonville), R3 hatch toned down.
+## What changed vs E (F values; G in brackets)
+- Water: NHD polygon lakes kept only if >14000 px2 at 2x HD [30000] (kills the farm-pond clutter at Pickett/Bentonville). Rivers (NHD area polygons) always. Creeks: only NAMED perennial streams whose total length in the window >700 px [1400]; line 3 px, big rivers 5 px, drawn 2x supersampled (smooth), edge alpha 120, fill alpha 225, water (94,134,160) edge (58,86,106). Fixed: E's unnamed/intermittent hairlines gone.
+- Forest: WorldCover tree mask smoothed (gauss 5, >0.5), fragments <30000 px dropped [60000], holes filled; soft tint (26,56,32) alpha 58 [40] feathered gauss 3.5, plus crisp 2 px edge (18,42,24) alpha 95 [80], slight mottle +-10%. Reads as forest vs open ground without texture.
+- Swamp: WorldCover wetland + NLCD 90/95, smoothed gauss 6 (removes blocky 30 m edges), only blobs >45000 px [90000]; teal fill alpha 26 [22], diagonal hatch period 20 px, 2 px, alpha 70 [48], edge alpha 110 [90]; forest tint is removed under swamp. No reeds, nothing under 2 px.
+## Verdict
+F is the better simple+detail balance: ground reads (forest edge, creek, river, wetland) yet stays quiet. Tunnel/Ringgold/Pickett are clean. Caveat: Bentonville wetland is ~60% of the window (NLCD woody wetland), so hatch covers most of it; it is faint but a uniform texture there. Use G for hatch-heavy maps or lower sw_hatch. Straight-edged creek corners in Ringgold/Bentonville are NHD source geometry. Data is 2021, not 1863.
