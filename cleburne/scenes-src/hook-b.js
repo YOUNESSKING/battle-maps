@@ -120,7 +120,7 @@ const xMark = (x, y, t, k, until) => { const el = pinAt(`<div style="font-family
 // =====================================================================================================================
 const L = GG.proj(13, 551392, 830364);
 const relief = document.getElementById("relief");
-const group = (r) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${r[0]}px;top:${r[1]}px;width:${r[2]}px;height:${r[3]}px;isolation:isolate;`; worldEl.insertBefore(g, relief); return g; };
+const group = (r) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${r[0]}px;top:${r[1]}px;width:${r[2]}px;height:${r[3]}px;isolation:isolate;`; worldEl.insertBefore(g, ov); return g; };
 const img = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? "mix-blend-mode:multiply;" : ""}`; parent.appendChild(i); return i; };
 const GAG = group([-17024, -11772, 38400, 21600]); img("assets/media/hka_ga_crop.jpg", GAG, false); img("assets/media/hka_ga_ctl_nov27_mx.png", GAG, true);
 const TUG = group([-815, -995, 2880, 1620]); img("assets/media/hka_tunnel_hd_lift.jpg", TUG, false);
@@ -138,7 +138,7 @@ const T_NAME = at(H, "Patrick Cleburne,"), T_IRE = at(H, "born in Ireland"), T_S
   T_THESE = at(H, "These are"), T_THREE = at(H, "three greatest");
 // ---------- the overview (option 1, Nov 1863) ----------
 const TH = INS.th.P(1384.7, 749.1), GP = INS.rg.P(1452, 972), PM = INS.pm.P(1625, 870);
-const OC = [2300, 3500], OS = 0.12;
+const OC = [2000, 1421], OS = 0.072;
 cam.cx = OC[0]; cam.cy = OC[1]; cam.s = OS * 0.9; applyCam();
 const LV = LivingK(B); const NA = LV.north(); gsap.set(NA, { autoAlpha: 0 });
 // =====================================================================================================================
@@ -175,16 +175,16 @@ const cut = (t, ins, holdTo, c, s) => {
   tl.set(ins.el, { autoAlpha: 1 }, t - 0.01); tl.set(ins.el, { autoAlpha: 0 }, holdTo - 0.01);
   camTo(t, 0.01, c[0], c[1], s); camTo(t + 0.02, holdTo - t - 0.1, c[0] + 10 / s, c[1], s * 1.06, "sine.out");
   SFX("ref:whoosh", t - 0.2); SFX("hit", t + 0.02); K.shake(t + 0.02, 3, 0.25); };
-const ringN = (p, name, n, t, until, k, dy = -46) => {
+const ringN = (p, name, n, t, until, k, dy = -46, dx = 0) => {
   K.target(p[0], p[1], t, { r: 36 * k, until });
-  const el = pinAt(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000,0 0 3px #000"><span style="display:inline-flex;width:34px;height:34px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:19px">${n}</span><span style="font-size:32px;letter-spacing:.1em;white-space:nowrap">${name}</span></div>`, p[0], p[1] + dy * k, t + 0.1, until);
+  const el = pinAt(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000,0 0 3px #000"><span style="display:inline-flex;width:34px;height:34px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:19px">${n}</span><span style="font-size:32px;letter-spacing:.1em;white-space:nowrap">${name}</span></div>`, p[0] + dx * k, p[1] + dy * k, t + 0.1, until);
   reg(el.firstElementChild); SFX("ref:pop", t + 0.12); return el; };
 const SC = 2.2;   // close-up scale (~14 km wide)
 const k = 1 / SC;
 // ---------- CUT 1: TUNNEL HILL 1863 (tunnel map): red waves break on the blue hill ----------
 cut(T_STOP, INS.th, T_HELD, [TH[0] + 20, TH[1] + 30], SC);
 dateSet("25 NOVEMBER 1863", T_STOP + 0.02, T_HELD);
-flagsC(INS.th.P(1130, 600), INS.th.P(1660, 860), T_STOP + 0.05, T_HELD - 0.05);
+flagsC(INS.th.P(1180, 690), INS.th.P(1660, 860), T_STOP + 0.05, T_HELD - 0.05);
 const thp = (x, y) => INS.th.P(x, y);
 frontS({ pts: [thp(1337, 817), thp(1332, 773), thp(1353, 729), thp(1393, 710), thp(1437, 716), thp(1465, 740)], sideA: "rome", sideB: "carth", t: T_STOP + 0.05, dur: 0.5, width: 15 * 1.3 * k, until: T_HELD });
 unitK("c1", "carth", thp(1393, 752), "infantry", "CLEBURNE", k, { t: T_STOP + 0.1 }); unitK("c1g", "carth", thp(1367, 775), "artillery", "", k, { t: T_STOP + 0.15 });
@@ -197,7 +197,7 @@ ringN(TH, "TUNNEL HILL · 1863", 1, T_HILL, T_HELD, k, -62);
 // ---------- CUT 2: RINGGOLD GAP 1863 (ringgold map): hidden guns in a narrow pass ----------
 cut(T_HELD, INS.rg, T_TURN, [GP[0] - 25, GP[1] - 12], SC);
 dateSet("27 NOVEMBER 1863", T_HELD + 0.02, T_TURN);
-flagsC(INS.rg.P(1240, 800), INS.rg.P(1700, 1060), T_HELD + 0.05, T_TURN - 0.05);
+flagsC(INS.rg.P(1260, 860), INS.rg.P(1700, 1060), T_HELD + 0.05, T_TURN - 0.05);
 const rgp = (x, y) => INS.rg.P(x, y);
 const BR2 = pinAt(`<div style="width:${70 * k}px;height:${38 * k}px;border-radius:45%;background:radial-gradient(ellipse at 30% 45%,#3d5a2a 0 30%,transparent 31%),radial-gradient(ellipse at 62% 40%,#2f4a22 0 32%,transparent 33%),radial-gradient(ellipse at 48% 70%,#46652f 0 34%,transparent 35%)"></div>`, ...rgp(1440, 977), T_HELD + 0.05, T_HELD + 1.2);
 unitK("g1", "carth", rgp(1440, 977), "artillery", "", k, { t: T_HELD + 0.05 }); unitK("g2", "carth", rgp(1470, 945), "infantry", "", k, { t: T_HELD + 0.1 });
@@ -207,11 +207,11 @@ go("r1", T_HELD + 0.2, 1.0, rgp(1395, 955)); go("r2", T_HELD + 0.25, 1.0, rgp(14
 B.arrow({ pts: [rgp(1330, 935), rgp(1380, 952), rgp(1415, 966)], side: "rome", t: T_HELD + 0.2, dur: 0.7, width: 12 * k, until: T_TURN });
 [0, 0.3, 0.6, 0.9].forEach((d, i) => shell(...rgp(1436, 975), ...[rgp(1400, 958), rgp(1392, 945), rgp(1412, 912), rgp(1385, 965)][i], T_PURS - 0.3 + d, k, { r: 10 * k, fly: 0.25, h: 4 * k }));
 go("r1", T_PURS + 0.6, 0.8, rgp(1350, 930), "power2.in"); B.grey(["r2"], T_PURS + 0.6, 0.4);
-ringN(GP, "RINGGOLD GAP · 1863", 2, T_HELD + 0.6, T_TURN, k, -70);
+ringN(GP, "RINGGOLD GAP · 1863", 2, T_HELD + 0.6, T_TURN, k, 110, 60);
 // ---------- CUT 3: PICKETT'S MILL 1864 (pickett map): a red column falling into a ravine ----------
 cut(T_TURN, INS.pm, T_THESE, [PM[0] - 6, PM[1] - 20], SC);
 dateSet("27 MAY 1864", T_TURN + 0.02, T_THESE);
-flagsC(INS.pm.P(1450, 720), INS.pm.P(1770, 1010), T_TURN + 0.05, T_THESE - 0.05);
+flagsC(INS.pm.P(1450, 720), INS.pm.P(1770, 1010), T_TURN + 0.05, T_THESE + 0.55);
 const pmp = (x, y) => INS.pm.P(x, y);
 const RAV = [pmp(1575, 790), pmp(1600, 820), pmp(1629, 857), pmp(1659, 897), pmp(1689, 942)];
 const rv = document.createElementNS(NS, "path"); rv.setAttribute("d", dpath(RAV)); rv.setAttribute("fill", "none"); rv.setAttribute("stroke", "#ff9a3c");
@@ -225,26 +225,30 @@ B.arrow({ pts: [pmp(1585, 770), pmp(1600, 815), pmp(1615, 850)], side: "rome", t
 volley(pmp(1580, 890), pmp(1620, 895), T_TRAP - 0.3, k); volley(pmp(1630, 905), pmp(1662, 935), T_TRAP - 0.1, k);
 [0, 0.3].forEach((d) => shell(...pmp(1655, 970), ...pmp(1625 - d * 30, 845), T_TRAP + d, k, { r: 10 * k, fly: 0.3 }));
 B.grey(["w1", "w2"], T_TRAP + 0.5, 0.4);
-ringN(pmp(1615, 870), "PICKETT'S MILL · 1864", 3, T_TURN + 0.6, T_THESE, k, -64);
+tl.set(PMG, { autoAlpha: 1 }, T_THESE + 0.005); tl.to(PMG, { autoAlpha: 0, duration: 0.5 }, T_THESE + 0.35);
+ringN(pmp(1615, 870), "PICKETT'S MILL · 1864", 3, T_TURN + 0.6, T_THESE, k, -20, 290);
 // ---------- pull out to all three, then the title (riser + boom) ----------
 SFX("ref:whoosh", T_THESE - 0.1); SFX("ref:riser", T_THESE + 0.1);
-camTo(T_THESE, 0.9, OC[0], OC[1], OS, "power3.inOut");
+const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {   // anchored log-scale zoom (hook-a)
+  const d0 = [(P[0] - c0[0]) * s0, (P[1] - c0[1]) * s0], d1 = [(P[0] - c1[0]) * s1, (P[1] - c1[1]) * s1], q = { u: 0 };
+  tl.fromTo(q, { u: 0 }, { u: 1, duration: dur, ease, immediateRender: false, onUpdate: () => { const u = q.u, s = Math.exp(Math.log(s0) + (Math.log(s1) - Math.log(s0)) * u);
+    cam.s = s; cam.cx = P[0] - (d0[0] + (d1[0] - d0[0]) * u) / s; cam.cy = P[1] - (d0[1] + (d1[1] - d0[1]) * u) / s; applyCam(); } }, t); };
+zoom(T_THESE, 0.9, [PM[0] - 6 + 10 / SC, PM[1] - 20], SC * 1.06, OC, OS, PM, "power3.inOut");
 camTo(T_THESE + 0.92, END - T_THESE - 0.9, OC[0] + 4, OC[1] - 3, OS * 1.04, "none");
 dateSet("1863 - 1864", T_THESE + 0.05, null);
-flagsC(L(35.10, -86.0), L(34.20, -84.0), T_THESE + 0.3, null);
-town("CHATTANOOGA", ...L(35.0456, -85.3097), T_THESE + 0.3, null, { side: "l", size: 30 });
+flagsC(L(35.1, -86.9), L(34.0, -83.6), T_THESE + 0.2, null);
 town("DALTON", ...L(34.7698, -84.9702), T_THESE + 0.3, null, { size: 30 }); town("ROME", ...L(34.257, -85.165), T_THESE + 0.3, null, { size: 30, side: "l" });
-[[TH, "TUNNEL HILL · 1863", 1, -150, -32], [GP, "RINGGOLD GAP · 1863", 2, 150, -10], [PM, "PICKETT'S MILL · 1864", 3, -180, 18]].forEach(([p, txt, n, dx, dy], i) => {
+[[TH, "TUNNEL HILL · 1863", 1, -150, -6], [GP, "RINGGOLD GAP · 1863", 2, 160, -6], [PM, "PICKETT'S MILL · 1864", 3, 175, 0]].forEach(([p, txt, n, dx, dy], i) => {
   K.target(p[0], p[1], T_THESE + 0.3 + i * 0.15, { r: 26 / OS, until: END + 1 });
   const el = pinAt(`<div style="display:flex;align-items:center;gap:6px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000,0 0 3px #000"><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:16px">${n}</span><span style="font-size:24px;letter-spacing:.1em;white-space:nowrap">${txt}</span></div>`, p[0] + dx / OS, p[1] + dy / OS, T_THESE + 0.4 + i * 0.15, null);
   reg(el.firstElementChild); });
 tl.to(BDG, { autoAlpha: 0, duration: 0.4 }, T_THREE - 0.6);
-const TDIM = scr("", "inset:0;background:linear-gradient(180deg,rgba(5,7,13,0) 35%,rgba(5,7,13,0.78) 75%);");
+const TDIM = scr("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0) 55%,rgba(5,7,13,0.75) 85%);");
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THREE - 0.5);
 const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">PATRICK CLEBURNE'S</div>
   <div style="font-size:84px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
-  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 TUNNEL HILL · 2 RINGGOLD GAP · 3 PICKETT'S MILL</div></div>`, "left:0;right:0;top:720px;display:flex;justify-content:center;");
+  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 TUNNEL HILL · 2 RINGGOLD GAP · 3 PICKETT'S MILL</div></div>`, "left:0;right:0;top:132px;display:flex;justify-content:center;");
 tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_THREE - 0.26);
 SFX("ref:boom", T_THREE); K.shake(T_THREE, 6, 0.4);
 K.raiseTerritory();

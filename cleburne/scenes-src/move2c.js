@@ -277,7 +277,7 @@ MD.filter((r) => r.o === 2).forEach((r) => { const p = document.createElementNS(
   OVL.insertBefore(g, OVL.children[1] || null); })();
 
 // ---------- camera ----------
-const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 952, 5.0], C4 = [1440, 905, 4.4], C5 = [1436, 920, 4.8], CW = [1600, 1150, 1.75], C6 = [1425, 950, 3.6], C7 = [1470, 975, 3.2], CD = [1600, 1260, 1.6];
+const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 952, 5.0], C4 = [1440, 905, 4.4], C5 = [1436, 920, 4.8], CW = [1605, 1130, 1.75], C6 = [1425, 950, 3.6], C7 = [1470, 975, 3.2], CD = [1600, 1260, 1.6];
 camera([[0, ...C0], [T_GOV - 0.4, ...C0], [T_GOV + 1.6, ...C1], [T4 - 0.4, ...C1], [T4 + 1.4, ...C2], [T_WAIT - 0.3, ...C2], [T_WAIT + 1.2, ...C3],
   [T_BACK + 1.2, ...C3], [T5 + 0.6, ...C4], [T_GEARY - 0.4, ...C4], [T_GEARY + 1.2, ...C5], [T6 - 0.2, ...C5], [T_NOON + 1.6, ...CW], [T_UART - 0.3, ...CW],
   [T_UART + 1.3, ...C6], [T_PULL + 0.4, ...C6], [T_BURN + 0.8, ...C7], [T_DALTON - 0.4, 1480, 990, 2.9], [T_DALTON + 1.6, ...CD], [END, CD[0], CD[1], 1.7]]);
@@ -388,7 +388,7 @@ const WROAD = [[1520, 1005], [1575, 1040], [1625, 1110], [1680, 1225], [1735, 13
 [0, 1, 2].forEach((k) => pinS(wagon(sub(WROAD, 0.30 + k * 0.1, 0.80 + k * 0.08, 12), T_NOON + 0.4 + k * 0.3, 2.6, T_UART + 0.6, { s: 24 })));
 arw({ pts: sub(WROAD, 0.3, 1, 10), side: "carth", t: T_NOON + 0.6, dur: 2.0, width: AW(1.75, 12), until: T_UART + 0.6 });
 town("TUNNEL HILL", TH, "l", T_NOON + 0.8, { until: T_UART + 0.6 });
-sstamp("THE TRAINS ARE SAFE", 300, T_SAFE + 0.1, { size: 56, color: "#4f8bff", sub: "THE ARMY'S WAGONS AND GUNS ARE PAST TUNNEL HILL", until: T_UART + 0.5 });
+sstamp("THE TRAINS ARE SAFE", 600, T_SAFE + 0.1, { size: 56, color: "#4f8bff", sub: "THE ARMY'S WAGONS AND GUNS ARE PAST TUNNEL HILL", until: T_UART + 0.5 });
 // the Union guns arrive at the creek, too late
 const UG = [[1322, 902], [1336, 918]];
 UG.forEach((q, k) => unitS("ug" + k, "rome", q, "artillery", k ? null : "UNION GUNS", { t: T_UART + 0.6 + k * 0.2, w: 46, h: 32 }));
