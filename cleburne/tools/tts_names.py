@@ -13,8 +13,9 @@ def speak(k, text, voice, speed):
     if not any(n in text for n in PHON):
         return k.create(text, voice=voice, speed=speed, lang="en-us")
     ph = []
-    for part in re.split("(" + "|".join(PHON) + ")", text):
-        if part in PHON: ph.append(PHON[part])
+    for part in re.split("((?:" + "|".join(PHON) + ")(?:'s)?)", text):
+        base = part[:-2] if part.endswith("'s") else part
+        if base in PHON: ph.append(PHON[base] + ("z" if part.endswith("'s") else ""))
         elif part.strip(): ph.append(k.tokenizer.phonemize(part, "en-us"))
     phon = re.sub(r"\s+([.,;:?!])", r"\1", " ".join(x.strip() for x in ph))
     return k.create(phon, voice=voice, speed=speed, lang="en-us", is_phonemes=True)
