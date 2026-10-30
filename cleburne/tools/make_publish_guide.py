@@ -1,4 +1,4 @@
-"""Build the Collins publishing guide PDF: build/Collins-publishing-guide.pdf
+"""Build the Cleburne publishing guide PDF: build/Cleburne-publishing-guide.pdf
 
 usage (from the project folder): python3 tools/make_publish_guide.py
 Uses build/youtube_description.txt, build/thumbnail_*.png, build/guide_frames.jpg (8 frames from the final video).
@@ -53,7 +53,7 @@ def img(path, width_mm):
 def page(c, d):
     c.saveState(); c.setFillColor(PAPER); c.rect(0, 0, A4[0], A4[1], fill=1, stroke=0)
     c.setFont("Helvetica", 8); c.setFillColor(colors.HexColor("#8a7f6a"))
-    c.drawString(18 * mm, 10 * mm, "William T. Sherman's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
+    c.drawString(18 * mm, 10 * mm, "Patrick Cleburne's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page))
     c.restoreState()
 
 
@@ -70,20 +70,20 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/sherman-thumb-A-make-georgia-howl.jpg"; TB = "youtube/thumb/sherman-thumb-B-cut-loose.jpg"
+TA = "youtube/thumb/cleburne-thumb-A-at-all-hazards.jpg"; TB = "youtube/thumb/cleburne-thumb-B-hold-the-gap.jpg"
 HAVE_T = os.path.exists(TA) and os.path.exists(TB)
-LEN = os.environ.get("VIDEO_LEN", "15:43")
+LEN = os.environ.get("VIDEO_LEN", "14:52")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
 THUMB_WAIT = P("<b>Thumbnail: not made yet.</b> Owner's choice (28 Oct): wait for the vidIQ credits (refill 22 Nov 2026), then build it with "
                "tools/make_thumb.py (vidIQ battlefield = the hook scene + Sherman's real LoC photo + red brush banner).", "warn")
-story = [Spacer(1, 18 * mm), P("WILLIAM T. SHERMAN", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
+story = [Spacer(1, 18 * mm), P("PATRICK CLEBURNE", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         (img(TA, 150) if HAVE_T else THUMB_WAIT), Spacer(1, 3 * mm), P("Main thumbnail: \u201cMAKE GEORGIA HOWL\u201d (vidIQ, made in one go: the hook battlefield + a colour portrait; vidIQ score 92)", "coversub"), PageBreak()]
+         (img(TA, 150) if HAVE_T else THUMB_WAIT), Spacer(1, 3 * mm), P("Main thumbnail: \u201cAT ALL HAZARDS\u201d (vidIQ, made in one go: the hook battlefield + a colour portrait; vidIQ score 92; variant B \u201cHOLD THE GAP\u201d scored 95)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Sherman-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
+                 ["File", f"Cleburne-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
                  ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample)"],
@@ -94,19 +94,18 @@ story += [P("1. The finished video", "h1"),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
           Spacer(1, 5 * mm), P("Key frames: the hook (0:00-1:22)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Title (owner's pick; vidIQ title score 89)", "h2"), P(f"<b>{TITLE}</b>"),
+story += [P("2. Title and thumbnail", "h1"), P("Title (recommended; vidIQ title score 87)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Alternatives:"),
-          *bullets(["William T. Sherman's Top 3 Legendary Tactical Moves | The Man Who Marched to the Sea",
-                    "William T. Sherman's Top 3 Legendary Tactical Moves | The Man Who Took Atlanta",
-                    "William T. Sherman's Top 3 Legendary Tactical Moves | The Man Who Saved Lincoln's Election"]),
-          P("Thumbnail banner texts (from the Tactical Genius results)", "h2"),
-          P("<b>A: “MAKE GEORGIA HOWL”</b>: his own words (telegram to Grant, 9 Oct 1864): defiance + menace, 3 words, no context needed "
-            "(TG winners LET THEM COME 986k, “AMATEURS” 752k). <b>B: CUT LOOSE</b>: the decision of the video in plain words. "
-            "Reserve: “INSANE” (the 1861 headline; insults about the general flopped twice on TG). Details: youtube/thumbnail_texts.md."),
+          *bullets(["Patrick Cleburne's Top 3 Legendary Tactical Moves | The Man Who Stopped Sherman (vidIQ 87)",
+                    "Patrick Cleburne's Top 3 Legendary Tactical Moves | The Man Who Beat Sherman (vidIQ 86)",
+                    "Patrick Cleburne's Top 3 Legendary Tactical Moves | The Man Who Saved an Army (vidIQ 85)"]),
+          P("Thumbnail banner texts", "h2"),
+          P("<b>A: AT ALL HAZARDS</b>: the words of Bragg's order to Cleburne at Ringgold Gap (stakes, 3 words, no context needed; TG type 3). "
+            "<b>B: HOLD THE GAP</b>: his decision in plain words (TG type 1). Studio Test &amp; compare can run both."),
           (Table([[img(TB, 82)]], colWidths=[85 * mm]) if HAVE_T else THUMB_WAIT),
-          P("Both thumbnails were generated by vidIQ in one go (owner rule 2026-10-26), with 3 Tactical Genius thumbnails as references; each scores 92 "
-            "on vidIQ. The battlefield is the hook (Union columns swinging round a burning Atlanta onto the railroad, rails twisted). The portrait is "
-            "an AI-generated Civil War general in colour, not a photograph of Sherman: no battle flags, no modern vehicles (checked).", "warn"), PageBreak()]
+          P("Both thumbnails were generated by vidIQ in one go (owner rule 2026-10-26), with 3 Tactical Genius thumbnails as references; A scores 92 and B 95 "
+            "on vidIQ. The battlefield is the hook (Union columns marching on Ringgold Gap, hidden Confederate units on the ridge walls, fire in the gap). The portrait is "
+            "an AI-generated Civil War general in colour, not a photograph of Cleburne. The AI's garbled map labels were repainted by hand (tools/make_thumb_labels.py); no battle flags.", "warn"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
           P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound and image licences require them.", "warn"),
           Preformatted(desc, S["mono"], maxLineLength=100), PageBreak()]
@@ -115,11 +114,11 @@ story += [P("4. Upload settings", "h1"),
                  ["Tags", open("youtube/tags.txt").read().strip()],
                  ["Category", "Education"],
                  ["Audience", "Not made for kids"],
-                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Tecumseh, Chattanooga, Dalton, Resaca, Oostanaula, Allatoona, Kennesaw, Chattahoochee, Jonesboro, McPherson, Schofield, Hardee, Macon, Milledgeville, Griswoldville, Ebenezer Creek, McAllister, Hazen, Salkehatchie, Bentonville, Durham's Station, Appomattox)"],
+                 ["Language / captions", "English; let YouTube auto-caption, then check the names (Cleburne = KLEE-burn, Chickamauga, Ringgold, Osterhaus, Granbury, Govan, Knefler, Goldthwaite, Bierce, Matthies, Raum, Hardee, Lowrey, Hazen)"],
                  ["Altered or synthetic content", "Yes: the narration is an AI voice and the thumbnail is AI-generated. Tick the disclosure box."],
                  ["Chapters", "Automatic from the description (first chapter is 0:00)"],
-                 ["Pinned comment", "Which was Sherman's greatest move: 1, 2 or 3? And which commander should we cover next?"],
-                 ["End screen", "One related video (e.g. the George Thomas video) + subscribe, over the last ~20 s"],
+                 ["Pinned comment", "Which was Cleburne's greatest move: 1, 2 or 3? And which commander should we cover next?"],
+                 ["End screen", "One related video (e.g. the Sherman or George Thomas video) + subscribe, over the last ~20 s"],
                  ["Schedule", "Your audience's peak time (YouTube Studio > Analytics > Audience)"]],
                 [45, 125]),
           P("Upload checklist", "h2"),
@@ -127,14 +126,15 @@ story += [P("4. Upload settings", "h1"),
                     "Paste title, description and tags; upload thumbnail A (1280x720).", "Fill in the business email in the description.",
                     "Tick 'altered or synthetic content'.", "Add end screen (one related video + subscribe) and cards; set visibility and schedule.",
                     "After 24-48 h: check click-through rate and 30-second retention; if CTR is under 2% after ~1,000 impressions, switch to the alternative thumbnail."]),
-          P("<b>Facts to double-check before publishing</b> (approximate, single-source or second-hand; see research/FACT_NOTES*.md):<br/>"
-            "&bull; Atlanta campaign casualties: Union 31,687 (Memoirs) vs 37,081 (Sherman's own OR table) vs ~34,500 (ABT); Confederate ~35,000. Card shows the range.<br/>"
-            "&bull; Griswoldville Confederate losses 523 (Scaife & Bragg) vs 1,100 (ABT); Fort McAllister Union losses 92-134.<br/>"
-            "&bull; 'No such army since the days of Julius Caesar': attributed to Johnston (book title/preface), no primary text found; said as 'is credited with saying'.<br/>"
-            "&bull; 'War is all hell': reported from his 1880 Columbus, Ohio speech to veterans (not 1879, not wartime).<br/>"
-            "&bull; Sent home on leave in late 1861 (Halleck); Louisiana resignation Jan 1861; Shiloh hand wound; Chattahoochee crossing 8-9 Jul; Johnston relieved 17/18 Jul; Johnston restored 22-23 Feb 1865; Raleigh 13 Apr.<br/>"
-            "&bull; Griswoldville and Rivers' Bridge are drawn schematically (enlarged); all front lines, control areas and march routes are approximate (research/FACT_NOTES_*.md).", "warn")]
-out = "build/Sherman-publishing-guide.pdf"
+          P("<b>Facts to double-check before publishing</b> (research/FACT_NOTES.md; the Official Records and the Symonds/Cozzens/Castel books were not reachable, so these rest on secondary sources):<br/>"
+            "&bull; Union strength at Ringgold Gap is hedged (&ldquo;more than ten thousand&rdquo;; sources say 12,000-16,000); Cleburne ~4,000 (OR figure 4,157 not confirmed).<br/>"
+            "&bull; Tunnel Hill: Sherman ~16,000 in three divisions (the research's 25,000 was wrong); Union loss &ldquo;almost 2,000&rdquo;; Cleburne &ldquo;a little over 200&rdquo; (222 in the report: confirm). Brigade names Cumming and Brown (Hardee's reinforcements) are from memory.<br/>"
+            "&bull; Ringgold Gap: Cleburne 20 killed, 190 wounded, 11 missing; Union &ldquo;about 500&rdquo; (509 in Wikipedia; Hooker's own return varies). Creighton and Crane killed: Geary's report to confirm.<br/>"
+            "&bull; Bragg's resignation within days of Ringgold; Helena druggist/lawyer; Hooker's column delayed by a burned bridge: from memory.<br/>"
+            "&bull; Pickett's Mill: Wood's division 1,457 and about 1,600 in all; Cleburne about 450 (his report). The positions in the ravine are approximate (no battle map could be downloaded). Matthies was WOUNDED (head), not killed: fixed in the script.<br/>"
+            "&bull; Dalton memorandum, 2 Jan 1864: only the verified half of the 'loss of independence' line is quoted; Davis ordered it suppressed. Not used because unsourced: 'Follow me, boys', Lee's 'meteor' quote, 'Dead Angle' at Pickett's Mill, 8 flags/500 prisoners, rolled shells.<br/>"
+            "&bull; Bierce's only available photo is post-war (captioned 'later in life'); Granbury and Walker have initials badges (no public-domain photo).", "warn")]
+out = "build/Cleburne-publishing-guide.pdf"
 SimpleDocTemplate(out, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm, topMargin=16 * mm, bottomMargin=18 * mm,
-                  title="William T. Sherman - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
+                  title="Patrick Cleburne - publishing guide").build(story, onFirstPage=page, onLaterPages=page)
 print(out)
