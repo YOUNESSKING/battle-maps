@@ -33,6 +33,7 @@ BOXES = {
     "osterhaus": ("osterhaus_src.jpg", (340, 87, 670, 417)),
     "geary": ("geary_src.jpg", (146, 222, 496, 572)),
     "lowrey": ("lowrey_src.jpg", (218, 190, 548, 520)),
+    "bierce": ("bierce_src.jpg", (190, 40, 1090, 940)),
     "dahlgren": ("dahlgren_src.jpg", (132, 218, 507, 593)),
 }
 for k in (sys.argv[1:] or BOXES):
