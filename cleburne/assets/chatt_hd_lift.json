@@ -1,0 +1,20 @@
+{
+ "name": "chatt_hd_lift",
+ "center": [
+  34.95,
+  -85.1
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  67664,
+  103069
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 125.3,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

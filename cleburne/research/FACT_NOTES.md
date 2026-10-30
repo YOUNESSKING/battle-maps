@@ -32,3 +32,6 @@ Method: web search + fetch of secondary sources (Wikipedia, NPS Civil War Series
 
 ## Facts from memory (list in the publishing PDF's double-check box)
 Bragg's resignation date; Helena druggist/lawyer; Hooker's column delayed by a burned bridge; Creighton/Crane; Cleburne's 222 losses.
+
+## Correction 2026-10-30 (map agent + web check)
+- Col. Charles L. Matthies was WOUNDED (head wound) at Missionary Ridge and died in 1868 (Wikipedia, prabook, Find a Grave). The NPS "mortally wounded" wording is wrong. Script move1-4 now says "wounded". Paragraph needs re-voicing (batch with any other fixes) BEFORE render.
