@@ -1,56 +1,106 @@
 {
  "4": [
   {
-   "photo": "assets/media/sherman_wide.jpg",
+   "photo": "assets/media/archive_cleburne_w.jpg",
    "move": "in",
    "focus": [
     0.5,
     0.38
    ],
-   "label": "WILLIAM TECUMSEH SHERMAN \u00b7 1820-1891",
-   "dur": 5.0,
+   "label": "PATRICK CLEBURNE \u00b7 1828-1864",
+   "dur": 6.0,
    "depth": true,
    "trim": 0
   },
   {
-   "photo": "assets/media/card_1820_lancaster.jpg",
+   "photo": "assets/media/card_1828_cork.jpg",
    "move": "in",
    "focus": [
     0.3,
     0.6
    ],
-   "dur": 3.8,
-   "trim": 0
+   "dur": 3.8
   },
   {
-   "photo": "assets/media/card_1861_louisiana.jpg",
-   "move": "in",
-   "focus": [
-    0.3,
-    0.6
-   ],
-   "dur": 4.2
-  },
-  {
-   "photo": "assets/media/archive_sherman_fort7_w.jpg",
+   "photo": "assets/media/archive_cork_cove1861_w.jpg",
    "move": "in",
    "focus": [
     0.5,
+    0.45
+   ],
+   "label": "COVE OF CORK, IRELAND \u00b7 1861",
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/archive_cork_queenstown.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "QUEENSTOWN (COBH), COUNTY CORK \u00b7 C. 1890",
+   "dur": 3.4
+  },
+  {
+   "photo": "assets/media/archive_helena_fortcurtis.jpg",
+   "move": "in",
+   "focus": [
+    0.55,
     0.55
    ],
-   "label": "SHERMAN AT ATLANTA, 1864 \u00b7 PHOTO: GEORGE N. BARNARD",
-   "dur": 5.0,
+   "label": "HELENA, ARKANSAS \u00b7 FORT CURTIS",
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/archive_bragg_w.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.38
+   ],
+   "label": "GENERAL BRAXTON BRAGG",
+   "dur": 4.2,
    "depth": true
   },
   {
-   "photo": "assets/media/sherman_wide.jpg",
+   "photo": "assets/media/card_1863_chattanooga.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.6
+   ],
+   "dur": 3.8
+  },
+  {
+   "photo": "assets/media/archive_chattanooga_depot_w.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "CHATTANOOGA \u00b7 LOOKOUT MOUNTAIN \u00b7 1864",
+   "dur": 3.4
+  },
+  {
+   "photo": "assets/media/archive_grant_w.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.42
+   ],
+   "label": "ULYSSES S. GRANT",
+   "dur": 4.2,
+   "depth": true
+  },
+  {
+   "photo": "assets/media/archive_cleburne_w.jpg",
    "move": "out",
    "focus": [
     0.5,
     0.38
    ],
-   "label": "\"CUMP\" TO HIS FAMILY",
-   "dur": 4.05,
+   "label": "MAJOR GENERAL PATRICK R. CLEBURNE, C.S.A.",
+   "dur": 5.04,
    "depth": true
   }
  ]

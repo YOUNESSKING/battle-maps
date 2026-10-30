@@ -23,3 +23,20 @@ dahlgren_src.jpg | [Portrait of Rear Adm. John A. Dahlgren, officer of the Feder
 grant_src.jpg, lincoln_src.jpg, *_head*.png for grant/lincoln: copied from meade/assets/media (see meade/assets/media/CREDITS.md for sources; LoC, public domain)
 *_head_flat.png = square 400x400 crop of the _src; *_head.png = rembg (isnet-general-use) cut-out of the flat crop. Flags (us34/us35/csa*) are copied from meade and Wikimedia (public domain as tagged).
 archive_sherman_fort7.jpg | [Atlanta, Ga. Gen. William T. Sherman on horseback at Federal Fort No. 7] | George N. Barnard | 1864 | https://www.loc.gov/item/2018666106/ | Public domain (LoC: no known restrictions on publication); cwpb 03628
+
+# Video #14 Cleburne (all Library of Congress, public domain: "No known restrictions on publication"; downloaded 2026-10-30 via loc.gov API, master TIFF/service JPEG)
+cleburne_src.jpg (+cleburne_head*.png) | [Maj. Gen. Patrick Ronayne Cleburne, 15th Arkansas / CSA General Staff] | Ben Oppenheimer, Mobile | 1861 | https://www.loc.gov/item/2025167359/ | Public domain (LoC); master 03428u.tif; also archive_cleburne_w.jpg, _src_cleburne_oppenheimer.jpg
+bragg_src.jpg (+bragg_head*.png) / _src_bragg.jpg / archive_bragg_w.jpg | [Major General Braxton Bragg, CSA, in uniform] | Vannerson & Jones | 1861 | https://www.loc.gov/item/2022630536/ (head crop from the cph card https://www.loc.gov/item/2001695009/) | Public domain (LoC)
+hooker_src.jpg (+hooker_head*.png) | [Portrait of Maj. Gen. Joseph Hooker] | Brady's National Photographic Portrait Galleries | 1860-65 | https://www.loc.gov/item/2018666437/ | Public domain (LoC) cwpb 06979
+_src_hooker.jpg / archive_hooker_w.jpg | Brig. Gen. Joseph Hooker | Brady-Handy Collection | c.1855-65 | https://www.loc.gov/item/2017896618/ | Public domain (LoC) cwpbh 00839
+wood_src.jpg (+wood_head*.png) | [Major General Thomas John Wood, U.S. Army] (carte de visite) | unknown (Liljenquist) | 1863 | https://www.loc.gov/item/2023630984/ | Public domain (LoC); small face, soft
+osterhaus_src.jpg (+osterhaus_head*.png) | [Portrait of Maj. Gen. Peter J. Osterhaus] | Brady's National Photographic Portrait Galleries | 1860-65 | https://www.loc.gov/item/2018666471/ | Public domain (LoC) cwpb 05815
+geary_src.jpg (+geary_head*.png) | John W. Geary | Brady's National Photographic Portrait Galleries | 1860-65 | https://www.loc.gov/item/2018669774/ | Public domain (LoC) cwpb 06916
+lowrey_src.jpg (+lowrey_head*.png) | [Mark P. Lowrey, pastor and Brigadier General, C.S.A.] | unknown | c.1870s | https://www.loc.gov/item/2004680078/ | Public domain (LoC); post-war clerical dress, dark photo (head.png is NOT a cut-out)
+_src_grant.jpg / archive_grant_w.jpg | General Ulysses S. Grant | Brady's National Photographic Portrait Galleries | 1865 | https://www.loc.gov/item/2019630719/ | Public domain (LoC)
+_src_sherman.jpg / archive_sherman_w.jpg | Maj. Gen. William T. Sherman (= sherman_hires_c.jpg) | Brady's National Photographic Portrait Galleries | 1860-65 | https://www.loc.gov/item/2018666487/ | Public domain (LoC)
+_src_queenstown.jpg / archive_cork_queenstown.jpg / card_1828_cork.jpg | [Queenstown, County Cork, Ireland] (photochrom, c.1890; NOT period-1828, caption says c. 1890) | Detroit Publishing Co. | 1890 | https://www.loc.gov/item/2002717381/ | Public domain (LoC)
+_src_cove1861.jpg / archive_cork_cove1861_w.jpg | Ireland, Queenstown, Co. Cork (stereoview, left half) | unknown | 1861 | https://www.loc.gov/item/2024723131/ | Public domain (LoC)
+_src_helena.jpg / archive_helena_fortcurtis.jpg | Interior of Fort Curtis, Helena, Ark. | unknown | c.1862-63 | https://www.loc.gov/item/2013651624/ | Public domain (LoC)
+_src_depot.jpg / archive_chattanooga_depot_w.jpg / card_1863_chattanooga.jpg | [Chattanooga, Tenn. U.S. military train at depot; Lookout Mountain in background] | unknown (Civil war photographs 1861-1865) | 1864 | https://www.loc.gov/item/2018666959/ | Public domain (LoC) cwpb 02119
+tools/make_cards_cleburne.py makes the archive_*_w.jpg wide plates and the two date cards (our own artwork from the sources above).

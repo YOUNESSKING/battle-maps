@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Square face crops (400x400 RGB) from sherman/assets/media/<name>_src.jpg.
-Box = (left, top, right, bottom) in source pixels. Run: python3 sherman/tools/make_heads.py [name ...]"""
+Box = (left, top, right, bottom) in source pixels. Run: python3 cleburne/tools/make_heads.py [name ...]
+_head_flat.png = RGB crop; _head.png = RGBA cut-out of it (rembg isnet-general-use) if cleburne/tools/cutout_heads.py is run."""
 import sys
 from PIL import Image
-M = "/home/user/battle-maps/sherman/assets/media/"
+M = "/home/user/battle-maps/cleburne/assets/media/"
 BOXES = {
     "grant":      ("grant_src.jpg",      (195, 170, 475, 450)),
     "lincoln":    ("lincoln_src.jpg",    (197, 243, 376, 422)),
@@ -25,6 +26,13 @@ BOXES = {
     "polk": ("polk_src.jpg", (239, 139, 509, 409)),
     "davis": ("davis_src.jpg", (205, 148, 455, 398)),
     "jcdavis": ("jcdavis_src.jpg", (108, 153, 483, 528)),
+    "cleburne": ("cleburne_src.jpg", (185, 133, 585, 533)),
+    "bragg": ("bragg_src.jpg", (161, 183, 541, 563)),
+    "hooker": ("hooker_src.jpg", (190, 220, 520, 550)),
+    "wood": ("wood_src.jpg", (164, 257, 424, 517)),
+    "osterhaus": ("osterhaus_src.jpg", (340, 87, 670, 417)),
+    "geary": ("geary_src.jpg", (146, 222, 496, 572)),
+    "lowrey": ("lowrey_src.jpg", (218, 190, 548, 520)),
     "dahlgren": ("dahlgren_src.jpg", (132, 218, 507, 593)),
 }
 for k in (sys.argv[1:] or BOXES):

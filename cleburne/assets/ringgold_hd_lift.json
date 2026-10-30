@@ -1,0 +1,20 @@
+{
+ "name": "ringgold_hd_lift",
+ "center": [
+  34.93,
+  -85.1
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  551392,
+  830364
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 15.67,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

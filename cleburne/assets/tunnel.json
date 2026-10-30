@@ -1,0 +1,19 @@
+{
+ "name": "tunnel",
+ "center": [
+  35.07,
+  -85.24
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  550577,
+  829369
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 15.64,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
