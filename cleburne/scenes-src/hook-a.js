@@ -23,6 +23,7 @@ const { at, P: PS } = B;
 const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
+{ const _arrow = B.arrow; B.arrow = (o) => { const g = _arrow(o); if ((o.width || 22) < 10) { const ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke-width", (o.width * 1.45 + 0.6 * o.width / 4).toFixed(2)); const pg = g.querySelector("polygon"); if (pg) pg.setAttribute("stroke-width", Math.min(1, o.width * 0.25)); } return g; }; }   // thin casing on zoomed-in arrows (meade kit)
 const FL = { us: "assets/media/us35_flag.png", csa: "assets/media/csa1_13_flag.png" };
 const tl = B.tl, scene = document.getElementById("scene"), worldEl = document.getElementById("world");
 const NS = "http://www.w3.org/2000/svg", ov = document.getElementById("overlay");
