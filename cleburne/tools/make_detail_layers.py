@@ -6,12 +6,14 @@ import json, math, os, sys, urllib.parse, urllib.request
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from scipy import ndimage
-import rasterio
+import rasterio, rasterio.enums
 from rasterio.windows import from_bounds
 base = sys.argv[1]; S = 2
 SIMPLE = os.environ.get('SIMPLE') == '1'; SUF = 'S' if SIMPLE else ''
 J = json.load(open(f"assets/{base}.json")); z = J["zoom"]; ox, oy = J["origin_world_px"]; W, H = J["size"][0] * S, J["size"][1] * S
 n = 256 * 2 ** z
+WIDE = z <= 10
+DEC = max(1, round(J['meters_per_px'] / S / 10)) if WIDE else 1
 def px2ll(i, j):
     x = ox + i / S; y = oy + j / S
     return math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * y / n)))), x / n * 360 - 180
@@ -20,15 +22,18 @@ def ll2px(lat, lon):
 n_lat, w_lon = px2ll(0, 0); s_lat, e_lon = px2ll(W, H)
 print("bounds", s_lat, w_lon, n_lat, e_lon, flush=True)
 # ---- ESA WorldCover mosaic over the bounds
-RES = 1 / 12000
+RES = DEC / 12000
 pad = 0.002; bl, bb, br, bt = w_lon - pad, s_lat - pad, e_lon + pad, n_lat + pad
 NR, NC = int(round((bt - bb) / RES)), int(round((br - bl) / RES)); WC = np.zeros((NR, NC), np.uint8)
 for tl in range(math.floor(bb / 3) * 3, math.ceil(bt / 3) * 3, 3):
     for tn in range(math.floor(bl / 3) * 3, math.ceil(br / 3) * 3, 3):
         name = f"ESA_WorldCover_10m_2021_v200_{'N' if tl >= 0 else 'S'}{abs(tl):02d}{'E' if tn >= 0 else 'W'}{abs(tn):03d}_Map.tif"
-        with rasterio.open("/vsicurl/https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/" + name) as ds:
+        try: ds = rasterio.open("/vsicurl/https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/" + name)
+        except Exception as e: print("no tile (ocean?)", name, flush=True); continue
+        with ds:
             b = (max(bl, tn), max(bb, tl), min(br, tn + 3), min(bt, tl + 3))
-            a = ds.read(1, window=from_bounds(*b, ds.transform))
+            _w = from_bounds(*b, ds.transform)
+            a = ds.read(1, window=_w, out_shape=(max(1, int(round(_w.height / DEC))), max(1, int(round(_w.width / DEC)))), resampling=rasterio.enums.Resampling.mode) if WIDE else ds.read(1, window=_w)
             r0 = int(round((bt - b[3]) / RES)); c0 = int(round((b[0] - bl) / RES)); WC[r0:r0 + a.shape[0], c0:c0 + a.shape[1]] = a[:NR - r0, :NC - c0]
 print("worldcover", WC.shape, dict(zip(*[x.tolist() for x in np.unique(WC, return_counts=True)])), flush=True)
 # resample onto the HD grid (nearest) via per-axis lat/lon lookup (mercator: lon linear in x, lat by y)
@@ -36,11 +41,11 @@ cols = np.clip(((np.array([px2ll(i, 0)[1] for i in range(W)]) - bl) / RES).astyp
 rows = np.clip(((bt - np.array([px2ll(0, j)[0] for j in range(H)])) / RES).astype(int), 0, NR - 1)
 CL = WC[np.ix_(rows, cols)]
 # ---- NHD (USGS)
-def nhd(layer, fields="FCode,FType,GNIS_Name"):
+def nhd(layer, fields="FCode,FType,GNIS_Name", where=None):
     out, off = [], 0
     while True:
         q = {"geometry": f"{w_lon},{s_lat},{e_lon},{n_lat}", "geometryType": "esriGeometryEnvelope", "inSR": 4326, "outSR": 4326, "spatialRel": "esriSpatialRelIntersects",
-             "outFields": fields, "returnGeometry": "true", "f": "geojson", "resultOffset": off, "resultRecordCount": 1000}
+             "outFields": fields, "returnGeometry": "true", "f": "geojson", "resultOffset": off, "resultRecordCount": 1000, **({"where": where} if where else {})}
         u = f"https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/{layer}/query?" + urllib.parse.urlencode(q)
         for k in range(4):
             try: d = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "battle-maps-detail-test"}), timeout=90)); break
@@ -49,7 +54,10 @@ def nhd(layer, fields="FCode,FType,GNIS_Name"):
         fs = d.get("features", []); out += fs; off += len(fs)
         if len(fs) < 1000 and not d.get("exceededTransferLimit"): break
     return out
-flow = nhd(6); body = nhd(12); area = nhd(9)
+if WIDE:
+    flow = body = area = []  # wide maps: DEM major rivers + WorldCover water instead of the (slow) NHD small-scale service
+else:
+    flow = nhd(6); body = nhd(12); area = nhd(9)
 print("nhd flowlines", len(flow), "waterbodies", len(body), "areas", len(area), flush=True)
 def polys(f):
     g = f["geometry"]
@@ -67,7 +75,7 @@ EXT = 20037508.342789244
 def m3857(i, j): return ((ox + i / S) / n - 0.5) * 2 * EXT, (0.5 - (oy + j / S) / n) * 2 * EXT
 NLW = np.zeros((H, W), bool); TW, TH = 1440, 810
 import io
-for tj in range(0, H, TH):
+for tj in range(0, 0 if WIDE else H, TH):
     for ti in range(0, W, TW):
         x0, y1 = m3857(ti, tj); x1, y0 = m3857(ti + TW, tj + TH)
         u = ("https://www.mrlc.gov/geoserver/mrlc_display/wms?service=WMS&version=1.1.1&request=GetMap&layers=NLCD_2021_Land_Cover_L48&styles=&srs=EPSG:3857"
@@ -102,6 +110,18 @@ for f in flow:
     for ln in lines(f):
         pts = [ll2px(la, lo) for lo, la in ln]
         if len(pts) > 1: d.line(pts, fill=EDGE + (150,), width=w + 1, joint="curve"); d.line(pts, fill=WATER + (225,), width=max(w, 1), joint="curve")
+if WIDE:
+    pl = f"assets/{base}_hd_lift_plain.jpg" if os.path.exists(f"assets/{base}_hd_lift_plain.jpg") else f"assets/{base}_hd_lift.jpg"
+    pa = np.array(Image.open(pl).convert("RGB").resize((W, H))).astype(int)
+    sea = ndimage.binary_dilation((np.abs(pa - np.array([18, 33, 44])).sum(2) < 40), iterations=25)  # the basemap's sea: never draw WorldCover 'water' over it
+    wm = ndimage.binary_opening((CL == 80) & ~sea, iterations=1); lab, nl = ndimage.label(wm); sz = ndimage.sum(wm, lab, range(1, nl + 1))
+    wm = np.isin(lab, [i + 1 for i, v in enumerate(sz) if v > 2500]); wl = np.zeros((H, W, 4), np.uint8); wl[wm] = WATER + (235,)
+    ed = wm & ~ndimage.binary_erosion(wm, iterations=1); wl[ed] = EDGE + (255,)
+    riv = Image.alpha_composite(riv, Image.fromarray(wl)); d = ImageDraw.Draw(riv)
+    dem = json.load(open(f"assets/src/{base}_dem_rivers.json")) if os.path.exists(f"assets/src/{base}_dem_rivers.json") else []
+    for r in dem:
+        if r["order"] >= 3 and len(r["pts"]) > 8:
+            pts = [tuple(q) for q in r["pts"]]; d.line(pts, fill=EDGE + (150,), width=4, joint="curve"); d.line(pts, fill=WATER + (225,), width=3, joint="curve")
 riv.save(f"assets/media/{base}_det_riv{SUF}.png")
 # ---- swamp layer: WorldCover herbaceous wetland (90) + NHD swamp/marsh polygons; hatched blue-green marsh pattern
 sw = (CL == 90) | (CL == 95)
@@ -131,12 +151,12 @@ swl = np.array(rim)
 Image.fromarray(swl).save(f"assets/media/{base}_det_swamp{SUF}.png")
 # ---- tree layer: canopy mottle on tree cover (10) (+ shrub 20 lighter); built-up/crop/grass left open
 tree = (CL == 10)
-tree = ndimage.binary_opening(tree, iterations=2)
+tree = ndimage.binary_opening(tree, iterations=(1 if WIDE else 2))
 rng = np.random.default_rng(7)
 def noise_(sig, seed):
     r = np.random.default_rng(seed).normal(size=(H, W)).astype(np.float32); r = ndimage.gaussian_filter(r, sig); return (r - r.mean()) / (r.std() + 1e-6)
 m = 0.6 * noise(3, 1) + 0.4 * noise(7, 2)
-al = (np.clip(0.50 + 0.08 * m, 0.35, 0.65) if SIMPLE else np.clip(0.55 + 0.22 * m, 0.3, 0.85)) * ndimage.gaussian_filter(tree.astype(np.float32), 6.0 if SIMPLE else 2.0)
+al = (np.clip(0.50 + 0.08 * m, 0.35, 0.65) if SIMPLE else np.clip(0.55 + 0.22 * m, 0.3, 0.85)) * ndimage.gaussian_filter(tree.astype(np.float32), (20.0 if WIDE else 6.0) if SIMPLE else 2.0)
 tl_ = np.zeros((H, W, 4), np.uint8)
 g = np.clip(0.5 + 0.35 * m, 0, 1)
 tl_[..., 0] = (22 + 26 * g).astype(np.uint8); tl_[..., 1] = (46 + 40 * g).astype(np.uint8); tl_[..., 2] = (24 + 22 * g).astype(np.uint8)
