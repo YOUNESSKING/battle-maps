@@ -97,6 +97,41 @@ def build_C(n=160, seed=5):
     return out
 
 
+def build_C2(n=260, seed=11):
+    """v11 (judge fixes): like C, but from THREE forest canopy photos (each normalised to the same exposure, so no
+    crown-to-crown tone swings), with more varied outlines (oval, lobed, slightly lopsided) and sizes."""
+    rng = np.random.default_rng(seed)
+    srcs = [("hro_dc_rockcreek.png", (0, 1250, 0, 1250)), ("hro_dc_glover.png", (0, 1200, 0, 880)),
+            ("hro_dc_rockcreek2.png", (380, 1200, 0, 1200))]
+    ref = None; pools = []
+    for fn, (y0, y1, x0, x1) in srcs:
+        a = np.array(Image.open(f"{SRC}/{fn}").convert("RGB")).astype(np.float32)[y0:y1, x0:x1]
+        fol = (a[..., 1] >= a[..., 0]) & (a[..., 1] >= a[..., 2] - 2) & (a.max(-1) < 175)
+        mu, sd = a[fol].mean(0), a[fol].std(0)
+        if ref is None: ref = (mu, sd)
+        a = (a - mu) / sd * ref[1] + ref[0]                                  # same exposure for every source
+        Ls = G(a.mean(-1), 2.2)
+        pk = peak_local_max(Ls, min_distance=9, threshold_abs=np.percentile(Ls, 55), exclude_border=30)
+        pools.append((a, fol, pk))
+    out = []
+    for _ in range(n * 6):
+        if len(out) >= n: break
+        a, fol, pk = pools[rng.integers(len(pools))]
+        cy, cx = pk[rng.integers(len(pk))]
+        R = rng.uniform(13, 21); s = int(R * 1.45) + 3
+        win = a[cy - s:cy + s + 1, cx - s:cx + s + 1]
+        if win.shape[:2] != (2 * s + 1, 2 * s + 1) or fol[cy - s:cy + s + 1, cx - s:cx + s + 1].mean() < 0.95: continue
+        yy, xx = np.mgrid[-s:s + 1, -s:s + 1].astype(np.float32)
+        th = np.arctan2(yy, xx); rr = np.hypot(xx, yy)
+        rad = R * (1 + rng.uniform(-0.18, 0.18) * np.cos(2 * th + rng.uniform(0, 6.3)))   # oval
+        rad = rad * (1 + rng.uniform(0, 0.12) * np.cos(th + rng.uniform(0, 6.3)))          # lopsided
+        for k, amp in ((3, 0.10), (4, 0.07), (6, 0.06), (9, 0.05), (14, 0.04), (22, 0.03)):
+            rad = rad * (1 + amp * rng.uniform(0.2, 1.0) * np.cos(k * th + rng.uniform(0, 6.3)))
+        al = np.clip((rad - rr) / 1.6 + 0.5, 0, 1)
+        out.append(np.dstack([np.clip(win, 0, 255), al * 255])[::-1, ::-1].astype(np.uint8))
+    return out
+
+
 def save(name, sprs):
     np.savez_compressed(f"{SRC}/sprites_{name}.npz", **{f"s{i:04d}": s for i, s in enumerate(sprs)})
     # contact sheet for eyeballing
@@ -113,3 +148,4 @@ if __name__ == "__main__":
     w = sys.argv[1] if len(sys.argv) > 1 else "all"
     if w in ("A", "all"): save("A", build_A())
     if w in ("C", "all"): save("C", build_C())
+    if w in ("C2", "all"): save("C2", build_C2())
