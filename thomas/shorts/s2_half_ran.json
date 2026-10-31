@@ -23,7 +23,14 @@
   {
    "scene": "hook1_nocap",
    "from": 26.3,
-   "to": 55.1
+   "to": 46.7
+  },
+  {
+   "scene": "chick2_nocap",
+   "from": 46.85,
+   "to": 55.1,
+   "pic_from": 295.5,
+   "x": 560
   },
   {
    "scene": "chick2_nocap",

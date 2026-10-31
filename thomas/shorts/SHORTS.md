@@ -12,7 +12,7 @@ title and on stamps only; no zoom whoosh (biggest camera moves only). Music = th
 shadow, nothing under it; captions 1-3 words, white with the spoken word in gold, soft shadow; no extra text. Per-segment `"x"` moves the
 map crop so labels are never cut off.
 **No on-screen caption bar from the map** (owner 2026-10-31: it duplicated the Short's captions): copy each scene to
-`scenes/<scene>_nocap/`, add `<style>.caption,#date,#credit{display:none!important}</style>` before `</head>` (caption bar, date scroll, terrain credit: the credit goes in the description), render it, and use `<scene>_nocap` in the
+`scenes/<scene>_nocap/`, add `<style>.caption,#date,#credit{display:none!important}</style>` before `</head>` (caption bar, date scroll, terrain credit: the credit goes in the description); add `.bubble` too when a scene has a wide speech bubble (nash2), render it, and use `<scene>_nocap` in the
 spec (copy `events_<scene>.json` to `events_<scene>_nocap.json`). Map labels and stamps stay.
 The narration is the posted video's own voice (Kokoro am_michael), so the Short matches the long video.
 Rules for descriptions are the channel's: **no links**; name the full video in words.

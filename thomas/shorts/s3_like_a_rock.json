@@ -26,8 +26,15 @@
    "to": 357.85
   },
   {
-   "scene": "chick3_nocap",
+   "scene": "chick2_nocap",
    "from": 358.2,
+   "to": 367.9,
+   "pic_from": 296.0,
+   "x": 560
+  },
+  {
+   "scene": "chick3_nocap",
+   "from": 367.95,
    "to": 377.0,
    "pic_from": 377.48
   }
