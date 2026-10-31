@@ -11,6 +11,9 @@
 //   front of map agent A), 2 BASTOGNE 1944 (4th Armored tanks race up the road through Assenois into the town, option 2, 26 Dec),
 //   3 THE RHINE 1945 (night, boats paddle over from Nierstein, MG fire; Montgomery badge on "a day before Montgomery"); pull-out to the
 //   europe map (three rings), title card (riser + boom).
+// OPENING v2 (2026-10-31, owner rule: stay in the story): hook-3 now starts with ~9 s IN THE DANGER on the Bastogne map (ring tightens, white-flag
+//   surrender demand 22 DEC, the answer 'ONE WORD' without showing it), THEN the hard cut to dark + calendar (22 -> 19 DEC) + the Verdun room.
+//   hook-4 adds 'Even he had misjudged the attack at first.' (Patton's 17 Dec diary) after the name slam; the plate no longer shows birth years.
 // @@KIT (tools/pc_kit.js)
 // ---------- pc kit (map agent C: hook-a, hook-b, move1f, ending) = a frozen copy of tools/m2b_kit.js (map agent B), inlined by tools/pc_inline.py ----------
 // Copied from the cleburne m23 kit (sherman move1_kit + the approved A1/A2 constant-size story layer, sherman/scenes-src/test-A2-labels.js).
@@ -310,6 +313,9 @@ const T_ROOM = at(H3, "The room"), T_PROM = at(H3, "promise"), T_FREEZ = at(H3, 
 const T_NAME = at(H4, "George S. Patton."), T_BROKE = at(H4, "He broke out"), T_FRANCE = at(H4, "across France"), T_NORTH = at(H4, "He turned north"),
   T_RELV = at(H4, "relieved Bastogne"), T_RHINE = at(H4, "And he crossed"), T_DARK = at(H4, "in the dark"), T_MONTY = at(H4, "a day before Montgomery"),
   T_THESE = at(H4, "These are"), T_GREAT = at(H4, "three greatest");
+const T_CLOSE = at(H3, "closing in"), T_DEM = at(H3, "demanded"), T_ANS = at(H3, "The answer"), T_WORD = at(H3, "single word");
+const TD0 = T_ROOM - 0.1;   // hard cut to dark
+const T_MIS = at(H4, "Even he");
 // ---------- projections ----------
 const EU = GG.proj(7, 15217, 10331), AVP = GG.proj(12, 518886, 360710), BAP = GG.proj(11, 269078, 177338), OPP = GG.proj(13, 1095661, 711514);
 // ---------- the three close maps (full-size layers at the world origin), hidden until their cut ----------
@@ -332,14 +338,14 @@ const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration
 // =====================================================================================================================
 // hook-3: hard cut to dark (frame 0), the calendar rolls back, the Verdun room, one stamp per detail
 // =====================================================================================================================
-const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:#05070d;"; SCN.insertBefore(DK, document.getElementById("credit")); gsap.set(DK, { autoAlpha: 1 });
-const CAL = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700"><div class="k" style="font-size:22px;letter-spacing:0.4em;color:#c9b48a">ONE WEEK EARLIER</div><div class="y" style="font-size:120px;line-height:1;color:#f7f3ea;letter-spacing:0.05em">26 DEC</div><div style="font-size:30px;letter-spacing:0.4em;color:#c9b48a">1944</div></div>`,
+const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:#05070d;"; SCN.insertBefore(DK, document.getElementById("credit")); gsap.set(DK, { autoAlpha: 0 }); tl.set(DK, { autoAlpha: 1 }, TD0 - 0.01);
+const CAL = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700"><div class="k" style="font-size:22px;letter-spacing:0.4em;color:#c9b48a">THREE DAYS EARLIER</div><div class="y" style="font-size:120px;line-height:1;color:#f7f3ea;letter-spacing:0.05em">22 DEC</div><div style="font-size:30px;letter-spacing:0.4em;color:#c9b48a">1944</div></div>`,
   "left:0;right:0;top:250px;display:flex;justify-content:center;transform-origin:50% 0%;");
-tl.fromTo(CAL, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, 0.02);
-SFX("hit", 0.05);
-const ye = CAL.querySelector(".y"), DAYS = ["26 DEC", "25 DEC", "24 DEC", "23 DEC", "22 DEC", "21 DEC", "20 DEC", "19 DEC"];
-const dv = { v: 0 }; tl.to(dv, { v: 7, duration: 1.2, ease: "none", onUpdate: () => { ye.textContent = DAYS[Math.round(dv.v)]; } }, 0.25);
-for (let k = 1; k < 8; k++) SFX("tick", 0.25 + (k - 0.5) * 0.17);
+tl.fromTo(CAL, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, TD0 + 0.02);
+SFX("hit", TD0 + 0.05);
+const ye = CAL.querySelector(".y"), DAYS = ["22 DEC", "21 DEC", "20 DEC", "19 DEC"];
+const dv = { v: 0 }; tl.to(dv, { v: 3, duration: 0.9, ease: "none", onUpdate: () => { ye.textContent = DAYS[Math.round(dv.v)]; } }, TD0 + 0.25);
+for (let k = 1; k < 4; k++) SFX("tick", TD0 + 0.25 + (k - 0.5) * 0.3);
 const TUP = T_PROM - 0.2;
 tl.to(CAL, { top: 26, scale: 0.42, duration: 0.45, ease: "power3.inOut" }, TUP);
 // the room: a long table, chairs, a frosted window, one small coal stove (designed card, not a map)
@@ -419,9 +425,10 @@ tl.to(BDG.querySelector(".q"), { autoAlpha: 0, duration: 0.15 }, T_NAME - 0.25);
 tl.call(() => {}, null, T_NAME);
 const PL = BDG.querySelector(".pl");
 tl.to(PL, { autoAlpha: 0, duration: 0.1 }, T_NAME - 0.3);
-const NAME = scr(`<div style="padding:12px 40px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:84px;letter-spacing:0.08em;line-height:1.1">GEORGE S. PATTON</div><div style="font-size:24px;letter-spacing:0.24em;color:#d8cfb8">U.S. THIRD ARMY · 1885 - 1945</div></div>`,
+const NAME = scr(`<div style="padding:12px 40px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:84px;letter-spacing:0.08em;line-height:1.1">GEORGE S. PATTON</div><div style="font-size:24px;letter-spacing:0.24em;color:#d8cfb8">U.S. THIRD ARMY · 1944 - 1945</div></div>`,
   "left:0;right:0;top:560px;display:flex;justify-content:center;transform-origin:50% 40%;", T_NAME - 0.1, null, { autoAlpha: 0 });
 slam(NAME, T_NAME - 0.1, { from: 1.9, shake: 6 }); pulse(T_NAME + 0.15);
+sst("EVEN HE MISJUDGED IT", T_MIS - 0.05, T_BROKE - 0.3, { size: 60, sub: "HIS OWN DIARY · 17 DEC 1944" });
 // hard CUTs: a black frame hides each camera jump (whoosh + hit)
 const CUTB = document.createElement("div"); CUTB.style.cssText = "position:absolute;inset:0;background:#030406;"; SCN.insertBefore(CUTB, document.getElementById("credit")); gsap.set(CUTB, { autoAlpha: 0 });
 const cut = (t, lay, until, c, s, drift) => {
@@ -445,6 +452,30 @@ const PINS = document.getElementById("pins");
 const snap = () => new Set([...OVL.children, ...PINS.children]);
 const endScope = (s0, until) => { const els = [...OVL.children, ...PINS.children].filter((e) => !s0.has(e) && e.tagName.toLowerCase() !== "defs"); tl.set(els, { autoAlpha: 0 }, until - 0.01); };
 const vis = (t0, t1) => (el) => { gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, t0); tl.set(el, { autoAlpha: 0 }, t1 - 0.01); return el; };
+// ---------- OPENING v2: the first ~9 s of hook-3 stay IN THE DANGER (Bastogne map, 22 Dec 1944) ----------
+{
+  const BASd = BAP(50.0023, 5.7173), SD = 2.0, END_D = TD0 - 0.05;
+  tl.set(LBA, { autoAlpha: 1 }, 0); tl.set(LBA, { autoAlpha: 0 }, TD0 - 0.01);
+  cam.cx = BASd[0] + 30; cam.cy = BASd[1] + 15; cam.s = SD; applyCam(); CAM_S0 = SD;
+  camTo(TD0 - 0.01, 0.01, [1440, 810], 1); tl.call(() => { CAM_S0 = 1; }, null, TD0);
+  [flagS(FL.us, "UNITED STATES", BASd[0] - 330, BASd[1] + 190, 0, END_D), flagS(FL.de, "GERMANY", BASd[0] + 300, BASd[1] - 190, 0, END_D)].forEach(vis(0, END_D + 0.01));
+  town("BASTOGNE", BASd, "l", 0, { until: END_D });
+  unitS("dp101", "carth", [BASd[0] + 6, BASd[1] - 4], "infantry", "101ST AIRBORNE", { t: 0, until: END_D });
+  const RING = [...Array(24)].map((_, k) => [BASd[0] + Math.cos(k / 24 * 6.2832) * 95, BASd[1] + Math.sin(k / 24 * 6.2832) * 70]); RING.push(RING[0]);
+  front2(RING, SD, 0.1, { dur: 0.8, until: END_D, flip: true });
+  [0, 1, 2, 3, 4, 5].forEach((k) => { const a = k / 6 * 6.2832 + 0.4, R0 = 190, R1 = 120, p0 = [BASd[0] + Math.cos(a) * R0, BASd[1] + Math.sin(a) * R0 * 0.75], p1 = [BASd[0] + Math.cos(a) * R1, BASd[1] + Math.sin(a) * R1 * 0.75];
+    unitS("dpg" + k, "rome", p0, k % 3 === 0 ? "tank" : "infantry", "", { t: 0.1 + k * 0.1, until: END_D }); go("dpg" + k, Math.max(T_CLOSE - 0.2, 0.4) + k * 0.05, 1.6, p1); });
+  [0.35, 0.9, 1.5, 2.2, 3.0].forEach((d, k) => K.impact(BASd[0] + 150 * Math.cos(k * 1.7), BASd[1] + 105 * Math.sin(k * 1.7), d, { r: 8 }));
+  sst("THE RING TIGHTENS", T_CLOSE - 0.1, T_DEM - 0.25, { sub: "BASTOGNE · 21-22 DEC 1944" });
+  sst("SURRENDER DEMAND", T_DEM - 0.05, T_ANS - 0.15, { color: "#ffd54a", sub: "22 DEC 1944 · UNDER A WHITE FLAG" });
+  const WF = `<svg width="30" height="46" viewBox="0 0 30 46" style="display:block;overflow:visible"><circle cx="15" cy="9" r="6" fill="#1b1d22" stroke="#f7f3ea" stroke-width="2"/><path d="M15 15 L15 34 M15 21 L5 29 M15 21 L24 16 M15 34 L8 45 M15 34 L22 45" stroke="#f7f3ea" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M24 16 L24 -6" stroke="#cfcab9" stroke-width="2"/><path d="M24 -6 L38 -2 L24 3 Z" fill="#fff"/></svg>`;
+  [0, 1, 2, 3].forEach((k) => { const a = [BASd[0] + 230 + k * 14, BASd[1] - 120 + k * 18], b = [BASd[0] + 95, BASd[1] - 40 + k * 10];
+    const el = pinS(GG.pin(WF, a[0], a[1], {})); vis(T_DEM - 0.2 + k * 0.15, END_D)(el); tl.to(el, { left: b[0], top: b[1], duration: Math.max(T_ANS - T_DEM, 1.5), ease: "none" }, T_DEM - 0.2 + k * 0.15); });
+  SFX("static", T_DEM);
+  const ANSW = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 18px;background:rgba(14,12,10,0.95);border-top:8px solid #1f4fc4;color:#f7f3ea;box-shadow:0 18px 40px rgba(0,0,0,.6)"><div style="font-size:24px;letter-spacing:0.34em;color:#9fc0ea">THE AMERICAN ANSWER</div><div style="font-size:96px;letter-spacing:0.12em;line-height:1.05">ONE WORD</div></div>`,
+    "left:0;right:0;top:640px;display:flex;justify-content:center;transform-origin:50% 40%;", T_WORD - 0.15, END_D, { autoAlpha: 0 });
+  slam(ANSW, T_WORD - 0.15, { from: 1.7, shake: 5, until: END_D }); pulse(T_WORD + 0.1);
+}
 // ---------- CUT 1: AVRANCHES 1944 (avranches map, option 2): blue columns pour through the one highway ----------
 const AV = AVP(48.684, -1.357), PBT = AVP(48.630, -1.355), S1 = 1.05;
 cut(T1, LAV, T2, [1450, 930], S1, [10, -10, 1.07]);
