@@ -2,7 +2,13 @@
 
 Built with `python3 tools/make_short.py shorts/<name>.json` (from `thomas/`). Each Short is cut from the long video's own scene renders
 and narration (same voice as the posted video), re-framed to 1080x1920: blurred map behind, the map centre in the middle, a 2-line hook
-title on top, word-by-word captions below. Sounds = the channel's locked kit (`goosegreen/assets/media/sfx`). Output: `build/shorts/`.
+title on top, word-by-word captions below. Output: `build/shorts/`.
+**Sound = the LOCKED mix (STYLE_LOCK 3-5), redone 2026-10-31 at the owner's request:** the locked kit (`goosegreen/assets/media/sfx`, md5-checked by
+`rokossovsky/tools/check_sound_lock.py`, which runs first) at the locked levels via `rokossovsky/tools/sfx_mix_lib.py`; cues come from the
+scene's own timeline (`shorts/events_<scene>.json`: every gun flash = "fire", every shell burst = "impact" + a 3 px shake); "hit" on the
+title and on stamps only; no zoom whoosh (biggest camera moves only). Music = the locked track for that part of the story (move 2 =
+"Wounded"), -20 LUFS x MUSIC_VOL 0.08, ducked thr 0.03 ratio 6; SFX ducked thr 0.03 ratio 3; limiter 0.5; two-pass -14 LUFS.
+The narration is the posted video's own voice (Kokoro am_michael), so the Short matches the long video.
 Rules for descriptions are the channel's: **no links**; name the full video in words.
 
 ## S1: Nobody Ordered This Charge (TEST, ~72 s) — `s1_nobody_ordered.json`
