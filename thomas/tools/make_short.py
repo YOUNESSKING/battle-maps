@@ -2,7 +2,7 @@
 
 usage (from thomas/): python3 tools/make_short.py shorts/<name>.json
 Spec: {"name", "title": ["LINE 1", "LINE 2"], "gold": "WORD", "music": "music_src_<locked track>.mp3",
-       "segments": [{"scene": "ridge2", "from": abs_s, "to": abs_s} | {"image": "archive/x.jpg", "from", "to", "caption"}],
+       "segments": [{"scene": "ridge2", "from": abs_s, "to": abs_s, ["pic_from": abs_s], ["x": crop_left]} | {"image": "archive/x.jpg", "from", "to", "caption"}],
        "cues": [[kind, short_time], ...]}   (extra locked-kit cues, e.g. ["hit", 0.05]; kinds as in STYLE_LOCK 3)
 Gun flashes / shell bursts come from shorts/events_<scene>.json (scene time, read from the scene's timeline).
 Times are absolute narration times (audio/timing.json). Layout: blurred map fills the frame, the map centre (1080x1080) sits in
@@ -27,17 +27,19 @@ ENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420
 run = lambda *a: subprocess.run(["ffmpeg", "-v", "error", "-y", *a], check=True)
 
 # ---------- sound cues: the scene's own flashes/bursts (shorts/events_<scene>.json, scene time) -> locked kinds ----------
-# flash = a gun firing -> "fire" (quiet launch); burst = a shell landing -> "impact" (real distant artillery) + a shake (STYLE_LOCK 3/3a)
+# flash = a gun/musket firing -> "fire" (quiet launch); burst = a shell landing -> "impact" (real distant artillery) + a shake;
+# clash = a melee starburst -> "hit" (STYLE_LOCK 3/3a). Events are read from the scene's timeline (see SHORTS.md).
 cues, shakes, total, seg_t0 = [], [], 0.0, []
 for s in spec["segments"]:
     seg_t0.append(total)
     if "scene" in s and os.path.exists(f"shorts/events_{s['scene']}.json"):
         for t, kind in json.load(open(f"shorts/events_{s['scene']}.json")):
             a = t + spec["scene_start"][s["scene"]]
-            if s["from"] <= a < s["to"] - 0.3:
-                cues.append([total + a - s["from"], "fire" if kind == "flash" else "impact", s["scene"]])
+            pf = s.get("pic_from", s["from"])  # picture start (abs); differs from the audio when a line plays over another map shot
+            if pf <= a < pf + s["to"] - s["from"] - 0.3:
+                cues.append([total + a - pf, {"flash": "fire", "burst": "impact", "clash": "hit"}[kind], s["scene"]])
                 if kind == "burst":
-                    shakes.append(total + a - s["from"])
+                    shakes.append(total + a - pf)
     total += s["to"] - s["from"]
 cues += [[t, kind, "short"] for kind, t in spec.get("cues", [])]  # e.g. ["hit", 0.05] for the title slam
 cues.sort()
@@ -56,7 +58,7 @@ for k, s in enumerate(spec["segments"]):
     d = s["to"] - s["from"]
     out = f"{OUT}/seg{k}.mp4"
     if "scene" in s:
-        st = s["from"] - spec["scene_start"][s["scene"]]
+        st = s.get("pic_from", s["from"]) - spec["scene_start"][s["scene"]]
         run("-ss", f"{st:.3f}", "-i", f"scenes/{s['scene']}/renders/{s['scene']}.mp4", "-t", f"{d:.3f}",
             "-vf", f"scale=1920:1080,fps={FPS},{LAYOUT(s.get('x'))}{shake(seg_t0[k], d)}", *ENC, "-an", out)
     else:  # archive picture: slow push-in on a 1920x1080 canvas, then the same layout

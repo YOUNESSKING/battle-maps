@@ -1,0 +1,35 @@
+{
+ "music": "music_src_long-note-one.mp3",
+ "cues": [
+  [
+   "hit",
+   0.05
+  ]
+ ],
+ "scene_start": {
+  "hook1_nocap": 0.0,
+  "chick2_nocap": 177.56,
+  "chick3_nocap": 377.48,
+  "nash2_nocap": 822.12,
+  "nash3_nocap": 879.58
+ },
+ "name": "s3_like_a_rock",
+ "title": [
+  "STANDING",
+  "LIKE A ROCK"
+ ],
+ "gold": "ROCK",
+ "segments": [
+  {
+   "scene": "chick2_nocap",
+   "from": 328.45,
+   "to": 357.85
+  },
+  {
+   "scene": "chick3_nocap",
+   "from": 358.2,
+   "to": 377.0,
+   "pic_from": 377.48
+  }
+ ]
+}

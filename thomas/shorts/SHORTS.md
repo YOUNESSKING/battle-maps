@@ -38,12 +38,57 @@ Full story on the channel: George Thomas's Top 3 Legendary Tactical Moves | The 
 **Tags:** missionary ridge, battle of chattanooga, george thomas, ulysses grant, civil war, american civil war, civil war battles,
 military history, battle maps, history shorts
 
-## Next Shorts (proposed, after the owner approves S1's format)
-| # | Moment | Cut from | Hook text | Title idea |
-|---|---|---|---|---|
-| S2 | Half an army runs; one general stays | 0:26-0:58 (hook-1b, hook-2) + 4:53-5:15 (Horseshoe Ridge) | HALF THE ARMY RAN | Half His Army Ran. He Didn't. #shorts |
-| S3 | The Rock of Chickamauga | 5:28-6:17 (wave after wave, bayonets, Garfield: "standing like a rock") | STANDING LIKE A ROCK | How George Thomas Got His Nickname #shorts |
-| S4 | He would not attack on ice | 14:07-14:58 (telegrams, ice storm, "submit without a murmur") + Nashville result | NOT ON ICE | Grant Told Him to Attack. He Refused. #shorts |
+## S2: Half the Army Ran. He Didn't. (~49 s, maps only) — `s2_half_ran.json`
+Cut: the Union right ceases to exist, Rosecrans swept away (0:26) → "But one general does not leave the field... George Henry Thomas"
+(0:47) → Horseshoe Ridge: "the army did not have to run" (5:07) → wave after wave, thrown back (5:28). Music: Long Note One (move 1).
+**Title:** Half His Army Ran. He Didn't. #shorts
+**Description:**
+```
+September 20, 1863, Chickamauga. A gap opens in the Union line, Longstreet's men pour through, and half the army runs, its commander
+with it. One general stays. George Thomas gathers every unbroken regiment onto a ridge, and all afternoon the attacks break on it.
+
+Full story on the channel: George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army.
+
+#shorts #civilwar #history #militaryhistory #chickamauga #generalsonthemap
+```
+**Tags:** chickamauga, battle of chickamauga, george thomas, horseshoe ridge, civil war, american civil war, military history, battle maps
+
+## S3: Standing Like a Rock (~48 s, maps only) — `s3_like_a_rock.json`
+Cut: wave after wave on Horseshoe Ridge, Steedman marches to the guns, bayonets (5:28) → Garfield finds Thomas still fighting,
+"standing like a rock" (5:58, narration over the Rossville withdrawal map). Music: Long Note One.
+**Title:** How George Thomas Got His Nickname #shorts
+**Description:**
+```
+Horseshoe Ridge, Chickamauga, 1863. Wave after wave of Confederate infantry charged the hill; some Union regiments ran out of ammunition
+and held the crest with bayonets. James Garfield, the future President, rode back and found Thomas still fighting. Thomas, he
+reported, was standing like a rock. The name stuck: the Rock of Chickamauga.
+
+Full story on the channel: George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army.
+
+#shorts #civilwar #history #militaryhistory #chickamauga #generalsonthemap
+```
+**Tags:** rock of chickamauga, george thomas, james garfield, chickamauga, horseshoe ridge, civil war, military history, battle maps
+
+## S4: He Refused to Attack (~61 s, maps only) — `s4_not_on_ice.json`
+Cut: telegrams demanding an attack, the ice storm, Thomas refuses, Grant draws up the removal order, "he would not attack on ice"
+(14:07) → "a day or two left... the ice began to melt" (14:51) → Shy's Hill falls, Hood's army flees (16:38) → "one of the most complete
+victories of the entire war" (17:23). Music: Long Note Two (move 3).
+**Title:** Grant Told Him to Attack. He Refused. #shorts
+**Description:**
+```
+Nashville, December 1864. Washington and Grant demanded that George Thomas attack at once. Then an ice storm turned the hills to glass,
+and Thomas refused to move. Grant drew up the order to remove him. The ice melted, Thomas attacked, and Hood's army broke: one of the
+most complete victories of the entire war.
+
+Full story on the channel: George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army.
+
+#shorts #civilwar #history #militaryhistory #nashville #generalsonthemap
+```
+**Tags:** battle of nashville, george thomas, ulysses grant, john bell hood, civil war, american civil war, military history, battle maps
+
+Map terrain credit for all descriptions (the map credit is hidden in Shorts): "Terrain: Mapzen / AWS Terrain Tiles (open data)."
+Shorts use **maps only** (owner 2026-10-31): narration from an archive section plays over a map shot (`"pic_from"`).
+Sound cues are read from each scene's timeline with `node tools/short_events.js` (flash = fire, burst = impact + shake, clash = hit).
 
 ## vidIQ auto-clips (2026-10-31, 171 credits, all 10 at 1080x1920 with "Loud & Clear" captions)
 Layout: the whole 16:9 frame small in the middle of a blurred copy, karaoke captions, no hook title. Downloaded for comparison:
