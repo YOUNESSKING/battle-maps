@@ -1,0 +1,69 @@
+{
+"title": "Patton #15 \u00b7 move1f (map agent C)",
+"note": "both flags on every map frame (cards / dark twist excepted); option 1 wide, option 2 close-ups; times = scene s / video mm:ss",
+"frames": [
+[
+"move1f",
+0.6,
+"6:05",
+"ardennes 19 Dec (option 1); Third Army's road from Avranches",
+"fire"
+],
+[
+"move1f",
+2.6,
+"6:07",
+"FACING EAST (Third Army on the Saar); salient pushes west",
+"hit, impacts"
+],
+[
+"move1f",
+5.2,
+"6:10",
+"'turn a whole army around': the gold '?' path swings north",
+"whoosh, hit"
+],
+[
+"move1f",
+7.6,
+"6:12",
+"IN WINTER (snow)",
+"hit"
+],
+[
+"move1f",
+9.0,
+"6:14",
+"IN TIME? on Bastogne, ring pulses",
+"hit"
+],
+[
+"move1f",
+11.6,
+"6:16",
+"E.subscribe: button slides in, cursor",
+"pop"
+],
+[
+"move1f",
+12.8,
+"6:18",
+"SUBSCRIBED + bell (on 'subscribing')",
+"tick"
+],
+[
+"move1f",
+15.3,
+"6:20",
+"'Here's how Patton did it': Patton badge, NEXT: MOVE 2 \u00b7 BASTOGNE",
+"hit"
+],
+[
+"move1f",
+16.9,
+"6:22",
+"push toward Bastogne (hand-off to move2a)",
+"-"
+]
+]
+}

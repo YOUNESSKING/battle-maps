@@ -1,0 +1,19 @@
+{
+ "name": "europe",
+ "center": [
+  49.8,
+  3.0
+ ],
+ "zoom": 7,
+ "origin_world_px": [
+  15217,
+  10331
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 789.39,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
