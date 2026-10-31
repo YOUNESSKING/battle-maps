@@ -52,6 +52,7 @@ Full story on the channel: George Thomas's Top 3 Legendary Tactical Moves | The 
 #shorts #civilwar #history #militaryhistory #chickamauga #generalsonthemap
 ```
 **Tags:** chickamauga, battle of chickamauga, george thomas, horseshoe ridge, civil war, american civil war, military history, battle maps
+**One line (phone upload: title + description in one field, max 100 characters):** Half His Army Ran. He Didn't. Chickamauga, 1863: George Thomas held the ridge. #shorts #civilwar
 
 ## S3: Standing Like a Rock (~48 s, maps only) — `s3_like_a_rock.json`
 Cut: wave after wave on Horseshoe Ridge, Steedman marches to the guns, bayonets (5:28) → Garfield finds Thomas still fighting,
