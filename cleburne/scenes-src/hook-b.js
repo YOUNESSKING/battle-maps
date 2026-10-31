@@ -148,7 +148,7 @@ const LV = LivingK(B); const NA = LV.north(); gsap.set(NA, { autoAlpha: 0 });
 const DK = scr("", "inset:0;background:#05070d;"); gsap.set(DK, { autoAlpha: 1 });
 tl.to(DK, { autoAlpha: 0, duration: 0.6, ease: "power2.out" }, T_STOP - 0.55);
 const CAP0 = scr(`<div style="font-family:Oswald;font-weight:700;font-size:30px;letter-spacing:0.34em;color:#c9b48a;text-shadow:0 2px 6px #000">MAJOR GENERAL TO THE END</div>`, "left:0;right:0;top:800px;display:flex;justify-content:center;");
-gsap.set(CAP0, { autoAlpha: 1 }); tl.to(CAP0, { autoAlpha: 0, duration: 0.3 }, Math.max(0.1, T_NAME - 0.6));
+gsap.set(CAP0, { autoAlpha: 0 });   // v3 (2026-10-31): hook-3 no longer ends on this caption
 const BDG = scr(`<div style="display:flex;flex-direction:column;align-items:center;gap:16px">
   <div style="position:relative;width:340px;height:340px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 6px #1f4fc4,0 20px 40px rgba(0,0,0,0.75);background:url(${FL.csa}) center/cover"><img src="assets/media/cleburne_head.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:190px;color:#f7f3ea">?</div></div>

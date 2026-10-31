@@ -414,5 +414,8 @@ const ORD = scr(`<div style="max-width:1180px;padding:22px 46px 22px;background:
   <div style="font-size:22px;letter-spacing:0.2em;color:#d8cfb8;margin-top:8px;font-weight:500">GENERAL BRAXTON BRAGG</div></div>`, "left:0;right:0;top:720px;display:flex;justify-content:center;transform-origin:50% 50%;");
 tl.to(QB3, { autoAlpha: 0.0, duration: 0.3 }, T_HOLD - 0.4);
 slam(ORD, T_HOLD - 0.1, { shake: 6, sfx: "ref:boom" }); pulse(T_HAZ + 0.1);
+// hand-off to hook-4: dip to dark over the last ~0.5 s, the "?" badge rises (hook-b frame 0 = dark + "?" badge, then the name)
+const DIP = scr("", "inset:0;background:#05070d;");
+tl.fromTo(DIP, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.45, ease: "power2.in", immediateRender: false }, END - 0.5); SFX("ref:whoosh", END - 0.5);
 K.raiseTerritory();
 B.finish();
