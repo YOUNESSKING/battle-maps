@@ -22,28 +22,36 @@ paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py (provisional: map agents may split differently)
-    "hook-a": ("hook-1", "hook-3"),
-    "hook-b": ("hook-4", "hook-4"),
-    "bg-a": ("bg-1", "bg-1"),
-    "move1a": ("move1-1", "move1-5"),
-    "move1e": ("move1-sub", "move1-sub"),
-    "move2a": ("move2-1", "move2-1b"),
+    "hook-a": ("hook-1", "hook-2"),
+    "hook-b": ("hook-3", "hook-4"),
+    "move1a": ("move1-1", "move1-1"),
+    "move1b": ("move1-2", "move1-2"),
+    "move1c": ("move1-3", "move1-4"),
+    "move1d": ("move1-5", "move1-5"),
+    "move1e": ("move1-6", "move1-8"),
+    "move1f": ("move1-sub", "move1-sub"),
+    "move2a": ("move2-1", "move2-1"),
     "move2b": ("move2-2", "move2-2"),
-    "move2c": ("move2-3", "move2-6"),
-    "move3a": ("move3-1", "move3-2"),
-    "move3b": ("move3-2b", "move3-6"),
+    "move2c": ("move2-3", "move2-3"),
+    "move2d": ("move2-4", "move2-4"),
+    "move2e": ("move2-5", "move2-6"),
+    "move2f": ("move2-7", "move2-8"),
+    "move3a": ("move3-1", "move3-1"),
+    "move3b": ("move3-2", "move3-5"),
+    "move3c": ("move3-6", "move3-6"),
+    "move3d": ("move3-7", "move3-7"),
     "ending": ("end-1", "end-2"),
 }
-CHAPTERS = [("hook-1", "Intro: The Man Who Saved the Confederacy's Western Army"), ("move1-1", "Move 1: Tunnel Hill (25 Nov 1863)"),
-            ("move2-1", "Move 2: Ringgold Gap (27 Nov 1863)"), ("move3-1", "Move 3: Pickett's Mill (27 May 1864)"),
+CHAPTERS = [("hook-1", "Intro: The Man Who Saved Bastogne"), ("move1-1", "Move 1: Avranches and Le Mans (Aug 1944)"),
+            ("move2-1", "Move 2: The Relief of Bastogne (Dec 1944)"), ("move3-1", "Move 3: The Rhine at Oppenheim (Mar 1945)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}
-NAME = os.environ.get("NAME", "cleburne")  # output name: build/<NAME>.mp4 (+ its own video-only track and segment folder)
+NAME = os.environ.get("NAME", "patton")  # output name: build/<NAME>.mp4 (+ its own video-only track and segment folder)
 FLY = json.loads(os.environ.get("FLY", "{}"))  # {"move1-1": "scenes/fly1/renders/fly1.mp4", ...}: 3D flyover for the first 9.5 s, 1 s dissolve into the map
 starts = [p["start"] for p in paras] + [total]
 enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an"]
-SEG = "build/seg" if NAME == "cleburne" else f"build/seg_{NAME}"
+SEG = "build/seg" if NAME == "patton" else f"build/seg_{NAME}"
 os.makedirs(SEG, exist_ok=True)
 FONT = "tools/oswald-latin-700-normal.ttf"
 
@@ -81,7 +89,7 @@ def still(src, dur, out, n):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-i", src, "-vf", vf, "-frames:v", str(frames), *enc, out], check=True)
 
 
-VONLY = f"build/video_only_{H}p.mp4" if NAME == "cleburne" else f"build/{NAME}_video_only_{H}p.mp4"
+VONLY = f"build/video_only_{H}p.mp4" if NAME == "patton" else f"build/{NAME}_video_only_{H}p.mp4"
 segs, i = [], 0
 if AUDIO_ONLY:
     assert os.path.exists(VONLY), "run once without --audio-only first"
