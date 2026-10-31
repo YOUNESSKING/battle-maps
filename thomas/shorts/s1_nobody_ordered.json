@@ -6,8 +6,7 @@
  ],
  "red": "NOBODY",
  "sub": "MISSIONARY RIDGE \u00b7 1863",
- "music": "music_05_crusade.mp3",
- "music_lufs": -34,
+ "music": "music_src_wounded.mp3",
  "scene_start": {
   "ridge2": 508.94,
   "ridge3": 664.91
@@ -39,56 +38,14 @@
    "to": 705.85
   }
  ],
- "sfx": [
+ "cues": [
   [
-   "hit.wav",
-   0.05,
-   0.8
+   "hit",
+   0.05
   ],
   [
-   "whoosh.wav",
-   10.5,
-   0.5
-  ],
-  [
-   "artillery_far_1.wav",
-   19.1,
-   0.7
-  ],
-  [
-   "whoosh.wav",
-   29.2,
-   0.5
-  ],
-  [
-   "hit.wav",
-   44.2,
-   0.6
-  ],
-  [
-   "whoosh.wav",
-   48.7,
-   0.5
-  ],
-  [
-   "hit.wav",
-   57.1,
-   0.5
-  ],
-  [
-   "whoosh.wav",
-   61.2,
-   0.5
-  ],
-  [
-   "artillery_far_2.wav",
-   61.5,
-   0.6
-  ],
-  [
-   "hit.wav",
-   62.0,
-   0.8
+   "hit",
+   44.21
   ]
  ]
 }
