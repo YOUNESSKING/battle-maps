@@ -8,6 +8,9 @@ title on top, word-by-word captions below. Output: `build/shorts/`.
 scene's own timeline (`shorts/events_<scene>.json`: every gun flash = "fire", every shell burst = "impact" + a 3 px shake); "hit" on the
 title and on stamps only; no zoom whoosh (biggest camera moves only). Music = the locked track for that part of the story (move 2 =
 "Wounded"), -20 LUFS x MUSIC_VOL 0.08, ducked thr 0.03 ratio 6; SFX ducked thr 0.03 ratio 3; limiter 0.5; two-pass -14 LUFS.
+**Text style = A, owner-approved 2026-10-31 ("I like the yellow one"):** title in white Oswald with ONE gold word (#F2C14E) and a soft
+shadow, nothing under it; captions 1-3 words, white with the spoken word in gold, soft shadow; no extra text. Per-segment `"x"` moves the
+map crop so labels are never cut off.
 **No on-screen caption bar from the map** (owner 2026-10-31: it duplicated the Short's captions): copy each scene to
 `scenes/<scene>_nocap/`, add `<style>.caption,#date,#credit{display:none!important}</style>` before `</head>` (caption bar, date scroll, terrain credit: the credit goes in the description), render it, and use `<scene>_nocap` in the
 spec (copy `events_<scene>.json` to `events_<scene>_nocap.json`). Map labels and stamps stay.
@@ -17,7 +20,7 @@ Rules for descriptions are the channel's: **no links**; name the full video in w
 ## S1: Nobody Ordered This Charge (TEST, ~72 s) — `s1_nobody_ordered.json`
 Cut: Grant's order to stop at the rifle pits (9:37) → the death trap (10:05) → the men climb on their own (10:24) → Grant furious,
 "I don't know. I did not." (painting, 10:44) → blue flags on the crest, Bragg's army flees (11:35).
-On-screen hook: **NOBODY ORDERED / THIS CHARGE** (NOBODY in red) · MISSIONARY RIDGE · 1863
+On-screen hook: **NOBODY ORDERED / THIS CHARGE** (NOBODY in gold)
 
 **Title:** Nobody Ordered This Charge. It Won the Battle. #shorts
 **Alternatives:** "Grant Was Furious: Who Ordered Those Men Up the Ridge?"

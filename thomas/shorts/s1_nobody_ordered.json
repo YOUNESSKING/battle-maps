@@ -4,8 +4,6 @@
   "NOBODY ORDERED",
   "THIS CHARGE"
  ],
- "red": "NOBODY",
- "sub": "MISSIONARY RIDGE \u00b7 1863",
  "music": "music_src_wounded.mp3",
  "scene_start": {
   "ridge2_nocap": 508.94,
@@ -35,7 +33,8 @@
   {
    "scene": "ridge3_nocap",
    "from": 695.45,
-   "to": 705.85
+   "to": 705.85,
+   "x": 300
   }
  ],
  "cues": [
@@ -47,5 +46,6 @@
    "hit",
    44.21
   ]
- ]
+ ],
+ "gold": "NOBODY"
 }
