@@ -1,57 +1,6 @@
 {
  "4": [
   {
-   "photo": "assets/media/archive_cleburne_w.jpg",
-   "move": "in",
-   "focus": [
-    0.5,
-    0.38
-   ],
-   "label": "PATRICK CLEBURNE \u00b7 1828-1864",
-   "dur": 6.0,
-   "depth": true,
-   "trim": 0
-  },
-  {
-   "photo": "assets/media/card_1828_cork.jpg",
-   "move": "in",
-   "focus": [
-    0.3,
-    0.6
-   ],
-   "dur": 3.8
-  },
-  {
-   "photo": "assets/media/archive_cork_cove1861_w.jpg",
-   "move": "in",
-   "focus": [
-    0.5,
-    0.45
-   ],
-   "label": "COVE OF CORK, IRELAND \u00b7 1861",
-   "dur": 3.6
-  },
-  {
-   "photo": "assets/media/archive_cork_queenstown.jpg",
-   "move": "right",
-   "focus": [
-    0.5,
-    0.45
-   ],
-   "label": "QUEENSTOWN (COBH), COUNTY CORK \u00b7 C. 1890",
-   "dur": 3.4
-  },
-  {
-   "photo": "assets/media/archive_helena_fortcurtis.jpg",
-   "move": "in",
-   "focus": [
-    0.55,
-    0.55
-   ],
-   "label": "HELENA, ARKANSAS \u00b7 FORT CURTIS",
-   "dur": 3.6
-  },
-  {
    "photo": "assets/media/archive_bragg_w.jpg",
    "move": "in",
    "focus": [
@@ -59,7 +8,7 @@
     0.38
    ],
    "label": "GENERAL BRAXTON BRAGG",
-   "dur": 4.2,
+   "dur": 4.6,
    "depth": true
   },
   {
@@ -69,7 +18,7 @@
     0.3,
     0.6
    ],
-   "dur": 3.8
+   "dur": 3.6
   },
   {
    "photo": "assets/media/archive_chattanooga_depot_w.jpg",
@@ -79,7 +28,7 @@
     0.45
    ],
    "label": "CHATTANOOGA \u00b7 LOOKOUT MOUNTAIN \u00b7 1864",
-   "dur": 3.4
+   "dur": 3.8
   },
   {
    "photo": "assets/media/archive_grant_w.jpg",
@@ -89,18 +38,7 @@
     0.42
    ],
    "label": "ULYSSES S. GRANT",
-   "dur": 4.2,
-   "depth": true
-  },
-  {
-   "photo": "assets/media/archive_cleburne_w.jpg",
-   "move": "out",
-   "focus": [
-    0.5,
-    0.38
-   ],
-   "label": "MAJOR GENERAL PATRICK R. CLEBURNE, C.S.A.",
-   "dur": 5.04,
+   "dur": 3.68,
    "depth": true
   }
  ]

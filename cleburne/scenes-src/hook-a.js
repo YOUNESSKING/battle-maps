@@ -12,9 +12,9 @@
 //         shake), the slope fires, red falls back; HELD · 27 NOV 1863 (the army's guns and wagons escape); pull-out + swing (whoosh)
 //         two days back to TUNNEL HILL: "?" badge THAT SAME GENERAL, Sherman's wing breaks on the blue hill, SHERMAN BEATEN; swing back
 //         to the gap: the pursuit breaks up, Grant badge, PURSUIT CALLED OFF (boom).
-// hook-3: hard cut to dark: "?" badge, NEVER GIVEN AN ARMY; the calendar runs NOV 1863 -> JAN 1864, DALTON, GEORGIA locator; the
-//         memorandum card; one stamp per spoken detail (TO SAVE THE CONFEDERACY / ARM ENSLAVED MEN / PROMISE THEM FREEDOM / GENERALS
-//         FURIOUS / PASSED OVER), the badge greys, the rank plate stays MAJOR GENERAL · DIVISION, caption MAJOR GENERAL TO THE END.
+// hook-3 (owner 2026-10-31 opening rule: never leave the story for a CV in the first minute): same map, no cut: the clock rewinds
+//         to DAWN 27 NOV; IT LOOKED HOPELESS; guns + wagons stuck on the road behind the gap; the Union columns march out of Ringgold
+//         straight at the gap (3 TO 1); the "?" badge THE GENERAL IN THE GAP; Bragg's verbatim order slams: AT ALL HAZARDS.
 // SIDES (Cleburne #14): Confederates = hero = BLUE ("carth"); Union = RED ("rome"). Flags A1: US 35-star / Confederate First National.
 // Facts: research/FACT_NOTES.md (Ringgold ~4,000 vs "more than ten thousand", sources 12,000-16,000; Grant halted the pursuit; the
 // Dalton memorandum 2 Jan 1864). The army commander in hook-1 is BRAGG (real photo); Cleburne's face is held back for the name slam.
@@ -174,9 +174,9 @@ const T_WEST = at(H1, "western army"), T_RUN = at(H1, "running for its life"), T
 const S2 = PS(H2), T_HELDIT = at(H2, "held it"), T_THREE = at(H2, "three times"), T_SAVED = at(H2, "and saved the army"), T_TWO = at(H2, "And two days earlier"),
   T_SAME = at(H2, "that same general"), T_BEAT = at(H2, "had already beaten"), T_WTS = at(H2, "William Tecumseh Sherman"), T_ABOVE = at(H2, "Above that gap"),
   T_BROKE = at(H2, "broke up"), T_GRANT = at(H2, "Ulysses Grant"), T_OFF = at(H2, "called it off");
-const S3 = PS(H3), T_NEVER = at(H3, "never trusted"), T_ARMY = at(H3, "with an army"), T_WINTER = at(H3, "That winter"), T_WROTE = at(H3, "he wrote a plan"),
-  T_SAVE = at(H3, "to save the Confederacy"), T_ARM = at(H3, "by arming enslaved men"), T_FREE = at(H3, "promising them freedom"), T_FUR = at(H3, "Fellow generals"),
-  T_RANK = at(H3, "men who ranked below him"), T_PAST = at(H3, "promoted past him"), T_DIV = at(H3, "He stayed a division commander"), T_LIFE = at(H3, "for the rest of his life");
+const S3 = PS(H3), T_DAWN = at(H3, "But at dawn"), T_HOPE = at(H3, "it looked hopeless"), T_GUNS = at(H3, "The army's guns"), T_STUCK = at(H3, "still stuck"),
+  T_UNI = at(H3, "A Union force"), T_THREE3 = at(H3, "three times the size"), T_MARCH = at(H3, "marching straight at it"), T_GEN = at(H3, "And the general in the gap"),
+  T_ORDER = at(H3, "had one order"), T_HOLD = at(H3, "hold this position"), T_HAZ = at(H3, "at all hazards");
 // ---------- places (world px) ----------
 const P = { rg: L(34.9162, -85.1091), depot: [1418, 950], gap: [1452, 972], th: L(35.0786, -85.2495), goat: L(35.088, -85.243), chatt: L(35.0456, -85.3097),
   dalton: L(34.7698, -84.9702), mr: L(35.022, -85.271), ross: L(34.983, -85.286), grays: L(34.982, -85.146), chst: L(35.043, -85.197), thga: L(34.841, -85.044),
@@ -369,66 +369,50 @@ const GRB = K.badge({ name: "ULYSSES S. GRANT", role: "UNION · COMMANDING AT CH
 const SPO = stampAt("PURSUIT CALLED OFF", "#9fc0ea", 74, -4, "GRANT HALTS AT RINGGOLD · 27 NOV 1863", "left:0;right:0;top:150px;display:flex;justify-content:center;");
 slam(SPO, T_OFF - 0.1, { shake: 7, sfx: "ref:boom" }); pulse(T_OFF + 0.1);
 // =====================================================================================================================
-// hook-3 (S3 .. END): hard cut to dark: the twist as action (the Dalton memorandum, passed over)
+// hook-3 (S3 .. END): the story goes on (no CV): rewind to dawn, the danger at the gap, the order
 // =====================================================================================================================
-const BLK = scr("", "inset:0;background:#05070d;");
-tl.fromTo(BLK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, immediateRender: false }, S3 - 0.08);
-SFX("hit", S3 - 0.04);
-tl.to(["#date", SPO, LG, NA, GRB], { autoAlpha: 0, duration: 0.05 }, S3 - 0.05);
-// the mystery badge, big, with the rank plate (two stars of a major general)
-const BD = scr(`<div style="display:flex;flex-direction:column;align-items:center;gap:12px">
-  <div class="disc" style="position:relative;width:230px;height:230px;border-radius:50%;overflow:hidden;border:8px solid #f3e7c4;box-shadow:0 0 0 6px #1f4fc4,0 20px 40px rgba(0,0,0,0.75);background:url(${FL.csa}) center/cover">
-  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.84), rgba(10,12,24,0.58));font-family:Oswald;font-weight:700;font-size:130px;color:#f7f3ea">?</div></div>
-  <div class="rk" style="padding:6px 20px 8px;background:rgba(18,16,12,0.92);border-top:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:30px;color:#ffd54a;letter-spacing:.2em">★ ★</div><div style="font-size:22px;letter-spacing:0.18em">MAJOR GENERAL · DIVISION</div></div></div>`,
-  "left:110px;top:430px;transform-origin:50% 40%;");
-tl.fromTo(BD, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, S3 + 0.05); SFX("ref:pop", S3 + 0.1);
-// "his own side never trusted him with an army"
-const SNA = stampAt("NEVER GIVEN AN ARMY", "#e3232f", 70, -4, "BY HIS OWN SIDE", "right:150px;top:220px;");
-slam(SNA, T_NEVER + 0.25, { shake: 4, until: T_WINTER - 0.15 }); pulse(T_NEVER + 0.45);
-tl.fromTo(BD.querySelector(".rk"), { scale: 1 }, { scale: 1.1, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_NEVER + 0.1);
-// "that winter": the calendar runs NOV 1863 -> JAN 1864 (ticks), Dalton locator (gold Georgia), winter quarters
-const MON = ["NOV 1863", "DEC 1863", "JAN 1864"];
-const CAL = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700"><div style="font-size:22px;letter-spacing:0.4em;color:#c9b48a">THAT WINTER</div><div class="y" style="font-size:120px;line-height:1;color:#f7f3ea;letter-spacing:0.05em">NOV 1863</div></div>`, "left:0;right:0;top:150px;display:flex;justify-content:center;transform-origin:50% 0%;");
-tl.fromTo(CAL, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.25, ease: "power3.out", immediateRender: false }, T_WINTER - 0.1);
-const ye = CAL.querySelector(".y"), dv = { v: 0 };
-tl.to(dv, { v: 2, duration: 0.8, ease: "none", onUpdate: () => { ye.textContent = MON[Math.round(dv.v)]; } }, T_WINTER + 0.15);
-for (let k = 1; k < 3; k++) SFX("tick", T_WINTER + 0.15 + (k - 0.5) * 0.4);
-tl.to(CAL, { top: 26, scale: 0.42, duration: 0.4, ease: "power3.inOut" }, T_WROTE - 0.2);
-const LB = scr(`<img src="assets/media/hka_loc_dalton_base.png" style="position:absolute;left:0;top:0;width:1920px;height:1080px">`, "left:0;top:0;width:1920px;height:1080px;");
-const LF = scr(`<img src="assets/media/hka_loc_dalton_fill.png" style="position:absolute;left:0;top:0;width:1920px;height:1080px">`, "left:0;top:0;width:1920px;height:1080px;");
-tl.fromTo(LB, { autoAlpha: 0 }, { autoAlpha: 0.9, duration: 0.5, immediateRender: false }, T_WINTER + 0.2);
-tl.fromTo(LF, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, T_WINTER + 0.5); SFX("ref:pop", T_WINTER + 0.55);
-tl.to(LF, { autoAlpha: 0.6, duration: 0.5, yoyo: true, repeat: 5, ease: "sine.inOut" }, T_WINTER + 0.9);
-const DAL = scr(`<div style="display:flex;align-items:center;gap:10px;font-family:Oswald;font-weight:700"><div style="width:18px;height:18px;border-radius:50%;background:#f7f3ea;box-shadow:0 0 12px #ffd54a"></div><div style="font-size:26px;letter-spacing:0.16em;color:#f7f3ea;text-shadow:0 2px 6px #000">DALTON, GEORGIA · WINTER QUARTERS</div></div>`, "left:977px;top:524px;");
-tl.fromTo(DAL, { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, T_WINTER + 0.6); SFX("ref:pop", T_WINTER + 0.65);
-// "he wrote a plan": the memorandum card (designed, no quote marks)
-const MEMO = scr(`<div style="width:700px;font-family:'Special Elite',monospace;padding:22px 32px 22px;background:linear-gradient(180deg,#f4ecd6,#e6d9b8);color:#1b1812;box-shadow:0 22px 44px rgba(0,0,0,.65);border:1px solid #b9a77e;transform:rotate(-1.5deg)">
-  <div style="font-size:18px;letter-spacing:0.18em;color:#6d5a3a">DALTON, GEORGIA · 2 JANUARY 1864</div>
-  <div style="font-size:38px;line-height:1.2;margin-top:10px">MEMORANDUM TO THE OFFICERS OF THE ARMY OF TENNESSEE</div>
-  <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">${[90, 96, 84, 92, 60].map((w) => `<div style="height:8px;width:${w}%;background:rgba(40,32,20,.22)"></div>`).join("")}</div></div>`,
-  "right:120px;top:300px;");
-tl.fromTo(MEMO, { autoAlpha: 0, y: 40, rotation: -3 }, { autoAlpha: 1, y: 0, rotation: 0, duration: 0.45, ease: "power3.out", immediateRender: false }, T_WROTE - 0.1); SFX("ref:pop", T_WROTE);
-tl.to([LB, LF, DAL], { autoAlpha: 0.25, duration: 0.4 }, T_SAVE - 0.3);
-// one stamp per spoken detail over the memo (hit + small shake + red pulse); each replaces the last (C2)
-const STAMPS = [];
-const sst = (txt, sub, css, t, rot, c = "#e3232f", size = 62, until) => { pulse(t + 0.22); const el = slam(stampAt(txt, c, size, rot, sub, css), t, { shake: 3, until }); STAMPS.push(el); return el; };
-sst("TO SAVE THE CONFEDERACY", "HIS AIM", "right:150px;top:560px;", T_SAVE - 0.05, -4, "#e8c66a", 58, T_ARM - 0.15);
-sst("ARM ENSLAVED MEN", "HIS PLAN · JANUARY 1864", "right:200px;top:560px;", T_ARM, 4, "#e3232f", 64, T_FREE - 0.15);
-sst("PROMISE THEM FREEDOM", "IN RETURN FOR SERVICE", "right:150px;top:560px;", T_FREE + 0.05, -3, "#e3232f", 62, T_FUR - 0.15);
-tl.to(MEMO, { autoAlpha: 0.35, duration: 0.3 }, T_FUR - 0.2);
-sst("GENERALS FURIOUS", "THE PAPER IS SUPPRESSED", "right:200px;top:420px;", T_FUR + 0.05, 3, "#e3232f", 70, T_PAST - 0.2);
-// "men who ranked below him were promoted past him": three blank rank tags rise past his plate, then PASSED OVER; the badge greys
-const RISE = [0, 1, 2].map((k) => { const el = scr(`<div style="padding:5px 16px;background:rgba(18,16,12,0.9);border-left:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#d8cfb8;font-size:26px;letter-spacing:.2em">★ ★ ★ &nbsp;PROMOTED</div>`, `left:${420 + k * 40}px;top:700px;`);
-  tl.fromTo(el, { autoAlpha: 0, y: 60 }, { autoAlpha: 1, y: -150 - k * 70, duration: 0.8, ease: "power2.out", immediateRender: false }, T_RANK + k * 0.35); SFX("ref:pop", T_RANK + 0.1 + k * 0.35);
-  tl.to(el, { autoAlpha: 0, duration: 0.3 }, T_DIV - 0.3); return el; });
-tl.to(MEMO, { autoAlpha: 0, duration: 0.3 }, T_RANK);
-sst("PASSED OVER", "MEN WHO RANKED BELOW HIM PROMOTED", "right:170px;top:420px;", T_PAST, -5, "#e3232f", 82, T_DIV - 0.2);
-tl.to(BD.querySelector(".disc"), { filter: "grayscale(1) brightness(0.7)", duration: 0.6 }, T_PAST + 0.2);
-// "he stayed a division commander for the rest of his life": the rank plate locks (gold pulse), small caption
-tl.to([LB, LF, DAL], { autoAlpha: 0, duration: 0.4 }, T_DIV - 0.3);
-tl.to(BD, { x: 700, y: -150, scale: 1.25, duration: 0.6, ease: "power3.inOut" }, T_DIV - 0.2); SFX("ref:whoosh", T_DIV - 0.2);
-tl.fromTo(BD.querySelector(".rk"), { boxShadow: "0 0 0 0 rgba(255,213,74,0)" }, { boxShadow: "0 0 0 6px rgba(255,213,74,0.9)", duration: 0.25, yoyo: true, repeat: 3, immediateRender: false }, T_DIV + 0.5); SFX("hit", T_DIV + 0.55); K.shake(T_DIV + 0.55, 3, 0.25);
-const CAP = scr(`<div style="font-family:Oswald;font-weight:700;font-size:30px;letter-spacing:0.34em;color:#c9b48a;text-shadow:0 2px 6px #000">MAJOR GENERAL TO THE END</div>`, "left:0;right:0;top:800px;display:flex;justify-content:center;");
-tl.fromTo(CAP, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_LIFE - 0.1); SFX("ref:pop", T_LIFE);
+// rewind: the payoff clears, the clock runs back (ticks), the camera eases out so the town AND the gap are on screen
+tl.to([SPO, GRB, ...PA], { autoAlpha: 0, duration: 0.25 }, S3 - 0.1);
+B.hideUnits(["pu1", "pu2", "pu3"], S3 - 0.05, 0.3);
+SFX("ref:whoosh", S3 - 0.1); for (let k = 0; k < 4; k++) SFX("tick", S3 + 0.05 + k * 0.12);
+const RW = scr(`<div style="font-family:Oswald;font-weight:700;font-size:64px;letter-spacing:0.2em;color:#f7f3ea;text-shadow:0 4px 14px #000">◀◀</div>`, "left:0;right:0;top:470px;display:flex;justify-content:center;");
+tl.fromTo(RW, { autoAlpha: 0 }, { autoAlpha: 0.9, duration: 0.1, immediateRender: false }, S3 - 0.05); tl.to(RW, { autoAlpha: 0, duration: 0.2 }, S3 + 0.55);
+const SQ = 1.7, KQ = 1 / SQ, CQ = [(P.rg[0] + P.gap[0]) / 2 + 30, (P.rg[1] + P.gap[1]) / 2 + 40];
+camTo(S3 - 0.05, 1.1, CQ[0], CQ[1], SQ, "power2.inOut");
+camTo(S3 + 1.1, END - S3 - 1.1, CQ[0] + 40, CQ[1] + 20, SQ * 1.12, "sine.inOut");
+dateSet("DAWN · 27 NOVEMBER 1863", S3 + 0.25, END + 1);
+const FR3 = flagsC([P.rg[0] - 300, P.rg[1] + 120], [P.gap[0] + 230, P.gap[1] + 150], S3 + 0.3, END + 1);
+const RGT3 = town("RINGGOLD", ...P.rg, S3 + 0.4, END + 1, { side: "l" });
+const GAPL3 = place("RINGGOLD GAP", P.gap[0] + 150, P.gap[1] - 70, S3 + 0.5, END + 1, { size: 26 });
+const RR3 = rail(WA, S3 + 0.2, 1.2, END + 1);
+// "it looked hopeless"
+slam(stampAt("IT LOOKED HOPELESS", "#e3232f", 72, -4, "", "left:0;right:0;top:150px;display:flex;justify-content:center;"), T_HOPE + 0.25, { shake: 4, until: T_GUNS + 1.2 }); pulse(T_HOPE + 0.4);
+// "the army's guns and wagons were still stuck on the road behind the gap": a jam of wagons + guns on the road to Dalton
+const JAM = [[1505, 1000], [1522, 1026], [1540, 1052], [1556, 1078], [1572, 1104], [1588, 1130]];
+JAM.forEach((q, k) => { const w = wagon(q[0] + (k % 2 ? 6 : -6), q[1], T_GUNS + 0.05 + k * 0.12, END + 1, KQ * 1.5); tl.to(w, { x: 3, duration: 0.18, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_STUCK); });
+glowDot(1546, 1065, T_STUCK - 0.1, 70, END + 1, "255,80,60");
+const STK = place("STUCK ON THE ROAD", 1640, 1060, T_STUCK + 0.1, END + 1, { size: 22 });
+// "a Union force three times the size of the rear guard was marching straight at it"
+const UC = [unitK("u31", "rome", [P.rg[0] - 120, P.rg[1] - 10], "infantry", "HOOKER", KQ, { t: T_UNI - 0.1 }),
+  unitK("u32", "rome", [P.rg[0] - 95, P.rg[1] + 50], "infantry", "", KQ, { t: T_UNI + 0.05 }),
+  unitK("u33", "rome", [P.rg[0] - 140, P.rg[1] - 70], "infantry", "", KQ, { t: T_UNI + 0.2 })];
+go("u31", T_MARCH - 0.2, END - T_MARCH, [P.gap[0] - 110, P.gap[1] - 20]); go("u32", T_MARCH - 0.1, END - T_MARCH, [P.gap[0] - 100, P.gap[1] + 30]); go("u33", T_MARCH, END - T_MARCH, [P.gap[0] - 120, P.gap[1] - 70]);
+[[[P.rg[0] - 90, P.rg[1] - 5], [P.gap[0] - 40, P.gap[1]]], [[P.rg[0] - 70, P.rg[1] + 55], [P.gap[0] - 40, P.gap[1] + 30]], [[P.rg[0] - 110, P.rg[1] - 60], [P.gap[0] - 50, P.gap[1] - 40]]]
+  .forEach(([a, b], k) => B.arrow({ pts: [a, b], side: "rome", t: T_MARCH - 0.3 + k * 0.2, dur: 1.2, width: 13 * KQ, until: END + 1 }));
+SFX("ref:whoosh", T_MARCH - 0.3);
+slam(stampAt("3 TO 1", "#e3232f", 96, 3, "UNION AGAINST THE REAR GUARD", "right:170px;top:330px;"), T_THREE3 + 0.1, { shake: 4, until: T_GEN - 0.1 }); pulse(T_THREE3 + 0.3);
+// "and the general in the gap": the mystery badge; the gap rings blue; the blue line pulses
+const QB3 = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.csa}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.86), rgba(10,12,24,0.6));font-family:Oswald;font-weight:700;font-size:110px;color:#f7f3ea">?</div></div>
+  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE GENERAL IN THE GAP</div><div style="font-size:20px;letter-spacing:0.14em;color:#d8cfb8">ONE CONFEDERATE DIVISION</div></div></div>`, "left:60px;top:800px;");
+tl.fromTo(QB3, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_GEN - 0.1); SFX("ref:pop", T_GEN);
+K.target(...P.gap, T_GEN + 0.2, { r: 46 * KQ, side: "carth", until: END + 1 });
+["gb1", "gb2"].forEach((id, k) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_GEN + 0.3 + k * 0.15));
+// "hold this position at all hazards": Bragg's verbatim order (quote marks: verbatim, FACT_NOTES)
+const ORD = scr(`<div style="max-width:1180px;padding:22px 46px 22px;background:rgba(18,16,12,0.94);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.6)">
+  <div style="font-size:20px;letter-spacing:0.3em;color:#c9b48a;font-weight:700">THE ORDER · 27 NOVEMBER 1863</div>
+  <div style="font-size:54px;font-weight:700;letter-spacing:0.03em;line-height:1.15;margin-top:6px">&ldquo;TO HOLD THIS POSITION AT ALL HAZARDS&rdquo;</div>
+  <div style="font-size:22px;letter-spacing:0.2em;color:#d8cfb8;margin-top:8px;font-weight:500">GENERAL BRAXTON BRAGG</div></div>`, "left:0;right:0;top:720px;display:flex;justify-content:center;transform-origin:50% 50%;");
+tl.to(QB3, { autoAlpha: 0.0, duration: 0.3 }, T_HOLD - 0.4);
+slam(ORD, T_HOLD - 0.1, { shake: 6, sfx: "ref:boom" }); pulse(T_HAZ + 0.1);
 K.raiseTerritory();
 B.finish();
