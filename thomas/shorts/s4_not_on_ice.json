@@ -1,0 +1,44 @@
+{
+ "music": "music_src_long-note-two.mp3",
+ "cues": [
+  [
+   "hit",
+   0.05
+  ]
+ ],
+ "scene_start": {
+  "hook1_nocap": 0.0,
+  "chick2_nocap": 177.56,
+  "chick3_nocap": 377.48,
+  "nash2_nocap": 822.12,
+  "nash3_nocap": 879.58
+ },
+ "name": "s4_not_on_ice",
+ "title": [
+  "HE REFUSED",
+  "TO ATTACK"
+ ],
+ "gold": "REFUSED",
+ "segments": [
+  {
+   "scene": "nash2_nocap",
+   "from": 847.1,
+   "to": 879.1
+  },
+  {
+   "scene": "nash3_nocap",
+   "from": 891.7,
+   "to": 897.55
+  },
+  {
+   "scene": "nash3_nocap",
+   "from": 998.15,
+   "to": 1018.1
+  },
+  {
+   "scene": "nash3_nocap",
+   "from": 1043.45,
+   "to": 1047.3
+  }
+ ]
+}
