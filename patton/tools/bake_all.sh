@@ -1,7 +1,7 @@
 #!/bin/bash
 # Cleburne maps: bake + HD lift + land mask + DEM rivers (run from cleburne/)
 set -e
-cd /home/user/battle-maps/cleburne
+cd /home/user/battle-maps/patton
 bake() { n=$1; python3 tools/bake.py $n $2 $3 $4 $5; LIFT=1 python3 tools/bake_hd.py $n; }
 bake chatt 34.95 -85.10 10 2.0
 bake tunnel 35.07 -85.24 13 2.0

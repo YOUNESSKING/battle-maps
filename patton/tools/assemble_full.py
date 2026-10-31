@@ -5,7 +5,7 @@ usage (from goosegreen/): python3 tools/assemble_full.py [--preview]
 - Archive paragraphs use the images listed in archive.json {"<para index>": ["archive_x.jpg", ...]} from
   assets/media/; images split the paragraph evenly, each with a slow zoom. Missing -> placeholder card.
 - Music: assets/media/music.wav (optional), ducked under the voice with a sidechain. Loudness -14 LUFS.
-Writes build/cleburne.mp4 (1080p master) or build/cleburne-720p.mp4 (--preview) + build/chapters.txt.
+Writes build/patton.mp4 (1080p master) or build/patton-720p.mp4 (--preview) + build/chapters.txt.
 """
 import json, os, subprocess, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))

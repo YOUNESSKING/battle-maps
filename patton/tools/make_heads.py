@@ -4,7 +4,7 @@ Box = (left, top, right, bottom) in source pixels. Run: python3 cleburne/tools/m
 _head_flat.png = RGB crop; _head.png = RGBA cut-out of it (rembg isnet-general-use) if cleburne/tools/cutout_heads.py is run."""
 import sys
 from PIL import Image
-M = "/home/user/battle-maps/cleburne/assets/media/"
+M = "/home/user/battle-maps/patton/assets/media/"
 BOXES = {
     "grant":      ("grant_src.jpg",      (195, 170, 475, 450)),
     "lincoln":    ("lincoln_src.jpg",    (197, 243, 376, 422)),

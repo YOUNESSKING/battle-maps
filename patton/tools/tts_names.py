@@ -1,9 +1,13 @@
-"""How the TTS says this video's names (tts/PRONUNCIATION.md; checked 2026-10-28). Used by narrate.py and narrate_changed.py.
-PRON = plain respellings; PHON = exact Kokoro phonemes for names no respelling can stress right (as Cornwallis on the Greene remake)."""
+"""How the TTS says this video's names (tts/PRONUNCIATION.md; checked 2026-10-31). Used by narrate.py and narrate_changed.py.
+PHON = exact Kokoro phonemes (English-documentary pronunciations; French/German names Americanised the way WWII histories say them)."""
 import re
 PRON = {}
-PHON = {"Chickamauga": "tʃˌɪkəmˈɔːɡə", "Chetoogeta": "tʃɛtˈuːɡətə", "Catoosa": "kətˈuːsə",
-        "Osterhaus": "ˈɔːstɚhˌaʊs", "Govan": "ɡˈʌvən", "Matthies": "mˈæθiz", "Raum": "ɹˈɑːm"}
+PHON = {"Patton": "pˈætən", "Bastogne": "bæstˈoʊn", "McAuliffe": "mɪkˈɔːlɪf", "Avranches": "ɑːvɹˈɑːnʃ",
+        "Pontaubault": "pˌɑːntoʊbˈoʊ", "Sélune": "seɪlˈuːn", "Le Mans": "lə mˈɑːn", "Mortain": "mɔːɹtˈæn",
+        "Alençon": "ɑːlɑːnsˈoʊn", "Argentan": "ɑːɹʒɑːntˈɑːn", "Kluge": "klˈuːɡə", "Mantes": "mˈɑːnt",
+        "Schnee Eifel": "ʃnˈeɪ ˈaɪfəl", "Meuse": "mjˈuːz", "Moselle": "moʊzˈɛl", "Chaumont": "ʃoʊmˈoʊn",
+        "Assenois": "ɑːsənwˈɑː", "Nierstein": "nˈɪɹʃtaɪn", "Hausser": "hˈaʊsɚ", "Grossgerau": "ɡɹˈoʊsɡɛɹˌaʊ",
+        "Remagen": "ɹɪmˈɑːɡən", "Verdun": "vɚdˈʌn"}
 
 
 def speak(k, text, voice, speed):

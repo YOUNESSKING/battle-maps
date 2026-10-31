@@ -2,7 +2,7 @@
 (cx, cy = centre of the 640x360-ish crop in 2x HD px; crop is 1400x788 HD px shown at 700x394)"""
 import sys, json
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance
-F = ImageFont.truetype("/home/user/battle-maps/cleburne/tools/oswald-latin-700-normal.ttf", 20)
+F = ImageFont.truetype("/home/user/battle-maps/patton/tools/oswald-latin-700-normal.ttf", 20)
 M = "assets/media/"
 def ld(p): return Image.open(p).convert("RGBA")
 def comp(base, layers):

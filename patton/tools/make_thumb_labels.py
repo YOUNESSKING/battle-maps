@@ -3,7 +3,7 @@ Boxes are (x0,y0,x1,y1) of the AI's labels in the 1280x720 image; each is painte
 import sys
 from PIL import Image, ImageDraw, ImageFont
 im = Image.open(sys.argv[1]).convert("RGB"); d = ImageDraw.Draw(im)
-F = ImageFont.truetype("/home/user/battle-maps/cleburne/tools/oswald-latin-700-normal.ttf", 12)
+F = ImageFont.truetype("/home/user/battle-maps/patton/tools/oswald-latin-700-normal.ttf", 12)
 LAB = [((176, 32, 250, 54), "TO CHATTANOOGA"), ((458, 14, 544, 40), "EAST CHICKAMAUGA CREEK"), ((24, 346, 112, 368), "TO CHATTANOOGA"), ((606, 304, 682, 324), "RINGGOLD GAP")]
 for (x0, y0, x1, y1), t in LAB:
     d.rectangle((x0, y0, x1, y1), fill=(196, 184, 160), outline=(60, 54, 44))

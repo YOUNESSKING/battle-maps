@@ -3,7 +3,7 @@
 import sys
 from PIL import Image
 from rembg import new_session, remove
-M = "/home/user/battle-maps/cleburne/assets/media/"
+M = "/home/user/battle-maps/patton/assets/media/"
 s = new_session("isnet-general-use")
 for k in sys.argv[1:]:
     remove(Image.open(M + k + "_head_flat.png").convert("RGB"), session=s).save(M + k + "_head.png"); print(k)

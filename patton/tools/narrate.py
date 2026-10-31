@@ -2,13 +2,13 @@
 import json, re, sys
 import numpy as np, soundfile as sf
 from kokoro_onnx import Kokoro
-sys.path.insert(0, "/home/user/battle-maps/cleburne/tools")
+sys.path.insert(0, "/home/user/battle-maps/patton/tools")
 from tts_names import speak  # names: tools/tts_names.py
 
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "am_michael"
 SPEED = 1.0
-SCRIPT = "/home/user/battle-maps/cleburne/script.md"
-OUT = "/home/user/battle-maps/cleburne/audio"
+SCRIPT = "/home/user/battle-maps/patton/script.md"
+OUT = "/home/user/battle-maps/patton/audio"
 GAP_PARA, GAP_SECTION = 0.6, 0.8
 
 k = Kokoro("kokoro-v1.0.onnx", "voices-v1.0.bin")

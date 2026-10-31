@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/user/battle-maps/cleburne
+cd /home/user/battle-maps/patton
 python3 tools/fetch_osm.py chatt "34.70,-85.50,35.20,-84.80"
 python3 tools/fetch_osm.py tunnel "35.00,-85.35,35.12,-85.15"
 python3 tools/fetch_osm.py ringgold "34.88,-85.17,34.98,-85.03"

@@ -70,7 +70,7 @@ if not chapters:
 mp4s = [f for f in glob.glob("build/*.mp4") if "540" not in os.path.basename(f) and "part" not in os.path.basename(f)]
 size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if mp4s else "size: see final render"
 
-TA = "youtube/thumb/cleburne-thumb-A-at-all-hazards.jpg"; TB = "youtube/thumb/cleburne-thumb-B-hold-the-gap.jpg"
+TA = "youtube/thumb/patton-thumb-A-at-all-hazards.jpg"; TB = "youtube/thumb/patton-thumb-B-hold-the-gap.jpg"
 HAVE_T = os.path.exists(TA) and os.path.exists(TB)
 LEN = os.environ.get("VIDEO_LEN", "14:52")
 if not os.path.exists("build/guide_frames.jpg"):
