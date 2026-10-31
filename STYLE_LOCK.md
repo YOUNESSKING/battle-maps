@@ -248,7 +248,7 @@ Our locked style (sections 2-5) stays the base; these are ADDED on top. Referenc
 - **Voice:** voice A (section 6); option 2 = plain am_michael. **Music:** the channel bed; Kevin MacLeod "Five Armies" (CC BY 4.0, from 1:00) matched to the bed loudness is approved for this look.
 
 ## 2b. MAP LOOK v11 + CLEAN SCREEN (LOCKED, owner 2026-10-31: "Yes, do like this look. Let's lock it down.")
-Applies to every NEW video (Patton #15 onward). It REPLACES the basemap look (look E / plain `_hd_lift`) and is ADDED on top of
+Applies to every NEW video from #16 on (owner 2026-10-31: Patton #15 stays on the old look). It REPLACES the basemap look (look E / plain `_hd_lift`) and is ADDED on top of
 sections 2 and 2a (counters, front lines, territory options 1/2, flags, planes, sounds all stay). Reference reel (old on top,
 new below): `reference/style-reference-maplook-v11.mp4`; trees close-up vs the owner's reference film:
 `reference/style-reference-maplook-v11-trees.jpg`; seamless colour fade: `reference/style-reference-maplook-v11-fade.jpg`.
