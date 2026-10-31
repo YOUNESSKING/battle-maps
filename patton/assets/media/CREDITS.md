@@ -18,3 +18,13 @@ _src_frame_normandy.png -> card_1944_normandy.jpg ('1 AUGUST 1944 / NORMANDY') |
 
 Film: see ../film/MANIFEST.md (credit line: US Army Signal Corps / US National Archives).
 Not found as licensed photos (initials badge): see the summary at the end of this file.
+
+## Commander badges still to fetch (Wikimedia 429 block on this machine, 2026-10-31; files + licences VERIFIED on the Commons API; run `python3 patton/tools/fetch_pending_heads.py`, then crop with make_heads_patton.py)
+eddy | File:Manton S. Eddy.jpg (480x663) | US Army | Public domain (Commons) | https://commons.wikimedia.org/wiki/File:Manton_S._Eddy.jpg | credit: US Army
+kluge | File:Bundesarchiv Bild 101I-299-1823-12, Günther v. Kluge.jpg (507x792, 1944, photographer Scheck) | Bundesarchiv | CC BY-SA 3.0 de | https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_101I-299-1823-12,_G%C3%BCnther_v._Kluge.jpg | credit line REQUIRED: "Bundesarchiv, Bild 101I-299-1823-12 / Scheck / CC-BY-SA 3.0" (alternative: Bundesarchiv Bild 146-1995-002-09A, July 1944, 520x800)
+felber | File:General der Infanterie Hans-Gustav Felber.jpg (766x1137, Armee-Oberkommando 2, 1941) | Commons tag: Public domain (wartime German official photo; weaker basis, check the file page) ; fallback CC BY-SA 3.0 de crop "Hans-Gustav Felber, 1943 (cropped).jpg" is only 174x218 | else initials FE
+eisenhower | File:(Photograph of General Dwight D. Eisenhower, Supreme Commander, Allied Forces) - DPLA - 88a664419789e13fe43c658886a3ae95.jpg (2454x3001, 1944, US Dept of Defense / NARA via DPLA) | Public domain | credit: US Army / US National Archives
+
+## Summary
+Real licensed photo badges made: patton, mcauliffe, bradley, collins (1948 photo), montgomery (US Signal Corps photo, not IWM), haislip, middleton (small, low-res, helmet), abrams (low-res 1944 scan).
+Pending only because of the Wikimedia block (sources verified, not downloaded): eddy, von kluge, felber, eisenhower. Until fetched the badge falls back to initials (EDDY = ME, KLUGE = vK, FELBER = HF, EISENHOWER = DE).

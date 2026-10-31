@@ -25,7 +25,13 @@ if os.path.exists(src):
         pts = simplify(pts, 1.0 if r["order"] == 3 else 1.6)
         if len(pts) < 2: continue
         (riv if r["order"] == 3 else strm).append(pts)
-data = "const GD = " + json.dumps({"base": base, "rivers": riv, "streams": strm}, separators=(",", ":")) + ";"
+import glob
+short = {"bastogne": "bas", "ardennes": "ard", "assenois": "ass"}[base]
+fronts = {}
+for fp in sorted(glob.glob(f"assets/media/m2b_{short}_front*.json")):
+    k = os.path.basename(fp)[len(f"m2b_{short}_front"):-5].lstrip("_") or "all"
+    fronts[k] = json.load(open(fp))
+data = "const GD = " + json.dumps({"base": base, "rivers": riv, "streams": strm, "fronts": fronts}, separators=(",", ":")) + ";"
 kit = open("tools/m2b_kit.js").read()
 body = open(f"tools/m2b_body_{scene}.js").read()
 out = body.replace("// @@KIT", "// @@KIT\n" + kit + "// @@END-KIT").replace("// @@DATA", "// @@DATA (tools/m2b_inline.py)\n" + data + "\n// @@END-DATA")

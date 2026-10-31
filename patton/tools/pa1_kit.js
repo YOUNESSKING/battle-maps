@@ -271,3 +271,26 @@ const casualty = (o) => { const el = K.casualties({ rows: o.rows, flagA: FL.us, 
   if (o.foot) { const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = o.foot; inner.appendChild(f); }
   return el; };
 // ================= end of approved layers =================
+// ================= map agent A additions (Patton #15, move1a..e) =================
+// a front shown across several camera scales: one frontS per segment [t0, t1, s] so the on-screen width stays 15 (19.5 on close-ups)
+const frontSeq = (pts, segs, o = {}) => segs.map(([t0, t1, s], i) => frontS({ pts, sideA: "carth", sideB: "rome", t: t0, dur: i === 0 ? (o.dur || 1.6) : 0.01,
+  width: +((o.close ? 19.5 : 15) / s).toFixed(2), glow: 0.47, until: t1 }));
+// locked bombing run with the glowing blue C-47 symbol (few, spaced, they leave): bombs land 1.55 s + k*0.25 s after the run starts
+const run = (x, yT, t, n = 3, o = {}) => { const v = o.v || 120, yTop = yT - 1.55 * v, len = o.len || 3.8 * v, dx = o.dx || 0;
+  const bombs = [...Array(n)].map((_, k) => [x + dx * (1.55 + k * 0.25) * v / len + (k % 2 ? 3 : -3), yT + k * 0.25 * v]);
+  K.bombRun({ kind: "c47g", side: "carth", size: o.size || 26, alt: o.alt || 8, pts: [[x, yTop], [x + dx, yTop + len]], t, dur: len / v, bombs });
+  return bombs; };
+const emblem = (p, w) => B.image("assets/media/emblem_ger.png", p[0] - w / 2, p[1] - w / 2, w, w, { t: 0, dur: 0.6, opacity: 0.8 });
+const riverLayer = (file) => B.image(file, 0, 0, 2880, 1620, { t: 0, dur: 0.01 });
+const ghost = (pts, t, w, until, side = "carth") => { const g = arw({ side, pts, width: w, t, dur: 0.01, dash: `${(w * 1.4).toFixed(1)} ${(w * 0.9).toFixed(1)}`, until });
+  tl.fromTo(g, { opacity: 0 }, { opacity: 0.75, duration: 0.6, immediateRender: false }, t); return g; };
+// a region name (big, spaced, faint) in world space, constant screen size
+const region = (txt, p, t, until, size = 44, col = "rgba(247,243,234,0.82)") => pinS(GG.pin(`<div style="font-family:Oswald;font-weight:700;font-size:${size}px;letter-spacing:.5em;color:${col};text-shadow:0 0 8px #0a0e10,0 2px 6px #000;white-space:nowrap">${txt}</div>`, p[0], p[1], { t, until }));
+// small world icons (constant screen size): truck, bulldozer, bridge
+const ICO = {
+  truck: (c) => `<svg width="34" height="20" viewBox="0 0 34 20" style="display:block;filter:drop-shadow(0 0 3px ${c})"><rect x="1" y="3" width="21" height="11" rx="1" fill="${c}" stroke="#f7f3ea" stroke-width="1.4"/><path d="M22 6 L29 6 L33 10 L33 14 L22 14 Z" fill="${c}" stroke="#f7f3ea" stroke-width="1.4"/><circle cx="7" cy="16" r="3" fill="#1a1712" stroke="#f7f3ea" stroke-width="1.2"/><circle cx="27" cy="16" r="3" fill="#1a1712" stroke="#f7f3ea" stroke-width="1.2"/></svg>`,
+  dozer: (c) => `<svg width="38" height="22" viewBox="0 0 38 22" style="display:block;filter:drop-shadow(0 0 3px #ffd27a)"><path d="M1 3 L5 3 L7 19 L1 19 Z" fill="#e8c35a" stroke="#1a1712" stroke-width="1.2"/><rect x="9" y="7" width="20" height="8" rx="1" fill="#e8c35a" stroke="#1a1712" stroke-width="1.2"/><rect x="16" y="1" width="9" height="7" fill="#e8c35a" stroke="#1a1712" stroke-width="1.2"/><rect x="8" y="15" width="24" height="6" rx="3" fill="#2a2420" stroke="#f7f3ea" stroke-width="1.2"/><path d="M5 9 L9 10" stroke="#1a1712" stroke-width="2"/></svg>`,
+  bridge: () => `<svg width="46" height="26" viewBox="0 0 46 26" style="display:block;filter:drop-shadow(0 0 4px #9fd0ff)"><path d="M2 12 Q12 2 23 12 Q34 2 44 12" fill="none" stroke="#f7f3ea" stroke-width="3"/><rect x="1" y="11" width="44" height="5" fill="#f7f3ea" stroke="#1a1712" stroke-width="1.2"/><path d="M8 16 L8 24 M23 16 L23 24 M38 16 L38 24" stroke="#f7f3ea" stroke-width="2.4"/></svg>`,
+};
+const icon = (kind, p, t, until, c = "#1f4fc4", s = 1.3, rot = 0) => pinS(GG.pin(`<div><div style="transform:scale(${s}) rotate(${rot}deg)">${ICO[kind](c)}</div></div>`, p[0], p[1], { t, pop: true, until }));
+const RD = { us: "#1f4fc4", de: "#c4121f" };

@@ -69,7 +69,7 @@ def rivers(base, out, minorder, col=(96, 150, 190, 235), widths={1: 2, 2: 4, 3: 
 EAST = [(49.335, -0.19), (49.287, -0.19), (49.240, -0.215), (49.180, -0.205)]          # Orne-mouth bridgehead (unchanged to mid-Aug)
 JUL31 = EAST + [(49.140, -0.24), (49.108, -0.31), (49.118, -0.38), (49.105, -0.46), (49.115, -0.52), (49.122, -0.62), (49.105, -0.70),
                 (49.050, -0.78), (48.995, -0.85), (48.985, -0.95), (48.965, -1.06), (48.920, -1.15), (48.840, -1.15), (48.745, -1.13),
-                (48.680, -1.22), (48.628, -1.33), (48.615, -1.42), (48.630, -1.52)]
+                (48.680, -1.22), (48.625, -1.27), (48.598, -1.33), (48.592, -1.42), (48.605, -1.52)]
 WEST31 = [(48.66, -1.66), (48.80, -1.75), (49.10, -1.78), (49.40, -1.96), (49.60, -2.00), (50.1, -2.0), (50.1, -0.19)]
 AUG8 = EAST + [(49.10, -0.22), (49.05, -0.28), (49.04, -0.36), (49.02, -0.47), (48.97, -0.62), (48.92, -0.72), (48.84, -0.84),
                (48.76, -0.90), (48.71, -0.98), (48.675, -1.02), (48.64, -0.99), (48.60, -0.93), (48.50, -0.85), (48.40, -0.72),
@@ -125,19 +125,15 @@ def avranches():
     hero = poly(P, AVR_FRONT + [(49.2, -1.15), (49.2, -2.2), (48.585, -2.2)])
     json.dump([orient(P, AVR_FRONT, hero)], open("assets/media/pa1_avr_front.json", "w"))
     json.dump({k: [round(c, 1) for c in P(*v)] for k, v in PLACES.items()}, open("assets/media/pa1_avr_places.json", "w"))
-    rivers("avranches", "pa1_avr_riv", 1, widths={1: 3, 2: 6, 3: 10})
+    rivers("avranches", "pa1_avr_riv", 2, widths={1: 3, 2: 5, 3: 9})
 
 # ---------------- lemans (z12), option 2 fronts 7-8 Aug ----------------
-LEM_A = [(48.33, -0.29), (48.25, -0.10), (48.17, 0.05), (48.12, 0.20), (48.10, 0.35), (48.05, 0.50), (47.95, 0.55), (47.85, 0.50), (47.75, 0.40)]   # 7 Aug: closing on Le Mans from the west/south-west
-LEM_B = [(48.33, -0.20), (48.24, -0.02), (48.15, 0.12), (48.09, 0.26), (48.04, 0.38), (47.98, 0.45), (47.90, 0.46), (47.82, 0.42), (47.75, 0.38)]   # 8 Aug evening: Le Mans taken, exits closed
 def lemans():
     if not os.path.exists("assets/lemans_hd_lift.json"): print("lemans not baked yet"); return
     P = proj("lemans")
-    for nm, fr in (("a", LEM_A), ("b", LEM_B)):
-        hero = poly(P, fr + [(47.5, -1.0), (48.6, -1.0)])
-        json.dump([orient(P, fr, hero)], open(f"assets/media/pa1_lem_front_{nm}.json", "w"))
+    # the Le Mans fronts (7 Aug west of the city -> 8 Aug evening east of it) are drawn in map px in scenes-src/move1d.js
     json.dump({k: [round(c, 1) for c in P(*v)] for k, v in PLACES.items()}, open("assets/media/pa1_lem_places.json", "w"))
-    if os.path.exists("assets/src/lemans_dem_rivers.json"): rivers("lemans", "pa1_lem_riv", 1, widths={1: 3, 2: 6, 3: 10})
+    if os.path.exists("assets/src/lemans_dem_rivers.json"): rivers("lemans", "pa1_lem_riv", 3, widths={1: 3, 2: 5, 3: 9})
 
 if __name__ == "__main__":
     which = sys.argv[1:] or ["normandy", "avranches", "lemans"]
