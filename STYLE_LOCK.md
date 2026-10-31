@@ -105,6 +105,19 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
 | Reference scenes to copy from | `goosegreen/scenes-src/move3.js` (Harrier bombing run, helicopters, AA, casualty card), `test-terr-f.js` (fronts + territory, final look), `move1.js` (night attack) |
 
 ## 1a. THE HOOK (LOCKED, owner 2026-10-09, Rokossovsky hook v2: "I do like it... I want all videos to have strong hooks like this")
+**UPDATED 2026-10-31 (owner, Cleburne v3): STAY IN THE STORY, NO CV IN THE FIRST TWO MINUTES.** Data: research/CHANNEL_LOG.md
+("why views stalled"). Hits (Thomas 123k, Morgan 45k, 2 Para 39k) told ONE continuous crisis story for 45-100 s and brought the general
+in as its turn (Thomas named at 0:47 "But one general does not leave the field", Morgan 1:20, move 1 at 2:20); the flops (Gavin, Collins)
+left the story at ~0:25 for a CV ("He was an orphan...", nickname + list of achievements, birth/West Point) and lost two thirds of viewers by 0:42.
+- 0:00-~0:45: one continuous story told as action on the map: stakes -> the place -> the number/disaster -> the title's promise as a result
+  by 10-15 s (unchanged) -> then BACK INTO the danger (e.g. "But at dawn, it looked hopeless...") until the general enters.
+- The general enters as the TURN of that story at ~0:45-1:00, in one line with at most ONE human detail ("His name was Patrick Cleburne,
+  and he was born in Ireland"), then name slam + 3 snap cuts (unchanged).
+- NEVER in the first two minutes: birth, schooling, career list, nickname + list of achievements, politics/controversy detours. Background
+  max ~20 s, only the context needed for move 1, placed right before it. Move 1 starts by ~1:30-2:00.
+- Do NOT follow "intro 20-25 s, name + move 1 by 0:25" (Studio AI advice): our hits did the opposite.
+- Reference: Cleburne v3 opening `cleburne/scenes-src/hook-a.js` hook-3 (rewind to dawn, guns stuck, 3 TO 1, "the general in the gap",
+  the order), master `cleburne/build/cleburne-v3.mp4` (not in git).
 **UPDATED 2026-10-28 (owner, Meade #12), REVISED same day: THE OPENING = THE STAKES OF THIS STORY -> CONTINUOUS ZOOM -> NUMBER.**
 Reference for the opening: `reference/hook-reference-meade-v3.mp4` (0:00-1:03) + `reference/hook-reference-meade-v3-sheet.jpg`
 (scene source `meade/scenes-src/hook-a.js`). Why: "Fifty-one thousand men..." as line 1 jumped in with no context; the old Greene opening
