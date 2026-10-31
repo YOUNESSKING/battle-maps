@@ -77,7 +77,7 @@ if not os.path.exists("build/guide_frames.jpg"):
     im = PI.open("build/sheet-hook.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
 story = [Spacer(1, 18 * mm), P("J. LAWTON COLLINS", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm),
-         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAMBLE (battlefield made with vidIQ; Collins's real public-domain 1948 photo added on top)", "coversub"), PageBreak()]
+         img(TA, 150), Spacer(1, 4 * mm), P("Main thumbnail: THE GAMBLE (made with vidIQ: dark battlefield + a generic US major general in colour, not a likeness)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
                  ["File", f"Collins-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size})"],
@@ -95,14 +95,14 @@ story += [P("2. Title and thumbnail", "h1"), P("Title (locked, vidIQ score 91)",
           *bullets(["J. Lawton Collins's Top 3 Legendary Tactical Moves | The General Who Did What Patton Got Credit For (96; good A/B title)",
                     "Lightning Joe Collins's Top 3 Legendary Tactical Moves | The Man Who Broke Hitler's Normandy Front (92)"]),
           P("Why this thumbnail", "h2"),
-          P("Tactical Genius picture formula: a dark aerial battlefield with red/blue unit blocks and white arrows on the left, the commander on the right, "
+          P("Tactical Genius picture formula: a dark, desaturated aerial battlefield with red/blue unit blocks and white arrows on the left, the commander in COLOUR on the right (owner 2026-10-30: only the general is in colour), "
             "a red brush banner bottom-left. <b>THE GAMBLE</b> is type 1 (his decision): committing the armour before the breach was secure, the move "
             "that broke open Normandy (title promise), shown over the Cobra carpet bombing of the hook."),
           P("Alternative for YouTube's Test &amp; compare: <b>4,000 TONS</b> (type 3, ominous stakes: the carpet bombing of 25 July).", "body"),
           Table([[img(TB, 82)]], colWidths=[85 * mm]),
-          P("Checked: the AI image has no text of its own; we added SAINT-LO - PERIERS ROAD and PANZER LEHR. Hedgerow fields, the straight road and "
-            "four-engine heavy bombers match Normandy, 25 July 1944. The portrait is Collins's real 1948 US Army photo (public domain), not an AI "
-            "likeness; it shows him as a general after the war (he wore two stars in 1944).", "warn"),
+          P("Checked: the only text is the banner (spelling correct). Hedgerow fields, the straight road and "
+            "four-engine heavy bombers match Normandy, 25 July 1944. The portrait is an AI-generated generic US Army major general of 1944 "
+            "(bareheaded, two stars on the collar, correct rank for Collins in 1944); it is not presented as a photo or likeness of Collins.", "warn"),
           P("<b>Before uploading:</b> check the thumbnail at small size on a phone.", "tip"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"),
           P("The first line is the title. Everything after it is the description: ready to paste, with NO links (channel rule). Keep the credit lines: the music, sound, archive and image licences require them.", "warn"),

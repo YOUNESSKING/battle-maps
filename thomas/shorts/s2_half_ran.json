@@ -1,0 +1,46 @@
+{
+ "music": "music_src_long-note-one.mp3",
+ "cues": [
+  [
+   "hit",
+   0.05
+  ]
+ ],
+ "scene_start": {
+  "hook1_nocap": 0.0,
+  "chick2_nocap": 177.56,
+  "chick3_nocap": 377.48,
+  "nash2_nocap": 822.12,
+  "nash3_nocap": 879.58
+ },
+ "name": "s2_half_ran",
+ "title": [
+  "HALF THE ARMY RAN",
+  "HE DIDN'T"
+ ],
+ "gold": "DIDN'T",
+ "segments": [
+  {
+   "scene": "hook1_nocap",
+   "from": 26.3,
+   "to": 46.7
+  },
+  {
+   "scene": "chick2_nocap",
+   "from": 46.85,
+   "to": 55.1,
+   "pic_from": 295.5,
+   "x": 560
+  },
+  {
+   "scene": "chick2_nocap",
+   "from": 306.9,
+   "to": 319.4
+  },
+  {
+   "scene": "chick2_nocap",
+   "from": 328.45,
+   "to": 336.7
+  }
+ ]
+}

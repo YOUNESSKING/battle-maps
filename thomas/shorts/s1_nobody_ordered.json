@@ -1,0 +1,51 @@
+{
+ "name": "s1_nobody_ordered",
+ "title": [
+  "NOBODY ORDERED",
+  "THIS CHARGE"
+ ],
+ "music": "music_src_wounded.mp3",
+ "scene_start": {
+  "ridge2_nocap": 508.94,
+  "ridge3_nocap": 664.91
+ },
+ "segments": [
+  {
+   "scene": "ridge2_nocap",
+   "from": 577.3,
+   "to": 587.95
+  },
+  {
+   "scene": "ridge2_nocap",
+   "from": 605.2,
+   "to": 623.85
+  },
+  {
+   "scene": "ridge2_nocap",
+   "from": 624.2,
+   "to": 643.75
+  },
+  {
+   "image": "archive/a05_b.jpg",
+   "from": 644.1,
+   "to": 656.55
+  },
+  {
+   "scene": "ridge3_nocap",
+   "from": 695.45,
+   "to": 705.85,
+   "x": 300
+  }
+ ],
+ "cues": [
+  [
+   "hit",
+   0.05
+  ],
+  [
+   "hit",
+   44.21
+  ]
+ ],
+ "gold": "NOBODY"
+}
