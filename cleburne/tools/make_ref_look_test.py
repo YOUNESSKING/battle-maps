@@ -6,13 +6,15 @@ from PIL import Image, ImageDraw, ImageFilter
 from scipy import ndimage
 base, cx, cy, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
 mode = sys.argv[5] if len(sys.argv) > 5 else "riparian"
+import os
+SMOOTH = os.environ.get("SMOOTH") == "1"
 W, H = 1920, 1080
 x0, y0 = max(0, min(5760 - W, cx - W // 2)), max(0, min(3240 - H, cy - H // 2))
 box = (x0, y0, x0 + W, y0 + H)
 el = np.load(f"assets/src/{base}_hd_elev.npy")[y0:y0 + H, x0:x0 + W].astype(np.float32)
-el = ndimage.gaussian_filter(el, 1.2)
+el = ndimage.gaussian_filter(el, 3.6 if SMOOTH else 1.2)
 # --- relief: strong multi-direction shading, warm ramp
-dz_dy, dz_dx = np.gradient(el * 6.5)
+dz_dy, dz_dx = np.gradient(el * (10.0 if SMOOTH else 6.5))
 def shade(az, alt=38):
     a, l = np.radians(az), np.radians(alt)
     sl = np.pi / 2 - np.arctan(np.hypot(dz_dx, dz_dy) / 7.8); asp = np.arctan2(-dz_dx, dz_dy)
@@ -27,10 +29,11 @@ col = col * (1 - 0.32 * slope[..., None]) + ORANGE[None, None] * (0.32 * slope[.
 col = col * (0.32 + 1.15 * sh[..., None])
 col = np.where((sh[..., None] < 0.35), col * 0.8 + DARK * 0.2, col)
 # fine drainage lines: darker hairlines where flow accumulates (cheap proxy: local concavity)
-conc = ndimage.gaussian_filter(el, 3) - ndimage.gaussian_filter(el, 9)
+conc = ndimage.gaussian_filter(el, 6 if SMOOTH else 3) - ndimage.gaussian_filter(el, 18 if SMOOTH else 9)
 col *= (1 - 0.22 * np.clip(-conc / 6, 0, 1))[..., None]
 lum = col.mean(2, keepdims=True); col = col * 0.85 + lum * 0.15 * np.array([1.0, 0.98, 0.86])
 img = Image.fromarray(np.clip(col, 0, 255).astype(np.uint8)).convert("RGBA")
+if SMOOTH: img = img.filter(ImageFilter.GaussianBlur(1.1))
 # --- river: pale grey-blue with soft bank
 riv = Image.open(f"assets/media/{base}_det_rivS.png").convert("RGBA").crop(box)
 ra = np.array(riv)[..., 3] > 40
@@ -38,14 +41,15 @@ ra = ndimage.binary_dilation(ra, iterations=4)
 bank = ndimage.binary_dilation(ra, iterations=3) & ~ra
 rl = np.zeros((H, W, 4), np.uint8)
 rl[bank] = (214, 205, 170, 150); rl[ra] = (146, 158, 160, 255)
-rl_img = Image.fromarray(rl).filter(ImageFilter.GaussianBlur(0.8))
+rl_img = Image.fromarray(rl).filter(ImageFilter.GaussianBlur(1.8 if SMOOTH else 0.8))
 img = Image.alpha_composite(img, rl_img)
 # --- trees: individual crowns with shadow + highlight
 tree = np.array(Image.open(f"assets/media/{base}_det_tree.png").convert("RGBA").crop(box))[..., 3].astype(np.float32) / 255
 tree = ndimage.gaussian_filter(tree, 4)
 dist = ndimage.distance_transform_edt(~ra)
 rng = np.random.default_rng(3)
-layer = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
+K = 2 if SMOOTH else 1
+layer = Image.new("RGBA", (W * K, H * K), (0, 0, 0, 0)); d = ImageDraw.Draw(layer)
 step = 9
 pts = []
 for gy in range(0, H, step):
@@ -60,17 +64,18 @@ for gy in range(0, H, step):
         if rng.random() < p: pts.append((y, x))
 pts.sort()
 for y, x in pts:
-    r = int(rng.integers(6, 9)); g = int(rng.integers(0, 3))
-    d.ellipse((x - r + 3, y - r + 4, x + r + 3, y + r + 4), fill=(20, 24, 12, 105))          # drop shadow
+    r = int(rng.integers(6, 9)) * K; g = int(rng.integers(0, 3)); y, x = y * K, x * K
+    d.ellipse((x - r + 3 * K, y - r + 4 * K, x + r + 3 * K, y + r + 4 * K), fill=(20, 24, 12, 105))          # drop shadow
     base_c = [(34, 62, 38), (44, 76, 44), (56, 88, 48)][g]
     d.ellipse((x - r, y - r, x + r, y + r), fill=base_c + (255,))
-    d.ellipse((x - r + 2, y - r + 1, x + r - 3, y + r - 4), fill=(base_c[0] + 18, base_c[1] + 26, base_c[2] + 14, 255))   # lit side
+    d.ellipse((x - r + 2 * K, y - r + K, x + r - 3 * K, y + r - 4 * K), fill=(base_c[0] + 18, base_c[1] + 26, base_c[2] + 14, 255))   # lit side
     d.ellipse((x - r // 2, y - r // 2 - 1, x + 1, y + 1), fill=(base_c[0] + 40, base_c[1] + 52, base_c[2] + 26, 200))     # highlight
-img = Image.alpha_composite(img, layer.filter(ImageFilter.GaussianBlur(0.6)))
+layer = layer.resize((W, H), Image.LANCZOS) if SMOOTH else layer
+img = Image.alpha_composite(img, layer.filter(ImageFilter.GaussianBlur(0.9 if SMOOTH else 0.6)))
 # --- vignette + grain
 yy, xx = np.mgrid[0:H, 0:W]
 v = 1 - 0.45 * np.clip(((xx - W / 2) / (W / 1.5)) ** 2 + ((yy - H / 2) / (H / 1.5)) ** 2, 0, 1)
 a = np.array(img.convert("RGB")).astype(np.float32) * v[..., None]
-a += rng.normal(0, 3.0, a.shape[:2])[..., None]
+a += rng.normal(0, 1.6 if SMOOTH else 3.0, a.shape[:2])[..., None]
 Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).save(out)
 print(out, len(pts), "trees")
