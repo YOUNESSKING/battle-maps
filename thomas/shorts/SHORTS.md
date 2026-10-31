@@ -32,3 +32,19 @@ military history, battle maps, history shorts
 | S2 | Half an army runs; one general stays | 0:26-0:58 (hook-1b, hook-2) + 4:53-5:15 (Horseshoe Ridge) | HALF THE ARMY RAN | Half His Army Ran. He Didn't. #shorts |
 | S3 | The Rock of Chickamauga | 5:28-6:17 (wave after wave, bayonets, Garfield: "standing like a rock") | STANDING LIKE A ROCK | How George Thomas Got His Nickname #shorts |
 | S4 | He would not attack on ice | 14:07-14:58 (telegrams, ice storm, "submit without a murmur") + Nashville result | NOT ON ICE | Grant Told Him to Attack. He Refused. #shorts |
+
+## vidIQ auto-clips (2026-10-31, 171 credits, all 10 at 1080x1920 with "Loud & Clear" captions)
+Layout: the whole 16:9 frame small in the middle of a blurred copy, karaoke captions, no hook title. Downloaded for comparison:
+`build/shorts/vidiq/vidiq_death_trap.mp4` (577.5-623.7, same moment as S1) and `vidiq_nashville_end.mp4`. The links expire.
+| Clip | Source | vidIQ score | vidIQ title |
+|---|---|---|---|
+| 1 | 0:07-0:46 | 92 | A Single Order, A Union Division Collapses! |
+| 2 | 3:09-3:46 | 88 | Savage Woods: Thomas's Log Walls Hold Strong! |
+| 3 | 3:46-4:23 | 95 | Confusing Order Creates a Quarter-Mile Gap! |
+| 4 | 4:33-5:19 | 93 | Thomas Sees Opportunity in Chaos: Horseshoe Ridge |
+| 5 | 6:48-7:25 | 90 | Thomas's Method: Calm in the Storm of Battle |
+| 6 | 9:37-10:24 | 94 | Death Trap! Union Soldiers Charge the Mountain! |
+| 7 | 11:05-11:45 | 93 | Confederate Blunder! The Collapse of Missionary Ridge |
+| 8 | 14:40-15:26 | 93 | Ice Storm Siege: Thomas's Risky Refusal! |
+| 9 | 15:27-16:15 | 95 | Nashville Decider: Thomas's Deceptive Wheel! |
+| 10 | 16:48-17:27 | 96 | Nashville's End: Hood's Army Crumbles! |
