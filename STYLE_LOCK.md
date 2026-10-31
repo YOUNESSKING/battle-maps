@@ -214,7 +214,7 @@ Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in 
     Generator: `gavin/tools/make_europe_control.py` (historical borders `world_1938.geojson` + front polylines per date ->
     `assets/media/<map>_ctl_<date>.png`, placed with `B.image(...)` and cross-faded when the date changes).
   - **The map changes with time:** one overlay per date the narration reaches (e.g. Jul 43 / Sep 43 / Jun 44 / Sep 44), cross-fade 1 s.
-  - **Nation flags on the map** with the name under them (flag ~115 px on screen, white Oswald name), one per power on screen;
+  - **Nation flags on the map** (flag ~115 px on screen; since 2026-10-31 NO name under them, section 2b), one per power on screen;
     "NEUTRAL" labels on neutral countries; legend card ALLIES / AXIS / NEUTRAL top-centre. Use the PERIOD national flags:
     Germany 1933-45 = the red flag with the white disc and swastika (`ger_reich_flag.png`, owner's choice), Kingdom of Italy
     with the Savoy shield (`italy_flag.png`), USSR 1936-55 (`ussr_flag.png`), UK, US 48-star. Unit counters keep their small flag chips.
@@ -246,6 +246,38 @@ Our locked style (sections 2-5) stays the base; these are ADDED on top. Referenc
 - **Archive sections (Netflix look, `tools/build_film_dday.py` + `archive_shots.py`):** (1) a **newspaper headline card** (`make_headline_dday.py`) with a paper-page sound; (2) **photos with 3D depth** (parallax, `"depth": True`) with a small caption (unit · place · date); (3) restored, tinted **film inside a projector frame** (`"frame": True`) with a quiet projector loop; (4) **date cards in headline style** ("6 JUNE 1944 / NORMANDY, FRANCE"). Never a slideshow.
 - **Sound design (Frontlines-style, mixed separately from the locked SFX, `assemble_dday.py`):** cinematic whoosh on camera moves (-14 dB), dry pop on labels (-20), big cinematic boom on key beats (-11), reverse riser into reveals (-17), newspaper page (-12), projector loop under film (-27), low tactical/tension drone bed (-30). The locked battle sounds (section 3a), plane sound B, music 0.08 + the locked mix chain are unchanged.
 - **Voice:** voice A (section 6); option 2 = plain am_michael. **Music:** the channel bed; Kevin MacLeod "Five Armies" (CC BY 4.0, from 1:00) matched to the bed loudness is approved for this look.
+
+## 2b. MAP LOOK v11 + CLEAN SCREEN (LOCKED, owner 2026-10-31: "Yes, do like this look. Let's lock it down.")
+Applies to every NEW video (Patton #15 onward). It REPLACES the basemap look (look E / plain `_hd_lift`) and is ADDED on top of
+sections 2 and 2a (counters, front lines, territory options 1/2, flags, planes, sounds all stay). Reference reel (old on top,
+new below): `reference/style-reference-maplook-v11.mp4`; trees close-up vs the owner's reference film:
+`reference/style-reference-maplook-v11-trees.jpg`; seamless colour fade: `reference/style-reference-maplook-v11-fade.jpg`.
+Code snippets for the scenes: `templates/clean_screen_v11.js`. How it was found (judges, checker, versions v3-v11):
+`research/TREE_REDESIGN_BRIEF.md`, `cleburne/build/judge-trees-v10.md`, `cleburne/build/check-trees-v10.md`.
+- **Basemap = `cleburne/tools/ref_look_v11.py`, full bake:** from the video folder,
+  `FULL=1 python3 tools/ref_look_v11.py <map> 2880 1620 assets/<map>_hd_lift.jpg` (about 3 min for 5760x3240; ~6 GB RAM;
+  without `FULL=1` it renders a 1920x1080 preview crop around CX,CY with a vignette). Copy into the new video's `tools/`:
+  `ref_look_v11.py`, `make_detail_layers.py`, `make_tree_sprites.py`, and `assets/src/trees/` (the sprite library
+  `sprites_C2.npz` + public-domain USGS sources, SOURCES.md). Inputs: `assets/src/<map>_hd_elev.npy` (`bake_hd.py`) and
+  `assets/media/<map>_det_riv.png`, `_det_rivS.png`, `_det_swamp.png` (`make_detail_layers.py`; NHD/NLCD are US-only, outside
+  the US the script's WIDE mode uses DEM rivers + ESA WorldCover water: check the rivers by eye).
+  - **Ground:** pale muted sand (no orange), relief about half as strong as before, fine paper grain, soft wide hills.
+  - **Rivers (copied from the owner's reference film):** speckled stony grey water, thin dark rim, narrow brown dirt bank, pale
+    green grass strip, then the trees. **Creeks:** thin dark wiggly hairlines (no straight trenches, no ghost lines).
+  - **Trees:** ONLY as belts along the rivers, near-continuous, placement free (not data-accurate, owner: "the trees should be
+    just around the river"); every tree a separate crown made from REAL public-domain aerial canopy photos, with its own light
+    (top-left lit), soft edge (no outline), its own soft shadow; olive ~RGB 74,82,52. Never sphere/dot/cartoon trees, never
+    scattered groves on the hills, never trees along tiny creeks.
+- **Clean screen (`templates/clean_screen_v11.js`):**
+  - **Nation flags show NO country name under them** (no "UNITED STATES" / "CONFEDERATE STATES"); the flags themselves stay
+    on every map (section 2 rule unchanged).
+  - **Words on screen leave after ~3.5 s (`LBL_LIFE = 3.5`):** the captions of what the narrator says, place-name boxes, town
+    names, map stamps (WRONG HILL, REPULSED...) and belief cards. Unit names under the counters stay with their counters.
+- **Option 1 -> option 2 is SEAMLESS:** when the camera dives from a wide territory-colour shot into a close-up with front
+  lines only, the colours dissolve over ~2.8 s during the dive (`sine.inOut`), never switched off in one frame; when the
+  colours come back they fade in over ~2.2 s.
+- Known open point (owner not asked yet): the territory colours were tuned for the old green-grey map and look strong orange /
+  blue-grey on the pale sand in wide shots; retune only if the owner asks.
 
 ## 3. Sound effects (locked files and levels)
 Rule: every visual beat has a sound, and **the boom is always on the impact** (launches are quiet). **Aircraft sounds only when an aircraft is on screen** (owner 2026-10-06): never a plane/jet/heli sound over parachutes or an empty sky; give `K.aircraft` the sound (its default) or show the planes. Levels are dB in `sfx_mix_lib.py`:
@@ -316,4 +348,5 @@ Rule: **the boom is always on the impact.** **Bombing always SHAKES the screen**
 - Simple flat aircraft icons, drone-like twin-boom transports, planes that stop in mid-air (exception: the glowing C-47 `c47g` is the approved WW2 plane symbol).
 - NATO dot/oval artillery and oval tank symbols (silhouettes chosen).
 - Music at 0.35 (too loud).
+- Map trees as dots, spheres or one fused clump; trees scattered everywhere / data-accurate forest cover; orange saturated relief ("cartoonic"); country names under flags; captions/labels that stay on screen for 10+ s; territory colours that switch off in one frame (all owner 2026-10-31, see 2b).
 - Licences: no NonCommercial / NoDerivatives (no IWM Non-Commercial, no BBC SFX). Never a fake likeness of a real person.
