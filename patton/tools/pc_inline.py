@@ -25,6 +25,7 @@ riv, strm = rivers(m0)
 GD = {"base": m0, "rivers": riv, "streams": strm, "R": {}}
 for m in ("ardennes", "bastogne", "avranches", "oppenheim", "europe"):
     if m != m0: GD["R"][m] = rivers(m, False)[0]
+GD["F"] = {n: json.load(open(f"assets/media/{n}.json")) for n in ("m2b_bas_front_dec19", "m2b_bas_front_dec26", "m2b_ard_front", "pa1_avr_front")}
 kit = open("tools/pc_kit.js").read()
 body = open(f"tools/pc_body_{scene}.js").read()
 out = body.replace("// @@KIT", "// @@KIT (tools/pc_kit.js)\n" + kit + "// @@END-KIT").replace("// @@DATA", "// @@DATA (tools/pc_inline.py)\nconst GD = " + json.dumps(GD, separators=(",", ":")) + ";\n// @@END-DATA")

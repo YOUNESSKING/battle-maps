@@ -29,7 +29,7 @@ legend(0.2, END + 1);
 B.title("MOVE 2", "BASTOGNE", "DECEMBER 1944", 0.3, T_16 + 1.2); SFX("hit", 0.4);
 // flags on each side's ground, moved with the camera (both visible on every shot)
 [[0, T_THIN - 0.1, [1150, 820], [2060, 560]], [T_THIN, T_GOAL + 0.6, [1450, 960], [1960, 700]], [T_GOAL + 0.6, T_DAYS + 2.4, [930, 760], [1880, 470]],
-  [T_DAYS + 2.4, T_BAS + 0.4, [1560, 900], [1930, 660]], [T_BAS + 0.4, END + 1, [1260, 1000], [1790, 860]]].forEach(([t0, t1, us, de], k) => {
+  [T_DAYS + 2.4, T_BAS + 0.4, [1340, 690], [1930, 660]], [T_BAS + 0.4, END + 1, [1260, 1000], [1790, 860]]].forEach(([t0, t1, us, de], k) => {
   flagS(FL.us, "UNITED STATES", ...us, t0 + 0.15, t1); flagS(FL.de, "GERMANY", ...de, t0 + 0.25, t1); });
 // big towns (A2), shrink near the fight
 town("ANTWERP", ANT, "l", 0.4); town("BRUSSELS", BRU, "l", 0.5); town("LIÈGE", LIE, "l", 0.55); town("NAMUR", NAM, "l", 0.6);
@@ -56,7 +56,7 @@ B.move("d6", T_16 + 0.6, 4, ...L(50.43, 6.30)); B.move("d5", T_16 + 0.8, 4, ...L
 // numbers (ticks)
 tickCard("THE GERMAN BLOW · 16 DEC", 200000, "left:70px;top:150px;", T_200 - 0.3, 1.8, T_THIN + 2.2, { suffix: "+", col: "#ff6b5e", sub: "MEN" });
 const TK = tickCard("TANKS", 500, "left:70px;top:330px;", T_500 - 0.2, 1.4, T_THIN + 2.2, { pre: "~", col: "#ff6b5e", sub: "ON THE FIRST DAY" });
-wstampS("THINLY HELD", ...L(50.12, 5.98), T_THIN + 0.3, T_GOAL + 0.6, "#9fc0ea", 22);
+wstampS("THINLY HELD", ...L(49.74, 6.02), T_THIN + 0.3, T_GOAL + 0.6, "#9fc0ea", 22);
 USL.forEach(([id], k) => pulseU(id, T_THIN + 0.2 + k * 0.15));
 // ---------- the goal: Antwerp ----------
 arw({ side: "rome", pts: [L(50.30, 6.10), L(50.45, 5.40), L(50.75, 4.90), L(51.13, 4.48)], width: AW(0.9, 13), t: T_GOAL - 0.1, dur: 2.2, dash: "26 16", until: T_DAYS + 2.0 });
@@ -76,7 +76,7 @@ tickCard("THE 106TH DIVISION", 7000, "left:70px;top:150px;", T_7000 - 0.3, 1.6, 
 region("SCHNEE EIFEL", L(50.36, 6.52), T_SCH - 0.4, T_BAS - 0.2, 26, "rgba(255,190,180,0.95)");
 // ---------- Bastogne: where the roads met ----------
 const ROADS = [[50.23, 5.34], [50.13, 5.79], [50.03, 5.86], [49.97, 5.93], [49.83, 5.74], [49.84, 5.43], [50.03, 5.37], [50.17, 5.62]];
-ROADS.forEach(([la, lo], k) => glowPath([BAS, L(50.0 + (la - 50.0) * 0.55, 5.717 + (lo - 5.717) * 0.55), L(la, lo)], "#f6d36b", 2.2, T_BAS + 0.2 + k * 0.12, END + 1, 2, 0.9, { draw: 0.8, top: true }));
+ROADS.forEach(([la, lo], k) => glowPath([BAS, L(50.0 + (la - 50.0) * 0.55, 5.717 + (lo - 5.717) * 0.55), L(la, lo)], "#f6d36b", 3.2, T_BAS + 0.2 + k * 0.12, END + 1, 2, 0.9, { draw: 0.8, top: true }));
 SFX("hit", T_MET + 0.1);
 wstampS("WHERE THE ROADS MET", BAS[0] - 130, BAS[1] + 70, T_MET + 0.2, T_WHO + 2.4, "#f6d36b", 22);
 // red arrows converge on the town
@@ -86,7 +86,7 @@ wstampS("WHERE THE ROADS MET", BAS[0] - 130, BAS[1] + 70, T_MET + 0.2, T_WHO + 2
 unitS("u101", "carth", [BAS[0] - 26, BAS[1] - 6], "infantry", "101ST AIRBORNE", { t: T_101 - 0.1, size: "XX" });
 unitS("u10", "carth", [BAS[0] + 30, BAS[1] + 22], "tank", "CCB · 10TH ARMD", { t: T_10 - 0.1 });
 K.target(...BAS, T_INS, { r: 22, side: "carth", until: END + 1 });
-const NF = scr(`<div style="padding:8px 22px 10px;background:rgba(18,16,12,0.92);border-top:5px solid #5b8fe8;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:36px;letter-spacing:.04em">NEARLY FULL STRENGTH</div><div style="font-size:16px;letter-spacing:.3em;color:#9fc0ea">101ST AIRBORNE</div></div>`,
+const NF = scr(`<div style="padding:8px 22px 10px;min-width:400px;box-sizing:border-box;background:rgba(18,16,12,0.92);border-top:5px solid #5b8fe8;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:.03em;white-space:nowrap">NEARLY FULL STRENGTH</div><div style="font-size:16px;letter-spacing:.3em;color:#9fc0ea">101ST AIRBORNE</div></div>`,
   "right:70px;top:150px;", T_101 + 0.5, END + 1); SFX("hit", T_101 + 0.6);
 tickCard("TANKS THAT COULD STILL RUN", 40, "right:70px;top:300px;", T_40 - 0.2, 1.2, END + 1, { pre: "~", col: "#5b8fe8", sub: "INSIDE BASTOGNE" });
 fixImgs();

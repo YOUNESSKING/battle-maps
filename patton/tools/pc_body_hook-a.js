@@ -17,6 +17,8 @@
 // @@KIT
 // @@DATA
 const L = GG.proj(11, 269078, 177338);
+const go = (id, t, dur, x, y, ease) => B.move(id, t, dur, x, y, ease || "power1.inOut");
+const ux = (id) => [B.units[id].x, B.units[id].y];
 const H1 = "hook-1", H2 = "hook-2", S2 = B.P(H2);
 const T_HIT = at(H1, "Hitler's"), T_TRAP = at(H1, "trapped"), T_THOU = at(H1, "thousands"), T_PARA = at(H1, "paratroopers"), T_BEL = at(H1, "Belgian"),
   T_BAS = at(H1, "Bastogne."), T_200 = at(H2, "two hundred"), T_GER = at(H2, "Germans"), T_500 = at(H2, "five hundred"), T_TANKS = at(H2, "tanks had"),
@@ -58,7 +60,7 @@ const setMask = (on) => { if (on === maskOn) return; maskOn = on; BL.forEach((el
 const OVS = 1920 / AR[2];                       // 1/6: the whole ardennes map fills the frame
 const cam = { cx: 0, cy: 0, s: OVS };
 const applyCam = () => { const s = cam.s; gsap.set(WORLD, { x: 960 - cam.cx * s, y: 540 - cam.cy * s, scale: s }); CAM_S = s; setInv();
-  const op = s <= 0.26 ? 1 : s >= 0.55 ? 0 : 1 - Math.log(s / 0.26) / Math.log(0.55 / 0.26);
+  const op = s <= 0.27 ? 1 : s >= 0.56 ? 0 : 1 - Math.log(s / 0.27) / Math.log(0.56 / 0.27);
   PW.style.opacity = op.toFixed(3); RG.style.opacity = (1 - op).toFixed(3); setMask(s < 0.7); };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 // anchored log-scale zoom: the anchor point P moves on a straight screen path while the scale changes exponentially
@@ -68,35 +70,36 @@ const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {
     cam.s = s; cam.cx = P[0] - (d0[0] + (d1[0] - d0[0]) * u) / s; cam.cy = P[1] - (d0[1] + (d1[1] - d0[1]) * u) / s; applyCam(); } }, t); };
 const OC0 = [AR[0] + AR[2] / 2, AR[1] + AR[3] / 2], OC1 = [OC0[0] + 160, OC0[1] + 110];
 const TZ0 = T_PARA - 0.25, TZ1 = T_BAS + 0.1;               // dive #1 (lands on "Bastogne")
-const CB = [1330, 700], SB = 0.8;                           // the Bastogne map, wide
+const CB = [1200, 700], SB = 0.8;                           // the Bastogne map, wide
 const TO0 = T_THEN - 0.35, TO1 = T_THEN + 1.25;              // zoom-out to the theatre
-const OC2 = [OC0[0] + 120, OC0[1] + 160], SO2 = OVS * 1.05;
+const OC2 = L(49.76, 6.0), SO2 = 0.245;
 const TD0 = T_BROKE - 0.55, TD1 = T_BAS2 + 0.05;             // dive #2 (lands on "Bastogne in a week")
-const CD = [1300, 760], SD = 0.92;
+const CD = [1380, 620], SD = 0.92;
 cam.cx = OC0[0]; cam.cy = OC0[1]; applyCam();
 camTo(0, TZ0, OC1, OVS * 1.05, "sine.inOut");
 zoom(TZ0, TZ1 - TZ0, OC1, OVS * 1.05, CB, SB, BAS, "power2.inOut"); SFX("whoosh", TZ0 - 0.05);
-camTo(TZ1 + 0.02, TO0 - TZ1 - 0.02, [CB[0] + 40, CB[1] - 30], SB * 1.08, "sine.inOut");
-zoom(TO0, TO1 - TO0, [CB[0] + 40, CB[1] - 30], SB * 1.08, OC2, SO2, BAS, "power2.inOut"); SFX("whoosh", TO0 - 0.05);
-camTo(TO1 + 0.02, TD0 - TO1 - 0.02, [OC2[0] + 60, OC2[1] - 30], SO2 * 1.04, "sine.inOut");
-zoom(TD0, TD1 - TD0, [OC2[0] + 60, OC2[1] - 30], SO2 * 1.04, CD, SD, BAS, "power2.inOut"); SFX("whoosh", TD0 - 0.05);
+camTo(TZ1 + 0.02, TO0 - TZ1 - 0.02, [CB[0] - 70, CB[1] - 50], SB * 1.08, "sine.inOut");
+zoom(TO0, TO1 - TO0, [CB[0] - 70, CB[1] - 50], SB * 1.08, OC2, SO2, BAS, "power2.inOut"); SFX("whoosh", TO0 - 0.05);
+camTo(TO1 + 0.02, TD0 - TO1 - 0.02, [OC2[0] + 60, OC2[1] - 40], SO2 * 1.04, "sine.inOut");
+zoom(TD0, TD1 - TD0, [OC2[0] + 60, OC2[1] - 40], SO2 * 1.04, CD, SD, BAS, "power2.inOut"); SFX("whoosh", TD0 - 0.05);
 camTo(TD1 + 0.02, END - TD1, [CD[0] + 20, CD[1] - 10], SD * 1.05, "sine.out");
 // ---------- HUD: date, legend; the German emblem (on German ground on both maps, never fades) ----------
 B.showDate(0.05); B.date("DECEMBER 1944", 0.1, TO19, 32); B.date("19 DECEMBER 1944", TO19 + 0.05, T_MID + 0.3, 32); B.date("22 - 26 DEC 1944", T_MID + 0.35, END + 1, 32);
 legend(0.0, END + 1);
 const EMB = document.createElement("img"); EMB.src = "assets/media/emblem_ger.png"; EMB.alt = "";   // overview emblem: in the ardennes layer (Germany)
-{ const [x, y] = L(50.55, 7.95), r = 520; Object.assign(EMB.style, { position: "absolute", left: `${(x - AR[0] - r) / AR[2] * 100}%`, top: `${(y - AR[1] - r) / AR[3] * 100}%`, width: `${2 * r / AR[2] * 100}%`, opacity: "0.8" }); PW.appendChild(EMB); }
-emblem(2560, 300, 85);                                                                                      // bastogne map: German ground NE
+{ const [x, y] = L(49.85, 8.0), r = 480; Object.assign(EMB.style, { position: "absolute", left: `${(x - AR[0] - r) / AR[2] * 100}%`, top: `${(y - AR[1] - r) / AR[3] * 100}%`, width: `${2 * r / AR[2] * 100}%`, opacity: "0.8" }); PW.appendChild(EMB); }
+const EM2 = emblem(2150, 430, 85); gsap.set(EM2, { autoAlpha: 0 }); tl.to(EM2, { autoAlpha: 0.8, duration: 0.4 }, TZ0 + 1.0); tl.to(EM2, { autoAlpha: 0, duration: 0.3 }, TO0 + 0.5); tl.to(EM2, { autoAlpha: 0.8, duration: 0.4 }, TD0 + 1.0);                                                                                      // bastogne map: German ground NE
 // ---------- flags: overview pair / close pair (both on every frame; the pair swaps mid-zoom) ----------
-const FOV = (t0, t1) => [flagS(FL.us, "UNITED STATES", ...L(50.25, 3.75), t0, t1), flagS(FL.de, "GERMANY", ...L(50.45, 8.25), t0, t1)];
-const FCL = (t0, t1) => [flagS(FL.us, "UNITED STATES", ...L(49.66, 5.22), t0, t1), flagS(FL.de, "GERMANY", ...L(50.17, 6.42), t0, t1)];
-FOV(0, TZ0 + 1.1); FCL(TZ0 + 1.2, TO0 + 0.5); FOV(TO0 + 0.6, TD0 + 1.1); FCL(TD0 + 1.2, END + 1);
+const FOV = (t0, t1) => [flagS(FL.us, "UNITED STATES", ...L(50.25, 3.75), t0, t1), flagS(FL.de, "GERMANY", ...L(50.95, 8.1), t0, t1)];
+const FOV2 = (t0, t1) => [flagS(FL.us, "UNITED STATES", ...L(49.95, 4.5), t0, t1), flagS(FL.de, "GERMANY", ...L(50.42, 7.45), t0, t1)];
+const FCL = (t0, t1) => [flagS(FL.us, "UNITED STATES", ...L(49.75, 5.05), t0, t1), flagS(FL.de, "GERMANY", ...L(50.10, 6.05), t0, t1)];
+FOV(0, TZ0 + 1.1); FCL(TZ0 + 1.2, TO0 + 0.5); FOV2(TO0 + 0.6, TD0 + 1.1); [flagS(FL.us, "UNITED STATES", ...L(49.80, 5.60), TD0 + 1.2, END + 1), flagS(FL.de, "GERMANY", ...L(50.10, 6.05), TD0 + 1.2, END + 1)];
 // ---------- towns (A2: big towns only) ----------
 const OT = [["ANTWERP", 51.22, 4.40, "r"], ["BRUSSELS", 50.85, 4.35, "l"], ["LIÈGE", 50.63, 5.57, "r"], ["COLOGNE", 50.94, 6.96, "r"], ["METZ", 49.12, 6.18, "l"],
   ["NANCY", 48.69, 6.18, "l"], ["VERDUN", 49.16, 5.38, "l"]];
 const OTE = OT.map(([n, la, lo, sd]) => town(n, L(la, lo), sd, 0));
 OTE.forEach((el) => { tl.to(el, { autoAlpha: 0, duration: 0.3 }, TZ0 + 0.4); tl.to(el, { autoAlpha: 1, duration: 0.4 }, TO0 + 0.9); tl.to(el, { autoAlpha: 0, duration: 0.3 }, TD0 + 0.4); });
-const TB = town("BASTOGNE", BAS, "l", 0, { shrink: [[TZ1 - 0.2, TO0 + 0.4], [TD1 - 0.2, null]] });
+const TB = town("BASTOGNE", BAS, "l", 0);
 const TL = town("LUXEMBOURG", LUX, "r", 0); const TA = town("ARLON", ARL, "l", TZ1 - 0.3); tl.to(TA, { autoAlpha: 0, duration: 0.3 }, TO0 + 0.2); tl.to(TA, { autoAlpha: 1, duration: 0.3 }, TD1 - 0.4);
 const TW = town("WILTZ", WIL, "r", TZ1 - 0.3, { until: TO0 + 0.2 });
 // ---------- hook-1: frame 0, units already moving; CUT OFF at 0.3 s (stakes) ----------
@@ -108,7 +111,8 @@ along("r1", RP[0], 0, TZ0 + 0.2, 20); along("r2", RP[1], 0, T_TRAP + 0.4, 20); a
 RP.forEach((pts, k) => arw({ pts, side: "rome", t: k * 0.25, dur: 2.2, width: AW(OVS, 13), until: TZ0 + 0.6 }));
 B.hideUnits(RU, TZ0 + 0.5, 0.3);
 // the paratroopers in the ring (constant counter), the ring pulses red
-const P101 = unitS("p101", "carth", [BAS[0] - 5, BAS[1] + 30], "infantry", "101ST AIRBORNE", { size: "XX" }); gsap.set(B.units.p101.el, { autoAlpha: 1 });
+unitS("p101", "carth", [BAS[0] + 150, BAS[1] + 170], "infantry", "101ST AIRBORNE", { size: "XX" }); gsap.set(B.units.p101.el, { autoAlpha: 1 }); B.hideUnits(["p101"], TZ0 + 0.6, 0.3);
+unitS("q101", "carth", [BAS[0] + 30, BAS[1] + 45], "infantry", "101ST AIRBORNE", { size: "XX", t: TZ0 + 1.3 });
 K.target(BAS[0], BAS[1], 0.2, { r: 230, side: "#ff3b30", until: TZ0 + 0.8 });
 // guns on the ring (gun flash -> arc -> impact, locked sound, shake 3): constant size on the overview
 const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)"></div>`, from[0], from[1], {}));
@@ -117,7 +121,7 @@ const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 const GO = [L(50.09, 5.86), L(49.94, 5.86), L(50.05, 5.60)];
 [[0.5, 0], [1.6, 1], [2.7, 2], [3.9, 0], [4.8, 1], [5.6, 2]].forEach(([t, k]) => shootS(GO[k], [BAS[0] + ((k * 70) % 120) - 60, BAS[1] + ((k * 50) % 90) - 45], t, OVS * 1.03, { dur: 0.6 }));
-const CUT = sstamp("CUT OFF", 640, 0.3, { size: 92, sub: "AMERICAN PARATROOPERS · BASTOGNE", shake: 5, until: T_HIT - 0.15 });
+const CUT = sstamp("CUT OFF", 800, 0.12, { size: 92, sub: "AMERICAN PARATROOPERS · BASTOGNE", shake: 5, until: T_HIT - 0.15 });
 badge({ name: "ANTHONY McAULIFFE", role: "101ST AIRBORNE · IN BASTOGNE", photo: PHOTO("mcauliffe"), flag: FL.us, side: "carth", corner: "bl", initials: "AM", t: 0.9, until: TZ0 + 0.4 });
 // "Hitler's last great offensive" (the next big text block replaces CUT OFF)
 const OFF = belief("HITLER'S LAST GREAT OFFENSIVE", "16 DECEMBER 1944 · THE ARDENNES", T_HIT - 0.1, T_TRAP - 0.1, { top: 160, size: 52 });
@@ -127,7 +131,7 @@ boxS("TO THE MEUSE", ...L(50.33, 5.05), T_HIT + 0.6, TZ0 + 0.3, { size: 15, bg: 
 [[[5.98, 50.20], [5.80, 50.14], [5.70, 50.05]], [[5.55, 50.13], [5.60, 50.07], [5.66, 50.03]], [[5.55, 49.92], [5.62, 49.96], [5.67, 49.985]], [[5.95, 49.88], [5.82, 49.94], [5.76, 49.975]]]
   .forEach((r, k) => arw({ pts: r.map(([lo, la]) => L(la, lo)), side: "rome", t: T_TRAP - 0.1 + k * 0.15, dur: 0.8, width: AW(OVS, 11), until: TZ0 + 0.6 }));
 wstampS("TRAPPED", BAS[0] + 560, BAS[1] - 330, T_TRAP + 0.3, TZ0 + 0.5, "#e3232f", 30, "SINCE 20 - 21 DEC");
-tl.to(B.units.p101.el, { scale: 1.2, duration: 0.25, yoyo: true, repeat: 3 }, T_PARA - 0.1);
+tl.to(B.units.p101.el.querySelector(".blk"), { scale: 1.2, duration: 0.25, yoyo: true, repeat: 3 }, T_PARA - 0.1);
 // =====================================================================================================================
 // arrival on Bastogne (the town map wide, option 1, 22 Dec): units on the ring, guns
 // =====================================================================================================================
@@ -143,9 +147,9 @@ B.hideUnits([...RR, "rg0", "rg1", "rg2"], TO0 + 0.3, 0.3);
 // hook-2: the number (slams on its words, ticks), then the burst out of the forest
 // =====================================================================================================================
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
-  <div style="display:flex;align-items:baseline;justify-content:center;gap:18px"><div class="n" style="font-size:140px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div><div class="w0" style="font-size:46px;letter-spacing:0.12em;color:#6e675c">GERMANS</div></div>
+  <div style="display:flex;align-items:baseline;justify-content:center;gap:18px"><div class="n" style="font-size:118px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div><div class="w0" style="font-size:46px;letter-spacing:0.12em;color:#6e675c">GERMANS</div></div>
   <div class="row2" style="display:flex;align-items:baseline;justify-content:center;gap:16px;margin-top:2px"><div style="font-size:30px;letter-spacing:0.2em;color:#d8cfb8">ABOUT</div><div class="m" style="font-size:84px;line-height:1.05;color:#f7f3ea">0</div><div class="w1" style="font-size:40px;letter-spacing:0.12em;color:#6e675c">TANKS</div></div>
-  <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">THE ARDENNES OFFENSIVE · 16 DECEMBER 1944</div></div>`, "right:70px;top:150px;transform-origin:50% 40%;", T_200 - 0.15, T_THEN - 0.3, { autoAlpha: 0 });
+  <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">THE ARDENNES OFFENSIVE · 16 DECEMBER 1944</div></div>`, "left:60px;top:150px;transform-origin:50% 40%;", T_200 - 0.15, T_THEN - 0.3, { autoAlpha: 0 });
 slam(BIG, T_200 - 0.15, { from: 1.9, dur: 0.22, shake: 6 });
 const tickN = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySelector(sel);
   tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt(v.v); } }, t0); for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
@@ -158,7 +162,7 @@ tl.to(BIG.querySelector(".w1"), { color: "#ef8a82", duration: 0.15 }, T_TANKS); 
 [[[2800, 260], [2300, 300], [1850, 280]], [[2800, 700], [2350, 640], [1950, 600]], [[2750, 1100], [2350, 980], [2000, 880]]]
   .forEach((pts, k) => arw({ pts, side: "rome", t: T_BURST - 0.2 + k * 0.2, dur: 1.0, width: AW(SB, 14), until: TO0 + 0.3 }));
 SFX("ref:whoosh", T_BURST - 0.1);
-boxS("THE ARDENNES FOREST", 2280, 470, T_BURST + 0.2, TO0 + 0.2, { size: 15 });
+boxS("THE ARDENNES FOREST", 1950, 560, T_BURST + 0.2, TO0 + 0.2, { size: 15 });
 // =====================================================================================================================
 // zoom-out to the theatre (19 Dec): the general facing the wrong way, far to the south (Third Army on the Saar)
 // =====================================================================================================================
@@ -170,7 +174,7 @@ const EAST = [[ST(6.58, 49.36), ST(6.92, 49.40)], [ST(6.88, 49.05), ST(7.20, 49.
 [[TO1, 0], [TO1 + 0.8, 1], [T_SOUTH, 0], [T_SOUTH + 0.9, 1]].forEach(([t, k]) => shootS(ux(k ? "t12" : "t20"), ST(7.0 + k * 0.25, 49.45 - k * 0.3), t, SO2, { dur: 0.6 }));
 const QB = badge({ name: "THIRD ARMY", role: "ITS GENERAL: ?", photo: null, flag: FL.us, side: "carth", corner: "bl", initials: "?", t: T_WRONG - 0.6, until: TD0 + 0.3 });
 QB.querySelector("div[style*='border-radius:50%'] div").style.fontSize = "110px";
-const WRONG = sstamp("FACING THE WRONG WAY", 160, T_WRONG + 0.1, { size: 64, sub: "THIRD ARMY · THE SAAR · 100 MILES SOUTH", shake: 5, until: T_TURN - 0.1 });
+const WRONG = sstamp("FACING THE WRONG WAY", 160, T_WRONG + 0.1, { size: 64, sub: "THIRD ARMY · ON THE SAAR, FAR TO THE SOUTH", shake: 5, until: T_TURN - 0.1 });
 K.target(...ux("t20"), T_WRONG + 0.2, { r: 200, side: "carth", until: T_TURN });
 // the swing: arrows turn north on the roads through Arlon and Luxembourg; the counters follow
 const N1 = [ST(6.25, 48.95), ST(6.05, 49.30), ST(5.88, 49.55), ARL, ST(5.76, 49.85)], N2 = [ST(6.50, 49.30), ST(6.30, 49.52), ST(6.15, 49.72), ST(6.05, 49.86)];
@@ -196,6 +200,8 @@ K.target(ASS[0], ASS[1], T_BROKE + 0.2, { r: 60, side: "carth", until: END + 1 }
 boxS("ASSENOIS", ASS[0] - 150, ASS[1] + 20, T_BROKE + 0.3, END + 1, { size: 14 });
 K.target(BAS[0], BAS[1], TD1 + 0.1, { r: 90, side: "carth", until: END + 1 });
 SFX("ref:boom", T_WEEK);
-const BROKE = sstamp("BROKE THROUGH · 26 DEC", 170, T_WEEK - 0.1, { size: 78, sub: "BASTOGNE RELIEVED · ONE WEEK AFTER THE TURN", color: "#9fc0ea", shake: 6 });
+const BROKE = sstamp("BROKE THROUGH · 26 DEC", 780, T_WEEK - 0.1, { size: 78, sub: "BASTOGNE RELIEVED · ONE WEEK AFTER THE TURN", color: "#9fc0ea", shake: 6 });
+tl.to(B.units.p101.el, { autoAlpha: 1, duration: 0.3 }, TO0 + 0.8); tl.to(B.units.p101.el, { autoAlpha: 0, duration: 0.3 }, TD0 + 0.6);
+tl.to(B.units.q101.el, { autoAlpha: 0, duration: 0.3 }, TO0 + 0.4); tl.to(B.units.q101.el, { autoAlpha: 1, duration: 0.3 }, TD0 + 1.3);
 K.raiseTerritory();
 B.finish();
