@@ -30,3 +30,11 @@ Add new rows for every video. Names from earlier videos with known fixes: see ea
 | Salkehatchie | exact phonemes `sˌɔːlkɪhˈætʃi` | `sˈælkɪhˌætʃi` (SAL-ki-hatchie) → `sˌɔːlkɪhˈætʃi` (sawl-kee-HATCH-ee) | Sherman |
 | Macon (Georgia) | Maykon | `mˈækən` (MACK-en) → `mˈeɪkən` (MAY-kun) | Sherman |
 | Kennesaw, Resaca, Allatoona, Milledgeville, Griswoldville, Hardee, Schofield, Slocum, Jonesboro, Durham | (as written) | `kˈɛnɪsˌɔː`, `ɹᵻsˈɑːkə`, `ˌælɐtˈuːnə`, `mˈɪlɪdʒvˌɪl`, ... fine | Sherman |
+| Patton | exact phonemes `pˈætən` | `pˈæʔn` (glottal stop) → `pˈætən` | Patton |
+| Bastogne | `bæstˈoʊn` (ba-STONE, Merriam-Webster; Americans since 1944) | `bˈæstɑːɡni` → `bæstˈoʊn` | Patton |
+| McAuliffe | `mɪkˈɔːlɪf` (mik-AW-lif) | `mək ˈɔːlɪf` (split) → one word | Patton |
+| Avranches / Pontaubault / Sélune / Le Mans / Mortain / Alençon / Argentan / Mantes / Chaumont / Assenois | Americanised French: `ɑːvɹˈɑːnʃ`, `pˌɑːntoʊbˈoʊ`, `seɪlˈuːn`, `lə mˈɑːn`, `mɔːɹtˈæn`, `ɑːlɑːnsˈoʊn`, `ɑːɹʒɑːntˈɑːn`, `mˈɑːnt`, `ʃoʊmˈoʊn`, `ɑːsənwˈɑː` | Kokoro read them as English spellings (AV-rantchiz, Le MANZ, AR-jenten, ...) | Patton |
+| Kluge / Hausser / Nierstein / Grossgerau / Remagen / Schnee Eifel | German: `klˈuːɡə`, `hˈaʊsɚ`, `nˈɪɹʃtaɪn`, `ɡɹˈoʊsɡɛɹˌaʊ`, `ɹɪmˈɑːɡən`, `ʃnˈeɪ ˈaɪfəl` | Kloodj, HAW-ser, Re-MAY-jen, SHNEE... → fixed | Patton |
+| Meuse / Moselle / Verdun | `mjˈuːz`, `moʊzˈɛl`, `vɚdˈʌn` (ver-DUN) | stress/voicing fixed | Patton |
+| Jaques | NOT verified (Jakes vs Jacks): name removed from the script | | Patton |
+Web check 2026-10-31 confirmed only Bastogne (Merriam-Webster ba-STONE); the rest follow standard English/WWII-documentary usage and Gemini's guide (Avranches ah-VRAHNSH, Sélune say-LOON, Mortain mor-TAN, Argentan ar-zhahn-TAHN, Assenois ah-sen-WAH, Chaumont shoh-MOHN, Nierstein NEER-shtine, Oppenheim OP-en-hime).

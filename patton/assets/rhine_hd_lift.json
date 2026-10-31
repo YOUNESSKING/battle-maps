@@ -1,0 +1,20 @@
+{
+ "name": "rhine_hd_lift",
+ "center": [
+  50.7,
+  7.4
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  66790,
+  43242
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 193.66,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

@@ -1,0 +1,87 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/archive_patton_w.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.38
+   ],
+   "label": "GEORGE S. PATTON · 1885-1945",
+   "dur": 9.0,
+   "depth": true,
+   "trim": 0
+  },
+  {
+   "photo": "assets/media/card_1885_california.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.5
+   ],
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/archive_la1885.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "CALIFORNIA · C. 1885",
+   "dur": 3.4
+  },
+  {
+   "photo": "assets/media/card_1943_sicily.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.55
+   ],
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/archive_sicily1943.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "SICILY · JULY 1943",
+   "dur": 3.4
+  },
+  {
+   "film": "assets/film/clips/m1_coutances_halftracks.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 3.4,
+   "label": "NORMANDY · JULY 1944"
+  },
+  {
+   "photo": "assets/media/card_1944_normandy.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.5
+   ],
+   "dur": 3.6
+  },
+  {
+   "film": "assets/film/clips/m1_avranches_pows.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 3.4,
+   "label": "AVRANCHES · 31 JULY 1944"
+  },
+  {
+   "film": "assets/film/clips/m1_columns_pow.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true,
+   "dur": 3.6,
+   "label": "FRANCE · AUGUST 1944"
+  }
+ ]
+}

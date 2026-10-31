@@ -1,0 +1,19 @@
+{
+ "name": "assenois",
+ "center": [
+  49.96,
+  5.69
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  1080282,
+  710790
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 12.29,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

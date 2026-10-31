@@ -1,0 +1,19 @@
+{
+ "name": "lemans",
+ "center": [
+  48.0,
+  0.2
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  523430,
+  363690
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 25.57,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
