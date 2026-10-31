@@ -12,3 +12,10 @@ owner's colour floods outward from it with a burning orange edge (~1-1.5 s). The
 
 ## Territory colour strength (owner 2026-10-29: "the colours are kind of strong")
 Sheet `sherman/build/sheet-tone.jpg`: NOW (E1 saturate 0.8) vs V1-V6 = `img.terr{filter:saturate(S) opacity(O)}`: V1 0.8/0.8 · V2 0.6/0.65 · V3 0.5/0.5 · V4 0.4/0.4 · V5 0.35/0.3 · V6 0.3/0.2 (opacity must be a FILTER: GSAP writes inline opacity, which overrides CSS opacity; the first T1-T5 sheet was wrong for that reason). **Owner 2026-10-29: none approved; keep our current colours (E1).** Competitor study: `research/territory_study/MEASUREMENTS.md`, sheet `sherman/build/sheet-competitor-colour.jpg` (C1-C4, none chosen).
+
+## Use territory colours less often (owner 2026-10-31, "not a rule yet")
+Owner: use the red/blue territory colours less and less: only where they actually help, otherwise leave them off (not "softer", fewer).
+Draft of where they help: wide shots when the ground changes hands or a new date/front is introduced, and the opening overview;
+everywhere else (close-ups, quotes, decision cards, captions over a stable front) the map can go without the fill (option 2 front lines
+or plain map + flags). Note it touches the locked rule "every map shows who controls the ground" (STYLE_LOCK 2): needs the owner's OK
+before it changes. Strength test sheet (not what the owner meant, kept for reference): `cleburne/build/sheet-territory-strength.jpg`.
