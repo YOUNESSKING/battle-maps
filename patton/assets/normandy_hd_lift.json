@@ -1,0 +1,20 @@
+{
+ "name": "normandy_hd_lift",
+ "center": [
+  48.6,
+  -0.8
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  63804,
+  44424
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 202.19,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

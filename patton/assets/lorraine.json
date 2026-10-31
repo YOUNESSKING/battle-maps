@@ -1,0 +1,19 @@
+{
+ "name": "lorraine",
+ "center": [
+  49.3,
+  6.3
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  134219,
+  88882
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 99.69,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

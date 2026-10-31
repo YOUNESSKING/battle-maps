@@ -1,0 +1,19 @@
+{
+ "name": "oppenheim",
+ "center": [
+  49.88,
+  8.33
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  1095661,
+  711514
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 12.31,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
