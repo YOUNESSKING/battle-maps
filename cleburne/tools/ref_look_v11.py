@@ -30,7 +30,7 @@ import numba
 t0 = time.time()
 base, cx, cy, out = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), sys.argv[4]
 VAR = sys.argv[5] if len(sys.argv) > 5 else "A"
-W, H, PAD = 1920, 1080, 48
+W, H, PAD = (5760, 3240, 0) if os.environ.get('FULL') == '1' else (1920, 1080, 48)   # FULL=1: whole basemap for a scene (no vignette)
 x0, y0 = max(0, min(5760 - W, cx - W // 2)), max(0, min(3240 - H, cy - H // 2))
 # padded window (filters need context; the full-map bake has no crop at all)
 px0, py0 = max(0, x0 - PAD), max(0, y0 - PAD)
@@ -204,7 +204,7 @@ col = col * (1 - 0.8 * cre_a[..., None]) + np.array([58, 52, 40.]) * (0.8 * cre_
 # domain USGS sources, assets/src/trees/SOURCES.md, tools/make_tree_sprites.py C2). v11: per-crown light ramp + small
 # highlights (volume, not a textured ball), calmer texture, soft edges (no sticker ring), mid-green understory in the
 # gaps (no black holes), shadows half as dark, trees exempt from the vignette, belts only along the RIVER, continuous.
-K = 2
+K = 1 if os.environ.get('FULL') == '1' else 2              # FULL bake: no supersampling (memory)
 TR = np.random.default_rng(23)
 TBLUR = float(os.environ.get("TBLUR", "0.35"))
 TMID = float(os.environ.get("TMID", "0.45"))
@@ -353,7 +353,7 @@ ct = c * np.array([1.02, 1.0, 0.97])
 c = c + 0.06 * (c - c * c * (3 - 2 * c)) * -1                      # gentle S-curve
 c = c * np.array([1.02, 1.0, 0.95])
 yy, xx = np.mgrid[0:H, 0:W]
-vig = 1 - 0.52 * ss(0.30, 1.25, np.sqrt(((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2))
+vig = (lambda v: np.ones_like(v) if os.environ.get('FULL') == '1' else v)(1 - 0.52 * ss(0.30, 1.25, np.sqrt(((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)))
 c = c * vig[..., None]
 ct = ct * (1 - 0.30 * (1 - vig))[..., None]                         # a light vignette on the trees only
 c = c * (1 - tal) + ct * tal + rng.normal(0, 0.004, (H, W))[..., None]
