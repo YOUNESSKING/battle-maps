@@ -432,7 +432,7 @@ wstampS("WHERE THE ROADS MET", BAS[0] - 130, BAS[1] + 70, T_MET + 0.2, T_WHO + 2
 unitS("u101", "carth", [BAS[0] - 26, BAS[1] - 6], "infantry", "101ST AIRBORNE", { t: T_101 - 0.1, size: "XX" });
 unitS("u10", "carth", [BAS[0] + 30, BAS[1] + 22], "tank", "CCB · 10TH ARMD", { t: T_10 - 0.1 });
 K.target(...BAS, T_INS, { r: 22, side: "carth", until: END + 1 });
-const NF = scr(`<div style="padding:8px 22px 10px;background:rgba(18,16,12,0.92);border-top:5px solid #5b8fe8;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:.03em;white-space:nowrap">NEARLY FULL STRENGTH</div><div style="font-size:16px;letter-spacing:.3em;color:#9fc0ea">101ST AIRBORNE</div></div>`,
+const NF = scr(`<div style="padding:8px 22px 10px;min-width:400px;box-sizing:border-box;background:rgba(18,16,12,0.92);border-top:5px solid #5b8fe8;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center"><div style="font-size:32px;letter-spacing:.03em;white-space:nowrap">NEARLY FULL STRENGTH</div><div style="font-size:16px;letter-spacing:.3em;color:#9fc0ea">101ST AIRBORNE</div></div>`,
   "right:70px;top:150px;", T_101 + 0.5, END + 1); SFX("hit", T_101 + 0.6);
 tickCard("TANKS THAT COULD STILL RUN", 40, "right:70px;top:300px;", T_40 - 0.2, 1.2, END + 1, { pre: "~", col: "#5b8fe8", sub: "INSIDE BASTOGNE" });
 fixImgs();

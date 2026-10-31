@@ -424,7 +424,7 @@ sstamp("THREE PLANS NORTH", 860, T_PLANS - 0.2, { size: 50, color: "#8fb4ff", un
 const PL3 = [[[L(49.25, 5.70), L(49.55, 5.55), NEU], "1 · NEUFCHÂTEAU"], [[L(49.28, 5.95), ARL, L(49.88, 5.76), L(49.98, 5.72)], "2 · ARLON - BASTOGNE"],
   [[L(49.30, 6.16), LUX, L(49.80, 6.15), DIE], "3 · LUXEMBOURG - DIEKIRCH"]];
 PL3.forEach(([pts, nm], k) => { ghost(pts, T_PLANS + k * 0.45, AW(0.95, 13), END + 1);
-  const q = posOn(pts, 0.45); boxS(nm, q[0] + (k === 0 ? -150 : 150), q[1] + (k === 1 ? 60 : 0), T_PLANS + 0.3 + k * 0.45, END + 1, { size: 14 }); });
+  const q = posOn(pts, [0.45, 0.2, 0.6][k]), od = [[-150, 0], [-140, 30], [170, 0]][k]; boxS(nm, q[0] + od[0], q[1] + od[1], T_PLANS + 0.3 + k * 0.45, END + 1, { size: 14 }); });
 town("BASTOGNE", BAS, "l", T_PLANS + 0.6);
 // the simple code, left with the chief of staff at Nancy
 placeCard("A SIMPLE CODE", "LEFT WITH HIS CHIEF OF STAFF", "left:70px;top:150px;", T_CODE - 0.1, T_CALL - 0.2,
