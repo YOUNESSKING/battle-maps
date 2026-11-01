@@ -275,8 +275,6 @@ flagS(FL.us, 1500, 560, T_TALK + 0.3, END + 1, 110); flagS(FL.cs, 1280, 1360, T_
 flagS(FL.cs, 820, 1400, T_HOW + 1.6, END + 1, 110);
 // ---------- the two forts, both Union now ----------
 [FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); poleFlag(FL.us, [p[0] + 3, p[1] - 6], 0, null, 30); });
-boxS("FORT HENRY · 6 FEB", FH[0] - 120, FH[1] - 34, T_TEN - 0.2, null, { size: 22 });
-boxS("FORT DONELSON · 16 FEB", FD[0] + 130, FD[1] + 30, T_TEN + 0.1, null, { size: 22 });
 B.caption("TWO RIVER FORTS · TEN DAYS", T_TWO + 0.2, T_GONE - 0.1, "carth");
 const GB = badge({ name: "ULYSSES S. GRANT", role: "FROM A SNUBBED BRIGADIER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "bl", t: T_SNUB - 0.3, until: T_WAIT - 0.3 });
 B.caption("THE MAN THE WHOLE NORTH WAS TALKING ABOUT", T_TALK, T_BOATS - 0.1, "carth r");
@@ -286,11 +284,9 @@ glowPath(CUMB_E.slice(4), "#6f9bff", 5, T_BOATS + 0.2, END + 1, 3, 0.85, { draw:
 const GT = ship("iron", "carth", [1392, 920], 90, T_BOATS, T_HOW + 1.0, { L: 46 }); sail(GT, TENN_S.slice(3, 9), T_BOATS + 0.2, 9.0, 20);
 const GC = ship("iron", "carth", [1470, 912], 20, T_BOATS + 0.3, T_HOW + 1.0, { L: 46 }); sail(GC, CUMB_E.slice(4), T_BOATS + 0.5, 8.0, 20);
 boxS("TENNESSEE RIVER", 1520, 1250, T_BOATS + 0.4, null, { size: 24, bg: "#dcecf8", sfx: false });
-boxS("CUMBERLAND RIVER", 1700, 900, T_BOATS + 0.7, null, { size: 24, bg: "#dcecf8" });
 // ---------- the Kentucky line collapses ----------
 const KYL = glowPath([COL, [1200, 840], FH, FD, [1700, 830], BG], "#ff6a5a", 4, T_FALL - 0.4, T_KY + 1.2, 1, 0.9, { dash: "10 7" });
 gsap.set(town("KENTUCKY", [1640, 560], T_KY, "r", { size: 34 }).el.querySelector(".dt"), { autoAlpha: 0 });
-town("NASHVILLE", NSH, T_MIDT - 0.3, "r", { size: 30 });
 gsap.set(town("TENNESSEE", [1700, 1250], T_MIDT, "r", { size: 34 }).el.querySelector(".dt"), { autoAlpha: 0 });
 [[BG, [1880, 900], [1840, 1060], [1880, 1300]], [COL, [990, 900], [960, 1050]], [[1840, 1060], [1860, 1220], [1900, 1380]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, width: AW(0.85, 14), until: T_WAIT + 1.5 }));
@@ -298,8 +294,9 @@ gsap.set(town("TENNESSEE", [1700, 1250], T_MIDT, "r", { size: 34 }).el.querySele
 B.caption("THE CONFEDERATES FALL BACK", T_FALL + 0.2, T_WAIT - 0.1, "rome r");
 // ---------- method card: line 1 lit on "attacked the moment the enemy hesitated" ----------
 GG.METHOD_TITLE = "GRANT'S METHOD";
-GG.METHOD = ["ATTACK WHILE THE ENEMY IS STILL DECIDING", "GO WHERE HE SAYS YOU CANNOT", "NEVER GIVE HIM TIME TO CATCH HIS BREATH"];
-const MC = GG.method(1, T_HIT2 - 0.3, T_ONLY + 1.4, [T_ATT]); SFX("ref:boom", T_ATT + 0.2);
+GG.METHOD = ["HE MOVED FAST", "HIT THE SECOND FORT BEFORE HELP COULD COME", "ATTACKED THE MOMENT THE ENEMY HESITATED"];   // spoken words only (m1-9)
+const MC = GG.method(3, T_FAST - 0.1, T_ONLY + 1.4, [T_FAST, T_HIT2, T_ATT]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "50px"; });
+SFX("ref:pop", T_FAST + 0.1); SFX("ref:pop", T_HIT2 + 0.1); SFX("ref:boom", T_ATT + 0.2);
 // ---------- move1-sub: only the beginning; the question (dark-to-bluff transition); subscribe; NEXT ----------
 B.caption("DONELSON WAS ONLY THE BEGINNING", T_ONLY + 1.5, T_HOW - 0.1, "carth");
 const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%, rgba(8,10,16,0.94) 0%, rgba(4,6,10,0.98) 75%);pointer-events:none";
@@ -343,7 +340,7 @@ const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
 scr(`<div style="padding:10px 26px 12px;background:#dcecf8;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.2em;font-size:34px;box-shadow:0 6px 20px rgba(0,0,0,.6)">NEXT: MOVE 2 →</div>`, "right:80px;bottom:150px;", T_HERE + 0.3, END + 1);
 SFX("ref:pop", T_HERE + 0.3);
 // ---------- clean screen ----------
-declutter([LGD, GB], [[T_HIT2 - 0.3, T_ONLY + 1.4]]);
+declutter([LGD, GB], [[T_FAST - 0.1, T_ONLY + 1.4]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

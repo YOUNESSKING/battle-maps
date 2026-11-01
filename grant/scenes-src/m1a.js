@@ -251,7 +251,7 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 
 const P1 = "m1-1";
 const T_SIXTH = at(P1, "sixth of February"), T_FEB = at(P1, "February"), T_FOOTE = at(P1, "Foote's gunboats"), T_STEAM = at(P1, "steamed up the Tennessee"),
-  T_FIRE = at(P1, "opened fire on Fort Henry"), T_FLOOD = at(P1, "The river was in flood"), T_TWO = at(P1, "two feet deep in water"),
+  T_FIRE = at(P1, "opened fire on Fort Henry"), T_FHN = at(P1, "Fort Henry"), T_FLOOD = at(P1, "The river was in flood"), T_TWO = at(P1, "two feet deep in water"),
   T_CMDR = at(P1, "The Confederate commander"), T_TIL = at(P1, "Lloyd Tilghman"), T_MARCH = at(P1, "had already marched most"),
   T_SURR = at(P1, "He surrendered to the navy"), T_NINETY = at(P1, "about ninety men"), T_GRANT = at(P1, "Grant had not needed"), T_STORM = at(P1, "storm the fort");
 // ---------- places (henry map px, from tools/m1_proj.py) ----------
@@ -266,8 +266,8 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 748, 2.6]
   [T_MARCH + 1.6, 1420, 790, 2.1], [T_SURR + 0.6, 1360, 780, 2.5], [T_GRANT, 1350, 760, 2.3], [END, 1340, 750, 2.2]]);
 // ---------- date (comes in on the spoken date) + title card ----------
 B.showDate(T_SIXTH); B.date("6 FEBRUARY 1862", T_SIXTH + 0.1, null, 34);
-const TT = B.title("MOVE 1", "TWO RIVERS", "FEBRUARY 1862", T_FEB + 0.15, T_FIRE - 0.1); SFX("ref:boom", T_FEB + 0.3);
-const LGD = legend(T_FIRE + 0.4, END + 1, false);
+const TT = B.title("MOVE 1", "FORT HENRY", "6 FEBRUARY", T_FHN, T_FHN + 2.6); SFX("ref:boom", T_FHN + 0.15);
+const LGD = legend(T_FHN + 3.0, END + 1, false);
 // ---------- flags (both on every frame; re-placed for the close-up) ----------
 flagS(FL.us, 1760, 430, 0, T_STEAM + 0.8); flagS(FL.cs, 1760, 1010, 0, T_STEAM + 0.8);
 flagS(FL.us, 1500, 590, T_STEAM + 0.6, END + 1, 96); flagS(FL.cs, 1480, 905, T_STEAM + 0.7, END + 1, 96);
@@ -277,7 +277,7 @@ tl.to(FLOOD.firstElementChild, { scale: 1.12, opacity: 0.8, duration: 0.9, yoyo:
 fortIcon(FH, 0, null, { s: 26 });
 const FHF = poleFlag(FL.cs, [FH[0] + 4, FH[1] - 8], 0.2, T_SURR + 0.5, 40);
 poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], T_SURR + 0.55, END + 1, 40);
-boxS("FORT HENRY", FH[0] - 62, FH[1] + 34, T_FIRE + 0.1, null, { size: 26 });
+boxS("FORT HENRY", FH[0] - 62, FH[1] + 34, T_FHN + 2.8, null, { size: 26 });
 boxS("TENNESSEE RIVER", 1210, 600, T_STEAM + 0.2, null, { size: 22, bg: "#dcecf8", sfx: false });
 // ---------- Foote's flotilla: four ironclads abreast, three timberclads behind (Memoirs: seven gunboats) ----------
 const OFF = [-24, -8, 8, 24], IRON = [], WOOD = [];
@@ -306,7 +306,6 @@ unitS("gar", "rome", [FH[0] + 44, FH[1] + 14], "infantry", null, { t: 0.3 });
 const OUT = [[FH[0] + 44, FH[1] + 14], [1400, 806], [1470, 818], [1530, 826], [1600, 836]];
 along("gar", OUT, T_MARCH - 0.2, 3.4, 18); hideU(["gar"], T_MARCH + 3.6);
 arw({ pts: [[FH[0] + 40, FH[1] + 2], [1410, 798], [1500, 812], [1560, 824]], side: "rome", t: T_MARCH, dur: 2.0, width: AW(2.2, 12), dash: "12 8", until: T_SURR + 2.5 });
-boxS("TO FORT DONELSON", 1480, 860, T_MARCH + 1.4, null, { size: 22, bg: "#f3d6d0" });
 wstampS("SURRENDERED", FH[0] - 70, FH[1] - 20, T_SURR + 0.15, null, "#9fc0ea", 26);
 boxS("ABOUT 90 MEN", FH[0] - 6, FH[1] + 50, T_NINETY, null, { size: 22, bg: "#f3d6d0" });
 // ---------- Grant had not needed to storm the fort: his columns, still on the road from the landing ----------
@@ -318,7 +317,7 @@ arw({ pts: [[1356, 728], [1352, 752], [1342, 770]], side: "carth", t: T_GRANT + 
 B.caption("GRANT HAD NOT NEEDED TO STORM THE FORT", T_STORM - 0.9, END + 1, "carth r");
 K.target(FH[0], FH[1], T_STORM, { r: 26, side: "#9fc0ea", until: END + 1 });
 // ---------- clean screen: the title card is up -> the legend/badges step out (the date scroll stays) ----------
-declutter([LGD, TB, GB], [[T_FEB + 0.15, T_FIRE - 0.1]]);
+declutter([LGD, TB, GB], [[T_FHN, T_FHN + 2.6]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

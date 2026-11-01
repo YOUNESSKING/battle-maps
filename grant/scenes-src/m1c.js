@@ -335,7 +335,7 @@ SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, {
 // not a last stand: they meant to leave, if the road opened (the road out glows; a dashed red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "#ffb08a", 4, T_LEAVE - 0.2, END + 1, 4, 0.9, { draw: 1.4, top: true });
 arw({ pts: ROAD_OUT.slice(1, 6).map((q) => [q[0] + 18, q[1]]), side: "rome", t: T_ROAD, dur: 1.8, width: AW(2.0, 12), dash: "12 9", until: END + 1 });
-boxS("THE ROAD OUT", ROAD_OUT[3][0] + 90, ROAD_OUT[3][1], T_ROAD + 0.3, null, { size: 26, bg: "#f3d6d0" });
+boxS("THE ROAD", ROAD_OUT[3][0] + 90, ROAD_OUT[3][1], T_ROAD + 0.3, null, { size: 26, bg: "#f3d6d0" });
 B.caption("NOT A LAST STAND: THEY PLANNED TO LEAVE", T_LAST, T_KNOW - 0.1, "rome");
 // Grant did not know that yet; his right wing breaking, no cartridges
 const GB = badge({ name: "ULYSSES S. GRANT", role: "DID NOT KNOW THAT YET", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "bl", t: T_KNOW, until: END + 1 });

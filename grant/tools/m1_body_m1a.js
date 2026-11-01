@@ -20,7 +20,7 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 748, 2.6]
   [T_MARCH + 1.6, 1420, 790, 2.1], [T_SURR + 0.6, 1360, 780, 2.5], [T_GRANT, 1350, 760, 2.3], [END, 1340, 750, 2.2]]);
 // ---------- date (comes in on the spoken date) + title card ----------
 B.showDate(T_SIXTH); B.date("6 FEBRUARY 1862", T_SIXTH + 0.1, null, 34);
-const TT = B.title("MOVE 1", "FORT HENRY", "FEBRUARY 1862", T_FHN, T_FHN + 2.6); SFX("ref:boom", T_FHN + 0.15);
+const TT = B.title("MOVE 1", "FORT HENRY", "6 FEBRUARY", T_FHN, T_FHN + 2.6); SFX("ref:boom", T_FHN + 0.15);
 const LGD = legend(T_FHN + 3.0, END + 1, false);
 // ---------- flags (both on every frame; re-placed for the close-up) ----------
 flagS(FL.us, 1760, 430, 0, T_STEAM + 0.8); flagS(FL.cs, 1760, 1010, 0, T_STEAM + 0.8);
