@@ -55,8 +55,8 @@ The finished Rokossovsky video is the channel's locked look + sound, end to end.
     - B2 overview framing: pull the overview out until both sides' ground is clearly visible (not 85 % one colour). `test-B2-frame.js`.
     - B3 decision card keeps moving: lighter dim, slow camera push, arrows keep drawing, options pulse on their words (a beat every
       <= 2.5 s), and a BLACK OUTLINE on the white card text (2 px stroke + soft shadow). `test-B3-decide.js`.
-    - C1 the first-second stamp states the STAKES (not a date). `test-C1-stamp.js`.
-    - C2 hook: one big text block on screen at a time (each new card replaces the last; map labels, date, legend stay). `test-C2-onetext.js`.
+    - C1 the first-second stamp states the STAKES (not a date). `test-C1-stamp.js`. **SUPERSEDED by section 1c (2026-11-01): clean first frame, every card on its spoken word.**
+    - C2 hook: one big text block on screen at a time (each new card replaces the last; map labels and the date stay; the legend and corner badges step out while a card is up, section 1c). `test-C2-onetext.js`.
     - C3 last 20 s: the final-question card shrinks to the top band so YouTube end-screen elements fit; the map stays alive under
       it. `test-C3-endscreen.js`.
     - REJECTED (never apply): A3 legend chips in the on-map colours (too strong), A5 dark edge on the red front band, E3 colour that
@@ -210,6 +210,21 @@ Owner kept BOTH spoken subscribe asks (after move 1 and at the very end), as in 
 - **The ending is ≤ 45 s after the final battle result**: method recap + callback in one short paragraph, legacy kept to 1-2 sentences, then the final question (beat 3).
 - **NO spoken next-video pitch by default (owner 2026-10-29, overrides the Thomas rule):** the narrator never tells the viewer "next, watch X" unless the owner asks for it in that video. The end screen (set in Studio) can still show a video.
 - The last ~20 s leave room for **YouTube's end screen** (map stays on screen; set that same video + subscribe in Studio). Target: ≤ 3 points lost in the ending. Time each beat with `B.at` on the spoken words.
+
+## 1c. ON-SCREEN TEXT AND CLUTTER (LOCKED, owner 2026-11-01, from the Patton #15 review; applies to the WHOLE video, every scene, from the next video on)
+Owner: "the things we applied to the video, not the packaging, should be rules and apply through the whole video." (Patton #15 itself keeps what it has.)
+These rules REPLACE C1 ("stamp in the first second") and the "legend and date stay" part of C2 in section 0b, and add to 1a. Reference: Patton #15 `patton/tools/pc_body_hook-a.js` (declutter block) and `pc_body_hook-b.js`.
+1. **Nothing appears on screen before the narrator says it.** Every card, stamp, banner, tag, number, name plate and badge lands ON or AFTER its own spoken word (use `B.at(para, "word")`).
+   The big text of a stamp is a word the narrator says ("TRAPPED" on "trapped", never "CUT OFF" if "cut off" is never spoken). Sub-lines under a card may use only spoken words.
+   A person's badge/photo/name appears only after the narrator has said that name (no McAuliffe badge before his name is spoken; mystery "?" badge until the name slam). Audit every stamp/card/badge text against the paragraph text before voicing.
+2. **A clean first frame.** Frame 0 = the map and the units already moving, nothing else: no half-faded legend, no stamp, no badge. The date scroll comes in on the spoken date word.
+   The first card lands on the first words that call for it (not at 0.1 s). (This replaces the C1 first-second stamp.)
+3. **One big card at a time, and the screen is clear around it.** While any big card (title card, stamp, number card, decision card, result card) is on screen, the clutter steps out: the colour legend (red/blue/who is who), corner commander badges and similar HUD fade out (use `filter: opacity()`, never a second autoAlpha tween on the same element) about 0.15 s before the card, and come back about 0.3 s after it leaves. Big cards stay ~2-3 s, not longer.
+   **The date scroll NEVER disappears** (owner 2026-11-01); cards sit below it and never overlap it. The legend is first shown after the opening cards (when the camera has arrived), not at 0.8 s.
+4. **Artillery shots only where you can see them.** Gun flashes, arcs, impacts and their booms (and the screen shake that goes with each impact) are kept for artillery that is clearly visible and large enough to read at that camera scale; no continuous barrage of tiny unseen shells (Patton #15 had ~25 shells in the first 25 s: the sound ran on after the artillery was off screen). A hook has at most ~1 shot per 2 s and only on a visible beat; when the camera leaves the guns or the shells land off screen, the cues stop. Check the cue list (`build/sfx_cues.json`) in the first 60 s against the frames.
+5. **The script must make sense when read cold.** Before voicing, read the whole spoken text as a viewer would: every transition has something it points back to ("The room where..." with no room before it is a bug), no sentence names the hero before the name slam (say "the general"), no repeated statistic, no "But ... But" stacks, a flashback says how far back ("Three days earlier"). After ANY text change, grep every `B.at(...)` phrase of every scene against the new text (a missing phrase silently breaks the scene).
+6. **The name slam by ~1:00 and move 1 by ~2:00** (1a). Keep each narrated line in the hook short enough for that.
+Packaging experiments (Test & Compare titles/thumbnails, `research/CONSIDERING.md` and `research/PACKAGING_TEST_PATTON.md`) are NOT part of these rules yet.
 
 ## 2. Visuals (locked)
 - **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).
