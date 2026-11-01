@@ -230,6 +230,7 @@ for _ in range(int(PW * PH / 25)):
     if water[iy, ix] or d < 11 + 4 * fld2[iy, ix] or d > band[iy, ix]: continue
     if rng.random() > (0.45 + 0.55 * ss(-1.5, -0.9, gap[iy, ix])) * (1 - ss(0.7, 1.0, d / band[iy, ix]) * 0.8): continue
     cand.append((x, y))
+if os.environ.get('NO_TREES') == '1': cand = []                     # owner 2026-11-01: no trees at all (distracting)
 from scipy.spatial import cKDTree
 pts = []
 if cand:
