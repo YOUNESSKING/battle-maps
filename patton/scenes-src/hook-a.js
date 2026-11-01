@@ -310,8 +310,8 @@ const go = (id, t, dur, x, y, ease) => B.move(id, t, dur, x, y, ease || "power1.
 const ux = (id) => [B.units[id].x, B.units[id].y];
 const H1 = "hook-1", H2 = "hook-2", S2 = B.P(H2);
 const T_DEC = at(H1, "December"), T_SURR = at(H1, "surrounded"), T_THOU = at(H1, "thousands"), T_PARA = at(H1, "paratroopers"), T_TANKS = at(H1, "German tanks"),
-  T_SNOW = at(H1, "snow"), T_BEL = at(H1, "Belgian"), T_BAS = at(H1, "Bastogne."),
-  T_FELL = at(H2, "If Bastogne fell"), T_ROADS = at(H2, "roads"), T_ANT = at(H2, "Antwerp"), T_PLAN = at(H2, "Hitler's plan"), T_SPLIT = at(H2, "split"), T_TWO = at(H2, "in two"),
+  T_SNOW = at(H1, "German tanks"), T_BEL = at(H1, "Belgian"), T_BAS = at(H1, "Bastogne."),
+  T_HUB = at(H2, "hub"), T_ROADS = at(H2, "roads of"), T_FELL = at(H2, "If it fell"), T_WEST = at(H2, "west"), T_MEUSE = at(H2, "Meuse"), T_ANT = at(H2, "Antwerp"),
   T_ONE = at(H2, "One American general"), T_SOUTH = at(H2, "far to the south"), T_TURN = at(H2, "turned his army north"), T_NORTH = at(H2, "north"),
   T_BROKE = at(H2, "broke through"), T_INWEEK = at(H2, "in a week"), T_WEEK = at(H2, "a week");
 // ---------- places (bastogne world px) ----------
@@ -360,7 +360,7 @@ const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {
 const OC0 = [AR[0] + AR[2] / 2, AR[1] + AR[3] / 2], OC1 = [OC0[0] + 160, OC0[1] + 110];
 const TZ0 = T_PARA - 0.25, TZ1 = T_BAS + 0.1;               // dive #1 (lands on "Bastogne")
 const CB = [1200, 700], SB = 0.8;                           // the Bastogne map, wide
-const TO0 = T_ANT - 0.6, TO1 = T_ANT + 1.0;              // zoom-out to the theatre
+const TO0 = T_WEST - 0.6, TO1 = T_WEST + 0.9;              // zoom-out to the theatre
 const OC2 = L(49.76, 6.0), SO2 = 0.245;
 const TD0 = T_BROKE - 0.35, TD1 = T_INWEEK + 0.1;             // dive #2 (lands on "Bastogne in a week")
 const CD = [1380, 620], SD = 0.92;
@@ -426,12 +426,21 @@ B.hideUnits([...RR, "rg0", "rg1", "rg2"], TO0 + 0.3, 0.3);
 // =====================================================================================================================
 // hook-2: the number (slams on its words, ticks), then the burst out of the forest
 // =====================================================================================================================
-// ---- the stakes (owner 2026-11-01): "If Bastogne fell ... the roads to Antwerp": ONE bold red arrow runs from Bastogne to Antwerp on the
-// spoken word; "split the Allied armies in two": a red slash cuts the Allied side, ONE stamp. Nothing before it is spoken.
-const ANTR = [BAS, L(50.30, 5.20), L(50.75, 4.75), ANTP];
+// ---- the stakes (opening test brief, item 7): "the hub where the roads ... met": the roads into Bastogne glow ON "roads of" (one stamp: THE ROAD HUB on "hub");
+// "west to the Meuse": red arrows aim west at THE MEUSE ON "Meuse"; "and Antwerp": after the zoom-out the red arrow runs on to ANTWERP. Nothing before it is spoken.
+const HUBS = sstamp("THE ROAD HUB", 160, T_HUB, { size: 84, shake: 5, until: T_ROADS - 0.1 });
+const RDS = [[50.133, 5.79], [50.285, 5.915], [49.966, 5.932], [49.68, 5.82], [49.84, 5.435], [50.23, 5.34]].map(([la, lo]) => L(la, lo));
+const RDG = document.createElementNS(NS, "g"); OVL.appendChild(RDG);
+RDS.forEach((q, k) => { const p = document.createElementNS(NS, "path"); p.setAttribute("d", `M${BAS[0]} ${BAS[1]} L${q[0]} ${q[1]}`); p.setAttribute("pathLength", "1"); p.setAttribute("fill", "none");
+  p.setAttribute("stroke", "#ffd54a"); p.setAttribute("stroke-width", "10"); p.setAttribute("stroke-linecap", "round"); p.style.filter = "drop-shadow(0 0 8px #ffb020)"; p.setAttribute("stroke-dasharray", "1 1"); RDG.appendChild(p);
+  gsap.set(p, { strokeDashoffset: 1 });
+  tl.fromTo(p, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: "power1.out", immediateRender: false }, T_ROADS + k * 0.08);
+  tl.to(p, { opacity: 0, duration: 0.4 }, T_FELL + 0.6); });
+const MEU = L(50.15, 4.90);
+arw({ pts: [BAS, [(BAS[0] + MEU[0]) / 2, (BAS[1] + MEU[1]) / 2 - 30], MEU], side: "rome", t: T_MEUSE - 0.25, dur: 1.0, width: AW(SON, 20), until: TD0 + 0.4 });
+boxS("THE MEUSE", MEU[0] - 40, MEU[1] + 70, T_MEUSE, TD0 + 0.4, { size: 16 });
+const ANTR = [MEU, L(50.60, 4.75), ANTP];
 arw({ pts: ANTR, side: "rome", t: T_ANT - 0.1, dur: 1.3, width: AW(SON, 20), until: TD0 + 0.4 });
-SFX("ref:whoosh", T_ANT - 0.2);
-const SPL = sstamp("SPLIT IN TWO", 640, T_SPLIT, { size: 84, sub: "THE ALLIED ARMIES", shake: 6, until: T_ONE - 0.15 });
 // =====================================================================================================================
 // zoom-out to the theatre (19 Dec): the general facing the wrong way, far to the south (Third Army on the Saar)
 // =====================================================================================================================
@@ -444,7 +453,6 @@ const NA1 = arw({ pts: N1, side: "carth", t: T_TURN - 0.1, dur: 1.6, width: AW(S
 const NA2 = arw({ pts: N2, side: "carth", t: T_TURN + 0.2, dur: 1.6, width: AW(SO2, 15), until: TD0 + 0.6 });
 along("t4a", N1, T_TURN, TD1 - T_TURN, 30); along("t20", [ux("t20"), ...N1.slice(2)], T_TURN + 0.2, TD0 - T_TURN, 24); along("t12", [ux("t12"), ...N2.slice(1)], T_TURN + 0.3, TD0 - T_TURN, 24);
 const TURNN = sstamp("TURNED NORTH", 160, T_TURN + 0.1, { size: 64, sub: "A WHOLE ARMY", color: "#9fc0ea", shake: 5, until: T_BROKE - 0.4 });
-SFX("hit", T_TURN + 0.1);
 B.hideUnits(["t20", "t12"], TD0 + 0.4, 0.3);
 // =====================================================================================================================
 // dive #2: the 4th Armored up the Arlon road, the ring breaks at Assenois (26 Dec), BROKE THROUGH

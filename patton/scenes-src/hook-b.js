@@ -394,13 +394,12 @@ const CLK = scr(`<div style="position:relative;width:200px;height:200px;border-r
   <div style="position:absolute;left:90px;top:90px;width:20px;height:20px;border-radius:50%;background:#ffd54a"></div></div>`, "left:880px;top:130px;transform-origin:50% 50%;", T_SOON - 0.15, T_SAID - 0.05, { autoAlpha: 0 });
 slam(CLK, T_SOON - 0.15, { from: 1.5, dur: 0.22, shake: 3 });
 tl.fromTo(CLK.querySelector(".hand"), { rotation: 0 }, { rotation: 380, duration: T_SAID - T_SOON - 0.2, ease: "power1.inOut", immediateRender: false }, T_SOON);
-for (let t = T_SOON + 0.1; t < T_SAID - 0.2; t += 0.25) SFX("tick", t);
 // the calendar lands on 22 DEC with a flash + gold ring + deep hit (count-up grammar)
 const RING = scr0('<div style="width:160px;height:160px;border-radius:50%;border:6px solid #ffd54a;box-shadow:0 0 30px #ffd54a"></div>', "left:880px;top:-30px;transform-origin:50% 50%;");
-tl.fromTo(RING, { autoAlpha: 1, scale: 0.3 }, { autoAlpha: 0, scale: 2.8, duration: 0.7, ease: "power2.out", immediateRender: false }, T_22 + 0.35); SFX("hit", T_22 + 0.38); K.shake(T_22 + 0.38, 4, 0.25);
+tl.fromTo(RING, { autoAlpha: 1, scale: 0.3 }, { autoAlpha: 0, scale: 2.8, duration: 0.7, ease: "power2.out", immediateRender: false }, T_22 + 0.35);
 // "facing east, in another battle": the window flickers with distant gun flashes in the east, an arrow points that way
 const WIN = ROOM.querySelector(".win");
-[0, 0.5, 0.95, 1.5, 2.0].forEach((d, k) => { const t = T_EAST + 0.1 + d; tl.fromTo(WIN, { boxShadow: "inset 0 0 40px rgba(220,235,255,.25)" }, { boxShadow: "inset 0 0 120px 40px rgba(255,170,70,.85)", duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("fire", t); });
+[0, 0.5, 0.95, 1.5, 2.0].forEach((d, k) => { const t = T_EAST + 0.1 + d; tl.fromTo(WIN, { boxShadow: "inset 0 0 40px rgba(220,235,255,.25)" }, { boxShadow: "inset 0 0 120px 40px rgba(255,170,70,.85)", duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, t);});
 const EA = scr('<div style="font-family:Oswald;font-weight:700;font-size:70px;color:#ef8a82;letter-spacing:.1em;text-shadow:0 3px 8px #000">&#10230;&#10230;</div>', "left:1560px;top:300px;", T_EAST, T_SOME - 0.4, { autoAlpha: 0 });
 tl.fromTo(EA, { x: -30 }, { x: 30, duration: 0.5, repeat: 5, yoyo: true, ease: "sine.inOut", immediateRender: false }, T_EAST);
 
@@ -412,7 +411,7 @@ for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.style.c
 const BDG = scr0(`<div style="display:flex;flex-direction:column;align-items:center;gap:14px">
   <div style="position:relative;width:250px;height:250px;border-radius:50%;overflow:hidden;border:8px solid #f3e7c4;box-shadow:0 0 0 6px #1f4fc4,0 20px 40px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover"><img src="${PHOTO("patton")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:150px;color:#f7f3ea">?</div></div>
-  <div class="pl" style="padding:10px 34px 12px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div class="nm" style="font-size:30px;letter-spacing:0.2em">THIRD ARMY</div><div class="rl" style="font-size:19px;letter-spacing:0.22em;color:#d8cfb8">ITS GENERAL: ?</div></div></div>`,
+  <div class="pl" style="padding:10px 34px 12px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div class="nm" style="font-size:30px;letter-spacing:0.2em">THE GENERAL</div></div></div>`,
   "left:120px;top:250px;transform-origin:50% 30%;");
 tl.fromTo(BDG, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, T_SAID - 0.1); SFX("ref:pop", T_SAID - 0.05);
 // the Verdun locator (designed card: a crop of the europe relief with the place dot; not a map shot)
@@ -422,7 +421,7 @@ const LOC = scr(`<div style="position:relative;width:${CW0}px;height:${CH0}px;bo
   <div style="position:absolute;left:${((bx - ox) * CS - 6).toFixed(1)}px;top:${((by - oy) * CS - 6).toFixed(1)}px;width:12px;height:12px;border-radius:50%;background:#f7f3ea"></div>
   <div style="position:absolute;left:${((bx - ox) * CS + 12).toFixed(1)}px;top:${((by - oy) * CS - 16).toFixed(1)}px;font-family:Oswald;font-weight:700;font-size:20px;letter-spacing:.14em;color:#d8cfb8;text-shadow:0 2px 4px #000">BASTOGNE</div>
   <div class="dot" style="position:absolute;left:${(CW0 / 2 - 11).toFixed(1)}px;top:${(CH0 * 0.6 - 11).toFixed(1)}px;width:22px;height:22px;border-radius:50%;background:#ffd54a;box-shadow:0 0 18px #ffd54a,0 0 0 4px rgba(10,12,16,.8)"></div>
-  <div style="position:absolute;left:${(CW0 / 2 + 22).toFixed(1)}px;top:${(CH0 * 0.6 - 4).toFixed(1)}px;font-family:Oswald;font-weight:700;color:#f7f3ea;text-shadow:0 2px 6px #000"><div style="font-size:34px;letter-spacing:.12em">VERDUN</div><div style="font-size:17px;letter-spacing:.24em;color:#c9b48a">FRANCE · 19 DEC 1944 · 11:00</div></div></div>`,
+  <div style="position:absolute;left:${(CW0 / 2 + 22).toFixed(1)}px;top:${(CH0 * 0.6 - 4).toFixed(1)}px;font-family:Oswald;font-weight:700;color:#f7f3ea;text-shadow:0 2px 6px #000"><div style="font-size:34px;letter-spacing:.12em">VERDUN</div><div style="font-size:17px;letter-spacing:.24em;color:#c9b48a">19 DECEMBER</div></div></div>`,
   "right:90px;top:150px;", T_VERD - 0.25, T_IKE - 0.1, { autoAlpha: 0, x: 80 });
 SFX("ref:pop", T_VERD - 0.2);
 tl.fromTo(LOC.querySelector(".dot"), { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2.5)", immediateRender: false }, T_VERD); SFX("hit", T_VERD + 0.05);
@@ -430,25 +429,25 @@ tl.fromTo(LOC.querySelector(".dot"), { scale: 0 }, { scale: 1, duration: 0.3, ea
 const STAMPS = [];
 const sst = (txt, t, until, o = {}) => { pulse(t + 0.22); const el = scr(stampHTML(txt, o.color || "#e3232f", o.size || 66, o.rot || -4, o.sub), `left:0;right:0;top:${o.top || 820}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 });
   STAMPS.push(el); return slam(el, t, { shake: 4, until }); };
-sst("A FREEZING BARRACKS", T_FREEZ - 0.05, T_VERD + 0.6, { sub: "A FRENCH ARMY BARRACKS · VERDUN" });
+sst("A FREEZING BARRACKS", T_FREEZ - 0.05, T_VERD + 0.6, { sub: "VERDUN" });
 tl.to(ROOM.querySelector(".frost"), { opacity: 1.6, scale: 1.05, duration: 0.6 }, T_FREEZ);
 // Eisenhower: no licensed photo in the kit -> initials (DDE)
-const IKE = badge({ name: "DWIGHT D. EISENHOWER", role: "SUPREME COMMANDER", photo: null, flag: FL.us, side: "carth", corner: "tr", initials: "DDE", t: T_IKE - 0.2, until: T_EAST - 0.3 });
+const IKE = badge({ name: "DWIGHT D. EISENHOWER", role: "", photo: null, flag: FL.us, side: "carth", corner: "tr", initials: "DDE", t: T_IKE - 0.2, until: T_EAST - 0.3 });
 sst("EISENHOWER: HOW SOON?", T_SOON - 0.1, T_SAID - 0.1, { size: 70 });
 // "the morning of December twenty-second": the calendar runs on, the badge pulses
 tl.to(BDG, { scale: 1.1, duration: 0.25, yoyo: true, repeat: 1 }, T_SAID); SFX("ref:pop", T_SAID + 0.05);
 const DAYS2 = ["19 DEC", "20 DEC", "21 DEC", "22 DEC"], dv2 = { v: 0 };
 tl.to(dv2, { v: 3, duration: 0.7, ease: "none", immediateRender: false, onUpdate: () => { ye.textContent = DAYS2[Math.round(dv2.v)]; } }, T_22 - 0.3);
 for (let k = 1; k < 4; k++) SFX("tick", T_22 - 0.3 + (k - 0.5) * 0.23);
-sst("22 DECEMBER", T_22 + 0.1, T_3DIV - 0.15, { color: "#9fc0ea", size: 84, sub: "THE ATTACK · IN THREE DAYS" });
+sst("22 DECEMBER", T_22 + 0.1, T_3DIV - 0.15, { color: "#9fc0ea", size: 84, sub: "THE ATTACK" });
 // "with three divisions": three blue chips + THREE DIVISIONS
 const CHIP = (nm, k) => `<div class="c${k}" style="display:flex;align-items:center;gap:10px;padding:8px 18px 8px 10px;background:rgba(18,16,12,0.92);border-left:6px solid #1f4fc4"><img src="${FL.us}" style="height:26px;border:1px solid #f7f3ea"><div style="width:58px;height:38px;background:#1f4fc4;border:3px solid #f7f3ea;display:flex;align-items:center;justify-content:center"><svg width="44" height="26" viewBox="0 0 44 26"><path d="M2 2 L42 24 M42 2 L2 24" stroke="#f7f3ea" stroke-width="3"/>${k === 0 ? '<ellipse cx="22" cy="13" rx="14" ry="7" fill="none" stroke="#f7f3ea" stroke-width="3"/>' : ""}</svg></div><div style="font-family:Oswald;font-weight:700;color:#f7f3ea;font-size:28px;letter-spacing:.1em">${nm}</div></div>`;
-const DIVS = scr(`<div style="display:flex;gap:26px">${["4TH ARMORED", "26TH INFANTRY", "80TH INFANTRY"].map(CHIP).join("")}</div>`, "left:0;right:0;top:680px;display:flex;justify-content:center;", T_3DIV - 0.1, T_EAST - 0.3, { autoAlpha: 0 });
+const DIVS = scr(`<div style="display:flex;gap:26px">${["DIVISION", "DIVISION", "DIVISION"].map(CHIP).join("")}</div>`, "left:0;right:0;top:680px;display:flex;justify-content:center;", T_3DIV - 0.1, T_EAST - 0.3, { autoAlpha: 0 });
 [0, 1, 2].forEach((k) => { tl.fromTo(DIVS.querySelector(".c" + k), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.25, immediateRender: false }, T_3DIV + k * 0.22); SFX("hit", T_3DIV + k * 0.22 + 0.1); });
 sst("THREE DIVISIONS", T_3DIV + 0.7, T_EAST - 0.3, { color: "#9fc0ea", size: 74 });
-sst("FACING EAST", T_EAST - 0.1, T_SOME - 0.4, { color: "#ef8a82", size: 78, sub: "ANOTHER BATTLE · THE SAAR →" });
+sst("FACING EAST", T_EAST - 0.1, T_SOME - 0.4, { color: "#ef8a82", size: 78, sub: "ANOTHER BATTLE →" });
 // the verbatim line (War As I Knew It)
-const QT = scr(`<div style="max-width:1300px;text-align:center;font-family:Oswald;font-weight:700;padding:18px 48px 20px;background:rgba(14,12,10,0.94);border-top:8px solid #c9b48a;color:#f7f3ea;box-shadow:0 18px 40px rgba(0,0,0,.6)"><div style="font-size:64px;letter-spacing:0.03em;line-height:1.1">“SOME PEOPLE THOUGHT I WAS BOASTING.”</div><div style="font-size:21px;letter-spacing:0.24em;color:#c9b48a;margin-top:10px">GEORGE S. PATTON · WAR AS I KNEW IT</div></div>`,
+const QT = scr(`<div style="max-width:1300px;text-align:center;font-family:Oswald;font-weight:700;padding:18px 48px 20px;background:rgba(14,12,10,0.94);border-top:8px solid #c9b48a;color:#f7f3ea;box-shadow:0 18px 40px rgba(0,0,0,.6)"><div style="font-size:64px;letter-spacing:0.03em;line-height:1.1">“SOME THOUGHT HE WAS BOASTING.”</div></div>`,
   "left:0;right:0;top:760px;display:flex;justify-content:center;transform-origin:50% 40%;", T_SOME - 0.3, null, { autoAlpha: 0 });
 slam(QT, T_SOME - 0.3, { from: 1.6, shake: 4, until: S4 + 0.3 }); pulse(T_BOAST);
 tl.to(ROOM, { autoAlpha: 0.45, duration: 0.6 }, T_BOAST - 0.3);
@@ -462,11 +461,11 @@ tl.to(BDG.querySelector(".q"), { autoAlpha: 0, duration: 0.15 }, T_NAME - 0.25);
 tl.call(() => {}, null, T_NAME);
 const PL = BDG.querySelector(".pl");
 tl.to(PL, { autoAlpha: 0, duration: 0.1 }, T_NAME - 0.3);
-const NAME = scr(`<div style="padding:12px 40px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:84px;letter-spacing:0.08em;line-height:1.1">GEORGE S. PATTON</div><div style="font-size:24px;letter-spacing:0.24em;color:#d8cfb8">U.S. THIRD ARMY · 1944 - 1945</div></div>`,
+const NAME = scr(`<div style="padding:12px 40px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:84px;letter-spacing:0.08em;line-height:1.1">GEORGE S. PATTON</div></div>`,
   "left:0;right:0;top:560px;display:flex;justify-content:center;transform-origin:50% 40%;", T_NAME - 0.1, null, { autoAlpha: 0 });
 slam(NAME, T_NAME - 0.1, { from: 1.9, shake: 6 }); pulse(T_NAME + 0.15);
 tl.to(NAME, { autoAlpha: 0, duration: 0.2 }, T_SLAP - 0.1);
-sst("REPRIMANDED · 1943", T_REPR - 0.05, T_BROKE - 0.3, { size: 62, sub: "SICILY · EISENHOWER'S LETTER, 17 AUGUST" });
+sst("REPRIMANDED · 1943", T_REPR - 0.05, T_BROKE - 0.3, { size: 62, sub: "SICILY · EISENHOWER" });
 // hard CUTs: a black frame hides each camera jump (whoosh + hit)
 const CUTB = document.createElement("div"); CUTB.style.cssText = "position:absolute;inset:0;background:#030406;"; SCN.insertBefore(CUTB, document.getElementById("credit")); gsap.set(CUTB, { autoAlpha: 0 });
 const cut = (t, lay, until, c, s, drift) => {
@@ -478,7 +477,7 @@ const T1 = T_BROKE - 0.1, T2 = T_NORTH - 0.1, T3 = T_RHINE - 0.1, T4 = T_THESE -
 tl.set([DK, ROOM, BDG, NAME, QT], { autoAlpha: 0 }, T1 - 0.01);
 tl.set(NA, { autoAlpha: 1 }, T1);
 // the badge returns small in the corner for the cuts
-const PB = badge({ name: "GEORGE S. PATTON", role: "U.S. THIRD ARMY", photo: PHOTO("patton"), flag: FL.us, side: "carth", corner: "bl", initials: "GSP", t: T1 + 0.2, until: T4 - 0.1 });
+const PB = badge({ name: "GEORGE S. PATTON", role: "", photo: PHOTO("patton"), flag: FL.us, side: "carth", corner: "bl", initials: "GSP", t: T1 + 0.2, until: T4 - 0.1 });
 B.showDate(T1); const dates = [["31 JULY 1944", T1, T2], ["26 DECEMBER 1944", T2, T3], ["22 MARCH 1945", T3, T4], ["1944 - 1945", T4, END + 1]];
 dates.forEach(([d, a, b]) => { const el = document.createElement("div"); el.className = "d"; el.textContent = d; el.style.fontSize = "32px"; document.getElementById("date").appendChild(el); gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, a); if (b < END) tl.set(el, { autoAlpha: 0 }, b - 0.01); });
 const LG2 = legend(T1, T4 - 0.01, true); tl.set(LG2, { autoAlpha: 1, y: 0 }, T1);
@@ -507,8 +506,7 @@ unitS("h4a", "carth", [1330, 1180], "tank", "4TH ARMORED", { t: T1, size: "XX", 
 unitS("hg1", "rome", [1880, 1240], "infantry", "", { t: T1, until: T2 - 0.01 });
 arw({ pts: [PBT, [1300, 1180], [1080, 1380]], side: "carth", t: T1 + 0.4, dur: 1.2, width: AW(S1, 14), until: T2 - 0.01 });
 arw({ pts: [PBT, [1530, 1260], [1580, 1480]], side: "carth", t: T1 + 0.6, dur: 1.2, width: AW(S1, 14), until: T2 - 0.01 });
-town("AVRANCHES", AV, "l", T1, { until: T2 - 0.01 });
-ringN(PBT, "AVRANCHES · 1944", 1, T1 + 0.5, T2 - 0.01, 60, 70);
+ringN(PBT, "NORMANDY · 1944", 1, T1 + 0.5, T2 - 0.01, 60, 70);
 shoot([1960, 1300], [1720, 1230], T1 + 0.8, { r: 10 }); shoot([1990, 1180], [1700, 1150], T_FRANCE, { r: 10 });
 endScope(SC1, T2);
 // ---------- CUT 2: BASTOGNE 1944 (bastogne map, option 2): the tanks race up the road through Assenois into the town ----------
@@ -536,7 +534,6 @@ glowPath(RH, "#3d6f9e", 26, T3, null, 0, 0.9);
 front2(RH, S3c, T3, { dur: 0.01, until: T4 - 0.01 });
 const NW = document.createElement("div"); NW.style.cssText = "position:absolute;inset:0;background:rgba(6,10,30,0.5);pointer-events:none"; document.getElementById("fx").appendChild(NW); vis(T3, T4)(NW);
 [flagS(FL.us, "UNITED STATES", 1180, 720, T3, T4), flagS(FL.de, "GERMANY", 1930, 760, T3, T4)].forEach(vis(T3, T4));
-town("NIERSTEIN", NIE, "l", T3, { until: T4 - 0.01 }); town("OPPENHEIM", OPN, "l", T3, { until: T4 - 0.01 });
 const BOAT = `<svg width="60" height="28" viewBox="0 0 34 16" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #6f9bff)"><path d="M1 4 L33 4 L28 14 L6 14 Z" fill="#e9eef8" stroke="#1f4fc4" stroke-width="2.4"/><circle cx="11" cy="4" r="2.6" fill="#1f4fc4"/><circle cx="18" cy="4" r="2.6" fill="#1f4fc4"/><circle cx="25" cy="4" r="2.6" fill="#1f4fc4"/></svg>`;
 const XP = [[[1490, 840], [1585, 832]], [[1495, 875], [1595, 868]], [[1505, 910], [1608, 903]], [[1600, 1010], [1755, 1030]], [[1590, 1050], [1750, 1075]]];
 XP.forEach((pts, k) => { const el = pinS(GG.pin(BOAT, pts[0][0], pts[0][1], {})); vis(T3 + 0.1 + k * 0.35, T4)(el); tl.to(el, { left: pts[1][0], top: pts[1][1], duration: 3.0, ease: "none" }, T3 + 0.1 + k * 0.35);
@@ -545,7 +542,7 @@ unitS("hk", "carth", [1420, 880], "infantry", "11TH INFANTRY", { t: T3, until: T
 unitS("hgr", "rome", [1700, 860], "infantry", "", { t: T3, until: T4 - 0.01 });
 mg([1800, 1020], [1660, 1030], T_DARK, 5, 1.6); mg([1690, 870], [1590, 880], T_DARK + 1.1, 5, 1.6);
 ringN([1560, 860], "THE RHINE · 1945", 3, T3 + 0.4, T4 - 0.01, 180, -60);
-badge({ name: "BERNARD MONTGOMERY", role: "HIS CROSSING: NIGHT OF 23 MARCH", photo: PHOTO("montgomery"), flag: "assets/media/uk_flag.png", side: "carth", corner: "tr", initials: "BM", t: T_MONTY - 0.3, until: T4 - 0.45 });
+badge({ name: "BERNARD MONTGOMERY", role: "", photo: PHOTO("montgomery"), flag: "assets/media/uk_flag.png", side: "carth", corner: "tr", initials: "BM", t: T_MONTY - 0.3, until: T4 - 0.45 });
 endScope(SC3, T4);
 // ---------- PULL-OUT: the europe map (option 1, March 1945), the three rings, the title (riser + boom) ----------
 const EC = EU(49.4, 5.0), SE = 1.45;
@@ -555,18 +552,17 @@ const A1 = EU(48.684, -1.357), A2 = EU(50.002, 5.717), A3 = EU(49.856, 8.357);
 const VE = vis(T4, END + 5);
 [flagS(FL.us, "UNITED STATES", ...EU(47.6, 1.6), T4, END + 1), flagS(FL.de, "GERMANY", ...EU(51.2, 10.6), T4, END + 1)].forEach(VE);
 VE(emblem(...EU(48.55, 10.0), 34));
-[["PARIS", 48.857, 2.352, "r"], ["BRUSSELS", 50.85, 4.35, "r"], ["LONDON", 51.507, -0.128, "r"]].forEach(([n, la, lo, sd]) => VE(town(n, EU(la, lo), sd, T4)));
 const LGN = GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "ALLIES"], ["#be3a2a", "GERMANY"], ["#9a968a", "NEUTRAL"]].map(([sq, nm]) => `<span><b style="display:inline-block;width:20px;height:20px;background:${sq};vertical-align:-3px;border:1px solid #f7f3ea;margin-right:8px"></b>${nm}</span>`).join("")}</div>`, "", 34, T4, null);
 tl.set(LGN, { autoAlpha: 1, y: 0 }, T4);
 CAM_S0 = SE;
-[[A1, "AVRANCHES", 1, -40, 52], [A2, "BASTOGNE", 2, 0, -48], [A3, "THE RHINE", 3, 40, 52]].forEach(([p, nm, n, dx, dy], i) => ringN(p, nm, n, T4 + 0.25 + i * 0.25, END + 1, dx, dy));
+[[A1, "NORMANDY", 1, -40, 52], [A2, "BASTOGNE", 2, 0, -48], [A3, "THE RHINE", 3, 40, 52]].forEach(([p, nm, n, dx, dy], i) => ringN(p, nm, n, T4 + 0.25 + i * 0.25, END + 1, dx, dy));
 arw({ pts: [A1, EU(48.3, 0.5), EU(48.95, 1.7), EU(48.9, 4.0), EU(48.95, 6.0), EU(49.3, 6.4), EU(49.75, 5.95), A2], side: "carth", t: T4 + 0.3, dur: 1.4, width: AW(SE, 9), dash: "12 9", until: END + 1 });
 arw({ pts: [A2, EU(49.85, 6.6), EU(49.75, 7.6), A3], side: "carth", t: T4 + 1.5, dur: 0.7, width: AW(SE, 9), dash: "12 9", until: END + 1 });
 const TDIM = scr("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0) 55%,rgba(5,7,13,0.75) 85%);", T_GREAT - 0.6, null, { autoAlpha: 0 });
 const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">GEORGE S. PATTON'S</div>
   <div style="font-size:84px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
-  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 AVRANCHES · 2 BASTOGNE · 3 THE RHINE</div></div>`, "left:0;right:0;top:132px;display:flex;justify-content:center;", T_GREAT - 0.26, null, { autoAlpha: 0 });
+  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 NORMANDY · 2 BASTOGNE · 3 THE RHINE</div></div>`, "left:0;right:0;top:132px;display:flex;justify-content:center;", T_GREAT - 0.26, null, { autoAlpha: 0 });
 tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_GREAT - 0.26);
 SFX("ref:boom", T_GREAT); K.shake(T_GREAT, 6, 0.4);
 K.raiseTerritory();
