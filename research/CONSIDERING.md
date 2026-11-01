@@ -20,7 +20,7 @@ everywhere else (close-ups, quotes, decision cards, captions over a stable front
 or plain map + flags). Note it touches the locked rule "every map shows who controls the ground" (STYLE_LOCK 2): needs the owner's OK
 before it changes. Strength test sheet (not what the owner meant, kept for reference): `cleburne/build/sheet-territory-strength.jpg`.
 
-## Packaging test rules (owner 2026-11-01: draft from the Studio AI advice, NOT rules; testing on Patton #15 first)
+## Packaging test rules: PROMOTED TO RULES 2026-11-01 (research/PACKAGING_GUIDE.md section 0b). Original draft below.
 Source: Studio AI "reignite" advice for Collins, checked against our data in research/CHANNEL_LOG.md (2026-11-01).
 1. **Title A/B with Test & Compare at launch:** A = our locked format (`<Name>'s Top 3 Legendary Tactical Moves | The Man Who <result>`);
    B = curiosity title that leads with the famous conflict/stakes casual fans know (e.g. "How One American General Broke the Normandy
