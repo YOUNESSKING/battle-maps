@@ -466,7 +466,7 @@ const vis = (t0, t1) => (el) => { gsap.set(el, { autoAlpha: 0 }); tl.set(el, { a
   [0, 1, 2, 3, 4, 5].forEach((k) => { const a = k / 6 * 6.2832 + 0.4, R0 = 190, R1 = 120, p0 = [BASd[0] + Math.cos(a) * R0, BASd[1] + Math.sin(a) * R0 * 0.75], p1 = [BASd[0] + Math.cos(a) * R1, BASd[1] + Math.sin(a) * R1 * 0.75];
     unitS("dpg" + k, "rome", p0, k % 3 === 0 ? "tank" : "infantry", "", { t: 0.1 + k * 0.1, until: END_D }); go("dpg" + k, Math.max(T_CLOSE - 0.2, 0.4) + k * 0.05, 1.6, p1); });
   [0.5, 1.8, 3.0].forEach((d, k) => K.impact(BASd[0] + 150 * Math.cos(k * 1.7), BASd[1] + 105 * Math.sin(k * 1.7), d, { r: 8 }));
-  sst("THE RING TIGHTENS", T_CLOSE - 0.1, T_DEM - 0.25, { sub: "BASTOGNE · 21-22 DEC 1944" });
+  sst("SURROUNDED", T_CLOSE - 0.1, T_DEM - 0.25, { sub: "BASTOGNE" });
   sst("SURRENDER DEMAND", T_DEM - 0.05, T_ANS - 0.15, { color: "#ffd54a", sub: "22 DEC 1944 · UNDER A WHITE FLAG" });
   const WF = `<svg width="30" height="46" viewBox="0 0 30 46" style="display:block;overflow:visible"><circle cx="15" cy="9" r="6" fill="#1b1d22" stroke="#f7f3ea" stroke-width="2"/><path d="M15 15 L15 34 M15 21 L5 29 M15 21 L24 16 M15 34 L8 45 M15 34 L22 45" stroke="#f7f3ea" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M24 16 L24 -6" stroke="#cfcab9" stroke-width="2"/><path d="M24 -6 L38 -2 L24 3 Z" fill="#fff"/></svg>`;
   [0, 1, 2, 3].forEach((k) => { const a = [BASd[0] + 230 + k * 14, BASd[1] - 120 + k * 18], b = [BASd[0] + 95, BASd[1] - 40 + k * 10];
