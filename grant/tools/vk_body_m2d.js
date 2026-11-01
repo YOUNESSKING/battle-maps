@@ -26,6 +26,7 @@ const BAT = [[1352, 588], [1358, 622], [1352, 656], [1340, 690]];    // Fort Cob
 const RIVB = [[1500, 200], [1330, 245], [1200, 290], [1215, 380], [1270, 500], [1308, 610], [1262, 700], [1180, 780], [1060, 840], [985, 915], [940, 1010], [905, 1100], [860, 1170]];
 const ROAD = [[1040, 940], [1150, 925], [1280, 905], [1420, 885], [PG[0], PG[1]]];
 // ---------- layers ----------
+riverLine(RIVB, 46);   // the channel (modern = 1863 here, from the NHD water layer); the LIFT bake shows no water
 living(GZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const NL = GG.night(T_NIGHT - 0.3, T_NDEF - 0.6, { dur: 2.0, outDur: 2.6 });
 const DAWN = GG.dawn(T_NDEF - 1.0, T_EAST + 1.0);
@@ -94,7 +95,7 @@ GBT.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.3));
 // ---------- m2-6: dawn, 30 April: the landing is not defended; about 17,000 step ashore; the bridgehead ----------
 const NDEF = sstamp("NOT DEFENDED", 790, T_NDEF, { size: 74, color: "#9fc0ea", shake: 4, until: T_NDEF + 2.2 });
 const LANDP = [[1010, 905], [1000, 945], [985, 985], [1022, 875]];
-LANDP.forEach((s, k) => { const b = [s[0] - 52, s[1] + 8 * (k - 1)];
+LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
   ship(k % 2 ? "transport" : "transport", [b], T_NDEF - 0.6, 1, T_LATER + 0.6, { s: 22, t0: T_NDEF - 0.6 });
   arw({ pts: [[b[0] + 14, b[1]], [s[0] - 6, s[1]], [s[0] + 26, s[1] - 8]], side: "carth", t: T_ASH - 0.3 + k * 0.25, dur: 0.8, width: AW(1.65, 11), until: T_LATER + 0.4 }); });
 NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
