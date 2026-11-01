@@ -289,9 +289,9 @@ const pontoons = (a, b, t0, t1, n = 26, o = {}) => { const L = Math.hypot(b[0] -
   const g = document.createElementNS(NS, "g"); OVL.appendChild(g);
   for (let k = 0; k < n; k++) { const f = (k + 0.5) / n, x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f, r = document.createElementNS(NS, "rect");
     r.setAttribute("x", -bw / 2); r.setAttribute("y", -bl / 2); r.setAttribute("width", bw); r.setAttribute("height", bl); r.setAttribute("rx", bw * 0.4);
-    r.setAttribute("fill", "#4a3c2c"); r.setAttribute("stroke", "#1f4fc4"); r.setAttribute("stroke-width", bw * 0.22); r.setAttribute("transform", `translate(${x} ${y}) rotate(${ang})`);
+    r.setAttribute("fill", o.fill || "#e2d3ad"); r.setAttribute("stroke", "#1f4fc4"); r.setAttribute("stroke-width", bw * 0.3); r.setAttribute("transform", `translate(${x} ${y}) rotate(${ang})`);
     g.appendChild(r); gsap.set(r, { opacity: 0 }); tl.to(r, { opacity: 1, duration: 0.25 }, t0 + (t1 - t0) * k / n); }
-  const deck = document.createElementNS(NS, "path"); deck.setAttribute("d", `M ${a[0]} ${a[1]} L ${b[0]} ${b[1]}`); deck.setAttribute("stroke", "#d8c9a6"); deck.setAttribute("stroke-width", bw * 0.55);
+  const deck = document.createElementNS(NS, "path"); deck.setAttribute("d", `M ${a[0]} ${a[1]} L ${b[0]} ${b[1]}`); deck.setAttribute("stroke", "#f3ead2"); deck.setAttribute("stroke-width", bw * 0.6);
   deck.setAttribute("stroke-linecap", "round"); deck.setAttribute("fill", "none"); g.appendChild(deck);
   gsap.set(deck, { strokeDasharray: `${L} ${L + 5}`, strokeDashoffset: L }); tl.to(deck, { strokeDashoffset: 0, duration: t1 - t0, ease: "none" }, t0);
   return g; };
@@ -340,8 +340,8 @@ B.caption("HE STRUCK WHILE THE ENEMY WAS STILL DECIDING", T_STRUCK, T_VICK - 0.2
 flagS(FL.us, 1392, 885, T_X2 + 0.4, T_X3 + 0.8, 100); flagS(FL.cs, 1600, 1010, T_X2 + 0.4, T_X3 + 0.8, 100);
 const VK = G.mis.VICKSBURG;
 boxS("VICKSBURG", VK[0] + 40, VK[1] - 40, T_VICK, null, { size: 28 });
-arw({ pts: G.mis.VKS, side: "carth", t: T_WENT - 0.2, dur: 3.2, width: AW(1.9, 13), until: T_X3 + 0.8 });
-unitS("va", "carth", G.mis.VKS[0], "infantry", null, { t: T_X2 + 0.3, size: "XXXX" }); along("va", G.mis.VKS, T_WENT - 0.1, 5.6, 24); hideU(["va"], T_X3 + 0.6);
+arw({ pts: G.mis.VKS, side: "carth", t: T_WENT - 0.2, dur: 3.2, width: AW(1.9, 13), until: T_X3 - 0.3 });
+unitS("va", "carth", G.mis.VKS[0], "infantry", null, { t: T_X2 + 0.3, size: "XXXX" }); along("va", G.mis.VKS, T_WENT - 0.1, 5.6, 24); hideU(["va"], T_X3 - 0.3); hideU(["vr"], T_X3 - 0.3);
 unitS("vr", "rome", [VK[0] + 10, VK[1] + 4], "infantry", null, { t: T_X2 + 0.4, size: "XXX" });
 B.caption("WHERE THE ENEMY SAID NO ARMY COULD GO", T_WENT + 0.2, T_LAND - 0.2, "carth");
 B.caption("AND LIVED OFF THE LAND TO DO IT", T_LAND, T_JAMES - 0.2, "carth");

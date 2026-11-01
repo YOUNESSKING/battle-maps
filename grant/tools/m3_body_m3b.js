@@ -16,8 +16,8 @@ const T_TWO = at(P4, "Over the next two days"), T_115 = at(P4, "a hundred and fi
   T_WIRED = at(P4, "he wired Beauregard"), T_HAVE = at(P4, "Have no information");
 // ---------- places (jamesriver px; river traced on the basemap) ----------
 const RIV = [[860, 640], [1000, 775], [1240, 778], [1330, 782], [1340, 830], [1350, 880], [1400, 886], [1450, 860], [1480, 822], [1600, 812], [1700, 800]];
-const BR_N = [1386, 876], BR_S = [1368, 898], WIL = [1290, 764], FERRY_S = [1296, 797];
-const ROAD_S = [[1360, 905], [1330, 935], [1200, 950], [1050, 960], [900, 975], [760, 990], [620, 1010], [520, 1040]];
+const BR_N = [1386, 876], BR_S = [1378, 924], WIL = [1290, 764], FERRY_S = [1296, 797];
+const ROAD_S = [[1375, 930], [1330, 945], [1200, 950], [1050, 960], [900, 975], [760, 990], [620, 1010], [520, 1040]];
 // ---------- map: option 1 wide, dissolving into the close-up (v11), back on the zoom-out ----------
 terr("assets/media/m3_jam_jun14_mx.png", 0, T_FERRY + 0.2, 1.0, 2.8);
 terr("assets/media/m3_jam_jun14_mx.png", T_GUESS - 0.6, null, 2.2);
@@ -50,7 +50,7 @@ B.caption("THE FIRST TROOPS FERRIED ACROSS THE JAMES", T_FERRY + 0.3, T_WEY - 0.
 boxS("WEYANOKE", BR_N[0] + 40, BR_N[1] - 26, T_WEY, null, { size: 26 });
 unitS("en1", "carth", [BR_N[0] + 26, BR_N[1] - 14], "infantry", "ENGINEERS", { t: T_ENG, size: "II" });
 unitS("en2", "carth", [BR_S[0] + 28, BR_S[1] + 14], "infantry", null, { t: T_ENG + 0.3, size: "II" });
-pontoons(BR_N, BR_S, T_ENG + 0.4, T_READY, 24, { bw: 1.5, bl: 4.2 });
+pontoons(BR_N, BR_S, T_ENG + 0.4, T_READY, 22, { bw: 2.2, bl: 5.5 });
 const TK = ticker("PONTOON BOATS", 101, "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_101 - 0.1, 2.0, T_FT - 0.1, 8, { col: "#2e5cb2" });
 boxS("ABOUT 2,100 FEET", BR_N[0] - 150, (BR_N[1] + BR_S[1]) / 2 - 6, T_FT, null, { size: 26, bg: "#dcecf8" });
 const CH = glowPath([[1338, 820], [1345, 870], [1376, 888], [1430, 878], [1470, 840]], "#3c74d8", 2.2, T_TIDE, T_FOUR, 2, 0.8);
@@ -68,10 +68,10 @@ B.caption("WITH THEIR GUNS AND WAGONS", T_GUNS + 0.1, T_GUESS - 0.2, "carth");
 arw({ pts: [[BR_S[0] - 10, BR_S[1] + 10], [1200, 950], [900, 975], [760, 992]], side: "carth", t: T_GUNS + 0.4, dur: 4.0, width: AW(1.2, 14), dash: "12 8", until: END + 1 });
 // ---------- Lee: guessed Petersburg on the 14th, would not believe it, kept his army around Richmond ----------
 const LB = badge({ name: "ROBERT E. LEE", role: "", initials: "REL", photo: PHOTO("lee"), flag: FL.cs, side: "rome", corner: "br", t: T_GUESS + 0.1, until: END + 1 });
-[["l1", [470, 380]], ["l2", [560, 330]], ["l3", [640, 300]], ["l4", [420, 470]]].forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: T_GUESS - 0.4, size: "XXX" }));
+[["l1", [470, 480]], ["l2", [570, 440]], ["l3", [660, 410]], ["l4", [420, 570]]].forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: T_GUESS - 0.4, size: "XXX" }));
 unitS("pb", "rome", [470, 1010], "infantry", null, { t: T_GUESS - 0.2, size: "X" });
 town("PETERSBURG", G.PETERSBURG, T_PETE - 0.3, "l", { size: 32 });
-const GQ = arw({ pts: [[470, 430], [440, 650], [430, 900], [440, 1000]], side: "rome", t: T_PETE, dur: 2.0, width: AW(1.05, 12), dash: "6 9", until: T_BELIEVE + 0.6 });
+const GQ = arw({ pts: [[470, 530], [440, 700], [430, 900], [440, 1000]], side: "rome", t: T_PETE, dur: 2.0, width: AW(1.05, 12), dash: "6 9", until: T_BELIEVE + 0.6 });
 K.target(G.PETERSBURG[0], G.PETERSBURG[1], T_PETE + 0.3, { r: 34, side: "#ffd54a", until: T_KEPT + 1 });
 B.caption("LEE GUESSED THAT GRANT MIGHT GO FOR PETERSBURG", T_PETE - 0.3, T_BELIEVE - 0.1, "rome");
 B.caption("BUT HE WOULD NOT BELIEVE IT", T_BELIEVE, T_KEPT - 0.1, "rome");

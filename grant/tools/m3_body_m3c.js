@@ -19,7 +19,7 @@ camera([[0, 1560, 790, 2.6], [T_14K, 1540, 805, 2.9], [T_HINKS, 1525, 825, 3.2],
   [T_WAIT, 1450, 840, 2.6], [END, 1445, 842, 2.55]]);
 dateNow("17 JUNE 1864", T_15 - 0.1); B.date("15 JUNE 1864", T_15, null, 34);
 // ---------- flags ----------
-flagS(FL.us, 1700, 905, 0, END + 1, 100); flagS(FL.cs, 1345, 740, 0, END + 1, 100);
+flagS(FL.us, 1600, 950, 0, END + 1, 100); flagS(FL.cs, 1345, 740, 0, END + 1, 100);
 // ---------- front (two colour: blue east of the line), the batteries ----------
 const FR = frontS({ pts: DL, to: DL2, moveT: T_BROKE + 0.3, moveDur: 3.0, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.9), until: END + 1 });
 const BAT = [[1494, 778], [1500, 808], [1503, 838], [1508, 868]];

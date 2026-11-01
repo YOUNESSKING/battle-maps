@@ -34,9 +34,9 @@ const pontoons = (a, b, t0, t1, n = 26, o = {}) => { const L = Math.hypot(b[0] -
   const g = document.createElementNS(NS, "g"); OVL.appendChild(g);
   for (let k = 0; k < n; k++) { const f = (k + 0.5) / n, x = a[0] + (b[0] - a[0]) * f, y = a[1] + (b[1] - a[1]) * f, r = document.createElementNS(NS, "rect");
     r.setAttribute("x", -bw / 2); r.setAttribute("y", -bl / 2); r.setAttribute("width", bw); r.setAttribute("height", bl); r.setAttribute("rx", bw * 0.4);
-    r.setAttribute("fill", "#4a3c2c"); r.setAttribute("stroke", "#1f4fc4"); r.setAttribute("stroke-width", bw * 0.22); r.setAttribute("transform", `translate(${x} ${y}) rotate(${ang})`);
+    r.setAttribute("fill", o.fill || "#e2d3ad"); r.setAttribute("stroke", "#1f4fc4"); r.setAttribute("stroke-width", bw * 0.3); r.setAttribute("transform", `translate(${x} ${y}) rotate(${ang})`);
     g.appendChild(r); gsap.set(r, { opacity: 0 }); tl.to(r, { opacity: 1, duration: 0.25 }, t0 + (t1 - t0) * k / n); }
-  const deck = document.createElementNS(NS, "path"); deck.setAttribute("d", `M ${a[0]} ${a[1]} L ${b[0]} ${b[1]}`); deck.setAttribute("stroke", "#d8c9a6"); deck.setAttribute("stroke-width", bw * 0.55);
+  const deck = document.createElementNS(NS, "path"); deck.setAttribute("d", `M ${a[0]} ${a[1]} L ${b[0]} ${b[1]}`); deck.setAttribute("stroke", "#f3ead2"); deck.setAttribute("stroke-width", bw * 0.6);
   deck.setAttribute("stroke-linecap", "round"); deck.setAttribute("fill", "none"); g.appendChild(deck);
   gsap.set(deck, { strokeDasharray: `${L} ${L + 5}`, strokeDashoffset: L }); tl.to(deck, { strokeDashoffset: 0, duration: t1 - t0, ease: "none" }, t0);
   return g; };

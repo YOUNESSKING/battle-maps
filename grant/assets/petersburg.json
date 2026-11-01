@@ -1,19 +1,19 @@
 {
- "name": "m3x_mis",
+ "name": "petersburg",
  "center": [
-  33.0,
-  -90.8
+  37.24,
+  -77.38
  ],
- "zoom": 8,
+ "zoom": 12,
  "origin_world_px": [
-  14798,
-  25587
+  297462,
+  406450
  ],
  "size": [
   2880,
   1620
  ],
- "meters_per_px": 512.84,
+ "meters_per_px": 30.43,
  "sea_below": 0.5,
  "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
 }

@@ -1,5 +1,5 @@
 {
- "name": "m3x_pet",
+ "name": "petersburg_hd_lift",
  "center": [
   37.24,
   -77.38
@@ -15,5 +15,6 @@
  ],
  "meters_per_px": 30.43,
  "sea_below": 0.5,
- "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
 }

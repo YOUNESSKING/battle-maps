@@ -45,8 +45,8 @@ B.caption("HE STRUCK WHILE THE ENEMY WAS STILL DECIDING", T_STRUCK, T_VICK - 0.2
 flagS(FL.us, 1392, 885, T_X2 + 0.4, T_X3 + 0.8, 100); flagS(FL.cs, 1600, 1010, T_X2 + 0.4, T_X3 + 0.8, 100);
 const VK = G.mis.VICKSBURG;
 boxS("VICKSBURG", VK[0] + 40, VK[1] - 40, T_VICK, null, { size: 28 });
-arw({ pts: G.mis.VKS, side: "carth", t: T_WENT - 0.2, dur: 3.2, width: AW(1.9, 13), until: T_X3 + 0.8 });
-unitS("va", "carth", G.mis.VKS[0], "infantry", null, { t: T_X2 + 0.3, size: "XXXX" }); along("va", G.mis.VKS, T_WENT - 0.1, 5.6, 24); hideU(["va"], T_X3 + 0.6);
+arw({ pts: G.mis.VKS, side: "carth", t: T_WENT - 0.2, dur: 3.2, width: AW(1.9, 13), until: T_X3 - 0.3 });
+unitS("va", "carth", G.mis.VKS[0], "infantry", null, { t: T_X2 + 0.3, size: "XXXX" }); along("va", G.mis.VKS, T_WENT - 0.1, 5.6, 24); hideU(["va"], T_X3 - 0.3); hideU(["vr"], T_X3 - 0.3);
 unitS("vr", "rome", [VK[0] + 10, VK[1] + 4], "infantry", null, { t: T_X2 + 0.4, size: "XXX" });
 B.caption("WHERE THE ENEMY SAID NO ARMY COULD GO", T_WENT + 0.2, T_LAND - 0.2, "carth");
 B.caption("AND LIVED OFF THE LAND TO DO IT", T_LAND, T_JAMES - 0.2, "carth");
