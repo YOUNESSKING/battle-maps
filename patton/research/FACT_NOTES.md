@@ -35,6 +35,6 @@ Move 3: details in FACTCHECK_C "Best vivid details".
 | "Turned his army north" (title B) | TRUE | Third Army was attacking east in the Saar; it was ordered north at Verdun on 19 Dec and attacked north on 22 Dec (FACTCHECK_B rows on Dec 17-22; Cole). Never "90 degrees" in a title: not sourced as an exact figure. |
 | "101st Airborne surrounded" (title C) | TRUE | Cole: ring closed night of 20-21 Dec; surrender demand 22 Dec (FACTCHECK_B rows 8, 10). |
 | "Battle of the Bulge" (title B) | TRUE | name of the Ardennes offensive of 16 Dec 1944 (Cole, The Ardennes: Battle of the Bulge). |
-| "From the Normandy breakout to Bastogne to the Rhine" (alt. C) | TRUE | Avranches breakout 1 Aug 1944 (Blumenson), Bastogne Dec 1944, Rhine crossing 22-23 Mar 1945 (MacDonald). Cobra itself is credited to Bradley/Collins in the video. |
+| "From the Normandy Breakout to the Siege of Bastogne" (title C, scored 91); earlier alt. "...to Bastogne to the Rhine" | TRUE | Avranches breakout 1 Aug 1944 (Blumenson), Bastogne Dec 1944, Rhine crossing 22-23 Mar 1945 (MacDonald). Cobra itself is credited to Bradley/Collins in the video. |
 | NOT USED (unsourced or false): "saved the war", "forgotten", "in 48 hours", "in 3 days" as a title time limit, "90 degrees", "Play ball", "11,000 trapped", any casualty figure. |
 Banners: THREE DAYS = Patton promised the attack for 22 Dec three days after Verdun (diary); ONE WEEK = 19->26 Dec; THE BREAKOUT = Avranches 1 Aug 1944; BROKE THE SIEGE = as above.
