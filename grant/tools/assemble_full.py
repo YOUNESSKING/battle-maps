@@ -21,27 +21,14 @@ T = json.load(open("audio/timing.json"))
 paras, total = T["paragraphs"], T["duration"]
 key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "").strip()
 idx = {key(p): i for i, p in enumerate(paras)}
-SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py (provisional: map agents may split differently)
-    "hook-a": ("hook-1", "hook-2"),
-    "hook-b": ("hook-3", "hook-4"),
-    "move1a": ("move1-1", "move1-1"),
-    "move1b": ("move1-2", "move1-2"),
-    "move1c": ("move1-3", "move1-4"),
-    "move1d": ("move1-5", "move1-5"),
-    "move1e": ("move1-6", "move1-8"),
-    "move1f": ("move1-sub", "move1-sub"),
-    "move2a": ("move2-1", "move2-1"),
-    "move2b": ("move2-2", "move2-2"),
-    "move2c": ("move2-3", "move2-3"),
-    "move2d": ("move2-4", "move2-4"),
-    "move2e": ("move2-5", "move2-6"),
-    "move2f": ("move2-7", "move2-7"),
-    "move2g": ("move2-8", "move2-8"),
-    "move3a": ("move3-1", "move3-1"),
-    "move3b": ("move3-2", "move3-5"),
-    "move3c": ("move3-6", "move3-6"),
-    "move3d": ("move3-7", "move3-7"),
-    "ending": ("end-1", "end-2"),
+SCENES = {  # scene name -> (first tag, last tag)
+    "hook-a": ("hook-1", "hook-2"), "hook-b": ("hook-3", "hook-4"),
+    "m1a": ("m1-1", "m1-1"), "m1b": ("m1-2", "m1-2"), "m1c": ("m1-3", "m1-4"), "m1d": ("m1-5", "m1-6"),
+    "m1e": ("m1-7", "m1-8"), "m1f": ("m1-9", "move1-sub"),
+    "m2a": ("m2-1", "m2-2"), "m2b": ("m2-3", "m2-3"), "m2c": ("m2-4", "m2-4"), "m2d": ("m2-5", "m2-6"),
+    "m2e": ("m2-7", "m2-7"), "m2f": ("m2-8", "m2-10"), "m2g": ("m2-11", "m2-12"),
+    "m3a": ("m3-1", "m3-2"), "m3b": ("m3-3", "m3-4"), "m3c": ("m3-5", "m3-5"), "m3d": ("m3-6", "m3-7"),
+    "ending": ("end-1", "end-1"),
 }
 CHAPTERS = [("hook-1", "Intro: Fort Donelson and the Man Nobody Knew"), ("m1-1", "Move 1: Fort Henry and Fort Donelson (Feb 1862)"),
             ("m2-1", "Move 2: The Vicksburg Campaign (1863)"), ("m3-1", "Move 3: Across the James River (Jun 1864)"),

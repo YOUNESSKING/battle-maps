@@ -1,0 +1,20 @@
+{
+ "name": "donelson_hd_lift",
+ "center": [
+  36.48,
+  -87.85
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  535372,
+  819244
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 15.37,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}
