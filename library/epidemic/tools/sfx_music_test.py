@@ -1,6 +1,6 @@
 """1-minute TEST: the locked SFX/music vs Epidemic Sound SFX/music on the same minute of a finished video (owner 2026-11-01).
 Does NOT touch the sound lock or any video. usage (from a video folder, e.g. cleburne/):
-  python3 ../library/epidemic/tools/sfx_music_test.py T0 DUR MUSIC.mp3 OUT.mp4
+  python3 ../library/epidemic/tools/sfx_music_test.py T0 DUR locked|MUSIC.mp3 OUT.mp4   ("locked" = the channel's locked music bed, same level and position as the master)
 Uses build/sfx_cues.json, audio/voice_owner.wav and build/<name>-v3.mp4 (or MASTER env)."""
 import json, os, subprocess, sys
 import numpy as np, soundfile as sf
@@ -37,15 +37,18 @@ for t, kind, _ in cues:
     if t - last.get(kind, -99) < gap: continue
     last[kind] = t
     ref = load(f"{L.D}/{files[0]}")
-    if kind in EPI:
-        cl = EPI[kind][used.get(kind, 0) % len(EPI[kind])]; cl = cl * (loud(ref) / max(loud(cl), 1e-6))   # same loudness as the locked sound
+    if kind in EPI and os.environ.get("EPI", "1") == "1":                              # EPI=0 -> the locked sounds, same pipeline (fair A/B)
+        cl = EPI[kind][used.get(kind, 0) % len(EPI[kind])]
+        gk = min(loud(ref) / max(loud(cl), 1e-6), np.abs(ref).max() / max(np.abs(cl).max(), 1e-6))   # never louder or peakier than the locked sound
+        cl = cl * gk
     else:
         cl = load(f"{L.D}/{files[used.get(kind, 0) % len(files)]}")
     used[kind] = used.get(kind, 0) + 1
     g = 10 ** ((db + rng.uniform(-2.0, 1.0)) / 20); i = int((t - t0) * SR); n = min(len(cl), len(o) - i)
     o[i:i + n] += cl[:n] * g
-amb = load(f"{LIB}/ambience_naval_bombardment_cannons.flac")[: len(o)]
-o[: len(amb)] += amb * (10 ** (-34 / 20)) / max(loud(amb), 1e-6) * 0.25          # faint distant battle bed
+if os.environ.get("AMB") == "1":                                                     # optional faint battle bed (off by default)
+    amb = load(f"{LIB}/ambience_naval_bombardment_cannons.flac")[: len(o)]
+    o[: len(amb)] += amb * (10 ** (-34 / 20)) / max(loud(amb), 1e-6) * 0.25
 pk = np.abs(o).max() or 1
 if pk > 0.89: o *= 0.89 / pk
 sf.write("build/_epi_sfx.wav", np.stack([o, o], 1)[: int(total * SR)], SR, subtype="PCM_16")
@@ -53,9 +56,9 @@ voice = "audio/voice_owner.wav" if os.path.exists("audio/voice_owner.wav") else 
 master = os.environ.get("MASTER") or sorted(f for f in os.listdir("build") if f.endswith("-v3.mp4"))[0]
 master = master if "/" in master else f"build/{master}"
 f = ["[1:a]aresample=48000,asplit=3[vo][key][key2]", "[2:a]aresample=48000[sx]", "[sx][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]",
-     "[3:a]aresample=48000,volume=0.08,afade=t=in:d=1.5[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
+     "[3:a]aresample=48000,volume=0.08" + ("" if music == "locked" else ",afade=t=in:d=1.5") + "[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
      "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false,loudnorm=I=-14:TP=-1.5:LRA=11[aout]"]
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t0}", "-t", f"{dur}", "-i", master, "-ss", f"{t0}", "-t", f"{dur}", "-i", voice,
-                "-i", "build/_epi_sfx.wav", "-stream_loop", "-1", "-i", music, "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
+                "-i", "build/_epi_sfx.wav", *(["-stream_loop", "-1", "-ss", f"{t0 % sf.info('assets/media/music.wav').duration:.3f}", "-i", "assets/media/music.wav"] if music == "locked" else ["-stream_loop", "-1", "-i", music]), "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                 "-t", f"{dur}", "-vf", "scale=1280:720", "-c:v", "libx264", "-crf", "22", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", out], check=True)
 print("wrote", out, len(cues), "cues")
