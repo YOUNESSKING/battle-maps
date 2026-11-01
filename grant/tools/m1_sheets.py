@@ -2,7 +2,7 @@
 import json, os, subprocess, sys, tempfile
 ABS = {"m1a": 105.63, "m1b": 128.7, "m1c": 157.33, "m1d": 205.7, "m1e": 257.2, "m1f": 319.75}
 D = {
- "m1a": [(0.0, "henry map, option 1 (6 FEB); gunboats already steaming up the Tennessee; clean frame", "-"), (4.5, "title MOVE 1 on 'February' (legend steps out); date scroll on the spoken date", "boom"),
+ "m1a": [(0.0, "henry map, option 1 (6 FEB); gunboats already steaming up the Tennessee; clean frame", "-"), (4.5, "title MOVE 1 · FORT HENRY on 'Fort Henry' (legend steps out); date scroll on the spoken date", "boom"),
          (7.0, "push-in: ironclads abreast vs Fort Henry, ship guns -> arc -> impact", "ship-gun fire + booms"), (14.0, "TILGHMAN badge on his name; fort in floodwater", "booms"),
          (19.0, "garrison already marched off toward Donelson; SURRENDERED; ABOUT 90 MEN; ground turns pale then blue (E2)", "hit"), (22.5, "GRANT badge; his columns still on the road; caption", "-")],
  "m1b": [(0.0, "donelson map wide, option 1 (12 FEB layer); Henry blue, Donelson red; reinforcements moving in", "-"), (2.0, "target on Fort Donelson; caption on 'reinforce'", "pop"),
@@ -24,9 +24,9 @@ D = {
          (27.0, "GRANT badge; answer travels back", "-"), (31.0, "verbatim reply, hit + shake on 'immediate'", "hit"), (35.0, "second sentence", "-"), (39.0, "UNGENEROUS AND UNCHIVALROUS", "-"),
          (43.5, "accepted: US flag over the fort; colours return (2.2 s) on the zoom-out; telegram card", "hit"), (48.0, "12,000-15,000 prisoners, 48 field guns, 17 heavy guns", "ticks"),
          (52.5, "map breather", "-"), (57.0, "U.S. -> UNCONDITIONAL SURRENDER GRANT", "hit + shake"), (62.3, "casualty card (old clean card)", "hit")],
- "m1f": [(0.0, "tennessee map, both forts Union (16 FEB layer)", "-"), (3.0, "FORT HENRY 6 FEB / FORT DONELSON 16 FEB", "pops"), (6.5, "Grant badge; caption", "-"),
+ "m1f": [(0.0, "tennessee map, both forts Union (16 FEB layer)", "-"), (3.0, "two river forts, ten days", "pops"), (6.5, "Grant badge; caption", "-"),
          (10.0, "the two rivers glow; gunboats far into Tennessee", "-"), (13.0, "Kentucky line: lost ground pale first (E2)", "-"), (16.0, "turns blue; Confederates fall back; Nashville", "-"),
-         (23.0, "method card", "-"), (26.5, "line 1 lit on 'attacked the moment'", "boom"), (29.5, "dark-to-bluff transition on the question", "-"),
+         (23.0, "method card from the spoken sentence: lines light on their words", "pops"), (26.5, "line 3 on 'attacked the moment the enemy hesitated'", "boom"), (29.5, "dark-to-bluff transition on the question", "-"),
          (32.0, "A FORTRESS ON A HIGH BLUFF", "-"), (34.5, "the supply river", "-"), (37.5, "right under its guns", "fire"), (40.5, "E.subscribe click", "ticks"), (44.5, "NEXT: MOVE 2", "pop")],
 }
 for sc in sys.argv[1:]:
