@@ -18,7 +18,7 @@
 // @@DATA
 const go = (id, t, dur, p, ease) => B.move(id, t, dur, p[0], p[1], ease || "power1.inOut");
 const H3 = "hook-3", H4 = "hook-4", S4 = B.P(H4);
-const T_ROOM = at(H3, "The room"), T_PROM = at(H3, "promise"), T_FREEZ = at(H3, "freezing"), T_VERD = at(H3, "Verdun,"), T_COAL = at(H3, "coal stove"),
+const T_ROOM = at(H3, "three days earlier"), T_PROM = at(H3, "promise"), T_FREEZ = at(H3, "freezing"), T_VERD = at(H3, "Verdun,"), T_COAL = at(H3, "coal stove"),
   T_SMALL = at(H3, "too small"), T_IKE = at(H3, "Dwight Eisenhower"), T_SOON = at(H3, "how soon"), T_SAID = at(H3, "Patton said"), T_22 = at(H3, "December twenty-second"),
   T_3DIV = at(H3, "three divisions"), T_WROTE = at(H3, "He wrote"), T_SOME = at(H3, "some of the people"), T_BOAST = at(H3, "boasting");
 const T_NAME = at(H4, "George S. Patton."), T_BROKE = at(H4, "He broke out"), T_FRANCE = at(H4, "across France"), T_NORTH = at(H4, "He turned north"),
