@@ -1,3 +1,4 @@
+# NOTE 2026-11-01: owner picked MAIN title = B and MAIN thumbnail = BROKE THE SIEGE (T1); A and C are optional for Test & Compare.
 # Patton #15 packaging TEST (owner 2026-11-01): NOT rules. For YouTube Test & Compare. Waiting for the owner's OK before the final PDF or any upload.
 
 ## Titles (vidIQ title score; every claim sourced in patton/research/FACT_NOTES.md, section "Packaging TEST claims")

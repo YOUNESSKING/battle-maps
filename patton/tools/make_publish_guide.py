@@ -94,9 +94,9 @@ story += [P("1. The finished video", "h1"),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
           Spacer(1, 5 * mm), P("Key frames: the new opening (0:08 to 2:05)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
-story += [P("2. Title and thumbnail", "h1"), P("Main title (title A, our locked format; vidIQ 91)", "h2"), P(f"<b>{TITLE}</b>"),
-          P("Titles for Studio Test &amp; compare (owner test, not a rule): <b>B</b> Battle of the Bulge: How Patton Turned His Army North and Reached Bastogne in a Week (vidIQ 99); <b>C</b> Patton's Race: From the Normandy Breakout to the Siege of Bastogne (vidIQ 91). Sources for every claim: patton/research/FACT_NOTES.md, section Packaging TEST claims."),
-          *bullets(["Main = A, because it keeps the locked title format that worked on Thomas (CTR 0.9% to 3.84% after the retitle). B and C are optional test titles."]),
+story += [P("2. Title and thumbnail", "h1"), P("Main title (owner pick 2026-11-01: title B; vidIQ 99)", "h2"), P(f"<b>{TITLE}</b>"),
+          P("Optional titles for Studio Test &amp; compare (owner test, not a rule): <b>A</b> (our locked format) George S. Patton's Top 3 Legendary Tactical Moves | The Man Who Broke the Siege of Bastogne (vidIQ 91); <b>C</b> Patton's Race: From the Normandy Breakout to the Siege of Bastogne (vidIQ 91). Sources for every claim: patton/research/FACT_NOTES.md, section Packaging TEST claims."),
+          *bullets(["Main = B (owner choice). It leads with the Battle of the Bulge and promises exactly what the video pays in its first 15 seconds. Note: B leaves the locked title format; the test (A vs B vs C) will show if that costs or gains clicks."]),
 
 
           P("Thumbnail banner texts", "h2"),
