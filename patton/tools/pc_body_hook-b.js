@@ -69,10 +69,52 @@ const ROOM = scr0(`<div style="position:relative;width:1920px;height:1080px;back
     <div style="position:absolute;left:10px;top:20px;width:100px;height:150px;border-radius:14px;background:#20242c;border:4px solid #39404d"></div>
     <div class="fire" style="position:absolute;left:36px;top:96px;width:48px;height:30px;border-radius:6px;background:radial-gradient(circle,#ffb347,#c4421f 60%,#3a1408)"></div>
     <div class="glow" style="position:absolute;left:-60px;top:20px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle, rgba(255,150,60,.35), rgba(255,150,60,0) 65%)"></div></div>
+  <div class="figE" style="position:absolute;left:640px;top:470px;width:160px;height:330px">
+    <div style="position:absolute;left:44px;top:0;width:70px;height:70px;border-radius:50%;background:#070a10;box-shadow:inset -10px 0 14px rgba(255,150,60,.32)"></div>
+    <div style="position:absolute;left:34px;top:-10px;width:90px;height:22px;border-radius:40px 40px 6px 6px;background:#0a0e16;border-bottom:4px solid #2a3140"></div>
+    <div style="position:absolute;left:0;top:78px;width:160px;height:250px;border-radius:70px 70px 0 0;background:#070a10;box-shadow:inset -16px 0 22px rgba(255,150,60,.25)"></div>
+    <div style="position:absolute;left:26px;top:215px;width:120px;height:70px;background:#c9b48a;opacity:.55;transform:rotate(-4deg)"></div></div>
+  <div class="figP" style="position:absolute;left:1330px;top:330px;width:190px;height:470px;transform-origin:50% 100%">
+    <div style="position:absolute;left:58px;top:0;width:76px;height:76px;border-radius:50%;background:#05070c;box-shadow:inset -12px 0 16px rgba(255,150,60,.5)"></div>
+    <div style="position:absolute;left:46px;top:-14px;width:100px;height:44px;border-radius:50px 50px 10px 10px;background:#0a0e16;border:3px solid #2a3140;box-shadow:inset -8px 0 10px rgba(255,150,60,.4)"></div>
+    <div style="position:absolute;left:0;top:86px;width:190px;height:390px;border-radius:84px 84px 0 0;background:#05070c;box-shadow:inset -22px 0 30px rgba(255,150,60,.42)"></div></div>
+  <div class="snow" style="position:absolute;left:1270px;top:260px;width:240px;height:280px;overflow:hidden"></div>
+  <div class="breath" style="position:absolute;inset:0;pointer-events:none"></div>
   <div style="position:absolute;left:0;right:0;top:800px;height:280px;background:linear-gradient(180deg,#0b0e14,#05070d)"></div></div>`, "left:0;top:0;");
 SCN.insertBefore(ROOM, CAL);
-tl.fromTo(ROOM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, TUP + 0.1);
+tl.fromTo(ROOM, { autoAlpha: 0 }, { autoAlpha: 0.32, duration: 0.5, immediateRender: false }, 0.05); tl.to(ROOM, { autoAlpha: 1, duration: 0.5 }, TUP + 0.1);
 const FIRE = ROOM.querySelector(".fire"), GLW = ROOM.querySelector(".glow");
+// ---- LIFE (animation kit, owner 2026-11-01: snap in < 0.5 s, then keep drifting; something new every 1-3 s; nothing fully still) ----
+tl.fromTo(ROOM, { scale: 1.0 }, { scale: 1.12, transformOrigin: "62% 62%", duration: S4 - 0.2, ease: "none", immediateRender: false }, 0.05);   // slow push-in
+const FE = ROOM.querySelector(".figE"), FP = ROOM.querySelector(".figP"), SNOW = ROOM.querySelector(".snow"), BR = ROOM.querySelector(".breath");
+tl.fromTo(FE, { y: 0 }, { y: -6, duration: 1.7, yoyo: true, repeat: 30, ease: "sine.inOut", immediateRender: false }, 0.1);           // idle sway
+tl.fromTo(FP, { y: 0 }, { y: -5, duration: 1.4, yoyo: true, repeat: 36, ease: "sine.inOut", immediateRender: false }, 0.2);
+for (let k = 0; k < 26; k++) { const f = document.createElement("div"); const x = (k * 53) % 240, sz = 3 + (k % 3);
+  f.style.cssText = `position:absolute;left:${x}px;top:-8px;width:${sz}px;height:${sz}px;border-radius:50%;background:#e8f1ff;opacity:.8`; SNOW.appendChild(f);
+  tl.fromTo(f, { y: 0, x: 0 }, { y: 300, x: -30, duration: 2.4 + (k % 4) * 0.5, repeat: 18, ease: "none", immediateRender: false }, 0.05 + (k * 0.37) % 2.4); }
+const puff = (x, y, t) => { const d = document.createElement("div"); d.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:46px;height:30px;border-radius:50%;background:radial-gradient(ellipse,rgba(225,236,255,.55),rgba(225,236,255,0) 70%);opacity:0`; BR.appendChild(d);
+  tl.fromTo(d, { opacity: 0.55, y: 0, x: 0, scale: 0.4 }, { opacity: 0, y: -50, x: -26, scale: 1.7, duration: 1.1, ease: "power1.out", immediateRender: false }, t); };
+for (let t = T_FREEZ; t < S4 - 0.3; t += 1.25) { puff(704, 500, t); puff(1396, 350, t + 0.55); }                                       // cold breath of both men
+// Eisenhower leans in on "how soon" (a clock sweeps and lands), Patton squares up on "The general said"
+tl.to(FE, { x: 26, scale: 1.05, transformOrigin: "50% 100%", duration: 0.35, ease: "power3.out" }, T_SOON - 0.1); tl.to(FE, { x: 0, scale: 1, duration: 0.6 }, T_SAID);
+tl.to(FP, { scale: 1.07, duration: 0.3, ease: "power3.out" }, T_SAID); tl.to(FP, { scale: 1, duration: 0.8 }, T_3DIV + 0.6);
+tl.to(FP, { scale: 1.1, duration: 0.25, ease: "power3.out", yoyo: true, repeat: 1 }, T_BOAST - 0.1);                                      // chest out: the boast
+const CLK = scr(`<div style="position:relative;width:200px;height:200px;border-radius:50%;border:8px solid #ffd54a;background:rgba(10,12,18,.92);box-shadow:0 0 30px rgba(255,213,74,.5)">
+  ${[0, 90, 180, 270].map((a) => `<div style="position:absolute;left:94px;top:8px;width:4px;height:16px;background:#f7f3ea;transform-origin:2px 86px;transform:rotate(${a}deg)"></div>`).join("")}
+  <div class="hand" style="position:absolute;left:96px;top:24px;width:6px;height:78px;background:#ffd54a;border-radius:3px;transform-origin:3px 76px"></div>
+  <div style="position:absolute;left:90px;top:90px;width:20px;height:20px;border-radius:50%;background:#ffd54a"></div></div>`, "left:880px;top:130px;transform-origin:50% 50%;", T_SOON - 0.15, T_SAID - 0.05, { autoAlpha: 0 });
+slam(CLK, T_SOON - 0.15, { from: 1.5, dur: 0.22, shake: 3 });
+tl.fromTo(CLK.querySelector(".hand"), { rotation: 0 }, { rotation: 380, duration: T_SAID - T_SOON - 0.2, ease: "power1.inOut", immediateRender: false }, T_SOON);
+for (let t = T_SOON + 0.1; t < T_SAID - 0.2; t += 0.25) SFX("tick", t);
+// the calendar lands on 22 DEC with a flash + gold ring + deep hit (count-up grammar)
+const RING = scr0('<div style="width:160px;height:160px;border-radius:50%;border:6px solid #ffd54a;box-shadow:0 0 30px #ffd54a"></div>', "left:880px;top:-30px;transform-origin:50% 50%;");
+tl.fromTo(RING, { autoAlpha: 1, scale: 0.3 }, { autoAlpha: 0, scale: 2.8, duration: 0.7, ease: "power2.out", immediateRender: false }, T_22 + 0.35); SFX("hit", T_22 + 0.38); K.shake(T_22 + 0.38, 4, 0.25);
+// "facing east, in another battle": the window flickers with distant gun flashes in the east, an arrow points that way
+const WIN = ROOM.querySelector(".win");
+[0, 0.5, 0.95, 1.5, 2.0].forEach((d, k) => { const t = T_EAST + 0.1 + d; tl.fromTo(WIN, { boxShadow: "inset 0 0 40px rgba(220,235,255,.25)" }, { boxShadow: "inset 0 0 120px 40px rgba(255,170,70,.85)", duration: 0.07, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("fire", t); });
+const EA = scr('<div style="font-family:Oswald;font-weight:700;font-size:70px;color:#ef8a82;letter-spacing:.1em;text-shadow:0 3px 8px #000">&#10230;&#10230;</div>', "left:1560px;top:300px;", T_EAST, T_SOME - 0.4, { autoAlpha: 0 });
+tl.fromTo(EA, { x: -30 }, { x: 30, duration: 0.5, repeat: 5, yoyo: true, ease: "sine.inOut", immediateRender: false }, T_EAST);
+
 tl.fromTo(GLW, { opacity: 0.6 }, { opacity: 1, duration: 0.25, yoyo: true, repeat: 60, ease: "sine.inOut", immediateRender: false }, TUP + 0.2);
 // cold breath / frost drifting across the room
 for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.style.cssText = `position:absolute;left:${200 + k * 230}px;top:${300 + (k % 3) * 120}px;width:220px;height:120px;border-radius:50%;background:radial-gradient(ellipse, rgba(220,232,250,.10), rgba(220,232,250,0) 70%)`; ROOM.firstElementChild.appendChild(f);
@@ -134,7 +176,7 @@ tl.to(PL, { autoAlpha: 0, duration: 0.1 }, T_NAME - 0.3);
 const NAME = scr(`<div style="padding:12px 40px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:84px;letter-spacing:0.08em;line-height:1.1">GEORGE S. PATTON</div><div style="font-size:24px;letter-spacing:0.24em;color:#d8cfb8">U.S. THIRD ARMY · 1944 - 1945</div></div>`,
   "left:0;right:0;top:560px;display:flex;justify-content:center;transform-origin:50% 40%;", T_NAME - 0.1, null, { autoAlpha: 0 });
 slam(NAME, T_NAME - 0.1, { from: 1.9, shake: 6 }); pulse(T_NAME + 0.15);
-tl.to(NAME, { autoAlpha: 0, duration: 0.2 }, T_SICILY - 0.1);
+tl.to(NAME, { autoAlpha: 0, duration: 0.2 }, T_SLAP - 0.1);
 sst("REPRIMANDED · 1943", T_REPR - 0.05, T_BROKE - 0.3, { size: 62, sub: "SICILY · EISENHOWER'S LETTER, 17 AUGUST" });
 // hard CUTs: a black frame hides each camera jump (whoosh + hit)
 const CUTB = document.createElement("div"); CUTB.style.cssText = "position:absolute;inset:0;background:#030406;"; SCN.insertBefore(CUTB, document.getElementById("credit")); gsap.set(CUTB, { autoAlpha: 0 });
