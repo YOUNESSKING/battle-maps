@@ -19,3 +19,17 @@ Draft of where they help: wide shots when the ground changes hands or a new date
 everywhere else (close-ups, quotes, decision cards, captions over a stable front) the map can go without the fill (option 2 front lines
 or plain map + flags). Note it touches the locked rule "every map shows who controls the ground" (STYLE_LOCK 2): needs the owner's OK
 before it changes. Strength test sheet (not what the owner meant, kept for reference): `cleburne/build/sheet-territory-strength.jpg`.
+
+## Packaging test rules (owner 2026-11-01: draft from the Studio AI advice, NOT rules; testing on Patton #15 first)
+Source: Studio AI "reignite" advice for Collins, checked against our data in research/CHANNEL_LOG.md (2026-11-01).
+1. **Title A/B with Test & Compare at launch:** A = our locked format (`<Name>'s Top 3 Legendary Tactical Moves | The Man Who <result>`);
+   B = curiosity title that leads with the famous conflict/stakes casual fans know (e.g. "How One American General Broke the Normandy
+   Stalemate"); optional C = nickname/stakes hybrid. Let YouTube pick the winner; log the result per video in CHANNEL_LOG.
+2. **Every title claim is true and sourced** (FACT_NOTES): no invented "in 1 hour", "saved D-Day", "forgotten" unless the sources say it.
+   Concrete + time-bound + famous enemy works (Morgan: "Destroyed Britain's Elite in 1 Hour") ONLY when it is literally true.
+3. **Thumbnail with instant context:** the commander's face (face pop, STYLE_LOCK 6) + one image casual fans recognise at once
+   (beach landing, snow + tanks, the battle's iconic place) or a clear map graphic with the battle shape; high contrast; 1-3 words.
+   Test 2-3 variants in Test & Compare.
+4. **End screen from the channel's busiest video to the new one** (free; expect little: our end-screen click rate is 0.6%).
+5. Packaging never fixes retention: the opening rule (STYLE_LOCK 1a, 2026-10-31) still decides 0:30. Judge the test on CTR and
+   impressions day 1-3, separately from retention.
