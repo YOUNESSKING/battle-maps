@@ -1,7 +1,7 @@
 {
  "voice": "am_michael",
  "speed": 1.0,
- "duration": 1033.09,
+ "duration": 1031.48,
  "paragraphs": [
   {
    "section": "HOOK (0:00 \u2013 ~1:05)",
@@ -14,210 +14,210 @@
    "section": "HOOK (0:00 \u2013 ~1:05)",
    "tag": "MAP: hook-2 | `bastogne` wide (option 1): BIG card slams on the number (hit + shake), ticks 0 -> 200,000+ GERMANS and about 500 TANKS (ticks, red); far to the south a blue army (Third Army) faces EAST at the Saar (stamp FACING THE WRONG WAY); the blue army swings 90 degrees north on the roads (zoom-out whoosh), converges on the town; stamp BROKE THROUGH \u00b7 26 DEC (hit + shake); Patton real-photo badge",
    "start": 10.88,
-   "end": 29.82,
-   "text": "Bastogne was the hub where the roads met. If it fell, the Germans could drive west to the Meuse, then on to Antwerp, the port that fed the Allied armies, and trap them in the north. That would be a disaster. One American general turned his army north and broke through to Bastogne in a week."
+   "end": 29.08,
+   "text": "Bastogne was the hub where the roads met. If it fell, the Germans could drive west to the Meuse, then on to Antwerp, the port that fed the Allied armies, and trap them. That would be a disaster. One American general turned his army north and broke through to Bastogne in a week."
   },
   {
    "section": "HOOK (0:00 \u2013 ~1:05)",
    "tag": "MAP: hook-3 | OPENING v2 (2026-10-31): FIRST ~9 s stay on the Bastogne map IN THE DANGER: red ring tightens, four small German figures under a white flag walk in (static), card SURRENDER DEMAND \u00b7 22 DEC, a blank answer box that slams shut on 'a single word' (hit + shake; do NOT show the word NUTS: move 2 reveals it); THEN the twist as action, hard cut to dark: mystery \"?\" badge; the calendar rolls to 19 DEC 1944, VERDUN (locator); one stamp per spoken detail (hit + small shake + red pulse): A FREEZING BARRACKS \u00b7 A COAL STOVE TOO SMALL \u00b7 EISENHOWER: HOW SOON? \u00b7 22 DECEMBER \u00b7 THREE DIVISIONS; caption: \"some thought I was boasting\" (Patton, War As I Knew It)",
-   "start": 30.42,
-   "end": 46.63,
-   "text": "On the nineteenth of December, in a freezing barracks at Verdun, Eisenhower asked how soon he could attack. The general said the morning of the twenty-second, with three divisions. His army was facing east, in another battle. Some thought he was boasting."
+   "start": 29.68,
+   "end": 45.02,
+   "text": "On the nineteenth of December, in a freezing barracks at Verdun, Eisenhower asked how soon he could attack. He said the morning of the twenty-second, with three divisions. His army was facing east, in another battle. Some thought he was boasting."
   },
   {
    "section": "HOOK (0:00 \u2013 ~1:05)",
    "tag": "MAP: hook-4 | Name slam: GEORGE S. PATTON (real photo badge, hit + shake); three snap cuts (~3 s each, whoosh + hit): AVRANCHES 1944 (blue columns pouring through a bottleneck), BASTOGNE 1944 (blue tanks racing a road into the town), THE RHINE 1945 (boats on a dark river); title card GEORGE S. PATTON'S 3 GREATEST TACTICAL MOVES (riser + boom)",
-   "start": 47.23,
-   "end": 75.18,
+   "start": 45.62,
+   "end": 73.57,
    "text": "His name was George S. Patton. Sixteen months earlier, in Sicily, he had slapped two hospitalised soldiers, and the same Eisenhower had reprimanded him. He broke out of Normandy and ran an army across France. He turned north and relieved Bastogne. And he crossed the Rhine in the dark, a day before Montgomery. These are George Patton's three greatest tactical moves. But what exactly made him the one general who could do it? Let's take a closer look."
   },
   {
    "section": "BACKGROUND (~1:05 \u2013 ~1:45)",
    "tag": "ARCHIVE: OPENING v2 background, ~20 s: headline date card \"1 AUGUST 1944 / NORMANDY\"; Signal Corps film of Avranches / Coutances (assets/film/clips), the hedgerows; one short Patton portrait (3D depth, ~3 s, label LT. GEN. GEORGE S. PATTON \u00b7 THIRD ARMY); cuts every 2.5-3 s; no birth/career cards, no slapping, never a slideshow",
-   "start": 76.58,
-   "end": 97.19,
+   "start": 74.97,
+   "end": 95.58,
    "text": "For weeks after D-Day, the Allies had been bottled up in the hedgerows of Normandy. Patton had no army in the field until the first of August, nineteen forty-four, when his Third Army came to life at noon. To break out, the Third Army first had to squeeze through a corner of Normandy only a few miles wide."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-1 | Title card MOVE 1 \u00b7 AVRANCHES \u00b7 AUGUST 1944. `normandy` (option 1 overview, territory 30-31 JUL: Allied blue west Normandy, German red); Bradley badge, then Collins badge (real photos), stamps COBRA \u00b7 25-30 JUL (not Patton's plan: credit); VII Corps blue arrows tear the line at Saint-L\u00f4 (impacts, shake, C-47 `c47g` bomb run, few and spaced); Middleton's VIII Corps arrows to AVRANCHES; the bridge at PONTAUBAULT pulses (31 JUL, taken intact)",
-   "start": 98.59,
-   "end": 135.9,
+   "start": 96.98,
+   "end": 134.29,
    "text": "Move one begins at the bottom of Normandy, on the last day of July. The breakthrough, Operation Cobra, was not Patton's. It was Omar Bradley's plan, and Lightning Joe Collins's VII Corps tore the hole in the German line. Then Troy Middleton's VIII Corps took Avranches, in the very corner of Normandy. On the evening of the thirty-first, the Fourth Armored Division captured the bridge at Pontaubault intact. Beyond it lay Brittany, and the open road into France. German vehicles arriving from the west were too late to stop them."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-2 | `avranches` (option 2 glowing fronts, close): everything has to squeeze through ONE corner: the highway through AVRANCHES (4 miles, highlighted), the SEE and SELUNE rivers with few crossings (rings), columns jam (wagon/truck icons stacking, counters), a task-force card 3,500 MEN \u00b7 3 HOURS (ticks); caption \"traffic cop\" (division commander); bulldozers push rubble aside; fighters cross overhead and AA fires (few planes)",
-   "start": 136.5,
-   "end": 172.5,
+   "start": 134.89,
+   "end": 170.89,
    "text": "But there was a problem. Everything had to squeeze through one corner. The main highway through Avranches was only about four miles long, and the crossings over the S\u00e9e and S\u00e9lune rivers were few. One task force was given three hours to move thirty-five hundred men through the bottleneck. One division commander wrote that he was spending most of his time as a traffic cop. Bulldozers shoved the rubble of Avranches aside, and fighters and anti-aircraft guns covered the roads, shooting down more than a score of German planes around Avranches in the first week."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-3 | `normandy` wider (option 1, territory 1-8 AUG): THIRD ARMY stamp at noon, 1 AUG; Patton badge (real photo); two blue corps counters (VIII, XV); the bottleneck opens and arrows fan out: two armoured divisions into BRITTANY within 48 hours (6th Armd to BREST), XV Corps east toward LAVAL and LE MANS; scale card 200 MILES (Brest to Le Mans, 8 AUG, ticks)",
-   "start": 173.1,
-   "end": 197.62,
+   "start": 171.49,
+   "end": 196.01,
    "text": "At noon on the first of August, Patton's Third Army went into action with just two corps, Middleton's VIII Corps and Wade Haislip's XV Corps. Within forty-eight hours, two armoured divisions were running loose in Brittany. By the eighth of August, more than two hundred miles separated Middleton's tanks at the gates of Brest from Haislip's corps, far to the east at Le Mans."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-4 | Red belief card: PATTON'S COLUMN IS STRETCHED THIN; Hitler's red panzer divisions (2nd SS, 2nd Panzer, 116th Panzer, 1st SS) attack west at MORTAIN in the night of 6-7 AUG (arrows, guns, impacts, shake); aim = the sea at AVRANCHES; blue First Army holds at Mortain (ring); the red arrows stall",
-   "start": 198.22,
-   "end": 216.46,
+   "start": 196.61,
+   "end": 214.85,
    "text": "Hitler looked at that long thin column, stretched back through Avranches, and saw his chance. In the night of the sixth to the seventh of August, four panzer divisions attacked west at Mortain. They were trying to drive to the sea at Avranches, and cut Patton's army off from its supplies."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-5 | Close on LE MANS (option 2): Haislip's blue XV Corps arrows (5th Armd, 79th, 90th Inf, French 2nd Armd) drive on Le Mans while Mortain burns far to the west (small inset ring); LE MANS falls 8 AUG (stamp, hit); casualty note LIGHT LOSSES; Haislip badge; line \"DON'T BE SURPRISED\" (Patton to Haislip)",
-   "start": 217.06,
-   "end": 249.92,
+   "start": 215.45,
+   "end": 248.31,
    "text": "Patton saw something different. The Germans had thrown their strength west, into a sack, and the First Army's Thirtieth Division held them at Mortain. Meanwhile Haislip's corps was already far behind them to the east. Patton did not stop, and he did not look back. His men covered about seventy-five miles in four days, took Le Mans on the eighth of August, and lost very few men doing it. The Ninetieth Division lost under three hundred men in ten days, and took more than fifteen hundred prisoners."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-6 | Wide `normandy` (option 1): Bradley badge; the shorter hook: XV Corps arrows turn NORTH from Le Mans through ALENCON (French 2nd Armd takes the bridges intact, 11 AUG) toward ARGENTAN; the British and Canadians push south from FALAISE (red pocket forming between the jaws); stamp ARGENTAN \u00b7 13 AUG; line \"DON'T BE SURPRISED\"",
-   "start": 250.52,
-   "end": 283.54,
+   "start": 248.91,
+   "end": 281.93,
    "text": "Bradley saw the opportunity too, and proposed a shorter hook. Instead of racing on to the Seine, Haislip's corps would turn north from Le Mans and meet the British and Canadians coming down from the other side. Patton warned Haislip to expect the order, and told him not to be surprised. On the tenth, XV Corps swung north. The French Second Armored Division seized the bridges at Alen\u00e7on intact, and by the thirteenth of August Haislip's leading troops stood just south of Argentan."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-7 | Gap card: LESS THAN 25 MILES (ticks down); Bradley's red STOP order stamp on XV Corps at ARGENTAN (hit + shake); Patton badge greys, caption \"a great mistake\" (Patton, War As I Knew It); the red pocket: many arrows escape through the gap (grey flow), others burn (smoke columns, fighter-bombers, impacts); counters 50,000 PRISONERS \u00b7 10,000 DEAD (ticks)",
-   "start": 284.14,
-   "end": 317.84,
+   "start": 282.53,
+   "end": 316.23,
    "text": "Then came the order Patton hated. On the thirteenth, Bradley stopped XV Corps at Argentan. The Canadians were still short of Falaise, and the gap between the two armies was less than twenty-five miles. Bradley feared a collision between friendly forces, and a thin American line trampled by fleeing Germans. Patton later wrote that the halt was a great mistake. Through that gap, many Germans escaped. But not all of them. The pocket left about fifty thousand prisoners and about ten thousand dead."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-8 | Von Kluge badge (Bundesarchiv, CC BY-SA, credit) greys, stamp CYANIDE \u00b7 ROAD TO METZ (small); Third Army arrows run EAST to the SEINE at MANTES, night 19-20 AUG: the 79th Division crosses in single file over a DAM in the rain (rain overlay, small blue counters in a line); RESULT card: the German front in France collapses; method card lights line 1: KEEP MOVING",
-   "start": 318.44,
-   "end": 356.69,
+   "start": 316.83,
+   "end": 355.08,
    "text": "The man who had been told to hold, Field Marshal von Kluge, wrote to Hitler that he should end the war, and took cyanide on the road home. The French Second Armored Division alone took almost nine thousand prisoners, and the Ninetieth Division more than thirteen thousand in four days. Meanwhile Patton's other columns ran east. On the night of the nineteenth, the Seventy-Ninth Division crossed the Seine at Mantes on foot, in single file, over a dam, in a torrential rainstorm. Patton's method here was simple. Keep moving, and let the enemy's attack walk into your net."
   },
   {
    "section": "MOVE 1 \u2014 KEEP MOVING: AVRANCHES AND LE MANS (~1:45 \u2013 ~6:35)",
    "tag": "MAP: move1-sub | Woven subscribe (E.subscribe, D2): small SUBSCRIBE button bottom-right, cursor clicks (SUBSCRIBED, bell), slides out on the subscribing clause; then NEXT: MOVE 2 \u00b7 BASTOGNE label; map shows the Ardennes salient",
-   "start": 357.29,
-   "end": 373.05,
+   "start": 355.68,
+   "end": 371.44,
    "text": "Avranches was only the beginning. So how do you turn a whole army around in the middle of a battle, in winter, and still arrive in time? That's the kind of question we answer here, and subscribing is how you catch the next one. Here's how Patton did it."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-1 | Title card MOVE 2 \u00b7 BASTOGNE \u00b7 DECEMBER 1944. `ardennes` (option 1, 16-19 DEC): the German salient grows; red arrows from the forest; the 106th Division destroyed on the SCHNEE EIFEL (stamp, 19 DEC, counter 7,000+ ticks); ANTWERP shown far north with a pulsing ring; BASTOGNE in the middle where the road web meets; red arrows converge",
-   "start": 374.45,
-   "end": 420.76,
+   "start": 372.84,
+   "end": 419.15,
    "text": "Move two begins in the Ardennes forest, on the sixteenth of December. The Germans had hidden their strength so well that more than two hundred thousand men and about five hundred tanks hit a thinly held American front on the first morning. Their goal was Antwerp, the port that fed the Allied armies. Within days a whole American division, the Hundred and Sixth, had been destroyed, and at least seven thousand men were lost on the Schnee Eifel alone. In the middle of the forest lay Bastogne, where the roads met. Whoever held the town controlled the roads. The Americans inside had the Hundred and First Airborne at nearly full strength, a combat command of the Tenth Armored, and about forty tanks that could still run."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-2 | `lorraine` (option 2): Third Army blue front faces EAST at the SAAR; 16-17 DEC: Patton badge, caption of his own words (paraphrase: \"playing into the hands of the Germans\"); the 10th Armd pulled away (arrow north, grey), the 4th Armd kept (ring); 18 DEC: Bradley's summons (phone icon, static); staff cards: THREE PLANS NORTH; code icon; 19 DEC dawn",
-   "start": 421.36,
-   "end": 454.19,
+   "start": 419.75,
+   "end": 452.58,
    "text": "Patton misread it at first. On the night of the sixteenth he protested when his Tenth Armored Division was ordered north, and the next day he made sure the Fourth Armored was kept in his own fight. He wrote later that this showed how little he had understood the attack. On the eighteenth, Bradley called him to a conference. By the next morning, his staff had drawn up three plans for a drive north, and he had left a simple code with his chief of staff, so that one telephone call from Verdun could start an army moving."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-3 | E.decide: dimmed map keeps moving (`bastogne`): Verdun room icon, cheerful faces card; options pulse on words: A) ATTACK IN 3 DAYS, WITH WHAT YOU HAVE / B) WAIT 6 DAYS AND HIT WITH EVERYTHING; TELL US IN THE COMMENTS (ticks); reveal: A lights blue, B greys (hit); then stamp 22 DEC \u00b7 3 DIVISIONS: 4th ARMD \u00b7 26th \u00b7 80th",
-   "start": 454.79,
-   "end": 508.63,
+   "start": 453.18,
+   "end": 507.02,
    "text": "On the nineteenth of December, at eleven in the morning, Eisenhower gathered his generals in that freezing barracks. There will be only cheerful faces at this conference table, he said. Now stop for a moment, and put yourself in Patton's place. The Germans are racing for the Meuse, and the paratroopers at Bastogne are cut off. He can start a piecemeal attack north in three days, with what he has. A properly coordinated blow would take six. Do you attack in three days, or wait six and hit with everything? Tell us in the comments what you would have done. And then Patton gave his answer. The morning of the twenty-second, with three divisions, the Fourth Armored, the Twenty-Sixth and the Eightieth. Reportedly, Eisenhower told him not to be fatuous. Patton meant it. As the meeting broke up, Eisenhower joked that every time he got a new star, he got attacked. Patton answered, and every time you get attacked, I pull you out."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-4 | `lorraine`-to-`bastogne` pan (option 1): blue columns turn north on the roads (headlights, trucks, night/ice, `K.night` flicker); counters: 4th ARMD 160 MILES \u00b7 21 TANKS SHORT \u00b7 700 MEN SHORT (ticks); 8th Tank Bn: 33 TANKS BROKEN DOWN on the road; the divisions arrive at ARLON on the 22nd",
-   "start": 509.23,
-   "end": 531.09,
+   "start": 507.62,
+   "end": 529.48,
    "text": "Three days later it began, from a standing start. The Fourth Armored Division rushed one hundred and sixty miles to the fight, twenty-one tanks and about seven hundred men short. One of its battalions alone lost thirty-three tanks to breakdowns on the way. The whole army was changing direction at night, on icy roads, in a hurry."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-5 | `bastogne` (option 2 close, 22 DEC): III Corps blue arrows from ARLON north on the Arlon-Bastogne road (4th Armd on the left, 26th centre, 80th right) at 06:00; inside Bastogne: four Germans with a white flag (surrender demand, static), McAuliffe badge (real photo), card NUTS (hit + shake); fog and rain overlay, no planes; then 23 DEC: sky clears, C-47s `c47g` drop supplies (few, spaced, they leave; prop sound), P-47s strafe, Patton badge, chaplain card O'NEILL, caption \"That O'Neill sure did some potent praying\"",
-   "start": 531.69,
-   "end": 588.07,
+   "start": 530.08,
+   "end": 586.46,
    "text": "The attack went in at six in the morning on the twenty-second. That same day, four Germans walked into Bastogne under a white flag and demanded surrender. Anthony McAuliffe answered with one word. Nuts. McAuliffe had muttered that word when he first read the demand, and when he asked what to write, his operations officer, Harry Kinnard, said that what he had said at first would be hard to beat. The American colonel who had to translate it for the Germans settled on go to hell. The weather was the other enemy. Fog and rain grounded every plane, and Patton had asked his chaplain for a prayer for good weather. The cards were handed out to the army on the twenty-second. On the twenty-third, the sky cleared. God damn, look at the weather, Patton said. That O'Neill sure did some potent praying. Two hundred and forty-one transport planes dropped supplies into Bastogne that day, and eighty-two Thunderbolts attacked the German ring."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-6 | Close on CHAUMONT / WARNACH (option 2, 23 DEC): the 4th Armd's lead tanks meet German assault guns (impacts, shake); a liaison jeep takes a WRONG TURN into red lines (red pulse); counter 11 SHERMANS \u00b7 65 MEN LOST (ticks); Patton's phone icon (static): \"TOO MUCH PIDDLING AROUND\" (card, black outline); blue arrows go AROUND the villages",
-   "start": 588.67,
-   "end": 615.89,
+   "start": 587.06,
+   "end": 614.28,
    "text": "But the attack bogged down. The roads were ice, and the Germans were dug into stone villages. At Chaumont, on the twenty-third, the Fourth Armored lost eleven Shermans and about sixty-five men. An officer carrying attack orders had taken a wrong turn into German lines. Patton picked up the telephone. There is too much piddling around, he told his commanders. Bypass these towns and clear them up later. Tanks can operate on this ground now."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-7 | Close on ASSENOIS (option 2, 26 DEC): Abrams badge (real photo) and the 37th Tank Bn on the approach road; thirteen blue gun counters fire (K.gun, rows) and ten volleys land on the village (K.impact rows, shake on each); card \"CONCENTRATION NUMBER NINE: PLAY IT SOFT AND SWEET\"; tanks race through the village in a dotted line, three lead tanks; Teller mines drop behind them, a half-track bursts (fireball); Dwight's two tanks clear mines by hand (small figures); 16:50: lead tank COBRA KING meets the 326th Engineers at the outer foxholes (stamp, hit + shake, ring pulses); 20 minutes later Abrams meets McAuliffe (stamp)",
-   "start": 616.49,
-   "end": 670.44,
+   "start": 614.88,
+   "end": 668.83,
    "text": "On the twenty-sixth, at the village of Assenois, just outside Bastogne, Lieutenant Colonel Creighton Abrams told Captain William Dwight, it's the push. Thirteen batteries of artillery had the village marked for a short, sharp concentration, and the code for it was play it soft and sweet. Ten volleys landed on the village, and the tanks of Abrams's battalion raced in behind them, with armoured infantry in half-tracks close behind. Not a hostile shot was fired as the tanks entered the street. Then the Germans got up behind them, and threw Teller mines across the road, and a half-track burst into flames. Dwight's tanks cleared the mines by hand. At ten minutes to five, the lead tank, the Sherman called Cobra King, reached the outer foxholes and met engineers of the Three Hundred and Twenty-Sixth. Twenty minutes later, Abrams shook McAuliffe's hand."
   },
   {
    "section": "MOVE 2 \u2014 PLAN THE TURN: THE RELIEF OF BASTOGNE (~6:35 \u2013 ~11:45)",
    "tag": "MAP: move2-8 | `bastogne` (option 1, 26 DEC night): the ring is broken; a narrow blue corridor opens; trucks and ambulances stream in (40 TRUCKS \u00b7 70 AMBULANCES, ticks); Patton badge arrives later: 30 DEC, DSC for McAuliffe (stamp); RESULT card: THE SIEGE IS BROKEN \u00b7 AN ARMY TURNED 90 DEGREES IN 7 DAYS; method card lights line 2: PLAN THE TURN BEFORE THE ORDER COMES",
-   "start": 671.04,
-   "end": 720.33,
+   "start": 669.43,
+   "end": 718.72,
    "text": "The road was open, though narrow. Staff Sergeant James Hendrix took on two German gun crews with a rifle, and earned the Medal of Honor. That night forty trucks and seventy ambulances rolled into Bastogne, and more than two hundred vehicles were waiting behind them. Only the night before, on Christmas night, Bradley had told Patton that Montgomery wanted to pull back to the Moselle. Both men found it disgusting. Patton himself did not arrive until the thirtieth, to pin a medal on McAuliffe. From the conference in Verdun to the link-up, it had taken seven days. The army had gone from attacking east to fighting north. Patton's method here was to plan the turn before the order came. The staff that drew three plans before breakfast had turned a whole army around."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-1 | Title card MOVE 3 \u00b7 THE RHINE \u00b7 MARCH 1945. `rhine` (option 1, 7-21 MAR): the Rhine as a wall; Remagen bridge ringed (First Army, 9th Armd, 7 MAR); Montgomery badge (real photo) in the north with huge gun counters and two airborne icons, stamp OPERATION PLUNDER \u00b7 NIGHT OF 23 MARCH; Patton badge in the south",
-   "start": 721.73,
-   "end": 749.32,
+   "start": 720.12,
+   "end": 747.71,
    "text": "Move three begins on the banks of the Rhine, in March nineteen forty-five. The Rhine was the last great wall protecting Germany. On the seventh of March, an American armoured division had captured an intact bridge at Remagen, but one bridge was not an army. The big crossing was Field Marshal Montgomery's, Operation Plunder, planned for the night of the twenty-third, with an enormous bombardment, and two airborne divisions to follow."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-2 | `oppenheim` wide (option 2 / 1): Third Army sweeps the Palatinate (arrows) to the river; 5th Infantry Division badge card CONQUEROR OF 22 RIVERS; hidden boats: 500 BOATS (ticks) in a bend among TREES (two days), 7,500 ENGINEERS, Navy landing craft on trucks; 22 MAR morning: Eddy and Irwin cards; Cub planes idea (small plane icons, crossed out)",
-   "start": 749.92,
-   "end": 798.0,
+   "start": 748.31,
+   "end": 796.39,
    "text": "Patton wanted to cross first. His Third Army swept through the Palatinate and reached the river with the Fifth Infantry Division, which was proud of having crossed twenty-two rivers already. Engineers had brought up about five hundred assault boats, and Navy landing craft on trucks, and hidden them for two days in a bend of the river among the trees. On the morning of the twenty-second, General Eddy told the division commander, General Irwin, that the crossing would be that night. Irwin protested that he could manage some sort of bridgehead. Patton wanted nothing more. For him this was the twenty-third river that division had crossed. He had even planned to fly infantry across in about a hundred small artillery spotter planes, until German aircraft over the site killed the idea."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-3 | Red belief card: NOBODY CROSSES THE RHINE WITHOUT A BUILD-UP; Felber badge (Bundesarchiv); only 4 DIVISIONS ON 50 MILES (ticks); most of them far to the south; three possible crossing sites pulse on the map, the Germans' divisions are elsewhere; a blue arrow marks NIERSTEIN \u00b7 OPPENHEIM; stamp NO ARTILLERY PREPARATION (hit)",
-   "start": 798.6,
-   "end": 831.66,
+   "start": 796.99,
+   "end": 830.05,
    "text": "The Germans did not expect it. General Felber's Seventh Army had only four organised divisions along fifty miles of river, and most of them were far to the south. Everyone believed that a crossing of the Rhine needed days of bombardment and build-up. Patton saw something different. A silent crossing, straight off the march, would catch them unready. There was no artillery preparation at all. Bradley announced it to the world that way: a crossing without even so much as an artillery preparation."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-4 | `oppenheim` close (option 2, night 22 MAR, moonlight; `K.night`): boats in the bend; the first wave pushes off at 22:30 (clock, half an hour late); K Company, 3rd Bn, 11th Infantry paddles from NIERSTEIN (small blue boats, dotted arrows); Lt IRVEN JACOBS card; seven grey German figures surrender and PADDLE BACK ON THEIR OWN (small beat); upstream at OPPENHEIM two companies cross under MG fire (tracer lines, mg, impacts); Stiller card \"at his own request\"",
-   "start": 832.26,
-   "end": 871.78,
+   "start": 830.65,
+   "end": 870.17,
    "text": "The boats were meant to start at ten o'clock, under a bright moon. They were half an hour late. Just after half past ten, K Company of the Eleventh Infantry paddled out from the bank at Nierstein. First Lieutenant Irven Jacobs's boat touched the far shore, and seven stunned German soldiers surrendered, and paddled themselves back across the river without an escort. Farther upstream, at Oppenheim, two more companies crossed under machine-gun fire. Patton's own aide, Major Al Stiller, went over in the first wave, at his own request. The night was moonlit, with what Patton called a disturbing brightness."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-5 | Dawn 23 MAR (option 2 to 1): bridgehead grows to 5 MILES DEEP (ring expands); casualty counters: 11th INF \u00b7 20 CASUALTIES, PATTON'S TALLY 28 (ticks); LCVPs and DUKWs ferry vehicles; late 23 MAR: a heavy TREADWAY BRIDGE opens (engineer counters); German aircraft attack (red jets/props, few), AA fires; counters 33 CLAIMED / 19 OFFICIAL (ticks); phone icon: Patton to Bradley (caption, no quote marks): I SNUCK A DIVISION ACROSS \u00b7 TELL THE WORLD",
-   "start": 872.38,
-   "end": 918.16,
+   "start": 870.77,
+   "end": 916.55,
    "text": "By morning the Eleventh Infantry had counted twenty casualties, and Patton's own tally for the whole night was twenty-eight killed and wounded. Within a day the bridgehead was more than five miles deep. Later, when the Germans did counterattack, Field Marshal Kesselring and General Hausser stood at Grossgerau and watched Felber's attack fail. Late on the twenty-third, engineers opened a heavy treadway bridge, while German aircraft came in to attack it. Patton claimed thirty-three planes shot down. The official count was nineteen. That day he telephoned Bradley with the news. He had sneaked a division over the river, he said, and he wanted the world told that Third Army had done it before Montgomery began."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-6 | North `rhine` (option 1): Montgomery's assault begins about 21:00, 23 MAR (huge gun counters fire, rows of K.gun, impacts, shake; C-47 `c47g` formations drop paratroopers next morning, few and spaced); counter 17th AIRBORNE \u00b7 DAY ONE: 159 KILLED \u00b7 522 WOUNDED \u00b7 840 MISSING (600 RETURNED) (ticks); Churchill card: THE FIRST ASSAULT CROSSING OF THE RHINE (everybody knew it was Third Army's); stamp PLUNDER WORKED TOO; it needed more, and cost more",
-   "start": 918.76,
-   "end": 956.68,
+   "start": 917.15,
+   "end": 955.07,
    "text": "That night, Montgomery's assault began at about nine o'clock, after a huge bombardment. The next morning, two airborne divisions landed behind the river, and the American Seventeenth Airborne alone lost one hundred and fifty-nine killed, five hundred and twenty-two wounded and eight hundred and forty missing on the first day, although about six hundred of the missing soon returned. Montgomery's plan worked too, but it needed far more, and it cost far more. When Winston Churchill praised the first assault crossing of the Rhine in a broadcast, everybody knew it belonged to Patton's Third Army."
   },
   {
    "section": "MOVE 3 \u2014 STRIKE BEFORE THEY THINK YOU CAN: THE RHINE AT OPPENHEIM (~11:45 \u2013 ~16:10)",
    "tag": "MAP: move3-7 | 24 MAR, the bridge at OPPENHEIM (option 2): Patton badge, Eddy and Codman cards walk the bridge (small counters in a line); a pause mid-span (stamp, small hit); far bank: he scoops a handful of dirt, caption \"in emulation of William the Conqueror\" (Patton's diary); RESULT card: THE FIRST ASSAULT CROSSING OF THE RHINE \u00b7 28 CASUALTIES, 1 DAY BEFORE MONTGOMERY; method card lights line 3: STRIKE BEFORE THEY THINK YOU CAN",
-   "start": 957.28,
-   "end": 983.22,
+   "start": 955.67,
+   "end": 981.61,
    "text": "On the twenty-fourth, Patton walked across the bridge at Oppenheim with General Eddy and his aide, Colonel Codman. In the middle of the span he stopped, as he wrote in his diary, to take a piss in the Rhine. On the far bank he picked up a handful of German dirt, in emulation, he wrote, of William the Conqueror. His method here was to strike before they thought he could. A night crossing, with no bombardment, taken straight off the march."
   },
   {
    "section": "ENDING (~16:10 \u2013 ~16:55)",
    "tag": "MAP: end-1 | `ardennes`/`rhine` theatre: the three moves light in turn (AVRANCHES, BASTOGNE, OPPENHEIM); method card complete: PATTON'S METHOD \u00b7 KEEP MOVING \u00b7 PLAN THE TURN BEFORE THE ORDER COMES \u00b7 STRIKE BEFORE THEY THINK YOU CAN",
-   "start": 984.62,
-   "end": 1009.9,
+   "start": 983.01,
+   "end": 1008.29,
    "text": "Three moves, one method. Keep moving, and let the enemy's attack walk into your net. Plan the turn before the order comes. And strike before they think you can. Patton was far from perfect. His temper nearly ended his career in Sicily. But when an army had to move in a hurry, there was no one faster in the whole American army. A year after Bastogne, he was dead, from a car accident in Germany."
   },
   {
    "section": "ENDING (~16:10 \u2013 ~16:55)",
    "tag": "MAP: end-2 | E.final: three numbered cards pop in as each move is named: 1 AVRANCHES \u00b7 1944 / 2 BASTOGNE \u00b7 1944 / 3 OPPENHEIM \u00b7 1945; 1, 2 OR 3? (gold), the family-story line, corner subscribe button; last 20 s: the card shrinks to the top band (C3), the map stays alive under it",
-   "start": 1010.5,
-   "end": 1031.69,
+   "start": 1008.89,
+   "end": 1030.08,
    "text": "So which was Patton's greatest move? One, the breakout from Avranches. Two, the relief of Bastogne. Or three, the crossing of the Rhine? Tell us in the comments. And if someone in your family served in Europe in the Second World War, on either side, tell us their story. We read every one. Subscribe, so you don't miss the next commander."
   }
  ]

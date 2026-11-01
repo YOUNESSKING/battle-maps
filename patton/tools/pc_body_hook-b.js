@@ -19,7 +19,7 @@
 const go = (id, t, dur, p, ease) => B.move(id, t, dur, p[0], p[1], ease || "power1.inOut");
 const H3 = "hook-3", H4 = "hook-4", S4 = B.P(H4);
 const T_19 = at(H3, "nineteenth"), T_FREEZ = at(H3, "freezing"), T_VERD = at(H3, "Verdun,"), T_IKE = at(H3, "Eisenhower asked"), T_SOON = at(H3, "how soon"),
-  T_SAID = at(H3, "The general said"), T_22 = at(H3, "twenty-second"), T_3DIV = at(H3, "three divisions"), T_EAST = at(H3, "facing east"), T_ANOTHER = at(H3, "another battle"),
+  T_SAID = at(H3, "He said"), T_22 = at(H3, "twenty-second"), T_3DIV = at(H3, "three divisions"), T_EAST = at(H3, "facing east"), T_ANOTHER = at(H3, "another battle"),
   T_SOME = at(H3, "Some thought"), T_BOAST = at(H3, "boasting");
 const T_NAME = at(H4, "George S. Patton."), T_16 = at(H4, "Sixteen months"), T_SICILY = at(H4, "Sicily"), T_SLAP = at(H4, "slapped"), T_REPR = at(H4, "reprimanded"),
   T_BROKE = at(H4, "He broke out"), T_FRANCE = at(H4, "across France"), T_NORTH = at(H4, "He turned north"),
@@ -122,7 +122,7 @@ for (let k = 0; k < 7; k++) { const f = document.createElement("div"); f.style.c
 const BDG = scr0(`<div style="display:flex;flex-direction:column;align-items:center;gap:14px">
   <div style="position:relative;width:250px;height:250px;border-radius:50%;overflow:hidden;border:8px solid #f3e7c4;box-shadow:0 0 0 6px #1f4fc4,0 20px 40px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover"><img src="${PHOTO("patton")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:150px;color:#f7f3ea">?</div></div>
-  <div class="pl" style="padding:10px 34px 12px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div class="nm" style="font-size:30px;letter-spacing:0.2em">THE GENERAL</div></div></div>`,
+  <div class="pl" style="padding:10px 34px 12px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"></div></div>`,
   "left:120px;top:250px;transform-origin:50% 30%;");
 tl.fromTo(BDG, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, T_SAID - 0.1); SFX("ref:pop", T_SAID - 0.05);
 // the Verdun locator (designed card: a crop of the europe relief with the place dot; not a map shot)
