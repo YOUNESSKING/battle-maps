@@ -23,10 +23,19 @@ def volley(files):  # a ragged rifle-musket volley from several real 1853 Enfiel
     for k in range(9):
         p = parts[k % len(parts)]; i = int(rng.uniform(0, 0.35) * SR); v[i:i + len(p)] += p * rng.uniform(0.5, 1.0)
     return v
-EPI = {"fire": [trim(load(f"{LIB}/{f}"), 4.5) for f in ["cannon_fire_distant.flac", "cannon_fire_low01.flac", "cannon_fire_low03.flac"]],
-       "impact": [trim(load(f"{LIB}/{f}"), 4.5) for f in ["impact_mortar_distant02.flac", "impact_mortar_distant04.flac"]],
-       "explosion": [trim(load(f"{LIB}/explosion_artillery_distant_deep.flac"), 6.0)],
-       "mg": [trim(volley(["rifle_enfield1853_60m01.flac", "rifle_enfield1853_60m02.flac", "rifle_enfield1853_30m01.flac", "rifle_enfield1853_30m02.flac"]), 5.0)]}
+SETS = {  # SET env: which Epidemic sounds replace the locked ones (all from library/epidemic/sfx, see CATALOG.md)
+ "B": dict(fire=["cannon_fire_distant", "cannon_fire_low01", "cannon_fire_low03"], impact=["impact_mortar_distant02", "impact_mortar_distant04"],
+           explosion=["explosion_artillery_distant_deep"], mg=("volley", ["rifle_enfield1853_60m01", "rifle_enfield1853_60m02", "rifle_enfield1853_30m01", "rifle_enfield1853_30m02"])),
+ "C": dict(fire=["cannon_fire_close", "cannon_fire_low02"], impact=["impact_mortar_40m", "impact_mortar_100m02"],
+           explosion=["explosion_small_bang02", "explosion_small_bang04"], mg=("volley", ["rifle_enfield1853_10m", "rifle_enfield1853_5m"])),
+ "D": dict(fire=["cannon_fire_low04", "cannon_fire_distant"], impact=["impact_mortar_distant01", "impact_mortar_distant03"],
+           explosion=["explosion_artillery_distant_deep"], mg=("plain", ["rifle_many_distant01", "rifle_many_distant02"])),
+ "E": dict(fire=["cannon_fire_low01", "cannon_fire_close"], impact=["explosion_small_bang04", "impact_mortar_distant02"],
+           explosion=["explosion_artillery_distant_deep"], mg=("volley", ["rifle_enfield1853_30m01", "rifle_enfield1853_10m"])),
+}
+SET = SETS[os.environ.get("SET", "B")]
+EPI = {k: [trim(load(f"{LIB}/{f}.flac"), 6.0 if k == "explosion" else 4.5) for f in SET[k]] for k in ("fire", "impact", "explosion")}
+EPI["mg"] = [trim(volley([f + ".flac" for f in SET["mg"][1]]), 5.0)] if SET["mg"][0] == "volley" else [trim(load(f"{LIB}/{f}.flac"), 5.0) for f in SET["mg"][1]]
 cues = [c for c in json.load(open("build/sfx_cues.json")) if t0 <= c[0] < t0 + dur]
 total = dur
 o = np.zeros(int((total + 6) * SR), "float32")
@@ -57,8 +66,10 @@ master = os.environ.get("MASTER") or sorted(f for f in os.listdir("build") if f.
 master = master if "/" in master else f"build/{master}"
 f = ["[1:a]aresample=48000,asplit=3[vo][key][key2]", "[2:a]aresample=48000[sx]", "[sx][key2]sidechaincompress=threshold=0.03:ratio=3:attack=10:release=300[sfx]",
      "[3:a]aresample=48000,volume=0.08" + ("" if music == "locked" else ",afade=t=in:d=1.5") + "[mus]", "[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[musd]",
-     "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false,loudnorm=I=-14:TP=-1.5:LRA=11[aout]"]
+     "[vo][musd][sfx]amix=inputs=3:normalize=0,alimiter=limit=0.5:level=false,loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.84:level=false[aout]"]
+if music == "none":                                                                  # no music at all (owner 2026-11-01 test)
+    f = f[:3] + ["[key]anullsink", "[vo][sfx]amix=inputs=2:normalize=0,alimiter=limit=0.5:level=false,loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.84:level=false[aout]"]
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t0}", "-t", f"{dur}", "-i", master, "-ss", f"{t0}", "-t", f"{dur}", "-i", voice,
-                "-i", "build/_epi_sfx.wav", *(["-stream_loop", "-1", "-ss", f"{t0 % sf.info('assets/media/music.wav').duration:.3f}", "-i", "assets/media/music.wav"] if music == "locked" else ["-stream_loop", "-1", "-i", music]), "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
+                "-i", "build/_epi_sfx.wav", *(["-stream_loop", "-1", "-ss", f"{t0 % sf.info('assets/media/music.wav').duration:.3f}", "-i", "assets/media/music.wav"] if music == "locked" else [] if music == "none" else ["-stream_loop", "-1", "-i", music]), "-filter_complex", ";".join(f), "-map", "0:v", "-map", "[aout]",
                 "-t", f"{dur}", "-vf", "scale=1280:720", "-c:v", "libx264", "-crf", "22", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", out], check=True)
 print("wrote", out, len(cues), "cues")
