@@ -9,6 +9,8 @@ from scipy import ndimage
 import rasterio, rasterio.enums
 from rasterio.windows import from_bounds
 base = sys.argv[1]; S = 2
+NORES = os.environ.get('NO_RESERVOIR') == '1'
+NOAREA = os.environ.get('NO_AREAS') == '1'   # Cumberland / Tennessee: the modern NHD 'area' polygons ARE Lake Barkley / Kentucky Lake: draw the 1860s river as a narrow channel from the flowlines instead
 SIMPLE = os.environ.get('SIMPLE') == '1'; SUF = 'S' if SIMPLE else ''
 J = json.load(open(f"assets/{base}.json")); z = J["zoom"]; ox, oy = J["origin_world_px"]; W, H = J["size"][0] * S, J["size"][1] * S
 n = 256 * 2 ** z
@@ -51,7 +53,11 @@ def nhd(layer, fields="FCode,FType,GNIS_Name", where=None):
             try: d = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "battle-maps-detail-test"}), timeout=90)); break
             except Exception as e: print("retry", layer, e, flush=True); d = None
         if not d: break
-        fs = d.get("features", []); out += fs; off += len(fs)
+        fs = d.get("features", [])
+        for _f in fs:   # the service now returns UPPER-case (waterbody/area) or lower-case (flowline) field names: normalise
+            _p = _f.get("properties") or {}; _lo = {k.lower(): v for k, v in _p.items()}
+            _f["properties"] = {"FCode": _lo.get("fcode"), "FType": _lo.get("ftype"), "GNIS_Name": _lo.get("gnis_name")}
+        out += fs; off += len(fs)
         if len(fs) < 1000 and not d.get("exceededTransferLimit"): break
     return out
 if WIDE:
@@ -92,9 +98,10 @@ print("nlcd wetland px", int(NLW.sum()), flush=True)
 # ---- rivers layer
 riv = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(riv)
 WATER = (96, 140, 168); EDGE = (52, 80, 100)
-for f in area + body:
+for f in ([] if NOAREA else area) + ([] if NOAREA else body):
     ft = (f["properties"].get("FType") or 0)
     if ft == 466: continue
+    if NORES and ft == 436 and f in body: continue   # owner 2026-11-01: no modern reservoirs (Lake Barkley, Kentucky Lake, Ross Barnett...): they did not exist in 1862-64
     if SIMPLE and f in body:
         g0 = polys(f)
         if g0 and len(g0[0][0]) < 40: continue  # drop small ponds  # swamp/marsh goes to the swamp layer
@@ -106,6 +113,8 @@ for f in flow:
     p = f["properties"]; named = bool(p.get("GNIS_Name")); fc = p.get("FCode") or 46006
     if SIMPLE and not named: continue
     w = 4 if named else 2
+    if NOAREA and (p.get("GNIS_Name") or "") in ("Cumberland River", "Tennessee River", "Ohio River", "Mississippi River"): w = 30   # only the main river is drawn as a channel
+    elif NORES and named and fc == 55800: w = 20      # named river path that crossed a reservoir: draw the 1860s river channel (~150 m)
     if fc in (46003, 46007): w = 1  # intermittent: hairline
     for ln in lines(f):
         pts = [ll2px(la, lo) for lo, la in ln]
@@ -114,7 +123,7 @@ if WIDE:
     pl = f"assets/{base}_hd_lift_plain.jpg" if os.path.exists(f"assets/{base}_hd_lift_plain.jpg") else f"assets/{base}_hd_lift.jpg"
     pa = np.array(Image.open(pl).convert("RGB").resize((W, H))).astype(int)
     sea = ndimage.binary_dilation((np.abs(pa - np.array([18, 33, 44])).sum(2) < 40), iterations=25)  # the basemap's sea: never draw WorldCover 'water' over it
-    wm = ndimage.binary_opening((CL == 80) & ~sea, iterations=1); lab, nl = ndimage.label(wm); sz = ndimage.sum(wm, lab, range(1, nl + 1))
+    wm = ndimage.binary_opening((CL == 80) & ~sea & (not NOAREA), iterations=1); lab, nl = ndimage.label(wm); sz = ndimage.sum(wm, lab, range(1, nl + 1))
     wm = np.isin(lab, [i + 1 for i, v in enumerate(sz) if v > 2500]); wl = np.zeros((H, W, 4), np.uint8); wl[wm] = WATER + (235,)
     ed = wm & ~ndimage.binary_erosion(wm, iterations=1); wl[ed] = EDGE + (255,)
     riv = Image.alpha_composite(riv, Image.fromarray(wl)); d = ImageDraw.Draw(riv)
