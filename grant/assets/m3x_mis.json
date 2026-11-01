@@ -1,0 +1,19 @@
+{
+ "name": "m3x_mis",
+ "center": [
+  33.0,
+  -90.8
+ ],
+ "zoom": 8,
+ "origin_world_px": [
+  14798,
+  25587
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 512.84,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

@@ -1,0 +1,19 @@
+{
+ "name": "m3x_ric",
+ "center": [
+  37.6,
+  -77.3
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  35951,
+  49932
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 242.24,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

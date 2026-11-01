@@ -1,0 +1,19 @@
+{
+ "name": "m3x_pet",
+ "center": [
+  37.24,
+  -77.38
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  297462,
+  406450
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 30.43,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
