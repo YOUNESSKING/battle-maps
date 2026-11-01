@@ -72,7 +72,7 @@ size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if
 
 TA = "youtube/thumb/patton-thumb-A-three-days.jpg"; TB = "youtube/thumb/patton-thumb-B-cut-off.jpg"
 HAVE_T = os.path.exists(TA) and os.path.exists(TB)
-LEN = os.environ.get("VIDEO_LEN", "17:21")
+LEN = os.environ.get("VIDEO_LEN", "17:16")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/qa/master-check.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
@@ -83,7 +83,7 @@ story = [Spacer(1, 18 * mm), P("GEORGE S. PATTON", "cover"), P("TOP 3 LEGENDARY 
          (img(TA, 150) if HAVE_T else THUMB_WAIT), Spacer(1, 3 * mm), P("Thumbnail A: \u201cTHREE DAYS\u201d (vidIQ, made in one go: the hook battlefield + a colour portrait; vidIQ score 92; variant B \u201cCUT OFF\u201d scored 91)", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
           table([["Item", "Details"],
-                 ["File", f"Patton-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size}; -14.1 LUFS, true peak -1.1 dB)"],
+                 ["File", f"Patton-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC, {size}; -14.0 LUFS, true peak -1.1 dB)"],
                  ["Download", os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")],
                  ["Length", LEN],
                  ["Voice", "Voice A: Kokoro am_michael converted to the owner's voice (reference: the approved voice-A sample)"],
@@ -93,7 +93,7 @@ story += [P("1. The finished video", "h1"),
                 [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"),
           table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
-          Spacer(1, 5 * mm), P("Key frames: hook, Move 1, Move 2, Move 3, ending", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
+          Spacer(1, 5 * mm), P("Key frames: the new opening (0:08 to 2:05)", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
 story += [P("2. Title and thumbnail", "h1"), P("Title A (vidIQ title score 86)", "h2"), P(f"<b>{TITLE}</b>"),
           P("Title B for the A/B test (vidIQ 87): <b>George S. Patton's Top 3 Legendary Tactical Moves</b> (no subtitle: Tactical Genius's best-performing form). Studio Test &amp; compare can run both titles and both thumbnails."),
           *bullets(["Title B (no subtitle) scored 87; title A scored 86. Both clear the 85 rule."]),
