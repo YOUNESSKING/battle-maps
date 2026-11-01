@@ -6,6 +6,26 @@ judged instead of followed blindly. Worked example: `morgan/youtube/youtube_meta
 
 ---
 
+## 0b. PACKAGING RULES (LOCKED, owner 2026-11-01, from the Patton #15 packaging test; they ADD to the rest of this guide and, where they differ, THEY WIN)
+Worked example: `patton/research/PACKAGING_TEST_PATTON.md`, `patton/youtube/test/`, `patton/research/FACT_NOTES.md` ("Packaging TEST claims").
+1. **Three titles and two or three thumbnails for YouTube Test & Compare, at launch.**
+   - Title A = the locked format `<Name>'s Top 3 Legendary Tactical Moves | The Man Who <true, concrete result>`.
+   - Title B = a curiosity title that leads with the famous battle or stakes casual WWII/history fans already know (Patton: "Battle of the Bulge: How Patton Turned His Army North and Reached Bastogne in a Week").
+   - Title C = a hybrid: the name + the stakes or the three places.
+   - The OWNER picks the main title (Patton: B) and the main thumbnail (Patton: BROKE THE SIEGE); the others go into Test & Compare. A title that leaves the locked format is allowed when the owner picks it, and the PDF says so.
+   - Score every title with vidIQ (`vidiq_score_title`, >= 85) and show the owner all of them with score and sources.
+2. **Every claim in a title, banner or thumbnail label is literally true and sourced** in `<name>/research/FACT_NOTES.md` (add a "Packaging TEST claims" table: claim, verdict, source). No invented time limits ("in 48 hours"), no "saved the war", no "forgotten", no exact figures that are only on one source, no code words or quotes that the check found unsourced. Concrete + time-bound + famous works ONLY when literally true (Patton: "in a Week" = Verdun 19 Dec to link-up 26 Dec).
+3. **Every thumbnail = the commander's face (face pop, STYLE_LOCK 6) + ONE instantly recognisable context image + 1-3 words in high contrast that match a title's promise:**
+   - context images: snow + tanks + the town's road sign; a clear map of the key move (an arrow that visibly turns or breaks through); a battle-shape map of the breakout. Colour portrait only; the context stays dark and desaturated (HANDOVER 1b).
+   - made by vidIQ in one go (battlefield first, then the same image + portrait + torn red banner; variant text by editing the finished image).
+   - **check before showing:** banner spelling; every map label spelled and placed right (a label hidden by the portrait or on the wrong side is fixed); no stray rank insignia (three stars on the helmet only, no single collar star); the whole face inside the frame; the picture matches the video (no fake battle details). Show all variants on ONE sheet WITH a 168x94 feed-size strip.
+   - match each thumbnail to the title it can sit with; if one fits only one title, say so (Test & Compare mixes them).
+4. **Description, chapters and tags as usual, no links.** The publishing PDF lists the test titles and thumbnails, says which are main/optional, and carries the Test & Compare note.
+5. **End screen:** from the channel's busiest video (currently Morgan) to the new video, plus subscribe, over the last ~20 s. Free; expect little (channel end-screen CTR 0.6%).
+6. **After the upload, log in `research/CHANNEL_LOG.md`:** which title and thumbnail won, CTR, and impressions on days 1-3, kept SEPARATE from retention at 0:30 and 1:00. Packaging never fixes retention: the opening rule (STYLE_LOCK 1a, 1c) decides 0:30.
+
+---
+
 ## 0. Order of work
 
 1. **Validate the topic** before writing anything (§1).
