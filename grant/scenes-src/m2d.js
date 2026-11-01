@@ -23,7 +23,7 @@ const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
 const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false && t > 0) SFX("ref:pop", t); return GG.pin(`<div style="background:${o.bg || "#f1eee6"};color:${o.col || "#111"};font-family:Oswald;font-weight:500;letter-spacing:.2em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.55).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 ${size * 0.1}px ${size * 0.4}px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"></div>`, x, y, { t, pop: true, until });   // v11 clean screen: no country name
+const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"></div>`, x, y, { t: t > 0 ? t : null, pop: true, until });   // v11 clean screen: no country name (t <= 0: on screen from frame 0)
 const unit = (id, side, p, icon, label, o = {}) => {
   const w = o.w || 22, h = o.h || 15;
   B.unit({ id, side, x: p[0], y: p[1], w, h, t: o.t, label });
@@ -186,7 +186,7 @@ const camera = (keys) => {
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, 2 * (o.size || 16) * 0.9, until, o));   // story-place labels (~29 px)
-const flagS = (src, name, x, y, t, until) => pinS(flag(src, name, x, y, t, until, 104));                   // ~104 px flag on screen
+const flagS = (src, name, x, y, t, until) => { const el = pinS(flag(src, name, x, y, t, until, 104)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };                   // ~104 px flag on screen
 const wstampS = (txt, x, y, t, until, c, size = 22, sub) => pinS(wstamp(txt, x, y, t, until, c, size, sub));
 const unitS = (id, side, p, icon, label, o = {}) => {                               // counter 54 x 36 px, name 19 px, on screen
   const W0 = o.w || 54, H0 = o.h || 36;
@@ -231,7 +231,7 @@ const SHIPSVG = (kind, s, col) => {
   const glow = `filter:drop-shadow(0 0 ${(s * 0.18).toFixed(1)}px ${col === "#1f4fc4" ? "#6f9bff" : "#ff7a6a"}) drop-shadow(0 ${(s * 0.06).toFixed(1)}px ${(s * 0.1).toFixed(1)}px rgba(0,0,0,.7))`;
   const pen = `<line x1="-21" y1="0" x2="-25" y2="0" stroke="#f3eee2" stroke-width="0.9"/><path d="M-24 -0.4 L-33 -3.2 L-30.5 -0.4 L-33 2.4 Z" fill="${col}" stroke="#f3eee2" stroke-width="0.6"/>`;
   const body = kind === "gunboat"
-    ? `<path d="M-22 -6.2 L13 -6.2 Q21 -3.6 24 0 Q21 3.6 13 6.2 L-22 6.2 Q-24 0 -22 -6.2 Z" fill="#4a5260" stroke="${col}" stroke-width="1.8"/>
+    ? `<path d="M-22 -6.2 L13 -6.2 Q21 -3.6 24 0 Q21 3.6 13 6.2 L-22 6.2 Q-24 0 -22 -6.2 Z" fill="#66718a" stroke="${col === "#1f4fc4" ? "#5b8cff" : col}" stroke-width="2.2"/>
        <path d="M-16 -4.4 L8 -4.4 L12.5 0 L8 4.4 L-16 4.4 Z" fill="#20252e" stroke="#9aa6b8" stroke-width="0.9"/>
        <circle cx="-3.5" cy="-1.7" r="1.7" fill="#0b0c0e" stroke="#7d8696" stroke-width="0.5"/><circle cx="-3.5" cy="1.7" r="1.7" fill="#0b0c0e" stroke="#7d8696" stroke-width="0.5"/>
        <rect x="9" y="-1.1" width="5" height="2.2" fill="#0b0c0e"/>`
@@ -244,8 +244,8 @@ const SHIPSVG = (kind, s, col) => {
 };
 // a boat along a path (pts; heading follows the path). Returns { el, at(tt) -> [x, y] } so guns can fire from it.
 const ship = (kind, pts, t, dur, until, o = {}) => {
-  const s = o.s || 22, col = o.side === "rome" ? "#c4121f" : "#1f4fc4";
-  const el = GG.pin(SHIPSVG(kind, s, col), pts[0][0], pts[0][1], { t, until }); pinS(el); if (o.t0 != null) tl.set(el, { autoAlpha: 1 }, o.t0);
+  const s = (o.s || 22) * 1.25, col = o.side === "rome" ? "#c4121f" : "#1f4fc4";
+  const el = GG.pin(SHIPSVG(kind, s, col), pts[0][0], pts[0][1], { t: t > 0 ? t : null, until }); pinS(el); if (!(t > 0) || o.t0 === 0) gsap.set(el, { autoAlpha: 1 }); else if (o.t0 != null) tl.set(el, { autoAlpha: 1 }, o.t0);
   const sv = el.querySelector("svg"), n = o.n || 40, ease = o.ease || ((u) => u);
   const head = (f) => { const a = posOn(pts, Math.max(0, f - 0.01)), b = posOn(pts, Math.min(1, f + 0.01)); return Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI; };
   gsap.set(sv, { rotation: head(0) });
@@ -285,9 +285,17 @@ const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
 const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
+// hide the modern (post-1876) cut-off channel under a soft land-coloured stroke, placed right above the relief (under the territory colours)
+const landPatch = (pts, w, col = "rgb(197,181,129)", blur = 3) => { const sv = document.createElementNS(NS, "svg"); sv.setAttribute("viewBox", "0 0 2880 1620");
+  sv.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;overflow:visible;pointer-events:none";
+  sv.innerHTML = `<defs><filter id="lp${pts.length}${w}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${blur}"/></filter></defs><path d="M${pts.map((q) => q.join(" ")).join(" L")}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#lp${pts.length}${w})"/>`;
+  const R = document.getElementById("relief"); WORLD.insertBefore(sv, R.nextSibling); return sv; };
+// a territory layer on screen from frame 0 (no fade-in tween), multiply, toned down (E1)
+const terr0 = (file) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" }); WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 1 }); return el; };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
-const GD = {"base":"henry","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36097870205296,"est":true},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.41820490369194,"est":true},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29395307487063,"est":true},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.843874523428,"est":true},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.40181371525205,"est":true},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.426050110962937,"est":true},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24105743836117,"est":true}}};
+const GD = {"base":"grandgulf","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.426050110962937,"est":true},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24105743836117,"est":true}}};
 // @@END-DATA
 const GZ = GD.maps.grandgulf;
 const L = GG.proj(12, GZ.origin_world_px[0], GZ.origin_world_px[1]);
@@ -300,42 +308,43 @@ const T_FIRST = at(P1, "The first place Grant"), T_GG = at(P1, "was Grand Gulf")
 const T_NDEF = at(P2, "was not defended"), T_30 = at(P2, "the thirtieth of April"), T_17K = at(P2, "seventeen thousand"), T_ASH = at(P2, "stepped ashore"),
   T_EAST = at(P2, "east bank of the Mississippi"), T_LATER = at(P2, "Grant later wrote"), T_REL = at(P2, "a degree of relief");
 // ---------- places (grandgulf z12 px) ----------
-const GGF = L(32.033, -91.053), BRU = L(31.942, -91.157), PG = L(31.961, -90.984), HT = L(32.065, -91.095), DIS = L(31.99, -91.175), BBR = L(32.045, -91.06);
-const BAT = LL([[32.043, -91.057], [32.036, -91.052], [32.027, -91.050], [32.019, -91.054]]);    // Fort Cobun (upper) .. Fort Wade (lower)
+// world px of the grandgulf map (river = the modern channel from the NHD water layer, which here still runs under the Grand Gulf bluffs and by Bruinsburg)
+const GGF = [1340, 626], BRU = [1040, 940], PG = L(31.961, -90.984), HT = [1205, 470], DIS = [988, 776], LANDB = [1000, 935];
+const BAT = [[1352, 588], [1358, 622], [1352, 656], [1340, 690]];    // Fort Cobun (upper) .. Fort Wade (lower), on the bluff at the water
 // the river below Hard Times past Grand Gulf to Bruinsburg (boat track, approx. 1863 channel)
-const RIVB = LL([[32.10, -91.08], [32.07, -91.075], [32.045, -91.068], [32.03, -91.066], [32.01, -91.075], [31.99, -91.10], [31.97, -91.13], [31.952, -91.150], [31.94, -91.17], [31.92, -91.20]]);
-const ROAD = LL([[31.944, -91.150], [31.95, -91.11], [31.955, -91.07], [31.958, -91.03], [31.961, -90.99]]);
+const RIVB = [[1500, 200], [1330, 245], [1200, 290], [1215, 380], [1270, 500], [1308, 610], [1262, 700], [1180, 780], [1060, 840], [985, 915], [940, 1010], [905, 1100], [860, 1170]];
+const ROAD = [[1040, 940], [1150, 925], [1280, 905], [1420, 885], [PG[0], PG[1]]];
 // ---------- layers ----------
-living(GZ.meters_per_px, [RIVB], { n: 5, clouds: 0.12, sw: 5 });
+living(GZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const NL = GG.night(T_NIGHT - 0.3, T_NDEF - 0.6, { dur: 2.0, outDur: 2.6 });
 const DAWN = GG.dawn(T_NDEF - 1.0, T_EAST + 1.0);
 // ---------- camera ----------
-const sKeys = [[0, 1330, 690, 1.15], [T_POR, 1370, 700, 1.35], [T_SIL, 1380, 720, 1.5], [T_10K, 1320, 690, 1.3], [T_NIGHT, 1250, 800, 1.05], [T_BRU, 1240, 860, 1.05],
-  [T_NDEF, 1120, 950, 1.5], [T_EAST, 1110, 960, 1.65], [T_LATER, 1230, 930, 1.25], [END, 1250, 925, 1.2]];
+const sKeys = [[0, 1300, 560, 1.1], [T_POR, 1300, 560, 1.3], [T_SIL, 1310, 580, 1.45], [T_10K, 1280, 560, 1.3], [T_NIGHT, 1250, 720, 1.05], [T_BRU, 1240, 780, 1.05],
+  [T_NDEF, 1120, 920, 1.5], [T_EAST, 1110, 930, 1.6], [T_LATER, 1230, 880, 1.25], [END, 1250, 870, 1.2]];
 const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]) { const [a, , , sa] = sKeys[i - 1], [b, , , sb] = sKeys[i], u = (t - a) / Math.max(0.01, b - a); return sa + (sb - sa) * u; } return sKeys[sKeys.length - 1][3]; };
 camera(sKeys);
 // ---------- HUD ----------
 B.showDate(T_29); B.date("29 APRIL 1863", T_29 + 0.05, T_NIGHT - 0.1, 32); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
 const LGD = legend(0.6, END + 1, true);
 // the fronts (option 2): first along the river (Union west bank / Confederate east bank), then the Bruinsburg bridgehead
-const FRV = front2(LL([[32.12, -91.06], [32.08, -91.062], [32.05, -91.058], [32.03, -91.058], [32.01, -91.066], [31.99, -91.09], [31.97, -91.12], [31.955, -91.14], [31.935, -91.165], [31.90, -91.19]]), 1.2, 0, { dur: 0.01, until: T_ASH + 0.6, flip: true });
-const FBH = front2(LL([[31.975, -91.168], [31.985, -91.14], [31.975, -91.105], [31.95, -91.09], [31.925, -91.11], [31.915, -91.145]]), 1.6, T_ASH, { dur: 1.8, flip: true });
+const FRV = front2([[1520, 230], [1350, 268], [1240, 300], [1252, 380], [1302, 495], [1334, 610], [1292, 712], [1205, 800], [1085, 862], [1010, 935], [968, 1025], [930, 1115], [885, 1190]], 1.2, 0, { dur: 0.01, until: T_ASH + 0.6 });
+const FBH = front2([[1000, 868], [1060, 852], [1122, 880], [1150, 945], [1122, 1008], [1060, 1038], [972, 1040]], 1.6, T_ASH, { dur: 1.8 });
 K.night({ lines: [FRV], tOn: T_NIGHT - 0.3, tOff: T_NDEF - 0.6 });
 // flags (both on every frame): US on the Louisiana shore, then in the bridgehead; the Confederacy on the Mississippi bluffs
-flagS(FL.us, "", ...L(32.02, -91.25), 0, END + 1); flagS(FL.cs, "", ...L(32.07, -90.98), 0, T_NIGHT + 1.0); flagS(FL.cs, "", ...L(31.99, -91.02), T_NIGHT + 1.1, END + 1);
+flagS(FL.us, "", 760, 880, 0, END + 1); flagS(FL.cs, "", 1610, 760, 0, END + 1);
 // ---------- m2-5: Grand Gulf; the 29 April attack ----------
-const TGG = town("GRAND GULF", GGF, "r", T_GG - 0.1, { until: T_GG + LBL_LIFE + 0.4 });
+boxL("GRAND GULF", GGF[0] + 150, GGF[1] - 70, T_GG - 0.1, null, { size: 20 });
 BAT.forEach((p, k) => unitS("bt" + k, "rome", [p[0] + 26, p[1]], "artillery", "", { t: k * 0.12, w: 46, h: 31 }));
 const BATP = BAT.map((p) => [p[0] + 26, p[1]]);
-unitS("cs1", "rome", L(32.02, -90.99), "infantry", "", { size: "XX" }); gsap.set(B.units.cs1.el, { autoAlpha: 1 });
+unitS("cs1", "rome", [1560, 640], "infantry", "", { size: "XX" }); gsap.set(B.units.cs1.el, { autoAlpha: 1 });
 // the transports with ~10,000 men wait above (Hard Times); frame 0: boats already moving
-const TR = [0, 1, 2, 3].map((k) => ship("transport", LL([[32.09 + k * 0.006, -91.115 + k * 0.004], [32.075 + k * 0.006, -91.103 + k * 0.004]]), 0, 6, null, { s: 22, t0: 0 }));
-const PLAN = arw({ pts: LL([[32.07, -91.09], [32.055, -91.075], [32.04, -91.062]]), side: "carth", t: T_FIRST + 0.2, dur: 1.0, width: AW(1.15, 13), dash: "14 10", until: T_LAND + 0.8 });
+const TR = [0, 1, 2, 3].map((k) => ship("transport", [[1150 - k * 8, 330 + k * 50], [1165 - k * 8, 360 + k * 50]], 0, 6, null, { s: 21, t0: 0 }));
+const PLAN = arw({ pts: [[1180, 470], [1250, 540], [1318, 600]], side: "carth", t: T_FIRST + 0.2, dur: 1.0, width: AW(1.15, 13), dash: "14 10", until: T_LAND + 0.8 });
 K.target(GGF[0] + 20, GGF[1], T_GG, { r: 34, side: "carth", until: T_NIGHT });
 // Porter's eight gunboats close in from upstream and take station off the batteries
 const PB = cmd("porter", "DAVID D. PORTER", "ACTING REAR ADMIRAL", "carth", "tr", T_POR, T_10K - 0.3);
-const STN = [[32.050, -91.080], [32.044, -91.077], [32.038, -91.075], [32.032, -91.074], [32.026, -91.075], [32.020, -91.078], [32.014, -91.082], [32.008, -91.087]];
-const GBT = STN.map(([la, lo], k) => ship("gunboat", LL([[32.12 + k * 0.004, -91.075 - k * 0.002], [32.08, -91.082], [la, lo]]), 0.2 + k * 0.25, T_ATT - k * 0.2, null, { s: 22, t0: 0.2 + k * 0.25, smoke: 1.4 }));
+const STN = [[1236, 370], [1252, 412], [1268, 454], [1283, 496], [1294, 538], [1303, 580], [1300, 640], [1282, 680]];
+const GBT = STN.map((p, k) => ship("gunboat", [[1480 - k * 6, 205 + k * 4], [1300, 250], [1218, 320], p], 0.2 + k * 0.3, T_ATT - k * 0.15, null, { s: 18, t0: 0.2 + k * 0.3, smoke: 1.4 }));
 // the duel (visible, ~1 shot per second, alternating: gunboats at the batteries / the batteries at the gunboats)
 const SHOTS = [];
 for (let t = T_ATT - 0.2, k = 0; t < T_10K + 0.8; t += 0.95, k++) SHOTS.push([t, k]);
@@ -353,35 +362,35 @@ BAT.forEach((p, k) => tl.fromTo(B.units["bt" + k].el.querySelector(".blk"), { sc
 const TK = ticker("SOLDIERS ON THE TRANSPORTS", 10000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_10K - 0.1, 1.0, T_NIGHT - 0.2, 6, { col: "#7fb0ff", sub: "WAITED AND WATCHED" });
 TR.forEach((b, k) => tl.fromTo(b.sv, { filter: "brightness(1)" }, { filter: "brightness(1.9)", duration: 0.25, yoyo: true, repeat: 3, immediateRender: false }, T_WAIT + k * 0.12));
 // ---------- that night: a local Black man comes to Grant's camp; the plan shifts south to Bruinsburg ----------
-const CAMP = L(32.00, -91.19);
+const CAMP = [1090, 760];
 const TENT = pinS(GG.pin(`<svg width="40" height="34" viewBox="0 0 40 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #6f9bff)"><path d="M4 30 L20 4 L36 30 Z" fill="#e9e2cf" stroke="#1f4fc4" stroke-width="2.4"/><path d="M20 4 L20 30" stroke="#1f4fc4" stroke-width="1.6"/><line x1="20" y1="4" x2="20" y2="-6" stroke="#f3eee2" stroke-width="1.4"/><path d="M20 -6 L30 -3 L20 0 Z" fill="#2f6bff"/></svg>`, CAMP[0], CAMP[1], { t: T_NIGHT + 0.2, pop: true, until: END + 1 }));
 const GRB = cmd("grant", "ULYSSES S. GRANT", "ARMY OF THE TENNESSEE", "carth", "bl", T_TOLD, T_REL - 0.2);
 const FIG = pinS(GG.pin(`<svg width="22" height="42" viewBox="0 0 22 42" style="display:block;overflow:visible;filter:drop-shadow(0 0 5px rgba(255,230,170,.55))"><circle cx="11" cy="6" r="5" fill="#15130f"/><path d="M4 14 Q11 10 18 14 L17 28 L14 28 L14 41 L8 41 L8 28 L5 28 Z" fill="#15130f"/></svg>`, CAMP[0] - 150, CAMP[1] - 20, { t: null }));
 gsap.set(FIG, { autoAlpha: 0 }); tl.to(FIG, { autoAlpha: 1, duration: 0.5 }, T_MAN - 0.2); tl.to(FIG, { left: CAMP[0] - 34, top: CAMP[1] + 4, duration: T_TOLD - T_MAN + 0.6, ease: "none" }, T_MAN - 0.2);
 tl.to(FIG, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.8);
 B.greyArrow(PLAN, T_LAND - 0.2, T_LAND + 0.8);
-const SHIFT = arw({ pts: LL([[32.0, -91.17], [31.97, -91.165], [31.945, -91.158]]), side: "carth", t: T_LAND, dur: 1.0, width: AW(1.05, 13), dash: "14 10", until: T_ASH + 0.4 });
+const SHIFT = arw({ pts: [[1110, 790], [1060, 860], [1035, 915]], side: "carth", t: T_LAND, dur: 1.0, width: AW(1.05, 13), dash: "14 10", until: T_ASH + 0.4 });
 K.target(BRU[0], BRU[1], T_BRU, { r: 34, side: "carth", until: T_NDEF + 1.0 });
-const TB = town("BRUINSBURG", BRU, "l", T_BRU, { until: T_BRU + LBL_LIFE + 0.4 });
+const TB = town("BRUINSBURG", BRU, "r", T_BRU, { until: T_BRU + LBL_LIFE + 0.4 });
 glowPath(ROAD, "#ffd27a", 5, T_ROAD - 0.1, END + 1, 2, 0.85, { draw: 1.4 });
 const TPG = town("PORT GIBSON", PG, "r", T_PG, { until: T_PG + LBL_LIFE + 0.4 });
 // the boats run past Grand Gulf in the dark (two visible shots) and gather at Disharoon's
-const RUNB = (k) => sub(RIVB, 0.02 + k * 0.02, 0.62 - k * 0.04, 20);
+const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
 TR.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.2));
 GBT.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.3));
 [[T_MAN + 0.2, 1, 0], [T_TOLD + 0.8, 2, 1]].forEach(([t, b, k]) => shootS(BATP[b], NB[k].at(t + 0.7), t, sAt(t), { dur: 0.7, h: 30, r: 9 }));
 // ---------- m2-6: dawn, 30 April: the landing is not defended; about 17,000 step ashore; the bridgehead ----------
 const NDEF = sstamp("NOT DEFENDED", 790, T_NDEF, { size: 74, color: "#9fc0ea", shake: 4, until: T_NDEF + 2.2 });
-const LANDP = [[31.952, -91.150], [31.944, -91.153], [31.936, -91.158], [31.948, -91.140]];
-LANDP.forEach(([la, lo], k) => { const s = L(la, lo), b = L(la - 0.002, lo - 0.022);
+const LANDP = [[1010, 905], [1000, 945], [985, 985], [1022, 875]];
+LANDP.forEach((s, k) => { const b = [s[0] - 52, s[1] + 8 * (k - 1)];
   ship(k % 2 ? "transport" : "transport", [b], T_NDEF - 0.6, 1, T_LATER + 0.6, { s: 22, t0: T_NDEF - 0.6 });
   arw({ pts: [[b[0] + 14, b[1]], [s[0] - 6, s[1]], [s[0] + 26, s[1] - 8]], side: "carth", t: T_ASH - 0.3 + k * 0.25, dur: 0.8, width: AW(1.65, 11), until: T_LATER + 0.4 }); });
 NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
-const LU = [["l13", "XIII", 31.957, -91.128], ["l9", "", 31.940, -91.130], ["l17", "XVII", 31.928, -91.150]];
-LU.forEach(([id, lb, la, lo], k) => { unitS(id, "carth", L(la + 0.004, lo - 0.02), "infantry", lb, { t: T_ASH + k * 0.3, size: "XXX" }); along(id, [L(la + 0.004, lo - 0.02), L(la, lo)], T_ASH + k * 0.3, 1.6, 8); });
+const LU = [["l13", "XIII", 1095, 905], ["l9", "", 1105, 965], ["l17", "XVII", 1060, 1005]];
+LU.forEach(([id, lb, x, y], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", lb, { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); along(id, [[x - 70, y - 5], [x, y]], T_ASH + k * 0.3, 1.6, 8); });
 const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT · 30 APRIL 1863" });
-boxL("EAST BANK", ...L(31.965, -91.105), T_EAST, null, { size: 18 });
+boxL("EAST BANK", 1190, 990, T_EAST, null, { size: 18 });
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
 const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,

@@ -34,17 +34,21 @@ const VKS = L(32.352, -90.878), MEM = L(35.149, -90.049), BR = L(30.451, -91.187
 const RIV = LL([[35.15, -90.07], [34.80, -90.30], [34.53, -90.58], [34.15, -90.85], [33.75, -91.05], [33.40, -91.08], [33.05, -91.12], [32.80, -91.16], [32.60, -91.12],
   [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893], [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07],
   [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.20, -91.58], [31.00, -91.62], [30.70, -91.32], [30.45, -91.20], [30.20, -91.08], [29.95, -90.07]]);
-const RIV_N = sub(RIV, 0, 0.30, 30), RIV_V = sub(RIV, 0.24, 0.40, 20);
+// the 1863 hairpin round De Soto Point (the river cut through the neck in 1876; the modern cut-off is hidden under a land-coloured stroke)
+const LOOP63 = LL([[32.402, -90.994], [32.394, -90.960], [32.387, -90.930], [32.381, -90.903], [32.376, -90.889], [32.367, -90.884], [32.352, -90.887], [32.336, -90.894], [32.321, -90.903]]);
+const CUT = LL([[32.383, -91.001], [32.366, -91.003], [32.352, -90.975], [32.343, -90.945], [32.334, -90.922], [32.327, -90.909]]);
 // ---------- the world: mississippi copy UNDER the vicksburg relief (shows beyond the feathered edges), vicksburg layers, mississippi layer on top ----------
 const AR = [MZ.origin_world_px[0] * 4 - VZ.origin_world_px[0], MZ.origin_world_px[1] * 4 - VZ.origin_world_px[1], 11520, 6480];
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
 const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? "mix-blend-mode:multiply;filter:saturate(0.8);" : ""}`; parent.appendChild(i); return i; };
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vk_miss_relief.jpg", PU, false); gimg("assets/media/vk_miss_ctl_apr1_mx.png", PU, true);
-const VC1 = ctlImg("assets/media/vk_vick_ctl_apr1_mx.png", 0, null, 0.01);
+const VC1 = terr0("assets/media/vk_vick_ctl_apr1_mx.png");
 const CUE = T_MARCH + 0.4, VC20 = ctlImg("assets/media/vk_vick_ctl_apr20_mx.png", CUE, null, 2.4);
 tl.to(VC1, { autoAlpha: 0, duration: 2.4 }, CUE);
 const PW = group(WORLD, OVL); gimg("assets/media/vk_miss_relief.jpg", PW, false); gimg("assets/media/vk_miss_ctl_apr1_mx.png", PW, true);
+landPatch(CUT, 16); riverLine(LOOP63, 6.5);
+const RLINE = riverLine(RIV, 9);   // the river on the theatre layer (that map shows no water); fades out with it
 living(VZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%)";
 const BL = [RELIEF, VC1, VC20];
@@ -58,7 +62,7 @@ const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
     const ccx = cl(cx, 960 / s, 2880 - 960 / s), ccy = cl(cy, 540 / s, 1620 - 540 / s); cx += (ccx - cx) * k; cy += (ccy - cy) * k; }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv();
   const op = s <= 0.27 ? 1 : s >= 0.56 ? 0 : 1 - Math.log(s / 0.27) / Math.log(0.56 / 0.27);
-  PW.style.opacity = op.toFixed(3); setMask(s < 0.75); };
+  PW.style.opacity = op.toFixed(3); RLINE.style.opacity = op.toFixed(3); setMask(s < 0.75); };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {
   const d0 = [(P[0] - c0[0]) * s0, (P[1] - c0[1]) * s0], d1 = [(P[0] - c1[0]) * s1, (P[1] - c1[1]) * s1], q = { u: 0 };
@@ -67,7 +71,7 @@ const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {
 const OC0 = [AR[0] + AR[2] / 2, AR[1] + AR[3] / 2];
 const S0 = OVS * 1.04, C0 = [OC0[0], OC0[1]];
 const C1 = L(32.75, -90.85), S1 = 0.215;                         // the delta north of Vicksburg (Yazoo Pass to the city)
-const C2 = L(32.62, -90.98), S2 = 0.92;                          // the Vicksburg map, wide (Lake Providence, Steele's Bayou, De Soto Point)
+const C2 = L(32.52, -90.98), S2 = 0.92;                          // the Vicksburg map, wide (Lake Providence, Steele's Bayou, De Soto Point)
 const C3 = L(32.30, -91.02), S3 = 1.25;                          // m2-2: Milliken's Bend to Hard Times
 const C4 = L(32.345, -90.90), S4 = 2.35;                         // the push onto Vicksburg (hand-off to m2b)
 cam.cx = C0[0]; cam.cy = C0[1]; applyCam();
@@ -84,33 +88,34 @@ B.title("MOVE 2", "THE MISSISSIPPI", "1863", T_MS, T_MS + 3.0); SFX("ref:boom", 
 B.showDate(T_WINT); B.date("WINTER 1862 - 63", T_WINT + 0.05, T_DIFF - 0.1, 32); B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
 const LGD = legend(T_MS + 3.4, END + 1);
 // ---------- flags: overview pair, delta pair, Vicksburg-map pair (both on every frame) ----------
-flagS(FL.us, "", ...L(35.85, -88.6), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
+flagS(FL.us, "", ...L(35.45, -88.9), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
 flagS(FL.us, "", ...L(32.36, -91.38), T_WINT + 0.5, TZ0 + 1.1); flagS(FL.cs, "", ...L(32.95, -89.7), T_WINT + 0.55, TZ0 + 1.1);
 flagS(FL.us, "", ...L(32.62, -91.36), TZ0 + 1.2, T_DIFF - 0.2); flagS(FL.cs, "", ...L(32.58, -90.45), TZ0 + 1.25, T_DIFF - 0.2);
 flagS(FL.us, "", ...L(32.44, -91.40), T_DIFF - 0.1, T_ONLY + 0.4); flagS(FL.cs, "", ...L(32.20, -90.62), T_DIFF - 0.05, T_ONLY + 0.4);
 flagS(FL.us, "", ...L(32.42, -91.20), T_ONLY + 0.5, END + 1); flagS(FL.cs, "", ...L(32.30, -90.80), T_ONLY + 0.55, END + 1);
 // ---------- big towns (A2, constant ~36 px; names leave after ~3.5 s, clean screen) ----------
 townL("MEMPHIS", MEM, "r", 0.6); townL("NEW ORLEANS", NO, "l", 0.8); townL("JACKSON", JAX, "r", T_LINK + 0.2);
-const TV = town("VICKSBURG", VKS, "r", 0.0, {});   // the story place, stays (shrinks when the guns fire, m2-2)
-gsap.set(TV, { autoAlpha: 0 }); tl.to(TV, { autoAlpha: 1, duration: 0.4 }, 0.15);
-tl.to(TV.querySelector(".tn"), { scale: 0.62, opacity: 0.85, duration: 0.6 }, T_ONLY);
+townL("VICKSBURG", VKS, "r", 0.15); townL("VICKSBURG", VKS, "r", TZ1 + 0.2); townL("VICKSBURG", VKS, "l", T_RUN - 0.3, { shrink: [[T_RUN - 0.3, null]] });
 // =================== m2-1 ===================
 // frame 0: the river war already moving: Union gunboats come down from Memphis; Grant's army above the city; the batteries on the bluff
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_FREE + 0.8, TZ0 + 0.6, { s: 20, t0: 0 }));
-unitS("ga", "carth", L(32.62, -91.25), "infantry", "XV", { size: "XXX" }); unitS("gb", "carth", L(32.95, -91.30), "infantry", "XVII", { size: "XXX" });
-unitS("gc", "carth", L(32.46, -91.24), "infantry", "XIII", { size: "XXX" });
-["ga", "gb", "gc"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
+// overview: one army counter each side (spread apart); the corps counters appear when the camera reaches the Vicksburg map
+unitS("oa", "carth", L(32.95, -91.75), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.30, -90.20), "infantry", "", { size: "XXXX" });
+["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 })); B.hideUnits(["oa", "ov"], TZ0 + 0.3, 0.4);
+along("oa", LL([[32.95, -91.75], [32.80, -91.55]]), 0, 10, 10);
+unitS("ga", "carth", L(32.62, -91.25), "infantry", "XV", { size: "XXX", t: TZ0 + 1.0 }); unitS("gb", "carth", L(32.95, -91.30), "infantry", "XVII", { size: "XXX", t: TZ0 + 1.1 });
+unitS("gc", "carth", L(32.46, -91.24), "infantry", "XIII", { size: "XXX", t: TZ0 + 1.2 });
 along("gb", LL([[32.95, -91.30], [32.85, -91.26]]), 0, 8, 10); along("ga", LL([[32.62, -91.25], [32.56, -91.20]]), 0, 9, 10);
-unitS("vk", "rome", L(32.40, -90.70), "infantry", "", { size: "XXX" }); gsap.set(B.units.vk.el, { autoAlpha: 1 });
-along("vk", LL([[32.40, -90.70], [32.37, -90.80]]), 0, 6, 10);
-unitS("jx", "rome", L(32.25, -90.30), "infantry", "", { t: T_LINK, size: "XX" });
+unitS("vk", "rome", L(32.44, -90.62), "infantry", "", { size: "XXX", t: TZ0 + 1.0 });
+along("vk", LL([[32.44, -90.62], [32.42, -90.70]]), 0, 6, 10);
+
 // the river glows on "Mississippi River"; Vicksburg ringed on "a bluff"
-glowPath(RIV, "#8fc3ff", 4.0 / 0.19, T_RIV - 0.3, T_WEST + 0.5, 2, 0.85, { draw: 1.6 });
+glowPath(RIV, "#8fc3ff", 6.5 / 0.185, T_RIV - 0.3, T_WEST + 0.5, 2, 0.95, { draw: 1.6, top: true });
 K.target(VKS[0], VKS[1], T_BLUFF, { r: 230, side: "#ff3b30", until: T_WINT + 0.4 });
 // "As long as the Confederates held it": the batteries pulse, a shot at the lead gunboat; the boats stop short of the city
-unitS("bt0", "rome", L(32.30, -90.83), "artillery", "", { t: T_HELD - 0.2, w: 44, h: 29, until: TZ0 + 0.5 });
-shootS(L(32.30, -90.83), GBN[0].at(T_FREE + 1.2), T_FREE + 0.3, 0.183, { dur: 0.9, h: 50 });
+unitS("bt0", "rome", L(32.42, -90.80), "artillery", "", { t: T_HELD - 0.2, w: 44, h: 29, until: TZ0 + 0.5 });
+shootS(L(32.42, -90.80), GBN[0].at(T_FREE + 1.2), T_FREE + 0.3, 0.183, { dur: 0.9, h: 50, r: 12 });
 B.caption("THE UNION COULD NOT USE THE RIVER FREELY", T_FREE - 0.1, T_LINK - 0.1, "rome");
 // "the South stayed linked to its western states": the rail line Monroe - De Soto Point - Vicksburg - Jackson, red arrows across the river
 const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.33, -90.95], [32.352, -90.878], [32.33, -90.55], [32.30, -90.19]]);
@@ -130,7 +135,7 @@ wstampL("FAILED IN THE SWAMPS", ...L(33.2, -90.0), T_FAIL + 0.2, null, "#e3232f"
 // "Canals dug in the mud": the canal across De Soto Point; "bayous cleared for gunboats": Lake Providence + Steele's Bayou; "boats stuck among the trees"
 const CANAL = LL([[32.375, -90.925], [32.355, -90.928], [32.335, -90.925], [32.318, -90.918]]);
 const cn = glowPath(CANAL, "#c9a26a", 7, T_CAN, T_DIFF - 0.3, 1, 0.95, { draw: 1.0, dash: "10 6", top: true });
-boxL("CANAL", ...L(32.36, -91.02), T_CAN + 0.2, null, { size: 18 });
+boxL("CANAL", ...L(32.33, -91.10), T_CAN + 0.2, null, { size: 18 });
 const LPR = LL([[32.80, -91.17], [32.72, -91.30], [32.60, -91.42], [32.45, -91.52], [32.30, -91.55]]);
 glowPath(LPR, "#8fc3ff", 6, T_BAY - 0.1, T_DIFF - 0.3, 1, 0.8, { draw: 1.4, dash: "4 7" });
 const STEE = LL([[32.42, -90.98], [32.55, -90.93], [32.68, -90.90], [32.80, -90.88], [32.86, -90.87]]);
@@ -147,27 +152,27 @@ const GB = cmd("grant", "ULYSSES S. GRANT", "ARMY OF THE TENNESSEE", "carth", "b
 const MARCH = LL([[32.48, -91.08], [32.42, -91.15], [32.39, -91.18], [32.28, -91.20], [32.16, -91.17], [32.09, -91.13], [32.07, -91.09]]);
 tl.to(B.units.gb.el, { autoAlpha: 0, duration: 0.4 }, T_DIFF);
 along("gc", [L(32.46, -91.24), MARCH[0]], T_DIFF - 0.2, 1.0, 6); along("gc", MARCH, T_MARCH, T_CROSS + 1.2 - T_MARCH, 24);
-along("ga", [L(32.56, -91.20), L(32.50, -91.10)], T_DIFF, 1.2, 6); along("ga", sub(MARCH, 0, 0.75, 16), T_MARCH + 0.8, T_CROSS + 1.6 - T_MARCH, 20);
-arw({ pts: MARCH, side: "carth", t: T_MARCH, dur: 2.6, width: AW(S3, 14), until: END + 1 });
+along("ga", [L(32.56, -91.20), L(32.53, -91.13)], T_DIFF, 1.2, 6); along("ga", [L(32.53, -91.13), ...sub(MARCH, 0, 0.7, 16)], T_MARCH + 1.4, T_CROSS + 1.6 - T_MARCH, 20);
+arw({ pts: MARCH, side: "carth", t: T_MARCH, dur: 2.6, width: AW(S3, 14), until: T_ONLY + 0.6 });
 boxL("MILLIKEN'S BEND", MIL[0] + 70, MIL[1] - 30, T_MARCH - 0.1, null, { size: 16 });
 boxL("LOUISIANA SWAMPS", ...L(32.25, -91.40), T_LA, null, { size: 16, bg: "#dcecf8" });
 // three large bayous bridged on the way (pontoon icons)
 [[32.40, -91.17, 70], [32.22, -91.195, 60], [32.12, -91.16, 40]].forEach(([la, lo, a], k) => pinS(GG.pin(`<svg width="40" height="22" viewBox="0 0 40 22" style="display:block;overflow:visible;transform:rotate(${a}deg);filter:drop-shadow(0 0 3px rgba(120,170,255,.9))">${[0, 1, 2, 3, 4, 5].map((j) => `<ellipse cx="${3.3 + j * 6.7}" cy="11" rx="2.2" ry="7" fill="#3a3024" stroke="#c9b48a" stroke-width="0.8"/>`).join("")}<rect x="0" y="7" width="40" height="8" fill="#e9dcc0" stroke="#1f4fc4" stroke-width="1.4"/></svg>`, ...L(la, lo), { t: T_LA + 0.3 + k * 0.4, pop: true, until: END + 1 })));
 boxL("HARD TIMES", HT[0] + 60, HT[1] + 26, T_CROSS - 0.6, null, { size: 16 });
 // "and cross the river below the city": the dashed crossing (east bank target)
-arw({ pts: [L(32.06, -91.10), L(32.00, -91.06), L(31.97, -91.02)], side: "carth", t: T_CROSS, dur: 1.0, width: AW(S3, 12), dash: "14 10", until: END + 1 });
+arw({ pts: [L(32.06, -91.10), L(32.00, -91.06), L(31.97, -91.02)], side: "carth", t: T_CROSS, dur: 1.0, width: AW(S3, 12), dash: "14 10", until: T_ONLY + 0.6 });
 K.target(...L(31.98, -91.02), T_CROSS + 0.5, { r: 30, side: "carth", until: T_ONLY + 1 });
 // "he needed boats and transports on the south side": ghost outlines below the city at Hard Times
 const GHOST = [[32.085, -91.075], [32.06, -91.065], [32.035, -91.075]].map(([la, lo], k) => { const s = ship(k === 1 ? "transport" : "gunboat", [L(la, lo)], T_NEED + k * 0.25, 1, T_ONLY + 1.4, { s: 20 });
   tl.set(s.el, { autoAlpha: 1 }, T_NEED + k * 0.25); tl.fromTo(s.el, { opacity: 0 }, { opacity: 0.45, duration: 0.4, yoyo: true, repeat: 5, immediateRender: false }, T_NEED + k * 0.25); gsap.set(s.sv, { rotation: 100 }); return s; });
 boxL("THE SOUTH SIDE", ...L(32.00, -91.24), T_SOUTH, null, { size: 16 });
 // "run them past the guns of Vicksburg": the boats wait above the city (Young's Point), the batteries along the bluff, two visible shots
-const BAT = LL([[32.375, -90.877], [32.362, -90.881], [32.348, -90.884], [32.332, -90.888], [32.31, -90.894]]);
-BAT.forEach((p, k) => unitS("bat" + k, "rome", [p[0] + 14, p[1]], "artillery", "", { t: T_ONLY + k * 0.12, w: 40, h: 27 }));
-const UP = [0, 1, 2, 3].map((k) => ship(k === 3 ? "transport" : "gunboat", sub(LL([[32.42, -91.04], [32.40, -91.0], [32.385, -90.96], [32.378, -90.93]]), 0.3 - k * 0.1, 0.8 - k * 0.12, 8), T_ONLY - 0.3 + k * 0.2, 3.0, END + 1, { s: 20 }));
-trail(LL([[32.38, -90.93], [32.373, -90.900], [32.36, -90.892], [32.33, -90.896], [32.29, -90.905], [32.247, -90.937]]), "#8fb2ff", 3.2, T_RUN - 0.2, 1.8, END + 1, "4 9");
-shoot(BAT[1], L(32.372, -90.915), T_RUN + 0.2, { unit: "bat1", r: 7, h: 30, width: 1.4, dur: 0.7 });
-shoot(BAT[3], L(32.345, -90.905), T_RUN + 1.3, { unit: "bat3", r: 7, h: 30, width: 1.4, dur: 0.7 });
+const BAT = LL([[32.378, -90.872], [32.351, -90.877], [32.324, -90.886]]).map((p) => [p[0] + 12, p[1]]);
+BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_ONLY + k * 0.15, w: 44, h: 29 }));
+const UP = [0, 1, 2, 3].map((k) => ship(k === 3 ? "transport" : "gunboat", sub(LL([[32.45, -91.02], [32.42, -91.0], [32.402, -90.994], [32.394, -90.960], [32.387, -90.930]]), 0.3 - k * 0.1, 0.85 - k * 0.12, 8), T_ONLY - 0.3 + k * 0.2, 3.0, END + 1, { s: 20 }));
+trail([...sub(LOOP63, 0.25, 1, 12), ...LL([[32.30, -90.917], [32.27, -90.957], [32.24, -90.975]])], "#8fb2ff", 3.2, T_RUN - 0.2, 1.8, END + 1, "4 9");
+shootS(BAT[0], L(32.386, -90.925), T_RUN + 0.2, 2.2, { dur: 0.7, h: 30, r: 9 });
+shootS(BAT[1], L(32.382, -90.905), T_RUN + 1.3, 2.3, { dur: 0.7, h: 30, r: 9 });
 B.hideUnits(["ga", "gc"], T_ONLY + 1.0, 0.6);
 // ---------- 1c declutter: the legend + the corner badge step out while a big card is up (the date scroll stays) ----------
 declutter([LGD, GB], [[T_NOTH, T_NOTH + 1.6], [T_IDEAS - 0.7, T_DIFF - 0.15]]);

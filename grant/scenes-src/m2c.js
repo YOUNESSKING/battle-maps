@@ -21,7 +21,7 @@ const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
 const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false && t > 0) SFX("ref:pop", t); return GG.pin(`<div style="background:${o.bg || "#f1eee6"};color:${o.col || "#111"};font-family:Oswald;font-weight:500;letter-spacing:.2em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.55).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 ${size * 0.1}px ${size * 0.4}px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"></div>`, x, y, { t, pop: true, until });   // v11 clean screen: no country name
+const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"></div>`, x, y, { t: t > 0 ? t : null, pop: true, until });   // v11 clean screen: no country name (t <= 0: on screen from frame 0)
 const unit = (id, side, p, icon, label, o = {}) => {
   const w = o.w || 22, h = o.h || 15;
   B.unit({ id, side, x: p[0], y: p[1], w, h, t: o.t, label });
@@ -184,7 +184,7 @@ const camera = (keys) => {
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, 2 * (o.size || 16) * 0.9, until, o));   // story-place labels (~29 px)
-const flagS = (src, name, x, y, t, until) => pinS(flag(src, name, x, y, t, until, 104));                   // ~104 px flag on screen
+const flagS = (src, name, x, y, t, until) => { const el = pinS(flag(src, name, x, y, t, until, 104)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };                   // ~104 px flag on screen
 const wstampS = (txt, x, y, t, until, c, size = 22, sub) => pinS(wstamp(txt, x, y, t, until, c, size, sub));
 const unitS = (id, side, p, icon, label, o = {}) => {                               // counter 54 x 36 px, name 19 px, on screen
   const W0 = o.w || 54, H0 = o.h || 36;
@@ -229,7 +229,7 @@ const SHIPSVG = (kind, s, col) => {
   const glow = `filter:drop-shadow(0 0 ${(s * 0.18).toFixed(1)}px ${col === "#1f4fc4" ? "#6f9bff" : "#ff7a6a"}) drop-shadow(0 ${(s * 0.06).toFixed(1)}px ${(s * 0.1).toFixed(1)}px rgba(0,0,0,.7))`;
   const pen = `<line x1="-21" y1="0" x2="-25" y2="0" stroke="#f3eee2" stroke-width="0.9"/><path d="M-24 -0.4 L-33 -3.2 L-30.5 -0.4 L-33 2.4 Z" fill="${col}" stroke="#f3eee2" stroke-width="0.6"/>`;
   const body = kind === "gunboat"
-    ? `<path d="M-22 -6.2 L13 -6.2 Q21 -3.6 24 0 Q21 3.6 13 6.2 L-22 6.2 Q-24 0 -22 -6.2 Z" fill="#4a5260" stroke="${col}" stroke-width="1.8"/>
+    ? `<path d="M-22 -6.2 L13 -6.2 Q21 -3.6 24 0 Q21 3.6 13 6.2 L-22 6.2 Q-24 0 -22 -6.2 Z" fill="#66718a" stroke="${col === "#1f4fc4" ? "#5b8cff" : col}" stroke-width="2.2"/>
        <path d="M-16 -4.4 L8 -4.4 L12.5 0 L8 4.4 L-16 4.4 Z" fill="#20252e" stroke="#9aa6b8" stroke-width="0.9"/>
        <circle cx="-3.5" cy="-1.7" r="1.7" fill="#0b0c0e" stroke="#7d8696" stroke-width="0.5"/><circle cx="-3.5" cy="1.7" r="1.7" fill="#0b0c0e" stroke="#7d8696" stroke-width="0.5"/>
        <rect x="9" y="-1.1" width="5" height="2.2" fill="#0b0c0e"/>`
@@ -242,8 +242,8 @@ const SHIPSVG = (kind, s, col) => {
 };
 // a boat along a path (pts; heading follows the path). Returns { el, at(tt) -> [x, y] } so guns can fire from it.
 const ship = (kind, pts, t, dur, until, o = {}) => {
-  const s = o.s || 22, col = o.side === "rome" ? "#c4121f" : "#1f4fc4";
-  const el = GG.pin(SHIPSVG(kind, s, col), pts[0][0], pts[0][1], { t, until }); pinS(el); if (o.t0 != null) tl.set(el, { autoAlpha: 1 }, o.t0);
+  const s = (o.s || 22) * 1.25, col = o.side === "rome" ? "#c4121f" : "#1f4fc4";
+  const el = GG.pin(SHIPSVG(kind, s, col), pts[0][0], pts[0][1], { t: t > 0 ? t : null, until }); pinS(el); if (!(t > 0) || o.t0 === 0) gsap.set(el, { autoAlpha: 1 }); else if (o.t0 != null) tl.set(el, { autoAlpha: 1 }, o.t0);
   const sv = el.querySelector("svg"), n = o.n || 40, ease = o.ease || ((u) => u);
   const head = (f) => { const a = posOn(pts, Math.max(0, f - 0.01)), b = posOn(pts, Math.min(1, f + 0.01)); return Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI; };
   gsap.set(sv, { rotation: head(0) });
@@ -283,9 +283,17 @@ const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
 const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
+// hide the modern (post-1876) cut-off channel under a soft land-coloured stroke, placed right above the relief (under the territory colours)
+const landPatch = (pts, w, col = "rgb(197,181,129)", blur = 3) => { const sv = document.createElementNS(NS, "svg"); sv.setAttribute("viewBox", "0 0 2880 1620");
+  sv.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;overflow:visible;pointer-events:none";
+  sv.innerHTML = `<defs><filter id="lp${pts.length}${w}" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${blur}"/></filter></defs><path d="M${pts.map((q) => q.join(" ")).join(" L")}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" filter="url(#lp${pts.length}${w})"/>`;
+  const R = document.getElementById("relief"); WORLD.insertBefore(sv, R.nextSibling); return sv; };
+// a territory layer on screen from frame 0 (no fade-in tween), multiply, toned down (E1)
+const terr0 = (file) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" }); WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 1 }); return el; };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
-const GD = {"base":"henry","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36097870205296,"est":true},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.41820490369194,"est":true},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29395307487063,"est":true},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.843874523428,"est":true},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.40181371525205,"est":true},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.426050110962937,"est":true},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24105743836117,"est":true}}};
+const GD = {"base":"mississippi","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.426050110962937,"est":true},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24105743836117,"est":true}}};
 // @@END-DATA
 const MZ = GD.maps.mississippi;
 const L = GG.proj(8, MZ.origin_world_px[0], MZ.origin_world_px[1]);
@@ -304,13 +312,19 @@ const GRI = LL([[35.045, -89.244], [34.73, -88.95], [34.49, -89.01], [34.25, -89
   [32.44, -89.11], [32.32, -89.163], [32.03, -89.52], [31.93, -89.98], [31.86, -90.40], [31.58, -90.44], [31.24, -90.47], [30.83, -90.67], [30.60, -90.90], [30.451, -91.187]]);
 const YAZ = LL([[32.415, -90.985], [32.44, -90.93], [32.47, -90.88], [32.50, -90.83], [32.512, -90.795]]);
 // ---------- layers ----------
-const C1 = ctlImg("assets/media/vk_miss_ctl_apr1_mx.png", 0, null, 0.01);
+const C1 = terr0("assets/media/vk_miss_ctl_apr1_mx.png");
 const C1b = ctlImg("assets/media/vk_miss_ctl_apr1b_mx.png", T_RAID - 0.3, null, 1.2);
 tl.to(C1, { autoAlpha: 0, duration: 1.2 }, T_RAID - 0.3);
 tl.to(C1, { autoAlpha: 1, duration: 1.2 }, T_SHER - 0.2); tl.to(C1b, { autoAlpha: 0, duration: 1.2 }, T_SHER - 0.2);
-living(MZ.meters_per_px, [], { n: 6, clouds: 0.12 });
+// the Mississippi and the Yazoo (the z8 map shows no water): drawn as water lines
+const RIVM = LL([[35.15, -90.07], [34.80, -90.30], [34.53, -90.58], [34.15, -90.85], [33.75, -91.05], [33.40, -91.08], [33.05, -91.12], [32.80, -91.16], [32.60, -91.12],
+  [32.48, -91.06], [32.40, -91.00], [32.385, -90.93], [32.37, -90.885], [32.345, -90.893], [32.30, -90.91], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07],
+  [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.20, -91.58], [31.00, -91.62], [30.70, -91.32], [30.45, -91.20], [30.20, -91.08], [29.95, -90.07], [29.6, -89.6], [29.2, -89.3]]);
+const YAZW = LL([[33.52, -90.18], [33.20, -90.40], [32.85, -90.55], [32.60, -90.72], [32.52, -90.79], [32.47, -90.88], [32.43, -90.94], [32.40, -90.97]]);
+riverLine(RIVM, 3.2); riverLine(YAZW, 1.8);
+living(MZ.meters_per_px, [RIVM], { n: 6, clouds: 0.12, sw: 1.2 });
 // ---------- camera: the raid (wide, both sides visible) -> push in on Vicksburg for Sherman ----------
-const CW = L(32.85, -90.05), SW = 0.86, CV = L(32.42, -90.86), SV = 2.7;
+const CW = L(32.85, -90.05), SW = 0.86, CV = L(32.40, -90.78), SV = 2.7;
 camera([[0, CW[0] + 30, CW[1] + 20, SW * 0.97], [T_SHER - 0.3, CW[0], CW[1], SW], [T_SHER + 2.2, CV[0], CV[1], SV, "power2.inOut"], [END, CV[0] + 4, CV[1] - 2, SV * 1.04]]);
 SFX("whoosh", T_SHER - 0.35);
 // ---------- HUD ----------
@@ -318,16 +332,16 @@ B.showDate(T_LG); B.date("17 APRIL 1863", T_LG + 0.05, T_MS + 0.4, 32); B.date("
 B.date("17 APRIL - 2 MAY 1863", T_SHER, END + 1, 32);
 const LGD = legend(0.6, END + 1);
 // flags: wide pair, then the Vicksburg pair (both on every frame)
-flagS(FL.us, "", ...L(35.95, -88.0), 0, T_SHER + 1.0); flagS(FL.cs, "", ...L(32.05, -88.1), 0, T_SHER + 1.0);
-flagS(FL.us, "", ...L(32.66, -91.26), T_SHER + 1.1, END + 1); flagS(FL.cs, "", ...L(32.24, -90.55), T_SHER + 1.15, END + 1);
-const TV = town("VICKSBURG", VKS, "l", 0.0); gsap.set(TV, { autoAlpha: 1 });
+flagS(FL.us, "", ...L(35.45, -87.6), 0, T_SHER + 1.0); flagS(FL.cs, "", ...L(32.05, -88.1), 0, T_SHER + 1.0);
+flagS(FL.us, "", ...L(32.66, -91.26), T_SHER + 1.1, END + 1); flagS(FL.cs, "", ...L(32.30, -90.45), T_SHER + 1.15, END + 1);
+townL("VICKSBURG", VKS, "l", 0.0); townL("VICKSBURG", VKS, "l", T_SHER + 2.0, { shrink: [[T_SHER + 2.0, null]] });
 townL("MEMPHIS", MEM, "r", 0.3); townL("JACKSON", JAX, "r", T_WRONG - 0.2);
 // ---------- frame 0: Grant's army on the west bank moving south; Pemberton's army at Vicksburg and Jackson ----------
-unitS("gr", "carth", L(32.42, -91.30), "infantry", "", { size: "XXXX" }); gsap.set(B.units.gr.el, { autoAlpha: 1 });
-along("gr", LL([[32.42, -91.30], [32.20, -91.30], [32.08, -91.22]]), 0, T_SHER - 0.5, 16);
+unitS("gr", "carth", L(32.25, -91.45), "infantry", "", { size: "XXXX" }); gsap.set(B.units.gr.el, { autoAlpha: 1 });
+along("gr", LL([[32.25, -91.45], [32.10, -91.38], [31.98, -91.26]]), 0, T_SHER - 0.5, 16);
 arw({ pts: LL([[32.48, -91.20], [32.25, -91.26], [32.09, -91.16]]), side: "carth", t: 0.1, dur: 2.4, width: AW(SW, 12), until: T_SHER + 0.4 });
-unitS("pv", "rome", L(32.40, -90.70), "infantry", "", { size: "XXX" }); gsap.set(B.units.pv.el, { autoAlpha: 1 });
-unitS("pj", "rome", L(32.24, -90.22), "infantry", "", { size: "XX" }); gsap.set(B.units.pj.el, { autoAlpha: 1 });
+unitS("pv", "rome", L(32.58, -90.52), "infantry", "", { size: "XXX" }); gsap.set(B.units.pv.el, { autoAlpha: 1 });
+unitS("pj", "rome", L(32.08, -90.22), "infantry", "", { size: "XX" }); gsap.set(B.units.pj.el, { autoAlpha: 1 });
 B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_MEAN + 0.2, T_GRI - 0.2, "carth");
 // ---------- Grierson: about 1,700 cavalrymen from La Grange through Mississippi to Baton Rouge ----------
 const GB = cmd("grierson", "BENJAMIN GRIERSON", "COLONEL · CAVALRY", "carth", "bl", T_GRI, T_SHER - 0.2);
@@ -337,9 +351,9 @@ boxL("LA GRANGE", LG[0] + 50, LG[1] - 34, T_LG, null, { size: 16 });
 along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
 trail(GRI, "#8fb2ff", 4, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");
 arw({ pts: GRI, side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 11), dash: "18 10", until: T_SHER + 0.4 });
-boxL("MISSISSIPPI", ...L(33.3, -89.65), T_MS, null, { size: 18, bg: "#f3d6c8" });
+boxL("MISSISSIPPI", ...L(32.95, -88.55), T_MS, null, { size: 18, bg: "#f3d6c8" });
 // the Confederates look the wrong way: the Jackson force turns east after the raiders
-along("pj", LL([[32.24, -90.22], [32.28, -89.85]]), T_MS + 0.3, 2.2, 8);
+along("pj", LL([[32.08, -90.22], [32.15, -89.85]]), T_MS + 0.3, 2.2, 8);
 arw({ pts: LL([[32.30, -90.10], [32.33, -89.65], [32.33, -89.30]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 11), until: T_SHER + 0.2 });
 const TBR = town("BATON ROUGE", BR, "l", T_BR - 0.1, { until: T_BR + LBL_LIFE + 0.4 });
 K.target(BR[0], BR[1], T_BR, { r: 30, side: "carth", until: T_SHER });
@@ -355,8 +369,8 @@ shootS([HB[0] + 10, HB[1] + 6], BOATS[0].at(T_THR + 1.9), T_THR + 1.2, SV, { dur
 unitS("ps", "rome", L(32.20, -90.86), "infantry", "", { t: T_SHER + 1.4, size: "XX" });
 along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.31, -90.84]]), T_PEM, 1.8, 8);
 arw({ pts: LL([[32.18, -90.90], [32.25, -90.86], [32.31, -90.84]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 10), until: END + 1 });
-boxL("PEMBERTON'S ARMY", ...L(32.25, -90.62), T_PEM, null, { size: 16, bg: "#f3d6c8" });
-const TIED = wstampL("TIED DOWN", ...L(32.36, -90.68), T_TIED, null, "#e3232f", 24);
+boxL("PEMBERTON'S ARMY", ...L(32.36, -90.60), T_PEM, null, { size: 16, bg: "#f3d6c8" });
+const TIED = wstampL("TIED DOWN", ...L(32.24, -90.86), T_TIED, null, "#e3232f", 24);
 // ---------- 1c declutter (the ticker is a small corner counter; no big cards in this scene) ----------
 declutter([LGD], [[T_1700 - 0.2, T_LG + 2.2]]);
 fixImgs();
