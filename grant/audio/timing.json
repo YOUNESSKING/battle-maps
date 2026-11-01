@@ -1,7 +1,7 @@
 {
  "voice": "am_michael",
  "speed": 1.0,
- "duration": 990.72,
+ "duration": 973.93,
  "paragraphs": [
   {
    "section": "HOOK (0:00 \u2013 ~1:05)",
@@ -257,10 +257,10 @@
   },
   {
    "section": "ENDING (~16:30 \u2013 ~17:15)",
-   "tag": "MAP: end-2 | engagement final card E.final({ moves: [[\"FORT DONELSON\",\"FEB 1862\"",
+   "tag": "MAP: end-2 | engagement final card E.final with the three numbered moves Fort Donelson Feb 1862, Vicksburg 1863, the James River Jun 1864 on the spoken numbers One, Two, Three; family-story line; corner subscribe button; the last 20 s keep the map clean for the end screen",
    "start": 953.44,
-   "end": 989.32,
-   "text": ",[\"VICKSBURG\",\"1863\"],[\"THE JAMES RIVER\",\"JUN 1864\"]] }) on the spoken numbers One, Two, Three; family-story line; corner subscribe button; the last 20 s keep the map clean for the end screen]\nSo which was Grant's greatest move? One, the two river forts. Two, Vicksburg. Or three, the crossing of the James? Tell us in the comments. And if someone in your family served in the Civil War, on either side, tell us their story. We read every one. Subscribe, so you don't miss the next commander."
+   "end": 972.53,
+   "text": "So which was Grant's greatest move? One, the two river forts. Two, Vicksburg. Or three, the crossing of the James? Tell us in the comments. And if someone in your family served in the Civil War, on either side, tell us their story. We read every one. Subscribe, so you don't miss the next commander."
   }
  ]
 }

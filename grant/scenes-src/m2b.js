@@ -392,8 +392,9 @@ B.caption("MANNED BY SOLDIERS · TO RESCUE ANYONE IN THE WATER", T_RESC - 0.6, T
 shootS(BATP[2], HCP, HCt - 0.75, sAt(HCt), { dur: 0.75, h: 46, r: 12 });
 K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
 boxL("HENRY CLAY", HCP[0] - 120, HCP[1] + 34, T_HC, null, { size: 18, bg: "#f3d6c8" });
-const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 60, sub: "ONE TRANSPORT · THE HENRY CLAY", shake: 5, until: T_EDGE + 2.4 });
-B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", T_NOONE + 0.1, T_22 - 0.2, "carth");
+const T_EDGE_OUT = Math.min(T_EDGE + 2.4, T_NOONE - 0.35);   // 1c rule 3: the stamp is gone before the caption lands
+const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 60, sub: "ONE TRANSPORT · THE HENRY CLAY", shake: 5, until: T_EDGE_OUT });
+B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth");
 // ---------- 22 April: six supply steamers (army volunteers) run the guns; one sinks, five get through ----------
 const C2T0 = T_22 - 0.3, C2T1 = END - 0.4;
 const CONV = [0, 1, 2, 3, 4, 5].map((k) => ship("cotton", sub(RUN, Math.max(0, 0.32 - k * 0.035), 0.97 - k * 0.06, 40), C2T0, C2T1 - C2T0, k === 3 ? null : END + 1, { s: 22, t0: C2T0, smoke: 1.8 }));
@@ -409,7 +410,7 @@ boxL("SIX MORE SUPPLY STEAMERS", 1120, 580, T_SIX, null, { size: 18 });
 const FIVEX = placeCard("ARMY VOLUNTEERS", "FIVE TIMES THE NUMBER", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_FIVEX - 0.1, T_THRU - 0.4);
 const THRU = sstamp("FIVE GOT THROUGH", 790, T_THRU, { size: 74, color: "#9fc0ea", shake: 5 });
 // ---------- 1c declutter ----------
-declutter([LGD, PB, SB], [[T_EDGE, T_EDGE + 2.4], [T_FIVEX - 0.1, T_THRU - 0.4], [T_THRU, END + 1]]);
+declutter([LGD, PB, SB], [[T_EDGE, T_EDGE_OUT], [T_FIVEX - 0.1, T_THRU - 0.4], [T_THRU, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();
