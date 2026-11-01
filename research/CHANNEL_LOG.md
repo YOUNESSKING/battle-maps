@@ -33,3 +33,9 @@ Open question: what triggers YouTube to expand a video on day 2-3 (Morgan, 2 Par
   Thomas (123k): battle disaster 0:00-0:47, "But one general does not leave the field" at 0:47. Morgan: war being lost -> villain Tarleton -> his defeat, man named at 1:20, move 1 at 2:20. Greene: named at 0:59. 2 Para: named at 1:42. Smith (69% at 0:30): numbers, then the trap story, named at 0:56.
   The two that FAILED left the story at ~0:25 for a CV: Gavin "He was an orphan..." at 0:26, name at 0:38, birth/orphanage at 0:52; Collins name + nickname + list of achievements at 0:45, birth/West Point at 1:06. The drop by 0:42 lines up with that switch from story to biography.
 - Conclusion (hypothesis): the killer is leaving the story for a résumé/biography in the first minute, not the length of the intro. Draft opening-rule change proposed to the owner 2026-10-31 (not locked yet).
+
+## Studio AI on Collins, 2026-11-01: "reignite" ideas (our check)
+- Titles suggested: "The Forgotten General Who Saved D-Day in 1 Hour" = FALSE (Collins did not save D-Day in an hour; Cobra was 25 July), never use.
+  "How One American General Broke the Normandy Stalemate" = accurate (Operation Cobra) -> worth a Test & Compare title test.
+- Collins CTR was 4.2% (normal); his problem is the 0:42 cliff (CV at 0:45), which a title/thumbnail cannot fix.
+- End screens: our own numbers say they barely work (Morgan 4 views, channel end-screen CTR 0.6%): free, but expect little.
