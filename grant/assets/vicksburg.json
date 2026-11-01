@@ -1,0 +1,19 @@
+{
+ "name": "vicksburg",
+ "center": [
+  32.2,
+  -90.8
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  63513,
+  105473
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 129.36,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

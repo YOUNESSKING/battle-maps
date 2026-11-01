@@ -1,0 +1,19 @@
+{
+ "name": "ghx_vks",
+ "center": [
+  32.33,
+  -90.87
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  258169,
+  423874
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 32.29,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

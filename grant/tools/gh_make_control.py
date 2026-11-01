@@ -38,7 +38,7 @@ UNION_STATES = {"Illinois", "Indiana", "Ohio", "Missouri", "Kentucky", "West Vir
 KY_CSA = [(36.95, -89.40), (36.88, -89.12), (36.84, -88.90), (36.78, -88.62), (36.71, -88.32), (36.72, -88.05), (36.85, -87.72),
           (36.98, -87.45), (37.10, -87.08), (37.18, -86.62), (37.20, -86.20), (37.08, -85.85), (36.85, -85.55), (36.62, -85.35),
           (36.40, -85.35), (36.40, -89.60)]
-NEW_MADRID = [(36.30, -89.85), (36.68, -89.85), (36.68, -89.42), (36.30, -89.42)]
+NEW_MADRID = [(35.90, -90.60), (36.62, -90.60), (36.74, -90.10), (36.66, -89.40), (35.90, -89.40)]   # the bootheel + New Madrid
 # Fort Donelson (donelson map): the Confederate pocket inside the outer works (Hickman Creek - west arc - Indian/Lick Creek), lat/lon
 POCKET = [(36.4985, -87.8565), (36.4962, -87.8700), (36.4950, -87.8790), (36.4890, -87.8835), (36.4815, -87.8800), (36.4755, -87.8705),
           (36.4720, -87.8575), (36.4712, -87.8440), (36.4740, -87.8330), (36.4820, -87.8290), (36.4900, -87.8300), (36.4960, -87.8420)]
@@ -46,6 +46,10 @@ POCKET = [(36.4985, -87.8565), (36.4962, -87.8700), (36.4950, -87.8790), (36.489
 CORRIDOR = [(36.565, -88.20), (36.540, -87.98), (36.520, -87.90), (36.505, -87.880), (36.500, -87.866), (36.4985, -87.8565),
             (36.4962, -87.8420), (36.4900, -87.8300) , (36.4820, -87.8290), (36.4740, -87.8330), (36.4690, -87.8450), (36.455, -87.880),
             (36.440, -87.940), (36.420, -88.20)]
+# Union ground 12-14 Feb: the roads from Fort Henry (Tennessee River) to the ring, and the ring itself (outside the pocket, to the river)
+ROADS14 = [(36.513, -88.06), (36.505, -87.99), (36.497, -87.94), (36.490, -87.900)]
+RINGOUT = [(36.507, -87.860), (36.505, -87.890), (36.495, -87.905), (36.478, -87.900), (36.466, -87.880), (36.462, -87.855), (36.466, -87.835),
+           (36.4715, -87.8440), (36.4740, -87.8330), (36.4820, -87.8290), (36.4900, -87.8300), (36.4985, -87.8565)]
 # after the surrender: the Dover (south-west) side of the Cumberland. The river line (north -> Dover -> east edge), traced on the relief
 CUMB_SW = [(36.62, -87.97), (36.56, -87.92), (36.525, -87.885), (36.505, -87.866), (36.4975, -87.8560), (36.4935, -87.8460),
            (36.4895, -87.8380), (36.4910, -87.8250), (36.4975, -87.8100), (36.5010, -87.7900), (36.4950, -87.7700), (36.4800, -87.7500),
@@ -74,10 +78,18 @@ def build(m, date):
             un = un[idx[0], idx[1]]
     elif date == "feb05":
         un = np.zeros((H, W), bool)
-    elif date == "feb14":
-        un = poly_mask(P, [CORRIDOR]) & ~poly_mask(P, [POCKET])
+    elif date == "feb14":   # a band round the roads Fort Henry -> Donelson (~7 km wide) closing on the ring; the pocket stays Confederate
+        im = Image.new("L", (W, H), 0); d = ImageDraw.Draw(im); J = json.load(open(f"assets/{m}_hd_lift.json"))
+        wpx = 7000 / J["meters_per_px"]
+        path = [P(*q) for q in ROADS14]
+        d.line(path, fill=255, width=int(wpx), joint="curve")
+        for q in (path[0], path[-1]): d.ellipse([q[0] - wpx / 2, q[1] - wpx / 2, q[0] + wpx / 2, q[1] + wpx / 2], fill=255)
+        ring = [P(*q) for q in RINGOUT]; d.polygon(ring, fill=255)
+        un = (ndimage.gaussian_filter((np.array(im) > 0).astype(np.float32), max(2, wpx / 8)) > 0.5) & ~poly_mask(P, [POCKET])
     elif date == "feb16":
         un = poly_mask(P, [CUMB_SW])
+    if m == "donelson" and date != "feb05":   # round the hand-drawn corners (the pocket stays within ~100 m)
+        un = ndimage.gaussian_filter(un.astype(np.float32), 6) > 0.5
     un = un & land; csa = land & ~un
     out = np.zeros((H, W, 4), np.float32)
     k = 1.0 if m == "donelson" else (0.5 if m == "henry" else 0.3)        # rim width in map px scales with the map zoom

@@ -8,6 +8,13 @@ m0 = base.replace("_hd_lift", "")
 GD = {"base": m0, "maps": {}}
 for f in glob.glob("assets/*_hd_lift.json"):
     J = json.load(open(f)); GD["maps"][J["name"].replace("_hd_lift", "")] = {k: J[k] for k in ("zoom", "origin_world_px", "meters_per_px")}
+# maps not baked yet: the same origin bake.py will give (centre - half the 2880x1620 frame), from tools/bake_all.sh
+import math, re
+for m, la, lo, z in re.findall(r"^bake (\w+) ([-\d.]+) ([-\d.]+) (\d+)", open("tools/bake_all.sh").read(), re.M):
+    if m in GD["maps"]: continue
+    la, lo, z = float(la), float(lo), int(z); n = 256 * 2 ** z
+    x = (lo + 180) / 360 * n; y = (1 - math.asinh(math.tan(math.radians(la))) / math.pi) / 2 * n
+    GD["maps"][m] = {"zoom": z, "origin_world_px": [int(x - 1440), int(y - 810)], "meters_per_px": 156543.03 * math.cos(math.radians(la)) / 2 ** z, "est": True}
 kit = open("tools/vk_kit.js").read()
 body = open(f"tools/vk_body_{scene}.js").read()
 out = body.replace("// @@KIT", "// @@KIT (tools/vk_kit.js)\n" + kit + "// @@END-KIT").replace("// @@DATA", "// @@DATA (tools/vk_inline.py)\nconst GD = " + json.dumps(GD, separators=(",", ":")) + ";\n// @@END-DATA")

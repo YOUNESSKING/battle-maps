@@ -1,0 +1,195 @@
+{
+ "title": "Grant #16 HOOK-B (hook-3..hook-4) - map agent hook, round 3",
+ "note": "STYLE_LOCK 1a + 1c + 2b: clean first frame, nothing before it is spoken, one big card at a time, ONE continuous zoom, visible fire only",
+ "frames": [
+  [
+   "hook-b",
+   0,
+   "0:29.3",
+   "frame 0 = hook-a's last frame (16 Feb, the pocket blue)",
+   "whoosh (rewind)"
+  ],
+  [
+   "hook-b",
+   1.6,
+   "0:30.9",
+   "rewind: white flag drops, the pocket red again, units step back",
+   "-"
+  ],
+  [
+   "hook-b",
+   3.4,
+   "0:32.7",
+   "'the fifteenth of February': the date rolls back",
+   "ticks"
+  ],
+  [
+   "hook-b",
+   5.2,
+   "0:34.5",
+   "'At dawn': dawn light, push in, colours dissolve into the fronts",
+   "-"
+  ],
+  [
+   "hook-b",
+   6.8,
+   "0:36.1",
+   "'burst out': red columns break out, volleys where lines touch",
+   "whoosh, musket"
+  ],
+  [
+   "hook-b",
+   8.4,
+   "0:37.7",
+   "'broken the Union right': BROKEN, the brigades fall back",
+   "hit + shake, musket"
+  ],
+  [
+   "hook-b",
+   10.0,
+   "0:39.3",
+   "'the road out stood open': the Forge road glows, THE ROAD OUT",
+   "pop, musket"
+  ],
+  [
+   "hook-b",
+   11.6,
+   "0:40.9",
+   "'The Union commander': the '?' badge, the HQ",
+   "-"
+  ],
+  [
+   "hook-b",
+   13.0,
+   "0:42.3",
+   "'not even there': the empty HQ, NOT EVEN THERE",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   14.6,
+   "0:43.9",
+   "'away on a gunboat': the flagship, the '?' rides on it",
+   "pop"
+  ],
+  [
+   "hook-b",
+   16.5,
+   "0:45.8",
+   "'the admiral'",
+   "-"
+  ],
+  [
+   "hook-b",
+   18.0,
+   "0:47.3",
+   "'when he rode back': the '?' rides back, dotted trail",
+   "whoosh"
+  ],
+  [
+   "hook-b",
+   19.8,
+   "0:49.1",
+   "'standing in knots, holding muskets': knots of blue men",
+   "pop"
+  ],
+  [
+   "hook-b",
+   21.8,
+   "0:51.1",
+   "NO AMMUNITION",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   23.4,
+   "0:52.7",
+   "'tons of it, close at hand': crates glow, TONS OF IT",
+   "pop, hit"
+  ],
+  [
+   "hook-b",
+   25.7,
+   "0:55.0",
+   "the map dims, the '?' comes to the centre",
+   "whoosh"
+  ],
+  [
+   "hook-b",
+   26.6,
+   "0:55.9",
+   "'Ulysses S. Grant': photo + NAME SLAM",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   29.0,
+   "0:58.3",
+   "'a few weeks earlier his own superior...' (unnamed: no photo)",
+   "pop"
+  ],
+  [
+   "hook-b",
+   30.9,
+   "1:00.2",
+   "'brushed off his plan': HIS PLAN + BRUSHED OFF",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   32.1,
+   "1:01.4",
+   "CUT 1 'He took two rivers': henry map, both forts blue, 1 TWO RIVERS",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   33.6,
+   "1:02.9",
+   "CUT 2 'the city that held...': Vicksburg at night, boats run the batteries",
+   "whoosh + hit, gun"
+  ],
+  [
+   "hook-b",
+   35.0,
+   "1:04.3",
+   "'...the Mississippi': 2 THE MISSISSIPPI",
+   "gun + impact"
+  ],
+  [
+   "hook-b",
+   36.9,
+   "1:06.2",
+   "CUT 3 'marched a whole army across a river': the pontoon bridge",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   38.4,
+   "1:07.7",
+   "3 ACROSS A RIVER",
+   "pop"
+  ],
+  [
+   "hook-b",
+   39.8,
+   "1:09.1",
+   "'Robert E. Lee': pull back, Lee's badge + his army",
+   "-"
+  ],
+  [
+   "hook-b",
+   41.2,
+   "1:10.5",
+   "'looking the other way': his army faces north, away",
+   "hit"
+  ],
+  [
+   "hook-b",
+   44.6,
+   "1:13.9",
+   "title card on 'three greatest'",
+   "riser + boom"
+  ]
+ ]
+}
