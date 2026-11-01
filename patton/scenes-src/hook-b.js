@@ -307,15 +307,14 @@ const GD = {"base":"europe","rivers":[[[2877.5,247.5],[2879.5,244.0]],[[1069.5,2
 // @@END-DATA
 const go = (id, t, dur, p, ease) => B.move(id, t, dur, p[0], p[1], ease || "power1.inOut");
 const H3 = "hook-3", H4 = "hook-4", S4 = B.P(H4);
-const T_ROOM = at(H3, "days earlier"), T_PROM = at(H3, "promise"), T_FREEZ = at(H3, "freezing"), T_VERD = at(H3, "Verdun,"), T_COAL = at(H3, "coal stove"),
-  T_SMALL = at(H3, "too small"), T_IKE = at(H3, "Dwight Eisenhower"), T_SOON = at(H3, "how soon"), T_SAID = at(H3, "The general said"), T_22 = at(H3, "December twenty-second"),
-  T_3DIV = at(H3, "three divisions"), T_WROTE = at(H3, "He wrote"), T_SOME = at(H3, "some thought"), T_BOAST = at(H3, "boasting");
-const T_NAME = at(H4, "George S. Patton,"), T_BROKE = at(H4, "He broke out"), T_FRANCE = at(H4, "across France"), T_NORTH = at(H4, "He turned north"),
+const T_19 = at(H3, "nineteenth"), T_FREEZ = at(H3, "freezing"), T_VERD = at(H3, "Verdun,"), T_IKE = at(H3, "Eisenhower asked"), T_SOON = at(H3, "how soon"),
+  T_SAID = at(H3, "The general said"), T_22 = at(H3, "twenty-second"), T_3DIV = at(H3, "three divisions"), T_EAST = at(H3, "facing east"), T_ANOTHER = at(H3, "another battle"),
+  T_SOME = at(H3, "Some thought"), T_BOAST = at(H3, "boasting");
+const T_NAME = at(H4, "George S. Patton."), T_16 = at(H4, "Sixteen months"), T_SICILY = at(H4, "Sicily"), T_SLAP = at(H4, "slapped"), T_REPR = at(H4, "reprimanded"),
+  T_BROKE = at(H4, "He broke out"), T_FRANCE = at(H4, "across France"), T_NORTH = at(H4, "He turned north"),
   T_RELV = at(H4, "relieved Bastogne"), T_RHINE = at(H4, "And he crossed"), T_DARK = at(H4, "in the dark"), T_MONTY = at(H4, "a day before Montgomery"),
   T_THESE = at(H4, "These are"), T_GREAT = at(H4, "three greatest");
-const T_CLOSE = at(H3, "surrounded"), T_DEM = at(H3, "demanded"), T_ANS = at(H3, "The answer"), T_WORD = at(H3, "single word");
-const TD0 = T_ROOM - 0.1;   // hard cut to dark
-const T_MIS = at(H4, "even he");
+const TD0 = 0;   // hard cut to dark (frame 0)
 // ---------- projections ----------
 const EU = GG.proj(7, 15217, 10331), AVP = GG.proj(12, 518886, 360710), BAP = GG.proj(11, 269078, 177338), OPP = GG.proj(13, 1095661, 711514);
 // ---------- the three close maps (full-size layers at the world origin), hidden until their cut ----------
@@ -338,15 +337,13 @@ const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration
 // =====================================================================================================================
 // hook-3: hard cut to dark (frame 0), the calendar rolls back, the Verdun room, one stamp per detail
 // =====================================================================================================================
-const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:#05070d;"; SCN.insertBefore(DK, document.getElementById("credit")); gsap.set(DK, { autoAlpha: 0 }); tl.set(DK, { autoAlpha: 1 }, TD0 - 0.01);
-const CAL = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700"><div class="k" style="font-size:22px;letter-spacing:0.4em;color:#c9b48a">THREE DAYS EARLIER</div><div class="y" style="font-size:120px;line-height:1;color:#f7f3ea;letter-spacing:0.05em">22 DEC</div><div style="font-size:30px;letter-spacing:0.4em;color:#c9b48a">1944</div></div>`,
+const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:#05070d;"; SCN.insertBefore(DK, document.getElementById("credit")); gsap.set(DK, { autoAlpha: 1 });
+const CAL = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700"><div class="k" style="font-size:22px;letter-spacing:0.4em;color:#c9b48a">&nbsp;</div><div class="y" style="font-size:120px;line-height:1;color:#f7f3ea;letter-spacing:0.05em">19 DEC</div><div style="font-size:30px;letter-spacing:0.4em;color:#c9b48a">1944</div></div>`,
   "left:0;right:0;top:250px;display:flex;justify-content:center;transform-origin:50% 0%;");
-tl.fromTo(CAL, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, TD0 + 0.02);
-SFX("hit", TD0 + 0.05);
-const ye = CAL.querySelector(".y"), DAYS = ["22 DEC", "21 DEC", "20 DEC", "19 DEC"];
-const dv = { v: 0 }; tl.to(dv, { v: 3, duration: 0.9, ease: "none", onUpdate: () => { ye.textContent = DAYS[Math.round(dv.v)]; } }, TD0 + 0.25);
-for (let k = 1; k < 4; k++) SFX("tick", TD0 + 0.25 + (k - 0.5) * 0.3);
-const TUP = T_PROM - 0.2;
+tl.fromTo(CAL, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, T_19 - 0.1);
+SFX("hit", T_19 - 0.05);
+const ye = CAL.querySelector(".y");
+const TUP = T_FREEZ - 0.45;
 tl.to(CAL, { top: 26, scale: 0.42, duration: 0.45, ease: "power3.inOut" }, TUP);
 // the room: a long table, chairs, a frosted window, one small coal stove (designed card, not a map)
 const ROOM = scr0(`<div style="position:relative;width:1920px;height:1080px;background:radial-gradient(ellipse 70% 60% at 50% 60%, #151b26, #05070d)">
@@ -375,7 +372,7 @@ const BDG = scr0(`<div style="display:flex;flex-direction:column;align-items:cen
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:150px;color:#f7f3ea">?</div></div>
   <div class="pl" style="padding:10px 34px 12px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div class="nm" style="font-size:30px;letter-spacing:0.2em">THIRD ARMY</div><div class="rl" style="font-size:19px;letter-spacing:0.22em;color:#d8cfb8">ITS GENERAL: ?</div></div></div>`,
   "left:120px;top:250px;transform-origin:50% 30%;");
-tl.fromTo(BDG, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, T_ROOM + 0.3); SFX("ref:pop", T_ROOM + 0.35);
+tl.fromTo(BDG, { autoAlpha: 0, scale: 0.5 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", immediateRender: false }, T_SAID - 0.1); SFX("ref:pop", T_SAID - 0.05);
 // the Verdun locator (designed card: a crop of the europe relief with the place dot; not a map shot)
 const [vx, vy] = EU(49.16, 5.38), [bx, by] = EU(50.002, 5.717), CS = 1.25, CW0 = 520, CH0 = 300, ox = vx - CW0 / 2 / CS, oy = vy - CH0 * 0.6 / CS;
 const LOC = scr(`<div style="position:relative;width:${CW0}px;height:${CH0}px;border-radius:12px;overflow:hidden;border:2px solid rgba(201,180,138,0.7);box-shadow:0 20px 40px rgba(0,0,0,.7);background:#06080e">
@@ -384,32 +381,30 @@ const LOC = scr(`<div style="position:relative;width:${CW0}px;height:${CH0}px;bo
   <div style="position:absolute;left:${((bx - ox) * CS + 12).toFixed(1)}px;top:${((by - oy) * CS - 16).toFixed(1)}px;font-family:Oswald;font-weight:700;font-size:20px;letter-spacing:.14em;color:#d8cfb8;text-shadow:0 2px 4px #000">BASTOGNE</div>
   <div class="dot" style="position:absolute;left:${(CW0 / 2 - 11).toFixed(1)}px;top:${(CH0 * 0.6 - 11).toFixed(1)}px;width:22px;height:22px;border-radius:50%;background:#ffd54a;box-shadow:0 0 18px #ffd54a,0 0 0 4px rgba(10,12,16,.8)"></div>
   <div style="position:absolute;left:${(CW0 / 2 + 22).toFixed(1)}px;top:${(CH0 * 0.6 - 4).toFixed(1)}px;font-family:Oswald;font-weight:700;color:#f7f3ea;text-shadow:0 2px 6px #000"><div style="font-size:34px;letter-spacing:.12em">VERDUN</div><div style="font-size:17px;letter-spacing:.24em;color:#c9b48a">FRANCE · 19 DEC 1944 · 11:00</div></div></div>`,
-  "right:90px;top:150px;", T_VERD - 0.25, T_IKE - 0.2, { autoAlpha: 0, x: 80 });
+  "right:90px;top:150px;", T_VERD - 0.25, T_IKE - 0.1, { autoAlpha: 0, x: 80 });
 SFX("ref:pop", T_VERD - 0.2);
 tl.fromTo(LOC.querySelector(".dot"), { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2.5)", immediateRender: false }, T_VERD); SFX("hit", T_VERD + 0.05);
 // one stamp per spoken detail (hit + small shake + red pulse); each replaces the last (C2)
 const STAMPS = [];
 const sst = (txt, t, until, o = {}) => { pulse(t + 0.22); const el = scr(stampHTML(txt, o.color || "#e3232f", o.size || 66, o.rot || -4, o.sub), `left:0;right:0;top:${o.top || 820}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 });
   STAMPS.push(el); return slam(el, t, { shake: 4, until }); };
-sst("A FREEZING BARRACKS", T_FREEZ - 0.05, T_COAL - 0.15, { sub: "A FRENCH ARMY BARRACKS · VERDUN" });
+sst("A FREEZING BARRACKS", T_FREEZ - 0.05, T_VERD + 0.6, { sub: "A FRENCH ARMY BARRACKS · VERDUN" });
 tl.to(ROOM.querySelector(".frost"), { opacity: 1.6, scale: 1.05, duration: 0.6 }, T_FREEZ);
-sst("A COAL STOVE TOO SMALL", T_COAL + 0.1, T_IKE - 0.15, { sub: "COATS KEPT ON" });
-tl.to(ROOM.querySelector(".stove"), { scale: 1.12, duration: 0.25, yoyo: true, repeat: 1 }, T_SMALL); tl.to(GLW, { scale: 0.7, duration: 0.6 }, T_SMALL);
 // Eisenhower: no licensed photo in the kit -> initials (DDE)
-const IKE = badge({ name: "DWIGHT D. EISENHOWER", role: "SUPREME COMMANDER", photo: null, flag: FL.us, side: "carth", corner: "tr", initials: "DDE", t: T_IKE - 0.2, until: T_WROTE - 0.2 });
-sst("EISENHOWER: HOW SOON?", T_SOON - 0.1, T_22 - 0.4, { size: 70 });
+const IKE = badge({ name: "DWIGHT D. EISENHOWER", role: "SUPREME COMMANDER", photo: null, flag: FL.us, side: "carth", corner: "tr", initials: "DDE", t: T_IKE - 0.2, until: T_EAST - 0.3 });
+sst("EISENHOWER: HOW SOON?", T_SOON - 0.1, T_SAID - 0.1, { size: 70 });
 // "the morning of December twenty-second": the calendar runs on, the badge pulses
 tl.to(BDG, { scale: 1.1, duration: 0.25, yoyo: true, repeat: 1 }, T_SAID); SFX("ref:pop", T_SAID + 0.05);
 const DAYS2 = ["19 DEC", "20 DEC", "21 DEC", "22 DEC"], dv2 = { v: 0 };
 tl.to(dv2, { v: 3, duration: 0.7, ease: "none", immediateRender: false, onUpdate: () => { ye.textContent = DAYS2[Math.round(dv2.v)]; } }, T_22 - 0.3);
 for (let k = 1; k < 4; k++) SFX("tick", T_22 - 0.3 + (k - 0.5) * 0.23);
-tl.to(CAL.querySelector(".k"), { autoAlpha: 0, duration: 0.2 }, T_22 - 0.3);
-sst("22 DECEMBER", T_22 + 0.4, T_3DIV - 0.15, { color: "#9fc0ea", size: 84, sub: "THE ATTACK · IN THREE DAYS" });
+sst("22 DECEMBER", T_22 + 0.1, T_3DIV - 0.15, { color: "#9fc0ea", size: 84, sub: "THE ATTACK · IN THREE DAYS" });
 // "with three divisions": three blue chips + THREE DIVISIONS
 const CHIP = (nm, k) => `<div class="c${k}" style="display:flex;align-items:center;gap:10px;padding:8px 18px 8px 10px;background:rgba(18,16,12,0.92);border-left:6px solid #1f4fc4"><img src="${FL.us}" style="height:26px;border:1px solid #f7f3ea"><div style="width:58px;height:38px;background:#1f4fc4;border:3px solid #f7f3ea;display:flex;align-items:center;justify-content:center"><svg width="44" height="26" viewBox="0 0 44 26"><path d="M2 2 L42 24 M42 2 L2 24" stroke="#f7f3ea" stroke-width="3"/>${k === 0 ? '<ellipse cx="22" cy="13" rx="14" ry="7" fill="none" stroke="#f7f3ea" stroke-width="3"/>' : ""}</svg></div><div style="font-family:Oswald;font-weight:700;color:#f7f3ea;font-size:28px;letter-spacing:.1em">${nm}</div></div>`;
-const DIVS = scr(`<div style="display:flex;gap:26px">${["4TH ARMORED", "26TH INFANTRY", "80TH INFANTRY"].map(CHIP).join("")}</div>`, "left:0;right:0;top:680px;display:flex;justify-content:center;", T_3DIV - 0.1, T_SOME - 0.4, { autoAlpha: 0 });
+const DIVS = scr(`<div style="display:flex;gap:26px">${["4TH ARMORED", "26TH INFANTRY", "80TH INFANTRY"].map(CHIP).join("")}</div>`, "left:0;right:0;top:680px;display:flex;justify-content:center;", T_3DIV - 0.1, T_EAST - 0.3, { autoAlpha: 0 });
 [0, 1, 2].forEach((k) => { tl.fromTo(DIVS.querySelector(".c" + k), { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.25, immediateRender: false }, T_3DIV + k * 0.22); SFX("hit", T_3DIV + k * 0.22 + 0.1); });
-sst("THREE DIVISIONS", T_3DIV + 0.7, T_SOME - 0.4, { color: "#9fc0ea", size: 74 });
+sst("THREE DIVISIONS", T_3DIV + 0.7, T_EAST - 0.3, { color: "#9fc0ea", size: 74 });
+sst("FACING EAST", T_EAST - 0.1, T_SOME - 0.4, { color: "#ef8a82", size: 78, sub: "ANOTHER BATTLE · THE SAAR →" });
 // the verbatim line (War As I Knew It)
 const QT = scr(`<div style="max-width:1300px;text-align:center;font-family:Oswald;font-weight:700;padding:18px 48px 20px;background:rgba(14,12,10,0.94);border-top:8px solid #c9b48a;color:#f7f3ea;box-shadow:0 18px 40px rgba(0,0,0,.6)"><div style="font-size:64px;letter-spacing:0.03em;line-height:1.1">“SOME PEOPLE THOUGHT I WAS BOASTING.”</div><div style="font-size:21px;letter-spacing:0.24em;color:#c9b48a;margin-top:10px">GEORGE S. PATTON · WAR AS I KNEW IT</div></div>`,
   "left:0;right:0;top:760px;display:flex;justify-content:center;transform-origin:50% 40%;", T_SOME - 0.3, null, { autoAlpha: 0 });
@@ -428,7 +423,8 @@ tl.to(PL, { autoAlpha: 0, duration: 0.1 }, T_NAME - 0.3);
 const NAME = scr(`<div style="padding:12px 40px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:84px;letter-spacing:0.08em;line-height:1.1">GEORGE S. PATTON</div><div style="font-size:24px;letter-spacing:0.24em;color:#d8cfb8">U.S. THIRD ARMY · 1944 - 1945</div></div>`,
   "left:0;right:0;top:560px;display:flex;justify-content:center;transform-origin:50% 40%;", T_NAME - 0.1, null, { autoAlpha: 0 });
 slam(NAME, T_NAME - 0.1, { from: 1.9, shake: 6 }); pulse(T_NAME + 0.15);
-sst("EVEN HE MISJUDGED IT", T_MIS - 0.05, T_BROKE - 0.3, { size: 60, sub: "HIS OWN DIARY · 17 DEC 1944" });
+tl.to(NAME, { autoAlpha: 0, duration: 0.2 }, T_SICILY - 0.1);
+sst("REPRIMANDED · 1943", T_REPR - 0.05, T_BROKE - 0.3, { size: 62, sub: "SICILY · EISENHOWER'S LETTER, 17 AUGUST" });
 // hard CUTs: a black frame hides each camera jump (whoosh + hit)
 const CUTB = document.createElement("div"); CUTB.style.cssText = "position:absolute;inset:0;background:#030406;"; SCN.insertBefore(CUTB, document.getElementById("credit")); gsap.set(CUTB, { autoAlpha: 0 });
 const cut = (t, lay, until, c, s, drift) => {
@@ -452,30 +448,6 @@ const PINS = document.getElementById("pins");
 const snap = () => new Set([...OVL.children, ...PINS.children]);
 const endScope = (s0, until) => { const els = [...OVL.children, ...PINS.children].filter((e) => !s0.has(e) && e.tagName.toLowerCase() !== "defs"); tl.set(els, { autoAlpha: 0 }, until - 0.01); };
 const vis = (t0, t1) => (el) => { gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, t0); tl.set(el, { autoAlpha: 0 }, t1 - 0.01); return el; };
-// ---------- OPENING v2: the first ~9 s of hook-3 stay IN THE DANGER (Bastogne map, 22 Dec 1944) ----------
-{
-  const BASd = BAP(50.0023, 5.7173), SD = 2.0, END_D = TD0 - 0.05;
-  tl.set(LBA, { autoAlpha: 1 }, 0); tl.set(LBA, { autoAlpha: 0 }, TD0 - 0.01);
-  cam.cx = BASd[0] + 30; cam.cy = BASd[1] + 15; cam.s = SD; applyCam(); CAM_S0 = SD;
-  camTo(TD0 - 0.01, 0.01, [1440, 810], 1); tl.call(() => { CAM_S0 = 1; }, null, TD0);
-  [flagS(FL.us, "UNITED STATES", BASd[0] - 330, BASd[1] + 190, 0, END_D), flagS(FL.de, "GERMANY", BASd[0] + 300, BASd[1] - 190, 0, END_D)].forEach(vis(0, END_D + 0.01));
-  town("BASTOGNE", BASd, "l", 0, { until: END_D });
-  unitS("dp101", "carth", [BASd[0] + 6, BASd[1] - 4], "infantry", "101ST AIRBORNE", { t: 0, until: END_D });
-  const RING = [...Array(24)].map((_, k) => [BASd[0] + Math.cos(k / 24 * 6.2832) * 95, BASd[1] + Math.sin(k / 24 * 6.2832) * 70]); RING.push(RING[0]);
-  front2(RING, SD, 0.1, { dur: 0.8, until: END_D, flip: true });
-  [0, 1, 2, 3, 4, 5].forEach((k) => { const a = k / 6 * 6.2832 + 0.4, R0 = 190, R1 = 120, p0 = [BASd[0] + Math.cos(a) * R0, BASd[1] + Math.sin(a) * R0 * 0.75], p1 = [BASd[0] + Math.cos(a) * R1, BASd[1] + Math.sin(a) * R1 * 0.75];
-    unitS("dpg" + k, "rome", p0, k % 3 === 0 ? "tank" : "infantry", "", { t: 0.1 + k * 0.1, until: END_D }); go("dpg" + k, Math.max(T_CLOSE - 0.2, 0.4) + k * 0.05, 1.6, p1); });
-  [0.5, 1.8, 3.0].forEach((d, k) => K.impact(BASd[0] + 150 * Math.cos(k * 1.7), BASd[1] + 105 * Math.sin(k * 1.7), d, { r: 8 }));
-  sst("SURROUNDED", T_CLOSE - 0.1, T_DEM - 0.25, { sub: "BASTOGNE" });
-  sst("SURRENDER DEMAND", T_DEM - 0.05, T_ANS - 0.15, { color: "#ffd54a", sub: "22 DEC 1944 · UNDER A WHITE FLAG" });
-  const WF = `<svg width="30" height="46" viewBox="0 0 30 46" style="display:block;overflow:visible"><circle cx="15" cy="9" r="6" fill="#1b1d22" stroke="#f7f3ea" stroke-width="2"/><path d="M15 15 L15 34 M15 21 L5 29 M15 21 L24 16 M15 34 L8 45 M15 34 L22 45" stroke="#f7f3ea" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M24 16 L24 -6" stroke="#cfcab9" stroke-width="2"/><path d="M24 -6 L38 -2 L24 3 Z" fill="#fff"/></svg>`;
-  [0, 1, 2, 3].forEach((k) => { const a = [BASd[0] + 230 + k * 14, BASd[1] - 120 + k * 18], b = [BASd[0] + 95, BASd[1] - 40 + k * 10];
-    const el = pinS(GG.pin(WF, a[0], a[1], {})); vis(T_DEM - 0.2 + k * 0.15, END_D)(el); tl.to(el, { left: b[0], top: b[1], duration: Math.max(T_ANS - T_DEM, 1.5), ease: "none" }, T_DEM - 0.2 + k * 0.15); });
-  SFX("static", T_DEM);
-  const ANSW = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 18px;background:rgba(14,12,10,0.95);border-top:8px solid #1f4fc4;color:#f7f3ea;box-shadow:0 18px 40px rgba(0,0,0,.6)"><div style="font-size:24px;letter-spacing:0.34em;color:#9fc0ea">THE AMERICAN ANSWER</div><div style="font-size:96px;letter-spacing:0.12em;line-height:1.05">ONE WORD</div></div>`,
-    "left:0;right:0;top:640px;display:flex;justify-content:center;transform-origin:50% 40%;", T_WORD - 0.15, END_D, { autoAlpha: 0 });
-  slam(ANSW, T_WORD - 0.15, { from: 1.7, shake: 5, until: END_D }); pulse(T_WORD + 0.1);
-}
 // ---------- CUT 1: AVRANCHES 1944 (avranches map, option 2): blue columns pour through the one highway ----------
 const AV = AVP(48.684, -1.357), PBT = AVP(48.630, -1.355), S1 = 1.05;
 cut(T1, LAV, T2, [1450, 930], S1, [10, -10, 1.07]);

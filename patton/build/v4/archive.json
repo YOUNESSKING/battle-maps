@@ -1,0 +1,56 @@
+{
+ "4": [
+  {
+   "film": "assets/film/clips/m1_coutances_halftracks.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 3.6,
+   "label": "NORMANDY \u00b7 JULY 1944"
+  },
+  {
+   "film": "assets/film/clips/m1_columns_pow.mp4",
+   "ss": 0.5,
+   "tint": true,
+   "frame": true,
+   "dur": 3.4,
+   "label": "NORMANDY \u00b7 HEDGEROW ROAD \u00b7 AUGUST 1944"
+  },
+  {
+   "photo": "assets/media/card_1944_normandy.jpg",
+   "move": "in",
+   "focus": [
+    0.3,
+    0.5
+   ],
+   "dur": 3.0
+  },
+  {
+   "photo": "assets/media/archive_patton_w.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.38
+   ],
+   "label": "LT. GEN. GEORGE S. PATTON \u00b7 THIRD ARMY",
+   "dur": 3.8,
+   "depth": true,
+   "trim": 0
+  },
+  {
+   "film": "assets/film/clips/m1_avranches_pows.mp4",
+   "ss": 0.3,
+   "tint": true,
+   "frame": true,
+   "dur": 3.4,
+   "label": "AVRANCHES \u00b7 31 JULY 1944"
+  },
+  {
+   "film": "assets/film/clips/m1_armored_cars.mp4",
+   "tint": true,
+   "frame": true,
+   "dur": 2.4,
+   "label": "AVRANCHES AREA \u00b7 AUGUST 1944"
+  }
+ ]
+}
