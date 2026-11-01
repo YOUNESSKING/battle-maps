@@ -311,8 +311,8 @@ const ux = (id) => [B.units[id].x, B.units[id].y];
 const H1 = "hook-1", H2 = "hook-2", S2 = B.P(H2);
 const T_DEC = at(H1, "December"), T_SURR = at(H1, "surrounded"), T_THOU = at(H1, "thousands"), T_PARA = at(H1, "paratroopers"), T_TANKS = at(H1, "German tanks"),
   T_SNOW = at(H1, "German tanks"), T_BEL = at(H1, "Belgian"), T_BAS = at(H1, "Bastogne."),
-  T_HUB = at(H2, "hub"), T_ROADS = at(H2, "roads of"), T_FELL = at(H2, "If it fell"), T_WEST = at(H2, "west"), T_MEUSE = at(H2, "Meuse"), T_ANT = at(H2, "Antwerp"),
-  T_ONE = at(H2, "One American general"), T_SOUTH = at(H2, "far to the south"), T_TURN = at(H2, "turned his army north"), T_NORTH = at(H2, "north"),
+  T_HUB = at(H2, "hub"), T_ROADS = at(H2, "roads met"), T_FELL = at(H2, "If it fell"), T_WEST = at(H2, "west"), T_MEUSE = at(H2, "Meuse"), T_ANT = at(H2, "Antwerp"),
+  T_TRAP = at(H2, "trap"), T_ONE = at(H2, "One American general"), T_TURN = at(H2, "turned his army north"), T_NORTH = at(H2, "north"),
   T_BROKE = at(H2, "broke through"), T_INWEEK = at(H2, "in a week"), T_WEEK = at(H2, "a week");
 // ---------- places (bastogne world px) ----------
 const BAS = L(50.0023, 5.7173), ARL = L(49.6834, 5.8167), WIL = L(49.9666, 5.9321), NEU = L(49.8408, 5.435), LUX = L(49.611, 6.130),
@@ -441,6 +441,9 @@ arw({ pts: [BAS, [(BAS[0] + MEU[0]) / 2, (BAS[1] + MEU[1]) / 2 - 30], MEU], side
 boxS("THE MEUSE", MEU[0] - 40, MEU[1] + 70, T_MEUSE, TD0 + 0.4, { size: 16 });
 const ANTR = [MEU, L(50.60, 4.75), ANTP];
 arw({ pts: ANTR, side: "rome", t: T_ANT - 0.1, dur: 1.3, width: AW(SON, 20), until: TD0 + 0.4 });
+// "trap the British and American armies": the red drive turns east at Antwerp and shuts the north in (ONE stamp, spoken words only)
+arw({ pts: [ANTP, L(51.12, 5.25), L(50.85, 6.1)], side: "rome", t: T_TRAP - 0.15, dur: 1.1, width: AW(SON, 20), until: TD0 + 0.4 });
+const TRAPST = sstamp("TRAP", 640, T_TRAP, { size: 92, sub: "THE BRITISH AND AMERICAN ARMIES", shake: 6, until: T_ONE - 0.15 });
 // =====================================================================================================================
 // zoom-out to the theatre (19 Dec): the general facing the wrong way, far to the south (Third Army on the Saar)
 // =====================================================================================================================
