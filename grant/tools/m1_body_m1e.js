@@ -102,8 +102,8 @@ slam(FULL, T_USG - 0.05, { shake: 5 });
 // ---------- casualty card (the old clean K.casualties card; real numbers only: FACTCHECK_A #11, #12) ----------
 const CAS = K.casualties({ rows: [["", "~2,800", "12,000–15,000"]], flagA: FL.us, flagB: FL.cs, headA: "UNION", headB: "CONFEDERATE", t: T_LOSS, until: END + 1, top: 250 });
 { const inner = CAS.firstElementChild; inner.style.flexWrap = "wrap"; inner.style.maxWidth = "980px";
-  const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FORT DONELSON · FEBRUARY 1862"; inner.insertBefore(h, inner.firstChild);
-  const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "UNION: CASUALTIES (NEARLY 2,800) · CONFEDERATE: PRISONERS (GRANT'S TELEGRAM)"; inner.appendChild(f); }
+  const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FORT DONELSON"; inner.insertBefore(h, inner.firstChild);
+  const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "UNION: LOSSES · CONFEDERATE: PRISONERS"; inner.appendChild(f); }
 // ---------- clean screen ----------
 declutter([LGD2, LGD1, CF, CP, BB, GB], [[T_NO - 0.1, T_BCALL - 0.2], [T_UNG - 0.1, T_ACC - 0.1], [T_TAKEN - 0.2, END + 1]]);
 fixImgs();

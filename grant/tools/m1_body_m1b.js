@@ -31,8 +31,6 @@ flagS(FL.us, 1180, 600, T_INSIDE + 0.4, END + 1, 90); flagS(FL.cs, 1560, 640, T_
 // ---------- the forts ----------
 fortIcon(FH, 0, null, { s: 22, col: "#4f8bff" }); poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], 0, null, 34);
 fortIcon(DON, 0, null, { s: 26 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 38);
-town("DOVER", DOV, T_INSIDE + 0.6, "r", { size: 30 });
-boxS("FORT HENRY", FH[0] + 20, FH[1] + 90, 0.4, null, { size: 26, sfx: false });
 boxS("FORT DONELSON", DON[0] - 20, DON[1] - 60, T_WANT + 0.8, null, { size: 26 });
 K.target(DON[0], DON[1], T_WANT + 0.6, { r: 44, side: "#9fc0ea", until: T_INSIDE });
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side)

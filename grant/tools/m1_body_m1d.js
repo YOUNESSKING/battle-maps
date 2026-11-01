@@ -64,7 +64,7 @@ RED.forEach(([id, , q], k) => { if (id !== "bu") B.move(id, T_PULLED - 0.2 + k *
 B.caption("BACK INSIDE THE RING", T_PULLED + 0.2, T_COUNTER - 0.1, "rome");
 // counterattacks: the first on the left
 K.target(1300, 655, T_LEFT, { r: 40, side: "#9fc0ea", until: T_TOOK });
-boxS("THE UNION LEFT", 1180, 610, T_LEFT + 0.2, null, { size: 26, bg: "#dcecf8" });
+boxS("THE LEFT", 1180, 610, T_LEFT + 0.2, null, { size: 26, bg: "#dcecf8" });
 // ---------- C. F. Smith storms the abatis and takes the outer works ----------
 const SB = badge({ name: "C. F. SMITH", role: "UNION DIVISION · THE LEFT", initials: "CFS", photo: PHOTO("csmith"), flag: FL.us, side: "carth", corner: "bl", t: T_SMITH, until: T_NIGHT + 0.2 });
 const ABT = `<svg width="18" height="12" viewBox="0 0 18 12" style="display:block"><path d="M1 10 L9 2 L17 10 M5 10 L9 5 L13 10" fill="none" stroke="#5b4a30" stroke-width="2.2" stroke-linecap="round"/><path d="M1 10 L9 2 L17 10" fill="none" stroke="#cdb98e" stroke-width="0.9" stroke-linecap="round"/></svg>`;
