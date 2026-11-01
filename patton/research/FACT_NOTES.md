@@ -26,3 +26,15 @@ Move 3: details in FACTCHECK_C "Best vivid details".
 
 ## Open items (not yet verified, do not voice until checked)
 - "Antwerp was the goal" (widely known; not tabulated). - the cavalry/tank career line in the background. - Montgomery's Plunder assault time ~21:00 (C check says about 2100). - "Patton marked the birthday ... brandy undrinkable" (WAIKI per A).
+
+## Packaging TEST claims (owner 2026-11-01; NOT rules; title/thumbnail text may only say what is below)
+| Claim in a title / thumbnail | Verdict | Source in this file / the FACTCHECK files |
+|---|---|---|
+| "Broke the siege of Bastogne" (title A) | TRUE | Patton's Third Army (4th Armored, Abrams's 37th Tank Bn) reached the 101st's outer foxholes at 16:50 on 26 Dec 1944; Cole, The Ardennes pp. 554-555 (FACTCHECK_B, Dec 26 link-up rows; "Dec 26 link-up" in FACT_NOTES item 10). Ring clamped shut night of 20-21 Dec (FACTCHECK_B row 8). |
+| "Reached Bastogne in a week" / "One Week" (title B, C, thumbnail) | TRUE | Verdun conference 19 Dec 1944, 11:00 -> link-up 26 Dec 1944 = 7 days (script move2-8; Cole; Patton's diary 19 Dec). |
+| "Turned his army north" (title B) | TRUE | Third Army was attacking east in the Saar; it was ordered north at Verdun on 19 Dec and attacked north on 22 Dec (FACTCHECK_B rows on Dec 17-22; Cole). Never "90 degrees" in a title: not sourced as an exact figure. |
+| "101st Airborne surrounded" (title C) | TRUE | Cole: ring closed night of 20-21 Dec; surrender demand 22 Dec (FACTCHECK_B rows 8, 10). |
+| "Battle of the Bulge" (title B) | TRUE | name of the Ardennes offensive of 16 Dec 1944 (Cole, The Ardennes: Battle of the Bulge). |
+| "From the Normandy Breakout to the Siege of Bastogne" (title C, scored 91); earlier alt. "...to Bastogne to the Rhine" | TRUE | Avranches breakout 1 Aug 1944 (Blumenson), Bastogne Dec 1944, Rhine crossing 22-23 Mar 1945 (MacDonald). Cobra itself is credited to Bradley/Collins in the video. |
+| NOT USED (unsourced or false): "saved the war", "forgotten", "in 48 hours", "in 3 days" as a title time limit, "90 degrees", "Play ball", "11,000 trapped", any casualty figure. |
+Banners: THREE DAYS = Patton promised the attack for 22 Dec three days after Verdun (diary); ONE WEEK = 19->26 Dec; THE BREAKOUT = Avranches 1 Aug 1944; BROKE THE SIEGE = as above.

@@ -147,7 +147,7 @@ B.hideUnits([...RR, "rg0", "rg1", "rg2"], TO0 + 0.3, 0.3);
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 16px;background:rgba(14,12,10,0.88);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div style="display:flex;align-items:baseline;justify-content:center;gap:18px"><div class="n" style="font-size:118px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div><div class="w0" style="font-size:46px;letter-spacing:0.12em;color:#6e675c">GERMANS</div></div>
   <div class="row2" style="display:flex;align-items:baseline;justify-content:center;gap:16px;margin-top:2px"><div style="font-size:30px;letter-spacing:0.2em;color:#d8cfb8">ABOUT</div><div class="m" style="font-size:84px;line-height:1.05;color:#f7f3ea">0</div><div class="w1" style="font-size:40px;letter-spacing:0.12em;color:#6e675c">TANKS</div></div>
-  <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">THE ARDENNES OFFENSIVE · 16 DECEMBER 1944</div></div>`, "left:60px;top:150px;transform-origin:50% 40%;", T_200 - 0.15, T_THEN - 0.3, { autoAlpha: 0 });
+  <div style="font-size:17px;letter-spacing:0.2em;color:#c9b48a;margin-top:6px">THE ARDENNES OFFENSIVE · 16 DECEMBER 1944</div></div>`, "left:60px;top:195px;transform-origin:50% 40%;", T_200 - 0.15, T_THEN - 0.3, { autoAlpha: 0 });
 slam(BIG, T_200 - 0.15, { from: 1.9, dur: 0.22, shake: 6 });
 const tickN = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySelector(sel);
   tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt(v.v); } }, t0); for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
@@ -205,7 +205,7 @@ K.raiseTerritory();
 // ---------- DECLUTTER (owner 2026-11-01): while a big card/stamp is on screen the HUD (legend, date scroll, corner badge) steps out and comes back
 // ~0.3 s after the card leaves; nothing on screen before the narrator says it. filter:opacity() so it never fights the autoAlpha tweens.
 {
-  const HUDS = [LGD, document.getElementById("date"), QB];
+  const HUDS = [LGD, QB];   // the date scroll stays on screen (owner 2026-11-01)
   const WIN = [[T_HIT - 0.15, T_TRAP - 0.1], [T_TRAP - 0.05, T_TRAP + 2.0], [T_200 - 0.2, T_THEN - 0.3], [T_WRONG + 0.05, T_TURN - 0.1], [T_NINE + 0.05, T_BROKE - 0.4], [T_WEEK - 0.15, END + 1]];
   const MERGED = []; WIN.forEach(([a, b]) => { const L2 = MERGED[MERGED.length - 1]; if (L2 && a - L2[1] < 0.9) L2[1] = Math.max(L2[1], b); else MERGED.push([a, b]); });
   HUDS.forEach((el) => { gsap.set(el, { filter: "opacity(1)" });
