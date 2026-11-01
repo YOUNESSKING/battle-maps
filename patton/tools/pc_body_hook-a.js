@@ -23,7 +23,7 @@ const H1 = "hook-1", H2 = "hook-2", S2 = B.P(H2);
 const T_DEC = at(H1, "December"), T_SURR = at(H1, "surrounded"), T_THOU = at(H1, "thousands"), T_PARA = at(H1, "paratroopers"), T_TANKS = at(H1, "German tanks"),
   T_SNOW = at(H1, "German tanks"), T_BEL = at(H1, "Belgian"), T_BAS = at(H1, "Bastogne."),
   T_HUB = at(H2, "hub"), T_ROADS = at(H2, "roads met"), T_FELL = at(H2, "If it fell"), T_WEST = at(H2, "west"), T_MEUSE = at(H2, "Meuse"), T_ANT = at(H2, "Antwerp"),
-  T_PORT = at(H2, "port"), T_TRAP = at(H2, "trap"), T_DIS = at(H2, "disaster"), T_ONE = at(H2, "One American general"), T_TURN = at(H2, "turned his army north"), T_NORTH = at(H2, "north"),
+  T_PORT = at(H2, "port"), T_TRAP = at(H2, "trap"), T_DIS = at(H2, "disaster"), T_ONE = at(H2, "But because"), T_TURN = at(H2, "turned his army north"), T_NORTH = at(H2, "north"),
   T_BROKE = at(H2, "broke through"), T_INWEEK = at(H2, "in a week"), T_WEEK = at(H2, "a week");
 // ---------- places (bastogne world px) ----------
 const BAS = L(50.0023, 5.7173), ARL = L(49.6834, 5.8167), WIL = L(49.9666, 5.9321), NEU = L(49.8408, 5.435), LUX = L(49.611, 6.130),
