@@ -16,20 +16,20 @@ Facts: patton/research/FACT_NOTES.md (every number and quote is logged there, wi
 In December nineteen forty-four, Hitler's last great offensive had trapped thousands of American paratroopers in the Belgian town of Bastogne.
 
 [MAP: hook-2 | `bastogne` wide (option 1): BIG card slams on the number (hit + shake), ticks 0 -> 200,000+ GERMANS and about 500 TANKS (ticks, red); far to the south a blue army (Third Army) faces EAST at the Saar (stamp FACING THE WRONG WAY); the blue army swings 90 degrees north on the roads (zoom-out whoosh), converges on the town; stamp BROKE THROUGH · 26 DEC (hit + shake); Patton real-photo badge]
-More than two hundred thousand Germans and about five hundred tanks had burst out of the Ardennes forest. Then the one American general facing the wrong way, far to the south, turned his whole army ninety degrees, in the middle of a battle, and broke through to Bastogne in a week.
+More than two hundred thousand Germans and about five hundred tanks had burst out of the Ardennes forest. Then an American general, facing the wrong way, far to the south, turned his whole army ninety degrees, in the middle of a battle, and broke through to Bastogne in a week.
 
 [MAP: hook-3 | OPENING v2 (2026-10-31): FIRST ~9 s stay on the Bastogne map IN THE DANGER: red ring tightens, four small German figures under a white flag walk in (static), card SURRENDER DEMAND · 22 DEC, a blank answer box that slams shut on 'a single word' (hit + shake; do NOT show the word NUTS: move 2 reveals it); THEN the twist as action, hard cut to dark: mystery "?" badge; the calendar rolls to 19 DEC 1944, VERDUN (locator); one stamp per spoken detail (hit + small shake + red pulse): A FREEZING BARRACKS · A COAL STOVE TOO SMALL · EISENHOWER: HOW SOON? · 22 DECEMBER · THREE DIVISIONS; caption: "some thought I was boasting" (Patton, War As I Knew It)]
-But the Germans were closing in on Bastogne, and on the twenty-second of December they demanded its surrender. The answer was a single word. But three days earlier, in a freezing French army barracks in Verdun, with a coal stove too small to heat it, one general had promised to strike north. Dwight Eisenhower had asked how soon he could attack. Patton said the morning of December twenty-second, with three divisions. He wrote afterwards that some of the people in the room thought he was boasting.
+Inside Bastogne, the Americans were surrounded, and on the twenty-second of December the Germans demanded their surrender. The answer was a single word. Three days earlier, in a freezing French barracks in Verdun, with a coal stove too small to heat it, one general had promised to strike north. Dwight Eisenhower had asked how soon he could attack. The general said the morning of December twenty-second, with three divisions. He wrote afterwards that some thought he was boasting.
 
 [MAP: hook-4 | Name slam: GEORGE S. PATTON (real photo badge, hit + shake); three snap cuts (~3 s each, whoosh + hit): AVRANCHES 1944 (blue columns pouring through a bottleneck), BASTOGNE 1944 (blue tanks racing a road into the town), THE RHINE 1945 (boats on a dark river); title card GEORGE S. PATTON'S 3 GREATEST TACTICAL MOVES (riser + boom)]
-His name was George S. Patton. Even he had misjudged the attack at first. He broke out of Normandy and ran an army across France. He turned north and relieved Bastogne. And he crossed the Rhine in the dark, a day before Montgomery. These are George Patton's three greatest tactical moves.
+His name was George S. Patton, and even he had misjudged the German attack at first. He broke out of Normandy and ran an army across France. He turned north and relieved Bastogne. And he crossed the Rhine in the dark, a day before Montgomery. These are George Patton's three greatest tactical moves.
 
 ---
 
 ## BACKGROUND (~1:05 – ~1:45)
 
 [ARCHIVE: OPENING v2 background, ~20 s: headline date card "1 AUGUST 1944 / NORMANDY"; Signal Corps film of Avranches / Coutances (assets/film/clips), the hedgerows; one short Patton portrait (3D depth, ~3 s, label LT. GEN. GEORGE S. PATTON · THIRD ARMY); cuts every 2.5-3 s; no birth/career cards, no slapping, never a slideshow]
-For weeks after D-Day, the Allies had been bottled up in the hedgerows of Normandy. Patton had no army in the field until the first of August, nineteen forty-four, when his Third Army came to life at noon. To get out, it first had to squeeze through a corner of Normandy only a few miles wide.
+For weeks after D-Day, the Allies had been bottled up in the hedgerows of Normandy. Patton had no army in the field until the first of August, nineteen forty-four, when his Third Army came to life at noon. To break out, the Third Army first had to squeeze through a corner of Normandy only a few miles wide.
 
 ---
 
