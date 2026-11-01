@@ -43,8 +43,8 @@ SCENES = {  # scene name -> (first tag, last tag), as built with build_scene.py 
     "move3d": ("move3-7", "move3-7"),
     "ending": ("end-1", "end-2"),
 }
-CHAPTERS = [("hook-1", "Intro: The Man Who Saved Bastogne"), ("move1-1", "Move 1: Avranches and Le Mans (Aug 1944)"),
-            ("move2-1", "Move 2: The Relief of Bastogne (Dec 1944)"), ("move3-1", "Move 3: The Rhine at Oppenheim (Mar 1945)"),
+CHAPTERS = [("hook-1", "Intro: Fort Donelson and the Man Nobody Knew"), ("m1-1", "Move 1: Fort Henry and Fort Donelson (Feb 1862)"),
+            ("m2-1", "Move 2: The Vicksburg Campaign (1863)"), ("m3-1", "Move 3: Across the James River (Jun 1864)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}

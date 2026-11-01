@@ -2,12 +2,8 @@
 PHON = exact Kokoro phonemes (English-documentary pronunciations; French/German names Americanised the way WWII histories say them)."""
 import re
 PRON = {}
-PHON = {"Patton": "pˈætən", "Bastogne": "bæstˈoʊn", "McAuliffe": "mɪkˈɔːlɪf", "Avranches": "ɑːvɹˈɑːnʃ",
-        "Pontaubault": "pˌɑːntoʊbˈoʊ", "Sélune": "seɪlˈuːn", "Le Mans": "lə mˈɑːn", "Mortain": "mɔːɹtˈæn",
-        "Alençon": "ɑːlɑːnsˈoʊn", "Argentan": "ɑːɹʒɑːntˈɑːn", "Kluge": "klˈuːɡə", "Mantes": "mˈɑːnt",
-        "Schnee Eifel": "ʃnˈeɪ ˈaɪfəl", "Meuse": "mjˈuːz", "Moselle": "moʊzˈɛl", "Chaumont": "ʃoʊmˈoʊn",
-        "Assenois": "ɑːsənwˈɑː", "Nierstein": "nˈɪɹʃtaɪn", "Hausser": "hˈaʊsɚ", "Grossgerau": "ɡɹˈoʊsɡɛɹˌaʊ",
-        "Remagen": "ɹɪmˈɑːɡən", "Verdun": "vɚdˈʌn"}
+PHON = {"Donelson": "dˈɑːnəlsən", "Tilghman": "tˈɪlmən", "Grierson": "ɡɹˈɪɹsən", "Beauregard": "bˈoʊɹəɡˌɑːɹd",
+        "Weyanoke": "wˈaɪɐnˌoʊk", "Trevilian": "tɹəvˈɪljən", "Gouverneur": "ɡˈʌvɚnɪɹ", "Appomattox": "ˌæpəmˈæɾəks"}
 
 
 def speak(k, text, voice, speed):
