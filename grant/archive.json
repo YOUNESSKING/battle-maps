@@ -1,0 +1,143 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/card_1862_cairo.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/arch_fort_henry_litho.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "FORT HENRY \u00b7 FEBRUARY 1862",
+   "dur": 4.0
+  },
+  {
+   "photo": "assets/media/archw_grant_1862_harpers.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "label": "ULYSSES S. GRANT \u00b7 1862",
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/arch_fort_henry_ci.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "FLAG OFFICER FOOTE'S GUNBOATS \u00b7 1862",
+   "dur": 4.0
+  },
+  {
+   "photo": "assets/media/arch_carondelet_gun.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "USS CARONDELET \u00b7 FORT DONELSON",
+   "dur": 3.8
+  },
+  {
+   "photo": "assets/media/arch_donelson_storm.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "FORT DONELSON \u00b7 1862",
+   "dur": 8.2
+  }
+ ],
+ "27": [
+  {
+   "photo": "assets/media/card_1864_washington.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 3.8
+  },
+  {
+   "photo": "assets/media/archw_lincoln_1863.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "label": "PRESIDENT LINCOLN \u00b7 1863",
+   "dur": 4.0
+  },
+  {
+   "photo": "assets/media/archw_grant_ltgen_harpers.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "label": "LT. GEN. ULYSSES S. GRANT \u00b7 1864",
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/arch_massaponax.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "GRANT AND MEADE \u00b7 MAY 1864",
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/arch_grant_coldharbor_tent.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "GRANT \u00b7 JUNE 1864",
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/arch_grant_coldharbor_brady.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "COLD HARBOR \u00b7 JUNE 1864",
+   "dur": 5.0
+  },
+  {
+   "photo": "assets/media/arch_massaponax.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "THE OVERLAND CAMPAIGN \u00b7 1864",
+   "dur": 6.0
+  },
+  {
+   "photo": "assets/media/arch_grant_coldharbor_tent.jpg",
+   "move": "out",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 6.3
+  }
+ ]
+}

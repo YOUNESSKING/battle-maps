@@ -28,7 +28,7 @@ SCENES = {  # scene name -> (first tag, last tag)
     "m2a": ("m2-1", "m2-2"), "m2b": ("m2-3", "m2-3"), "m2c": ("m2-4", "m2-4"), "m2d": ("m2-5", "m2-6"),
     "m2e": ("m2-7", "m2-7"), "m2f": ("m2-8", "m2-10"), "m2g": ("m2-11", "m2-12"),
     "m3a": ("m3-1", "m3-2"), "m3b": ("m3-3", "m3-4"), "m3c": ("m3-5", "m3-5"), "m3d": ("m3-6", "m3-7"),
-    "ending": ("end-1", "end-1"),
+    "ending": ("end-1", "end-2"),
 }
 CHAPTERS = [("hook-1", "Intro: Fort Donelson and the Man Nobody Knew"), ("m1-1", "Move 1: Fort Henry and Fort Donelson (Feb 1862)"),
             ("m2-1", "Move 2: The Vicksburg Campaign (1863)"), ("m3-1", "Move 3: Across the James River (Jun 1864)"),
