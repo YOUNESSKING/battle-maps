@@ -1,0 +1,19 @@
+{
+ "name": "henry",
+ "center": [
+  36.5,
+  -87.95
+ ],
+ "zoom": 11,
+ "origin_world_px": [
+  132617,
+  204167
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 61.44,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

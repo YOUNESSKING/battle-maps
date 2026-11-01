@@ -1,0 +1,19 @@
+{
+ "name": "tennessee",
+ "center": [
+  36.7,
+  -87.9
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  32092,
+  50343
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 245.14,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

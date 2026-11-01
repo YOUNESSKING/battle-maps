@@ -1,7 +1,7 @@
 #!/bin/bash
 # Grant maps, v11 look (run from anywhere). bake -> HD elevation -> detail layers -> ref_look_v11 FULL -> land mask -> DEM rivers
 cd /home/user/battle-maps/grant
-bake() { n=$1; python3 tools/bake.py $n $2 $3 $4 $5 && LIFT=1 python3 tools/bake_hd.py $n && python3 tools/make_detail_layers.py $n && FULL=1 python3 tools/ref_look_v11.py $n 2880 1620 assets/${n}_hd_lift.jpg && touch logs/$n.done; }
+bake() { n=$1; python3 tools/bake.py $n $2 $3 $4 $5 && LIFT=1 python3 tools/bake_hd.py $n && python3 tools/make_detail_layers.py $n && SIMPLE=1 python3 tools/make_detail_layers.py $n && FULL=1 python3 tools/ref_look_v11.py $n 2880 1620 assets/${n}_hd_lift.jpg && touch logs/$n.done; }
 bake donelson 36.48 -87.85 13 2.0
 bake henry 36.50 -87.95 11 2.0
 bake tennessee 36.70 -87.90 9 2.0
