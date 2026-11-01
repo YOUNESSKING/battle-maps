@@ -72,7 +72,7 @@ size = "%d MB" % round(os.path.getsize(max(mp4s, key=os.path.getsize)) / 1e6) if
 
 TA = "youtube/thumb/patton-thumb-A-three-days.jpg"; TB = "youtube/thumb/patton-thumb-B-cut-off.jpg"
 HAVE_T = os.path.exists(TA) and os.path.exists(TB)
-LEN = os.environ.get("VIDEO_LEN", "17:13")
+LEN = os.environ.get("VIDEO_LEN", "17:17")
 if not os.path.exists("build/guide_frames.jpg"):
     from PIL import Image as PI
     im = PI.open("build/qa/master-check.jpg").convert("RGB"); im.thumbnail((1800, 1800)); im.save("build/guide_frames.jpg", quality=85)
