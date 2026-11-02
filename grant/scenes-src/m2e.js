@@ -216,6 +216,10 @@ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt,
 const boxL = (txt, x, y, t, until, o = {}) => boxS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), o);
 const wstampL = (txt, x, y, t, until, c, size = 22, sub) => wstampS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), c, size, sub);
 const townL = (nm, p, side, t, o = {}) => town(nm, p, side, t, { ...o, until: Math.min(o.until ?? 1e9, t + LBL_LIFE + 0.5) });
+// owner 2026-11-02: territory fills only on the wide shots that need them, and subtler there (about half the old opacity, less orange)
+const SOFT = "saturate(0.4) opacity(0.5)";
+// a front already fully drawn at frame 0 (kills the 0.01 s draw-on at t = 0, which leaves frame 0 empty)
+const on0 = (g) => { const ps = [...g.querySelectorAll("path")]; tl.getTweensOf(ps).filter((tw) => tw.startTime() < 0.05 && tw.duration() < 0.05).forEach((tw) => tw.kill()); gsap.set(ps, { strokeDashoffset: 0 }); return g; };
 // option 1 territory layer with the seamless dissolve (out over ~2.8 s, back in over ~2.2 s)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
   Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
@@ -318,9 +322,15 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), BRU = L(31.942, -91.15
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // ---------- map ----------
-terr("assets/media/vx_vick_may03_mx.png", -1, null, 0.01);   // on screen from frame 0 (continuity)
+// owner 2026-11-02: no territory fill on this close-up (option 2: two glowing front bands, on screen from frame 0)
+// may03 ground (tools/vx_make_control.py vick(): west bank + the bridgehead Bruinsburg - Port Gibson - Grand Gulf) as option 2 fronts:
+// the west edge of the west-bank strip, round the bridgehead, then up the river (Union inside / west, red band on the Confederate side)
+const F03P = LL([[33.40, -91.52], [32.90, -91.50], [32.55, -91.48], [32.25, -91.45], [32.02, -91.42], [31.96, -91.20], [31.90, -91.20], [31.87, -91.05], [31.90, -90.93],
+  [31.97, -90.86], [32.06, -90.76], [32.12, -90.80], [32.15, -90.92], [32.10, -91.00], [32.045, -91.06], [32.06, -91.08], [32.12, -91.02], [32.20, -90.98], [32.28, -90.93],
+  [32.32, -90.90], [32.36, -90.93], [32.47, -91.02], [32.62, -91.11], [32.82, -91.13], [33.05, -91.12], [33.40, -91.18]]);
+const F03 = on0(front2(F03P, 1.25, 0, { flip: true, dur: 0.01 }));
 living(VZ.meters_per_px, [RIV], { n: 6, clouds: 0.13, sw: 4 });
-const LGD = now(legend(0, END + 1, false));
+const LGD = now(legend(0, END + 1, true));
 dateNow("MAY 1863", null);
 // ---------- camera (B3: keeps moving under the card) ----------
 const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1240, 1000, 1.0], K4 = [1290, 960, 1.22];

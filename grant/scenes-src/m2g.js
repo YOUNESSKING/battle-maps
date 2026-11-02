@@ -218,6 +218,10 @@ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt,
 const boxL = (txt, x, y, t, until, o = {}) => boxS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), o);
 const wstampL = (txt, x, y, t, until, c, size = 22, sub) => wstampS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), c, size, sub);
 const townL = (nm, p, side, t, o = {}) => town(nm, p, side, t, { ...o, until: Math.min(o.until ?? 1e9, t + LBL_LIFE + 0.5) });
+// owner 2026-11-02: territory fills only on the wide shots that need them, and subtler there (about half the old opacity, less orange)
+const SOFT = "saturate(0.4) opacity(0.5)";
+// a front already fully drawn at frame 0 (kills the 0.01 s draw-on at t = 0, which leaves frame 0 empty)
+const on0 = (g) => { const ps = [...g.querySelectorAll("path")]; tl.getTweensOf(ps).filter((tw) => tw.startTime() < 0.05 && tw.duration() < 0.05).forEach((tw) => tw.kill()); gsap.set(ps, { strokeDashoffset: 0 }); return g; };
 // option 1 territory layer with the seamless dissolve (out over ~2.8 s, back in over ~2.2 s)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
   Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
@@ -333,7 +337,7 @@ const RIVS = LL([[32.42, -90.96], [32.375, -90.93], [32.37, -90.895], [32.345, -
 // ---------- the world: mississippi layers under the feathered siege relief + on top of it ----------
 const AR = [MZ.origin_world_px[0] * 16 - SZ.origin_world_px[0], MZ.origin_world_px[1] * 16 - SZ.origin_world_px[1], 46080, 25920];
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
-const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? "mix-blend-mode:multiply;" : ""}`; parent.appendChild(i); return i; };
+const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };   // owner 2026-11-02: the river-overview fill kept (Confederacy cut in two), subtler
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vx_miss_relief.jpg", PU, false);
 const PW = group(WORLD, OVL); gimg("assets/media/vx_miss_relief.jpg", PW, false);
@@ -380,7 +384,7 @@ const F35 = `<img src="assets/media/us35_flag.png" style="height:30px;border:1px
 dateF(`${F35}<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);
 dateF(`${F35}<span>4 JULY 1863</span>`, T_JUL, null);
 // ---------- the siege lines (option 2: two glowing bands where the sides touch; no fill) ----------
-const FR = front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 });
+const FR = on0(front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 }));
 tl.set(FR, { autoAlpha: 1 }, 0);
 // flags: US (34 stars until 31 May, 35 from 1 June) outside the lines, the Confederacy inside the city
 const FUS34 = now(flagS(FL.us, "", ...L(32.36, -90.81), 0, T_SIEGE + 0.3));

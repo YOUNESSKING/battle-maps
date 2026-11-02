@@ -199,16 +199,19 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
+// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
+// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
+const TERR_A = 0.5, TERR_F = "saturate(0.55)";
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -255,13 +258,15 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 // ---------- end of kit ----------
 // @@END-KIT
 // @@KITX (move-3 agent additions, appended after tools/m1_kit.js by tools/m3_build.py; FL.us is the 35-star flag for June 1864)
+// OWNER 2026-11-02 "minimize the territory colours": where a fill stays (wide shots only) it is about half as strong and less orange/saturated
+(() => { const st = document.createElement("style"); st.textContent = ".wimg.terr, .wimg.ext.terrx { filter: saturate(0.55) opacity(0.5); }"; document.head.appendChild(st); })();
 // phrase lookup that never throws: first paragraph (of the scene) whose text has the phrase; null if none (the re-voiced ending may add a paragraph)
 const atAny = (phrase, off = 0) => { for (const k of Object.keys(B.T.paras)) if (B.T.text[k].indexOf(phrase) >= 0) return at(k, phrase, off); return null; };
 // another basemap (or a world-sized image) as a layer in the world, under the territory layers + overlay. box = [left, top, width, height] in world px
 const extImg = (src, t, until, o = {}) => { const el = document.createElement("img"); el.className = "wimg ext"; el.src = src; el.alt = "";
   const [l, tp, w, h] = o.box || [0, 0, 2880, 1620];
   Object.assign(el.style, { position: "absolute", left: l + "px", top: tp + "px", width: w + "px", height: h + "px", maxWidth: "none" });
-  if (o.mx) el.style.mixBlendMode = "multiply";
+  if (o.mx) { el.style.mixBlendMode = "multiply"; el.classList.add("terrx"); }
   if (o.under) WORLD.insertBefore(el, document.getElementById("relief")); else { const first = WORLD.querySelector(".terr"); WORLD.insertBefore(el, first || OVL); }
   gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.to(el, { autoAlpha: 1, duration: o.dur || 1.0, ease: "sine.inOut" }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: o.outDur || o.dur || 1.0, ease: "sine.inOut" }, until); return el; };
@@ -324,7 +329,8 @@ extImg("assets/ext_richmond.jpg", 0, null, { box: BOX, under: true });
 extImg("assets/media/m3_ric_jun18_mx.png", 0, null, { box: BOX, under: true, mx: true });
 const REL = document.getElementById("relief");
 const T_Z0 = T_CHG - 0.4, T_Z1 = T_PIN + 1.0;
-const PT = terr("assets/media/m3_pet_jun18_mx.png", 0, null);
+// owner 2026-11-02: the 16-18 June close-up is option 2 (fronts only); the 18 JUN colours fade in (~2.2 s) only as the final zoom-out begins
+const PT = terr("assets/media/m3_pet_jun18_mx.png", T_EVEN, null, 2.2);
 tl.set(REL, { webkitMaskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)", maskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)" }, T_Z0);
 tl.to([REL, PT], { opacity: 0, duration: 2.6, ease: "sine.inOut" }, T_Z0 + 1.2);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 }); LV.shimmer([G.APPOM, G.JAMES], { width: 1.2 }); LV.north();

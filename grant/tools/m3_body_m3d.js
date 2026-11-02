@@ -29,7 +29,8 @@ extImg("assets/ext_richmond.jpg", 0, null, { box: BOX, under: true });
 extImg("assets/media/m3_ric_jun18_mx.png", 0, null, { box: BOX, under: true, mx: true });
 const REL = document.getElementById("relief");
 const T_Z0 = T_CHG - 0.4, T_Z1 = T_PIN + 1.0;
-const PT = terr("assets/media/m3_pet_jun18_mx.png", 0, null);
+// owner 2026-11-02: the 16-18 June close-up is option 2 (fronts only); the 18 JUN colours fade in (~2.2 s) only as the final zoom-out begins
+const PT = terr("assets/media/m3_pet_jun18_mx.png", T_EVEN, null, 2.2);
 tl.set(REL, { webkitMaskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)", maskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)" }, T_Z0);
 tl.to([REL, PT], { opacity: 0, duration: 2.6, ease: "sine.inOut" }, T_Z0 + 1.2);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 }); LV.shimmer([G.APPOM, G.JAMES], { width: 1.2 }); LV.north();

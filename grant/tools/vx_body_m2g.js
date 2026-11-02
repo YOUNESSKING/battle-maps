@@ -38,7 +38,7 @@ const RIVS = LL([[32.42, -90.96], [32.375, -90.93], [32.37, -90.895], [32.345, -
 // ---------- the world: mississippi layers under the feathered siege relief + on top of it ----------
 const AR = [MZ.origin_world_px[0] * 16 - SZ.origin_world_px[0], MZ.origin_world_px[1] * 16 - SZ.origin_world_px[1], 46080, 25920];
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
-const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? "mix-blend-mode:multiply;" : ""}`; parent.appendChild(i); return i; };
+const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };   // owner 2026-11-02: the river-overview fill kept (Confederacy cut in two), subtler
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vx_miss_relief.jpg", PU, false);
 const PW = group(WORLD, OVL); gimg("assets/media/vx_miss_relief.jpg", PW, false);
@@ -85,7 +85,7 @@ const F35 = `<img src="assets/media/us35_flag.png" style="height:30px;border:1px
 dateF(`${F35}<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);
 dateF(`${F35}<span>4 JULY 1863</span>`, T_JUL, null);
 // ---------- the siege lines (option 2: two glowing bands where the sides touch; no fill) ----------
-const FR = front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 });
+const FR = on0(front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 }));
 tl.set(FR, { autoAlpha: 1 }, 0);
 // flags: US (34 stars until 31 May, 35 from 1 June) outside the lines, the Confederacy inside the city
 const FUS34 = now(flagS(FL.us, "", ...L(32.36, -90.81), 0, T_SIEGE + 0.3));

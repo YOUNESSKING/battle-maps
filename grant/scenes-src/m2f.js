@@ -220,6 +220,10 @@ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt,
 const boxL = (txt, x, y, t, until, o = {}) => boxS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), o);
 const wstampL = (txt, x, y, t, until, c, size = 22, sub) => wstampS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), c, size, sub);
 const townL = (nm, p, side, t, o = {}) => town(nm, p, side, t, { ...o, until: Math.min(o.until ?? 1e9, t + LBL_LIFE + 0.5) });
+// owner 2026-11-02: territory fills only on the wide shots that need them, and subtler there (about half the old opacity, less orange)
+const SOFT = "saturate(0.4) opacity(0.5)";
+// a front already fully drawn at frame 0 (kills the 0.01 s draw-on at t = 0, which leaves frame 0 empty)
+const on0 = (g) => { const ps = [...g.querySelectorAll("path")]; tl.getTweensOf(ps).filter((tw) => tw.startTime() < 0.05 && tw.duration() < 0.05).forEach((tw) => tw.kill()); gsap.set(ps, { strokeDashoffset: 0 }); return g; };
 // option 1 territory layer with the seamless dissolve (out over ~2.8 s, back in over ~2.2 s)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
   Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
@@ -330,11 +334,20 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
   EDW = L(32.33, -90.605), BBR = L(32.347, -90.716), CLI = L(32.341, -90.322), BOL = L(32.35, -90.459), UTI = L(32.108, -90.623), RS = L(32.087, -90.80);
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
-// ---------- territory by date (option 1, 1 s cross-fades) ----------
-const TC = [["may03", -1], ["may12", T_RAY + 0.2], ["may14", T_JAX + 0.2], ["may16", T_WEST + 0.3], ["may18", T_18M + 0.2]];
-TC.forEach(([d, t], k) => { const nx = TC[k + 1]; terr(`assets/media/vx_vick_${d}_mx.png`, t, nx ? nx[1] : null, 1.0, 1.0); });   // old layer fades while the new one comes in
+// ---------- owner 2026-11-02: territory fills ONLY on the wide five-battles shot (the wedge between the two Confederate armies), subtler;
+// m2-8 (continuing m2e) and the Champion Hill / Big Black close-ups and the end are option 2 (glowing front bands, no fill) ----------
+// may03 ground (tools/vx_make_control.py vick(): west bank + the bridgehead Bruinsburg - Port Gibson - Grand Gulf) as option 2 fronts:
+// the west edge of the west-bank strip, round the bridgehead, then up the river (Union inside / west, red band on the Confederate side)
+const F03P = LL([[33.40, -91.52], [32.90, -91.50], [32.55, -91.48], [32.25, -91.45], [32.02, -91.42], [31.96, -91.20], [31.90, -91.20], [31.87, -91.05], [31.90, -90.93],
+  [31.97, -90.86], [32.06, -90.76], [32.12, -90.80], [32.15, -90.92], [32.10, -91.00], [32.045, -91.06], [32.06, -91.08], [32.12, -91.02], [32.20, -90.98], [32.28, -90.93],
+  [32.32, -90.90], [32.36, -90.93], [32.47, -91.02], [32.62, -91.11], [32.82, -91.13], [33.05, -91.12], [33.40, -91.18]]);
+const F03 = on0(front2(F03P, 1.25, 0, { flip: true, dur: 0.01 }));
+const T_T0 = T_INL - 0.2, T_T1 = T_CH - 0.3;                      // fill in over ~2.2 s as the camera opens out; dissolves ~2.8 s into the Champion Hill dive
+tl.to(F03, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_T0);
+const TC = [["may03", T_T0], ["may12", T_RAY + 0.2], ["may14", T_JAX + 0.2], ["may16", T_WEST + 0.3]];
+TC.forEach(([d, t], k) => { const nx = TC[k + 1], el = terr(`assets/media/vx_vick_${d}_mx.png`, t, nx ? nx[1] : T_T1, k ? 1.0 : 2.2, nx ? 1.0 : 2.8); el.style.filter = SOFT; });
 living(VZ.meters_per_px, [RIV], { n: 6, clouds: 0.12, sw: 4 });
-const LGD = now(legend(0, END + 1, false));
+const LGD = now(legend(0, T_T0, true)), LGS = legend(T_T0 + 0.6, T_T1 + 0.8, false), LGL = legend(T_T1 + 1.4, END + 1, true);
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
 const DS = [["MAY 1863", null], ["1 MAY 1863", T_PG], ["12 MAY 1863", T_RAY], ["14 MAY 1863", T_JAX + 0.3], ["16 MAY 1863", T_CH + 0.3], ["17 MAY 1863", T_NEXT + 0.2], ["MAY 1863", T_COUNT], ["18 MAY 1863", T_18M + 0.3]];
 DS.forEach(([txt, t], k) => { const nx = DS[k + 1]; if (t == null) dateNow(txt, nx[1] - 0.05); else B.date(txt, t, nx ? nx[1] - 0.05 : null, 32); });
@@ -423,6 +436,9 @@ const AW1 = arw({ pts: LL([[32.30, -90.21], [32.34, -90.32], [32.35, -90.46], [3
 B.move("u17", T_WEST, 2.0, ...L(32.335, -90.515)); B.move("u15", T_WEST + 0.3, 2.4, ...L(32.40, -90.47)); B.move("u13", T_WEST + 0.2, 2.0, ...L(32.29, -90.53));
 B.move("rv", T_WEST, 1.8, ...L(32.36, -90.585)); B.move("re", T_WEST + 0.2, 1.8, ...L(32.325, -90.59)); B.move("rs", T_WEST + 0.2, 1.8, ...L(32.29, -90.595));
 // ---------- Champion Hill (16 May): close-up ----------
+// option 2 front between the lines (Union east, red west); slides west as the Confederates are pushed off the hill
+const FCH = front2(LL([[32.405, -90.563], [32.37, -90.565], [32.335, -90.567], [32.30, -90.570], [32.265, -90.572]]), KC[2], T_BEAT - 0.2,
+  { flip: true, dur: 1.4, until: T_NEXT - 0.3, to: LL([[32.405, -90.625], [32.37, -90.628], [32.335, -90.632], [32.30, -90.630], [32.265, -90.620]]), moveT: T_CUTOFF - 1.0, moveDur: 2.2 });
 BAT("CHAMPION HILL", L(32.40, -90.60), T_CH + 0.1, "16 MAY", 0, 0);
 const CHB = cmd("pemberton", "JOHN C. PEMBERTON", "CONFEDERATE ARMY", "rome", "tr", T_BEAT - 0.1, T_15 - 0.3);
 const sCH = KC[2];
@@ -463,6 +479,8 @@ B.move("u13", T_NEXT, 1.8, ...L(32.36, -90.66)); B.move("u17", T_NEXT + 0.2, 1.8
 BAT("BIG BLACK RIVER", L(32.405, -90.715), T_BB - 0.1, "THE NEXT DAY", 0, 0);
 mg(L(32.36, -90.665), L(32.36, -90.70), T_BB + 0.6, 5, 1.1 / KBB[2] * 2.2); shootS(L(32.34, -90.67), L(32.347, -90.712), T_BB + 1.0, KBB[2], { dur: 0.6, h: 30, r: 9 });
 fireGlowS(BBR[0] - 2, BBR[1], 10, T_BB + 1.4, T_1700 + 2.0);
+// option 2: once the Confederates are back across, the Big Black River is the line (Union east, red west)
+front2(BBRIV, KBB[2], T_18G - 0.1, { flip: true, dur: 1.4, until: T_COUNT + 0.4 });
 B.move("rv", T_18G - 0.2, 1.6, ...L(32.37, -90.78)); B.move("re", T_18G, 1.6, ...L(32.33, -90.785));
 const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div class="a"><div style="font-size:60px;line-height:1.05">18</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">GUNS</div></div>
@@ -485,7 +503,7 @@ glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_1
 wstampL("SHUT INSIDE VICKSBURG", ...L(32.43, -90.66), T_SHUT + 0.2, null, "#e3232f", 28);
 const VTW2 = townL("VICKSBURG", L(32.352, -90.878), "l", T_18M + 0.3);
 // ---------- 1c declutter: one big card at a time ----------
-declutter([LGD, GRB, CHB], [[0.2, T_ANS - 0.2], [T_BREAD - 0.2, T_SET - 0.3], [T_15 - 0.2, T_DIV - 0.3], [T_18G - 0.2, T_COUNT - 0.3],
+declutter([LGD, LGS, LGL, GRB, CHB], [[0.2, T_ANS - 0.2], [T_BREAD - 0.2, T_SET - 0.3], [T_15 - 0.2, T_DIV - 0.3], [T_18G - 0.2, T_COUNT - 0.3],
   [T_60 - 0.3, T_18D - 0.2], [T_FIVE - 0.1, T_18M - 0.2]]);
 gsap.set(LGD, { filter: "opacity(0)" });   // frame 0: the m2e decision card is still up, the legend is stepped out
 fixImgs();

@@ -1,7 +1,7 @@
 // m1b (m1-2), Grant #16: 12 Feb 1862, Grant marches ~15,000 men overland from Fort Henry to Fort Donelson (about a dozen miles) before
 // the Confederates can reinforce it; Floyd, Pillow and Buckner inside; "15,000 on the 8th > 50,000 a month later".
-// Basemap donelson_hd_lift (z13, v11): Fort Henry at the left edge, Fort Donelson + Dover on the Cumberland. Option 1 territory
-// m1_don_feb12 -> m1_don_feb13 (the ring) as the columns arrive.
+// Basemap donelson_hd_lift (z13, v11): Fort Henry at the left edge, Fort Donelson + Dover on the Cumberland. Option 2 (owner
+// 2026-11-02: territory minimised; a battle map -> no ground tint): the two-colour front comes in where the columns reach the works.
 // Built with: python3 tools/m1_build.py m1b donelson_hd_lift m1-2 m1-2
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // Source: cleburne/scenes-src/move1e.js kit (sherman move1_kit + the 2026-10-29 approved layers) + templates/clean_screen_v11.js,
@@ -194,16 +194,19 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
+// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
+// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
+const TERR_A = 0.5, TERR_F = "saturate(0.4)";
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -264,10 +267,8 @@ const ROAD_N = [[430, 540], [640, 512], [860, 540], [1040, 590], [1170, 630], [1
 const ROAD_S = [[430, 580], [640, 650], [880, 710], [1080, 770], [1230, 800], [1330, 845]];      // Ridge / Dover road (south)
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820], [2200, 940], [2320, 1100], [2460, 1240], [2600, 1360], [2800, 1380]];
 // ---------- map ----------
-terr("assets/media/m1_don_feb12_mx.png", 0, T_GUNSHOT + 0.6, 0.01, 1.2);
-terr("assets/media/m1_don_feb13_mx.png", T_GUNSHOT + 0.4, null, 1.4);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 }); LV.shimmer([CUMB], { width: 1.4 }); LV.scaleBar(15.37); LV.north();
-const LGD = now(legend(0, END + 1, false));
+const LGD = now(legend(0, END + 1, true));
 camera([[0, 900, 690, 0.9], [T_12, 880, 680, 0.95], [T_TODON + 0.5, 1080, 700, 1.15], [T_INSIDE + 0.3, 1390, 735, 2.0], [T_KNEW, 1395, 740, 2.2],
   [T_GUNSHOT, 1370, 740, 1.9], [T_EIGHTH, 1250, 720, 1.4], [END, 1220, 720, 1.35]]);
 dateNow("6 FEBRUARY 1862", T_12 - 0.1); B.date("12 FEBRUARY 1862", T_12, null, 34);

@@ -24,7 +24,7 @@ terr("assets/media/m1_ten_feb16_mx.png", 0, T_X2 + 0.2, 1.0, 0.9);
 extImg("assets/ext_mississippi.jpg", T_X2, T_X3 + 1.0, { dur: 0.9, outDur: 0.01 });
 extImg("assets/ext_richmond.jpg", T_X3, null, { dur: 0.9 });
 terr("assets/media/m3_mis_jul_mx.png", T_X2, T_X3 + 0.9, 0.9, 0.9);
-terr("assets/media/m3_ric_jun18_mx.png", T_X3, null, 0.9);
+terr("assets/media/m3_ric_jun18_mx.png", T_X3, T_EACH + 0.4, 0.9, 2.8);   // owner 2026-11-02: colours only on the recap maps; dissolve (~2.8 s) before the final question (option 2)
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.north();
 const R = G.ric, AP = R.APPOMATTOX;
 const KEYS = [[0, 1440, 905, 1.7], [T_X1 + 0.6, 1440, 900, 2.1], [T_X2 - 0.1, 1440, 905, 2.25], [T_X2 + 0.6, 1440, 990, 1.75], [T_X3 - 0.1, 1420, 980, 1.95],

@@ -221,6 +221,10 @@ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt,
 const boxL = (txt, x, y, t, until, o = {}) => boxS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), o);
 const wstampL = (txt, x, y, t, until, c, size = 22, sub) => wstampS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), c, size, sub);
 const townL = (nm, p, side, t, o = {}) => town(nm, p, side, t, { ...o, until: Math.min(o.until ?? 1e9, t + LBL_LIFE + 0.5) });
+// owner 2026-11-02: territory fills only on the wide shots that need them, and subtler there (about half the old opacity, less orange)
+const SOFT = "saturate(0.4) opacity(0.5)";
+// a front already fully drawn at frame 0 (kills the 0.01 s draw-on at t = 0, which leaves frame 0 empty)
+const on0 = (g) => { const ps = [...g.querySelectorAll("path")]; tl.getTweensOf(ps).filter((tw) => tw.startTime() < 0.05 && tw.duration() < 0.05).forEach((tw) => tw.kill()); gsap.set(ps, { strokeDashoffset: 0 }); return g; };
 // option 1 territory layer with the seamless dissolve (out over ~2.8 s, back in over ~2.2 s)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
   Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
@@ -329,18 +333,19 @@ const CUT = LL([[32.383, -91.001], [32.366, -91.003], [32.352, -90.975], [32.343
 // ---------- the world: mississippi copy UNDER the vicksburg relief (shows beyond the feathered edges), vicksburg layers, mississippi layer on top ----------
 const AR = [MZ.origin_world_px[0] * 4 - VZ.origin_world_px[0], MZ.origin_world_px[1] * 4 - VZ.origin_world_px[1], 11520, 6480];
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
-const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? "mix-blend-mode:multiply;filter:saturate(0.8);" : ""}`; parent.appendChild(i); return i; };
+const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vk_miss_relief.jpg", PU, false); gimg("assets/media/vk_miss_ctl_apr1_mx.png", PU, true);
-const VC1 = terr0("assets/media/vk_vick_ctl_apr1_mx.png");
-const CUE = T_MARCH + 0.4, VC20 = ctlImg("assets/media/vk_vick_ctl_apr20_mx.png", CUE, null, 2.4);
-tl.to(VC1, { autoAlpha: 0, duration: 2.4 }, CUE);
+// owner 2026-11-02: territory colours ONLY on the theatre wide shot (the river splits the Confederacy); the Vicksburg close-ups are option 2
+// (two glowing front bands round the Union west-bank ground, no fill). The colours dissolve over ~2.8 s during the dive (defined below at TZ0).
+const VC1 = terr0("assets/media/vk_vick_ctl_apr1_mx.png"); VC1.style.filter = SOFT;
+const CUE = T_MARCH + 0.4;
 const PW = group(WORLD, OVL); gimg("assets/media/vk_miss_relief.jpg", PW, false); gimg("assets/media/vk_miss_ctl_apr1_mx.png", PW, true);
 landPatch(CUT, 16); riverLine(LOOP63, 6.5);
 const RLINE = riverLine(RIV, 9);   // the river on the theatre layer (that map shows no water); fades out with it
 living(VZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%)";
-const BL = [RELIEF, VC1, VC20];
+const BL = [RELIEF, VC1];
 let maskOn = null;
 const setMask = (on) => { if (on === maskOn) return; maskOn = on; BL.forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; }); };
 // ---------- the one camera (clamped inside the vicksburg map once the mississippi layer is gone) ----------
@@ -368,6 +373,7 @@ camTo(0, T_WINT - 0.2, [C0[0] + (VKS[0] - C0[0]) * 0.35, C0[1] + (VKS[1] - C0[1]
 camTo(T_WINT - 0.2, T_CAN - 0.6 - T_WINT + 0.2, C1, S1, "sine.inOut");
 const TZ0 = T_CAN - 0.6, TZ1 = T_CAN + 1.5;
 zoom(TZ0, TZ1 - TZ0, C1, S1, C2, S2, L(32.42, -90.95), "power2.inOut"); SFX("whoosh", TZ0 - 0.05);
+tl.to(VC1, { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, TZ0);   // option 1 -> option 2, seamless during the dive
 camTo(TZ1 + 0.02, T_DIFF - TZ1, [C2[0] - 10, C2[1] + 30], S2 * 1.05, "sine.inOut");
 camTo(T_DIFF, T_CROSS - T_DIFF, C3, S3, "sine.inOut");
 camTo(T_CROSS, T_ONLY - T_CROSS, [C3[0] + 20, C3[1] - 10], S3 * 1.08, "sine.inOut");
@@ -375,7 +381,7 @@ camTo(T_ONLY, END - T_ONLY, C4, S4, "sine.inOut");
 // ---------- HUD ----------
 B.title("MOVE 2", "THE MISSISSIPPI", "1863", T_MS, T_MS + 3.0); SFX("ref:boom", T_MS + 0.1);
 B.showDate(T_WINT); B.date("WINTER 1862 - 63", T_WINT + 0.05, T_DIFF - 0.1, 32); B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
-const LGD = legend(T_MS + 3.4, END + 1);
+const LGD = legend(T_MS + 3.4, TZ0 + 1.0), LGD2 = legend(TZ0 + 1.5, END + 1, true);   // squares on the wide shot, glowing lines on the close-ups
 // ---------- flags: overview pair, delta pair, Vicksburg-map pair (both on every frame) ----------
 flagS(FL.us, "", ...L(35.45, -88.9), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
 flagS(FL.us, "", ...L(32.36, -91.38), T_WINT + 0.5, TZ0 + 1.1); flagS(FL.cs, "", ...L(32.95, -89.7), T_WINT + 0.55, TZ0 + 1.1);
@@ -435,6 +441,16 @@ boxL("STUCK", ...L(32.80, -90.70), T_STUCK + 0.2, null, { size: 18, bg: "#f3d6c8
 const NOTH = sstamp("NOTHING WORKED", 760, T_NOTH, { size: 76, shake: 4, until: T_NOTH + 1.6 });
 // "Many in the North believed Grant had run out of ideas" (belief card; Grant's badge waits until it leaves)
 const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.7, T_DIFF - 0.15, { top: 160, size: 52 });
+// ---------- option 2 fronts (close-ups): the Union west-bank ground (1 Apr: Lake Providence - Young's Point; 20 Apr: down to New Carthage),
+// red band on the Confederate side; same ground as tools/vk_make_control.py vick(). Cross-fades instead of the old apr1 -> apr20 fill.
+const RIVN_ = [[32.40, -91.00], [32.48, -91.06], [32.60, -91.12], [32.80, -91.16], [33.05, -91.12], [33.40, -91.08]];   // the river, south -> north
+const FA = front2(LL([[33.40, -91.47], [32.90, -91.45], [32.55, -91.40], [32.33, -91.30], [32.33, -91.10], [32.33, -90.898], [32.345, -90.893], [32.37, -90.895], [32.375, -90.93], ...RIVN_]),
+  1.0, TZ0 + 0.7, { flip: true, dur: 1.8, until: CUE });
+const frB = (s) => front2(LL([[33.40, -91.50], [32.90, -91.47], [32.55, -91.45], [32.25, -91.42], [32.02, -91.25], [32.02, -91.09], [32.04, -91.07], [32.13, -91.04], [32.247, -90.935],
+  [32.30, -90.90], [32.345, -90.893], [32.37, -90.895], [32.375, -90.93], ...RIVN_]), s, 0, { flip: true, dur: 0.01 });
+const FB = frB(1.5), FC = frB(2.1);
+gsap.set([FB, FC], { opacity: 0 }); tl.to(FB, { opacity: 1, duration: 2.4, ease: "sine.inOut" }, CUE); tl.to(FB, { opacity: 0, duration: 2.0, ease: "sine.inOut" }, T_ONLY + 0.3);
+tl.to(FC, { opacity: 1, duration: 2.0, ease: "sine.inOut" }, T_ONLY + 0.3);
 // =================== m2-2: Grant's idea ===================
 const GB = cmd("grant", "ULYSSES S. GRANT", "ARMY OF THE TENNESSEE", "carth", "bl", T_DIFF + 0.3, T_RUN + 0.2);
 // "march his army down the west bank, through the Louisiana swamps": Milliken's Bend - Richmond - Perkins' plantation - Hard Times
@@ -464,7 +480,7 @@ shootS(BAT[0], L(32.386, -90.925), T_RUN + 0.2, 2.2, { dur: 0.7, h: 30, r: 9 });
 shootS(BAT[1], L(32.382, -90.905), T_RUN + 1.3, 2.3, { dur: 0.7, h: 30, r: 9 });
 B.hideUnits(["ga", "gc"], T_ONLY + 1.0, 0.6);
 // ---------- 1c declutter: the legend + the corner badge step out while a big card is up (the date scroll stays) ----------
-declutter([LGD, GB], [[T_NOTH, T_NOTH + 1.6], [T_IDEAS - 0.7, T_DIFF - 0.15]]);
+declutter([LGD, LGD2, GB], [[T_NOTH, T_NOTH + 1.6], [T_IDEAS - 0.7, T_DIFF - 0.15]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

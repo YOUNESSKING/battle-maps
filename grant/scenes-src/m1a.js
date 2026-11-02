@@ -1,6 +1,6 @@
 // m1a (m1-1), Grant #16: MOVE 1 opens. Fort Henry, 6 Feb 1862: Foote's gunboats steam up the Tennessee, the fort half under water,
 // Tilghman has sent his garrison off toward Donelson and gives the fort to the navy with ~90 men; Grant's columns are still on the road.
-// Basemap henry_hd_lift (z11, v11 look). Option 1 territory 6 FEB (m1_henry_feb06a -> feb06b on the surrender, E2 pale-first).
+// Basemap henry_hd_lift (z11, v11 look). Option 2 (owner 2026-11-02: territory minimised, a close-up -> no ground tint; the fort flag says who holds it).
 // Built with: python3 tools/m1_build.py m1a henry_hd_lift m1-1 m1-1     (kit: tools/m1_kit.js, body: tools/m1_body_m1a.js)
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // Source: cleburne/scenes-src/move1e.js kit (sherman move1_kit + the 2026-10-29 approved layers) + templates/clean_screen_v11.js,
@@ -193,16 +193,19 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
+// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
+// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
+const TERR_A = 0.5, TERR_F = "saturate(0.4)";
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -258,8 +261,7 @@ const T_SIXTH = at(P1, "sixth of February"), T_FEB = at(P1, "February"), T_FOOTE
 const FH = [1324, 783], FHEI = [1298, 763], LAND = [1350, 711], DON = [1576, 822];
 const TENN = [[1100, 0], [1150, 200], [1230, 400], [1268, 600], [1282, 700], [1285, 780], [1272, 960], [1350, 1100], [1420, 1300], [1420, 1620]];
 const CUMB = [[1400, 0], [1440, 200], [1500, 400], [1560, 640], [1590, 790], [1700, 860], [1800, 960], [1900, 1000], [2050, 900], [2150, 820], [2250, 760], [2400, 860], [2540, 1140], [2800, 1320]];
-// ---------- map: territory (option 1), living map ----------
-terrLoss("assets/media/m1_henry_feb06a_mx.png", "assets/media/m1_henry_feb06b_mx.png", T_SURR, T_SURR + 1.3, null);
+// ---------- map: option 2 (no territory fill), living map ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 }); LV.shimmer([TENN, CUMB], { width: 1.6 }); LV.scaleBar(61.44); LV.north();
 // ---------- camera: wide (both rivers) -> push in on Fort Henry for the fight -> ease back to show the garrison leaving ----------
 camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 748, 2.6], [T_FLOOD + 0.6, 1308, 768, 3.0], [T_CMDR, 1330, 772, 2.7],
@@ -267,7 +269,7 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 748, 2.6]
 // ---------- date (comes in on the spoken date) + title card ----------
 B.showDate(T_SIXTH); B.date("6 FEBRUARY 1862", T_SIXTH + 0.1, null, 34);
 const TT = B.title("MOVE 1", "FORT HENRY", "6 FEBRUARY", T_FHN, T_FHN + 2.6); SFX("ref:boom", T_FHN + 0.15);
-const LGD = legend(T_FHN + 3.0, END + 1, false);
+const LGD = legend(T_FHN + 3.0, END + 1, true);
 // ---------- flags (both on every frame; re-placed for the close-up) ----------
 flagS(FL.us, 1760, 430, 0, T_STEAM + 0.8); flagS(FL.cs, 1760, 1010, 0, T_STEAM + 0.8);
 flagS(FL.us, 1500, 590, T_STEAM + 0.6, END + 1, 96); flagS(FL.cs, 1480, 905, T_STEAM + 0.7, END + 1, 96);
