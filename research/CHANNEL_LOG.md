@@ -76,6 +76,9 @@ Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant 
 | Greene | 1 (Oct 28) | 6,250 | 1,312 | 4.50% | 1,892 | 108 | 2.54% | 60.5% | 50.4% | 4:43 |
 | Greene | 2 | 3,640 | 811 | 4.09% | 997 | 36 | 1.81% | | | 4:46 |
 | Greene | 3 | 4,784 | 917 | 3.28% | 350 | 14 | 2.86% | | | 4:35 |
+| 2 Para | 1 (Oct 17) | 316 | 81 | 2.22% | 655 | 34 | 1.53% | 64.6% | 37.2% | 4:41 |
+| 2 Para | 2 | 3,678 | 1,135 | 5.82% | 9,398 | 542 | 3.58% | | | 5:07 |
+| 2 Para | 3 | 15,341 | 4,266 | 4.70% | 26,335 | 1,339 | 2.78% | | | 4:54 |
 | Patton | ~20 h | 766 | 116 | 4.96% | 530 | 10 | 0.75% | | 48.2% | 5:06 |
 Reading: Patton's retention (48.2% at 0:40) is as good as Morgan's (46.6%) and its Browse CTR is as good (4.96% vs 4.77%). The two
 differences: (1) day-1 Browse impressions ~10x lower (766 in 20 h vs 7,590), (2) Suggested CTR 0.75% vs 3.68%. Morgan launched 4 days after
@@ -88,3 +91,10 @@ Greene vs Morgan: same era, same day-1 reach (6,250 vs 7,590 Browse impressions)
 view duration 4:43 vs 6:17. Watch time per Browse impression (CTR x AVD): Morgan 4.77% x 377 s = 18.0 s; Greene 4.50% x 283 s = 12.7 s;
 Patton 4.96% x 306 s = 15.2 s. Hypothesis: YouTube expands on day 2 when watch time per impression is high (~18 s+). Test it on 2 Para,
 Thomas (after retitle), Gavin, Collins.
+
+2 Para: tiny day 1 (316 Browse impressions), then it took off through SUGGESTED first (9,398 on day 2, 26,335 on day 3) with a 3.58% Suggested
+CTR, and Browse followed (5.82% CTR on day 2). Retention at 0:40 was only 37.2% (worse than Greene's 50.4%), so 0:40 retention is NOT what
+decided it. Watch time per impression on day 2: Browse 5.82% x 307 s = 17.9 s (Morgan day 1: 18.0 s; Greene: 12.7 s; Patton: 15.2 s),
+and Suggested CTR 3.6-3.7% for both hits vs 2.5% Greene and 0.75% Patton. Updated hypothesis: a video grows when (a) clicks x minutes watched
+per impression is high (~18 s+) AND/OR (b) Suggested CTR is ~3.5%+ (the sidebar next to related videos opens up). A crowded topic is not bad
+by itself: it means a big sidebar audience, IF our thumbnail wins the click there (2 Para yes, Patton no).
