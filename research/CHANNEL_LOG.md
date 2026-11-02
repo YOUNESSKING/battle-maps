@@ -39,3 +39,11 @@ Open question: what triggers YouTube to expand a video on day 2-3 (Morgan, 2 Par
   "How One American General Broke the Normandy Stalemate" = accurate (Operation Cobra) -> worth a Test & Compare title test.
 - Collins CTR was 4.2% (normal); his problem is the 0:42 cliff (CV at 0:45), which a title/thumbnail cannot fix.
 - End screens: our own numbers say they barely work (Morgan 4 views, channel end-screen CTR 0.6%): free, but expect little.
+
+## Studio AI 2026-11-01: "the 40-second bucket"
+- 2 Para and Collins both had ~23.1% avg viewed, but at 0:40 2 Para kept >41% and Collins 36% (then <30%): 40k views vs ~600.
+- The body (1:00-12:00) is flat for every video: each point gained at 0:40 carries through the whole video (36% -> 50% at 0:40 = ~+39% watch time).
+- Its formula: 0:00-0:10 impossible stakes (no stats/logistics); 0:10-0:25 the impending catastrophe ("if the line broke here..."); 0:25-0:40 the
+  commander + his unconventional move ("everyone expected him to retreat; instead...").
+- Our check: fits the 2026-10-31 opening rule (stay in one story, no CV), except the hero enters a little earlier (by ~0:40 vs our ~0:45-1:00:
+  Thomas 0:47 and Smith 0:56 kept 69-70% at 0:30, so the exact second is not proven). Being TESTED on Patton #15 (research/CONSIDERING.md); not a rule yet.

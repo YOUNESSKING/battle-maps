@@ -16,6 +16,7 @@
 // ---------- m23 kit (Cleburne #14: move2c, move3a, move3b; inlined by tools/m23_inline.py; edit assets/src/m23_kit.js, not scenes-src) ----------
 // Copied from sherman/scenes-src/move1_kit.js + the approved A1/A2 constant-size story layer (sherman/scenes-src/test-A2-labels.js).
 // SIDES (cleburne/SCENES.md): hero Cleburne / Confederates = BLUE "carth" + Confederate First National (13 stars); Union = RED "rome" + US 35 stars.
+document.documentElement.classList.add("terr-on");   // owner 2026-11-02: territory colours kept in this wide scene (ground changes hands)
 const B = Battle();
 const { at } = B;
 const END = B.T.duration;

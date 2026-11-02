@@ -105,3 +105,6 @@ html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; backgro
    tone every multiply territory layer back to the old perceived strength. Never make territory more saturated. */
 /* Tagged by tools/scene_template.html (class "terr" on every multiply image): an attribute selector on style made renders ~10x slower. */
 img.terr { filter: saturate(0.8); }
+/* owner 2026-11-02 (Cleburne v4 test): territory colours only where they help. Every territory overlay (*_mx.png) is hidden
+   unless the scene opts in with document.documentElement.classList.add("terr-on") (wide shots where ground changes hands). */
+html:not(.terr-on) img[src*="_mx"] { visibility: hidden !important; }
