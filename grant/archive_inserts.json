@@ -1,0 +1,88 @@
+{
+ "m1-8": {
+  "from": "The North turned the letters",
+  "to": "Unconditional Surrender Grant.",
+  "shots": [
+   {
+    "photo": "assets/media/headline_donelson.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.45
+    ],
+    "dur": 3.2
+   },
+   {
+    "photo": "assets/media/archw_grant_1862_harpers.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.4
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "ULYSSES S. GRANT \u00b7 1862",
+    "trim": [
+     0.02,
+     0.16,
+     0.02,
+     0.02
+    ]
+   }
+  ]
+ },
+ "m2-11": {
+  "from": "Two assaults",
+  "to": "settled in for a siege.",
+  "shots": [
+   {
+    "photo": "assets/media/arch_vicksburg_siege.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "THE SIEGE OF VICKSBURG \u00b7 1863"
+   },
+   {
+    "photo": "assets/media/arch_vicksburg_crater.jpg",
+    "move": "left",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true
+   }
+  ]
+ },
+ "m3-7": {
+  "from": "Even so, the move changed the war.",
+  "to": "siege that would last more than nine months,",
+  "shots": [
+   {
+    "photo": "assets/media/arch_petersburg_waud.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "PETERSBURG \u00b7 1864"
+   },
+   {
+    "photo": "assets/media/arch_petersburg_dimmock.jpg",
+    "move": "right",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true
+   }
+  ]
+ }
+}
