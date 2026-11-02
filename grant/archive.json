@@ -17,7 +17,9 @@
     0.5
    ],
    "label": "FORT HENRY \u00b7 FEBRUARY 1862",
-   "dur": 4.0
+   "dur": 4.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archw_grant_1862_harpers.jpg",
@@ -27,7 +29,15 @@
     0.4
    ],
    "label": "ULYSSES S. GRANT \u00b7 1862",
-   "dur": 4.2
+   "dur": 4.2,
+   "depth": true,
+   "frame": true,
+   "trim": [
+    0.02,
+    0.16,
+    0.02,
+    0.02
+   ]
   },
   {
    "photo": "assets/media/arch_fort_henry_ci.jpg",
@@ -37,7 +47,9 @@
     0.5
    ],
    "label": "FLAG OFFICER FOOTE'S GUNBOATS \u00b7 1862",
-   "dur": 4.0
+   "dur": 4.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/arch_carondelet_gun.jpg",
@@ -47,7 +59,9 @@
     0.5
    ],
    "label": "USS CARONDELET \u00b7 FORT DONELSON",
-   "dur": 3.8
+   "dur": 3.8,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/arch_donelson_storm.jpg",
@@ -57,7 +71,9 @@
     0.5
    ],
    "label": "FORT DONELSON \u00b7 1862",
-   "dur": 8.2
+   "dur": 8.2,
+   "depth": true,
+   "frame": true
   }
  ],
  "27": [
@@ -78,7 +94,9 @@
     0.4
    ],
    "label": "PRESIDENT LINCOLN \u00b7 1863",
-   "dur": 4.0
+   "dur": 4.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/archw_grant_ltgen_harpers.jpg",
@@ -88,7 +106,15 @@
     0.4
    ],
    "label": "LT. GEN. ULYSSES S. GRANT \u00b7 1864",
-   "dur": 5.0
+   "dur": 5.0,
+   "depth": true,
+   "frame": true,
+   "trim": [
+    0.02,
+    0.14,
+    0.02,
+    0.02
+   ]
   },
   {
    "photo": "assets/media/arch_massaponax.jpg",
@@ -98,7 +124,9 @@
     0.5
    ],
    "label": "GRANT AND MEADE \u00b7 MAY 1864",
-   "dur": 5.0
+   "dur": 5.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/arch_grant_coldharbor_tent.jpg",
@@ -108,7 +136,9 @@
     0.5
    ],
    "label": "GRANT \u00b7 JUNE 1864",
-   "dur": 5.0
+   "dur": 5.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/arch_grant_coldharbor_brady.jpg",
@@ -118,7 +148,9 @@
     0.5
    ],
    "label": "COLD HARBOR \u00b7 JUNE 1864",
-   "dur": 5.0
+   "dur": 5.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/arch_massaponax.jpg",
@@ -128,7 +160,9 @@
     0.5
    ],
    "label": "THE OVERLAND CAMPAIGN \u00b7 1864",
-   "dur": 6.0
+   "dur": 6.0,
+   "depth": true,
+   "frame": true
   },
   {
    "photo": "assets/media/arch_grant_coldharbor_tent.jpg",
@@ -137,7 +171,9 @@
     0.5,
     0.5
    ],
-   "dur": 6.3
+   "dur": 6.3,
+   "depth": true,
+   "frame": true
   }
  ]
 }

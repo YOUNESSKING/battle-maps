@@ -123,11 +123,15 @@ const PB = cmd("pemberton", "JOHN C. PEMBERTON", "CONFEDERATE ARMY", "rome", "tr
 wstampL("SURRENDERED", ...L(32.345, -90.866), T_PEM + 0.4, null, "#f7f3ea", 34);
 ["rp", "r2", "r3"].forEach((id, k) => B.grey([id], T_PEM + 0.6 + k * 0.1, 0.8));
 const POLE = poleFlag("assets/media/us35_flag.png", L(32.352, -90.880), T_172 + 0.6, END + 1, 46);
-// about 29,500 men and 172 cannon
-const NUM = scr(`<div style="display:flex;gap:46px;padding:14px 44px 16px;background:rgba(18,16,12,0.93);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
-  <div class="a"><div style="font-size:20px;letter-spacing:.3em;color:#9fc0ea">SURRENDERED</div><div class="v" style="font-size:62px;line-height:1.05">~0</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">MEN</div></div>
-  <div class="b"><div style="font-size:20px;letter-spacing:.3em;color:#9fc0ea">AND</div><div style="font-size:62px;line-height:1.05">172</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">CANNON</div></div></div>`,
+// RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
+const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+  <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT · 4 JULY 1863</div>
+  <div style="font-size:30px;letter-spacing:.12em;margin-top:6px;color:#ff8a80">PEMBERTON SURRENDERED</div>
+  <div style="display:flex;gap:56px;justify-content:center;margin-top:8px">
+  <div class="a"><div class="v" style="font-size:62px;line-height:1.05">~0</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">MEN</div></div>
+  <div class="b"><div style="font-size:62px;line-height:1.05">172</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">CANNON</div></div></div></div>`,
   "left:0;right:0;top:215px;display:flex;justify-content:center;", T_295 - 0.2, T_LIN - 0.2);
+SFX("hit", T_295 - 0.05);
 { const v = NUM.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 29500, duration: 1.0, ease: "none", onUpdate: () => { v.textContent = "~" + (Math.round(st.x / 100) * 100).toLocaleString("en-US"); } }, T_295);
   for (let k = 0; k < 6; k++) SFX("tick", T_295 + k * 0.17);
   const b = NUM.querySelector(".b"); gsap.set(b, { autoAlpha: 0 }); tl.fromTo(b, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_172 - 0.1); SFX("hit", T_172); }

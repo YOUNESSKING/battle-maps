@@ -93,7 +93,26 @@ def ease(t):
     return t * t * (3 - 2 * t)
 
 
+def projector_frame(tmp, dur, W, H, enc):
+    """film/photo clip inside a rounded projector frame on a dark blurred copy, teal-orange grade (in place)"""
+    from PIL import Image as _I, ImageDraw as _D, ImageFilter as _F
+    fw, fh = int(W * 0.78) // 2 * 2, int(H * 0.78) // 2 * 2
+    mp = tmp + ".mask.png"; m = _I.new("L", (fw, fh), 0); _D.Draw(m).rounded_rectangle((6, 6, fw - 6, fh - 6), radius=int(fh * 0.06), fill=255)
+    m.filter(_F.GaussianBlur(3)).save(mp)
+    t2 = tmp + ".f.mp4"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-loop", "1", "-i", mp, "-filter_complex",
+                    f"[0:v]split[a][b];[b]scale={W}:{H},boxblur=40:2,eq=brightness=-0.32:saturation=0.35,colorbalance=bs=0.12:gs=0.04:rs=-0.06[bg];"
+                    f"[a]scale={fw}:{fh},colorbalance=rs=-0.06:gs=0.01:bs=0.09:rh=0.07:gh=0.02:bh=-0.05,eq=contrast=1.08:saturation=1.1[fg];"
+                    f"[1:v]format=gray[mk];[fg][mk]alphamerge[fgm];[bg][fgm]overlay=(W-w)/2:(H-h)/2:shortest=1,vignette=PI/4.5",
+                    "-t", f"{dur:.3f}", *enc, t2], check=True)
+    os.replace(t2, tmp); os.remove(mp)
+
+
 def photo_shot(sh, dur, out, W, H, enc):
+    if sh.get('frame') and not sh.get('_inner'):
+        raw = out + '.raw.mp4'
+        photo_shot(dict(sh, _inner=True, frame=False), dur, raw, W, H, enc)
+        projector_frame(raw, dur, W, H, enc); os.replace(raw, out); return
     src = Image.open(sh["photo"]).convert("RGB")
     tr = sh.get("trim", 0.03)  # cut scan borders / film edges (fraction per side, or [left, top, right, bottom])
     tr = [tr] * 4 if isinstance(tr, (int, float)) else tr
@@ -203,7 +222,7 @@ def build(shots, dur, out, W, H, enc):
     """render one archive paragraph (list of shot dicts) to `out`, exactly `dur` seconds"""
     fixed = sum(s.get("dur", 0) for s in shots); free = [s for s in shots if not s.get("dur")]
     each = (dur - fixed) / max(1, len(free))
-    parts, t = [], 0.0
+    parts, t, placed = [], 0.0, []
     for n, sh in enumerate(shots):
         d = sh.get("dur", each)
         if n == len(shots) - 1:
@@ -211,7 +230,8 @@ def build(shots, dur, out, W, H, enc):
         fr0, fr1 = int(round(t * FPS)), int(round((t + d) * FPS)); d = (fr1 - fr0) / FPS; t += d
         part = f"{out[:-4]}_{n}.mp4"
         (film_shot if "film" in sh else photo_shot)(sh, d, part, W, H, enc)
-        parts.append(part)
+        parts.append(part); placed.append((t - d, d, sh))
     lst = out[:-4] + "_list.txt"
     open(lst, "w").write("".join(f"file '{os.path.abspath(p)}'\n" for p in parts))
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", out], check=True)
+    return placed

@@ -78,6 +78,8 @@ def still(src, dur, out, n):
 
 
 VONLY = f"build/video_only_{H}p.mp4" if NAME == "grant" else f"build/{NAME}_video_only_{H}p.mp4"
+ARCH_EVENTS = []   # (absolute time, duration, shot) of archive shots: paper sound on headline cards, projector loop under framed shots
+INSERTS = json.load(open('archive_inserts.json')) if os.path.exists('archive_inserts.json') else {}
 segs, i = [], 0
 if AUDIO_ONLY:
     assert os.path.exists(VONLY), "run once without --audio-only first"
@@ -90,7 +92,7 @@ while i < len(paras):
     render = f"scenes/{scene}/renders/{scene}.mp4" if scene else None
     if tag.startswith("ARCHIVE") and ARCH.get(str(i)) and isinstance(ARCH[str(i)][0], dict):  # shot lists: film + moving photos (archive_shots.py)
         import archive_shots
-        archive_shots.build(ARCH[str(i)], dur, out, W, H, enc)
+        for (ts, dd, sh) in archive_shots.build(ARCH[str(i)], dur, out, W, H, enc): ARCH_EVENTS.append((starts[i] + ts, dd, sh))
     elif tag.startswith("ARCHIVE") and ARCH.get(str(i)):
         imgs = [f"assets/media/{f}" for f in ARCH[str(i)] if os.path.exists(f"assets/media/{f}")]
         parts = []
@@ -108,6 +110,18 @@ while i < len(paras):
                             f"[0:v]scale={W}:{H},fps={FPS},format=yuv420p[a];[1:v]fps={FPS},format=yuv420p,setpts=PTS-STARTPTS[b];[a][b]xfade=transition=fade:duration=1.0:offset=8.5",
                             "-t", f"{dur:.3f}", *enc, tmp], check=True)
             os.replace(tmp, out)
+        if key(paras[i]) in INSERTS:   # short archive block spliced into the map paragraph (video only; the voice runs on)
+            import archive_shots
+            ib = INSERTS[key(paras[i])]; txt = paras[i]["text"]
+            ta = dur * txt.index(ib["from"]) / len(txt); tb = min(dur, dur * (txt.index(ib["to"]) + len(ib["to"])) / len(txt) + 0.4)
+            clip = out[:-4] + "_ins.mp4"; placed = archive_shots.build(ib["shots"], tb - ta, clip, W, H, enc)
+            for (ts, dd, sh) in placed: ARCH_EVENTS.append((starts[i] + ta + ts, dd, sh))
+            r2 = out[:-4] + "_spl.mp4"
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", out, "-i", clip, "-filter_complex",
+                            f"[0:v]trim=0:{ta:.3f},setpts=PTS-STARTPTS,fps={FPS},format=yuv420p[a];[1:v]setpts=PTS-STARTPTS,fps={FPS},format=yuv420p[b];"
+                            f"[0:v]trim={tb:.3f}:{dur:.3f},setpts=PTS-STARTPTS,fps={FPS},format=yuv420p[c];[a][b][c]concat=n=3:v=1:a=0",
+                            "-t", f"{dur:.3f}", *enc, r2], check=True)
+            os.replace(r2, out)
     else:
         png = f"{SEG}/{i:02d}.png"
         card(("MAP " + key(paras[i]) + " (not rendered yet)") if not tag.startswith("ARCHIVE") else tag, png)
@@ -122,6 +136,25 @@ if not AUDIO_ONLY:
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
+subprocess.run(["python3", "tools/ref_sounds.py"], check=True)
+if AUDIO_ONLY and os.path.exists("build/arch_events.json"): ARCH_EVENTS = [tuple(e) for e in json.load(open("build/arch_events.json"))]
+elif not AUDIO_ONLY: json.dump([list(e) for e in ARCH_EVENTS], open("build/arch_events.json", "w"))
+import numpy as np, soundfile as sf
+_fx, _sr = sf.read("build/sfx.wav", always_2d=True)
+def _place(name, t, db, dur=None, fade=0.4):
+    a, r = sf.read("assets/media/sfx_ref/" + name, always_2d=True)
+    if r != _sr: a = a[(np.arange(0, len(a), r / _sr)).astype(int).clip(0, len(a) - 1)]
+    if dur: a = np.tile(a, (int(dur * _sr / len(a)) + 1, 1))[:int(dur * _sr)]
+    n = min(int(fade * _sr), len(a) // 2); a = a.copy(); a[-n:] *= np.linspace(1, 0, n)[:, None]
+    s0 = int(t * _sr); e = min(len(_fx), s0 + len(a)); _fx[s0:e] += a[:max(0, e - s0)] * 10 ** (db / 20)
+_LV = {"ref:whoosh": ("whoosh_cinematic_tunnel.wav", -14), "ref:pop": ("label_pop_dry.wav", -20), "ref:boom": ("boom_big_cinematic_impact.wav", -11), "ref:riser": ("riser_reverse_swell.wav", -17)}
+_cues = json.load(open("build/sfx_cues.json")); _n = 0
+for _t, _k, _s in _cues:
+    if _k in _LV: _place(_LV[_k][0], _t, _LV[_k][1]); _n += 1
+for _ts, _dd, _sh in ARCH_EVENTS:
+    if "headline" in _sh.get("photo", "") or _sh.get("headline_card"): _place("paper_newspaper_big_page.wav", _ts - 0.1, -12)
+    if _sh.get("frame"): _place("projector_loop.wav", _ts + 0.3, -27, dur=max(0.5, _dd - 0.3))
+sf.write("build/sfx.wav", _fx, _sr); print("reference sound design:", _n, "ref cues,", len(ARCH_EVENTS), "archive shots")
 inputs = ["-i", os.environ.get("VOICE", "audio/voice_owner.wav" if os.path.exists("audio/voice_owner.wav") else "audio/voice.wav"), "-i", "build/sfx.wav"]
 f = ["[0:a]aresample=48000,asplit=3[vo][key][key2]",
      "[1:a]aresample=48000[sfxin]",

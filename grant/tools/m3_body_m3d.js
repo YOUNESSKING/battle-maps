@@ -60,7 +60,12 @@ B.caption("LEE'S VETERANS WERE ARRIVING", T_VET + 0.1, T_18 - 0.1, "rome");
 shoot([1452, 790], [1490, 792], T_18 + 0.9, { r: 4, width: 0.6, dur: 0.5, h: 6 });
 shoot([1446, 860], [1484, 866], T_18 + 2.0, { r: 4, width: 0.6, dur: 0.5, h: 6 });
 shoot([1438, 915], [1478, 916], T_18 + 3.1, { r: 4, width: 0.6, dur: 0.5, h: 6 });
-const NC = numCard("THE UNION LOST", "ABOUT 11,400 MEN", "IN FOUR DAYS OF ASSAULTS", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_LOST - 0.1, T_GONE - 0.1, { col: "#c4121f", lc: "#ff8a80" });
+// casualty card (the OLD clean K.casualties card, STYLE_LOCK 0b; real numbers only: FACTCHECK_C #9, ~11,400 Union, 15-18 Jun). Union column only:
+// the Confederate loss is not spoken, so column B is removed.
+const NC = K.casualties({ rows: [["", "~11,400"]], flagA: FL.us, headA: "UNION", flagB: FL.cs, t: T_LOST - 0.1, until: T_GONE - 0.1, top: 250 });
+{ const inner = NC.firstElementChild; inner.removeChild(inner.lastElementChild); inner.style.flexWrap = "wrap"; inner.style.maxWidth = "700px"; inner.style.justifyContent = "center";
+  const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FOUR DAYS OF ASSAULTS"; inner.insertBefore(h, inner.firstChild);
+  const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "MEN LOST"; inner.appendChild(f); }
 const TRA = trench(NL.map((q) => [q[0] + 7, q[1]]), T_GONE - 0.2, 2.0, null, 2.0), TRB = trench(NL.map((q) => [q[0] - 7, q[1]]), T_GONE, 2.0, null, 2.0);
 wstampS("THE CHANCE WAS GONE", 1400, 990, T_GONE + 0.1, null, "#e3232f", 26);
 const GB = badge({ name: "ULYSSES S. GRANT", role: "YEARS LATER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "bl", t: T_WROTE - 0.1, until: T_EVEN + 0.6 });
