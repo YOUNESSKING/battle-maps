@@ -82,6 +82,9 @@ Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant 
 | Gavin | 1 (Oct 26) | 1,742 | 374 | 4.36% | 184 | 18 | 2.72% | 53.0% | 38.8% | 3:00 |
 | Gavin | 2 | 856 | 155 | 3.39% | 169 | 7 | 2.96% | | | 3:04 |
 | Gavin | 3 | 73 | 14 | 2.74% | 33 | 2 | 0.00% | | | (11:45 on 14 views) |
+| Smith | 1 (Oct 11) | 50 | 13 | 4.00% | 114 | 12 | 7.02% | 67.8% | 63.8% | 8:31 |
+| Smith | 2 | 9 | 6 | 0.00% | 6 | 0 | 0.00% | | | 7:26 |
+| Smith | 3 | 12 | 5 | 16.67% | 26 | 7 | 7.69% | | | 8:06 |
 | Patton | ~20 h | 766 | 116 | 4.96% | 530 | 10 | 0.75% | | 48.2% | 5:06 |
 Reading: Patton's retention (48.2% at 0:40) is as good as Morgan's (46.6%) and its Browse CTR is as good (4.96% vs 4.77%). The two
 differences: (1) day-1 Browse impressions ~10x lower (766 in 20 h vs 7,590), (2) Suggested CTR 0.75% vs 3.68%. Morgan launched 4 days after
@@ -106,3 +109,10 @@ Gavin: same 0:40 retention as 2 Para (38.8% vs 37.2%) but average view duration 
 4.36% x 180 s = 7.8 s -> cut on day 2. Ranking so far (watch time per impression, day 1-2): Morgan 18.0 s (hit), 2 Para 17.9 s (hit),
 Patton 15.2 s (slow), Greene 12.7 s (flat), Gavin 7.8 s (cut). The order matches the outcomes exactly (n=5). The lever is MINUTES WATCHED
 after the click, not the 0:40 number: 2 Para and Gavin had the same 0:40 retention and opposite fates.
+
+Smith: YouTube barely tested it (164 Browse + Suggested impressions in day 1, ~240 in 3 days; the channel had 16 subscribers and no hit yet).
+Its tiny sample looked excellent (watch time per impression 4.00% x 511 s = 20 s; Suggested CTR 7%; 63.8% at 0:40), but too small to
+trigger anything. So there are TWO stages: (1) YouTube must give the video a test batch on day 1-2 (depends on the channel's state/momentum:
+Smith 164, Patton 766 in 20 h vs Morgan 7,590 and Greene 6,250, both published in the weeks after 2 Para's explosion); (2) the batch decides:
+~18 s of watch time per impression (CTR x average view duration) and ~3.5% Suggested CTR -> expansion (Morgan, 2 Para); 13 s (Greene) holds
+flat; 8 s (Gavin) is cut. 2 Para itself started tiny (316) and broke out through Suggested on day 2.
