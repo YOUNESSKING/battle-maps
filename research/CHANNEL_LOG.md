@@ -57,3 +57,12 @@ Open question: what triggers YouTube to expand a video on day 2-3 (Morgan, 2 Par
 - Studio's thumbnail ideas checked against FACT_NOTES: "90°" is NOT sourced as an exact figure and "72-hour relief" is false (Verdun 19 Dec ->
   attack 22 Dec -> link-up 26 Dec = 7 days). Usable and sourced: THREE DAYS (promise to attack on 22 Dec), ONE WEEK, a map of the turn north.
 - Small sample (1,296 impressions): read again at day 7 with Studio numbers (retention 0:30 too).
+
+## Studio AI 2026-11-02: "it's the era" (did not answer the traffic-source question)
+Views now: Thomas 125,206 (Civil War); Morgan 47,888, Greene 3,728 (Revolution); Smith 2,220 (Korea); 2 Para 39,662 (Falklands);
+Gavin 674, Collins 615, Patton 135 at ~20 h (WWII). Thomas had 24 views / 0.94% CTR in its first 2 days, then ignited (after the retitle).
+Studio's claim: 18th-19th-century American wars are our audience; WWII is the most saturated category. Our check: by era the record is
+Civil War 1/1, Revolution 1/2 (+Greene still beats all WWII), Falklands 1/1, Korea 0/1, WWII 0/3. The WWII 0/3 is the strongest era signal,
+but Gavin and Collins also had the CV openings; Patton (good opening, 48% at 0:40) is the clean WWII test: read it at day 7.
+Its "saturation" reason is NOT supported by our search counts (research/saturation/SATURATION.md: Goose Green is crowded and a hit).
+Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant (Vicksburg), Benedict Arnold (Saratoga), Henry Knox.
