@@ -1,0 +1,139 @@
+{
+ "title": "Grant #16 HOOK-A (hook-1..hook-2) - map agent hook, round 3",
+ "note": "STYLE_LOCK 1a + 1c + 2b: clean first frame, nothing before it is spoken, one big card at a time, ONE continuous zoom, visible fire only",
+ "frames": [
+  [
+   "hook-a",
+   0,
+   "0:00.0",
+   "frame 0: the theatre, Feb 1862, territory, both flags, boats + columns already moving",
+   "-"
+  ],
+  [
+   "hook-a",
+   2.5,
+   "0:02.5",
+   "'two rivers': the Tennessee + Cumberland light up from the Ohio",
+   "pop"
+  ],
+  [
+   "hook-a",
+   4.0,
+   "0:04.0",
+   "'open doors': blue arrows up both rivers, OPEN DOORS",
+   "whoosh, hit"
+  ],
+  [
+   "hook-a",
+   5.4,
+   "0:05.4",
+   "'heart of the Confederacy': Nashville pulses",
+   "pop"
+  ],
+  [
+   "hook-a",
+   7.3,
+   "0:07.3",
+   "'two forts': the forts slam onto the rivers",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   8.0,
+   "0:08.0",
+   "'held them shut': red bars across both rivers, HELD SHUT",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   9.3,
+   "0:09.3",
+   "ONE continuous zoom (no cut, no flash)",
+   "zoom whoosh"
+  ],
+  [
+   "hook-a",
+   10.8,
+   "0:10.8",
+   "mid-zoom: the henry map, CUMBERLAND RIVER on its words",
+   "-"
+  ],
+  [
+   "hook-a",
+   12.0,
+   "0:12.0",
+   "the donelson map fades in, the Union corridor colours in",
+   "-"
+  ],
+  [
+   "hook-a",
+   13.1,
+   "0:13.1",
+   "lands on 'Fort Donelson': FORT DONELSON, the garrison",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   14.8,
+   "0:14.8",
+   "'within a week': blue columns march over from Fort Henry, legend",
+   "whoosh"
+  ],
+  [
+   "hook-a",
+   16.4,
+   "0:16.4",
+   "12,000 card slams on 'twelve thousand', ticks",
+   "hit + shake, ticks"
+  ],
+  [
+   "hook-a",
+   17.6,
+   "0:17.6",
+   "CONFEDERATE SOLDIERS lights on its words, the ring front",
+   "pop"
+  ],
+  [
+   "hook-a",
+   19.0,
+   "0:19.0",
+   "SURRENDERED: the pocket turns blue, garrison greys, white flag",
+   "hit + shake"
+  ],
+  [
+   "hook-a",
+   20.6,
+   "0:20.6",
+   "'to a general': the '?' badge",
+   "-"
+  ],
+  [
+   "hook-a",
+   22.5,
+   "0:22.5",
+   "'almost nobody...heard of': badge pulse, the ring on the HQ",
+   "pop"
+  ],
+  [
+   "hook-a",
+   25.2,
+   "0:25.2",
+   "FIRST MAJOR VICTORY / OF THE WAR",
+   "hit + shake, boom"
+  ],
+  [
+   "hook-a",
+   27.0,
+   "0:27.0",
+   "'it began as...': camera pushes in on the Union right",
+   "-"
+  ],
+  [
+   "hook-a",
+   28.4,
+   "0:28.4",
+   "A DISASTER, red pulse (hook-b starts on this camera)",
+   "hit + shake"
+  ]
+ ]
+}

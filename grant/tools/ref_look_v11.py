@@ -217,6 +217,8 @@ river = ndimage.binary_opening(water, iterations=RIV_OPEN)               # only 
 _rl, _rn = ndimage.label(river)
 if _rn:
     _rs = ndimage.sum(river, _rl, range(1, _rn + 1)); river = np.isin(_rl, 1 + np.nonzero(_rs >= 6000)[0])
+    if os.environ.get('MAIN_ONLY') == '1':                                   # owner 2026-11-01: trees ONLY along the main river, not every pocket/bay/oxbow
+        river = (_rl == 1 + int(np.argmax(_rs)))
 river = ndimage.binary_dilation(river, iterations=RIV_OPEN + 2) & water   # river banks back, creeks stay out
 _drv = ndimage.distance_transform_edt(~river)
 halfw = wmax[niy, nix] - 1
@@ -228,6 +230,7 @@ for _ in range(int(PW * PH / 25)):
     if water[iy, ix] or d < 11 + 4 * fld2[iy, ix] or d > band[iy, ix]: continue
     if rng.random() > (0.45 + 0.55 * ss(-1.5, -0.9, gap[iy, ix])) * (1 - ss(0.7, 1.0, d / band[iy, ix]) * 0.8): continue
     cand.append((x, y))
+if os.environ.get('NO_TREES') == '1': cand = []                     # owner 2026-11-01: no trees at all (distracting)
 from scipy.spatial import cKDTree
 pts = []
 if cand:
