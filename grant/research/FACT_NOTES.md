@@ -48,3 +48,13 @@ Candidates: "Accepted three Confederate surrenders" (Donelson garrison, Vicksbur
 
 ## Pronunciation (names to build in tts_names.py; see FACTCHECK files; web-verified only where marked)
 Carondelet kuh-RON-duh-let (verified), Buckner BUK-nur (verified), Chickahominy (MW), Pamunkey puh-MUN-kee (VA DOE), Weyanoke WYE-uh-nok; Tilghman TIL-mun, Yazoo, Bruinsburg BROO-inz-burg, Grierson, Beauregard BOH-ruh-gard, Trevilian truh-VIL-yun = unverified, ear-check. Hinks, Benham, Dimmock to check.
+
+## Packaging TEST claims (PACKAGING_GUIDE 0b; every claim in a title, banner or thumbnail)
+| Claim | Where used | Verdict | Source |
+|---|---|---|---|
+| Grant accepted three Confederate surrenders (Donelson garrison under Buckner 16 Feb 1862, Pemberton's army at Vicksburg 4 Jul 1863, Lee at Appomattox 9 Apr 1865) | Title A | TRUE (not "only general in history") | FACTCHECK_B #31; Memoirs, NPS |
+| "UNCONDITIONAL SURRENDER" (Grant's nickname 1862; his note to Buckner: "No terms except an unconditional and immediate surrender can be accepted") | Thumbnail A | TRUE | FACTCHECK_A #22-23 (nickname = Northern press pun on U.S.) |
+| "Cut loose from his supply base" (Grant: "cut loose from my base"; supplies still came by wagon train, so the video says he made the country furnish the balance) | Title B, thumbnail B CUT LOOSE | TRUE as Grant's own words | FACTCHECK_B #14, #25 |
+| Took the Mississippi (Vicksburg fell 4 Jul 1863; Lincoln: "The Father of Waters again goes unvexed to the sea"; Port Hudson fell 9 Jul, not stated in title) | Title B | TRUE for Vicksburg; title says "took the Mississippi" loosely (river opened) | FACTCHECK_B #27 |
+| Fort Donelson, Vicksburg, the crossing of the James | Title C, thumbnail C ACROSS THE JAMES | TRUE | FACTCHECK_A/B/C |
+| Thumbnail portrait = AI-generated generic Union general (not a photo of Grant, no insignia) | all thumbnails | checked by eye: no stars, face in frame | |
