@@ -38,3 +38,11 @@ Source: Studio AI "reignite" advice for Collins, checked against our data in res
 0:00-0:10 the impossible stakes, no statistics; 0:10-0:25 the impending catastrophe (what is lost if it fails); 0:25-0:40 the commander enters
 WITH his unconventional move (the twist), named by ~0:40. Everything else from the 2026-10-31 opening rule stays (one continuous story, no CV
 in the first two minutes, background <= 20 s before move 1). Judge it on Patton's retention at 0:30 and 0:40 vs Cleburne v3. Data: CHANNEL_LOG.
+
+## Fewer territory colours + the old narration voice (owner 2026-11-02; testing on Cleburne v4, NOT a rule yet)
+Owner noticed the hits (Thomas, Morgan, 2 Para) used almost no territory colours and the old plain narration (Kokoro am_michael, before
+voice A was locked on 2026-10-06). Repo check: Thomas 0/14 scenes with territory, Morgan 0/11, 2 Para 4/15; Gavin 8/13, Collins 10/11,
+Cleburne 11/11. Caveat: those hits also differ in topic, opening style and date, so this is a correlation to test, not proof.
+Cleburne v4 test: territory overlays hidden everywhere (lib/battle.css `html:not(.terr-on) img[src*="_mx"]`) except the wide scenes
+where ground changes hands (bg-a siege + Missionary Ridge collapse, move2a retreat, move3a 1864 theatre); no colours in the opening;
+narration = the plain Kokoro take (audio/voice.wav, same timing as voice A). Judge on Cleburne's retention at 0:30/0:40 after upload.

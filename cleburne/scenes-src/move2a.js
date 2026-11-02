@@ -7,6 +7,7 @@
 //   move2-1b belief card A BEATEN MOB; Hooker badge; the burned bridge; seven red columns; stragglers and wagons pass through the gap;
 //            the gap closes behind them: the one division that had not broken.
 // Built with: python3 tools/build_scene.py move2a chatt_hd_lift move2-1 move2-1b
+document.documentElement.classList.add("terr-on");   // owner 2026-11-02: territory colours kept in this wide scene (ground changes hands)
 const B = Battle();
 const { at } = B;
 const END = B.T.duration;

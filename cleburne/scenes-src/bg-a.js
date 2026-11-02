@@ -7,6 +7,7 @@
 // boom); push in to TUNNEL HILL: the north end holds (two-colour front, guns, X marks, NEVER GAVE WAY); "That division was Cleburne's"
 // (real photo badge, the counter takes his name); Sherman / Hooker / Howard badges on their names; the empty CLEBURNE'S METHOD card.
 // Confederates = BLUE (hero), Union = RED. Flags A1 on every frame. Facts: research/FACT_NOTES.md.
+document.documentElement.classList.add("terr-on");   // owner 2026-11-02: territory colours kept in this wide scene (ground changes hands)
 const B = Battle();
 const { at, P: PS } = B;
 const END = B.T.duration;
