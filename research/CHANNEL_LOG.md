@@ -66,3 +66,16 @@ Civil War 1/1, Revolution 1/2 (+Greene still beats all WWII), Falklands 1/1, Kor
 but Gavin and Collins also had the CV openings; Patton (good opening, 48% at 0:40) is the clean WWII test: read it at day 7.
 Its "saturation" reason is NOT supported by our search counts (research/saturation/SATURATION.md: Goose Green is crowded and a hit).
 Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant (Vicksburg), Benedict Arnold (Saratoga), Henry Knox.
+
+## Traffic sources, days 1-3 (Studio, asked 2026-11-02)
+| Video | Day | Browse impr. | Browse views | Browse CTR | Suggested impr. | Sugg. views | Sugg. CTR | Ret. 0:30 | Ret. 0:40 | AVD |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Morgan | 1 (Oct 21) | 7,590 | 1,740 | 4.77% | 2,013 | 193 | 3.68% | 68.0% | 46.6% | 6:17 |
+| Morgan | 2 | 10,158 | 2,098 | 3.74% | 3,104 | 217 | 3.32% | | | 6:29 |
+| Morgan | 3 | 28,945 | 6,182 | 4.47% | 4,378 | 240 | 2.33% | | | 5:47 |
+| Patton | ~20 h | 766 | 116 | 4.96% | 530 | 10 | 0.75% | | 48.2% | 5:06 |
+Reading: Patton's retention (48.2% at 0:40) is as good as Morgan's (46.6%) and its Browse CTR is as good (4.96% vs 4.77%). The two
+differences: (1) day-1 Browse impressions ~10x lower (766 in 20 h vs 7,590), (2) Suggested CTR 0.75% vs 3.68%. Morgan launched 4 days after
+2 Para, which was exploding (13-42k impressions/day), so YouTube showed the next video to that fresh audience; Patton launched after a pause
+and two dead WWII videos. Hypothesis (to check with Greene/Gavin/Collins/Thomas rows): day-1 reach follows channel momentum + how close the
+topic is to what our recent viewers watched; Suggested CTR is the topic/thumbnail match in the sidebar.
