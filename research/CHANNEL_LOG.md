@@ -47,3 +47,13 @@ Open question: what triggers YouTube to expand a video on day 2-3 (Morgan, 2 Par
   commander + his unconventional move ("everyone expected him to retreat; instead...").
 - Our check: fits the 2026-10-31 opening rule (stay in one story, no CV), except the hero enters a little earlier (by ~0:40 vs our ~0:45-1:00:
   Thomas 0:47 and Smith 0:56 kept 69-70% at 0:30, so the exact second is not proven). Being TESTED on Patton #15 (research/CONSIDERING.md); not a rule yet.
+
+## Patton #15 (published ~2026-11-02, title "| The Man Who Broke the Siege of Bastogne"): Studio AI, first days
+- 135 views. Retention at 0:40 = 48.2% (Collins 36.0%); avg view duration 5:06 = 29.6% (Collins 3:07). First video with the 2026-10-31/11-01
+  opening (stay in the story, name ~0:40, no stats early): the opening fix WORKED on retention.
+- Traffic: Browse (Home) 766 impressions, 116 views, CTR 4.96%; Suggested 530 impressions, 10 views, CTR 0.75%.
+- Studio's reading: Suggested places us next to big Patton/Bulge documentaries where our thumbnail does not win the click; low Suggested CTR
+  slows impressions everywhere. Saturated topic (Patton/Bulge) vs our hits (Thomas, Morgan: few strong competitors).
+- Studio's thumbnail ideas checked against FACT_NOTES: "90°" is NOT sourced as an exact figure and "72-hour relief" is false (Verdun 19 Dec ->
+  attack 22 Dec -> link-up 26 Dec = 7 days). Usable and sourced: THREE DAYS (promise to attack on 22 Dec), ONE WEEK, a map of the turn north.
+- Small sample (1,296 impressions): read again at day 7 with Studio numbers (retention 0:30 too).
