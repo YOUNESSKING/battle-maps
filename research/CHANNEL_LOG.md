@@ -79,6 +79,9 @@ Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant 
 | 2 Para | 1 (Oct 17) | 316 | 81 | 2.22% | 655 | 34 | 1.53% | 64.6% | 37.2% | 4:41 |
 | 2 Para | 2 | 3,678 | 1,135 | 5.82% | 9,398 | 542 | 3.58% | | | 5:07 |
 | 2 Para | 3 | 15,341 | 4,266 | 4.70% | 26,335 | 1,339 | 2.78% | | | 4:54 |
+| Gavin | 1 (Oct 26) | 1,742 | 374 | 4.36% | 184 | 18 | 2.72% | 53.0% | 38.8% | 3:00 |
+| Gavin | 2 | 856 | 155 | 3.39% | 169 | 7 | 2.96% | | | 3:04 |
+| Gavin | 3 | 73 | 14 | 2.74% | 33 | 2 | 0.00% | | | (11:45 on 14 views) |
 | Patton | ~20 h | 766 | 116 | 4.96% | 530 | 10 | 0.75% | | 48.2% | 5:06 |
 Reading: Patton's retention (48.2% at 0:40) is as good as Morgan's (46.6%) and its Browse CTR is as good (4.96% vs 4.77%). The two
 differences: (1) day-1 Browse impressions ~10x lower (766 in 20 h vs 7,590), (2) Suggested CTR 0.75% vs 3.68%. Morgan launched 4 days after
@@ -98,3 +101,8 @@ decided it. Watch time per impression on day 2: Browse 5.82% x 307 s = 17.9 s (M
 and Suggested CTR 3.6-3.7% for both hits vs 2.5% Greene and 0.75% Patton. Updated hypothesis: a video grows when (a) clicks x minutes watched
 per impression is high (~18 s+) AND/OR (b) Suggested CTR is ~3.5%+ (the sidebar next to related videos opens up). A crowded topic is not bad
 by itself: it means a big sidebar audience, IF our thumbnail wins the click there (2 Para yes, Patton no).
+
+Gavin: same 0:40 retention as 2 Para (38.8% vs 37.2%) but average view duration 3:00 vs ~5:00. Watch time per Browse impression on day 1:
+4.36% x 180 s = 7.8 s -> cut on day 2. Ranking so far (watch time per impression, day 1-2): Morgan 18.0 s (hit), 2 Para 17.9 s (hit),
+Patton 15.2 s (slow), Greene 12.7 s (flat), Gavin 7.8 s (cut). The order matches the outcomes exactly (n=5). The lever is MINUTES WATCHED
+after the click, not the 0:40 number: 2 Para and Gavin had the same 0:40 retention and opposite fates.
