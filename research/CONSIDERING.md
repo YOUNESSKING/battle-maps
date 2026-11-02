@@ -46,3 +46,12 @@ Cleburne 11/11. Caveat: those hits also differ in topic, opening style and date,
 Cleburne v4 test: territory overlays hidden everywhere (lib/battle.css `html:not(.terr-on) img[src*="_mx"]`) except the wide scenes
 where ground changes hands (bg-a siege + Missionary Ridge collapse, move2a retreat, move3a 1864 theatre); no colours in the opening;
 narration = the plain Kokoro take (audio/voice.wav, same timing as voice A). Judge on Cleburne's retention at 0:30/0:40 after upload.
+
+## Checklist for picking and packaging new commanders (draft from Patton #15 data, 2026-11-02; NOT a rule yet)
+1. The opening fix works (Patton 48% at 0:40 vs Collins 36%): keep the stay-in-the-story opening.
+2. Prefer high-stakes stories that few big channels cover well (Thomas, Morgan pattern). For a saturated name (Patton, Bulge, D-Day,
+   Rommel...), we only win if the packaging is clearly different from the big documentaries: check the Suggested-sidebar competition first
+   (who else ranks for the name, what their thumbnails look like) and pick the angle they don't own.
+3. Thumbnail = OUR advantage: the animated-map manoeuvre (bold arrow, the turn, the trap) + the face, not a painting or a B&W photo that
+   blends into every other video on the topic. 2-3 high-contrast words that are TRUE and sourced (no invented "90 degrees" / "72 hours").
+4. Read Browse CTR and Suggested CTR separately after 3 days; if Suggested CTR < ~2%, test a new thumbnail (Test & Compare) before anything else.
