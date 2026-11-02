@@ -73,9 +73,18 @@ Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant 
 | Morgan | 1 (Oct 21) | 7,590 | 1,740 | 4.77% | 2,013 | 193 | 3.68% | 68.0% | 46.6% | 6:17 |
 | Morgan | 2 | 10,158 | 2,098 | 3.74% | 3,104 | 217 | 3.32% | | | 6:29 |
 | Morgan | 3 | 28,945 | 6,182 | 4.47% | 4,378 | 240 | 2.33% | | | 5:47 |
+| Greene | 1 (Oct 28) | 6,250 | 1,312 | 4.50% | 1,892 | 108 | 2.54% | 60.5% | 50.4% | 4:43 |
+| Greene | 2 | 3,640 | 811 | 4.09% | 997 | 36 | 1.81% | | | 4:46 |
+| Greene | 3 | 4,784 | 917 | 3.28% | 350 | 14 | 2.86% | | | 4:35 |
 | Patton | ~20 h | 766 | 116 | 4.96% | 530 | 10 | 0.75% | | 48.2% | 5:06 |
 Reading: Patton's retention (48.2% at 0:40) is as good as Morgan's (46.6%) and its Browse CTR is as good (4.96% vs 4.77%). The two
 differences: (1) day-1 Browse impressions ~10x lower (766 in 20 h vs 7,590), (2) Suggested CTR 0.75% vs 3.68%. Morgan launched 4 days after
 2 Para, which was exploding (13-42k impressions/day), so YouTube showed the next video to that fresh audience; Patton launched after a pause
 and two dead WWII videos. Hypothesis (to check with Greene/Gavin/Collins/Thomas rows): day-1 reach follows channel momentum + how close the
 topic is to what our recent viewers watched; Suggested CTR is the topic/thumbnail match in the sidebar.
+
+Greene vs Morgan: same era, same day-1 reach (6,250 vs 7,590 Browse impressions), Browse CTR as good (4.50% vs 4.77%), better retention at
+0:40 (50.4% vs 46.6%). But day-2 Browse impressions FELL (3,640) where Morgan's ROSE (10,158, then 28,945). The visible difference: average
+view duration 4:43 vs 6:17. Watch time per Browse impression (CTR x AVD): Morgan 4.77% x 377 s = 18.0 s; Greene 4.50% x 283 s = 12.7 s;
+Patton 4.96% x 306 s = 15.2 s. Hypothesis: YouTube expands on day 2 when watch time per impression is high (~18 s+). Test it on 2 Para,
+Thomas (after retitle), Gavin, Collins.
