@@ -11,8 +11,8 @@ Facts: arnold/research/FACT_NOTES.md.
 
 ## HOOK (0:00 – ~1:05)
 
-[MAP: hook-1 | stakes frame. Frame 0 = `northeast` wide: red columns and boats already moving south from Canada down Lake Champlain toward the Hudson, a red arrow aiming at Albany, New England glowing on the right; flags 13-star US + Union Flag; ONE continuous zoom (zoom whoosh) down the Hudson onto the heights above the river, arriving on the word Saratoga; no cut, no white flash]
-In seventeen seventy-seven, a British army came down from Canada to cut the colonies in two. Its road ran down the Hudson, past a village called Saratoga.
+[MAP: hook-1 | stakes frame. Frame 0 = `northeast` wide: NEW YORK and PHILADELPHIA marked red (each pulses on its spoken name), then red columns and boats moving south from Canada down Lake Champlain toward the Hudson on 'a second British army'; flags 13-star US + Union Flag; ONE continuous zoom (zoom whoosh) down the Hudson onto the heights above the river, arriving on the word Saratoga; no cut, no white flash]
+By seventeen seventy-seven, the Revolution was going badly. The British held New York and Philadelphia, the American capital, and a second British army was coming down from Canada, toward a village called Saratoga.
 
 [MAP: hook-2 | `saratoga` wide: BIG number card slams on "six thousand" (ABOUT 6,000 SURRENDER, red); stamp FRANCE on "France"; on "no command at all" a blue "?" badge pulses on the American lines]
 Within weeks, about six thousand of its soldiers would lay down their arms there. The victory would bring France into the war. And the man who broke the British line that day had no command at all.

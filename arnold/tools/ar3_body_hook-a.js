@@ -5,18 +5,20 @@
 //   `northeast` (z8, 128x, the overview, option 1 territory at half strength), `hudson` (z10, 32x, feathered, fades in 2x-4x the overview's
 //   native scale, its own half-strength territory) and `saratoga` (z15, feathered, fades in at s 0.1-0.2). The colours dissolve (~2.8 s)
 //   during the dive; the battlefield close-up is option 2.
-// hook-1 (stakes): frame 0 = the theatre: red columns + boats already moving south from Canada down Lake Champlain, the Americans in New
-//   England (soft blue glow), both flags, territory; 1777 on the year; "a British army": the red pulse; "came down from Canada": red arrow down
-//   the lake toward Albany; "to cut the colonies in two": a red cut line Canada - Hudson - New York, CUT IN TWO; "Its road ran down the Hudson":
-//   the ONE continuous zoom (whoosh, no cut, no flash) down the Hudson, HUDSON on its word, landing on the word "Saratoga" (the village).
+// hook-1 v2 (owner 2026-11-03, new stakes line): frame 0 = the theatre, units moving (British at the north end of the lake and at New York,
+//   Americans in New England), both flags, territory; 1777 on the year; "going badly": GOING BADLY + red pulse; "New York": ring, label,
+//   flag; "Philadelphia, the American capital": an edge marker at the SW map edge (the city is off the map); "a second British army": the
+//   column starts down Lake Champlain; "coming down from Canada": the red arrow + the ONE continuous zoom (whoosh, no cut, no flash),
+//   landing on "Saratoga". No CUT IN TWO (no longer spoken).
 // hook-2: OCTOBER 1777; ABOUT 6,000 slams on "six thousand" (ticks); "lay down their arms there": grey + white flag at Saratoga; FRANCE on
 //   "France"; "the man who broke the British line that day": push in to the battlefield, the blue arrow breaks the line at the German
 //   redoubt; the "?" badge on "no command at all". hook-b starts on this last frame (keep in sync with tools/ar3_body_hook-b.js).
 // Facts: FACT_NOTES (Burgoyne from Canada down Champlain/Hudson toward Albany; ~6,000 surrendered at Saratoga 17 Oct; France 1778).
 // @@KIT
 const H1 = "hook-1", H2 = "hook-2", S2 = B.P(H2);
-const T_1777 = at(H1, "seventeen seventy-seven"), T_ARMY = at(H1, "a British army"), T_DOWN = at(H1, "came down from Canada"), T_CUT = at(H1, "to cut the colonies"),
-  T_TWO = at(H1, "in two"), T_ROAD = at(H1, "Its road ran"), T_HUD = at(H1, "Hudson"), T_PAST = at(H1, "past a village"), T_SARA = at(H1, "Saratoga");
+const T_1777 = at(H1, "seventeen seventy-seven"), T_REV = at(H1, "the Revolution"), T_BADLY = at(H1, "going badly"), T_HELD = at(H1, "The British held"),
+  T_NY = at(H1, "New York"), T_PHIL = at(H1, "Philadelphia"), T_CAP = at(H1, "the American capital"), T_ARMY = at(H1, "a second British army"),
+  T_DOWN = at(H1, "coming down from Canada"), T_TOWARD = at(H1, "toward a village"), T_SARA = at(H1, "Saratoga");
 const T_WEEKS = at(H2, "Within weeks"), T_6000 = at(H2, "six thousand"), T_SOLD = at(H2, "soldiers"), T_ARMS = at(H2, "lay down their arms"),
   T_VIC = at(H2, "The victory"), T_FR = at(H2, "France"), T_MAN = at(H2, "And the man"), T_BROKE = at(H2, "broke the British line"),
   T_DAY = at(H2, "that day"), T_NOCMD = at(H2, "no command at all");
@@ -40,49 +42,66 @@ const CAMPL = [[1440, 655], [1560, 668], [1700, 660], [1850, 640], [2000, 610], 
 // =====================================================================================================================
 // hook-1: frame 0 = the theatre (option 1, half strength), units already moving
 // =====================================================================================================================
-const C0 = [LD(44.2, -72.6)[0], LD(44.2, -72.6)[1]], S0 = 0.0072, C0b = [C0[0] - 4000, C0[1] + 8000], S0b = 0.0078;
+const NEP = (x, y) => [NE.rect[0] + x * NE.k, NE.rect[1] + y * NE.k];        // northeast map px -> world
+const C0 = NEP(1240, 960), S0 = 0.0064, C0b = NEP(1230, 930), S0b = 0.0068;
 camSet(C0, S0);
-const TZ0 = T_ROAD - 0.25, TZ1 = T_SARA + 0.1;
+const TZ0 = T_DOWN + 0.25, TZ1 = T_SARA + 0.1;   // the dive starts on "coming down from Canada", lands on "Saratoga"
 camTo(0, TZ0, C0b, S0b, "sine.inOut");
 const K0 = 1 / S0;
 // flags (no names, v11): on each side's ground
-const F0 = [flagS(FL.gb, "", ...LD(46.2, -74.6), null, TZ0 + 1.2), flagS(FL.us, "", ...LD(43.0, -71.3), null, TZ0 + 1.2)]; gsap.set(F0, { autoAlpha: 1 });
+const F0 = [flagS(FL.gb, "", ...LD(46.0, -74.8), null, TZ0 + 1.2), flagS(FL.us, "", ...LD(43.0, -71.3), null, TZ0 + 1.2)]; gsap.set(F0, { autoAlpha: 1 });
 // New England (soft blue glow on the right, world-sized)
-const NEG = GG.pin(`<div style="width:${360 * 128}px;height:${300 * 128}px;border-radius:50%;background:radial-gradient(ellipse at center, rgba(120,170,255,0.38) 0%, rgba(120,170,255,0.16) 45%, rgba(120,170,255,0) 70%)"></div>`, ...NENG, {});
+const NEG = GG.pin(`<div style="width:${360 * 128}px;height:${300 * 128}px;border-radius:50%;background:radial-gradient(ellipse at center, rgba(120,170,255,0.32) 0%, rgba(120,170,255,0.14) 45%, rgba(120,170,255,0) 70%)"></div>`, ...NENG, {});
 gsap.set(NEG, { autoAlpha: 1 }); tl.to(NEG, { autoAlpha: 0.55, duration: 1.2, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.5); tl.to(NEG, { autoAlpha: 0, duration: 1.2 }, TZ0 + 0.6);
-// the British army already coming south: boats down the lake, red columns on the shore road; blue troops in New England + at Albany
-const BT = [0, 1, 2, 3].map((k) => gunboat(sub(LAKE, 0.02 + k * 0.06, 0.55 + k * 0.08, 12), 0, TZ0 + 1.0, TZ0 + 1.6, { s: 15, side: "rome" }));
+// units already moving at frame 0: British boats + a column at the north end of the lake (they start south on "a second British army"),
+// a red garrison at New York with ships, blue troops in New England and on the Hudson
+const BT = [0, 1, 2, 3].map((k) => gunboat(sub(LAKE, 0.0 + k * 0.035, 0.12 + k * 0.035, 6), 0, T_ARMY, TZ0 + 1.6, { s: 15, side: "rome" }));
 gsap.set(BT, { autoAlpha: 1 });
-const RC = [unitS("rc1", "rome", posOn(LAKE, 0.25), "infantry", ""), unitS("rc2", "rome", posOn(LAKE, 0.12), "infantry", "")];
+const BT2 = [0, 1, 2, 3].map((k) => gunboat(sub(LAKE, 0.12 + k * 0.035, 0.6 + k * 0.08, 12), T_ARMY, TZ0 + 1.0 - T_ARMY, null, { s: 15, side: "rome" }));
+BT.forEach((el) => tl.set(el, { autoAlpha: 0 }, T_ARMY)); tl.to(BT2, { autoAlpha: 0, duration: 0.5 }, TZ0 + 1.6);
+const RC = [unitS("rc1", "rome", posOn(LAKE, 0.06), "infantry", ""), unitS("rc2", "rome", MTL, "infantry", "")];
 RC.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
+go("rc2", 0, T_ARMY, posOn(LAKE, 0.02));
 const SH = (pts, dx) => pts.map(([x, y]) => [x + dx, y]);
-along("rc1", SH(sub(LAKE, 0.25, 0.75, 12), 2600), 0, TZ0 + 0.6, 12); along("rc2", SH(sub(LAKE, 0.12, 0.62, 12), -2600), 0, TZ0 + 0.6, 12);
-const UB = [unitS("ub1", "carth", LD(42.95, -73.65), "infantry", ""), unitS("ub2", "carth", LD(43.0, -71.9), "infantry", ""), unitS("ub3", "carth", LD(42.4, -72.6), "infantry", "")];
+along("rc1", SH(sub(LAKE, 0.06, 0.7, 12), 2600), T_ARMY, TZ0 + 0.6 - T_ARMY, 12); along("rc2", SH(sub(LAKE, 0.02, 0.6, 12), -2600), T_ARMY + 0.2, TZ0 + 0.6 - T_ARMY, 12);
+const NYP = LD(40.71, -74.0), NYU = LD(40.80, -73.95);
+const RNY = unitS("rny", "rome", NYU, "infantry", ""); gsap.set(B.units.rny.el, { autoAlpha: 1 });
+const NYS = [0, 1].map((k) => gunboat([LD(40.55 - k * 0.05, -73.70 + k * 0.25), LD(40.52 - k * 0.04, -73.95 + k * 0.2)], 0, T_NY + 1.5, TZ0 + 0.8, { s: 15, side: "rome" })); gsap.set(NYS, { autoAlpha: 1 });
+const UB = [unitS("ub1", "carth", LD(42.95, -73.65), "infantry", ""), unitS("ub2", "carth", LD(43.0, -71.9), "infantry", ""), unitS("ub3", "carth", LD(41.6, -73.9), "infantry", "")];
 UB.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
-go("ub2", 0, TZ0, LD(43.0, -72.9)); go("ub3", 0, TZ0, LD(42.7, -73.2));
-B.hideUnits(["rc1", "rc2", "ub1", "ub2", "ub3"], TZ0 + 0.8, 0.5);
-// 1777 on the year (the date scroll stays from now on)
+go("ub2", 0, TZ0, LD(43.0, -72.9)); go("ub3", 0, TZ0, LD(42.2, -73.6));
+B.hideUnits(["rc1", "rc2", "ub1", "ub2", "ub3", "rny"], TZ0 + 0.8, 0.5);
+// "By seventeen seventy-seven": the date scroll (stays from now on)
 B.showDate(T_1777 - 0.1); dateSet("1777", T_1777 - 0.05, T_WEEKS - 0.05);
-// "a British army": the red force pulses
-tl.to(RC.map((id) => B.units[id].el.firstElementChild), { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1 }, T_ARMY + 0.2);
-K.target(...posOn(LAKE, 0.3), T_ARMY + 0.1, { r: 60 * K0, side: "rome", until: T_DOWN + 0.8 }); SFX("ref:pop", T_ARMY + 0.15);
-// "came down from Canada": a red arrow down the lake and on toward Albany
-const DOWN = [...sub(LAKE, 0, 1, 10), FTE, SARV, ALB];
-arw({ pts: DOWN, side: "rome", t: T_DOWN - 0.05, dur: 1.6, width: AW(S0, 13), until: TZ0 + 1.0 });
-SFX("ref:whoosh", T_DOWN);
-// "to cut the colonies in two": the red cut line Canada - the lake - the Hudson - New York; CUT IN TWO
-const CUTL = glowPath([MTL, ...LAKE, FTE, ...HUDR.slice(1)], "#ff3b30", 6 * K0, T_CUT, TZ0 + 1.2, 1, 1.0, { draw: 1.1, top: true });
-SFX("ref:pop", T_CUT + 0.1);
-const CUT2 = sstamp("CUT IN TWO", 820, T_TWO - 0.05, { size: 72, until: TZ0 + 1.1, shake: 5 });
-pulse(T_TWO + 0.2);
+// "the Revolution was going badly": red edge pulse + GOING BADLY (spoken words)
+const BAD = sstamp("GOING BADLY", 820, T_BADLY - 0.05, { size: 72, until: T_NY - 0.2, shake: 5 });
+pulse(T_BADLY + 0.2);
+// "The British held New York": the red ring + label + flag at New York
+K.target(...NYP, T_NY, { r: 55 * K0, side: "rome", until: T_PHIL + 0.6 }); SFX("ref:pop", T_NY + 0.05);
+const TNY = town("NEW YORK", LD(41.02, -73.85), "r", T_NY, { until: T_NY + LBL_LIFE });
+const FNY = flagS(FL.gb, "", ...LD(41.05, -74.55), T_NY + 0.1, TZ0 + 0.8);
+tl.to(B.units.rny.el.firstElementChild, { scale: 1.35, duration: 0.22, yoyo: true, repeat: 1 }, T_NY + 0.1);
+// "and Philadelphia, the American capital": off the map to the south-west -> an edge marker with an arrow, ring + label
+const PHE = LD(41.45, -76.55);   // the map's south-west edge, in the direction of Philadelphia (39.95, -75.16)
+const PH = pinS(GG.pin(`<div style="display:flex;align-items:center;gap:10px;font-family:Oswald;font-weight:700;color:#f0ece2;text-shadow:0 0 6px #0a0e10,0 2px 4px #000">
+  <svg width="46" height="46" viewBox="-23 -23 46 46" style="display:block;overflow:visible;filter:drop-shadow(0 0 6px #ff3b30)"><circle r="17" fill="rgba(196,18,31,0.9)" stroke="#f3eee2" stroke-width="3"/><path d="M8 -8 L-9 9 M-9 1 L-9 9 L-1 9" fill="none" stroke="#f3eee2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div><div style="font-size:34px;letter-spacing:.06em;line-height:1">PHILADELPHIA</div><div class="cap" style="font-size:18px;letter-spacing:.24em;color:#ff8a80">THE AMERICAN CAPITAL</div></div></div>`, ...PHE, { t: T_PHIL - 0.05, pop: true, until: T_PHIL + LBL_LIFE + 1.0 }));
+gsap.set(PH.querySelector(".cap"), { autoAlpha: 0 }); tl.to(PH.querySelector(".cap"), { autoAlpha: 1, duration: 0.25 }, T_CAP);
+SFX("ref:pop", T_PHIL); SFX("hit", T_CAP + 0.05); K.shake(T_CAP + 0.05, 3, 0.25);
+// "and a second British army": the red column in Canada pulses and starts down Lake Champlain
+tl.to(RC.map((id) => B.units[id].el.firstElementChild), { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1 }, T_ARMY + 0.1);
+K.target(...posOn(LAKE, 0.08), T_ARMY + 0.05, { r: 60 * K0, side: "rome", until: T_DOWN + 1.0 }); SFX("ref:pop", T_ARMY + 0.1);
+// "was coming down from Canada": the red arrow down the lake toward Saratoga
+const DOWN = [...sub(LAKE, 0, 1, 10), FTE, SARV];
+arw({ pts: DOWN, side: "rome", t: T_DOWN - 0.1, dur: 1.4, width: AW(S0, 13), until: TZ0 + 1.6 });
+SFX("ref:whoosh", T_DOWN - 0.1);
 // ---------- ONE CONTINUOUS ZOOM (whoosh) down the Hudson onto Saratoga ----------
 const C1 = [SARV[0] - 250, SARV[1] + 700], S1 = 0.22;
-SFX("whoosh", TZ0 - 0.05);
+SFX("whoosh", TZ0 - 0.05);  // ONE zoom
 zoom(TZ0, TZ1 - TZ0, C0b, S0b, C1, S1, SARV, "power2.inOut");
 tl.to([NE_C, HUD_C], { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, TZ0 + 0.4);
 // the Hudson glows on its word (hudson scale), its label leaves after ~3.5 s
-glowPath(HUDR.slice(0, 7), "#bfe2ff", 3 / 0.04, T_HUD - 0.1, S2 + 0.5, 1, 0.6, { draw: 0.9 });
-boxL("HUDSON", ...LD(43.02, -73.50), T_HUD + 0.05, null, { size: 15 });
+glowPath(HUDR.slice(0, 7), "#bfe2ff", 3 / 0.04, TZ0 + 0.6, S2 + 0.5, 1, 0.6, { draw: 0.9 });
 // mid-zoom flags (hudson scale)
 const FM = [flagS(FL.gb, "", ...LD(43.30, -73.40), TZ0 + 1.1, T_MAN), flagS(FL.us, "", ...LD(42.80, -73.40), TZ0 + 1.1, T_MAN)];
 // arriving on "Saratoga": the village, the British army camped near it, the American lines south of it
