@@ -14,7 +14,8 @@ NOAREA = os.environ.get('NO_AREAS') == '1'   # Cumberland / Tennessee: the moder
 SIMPLE = os.environ.get('SIMPLE') == '1'; SUF = 'S' if SIMPLE else ''
 J = json.load(open(f"assets/{base}.json")); z = J["zoom"]; ox, oy = J["origin_world_px"]; W, H = J["size"][0] * S, J["size"][1] * S
 n = 256 * 2 ** z
-WIDE = z <= 10
+WIDE = z <= 10 or os.environ.get('WIDE') == '1'   # Arnold #17: WIDE=1 forces WorldCover water (Canada: no NHD)
+ERASE = [tuple(map(float, b.split(','))) for b in os.environ.get('ERASE', '').split(';') if b]   # lat0,lon0,lat1,lon1 boxes: modern reservoirs to leave out (Flagstaff, Wyman)
 DEC = max(1, round(J['meters_per_px'] / S / 10)) if WIDE else 1
 def px2ll(i, j):
     x = ox + i / S; y = oy + j / S
@@ -110,6 +111,7 @@ for f in ([] if NOAREA else area) + ([] if NOAREA else body):
         for k, ring in enumerate(pg):
             pts = [ll2px(la, lo) for lo, la in ring]
             if k == 0: d.polygon(pts, fill=WATER + (235,), outline=EDGE + (255,))
+            else: d.polygon(pts, fill=(0, 0, 0, 0), outline=EDGE + (255,))   # interior ring = island (Valcour!): punch it out
 for f in flow:
     p = f["properties"]; named = bool(p.get("GNIS_Name")); fc = p.get("FCode") or 46006
     if NORES and ((p.get("FType") or 0) == 336 or "Canal" in (p.get("GNIS_Name") or "")): continue   # no modern canals
@@ -126,7 +128,11 @@ if WIDE:
     pa = np.array(Image.open(pl).convert("RGB").resize((W, H))).astype(int)
     sea = ndimage.binary_dilation((np.abs(pa - np.array([18, 33, 44])).sum(2) < 40), iterations=25)  # the basemap's sea: never draw WorldCover 'water' over it
     wm = ndimage.binary_opening((CL == 80) & ~sea & (not NOAREA), iterations=1); lab, nl = ndimage.label(wm); sz = ndimage.sum(wm, lab, range(1, nl + 1))
-    wm = np.isin(lab, [i + 1 for i, v in enumerate(sz) if v > 2500]); wl = np.zeros((H, W, 4), np.uint8); wl[wm] = WATER + (235,)
+    wm = np.isin(lab, [i + 1 for i, v in enumerate(sz) if v > 2500])
+    for la0, lo0, la1, lo1 in ERASE:
+        x0, y0 = ll2px(max(la0, la1), min(lo0, lo1)); x1, y1 = ll2px(min(la0, la1), max(lo0, lo1))
+        wm[max(0, int(y0)):int(y1), max(0, int(x0)):int(x1)] = False
+    wl = np.zeros((H, W, 4), np.uint8); wl[wm] = WATER + (235,)
     ed = wm & ~ndimage.binary_erosion(wm, iterations=1); wl[ed] = EDGE + (255,)
     riv = Image.alpha_composite(riv, Image.fromarray(wl)); d = ImageDraw.Draw(riv)
     dem = json.load(open(f"assets/src/{base}_dem_rivers.json")) if os.path.exists(f"assets/src/{base}_dem_rivers.json") else []

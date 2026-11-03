@@ -1,0 +1,105 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/card_1775_champlain.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 3.6
+  },
+  {
+   "photo": "assets/media/arch_ticonderoga.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "FORT TICONDEROGA",
+   "dur": 4.4,
+   "depth": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/archw_arnold.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "label": "BENEDICT ARNOLD · 1776",
+   "dur": 5.2,
+   "depth": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/archw_washington.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "label": "GEN. GEORGE WASHINGTON · 1776",
+   "dur": 5.0,
+   "depth": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/arch_kennebec_top.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "THE ROUTE TO QUEBEC",
+   "dur": 6.3,
+   "depth": true,
+   "frame": true
+  }
+ ],
+ "23": [
+  {
+   "photo": "assets/media/headline_congress.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 4.6
+  },
+  {
+   "photo": "assets/media/card_1777_ticonderoga.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 4.2
+  },
+  {
+   "photo": "assets/media/arch_saratoga_faden.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "label": "BURGOYNE'S ARMY · 1777",
+   "dur": 5.4,
+   "depth": true,
+   "frame": true
+  },
+  {
+   "photo": "assets/media/archw_arnold.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.4
+   ],
+   "label": "BENEDICT ARNOLD",
+   "dur": 7.3,
+   "depth": true,
+   "frame": true
+  }
+ ]
+}
