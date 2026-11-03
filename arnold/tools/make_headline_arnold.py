@@ -4,8 +4,9 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from scipy import ndimage
 SB = "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf"; SR = "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf"
 CARDS = {
-    "congress": ("CONTINENTAL CONGRESS  ·  FEBRUARY 1777", ["FIVE NEW", "MAJOR GENERALS"], "Five brigadiers are promoted. Benedict Arnold, senior to them, is passed over"),
-    "mahan": ("A. T. MAHAN  ·  THE MAJOR OPERATIONS OF THE NAVIES  ·  1913", ["“THE INVALUABLE", "YEAR OF DELAY”"], "secured to them in 1776 by their little navy on Lake Champlain"),
+    "congress": ("CONTINENTAL CONGRESS  ·  FEBRUARY 1777", ["FIVE GENERALS", "PROMOTED"], "Congress promotes five generals who were junior to Benedict Arnold"),
+    "ticonderoga": ("LAKE CHAMPLAIN  ·  MAY 1775", ["FORT TICONDEROGA", "CAPTURED"], "Benedict Arnold helps capture the fort weeks after the war began"),
+    "mahan": ("ALFRED THAYER MAHAN  ·  NAVAL HISTORIAN", ["“THE INVALUABLE", "YEAR OF DELAY”"], "secured to them in 1776 by their little navy on Lake Champlain"),
     "gates": ("GEN. HORATIO GATES  ·  REPORT  ·  OCTOBER 1777", ["“THE GALLANT", "GENERAL ARNOLD”"], "whose Leg was fractured by a musket ball, as he forced the Enemy's Breast Work"),
 }
 PW, PH = 2400, 1350

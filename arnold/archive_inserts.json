@@ -28,7 +28,7 @@
   ]
  },
  "m2-9": {
-  "from": "More than a century later",
+  "from": "Alfred Thayer Mahan wrote",
   "to": "on Lake Champlain.",
   "shots": [
    {
@@ -48,17 +48,6 @@
      0.5
     ],
     "label": "VALCOUR ISLAND · 11 OCTOBER 1776",
-    "depth": true,
-    "frame": true
-   },
-   {
-    "photo": "assets/media/archw_philadelphia.jpg",
-    "move": "left",
-    "focus": [
-     0.5,
-     0.5
-    ],
-    "label": "THE GONDOLA PHILADELPHIA",
     "depth": true,
     "frame": true
    }
