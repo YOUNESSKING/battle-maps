@@ -593,9 +593,9 @@ const F_CARRY = fR(CARRY0), F_DEAD = fR(DEAD0), F_HL = fR(HL), F_MEGN = fR(MEGN)
 // =====================================================================================================================
 // m1-1: the two invasion routes (northeast on top, option 1 at half strength)
 // =====================================================================================================================
-const C0 = [1440, 830], S0 = 0.68;
+const C0 = [1440, 760], S0 = 0.68;
 camSet(C0, S0);
-camTo(0.2, T_200 - 0.2, [1450, 815], 0.70, "sine.inOut");
+camTo(0.2, T_200 - 0.2, [1450, 770], 0.70, "sine.inOut");
 const TTL = B.title("MOVE 1", "THE BACK DOOR", "1775", 0.25, T_NORTH - 0.1); SFX("ref:boom", 0.35);
 const F0 = [flagS(FL.gb, "", ...L(46.55, -72.6), null, T_200 + 1.2), flagS(FL.us, "", ...L(44.55, -71.25), null, T_200 + 1.2)]; gsap.set(F0, { autoAlpha: 1 });
 const LGD = legend(T_NORTH + 0.4, null, false);
@@ -604,7 +604,7 @@ const MB = unitS("mg", "carth", posOn(LAKEP, 0.02), "infantry", "", { t: T_ONE +
 along("mg", sub(LAKEP, 0.02, 0.62, 12), T_NORTH, T_ARN - T_NORTH + 1.0, 12);
 arw({ pts: LAKEP, side: "carth", t: T_NORTH + 0.1, dur: 2.2, width: AW(S0, 13), until: T_200 + 0.6 });
 SFX("ref:whoosh", T_NORTH + 0.1);
-boxL("LAKE CHAMPLAIN", VALC[0] + 50, VALC[1] - 10, T_CHAMP + 0.05, null, { size: 15 });
+boxL("LAKE CHAMPLAIN", VALC[0] + 60, VALC[1] - 250, T_CHAMP + 0.05, null, { size: 15 });
 const TMTL = town("MONTREAL", MTL, "r", T_MTL - 0.05, { until: T_MTL + LBL_LIFE });
 // "Arnold's would go up the Kennebec River in Maine, over the mountains, and down the Chaudière River to Quebec"
 const AB = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_ARN, T_FORT + 0.6);
@@ -624,7 +624,7 @@ const N1100 = bigNum("ABOUT", 1100, "MEN", T_1100 - 0.1, T_200 - 0.15, { tick: 0
 // ---------- the dive onto the Kennebec (northeast + its colours dissolve ~2.8 s) ----------
 const CK = [1690, 1290], SK = 1.75;
 SFX("whoosh", T_200 - 0.05);
-zoom(T_200, 3.4, [1450, 815], 0.70, CK, SK, FTW, "power2.inOut");
+zoom(T_200, 3.4, [1450, 770], 0.70, CK, SK, FTW, "power2.inOut");
 fadeL(NE, T_200 + 0.3, 2.8, 0); fadeL(NE_C, T_200 + 0.1, 2.8, 0);
 tl.to(TR, { opacity: 0, duration: 0.8 }, T_200 + 2.0); tl.set(B.units.mg.el, { autoAlpha: 0 }, T_200 + 2.5); hideU(["ac"], T_200 + 1.0);
 // close-up flags: the Continental Colours on the Kennebec, the Union Flag toward Canada (north-west)
@@ -759,7 +759,7 @@ const DB2 = pbadge("HENRY DEARBORN", "CAPTAIN", null, "carth", "tr", "HD", T_DEA
 const HUNG = listCard("EATEN", [["HIS DOG", T_DOG + 0.2], ["SHAVING SOAP", T_SOAP], ["LIP SALVE", T_LIP], ["SHOE LEATHER", T_SHOE + 0.5], ["CARTRIDGE BOXES", T_CART]],
   "left:0;right:0;top:150px;display:flex;justify-content:center;", T_DOG + 0.15, END + 1, { size: 50, mw: 520, kickT: T_EATEN, col: "#c4121f", kc: "#ff8a80" });
 // the HUD steps out under the big cards (1c); the date scroll stays
-declutter([LGD, AB, AB2, DB2], [[0.25, T_NORTH - 0.1], [T_1100 - 0.1, T_200 - 0.15], [T_PLAN, T_BRIT + 0.4], [T_BACK - 0.05, T_BACK + 3.0], [T_FEET - 0.05, T_SANK + 2.2],
+declutter([LGD, AB, AB2, DB2], [[0.25, T_NORTH - 0.1], [T_QUE, T_QUE + LBL_LIFE + 1.0], [T_1100 - 0.1, T_200 - 0.15], [T_PLAN, T_BRIT + 0.4], [T_BACK - 0.05, T_BACK + 3.0], [T_FEET - 0.05, T_SANK + 2.2],
   [T_450 - 0.1, T_REST - 0.2], [T_DOG + 0.15, END + 1]]);
 fixImgs();
 B.finish();

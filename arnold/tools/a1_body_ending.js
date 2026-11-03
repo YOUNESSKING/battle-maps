@@ -28,9 +28,8 @@ const ROUTE = smoothP([[44.05, -69.79], [44.31, -69.77], [44.55, -69.63], [44.76
 const LAKEP = [L(43.843, -73.387), CRP, L(44.25, -73.36), VALC, L(44.85, -73.33), L(45.05, -73.32), STJ];
 const C0 = [1420, 560], S0 = 0.9;
 camSet(C0, S0); camTo(0, T_TODAY, [1420, 566], 0.92, "sine.inOut");
-const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); flagS(FL.gb, "", 1100, 600, T_TODAY + 1.5, null);
+const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); const F1 = flagS(FL.gb, "", 1100, 600, T_TODAY + 1.5, null);
 B.showDate(0.2); dateRun([["1775 – 1777", 0.25, null]]);
-const LGD = legend(0.6, null, false);
 // QUEBEC: lights up on its name; the march redrawn
 const TQ = town("QUEBEC", QUE, "r", T_QUE, { until: T_QUE + LBL_LIFE });
 K.target(...QUE, T_QUE + 0.1, { r: 46 / S0, side: "#ffd54a", until: T_CHAMP });
@@ -60,6 +59,6 @@ FC.querySelector(".fam").innerHTML = `WHICH COMMANDER SHOULD WE COVER NEXT? <spa
 const tBand = Math.max(F_TELL + 1.2, END - 20);
 tl.to(FC, { scale: 0.5, y: -125, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);
 const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
-declutter([LGD], [[T_BOOT - 0.05, F_Q - 0.2], [F_Q, END + 1]]);
+declutter([F0[0], F0[1], F1], [[F_Q - 0.3, Math.max(F_TELL + 1.2, END - 20) + 0.6]]);
 fixImgs();
 B.finish();

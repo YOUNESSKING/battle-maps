@@ -558,5 +558,96 @@
 "arrow into the redoubt",
 "hit + shake"
 ]
+],
+"hook-a-p2": [
+[
+0,
+"frame 0 (northeast p2)",
+"-"
+],
+[
+6.6,
+"CUT IN TWO",
+"hit"
+],
+[
+7.6,
+"zoom starts",
+"zoom whoosh"
+],
+[
+8.8,
+"mid-zoom: hudson p2 + HUDSON",
+"-"
+],
+[
+10.6,
+"lands on Saratoga",
+"hit"
+],
+[
+12.0,
+"Within weeks",
+"ticks"
+],
+[
+20.4,
+"push in to the battlefield",
+"-"
+]
+],
+"m3a-p2": [
+[
+1.2,
+"title over hudson p2 (option 1 half)",
+"boom"
+],
+[
+5.8,
+"~25 MILES / ALBANY",
+"-"
+],
+[
+8.4,
+"BEMIS HEIGHTS",
+"-"
+],
+[
+10.0,
+"the dive",
+"zoom whoosh"
+],
+[
+11.6,
+"river road",
+"-"
+]
+],
+"m3b-p2": [
+[
+104.0,
+"That night: zoom out onto hudson p2",
+"whoosh"
+],
+[
+106.8,
+"SARATOGA",
+"-"
+],
+[
+109.0,
+"the ring",
+"whoosh"
+],
+[
+112.6,
+"surrender card ticking",
+"ticks"
+],
+[
+113.6,
+"surrender card settled: ABOUT 6,000",
+"-"
+]
 ]
 }

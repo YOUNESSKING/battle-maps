@@ -394,7 +394,7 @@ const REDOUBT = (s, side, open) => { const c = side === "carth" ? "#1f4fc4" : "#
 const openGlow = (el, t, until) => { const p = el.querySelector(".ro"); if (!p) return; tl.to(p, { opacity: 1, duration: 0.3 }, t); tl.to(p, { opacity: 0.35, duration: 0.45, yoyo: true, repeat: 5, ease: "sine.inOut" }, t + 0.3); if (until != null) tl.to(p, { opacity: 0, duration: 0.4 }, until); };
 // a person on the map: round portrait (initials until the photo exists), side-coloured ring, world space, constant on screen
 const faceMarker = (who, ini, side, x, y, t, until, sz = 58) => { const c = side === "carth" ? "#1f4fc4" : "#c4121f";
-  return pinS(GG.pin(`<div class="fm" style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;overflow:hidden;border:${(sz * 0.07).toFixed(1)}px solid #f3e7c4;box-shadow:0 0 0 3px ${c},0 6px 14px rgba(0,0,0,.7);background:radial-gradient(circle,#2a3142,#0d1018);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:${(sz * 0.4).toFixed(0)}px;color:#f7f3ea">${ini}${who ? `<img src="${PHOTO(who)}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">` : ""}</div>`, x, y, { t, pop: true, until })); };
+  return pinS(GG.pin(`<div class="fm" style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;overflow:hidden;border:${(sz * 0.07).toFixed(1)}px solid #f3e7c4;box-shadow:0 0 0 3px ${c},0 6px 14px rgba(0,0,0,.7);background:radial-gradient(circle,#2a3142,#0d1018);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:${(sz * 0.4).toFixed(0)}px;color:#f7f3ea"><span>${ini}</span>${who ? `<img src="${PHOTO(who)}" onload="this.previousElementSibling.style.display='none'" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">` : ""}</div>`, x, y, { t, pop: true, until })); };
 const redoubt = (x, y, t, until, o = {}) => { const el = pinS(GG.pin(REDOUBT(o.s || 40, o.side || "rome", o.open), x, y, { t, pop: true, until })); return el; };
 const recolor = (el, side, t) => { const c = side === "carth" ? "#1f4fc4" : "#c4121f";
   tl.to(el.querySelectorAll(".rf"), { attr: { fill: c }, duration: 0.6 }, t); tl.to(el.querySelectorAll(".rw2"), { attr: { stroke: c }, duration: 0.6 }, t);
@@ -549,11 +549,10 @@ const ROUTE = smoothP([[44.05, -69.79], [44.31, -69.77], [44.55, -69.63], [44.76
   [45.18, -70.12], [45.19, -70.18], [45.15, -70.28], [45.22, -70.48], [45.33, -70.63], [45.39, -70.80], [45.45, -70.87], [45.585, -70.885], [45.80, -70.80],
   [46.12, -70.67], [46.30, -70.87], [46.44, -71.03], [46.60, -71.12], [46.80, -71.18]].map((q) => L(...q)), 2);
 const LAKEP = [L(43.843, -73.387), CRP, L(44.25, -73.36), VALC, L(44.85, -73.33), L(45.05, -73.32), STJ];
-const C0 = [1420, 525], S0 = 0.98;
-camSet(C0, S0); camTo(0, T_TODAY, [1420, 540], 1.02, "sine.inOut");
-const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 });
+const C0 = [1420, 560], S0 = 0.9;
+camSet(C0, S0); camTo(0, T_TODAY, [1420, 566], 0.92, "sine.inOut");
+const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); const F1 = flagS(FL.gb, "", 1100, 600, T_TODAY + 1.5, null);
 B.showDate(0.2); dateRun([["1775 – 1777", 0.25, null]]);
-const LGD = legend(0.6, null, false);
 // QUEBEC: lights up on its name; the march redrawn
 const TQ = town("QUEBEC", QUE, "r", T_QUE, { until: T_QUE + LBL_LIFE });
 K.target(...QUE, T_QUE + 0.1, { r: 46 / S0, side: "#ffd54a", until: T_CHAMP });
@@ -583,6 +582,6 @@ FC.querySelector(".fam").innerHTML = `WHICH COMMANDER SHOULD WE COVER NEXT? <spa
 const tBand = Math.max(F_TELL + 1.2, END - 20);
 tl.to(FC, { scale: 0.5, y: -125, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);
 const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
-declutter([LGD], [[T_BOOT - 0.05, F_Q - 0.2], [F_Q, END + 1]]);
+declutter([F0[0], F0[1], F1], [[F_Q - 0.3, Math.max(F_TELL + 1.2, END - 20) + 0.6]]);
 fixImgs();
 B.finish();

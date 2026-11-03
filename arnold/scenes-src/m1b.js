@@ -581,7 +581,7 @@ GAR.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 const C5 = [1460, 990], S5 = 0.85;
 camSet([1480, 1000], 0.82); camTo(0, 12, C5, S5, "sine.inOut");
 const F0 = [flagS(FL.gb, "", QUE[0] - 40, QUE[1] - 150, null, null), flagS(FL.us, "", 2050, 1250, null, T_DEC + 1.0)]; gsap.set(F0, { autoAlpha: 1 });
-B.showDate(0.3); dateRun([["9 NOVEMBER 1775", T_9, T_4N - 0.1], ["13 NOVEMBER 1775", T_4N, T_DEC - 0.1], ["DECEMBER 1775", T_DEC, T_LAST - 0.1], ["31 DECEMBER 1775", T_LAST, T_HOSP]]);
+B.showDate(0.3); dateRun([["9 NOVEMBER 1775", T_9, T_4N - 0.1], ["13 NOVEMBER 1775", T_4N, T_DEC - 0.1], ["DECEMBER 1775", T_DEC, T_LAST - 0.1], ["31 DECEMBER 1775", T_LAST, T_WINTER - 0.35]]);
 const LGD = legend(T_STL + 0.6, null, true);
 // "about six hundred men came out of the forest on the bank of the St. Lawrence"
 const SB = ["s1", "s2", "s3"].map((id, k) => unitS(id, "carth", [2120 + k * 60, 1500 + k * 30], "infantry", "", { t: T_FOREST - 0.6 + k * 0.15 }));
