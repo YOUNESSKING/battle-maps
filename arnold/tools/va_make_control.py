@@ -19,3 +19,11 @@ out = np.zeros((1620, 2880, 4), np.uint8)
 out[..., :3] = np.where(red[..., None], np.array([240, 105, 95]), np.array([110, 160, 255]))
 out[..., 3] = (land * np.where(red, 158, 144)).astype(np.uint8)
 Image.fromarray(out).save(f"assets/media/va_{m}_ctl_mx.png"); print(f"assets/media/va_{m}_ctl_mx.png border y={yb:.0f}")
+# audit #35 (2026-11-03): soft version = a wavy, feathered border (no flat band, no hard edge), a cooler (less orange) red, lower alpha
+xx = np.arange(2880)[None, :] * np.ones((1620, 1))
+wav = 9 * np.sin(xx / 97.0) + 6 * np.sin(xx / 41.0 + 1.3) + 4 * np.sin(xx / 23.0 + 0.4)
+fr = 1 / (1 + np.exp(-((yb + wav) - yy) / 16.0))          # 1 = British (north), 0 = American, feathered over ~60 px
+rgb = fr[..., None] * np.array([214, 108, 122]) + (1 - fr[..., None]) * np.array([118, 160, 240])
+al = land * (fr * 112 + (1 - fr) * 104)
+out2 = np.zeros((1620, 2880, 4), np.uint8); out2[..., :3] = rgb.astype(np.uint8); out2[..., 3] = al.astype(np.uint8)
+Image.fromarray(out2).save(f"assets/media/va_{m}_ctl_soft.png"); print(f"assets/media/va_{m}_ctl_soft.png")

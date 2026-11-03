@@ -274,9 +274,10 @@ const cmd = (key, name, role, side, corner, t, until) => badge({ name, role, pho
 const ux = (id) => [B.units[id].x, B.units[id].y];
 const nearestF = (pts, p) => { let best = 0, bd = 1e9; for (let k = 0; k <= 400; k++) { const q = posOn(pts, k / 400), d = Math.hypot(q[0] - p[0], q[1] - p[1]); if (d < bd) { bd = d; best = k / 400; } } return best; };
 // a shot that reads at ANY camera scale s (wide shots): constant-size flash, arc and impact (patton hook-a shootS), locked sounds + shake
-const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)"></div>`, from[0], from[1], {}));
-  tl.fromTo(f, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t); tl.to(f, { autoAlpha: 0, duration: 0.25 }, t + 0.07); SFX("fire", t);
-  GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: 1.8 / s, h: (o.h || 40) / s, impact: false });
+const shootS = (from, to, t, s, o = {}) => { const fl = o.fl || 16, f = pinS(GG.pin(`<div style="width:${fl}px;height:${fl}px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)${o.fl ? ";box-shadow:0 0 " + fl + "px " + fl * 0.3 + "px rgba(255,170,40,.6)" : ""}"></div>`, from[0], from[1], {}));
+  tl.fromTo(f, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t); tl.to(f, { autoAlpha: 0, duration: o.fl ? 0.4 : 0.25 }, t + (o.fl ? 0.12 : 0.07)); SFX("fire", t);
+  if (o.fl) K.smoke(from[0], from[1] - 2, t + 0.08, { n: 2, r: 10 / s, rise: 10 / s, life: 2.2, alpha: 0.55, drift: 6 / s });
+  GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: (o.aw || 1.8) / s, h: (o.h || 40) / s, impact: false });
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
 const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
@@ -318,3 +319,7 @@ const LAKESVG = (kind, s, col) => {
   const glow = `filter:drop-shadow(0 0 ${(s * 0.16).toFixed(1)}px ${gl}) drop-shadow(0 ${(s * 0.06).toFixed(1)}px ${(s * 0.1).toFixed(1)}px rgba(0,0,0,.7))`;
   return `<div><svg width="${(s * w / 23).toFixed(0)}" height="${(s * h / 23).toFixed(0)}" viewBox="${-w / 2} ${-h / 2} ${w} ${h}" style="display:block;overflow:visible;${glow}">${body}</svg></div>`;
 };
+// audit #18 (2026-11-03): the date scroll and its first date on screen from frame 0 (no fade-in at the scene cut)
+const date0 = () => { const box = document.getElementById("date"), els = [box, ...box.children];
+  tl.getTweensOf(els).filter((tw) => tw.startTime() < 0.06).forEach((tw) => tw.kill());
+  gsap.set(box, { autoAlpha: 1, x: 0 }); const d = box.querySelector(".d"); if (d) gsap.set(d, { autoAlpha: 1, y: 0 }); };

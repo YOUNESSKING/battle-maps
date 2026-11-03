@@ -1,214 +1,242 @@
 {
- "title": "Arnold #17 M1A (m1-1 - m1-2 - m1-3 - m1-4) - map agent a1_, round 3, 105.8 s",
+ "title": "Arnold #17 M1A (m1-1 - m1-2 - m1-3 - m1-4) - map agent a1_, round 5, 105.8 s",
  "note": "STYLE_LOCK 1a + 1c + 2b/2c: nothing before it is spoken, one big card at a time, option 2 on close-ups, visible fire only",
  "frames": [
   [
    "m1a",
-   0.4,
-   "1:50.1",
-   "m1-1 clean first frame: northeast wide, territory 1775 half strength, both flags, title card",
+   0.0,
+   "1:53.2",
+   "m1-1 first frame: date scroll 1775 already up, both flags on their land, territory half strength (soft border)",
+   "-"
+  ],
+  [
+   "m1a",
+   1.2,
+   "1:54.4",
+   "title MOVE 1 \u00b7 THE MARCH TO QUEBEC \u00b7 1775 (legend out)",
    "boom"
   ],
   [
    "m1a",
    4.6,
-   "1:54.3",
+   "1:57.8",
    "blue arrow up Lake Champlain, MONTREAL on its word",
    "whoosh"
   ],
   [
    "m1a",
    8.6,
-   "1:58.3",
+   "2:01.8",
    "Arnold badge; dotted route up the KENNEBEC",
    "whoosh"
   ],
   [
    "m1a",
    12.2,
-   "2:01.9",
+   "2:05.4",
    "down the Chaudiere to QUEBEC (label + ring), fortress",
    "pop"
   ],
   [
    "m1a",
    17.4,
-   "2:07.1",
+   "2:10.6",
    "SEPTEMBER 1775; ABOUT 1,100 MEN",
    "ticks"
   ],
   [
    "m1a",
    19.6,
-   "2:09.3",
-   "dive onto the Kennebec, colours dissolving",
+   "2:12.8",
+   "dive onto the Kennebec: both flags stay in frame, colours dissolving",
    "whoosh"
   ],
   [
    "m1a",
+   21.4,
+   "2:14.6",
+   "mid-dive: Union Flag (Canada) + Continental Colours both inside the frame",
+   "-"
+  ],
+  [
+   "m1a",
    23.4,
-   "2:13.1",
+   "2:16.6",
    "bateaux upriver, rapids; THE PLAN ~180 MILES",
    "hit"
   ],
   [
    "m1a",
    25.6,
-   "2:15.3",
+   "2:18.8",
    "~20 DAYS",
    "hit"
   ],
   [
    "m1a",
    30.6,
-   "2:20.3",
+   "2:23.8",
    "m1-2 pull out: British at St. Johns watch the lake; first American army",
    "pop"
   ],
   [
    "m1a",
    35.3,
-   "2:25.0",
+   "2:28.5",
    "MAINE WOODS",
    "pop"
   ],
   [
    "m1a",
    38.5,
-   "2:28.2",
+   "2:31.7",
    "THE BACK DOOR stamp",
    "hit"
   ],
   [
    "m1a",
    40.4,
-   "2:30.1",
+   "2:33.6",
    "FRONT DOOR on the lake",
    "hit"
   ],
   [
    "m1a",
    46.8,
-   "2:36.5",
+   "2:40.0",
    "m1-3 close: boats at the carry, food spoiled",
    "pop"
   ],
   [
    "m1a",
    50.6,
-   "2:40.3",
+   "2:43.8",
    "GREAT CARRYING PLACE, the carry",
    "whoosh"
   ],
   [
    "m1a",
    53.2,
-   "2:42.9",
+   "2:46.4",
    "12 MILES",
    "hit"
   ],
   [
    "m1a",
    56.6,
-   "2:46.3",
+   "2:49.8",
    "night, 21 OCTOBER 1775",
    "-"
   ],
   [
    "m1a",
    59.9,
-   "2:49.6",
+   "2:53.1",
    "storm on the Dead River, rain, trees down",
    "boom"
   ],
   [
    "m1a",
    63.6,
-   "2:53.3",
+   "2:56.8",
    "river swells; 8-10 FEET",
    "hit"
   ],
   [
    "m1a",
    65.6,
-   "2:55.3",
+   "2:58.8",
    "boats sink, supplies wash away",
    "pop"
   ],
   [
    "m1a",
+   66.0,
+   "2:59.2",
+   "8-10 FEET card gone after ~3 s, legend back",
+   "-"
+  ],
+  [
+   "m1a",
    67.8,
-   "2:57.5",
+   "3:01.0",
    "men lost in the flooded woods",
    "-"
   ],
   [
    "m1a",
    72.4,
-   "3:02.1",
+   "3:05.6",
    "m1-4 three companies at the rear, council",
    "pop"
   ],
   [
    "m1a",
    75.8,
-   "3:05.5",
+   "3:09.0",
    "turned back (grey); ABOUT 450 MEN",
    "hit"
   ],
   [
    "m1a",
+   78.3,
+   "3:11.5",
+   "450 MEN gone after ~3 s",
+   "-"
+  ],
+  [
+   "m1a",
    81.2,
-   "3:10.9",
+   "3:14.4",
    "the rest kept going",
    "-"
   ],
   [
    "m1a",
    85.6,
-   "3:15.3",
+   "3:18.8",
    "Arnold's small party down the Chaudiere rapids",
    "whoosh"
   ],
   [
    "m1a",
    88.2,
-   "3:17.9",
+   "3:21.4",
    "SARTIGAN farms",
    "pop"
   ],
   [
    "m1a",
    90.6,
-   "3:20.3",
+   "3:23.8",
    "cattle + flour back up the trail",
    "pop"
   ],
   [
    "m1a",
    93.6,
-   "3:23.3",
-   "Dearborn (initials)",
+   "3:26.8",
+   "Henry Dearborn (Gilbert Stuart portrait), Continental Colours ring",
    "-"
   ],
   [
    "m1a",
    97.4,
-   "3:27.1",
+   "3:30.6",
    "hunger card: HIS DOG, EATEN",
    "hit"
   ],
   [
    "m1a",
    102.0,
-   "3:31.7",
-   "SHAVING SOAP, LIP SALVE",
+   "3:35.2",
+   "hunger card: only the last two lines (LIP SALVE, SHAVING SOAP); finished lines drop",
    "hit"
   ],
   [
    "m1a",
    105.3,
-   "3:35.0",
+   "3:38.5",
    "SHOE LEATHER, CARTRIDGE BOXES",
    "hit"
   ]

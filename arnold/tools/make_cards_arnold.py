@@ -17,7 +17,7 @@ def wide(src, out, fx=0.5):
     bg = cover(im).filter(ImageFilter.GaussianBlur(40)); bg = Image.fromarray((np.asarray(bg, np.float32) * 0.45).astype(np.uint8))
     w = int(im.width * H / im.height); fg = im.resize((w, H), Image.LANCZOS); bg.paste(fg, (int(W * fx - w / 2), 0)); bg.save(M + out, quality=93)
 datecard("arch_ticonderoga.jpg", "MAY 1775", "LAKE CHAMPLAIN", "card_1775_champlain.jpg")
-datecard("arch_ticonderoga.jpg", "JULY 1777", "FORT TICONDEROGA", "card_1777_ticonderoga.jpg")
+datecard("arch_ticonderoga.jpg", "1777", "FORT TICONDEROGA", "card_1777_ticonderoga.jpg")
 wide("arch_arnold_mezzotint.jpg", "archw_arnold.jpg")
 wide("washington_src.jpg", "archw_washington.jpg")
 wide("arch_philadelphia.jpg", "archw_philadelphia.jpg")

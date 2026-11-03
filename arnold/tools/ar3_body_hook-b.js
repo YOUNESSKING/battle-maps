@@ -17,7 +17,7 @@ const H3 = "hook-3", H4 = "hook-4", S4 = B.P(H4);
 const T_AFT = at(H3, "the afternoon"), T_7 = at(H3, "seventh of October"), T_NOT = at(H3, "did not look like a victory"), T_1500 = at(H3, "fifteen hundred"),
   T_MARCH = at(H3, "had marched out"), T_CAN = at(H3, "with cannon"), T_FIELDS = at(H3, "into the fields"), T_LEFT = at(H3, "the American left"),
   T_GEN = at(H3, "The general who"), T_WEEKS = at(H3, "three weeks before"), T_QUAR = at(H3, "quarrelled"), T_GATES = at(H3, "Horatio Gates"),
-  T_WITH = at(H3, "without a command"), T_GUNS = at(H3, "When the guns opened"), T_RODE = at(H3, "he rode out"), T_ANY = at(H3, "anyway"),
+  T_WITH = at(H3, "without a command"), T_GUNS = at(H3, "guns opened") + 0.25, T_RODE = at(H3, "he rode out"), T_ANY = at(H3, "anyway"),
   T_OFF = at(H3, "An officer"), T_REP = at(H3, "reportedly"), T_BACK = at(H3, "bring him back"), T_CATCH = at(H3, "did not catch up"), T_OVER = at(H3, "it was over");
 const T_NAME = at(H4, "Benedict Arnold."), T_3Y = at(H4, "Three years later"), T_WP = at(H4, "West Point"), T_WORD = at(H4, "another word"),
   T_TRAIT = at(H4, "traitor"), T_BEFORE = at(H4, "But before that"), T_MAR = at(H4, "had marched an army"), T_QUE = at(H4, "to Quebec"),
@@ -55,13 +55,12 @@ const R0 = { r1: [1300, 575], r2: [1400, 690], r3: [1480, 690], rg: [1450, 655] 
 Object.entries(R0).forEach(([id, p]) => { unitS(id, "rome", p, id === "rg" ? "artillery" : "infantry", "", id === "rg" ? { w: 44, h: 29 } : {}); gsap.set(B.units[id].el, { autoAlpha: 1 }); });
 const AU = [unitS("a1", "carth", [1380, 1170], "infantry", ""), unitS("a2", "carth", [1560, 1200], "infantry", ""), unitS("a3", "carth", [1700, 1235], "infantry", "")];
 AU.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
-const F0 = [flagS(FL.us, "", 1620, 1110, null, T_GEN + 0.2), flagS(FL.gb, "", 1760, 560, null, T_GEN + 0.2)]; gsap.set(F0, { autoAlpha: 1 });
+const F0 = [flagS(FL.us, "", 1800, 1140, null, T_GEN + 0.2), flagS(FL.gb, "", 1760, 560, null, T_GEN + 0.2)]; gsap.set(F0, { autoAlpha: 1 });
 const QB = atZero(qBadge("THE MAN", "", 0, null, { corner: "bl" }), null);
 const LGD = atZero(legend(0, null, true), null);
 // =====================================================================================================================
 // hook-3: rewind to the afternoon of 7 October
 // =====================================================================================================================
-SFX("ref:whoosh", 0.3);
 go("r1", 0.5, 1.4, [1320, 690]); go("r2", 0.55, 1.4, [1360, 705]); go("r3", 0.6, 1.4, [1400, 715]); go("rg", 0.6, 1.4, [1360, 735]);
 tl.to(d0, { autoAlpha: 0, y: -14, duration: 0.3 }, T_7 - 0.3); for (let k = 0; k < 3; k++) SFX("tick", T_7 - 0.5 + k * 0.13);
 dateSet("7 OCTOBER 1777", T_7, T_3Y - 0.05);
@@ -72,17 +71,17 @@ const N15 = numCard("ABOUT", "1,500", "BRITISH AND GERMAN", "right:110px;top:300
 const LINE = { r1: [1110, 930], r2: [1200, 952], r3: [1292, 975], rg: [1205, 912] };
 Object.entries(LINE).forEach(([id, p], k) => go(id, T_MARCH - 0.1 + k * 0.12, 3.4, p));
 [[[1320, 720], [1200, 860], [1120, 915]], [[1370, 730], [1300, 880], [1285, 955]]].forEach((pts, k) => arw({ pts, side: "rome", t: T_MARCH + k * 0.15, dur: 1.4, width: AW(1.5, 12), until: T_GEN }));
-SFX("ref:whoosh", T_MARCH);
 tl.fromTo(B.units.rg.el.querySelector(".blk"), { scale: 1 }, { scale: 1.35, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_CAN); SFX("ref:pop", T_CAN);
 const WFP = [[1060, 905], [1170, 880], [1320, 905], [1345, 990], [1240, 1025], [1080, 1005]];
 const wf = document.createElementNS(NS, "polygon"); wf.setAttribute("points", WFP.map((q) => q.join(",")).join(" ")); wf.setAttribute("fill", "rgba(232,200,90,0.32)");
 wf.setAttribute("stroke", "#e8c85a"); wf.setAttribute("stroke-width", 2.4 / 1.5); wf.setAttribute("stroke-dasharray", "6 4"); OVL.insertBefore(wf, OVL.firstChild); gsap.set(wf, { opacity: 0 });
 tl.to(wf, { opacity: 1, duration: 0.6 }, T_FIELDS - 0.05); tl.to(wf, { opacity: 0.5, duration: 1 }, T_FIELDS + 3);
 glowPath(AMLINE.slice(0, 3), "#8fb2ff", 9 / 1.5, T_LEFT - 0.05, T_GEN + 1, 2, 0.95, { draw: 0.6, top: true });
-tagL("THE AMERICAN LEFT", 1420, 1245, T_LEFT, null, 15);
+tagL("THE AMERICAN LEFT", 1330, 1140, T_LEFT, null, 15);
 // "The general who had fought them hardest three weeks before": the "?" in the American camp
 camTo(T_GEN - 0.5, 2.2, [1440, 1060], 1.55, "sine.inOut");
-const F1 = [flagS(FL.us, "", 1620, 1360, T_GEN - 0.2, T_NAME - 1.4), flagS(FL.gb, "", 1430, 780, T_GEN - 0.2, T_NAME - 1.4)];
+// both flags stay through the name slam (dimmed with the map) until the first snap cut; the Union Flag on the British side, clear of the legend
+const F1 = [flagS(FL.us, "", 1620, 1360, T_GEN - 0.2, null), flagS(FL.gb, "", 1180, 880, T_GEN - 0.2, null)];
 const QM = pinS(GG.pin(RIDER("?", "#1f4fc4", 72), ...QCAMP, { t: T_GEN + 0.1, pop: true, until: T_NAME - 1.4 }));
 SFX("ref:pop", T_GEN + 0.15);
 tl.to(QB, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: "0% 100%" }, T_GEN + 0.1);
@@ -97,15 +96,16 @@ pulse(T_WITH + 0.2);
 tl.to(QM.firstElementChild, { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_WITH + 0.1);
 // "When the guns opened": the British guns in the wheat field fire (visible), volleys along the line
 camTo(T_GUNS - 0.4, 2.0, [1350, 1060], 1.5, "sine.inOut");
-K.gun(LINE.rg[0], LINE.rg[1], T_GUNS + 0.1, { unit: "rg", dx: 6, dy: 10 }); K.gun(LINE.rg[0], LINE.rg[1], T_GUNS + 1.6, { unit: "rg", dx: 6, dy: 10 });
-[[T_GUNS + 0.4, [1120, 950], [1290, 990]], [T_RODE + 0.8, [1100, 950], [1300, 995]], [T_OFF + 0.6, [1130, 955], [1280, 990]], [T_CATCH, [1110, 950], [1295, 995]]]
-  .forEach(([t, a, b]) => { volley(a, b, t, 6, 1.0); smokeLine([a[0], a[1] + 14], [b[0], b[1] + 14], t + 0.05, 4, 28); });
+// the red guns fire on "opened": big readable muzzle flashes + smoke at the gun (2 shots, 2.2 s apart), then musket volleys along the line
+[T_GUNS, T_GUNS + 2.2].forEach((t) => { K.gun(LINE.rg[0], LINE.rg[1], t, { unit: "rg", dx: 6, dy: 10 }); flashW(LINE.rg[0] + 4, LINE.rg[1] + 14, t, 6.5); flashW(LINE.rg[0] + 10, LINE.rg[1] + 22, t + 0.06, 4.0);
+  smokeLine([LINE.rg[0] - 6, LINE.rg[1] + 22], [LINE.rg[0] + 22, LINE.rg[1] + 28], t + 0.08, 3, 34); tl.fromTo(B.units.rg.el.querySelector(".blk"), { x: 0 }, { x: -5, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t); });
+[[T_GUNS + 1.1, [1120, 950], [1290, 990]], [T_OFF + 0.6, [1130, 955], [1280, 990]], [T_CATCH, [1110, 950], [1295, 995]]]
+  .forEach(([t, a, b]) => { volley(a, b, t, 6, 1.9); smokeLine([a[0], a[1] + 14], [b[0], b[1] + 14], t + 0.05, 4, 28); });
 // "he rode out to the fighting anyway": the "?" rides out (dotted trail)
 tl.to(QM.firstElementChild, { filter: "grayscale(0) brightness(1)", duration: 0.3 }, T_RODE - 0.1);
 const RIDE = [QCAMP, [1490, 1180], [1420, 1120], [1350, 1070], [1290, 1035], [1250, 1010]];
 pinAlong(QM, RIDE, T_RODE, T_OFF - T_RODE + 0.6, 16);
 trail(RIDE, "#9fc0ea", 2.4 / 1.5, T_RODE, T_OFF - T_RODE + 0.6, T_NAME - 1.4, "3 7");
-SFX("ref:whoosh", T_RODE);
 // "An officer was reportedly sent after him": a second, plain rider follows from the HQ, falls behind and stops
 const OM = pinS(GG.pin(RIDER(HORSE(38), "#1f4fc4", 58), ...HQ, { t: T_OFF - 0.05, pop: true, until: T_NAME - 1.4 }));
 const OR = [HQ, [1650, 1250], [1580, 1215], [1520, 1180], [1480, 1150]];
@@ -196,11 +196,11 @@ tl.set(RELIEF, { autoAlpha: 1 }, T3 - 0.01);
 cut(T3, null, T4 + 1.0, C3, S3c, [8, -6, 1.06]); CAM_S0 = S3c;
 dateSet("7 OCTOBER 1777", T3, null);
 const SC3 = snap();
-vis(T3, null)(flagS(FL.us, "", 1250, 700, null, null)); vis(T3, null)(flagS(FL.gb, "", 1470, 520, null, null));
+vis(T3, null)(flagS(FL.us, "", 1460, 700, null, null)); vis(T3, null)(flagS(FL.gb, "", 1470, 520, null, null));
 const RB3 = vis(T3, null)(redoubt(...BRY, null, null, { s: 60, open: "n" }));
 const R3 = unitS("z1", "rome", [BRY[0] + 40, BRY[1] + 6], "infantry", ""); vis(T3, null)(B.units.z1.el);
 arw({ pts: [[1240, 680], [1268, 600], [1300, 525], [1338, 505], [BRY[0], BRY[1] - 4]], side: "carth", t: T_BROKE - 0.1, dur: 0.9, width: AW(S3c, 12), until: null });
-SFX("ref:whoosh", T_BROKE - 0.1); recolor(RB3, "carth", T_BROKE + 0.7); B.grey(["z1"], T_BROKE + 0.7, 0.5); SFX("hit", T_BROKE + 0.75); K.shake(T_BROKE + 0.75, 4, 0.3);
+recolor(RB3, "carth", T_BROKE + 0.7); B.grey(["z1"], T_BROKE + 0.7, 0.5); SFX("hit", T_BROKE + 0.75); K.shake(T_BROKE + 0.75, 4, 0.3);
 ringN([1300, 640], "SARATOGA", 3, T_SAR + 0.2, null, 40, 120, "1777");
 // =====================================================================================================================
 // the title (riser + boom)

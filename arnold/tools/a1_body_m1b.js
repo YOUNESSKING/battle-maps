@@ -10,7 +10,7 @@
 //   KILLED; his column falls back; Arnold along the waterfront to the SAULT-AU-MATELOT barricade, hit in the leg, helped back; Morgan over the
 //   barricade, STALLED; a red column out of the Palace Gate behind them, the ring closes; casualty card (spoken numbers only).
 // m1-8: grey dawn, wide: the hospital (PISTOLS LOADED / A SWORD ON HIS BED / THEY NEVER CAME); the blockade line through the winter (date scroll
-//   to MAY 1776); RESULT QUEBEC HELD · THE MARCH ~350 MILES; ARNOLD'S METHOD, each line on its spoken words.
+//   to MAY 1776); RESULT QUEBEC HELD · THE MARCH ~350 MILES; ARNOLD'S METHOD: only line 1 (the re-voiced m1-8 speaks only "go where the enemy says no army can go").
 // Facts: FACT_NOTES MOVE 1 + FACTCHECK_A (Pointe-Lévy 9 Nov; 35 canoes/dugouts past Lizard + Hunter 13-14 Nov to Wolfe's Cove; Montgomery ~300
 //   early Dec; enlistments 31 Dec; "Liberty or death"; Près-de-Ville grapeshot; Sault-au-Matelot; Morgan; Palace Gate sortie; ~400 captured,
 //   30-60 killed, defenders <20; Senter's pistols; blockade to May 1776).
@@ -34,8 +34,7 @@ const T_PLAN = at(P7, "The plan was"), T_LOWER = at(P7, "the Lower"), T_CLIFFS =
   T_20 = at(P7, "fewer than twenty");
 const T_HOSP = at(P8, "In the hospital"), T_PIST = at(P8, "pistols"), T_SWORD = at(P8, "a sword"), T_KILLAS = at(P8, "he would kill"),
   T_NEVER = at(P8, "They never came"), T_FEW = at(P8, "With a few hundred"), T_SIEGE = at(P8, "under siege"), T_WINTER = at(P8, "rest of the winter"),
-  T_NOTF = at(P8, "The city had not fallen"), T_SHOWN = at(P8, "But Arnold had"), T_GO = at(P8, "Go where the enemy"), T_LET = at(P8, "Let the ground"),
-  T_LEAD = at(P8, "And lead from");
+  T_NOTF = at(P8, "The city had not fallen"), T_SHOWN = at(P8, "But Arnold had"), T_HOW = at(P8, "how he fought"), T_GO = at(P8, "go where the enemy");
 // =====================================================================================================================
 // THE WORLD: the quebec relief; places (quebec px)
 // =====================================================================================================================
@@ -57,8 +56,8 @@ GAR.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 // =====================================================================================================================
 const C5 = [1460, 990], S5 = 0.85;
 camSet([1480, 1000], 0.82); camTo(0, 12, C5, S5, "sine.inOut");
-const F0 = [flagS(FL.gb, "", QUE[0] - 40, QUE[1] - 150, null, null), flagS(FL.us, "", 2050, 1250, null, T_DEC + 1.0)]; gsap.set(F0, { autoAlpha: 1 });
-B.showDate(0.3); dateRun([["9 NOVEMBER 1775", T_9, T_4N - 0.1], ["13 NOVEMBER 1775", T_4N, T_DEC - 0.1], ["DECEMBER 1775", T_DEC, T_LAST - 0.1], ["31 DECEMBER 1775", T_LAST, T_WINTER - 0.35]]);
+const F0 = [flagS(FL.gb, "", QUE[0] - 40, QUE[1] - 150, null, T_PLAN + 1.4), flagS(FL.us, "", 2050, 1250, null, T_DEC + 1.0)]; gsap.set(F0, { autoAlpha: 1 });
+dateHold("NOVEMBER 1775", T_9); dateRun([["9 NOVEMBER 1775", T_9, T_4N - 0.1], ["13 NOVEMBER 1775", T_4N, T_DEC - 0.1], ["DECEMBER 1775", T_DEC, T_LAST - 0.1], ["31 DECEMBER 1775", T_LAST, T_WINTER - 0.35]]);
 const LGD = legend(T_STL + 0.6, null, true);
 // "about six hundred men came out of the forest on the bank of the St. Lawrence"
 const SB = ["s1", "s2", "s3"].map((id, k) => unitS(id, "carth", [2120 + k * 60, 1500 + k * 30], "infantry", "", { t: T_FOREST - 0.6 + k * 0.15 }));
@@ -69,10 +68,12 @@ const N600 = numCard("ABOUT", "600 MEN", "", "right:110px;top:240px;", T_600 - 0
 boxL("ST. LAWRENCE", 1330, 1185, T_STL + 0.05, null, { size: 15, bg: "#dcecf8" });
 const TQ = town("QUEBEC", [QUE[0] - 10, QUE[1] - 30], "l", T_FROMQ, { until: T_FROMQ + LBL_LIFE });
 // "about three hundred and fifty miles, nearly twice the distance on the plan"
-const MARCH = listCard("THE MARCH", [["~350 MILES", T_350 + 0.3], ["NEARLY TWICE THE 180 PLANNED", T_TWICE + 0.2]], "left:0;right:0;top:170px;display:flex;justify-content:center;", T_350, T_4N - 0.2, { size: 54, mw: 560, col: "#2e5cb2", kc: "#9fc0ea" });
+const MARCH_OUT = T_TWICE + 2.4;   // big cards on the right: the Union Flag over the city stays in view
+const MARCH = listCard("THE MARCH", [["~350 MILES", T_350 + 0.3], ["NEARLY TWICE THE 180 PLANNED", T_TWICE + 0.2]], "right:90px;top:240px;display:flex;justify-content:flex-end;", T_350 + 0.1, MARCH_OUT, { size: 44, mw: 480, col: "#2e5cb2", kc: "#9fc0ea" });
 // "Four nights later, in some thirty-five canoes and dugouts, they slipped across the river between two British warships"
 const NW1 = nightWash(T_4N, T_WORN + 0.4, 0.5);
-const N35 = numCard("SOME", "35 CANOES", "AND DUGOUTS", "right:110px;top:240px;", T_35 - 0.05, T_WAR - 0.3, { col: "#2e5cb2", vs: 54 });
+const N35_OUT = T_35 + 2.9;
+const N35 = numCard("SOME", "35 CANOES", "AND DUGOUTS", "right:110px;top:240px;", T_35 - 0.05, N35_OUT, { col: "#2e5cb2", vs: 54 });
 const SHIPA = [1495, 1040], SHIPB = [1330, 1235];
 const WS = [craft("ship", [SHIPA, [SHIPA[0] + 2, SHIPA[1] - 1]], T_WAR - 0.4, 3, T_WORN + 1.0, { s: 34, side: "rome" }), craft("ship", [SHIPB, [SHIPB[0] + 2, SHIPB[1] - 1]], T_WAR - 0.25, 3, T_WORN + 1.0, { s: 34, side: "rome" })];
 SFX("ref:pop", T_WAR);
@@ -104,7 +105,7 @@ const MB = pbadge("RICHARD MONTGOMERY", "GENERAL", "rmontgomery", "carth", "tr",
 const N300 = tagL("~300 MEN", 820, 1180, T_300 + 0.05, null, 16);
 // "The enlistments ... ran out at the end of the year": the calendar card
 const CAL = `<svg width="64" height="64" viewBox="0 0 64 64" style="display:block"><rect x="6" y="10" width="52" height="48" rx="4" fill="#f3eee2" stroke="#c9b48a" stroke-width="3"/><rect x="6" y="10" width="52" height="13" rx="4" fill="#c4121f"/><text x="32" y="51" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="24" fill="#1b1812">31</text><rect x="16" y="4" width="5" height="12" rx="2" fill="#8a867c"/><rect x="43" y="4" width="5" height="12" rx="2" fill="#8a867c"/></svg>`;
-const EOY = placeCard("ENLISTMENTS RUN OUT", "THE END OF THE YEAR", "left:0;right:0;top:200px;display:flex;justify-content:center;", T_EOY - 0.05, T_STORM + 0.6, CAL);
+const EOY = placeCard("ENLISTMENTS RUN OUT", "THE END OF THE YEAR", "right:90px;top:240px;display:flex;justify-content:flex-end;", T_EOY - 0.05, T_STORM + 0.6, CAL);
 SFX("hit", T_EOY + 0.1);
 // "on the last night of seventeen seventy-five, in a blizzard, they attacked"
 const NW2 = nightWash(T_LAST, T_HOSP + 0.2, 0.55);
@@ -112,11 +113,12 @@ B.snow(T_BLIZ - 0.1, T_NEVER);
 SFX("ref:whoosh", T_ATT);
 const A1p = arw({ pts: [[PLAINS[0] - 60, PLAINS[1] + 60], [1250, 1030], [1380, 975], [PDV[0] - 20, PDV[1] + 10]], side: "carth", t: T_ATT, dur: 1.2, width: AW(S6, 12), dash: "12 9", until: T_PLAN + 1.2 });
 const A2p = arw({ pts: [[PLAINS[0] - 20, PLAINS[1] - 60], [STROCH[0], STROCH[1] + 40], [1420, 680], [SAULT[0] - 20, SAULT[1] - 10]], side: "carth", t: T_ATT + 0.15, dur: 1.2, width: AW(S6, 12), dash: "12 9", until: T_PLAN + 1.2 });
-// the paper slip in every cap: blank on "a piece of paper", the words on "Liberty or death"
-const SLIP = scr(`<div style="transform:rotate(-3deg);padding:26px 60px 30px;background:linear-gradient(170deg,#f6efdc,#e6d8b4);box-shadow:0 18px 40px rgba(0,0,0,.6);border:1px solid #b9a77c;min-width:560px;text-align:center">
+// the paper slip in every cap: blank on "a piece of paper ... in his cap", the words on "Liberty or death" (~4 s in all)
+const SLIP_IN = T_PAPER + 1.0, SLIP_OUT = T_LIB + 2.6;
+const SLIP = scr(`<div style="transform:rotate(-3deg);padding:26px 60px 30px;background:linear-gradient(170deg,#f6efdc,#e6d8b4);box-shadow:0 18px 40px rgba(0,0,0,.6);border:1px solid #b9a77c;min-width:520px;text-align:center">
   <div class="lw" style="font-family:'Special Elite',monospace;font-size:66px;color:#2a2018;letter-spacing:.02em">&ldquo;Liberty or death.&rdquo;</div></div>`,
-  "left:0;right:0;top:230px;display:flex;justify-content:center;", T_PAPER - 0.05, T_PLAN + 1.6, { autoAlpha: 0, y: 40, rotation: 6 });
-gsap.set(SLIP.querySelector(".lw"), { autoAlpha: 0 }); tl.to(SLIP.querySelector(".lw"), { autoAlpha: 1, duration: 0.5 }, T_LIB - 0.05); SFX("ref:pop", T_PAPER); SFX("hit", T_LIB + 0.1);
+  "right:90px;top:600px;display:flex;justify-content:flex-end;", SLIP_IN, SLIP_OUT, { autoAlpha: 0, y: 40, rotation: 6 });
+gsap.set(SLIP.querySelector(".lw"), { autoAlpha: 0 }); tl.to(SLIP.querySelector(".lw"), { autoAlpha: 1, duration: 0.5 }, T_LIB - 0.05); SFX("ref:pop", SLIP_IN); SFX("hit", T_LIB + 0.1);
 // =====================================================================================================================
 // m1-7: the Lower Town at night in the snow (option 2: two glowing fronts only)
 // =====================================================================================================================
@@ -142,7 +144,7 @@ mg([PDV[0] - 4, PDV[1]], [PDV[0] - 40, PDV[1] + 18], T_GRAPE + 0.45, 7, 1.0);
 pulse(T_GRAPE + 0.7);
 badgeStamp(MB, "KILLED", T_KILLED + 0.4, { size: 30 }); greyM(MF, T_KILLED + 0.3);
 // "His column fell back"
-B.grey(["mk"], T_FELL, 0.5); go("mk", T_FELL + 0.1, 2.0, MPATH[1]);
+B.grey(["mk"], T_FELL, 0.5); go("mk", T_FELL + 0.1, 2.0, MPATH[1]); hideU(["mk"], T_FELL + 2.2);   // gone before it reaches the frame edge
 const MBACK = arw({ pts: [[PDV[0] - 30, PDV[1] + 20], MPATH[2], MPATH[1]], side: "carth", t: T_FELL, dur: 1.0, width: AW(S7, 10), dash: "10 7", until: T_SAULT });
 gsap.set(MBACK, { filter: "grayscale(1) brightness(1.15)" });
 // Arnold's column along the waterfront to the barricade at Sault-au-Matelot
@@ -180,7 +182,10 @@ const RING = front2([...Array(13)].map((_, k) => { const a = k / 12 * 6.2832; re
 // the casualty card (spoken numbers only, each on its words)
 B.grey(["ak1", "ak2"], T_CAPT, 0.6);
 const BARS = bars(SAULT[0] + 50, SAULT[1] + 30, T_CAPT + 0.1, T_HOSP + 0.4, 36);
-const CAS = casCard([["ABOUT 400 CAPTURED", T_400 + 0.6], ["30–60 KILLED", T_3060 + 0.3]], [["FEWER THAN 20 LOST", T_20]], "QUEBEC · 31 DECEMBER 1775", T_400, T_HOSP + 0.2, 230);
+// "About four hundred Americans were captured": on the map, by the prisoners' bars; the card only from "between thirty and sixty" (audit #22: short)
+const CAPL = wstampL("~400 CAPTURED", SAULT[0] + 50, SAULT[1] + 78, T_400 + 0.6, T_3060 - 0.1, "#9fc0ea", 20);
+const CAS_IN = T_3060 + 0.1, CAS_OUT = T_20 + 2.3;
+const CAS = casCard([["ABOUT 400 CAPTURED", CAS_IN + 0.1], ["30–60 KILLED", T_3060 + 0.4]], [["FEWER THAN 20 LOST", T_20]], "QUEBEC · 31 DECEMBER 1775", CAS_IN, CAS_OUT, "right:60px;top:590px;display:flex;justify-content:flex-end;");   // over the river: clear of both flags and the ring
 // =====================================================================================================================
 // m1-8: grey dawn; the hospital; the blockade through the winter; result; the method
 // =====================================================================================================================
@@ -189,11 +194,16 @@ camTo(T_HOSP - 0.2, 3.2, C8, S8, "sine.inOut");
 hideU(["mk", "ak1", "ak2", "rg1", "rg2"], T_HOSP); tl.to([BH, BARR, MOF], { autoAlpha: 0, duration: 0.5 }, T_HOSP);
 const GREY = document.createElement("div"); GREY.style.cssText = "position:absolute;inset:0;background:rgba(150,156,166,0.22);pointer-events:none"; document.getElementById("fx").appendChild(GREY);
 gsap.set(GREY, { autoAlpha: 0 }); tl.to(GREY, { autoAlpha: 1, duration: 1.2 }, T_HOSP); tl.to(GREY, { autoAlpha: 0, duration: 2.0 }, T_FEW);
-const F3 = [flagS(FL.gb, "", QUE[0] - 40, QUE[1] - 150, T_HOSP + 0.8, null), flagS(FL.us, "", 1000, 1000, T_HOSP + 0.8, null)];
+// the Union Flag on the walled city itself, the Continental Colours on the American-held country to the west (clear of the blockade line and the cards)
+const F3 = [flagS(FL.gb, "", QUE[0] + 55, QUE[1] + 45, T_HOSP + 0.8, null), flagS(FL.us, "", 778, 647, T_HOSP + 0.8, null)];
 const AB3 = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_HOSP + 0.2, T_SHOWN);
 const PISTOL = `<svg width="70" height="34" viewBox="0 0 70 34" style="display:inline-block;vertical-align:middle;margin-right:14px"><path d="M4 8 L50 8 L56 4 L62 6 L58 12 L30 12 L26 30 L14 30 L18 14 L4 14 Z" fill="#f3eee2" stroke="#c9b48a" stroke-width="1.5"/><path d="M28 12 Q30 20 36 16" fill="none" stroke="#c9b48a" stroke-width="2"/></svg>`;
-const HOS = listCard(`${PISTOL}IN THE HOSPITAL`, [["PISTOLS LOADED", T_PIST + 0.1], ["A SWORD ON HIS BED", T_SWORD + 0.3], ["THEY NEVER CAME", T_NEVER + 0.05]],
-  "left:0;right:0;top:170px;display:flex;justify-content:center;", T_PIST - 0.05, T_FEW - 0.1, { size: 52, mw: 600 });
+const HOS_OUT = T_SWORD + 2.6;
+const HOS = listCard(`${PISTOL}IN THE HOSPITAL`, [["PISTOLS LOADED", T_PIST + 0.1], ["A SWORD ON HIS BED", T_SWORD + 0.3]],
+  "right:90px;top:240px;display:flex;justify-content:flex-end;", T_PIST - 0.05, HOS_OUT, { size: 52, mw: 600 });
+// "They never came": its own short stamp (the hospital card has long gone)
+const NEVER_OUT = T_NEVER + 2.4;
+const NEV = sstamp("THEY NEVER CAME", 190, T_NEVER + 0.05, { size: 54, color: "#f7f3ea", until: NEVER_OUT });
 // "With a few hundred men, he kept Quebec under siege for the rest of the winter"
 const BU = [[1180, 1060], [1215, 900], [1250, 760], [1330, 640], [1790, 1010]].map((p, k) => unitS("b" + k, "carth", p, "infantry", "", { t: T_FEW + k * 0.12 }));
 const BLOCK = front2([[1150, 1110], [1190, 980], [1225, 860], [1255, 760], [1300, 680], [1360, 625], [1430, 600]], S8, T_SIEGE - 0.1, { dur: 1.6, flip: true });
@@ -201,13 +211,12 @@ SFX("ref:whoosh", T_SIEGE);
 dateRun([["JANUARY 1776", T_WINTER - 0.3, T_WINTER + 0.35], ["MARCH 1776", T_WINTER + 0.4, T_WINTER + 1.05], ["MAY 1776", T_WINTER + 1.1, null]], 30);
 for (let k = 0; k < 3; k++) SFX("tick", T_WINTER - 0.3 + k * 0.7);
 // "The city had not fallen": the result card
-const RES = resultCard("RESULT", "QUEBEC HELD", "THE MARCH · ~350 MILES", T_NOTF - 0.05, T_SHOWN + 0.9, { size: 80 });
-// the method: each line on its own spoken words
-const MCD = GG.method(3, T_SHOWN + 1.0, END + 1, [T_GO, T_LET, T_LEAD]); MCD.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "48px"; });
-[T_GO, T_LET, T_LEAD].forEach((t) => SFX("ref:pop", t));
-SFX("ref:boom", T_LEAD + 0.4);
+const RES = resultCard("RESULT", "QUEBEC HELD", "THE MARCH · ~350 MILES", T_NOTF - 0.05, T_SHOWN + 0.9, { size: 80, top: 640 });
+// the method: move 1 lights ONLY line 1, on its spoken words (lines 2 and 3 stay dim bars for moves 2 and 3)
+const MCD = GG.method(1, T_HOW - 0.1, END + 1, [T_GO]); MCD.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "48px"; }); MCD.style.top = "600px";
+SFX("ref:pop", T_GO); SFX("ref:boom", T_GO + 0.4);
 // the HUD steps out while a big card is up (1c); the date scroll stays
-declutter([LGD, AB, MB, AB2, MOB, AB3], [[T_600 - 0.1, T_STL - 0.2], [T_350, T_4N - 0.2], [T_EOY - 0.05, T_STORM + 0.6], [T_PAPER - 0.05, T_PLAN + 1.6],
-  [T_400, T_HOSP + 0.2], [T_PIST - 0.05, T_FEW - 0.1], [T_NOTF - 0.05, END + 1]]);
+declutter([LGD, AB, MB, AB2, MOB, AB3], [[T_600 - 0.1, T_STL - 0.2], [T_350 + 0.1, MARCH_OUT], [T_35 - 0.05, N35_OUT], [T_EOY - 0.05, T_STORM + 0.6], [SLIP_IN, SLIP_OUT],
+  [CAS_IN, CAS_OUT], [T_PIST - 0.05, HOS_OUT], [T_NEVER + 0.05, NEVER_OUT], [T_NOTF - 0.05, END + 1]]);
 fixImgs();
 B.finish();

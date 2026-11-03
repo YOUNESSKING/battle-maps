@@ -27,7 +27,15 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); });
+  FADEF.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.filter = `opacity(${(inv ? 1 - r : r).toFixed(3)})`; });
+  SCALEFIX.forEach((q) => q(s)); CAM_S = s; setInv(); };
+// FADEF: like FADES but through filter:opacity (safe on elements gsap also fades with autoAlpha); SCALEFIX: callbacks(s) per camera update
+const FADEF = [], SCALEFIX = [];
+const fadeS = (els, a, b, inv) => [].concat(els).forEach((g) => { if (g) FADEF.push([g.el || g, a, b, inv]); });
+// keep a world-space arrow (arw) at a constant on-screen size: its widths and head are rescaled by s0 / s while the camera moves
+const arrowFix = (g, s0) => { const ps = [...g.querySelectorAll("path")], w = ps.map((p) => +p.getAttribute("stroke-width")), hg = g.querySelector("g"), tr = hg ? hg.getAttribute("transform") : "";
+  SCALEFIX.push((s) => { const f = s0 / s; ps.forEach((p, i) => p.setAttribute("stroke-width", (w[i] * f).toFixed(2))); if (hg) hg.setAttribute("transform", `${tr} scale(${f.toFixed(4)})`); }); return g; };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)

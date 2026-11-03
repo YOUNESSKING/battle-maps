@@ -68,7 +68,8 @@ const icon = (html, x, y, t, until, o = {}) => { const el = pinS(GG.pin(`<div st
 // a screen card that grows line by line, each line on its spoken word: lines = [[text, t], ...]
 const listCard = (kick, lines, css, t, until, o = {}) => { const el = scr(`<div style="padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);min-width:${o.mw || 520}px">
   <div class="kk" style="font-size:20px;letter-spacing:.36em;color:${o.kc || "#c9b48a"};min-height:26px">${kick}</div>${lines.map(([tx], i) => `<div class="ln ln${i}" style="font-size:${o.size || 50}px;letter-spacing:.06em;line-height:1.18">${tx}</div>`).join("")}</div>`, css, t, until);
-  lines.forEach(([, tt], i) => { const ln = el.querySelector(".ln" + i); gsap.set(ln, { autoAlpha: 0, display: "none" }); tl.set(ln, { display: "block" }, tt); tl.fromTo(ln, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05); });
+  lines.forEach(([, tt], i) => { const ln = el.querySelector(".ln" + i); gsap.set(ln, { autoAlpha: 0, display: "none" }); tl.set(ln, { display: "block" }, tt); tl.fromTo(ln, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05);
+    if (o.keep && i >= o.keep) tl.set(el.querySelector(".ln" + (i - o.keep)), { display: "none" }, tt); });   // o.keep: only the last N lines stay (finished lines drop)
   if (o.kickT != null) { const kk = el.querySelector(".kk"); gsap.set(kk, { autoAlpha: 0 }); tl.to(kk, { autoAlpha: 1, duration: 0.3 }, o.kickT); }
   return el; };
 // casualty card (the K.casualties look, but each value only on its own spoken words): colA/colB = [[text, t], ...]
@@ -76,7 +77,7 @@ const casCard = (colA, colB, foot, t, until, top = 250) => { const col = (flag, 
     <img src="${flag}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:0.08em">${head}</div></div>${vals.map(([tx], i) => `<div class="v${k}${i}" style="font-size:38px;line-height:1.5">${tx}</div>`).join("")}</div>`;
   const el = scr(`<div style="display:flex;gap:70px;padding:28px 50px 22px;background:rgba(18,16,12,0.92);border-top:6px solid #c9b48a;color:#f7f3ea;font-family:Oswald;font-weight:700;box-shadow:0 20px 40px rgba(0,0,0,0.55);flex-wrap:wrap;justify-content:center;max-width:980px">
     ${col(FL.us, "AMERICANS", "#2e5cb2", colA, "a")}${col(FL.gb, "BRITISH", "#be3a2a", colB, "b")}<div style="font-size:16px;letter-spacing:.2em;color:#a8a294;text-align:center;width:100%">${foot}</div></div>`,
-    `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+    typeof top === "string" ? top : `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
   [[colA, "a"], [colB, "b"]].forEach(([vals, k]) => vals.forEach(([, tt], i) => { const v = el.querySelector(".v" + k + i); gsap.set(v, { autoAlpha: 0 }); tl.fromTo(v, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05); }));
   SFX("hit", t + 0.2); return el; };
 // the date scroll ticking through several dates (the scroll itself never disappears)
@@ -85,3 +86,11 @@ const dateRun = (list, size = 30) => list.forEach(([txt, t, until]) => B.date(tx
 const fadeL = (el, t, dur, to) => tl.to(el, { autoAlpha: to, duration: dur, ease: "sine.inOut" }, t);
 // grey a world-space marker (face marker / icon)
 const greyM = (el, t) => tl.to(el.firstElementChild, { filter: "grayscale(1) brightness(0.65)", duration: 0.5 }, t);
+// badge rings in 1775-76: the Continental Colours with the Union canton clearly in view (audit #42: never read as the 13-star flag)
+(() => { const kb = K.badge; K.badge = (o) => { const el = kb(o); if (/continental/.test(o.flag || "")) { const r = el.querySelector("div[style*='border-radius:50%']");
+  const bg = document.createElement("div"); bg.style.cssText = `position:absolute;inset:0;background:url(${o.flag}) 0% 0%/auto 150% no-repeat;`; r.insertBefore(bg, r.firstChild); } return el; }; })();
+  // (a child layer, not r.style: re-serialising the ring's style would break the "border-radius:50%" selectors in gh_kit)
+// the date scroll ON from frame 0 (no fade-in: the scroll never disappears across a scene cut)
+const dateHold = (txt, until, size = 30) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1, x: 0 });
+  const d = document.createElement("div"); d.className = "d"; d.textContent = txt; d.style.fontSize = size + "px"; box.appendChild(d); gsap.set(d, { autoAlpha: 1, y: 0 });
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
