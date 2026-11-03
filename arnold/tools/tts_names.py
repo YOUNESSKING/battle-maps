@@ -1,9 +1,10 @@
 """How the TTS says this video's names (tts/PRONUNCIATION.md; checked 2026-10-31). Used by narrate.py and narrate_changed.py.
 PHON = exact Kokoro phonemes (English-documentary pronunciations; French/German names Americanised the way WWII histories say them)."""
 import re
-PRON = {}
-PHON = {"Donelson": "dˈɑːnəlsən", "Tilghman": "tˈɪlmən", "Grierson": "ɡɹˈɪɹsən", "Beauregard": "bˈoʊɹəɡˌɑːɹd",
-        "Weyanoke": "wˈaɪɐnˌoʊk", "Trevilian": "tɹəvˈɪljən", "Gouverneur": "ɡˈʌvɚnɪɹ", "Appomattox": "ˌæpəmˈæɾəks"}
+PRON = {"St. Lawrence": "Saint Lawrence", "Major-general": "Major general"}
+PHON = {"Chaudière": "ʃoʊdjˈɛɹ", "bateaux": "bætˈoʊz", "Sault-au-Matelot": "sˌoʊ oʊ mˌætlˈoʊ", "Valcour": "vˈælkɔːɹ",
+        "Skenesborough": "skˈiːnzbɚɹoʊ", "Breymann": "bɹˈaɪmən", "Burgoyne": "bɚɡˈɔɪn", "Bemis": "bˈiːmɪs",
+        "gondolas": "ɡˈɑːndələz", "Mahan": "məhˈæn", "Champlain": "ʃæmplˈeɪn", "Pellew": "pəlˈuː", "Carleton": "kˈɑːɹltən"}
 
 
 def speak(k, text, voice, speed):
