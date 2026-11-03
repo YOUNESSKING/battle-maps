@@ -23,15 +23,13 @@ key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag)
     "hook-a": ("hook-1", "hook-2"), "hook-b": ("hook-3", "hook-4"),
-    "m1a": ("m1-1", "m1-1"), "m1b": ("m1-2", "m1-2"), "m1c": ("m1-3", "m1-4"), "m1d": ("m1-5", "m1-6"),
-    "m1e": ("m1-7", "m1-8"), "m1f": ("m1-9", "move1-sub"),
-    "m2a": ("m2-1", "m2-2"), "m2b": ("m2-3", "m2-3"), "m2c": ("m2-4", "m2-4"), "m2d": ("m2-5", "m2-6"),
-    "m2e": ("m2-7", "m2-7"), "m2f": ("m2-8", "m2-10"), "m2g": ("m2-11", "m2-12"),
-    "m3a": ("m3-1", "m3-2"), "m3b": ("m3-3", "m3-4"), "m3c": ("m3-5", "m3-5"), "m3d": ("m3-6", "m3-7"),
+    "m1a": ("m1-1", "m1-4"), "m1b": ("m1-5", "m1-8"),
+    "m2a": ("move1-sub", "m2-2"), "m2b": ("m2-3", "m2-5"), "m2c": ("m2-6", "m2-7"), "m2d": ("m2-8", "m2-9"),
+    "m3a": ("m3-1", "m3-3"), "m3b": ("m3-4", "m3-8"),
     "ending": ("end-1", "end-2"),
 }
-CHAPTERS = [("hook-1", "Intro: Fort Donelson and the Man Nobody Knew"), ("m1-1", "Move 1: Fort Henry and Fort Donelson (Feb 1862)"),
-            ("m2-1", "Move 2: The Vicksburg Campaign (1863)"), ("m3-1", "Move 3: Across the James River (Jun 1864)"),
+CHAPTERS = [("hook-1", "Intro: Saratoga and the General With No Command"), ("m1-1", "Move 1: The March to Quebec (1775)"),
+            ("m2-1", "Move 2: Valcour Island (1776)"), ("m3-1", "Move 3: Saratoga (1777)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}

@@ -101,6 +101,7 @@ WATER = (96, 140, 168); EDGE = (52, 80, 100)
 for f in ([] if NOAREA else area) + ([] if NOAREA else body):
     ft = (f["properties"].get("FType") or 0)
     if ft == 466: continue
+    if NORES and (ft == 336 or "Canal" in (f["properties"].get("GNIS_Name") or "")): continue   # Arnold #17: no modern canals (Champlain Canal)
     if NORES and ft == 436 and f in body: continue   # owner 2026-11-01: no modern reservoirs (Lake Barkley, Kentucky Lake, Ross Barnett...): they did not exist in 1862-64
     if SIMPLE and f in body:
         g0 = polys(f)
@@ -111,6 +112,7 @@ for f in ([] if NOAREA else area) + ([] if NOAREA else body):
             if k == 0: d.polygon(pts, fill=WATER + (235,), outline=EDGE + (255,))
 for f in flow:
     p = f["properties"]; named = bool(p.get("GNIS_Name")); fc = p.get("FCode") or 46006
+    if NORES and ((p.get("FType") or 0) == 336 or "Canal" in (p.get("GNIS_Name") or "")): continue   # no modern canals
     if SIMPLE and not named: continue
     w = 4 if named else 2
     if NOAREA and (p.get("GNIS_Name") or "") in ("Cumberland River", "Tennessee River", "Ohio River", "Mississippi River"): w = 30   # only the main river is drawn as a channel

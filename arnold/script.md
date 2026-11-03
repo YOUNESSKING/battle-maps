@@ -12,10 +12,10 @@ Facts: arnold/research/FACT_NOTES.md.
 ## HOOK (0:00 – ~1:05)
 
 [MAP: hook-1 | stakes frame. Frame 0 = `northeast` wide: red columns and boats already moving south from Canada down Lake Champlain toward the Hudson, a red arrow aiming at Albany, New England glowing on the right; flags 13-star US + Union Flag; ONE continuous zoom (zoom whoosh) down the Hudson onto the heights above the river, arriving on the word Saratoga; no cut, no white flash]
-In the autumn of seventeen seventy-seven, a British army came down from Canada to cut the rebel colonies in two. Its road to Albany ran along the Hudson River, past the high ground near a village called Saratoga.
+In seventeen seventy-seven, a British army came down from Canada to cut the colonies in two. Its road ran down the Hudson, past a village called Saratoga.
 
 [MAP: hook-2 | `saratoga` wide: BIG number card slams on "six thousand" (ABOUT 6,000 SURRENDER, red); stamp FRANCE on "France"; on "no command at all" a blue "?" badge pulses on the American lines]
-Within ten days, about six thousand British and German soldiers would lay down their arms there. The victory would bring France into the war. And the man who broke the British line that day had no command at all.
+Within weeks, about six thousand of its soldiers would lay down their arms there. The victory would bring France into the war. And the man who broke the British line that day had no command at all.
 
 [MAP: hook-3 | back into the danger: date scroll 7 OCT 1777 on the spoken date; red columns with guns push out into a wheat field in front of the American left; small musket fire, no unseen artillery; Gates badge after his name; the "?" badge rides out from the American camp toward the smoke; a second small rider follows and falls behind]
 But on the afternoon of the seventh of October, it did not look like a victory. About fifteen hundred British and German troops had marched out of their camp, with cannon, into the fields in front of the American left. The general who had fought them hardest three weeks before had quarrelled with his commander, Horatio Gates, and been left without a command. When the guns opened, he rode out to the fighting anyway. An officer was reportedly sent after him to bring him back. He did not catch up until it was over.
