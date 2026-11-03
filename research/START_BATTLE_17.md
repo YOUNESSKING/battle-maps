@@ -18,7 +18,7 @@ Make video #17: "Benedict Arnold's Top 3 Legendary Tactical Moves | The Man Who 
 2. `research/DATA_RULES.md` (LOCKED 2026-11-02: two-stage reach model; write for MINUTES watched; win the sidebar click; publish order).
 3. `STYLE_LOCK.md`, the whole file: 0b, **1a (the 2026-10-31 "stay in the story, no CV" block FIRST)**, 1b engagement, **1c on-screen text
    and clutter**, 2/2a, **2b map look v11 + clean screen**, **2c GRANT #16 LOCKS** (no trees, no modern reservoirs, territory colours only on
-   wide overhead shots at half strength, plain Kokoro narration by default, complete Netflix archive style, move-end result + method cards).
+   territory colours whenever they help the viewer (2c item 2, changed 2026-11-03), plain Kokoro narration by default, complete Netflix archive style, move-end result + method cards).
 4. `research/PACKAGING_GUIDE.md` 0b + `research/CHANNEL_LOG.md` (traffic sources table: what separates hits from flops) +
    `research/CONSIDERING.md` (ideas NOT in the rules) + `research/competitors/openings/SYNTHESIS.md` (how top competitors open).
 5. **The Grant #16 project = the newest worked example of everything** (`grant/`: script, FACT_NOTES, FACTCHECK files, SCENES.md, tools
