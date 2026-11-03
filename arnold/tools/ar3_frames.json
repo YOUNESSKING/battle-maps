@@ -649,5 +649,87 @@
 "surrender card settled: ABOUT 6,000",
 "-"
 ]
+],
+"hook-a-v2": [
+[
+0,
+"frame 0: clean, units moving, flags, territory",
+"-"
+],
+[
+2,
+"'seventeen seventy-seven': 1777",
+"-"
+],
+[
+4,
+"'going badly': GOING BADLY + red pulse",
+"-"
+],
+[
+6,
+"'New York': ring, label, flag",
+"-"
+],
+[
+8,
+"'Philadelphia, the American capital': SW edge marker",
+"-"
+],
+[
+10,
+"'a second British army': the column starts down the lake",
+"-"
+],
+[
+11.6,
+"'coming down from Canada': arrow + ONE zoom starts",
+"-"
+],
+[
+13.0,
+"mid-zoom onto the hudson map",
+"-"
+],
+[
+14.3,
+"lands on 'Saratoga'",
+"-"
+],
+[
+16,
+"'Within weeks': OCTOBER 1777",
+"-"
+],
+[
+17.6,
+"ABOUT 6,000 slams, ticks",
+"-"
+],
+[
+20,
+"'lay down their arms': grey + white flag",
+"-"
+],
+[
+22,
+"FRANCE / INTO THE WAR",
+"-"
+],
+[
+24,
+"'And the man': push in to the battlefield",
+"-"
+],
+[
+25.6,
+"'broke the British line'",
+"-"
+],
+[
+27.4,
+"'no command at all': the '?' badge",
+"-"
+]
 ]
 }
