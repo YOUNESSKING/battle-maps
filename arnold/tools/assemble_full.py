@@ -146,7 +146,7 @@ def _place(name, t, db, dur=None, fade=0.4):
     n = min(int(fade * _sr), len(a) // 2); a = a.copy(); a[-n:] *= np.linspace(1, 0, n)[:, None]
     s0 = int(t * _sr); e = min(len(_fx), s0 + len(a)); _fx[s0:e] += a[:max(0, e - s0)] * 10 ** (db / 20)
 _LV = {"ref:whoosh": ("whoosh_cinematic_tunnel.wav", -14), "ref:pop": ("label_pop_dry.wav", -20), "ref:boom": ("boom_big_cinematic_impact.wav", -11), "ref:riser": ("riser_reverse_swell.wav", -17)}
-_cues = json.load(open("build/sfx_cues.json")); _n = 0
+_cues = [] if os.environ.get("REF_SOUNDS") != "1" else json.load(open("build/sfx_cues.json")); _n = 0   # owner 2026-11-03: NO synthesized ref sounds (pops, whooshes, booms, riser, paper, projector): only the locked kit, as in the reference video
 _snap = [p_["start"] for p_ in paras if p_["tag"].startswith("MAP: hook-4")][0]
 for _t, _k, _s in _cues:
     if _k == "ref:whoosh":   # owner 2026-11-03 (Arnold): the synthesized whoosh is NOT the locked sound; locked zoom_whoosh only on the hook-4 snap cuts, none on ordinary camera moves
@@ -154,7 +154,7 @@ for _t, _k, _s in _cues:
             a_, r_ = sf.read("assets/media/sfx/zoom_whoosh.wav", always_2d=True); s0 = int(_t * _sr); e_ = min(len(_fx), s0 + len(a_)); _fx[s0:e_] += a_[:max(0, e_ - s0)] * 10 ** (-12 / 20); _n += 1
         continue
     if _k in _LV: _place(_LV[_k][0], _t, _LV[_k][1]); _n += 1
-for _ts, _dd, _sh in ARCH_EVENTS:
+for _ts, _dd, _sh in ([] if os.environ.get("REF_SOUNDS") != "1" else ARCH_EVENTS):
     if "headline" in _sh.get("photo", "") or _sh.get("headline_card"): _place("paper_newspaper_big_page.wav", _ts - 0.1, -12)
     if _sh.get("frame"): _place("projector_loop.wav", _ts + 0.3, -27, dur=max(0.5, _dd - 0.3))
 sf.write("build/sfx.wav", _fx, _sr); print("reference sound design:", _n, "ref cues,", len(ARCH_EVENTS), "archive shots")
