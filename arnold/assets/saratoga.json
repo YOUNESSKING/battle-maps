@@ -1,0 +1,19 @@
+{
+ "name": "saratoga",
+ "center": [
+  43.0,
+  -73.635
+ ],
+ "zoom": 15,
+ "origin_world_px": [
+  2477044,
+  3081578
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 3.49,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

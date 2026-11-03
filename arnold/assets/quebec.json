@@ -1,0 +1,19 @@
+{
+ "name": "quebec",
+ "center": [
+  46.81,
+  -71.21
+ ],
+ "zoom": 14,
+ "origin_world_px": [
+  1266055,
+  1477676
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 6.54,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

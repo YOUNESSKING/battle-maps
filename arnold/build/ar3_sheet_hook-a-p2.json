@@ -1,0 +1,55 @@
+{
+ "title": "Arnold #17 HOOK-A (hook-1 - hook-2) - map agent ar3_, round p2, 24.43 s",
+ "note": "STYLE_LOCK 1a + 1c + 2b/2c: nothing before it is spoken, one big card at a time, option 2 on close-ups, visible fire only",
+ "frames": [
+  [
+   "hook-a",
+   0,
+   "0:00.0",
+   "frame 0 (northeast p2)",
+   "-"
+  ],
+  [
+   "hook-a",
+   6.6,
+   "0:06.6",
+   "CUT IN TWO",
+   "hit"
+  ],
+  [
+   "hook-a",
+   7.6,
+   "0:07.6",
+   "zoom starts",
+   "zoom whoosh"
+  ],
+  [
+   "hook-a",
+   8.8,
+   "0:08.8",
+   "mid-zoom: hudson p2 + HUDSON",
+   "-"
+  ],
+  [
+   "hook-a",
+   10.6,
+   "0:10.6",
+   "lands on Saratoga",
+   "hit"
+  ],
+  [
+   "hook-a",
+   12.0,
+   "0:12.0",
+   "Within weeks",
+   "ticks"
+  ],
+  [
+   "hook-a",
+   20.4,
+   "0:20.4",
+   "push in to the battlefield",
+   "-"
+  ]
+ ]
+}

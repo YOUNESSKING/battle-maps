@@ -1,0 +1,19 @@
+{
+ "name": "hudson",
+ "center": [
+  43.0,
+  -73.6
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  76038,
+  95514
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 111.81,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
