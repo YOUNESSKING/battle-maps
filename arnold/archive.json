@@ -2,7 +2,7 @@
  "4": [
   {
    "photo": "assets/media/card_1775_champlain.jpg",
-   "move": "in",
+   "move": "card",
    "focus": [
     0.5,
     0.5
@@ -61,7 +61,7 @@
  "23": [
   {
    "photo": "assets/media/headline_congress.jpg",
-   "move": "in",
+   "move": "card",
    "focus": [
     0.5,
     0.5
@@ -70,7 +70,7 @@
   },
   {
    "photo": "assets/media/card_1777_ticonderoga.jpg",
-   "move": "in",
+   "move": "card",
    "focus": [
     0.5,
     0.5

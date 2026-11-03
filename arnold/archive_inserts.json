@@ -33,7 +33,7 @@
   "shots": [
    {
     "photo": "assets/media/headline_mahan.jpg",
-    "move": "in",
+    "move": "card",
     "focus": [
      0.5,
      0.45
@@ -70,7 +70,7 @@
   "shots": [
    {
     "photo": "assets/media/headline_gates.jpg",
-    "move": "in",
+    "move": "card",
     "focus": [
      0.5,
      0.45

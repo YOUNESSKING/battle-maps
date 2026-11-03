@@ -66,6 +66,7 @@ def boxes(move, focus, iw, ih, W, H):
         w, h = w_full / zoom, h_full / zoom
         x0 = min(max(cx * iw - w / 2, 0), iw - w); y0 = min(max(cy * ih - h / 2, 0), ih - h)
         return np.array([x0, y0, w, h], float)
+    if move == "card": return box(1.0, 0.5, 0.5), box(1.03, 0.5, 0.5)   # text cards (date/headline): almost still, never crop the words (owner 2026-11-03)
     if move == "in":  return box(1.0, 0.5, 0.5), box(1.22, fx, fy)
     if move == "out": return box(1.22, fx, fy), box(1.0, 0.5, 0.5)
     pan = {"left": (0.62, 0.38, 0.5, 0.5), "right": (0.38, 0.62, 0.5, 0.5), "up": (0.5, 0.5, 0.62, 0.38), "down": (0.5, 0.5, 0.38, 0.62)}[move]
