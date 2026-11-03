@@ -291,9 +291,10 @@ const cmd = (key, name, role, side, corner, t, until) => badge({ name, role, pho
 const ux = (id) => [B.units[id].x, B.units[id].y];
 const nearestF = (pts, p) => { let best = 0, bd = 1e9; for (let k = 0; k <= 400; k++) { const q = posOn(pts, k / 400), d = Math.hypot(q[0] - p[0], q[1] - p[1]); if (d < bd) { bd = d; best = k / 400; } } return best; };
 // a shot that reads at ANY camera scale s (wide shots): constant-size flash, arc and impact (patton hook-a shootS), locked sounds + shake
-const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)"></div>`, from[0], from[1], {}));
-  tl.fromTo(f, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t); tl.to(f, { autoAlpha: 0, duration: 0.25 }, t + 0.07); SFX("fire", t);
-  GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: 1.8 / s, h: (o.h || 40) / s, impact: false });
+const shootS = (from, to, t, s, o = {}) => { const fl = o.fl || 16, f = pinS(GG.pin(`<div style="width:${fl}px;height:${fl}px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)${o.fl ? ";box-shadow:0 0 " + fl + "px " + fl * 0.3 + "px rgba(255,170,40,.6)" : ""}"></div>`, from[0], from[1], {}));
+  tl.fromTo(f, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t); tl.to(f, { autoAlpha: 0, duration: o.fl ? 0.4 : 0.25 }, t + (o.fl ? 0.12 : 0.07)); SFX("fire", t);
+  if (o.fl) K.smoke(from[0], from[1] - 2, t + 0.08, { n: 2, r: 10 / s, rise: 10 / s, life: 2.2, alpha: 0.55, drift: 6 / s });
+  GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: (o.aw || 1.8) / s, h: (o.h || 40) / s, impact: false });
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
 const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
@@ -335,6 +336,10 @@ const LAKESVG = (kind, s, col) => {
   const glow = `filter:drop-shadow(0 0 ${(s * 0.16).toFixed(1)}px ${gl}) drop-shadow(0 ${(s * 0.06).toFixed(1)}px ${(s * 0.1).toFixed(1)}px rgba(0,0,0,.7))`;
   return `<div><svg width="${(s * w / 23).toFixed(0)}" height="${(s * h / 23).toFixed(0)}" viewBox="${-w / 2} ${-h / 2} ${w} ${h}" style="display:block;overflow:visible;${glow}">${body}</svg></div>`;
 };
+// audit #18 (2026-11-03): the date scroll and its first date on screen from frame 0 (no fade-in at the scene cut)
+const date0 = () => { const box = document.getElementById("date"), els = [box, ...box.children];
+  tl.getTweensOf(els).filter((tw) => tw.startTime() < 0.06).forEach((tw) => tw.kill());
+  gsap.set(box, { autoAlpha: 1, x: 0 }); const d = box.querySelector(".d"); if (d) gsap.set(d, { autoAlpha: 1, y: 0 }); };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
 const GD = {"base":"champsouth","maps":{"maine":{"zoom":9,"origin_world_px":[38427,46029],"meters_per_px":213.92},"champlain":{"zoom":9,"origin_world_px":[37408,46570],"meters_per_px":217.89},"hudson":{"zoom":10,"origin_world_px":[76038,95514],"meters_per_px":111.81},"valcour":{"zoom":13,"origin_world_px":[619433,756872],"meters_per_px":13.61},"saratoga":{"zoom":15,"origin_world_px":[2477044,3081578],"meters_per_px":3.49},"northeast":{"zoom":8,"origin_world_px":[18129,23070],"meters_per_px":441.35},"champsouth":{"zoom":11,"origin_world_px":[153836,188978],"meters_per_px":54.59},"quebec":{"zoom":14,"origin_world_px":[1266055,1477676],"meters_per_px":6.54}}};
@@ -350,7 +355,8 @@ const T_CHASE = at(P8, "chased him south"), T_2D = at(P8, "two days"), T_BATT = 
 const T_P9 = B.T.paras[P9][0], T_1011 = at(P9, "ten or eleven"), T_80 = at(P9, "eighty men"), T_100 = at(P9, "more than a hundred captured"), T_BR40 = at(P9, "The British lost fewer"),
   T_SEA = at(P9, "As a sea battle"), T_DEF = at(P9, "a defeat"), T_TOOK = at(P9, "But the British took Crown Point"), T_TIC = at(P9, "looked at Ticonderoga"),
   T_9000 = at(P9, "nine thousand"), T_LATE = at(P9, "too late in the year"), T_NOV = at(P9, "second of November"), T_SNOW = at(P9, "first snow"), T_CAN = at(P9, "back to Canada"),
-  T_ARCH = at(P9, "More than a century later"), T_ARCH1 = at(P9, "on Lake Champlain."), T_CHOSE = at(P9, "Arnold had chosen the place");
+  T_ARCH = at(P9, "More than a century later"), T_ARCH1 = at(P9, "on Lake Champlain."), T_CHOSE = at(P9, "Arnold had chosen the place"),
+  T_PART2 = at(P9, "the second part of his method"), T_LET = at(P9, "let the ground and the weather fight for you");
 // ---------- places (champsouth z11 px; checked on the DEM: Valcour island x 1365-1406 y 367-427, Schuyler island ~1446,646) ----------
 const VAL = L(44.61, -73.43), SCH = [1446, 646], SPL = L(44.27, -73.32), BAY = [1478, 1285], CRP = L(44.027, -73.424), TIC = L(43.843, -73.387), STJ = L(45.30, -73.26),
   SKE = L(43.555, -73.404), MTL = L(45.50, -73.57);
@@ -362,8 +368,8 @@ const AR = [CZ.origin_world_px[0] * 4 - SZ.origin_world_px[0], CZ.origin_world_p
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
 const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };
 const RELIEF = document.getElementById("relief");
-const PU = group(WORLD, RELIEF); gimg("assets/media/va_champlain_relief.jpg", PU, false); gimg("assets/media/va_champlain_ctl_mx.png", PU, true);
-const PW = group(WORLD, OVL); gimg("assets/media/va_champlain_relief.jpg", PW, false); const PWC = gimg("assets/media/va_champlain_ctl_mx.png", PW, true);
+const PU = group(WORLD, RELIEF); gimg("assets/media/va_champlain_relief.jpg", PU, false); gimg("assets/media/va_champlain_ctl_soft.png", PU, true);
+const PW = group(WORLD, OVL); gimg("assets/media/va_champlain_relief.jpg", PW, false); const PWC = gimg("assets/media/va_champlain_ctl_soft.png", PW, true);
 living(SZ.meters_per_px, [], { n: 5, clouds: 0.1 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%)";
 let maskOn = null;
@@ -381,8 +387,8 @@ const sAt = (t) => cam.s;   // (shots below happen only on the champsouth close-
 applyCam();
 const CW = L(44.5, -73.38);                       // the whole-lake view centre (champlain map, wide)
 camTo(0, T_NOON - 0.5, [1470, 820], 1.15);
-camTo(T_NOON - 0.5, T_SURR + 1.5 - T_NOON + 0.5, [1520, 1040], 1.45);
-camTo(T_SURR + 1.5, T_FIRE - T_SURR - 1.5, [1490, 1240], 1.7);
+// (T_NOON - 0.5 .. T_SURR + 1.2: the camera holds on the WASHINGTON; set below, once her position is known)
+camTo(T_SURR + 1.2, T_FIRE - T_SURR - 1.2, [1490, 1240], 1.7);
 camTo(T_FIRE, T_CP - T_FIRE, [1470, 1360], 1.5);
 camTo(T_CP, T_P9 - T_CP, [1450, 1380], 1.45);
 SFX("whoosh", T_P9 - 0.1);
@@ -391,13 +397,15 @@ camTo(T_P9 + 3.6, T_TOOK - T_P9 - 3.6, [CW[0], CW[1] - 260], 0.24);
 camTo(T_TOOK, T_CAN - T_TOOK, [CW[0], CW[1] + 300], 0.26);
 camTo(T_CAN, END - T_CAN, [CW[0], CW[1] - 500], 0.23);
 // ---------- HUD ----------
-B.showDate(0); B.date("12 OCTOBER 1776", 0.02, T_13 - 0.1, 32); B.date("13 OCTOBER 1776", T_13, T_NOV - 0.1, 32); B.date("2 NOVEMBER 1776", T_NOV, END + 1, 32);
+B.showDate(0); B.date("12 OCTOBER 1776", 0, T_13 - 0.1, 32); date0(); B.date("13 OCTOBER 1776", T_13, T_NOV - 0.1, 32); B.date("2 NOVEMBER 1776", T_NOV, END + 1, 32);
 const LGD = legend(0.6, T_P9 + 1.0, true), LGD2 = legend(T_P9 + 3.6, END + 1);
 // flags (both on every frame): close-ups = Continental Colours on the New York shore, Union Flag out on the lake with the British ships;
 // whole lake = Union Flag on Canada, Continental Colours on the American side
-flagS(FL.us, "", 1200, 900, 0, T_P9 + 1.2); flagS(FL.cs, "", 1610, 780, 0, T_SURR + 1.5); flagS(FL.cs, "", 1555, 1150, T_SURR + 1.3, T_P9 + 1.2);
-flagS(FL.us, "", 1250, 1330, T_FIRE - 0.5, T_P9 + 1.2);
-flagS(FL.cs, "", ...L(45.42, -72.55), T_P9 + 1.6, END + 1); flagS(FL.us, "", ...L(43.9, -72.6), T_P9 + 1.6, END + 1);
+// audit #11/#12/#15/#16 (2026-11-03): flags on their own LAND, in frame, clear of the boats, labels, legend, badge and date scroll (tools/va_flagsolve.py):
+// close-ups: the Union Flag on the New York shore north of the fight, the Continental Colours on the Vermont shore; whole lake: Union Flag on Canada,
+// Continental Colours on Vermont. During the zoom-out each pair cross-fades.
+flagS(FL.cs, "", 1349, 1095, 0, 31.4); flagS(FL.us, "", 1645, 1082, 0, 29.5);
+flagS(FL.cs, "", 3720, -788, 30.6, END + 1); flagS(FL.us, "", 2051, 1138, 28.9, END + 1);
 // =================== m2-8: the chase ===================
 // the American boats (ahead) and the red ships (behind), frame 0 already moving
 const AMK = ["galley", "gondola", "gondola", "gondola", "gondola", "galley", "schooner", "galley"];   // Congress = index 5, Washington = index 7 (the rear)
@@ -409,8 +417,14 @@ arw({ pts: [[1590, 560], [1600, 760], [1590, 960]], side: "rome", t: T_CHASE, du
 // 13 Oct: the Washington caught and surrendered (about noon)
 const WAS = AMB[7], CON = AMB[5];
 const wq = WAS.at(T_NOON + 1);
+camTo(T_NOON - 0.5, T_SURR + 1.2 - T_NOON + 0.5, [wq[0] + 70, wq[1] + 170], 1.4);   // fix: the WASHINGTON's capture stays in frame (it was under the legend)
 tl.to(WAS.el, { left: wq[0] + 4, top: wq[1] + 30, duration: T_SURR - T_NOON, ease: "sine.out" }, T_NOON + 1.0);
-[[T_WCAU - 0.6, 0], [T_WCAU + 0.4, 2], [T_SURR - 0.6, 1]].forEach(([t, k]) => shootS(RD[k].at(t), [wq[0] + 6, wq[1] + 22], t, 1.45, { dur: 0.6, h: 18, r: 7 }));
+// audit #25 (2026-11-03): only three readable broadsides in the whole chase (two into the WASHINGTON, one into the CONGRESS), nothing unseen
+const BIG = { dur: 0.7, h: 26, r: 15, fl: 34, aw: 2.8 };
+// red ships: after T_NOON + 2 they follow their own pinAlong path (below), so positions come from that path
+const rdPath = (k) => { const q = RD[k].at(T_NOON + 2); return [q, [1545 + (k % 3) * 18, 1150 + k * 10], [1520 + (k % 3) * 22, 1215 + (k % 2) * 16]]; };
+const rdAt = (k, t) => t <= T_NOON + 2 ? RD[k].at(t) : posOn(rdPath(k), Math.min(1, (t - T_NOON - 2) / (T_ASH + 1 - T_NOON - 2)));
+[[T_WCAU - 1.4, 0], [T_WCAU + 0.6, 2]].forEach(([t, k]) => shootS(rdAt(k, t), [wq[0] + 6, wq[1] + 22], t, 1.45, BIG));
 tl.to(WAS.sv, { filter: "grayscale(1) brightness(0.7)", duration: 0.5 }, T_SURR);
 boxL("WASHINGTON", wq[0] - 150, wq[1] + 30, T_WCAU, null, { size: 12 });
 wstampL("SURRENDERED", wq[0] + 60, wq[1] + 70, T_SURR, null, "#e3232f", 18);
@@ -419,8 +433,8 @@ const AB = cmd("arnold", "BENEDICT ARNOLD", "GALLEY CONGRESS", "carth", "tr", T_
 const FIVE = [5, 1, 2, 3, 4], BAYP = [[1480, 1278], [1470, 1268], [1490, 1266], [1466, 1288], [1488, 1292]];
 FIVE.forEach((k, j) => { const b = AMB[k], q = b.at(T_NOON + 1), path = [q, [1505, 1180 + j * 6], [1495, 1235], BAYP[j]];
   pinAlong(b.el, path, T_FOUGHT + 0.2, T_ASH + 1.0 - T_FOUGHT, 14); });
-[[T_4G, 0, 5], [T_2H - 0.2, 1, 1], [T_2H + 0.8, 2, 2]].forEach(([t, kr, ka]) => shootS(RD[kr].at(t), [1505, 1200], t, 1.6, { dur: 0.6, h: 18, r: 7 }));
-[[T_4G + 0.6, 0], [T_2H + 0.3, 2]].forEach(([t, kr]) => shootS([1500, 1215], RD[kr].at(t + 0.6), t, 1.6, { dur: 0.6, h: 18, r: 7 }));
+{ const cp = [CON.at(T_NOON + 1), [1505, 1180], [1495, 1235], BAYP[0]], ct = posOn(cp, Math.min(1, (T_2H + 0.7 - T_FOUGHT - 0.2) / (T_ASH + 1.0 - T_FOUGHT)));
+  shootS(rdAt(1, T_2H), ct, T_2H, 1.6, BIG); }
 boxL("CONGRESS + 4 GONDOLAS", 1180, 1210, T_4G, null, { size: 12 });
 boxL("MORE THAN TWO HOURS", 1180, 1150, T_2H + 0.2, null, { size: 11 });
 // the red ships follow down the lake and stand off the bay
@@ -433,23 +447,28 @@ boxL("FLAGS STILL FLYING", 1560, 1240, T_FLAGS, null, { size: 12 });
 // about two hundred men walk through the woods to Crown Point; an ambush on the road behind them
 trail(WALK, "#8fb2ff", 2.6, T_200 - 0.2, T_CP + 1.0 - T_200, T_P9 + 1.0, "3 7");
 unitS("walk", "carth", WALK[0], "infantry", "~200", { t: T_200 - 0.2 }); along("walk", WALK, T_200, T_CP + 1.0 - T_200, 16); B.hideUnits(["walk"], T_P9 + 0.8, 0.4);
-townL("CROWN POINT", [CRP[0] + 10, CRP[1] - 20], "r", T_CP);
+boxL("CROWN POINT", CRP[0] + 70, CRP[1] - 62, T_CP, null, { size: 13 });   // audit #36: the place sits on the map's bottom edge: label above it, inside the frame
 const AMBP = WALK[2];
 const AMK2 = pinS(GG.pin(`<svg width="34" height="34" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 5px #ff3b30)"><circle r="13" fill="rgba(196,18,31,0.85)" stroke="#f7f3ea" stroke-width="2"/><path d="M-6 -6 L6 6 M6 -6 L-6 6" stroke="#f7f3ea" stroke-width="2.6"/></svg>`, AMBP[0] + 24, AMBP[1], { t: T_AMB, until: T_P9 + 1.0 }));
 boxL("AMBUSH", AMBP[0] + 60, AMBP[1] - 10, T_AMB + 0.2, null, { size: 12, bg: "#f3d6c8" });
 // =================== m2-9: the whole lake ===================
 // cost card: each line on its spoken words
+// audit #22 (2026-11-03): no 9 s card: two short American cards on their words, then the casualty card (both sides) ~3.5 s
+const CA = placeCard("AMERICANS", "10 - 11 OF 15 VESSELS LOST", "left:0;right:0;top:220px;display:flex;justify-content:center;", T_1011 - 0.1, T_80 - 0.35); CA.firstElementChild.style.borderTopColor = "#1f4fc4"; SFX("hit", T_1011 + 0.1);
+const CB = placeCard("AMERICANS", "~80 KILLED AND WOUNDED<span class='c2'> · 100+ CAPTURED</span>", "left:0;right:0;top:220px;display:flex;justify-content:center;", T_80 - 0.15, T_BR40 - 0.35); CB.firstElementChild.style.borderTopColor = "#1f4fc4"; SFX("hit", T_80 + 0.05);
+{ const c2 = CB.querySelector(".c2"); gsap.set(c2, { autoAlpha: 0 }); tl.fromTo(c2, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_100); SFX("ref:pop", T_100); }
 const COST = scr(`<div style="display:flex;gap:56px;padding:26px 48px 28px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="min-width:420px"><div style="display:flex;align-items:center;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:3px solid #1f4fc4"><img src="${FL.us}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:.08em">AMERICANS</div></div>
     <div class="r1" style="font-size:36px;line-height:1.5">10 - 11 OF 15 VESSELS LOST</div><div class="r2" style="font-size:36px;line-height:1.5">~80 KILLED AND WOUNDED</div><div class="r3" style="font-size:36px;line-height:1.5">100+ CAPTURED</div></div>
   <div class="bc" style="min-width:330px"><div style="display:flex;align-items:center;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:3px solid #c4121f"><img src="${FL.cs}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:.08em">BRITISH</div></div>
-    <div style="font-size:36px;line-height:1.5">FEWER THAN 40 LOST</div></div></div>`, "left:0;right:0;top:220px;display:flex;justify-content:center;", T_1011 - 0.1, T_SEA - 0.2);
-[[".r1", T_1011], [".r2", T_80], [".r3", T_100], [".bc", T_BR40]].forEach(([c, t]) => { const el = COST.querySelector(c); gsap.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, t); SFX("hit", t + 0.1); });
-const DEF = sstamp("A DEFEAT", 760, T_DEF, { size: 70, shake: 4, until: T_DEF + 2.0 });
+    <div style="font-size:36px;line-height:1.5">FEWER THAN 40 LOST</div></div></div>`, "left:0;right:0;top:220px;display:flex;justify-content:center;", T_BR40 - 0.15, T_DEF - 0.25);
+{ const el = COST.querySelector(".bc"); gsap.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, T_BR40); SFX("hit", T_BR40 + 0.1); }
+// audit #36: the stamp high on the screen, clear of the CROWN POINT label (which comes in on "took Crown Point")
+const DEF = sstamp("A DEFEAT", 250, T_DEF, { size: 70, shake: 4, until: T_DEF + 2.2 });
 // the British take Crown Point and look at Ticonderoga
 const RCP = ship("ship", LL([[44.75, -73.36], [44.35, -73.33], [44.06, -73.42]]), T_SEA, T_TOOK + 1.5 - T_SEA, T_CAN + 0.2, { side: "rome", s: 26 });
 unitS("brcp", "rome", L(44.04, -73.46), "infantry", "", { size: "XX", t: T_TOOK + 0.2 });
-townL("CROWN POINT", CRP, "l", T_TOOK + 0.1); townL("TICONDEROGA", TIC, "r", T_TIC);
+townL("CROWN POINT", CRP, "l", T_TOOK + 0.1); townL("TICONDEROGA", TIC, "l", T_TIC);
 unitS("tic", "carth", L(43.84, -73.36), "infantry", "", { size: "XX", t: T_TIC + 0.2 });
 arw({ pts: LL([[44.02, -73.44], [43.95, -73.42], [43.88, -73.40]]), side: "rome", t: T_TIC + 0.2, dur: 1.4, width: AW(0.25, 12), dash: "10 8", until: T_LATE + 1 });
 const C9 = placeCard("TICONDEROGA", "9,000 DEFENDERS", "left:0;right:0;top:220px;display:flex;justify-content:center;", T_9000 - 0.05, T_LATE - 0.1); C9.firstElementChild.style.borderTopColor = "#1f4fc4";
@@ -463,10 +482,14 @@ ship("ship", LL([[44.06, -73.42], [44.5, -73.32], [45.0, -73.35], [45.28, -73.26
 townL("ST. JOHNS", STJ, "r", T_CAN + 2.6);
 // method card (after the archive insert), line 2 = this move
 GG.METHOD_TITLE = "ARNOLD'S METHOD";
-GG.METHOD = ["GO WHERE HE SAYS NO ARMY CAN GO", "LET THE GROUND AND THE WEATHER FIGHT FOR YOU", ""];
-const MC = GG.method(2, T_CHOSE - 0.1, END + 1, [T_CHOSE - 0.05, T_CHOSE + 0.1]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "44px"; });
+// audit #20 (2026-11-03): line 1 (move 1) shown dim from the start, line 2 lit on its spoken words "let the ground and the weather fight for you", nothing else; ~3.5 s
+GG.METHOD = ["GO WHERE HE SAYS NO ARMY CAN GO", "LET THE GROUND AND THE WEATHER FIGHT FOR YOU"];
+const T_MC0 = T_LET - 0.6, T_MC1 = Math.min(END - 0.6, T_LET + 3.4);
+const MC = GG.method(2, T_MC0, T_MC1, [T_MC0, T_LET]); MC.style.top = "400px";   // between the two flags MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "38px"; });
+{ const r1 = MC.querySelectorAll(".row")[0]; tl.getTweensOf(r1).forEach((tw) => tw.kill()); gsap.set(r1, { autoAlpha: 0.38, x: 0 }); }
+SFX("ref:pop", T_LET);
 // ---------- 1c declutter ----------
-declutter([LGD, LGD2, AB], [[T_1011 - 0.1, T_SEA - 0.2], [T_DEF, T_DEF + 2.0], [T_9000 - 0.05, T_LATE - 0.1], [T_CHOSE - 0.1, END + 1]]);
+declutter([LGD, LGD2, AB], [[T_1011 - 0.1, T_DEF + 2.2], [T_9000 - 0.05, T_LATE - 0.1], [T_MC0, T_MC1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

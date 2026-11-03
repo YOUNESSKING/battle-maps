@@ -145,3 +145,11 @@ All files public domain / no known restrictions, except the two CC BY-SA 4.0 pho
 - Credit line: none required
 - Note: Same file as arnold_src.jpg.
 
+
+## dearborn_head.png / dearborn_head_flat.png
+- Title: Major-General Henry Dearborn
+- Creator/date: Gilbert Stuart, 1812 (Art Institute of Chicago 1913.793)
+- Source page: https://commons.wikimedia.org/wiki/File:Gilbert_Stuart_-_Major-General_Henry_Dearborn_-_1913.793_-_Art_Institute_of_Chicago.jpg
+- Licence: Public domain
+- Credit line: none required
+- Note: head crop + rembg cut-out for the m1a badge (Captain Dearborn, 1775; the portrait is later).

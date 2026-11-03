@@ -28,11 +28,13 @@ const ROUTE = smoothP([[44.05, -69.79], [44.31, -69.77], [44.55, -69.63], [44.76
 const LAKEP = [L(43.843, -73.387), CRP, L(44.25, -73.36), VALC, L(44.85, -73.33), L(45.05, -73.32), STJ];
 const C0 = [1420, 560], S0 = 0.9;
 camSet(C0, S0); camTo(0, T_TODAY, [1420, 566], 0.92, "sine.inOut");
-const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); const F1 = flagS(FL.gb, "", 1100, 600, T_TODAY + 1.5, null);
+// flags on their own ground, inside the frame for the whole scene and the end screen (Union Flag on Canada, clear of the date scroll and of the top band)
+const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); const F1 = flagS(FL.gb, "", 1800, 470, T_TODAY + 0.6, null); tl.to(F0[0], { autoAlpha: 0, duration: 0.5 }, T_TODAY + 0.3);   // hand-over: the first Union Flag would leave through the top edge
 B.showDate(0.2); dateRun([["1775 – 1777", 0.25, null]]);
 // QUEBEC: lights up on its name; the march redrawn
-const TQ = town("QUEBEC", QUE, "r", T_QUE, { until: T_QUE + LBL_LIFE });
-K.target(...QUE, T_QUE + 0.1, { r: 46 / S0, side: "#ffd54a", until: T_CHAMP });
+// QUEBEC sits near the top of this shot: its label goes below-right of the city (never on the frame edge), a smaller ring
+const TQ = boxL("QUEBEC", QUE[0] + 80 / S0, QUE[1] + 62 / S0, T_QUE, null, { size: 16 });
+K.target(...QUE, T_QUE + 0.1, { r: 34 / S0, side: "#ffd54a", until: T_CHAMP });
 trail(ROUTE, "#e6f0ff", 4.5 / S0, T_TOOK, 3.0, T_SARA, `${9 / S0} ${7 / S0}`); SFX("ref:whoosh", T_TOOK);
 arw({ pts: ROUTE.slice(-6), side: "carth", t: T_TOOK + 2.6, dur: 0.6, width: AW(S0, 12), until: T_SARA });
 // LAKE CHAMPLAIN: the lake glows on its name; the channel; the wind; a whole year
@@ -49,16 +51,30 @@ const RL = glowPath([[SARA[0] - 60, SARA[1] - 40], [SARA[0] - 20, SARA[1] - 8], 
 const BR = arw({ pts: [[SARA[0] - 30, SARA[1] + 70], [SARA[0] - 22, SARA[1] + 10], [SARA[0] - 14, SARA[1] - 60]], side: "carth", t: T_THRU - 0.3, dur: 0.8, width: AW(S0, 12), until: T_BOOT });
 SFX("hit", T_THRU + 0.4); K.shake(T_THRU + 0.4, 3, 0.25);
 // "Today, on the battlefield at Saratoga": push toward it; the boot card on "a boot" (no name on it)
-camTo(T_TODAY, 5.0, [SARA[0] + 120, SARA[1] - 160], 1.5, "sine.inOut");
-const BOOT = scr(`<div style="padding:12px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;box-shadow:0 20px 40px rgba(0,0,0,.6)"><div style="width:520px;height:560px;background:url(assets/media/arch_boot_monument.jpg) 50% 45%/auto 100% no-repeat;filter:grayscale(0.85) contrast(1.08) sepia(0.15)"></div></div>`,
-  "left:0;right:0;top:150px;display:flex;justify-content:center;", T_BOOT - 0.05, F_Q - 0.2, { autoAlpha: 0, y: 30 });
+const CF = [SARA[0] + 122, SARA[1] - 165], SF = 1.1;   // the end-screen shot: Saratoga with Canada (British) along the top, both flags in frame
+camTo(T_TODAY, 5.0, CF, SF, "sine.inOut");
+camTo(T_TODAY + 5.0, END - T_TODAY - 5.0, [CF[0] + 20, CF[1] - 10], SF * 1.05, "none");   // a slow living drift to the last frame
+// "It shows a boot.": a SMALL framed archive card (projector-style frame, sepia, slow push inside), no name on it, beside Saratoga
+const BOOT = scr(`<div style="padding:10px;background:#15120d;border:2px solid #c9b48a;box-shadow:0 0 0 6px rgba(21,18,13,0.92),0 22px 44px rgba(0,0,0,.65);transform:rotate(-1.5deg)">
+  <div style="position:relative;width:400px;height:300px;overflow:hidden;outline:1px solid rgba(201,180,138,0.5)"><div class="bi" style="position:absolute;inset:0;background:url(assets/media/arch_boot_monument.jpg) 52% 40%/auto 128% no-repeat;filter:grayscale(0.9) sepia(0.35) contrast(1.12) brightness(0.95)"></div>
+  <div style="position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(0,0,0,0.75)"></div></div></div>`,
+  "right:170px;top:300px;transform-origin:50% 50%;", T_BOOT - 0.05, F_Q - 0.2, { autoAlpha: 0, scale: 0.85 });
+tl.fromTo(BOOT.querySelector(".bi"), { scale: 1 }, { scale: 1.08, duration: F_Q - T_BOOT, ease: "none", immediateRender: false }, T_BOOT);
 SFX("ref:pop", T_BOOT);
 // end-2: the final question
 const FC = E.final({ moves: [["QUEBEC", "1775"], ["VALCOUR ISLAND", "1776"], ["SARATOGA", "1777"]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL, tFamily: F_NEXT, tSub: F_SUB, until: END + 1 });
 FC.querySelector(".fam").innerHTML = `WHICH COMMANDER SHOULD WE COVER NEXT? <span style="color:#c9b48a">TELL US IN THE COMMENTS</span>`;
-const tBand = Math.max(F_TELL + 1.2, END - 20);
+FC.style.top = "210px";                                       // below the date scroll
+document.getElementById("date").style.zIndex = 40;           // the date scroll stays above the dim layer
+// nothing before it is spoken: the kicker waits for "Tell us in the comments"; each numbered card pops ONLY on its number (one entrance each)
+const KICK = FC.firstElementChild; gsap.set(KICK, { autoAlpha: 0 }); tl.set(KICK, { autoAlpha: 0 }, 0); tl.to(KICK, { autoAlpha: 1, duration: 0.3 }, F_TELL);
+[F_1, F_2, F_3].forEach((tt, i) => { const c = FC.querySelector(".m" + i); tl.getTweensOf(c).forEach((tw) => tw.kill()); gsap.set(c, { autoAlpha: 0 }); tl.set(c, { autoAlpha: 0 }, 0);
+  tl.fromTo(c, { autoAlpha: 0, scale: 1.25, y: 0 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, tt);
+  tl.to(c, { borderColor: "#ffd54a", duration: 0.25 }, tt + 0.3); tl.to(c, { borderColor: "rgba(201,180,138,0.6)", duration: 0.4 }, (i < 2 ? [F_2, F_3][i] : F_TELL)); });
+// right after "Subscribe, so you don't miss the next one": the card shrinks to the top band, the subscribe button leaves, the map is clean + alive to END
+const tBand = B.T.paras[P2][1] + 0.15;
 tl.to(FC, { scale: 0.5, y: -125, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);
-const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
-declutter([F0[0], F0[1], F1], [[F_Q - 0.3, Math.max(F_TELL + 1.2, END - 20) + 0.6]]);
+const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0, duration: 0.8 }, tBand);
+const SUBB = [...SCN.children].find((e) => e.querySelector && e.querySelector(".lab")); if (SUBB) tl.to(SUBB, { autoAlpha: 0, x: 120, duration: 0.5, ease: "power2.in" }, tBand);
 fixImgs();
 B.finish();

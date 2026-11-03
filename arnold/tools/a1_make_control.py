@@ -21,13 +21,17 @@ def build(m):
     if os.path.exists(f"assets/media/{m}_det_riv.png"):
         a = np.array(Image.open(f"assets/media/{m}_det_riv.png").convert("RGBA").resize((W, H), Image.BILINEAR))[:, :, 3]; land &= a <= 110
     im = Image.new("L", (W, H), 0); ImageDraw.Draw(im).polygon([P(*q) for q in CANADA], fill=255)
-    gb = ndimage.gaussian_filter((np.array(im) > 0).astype(np.float32), 2) > 0.5; gb &= land; us = land & ~gb
-    out = np.zeros((H, W, 4), np.float32); dU = ndimage.distance_transform_edt(~gb); dG = ndimage.distance_transform_edt(~us)
-    out[us, :3] = (110, 160, 255); out[us, 3] = 0.565
-    out[gb, :3] = (240, 105, 95); out[gb, 3] = (0.62 + 0.2 * np.exp(-dG / 40.0))[gb]
-    rimU = us & (dU < 5); rimG = gb & (dG < 5)
-    out[rimU, :3] = (70, 120, 235); out[rimU, 3] = 0.85; out[rimG, :3] = (215, 60, 55); out[rimG, 3] = 0.88
-    a = ndimage.gaussian_filter(out[:, :, 3], 1.0); out[:, :, 3] = np.where(land, np.maximum(a, out[:, :, 3] * 0.9), a * 0.5)
+    gb0 = np.array(im) > 0
+    # soft, wobbly border (audit #35: no hard straight-edged blocks): signed distance + low-frequency noise, wide feather
+    d = ndimage.distance_transform_edt(~gb0) - ndimage.distance_transform_edt(gb0)
+    rs = np.random.default_rng(1775); nz = ndimage.gaussian_filter(rs.standard_normal((H, W)), 60); nz *= 30 / (np.abs(nz).max() + 1e-6)
+    soft = np.clip(0.5 - (d + nz) / 90.0, 0, 1); soft = soft * soft * (3 - 2 * soft)
+    lm = ndimage.gaussian_filter(land.astype(np.float32), 1.5)
+    out = np.zeros((H, W, 4), np.float32)
+    # British = a cooler, less orange red; Americans = soft blue; both about half the old strength
+    for c in range(3): out[:, :, c] = soft * (200, 92, 112)[c] + (1 - soft) * (115, 150, 235)[c]
+    out[:, :, 3] = lm * (soft * 0.64 + (1 - soft) * 0.52)
+    us, gb = land & (soft < 0.5), land & (soft >= 0.5)
     Image.fromarray(np.clip(out * [1, 1, 1, 255], 0, 255).astype(np.uint8), "RGBA").save(f"assets/media/a1_ctl_{m}_1775.png", optimize=True)
     print("wrote", f"a1_ctl_{m}_1775.png", int(us.sum()), int(gb.sum()))
 for m in sys.argv[1:]: build(m)

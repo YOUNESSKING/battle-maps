@@ -287,9 +287,10 @@ const cmd = (key, name, role, side, corner, t, until) => badge({ name, role, pho
 const ux = (id) => [B.units[id].x, B.units[id].y];
 const nearestF = (pts, p) => { let best = 0, bd = 1e9; for (let k = 0; k <= 400; k++) { const q = posOn(pts, k / 400), d = Math.hypot(q[0] - p[0], q[1] - p[1]); if (d < bd) { bd = d; best = k / 400; } } return best; };
 // a shot that reads at ANY camera scale s (wide shots): constant-size flash, arc and impact (patton hook-a shootS), locked sounds + shake
-const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)"></div>`, from[0], from[1], {}));
-  tl.fromTo(f, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t); tl.to(f, { autoAlpha: 0, duration: 0.25 }, t + 0.07); SFX("fire", t);
-  GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: 1.8 / s, h: (o.h || 40) / s, impact: false });
+const shootS = (from, to, t, s, o = {}) => { const fl = o.fl || 16, f = pinS(GG.pin(`<div style="width:${fl}px;height:${fl}px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb020 45%,rgba(255,120,0,0) 72%)${o.fl ? ";box-shadow:0 0 " + fl + "px " + fl * 0.3 + "px rgba(255,170,40,.6)" : ""}"></div>`, from[0], from[1], {}));
+  tl.fromTo(f, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t); tl.to(f, { autoAlpha: 0, duration: o.fl ? 0.4 : 0.25 }, t + (o.fl ? 0.12 : 0.07)); SFX("fire", t);
+  if (o.fl) K.smoke(from[0], from[1] - 2, t + 0.08, { n: 2, r: 10 / s, rise: 10 / s, life: 2.2, alpha: 0.55, drift: 6 / s });
+  GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: (o.aw || 1.8) / s, h: (o.h || 40) / s, impact: false });
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
 const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
@@ -331,6 +332,10 @@ const LAKESVG = (kind, s, col) => {
   const glow = `filter:drop-shadow(0 0 ${(s * 0.16).toFixed(1)}px ${gl}) drop-shadow(0 ${(s * 0.06).toFixed(1)}px ${(s * 0.1).toFixed(1)}px rgba(0,0,0,.7))`;
   return `<div><svg width="${(s * w / 23).toFixed(0)}" height="${(s * h / 23).toFixed(0)}" viewBox="${-w / 2} ${-h / 2} ${w} ${h}" style="display:block;overflow:visible;${glow}">${body}</svg></div>`;
 };
+// audit #18 (2026-11-03): the date scroll and its first date on screen from frame 0 (no fade-in at the scene cut)
+const date0 = () => { const box = document.getElementById("date"), els = [box, ...box.children];
+  tl.getTweensOf(els).filter((tw) => tw.startTime() < 0.06).forEach((tw) => tw.kill());
+  gsap.set(box, { autoAlpha: 1, x: 0 }); const d = box.querySelector(".d"); if (d) gsap.set(d, { autoAlpha: 1, y: 0 }); };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
 const GD = {"base":"valcour","maps":{"maine":{"zoom":9,"origin_world_px":[38427,46029],"meters_per_px":213.92},"champlain":{"zoom":9,"origin_world_px":[37408,46570],"meters_per_px":217.89},"hudson":{"zoom":10,"origin_world_px":[76038,95514],"meters_per_px":111.81},"valcour":{"zoom":13,"origin_world_px":[619433,756872],"meters_per_px":13.61},"saratoga":{"zoom":15,"origin_world_px":[2477044,3081578],"meters_per_px":3.49},"northeast":{"zoom":8,"origin_world_px":[18129,23070],"meters_per_px":441.35},"champsouth":{"zoom":11,"origin_world_px":[153836,188978],"meters_per_px":54.59},"quebec":{"zoom":14,"origin_world_px":[1266055,1477676],"meters_per_px":6.54}}};
@@ -342,7 +347,7 @@ const T_PICK = at(P3, "Arnold had picked"), T_HALF = at(P3, "Halfway"), T_ISL = 
 const T_11 = at(P4, "eleventh of October"), T_NE = at(P4, "north-east"), T_PAST = at(P4, "sailed right past"), T_ATT = at(P4, "To attack"),
   T_WIND = at(P4, "against the wind"), T_CARL = at(P4, "Only the schooner Carleton"), T_BIG = at(P4, "Their biggest ships"), T_RS = at(P4, "Royal Savage"),
   T_AGR = at(P4, "ran aground"), T_LOST = at(P4, "was lost"), T_NOON = at(P4, "From about noon"), T_CLOSE = at(P4, "close range");
-const T_P5 = B.T.paras[P5][0], T_AIM = at(P5, "aimed most"), T_CONG = at(P5, "the Congress"), T_CHIT = at(P5, "The Carleton was hit"), T_PEL = at(P5, "Edward Pellew"),
+const T_P5 = B.T.paras[P5][0], T_AIM = at(P5, "aimed most"), T_GAL5 = at(P5, "his galley"), T_CONG = at(P5, "the Congress"), T_CHIT = at(P5, "The Carleton was hit"), T_PEL = at(P5, "Edward Pellew"),
   T_BOW = at(P5, "bowsprit"), T_TOW = at(P5, "towed out"), T_DUSK = at(P5, "At dusk"), T_FIVE = at(P5, "five broadsides"), T_PHIL = at(P5, "The gondola Philadelphia"),
   T_SANK = at(P5, "sank about"), T_STOP = at(P5, "guns stopped");
 // ---------- places (valcour map px) ----------
@@ -365,11 +370,13 @@ const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]
 camera(sKeys);
 SFX("whoosh", 0.2);
 // ---------- HUD ----------
-B.showDate(0.01); B.date("OCTOBER 1776", 0.02, T_11 - 0.1, 32); B.date("11 OCTOBER 1776", T_11, T_NOON - 0.1, 32);
+B.showDate(0); B.date("OCTOBER 1776", 0, T_11 - 0.1, 32); date0(); B.date("11 OCTOBER 1776", T_11, T_NOON - 0.1, 32);
 B.date("11 OCT 1776 · NOON", T_NOON, T_DUSK - 0.1, 32); B.date("11 OCT 1776 · DUSK", T_DUSK, END + 1, 32);
 const LGD = legend(4.2, END + 1, true);
-// flags (both on every frame): the Continental Colours on the New York shore, the Union Flag out on the open lake (the British fleet)
-flagS(FL.us, "", 1150, 640, 0, END + 1); flagS(FL.cs, "", 1760, 600, 0, END + 1);
+// audit #11/#12/#16 (2026-11-03): both flags on LAND on the New York shore, in frame and clear of the legend, badges, date scroll, boats and labels at every
+// camera position (placed with tools/va_flagsolve.py from the frame probe): the Union Flag on the shore beside the channel (British troops and their Native
+// allies were landed on the shore and the island), the Continental Colours on the shore south of the fight
+flagS(FL.cs, "", 1050, 677, 0, END + 1); flagS(FL.us, "", 1040, 851, 0, END + 1);
 // ---------- m2-3: the American boats come up into the channel and anchor in a crescent ----------
 const APPROACH = (k) => [[1395 + (k % 3) * 8, 1150 + k * 26], [1380, 960 + k * 6], [1372, 800 + k * 2], SLOT[k]];
 const AM = NAM.map((nm, k) => ship(KIND[k], APPROACH(k), 0, T_ANCH + 0.8 - k * 0.05, null, { s: 22, t0: 0, ease: (u) => 1 - (1 - u) * (1 - u) }));
@@ -404,7 +411,7 @@ BR.forEach(([kind, nm, end, dl, s]) => {
 const WA = arw({ pts: [[1980, 230], [1870, 340], [1760, 450]], side: "rome", t: T_NE - 0.1, dur: 1.0, width: AW(0.85, 16) });
 WA.querySelectorAll("path,polygon").forEach((p) => { p.setAttribute("stroke", "#f3eee2"); p.setAttribute("fill", p.tagName === "polygon" ? "#f3eee2" : "none"); });
 tl.to(WA, { autoAlpha: 0, duration: 0.6 }, T_ATT + 3);
-boxL("WIND FROM THE NORTH-EAST", 1990, 190, T_NE, null, { size: 14 });
+boxL("WIND FROM THE NORTH-EAST", 2150, 420, T_NE, null, { size: 14 });   // audit #36: clear of the legend
 boxL("AGAINST THE WIND", 1360, 1010, T_WIND, null, { size: 13, bg: "#f3d6c8" });
 boxL("CARLETON", 1300, 850, T_CARL + 0.6, null, { size: 12, bg: "#f3d6c8" });
 boxL("INFLEXIBLE", 1650, 975, T_BIG + 0.2, null, { size: 12, bg: "#f3d6c8" });
@@ -419,18 +426,22 @@ const FR = front2([[1324, 768], [1360, 764], [1395, 762], [1430, 766], [1466, 77
 // visible ship guns, ~1 shot per 1.5 s: [time, from (american slot k | british name), to]
 const amAt = (k) => AM[k].at(T_ANCH + 99);
 const brAt = (nm) => (t) => RB[nm].at(t);
-const FIRE = [[T_NOON + 0.3, "gb2", 3], [T_NOON + 1.4, 5, "gb2"], [T_NOON + 2.6, "carleton", 6], [T_CLOSE + 0.4, 8, "carleton"], [T_CLOSE + 1.3, "gb4", 10],
-  [T_P5 + 0.4, 12, "gb4"], [T_P5 + 1.4, "gb6", 1]];
+// audit #24 (2026-11-03): no barrage of tiny shells: SIX readable shots from noon to the tow (big flash + smoke, thick arc, big impact), >= 2 s apart
+const BIG = { dur: 0.7, h: 26, r: 15, fl: 34, aw: 2.8 };
+const FIRE = [[T_NOON + 0.4, "carleton", 6], [T_CLOSE + 0.4, 8, "gb4"]];
 FIRE.forEach(([t, a, b]) => { const from = typeof a === "number" ? amAt(a) : RB[a].at(t), to = typeof b === "number" ? amAt(b) : RB[b].at(t + 0.7);
-  shootS(from, [to[0] + 2, to[1] + (typeof b === "number" ? 4 : -3)], t, sAt(t), { dur: 0.65, h: 22, r: 7 }); });
+  shootS(from, [to[0] + 2, to[1] + (typeof b === "number" ? 4 : -3)], t, sAt(t), BIG); });
 // ---------- m2-5: Arnold aims the Congress's guns; quote card; the Carleton hit, Pellew, towed out; dusk: the Inflexible; Philadelphia sinks ----------
 const AB = cmd("arnold", "BENEDICT ARNOLD", "GALLEY CONGRESS", "carth", "tr", T_P5 + 0.2, T_DUSK - 0.4);
+{ const role = [...AB.querySelectorAll("div")].find((d) => d.textContent === "GALLEY CONGRESS"); gsap.set(role, { autoAlpha: 0 });   // audit #38: sub-line on "his galley, the Congress"
+  tl.fromTo(role, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_GAL5); }
 boxL("CONGRESS", amAt(5)[0] - 70, amAt(5)[1] - 40, T_CONG, null, { size: 11 });
 K.target(amAt(5)[0], amAt(5)[1], T_AIM - 0.2, { r: 16, side: "carth", until: T_CHIT });
-[[T_AIM + 0.1, "gb3"], [T_AIM + 1.0, "carleton"], [T_AIM + 1.9, "gb1"], [T_CONG + 0.6, "carleton"]].forEach(([t, b]) => shootS(amAt(5), RB[b].at(t + 0.7), t, sAt(t), { dur: 0.6, h: 20, r: 7 }));
-const QT = quote("“I was obliged myself to Point Most of the Guns”", "ARNOLD · 12 OCTOBER 1776", T_AIM + 0.2, T_CHIT - 0.2, { size: 32, top: 200, mw: 980 });
+// the Congress fires (Arnold aims): two shots into the Carleton (audit #9: the never-spoken quote card is gone)
+[[T_AIM + 0.2, "carleton"], [T_CONG + 0.3, "carleton"]].forEach(([t, b]) => { shootS(amAt(5), RB[b].at(t + 0.7), t, sAt(t), BIG);
+  tl.fromTo(RB.carleton.sv, { filter: "brightness(1)" }, { filter: "brightness(2.3)", duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t + 0.75); });
 // the Carleton hit hard; Pellew on the bowsprit swings her round; two gunboats tow her out
-[[T_CHIT + 0.1, 4], [T_CHIT + 0.9, 6], [T_CHIT + 1.7, 9], [T_PEL + 0.2, 5]].forEach(([t, k]) => { shootS(amAt(k), RB.carleton.at(t + 0.6), t, sAt(t), { dur: 0.6, h: 20, r: 8 });
+[[T_CHIT + 0.9, 4], [T_PEL + 0.3, 9]].forEach(([t, k]) => { shootS(amAt(k), RB.carleton.at(t + 0.7), t, sAt(t), BIG);
   tl.fromTo(RB.carleton.sv, { filter: "brightness(1)" }, { filter: "brightness(2.3)", duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t + 0.6); });
 const PB = badge({ name: "EDWARD PELLEW", role: "THE CARLETON", photo: "assets/media/pellew_head.png", flag: FL.cs, side: "rome", corner: "bl", initials: "EP", t: T_PEL + 0.1, until: T_DUSK - 0.4 });
 tl.to(RB.carleton.sv, { rotation: "+=70", duration: 2.2, ease: "sine.inOut" }, T_BOW);
@@ -461,7 +472,7 @@ tl.to(PH.el, { autoAlpha: 0, duration: 1.6, ease: "power1.in" }, T_SANK + 0.2); 
 { const q = amAt(2), rip = pinS(GG.pin(`<div style="width:40px;height:40px;border-radius:50%;border:2.5px solid rgba(200,225,255,.85)"></div>`, q[0], q[1], {})), r = rip.firstElementChild.firstElementChild || rip.firstElementChild;
   gsap.set(rip, { autoAlpha: 0 }); tl.set(rip, { autoAlpha: 1 }, T_SANK + 0.5); tl.fromTo(r, { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 2.2, duration: 1.8, immediateRender: false }, T_SANK + 0.5); }
 // ---------- 1c declutter (legend + corner badges step out under the big cards) ----------
-declutter([LGD, GB, AB, PB], [[T_AIM + 0.2, T_CHIT - 0.2], [T_FIVE + 0.1, T_FIVE + 2.6]]);
+declutter([LGD, GB, AB, PB], [[T_FIVE + 0.1, T_FIVE + 2.6]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

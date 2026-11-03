@@ -1,4 +1,4 @@
-// M1A (m1-1 .. m1-4), Benedict Arnold #17: MOVE 1 · THE BACK DOOR · 1775, the march up the Kennebec. Map agent a1_.
+// M1A (m1-1 .. m1-4), Benedict Arnold #17: MOVE 1 · THE MARCH TO QUEBEC · 1775, the march up the Kennebec. Map agent a1_.
 // Built with: python3 tools/a1_make_control.py maine northeast && python3 tools/a1_inline.py m1a m1-1 m1-4 maine
 // World = the maine map px (z9). `northeast` (z8, 2x) lies ON TOP at its true place for the wide opening (option 1 territory, half strength),
 // then dissolves (~2.8 s) during the dive into `maine` (close-ups: no ground tint). A sand underlay fills any corner outside the maps.
@@ -380,7 +380,15 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); });
+  FADEF.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.filter = `opacity(${(inv ? 1 - r : r).toFixed(3)})`; });
+  SCALEFIX.forEach((q) => q(s)); CAM_S = s; setInv(); };
+// FADEF: like FADES but through filter:opacity (safe on elements gsap also fades with autoAlpha); SCALEFIX: callbacks(s) per camera update
+const FADEF = [], SCALEFIX = [];
+const fadeS = (els, a, b, inv) => [].concat(els).forEach((g) => { if (g) FADEF.push([g.el || g, a, b, inv]); });
+// keep a world-space arrow (arw) at a constant on-screen size: its widths and head are rescaled by s0 / s while the camera moves
+const arrowFix = (g, s0) => { const ps = [...g.querySelectorAll("path")], w = ps.map((p) => +p.getAttribute("stroke-width")), hg = g.querySelector("g"), tr = hg ? hg.getAttribute("transform") : "";
+  SCALEFIX.push((s) => { const f = s0 / s; ps.forEach((p, i) => p.setAttribute("stroke-width", (w[i] * f).toFixed(2))); if (hg) hg.setAttribute("transform", `${tr} scale(${f.toFixed(4)})`); }); return g; };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)
@@ -519,7 +527,8 @@ const icon = (html, x, y, t, until, o = {}) => { const el = pinS(GG.pin(`<div st
 // a screen card that grows line by line, each line on its spoken word: lines = [[text, t], ...]
 const listCard = (kick, lines, css, t, until, o = {}) => { const el = scr(`<div style="padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);min-width:${o.mw || 520}px">
   <div class="kk" style="font-size:20px;letter-spacing:.36em;color:${o.kc || "#c9b48a"};min-height:26px">${kick}</div>${lines.map(([tx], i) => `<div class="ln ln${i}" style="font-size:${o.size || 50}px;letter-spacing:.06em;line-height:1.18">${tx}</div>`).join("")}</div>`, css, t, until);
-  lines.forEach(([, tt], i) => { const ln = el.querySelector(".ln" + i); gsap.set(ln, { autoAlpha: 0, display: "none" }); tl.set(ln, { display: "block" }, tt); tl.fromTo(ln, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05); });
+  lines.forEach(([, tt], i) => { const ln = el.querySelector(".ln" + i); gsap.set(ln, { autoAlpha: 0, display: "none" }); tl.set(ln, { display: "block" }, tt); tl.fromTo(ln, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05);
+    if (o.keep && i >= o.keep) tl.set(el.querySelector(".ln" + (i - o.keep)), { display: "none" }, tt); });   // o.keep: only the last N lines stay (finished lines drop)
   if (o.kickT != null) { const kk = el.querySelector(".kk"); gsap.set(kk, { autoAlpha: 0 }); tl.to(kk, { autoAlpha: 1, duration: 0.3 }, o.kickT); }
   return el; };
 // casualty card (the K.casualties look, but each value only on its own spoken words): colA/colB = [[text, t], ...]
@@ -527,7 +536,7 @@ const casCard = (colA, colB, foot, t, until, top = 250) => { const col = (flag, 
     <img src="${flag}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:0.08em">${head}</div></div>${vals.map(([tx], i) => `<div class="v${k}${i}" style="font-size:38px;line-height:1.5">${tx}</div>`).join("")}</div>`;
   const el = scr(`<div style="display:flex;gap:70px;padding:28px 50px 22px;background:rgba(18,16,12,0.92);border-top:6px solid #c9b48a;color:#f7f3ea;font-family:Oswald;font-weight:700;box-shadow:0 20px 40px rgba(0,0,0,0.55);flex-wrap:wrap;justify-content:center;max-width:980px">
     ${col(FL.us, "AMERICANS", "#2e5cb2", colA, "a")}${col(FL.gb, "BRITISH", "#be3a2a", colB, "b")}<div style="font-size:16px;letter-spacing:.2em;color:#a8a294;text-align:center;width:100%">${foot}</div></div>`,
-    `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+    typeof top === "string" ? top : `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
   [[colA, "a"], [colB, "b"]].forEach(([vals, k]) => vals.forEach(([, tt], i) => { const v = el.querySelector(".v" + k + i); gsap.set(v, { autoAlpha: 0 }); tl.fromTo(v, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05); }));
   SFX("hit", t + 0.2); return el; };
 // the date scroll ticking through several dates (the scroll itself never disappears)
@@ -536,6 +545,14 @@ const dateRun = (list, size = 30) => list.forEach(([txt, t, until]) => B.date(tx
 const fadeL = (el, t, dur, to) => tl.to(el, { autoAlpha: to, duration: dur, ease: "sine.inOut" }, t);
 // grey a world-space marker (face marker / icon)
 const greyM = (el, t) => tl.to(el.firstElementChild, { filter: "grayscale(1) brightness(0.65)", duration: 0.5 }, t);
+// badge rings in 1775-76: the Continental Colours with the Union canton clearly in view (audit #42: never read as the 13-star flag)
+(() => { const kb = K.badge; K.badge = (o) => { const el = kb(o); if (/continental/.test(o.flag || "")) { const r = el.querySelector("div[style*='border-radius:50%']");
+  const bg = document.createElement("div"); bg.style.cssText = `position:absolute;inset:0;background:url(${o.flag}) 0% 0%/auto 150% no-repeat;`; r.insertBefore(bg, r.firstChild); } return el; }; })();
+  // (a child layer, not r.style: re-serialising the ring's style would break the "border-radius:50%" selectors in gh_kit)
+// the date scroll ON from frame 0 (no fade-in: the scroll never disappears across a scene cut)
+const dateHold = (txt, until, size = 30) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1, x: 0 });
+  const d = document.createElement("div"); d.className = "d"; d.textContent = txt; d.style.fontSize = size + "px"; box.appendChild(d); gsap.set(d, { autoAlpha: 1, y: 0 });
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // @@END-KIT
 const P1 = "m1-1", P2 = "m1-2", P3 = "m1-3", P4 = "m1-4";
 const T_ONE = at(P1, "One American army"), T_NORTH = at(P1, "go north up"), T_CHAMP = at(P1, "Lake Champlain"), T_MTL = at(P1, "Montreal."),
@@ -596,8 +613,10 @@ const F_CARRY = fR(CARRY0), F_DEAD = fR(DEAD0), F_HL = fR(HL), F_MEGN = fR(MEGN)
 const C0 = [1440, 760], S0 = 0.68;
 camSet(C0, S0);
 camTo(0.2, T_200 - 0.2, [1450, 770], 0.70, "sine.inOut");
-const TTL = B.title("MOVE 1", "THE BACK DOOR", "1775", 0.25, T_NORTH - 0.1); SFX("ref:boom", 0.35);
-const F0 = [flagS(FL.gb, "", ...L(46.55, -72.6), null, T_200 + 1.2), flagS(FL.us, "", ...L(44.55, -71.25), null, T_200 + 1.2)]; gsap.set(F0, { autoAlpha: 1 });
+const TTL = B.title("MOVE 1", "THE MARCH TO QUEBEC", "1775", 0.25, T_NORTH - 0.1);   // words spoken in hook-4 ("marched ... to Quebec") SFX("ref:boom", 0.35);
+// both flags on their own land at a spot that stays inside the frame for the whole wide shot, the dive and m1-2 (audit #15/#16)
+const F0 = [flagS(FL.gb, "", 1120, 1060, null, T_KILL + 1.8), flagS(FL.us, "", ...L(44.55, -71.25), null, T_KILL + 1.8)]; gsap.set(F0, { autoAlpha: 1 });
+dateHold("1775", T_SEP - 0.1);
 const LGD = legend(T_NORTH + 0.4, null, false);
 // "One American army would go north up Lake Champlain toward Montreal"
 const MB = unitS("mg", "carth", posOn(LAKEP, 0.02), "infantry", "", { t: T_ONE + 0.2 });
@@ -618,29 +637,27 @@ K.target(...QUE, T_QUE + 0.1, { r: 34 / S0, side: "rome", until: T_SEP });
 // "the fortress city that held Canada": the fortress on its cliff
 const FQ = fortIcon(QUE[0] + 6, QUE[1] + 30, T_FORT - 0.05, T_200 + 1.0, { s: 44, side: "rome" }); SFX("ref:pop", T_FORT);
 // "He set out in late September with about eleven hundred men"
-B.showDate(T_SEP - 0.2); dateRun([["SEPTEMBER 1775", T_SEP - 0.1, T_21 - 0.1]]);
+dateRun([["SEPTEMBER 1775", T_SEP - 0.1, T_21 - 0.1]]);
 const AC = unitS("ac", "carth", posOn(ROUTE, 0.0), "infantry", "", { t: T_SEP + 0.2 }); along("ac", sub(ROUTE, 0, 0.06, 6), T_SEP + 0.4, 3.0, 6);
 const N1100 = bigNum("ABOUT", 1100, "MEN", T_1100 - 0.1, T_200 - 0.15, { tick: 0.9, col: "#2e5cb2", wc: "#9fc0ea", top: 190 });
 // ---------- the dive onto the Kennebec (northeast + its colours dissolve ~2.8 s) ----------
-const CK = [1690, 1290], SK = 1.75;
+const CK = [1600, 1235], SK = 1.55;
 SFX("whoosh", T_200 - 0.05);
 zoom(T_200, 3.4, [1450, 770], 0.70, CK, SK, FTW, "power2.inOut");
 fadeL(NE, T_200 + 0.3, 2.8, 0); fadeL(NE_C, T_200 + 0.1, 2.8, 0);
-tl.to(TR, { opacity: 0, duration: 0.8 }, T_200 + 2.0); tl.set(B.units.mg.el, { autoAlpha: 0 }, T_200 + 2.5); hideU(["ac"], T_200 + 1.0);
-// close-up flags: the Continental Colours on the Kennebec, the Union Flag toward Canada (north-west)
-const F1 = [flagS(FL.us, "", FTW[0] + 150, FTW[1] - 40, T_200 + 2.4, T_BRIT + 0.6), flagS(FL.gb, "", 1430, 1060, T_200 + 2.4, T_BRIT + 0.6)];
+tl.to(TR, { opacity: 0, duration: 0.8 }, T_200 + 2.0); tl.to(B.units.mg.el, { autoAlpha: 0, duration: 0.4 }, T_200 + 0.9); hideU(["ac"], T_200 + 1.0);
 // "flat-bottomed boats called bateaux": the boats push upriver from Fort Western (rapids on the way)
 const BOATS = [0, 1, 2, 3, 4, 5].map((k) => craft("bateau", sub(KEN_UP, 0.25 - k * 0.035, 0.98 - k * 0.05, 30), T_BAT - 0.2 + k * 0.12, T_KILL + 2.0 - T_BAT, T_KILL + 2.6, { s: 30 }));
 SFX("ref:pop", T_BAT);
 const RP = [[KEN_UP[iN(KEN_UP, L(44.765, -69.72))], 30], [KEN_UP[iN(KEN_UP, L(44.713, -69.79))], 0], [KEN_UP[iN(KEN_UP, L(45.05, -69.88))], -60]].map(([p, a]) => rapids(p[0] + 4, p[1], T_BAT + 0.6, T_KILL + 1.0, a, 34));
 // "The plan said about a hundred and eighty miles, in about twenty days"
-const PLAN = listCard("THE PLAN", [["~180 MILES", T_180 + 0.2], ["~20 DAYS", T_20]], "left:0;right:0;top:170px;display:flex;justify-content:center;", T_PLAN, T_BRIT + 0.4, { size: 58, mw: 440 });
+const PLAN_IN = T_180 - 0.1, PLAN_OUT = T_20 + 2.2;
+const PLAN = listCard("THE PLAN", [["~180 MILES", T_180 + 0.2], ["~20 DAYS", T_20]], "left:0;right:0;top:170px;display:flex;justify-content:center;", PLAN_IN, PLAN_OUT, { size: 58, mw: 440 });
 // =====================================================================================================================
 // m1-2: the front door (the lake) and the back door (the Maine woods)
 // =====================================================================================================================
 const CW = [1360, 860], SW = 0.72;
 camTo(T_BRIT - 0.3, 2.8, CW, SW, "sine.inOut");
-const F2 = [flagS(FL.gb, "", ...L(45.95, -72.6), T_BRIT, T_KILL + 0.5), flagS(FL.us, "", ...L(44.55, -71.25), T_BRIT, T_KILL + 0.5)];
 // the British at St. Johns, facing the lake; the first American army coming up it
 const RS = [unitS("rs1", "rome", [STJ[0] - 20, STJ[1] + 10], "infantry", "", { t: T_BRIT + 0.2 }), unitS("rs2", "rome", [STJ[0] + 40, STJ[1] - 40], "infantry", "", { t: T_BRIT + 0.35 }),
   unitS("rs3", "rome", [MTL[0] + 30, MTL[1] + 10], "infantry", "", { t: T_BRIT + 0.5 })];
@@ -667,7 +684,7 @@ wstampL("FRONT DOOR", VALC[0] + 70, VALC[1] - 60, T_FRONT + 0.15, null, "#ffd54a
 const CG = [1585, 1045], SG = 2.6;
 camTo(T_KILL - 0.6, 3.2, CG, SG, "power2.inOut");
 hideU(["rs1", "rs2", "rs3", "mu"], T_KILL - 0.4);
-const F3 = [flagS(FL.us, "", 1700, 1150, T_KILL + 1.4, T_FEW + 1.2), flagS(FL.gb, "", 1300, 960, T_KILL + 1.4, T_FEW + 1.2)];
+const F3 = [flagS(FL.us, "", 1700, 1150, T_KILL + 0.8, T_FEW + 1.2), flagS(FL.gb, "", 1300, 960, T_KILL + 0.8, T_FEW + 1.2)];
 // boats at the carry start; barrels inside them spoil (go green-grey)
 const B3 = [0, 1, 2].map((k) => craft("bateau", sub(KEN_UP, 0.86 + k * 0.03, 0.95 + k * 0.02, 6), T_KILL + 1.4 + k * 0.15, T_LEAK + 1.6 - T_KILL, T_HAUL + 0.4, { s: 30 }));
 const BAR = [[1650, 1060], [1662, 1048], [1640, 1072], [1668, 1066]].map((p, k) => icon(ICO.barrel(), p[0], p[1], T_LEAK + 0.6 + k * 0.1, T_HAUL + 0.5));
@@ -703,7 +720,8 @@ FLD.setAttribute("fill", "none"); FLD.setAttribute("stroke", "rgba(110,150,185,0
 OVL.insertBefore(FLD, OVL.firstChild.nextSibling); gsap.set(FLD, { opacity: 0 });
 tl.to(FLD, { opacity: 1, duration: 0.6 }, T_MORN); tl.to(FLD, { attr: { "stroke-width": 9 }, duration: 3.0, ease: "power1.inOut" }, T_MORN + 0.3); tl.to(FLD, { opacity: 0.55, duration: 1.5 }, T_FEW + 1);
 tl.to(FLD, { opacity: 0, duration: 1.2 }, T_BEH);
-const FEET = numCard("THE RIVER ROSE", "8–10 FEET", "", "right:110px;top:250px;", T_FEET - 0.05, T_SANK + 2.2, { col: "#6f9bff", vs: 58 });
+const FEET_OUT = T_FEET + 2.9;
+const FEET = numCard("THE RIVER ROSE", "8–10 FEET", "", "right:110px;top:250px;", T_FEET - 0.05, FEET_OUT, { col: "#6f9bff", vs: 58 });
 // "Boats sank, supplies washed away, and men lost their way in the flooded woods"
 DB.slice(0, 2).forEach((el, k) => { tl.to(el, { autoAlpha: 0.25, duration: 0.12, yoyo: true, repeat: 3 }, T_SANK + k * 0.25); tl.to(el, { autoAlpha: 0, scale: 0.5, duration: 0.5 }, T_SANK + 0.6 + k * 0.25); });
 SFX("ref:pop", T_SANK + 0.1);
@@ -715,7 +733,7 @@ const QS = [[1475, 1100], [1525, 1105]].map((p, k) => icon(ICO.q, p[0], p[1], T_
 // =====================================================================================================================
 // m1-4: three companies turn back; the rest go on; Arnold ahead down the Chaudière; cattle + flour; the hunger
 // =====================================================================================================================
-const C4 = [1440, 790], S4 = 1.55;
+const C4 = [1440, 745], S4 = 1.55;   // SARTIGAN + the farms stay clear of the legend
 camTo(T_FEW - 0.3, 2.8, C4, S4, "sine.inOut");
 const F4 = [flagS(FL.us, "", 1640, 1000, T_FEW + 1.0, null), flagS(FL.gb, "", 1200, 700, T_FEW + 1.0, null)];
 const fpos = (f) => posOn(ROUTE, f);
@@ -729,7 +747,8 @@ B.grey(REAR, T_TURN, 0.6);
 REAR.forEach((id, k) => along(id, [fpos(F_DEAD + 0.01 + k * 0.018), DEAD0, ...CARRY.slice().reverse().slice(1), ...KEN_UP.slice().reverse().slice(0, 30 - k * 4)], T_TURN + 0.3 + k * 0.15, T_REST - T_TURN + 1.5, 16));
 const ARWG = arw({ pts: [DEAD0, CARRY[2], CARRY0, KEN_UP[KEN_UP.length - 12]], side: "carth", t: T_TURN + 0.2, dur: 1.4, width: AW(S4, 10), dash: "10 7", until: T_PUSH });
 gsap.set(ARWG, { filter: "grayscale(1) brightness(1.15)" });
-const N450 = numCard("TURNED BACK · ABOUT", "450 MEN", "", "right:110px;top:240px;", T_450 - 0.1, T_REST - 0.2, { col: "#8a867c", lc: "#c9c2b2", vs: 58 });
+const N450_OUT = T_450 + 2.9;
+const N450 = numCard("TURNED BACK · ABOUT", "450 MEN", "", "right:110px;top:240px;", T_450 - 0.1, N450_OUT, { col: "#8a867c", lc: "#c9c2b2", vs: 58 });
 const FB = [0, 1, 2].map((k) => icon(ICO.barrel(), DEAD0[0] + 8 + k * 6, DEAD0[1] + 10, T_SHARE, T_REST + 2.0));
 FB.forEach((el, k) => pinAlong(el, [[DEAD0[0] + 8 + k * 6, DEAD0[1] + 10], [CARRY[2][0] + k * 6, CARRY[2][1] + 10], [CARRY0[0] + k * 6, CARRY0[1] + 10]], T_SHARE + 0.2, 3.0, 8));
 SFX("ref:pop", T_SHARE + 0.1);
@@ -754,12 +773,12 @@ const SACK = icon(ICO.sack, ...BACKP[0], T_CATTLE + 0.5, T_EATEN + 1.0); pinAlon
 SFX("ref:pop", T_CATTLE + 0.1);
 // "Behind him, one of his captains, Henry Dearborn": back to the column (initials badge)
 camTo(T_BEH - 0.2, 3.0, [1395, 880], 1.75, "sine.inOut");
-const DB2 = pbadge("HENRY DEARBORN", "CAPTAIN", null, "carth", "tr", "HD", T_DEAR + 0.05, T_DOG + 2.2);
-// the hunger card: one line per spoken item
+const DB2 = pbadge("HENRY DEARBORN", "CAPTAIN", "dearborn", "carth", "tr", "HD", T_DEAR + 0.05, T_DOG + 2.2);
+// the hunger card: one line per spoken item, only the last two stay (finished lines drop, audit #22)
 const HUNG = listCard("EATEN", [["HIS DOG", T_DOG + 0.2], ["SHAVING SOAP", T_SOAP], ["LIP SALVE", T_LIP], ["SHOE LEATHER", T_SHOE + 0.5], ["CARTRIDGE BOXES", T_CART]],
-  "left:0;right:0;top:150px;display:flex;justify-content:center;", T_DOG + 0.15, END + 1, { size: 50, mw: 520, kickT: T_EATEN, col: "#c4121f", kc: "#ff8a80" });
+  "left:0;right:0;top:150px;display:flex;justify-content:center;", T_DOG + 0.15, END + 1, { size: 50, mw: 520, kickT: T_EATEN, col: "#c4121f", kc: "#ff8a80", keep: 2 });
 // the HUD steps out under the big cards (1c); the date scroll stays
-declutter([LGD, AB, AB2, DB2], [[0.25, T_NORTH - 0.1], [T_QUE, T_QUE + LBL_LIFE + 1.0], [T_1100 - 0.1, T_200 - 0.15], [T_PLAN, T_BRIT + 0.4], [T_BACK - 0.05, T_BACK + 3.0], [T_FEET - 0.05, T_SANK + 2.2],
-  [T_450 - 0.1, T_REST - 0.2], [T_DOG + 0.15, END + 1]]);
+declutter([LGD, AB, AB2, DB2], [[0.25, T_NORTH - 0.1], [T_QUE, T_QUE + LBL_LIFE + 1.0], [T_1100 - 0.1, T_200 - 0.15], [PLAN_IN, PLAN_OUT], [T_BACK - 0.05, T_BACK + 3.0], [T_FEET - 0.05, FEET_OUT],
+  [T_450 - 0.1, N450_OUT], [T_FARM - 0.3, T_BEH + 0.3], [T_DOG + 0.15, END + 1]]);   // + the legend steps out while SARTIGAN sits under it
 fixImgs();
 B.finish();

@@ -377,7 +377,15 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); });
+  FADEF.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.filter = `opacity(${(inv ? 1 - r : r).toFixed(3)})`; });
+  SCALEFIX.forEach((q) => q(s)); CAM_S = s; setInv(); };
+// FADEF: like FADES but through filter:opacity (safe on elements gsap also fades with autoAlpha); SCALEFIX: callbacks(s) per camera update
+const FADEF = [], SCALEFIX = [];
+const fadeS = (els, a, b, inv) => [].concat(els).forEach((g) => { if (g) FADEF.push([g.el || g, a, b, inv]); });
+// keep a world-space arrow (arw) at a constant on-screen size: its widths and head are rescaled by s0 / s while the camera moves
+const arrowFix = (g, s0) => { const ps = [...g.querySelectorAll("path")], w = ps.map((p) => +p.getAttribute("stroke-width")), hg = g.querySelector("g"), tr = hg ? hg.getAttribute("transform") : "";
+  SCALEFIX.push((s) => { const f = s0 / s; ps.forEach((p, i) => p.setAttribute("stroke-width", (w[i] * f).toFixed(2))); if (hg) hg.setAttribute("transform", `${tr} scale(${f.toFixed(4)})`); }); return g; };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)
@@ -478,15 +486,15 @@ const BLUFF = [[1640, 1400], [1740, 1250], [1850, 1120], [1950, 980]];
 const CW = [(ALB[0] + FTE[0]) / 2 + 600, (ALB[1] + FTE[1]) / 2 - 800], SW = 0.05;
 camSet(CW, SW);
 camTo(0, T_BLUFF - 0.6, [CW[0] + 300, CW[1] - 700], SW * 1.12, "sine.inOut");
-const TTL = B.title("MOVE 3", "THE OPEN BACK DOOR", "1777", 0.25, T_BARMY + 1.0);
+const TTL = B.title("MOVE 3", "SARATOGA", "1777", 0.25, T_BARMY + 1.0);
 SFX("ref:boom", 0.4);
 B.showDate(T_SEP); dateSet("SEPTEMBER 1777", T_SEP + 0.05, T_19 - 0.05);
-const F1 = [flagS(FL.gb, "", ...LD(43.33, -73.35), 0.2, T_BLUFF + 1.2), flagS(FL.us, "", ...LD(42.80, -73.40), 0.2, T_BLUFF + 1.2)];
+// flags inside the frame on their own ground (Union Flag beside Burgoyne's corridor, clear of the badge); they cross-fade with the close flags during the dive
+const F1 = [flagS(FL.gb, "", ...LD(43.17, -73.48), 0.2, null), flagS(FL.us, "", ...LD(42.80, -73.40), 0.2, null)]; fadeS(F1, 0.12, 0.25, true);
 // Burgoyne's army on the Hudson (red counters coming down the river road), his badge on his name
 const RA = [0, 1, 2].map((k) => unitS("ra" + k, "rome", posOn(HROAD, 0.04 + k * 0.12), "infantry", "", { t: 0.3 + k * 0.1 }));
 RA.forEach((id, k) => along(id, sub(HROAD, 0.04 + k * 0.12, 0.5 + k * 0.12, 10), 0.4, T_BLUFF - 0.5, 10));
 arw({ pts: sub(HROAD, 0, 0.75, 8), side: "rome", t: T_HUD - 0.1, dur: 1.3, width: AW(SW, 12), until: T_BLUFF });
-SFX("ref:whoosh", T_HUD);
 const BB = pbadge("JOHN BURGOYNE", "", "burgoyne", "rome", "tr", "JB", T_BARMY + 1.1, T_AROUND + 2.5);
 // "about twenty-five miles above Albany": a dashed measure to ALBANY
 const ALBT = town("ALBANY", ALB, "r", T_ALB - 0.05, { until: T_ALB + LBL_LIFE });
@@ -500,18 +508,20 @@ const AL = glowPath(AMLINE, "#2c57b7", 4, T_DUG - 0.1, null, 0, 0.75, { draw: 1.
 const BMT = town("BEMIS HEIGHTS", BEM, "r", T_BEMIS - 0.05, { until: T_BEMIS + LBL_LIFE });
 // ---------- the dive (whoosh) into the saratoga map; the colours dissolve ----------
 const TZ0 = T_BLUFF - 0.5, TZ1 = T_ROAD + 0.6, CS = [1560, 1000], SS = 0.95;
-SFX("whoosh", TZ0 - 0.05);
+SFX("ref:whoosh", TZ0 - 0.05);   // quiet dive (the locked whoosh is kept for the hook dive + the big zoom-out)
 zoom(TZ0, TZ1 - TZ0, [CW[0] + 300, CW[1] - 700], SW * 1.12, CS, SS, BEM, "power2.inOut");
 tl.to(HUD_C, { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, TZ0 + 0.2);
 glowPath(BLUFF, "#ffd54a", 6 / SS, T_BLUFF + 0.4, T_AROUND + 1.0, 2, 0.85, { draw: 0.8, top: true });
 glowPath(RROAD, "#e8d9b0", 5 / SS, T_ROAD, T_AROUND + 2.0, 1, 0.85, { draw: 0.9 });
 tagL("RIVER ROAD", 2010, 900, T_ROAD + 0.1, null, 14);
-const F2 = [flagS(FL.us, "", 1560, 1380, TZ1 - 0.3, T_ARN + 0.5), flagS(FL.gb, "", 2080, 420, TZ1 - 0.3, T_ARN + 0.5)];
+// mid-dive flags (between the wide flags and the close flags)
+const FMID = [flagS(FL.gb, "", BEM[0] - 700, BEM[1] - 2700, null, null), flagS(FL.us, "", BEM[0] + 900, BEM[1] + 700, null, null)]; gsap.set(FMID, { autoAlpha: 1 });
+SCALEFIX.push((s) => { const v = ramp(s, 0.07, 0.1) * (1 - ramp(s, 0.28, 0.42)); FMID.forEach((g) => { g.style.filter = `opacity(${v.toFixed(3)})`; }); });
+const F2 = [flagS(FL.us, "", 1560, 1380, 0.2, T_19 + 0.3), flagS(FL.gb, "", 1150, 700, 0.2, T_19 + 0.3)]; fadeS(F2, 0.2, 0.38);
 // "So Burgoyne went around, through the woods to the west": red columns swing west, then south
 const RC = { rw: [[2080, 560], [1800, 430], [1500, 430], [1330, 560], [1300, 650]], rc: [[2080, 600], [1850, 560], [1600, 600], [1420, 680]], re: [[2150, 640], [2050, 760], [1950, 820]] };
 Object.entries(RC).forEach(([id, pts], k) => { unitS(id, "rome", pts[0], "infantry", "", { t: T_AROUND - 0.4 + k * 0.1 }); along(id, pts, T_AROUND + k * 0.15, T_CLEAR - T_AROUND, 14);
   arw({ pts, side: "rome", t: T_AROUND + k * 0.15, dur: 1.6, width: AW(SS, 12), until: T_MET + 0.5 }); });
-SFX("ref:whoosh", T_AROUND);
 tagL("WOODS", 1520, 360, T_WEST, null, 14);
 hideU(RA, TZ0 + 1.0);
 // "On the nineteenth, at a clearing called Freeman's Farm, the two armies met"
@@ -526,7 +536,7 @@ go("a1", T_CLEAR, 2.4, [1280, 900]); go("a2", T_CLEAR + 0.1, 2.4, [1380, 930]);
 // =====================================================================================================================
 const C2 = [1345, 930], S2 = 1.6;
 camTo(T_ARN - 0.4, 2.0, C2, S2, "sine.inOut");
-const F3 = [flagS(FL.us, "", 1500, 1080, T_ARN + 0.3, T_TURN), flagS(FL.gb, "", 1520, 690, T_ARN + 0.3, T_TURN)];
+const F3 = [flagS(FL.us, "", 1500, 1080, T_19 - 0.3, T_TURN), flagS(FL.gb, "", 1520, 690, T_19 - 0.3, T_TURN)];
 const LGD = legend(T_ARN + 1.0, null, true);
 const AB = pbadge("BENEDICT ARNOLD", "THE AMERICAN LEFT", "arnold", "carth", "bl", "BA", T_ARN + 0.05, T_TURN);
 const AM = faceMarker("arnold", "BA", "carth", 1250, 1010, T_LEFT - 0.1, null, 72);
@@ -538,7 +548,6 @@ const FR = front2(FRP, S2, T_ARN + 0.4, { dur: 1.2, until: T_TURN - 0.2, to: FRP
 glowPath(AMLINE.slice(0, 3), "#8fb2ff", 7 / S2, T_EARTH - 0.1, T_EARTH + 2.2, 1, 0.9, { top: true });
 tagL("EARTHWORKS", 1330, 1150, T_EARTH, null, 14);
 arw({ pts: [[1300, 1080], [1290, 960], [1300, 860]], side: "carth", t: T_WOODS - 0.1, dur: 1.0, width: AW(S2, 12), until: T_MORG });
-SFX("ref:whoosh", T_WOODS);
 // "he sent in Daniel Morgan's riflemen": one counter, MORGAN badge after the name
 const MB = pbadge("DANIEL MORGAN", "RIFLEMEN", "morgan", "carth", "tr", "DM", T_MORG + 0.1, T_REG + 1.0);
 unitS("mo", "carth", [1240, 960], "infantry", "MORGAN", { t: T_MORG, tag: 15 });
@@ -549,12 +558,11 @@ volley([1250, 800], [1300, 795], T_MORG + 1.2, 5, 1.0);
 const WV = [[1330, 1000], [1400, 1010], [1200, 1000]];
 WV.forEach((p, k) => { const t = T_REG - 0.2 + k * 0.9; const id = unitS("w" + k, "carth", [p[0], p[1] + 60], "infantry", "", { t });
   go(id, t + 0.1, 1.4, [p[0] - 10, 820]); arw({ pts: [[p[0], p[1] + 40], [p[0] - 5, 900], [p[0] - 10, 835]], side: "carth", t: t + 0.05, dur: 0.8, width: AW(S2, 11), until: t + 2.4 });
-  volley([p[0] - 30, 800], [p[0] + 20, 798], t + 1.3, 5, 1.0); smokeLine([p[0] - 30, 790], [p[0] + 20, 788], t + 1.35, 3, 24); SFX("ref:whoosh", t + 0.05); });
+  volley([p[0] - 30, 800], [p[0] + 20, 798], t + 1.3, 5, 1.0); smokeLine([p[0] - 30, 790], [p[0] + 20, 788], t + 1.35, 3, 24); });
 // "At dusk German reinforcements arrived": dusk light, a red column from the river side
 const DUSK = nightWash(T_DUSK - 0.1, null, 0.22);
 const GER = unitS("ge", "rome", [1700, 700], "infantry", "GERMANS", { t: T_GER - 0.2, tag: 14 });
 go("ge", T_GER, 2.2, [1450, 740]); arw({ pts: [[1720, 690], [1580, 720], [1460, 745]], side: "rome", t: T_GER, dur: 1.2, width: AW(S2, 12), until: T_LOST });
-SFX("ref:whoosh", T_GER);
 volley([1420, 780], [1460, 790], T_GER + 1.6, 5, 1.0);
 // "the British kept the clearing": the waves pull back a little
 ["w0", "w1", "w2", "mo"].forEach((id, k) => go(id, T_KEPT + k * 0.08, 1.4, [[1320, 880], [1390, 890], [1190, 880], [1260, 870]][k]));
@@ -585,7 +593,6 @@ SFX("hit", T_TURN + 0.5); K.shake(T_TURN + 0.5, 2, 0.2);
 // "Gates took Morgan's riflemen out of Arnold's command": Morgan's counter slides to Gates's HQ, a new command line to Gates
 go("mo", T_MR, 2.2, [HQ[0] - 60, HQ[1] - 50]);
 glowPath([[HQ[0], HQ[1]], [HQ[0] - 60, HQ[1] - 50]], "#8fb2ff", 4.5 / S3, T_ACMD + 0.4, null, 0, 0.9, { dash: "5 4", top: true });
-SFX("ref:whoosh", T_MR);
 // "The two men had a shouting match": the crack flares, both markers shake
 tl.to(CRACK, { opacity: 1, strokeWidth: 7 / S3, duration: 0.2, yoyo: true, repeat: 3 }, T_SHOUT - 0.1);
 [AM, GM].forEach((m, k) => tl.to(m.firstElementChild, { x: 3, duration: 0.06, yoyo: true, repeat: 7 }, T_SHOUT + k * 0.1)); SFX("hit", T_SHOUT + 0.1); K.shake(T_SHOUT + 0.1, 3, 0.25);

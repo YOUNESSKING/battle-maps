@@ -1,4 +1,4 @@
-// M1A (m1-1 .. m1-4), Benedict Arnold #17: MOVE 1 · THE BACK DOOR · 1775, the march up the Kennebec. Map agent a1_.
+// M1A (m1-1 .. m1-4), Benedict Arnold #17: MOVE 1 · THE MARCH TO QUEBEC · 1775, the march up the Kennebec. Map agent a1_.
 // Built with: python3 tools/a1_make_control.py maine northeast && python3 tools/a1_inline.py m1a m1-1 m1-4 maine
 // World = the maine map px (z9). `northeast` (z8, 2x) lies ON TOP at its true place for the wide opening (option 1 territory, half strength),
 // then dissolves (~2.8 s) during the dive into `maine` (close-ups: no ground tint). A sand underlay fills any corner outside the maps.
@@ -73,8 +73,10 @@ const F_CARRY = fR(CARRY0), F_DEAD = fR(DEAD0), F_HL = fR(HL), F_MEGN = fR(MEGN)
 const C0 = [1440, 760], S0 = 0.68;
 camSet(C0, S0);
 camTo(0.2, T_200 - 0.2, [1450, 770], 0.70, "sine.inOut");
-const TTL = B.title("MOVE 1", "THE BACK DOOR", "1775", 0.25, T_NORTH - 0.1); SFX("ref:boom", 0.35);
-const F0 = [flagS(FL.gb, "", ...L(46.55, -72.6), null, T_200 + 1.2), flagS(FL.us, "", ...L(44.55, -71.25), null, T_200 + 1.2)]; gsap.set(F0, { autoAlpha: 1 });
+const TTL = B.title("MOVE 1", "THE MARCH TO QUEBEC", "1775", 0.25, T_NORTH - 0.1);   // words spoken in hook-4 ("marched ... to Quebec") SFX("ref:boom", 0.35);
+// both flags on their own land at a spot that stays inside the frame for the whole wide shot, the dive and m1-2 (audit #15/#16)
+const F0 = [flagS(FL.gb, "", 1120, 1060, null, T_KILL + 1.8), flagS(FL.us, "", ...L(44.55, -71.25), null, T_KILL + 1.8)]; gsap.set(F0, { autoAlpha: 1 });
+dateHold("1775", T_SEP - 0.1);
 const LGD = legend(T_NORTH + 0.4, null, false);
 // "One American army would go north up Lake Champlain toward Montreal"
 const MB = unitS("mg", "carth", posOn(LAKEP, 0.02), "infantry", "", { t: T_ONE + 0.2 });
@@ -95,29 +97,27 @@ K.target(...QUE, T_QUE + 0.1, { r: 34 / S0, side: "rome", until: T_SEP });
 // "the fortress city that held Canada": the fortress on its cliff
 const FQ = fortIcon(QUE[0] + 6, QUE[1] + 30, T_FORT - 0.05, T_200 + 1.0, { s: 44, side: "rome" }); SFX("ref:pop", T_FORT);
 // "He set out in late September with about eleven hundred men"
-B.showDate(T_SEP - 0.2); dateRun([["SEPTEMBER 1775", T_SEP - 0.1, T_21 - 0.1]]);
+dateRun([["SEPTEMBER 1775", T_SEP - 0.1, T_21 - 0.1]]);
 const AC = unitS("ac", "carth", posOn(ROUTE, 0.0), "infantry", "", { t: T_SEP + 0.2 }); along("ac", sub(ROUTE, 0, 0.06, 6), T_SEP + 0.4, 3.0, 6);
 const N1100 = bigNum("ABOUT", 1100, "MEN", T_1100 - 0.1, T_200 - 0.15, { tick: 0.9, col: "#2e5cb2", wc: "#9fc0ea", top: 190 });
 // ---------- the dive onto the Kennebec (northeast + its colours dissolve ~2.8 s) ----------
-const CK = [1690, 1290], SK = 1.75;
+const CK = [1600, 1235], SK = 1.55;
 SFX("whoosh", T_200 - 0.05);
 zoom(T_200, 3.4, [1450, 770], 0.70, CK, SK, FTW, "power2.inOut");
 fadeL(NE, T_200 + 0.3, 2.8, 0); fadeL(NE_C, T_200 + 0.1, 2.8, 0);
-tl.to(TR, { opacity: 0, duration: 0.8 }, T_200 + 2.0); tl.set(B.units.mg.el, { autoAlpha: 0 }, T_200 + 2.5); hideU(["ac"], T_200 + 1.0);
-// close-up flags: the Continental Colours on the Kennebec, the Union Flag toward Canada (north-west)
-const F1 = [flagS(FL.us, "", FTW[0] + 150, FTW[1] - 40, T_200 + 2.4, T_BRIT + 0.6), flagS(FL.gb, "", 1430, 1060, T_200 + 2.4, T_BRIT + 0.6)];
+tl.to(TR, { opacity: 0, duration: 0.8 }, T_200 + 2.0); tl.to(B.units.mg.el, { autoAlpha: 0, duration: 0.4 }, T_200 + 0.9); hideU(["ac"], T_200 + 1.0);
 // "flat-bottomed boats called bateaux": the boats push upriver from Fort Western (rapids on the way)
 const BOATS = [0, 1, 2, 3, 4, 5].map((k) => craft("bateau", sub(KEN_UP, 0.25 - k * 0.035, 0.98 - k * 0.05, 30), T_BAT - 0.2 + k * 0.12, T_KILL + 2.0 - T_BAT, T_KILL + 2.6, { s: 30 }));
 SFX("ref:pop", T_BAT);
 const RP = [[KEN_UP[iN(KEN_UP, L(44.765, -69.72))], 30], [KEN_UP[iN(KEN_UP, L(44.713, -69.79))], 0], [KEN_UP[iN(KEN_UP, L(45.05, -69.88))], -60]].map(([p, a]) => rapids(p[0] + 4, p[1], T_BAT + 0.6, T_KILL + 1.0, a, 34));
 // "The plan said about a hundred and eighty miles, in about twenty days"
-const PLAN = listCard("THE PLAN", [["~180 MILES", T_180 + 0.2], ["~20 DAYS", T_20]], "left:0;right:0;top:170px;display:flex;justify-content:center;", T_PLAN, T_BRIT + 0.4, { size: 58, mw: 440 });
+const PLAN_IN = T_180 - 0.1, PLAN_OUT = T_20 + 2.2;
+const PLAN = listCard("THE PLAN", [["~180 MILES", T_180 + 0.2], ["~20 DAYS", T_20]], "left:0;right:0;top:170px;display:flex;justify-content:center;", PLAN_IN, PLAN_OUT, { size: 58, mw: 440 });
 // =====================================================================================================================
 // m1-2: the front door (the lake) and the back door (the Maine woods)
 // =====================================================================================================================
 const CW = [1360, 860], SW = 0.72;
 camTo(T_BRIT - 0.3, 2.8, CW, SW, "sine.inOut");
-const F2 = [flagS(FL.gb, "", ...L(45.95, -72.6), T_BRIT, T_KILL + 0.5), flagS(FL.us, "", ...L(44.55, -71.25), T_BRIT, T_KILL + 0.5)];
 // the British at St. Johns, facing the lake; the first American army coming up it
 const RS = [unitS("rs1", "rome", [STJ[0] - 20, STJ[1] + 10], "infantry", "", { t: T_BRIT + 0.2 }), unitS("rs2", "rome", [STJ[0] + 40, STJ[1] - 40], "infantry", "", { t: T_BRIT + 0.35 }),
   unitS("rs3", "rome", [MTL[0] + 30, MTL[1] + 10], "infantry", "", { t: T_BRIT + 0.5 })];
@@ -144,7 +144,7 @@ wstampL("FRONT DOOR", VALC[0] + 70, VALC[1] - 60, T_FRONT + 0.15, null, "#ffd54a
 const CG = [1585, 1045], SG = 2.6;
 camTo(T_KILL - 0.6, 3.2, CG, SG, "power2.inOut");
 hideU(["rs1", "rs2", "rs3", "mu"], T_KILL - 0.4);
-const F3 = [flagS(FL.us, "", 1700, 1150, T_KILL + 1.4, T_FEW + 1.2), flagS(FL.gb, "", 1300, 960, T_KILL + 1.4, T_FEW + 1.2)];
+const F3 = [flagS(FL.us, "", 1700, 1150, T_KILL + 0.8, T_FEW + 1.2), flagS(FL.gb, "", 1300, 960, T_KILL + 0.8, T_FEW + 1.2)];
 // boats at the carry start; barrels inside them spoil (go green-grey)
 const B3 = [0, 1, 2].map((k) => craft("bateau", sub(KEN_UP, 0.86 + k * 0.03, 0.95 + k * 0.02, 6), T_KILL + 1.4 + k * 0.15, T_LEAK + 1.6 - T_KILL, T_HAUL + 0.4, { s: 30 }));
 const BAR = [[1650, 1060], [1662, 1048], [1640, 1072], [1668, 1066]].map((p, k) => icon(ICO.barrel(), p[0], p[1], T_LEAK + 0.6 + k * 0.1, T_HAUL + 0.5));
@@ -180,7 +180,8 @@ FLD.setAttribute("fill", "none"); FLD.setAttribute("stroke", "rgba(110,150,185,0
 OVL.insertBefore(FLD, OVL.firstChild.nextSibling); gsap.set(FLD, { opacity: 0 });
 tl.to(FLD, { opacity: 1, duration: 0.6 }, T_MORN); tl.to(FLD, { attr: { "stroke-width": 9 }, duration: 3.0, ease: "power1.inOut" }, T_MORN + 0.3); tl.to(FLD, { opacity: 0.55, duration: 1.5 }, T_FEW + 1);
 tl.to(FLD, { opacity: 0, duration: 1.2 }, T_BEH);
-const FEET = numCard("THE RIVER ROSE", "8–10 FEET", "", "right:110px;top:250px;", T_FEET - 0.05, T_SANK + 2.2, { col: "#6f9bff", vs: 58 });
+const FEET_OUT = T_FEET + 2.9;
+const FEET = numCard("THE RIVER ROSE", "8–10 FEET", "", "right:110px;top:250px;", T_FEET - 0.05, FEET_OUT, { col: "#6f9bff", vs: 58 });
 // "Boats sank, supplies washed away, and men lost their way in the flooded woods"
 DB.slice(0, 2).forEach((el, k) => { tl.to(el, { autoAlpha: 0.25, duration: 0.12, yoyo: true, repeat: 3 }, T_SANK + k * 0.25); tl.to(el, { autoAlpha: 0, scale: 0.5, duration: 0.5 }, T_SANK + 0.6 + k * 0.25); });
 SFX("ref:pop", T_SANK + 0.1);
@@ -192,7 +193,7 @@ const QS = [[1475, 1100], [1525, 1105]].map((p, k) => icon(ICO.q, p[0], p[1], T_
 // =====================================================================================================================
 // m1-4: three companies turn back; the rest go on; Arnold ahead down the Chaudière; cattle + flour; the hunger
 // =====================================================================================================================
-const C4 = [1440, 790], S4 = 1.55;
+const C4 = [1440, 745], S4 = 1.55;   // SARTIGAN + the farms stay clear of the legend
 camTo(T_FEW - 0.3, 2.8, C4, S4, "sine.inOut");
 const F4 = [flagS(FL.us, "", 1640, 1000, T_FEW + 1.0, null), flagS(FL.gb, "", 1200, 700, T_FEW + 1.0, null)];
 const fpos = (f) => posOn(ROUTE, f);
@@ -206,7 +207,8 @@ B.grey(REAR, T_TURN, 0.6);
 REAR.forEach((id, k) => along(id, [fpos(F_DEAD + 0.01 + k * 0.018), DEAD0, ...CARRY.slice().reverse().slice(1), ...KEN_UP.slice().reverse().slice(0, 30 - k * 4)], T_TURN + 0.3 + k * 0.15, T_REST - T_TURN + 1.5, 16));
 const ARWG = arw({ pts: [DEAD0, CARRY[2], CARRY0, KEN_UP[KEN_UP.length - 12]], side: "carth", t: T_TURN + 0.2, dur: 1.4, width: AW(S4, 10), dash: "10 7", until: T_PUSH });
 gsap.set(ARWG, { filter: "grayscale(1) brightness(1.15)" });
-const N450 = numCard("TURNED BACK · ABOUT", "450 MEN", "", "right:110px;top:240px;", T_450 - 0.1, T_REST - 0.2, { col: "#8a867c", lc: "#c9c2b2", vs: 58 });
+const N450_OUT = T_450 + 2.9;
+const N450 = numCard("TURNED BACK · ABOUT", "450 MEN", "", "right:110px;top:240px;", T_450 - 0.1, N450_OUT, { col: "#8a867c", lc: "#c9c2b2", vs: 58 });
 const FB = [0, 1, 2].map((k) => icon(ICO.barrel(), DEAD0[0] + 8 + k * 6, DEAD0[1] + 10, T_SHARE, T_REST + 2.0));
 FB.forEach((el, k) => pinAlong(el, [[DEAD0[0] + 8 + k * 6, DEAD0[1] + 10], [CARRY[2][0] + k * 6, CARRY[2][1] + 10], [CARRY0[0] + k * 6, CARRY0[1] + 10]], T_SHARE + 0.2, 3.0, 8));
 SFX("ref:pop", T_SHARE + 0.1);
@@ -231,12 +233,12 @@ const SACK = icon(ICO.sack, ...BACKP[0], T_CATTLE + 0.5, T_EATEN + 1.0); pinAlon
 SFX("ref:pop", T_CATTLE + 0.1);
 // "Behind him, one of his captains, Henry Dearborn": back to the column (initials badge)
 camTo(T_BEH - 0.2, 3.0, [1395, 880], 1.75, "sine.inOut");
-const DB2 = pbadge("HENRY DEARBORN", "CAPTAIN", null, "carth", "tr", "HD", T_DEAR + 0.05, T_DOG + 2.2);
-// the hunger card: one line per spoken item
+const DB2 = pbadge("HENRY DEARBORN", "CAPTAIN", "dearborn", "carth", "tr", "HD", T_DEAR + 0.05, T_DOG + 2.2);
+// the hunger card: one line per spoken item, only the last two stay (finished lines drop, audit #22)
 const HUNG = listCard("EATEN", [["HIS DOG", T_DOG + 0.2], ["SHAVING SOAP", T_SOAP], ["LIP SALVE", T_LIP], ["SHOE LEATHER", T_SHOE + 0.5], ["CARTRIDGE BOXES", T_CART]],
-  "left:0;right:0;top:150px;display:flex;justify-content:center;", T_DOG + 0.15, END + 1, { size: 50, mw: 520, kickT: T_EATEN, col: "#c4121f", kc: "#ff8a80" });
+  "left:0;right:0;top:150px;display:flex;justify-content:center;", T_DOG + 0.15, END + 1, { size: 50, mw: 520, kickT: T_EATEN, col: "#c4121f", kc: "#ff8a80", keep: 2 });
 // the HUD steps out under the big cards (1c); the date scroll stays
-declutter([LGD, AB, AB2, DB2], [[0.25, T_NORTH - 0.1], [T_QUE, T_QUE + LBL_LIFE + 1.0], [T_1100 - 0.1, T_200 - 0.15], [T_PLAN, T_BRIT + 0.4], [T_BACK - 0.05, T_BACK + 3.0], [T_FEET - 0.05, T_SANK + 2.2],
-  [T_450 - 0.1, T_REST - 0.2], [T_DOG + 0.15, END + 1]]);
+declutter([LGD, AB, AB2, DB2], [[0.25, T_NORTH - 0.1], [T_QUE, T_QUE + LBL_LIFE + 1.0], [T_1100 - 0.1, T_200 - 0.15], [PLAN_IN, PLAN_OUT], [T_BACK - 0.05, T_BACK + 3.0], [T_FEET - 0.05, FEET_OUT],
+  [T_450 - 0.1, N450_OUT], [T_FARM - 0.3, T_BEH + 0.3], [T_DOG + 0.15, END + 1]]);   // + the legend steps out while SARTIGAN sits under it
 fixImgs();
 B.finish();

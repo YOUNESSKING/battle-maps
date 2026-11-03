@@ -25,7 +25,9 @@ body = open(f"tools/ar3_body_{scene}.js").read()
 out = body.replace("// @@KIT", "// @@KIT (tools/gh_kit.js + tools/ar3_kit.js)\nconst GD = " + json.dumps(GD, separators=(",", ":")) + ";\n" + kit + open("tools/ar3_kit.js").read() + "// @@END-KIT")
 open(f"scenes-src/{scene}.js", "w").write(out)
 base = "saratoga_hd_lift" if os.path.exists("assets/saratoga_hd_lift.jpg") else "saratoga"
-r = subprocess.run(["python3", "tools/build_scene.py", scene, base, first, last], capture_output=True, text=True); print(r.stdout.strip(), r.stderr.strip()[-800:])
+# build_scene.py, but without copying the (unused, ~250 MB) *_det_* tree/detail layers into the scene (disk space; trees are banned anyway)
+SKIP_DET = "import shutil, sys; _c = shutil.copy; shutil.copy = lambda a, b, *k, **kw: None if '_det_' in str(a) else _c(a, b, *k, **kw); sys.argv = ['build_scene.py'] + sys.argv[1:]; exec(open('tools/build_scene.py').read(), {'__file__': 'tools/build_scene.py', '__name__': '__main__'})"
+r = subprocess.run(["python3", "-c", SKIP_DET, scene, base, first, last] if True else ["python3", "tools/build_scene.py", scene, base, first, last], capture_output=True, text=True); print(r.stdout.strip(), r.stderr.strip()[-800:])
 dst = f"scenes/{scene}/assets"
 for m in MAPS:
     if f"ar3_{m}.jpg" not in body and f"mapGroup(\"{m}\"" not in body: continue

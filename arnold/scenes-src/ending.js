@@ -374,7 +374,15 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); });
+  FADEF.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.filter = `opacity(${(inv ? 1 - r : r).toFixed(3)})`; });
+  SCALEFIX.forEach((q) => q(s)); CAM_S = s; setInv(); };
+// FADEF: like FADES but through filter:opacity (safe on elements gsap also fades with autoAlpha); SCALEFIX: callbacks(s) per camera update
+const FADEF = [], SCALEFIX = [];
+const fadeS = (els, a, b, inv) => [].concat(els).forEach((g) => { if (g) FADEF.push([g.el || g, a, b, inv]); });
+// keep a world-space arrow (arw) at a constant on-screen size: its widths and head are rescaled by s0 / s while the camera moves
+const arrowFix = (g, s0) => { const ps = [...g.querySelectorAll("path")], w = ps.map((p) => +p.getAttribute("stroke-width")), hg = g.querySelector("g"), tr = hg ? hg.getAttribute("transform") : "";
+  SCALEFIX.push((s) => { const f = s0 / s; ps.forEach((p, i) => p.setAttribute("stroke-width", (w[i] * f).toFixed(2))); if (hg) hg.setAttribute("transform", `${tr} scale(${f.toFixed(4)})`); }); return g; };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)
@@ -513,7 +521,8 @@ const icon = (html, x, y, t, until, o = {}) => { const el = pinS(GG.pin(`<div st
 // a screen card that grows line by line, each line on its spoken word: lines = [[text, t], ...]
 const listCard = (kick, lines, css, t, until, o = {}) => { const el = scr(`<div style="padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);min-width:${o.mw || 520}px">
   <div class="kk" style="font-size:20px;letter-spacing:.36em;color:${o.kc || "#c9b48a"};min-height:26px">${kick}</div>${lines.map(([tx], i) => `<div class="ln ln${i}" style="font-size:${o.size || 50}px;letter-spacing:.06em;line-height:1.18">${tx}</div>`).join("")}</div>`, css, t, until);
-  lines.forEach(([, tt], i) => { const ln = el.querySelector(".ln" + i); gsap.set(ln, { autoAlpha: 0, display: "none" }); tl.set(ln, { display: "block" }, tt); tl.fromTo(ln, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05); });
+  lines.forEach(([, tt], i) => { const ln = el.querySelector(".ln" + i); gsap.set(ln, { autoAlpha: 0, display: "none" }); tl.set(ln, { display: "block" }, tt); tl.fromTo(ln, { autoAlpha: 0, x: -24 }, { autoAlpha: 1, x: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05);
+    if (o.keep && i >= o.keep) tl.set(el.querySelector(".ln" + (i - o.keep)), { display: "none" }, tt); });   // o.keep: only the last N lines stay (finished lines drop)
   if (o.kickT != null) { const kk = el.querySelector(".kk"); gsap.set(kk, { autoAlpha: 0 }); tl.to(kk, { autoAlpha: 1, duration: 0.3 }, o.kickT); }
   return el; };
 // casualty card (the K.casualties look, but each value only on its own spoken words): colA/colB = [[text, t], ...]
@@ -521,7 +530,7 @@ const casCard = (colA, colB, foot, t, until, top = 250) => { const col = (flag, 
     <img src="${flag}" style="height:34px;border:1px solid #f7f3ea"><div style="font-size:30px;letter-spacing:0.08em">${head}</div></div>${vals.map(([tx], i) => `<div class="v${k}${i}" style="font-size:38px;line-height:1.5">${tx}</div>`).join("")}</div>`;
   const el = scr(`<div style="display:flex;gap:70px;padding:28px 50px 22px;background:rgba(18,16,12,0.92);border-top:6px solid #c9b48a;color:#f7f3ea;font-family:Oswald;font-weight:700;box-shadow:0 20px 40px rgba(0,0,0,0.55);flex-wrap:wrap;justify-content:center;max-width:980px">
     ${col(FL.us, "AMERICANS", "#2e5cb2", colA, "a")}${col(FL.gb, "BRITISH", "#be3a2a", colB, "b")}<div style="font-size:16px;letter-spacing:.2em;color:#a8a294;text-align:center;width:100%">${foot}</div></div>`,
-    `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
+    typeof top === "string" ? top : `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, until);
   [[colA, "a"], [colB, "b"]].forEach(([vals, k]) => vals.forEach(([, tt], i) => { const v = el.querySelector(".v" + k + i); gsap.set(v, { autoAlpha: 0 }); tl.fromTo(v, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.05); }));
   SFX("hit", t + 0.2); return el; };
 // the date scroll ticking through several dates (the scroll itself never disappears)
@@ -530,6 +539,14 @@ const dateRun = (list, size = 30) => list.forEach(([txt, t, until]) => B.date(tx
 const fadeL = (el, t, dur, to) => tl.to(el, { autoAlpha: to, duration: dur, ease: "sine.inOut" }, t);
 // grey a world-space marker (face marker / icon)
 const greyM = (el, t) => tl.to(el.firstElementChild, { filter: "grayscale(1) brightness(0.65)", duration: 0.5 }, t);
+// badge rings in 1775-76: the Continental Colours with the Union canton clearly in view (audit #42: never read as the 13-star flag)
+(() => { const kb = K.badge; K.badge = (o) => { const el = kb(o); if (/continental/.test(o.flag || "")) { const r = el.querySelector("div[style*='border-radius:50%']");
+  const bg = document.createElement("div"); bg.style.cssText = `position:absolute;inset:0;background:url(${o.flag}) 0% 0%/auto 150% no-repeat;`; r.insertBefore(bg, r.firstChild); } return el; }; })();
+  // (a child layer, not r.style: re-serialising the ring's style would break the "border-radius:50%" selectors in gh_kit)
+// the date scroll ON from frame 0 (no fade-in: the scroll never disappears across a scene cut)
+const dateHold = (txt, until, size = 30) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1, x: 0 });
+  const d = document.createElement("div"); d.className = "d"; d.textContent = txt; d.style.fontSize = size + "px"; box.appendChild(d); gsap.set(d, { autoAlpha: 1, y: 0 });
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // @@END-KIT
 const P1 = "end-1", P2 = "end-2";
 const T_LOOK = at(P1, "Look at the three"), T_QUE = at(P1, "At Quebec"), T_TOOK = at(P1, "he took an army"), T_CHAMP = at(P1, "On Lake Champlain"),
@@ -551,11 +568,13 @@ const ROUTE = smoothP([[44.05, -69.79], [44.31, -69.77], [44.55, -69.63], [44.76
 const LAKEP = [L(43.843, -73.387), CRP, L(44.25, -73.36), VALC, L(44.85, -73.33), L(45.05, -73.32), STJ];
 const C0 = [1420, 560], S0 = 0.9;
 camSet(C0, S0); camTo(0, T_TODAY, [1420, 566], 0.92, "sine.inOut");
-const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); const F1 = flagS(FL.gb, "", 1100, 600, T_TODAY + 1.5, null);
+// flags on their own ground, inside the frame for the whole scene and the end screen (Union Flag on Canada, clear of the date scroll and of the top band)
+const F0 = [flagS(FL.gb, "", ...L(46.3, -73.9), null, null), flagS(FL.us, "", ...L(43.6, -71.6), null, null)]; gsap.set(F0, { autoAlpha: 1 }); const F1 = flagS(FL.gb, "", 1800, 470, T_TODAY + 0.6, null); tl.to(F0[0], { autoAlpha: 0, duration: 0.5 }, T_TODAY + 0.3);   // hand-over: the first Union Flag would leave through the top edge
 B.showDate(0.2); dateRun([["1775 – 1777", 0.25, null]]);
 // QUEBEC: lights up on its name; the march redrawn
-const TQ = town("QUEBEC", QUE, "r", T_QUE, { until: T_QUE + LBL_LIFE });
-K.target(...QUE, T_QUE + 0.1, { r: 46 / S0, side: "#ffd54a", until: T_CHAMP });
+// QUEBEC sits near the top of this shot: its label goes below-right of the city (never on the frame edge), a smaller ring
+const TQ = boxL("QUEBEC", QUE[0] + 80 / S0, QUE[1] + 62 / S0, T_QUE, null, { size: 16 });
+K.target(...QUE, T_QUE + 0.1, { r: 34 / S0, side: "#ffd54a", until: T_CHAMP });
 trail(ROUTE, "#e6f0ff", 4.5 / S0, T_TOOK, 3.0, T_SARA, `${9 / S0} ${7 / S0}`); SFX("ref:whoosh", T_TOOK);
 arw({ pts: ROUTE.slice(-6), side: "carth", t: T_TOOK + 2.6, dur: 0.6, width: AW(S0, 12), until: T_SARA });
 // LAKE CHAMPLAIN: the lake glows on its name; the channel; the wind; a whole year
@@ -572,16 +591,30 @@ const RL = glowPath([[SARA[0] - 60, SARA[1] - 40], [SARA[0] - 20, SARA[1] - 8], 
 const BR = arw({ pts: [[SARA[0] - 30, SARA[1] + 70], [SARA[0] - 22, SARA[1] + 10], [SARA[0] - 14, SARA[1] - 60]], side: "carth", t: T_THRU - 0.3, dur: 0.8, width: AW(S0, 12), until: T_BOOT });
 SFX("hit", T_THRU + 0.4); K.shake(T_THRU + 0.4, 3, 0.25);
 // "Today, on the battlefield at Saratoga": push toward it; the boot card on "a boot" (no name on it)
-camTo(T_TODAY, 5.0, [SARA[0] + 120, SARA[1] - 160], 1.5, "sine.inOut");
-const BOOT = scr(`<div style="padding:12px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;box-shadow:0 20px 40px rgba(0,0,0,.6)"><div style="width:520px;height:560px;background:url(assets/media/arch_boot_monument.jpg) 50% 45%/auto 100% no-repeat;filter:grayscale(0.85) contrast(1.08) sepia(0.15)"></div></div>`,
-  "left:0;right:0;top:150px;display:flex;justify-content:center;", T_BOOT - 0.05, F_Q - 0.2, { autoAlpha: 0, y: 30 });
+const CF = [SARA[0] + 122, SARA[1] - 165], SF = 1.1;   // the end-screen shot: Saratoga with Canada (British) along the top, both flags in frame
+camTo(T_TODAY, 5.0, CF, SF, "sine.inOut");
+camTo(T_TODAY + 5.0, END - T_TODAY - 5.0, [CF[0] + 20, CF[1] - 10], SF * 1.05, "none");   // a slow living drift to the last frame
+// "It shows a boot.": a SMALL framed archive card (projector-style frame, sepia, slow push inside), no name on it, beside Saratoga
+const BOOT = scr(`<div style="padding:10px;background:#15120d;border:2px solid #c9b48a;box-shadow:0 0 0 6px rgba(21,18,13,0.92),0 22px 44px rgba(0,0,0,.65);transform:rotate(-1.5deg)">
+  <div style="position:relative;width:400px;height:300px;overflow:hidden;outline:1px solid rgba(201,180,138,0.5)"><div class="bi" style="position:absolute;inset:0;background:url(assets/media/arch_boot_monument.jpg) 52% 40%/auto 128% no-repeat;filter:grayscale(0.9) sepia(0.35) contrast(1.12) brightness(0.95)"></div>
+  <div style="position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(0,0,0,0.75)"></div></div></div>`,
+  "right:170px;top:300px;transform-origin:50% 50%;", T_BOOT - 0.05, F_Q - 0.2, { autoAlpha: 0, scale: 0.85 });
+tl.fromTo(BOOT.querySelector(".bi"), { scale: 1 }, { scale: 1.08, duration: F_Q - T_BOOT, ease: "none", immediateRender: false }, T_BOOT);
 SFX("ref:pop", T_BOOT);
 // end-2: the final question
 const FC = E.final({ moves: [["QUEBEC", "1775"], ["VALCOUR ISLAND", "1776"], ["SARATOGA", "1777"]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL, tFamily: F_NEXT, tSub: F_SUB, until: END + 1 });
 FC.querySelector(".fam").innerHTML = `WHICH COMMANDER SHOULD WE COVER NEXT? <span style="color:#c9b48a">TELL US IN THE COMMENTS</span>`;
-const tBand = Math.max(F_TELL + 1.2, END - 20);
+FC.style.top = "210px";                                       // below the date scroll
+document.getElementById("date").style.zIndex = 40;           // the date scroll stays above the dim layer
+// nothing before it is spoken: the kicker waits for "Tell us in the comments"; each numbered card pops ONLY on its number (one entrance each)
+const KICK = FC.firstElementChild; gsap.set(KICK, { autoAlpha: 0 }); tl.set(KICK, { autoAlpha: 0 }, 0); tl.to(KICK, { autoAlpha: 1, duration: 0.3 }, F_TELL);
+[F_1, F_2, F_3].forEach((tt, i) => { const c = FC.querySelector(".m" + i); tl.getTweensOf(c).forEach((tw) => tw.kill()); gsap.set(c, { autoAlpha: 0 }); tl.set(c, { autoAlpha: 0 }, 0);
+  tl.fromTo(c, { autoAlpha: 0, scale: 1.25, y: 0 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2)", immediateRender: false }, tt);
+  tl.to(c, { borderColor: "#ffd54a", duration: 0.25 }, tt + 0.3); tl.to(c, { borderColor: "rgba(201,180,138,0.6)", duration: 0.4 }, (i < 2 ? [F_2, F_3][i] : F_TELL)); });
+// right after "Subscribe, so you don't miss the next one": the card shrinks to the top band, the subscribe button leaves, the map is clean + alive to END
+const tBand = B.T.paras[P2][1] + 0.15;
 tl.to(FC, { scale: 0.5, y: -125, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);
-const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
-declutter([F0[0], F0[1], F1], [[F_Q - 0.3, Math.max(F_TELL + 1.2, END - 20) + 0.6]]);
+const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0, duration: 0.8 }, tBand);
+const SUBB = [...SCN.children].find((e) => e.querySelector && e.querySelector(".lab")); if (SUBB) tl.to(SUBB, { autoAlpha: 0, x: 120, duration: 0.5, ease: "power2.in" }, tBand);
 fixImgs();
 B.finish();

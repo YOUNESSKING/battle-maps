@@ -32,22 +32,24 @@ const LKP = LL([[45.30, -73.26], [45.12, -73.29], [45.0, -73.35], [44.85, -73.35
 const HUD = LL([[43.555, -73.404], [43.40, -73.48], [43.27, -73.58], [43.05, -73.58], [42.75, -73.70]]);
 // ---------- layers ----------
 living(CZ.meters_per_px, [], { n: 6, clouds: 0.12 });
-const TC = terr0("assets/media/va_champlain_ctl_mx.png"); TC.style.filter = SOFT;
+const TC = terr0("assets/media/va_champlain_ctl_soft.png"); TC.style.filter = SOFT;   // audit #35: feathered wavy border, cooler red, lower alpha
 const BY = L(45.02, -73.3)[1];
 const FR = front2([[1180, BY + 14], [1260, BY + 4], [1340, BY + 10], [1420, BY - 2], [1500, BY + 6], [1580, BY - 4], [1660, BY + 8], [1740, BY + 2]], 2.0, 0.0, { dur: 0.01 });
 on0(FR);
 // ---------- camera ----------
-const sKeys = [[0, 1430, 830, 0.95], [T_FLEET - 0.5, 1440, 780, 1.0], [T_P1 - 0.4, 1440, 720, 1.12], [T_WAR, 1450, 455, 2.1, "power2.inOut"], [T_BACK + 0.5, 1452, 405, 2.3],
-  [T_ROAD, 1450, 430, 2.1], [T_HUD + 0.5, 1430, 900, 0.9, "power2.inOut"], [T_P2 - 0.2, 1520, 960, 0.85], [T_GAL + 1.0, 1410, 1000, 1.1], [T_AGAINST, 1420, 880, 0.95],
-  [END, 1395, 800, 1.25]];
+const sKeys = [[0, 1430, 830, 0.95], [T_FLEET - 0.5, 1470, 790, 1.0], [T_P1 - 0.4, 1450, 720, 1.12], [T_P1 + 2.6, 1450, 700, 1.2], [T_WAR, 1450, 455, 2.1, "power2.inOut"], [T_BACK + 0.5, 1452, 440, 2.2],
+  [T_ROAD, 1450, 430, 2.1], [T_HUD + 0.5, 1430, 900, 0.9, "power2.inOut"], [T_P2 - 0.2, 1480, 900, 0.85], [T_GAL + 1.0, 1440, 930, 0.9], [T_AGAINST, 1440, 880, 0.88],
+  [END, 1430, 830, 0.95]]   // audit #15/#16: Canada stays in frame (the Union Flag on its own ground);
 camera(sKeys);
 // ---------- HUD ----------
-B.showDate(0); B.date("SUMMER 1776", 0.02, T_OCT - 0.1, 32); B.date("OCTOBER 1776", T_OCT, END + 1, 32);
+B.showDate(0); B.date("SUMMER 1776", 0.0, T_OCT - 0.1, 32); date0(); B.date("OCTOBER 1776", T_OCT, END + 1, 32);
 const LGD = legend(0.8, END + 1);
 // flags (both on every frame): Union Flag on Canada, Continental Colours on the American shore (two pairs: wide, and the St. Johns close-up)
-flagS(FL.cs, "", 1720, 330, 0, END + 1); flagS(FL.us, "", 1650, 900, 0, T_WAR + 0.4); flagS(FL.us, "", 1580, 625, T_WAR - 0.6, T_HUD + 1.0); flagS(FL.us, "", 1650, 900, T_ROAD + 0.4, END + 1);
+// audit #11-#16 (2026-11-03): ONE flag each for the whole scene, both on their own land and in frame at every camera position (checked with tools/va_probe.js):
+// Union Flag on Canada east of the Richelieu (lat ~45.2), clear of the legend and the corner badge; Continental Colours on northern Vermont
+flagS(FL.cs, "", 1750, 515, 0, END + 1); flagS(FL.us, "", 1640, 640, 0, END + 1);
 // big towns (small labels, leave after ~3.5 s)
-townL("MONTREAL", MTL, "l", 0.4); townL("ST. JOHNS", STJ, "r", T_NORTH); townL("TICONDEROGA", TIC, "r", T_TIC); townL("SKENESBOROUGH", SKE, "r", T_SKE);
+townL("ST. JOHNS", STJ, "r", T_NORTH); townL("TICONDEROGA", TIC, "r", T_TIC); townL("SKENESBOROUGH", SKE, "r", T_SKE);
 // =================== move1-sub: out of Canada; the British fleet at St. Johns; the subscribe beat ===================
 unitS("am1", "carth", L(45.25, -73.32), "infantry", "", { size: "XX", t: 0 }); unitS("am2", "carth", L(45.08, -73.40), "infantry", "", { size: "XX", t: 0 });
 ["am1", "am2"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 })); B.hideUnits(["am1", "am2"], T_P2 - 0.5, 0.6);
@@ -62,7 +64,7 @@ E.subscribe(T_SUBS - 1.1, T_HERE - 0.3);
 const NX = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;font-size:30px;letter-spacing:.14em">NEXT: <span style="color:#c9b48a">MOVE 2</span></div>`,
   "left:90px;bottom:150px;", T_HERE + 0.1, T_P1 - 0.2, { autoAlpha: 0, x: -60 });
 // =================== m2-1: the fleet from St. Johns; the Inflexible in pieces; 28 days; the road south ===================
-B.title("MOVE 2", "THE FLEET FROM A FOREST", "1776", T_P1 + 0.1, T_P1 + 2.9); SFX("ref:boom", T_P1 + 0.2);
+const TT2 = B.title("MOVE 2", "THE FLEET FROM A FOREST", "1776", T_P1 + 0.1, T_P1 + 2.9); TT2.style.top = "600px";   // below both flags SFX("ref:boom", T_P1 + 0.2);
 // more warships appear on "building warships"
 const RF2 = [[45.285, -73.235, "gunboat2"], [45.255, -73.29, "gunboat2"], [45.225, -73.24, "gunboat2"], [45.19, -73.30, "gunboat2"], [45.29, -73.29, "gondola"]];
 RF2.forEach(([la, lo, kind], k) => ship(kind, [L(la, lo)], T_WAR + 0.2 + k * 0.3, 0.01, null, { side: "rome", s: 20, rot: 90 }));
@@ -95,17 +97,17 @@ const AMF = BLUE.map(([kind, la, lo], k) => { const tk = kind === "galley" ? T_G
 boxL("GONDOLAS", SKE[0] + 50, SKE[1] - 70, T_GOND, null, { size: 12 }); boxL("GALLEYS", SKE[0] + 60, SKE[1] - 150, T_GAL + 0.1, null, { size: 12 });
 // the fleet moves north to its station (more boats appear on "fifteen vessels")
 [[44.15, -73.40, "schooner"], [44.22, -73.37, "galley"], [44.30, -73.36, "gondola"]].forEach(([la, lo, kind], k) => ship(kind, [L(la - 0.15, lo), L(la, lo)], T_15 + k * 0.3, 2.5, null, { side: "carth", s: 22 }));
-const N15 = placeCard("AMERICANS", "15 VESSELS · <span class='m7'>ABOUT 700 MEN</span>", "left:0;right:0;top:200px;display:flex;justify-content:center;", T_15 - 0.05, T_AGAINST - 0.3);
+const N15 = placeCard("AMERICANS", "15 VESSELS<br><span class='m7'>ABOUT 700 MEN</span>", "left:110px;top:430px;", T_15 - 0.05, T_AGAINST - 0.3);
 { const m7 = N15.querySelector(".m7"); gsap.set(m7, { autoAlpha: 0 }); tl.fromTo(m7, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_700); }
 N15.firstElementChild.style.borderTopColor = "#1f4fc4"; SFX("hit", T_15 + 0.1);
 // the British fleet moves south from St. Johns
 RFS.forEach((b, k) => { const p = L(RF[k][0], RF[k][1]); tl.to(b.el, { top: p[1] + 120, duration: 6, ease: "sine.inOut" }, T_AGAINST + k * 0.1); });
-const N25 = placeCard("BRITISH", "ABOUT 25 ARMED VESSELS · <span class='m7'>ABOUT 700 SEAMEN</span>", "left:0;right:0;top:200px;display:flex;justify-content:center;", T_25 - 0.05, T_1000 - 0.3);
+const N25 = placeCard("BRITISH", "ABOUT 25 ARMED VESSELS<br><span class='m7'>ABOUT 700 SEAMEN</span>", "left:110px;top:430px;", T_25 - 0.05, T_1000 - 0.3);
 { const m7 = N25.querySelector(".m7"); gsap.set(m7, { autoAlpha: 0 }); tl.fromTo(m7, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_SEA); }
 N25.firstElementChild.style.borderTopColor = "#c4121f"; SFX("hit", T_25 + 0.1);
 // more than a thousand soldiers in boats, behind the warships
 [[45.32, -73.28], [45.33, -73.24], [45.35, -73.26], [45.36, -73.29], [45.37, -73.245], [45.39, -73.27]].forEach(([la, lo], k) => ship("bateau", [L(la, lo), L(la - 0.22, lo - 0.02)], T_1000 + k * 0.15, 4.5, null, { side: "rome", s: 18 }));
-boxL("MORE THAN 1,000 SOLDIERS IN BOATS", STJ[0] + 250, STJ[1] + 90, T_1000 + 0.3, null, { size: 13, bg: "#f3d6c8" });
+boxL("MORE THAN 1,000 SOLDIERS IN BOATS", STJ[0] - 230, STJ[1] + 70, T_1000 + 0.3, null, { size: 13, bg: "#f3d6c8" });
 // ---------- 1c declutter ----------
 declutter([LGD, AB], [[T_P1 + 0.1, T_P1 + 2.9], [T_28 - 0.05, T_ROAD - 0.3], [T_15 - 0.05, T_AGAINST - 0.3], [T_25 - 0.05, T_1000 - 0.3]]);
 fixImgs();

@@ -377,7 +377,15 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); });
+  FADEF.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.filter = `opacity(${(inv ? 1 - r : r).toFixed(3)})`; });
+  SCALEFIX.forEach((q) => q(s)); CAM_S = s; setInv(); };
+// FADEF: like FADES but through filter:opacity (safe on elements gsap also fades with autoAlpha); SCALEFIX: callbacks(s) per camera update
+const FADEF = [], SCALEFIX = [];
+const fadeS = (els, a, b, inv) => [].concat(els).forEach((g) => { if (g) FADEF.push([g.el || g, a, b, inv]); });
+// keep a world-space arrow (arw) at a constant on-screen size: its widths and head are rescaled by s0 / s while the camera moves
+const arrowFix = (g, s0) => { const ps = [...g.querySelectorAll("path")], w = ps.map((p) => +p.getAttribute("stroke-width")), hg = g.querySelector("g"), tr = hg ? hg.getAttribute("transform") : "";
+  SCALEFIX.push((s) => { const f = s0 / s; ps.forEach((p, i) => p.setAttribute("stroke-width", (w[i] * f).toFixed(2))); if (hg) hg.setAttribute("transform", `${tr} scale(${f.toFixed(4)})`); }); return g; };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)
@@ -448,8 +456,8 @@ const hudRiver = (sLo = 0.5, sHi = 0.9) => { const g = document.createElementNS(
 const atZero = (el, until) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, x: 0, y: 0 }); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, until); return el; };
 // @@END-KIT
 const P4 = "m3-4", P5 = "m3-5", P6 = "m3-6", P7 = "m3-7", P8 = "m3-8";
-const T_7 = at(P4, "the seventh of October"), T_BURG = at(P4, "Burgoyne tried"), T_1500 = at(P4, "fifteen hundred"), T_CANNON = at(P4, "with cannon"),
-  T_OUT = at(P4, "moved out"), T_WHEAT = at(P4, "wheat field"), T_PROBE = at(P4, "probe the American left"), T_BOTH = at(P4, "hit both ends"),
+const T_7 = at(P4, "the seventh of October"), T_BURG = at(P4, "Burgoyne tried"), T_OUT = at(P4, "sent his men out"),
+  T_WHEAT = at(P4, "wheat field"), T_PROBE = at(P4, "probe the American left"), T_BOTH = at(P4, "hit both ends"),
   T_BRR = at(P4, "On the British right"), T_MORG = at(P4, "Morgan's riflemen"), T_FRAS = at(P4, "Simon Fraser"), T_HOLD = at(P4, "hold the line together"),
   T_SHOT = at(P4, "was shot"), T_MORT = at(P4, "mortally wounded"), T_FELL = at(P4, "fell back"), T_FORTS = at(P4, "two big log forts"), T_REDS = at(P4, "their redoubts");
 const T_ARN = at(P5, "Arnold was"), T_MID = at(P5, "middle of it"), T_ACC = at(P5, "Accounts differ"), T_LET = at(P5, "Gates let him go"),
@@ -459,12 +467,13 @@ const T_GAP = at(P6, "was a gap"), T_CAN = at(P6, "Canadian troops"), T_CAB = at
   T_BREY = at(P6, "Colonel Breymann"), T_BACK = at(P6, "open at the back"), T_SEV = at(P6, "By several accounts"), T_GAL = at(P6, "galloped"),
   T_LINES = at(P6, "two firing lines"), T_CLEAR = at(P6, "cleared the cabins"), T_IN = at(P6, "Arnold went in"), T_SIDE = at(P6, "open side");
 const T_BALL = at(P7, "A ball broke"), T_SAME = at(P7, "the same leg"), T_QUE = at(P7, "Quebec"), T_HORSE = at(P7, "horse was killed"),
-  T_TAKEN = at(P7, "redoubt was taken"), T_DEAD = at(P7, "Breymann was dead"), T_GATES = at(P7, "Gates himself"), T_Q = at(P7, "the Gallant"),
+  T_TAKEN = at(P7, "redoubt was taken"), T_DEAD = at(P7, "Breymann was dead"), T_DEADW = at(P7, "dead."), T_GATES = at(P7, "Gates himself"), T_Q = at(P7, "the Gallant"),
   T_QEND = at(P7, "Breast Work"), T_GONE = at(P7, "redoubt gone"), T_CAMP = at(P7, "whole British camp"), T_OPEN = at(P7, "open from the side");
 const T_L7 = at(P8, "On the seventh"), T_630 = at(P8, "six hundred and thirty"), T_150 = at(P8, "hundred and fifty"), T_NIGHT = at(P8, "That night"),
   T_BUR8 = at(P8, "Burgoyne abandoned"), T_SARA = at(P8, "to Saratoga"), T_CLOSE = at(P8, "closed in"), T_17 = at(P8, "seventeenth of October"),
   T_SURR = at(P8, "surrendered"), T_6000 = at(P8, "six thousand"), T_FR = at(P8, "France"), T_HOSP = at(P8, "Arnold spent"),
-  T_DOOR = at(P8, "He had found"), T_THRU = at(P8, "gone through it himself");
+  T_DOOR = at(P8, "He had found"), T_THRU = at(P8, "gone through it himself"), T_ALLI = at(P8, "an alliance"),
+  T_THIRD = at(P8, "That was the third part"), T_LEAD = at(P8, "lead from the front");
 // =====================================================================================================================
 // THE WORLD: saratoga relief (feathered) over the hudson map (for the retreat north)
 // =====================================================================================================================
@@ -482,7 +491,7 @@ camSet([1300, 900], 1.38); CLAMP = true;
 camTo(0, 6, C1, S1, "sine.inOut");
 // date scroll + flags + legend
 B.showDate(T_7 - 0.15); dateSet("7 OCTOBER 1777", T_7, T_NIGHT - 0.05);
-const F1 = [flagS(FL.us, "", 1590, 1110, 0.2, T_ARN + 1.0), flagS(FL.gb, "", 1720, 720, 0.2, T_ARN + 1.0)];
+const F1 = [flagS(FL.us, "", 1590, 1110, 0.2, T_ARN + 1.0), flagS(FL.gb, "", 1560, 760, 0.2, T_ARN + 1.0)];   // Union Flag clear of the corner badges
 const LGD = legend(1.2, null, true);
 // the American line on Bemis Heights (earthworks) and the British camp line (both drawn faint, they stay)
 const AL = glowPath(AMLINE, "#2c57b7", 5 / S1, 0.1, T_NIGHT, 0, 0.7, { top: false }); gsap.set(AL, { opacity: 0.7 }); tl.set(AL, { opacity: 0.7 }, 0);
@@ -494,13 +503,11 @@ AU.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 // =====================================================================================================================
 const R = [unitS("r1", "rome", [1310, 760], "infantry", ""), unitS("r2", "rome", [1345, 745], "infantry", ""), unitS("r3", "rome", [1380, 765], "infantry", "")];
 R.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
-const RG = unitS("rg", "rome", [1350, 790], "artillery", "", { w: 44, h: 29, t: T_CANNON - 0.1 });
-SFX("ref:pop", T_CANNON);
+const RG = unitS("rg", "rome", [1350, 790], "artillery", "", { w: 44, h: 29, t: T_OUT - 0.3 });
 const LINE = { r1: [1110, 930], r2: [1200, 952], r3: [1292, 975], rg: [1205, 912] };
 Object.entries(LINE).forEach(([id, p], k) => go(id, T_OUT - 0.2 + k * 0.12, 3.2, p));
 [[[1310, 790], [1200, 880], [1120, 915]], [[1350, 800], [1290, 900], [1280, 955]]].forEach((pts, k) => arw({ pts, side: "rome", t: T_OUT - 0.1 + k * 0.15, dur: 1.4, width: AW(S1, 12), until: T_BOTH }));
-SFX("ref:whoosh", T_OUT - 0.1);
-const N15 = numCard("ABOUT", "1,500", "MEN", "right:120px;top:300px;", T_1500 - 0.05, T_1500 + 3.0, { col: "#e3232f", lc: "#ff8a80", vs: 56 });
+// (no ABOUT 1,500 card here: the number is no longer spoken in m3-4; the beat is "sent his men out into a wheat field")
 // the wheat field: a pale-gold field outline on the words
 const WFP = [[1060, 905], [1170, 880], [1320, 905], [1345, 990], [1240, 1025], [1080, 1005]];
 const WFF = GG.polygon ? null : null;
@@ -517,7 +524,6 @@ const AP = unitS("aP", "carth", [1420, 1150], "infantry", "", { t: T_BOTH - 0.5 
 go("aP", T_BOTH, 2.4, [1335, 1010]); go("aM", T_BOTH + 0.1, 3.6, [1040, 965]); go("aL", T_BOTH + 0.4, 3.0, [1200, 1030]);
 arw({ pts: [[1440, 1140], [1380, 1060], [1320, 1005]], side: "carth", t: T_BOTH - 0.1, dur: 1.1, width: AW(S1, 12), until: T_FELL });
 arw({ pts: [[930, 1100], [990, 1010], [1075, 950]], side: "carth", t: T_BOTH + 0.1, dur: 1.1, width: AW(S1, 12), until: T_FELL });
-SFX("ref:whoosh", T_BOTH);
 [[T_BOTH + 1.3, [1300, 995], [1330, 1005]], [T_BRR + 0.4, [1080, 945], [1060, 965]], [T_MORG + 1.0, [1090, 935], [1055, 960]], [T_HOLD, [1190, 975], [1225, 990]]]
   .forEach(([t, a, b]) => { volley(a, b, t, 5, 1.0); smokeLine(a, b, t + 0.05, 3, 26); });
 // Morgan: badge on his name, his counter takes his name
@@ -535,17 +541,16 @@ pulse(T_MORT + 0.2);
 camTo(T_FELL - 0.8, 3.0, [1360, 760], 1.6, "sine.inOut");
 go("r1", T_FELL, 3.0, [1310, 570]); go("r2", T_FELL + 0.1, 3.0, [1400, 680]); go("r3", T_FELL + 0.2, 3.0, [1450, 690]); go("rg", T_FELL + 0.1, 3.0, [1430, 640]);
 [[[1110, 920], [1200, 760], [1310, 590]], [[1260, 955], [1340, 800], [1405, 680]]].forEach((pts, k) => arw({ pts, side: "rome", t: T_FELL + k * 0.15, dur: 1.4, width: AW(1.6, 12), until: T_ARN + 0.5 }));
-SFX("ref:whoosh", T_FELL);
 go("aM", T_FELL + 0.4, 3.0, [1180, 760]); go("aL", T_FELL + 0.5, 3.0, [1290, 800]); go("aP", T_FELL + 0.6, 3.0, [1440, 780]);
 const RB = redoubt(...BRY, T_FORTS - 0.05, null, { s: 62, open: "n" }), RL = redoubt(...LIR, T_FORTS + 0.15, null, { s: 62 });
 SFX("hit", T_FORTS + 0.2); K.shake(T_FORTS + 0.2, 3, 0.25);
-tagL("REDOUBT", BRY[0] - 140, BRY[1] - 8, T_REDS, null, 14); tagL("REDOUBT", LIR[0] + 40, LIR[1] - 8, T_REDS + 0.1, null, 14);
+tagL("REDOUBT", BRY[0] - 20, BRY[1] + 58, T_REDS, null, 14); tagL("REDOUBT", LIR[0] + 40, LIR[1] - 8, T_REDS + 0.1, null, 14);
 // =====================================================================================================================
 // m3-5: Arnold on the field; accounts differ; the regiments he could reach; the Light Infantry redoubt holds
 // =====================================================================================================================
 const C5 = [1420, 760], S5 = 1.9;
 camTo(T_ARN - 0.6, 2.6, C5, S5, "sine.inOut");
-const F2 = [flagS(FL.us, "", 1560, 900, T_ARN + 0.4, T_GAP + 0.6), flagS(FL.gb, "", 1250, 560, T_ARN + 0.4, T_GAP + 0.6)];
+const F2 = [flagS(FL.us, "", 1560, 900, T_ARN + 0.4, T_GAP + 0.6), flagS(FL.gb, "", 1650, 600, T_ARN + 0.4, T_GAP + 0.6)];   // on the British side of the camp line, clear of the labels + cards
 const AB = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_ARN + 0.05, T_BALL + 2.5);
 const AMK = faceMarker("arnold", "BA", "carth", 1490, 860, T_MID - 0.1, null, 58);
 SFX("ref:pop", T_MID);
@@ -565,7 +570,6 @@ K.target(1450, 790, T_CHARGE + 0.2, { r: 46, side: "carth", until: T_THREW });
 // "threw them at the first redoubt": arrows into the Light Infantry redoubt; its fire (visible); the attack recoils, IT HELD
 const LIA = [[[1470, 750], [1445, 700], [1425, 665]], [[1415, 765], [1410, 715], [1410, 672]], [[1505, 775], [1475, 715], [1440, 670]]];
 LIA.forEach((pts, k) => arw({ pts, side: "carth", t: T_THREW + k * 0.15, dur: 1.0, width: AW(S5, 11), until: T_HELD + 0.4 }));
-SFX("ref:whoosh", T_THREW);
 go("aP", T_THREW + 0.2, 1.6, [1450, 700]); go("aL", T_THREW + 0.3, 1.6, [1405, 700]); go("aX", T_THREW + 0.4, 1.6, [1480, 705]);
 pinAlong(AMK, [[1445, 790], [1440, 730]], T_THREW + 0.2, 1.6, 6);
 tagL("LIGHT INFANTRY REDOUBT", LIR[0] + 40, LIR[1] - 50, T_LI, null, 14);
@@ -583,7 +587,7 @@ SFX("ref:pop", T_WEAK + 0.1);
 // =====================================================================================================================
 const C6 = [1385, 620], S6 = 2.6;
 camTo(T_GAP - 0.5, 2.0, C6, S6, "sine.inOut");
-const F3 = [flagS(FL.us, "", 1540, 720, T_GAP + 0.3, T_NIGHT + 0.5), flagS(FL.gb, "", 1270, 470, T_GAP + 0.3, T_CAMP - 0.3)];
+const F3 = [flagS(FL.us, "", 1540, 720, T_GAP + 0.3, T_NIGHT + 0.6), flagS(FL.gb, "", 1270, 470, T_GAP + 0.3, T_CAMP - 0.3)];
 // option 2 front: the British line (redoubt - gap - redoubt) facing the Americans to the south
 const FR6 = front2([[1290, 585], [1330, 568], [1365, 600], [1395, 618], [1440, 668], [1490, 690]], S6, T_GAP - 0.2, { dur: 1.2, until: T_TAKEN });
 K.target(...GAP, T_GAP + 0.1, { r: 26, side: "#ffd54a", until: T_CAN });
@@ -602,7 +606,6 @@ const sev = tagL("BY SEVERAL ACCOUNTS", 1440, 760, T_SEV, T_GAL + 2.2, 13);
 const RIDE = [[1450, 780], [1450, 720], [1430, 690], [1395, 662], [1360, 640], [1325, 625], [1295, 610], [1282, 585]];
 pinAlong(AMK, RIDE, T_GAL, T_CLEAR - T_GAL - 0.3, 20);
 trail(RIDE, "#9fc0ea", 2.2 / S6, T_GAL, T_CLEAR - T_GAL - 0.3, T_TAKEN, "2 6");
-SFX("ref:whoosh", T_GAL);
 const LA = [[1420, 640], [1375, 615], [1335, 595]], LB = [[1430, 705], [1385, 680], [1340, 655]];   // British line (north) / American line (south) flashes
 for (let k = 0; k < 3; k++) { flashW(...LA[k], T_GAL + 0.6 + k * 0.9, 1.1); flashW(...LB[k], T_GAL + 0.95 + k * 0.9, 1.1); }
 SFX("mg", T_GAL + 0.6); SFX("mg", T_LINES + 0.3);
@@ -617,7 +620,6 @@ const SG = unitS("aS", "carth", [1300, 615], "infantry", "", { t: T_IN - 0.2, w:
 const ROUND = [[1282, 585], [1300, 545], [1318, 515], [1338, 508], [BRY[0], BRY[1] - 8]];
 pinAlong(AMK, ROUND, T_IN, T_BALL - T_IN - 0.2, 12); along("aS", ROUND.map(([x, y]) => [x + 6, y + 14]), T_IN + 0.2, T_BALL - T_IN - 0.3, 12);
 arw({ pts: ROUND.slice(0, 4), side: "carth", t: T_SIDE - 0.2, dur: 0.9, width: AW(S6, 9), until: T_TAKEN + 0.4 });
-SFX("ref:whoosh", T_IN);
 camTo(T_IN - 0.3, 3.0, [1350, 570], 2.9, "sine.inOut");
 // =====================================================================================================================
 // m3-7: the wound, the horse, the redoubt taken, Breymann dead, Gates's report, the camp open
@@ -634,18 +636,22 @@ SFX("hit", T_HORSE + 0.4);
 recolor(RB, "carth", T_TAKEN); SFX("ref:pop", T_TAKEN + 0.05);
 go("aS", T_TAKEN - 0.2, 0.9, [BRY[0] + 4, BRY[1] + 2]); go("aL", T_TAKEN - 0.1, 1.2, [BRY[0] + 30, BRY[1] + 30]);
 go("rB", T_TAKEN, 1.2, [BRY[0] + 50, BRY[1] - 30]); B.grey(["rB"], T_TAKEN + 0.2, 0.8); B.hideUnits(["rB"], T_DEAD + 1.4);
-badgeStamp(BB, "DEAD", T_DEAD + 0.25, { size: 30 });
+badgeStamp(BB, "DEAD", T_DEADW - 0.1, { size: 30 }); tl.to(BB.querySelectorAll("div[style*='border-radius:50%'] *"), { filter: "grayscale(1) brightness(0.6)", duration: 0.4 }, T_DEADW - 0.1);   // greys on "dead"
 // (no Gates quote card here: the main session covers "Gates himself reported ... Breast Work." with an archive insert)
 // "With the German redoubt gone, the whole British camp lay open from the side"
 camTo(T_GONE - 0.6, 2.8, [1640, 620], 1.55, "sine.inOut");
 const CAMPG = glowPath(CAMPL, "#ff6b5e", 7 / 1.55, T_CAMP - 0.1, T_NIGHT + 0.5, 2, 0.9, { draw: 1.0, top: true });
 arw({ pts: [[BRY[0] + 30, BRY[1] + 30], [1450, 610], [1600, 640], [1750, 640]], side: "carth", t: T_OPEN - 0.2, dur: 1.2, width: AW(1.55, 12), dash: "12 8", until: T_L7 + 1.0 });
 wstampL("OPEN FROM THE SIDE", 1620, 720, T_OPEN + 0.1, null, "#9fc0ea", 26);
-const F4 = [flagS(FL.gb, "", 1900, 520, T_CAMP - 0.3, T_NIGHT + 0.6)];
+const F4 = [flagS(FL.gb, "", 1760, 450, T_CAMP - 0.3, null)]; fadeS(F4, 0.75, 1.1);
+// the night zoom-out keeps a Union Flag on screen: one on the retreat road (mid scale), then the one at Saratoga
+const FMID = flagS(FL.gb, "", 1300, 300, null, null); gsap.set(FMID, { autoAlpha: 1 });
+SCALEFIX.push((sc) => { const v = (1 - ramp(sc, 0.75, 1.0)) * ramp(sc, 0.25, 0.32); FMID.style.filter = `opacity(${v.toFixed(3)})`; });
 // =====================================================================================================================
 // m3-8: the casualty card; that night north to Saratoga; the ring; 17 OCT surrender; France; the method
 // =====================================================================================================================
-const CAS = casualties([["", "ABOUT 150", "OVER 630"]], "7 OCTOBER 1777 · MEN LOST", T_L7 + 0.2, T_NIGHT - 0.3, 240);
+const T_CAS0 = T_630 - 0.3, T_CAS1 = Math.min(T_150 + 0.9, T_NIGHT - 0.3);   // ~3 s, on the spoken numbers
+const CAS = casualties([["", "ABOUT 150", "OVER 630"]], "7 OCTOBER 1777 · MEN LOST", T_CAS0, T_CAS1, 240);
 // that night: night wash, the date, zoom out (whoosh) north to Saratoga on the hudson map
 nightWash(T_NIGHT - 0.2, T_17 - 0.5, 0.45);
 dateSet("NIGHT, 8 OCTOBER", T_NIGHT, T_17 - 0.05, 28);
@@ -662,12 +668,11 @@ arw({ pts: sub(ROAD, 0.05, 0.98, 10), side: "rome", t: T_BUR8 + 0.3, dur: 2.0, w
 hideU(["a1", "a2", "a3", "aP", "aL", "aX", "aS", "aM", "r1", "r2", "r3", "rg"], T_NIGHT + 0.8);
 tl.to([RB, RL, AMK, ...CB], { autoAlpha: 0, duration: 0.5 }, T_NIGHT + 0.8);
 const ST = town("SARATOGA", SARV, "r", T_SARA, { until: T_SARA + LBL_LIFE });
-const F5 = [flagS(FL.gb, "", SARV[0] + 420, SARV[1] - 300, T_SARA - 0.6, null), flagS(FL.us, "", 1500, 900, T_SARA - 0.6, null)];
+const F5 = [flagS(FL.gb, "", SARV[0] - 330, SARV[1] + 150, T_NIGHT + 0.3, null), flagS(FL.us, "", 1500, 900, T_NIGHT + 0.3, T_SARA + 0.6), flagS(FL.us, "", SARV[0] + 1100, SARV[1] + 1100, T_SARA - 0.2, null)]; fadeS(F5[0], 0.3, 0.42, true);
 // "The Americans closed in around him": blue counters converge on the village, the ring
 const RINGP = [[-1, -1], [1, -1], [1, 1], [-1, 1], [0, 1.4], [-1.4, 0]].map(([dx, dy]) => [SARV[0] + dx * 700, SARV[1] + dy * 500]);
 const RING = RINGP.map((p, k) => unitS("u" + k, "carth", [p[0] + (p[0] - SARV[0]) * 0.8, p[1] + (p[1] - SARV[1]) * 0.8], "infantry", "", { t: T_CLOSE - 0.4 + k * 0.08 }));
 RING.forEach((id, k) => go(id, T_CLOSE + k * 0.08, 2.6, RINGP[k]));
-SFX("ref:whoosh", T_CLOSE);
 camTo(T_CLOSE - 0.2, 2.8, [SARV[0], SARV[1] + 80], 0.3, "sine.inOut");
 const RGF = front2([...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((k) => { const a = k / 12 * 6.2832; return [SARV[0] + Math.cos(a) * 560, SARV[1] + 60 + Math.sin(a) * 420]; })], 0.3, T_CLOSE + 1.0, { dur: 1.6, flip: true });
 dateSet("17 OCTOBER 1777", T_17, null);
@@ -675,17 +680,21 @@ SFX("tick", T_17 - 0.3); SFX("tick", T_17 - 0.17);
 // "he surrendered, about six thousand men": the red grey, a white flag, the number card
 B.grey(RET, T_SURR + 0.1, 0.8);
 whiteFlag(SARV[0] + 40, SARV[1] - 60, T_SURR + 0.2, null); SFX("ref:pop", T_SURR + 0.25);
-const SUR = bigNum("SURRENDERED · ABOUT", 6000, "MEN", T_6000 - 0.1, T_FR - 0.35, { tick: 1.0 });
+// the headline result: ticks fast, then HOLDS ~2.5 s on ABOUT 6,000, high on the screen, clear of the ring and the flags; FRANCE only after it
+const SUR = bigNum("SURRENDERED · ABOUT", 6000, "MEN", T_6000 - 0.1, T_ALLI - 0.2, { tick: 0.7, top: 100 });
 pulse(T_6000 + 0.1);
 // "France signed an alliance": small stamp on the word
-const FRA = sstamp("FRANCE", 330, T_FR - 0.05, { size: 70, color: "#9fc0ea", sub: "AN ALLIANCE", until: T_HOSP - 0.1, shake: 4 });
+const FRA = sstamp("FRANCE", 330, T_ALLI - 0.05, { size: 70, color: "#9fc0ea", sub: "AN ALLIANCE", until: T_HOSP - 0.1, shake: 4 });
 // "Arnold spent the winter in a hospital bed": his badge, quietly
-const AB2 = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_HOSP + 0.1, T_DOOR - 0.3);
+const AB2 = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_HOSP + 0.1, null);
 // method card: line 3 lit on the closing words
-const MC = method(3, T_DOOR - 0.2, END + 1, T_THRU - 0.6);
-SFX("ref:boom", T_THRU + 0.2);
+// method card on "That was the third part of his method": lines 1-2 shown DIM (moves 1 + 2), line 3 lights on "lead from the front"
+const MC = GG.method(3, T_THIRD - 0.1, END + 1, [T_THIRD + 0.1, T_THIRD + 0.2, T_LEAD - 0.1]);
+MC.querySelectorAll(".row").forEach((r, i) => { r.style.fontSize = "48px"; if (i < 2) r.style.filter = "opacity(0.42) saturate(0.3)"; });
+tl.fromTo(MC.querySelectorAll(".row.lit")[2], { scale: 1 }, { scale: 1.06, color: "#8fb2ff", duration: 0.3, yoyo: true, repeat: 1, immediateRender: false }, T_LEAD + 0.4);
+SFX("hit", T_LEAD); SFX("ref:boom", T_LEAD + 0.1);
 // HUD steps out under the big cards (1c); the date scroll stays
-declutter([LGD, MB, FB, AB, BB, BU, AB2], [[T_1500 - 0.05, T_1500 + 3.0], [T_ACC - 0.05, T_WENT + 1.6], [T_L7 + 0.2, T_NIGHT - 0.3], [T_6000 - 0.1, T_HOSP - 0.1], [T_DOOR - 0.2, END + 1]]);
+declutter([LGD, MB, FB, AB, BB, BU, AB2], [[T_ACC - 0.05, T_WENT + 1.6], [T_CAS0, T_CAS1], [T_6000 - 0.1, T_HOSP - 0.1], [T_THIRD - 0.1, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();
