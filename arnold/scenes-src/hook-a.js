@@ -514,11 +514,11 @@ const BAD = sstamp("GOING BADLY", 820, T_BADLY - 0.05, { size: 72, until: T_NY -
 pulse(T_BADLY + 0.2);
 // "The British held New York": the red ring + label + flag at New York
 K.target(...NYP, T_NY, { r: 55 * K0, side: "rome", until: T_PHIL + 0.6 }); SFX("ref:pop", T_NY + 0.05);
-const TNY = town("NEW YORK", NYP, "r", T_NY, { until: T_NY + LBL_LIFE });
+const TNY = town("NEW YORK", LD(41.02, -73.85), "r", T_NY, { until: T_NY + LBL_LIFE });
 const FNY = flagS(FL.gb, "", ...LD(41.05, -74.55), T_NY + 0.1, TZ0 + 0.8);
 tl.to(B.units.rny.el.firstElementChild, { scale: 1.35, duration: 0.22, yoyo: true, repeat: 1 }, T_NY + 0.1);
 // "and Philadelphia, the American capital": off the map to the south-west -> an edge marker with an arrow, ring + label
-const PHE = LD(40.62, -74.95);   // the map's south-west edge, in the direction of Philadelphia (39.95, -75.16)
+const PHE = LD(41.45, -76.55);   // the map's south-west edge, in the direction of Philadelphia (39.95, -75.16)
 const PH = pinS(GG.pin(`<div style="display:flex;align-items:center;gap:10px;font-family:Oswald;font-weight:700;color:#f0ece2;text-shadow:0 0 6px #0a0e10,0 2px 4px #000">
   <svg width="46" height="46" viewBox="-23 -23 46 46" style="display:block;overflow:visible;filter:drop-shadow(0 0 6px #ff3b30)"><circle r="17" fill="rgba(196,18,31,0.9)" stroke="#f3eee2" stroke-width="3"/><path d="M8 -8 L-9 9 M-9 1 L-9 9 L-1 9" fill="none" stroke="#f3eee2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <div><div style="font-size:34px;letter-spacing:.06em;line-height:1">PHILADELPHIA</div><div class="cap" style="font-size:18px;letter-spacing:.24em;color:#ff8a80">THE AMERICAN CAPITAL</div></div></div>`, ...PHE, { t: T_PHIL - 0.05, pop: true, until: T_PHIL + LBL_LIFE + 1.0 }));
