@@ -333,7 +333,7 @@ const LAKESVG = (kind, s, col) => {
 };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
-const GD = {"base":"valcour","maps":{"maine":{"zoom":9,"origin_world_px":[38427,46029],"meters_per_px":213.92},"champlain":{"zoom":9,"origin_world_px":[37408,46570],"meters_per_px":217.89},"valcour":{"zoom":13,"origin_world_px":[619433,756872],"meters_per_px":13.61},"saratoga":{"zoom":15,"origin_world_px":[2477044,3081578],"meters_per_px":3.49},"northeast":{"zoom":8,"origin_world_px":[18129,23070],"meters_per_px":441.35},"quebec":{"zoom":14,"origin_world_px":[1266055,1477676],"meters_per_px":6.54},"champsouth":{"zoom":11,"origin_world_px":[153836,188978],"meters_per_px":54.5934956186146,"est":true},"hudson":{"zoom":10,"origin_world_px":[76038,95514],"meters_per_px":111.80500434880942,"est":true}}};
+const GD = {"base":"valcour","maps":{"maine":{"zoom":9,"origin_world_px":[38427,46029],"meters_per_px":213.92},"champlain":{"zoom":9,"origin_world_px":[37408,46570],"meters_per_px":217.89},"hudson":{"zoom":10,"origin_world_px":[76038,95514],"meters_per_px":111.81},"valcour":{"zoom":13,"origin_world_px":[619433,756872],"meters_per_px":13.61},"saratoga":{"zoom":15,"origin_world_px":[2477044,3081578],"meters_per_px":3.49},"northeast":{"zoom":8,"origin_world_px":[18129,23070],"meters_per_px":441.35},"champsouth":{"zoom":11,"origin_world_px":[153836,188978],"meters_per_px":54.59},"quebec":{"zoom":14,"origin_world_px":[1266055,1477676],"meters_per_px":6.54}}};
 // @@END-DATA
 const VZ = GD.maps.valcour;
 const P3 = "m2-3", P4 = "m2-4", P5 = "m2-5";

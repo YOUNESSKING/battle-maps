@@ -15,6 +15,12 @@ for m, la, lo, z in re.findall(r"^bake (\w+) ([-\d.]+) ([-\d.]+) (\d+)", open("t
     la, lo, z = float(la), float(lo), int(z); n = 256 * 2 ** z
     x = (lo + 180) / 360 * n; y = (1 - math.asinh(math.tan(math.radians(la))) / math.pi) / 2 * n
     GD["maps"][m] = {"zoom": z, "origin_world_px": [int(x - 1440), int(y - 810)], "meters_per_px": 156543.03 * math.cos(math.radians(la)) / 2 ** z, "est": True}
+# m2d: the champlain map embedded in champsouth (refresh the downscaled copy whenever the champlain bake is newer)
+if scene == "m2d":
+    src, dst = "assets/champlain_hd_lift.jpg", "assets/media/va_champlain_relief.jpg"
+    if not os.path.exists(dst) or os.path.getmtime(src) > os.path.getmtime(dst):
+        from PIL import Image; Image.open(src).resize((2880, 1620), Image.LANCZOS).save(dst, quality=88)
+        subprocess.run(["python3", "tools/va_make_control.py", "champlain"])
 kit = open("tools/va_kit.js").read()
 body = open(f"tools/va_body_{scene}.js").read()
 out = body.replace("// @@KIT", "// @@KIT (tools/va_kit.js)\n" + kit + "// @@END-KIT").replace("// @@DATA", "// @@DATA (tools/vk_inline.py)\nconst GD = " + json.dumps(GD, separators=(",", ":")) + ";\n// @@END-DATA")
@@ -30,4 +36,4 @@ for m in re.finditer(r'\bat\((\w+|"[\w-]+"),\s*"([^"]+)"', body):
     k = m.group(1).strip('"'); k = consts.get(k, k)
     if k not in t["text"] or m.group(2) not in t["text"][k]: print("MISSING PHRASE:", k, repr(m.group(2))); bad += 1
 print("phrases OK" if not bad else f"{bad} MISSING PHRASES")
-if m0 in ("valcour", "champlain", "champsouth"): print(subprocess.run(["python3", "tools/va_tmp_islands.py", m0, scene], capture_output=True, text=True).stdout.strip())
+if m0 in ("valcour", "champlain"): print(subprocess.run(["python3", "tools/va_tmp_islands.py", m0, scene], capture_output=True, text=True).stdout.strip())

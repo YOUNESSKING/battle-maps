@@ -377,7 +377,7 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b]) => { g.style.opacity = ramp(s, a, b).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)
@@ -397,7 +397,7 @@ const REDOUBT = (s, side, open) => { const c = side === "carth" ? "#1f4fc4" : "#
 const openGlow = (el, t, until) => { const p = el.querySelector(".ro"); if (!p) return; tl.to(p, { opacity: 1, duration: 0.3 }, t); tl.to(p, { opacity: 0.35, duration: 0.45, yoyo: true, repeat: 5, ease: "sine.inOut" }, t + 0.3); if (until != null) tl.to(p, { opacity: 0, duration: 0.4 }, until); };
 // a person on the map: round portrait (initials until the photo exists), side-coloured ring, world space, constant on screen
 const faceMarker = (who, ini, side, x, y, t, until, sz = 58) => { const c = side === "carth" ? "#1f4fc4" : "#c4121f";
-  return pinS(GG.pin(`<div class="fm" style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;overflow:hidden;border:${(sz * 0.07).toFixed(1)}px solid #f3e7c4;box-shadow:0 0 0 3px ${c},0 6px 14px rgba(0,0,0,.7);background:radial-gradient(circle,#2a3142,#0d1018);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:${(sz * 0.4).toFixed(0)}px;color:#f7f3ea">${ini}${who ? `<img src="${PHOTO(who)}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">` : ""}</div>`, x, y, { t, pop: true, until })); };
+  return pinS(GG.pin(`<div class="fm" style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;overflow:hidden;border:${(sz * 0.07).toFixed(1)}px solid #f3e7c4;box-shadow:0 0 0 3px ${c},0 6px 14px rgba(0,0,0,.7);background:radial-gradient(circle,#2a3142,#0d1018);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:${(sz * 0.4).toFixed(0)}px;color:#f7f3ea"><span>${ini}</span>${who ? `<img src="${PHOTO(who)}" onload="this.previousElementSibling.style.display='none'" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">` : ""}</div>`, x, y, { t, pop: true, until })); };
 const redoubt = (x, y, t, until, o = {}) => { const el = pinS(GG.pin(REDOUBT(o.s || 40, o.side || "rome", o.open), x, y, { t, pop: true, until })); return el; };
 const recolor = (el, side, t) => { const c = side === "carth" ? "#1f4fc4" : "#c4121f";
   tl.to(el.querySelectorAll(".rf"), { attr: { fill: c }, duration: 0.6 }, t); tl.to(el.querySelectorAll(".rw2"), { attr: { stroke: c }, duration: 0.6 }, t);
@@ -437,6 +437,12 @@ const numCard = (label, value, sub, css, t, until, o = {}) => { const el = scr(`
   <div style="font-size:20px;letter-spacing:.3em;color:${o.lc || "#9fc0ea"}">${label}</div><div class="v" style="font-size:${o.vs || 62}px;letter-spacing:.04em;line-height:1.1">${value}</div>${sub ? `<div style="font-size:19px;letter-spacing:.22em;color:#c9c2b2">${sub}</div>` : ""}</div>`, css, t, until);
   if (o.slam !== false) slam(el, t, { sfx: "hit", shake: 3 }); return el; };
 fixImgs();
+// the Hudson drawn over the wide maps (the hudson bake has no river line): faded out where the saratoga relief shows its own river
+const HUDSON_LL = [[43.35, -73.60], [43.267, -73.585], [43.18, -73.570], [43.10, -73.572], [43.05, -73.588], [43.02, -73.598], [43.0, -73.606], [42.975, -73.626], [42.94, -73.65], [42.90, -73.685], [42.82, -73.68], [42.78, -73.685],
+  [42.73, -73.69], [42.65, -73.745], [42.55, -73.77], [42.40, -73.785], [42.20, -73.86], [42.0, -73.93], [41.80, -73.95]];
+const hudRiver = (sLo = 0.5, sHi = 0.9) => { const g = document.createElementNS(NS, "g"), pts = HUDSON_LL.map((q) => LD(...q)), d = "M" + pts.map((q) => q.map((v) => v.toFixed(0)).join(" ")).join(" L");
+  g.innerHTML = `<path d="${d}" fill="none" stroke="rgba(60,58,50,0.55)" stroke-width="190" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="#9fb0b4" stroke-width="150" stroke-linecap="round" stroke-linejoin="round"/>`;
+  OVL.insertBefore(g, OVL.firstChild); FADES.push([g, sLo, sHi, true]); return g; };
 // ---------- end of Arnold additions ----------
 // an element that must already be on screen at frame 0 (it continues from the previous scene): drop its entry tween, show it, fade at until
 const atZero = (el, until) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, x: 0, y: 0 }); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, until); return el; };
@@ -458,9 +464,10 @@ const T_TURN = at(P3, "turned on each"), T_TOOK = at(P3, "Gates took"), T_MR = a
 // =====================================================================================================================
 const HUD = mapGroup("hudson", 0); const HUD_C = terrImg("assets/media/ar3_ctl_hudson_1777.png", HUD, 0, null, 0.01);
 const SAR = baseGroup(4); FADES.push([SAR, 0.1, 0.22]);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north();
+hudRiver();
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north(); NA.style.top = "330px";
 // ---------- places (world = saratoga px) ----------
-const ALB = LD(42.65, -73.75), FTE = LD(43.267, -73.585), SARV = LD(43.10, -73.58), BEM = [1790, 1288], FF = [1324, 714];
+const ALB = LD(42.65, -73.75), FTE = LD(43.267, -73.585), SARV = LD(43.10, -73.588), BEM = [1790, 1288], FF = [1324, 714];
 const HROAD = [FTE, LD(43.18, -73.575), SARV, LD(43.05, -73.60), [2250, 450]];
 const AMLINE = [[1300, 1185], [1420, 1195], [1560, 1215], [1700, 1250], [1830, 1290]];
 const RROAD = [[1600, 1560], [1720, 1330], [1880, 1050], [2060, 760], [2230, 480], [2330, 200]];
@@ -517,9 +524,9 @@ go("a1", T_CLEAR, 2.4, [1280, 900]); go("a2", T_CLEAR + 0.1, 2.4, [1380, 930]);
 // =====================================================================================================================
 // m3-2: Arnold on the American left; into the woods; Morgan then the waves; the Germans at dusk; the losses; stuck
 // =====================================================================================================================
-const C2 = [1345, 900], S2 = 1.75;
+const C2 = [1345, 930], S2 = 1.6;
 camTo(T_ARN - 0.4, 2.0, C2, S2, "sine.inOut");
-const F3 = [flagS(FL.us, "", 1500, 1060, T_ARN + 0.3, T_TURN), flagS(FL.gb, "", 1460, 600, T_ARN + 0.3, T_TURN)];
+const F3 = [flagS(FL.us, "", 1500, 1080, T_ARN + 0.3, T_TURN), flagS(FL.gb, "", 1520, 690, T_ARN + 0.3, T_TURN)];
 const LGD = legend(T_ARN + 1.0, null, true);
 const AB = pbadge("BENEDICT ARNOLD", "THE AMERICAN LEFT", "arnold", "carth", "bl", "BA", T_ARN + 0.05, T_TURN);
 const AM = faceMarker("arnold", "BA", "carth", 1250, 1010, T_LEFT - 0.1, null, 72);
@@ -560,7 +567,7 @@ const STK = wstampL("STUCK", FF[0] + 170, FF[1] + 10, T_STUCK, null, "#e3232f", 
 const HQ = [1745, 1320], C3 = [1560, 1200], S3 = 1.7;
 camTo(T_TURN - 1.0, 2.2, C3, S3, "sine.inOut");
 tl.to(DUSK, { autoAlpha: 0, duration: 1.2 }, T_TURN - 1.0);
-const F4 = [flagS(FL.us, "", 1250, 1330, T_TURN - 0.4, null), flagS(FL.gb, "", 1330, 950, T_TURN - 0.4, null)];
+const F4 = [flagS(FL.us, "", 1250, 1330, T_TURN - 0.4, null), flagS(FL.gb, "", 1680, 1010, T_TURN - 0.4, null)];
 // the armies back in their lines; Arnold's division on the left with Morgan, Gates's HQ on the right
 hideU(["rw", "rc", "re", "ge", "w0", "w1", "w2"], T_TURN - 0.9);
 const RW = [unitS("b1", "rome", [1330, 740], "infantry", "", { t: T_TURN - 0.4 }), unitS("b2", "rome", [1460, 720], "infantry", "", { t: T_TURN - 0.3 })];
@@ -572,12 +579,12 @@ const AB2 = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_TURN,
 const GB2 = pbadge("HORATIO GATES", "", "gates", "carth", "tr", "HG", T_TURN + 0.1, null);
 SFX("ref:pop", T_TURN);
 // Arnold's command lines (dashed blue) to his regiments and to Morgan
-const CMD = [[1330, 1180], [1430, 1195], [1380, 1120]].map((p, k) => glowPath([[1400, 1250], p], "#8fb2ff", 2.4 / S3, T_TURN + 0.3 + k * 0.1, k === 2 ? T_MR + 0.3 : T_NOC, 0, 0.9, { dash: "5 4", top: true }));
+const CMD = [[1330, 1180], [1430, 1195], [1380, 1120]].map((p, k) => glowPath([[1400, 1250], p], "#8fb2ff", 4.5 / S3, T_TURN + 0.3 + k * 0.1, k === 2 ? T_MR + 0.3 : T_NOC, 0, 0.9, { dash: "5 4", top: true }));
 const CRACK = glowPath([[1440, 1255], [1520, 1300], [1560, 1270], [1610, 1320], [1660, 1300], [HQ[0] - 40, HQ[1]]], "#ff3b30", 4 / S3, T_TURN + 0.4, T_WROTE, 2, 1, { draw: 0.5, top: true });
 SFX("hit", T_TURN + 0.5); K.shake(T_TURN + 0.5, 2, 0.2);
 // "Gates took Morgan's riflemen out of Arnold's command": Morgan's counter slides to Gates's HQ, a new command line to Gates
 go("mo", T_MR, 2.2, [HQ[0] - 60, HQ[1] - 50]);
-glowPath([[HQ[0], HQ[1]], [HQ[0] - 60, HQ[1] - 50]], "#8fb2ff", 2.4 / S3, T_ACMD + 0.4, null, 0, 0.9, { dash: "5 4", top: true });
+glowPath([[HQ[0], HQ[1]], [HQ[0] - 60, HQ[1] - 50]], "#8fb2ff", 4.5 / S3, T_ACMD + 0.4, null, 0, 0.9, { dash: "5 4", top: true });
 SFX("ref:whoosh", T_MR);
 // "The two men had a shouting match": the crack flares, both markers shake
 tl.to(CRACK, { opacity: 1, strokeWidth: 7 / S3, duration: 0.2, yoyo: true, repeat: 3 }, T_SHOUT - 0.1);

@@ -30,7 +30,7 @@ const layer = (src) => { const g = document.createElement("div"); g.style.cssTex
   const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;"; g.appendChild(i);
   WORLD.insertBefore(g, OVL); gsap.set(g, { autoAlpha: 0 }); return g; };
 const LQU = layer("assets/ar3_quebec.jpg"), LVA = layer("assets/ar3_valcour.jpg");
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north();
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north(); NA.style.top = "330px";
 CLAMP = true;
 const scr0 = (html, css) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el); return el; };
 const vis = (t0, t1) => (el) => { gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, t0); if (t1 != null) tl.set(el, { autoAlpha: 0 }, t1 - 0.01); return el; };
@@ -120,7 +120,7 @@ camTo(T_OFF - 0.3, T_OVER - T_OFF + 0.6, [1380, 1080], 1.45, "sine.inOut");
 const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
 const BDG = scr0(`<div style="position:relative;width:300px;height:300px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 7px #1f4fc4,0 24px 48px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover">
   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.8), rgba(10,12,24,0.55));font-family:Oswald;font-weight:700;font-size:120px;color:#f7f3ea">BA</div>
-  <img src="${PHOTO("arnold")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
+  <img src="${PHOTO("arnold")}" onload="this.previousElementSibling.style.display='none'" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:180px;color:#f7f3ea">?</div></div>`,
   "left:810px;top:130px;transform-origin:50% 50%;");
 tl.fromTo(BDG, { autoAlpha: 0, scale: 0.4, x: -620, y: 520 }, { autoAlpha: 1, scale: 1, x: 0, y: 0, duration: 0.55, ease: "power3.out", immediateRender: false }, S4 - 0.1);
@@ -153,7 +153,11 @@ tl.set([DK, BDG, RELIEF], { autoAlpha: 0 }, T1 - 0.01);
 const S0 = snap(); tl.set([...S0].filter((e) => e.tagName.toLowerCase() !== "defs"), { autoAlpha: 0 }, T1 - 0.01);
 tl.set(Object.values(B.units).map((u) => u.el), { autoAlpha: 0 }, T1 - 0.01);
 tl.set(LGD, { autoAlpha: 0 }, T1 - 0.01);
-const PB = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T1 + 0.15, T4 - 0.1);
+// Arnold's corner badge: Continental Colours behind him for the 1775 / 1776 cuts, the 13-star flag from the Saratoga 1777 cut on (instant swap)
+const PB = badge({ name: "BENEDICT ARNOLD", role: "", photo: PHOTO("arnold"), flag: "assets/media/continental_colours.png", side: "carth", corner: "bl", initials: "BA", t: T1 + 0.15 });
+tl.set(PB, { autoAlpha: 0 }, T3 - 0.01);
+const PB3 = badge({ name: "BENEDICT ARNOLD", role: "", photo: PHOTO("arnold"), flag: FL.us, side: "carth", corner: "bl", initials: "BA", t: T3 });
+tl.getTweensOf(PB3).forEach((tw) => tw.kill()); gsap.set(PB3, { autoAlpha: 0 }); tl.set(PB3, { autoAlpha: 1, x: 0 }, T3 - 0.01); tl.to(PB3, { autoAlpha: 0, duration: 0.4 }, T4 - 0.1);
 let CAM_S0 = 1;
 const ringN = (p, txt, n, t, until, dx, dy, sub) => { K.target(p[0], p[1], t, { r: 34 / CAM_S0, until });
   const el = GG.pin(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000,0 0 3px #000"><span style="display:inline-flex;width:38px;height:38px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:21px">${n}</span><span style="font-size:36px;letter-spacing:.1em;white-space:nowrap">${txt}</span>${sub ? `<span style="font-size:24px;letter-spacing:.14em;color:#f3eee2;margin-left:6px">${sub}</span>` : ""}</div>`, p[0] + dx, p[1] + dy, { t: t + 0.1, pop: true, until });
@@ -165,9 +169,9 @@ dateSet("1775", T1, T2 - 0.05);
 const SC1 = snap();
 const SNW = scr0("", "inset:0;background:rgba(225,232,240,0.18);"); vis(T1, T2)(SNW);
 B.snow(T1, T2 - 0.02);
-const WALL = [[1370, 700], [1450, 650], [1545, 690], [1560, 790], [1510, 880], [1430, 890], [1370, 830]];
+const WALL = [[1370, 700], [1440, 670], [1510, 700], [1525, 780], [1480, 860], [1420, 880], [1365, 830]];
 vis(T1, T2)(glowPath([...WALL, WALL[0]], "#c4121f", 5 / S1c, T1, null, 0, 1.0, { top: false }));
-vis(T1, T2)(flagS(FL.gb, "", 1470, 760, null, null)); vis(T1, T2)(flagS(FL.us, "", 1080, 1110, null, null));
+vis(T1, T2)(flagS(FL.gb, "", 1470, 760, null, null)); vis(T1, T2)(flagS("assets/media/continental_colours.png", "", 1000, 1000, null, null));
 const QCOL = [[980, 1240], [1090, 1150], [1200, 1060], [1300, 980], [1350, 930]];
 [0, 1, 2].forEach((k) => { const id = unitS("q" + k, "carth", QCOL[0], "infantry", "", { flag: "assets/media/continental_colours.png" }); vis(T1, T2)(B.units[id].el); along(id, sub(QCOL, 0, 0.75 - k * 0.12, 10), T1 + k * 0.2, T2 - T1 - 0.4, 10); });
 arw({ pts: QCOL, side: "carth", t: T1 + 0.2, dur: 1.4, width: AW(S1c, 12), until: T2 - 0.01 });
@@ -178,8 +182,8 @@ const C2 = [1520, 760], S2c = 1.35;
 cut(T2, LVA, T3, C2, S2c, [-10, 8, 1.07]); CAM_S0 = S2c;
 dateSet("1776", T2, T3 - 0.05);
 const SC2 = snap();
-vis(T2, T3)(flagS(FL.us, "", 1200, 640, null, null)); vis(T2, T3)(flagS(FL.gb, "", 1900, 560, null, null));
-const CRES = [[1352, 640], [1364, 670], [1372, 700], [1374, 730], [1370, 760], [1360, 790]];
+vis(T2, T3)(flagS("assets/media/continental_colours.png", "", 1200, 640, null, null)); vis(T2, T3)(flagS(FL.gb, "", 1900, 560, null, null));
+const CRES = [[1362, 560], [1373, 592], [1379, 624], [1380, 656], [1376, 688], [1366, 718]];
 CRES.forEach((p, k) => vis(T2, T3)(gunboat([[p[0] - 1, p[1] - 1], p], T2, 0.2, null, { s: 14, side: "carth" })));
 [[[1980, 420], [1860, 640], [1780, 760]], [[2080, 480], [1960, 700], [1850, 820]], [[2040, 330], [1900, 560], [1800, 700]]].forEach((pts, k) =>
   vis(T2, T3)(gunboat(pts, T2 + k * 0.15, T3 - T2 - 0.3, null, { s: 19, side: "rome" })));
@@ -210,7 +214,7 @@ const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:
 tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_GREAT - 0.26);
 SFX("ref:boom", T_GREAT); K.shake(T_GREAT, 6, 0.4);
 // the HUD steps out while a big card is up (1c); the date scroll stays
-declutter([LGD, QB, GB, PB], [[T_1500 - 0.05, T_1500 + 2.6], [T_WITH - 0.05, T_GUNS - 0.15], [S4 - 0.2, T1], [T4, END + 1]]);
+declutter([LGD, QB, GB, PB, PB3], [[T_1500 - 0.05, T_1500 + 2.6], [T_WITH - 0.05, T_GUNS - 0.15], [S4 - 0.2, T1], [T4, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

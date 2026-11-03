@@ -34,9 +34,10 @@ const T_L7 = at(P8, "On the seventh"), T_630 = at(P8, "six hundred and thirty"),
 // =====================================================================================================================
 const HUD = mapGroup("hudson", 4);
 const SAR = baseGroup(3); FADES.push([SAR, 0.3, 0.8]);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north();
+hudRiver();
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north(); NA.style.top = "330px";
 // ---------- places (saratoga px) ----------
-const BRY = [1338, 542], LIR = [1417, 651], GAP = [1380, 600], WF = [1205, 955], SARV = LD(43.10, -73.58);
+const BRY = [1338, 542], LIR = [1417, 651], GAP = [1380, 600], WF = [1205, 955], SARV = LD(43.10, -73.588);
 const AMLINE = [[1300, 1185], [1420, 1195], [1560, 1215], [1700, 1250], [1830, 1290]];
 const CAMPL = [[1440, 655], [1560, 668], [1700, 660], [1850, 640], [2000, 610], [2150, 560]];
 // camera keys
@@ -117,7 +118,7 @@ pinAlong(AMK, [[1490, 860], [1460, 820], [1445, 790]], T_MID, 2.0, 8);
 const ACC = scr(`<div style="padding:12px 30px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
   <div style="font-size:18px;letter-spacing:.32em;color:#c9b48a">ACCOUNTS DIFFER</div>
   <div style="display:flex;gap:26px;margin-top:6px;font-size:34px;letter-spacing:.06em"><span class="o1">GATES LET HIM GO?</span><span style="color:#8a8170">/</span><span class="o2">HE SIMPLY WENT?</span></div></div>`,
-  "left:0;right:0;top:240px;display:flex;justify-content:center;", T_ACC - 0.05, T_ACC + 3.6);
+  "left:0;right:0;top:240px;display:flex;justify-content:center;", T_ACC - 0.05, T_WENT + 1.6);
 gsap.set([ACC.querySelector(".o1"), ACC.querySelector(".o2")], { autoAlpha: 0 });
 tl.to(ACC.querySelector(".o1"), { autoAlpha: 1, duration: 0.25 }, T_LET - 0.05); tl.to(ACC.querySelector(".o2"), { autoAlpha: 1, duration: 0.25 }, T_WENT - 0.4);
 SFX("ref:pop", T_LET); SFX("ref:pop", T_WENT - 0.35);
@@ -146,7 +147,7 @@ SFX("ref:pop", T_WEAK + 0.1);
 // =====================================================================================================================
 const C6 = [1385, 620], S6 = 2.6;
 camTo(T_GAP - 0.5, 2.0, C6, S6, "sine.inOut");
-const F3 = [flagS(FL.us, "", 1540, 720, T_GAP + 0.3, T_THRU), flagS(FL.gb, "", 1270, 470, T_GAP + 0.3, T_CAMP - 0.3)];
+const F3 = [flagS(FL.us, "", 1540, 720, T_GAP + 0.3, T_NIGHT + 0.5), flagS(FL.gb, "", 1270, 470, T_GAP + 0.3, T_CAMP - 0.3)];
 // option 2 front: the British line (redoubt - gap - redoubt) facing the Americans to the south
 const FR6 = front2([[1290, 585], [1330, 568], [1365, 600], [1395, 618], [1440, 668], [1490, 690]], S6, T_GAP - 0.2, { dur: 1.2, until: T_TAKEN });
 K.target(...GAP, T_GAP + 0.1, { r: 26, side: "#ffd54a", until: T_CAN });
@@ -198,9 +199,7 @@ recolor(RB, "carth", T_TAKEN); SFX("ref:pop", T_TAKEN + 0.05);
 go("aS", T_TAKEN - 0.2, 0.9, [BRY[0] + 4, BRY[1] + 2]); go("aL", T_TAKEN - 0.1, 1.2, [BRY[0] + 30, BRY[1] + 30]);
 go("rB", T_TAKEN, 1.2, [BRY[0] + 50, BRY[1] - 30]); B.grey(["rB"], T_TAKEN + 0.2, 0.8); B.hideUnits(["rB"], T_DEAD + 1.4);
 badgeStamp(BB, "DEAD", T_DEAD + 0.25, { size: 30 });
-// Gates's report (verbatim, quote marks: spoken by the narrator)
-const QG = quote("&ldquo;the Gallant General Arnold, whose Leg was fractured by a musket ball, as he forced the Enemy&rsquo;s Breast Work.&rdquo;", "GENERAL GATES, HIS REPORT", T_Q - 0.15, T_QEND + 1.3, { size: 42, top: 190, mw: 1300 });
-SFX("ref:pop", T_Q - 0.1);
+// (no Gates quote card here: the main session covers "Gates himself reported ... Breast Work." with an archive insert)
 // "With the German redoubt gone, the whole British camp lay open from the side"
 camTo(T_GONE - 0.6, 2.8, [1640, 620], 1.55, "sine.inOut");
 const CAMPG = glowPath(CAMPL, "#ff6b5e", 7 / 1.55, T_CAMP - 0.1, T_NIGHT + 0.5, 2, 0.9, { draw: 1.0, top: true });
@@ -250,7 +249,7 @@ const AB2 = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T_HOSP 
 const MC = method(3, T_DOOR - 0.2, END + 1, T_THRU - 0.6);
 SFX("ref:boom", T_THRU + 0.2);
 // HUD steps out under the big cards (1c); the date scroll stays
-declutter([LGD, MB, FB, AB, BB, BU, AB2], [[T_1500 - 0.05, T_1500 + 3.0], [T_ACC - 0.05, T_ACC + 3.6], [T_Q - 0.15, T_QEND + 1.3], [T_L7 + 0.2, T_NIGHT - 0.3], [T_6000 - 0.1, T_HOSP - 0.1], [T_DOOR - 0.2, END + 1]]);
+declutter([LGD, MB, FB, AB, BB, BU, AB2], [[T_1500 - 0.05, T_1500 + 3.0], [T_ACC - 0.05, T_WENT + 1.6], [T_L7 + 0.2, T_NIGHT - 0.3], [T_6000 - 0.1, T_HOSP - 0.1], [T_DOOR - 0.2, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

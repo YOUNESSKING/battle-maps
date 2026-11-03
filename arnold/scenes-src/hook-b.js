@@ -379,7 +379,7 @@ let CLAMP = false;
 const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (CLAMP) { s = Math.max(s, 1920 / 2880); cx = Math.min(Math.max(cx, 960 / s), 2880 - 960 / s); cy = Math.min(Math.max(cy, 540 / s), 1620 - 540 / s); }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s, force3D: false });
-  FADES.forEach(([g, a, b]) => { g.style.opacity = ramp(s, a, b).toFixed(3); }); CAM_S = s; setInv(); };
+  FADES.forEach(([g, a, b, inv]) => { const r = ramp(s, a, b); g.style.opacity = (inv ? 1 - r : r).toFixed(3); }); CAM_S = s; setInv(); };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const camSet = (c, s) => { cam.cx = c[0]; cam.cy = c[1]; cam.s = s; applyCam(); };
 // continuous geographic zoom: log-linear scale, the anchor P slides on a straight screen path (no cut, no flash)
@@ -399,7 +399,7 @@ const REDOUBT = (s, side, open) => { const c = side === "carth" ? "#1f4fc4" : "#
 const openGlow = (el, t, until) => { const p = el.querySelector(".ro"); if (!p) return; tl.to(p, { opacity: 1, duration: 0.3 }, t); tl.to(p, { opacity: 0.35, duration: 0.45, yoyo: true, repeat: 5, ease: "sine.inOut" }, t + 0.3); if (until != null) tl.to(p, { opacity: 0, duration: 0.4 }, until); };
 // a person on the map: round portrait (initials until the photo exists), side-coloured ring, world space, constant on screen
 const faceMarker = (who, ini, side, x, y, t, until, sz = 58) => { const c = side === "carth" ? "#1f4fc4" : "#c4121f";
-  return pinS(GG.pin(`<div class="fm" style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;overflow:hidden;border:${(sz * 0.07).toFixed(1)}px solid #f3e7c4;box-shadow:0 0 0 3px ${c},0 6px 14px rgba(0,0,0,.7);background:radial-gradient(circle,#2a3142,#0d1018);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:${(sz * 0.4).toFixed(0)}px;color:#f7f3ea">${ini}${who ? `<img src="${PHOTO(who)}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">` : ""}</div>`, x, y, { t, pop: true, until })); };
+  return pinS(GG.pin(`<div class="fm" style="position:relative;width:${sz}px;height:${sz}px;border-radius:50%;overflow:hidden;border:${(sz * 0.07).toFixed(1)}px solid #f3e7c4;box-shadow:0 0 0 3px ${c},0 6px 14px rgba(0,0,0,.7);background:radial-gradient(circle,#2a3142,#0d1018);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:${(sz * 0.4).toFixed(0)}px;color:#f7f3ea"><span>${ini}</span>${who ? `<img src="${PHOTO(who)}" onload="this.previousElementSibling.style.display='none'" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)">` : ""}</div>`, x, y, { t, pop: true, until })); };
 const redoubt = (x, y, t, until, o = {}) => { const el = pinS(GG.pin(REDOUBT(o.s || 40, o.side || "rome", o.open), x, y, { t, pop: true, until })); return el; };
 const recolor = (el, side, t) => { const c = side === "carth" ? "#1f4fc4" : "#c4121f";
   tl.to(el.querySelectorAll(".rf"), { attr: { fill: c }, duration: 0.6 }, t); tl.to(el.querySelectorAll(".rw2"), { attr: { stroke: c }, duration: 0.6 }, t);
@@ -439,6 +439,12 @@ const numCard = (label, value, sub, css, t, until, o = {}) => { const el = scr(`
   <div style="font-size:20px;letter-spacing:.3em;color:${o.lc || "#9fc0ea"}">${label}</div><div class="v" style="font-size:${o.vs || 62}px;letter-spacing:.04em;line-height:1.1">${value}</div>${sub ? `<div style="font-size:19px;letter-spacing:.22em;color:#c9c2b2">${sub}</div>` : ""}</div>`, css, t, until);
   if (o.slam !== false) slam(el, t, { sfx: "hit", shake: 3 }); return el; };
 fixImgs();
+// the Hudson drawn over the wide maps (the hudson bake has no river line): faded out where the saratoga relief shows its own river
+const HUDSON_LL = [[43.35, -73.60], [43.267, -73.585], [43.18, -73.570], [43.10, -73.572], [43.05, -73.588], [43.02, -73.598], [43.0, -73.606], [42.975, -73.626], [42.94, -73.65], [42.90, -73.685], [42.82, -73.68], [42.78, -73.685],
+  [42.73, -73.69], [42.65, -73.745], [42.55, -73.77], [42.40, -73.785], [42.20, -73.86], [42.0, -73.93], [41.80, -73.95]];
+const hudRiver = (sLo = 0.5, sHi = 0.9) => { const g = document.createElementNS(NS, "g"), pts = HUDSON_LL.map((q) => LD(...q)), d = "M" + pts.map((q) => q.map((v) => v.toFixed(0)).join(" ")).join(" L");
+  g.innerHTML = `<path d="${d}" fill="none" stroke="rgba(60,58,50,0.55)" stroke-width="190" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="#9fb0b4" stroke-width="150" stroke-linecap="round" stroke-linejoin="round"/>`;
+  OVL.insertBefore(g, OVL.firstChild); FADES.push([g, sLo, sHi, true]); return g; };
 // ---------- end of Arnold additions ----------
 // an element that must already be on screen at frame 0 (it continues from the previous scene): drop its entry tween, show it, fade at until
 const atZero = (el, until) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, x: 0, y: 0 }); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, until); return el; };
@@ -460,7 +466,7 @@ const layer = (src) => { const g = document.createElement("div"); g.style.cssTex
   const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;"; g.appendChild(i);
   WORLD.insertBefore(g, OVL); gsap.set(g, { autoAlpha: 0 }); return g; };
 const LQU = layer("assets/ar3_quebec.jpg"), LVA = layer("assets/ar3_valcour.jpg");
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north();
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north(); NA.style.top = "330px";
 CLAMP = true;
 const scr0 = (html, css) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el); return el; };
 const vis = (t0, t1) => (el) => { gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, t0); if (t1 != null) tl.set(el, { autoAlpha: 0 }, t1 - 0.01); return el; };
@@ -486,7 +492,7 @@ Object.entries(R0).forEach(([id, p]) => { unitS(id, "rome", p, id === "rg" ? "ar
 const AU = [unitS("a1", "carth", [1380, 1170], "infantry", ""), unitS("a2", "carth", [1560, 1200], "infantry", ""), unitS("a3", "carth", [1700, 1235], "infantry", "")];
 AU.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 const F0 = [flagS(FL.us, "", 1620, 1110, null, T_GEN + 0.2), flagS(FL.gb, "", 1760, 560, null, T_GEN + 0.2)]; gsap.set(F0, { autoAlpha: 1 });
-const QB = atZero(qBadge("THE GENERAL", "", 0, null, { corner: "bl" }), null);
+const QB = atZero(qBadge("THE MAN", "", 0, null, { corner: "bl" }), null);
 const LGD = atZero(legend(0, null, true), null);
 // =====================================================================================================================
 // hook-3: rewind to the afternoon of 7 October
@@ -550,7 +556,7 @@ camTo(T_OFF - 0.3, T_OVER - T_OFF + 0.6, [1380, 1080], 1.45, "sine.inOut");
 const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
 const BDG = scr0(`<div style="position:relative;width:300px;height:300px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 7px #1f4fc4,0 24px 48px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover">
   <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.8), rgba(10,12,24,0.55));font-family:Oswald;font-weight:700;font-size:120px;color:#f7f3ea">BA</div>
-  <img src="${PHOTO("arnold")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
+  <img src="${PHOTO("arnold")}" onload="this.previousElementSibling.style.display='none'" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:180px;color:#f7f3ea">?</div></div>`,
   "left:810px;top:130px;transform-origin:50% 50%;");
 tl.fromTo(BDG, { autoAlpha: 0, scale: 0.4, x: -620, y: 520 }, { autoAlpha: 1, scale: 1, x: 0, y: 0, duration: 0.55, ease: "power3.out", immediateRender: false }, S4 - 0.1);
@@ -583,7 +589,11 @@ tl.set([DK, BDG, RELIEF], { autoAlpha: 0 }, T1 - 0.01);
 const S0 = snap(); tl.set([...S0].filter((e) => e.tagName.toLowerCase() !== "defs"), { autoAlpha: 0 }, T1 - 0.01);
 tl.set(Object.values(B.units).map((u) => u.el), { autoAlpha: 0 }, T1 - 0.01);
 tl.set(LGD, { autoAlpha: 0 }, T1 - 0.01);
-const PB = pbadge("BENEDICT ARNOLD", "", "arnold", "carth", "bl", "BA", T1 + 0.15, T4 - 0.1);
+// Arnold's corner badge: Continental Colours behind him for the 1775 / 1776 cuts, the 13-star flag from the Saratoga 1777 cut on (instant swap)
+const PB = badge({ name: "BENEDICT ARNOLD", role: "", photo: PHOTO("arnold"), flag: "assets/media/continental_colours.png", side: "carth", corner: "bl", initials: "BA", t: T1 + 0.15 });
+tl.set(PB, { autoAlpha: 0 }, T3 - 0.01);
+const PB3 = badge({ name: "BENEDICT ARNOLD", role: "", photo: PHOTO("arnold"), flag: FL.us, side: "carth", corner: "bl", initials: "BA", t: T3 });
+tl.getTweensOf(PB3).forEach((tw) => tw.kill()); gsap.set(PB3, { autoAlpha: 0 }); tl.set(PB3, { autoAlpha: 1, x: 0 }, T3 - 0.01); tl.to(PB3, { autoAlpha: 0, duration: 0.4 }, T4 - 0.1);
 let CAM_S0 = 1;
 const ringN = (p, txt, n, t, until, dx, dy, sub) => { K.target(p[0], p[1], t, { r: 34 / CAM_S0, until });
   const el = GG.pin(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000,0 0 3px #000"><span style="display:inline-flex;width:38px;height:38px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:21px">${n}</span><span style="font-size:36px;letter-spacing:.1em;white-space:nowrap">${txt}</span>${sub ? `<span style="font-size:24px;letter-spacing:.14em;color:#f3eee2;margin-left:6px">${sub}</span>` : ""}</div>`, p[0] + dx, p[1] + dy, { t: t + 0.1, pop: true, until });
@@ -595,9 +605,9 @@ dateSet("1775", T1, T2 - 0.05);
 const SC1 = snap();
 const SNW = scr0("", "inset:0;background:rgba(225,232,240,0.18);"); vis(T1, T2)(SNW);
 B.snow(T1, T2 - 0.02);
-const WALL = [[1370, 700], [1450, 650], [1545, 690], [1560, 790], [1510, 880], [1430, 890], [1370, 830]];
+const WALL = [[1370, 700], [1440, 670], [1510, 700], [1525, 780], [1480, 860], [1420, 880], [1365, 830]];
 vis(T1, T2)(glowPath([...WALL, WALL[0]], "#c4121f", 5 / S1c, T1, null, 0, 1.0, { top: false }));
-vis(T1, T2)(flagS(FL.gb, "", 1470, 760, null, null)); vis(T1, T2)(flagS(FL.us, "", 1080, 1110, null, null));
+vis(T1, T2)(flagS(FL.gb, "", 1470, 760, null, null)); vis(T1, T2)(flagS("assets/media/continental_colours.png", "", 1000, 1000, null, null));
 const QCOL = [[980, 1240], [1090, 1150], [1200, 1060], [1300, 980], [1350, 930]];
 [0, 1, 2].forEach((k) => { const id = unitS("q" + k, "carth", QCOL[0], "infantry", "", { flag: "assets/media/continental_colours.png" }); vis(T1, T2)(B.units[id].el); along(id, sub(QCOL, 0, 0.75 - k * 0.12, 10), T1 + k * 0.2, T2 - T1 - 0.4, 10); });
 arw({ pts: QCOL, side: "carth", t: T1 + 0.2, dur: 1.4, width: AW(S1c, 12), until: T2 - 0.01 });
@@ -608,8 +618,8 @@ const C2 = [1520, 760], S2c = 1.35;
 cut(T2, LVA, T3, C2, S2c, [-10, 8, 1.07]); CAM_S0 = S2c;
 dateSet("1776", T2, T3 - 0.05);
 const SC2 = snap();
-vis(T2, T3)(flagS(FL.us, "", 1200, 640, null, null)); vis(T2, T3)(flagS(FL.gb, "", 1900, 560, null, null));
-const CRES = [[1352, 640], [1364, 670], [1372, 700], [1374, 730], [1370, 760], [1360, 790]];
+vis(T2, T3)(flagS("assets/media/continental_colours.png", "", 1200, 640, null, null)); vis(T2, T3)(flagS(FL.gb, "", 1900, 560, null, null));
+const CRES = [[1362, 560], [1373, 592], [1379, 624], [1380, 656], [1376, 688], [1366, 718]];
 CRES.forEach((p, k) => vis(T2, T3)(gunboat([[p[0] - 1, p[1] - 1], p], T2, 0.2, null, { s: 14, side: "carth" })));
 [[[1980, 420], [1860, 640], [1780, 760]], [[2080, 480], [1960, 700], [1850, 820]], [[2040, 330], [1900, 560], [1800, 700]]].forEach((pts, k) =>
   vis(T2, T3)(gunboat(pts, T2 + k * 0.15, T3 - T2 - 0.3, null, { s: 19, side: "rome" })));
@@ -640,7 +650,7 @@ const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:
 tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_GREAT - 0.26);
 SFX("ref:boom", T_GREAT); K.shake(T_GREAT, 6, 0.4);
 // the HUD steps out while a big card is up (1c); the date scroll stays
-declutter([LGD, QB, GB, PB], [[T_1500 - 0.05, T_1500 + 2.6], [T_WITH - 0.05, T_GUNS - 0.15], [S4 - 0.2, T1], [T4, END + 1]]);
+declutter([LGD, QB, GB, PB, PB3], [[T_1500 - 0.05, T_1500 + 2.6], [T_WITH - 0.05, T_GUNS - 0.15], [S4 - 0.2, T1], [T4, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

@@ -27,12 +27,13 @@ const NE = mapGroup("northeast", 0); const NE_C = terrImg("assets/media/ar3_ctl_
 const HUD = mapGroup("hudson", 6); const HUD_C = terrImg("assets/media/ar3_ctl_hudson_1777.png", HUD, 0, null, 0.01);
 const SAR = baseGroup(4);
 FADES.push([HUD, 0.0156, 0.031], [SAR, 0.1, 0.2]);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north();
+hudRiver();
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north(); NA.style.top = "330px";
 // ---------- places (world = saratoga px) ----------
 const STJ = LD(45.30, -73.26), VAL = LD(44.611, -73.40), CRP = LD(44.027, -73.424), TIC = LD(43.843, -73.387), SKN = LD(43.555, -73.404),
-  FTE = LD(43.267, -73.585), SARV = LD(43.10, -73.58), ALB = LD(42.65, -73.75), NYC = LD(40.70, -74.02), NENG = LD(43.6, -71.6), MTL = LD(45.50, -73.57);
+  FTE = LD(43.267, -73.585), SARV = LD(43.10, -73.588), ALB = LD(42.65, -73.75), NYC = LD(40.70, -74.02), NENG = LD(43.6, -71.6), MTL = LD(45.50, -73.57);
 const LAKE = [LD(45.45, -73.25), STJ, LD(45.05, -73.32), LD(44.85, -73.33), VAL, LD(44.35, -73.36), LD(44.15, -73.40), CRP, TIC, LD(43.70, -73.39), SKN];
-const HUDR = [FTE, LD(43.18, -73.58), SARV, LD(42.99, -73.60), LD(42.85, -73.68), ALB, LD(42.40, -73.80), LD(42.0, -73.93), LD(41.6, -73.95), LD(41.39, -73.96), LD(41.0, -73.90), NYC];
+const HUDR = [...HUDSON_LL.slice(1).map((q) => LD(...q)), LD(41.39, -73.96), LD(41.0, -73.90), NYC];
 const BRY = [1338, 542], LIR = [1417, 651];
 const AMLINE = [[1300, 1185], [1420, 1195], [1560, 1215], [1700, 1250], [1830, 1290]];
 const CAMPL = [[1440, 655], [1560, 668], [1700, 660], [1850, 640], [2000, 610], [2150, 560]];
@@ -81,7 +82,7 @@ zoom(TZ0, TZ1 - TZ0, C0b, S0b, C1, S1, SARV, "power2.inOut");
 tl.to([NE_C, HUD_C], { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, TZ0 + 0.4);
 // the Hudson glows on its word (hudson scale), its label leaves after ~3.5 s
 glowPath(HUDR.slice(0, 7), "#bfe2ff", 3 / 0.04, T_HUD - 0.1, S2 + 0.5, 1, 0.6, { draw: 0.9 });
-boxL("HUDSON", ...LD(42.80, -73.95), T_HUD + 0.05, null, { size: 15 });
+boxL("HUDSON", ...LD(43.02, -73.50), T_HUD + 0.05, null, { size: 15 });
 // mid-zoom flags (hudson scale)
 const FM = [flagS(FL.gb, "", ...LD(43.30, -73.40), TZ0 + 1.1, T_MAN), flagS(FL.us, "", ...LD(42.80, -73.40), TZ0 + 1.1, T_MAN)];
 // arriving on "Saratoga": the village, the British army camped near it, the American lines south of it
@@ -100,7 +101,7 @@ dateSet("OCTOBER 1777", T_WEEKS, null);
 for (let k = 0; k < 3; k++) SFX("tick", T_WEEKS - 0.3 + k * 0.12);
 // the Americans close round the village (within weeks)
 go("y0", T_WEEKS, 2.4, [SARV[0] - 600, SARV[1] + 800]); go("y1", T_WEEKS + 0.1, 2.4, [SARV[0] + 650, SARV[1] + 500]);
-const NUM = bigNum("ABOUT", 6000, "SOLDIERS", T_6000 - 0.12, T_ARMS + 0.5, { tick: 1.0 });
+const NUM = bigNum("ABOUT", 6000, "SOLDIERS", T_6000 - 0.12, T_ARMS + 0.5, { tick: 1.0, top: 600 });
 tl.to(NUM.querySelector(".w0"), { color: "#ef8a82", duration: 0.15 }, T_SOLD);
 // "would lay down their arms there": grey + white flag at Saratoga
 B.grey(XR, T_ARMS + 0.1, 0.8);
@@ -111,15 +112,15 @@ const FRA = sstamp("FRANCE", 330, T_FR - 0.05, { size: 84, color: "#9fc0ea", sub
 SFX("ref:boom", T_FR + 0.2);
 // "And the man who broke the British line that day": push in to the battlefield (saratoga map, option 2), the line breaks at the redoubt
 const CE = [1420, 860], SE = 1.35;                         // hook-b's first camera (keep in sync)
-camTo(T_MAN - 0.1, T_BROKE - T_MAN + 0.9, CE, SE, "power2.inOut");
+camTo(T_MAN - 0.2, 0.9, [1500, 1000], S1, "sine.inOut"); camTo(T_MAN + 0.7, T_BROKE - T_MAN + 0.1, CE, SE, "power2.inOut");
 hideU(["x0", "x1", "x2", "y0", "y1"], T_MAN + 0.3);
 const RB = redoubt(...BRY, T_MAN + 0.4, null, { s: 56, open: "n" }), RL = redoubt(...LIR, T_MAN + 0.5, null, { s: 56 });
 const CL = glowPath(CAMPL, "#bc2528", 5 / SE, T_MAN + 0.3, null, 0, 0.7, { draw: 0.8 });
 const AL = glowPath(AMLINE, "#2c57b7", 5 / SE, T_MAN + 0.3, null, 0, 0.7, { draw: 0.8 });
 const R0 = { r1: [1300, 575], r2: [1400, 690], r3: [1480, 690], rg: [1450, 655] };
-Object.entries(R0).forEach(([id, p], k) => unitS(id, "rome", p, id === "rg" ? "artillery" : "infantry", "", id === "rg" ? { w: 44, h: 29, t: T_MAN + 0.5 } : { t: T_MAN + 0.4 + k * 0.08 }));
+Object.entries(R0).forEach(([id, p], k) => unitS(id, "rome", p, id === "rg" ? "artillery" : "infantry", "", id === "rg" ? { w: 44, h: 29, t: T_MAN + 1.0 } : { t: T_MAN + 0.9 + k * 0.08 }));
 const AU = [unitS("a1", "carth", [1380, 1170], "infantry", "", { t: T_MAN + 0.5 }), unitS("a2", "carth", [1560, 1200], "infantry", "", { t: T_MAN + 0.55 }), unitS("a3", "carth", [1700, 1235], "infantry", "", { t: T_MAN + 0.6 })];
-const F0b = [flagS(FL.us, "", 1620, 1110, T_MAN + 0.5, null), flagS(FL.gb, "", 1760, 560, T_MAN + 0.5, null)];
+const F0b = [flagS(FL.us, "", 1620, 1110, T_MAN + 1.0, null), flagS(FL.gb, "", 1760, 560, T_MAN + 1.0, null)];
 const FRB = front2([[1240, 600], [1300, 560], [1338, 560], [1380, 610], [1417, 670], [1480, 710], [1560, 700]], SE, T_MAN + 0.6, { dur: 1.0, until: END - 0.6 });
 arw({ pts: [[1240, 700], [1270, 610], [1320, 545], [1400, 520]], side: "carth", t: T_BROKE + 0.1, dur: 0.8, width: AW(SE, 13), until: END - 0.6 });
 SFX("ref:whoosh", T_BROKE + 0.1); SFX("hit", T_BROKE + 0.85); K.shake(T_BROKE + 0.85, 4, 0.3); pulse(T_BROKE + 0.9);

@@ -117,8 +117,8 @@
 ],
 [
 84.0,
-"Gates's report: verbatim quote card",
-"pop"
+"(archive insert covers 'Gates himself reported ... Breast Work.'; map holds)",
+"-"
 ],
 [
 91.5,
@@ -525,6 +525,38 @@
 69.4,
 "'no command at all': NO COMMAND, lines fade",
 "hit"
+]
+],
+"hook-b-cuts": [
+[
+44.6,
+"CUT 1 Quebec: Continental Colours flag + badge",
+"whoosh + hit"
+],
+[
+46.6,
+"1 QUEBEC 1775",
+"pop"
+],
+[
+48.3,
+"CUT 2 Valcour: Continental Colours",
+"whoosh + hit"
+],
+[
+51.5,
+"2 VALCOUR ISLAND 1776",
+"fire, pop"
+],
+[
+52.9,
+"CUT 3 Saratoga: 13-star flag + badge from here",
+"whoosh + hit"
+],
+[
+54.6,
+"arrow into the redoubt",
+"hit + shake"
 ]
 ]
 }

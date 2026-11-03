@@ -34,7 +34,7 @@ const HUD = LL([[43.555, -73.404], [43.40, -73.48], [43.27, -73.58], [43.05, -73
 living(CZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 const TC = terr0("assets/media/va_champlain_ctl_mx.png"); TC.style.filter = SOFT;
 const BY = L(45.02, -73.3)[1];
-const FR = front2([[880, BY], [1100, BY + 2], [1300, BY], [1500, BY - 2], [1750, BY], [2000, BY + 2]], 1.0, 0.0, { dur: 0.01, flip: true });
+const FR = front2([[1180, BY + 14], [1260, BY + 4], [1340, BY + 10], [1420, BY - 2], [1500, BY + 6], [1580, BY - 4], [1660, BY + 8], [1740, BY + 2]], 2.0, 0.0, { dur: 0.01 });
 on0(FR);
 // ---------- camera ----------
 const sKeys = [[0, 1430, 830, 0.95], [T_FLEET - 0.5, 1440, 780, 1.0], [T_P1 - 0.4, 1440, 720, 1.12], [T_WAR, 1450, 455, 2.1, "power2.inOut"], [T_BACK + 0.5, 1452, 405, 2.3],
@@ -45,12 +45,12 @@ camera(sKeys);
 B.showDate(0); B.date("SUMMER 1776", 0.02, T_OCT - 0.1, 32); B.date("OCTOBER 1776", T_OCT, END + 1, 32);
 const LGD = legend(0.8, END + 1);
 // flags (both on every frame): Union Flag on Canada, Continental Colours on the American shore (two pairs: wide, and the St. Johns close-up)
-flagS(FL.cs, "", 1720, 330, 0, END + 1); flagS(FL.us, "", 1650, 900, 0, T_WAR + 0.4); flagS(FL.us, "", 1300, 650, T_WAR - 0.6, T_HUD + 1.0); flagS(FL.us, "", 1650, 900, T_ROAD + 0.4, END + 1);
+flagS(FL.cs, "", 1720, 330, 0, END + 1); flagS(FL.us, "", 1650, 900, 0, T_WAR + 0.4); flagS(FL.us, "", 1580, 625, T_WAR - 0.6, T_HUD + 1.0); flagS(FL.us, "", 1650, 900, T_ROAD + 0.4, END + 1);
 // big towns (small labels, leave after ~3.5 s)
 townL("MONTREAL", MTL, "l", 0.4); townL("ST. JOHNS", STJ, "r", T_NORTH); townL("TICONDEROGA", TIC, "r", T_TIC); townL("SKENESBOROUGH", SKE, "r", T_SKE);
 // =================== move1-sub: out of Canada; the British fleet at St. Johns; the subscribe beat ===================
 unitS("am1", "carth", L(45.25, -73.32), "infantry", "", { size: "XX", t: 0 }); unitS("am2", "carth", L(45.08, -73.40), "infantry", "", { size: "XX", t: 0 });
-["am1", "am2"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
+["am1", "am2"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 })); B.hideUnits(["am1", "am2"], T_P2 - 0.5, 0.6);
 along("am1", LL([[45.25, -73.32], [44.9, -73.42], [44.4, -73.42], [44.05, -73.50]]), 0, 9.0, 16); along("am2", LL([[45.08, -73.40], [44.7, -73.50], [44.2, -73.50], [43.90, -73.48]]), 0, 9.5, 16);
 arw({ pts: LL([[45.28, -73.22], [44.9, -73.30], [44.4, -73.30], [44.1, -73.36]]), side: "carth", t: 0.3, dur: 4.0, width: AW(0.95, 13), until: T_HOW });
 arw({ pts: LL([[45.45, -73.42], [45.0, -73.50], [44.5, -73.55], [44.15, -73.55]]), side: "carth", t: T_OUT - 0.2, dur: 4.0, width: AW(0.95, 13), until: T_HOW });
@@ -85,7 +85,7 @@ glowPath(LKP, "#ff6a5a", 6, T_ROAD - 0.1, T_NE + 3.0, 2, 0.75, { draw: 2.0 });
 arw({ pts: [...LKP.slice(2), ...HUD.slice(1)], side: "rome", t: T_TIC - 0.4, dur: 2.6, width: AW(0.9, 15), until: T_P2 + 1.0 });
 boxL("HUDSON", HUD[3][0] - 150, HUD[3][1], T_HUD + 0.1, null, { size: 14 });
 // New England glows on "cut New England off"
-const NEG = GG.layer(`background:radial-gradient(ellipse 22% 30% at ${(L(43.6, -71.7)[0] / 28.8).toFixed(1)}% ${(L(43.6, -71.7)[1] / 16.2).toFixed(1)}%, rgba(120,170,255,0.45), rgba(120,170,255,0) 72%);mix-blend-mode:screen;`, T_NE - 0.1, T_P2 + 1.5, { dur: 0.8, outDur: 1.2 });
+const NEG = GG.layer(`background:radial-gradient(ellipse 22% 30% at ${(L(43.6, -71.7)[0] / 28.8).toFixed(1)}% ${(L(43.6, -71.7)[1] / 16.2).toFixed(1)}%, rgba(130,180,255,0.75), rgba(130,180,255,0) 72%);mix-blend-mode:screen;`, T_NE - 0.1, T_P2 + 1.5, { dur: 0.8, outDur: 1.2 });
 boxL("NEW ENGLAND", ...L(43.9, -71.9), T_NE + 0.1, null, { size: 16 });
 // =================== m2-2: Skenesborough; the American fleet; the numbers ===================
 const BLUE = [["gondola", 43.60, -73.40], ["gondola", 43.66, -73.41], ["gondola", 43.72, -73.40], ["galley", 43.78, -73.40], ["galley", 43.85, -73.38], ["gondola", 43.93, -73.40]];
@@ -105,7 +105,7 @@ const N25 = placeCard("BRITISH", "ABOUT 25 ARMED VESSELS · <span class='m7'>ABO
 N25.firstElementChild.style.borderTopColor = "#c4121f"; SFX("hit", T_25 + 0.1);
 // more than a thousand soldiers in boats, behind the warships
 [[45.32, -73.28], [45.33, -73.24], [45.35, -73.26], [45.36, -73.29], [45.37, -73.245], [45.39, -73.27]].forEach(([la, lo], k) => ship("bateau", [L(la, lo), L(la - 0.22, lo - 0.02)], T_1000 + k * 0.15, 4.5, null, { side: "rome", s: 18 }));
-boxL("MORE THAN 1,000 SOLDIERS IN BOATS", STJ[0] + 60, STJ[1] - 30, T_1000 + 0.3, null, { size: 13, bg: "#f3d6c8" });
+boxL("MORE THAN 1,000 SOLDIERS IN BOATS", STJ[0] + 250, STJ[1] + 90, T_1000 + 0.3, null, { size: 13, bg: "#f3d6c8" });
 // ---------- 1c declutter ----------
 declutter([LGD, AB], [[T_P1 + 0.1, T_P1 + 2.9], [T_28 - 0.05, T_ROAD - 0.3], [T_15 - 0.05, T_AGAINST - 0.3], [T_25 - 0.05, T_1000 - 0.3]]);
 fixImgs();

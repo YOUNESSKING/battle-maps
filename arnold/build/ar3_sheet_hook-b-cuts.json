@@ -1,0 +1,48 @@
+{
+ "title": "Arnold #17 HOOK-B (hook-3 - hook-4) - map agent ar3_, round 4, 59.36 s",
+ "note": "STYLE_LOCK 1a + 1c + 2b/2c: nothing before it is spoken, one big card at a time, option 2 on close-ups, visible fire only",
+ "frames": [
+  [
+   "hook-b",
+   44.6,
+   "1:09.0",
+   "CUT 1 Quebec: Continental Colours flag + badge",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   46.6,
+   "1:11.0",
+   "1 QUEBEC 1775",
+   "pop"
+  ],
+  [
+   "hook-b",
+   48.3,
+   "1:12.7",
+   "CUT 2 Valcour: Continental Colours",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   51.5,
+   "1:15.9",
+   "2 VALCOUR ISLAND 1776",
+   "fire, pop"
+  ],
+  [
+   "hook-b",
+   52.9,
+   "1:17.3",
+   "CUT 3 Saratoga: 13-star flag + badge from here",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   54.6,
+   "1:19.0",
+   "arrow into the redoubt",
+   "hit + shake"
+  ]
+ ]
+}
