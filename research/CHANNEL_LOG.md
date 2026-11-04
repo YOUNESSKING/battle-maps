@@ -125,3 +125,8 @@ cut). The CLICK failed, not the opening (name 1:01, move 1 1:53). Action: Test &
 packaging the priority before posting. vidIQ title scores for Grant (2026-11-04): current "| The Man Who Accepted Three Confederate
 Surrenders" 87, "| The Man Who Took Vicksburg" 88, "| The Man Who Won the Civil War" 93, "How Grant Cut Loose From His Supplies and Took
 Vicksburg" 86.
+Arnold CTR fix (2026-11-04): sidebar sheet `arnold/youtube/sidebar_test_sheet_2x.jpg` vs the 7 biggest Arnold/Saratoga videos. Every big
+Arnold thumbnail writes the NAME "BENEDICT ARNOLD" + the hero/traitor hook in big text on a bright, warm image; ours is dark grey-blue, small
+text, no name, and the AI face does not look like his famous portrait. vidIQ title scores: current "| America's Most Brilliant Traitor" 91;
+"| The Man Who Turned the Tide at Saratoga" 90; "| The Hero Who Won Saratoga Before He Betrayed America" 92; "| The Man Who Saved the
+Revolution, Then Betrayed It" 93 (strong claim: check FACT_NOTES before use). The title is not the main problem; the thumbnail is.
