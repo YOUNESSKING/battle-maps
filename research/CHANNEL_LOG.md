@@ -116,3 +116,12 @@ trigger anything. So there are TWO stages: (1) YouTube must give the video a tes
 Smith 164, Patton 766 in 20 h vs Morgan 7,590 and Greene 6,250, both published in the weeks after 2 Para's explosion); (2) the batch decides:
 ~18 s of watch time per impression (CTR x average view duration) and ~3.5% Suggested CTR -> expansion (Morgan, 2 Para); 13 s (Greene) holds
 flat; 8 s (Gavin) is cut. 2 Para itself started tiny (316) and broke out through Suggested on day 2.
+
+## Benedict Arnold #17 (published 2026-11-03, "| America's Most Brilliant Traitor"), day ~1 (Studio)
+Browse 1,262 impressions, 237 views, 2.85% CTR; Suggested 544 impressions, 20 views, 1.29% CTR; all sources 1,848 impressions, 269 views,
+2.38% CTR, average view duration 4:48. Reading with DATA_RULES: stage 1 small batch (cold channel, like Patton 766), AND stage 2 weak: Browse
+CTR 2.85% is the lowest of any recent upload (others 4.4-5.8%), so watch time per Browse impression = 2.85% x 288 s = 8.2 s (Gavin 7.8 s,
+cut). The CLICK failed, not the opening (name 1:01, move 1 1:53). Action: Test & Compare a new thumbnail/title on Arnold now; make Grant's
+packaging the priority before posting. vidIQ title scores for Grant (2026-11-04): current "| The Man Who Accepted Three Confederate
+Surrenders" 87, "| The Man Who Took Vicksburg" 88, "| The Man Who Won the Civil War" 93, "How Grant Cut Loose From His Supplies and Took
+Vicksburg" 86.
