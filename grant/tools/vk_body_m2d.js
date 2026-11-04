@@ -37,7 +37,11 @@ const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]
 camera(sKeys);
 // ---------- HUD ----------
 B.showDate(T_29); B.date("29 APRIL 1863", T_29 + 0.05, T_NIGHT - 0.1, 32); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
-const LGD = legend(0.6, END + 1, true);
+// owner 2026-11-03 (STYLE_LOCK 2c item 2): the bombardment (river fight) and the night run stay fronts-only; at the landing the ground changes
+// hands: the territory colours (vk_gg_ctl_apr30: Louisiana west bank + the Bruinsburg bridgehead blue, the rest of the east bank red) dissolve in
+// over ~2.8 s at full strength as the bridgehead front draws, and stay to the end.
+const TT = terr("assets/media/vk_gg_ctl_apr30_mx.png", T_ASH - 0.2, null, 2.8); TT.style.filter = SOFT;
+const LGD = legend(0.6, T_ASH + 0.6, true), LGS = legend(T_ASH + 1.2, END + 1);   // glowing lines while fronts-only, squares once the ground is filled
 // the fronts (option 2): first along the river (Union west bank / Confederate east bank), then the Bruinsburg bridgehead
 const FRV = front2([[1520, 230], [1350, 268], [1240, 300], [1252, 380], [1302, 495], [1334, 610], [1292, 712], [1205, 800], [1085, 862], [1010, 935], [968, 1025], [930, 1115], [885, 1190]], 1.2, 0, { dur: 0.01, until: T_ASH + 0.6 });
 const FBH = front2([[1000, 868], [1060, 852], [1122, 880], [1150, 945], [1122, 1008], [1060, 1038], [972, 1040]], 1.6, T_ASH, { dur: 1.8 });
@@ -108,7 +112,7 @@ const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,
   "left:0;right:0;top:160px;display:flex;justify-content:center;", T_REL - 0.2, END + 1);
 // ---------- 1c declutter ----------
-declutter([LGD, PB, GRB], [[T_HRS - 0.2, T_SIL - 0.2], [T_SIL, T_SIL + 2.4], [T_10K - 0.1, T_NIGHT - 0.2], [T_NDEF, T_NDEF + 2.2], [T_17K - 0.2, T_LATER - 0.2], [T_REL - 0.2, END + 1]]);
+declutter([LGD, LGS, PB, GRB], [[T_HRS - 0.2, T_SIL - 0.2], [T_SIL, T_SIL + 2.4], [T_10K - 0.1, T_NIGHT - 0.2], [T_NDEF, T_NDEF + 2.2], [T_17K - 0.2, T_LATER - 0.2], [T_REL - 0.2, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

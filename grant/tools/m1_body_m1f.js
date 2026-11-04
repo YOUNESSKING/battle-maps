@@ -1,4 +1,4 @@
-// m1f (m1-9 + move1-sub), Grant #16: zoom out from the two fallen forts over the theatre (tennessee map, option 1 subtle, fading in on the pull-out): the two rivers glow
+// m1f (m1-9 + move1-sub), Grant #16: zoom out from the two fallen forts over the theatre (tennessee map, option 1): the two rivers glow
 // blue and the gunboats steam far into Tennessee; the Kentucky line collapses (E2: the lost ground turns pale first, then blue);
 // method card line 1 on "attacked the moment the enemy hesitated". move1-sub: woven subscribe (E.subscribe on the subscribing clause),
 // a dark-to-bluff transition on the question (a fortress on a high bluff, the supply river under its guns; no place name: it is not spoken),
@@ -16,14 +16,10 @@ const T_ONLY = at(PS, "Donelson was only the beginning"), T_HOW = at(PS, "So how
 const FH = [1393, 895], FD = [1456, 904], CLK = [1637, 888], NSH = [1848, 1054], BG = [1957, 689], COL = [1002, 783], PAD = [1186, 636], CAI = [976, 672];
 const TENN_S = [[1190, 640], [1300, 700], [1360, 800], [1390, 890], [1400, 1000], [1420, 1100], [1400, 1200], [1360, 1400], [1320, 1560], [1330, 1620]];
 const CUMB_E = [[1257, 611], [1360, 650], [1400, 750], [1440, 830], [1456, 900], [1500, 920], [1560, 940], [1637, 888], [1700, 970], [1760, 1020], [1848, 1054]];
-// ---------- map: option 1 (16 Feb -> March 1862, E2 pale-first). Owner 2026-11-02 (territory minimised): the (subtle) colours only on
-// this wide overview: they fade in (~2.2 s) as the camera pulls out over the theatre (m1e ends on the close-up without tint) ----------
-const T_TIN = T_BOATS - 0.4;
-const TA = terr("assets/media/m1_ten_feb16_mx.png", T_TIN, null, 2.2);
-tl.to(TA, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, T_FALL);
-terr("assets/media/m1_ten_mar_mx.png", T_KY + 0.6, null, 1.0, 2.2); tl.to(TA, { autoAlpha: 0, duration: 1.0 }, T_KY + 0.8);
+// ---------- map: option 1 (16 Feb -> March 1862, E2 pale-first) ----------
+terrLoss("assets/media/m1_ten_feb16_mx.png", "assets/media/m1_ten_mar_mx.png", T_FALL, T_KY + 0.6, null);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 }); LV.shimmer([TENN_S, CUMB_E], { width: 2.0 }); LV.scaleBar(245.14); LV.north();
-const LGD2 = now(legend(0, T_TIN + 1.2, true)), LGD = legend(T_TIN + 1.4, T_HOW + 0.4, false);
+const LGD = now(legend(0, T_HOW + 0.4, false));
 camera([[0, 1430, 900, 2.1], [T_TEN + 0.6, 1440, 905, 1.9], [T_TALK, 1500, 930, 1.6], [T_INTO + 0.6, 1520, 1000, 1.05], [T_KY + 0.8, 1470, 920, 0.85],
   [T_MIDT + 1.2, 1460, 940, 0.82], [T_ONLY, 1400, 960, 0.9], [T_HOW + 2.5, 1000, 1250, 1.25], [END, 980, 1270, 1.3]]);
 dateNow("16 FEBRUARY 1862", T_FALL - 0.1); B.date("FEBRUARY–MARCH 1862", T_FALL, null, 30);
@@ -98,7 +94,7 @@ const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
 scr(`<div style="padding:10px 26px 12px;background:#dcecf8;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.2em;font-size:34px;box-shadow:0 6px 20px rgba(0,0,0,.6)">NEXT: MOVE 2 →</div>`, "right:80px;bottom:150px;", T_HERE + 0.3, END + 1);
 SFX("ref:pop", T_HERE + 0.3);
 // ---------- clean screen ----------
-declutter([LGD2, LGD, GB], [[T_FAST - 0.1, T_ONLY + 1.4]]);
+declutter([LGD, GB], [[T_FAST - 0.1, T_ONLY + 1.4]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

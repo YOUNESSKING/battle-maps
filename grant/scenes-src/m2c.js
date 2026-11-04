@@ -213,8 +213,8 @@ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt,
 const boxL = (txt, x, y, t, until, o = {}) => boxS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), o);
 const wstampL = (txt, x, y, t, until, c, size = 22, sub) => wstampS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), c, size, sub);
 const townL = (nm, p, side, t, o = {}) => town(nm, p, side, t, { ...o, until: Math.min(o.until ?? 1e9, t + LBL_LIFE + 0.5) });
-// owner 2026-11-02: territory fills only on the wide shots that need them, and subtler there (about half the old opacity, less orange)
-const SOFT = "saturate(0.4) opacity(0.5)";
+// owner 2026-11-03 (STYLE_LOCK 2c item 2): territory colours wherever they help the viewer, at the locked FULL strength (old saturate(0.8) tone, no half opacity)
+const SOFT = "saturate(0.8)";
 // a front already fully drawn at frame 0 (kills the 0.01 s draw-on at t = 0, which leaves frame 0 empty)
 const on0 = (g) => { const ps = [...g.querySelectorAll("path")]; tl.getTweensOf(ps).filter((tw) => tw.startTime() < 0.05 && tw.duration() < 0.05).forEach((tw) => tw.kill()); gsap.set(ps, { strokeDashoffset: 0 }); return g; };
 // option 1 territory layer with the seamless dissolve (out over ~2.8 s, back in over ~2.2 s)
@@ -316,8 +316,13 @@ const GRI = LL([[35.045, -89.244], [34.73, -88.95], [34.49, -89.01], [34.25, -89
   [32.44, -89.11], [32.32, -89.163], [32.03, -89.52], [31.93, -89.98], [31.86, -90.40], [31.58, -90.44], [31.24, -90.47], [30.83, -90.67], [30.60, -90.90], [30.451, -91.187]]);
 const YAZ = LL([[32.415, -90.985], [32.44, -90.93], [32.47, -90.88], [32.50, -90.83], [32.512, -90.795]]);
 // ---------- layers ----------
-// owner 2026-11-02: no territory fill in this scene (option 2): who holds what = the two glowing front bands (same ground as
-// tools/vk_make_control.py miss(): the Tennessee front Memphis - La Grange - Corinth, the west-bank strip down to Hard Times, Baton Rouge - New Orleans)
+// owner 2026-11-03 (STYLE_LOCK 2c item 2): territory colours back at full strength on this wide diversion map (who holds which region; the raid
+// rides deep through Confederate ground): vk_miss_ctl_apr1, the B1 raid look apr1b while the cavalry is deep inside, back to apr1 for Sherman.
+// The two glowing front bands stay on top (same ground as tools/vk_make_control.py miss()).
+const C1 = terr0("assets/media/vk_miss_ctl_apr1_mx.png"); C1.style.filter = SOFT;
+const C1b = ctlImg("assets/media/vk_miss_ctl_apr1b_mx.png", T_RAID - 0.3, null, 1.2); C1b.style.filter = SOFT;
+tl.to(C1, { autoAlpha: 0, duration: 1.2 }, T_RAID - 0.3);
+tl.to(C1, { autoAlpha: 1, duration: 1.2 }, T_SHER - 0.2); tl.to(C1b, { autoAlpha: 0, duration: 1.2 }, T_SHER - 0.2);
 // the Mississippi and the Yazoo (the z8 map shows no water): drawn as water lines
 const RIVM = LL([[35.15, -90.07], [34.80, -90.30], [34.53, -90.58], [34.15, -90.85], [33.75, -91.05], [33.40, -91.08], [33.05, -91.12], [32.80, -91.16], [32.60, -91.12],
   [32.48, -91.06], [32.40, -91.00], [32.385, -90.93], [32.37, -90.885], [32.345, -90.893], [32.30, -90.91], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07],
@@ -332,7 +337,7 @@ SFX("whoosh", T_SHER - 0.35);
 // ---------- HUD ----------
 B.showDate(T_LG); B.date("17 APRIL 1863", T_LG + 0.05, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
 B.date("17 APRIL - 2 MAY 1863", T_SHER, END + 1, 32);
-const LGD = legend(0.6, END + 1, true);
+const LGD = legend(0.6, END + 1);
 // flags: wide pair, then the Vicksburg pair (both on every frame)
 flagS(FL.us, "", ...L(35.45, -87.6), 0, T_SHER + 1.0); flagS(FL.cs, "", ...L(32.05, -88.1), 0, T_SHER + 1.0);
 flagS(FL.us, "", ...L(32.66, -91.26), T_SHER + 1.1, END + 1); flagS(FL.cs, "", ...L(32.45, -90.35), T_SHER + 1.15, END + 1);

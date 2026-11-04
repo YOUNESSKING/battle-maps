@@ -197,19 +197,16 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
-// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
-// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
-const TERR_A = 0.5, TERR_F = "saturate(0.55)";
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -256,8 +253,8 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 // ---------- end of kit ----------
 // @@END-KIT
 // @@KITX (move-3 agent additions, appended after tools/m1_kit.js by tools/m3_build.py; FL.us is the 35-star flag for June 1864)
-// OWNER 2026-11-02 "minimize the territory colours": where a fill stays (wide shots only) it is about half as strong and less orange/saturated
-(() => { const st = document.createElement("style"); st.textContent = ".wimg.terr, .wimg.ext.terrx { filter: saturate(0.55) opacity(0.5); }"; document.head.appendChild(st); })();
+// OWNER 2026-11-03 (STYLE_LOCK 2c item 2): territory at the locked full strength (saturate(0.8) as battle.css img.terr), also on ext multiply layers
+(() => { const st = document.createElement("style"); st.textContent = ".wimg.ext.terrx { filter: saturate(0.8); }"; document.head.appendChild(st); })();
 // phrase lookup that never throws: first paragraph (of the scene) whose text has the phrase; null if none (the re-voiced ending may add a paragraph)
 const atAny = (phrase, off = 0) => { for (const k of Object.keys(B.T.paras)) if (B.T.text[k].indexOf(phrase) >= 0) return at(k, phrase, off); return null; };
 // another basemap (or a world-sized image) as a layer in the world, under the territory layers + overlay. box = [left, top, width, height] in world px

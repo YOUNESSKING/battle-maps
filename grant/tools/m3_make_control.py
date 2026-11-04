@@ -77,6 +77,21 @@ def petersburg():
     # contested: north bank between Warren's old screen and the Bermuda Hundred front stays red (Lee's side of the river)
     render(land, u, A, "m3_pet_jun18")
 
+def petersburg15():
+    """m3c 15 Jun (owner 2026-11-03 territory rule): before = Union east of the Dimmock Line (pixel-exact with m3c's front DL);
+    after = the same plus the ~two-mile stretch Smith's men took (m3c's DL2: points 1-5 pushed west by the same pixel offsets)."""
+    P = proj(base_of("petersburg")); land = land_of("petersburg"); A = poly(P, ALL)
+    DIM = [(37.258, -77.368), (37.250, -77.359), (37.243, -77.357), (37.237, -77.356), (37.231, -77.3555), (37.223, -77.353), (37.215, -77.357), (37.205, -77.365)]
+    DL = [P(*q) for q in DIM]; OX, OY = [0, 18, 30, 34, 30, 14], [0, 4, 2, 0, -2, -4]
+    DL2 = [(x - OX[i], y + OY[i]) if 1 <= i <= 5 else (x, y) for i, (x, y) in enumerate(DL)]
+    # north edge just south of the Appomattox to City Point, then the James south bank east, then down and back west to the line's south end
+    NE = [(1490, 735), (1500, 640), (1505, 570), (1530, 545), (1560, 545), (1650, 548), (1720, 540), (1800, 600), (1900, 610), (2000, 600), (2880, 560), (2880, 1300),
+          (1650, 1300), (1520, 960)]   # px (traced on petersburg_hd_lift): just south/east of the Appomattox to City Point, the James south bank east
+    base_u = poly(P, BERMUDA) | poly(P, NBANK14) | poly(P, SBANK14) | poly(P, PENIN)
+    for nm, line in (("m3_pet_jun15a", DL), ("m3_pet_jun15b", DL2)):
+        im = Image.new("L", (2880, 1620), 0); ImageDraw.Draw(im).polygon([tuple(map(float, q)) for q in line + NE[::-1]], fill=255)
+        render(land, base_u | (np.array(im) > 0), A, nm)
+
 def mississippi():
     P = proj(base_of("mississippi")); land = land_of("mississippi"); A = poly(P, ALL)
     im = Image.new("L", (2880, 1620), 0); d = ImageDraw.Draw(im)

@@ -20,11 +20,11 @@ const F_Q = at(P2, "So which was Grant's greatest move"), F_1 = at(P2, "One, the
 const T_X1 = T_DON - 0.9, T_X2 = T_VICK - 0.6, T_X3 = T_JAMES - 0.5;        // map dissolves (each lands on the spoken place)
 // ---------- maps: tennessee relief (Feb 1862 layer) -> mississippi (July 1863) -> richmond (June 1864) ----------
 const FL34 = "assets/media/us34_flag.png";
-// (owner 2026-11-04: no territory fill on the recap maps) terr("assets/media/m1_ten_feb16_mx.png", 0, T_X2 + 0.2, 1.0, 0.9);
+terr("assets/media/m1_ten_feb16_mx.png", 0, T_X2 + 0.2, 1.0, 0.9);
 extImg("assets/ext_mississippi.jpg", T_X2, T_X3 + 1.0, { dur: 0.9, outDur: 0.01 });
 extImg("assets/ext_richmond.jpg", T_X3, null, { dur: 0.9 });
-// (owner 2026-11-04: no territory fill on the recap maps) terr("assets/media/m3_mis_jul_mx.png", T_X2, T_X3 + 0.9, 0.9, 0.9);
-// (owner 2026-11-04: no territory fill on the recap maps) terr("assets/media/m3_ric_jun18_mx.png", T_X3, T_EACH + 0.4, 0.9, 2.8);   // owner 2026-11-02: colours only on the recap maps; dissolve (~2.8 s) before the final question (option 2)
+terr("assets/media/m3_mis_jul_mx.png", T_X2, T_X3 + 0.9, 0.9, 0.9);
+terr("assets/media/m3_ric_jun18_mx.png", T_X3, T_EACH + 0.4, 0.9, 2.8);   // owner 2026-11-03 rule: recap fills back; dissolve (~2.8 s) before the final question (end-screen stretch stays clean)
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.north();
 const R = G.ric, AP = R.APPOMATTOX;
 const KEYS = [[0, 1440, 905, 1.7], [T_X1 + 0.6, 1440, 900, 2.1], [T_X2 - 0.1, 1440, 905, 2.25], [T_X2 + 0.6, 1440, 990, 1.75], [T_X3 - 0.1, 1420, 980, 1.95],
@@ -56,7 +56,7 @@ along("va", G.mis.VKS, T_WENT - 0.1, 5.6, 24); hideU(["va", "vr"], T_X3 - 0.3);
 B.caption("WHERE THE ENEMY SAID NO ARMY COULD GO", T_WENT + 0.2, T_LAND - 0.2, "carth");
 B.caption("AND LIVED OFF THE LAND TO DO IT", T_LAND, T_JAMES - 0.2, "carth");
 // ---------- 3: the James (richmond map) ----------
-flagS(FL.us, 1590, 960, T_X3 + 0.5, T_LEE - 0.3, 100); flagS(FL.cs, 1350, 820, T_X3 + 0.5, T_LEE - 0.3, 100);
+flagS(FL.us, 1590, 960, T_X3 + 0.5, T_LEE - 0.3, 100); flagS(FL.cs, 1260, 930, T_X3 + 0.5, T_LEE - 0.3, 100);   // moved off the U. S. GRANT card (both flags visible)
 arw({ pts: R.MOVE, side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 13), dash: "9 6", until: END + 1 });
 glowPath([R.WEYANOKE, [R.WEYANOKE[0] - 1, R.WEYANOKE[1] + 5]], "#6f9bff", 2.0, T_JAMES + 0.8, END + 1, 3, 0.95, { top: true });
 boxS("THE JAMES", R.WEYANOKE[0] + 14, R.WEYANOKE[1] + 14, T_JAMES, null, { size: 28, bg: "#dcecf8" });
@@ -91,7 +91,7 @@ tl.to(AT, { opacity: 1, duration: 0.3 }, T_APP);
 // Appomattox on the map, only on its spoken word (the card stays up; the place stamp + 1865 sit on the map, left of the card)
 boxS("APPOMATTOX", AP[0] + 10, AP[1] + 40, T_APP, null, { size: 30 }); wstampS("1865", AP[0] + 10, AP[1] + 78, T_L65, null, "#9fc0ea", 30);
 K.target(AP[0], AP[1], T_APP + 0.1, { r: 26, side: "#ffd54a", until: T_APP + 3.0 });
-flagS(FL.us, 1100, 1010, T_LEE - 0.3, END + 1, 100); flagS(FL.cs, 1010, 790, T_LEE - 0.3, END + 1, 100);
+flagS(FL.us, 1100, 1010, T_LEE - 0.3, END + 1, 100); flagS(FL.cs, 1010, 790, T_LEE - 0.3, T_EACH - 0.2, 100);
 // ---------- each time: the method, in the last sentence's own words ----------
 GG.METHOD_TITLE = "EACH TIME";
 GG.METHOD = ["HE MOVED BEFORE THE ENEMY WAS READY", "HE WENT WHERE THE ENEMY SAID HE COULD NOT GO"];
@@ -105,6 +105,8 @@ const FC = E.final({ moves: [["THE TWO RIVER FORTS", "FEB 1862"], ["VICKSBURG", 
 FC.querySelector(".fam").innerHTML = `SOMEONE IN YOUR FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY · WE READ EVERY ONE</span>`;
 // end screen: the last ~20 s the card shrinks to a top band and the dark backing lifts, the map alive under it
 const tBand = Math.max(F_TELL + 1.2, END - 20);
+// Confederate flag clear of the EACH TIME card and the big final-question card, back to its place once the card shrinks to the top band
+flagS(FL.cs, 950, 975, T_EACH - 0.2, tBand, 100); flagS(FL.cs, 1010, 790, tBand, END + 1, 100);
 tl.to(FC, { scale: 0.5, y: -125, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);
 const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
 WIN.push([F_Q, END + 1]);

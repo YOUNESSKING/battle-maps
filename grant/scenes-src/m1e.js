@@ -1,6 +1,6 @@
 // m1e (m1-7..m1-8), Grant #16: night 15-16 Feb: Floyd and Pillow leave on river steamers from the Dover landing, Forrest's cavalry rides
 // out through the flooded backwater of Lick Creek, the command falls to Buckner; dawn 16 Feb: the letters (Grant's reply verbatim, hit on
-// "immediate"), Buckner accepts, the US flag over the fort (option 2 throughout: owner 2026-11-02, no ground tint on close-ups); Grant's telegram
+// "immediate"), Buckner accepts, the US flag over the fort, territory returns (option 1, 2.2 s fade) on the zoom-out; Grant's telegram
 // (12,000-15,000 prisoners, 48 field guns, 17 heavy guns), U.S. = Unconditional Surrender Grant, the casualty card.
 // Basemap donelson_hd_lift (z13, v11). Built with: python3 tools/m1_build.py m1e donelson_hd_lift m1-7 m1-8
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
@@ -194,19 +194,16 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
-// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
-// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
-const TERR_A = 0.5, TERR_F = "saturate(0.4)";
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -272,11 +269,12 @@ const MID2 = MID.map((q, i) => i >= 5 ? [q[0] + [0, 0, 0, 36, 40, 30, 22, 10][i]
 const UPRIVER = [LANDG, [1600, 690], [1720, 650], [1840, 628], [1960, 680], [2060, 780], [2160, 900], [2260, 1040]];
 const ESCAPE = [[1500, 805], [1556, 832], [1610, 878], [1660, 950], [1712, 1050], [1760, 1160], [1800, 1280]];
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
-// ---------- map: option 2 (no territory fill) the whole scene ----------
+// ---------- map: option 2 at night; option 1 returns (fade 2.2 s) as the camera pulls out after the surrender ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.shimmer([CUMB], { width: 1.2 }); LV.scaleBar(15.37); LV.north();
 const NW = nightWash(0, T_DAWN - 0.2, 0.5); gsap.set(NW, { autoAlpha: 1 }); tl.getTweensOf(NW).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill());
 dawnWash(T_DAWN - 0.3, T_TELE);
-const LGD2 = now(legend(0, END + 1, true));
+const LGD2 = now(legend(0, T_ACC + 1.4, true)); const LGD1 = legend(T_ACC + 1.6, END + 1, false);
+const TER = terr("assets/media/m1_don_feb16_mx.png", T_ACC + 1.0, null, 2.8);
 camera([[0, 1480, 760, 2.2], [T_STEAM + 0.4, 1560, 740, 2.0], [T_FEAR, 1600, 760, 1.9], [T_FOR, 1560, 860, 2.1], [T_BACKW + 0.6, 1590, 900, 2.0],
   [T_CMD, 1450, 770, 2.2], [T_DAWN + 0.3, 1380, 790, 1.8], [T_ANS + 0.4, 1370, 790, 1.8], [T_ACC, 1400, 760, 2.0], [T_TELE, 1380, 760, 1.35],
   [T_LET, 1360, 760, 1.2], [END, 1340, 760, 1.12]]);
@@ -353,7 +351,7 @@ const CAS = K.casualties({ rows: [["", "~2,800", "12,000–15,000"]], flagA: FL.
   const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FORT DONELSON"; inner.insertBefore(h, inner.firstChild);
   const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "UNION: LOSSES · CONFEDERATE: PRISONERS"; inner.appendChild(f); }
 // ---------- clean screen ----------
-declutter([LGD2, CF, CP, BB, GB], [[T_NO - 0.1, T_BCALL - 0.2], [T_UNG - 0.1, T_ACC - 0.1], [T_TAKEN - 0.2, END + 1]]);
+declutter([LGD2, LGD1, CF, CP, BB, GB], [[T_NO - 0.1, T_BCALL - 0.2], [T_UNG - 0.1, T_ACC - 0.1], [T_TAKEN - 0.2, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

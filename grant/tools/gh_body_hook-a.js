@@ -2,15 +2,14 @@
 // Map agent hook (prefix gh_). Built with:  python3 tools/gh_make_control.py && python3 tools/gh_inline.py hook-a donelson_hd_lift hook-1 hook-2
 // ONE world = donelson map px (z13). Three maps on ONE camera at their true place and scale (technique: patton/cleburne hook-a):
 //   `tennessee` (z9, 16x, the overview), `henry` (z11, 4x, feathered, fades in 0.12x-0.24x) and `donelson` (z13, the relief, feathered,
-//   fades in 0.38x-0.72x). Owner 2026-11-02 (territory minimised): option 1 (subtle tint) ONLY on the wide theatre shot (tennessee + henry
-//   feb62, tools/gh_make_control.py); it dissolves (~2.8 s, sine.inOut) during the dive; the donelson close-up is option 2 (front lines only).
+//   fades in 0.38x-0.72x). Territory option 1 per date: tools/gh_make_control.py (feb62 overview; donelson feb05 -> feb14 -> feb16).
 // hook-1 (stakes): frame 0 = the theatre (Cairo - Nashville), territory Feb 1862, both flags, blue gunboats + columns already moving up the
 //   rivers, red columns reinforcing; FEBRUARY 1862 on "eighteen sixty-two"; "two rivers": the Tennessee and the Cumberland light up from
 //   the Ohio; "open doors": blue arrows run up both rivers (OPEN DOORS); "heart of the Confederacy": Nashville pulses; "two forts": two red
 //   forts slam on the rivers; "held them shut": red bars across both rivers, the boats stop (HELD SHUT); ONE continuous zoom (whoosh, no cut,
 //   no flash) from the theatre down the Cumberland onto FORT DONELSON, landing on the words "Fort Donelson".
 // hook-2: blue columns march over from the Tennessee and close the ring, gunboats come up the river; 12,000+ card slams on "twelve
-//   thousand" (ticks), CONFEDERATE SOLDIERS lights on its words; SURRENDERED on "surrendered" (the garrison greys, a
+//   thousand" (ticks), CONFEDERATE SOLDIERS lights on its words; SURRENDERED on "surrendered" (the pocket turns blue, the garrison greys, a
 //   white flag over the fort, prisoners); the "?" badge on "a general"; FIRST MAJOR VICTORY on its words; "a disaster": red pulse, the
 //   camera pushes in on the Union right (hook-b starts there).
 // Facts: research/FACT_NOTES.md + FACTCHECK_A (forts, ring, 12,000-15,000 prisoners). Nothing on screen before it is spoken (1c).
@@ -37,6 +36,7 @@ const gimg = (src, parent) => { const i = document.createElement("img"); i.src =
 const TEN = group([-21900, -13756, 46080, 25920], 0); gimg("assets/media/gh_ten_relief.jpg", TEN); const TEN_C = terrImg("assets/media/gh_tennessee_ctl_feb62_mx.png", TEN, 0, null, 0.01);
 const HEN = group([-4904, -2576, 11520, 6480], 6); gimg("assets/media/gh_hen_relief.jpg", HEN); const HEN_C = terrImg("assets/media/gh_henry_ctl_feb62_mx.png", HEN, 0, null, 0.01);
 const DON = group([0, 0, 2880, 1620], 5); RELIEF.style.cssText += "position:absolute;left:0;top:0;width:100%;height:100%;"; DON.appendChild(RELIEF);
+const DC14 = terrImg("assets/media/gh_donelson_ctl_feb14_mx.png", DON, 0, null, 0.01);   // the Union corridor Fort Henry -> Donelson (12-14 Feb)
 // ---------- the camera ----------
 const cam = { cx: 0, cy: 0, s: 1 };
 const smooth = (a) => a * a * (3 - 2 * a), ramp = (s, a, b) => smooth(Math.min(Math.max(Math.log(s / a) / Math.log(b / a), 0), 1));
@@ -116,8 +116,6 @@ pulse(T_SHUT + 0.25);
 // ---------- ONE CONTINUOUS ZOOM (whoosh) from the theatre down the Cumberland onto Fort Donelson ----------
 SFX("whoosh", TZ0 - 0.05);
 zoom(TZ0, TZ1 - TZ0, C0b, S0b, CF, SF, FD, "power2.inOut");
-// option 1 -> option 2: the (subtle) theatre colours dissolve smoothly during the dive; the close-up shows front lines only
-tl.to([TEN_C, HEN_C], { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, TZ0 + 0.2);
 // the Cumberland is named on its words (donelson scale), then the river label leaves (v11)
 glowPath(CUMB_D, "#bfe2ff", 6 / SF, T_CUMB - 0.1, S2 + 1.0, 1, 0.55, { draw: 0.9 });
 boxL("CUMBERLAND RIVER", 1385, 470, T_CUMB, null, { size: 15 });
@@ -127,8 +125,9 @@ const BOATR2 = [...BOATR, [1300, 545]];
 const GB2 = [0, 1].map((k) => gunboat(BOATR2.map(([x, y]) => [x - k * 22, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), null, { s: 17 }));
 const FB = flagS(FL.us, "", 1060, 230, TZ0 + 0.8, TZ1 - 0.3); pinAlong(FB, [[1060, 230], [1110, 380]], TZ0 + 0.8, 6.0, 8);
 const FM = flagS(FL.csa, "", ...LD(36.40, -87.72), TZ0 + 0.8, TZ1 + 0.4);
-// arriving on Fort Donelson (donelson map, option 2: no ground tint): the fort, its water batteries, Dover
+// arriving on Fort Donelson (donelson map, option 1): the fort, its water batteries, Dover; the Union corridor colours in from the west
 const TA = TZ1 - 0.6;
+const DC16 = terrImg("assets/media/gh_donelson_ctl_feb16_mx.png", DON, null, null);
 const F2 = [flagS(FL.us, "", 900, 690, TZ1 - 0.5, null), flagS(FL.csa, "", 1745, 445, TZ1 - 0.5, null)];
 const FDL = boxL("FORT DONELSON", FD[0] - 175, FD[1] - 8, T_FD - 0.05, null, { size: 18 });
 K.target(...FD, T_FD + 0.05, { r: 60, side: "rome", until: T_FD + 3.2 });
@@ -140,7 +139,7 @@ const GR = [unitS("g1", "rome", [1320, 810], "infantry", "", { t: TZ1 - 0.5 }), 
 // =====================================================================================================================
 // hook-2: within a week -- the ring closes; 12,000+; SURRENDERED; the "?" general; first major victory; a disaster
 // =====================================================================================================================
-const LGD = legend(TZ1 + 0.4, null, true);     // two glowing lines (option 2); who is who, first shown after the camera has arrived (1c)
+const LGD = legend(TZ1 + 0.4, null);     // who is who, first shown after the camera has arrived (1c)
 // the Union columns march over from the Tennessee (Fort Henry) and take their places round the fort: Smith left, Wallace centre, McClernand right
 const CW = [1060, 730], SW = 0.95, CR = [1430, 800], SR = 1.55;
 camTo(TZ1 + 0.02, T_WEEK - TZ1 + 0.1, [CF[0] - 25, CF[1] + 5], SF * 1.04, "sine.out");
@@ -154,10 +153,12 @@ SFX("ref:whoosh", T_WEEK);
 const FH_I = fortIcon(FH[0] + 25, FH[1] - 10, T_WEEK - 0.2, T_SURR + 1.0, { s: 40, side: "carth" });     // Fort Henry already taken (blue)
 // the gunboats come up the river and fire on the water batteries (visible, on screen)
 shoot([1290, 520], [WB[0] - 6, WB[1] - 8], T_WEEK + 3.1, { r: 7, h: 30, width: 1.4, dur: 0.6 });
-// push in on the fort as the ring closes; the two-colour front round the pocket (option 2)
+// push in on the fort as the ring closes; the front (two-colour) round the pocket (option 1 + the front line where the sides touch)
 camTo(T_12 - 0.6, 2.4, CR, SR, "sine.inOut");
 const RING = [[1300, 735], [1290, 790], [1305, 850], [1360, 885], [1440, 900], [1520, 892], [1580, 860], [1600, 800]];
 const RF = front2(RING, SR, T_WEEK + 2.2, { dur: 1.4, until: T_SURR + 0.4 });
+// ground won as the ring closes (owner 2026-11-03): the corridor colours give way to the ring (Union outside the pocket, m1_don_hb_ring)
+const DCR = terrImg("assets/media/m1_don_hb_ring_mx.png", DON, T_WEEK + 2.2, null, 1.6); tl.to(DC14, { autoAlpha: 0, duration: 1.6, ease: "sine.inOut" }, T_WEEK + 2.4);
 // the big number card: slams on "twelve thousand", ticks; CONFEDERATE SOLDIERS lights on its words
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 60px 18px;background:rgba(14,12,10,0.9);border-top:8px solid #e3232f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div style="font-size:26px;letter-spacing:0.36em;color:#d8cfb8">MORE THAN</div>
@@ -168,10 +169,11 @@ const tickN = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySel
   tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt(v.v); } }, t0); for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
 tickN(BIG, ".n", 12000, T_12 + 0.1, T_CSOL + 0.2, (v) => (Math.round(v / 100) * 100).toLocaleString("en-US"));
 tl.to(BIG.querySelector(".w0"), { color: "#ef8a82", duration: 0.15 }, T_CSOL); SFX("ref:pop", T_CSOL + 0.02);
-// "surrendered": the garrison greys, a white flag over the fort, prisoners
+// "surrendered": the pocket turns blue, the garrison greys, a white flag over the fort, prisoners
 const SURR = sstamp("SURRENDERED", 760, T_SURR - 0.05, { size: 92, shake: 6, until: T_GEN - 0.05 });
 pulse(T_SURR + 0.2);
 dateSet("16 FEBRUARY 1862", T_SURR + 0.1, null);
+tl.to(DC16, { autoAlpha: 1, duration: 1.0 }, T_SURR); tl.to([DC14, DCR], { autoAlpha: 0, duration: 1.0 }, T_SURR);
 B.grey(GR, T_SURR + 0.1, 0.8);
 const WF = pinS(GG.pin(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, FD[0] + 8, FD[1] - 48, { t: T_SURR + 0.2, pop: true }));
 SFX("ref:pop", T_SURR + 0.25);

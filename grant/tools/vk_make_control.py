@@ -10,7 +10,9 @@ itself stays uncoloured and visibly splits the two banks. Fronts are hand-placed
                            sides touch (Grierson's raid deep in enemy land).
   vk_vick_ctl_apr20_mx.png 20 Apr 1863 on `vicksburg`: Union on the Louisiana west bank from Milliken's Bend down to New Carthage /
                            Perkins' plantation; Confederacy: the east bank (Vicksburg, Grand Gulf, Port Gibson) and west Louisiana.
-usage (from grant/): python3 tools/vk_make_control.py [miss] [vick]"""
+  vk_gg_ctl_apr30_mx.png   30 Apr 1863 on `grandgulf` (m2d, owner 2026-11-03 territory rule): Union = the Louisiana west bank + the
+                           Bruinsburg bridgehead on the east bank (same arc as the m2d front FBH, world px); Confederacy = the rest of the east bank.
+usage (from grant/): python3 tools/vk_make_control.py [miss] [vick] [gg]"""
 import json, math, sys, os
 import numpy as np
 from PIL import Image, ImageDraw
@@ -84,7 +86,18 @@ def vick():
     render(land, mask(P, [apr1]) & W, "vk_vick_ctl_apr1_mx.png")
     render(land, mask(P, [apr20]) & W, "vk_vick_ctl_apr20_mx.png")
 
+def gg():
+    land = land_of("grandgulf")
+    # west bank = west of the channel as the grandgulf water layer shows it (hand-traced centreline, world px), + the bridgehead
+    riv = [(1560, -10), (1520, 100), (1440, 220), (1300, 280), (1240, 340), (1300, 460), (1290, 600), (1200, 700), (1080, 780), (980, 840), (920, 980),
+           (840, 1120), (760, 1200), (600, 1240), (480, 1360), (420, 1500), (390, 1630)]
+    bh = [(1000, 868), (1060, 852), (1122, 880), (1150, 945), (1122, 1008), (1060, 1038), (972, 1040), (930, 1045), (940, 990), (975, 905)]   # m2d FBH arc, closed on the river
+    im = Image.new("L", (2880, 1620), 0); dr = ImageDraw.Draw(im)
+    dr.polygon(riv + [(-10, 1630), (-10, -10)], fill=255); dr.polygon(bh, fill=255); W = np.array(im) > 0
+    render(land, W, "vk_gg_ctl_apr30_mx.png")
+
 if __name__ == "__main__":
     a = sys.argv[1:] or ["miss", "vick"]
+    if "gg" in a: gg()
     if "miss" in a: miss()
     if "vick" in a: vick()

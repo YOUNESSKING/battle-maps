@@ -7,6 +7,8 @@ One lat/lon definition per date, rendered into every map's pixel space so the ma
           lost 19 Jan), New Madrid pocket (Missouri bootheel) Confederate; Paducah, Smithland, Cairo Union; Tennessee, Arkansas,
           Mississippi, Alabama Confederate. Approximate to ~5-10 km (fine for z9/z11).
   feb14   (donelson map) the Union corridor from Fort Henry to the ring round the fort; the pocket (outer works, fort, Dover) Confederate.
+  feb15   (donelson map) 15 Feb, the breakout: as feb14, but the pocket bulges south over the Union right (McClernand thrown back,
+          the Forge road open; FACTCHECK_A row 17); the bulge = hook-b's RING2 front (donelson px).
   feb16   (donelson map) after the surrender: the whole Dover side of the Cumberland Union; the far bank Confederate.
 -> assets/media/gh_<map>_ctl_<date>_mx.png (2880 x 1620)
 usage (from grant/): python3 tools/gh_make_control.py [map:date ...]"""
@@ -78,7 +80,7 @@ def build(m, date):
             un = un[idx[0], idx[1]]
     elif date == "feb05":
         un = np.zeros((H, W), bool)
-    elif date == "feb14":   # a band round the roads Fort Henry -> Donelson (~7 km wide) closing on the ring; the pocket stays Confederate
+    elif date in ("feb14", "feb15"):   # a band round the roads Fort Henry -> Donelson (~7 km wide) closing on the ring; the pocket stays Confederate
         im = Image.new("L", (W, H), 0); d = ImageDraw.Draw(im); J = json.load(open(f"assets/{m}_hd_lift.json"))
         wpx = 7000 / J["meters_per_px"]
         path = [P(*q) for q in ROADS14]
@@ -86,6 +88,9 @@ def build(m, date):
         for q in (path[0], path[-1]): d.ellipse([q[0] - wpx / 2, q[1] - wpx / 2, q[0] + wpx / 2, q[1] + wpx / 2], fill=255)
         ring = [P(*q) for q in RINGOUT]; d.polygon(ring, fill=255)
         un = (ndimage.gaussian_filter((np.array(im) > 0).astype(np.float32), max(2, wpx / 8)) > 0.5) & ~poly_mask(P, [POCKET])
+        if date == "feb15":   # the breakout bulge (hook-b RING2, donelson px; closed across the pocket)
+            RING2 = [(1300, 735), (1290, 790), (1300, 860), (1335, 930), (1405, 975), (1490, 995), (1565, 955), (1600, 800)]
+            bm = Image.new("L", (W, H), 0); ImageDraw.Draw(bm).polygon(RING2, fill=255); un &= ~(np.array(bm) > 0)
     elif date == "feb16":
         un = poly_mask(P, [CUMB_SW])
     if m == "donelson" and date != "feb05":   # round the hand-drawn corners (the pocket stays within ~100 m)

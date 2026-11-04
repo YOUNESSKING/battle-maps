@@ -6,6 +6,10 @@ campaign maps (Feb-Mar 1862): ~1 km accuracy on `donelson`, ~5 km on `henry`, ~2
   m1_henry_feb06b   6 Feb after: Fort Henry and the river bend taken (Union).
   m1_don_feb12      12 Feb: Union around Fort Henry and the north; Confederates hold Donelson and the ground east.
   m1_don_feb13      13-15 Feb: the ring: Confederates inside the outer works + east of the Cumberland + the open south-east.
+  m1_don_feb15a     15 Feb noon: the breakout: the Confederate pocket bulges south-west over the Union right (McClernand thrown back, the
+                    Forge road inside the red ground); front = the m1c PUSH line.
+  m1_don_feb15b     15 Feb evening: Pillow recalled to the trenches (ring as on the 13th) and C. F. Smith holds the outer works on the
+                    Confederate right (FACTCHECK_A rows 17, 19, 26); front = the m1d MID2 line.
   m1_don_feb16      16 Feb after the surrender: the pocket Union; only the far south-east (toward Nashville) Confederate.
   m1_ten_feb06      6 Feb: the Columbus - Henry/Donelson - Bowling Green line (Mill Springs already lost, 19 Jan).
   m1_ten_mar        March 1862: Kentucky and much of middle Tennessee lost; the Tennessee River corridor Union.
@@ -65,6 +69,31 @@ def donelson():
     red16 = [(1720, 640), (1840, 600), (2000, 520), (2200, 400), (2500, 280), (2880, 230), (2880, 1620), (2100, 1620), (1950, 1250), (1850, 950), (1760, 760)]
     u16 = poly([(0, 0), (2880, 0), (2880, 1620), (0, 1620)]) & ~poly(red16)
     render(land, u16, "m1_don_feb16")
+
+def donelson15():
+    land = land_of("donelson"); ALL = poly([(0, 0), (2880, 0), (2880, 1620), (0, 1620)])
+    WORKS = [(1540, 811), (1487, 832), (1429, 825), (1371, 796), (1312, 753), (1289, 702), (1307, 651), (1324, 630)]
+    ULINE = [(1557, 854), (1487, 876), (1406, 869), (1330, 832), (1266, 775), (1243, 709), (1254, 644), (1289, 601)]
+    MID = [((a[0] + b[0]) / 2, (a[1] + b[1]) / 2) for a, b in zip(WORKS, ULINE)]
+    PUSH = [(q[0] - [10, 20, 38, 46][i], q[1] + [60, 66, 58, 40][i]) if i < 4 else ((q[0] - 14, q[1] + 12) if i == 4 else q) for i, q in enumerate(MID)]
+    north = [(1324, 630), (1400, 600), (1480, 660), (1600, 650), (1720, 610), (1840, 590), (2000, 520), (2200, 400), (2500, 280), (2880, 230), (2880, 1620),
+             (1800, 1620), (1700, 1200), (1620, 950)]
+    # breakout: the red ground reaches the PUSH line on the Union right (indices 0-4), the works further north
+    render(land, ALL & ~poly(north + [(1580, 960)] + PUSH[:5] + WORKS[5:]), "m1_don_feb15a")
+    # evening: back inside the works; Smith's lodgement on the Confederate right (works 5-7 pushed east, as MID2 in m1d)
+    W2 = [(q[0] + [0, 0, 0, 0, 0, 30, 22, 10][i] * 1.3, q[1] + [0, 0, 0, 0, 0, 6, 14, 18][i]) for i, q in enumerate(WORKS)]
+    render(land, ALL & ~poly(north + W2), "m1_don_feb15b")
+
+def hookring():
+    """hook-a/hook-b (gh_ scenes, same donelson px): the ring as the hook draws it (front RING) and the breakout (front RING2);
+    Union = everything outside the pocket (as m1_don_feb13), so the Union units never stand on red ground."""
+    land = land_of("donelson"); ALL = poly([(0, 0), (2880, 0), (2880, 1620), (0, 1620)])
+    north = [(1324, 630), (1400, 600), (1480, 660), (1600, 650), (1720, 610), (1840, 590), (2000, 520), (2200, 400), (2500, 280), (2880, 230), (2880, 1620),
+             (1800, 1620), (1700, 1200), (1620, 950)]
+    RING = [(1300, 735), (1290, 790), (1305, 850), (1360, 885), (1440, 900), (1520, 892), (1580, 860)]
+    RING2 = [(1300, 735), (1290, 790), (1300, 860), (1335, 930), (1405, 975), (1490, 995), (1565, 955)]
+    render(land, ALL & ~poly(north + RING[::-1]), "m1_don_hb_ring")
+    render(land, ALL & ~poly(north + RING2[::-1]), "m1_don_hb_burst")
 
 def tennessee():
     P = proj("tennessee"); land = land_of("tennessee"); L = lambda pts: [P(*q) for q in pts]

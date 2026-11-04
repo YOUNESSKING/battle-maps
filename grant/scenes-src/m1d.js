@@ -1,4 +1,4 @@
-// m1d (m1-5..m1-6), Grant #16: Fort Donelson close-up, option 2. 15 Feb: Grant rides back along the line, does not panic;
+// m1d (m1-5..m1-6), Grant #16: Fort Donelson close-up, option 1 + fronts by day, option 2 at night. 15 Feb: Grant rides back along the line, does not panic;
 // "whoever attacks first now will win" (paraphrase card, no quote marks); the cartridge boxes are filled, the right re-forms ("acted like a charm");
 // the Confederates pull back inside the ring; the first counterattack on the LEFT: C. F. Smith leads his division through the abatis
 // and takes the outer works; night: the Confederate council decides to give up.
@@ -194,19 +194,16 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
-// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
-// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
-const TERR_A = 0.5, TERR_F = "saturate(0.4)";
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -270,15 +267,21 @@ const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 
 const MID2 = MID.map((q, i) => i >= 5 ? [q[0] + [0, 0, 0, 36, 40, 30, 22, 10][i], q[1] + [0, 0, 0, 0, 0, 6, 14, 18][i]] : q);   // Smith's lodgement
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
 const RIDE = [[1215, 560], [1205, 640], [1200, 720], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
-// ---------- map (option 2) ----------
+// ---------- map: owner 2026-11-03 (territory when it helps): ground changes hands all scene -> option 1 (full strength) + fronts:
+// the breakout bulge (m1_don_feb15a, m1c's last frame) goes back to the ring as the Confederates pull back (m1_don_feb13), then
+// Smith's outer works turn blue (m1_don_feb15b); at night the colours dissolve (~2.8 s) into fronts only (m1e opens on the night) ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.shimmer([CUMB], { width: 1.2 }); LV.scaleBar(15.37); LV.north();
-const LGD = now(legend(0, END + 1, true));
+const TRa = terr("assets/media/m1_don_feb15a_mx.png", 0, null, 0.01);
+const TRr = terr("assets/media/m1_don_feb13_mx.png", T_PULLED - 0.1, null, 2.4); tl.to(TRa, { autoAlpha: 0, duration: 2.4, ease: "sine.inOut" }, T_PULLED + 0.1);
+const TRs = terr("assets/media/m1_don_feb15b_mx.png", T_TOOK - 0.4, null, 2.0); tl.to(TRr, { autoAlpha: 0, duration: 2.0, ease: "sine.inOut" }, T_TOOK - 0.2);
+tl.to(TRs, { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, T_NIGHT + 0.3);
+const LGD = now(legend(0, T_NIGHT + 0.6, false)), LGD2 = legend(T_NIGHT + 0.8, END + 1, true);
 dawnWash(0, T_NIGHT); { const d = document.getElementById("fx").lastElementChild; gsap.set(d, { autoAlpha: 1 }); tl.getTweensOf(d).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); }
 camera([[0, 1300, 820, 2.0], [T_TOLD, 1300, 860, 2.1], [T_FILL, 1360, 900, 2.4], [T_REPORT, 1400, 870, 2.2], [T_PULLED + 0.6, 1380, 820, 2.0],
   [T_LEFT + 0.4, 1290, 670, 2.5], [T_FELLED, 1285, 655, 2.9], [T_TOOK + 1.2, 1300, 670, 2.7], [T_NIGHT + 0.3, 1400, 720, 2.2], [END, 1420, 730, 2.15]]);
 dateNow("15 FEB · DAWN", T_RODE + 0.4); B.date("15 FEBRUARY 1862", T_RODE + 0.5, T_NIGHT - 0.1, 34); B.date("15 FEB · NIGHT", T_NIGHT, null, 34);
 // ---------- flags ----------
-flagS(FL.us, 1150, 760, 0, END + 1, 90); flagS(FL.cs, 1520, 690, 0, END + 1, 90);
+flagS(FL.us, 1175, 745, 0, END + 1, 90);   // (moved from 1150,760: was under the C. F. Smith badge) flagS(FL.cs, 1520, 690, 0, END + 1, 90);
 // ---------- the lines and units as m1c left them ----------
 fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 34);
 const F1 = frontS({ pts: PUSH, to: MID, moveT: T_PULLED - 0.3, moveDur: 3.0, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.2), until: T_TOOK - 0.3 });
@@ -332,7 +335,7 @@ tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: t
 boxS("COUNCIL", DOV[0] + 70, DOV[1] - 20, T_COUNCIL, null, { size: 24, bg: "#f3d6d0" });
 const GU = sstamp("GIVE UP", 250, T_GU - 0.05, { size: 84, sub: "THE CONFEDERATE COUNCIL", until: END - 0.1 });
 // ---------- clean screen ----------
-declutter([LGD, GB, SB], [[T_WHO, T_FILL - 0.4], [T_GREAT - 0.2, T_GONE - 0.2], [T_GU - 0.05, END + 1]]);
+declutter([LGD, LGD2, GB, SB], [[T_WHO, T_FILL - 0.4], [T_GREAT - 0.2, T_GONE - 0.2], [T_GU - 0.05, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();
