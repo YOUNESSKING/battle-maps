@@ -62,3 +62,9 @@ MOVE 2
 - Move 2 (Oct 1776): Continental Colours vs Union Flag.
 - Move 3 + hook (Sep-Oct 1777): US 13-star flag (Flag Act 14 Jun 1777) vs Union Flag. German troops shown under the British flag (in British pay).
 - Americans = hero BLUE, British = RED (as greene2/morgan).
+
+## Packaging claim check (2026-11-04): title "| The Man Who Saved the Revolution, Then Betrayed It" (vidIQ 93)
+Defensible as a historian's judgement, not as a literal fact: Mahan (verbatim, FACTCHECK_B): the capitulation of Saratoga "was due to the
+invaluable year of delay secured ... by their little navy on Lake Champlain, created ... and handled ... by ... Benedict Arnold"; Saratoga
+(where Arnold led the decisive attack at Breymann's redoubt) brought France into the war (NPS). The treason (West Point, 1780) is fact.
+Acceptable for a title; the video must support it in words (Mahan line + Saratoga/France) so the promise is paid.
