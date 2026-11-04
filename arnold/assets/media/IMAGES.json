@@ -1,0 +1,252 @@
+[
+ {
+  "file": "arnold_src.jpg",
+  "title": "Benedict Arnold (Thomas Hart mezzotint, 1776, hand-coloured copy)",
+  "shows": "Benedict Arnold (Thomas Hart mezzotint, 1776, hand-coloured copy) (1776 Hart mezzotint, NOT du Simitiere (not located). Palm-tree backdrop is the print's invention.)",
+  "points": [
+   [
+    0.5,
+    0.4
+   ]
+  ]
+ },
+ {
+  "file": "carleton_src.jpg",
+  "title": "Sir Guy Carleton, head-and-shoulders portrait",
+  "shows": "Sir Guy Carleton, head-and-shoulders portrait",
+  "points": [
+   [
+    0.5,
+    0.4
+   ]
+  ]
+ },
+ {
+  "file": "riedesel_src.jpg",
+  "title": "Friedrich Adolf Riedesel",
+  "shows": "Friedrich Adolf Riedesel (19th-century engraving, not a life portrait)",
+  "points": [
+   [
+    0.5,
+    0.35
+   ]
+  ]
+ },
+ {
+  "file": "rmontgomery_src.jpg",
+  "title": "General Montgomery (Murray's History of the American War)",
+  "shows": "General Montgomery (Murray's History of the American War) (Crude, probably unreliable likeness (period Montgomery prints are largely fantasy); cut-out is rough)",
+  "points": [
+   [
+    0.5,
+    0.35
+   ]
+  ]
+ },
+ {
+  "file": "washington_src.jpg",
+  "title": "George Washington",
+  "shows": "George Washington",
+  "points": [
+   [
+    0.5,
+    0.17
+   ]
+  ]
+ },
+ {
+  "file": "arch_montgomery_print.jpg",
+  "title": "The death of General Montgomery at Quebec (print after Trumbull's composition)",
+  "shows": "The death of General Montgomery at Quebec (print after Trumbull's composition) (Heroic tableau; the real attack was a chaotic night blizzard assault. Trumbull's original painting not obtained (Commons kept returning 429).)",
+  "points": [
+   [
+    0.3,
+    0.5
+   ],
+   [
+    0.55,
+    0.5
+   ]
+  ]
+ },
+ {
+  "file": "arch_philadelphia.jpg",
+  "title": "Gunboat Philadelphia (sunk 1776, raised 1935), Smithsonian",
+  "shows": "Gunboat Philadelphia (sunk 1776, raised 1935), Smithsonian (Portrait orientation 1280x1707)",
+  "points": [
+   [
+    0.5,
+    0.2
+   ],
+   [
+    0.5,
+    0.6
+   ]
+  ]
+ },
+ {
+  "file": "arch_faden_valcour.jpg",
+  "title": "The attack and defeat of the American fleet under Benedict Arnold by the King's fleet (Valcour)",
+  "shows": "The attack and defeat of the American fleet under Benedict Arnold by the King's fleet (Valcour) (Title credits Carleton; the British fleet commander was Pringle.)",
+  "points": [
+   [
+    0.12,
+    0.62
+   ],
+   [
+    0.28,
+    0.7
+   ],
+   [
+    0.55,
+    0.45
+   ]
+  ]
+ },
+ {
+  "file": "arch_faden_valcour_text.jpg",
+  "title": "Faden Valcour map, other state, with narrative and ship lists",
+  "shows": "Faden Valcour map, other state, with narrative and ship lists (Stained sheet)",
+  "points": [
+   [
+    0.2,
+    0.4
+   ],
+   [
+    0.45,
+    0.3
+   ]
+  ]
+ },
+ {
+  "file": "arch_saratoga_faden.jpg",
+  "title": "Plan of the encampment and position of the army under Burgoyne at Swords House",
+  "shows": "Plan of the encampment and position of the army under Burgoyne at Swords House",
+  "points": [
+   [
+    0.25,
+    0.4
+   ],
+   [
+    0.55,
+    0.45
+   ]
+  ]
+ },
+ {
+  "file": "arch_burgoyne_surrender.jpg",
+  "title": "Surrender of General Burgoyne",
+  "shows": "Surrender of General Burgoyne (Idealised: Arnold is absent (correctly, he was wounded) but the staged tableau is not a literal record.)",
+  "points": [
+   [
+    0.5,
+    0.45
+   ],
+   [
+    0.35,
+    0.5
+   ]
+  ]
+ },
+ {
+  "file": "arch_boot_monument.jpg",
+  "title": "Boot Monument, Saratoga National Historical Park",
+  "shows": "Boot Monument, Saratoga National Historical Park (Monument deliberately omits Arnold's name.)",
+  "points": [
+   [
+    0.5,
+    0.5
+   ]
+  ]
+ },
+ {
+  "file": "arch_kennebec_route.jpg",
+  "title": "Arnold expedition route marked on John Russell's 1795 map",
+  "shows": "Arnold expedition route marked on John Russell's 1795 map (Red route and letters are 2010 additions, not period. Tall image 1280x3173.)",
+  "points": [
+   [
+    0.7,
+    0.15
+   ],
+   [
+    0.8,
+    0.6
+   ],
+   [
+    0.55,
+    0.9
+   ]
+  ]
+ },
+ {
+  "file": "arch_andre_capture.jpg",
+  "title": "The Capture of Major Andre",
+  "shows": "The Capture of Major Andre (Romanticised 19th-century scene.)",
+  "points": [
+   [
+    0.5,
+    0.45
+   ],
+   [
+    0.3,
+    0.5
+   ]
+  ]
+ },
+ {
+  "file": "arch_arnold_wounded.jpg",
+  "title": "Battle of Saratoga. Gen. Arnold wounded in the attack on the Hessian Redoubt",
+  "shows": "Battle of Saratoga. Gen. Arnold wounded in the attack on the Hessian Redoubt (Romanticised 1858 melee; 640 px only. Arnold's horse was shot and his leg broken at the Breymann redoubt, 7 Oct 1777.)",
+  "points": [
+   [
+    0.5,
+    0.5
+   ],
+   [
+    0.65,
+    0.35
+   ]
+  ]
+ },
+ {
+  "file": "arch_ticonderoga.jpg",
+  "title": "A view of the lines and fort of Ticonderoga from a hill on South Bay",
+  "shows": "A view of the lines and fort of Ticonderoga from a hill on South Bay (1759 sketch (pre-1775 fort, earlier than Arnold's 1775 capture).)",
+  "points": [
+   [
+    0.7,
+    0.35
+   ],
+   [
+    0.4,
+    0.55
+   ]
+  ]
+ },
+ {
+  "file": "arch_quebec_1759.jpg",
+  "title": "A view of the taking of Quebec by the English forces commanded by Gen. Wolfe, 13 Sep 1759",
+  "shows": "A view of the taking of Quebec by the English forces commanded by Gen. Wolfe, 13 Sep 1759 (Depicts 1759 not 1775; 640 px only.)",
+  "points": [
+   [
+    0.3,
+    0.55
+   ],
+   [
+    0.75,
+    0.35
+   ]
+  ]
+ },
+ {
+  "file": "arch_arnold_mezzotint.jpg",
+  "title": "Benedict Arnold, full mezzotint",
+  "shows": "Benedict Arnold, full mezzotint (Same file as arnold_src.jpg.)",
+  "points": [
+   [
+    0.5,
+    0.2
+   ]
+  ]
+ }
+]

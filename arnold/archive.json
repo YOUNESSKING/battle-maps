@@ -1,0 +1,148 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/arch_ticonderoga.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "frame": true,
+   "dur": 3.76
+  },
+  {
+   "photo": "assets/media/archc_arnold.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.3
+   ],
+   "label": "BENEDICT ARNOLD",
+   "depth": true,
+   "frame": true,
+   "dur": 4.74
+  },
+  {
+   "photo": "assets/media/arch_quebec_1759.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "QUEBEC",
+   "depth": true,
+   "frame": true,
+   "dur": 4.22
+  },
+  {
+   "photo": "assets/media/headline_ticonderoga.jpg",
+   "move": "card",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 2.86
+  },
+  {
+   "photo": "assets/media/archc_arnold_b.jpg",
+   "move": "up",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "frame": true,
+   "dur": 1.88
+  },
+  {
+   "photo": "assets/media/archc_washington.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.3
+   ],
+   "label": "GEN. GEORGE WASHINGTON",
+   "depth": true,
+   "frame": true,
+   "dur": 4.74
+  },
+  {
+   "photo": "assets/media/arch_kennebec_top.jpg",
+   "move": "right",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "THE ROUTE TO QUEBEC",
+   "depth": true,
+   "frame": true,
+   "dur": 2.34
+  }
+ ],
+ "23": [
+  {
+   "photo": "assets/media/arch_faden_valcour_text.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "frame": true,
+   "dur": 2.56
+  },
+  {
+   "photo": "assets/media/headline_congress.jpg",
+   "move": "card",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 6.39
+  },
+  {
+   "photo": "assets/media/archc_arnold_b.jpg",
+   "move": "down",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "frame": true,
+   "dur": 2.42
+  },
+  {
+   "photo": "assets/media/arch_saratoga_faden.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "label": "BURGOYNE'S ARMY · 1777",
+   "depth": true,
+   "frame": true,
+   "dur": 4.51
+  },
+  {
+   "photo": "assets/media/card_1777_ticonderoga.jpg",
+   "move": "card",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 3.16
+  },
+  {
+   "photo": "assets/media/arch_arnold_wounded.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "depth": true,
+   "frame": true,
+   "dur": 2.49
+  }
+ ]
+}

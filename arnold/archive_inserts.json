@@ -1,0 +1,82 @@
+{
+ "m1-8": {
+  "from": "With a few hundred men",
+  "to": "The city had not fallen.",
+  "shots": [
+   {
+    "photo": "assets/media/arch_montgomery_print.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "label": "QUEBEC · 31 DECEMBER 1775",
+    "depth": true,
+    "frame": true
+   },
+   {
+    "photo": "assets/media/arch_quebec_1759.jpg",
+    "move": "left",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "label": "QUEBEC",
+    "depth": true,
+    "frame": true
+   }
+  ]
+ },
+ "m2-9": {
+  "from": "Alfred Thayer Mahan wrote",
+  "to": "on Lake Champlain.",
+  "shots": [
+   {
+    "photo": "assets/media/headline_mahan.jpg",
+    "move": "card",
+    "focus": [
+     0.5,
+     0.45
+    ],
+    "dur": 3.4
+   },
+   {
+    "photo": "assets/media/arch_faden_valcour.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "label": "VALCOUR ISLAND · 11 OCTOBER 1776",
+    "depth": true,
+    "frame": true
+   }
+  ]
+ },
+ "m3-7": {
+  "from": "Gates himself reported",
+  "to": "Breast Work.",
+  "shots": [
+   {
+    "photo": "assets/media/headline_gates.jpg",
+    "move": "card",
+    "focus": [
+     0.5,
+     0.45
+    ],
+    "dur": 3.4
+   },
+   {
+    "photo": "assets/media/arch_arnold_wounded.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "label": "SARATOGA · 7 OCTOBER 1777",
+    "depth": true,
+    "frame": true
+   }
+  ]
+ }
+}

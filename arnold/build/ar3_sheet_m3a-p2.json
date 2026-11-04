@@ -1,0 +1,41 @@
+{
+ "title": "Arnold #17 M3A (m3-1 - m3-2 - m3-3) - map agent ar3_, round p2, 70.26 s",
+ "note": "STYLE_LOCK 1a + 1c + 2b/2c: nothing before it is spoken, one big card at a time, option 2 on close-ups, visible fire only",
+ "frames": [
+  [
+   "m3a",
+   1.2,
+   "11:16.1",
+   "title over hudson p2 (option 1 half)",
+   "boom"
+  ],
+  [
+   "m3a",
+   5.8,
+   "11:20.7",
+   "~25 MILES / ALBANY",
+   "-"
+  ],
+  [
+   "m3a",
+   8.4,
+   "11:23.3",
+   "BEMIS HEIGHTS",
+   "-"
+  ],
+  [
+   "m3a",
+   10.0,
+   "11:24.9",
+   "the dive",
+   "zoom whoosh"
+  ],
+  [
+   "m3a",
+   11.6,
+   "11:26.5",
+   "river road",
+   "-"
+  ]
+ ]
+}

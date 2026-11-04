@@ -57,3 +57,76 @@ Open question: what triggers YouTube to expand a video on day 2-3 (Morgan, 2 Par
 - Studio's thumbnail ideas checked against FACT_NOTES: "90°" is NOT sourced as an exact figure and "72-hour relief" is false (Verdun 19 Dec ->
   attack 22 Dec -> link-up 26 Dec = 7 days). Usable and sourced: THREE DAYS (promise to attack on 22 Dec), ONE WEEK, a map of the turn north.
 - Small sample (1,296 impressions): read again at day 7 with Studio numbers (retention 0:30 too).
+
+## Studio AI 2026-11-02: "it's the era" (did not answer the traffic-source question)
+Views now: Thomas 125,206 (Civil War); Morgan 47,888, Greene 3,728 (Revolution); Smith 2,220 (Korea); 2 Para 39,662 (Falklands);
+Gavin 674, Collins 615, Patton 135 at ~20 h (WWII). Thomas had 24 views / 0.94% CTR in its first 2 days, then ignited (after the retitle).
+Studio's claim: 18th-19th-century American wars are our audience; WWII is the most saturated category. Our check: by era the record is
+Civil War 1/1, Revolution 1/2 (+Greene still beats all WWII), Falklands 1/1, Korea 0/1, WWII 0/3. The WWII 0/3 is the strongest era signal,
+but Gavin and Collins also had the CV openings; Patton (good opening, 48% at 0:40) is the clean WWII test: read it at day 7.
+Its "saturation" reason is NOT supported by our search counts (research/saturation/SATURATION.md: Goose Green is crowded and a hit).
+Studio's suggested topics: Hancock (Gettysburg), Jackson's Valley (made), Grant (Vicksburg), Benedict Arnold (Saratoga), Henry Knox.
+
+## Traffic sources, days 1-3 (Studio, asked 2026-11-02)
+| Video | Day | Browse impr. | Browse views | Browse CTR | Suggested impr. | Sugg. views | Sugg. CTR | Ret. 0:30 | Ret. 0:40 | AVD |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Morgan | 1 (Oct 21) | 7,590 | 1,740 | 4.77% | 2,013 | 193 | 3.68% | 68.0% | 46.6% | 6:17 |
+| Morgan | 2 | 10,158 | 2,098 | 3.74% | 3,104 | 217 | 3.32% | | | 6:29 |
+| Morgan | 3 | 28,945 | 6,182 | 4.47% | 4,378 | 240 | 2.33% | | | 5:47 |
+| Greene | 1 (Oct 28) | 6,250 | 1,312 | 4.50% | 1,892 | 108 | 2.54% | 60.5% | 50.4% | 4:43 |
+| Greene | 2 | 3,640 | 811 | 4.09% | 997 | 36 | 1.81% | | | 4:46 |
+| Greene | 3 | 4,784 | 917 | 3.28% | 350 | 14 | 2.86% | | | 4:35 |
+| 2 Para | 1 (Oct 17) | 316 | 81 | 2.22% | 655 | 34 | 1.53% | 64.6% | 37.2% | 4:41 |
+| 2 Para | 2 | 3,678 | 1,135 | 5.82% | 9,398 | 542 | 3.58% | | | 5:07 |
+| 2 Para | 3 | 15,341 | 4,266 | 4.70% | 26,335 | 1,339 | 2.78% | | | 4:54 |
+| Gavin | 1 (Oct 26) | 1,742 | 374 | 4.36% | 184 | 18 | 2.72% | 53.0% | 38.8% | 3:00 |
+| Gavin | 2 | 856 | 155 | 3.39% | 169 | 7 | 2.96% | | | 3:04 |
+| Gavin | 3 | 73 | 14 | 2.74% | 33 | 2 | 0.00% | | | (11:45 on 14 views) |
+| Smith | 1 (Oct 11) | 50 | 13 | 4.00% | 114 | 12 | 7.02% | 67.8% | 63.8% | 8:31 |
+| Smith | 2 | 9 | 6 | 0.00% | 6 | 0 | 0.00% | | | 7:26 |
+| Smith | 3 | 12 | 5 | 16.67% | 26 | 7 | 7.69% | | | 8:06 |
+| Patton | ~20 h | 766 | 116 | 4.96% | 530 | 10 | 0.75% | | 48.2% | 5:06 |
+Reading: Patton's retention (48.2% at 0:40) is as good as Morgan's (46.6%) and its Browse CTR is as good (4.96% vs 4.77%). The two
+differences: (1) day-1 Browse impressions ~10x lower (766 in 20 h vs 7,590), (2) Suggested CTR 0.75% vs 3.68%. Morgan launched 4 days after
+2 Para, which was exploding (13-42k impressions/day), so YouTube showed the next video to that fresh audience; Patton launched after a pause
+and two dead WWII videos. Hypothesis (to check with Greene/Gavin/Collins/Thomas rows): day-1 reach follows channel momentum + how close the
+topic is to what our recent viewers watched; Suggested CTR is the topic/thumbnail match in the sidebar.
+
+Greene vs Morgan: same era, same day-1 reach (6,250 vs 7,590 Browse impressions), Browse CTR as good (4.50% vs 4.77%), better retention at
+0:40 (50.4% vs 46.6%). But day-2 Browse impressions FELL (3,640) where Morgan's ROSE (10,158, then 28,945). The visible difference: average
+view duration 4:43 vs 6:17. Watch time per Browse impression (CTR x AVD): Morgan 4.77% x 377 s = 18.0 s; Greene 4.50% x 283 s = 12.7 s;
+Patton 4.96% x 306 s = 15.2 s. Hypothesis: YouTube expands on day 2 when watch time per impression is high (~18 s+). Test it on 2 Para,
+Thomas (after retitle), Gavin, Collins.
+
+2 Para: tiny day 1 (316 Browse impressions), then it took off through SUGGESTED first (9,398 on day 2, 26,335 on day 3) with a 3.58% Suggested
+CTR, and Browse followed (5.82% CTR on day 2). Retention at 0:40 was only 37.2% (worse than Greene's 50.4%), so 0:40 retention is NOT what
+decided it. Watch time per impression on day 2: Browse 5.82% x 307 s = 17.9 s (Morgan day 1: 18.0 s; Greene: 12.7 s; Patton: 15.2 s),
+and Suggested CTR 3.6-3.7% for both hits vs 2.5% Greene and 0.75% Patton. Updated hypothesis: a video grows when (a) clicks x minutes watched
+per impression is high (~18 s+) AND/OR (b) Suggested CTR is ~3.5%+ (the sidebar next to related videos opens up). A crowded topic is not bad
+by itself: it means a big sidebar audience, IF our thumbnail wins the click there (2 Para yes, Patton no).
+
+Gavin: same 0:40 retention as 2 Para (38.8% vs 37.2%) but average view duration 3:00 vs ~5:00. Watch time per Browse impression on day 1:
+4.36% x 180 s = 7.8 s -> cut on day 2. Ranking so far (watch time per impression, day 1-2): Morgan 18.0 s (hit), 2 Para 17.9 s (hit),
+Patton 15.2 s (slow), Greene 12.7 s (flat), Gavin 7.8 s (cut). The order matches the outcomes exactly (n=5). The lever is MINUTES WATCHED
+after the click, not the 0:40 number: 2 Para and Gavin had the same 0:40 retention and opposite fates.
+
+Smith: YouTube barely tested it (164 Browse + Suggested impressions in day 1, ~240 in 3 days; the channel had 16 subscribers and no hit yet).
+Its tiny sample looked excellent (watch time per impression 4.00% x 511 s = 20 s; Suggested CTR 7%; 63.8% at 0:40), but too small to
+trigger anything. So there are TWO stages: (1) YouTube must give the video a test batch on day 1-2 (depends on the channel's state/momentum:
+Smith 164, Patton 766 in 20 h vs Morgan 7,590 and Greene 6,250, both published in the weeks after 2 Para's explosion); (2) the batch decides:
+~18 s of watch time per impression (CTR x average view duration) and ~3.5% Suggested CTR -> expansion (Morgan, 2 Para); 13 s (Greene) holds
+flat; 8 s (Gavin) is cut. 2 Para itself started tiny (316) and broke out through Suggested on day 2.
+
+## Benedict Arnold #17 (published 2026-11-03, "| America's Most Brilliant Traitor"), day ~1 (Studio)
+Browse 1,262 impressions, 237 views, 2.85% CTR; Suggested 544 impressions, 20 views, 1.29% CTR; all sources 1,848 impressions, 269 views,
+2.38% CTR, average view duration 4:48. Reading with DATA_RULES: stage 1 small batch (cold channel, like Patton 766), AND stage 2 weak: Browse
+CTR 2.85% is the lowest of any recent upload (others 4.4-5.8%), so watch time per Browse impression = 2.85% x 288 s = 8.2 s (Gavin 7.8 s,
+cut). The CLICK failed, not the opening (name 1:01, move 1 1:53). Action: Test & Compare a new thumbnail/title on Arnold now; make Grant's
+packaging the priority before posting. vidIQ title scores for Grant (2026-11-04): current "| The Man Who Accepted Three Confederate
+Surrenders" 87, "| The Man Who Took Vicksburg" 88, "| The Man Who Won the Civil War" 93, "How Grant Cut Loose From His Supplies and Took
+Vicksburg" 86.
+Arnold CTR fix (2026-11-04): sidebar sheet `arnold/youtube/sidebar_test_sheet_2x.jpg` vs the 7 biggest Arnold/Saratoga videos. Every big
+Arnold thumbnail writes the NAME "BENEDICT ARNOLD" + the hero/traitor hook in big text on a bright, warm image; ours is dark grey-blue, small
+text, no name, and the AI face does not look like his famous portrait. vidIQ title scores: current "| America's Most Brilliant Traitor" 91;
+"| The Man Who Turned the Tide at Saratoga" 90; "| The Hero Who Won Saratoga Before He Betrayed America" 92; "| The Man Who Saved the
+Revolution, Then Betrayed It" 93 (strong claim: check FACT_NOTES before use). The title is not the main problem; the thumbnail is.

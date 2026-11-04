@@ -1,0 +1,41 @@
+{
+ "title": "Arnold #17 M3B (m3-4 - m3-5 - m3-6 - m3-7 - m3-8) - map agent ar3_, round p2, 126.63 s",
+ "note": "STYLE_LOCK 1a + 1c + 2b/2c: nothing before it is spoken, one big card at a time, option 2 on close-ups, visible fire only",
+ "frames": [
+  [
+   "m3b",
+   104.0,
+   "14:09.1",
+   "That night: zoom out onto hudson p2",
+   "whoosh"
+  ],
+  [
+   "m3b",
+   106.8,
+   "14:11.9",
+   "SARATOGA",
+   "-"
+  ],
+  [
+   "m3b",
+   109.0,
+   "14:14.1",
+   "the ring",
+   "whoosh"
+  ],
+  [
+   "m3b",
+   112.6,
+   "14:17.8",
+   "surrender card ticking",
+   "ticks"
+  ],
+  [
+   "m3b",
+   113.6,
+   "14:18.8",
+   "surrender card settled: ABOUT 6,000",
+   "-"
+  ]
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "name": "champlain",
+ "center": [
+  44.55,
+  -73.3
+ ],
+ "zoom": 9,
+ "origin_world_px": [
+  37408,
+  46570
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 217.89,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

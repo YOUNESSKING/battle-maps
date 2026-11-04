@@ -58,3 +58,5 @@ Carondelet kuh-RON-duh-let (verified), Buckner BUK-nur (verified), Chickahominy 
 | Took the Mississippi (Vicksburg fell 4 Jul 1863; Lincoln: "The Father of Waters again goes unvexed to the sea"; Port Hudson fell 9 Jul, not stated in title) | Title B | TRUE for Vicksburg; title says "took the Mississippi" loosely (river opened) | FACTCHECK_B #27 |
 | Fort Donelson, Vicksburg, the crossing of the James | Title C, thumbnail C ACROSS THE JAMES | TRUE | FACTCHECK_A/B/C |
 | Thumbnail portrait = AI-generated generic Union general (not a photo of Grant, no insignia) | all thumbnails | checked by eye: no stars, face in frame | |
+| "The Man Who Won the Civil War" (title, 2026-11-04, vidIQ 93) | Title | Historian's judgement, widely held: Grant was general-in-chief of all Union armies from March 1864 to Lee's surrender at Appomattox (9 Apr 1865); not a literal single-handed claim | Memoirs; Chernow, White; NPS |
+| Thumbnail D "CUT LOOSE" (vidIQ Vicksburg aerial, real Brady portrait LC public domain) | Thumbnail | TRUE as Grant's own words ("cut loose from my base"); AI flag-like Confederate markers painted out to plain red blocks | FACTCHECK_B #14, #25 |

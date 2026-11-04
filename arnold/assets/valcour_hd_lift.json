@@ -1,0 +1,20 @@
+{
+ "name": "valcour_hd_lift",
+ "center": [
+  44.6,
+  -73.42
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  619433,
+  756872
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 13.61,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

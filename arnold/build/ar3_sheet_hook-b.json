@@ -1,0 +1,209 @@
+{
+ "title": "Arnold #17 HOOK-B (hook-3 - hook-4) - map agent ar3_, round 3, 59.36 s",
+ "note": "STYLE_LOCK 1a + 1c + 2b/2c: nothing before it is spoken, one big card at a time, option 2 on close-ups, visible fire only",
+ "frames": [
+  [
+   "hook-b",
+   0,
+   "0:24.4",
+   "frame 0 = hook-a's last frame: the line broken at the redoubt, '?'",
+   "-"
+  ],
+  [
+   "hook-b",
+   1.2,
+   "0:25.6",
+   "'But on the afternoon': rewind, the British step back",
+   "whoosh"
+  ],
+  [
+   "hook-b",
+   2.6,
+   "0:27.0",
+   "'seventh of October': 7 OCTOBER 1777",
+   "ticks"
+  ],
+  [
+   "hook-b",
+   4.6,
+   "0:29.0",
+   "'did not look like a victory': red pulse",
+   "pop"
+  ],
+  [
+   "hook-b",
+   6.6,
+   "0:31.0",
+   "'fifteen hundred': ABOUT 1,500 card",
+   "hit"
+  ],
+  [
+   "hook-b",
+   9.6,
+   "0:34.0",
+   "'marched out of their camp': columns + arrows",
+   "whoosh"
+  ],
+  [
+   "hook-b",
+   11.0,
+   "0:35.4",
+   "'with cannon': the gun pops",
+   "pop"
+  ],
+  [
+   "hook-b",
+   12.0,
+   "0:36.4",
+   "'into the fields': the wheat field",
+   "-"
+  ],
+  [
+   "hook-b",
+   14.0,
+   "0:38.4",
+   "'the American left': the left glows + label",
+   "-"
+  ],
+  [
+   "hook-b",
+   15.8,
+   "0:40.2",
+   "'The general who had fought them hardest': '?' in the camp",
+   "pop"
+  ],
+  [
+   "hook-b",
+   18.6,
+   "0:43.0",
+   "'quarrelled': red crack",
+   "hit"
+  ],
+  [
+   "hook-b",
+   21.2,
+   "0:45.6",
+   "'Horatio Gates': badge + HQ",
+   "-"
+  ],
+  [
+   "hook-b",
+   22.6,
+   "0:47.0",
+   "'without a command': stamp",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   24.3,
+   "0:48.7",
+   "'When the guns opened': guns fire (visible), volleys",
+   "fire, musket"
+  ],
+  [
+   "hook-b",
+   26.0,
+   "0:50.4",
+   "'he rode out to the fighting': the '?' rides out",
+   "whoosh"
+  ],
+  [
+   "hook-b",
+   28.8,
+   "0:53.2",
+   "'An officer was reportedly sent after him'",
+   "-"
+  ],
+  [
+   "hook-b",
+   31.0,
+   "0:55.4",
+   "'did not catch up': the officer falls behind",
+   "musket"
+  ],
+  [
+   "hook-b",
+   33.6,
+   "0:58.0",
+   "the map dims, the '?' to the centre",
+   "whoosh"
+  ],
+  [
+   "hook-b",
+   35.0,
+   "0:59.4",
+   "'Benedict Arnold': NAME SLAM",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   36.6,
+   "1:01.0",
+   "'Three years later': 1780",
+   "ticks"
+  ],
+  [
+   "hook-b",
+   39.0,
+   "1:03.4",
+   "'West Point': card",
+   "pop"
+  ],
+  [
+   "hook-b",
+   42.4,
+   "1:06.8",
+   "'traitor': TRAITOR stamp",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   44.6,
+   "1:09.0",
+   "CUT 1 'marched an army ... to Quebec' (snow, walls)",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   46.5,
+   "1:10.9",
+   "1 QUEBEC 1775",
+   "pop"
+  ],
+  [
+   "hook-b",
+   48.3,
+   "1:12.7",
+   "CUT 2 'built a fleet out of a forest'",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   51.5,
+   "1:15.9",
+   "'Royal Navy': shot; 2 VALCOUR ISLAND 1776",
+   "fire, pop"
+  ],
+  [
+   "hook-b",
+   52.8,
+   "1:17.2",
+   "CUT 3 'And at Saratoga'",
+   "whoosh + hit"
+  ],
+  [
+   "hook-b",
+   54.6,
+   "1:19.0",
+   "'he broke a British army': arrow into the redoubt, blue",
+   "hit + shake"
+  ],
+  [
+   "hook-b",
+   57.3,
+   "1:21.7",
+   "title card on 'three greatest'",
+   "riser + boom"
+  ]
+ ]
+}
