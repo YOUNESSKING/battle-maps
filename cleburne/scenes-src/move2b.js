@@ -311,6 +311,7 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });
 const RT = town("ringgold", RNG, 0, "l");   // permanent; Hooker's columns pass north and south of the name, Hooker stands west of it
 // critic r1: on screen AT t=0 (no fade-in): kill the element's opening reveal tweens and show it
 const now0 = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.3).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, scale: 1, x: 0, y: 0 }); };
+now0(RT.el);
 
 // =================== BATCH 2 / BATCH 3 / BATCH 1 Style W tools (verbatim from move1a) ===================
 // =================== BATCH 2 (three-agent review, owner OK 2026-11-05): map tools ===================
@@ -415,7 +416,7 @@ const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelecto
 camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 556, 1.2], [END, 1440, 598, 1.35]]);   // under the card the action (and Hooker's portrait) sits below the card, above the bottom edge
 B.showDate(0); const D0 = B.date("27 NOVEMBER 1863", 0, null, 34); now0(document.getElementById("date")); document.querySelectorAll("#date .d").forEach(now0);
 // flags 48 px behind each side's lines (no country names)
-[flagS(FL.us, "UNITED STATES", 1110, 790, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1585, 1010, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
+[flagS(FL.us, "UNITED STATES", 1080, 990, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1585, 1010, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
 flagS(FL.us, "UNITED STATES", 1080, 880, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1585, 935, T_DO - 0.2, END + 1);   // below the card, clear of the portraits
 // ---------- Cleburne at the gap, two guns at its mouth (bare boxes until named) ----------
 unitS("cle", "carth", [GAP[0] + 48, GAP[1] - 22], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0); tagAt("cle", null);

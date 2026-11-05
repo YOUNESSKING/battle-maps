@@ -460,7 +460,7 @@ camTo(S2 + 1.2, 2.0, [1500, 667], 0.68); camTo(S2 + 3.2, END - S2 - 3.2, [1505, 
 date0("1863 - 1864", T_30 - 0.1); B.date("30 NOVEMBER 1864", T_30, T_INTHREE - 0.3, 34);
 B.date("1863 - 1864", T_INTHREE - 0.2, T_LESS - 0.1, 34); B.date("MARCH 1865", T_LESS, S2 - 0.2, 34); B.date("1863 - 1864", S2 - 0.1, null, 34);
 // ---------- flags (48 px, no names) + the towns: Chattanooga and the three battle places (permanent dots, numbered) ----------
-now(flagS(FL.us, "", ...L(35.0, -85.75), null, END + 1)); now(flagS(FL.cs, "", ...L(34.12, -84.25), null, END + 1));
+now(flagS(FL.us, "", ...L(35.0, -85.75), null, END + 1)); now(flagS(FL.cs, "", ...L(34.12, -84.25), null, S2 + 1.3));
 const CHTT = town("chattanooga", P.chatt, null, "l"); now(CHTT.el);
 const PL = [town("1 · tunnel hill", P.th, T_THREE + 0.1, "r"), town("2 · ringgold gap", P.gap, T_THREE + 0.4, "r"), town("3 · pickett's mill", P.pm, T_THREE + 0.7, "r")];
 const pop = (i, t) => tl.fromTo(PL[i].el.querySelector(".nm"), { scale: 1 }, { scale: 1.18, duration: 0.18, yoyo: true, repeat: 1, immediateRender: false }, t);
@@ -552,6 +552,7 @@ tl.to(BACK, { autoAlpha: 0, duration: 0.8 }, TL - 0.2);
 tl.to([...document.querySelectorAll(".gg-card"), CHTT.el, ...PL.map((q) => q.el)], { autoAlpha: 0, duration: 0.4 }, TL - 0.3);
 document.getElementById("date").style.zIndex = 60;   // the date scroll never disappears (above the question's dark back)
 tl.to(EF, { scale: 0.66, x: 70, y: -128, transformOrigin: "50% 0%", duration: 0.7, ease: "power3.inOut" }, TL);   // band to the right of the date scroll, readable
+flagS(FL.cs, "", ...L(34.72, -84.85), TL + 0.4, END + 1);   // the Confederate flag stays in shot after the reframe
 Object.assign(PILL.style, { right: "50px", top: "34px", bottom: "auto" });
 // the end card sits in the band right of the date scroll; the map drifts under it
 // the map stays alive under the band: small fights flare at the hill and the gap on their numbers (both in view; Pickett's Mill is off frame here)
