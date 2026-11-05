@@ -63,7 +63,7 @@ const badge = (o) => {   // K.badge + initials under the photo (shown if the pho
 const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
   tl.to(ring, { filter: "grayscale(1) brightness(0.6)", duration: 0.4 }, t);
-  const st = document.createElement("div"); st.innerHTML = stampHTML(txt, o.color || "#e3232f", o.size || 30, -8);
+  const st = document.createElement("div"); st.innerHTML = stampHTML(txt, o.color || "#e3232f", o.size || 30, 0);   // critic r1: level
   st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5";
   ring.appendChild(st);
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
@@ -461,7 +461,7 @@ tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_EIGHT - 0.1); tl.to(TOD_COOL,
 
 // ---------- flags (48 px, behind each side's lines, no names; both on every shot) ----------
 const FLAGSET = [[0, T_NOON + 0.4, [1300, 985], [1528, 925]], [T_NOON + 0.6, T_UART + 0.6, [1250, 1080], [1810, 1250]],
-  [T_UART + 0.8, T_DALTON - 0.2, [1300, 960], [1660, 930]], [T_DALTON, END + 1, [1100, 1400], [1820, 1360]]];
+  [T_UART + 0.8, T_DALTON - 0.2, [1300, 960], [1660, 1000]], [T_DALTON, END + 1, [1100, 1400], [1820, 1360]]];
 FLAGSET.forEach(([t0, t1, us, cs], k) => { const a = flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0), t1), b = flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0), t1); if (!k) [a, b].forEach(now0); });
 
 // ---------- permanent town (the armies march out of it); passing labels only on their words ----------
@@ -603,7 +603,7 @@ const TOD = [[1560, 1040], [1640, 1150], [1700, 1280], [1745, 1390], [1790, 1520
 arw({ pts: TOD, side: "carth", t: T_DALTON + 0.4, dur: 2.2, width: AW(1.6, 11), until: END + 1 });
 boxP("TO DALTON", 1835, 1440, at(P6, "at Dalton") + 0.3, END + 1, { size: 24, keep: true });   // critic r1: Dalton named where the road leads (Dalton itself is off the map, south-east)
 const bb = badge({ name: "BRAXTON BRAGG", role: "ARMY OF TENNESSEE", photo: PHOTO.bragg, flag: FL.cs, side: "carth", corner: "tr", initials: "BB", t: T_BRAGG - 0.2, until: Math.min(T_RES + 2.4, T_HIDE - 0.5) });
-badgeStamp(bb, "RESIGNED", T_RES + 0.1, { size: 30 });
+badgeStamp(bb, "RESIGNED", T_RES + 0.4, { size: 30, color: "#f0e6c8" });
 // method card, line 2
 method(2, T_HIDE - 0.4, END + 1, T_HIDE - 0.1);
 fixImgs();
