@@ -10,6 +10,7 @@ Test only, NOT locked. Generator: ../make_style_w.py (wide look + close= battle 
 - Tests carry sound (narration + music + SFX via tools/make_clip.py).
 - Place labels much smaller, reference style (white serif + soft shadow, no box); no country names under flags.
 - Important towns the armies head for are PERMANENT town symbols on the map (dot + serif name), like the reference maps.
+- Territory colour ONLY at the moments that help the viewer (owner 2026-11-05: "it should be only at the part that is helpful for the viewer"): e.g. the opening (who holds what) and the moment ground changes hands; never left on through the middle of a scene.
 - Territory colours scale with zoom (owner 2026-11-05: "stronger when you zoom out to show the whole continent or the whole country"): full red/blue fill (~55 %, color blend) on far-out views, fading to front bands only on battle close-ups (opacity follows the camera scale: full at s <= 0.75, none at s >= 1.4).
 - Territory scenario (test): 23-Nov lines on the opening wide shots, Billy Goat Hill changes hands on "he seized a hill" (loser paler, winner fills), colours dissolve ~2.8 s at "Cleburne saw something"; on the green map the colours are normal-blend red/blue at ~24 % + a light front line (multiply turns muddy on green).
 
