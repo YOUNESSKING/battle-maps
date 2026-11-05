@@ -1,9 +1,11 @@
 // MOVE 2b (move2-2), Patrick Cleburne #14: the ONE "What would you do?" card (STYLE_LOCK 1b, E.decide) in the approved B3 form (lighter dim,
-// slow camera push, arrows keep drawing, options pulse on their words, a beat every <= 2.5 s, black outline on the card text).
-// Basemap ringgold_hd_lift (z13, 34.93N 85.10W; 15.67 m/px), option 1 m2_ringgold_ctl_nov27 (tools/m1m2_make_control.py): Union in the town,
-// Cleburne's division on Taylor's Ridge / White Oak Mountain. Opens on the same place move2a ends on (Ringgold + the gap).
+// slow camera push, arrows keep drawing, options pulse on their words, black outline on the card text).
+// STYLE W (STYLE_LOCK 2d, 2026-11-05 restyle): basemap ringgold_w (+ ringgold_w_close, story ground assets/src/ringgold_story.json: Taylor's Ridge
+// north + south of the gap, the W&A railroad through it); clean map (no territory fill), permanent Ringgold town symbol, no scale bar / north arrow,
+// Cleburne + Hooker portrait cards pinned at their units, the named ground re-inked on its word (focus + ink trace) under the card.
+// Kit + BATCH 1-3 tools copied verbatim from the approved model scenes-src/move1a.js.
 //   A = MEET THEM IN THE OPEN AT THE DEPOT · B = HIDE IN THE GAP AND ON THE RIDGES; "here is what he did": B lights blue, A greys.
-// Built with: python3 tools/build_scene.py move2b ringgold_hd_lift move2-2 move2-2
+// Built with: python3 tools/build_scene.py move2b ringgold_w move2-2 move2-2
 const B = Battle();
 const { at } = B;
 const END = B.T.duration;
@@ -18,8 +20,9 @@ const PHOTO = { cleburne: "assets/media/cleburne_head.png", sherman: "assets/med
 const SCN = document.getElementById("scene");
 const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
-const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false) SFX("ref:pop", t); return GG.pin(`<div style="background:${o.bg || "#f1eee6"};color:${o.col || "#111"};font-family:Oswald;font-weight:500;letter-spacing:.2em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.55).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 ${size * 0.1}px ${size * 0.4}px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:${(w * 0.05).toFixed(1)}px"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:${(w / 5.2).toFixed(1)}px;color:#f7f3ea;text-shadow:0 ${w * 0.02}px ${w * 0.04}px #000;letter-spacing:0.08em;white-space:nowrap">${name}</div></div>`, x, y, { t, pop: true, until });
+const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false) SFX("ref:pop", t); size = Math.round(Math.max(20, Math.min(24, size * 0.85)));   // STYLE W: Warhawk labels (white serif + soft shadow, no box, smaller)
+  return GG.pin(`<div style="color:#fbf8ef;font-family:'Liberation Serif',Georgia,serif;font-weight:700;letter-spacing:.02em;font-size:${size}px;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">${txt.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase())}</div>`, x, y, { t, until }); };
+const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:${(w * 0.05).toFixed(1)}px"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:${(w / 5.2).toFixed(1)}px;color:#f7f3ea;text-shadow:0 ${w * 0.02}px ${w * 0.04}px #000;letter-spacing:0.08em;white-space:nowrap;display:none">${name}</div></div>`, x, y, { t, pop: true, until });
 const unit = (id, side, p, icon, label, o = {}) => {
   const w = o.w || 22, h = o.h || 15;
   B.unit({ id, side, x: p[0], y: p[1], w, h, t: o.t, label });
@@ -63,7 +66,7 @@ const badgeStamp = (el, txt, t, o = {}) => {
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
-const glowPath = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => {   // glowing stroke (river, road, ridge, railroad), pulses then holds
+const glowPathOld = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => {   // glowing stroke (river, road, ridge, railroad), pulses then holds
   const p = document.createElementNS(NS, "path"), svg = document.getElementById("overlay");
   p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); p.setAttribute("fill", "none"); p.setAttribute("stroke", col);
   p.setAttribute("stroke-width", w); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round"); p.style.filter = `drop-shadow(0 0 ${w}px ${col})`;
@@ -225,7 +228,13 @@ const setInv = () => { const k = (1 / CAM_S).toFixed(4); SCL.forEach((el) => { e
 const camera = (keys) => {
   const cam = { cx: keys[0][1], cy: keys[0][2], s: keys[0][3] }, clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const apply = () => { const s = Math.max(cam.s, 1920 / 2880), cx = clamp(cam.cx, 960 / s, 2880 - 960 / s), cy = clamp(cam.cy, 540 / s, 1620 - 540 / s);
-    gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); };
+    gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv();
+    const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)); const R2 = document.getElementById("relief2");
+    // (6) lens transition: the close-up art spreads out from the screen centre instead of a whole-screen cross-fade
+    R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
+    R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none";
+    CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); } document.getElementById("vignette").style.opacity = kc.toFixed(3);
+    if (window.__GFULL) window.__GFULL.style.opacity = (window.__GFK.k * Math.min(1, Math.max(0, (1.4 - s) / 0.65))).toFixed(3); };   // STYLE W: wide look -> close battle look as the camera zooms in
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
     tl.to(cam, { cx, cy, s, duration: Math.max(t1 - t0, 0.01), ease: "sine.inOut", onUpdate: apply }, t0); }
@@ -234,7 +243,7 @@ const camera = (keys) => {
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 32, until, o));            // A2 story-place labels ~32 px
-const flagS = (src, name, x, y, t, until, w = 104) => pinS(flag(src, name, x, y, t, until, w));
+const flagS = (src, name, x, y, t, until, w = 48) => pinS(flag(src, name, x, y, t, until, w));
 const wstampS = (txt, x, y, t, until, c, size = 22) => pinS(wstamp(txt, x, y, t, until, c, size));
 const unitS = (id, side, p, icon, label, o = {}) => {                                                     // A1: counter 54 x 36 px, name 19 px
   const W0 = o.w || 54, H0 = o.h || 36;
@@ -252,12 +261,12 @@ const FWw = (s) => +(15 / s).toFixed(2);                         // front width 
 const FWc = (s) => +(15 * 1.3 / s).toFixed(2);                   // front width 15*1.3 on close-ups (HANDOVER Sherman lesson 4)
 // A2: big-town label (constant ~36 px, dot + halo); shrink(t) / grow(t) when troops come near (never hide the fight)
 const town = (nm, p, t, side = "r") => { const lft = side === "l";
-  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div class="dt" style="position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#f0ece2;box-shadow:0 0 0 3px rgba(10,14,16,.75)"></div><div class="nm" style="position:absolute;top:-24px;${lft ? "right:16px" : "left:16px"};font-family:Oswald;font-weight:700;font-size:36px;letter-spacing:.06em;color:#f0ece2;white-space:nowrap;text-shadow:0 0 6px #0a0e10,0 0 3px #0a0e10,0 2px 4px #000;transform-origin:${lft ? "100%" : "0%"} 50%">${nm}</div></div>`, p[0], p[1], { t });
+  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div class="dt" style="position:absolute;left:-5.5px;top:-5.5px;width:11px;height:11px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 1.5px rgba(160,158,146,.9)"></div><div class="nm" style="position:absolute;top:-17px;${lft ? "right:13px" : "left:13px"};font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:28px;letter-spacing:.02em;color:#fbf8ef;white-space:nowrap;text-transform:capitalize;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6);transform-origin:${lft ? "100%" : "0%"} 50%">${nm}</div></div>`, p[0], p[1], { t });
   pinS(el); const nmEl = el.querySelector(".nm");
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
 // E2 (approved): ground about to be lost turns PALER first (its layer to 40 % over ~1.3 s), then the winner's colour fades in (~1 s)
 const lay = (file, on, off) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: file.includes("/g_") ? "color" : file.includes("/gn_") ? "normal" : "multiply" });
   WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 });
   tl.set(el, { autoAlpha: 1 }, on); if (off != null) tl.set(el, { autoAlpha: 0 }, off); return el; };
 const loss = (prefix, before, after, cue, move, offAfter) => {
@@ -291,39 +300,134 @@ const T_STOP = at(P2, "Now stop for a moment"), T_PLACE = at(P2, "put yourself i
   T_DEPOT = at(P2, "the stone railroad depot"), T_HIDE = at(P2, "Or do you hide your men"), T_RIDGES = at(P2, "up on the ridges"),
   T_WALK = at(P2, "let the enemy walk into it"), T_TELL = at(P2, "Tell us in the comments"), T_WHAT = at(P2, "what you would have done"),
   T_HERE = at(P2, "here is what he did");
-// ---------- places (ringgold map px, hand-placed on the relief; ring = research/maps_ref/ringgold_gap_jespersen_960.png) ----------
-const RNG = [1388, 905], DEPOT = [1392, 918], GAP = [1478, 982], MOUTH = [1455, 975];
-const RN = [[1600, 0], [1540, 300], [1500, 600], [1470, 780], [1460, 950]], RS = [[1450, 1000], [1400, 1080], [1330, 1300], [1280, 1500]];
-// ---------- layers ----------
-terr("assets/media/m2_ringgold_ctl_nov27_mx.png", 0, null, 0.01);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.scaleBar(15.67); LV.north();
-const RT = town("RINGGOLD", RNG, 0, "l"); RT.shrink(0.01);   // A2: troops are in the town
-legend(0.1, END + 1, false);
+// ---------- places (ringgold map, scene css px; same ground as move2c + assets/src/ringgold_story.json) ----------
+const RNG = [1386, 905], DEPOT = [1397, 915], GAP = [1454, 972], GN = [1447, 958];
+const NCREST = [[1457, 952], [1462, 930], [1467, 900], [1472, 860], [1478, 820], [1488, 770]];
+const SCREST = [[1428, 992], [1420, 1015], [1411, 1045], [1399, 1080], [1387, 1117], [1373, 1160]];
+const THROAT = [[1430, 968], [1454, 972], [1478, 980]];
+
+// ---------- STYLE W map layers: clean map (no territory at the opening), permanent town, no scale bar / north arrow ----------
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });
+const RT = town("ringgold", RNG, 0, "l");
+tl.to(RT.el.querySelector(".nm"), { autoAlpha: 0, duration: 0.5 }, at(P2, "Hooker's men are coming") + 1.2);   // the columns march through the town: its name steps out (the dot stays), no arrow over text
+
+// =================== BATCH 2 / BATCH 3 / BATCH 1 Style W tools (verbatim from move1a) ===================
+// =================== BATCH 2 (three-agent review, owner OK 2026-11-05): map tools ===================
+const NSs = "http://www.w3.org/2000/svg";
+let CAM_X0 = 0, CAM_Y0 = 0;
+// (1) soft focus wash, screen space: everything outside the place being talked about dims to ~85 %; replaces target rings + colour glows
+const FOC = document.createElement("div"); FOC.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0";
+document.getElementById("scene").insertBefore(FOC, document.getElementById("fx"));
+const FS = { x: 1440, y: 810, r: 120, k: 0 };
+const focApply = () => { const sx = CAM_X0 + FS.x * CAM_S, sy = CAM_Y0 + FS.y * CAM_S, r = Math.max(70, FS.r * CAM_S);
+  FOC.style.background = `radial-gradient(ellipse ${(r * 1.3).toFixed(0)}px ${r.toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) 0%, rgba(8,8,4,0) 45%, rgba(8,8,4,${CAM_S > 2.5 ? 0.22 : 0.16}) 100%)`;
+  FOC.style.opacity = FS.k.toFixed(3); };
+const focus = (p, r, t, until) => { until = Math.min(until, t + 3.5);
+  tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
+  tl.to(FS, { k: 1, duration: 0.6, onUpdate: focApply }, t);
+  tl.to(FS, { k: 0, duration: 0.6, onUpdate: focApply }, until); };
+// (2) re-ink the named ground: a sepia ink trace draws along the feature on its word, holds, then fades
+const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", (2.0 / CAM_S).toFixed(3)));
+const inkTrace = (pts, t, until, w = 2.4, dash) => { until = Math.min(until, t + 3.5);
+  const p = document.createElementNS(NSs, "path"); p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
+  Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));
+  OVL.appendChild(p); INKS.push(p);
+  if (dash) { p.setAttribute("stroke-dasharray", dash); tl.to(p, { opacity: 0.65, duration: 0.4 }, t); }
+  else { const L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+    tl.to(p, { opacity: 0.65, duration: 0.2 }, t); tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "sine.out" }, t); }
+  tl.to(p, { opacity: 0, duration: 0.8 }, until - 0.3); return p; };
+// every former colour glow becomes focus + ink trace; every former target ring becomes focus
+const glowPath = (pts, col, w, t, until, pulses, op, o = {}) => {
+  const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  focus([cx, cy], Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / 2 + 40, t, until);
+  const pp = pts;
+  return inkTrace(pp, t, until, 2.4, o.dash ? "6 5" : null); };
+K.target = (x, y, t, o = {}) => focus([x, y], (o.r || 20) * 2 + 30, t, o.until != null ? o.until : t + 3);
+// (3) map-style curved labels (white serif along the feature), counter-scaled to constant screen size
+const CURV = [];
+const curveLabel = (txt, pts, t, until, px = 26) => { until = Math.min(until, t + 3.5);
+  const id = "cl" + CURV.length, g = document.createElementNS(NSs, "g"), path = document.createElementNS(NSs, "path");
+  path.setAttribute("id", id); path.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); path.setAttribute("fill", "none");
+  const tx = document.createElementNS(NSs, "text"); Object.entries({ fill: "#fbf8ef", "font-family": "'Liberation Serif',Georgia,serif", "font-weight": "700", "text-anchor": "middle" }).forEach(([k, v]) => tx.setAttribute(k, v));
+  tx.style.filter = "drop-shadow(0 1px 1.5px rgba(0,0,0,.9))";
+  const tp = document.createElementNS(NSs, "textPath"); tp.setAttribute("href", "#" + id); tp.setAttribute("startOffset", "50%"); tp.textContent = txt; tx.appendChild(tp);
+  g.appendChild(path); g.appendChild(tx); g.setAttribute("opacity", "0"); OVL.appendChild(g); CURV.push([tx, px]);
+  tl.to(g, { opacity: 1, duration: 0.5 }, t); tl.to(g, { opacity: 0, duration: 0.5 }, until); return g; };
+const curvApply = () => CURV.forEach(([tx, px]) => tx.setAttribute("font-size", (px / CAM_S).toFixed(2)));
+// (5) zoom box: a thin dashed sepia frame of where the camera is about to dive
+const zoomBox = (cx, cy, s, t) => { const hw = 190, hh = 110, g = document.createElementNS(NSs, "g"), r = document.createElementNS(NSs, "rect");
+  Object.entries({ x: cx - hw, y: cy - hh, width: 2 * hw, height: 2 * hh, fill: "none", stroke: "#2a2410", "stroke-width": 2.2, "stroke-dasharray": "10 7" }).forEach(([k, v]) => r.setAttribute(k, v));
+  g.appendChild(r); g.setAttribute("opacity", "0"); OVL.appendChild(g);
+  tl.to(g, { opacity: 0.9, duration: 0.3 }, t); tl.to(g, { opacity: 0, duration: 0.4 }, t + 1.2); };
+
+// =================== BATCH 3 (owner OK 2026-11-05): story devices ===================
+// (a) commander portrait pinned on a stake at his own unit (Warhawk style); replaces the corner badge; rides with the unit
+const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up") => { if (!keep) until = Math.min(until, t + 3.6);
+  const host = B.units[id].el.firstElementChild, w = document.createElement("div");
+  w.style.cssText = "position:absolute;left:50%;top:-44px;width:0;height:0;pointer-events:none;z-index:5";
+  w.innerHTML = `<div style="position:absolute;left:-38px;bottom:0;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:-1px;bottom:-40px;width:1.5px;height:40px;background:#463a1e"></div>`;
+  if (side === "right") {   // card to the right of the unit on a short horizontal stake (keeps the crest/action free)
+    w.style.top = "4px"; w.style.left = "calc(100% + 0px)";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: "40px", bottom: "auto", top: "56px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(54deg)" });
+  }
+  host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
+  const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
+  tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); };
+// (b) a brigade attack as a line of rings climbing the slope; rings drop out as the attack breaks; the unit box hides meanwhile
+const ringLine = (id, pts, t, dur, dropT, endT, side = "rome", n = 7) => {
+  const g = document.createElementNS(NSs, "g"); g.setAttribute("opacity", "0"); OVL.appendChild(g);
+  const a = pts[0], b = pts[pts.length - 1], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L, cs = [];
+  for (let i = 0; i < n; i++) { const o = (i - (n - 1) / 2) * 4.4, c = document.createElementNS(NSs, "circle");
+    Object.entries({ cx: (nx * o).toFixed(2), cy: (ny * o).toFixed(2), r: 2.1, fill: "#efe6cf", stroke: side === "rome" ? "#b3242a" : "#2c57b7", "stroke-width": 0.9 }).forEach(([k, v]) => c.setAttribute(k, v));
+    g.appendChild(c); cs.push(c); }
+  const seg = []; let tot = 0; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(l); tot += l; }
+  const P = { k: 0 }, place = () => { let d = P.k * tot, i = 0; while (i < seg.length - 1 && d > seg[i]) { d -= seg[i]; i++; }
+    const f = seg[i] ? d / seg[i] : 0, x = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * f, y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * f; g.setAttribute("transform", `translate(${x.toFixed(2)} ${y.toFixed(2)})`); };
+  place();
+  tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.2 }, t - 0.3); tl.to(g, { opacity: 1, duration: 0.3 }, t - 0.2);
+  tl.to(P, { k: 1, duration: dur, ease: "none", onUpdate: place }, t);
+  cs.forEach((c, i) => { if (i % 3 !== 1) tl.to(c, { opacity: 0, duration: 0.25 }, dropT + i * 0.16); });
+  tl.to(g, { opacity: 0, duration: 0.4 }, endT); tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.3 }, endT + 0.1); };
+// (c) powder smoke from the crest: soft grey-sepia puffs drifting east (visual only: the existing locked shot sounds stay as they are)
+const SMK = document.createElementNS(NSs, "filter"); SMK.setAttribute("id", "smkblur"); SMK.innerHTML = '<feGaussianBlur stdDeviation="1.6"/>';
+{ let defs = OVL.querySelector("defs"); if (!defs) { defs = document.createElementNS(NSs, "defs"); OVL.insertBefore(defs, OVL.firstChild); } defs.appendChild(SMK); }
+const smoke = (pts, t) => pts.slice(0, 5).forEach((q, i) => { const e = document.createElementNS(NSs, "ellipse");
+  Object.entries({ cx: q[0], cy: q[1], rx: 5.5, ry: 4, fill: "#6e6a5c", opacity: 0, filter: "url(#smkblur)" }).forEach(([k, v]) => e.setAttribute(k, v)); OVL.appendChild(e);
+  const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + 10, cy: q[1] - 3, rx: 9, ry: 6 }, duration: 3.6, ease: "sine.out" }, t0);
+  tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
+// (d) side-view profile strip (once per move, on the terrain beat): Taylor's Ridge, the narrow gap, Taylor's Ridge (Ringgold version)
+const profileStrip = (t, until) => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+  <svg width="480" height="124" viewBox="0 0 480 124"><path d="M10 106 C 60 104, 95 50, 140 32 C 175 22, 200 60, 222 98 C 232 106, 248 106, 258 98 C 280 60, 305 22, 340 32 C 385 50, 420 104, 470 106" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M10 106 L470 106" stroke="#463a1e" stroke-width="1" stroke-dasharray="3 4"/>
+  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="140" y="22">Taylor's Ridge</text><text x="240" y="121">The gap</text><text x="340" y="22">Taylor's Ridge</text></g></svg></div>`,
+  "left:56px;bottom:56px;", t, until);
+// BATCH 1 (three-agent review): one passing word item at a time, each at most 3.5 s
+{ const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
+const _boxS = boxS; const boxP = (txt, x, y, t, u, o = {}) => _boxS(txt, x, y, t, o.keep ? u : Math.min(u, t + 3.5), o);
+const _wst = wstampS; const stampP = (txt, x, y, t, u, c, sz) => _wst(txt, x, y, t, Math.min(u, t + 3.5), "#f0e6c8", sz);
+// unit name tags only from the moment the name is spoken (null = never in this scene)
+const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelector(".tag"); if (!tg) return; gsap.set(tg, { autoAlpha: 0 }); if (t != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, t); };
 // ---------- camera: the hand-off from move2a, then a slow push that never stops under the card ----------
-camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 745, 1.45], [END, 1440, 792, 1.9]]);   // under the card the action sits low in the frame
+camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 556, 1.2], [END, 1440, 598, 1.35]]);   // under the card the action (and Hooker's portrait) sits below the card, above the bottom edge
 B.showDate(0.05); B.date("27 NOVEMBER 1863", 0.1, null, 34);
+// flags 48 px behind each side's lines (no country names)
 flagS(FL.us, "UNITED STATES", 1150, 760, 0, T_DO - 0.3); flagS(FL.cs, "CONFEDERATE STATES", 1700, 1100, 0.05, T_DO - 0.3);
-flagS(FL.us, "UNITED STATES", 1200, 960, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1690, 1025, T_DO - 0.2, END + 1);   // below the card
-// ---------- the ground: the ridges either side of the gap, the railroad + creek through it ----------
-glowPath(RN, "#6f9bff", 3.4, 0.2, END + 1, 2, 0.8, { draw: 1.0 }); glowPath(RS, "#6f9bff", 3.4, 0.3, END + 1, 2, 0.8, { draw: 1.0 });
-const RR = [[1200, 860], [1300, 890], [1392, 918], [1440, 960], [1478, 982], [1530, 992], [1600, 1010]];
-glowPath(RR, "#ffd27a", 2.4, 0.2, END + 1, 2, 0.85, { draw: 1.2 });
-boxS("THE GAP", GAP[0] + 95, GAP[1] - 12, 0.4, END + 1, { size: 24, bg: "#dcecf8", sfx: false });
-boxS("TAYLOR'S RIDGE", 1360, 1150, 0.5, END + 1, { size: 22, bg: "#dcecf8", sfx: false });
-boxS("WHITE OAK MOUNTAIN", 1560, 760, 0.6, T_DO - 0.3, { size: 22, bg: "#dcecf8", sfx: false });
-// ---------- Cleburne at the gap, two guns at its mouth ----------
-unitS("cle", "carth", [GAP[0] + 22, GAP[1] + 2], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0);
-unitS("g1", "carth", [MOUTH[0] - 4, MOUTH[1] - 18], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g1.el, { autoAlpha: 1 }, 0);
-unitS("g2", "carth", [MOUTH[0] + 2, MOUTH[1] + 20], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g2.el, { autoAlpha: 1 }, 0);
-badge({ name: "PATRICK CLEBURNE", role: "PUT YOURSELF IN HIS PLACE", initials: "PC", photo: PHOTO.cleburne, flag: FL.cs, side: "carth", corner: "bl", t: T_PLACE - 0.3, until: T_DO - 0.5 });
+flagS(FL.us, "UNITED STATES", 1215, 915, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1585, 935, T_DO - 0.2, END + 1);   // below the card
+// ---------- Cleburne at the gap, two guns at its mouth (bare boxes until named) ----------
+unitS("cle", "carth", [GAP[0] + 48, GAP[1] - 22], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0); tagAt("cle", null);
+unitS("g1", "carth", [GN[0] - 18, GN[1] - 10], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g1.el, { autoAlpha: 1 }, 0);
+unitS("g2", "carth", [GN[0] + 14, GN[1] - 4], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g2.el, { autoAlpha: 1 }, 0);
+pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_PLACE - 0.1, END + 1, true);   // owner: the general's portrait stays at his unit for the whole battle
 // ---------- Hooker's men are coming from the town ----------
-unitS("hk", "rome", [1240, 850], "infantry", "HOOKER", { t: 0, size: "XXX" }); tl.set(B.units.hk.el, { autoAlpha: 1 }, 0);
+unitS("hk", "rome", [1240, 850], "infantry", "HOOKER", { t: 0, size: "XXX" }); tl.set(B.units.hk.el, { autoAlpha: 1 }, 0); tagAt("hk", null);
+pinPortrait("hk", PHOTO.hooker, FL.us, "Hooker", T_COMING - 0.1, END + 1, true);
 const COLS = [[[1250, 840], [1310, 862], [1360, 885]], [[1240, 885], [1300, 895], [1352, 908]], [[1255, 935], [1310, 930], [1355, 928]]];
-COLS.forEach((pts, k) => arw({ pts, side: "rome", t: T_COMING - 0.2 + k * 0.3, dur: 1.4, width: AW(1.1, 11), until: END + 1 }));
-B.caption("HOOKER'S MEN ARE COMING", T_COMING, T_TWO - 0.1, "rome");
+COLS.forEach((pts, k) => arw({ pts, side: "rome", t: T_COMING - 0.2 + k * 0.3, dur: 1.4, width: AW(1.1, 9), until: END + 1 }));
 pulseU("g1", T_TWO + 0.2); pulseU("g2", T_TWO + 0.5);
-B.caption("ONLY TWO GUNS", T_TWO + 0.1, T_DO - 0.5, "carth");
-boxS("STONE DEPOT", DEPOT[0] + 4, DEPOT[1] + 22, T_TOWN - 0.6, END + 1, { size: 22, bg: "#f3e2b8" });
+stampP("ONLY TWO GUNS", 1625, 990, T_TWO + 0.1, T_DO - 0.5, null, 22);   // stamp on empty ground east of the ridge (a caption here would cover the guns)
 // ---------- E.decide (B3) ----------
 const DEC = E.decide({ sub: "27 NOVEMBER 1863 · YOU ARE CLEBURNE", a: "MEET THEM IN THE OPEN AT THE DEPOT", b: "HIDE IN THE GAP AND ON THE RIDGES", real: 1,
   t: T_DO - 0.4, tCount: T_TELL, tReveal: T_HERE, until: END - 0.3 });
@@ -332,12 +436,14 @@ DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; D
 OA.querySelectorAll("div")[1].style.fontSize = "48px"; OB.querySelectorAll("div")[1].style.fontSize = "48px";
 const BACK = DEC.previousElementSibling;
 tl.to(BACK, { autoAlpha: 0.56, duration: 0.8 }, T_DO + 0.3);                       // lighter dim: the moving map shows through
-// the map keeps moving under the card: the red columns keep drawing toward the town and the gap, a ring every ~2.4 s
-const MORE = [[[1360, 885], [1400, 900], [1430, 925]], [[1352, 908], [1395, 925], [1425, 948]], [[1355, 928], [1395, 945], [1420, 965]]];
-MORE.forEach((pts, k) => arw({ pts, side: "rome", t: T_DO + 0.6 + k * 1.6, dur: 3.0, width: AW(1.6, 11), until: END + 1 }));
+// the map keeps moving under the card: the red columns keep drawing toward the town and the gap; the named ground re-inks on its word
+const MORE = [[[1360, 885], [1395, 902], [1420, 925]], [[1352, 908], [1390, 925], [1415, 946]], [[1355, 928], [1392, 945], [1412, 962]]];
+MORE.forEach((pts, k) => arw({ pts, side: "rome", t: T_DO + 0.6 + k * 1.6, dur: 3.0, width: AW(1.6, 9), until: END + 1 }));
 along("hk", [[1240, 850], [1300, 872], [1340, 888]], T_DO + 0.5, 10.0, 20);
-const RINGS = [[DEPOT, "#ff5a48"], [GAP, "#4f8bff"], [[1468, 880], "#4f8bff"], [[1445, 1040], "#4f8bff"], [DEPOT, "#ff5a48"], [GAP, "#4f8bff"]];
-for (let k = 0, tt = T_DO + 0.4; tt < T_HERE - 0.3 && k < RINGS.length; k++, tt += 2.4) K.target(RINGS[k][0][0], RINGS[k][0][1], tt, { r: 22, side: RINGS[k][1], until: tt + 1.8 });
+focus(DEPOT, 40, T_TOWN, T_DEPOT + 2.2);   // "near the town and the stone railroad depot" (the depot is on the card: focus wash only, no label)
+glowPath(THROAT, "", 2, T_HIDE + 0.1, T_RIDGES - 0.2);                                // "hide your men in the gap": focus + ink trace
+glowPath(NCREST, "", 2, T_RIDGES, T_WALK); inkTrace(SCREST, T_RIDGES + 0.2, T_WALK + 0.6);   // "up on the ridges"
+focus(GAP, 50, T_WALK + 0.2, T_WALK + 2.6);
 // option beats on their words
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
