@@ -448,10 +448,10 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 // ---------- camera ----------
-const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 952, 5.0], C4 = [1440, 905, 4.4], C5 = [1436, 945, 4.8], CW = [1610, 1225, 1.6], C6 = [1425, 950, 3.6], C7 = [1490, 1000, 3.2], CD = [1600, 1225, 1.6];
+const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 975, 5.0], C4 = [1440, 925, 4.4], C5 = [1436, 965, 4.2], CW = [1610, 1225, 1.6], C6 = [1425, 950, 3.6], C7 = [1490, 1000, 3.2], CD = [1600, 1200, 1.6];
 camera([[0, ...C0], [T_GOV - 0.4, ...C0], [T_GOV + 1.6, ...C1], [T4 - 0.4, ...C1], [T4 + 1.4, ...C2], [T_WAIT - 0.3, ...C2], [T_WAIT + 1.2, ...C3],
   [T_BACK + 1.2, ...C3], [T5 + 0.6, ...C4], [T_GEARY - 0.4, ...C4], [T_GEARY + 1.2, ...C5], [T6 + 1.4, ...C5], [T_NOON + 2.6, ...CW], [T_UART - 0.3, ...CW],
-  [T_UART + 1.3, ...C6], [T_PULL + 0.4, ...C6], [T_BURN + 0.8, ...C7], [T_DALTON - 0.4, 1480, 990, 2.9], [T_DALTON + 1.6, ...CD], [END, CD[0], 1215, 1.7]]);
+  [T_UART + 1.3, ...C6], [T_PULL + 0.4, ...C6], [T_BURN + 0.8, ...C7], [T_DALTON - 0.4, 1480, 990, 2.9], [T_DALTON + 1.6, ...CD], [END, CD[0], 1190, 1.7]]);
 // critic r1: date scroll, the two flags and the units on screen AT t=0 (no fade-in)
 const now0 = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.3).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, scale: 1, x: 0, y: 0 }); };
 B.showDate(0); B.date("27 NOVEMBER 1863", 0, T_EIGHT - 0.2, 32); now0(document.getElementById("date")); document.querySelectorAll("#date .d").forEach(now0); B.date("27 NOV 1863 · 8 A.M.", T_EIGHT - 0.1, T_NOON - 0.2, 32); B.date("27 NOV 1863 · NOON", T_NOON - 0.1, T_DALTON - 0.2, 32);
@@ -461,7 +461,7 @@ tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_EIGHT - 0.1); tl.to(TOD_COOL,
 
 // ---------- flags (48 px, behind each side's lines, no names; both on every shot) ----------
 const FLAGSET = [[0, T_NOON + 0.4, [1300, 985], [1528, 925]], [T_NOON + 0.6, T_UART + 0.6, [1250, 1080], [1810, 1250]],
-  [T_UART + 0.8, T_DALTON - 0.2, [1290, 990], [1612, 945]], [T_DALTON, END + 1, [1100, 1400], [1760, 1480]]];
+  [T_UART + 0.8, T_DALTON - 0.2, [1300, 960], [1660, 930]], [T_DALTON, END + 1, [1100, 1400], [1820, 1360]]];
 FLAGSET.forEach(([t0, t1, us, cs], k) => { const a = flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0), t1), b = flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0), t1); if (!k) [a, b].forEach(now0); });
 
 // ---------- permanent town (the armies march out of it); passing labels only on their words ----------
@@ -478,7 +478,7 @@ pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0.3, END + 1, true);   // 
 unitS("gov", "carth", GV, "infantry", "GOVAN", { t: 0, size: "X" }); tagAt("gov", T_GOV + 0.3);
 unitS("gra", "carth", GR, "infantry", "GRANBURY", { t: 0, size: "X" }); tagAt("gra", T_GRAN + 0.4);
 unitS("pol", "carth", PO, "infantry", "POLK", { t: 0, size: "X" }); tagAt("pol", T_GRAN + 0.9);
-unitS("low", "carth", LO, "infantry", "LOWREY", { t: 0, size: "X" }); tagAt("low", T_LOW + 0.2);
+unitS("low", "carth", LO, "infantry", "LOWREY", { t: 0, size: "X" }); tagAt("low", null);   // Lowrey's name rides on his portrait card
 ["gov", "gra", "pol", "low"].forEach((id) => now0(B.units[id].el));   // in place from the first frame; each pulses on its name
 pinPortrait("low", PH("lowrey"), FL.cs, "Lowrey", T_LOW + 0.1, END + 1, true);
 glowPath([[1430, 968], [1454, 972], [1478, 980]], "", 2, T_THROAT - 0.2, T_WALLS - 0.2);   // "the narrow throat": focus + ink trace
@@ -550,8 +550,8 @@ along("gea", [GE1, [1432, 885], GE2], T_DROVE, 1.6, 8);
 arw({ pts: [[1442, 886], [1414, 886]], side: "rome", t: T_DROVE + 0.2, dur: 0.8, width: AW(5, 8), until: T_DROVE + 3.2 });
 crosses([[1438, 882], [1445, 888], [1434, 890], [1442, 878]], T_DROVE + 0.3, T_NOON);   // where Geary's assault broke
 B.caption("PLANTED A FLAG, BUT COULD NOT HOLD IT", T_HOLD + 0.8, T_HOLD + 4.3, "rome");
-stampP("CREIGHTON KILLED", 1336, 860, at(P5, "were killed") + 0.4, T6 + 1.4, null, 20);
-stampP("CRANE KILLED", 1336, 884, at(P5, "were killed") + 0.6, T6 + 1.4, null, 20);
+stampP("CREIGHTON KILLED", 1345, 995, at(P5, "were killed") + 0.4, T6 + 1.4, null, 20);
+stampP("CRANE KILLED", 1345, 1015, at(P5, "were killed") + 0.6, T6 + 1.4, null, 20);
 
 // ---------- move2-6: noon; the train is safe, the pull-back, the price ----------
 SFX("static", T_NOON); SFX("hit", T_SAFE);
