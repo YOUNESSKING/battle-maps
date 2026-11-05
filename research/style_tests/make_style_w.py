@@ -84,7 +84,7 @@ def story_paint(a, close=False):
     a = a * (1 - 0.12 * np.exp(-(rvd / 10) ** 2))[..., None]
     f = fmask.astype(np.float32)[..., None]
     fcol = np.array([128, 128, 66] if P['green'] or close else [176, 168, 112], np.float32)
-    return a * (1 - f * 0.45) + fcol * f * 0.45
+    return a * (1 - f * 0.35) + fcol * f * 0.35
 def story_draw(d, SSf, ink, close=False):
     """ink layer (draw stage, coordinates x SSf). u = image px per screen px at the zoom this look is seen at."""
     if not ST: return
@@ -92,43 +92,49 @@ def story_draw(d, SSf, ink, close=False):
     c = lambda p: (p[0] * 2 * SSf, p[1] * 2 * SSf)
     rng2 = np.random.default_rng(3); gys, gxs = np.gradient(hgt)
     # 1) contour-row hachures
-    step_lev = 0.09
-    for lev in np.arange(0.10, 0.92, step_lev):
+    step_lev = 0.09; gmag = np.hypot(gxs, gys); p95 = np.percentile(gmag[hgt > 0.12], 95)
+    for li, lev in enumerate(np.arange(0.10, 0.92, step_lev)):
         cs, _ = cv2.findContours((hgt > lev).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        sp = max(1, round(3.2 * u))
         for cnt in cs:
             if len(cnt) < 20: continue
-            for x, y in cnt[:, 0, :][::max(1, round(4.5 * u))]:
+            for x, y in cnt[:, 0, :][(sp // 2 if li % 2 else 0)::sp]:           # brick offset on alternate rows
                 if keepoff[y, x] or wdist(x, y) < 9 * K or lev > 0.86 * lmax[y, x]: continue
                 gxv, gyv = gxs[y, x], gys[y, x]; gm = np.hypot(gxv, gyv) + 1e-6
+                if gm < 0.25 * p95: continue                                    # no rings on flat ground
                 ux, uy = -gxv / gm, -gyv / gm
-                L = np.clip(step_lev / gm, 4 * u, 8 * u) * 0.8
+                L = np.clip(step_lev / gm, 5 * u, 11 * u) * 0.88
                 shd = np.clip(0.5 + 0.5 * (ux * 0.7 + uy * 0.7), 0, 1)        # 1 = facing SE (shade)
-                if shd < 0.35 and rng2.random() < 0.4: continue
+                sl = np.clip(gm / p95, 0, 1)
                 x0, y0 = x + rng2.normal(0, 0.3 * u), y + rng2.normal(0, 0.3 * u)
-                wd0 = (0.9 + 1.1 * shd) * Z
+                wd0 = (0.8 + 1.6 * sl) * (0.8 + 0.3 * shd) * Z
                 pts = [(x0 * SSf - uy * wd0 / 2, y0 * SSf + ux * wd0 / 2), (x0 * SSf + uy * wd0 / 2, y0 * SSf - ux * wd0 / 2),
                        ((x0 + ux * L) * SSf + uy * wd0 / 4, (y0 + uy * L) * SSf - ux * wd0 / 4), ((x0 + ux * L) * SSf - uy * wd0 / 4, (y0 + uy * L) * SSf + ux * wd0 / 4)]
-                d.polygon(pts, fill=ink + (int(70 + 130 * shd),))      # tapered stroke
+                d.polygon(pts, fill=ink + (int(100 + 100 * shd),))     # tapered stroke
     # 2) pale crest line along the spine (unhachured)
-    d.line([c(p) for p in ST['ridge']], fill=(205, 200, 150, 70), width=max(1, round(3 * Z)), joint='curve')
-    # 3) ravine: wobbly thalweg + V-notch strokes into it
+    # 3) ravine: slanted strokes from both banks running down into a faint broken thalweg (not a trench symbol)
     rv = np.array([c(p) for p in ST['ravine']], np.float32); seg = []
     for (x0, y0), (x1, y1) in zip(rv[:-1], rv[1:]):
         L = np.hypot(x1 - x0, y1 - y0); ux, uy = (x1 - x0) / L, (y1 - y0) / L
-        for t in np.arange(0, L, 4 * Z):
-            j = rng2.normal(0, 0.8 * Z); seg.append((x0 + ux * t - uy * j, y0 + uy * t + ux * j))
-            if rng2.random() < 0.6:
-                for sgn, al in ((1, 210), (-1, 120)):                      # NW bank faces SE: heavier
-                    sx, sy = x0 + ux * t + uy * sgn * 7 * Z, y0 + uy * t - ux * sgn * 7 * Z
-                    d.line([(sx, sy), (sx - uy * sgn * 5 * Z, sy + ux * sgn * 5 * Z)], fill=ink + (al,), width=max(1, round(1.3 * Z)))
-    d.line(seg, fill=ink + (220,), width=max(1, round(1.6 * Z)), joint='curve')
+        for t in np.arange(0, L, 6 * Z):
+            mx, my = x0 + ux * t, y0 + uy * t
+            for sgn in (1, -1):
+                ang = np.radians(35); nx, ny = uy * sgn, -ux * sgn                # normal pointing to this bank
+                sx, sy = mx + nx * 10 * Z, my + ny * 10 * Z
+                dx, dy = -nx * np.cos(ang) + ux * np.sin(ang), -ny * np.cos(ang) + uy * np.sin(ang)
+                d.line([(sx, sy), (sx + dx * 8 * Z, sy + dy * 8 * Z)], fill=ink + (160,), width=max(1, round(1.2 * Z)))
+        for t in np.arange(0, L, 3 * Z): seg.append((x0 + ux * t + rng2.normal(0, 0.2 * Z), y0 + uy * t + rng2.normal(0, 0.2 * Z)))
+    for i in range(0, len(seg) - 1, 1):
+        if (i // 5) % 3 != 2: d.line([seg[i], seg[i + 1]], fill=ink + (110,), width=max(1, round(1.0 * Z)))
     # 4) field: crisp dashed border + parallel furrows along the long axis
     for poly in ST['fields']:
-        P2 = np.array([c(p) for p in poly], np.float32); ctr = P2.mean(0); ev = np.linalg.eigh(np.cov((P2 - ctr).T))[1][:, -1]
+        P2 = np.array([c(p) for p in poly], np.float32)
+        for _ in range(2): P2 = np.concatenate([[0.75 * a + 0.25 * b, 0.25 * a + 0.75 * b] for a, b in zip(P2, np.roll(P2, -1, 0))])   # Chaikin rounding
+        P2 = P2 + rng2.normal(0, 1.2 * Z, P2.shape).astype(np.float32); ctr = P2.mean(0); ev = np.linalg.eigh(np.cov((P2 - ctr).T))[1][:, -1]
         nx, ny = -ev[1], ev[0]
         fm = Image.new('L', (W * SSf, H * SSf), 0); ImageDraw.Draw(fm).polygon([tuple(p) for p in P2], fill=255)
         lay = Image.new('L', (W * SSf, H * SSf), 0); dl = ImageDraw.Draw(lay); R = np.abs(P2 - ctr).max() * 1.5
-        for o in np.arange(-R, R, 6 * Z):
+        for o in np.arange(-R, R, 5 * Z):
             pts = [(ctr[0] + ev[0] * t + nx * (o + np.sin(t / (80 * Z)) * Z), ctr[1] + ev[1] * t + ny * (o + np.sin(t / (80 * Z)) * Z)) for t in np.arange(-R, R, 6 * Z)]
             dl.line(pts, fill=90, width=max(1, round(1.0 * Z)))
         from PIL import ImageChops
@@ -136,8 +142,9 @@ def story_draw(d, SSf, ink, close=False):
         bd = [tuple(p) for p in P2] + [tuple(P2[0])]
         for (x0, y0), (x1, y1) in zip(bd[:-1], bd[1:]):
             L = np.hypot(x1 - x0, y1 - y0)
-            for t in np.arange(0, L, 8 * Z): d.line([(x0 + (x1 - x0) * t / L, y0 + (y1 - y0) * t / L), (x0 + (x1 - x0) * min(t + 5 * Z, L) / L, y0 + (y1 - y0) * min(t + 5 * Z, L) / L)], fill=ink + (130,), width=max(1, round(1.3 * Z)))
-    # 5) railroad: pale bed, rail, jittered ties
+            for t in np.arange(0, L, 8 * Z): d.line([(x0 + (x1 - x0) * t / L, y0 + (y1 - y0) * t / L), (x0 + (x1 - x0) * min(t + 4 * Z, L) / L, y0 + (y1 - y0) * min(t + 4 * Z, L) / L)], fill=ink + (120,), width=max(1, round(1.0 * Z)))
+    # 5) railroad: pale bed, rail, jittered ties (rail/tunnel drawn a bit bigger on the close image so they stay legible)
+    Z = (1.5 if not close else 0.9) * SSf
     for seg_ in ST['rail']:
         pts = [c(p) for p in seg_]
         d.line(pts, fill=(196, 190, 146, 120), width=max(2, round(7 * Z)), joint='curve')
@@ -152,13 +159,14 @@ def story_draw(d, SSf, ink, close=False):
     L = np.hypot(b_[0] - a_[0], b_[1] - a_[1]); ux, uy = (b_[0] - a_[0]) / L, (b_[1] - a_[1]) / L
     for t in np.arange(0, L, 11 * Z): d.line([(a_[0] + ux * t, a_[1] + uy * t), (a_[0] + ux * min(t + 6 * Z, L), a_[1] + uy * min(t + 6 * Z, L))], fill=(215, 205, 160, 220), width=max(1, round(2.2 * Z)))
     for (px, py), sgn in ((a_, -1), (b_, 1)):
-        ox, oy = ux * sgn, uy * sgn; r = 6 * Z                              # portal faces outward along the track
-        d.ellipse([px - r, py - r, px + r, py + r], fill=(170, 160, 128, 255), outline=(40, 36, 16, 255), width=max(1, round(1.3 * Z)))
-        ri = 3.5 * Z; d.ellipse([px + ox * 1.5 * Z - ri, py + oy * 1.5 * Z - ri, px + ox * 1.5 * Z + ri, py + oy * 1.5 * Z + ri], fill=(20, 18, 10, 255))
+        ox, oy = ux * sgn, uy * sgn; nx, ny = -oy, ox                       # o = outward along the track, n = across
         for side in (-1, 1):                                                # cutting walls leading into the portal
             for k in range(4):
-                bx, by = px + ox * (8 + 4 * k) * Z + (-oy) * side * (7 - k) * Z, py + oy * (8 + 4 * k) * Z + ox * side * (7 - k) * Z
-                d.line([(bx, by), (bx + (-oy) * side * 4 * Z, by + ox * side * 4 * Z)], fill=ink + (170,), width=max(1, round(1.2 * Z)))
+                bx, by = px + ox * (6 + 4 * k) * Z + nx * side * (7 - k * 0.5) * Z, py + oy * (6 + 4 * k) * Z + ny * side * (7 - k * 0.5) * Z
+                d.line([(bx, by), (bx + nx * side * 5 * Z, by + ny * side * 5 * Z)], fill=ink + (170,), width=max(1, round(1.2 * Z)))
+        arch = [(px + nx * 5 * Z * np.cos(t) + ox * 4 * Z * np.sin(t), py + ny * 5 * Z * np.cos(t) + oy * 4 * Z * np.sin(t)) for t in np.linspace(0, np.pi, 14)]
+        d.polygon(arch, fill=(20, 18, 10, 255))                            # horseshoe opening, 10 x 8 px
+        d.line(arch, fill=(160, 150, 120, 255), width=max(1, round(1.5 * Z)), joint='curve')    # stone rim on the arch only
 def sh2(m, dy, dx): return sh(sh(m, dy).T, dx).T
 def sh(m, dy): o = np.zeros_like(m); (o.__setitem__(slice(dy, None), m[:-dy]) if dy > 0 else o.__setitem__(slice(None, dy), m[-dy:])); return o
 
@@ -171,7 +179,7 @@ top = (wB & ~sh2(wB, round(3.5 * K), round(2 * K))) | (wD & ~sh2(wD, round(2.5 *
 a[below] = a[below] * 0.5 + np.array([148, 146, 122], np.float32) * 0.5
 yy = np.cumsum(water, axis=0).astype(np.float32)          # depth into the river from its top edge (for the soft fill gradient)
 if P['green']:                                            # owner 2026-11-05: one colour for the whole map, the greener (close) one
-    lum_ = 4.0 * fbm(0.7) + 2.5 * fbm(1.6) + 4 * fbm(5) + 6 * fbm(40); fl_ = fbm(3); sp_ = (fbm(1.5) > 1.4)[..., None]   # critic r3: ref turf (107,112,62)
+    lum_ = 4.0 * fbm(0.7) + 2.5 * fbm(1.6) + 3 * fbm(5) + 2.2 * fbm(40); fl_ = fbm(3); sp_ = (fbm(1.5) > 1.4)[..., None]   # critic r3: ref turf (107,112,62)
     a = np.stack([106 + lum_ + fl_ * 4, 111 + lum_ - fl_, 61 + lum_ * 0.75 - fl_ * 2], -1) + sp_ * np.array([6, 0, -4], np.float32); del lum_, fl_, sp_
     a[below] = a[below] * 0.6
     a = story_paint(a)
@@ -253,8 +261,8 @@ for cx, cy, R, t in clumps:
             if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K or (ST and treeoff[min(int(y), H - 1), min(int(x), W - 1)]): continue
             trees.append((y, x, t))
     for k in range(rng.integers(8, 14)):
-        y = cy + rng.uniform(-0.6, 1.15) * R; x0 = cx + rng.uniform(-1.1, 0.8) * R
-        hatch.append((x0, y, rng.uniform(20, 60) * K))
+        y = cy + rng.uniform(0.3, 1.1) * R; x0 = cx + rng.uniform(-1.0, 0.7) * R
+        hatch.append((x0, y, rng.uniform(10, 30) * K))
 for _ in range(8):                                     # a few lone pines near clumps
     cx, cy, R, _t = clumps[rng.integers(0, len(clumps))]; x, y = cx + rng.uniform(-1, 1) * (R + 60 * K), cy + rng.uniform(-1, 1) * (R + 40 * K)
     if 0 < x < W and 0 < y < H and wdist(x, y) > 14 * K: trees.append((y, x, 'pine'))
@@ -271,13 +279,13 @@ def blade(x, y, h, bend, s):
         pts_l.append((px - wdt, py)); pts_r.append((px + wdt, py))
     d.polygon(pts_l + pts_r[::-1], fill=(40, 36, 16, 255) if MULT else (50, 44, 20, 255))
 def tuft(x, y, s):                                     # mixed asymmetric glyphs: hooked 'fr', straight 'il', curling fan
-    kind = rng.choice(3, p=[0.33, 0.33, 0.34]); h0 = rng.uniform(12, 16) * s * (1.25 if MULT else 1)
+    kind = rng.choice(3, p=[0.15, 0.15, 0.7]) if MULT else rng.choice(3, p=[0.33, 0.33, 0.34]); h0 = rng.uniform(12, 16) * s * (1.25 if MULT else 1)
     if kind == 0:
         blade(x, y, h0, rng.choice([-1, 1]) * rng.uniform(0, 3) * s, s); blade(x + 1 * s, y - h0 * 0.45, h0 * 0.45, rng.choice([-1, 1]) * rng.uniform(7, 11) * s, s * 0.8)
     elif kind == 1:
         for k in range(rng.choice([2, 3])): blade(x + k * 2.6 * s, y, h0 * rng.uniform(0.7, 1.0), rng.uniform(-1.5, 1.5) * s, s)
     else:
-        nb = rng.choice([2, 3, 4], p=[0.35, 0.4, 0.25])
+        nb = rng.choice([3, 4]) if MULT else rng.choice([2, 3, 4], p=[0.35, 0.4, 0.25])
         for k in range(nb):
             o = (k - (nb - 1) / 2); sg = np.sign(o) if (o != 0 and rng.random() < 0.7) else rng.choice([-1, 1])
             blade(x + o * 2.2 * s, y, h0 * rng.uniform(0.7, 1.05), (sg * rng.uniform(7, 11) if abs(o) >= 0.5 else rng.uniform(-1.5, 1.5)) * s, s)
@@ -297,15 +305,17 @@ while n < P['patches'] and tries < 20000:
     n += 1
 story_draw(d, SS, (45, 40, 18))
 G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur((0.5 if MULT else 0.8) * K))
+Ga = np.asarray(G).copy(); Ga[water, 3] = 0; G = Image.fromarray(Ga); del Ga                # no ink over the water
 if MULT:
     Fa = np.asarray(F.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5 * K))).astype(np.float32)[..., None] / 255
+    Fa[water] = 1.0
     img = Image.fromarray(np.clip(np.asarray(img).astype(np.float32) * Fa, 0, 255).astype(np.uint8)); del Fa, F
 img.paste(G, (0, 0), G); img.save(out, quality=92); print(out, 'clumps', len(clumps), 'trees', len(trees), 'patches', n)
 
 # ---------- CLOSE battle look (same woods + rivers; tuned for s ~ 3): mossy turf, top-down canopies; vignette is done in CSS ----------
 if P['close']:
     q = 1 / 1.5                                        # screen px -> image px at s ~ 3
-    lum = 6.5 * fbm(max(0.5, 0.7 * q)) + 4 * fbm(1.6 * q) + 4 * fbm(5 * q) + 6 * fbm(40 * q)
+    lum = 5 * fbm(max(0.5, 0.7 * q)) + 4 * fbm(1.6 * q) + 3 * fbm(5 * q) + 2.5 * fbm(40 * q)
     fl = fbm(3 * q); sp = (fbm(1.0) > 1.4)[..., None]
     c = np.stack([106 + lum + fl * 4, 111 + lum - fl, 61 + lum * 0.75 - fl * 2], -1) + sp * np.array([6, 0, -4], np.float32); del sp
     c = story_paint(c, close=True)
