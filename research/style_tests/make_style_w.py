@@ -10,7 +10,7 @@ from scipy import ndimage
 from skimage.morphology import skeletonize
 import cv2
 base, out = sys.argv[1], sys.argv[2]
-P = dict(story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
+P = dict(green=0, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
 for kv in sys.argv[3:]:
     k, v = kv.split('='); P[k] = type(P[k])(v) if not isinstance(P[k], str) else v
 W, H = 5760, 3240; rng = np.random.default_rng(P['seed']); K = P['K']
@@ -128,9 +128,15 @@ a = np.stack([g[0] + v + fbm(6) * 1.5, g[1] + v, g[2] + v * 0.75], -1) + rng.sta
 top = (wB & ~sh2(wB, round(3.5 * K), round(2 * K))) | (wD & ~sh2(wD, round(2.5 * K), round(1.5 * K))); below = sh(water, round(3 * K)) & ~water
 a[below] = a[below] * 0.5 + np.array([148, 146, 122], np.float32) * 0.5
 yy = np.cumsum(water, axis=0).astype(np.float32)          # depth into the river from its top edge (for the soft fill gradient)
-a = story_paint(a, (50, 44, 20), (190, 184, 140))
+if P['green']:                                            # owner 2026-11-05: one colour for the whole map, the greener (close) one
+    lum_ = 6.5 * fbm(0.7) + 4 * fbm(1.6) + 3 * fbm(5) + 4 * fbm(40); fl_ = fbm(3)
+    a = np.stack([118 + lum_ + fl_ * 4, 123 + lum_ - fl_, 69 + lum_ * 0.75 - fl_ * 2], -1); del lum_, fl_
+    a[below] = a[below] * 0.6
+    a = story_paint(a, (30, 34, 14), (170, 172, 110), close=True)
+else:
+    a = story_paint(a, (50, 44, 20), (190, 184, 140))
 a = cv2.GaussianBlur(a, (0, 0), 0.6)
-a[water] = (213, 229, 240); a[top] = (154, 173, 183)
+a[water] = (77, 125, 154) if P['green'] else (213, 229, 240); a[top] = (60, 100, 126) if P['green'] else (154, 173, 183)
 wm = cv2.GaussianBlur(cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(np.float32), (0, 0), 2)[..., None]
 a = a * (1 - wm) + cv2.GaussianBlur(a, (0, 0), 1.0) * wm
 img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
@@ -139,6 +145,7 @@ img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 SS = 2; S = SS * K
 G = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(G)
 INK, DARK, MID, LITE, UNDER = (50, 44, 20, 255), (86, 81, 52, 255), (118, 112, 82, 255), (150, 145, 108, 255), (70, 64, 35, 255)
+if P['green']: INK, DARK, MID, LITE, UNDER = (30, 34, 14, 255), (58, 70, 34, 255), (84, 98, 50, 255), (120, 130, 70, 255), (44, 54, 24, 255)
 wd = ndimage.distance_transform_edt(~cv2.resize(water.astype(np.uint8), (W // 8, H // 8), interpolation=cv2.INTER_NEAREST).astype(bool)) * 8
 def wdist(x, y): return wd[min(int(y // 8), wd.shape[0] - 1), min(int(x // 8), wd.shape[1] - 1)]
 fn = fbm(260) + fbm(90) * 0.6
@@ -153,9 +160,9 @@ def dome(x, y, s):                                   # mushroom dome ~21x15 scre
         t = 0.6 * np.pi + 1.8 * np.pi * i / 54; sc = 1 + 0.18 * abs(np.sin(1.5 * (t - 0.6 * np.pi) * 2 + bump)) - 0.06
         arch.append((x + rx * np.cos(t) * sc - lean * rx * np.sin(t) * 0.3, cy + ry * 0.92 * np.sin(t) * sc))
     arch = jit(arch, s * 5, 0.05)
-    d.polygon(arch, fill=(128, 122, 84, 235))
+    d.polygon(arch, fill=(MID[:3] + (235,)) if P['green'] else (128, 122, 84, 235))
     d.chord([x - rx * 0.6, cy - ry * 0.1, x + rx * 1.05, cy + ry * 1.05], -10, 120, fill=(50, 44, 20, 255))   # dark crescent lower right
-    d.line(arch, fill=(40, 35, 14, 255), width=max(2, round(2.4 * s)), joint='curve')
+    d.line(arch, fill=INK if P['green'] else (40, 35, 14, 255), width=max(2, round(2.4 * s)), joint='curve')
     d.line([(x - rx * 0.1, cy + ry * 0.7), (x, y + 2 * s)], fill=(40, 35, 14, 255), width=max(2, round(2 * s)))
     for k in range(rng.integers(1, 3)):
         r = rx * rng.uniform(0.3, 0.42); px, py = x + rng.uniform(-0.35, 0.3) * rx, cy + rng.uniform(-0.4, 0.15) * ry
@@ -226,7 +233,7 @@ while n < P['patches'] and tries < 20000:
     for k in range(rng.integers(6, 13)):
         j = rng.integers(0, rows); tuft((x + rng.uniform(0, pw)) * SS, (y + j * 7 * K) * SS, S * rng.uniform(0.85, 1.1))
     n += 1
-story_draw(d, SS, (50, 44, 20))
+story_draw(d, SS, (30, 34, 14) if P['green'] else (50, 44, 20))
 G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.8 * K))
 img.paste(G, (0, 0), G); img.save(out, quality=92); print(out, 'clumps', len(clumps), 'trees', len(trees), 'patches', n)
 
