@@ -465,7 +465,7 @@ FLAGSET.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, 
 // ---------- permanent town (the armies march out of it); passing labels only on their words ----------
 const RT = town("ringgold", RGT, 0, "l");
 tl.to(RT.el, { autoAlpha: 0, duration: 0.4 }, 0); tl.to(RT.el, { autoAlpha: 1, duration: 0.5 }, T_MARCH - 0.2);   // off-frame in the gap close-up; back when "marched out of Ringgold"
-tl.to(RT.el, { autoAlpha: 0, duration: 0.4 }, T_WAIT + 0.6);   // steps out while the camera crops it, and stays out (Osterhaus's card and the Union guns sit on it later)
+tl.to(RT.el, { autoAlpha: 0, duration: 0.4 }, T_MARCH + 2.2);   // Osterhaus marches through the town: its name steps out   // steps out while the camera crops it, and stays out (Osterhaus's card and the Union guns sit on it later)
 
 // ---------- move2-3: the trap is set ----------
 const FRONT = [[1470, 845], [1465, 875], [1460, 900], [1455, 925], [1450, 950], [1443, 972], [1424, 995], [1413, 1020], [1404, 1045]];
