@@ -133,7 +133,7 @@ const slam = (el, t, o = {}) => {
   return el;
 };
 const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, o.color || "#e3232f", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
-const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
+const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, 0, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only on verbatim text)
@@ -393,66 +393,73 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 const T_HUM = at(P1, "He was not trying to end"), T_WCAMP = at(P1, "winter camp");
 
+// ---------- critic round 1 (main 2026-11-05): hard cuts + one stamp style ----------
+// everything revealed at t <= 0.05 (units, flags, date scroll, towns, portrait cards) is ON at t = 0: no fade-in (scenes are hard cuts)
+const zeroIn = () => { const META = ["duration", "ease", "immediateRender", "startAt", "onUpdate", "onComplete", "onStart", "yoyo", "repeat", "delay", "data", "id", "overwrite", "callbackScope"];
+  tl.getChildren(false, true, false).forEach((tw) => {
+    const v = tw.vars || {}; if (tw.startTime() > 0.05 || tw.duration() <= 0 || tw.duration() > 1.0 || !v.startAt || !("autoAlpha" in v || "opacity" in v)) return;
+    const tg = tw.targets(); if (!tg.length || !(tg[0] instanceof Element)) return;
+    const s = {}; Object.keys(v).forEach((k) => { if (!META.includes(k) && typeof v[k] !== "function") s[k] = v[k]; });
+    v.startAt = { ...v.startAt, ...s }; v.immediateRender = true; tw.invalidate(); });
+  tl.render(0, false, true); };   // a fresh paused timeline does not render on seek(0): force the first frame (hard cut: everything already on)
+// screen-space stamp in move1a stampP style: level, cream on dark, <= 3.5 s, placed by the caller on empty ground
+const banner = (txt, css, t, until, size = 40) => { const el = scr(stampHTML(txt, "#f0e6c8", size, 0), "display:flex;justify-content:center;" + css, t, Math.min(until, t + 3.5), { autoAlpha: 0 });
+  tl.fromTo(el, { scale: 1.6 }, { scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t); SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); return el; };
 // ---------- map: clean by default (STYLE W): no territory fill, no overlay geo / rail lines, no scale bar / north arrow ----------
 document.documentElement.classList.add("terr-on");   // the hatch layer (class terr) shows only with terr-on
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 });
 // May 1864: the ground the Union took since January, as red ink hatching, ~3 s, then it dissolves (STYLE_LOCK 2d item 3)
 const HMAY = T_MAY + 0.9;
-const GMAY = lay("assets/media/gn_corridor_ctl_may26cap_mx.png", HMAY, HMAY + 4.4); tl.fromTo(GMAY, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, HMAY);
-tl.to(GMAY, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, HMAY + 3.1);
+const GMAY = lay("assets/media/gn_corridor_ctl_may26cap_mx.png", HMAY, HMAY + 3.1); tl.fromTo(GMAY, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, HMAY);   // dense red ink hatch (wide view), ~3 s
+tl.to(GMAY, { opacity: 0, duration: 0.5, ease: "sine.inOut" }, HMAY + 2.5);
+// "through the woods": the march route east of New Hope Church was wooded; the woods are drawn on the map there (canopy, close look)
+{ const wd = document.createElement("img"); wd.className = "wimg"; wd.src = "assets/media/m3a_woods_canopy.png"; wd.alt = "";
+  Object.assign(wd.style, { position: "absolute", left: "1405px", top: "1017px", width: "175px", height: "90px" }); WORLD.insertBefore(wd, OVL); gsap.set(wd, { autoAlpha: 0 }); tl.to(wd, { autoAlpha: 1, duration: 1.0 }, T_STOP + 1.0); }
 
 // ---------- camera ----------
 const CD = [...L(34.88, -85.08), 2.3], CD2 = [...L(34.86, -85.04), 2.8], CM = [(DAL[0] + NHC[0]) / 2, (DAL[1] + NHC[1]) / 2 - 10, 1.2], CN = [NHC[0] + 8, NHC[1] - 6, 5.2];
 camera([[0, ...CD], [T_PAPER, ...CD], [T_ARGUED + 1.0, ...CD2], [T_MAY - 0.2, ...CD2], [T_MAY + 1.8, ...CM], [T2 + 0.2, ...CM], [T_STOP + 2.0, ...CN],
   [T_HOW - 0.2, ...CN], [T_MARCH + 1.6, NHC[0] + 18, NHC[1] - 10, 5.6], [T_MOVED, NHC[0] + 22, NHC[1] - 8, 5.6], [END - 0.2, PK[0], PK[1], PKS], [END, PK[0], PK[1], PKS]]);
-B.showDate(0.05);
+B.showDate(0);
 
 // ---------- title (alone, no date of its own: the date scroll carries the date) ----------
 B.title("MOVE 3", "PICKETT'S MILL", "", 0.1, T_CAMP - 0.2);
 SFX("hit", 0.4);
 
 // ---------- permanent towns + flags (48 px, one pair per shot) ----------
-town("chattanooga", CHT, "l", 0.2, { until: T_ARGUED - 0.2 });   // steps out before the camera crops it under the date scroll
-town("dalton", DAL, "r", 0.2, { until: T_STOP + 1.0 });
+town("chattanooga", CHT, "l", 0, { until: T_ARGUED - 0.2 });   // steps out before the camera crops it under the date scroll
+town("dalton", DAL, "r", 0, { until: T_STOP + 1.0 });
 town("marietta", MAR, "r", T_MAY + 1.0, { until: T_STOP });
 town("dallas", DLS, "l", T_MAY + 1.2, {});
 town("new hope church", NHC, "r", T_STOP - 0.2, { until: T_MOVED + 0.6 });   // steps out as Cleburne's division moves through it
-const FLS = [[0, T_MAY + 1.2, L(34.99, -85.24), L(34.72, -84.90)], [T_MAY + 1.3, T_STOP + 1.4, L(34.30, -85.25), L(33.86, -84.55)],
-  [T_STOP + 1.5, END - 2.0, L(33.995, -84.835), L(33.932, -84.752)], [END - 1.9, END + 1, L(34.02, -84.86), L(33.93, -84.70)]];
-FLS.forEach(([t0, t1, us, cs]) => { flagS(FL.us, "UNITED STATES", ...us, t0 + 0.2, t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + 0.3, t1); });
+const FLS = [[0, T_MAY + 1.2, L(34.99, -85.24), L(34.755, -84.86)], [T_MAY + 1.3, T_STOP + 1.4, L(34.30, -85.25), L(33.86, -84.55)],
+  [T_STOP + 1.5, END - 2.0, L(33.995, -84.835), L(33.915, -84.72)], [END - 1.9, END + 1, L(34.02, -84.86), L(33.93, -84.70)]];
+FLS.forEach(([t0, t1, us, cs]) => { flagS(FL.us, "UNITED STATES", ...us, t0 ? t0 + 0.2 : 0, t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 ? t0 + 0.3 : 0, t1); });
 // the winter front (both colours) + the army in winter camp
-const FJ = frontS({ pts: MD.fronts.jan64, sideA: "rome", sideB: "carth", t: 0.4, dur: 1.4, width: FW(2.3), until: T_MAY + 0.8 });
-unitS("aot", "carth", [DAL[0] + 2, DAL[1] + 26], "infantry", "ARMY OF TENNESSEE", { t: 0.6, size: "XXXX", until: T_MAY + 0.8 }); tagAt("aot", null);
+const FJ = frontS({ pts: MD.fronts.jan64, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: FW(2.3), until: T_MAY + 0.8 });
+unitS("aot", "carth", [DAL[0] + 2, DAL[1] + 26], "infantry", "ARMY OF TENNESSEE", { t: 0, size: "XXXX", until: T_MAY + 0.8 }); tagAt("aot", null);
 unitS("cbd", "carth", [TUN[0] + 22, TUN[1] + 4], "infantry", "CLEBURNE", { t: T_CAMP, size: "XX", until: T_MAY + 0.8 }); tagAt("cbd", null);   // his portrait card carries the name
-unitS("uth", "rome", L(34.965, -85.05), "infantry", "UNION ARMIES", { t: 0.7, size: "XXXX", until: T_MAY + 0.8 }); tagAt("uth", null);
+unitS("uth", "rome", L(34.965, -85.05), "infantry", "UNION ARMIES", { t: 0, size: "XXXX", until: T_MAY + 0.8 }); tagAt("uth", null);
 
 // ---------- move3-1: the date rolls, the paper ----------
-B.date("NOVEMBER 1863", 0.15, 0.95, 32);
-B.date("DECEMBER 1863", 1.0, 1.5, 32);
-B.date("JANUARY 1864", 1.6, T_MAY - 0.2, 32);
-[0.95, 1.55].forEach((t) => SFX("tick", t));
+B.date("JANUARY 1864", 0, T_MAY - 0.2, 32);   // the move's first date from the first frame (no clashing dates)
 focus(DAL, 60, T_WCAMP, T_WCAMP + 3.4);
 pinPortrait("cbd", PHOTO("cleburne"), FL.cs, "Cleburne", T_PAPER - 0.2, T_MAY + 0.8, true, "left");
-// the paper: a document card that unfolds (slavery = "one of our chief sources of weakness" is said as narration only)
-const doc = scr(`<div style="width:760px;padding:30px 44px 32px;background:#efe6cf;color:#1b1812;font-family:'Special Elite',monospace;box-shadow:0 24px 50px rgba(0,0,0,.65);border:1px solid #b9a77f;transform-origin:50% 0%">
-  <div style="font-family:Oswald;font-weight:700;font-size:18px;letter-spacing:.3em;color:#7a2a1a">MEMORANDUM · DALTON, GEORGIA · 2 JANUARY 1864</div>
-  <div style="height:2px;background:#7a2a1a;margin:10px 0 16px"></div>
-  <div class="l1" style="font-size:26px;line-height:1.45">FREE AND ARM ENSLAVED MEN</div>
-  <div class="l2" style="font-size:26px;line-height:1.45">TO WIN THE WAR FOR THE CONFEDERACY</div>
-  <div style="margin-top:14px;display:flex;gap:8px;flex-direction:column">${[0, 1, 2, 3].map((k) => `<div style="height:9px;width:${92 - k * 9}%;background:rgba(27,24,18,.18)"></div>`).join("")}</div>
-  <div style="font-family:Oswald;font-weight:700;font-size:18px;letter-spacing:.22em;margin-top:16px;text-align:right">P. R. CLEBURNE, MAJ. GEN.</div></div>`,
-  "left:0;right:0;top:250px;display:flex;justify-content:center;", T_PAPER - 0.1, T_WORDS - 0.3, { autoAlpha: 0 });
-tl.fromTo(doc.firstElementChild, { scaleY: 0.08 }, { scaleY: 1, duration: 0.6, ease: "power3.out", immediateRender: false }, T_PAPER - 0.1);
-tl.fromTo(doc.querySelector(".l1"), { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.4 }, T_FREE - 0.2);
-tl.fromTo(doc.querySelector(".l2"), { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.4 }, T_WIN - 0.1);
-SFX("hit", T_PAPER + 0.2);
+focus(TUN, 40, T_PAPER, T_PAPER + 3.4);   // "Cleburne put his name to a long paper"
+// the paper (spoken words only, <= 3.5 s): free and arm enslaved men, to win the war
+const doc = scr(`<div style="width:640px;padding:26px 44px 28px;background:#efe6cf;color:#1b1812;font-family:'Special Elite',monospace;box-shadow:0 24px 50px rgba(0,0,0,.65);border:1px solid #b9a77f;transform-origin:50% 0%">
+  <div class="l1" style="font-size:34px;line-height:1.45">FREE AND ARM ENSLAVED MEN</div>
+  <div class="l2" style="font-size:34px;line-height:1.45">TO WIN THE WAR</div></div>`,
+  "left:0;right:0;top:230px;display:flex;justify-content:center;", T_FREE - 0.2, T_WORDS - 0.4, { autoAlpha: 0 });
+tl.fromTo(doc.firstElementChild, { scaleY: 0.08 }, { scaleY: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, T_FREE - 0.2);
+tl.fromTo(doc.querySelector(".l2"), { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.3 }, T_WIN - 0.1);
+SFX("hit", T_FREE);
 // the verbatim line (first half only, as spoken; quote marks = verbatim)
-quote("“AS BETWEEN THE LOSS OF INDEPENDENCE AND THE LOSS OF SLAVERY…”", "PATRICK CLEBURNE · MEMORANDUM, 2 JANUARY 1864", T_WORDS - 0.2, T_NOT - 0.3, { size: 44, mw: 1500, top: 205 });
-sstamp("TO WIN THE WAR", 870, T_NOT - 0.2, { size: 52, color: "#4f8bff", until: T_SAVE - 0.1 });
-sstamp("NOT TO END SLAVERY", 955, T_HUM + 0.3, { size: 52, until: T_SAVE - 0.1 });
-B.caption("TO SAVE A GOVERNMENT BUILT ON SLAVERY", T_BUILT - 0.6, T_MOST - 0.2, "");
-badge({ name: "JEFFERSON DAVIS", role: "CONFEDERATE PRESIDENT", photo: PHOTO("davis"), flag: FL.cs, side: "carth", corner: "tr", initials: "JD", t: T_DAVIS - 0.1, until: T_DAVIS + 3.4 });
-sstamp("SUPPRESSED", 880, T_SUPP + 0.2, { size: 72, until: Math.min(T_MAY - 0.1, T_SUPP + 3.6) });
+quote("“AS BETWEEN THE LOSS OF INDEPENDENCE AND THE LOSS OF SLAVERY…”", "CLEBURNE", T_WORDS + 0.3, Math.min(T_NOT - 0.3, T_WORDS + 3.8), { size: 44, mw: 1500, top: 205 });
+banner("NOT TRYING TO END SLAVERY FOR ITS OWN SAKE", "left:0;right:0;top:900px;", T_HUM + 0.3, T_HUM + 3.8, 34);
+B.caption("HE WAS TRYING TO SAVE A GOVERNMENT THAT HAD BEEN BUILT ON IT", T_SAVE, T_MOST - 0.2, "");
+badge({ name: "JEFFERSON DAVIS", role: "PRESIDENT", photo: PHOTO("davis"), flag: FL.cs, side: "carth", corner: "tr", initials: "JD", t: T_DAVIS - 0.1, until: T_DAVIS + 3.4 });
+banner("SUPPRESSED", "left:0;right:0;top:900px;", T_SUPP + 0.9, T_MAY - 0.1, 44);
 // May: the armies in Georgia again, the band moves south
 B.date("MAY 1864", T_MAY - 0.1, T2 + 0.2, 32);
 for (let k = 0; k < 5; k++) SFX("tick", T_MAY + k * 0.18);
@@ -474,20 +481,22 @@ unitS("how", "rome", HM[0], "infantry", "HOWARD", { t: T_HOW, size: "XXX" });
 pinPortrait("how", PHOTO("howard"), FL.us, "Howard", T_HOW + 0.2, END + 1, true);
 trail(HM.slice(0, 4), "#be3a2a", AW(5.6, 3), T_MARCH - 0.2, T_SAW - T_MARCH + 0.4, END + 1);
 along("how", HM.slice(0, 4), T_MARCH, T_SAW - T_MARCH, 20);
-boxP("THE WOODS", ...L(34.000, -84.770), T_MARCH + 0.3, T_CAV, { size: 22 });
-belief("AROUND THE END OF JOHNSTON'S LINE", "WHAT HOWARD BELIEVED", T_BEL - 0.1, T_CAV - 0.3, { top: 820 });
+boxP("THE WOODS", 1525, 1035, T_MARCH + 0.3, T_CAV, { size: 22 });
+scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+  <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">HOWARD BELIEVED</div><div style="font-size:32px;letter-spacing:.06em;margin-top:4px">AROUND THE END OF JOHNSTON'S LINE</div></div>`,
+  "right:40px;top:560px;", T_BEL - 0.1, Math.min(T_CAV - 0.3, T_BEL + 3.4));   // on the empty ground east of the front, off the units
 K.target(PMI[0], PMI[1], T_END, { r: 14, side: "rome", until: T_SAW + 0.5 });
 // the cavalry sees him; Cleburne slides to the end of the line
 unitS("kel", "carth", L(33.982, -84.746), "infantry", "CAVALRY", { t: T_CAV - 0.2, w: 54, h: 36 }); cavIcon("kel"); tagAt("kel", T_CAV + 0.3);
 stampP("SAW HIM COMING", ...L(33.995, -84.725), T_SAW + 0.1, T_MOVED + 1.2, null, 22);
 mg(L(33.982, -84.749), L(33.986, -84.762), T_SAW + 0.3, 4, 0.25);
-badge({ name: "JOSEPH E. JOHNSTON", role: "ARMY OF TENNESSEE", photo: PHOTO("johnston"), flag: FL.cs, side: "carth", corner: "tr", initials: "JJ", t: T_MOVED - 0.2, until: T_MOVED + 3.2 });
+badge({ name: "JOSEPH E. JOHNSTON", role: "", photo: PHOTO("johnston"), flag: FL.cs, side: "carth", corner: "tr", initials: "JJ", t: T_MOVED - 0.2, until: T_MOVED + 3.2 });
 const CM2 = LL([[33.936, -84.800], [33.950, -84.786], [33.960, -84.774], [33.967, -84.767]]);
 along("clb", CM2, T_MOVED, 2.4, 14);
 arw({ pts: CM2, side: "carth", t: T_MOVED, dur: 1.8, width: AW(5.6, 9), until: T_MOVED + 4.4 });
 const FE = frontS({ pts: LL([[33.990, -84.745], [33.984, -84.755], [33.978, -84.762], [33.970, -84.770]]), sideA: "rome", sideB: "carth", t: T_TIME - 0.3, dur: 0.8, width: FW(5.6), until: END + 1 });
-sstamp("IN TIME TO MEET HIM", 940, T_TIME - 0.1, { size: 54, color: "#4f8bff", until: END + 1 });
-boxP("PICKETT'S MILL", PMI[0] - 30, PMI[1] - 14, T_END + 0.2, T_END + 3.5, { size: 22 });
+banner("IN TIME TO MEET HIM", "right:80px;top:180px;", T_TIME - 0.2, END + 1, 40);   // empty ground, ~2 s to the cut
+zeroIn();
 fixImgs();
 K.raiseTerritory();
 B.finish();

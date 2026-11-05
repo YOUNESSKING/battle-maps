@@ -482,7 +482,8 @@ arw({ pts: [L(34.10, -84.82), [P.pm[0] + 2, P.pm[1] - 8]], side: "rome", t: T_FO
 // the method, full (CLEBURNE'S METHOD, three lines): one big card alone
 GG.METHOD = ["LET THEM TIRE ON THE HILL, THEN STRIKE", "HIDE YOUR STRENGTH UNTIL THEY ARE CLOSE", "LET THE GROUND DO THE KILLING"]; GG.METHOD_TITLE = "CLEBURNE'S METHOD";
 const MC = GG.method(3, T_MOST - 0.2, T_KILLED + 0.6, [T_MOST - 0.1, T_MOST + 0.15, T_KILLW]);   // line 3 lands on "killing"
-MC.style.top = "250px";   // below the date scroll MC.firstElementChild.style.zoom = "0.72";
+MC.querySelector(".inner").style.background = "rgb(18,16,12)"; MC.style.top = "385px";   // critic r2: opaque, no map labels through the text
+MC.firstElementChild.style.zoom = "0.72";   // top set above (385 px): below the date scroll, clear of the place labels
 
 // =====================================================================================================================
 // 30 NOVEMBER 1864, FRANKLIN (dark interlude): the date scroll rolls on, ONE locator card (his portrait greys inside it), then the stamp

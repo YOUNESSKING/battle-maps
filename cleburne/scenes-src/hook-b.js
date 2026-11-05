@@ -89,7 +89,7 @@ const dateSet = (text, t, until) => { const d = document.createElement("div"); d
 const tick = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySelector(sel);
   tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt ? fmt(v.v) : Math.round(v.v).toLocaleString("en-US"); } }, t0);
   for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
-const RED = scr("", "inset:0;background:radial-gradient(ellipse at center, rgba(200,20,30,0) 40%, rgba(200,20,30,0.45) 100%);");
+const RED = scr("", "inset:0;background:radial-gradient(ellipse at center, rgba(8,8,4,0) 45%, rgba(8,8,4,0.42) 100%);");   // critic r2: neutral dark vignette pulse, no red tint
 const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, immediateRender: false }, t); tl.to(RED, { autoAlpha: 0, duration: 0.5 }, t + 0.08); };
 let FID = 0;   // K.front shares ONE blur filter sized by the first front: give each front its own (fronts at several scales)
 const frontS = (o) => { const g = K.front(o), id = "hkblur" + (++FID), f = document.createElementNS(NS, "filter");
@@ -200,9 +200,8 @@ const BDG = scr(`<div style="display:flex;flex-direction:column;align-items:cent
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:190px;color:#f7f3ea">?</div></div>
   <div class="pl" style="padding:12px 36px 14px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:66px;letter-spacing:0.08em;line-height:1.1">PATRICK CLEBURNE</div></div></div>`,
   "left:0;right:0;top:150px;display:flex;justify-content:center;transform-origin:50% 25%;");
-gsap.set(BDG, { autoAlpha: 1, scale: 0.85, y: 60 });
+gsap.set(BDG, { autoAlpha: 1 });   // critic r2: the "?" sits exactly where the photo lands
 const QM = BDG.querySelector(".q"), PL = BDG.querySelector(".pl"); gsap.set(PL, { autoAlpha: 0 });
-tl.to(BDG, { scale: 1, y: 0, duration: 0.5, ease: "power3.out" }, Math.max(0.1, T_NAME - 0.6));
 tl.to(QM, { autoAlpha: 0, duration: 0.15 }, T_NAME - 0.05); SFX("ref:whoosh", T_NAME - 0.25);
 tl.fromTo(PL, { autoAlpha: 0, scale: 1.9 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, T_NAME + 0.1);
 SFX("hit", T_NAME + 0.3); K.shake(T_NAME + 0.3, 6, 0.3); pulse(T_NAME + 0.32);
@@ -235,9 +234,9 @@ const thp = (x, y) => INS.th.P(x, y);
 frontS({ pts: [thp(1337, 817), thp(1332, 773), thp(1353, 729), thp(1393, 710), thp(1437, 716), thp(1465, 740)], sideA: "rome", sideB: "carth", t: T_STOP + 0.05, dur: 0.5, width: 15 * 1.3 * k, until: T_HELD });
 unitK("c1", "carth", thp(1393, 752), "infantry", "", k, { t: T_STOP + 0.1 }); unitK("c1g", "carth", thp(1367, 775), "artillery", "", k, { t: T_STOP + 0.15 });
 pinPortrait("c1", PHOTO.cleburne, FL.csa, "Cleburne", T_STOP + 0.15, null, k, "right");
-[[thp(1423, 640), thp(1400, 700)], [thp(1280, 735), thp(1335, 750)], [thp(1500, 670), thp(1450, 712)]].forEach(([a, b], i) => {
+[[thp(1423, 640), thp(1400, 700), thp(1393, 652)], [thp(1280, 735), thp(1335, 750)], [thp(1500, 670), thp(1450, 712)]].forEach(([a, b, a2], i) => {
   unitK("s" + i, "rome", a, "infantry", i ? "" : "SHERMAN", k, { t: T_STOP + (i ? 0.1 + i * 0.05 : 0.45) });   // tag lands on "Sherman's"
-  arw({ pts: [a, b], side: "rome", t: T_STOP + 0.2 + i * 0.25, dur: 0.6, until: T_HELD }, SC, 9); });
+  arw({ pts: [a2 || a, b], side: "rome", t: T_STOP + 0.2 + i * 0.25, dur: 0.6, until: T_HELD }, SC, 9); });
 [0.4, 1.4].forEach((d, i) => shell(...thp(1367, 775), ...[thp(1410, 690), thp(1320, 742)][i], T_STOP + 0.3 + d, k, { r: 10 * k, fly: 0.35 }));
 smoke([thp(1370, 772), thp(1385, 742), thp(1400, 738), thp(1360, 760)], T_STOP + 0.6, k);
 B.grey(["s1", "s2"], T_HILL + 0.4, 0.4);
@@ -291,7 +290,7 @@ flagsC(L(35.1, -86.9), L(34.0, -83.6), T_THESE + 0.2, null);
 town("DALTON", ...L(34.7698, -84.9702), T_THESE + 0.3, null); town("ROME", ...L(34.257, -85.165), T_THESE + 0.3, null, { side: "l" });
 // the three places: numbered dark dots + white serif names (no rings)
 [[TH, "Tunnel Hill · 1863", 1, -150, -6], [GP, "Ringgold Gap · 1863", 2, 160, -6], [PM, "Pickett's Mill · 1864", 3, 175, 0]].forEach(([p, txt, n, dx, dy], i) => {
-  const el = pinAt(`<div style="display:flex;align-items:center;gap:8px;font-family:${SERIF};font-weight:700;color:#fbf8ef;${SHADOW}"><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:#1e1c14;border:2px solid #fbf8ef;align-items:center;justify-content:center;font-size:16px">${n}</span><span style="font-size:26px;white-space:nowrap">${txt}</span></div>`, p[0] + dx / OS, p[1] + dy / OS, T_THESE + 0.4 + i * 0.15, null);
+  const el = pinAt(`<div style="display:flex;align-items:center;gap:8px;font-family:${SERIF};font-weight:700;color:#fbf8ef;${SHADOW}"><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:#1e1c14;border:2px solid #fbf8ef;align-items:center;justify-content:center;font-size:16px">${n}</span><span style="font-size:26px;white-space:nowrap">${txt}</span></div>`, p[0] + dx / OS, p[1] + dy / OS, T_THESE + 0.95 + i * 0.15, null);   // critic r2: names only once the camera has arrived (clear of the date scroll)
   reg(el.firstElementChild); tl.to(el, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45);   // the title card stands alone (2d item 8)
   const d = pinAt(`<div style="width:12px;height:12px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 2px #fbf8ef"></div>`, p[0], p[1], T_THESE + 0.3 + i * 0.15, null); reg(d.firstElementChild); });
 const TDIM = scr("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0) 55%,rgba(5,7,13,0.75) 85%);");

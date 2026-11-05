@@ -130,7 +130,7 @@ const slam = (el, t, o = {}) => {
 };
 const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, o.color || "#e3232f", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
 // world-space mini stamp (KILLED / HELD at a counter)
-const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
+const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, 0, sub), x, y, {});   // critic r1: stamps level
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // pontoon bridge icon across the river (planks on boats), world space; ang = direction across the river (deg)
@@ -448,11 +448,13 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 // ---------- camera ----------
-const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 952, 5.0], C4 = [1440, 905, 4.4], C5 = [1436, 920, 4.8], CW = [1610, 1225, 1.6], C6 = [1425, 950, 3.6], C7 = [1490, 1000, 3.2], CD = [1600, 1260, 1.6];
+const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 952, 5.0], C4 = [1440, 905, 4.4], C5 = [1436, 945, 4.8], CW = [1610, 1225, 1.6], C6 = [1425, 950, 3.6], C7 = [1490, 1000, 3.2], CD = [1600, 1225, 1.6];
 camera([[0, ...C0], [T_GOV - 0.4, ...C0], [T_GOV + 1.6, ...C1], [T4 - 0.4, ...C1], [T4 + 1.4, ...C2], [T_WAIT - 0.3, ...C2], [T_WAIT + 1.2, ...C3],
-  [T_BACK + 1.2, ...C3], [T5 + 0.6, ...C4], [T_GEARY - 0.4, ...C4], [T_GEARY + 1.2, ...C5], [T6 - 0.2, ...C5], [T_NOON + 1.6, ...CW], [T_UART - 0.3, ...CW],
-  [T_UART + 1.3, ...C6], [T_PULL + 0.4, ...C6], [T_BURN + 0.8, ...C7], [T_DALTON - 0.4, 1480, 990, 2.9], [T_DALTON + 1.6, ...CD], [END, CD[0], CD[1], 1.7]]);
-B.showDate(0.05); B.date("27 NOVEMBER 1863", 0.1, T_EIGHT - 0.2, 32); B.date("27 NOV 1863 · 8 A.M.", T_EIGHT - 0.1, T_NOON - 0.2, 32); B.date("27 NOV 1863 · NOON", T_NOON - 0.1, T_DALTON - 0.2, 32);
+  [T_BACK + 1.2, ...C3], [T5 + 0.6, ...C4], [T_GEARY - 0.4, ...C4], [T_GEARY + 1.2, ...C5], [T6 + 1.4, ...C5], [T_NOON + 2.6, ...CW], [T_UART - 0.3, ...CW],
+  [T_UART + 1.3, ...C6], [T_PULL + 0.4, ...C6], [T_BURN + 0.8, ...C7], [T_DALTON - 0.4, 1480, 990, 2.9], [T_DALTON + 1.6, ...CD], [END, CD[0], 1215, 1.7]]);
+// critic r1: date scroll, the two flags and the units on screen AT t=0 (no fade-in)
+const now0 = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.3).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, scale: 1, x: 0, y: 0 }); };
+B.showDate(0); B.date("27 NOVEMBER 1863", 0, T_EIGHT - 0.2, 32); now0(document.getElementById("date")); document.querySelectorAll("#date .d").forEach(now0); B.date("27 NOV 1863 · 8 A.M.", T_EIGHT - 0.1, T_NOON - 0.2, 32); B.date("27 NOV 1863 · NOON", T_NOON - 0.1, T_DALTON - 0.2, 32);
 B.date("DECEMBER 1863", T_DALTON - 0.1, END + 1, 32);
 // time of day: cool morning light from 8 A.M. until noon
 tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_EIGHT - 0.1); tl.to(TOD_COOL, { opacity: 0, duration: 2.0 }, T_NOON - 0.1);
@@ -460,7 +462,7 @@ tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_EIGHT - 0.1); tl.to(TOD_COOL,
 // ---------- flags (48 px, behind each side's lines, no names; both on every shot) ----------
 const FLAGSET = [[0, T_NOON + 0.4, [1300, 985], [1528, 925]], [T_NOON + 0.6, T_UART + 0.6, [1250, 1080], [1810, 1250]],
   [T_UART + 0.8, T_DALTON - 0.2, [1290, 990], [1612, 945]], [T_DALTON, END + 1, [1100, 1400], [1760, 1480]]];
-FLAGSET.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0.2), t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0.3), t1); });
+FLAGSET.forEach(([t0, t1, us, cs], k) => { const a = flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0), t1), b = flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0), t1); if (!k) [a, b].forEach(now0); });
 
 // ---------- permanent town (the armies march out of it); passing labels only on their words ----------
 const RT = town("ringgold", RGT, 0, "l");
@@ -471,26 +473,25 @@ tl.to(RT.el, { autoAlpha: 0, duration: 0.4 }, T_MARCH + 2.2);   // Osterhaus mar
 const FRONT = [[1470, 845], [1465, 875], [1460, 900], [1455, 925], [1450, 950], [1443, 972], [1424, 995], [1413, 1020], [1404, 1045]];
 const front = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: 0.6, dur: 1.6, width: FWc(4.8), until: T_NOON + 0.6 });
 const GV = [1464, 990], GR = [1458, 917], PO = [1424, 1010], LO = [1508, 1012], GN = [1447, 958], CL = [1494, 952];
-unitS("cle", "carth", CL, "infantry", "CLEBURNE", { t: 0.2, size: "XX" }); tagAt("cle", null);
+unitS("cle", "carth", CL, "infantry", "CLEBURNE", { t: 0, size: "XX" }); now0(B.units.cle.el); tagAt("cle", null);
 pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0.3, END + 1, true);   // owner: the general's portrait at his unit for the whole battle
-unitS("gov", "carth", GV, "infantry", "GOVAN", { t: T_GOV - 0.1, size: "X" });
-unitS("gra", "carth", GR, "infantry", "GRANBURY", { t: T_GRAN, size: "X" });
-unitS("pol", "carth", PO, "infantry", "POLK", { t: T_GRAN + 0.5, size: "X" }); tagAt("pol", T_GRAN + 0.9);
-unitS("low", "carth", LO, "infantry", "LOWREY", { t: T_LOW, size: "X" });
+unitS("gov", "carth", GV, "infantry", "GOVAN", { t: 0, size: "X" }); tagAt("gov", T_GOV + 0.3);
+unitS("gra", "carth", GR, "infantry", "GRANBURY", { t: 0, size: "X" }); tagAt("gra", T_GRAN + 0.4);
+unitS("pol", "carth", PO, "infantry", "POLK", { t: 0, size: "X" }); tagAt("pol", T_GRAN + 0.9);
+unitS("low", "carth", LO, "infantry", "LOWREY", { t: 0, size: "X" }); tagAt("low", T_LOW + 0.2);
+["gov", "gra", "pol", "low"].forEach((id) => now0(B.units[id].el));   // in place from the first frame; each pulses on its name
 pinPortrait("low", PH("lowrey"), FL.cs, "Lowrey", T_LOW + 0.1, END + 1, true);
 glowPath([[1430, 968], [1454, 972], [1478, 980]], "", 2, T_THROAT - 0.2, T_WALLS - 0.2);   // "the narrow throat": focus + ink trace
 boxP("THE GAP", 1452, 1002, T_THROAT, T_WALLS - 0.2, { size: 22 });
 inkTrace(NCREST.slice(0, 4), T_WALLS - 0.1, T_LOW - 0.2); inkTrace(SCREST.slice(0, 3), T_WALLS, T_LOW - 0.2);   // "up on the walls of Taylor's Ridge"
 focus([1444, 960], 70, T_WALLS - 0.1, T_LOW - 0.2);
 profileStrip(T_WALLS, T_LOW - 0.1);                                                        // BATCH 3: one side view per move, on the terrain beat
-arw({ pts: [[1478, 1000], [1466, 992]], side: "carth", t: T_GOV + 0.2, dur: 0.6, width: AW(5, 8), until: T_LOW });
-arw({ pts: [[1480, 935], [1462, 920]], side: "carth", t: T_GRAN + 0.2, dur: 0.6, width: AW(5, 8), until: T_LOW });
-arw({ pts: [[1448, 1015], [1428, 1010]], side: "carth", t: T_GRAN + 0.6, dur: 0.6, width: AW(5, 8), until: T_LOW });
+pulseU("gov", T_GOV + 0.2); pulseU("gra", T_GRAN + 0.3); pulseU("pol", T_GRAN + 0.8); pulseU("low", T_LOW + 0.1);
 focus(LO, 30, T_LOW + 0.2, T_HID - 0.1);                                                  // "in reserve"
 unitS("gun", "carth", GN, "artillery", "GOLDTHWAITE", { t: T_HID, w: 46, h: 32 }); tagAt("gun", T_GOLD);
-const BR = [brush(GN[0] - 8, GN[1] - 2, T_BRUSH - 0.2, T_CLEAR + 0.15, 42), brush(GN[0] - 7, GN[1] + 6, T_BRUSH, T_CLEAR + 0.15, 42), brush(GN[0] - 3, GN[1] - 8, T_BRUSH + 0.15, T_CLEAR + 0.15, 38)];
+const BR = [brush(GN[0] - 6, GN[1] - 3, T_BRUSH - 0.2, T_CLEAR + 0.15, 42), brush(GN[0] + 2, GN[1] - 2, T_BRUSH, T_CLEAR + 0.15, 42), brush(GN[0] - 2, GN[1] - 6, T_BRUSH + 0.15, T_CLEAR + 0.15, 38)];   // critic r1: brush over the box, clear of the GOLDTHWAITE tag
 tl.to(B.units.gun.el, { opacity: 0.55, duration: 0.5 }, T_BRUSH + 0.3);
-B.caption("THE HIDDEN GUNS", T_BRUSH - 0.2, T4 - 0.2, "carth");
+B.caption("TWO GUNS BEHIND CUT BRUSH", T_BRUSH + 0.7, T_BRUSH + 3.9, "carth");   // spoken words, landed after "behind cut brush"
 
 // ---------- move2-4: Osterhaus walks into it ----------
 for (let k = 0; k < 6; k++) SFX("tick", T_EIGHT + k * 0.15);
@@ -502,18 +503,18 @@ arw({ pts: [[1372, 906], [DEP[0] + 8, DEP[1] + 10], [1416, 938]], side: "rome", 
 // its guns are stuck back at the creek (no artillery)
 unitS("ugun", "rome", [1318, 896], "artillery", null, { t: T_ART, w: 40, h: 28, until: T_THOUGHT + 1 });
 tl.to(B.units.ugun.el, { opacity: 0.45, duration: 0.4 }, T_ART + 0.6);
-stampP("NOT CAUGHT UP", 1318, 870, T_ART + 0.5, T_THOUGHT + 1, null, 18);
-belief("A FEW HUNDRED CAVALRY", "WHAT OSTERHAUS THOUGHT WAS IN THE GAP", T_THOUGHT - 0.1, T_WAIT - 0.3);
+stampP("NOT CAUGHT UP", 1318, 870, at(P4, "had not caught up") + 0.6, T_THOUGHT + 1, null, 20);
+belief("ONLY A FEW HUNDRED CAVALRY", "OSTERHAUS LATER SAID", T_CAV + 1.0, T_CAV + 3.8, { top: 96 });   // spoken words, landed after "cavalry", above Osterhaus's card
 // close: the brush clears, the guns open, Govan's crossfire
 BR.forEach((b) => tl.to(b, { scale: 1.6, opacity: 0, duration: 0.3 }, T_CLEAR));
 tl.to(B.units.gun.el, { opacity: 1, duration: 0.2 }, T_CLEAR);
-sstamp("FIRE", 110, T_FIRE, { size: 64, color: "#f7f3ea", rot: -4, until: T_CLEAR + 0.6 });
+stampP("FIRE", 1395, 985, at(P4, "the order to fire") + 0.5, T_CLEAR + 0.9, null, 30);   // level cream-on-dark, on empty ground
 [0, 1, 2, 3].forEach((k) => shoot([GN[0] - 6, GN[1]], [1426 - k * 5, 944 - (k % 2) * 6], T_OPEN + k * 0.55, { r: 6, dur: 0.45, h: 6, unit: "gun", width: 0.9 }));
 smoke([[GN[0] - 6, GN[1] - 2], [GN[0] - 3, GN[1] + 4]], T_OPEN + 0.2);
 mg([GV[0] - 10, GV[1] - 4], [1428, 946], T_POUR, 6, 0.6); mg([GR[0] - 8, GR[1] + 6], [1425, 942], T_POUR + 0.5, 5, 0.6); mg([PO[0] + 2, PO[1] - 8], [1424, 950], T_POUR + 1.0, 5, 0.6);
 smoke([[GV[0] - 8, GV[1] - 4], [GR[0] - 6, GR[1] + 6], [PO[0] + 2, PO[1] - 6]], T_POUR + 0.3);
 glowPath([[GR[0] - 6, GR[1] + 8], [1426, 944], [PO[0], PO[1] - 8]], "", 2, T_POUR, T_BACK);   // the crossfire: focus + ink trace
-B.caption("THE CROSSFIRE AT THE MOUTH OF THE GAP", T_POUR, T_BACK - 0.1, "carth");
+B.caption("FIRE ACROSS THE MOUTH OF THE GAP", at(P4, "mouth of the gap") + 0.8, at(P4, "mouth of the gap") + 4.3, "carth");
 along("ost", [OP1, [1404, 932], OP2], T_BACK, 1.6, 8);
 arw({ pts: [[1420, 942], [1396, 926]], side: "rome", t: T_BACK, dur: 0.8, width: AW(5, 8), until: T_BACK + 3.2 });   // real move: solid, fades ~2 s after arrival
 crosses([[1420, 944], [1427, 949], [1416, 951], [1424, 939]], T_BACK + 0.3, T_NOON);   // where Osterhaus's attack broke
@@ -548,9 +549,9 @@ tl.to(UF.firstElementChild, { rotation: 80, y: 16, opacity: 0, duration: 0.7, ea
 along("gea", [GE1, [1432, 885], GE2], T_DROVE, 1.6, 8);
 arw({ pts: [[1442, 886], [1414, 886]], side: "rome", t: T_DROVE + 0.2, dur: 0.8, width: AW(5, 8), until: T_DROVE + 3.2 });
 crosses([[1438, 882], [1445, 888], [1434, 890], [1442, 878]], T_DROVE + 0.3, T_NOON);   // where Geary's assault broke
-B.caption("A FLAG ON THE CREST, BUT NOT FOR LONG", T_FLAG, T_TWO - 0.1, "rome");
-stampP("CREIGHTON KILLED", 1336, 862, T_CREI + 0.3, T6 + 0.4, null, 16);
-stampP("CRANE KILLED", 1336, 882, T_CRANE + 0.3, T6 + 0.4, null, 16);
+B.caption("PLANTED A FLAG, BUT COULD NOT HOLD IT", T_HOLD + 0.8, T_HOLD + 4.3, "rome");
+stampP("CREIGHTON KILLED", 1336, 860, at(P5, "were killed") + 0.4, T6 + 1.4, null, 20);
+stampP("CRANE KILLED", 1336, 884, at(P5, "were killed") + 0.6, T6 + 1.4, null, 20);
 
 // ---------- move2-6: noon; the train is safe, the pull-back, the price ----------
 SFX("static", T_NOON); SFX("hit", T_SAFE);
@@ -559,7 +560,6 @@ const front2 = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: T_NOON + 0
 const WROAD = [[1520, 1005], [1575, 1040], [1625, 1110], [1680, 1225], [1735, 1355], [TH[0] + 6, TH[1] + 4], [1792, 1560]];
 [0, 1, 2].forEach((k) => pinS(wagonM(sub(WROAD, 0.30 + k * 0.1, 0.80 + k * 0.08, 12), T_NOON + 0.4 + k * 0.3, 2.6, T_UART + 0.6, { s: 24 })));
 arw({ pts: sub(WROAD, 0.3, 1, 10), side: "carth", t: T_NOON + 0.6, dur: 2.0, width: AW(1.75, 10), until: T_UART + 0.6 });
-const THT = town("tunnel hill", TH, T_SAFE, "l"); tl.to(THT.el, { autoAlpha: 0, duration: 0.5 }, T_UART + 0.6); tl.to(THT.el, { autoAlpha: 1, duration: 0.5 }, T_DALTON + 1.4);
 stampP("THE TRAIN WAS SAFE", 1470, 1245, T_SAFE + 0.1, T_UART + 0.5, null, 30);   // on empty ground beside the road
 const EDGE = ["cle", "gov", "gra", "pol", "low", "gun", "ost", "lowr"];   // cropped at the top edge of the wide shot: step out, back on the close-up
 hideU(EDGE, T_NOON + 0.9); showU(EDGE, T_UART + 0.9);
@@ -569,32 +569,39 @@ UG.forEach((q, k) => unitS("ug" + k, "rome", q, "artillery", null, { t: T_UART +
 [0, 1, 2].forEach((k) => shoot([UG[k % 2][0] + 6, UG[k % 2][1]], [1448 + k * 6, 962 + k * 6], T_UART + 1.4 + k * 0.7, { r: 6, dur: 0.9, width: 0.8 }));
 // Cleburne pulls back through the gap; the bridges burn
 const BACK = [[1478, 976], [1505, 990], [1545, 1010], [1580, 1045]];
-[["gun", [1528, 992]], ["lowr", [1548, 1014]], ["gov", [1568, 1038]], ["gra", [1586, 1066]], ["pol", [1600, 1098]], ["low", [1650, 1118]], ["cle", [1558, 978]]].forEach(([id, q], k) => B.move(id, T_PULL + 0.2 + k * 0.15, 2.4, q[0], q[1]));
+[["cle", [1602, 962]], ["gun", [1520, 994]], ["lowr", [1548, 1022]], ["gov", [1574, 1050]], ["gra", [1598, 1080]], ["pol", [1622, 1110]], ["low", [1664, 1124]]].forEach(([id, q], k) => B.move(id, T_PULL + 0.1 + k * 0.12, 1.5, q[0], q[1]));   // critic r1: staggered column, Cleburne off to the side
 arw({ pts: BACK, side: "carth", t: T_PULL + 0.2, dur: 1.6, width: AW(3.4, 9), until: T_PULL + 3.8 });
 tl.to(front, { opacity: 0, duration: 0.8 }, T_PULL + 0.6);
 [[1468, 972], [1497, 962], [1509, 993]].forEach((q, k) => { fireGlow(q[0], q[1], 14, T_BURN + k * 0.3, T_DALTON); K.smoke(q[0], q[1], T_BURN + k * 0.3, { n: 5, r: 7, rise: 26, life: 3.2 }); K.smoke(q[0], q[1], T_BURN + 2 + k * 0.3, { n: 4, r: 7, rise: 26, life: 3.2 }); });
 SFX("hit", T_BURN + 0.1);
 B.caption("THE BRIDGES BURN BEHIND THEM", T_BURN, T_GRANT - 0.1, "carth");
 // the gap changes hands: Union troops walk into it (STYLE W: red ink hatching on the captured patch only, ~3 s, then dissolve)
-hideU(["ost"], T_GRANT - 0.7);
-unitS("ost2", "rome", [1412, 940], "infantry", null, { t: T_GRANT - 0.6, size: "XXX" });
-along("ost2", [[1412, 940], [1436, 958]], T_GRANT, 1.6, 6);
+along("ost", [OP2, [1412, 940], [1436, 958]], T_GRANT - 0.4, 2.0, 8);   // Osterhaus's division walks into the gap
 const HM = T_GRANT + 0.4;
 const GCAP = lay("assets/media/gn_ringgold_ctl_gapnoon_mx.png", HM, HM + 4.2); tl.fromTo(GCAP, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, HM);
 tl.to(GCAP, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, HM + 3.0);
-stampP("PURSUIT CALLED OFF", 1430, 922, T_CALL + 0.2, T_ULOST - 0.3, null, 22);
+stampP("PURSUIT CALLED OFF", 1370, 1004, at(P6, "off the pursuit") + 0.5, T_ULOST - 0.3, null, 22);
 badge({ name: "ULYSSES S. GRANT", role: "REACHES RINGGOLD THE SAME DAY", photo: PHOTO.grant, flag: FL.us, side: "rome", corner: "tr", initials: "USG", t: T_GRANT - 0.1, until: Math.min(T_GRANT + 3.4, T_ULOST - 0.3) });   // no unit on the map: corner badge <= 3.5 s
 // the casualty card (Cleburne's report + the Union total; no source line on the card)
-casualty({ head: "RINGGOLD GAP · 27 NOVEMBER 1863", rows: [["killed", "20", ""], ["wounded", "190", ""], ["captured", "11 MISSING", ""], ["", "221 IN ALL", "~500 IN ALL"]], t: T_ULOST - 0.1, until: T_CONG - 0.3, top: 170 });
-sstamp("THANKS OF THE CONFEDERATE CONGRESS", 150, T_THANKS - 0.3, { size: 50, color: "#4f8bff", sub: "TO CLEBURNE AND HIS DIVISION", until: T_THANKS + 3.2 });
+// critic r1: the casualty card, worded rows, no empty icon rows, opaque, in the empty lower-left (off the date scroll and the units)
+{ const CR = (fl, nm, v) => `<div style="display:flex;align-items:center;gap:14px;padding:5px 0;border-bottom:1.5px solid rgba(201,180,138,.35)"><img src="${fl}" style="height:24px;border:1px solid #f7f3ea"><div style="font-size:26px;letter-spacing:.08em;flex:1">${nm}</div><div style="font-size:40px">${v}</div></div>`;
+  const R1 = (nm, v) => `<div style="display:flex;padding:2px 0 2px 52px"><div style="font-size:22px;letter-spacing:.12em;color:#c9cfd8;flex:1">${nm}</div><div style="font-size:30px">${v}</div></div>`;
+  const ul = at(P6, "five hundred men there"), rp = at(P6, "twenty killed");
+  const el = scr(`<div style="width:600px;padding:18px 34px 18px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 16px 36px rgba(0,0,0,.6)">
+    <div style="font-size:20px;letter-spacing:.3em;color:#c9b48a;text-align:center;margin-bottom:6px">RINGGOLD GAP · CASUALTIES</div>
+    <div class="u">${CR(FL.us, "UNION", "ABOUT 500")}</div>
+    <div class="c">${CR(FL.cs, "CONFEDERATE", "221")}${R1("KILLED", "20")}${R1("WOUNDED", "190")}${R1("MISSING", "11")}</div></div>`, "left:70px;top:520px;", T_ULOST - 0.1, T_CONG - 0.3);
+  const u = el.querySelector(".u"), c = el.querySelector(".c"); gsap.set([u, c], { autoAlpha: 0 });
+  tl.to(u, { autoAlpha: 1, duration: 0.3 }, ul + 0.6); tl.to(c, { autoAlpha: 1, duration: 0.3 }, rp); SFX("hit", ul + 0.6); }
+stampP("THANKS OF THE CONFEDERATE CONGRESS", 1315, 1050, T_THANKS + 0.7, T_THANKS + 4.2, null, 26);   // level cream-on-dark, empty ground lower-left
 // on to Dalton, intact: one division counter follows the road, the rest leave the picture
-hideU(["gov", "gra", "pol", "lowr", "low", "gun", "ost2", "ug0", "ug1", "ost", "cle"], T_DALTON);
+hideU(["gov", "gra", "pol", "lowr", "low", "gun", "ug0", "ug1", "ost", "cle"], T_DALTON);
 unitS("div", "carth", [1560, 1040], "infantry", "CLEBURNE", { t: T_DALTON + 0.2, size: "XX" });
 pinPortrait("div", PHOTO.cleburne, FL.cs, "Cleburne", T_DALTON + 0.2, END + 1, true);
 along("div", [[1560, 1040], [1640, 1150], [1700, 1280], [1745, 1390]], T_DALTON + 0.5, 3.2, 12);
 const TOD = [[1560, 1040], [1640, 1150], [1700, 1280], [1745, 1390], [1790, 1520], [1810, 1610]];
 arw({ pts: TOD, side: "carth", t: T_DALTON + 0.4, dur: 2.2, width: AW(1.6, 11), until: END + 1 });
-B.caption("THE ARMY REACHES DALTON INTACT", at(P6, "at Dalton"), T_BRAGG - 0.2, "carth");
+boxP("TO DALTON", 1835, 1440, at(P6, "at Dalton") + 0.3, END + 1, { size: 24, keep: true });   // critic r1: Dalton named where the road leads (Dalton itself is off the map, south-east)
 const bb = badge({ name: "BRAXTON BRAGG", role: "ARMY OF TENNESSEE", photo: PHOTO.bragg, flag: FL.cs, side: "carth", corner: "tr", initials: "BB", t: T_BRAGG - 0.2, until: Math.min(T_RES + 2.4, T_HIDE - 0.5) });
 badgeStamp(bb, "RESIGNED", T_RES + 0.1, { size: 30 });
 // method card, line 2

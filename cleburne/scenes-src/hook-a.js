@@ -7,8 +7,7 @@
 // hka_ga_crop_w.jpg), `chatt` (z10, 8x, feathered, fades in 0.09x-0.2x, hka_chatt_w.jpg), `tunnel` (z13, 1x, offset, hka_tunnel_w.jpg
 // + _close) and `ringgold` (z13, the relief ringgold_w + relief2 = ringgold_w_close), both feathered and faded in 0.35x-0.7x.
 // Close-ups (camera scale > ~2) cross into the close battle look by the lens transition (move1a), with the close-look vignette.
-// Territory (2d item 3): NONE at the opening; one short red ink hatching (~3.5 s) where ground changed hands: the ground the Union pursuit
-// took between 24 and 27 Nov (gn_ringgold/gn_tunnel_ctl_hk27cap_mx.png, tools/make_hatch.py nov27 minus nov24), on "Above that gap".
+// Territory (2d item 3): none (clean map): no ground changes hands in the narration of the hook (critic r2 removed the pursuit hatching).
 // hook-1: frame 0 = the overview, clean (map + units moving); NOVEMBER 1863 stamp in the first second (spoken words, 1c), the date scroll
 //         takes over; the Confederate army (blue) streams south-east toward Dalton, Union columns (red) press behind it, a few visible
 //         shots; RUNNING FOR ITS LIFE; red arrows converge on the gap, focus + zoom box; ONE continuous zoom (whoosh) from the overview
@@ -16,7 +15,7 @@
 // hook-2: 4,000 card slams on its words (ticks) + "AGAINST x3 THEIR NUMBER"; the red column marches on the gap, the guns open (impacts,
 //         smoke), the slope fires, red falls back; SAVED THE ARMY (wagons escape, ink trace along the railroad); pull-out + swing (whoosh)
 //         two days back to Tunnel Hill: "?" badge THE SAME GENERAL, Sherman's wing breaks on the blue hill (Sherman's portrait on a stake
-//         at his unit once named), SHERMAN BEATEN, ink crosses; swing back to the gap (hatching: the ground the pursuit took), the pursuit
+//         at his unit once named), SHERMAN BEATEN, ink crosses; swing back to the gap, the pursuit
 //         breaks up, Grant's portrait at the pursuit column, PURSUIT CALLED OFF.
 // hook-3: same map, no cut: the clock rewinds to DAWN (cool morning light); IT LOOKED HOPELESS; guns + wagons stuck on the road behind
 //         the gap; the Union columns march out of Ringgold straight at the gap (3 TIMES THE SIZE); the "?" badge THE GENERAL IN THE GAP;
@@ -105,7 +104,7 @@ const dateSet = (text, t, until) => { const d = document.createElement("div"); d
 const tick = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySelector(sel);
   tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt ? fmt(v.v) : Math.round(v.v).toLocaleString("en-US"); } }, t0);
   for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
-const RED = scr("", "inset:0;background:radial-gradient(ellipse at center, rgba(200,20,30,0) 40%, rgba(200,20,30,0.45) 100%);");
+const RED = scr("", "inset:0;background:radial-gradient(ellipse at center, rgba(8,8,4,0) 45%, rgba(8,8,4,0.42) 100%);");   // critic r2: neutral dark vignette pulse, no red tint
 const pulse = (t) => { tl.fromTo(RED, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, immediateRender: false }, t); tl.to(RED, { autoAlpha: 0, duration: 0.5 }, t + 0.08); };
 let FID = 0;   // K.front shares ONE blur filter sized by the first front: give each front its own (fronts at several scales)
 const frontS = (o) => { const g = K.front(o), id = "hkblur" + (++FID), f = document.createElementNS(NS, "filter");
@@ -192,9 +191,7 @@ const CHG = group([-10080, -5812, 23040, 12960], 5); img("assets/media/hka_chatt
 const TUG = group([-815, -995, 2880, 1620], 7); img("assets/media/hka_tunnel_w.jpg", TUG); const TUC2 = img("assets/media/hka_tunnel_w_close.jpg", TUG);
 const RGG = group([0, 0, 2880, 1620], 6); relief.style.cssText += "position:absolute;left:0;top:0;width:100%;height:100%;"; RGG.appendChild(relief);
 RGG.appendChild(relief2); relief2.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;opacity:0";
-// red ink hatching: the ground the Union pursuit took between 24 and 27 November (shown once, briefly, on "Above that gap")
-const HT = img("assets/media/gn_tunnel_ctl_hk27cap_mx.png", TUG), HR = img("assets/media/gn_ringgold_ctl_hk27cap_mx.png", RGG);
-gsap.set([TUC2, HT, HR], { opacity: 0 });
+gsap.set([TUC2], { opacity: 0 });
 // ---------- the camera ----------
 const CW = 1920, CH = 1080, cam = { cx: 0, cy: 0, s: 1 };
 const smooth = (a) => a * a * (3 - 2 * a), ramp = (s, a, b) => smooth(clamp(Math.log(s / a) / Math.log(b / a), 0, 1));
@@ -243,7 +240,7 @@ camTo(0, TZ0, C0b[0], C0b[1], SOb, "sine.inOut");
 // stamp in the first second, in the narrator's words (1a + 1c): NOVEMBER 1863 slams on "eighteen sixty-three", then the date scroll takes over
 const ST0 = stampAt("NOVEMBER 1863", 76, -4, "left:0;right:0;top:150px;display:flex;justify-content:center;");
 slam(ST0, Math.min(T_1863, 0.8), { shake: 5, until: T_1863 + 1.35 });
-const DT0 = dateSet("NOVEMBER 1863", T_1863 + 1.4, T_TWO);
+const DT0 = dateSet("NOVEMBER 1863", 0, T_TWO);   // critic r2: the date scroll is never blank
 const F0 = flagsC(L(35.30, -85.75), L(34.55, -84.55), 0.3, TZ0 + 0.1);
 // permanent towns (the army runs from Chattanooga toward Dalton; Ringgold on arrival)
 const TW0 = [town("CHATTANOOGA", ...P.chatt, 0, TZ0 + 1.6, { side: "l" }), town("DALTON", ...P.dalton, 0, TZ0 + 1.85)];
@@ -360,9 +357,9 @@ const SHU = [unitK("ts1", "rome", [608, -350], "infantry", "", KT, { t: TS2 - 0.
   unitK("ts3", "rome", [700, -320], "infantry", "", KT, { t: TS2 - 0.1, until: T_ABOVE + 0.1 })];
 // "that same general": the mystery badge (Confederate flag, "?"), <= 3.5 s, out before the SHERMAN BEATEN stamp (one big card at a time)
 const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.csa}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.86), rgba(10,12,24,0.6));font-family:Oswald;font-weight:700;font-size:110px;color:#f7f3ea">?</div></div>
-  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE SAME GENERAL</div></div></div>`, "left:60px;top:200px;");
-tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_SAME - 0.05);
-tl.to(QB, { autoAlpha: 0, x: -80, duration: 0.35 }, Math.min(T_WTS - 0.3, T_SAME + 3.3));
+  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE SAME GENERAL</div></div></div>`, "right:60px;top:150px;");
+tl.fromTo(QB, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_SAME - 0.05);
+tl.to(QB, { autoAlpha: 0, x: 80, duration: 0.35 }, Math.min(T_WTS - 0.3, T_SAME + 3.3));
 // Sherman's wing attacks the hill in waves and breaks on it (two visible shots, smoke, red arrows cut short, ink crosses)
 [[[600, -335], [585, -296]], [[478, -258], [520, -246]], [[688, -312], [635, -284]]].forEach(([a, b], k) => arw({ pts: [a, b], side: "rome", t: T_SAME + 0.2 + k * 0.3, dur: 0.6, until: T_WTS + 0.4 }, ST, 9));
 SFX("ref:whoosh", T_SAME + 0.3);
@@ -377,15 +374,14 @@ crosses([[585, -296], [522, -246], [635, -284]], T_BEAT + 0.1, T_ABOVE, ST);
 pinPortrait("ts1", PHOTO.sherman, FL.us, "Sherman", T_WTS + 0.05, null, KT, "right");
 const SSB = stampAt("SHERMAN BEATEN", 76, -4, "left:0;right:0;top:770px;display:flex;justify-content:center;");
 slam(SSB, T_WTS + 0.3, { shake: 6, sfx: "ref:boom", until: T_ABOVE - 0.1 }); pulse(T_WTS + 0.5);
-// ---------- back to the gap, 27 November: the ground the pursuit took (hatching), the pursuit breaks up, Grant calls it off ----------
+// ---------- back to the gap, 27 November: the pursuit breaks up, Grant calls it off ----------
 const SR = 2.4, KR = 1 / SR, CR = [1420, 930];
 const TB0 = T_ABOVE - 0.2, TB1 = T_ABOVE + 0.6, TB2 = T_ABOVE + 1.5;
 SFX("whoosh", TB0 - 0.05);
 zoom(TB0, TB1 - TB0, [CT[0], CT[1]], ST, CM, SM, P.th, "power2.in");
 zoom(TB1, TB2 - TB1, CM, SM, CR, SR, P.gap, "power2.out");
 camTo(TB2 + 0.02, END - TB2, CR[0] + 10, CR[1] + 4, SR * 1.04, "sine.inOut");
-[HT, HR].forEach((h) => { tl.fromTo(h, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: false }, TB0 + 0.3); tl.to(h, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, TB2 + 1.0); });
-dateSet("27 NOVEMBER 1863", T_ABOVE + 0.3, T_27);
+dateSet("27 NOVEMBER 1863", T_ABOVE + 0.3, T_DAWN + 0.3);
 const FR2 = flagsC([1210, 800], [1700, 850], TB1 - 0.2, S3 - 0.05);
 const GAPL2 = place("RINGGOLD GAP", P.gap[0] + 95, P.gap[1] + 60, TB2 - 0.3, S3 - 0.05, { size: 26 });
 // the pursuit: red columns at the gap mouth and the town, halted; the arrows toward Dalton fade
@@ -416,7 +412,7 @@ const TOD_COOL = todDiv("rgba(100,135,205,0.55)"); tl.to(TOD_COOL, { opacity: 0.
 const SQ = 1.7, KQ = 1 / SQ, CQ = [(P.rg[0] + P.gap[0]) / 2 + 30, (P.rg[1] + P.gap[1]) / 2 + 40];
 camTo(S3 - 0.05, 1.1, CQ[0], CQ[1], SQ, "power2.inOut");
 camTo(S3 + 1.1, END - S3 - 1.1, CQ[0] + 40, CQ[1] + 20, SQ * 1.12, "sine.inOut");
-dateSet("DAWN · 27 NOVEMBER 1863", T_27 + 0.15, END + 1);
+dateSet("DAWN · 27 NOVEMBER 1863", T_DAWN + 0.3, END + 1);   // the roll is done before "the twenty-seventh"
 // the town name steps aside while Grant's card or the Union columns sit on it (C7: no overlap); the dot stays
 town("RINGGOLD", ...P.rg, S3 + 0.3, T_UNI - 0.3, { side: "l" }); town("", ...P.rg, T_GRANT - 0.25, null);
 const FR3 = flagsC([P.rg[0] - 300, P.rg[1] + 120], [P.gap[0] + 230, P.gap[1] + 150], S3 + 0.3, END + 1);
@@ -439,14 +435,14 @@ SFX("ref:whoosh", T_MARCH - 0.3);
 slam(stampAt("3 TIMES THE SIZE", 80, 3, "right:150px;top:330px;"), T_THREE3 + 0.1, { shake: 4, until: Math.min(T_GEN - 0.15, T_THREE3 + 3.3) }); pulse(T_THREE3 + 0.3);
 // "and the general in the gap": the mystery badge; focus on the gap; the blue line pulses
 const QB3 = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.csa}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.86), rgba(10,12,24,0.6));font-family:Oswald;font-weight:700;font-size:110px;color:#f7f3ea">?</div></div>
-  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE GENERAL IN THE GAP</div></div></div>`, "left:60px;top:800px;");
-tl.fromTo(QB3, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_GEN - 0.05);
+  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE GENERAL IN THE GAP</div></div></div>`, "right:60px;top:150px;");
+tl.fromTo(QB3, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_GEN - 0.05);
 focus(P.gap, 70, T_GEN + 0.2, END + 1);
 ["gb1", "gb2"].forEach((id, k) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_GEN + 0.3 + k * 0.15));
 // "hold this position at all hazards": the verbatim order (quote marks: verbatim, FACT_NOTES); header in the narrator's words
 const ORD = scr(`<div style="max-width:1180px;padding:22px 46px 22px;background:rgba(18,16,12,0.94);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.6)">
   <div style="font-size:20px;letter-spacing:0.3em;color:#c9b48a;font-weight:700">ONE ORDER</div>
-  <div style="font-size:54px;font-weight:700;letter-spacing:0.03em;line-height:1.15;margin-top:6px">&ldquo;TO HOLD THIS POSITION AT ALL HAZARDS&rdquo;</div></div>`, "left:0;right:0;top:720px;display:flex;justify-content:center;transform-origin:50% 50%;");
+  <div style="font-size:54px;font-weight:700;letter-spacing:0.03em;line-height:1.15;margin-top:6px">&ldquo;HOLD THIS POSITION AT ALL HAZARDS&rdquo;</div></div>`, "left:0;right:0;top:720px;display:flex;justify-content:center;transform-origin:50% 50%;");
 tl.to(QB3, { autoAlpha: 0.0, duration: 0.3 }, T_HOLD - 0.4);
 slam(ORD, T_HOLD - 0.1, { shake: 6, sfx: "ref:boom" }); pulse(T_HAZ + 0.1);
 // hand-off to hook-4: dip to dark over the last ~0.5 s (hook-b frame 0 = dark + "?" badge, then the name)

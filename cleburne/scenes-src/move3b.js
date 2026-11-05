@@ -138,7 +138,7 @@ const slam = (el, t, o = {}) => {
   return el;
 };
 const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, o.color || "#e3232f", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
-const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
+const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, 0, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only on verbatim text)
@@ -346,6 +346,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, { left: "40px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(54deg)" });
   }
+  if (side === "farupleft") {   // long side stake up-left: the card stands on the Union slope, clear of the ravine and the front
+    w.style.top = "4px"; w.style.left = "0px"; const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: "-230px", bottom: "auto", top: "-175px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "165px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-158.7deg)" });
+  }
   if (side === "left" || side === "upleft") {   // mirrored side stakes (Cleburne #14 restyle): card below-left / above-left of the unit
     w.style.top = "4px"; w.style.left = "0px";
     const card = w.firstElementChild, stake = w.lastElementChild, up = side === "upleft";
@@ -409,7 +414,7 @@ const NHC = L(33.957, -84.790);
 const CF = [1440, 810, 0.6667], CW = [1600, 872, 2.3], CC = [1606, 852, 4.6], CA = [1610, 856, 4.9], CG = [1604, 880, 4.4], CN = [1612, 860, 4.3], CE = [1610, 880, 2.8];
 camera([[0, ...CF], [0.6, ...CF], [T_WORSE + 1.2, ...CW], [T_RAV - 0.2, ...CW], [T_RAV + 1.8, 1606, 864, 3.6], [T3, 1606, 864, 3.6], [T_WOOD - 0.2, ...CC],
   [T4, ...CC], [T_SENT + 0.6, ...CA], [T_STREAM + 1.0, ...CA], [T5 + 0.8, ...CG], [T6 - 0.2, ...CG], [T6 + 1.0, ...CN], [T_WLOST - 0.6, ...CN], [T_WLOST + 1.4, ...CE], [END, CE[0], CE[1], 2.95]]);
-B.showDate(0.05); B.date("27 MAY 1864", 0.1, T_ATT - 0.2, 32); B.date("27 MAY 1864 · 4:30 P.M.", T_ATT - 0.1, T_DARK - 0.2, 32); B.date("27 MAY 1864 · NIGHT", T_DARK - 0.1, T_TRY - 0.2, 32);
+B.showDate(0); B.date("27 MAY 1864", 0, T_ATT - 0.2, 32); B.date("27 MAY 1864 · 4:30 P.M.", T_ATT - 0.1, T_DARK - 0.2, 32); B.date("27 MAY 1864 · NIGHT", T_DARK - 0.1, T_TRY - 0.2, 32);
 B.date("28 MAY 1864", T_TRY - 0.1, END + 1, 32);
 // time of day: warm late-afternoon light for the 4:30 P.M. attack (night wash below)
 tl.to(TOD_WARM, { opacity: 0.22, duration: 2.0 }, T_ATT - 0.1); tl.to(TOD_WARM, { opacity: 0, duration: 2.0 }, T_DARK - 0.4);
@@ -417,15 +422,27 @@ tl.to(TOD_WARM, { opacity: 0.22, duration: 2.0 }, T_ATT - 0.1); tl.to(TOD_WARM, 
 // ---------- flags (48 px, behind each side's lines, one pair per shot) ----------
 const FLS = [[0, T_WORSE + 0.8, [1033, 600], [1965, 1232]], [T_WORSE + 1.0, T_WOOD - 0.3, [1525, 790], [1560, 960]], [T_WOOD - 0.1, T_WLOST - 0.1, [1660, 800], [1640, 930]],
   [T_WLOST + 0.1, END + 1, [1500, 770], [1725, 965]]];
-FLS.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0.2), t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0.3), t1); });
+FLS.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, k ? t0 + 0.1 : 0, t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, k ? t0 + 0.2 : 0, t1); });
 
 // ---------- move3-2b: the march ends at the creek; the works half-built ----------
+// ---------- critic round 1 (main 2026-11-05): hard cuts + one stamp style ----------
+// everything revealed at t <= 0.05 (units, flags, date scroll, towns, portrait cards) is ON at t = 0: no fade-in (scenes are hard cuts)
+const zeroIn = () => { const META = ["duration", "ease", "immediateRender", "startAt", "onUpdate", "onComplete", "onStart", "yoyo", "repeat", "delay", "data", "id", "overwrite", "callbackScope"];
+  tl.getChildren(false, true, false).forEach((tw) => {
+    const v = tw.vars || {}; if (tw.startTime() > 0.05 || tw.duration() <= 0 || tw.duration() > 1.0 || !v.startAt || !("autoAlpha" in v || "opacity" in v)) return;
+    const tg = tw.targets(); if (!tg.length || !(tg[0] instanceof Element)) return;
+    const s = {}; Object.keys(v).forEach((k) => { if (!META.includes(k) && typeof v[k] !== "function") s[k] = v[k]; });
+    v.startAt = { ...v.startAt, ...s }; v.immediateRender = true; tw.invalidate(); });
+  tl.render(0, false, true); };   // a fresh paused timeline does not render on seek(0): force the first frame (hard cut: everything already on)
+// screen-space stamp in move1a stampP style: level, cream on dark, <= 3.5 s, placed by the caller on empty ground
+const banner = (txt, css, t, until, size = 40) => { const el = scr(stampHTML(txt, "#f0e6c8", size, 0), "display:flex;justify-content:center;" + css, t, Math.min(until, t + 3.5), { autoAlpha: 0 });
+  tl.fromTo(el, { scale: 1.6 }, { scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t); SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); return el; };
 // carried over from move3a's last frame (same view: the pickett map's full extent): Dallas, the May fronts, the corps, Howard's column,
 // Cleburne's division at the end of the line, the cavalry; the wide context steps out as the camera dives
 town("dallas", [1143, 1274], "l", 0, { until: T_WORSE + 0.4 });
 const FN3 = [[450.0, 1653.2], [527.6, 1622.0], [605.2, 1590.8], [682.8, 1559.6], [759.6, 1528.4], [837.2, 1497.2], [914.8, 1466.0], [993.2, 1438.0], [1074.8, 1421.2], [1145.2, 1390.0], [1178.8, 1313.2], [1235.6, 1253.2], [1295.6, 1195.6], [1354.0, 1134.8], [1412.4, 1076.4], [1473.2, 1018.8], [1540.4, 970.0], [1604.4, 916.4], [1661.2, 855.6], [1706.0, 788.4], [1719.6, 706.0], [1733.2, 623.6], [1746.8, 541.2], [1761.2, 458.8]];
-frontS({ pts: FN3, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: FW(0.667), until: T_WORSE + 0.6 });
-frontS({ pts: [[1703, 810], [1644, 853], [1604, 895], [1557, 951]], sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: FW(0.667), until: T_WORSE + 0.6 });
+frontS({ pts: FN3, sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: FW(0.667), until: 0.7 });   // out before the camera dives (no smear in the lens cross-fade)
+frontS({ pts: [[1703, 810], [1644, 853], [1604, 895], [1557, 951]], sideA: "rome", sideB: "carth", t: 0, dur: 0.01, width: FW(0.667), until: 0.7 });
 [["hd", "carth", [1219, 1316]], ["hoo", "carth", [1569, 1120]], ["mcp", "rome", [1021, 1358]], ["tho", "rome", [1172, 1000]]].forEach(([id, sd, q]) => {
   unitS(id, sd, q, "infantry", null, { t: 0, size: "XXX", until: T_WORSE + 0.6 }); tl.set(B.units[id].el, { autoAlpha: 1 }, 0); });
 unitS("clb", "carth", [1574, 972], "infantry", "CLEBURNE", { t: 0, size: "XX", until: T_HOURS - 0.2 }); tl.set(B.units.clb.el, { autoAlpha: 1 }, 0);
@@ -435,7 +452,7 @@ unitS("how", "rome", MARCH[0], "infantry", "HOWARD", { t: 0, size: "XXX", until:
 along("how", MARCH, 0.5, 1.6, 8);
 pinPortrait("how", PHOTO("howard"), FL.us, "Howard", 0, T_WOOD - 0.4, true);   // named in move3a; his column, for as long as it is on the map
 zoomBox(CW[0], CW[1], CW[2], T_WORSE - 1.4);
-boxP("PICKETT'S MILL", 1640, 800, T_WORSE + 0.3, T_WORSE + 3.4, { size: 24 });
+boxP("PICKETT'S MILL", 1695, 812, T_WORSE + 0.3, T_WORSE + 3.4, { size: 24 });
 const CL = [["pol", [1518, 906], "POLK"], ["gvn", [1556, 902], "GOVAN"], ["grb", [1598, 900], "GRANBURY"]];
 CL.forEach(([id, q, nm], k) => unitS(id, "carth", q, "infantry", nm, { t: T_HOURS - 0.2 + k * 0.25, size: "X" }));
 tagAt("pol", null); tagAt("gvn", null); tagAt("grb", T_TEX);   // BATCH 1: tags only once spoken (Polk / Govan never are)
@@ -443,7 +460,7 @@ pinPortrait("pol", PHOTO("cleburne"), FL.cs, "Cleburne", T_HOURS + 0.4, END + 1,
 // half-built works: short log rows that stop part-way
 const LOGS = [[1505, 893], [1530, 891], [1545, 890], [1585, 888], [1600, 887], [1615, 886]];
 LOGS.forEach(([x, y], k) => pinS(GG.pin(`<svg width="34" height="10" viewBox="0 0 34 10" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="1" y="2" width="${k % 2 ? 18 : 30}" height="6" rx="3" fill="#8a6a44" stroke="#f3eee2" stroke-width="1.2"/></svg>`, x, y, { t: T_WORKS + k * 0.12, pop: true, until: T_DARK })));
-stampP("WORKS NOT FINISHED", 1470, 930, T_WORKS + 0.5, T_NEED + 1.2, null, 22);
+stampP("HAD NOT FINISHED THEIR WORKS", 1470, 930, T_WORKS + 0.5, T_NEED + 1.2, null, 22);
 // the ravine: the ground does the work (focus + ink trace + curved map label)
 glowPath(RAV, "#ffd27a", 6, T_RAV - 0.1, T_RAV + 3.4, 4, 0.9, { draw: 1.0 });
 curveLabel("The Ravine", RAV.slice(0, 7).map((q) => [q[0], q[1] - 7]), T_RAV + 0.3, T_RAV + 3.6, 22);
@@ -463,14 +480,15 @@ unitS("kel", "carth", [1697, 867], "infantry", "CAVALRY", { t: 0 }); cavIcon("ke
 B.move("kel", T_RIDGE + 0.6, 1.2, 1684, 878);
 // Wood's division: a column of brigades, one behind the other; Wood's card on his division HQ, clear of the column
 unitS("wood", "rome", [1510, 795], "infantry", "WOOD", { t: T_WOOD - 0.1, size: "XX" });
-pinPortrait("wood", PHOTO("wood"), FL.us, "Wood", T_WOOD, END + 1, true, "right");
+// Wood's card only while he is talked about (C4: <= 7 story text items)
+[[T_WOOD, T_HAZEN - 0.3], [T_GIB, T_KNEF + 1.0], [T_ORDER - 0.2, T_WORD - 0.3]].forEach(([a, b]) => pinPortrait("wood", PHOTO("wood"), FL.us, "Wood", a, b, true, "right"));
 const COLP = [["haz", [1600, 832], "HAZEN"], ["gib", [1594, 806], "GIBSON"], ["kne", [1588, 780], "KNEFLER"]];
 COLP.forEach(([id, q, nm], k) => unitS(id, "rome", q, "infantry", nm, { t: T_COL + k * 0.35, size: "X" }));
 tagAt("haz", T_HAZEN); tagAt("gib", T_GIB + 0.3); tagAt("kne", T_KNEF + 0.3);
 glowPath([[1588, 772], [1594, 806], [1600, 840]], "#ff8a80", 3, T_BEHIND - 0.2, T_BEHIND + 3.0, 2, 0.8, { top: true, dash: "3 4" });
-badge({ name: "AMBROSE BIERCE", role: "STAFF OFFICER · HAZEN'S BRIGADE", photo: PHOTO("bierce"), flag: FL.us, side: "rome", corner: "tr", initials: "AB", t: T_BIER - 0.1, until: T_BIER + 3.3 });
-pinPortrait("haz", PHOTO("hazen"), FL.us, "Hazen", T_HAZEN + 0.2, END + 1, true, "upleft");   // Hazen's card stays on his brigade for the battle
-B.caption("A QUARTER-MILE UPHILL, THROUGH ALMOST IMPASSABLE TANGLE", T_QUARTER + 0.6, T4 - 0.2, "");
+badge({ name: "AMBROSE BIERCE", role: "STAFF OFFICER", photo: PHOTO("bierce"), flag: FL.us, side: "rome", corner: "tr", initials: "AB", t: T_BIER - 0.1, until: T_BIER + 3.3 });
+[[T_HAZEN + 0.2, T_GIB - 0.3], [T_ORDER - 0.2, T_DEAD - 0.3]].forEach(([a, b]) => pinPortrait("haz", PHOTO("hazen"), FL.us, "Hazen", a, b, true, "farupleft"));   // on a long side stake, off the ravine; only while Hazen is talked about
+B.caption("A QUARTER OF A MILE UPHILL THROUGH AN ALMOST IMPASSABLE TANGLE", T_QUARTER + 0.6, T4 - 0.2, "");
 
 // ---------- move3-4: Hazen alone ----------
 for (let k = 0; k < 6; k++) SFX("tick", T_ATT + k * 0.15);
@@ -478,12 +496,12 @@ const H1 = [[1600, 832], [1602, 852], [1604, 868], [1604, 880]];
 along("haz", H1, T_SENT + 0.4, T_CLOSE - T_SENT, 14);
 // the arrow frays in the brush: three short broken pieces (solid)
 [[[1598, 836], [1600, 850]], [[1602, 853], [1603, 864]], [[1604, 866], [1604, 878]]].forEach((pts, k) => arw({ pts, side: "rome", t: T_PLUNGE - 0.3 + k * 0.5, dur: 0.5, width: AW(4.9, 9), until: T_SHAT }));
-B.caption("HAZEN'S BRIGADE GOES IN ALONE", T_ALONE, T_TORE - 0.1, "rome");
+B.caption("HAZEN'S BRIGADE ALONE", T_ALONE, T_TORE - 0.1, "rome");
 stampP("THE BRUSH TORE ITS LINE APART", 1660, 836, T_TORE + 0.1, T_TEX + 0.6, null, 18);
 smoke([[1580, 896], [1598, 894], [1615, 892], [1630, 900]], T_CLOSE - 0.2);
 mg([1598, 894], [1603, 878], T_CLOSE, 6, 0.4); mg([1580, 896], [1601, 878], T_CLOSE + 0.4, 5, 0.4); mg([1615, 892], [1605, 878], T_CLOSE + 0.8, 5, 0.4);
 [0, 1, 2].forEach((k) => shoot([1626, 900], [1606 - k * 3, 872 - k * 4], T_CAN + k * 0.5, { r: 5, dur: 0.3, h: 3, unit: "guns", width: 0.6 }));
-pinPortrait("lwy", PHOTO("lowrey"), FL.cs, "Lowrey", T_FED + 1.4, END + 1, true, "right");
+pinPortrait("lwy", PHOTO("lowrey"), FL.cs, "Lowrey", T_FED + 1.4, T_RIGHT + 0.4, true, "right");   // only on the reserve beat
 along("lwy", [[1612, 934], [1636, 914], [1652, 886]], T_FED, 1.6, 8);
 arw({ pts: [[1612, 930], [1636, 916], [1650, 900]], side: "carth", t: T_FED, dur: 1.2, width: AW(4.9, 9), until: T_FED + 3.6 });
 stampP("THE THREATENED FLANK", 1715, 915, T_FED + 0.8, T_RIGHT + 0.6, null, 16);
@@ -512,12 +530,12 @@ tl.to(B.units.gib.el.querySelector(".blk"), { opacity: 0.55, duration: 0.6 }, T_
 crosses(DEAD.slice(5, 9), T_BODIES + 0.6, END + 1);
 along("kne", [[1588, 780], [1606, 815], [1608, 842]], T_KNEF + 0.2, 2.0, 8);
 arw({ pts: [[1590, 786], [1605, 815], [1608, 838]], side: "rome", t: T_KNEF + 0.1, dur: 1.2, width: AW(4.4, 9), until: T_ORDER + 1.2 });
-quote("“WE WILL PUT IN HAZEN AND SEE WHAT SUCCESS HE HAS.”", "THOMAS J. WOOD, AS AMBROSE BIERCE RECORDED IT", T_PUT - 0.4, T_BLUN + 0.4, { col: "#c4121f", size: 40, mw: 1400, top: 820 });
-quote("“THERE WAS A ‘DEAD-LINE’ BEYOND WHICH NO MAN ADVANCED BUT TO FALL”", "AMBROSE BIERCE, THE CRIME AT PICKETT'S MILL", T_DEAD - 0.2, T_ACC + 0.2, { col: "#c4121f", size: 40, mw: 1500, top: 820 });
+quote("“WE WILL PUT IN HAZEN AND SEE WHAT SUCCESS HE HAS.”", "WOOD", T_PUT - 0.1, Math.min(T_BLUN + 0.4, T_PUT + 3.4), { col: "#c4121f", size: 40, mw: 1400, top: 820 });
+quote("“THERE WAS A ‘DEAD-LINE’ BEYOND WHICH NO MAN ADVANCED BUT TO FALL”", "BIERCE", T_DEAD - 0.2, Math.min(T_ACC + 0.2, T_DEAD + 3.3), { col: "#c4121f", size: 40, mw: 1500, top: 820 });
 glowPath([[1588, 882], [1600, 880], [1612, 879], [1624, 880]], "#ff3b30", 2.2, T_ACC + 0.3, T_ACC + 3.4, 3, 0.9, { top: true, dash: "4 3" });   // the dead-line, inked once the quote has left
 crosses(DEAD.slice(9), T_DEAD + 0.6, END + 1);
-sstamp("HOWARD PLANNED IT · SHERMAN ORDERED IT", 830, T_SHER + 0.2, { size: 46, sub: "IN BIERCE'S ACCOUNT", until: T_NOBODY + 0.4 });
-B.caption("NOBODY HAD LOOKED AT THE GROUND", T_NOBODY + 0.5, T6 - 0.2, "");
+banner("HOWARD PLANNED THE ATTACK, AND SHERMAN ORDERED IT", "left:0;right:0;top:830px;", T_ACC + 1.0, T_NOBODY + 0.3, 36);   // "In his account, Howard planned the attack, and Sherman ordered it"
+B.caption("NOBODY HAD LOOKED AT THE GROUND", T_NOBODY + 0.6, T6 - 0.2, "");
 glowPath(RAV, "#ffd27a", 5, T_NOBODY + 0.2, T_NOBODY + 3.6, 3, 0.9, { top: true });
 smoke([[1598, 894], [1580, 896], [1616, 893]], T_WAVE - 0.3);
 mg([1598, 894], [1600, 872], T_WAVE, 5, 0.4); mg([1580, 896], [1596, 874], T_WAVE + 0.4, 4, 0.4);
@@ -531,18 +549,27 @@ along("kne", [[1608, 842], [1606, 800], [1604, 770]], T_DARK + 0.6, 2.0, 8);
 along("gib", [[1640, 812], [1630, 792]], T_DARK + 0.6, 1.6, 6);
 along("haz", [[1600, 834], [1608, 812]], T_DARK + 0.6, 1.4, 6);
 bars(1624, 858, T_PRIS, T_WLOST - 0.2, 44);
-B.caption("AFTER DARK: THE RAVINE CLEARED, PRISONERS TAKEN", T_PRIS + 0.2, T_WLOST - 0.2, "carth");
-casualties([["killed", "", "212"], ["wounded", "", "927"], ["captured", "", "318 MISSING"], ["", "~450 IN ALL", "~1,600 IN ALL"]],
-  "UNION ROWS: WOOD'S DIVISION ALONE (1,457) · ~1,600 THE WHOLE UNION FORCE", T_WLOST - 0.1, T_SURV - 0.3, 200);
-scr(`<div style="padding:22px 50px 24px;background:#efe6cf;color:#1b1812;text-align:center;box-shadow:0 24px 50px rgba(0,0,0,.65);border:1px solid #b9a77f">
-  <div style="font-family:Oswald;font-weight:700;font-size:18px;letter-spacing:.3em;color:#7a2a1a">AN ESSAY BY AMBROSE BIERCE</div>
-  <div style="font-family:'Special Elite',monospace;font-size:52px;margin-top:6px">THE CRIME AT PICKETT'S MILL</div>
-  <div style="font-family:Oswald;font-weight:700;font-size:17px;letter-spacing:.22em;margin-top:6px;color:#4a4236">ONE OF THE WAR'S MOST FAMOUS EYEWITNESS ACCOUNTS</div></div>`, "left:0;right:0;top:250px;display:flex;justify-content:center;", T_ESSAY - 0.2, T_FAIL - 0.3);
+B.caption("CLEBURNE'S MEN CLEARED THE RAVINE AND TOOK PRISONERS", T_PRIS - 0.2, T_WLOST - 0.2, "carth");
+// the cost: spoken figures only (FACT_NOTES: Wood's division 1,457; whole Union force ~1,600; Cleburne's report 448), one small card per figure, each <= 3.5 s
+const T_WHOLE = at(P6, "the whole Union force");
+const cas = (flag, head, num, sub, t, until) => { const el = scr(`<div style="padding:18px 46px 20px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+  <div style="display:flex;align-items:center;justify-content:center;gap:14px;font-size:24px;letter-spacing:.14em"><img src="${flag}" style="height:30px;border:1px solid #f7f3ea">${head}</div>
+  <div style="font-size:72px;letter-spacing:.04em;line-height:1.15">${num}</div><div style="font-size:20px;letter-spacing:.24em;color:#c9b48a">${sub}</div></div>`,
+  "right:60px;top:300px;", t, Math.min(until, t + 3.5)); SFX("hit", t + 0.2); return el; };
+cas(FL.us, "WOOD'S DIVISION", "~1,400", "MEN LOST", T_WLOST - 0.1, T_WHOLE - 0.5);
+cas(FL.us, "THE WHOLE UNION FORCE", "~1,600", "MEN LOST", T_WHOLE - 0.1, T_REP - 0.4);
+cas(FL.cs, "CLEBURNE REPORTED", "~450", "CONFEDERATE CASUALTIES", T_REP, T_SURV - 0.3);
+scr(`<div style="padding:18px 40px 20px;background:#efe6cf;color:#1b1812;text-align:center;box-shadow:0 24px 50px rgba(0,0,0,.65);border:1px solid #b9a77f">
+  <div style="font-family:Oswald;font-weight:700;font-size:16px;letter-spacing:.3em;color:#7a2a1a">BIERCE · AN ESSAY</div>
+  <div style="font-family:'Special Elite',monospace;font-size:40px;margin-top:6px">THE CRIME AT PICKETT'S MILL</div>
+  <div style="font-family:Oswald;font-weight:700;font-size:15px;letter-spacing:.18em;margin-top:6px;color:#4a4236">ONE OF THE MOST FAMOUS EYEWITNESS ACCOUNTS OF THE WAR</div></div>`, "right:40px;top:260px;", T_ESSAY - 0.2, T_ESSAY + 3.3);   // on the empty ground east of the front
 SFX("hit", T_ESSAY);
-sstamp("SHERMAN'S FLANK MARCH FAILED", 860, T_FAIL, { size: 54, until: T_FAIL + 3.4 });
-stampP("THE LINE STOOD", 1585, 955, at(P6, "the Confederate line stood"), at(P6, "the Confederate line stood") + 3.4, null, 22);
+banner("SHERMAN'S FLANK MARCH HAD FAILED", "left:0;right:0;top:860px;", T_FAIL, at(P6, "the Confederate line stood") - 0.3, 40);
+stampP("THE CONFEDERATE LINE STOOD", 1585, 955, at(P6, "the Confederate line stood"), at(P6, "the Confederate line stood") + 3.4, null, 22);
 arw({ pts: [[1560, 790], [1500, 760], [1440, 790]], side: "rome", t: T_TRY + 0.2, dur: 1.4, width: AW(2.9, 9), until: END + 1 });
+scr(`<div style="width:100%;height:100%;background:rgba(8,8,4,0.55)"></div>`, "left:0;top:0;width:1920px;height:1080px;", T_LET - 0.7, END + 1, { autoAlpha: 0 });   // the map dims under the method card
 method(3, T_LET - 0.5, END + 1, T_LET - 0.2);
+zeroIn();
 fixImgs();
 K.raiseTerritory();
 B.finish();
