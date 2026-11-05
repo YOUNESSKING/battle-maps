@@ -459,7 +459,7 @@ tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_EIGHT - 0.1); tl.to(TOD_COOL,
 
 // ---------- flags (48 px, behind each side's lines, no names; both on every shot) ----------
 const FLAGSET = [[0, T_NOON + 0.4, [1300, 985], [1528, 925]], [T_NOON + 0.6, T_UART + 0.6, [1250, 1080], [1810, 1250]],
-  [T_UART + 0.8, T_DALTON - 0.2, [1290, 990], [1540, 935]], [T_DALTON, END + 1, [1100, 1400], [1760, 1480]]];
+  [T_UART + 0.8, T_DALTON - 0.2, [1290, 990], [1612, 945]], [T_DALTON, END + 1, [1100, 1400], [1760, 1480]]];
 FLAGSET.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, t0 + (k ? 0.1 : 0.2), t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, t0 + (k ? 0.2 : 0.3), t1); });
 
 // ---------- permanent town (the armies march out of it); passing labels only on their words ----------
