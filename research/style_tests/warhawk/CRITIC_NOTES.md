@@ -3,6 +3,12 @@ Reference: Warhawk "Deathblow of the Dakota: Dakota War of 1862 - Part 2/2" (you
 real frames are YouTube's own thumbnail frames (ref_*.jpg) + the owner's screenshot ../ref_A_flat_illustrated.png + an AI walkthrough (VIDIQ_MAP_NOTES.md).
 Test only, NOT locked. Generator: ../make_style_w.py (wide look + close= battle look, same woods/rivers so the camera cross-fades between them).
 
+## Owner rules for this work (2026-11-05)
+- **Before committing to / showing any test, dispatch it to the two critic agents first**; fix what they find, then show the owner.
+- One colour for the whole map: the greener (close battle) one. Never recolour the ink-drawn trees into green blobs (rejected: "you butchered the trees").
+- Draw what the story talks about on the map (hilltops, the narrow ridge spine, ravine, railroad + tunnel, open fields).
+- Tests carry sound (narration + music + SFX via tools/make_clip.py).
+
 ## Scores
 | Round | Critic 1 (wide map) | Critic 2 (glyph detail + close look) |
 |---|---|---|
