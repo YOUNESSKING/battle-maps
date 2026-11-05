@@ -8,6 +8,9 @@ Test only, NOT locked. Generator: ../make_style_w.py (wide look + close= battle 
 - One colour for the whole map: the greener (close battle) one. Never recolour the ink-drawn trees into green blobs (rejected: "you butchered the trees").
 - Draw what the story talks about on the map (hilltops, the narrow ridge spine, ravine, railroad + tunnel, open fields).
 - Tests carry sound (narration + music + SFX via tools/make_clip.py).
+- Place labels much smaller, reference style (white serif + soft shadow, no box); no country names under flags.
+- Important towns the armies head for are PERMANENT town symbols on the map (dot + serif name), like the reference maps.
+- Territory scenario (test): 23-Nov lines on the opening wide shots, Billy Goat Hill changes hands on "he seized a hill" (loser paler, winner fills), colours dissolve ~2.8 s at "Cleburne saw something"; on the green map the colours are normal-blend red/blue at ~24 % + a light front line (multiply turns muddy on green).
 
 ## Scores
 | Round | Critic 1 (wide map) | Critic 2 (glyph detail + close look) |
