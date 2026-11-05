@@ -448,7 +448,7 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 // ---------- camera ----------
-const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 975, 5.0], C4 = [1440, 925, 4.4], C5 = [1436, 965, 4.2], CW = [1610, 1225, 1.6], C6 = [1425, 950, 3.6], C7 = [1490, 1000, 3.2], CD = [1600, 1200, 1.6];
+const C0 = [1432, 945, 3.7], C1 = [1447, 958, 5.0], C2 = [1418, 938, 4.3], C3 = [1438, 975, 5.0], C4 = [1440, 925, 4.4], C5 = [1436, 955, 4.2], CW = [1610, 1225, 1.6], C6 = [1425, 950, 3.6], C7 = [1495, 1035, 2.9], CD = [1600, 1200, 1.6];
 camera([[0, ...C0], [T_GOV - 0.4, ...C0], [T_GOV + 1.6, ...C1], [T4 - 0.4, ...C1], [T4 + 1.4, ...C2], [T_WAIT - 0.3, ...C2], [T_WAIT + 1.2, ...C3],
   [T_BACK + 1.2, ...C3], [T5 + 0.6, ...C4], [T_GEARY - 0.4, ...C4], [T_GEARY + 1.2, ...C5], [T6 + 1.4, ...C5], [T_NOON + 2.6, ...CW], [T_UART - 0.3, ...CW],
   [T_UART + 1.3, ...C6], [T_PULL + 0.4, ...C6], [T_BURN + 0.8, ...C7], [T_DALTON - 0.4, 1480, 990, 2.9], [T_DALTON + 1.6, ...CD], [END, CD[0], 1190, 1.7]]);
@@ -569,14 +569,14 @@ UG.forEach((q, k) => unitS("ug" + k, "rome", q, "artillery", null, { t: T_UART +
 [0, 1, 2].forEach((k) => shoot([UG[k % 2][0] + 6, UG[k % 2][1]], [1448 + k * 6, 962 + k * 6], T_UART + 1.4 + k * 0.7, { r: 6, dur: 0.9, width: 0.8 }));
 // Cleburne pulls back through the gap; the bridges burn
 const BACK = [[1478, 976], [1505, 990], [1545, 1010], [1580, 1045]];
-[["cle", [1602, 962]], ["gun", [1520, 994]], ["lowr", [1548, 1022]], ["gov", [1574, 1050]], ["gra", [1598, 1080]], ["pol", [1622, 1110]], ["low", [1664, 1124]]].forEach(([id, q], k) => B.move(id, T_PULL + 0.1 + k * 0.12, 1.5, q[0], q[1]));   // critic r1: staggered column, Cleburne off to the side
+[["cle", [1575, 1010]], ["gun", [1520, 994]], ["lowr", [1548, 1022]], ["gov", [1574, 1050]], ["gra", [1598, 1080]], ["pol", [1622, 1110]], ["low", [1664, 1124]]].forEach(([id, q], k) => B.move(id, T_PULL + 0.1 + k * 0.12, 1.5, q[0], q[1]));   // critic r1: staggered column, Cleburne off to the side
 arw({ pts: BACK, side: "carth", t: T_PULL + 0.2, dur: 1.6, width: AW(3.4, 9), until: T_PULL + 3.8 });
 tl.to(front, { opacity: 0, duration: 0.8 }, T_PULL + 0.6);
 [[1468, 972], [1497, 962], [1509, 993]].forEach((q, k) => { fireGlow(q[0], q[1], 14, T_BURN + k * 0.3, T_DALTON); K.smoke(q[0], q[1], T_BURN + k * 0.3, { n: 5, r: 7, rise: 26, life: 3.2 }); K.smoke(q[0], q[1], T_BURN + 2 + k * 0.3, { n: 4, r: 7, rise: 26, life: 3.2 }); });
 SFX("hit", T_BURN + 0.1);
 B.caption("THE BRIDGES BURN BEHIND THEM", T_BURN, T_GRANT - 0.1, "carth");
 // the gap changes hands: Union troops walk into it (STYLE W: red ink hatching on the captured patch only, ~3 s, then dissolve)
-along("ost", [OP2, [1412, 940], [1436, 958]], T_GRANT - 0.4, 2.0, 8);   // Osterhaus's division walks into the gap
+along("ost", [OP2, [1412, 940], [1436, 958]], T_PULL + 1.0, 2.4, 8);   // Osterhaus's division follows into the gap as Cleburne pulls back (card stays inside the frame when the camera drops)   // Osterhaus's division walks into the gap
 const HM = T_GRANT + 0.4;
 const GCAP = lay("assets/media/gn_ringgold_ctl_gapnoon_mx.png", HM, HM + 4.2); tl.fromTo(GCAP, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, HM);
 tl.to(GCAP, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, HM + 3.0);

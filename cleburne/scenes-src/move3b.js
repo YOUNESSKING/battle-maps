@@ -358,7 +358,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: up ? "95px" : "69px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${up ? -141 : 125.5}deg)` });
   }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
-  const tg = B.units[id].el.querySelector(".tag"); if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
+  const tg = B.units[id].el.querySelector(".tag"); if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); };
 // (b) a brigade attack as a line of rings climbing the slope; rings drop out as the attack breaks; the unit box hides meanwhile
 const ringLine = (id, pts, t, dur, dropT, endT, side = "rome", n = 7) => {
@@ -510,7 +510,7 @@ arw({ pts: [[1614, 846], [1640, 858], [1660, 868]], side: "rome", t: T_RIGHT - 0
 mg([1682, 876], [1662, 868], T_RIGHT + 0.3, 5, 0.4); mg([1684, 882], [1660, 872], T_MIN, 4, 0.4);
 B.caption("THE CAVALRY BOUGHT CLEBURNE THE MINUTES", T_MIN, T_SHAT - 0.1, "carth");
 K.target(1684, 878, T_RIGHT, { r: 12, side: "carth", until: T_MIN + 1 });
-along("haz", [[1604, 880], [1603, 860], [1600, 834]], T_SHAT + 0.4, 2.2, 10);
+along("haz", [[1604, 880], [1598, 860], [1588, 826]], T_SHAT + 0.4, 2.2, 10);
 tl.to(B.units.haz.el.querySelector(".blk"), { opacity: 0.55, duration: 0.6 }, T_SHAT + 0.3);
 arw({ pts: [[1604, 874], [1602, 856], [1599, 838]], side: "rome", t: T_STREAM - 0.2, dur: 1.0, width: AW(4.9, 8), until: T_STREAM + 3.0 });
 stampP("SHATTERED", 1640, 822, T_SHAT + 0.3, T5 + 0.6, null, 22);
@@ -528,7 +528,7 @@ mg([1598, 894], [1604, 874], T_BODIES - 0.3, 6, 0.4); mg([1616, 893], [1605, 872
 along("gib", [[1604, 874], [1622, 850], [1640, 812]], T_KNEF - 0.4, 2.0, 8);
 tl.to(B.units.gib.el.querySelector(".blk"), { opacity: 0.55, duration: 0.6 }, T_KNEF);
 crosses(DEAD.slice(5, 9), T_BODIES + 0.6, END + 1);
-along("kne", [[1588, 780], [1606, 815], [1608, 842]], T_KNEF + 0.2, 2.0, 8);
+along("kne", [[1588, 780], [1608, 815], [1612, 846]], T_KNEF + 0.2, 2.0, 8);
 arw({ pts: [[1590, 786], [1605, 815], [1608, 838]], side: "rome", t: T_KNEF + 0.1, dur: 1.2, width: AW(4.4, 9), until: T_ORDER + 1.2 });
 quote("“WE WILL PUT IN HAZEN AND SEE WHAT SUCCESS HE HAS.”", "WOOD", T_PUT - 0.1, Math.min(T_BLUN + 0.4, T_PUT + 3.4), { col: "#c4121f", size: 40, mw: 1400, top: 820 });
 quote("“THERE WAS A ‘DEAD-LINE’ BEYOND WHICH NO MAN ADVANCED BUT TO FALL”", "BIERCE", T_DEAD - 0.2, Math.min(T_ACC + 0.2, T_DEAD + 3.3), { col: "#c4121f", size: 40, mw: 1500, top: 820 });
@@ -545,9 +545,9 @@ nightWash(T_DARK - 0.4, T_TRY - 0.6, 0.42);
 K.night({ lines: [F1], tOn: T_DARK - 0.4, tOff: T_TRY - 0.6 });
 arw({ pts: [[1600, 896], [1603, 874], [1602, 852]], side: "carth", t: T_DARK + 0.2, dur: 1.2, width: AW(4.3, 10), until: T_DARK + 3.6 });
 along("grb", [[1598, 900], [1602, 876], [1602, 862]], T_DARK + 0.3, 1.6, 8);
-along("kne", [[1608, 842], [1606, 800], [1604, 770]], T_DARK + 0.6, 2.0, 8);
+along("kne", [[1612, 846], [1606, 800], [1604, 770]], T_DARK + 0.6, 2.0, 8);
 along("gib", [[1640, 812], [1630, 792]], T_DARK + 0.6, 1.6, 6);
-along("haz", [[1600, 834], [1608, 812]], T_DARK + 0.6, 1.4, 6);
+along("haz", [[1588, 826], [1596, 806]], T_DARK + 0.6, 1.4, 6);
 bars(1624, 858, T_PRIS, T_WLOST - 0.2, 44);
 B.caption("CLEBURNE'S MEN CLEARED THE RAVINE AND TOOK PRISONERS", T_PRIS - 0.2, T_WLOST - 0.2, "carth");
 // the cost: spoken figures only (FACT_NOTES: Wood's division 1,457; whole Union force ~1,600; Cleburne's report 448), one small card per figure, each <= 3.5 s

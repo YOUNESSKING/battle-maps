@@ -357,7 +357,7 @@ const SHU = [unitK("ts1", "rome", [608, -350], "infantry", "", KT, { t: TS2 - 0.
   unitK("ts3", "rome", [700, -320], "infantry", "", KT, { t: TS2 - 0.1, until: T_ABOVE + 0.1 })];
 // "that same general": the mystery badge (Confederate flag, "?"), <= 3.5 s, out before the SHERMAN BEATEN stamp (one big card at a time)
 const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.csa}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.86), rgba(10,12,24,0.6));font-family:Oswald;font-weight:700;font-size:110px;color:#f7f3ea">?</div></div>
-  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE SAME GENERAL</div></div></div>`, "right:60px;top:150px;");
+  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE SAME GENERAL</div></div></div>`, "right:60px;top:60px;");   // clear of the Union units on the hill
 tl.fromTo(QB, { autoAlpha: 0, x: 80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_SAME - 0.05);
 tl.to(QB, { autoAlpha: 0, x: 80, duration: 0.35 }, Math.min(T_WTS - 0.3, T_SAME + 3.3));
 // Sherman's wing attacks the hill in waves and breaks on it (two visible shots, smoke, red arrows cut short, ink crosses)

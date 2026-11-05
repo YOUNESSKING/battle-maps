@@ -234,7 +234,7 @@ const thp = (x, y) => INS.th.P(x, y);
 frontS({ pts: [thp(1337, 817), thp(1332, 773), thp(1353, 729), thp(1393, 710), thp(1437, 716), thp(1465, 740)], sideA: "rome", sideB: "carth", t: T_STOP + 0.05, dur: 0.5, width: 15 * 1.3 * k, until: T_HELD });
 unitK("c1", "carth", thp(1393, 752), "infantry", "", k, { t: T_STOP + 0.1 }); unitK("c1g", "carth", thp(1367, 775), "artillery", "", k, { t: T_STOP + 0.15 });
 pinPortrait("c1", PHOTO.cleburne, FL.csa, "Cleburne", T_STOP + 0.15, null, k, "right");
-[[thp(1423, 640), thp(1400, 700), thp(1393, 652)], [thp(1280, 735), thp(1335, 750)], [thp(1500, 670), thp(1450, 712)]].forEach(([a, b, a2], i) => {
+[[thp(1423, 640), thp(1400, 700), thp(1384, 656)], [thp(1280, 735), thp(1335, 750)], [thp(1500, 670), thp(1450, 712)]].forEach(([a, b, a2], i) => {
   unitK("s" + i, "rome", a, "infantry", i ? "" : "SHERMAN", k, { t: T_STOP + (i ? 0.1 + i * 0.05 : 0.45) });   // tag lands on "Sherman's"
   arw({ pts: [a2 || a, b], side: "rome", t: T_STOP + 0.2 + i * 0.25, dur: 0.6, until: T_HELD }, SC, 9); });
 [0.4, 1.4].forEach((d, i) => shell(...thp(1367, 775), ...[thp(1410, 690), thp(1320, 742)][i], T_STOP + 0.3 + d, k, { r: 10 * k, fly: 0.35 }));
