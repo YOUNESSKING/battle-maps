@@ -15,6 +15,8 @@ Test only, NOT locked. Generator: ../make_style_w.py (wide look + close= battle 
 - Territory colours scale with zoom (owner 2026-11-05: "stronger when you zoom out to show the whole continent or the whole country"): full red/blue fill (~55 %, color blend) on far-out views, fading to front bands only on battle close-ups (opacity follows the camera scale: full at s <= 0.75, none at s >= 1.4).
 - Territory scenario (test): 23-Nov lines on the opening wide shots, Billy Goat Hill changes hands on "he seized a hill" (loser paler, winner fills), colours dissolve ~2.8 s at "Cleburne saw something"; on the green map the colours are normal-blend red/blue at ~24 % + a light front line (multiply turns muddy on green).
 
+- Owner after the full 3.5-min test (2026-11-05): likes it. NO flags on the units (side colour says it); NO units split into dots/rings; NO dashed arrows anymore (solid only); time-of-day light + crosses where attacks broke are in.
+
 ## Scores
 | Round | Critic 1 (wide map) | Critic 2 (glyph detail + close look) |
 |---|---|---|
