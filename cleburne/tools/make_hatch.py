@@ -5,6 +5,7 @@ IN_mx.png  = an existing territory layer (red = Union ground, blue = Confederate
 OUT.png    = assets/media/gn_<map>_ctl_<what>_mx.png: 45 deg hatch, 2 px every 9 px, (200,50,40) at 75 % alpha,
              rivers and woods on RELIEF_W.jpg (the Style W wide basemap) left clear.
 minus=     = 'captured' layer: only ground that is <side> in IN but NOT <side> in OTHER (the patch that changed hands).
+step=/lw=  = line spacing / width in px (default 9 / 2; wide views shown at s < 1 use e.g. step=14 lw=3).
 side=blue  = hatch the blue (Confederate) ground instead (still drawn in red ink only if colour=red; default colour follows side).
 Load in a scene with blend 'normal' (lay() picks normal for files named gn_*)."""
 import sys
@@ -31,7 +32,8 @@ water = (rl[..., 2] > rl[..., 0] + 25)
 dark = rl.mean(-1) < 62
 clear = cv2.dilate((water | dark).astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
 yy, xx = np.mgrid[0:1620, 0:2880]
-hatch = np.isin((xx + yy) % 9, (1, 2))
+STEP, LW = int(O.get('step', 9)), int(O.get('lw', 2))   # step=/lw= (optional): wider spacing for far-out views so the lines stay crisp lines on screen
+hatch = ((xx + yy) % STEP) < LW
 on = m & hatch & ~clear
 col = (200, 50, 40) if O.get('colour', 'red') == 'red' else (40, 80, 190)
 o = np.zeros((1620, 2880, 4), np.uint8); o[on] = col + (191,)

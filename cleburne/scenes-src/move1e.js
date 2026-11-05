@@ -401,12 +401,24 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// ---------- critic round 1 (main 2026-11-05): hard cuts + one stamp style ----------
+// everything revealed at t <= 0.05 (units, flags, date scroll, towns, portrait cards) is ON at t = 0: no fade-in (scenes are hard cuts)
+const zeroIn = () => { const META = ["duration", "ease", "immediateRender", "startAt", "onUpdate", "onComplete", "onStart", "yoyo", "repeat", "delay", "data", "id", "overwrite", "callbackScope"];
+  tl.getChildren(false, true, false).forEach((tw) => {
+    const v = tw.vars || {}; if (tw.startTime() > 0.05 || tw.duration() <= 0 || tw.duration() > 1.0 || !v.startAt || !("autoAlpha" in v || "opacity" in v)) return;
+    const tg = tw.targets(); if (!tg.length || !(tg[0] instanceof Element)) return;
+    const s = {}; Object.keys(v).forEach((k) => { if (!META.includes(k) && typeof v[k] !== "function") s[k] = v[k]; });
+    v.startAt = { ...v.startAt, ...s }; tw.invalidate(); });
+  tl.render(0, false, true); };   // a fresh paused timeline does not render on seek(0): force the first frame (hard cut: everything already on)
+// screen-space stamp in move1a stampP style: level, cream on dark, <= 3.5 s, placed by the caller on empty ground
+const banner = (txt, css, t, until, size = 40) => { const el = scr(stampHTML(txt, "#f0e6c8", size, 0), "display:flex;justify-content:center;" + css, t, Math.min(until, t + 3.5), { autoAlpha: 0 });
+  tl.fromTo(el, { scale: 1.6 }, { scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t); SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); return el; };
 // ---------- map: clean (STYLE W: no territory here), permanent towns, night as move1a ends ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });   // BATCH 1: no scale bar / north arrow
 town("chattanooga", [1035, 983], 0, "l");
 town("chickamauga station", [1725, 1055], 0, "r");
-camera([[0, 1560, 865, 1.3], [T_HOW, 1600, 940, 1.25], [END, 1680, 1000, 1.18]]);
-B.showDate(0); B.date("25 NOV · NIGHT", 0.1, null, 34);
+camera([[0, 1560, 865, 1.3], [T_HOW, 1680, 1060, 1.2], [END, 1720, 1080, 1.15]]);   // the arrow tip + "A narrow pass" stay >= 40 px inside the frame
+B.showDate(0); B.date("25 NOV · NIGHT", 0, null, 34);
 { const nw = document.createElement("div"); nw.style.cssText = "position:absolute;inset:0;background:rgba(6,10,26,0.42);pointer-events:none"; document.getElementById("fx").appendChild(nw); }   // night (as move1a ends)
 flagS(FL.us, "UNITED STATES", 1150, 920, 0, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1880, 1010, 0, T_HOW - 0.2); flagS(FL.cs, "CONFEDERATE STATES", 2150, 880, T_HOW - 0.1, END + 1);
 // the armies as move1a leaves them: Thomas in Chattanooga, Bragg's army in flight, Cleburne's rear guard over the creek
@@ -414,20 +426,19 @@ unitS("tho", "rome", [1000, 1100], "infantry", "THOMAS", { t: 0, size: "XXXX" })
 unitS("cle", "carth", [1700, 920], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0);
 const CLE_R = [[1700, 920], [1790, 938], [1880, 962], [1990, 1000]];   // east of the Chickamauga Station label (no overlap)
 along("cle", CLE_R, 0.2, T_HOW + 0.6, 16);
-// the bridges behind the rear guard burn (fire glow + powder smoke, visual only)
-[[1572, 836], [1612, 902]].forEach((p) => { pinS(fireGlow(p[0], p[1], 14, 0, END + 1)); K.smoke(p[0], p[1], 0.3, { n: 4, r: 8, rise: 24, life: 3 }); K.smoke(p[0], p[1], 3.5, { n: 4, r: 8, rise: 24, life: 3 }); });
+// the bridges behind the rear guard burn: a clear fire glow + rising smoke on each (visual only)
+[[1572, 836], [1612, 902]].forEach((p) => { pinS(fireGlow(p[0], p[1], 26, 0, END + 1)); [0, 3.2, 6.4, 9.6, 12.8].forEach((tt) => K.smoke(p[0], p[1], tt, { n: 5, r: 11, rise: 34, life: 3.6 })); });
 // the retreat south-east: solid thin trails that fade ~2 s after arrival (STYLE W: no dashed arrows)
-arw({ pts: [[1520, 840], [1590, 850], [1650, 880], [1700, 920]], side: "carth", t: 0, dur: 0.01, width: AW(1.3), until: 2.2 });
-arw({ pts: CLE_R, side: "carth", t: 0.2, dur: T_HOW + 0.6, width: AW(1.25, 6), until: T_HOW + 2.8 });   // thin trail, fades ~2 s after arrival
+arw({ pts: CLE_R.slice(0, 3).concat([[1958, 989]]), side: "carth", t: 0.2, dur: T_HOW + 0.6, width: AW(1.25, 6), until: T_HOW + 2.8 });   // thin trail, fades ~2 s after arrival
 // the question: one tired division, a narrow pass, a whole army behind it
 arw({ pts: [[2000, 1018], [2040, 1130], [2085, 1250], [2120, 1350]], side: "carth", t: T_HOW, dur: 2.4, width: AW(1.25, 10), until: T_KIND + 1.0 });
-B.caption("ONE TIRED DIVISION · ONE NARROW PASS", T_TIRED, T_KIND - 0.1, "carth");
 focus([2120, 1360], 70, T_PASS, T_PASS + 3.4);
-boxP("A NARROW PASS", 2160, 1310, T_PASS + 0.1, T_PASS + 3.3, { size: 22 });
+boxP("A NARROW PASS", 2215, 1352, T_PASS + 0.1, T_PASS + 3.3, { size: 22 });   // right of the arrow tip, >= 12 px clear
 // woven subscribe: small button bottom-right, cursor click, bell, slides out (never a full-screen card)
 const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
 // "Here's how Cleburne did it": his portrait card goes up on his own unit (stays for the move that follows)
-pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_HERE + 0.3, END + 1, true, "right");
+pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0, END + 1, true, "right");   // already named in move 1: his card from the first frame, tag hidden
+zeroIn();
 fixImgs();
 K.raiseTerritory();
 B.finish();

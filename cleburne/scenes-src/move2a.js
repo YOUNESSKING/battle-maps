@@ -400,6 +400,21 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// ================= critic round 1 (main, 2026-11-05): frame-0 furniture, level stamps, crisp hatch =================
+const nowU = (...ids) => ids.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));     // a unit already on the map at t = 0
+const now = (el) => { gsap.set(el, { autoAlpha: 1 }); return el; };                             // a flag / town already on the map at t = 0
+const date0 = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });   // date scroll visible at t = 0
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "34px"; box.appendChild(d); gsap.set(d, { autoAlpha: 1 });
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
+// stamps: level (no tilt), cream on dark, <= 3.5 s (move1a stampP look); world (on empty ground) or screen
+const levelHTML = (txt, size, sub) => stampHTML(txt, "#f0e6c8", size, 0, sub);
+const stampL = (txt, x, y, t, until, size = 22, sub) => { until = Math.min(until, t + 3.5); const el = pinS(GG.pin(levelHTML(txt, size, sub), x, y, {}));
+  tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
+  SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
+const stampS = (txt, css, t, until, size = 52, sub) => { until = Math.min(until, t + 3.5); const el = scr(levelHTML(txt, size, sub), css, t, null, { autoAlpha: 0 });
+  return slam(el, t, { from: 1.4, until, shake: 3 }); };
+// red ink hatch (tools/make_hatch.py, normal blend): no saturate filter from the old "terr" class
+const layN = (file, on, off) => { const el = lay(file, on, off); el.classList.remove("terr"); el.style.filter = "none"; el.style.mixBlendMode = "normal"; return el; };
 // =====================================================================================================================
 // MOVE 2a scene (STYLE W)
 // =====================================================================================================================
@@ -414,8 +429,12 @@ const T_26 = at(P1, "By the twenty-sixth"), T_WET = at(P1, "cold, wet weather"),
 const T_THOUGHT = at(P2, "The Union generals thought"), T_DELAY = at(P2, "delayed by a burned bridge"), T_CAME = at(P2, "but they came on"),
   T_SEVEN = at(P2, "seven columns strong"), T_SCOOP = at(P2, "expecting to scoop up"), T_RIGHT = at(P2, "In a sense"),
   T_BROKEN = at(P2, "It had broken at Missionary Ridge"), T_NOT = at(P2, "But they had not counted");
-const T_CLEB = T_BRAGG + 0.9;   // "... ordered Cleburne" (his name)
+const T_CLEB = T_BRAGG + 0.9;
+const T_HAZ = at(P1, "at all hazards"), T_4KW = at(P1, "about four thousand") + 0.5;   // "... ordered Cleburne" (his name)
 
+// a static figure card (the spoken number only, no counting through other numbers)
+const figure = (label, val, sub, col, t, until) => { SFX("tick", t + 0.1); return scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${col};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
+  <div style="font-size:18px;letter-spacing:.3em;color:${col}">${label}</div><div style="font-size:54px;letter-spacing:.04em">${val}</div>${sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#a8a294">${sub}</div>` : ""}</div>`, "right:70px;top:300px;", t, until); };
 // ---------- places ----------
 const CHT = L(35.046, -85.310), RNG = L(34.916, -85.109), GAP = L(34.906, -85.095), DAL = L(34.770, -84.970),
   GRAY = L(34.980, -85.150), ROSS = L(34.983, -85.286), BRIDGE = L(34.972, -85.162);
@@ -424,25 +443,19 @@ const RIDGE_N = LL([[35.0441, -85.0726], [35.0019, -85.0829], [34.9597, -85.0898
 const RIDGE_S = LL([[34.9034, -85.0984], [34.8921, -85.107], [34.8611, -85.119], [34.833, -85.1276], [34.80, -85.18], [34.65, -85.27]]);
 const RIDGE = RIDGE_N.concat(RIDGE_S), SADDLE = null;
 
-// ---------- map: clean by default; the hand-over on "on its heels" = red ink hatching (who holds the valley, then the ground just taken) ----------
-document.documentElement.classList.add("terr-on");   // the gn_* hatch layers are *_mx.png (hidden unless terr-on)
-const HV = T_HEELS + 0.2;
-const H26 = lay("assets/media/gn_chatt_ctl_nov26_mx.png", HV, HV + 4.0); tl.fromTo(H26, { opacity: 0 }, { opacity: 0.4, duration: 0.8, immediateRender: false }, HV);
-tl.to(H26, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, HV + 2.8);
-const H27 = lay("assets/media/gn_chatt_ctl_cap27_mx.png", HV + 0.9, HV + 4.6); tl.fromTo(H27, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, HV + 0.9);
-tl.to(H27, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, HV + 3.4);
+// ---------- map: clean (no ground changes hands in this scene: no territory) ----------
 const LV = LivingK(B); LV.clouds({ n: 7, opacity: 0.16 });   // no scale bar / north arrow (Style W)
-const TW = { cht: town("chattanooga", CHT, 0, "l"), dal: town("dalton", DAL, 0, "r") };
+const TW = { cht: town("chattanooga", CHT, null, "l"), dal: town("dalton", DAL, null, "r") }; now(TW.cht.el); now(TW.dal.el);
 
 // ---------- camera: wide theatre -> push in on Ringgold (lens to the close look past s ~1.5) ----------
 camera([[0, 1430, 830, 0.72], [3.6, 1425, 815, 0.9], [T_WAG, 1405, 800, 1.7], [T_HEELS + 2.5, 1405, 800, 1.8], [T_TAYLOR + 0.6, 1440, 845, 2.6],
   [T_BRAGG, 1440, 845, 2.9], [T_HOOK, 1415, 822, 3.2], [T_THOUGHT + 1.0, 1418, 820, 3.4], [T_SEVEN + 0.6, 1422, 825, 3.8],
   [T_BROKEN, 1432, 836, 4.2], [END, 1440, 846, 4.6]]);
-B.showDate(0.1); B.date("26 NOVEMBER 1863", 0.2, T_THOUGHT - 0.2, 34); B.date("27 NOVEMBER 1863", T_THOUGHT - 0.1, null, 34);
+date0("26 NOVEMBER 1863", T_THOUGHT - 0.2); B.date("27 NOVEMBER 1863", T_THOUGHT - 0.1, null, 34);
 B.title("MOVE 2", "RINGGOLD GAP", "", 0.3, 4.6); SFX("ref:boom", 0.4);
 
 // ---------- flags (48 px, no names): wide pair, then the close pair once the camera is in ----------
-flagS(FL.us, "", 1150, 600, 0.2, T_TAYLOR); flagS(FL.cs, "", 1660, 1050, 0.3, T_TAYLOR);
+now(flagS(FL.us, "", 1150, 600, null, T_TAYLOR)); now(flagS(FL.cs, "", 1660, 1050, null, T_TAYLOR));
 flagS(FL.us, "", 1350, 790, T_TAYLOR + 0.1, END + 1); flagS(FL.cs, "", 1540, 912, T_TAYLOR + 0.2, END + 1);
 
 // =================== move2-1 ===================
@@ -450,7 +463,7 @@ flagS(FL.us, "", 1350, 790, T_TAYLOR + 0.1, END + 1); flagS(FL.cs, "", 1540, 912
 rain(T_26, T_HEELS + 2.0, { n: 220 });
 [[[35.06, -85.24], [34.98, -85.17], [34.90, -85.09], [34.80, -85.00]], [[35.00, -85.28], [34.93, -85.20], [34.86, -85.12], [34.78, -85.03]]].forEach((q, k) =>
   arw({ pts: LL(q), side: "carth", t: 0.5 + k * 0.4, dur: 3.0, width: AW(1.0, 9), until: 0.5 + k * 0.4 + 5.0 }));
-unitS("aot", "carth", L(34.95, -85.13), "infantry", null, { t: 0.3, size: "XXXX", until: T_TAYLOR - 0.2 });
+unitS("aot", "carth", L(34.95, -85.13), "infantry", null, { size: "XXXX", until: T_TAYLOR - 0.2 });
 along("aot", LL([[34.95, -85.13], [34.88, -85.07], [34.81, -85.01]]), 0.6, T_GOOD, 12);
 inkTrace(ROAD, T_WAG, T_WAG + 3.4);
 const WG = [0.30, 0.38, 0.46, 0.54, 0.62, 0.72];
@@ -458,8 +471,9 @@ WG.forEach((f, k) => { const p = posOn(ROAD, f); const w = wagon([p[0] + (k % 2 
   tl.to(w.firstElementChild.firstElementChild, { rotation: k % 2 ? 6 : -6, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, T_WAG + 0.6); });
 B.caption("WAGONS AND ARTILLERY STUCK ON MUDDY ROADS", T_WAG + 0.3, T_HEELS - 0.1, "carth");
 // the Union on its heels: the valley hatches red (who holds it, then the ground just taken)
-unitS("hk", "rome", ROSS, "infantry", "HOOKER", { t: 0.4, size: "XXX" }); tagAt("hk", null);   // his portrait carries the name once spoken
-unitS("th", "rome", L(35.075, -85.30), "infantry", null, { t: 0.5, size: "XXXX", until: T_TAYLOR - 0.2 });
+unitS("hk", "rome", ROSS, "infantry", "HOOKER", { size: "XXX" }); tagAt("hk", null);   // his portrait carries the name once spoken
+unitS("th", "rome", L(35.075, -85.30), "infantry", null, { size: "XXXX", until: T_TAYLOR - 0.2 });
+nowU("aot", "hk", "th");   // on the map at t = 0
 along("hk", [ROSS, L(34.985, -85.22), GRAY], T_HEELS, 3.0, 12);
 along("th", LL([[35.075, -85.30], [35.05, -85.22]]), T_HEELS + 0.2, 2.6, 8);
 arw({ pts: LL([[34.99, -85.28], [34.985, -85.21], [34.975, -85.16]]), side: "rome", t: T_HEELS - 0.1, dur: 1.6, width: AW(1.8), until: T_HEELS + 3.6 });
@@ -470,34 +484,35 @@ boxP("TAYLOR'S RIDGE", ...L(34.86, -85.06), T_TAYLOR, T_TAYLOR + 3.4, { size: 24
 boxP("THE GAP", GAP[0] + 30, GAP[1] - 3, T_GAP + 0.6, T_GAP + 3.6, { size: 22, sfx: false });
 const RT = town("ringgold", [RNG[0] - 4, RNG[1] - 2], T_RING + 0.5, "l");
 TW.dal.shrink(T_TAYLOR);
-tl.to(TW.cht.el, { autoAlpha: 0, duration: 0.4 }, T_10K - 0.5);   // steps out before the camera crops it under the date scroll
+tl.to(TW.cht.el, { autoAlpha: 0, duration: 0.4 }, T_TAYLOR - 0.3);   // steps out before the camera crops it at the top edge
 // Bragg's order: Bragg has no unit on this close map -> one corner badge (<= 3.5 s), then the verbatim quote card alone
 badge({ name: "BRAXTON BRAGG", role: "CONFEDERATE ARMY OF TENNESSEE", initials: "BB", photo: PHOTO.bragg, flag: FL.cs, side: "carth", corner: "tr", t: T_BRAGG, until: Math.min(T_BRAGG + 3.5, T_WORDS - 0.3) });
-quote("“TO HOLD THIS POSITION AT ALL HAZARDS, AND KEEP BACK THE ENEMY UNTIL THE ARTILLERY AND TRANSPORTATION OF THE ARMY ARE SECURE”",
-  "BRAXTON BRAGG · ORDER TO CLEBURNE", T_WORDS - 0.1, T_4K - 0.2, { size: 34, mw: 1500, top: 230 });   // clear of the date scroll
+{ const Q = quote("“AT ALL HAZARDS, AND KEEP BACK THE ENEMY UNTIL THE ARTILLERY AND TRANSPORTATION OF THE ARMY WERE SECURE”",
+  "", T_HAZ, T_4K - 0.2, { size: 34, mw: 1400, top: 800 });   // the spoken words only, no source line; low, clear of the units and the date scroll
+  const w = Q.firstElementChild.lastElementChild; if (w) w.remove(); }
 // Cleburne at the gap: his portrait on its stake for the rest of the move (side stake keeps the gap free); ~4,000 and two guns
-unitS("cle", "carth", L(34.935, -85.075), "infantry", "CLEBURNE", { t: T_BRAGG + 0.2, size: "XX" });
+unitS("cle", "carth", L(34.935, -85.075), "infantry", "CLEBURNE", { t: T_TAYLOR - 0.3, size: "XX" }); tagAt("cle", null);   // on screen as the army leaves; his card names him
 along("cle", [L(34.935, -85.075), [GAP[0] + 8, GAP[1] - 14]], T_BRAGG + 0.6, 2.0, 8);
 arw({ pts: [L(34.95, -85.065), L(34.925, -85.08), [GAP[0] + 4, GAP[1] - 10]], side: "carth", t: T_BRAGG + 0.4, dur: 1.2, width: AW(2.6, 9), until: T_BRAGG + 3.8 });
 pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_CLEB, END + 1, true, "right");
-ticker("CLEBURNE AT THE GAP", 4000, "", "right:70px;top:300px;", T_4K - 0.2, 1.0, Math.min(T_HOOK + 0.4, T_10K - 0.6), 5, { col: "#7fb0ff", pre: "~", sub: "AND TWO GUNS" });
+figure("CLEBURNE", "~4,000", "MEN AND TWO GUNS", "#7fb0ff", T_4KW, Math.min(T_4KW + 3.4, T_HOOK + 0.4));   // static: the spoken figure only
 unitS("g1", "carth", [GAP[0] - 10, GAP[1] + 10], "artillery", null, { t: T_GUNS, w: 40, h: 27 });
 unitS("g2", "carth", [GAP[0] + 13, GAP[1] + 12], "artillery", null, { t: T_GUNS + 0.2, w: 40, h: 27 });
 // Hooker's pursuit, more than ten thousand, on the road behind: his portrait at his column for the rest of the move
 pinPortrait("hk", PHOTO.hooker, FL.us, "Hooker", T_HOOK + 0.4, END + 1, true);
-ticker("HOOKER'S PURSUIT", 10000, "+", "right:70px;top:300px;", T_10K - 0.2, 1.0, T_THOUGHT - 0.4, 5, { col: "#ff8a80", sub: "MORE THAN TEN THOUSAND" });
+figure("HOOKER'S PURSUING COLUMNS", "10,000+", "", "#ff8a80", T_10K + 0.3, T_THOUGHT - 0.3);   // static: "more than ten thousand"
 arw({ pts: [GRAY, L(34.95, -85.13), [RNG[0] - 6, RNG[1] - 8]], side: "rome", t: T_HOOK, dur: 1.6, width: AW(3.0, 9), until: T_HOOK + 3.6 });
 pulseU("hk", T_10K);
 
 // =================== move2-1b: a beaten mob? ===================
-belief("A BEATEN MOB", "WHAT THE UNION GENERALS THOUGHT", T_THOUGHT - 0.1, T_DELAY - 0.2);
+belief("A BEATEN MOB", "WHAT THE UNION GENERALS THOUGHT", T_THOUGHT - 0.1, T_DELAY - 0.2, { top: 800 });   // low: clear of Hooker's card
 // the burned bridge slows them
 pinS(fireGlow(BRIDGE[0], BRIDGE[1], 8, T_DELAY - 0.2, T_SEVEN + 1.0)); K.smoke(BRIDGE[0], BRIDGE[1], T_DELAY, { n: 5, r: 4, rise: 12, life: 3 });
 stampP("BURNED BRIDGE", BRIDGE[0] - 30, BRIDGE[1] + 12, T_DELAY + 1.0, T_SEVEN, "#f0e6c8", 18);
 // seven columns come on toward Ringgold (solid thin arrows; the trails fade ~2 s after they arrive)
-const C7 = [-0.016, -0.011, -0.006, 0, 0.006, 0.011, 0.016];
+const C7 = [-0.02, -0.007, 0.007, 0.02];   // four clearly separate trails
 C7.forEach((d, k) => arw({ pts: LL([[34.966 + d * 0.4, -85.150 + d], [34.946 + d * 0.3, -85.134 + d * 0.8], [34.926 + d * 0.15, -85.120 + d * 0.5]]),
-  side: "rome", t: T_SEVEN - 0.4 + k * 0.22, dur: 1.4, width: AW(3.6, 8), until: T_SEVEN + 4.4 }));
+  side: "rome", t: T_SEVEN - 0.4 + k * 0.22, dur: 1.4, width: AW(3.6, 6), until: T_SEVEN + 4.4 }));
 B.caption("SEVEN COLUMNS STRONG", T_SEVEN + 0.2, T_RIGHT - 0.1, "rome");
 TW.dal.grow(T_SEVEN);
 // stragglers and wagons pass through the gap behind Cleburne's line

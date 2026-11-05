@@ -403,6 +403,21 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// ================= critic round 1 (main, 2026-11-05): frame-0 furniture, level stamps, crisp hatch =================
+const nowU = (...ids) => ids.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));     // a unit already on the map at t = 0
+const now = (el) => { gsap.set(el, { autoAlpha: 1 }); return el; };                             // a flag / town already on the map at t = 0
+const date0 = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });   // date scroll visible at t = 0
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "34px"; box.appendChild(d); gsap.set(d, { autoAlpha: 1 });
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
+// stamps: level (no tilt), cream on dark, <= 3.5 s (move1a stampP look); world (on empty ground) or screen
+const levelHTML = (txt, size, sub) => stampHTML(txt, "#f0e6c8", size, 0, sub);
+const stampL = (txt, x, y, t, until, size = 22, sub) => { until = Math.min(until, t + 3.5); const el = pinS(GG.pin(levelHTML(txt, size, sub), x, y, {}));
+  tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
+  SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
+const stampS = (txt, css, t, until, size = 52, sub) => { until = Math.min(until, t + 3.5); const el = scr(levelHTML(txt, size, sub), css, t, null, { autoAlpha: 0 });
+  return slam(el, t, { from: 1.4, until, shake: 3 }); };
+// red ink hatch (tools/make_hatch.py, normal blend): no saturate filter from the old "terr" class
+const layN = (file, on, off) => { const el = lay(file, on, off); el.classList.remove("terr"); el.style.filter = "none"; el.style.mixBlendMode = "normal"; return el; };
 // =====================================================================================================================
 // ENDING scene (STYLE W)
 // =====================================================================================================================
@@ -418,6 +433,7 @@ const T_THREE = at(E1, "Three battles"), T_LET = at(E1, "Cleburne let"), T_CHOSE
   T_FACED = at(E1, "Sherman, Hooker"), T_HOOKR = at(E1, "Hooker and Howard"), T_HOWR = at(E1, "Howard, and beaten"), T_BEATEN = at(E1, "and beaten"),
   T_CHOSE = at(E1, "on ground he chose"), T_NEVER = at(E1, "He never rose"), T_LESS = at(E1, "Less than four"),
   T_AUTH = at(E1, "authorized black troops"), T_IDEA = at(E1, "the very idea"), T_LATE = at(E1, "far too late");
+const T_30 = at(E1, "on the thirtieth"), T_KILLW = at(E1, "of the killing") + 0.4;
 const S2 = B.P(E2), T_ONE = at(E2, "One, the stand"), T_TWO = at(E2, "Two, the rear"), T_THR = at(E2, "Or three"), T_TELL = at(E2, "Tell us in the comments"),
   T_CMDR = at(E2, "which commander"), T_SUB = at(E2, "Subscribe");
 // ---------- places (chatt map px; Pickett's Mill lies just south of the chatt frame, on the ground strip below it) ----------
@@ -427,6 +443,9 @@ const P = { th: L(35.0786, -85.2495), gap: L(34.912, -85.093), pm: L(33.977, -84
 const SOUTH = document.createElement("img"); SOUTH.src = "assets/media/chatt_w_south.jpg"; SOUTH.alt = "";
 SOUTH.style.cssText = "position:absolute;left:0;top:1590px;width:2880px;height:390px;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 30px);mask-image:linear-gradient(to bottom,transparent 0,#000 30px)";
 WORLD.insertBefore(SOUTH, document.getElementById("relief2"));
+// the same turf under the whole view (the end-question framing reaches a little past the map edges)
+const TURF = document.createElement("div"); TURF.style.cssText = "position:absolute;left:-400px;top:-300px;width:3680px;height:2400px;background:url(assets/media/chatt_w_south.jpg) 0 0/2880px 390px repeat";
+WORLD.insertBefore(TURF, WORLD.firstChild);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 });
 // ---------- camera: one wide theatre view, slow drift (wide look only; no clamp: the view takes in the strip) ----------
 const C0 = [1470, 1150], S0 = 0.68, camE = { cx: C0[0], cy: C0[1], s: S0 * 0.97 };
@@ -435,19 +454,18 @@ const applyE = () => { const s = camE.s; gsap.set(WORLD, { x: 960 - camE.cx * s,
 const camTo = (t, dur, c, s) => tl.to(camE, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease: "sine.inOut", onUpdate: applyE }, t);
 applyE(); tl.call(applyE, null, 0);
 camTo(0, T_KILLED - 0.4, [C0[0] + 20, C0[1] - 10], S0);
-camTo(S2 + 1.2, 2.0, [1440, 936], 0.667); camTo(S2 + 3.2, END - S2 - 3.2, [1440, 930], 0.672);   // the places slide below the end-card band
+camTo(S2 + 1.2, 2.0, [1500, 894], 0.62); camTo(S2 + 3.2, END - S2 - 3.2, [1505, 890], 0.622);   // the places slide below the end-card band, Pickett's Mill >= 40 px above the bottom   // the places slide below the end-card band
 
 // ---------- date (never two dates on screen: the scroll carries the Franklin and March 1865 dates) ----------
-B.showDate(0.1);
-B.date("1863 - 1864", 0.2, T_KILLED + 0.1, 34); B.date("30 NOVEMBER 1864", T_KILLED + 0.2, T_INTHREE - 0.3, 34);
+date0("1863 - 1864", T_30 - 0.1); B.date("30 NOVEMBER 1864", T_30, T_INTHREE - 0.3, 34);
 B.date("1863 - 1864", T_INTHREE - 0.2, T_LESS - 0.1, 34); B.date("MARCH 1865", T_LESS, S2 - 0.2, 34); B.date("1863 - 1864", S2 - 0.1, null, 34);
 // ---------- flags (48 px, no names) + the towns: Chattanooga and the three battle places (permanent dots, numbered) ----------
-flagS(FL.us, "", ...L(35.0, -85.75), 0.2, END + 1); flagS(FL.cs, "", ...L(34.3, -84.3), 0.3, END + 1);
-const CHTT = town("chattanooga", P.chatt, 0, "l");
+now(flagS(FL.us, "", ...L(35.0, -85.75), null, END + 1)); now(flagS(FL.cs, "", ...L(34.3, -84.3), null, END + 1));
+const CHTT = town("chattanooga", P.chatt, null, "l"); now(CHTT.el);
 const PL = [town("1 · tunnel hill", P.th, T_THREE + 0.1, "r"), town("2 · ringgold gap", P.gap, T_THREE + 0.4, "r"), town("3 · pickett's mill", P.pm, T_THREE + 0.7, "r")];
 const pop = (i, t) => tl.fromTo(PL[i].el.querySelector(".nm"), { scale: 1 }, { scale: 1.18, duration: 0.18, yoyo: true, repeat: 1, immediateRender: false }, t);
 // "Cleburne let ...": no unit of his on this map -> one corner badge (<= 3.5 s)
-badge({ name: "PATRICK CLEBURNE", role: "MAJOR GENERAL", initials: "PC", photo: PHOTO.cleburne, flag: FL.cs, side: "carth", corner: "bl", t: T_LET + 0.1, until: T_LET + 3.5 });
+badge({ name: "PATRICK CLEBURNE", role: "MAJOR GENERAL", initials: "PC", photo: PHOTO.cleburne, flag: FL.cs, side: "carth", corner: "tr", t: T_LET + 0.1, until: T_LET + 3.5 });
 // line 1: red attacks wear themselves out on the hill
 [[L(35.15, -85.33), P.th], [L(35.12, -85.40), [P.th[0] - 4, P.th[1] + 4]]].forEach(([a, b], i) => arw({ pts: [a, b], side: "rome", t: T_LET + 0.2 + i * 0.25, dur: 0.8, width: AW(S0, 8), until: T_HID }));
 [0.4, 0.8].forEach((d, i) => K.impact(P.th[0] - 6 + i * 8, P.th[1] - 8, T_CHOSEN + d, { r: 12 }));
@@ -463,30 +481,30 @@ arw({ pts: [L(34.10, -84.82), [P.pm[0] + 2, P.pm[1] - 8]], side: "rome", t: T_FO
 [0, 0.3].forEach((d) => K.impact(P.pm[0] - 4 + d * 12, P.pm[1] - 6, T_RAV + 0.2 + d, { r: 12 }));
 // the method, full (CLEBURNE'S METHOD, three lines): one big card alone
 GG.METHOD = ["LET THEM TIRE ON THE HILL, THEN STRIKE", "HIDE YOUR STRENGTH UNTIL THEY ARE CLOSE", "LET THE GROUND DO THE KILLING"]; GG.METHOD_TITLE = "CLEBURNE'S METHOD";
-const MC = GG.method(3, T_MOST - 0.2, T_KILLED - 0.35, [T_MOST, T_MOST + 0.25, T_MOST + 0.5]);
-MC.style.top = "210px";   // below the date scroll MC.firstElementChild.style.zoom = "0.72";
+const MC = GG.method(3, T_MOST - 0.2, T_KILLED + 0.6, [T_MOST - 0.1, T_MOST + 0.15, T_KILLW]);   // line 3 lands on "killing"
+MC.style.top = "250px";   // below the date scroll MC.firstElementChild.style.zoom = "0.72";
 
 // =====================================================================================================================
 // 30 NOVEMBER 1864, FRANKLIN (dark interlude): the date scroll rolls on, ONE locator card (his portrait greys inside it), then the stamp
 // =====================================================================================================================
 const DIM = document.createElement("div"); DIM.style.cssText = "position:absolute;inset:0;background:rgba(5,7,13,0.8);pointer-events:none";
 SCN.insertBefore(DIM, document.getElementById("date")); gsap.set(DIM, { autoAlpha: 0 });
-tl.to(DIM, { autoAlpha: 1, duration: 0.4 }, T_KILLED - 0.3); tl.to(DIM, { autoAlpha: 0, duration: 0.5 }, T_INTHREE - 0.3);
-const LOC = scr(`<div style="position:relative;width:1100px;height:520px;border-radius:14px;overflow:hidden;background:#06080e;border:2px solid rgba(201,180,138,0.6);box-shadow:0 24px 50px rgba(0,0,0,.7)">
-  <img src="assets/media/hka_loc_franklin_base.png" style="position:absolute;left:-410px;top:-280px;width:1920px;height:1080px;opacity:.9">
-  <img class="fill" src="assets/media/hka_loc_franklin_fill.png" style="position:absolute;left:-410px;top:-280px;width:1920px;height:1080px">
-  <div class="dot" style="position:absolute;left:${907 - 410 - 11}px;top:${495 - 280 - 11}px;width:22px;height:22px;border-radius:50%;background:#f7f3ea;box-shadow:0 0 16px #ffd54a,0 0 0 4px rgba(227,35,47,.8)"></div>
-  <div class="tx" style="position:absolute;left:${907 - 410 + 22}px;top:${495 - 280 - 70}px;font-family:'Liberation Serif',Georgia,serif;font-weight:700;color:#fbf8ef;text-shadow:0 2px 6px #000;font-size:40px">Franklin, Tennessee</div>
-  <div class="pc" style="position:absolute;left:34px;top:150px;width:150px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 6px 14px rgba(0,0,0,.6)"><img src="${FL.cs}" style="display:block;width:150px;height:26px;object-fit:cover"><img class="ph" src="${PHOTO.cleburne}" style="display:block;width:150px;height:170px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:22px;color:#fbf8ef;text-align:center;padding:3px 0 5px">Cleburne</div></div>
-  <div class="yr" style="position:absolute;right:26px;bottom:20px;font-family:Oswald;font-weight:700;font-size:24px;letter-spacing:.2em;color:#ffd54a">A YEAR AND THREE DAYS AFTER RINGGOLD</div></div>`,
-  "left:0;right:0;top:250px;display:flex;justify-content:center;", T_KILLED + 1.0, T_OPP - 0.2, { autoAlpha: 0, y: 40 });
-gsap.set(LOC.querySelector(".yr"), { autoAlpha: 0 }); gsap.set(LOC.querySelector(".pc"), { autoAlpha: 0 });
-tl.fromTo(LOC.querySelector(".dot"), { scale: 0 }, { scale: 1, duration: 0.3, ease: "back.out(2.5)", immediateRender: false }, T_KILLED + 1.4); SFX("hit", T_KILLED + 1.45);
-tl.fromTo(LOC.querySelector(".yr"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_YEAR);
-tl.to(LOC.querySelector(".fill"), { opacity: 0.55, duration: 0.5, yoyo: true, repeat: 5 }, T_KILLED + 1.6);
-tl.fromTo(LOC.querySelector(".pc"), { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, T_LEAD - 0.1);
-tl.to(LOC.querySelector(".ph"), { filter: "grayscale(1) brightness(0.55)", duration: 0.8 }, T_FRANK);
-sstamp("AN ATTACK HE HAD OPPOSED", 400, T_OPP + 0.3, { color: "#f0e6c8", size: 52, sub: "FRANKLIN, TENNESSEE", until: T_STONE - 0.3, shake: 4 });
+tl.to(DIM, { autoAlpha: 1, duration: 0.4 }, T_KILLED + 0.4); tl.to(DIM, { autoAlpha: 0, duration: 0.5 }, T_INTHREE - 0.3);
+stampS("A YEAR AND THREE DAYS AFTER RINGGOLD", "left:0;right:0;top:440px;display:flex;justify-content:center;", T_YEAR, T_LEAD - 0.2, 44);
+// ONE locator card (~3 s): his portrait in its own panel left of the map, Tennessee in gold (no state names), Franklin on its word
+const LOC = scr(`<div style="position:relative;width:1300px;height:520px;border-radius:14px;overflow:hidden;background:#06080e;border:2px solid rgba(201,180,138,0.6);box-shadow:0 24px 50px rgba(0,0,0,.7)">
+  <img src="assets/media/endloc_franklin_base.png" style="position:absolute;left:-210px;top:-280px;width:1920px;height:1080px;opacity:.9">
+  <img class="fill" src="assets/media/endloc_franklin_fill.png" style="position:absolute;left:-210px;top:-280px;width:1920px;height:1080px">
+  <div style="position:absolute;left:0;top:0;width:240px;height:520px;background:#06080e;border-right:1.5px solid rgba(201,180,138,0.5)"></div>
+  <div class="dot" style="position:absolute;left:${907 - 210 - 11}px;top:${495 - 280 - 11}px;width:22px;height:22px;border-radius:50%;background:#f7f3ea;box-shadow:0 0 16px #ffd54a,0 0 0 4px rgba(227,35,47,.8)"></div>
+  <div class="tx" style="position:absolute;left:${907 - 210 + 24}px;top:${495 - 280 - 70}px;font-family:'Liberation Serif',Georgia,serif;font-weight:700;color:#fbf8ef;text-shadow:0 2px 6px #000;font-size:40px;white-space:nowrap">Franklin, Tennessee</div>
+  <div style="position:absolute;left:45px;top:135px;width:150px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 6px 14px rgba(0,0,0,.6)"><img src="${FL.cs}" style="display:block;width:150px;height:26px;object-fit:cover"><img class="ph" src="${PHOTO.cleburne}" style="display:block;width:150px;height:170px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:22px;color:#fbf8ef;text-align:center;padding:3px 0 5px">Cleburne</div></div></div>`,
+  "left:0;right:0;top:250px;display:flex;justify-content:center;", T_LEAD - 0.05, T_OPP - 0.15, { autoAlpha: 0, y: 30 });
+gsap.set([LOC.querySelector(".tx"), LOC.querySelector(".dot")], { autoAlpha: 0 });
+tl.fromTo(LOC.querySelector(".dot"), { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "back.out(2.5)", immediateRender: false }, T_FRANK); SFX("hit", T_FRANK + 0.05);
+tl.fromTo(LOC.querySelector(".tx"), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_FRANK + 0.1);
+tl.to(LOC.querySelector(".ph"), { filter: "grayscale(1) brightness(0.55)", duration: 0.8 }, T_FRANK + 0.4);
+stampS("AN ATTACK HE HAD OPPOSED", "left:0;right:0;top:440px;display:flex;justify-content:center;", T_OPP, T_STONE - 0.3, 52, "FRANKLIN, TENNESSEE");
 // "Later writers called him the Stonewall Jackson of the West" (a later nickname, no quote marks)
 const SJ = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 46px 16px;background:rgba(14,12,10,0.93);border-top:7px solid #c9b48a;color:#f7f3ea;box-shadow:0 18px 40px rgba(0,0,0,.6)"><div style="font-size:20px;letter-spacing:0.34em;color:#c9b48a">AS LATER WRITERS CALLED HIM</div><div style="font-size:66px;letter-spacing:0.06em;line-height:1.08">THE STONEWALL JACKSON OF THE WEST</div></div>`,
   "left:0;right:0;top:420px;display:flex;justify-content:center;", T_STONE - 0.1, T_INTHREE - 0.3, { autoAlpha: 0 });
@@ -497,22 +515,23 @@ SFX("hit", T_STONE + 0.1);
 // Their portrait cards on stakes at the place each was beaten (they have no units here); greyed with an ink cross on "beaten".
 // =====================================================================================================================
 const stakeCard = (photo, name, p, t, until, dx, dy) => {
-  const el = GG.pin(`<div style="position:relative;width:0;height:0"><svg style="position:absolute;left:${Math.min(0, dx)}px;top:${Math.min(0, dy)}px;overflow:visible" width="${Math.abs(dx)}" height="${Math.abs(dy)}"><line x1="${dx < 0 ? -dx : 0}" y1="${dy < 0 ? -dy : 0}" x2="${dx < 0 ? 0 : dx}" y2="${dy < 0 ? 0 : dy}" stroke="#463a1e" stroke-width="1.6"/></svg>
-    <div class="cd" style="position:absolute;left:${dx - 38}px;top:${dy - (dy < 0 ? 118 : 0)}px;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${FL.us}" style="display:block;width:76px;height:15px;object-fit:cover"><img class="ph" src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px">${name}</div>
-    <div class="x" style="position:absolute;left:0;right:0;top:14px;text-align:center;font-family:'Liberation Serif',Georgia,serif;font-size:76px;line-height:82px;color:#2a2410;text-shadow:0 0 4px #e9dfc6">✕</div></div></div>`, p[0], p[1], { t, until });
-  pinS(el); gsap.set(el.querySelector(".x"), { autoAlpha: 0 }); return el; };
-const GBS = [stakeCard(PHOTO.sherman, "Sherman", P.th, T_FACED, S2 - 0.2, -120, 40), stakeCard(PHOTO.hooker, "Hooker", P.gap, T_HOOKR + 0.1, S2 - 0.2, 120, 10),
-  stakeCard(PHOTO.howard, "Howard", P.pm, T_HOWR, S2 - 0.2, -120, -30)];
+  const len = Math.hypot(dx, dy), ang = Math.atan2(dy, dx) * 180 / Math.PI;
+  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:0;top:0;width:${len.toFixed(0)}px;height:1.6px;background:#463a1e;transform-origin:0 50%;transform:rotate(${ang.toFixed(1)}deg)"></div>
+    <div style="position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#463a1e"></div>
+    <div class="cd" style="position:absolute;left:${dx - 38}px;top:${dy < 0 ? dy - 118 : dy}px;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${FL.us}" style="display:block;width:76px;height:15px;object-fit:cover"><img class="ph" src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px">${name}</div></div></div>`, p[0], p[1], { t, until });
+  return pinS(el); };
+const GBS = [stakeCard(PHOTO.sherman, "Sherman", P.th, T_FACED, S2 - 0.2, -130, 50), stakeCard(PHOTO.hooker, "Hooker", P.gap, T_HOOKR + 0.1, S2 - 0.2, 130, 20),
+  stakeCard(PHOTO.howard, "Howard", P.pm, T_HOWR, S2 - 0.2, -130, -40)];
 tl.to(CHTT.el, { autoAlpha: 0, duration: 0.3 }, T_FACED - 0.3); tl.to(CHTT.el, { autoAlpha: 1, duration: 0.3 }, S2 - 0.1);   // Sherman's card takes its place
-GBS.forEach((g, i) => { const t = T_BEATEN + 0.15 + i * 0.25; tl.to(g.querySelector(".ph"), { filter: "grayscale(1) brightness(0.55)", duration: 0.3 }, t);
-  tl.fromTo(g.querySelector(".x"), { autoAlpha: 0, scale: 1.8 }, { autoAlpha: 1, scale: 1, duration: 0.2, immediateRender: false }, t); SFX("hit", t + 0.15); });
-sstamp("ON GROUND HE CHOSE", 570, T_CHOSE, { color: "#f0e6c8", size: 56, until: Math.min(T_CHOSE + 3.2, T_NEVER + 0.85), shake: 4 });
+// "and beaten each of them": the faces grey (still readable), no marks over them
+GBS.forEach((g, i) => tl.to(g.querySelector(".ph"), { filter: "grayscale(1) brightness(0.72) contrast(1.05)", duration: 0.4 }, T_BEATEN + 0.15 + i * 0.25));
+stampS("ON GROUND HE CHOSE", "left:700px;width:1100px;top:560px;display:flex;justify-content:center;", T_CHOSE, Math.min(T_CHOSE + 3.2, T_NEVER + 0.85), 48);   // level, on empty ground east of the cards
 // "He never rose above the command of a division": the rank plate
 const RK = scr(`<div style="padding:8px 26px 10px;background:rgba(18,16,12,0.93);border-top:5px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:34px;color:#ffd54a;letter-spacing:.2em">★ ★</div><div style="font-size:18px;letter-spacing:0.26em;color:#c9b48a">HE NEVER ROSE ABOVE</div><div style="font-size:30px;letter-spacing:0.16em">THE COMMAND OF A DIVISION</div></div>`,
-  "left:0;right:0;top:560px;display:flex;justify-content:center;", T_NEVER + 1.0, T_LESS - 0.15, { autoAlpha: 0 });
+  "left:700px;width:1100px;top:540px;display:flex;justify-content:center;", T_NEVER + 1.0, T_LESS - 0.15, { autoAlpha: 0 });
 // "Less than four months later ... authorized black troops ... far too late"
-sstamp("CONFEDERATE CONGRESS AUTHORIZED BLACK TROOPS", 570, T_AUTH - 0.2, { color: "#f0e6c8", size: 44, sub: "LESS THAN FOUR MONTHS LATER", until: T_LATE - 0.15, shake: 4 });
-sstamp("FAR TOO LATE", 570, T_LATE, { color: "#f0e6c8", size: 70, until: S2 - 0.15, shake: 5 });
+stampS("CONFEDERATE CONGRESS AUTHORIZED BLACK TROOPS", "left:700px;width:1100px;top:560px;display:flex;justify-content:center;", T_AUTH, T_LATE - 0.15, 32, "LESS THAN FOUR MONTHS LATER");
+stampS("FAR TOO LATE", "left:700px;width:1100px;top:560px;display:flex;justify-content:center;", T_LATE, S2 - 0.15, 60);
 
 // =====================================================================================================================
 // end-2: the final question (E.final; "which commander next"). The whole paragraph sits in the last 20 s, so (C3) the card shrinks into the
@@ -522,12 +541,17 @@ const EF = E.final({ moves: [["TUNNEL HILL", "1863"], ["RINGGOLD GAP", "1863"], 
   tNums: [T_ONE, T_TWO, T_THR], tAsk: T_TELL - 0.3, tFamily: T_CMDR - 0.3, tSub: T_SUB - 0.6, until: END - 0.2 });
 EF.querySelector(".fam").innerHTML = `TELL US WHICH COMMANDER WE SHOULD COVER NEXT<div style="font-size:22px;letter-spacing:0.3em;color:#c9b48a;margin-top:4px">WE READ EVERY ONE</div>`;
 EF.querySelector(".q").textContent = "WHICH WAS CLEBURNE'S GREATEST MOVE?";
+// C1: the three options appear only on their words; the header only on "Tell us in the comments"; readable comment lines
+[0, 1, 2].forEach((i) => { const c = EF.querySelector(".m" + i); gsap.set(c, { autoAlpha: 0 }); tl.set(c, { autoAlpha: 0 }, 0); });
+{ const hd = EF.firstElementChild; gsap.set(hd, { autoAlpha: 0 }); tl.fromTo(hd, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_TELL); hd.style.fontSize = "40px"; }
+EF.querySelector(".ans").style.fontSize = "70px"; EF.querySelector(".fam").style.fontSize = "40px"; EF.querySelector(".fam").firstElementChild && (EF.querySelector(".fam").lastElementChild.style.fontSize = "30px");
 const PILL = document.getElementById("credit").previousElementSibling;
 const BACK = EF.previousElementSibling;
 const TL = S2 + 1.5;
 tl.to(BACK, { autoAlpha: 0, duration: 0.8 }, TL - 0.2);
-tl.to(["#date", ...document.querySelectorAll(".gg-card"), CHTT.el], { autoAlpha: 0, duration: 0.4 }, TL - 0.3);
-tl.to(EF, { scale: 0.42, y: -142, transformOrigin: "50% 0%", duration: 0.7, ease: "power3.inOut" }, TL);
+tl.to([...document.querySelectorAll(".gg-card"), CHTT.el], { autoAlpha: 0, duration: 0.4 }, TL - 0.3);
+document.getElementById("date").style.zIndex = 60;   // the date scroll never disappears (above the question's dark back)
+tl.to(EF, { scale: 0.66, x: 70, y: -128, transformOrigin: "50% 0%", duration: 0.7, ease: "power3.inOut" }, TL);   // band to the right of the date scroll, readable
 Object.assign(PILL.style, { right: "50px", top: "34px", bottom: "auto" });
 // the map stays alive: slow drift, the three places pulse on their numbers, small fights flare at each in turn
 [[0, T_ONE], [1, T_TWO], [2, T_THR]].forEach(([i, t]) => pop(i, t));

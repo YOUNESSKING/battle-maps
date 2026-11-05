@@ -401,6 +401,21 @@ const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.cr
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// ================= critic round 1 (main, 2026-11-05): frame-0 furniture, level stamps, crisp hatch =================
+const nowU = (...ids) => ids.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));     // a unit already on the map at t = 0
+const now = (el) => { gsap.set(el, { autoAlpha: 1 }); return el; };                             // a flag / town already on the map at t = 0
+const date0 = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });   // date scroll visible at t = 0
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "34px"; box.appendChild(d); gsap.set(d, { autoAlpha: 1 });
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
+// stamps: level (no tilt), cream on dark, <= 3.5 s (move1a stampP look); world (on empty ground) or screen
+const levelHTML = (txt, size, sub) => stampHTML(txt, "#f0e6c8", size, 0, sub);
+const stampL = (txt, x, y, t, until, size = 22, sub) => { until = Math.min(until, t + 3.5); const el = pinS(GG.pin(levelHTML(txt, size, sub), x, y, {}));
+  tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
+  SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
+const stampS = (txt, css, t, until, size = 52, sub) => { until = Math.min(until, t + 3.5); const el = scr(levelHTML(txt, size, sub), css, t, null, { autoAlpha: 0 });
+  return slam(el, t, { from: 1.4, until, shake: 3 }); };
+// red ink hatch (tools/make_hatch.py, normal blend): no saturate filter from the old "terr" class
+const layN = (file, on, off) => { const el = lay(file, on, off); el.classList.remove("terr"); el.style.filter = "none"; el.style.mixBlendMode = "normal"; return el; };
 // =====================================================================================================================
 // BG-A scene (STYLE W). One basemap in tunnel px (tunnelbg_w = tunnel_w + Lookout Mountain drawn); the camera stays in the wide look.
 // =====================================================================================================================
@@ -422,37 +437,36 @@ const FRONT = [[1475, 795], [1450, 797], [1425, 800], [1410, 812], [1402, 830], 
 
 // ---------- map: clean by default; red ink hatching only where ground changes hands (~3 s each) ----------
 document.documentElement.classList.add("terr-on");   // the gn_* hatch layers are *_mx.png (hidden unless terr-on)
-const hand = (file, on) => { const el = lay(file, on, on + 4.4); tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, on);
+const hand = (file, on) => { const el = layN(file, on, on + 4.4); tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, on);
   tl.to(el, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, on + 3.0); return el; };
 hand("assets/media/gn_tunnelbg_ctl_cap23_mx.png", T_SIEGE + 0.4);   // the siege is broken: Lookout Valley changes hands
 hand("assets/media/gn_tunnelbg_ctl_cap24_mx.png", T_TOOK + 0.4);    // Lookout Mountain taken
 hand("assets/media/gn_tunnelbg_ctl_cap25_mx.png", T_COLLW);         // the centre of Missionary Ridge collapses
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });
-const CHTT = town("chattanooga", CITY, 0, "l");
+const CHTT = town("chattanooga", CITY, null, "l"); now(CHTT.el);
 
 // ---------- camera (old chatt scales / 8: the whole background stays in the wide look) ----------
 camera([[0, 1180, 1080, 0.72], [T_24 - 0.6, 1150, 1100, 0.75], [T_24 + 0.7, 870, 1250, 1.19], [T_NEXT - 0.3, 890, 1240, 1.23],
   [T_NEXT + 0.8, 1240, 1120, 1.0], [T_BUT - 0.2, 1250, 1090, 1.03], [T_BUT + 1.0, 1430, 830, 1.375], [END, 1420, 838, 1.44]]);
 
 // ---------- date ----------
-B.showDate(0.1);
-B.date("OCTOBER 1863", 0.2, T_24 - 0.2, 34); B.date("24 NOVEMBER 1863", T_24 - 0.1, T_NEXT - 0.2, 34); B.date("25 NOVEMBER 1863", T_NEXT - 0.1, null, 34);
+date0("OCTOBER 1863", T_24 - 0.2); B.date("24 NOVEMBER 1863", T_24 - 0.1, T_NEXT - 0.2, 34); B.date("25 NOVEMBER 1863", T_NEXT - 0.1, null, 34);
 
 // ---------- flags (48 px, behind each side's lines, one pair per shot) ----------
-flagS(FL.us, "", 700, 640, 0.2, T_24 - 0.3); flagS(FL.cs, "", 1800, 1250, 0.3, T_24 - 0.3);
+now(flagS(FL.us, "", 700, 640, null, T_24 - 0.3)); now(flagS(FL.cs, "", 1800, 1250, null, T_24 - 0.3));
 flagS(FL.us, "", 640, 1060, T_24 - 0.1, T_NEXT + 0.6); flagS(FL.cs, "", 1090, 1420, T_24, T_NEXT + 0.6);
 flagS(FL.us, "", 1000, 880, T_NEXT + 0.2, T_BUT + 0.4); flagS(FL.cs, "", 1620, 1250, T_NEXT + 0.3, T_BUT + 0.4);
 flagS(FL.us, "", 1290, 740, T_BUT + 0.5, END + 1); flagS(FL.cs, "", 1600, 900, T_BUT + 0.6, END + 1);
 
 // =================== October 1863: the siege, Grant, the heights ===================
 // the Union army pinned in the city (red), the Confederates on the heights around it (blue); bare boxes until a name is spoken
-unitS("u1", "rome", [1040, 930], "infantry", null, { t: 0.2, size: "XXXX", until: T_NEXT - 0.3 });
-unitS("u2", "rome", [1110, 1010], "infantry", null, { t: 0.3, size: "XXX", until: T_NEXT - 0.3 });
-unitS("c1", "carth", [880, 1300], "infantry", null, { t: 0.3, size: "XX", until: T_24 - 0.5 });
-unitS("c2", "carth", [1352, 1060], "infantry", "BRAGG", { t: 0.35, size: "XXXX", until: T_NEXT - 0.3 });
-unitS("c3", "carth", [1280, 1250], "infantry", null, { t: 0.4, size: "XX", until: T_NEXT - 0.3 });
-unitS("c4", "carth", [1452, 840], "infantry", null, { t: 0.45, size: "XX", until: T_NEXT - 0.3 });
-tagAt("c2", null);
+unitS("u1", "rome", [1040, 930], "infantry", null, { size: "XXXX", until: T_NEXT - 0.3 });
+unitS("u2", "rome", [1110, 1010], "infantry", null, { size: "XXX", until: T_NEXT - 0.3 });
+unitS("c1", "carth", [880, 1300], "infantry", null, { size: "XX", until: T_24 - 0.5 });
+unitS("c2", "carth", [1352, 1060], "infantry", "BRAGG", { size: "XXXX", until: T_NEXT - 0.3 });
+unitS("c3", "carth", [1280, 1250], "infantry", null, { size: "XX", until: T_NEXT - 0.3 });
+unitS("c4", "carth", [1452, 840], "infantry", null, { size: "XX", until: T_NEXT - 0.3 });
+tagAt("c2", null); nowU("u1", "u2", "c1", "c2", "c3", "c4");   // on the map at t = 0
 // "Then Ulysses Grant arrived": no unit of his on this map -> one corner badge (<= 3.5 s)
 badge({ name: "ULYSSES S. GRANT", role: "UNION", initials: "USG", photo: PHOTO.grant, flag: FL.us, side: "rome", corner: "tr", t: T_GRANT + 0.5, until: Math.min(T_GRANT + 3.8, T_BRAGG - 0.3) });
 // "the siege was broken": supplies come in from the west (solid thin route, fades after arrival), wagons roll, Lookout Valley changes hands
@@ -495,13 +509,13 @@ B.grey(["m1", "m2", "m3"], T_COLLW - 0.4, 0.5);
 MC.forEach(([id], i) => B.move(id, T_COLLW - 0.2 + i * 0.1, 1.6, 1480 + i * 10, 1060 + i * 110, "power2.in"));
 [[1365, 1040, 1470, 1060], [1325, 1150, 1460, 1170], [1275, 1255, 1455, 1280]].forEach(([x1, y1, x2, y2], i) =>
   arw({ pts: [[x1, y1], [x2, y2]], side: "carth", t: T_COLLW - 0.1 + i * 0.12, dur: 0.8, width: AW(1.0, 7), until: Math.min(T_COLLW + 2.8, T_BUT + 0.4) }));
-sstamp("COLLAPSED", 150, T_COLLW - 0.25, { color: "#f0e6c8", size: 54, until: Math.min(T_COLLW + 2.6, T_BUT - 0.1), shake: 4 });
+stampL("COLLAPSED", 1700, 1440, T_COLLW - 0.25, Math.min(T_COLLW + 2.6, T_BUT - 0.1), 30);   // level, on empty ground east of the ridge
 
 B.hideUnits(["m1", "m2", "m3", "t0", "t1", "t2", "t3"], T_BUT + 0.8);   // the camera leaves the centre: clean screen at Tunnel Hill
 // =================== the north end: TUNNEL HILL holds; Cleburne's division ===================
 zoomBox(1430, 830, 1.375, T_BUT - 1.5);
 frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: T_BUT + 0.5, dur: 0.8, width: FWc(1.4), until: END + 1 });
-unitS("tc", "carth", [1452, 818], "infantry", "ONE DIVISION", { t: T_BUT + 0.5, size: "XX" }); tagAt("tc", T_ONEDIV);
+unitS("tc", "carth", [1452, 818], "infantry", null, { t: T_BUT + 0.5, size: "XX" });   // bare until Cleburne's card lands
 unitS("tg", "carth", [1420, 846], "artillery", null, { t: T_BUT + 0.6 });
 unitS("sr1", "rome", [1450, 745], "infantry", null, { t: T_BUT + 0.5, size: "XX" });
 unitS("sr2", "rome", [1335, 808], "infantry", null, { t: T_BUT + 0.55, size: "XX" });
@@ -511,19 +525,13 @@ focus(TH, 70, T_KNOB, T_KNOB + 3.2);
 [[1450, 784], [1396, 818], [1446, 776], [1388, 812]].forEach((p, i) => shoot([1420, 840], p, T_KNOB + 0.3 + i * 0.4, { unit: "tg", r: 7, width: 1.0, dur: 0.45, h: 18 }));
 smoke([[1440, 812], [1452, 822], [1420, 846]], T_KNOB + 0.4);
 crosses([[1450, 782], [1456, 776], [1444, 774], [1392, 818], [1386, 812]], T_NEVER + 0.1, T_DIVC + 2.0);
-sstamp("NEVER GAVE WAY", 150, T_NEVER, { color: "#f0e6c8", size: 56, until: T_NEVER + 2.7, shake: 4 });
+stampL("NEVER GAVE WAY", 1730, 640, T_NEVER, T_NEVER + 2.7, 30);   // level, on empty ground north-east of the hill
 // "That division was Cleburne's": his portrait on its stake at his division for the rest of the scene (side stake: keeps the hill free)
-tl.call(() => { const tg = B.units.tc.el.querySelector(".tag"); if (tg) tg.textContent = "CLEBURNE"; }, null, T_DIVC);
 pinPortrait("tc", PHOTO.cleburne, FL.cs, "Cleburne", T_DIVC, END + 1, true, "right");
 // "Sherman, Hooker and Howard": Sherman's portrait at his men on the hill; Hooker and Howard (no unit here) share ONE corner badge
 pinPortrait("sr1", PHOTO.sherman, FL.us, "Sherman", T_SHER, END + 1, true);
-{ const card = (ph, nm) => `<div class="g" style="display:flex;flex-direction:column;align-items:center;width:96px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 6px 14px rgba(0,0,0,.6)"><img src="${FL.us}" style="display:block;width:96px;height:18px;object-fit:cover"><img src="${ph}" style="display:block;width:96px;height:104px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:17px;color:#fbf8ef;padding:2px 0 4px">${nm}</div></div>`;
-  const HH = scr(`<div style="display:flex;gap:14px">${card(PHOTO.hooker, "Hooker")}${card(PHOTO.howard, "Howard")}</div>`, "right:70px;top:110px;", T_HOOK - 0.05, Math.min(T_HOW + 3.2, T_YEAR + 0.8), { autoAlpha: 0, x: 60 });
-  const g2 = HH.querySelectorAll(".g")[1]; gsap.set(g2, { autoAlpha: 0 }); tl.fromTo(g2, { autoAlpha: 0, x: 30 }, { autoAlpha: 1, x: 0, duration: 0.35, immediateRender: false }, T_HOW - 0.05); }
-// the method card frame appears, still empty (one line per move from move 1 on); one big card alone
-GG.METHOD = ["LET THEM TIRE ON THE HILL, THEN STRIKE", "HIDE YOUR STRENGTH UNTIL THEY ARE CLOSE", "LET THE GROUND DO THE KILLING"]; GG.METHOD_TITLE = "CLEBURNE'S METHOD";
-const MCD = GG.method(0, T_YEAR + 1.1, END - 0.1, []);
-MCD.style.top = "170px"; MCD.firstElementChild.style.zoom = "0.7";
+badge({ name: "JOSEPH HOOKER", role: "UNION", initials: "JH", photo: PHOTO.hooker, flag: FL.us, side: "rome", corner: "tr", t: T_HOOK + 0.1, until: T_HOW + 1.0 });
+badge({ name: "OLIVER O. HOWARD", role: "UNION", initials: "OOH", photo: PHOTO.howard, flag: FL.us, side: "rome", corner: "tr", t: T_HOW + 1.1, until: END - 0.3 });
 fixImgs();
 K.raiseTerritory();
 B.finish();

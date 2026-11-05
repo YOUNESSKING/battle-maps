@@ -29,6 +29,7 @@ const { at, P: PS } = B;
 const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
+document.documentElement.classList.add("terr-on");   // gn_* hatch layers are hidden by battle.css unless terr-on (move1a)
 const FL = { us: "assets/media/us35_flag.png", csa: "assets/media/csa1_13_flag.png" };
 const PHOTO = { sherman: "assets/media/sherman_head.png", grant: "assets/media/grant_head.png" };
 const tl = B.tl, scene = document.getElementById("scene"), worldEl = document.getElementById("world");
@@ -73,10 +74,14 @@ const unitK = (id, side, p, icon, label, k, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until, 0.4);
   return id; };
 // general's portrait card on a stake at his own unit (move1a pinPortrait, sized for a unit made at stage scale k); rides with the unit
-const pinPortrait = (id, photo, flag, name, t, until, k) => {
+const pinPortrait = (id, photo, flag, name, t, until, k, side = "up") => {
   const host = B.units[id].el, w = document.createElement("div"), z = (v) => (v * k).toFixed(2) + "px";
   w.style.cssText = `position:absolute;left:50%;top:${z(-44)};width:0;height:0;pointer-events:none;z-index:5`;
   w.innerHTML = `<div style="position:absolute;left:${z(-38)};bottom:0;width:${z(76)};background:#1a1712;border:${z(1.5)} solid #e9dfc6;box-shadow:0 ${z(4)} ${z(10)} rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:${z(76)};height:${z(15)};object-fit:cover"><img src="${photo}" style="display:block;width:${z(76)};height:${z(82)};object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:${SERIF};font-weight:700;font-size:${z(13)};color:#fbf8ef;text-align:center;padding:${z(2)} 0 ${z(3)};white-space:nowrap">${name}</div></div><div style="position:absolute;left:${z(-1)};bottom:${z(-40)};width:${z(1.5)};height:${z(40)};background:#463a1e"></div>`;
+  if (side === "right") {   // card to the right of the unit on a short slanted stake (keeps the card inside the frame / off the fight)
+    w.style.top = z(4); w.style.left = "100%"; const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: z(40), bottom: "auto", top: z(56) });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: z(70), height: z(1.5), transformOrigin: "0 0", transform: "rotate(54deg)" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   tl.fromTo(w, { autoAlpha: 0, y: 8 * k }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
 const go = (id, t, dur, p, ease) => B.move(id, t, dur, p[0], p[1], ease || "power1.inOut");
@@ -239,7 +244,7 @@ camTo(0, TZ0, C0b[0], C0b[1], SOb, "sine.inOut");
 const ST0 = stampAt("NOVEMBER 1863", 76, -4, "left:0;right:0;top:150px;display:flex;justify-content:center;");
 slam(ST0, Math.min(T_1863, 0.8), { shake: 5, until: T_1863 + 1.35 });
 const DT0 = dateSet("NOVEMBER 1863", T_1863 + 1.4, T_TWO);
-const F0 = flagsC(L(35.30, -85.75), L(34.55, -84.55), 0.3, TZ0 + 0.5);
+const F0 = flagsC(L(35.30, -85.75), L(34.55, -84.55), 0.3, TZ0 + 0.1);
 // permanent towns (the army runs from Chattanooga toward Dalton; Ringgold on arrival)
 const TW0 = [town("CHATTANOOGA", ...P.chatt, 0, TZ0 + 1.6, { side: "l" }), town("DALTON", ...P.dalton, 0, TZ0 + 1.85)];
 // the Confederate army streams south-east from Missionary Ridge (blue), the Union armies press behind it (red); no tags (names unspoken)
@@ -272,13 +277,13 @@ const SL = 1.35, KA = 1 / SL, CL = [1500, 985];
 SFX("whoosh", TZ0 - 0.05);
 zoom(TZ0, TZ1 - TZ0, C0b, SOb, CL, SL, P.gap, "power2.inOut");
 // flag pairs hand over during the dive (each kept on screen for its part of the zoom)
-const F1 = flagsC([-1400, -1200], [3552, 2772], TZ0 + 0.25, TZ0 + 1.45);
+const F1 = flagsC([-1400, -1200], [3552, 2772], TZ0 + 0.35, TZ0 + 1.45);
 const F1b = flagsC([682, 422], [2350, 1350], TZ0 + 1.3, TZ0 + 1.8);
 // arriving at Ringgold: the town (permanent), the gap (spoken: "a mountain gap called Ringgold"), the wagons going through
-const F2 = flagsC([1150, 760], [1700, 1150], TZ0 + 1.8, T_HELDIT - 0.3);
-const RGT = town("RINGGOLD", ...P.rg, TZ1 - 0.3, null, { side: "l" });
+const F2 = flagsC([1060, 860], [1700, 1150], TZ0 + 1.8, T_HELDIT - 0.3);
+const RGT = town("RINGGOLD", ...P.rg, TZ1 - 0.3, T_GRANT - 0.2, { side: "l" });
 SFX("hit", TZ1); K.shake(TZ1, 4, 0.3);
-const GAPL = place("RINGGOLD GAP", 1500, 1060, TZ1 - 0.1, S2 + 1.0, { size: 26 });
+const GAPL = place("RINGGOLD GAP", 1385, 1050, TZ1 - 0.1, S2 + 1.0, { size: 26 });
 inkTrace([[1457, 952], [1467, 900], [1478, 820], [1502, 717]], TZ1 - 0.2, S2 + 1.0);   // the ridge either side of the notch, re-inked on arrival
 // the rear guard in the gap, the army's wagons streaming through it toward Dalton (no tags: "rear guard" is spoken only in hook-3)
 const RG1 = unitK("rg1", "carth", [1470, 950], "infantry", "", KA, { t: TZ1 - 0.25, until: T_HELDIT - 0.5 });
@@ -355,7 +360,7 @@ const SHU = [unitK("ts1", "rome", [608, -350], "infantry", "", KT, { t: TS2 - 0.
   unitK("ts3", "rome", [700, -320], "infantry", "", KT, { t: TS2 - 0.1, until: T_ABOVE + 0.1 })];
 // "that same general": the mystery badge (Confederate flag, "?"), <= 3.5 s, out before the SHERMAN BEATEN stamp (one big card at a time)
 const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.csa}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.86), rgba(10,12,24,0.6));font-family:Oswald;font-weight:700;font-size:110px;color:#f7f3ea">?</div></div>
-  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE SAME GENERAL</div></div></div>`, "left:60px;top:150px;");
+  <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE SAME GENERAL</div></div></div>`, "left:60px;top:200px;");
 tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_SAME - 0.05);
 tl.to(QB, { autoAlpha: 0, x: -80, duration: 0.35 }, Math.min(T_WTS - 0.3, T_SAME + 3.3));
 // Sherman's wing attacks the hill in waves and breaks on it (two visible shots, smoke, red arrows cut short, ink crosses)
@@ -369,7 +374,7 @@ go("ts1", T_BEAT + 0.2, 1.0, [612, -372], "power2.in"); go("ts2", T_BEAT + 0.3, 
 B.grey(["ts2", "ts3"], T_BEAT + 0.6, 0.5);
 crosses([[585, -296], [522, -246], [635, -284]], T_BEAT + 0.1, T_ABOVE, ST);
 // Sherman named: his portrait card on a stake at his own unit (2d item 6)
-pinPortrait("ts1", PHOTO.sherman, FL.us, "Sherman", T_WTS + 0.05, null, KT);
+pinPortrait("ts1", PHOTO.sherman, FL.us, "Sherman", T_WTS + 0.05, null, KT, "right");
 const SSB = stampAt("SHERMAN BEATEN", 76, -4, "left:0;right:0;top:770px;display:flex;justify-content:center;");
 slam(SSB, T_WTS + 0.3, { shake: 6, sfx: "ref:boom", until: T_ABOVE - 0.1 }); pulse(T_WTS + 0.5);
 // ---------- back to the gap, 27 November: the ground the pursuit took (hatching), the pursuit breaks up, Grant calls it off ----------
@@ -380,7 +385,7 @@ zoom(TB0, TB1 - TB0, [CT[0], CT[1]], ST, CM, SM, P.th, "power2.in");
 zoom(TB1, TB2 - TB1, CM, SM, CR, SR, P.gap, "power2.out");
 camTo(TB2 + 0.02, END - TB2, CR[0] + 10, CR[1] + 4, SR * 1.04, "sine.inOut");
 [HT, HR].forEach((h) => { tl.fromTo(h, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: false }, TB0 + 0.3); tl.to(h, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, TB2 + 1.0); });
-dateSet("27 NOVEMBER 1863", T_ABOVE + 0.3, S3 - 0.1);
+dateSet("27 NOVEMBER 1863", T_ABOVE + 0.3, T_27);
 const FR2 = flagsC([1210, 800], [1700, 850], TB1 - 0.2, S3 - 0.05);
 const GAPL2 = place("RINGGOLD GAP", P.gap[0] + 95, P.gap[1] + 60, TB2 - 0.3, S3 - 0.05, { size: 26 });
 // the pursuit: red columns at the gap mouth and the town, halted; the arrows toward Dalton fade
@@ -411,7 +416,9 @@ const TOD_COOL = todDiv("rgba(100,135,205,0.55)"); tl.to(TOD_COOL, { opacity: 0.
 const SQ = 1.7, KQ = 1 / SQ, CQ = [(P.rg[0] + P.gap[0]) / 2 + 30, (P.rg[1] + P.gap[1]) / 2 + 40];
 camTo(S3 - 0.05, 1.1, CQ[0], CQ[1], SQ, "power2.inOut");
 camTo(S3 + 1.1, END - S3 - 1.1, CQ[0] + 40, CQ[1] + 20, SQ * 1.12, "sine.inOut");
-dateSet("DAWN · 27 NOVEMBER 1863", T_27 + 0.1, END + 1);
+dateSet("DAWN · 27 NOVEMBER 1863", T_27 + 0.15, END + 1);
+// the town name steps aside while Grant's card or the Union columns sit on it (C7: no overlap); the dot stays
+town("RINGGOLD", ...P.rg, S3 + 0.3, T_UNI - 0.3, { side: "l" }); town("", ...P.rg, T_GRANT - 0.25, null);
 const FR3 = flagsC([P.rg[0] - 300, P.rg[1] + 120], [P.gap[0] + 230, P.gap[1] + 150], S3 + 0.3, END + 1);
 const GAPL3 = place("RINGGOLD GAP", P.gap[0] + 150, P.gap[1] - 70, S3 + 0.5, END + 1, { size: 26 });
 // "it looked hopeless"
