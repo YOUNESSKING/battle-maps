@@ -70,6 +70,7 @@ if ST:
     hs = np.clip((gx * 0.7 + gy * 0.7) / np.sqrt(gx * gx + gy * gy + 1), -1, 1)   # + = NW-facing (lit), - = SE-facing (shade)
     hmask = np.clip(hgt * 2.2, 0, 1)
     lmax = maximum_filter(hgt, size=121)
+    sumthr = lmax * 0.86 + 0.04 * fbm(6)                               # ragged summit edge
     fmask = np.zeros((H, W), np.uint8)
     for poly in ST['fields']: cv2.fillPoly(fmask, [np.array([[x * 2, y * 2] for x, y in poly], np.int32)], 1)
     keepoff = cv2.dilate(fmask, np.ones((25, 25), np.uint8))
@@ -92,25 +93,28 @@ def story_draw(d, SSf, ink, close=False):
     c = lambda p: (p[0] * 2 * SSf, p[1] * 2 * SSf)
     rng2 = np.random.default_rng(3); gys, gxs = np.gradient(hgt)
     # 1) contour-row hachures
-    step_lev = 0.09; gmag = np.hypot(gxs, gys); p95 = np.percentile(gmag[hgt > 0.12], 95)
+    step_lev = 0.09 if not close else 0.054; gmag = np.hypot(gxs, gys); p95 = np.percentile(gmag[hgt > 0.12], 95)
     for li, lev in enumerate(np.arange(0.10, 0.92, step_lev)):
         cs, _ = cv2.findContours((hgt > lev).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        sp = max(1, round(3.2 * u))
+        sp = max(1, round((3.2 if not close else 6.0) * u))
         for cnt in cs:
             if len(cnt) < 20: continue
-            for x, y in cnt[:, 0, :][(sp // 2 if li % 2 else 0)::sp]:           # brick offset on alternate rows
-                if keepoff[y, x] or wdist(x, y) < 9 * K or lev > 0.86 * lmax[y, x]: continue
+            off_ = (sp // 2 if li % 2 else 0) if not close else int(rng2.integers(0, sp))
+            for x, y in cnt[:, 0, :][off_::sp]:           # brick offset (wide) / random row start (close)
+                if keepoff[y, x] or wdist(x, y) < 9 * K or lev > sumthr[y, x]: continue
                 gxv, gyv = gxs[y, x], gys[y, x]; gm = np.hypot(gxv, gyv) + 1e-6
                 if gm < 0.25 * p95: continue                                    # no rings on flat ground
                 ux, uy = -gxv / gm, -gyv / gm
-                L = np.clip(step_lev / gm, 5 * u, 11 * u) * 0.88
+                L = np.clip(step_lev / gm, 5 * u, 11 * u) * 0.88 if not close else np.clip(step_lev / gm * 1.05, 5 * u, 24 * u)
                 shd = np.clip(0.5 + 0.5 * (ux * 0.7 + uy * 0.7), 0, 1)        # 1 = facing SE (shade)
                 sl = np.clip(gm / p95, 0, 1)
+                lit = (ux * 0.7 + uy * 0.7) < -0.3 * 1.414 / 2 * 2 ** 0.5
+                if close and lit and rng2.random() < 0.4: continue
                 x0, y0 = x + rng2.normal(0, 0.3 * u), y + rng2.normal(0, 0.3 * u)
-                wd0 = (0.8 + 1.6 * sl) * (0.8 + 0.3 * shd) * Z
+                wd0 = ((0.8 + 1.6 * sl) * (0.8 + 0.3 * shd) if not close else (0.9 if lit else 1.2 + 0.8 * sl)) * Z
                 pts = [(x0 * SSf - uy * wd0 / 2, y0 * SSf + ux * wd0 / 2), (x0 * SSf + uy * wd0 / 2, y0 * SSf - ux * wd0 / 2),
                        ((x0 + ux * L) * SSf + uy * wd0 / 4, (y0 + uy * L) * SSf - ux * wd0 / 4), ((x0 + ux * L) * SSf - uy * wd0 / 4, (y0 + uy * L) * SSf + ux * wd0 / 4)]
-                d.polygon(pts, fill=ink + (int(100 + 100 * shd),))     # tapered stroke
+                d.polygon(pts, fill=ink + ((int(100 + 100 * shd),) if not close else ((100,) if lit else (int(150 + 80 * shd),))))     # tapered stroke
     # 2) pale crest line along the spine (unhachured)
     # 3) ravine: slanted strokes from both banks running down into a faint broken thalweg (not a trench symbol)
     rv = np.array([c(p) for p in ST['ravine']], np.float32); seg = []
@@ -122,7 +126,7 @@ def story_draw(d, SSf, ink, close=False):
                 ang = np.radians(35); nx, ny = uy * sgn, -ux * sgn                # normal pointing to this bank
                 sx, sy = mx + nx * 10 * Z, my + ny * 10 * Z
                 dx, dy = -nx * np.cos(ang) + ux * np.sin(ang), -ny * np.cos(ang) + uy * np.sin(ang)
-                d.line([(sx, sy), (sx + dx * 8 * Z, sy + dy * 8 * Z)], fill=ink + (160,), width=max(1, round(1.2 * Z)))
+                d.line([(sx, sy), (sx + dx * (8 if not close else 6) * Z, sy + dy * (8 if not close else 6) * Z)], fill=ink + ((160 if not close else 110),), width=max(1, round(1.2 * Z)))
         for t in np.arange(0, L, 3 * Z): seg.append((x0 + ux * t + rng2.normal(0, 0.2 * Z), y0 + uy * t + rng2.normal(0, 0.2 * Z)))
     for i in range(0, len(seg) - 1, 1):
         if (i // 5) % 3 != 2: d.line([seg[i], seg[i + 1]], fill=ink + (110,), width=max(1, round(1.0 * Z)))
