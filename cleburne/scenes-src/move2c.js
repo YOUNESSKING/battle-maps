@@ -602,10 +602,10 @@ along("div", [[1560, 1040], [1640, 1150], [1700, 1280], [1745, 1390]], T_DALTON 
 const TOD = [[1560, 1040], [1640, 1150], [1700, 1280], [1745, 1390], [1790, 1520], [1810, 1610]];
 arw({ pts: TOD, side: "carth", t: T_DALTON + 0.4, dur: 2.2, width: AW(1.6, 11), until: END + 1 });
 boxP("TO DALTON", 1835, 1440, at(P6, "at Dalton") + 0.3, END + 1, { size: 24, keep: true });   // critic r1: Dalton named where the road leads (Dalton itself is off the map, south-east)
-const bb = badge({ name: "BRAXTON BRAGG", role: "ARMY OF TENNESSEE", photo: PHOTO.bragg, flag: FL.cs, side: "carth", corner: "tr", initials: "BB", t: T_BRAGG - 0.2, until: Math.min(T_RES + 2.4, T_HIDE - 0.5) });
-badgeStamp(bb, "RESIGNED", T_RES + 0.4, { size: 30, color: "#f0e6c8" });
+const bb = badge({ name: "BRAXTON BRAGG", role: "ARMY OF TENNESSEE", photo: PHOTO.bragg, flag: FL.cs, side: "carth", corner: "tr", initials: "BB", t: T_BRAGG + 0.4, until: T_HIDE + 0.2 });
+badgeStamp(bb, "RESIGNED", T_RES + 0.35, { size: 30, color: "#f0e6c8" });
 // method card, line 2
-method(2, T_HIDE - 0.4, END + 1, T_HIDE - 0.1);
+method(2, T_HIDE + 0.3, END + 1, T_HIDE + 0.5);   // after the Bragg badge has stepped out (one big card at a time)
 fixImgs();
 K.raiseTerritory();
 B.finish();
