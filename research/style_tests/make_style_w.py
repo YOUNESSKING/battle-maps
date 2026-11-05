@@ -10,7 +10,7 @@ from scipy import ndimage
 from skimage.morphology import skeletonize
 import cv2
 base, out = sys.argv[1], sys.argv[2]
-P = dict(close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
+P = dict(story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
 for kv in sys.argv[3:]:
     k, v = kv.split('='); P[k] = type(P[k])(v) if not isinstance(P[k], str) else v
 W, H = 5760, 3240; rng = np.random.default_rng(P['seed']); K = P['K']
@@ -47,6 +47,76 @@ def band(sk, r):
     dist = cv2.distanceTransform((~full).astype(np.uint8), cv2.DIST_L2, 5)
     return cv2.GaussianBlur(cv2.GaussianBlur(dist, (0, 0), 6) - r, (0, 0), 1.5) <= 0
 wB, wD = band(skB, P['main_r']), band(skD, P['creek_r']); water = wB | wD
+# ---------- story ground (owner 2026-11-05: show what the narration talks about: hills, narrow ridge spine, ravine, railroad + tunnel, open field) ----------
+import json
+ST = json.load(open(P['story'])) if P['story'] else None
+if ST:
+    def dist_to(poly):
+        m = np.ones((H // 4, W // 4), np.uint8); cv2.polylines(m, [np.array([[x / 2, y / 2] for x, y in poly], np.int32)], False, 0, 1)
+        return cv2.resize(cv2.distanceTransform(m, cv2.DIST_L2, 5), (W, H)) * 4
+    yy_, xx_ = np.mgrid[0:H, 0:W].astype(np.float32)
+    hgt = np.zeros((H, W), np.float32)
+    for i, (x, y, r) in enumerate(ST['hills']):                       # first hill = the highest (the real Tunnel Hill)
+        hgt = np.maximum(hgt, (1.0 if i == 0 else 0.78) * np.exp(-(((xx_ - x * 2) ** 2 + (yy_ - y * 2) ** 2) / (r * 2 * 0.9) ** 2)))
+    hgt = np.maximum(hgt, 0.62 * np.exp(-(dist_to(ST['ridge']) / 46) ** 2))   # the narrow ridge spine
+    hgt -= 0.32 * np.exp(-(dist_to(ST['ravine']) / 16) ** 2)                 # the ravine between the hills
+    hgt = cv2.GaussianBlur(hgt, (0, 0), 4); del yy_, xx_
+    gy, gx = np.gradient(hgt * 260)
+    hs = np.clip((gx * 0.7 + gy * 0.7) / np.sqrt(gx * gx + gy * gy + 1), -1, 1)   # light from the upper left (NW-facing slopes lit)
+    hmask = np.clip(hgt * 2.2, 0, 1)
+    fmask = np.zeros((H, W), np.uint8)
+    for poly in ST['fields']: cv2.fillPoly(fmask, [np.array([[x * 2, y * 2] for x, y in poly], np.int32)], 1)
+    keepoff = cv2.dilate(fmask, np.ones((25, 25), np.uint8)).astype(bool)
+    for seg in ST['rail']: cv2.polylines(keepoff.view(np.uint8), [np.array([[x * 2, y * 2] for x, y in seg], np.int32)], False, 1, 30)
+def story_paint(a, ink, lite, close=False):
+    """painted hill shading only on the story ground + open field tint (array stage)."""
+    if not ST: return a
+    k = (hmask * hs * 1.1)[..., None]
+    a = np.where(k < 0, a * (1 + k * (0.42 if not close else 0.5)) + np.array(ink, np.float32) * (-k) * 0.12, a * (1 - k * 0.3) + np.array(lite, np.float32) * k * 0.3)
+    f = cv2.GaussianBlur(fmask.astype(np.float32), (0, 0), 3)[..., None]
+    fcol = np.array([182, 172, 110] if not close else [150, 146, 80], np.float32)
+    return a * (1 - f * 0.45) + fcol * f * 0.45
+def story_draw(d, SSf, ink, close=False):
+    """ink layer: ravine, field furrows, railroad with ties, tunnel portals (draw stage, coordinates x SSf)."""
+    if not ST: return
+    c = lambda p: (p[0] * 2 * SSf, p[1] * 2 * SSf)
+    w = (1.0 if not close else 0.7) * SSf
+    rv = [c(p) for p in ST['ravine']]
+    d.line(rv, fill=ink + (200,), width=round(4 * w), joint='curve'); d.line([(x, y - 3 * w) for x, y in rv], fill=(190, 180, 130, 120), width=round(2 * w), joint='curve')
+    for poly in ST['fields']:                               # furrows inside the field
+        xs, ys = [p[0] for p in poly], [p[1] for p in poly]
+        fm = Image.new('L', (W * SSf, H * SSf), 0); ImageDraw.Draw(fm).polygon([c(p) for p in poly], fill=255)
+        fm = fm.filter(ImageFilter.GaussianBlur(6 * SSf)).point(lambda v: 255 if v > 128 + rng.integers(-40, 40) else 0)
+        lay = Image.new('L', (W * SSf, H * SSf), 0); dl = ImageDraw.Draw(lay)
+        for yy in np.arange(min(ys) * 2 * SSf, max(ys) * 2 * SSf, 9 * w):
+            dl.line([(min(xs) * 2 * SSf, yy), (max(xs) * 2 * SSf, yy + 14 * w)], fill=90, width=max(1, round(1.4 * w)))
+        from PIL import ImageChops
+        d.bitmap((0, 0), ImageChops.multiply(lay, fm), fill=ink + (255,))
+    rng2 = np.random.default_rng(3)                          # hill hachures: short ink strokes down the slopes, heavier on the shaded side
+    gys, gxs = np.gradient(hgt)
+    band_ = np.argwhere((hgt > 0.18) & (hgt < 0.75)); band_ = band_[rng2.choice(len(band_), min(len(band_), 9000), replace=False)]
+    placed_ = []
+    for yi, xi in band_:
+        x, y = xi + rng2.uniform(0, 1), yi + rng2.uniform(0, 1)
+        gxv, gyv = gxs[yi, xi], gys[yi, xi]; gm = np.hypot(gxv, gyv)
+        if gm < 0.002 or wdist(x, y) < 9 * K or keepoff[yi, xi]: continue
+        if len(placed_) > 3000: break
+        if any(abs(px - x) < 6 and abs(py - y) < 6 for px, py in placed_[-40:]): continue
+        placed_.append((x, y))
+        ux, uy = -gxv / gm, -gyv / gm; L = rng2.uniform(9, 17) * (1.3 if not close else 1.0)
+        shade = 1 if (gxv + gyv) < 0 else 0
+        d.line([(x * SSf, y * SSf), ((x + ux * L) * SSf, (y + uy * L) * SSf)], fill=ink + ((190 if shade else 110),), width=max(1, round((2.2 if shade else 1.4) * SSf * (1.0 if not close else 0.75))))
+    for seg in ST['rail']:                                  # railroad: dark line + cross ties
+        pts = [c(p) for p in seg]; d.line(pts, fill=ink + (255,), width=round(3 * w), joint='curve')
+        for (x0, y0), (x1, y1) in zip(pts[:-1], pts[1:]):
+            L = np.hypot(x1 - x0, y1 - y0); ux, uy = (x1 - x0) / L, (y1 - y0) / L
+            for t in np.arange(0, L, 12 * w):
+                px, py = x0 + ux * t, y0 + uy * t; d.line([(px - uy * 5 * w, py + ux * 5 * w), (px + uy * 5 * w, py - ux * 5 * w)], fill=ink + (255,), width=max(1, round(1.6 * w)))
+    a_, b_ = [c(p) for p in ST['tunnel']]                     # tunnel: dashed hidden line + two portal arches
+    L = np.hypot(b_[0] - a_[0], b_[1] - a_[1]); ux, uy = (b_[0] - a_[0]) / L, (b_[1] - a_[1]) / L
+    for t in np.arange(0, L, 14 * w): d.line([(a_[0] + ux * t, a_[1] + uy * t), (a_[0] + ux * min(t + 7 * w, L), a_[1] + uy * min(t + 7 * w, L))], fill=ink + (200,), width=round(2.2 * w))
+    for (px, py) in (a_, b_):
+        r = 9 * w; d.chord([px - r, py - r, px + r, py + r], 180, 360, fill=(30, 26, 12, 255)); d.arc([px - r - 2 * w, py - r - 2 * w, px + r + 2 * w, py + r + 2 * w], 180, 360, fill=(200, 190, 150, 255), width=round(2.4 * w))
 def sh2(m, dy, dx): return sh(sh(m, dy).T, dx).T
 def sh(m, dy): o = np.zeros_like(m); (o.__setitem__(slice(dy, None), m[:-dy]) if dy > 0 else o.__setitem__(slice(None, dy), m[-dy:])); return o
 
@@ -58,6 +128,7 @@ a = np.stack([g[0] + v + fbm(6) * 1.5, g[1] + v, g[2] + v * 0.75], -1) + rng.sta
 top = (wB & ~sh2(wB, round(3.5 * K), round(2 * K))) | (wD & ~sh2(wD, round(2.5 * K), round(1.5 * K))); below = sh(water, round(3 * K)) & ~water
 a[below] = a[below] * 0.5 + np.array([148, 146, 122], np.float32) * 0.5
 yy = np.cumsum(water, axis=0).astype(np.float32)          # depth into the river from its top edge (for the soft fill gradient)
+a = story_paint(a, (50, 44, 20), (190, 184, 140))
 a = cv2.GaussianBlur(a, (0, 0), 0.6)
 a[water] = (213, 229, 240); a[top] = (154, 173, 183)
 wm = cv2.GaussianBlur(cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(np.float32), (0, 0), 2)[..., None]
@@ -113,7 +184,7 @@ for cx, cy, R, t in clumps:
             x, y = xx_ + rng.uniform(-0.45, 0.45) * step, yy_ + rng.uniform(-0.45, 0.45) * step
             if rng.random() < (0.2 if t == 'pine' else 0.06): continue
             dx, dy = (x - cx) / (R * 1.2), (y - cy) / R; th = np.arctan2(dy, dx)
-            if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K: continue
+            if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K or (ST and keepoff[min(int(y), H - 1), min(int(x), W - 1)]): continue
             trees.append((y, x, t))
     for k in range(rng.integers(8, 14)):
         y = cy + rng.uniform(-0.6, 1.15) * R; x0 = cx + rng.uniform(-1.1, 0.8) * R
@@ -155,6 +226,7 @@ while n < P['patches'] and tries < 20000:
     for k in range(rng.integers(6, 13)):
         j = rng.integers(0, rows); tuft((x + rng.uniform(0, pw)) * SS, (y + j * 7 * K) * SS, S * rng.uniform(0.85, 1.1))
     n += 1
+story_draw(d, SS, (50, 44, 20))
 G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.8 * K))
 img.paste(G, (0, 0), G); img.save(out, quality=92); print(out, 'clumps', len(clumps), 'trees', len(trees), 'patches', n)
 
@@ -164,6 +236,7 @@ if P['close']:
     lum = 6.5 * fbm(max(0.5, 0.7 * q)) + 4 * fbm(1.6 * q) + 3 * fbm(5 * q) + 4 * fbm(40 * q)
     fl = fbm(3 * q)
     c = np.stack([118 + lum + fl * 4, 123 + lum - fl, 69 + lum * 0.75 - fl * 2], -1)
+    c = story_paint(c, (30, 34, 14), (170, 172, 110), close=True)
     bank = (cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0) & ~water
     bs = cv2.GaussianBlur(sh2(water, round(2 * K), round(1.5 * K)).astype(np.float32) * (~water), (0, 0), 2)[..., None]
     c = c * (1 - 0.35 * bs); c[water] = (77, 125, 154); c[top] = (60, 100, 126)
@@ -191,5 +264,6 @@ if P['close']:
             for k in range(rng.integers(3, 8)):
                 a_, rr = rng.uniform(0, 6.28), lr * np.sqrt(rng.uniform(0, 1)); pr = max(1.0, rng.uniform(0.7, 1.4) * q) * SS
                 px, py = lx + rr * np.cos(a_), ly + rr * np.sin(a_); d.ellipse([px - pr, py - pr, px + pr, py + pr], fill=(74, 90, 48, 220))
+    story_draw(d, SS, (34, 30, 14), close=True)
     G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5)); img.paste(G, (0, 0), G)
     img.save(P['close'], quality=92); print(P['close'])
