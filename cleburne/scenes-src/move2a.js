@@ -508,7 +508,7 @@ pulseU("hk", T_10K);
 belief("A BEATEN MOB", "WHAT THE UNION GENERALS THOUGHT", T_THOUGHT - 0.1, T_DELAY - 0.2, { top: 800 });   // low: clear of Hooker's card
 // the burned bridge slows them
 pinS(fireGlow(BRIDGE[0], BRIDGE[1], 8, T_DELAY - 0.2, T_SEVEN + 1.0)); K.smoke(BRIDGE[0], BRIDGE[1], T_DELAY, { n: 5, r: 4, rise: 12, life: 3 });
-stampP("BURNED BRIDGE", BRIDGE[0] - 30, BRIDGE[1] + 12, T_DELAY + 1.0, T_SEVEN, "#f0e6c8", 18);
+stampL("BURNED BRIDGE", BRIDGE[0] - 34, BRIDGE[1] + 14, T_DELAY + 1.0, T_SEVEN, 18);
 // seven columns come on toward Ringgold (solid thin arrows; the trails fade ~2 s after they arrive)
 const C7 = [-0.02, -0.007, 0.007, 0.02];   // four clearly separate trails
 C7.forEach((d, k) => arw({ pts: LL([[34.966 + d * 0.4, -85.150 + d], [34.946 + d * 0.3, -85.134 + d * 0.8], [34.926 + d * 0.15, -85.120 + d * 0.5]]),

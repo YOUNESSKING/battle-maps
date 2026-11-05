@@ -454,13 +454,13 @@ const applyE = () => { const s = camE.s; gsap.set(WORLD, { x: 960 - camE.cx * s,
 const camTo = (t, dur, c, s) => tl.to(camE, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease: "sine.inOut", onUpdate: applyE }, t);
 applyE(); tl.call(applyE, null, 0);
 camTo(0, T_KILLED - 0.4, [C0[0] + 20, C0[1] - 10], S0);
-camTo(S2 + 1.2, 2.0, [1500, 894], 0.62); camTo(S2 + 3.2, END - S2 - 3.2, [1505, 890], 0.622);   // the places slide below the end-card band, Pickett's Mill >= 40 px above the bottom   // the places slide below the end-card band
+camTo(S2 + 1.2, 2.0, [1500, 667], 0.68); camTo(S2 + 3.2, END - S2 - 3.2, [1505, 662], 0.685);   // the hill and the gap slide below the end-card band (place labels step out under the card)   // the places slide below the end-card band
 
 // ---------- date (never two dates on screen: the scroll carries the Franklin and March 1865 dates) ----------
 date0("1863 - 1864", T_30 - 0.1); B.date("30 NOVEMBER 1864", T_30, T_INTHREE - 0.3, 34);
 B.date("1863 - 1864", T_INTHREE - 0.2, T_LESS - 0.1, 34); B.date("MARCH 1865", T_LESS, S2 - 0.2, 34); B.date("1863 - 1864", S2 - 0.1, null, 34);
 // ---------- flags (48 px, no names) + the towns: Chattanooga and the three battle places (permanent dots, numbered) ----------
-now(flagS(FL.us, "", ...L(35.0, -85.75), null, END + 1)); now(flagS(FL.cs, "", ...L(34.3, -84.3), null, END + 1));
+now(flagS(FL.us, "", ...L(35.0, -85.75), null, END + 1)); now(flagS(FL.cs, "", ...L(34.12, -84.25), null, END + 1));
 const CHTT = town("chattanooga", P.chatt, null, "l"); now(CHTT.el);
 const PL = [town("1 · tunnel hill", P.th, T_THREE + 0.1, "r"), town("2 · ringgold gap", P.gap, T_THREE + 0.4, "r"), town("3 · pickett's mill", P.pm, T_THREE + 0.7, "r")];
 const pop = (i, t) => tl.fromTo(PL[i].el.querySelector(".nm"), { scale: 1 }, { scale: 1.18, duration: 0.18, yoyo: true, repeat: 1, immediateRender: false }, t);
@@ -549,13 +549,13 @@ const PILL = document.getElementById("credit").previousElementSibling;
 const BACK = EF.previousElementSibling;
 const TL = S2 + 1.5;
 tl.to(BACK, { autoAlpha: 0, duration: 0.8 }, TL - 0.2);
-tl.to([...document.querySelectorAll(".gg-card"), CHTT.el], { autoAlpha: 0, duration: 0.4 }, TL - 0.3);
+tl.to([...document.querySelectorAll(".gg-card"), CHTT.el, ...PL.map((q) => q.el)], { autoAlpha: 0, duration: 0.4 }, TL - 0.3);
 document.getElementById("date").style.zIndex = 60;   // the date scroll never disappears (above the question's dark back)
 tl.to(EF, { scale: 0.66, x: 70, y: -128, transformOrigin: "50% 0%", duration: 0.7, ease: "power3.inOut" }, TL);   // band to the right of the date scroll, readable
 Object.assign(PILL.style, { right: "50px", top: "34px", bottom: "auto" });
-// the map stays alive: slow drift, the three places pulse on their numbers, small fights flare at each in turn
-[[0, T_ONE], [1, T_TWO], [2, T_THR]].forEach(([i, t]) => pop(i, t));
-[[P.th, T_ONE], [P.gap, T_TWO], [P.pm, T_THR]].forEach(([p, t]) => [0, 0.3].forEach((d) => K.impact(p[0] - 4 + d * 12, p[1] - 6, t + 0.3 + d, { r: 12 })));
+// the end card sits in the band right of the date scroll; the map drifts under it
+// the map stays alive under the band: small fights flare at the hill and the gap on their numbers (both in view; Pickett's Mill is off frame here)
+[[P.th, T_ONE], [P.gap, T_TWO]].forEach(([p, t]) => [0, 0.3].forEach((d) => K.impact(p[0] - 4 + d * 12, p[1] - 6, t + 0.3 + d, { r: 12 })));
 fixImgs();
 K.raiseTerritory();
 B.finish();

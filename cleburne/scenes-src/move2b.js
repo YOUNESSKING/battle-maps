@@ -127,7 +127,7 @@ const slam = (el, t, o = {}) => {
 };
 const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, o.color || "#e3232f", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
 // world-space mini stamp (KILLED / HELD at a counter)
-const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
+const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, 0, sub), x, y, {});   // critic r1: stamps level
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // pontoon bridge icon across the river (planks on boats), world space; ang = direction across the river (deg)
@@ -308,8 +308,9 @@ const THROAT = [[1430, 968], [1454, 972], [1478, 980]];
 
 // ---------- STYLE W map layers: clean map (no territory at the opening), permanent town, no scale bar / north arrow ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });
-const RT = town("ringgold", RNG, 0, "l");
-tl.to(RT.el.querySelector(".nm"), { autoAlpha: 0, duration: 0.5 }, at(P2, "Hooker's men are coming") + 1.2);   // the columns march through the town: its name steps out (the dot stays), no arrow over text
+const RT = town("ringgold", RNG, 0, "l");   // permanent; Hooker's columns pass north and south of the name, Hooker stands west of it
+// critic r1: on screen AT t=0 (no fade-in): kill the element's opening reveal tweens and show it
+const now0 = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.3).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, scale: 1, x: 0, y: 0 }); };
 
 // =================== BATCH 2 / BATCH 3 / BATCH 1 Style W tools (verbatim from move1a) ===================
 // =================== BATCH 2 (three-agent review, owner OK 2026-11-05): map tools ===================
@@ -412,34 +413,42 @@ const _wst = wstampS; const stampP = (txt, x, y, t, u, c, sz) => _wst(txt, x, y,
 const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelector(".tag"); if (!tg) return; gsap.set(tg, { autoAlpha: 0 }); if (t != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, t); };
 // ---------- camera: the hand-off from move2a, then a slow push that never stops under the card ----------
 camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 556, 1.2], [END, 1440, 598, 1.35]]);   // under the card the action (and Hooker's portrait) sits below the card, above the bottom edge
-B.showDate(0.05); B.date("27 NOVEMBER 1863", 0.1, null, 34);
+B.showDate(0); const D0 = B.date("27 NOVEMBER 1863", 0, null, 34); now0(document.getElementById("date")); document.querySelectorAll("#date .d").forEach(now0);
 // flags 48 px behind each side's lines (no country names)
-flagS(FL.us, "UNITED STATES", 1150, 760, 0, T_DO - 0.3); flagS(FL.cs, "CONFEDERATE STATES", 1700, 1100, 0.05, T_DO - 0.3);
-flagS(FL.us, "UNITED STATES", 1215, 915, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1585, 935, T_DO - 0.2, END + 1);   // below the card
+[flagS(FL.us, "UNITED STATES", 1110, 790, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1585, 1010, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
+flagS(FL.us, "UNITED STATES", 1080, 880, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1585, 935, T_DO - 0.2, END + 1);   // below the card, clear of the portraits
 // ---------- Cleburne at the gap, two guns at its mouth (bare boxes until named) ----------
 unitS("cle", "carth", [GAP[0] + 48, GAP[1] - 22], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0); tagAt("cle", null);
 unitS("g1", "carth", [GN[0] - 18, GN[1] - 10], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g1.el, { autoAlpha: 1 }, 0);
 unitS("g2", "carth", [GN[0] + 14, GN[1] - 4], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g2.el, { autoAlpha: 1 }, 0);
 pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_PLACE - 0.1, END + 1, true);   // owner: the general's portrait stays at his unit for the whole battle
 // ---------- Hooker's men are coming from the town ----------
-unitS("hk", "rome", [1240, 850], "infantry", "HOOKER", { t: 0, size: "XXX" }); tl.set(B.units.hk.el, { autoAlpha: 1 }, 0); tagAt("hk", null);
+unitS("hk", "rome", [1150, 915], "infantry", "HOOKER", { t: 0, size: "XXX" }); tl.set(B.units.hk.el, { autoAlpha: 1 }, 0); tagAt("hk", null);
 pinPortrait("hk", PHOTO.hooker, FL.us, "Hooker", T_COMING - 0.1, END + 1, true);
-const COLS = [[[1250, 840], [1310, 862], [1360, 885]], [[1240, 885], [1300, 895], [1352, 908]], [[1255, 935], [1310, 930], [1355, 928]]];
-COLS.forEach((pts, k) => arw({ pts, side: "rome", t: T_COMING - 0.2 + k * 0.3, dur: 1.4, width: AW(1.1, 9), until: END + 1 }));
+// critic r1: three thin solid columns, spaced, separate heads, north and south of the town name, ending short of the Ringgold dot
+const COLS = [[[1200, 836], [1272, 826], [1335, 830]], [[1198, 872], [1272, 866], [1340, 868]], [[1198, 944], [1272, 946], [1340, 948]]];
+COLS.forEach((pts, k) => arw({ pts, side: "rome", t: T_COMING - 0.2 + k * 0.3, dur: 1.4, width: AW(1.1, 6), until: END + 1 }));
 pulseU("g1", T_TWO + 0.2); pulseU("g2", T_TWO + 0.5);
 stampP("ONLY TWO GUNS", 1625, 990, T_TWO + 0.1, T_DO - 0.5, null, 22);   // stamp on empty ground east of the ridge (a caption here would cover the guns)
 // ---------- E.decide (B3) ----------
-const DEC = E.decide({ sub: "27 NOVEMBER 1863 · YOU ARE CLEBURNE", a: "MEET THEM IN THE OPEN AT THE DEPOT", b: "HIDE IN THE GAP AND ON THE RIDGES", real: 1,
+const DEC = E.decide({ sub: "", a: "MEET THEM IN THE OPEN AT THE DEPOT", b: "HIDE IN THE GAP AND ON THE RIDGES", real: 1,
   t: T_DO - 0.4, tCount: T_TELL, tReveal: T_HERE, until: END - 0.3 });
-const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
+const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1"), OR_ = OB.previousElementSibling, CD = DEC.querySelector(".cd");
+// critic r1: each option lands on its own words; the "tell us" line on "Tell us"
+[OA, OB].forEach((o) => tl.getTweensOf(o).forEach((tw) => tw.kill()));
+gsap.set([OA, OB, OR_, CD], { autoAlpha: 0 });
+tl.fromTo(OA, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_DO + 0.15);
+tl.fromTo([OR_, OB], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_HIDE + 0.05);
+tl.fromTo(CD, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_TELL);
+tl.to(OB, { borderColor: "#2e5cb2", backgroundColor: "rgba(31,79,196,0.55)", scale: 1.06, duration: 0.35 }, T_HERE);
+tl.to(OA, { autoAlpha: 0.35, filter: "grayscale(1)", duration: 0.35 }, T_HERE);
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 OA.querySelectorAll("div")[1].style.fontSize = "48px"; OB.querySelectorAll("div")[1].style.fontSize = "48px";
 const BACK = DEC.previousElementSibling;
 tl.to(BACK, { autoAlpha: 0.56, duration: 0.8 }, T_DO + 0.3);                       // lighter dim: the moving map shows through
 // the map keeps moving under the card: the red columns keep drawing toward the town and the gap; the named ground re-inks on its word
-const MORE = [[[1360, 885], [1395, 902], [1420, 925]], [[1352, 908], [1390, 925], [1415, 946]], [[1355, 928], [1392, 945], [1412, 962]]];
-MORE.forEach((pts, k) => arw({ pts, side: "rome", t: T_DO + 0.6 + k * 1.6, dur: 3.0, width: AW(1.6, 9), until: END + 1 }));
-along("hk", [[1240, 850], [1300, 872], [1340, 888]], T_DO + 0.5, 10.0, 20);
+const MORE = [[[1345, 868], [1372, 872], [1395, 876]], [[1345, 948], [1380, 950], [1408, 952]]];   // two columns keep coming, heads apart, clear of the town name
+MORE.forEach((pts, k) => arw({ pts, side: "rome", t: T_DO + 0.6 + k * 2.0, dur: 3.0, width: AW(1.3, 6), until: END + 1 }));
 focus(DEPOT, 40, T_TOWN, T_DEPOT + 2.2);   // "near the town and the stone railroad depot" (the depot is on the card: focus wash only, no label)
 glowPath(THROAT, "", 2, T_HIDE + 0.1, T_RIDGES - 0.2);                                // "hide your men in the gap": focus + ink trace
 glowPath(NCREST, "", 2, T_RIDGES, T_WALK); inkTrace(SCREST, T_RIDGES + 0.2, T_WALK + 0.6);   // "up on the ridges"

@@ -356,7 +356,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(54deg)" });
   }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
-  const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
+  const tg = B.units[id].el.querySelector(".tag"); if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); };
 // (b) a brigade attack as a line of rings climbing the slope; rings drop out as the attack breaks; the unit box hides meanwhile
 const ringLine = (id, pts, t, dur, dropT, endT, side = "rome", n = 7) => {
@@ -408,7 +408,7 @@ const zeroIn = () => { const META = ["duration", "ease", "immediateRender", "sta
     const v = tw.vars || {}; if (tw.startTime() > 0.05 || tw.duration() <= 0 || tw.duration() > 1.0 || !v.startAt || !("autoAlpha" in v || "opacity" in v)) return;
     const tg = tw.targets(); if (!tg.length || !(tg[0] instanceof Element)) return;
     const s = {}; Object.keys(v).forEach((k) => { if (!META.includes(k) && typeof v[k] !== "function") s[k] = v[k]; });
-    v.startAt = { ...v.startAt, ...s }; tw.invalidate(); });
+    v.startAt = { ...v.startAt, ...s }; v.immediateRender = true; tw.invalidate(); });
   tl.render(0, false, true); };   // a fresh paused timeline does not render on seek(0): force the first frame (hard cut: everything already on)
 // screen-space stamp in move1a stampP style: level, cream on dark, <= 3.5 s, placed by the caller on empty ground
 const banner = (txt, css, t, until, size = 40) => { const el = scr(stampHTML(txt, "#f0e6c8", size, 0), "display:flex;justify-content:center;" + css, t, Math.min(until, t + 3.5), { autoAlpha: 0 });
@@ -426,16 +426,14 @@ unitS("tho", "rome", [1000, 1100], "infantry", "THOMAS", { t: 0, size: "XXXX" })
 unitS("cle", "carth", [1700, 920], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0);
 const CLE_R = [[1700, 920], [1790, 938], [1880, 962], [1990, 1000]];   // east of the Chickamauga Station label (no overlap)
 along("cle", CLE_R, 0.2, T_HOW + 0.6, 16);
-// the bridges behind the rear guard burn: a clear fire glow + rising smoke on each (visual only)
-[[1572, 836], [1612, 902]].forEach((p) => { pinS(fireGlow(p[0], p[1], 26, 0, END + 1)); [0, 3.2, 6.4, 9.6, 12.8].forEach((tt) => K.smoke(p[0], p[1], tt, { n: 5, r: 11, rise: 34, life: 3.6 })); });
 // the retreat south-east: solid thin trails that fade ~2 s after arrival (STYLE W: no dashed arrows)
-arw({ pts: CLE_R.slice(0, 3).concat([[1958, 989]]), side: "carth", t: 0.2, dur: T_HOW + 0.6, width: AW(1.25, 6), until: T_HOW + 2.8 });   // thin trail, fades ~2 s after arrival
+trail(CLE_R, "#2c57b7", 2.2, 0.2, T_HOW + 0.6, T_HOW + 2.8, "1000 0");   // thin solid trail (no head), fades ~2 s after arrival
 // the question: one tired division, a narrow pass, a whole army behind it
 arw({ pts: [[2000, 1018], [2040, 1130], [2085, 1250], [2120, 1350]], side: "carth", t: T_HOW, dur: 2.4, width: AW(1.25, 10), until: T_KIND + 1.0 });
 focus([2120, 1360], 70, T_PASS, T_PASS + 3.4);
 boxP("A NARROW PASS", 2215, 1352, T_PASS + 0.1, T_PASS + 3.3, { size: 22 });   // right of the arrow tip, >= 12 px clear
 // woven subscribe: small button bottom-right, cursor click, bell, slides out (never a full-screen card)
-const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
+const E = EngageK(B); gsap.set(E.subscribe(T_SUBS - 1.0, T_HERE + 0.2), { autoAlpha: 0 });   // hidden until it slides in
 // "Here's how Cleburne did it": his portrait card goes up on his own unit (stays for the move that follows)
 pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0, END + 1, true, "right");   // already named in move 1: his card from the first frame, tag hidden
 zeroIn();
