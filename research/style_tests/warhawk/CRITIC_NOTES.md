@@ -17,6 +17,8 @@ Test only, NOT locked. Generator: ../make_style_w.py (wide look + close= battle 
 
 - Owner after the full 3.5-min test (2026-11-05): likes it. NO flags on the units (side colour says it); NO units split into dots/rings; NO dashed arrows anymore (solid only); time-of-day light + crosses where attacks broke are in.
 
+- Owner (2026-11-05): keep the generals' portraits on the map for the WHOLE battle (portrait card on a stake at the commander's unit, moving to the unit/guns he commands later).
+
 ## Scores
 | Round | Critic 1 (wide map) | Critic 2 (glyph detail + close look) |
 |---|---|---|
