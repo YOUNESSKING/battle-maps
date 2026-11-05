@@ -1,7 +1,9 @@
-// MOVE 1e (move1-sub), Patrick Cleburne #14: the woven subscribe beat (STYLE_LOCK 1b, D2: E.subscribe on the subscribing clause) + NEXT: RINGGOLD GAP.
-// Basemap tunnel_hd_lift (continues move1a's last frame: night of 25 Nov, option 1 m1_tunnel_ctl_nov25, the rear guard over South
-// Chickamauga Creek with the bridges burning). The map idles on the retreating column; on the question the arrow points south-east to Ringgold.
-// Built with: python3 tools/build_scene.py move1e tunnel_hd_lift move1-sub move1-sub
+// MOVE 1e (move1-sub), Patrick Cleburne #14: the woven subscribe beat (STYLE_LOCK 1b, D2: E.subscribe on the subscribing clause), STYLE W (STYLE_LOCK 2d).
+// Basemap tunnel_w (+ tunnel_w_close): continues move1a's last frame (night of 25 Nov, the rear guard over South Chickamauga Creek, the bridges
+// burning). Clean map (no territory: nothing changes hands here). The map idles on the retreating column; on the question a solid arrow points
+// south-east to the narrow pass (Ringgold Gap); Cleburne's portrait card goes up on his unit on "Here's how Cleburne did it".
+// Kit = move1a's Style W kit + BATCH 1-3 blocks (copied verbatim).
+// Built with: python3 tools/build_scene.py move1e tunnel_w move1-sub move1-sub
 const B = Battle();
 const { at } = B;
 const END = B.T.duration;
@@ -15,8 +17,9 @@ const PHOTO = { cleburne: "assets/media/cleburne_head.png", sherman: "assets/med
 const SCN = document.getElementById("scene");
 const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
-const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false) SFX("ref:pop", t); return GG.pin(`<div style="background:${o.bg || "#f1eee6"};color:${o.col || "#111"};font-family:Oswald;font-weight:500;letter-spacing:.2em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.55).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 ${size * 0.1}px ${size * 0.4}px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:${(w * 0.05).toFixed(1)}px"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:${(w / 5.2).toFixed(1)}px;color:#f7f3ea;text-shadow:0 ${w * 0.02}px ${w * 0.04}px #000;letter-spacing:0.08em;white-space:nowrap">${name}</div></div>`, x, y, { t, pop: true, until });
+const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false) SFX("ref:pop", t); size = Math.round(Math.max(20, Math.min(24, size * 0.85)));   // STYLE W: Warhawk labels (white serif + soft shadow, no box, smaller)
+  return GG.pin(`<div style="color:#fbf8ef;font-family:'Liberation Serif',Georgia,serif;font-weight:700;letter-spacing:.02em;font-size:${size}px;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">${txt.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase())}</div>`, x, y, { t, until }); };
+const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:${(w * 0.05).toFixed(1)}px"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:${(w / 5.2).toFixed(1)}px;color:#f7f3ea;text-shadow:0 ${w * 0.02}px ${w * 0.04}px #000;letter-spacing:0.08em;white-space:nowrap;display:none">${name}</div></div>`, x, y, { t, pop: true, until });
 const unit = (id, side, p, icon, label, o = {}) => {
   const w = o.w || 22, h = o.h || 15;
   B.unit({ id, side, x: p[0], y: p[1], w, h, t: o.t, label });
@@ -60,7 +63,7 @@ const badgeStamp = (el, txt, t, o = {}) => {
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
-const glowPath = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => {   // glowing stroke (river, road, ridge, railroad), pulses then holds
+const glowPathOld = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => {   // glowing stroke (river, road, ridge, railroad), pulses then holds
   const p = document.createElementNS(NS, "path"), svg = document.getElementById("overlay");
   p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); p.setAttribute("fill", "none"); p.setAttribute("stroke", col);
   p.setAttribute("stroke-width", w); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round"); p.style.filter = `drop-shadow(0 0 ${w}px ${col})`;
@@ -222,7 +225,13 @@ const setInv = () => { const k = (1 / CAM_S).toFixed(4); SCL.forEach((el) => { e
 const camera = (keys) => {
   const cam = { cx: keys[0][1], cy: keys[0][2], s: keys[0][3] }, clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const apply = () => { const s = Math.max(cam.s, 1920 / 2880), cx = clamp(cam.cx, 960 / s, 2880 - 960 / s), cy = clamp(cam.cy, 540 / s, 1620 - 540 / s);
-    gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); };
+    gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv();
+    const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)); const R2 = document.getElementById("relief2");
+    // (6) lens transition: the close-up art spreads out from the screen centre instead of a whole-screen cross-fade
+    R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
+    R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none";
+    CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); } document.getElementById("vignette").style.opacity = kc.toFixed(3);
+    if (window.__GFULL) window.__GFULL.style.opacity = (window.__GFK.k * Math.min(1, Math.max(0, (1.4 - s) / 0.65))).toFixed(3); };   // STYLE W: wide look -> close battle look as the camera zooms in
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
     tl.to(cam, { cx, cy, s, duration: Math.max(t1 - t0, 0.01), ease: "sine.inOut", onUpdate: apply }, t0); }
@@ -231,7 +240,7 @@ const camera = (keys) => {
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 32, until, o));            // A2 story-place labels ~32 px
-const flagS = (src, name, x, y, t, until, w = 104) => pinS(flag(src, name, x, y, t, until, w));
+const flagS = (src, name, x, y, t, until, w = 48) => pinS(flag(src, name, x, y, t, until, w));
 const wstampS = (txt, x, y, t, until, c, size = 22) => pinS(wstamp(txt, x, y, t, until, c, size));
 const unitS = (id, side, p, icon, label, o = {}) => {                                                     // A1: counter 54 x 36 px, name 19 px
   const W0 = o.w || 54, H0 = o.h || 36;
@@ -249,12 +258,12 @@ const FWw = (s) => +(15 / s).toFixed(2);                         // front width 
 const FWc = (s) => +(15 * 1.3 / s).toFixed(2);                   // front width 15*1.3 on close-ups (HANDOVER Sherman lesson 4)
 // A2: big-town label (constant ~36 px, dot + halo); shrink(t) / grow(t) when troops come near (never hide the fight)
 const town = (nm, p, t, side = "r") => { const lft = side === "l";
-  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div class="dt" style="position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#f0ece2;box-shadow:0 0 0 3px rgba(10,14,16,.75)"></div><div class="nm" style="position:absolute;top:-24px;${lft ? "right:16px" : "left:16px"};font-family:Oswald;font-weight:700;font-size:36px;letter-spacing:.06em;color:#f0ece2;white-space:nowrap;text-shadow:0 0 6px #0a0e10,0 0 3px #0a0e10,0 2px 4px #000;transform-origin:${lft ? "100%" : "0%"} 50%">${nm}</div></div>`, p[0], p[1], { t });
+  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div class="dt" style="position:absolute;left:-5.5px;top:-5.5px;width:11px;height:11px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 1.5px rgba(160,158,146,.9)"></div><div class="nm" style="position:absolute;top:-17px;${lft ? "right:13px" : "left:13px"};font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:28px;letter-spacing:.02em;color:#fbf8ef;white-space:nowrap;text-transform:capitalize;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6);transform-origin:${lft ? "100%" : "0%"} 50%">${nm}</div></div>`, p[0], p[1], { t });
   pinS(el); const nmEl = el.querySelector(".nm");
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
 // E2 (approved): ground about to be lost turns PALER first (its layer to 40 % over ~1.3 s), then the winner's colour fades in (~1 s)
 const lay = (file, on, off) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: file.includes("/g_") ? "color" : file.includes("/gn_") ? "normal" : "multiply" });
   WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 });
   tl.set(el, { autoAlpha: 1 }, on); if (off != null) tl.set(el, { autoAlpha: 0 }, off); return el; };
 const loss = (prefix, before, after, cue, move, offAfter) => {
@@ -284,30 +293,141 @@ const casualty = (o) => { const el = K.casualties({ rows: o.rows, flagA: FL.cs, 
 // @@END-KIT
 const PS = "move1-sub";
 const T_ONLY = at(PS, "But Tunnel Hill was only"), T_HOW = at(PS, "So how do you stop"), T_PASS = at(PS, "a narrow pass"),
-  T_KIND = at(PS, "That's the kind of question"), T_SUBS = at(PS, "and subscribing is how"), T_HERE = at(PS, "Here's how Cleburne did it");
-terr("assets/media/m1_tunnel_ctl_nov25_mx.png", 0, null, 0.01);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.scaleBar(15.64); LV.north();
-town("CHATTANOOGA", [1035, 983], 0, "l");
-legend(0.1, END + 1, false);
-camera([[0, 1560, 905, 1.3], [T_HOW, 1600, 940, 1.25], [END, 1680, 1000, 1.18]]);
-B.showDate(0.05); B.date("25 NOV · NIGHT", 0.1, null, 34);
+  T_TIRED = at(PS, "one tired division"), T_KIND = at(PS, "That's the kind of question"), T_SUBS = at(PS, "and subscribing is how"), T_HERE = at(PS, "Here's how Cleburne did it");
+// =================== BATCH 2 (three-agent review, owner OK 2026-11-05): map tools ===================
+const NSs = "http://www.w3.org/2000/svg";
+let CAM_X0 = 0, CAM_Y0 = 0;
+// (1) soft focus wash, screen space: everything outside the place being talked about dims to ~85 %; replaces target rings + colour glows
+const FOC = document.createElement("div"); FOC.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0";
+document.getElementById("scene").insertBefore(FOC, document.getElementById("fx"));
+const FS = { x: 1440, y: 810, r: 120, k: 0 };
+const focApply = () => { const sx = CAM_X0 + FS.x * CAM_S, sy = CAM_Y0 + FS.y * CAM_S, r = Math.max(70, FS.r * CAM_S);
+  FOC.style.background = `radial-gradient(ellipse ${(r * 1.3).toFixed(0)}px ${r.toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) 0%, rgba(8,8,4,0) 45%, rgba(8,8,4,${CAM_S > 2.5 ? 0.22 : 0.16}) 100%)`;
+  FOC.style.opacity = FS.k.toFixed(3); };
+const focus = (p, r, t, until) => { until = Math.min(until, t + 3.5);
+  tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
+  tl.to(FS, { k: 1, duration: 0.6, onUpdate: focApply }, t);
+  tl.to(FS, { k: 0, duration: 0.6, onUpdate: focApply }, until); };
+// (2) re-ink the named ground: a sepia ink trace draws along the feature on its word, holds, then fades
+const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", (2.0 / CAM_S).toFixed(3)));
+const inkTrace = (pts, t, until, w = 2.4, dash) => { until = Math.min(until, t + 3.5);
+  const p = document.createElementNS(NSs, "path"); p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
+  Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));
+  OVL.appendChild(p); INKS.push(p);
+  if (dash) { p.setAttribute("stroke-dasharray", dash); tl.to(p, { opacity: 0.65, duration: 0.4 }, t); }
+  else { const L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+    tl.to(p, { opacity: 0.65, duration: 0.2 }, t); tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "sine.out" }, t); }
+  tl.to(p, { opacity: 0, duration: 0.8 }, until - 0.3); return p; };
+// every former colour glow becomes focus + ink trace; every former target ring becomes focus
+const glowPath = (pts, col, w, t, until, pulses, op, o = {}) => {
+  const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  focus([cx, cy], Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / 2 + 40, t, until);
+  const pp = pts;
+  return inkTrace(pp, t, until, 2.4, o.dash || pts.length > 6 ? "6 5" : null); };
+K.target = (x, y, t, o = {}) => focus([x, y], (o.r || 20) * 2 + 30, t, o.until != null ? o.until : t + 3);
+// (3) map-style curved labels (white serif along the feature), counter-scaled to constant screen size
+const CURV = [];
+const curveLabel = (txt, pts, t, until, px = 26) => { until = Math.min(until, t + 3.5);
+  const id = "cl" + CURV.length, g = document.createElementNS(NSs, "g"), path = document.createElementNS(NSs, "path");
+  path.setAttribute("id", id); path.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); path.setAttribute("fill", "none");
+  const tx = document.createElementNS(NSs, "text"); Object.entries({ fill: "#fbf8ef", "font-family": "'Liberation Serif',Georgia,serif", "font-weight": "700", "text-anchor": "middle" }).forEach(([k, v]) => tx.setAttribute(k, v));
+  tx.style.filter = "drop-shadow(0 1px 1.5px rgba(0,0,0,.9))";
+  const tp = document.createElementNS(NSs, "textPath"); tp.setAttribute("href", "#" + id); tp.setAttribute("startOffset", "50%"); tp.textContent = txt; tx.appendChild(tp);
+  g.appendChild(path); g.appendChild(tx); g.setAttribute("opacity", "0"); OVL.appendChild(g); CURV.push([tx, px]);
+  tl.to(g, { opacity: 1, duration: 0.5 }, t); tl.to(g, { opacity: 0, duration: 0.5 }, until); return g; };
+const curvApply = () => CURV.forEach(([tx, px]) => tx.setAttribute("font-size", (px / CAM_S).toFixed(2)));
+// (5) zoom box: a thin dashed sepia frame of where the camera is about to dive
+const zoomBox = (cx, cy, s, t) => { const hw = 190, hh = 110, g = document.createElementNS(NSs, "g"), r = document.createElementNS(NSs, "rect");
+  Object.entries({ x: cx - hw, y: cy - hh, width: 2 * hw, height: 2 * hh, fill: "none", stroke: "#2a2410", "stroke-width": 2.2, "stroke-dasharray": "10 7" }).forEach(([k, v]) => r.setAttribute(k, v));
+  g.appendChild(r); g.setAttribute("opacity", "0"); OVL.appendChild(g);
+  tl.to(g, { opacity: 0.9, duration: 0.3 }, t); tl.to(g, { opacity: 0, duration: 0.4 }, t + 1.2); };
+
+// =================== BATCH 3 (owner OK 2026-11-05): story devices ===================
+// (a) commander portrait pinned on a stake at his own unit (Warhawk style); replaces the corner badge; rides with the unit
+const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up") => { if (!keep) until = Math.min(until, t + 3.6);
+  const host = B.units[id].el.firstElementChild, w = document.createElement("div");
+  w.style.cssText = "position:absolute;left:50%;top:-44px;width:0;height:0;pointer-events:none;z-index:5";
+  w.innerHTML = `<div style="position:absolute;left:-38px;bottom:0;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:-1px;bottom:-40px;width:1.5px;height:40px;background:#463a1e"></div>`;
+  if (side === "right") {   // card to the right of the unit on a short horizontal stake (keeps the crest/action free)
+    w.style.top = "4px"; w.style.left = "calc(100% + 0px)";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: "40px", bottom: "auto", top: "56px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(54deg)" });
+  }
+  host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
+  const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
+  tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); };
+// (b) a brigade attack as a line of rings climbing the slope; rings drop out as the attack breaks; the unit box hides meanwhile
+const ringLine = (id, pts, t, dur, dropT, endT, side = "rome", n = 7) => {
+  const g = document.createElementNS(NSs, "g"); g.setAttribute("opacity", "0"); OVL.appendChild(g);
+  const a = pts[0], b = pts[pts.length - 1], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L, cs = [];
+  for (let i = 0; i < n; i++) { const o = (i - (n - 1) / 2) * 4.4, c = document.createElementNS(NSs, "circle");
+    Object.entries({ cx: (nx * o).toFixed(2), cy: (ny * o).toFixed(2), r: 2.1, fill: "#efe6cf", stroke: side === "rome" ? "#b3242a" : "#2c57b7", "stroke-width": 0.9 }).forEach(([k, v]) => c.setAttribute(k, v));
+    g.appendChild(c); cs.push(c); }
+  const seg = []; let tot = 0; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(l); tot += l; }
+  const P = { k: 0 }, place = () => { let d = P.k * tot, i = 0; while (i < seg.length - 1 && d > seg[i]) { d -= seg[i]; i++; }
+    const f = seg[i] ? d / seg[i] : 0, x = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * f, y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * f; g.setAttribute("transform", `translate(${x.toFixed(2)} ${y.toFixed(2)})`); };
+  place();
+  tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.2 }, t - 0.3); tl.to(g, { opacity: 1, duration: 0.3 }, t - 0.2);
+  tl.to(P, { k: 1, duration: dur, ease: "none", onUpdate: place }, t);
+  cs.forEach((c, i) => { if (i % 3 !== 1) tl.to(c, { opacity: 0, duration: 0.25 }, dropT + i * 0.16); });
+  tl.to(g, { opacity: 0, duration: 0.4 }, endT); tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.3 }, endT + 0.1); };
+// (c) powder smoke from the crest: soft grey-sepia puffs drifting east (visual only: the existing locked shot sounds stay as they are)
+const SMK = document.createElementNS(NSs, "filter"); SMK.setAttribute("id", "smkblur"); SMK.innerHTML = '<feGaussianBlur stdDeviation="1.6"/>';
+{ let defs = OVL.querySelector("defs"); if (!defs) { defs = document.createElementNS(NSs, "defs"); OVL.insertBefore(defs, OVL.firstChild); } defs.appendChild(SMK); }
+const smoke = (pts, t) => pts.slice(0, 5).forEach((q, i) => { const e = document.createElementNS(NSs, "ellipse");
+  Object.entries({ cx: q[0], cy: q[1], rx: 5.5, ry: 4, fill: "#6e6a5c", opacity: 0, filter: "url(#smkblur)" }).forEach(([k, v]) => e.setAttribute(k, v)); OVL.appendChild(e);
+  const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + 10, cy: q[1] - 3, rx: 9, ry: 6 }, duration: 3.6, ease: "sine.out" }, t0);
+  tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
+// (d) side-view profile strip (once, on the ravine beat): the wrong hill, the ravine, the real Tunnel Hill
+const profileStrip = (t, until, o = {}) => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+  <svg width="480" height="124" viewBox="0 0 480 124"><path d="${o.d || "M10 104 C 60 100, 80 62, 120 58 C 150 56, 170 84, 205 96 C 225 103, 245 103, 262 94 C 300 70, 330 34, 370 30 C 410 28, 440 72, 470 100"}" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M10 104 L470 104" stroke="#463a1e" stroke-width="1" stroke-dasharray="3 4"/>
+  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle">${(o.labels || [[118, 46, "The wrong one"], [234, 121, "The ravine"], [370, 22, "Tunnel Hill"]]).map(([x, y, s]) => `<text x="${x}" y="${y}">${s}</text>`).join("")}</g>${o.extra || ""}</svg></div>`,
+  "left:56px;bottom:56px;", t, until);
+// BATCH 1 (three-agent review): one passing word item at a time, each at most 3.5 s
+{ const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
+const _boxS = boxS; const boxP = (txt, x, y, t, u, o = {}) => _boxS(txt, x, y, t, o.keep ? u : Math.min(u, t + 3.5), o);
+const _wst = wstampS; const stampP = (txt, x, y, t, u, c, sz) => _wst(txt, x, y, t, Math.min(u, t + 3.5), "#f0e6c8", sz);
+// unit name tags only from the moment the name is spoken (null = never in this scene)
+const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelector(".tag"); if (!tg) return; gsap.set(tg, { autoAlpha: 0 }); if (t != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, t); };
+
+// owner 2026-11-05 (after the full test): the two ideas left out are in too: time-of-day light, and small ink crosses where each attack broke
+const todDiv = (bg) => { const d = document.createElement("div"); d.style.cssText = `position:absolute;inset:0;pointer-events:none;opacity:0;background:${bg};mix-blend-mode:soft-light`; document.getElementById("scene").insertBefore(d, document.getElementById("fx")); return d; };
+const TOD_COOL = todDiv("rgba(100,135,205,0.55)"), TOD_WARM = todDiv("rgba(255,165,80,0.6)");
+const CROSSES = [];
+const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.createElementNS(NSs, "path"), a = 3.6;
+  g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
+  Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
+  tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// ---------- map: clean (STYLE W: no territory here), permanent towns, night as move1a ends ----------
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });   // BATCH 1: no scale bar / north arrow
+town("chattanooga", [1035, 983], 0, "l");
+town("chickamauga station", [1725, 1055], 0, "r");
+camera([[0, 1560, 865, 1.3], [T_HOW, 1600, 940, 1.25], [END, 1680, 1000, 1.18]]);
+B.showDate(0); B.date("25 NOV · NIGHT", 0.1, null, 34);
 { const nw = document.createElement("div"); nw.style.cssText = "position:absolute;inset:0;background:rgba(6,10,26,0.42);pointer-events:none"; document.getElementById("fx").appendChild(nw); }   // night (as move1a ends)
 flagS(FL.us, "UNITED STATES", 1150, 920, 0, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1880, 1010, 0, T_HOW - 0.2); flagS(FL.cs, "CONFEDERATE STATES", 2150, 880, T_HOW - 0.1, END + 1);
-// the rear guard keeps moving south-east; the bridges behind it burn
+// the armies as move1a leaves them: Thomas in Chattanooga, Bragg's army in flight, Cleburne's rear guard over the creek
+unitS("tho", "rome", [1000, 1100], "infantry", "THOMAS", { t: 0, size: "XXXX" }); tl.set(B.units.tho.el, { autoAlpha: 1 }, 0);
 unitS("cle", "carth", [1700, 920], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0);
-along("cle", [[1700, 920], [1760, 975], [1820, 1030], [1870, 1080]], 0.2, END - 0.4, 16);
+const CLE_R = [[1700, 920], [1790, 938], [1880, 962], [1990, 1000]];   // east of the Chickamauga Station label (no overlap)
+along("cle", CLE_R, 0.2, T_HOW + 0.6, 16);
+// the bridges behind the rear guard burn (fire glow + powder smoke, visual only)
 [[1572, 836], [1612, 902]].forEach((p) => { pinS(fireGlow(p[0], p[1], 14, 0, END + 1)); K.smoke(p[0], p[1], 0.3, { n: 4, r: 8, rise: 24, life: 3 }); K.smoke(p[0], p[1], 3.5, { n: 4, r: 8, rise: 24, life: 3 }); });
-boxS("SOUTH CHICKAMAUGA CREEK", 1690, 800, 0, END + 1, { size: 22, bg: "#dcecf8", sfx: false });
-[[[1340, 1180], [1460, 1280], [1580, 1380]], [[1300, 1250], [1400, 1340], [1500, 1430]]].forEach((pts) =>
-  arw({ pts, side: "carth", t: 0.2, dur: 3.0, width: AW(1.25, 10), dash: "10 7", until: END + 1 }));
-B.caption("TUNNEL HILL WAS ONLY THE BEGINNING", T_ONLY + 0.2, T_HOW - 0.1, "carth");
+// the retreat south-east: solid thin trails that fade ~2 s after arrival (STYLE W: no dashed arrows)
+arw({ pts: [[1520, 840], [1590, 850], [1650, 880], [1700, 920]], side: "carth", t: 0, dur: 0.01, width: AW(1.3), until: 2.2 });
+arw({ pts: CLE_R, side: "carth", t: 0.2, dur: T_HOW + 0.6, width: AW(1.25, 6), until: T_HOW + 2.8 });   // thin trail, fades ~2 s after arrival
 // the question: one tired division, a narrow pass, a whole army behind it
-arw({ pts: [[1720, 960], [1860, 1100], [2000, 1240], [2120, 1360]], side: "carth", t: T_HOW, dur: 2.4, width: AW(1.25, 14), dash: "22 12", until: END + 1 });
-B.caption("ONE TIRED DIVISION · ONE NARROW PASS", T_HOW + 0.4, T_KIND - 0.1, "carth");
-K.target(2120, 1360, T_PASS, { r: 40, side: "#ffd54a", until: END + 1 });
+arw({ pts: [[2000, 1018], [2040, 1130], [2085, 1250], [2120, 1350]], side: "carth", t: T_HOW, dur: 2.4, width: AW(1.25, 10), until: T_KIND + 1.0 });
+B.caption("ONE TIRED DIVISION · ONE NARROW PASS", T_TIRED, T_KIND - 0.1, "carth");
+focus([2120, 1360], 70, T_PASS, T_PASS + 3.4);
+boxP("A NARROW PASS", 2160, 1310, T_PASS + 0.1, T_PASS + 3.3, { size: 22 });
 // woven subscribe: small button bottom-right, cursor click, bell, slides out (never a full-screen card)
 const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
-boxS("NEXT: RINGGOLD GAP →", 2260, 1290, T_HERE - 0.3, END + 1, { size: 30, bg: "#dcecf8" });
+// "Here's how Cleburne did it": his portrait card goes up on his own unit (stays for the move that follows)
+pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_HERE + 0.3, END + 1, true, "right");
 fixImgs();
 K.raiseTerritory();
 B.finish();

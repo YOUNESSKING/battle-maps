@@ -1,0 +1,9 @@
+{"_note": "Style W story ground for the chatt theatre map (scene css px). move2a names Taylor's Ridge split by a narrow gap (Ringgold Gap) and Missionary Ridge; wide map, kept light.",
+ "hills": [],
+ "ridge": [[[1460.0, 726.5], [1452.5, 764.0], [1447.5, 801.5], [1443.8, 824.0], [1442.5, 845.3]],
+           [[1441.2, 853.5], [1435.0, 863.5], [1426.2, 889.0], [1420.0, 914.0], [1381.8, 943.2], [1316.3, 1076.1]],
+           [[1338.1, 705.2], [1325.0, 740.8], [1304.6, 780.8], [1294.4, 819.0]]],
+ "ridge_w": 16,
+ "ravine": [],
+ "rail": [],
+ "fields": []}

@@ -1,0 +1,5 @@
+{"_note": "Pickett's Mill story ground (Cleburne #14 move3b), scene css px (x2 = map px), from scenes-src/move3b.js places: the ravine between the armies (RAV) and the ridge on the far side where Granbury's Texans stood (Cleburne's line). Only ground the narration names.",
+ "hills": [[1606, 900, 26]],
+ "ridge": [[1500, 900], [1540, 898], [1575, 896], [1605, 894], [1630, 892], [1652, 888], [1672, 884]],
+ "ridge_w": 20,
+ "ravine": [[1556, 866], [1566, 864], [1584, 860], [1600, 858], [1614, 856], [1626, 853], [1637, 857], [1645, 866], [1652, 874]]}
