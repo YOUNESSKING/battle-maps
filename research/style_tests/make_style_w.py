@@ -10,7 +10,7 @@ from scipy import ndimage
 from skimage.morphology import skeletonize
 import cv2
 base, out = sys.argv[1], sys.argv[2]
-P = dict(green=0, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
+P = dict(tint=1, green=0, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
 for kv in sys.argv[3:]:
     k, v = kv.split('='); P[k] = type(P[k])(v) if not isinstance(P[k], str) else v
 W, H = 5760, 3240; rng = np.random.default_rng(P['seed']); K = P['K']
@@ -145,7 +145,7 @@ img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 SS = 2; S = SS * K
 G = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(G)
 INK, DARK, MID, LITE, UNDER = (50, 44, 20, 255), (86, 81, 52, 255), (118, 112, 82, 255), (150, 145, 108, 255), (70, 64, 35, 255)
-if P['green']: INK, DARK, MID, LITE, UNDER = (30, 34, 14, 255), (58, 70, 34, 255), (84, 98, 50, 255), (120, 130, 70, 255), (44, 54, 24, 255)
+if P['green'] and P['tint']: INK, DARK, MID, LITE, UNDER = (30, 34, 14, 255), (58, 70, 34, 255), (84, 98, 50, 255), (120, 130, 70, 255), (44, 54, 24, 255)
 wd = ndimage.distance_transform_edt(~cv2.resize(water.astype(np.uint8), (W // 8, H // 8), interpolation=cv2.INTER_NEAREST).astype(bool)) * 8
 def wdist(x, y): return wd[min(int(y // 8), wd.shape[0] - 1), min(int(x // 8), wd.shape[1] - 1)]
 fn = fbm(260) + fbm(90) * 0.6
@@ -160,9 +160,9 @@ def dome(x, y, s):                                   # mushroom dome ~21x15 scre
         t = 0.6 * np.pi + 1.8 * np.pi * i / 54; sc = 1 + 0.18 * abs(np.sin(1.5 * (t - 0.6 * np.pi) * 2 + bump)) - 0.06
         arch.append((x + rx * np.cos(t) * sc - lean * rx * np.sin(t) * 0.3, cy + ry * 0.92 * np.sin(t) * sc))
     arch = jit(arch, s * 5, 0.05)
-    d.polygon(arch, fill=(MID[:3] + (235,)) if P['green'] else (128, 122, 84, 235))
+    d.polygon(arch, fill=(MID[:3] + (235,)) if P['green'] and P['tint'] else (128, 122, 84, 235))
     d.chord([x - rx * 0.6, cy - ry * 0.1, x + rx * 1.05, cy + ry * 1.05], -10, 120, fill=(50, 44, 20, 255))   # dark crescent lower right
-    d.line(arch, fill=INK if P['green'] else (40, 35, 14, 255), width=max(2, round(2.4 * s)), joint='curve')
+    d.line(arch, fill=INK if P['green'] and P['tint'] else (40, 35, 14, 255), width=max(2, round(2.4 * s)), joint='curve')
     d.line([(x - rx * 0.1, cy + ry * 0.7), (x, y + 2 * s)], fill=(40, 35, 14, 255), width=max(2, round(2 * s)))
     for k in range(rng.integers(1, 3)):
         r = rx * rng.uniform(0.3, 0.42); px, py = x + rng.uniform(-0.35, 0.3) * rx, cy + rng.uniform(-0.4, 0.15) * ry
