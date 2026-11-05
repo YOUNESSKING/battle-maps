@@ -25,8 +25,9 @@ const PHOTO = { cleburne: "assets/media/cleburne_head.png", sherman: "assets/med
 const SCN = document.getElementById("scene");
 const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
-const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false) SFX("ref:pop", t); return GG.pin(`<div style="background:${o.bg || "#f1eee6"};color:${o.col || "#111"};font-family:Oswald;font-weight:500;letter-spacing:.2em;padding:${(size * 0.2).toFixed(1)}px ${(size * 0.35).toFixed(1)}px ${(size * 0.2).toFixed(1)}px ${(size * 0.55).toFixed(1)}px;font-size:${size}px;white-space:nowrap;box-shadow:0 ${size * 0.1}px ${size * 0.4}px rgba(0,0,0,.6)">${txt}</div>`, x, y, { t, until }); };
-const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:${(w * 0.05).toFixed(1)}px"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:${(w / 5.2).toFixed(1)}px;color:#f7f3ea;text-shadow:0 ${w * 0.02}px ${w * 0.04}px #000;letter-spacing:0.08em;white-space:nowrap">${name}</div></div>`, x, y, { t, pop: true, until });
+const box = (txt, x, y, t, size = 16, until, o = {}) => { if (o.sfx !== false) SFX("ref:pop", t); size = Math.round(Math.max(20, Math.min(24, size * 0.85)));   // STYLE W: Warhawk labels (white serif + soft shadow, no box, smaller)
+  return GG.pin(`<div style="color:#fbf8ef;font-family:'Liberation Serif',Georgia,serif;font-weight:700;letter-spacing:.02em;font-size:${size}px;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">${txt.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase())}</div>`, x, y, { t, until }); };
+const flag = (src, name, x, y, t, until, w = 76) => GG.pin(`<div style="display:flex;flex-direction:column;align-items:center;gap:${(w * 0.05).toFixed(1)}px"><img src="${src}" style="width:${w}px;display:block;border:${Math.max(0.6, w / 60).toFixed(1)}px solid #1a1712;box-shadow:0 ${w * 0.025}px ${w * 0.07}px rgba(0,0,0,0.55)"><div class="gg-lbl" style="position:relative;font-size:${(w / 5.2).toFixed(1)}px;color:#f7f3ea;text-shadow:0 ${w * 0.02}px ${w * 0.04}px #000;letter-spacing:0.08em;white-space:nowrap;display:none">${name}</div></div>`, x, y, { t, pop: true, until });
 const unit = (id, side, p, icon, label, o = {}) => {
   const w = o.w || 22, h = o.h || 15;
   B.unit({ id, side, x: p[0], y: p[1], w, h, t: o.t, label });
@@ -70,7 +71,7 @@ const badgeStamp = (el, txt, t, o = {}) => {
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
-const glowPath = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => {   // glowing stroke (river, road, ridge, railroad), pulses then holds
+const glowPathOld = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => {   // glowing stroke (river, road, ridge, railroad), pulses then holds
   const p = document.createElementNS(NS, "path"), svg = document.getElementById("overlay");
   p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); p.setAttribute("fill", "none"); p.setAttribute("stroke", col);
   p.setAttribute("stroke-width", w); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round"); p.style.filter = `drop-shadow(0 0 ${w}px ${col})`;
@@ -232,7 +233,13 @@ const setInv = () => { const k = (1 / CAM_S).toFixed(4); SCL.forEach((el) => { e
 const camera = (keys) => {
   const cam = { cx: keys[0][1], cy: keys[0][2], s: keys[0][3] }, clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const apply = () => { const s = Math.max(cam.s, 1920 / 2880), cx = clamp(cam.cx, 960 / s, 2880 - 960 / s), cy = clamp(cam.cy, 540 / s, 1620 - 540 / s);
-    gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); };
+    gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv();
+    const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)); const R2 = document.getElementById("relief2");
+    // (6) lens transition: the close-up art spreads out from the screen centre instead of a whole-screen cross-fade
+    R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
+    R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none";
+    CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); } document.getElementById("vignette").style.opacity = kc.toFixed(3);
+    if (window.__GFULL) window.__GFULL.style.opacity = (window.__GFK.k * Math.min(1, Math.max(0, (1.4 - s) / 0.65))).toFixed(3); };   // STYLE W: wide look -> close battle look as the camera zooms in
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
     tl.to(cam, { cx, cy, s, duration: Math.max(t1 - t0, 0.01), ease: "sine.inOut", onUpdate: apply }, t0); }
@@ -241,7 +248,7 @@ const camera = (keys) => {
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 32, until, o));            // A2 story-place labels ~32 px
-const flagS = (src, name, x, y, t, until, w = 104) => pinS(flag(src, name, x, y, t, until, w));
+const flagS = (src, name, x, y, t, until, w = 48) => pinS(flag(src, name, x, y, t, until, w));
 const wstampS = (txt, x, y, t, until, c, size = 22) => pinS(wstamp(txt, x, y, t, until, c, size));
 const unitS = (id, side, p, icon, label, o = {}) => {                                                     // A1: counter 54 x 36 px, name 19 px
   const W0 = o.w || 54, H0 = o.h || 36;
@@ -259,12 +266,12 @@ const FWw = (s) => +(15 / s).toFixed(2);                         // front width 
 const FWc = (s) => +(15 * 1.3 / s).toFixed(2);                   // front width 15*1.3 on close-ups (HANDOVER Sherman lesson 4)
 // A2: big-town label (constant ~36 px, dot + halo); shrink(t) / grow(t) when troops come near (never hide the fight)
 const town = (nm, p, t, side = "r") => { const lft = side === "l";
-  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div class="dt" style="position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#f0ece2;box-shadow:0 0 0 3px rgba(10,14,16,.75)"></div><div class="nm" style="position:absolute;top:-24px;${lft ? "right:16px" : "left:16px"};font-family:Oswald;font-weight:700;font-size:36px;letter-spacing:.06em;color:#f0ece2;white-space:nowrap;text-shadow:0 0 6px #0a0e10,0 0 3px #0a0e10,0 2px 4px #000;transform-origin:${lft ? "100%" : "0%"} 50%">${nm}</div></div>`, p[0], p[1], { t });
+  const el = GG.pin(`<div style="position:relative;width:0;height:0"><div class="dt" style="position:absolute;left:-5.5px;top:-5.5px;width:11px;height:11px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 1.5px rgba(160,158,146,.9)"></div><div class="nm" style="position:absolute;top:-17px;${lft ? "right:13px" : "left:13px"};font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:28px;letter-spacing:.02em;color:#fbf8ef;white-space:nowrap;text-transform:capitalize;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6);transform-origin:${lft ? "100%" : "0%"} 50%">${nm}</div></div>`, p[0], p[1], { t });
   pinS(el); const nmEl = el.querySelector(".nm");
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
 // E2 (approved): ground about to be lost turns PALER first (its layer to 40 % over ~1.3 s), then the winner's colour fades in (~1 s)
 const lay = (file, on, off) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: file.includes("/g_") ? "color" : file.includes("/gn_") ? "normal" : "multiply" });
   WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 });
   tl.set(el, { autoAlpha: 1 }, on); if (off != null) tl.set(el, { autoAlpha: 0 }, off); return el; };
 const loss = (prefix, before, after, cue, move, offAfter) => {
@@ -330,15 +337,142 @@ const SADDLE = [[1480, 788], [1458, 795], [1440, 799], [1420, 803], [1406, 812]]
 const RR_W = [[1250, 930], [1320, 895], [1380, 868], [1428, 842]], RR_T = [[1428, 842], [1470, 832]], RR_E = [[1470, 832], [1530, 826], [1575, 834], [1620, 838], [1700, 832]];
 const FIELD = [[1338, 778], [1392, 796], [1400, 828], [1388, 872], [1342, 884], [1318, 832]];
 const CREEK = [[1505, 620], [1525, 700], [1515, 760], [1530, 800], [1570, 835], [1610, 900], [1650, 1000], [1720, 1080], [1800, 1180]];
-const FRONT = [[1530, 782], [1505, 790], [1475, 795], [1450, 797], [1425, 800], [1410, 812], [1402, 830], [1396, 850], [1388, 875], [1378, 905], [1366, 940]];
-const FRONT2 = [[1530, 768], [1505, 772], [1475, 776], [1450, 776], [1425, 780], [1400, 792], [1385, 815], [1372, 845], [1360, 875], [1350, 905], [1340, 940]];
+const FRONT = [[1475, 795], [1450, 797], [1425, 800], [1410, 812], [1402, 830], [1396, 850], [1388, 875], [1378, 905], [1366, 940]];
+const FRONT2 = [[1475, 776], [1450, 776], [1425, 780], [1400, 792], [1385, 815], [1372, 845], [1360, 875], [1350, 905], [1340, 940]];
 
 // ---------- map layers: option 1 territory (wide), the geography, the living map ----------
-terr("assets/media/m1_tunnel_ctl_nov24_mx.png", 0, T_BELIEVED + 1.4, 0.01);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 }); LV.shimmer([CREEK, [[760, 640], [900, 600], [1050, 700], [1150, 760], [1200, 690], [1300, 640], [1420, 610], [1488, 606], [1560, 560]]], { width: 1.4 }); LV.scaleBar(15.64); LV.north();
-const CHTT = town("CHATTANOOGA", CHT, 0, "l");
-legend(0.4, T_BELIEVED + 1.4, false); legend(T_BELIEVED + 1.5, T_WHILE - 0.4, true); legend(T_WHILE - 0.3, END + 1, false);
+// STYLE W territory scenario (owner 2026-11-05): who holds the ground at the start (23 Nov lines), then Billy Goat Hill changes hands
+// when "he seized a hill": the Confederate colour on that ground turns paler, Union red fills it, then all colour dissolves (~2.8 s).
+document.documentElement.classList.add("terr-on");
+// owner 2026-11-05: colours STRONGER when the camera zooms out (country/continent views), bands only on battle close-ups.
+// A full-fill layer whose opacity follows the camera scale: 1 at s <= 0.75, 0 at s >= 1.4 (set in camera apply).
+const GFULL = document.createElement("img"); GFULL.className = "wimg terr"; GFULL.src = "assets/media/g_tunnel_ctl_nov23_full_mx.png"; GFULL.alt = "";
+Object.assign(GFULL.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "color", opacity: 0 }); WORLD.insertBefore(GFULL, OVL);
+window.__GFULL = GFULL; const GFK = { k: 0 }; window.__GFK = GFK;
+const gfApply = () => { const s = CAM_S; GFULL.style.opacity = (GFK.k * Math.min(1, Math.max(0, (1.4 - s) / 0.65))).toFixed(3); };
+// owner 2026-11-05: colour ONLY where it helps the viewer: (1) the opening, who holds what, until "roll up Bragg's right flank";
+// (2) the hand-over on "he seized a hill". Nothing in between.
+tl.to(GFK, { k: 0, duration: 2.0, onUpdate: gfApply }, T_ROLL + 0.8);
+// owner 2026-11-05 (later): NOT at the beginning either: clean maps by default, colour only at the moment ground changes hands.
+// hand-over: the 23-Nov picture fades back in just before "he seized a hill", the lost ground turns paler, Union red fills it
+// critic b2: hand-over = ONLY the captured patch, plain red ~30 %, crisp edge, trees masked, ~3 s; no blue, no haze
+const HM = T_SEIZED + 0.7;
+const GCAP = lay("assets/media/gn_tunnel_ctl_captured_mx.png", HM, HM + 4.2); tl.fromTo(GCAP, { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, HM);
+tl.to(GCAP, { opacity: 0, duration: 1.2, ease: "sine.inOut" }, HM + 3.0);
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });   // BATCH 1: no scale bar / north arrow (reference has none)
+const CHTT = town("chattanooga", CHT, 0, "l");
+legend(T_CROSS + 3.9, T_CROSS + 9.5, false); legend(T_SEIZED + 0.9, T_RAVINE - 0.4, true);   // BATCH 1: key shown only when a symbol is new
 
+
+// =================== BATCH 2 (three-agent review, owner OK 2026-11-05): map tools ===================
+const NSs = "http://www.w3.org/2000/svg";
+let CAM_X0 = 0, CAM_Y0 = 0;
+// (1) soft focus wash, screen space: everything outside the place being talked about dims to ~85 %; replaces target rings + colour glows
+const FOC = document.createElement("div"); FOC.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0";
+document.getElementById("scene").insertBefore(FOC, document.getElementById("fx"));
+const FS = { x: 1440, y: 810, r: 120, k: 0 };
+const focApply = () => { const sx = CAM_X0 + FS.x * CAM_S, sy = CAM_Y0 + FS.y * CAM_S, r = Math.max(70, FS.r * CAM_S);
+  FOC.style.background = `radial-gradient(ellipse ${(r * 1.3).toFixed(0)}px ${r.toFixed(0)}px at ${sx.toFixed(0)}px ${sy.toFixed(0)}px, rgba(8,8,4,0) 0%, rgba(8,8,4,0) 45%, rgba(8,8,4,${CAM_S > 2.5 ? 0.22 : 0.16}) 100%)`;
+  FOC.style.opacity = FS.k.toFixed(3); };
+const focus = (p, r, t, until) => { until = Math.min(until, t + 3.5);
+  tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
+  tl.to(FS, { k: 1, duration: 0.6, onUpdate: focApply }, t);
+  tl.to(FS, { k: 0, duration: 0.6, onUpdate: focApply }, until); };
+// (2) re-ink the named ground: a sepia ink trace draws along the feature on its word, holds, then fades
+const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", (2.0 / CAM_S).toFixed(3)));
+const inkTrace = (pts, t, until, w = 2.4, dash) => { until = Math.min(until, t + 3.5);
+  const p = document.createElementNS(NSs, "path"); p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
+  Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));
+  OVL.appendChild(p); INKS.push(p);
+  if (dash) { p.setAttribute("stroke-dasharray", dash); tl.to(p, { opacity: 0.65, duration: 0.4 }, t); }
+  else { const L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+    tl.to(p, { opacity: 0.65, duration: 0.2 }, t); tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "sine.out" }, t); }
+  tl.to(p, { opacity: 0, duration: 0.8 }, until - 0.3); return p; };
+// every former colour glow becomes focus + ink trace; every former target ring becomes focus
+const glowPath = (pts, col, w, t, until, pulses, op, o = {}) => {
+  const xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  focus([cx, cy], Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / 2 + 40, t, until);
+  const pp = pts === SADDLE ? pts.map((q) => [q[0], q[1] - 4]) : pts;   // ravine trace sits just north of the front line
+  return inkTrace(pp, t, until, 2.4, o.dash || pts === RIDGE || pts.length > 6 ? "6 5" : null); };
+K.target = (x, y, t, o = {}) => focus([x, y], (o.r || 20) * 2 + 30, t, o.until != null ? o.until : t + 3);
+// (3) map-style curved labels (white serif along the feature), counter-scaled to constant screen size
+const CURV = [];
+const curveLabel = (txt, pts, t, until, px = 26) => { until = Math.min(until, t + 3.5);
+  const id = "cl" + CURV.length, g = document.createElementNS(NSs, "g"), path = document.createElementNS(NSs, "path");
+  path.setAttribute("id", id); path.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); path.setAttribute("fill", "none");
+  const tx = document.createElementNS(NSs, "text"); Object.entries({ fill: "#fbf8ef", "font-family": "'Liberation Serif',Georgia,serif", "font-weight": "700", "text-anchor": "middle" }).forEach(([k, v]) => tx.setAttribute(k, v));
+  tx.style.filter = "drop-shadow(0 1px 1.5px rgba(0,0,0,.9))";
+  const tp = document.createElementNS(NSs, "textPath"); tp.setAttribute("href", "#" + id); tp.setAttribute("startOffset", "50%"); tp.textContent = txt; tx.appendChild(tp);
+  g.appendChild(path); g.appendChild(tx); g.setAttribute("opacity", "0"); OVL.appendChild(g); CURV.push([tx, px]);
+  tl.to(g, { opacity: 1, duration: 0.5 }, t); tl.to(g, { opacity: 0, duration: 0.5 }, until); return g; };
+const curvApply = () => CURV.forEach(([tx, px]) => tx.setAttribute("font-size", (px / CAM_S).toFixed(2)));
+// (5) zoom box: a thin dashed sepia frame of where the camera is about to dive
+const zoomBox = (cx, cy, s, t) => { const hw = 190, hh = 110, g = document.createElementNS(NSs, "g"), r = document.createElementNS(NSs, "rect");
+  Object.entries({ x: cx - hw, y: cy - hh, width: 2 * hw, height: 2 * hh, fill: "none", stroke: "#2a2410", "stroke-width": 2.2, "stroke-dasharray": "10 7" }).forEach(([k, v]) => r.setAttribute(k, v));
+  g.appendChild(r); g.setAttribute("opacity", "0"); OVL.appendChild(g);
+  tl.to(g, { opacity: 0.9, duration: 0.3 }, t); tl.to(g, { opacity: 0, duration: 0.4 }, t + 1.2); };
+
+// =================== BATCH 3 (owner OK 2026-11-05): story devices ===================
+// (a) commander portrait pinned on a stake at his own unit (Warhawk style); replaces the corner badge; rides with the unit
+const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up") => { if (!keep) until = Math.min(until, t + 3.6);
+  const host = B.units[id].el.firstElementChild, w = document.createElement("div");
+  w.style.cssText = "position:absolute;left:50%;top:-44px;width:0;height:0;pointer-events:none;z-index:5";
+  w.innerHTML = `<div style="position:absolute;left:-38px;bottom:0;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:-1px;bottom:-40px;width:1.5px;height:40px;background:#463a1e"></div>`;
+  if (side === "right") {   // card to the right of the unit on a short horizontal stake (keeps the crest/action free)
+    w.style.top = "4px"; w.style.left = "calc(100% + 0px)";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: "40px", bottom: "auto", top: "56px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(54deg)" });
+  }
+  host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
+  const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
+  tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); };
+// (b) a brigade attack as a line of rings climbing the slope; rings drop out as the attack breaks; the unit box hides meanwhile
+const ringLine = (id, pts, t, dur, dropT, endT, side = "rome", n = 7) => {
+  const g = document.createElementNS(NSs, "g"); g.setAttribute("opacity", "0"); OVL.appendChild(g);
+  const a = pts[0], b = pts[pts.length - 1], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1, nx = -dy / L, ny = dx / L, cs = [];
+  for (let i = 0; i < n; i++) { const o = (i - (n - 1) / 2) * 4.4, c = document.createElementNS(NSs, "circle");
+    Object.entries({ cx: (nx * o).toFixed(2), cy: (ny * o).toFixed(2), r: 2.1, fill: "#efe6cf", stroke: side === "rome" ? "#b3242a" : "#2c57b7", "stroke-width": 0.9 }).forEach(([k, v]) => c.setAttribute(k, v));
+    g.appendChild(c); cs.push(c); }
+  const seg = []; let tot = 0; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(l); tot += l; }
+  const P = { k: 0 }, place = () => { let d = P.k * tot, i = 0; while (i < seg.length - 1 && d > seg[i]) { d -= seg[i]; i++; }
+    const f = seg[i] ? d / seg[i] : 0, x = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * f, y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * f; g.setAttribute("transform", `translate(${x.toFixed(2)} ${y.toFixed(2)})`); };
+  place();
+  tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.2 }, t - 0.3); tl.to(g, { opacity: 1, duration: 0.3 }, t - 0.2);
+  tl.to(P, { k: 1, duration: dur, ease: "none", onUpdate: place }, t);
+  cs.forEach((c, i) => { if (i % 3 !== 1) tl.to(c, { opacity: 0, duration: 0.25 }, dropT + i * 0.16); });
+  tl.to(g, { opacity: 0, duration: 0.4 }, endT); tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.3 }, endT + 0.1); };
+// (c) powder smoke from the crest: soft grey-sepia puffs drifting east (visual only: the existing locked shot sounds stay as they are)
+const SMK = document.createElementNS(NSs, "filter"); SMK.setAttribute("id", "smkblur"); SMK.innerHTML = '<feGaussianBlur stdDeviation="1.6"/>';
+{ let defs = OVL.querySelector("defs"); if (!defs) { defs = document.createElementNS(NSs, "defs"); OVL.insertBefore(defs, OVL.firstChild); } defs.appendChild(SMK); }
+const smoke = (pts, t) => pts.slice(0, 5).forEach((q, i) => { const e = document.createElementNS(NSs, "ellipse");
+  Object.entries({ cx: q[0], cy: q[1], rx: 5.5, ry: 4, fill: "#6e6a5c", opacity: 0, filter: "url(#smkblur)" }).forEach(([k, v]) => e.setAttribute(k, v)); OVL.appendChild(e);
+  const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + 10, cy: q[1] - 3, rx: 9, ry: 6 }, duration: 3.6, ease: "sine.out" }, t0);
+  tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
+// (d) side-view profile strip (once, on the ravine beat): the wrong hill, the ravine, the real Tunnel Hill
+const profileStrip = (t, until) => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+  <svg width="480" height="124" viewBox="0 0 480 124"><path d="M10 104 C 60 100, 80 62, 120 58 C 150 56, 170 84, 205 96 C 225 103, 245 103, 262 94 C 300 70, 330 34, 370 30 C 410 28, 440 72, 470 100" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M10 104 L470 104" stroke="#463a1e" stroke-width="1" stroke-dasharray="3 4"/>
+  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="118" y="46">The wrong one</text><text x="234" y="121">The ravine</text><text x="370" y="22">Tunnel Hill</text></g></svg></div>`,
+  "left:56px;bottom:56px;", t, until);
+// BATCH 1 (three-agent review): one passing word item at a time, each at most 3.5 s
+{ const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
+const _boxS = boxS; const boxP = (txt, x, y, t, u, o = {}) => _boxS(txt, x, y, t, o.keep ? u : Math.min(u, t + 3.5), o);
+const _wst = wstampS; const stampP = (txt, x, y, t, u, c, sz) => _wst(txt, x, y, t, Math.min(u, t + 3.5), "#f0e6c8", sz);
+// unit name tags only from the moment the name is spoken (null = never in this scene)
+const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelector(".tag"); if (!tg) return; gsap.set(tg, { autoAlpha: 0 }); if (t != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, t); };
+
+// owner 2026-11-05 (after the full test): the two ideas left out are in too: time-of-day light, and small ink crosses where each attack broke
+const todDiv = (bg) => { const d = document.createElement("div"); d.style.cssText = `position:absolute;inset:0;pointer-events:none;opacity:0;background:${bg};mix-blend-mode:soft-light`; document.getElementById("scene").insertBefore(d, document.getElementById("fx")); return d; };
+const TOD_COOL = todDiv("rgba(100,135,205,0.55)"), TOD_WARM = todDiv("rgba(255,165,80,0.6)");
+tl.to(TOD_COOL, { opacity: 0.45, duration: 2.0 }, T_EIGHT - 0.1); tl.to(TOD_COOL, { opacity: 0, duration: 2.0 }, T_TWO - 0.1);
+tl.to(TOD_WARM, { opacity: 0.22, duration: 2.0 }, T_FOUR - 0.1); tl.to(TOD_WARM, { opacity: 0, duration: 2.0 }, T_NIGHT - 0.2);
+const CROSSES = [];
+const crosses = (pts, t, until) => pts.forEach((q, i) => { const g = document.createElementNS(NSs, "path"), a = 3.6;
+  g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
+  Object.entries({ stroke: "#322c14", "stroke-width": 0.7, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g); CROSSES.push(g);
+  tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 // ---------- camera ----------
 const CW = [1440, 810];
 camera([[0, CW[0], CW[1], 0.667], [T_CROSS - 0.2, 1450, 800, 0.74], [T_ROLL, 1470, 770, 1.05], [T_ENDR + 0.8, 1460, 790, 1.12],
@@ -349,134 +483,130 @@ camera([[0, CW[0], CW[1], 0.667], [T_CROSS - 0.2, 1450, 800, 0.74], [T_ROLL, 147
   [T_TIME + 1.2, 1442, 802, 3.7], [T_WEST, 1412, 828, 3.5], [T_SHRED + 0.6, 1410, 840, 3.5], [T_EACH + 0.6, 1428, 820, 3.1],
   [T_16 + 0.6, 1430, 790, 2.0], [T_FRAC + 1.4, 1430, 800, 2.2], [T_TWO + 0.6, 1415, 838, 3.3], [T_MEAN + 0.4, 1425, 850, 2.8],
   [T_FOUR + 0.6, 1430, 822, 3.0], [T_DOWN + 0.4, 1425, 815, 3.5], [T_SURR + 0.2, 1415, 812, 3.2], [T_PUT, 1405, 830, 3.4],
-  [T_WHILE + 1.8, 1430, 1000, 1.05], [T_FLIGHT + 1.0, 1440, 1010, 1.0], [T_NIGHT + 0.6, 1520, 900, 1.45], [T_COST, 1540, 900, 1.35], [END, 1560, 905, 1.3]]);
+  [T_WHILE + 1.8, 1430, 1000, 1.05], [T_FLIGHT + 1.0, 1440, 1010, 1.0], [T_NIGHT + 0.6, 1520, 900, 1.45], [T_COST, 1540, 870, 1.35], [END, 1560, 865, 1.3]]);
 
 // ---------- date / title ----------
 B.showDate(0.1);
 B.date("24 NOVEMBER 1863", 0.2, T_EIGHT - 0.2, 34); B.date("25 NOV · 8 AM", T_EIGHT - 0.1, T_TWO - 0.2, 34);
 B.date("25 NOV · 2 PM", T_TWO - 0.1, T_FOUR - 0.2, 34); B.date("25 NOV · 4 PM", T_FOUR - 0.1, T_NIGHT - 0.2, 34); B.date("25 NOV · NIGHT", T_NIGHT - 0.1, null, 34);
-B.title("MOVE 1", "TUNNEL HILL", "25 NOVEMBER 1863", 0.3, T_CROSS - 0.3); SFX("ref:boom", 0.4);
+B.title("MOVE 1", "TUNNEL HILL", "", 0.3, T_CROSS - 0.3); SFX("ref:boom", 0.4);
 
-// ---------- flags (both on every map frame; repositioned with the camera) ----------
-flagS(FL.us, "UNITED STATES", 880, 470, 0.2, T_NOBODY + 0.3); flagS(FL.cs, "CONFEDERATE STATES", 1950, 1060, 0.3, T_NOBODY + 0.3);
-flagS(FL.us, "UNITED STATES", 1190, 735, T_NOBODY + 0.4, T_ARR + 0.6); flagS(FL.cs, "CONFEDERATE STATES", 1950, 1000, T_NOBODY + 0.5, T_ARR + 0.6);
-flagS(FL.us, "UNITED STATES", 1290, 758, T_ARR + 0.7, T_WHILE - 0.2); flagS(FL.cs, "CONFEDERATE STATES", 1650, 880, T_ARR + 0.8, T_WHILE - 0.2);
+// ---------- flags (BATCH 1: 48 px, behind each side's lines) (both on every map frame; repositioned with the camera) ----------
+flagS(FL.us, "UNITED STATES", 880, 470, 0.2, T_NOBODY + 0.3); flagS(FL.cs, "CONFEDERATE STATES", 2140, 940, 0.3, T_NOBODY + 0.3);
+flagS(FL.us, "UNITED STATES", 1190, 735, T_NOBODY + 0.4, T_ARR + 0.6); flagS(FL.cs, "CONFEDERATE STATES", 2140, 940, T_NOBODY + 0.5, T_ARR + 0.6);
+flagS(FL.us, "UNITED STATES", 1290, 758, T_ARR + 0.7, T_WHILE - 0.2); flagS(FL.cs, "CONFEDERATE STATES", 1650, 850, T_ARR + 0.8, T_WHILE - 0.2);
 flagS(FL.us, "UNITED STATES", 1150, 920, T_WHILE - 0.1, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1880, 1010, T_WHILE, END + 1);
 
 // =================== move1-1: the plan, the crossing, the recall ===================
-boxS("MISSIONARY RIDGE", 1440, 1075, 0.6, T_NOBODY + 0.3, { bg: "#dcecf8", size: 30 });
-boxS("TENNESSEE RIVER", 1240, 668, 0.8, T_NOBODY + 0.3, { bg: "#dcecf8", size: 26, sfx: false });
+boxP("MISSIONARY RIDGE", 1500, 985, T_ENDR, T_NOBODY + 0.3, { size: 28 });   // critic b2: straight, beside the ridge, clear of Bragg and the arrowhead
+boxP("TENNESSEE RIVER", 1240, 668, T_CROSS + 0.3, T_NOBODY + 0.3, { bg: "#dcecf8", size: 26, sfx: false });
 glowPath(RIDGE, "#6f9bff", 4.5, 0.6, T_ARR + 0.6, 2, 0.8, { draw: 2.0 });
 // the armies: Thomas in Chattanooga, Bragg on the ridge, Sherman's three divisions on the north bank
 unitS("tho", "rome", [1000, 1100], "infantry", "THOMAS", { t: 0.3, size: "XXXX", until: T_BELIEVED + 1.0 });
 unitS("brg", "carth", [1330, 1175], "infantry", "BRAGG", { t: 0.35, size: "XXXX", until: T_BELIEVED + 1.0 });
 const SH0 = [[1385, 545], [1470, 535], [1560, 525]], SH1 = [[1395, 730], [1468, 705], [1535, 712]], SHN = ["EWING", "J. E. SMITH", "M. L. SMITH"];
-SHN.forEach((nm, k) => unitS("sd" + k, "rome", SH0[k], "infantry", nm, { t: 0.5 + k * 0.12, size: "XX" }));
-B.caption("GRANT'S PLAN: SHERMAN HAS THE MAIN ROLE", T_MAIN - 0.4, T_CROSS - 0.1, "rome");
-badge({ name: "ULYSSES S. GRANT", role: "UNION COMMANDER AT CHATTANOOGA", initials: "USG", photo: PHOTO.grant, flag: FL.us, side: "rome", corner: "tr", t: 0.6, until: T_CROSS - 0.2 });
+SHN.forEach((nm, k) => unitS("sd" + k, "rome", SH0[k], "infantry", k === 1 ? "SHERMAN" : nm, { t: T_CROSS - 0.2 + k * 0.12, size: "XX" }));
+// BATCH 1: division names are never spoken: one group tag "SHERMAN" (spoken), the others bare; Thomas named only in move 1-5
+tagAt("sd0", null); tagAt("sd2", null); tagAt("sd1", T_CROSS); tagAt("tho", T_CENTRE); tagAt("brg", T_NOBODY);
+
 // crossing in the dark (pontoon at the mouth of South Chickamauga Creek)
 nightWash(T_CROSS - 0.3, T_ROLL + 0.2, 0.34);
-pinS(pontoon(XING[0], XING[1], 100, T_CROSS + 0.3, T_BELIEVED + 1.0, 46));
-badge({ name: "WILLIAM T. SHERMAN", role: "UNION LEFT WING", initials: "WTS", photo: PHOTO.sherman, flag: FL.us, side: "rome", corner: "tr", t: T_CROSS, until: T_NOBODY - 0.2 });
+inkTrace([[XING[0] - 4, XING[1] - 22], [XING[0] + 4, XING[1] + 22]], T_CROSS + 0.3, T_ROLL + 0.5);   // critic b3: the pontoon bridge as a short ink line
+pinPortrait("sd1", PHOTO.sherman, FL.us, "Sherman", T_CROSS + 0.2, T_16 - 0.3, true);   // owner: the general's portrait stays on the map for the whole battle   // BATCH 3: pin at his unit instead of the corner badge
 SHN.forEach((nm, k) => along("sd" + k, [SH0[k], [XING[0] - 60 + k * 60, XING[1] + 22], SH1[k]], T_DARK - 0.6 + k * 0.9, 2.6, 14));
-arw({ pts: [[1470, 540], [1488, 600], [1478, 690]], side: "rome", t: T_DARK - 0.3, dur: 1.6, width: AW(0.9), until: T_NOBODY });
-B.caption("SHERMAN CROSSES THE TENNESSEE IN THE DARK", T_DARK - 0.2, T_ROLL - 0.1, "rome");
+arw({ pts: [[1470, 540], [1488, 600], [1478, 690]], side: "rome", t: T_DARK - 0.3, dur: 1.6, width: AW(0.9, 6), until: T_DARK + 4.0 });   // BATCH 2: thin dashed march trail
 // the plan: roll up the north end of the ridge (dashed planned arrow down the ridge)
-arw({ pts: [[1470, 700], [1452, 790], [1420, 880], [1390, 960], [1350, 1060]], side: "rome", t: T_ROLL, dur: 2.0, width: AW(1.05), dash: "16 10", until: T_NOBODY + 0.4 });
+arw({ pts: [[1470, 700], [1452, 790], [1420, 880], [1390, 960], [1350, 1060]], side: "rome", t: T_ROLL, dur: 2.0, width: AW(1.05), until: T_NOBODY + 0.4 });
 K.target(TH[0], TH[1], T_ENDR, { r: 34, side: "#ffd54a", until: T_NOBODY + 1.4 });
-B.caption("ROLL UP BRAGG'S RIGHT FLANK FROM THE NORTH", T_ROLL, T_NOBODY - 0.1, "rome");
-wstampS("ALMOST UNDEFENDED", TH[0] + 30, TH[1] - 40, T_NOBODY + 0.3, T_TRAINS + 1.2, "#e3232f", 22);
+{ const c = B.caption("ROLL UP BRAGG'S RIGHT FLANK FROM THE NORTH", T_ROLL, T_NOBODY - 0.1, "rome"); c.style.bottom = "auto"; c.style.top = "150px"; }   // guard b2: clear of the Bragg counter
+stampP("ALMOST NOBODY", TH[0] + 95, TH[1] + 55, T_NOBODY + 0.3, T_TRAINS + 1.2, "#e3232f", 22);
 // Cleburne's division at Chickamauga Station, on the trains for Knoxville; recalled; races back to the north end
-boxS("CHICKAMAUGA STATION", CHST[0] + 10, CHST[1] + 40, T_NOBODY + 0.6, T_ARR + 0.6, { size: 24 });
+// STYLE W (owner 2026-11-05): important towns the armies head for are PERMANENT map symbols (dot + serif name), like the reference maps
+const CHSTT = town("chickamauga station", CHST, 0, "r");
+// BATCH 1: no cut-off labels at the frame edge: Chattanooga steps out while the camera crops it
+tl.to(CHTT.el, { autoAlpha: 0, duration: 0.4 }, T_RACING); tl.to(CHSTT.el, { autoAlpha: 0, duration: 0.4 }, T_ARR + 1.0); tl.to(CHSTT.el, { autoAlpha: 1, duration: 0.6 }, T_WHILE + 1.2); tl.to(B.units.tho.el, { autoAlpha: 0, duration: 0.4 }, T_RACING); tl.to(B.units.tho.el, { autoAlpha: 1, duration: 0.6 }, T_WHILE + 1.2); tl.to(CHTT.el, { autoAlpha: 1, duration: 0.6 }, T_WHILE + 1.2);
 unitS("cle", "carth", [CHST[0] - 20, CHST[1] - 8], "infantry", "CLEBURNE", { t: T_NOBODY + 0.5, size: "XX" });
 const TRN = pinS(train([[CHST[0] + 18, CHST[1] - 6], [1800, 990], [1880, 930]], T_TRAINS - 0.1, 3.0, T_RACING + 0.6, { s: 36, glow: "#7fb0ff" }));
-arw({ pts: [[1770, 1020], [1880, 940], [1980, 880]], side: "carth", t: T_TRAINS + 0.2, dur: 1.4, width: AW(1.3), dash: "14 9", until: T_CHANGED + 0.4 });
-boxS("TO KNOXVILLE →", 1985, 850, T_KNOX - 0.2, T_CHANGED + 0.6, { size: 24, bg: "#dcecf8" });
-badge({ name: "BRAXTON BRAGG", role: "CONFEDERATE ARMY OF TENNESSEE", initials: "BB", photo: PHOTO.bragg, flag: FL.cs, side: "carth", corner: "tr", t: T_CHANGED - 0.3, until: T_ARR - 0.1 });
-wstampS("RECALLED", 1880, 905, T_CHANGED + 0.4, T_RACING + 1.2, "#4f8bff", 22);
+arw({ pts: [[1770, 1020], [1880, 940], [1980, 880]], side: "carth", t: T_TRAINS + 0.2, dur: 1.4, width: AW(1.3), until: T_CHANGED + 0.4 });
+boxP("TO KNOXVILLE →", 1985, 850, T_KNOX - 0.2, T_CHANGED + 0.6, { size: 24, bg: "#dcecf8" });
+pinPortrait("brg", PHOTO.bragg, FL.cs, "Bragg", T_CHANGED - 0.1, T_BELIEVED + 0.9, true);
 const RACE = [[CHST[0] - 20, CHST[1] - 8], [1650, 965], [1570, 895], [1505, 850], [1468, 838]];
-arw({ pts: RACE.map((q) => [q[0], q[1] - 6]), side: "carth", t: T_RACING - 0.1, dur: 2.2, width: AW(1.3), until: T_BELIEVED + 0.6 });
+arw({ pts: RACE.map((q) => [q[0], q[1] - 6]), side: "carth", t: T_RACING - 0.1, dur: 2.2, width: AW(1.3, 6), until: T_RACING + 5.6 });   // BATCH 2: trail fades 2 s after arrival
+zoomBox(1470, 830, 1.9, T_ARR - 1.6);
 along("cle", RACE, T_RACING, 3.6, 20);
-B.caption("BRAGG CHANGES HIS MIND: CLEBURNE RACES BACK", T_CHANGED, T_ARR - 0.1, "carth");
 // the counts
-badge({ name: "PATRICK CLEBURNE", role: "MAJOR GENERAL · DIVISION", initials: "PC", photo: PHOTO.cleburne, flag: FL.cs, side: "carth", corner: "bl", t: T_ARR - 0.1, until: T_BELIEVED + 0.6 });
-ticker("SHERMAN · THREE DIVISIONS", 16000, "", "right:70px;top:300px;", T_16K - 0.3, 1.4, T_BELIEVED + 0.4, 7, { col: "#ff8a80", pre: "~", sub: "ABOUT · WIKIPEDIA / NPS" });
-ticker("CLEBURNE · ONE DIVISION", 4000, "", "right:70px;top:480px;", T_4K - 0.2, 1.0, T_BELIEVED + 0.4, 5, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
+pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_ARR - 0.1, T_GUNS - 0.1, true, "right");
+ticker("SHERMAN · THREE DIVISIONS", 16000, "", "right:70px;top:300px;", T_16K - 0.3, 1.4, T_16K + 2.4, 7, { col: "#ff8a80", pre: "~", sub: "" });
+ticker("CLEBURNE · ONE DIVISION", 4000, "", "right:70px;top:300px;", Math.max(T_4K - 0.2, T_16K + 2.6), 1.0, Math.max(T_4K - 0.2, T_16K + 2.6) + 3.2, 5, { col: "#7fb0ff", pre: "~", sub: "" });
 tl.to(B.units.cle.el.querySelector(".blk"), { scale: 1.3, duration: 0.25, yoyo: true, repeat: 1 }, T_4K);
 
 // =================== move1-2: the wrong hill; the hill Cleburne chose ===================
-belief("THE END OF THE RIDGE IS EASY", "WHAT SHERMAN BELIEVED", T_BELIEVED - 0.2, T_SEIZED + 0.4);
+belief("THE END OF THE RIDGE IS EASY", "WHAT SHERMAN BELIEVED", T_BELIEVED - 0.2, T_BELIEVED + 3.3, { top: 820 });
 // option 2 from here: the two-colour glowing front on the hill (each front its own blur, width 15*1.3 on screen)
-const F1 = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: T_BELIEVED + 1.2, dur: 1.6, width: FWc(3.3), until: T_16 - 0.2 });
+const F1 = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: T_SEIZED + 0.7, dur: 1.6, width: FWc(3.3), until: T_16 - 0.2 });
 // Sherman's men take Billy Goat Hill
 const SH2 = [[1398, 738], [1470, 724], [1535, 728]];
 SHN.forEach((nm, k) => B.move("sd" + k, T_SEIZED - 0.4 + k * 0.2, 1.6, SH2[k][0], SH2[k][1]));
-unitS("corse", "rome", BGH, "infantry", "CORSE", { t: T_SEIZED + 0.2, size: "X" });
-boxS("BILLY GOAT HILL", 1500, 762, T_SEIZED + 0.4, T_EVERY, { size: 24, bg: "#f3d6d0" });
+unitS("corse", "rome", BGH, "infantry", "CORSE", { t: T_SEIZED + 0.2, size: "X" }); tagAt("corse", T_CORSE);
 arw({ pts: [[1440, 728], [1440, 756]], side: "rome", t: T_SEIZED - 0.1, dur: 0.6, width: AW(3.0), until: T_SAW });
-wstampS("WRONG HILL", BGH[0] - 2, BGH[1] - 26, T_WRONG + 0.1, T_SAW + 0.4, "#e3232f", 24);
+stampP("THE WRONG ONE", BGH[0] - 85, BGH[1] + 8, T_WRONG + 0.1, T_SAW + 0.4, "#e3232f", 24);
 const RAV = glowPath(SADDLE, "#ff5a48", 3, T_RAVINE - 0.2, T_SAW + 0.6, 3, 0.95, { draw: 0.8, top: true, dash: "4 4" });
-boxS("THE RAVINE", 1470, 787, T_RAVINE, T_SAW + 0.4, { size: 20, bg: "#f3d6d0" });
-boxS("TUNNEL HILL", 1500, 858, T_REAL - 0.2, T_EACH, { size: 26, bg: "#dcecf8" });
+{ const PS = Math.max(T_RAVINE, T_WRONG + 3.7); profileStrip(PS, Math.min(T_SAW + 1.5, PS + 3.5)); }   // BATCH 3: side view, once
+boxP("THE RAVINE", 1470, 787, T_RAVINE, T_SAW + 0.4, { size: 20, bg: "#f3d6d0" });
+boxP("TUNNEL HILL", 1500, 858, T_REAL, T_GUNS, { size: 26, keep: true });   // steps out when Cleburne's card takes the hill   // permanent objective once named
 K.target(TH[0], TH[1], T_REAL, { r: 16, side: "#ffd54a", until: T_SAW + 1.0 });
 // Cleburne's view: not the whole army; a few at a time, over the ground in front of him
-badge({ name: "PATRICK CLEBURNE", role: "MAJOR GENERAL · DIVISION", initials: "PC", photo: PHOTO.cleburne, flag: FL.cs, side: "carth", corner: "tr", t: T_SAW - 0.2, until: T_REPORT - 0.1 });
+
 B.caption("NOT THE WHOLE ARMY: A FEW AT A TIME", T_NOTBEAT, T_REPORT - 0.1, "carth");
 [[[1440, 742], [1440, 784]], [[1372, 800], [1398, 822]], [[1372, 866], [1392, 856]]].forEach((pts, k) =>
-  arw({ pts, side: "rome", t: T_FEW - 0.6 + k * 0.6, dur: 0.5, width: AW(3.0, 9), dash: "6 5", until: T_REPORT + 0.2 }));
+  arw({ pts, side: "rome", t: T_FEW - 0.6 + k * 0.6, dur: 0.5, width: AW(3.0, 9), until: T_REPORT + 0.2 }));
 // "the highest point on my line" (Cleburne's report): the hill rings; guns by the tunnel mouth; infantry on the crest
 glowPath(RIDGE.slice(0, 7), "#6f9bff", 2.4, T_HIGH - 0.2, T_IDEA, 2, 0.9, { draw: 0.9 });
-boxS("THE HIGHEST POINT ON MY LINE", 1452, 868, T_HIGH - 0.1, T_GUNS + 0.6, { size: 22, bg: "#dcecf8" });
-B.caption("CLEBURNE'S REPORT", T_HIGH - 0.1, T_GUNS - 0.1, "carth");
+B.caption("CLEBURNE: \"THE HIGHEST POINT ON MY LINE\"", T_HIGH - 0.4, T_GUNS, "carth");
 hideU(["cle"], T_GUNS);
 unitS("gun", "carth", [1458, 824], "artillery", null, { t: T_GUNS });
+pinPortrait("gun", PHOTO.cleburne, FL.cs, "Cleburne", T_GUNS, END + 1, true, "right");   // Cleburne stays on Tunnel Hill (his guns) for the rest of the battle
 glowPath(RR_W, "#ffd27a", 2.2, T_MOUTH - 0.3, T_IDEA + 0.4, 2, 0.9, { draw: 0.6, top: true });
 glowPath(RR_T, "#ffd27a", 2.2, T_MOUTH, T_IDEA + 0.4, 3, 0.95, { dash: "3 3", top: true });
 glowPath(RR_E, "#ffd27a", 2.2, T_MOUTH + 0.2, T_IDEA + 0.4, 2, 0.9, { draw: 0.6, top: true });
-boxS("RAILROAD TUNNEL", 1412, 858, T_MOUTH, T_INF + 0.8, { size: 20, bg: "#f3e2b8" });
+boxP("RAILROAD TUNNEL", 1412, 858, T_MOUTH, T_INF + 0.8, { size: 20, bg: "#f3e2b8" });
 [0, 1].forEach((k) => shoot([1458, 818], [1440 - k * 8, 770 + k * 6], T_MOUTH + 0.6 + k * 0.7, { unit: "gun", r: 3, width: 0.5, dur: 0.6 }));
 const BRG = [["smith", [1432, 808], "SMITH · TEXANS"], ["low", [1494, 808], "LOWREY"], ["gov", [1418, 849], "GOVAN"], ["polk", [1556, 830], "POLK"]];
-BRG.forEach(([id, p, nm], k) => unitS(id, "carth", p, "infantry", nm, { t: T_INF + k * 0.25, size: "X" }));
+BRG.forEach(([id, p, nm], k) => { unitS(id, "carth", p, "infantry", nm, { t: T_INF + k * 0.25, size: "X" }); tagAt(id, null); });
 // the ravine and the open fields do the rest
 glowPath(SADDLE, "#ff5a48", 3, T_LET, T_IDEA + 0.6, 2, 0.95, { top: true });
-const FLD = GG.polygon(FIELD, "rgba(255,90,72,0.28)", T_FIELDS - 0.3, T_IDEA + 0.6, { stroke: "#ff5a48", sw: 1.4, dash: "4 4", dur: 0.5 });
-tl.to(FLD, { opacity: 0.45, duration: 0.4, yoyo: true, repeat: 3 }, T_FIELDS + 0.3);
-boxS("THE SADDLE", 1494, 786, T_LET + 0.1, T_IDEA + 0.6, { size: 20, bg: "#f3d6d0" });
-boxS("THE WESTERN FIELD", 1352, 832, T_FIELDS - 0.2, T_IDEA + 0.6, { size: 20, bg: "#f3d6d0" });
+glowPath(FIELD.concat([FIELD[0]]), "", 2, T_FIELDS - 0.3, T_IDEA + 0.6, 0, 0, { dash: true });   // BATCH 2: focus + dashed ink outline instead of an orange fill
+boxP("OPEN FIELDS", 1352, 832, T_FIELDS - 0.2, T_IDEA + 0.6, { size: 20, bg: "#f3d6d0" });
 
 // =================== move1-2b: the whole idea ===================
-B.caption("THE CREST", T_HILLLIKE, T_DEF + 1.0, "carth");
 glowPath(RIDGE.slice(0, 6), "#6f9bff", 3, T_HILLLIKE, T_DEF + 1.2, 2, 0.95, { top: true });
-B.caption("THE CUT", T_DEF + 1.1, T_OPEN - 0.1, "carth");
 glowPath(RR_T.concat(RR_W.slice().reverse()), "#ffd27a", 2.6, T_DEF + 1.1, T_OPEN + 0.2, 2, 0.95, { top: true });
-B.caption("THE OPEN FIELD", T_OPEN, T_EVERY + 1.0, "rome");
-const FLD2 = GG.polygon(FIELD, "rgba(255,90,72,0.3)", T_OPEN, T_NOCOVER + 1.2, { stroke: "#ff5a48", sw: 1.4, dash: "4 4", dur: 0.5 });
+glowPath(FIELD.concat([FIELD[0]]), "", 2, T_OPEN, T_NOCOVER + 1.2, 0, 0, { dash: true });
 // the Union brigades form up on Billy Goat Hill and in the western valley
 const UB = [["loomis", [1352, 792], "LOOMIS"], ["matt", [1360, 860], "MATTHIES"], ["raum", [1330, 900], "RAUM"]];
 UB.forEach(([id, p, nm], k) => unitS(id, "rome", p, "infantry", nm, { t: T_EVERY + k * 0.35, size: "X" }));
-arw({ pts: [[1440, 750], [1442, 788], [1444, 812]], side: "rome", t: T_SLOPE - 0.2, dur: 0.8, width: AW(3.0, 10), dash: "6 5", until: T_NOCOVER + 1.0 });
-arw({ pts: [[1360, 800], [1384, 818], [1400, 834]], side: "rome", t: T_FIELDF - 0.2, dur: 0.8, width: AW(3.0, 10), dash: "6 5", until: T_NOCOVER + 1.0 });
-wstampS("NO COVER", 1372, 840, T_NOCOVER, T_WEIGHT + 0.8, "#e3232f", 22);
+tagAt("loomis", T_LOOMIS + 0.3); tagAt("matt", T_MATT + 0.3); tagAt("raum", null);   // BATCH 1: tags only when spoken
+arw({ pts: [[1440, 750], [1442, 788], [1444, 812]], side: "rome", t: T_SLOPE - 0.2, dur: 0.8, width: AW(3.0, 4), until: T_NOCOVER + 1.0 });
+arw({ pts: [[1360, 800], [1384, 818], [1400, 834]], side: "rome", t: T_FIELDF - 0.2, dur: 0.8, width: AW(3.0, 4), until: T_NOCOVER + 1.0 });
+stampP("NO COVER", 1372, 840, T_NOCOVER, T_WEIGHT + 0.8, "#e3232f", 22);
 [["loomis", 0], ["matt", 0.25], ["raum", 0.5], ["corse", 0.75]].forEach(([id, d]) => tl.to(B.units[id].el.querySelector(".blk"), { opacity: 0.55, duration: 0.3, yoyo: true, repeat: 1 }, T_WEIGHT + d));
-B.caption("NO WAY TO BRING ITS FULL WEIGHT TO BEAR", T_WEIGHT - 0.4, T_HARDEE - 0.2, "rome");
 // Hardee behind him (reinforcements can come up the ridge from the south)
-badge({ name: "WILLIAM J. HARDEE", role: "CORPS COMMANDER · CLEBURNE'S SUPERIOR", initials: "WJH", photo: PHOTO.hardee, flag: FL.cs, side: "carth", corner: "tr", t: T_HARDEE - 0.3, until: T_EXACT + 1.0 });
-arw({ pts: [[1385, 960], [1405, 915], [1420, 878]], side: "carth", t: T_FEED - 0.2, dur: 1.0, width: AW(3.0), dash: "8 6", until: T_EIGHT });
+badge({ name: "WILLIAM J. HARDEE", role: "CORPS COMMANDER · CLEBURNE'S SUPERIOR", initials: "WJH", photo: PHOTO.hardee, flag: FL.cs, side: "carth", corner: "tr", t: T_HARDEE - 0.3, until: Math.min(T_HARDEE + 3.2, T_FEED - 0.5) });
+arw({ pts: [[1385, 960], [1405, 915], [1420, 878]], side: "carth", t: T_FEED - 0.2, dur: 1.0, width: AW(3.0), until: T_EIGHT });
 B.caption("FRESH MEN IF THE FIGHT LASTS", T_FEED - 0.2, T_EXACT - 0.1, "carth");
-B.caption("WHAT SHERMAN'S PLAN HAD NOT ALLOWED FOR", T_EXACT, T_EIGHT - 0.3, "rome");
 
 // =================== move1-3: 8 AM, one brigade at a time ===================
 B.caption("ONE BRIGADE AT A TIME", T_ONEAT - 0.2, T_CORSE - 0.1, "rome");
-ticker("CORSE'S BRIGADE", 920, "", "right:70px;top:300px;", T_CORSE, 0.8, T_URGED, 4, { col: "#ff8a80", pre: "~", sub: "FEWER THAN A THOUSAND · NPS" });
+ticker("CORSE'S BRIGADE", 1000, "", "right:70px;top:300px;", Math.max(T_CORSE, T_ONEAT + 3.6), 0.05, Math.max(T_CORSE, T_ONEAT + 3.6) + 3.4, 4, { col: "#ff8a80", pre: "<", sub: "" });
 // Corse, two waves along the spine
 const C_UP = [[1440, 768], [1440, 782], [1441, 790]];
 along("corse", C_UP, T_SPINE - 0.3, 1.6, 6);
-arw({ pts: [[1440, 750], [1441, 792]], side: "rome", t: T_SPINE - 0.4, dur: 0.8, width: AW(3.7), until: T_TORN + 1.0 });
+smoke([[1432, 806], [1446, 800], [1458, 818]], T_TORN - 0.9);
+arw({ pts: [[1440, 750], [1441, 792]], side: "rome", t: T_SPINE - 0.4, dur: 0.8, width: AW(3.7, 8), until: T_TORN + 1.0 });
 mg([1432, 806], [1441, 792], T_SPINE + 0.9, 5, 0.5); mg([1494, 806], [1446, 792], T_SPINE + 1.3, 4, 0.5);
 [0, 1, 2].forEach((k) => shoot([1458, 818], [1438 + k * 5, 784 - k * 3], T_TORN - 0.9 + k * 0.45, { unit: "gun", r: 4, width: 0.5, dur: 0.5 }));
 along("corse", [[1441, 790], [1440, 776], [1438, 766]], T_TORN + 0.4, 1.3, 6);
 tl.to(B.units.corse.el, { opacity: 0.7, duration: 0.4 }, T_TORN + 0.4);
-B.caption("CORSE: TORN APART ON THE SPINE", T_TORN - 0.2, T_URGED - 0.1, "rome");
 along("corse", C_UP, T_URGED, 1.4, 6);
 arw({ pts: [[1436, 750], [1439, 790]], side: "rome", t: T_URGED - 0.1, dur: 0.7, width: AW(3.7), until: T_LOOMIS });
 quote("“GO BACK AND MAKE THAT CHARGE IMMEDIATELY; TIME IS EVERYTHING”", "WILLIAM T. SHERMAN · 25 NOV 1863 (NPS)", T_URGED + 0.2, T_LOOMIS - 0.3, { size: 34, mw: 1500, col: "#c4121f" });
@@ -484,27 +614,31 @@ mg([1432, 806], [1440, 791], T_TIME + 0.2, 5, 0.5); K.impact(1440, 790, T_TIME +
 along("corse", [[1441, 790], [1440, 776], [1438, 766]], T_LOOMIS - 0.4, 1.2, 6);
 // Loomis across the open fields on the west, stopped at the railroad embankment
 along("loomis", [[1352, 792], [1372, 812], [1388, 832]], T_WEST - 0.3, 2.4, 10);
-arw({ pts: [[1345, 790], [1370, 812], [1390, 834]], side: "rome", t: T_WEST - 0.4, dur: 1.0, width: AW(3.5), until: T_MATT + 0.6 });
+arw({ pts: [[1345, 790], [1370, 812], [1390, 834]], side: "rome", t: T_WEST - 0.4, dur: 1.0, width: AW(3.5, 8), until: T_MATT + 0.6 });
 glowPath(RR_W.slice(1), "#ffd27a", 2.8, T_EMB - 0.2, T_MATT + 0.6, 2, 0.95, { top: true });
-boxS("RAILROAD EMBANKMENT", 1405, 893, T_EMB - 0.1, T_MATT + 0.4, { size: 20, bg: "#f3e2b8" });
+boxP("RAILROAD EMBANKMENT", 1405, 893, T_EMB - 0.1, T_MATT + 0.4, { size: 20, bg: "#f3e2b8" });
 mg([1418, 846], [1392, 834], T_EMB, 5, 0.5); K.impact(1388, 836, T_EMB + 0.5, { r: 4, puffs: 2 });
-wstampS("STOPPED", 1380, 812, T_EMB + 0.4, T_MATT + 0.5, "#4f8bff", 20);
+stampP("STOPPED", 1366, 806, T_EMB + 0.4, T_MATT + 0.5, "#4f8bff", 20);
 // Matthies tries the flat ground and is shredded
 along("matt", [[1360, 860], [1376, 858], [1388, 856]], T_MATT, 2.0, 8);
-arw({ pts: [[1350, 862], [1372, 859], [1390, 856]], side: "rome", t: T_MATT - 0.1, dur: 0.9, width: AW(3.5), until: T_EACH + 0.8 });
+smoke([[1418, 849], [1458, 822], [1432, 840]], T_SHRED - 0.8);
+arw({ pts: [[1350, 862], [1372, 859], [1390, 856]], side: "rome", t: T_MATT - 0.1, dur: 0.9, width: AW(3.5, 8), until: T_EACH + 0.8 });
 [0, 1, 2, 3].forEach((k) => shoot([1458, 822], [1384 + (k % 2) * 6, 852 + k * 3], T_SHRED - 0.8 + k * 0.4, { unit: "gun", r: 5, width: 0.6, dur: 0.7, h: 18 }));
 mg([1418, 849], [1390, 856], T_SHRED - 0.2, 6, 0.5);
 along("matt", [[1388, 856], [1362, 852], [1340, 846]], T_SHRED + 1.0, 1.4, 6); tl.to(B.units.matt.el, { opacity: 0.7, duration: 0.4 }, T_SHRED + 1.0);
-B.caption("MATTHIES: SHREDDED ON THE FLAT", T_SHRED - 0.4, T_EACH - 0.1, "rome");
+smoke([[1432, 806], [1458, 818], [1494, 806], [1418, 849], [1446, 812]], T_EACH);
+crosses([[1436, 784], [1442, 778], [1447, 786], [1439, 791]], T_TORN + 0.3, T_TWO);   // Corse, on the spine
+crosses([[1386, 830], [1393, 836], [1381, 838], [1390, 842]], T_EMB + 0.4, T_TWO);   // Loomis, at the embankment
+crosses([[1380, 856], [1387, 852], [1384, 861], [1392, 858]], T_SHRED + 0.3, T_TWO);   // Matthies, on the flat
 // each time: fire from the crest, the red line breaks before it reaches them (the front never moves)
 mg([1432, 808], [1440, 790], T_EACH, 4, 0.5); mg([1418, 848], [1390, 834], T_EACH + 0.4, 4, 0.5); mg([1494, 808], [1470, 793], T_EACH + 0.8, 4, 0.5);
-B.caption("EACH TIME, FIRE FROM THE CREST", T_EACH, T_16 - 0.1, "carth");
 // sixteen thousand on the field, a fraction used: the reserves
 const F2 = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: T_16 - 0.3, dur: 0.01, width: FWw(2.0), until: T_TWO + 0.4 });
 const RES = [["rs1", [1340, 735], "J. E. SMITH"], ["rs2", [1520, 700], "M. L. SMITH"], ["rs3", [1395, 690], "EWING"]];
 tl.to(["sd0", "sd1", "sd2"].map((k) => B.units[k].el), { autoAlpha: 0, duration: 0.3 }, T_16 - 0.2);
-RES.forEach(([id, p, nm], k) => unitS(id, "rome", p, "infantry", nm, { t: T_16 + k * 0.2, size: "XX", until: T_TWO + 0.4 }));
-ticker("SHERMAN ON THE FIELD", 16000, "", "right:70px;top:300px;", T_16, 1.0, T_FRAC + 2.0, 5, { col: "#ff8a80", pre: "~", sub: "ABOUT" });
+RES.forEach(([id, p, nm], k) => { unitS(id, "rome", p, "infantry", nm, { t: T_16 + k * 0.2, size: "XX", until: T_TWO + 0.4 }); tagAt(id, null); });
+pinPortrait("rs3", PHOTO.sherman, FL.us, "Sherman", T_16 + 0.4, T_TWO + 0.3, true);
+ticker("SHERMAN ON THE FIELD", 16000, "", "right:70px;top:300px;", T_16, 1.0, T_FRAC + 2.0, 5, { col: "#ff8a80", pre: "~", sub: "" });
 RES.forEach(([id], k) => tl.to(B.units[id].el.querySelector(".blk"), { backgroundColor: "#77746c", duration: 0.5 }, T_FRAC + k * 0.15));
 K.target(1440, 770, T_FRAC, { r: 20, side: "#ff5a48", until: T_TWO });
 B.caption("NEVER MORE THAN A FRACTION AT ONCE", T_FRAC - 0.2, T_TWO - 0.2, "rome");
@@ -515,50 +649,45 @@ along("raum", [[1330, 900], [1358, 890], [1384, 882]], T_TWO, 2.2, 8);
 arw({ pts: [[1325, 902], [1355, 886], [1382, 872]], side: "rome", t: T_TWO - 0.1, dur: 1.0, width: AW(3.3), until: T_MEAN });
 [0, 1, 2].forEach((k) => shoot([1458, 824], [1380 + k * 4, 870 - k * 4], T_TWO + 1.6 + k * 0.5, { unit: "gun", r: 5, width: 0.6, dur: 0.7, h: 20 }));
 mg([1418, 849], [1384, 880], T_EITHER - 0.4, 5, 0.5);
-wstampS("REPULSED", 1366, 900, T_EITHER + 0.3, T_MEAN + 0.4, "#4f8bff", 20);
+stampP("REPULSED", 1366, 900, T_EITHER + 0.3, T_MEAN + 0.4, "#4f8bff", 20);
 along("raum", [[1384, 882], [1360, 884], [1342, 894]], T_EITHER + 0.8, 1.6, 6);
-badge({ name: "WILLIAM J. HARDEE", role: "SENDS REINFORCEMENTS", initials: "WJH", photo: PHOTO.hardee, flag: FL.cs, side: "carth", corner: "tr", t: T_MEAN - 0.2, until: T_FOUR - 0.2 });
 unitS("cum", "carth", [1400, 955], "infantry", "CUMMING", { t: T_REINF - 0.2, size: "X" });
-unitS("brn", "carth", [1428, 965], "infantry", "BROWN", { t: T_REINF, size: "X" });
+unitS("brn", "carth", [1428, 965], "infantry", "BROWN", { t: T_REINF, size: "X" }); tagAt("cum", null); tagAt("brn", null);
 along("cum", [[1400, 955], [1404, 920], [1406, 888]], T_REINF + 0.2, 2.4, 10);
 along("brn", [[1428, 965], [1445, 915], [1452, 872]], T_REINF + 0.5, 2.4, 10);
 arw({ pts: [[1395, 945], [1402, 915], [1405, 895]], side: "carth", t: T_REINF, dur: 1.2, width: AW(2.8), until: T_FOUR });
 arw({ pts: [[1430, 955], [1446, 912], [1452, 880]], side: "carth", t: T_REINF + 0.3, dur: 1.2, width: AW(2.8), until: T_FOUR });
-B.caption("FRESH TROOPS INTO THE LINE", T_FRESH - 0.2, T_FOUR - 0.1, "carth");
 ["corse", "loomis", "matt", "raum"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { opacity: 0.55, scale: 0.85, duration: 0.6 }, T_FRESH + 0.4 + k * 0.3));
-B.caption("THE UNION BRIGADES: EXHAUSTED, SHORT OF AMMUNITION", T_EXH - 0.4, T_CHOSE - 0.1, "rome");
 sstamp("CLEBURNE STRIKES", 190, T_CHOSE - 0.1, { color: "#4f8bff", size: 56, until: T_DOWN + 1.6 });
 // down off the hill all along the line
 const CH = [["smith", [1432, 808], [1438, 780]], ["low", [1494, 808], [1488, 782]], ["gov", [1418, 849], [1390, 832]], ["cum", [1406, 888], [1378, 870]], ["brn", [1452, 872], [1410, 892]]];
 CH.forEach(([id, a, b], k) => { B.move(id, T_DOWN + 0.2 + k * 0.15, 2.4, b[0], b[1]);
-  arw({ pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (b[0] - a[0]) * 0.4, b[1] + (b[1] - a[1]) * 0.4]], side: "carth", t: T_DOWN + k * 0.15, dur: 0.9, width: AW(3.5), until: T_PUT }); });
+  arw({ pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (b[0] - a[0]) * 0.4, b[1] + (b[1] - a[1]) * 0.4]], side: "carth", t: T_DOWN + Math.floor(k / 2) * 0.4, dur: 0.9, width: AW(3.5), until: T_PUT }); });
 mg([1438, 790], [1440, 768], T_DOWN + 0.6, 6, 0.5); mg([1395, 838], [1378, 820], T_DOWN + 1.0, 5, 0.5); mg([1395, 862], [1372, 862], T_DOWN + 1.4, 5, 0.5);
 K.shake(T_DOWN + 0.3, 5, 0.4);
 [["corse", [1430, 742]], ["loomis", [1330, 776]], ["matt", [1338, 868]], ["raum", [1322, 900]]].forEach(([id, p], k) => B.move(id, T_COLL - 0.2 + k * 0.2, 2.2, p[0], p[1]));
 B.caption("THE UNION ATTACK COLLAPSES", T_COLL - 0.1, T_SURR - 0.1, "carth");
-pinS(GG.pin(BARS("HUNDREDS SURRENDER"), 1395, 812, { t: T_SURR, pop: true, until: T_WHILE - 0.2 })); SFX("hit", T_SURR + 0.1);
-[[[1400, 820], [1360, 790], [1330, 770]], [[1395, 866], [1360, 870], [1325, 895]], [[1440, 762], [1436, 738]]].forEach((pts, k) =>
-  arw({ pts, side: "rome", t: T_RAN + k * 0.25, dur: 1.0, width: AW(3.3, 10), dash: "7 5", until: T_WHILE }));
-B.caption("THE REST RUN BACK ACROSS THE FIELDS", T_RAN, T_PUT - 0.1, "rome");
-wstampS("COL. PUTNAM KILLED", 1322, 838, T_PUT + 0.2, T_WHILE - 0.2, "#e3232f", 18);
-wstampS("MATTHIES WOUNDED", 1318, 892, T_MORT + 0.3, T_WHILE - 0.2, "#e3232f", 18);
-B.caption("93RD ILLINOIS · COLONEL PUTNAM KILLED ON THE SLOPE", T_PUT, T_WHILE - 0.1, "rome");
+pinS(GG.pin(BARS("HUNDREDS SURRENDER"), 1418, 834, { t: T_SURR, pop: true, until: T_WHILE - 0.2 })); SFX("hit", T_SURR + 0.1);
+[[[1400, 820], [1360, 790], [1330, 770]], [[1395, 878], [1360, 886], [1325, 902]], [[1440, 762], [1436, 738]]].forEach((pts, k) =>
+  arw({ pts, side: "rome", t: T_RAN + Math.floor(k / 2) * 0.45, dur: 1.0, width: AW(3.3, 4), until: T_WHILE }));
+stampP("COL. PUTNAM KILLED", 1322, 838, T_PUT + 0.2, T_WHILE - 0.2, "#e3232f", 18);
+stampP("MATTHIES WOUNDED", 1318, 892, T_MORT + 0.3, T_WHILE - 0.2, "#e3232f", 18);
 
 // =================== move1-5: the centre breaks; the rear guard; the cost; the method ===================
 // back to option 1: the ridge as it was, then E2: the lost ground turns paler, then red as the centre breaks
 const CUE = T_CENTRE - 0.2, MOVE = T_FLIGHT - 0.2;
-const L24 = lay("assets/media/m1_tunnel_ctl_nov24_mx.png", T_WHILE - 0.6, CUE); tl.fromTo(L24, { opacity: 0 }, { opacity: 1, duration: 1.0, immediateRender: false }, T_WHILE - 0.6);
-loss("m1_tunnel_ctl", "nov24", "nov25", CUE, MOVE, null);
+const L24 = lay("assets/media/gn_tunnel_ctl_nov24_mx.png", T_WHILE - 0.6, CUE); tl.fromTo(L24, { opacity: 0 }, { opacity: 1, duration: 1.0, immediateRender: false }, T_WHILE - 0.6);
+const LEND = loss("gn_tunnel_ctl", "nov24", "nov25", CUE, MOVE, T_NIGHT + 1.0); tl.to(LEND, { opacity: 0, duration: 2.0, ease: "sine.inOut" }, T_NIGHT - 1.2);   // BATCH 1 fix: plain red/blue, ~3 s, dissolves before the night shot
 hideU(["corse", "loomis", "matt", "raum", "low", "gov", "cum", "brn", "polk", "gun"], T_WHILE + 0.2);
 B.move("smith", T_WHILE, 0.5, TH[0], TH[1]);
 showU(["tho", "brg"], T_WHILE + 0.4);
 [[[1120, 1110], [1200, 1130], [1268, 1150]], [[1100, 1190], [1180, 1200], [1250, 1215]], [[1140, 1030], [1230, 1060], [1300, 1085]], [[1080, 1270], [1160, 1280], [1215, 1300]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_CENTRE - 0.4 + k * 0.3, dur: 1.2, width: AW(1.05), until: T_NIGHT + 1.0 }));
 [[1290, 1150], [1265, 1210], [1305, 1090]].forEach((p, k) => K.impact(p[0], p[1], T_CENTRE + 0.6 + k * 0.4, { r: 10, puffs: 2 }));
-wstampS("CENTRE BROKEN", CTR[0] - 60, CTR[1] - 70, T_SOUTH, T_NIGHT + 0.8, "#e3232f", 24);
+stampP("CENTRE BROKEN", CTR[0] - 60, CTR[1] - 70, T_SOUTH, T_NIGHT + 0.8, "#e3232f", 24);
 B.move("brg", T_FLIGHT - 0.2, 2.6, 1560, 1330);
 [[[1320, 1180], [1420, 1260], [1540, 1350]], [[1290, 1240], [1380, 1330], [1480, 1420]]].forEach((pts, k) =>
-  arw({ pts, side: "carth", t: T_FLIGHT + k * 0.3, dur: 1.4, width: AW(1.05, 10), dash: "10 7", until: T_COST }));
+  arw({ pts, side: "carth", t: T_FLIGHT + k * 0.3, dur: 1.4, width: AW(1.05, 10), until: T_COST }));
 B.caption("THE CENTRE BREAKS: BRAGG'S ARMY IN FLIGHT", T_CENTRE, T_NIGHT - 0.1, "rome");
 // night: Cleburne's undefeated division becomes the rear guard over South Chickamauga Creek; the bridges burn behind it
 nightWash(T_NIGHT - 0.3, null, 0.42);
@@ -569,11 +698,11 @@ arw({ pts: RG, side: "carth", t: T_REAR - 0.2, dur: 2.0, width: AW(1.4), until: 
 along("cle2", RG, T_REAR, 3.4, 16);
 BR.forEach((p, k) => K.target(p[0], p[1], T_REAR + 0.3 + k * 0.3, { r: 14, side: "#ffd54a", until: T_COST + 1.0 }));
 BR.forEach((p, k) => { pinS(fireGlow(p[0], p[1], 14, T_REAR + 2.6 + k * 0.4, END + 1)); K.smoke(p[0], p[1], T_REAR + 2.7 + k * 0.4, { n: 4, r: 8, rise: 24, life: 3 }); SFX("impact", T_REAR + 2.7 + k * 0.4); });
-boxS("SOUTH CHICKAMAUGA CREEK", 1690, 800, T_REAR, END + 1, { size: 22, bg: "#dcecf8" });
+boxP("SOUTH CHICKAMAUGA CREEK", 1690, 800, T_REAR, END + 1, { size: 22, bg: "#dcecf8" });
 B.caption("CLEBURNE: THE REAR GUARD", T_REAR - 0.2, T_COST - 0.1, "carth");
 // the cost (old clean K.casualties card, real figures only: ~2,000 / ~220, killed + wounded + missing)
-casualty({ head: "TUNNEL HILL · 25 NOVEMBER 1863", rows: [["casualties", "~220", "~2,000"]], t: T_COST - 0.2, until: T_METH - 0.4,
-  foot: "KILLED, WOUNDED AND MISSING · ABOUT" }).querySelectorAll("span").forEach((sp) => { sp.style.fontSize = "64px"; });
+casualty({ head: "TUNNEL HILL · 25 NOVEMBER 1863", rows: [["casualties", "~220", "~2,000"]], t: T_COST - 0.2, until: T_METH - 0.4, top: 170,
+  foot: "" }).querySelectorAll("span").forEach((sp) => { sp.style.fontSize = "64px"; });
 // the method card, line 1
 GG.METHOD = ["LET THEM TIRE ON THE HILL, THEN STRIKE", "HIDE YOUR STRENGTH UNTIL THEY ARE CLOSE", "LET THE GROUND DO THE KILLING"]; GG.METHOD_TITLE = "CLEBURNE'S METHOD";
 const MC = GG.method(1, T_METH - 0.4, END + 1, [T_METH - 0.2]); SFX("hit", T_METH);

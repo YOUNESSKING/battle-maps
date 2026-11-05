@@ -54,7 +54,11 @@ wB, wD = band(skB, P['main_r']), band(skD, P['creek_r']); water = wB | wD
 import json
 from scipy.ndimage import maximum_filter
 ST = json.load(open(P['story'])) if P['story'] else None
+# generalised 2026-11-05 (Cleburne restyle): ridge/ravine may be ONE polyline or a LIST of polylines; hills/rail/fields/tunnel optional
+_pl = lambda v: [] if not v else (v if isinstance(v[0][0], (list, tuple)) else [v])
 if ST:
+    RIDGES, RAVINES = _pl(ST.get('ridge')), _pl(ST.get('ravine'))
+    for _k in ('hills', 'rail', 'fields'): ST.setdefault(_k, [])
     def dist_to(poly):
         m = np.ones((H // 4, W // 4), np.uint8); cv2.polylines(m, [np.array([[x / 2, y / 2] for x, y in poly], np.int32)], False, 0, 1)
         return cv2.resize(cv2.distanceTransform(m, cv2.DIST_L2, 5), (W, H)) * 4
@@ -62,8 +66,8 @@ if ST:
     hgt = np.zeros((H, W), np.float32)
     for i, (x, y, r) in enumerate(ST['hills']):                       # first hill = the highest (the real Tunnel Hill)
         hgt = np.maximum(hgt, (1.0 if i == 0 else 0.78) * np.exp(-(((xx_ - x * 2) ** 2 + (yy_ - y * 2) ** 2) / (r * 2 * 0.9) ** 2)))
-    hgt = np.maximum(hgt, 0.62 * np.exp(-(dist_to(ST['ridge']) / 28) ** 2))   # the NARROW ridge spine
-    rvd = dist_to(ST['ravine'])
+    for _r in RIDGES: hgt = np.maximum(hgt, ST.get('ridge_h', 0.62) * np.exp(-(dist_to(_r) / ST.get('ridge_w', 28)) ** 2))   # the NARROW ridge spine(s)
+    rvd = np.minimum.reduce([dist_to(_r) for _r in RAVINES]) if RAVINES else np.full((H, W), 1e4, np.float32)
     hgt -= 0.45 * np.exp(-(rvd / 11) ** 2)                                   # the ravine pinches the contours between the hills
     hgt = cv2.GaussianBlur(hgt, (0, 0), 4); del yy_, xx_
     gy, gx = np.gradient(hgt * 260)
@@ -117,8 +121,8 @@ def story_draw(d, SSf, ink, close=False):
                 d.polygon(pts, fill=ink + ((int(100 + 100 * shd),) if not close else ((100,) if lit else (int(150 + 80 * shd),))))     # tapered stroke
     # 2) pale crest line along the spine (unhachured)
     # 3) ravine: slanted strokes from both banks running down into a faint broken thalweg (not a trench symbol)
-    rv = np.array([c(p) for p in ST['ravine']], np.float32); seg = []
-    for (x0, y0), (x1, y1) in zip(rv[:-1], rv[1:]):
+    seg = []
+    for (x0, y0), (x1, y1) in [pr for _r in RAVINES for pr in zip(np.array([c(p) for p in _r], np.float32)[:-1], np.array([c(p) for p in _r], np.float32)[1:])]:
         L = np.hypot(x1 - x0, y1 - y0); ux, uy = (x1 - x0) / L, (y1 - y0) / L
         for t in np.arange(0, L, 6 * Z):
             mx, my = x0 + ux * t, y0 + uy * t
@@ -159,6 +163,7 @@ def story_draw(d, SSf, ink, close=False):
                 px, py = x0 + ux * t, y0 + uy * t; d.line([(px - vx * hl, py - vy * hl), (px + vx * hl, py + vy * hl)], fill=(40, 36, 16, 235), width=max(1, round(1.3 * Z)))
         d.line(pts, fill=(40, 36, 16, 255), width=max(1, round(2.2 * Z)), joint='curve')
     # 6) tunnel: pale dashed hidden line on top + outward-facing portals
+    if not ST.get('tunnel'): return
     a_, b_ = [c(p) for p in ST['tunnel']]
     L = np.hypot(b_[0] - a_[0], b_[1] - a_[1]); ux, uy = (b_[0] - a_[0]) / L, (b_[1] - a_[1]) / L
     for t in np.arange(0, L, 11 * Z): d.line([(a_[0] + ux * t, a_[1] + uy * t), (a_[0] + ux * min(t + 6 * Z, L), a_[1] + uy * min(t + 6 * Z, L))], fill=(215, 205, 160, 220), width=max(1, round(2.2 * Z)))
