@@ -10,7 +10,7 @@ from scipy import ndimage
 from skimage.morphology import skeletonize
 import cv2
 base, out = sys.argv[1], sys.argv[2]
-P = dict(tint=1, green=0, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.16, patches=55, K=1.5, seed=5, ground='162,159,112')
+P = dict(mult=0, tint=1, green=0, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.12, patches=55, K=1.5, seed=5, ground='162,159,112')
 for kv in sys.argv[3:]:
     k, v = kv.split('='); P[k] = type(P[k])(v) if not isinstance(P[k], str) else v
 W, H = 5760, 3240; rng = np.random.default_rng(P['seed']); K = P['K']
@@ -47,8 +47,12 @@ def band(sk, r):
     dist = cv2.distanceTransform((~full).astype(np.uint8), cv2.DIST_L2, 5)
     return cv2.GaussianBlur(cv2.GaussianBlur(dist, (0, 0), 6) - r, (0, 0), 1.5) <= 0
 wB, wD = band(skB, P['main_r']), band(skD, P['creek_r']); water = wB | wD
-# ---------- story ground (owner 2026-11-05: show what the narration talks about: hills, narrow ridge spine, ravine, railroad + tunnel, open field) ----------
+# ---------- story ground (owner 2026-11-05: show what the narration talks about), critic round-3 recipe ----------
+# contour-row hachures (rows along contours, strokes straight downslope, heavy on the shaded SE side, light on the lit NW side,
+# blank summits and crest), a pale crest line on the narrow spine, a V-notch ravine, rail on a pale bed with jittered ties,
+# outward-facing tunnel portals + pale dashed hidden tunnel, a crisp field with parallel furrows.
 import json
+from scipy.ndimage import maximum_filter
 ST = json.load(open(P['story'])) if P['story'] else None
 if ST:
     def dist_to(poly):
@@ -58,65 +62,103 @@ if ST:
     hgt = np.zeros((H, W), np.float32)
     for i, (x, y, r) in enumerate(ST['hills']):                       # first hill = the highest (the real Tunnel Hill)
         hgt = np.maximum(hgt, (1.0 if i == 0 else 0.78) * np.exp(-(((xx_ - x * 2) ** 2 + (yy_ - y * 2) ** 2) / (r * 2 * 0.9) ** 2)))
-    hgt = np.maximum(hgt, 0.62 * np.exp(-(dist_to(ST['ridge']) / 46) ** 2))   # the narrow ridge spine
-    hgt -= 0.32 * np.exp(-(dist_to(ST['ravine']) / 16) ** 2)                 # the ravine between the hills
+    hgt = np.maximum(hgt, 0.62 * np.exp(-(dist_to(ST['ridge']) / 28) ** 2))   # the NARROW ridge spine
+    rvd = dist_to(ST['ravine'])
+    hgt -= 0.45 * np.exp(-(rvd / 11) ** 2)                                   # the ravine pinches the contours between the hills
     hgt = cv2.GaussianBlur(hgt, (0, 0), 4); del yy_, xx_
     gy, gx = np.gradient(hgt * 260)
-    hs = np.clip((gx * 0.7 + gy * 0.7) / np.sqrt(gx * gx + gy * gy + 1), -1, 1)   # light from the upper left (NW-facing slopes lit)
+    hs = np.clip((gx * 0.7 + gy * 0.7) / np.sqrt(gx * gx + gy * gy + 1), -1, 1)   # + = NW-facing (lit), - = SE-facing (shade)
     hmask = np.clip(hgt * 2.2, 0, 1)
+    lmax = maximum_filter(hgt, size=121)
     fmask = np.zeros((H, W), np.uint8)
     for poly in ST['fields']: cv2.fillPoly(fmask, [np.array([[x * 2, y * 2] for x, y in poly], np.int32)], 1)
-    keepoff = cv2.dilate(fmask, np.ones((25, 25), np.uint8)).astype(bool)
-    for seg in ST['rail']: cv2.polylines(keepoff.view(np.uint8), [np.array([[x * 2, y * 2] for x, y in seg], np.int32)], False, 1, 30)
-def story_paint(a, ink, lite, close=False):
-    """painted hill shading only on the story ground + open field tint (array stage)."""
+    keepoff = cv2.dilate(fmask, np.ones((25, 25), np.uint8))
+    for seg in ST['rail']: cv2.polylines(keepoff, [np.array([[x * 2, y * 2] for x, y in seg], np.int32)], False, 1, 30)
+    treeoff = (keepoff | cv2.dilate((hgt > 0.12).astype(np.uint8), np.ones((90, 90), np.uint8))).astype(bool)   # woods keep the story ground open
+    keepoff = keepoff.astype(bool)
+def story_paint(a, close=False):
+    """gentle painted light/shade on the story ground (<=15 % darkening), ravine band, crisp field tint (array stage)."""
     if not ST: return a
-    k = (hmask * hs * 1.1)[..., None]
-    a = np.where(k < 0, a * (1 + k * (0.42 if not close else 0.5)) + np.array(ink, np.float32) * (-k) * 0.12, a * (1 - k * 0.3) + np.array(lite, np.float32) * k * 0.3)
-    f = cv2.GaussianBlur(fmask.astype(np.float32), (0, 0), 3)[..., None]
-    fcol = np.array([182, 172, 110] if not close else [150, 146, 80], np.float32)
+    k = (hmask * hs)[..., None]
+    a = np.where(k < 0, a * (1 + k * 0.15), a * (1 + k * 0.12))
+    a = a * (1 - 0.12 * np.exp(-(rvd / 10) ** 2))[..., None]
+    f = fmask.astype(np.float32)[..., None]
+    fcol = np.array([128, 128, 66] if P['green'] or close else [176, 168, 112], np.float32)
     return a * (1 - f * 0.45) + fcol * f * 0.45
 def story_draw(d, SSf, ink, close=False):
-    """ink layer: ravine, field furrows, railroad with ties, tunnel portals (draw stage, coordinates x SSf)."""
+    """ink layer (draw stage, coordinates x SSf). u = image px per screen px at the zoom this look is seen at."""
     if not ST: return
+    u = 1.5 if not close else 0.6; Z = u * SSf
     c = lambda p: (p[0] * 2 * SSf, p[1] * 2 * SSf)
-    w = (1.0 if not close else 0.7) * SSf
-    rv = [c(p) for p in ST['ravine']]
-    d.line(rv, fill=ink + (200,), width=round(4 * w), joint='curve'); d.line([(x, y - 3 * w) for x, y in rv], fill=(190, 180, 130, 120), width=round(2 * w), joint='curve')
-    for poly in ST['fields']:                               # furrows inside the field
-        xs, ys = [p[0] for p in poly], [p[1] for p in poly]
-        fm = Image.new('L', (W * SSf, H * SSf), 0); ImageDraw.Draw(fm).polygon([c(p) for p in poly], fill=255)
-        fm = fm.filter(ImageFilter.GaussianBlur(6 * SSf)).point(lambda v: 255 if v > 128 + rng.integers(-40, 40) else 0)
-        lay = Image.new('L', (W * SSf, H * SSf), 0); dl = ImageDraw.Draw(lay)
-        for yy in np.arange(min(ys) * 2 * SSf, max(ys) * 2 * SSf, 9 * w):
-            dl.line([(min(xs) * 2 * SSf, yy), (max(xs) * 2 * SSf, yy + 14 * w)], fill=90, width=max(1, round(1.4 * w)))
+    rng2 = np.random.default_rng(3); gys, gxs = np.gradient(hgt)
+    # 1) contour-row hachures
+    step_lev = 0.09
+    for lev in np.arange(0.10, 0.92, step_lev):
+        cs, _ = cv2.findContours((hgt > lev).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        for cnt in cs:
+            if len(cnt) < 20: continue
+            for x, y in cnt[:, 0, :][::max(1, round(4.5 * u))]:
+                if keepoff[y, x] or wdist(x, y) < 9 * K or lev > 0.86 * lmax[y, x]: continue
+                gxv, gyv = gxs[y, x], gys[y, x]; gm = np.hypot(gxv, gyv) + 1e-6
+                ux, uy = -gxv / gm, -gyv / gm
+                L = np.clip(step_lev / gm, 4 * u, 8 * u) * 0.8
+                shd = np.clip(0.5 + 0.5 * (ux * 0.7 + uy * 0.7), 0, 1)        # 1 = facing SE (shade)
+                if shd < 0.35 and rng2.random() < 0.4: continue
+                x0, y0 = x + rng2.normal(0, 0.3 * u), y + rng2.normal(0, 0.3 * u)
+                wd0 = (0.9 + 1.1 * shd) * Z
+                pts = [(x0 * SSf - uy * wd0 / 2, y0 * SSf + ux * wd0 / 2), (x0 * SSf + uy * wd0 / 2, y0 * SSf - ux * wd0 / 2),
+                       ((x0 + ux * L) * SSf + uy * wd0 / 4, (y0 + uy * L) * SSf - ux * wd0 / 4), ((x0 + ux * L) * SSf - uy * wd0 / 4, (y0 + uy * L) * SSf + ux * wd0 / 4)]
+                d.polygon(pts, fill=ink + (int(70 + 130 * shd),))      # tapered stroke
+    # 2) pale crest line along the spine (unhachured)
+    d.line([c(p) for p in ST['ridge']], fill=(205, 200, 150, 70), width=max(1, round(3 * Z)), joint='curve')
+    # 3) ravine: wobbly thalweg + V-notch strokes into it
+    rv = np.array([c(p) for p in ST['ravine']], np.float32); seg = []
+    for (x0, y0), (x1, y1) in zip(rv[:-1], rv[1:]):
+        L = np.hypot(x1 - x0, y1 - y0); ux, uy = (x1 - x0) / L, (y1 - y0) / L
+        for t in np.arange(0, L, 4 * Z):
+            j = rng2.normal(0, 0.8 * Z); seg.append((x0 + ux * t - uy * j, y0 + uy * t + ux * j))
+            if rng2.random() < 0.6:
+                for sgn, al in ((1, 210), (-1, 120)):                      # NW bank faces SE: heavier
+                    sx, sy = x0 + ux * t + uy * sgn * 7 * Z, y0 + uy * t - ux * sgn * 7 * Z
+                    d.line([(sx, sy), (sx - uy * sgn * 5 * Z, sy + ux * sgn * 5 * Z)], fill=ink + (al,), width=max(1, round(1.3 * Z)))
+    d.line(seg, fill=ink + (220,), width=max(1, round(1.6 * Z)), joint='curve')
+    # 4) field: crisp dashed border + parallel furrows along the long axis
+    for poly in ST['fields']:
+        P2 = np.array([c(p) for p in poly], np.float32); ctr = P2.mean(0); ev = np.linalg.eigh(np.cov((P2 - ctr).T))[1][:, -1]
+        nx, ny = -ev[1], ev[0]
+        fm = Image.new('L', (W * SSf, H * SSf), 0); ImageDraw.Draw(fm).polygon([tuple(p) for p in P2], fill=255)
+        lay = Image.new('L', (W * SSf, H * SSf), 0); dl = ImageDraw.Draw(lay); R = np.abs(P2 - ctr).max() * 1.5
+        for o in np.arange(-R, R, 6 * Z):
+            pts = [(ctr[0] + ev[0] * t + nx * (o + np.sin(t / (80 * Z)) * Z), ctr[1] + ev[1] * t + ny * (o + np.sin(t / (80 * Z)) * Z)) for t in np.arange(-R, R, 6 * Z)]
+            dl.line(pts, fill=90, width=max(1, round(1.0 * Z)))
         from PIL import ImageChops
         d.bitmap((0, 0), ImageChops.multiply(lay, fm), fill=ink + (255,))
-    rng2 = np.random.default_rng(3)                          # hill hachures: short ink strokes down the slopes, heavier on the shaded side
-    gys, gxs = np.gradient(hgt)
-    band_ = np.argwhere((hgt > 0.18) & (hgt < 0.75)); band_ = band_[rng2.choice(len(band_), min(len(band_), 9000), replace=False)]
-    placed_ = []
-    for yi, xi in band_:
-        x, y = xi + rng2.uniform(0, 1), yi + rng2.uniform(0, 1)
-        gxv, gyv = gxs[yi, xi], gys[yi, xi]; gm = np.hypot(gxv, gyv)
-        if gm < 0.002 or wdist(x, y) < 9 * K or keepoff[yi, xi]: continue
-        if len(placed_) > 3000: break
-        if any(abs(px - x) < 6 and abs(py - y) < 6 for px, py in placed_[-40:]): continue
-        placed_.append((x, y))
-        ux, uy = -gxv / gm, -gyv / gm; L = rng2.uniform(9, 17) * (1.3 if not close else 1.0)
-        shade = 1 if (gxv + gyv) < 0 else 0
-        d.line([(x * SSf, y * SSf), ((x + ux * L) * SSf, (y + uy * L) * SSf)], fill=ink + ((190 if shade else 110),), width=max(1, round((2.2 if shade else 1.4) * SSf * (1.0 if not close else 0.75))))
-    for seg in ST['rail']:                                  # railroad: dark line + cross ties
-        pts = [c(p) for p in seg]; d.line(pts, fill=ink + (255,), width=round(3 * w), joint='curve')
+        bd = [tuple(p) for p in P2] + [tuple(P2[0])]
+        for (x0, y0), (x1, y1) in zip(bd[:-1], bd[1:]):
+            L = np.hypot(x1 - x0, y1 - y0)
+            for t in np.arange(0, L, 8 * Z): d.line([(x0 + (x1 - x0) * t / L, y0 + (y1 - y0) * t / L), (x0 + (x1 - x0) * min(t + 5 * Z, L) / L, y0 + (y1 - y0) * min(t + 5 * Z, L) / L)], fill=ink + (130,), width=max(1, round(1.3 * Z)))
+    # 5) railroad: pale bed, rail, jittered ties
+    for seg_ in ST['rail']:
+        pts = [c(p) for p in seg_]
+        d.line(pts, fill=(196, 190, 146, 120), width=max(2, round(7 * Z)), joint='curve')
         for (x0, y0), (x1, y1) in zip(pts[:-1], pts[1:]):
             L = np.hypot(x1 - x0, y1 - y0); ux, uy = (x1 - x0) / L, (y1 - y0) / L
-            for t in np.arange(0, L, 12 * w):
-                px, py = x0 + ux * t, y0 + uy * t; d.line([(px - uy * 5 * w, py + ux * 5 * w), (px + uy * 5 * w, py - ux * 5 * w)], fill=ink + (255,), width=max(1, round(1.6 * w)))
-    a_, b_ = [c(p) for p in ST['tunnel']]                     # tunnel: dashed hidden line + two portal arches
+            for t in np.arange(0, L, 8 * Z):
+                a_ = rng2.normal(0, 0.12); vx, vy = -uy * np.cos(a_) - ux * np.sin(a_), ux * np.cos(a_) - uy * np.sin(a_); hl = (3 + rng2.normal(0, 0.35)) * Z
+                px, py = x0 + ux * t, y0 + uy * t; d.line([(px - vx * hl, py - vy * hl), (px + vx * hl, py + vy * hl)], fill=(40, 36, 16, 235), width=max(1, round(1.3 * Z)))
+        d.line(pts, fill=(40, 36, 16, 255), width=max(1, round(2.2 * Z)), joint='curve')
+    # 6) tunnel: pale dashed hidden line on top + outward-facing portals
+    a_, b_ = [c(p) for p in ST['tunnel']]
     L = np.hypot(b_[0] - a_[0], b_[1] - a_[1]); ux, uy = (b_[0] - a_[0]) / L, (b_[1] - a_[1]) / L
-    for t in np.arange(0, L, 14 * w): d.line([(a_[0] + ux * t, a_[1] + uy * t), (a_[0] + ux * min(t + 7 * w, L), a_[1] + uy * min(t + 7 * w, L))], fill=ink + (200,), width=round(2.2 * w))
-    for (px, py) in (a_, b_):
-        r = 9 * w; d.chord([px - r, py - r, px + r, py + r], 180, 360, fill=(30, 26, 12, 255)); d.arc([px - r - 2 * w, py - r - 2 * w, px + r + 2 * w, py + r + 2 * w], 180, 360, fill=(200, 190, 150, 255), width=round(2.4 * w))
+    for t in np.arange(0, L, 11 * Z): d.line([(a_[0] + ux * t, a_[1] + uy * t), (a_[0] + ux * min(t + 6 * Z, L), a_[1] + uy * min(t + 6 * Z, L))], fill=(215, 205, 160, 220), width=max(1, round(2.2 * Z)))
+    for (px, py), sgn in ((a_, -1), (b_, 1)):
+        ox, oy = ux * sgn, uy * sgn; r = 6 * Z                              # portal faces outward along the track
+        d.ellipse([px - r, py - r, px + r, py + r], fill=(170, 160, 128, 255), outline=(40, 36, 16, 255), width=max(1, round(1.3 * Z)))
+        ri = 3.5 * Z; d.ellipse([px + ox * 1.5 * Z - ri, py + oy * 1.5 * Z - ri, px + ox * 1.5 * Z + ri, py + oy * 1.5 * Z + ri], fill=(20, 18, 10, 255))
+        for side in (-1, 1):                                                # cutting walls leading into the portal
+            for k in range(4):
+                bx, by = px + ox * (8 + 4 * k) * Z + (-oy) * side * (7 - k) * Z, py + oy * (8 + 4 * k) * Z + ox * side * (7 - k) * Z
+                d.line([(bx, by), (bx + (-oy) * side * 4 * Z, by + ox * side * 4 * Z)], fill=ink + (170,), width=max(1, round(1.2 * Z)))
 def sh2(m, dy, dx): return sh(sh(m, dy).T, dx).T
 def sh(m, dy): o = np.zeros_like(m); (o.__setitem__(slice(dy, None), m[:-dy]) if dy > 0 else o.__setitem__(slice(None, dy), m[-dy:])); return o
 
@@ -129,12 +171,12 @@ top = (wB & ~sh2(wB, round(3.5 * K), round(2 * K))) | (wD & ~sh2(wD, round(2.5 *
 a[below] = a[below] * 0.5 + np.array([148, 146, 122], np.float32) * 0.5
 yy = np.cumsum(water, axis=0).astype(np.float32)          # depth into the river from its top edge (for the soft fill gradient)
 if P['green']:                                            # owner 2026-11-05: one colour for the whole map, the greener (close) one
-    lum_ = 6.5 * fbm(0.7) + 4 * fbm(1.6) + 3 * fbm(5) + 4 * fbm(40); fl_ = fbm(3)
-    a = np.stack([118 + lum_ + fl_ * 4, 123 + lum_ - fl_, 69 + lum_ * 0.75 - fl_ * 2], -1); del lum_, fl_
+    lum_ = 4.0 * fbm(0.7) + 2.5 * fbm(1.6) + 4 * fbm(5) + 6 * fbm(40); fl_ = fbm(3); sp_ = (fbm(1.5) > 1.4)[..., None]   # critic r3: ref turf (107,112,62)
+    a = np.stack([106 + lum_ + fl_ * 4, 111 + lum_ - fl_, 61 + lum_ * 0.75 - fl_ * 2], -1) + sp_ * np.array([6, 0, -4], np.float32); del lum_, fl_, sp_
     a[below] = a[below] * 0.6
-    a = story_paint(a, (30, 34, 14), (170, 172, 110), close=True)
+    a = story_paint(a)
 else:
-    a = story_paint(a, (50, 44, 20), (190, 184, 140))
+    a = story_paint(a)
 a = cv2.GaussianBlur(a, (0, 0), 0.6)
 a[water] = (77, 125, 154) if P['green'] else (213, 229, 240); a[top] = (60, 100, 126) if P['green'] else (154, 173, 183)
 wm = cv2.GaussianBlur(cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(np.float32), (0, 0), 2)[..., None]
@@ -144,7 +186,10 @@ img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 # ---------- vegetation (drawn at 2x, then softened) ----------
 SS = 2; S = SS * K
 G = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(G)
+MULT = bool(P['mult'])
+if MULT: F = Image.new('L', (W * SS, H * SS), 255); dF = ImageDraw.Draw(F)
 INK, DARK, MID, LITE, UNDER = (50, 44, 20, 255), (86, 81, 52, 255), (118, 112, 82, 255), (150, 145, 108, 255), (70, 64, 35, 255)
+if MULT: INK = (45, 40, 18, 255)
 if P['green'] and P['tint']: INK, DARK, MID, LITE, UNDER = (30, 34, 14, 255), (58, 70, 34, 255), (84, 98, 50, 255), (120, 130, 70, 255), (44, 54, 24, 255)
 wd = ndimage.distance_transform_edt(~cv2.resize(water.astype(np.uint8), (W // 8, H // 8), interpolation=cv2.INTER_NEAREST).astype(bool)) * 8
 def wdist(x, y): return wd[min(int(y // 8), wd.shape[0] - 1), min(int(x // 8), wd.shape[1] - 1)]
@@ -152,7 +197,9 @@ fn = fbm(260) + fbm(90) * 0.6
 fn += 0.9 * np.clip(1 - cv2.resize(wd.astype(np.float32), (W, H)) / (90 * K), 0, 1)      # woods hug the rivers
 thr = np.quantile(fn, 1 - P['forest'])
 def jit(pts, s, amt=0.08): return [(x + rng.normal(0, amt) * s, y + rng.normal(0, amt) * s) for x, y in pts]
-def streak(x, y, s): d.line([(x - 2 * s, y + 1 * s), (x + 14 * s, y + 2 * s)], fill=(60, 55, 30, 110), width=max(2, round(3 * s)))
+def streak(x, y, s):
+    if MULT: dF.line([(x - 2 * s, y + 1 * s), (x + 14 * s, y + 2 * s)], fill=150, width=max(2, round(3 * s))); return
+    d.line([(x - 2 * s, y + 1 * s), (x + 14 * s, y + 2 * s)], fill=(60, 55, 30, 110), width=max(2, round(3 * s)))
 def dome(x, y, s):                                   # mushroom dome ~21x15 screen px: thick dark arch, light hollow inside, open base, dark base smudge
     rx, ry = 8.5 * s * rng.uniform(0.85, 1.15), 8.5 * s * rng.uniform(0.85, 1.12); bump = rng.uniform(0, 6.28); lean = rng.uniform(-0.25, 0.25); arch = []
     cy = y - ry * 0.95
@@ -160,6 +207,14 @@ def dome(x, y, s):                                   # mushroom dome ~21x15 scre
         t = 0.6 * np.pi + 1.8 * np.pi * i / 54; sc = 1 + 0.18 * abs(np.sin(1.5 * (t - 0.6 * np.pi) * 2 + bump)) - 0.06
         arch.append((x + rx * np.cos(t) * sc - lean * rx * np.sin(t) * 0.3, cy + ry * 0.92 * np.sin(t) * sc))
     arch = jit(arch, s * 5, 0.05)
+    if MULT:                                         # ink-and-wash on green: fills shade the turf, outline stays sepia
+        dF.polygon(arch, fill=186); dF.chord([x - rx * 0.6, cy - ry * 0.1, x + rx * 1.05, cy + ry * 1.05], -10, 120, fill=135)
+        d.line(arch, fill=INK, width=max(2, round(2.0 * s)), joint='curve')
+        d.line([(x - rx * 0.1, cy + ry * 0.7), (x, y + 2 * s)], fill=INK, width=max(2, round(2 * s)))
+        for k in range(2):
+            r = rx * rng.uniform(0.22, 0.32); px, py = x + rng.uniform(0.05, 0.45) * rx, cy + rng.uniform(-0.55, -0.1) * ry
+            st = rng.uniform(170, 220); d.arc([px - r, py - r * 0.75, px + r, py + r * 0.75], st, st + rng.uniform(100, 150), fill=INK, width=max(1, round(1.4 * s)))
+        return
     d.polygon(arch, fill=(MID[:3] + (235,)) if P['green'] and P['tint'] else (128, 122, 84, 235))
     d.chord([x - rx * 0.6, cy - ry * 0.1, x + rx * 1.05, cy + ry * 1.05], -10, 120, fill=(50, 44, 20, 255))   # dark crescent lower right
     d.line(arch, fill=INK if P['green'] and P['tint'] else (40, 35, 14, 255), width=max(2, round(2.4 * s)), joint='curve')
@@ -170,6 +225,10 @@ def dome(x, y, s):                                   # mushroom dome ~21x15 scre
 def pine(x, y, s):                                   # plain A-frame ~15x24 screen px, light left half, dark right half
     h, w = 21 * s * rng.uniform(0.9, 1.1), 8.5 * s * rng.uniform(0.9, 1.1)
     tp, l, r, m = (x + rng.normal(0, 0.8) * s, y - h), (x - w, y), (x + w, y), (x, y)
+    if MULT:
+        dF.polygon([tp, l, r], fill=135); dF.polygon([tp, l, (x - 0.3 * w, y)], fill=240); dF.line([(x - w * 0.6, y + 1 * s), (x + w * 1.6, y + 1.8 * s)], fill=140, width=max(2, round(2.6 * s)))
+        d.line(jit([tp, l, r], s * 4) + [tp], fill=INK, width=max(1, round(1.3 * s)), joint='curve'); d.line([(x, y), (x, y + 2.5 * s)], fill=INK, width=max(1, round(1.6 * s)))
+        return
     d.polygon([tp, l, r], fill=DARK); d.polygon([tp, l, (x - 0.3 * w, y)], fill=MID)
     d.line([((tp[0] + r[0]) / 2 - 1.5 * s, (tp[1] + y) / 2 + 2 * s), (x + w * 0.45, y - 1 * s)], fill=INK, width=max(1, round(1.3 * s)))
     d.line([(x - w * 0.6, y + 1 * s), (x + w * 1.6, y + 1.8 * s)], fill=(44, 39, 16, 200), width=max(2, round(2.6 * s)))
@@ -179,8 +238,8 @@ def pine(x, y, s):                                   # plain A-frame ~15x24 scre
 clumps = []; tries = 0
 while tries < 60000:
     tries += 1; x, y = rng.uniform(30, W - 30), rng.uniform(60, H - 20)
-    if fn[int(y), int(x)] < thr or wdist(x, y) < 10 * K: continue
-    R = rng.uniform(40, 80) * K
+    if fn[int(y), int(x)] < thr or wdist(x, y) < 10 * K or (ST and treeoff[int(y), int(x)]): continue
+    R = rng.uniform(30, 60) * K
     if any((x - cx) ** 2 + (y - cy) ** 2 < (R + cr + rng.uniform(15, 50) * K) ** 2 for cx, cy, cr, _ in clumps): continue
     clumps.append((x, y, R, 'pine' if rng.random() < 0.45 else 'dome'))
 trees, hatch = [], []
@@ -191,7 +250,7 @@ for cx, cy, R, t in clumps:
             x, y = xx_ + rng.uniform(-0.45, 0.45) * step, yy_ + rng.uniform(-0.45, 0.45) * step
             if rng.random() < (0.2 if t == 'pine' else 0.06): continue
             dx, dy = (x - cx) / (R * 1.2), (y - cy) / R; th = np.arctan2(dy, dx)
-            if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K or (ST and keepoff[min(int(y), H - 1), min(int(x), W - 1)]): continue
+            if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K or (ST and treeoff[min(int(y), H - 1), min(int(x), W - 1)]): continue
             trees.append((y, x, t))
     for k in range(rng.integers(8, 14)):
         y = cy + rng.uniform(-0.6, 1.15) * R; x0 = cx + rng.uniform(-1.1, 0.8) * R
@@ -199,18 +258,20 @@ for cx, cy, R, t in clumps:
 for _ in range(8):                                     # a few lone pines near clumps
     cx, cy, R, _t = clumps[rng.integers(0, len(clumps))]; x, y = cx + rng.uniform(-1, 1) * (R + 60 * K), cy + rng.uniform(-1, 1) * (R + 40 * K)
     if 0 < x < W and 0 < y < H and wdist(x, y) > 14 * K: trees.append((y, x, 'pine'))
-for x0, y, L in hatch: d.line([(x0 * SS, y * SS), ((x0 + L) * SS, y * SS)], fill=(70, 64, 35, 120), width=max(2, round(2.2 * S)))
+for x0, y, L in hatch:
+    if MULT: dF.line([(x0 * SS, y * SS), ((x0 + L) * SS, y * SS)], fill=150, width=max(2, round(1.7 * S)))
+    else: d.line([(x0 * SS, y * SS), ((x0 + L) * SS, y * SS)], fill=(70, 64, 35, 120), width=max(2, round(2.2 * S)))
 for y, x, t in sorted(trees, key=lambda p: p[0]):
     s = S * rng.uniform(0.88, 1.12); streak(x * SS, y * SS, s); (pine if t == 'pine' else dome)(x * SS, y * SS, s)
 # grass patches: faint long hatch rows first, calligraphic tufts sitting on them
 def blade(x, y, h, bend, s):
     pts_l, pts_r = [], []
     for i in range(9):
-        t = i / 8; px = x + bend * t ** 3; py = y - h * t; wdt = (1.2 - 0.95 * t) * s
+        t = i / 8; px = x + bend * t ** 3; py = y - h * t; wdt = ((1.4 if MULT else 1.2) - (1.15 if MULT else 0.95) * t) * s
         pts_l.append((px - wdt, py)); pts_r.append((px + wdt, py))
-    d.polygon(pts_l + pts_r[::-1], fill=(50, 44, 20, 255))
+    d.polygon(pts_l + pts_r[::-1], fill=(40, 36, 16, 255) if MULT else (50, 44, 20, 255))
 def tuft(x, y, s):                                     # mixed asymmetric glyphs: hooked 'fr', straight 'il', curling fan
-    kind = rng.choice(3, p=[0.33, 0.33, 0.34]); h0 = rng.uniform(12, 16) * s
+    kind = rng.choice(3, p=[0.33, 0.33, 0.34]); h0 = rng.uniform(12, 16) * s * (1.25 if MULT else 1)
     if kind == 0:
         blade(x, y, h0, rng.choice([-1, 1]) * rng.uniform(0, 3) * s, s); blade(x + 1 * s, y - h0 * 0.45, h0 * 0.45, rng.choice([-1, 1]) * rng.uniform(7, 11) * s, s * 0.8)
     elif kind == 1:
@@ -229,21 +290,25 @@ while n < P['patches'] and tries < 20000:
     rows = rng.integers(7, 12)
     for j in range(rows):
         ry_ = y + j * 7 * K * rng.uniform(0.9, 1.2); x0 = x + rng.uniform(-0.15, 0.3) * pw; L = rng.uniform(25, 60) * K
-        d.line([(x0 * SS, ry_ * SS), (min(x0 + L, x + pw) * SS, ry_ * SS)], fill=(105, 100, 66, 150), width=max(2, round(1.7 * S)))
+        if MULT: dF.line([(x0 * SS, ry_ * SS), (min(x0 + L, x + pw) * SS, ry_ * SS)], fill=165, width=max(2, round(1.7 * S)))
+        else: d.line([(x0 * SS, ry_ * SS), (min(x0 + L, x + pw) * SS, ry_ * SS)], fill=(105, 100, 66, 150), width=max(2, round(1.7 * S)))
     for k in range(rng.integers(6, 13)):
         j = rng.integers(0, rows); tuft((x + rng.uniform(0, pw)) * SS, (y + j * 7 * K) * SS, S * rng.uniform(0.85, 1.1))
     n += 1
-story_draw(d, SS, (30, 34, 14) if P['green'] else (50, 44, 20))
-G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.8 * K))
+story_draw(d, SS, (45, 40, 18))
+G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur((0.5 if MULT else 0.8) * K))
+if MULT:
+    Fa = np.asarray(F.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5 * K))).astype(np.float32)[..., None] / 255
+    img = Image.fromarray(np.clip(np.asarray(img).astype(np.float32) * Fa, 0, 255).astype(np.uint8)); del Fa, F
 img.paste(G, (0, 0), G); img.save(out, quality=92); print(out, 'clumps', len(clumps), 'trees', len(trees), 'patches', n)
 
 # ---------- CLOSE battle look (same woods + rivers; tuned for s ~ 3): mossy turf, top-down canopies; vignette is done in CSS ----------
 if P['close']:
     q = 1 / 1.5                                        # screen px -> image px at s ~ 3
-    lum = 6.5 * fbm(max(0.5, 0.7 * q)) + 4 * fbm(1.6 * q) + 3 * fbm(5 * q) + 4 * fbm(40 * q)
-    fl = fbm(3 * q)
-    c = np.stack([118 + lum + fl * 4, 123 + lum - fl, 69 + lum * 0.75 - fl * 2], -1)
-    c = story_paint(c, (30, 34, 14), (170, 172, 110), close=True)
+    lum = 6.5 * fbm(max(0.5, 0.7 * q)) + 4 * fbm(1.6 * q) + 4 * fbm(5 * q) + 6 * fbm(40 * q)
+    fl = fbm(3 * q); sp = (fbm(1.0) > 1.4)[..., None]
+    c = np.stack([106 + lum + fl * 4, 111 + lum - fl, 61 + lum * 0.75 - fl * 2], -1) + sp * np.array([6, 0, -4], np.float32); del sp
+    c = story_paint(c, close=True)
     bank = (cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0) & ~water
     bs = cv2.GaussianBlur(sh2(water, round(2 * K), round(1.5 * K)).astype(np.float32) * (~water), (0, 0), 2)[..., None]
     c = c * (1 - 0.35 * bs); c[water] = (77, 125, 154); c[top] = (60, 100, 126)
@@ -254,14 +319,14 @@ if P['close']:
     ctrees = [(y + rng.uniform(-14, 14) * K, x + rng.uniform(-16, 16) * K, t) for y, x, t in trees for _ in range(3)]
     ctrees = [p_ for p_ in ctrees if wdist(p_[1], p_[0]) > 9 * K]
     for y, x, t in ctrees:
-        R = rng.uniform(18, 28) * q * SS * (0.85 if t == 'pine' else 1); X, Y = x * SS, y * SS
-        cs = [(X + rng.uniform(-0.45, 0.45) * R, Y + rng.uniform(-0.45, 0.45) * R, R * rng.uniform(0.3, 0.8)) for _ in range(rng.integers(5, 10))]
+        R = rng.uniform(12, 20) * q * SS * (0.85 if t == 'pine' else 1); X, Y = x * SS, y * SS
+        cs = [(X + rng.uniform(-0.45, 0.45) * R, Y + rng.uniform(-0.45, 0.45) * R, R * rng.uniform(0.3, 0.8)) for _ in range(rng.integers(8, 15))]
         cans.append(cs)
-        for cx, cy, r in cs: ds.ellipse([cx - r + 6 * SS * q, cy - r + 5 * SS * q, cx + r + 6 * SS * q, cy + r + 5 * SS * q], fill=255)
-    Sh = Sh.resize((W, H), Image.BILINEAR).filter(ImageFilter.GaussianBlur(4 * q))
-    img = Image.composite(Image.new('RGB', (W, H), (15, 20, 10)), img, Sh.point(lambda v: int(v * 0.45)))
+        for cx, cy, r in cs: ds.ellipse([cx - r + 3 * SS * q, cy - r + 3 * SS * q, cx + r + 3 * SS * q, cy + r + 3 * SS * q], fill=255)
+    Sh = Sh.resize((W, H), Image.BILINEAR).filter(ImageFilter.GaussianBlur(6 * q))
+    img = Image.composite(Image.new('RGB', (W, H), (15, 20, 10)), img, Sh.point(lambda v: int(v * 0.35)))
     for cs in cans:                                    # dark rim on the south-east half of each lobe
-        for cx, cy, r in cs: d.ellipse([cx - r + 1.2 * SS * q, cy - r + 1.2 * SS * q, cx + r + 1.2 * SS * q, cy + r + 1.2 * SS * q], fill=(30, 38, 20, 255))
+        for cx, cy, r in cs: d.ellipse([cx - r + 1.2 * SS * q, cy - r + 1.2 * SS * q, cx + r + 1.2 * SS * q, cy + r + 1.2 * SS * q], fill=(34, 44, 24, 255))
     for cs in cans:
         for cx, cy, r in cs: d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(46, 58, 32, 255))
     for cs in cans:                                    # lit north-west disc + stipple only inside it
@@ -271,6 +336,6 @@ if P['close']:
             for k in range(rng.integers(3, 8)):
                 a_, rr = rng.uniform(0, 6.28), lr * np.sqrt(rng.uniform(0, 1)); pr = max(1.0, rng.uniform(0.7, 1.4) * q) * SS
                 px, py = lx + rr * np.cos(a_), ly + rr * np.sin(a_); d.ellipse([px - pr, py - pr, px + pr, py + pr], fill=(74, 90, 48, 220))
-    story_draw(d, SS, (34, 30, 14), close=True)
+    story_draw(d, SS, (45, 40, 18), close=True)
     G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5)); img.paste(G, (0, 0), G)
     img.save(P['close'], quality=92); print(P['close'])
