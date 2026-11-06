@@ -366,7 +366,7 @@ const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy; const cl = (v,
   const k = clampK(s); if (k > 0) { const ccx = cl(cx, 960 / s, 2880 - 960 / s), ccy = cl(cy, 540 / s, 1620 - 540 / s); cx += (ccx - cx) * k; cy += (ccy - cy) * k; }
   if (s < 0.9) { const mx = cl(cx, AR[0] + 960 / s, AR[0] + AR[2] - 960 / s), my = cl(cy, AR[1] + 540 / s, AR[1] + AR[3] - 540 / s); const j = 1 - k; cx += (mx - cx) * j; cy += (my - cy) * j; }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s });
-  const op = s >= 0.35 ? 0 : s <= 0.12 ? 1 : Math.log(0.35 / s) / Math.log(0.35 / 0.12);
+  const op = s >= 0.6 ? 0 : s <= 0.22 ? 1 : Math.log(0.6 / s) / Math.log(0.6 / 0.22);   // the river map takes over early in the pull-out
   PW.style.opacity = op.toFixed(3); setMask(s < 0.8); camHook(s, cx, cy);
   if (R2.style.webkitMaskImage === "none" && maskOn) { R2.style.webkitMaskImage = R2.style.maskImage = FEATHER; } };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
@@ -464,20 +464,21 @@ const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">LINCOLN WROTE</div><div style="font-size:48px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">THE FATHER OF WATERS AGAIN WENT UNVEXED TO THE SEA</div></div>`,
   "left:0;right:0;bottom:130px;display:flex;justify-content:center;", T_FATHER - 0.2, T_EVERY - 0.3);
 // flags on the river map (48 px, no names): the US on the river, the Confederacy on both sides of it (cut in two from July: shown, not spoken)
-const MFL = [flagS("assets/media/us35_flag.png", "", ...L(33.3, -91.75), T_FATHER + 0.4, END + 1), flagS(FL.cs, "", ...L(32.3, -88.4), T_FATHER + 0.45, END + 1)];   // one pair: the US west of the river, the Confederacy east
+const MFL = [flagS("assets/media/us35_flag.png", "", ...L(33.3, -91.75), T_LIN + 0.45, END + 1), flagS(FL.cs, "", ...L(32.3, -88.4), T_LIN + 0.5, END + 1)];   // one pair: the US west of the river, the Confederacy east
 // ---------- m2-12: the supply line he cut; method card line 2 on the spoken words ----------
 K.target(VKS[0], VKS[1], T_GATES, { r: 30 / S3, until: T_GATES + 2.6 });
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["ATTACKED THE MOMENT THE ENEMY HESITATED", "CUT HIS SUPPLY LINE · FED HIS MEN OFF THE LAND", ""];   // line 1 = move 1 (m1-9), line 2 = spoken here (m2-12)
-const MC = GG.method(2, T_CUT - 0.2, T_FEW - 0.2, [T_CUT - 0.1, T_FED - 0.1]);   // line 2 lands on "fed his men off the land" MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
+const MC = GG.method(2, T_CUT - 0.2, T_FEW - 0.2, [T_CUT - 0.1, T_FED - 0.1]);   // line 2 lands on "fed his men off the land"
+MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "40px"; }); MC.style.top = "690px";   // lower band: Vicksburg + the river-map flags stay visible above it
 { const r1 = MC.querySelectorAll(".row.lit")[0]; r1.style.opacity = "0.6"; }
 const FEW = [L(32.35, -90.88), L(32.30, -90.19)];
 K.target(FEW[0][0], FEW[0][1], T_FEW + 0.3, { r: 28 / S3, until: END + 0.5 });
 // the siege close-up layer leaves as the camera goes out (units + their cards, flags, white flags, the pole flag, the town stay readable only up close)
 const CLOSE = [...["u15", "u17", "u13", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS35, FCS, ...WFL, POLE, TV];
-CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.5 }, T_FATHER - 0.1));   // out just before the river-map pair lands (one pair per shot)
+CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.5 }, T_LIN));   // out as the pull-out starts (Pemberton's card never slides over the town)   // out just before the river-map pair lands (one pair per shot)
 // Vicksburg stays a permanent town symbol on the river map
-town("VICKSBURG", VKS, "r", T_FATHER + 0.4);   // after the river-map flags are up (both flags on every frame)
+town("VICKSBURG", VKS, "r", T_LIN + 0.5);   // after the river-map flags are up (both flags on every frame)
 // every constant-size element exists now: apply the camera once more so frame 0 is right
 applyCam(); tl.call(applyCam, null, 0);
 fixImgs();

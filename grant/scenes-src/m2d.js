@@ -397,7 +397,7 @@ smoke(BATP.map((p) => [p[0] + 4, p[1] - 6]), T_ATT, 1.6);
 smoke(BATP.map((p) => [p[0] + 4, p[1] - 6]), T_HRS + 1.0, 1.6);
 const HRS = scr(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)">
   <div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">NEARLY</div><div class="v" style="font-size:64px;letter-spacing:.04em;line-height:1.05">0 HOURS</div><div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">PORTER'S EIGHT GUNBOATS</div></div>`,
-  "left:0;right:0;top:160px;display:flex;justify-content:center;", at(P1, "nearly five") - 0.05, T_SIL - 0.15);   // ~2.1 s up; out before the stamp
+  "left:0;right:0;top:120px;display:flex;justify-content:center;", at(P1, "nearly five") - 0.05, T_SIL - 0.15);   // ~2.1 s up; out before the stamp
 { const v = HRS.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 5.5, duration: 0.6, ease: "power1.out", onUpdate: () => { v.textContent = (st.x >= 5.45 ? "5½" : Math.floor(st.x)) + " HOURS"; } }, T_HRS);
   for (let k = 0; k < 6; k++) SFX("tick", T_HRS + k * 0.1); }
 // big stamps on the empty ground east of the bluffs (screen right), not over the river (2d item 8)
@@ -441,7 +441,7 @@ LANDP.forEach((s, k) => { const b = [s[0] - 22, s[1] + 4 * (k - 1)];
 NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
 const LU = [["l13", 1172, 878], ["l9", 1226, 992], ["l17", 1122, 1018]];   // inland of the Bruinsburg dot, clear of its name
 LU.forEach(([id, x, y], k) => { unitS(id, "carth", [x - 110, y + 10], "infantry", "", { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); tagAt(id, null); along(id, [[x - 110, y + 10], [x, y]], T_ASH + k * 0.3, 1.8, 8); });
-pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 1.2, END + 1, true);
+pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 2.2, END + 1, true);   // after the 17,000 ticker has gone
 // the ground changes hands: the Bruinsburg bridgehead in red ink hatching (~3 s, then it dissolves)
 hatch("assets/media/gn_grandgulf_bruinsburg_mx.png", T_ASH + 0.6, 3.0);
 const TK17 = ticker("ABOUT", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K + 0.3, 0.9, T_ASH + 1.6, 7, { col: "#7fb0ff", pre: "~", sub: "UNION SOLDIERS ASHORE" });

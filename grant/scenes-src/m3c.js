@@ -381,7 +381,7 @@ glowPath(G.BREACH.map((q) => [q[0] + 10, q[1]]), T_TWO - 0.3, T_TWO + 3.0, { pad
 boxP("About two miles wide", 1585, 752, T_TWO - 0.1, T_TWO + 3.2, { size: 24 });
 // ---------- Smith stops for the night; the open road to the city he did not take ----------
 nightWash(T_STOP, null, 0.45, 1.6); K.night({ lines: [FR], tOn: T_STOP });
-[[[1470, 800], [1420, 820], [1392, 842]], [[1468, 845], [1430, 860], [1400, 868]]].forEach((pts, k) => {
+[[[1470, 852], [1430, 858], [1398, 860]], [[1470, 886], [1432, 881], [1402, 872]]].forEach((pts, k) => {
   const a = arw({ pts, side: "carth", t: T_WAIT - 0.2 + k * 0.3, dur: 1.2, width: AW(2.6, 6), until: END + 1 }); gsap.set(a, { opacity: 0.45 }); });
 focus(G.PETERSBURG, 40, T_WAIT, END + 1);
 B.caption("SMITH STOPPED FOR THE NIGHT", T_STOP + 0.9, END + 1, "carth");

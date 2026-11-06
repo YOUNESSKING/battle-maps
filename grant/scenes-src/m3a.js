@@ -420,7 +420,7 @@ const M18 = sub(G.MARCH1.map((q) => [q[0] - 4, q[1] + 3]), 0, 0.35, 12), M6 = su
 trailArw(G.MARCH1, "carth", T_SOUTH2 - 0.6, 3.0, 4.2);
 trailArw(G.MARCH2, "carth", T_SOUTH2 - 0.2, 3.0, 4.2);
 B.caption("MARCHED SOUTH BY BACK ROADS", T_STOP2 + 0.2, T_STOP2 + 2.8, "carth");
-pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADN + 0.1, null, true, [0, 150]);
+pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADN + 0.1, null, true, [100, 4]);
 pulseU("u2", T_LEAD);
 fixImgs();
 B.finish();
