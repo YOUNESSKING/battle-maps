@@ -439,7 +439,7 @@ RED.forEach(([id, p, sz]) => U(id, "rome", p, "", sz));
 B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.move("r4", 0.6, 12, ...L(32.14, -90.80));
 // Banks' column on the Red River (Alexandria), far from Port Hudson
 unitS("bk", "carth", ALX, "infantry", "BANKS", { t: T_BANKS + 0.1, size: "XX" });
-pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, null, true);   // STYLE W: Banks' portrait at his column (no corner badge)
+pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, T_DO + 0.3, true);   // steps out as his column crawls off the frame under the card   // STYLE W: Banks' portrait at his column (no corner badge)
 // ---------- m2-7 beats ----------
 pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, null, true);   // STYLE W: Grant's portrait at his army in the bridgehead
 // across the river: the crossing pulses; deep in enemy country: red rings close round the bridgehead
