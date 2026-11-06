@@ -475,7 +475,7 @@ SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (both on every frame, re-placed for the overview) ----------
 flagS(FL.us, 1640, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1330, 720, 0, T_Z1 - 1.0);
-flagS(FL.us, 1950, 950, T_Z1 - 1.2, END + 1); flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
+flagS(FL.us, 2500, 600, T_Z1 - 1.2, END + 1); flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
 // ---------- 16-18 June: Smith's men and Hancock's corps; Lee's veterans arrive; the assaults fail ----------
 const NL = G.NEWLINE;
 const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(2.1), until: T_Z0 + 1.0 });
@@ -502,7 +502,7 @@ shoot([1438, 915], [1478, 916], T_18 + 3.1, { r: 4, width: 0.6, dur: 0.5, h: 6 }
 // casualty card (the OLD clean K.casualties card, STYLE_LOCK 0b; real numbers only: FACTCHECK_C #9, ~11,400 Union, 15-18 Jun). Union column only:
 // the Confederate loss is not spoken, so column B is removed.
 const NC = K.casualties({ rows: [["", "~11,400"]], flagA: FL.us, headA: "UNION", flagB: FL.cs, t: T_LOST - 0.1, until: T_GONE - 0.1, top: 520 });
-NC.style.justifyContent = "flex-end"; NC.style.paddingRight = "70px";   // critic r1: on the empty ground east of the US flag
+NC.style.justifyContent = "flex-end"; NC.style.paddingRight = "40px";   // critic r1: on the empty ground east of the US flag
 { const inner = NC.firstElementChild; inner.removeChild(inner.lastElementChild); inner.style.flexWrap = "wrap"; inner.style.maxWidth = "520px"; inner.style.justifyContent = "center"; inner.style.background = "rgba(18,16,12,0.96)";
   const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FOUR DAYS OF ASSAULTS"; inner.insertBefore(h, inner.firstChild);
   const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:18px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "MEN LOST"; inner.appendChild(f); }

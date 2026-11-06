@@ -535,13 +535,12 @@ const WIN = [[T_NICK + 0.2, T_SURR - 0.2], [T_SURW, T_EACH - 0.2], [T_EACH, T_E1
 const E = EngageK(B);
 const FC = E.final({ moves: [["THE TWO RIVER FORTS", ""], ["VICKSBURG", ""], ["THE JAMES", ""]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL,
   tFamily: F_FAM, tSub: F_SUB, until: END + 1 });
-FC.querySelector(".fam").innerHTML = `SOMEONE IN YOUR FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY · WE READ EVERY ONE</span>`;
+FC.querySelector(".fam").innerHTML = `FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY</span>`; FC.querySelector(".fam").style.fontSize = "46px";   // critic r1: >= 22 px in the end-screen band (scale 0.5)
 // end screen: the last ~20 s the card shrinks to a top band and the dark backing lifts, the map alive under it
 const tBand = Math.max(F_TELL + 1.2, END - 20);
 // Confederate flag clear of the EACH TIME card and the big final-question card, back to its place once the card shrinks to the top band
 flagS(FL.cs, 950, 975, T_EACH - 0.2, tBand); flagS(FL.cs, 1010, 790, tBand, END + 1);
 tl.to(FC, { scale: 0.5, y: -100, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);   // header >= 40 px from the top
-tl.to(FC.querySelector(".fam"), { autoAlpha: 0, duration: 0.4 }, tBand - 0.2);   // the family line would shrink below 22 px in the band: it leaves (spoken before)
 document.getElementById("date").style.zIndex = 60;   // the date scroll stays at full strength above the question's dark backing
 const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
 WIN.push([F_Q, END + 1]);
