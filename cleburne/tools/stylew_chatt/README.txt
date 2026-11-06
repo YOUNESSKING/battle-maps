@@ -1,0 +1,1 @@
+chatt_w was made with msw_chatt.py (make_style_w.py copy, main-river pruning 20) run from a folder holding assets/ (fixed one-line Tennessee river layers, no reservoirs). Re-running the stock make_style_w.py on chatt brings back the broken reservoir fork.
