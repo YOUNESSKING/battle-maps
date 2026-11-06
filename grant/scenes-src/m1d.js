@@ -478,9 +478,10 @@ const GU = sstamp("GIVE UP", 250, T_GU - 0.05, { size: 64, until: END - 0.1, pos
 restake(BUW, [100, -30], [80, -150], T_NIGHT - 0.6, 1.6); restake(PPW, [0, -150], [40, -190], T_NIGHT - 0.6, 1.6); restake(FLW, [-102, -64], [20, -150], T_NIGHT - 0.6, 1.6);
 { const scrollGuard = () => document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;   /* a counter inside the date-scroll area (+30 px) steps out */
     const hit = r.right > 45 && r.left < 600 && r.bottom > 45 && r.top < 215;
-    [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.visibility = hit ? "hidden" : ""; }); });
+    [...b.parentElement.children].forEach((ch) => { if (ch.querySelector(".pcard")) return; if (hit) { ch.dataset.sg = "1"; ch.style.visibility = "hidden"; } else if (ch.dataset.sg) { delete ch.dataset.sg; ch.style.visibility = ""; } }); });   /* restores only what it hid (tags stay as pinPortrait set them) */
   const flagGuard = () => document.querySelectorAll(".sflag img").forEach((im) => { const r = im.getBoundingClientRect(); im.style.visibility = r.width && r.right > 45 && r.left < 600 && r.bottom > 45 && r.top < 215 ? "hidden" : ""; });   /* side flags too */
-  tl.to({ k: 0 }, { k: 1, duration: END, ease: "none", onUpdate: () => { scrollGuard(); flagGuard(); } }, 0); tl.call(scrollGuard, null, END - 0.01); }
+  tl.to({ k: 0 }, { k: 1, duration: END, ease: "none", onUpdate: () => { scrollGuard(); flagGuard(); } }, 0);
+  { const prev = tl.eventCallback("onUpdate"); tl.eventCallback("onUpdate", () => { if (prev) prev(); scrollGuard(); flagGuard(); }); }   /* run again after every child has rendered (camera moved) */ tl.call(scrollGuard, null, END - 0.01); }
 fixImgs();
 K.raiseTerritory();
 B.finish();
