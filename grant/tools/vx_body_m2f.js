@@ -66,14 +66,14 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 [DEC, BACK, OA, OB].forEach((el) => tl.getTweensOf(el).filter((tw) => tw.startTime() < 1.0).forEach((tw) => tw.kill()));
 gsap.set(DEC, { autoAlpha: 1, scale: 1 }); gsap.set([OA, OB], { autoAlpha: 1, y: 0 }); gsap.set(BACK, { autoAlpha: 0.56 }); dropCues(0, 1.0);
-Object.assign(DEC.style, { top: "530px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
+Object.assign(DEC.style, { top: "565px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
 BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 // the supply line back to Grand Gulf (the base) flickers and is cut
 const SUP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.04, -90.93), L(31.995, -90.955)];
 const SUPL = document.createElementNS(NSs, "path"); SUPL.setAttribute("d", "M" + SUP.map((q) => q.join(" ")).join(" L"));   // STYLE W: the supply line = a thin solid sepia ink line
 Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": (2.4 / KA[2]).toFixed(2), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.8 }).forEach(([k, v]) => SUPL.setAttribute(k, v)); OVL.appendChild(SUPL);
-const GGB = boxL("HIS BASE", GGF[0] - 120, GGF[1] + 40, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
+const GGB = boxL("HIS BASE", GGF[0] + 40, GGF[1] + 48, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
 tl.to(SUPL, { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 5, ease: "none" }, T_CUTL + 1.5); tl.to(SUPL, { opacity: 0, duration: 0.4 }, T_CUTL + 2.4);
 // critic r1: no separate CUT LOOSE stamp (the card lights CUT LOOSE; Sherman's card follows at once)
 // Sherman's warning: one road, the wagons bunch on it
@@ -98,7 +98,7 @@ const GRC = scr(`<div style="max-width:1400px;padding:18px 46px 22px;background:
   <div class="l1" style="display:flex;gap:26px;justify-content:center;align-items:center;font-size:40px;font-weight:600;letter-spacing:.06em;margin-top:8px">
     <span class="i0" style="display:flex;align-items:center;gap:10px">${ICO.bread}HARD BREAD</span><span class="i1" style="display:flex;align-items:center;gap:10px">${ICO.coffee}COFFEE</span><span class="i2" style="display:flex;align-items:center;gap:10px">${ICO.salt}SALT</span></div>
   <div class="l2" style="font-size:52px;font-weight:700;line-height:1.15;letter-spacing:.03em;margin-top:12px">“MAKE THE COUNTRY FURNISH THE BALANCE”</div></div>`,
-  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_BREAD - 0.2, T_SET - 0.3);
+  "left:0;right:0;bottom:110px;display:flex;justify-content:center;", T_BREAD - 0.2, T_SET - 0.3);   // critic r2: lower band, clear of the units
 [[".i0", T_BREAD - 0.1], [".i1", T_COF - 0.1], [".i2", T_COF + 0.6], [".l2", T_FURN - 0.1]].forEach(([q, t]) => { const e = GRC.querySelector(q); gsap.set(e, { autoAlpha: 0 });
   tl.fromTo(e, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); SFX(q === ".l2" ? "hit" : "ref:pop", t + 0.05); });
 tl.fromTo(GRC.querySelector(".l2"), { scale: 1.15 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, T_FURN - 0.1);
@@ -106,7 +106,7 @@ tl.fromTo(GRC.querySelector(".l2"), { scale: 1.15 }, { scale: 1, duration: 0.3, 
 B.caption("ABOUT TWO DAYS OF FOOD", T_TWO - 0.1, T_BEEF - 0.2, "carth");
 const COW = `<svg width="64" height="45" viewBox="0 0 40 28" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><path d="M4 9 Q4 5 9 5 L28 5 Q31 2 34 3 L37 6 Q39 9 35 10 L33 11 L33 18 L30 18 L30 25 L27 25 L27 18 L12 18 L12 25 L9 25 L9 18 Q4 17 4 13 Z" fill="#6b4a2a" stroke="#f3eee2" stroke-width="1.4"/><circle cx="18" cy="11" r="3" fill="#f3eee2"/></svg>`;
 const CORN = `<svg width="34" height="59" viewBox="0 0 22 38" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><ellipse cx="11" cy="14" rx="6" ry="12" fill="#f1c84a" stroke="#6b4a1a" stroke-width="1.4"/>${[6, 10, 14, 18, 22].map((y) => `<line x1="6" y1="${y}" x2="16" y2="${y}" stroke="#b8902a" stroke-width="1"/>`).join("")}<path d="M11 36 Q3 26 4 12 Q8 24 11 30 Q14 24 18 12 Q19 26 11 36 Z" fill="#6c8a3a" stroke="#2a3a1a" stroke-width="1"/></svg>`;
-const ICP = [[COW, L(32.05, -90.84), T_BEEF], [CORN, L(32.11, -90.74), T_CORN - 0.2], [COW, L(32.16, -90.66), T_CORN + 0.4], [CORN, L(32.03, -90.73), T_CORN + 0.9], [COW, L(32.12, -90.58), T_INL + 0.3]];
+const ICP = [[COW, L(31.99, -90.84), T_BEEF], [CORN, L(32.05, -90.70), T_CORN - 0.2], [COW, L(32.09, -90.62), T_CORN + 0.4], [CORN, L(31.97, -90.76), T_CORN + 0.9], [COW, L(32.05, -90.55), T_INL + 0.3]];   // critic r2: clear of the corps boxes
 const ICE = ICP.map(([svg, p, t]) => { const el = pinS(GG.pin(svg, p[0], p[1], { t, pop: true, until: T_PG })); SFX("ref:pop", t + 0.05); return el; });
 const MV0 = T_SET + 0.2;
 arw({ pts: [L(31.99, -90.95), L(32.04, -90.84), L(32.09, -90.74)], side: "carth", t: MV0, dur: 2.2, width: AW(1.5, 12), until: T_PG });

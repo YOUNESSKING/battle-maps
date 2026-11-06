@@ -38,7 +38,7 @@ const sKeys = [[0, 1300, 560, 1.1], [T_POR, 1300, 560, 1.3], [T_SIL, 1310, 580, 
 const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]) { const [a, , , sa] = sKeys[i - 1], [b, , , sb] = sKeys[i], u = (t - a) / Math.max(0.01, b - a); return sa + (sb - sa) * u; } return sKeys[sKeys.length - 1][3]; };
 camera(sKeys);
 // ---------- HUD ----------
-dateNow("29 APRIL 1863", T_NIGHT - 0.1); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
+dateNow("29 APRIL 1863", T_NIGHT - 0.1); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_NDEF - 1.1, 32); B.date("30 APRIL 1863", T_NDEF - 1.0, END + 1, 32);   // critic r2: the date turns with the dawn light
 // STYLE W: clean map; the ground that changes hands (the Bruinsburg bridgehead) hatches blue on "stepped ashore", ~3 s, then dissolves
 hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_ASH - 0.2, 3.0);
 // flags (both on every frame): US on the Louisiana shore, then in the bridgehead; the Confederacy on the Mississippi bluffs
@@ -66,7 +66,7 @@ const HRS = scr(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.9
   <div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">NEARLY</div><div style="font-size:64px;letter-spacing:.04em;line-height:1.05">5½ HOURS</div></div>`,
   "right:90px;top:430px;", T_HRS - 0.2, T_SIL - 0.2);   // critic r1: the spoken figure only, on empty ground right (clear of the gunboats + Porter)
 SFX("tick", T_HRS);
-const SIL = sstamp("DID NOT SILENCE A SINGLE GUN", 790, T_SIL, { size: 56, shake: 5, until: T_SIL + 2.4 });
+const SIL = sstamp("DID NOT SILENCE A SINGLE GUN", 790, T_SIL, { size: 50, shake: 5, until: T_SIL + 2.4, css: "left:110px;top:800px;" });   // critic r2: clear of the CS flag
 BAT.forEach((p, k) => tl.fromTo(B.units["bt" + k].el.querySelector(".blk"), { scale: 1 }, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_SIL + 0.3 + k * 0.12));
 // "Ten thousand soldiers waited on transports and watched"
 const TK = ticker("SOLDIERS ON THE TRANSPORTS", 10000, "", "right:90px;top:430px;", T_10K - 0.1, 1.0, T_NIGHT - 0.2, 6, { col: "#7fb0ff", sub: "WAITED AND WATCHED" });
@@ -89,8 +89,8 @@ const TPG = town("PORT GIBSON", PG, "r", T_PG);
 const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
 TR.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.2));
-pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true);   // Grant with the waiting transports (named on "The first place Grant picked")
-pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "right");   // Porter leads the night run
+pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true, "right");   // side stake: clear of the top edge   // Grant with the waiting transports (named on "The first place Grant picked")
+pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "left");   // Porter leads the night run
 // critic r1: the Grand Gulf batteries + their infantry step out at the landing (they would sit cut at the top edge)
 ["bt0", "bt1", "bt2", "bt3", "cs1"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, T_NDEF - 0.5));
 GBT.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.3));

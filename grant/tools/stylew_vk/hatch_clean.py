@@ -19,6 +19,7 @@ m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((11, 11), np.uint8)).astype(bool
 m = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3) > 0.55
 lab, n = ndimage.label(m); minpx = int(O.get('minpx', 1500))
 if n: sz = ndimage.sum(m, lab, range(1, n + 1)); m = np.isin(lab, 1 + np.where(sz >= minpx)[0])
+if O.get('largest') and m.any(): lab, n = ndimage.label(m); sz = ndimage.sum(m, lab, range(1, n + 1)); m = lab == 1 + int(np.argmax(sz))   # one clean patch on one bank
 yy, xx = np.mgrid[0:1620, 0:2880]; STEP, LW = int(O.get('step', 9)), int(O.get('lw', 2))
 col = (200, 50, 40) if side == 'red' else (40, 80, 190)
 o = np.zeros((1620, 2880, 4), np.uint8); o[m & (((xx + yy) % STEP) < LW)] = col + (191,)
