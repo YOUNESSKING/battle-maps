@@ -423,7 +423,7 @@ camera([[0, ...CD], [T_PAPER, ...CD], [T_ARGUED + 1.0, ...CD2], [T_MAY - 0.2, ..
 B.showDate(0);
 
 // ---------- title (alone, no date of its own: the date scroll carries the date) ----------
-B.title("MOVE 3", "PICKETT'S MILL", "", 0.1, T_CAMP - 0.2);
+{ const ti = B.title("MOVE 3", "PICKETT'S MILL", "", 0.1, T_CAMP - 0.2), inn = ti.querySelector(".inner"); inn.style.background = "#17150f"; inn.style.opacity = "1"; inn.style.marginTop = "80px"; }   // opaque panel, >= 12 px below the Union armies box
 SFX("hit", 0.4);
 
 // ---------- permanent towns + flags (48 px, one pair per shot) ----------
@@ -454,7 +454,7 @@ tl.fromTo(doc.firstElementChild, { scaleY: 0.08 }, { scaleY: 1, duration: 0.5, e
 tl.fromTo(doc.querySelector(".l2"), { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.3 }, T_WIN - 0.1);
 SFX("hit", T_FREE);
 // the verbatim line (first half only, as spoken; quote marks = verbatim)
-quote("“AS BETWEEN THE LOSS OF INDEPENDENCE AND THE LOSS OF SLAVERY…”", "CLEBURNE", T_WORDS + 0.3, Math.min(T_NOT - 0.3, T_WORDS + 3.8), { size: 44, mw: 1500, top: 205 });
+quote("“AS BETWEEN THE LOSS OF INDEPENDENCE AND THE LOSS OF SLAVERY…”", "CLEBURNE", T_WORDS + 0.3, Math.min(T_NOT - 0.3, T_WORDS + 3.8), { size: 38, mw: 1500, top: 322 }).querySelector("div").style.background = "#17150f";   // opaque, below the US flag and the Union box
 banner("NOT TRYING TO END SLAVERY FOR ITS OWN SAKE", "left:0;right:0;top:900px;", T_HUM + 0.3, T_HUM + 3.8, 34);
 B.caption("HE WAS TRYING TO SAVE A GOVERNMENT THAT HAD BEEN BUILT ON IT", T_SAVE, T_MOST - 0.2, "");
 badge({ name: "JEFFERSON DAVIS", role: "PRESIDENT", photo: PHOTO("davis"), flag: FL.cs, side: "carth", corner: "tr", initials: "JD", t: T_DAVIS - 0.1, until: T_DAVIS + 3.4 });
@@ -481,7 +481,7 @@ unitS("how", "rome", HM[0], "infantry", "HOWARD", { t: T_HOW, size: "XXX" });
 pinPortrait("how", PHOTO("howard"), FL.us, "Howard", T_HOW + 0.2, END + 1, true);
 trail(HM.slice(0, 4), "#be3a2a", AW(5.6, 3), T_MARCH - 0.2, T_SAW - T_MARCH + 0.4, END + 1);
 along("how", HM.slice(0, 4), T_MARCH, T_SAW - T_MARCH, 20);
-boxP("THE WOODS", 1440, 1040, T_MARCH + 0.3, T_CAV, { size: 22 });
+boxP("THE WOODS", 1412, 1050, T_MARCH + 0.3, T_CAV, { size: 22 });
 scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">HOWARD BELIEVED</div><div style="font-size:32px;letter-spacing:.06em;margin-top:4px">AROUND THE END OF JOHNSTON'S LINE</div></div>`,
   "right:40px;top:560px;", T_BEL - 0.1, Math.min(T_CAV - 0.3, T_BEL + 3.4));   // on the empty ground east of the front, off the units
