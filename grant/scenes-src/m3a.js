@@ -477,11 +477,11 @@ BU.forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X
 RU.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "XXX" }));
 unitS("v5", "carth", [1470, 822], "infantry", null, { t: 0, size: "XXX" });            // Warren's Fifth Corps in reserve
 unitS("rr", "rome", [1398, 822], "infantry", null, { t: 0, size: "XXX" }); B.move("rr", 0, 4.0, 1414, 818);   // moving at frame 0
-B.move("v5", 0.3, 3.5, 1468, 818);
+B.move("v5", 0.3, 3.5, 1480, 812);   // critic: Warren's reserve >= 12 px clear of the trench boxes
 // Grant cannot break through Lee's lines: a probe that bounces, the guns of the line fire (visible, powder smoke)
 badgeC({ name: "ULYSSES S. GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_GRANT - 0.1, until: T_NOT + 1.2 });   // no unit of his on this map
 pinPortrait("r1", PHOTO("lee"), FL.cs, "Lee", T_LEE - 0.1, END + 1, true, "west");   // Lee's card at his line while his part of the story runs (steps out before the night shot crops it at the top edge)
-arw({ pts: [[1466, 806], [1452, 808], [1444, 810]], side: "carth", t: T_GRANT + 0.1, dur: 0.9, width: AW(6.2, 9), until: T_NOT + 0.4 });
+arw({ pts: [[1466, 803], [1452, 804], [1445, 805]], side: "carth", t: T_GRANT + 0.1, dur: 0.9, width: AW(6.2, 9), until: T_NOT + 0.4 });
 shoot([1426, 802], [1450, 808], T_GRANT + 0.9, { r: 2.2, width: 0.35, dur: 0.5, h: 3 }); smoke([[1426, 801], [1427, 799]], T_GRANT + 0.9, 1.0);
 shoot([1428, 820], [1453, 815], T_LEE + 0.5, { r: 2.2, width: 0.35, dur: 0.5, h: 3 }); smoke([[1428, 819], [1429, 817]], T_LEE + 0.5, 1.0);
 crosses([[1446, 809]], T_NOT, T_NOT + 3.0, 1.2);
@@ -522,7 +522,7 @@ K.night({ lines: [FR], tOn: T_DARK });
 pinPortrait("v5", PHOTO("warren"), FL.us, "Warren", T_WAR, END + 1, true, "right");
 glowPath(G.CHICK.slice(2, 9), "", 1.3, T_CHICK - 0.2, T_CHICK + 3.2);
 curveLabel("Chickahominy River", G.CHICK.slice(8, 12).map((q) => [q[0] + 5, q[1] - 6]), T_CHICK, T_CHICK + 3.3, 22);   // downstream of Warren's card
-along("v5", [[1468, 818], ...G.WARREN.slice(1)], T_CHICK - 0.3, 4.2, 18);
+along("v5", [[1480, 812], ...G.WARREN.slice(1)], T_CHICK - 0.3, 4.2, 18);
 arw({ pts: G.WARREN.slice(0, 5), side: "carth", t: T_CHICK - 0.2, dur: 3.6, width: AW(4.6, 8), until: T_CHICK + 5.4 });
 const WF = frontS({ pts: [[1452, 878], [1449, 890], [1451, 902]], sideA: "carth", sideB: "rome", t: T_FACED, dur: 1.2, width: FWw(4.6), until: END + 1 });
 K.night({ lines: [WF], tOn: T_FACED });

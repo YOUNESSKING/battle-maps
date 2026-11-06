@@ -50,14 +50,16 @@ flagS(FL.us, 1392, 885, T_X2 + 0.4, T_X3 + 0.8); flagS(FL.cs, 1600, 1010, T_X2 +
 const VK = G.mis.VICKSBURG;
 boxS("VICKSBURG", VK[0] + 40, VK[1] - 40, T_VICK, null, { size: 28 });
 K.target(VK[0], VK[1], T_VICK + 0.1, { r: 30, side: "#ffd54a", until: T_WENT });
-arw({ pts: G.mis.VKS, side: "carth", t: T_WENT - 0.2, dur: 3.2, width: AW(1.9, 8), until: Math.min(T_X3 - 0.3, T_WENT + 5.0) });
+// critic: the loop ends short of Vicksburg (>= 12 px from the red box there), and the blue box ends with it
+const VKE = (() => { const L = G.mis.VKS, a = L[L.length - 2], b = L[L.length - 1]; return [...L.slice(0, -1), [a[0] + (b[0] - a[0]) * 0.4, a[1] + (b[1] - a[1]) * 0.4]]; })();
+arw({ pts: VKE, side: "carth", t: T_WENT - 0.2, dur: 3.2, width: AW(1.9, 8), until: Math.min(T_X3 - 0.3, T_WENT + 5.0) });
 unitS("va", "carth", G.mis.VKS[0], "infantry", null, { t: T_X2 + 0.3, size: "XXXX" });
 unitS("vr", "rome", [VK[0] + 10, VK[1] + 4], "infantry", null, { t: T_X2 + 0.4, size: "XXX" });
-along("va", G.mis.VKS, T_WENT - 0.1, 5.6, 24); hideU(["va", "vr"], T_X3 - 0.3);
+along("va", VKE, T_WENT - 0.1, 3.4, 24); hideU(["va", "vr"], T_X3 - 0.3);
 stampP("NO ARMY COULD GO", VK[0] + 150, VK[1] + 110, at(P1, "no army could go"), T_LAND + 1.0, 26);
 // ---------- 3: the James (richmond map) ----------
 flagS(FL.us, 1590, 960, T_X3 + 0.5, T_LEE - 0.3); flagS(FL.cs, 1260, 930, T_X3 + 0.5, T_LEE - 0.3);   // moved off the U. S. GRANT card (both flags visible)
-arw({ pts: R.MOVE, side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 8), until: T_JAMES + 4.5 });   // thin trail, fades ~2 s after arrival
+arw({ pts: [...R.MOVE.slice(0, -1), [1450, 968]], side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 8), until: T_JAMES + 4.5 });   // ends at the blue box   // thin trail, fades ~2 s after arrival
 // critic 2: the armies on the James map (a blue box rides the trail; Lee's army at Cold Harbor, then before Petersburg) + Richmond and Petersburg
 const RICHT = town("RICHMOND", R.RICHMOND, T_X3 + 0.4, "l", { keep: true });
 // critic: Richmond steps out while a big card would cover it (one window from the surrender card to the end band: no flicker) (the two nickname cards, the question card)
@@ -116,6 +118,9 @@ FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?"; FC.quer
 const tBand = Math.max(F_TELL + 1.2, END - 20);
 // Confederate flag clear of the EACH TIME card and the big final-question card, back to its place once the card shrinks to the top band
 flagS(FL.cs, 950, 975, T_EACH - 0.2, tBand); flagS(FL.cs, 1010, 790, tBand, END + 1);
+// critic: each option tile on its spoken word, the heading on "Tell us in the comments" (E.final only times the number highlights)
+[0, 1, 2].forEach((i) => { const c = FC.querySelector(".m" + i); gsap.set(c, { autoAlpha: 0 }); tl.set(c, { autoAlpha: 0 }, 0); });
+{ const hd = FC.firstElementChild; gsap.set(hd, { autoAlpha: 0 }); tl.set(hd, { autoAlpha: 0 }, 0); tl.fromTo(hd, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, F_TELL); }
 tl.to(FC.firstElementChild, { autoAlpha: 0, duration: 0.3 }, tBand - 0.1);   // critic: the small header leaves in the band (the question says it)
 tl.to(FC, { scale: 0.5, y: -75, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);   // header >= 40 px from the top
 document.getElementById("date").style.zIndex = 60;   // the date scroll stays at full strength above the question's dark backing
