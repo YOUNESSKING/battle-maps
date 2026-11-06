@@ -69,7 +69,7 @@ unitS("g1", "carth", [LAND[0] + 6, LAND[1] - 20], "infantry", null, { t: 0 }); u
 along("g1", [[LAND[0] + 6, LAND[1] - 20], [1354, 730], [1356, 742]], 0.6, T_SURR, 10);
 along("g2", [[LAND[0] + 40, LAND[1] - 4], [1384, 726], [1388, 744]], 0.8, T_SURR, 10);
 pinPortrait("g2", PHOTO("grant"), FL.us, "Grant", T_GRANT + 0.15, END + 1, true, "upright");
-arw({ pts: [[1372, 700], [1366, 730], [1352, 760]], side: "carth", t: T_GRANT + 0.2, dur: 1.2, width: AW(2.3), until: END + 1 });
+// critic r3: Grant's arrival stub removed (his columns already stand at the fort)
 K.target(FH[0], FH[1], T_STORM, { r: 26, until: END + 1 });
 fixImgs();
 K.raiseTerritory();

@@ -4,7 +4,7 @@
 // ground hatches BLUE on the surrender (gn_henry_ctl_feb06cap, ~3 s). Portraits on the map: Foote on his flagship, Tilghman at the fort,
 // Grant at his columns. The floodwater is drawn on its words; one profile strip (the fort in the flood) on the terrain beat.
 // Built with: python3 tools/m1_build.py m1a henry_w m1-1 m1-1     (kit: tools/m1_kit.js, body: tools/m1_body_m1a.js)
-window.CARDPOS = {"Foote@el1":[-100,0],"Tilghman@til":[0,100],"Grant@g2":[100,0]};
+window.CARDPOS = {"Foote@el1": [-100, 0], "Tilghman@til": [0, 128], "Grant@g2": [100, 0]};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -177,7 +177,8 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), capHit = [...document.querySelectorAll(".caption span")].some((sp) => { const q = sp.getBoundingClientRect(), cs = getComputedStyle(sp.parentElement); return q.width && cs.visibility !== "hidden" && +cs.opacity > 0.1 && r.right > q.left - 12 && r.left < q.right + 12 && r.bottom > q.top - 12 && r.top < q.bottom + 12; }),
+        k = capHit ? "0" : Math.max(0, Math.min(1, (m - 40) / 6)).toFixed(3);   // fully out while cropped (< 40 px), under the date scroll or under a caption
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
@@ -442,7 +443,7 @@ unitS("g1", "carth", [LAND[0] + 6, LAND[1] - 20], "infantry", null, { t: 0 }); u
 along("g1", [[LAND[0] + 6, LAND[1] - 20], [1354, 730], [1356, 742]], 0.6, T_SURR, 10);
 along("g2", [[LAND[0] + 40, LAND[1] - 4], [1384, 726], [1388, 744]], 0.8, T_SURR, 10);
 pinPortrait("g2", PHOTO("grant"), FL.us, "Grant", T_GRANT + 0.15, END + 1, true, "upright");
-arw({ pts: [[1372, 700], [1366, 730], [1352, 760]], side: "carth", t: T_GRANT + 0.2, dur: 1.2, width: AW(2.3), until: END + 1 });
+// critic r3: Grant's arrival stub removed (his columns already stand at the fort)
 K.target(FH[0], FH[1], T_STORM, { r: 26, until: END + 1 });
 fixImgs();
 K.raiseTerritory();

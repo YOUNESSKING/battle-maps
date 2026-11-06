@@ -6,7 +6,7 @@
 // (gn_don_ctl_feb16cap, ~3 s). Portraits: Floyd and Pillow ride their steamers out, Buckner at his command, Grant at his headquarters
 // (then at his army on the pull-out). Captions cut to one; the cards (reply, Buckner, telegram, U.S., casualties) one at a time.
 // Built with: python3 tools/m1_build.py m1e donelson_w m1-7 m1-8
-window.CARDPOS = {"C. F. Smith@sm1":[165,0],"Floyd@el1":[-100,0],"Pillow@el2":[-130,0],"Buckner@bu":[212,-123],"Grant@ghq":[-100,0],"Buckner@pr":[100,0],"Grant@gA":[-100,0],"cap0":"right"};
+window.CARDPOS = {"C. F. Smith@sm1": [165, 0], "Floyd@el1": [0, -132], "Pillow@el2": [-150, 62], "Buckner@bu": [212, -123], "Grant@ghq": [-100, 0], "Buckner@pr": [100, 0], "Grant@gA": [-100, 0], "cap0": "right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -179,7 +179,8 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), capHit = [...document.querySelectorAll(".caption span")].some((sp) => { const q = sp.getBoundingClientRect(), cs = getComputedStyle(sp.parentElement); return q.width && cs.visibility !== "hidden" && +cs.opacity > 0.1 && r.right > q.left - 12 && r.left < q.right + 12 && r.bottom > q.top - 12 && r.top < q.bottom + 12; }),
+        k = capHit ? "0" : Math.max(0, Math.min(1, (m - 40) / 6)).toFixed(3);   // fully out while cropped (< 40 px), under the date scroll or under a caption
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
@@ -458,6 +459,7 @@ unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, siz
 tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
 pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
+pinPortrait("gA", PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, END + 1, true, [-112, -128]);   // Smith stays on the merged Union box
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });
 // ---------- the telegram to Halleck ----------
 // the telegram (spoken numbers only), two short cards <= 3.5 s each, top-left under the date scroll, off the fort and Grant's card

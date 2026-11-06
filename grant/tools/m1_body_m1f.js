@@ -28,7 +28,7 @@ camera([[0, 1430, 900, 2.1], [T_TEN + 0.6, 1440, 905, 1.9], [T_TALK, 1500, 930, 
 dateNow("16 FEBRUARY 1862");   // critic r2: one date only (no other date is spoken in this scene)
 // ---------- flags ----------
 flagS(FL.us, 1430, 820, 0, T_TALK + 0.5); flagS(FL.cs, 1500, 1010, 0, T_TALK + 0.5);
-flagS(FL.us, 1440, 700, T_TALK + 0.3, END + 1); flagS(FL.cs, 1300, 1320, T_TALK + 0.4, T_HOW + 1.8);
+flagS(FL.us, 1440, 700, T_TALK + 0.3, END + 1); flagS(FL.cs, 1300, 1410, T_TALK + 0.4, T_HOW + 1.8);   // clear of the method card
 flagS(FL.cs, 860, 1380, T_HOW + 1.6, END + 1);
 // ---------- the two forts, both Union now ----------
 [FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); });
@@ -68,7 +68,7 @@ const FLB = flag(FL.cs, 0, 0, null, null, 48); SCN.insertBefore(FLB, document.ge
 Object.assign(FLB.style, { position: "absolute", left: "1560px", top: "430px" }); gsap.set(FLB, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLB, { autoAlpha: 1, duration: 0.5 }, T_HOW + 0.4);   // both flags from the cut
 const FLU = flag(FL.us, 0, 0, null, null, 48); SCN.insertBefore(FLU, document.getElementById("credit")); FLU.classList.remove("gg-pin");
 Object.assign(FLU.style, { position: "absolute", left: "420px", top: "640px" }); gsap.set(FLU, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLU, { autoAlpha: 1, duration: 0.5 }, T_HOW + 0.4);
-B.caption("A FORTRESS ON A HIGH BLUFF", T_BLUFF, T_BLUFF + 2.6, "rome");
+{ const c = B.caption("A FORTRESS ON A HIGH BLUFF", T_BLUFF, T_BLUFF + 2.6, "rome"); Object.assign(c.style, { justifyContent: "flex-start", paddingLeft: "90px" }); }   // empty ground west of the river
 // the supply steamer (blue) comes down the river, right under the guns
 const SUP = document.createElement("div"); SUP.style.cssText = "position:absolute;left:0;top:0;width:0;height:0"; SUP.innerHTML = `<div style="position:absolute;left:-55px;top:-19px;width:110px">${shipSVG("steamer", "carth", 110)}</div>`;
 SCN.insertBefore(SUP, document.getElementById("credit")); gsap.set(SUP, { autoAlpha: 0 });

@@ -6,7 +6,7 @@
 // where the sides touch; the ground the breakout takes hatches RED (gn_don_ctl_feb15acap, ~3 s). Foote's portrait rides his flagship (greys
 // on "wounded"); Grant (no unit here) = one corner badge <= 3.5 s. Captions cut to the two claims to remember.
 // Built with: python3 tools/m1_build.py m1c donelson_w m1-3 m1-4
-window.CARDPOS = {"Grant@ghq":[-87,-50],"Floyd@fl":[237,63],"Pillow@c2":[75,-280],"Buckner@bu":[50,-87],"Foote@el1":[-175,30],"cap1":"right"};
+window.CARDPOS = {"Grant@ghq": [-87, -50], "Floyd@fl": [237, 63], "Pillow@c2": [97, -280], "Buckner@bu": [38, -112], "Foote@el1": [-175, 30], "cap1": "right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -179,7 +179,8 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), capHit = [...document.querySelectorAll(".caption span")].some((sp) => { const q = sp.getBoundingClientRect(), cs = getComputedStyle(sp.parentElement); return q.width && cs.visibility !== "hidden" && +cs.opacity > 0.1 && r.right > q.left - 12 && r.left < q.right + 12 && r.bottom > q.top - 12 && r.top < q.bottom + 12; }),
+        k = capHit ? "0" : Math.max(0, Math.min(1, (m - 40) / 6)).toFixed(3);   // fully out while cropped (< 40 px), under the date scroll or under a caption
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
