@@ -307,7 +307,7 @@ const FR = frontNow(front2(RING, 2.2, 0, { dur: 0.01, to: RING2, moveT: T_STRUCK
 unitS("uSm", "carth", [1246, 700], "infantry", null, { size: "XX" }); unitS("uWa", "carth", [1262, 862], "infantry", null, { size: "XX" });
 unitS("m1", "carth", [1362, 884], "infantry", null, { size: "X" }); unitS("m2", "carth", [1432, 897], "infantry", null, { size: "X" }); unitS("m3", "carth", [1505, 896], "infantry", null, { size: "X" });
 unitS("hq", "carth", HQ, "hq", null);
-cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_DAWN - 0.3, "up"));   // Grant at his headquarters on the 14th; at dawn he is away (hook-3)
+cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_DAWN - 0.3, "left"));   // Grant at his headquarters on the 14th; at dawn he is away (hook-3)
 // Confederates: Buckner (their right), Floyd (centre, in command), Pillow (their left), one more brigade + horsemen (bare)
 unitS("bu", "rome", [1300, 698], "infantry", null); unitS("fl", "rome", [1452, 772], "infantry", null); unitS("pi", "rome", [1500, 818], "infantry", null);
 unitS("c1", "rome", [1408, 822], "infantry", null); unitS("cF", "rome", [1562, 846], "infantry", null); cavIcon("cF");
@@ -360,6 +360,8 @@ B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
 const BLK = `<svg width="26" height="18" viewBox="0 0 26 18" style="display:block;filter:drop-shadow(0 1px 2px #000)"><path d="M2 4 Q8 1 13 4 Q18 7 24 3 L24 14 Q18 17 13 14 Q8 11 2 14 Z" fill="#8d7a5e" stroke="#efe6cf" stroke-width="1.2"/><path d="M5 8 L21 8 M5 11 L21 11" stroke="#5a4a36" stroke-width="1"/></svg>`;
 [[1150, 640], [1100, 615], [1045, 595], [1175, 760], [1120, 742], [1062, 722], [995, 702]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.6)">${BLK}</div></div>`, p[0], p[1], T_BLANK + k * 0.15, T_CHANCE + 0.4); reg(el.firstElementChild); });
 B.caption("THROWN AWAY THEIR BLANKETS ON THE MARCH", T_BLANK + 0.1, T_CHANCE - 0.1, "carth");
+// the dawn shot frames the Union right: Buckner (top-left corner, by the date scroll) steps out of the cropped frame edge
+hideU(["bu"], T_CHANCE + 0.2);
 // =====================================================================================================================
 // 15 Feb dawn: the breakout against the Union right (cool morning light)
 // =====================================================================================================================
