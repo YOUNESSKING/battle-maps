@@ -181,7 +181,8 @@ arw({ pts: [[1220, 945], [1240, 950], [1258, 955]], side: "carth", t: T_HAND, du
 // =====================================================================================================================
 // hook-4: the name slam (the "?" turns into the real photo)
 // =====================================================================================================================
-const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); SCN.insertBefore(DK, document.getElementById("date"));   // the date scroll stays bright tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
+const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); SCN.insertBefore(DK, document.getElementById("date"));   // the date scroll stays bright
+tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
 const BDG = scr0(`<div style="position:relative;width:300px;height:300px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 7px #1f4fc4,0 24px 48px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover">
   <img src="${PHOTO("grant")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:180px;color:#f7f3ea">?</div></div>`,
@@ -278,7 +279,7 @@ camTo(T_LEE - 0.6, 1.3, C3, S3c, "power2.inOut"); camTo(T_LEE + 0.75, T4 - T_LEE
 SFX("ref:whoosh", T3 - 0.2); SFX("hit", T3 + 0.02); K.shake(T3 + 0.02, 3, 0.25);
 dateSet("JUNE 1864", T3, null);
 [flagS(FL.us35, "", WEY[0] + 140, WEY[1] - 95, T3, null), flagS(FL.csa, "", WIN[0] - 60, WIN[1] + 95, T3, T_LEE - 0.4)].forEach(vis(T3, null));   // the south bank was still Confederate country
-flagS(FL.csa, "", LEEP[0] - 40, LEEP[1] + 270, T_LEE - 0.6, null);
+flagS(FL.csa, "", LEEP[0] - 150, LEEP[1] + 40, T_LEE - 0.6, null);
 // the pontoon bridge: a plank line with a dark casing (solid, no glow)
 const BR = document.createElementNS(NS, "g");
 BR.innerHTML = `<path d="M${WEY.join(" ")} L${WIN.join(" ")}" stroke="#2a2420" stroke-width="${(7 / S3b).toFixed(2)}" stroke-linecap="round"/><path d="M${WEY.join(" ")} L${WIN.join(" ")}" stroke="#d9c79d" stroke-width="${(4 / S3b).toFixed(2)}" stroke-linecap="round"/>`;
@@ -287,7 +288,7 @@ const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1418, 975]];
 [0, 1, 2].forEach((k) => { const id = unitS("j" + k, "carth", XR[0], "infantry", "", { t: T3 + k * 0.3 }); along(id, XR, T3 + k * 0.45, 4.2, 24); });
 arw({ pts: XR, side: "carth", t: T3 + 0.2, dur: 1.4, width: AW(S3b, 9), until: T_LEE - 0.5 });
 arw({ pts: XR, side: "carth", t: T_LEE - 0.4, dur: 0.01, width: AW(S3c, 9), until: null });
-pinPortrait("j0", PHOTO("grant"), FL.us35, "Grant", T3 + 0.2, T4 - 0.1, "right");
+pinPortrait("j2", PHOTO("grant"), FL.us35, "Grant", T3 + 0.75, T4 - 0.1, "up");   // on the last column (card above it, clear of the leading columns)
 placeN([(WEY[0] + WIN[0]) / 2, (WEY[1] + WIN[1]) / 2], "James River · 1864", 3, T_ACROSS, T4 - 0.1, "l");
 // Lee (his portrait card on a stake at his own army, on his name) and his army, facing the other way (north, toward Richmond)
 const LR = [unitS("l0", "rome", LEEP, "infantry", "", { t: T3 + 0.1, until: T4 }), unitS("l1", "rome", [LEEP[0] + 120, LEEP[1] - 30], "infantry", "", { t: T3 + 0.2, until: T4 })];
