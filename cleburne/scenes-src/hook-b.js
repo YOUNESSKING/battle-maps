@@ -207,8 +207,8 @@ tl.fromTo(PL, { autoAlpha: 0, scale: 1.9 }, { autoAlpha: 1, scale: 1, duration: 
 SFX("hit", T_NAME + 0.3); K.shake(T_NAME + 0.3, 6, 0.3); pulse(T_NAME + 0.32);
 // "born in Ireland": the narrator's words only
 const IRE = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 26px 10px;background:rgba(18,16,12,0.94);border-left:8px solid #c9b48a;color:#f7f3ea"><div style="font-size:40px;letter-spacing:0.08em">BORN IN IRELAND</div></div>`, "left:0;right:0;top:860px;display:flex;justify-content:center;");
-tl.fromTo(IRE, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, at(H, "Ireland"));   // lands on the word
-tl.to(IRE, { autoAlpha: 0, duration: 0.25 }, T_STOP - 0.5);
+tl.fromTo(IRE, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, at(H, "born in Ireland"));   // lands on "born", carries over the first cut (>= 2 s)
+tl.to(IRE, { autoAlpha: 0, duration: 0.3 }, T_STOP + 1.2);
 // the big badge leaves (no corner badge: in every cut his portrait card stands on a stake at his own unit, 2d item 6)
 tl.to(BDG, { scale: 0.6, autoAlpha: 0, duration: 0.45, ease: "power3.in" }, T_STOP - 0.6); SFX("ref:whoosh", T_STOP - 0.55);
 dateSet("1863 - 1864", T_STOP - 0.65, T_STOP, 0.12);   // already showing its date while the dark lifts (critic r3)
@@ -236,7 +236,7 @@ unitK("c1", "carth", thp(1393, 752), "infantry", "", k, { t: T_STOP + 0.1 }); un
 pinPortrait("c1", PHOTO.cleburne, FL.csa, "Cleburne", T_STOP + 0.15, null, k, "right");
 [[thp(1423, 640), thp(1400, 700), thp(1384, 656)], [thp(1280, 735), thp(1335, 750)], [thp(1500, 670), thp(1450, 712)]].forEach(([a, b, a2], i) => {
   unitK("s" + i, "rome", a, "infantry", i ? "" : "SHERMAN", k, { t: T_STOP + (i ? 0.1 + i * 0.05 : 0.45) });   // tag lands on "Sherman's"
-  arw({ pts: [a2 || a, b], side: "rome", t: T_STOP + 0.2 + i * 0.25, dur: 0.6, until: T_HELD }, SC, 9); });
+  arw({ pts: [a2 || a, b], side: "rome", t: T_STOP + 0.55 + i * 0.25, dur: 0.6, until: T_HELD }, SC, 9); });
 [0.4, 1.4].forEach((d, i) => shell(...thp(1367, 775), ...[thp(1410, 690), thp(1320, 742)][i], T_STOP + 0.3 + d, k, { r: 10 * k, fly: 0.35 }));
 smoke([thp(1370, 772), thp(1385, 742), thp(1400, 738), thp(1360, 760)], T_STOP + 0.6, k);
 B.grey(["s1", "s2"], T_HILL + 0.4, 0.4);
@@ -290,7 +290,7 @@ flagsC(L(35.1, -86.9), L(34.0, -83.6), T_THESE + 0.2, null);
 town("DALTON", ...L(34.7698, -84.9702), T_THESE + 0.3, null);
 // the three places: the numbered disc IS the place marker (centred on the place), the name beside it; all three land together once
 // the camera has arrived, and leave together before the title card (critic r3)
-[[TH, "Tunnel Hill · 1863", 1, "l"], [GP, "Ringgold Gap · 1863", 2, "r"], [PM, "Pickett's Mill · 1864", 3, "r"]].forEach(([p, txt, n, side]) => {
+[[TH, "Tunnel Hill · 1863", 1, "r"], [GP, "Ringgold Gap · 1863", 2, "r"], [PM, "Pickett's Mill · 1864", 3, "r"]].forEach(([p, txt, n, side]) => {
   const el = pinAt(`<div style="position:relative;width:0;height:0;font-family:${SERIF};font-weight:700;color:#fbf8ef"><span style="position:absolute;left:-14px;top:-14px;display:flex;width:24px;height:24px;border-radius:50%;background:#1e1c14;border:2px solid #fbf8ef;align-items:center;justify-content:center;font-size:15px">${n}</span><span style="position:absolute;top:-17px;${side === "l" ? "right:20px" : "left:20px"};font-size:26px;white-space:nowrap;${SHADOW}">${txt}</span></div>`, p[0], p[1], T_THESE + 0.95, null);
   reg(el.firstElementChild); tl.to(el, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45); });
 const TDIM = scr("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0) 55%,rgba(5,7,13,0.75) 85%);");

@@ -66,7 +66,7 @@ const badgeStamp = (el, txt, t, o = {}) => {
   tl.to(ring, { filter: "grayscale(1) brightness(0.6)", duration: 0.4 }, t);
   const st = document.createElement("div"); st.innerHTML = stampHTML(txt, o.color || "#e3232f", o.size || 30, 0);   // critic r1: level
   st.style.cssText = "position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5";
-  ring.appendChild(st);
+  ring.appendChild(st); gsap.set(st, { autoAlpha: 0 });   // critic r2: hidden until its word (immediateRender false left it visible before)
   tl.fromTo(st, { autoAlpha: 0, scale: 2.2 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.2); K.shake(t + 0.2, 3, 0.25); return st;
 };
