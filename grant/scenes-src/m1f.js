@@ -38,9 +38,11 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");   // STYLE W: solid arrows only (2d item 5)
-  ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1));
-  const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
+const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
+  o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
+  const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
 const legend = (t, until, opt2) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]].map(([sq, ln, nm]) => `<span><b style="display:inline-block;width:20px;height:${opt2 ? 6 : 20}px;background:${opt2 ? ln : sq};${opt2 ? `box-shadow:0 0 8px ${ln};vertical-align:4px;` : "vertical-align:-3px;"}margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}</div>`, "", 34, t, Math.min(until, t + 6));   // STYLE W: ~6 s, only when a symbol is new
 const posOn = (pts, f) => { let Lt = 0; const seg = []; for (let j = 1; j < pts.length; j++) { const d = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]); seg.push(d); Lt += d; }
@@ -98,13 +100,10 @@ const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {   // scre
 };
 const along = (id, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); B.move(id, t + (k - 1) * dur / n, dur / n, q[0], q[1], "none"); } };
 const pinAlong = (el, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); tl.to(el, { left: q[0], top: q[1], duration: dur / n, ease: "none" }, t + (k - 1) * dur / n); } };
-const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {   // a counter that ticks up (screen space)
+const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {   // STYLE W (critic r1): the spoken number only (no count-up, no sub line), <= 3.5 s
   const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
-    <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:${o.vs || 54}px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#a8a294">${o.sub}</div>` : ""}</div>`, css, t, until);
-  const v = el.querySelector(".v"), st = { x: 0 };
-  tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
-  for (let k = 0; k < n; k++) SFX("tick", t + 0.2 + (k * dur) / n);
-  return el;
+    ${label ? `<div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div>` : ""}<div class="v" style="font-size:${o.vs || 54}px;letter-spacing:.04em">${o.pre || ""}${Number(to).toLocaleString("en-US")}${suffix}</div></div>`, css, t, Math.min(until, t + 3.5));
+  SFX("tick", t + 0.2); return el;
 };
 const mg = (a, b, t, n = 5, w = 1.1) => { SFX("mg", t);   // musket volley: tracer dashes (mg sound), sparingly
   for (let k = 0; k < n; k++) { const g = document.createElementNS(NS, "line"), j = ((k * 7) % 5 - 2) * 1.5 * w;
@@ -129,11 +128,11 @@ const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only for verbatim words)
 const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
-  `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
+  <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div>${who ? `<div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div>` : ""}</div>`,
+  o.pos || `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
 const belief = (txt, subt, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c4121f"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:17px;letter-spacing:.32em;color:${o.subc || "#ff8a80"}">${subt}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
-  `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
+  ${subt ? `<div style="font-size:17px;letter-spacing:.32em;color:${o.subc || "#ff8a80"}">${subt}</div>` : ""}<div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
+  o.pos || `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => { im.addEventListener("error", () => { im.style.display = "none"; }, { once: true }); });
 const fireGlow = (x, y, r, t, until) => { const el = GG.pin(`<div style="width:${r * 2}px;height:${r * 2}px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,90,.85) 0%,rgba(255,110,20,.55) 35%,rgba(200,40,0,.25) 60%,rgba(120,20,0,0) 75%);mix-blend-mode:screen"></div>`, x, y, { t, until });
   tl.to(el.firstElementChild, { scale: 1.15, opacity: 0.75, duration: 0.35, yoyo: true, repeat: Math.max(1, Math.round(((until || t + 8) - t) / 0.35)), ease: "sine.inOut" }, t + 0.5); return el; };
@@ -185,7 +184,7 @@ const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o));   // STYLE W label; passing labels <= 3.5 s
 const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
-  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", Math.min(size, 24), 0), x, y, {}));
+  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {}));
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 px, name 19 px (screen)
@@ -199,9 +198,9 @@ const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 p
 const showU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.4 }, t));
 const hideU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.4 }, t));
 const pulseU = (id, t, k = 1.25) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale: 1 }, { scale: k, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, t);
-const greyU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "grayscale(1) brightness(0.75)", duration: 0.6 }, t));
+const greyU = () => null;   // STYLE W (critic r1, C10): side colours only, units never turn grey
 const ungreyU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "grayscale(0) brightness(1)", duration: 0.6 }, t));
-const AW = (s, px = 13) => +(Math.min(px, 13) / s).toFixed(2);       // STYLE W: thin arrows (<= 13 px on screen at camera scale s)
+const AW = (s, px = 6) => +(Math.min(px, 6) / s).toFixed(2);       // STYLE W (critic r1): thin trails, <= 6 px on screen at camera scale s
 const FWw = (s) => +(15 / s).toFixed(2);               // front width 15 on screen (wide)
 const FWc = (s) => +(15 * 1.3 / s).toFixed(2);         // front width 15*1.3 on close-ups
 const town = (nm, p, t, side = "r") => { const lft = side === "l";   // STYLE W: permanent town symbol (dark dot + serif name), towns the armies head for
@@ -381,35 +380,36 @@ flagS(FL.cs, 860, 1380, T_HOW + 1.6, END + 1);
 // ---------- the two forts, both Union now ----------
 [FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); poleFlag(FL.us, [p[0] + 3, p[1] - 6], 0, null, 26); });
 B.caption("TWO RIVER FORTS · TEN DAYS", T_TEN, T_TEN + 2.6, "carth");
-const GB = badge({ name: "ULYSSES S. GRANT", role: "FROM A SNUBBED BRIGADIER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_SNUB - 0.1, until: T_SNUB + 3.3 });   // no unit of his on this map
+const GB = badge({ name: "GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_SNUB - 0.1, until: T_SNUB + 3.3 });   // no unit of his on this map
 // ---------- the rivers open: the gunboats steam far into Tennessee ----------
 glowPath(TENN_S.slice(5, 14), "", 0, T_INTO - 0.2, T_INTO + 3.3, 0, 0, { focus: false });   // ink trace along both rivers, deep into Tennessee
 glowPath(CUMB_E.slice(7), "", 0, T_INTO, T_INTO + 3.4, 0, 0, { focus: false });
-const GT = ship("iron", "carth", TENN_S[5], 90, T_BOATS, T_HOW + 1.0, { L: 46 }); sail(GT, TENN_S.slice(5, 14), T_BOATS + 0.2, 9.0, 24);
-const GC = ship("iron", "carth", CUMB_E[7], 20, T_BOATS + 0.3, T_HOW + 1.0, { L: 46 }); sail(GC, CUMB_E.slice(7), T_BOATS + 0.5, 8.0, 24);
+const GT = ship("iron", "carth", TENN_S[5], 90, null, null, { L: 46 }); tl.set(GT.el, { autoAlpha: 1 }, 0); tl.to(GT.el, { autoAlpha: 0, duration: 0.5 }, T_HOW + 1.0);   // on the river from frame 0 sail(GT, TENN_S.slice(5, 14), T_BOATS + 0.2, 9.0, 24);
+const GC = ship("iron", "carth", CUMB_E[7], 20, null, null, { L: 46 }); tl.set(GC.el, { autoAlpha: 1 }, 0); tl.to(GC.el, { autoAlpha: 0, duration: 0.5 }, T_HOW + 1.0); sail(GC, CUMB_E.slice(7), T_BOATS + 0.5, 8.0, 24);
 curveLabel("Tennessee River", [[1446, 1150], [1440, 1230], [1428, 1300]], T_BOATS + 0.4, T_BOATS + 3.8, 22);
 // ---------- the Kentucky line collapses ----------
 const KYL = glowPath([COL, [1200, 840], FH, FD, [1700, 830], BG], "", 0, T_FALL, T_FALL + 3.4);   // the old Kentucky line: focus + ink trace
 boxS("KENTUCKY", 1640, 560, T_KY, null, { size: 30 }); boxS("MIDDLE TENNESSEE", 1720, 1250, T_MIDT, null, { size: 30 });
 [[BG, [1880, 900], [1840, 1060], [1880, 1300]], [COL, [990, 900], [960, 1050]], [[1840, 1060], [1860, 1220], [1900, 1380]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, width: AW(0.85, 10), until: T_FALL + 7.0 }));
-[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { t: T_FALL - 0.6, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
+[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060]], ["r3", [1600, 1040], [1720, 1330]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { t: 0, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
+hideU(["r1", "r2", "r3"], T_WAIT);   // they have fallen back off the stage before the method card
 // ---------- method card: line 1 lit on "attacked the moment the enemy hesitated" ----------
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["HE MOVED FAST", "HIT THE SECOND FORT BEFORE HELP COULD COME", "ATTACKED THE MOMENT THE ENEMY HESITATED"];   // spoken words only (m1-9)
-const MC = GG.method(3, T_FAST - 0.1, T_ONLY + 1.4, [T_FAST, T_HIT2, T_ATT]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "50px"; });
+const MC = GG.method(3, T_FAST - 0.1, T_ATT + 3.0, [T_FAST, T_HIT2, T_ATT]);   // holds ~3 s after line 3 MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "50px"; });
 SFX("ref:pop", T_FAST + 0.1); SFX("ref:pop", T_HIT2 + 0.1); SFX("ref:boom", T_ATT + 0.2);
 // ---------- move1-sub: only the beginning; the question (dark-to-bluff transition); subscribe; NEXT ----------
-const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%, rgb(128,128,66) 0%, rgb(100,101,52) 100%);pointer-events:none";   // STYLE W: the question scene on the same green ground
+const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:url(assets/relief_close.jpg) 0px -640px / 5760px 3240px no-repeat;pointer-events:none";   // STYLE W: the question scene on the Style W turf (a clear patch of tennessee_w_close)   // STYLE W: the question scene on the same green ground
 document.getElementById("fx").appendChild(DK); gsap.set(DK, { autoAlpha: 0 }); tl.to(DK, { autoAlpha: 1, duration: 1.6, ease: "sine.inOut" }, T_HOW - 0.2);
 // the bluff scene (screen space): a river bending under a high bluff, guns on the crest, a supply steamer under them
 const RIV = "M -40 250 C 400 300 700 200 860 420 C 1000 610 760 760 900 900 C 1000 1000 1300 980 1960 1040";
 const BLF = "M 820 160 C 980 300 1100 420 1060 600 C 1030 720 980 800 1060 880 C 1140 950 1300 930 1500 960";
 const BS = scr(`<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="display:block">
   <defs><filter id="bfg" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter></defs>
-  <path d="${RIV}" fill="none" stroke="#3c6378" stroke-width="92" stroke-linecap="round"/><path d="${RIV}" fill="none" stroke="#4d7d9a" stroke-width="80" stroke-linecap="round"/>
+  <path d="${RIV}" fill="none" stroke="#2a2410" stroke-width="96" stroke-linecap="round" opacity=".8"/><path d="${RIV}" fill="none" stroke="#3c6378" stroke-width="92" stroke-linecap="round"/><path d="${RIV}" fill="none" stroke="#4d7d9a" stroke-width="80" stroke-linecap="round"/>
   <path class="rsh" d="${RIV}" fill="none" stroke="rgba(200,220,232,.35)" stroke-width="2" stroke-dasharray="14 60"/>
-  <path d="M 900 120 C 1080 280 1190 420 1150 600 C 1120 730 1080 800 1150 860 C 1240 920 1400 900 1960 900 L 1960 120 Z" fill="#6b6a3a"/>
+  <path d="M 900 120 C 1080 280 1190 420 1150 600 C 1120 730 1080 800 1150 860 C 1240 920 1400 900 1960 900 L 1960 120 Z" fill="rgba(52,50,22,.32)"/>
   <path class="bg" d="${BLF}" fill="none" stroke="#2a2410" stroke-width="18" stroke-dasharray="2 7" transform="translate(-10 2)" opacity="0"/>
   <path class="bl" d="${BLF}" fill="none" stroke="#2a2410" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
   <g class="guns">${[[930, 270], [1040, 400], [1075, 560], [1020, 760], [1110, 905]].map(([x, y]) => `<g transform="translate(${x} ${y})"><rect x="-16" y="-9" width="32" height="18" fill="#c4121f" stroke="#f7f3ea" stroke-width="2.5"/><circle class="fl" cx="-24" cy="0" r="14" fill="#ffd27a" opacity="0"/></g>`).join("")}</g>
@@ -436,7 +436,7 @@ tl.to(BS.querySelector(".guns"), { autoAlpha: 1, duration: 0.4 }, T_GUNS - 0.3);
   tl.fromTo(f, { opacity: 1, scale: 0.4 }, { opacity: 0, scale: 1.6, duration: 0.35, immediateRender: false, transformOrigin: "50% 50%" }, t); if (d === 0) SFX("fire", t); }); });
 // woven subscribe: small button bottom-right, cursor click, bell; never a full-screen card
 const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
-scr(`<div style="padding:10px 26px 12px;background:#dcecf8;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.2em;font-size:34px;box-shadow:0 6px 20px rgba(0,0,0,.6)">NEXT: MOVE 2 →</div>`, "right:80px;bottom:150px;", T_HERE + 0.3, END + 1);
+// critic r1: no "NEXT: MOVE 2" label (never spoken)
 SFX("ref:pop", T_HERE + 0.3);
 // ---------- clean screen ----------
 fixImgs();

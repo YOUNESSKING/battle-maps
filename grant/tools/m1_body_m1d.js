@@ -23,7 +23,7 @@ const MID = WORKS.map((q, i) => [(q[0] + ULINE[i][0]) / 2, (q[1] + ULINE[i][1]) 
 const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 66, 58, 40][i]] : (i === 4 ? [q[0] - 14, q[1] + 12] : q));
 const MID2 = MID.map((q, i) => i >= 5 ? [q[0] + [0, 0, 0, 36, 40, 30, 22, 10][i], q[1] + [0, 0, 0, 0, 0, 6, 14, 18][i]] : q);   // Smith's lodgement
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
-const RIDE = [[1205, 640], [1200, 720], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
+const RIDE = [[1200, 700], [1200, 740], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
 // ---------- map: owner 2026-11-03 (territory when it helps): ground changes hands all scene -> option 1 (full strength) + fronts:
 // the breakout bulge (m1_don_feb15a, m1c's last frame) goes back to the ring as the Confederates pull back (m1_don_feb13), then
 // Smith's outer works turn blue (m1_don_feb15b); at night the colours dissolve (~2.8 s) into fronts only (m1e opens on the night) ----------
@@ -38,18 +38,23 @@ dateNow("15 FEB · DAWN", T_RODE + 0.4); B.date("15 FEBRUARY 1862", T_RODE + 0.5
 flagS(FL.us, 1175, 745, 0, END + 1); flagS(FL.cs, 1560, 790, 0, END + 1);
 // ---------- the lines and units as m1c left them ----------
 fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 28);
-const F1 = frontS({ pts: PUSH, to: MID, moveT: T_PULLED - 0.3, moveDur: 3.0, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.2), until: T_TOOK - 0.3 });
-const F2 = frontS({ pts: MID, to: MID2, moveT: T_TOOK - 0.6, moveDur: 2.6, sideA: "carth", sideB: "rome", t: T_TOOK - 0.4, dur: 0.01, width: FWc(2.8), until: END + 1 });
+// the front as m1c left it (PUSH2), back to the ring as they pull back (MID), then Smith's lodgement (MID2): cross-fades
+const PUSH2 = PUSH.map((q, i) => i < 4 ? [q[0] - 10, q[1] + [40, 45, 40, 25][i]] : q);
+const frontIn = (pts, t, until) => { const g = frontS({ pts, sideA: "carth", sideB: "rome", t, dur: 0.01, width: FWc(2.4), until }); if (t > 0) tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 1.2, immediateRender: false }, t); return g; };
+frontIn(PUSH2, 0, T_PULLED + 1.0); frontIn(MID, T_PULLED + 0.6, T_TOOK + 0.6); frontIn(MID2, T_TOOK + 0.2, END + 1);
 [["sm1", [1250, 660]], ["sm2", [1243, 720]], ["wal", [1268, 790]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
 [["mc1", [1250, 950]], ["mc2", [1350, 1000]], ["mc3", [1440, 1015]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
-greyU(["mc1", "mc2", "mc3"], 0); tl.set(["mc1", "mc2", "mc3"].map((id) => B.units[id].el.querySelector(".blk")), { filter: "grayscale(1) brightness(0.75)" }, 0);
-const RED = [["bu", [1318, 700], [1318, 700]], ["c1", [1310, 860], [1352, 790]], ["c2", [1410, 905], [1420, 805]], ["c3", [1490, 910], [1490, 812]], ["c4", [1440, 860], [1455, 780]], ["c5", [1500, 860], [1525, 790]]];
+const RED = [["bu", [1306, 722], [1306, 722]], ["c1", [1305, 870], [1352, 790]], ["c2", [1405, 925], [1420, 805]], ["c3", [1485, 930], [1490, 812]], ["c4", [1440, 860], [1455, 780]], ["c5", [1500, 860], [1525, 790]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
+unitS("fl", "rome", [1462, 752], "infantry", null, { t: 0, size: "X" });
+pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");   // critic r1: named generals keep their cards (same map)
+pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "right");
+pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
 // ---------- Grant rides back along the line ----------
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
-pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0.15, END + 1, true, "left");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
-const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "GRANT TO AN OFFICER", T_WHO, T_FILL - 0.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 54 });
+pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
+const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "", T_WHO, T_WHO + 3.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 46, pos: "right:60px;top:60px;" });   // empty upper right, off the front and the fort
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line: "it acted like a charm" (narrated; the caption carries no quote marks)
 const CBOX = `<svg width="26" height="20" viewBox="0 0 26 20" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="2" y="3" width="22" height="15" rx="2" fill="#2a2420" stroke="#efe6cf" stroke-width="1.4"/><rect x="2" y="3" width="22" height="5" fill="#4a3c2c" stroke="#efe6cf" stroke-width="1.2"/><circle cx="13" cy="12" r="2.6" fill="#c9b48a"/></svg>`;
@@ -59,7 +64,7 @@ ungreyU(["mc1", "mc2", "mc3"], T_BACK);
 [["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p], k) => B.move(id, T_BACK + 0.1 + k * 0.15, 2.0, p[0], p[1]));
 B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_REPORT - 0.1, "carth");
 // the official report: the confusion on the Confederate side as great as his own, possibly greater
-const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "GRANT'S OFFICIAL REPORT · CONFUSION ON THE CONFEDERATE SIDE", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 46 });
+const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "OFFICIAL REPORT", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 40, pos: "right:60px;top:60px;" });
 ["c1", "c2", "c3", "c4", "c5"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { rotation: k % 2 ? 8 : -8, duration: 0.25, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_GREAT + k * 0.12));
 // they had gone out to break the ring, then pulled back inside it
 [[1310, 900], [1410, 950], [1490, 955]].forEach((p, k) => arw({ pts: [[p[0], p[1] - 70], [p[0] + 4, p[1] - 30]], side: "rome", t: T_GONE + k * 0.2, dur: 0.6, width: AW(2.2, 9), until: T_PULLED + 0.4 }));
@@ -79,7 +84,7 @@ B.move("sm1", T_FRONT, 3.0, 1305, 660); B.move("sm2", T_FRONT + 0.3, 3.0, 1302, 
 [0, 0.9].forEach((d) => mg([1262, 662], [1300, 668], T_FELLED + 0.2 + d, 5, 0.9)); mg([1318, 700], [1278, 690], T_UP + 0.6, 4, 0.9);
 smoke([[1318, 694], [1310, 668], [1300, 640]], T_UP + 0.5, 0.7);
 B.move("bu", T_TOOK - 0.2, 2.2, 1350, 712);
-wstampS("TOOK THE OUTER WORKS", 1404, 604, T_TOOK + 0.1, null, "#9fc0ea", 22);
+wstampS("TOOK THE OUTER WORKS", 1488, 612, T_TOOK + 0.1, null);   // empty ground north-east, clear of the river
 // ---------- night: the Confederate council chooses to give up ----------
 nightWash(T_NIGHT - 0.2, null, 0.5);
 const COUN = pinS(GG.pin(`<div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,140,.95) 0%,rgba(255,170,60,.55) 35%,rgba(255,120,20,0) 72%);mix-blend-mode:screen"></div>`, DOV[0] - 6, DOV[1] - 8, { t: T_COUNCIL - 0.3, until: END + 1 }));

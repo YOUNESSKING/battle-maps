@@ -38,9 +38,11 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");   // STYLE W: solid arrows only (2d item 5)
-  ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1));
-  const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
+const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
+  o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
+  const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
 const legend = (t, until, opt2) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]].map(([sq, ln, nm]) => `<span><b style="display:inline-block;width:20px;height:${opt2 ? 6 : 20}px;background:${opt2 ? ln : sq};${opt2 ? `box-shadow:0 0 8px ${ln};vertical-align:4px;` : "vertical-align:-3px;"}margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}</div>`, "", 34, t, Math.min(until, t + 6));   // STYLE W: ~6 s, only when a symbol is new
 const posOn = (pts, f) => { let Lt = 0; const seg = []; for (let j = 1; j < pts.length; j++) { const d = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]); seg.push(d); Lt += d; }
@@ -98,13 +100,10 @@ const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {   // scre
 };
 const along = (id, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); B.move(id, t + (k - 1) * dur / n, dur / n, q[0], q[1], "none"); } };
 const pinAlong = (el, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); tl.to(el, { left: q[0], top: q[1], duration: dur / n, ease: "none" }, t + (k - 1) * dur / n); } };
-const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {   // a counter that ticks up (screen space)
+const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {   // STYLE W (critic r1): the spoken number only (no count-up, no sub line), <= 3.5 s
   const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
-    <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:${o.vs || 54}px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#a8a294">${o.sub}</div>` : ""}</div>`, css, t, until);
-  const v = el.querySelector(".v"), st = { x: 0 };
-  tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
-  for (let k = 0; k < n; k++) SFX("tick", t + 0.2 + (k * dur) / n);
-  return el;
+    ${label ? `<div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div>` : ""}<div class="v" style="font-size:${o.vs || 54}px;letter-spacing:.04em">${o.pre || ""}${Number(to).toLocaleString("en-US")}${suffix}</div></div>`, css, t, Math.min(until, t + 3.5));
+  SFX("tick", t + 0.2); return el;
 };
 const mg = (a, b, t, n = 5, w = 1.1) => { SFX("mg", t);   // musket volley: tracer dashes (mg sound), sparingly
   for (let k = 0; k < n; k++) { const g = document.createElementNS(NS, "line"), j = ((k * 7) % 5 - 2) * 1.5 * w;
@@ -129,11 +128,11 @@ const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only for verbatim words)
 const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
-  `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
+  <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div>${who ? `<div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div>` : ""}</div>`,
+  o.pos || `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
 const belief = (txt, subt, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c4121f"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:17px;letter-spacing:.32em;color:${o.subc || "#ff8a80"}">${subt}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
-  `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
+  ${subt ? `<div style="font-size:17px;letter-spacing:.32em;color:${o.subc || "#ff8a80"}">${subt}</div>` : ""}<div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
+  o.pos || `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => { im.addEventListener("error", () => { im.style.display = "none"; }, { once: true }); });
 const fireGlow = (x, y, r, t, until) => { const el = GG.pin(`<div style="width:${r * 2}px;height:${r * 2}px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,90,.85) 0%,rgba(255,110,20,.55) 35%,rgba(200,40,0,.25) 60%,rgba(120,20,0,0) 75%);mix-blend-mode:screen"></div>`, x, y, { t, until });
   tl.to(el.firstElementChild, { scale: 1.15, opacity: 0.75, duration: 0.35, yoyo: true, repeat: Math.max(1, Math.round(((until || t + 8) - t) / 0.35)), ease: "sine.inOut" }, t + 0.5); return el; };
@@ -185,7 +184,7 @@ const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o));   // STYLE W label; passing labels <= 3.5 s
 const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
-  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", Math.min(size, 24), 0), x, y, {}));
+  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {}));
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 px, name 19 px (screen)
@@ -199,9 +198,9 @@ const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 p
 const showU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.4 }, t));
 const hideU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.4 }, t));
 const pulseU = (id, t, k = 1.25) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale: 1 }, { scale: k, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, t);
-const greyU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "grayscale(1) brightness(0.75)", duration: 0.6 }, t));
+const greyU = () => null;   // STYLE W (critic r1, C10): side colours only, units never turn grey
 const ungreyU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "grayscale(0) brightness(1)", duration: 0.6 }, t));
-const AW = (s, px = 13) => +(Math.min(px, 13) / s).toFixed(2);       // STYLE W: thin arrows (<= 13 px on screen at camera scale s)
+const AW = (s, px = 6) => +(Math.min(px, 6) / s).toFixed(2);       // STYLE W (critic r1): thin trails, <= 6 px on screen at camera scale s
 const FWw = (s) => +(15 / s).toFixed(2);               // front width 15 on screen (wide)
 const FWc = (s) => +(15 * 1.3 / s).toFixed(2);         // front width 15*1.3 on close-ups
 const town = (nm, p, t, side = "r") => { const lft = side === "l";   // STYLE W: permanent town symbol (dark dot + serif name), towns the armies head for
@@ -350,7 +349,7 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 const nowU = (...ids) => ids.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));   // a unit already on the map at t = 0
 // water on the Style W map (floodwater, backwater): the map's own water colour, soft edge, world space
-const water = (p, rx, ry, rot, t, until) => { const el = pinS(GG.pin(`<div style="width:${rx * 2}px;height:${ry * 2}px;border-radius:50%;transform:rotate(${rot}deg);background:radial-gradient(ellipse at center, rgba(77,125,154,.92) 0%, rgba(77,125,154,.88) 52%, rgba(77,125,154,0) 71%)"></div>`, p[0], p[1], { t: t > 0 ? t : null, until }));
+const water = (p, rx, ry, rot, t, until, op = 1) => { const el = pinS(GG.pin(`<div style="width:${rx * 2}px;height:${ry * 2}px;border-radius:50%;opacity:${op};transform:rotate(${rot}deg);background:radial-gradient(ellipse at center, rgba(77,125,154,.92) 0%, rgba(77,125,154,.88) 52%, rgba(77,125,154,0) 71%)"></div>`, p[0], p[1], { t: t > 0 ? t : null, until }));
   if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };
 // ---------- end of kit ----------
 // @@END-KIT
@@ -371,7 +370,7 @@ const MID = WORKS.map((q, i) => [(q[0] + ULINE[i][0]) / 2, (q[1] + ULINE[i][1]) 
 const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 66, 58, 40][i]] : (i === 4 ? [q[0] - 14, q[1] + 12] : q));
 const MID2 = MID.map((q, i) => i >= 5 ? [q[0] + [0, 0, 0, 36, 40, 30, 22, 10][i], q[1] + [0, 0, 0, 0, 0, 6, 14, 18][i]] : q);   // Smith's lodgement
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
-const RIDE = [[1205, 640], [1200, 720], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
+const RIDE = [[1200, 700], [1200, 740], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
 // ---------- map: owner 2026-11-03 (territory when it helps): ground changes hands all scene -> option 1 (full strength) + fronts:
 // the breakout bulge (m1_don_feb15a, m1c's last frame) goes back to the ring as the Confederates pull back (m1_don_feb13), then
 // Smith's outer works turn blue (m1_don_feb15b); at night the colours dissolve (~2.8 s) into fronts only (m1e opens on the night) ----------
@@ -386,18 +385,23 @@ dateNow("15 FEB · DAWN", T_RODE + 0.4); B.date("15 FEBRUARY 1862", T_RODE + 0.5
 flagS(FL.us, 1175, 745, 0, END + 1); flagS(FL.cs, 1560, 790, 0, END + 1);
 // ---------- the lines and units as m1c left them ----------
 fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 28);
-const F1 = frontS({ pts: PUSH, to: MID, moveT: T_PULLED - 0.3, moveDur: 3.0, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.2), until: T_TOOK - 0.3 });
-const F2 = frontS({ pts: MID, to: MID2, moveT: T_TOOK - 0.6, moveDur: 2.6, sideA: "carth", sideB: "rome", t: T_TOOK - 0.4, dur: 0.01, width: FWc(2.8), until: END + 1 });
+// the front as m1c left it (PUSH2), back to the ring as they pull back (MID), then Smith's lodgement (MID2): cross-fades
+const PUSH2 = PUSH.map((q, i) => i < 4 ? [q[0] - 10, q[1] + [40, 45, 40, 25][i]] : q);
+const frontIn = (pts, t, until) => { const g = frontS({ pts, sideA: "carth", sideB: "rome", t, dur: 0.01, width: FWc(2.4), until }); if (t > 0) tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 1.2, immediateRender: false }, t); return g; };
+frontIn(PUSH2, 0, T_PULLED + 1.0); frontIn(MID, T_PULLED + 0.6, T_TOOK + 0.6); frontIn(MID2, T_TOOK + 0.2, END + 1);
 [["sm1", [1250, 660]], ["sm2", [1243, 720]], ["wal", [1268, 790]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
 [["mc1", [1250, 950]], ["mc2", [1350, 1000]], ["mc3", [1440, 1015]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
-greyU(["mc1", "mc2", "mc3"], 0); tl.set(["mc1", "mc2", "mc3"].map((id) => B.units[id].el.querySelector(".blk")), { filter: "grayscale(1) brightness(0.75)" }, 0);
-const RED = [["bu", [1318, 700], [1318, 700]], ["c1", [1310, 860], [1352, 790]], ["c2", [1410, 905], [1420, 805]], ["c3", [1490, 910], [1490, 812]], ["c4", [1440, 860], [1455, 780]], ["c5", [1500, 860], [1525, 790]]];
+const RED = [["bu", [1306, 722], [1306, 722]], ["c1", [1305, 870], [1352, 790]], ["c2", [1405, 925], [1420, 805]], ["c3", [1485, 930], [1490, 812]], ["c4", [1440, 860], [1455, 780]], ["c5", [1500, 860], [1525, 790]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
+unitS("fl", "rome", [1462, 752], "infantry", null, { t: 0, size: "X" });
+pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");   // critic r1: named generals keep their cards (same map)
+pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "right");
+pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
 // ---------- Grant rides back along the line ----------
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
-pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0.15, END + 1, true, "left");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
-const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "GRANT TO AN OFFICER", T_WHO, T_FILL - 0.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 54 });
+pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
+const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "", T_WHO, T_WHO + 3.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 46, pos: "right:60px;top:60px;" });   // empty upper right, off the front and the fort
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line: "it acted like a charm" (narrated; the caption carries no quote marks)
 const CBOX = `<svg width="26" height="20" viewBox="0 0 26 20" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="2" y="3" width="22" height="15" rx="2" fill="#2a2420" stroke="#efe6cf" stroke-width="1.4"/><rect x="2" y="3" width="22" height="5" fill="#4a3c2c" stroke="#efe6cf" stroke-width="1.2"/><circle cx="13" cy="12" r="2.6" fill="#c9b48a"/></svg>`;
@@ -407,7 +411,7 @@ ungreyU(["mc1", "mc2", "mc3"], T_BACK);
 [["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p], k) => B.move(id, T_BACK + 0.1 + k * 0.15, 2.0, p[0], p[1]));
 B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_REPORT - 0.1, "carth");
 // the official report: the confusion on the Confederate side as great as his own, possibly greater
-const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "GRANT'S OFFICIAL REPORT · CONFUSION ON THE CONFEDERATE SIDE", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 46 });
+const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "OFFICIAL REPORT", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 40, pos: "right:60px;top:60px;" });
 ["c1", "c2", "c3", "c4", "c5"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { rotation: k % 2 ? 8 : -8, duration: 0.25, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_GREAT + k * 0.12));
 // they had gone out to break the ring, then pulled back inside it
 [[1310, 900], [1410, 950], [1490, 955]].forEach((p, k) => arw({ pts: [[p[0], p[1] - 70], [p[0] + 4, p[1] - 30]], side: "rome", t: T_GONE + k * 0.2, dur: 0.6, width: AW(2.2, 9), until: T_PULLED + 0.4 }));
@@ -427,7 +431,7 @@ B.move("sm1", T_FRONT, 3.0, 1305, 660); B.move("sm2", T_FRONT + 0.3, 3.0, 1302, 
 [0, 0.9].forEach((d) => mg([1262, 662], [1300, 668], T_FELLED + 0.2 + d, 5, 0.9)); mg([1318, 700], [1278, 690], T_UP + 0.6, 4, 0.9);
 smoke([[1318, 694], [1310, 668], [1300, 640]], T_UP + 0.5, 0.7);
 B.move("bu", T_TOOK - 0.2, 2.2, 1350, 712);
-wstampS("TOOK THE OUTER WORKS", 1404, 604, T_TOOK + 0.1, null, "#9fc0ea", 22);
+wstampS("TOOK THE OUTER WORKS", 1488, 612, T_TOOK + 0.1, null);   // empty ground north-east, clear of the river
 // ---------- night: the Confederate council chooses to give up ----------
 nightWash(T_NIGHT - 0.2, null, 0.5);
 const COUN = pinS(GG.pin(`<div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,140,.95) 0%,rgba(255,170,60,.55) 35%,rgba(255,120,20,0) 72%);mix-blend-mode:screen"></div>`, DOV[0] - 6, DOV[1] - 8, { t: T_COUNCIL - 0.3, until: END + 1 }));

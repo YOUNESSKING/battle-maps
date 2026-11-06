@@ -20,13 +20,13 @@ const T_PLAN = at(P2, "The plan was to disappear"), T_TELL = at(P2, "Grant did n
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 camera([[0, 1432, 812, 5.6], [T_TRENCH, 1430, 816, 6.0], [T_GRANT + 1.0, 1436, 818, 6.2], [T_SOUTH, 1432, 872, 4.7], [T_PET, 1428, 890, 4.5], [T_TOG, 1428, 890, 4.5],
   [T_STARVE + 0.6, 1430, 888, 4.5], [T_TELL + 1.0, 1428, 840, 4.9], [T_LOOK + 0.8, 1400, 800, 3.6], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
-  [T_12 + 0.4, 1470, 855, 4.5], [T_CHICK + 1.5, 1475, 868, 4.9], [T_REST + 0.6, 1490, 880, 4.3], [T_LEAD, 1495, 888, 4.1], [END, 1497, 890, 4.05]]);
+  [T_12 + 0.4, 1470, 840, 4.3], [T_CHICK + 1.5, 1475, 855, 4.5], [T_REST + 0.6, 1490, 865, 4.0], [T_LEAD, 1495, 870, 3.9], [END, 1497, 872, 3.85]]);   // critic 2: Lee's card clear of the date scroll in the night section
 // date scroll on the spoken date (clean first frame: nothing before it)
 dateNow("JUNE 1864", T_12 - 0.1); B.date("12 JUNE 1864", T_12, null, 34);   // critic r1: the date scroll is filled from frame 0
 // ---------- flags (48 px, behind each side's lines, both on every frame) ----------
 flagS(FL.us, 1488, 806, 0, T_LOOK + 1.2); flagS(FL.cs, 1380, 800, 0, T_SOUTH + 1.0);
 flagS(FL.cs, 1350, 930, T_SOUTH + 0.6, T_LOOK + 1.2);
-flagS(FL.us, 1500, 760, T_LOOK + 0.9, T_DARK + 1.4); flagS(FL.cs, 1250, 800, T_LOOK + 0.9, T_DARK + 1.4);
+flagS(FL.us, 1530, 792, T_LOOK + 0.9, T_DARK + 1.4);   // off the start of Sheridan's trail flagS(FL.cs, 1250, 800, T_LOOK + 0.9, T_DARK + 1.4);
 flagS(FL.us, 1520, 860, T_DARK + 1.1, END + 1); flagS(FL.cs, 1405, 905, T_DARK + 1.1, END + 1);
 // ---------- Cold Harbor: the two lines (the locked two-colour front where the sides touch) + the ink trenches ----------
 const FR = frontS({ pts: G.CH_FRONT, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(5.6), until: T_REST + 2.0 });
@@ -51,6 +51,7 @@ const RICH = town("RICHMOND", G.RICHMOND, T_RICH, "l", { keep: true });
 glowPath(G.JAMES, "", 1.3, T_JAMES - 0.2, T_JAMES + 3.0);                     // STYLE W: focus + ink trace along the James on its word
 const TT = B.title("MOVE 3", "THE JAMES RIVER", "JUNE 1864", T_JAMES, T_JAMES + 2.6); SFX("ref:boom", T_JAMES + 0.15);
 const PETL = town("PETERSBURG", G.PETERSBURG, T_PET, "l", { keep: true });
+tl.to(PETL.el, { autoAlpha: 0, duration: 0.4 }, T_LOOK + 0.4); tl.to(PETL.el, { autoAlpha: 1, duration: 0.5 }, T_REST + 0.6);   // steps out while the camera crops it at the bottom edge
 focus(G.PETERSBURG, 40, T_PET + 0.2, T_PET + 3.4);
 // critic r1: the railroads as railroads (ink rail + cross ties), drawn in after "railroads", clear of the title card, held to "Richmond would starve"
 const RAILS = [G.RR_RP, G.RR_SS, G.RR_W, G.RR_NP, G.RR_CP].map((pts, k) => railInk(pts.slice().reverse(), T_RR + 0.1 + k * 0.25, T_STARVE + 1.2, 4.5));
@@ -62,16 +63,17 @@ stampP("RICHMOND WOULD STARVE", 1478, 930, T_STARVE - 0.1, T_PLAN - 0.2, 26);   
 stampP("THE PLAN WAS TO DISAPPEAR", 1418, 862, T_PLAN + 0.1, T_PLAN + 3.4, 24);
 BU.concat([["v5"]]).forEach(([id], k) => tl.to(B.units[id].el, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 1, ease: "sine.inOut" }, T_PLAN + 0.2 + k * 0.15));
 // Lee looks in the wrong place: question marks over the empty ground to the north-west (<= 3.5 s)
-[[1402, 790], [1388, 772], [1416, 770]].forEach((p, k) => { const q = pinS(GG.pin(`<div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:40px;color:#fbf8ef;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">?</div>`, p[0], p[1], { t: T_WRONG - 0.3 + k * 0.25 }));
+[[1386, 770], [1414, 760]].forEach((p, k) => { const q = pinS(GG.pin(`<div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:40px;color:#fbf8ef;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">?</div>`, p[0], p[1], { t: T_WRONG - 0.3 + k * 0.25 }));
   tl.to(q, { autoAlpha: 0, duration: 0.5 }, Math.min(T_SHER - 0.2, T_WRONG + 3.0)); });
 // Sheridan's cavalry off to the west (his card rides with it); Lee's cavalry after it; thin trails fade ~2 s after arrival
 unitS("sh", "carth", G.SHERIDAN[0], "infantry", "SHERIDAN", { t: T_SHER - 0.3, size: "XX" }); cavIcon("sh", { flip: true });
 pinPortrait("sh", PHOTO("sheridan"), FL.us, "Sheridan", T_SHER, END + 1, true, "up");
 along("sh", G.SHERIDAN, T_SHER + 0.2, 5.5, 20);
-arw({ pts: G.SHERIDAN, side: "carth", t: T_SHER + 0.2, dur: 5.0, width: AW(2.35, 8), until: T_SHER + 7.2 });
-unitS("hc", "rome", G.HAMPTON[0], "infantry", null, { t: T_LCAV - 0.2, size: "XX" }); cavIcon("hc", { flip: true });
-along("hc", G.HAMPTON, T_LCAV + 0.2, 4.4, 18);
-arw({ pts: G.HAMPTON, side: "rome", t: T_LCAV + 0.2, dur: 4.0, width: AW(2.35, 8), until: T_LCAV + 6.2 });
+arw({ pts: G.SHERIDAN, side: "carth", t: T_SHER + 0.2, dur: 5.0, width: AW(2.35, 8), until: T_DARK - 0.5 });   // fades before the camera dives back (~2 s after the riders leave the frame)
+const HMP = G.HAMPTON.slice(1);   // critic 2: the trail starts clear of Lee's card
+unitS("hc", "rome", HMP[0], "infantry", null, { t: T_LCAV - 0.2, size: "XX" }); cavIcon("hc", { flip: true });
+along("hc", HMP, T_LCAV + 0.2, 4.4, 18);
+arw({ pts: HMP, side: "rome", t: T_LCAV + 0.2, dur: 4.0, width: AW(2.35, 8), until: T_DARK - 0.5 });
 // critic r1: at the wide scale one box per side at Cold Harbor (the others step out, back when the camera returns)
 hideU(["u6", "u18", "v5", "r2", "r3", "rr"], T_LOOK + 0.3); showU(["u6", "u18", "v5", "r2", "r3", "rr"], T_12 + 0.2);
 // ---------- after dark on the 12th: Warren crosses the Chickahominy and faces Richmond; the rest slips out south ----------
@@ -89,7 +91,6 @@ arw({ pts: [[1460, 892], [1446, 890], [1436, 887]], side: "carth", t: T_FACED + 
 // the rest of the army slips out of the trenches and marches south by back roads (thin trails, fade ~2 s after arrival)
 [["u2", G.MARCH1], ["u6", G.MARCH2], ["u18", G.MARCH1.map((q) => [q[0] - 6, q[1] + 4])]].forEach(([id, pts], k) => along(id, [[BU[k][1][0], BU[k][1][1]], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, 6.0, 22));
 arw({ pts: G.MARCH1, side: "carth", t: T_SOUTH2 - 0.6, dur: 3.0, width: AW(4.3, 8), until: T_SOUTH2 + 4.4 });
-arw({ pts: G.MARCH2, side: "carth", t: T_SOUTH2 - 0.2, dur: 3.0, width: AW(4.3, 8), until: T_SOUTH2 + 4.8 });
 pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADE, END + 1, true, "right");
 pulseU("u2", T_LEAD); pulseU("u2", T_LEAD + 0.6);
 fixImgs();

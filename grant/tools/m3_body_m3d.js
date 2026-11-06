@@ -47,11 +47,11 @@ const NL = G.NEWLINE;
 const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(2.1), until: T_Z0 + 1.0 });
 // critic r1: carry over m3c's end state (same units, same cards): Smith's two brigades + Hinks's division at the breach, Beauregard's line west
 [["s1", [1494, 790]], ["s2", [1490, 828]], ["hk", [1496, 862]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "XX" }));
-now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z1 - 1.6, true, "east")); now(pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", 0, T_Z1 - 1.6, true, "east"));
+now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z0 + 0.2, true, "east-up")); now(pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", 0, T_Z0 + 0.2, true, "east-down"));   // critic 2: the three Union cards spaced
 unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1488, 900);
-const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z1 - 1.6, true, "right");
+const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 0.2, true, "right");
 unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET, 2.0, 1432, 842);
-now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z1 - 1.6, true, "left"));
+now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, true, "left"));
 const VET = [["v1", [1458, 768]], ["v2", [1456, 812]], ["v3", [1446, 880]], ["v4", [1430, 948]]];
 VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.4, size: "XXX" });
   along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.4, 5.0, 22); });
@@ -67,7 +67,7 @@ shoot([1446, 860], [1484, 866], T_18 + 2.0, { r: 4, width: 0.6, dur: 0.5, h: 6 }
 shoot([1438, 915], [1478, 916], T_18 + 3.1, { r: 4, width: 0.6, dur: 0.5, h: 6 }); smoke([[1439, 914], [1441, 911]], T_18 + 3.1, 3);
 // casualty card (the OLD clean K.casualties card, STYLE_LOCK 0b; real numbers only: FACTCHECK_C #9, ~11,400 Union, 15-18 Jun). Union column only:
 // the Confederate loss is not spoken, so column B is removed.
-const NC = K.casualties({ rows: [["", "~11,400"]], flagA: FL.us, headA: "UNION", flagB: FL.cs, t: T_LOST - 0.1, until: T_GONE - 0.1, top: 520 });
+const NC = K.casualties({ rows: [["", "~11,400"]], flagA: FL.us, headA: "UNION", flagB: FL.cs, t: T_LOST - 0.1, until: Math.min(T_GONE - 0.1, T_LOST + 3.3), top: 520 });
 NC.style.justifyContent = "flex-end"; NC.style.paddingRight = "40px";   // critic r1: on the empty ground east of the US flag
 { const inner = NC.firstElementChild; inner.removeChild(inner.lastElementChild); inner.style.flexWrap = "wrap"; inner.style.maxWidth = "520px"; inner.style.justifyContent = "center"; inner.style.background = "rgba(18,16,12,0.96)";
   const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FOUR DAYS OF ASSAULTS"; inner.insertBefore(h, inner.firstChild);
@@ -79,18 +79,20 @@ const PET = town("PETERSBURG", G.PETERSBURG, T_EASY - 1.2, "l", { keep: true });
 const QG = quote("PETERSBURG COULD HAVE BEEN EASILY CAPTURED AT THAT TIME", "GRANT WROTE YEARS LATER", T_EASY - 0.3, T_EVEN + 0.2, { col: "#1f4fc4", size: 40 });
 // ---------- m3-7: the zoom-out. The army across the James (the whole move + the bridge), the siege lines grow, more than nine months ----------
 const MOVE = G.MOVE;
-arw({ pts: MOVE, side: "carth", t: T_ACROSS - 0.4, dur: 3.0, width: 15, until: T_ACROSS + 4.6 });   // the whole move: thin trail, fades ~2 s after arrival
+arw({ pts: MOVE, side: "carth", t: T_ACROSS - 0.4, dur: 3.0, width: 15, until: Math.min(T_ACROSS + 4.6, T_NINE - 0.7) });   // the whole move: thin trail, gone before the nine-months card
 glowPath([[2347, 657], [2329, 679]], "", 14, T_ACROSS - 0.2, T_ACROSS + 3.2);
 boxS("THE JAMES", 2200, 470, T_ACROSS, null, { size: 26 });
 hatch("assets/media/gn_ric_ctl_jun18gain_mx.png", T_ACROSS + 0.4, 3.0, { box: BOX });   // the ground south of the James now Union (blue hatching, ~3 s)
 const W5 = FWw(0.55);
-frontS({ pts: G.SIEGE_N, sideA: "carth", sideB: "rome", t: T_PIN, dur: 2.0, width: W5, until: END + 1 });
-frontS({ pts: G.HOWLETT, sideA: "carth", sideB: "rome", t: T_PIN + 0.4, dur: 1.6, width: W5, until: END + 1 });
-frontS({ pts: [...NL, ...G.SIEGE_S.slice(1)], sideA: "carth", sideB: "rome", t: T_PIN + 0.6, dur: 3.0, width: W5, until: END + 1 });
+// critic 2: ONE continuous siege line from east of Richmond across the James and the Appomattox to south-west of Petersburg (both ends on land)
+frontS({ pts: [...G.SIEGE_N, ...G.HOWLETT, ...NL, ...G.SIEGE_S.slice(1)], sideA: "carth", sideB: "rome", t: T_PIN, dur: 3.2, width: W5, until: END + 1 });
+// "Lee was pinned in a siege": his army in the line (his card), the Union army facing it
+unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_PIN + 0.3, size: "XXXX" }); pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
+unitS("bp", "carth", [1640, 860], "infantry", null, { t: T_PIN + 0.5, size: "XXXX" });
 const NM = numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "right:100px;top:560px;", T_NINE - 0.1, T_ABAN - 0.2, { col: "#c4121f", lc: "#ff8a80" });
 const RT = town("RICHMOND", G.RICHMOND, T_ABAN + 0.4, "l", { keep: true });
 focus([(G.RICHMOND[0] + G.PETERSBURG[0]) / 2, (G.RICHMOND[1] + G.PETERSBURG[1]) / 2], Math.abs(G.PETERSBURG[1] - G.RICHMOND[1]) / 2 + 160, T_ABAN + 0.2, T_ABAN + 3.4);
-hideU(["s1", "s2", "hk", "h2", "pr", "v1", "v2", "v3", "v4"], T_Z1 - 1.5);
+hideU(["s1", "s2", "hk", "h2", "pr", "v1", "v2", "v3", "v4"], T_Z0 + 0.2);   // critic 2: the close-up units and cards step out before the zoom-out
 // method card on the spoken words of m3-7
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["OUT OF A STALEMATE", "OVER A RIVER", "WHERE LEE COULD NOT FOLLOW"];   // spoken words only (m3-7)

@@ -336,11 +336,12 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
-  } else if (side === "west" || side === "east") {   // card level with the unit on a short horizontal stake (clear of what is above/below)
-    const E = side === "east"; w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
+  } else if (/^(west|east)/.test(side)) {   // card beside the unit on a horizontal stake: west/east (34 px), -far (90 px), -up / -down (70 px, card raised / lowered)
+    const E = side.startsWith("east"), L = /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
+    w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
     const card = w.firstElementChild, stake = w.lastElementChild;
-    Object.assign(card.style, { left: E ? "34px" : "-110px", bottom: "auto", top: "-58px" });
-    Object.assign(stake.style, { left: E ? "0px" : "-34px", bottom: "auto", top: "0px", width: "34px", height: "1.5px" });
+    Object.assign(card.style, { left: E ? L + "px" : (-L - 76) + "px", bottom: "auto", top: top + "px" });
+    Object.assign(stake.style, { left: E ? "0px" : -L + "px", bottom: "auto", top: "0px", width: L + "px", height: "1.5px" });
   } else if (side === "down") { w.style.top = "40px"; const card = w.firstElementChild, stake = w.lastElementChild; Object.assign(card.style, { bottom: "auto", top: "40px" }); Object.assign(stake.style, { bottom: "auto", top: "0px" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }

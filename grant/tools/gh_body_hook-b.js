@@ -270,7 +270,7 @@ endScope(SC2, T3);
 // ---------- CUT 3: James River · 1864 (jamesriver_w): the pontoon bridge, Lee's army facing the other way ----------
 // the bridge: Weyanoke Point (the tip of the north-bank peninsula) -> Windmill Point (south bank), traced on the jamesriver relief (map px)
 const WEY = [1402, 874], WIN = [1414, 940], S3c = 1.2, S3b = 2.4;
-const LEEP = JP(37.41, -77.25), C3 = [LEEP[0] + 300, LEEP[1] + 255], C3b = [1412, 880];
+const LEEP = JP(37.41, -77.25), C3 = [LEEP[0] + 240, LEEP[1] + 230], C3b = [1412, 880];
 // close on the bridge first ("marched a whole army across a river"), then pull back to show Lee ("while Robert E. Lee...")
 tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, T3 - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, T3 + 0.04);
 tl.set(LJA, { autoAlpha: 1 }, T3 - 0.01);
@@ -289,7 +289,7 @@ const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1418, 975]];
 arw({ pts: XR, side: "carth", t: T3 + 0.2, dur: 1.4, width: AW(S3b, 9), until: T_LEE - 0.5 });
 arw({ pts: XR, side: "carth", t: T_LEE - 0.4, dur: 0.01, width: AW(S3c, 9), until: null });
 pinPortrait("j2", PHOTO("grant"), FL.us35, "Grant", T3 + 0.75, T4 - 0.1, "up");   // on the last column (card above it, clear of the leading columns)
-placeN([(WEY[0] + WIN[0]) / 2, (WEY[1] + WIN[1]) / 2], "James River · 1864", 3, T_ACROSS, T4 - 0.1, "l");
+placeN([(WEY[0] + WIN[0]) / 2, (WEY[1] + WIN[1]) / 2], "James River · 1864", 3, T_ACROSS, T_ACROSS + 2.4, "r");
 // Lee (his portrait card on a stake at his own army, on his name) and his army, facing the other way (north, toward Richmond)
 const LR = [unitS("l0", "rome", LEEP, "infantry", "", { t: T3 + 0.1, until: T4 }), unitS("l1", "rome", [LEEP[0] + 120, LEEP[1] - 30], "infantry", "", { t: T3 + 0.2, until: T4 })];
 pinPortrait("l0", PHOTO("lee"), FL.csa, "Lee", T_LEE - 0.05, T4 - 0.1, "left");

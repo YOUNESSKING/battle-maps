@@ -33,35 +33,36 @@ flagS(FL.cs, 860, 1380, T_HOW + 1.6, END + 1);
 // ---------- the two forts, both Union now ----------
 [FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); poleFlag(FL.us, [p[0] + 3, p[1] - 6], 0, null, 26); });
 B.caption("TWO RIVER FORTS · TEN DAYS", T_TEN, T_TEN + 2.6, "carth");
-const GB = badge({ name: "ULYSSES S. GRANT", role: "FROM A SNUBBED BRIGADIER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_SNUB - 0.1, until: T_SNUB + 3.3 });   // no unit of his on this map
+const GB = badge({ name: "GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_SNUB - 0.1, until: T_SNUB + 3.3 });   // no unit of his on this map
 // ---------- the rivers open: the gunboats steam far into Tennessee ----------
 glowPath(TENN_S.slice(5, 14), "", 0, T_INTO - 0.2, T_INTO + 3.3, 0, 0, { focus: false });   // ink trace along both rivers, deep into Tennessee
 glowPath(CUMB_E.slice(7), "", 0, T_INTO, T_INTO + 3.4, 0, 0, { focus: false });
-const GT = ship("iron", "carth", TENN_S[5], 90, T_BOATS, T_HOW + 1.0, { L: 46 }); sail(GT, TENN_S.slice(5, 14), T_BOATS + 0.2, 9.0, 24);
-const GC = ship("iron", "carth", CUMB_E[7], 20, T_BOATS + 0.3, T_HOW + 1.0, { L: 46 }); sail(GC, CUMB_E.slice(7), T_BOATS + 0.5, 8.0, 24);
+const GT = ship("iron", "carth", TENN_S[5], 90, null, null, { L: 46 }); tl.set(GT.el, { autoAlpha: 1 }, 0); tl.to(GT.el, { autoAlpha: 0, duration: 0.5 }, T_HOW + 1.0);   // on the river from frame 0 sail(GT, TENN_S.slice(5, 14), T_BOATS + 0.2, 9.0, 24);
+const GC = ship("iron", "carth", CUMB_E[7], 20, null, null, { L: 46 }); tl.set(GC.el, { autoAlpha: 1 }, 0); tl.to(GC.el, { autoAlpha: 0, duration: 0.5 }, T_HOW + 1.0); sail(GC, CUMB_E.slice(7), T_BOATS + 0.5, 8.0, 24);
 curveLabel("Tennessee River", [[1446, 1150], [1440, 1230], [1428, 1300]], T_BOATS + 0.4, T_BOATS + 3.8, 22);
 // ---------- the Kentucky line collapses ----------
 const KYL = glowPath([COL, [1200, 840], FH, FD, [1700, 830], BG], "", 0, T_FALL, T_FALL + 3.4);   // the old Kentucky line: focus + ink trace
 boxS("KENTUCKY", 1640, 560, T_KY, null, { size: 30 }); boxS("MIDDLE TENNESSEE", 1720, 1250, T_MIDT, null, { size: 30 });
 [[BG, [1880, 900], [1840, 1060], [1880, 1300]], [COL, [990, 900], [960, 1050]], [[1840, 1060], [1860, 1220], [1900, 1380]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, width: AW(0.85, 10), until: T_FALL + 7.0 }));
-[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { t: T_FALL - 0.6, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
+[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060]], ["r3", [1600, 1040], [1720, 1330]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { t: 0, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
+hideU(["r1", "r2", "r3"], T_WAIT);   // they have fallen back off the stage before the method card
 // ---------- method card: line 1 lit on "attacked the moment the enemy hesitated" ----------
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["HE MOVED FAST", "HIT THE SECOND FORT BEFORE HELP COULD COME", "ATTACKED THE MOMENT THE ENEMY HESITATED"];   // spoken words only (m1-9)
-const MC = GG.method(3, T_FAST - 0.1, T_ONLY + 1.4, [T_FAST, T_HIT2, T_ATT]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "50px"; });
+const MC = GG.method(3, T_FAST - 0.1, T_ATT + 3.0, [T_FAST, T_HIT2, T_ATT]);   // holds ~3 s after line 3 MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "50px"; });
 SFX("ref:pop", T_FAST + 0.1); SFX("ref:pop", T_HIT2 + 0.1); SFX("ref:boom", T_ATT + 0.2);
 // ---------- move1-sub: only the beginning; the question (dark-to-bluff transition); subscribe; NEXT ----------
-const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%, rgb(128,128,66) 0%, rgb(100,101,52) 100%);pointer-events:none";   // STYLE W: the question scene on the same green ground
+const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:url(assets/relief_close.jpg) 0px -640px / 5760px 3240px no-repeat;pointer-events:none";   // STYLE W: the question scene on the Style W turf (a clear patch of tennessee_w_close)   // STYLE W: the question scene on the same green ground
 document.getElementById("fx").appendChild(DK); gsap.set(DK, { autoAlpha: 0 }); tl.to(DK, { autoAlpha: 1, duration: 1.6, ease: "sine.inOut" }, T_HOW - 0.2);
 // the bluff scene (screen space): a river bending under a high bluff, guns on the crest, a supply steamer under them
 const RIV = "M -40 250 C 400 300 700 200 860 420 C 1000 610 760 760 900 900 C 1000 1000 1300 980 1960 1040";
 const BLF = "M 820 160 C 980 300 1100 420 1060 600 C 1030 720 980 800 1060 880 C 1140 950 1300 930 1500 960";
 const BS = scr(`<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="display:block">
   <defs><filter id="bfg" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter></defs>
-  <path d="${RIV}" fill="none" stroke="#3c6378" stroke-width="92" stroke-linecap="round"/><path d="${RIV}" fill="none" stroke="#4d7d9a" stroke-width="80" stroke-linecap="round"/>
+  <path d="${RIV}" fill="none" stroke="#2a2410" stroke-width="96" stroke-linecap="round" opacity=".8"/><path d="${RIV}" fill="none" stroke="#3c6378" stroke-width="92" stroke-linecap="round"/><path d="${RIV}" fill="none" stroke="#4d7d9a" stroke-width="80" stroke-linecap="round"/>
   <path class="rsh" d="${RIV}" fill="none" stroke="rgba(200,220,232,.35)" stroke-width="2" stroke-dasharray="14 60"/>
-  <path d="M 900 120 C 1080 280 1190 420 1150 600 C 1120 730 1080 800 1150 860 C 1240 920 1400 900 1960 900 L 1960 120 Z" fill="#6b6a3a"/>
+  <path d="M 900 120 C 1080 280 1190 420 1150 600 C 1120 730 1080 800 1150 860 C 1240 920 1400 900 1960 900 L 1960 120 Z" fill="rgba(52,50,22,.32)"/>
   <path class="bg" d="${BLF}" fill="none" stroke="#2a2410" stroke-width="18" stroke-dasharray="2 7" transform="translate(-10 2)" opacity="0"/>
   <path class="bl" d="${BLF}" fill="none" stroke="#2a2410" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
   <g class="guns">${[[930, 270], [1040, 400], [1075, 560], [1020, 760], [1110, 905]].map(([x, y]) => `<g transform="translate(${x} ${y})"><rect x="-16" y="-9" width="32" height="18" fill="#c4121f" stroke="#f7f3ea" stroke-width="2.5"/><circle class="fl" cx="-24" cy="0" r="14" fill="#ffd27a" opacity="0"/></g>`).join("")}</g>
@@ -88,7 +89,7 @@ tl.to(BS.querySelector(".guns"), { autoAlpha: 1, duration: 0.4 }, T_GUNS - 0.3);
   tl.fromTo(f, { opacity: 1, scale: 0.4 }, { opacity: 0, scale: 1.6, duration: 0.35, immediateRender: false, transformOrigin: "50% 50%" }, t); if (d === 0) SFX("fire", t); }); });
 // woven subscribe: small button bottom-right, cursor click, bell; never a full-screen card
 const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
-scr(`<div style="padding:10px 26px 12px;background:#dcecf8;color:#111;font-family:Oswald;font-weight:500;letter-spacing:.2em;font-size:34px;box-shadow:0 6px 20px rgba(0,0,0,.6)">NEXT: MOVE 2 →</div>`, "right:80px;bottom:150px;", T_HERE + 0.3, END + 1);
+// critic r1: no "NEXT: MOVE 2" label (never spoken)
 SFX("ref:pop", T_HERE + 0.3);
 // ---------- clean screen ----------
 fixImgs();

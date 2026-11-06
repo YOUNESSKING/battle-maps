@@ -38,9 +38,11 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");   // STYLE W: solid arrows only (2d item 5)
-  ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1));
-  const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
+const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
+  o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
+  const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
 const legend = (t, until, opt2) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]].map(([sq, ln, nm]) => `<span><b style="display:inline-block;width:20px;height:${opt2 ? 6 : 20}px;background:${opt2 ? ln : sq};${opt2 ? `box-shadow:0 0 8px ${ln};vertical-align:4px;` : "vertical-align:-3px;"}margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}</div>`, "", 34, t, Math.min(until, t + 6));   // STYLE W: ~6 s, only when a symbol is new
 const posOn = (pts, f) => { let Lt = 0; const seg = []; for (let j = 1; j < pts.length; j++) { const d = Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]); seg.push(d); Lt += d; }
@@ -98,13 +100,10 @@ const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {   // scre
 };
 const along = (id, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); B.move(id, t + (k - 1) * dur / n, dur / n, q[0], q[1], "none"); } };
 const pinAlong = (el, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); tl.to(el, { left: q[0], top: q[1], duration: dur / n, ease: "none" }, t + (k - 1) * dur / n); } };
-const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {   // a counter that ticks up (screen space)
+const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {   // STYLE W (critic r1): the spoken number only (no count-up, no sub line), <= 3.5 s
   const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
-    <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:${o.vs || 54}px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#a8a294">${o.sub}</div>` : ""}</div>`, css, t, until);
-  const v = el.querySelector(".v"), st = { x: 0 };
-  tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
-  for (let k = 0; k < n; k++) SFX("tick", t + 0.2 + (k * dur) / n);
-  return el;
+    ${label ? `<div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div>` : ""}<div class="v" style="font-size:${o.vs || 54}px;letter-spacing:.04em">${o.pre || ""}${Number(to).toLocaleString("en-US")}${suffix}</div></div>`, css, t, Math.min(until, t + 3.5));
+  SFX("tick", t + 0.2); return el;
 };
 const mg = (a, b, t, n = 5, w = 1.1) => { SFX("mg", t);   // musket volley: tracer dashes (mg sound), sparingly
   for (let k = 0; k < n; k++) { const g = document.createElementNS(NS, "line"), j = ((k * 7) % 5 - 2) * 1.5 * w;
@@ -129,11 +128,11 @@ const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only for verbatim words)
 const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
-  `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
+  <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div>${who ? `<div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div>` : ""}</div>`,
+  o.pos || `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
 const belief = (txt, subt, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c4121f"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:17px;letter-spacing:.32em;color:${o.subc || "#ff8a80"}">${subt}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
-  `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
+  ${subt ? `<div style="font-size:17px;letter-spacing:.32em;color:${o.subc || "#ff8a80"}">${subt}</div>` : ""}<div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
+  o.pos || `left:0;right:0;top:${o.top || 230}px;display:flex;justify-content:center;`, t, until);
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => { im.addEventListener("error", () => { im.style.display = "none"; }, { once: true }); });
 const fireGlow = (x, y, r, t, until) => { const el = GG.pin(`<div style="width:${r * 2}px;height:${r * 2}px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,90,.85) 0%,rgba(255,110,20,.55) 35%,rgba(200,40,0,.25) 60%,rgba(120,20,0,0) 75%);mix-blend-mode:screen"></div>`, x, y, { t, until });
   tl.to(el.firstElementChild, { scale: 1.15, opacity: 0.75, duration: 0.35, yoyo: true, repeat: Math.max(1, Math.round(((until || t + 8) - t) / 0.35)), ease: "sine.inOut" }, t + 0.5); return el; };
@@ -185,7 +184,7 @@ const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o));   // STYLE W label; passing labels <= 3.5 s
 const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
-  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", Math.min(size, 24), 0), x, y, {}));
+  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {}));
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 px, name 19 px (screen)
@@ -199,9 +198,9 @@ const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 p
 const showU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.4 }, t));
 const hideU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.4 }, t));
 const pulseU = (id, t, k = 1.25) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale: 1 }, { scale: k, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, t);
-const greyU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "grayscale(1) brightness(0.75)", duration: 0.6 }, t));
+const greyU = () => null;   // STYLE W (critic r1, C10): side colours only, units never turn grey
 const ungreyU = (ids, t) => ids.forEach((id) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "grayscale(0) brightness(1)", duration: 0.6 }, t));
-const AW = (s, px = 13) => +(Math.min(px, 13) / s).toFixed(2);       // STYLE W: thin arrows (<= 13 px on screen at camera scale s)
+const AW = (s, px = 6) => +(Math.min(px, 6) / s).toFixed(2);       // STYLE W (critic r1): thin trails, <= 6 px on screen at camera scale s
 const FWw = (s) => +(15 / s).toFixed(2);               // front width 15 on screen (wide)
 const FWc = (s) => +(15 * 1.3 / s).toFixed(2);         // front width 15*1.3 on close-ups
 const town = (nm, p, t, side = "r") => { const lft = side === "l";   // STYLE W: permanent town symbol (dark dot + serif name), towns the armies head for
@@ -380,17 +379,18 @@ const NW = nightWash(0, T_DAWN - 0.2, 0.5); gsap.set(NW, { autoAlpha: 1 }); tl.g
 dawnWash(T_DAWN - 0.3, T_TELE);
 hand("assets/media/gn_don_ctl_feb16cap_mx.png", T_ACC + 0.9);   // the surrender: the pocket and the ground behind it pass to the Union (blue ink)
 camera([[0, 1480, 760, 2.2], [T_STEAM + 0.4, 1560, 740, 2.0], [T_FEAR, 1600, 760, 1.9], [T_FOR, 1560, 860, 2.1], [T_BACKW + 0.6, 1590, 900, 2.0],
-  [T_CMD, 1450, 770, 2.2], [T_DAWN + 0.3, 1380, 790, 1.8], [T_ANS + 0.4, 1370, 790, 1.8], [T_ACC, 1400, 760, 2.0], [T_TELE, 1380, 760, 1.35],
+  [T_CMD, 1450, 770, 2.2], [T_DAWN + 0.3, 1380, 790, 1.8], [T_ANS + 0.4, 1340, 850, 1.8], [T_BCALL, 1340, 850, 1.8], [T_ACC, 1400, 760, 2.0], [T_TELE, 1380, 760, 1.35],
   [T_LET, 1360, 760, 1.2], [END, 1340, 760, 1.12]]);
 dateNow("15 FEB · NIGHT", T_DAWN - 0.1); B.date("16 FEB · DAWN", T_DAWN, T_ANS - 0.1, 34); B.date("16 FEBRUARY 1862", T_ANS, null, 34);
 // ---------- flags ----------
 flagS(FL.us, 1290, 880, 0, T_ACC + 1.6); flagS(FL.cs, 1600, 790, 0, T_ACC + 1.6);
 flagS(FL.us, 1060, 660, T_ACC + 1.4, END + 1); flagS(FL.cs, 1800, 900, T_ACC + 1.5, END + 1);
 // ---------- the pocket as m1d left it ----------
-fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, T_ACC + 0.4, 28); poleFlag(FL.us, [DON[0] + 4, DON[1] - 8], T_ACC + 0.45, END + 1, 30);
+fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], T_ACC - 1.2, T_ACC + 0.4, 28); poleFlag(FL.us, [DON[0] + 4, DON[1] - 8], T_ACC + 0.45, T_ACC + 3.6, 30);   // the flag switch only at the surrender beat
 const FR = frontS({ pts: MID2, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.1), until: T_ACC + 1.0 });
 tl.to(FR, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_ACC + 1.0);
 [["sm1", [1305, 660]], ["sm2", [1302, 700]], ["wal", [1268, 790]], ["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
+pinPortrait("sm1", PHOTO("csmith"), FL.us, "C. F. Smith", 0, T_TELE + 0.4, true, "upleft");   // critic r1: named generals keep their cards (same map)
 const RED = [["bu", [1350, 712]], ["c1", [1352, 790]], ["c2", [1420, 805]], ["c3", [1490, 812]], ["c4", [1455, 780]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
 tl.to(B.units.c2.el, { y: -3, duration: 0.7, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.1);
@@ -401,8 +401,8 @@ const ST = [0, 1].map((k) => { const p0 = posOn(UPRIVER, 0), s = ship("steamer",
   tl.set(s.el, { autoAlpha: 1 }, 0);
   sail(s, [[p0[0] - 14 - k * 26, p0[1] + 4 + k * 4], ...UPRIVER], T_STEAM + 0.2 + k * 1.8, T_CMD - T_STEAM + 1.0, 24); stackSmoke([LANDG[0] + 50, LANDG[1] - 16], T_STEAM + 0.8 + k * 0.6, T_STEAM + 4, 1.4); return s; });
 // STYLE W: the two generals' portraits ride their own steamers out (were corner chips)
-pinPortrait(ST[0].el, PHOTO("floyd"), FL.cs, "Floyd", T_FP + 0.1, T_CMD + 0.6, true, "upleft");
-pinPortrait(ST[1].el, PHOTO("pillow"), FL.cs, "Pillow", T_PIL + 0.1, T_CMD + 0.6, true, "upright");
+pinPortrait(ST[0].el, PHOTO("floyd"), FL.cs, "Floyd", 0, T_CMD + 0.6, true, "upleft");
+pinPortrait(ST[1].el, PHOTO("pillow"), FL.cs, "Pillow", 0, T_CMD + 0.6, true, "upright");
 B.caption("FLOYD: BUCHANAN'S SECRETARY OF WAR", T_SEC, T_FOR - 0.2, "rome");
 // ---------- Forrest's cavalry out through the flooded backwater ----------
 const BW = water([1566, 838], 96, 30, 116, T_BACKW - 0.2, T_DAWN + 1, 0.75);   // the flooded backwater (Lick Creek), in the map's own water colour
@@ -410,47 +410,46 @@ unitS("for", "rome", ESCAPE[0], "cavalry", "FORREST", { t: T_FOR }); cavIcon("fo
 along("for", ESCAPE, T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
 arw({ pts: ESCAPE.slice(0, 6).map((q) => [q[0] + 16, q[1] - 6]), side: "rome", t: T_SEV - 0.2, dur: 2.4, width: AW(2.0, 9), until: T_CMD + 3.0 });
 // ---------- the command falls to Buckner; at dawn he writes asking for terms ----------
-pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", T_BUCK + 0.1, T_TELE + 0.4, true, "upleft");   // the command falls to him
+pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, T_TELE + 0.4, true, "up");
 pulseU("bu", T_BUCK + 0.2);
 const LTR = `<svg width="34" height="24" viewBox="0 0 34 24" style="display:block;filter:drop-shadow(0 0 4px rgba(255,240,200,.9)) drop-shadow(0 2px 3px #000)"><rect x="1" y="1" width="32" height="22" rx="2" fill="#efe6cf" stroke="#1a1712" stroke-width="1.4"/><path d="M1 2 L17 13 L33 2" fill="none" stroke="#1a1712" stroke-width="1.4"/></svg>`;
 const L1 = pinS(GG.pin(`<div style="transform:scale(1.4)">${LTR}</div>`, DOV[0], DOV[1], { t: T_DAWN, pop: true, until: T_TERMS + 2.0 }));
 pinAlong(L1, [DOV, [1420, 790], [1330, 815], GHQ], T_DAWN + 0.4, 2.4, 16);
-unitS("ghq", "carth", GHQ, "infantry", null, { t: 0.2 });   // Grant's headquarters (his own counter)
+unitS("ghq", "carth", GHQ, "infantry", null, { t: 0 });   // Grant's headquarters (his own counter)
 // ---------- Grant's answer (verbatim; quote marks) ----------
-pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", T_ANS + 0.05, T_TELE + 0.4, true, "left");
+pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", 0, T_TELE + 0.4, true, "left");
 const L2 = pinS(GG.pin(`<div style="transform:scale(1.4)">${LTR}</div>`, GHQ[0], GHQ[1], { t: T_ANS + 0.2, pop: true, until: T_BCALL + 0.5 }));
 pinAlong(L2, [GHQ, [1330, 815], [1420, 790], DOV], T_ANS + 0.5, 2.0, 16);
-const Q = quote(`“No terms except an unconditional and <b class="imm" style="color:#9fc0ea">immediate</b> surrender can be accepted.<span class="q2"> I propose to move immediately upon your works.”</span>`, "GRANT TO BUCKNER · 16 FEBRUARY 1862", T_NO - 0.1, T_BCALL - 0.2, { size: 44, mw: 1300 });
+const Q = quote(`“No terms except an unconditional and <b class="imm" style="color:#9fc0ea">immediate</b> surrender can be accepted.<span class="q2"> I propose to move immediately upon your works.”</span>`, "", T_NO - 0.1, T_BCALL - 0.2, { size: 38, mw: 860, pos: "right:60px;bottom:96px;" });   // lower-right empty ground, no source line
 const Q2 = Q.querySelector(".q2"); gsap.set(Q2, { autoAlpha: 0 }); tl.to(Q2, { autoAlpha: 1, duration: 0.4 }, T_PROP - 0.1);
 tl.fromTo(Q.querySelector(".imm"), { color: "#f7f3ea" }, { color: "#9fc0ea", duration: 0.2, immediateRender: false }, T_IMM); SFX("hit", T_IMM + 0.05); K.shake(T_IMM + 0.05, 5, 0.3);
 // Buckner: ungenerous and unchivalrous, but he accepted
-const UN = belief("UNGENEROUS AND UNCHIVALROUS", "BUCKNER ON THE TERMS", T_UNG - 0.1, T_ACC - 0.1, { size: 50 });
+const UN = belief("UNGENEROUS AND UNCHIVALROUS", "", T_UNG - 0.1, T_ACC - 0.1, { size: 44, pos: "right:60px;top:60px;" });
 greyU(["bu", "c1", "c2", "c3", "c4"], T_ACC + 0.3);
 wstampS("ACCEPTED", DON[0] + 10, DON[1] - 70, T_ACC + 0.1, null, "#9fc0ea", 26);
 hideU(["bu", "c1", "c2", "c3", "c4", "mc1", "mc2", "mc3", "wal", "sm1", "sm2", "ghq"], T_TELE + 0.4);
-unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); greyU(["pr"], T_TELE + 0.4); tagAt("pr", T_PRIS);
+unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
-pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.6, END + 1, true, "upleft");
+pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });
 // ---------- the telegram to Halleck ----------
-const TG = scr(`<div style="padding:18px 46px 20px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);min-width:720px">
-  <div style="font-size:20px;letter-spacing:.32em;color:#c9b48a">GRANT TO HALLECK · TELEGRAM</div>
-  <div style="font-size:30px;letter-spacing:.1em;margin-top:6px">TAKEN FORT DONELSON</div>
-  <div class="r1" style="font-size:58px;letter-spacing:.04em;margin-top:6px;color:#ff8a80">12,000–15,000 <span style="font-size:30px;color:#f7f3ea">PRISONERS</span></div>
-  <div class="r2" style="display:flex;justify-content:center;gap:44px;font-size:44px;margin-top:4px"><span class="a">48 <span style="font-size:24px">FIELD GUNS</span></span><span class="b">17 <span style="font-size:24px">HEAVY GUNS</span></span></div></div>`,
-  "left:0;right:0;top:230px;display:flex;justify-content:center;", T_TAKEN - 0.2, T_LET - 0.2);
-const [R1, RA, RB] = [TG.querySelector(".r1"), TG.querySelector(".a"), TG.querySelector(".b")]; gsap.set([R1, RA, RB], { autoAlpha: 0 });
-[[R1, T_PRIS], [RA, T_48], [RB, T_17]].forEach(([el, t]) => { tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.25, immediateRender: false }, t); SFX("tick", t + 0.1); });
+// the telegram (spoken numbers only), two short cards <= 3.5 s each, top-left under the date scroll, off the fort and Grant's card
+const TG = scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+  <div style="font-size:54px;letter-spacing:.04em;color:#ff8a80">12,000–15,000 <span style="font-size:28px;color:#f7f3ea">PRISONERS</span></div></div>`, "left:76px;top:224px;", T_PRIS - 0.1, T_PRIS + 3.1);
+SFX("tick", T_PRIS + 0.1);
+const TG2 = scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);display:flex;gap:40px;font-size:48px">
+  <span class="a">48 <span style="font-size:24px">FIELD GUNS</span></span><span class="b">17 <span style="font-size:24px">HEAVY GUNS</span></span></div>`, "left:76px;top:224px;", T_48 - 0.1, T_17 + 1.4);
+const RB = TG2.querySelector(".b"); gsap.set(RB, { autoAlpha: 0 }); tl.fromTo(RB, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.25, immediateRender: false }, T_17); SFX("tick", T_48 + 0.1); SFX("tick", T_17 + 0.1);
 // ---------- U.S. -> UNCONDITIONAL SURRENDER GRANT ----------
 const NN = scr(`<div style="padding:20px 56px 24px;background:rgba(18,16,12,0.94);border-top:6px solid #1f4fc4;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div class="us" style="font-size:110px;letter-spacing:.12em;line-height:1;color:#c9b48a">U.S.</div>
   <div class="full" style="font-size:66px;letter-spacing:.06em;line-height:1.1"><b style="color:#c9b48a">U</b>NCONDITIONAL <b style="color:#c9b48a">S</b>URRENDER GRANT</div></div>`,
-  "left:0;right:0;top:230px;display:flex;justify-content:center;", T_US - 0.3, T_LOSS - 0.2);
+  "left:0;right:0;top:230px;display:flex;justify-content:center;", T_NICK - 0.2, T_USG + 2.0);
 const US = NN.querySelector(".us"), FULL = NN.querySelector(".full"); gsap.set(FULL, { autoAlpha: 0, height: 0 });
 tl.to(US, { autoAlpha: 0, height: 0, duration: 0.3 }, T_USG - 0.2); tl.to(FULL, { autoAlpha: 1, height: "auto", duration: 0.01 }, T_USG - 0.05);
 slam(FULL, T_USG - 0.05, { shake: 5 });
 // ---------- casualty card (the old clean K.casualties card; real numbers only: FACTCHECK_A #11, #12) ----------
-const CAS = K.casualties({ rows: [["", "~2,800", "12,000–15,000"]], flagA: FL.us, flagB: FL.cs, headA: "UNION", headB: "CONFEDERATE", t: T_LOSS, until: END + 1, top: 250 });
+const CAS = K.casualties({ rows: [["", "~2,800", "12,000–15,000"]], flagA: FL.us, flagB: FL.cs, headA: "UNION", headB: "CONFEDERATE", t: T_LOSS, until: END + 1, top: 210 });
 { const inner = CAS.firstElementChild; inner.style.flexWrap = "wrap"; inner.style.maxWidth = "980px";
   const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FORT DONELSON"; inner.insertBefore(h, inner.firstChild);
   const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "UNION: LOSSES · CONFEDERATE: PRISONERS"; inner.appendChild(f); }

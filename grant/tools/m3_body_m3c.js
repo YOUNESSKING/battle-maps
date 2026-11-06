@@ -19,7 +19,7 @@ hatch("assets/media/gn_pet_ctl_breach_mx.png", T_BROKE + 2.6, 3.0);   // in as t
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
 camera([[0, 1560, 790, 2.6], [T_14K, 1540, 805, 2.9], [T_HINKS, 1525, 825, 3.2], [T_22, 1510, 820, 3.0], [T_BROKE + 0.4, 1495, 822, 3.3], [T_STOP, 1480, 830, 3.0],
   [T_WAIT, 1450, 840, 2.6], [END, 1445, 842, 2.55]]);
-dateNow("17 JUNE 1864", T_15 - 0.1); B.date("15 JUNE 1864", T_15, null, 34);
+dateNow("15 JUNE 1864", null);   // critic 2: open on the date of this attack
 // time of day: the attack went in late on the 15th (warm evening light), then night
 const TODW = todDiv("rgba(255,165,80,0.6)"); tl.to(TODW, { opacity: 0.2, duration: 2.0 }, T_15); tl.to(TODW, { opacity: 0, duration: 1.6 }, T_STOP);
 // ---------- flags (48 px, behind each side's lines) ----------
@@ -37,8 +37,8 @@ tagAt("hk", T_HINKS);
 arw({ pts: G.CPROAD.slice(1), side: "carth", t: 0.2, dur: 3.0, width: AW(2.6, 9), until: 5.2 });   // real move: thin trail, fades ~2 s after arrival
 boxS("ABOUT 14,000", 1580, 912, T_14K, null, { size: 28 });   // below Hinks's column, clear of the cards
 // generals: portrait cards on stakes at their own units for the whole battle (Smith above his lead brigade, Hinks below his division, Beauregard west of his line)
-const SMP = pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", T_SMITH, END + 1, true, "east");   // critic r1: side stakes east, off the line
-pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS + 0.2, END + 1, true, "east");
+const SMP = pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", T_SMITH, END + 1, true, "east-far");   // critic r1: side stakes east, off the line
+pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS + 0.2, END + 1, true, "east-far");
 pulseU("hk", T_LEAD); pulseU("hk", T_LEAD + 0.6);
 boxS("ABOUT 2,200", 1440, 768, T_22, null, { size: 28 });
 pinPortrait("ri", PHOTO("beauregard"), FL.cs, "Beauregard", T_BEAU + 0.6, END + 1, true, "left");
@@ -48,13 +48,13 @@ shoot([1503, 838], [1556, 850], T_22 + 0.4, { r: 4, width: 0.6, dur: 0.6, h: 8 }
 shoot([1508, 868], [1560, 866], T_BROKE - 0.2, { r: 4, width: 0.6, dur: 0.6, h: 8 }); smoke([[1510, 866], [1512, 862]], T_BROKE - 0.2, 3);
 mg([1556, 852], [1512, 852], T_BROKE + 0.1, 5, 0.9); mg([1552, 800], [1505, 805], T_BROKE + 0.7, 5, 0.9);
 [["s1", [1494, 790]], ["s2", [1490, 828]], ["hk", [1496, 862]]].forEach(([id, p], k) => B.move(id, T_BROKE + 0.3 + k * 0.2, 2.6, p[0], p[1]));
-[[[1580, 770], [1540, 780], [1500, 790]], [[1585, 820], [1540, 822], [1495, 828]], [[1585, 868], [1540, 864], [1500, 862]]].forEach((pts, k) =>
+[[[1562, 745], [1530, 768], [1500, 788]], [[1585, 820], [1540, 822], [1495, 828]], [[1562, 912], [1532, 888], [1502, 866]]].forEach((pts, k) =>
   arw({ pts, side: "carth", t: T_BROKE + 0.2 + k * 0.25, dur: 1.4, width: AW(3.3, 9), until: T_BROKE + 0.2 + k * 0.25 + 3.4 }));
-greyU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 1.6); hideU(["bt0", "bt1", "bt2", "bt3"], T_STOP - 0.4);
+hideU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 1.3);   // the captured batteries step out as Smith's men reach them
 B.move("ri", T_BROKE + 1.0, 2.5, 1440, 830);
 glowPath(G.BREACH.map((q) => [q[0] + 10, q[1]]), "", 1.4, T_TWO - 0.3, T_TWO + 3.2);   // STYLE W: focus wash + ink trace along the broken stretch
 inkTrace([[1512, 774], [1530, 774]], T_TWO - 0.2, T_TWO + 3.2, 2.4); inkTrace([[1529, 873], [1546, 873]], T_TWO - 0.2, T_TWO + 3.2, 2.4);   // bracket ticks at both ends of the broken stretch
-boxS("ABOUT TWO MILES WIDE", 1492, 742, T_TWO - 0.1, null, { size: 28 });   // at the north end of the bracketed stretch, clear of the cards
+boxS("ABOUT TWO MILES WIDE", 1492, 742, T_TWO - 0.1, T_STOP - 0.35, { size: 28 });   // leaves before STOPPED lands   // at the north end of the bracketed stretch, clear of the cards
 // ---------- Smith stops for the night; the open road to the city he did not take ----------
 nightWash(T_STOP, null, 0.45, 1.6); K.night({ lines: [FR], tOn: T_STOP });
 tl.to(SMP.querySelector(".ph"), { filter: "grayscale(1) brightness(0.7)", duration: 0.6 }, T_STOP + 0.3);

@@ -25,7 +25,8 @@ const ROAD_S = [[1375, 930], [1330, 945], [1200, 950], [1050, 960], [900, 975], 
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 zoomBox(1335, 800, 1.75, T_FERRY - 1.4);   // where the camera is about to dive
 camera([[0, 1180, 640, 1.6], [T_FERRY, 1250, 700, 2.1], [T_WIL + 0.8, 1310, 780, 3.2], [T_WEY + 0.6, 1360, 830, 3.4], [T_101, 1385, 842, 4.2], [T_90, 1385, 850, 4.0],
-  [T_ELEV, 1380, 865, 3.8], [T_TWO, 1360, 870, 3.0], [T_GUNS + 1.0, 1250, 880, 2.4], [T_GUESS + 1.6, 940, 720, 1.05], [T_16, 920, 730, 1.0], [END, 930, 735, 1.02]]);
+  [T_ELEV, 1380, 865, 3.8], [T_TWO, 1360, 870, 3.0], [T_GUNS + 1.0, 1250, 880, 2.4], [T_GUESS - 0.3, 940, 720, 1.05],   // settled before Lee's army appears
+  [T_16, 920, 730, 1.0], [END, 930, 735, 1.02]]);
 dateNow("12 JUNE 1864", T_MORN + 0.8); B.date("14 JUNE 1864", T_MORN + 0.9, T_16 - 0.1, 34); B.date("16 JUNE 1864", T_16, T_17 - 0.1, 34); B.date("17 JUNE 1864", T_17, null, 34);
 // dawn of the 14th (the night of m3a fades)
 nightWash(0, 1.2, 0.42, 0.01);
@@ -33,8 +34,8 @@ const TODC = todDiv("rgba(100,135,205,0.55)"); tl.to(TODC, { opacity: 0.4, durat
 // ---------- flags ----------
 flagS(FL.us, 1420, 560, 0, T_WIL + 1.2); flagS(FL.cs, 760, 560, 0, T_FERRY + 1.2);
 flagS(FL.cs, 1080, 690, T_FERRY + 0.8, T_WIL + 1.5);
-flagS(FL.us, 1450, 760, T_WIL + 0.8, T_GUNS + 1.6); flagS(FL.cs, 1280, 960, T_WIL + 1.2, T_GUNS + 1.6);
-flagS(FL.us, 1150, 600, T_GUNS + 1.0, END + 1); flagS(FL.cs, 300, 690, T_GUNS + 1.0, END + 1);
+flagS(FL.us, 1450, 760, T_WIL + 0.8, T_GUNS + 1.6); flagS(FL.cs, 1150, 1010, T_WIL + 1.2, T_GUNS + 1.6);   // behind the red side, toward Petersburg
+flagS(FL.us, 1150, 600, T_GUNS + 1.0, END + 1); flagS(FL.cs, 330, 760, T_GUNS + 1.0, END + 1);
 // ---------- the columns arrive at the James; the first troops ferried across at Wilcox's Landing ----------
 const COLS = [["c1", [1205, 420], [[1205, 420], [1250, 560], [1275, 700], WIL]], ["c2", [1330, 470], [[1330, 470], [1370, 600], [1320, 700], [WIL[0] + 18, WIL[1] - 8]]],
   ["c3", [1120, 480], [[1120, 480], [1180, 620], [1250, 720], [WIL[0] - 16, WIL[1] - 6]]]];
@@ -65,22 +66,24 @@ nightWash(T_FOUR + 1.0, T_TWO, 0.38, 2.2);
 const BRG = glowPath([BR_N, BR_S], "#6f9bff", 2.6, T_READY, END + 1, 3, 0.95, { top: true });
 wstampS("READY", BR_S[0] + 60, BR_S[1] + 10, T_READY + 0.3, null, "#9fc0ea", 30);
 // ---------- m3-4: about 115,000 men cross with their guns and wagons ----------
-const XS = [];
-for (let k = 0; k < 6; k++) { const id = "x" + k; unitS(id, "carth", BR_N, k % 3 === 2 ? "artillery" : "infantry", null, { t: T_TWO + k * 0.9, size: k % 3 === 2 ? "" : "XX" });
-  along(id, [BR_N, BR_S, ...ROAD_S.slice(0, 3 + (k % 3))], T_TWO + k * 0.9, 7.0, 20); hideU([id], T_GUESS + 3 + k * 0.2); XS.push(id); }
-const N115 = numCard("CROSSED THE RIVER", "ABOUT 115,000 MEN", "", "right:120px;top:300px;", T_115, T_GUNS + 1.8);   // critic r1: on the empty river east of the crossing, no source line
+// critic 2: three columns (one per ~1.6 s, never touching) cross and march on south toward Petersburg and stay there; the bridge parties step out
+const XEND = [[1000, 965], [880, 978], [760, 992]];
+for (let k = 0; k < 3; k++) { const id = "x" + k; unitS(id, "carth", BR_N, k === 1 ? "artillery" : "infantry", null, { t: T_TWO + k * 1.6, size: k === 1 ? "" : "XX" });
+  along(id, [BR_N, BR_S, ...ROAD_S.filter((q) => q[0] > XEND[k][0]), XEND[k]], T_TWO + k * 1.6, 7.0 + k * 0.8, 24); }
+hideU(["f1", "f2", "en1", "en2"], T_TWO + 1.0);
+const N115 = numCard("CROSSED THE RIVER", "ABOUT 115,000 MEN", "", "right:120px;top:300px;", T_115, T_115 + 3.3);   // critic r1: on the empty river east of the crossing, no source line
 arw({ pts: [[BR_S[0] - 10, BR_S[1] + 10], [1200, 950], [900, 975], [760, 992]], side: "carth", t: T_GUNS + 0.4, dur: 4.0, width: AW(1.2, 8), until: T_GUNS + 6.4 });
 // ---------- Lee: guessed Petersburg on the 14th, would not believe it, kept his army around Richmond ----------
-[["l1", [470, 480]], ["l2", [570, 440]], ["l3", [660, 410]], ["l4", [420, 570]]].forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: T_GUESS - 0.4, size: "XXX" }));
+[["l1", [520, 560]], ["l2", [620, 520]], ["l3", [720, 500]], ["l4", [470, 640]]].forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: T_GUESS - 0.4, size: "XXX" }));
 unitS("pb", "rome", [470, 1010], "infantry", null, { t: T_GUESS - 0.2, size: "X" });
 pinPortrait("l4", PHOTO("lee"), FL.cs, "Lee", T_GUESS + 0.1, END + 1, true, "west");   // Lee's card at his army north of the river
 town("PETERSBURG", G.PETERSBURG, T_PETE - 0.3, "l", { keep: true });
-const GQ = arw({ pts: [[470, 530], [440, 700], [430, 900], [440, 1000]], side: "rome", t: T_PETE, dur: 2.0, width: AW(1.05, 8), until: T_BELIEVE + 0.6 }); gsap.set(GQ, { opacity: 0.5 });   // only a guess: faint
+inkTrace([[500, 690], [470, 800], [455, 900]], T_PETE, T_BELIEVE + 0.6, 2.4);   // critic 2: only a guess (no march): a short sepia ink trace toward Petersburg, no arrowhead
 K.target(G.PETERSBURG[0], G.PETERSBURG[1], T_PETE + 0.3, { r: 34, side: "#ffd54a", until: T_KEPT + 1 });
 B.caption("BUT HE WOULD NOT BELIEVE IT", T_BELIEVE, T_KEPT - 0.1, "rome");
 ["l1", "l2", "l3", "l4"].forEach((id, k) => pulseU(id, T_KEPT + 0.2 + k * 0.2));
 // the wire to Beauregard (verbatim, 17 June): card only on its spoken words
-const Q = quote(`"Have no information of Grant's crossing James River."`, "LEE TO BEAUREGARD", T_HAVE - 0.1, END + 1, { col: "#c4121f", size: 38, top: 850 }); Q.style.paddingLeft = "380px";   // critic r1: lower band, on empty ground clear of the crossing units and Lee's card
+const Q = quote(`"Have no information of Grant's crossing James River."`, "LEE TO BEAUREGARD", T_HAVE - 0.1, T_HAVE + 3.3, { col: "#c4121f", size: 38, top: 850 }); Q.style.paddingLeft = "380px";   // critic r1: lower band, on empty ground clear of the crossing units and Lee's card
 for (let k = 0; k < 6; k++) SFX("tick", T_HAVE + k * 0.18);
 // ---------- clean screen ----------
 fixImgs();
