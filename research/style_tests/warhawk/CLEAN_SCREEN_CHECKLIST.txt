@@ -1,0 +1,16 @@
+CLEAN-SCREEN CHECKLIST v1 (style W, 2026-11-05). Frame = 1920x1080. "Story text item" = any readable word block except the date scroll.
+C1 Spoken first: every word item lands >= its spoken word (tolerance -0.2 s); only spoken words; a person/unit name only after it is spoken.
+C2 Clean first frame: t=0 map + units only, 0 panels; legend never before the first card has left.
+C3 One big card: <=1 opaque panel >=2% of frame at a time (date scroll excluded); legend/badge/caption step out 0.15 s before, back 0.3 s after; big card 2.0-3.0 s (max 3.5).
+C4 Text count: <=7 story text items on screen (reference max 7); of these <=2 transient word items (caption/stamp/place label/ticker) and <=1 badge.
+C5 Coverage: always-on furniture <=3.0% of frame (date scroll = 2.8%); all opaque UI <=10%; a single big card alone may reach 25%.
+C6 Lifetime: transient words min max(2.0, 0.6 + chars/15) s, max 3.5 s; badge <=4 s; permanent text only <=3 town dots + <=2 named objectives (<=22 px).
+C7 No overlap: 0 px overlap between text/HUD/counters/arrows; >=12 px clearance; HUD never on HUD.
+C8 Safe zones: HUD only in corners/bands (date TL, badge TR, caption band y 860-980); battle box x480-1440 y270-810 = map-native labels, units, arrows only (big card only when alone and not over the unit being discussed); >=40 px from frame edge, no cut labels.
+C9 Unit tags: <=4 named tags; tag only for names spoken; no tag collisions; others bare symbol.
+C10 Colour: <=4 hue bins >0.3% of frame (green map + blue + red + 1 accent); one accent element at a time; no off-palette pills.
+C11 Territory colour: 0 at t=0; only who-holds-what wide shots / hand-over moments; <=6 s per use; 2.8 s dissolve.
+C12 Motion: <=2 map elements moving/drawing at once + <=1 text entry per second; pulses <=2 cycles.
+C13 One channel per fact: no fact in two text items at once; no meta/source text (WIKIPEDIA/NPS, terrain credit) on screen.
+C14 Furniture: no scale bar / north arrow / credit by default (reference has none); legend <=8 s, first map of video + new symbol only; flags 1 pair per shot, no names.
+C15 Consistency: never two different dates/times on screen; card dates = date scroll.

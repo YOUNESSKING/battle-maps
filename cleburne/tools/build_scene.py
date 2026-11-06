@@ -28,6 +28,10 @@ for d in ("lib", "vendor"):
 shutil.copytree(f"{ROOT}/assets/fonts", f"{out}/assets/fonts", dirs_exist_ok=True)
 shutil.copy(f"{ROOT}/assets/grain.png", f"{out}/assets/grain.png")
 shutil.copy(f"{ROOT}/assets/{basemap}.jpg", f"{out}/assets/relief.jpg")
+# STYLE W (STYLE_LOCK 2d): a basemap with a close-up twin (assets/<basemap>_close.jpg) uses the Style W template (lens cross-fade)
+STYLEW = os.path.exists(f"{ROOT}/assets/{basemap}_close.jpg")
+if STYLEW:
+    shutil.copy(f"{ROOT}/assets/{basemap}_close.jpg", f"{out}/assets/relief_close.jpg")
 # map overlays (assets/*.png) and photo media (assets/media/*.png|jpg|webp), referenced as assets/NAME and assets/media/NAME
 for f in os.listdir(f"{ROOT}/assets"):
     if f.endswith(".png") and f != "grain.png":
@@ -38,8 +42,9 @@ if os.path.isdir(f"{ROOT}/assets/media"):
         if os.path.isfile(f"{ROOT}/assets/media/{f}") and f.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
             shutil.copy(f"{ROOT}/assets/media/{f}", f"{out}/assets/media/{f}")
 open(f"{out}/timing.js", "w").write("window.SCENE_TIMING = " + json.dumps(scene_t) + ";\n")
-credit = json.load(open(f"{ROOT}/assets/{basemap}.json"))["credit"]
-html = open(f"{ROOT}/tools/scene_template.html").read()
+_bj = f"{ROOT}/assets/{basemap}.json"
+credit = json.load(open(_bj if os.path.exists(_bj) else f"{ROOT}/assets/{basemap.replace('_w', '_hd_lift')}.json"))["credit"]
+html = open(f"{ROOT}/tools/scene_template_w.html" if STYLEW else f"{ROOT}/tools/scene_template.html").read()
 html = html.replace("{{DURATION}}", str(dur)).replace("{{CREDIT}}", credit).replace("{{SCENE_JS}}", open(f"{ROOT}/scenes-src/{name}.js").read())
 open(f"{out}/index.html", "w").write(html)
 for f in ("hyperframes.json",):

@@ -1,5 +1,7 @@
 # battle-maps
 
+**STYLE W IS THE LOCKED LOOK (owner 2026-11-05: "Perfect. Now, this is the locked style.")**: Warhawk-style ink map on one green, clean screen, generals' portraits on the map, territory only as red hatching when ground changes hands, no unit flags, no dashed arrows. Read STYLE_LOCK.md section 2d FIRST; reference `reference/style-reference-stylew-tunnelhill.mp4` + `reference/style_w/`. Where older rules below conflict (map look v11, territory colours, legend/furniture, corner badges), 2d wins.
+
 Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical Moves", Tactical Genius style).
 **Read HANDOVER.md first**: it has the plan, the pipeline, the commands and the lessons learned.
 **THE LOCKED REFERENCE VIDEO is Rokossovsky #8 (owner 2026-10-10; STYLE_LOCK.md section 0b):** copy the skeleton from `rokossovsky/`, watch `reference/style-reference-rokossovsky-v8.mp4` and match it exactly.
