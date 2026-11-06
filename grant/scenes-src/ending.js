@@ -373,8 +373,8 @@ const greyCard = (w, t) => tl.to(w.querySelectorAll("img")[1], { filter: "graysc
 extMap("mississippi", T_X2, T_X3 + 1.0);
 extMap("richmond", T_X3, null);
 camera([[0, 1440, 884, 1.6], [T_X2 - 0.1, 1438, 896, 2.4], [T_X2 + 0.9, 1462, 985, 2.2], [T_X3 - 0.1, 1462, 988, 2.4],
-  [T_X3 + 0.9, 1478, 895, 3.2], [T_BREATH + 1.5, 1462, 905, 3.0], [T_SURR, 1330, 915, 2.5], [T_LEE - 0.3, 1330, 915, 2.45],
-  [T_APP + 0.6, 1180, 905, 2.2], [END, 1186, 900, 2.15]]);
+  [T_X3 + 0.9, 1478, 895, 3.2], [T_BREATH + 1.5, 1462, 905, 3.0], [T_SURR, 1330, 896, 2.5], [T_LEE - 0.3, 1330, 896, 2.45],
+  [T_APP + 0.6, 1180, 862, 2.2], [END, 1188, 856, 2.15]]);
 // ---------- the date scroll (never two dates on screen: the cards' years sit inside the 1862 - 1865 span) ----------
 dateNow("FEBRUARY 1862", T_VICK - 0.1); B.date("1863", T_VICK, T_JAMES - 0.1, 34); B.date("JUNE 1864", T_JAMES, T_NICK - 0.1, 34);
 B.date("1862 – 1865", T_NICK, null, 34);
@@ -382,17 +382,17 @@ B.date("1862 – 1865", T_NICK, null, 34);
 // =====================================================================================================================
 // 1. DONELSON (tennessee_w, Feb 1862): Grant's column from Fort Henry, the gunboats up the Cumberland, the fort under fire
 // =====================================================================================================================
-const TN = G.ten, FH = TN.FORT_HENRY, FD = TN.FORT_DONELSON, OUT1 = T_X2 + 0.5;
-flagS(FL34, 1350, 935, 0, OUT1); flagS(FL.cs, 1525, 935, 0, OUT1);
-fortIcon(FH, 0, OUT1, { s: 26, side: "carth" });     // Fort Henry already taken (blue)
-fortIcon(FD, 0, OUT1, { s: 30, side: "rome" });
-unitS("d1", "rome", [FD[0] + 22, FD[1] + 12], "infantry", null, { t: 0, size: "XX", until: OUT1 });
+const TN = G.ten, FH = TN.FORT_HENRY, FD = TN.FORT_DONELSON, OUT1 = T_X2 + 0.1;
+flagS(FL34, 1350, 935, 0, OUT1); flagS(FL.cs, 1495, 965, 0, OUT1);
+fortIcon(FH, 0, OUT1, { s: 36, side: "carth" });     // Fort Henry already taken (blue)
+fortIcon(FD, 0, OUT1, { s: 40, side: "rome" });
+unitS("d1", "rome", [FD[0] + 6, FD[1] + 30], "infantry", null, { t: 0, size: "XX", until: OUT1 });
 unitS("g1", "carth", [FH[0] - 4, FH[1] + 4], "infantry", null, { t: 0, size: "XXX", until: OUT1 });
-nowEl(pinPortrait("g1", PHOTO("grant"), FL34, "Grant", 0, null, true, "up"));
+nowEl(pinPortrait("g1", PHOTO("grant"), FL34, "Grant", 0, null, true, [-60, 150]));   // below-left: the gunboats come down the river above
 // the gunboats steam up the Cumberland (from the Ohio) to the fort
 const iFD = near(CUMB_T, FD), UP1 = CUMB_T.slice(iFD + 5, iFD + 34).reverse(), UP2 = CUMB_T.slice(iFD + 11, iFD + 44).reverse();
 const ang0 = (pts) => Math.atan2(pts[1][1] - pts[0][1], pts[1][0] - pts[0][0]) * 180 / Math.PI;
-const GB1 = ship("iron", "carth", UP1[0], ang0(UP1), null, OUT1, { L: 34 }), GB2 = ship("iron", "carth", UP2[0], ang0(UP2), null, OUT1, { L: 34 });
+const GB1 = ship("iron", "carth", UP1[0], ang0(UP1), null, OUT1, { L: 48 }), GB2 = ship("iron", "carth", UP2[0], ang0(UP2), null, OUT1, { L: 48 });
 gsap.set([GB1.el, GB2.el], { autoAlpha: 1 });
 sail(GB1, UP1, 0, T_STRUCK + 0.3, 18); sail(GB2, UP2, 0, T_STRUCK + 0.5, 18);
 boxP("Donelson", FD[0] + 36, FD[1] - 16, T_DON + 0.05, T_X2 - 0.1);
@@ -400,7 +400,7 @@ focus(FD, 46, T_DON, T_X2 - 0.2);
 // "he struck while the enemy was still deciding": the column marches over, the gunboats open fire (visible guns only)
 const G1E = [FD[0] - 24, FD[1] + 6];
 along("g1", [[FH[0] + 18, FH[1] + 10], [FH[0] + 40, FH[1] + 14], G1E], T_STRUCK, 1.9, 16);
-trailArw([[FH[0] + 2, FH[1] + 6], [FH[0] + 18, FH[1] + 10], [FH[0] + 40, FH[1] + 14], G1E], "carth", T_STRUCK, 1.9, 2.3, 7);
+arw({ pts: [[FH[0] + 2, FH[1] + 6], [FH[0] + 18, FH[1] + 10], [FH[0] + 40, FH[1] + 14], G1E], side: "carth", t: T_STRUCK, dur: 1.9, width: AW(2.3, 7), until: Math.min(T_STRUCK + 3.9, T_X2 - 0.3) });   // thin trail, gone before the dissolve
 const B1 = UP1[UP1.length - 1], B2 = UP2[UP2.length - 1];
 shoot(B1, [FD[0] + 2, FD[1] - 3], T_STRUCK + 0.6, { r: 4, width: 0.6, dur: 0.55, h: 8 });
 shoot(B2, [FD[0] - 3, FD[1] + 1], T_STRUCK + 1.4, { r: 4, width: 0.6, dur: 0.6, h: 8 });
@@ -410,12 +410,12 @@ smoke([[B1[0] + 3, B1[1]], [B2[0] + 3, B2[1]], [FD[0] + 4, FD[1] - 6]], T_STRUCK
 // =====================================================================================================================
 // 2. VICKSBURG (mississippi_w, 1863): down the west bank, over the river, Jackson, back on Vicksburg
 // =====================================================================================================================
-const MS = G.mis, VK = MS.VICKSBURG, IN2 = T_X2 + 0.4, OUT2 = T_X3 + 0.6;
-flagS(FL34, 1340, 1000, IN2, OUT2); flagS(FL.cs, 1520, 1050, IN2, OUT2);
-unitS("rp", "rome", [VK[0] + 18, VK[1] - 2], "infantry", null, { t: IN2, size: "XXX", until: OUT2 });
+const MS = G.mis, VK = MS.VICKSBURG, IN2 = T_X2 + 0.4, OUT2 = T_X3 + 0.1;
+flagS(FL34, 1300, 1060, IN2, OUT2); flagS(FL.cs, 1520, 1050, IN2, OUT2);
+unitS("rp", "rome", [VK[0] + 16, VK[1] + 18], "infantry", null, { t: IN2, size: "XXX", until: OUT2 });
 unitS("g2", "carth", MS.MILLIKENS, "infantry", null, { t: IN2, size: "XXXX", until: OUT2 });
-pinPortrait("g2", PHOTO("grant"), FL34, "Grant", IN2 + 0.1, null, true, "up");
-const VT = town("Vicksburg", VK, T_VICK, "l"); VT.out(OUT2 - 0.3);
+pinPortrait("g2", PHOTO("grant"), FL34, "Grant", IN2 + 0.1, null, true, "left");
+const VT = town("Vicksburg", VK, T_VICK, "r"); VT.out(OUT2 - 0.3);
 focus(VK, 40, T_VICK, T_WENT + 1.2);
 const VROUTE = [...MS.VKS.slice(0, -1), [VK[0] + 34, VK[1] + 5]];
 along("g2", VROUTE, T_WENT, 4.6, 30);
@@ -467,12 +467,12 @@ const SC = scr(`<div style="width:900px;padding:16px 40px 18px;background:rgba(1
 const R3 = SC.querySelector(".r3 span"); const AT = document.createElement("span"); AT.textContent = " AT APPOMATTOX"; AT.style.opacity = 0; R3.appendChild(AT);
 tl.to(AT, { opacity: 1, duration: 0.3 }, T_APP);
 // on the map under the card: Lee's army marches west along the Southside Railroad to Appomattox (permanent town on its word), Grant follows; it greys
-const LEE_W = [[1405, 970], ...R.RR_SS.slice(1), [925, 925]];
+const LEE_W = [[1405, 970], ...R.RR_SS.slice(1), [912, 940]];
 along("lee", LEE_W, T_LEE - 0.1, 2.2, 24);
 arw({ pts: LEE_W, side: "rome", t: T_LEE - 0.1, dur: 2.2, width: AW(2.3, 7), until: T_LEE + 4.1 });
 arw({ pts: [[1418, 992], [1300, 1012], [1120, 992], [965, 945]], side: "carth", t: T_LEE + 0.3, dur: 2.0, width: AW(2.3, 7), until: T_LEE + 4.3 });
 flagS(FL.cs, 840, 985, T_LEE + 1.6, null);
-const APT = town("Appomattox", AP, T_APP, "l");
+const APT = town("Appomattox", AP, T_APP, "r");
 focus(AP, 40, T_APP, T_APP + 3.0);
 greyU(["lee"], T_L65); greyCard(LEEC, T_L65);
 // ---------- each time: the method, in the last sentence's own words ----------
@@ -487,7 +487,7 @@ const MC = GG.method(2, T_EACH, T_E1END - 0.1, [T_MOVED, T_COULD]); MC.querySele
 const E = EngageK(B);
 const FC = E.final({ moves: [["THE TWO RIVER FORTS", "FEB 1862"], ["VICKSBURG", "1863"], ["THE JAMES", "JUNE 1864"]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL,
   tFamily: F_FAM, tSub: F_SUB, until: END - 0.2 });
-FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?";
+FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?"; FC.querySelector(".q").style.fontSize = "68px";
 FC.querySelector(".fam").innerHTML = `SOMEONE IN YOUR FAMILY SERVED IN THE CIVIL WAR?<div style="font-size:26px;letter-spacing:0.3em;color:#c9b48a;margin-top:4px">TELL US THEIR STORY · WE READ EVERY ONE</div>`;
 // C1: the header only on "Tell us in the comments"; readable comment lines
 { const hd = FC.firstElementChild; gsap.set(hd, { autoAlpha: 0 }); tl.fromTo(hd, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, F_TELL); hd.style.fontSize = "40px"; }

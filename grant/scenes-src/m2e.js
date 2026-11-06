@@ -142,7 +142,7 @@ const focus = (p, r, t, until) => { until = Math.min(until, t + 3.5);
   tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
   tl.to(FS, { k: 1, duration: 0.6, onUpdate: focApply }, t);
   tl.to(FS, { k: 0, duration: 0.6, onUpdate: focApply }, until); };
-const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", (2.0 / CAM_S).toFixed(3)));
+const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", ((p.__w || 2.0) / CAM_S).toFixed(3)));   // p.__w = screen px (default 2)
 const inkTrace = (pts, t, until, w = 2.4, dash) => { until = Math.min(until, t + 3.5);
   const p = document.createElementNS(NS, "path"); p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
   Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));
@@ -333,7 +333,7 @@ const VKS = L(32.352, -90.878), JAX = L(32.299, -90.185), EDW = L(32.33, -90.605
 living(VZ.meters_per_px, [], { n: 6 });
 dateNow("MAY 1863", null);
 // Vicksburg = the objective of the whole move: permanent town symbol (continues m2a / m2c)
-town("VICKSBURG", VKS, "r", 0);
+town("VICKSBURG", VKS, "l", 0);   // name on the river side, clear of the red boxes east of the city
 // ---------- camera (B3: keeps moving under the card) ----------
 const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1240, 1000, 1.0], K4 = [1290, 960, 1.22];
 camera([[0, ...K0], [T_ACROSS, ...K0], [T_DEEP + 0.4, ...K1], [T_BANKS + 0.2, ...K1], [T_PH + 0.3, ...K2], [T_DO - 0.2, ...K2], [T_DO + 1.6, ...K3], [END, ...K4]]);
@@ -344,12 +344,13 @@ U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075
 along("u15", [L(32.18, -91.17), L(32.10, -91.13), L(32.06, -91.10)], 0.2, 12, 12);   // Sherman's corps still coming down the west bank
 const RED = [["r1", L(32.40, -90.74), "XX"], ["r2", L(32.33, -90.64), "XX"], ["r3", L(32.30, -90.26), "XX"], ["r4", L(32.18, -90.75), "XX"]];
 RED.forEach(([id, p, sz]) => U(id, "rome", p, "", sz));
-B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.move("r4", 0.6, 12, ...L(32.14, -90.80));
+B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.move("r4", 0.6, 12, ...L(32.21, -90.70));
 // Banks' column on the Red River (Alexandria), far from Port Hudson; his portrait card on its stake from his name
-unitS("bk", "carth", ALX, "infantry", "", { t: T_BANKS + 0.1, size: "XX" });
-pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.2, END + 1, true);
+const T_BNAME = at(P7, "Banks, who");
+unitS("bk", "carth", ALX, "infantry", "", { t: T_BNAME, size: "XX" });
+pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BNAME + 0.05, END + 1, true);
 // ---------- m2-7 beats ----------
-pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, END + 1, true);
+pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, END + 1, true, "right");   // side stake: the XVII box stays clear
 // across the river: the crossing; deep in enemy country: the focus opens on the bridgehead, the red armies round it pulse
 const XR = arw({ pts: [L(31.99, -91.24), L(31.965, -91.18), L(31.955, -91.13)], side: "carth", t: T_ACROSS - 0.1, dur: 0.9, width: AW(1.4, 10), until: T_BANKS });
 K.target(...L(32.02, -90.96), T_ACROSS + 0.4, { r: 40, until: T_DEEP - 0.1 });
@@ -359,9 +360,9 @@ RED.forEach(([id], k) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale
 const JOIN = arw({ pts: LL([[31.25, -91.58], [31.56, -91.42], [31.80, -91.28], [31.93, -91.17]]), side: "carth", t: T_JOIN - 0.1, dur: 1.2, width: AW(0.86, 9), until: T_DO - 0.3, keep: true });
 B.greyArrow(JOIN, T_PH + 0.2, T_TENTH + 0.6);
 const PHB = boxL("PORT HUDSON ▼", PHX[0] - 10, 1560, T_PH, null);
-const BKA = arw({ pts: [ALX, L(31.38, -91.95), L(31.29, -91.62)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 9), until: END + 1, keep: true });
-B.caption("NOT BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth r");
-wstampL("FIFTEEN THOUSAND MEN", ALX[0] + 10, ALX[1] + 70, T_15K, T_DO - 0.25, null, 22);
+const BKA = arw({ pts: [ALX, L(31.43, -91.98), L(31.40, -91.76)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 9), until: END + 1, keep: true });
+B.caption("NOT BEFORE THE TENTH OF MAY", T_TENTH, T_TENTH + 2.45, "carth r");
+wstampL("FIFTEEN THOUSAND MEN", ALX[0] - 200, ALX[1] - 10, T_15K, T_15K + 2.05, null, 22);   // left of Banks, clear of his arrow
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
 // ---------- the decision card on "Do you wait for Banks" (critic A: opaque, <= 3.5 s, each option on its own words, no repeated subtitle) ----------
 // A lands on "wait for Banks", B on "cut loose"; the card leaves after "go inland alone"; "Tell us in the comments" is a caption on its words.
@@ -382,8 +383,8 @@ const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0
 pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.3); pulse(OB, T_INL + 0.2);
 B.caption("TELL US IN THE COMMENTS", T_TELL, T_THEN, "carth");
 // the map keeps moving under the card: the two inland options draw (toward Jackson / toward Vicksburg), Banks' column crawls, the focus moves
-const GH1 = arw({ pts: LL([[32.02, -90.93], [32.12, -90.72], [32.22, -90.50], [32.28, -90.30]]), side: "carth", t: T_CUT + 0.1, dur: 3.2, width: AW(1.1, 9), until: END + 1, keep: true });
-const GH2 = arw({ pts: LL([[32.08, -90.89], [32.20, -90.82], [32.30, -90.80]]), side: "carth", t: T_INL + 0.3, dur: 2.6, width: AW(1.1, 9), until: END + 1, keep: true });
+const GH1 = arw({ pts: LL([[32.10, -90.84], [32.16, -90.66], [32.22, -90.50], [32.24, -90.40]]), side: "carth", t: T_CUT + 0.1, dur: 3.2, width: AW(1.1, 9), until: END + 1, keep: true });
+const GH2 = arw({ pts: LL([[32.12, -90.90], [32.22, -90.87], [32.29, -90.85]]), side: "carth", t: T_INL + 0.3, dur: 2.6, width: AW(1.1, 9), until: END + 1, keep: true });
 gsap.set([GH1, GH2], { opacity: 0.7 });
 B.move("bk", T_DO + 0.4, END - T_DO, ...L(31.36, -92.12)); hideU(["bk"], T_CUT + 0.8);   // steps out before the camera crops it
 const RINGS = [L(32.02, -90.96), JAX, VKS, L(32.02, -90.96)];

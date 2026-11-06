@@ -148,7 +148,7 @@ const focus = (p, r, t, until) => { until = Math.min(until, t + 3.5);
   tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
   tl.to(FS, { k: 1, duration: 0.6, onUpdate: focApply }, t);
   tl.to(FS, { k: 0, duration: 0.6, onUpdate: focApply }, until); };
-const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", (2.0 / CAM_S).toFixed(3)));
+const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", ((p.__w || 2.0) / CAM_S).toFixed(3)));   // p.__w = screen px (default 2)
 const inkTrace = (pts, t, until, w = 2.4, dash) => { until = Math.min(until, t + 3.5);
   const p = document.createElementNS(NS, "path"); p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
   Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));

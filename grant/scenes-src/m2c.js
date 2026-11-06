@@ -139,7 +139,7 @@ const focus = (p, r, t, until) => { until = Math.min(until, t + 3.5);
   tl.to(FS, { x: p[0], y: p[1], r, duration: 0.6, ease: "sine.inOut", onUpdate: focApply }, t);
   tl.to(FS, { k: 1, duration: 0.6, onUpdate: focApply }, t);
   tl.to(FS, { k: 0, duration: 0.6, onUpdate: focApply }, until); };
-const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", (2.0 / CAM_S).toFixed(3)));
+const INKS = []; const inkApply = () => INKS.forEach((p) => p.setAttribute("stroke-width", ((p.__w || 2.0) / CAM_S).toFixed(3)));   // p.__w = screen px (default 2)
 const inkTrace = (pts, t, until, w = 2.4, dash) => { until = Math.min(until, t + 3.5);
   const p = document.createElementNS(NS, "path"); p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L"));
   Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));
@@ -345,7 +345,7 @@ dateNow("22 APRIL 1863", T_LG);   // carries the m2b date in from frame 0 (the s
 B.date("17 APRIL 1863", T_LG + 0.05, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
 B.date("17 APRIL - 2 MAY 1863", T_SHER, END + 1, 32);
 // flags (48 px, no names): wide pair, then the Vicksburg pair
-flagS(FL.us, "", ...L(35.45, -87.6), 0, T_SHER + 1.0); flagS(FL.cs, "", ...L(32.05, -88.1), 0, T_SHER + 1.0);
+flagS(FL.us, "", ...L(35.15, -87.6), 0, T_SHER + 1.0); flagS(FL.cs, "", ...L(32.05, -88.1), 0, T_SHER + 1.0);
 flagS(FL.us, "", ...L(32.64, -91.16), T_SHER + 1.1, END + 1); flagS(FL.cs, "", ...L(32.47, -90.40), T_SHER + 1.15, END + 1);
 // Vicksburg = the objective of the whole move: permanent town symbol (continues m2a)
 const VT = town("VICKSBURG", VKS, "r", 0);
@@ -358,35 +358,37 @@ along("gr", LL([[32.25, -91.45], [32.10, -91.38], [31.98, -91.26]]), 0, T_SHER -
 arw({ pts: LL([[32.48, -91.20], [32.25, -91.26], [32.09, -91.16]]), side: "carth", t: 0.1, dur: 2.4, width: AW(SW, 9) });
 unitS("pv", "rome", L(32.58, -90.52), "infantry", "", { size: "XXX" }); gsap.set(B.units.pv.el, { autoAlpha: 1 });
 unitS("pj", "rome", L(32.08, -90.22), "infantry", "", { size: "XX" }); gsap.set(B.units.pj.el, { autoAlpha: 1 });
-B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_MEAN + 0.2, T_GRI - 0.2, "carth");
+B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_WRONG, T_WRONG + 3.4, "carth");
 // ---------- Grierson: about 1,700 cavalrymen from La Grange through Mississippi to Baton Rouge; his portrait rides with his column ----------
 const TK = ticker("CAVALRYMEN", 1700, "", "right:70px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 1.6, 5, { col: "#7fb0ff", pre: "~" });
-unitS("gri", "carth", LG, "infantry", "", { t: T_GRI + 0.2, size: "III" }); cavIcon("gri");
-pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_MS + 1.0, true, "right");   // steps out before the column reaches the frame bottom
-townL("LA GRANGE", LG, "r", T_LG);
-along("gri", sub(GRI, 0, 0.93, 40), T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);   // stops just short of Baton Rouge (its name stays clear)
-arw({ pts: GRI, side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 9), until: T_SHER - 0.2 });
+const LG0 = [LG[0] + 42, LG[1] + 14];   // the column forms just east of La Grange (dot + name stay clear)
+unitS("gri", "carth", LG0, "infantry", "", { t: T_GRI + 1.0, size: "III" }); cavIcon("gri");
+pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 1.1, T_MS + 1.0, true, "right");   // steps out before the column reaches the frame bottom
+townL("LA GRANGE", LG, "l", at(P1, "La Grange"));
+along("gri", sub([LG0, ...GRI.slice(1)], 0, 0.93, 40), T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);   // stops just short of Baton Rouge (its name stays clear)
+arw({ pts: sub([LG0, ...GRI.slice(1)], 0, 0.955, 40), side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 9), until: T_SHER - 0.2 });
 // the Confederates look the wrong way: the Jackson force turns east after the raiders
-along("pj", LL([[32.08, -90.22], [32.15, -89.85]]), T_MS + 0.3, 2.2, 8);
-arw({ pts: LL([[32.30, -90.10], [32.33, -89.65], [32.33, -89.30]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 9), until: T_SHER - 0.2 });
+along("pj", LL([[32.08, -90.22], [32.05, -89.95]]), T_MS + 0.3, 2.2, 8);
+arw({ pts: LL([[32.12, -89.70], [32.18, -89.42], [32.22, -89.18]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 9), until: T_SHER - 0.2 });
 townL("BATON ROUGE", BR, "l", T_BR - 0.1);
 K.target(BR[0], BR[1], T_BR, { r: 30, until: T_SHER });
 // ---------- Sherman's corps up the Yazoo, threatening the bluffs north of Vicksburg; Pemberton's army tied down there ----------
 const BOATS = [0, 1, 2].map((k) => ship(k === 1 ? "transport" : "gunboat", sub(YAZ, 0, 0.80 - k * 0.14, 12), T_YAZ - 0.4 + k * 0.25, 2.6, END + 1, { s: 18, t0: T_YAZ - 0.4 + k * 0.25 }));
 unitS("sh", "carth", L(32.44, -90.99), "infantry", "", { t: T_SHER + 1.6, size: "XX" });
 pinPortrait("sh", PHOTO("sherman"), FL.us, "Sherman", T_SHER + 1.8, END + 1, true);
-along("sh", [L(32.44, -90.99), L(32.48, -90.92), L(32.52, -90.84)], T_YAZ - 0.2, 2.8, 12);
+along("sh", [L(32.44, -90.99), L(32.455, -90.955), L(32.47, -90.92)], T_YAZ - 0.2, 2.8, 12);
 arw({ pts: sub(YAZ, 0.05, 0.8, 10), side: "carth", t: T_YAZ, dur: 1.6, width: AW(SV, 8) });
-boxL("YAZOO RIVER", ...L(32.47, -91.08), T_YAZ + 0.2, null);
-unitS("hb", "rome", [HB[0] + 8, HB[1] + 5], "artillery", "", { t: T_THR - 0.4, w: 40, h: 27 });
-inkTrace(BLUFF, T_THR - 0.1, T_THR + 3.2); boxL("THE BLUFFS", ...L(32.42, -90.69), T_THR, null);
-shootS(BOATS[0].at(T_THR + 0.4), [HB[0] + 8, HB[1] + 5], T_THR + 0.4, SV, { dur: 0.7, h: 30, r: 9 });
-shootS([HB[0] + 8, HB[1] + 5], BOATS[0].at(T_THR + 1.9), T_THR + 1.2, SV, { dur: 0.7, h: 30, r: 9 });
-smoke([[HB[0] + 8, HB[1] + 3]], T_THR + 1.2, 0.8);
+boxL("YAZOO RIVER", ...L(32.585, -90.60), T_YAZ + 0.2, null);   // beside the Yazoo, north-east
+const HBP = L(32.53, -90.77);   // on the north end of the bluffs (Haines' Bluff)
+unitS("hb", "rome", HBP, "artillery", "", { t: T_THR - 0.4, w: 40, h: 27 });
+inkTrace(BLUFF, T_THR - 0.1, T_THR + 3.2); boxL("THE BLUFFS", ...L(32.42, -90.69), at(P1, "the bluffs"), null);
+shootS(BOATS[0].at(T_THR + 0.4), HBP, T_THR + 0.4, SV, { dur: 0.7, h: 30, r: 9 });
+shootS(HBP, BOATS[0].at(T_THR + 1.9), T_THR + 1.2, SV, { dur: 0.7, h: 30, r: 9 });
+smoke([[HBP[0], HBP[1] - 2]], T_THR + 1.2, 0.8);
 // Pemberton's army stays at Vicksburg (the column that had started south turns back north); his portrait on its stake from his name
 unitS("ps", "rome", L(32.20, -90.86), "infantry", "", { t: T_SHER + 1.4, size: "XX" });
-along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.29, -90.83]]), T_PEM, 1.8, 8);
-arw({ pts: LL([[32.18, -90.90], [32.25, -90.86], [32.31, -90.84]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 8) });
+along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.20, -90.84], [32.29, -90.80]]), T_PEM, 1.8, 8);
+arw({ pts: LL([[32.15, -90.83], [32.20, -90.815], [32.245, -90.80]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 8) });
 pinPortrait("ps", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, END + 1, true, "right");
 const TIED = wstampL("TIED DOWN", ...L(32.40, -90.52), T_TIED, null, null, 24);
 fixImgs();
