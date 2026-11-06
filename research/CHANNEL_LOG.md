@@ -130,3 +130,14 @@ Arnold thumbnail writes the NAME "BENEDICT ARNOLD" + the hero/traitor hook in bi
 text, no name, and the AI face does not look like his famous portrait. vidIQ title scores: current "| America's Most Brilliant Traitor" 91;
 "| The Man Who Turned the Tide at Saratoga" 90; "| The Hero Who Won Saratoga Before He Betrayed America" 92; "| The Man Who Saved the
 Revolution, Then Betrayed It" 93 (strong claim: check FACT_NOTES before use). The title is not the main problem; the thumbnail is.
+
+## Arnold #17: days 1-4 by traffic source (Studio, read 2026-11-06)
+Title: "Benedict Arnold's Top 3 Legendary Tactical Moves | He Saved the Revolution, Then Betrayed It" (video QnUiueJUSY4, published Nov 3)
+| Day | Browse impr / views / CTR | Suggested impr / views / CTR | Avg view duration |
+|---|---|---|---|
+| 1 (Nov 3) | 1,197 / 218 / 2.59% | 527 / 20 / 1.52% | 4:35 |
+| 2 (Nov 4) | 431 / 79 / 2.78% | 3,330 / 38 / 0.78% | 3:17 |
+| 3 (Nov 5) | 139 / 20 / 3.60% | 202 / 1 / 0.00% | 5:21 |
+| 4 (Nov 6, partial) | 2 / 1 | 1 / 0 | 0:21 |
+Retention (whole history): 0:30 56.9%, 0:40 51.3%. Date of the title/thumbnail change and Test & Compare result: not available through Studio AI (check the Details tab).
+Reading against DATA_RULES: watch time per Browse impression ~2.6% x ~275 s = ~7 s (expansion needs ~18 s); Suggested CTR 0.8-1.5% (needs ~3.5%). YouTube tested the sidebar on day 2 (3,330 Suggested impressions) and the click failed, so it stopped. Retention at 0:30 (57%) is also below Morgan (68%) and 2 Para (65%). A click problem first, opening second.
