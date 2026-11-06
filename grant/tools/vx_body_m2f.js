@@ -39,7 +39,7 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // STYLE W: clean map; the ground that changes hands hatches blue for ~3 s (tools/stylew_vk/make_hatches.sh: gn_vick_may14cap / may16cap / may18cap)
-hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_NEXT - 0.2, 2.0);   // critic r1: only once the ground is taken hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
+hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_NEXT - 0.2, 2.0); hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);   // critic r1: only once the ground is taken
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 const LGD = null;   // STYLE W: no key
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------

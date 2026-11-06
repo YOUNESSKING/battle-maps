@@ -6,7 +6,7 @@
 // (gn_don_ctl_feb16cap, ~3 s). Portraits: Floyd and Pillow ride their steamers out, Buckner at his command, Grant at his headquarters
 // (then at his army on the pull-out). Captions cut to one; the cards (reply, Buckner, telegram, U.S., casualties) one at a time.
 // Built with: python3 tools/m1_build.py m1e donelson_w m1-7 m1-8
-window.CARDPOS = {"C. F. Smith@sm1": [165, 0], "Floyd@el1": [0, -132], "Pillow@el2": [-150, 62], "Buckner@bu": [212, -123], "Grant@ghq": [-100, 0], "Buckner@pr": [100, 0], "Grant@gA": [-100, 0], "cap0": "right"};
+window.CARDPOS = {"C. F. Smith@sm1": [165, 0], "Floyd@el1": [-40, -150], "Pillow@el2": [150, -90], "Buckner@bu": [212, -123], "Grant@ghq": [-100, 0], "Buckner@pr": [100, 0], "Grant@gA": [-100, 0], "cap0": "right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.

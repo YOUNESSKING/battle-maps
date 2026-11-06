@@ -4,7 +4,7 @@
 // Fort Henry at the left edge, Fort Donelson on the Cumberland. Clean map; the ground the Union closes in on hatches BLUE on "within gunshot"
 // (gn_don_ctl_feb13cap, ~3 s). Portraits: Grant at his column, Floyd / Pillow / Buckner at their commands inside the works.
 // Built with: python3 tools/m1_build.py m1b donelson_w m1-2 m1-2
-window.CARDPOS = {"Grant@mc": [-110, -205], "Floyd@fl": [87, -50], "Pillow@pi": [145, -145], "Buckner@bu": [0, -205], "cap0": "left"};
+window.CARDPOS = {"Grant@mc": [-200, 40], "Floyd@fl": [87, -50], "Pillow@pi": [145, -145], "Buckner@bu": [0, -205], "cap0": "right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
