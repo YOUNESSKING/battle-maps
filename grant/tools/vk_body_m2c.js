@@ -23,7 +23,7 @@ const VKS = L(32.352, -90.878), JAX = L(32.299, -90.185), MEM = L(35.149, -90.04
 // Grierson's route: La Grange - Ripley - New Albany - Pontotoc - Houston - Starkville - Louisville - Philadelphia - Decatur - Newton Station -
 // Raleigh - Westville - Hazlehurst - Brookhaven - Summit - Greensburg - Williams' Bridge (Amite) - Baton Rouge
 const GRI = LL([[35.045, -89.244], [34.73, -88.95], [34.49, -89.01], [34.25, -89.00], [33.90, -89.00], [33.46, -88.82], [33.12, -89.05], [32.77, -89.12],
-  [32.44, -89.11], [32.32, -89.163], [32.03, -89.52], [31.93, -89.98], [31.86, -90.40], [31.58, -90.44], [31.24, -90.47], [30.83, -90.67], [30.60, -90.90], [30.451, -91.187]]);
+  [32.44, -89.11], [32.32, -89.163], [32.03, -89.52], [31.93, -89.98], [31.86, -90.40], [31.58, -90.44], [31.24, -90.47], [30.83, -90.67], [30.72, -90.86]]);   // critic r2: the raid column stops clear of the Baton Rouge label
 const YAZ = LL([[32.415, -90.985], [32.44, -90.93], [32.47, -90.88], [32.50, -90.83], [32.512, -90.795]]);
 // ---------- layers ----------
 // owner 2026-11-03 (STYLE_LOCK 2c item 2): territory colours back at full strength on this wide diversion map (who holds which region; the raid
@@ -73,7 +73,7 @@ unitS("gri", "carth", LG, "infantry", "", { t: T_GRI + 0.2, size: "III" }); cavI
 pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_BR - 0.6, true, "right");   // steps out before the raid reaches the frame edge   // STYLE W: his portrait rides with his cavalry
 boxL("LA GRANGE", LG[0] - 95, LG[1] - 34, T_LG, null, { size: 16 });
 along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
-trail(GRI, "#8fb2ff", 4, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");
+trail(GRI, "#2c57b7", 3, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");
 arw({ pts: GRI, side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 11), dash: "18 10", until: T_SHER + 0.4 });
 boxL("MISSISSIPPI", ...L(32.95, -88.55), T_MS, null, { size: 18 });
 // the Confederates look the wrong way: the Jackson force turns east after the raiders
@@ -83,11 +83,11 @@ const TBR = town("BATON ROUGE", BR, "l", T_BR - 0.1, { until: T_BR + LBL_LIFE + 
 K.target(BR[0], BR[1], T_BR, { r: 30, side: "carth", until: T_SHER });
 // ---------- Sherman up the Yazoo, threatening the bluffs north of Vicksburg; Pemberton's army tied down there ----------
 const SB = null;
-const BOATS = [0, 1, 2].map((k) => ship(k === 1 ? "transport" : "gunboat", sub(YAZ, 0, 0.92 - k * 0.14, 12), T_YAZ - 0.4 + k * 0.25, 2.6, END + 1, { s: 20, t0: T_YAZ - 0.4 + k * 0.25 }));
+const BOATS = [0, 1, 2].map((k) => ship(k === 1 ? "transport" : "gunboat", sub(YAZ, 0, 0.74 - k * 0.14, 12), T_YAZ - 0.4 + k * 0.25, 2.6, END + 1, { s: 20, t0: T_YAZ - 0.4 + k * 0.25 }));
 pinPortrait(BOATS[1].el.firstElementChild, PHOTO("sherman"), FL.us, "Sherman", T_YAZ - 0.1, null, true);   // STYLE W: Sherman's portrait on his corps' transport
 arw({ pts: sub(YAZ, 0.05, 0.8, 10), side: "carth", t: T_YAZ, dur: 1.6, width: AW(SV, 11), until: END + 1 });
 unitS("hb", "rome", [HB[0] + 10, HB[1] + 6], "artillery", "", { t: T_THR - 0.4, w: 40, h: 27 });
-boxL("THE BLUFFS", HB[0] + 70, HB[1] - 22, T_THR, null, { size: 16 });   // spoken words only ("threaten the bluffs")
+boxL("THE BLUFFS", HB[0] + 45, HB[1] - 42, T_THR, null, { size: 16 });   // spoken words only ("threaten the bluffs")
 shootS(BOATS[0].at(T_THR + 0.4), [HB[0] + 8, HB[1] + 6], T_THR + 0.4, SV, { dur: 0.7, h: 30, r: 9 });
 shootS([HB[0] + 10, HB[1] + 6], BOATS[0].at(T_THR + 1.9), T_THR + 1.2, SV, { dur: 0.7, h: 30, r: 9 });
 // Pemberton's army stays at Vicksburg (the column that had started south turns back north)
@@ -95,7 +95,7 @@ unitS("ps", "rome", L(32.20, -90.86), "infantry", "PEMBERTON'S ARMY", { t: T_SHE
 along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.26, -90.78]]), T_PEM, 1.8, 8);   // stops clear of the Vicksburg dot
 arw({ pts: LL([[32.18, -90.90], [32.22, -90.84], [32.25, -90.795]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 10), until: END + 1 });
 // (the unit tag carries "Pemberton's army")
-const TIED = wstampL("TIED DOWN", ...L(32.52, -90.45), T_TIED, null, "#e3232f", 24);
+const TIED = wstampL("TIED DOWN", ...L(32.10, -90.55), T_TIED, null, "#e3232f", 24);
 // ---------- 1c declutter (the ticker is a small corner counter; no big cards in this scene) ----------
 
 fixImgs();
