@@ -303,7 +303,7 @@ const NSs = "http://www.w3.org/2000/svg";
 let CAM_X0 = 0, CAM_Y0 = 0;
 // (6) lens transition: the close-up art (#relief2) spreads out from the screen centre as the camera zooms in (wide look -> close battle look)
 const lens = (cx, cy, s) => { CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s;
-  const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");
+  const kc = window.__NOLENS ? 0 : Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");   // __NOLENS: a wide-look scene at a high scale (m2c)
   if (R2) { R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
     R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none"; }
   const vg = document.getElementById("vignette"); if (vg) vg.style.opacity = kc.toFixed(3);

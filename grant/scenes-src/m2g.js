@@ -43,9 +43,10 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { const g = B.arrow({ ...o, dash: undefined }), w = o.width || 22, ps = g.querySelectorAll("path");
-  ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1)); 
-  const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
+const arw = (o) => { const w = (o.width || 22) * 0.5, un = o.t + (o.dur || 1.4) + 2.0;   // @@STYLEW2 critic r1: thin solid trail, no white casing, fades ~2 s after arrival
+  const g = B.arrow({ ...o, dash: undefined, width: w, until: o.until == null ? un : Math.min(o.until, un) }), ps = g.querySelectorAll("path");
+  ps[0].setAttribute("stroke", "rgba(24,20,10,0.55)"); ps[0].setAttribute("stroke-width", (w + Math.max(1.2 / CAM_S, w * 0.35)).toFixed(2));
+  const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(24,20,10,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend: UNION (blue) / CONFEDERACY (red); opt2 = two short glowing lines instead of squares
 const legend0 = (t, until, opt2) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]].map(([sq, ln, nm]) => `<span><b style="display:inline-block;width:${opt2 ? 30 : 20}px;height:${opt2 ? 7 : 20}px;background:${opt2 ? ln : sq};${opt2 ? `box-shadow:0 0 8px ${ln},0 0 3px #fff;vertical-align:4px;` : "vertical-align:-3px;border:1px solid #f7f3ea;"}margin-right:8px"></b>${nm}</span>`).join("")}</div>`, "", 34, t, until);
 const legend = (t, until, opt2) => legend0(t, Math.min(until ?? 1e9, t + 6), opt2);   // STYLE W: key only ~6 s when a symbol is new
@@ -67,7 +68,7 @@ const badge = (o) => {   // K.badge + initials (shown if no photo / photo missin
     ini.textContent = o.initials || ""; ini.style.display = "none"; ring.insertBefore(ini, img); img.addEventListener("error", () => { img.style.display = "none"; ini.style.display = "flex"; }); }
   return el;
 };
-const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
+const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 // grey a badge + slam a small stamp on it (RESIGNED / SUPPRESSED)
 const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
@@ -115,7 +116,7 @@ const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
   const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
-  tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
+  tl.to(st, { x: to, duration: 0.05, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
   for (let k = 0; k < n; k++) SFX("tick", t + 0.2 + (k * dur) / n);
   return el;
 };
@@ -136,7 +137,7 @@ const slam = (el, t, o = {}) => {
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.35 }, o.until);
   return el;
 };
-const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
+const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, o.rot || -5, o.sub), o.css || `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
 const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
@@ -318,7 +319,7 @@ const NSs = "http://www.w3.org/2000/svg";
 let CAM_X0 = 0, CAM_Y0 = 0;
 // (6) lens transition: the close-up art (#relief2) spreads out from the screen centre as the camera zooms in (wide look -> close battle look)
 const lens = (cx, cy, s) => { CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s;
-  const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");
+  const kc = window.__NOLENS ? 0 : Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");   // __NOLENS: a wide-look scene at a high scale (m2c)
   if (R2) { R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
     R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none"; }
   const vg = document.getElementById("vignette"); if (vg) vg.style.opacity = kc.toFixed(3);
@@ -406,6 +407,9 @@ const hatch = (file, t, hold = 3.0, box_ = [0, 0, 2880, 1620], parent = null) =>
   tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: false }, t); tl.to(el, { autoAlpha: 0, duration: 1.2, ease: "sine.inOut" }, t + 0.8 + hold); return el; };
 const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min(u ?? 1e9, t + 3.5), "#f0e6c8", sz, sub);
 // ================= end of @@STYLEW =================
+
+// @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
+B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
 // @@END-KIT
 // @@DATA (tools/vx_inline.py)
 const GD = {"base":"vicksburg_siege","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -481,8 +485,8 @@ B.date("19 MAY 1863", T_19, T_22 - 0.05, 32); B.date("22 MAY 1863", T_22, T_SIEG
 const dateF = (html, t, until) => { const box = document.getElementById("date"), d = document.createElement("div"); d.className = "d"; d.style.fontSize = "32px"; d.style.gap = "14px"; d.innerHTML = html; box.appendChild(d);
   gsap.set(d, { autoAlpha: 0 }); tl.fromTo(d, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, t); if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 const F35 = `<img src="assets/media/us35_flag.png" style="height:30px;border:1px solid #1a1712;box-shadow:0 1px 3px rgba(0,0,0,.5)">`;
-dateF(`${F35}<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);
-dateF(`${F35}<span>4 JULY 1863</span>`, T_JUL, null);
+dateF(`<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);   // critic r1: no flag icon in the scroll (the 35-star flag is on the map)
+dateF(`<span>4 JULY 1863</span>`, T_JUL, null);
 // ---------- the siege lines: two glowing bands where the sides touch, on top of the pocket fill ----------
 const FR = on0(front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 }));
 tl.set(FR, { autoAlpha: 1 }, 0);
@@ -495,9 +499,9 @@ U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, 
 U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true, "right")); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- 19 and 22 May: the assaults bounce off ----------
-const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); tl.to(a, { opacity: 0.25, duration: 0.25, yoyo: true, repeat: 1 }, t + 0.8); return a; };
+const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); return a; };   // critic r1: no grey pulse; the thin trail fades
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
 const A22 = [[[32.382, -90.846], [32.376, -90.857], [32.371, -90.863]], [[32.355, -90.828], [32.353, -90.839], [32.352, -90.845]], [[32.336, -90.831], [32.337, -90.842], [32.339, -90.848]],
   [[32.324, -90.840], [32.327, -90.850], [32.329, -90.854]]];
@@ -508,7 +512,7 @@ A22.forEach((p, k) => AS(p, T_22 - 0.1 + k * 0.25));
 [[T_19 + 0.9, [32.370, -90.858], [32.376, -90.850]], [T_22 + 1.0, [32.340, -90.851], [32.338, -90.843]]].forEach(([t, a, b]) => mg(L(...a), L(...b), t, 5, 1.1 / S1 * 2.2));
 const FAIL = wstampL("FAILED", ...L(32.335, -90.812), T_FAIL, null, "#e3232f", 40);
 // Grant later wrote that he regretted the second one (paraphrase: no quote marks)
-B.caption("HE REGRETTED THE SECOND ONE", T_REG - 0.2, T_SIEGE - 0.2, "carth r");
+B.caption("HE REGRETTED THE SECOND ONE", T_REG - 0.2, T_SIEGE - 0.2, "carth");
 // ---------- the siege: saps creep toward the works; gunboats shell the city from the river ----------
 const SAPS = [[[32.380, -90.853], [32.378, -90.857], [32.376, -90.856], [32.374, -90.860]], [[32.366, -90.840], [32.364, -90.845], [32.362, -90.844], [32.360, -90.849]],
   [[32.352, -90.834], [32.352, -90.839], [32.350, -90.840], [32.350, -90.845]], [[32.336, -90.838], [32.337, -90.843], [32.335, -90.845], [32.336, -90.849]],
@@ -521,8 +525,8 @@ const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block
 [[32.380, -90.866], [32.365, -90.856], [32.350, -90.851], [32.334, -90.855], [32.318, -90.867], [32.306, -90.881]].forEach(([la, lo], k) => {
   const el = pinS(GG.pin(WF, ...L(la, lo), { t: T_JUL + 0.15 + k * 0.18, pop: true })); WFL.push(el); SFX("ref:pop", T_JUL + 0.2 + k * 0.18); });
 wstampL("SURRENDERED", ...L(32.345, -90.905), T_PEM + 0.4, null, "#f7f3ea", 34);
-["rp", "r2", "r3"].forEach((id, k) => B.grey([id], T_PEM + 0.6 + k * 0.1, 0.8));
-const POLE = poleFlag("assets/media/us35_flag.png", L(32.352, -90.880), T_172 + 0.6, END + 1, 46);
+// critic r1: the surrendered units stay red (white flags), no grey
+// critic r1: one flag pair per shot (no extra pole flag)
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
 const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT · 4 JULY 1863</div>
@@ -553,7 +557,7 @@ SFX("ref:pop", T_CUT); SFX("ref:boom", T_FED);
 const FEW = [L(32.35, -90.88), L(32.30, -90.19)];
 K.target(FEW[0][0], FEW[0][1], T_FEW + 0.3, { r: 28 / S3, side: "carth", until: END + 0.5 });
 // the siege close-up layer leaves as the camera goes out (units, flags, white flags, the pole flag stay readable only up close)
-const CLOSE = [...["u15", "u17", "u13", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS35, FCS, ...WFL];
+const CLOSE = [...["u15", "u17", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS35, FCS, ...WFL];   // critic r1: Grant's army (with his card) holds to the end
 CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.6 }, T_FATHER + 0.4));   // after the river-map flags are up (both flags on every frame)
 // ---------- 1c declutter ----------
 

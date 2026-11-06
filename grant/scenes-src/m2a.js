@@ -46,9 +46,10 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { const g = B.arrow({ ...o, dash: undefined }), w = o.width || 22, ps = g.querySelectorAll("path");
-  ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1)); 
-  const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
+const arw = (o) => { const w = (o.width || 22) * 0.5, un = o.t + (o.dur || 1.4) + 2.0;   // @@STYLEW2 critic r1: thin solid trail, no white casing, fades ~2 s after arrival
+  const g = B.arrow({ ...o, dash: undefined, width: w, until: o.until == null ? un : Math.min(o.until, un) }), ps = g.querySelectorAll("path");
+  ps[0].setAttribute("stroke", "rgba(24,20,10,0.55)"); ps[0].setAttribute("stroke-width", (w + Math.max(1.2 / CAM_S, w * 0.35)).toFixed(2));
+  const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(24,20,10,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend: UNION (blue) / CONFEDERACY (red); opt2 = two short glowing lines instead of squares
 const legend0 = (t, until, opt2) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]].map(([sq, ln, nm]) => `<span><b style="display:inline-block;width:${opt2 ? 30 : 20}px;height:${opt2 ? 7 : 20}px;background:${opt2 ? ln : sq};${opt2 ? `box-shadow:0 0 8px ${ln},0 0 3px #fff;vertical-align:4px;` : "vertical-align:-3px;border:1px solid #f7f3ea;"}margin-right:8px"></b>${nm}</span>`).join("")}</div>`, "", 34, t, until);
 const legend = (t, until, opt2) => legend0(t, Math.min(until ?? 1e9, t + 6), opt2);   // STYLE W: key only ~6 s when a symbol is new
@@ -70,7 +71,7 @@ const badge = (o) => {   // K.badge + initials (shown if no photo / photo missin
     ini.textContent = o.initials || ""; ini.style.display = "none"; ring.insertBefore(ini, img); img.addEventListener("error", () => { img.style.display = "none"; ini.style.display = "flex"; }); }
   return el;
 };
-const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.34).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
+const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.34).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 // grey a badge + slam a small stamp on it (RESIGNED / SUPPRESSED)
 const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
@@ -118,7 +119,7 @@ const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
   const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
-  tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
+  tl.to(st, { x: to, duration: 0.05, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
   for (let k = 0; k < n; k++) SFX("tick", t + 0.2 + (k * dur) / n);
   return el;
 };
@@ -139,7 +140,7 @@ const slam = (el, t, o = {}) => {
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.35 }, o.until);
   return el;
 };
-const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
+const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, o.rot || -5, o.sub), o.css || `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
 const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
@@ -315,7 +316,7 @@ const NSs = "http://www.w3.org/2000/svg";
 let CAM_X0 = 0, CAM_Y0 = 0;
 // (6) lens transition: the close-up art (#relief2) spreads out from the screen centre as the camera zooms in (wide look -> close battle look)
 const lens = (cx, cy, s) => { CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s;
-  const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");
+  const kc = window.__NOLENS ? 0 : Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");   // __NOLENS: a wide-look scene at a high scale (m2c)
   if (R2) { R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
     R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none"; }
   const vg = document.getElementById("vignette"); if (vg) vg.style.opacity = kc.toFixed(3);
@@ -403,6 +404,9 @@ const hatch = (file, t, hold = 3.0, box_ = [0, 0, 2880, 1620], parent = null) =>
   tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: false }, t); tl.to(el, { autoAlpha: 0, duration: 1.2, ease: "sine.inOut" }, t + 0.8 + hold); return el; };
 const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min(u ?? 1e9, t + 3.5), "#f0e6c8", sz, sub);
 // ================= end of @@STYLEW =================
+
+// @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
+B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
 const GD = {"base":"vicksburg","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -465,7 +469,7 @@ const S0 = OVS * 1.04, C0 = [OC0[0], OC0[1]];
 const C1 = L(32.75, -90.85), S1 = 0.215;                         // the delta north of Vicksburg (Yazoo Pass to the city)
 const C2 = L(32.52, -90.98), S2 = 0.92;                          // the Vicksburg map, wide (Lake Providence, Steele's Bayou, De Soto Point)
 const C3 = L(32.30, -91.02), S3 = 1.25;                          // m2-2: Milliken's Bend to Hard Times
-const C4 = L(32.345, -90.90), S4 = 2.35;                         // the push onto Vicksburg (hand-off to m2b)
+const C4 = L(32.22, -90.98), S4 = 1.4;                           // critic r1: the boats above the city AND Grant's army at Hard Times stay in view
 cam.cx = C0[0]; cam.cy = C0[1]; applyCam();
 camTo(0, T_WINT - 0.2, [C0[0] + (VKS[0] - C0[0]) * 0.35, C0[1] + (VKS[1] - C0[1]) * 0.35], OVS * 1.16, "sine.inOut");
 camTo(T_WINT - 0.2, T_CAN - 0.6 - T_WINT + 0.2, C1, S1, "sine.inOut");
@@ -477,8 +481,8 @@ camTo(T_DIFF, T_CROSS - T_DIFF, C3, S3, "sine.inOut");
 camTo(T_CROSS, T_ONLY - T_CROSS, [C3[0] + 20, C3[1] - 10], S3 * 1.08, "sine.inOut");
 camTo(T_ONLY, END - T_ONLY, C4, S4, "sine.inOut");
 // ---------- HUD ----------
-B.title("MOVE 2", "THE MISSISSIPPI", "1863", T_MS, T_MS + 3.0); SFX("ref:boom", T_MS + 0.1);
-B.showDate(T_WINT); B.date("WINTER 1862 - 63", T_WINT + 0.05, T_DIFF - 0.1, 32); B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
+B.title("MOVE 2", "THE MISSISSIPPI", "", T_MS, T_MS + 3.0);   // critic r1: one date on screen (the scroll) SFX("ref:boom", T_MS + 0.1);
+B.showDate(0); B.date("WINTER 1862 - 63", 0.02, T_DIFF - 0.1, 32); B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
 const LGD = null, LGD2 = null;   // STYLE W: no key (no new symbol in this scene)
 // ---------- flags: overview pair, delta pair, Vicksburg-map pair (both on every frame) ----------
 flagS(FL.us, "", ...L(35.45, -88.9), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
@@ -534,7 +538,7 @@ wstampL("FAILED IN THE SWAMPS", ...L(33.2, -90.0), T_FAIL + 0.2, null, "#e3232f"
 // "Canals dug in the mud": the canal across De Soto Point; "bayous cleared for gunboats": Lake Providence + Steele's Bayou; "boats stuck among the trees"
 const CANAL = LL([[32.375, -90.925], [32.355, -90.928], [32.335, -90.925], [32.318, -90.918]]);
 const cn = glowPath(CANAL, "#c9a26a", 7, T_CAN, T_DIFF - 0.3, 1, 0.95, { draw: 1.0, dash: "10 6", top: true });
-boxL("CANAL", ...L(32.33, -91.10), T_CAN + 0.2, null, { size: 18 });
+boxL("CANAL", ...L(32.405, -91.0), T_CAN + 0.2, null, { size: 18 });
 const LPR = LL([[32.80, -91.17], [32.72, -91.30], [32.60, -91.42], [32.45, -91.52], [32.30, -91.55]]);
 glowPath(LPR, "#8fc3ff", 6, T_BAY - 0.1, T_DIFF - 0.3, 1, 0.8, { draw: 1.4, dash: "4 7" });
 const STEE = LL([[32.42, -90.98], [32.55, -90.93], [32.68, -90.90], [32.80, -90.88], [32.86, -90.87]]);
@@ -547,7 +551,7 @@ const NOTH = sstamp("NOTHING WORKED", 760, T_NOTH, { size: 76, shake: 4, until: 
 const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.7, T_DIFF - 0.15, { top: 160, size: 52 });
 // STYLE W: no fronts along the water (the hand-over of the west bank is the blue hatch at CUE)
 // =================== m2-2: Grant's idea ===================
-const GB = null; pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_DIFF + 0.3, T_ONLY + 0.3, true);   // steps out before the push onto the city crops it   // STYLE W: Grant's portrait on a stake at his marching corps (no corner badge)
+const GB = null; pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_DIFF + 0.3, null, true, "right");   // critic r1: up for the rest of the move, side stake (clear of the corps)   // STYLE W: Grant's portrait on a stake at his marching corps (no corner badge)
 // "march his army down the west bank, through the Louisiana swamps": Milliken's Bend - Richmond - Perkins' plantation - Hard Times
 const MARCH = LL([[32.48, -91.08], [32.42, -91.15], [32.39, -91.18], [32.28, -91.20], [32.16, -91.17], [32.09, -91.13], [32.07, -91.09]]);
 tl.to(B.units.gb.el, { autoAlpha: 0, duration: 0.4 }, T_DIFF);
@@ -556,7 +560,7 @@ along("ga", [L(32.56, -91.20), L(32.53, -91.13)], T_DIFF, 1.2, 6); along("ga", [
 arw({ pts: MARCH, side: "carth", t: T_MARCH, dur: 2.6, width: AW(S3, 14), until: T_ONLY + 0.6 });
 boxL("LOUISIANA SWAMPS", ...L(32.25, -91.40), T_LA, null, { size: 16 });
 // three large bayous bridged on the way (pontoon icons)
-[[32.40, -91.17, 70], [32.22, -91.195, 60], [32.12, -91.16, 40]].forEach(([la, lo, a], k) => pinS(GG.pin(`<svg width="40" height="22" viewBox="0 0 40 22" style="display:block;overflow:visible;transform:rotate(${a}deg);filter:drop-shadow(0 0 3px rgba(120,170,255,.9))">${[0, 1, 2, 3, 4, 5].map((j) => `<ellipse cx="${3.3 + j * 6.7}" cy="11" rx="2.2" ry="7" fill="#3a3024" stroke="#c9b48a" stroke-width="0.8"/>`).join("")}<rect x="0" y="7" width="40" height="8" fill="#e9dcc0" stroke="#1f4fc4" stroke-width="1.4"/></svg>`, ...L(la, lo), { t: T_LA + 0.3 + k * 0.4, pop: true, until: END + 1 })));
+[[32.40, -91.17, 70], [32.22, -91.195, 60], [32.12, -91.16, 40]].forEach(([la, lo, a], k) => pinS(GG.pin(`<svg width="40" height="22" viewBox="0 0 40 22" style="display:block;overflow:visible;transform:rotate(${a}deg);filter:drop-shadow(0 0 3px rgba(120,170,255,.9))">${[0, 1, 2, 3, 4, 5].map((j) => `<ellipse cx="${3.3 + j * 6.7}" cy="11" rx="2.2" ry="7" fill="#3a3024" stroke="#c9b48a" stroke-width="0.8"/>`).join("")}<rect x="0" y="7" width="40" height="8" fill="#e9dcc0" stroke="#1f4fc4" stroke-width="1.4"/></svg>`, ...L(la, lo), { t: T_LA + 0.3 + k * 0.4, pop: true, until: T_ONLY + 0.2 })));
 // "and cross the river below the city": the dashed crossing (east bank target)
 arw({ pts: [L(32.06, -91.10), L(32.00, -91.06), L(31.97, -91.02)], side: "carth", t: T_CROSS, dur: 1.0, width: AW(S3, 12), dash: "14 10", until: T_ONLY + 0.6 });
 K.target(...L(31.98, -91.02), T_CROSS + 0.5, { r: 30, side: "carth", until: T_ONLY + 1 });
@@ -568,10 +572,9 @@ boxL("THE SOUTH SIDE", ...L(32.00, -91.24), T_SOUTH, null, { size: 16 });
 const BAT = LL([[32.378, -90.872], [32.351, -90.877], [32.324, -90.886]]).map((p) => [p[0] + 12, p[1]]);
 BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_ONLY + k * 0.15, w: 44, h: 29 }));
 const UP = [0, 1, 2, 3].map((k) => ship(k === 3 ? "transport" : "gunboat", sub(LL([[32.45, -91.02], [32.42, -91.0], [32.402, -90.994], [32.394, -90.960], [32.387, -90.930]]), 0.3 - k * 0.1, 0.85 - k * 0.12, 8), T_ONLY - 0.3 + k * 0.2, 3.0, END + 1, { s: 20 }));
-trail([...sub(LOOP63, 0.25, 1, 12), ...LL([[32.30, -90.917], [32.27, -90.957], [32.24, -90.975]])], "#8fb2ff", 3.2, T_RUN - 0.2, 1.8, END + 1, "4 9");
 shootS(BAT[0], L(32.386, -90.925), T_RUN + 0.2, 2.2, { dur: 0.7, h: 30, r: 9 });
 shootS(BAT[1], L(32.382, -90.905), T_RUN + 1.3, 2.3, { dur: 0.7, h: 30, r: 9 });
-B.hideUnits(["ga"], T_ONLY + 1.0, 0.6);   // Grant's corps (with his portrait) stays
+// critic r1: the corps stay on the map to the end
 // ---------- 1c declutter: the legend + the corner badge step out while a big card is up (the date scroll stays) ----------
 declutter([LGD, LGD2, GB], [[T_NOTH, T_NOTH + 1.6], [T_IDEAS - 0.7, T_DIFF - 0.15]]);
 fixImgs();

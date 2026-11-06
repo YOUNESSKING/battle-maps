@@ -39,9 +39,10 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { const g = B.arrow({ ...o, dash: undefined }), w = o.width || 22, ps = g.querySelectorAll("path");
-  ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1)); 
-  const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
+const arw = (o) => { const w = (o.width || 22) * 0.5, un = o.t + (o.dur || 1.4) + 2.0;   // @@STYLEW2 critic r1: thin solid trail, no white casing, fades ~2 s after arrival
+  const g = B.arrow({ ...o, dash: undefined, width: w, until: o.until == null ? un : Math.min(o.until, un) }), ps = g.querySelectorAll("path");
+  ps[0].setAttribute("stroke", "rgba(24,20,10,0.55)"); ps[0].setAttribute("stroke-width", (w + Math.max(1.2 / CAM_S, w * 0.35)).toFixed(2));
+  const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(24,20,10,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend: UNION (blue) / CONFEDERACY (red); opt2 = two short glowing lines instead of squares
 const legend0 = (t, until, opt2) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]].map(([sq, ln, nm]) => `<span><b style="display:inline-block;width:${opt2 ? 30 : 20}px;height:${opt2 ? 7 : 20}px;background:${opt2 ? ln : sq};${opt2 ? `box-shadow:0 0 8px ${ln},0 0 3px #fff;vertical-align:4px;` : "vertical-align:-3px;border:1px solid #f7f3ea;"}margin-right:8px"></b>${nm}</span>`).join("")}</div>`, "", 34, t, until);
 const legend = (t, until, opt2) => legend0(t, Math.min(until ?? 1e9, t + 6), opt2);   // STYLE W: key only ~6 s when a symbol is new
@@ -63,7 +64,7 @@ const badge = (o) => {   // K.badge + initials (shown if no photo / photo missin
     ini.textContent = o.initials || ""; ini.style.display = "none"; ring.insertBefore(ini, img); img.addEventListener("error", () => { img.style.display = "none"; ini.style.display = "flex"; }); }
   return el;
 };
-const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
+const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 // grey a badge + slam a small stamp on it (RESIGNED / SUPPRESSED)
 const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
@@ -111,7 +112,7 @@ const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
   const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
-  tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
+  tl.to(st, { x: to, duration: 0.05, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
   for (let k = 0; k < n; k++) SFX("tick", t + 0.2 + (k * dur) / n);
   return el;
 };
@@ -132,7 +133,7 @@ const slam = (el, t, o = {}) => {
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.35 }, o.until);
   return el;
 };
-const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, o.rot || -5, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
+const sstamp = (txt, top, t, o = {}) => { const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, o.rot || -5, o.sub), o.css || `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, o); };
 const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
@@ -314,7 +315,7 @@ const NSs = "http://www.w3.org/2000/svg";
 let CAM_X0 = 0, CAM_Y0 = 0;
 // (6) lens transition: the close-up art (#relief2) spreads out from the screen centre as the camera zooms in (wide look -> close battle look)
 const lens = (cx, cy, s) => { CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s;
-  const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");
+  const kc = window.__NOLENS ? 0 : Math.min(1, Math.max(0, (s - 1.5) / 0.7)), R2 = document.getElementById("relief2");   // __NOLENS: a wide-look scene at a high scale (m2c)
   if (R2) { R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
     R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none"; }
   const vg = document.getElementById("vignette"); if (vg) vg.style.opacity = kc.toFixed(3);
@@ -402,6 +403,9 @@ const hatch = (file, t, hold = 3.0, box_ = [0, 0, 2880, 1620], parent = null) =>
   tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: false }, t); tl.to(el, { autoAlpha: 0, duration: 1.2, ease: "sine.inOut" }, t + 0.8 + hold); return el; };
 const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min(u ?? 1e9, t + 3.5), "#f0e6c8", sz, sub);
 // ================= end of @@STYLEW =================
+
+// @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
+B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
 // @@END-KIT
 // @@DATA (tools/vx_inline.py)
 const GD = {"base":"vicksburg","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -421,12 +425,12 @@ const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.0
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // ---------- map ----------
 // STYLE W: clean map; "deep in enemy country" = the Confederate ground all round the bridgehead hatches red for ~3 s
-hatch("assets/media/gn_vick_may03cs_mx.png", T_DEEP - 0.1, 3.0);
+focus(L(32.0, -90.95), 120, T_DEEP - 0.1, T_DEEP + 3.0);   // critic r1: no territory (nothing changes hands here): the focus wash on the bridgehead
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.13 });
 const LGD = null;   // STYLE W: no key
 dateNow("MAY 1863", null);
 // ---------- camera (B3: keeps moving under the card) ----------
-const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1240, 1000, 1.0], K4 = [1290, 960, 1.22];
+const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1290, 1170, 1.22], K4 = [1300, 1175, 1.3];   // critic r1: under the card the army sits in the upper half
 camera([[0, ...K0], [T_ACROSS, ...K0], [T_DEEP + 0.4, ...K1], [T_BANKS + 0.2, ...K1], [T_PH + 0.3, ...K2], [T_DO - 0.2, ...K2], [T_DO + 1.6, ...K3], [END, ...K4]]);
 // ---------- flags (both visible on every frame) ----------
 now(flagS(FL.us, "", 1010, 880, 0, END + 1)); now(flagS(FL.cs, "", 1700, 960, 0, END + 1));
@@ -441,7 +445,7 @@ B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.move("r4", 0.6, 12, ...L(32.14, -9
 unitS("bk", "carth", ALX, "infantry", "BANKS", { t: T_BANKS + 0.1, size: "XX" });
 pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, T_DO + 0.3, true);   // steps out as his column crawls off the frame under the card   // STYLE W: Banks' portrait at his column (no corner badge)
 // ---------- m2-7 beats ----------
-pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, null, true);   // STYLE W: Grant's portrait at his army in the bridgehead
+pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, null, true, "left");   // side stake: clear of the corps boxes   // STYLE W: Grant's portrait at his army in the bridgehead
 // across the river: the crossing pulses; deep in enemy country: red rings close round the bridgehead
 const XR = arw({ pts: [L(31.99, -91.24), L(31.965, -91.18), L(31.955, -91.13)], side: "carth", t: T_ACROSS - 0.1, dur: 0.9, width: AW(1.4, 12), until: T_BANKS });
 K.target(...L(32.02, -90.96), T_ACROSS + 0.4, { r: 40, side: "carth", until: T_DEEP + 2.5 });
@@ -451,7 +455,7 @@ const JOIN = arw({ pts: LL([[31.25, -91.58], [31.56, -91.42], [31.80, -91.28], [
 B.greyArrow(JOIN, T_PH + 0.2, T_TENTH + 0.6);
 const PHB = boxL("PORT HUDSON ▼", PHX[0] - 10, 1560, T_PH, null, { size: 20 });
 const BKA = arw({ pts: [ALX, L(31.38, -91.95), L(31.29, -91.62)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 11), dash: "14 10", until: END + 1 });
-B.caption("NOT BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth r");
+B.caption("CANNOT GET TO PORT HUDSON BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth r");
 B.caption("ONLY FIFTEEN THOUSAND MEN", T_15K, T_DO - 0.25, "carth r");
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
 // ---------- E.decide (B3) on "Do you wait for Banks" ----------
@@ -459,7 +463,9 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 const BACK = DEC.previousElementSibling;
-tl.to(BACK, { autoAlpha: 0.56, duration: 0.8 }, T_DO + 0.4);                       // lighter dim: the moving map shows through
+// critic r1: the card sits on the empty lower half with its own opaque backing; the dim only covers the lower half, Grant + his army stay visible above
+Object.assign(DEC.style, { top: "585px", background: "rgba(14,13,10,0.95)", padding: "16px 34px 18px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
+BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 45%, rgba(6,8,12,0.7) 60%)";
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
 pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.2); pulse(OB, T_INL + 0.2); pulse(DEC.querySelector(".cd"), T_WHAT, "#c9b48a"); pulse(OA, T_THEN - 0.2); pulse(OB, T_THEN + 0.3);

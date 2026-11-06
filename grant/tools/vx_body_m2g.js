@@ -86,8 +86,8 @@ B.date("19 MAY 1863", T_19, T_22 - 0.05, 32); B.date("22 MAY 1863", T_22, T_SIEG
 const dateF = (html, t, until) => { const box = document.getElementById("date"), d = document.createElement("div"); d.className = "d"; d.style.fontSize = "32px"; d.style.gap = "14px"; d.innerHTML = html; box.appendChild(d);
   gsap.set(d, { autoAlpha: 0 }); tl.fromTo(d, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, t); if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 const F35 = `<img src="assets/media/us35_flag.png" style="height:30px;border:1px solid #1a1712;box-shadow:0 1px 3px rgba(0,0,0,.5)">`;
-dateF(`${F35}<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);
-dateF(`${F35}<span>4 JULY 1863</span>`, T_JUL, null);
+dateF(`<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);   // critic r1: no flag icon in the scroll (the 35-star flag is on the map)
+dateF(`<span>4 JULY 1863</span>`, T_JUL, null);
 // ---------- the siege lines: two glowing bands where the sides touch, on top of the pocket fill ----------
 const FR = on0(front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 }));
 tl.set(FR, { autoAlpha: 1 }, 0);
@@ -100,9 +100,9 @@ U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, 
 U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true, "right")); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- 19 and 22 May: the assaults bounce off ----------
-const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); tl.to(a, { opacity: 0.25, duration: 0.25, yoyo: true, repeat: 1 }, t + 0.8); return a; };
+const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); return a; };   // critic r1: no grey pulse; the thin trail fades
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
 const A22 = [[[32.382, -90.846], [32.376, -90.857], [32.371, -90.863]], [[32.355, -90.828], [32.353, -90.839], [32.352, -90.845]], [[32.336, -90.831], [32.337, -90.842], [32.339, -90.848]],
   [[32.324, -90.840], [32.327, -90.850], [32.329, -90.854]]];
@@ -113,7 +113,7 @@ A22.forEach((p, k) => AS(p, T_22 - 0.1 + k * 0.25));
 [[T_19 + 0.9, [32.370, -90.858], [32.376, -90.850]], [T_22 + 1.0, [32.340, -90.851], [32.338, -90.843]]].forEach(([t, a, b]) => mg(L(...a), L(...b), t, 5, 1.1 / S1 * 2.2));
 const FAIL = wstampL("FAILED", ...L(32.335, -90.812), T_FAIL, null, "#e3232f", 40);
 // Grant later wrote that he regretted the second one (paraphrase: no quote marks)
-B.caption("HE REGRETTED THE SECOND ONE", T_REG - 0.2, T_SIEGE - 0.2, "carth r");
+B.caption("HE REGRETTED THE SECOND ONE", T_REG - 0.2, T_SIEGE - 0.2, "carth");
 // ---------- the siege: saps creep toward the works; gunboats shell the city from the river ----------
 const SAPS = [[[32.380, -90.853], [32.378, -90.857], [32.376, -90.856], [32.374, -90.860]], [[32.366, -90.840], [32.364, -90.845], [32.362, -90.844], [32.360, -90.849]],
   [[32.352, -90.834], [32.352, -90.839], [32.350, -90.840], [32.350, -90.845]], [[32.336, -90.838], [32.337, -90.843], [32.335, -90.845], [32.336, -90.849]],
@@ -126,8 +126,8 @@ const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block
 [[32.380, -90.866], [32.365, -90.856], [32.350, -90.851], [32.334, -90.855], [32.318, -90.867], [32.306, -90.881]].forEach(([la, lo], k) => {
   const el = pinS(GG.pin(WF, ...L(la, lo), { t: T_JUL + 0.15 + k * 0.18, pop: true })); WFL.push(el); SFX("ref:pop", T_JUL + 0.2 + k * 0.18); });
 wstampL("SURRENDERED", ...L(32.345, -90.905), T_PEM + 0.4, null, "#f7f3ea", 34);
-["rp", "r2", "r3"].forEach((id, k) => B.grey([id], T_PEM + 0.6 + k * 0.1, 0.8));
-const POLE = poleFlag("assets/media/us35_flag.png", L(32.352, -90.880), T_172 + 0.6, END + 1, 46);
+// critic r1: the surrendered units stay red (white flags), no grey
+// critic r1: one flag pair per shot (no extra pole flag)
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
 const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT · 4 JULY 1863</div>
@@ -158,7 +158,7 @@ SFX("ref:pop", T_CUT); SFX("ref:boom", T_FED);
 const FEW = [L(32.35, -90.88), L(32.30, -90.19)];
 K.target(FEW[0][0], FEW[0][1], T_FEW + 0.3, { r: 28 / S3, side: "carth", until: END + 0.5 });
 // the siege close-up layer leaves as the camera goes out (units, flags, white flags, the pole flag stay readable only up close)
-const CLOSE = [...["u15", "u17", "u13", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS35, FCS, ...WFL];
+const CLOSE = [...["u15", "u17", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS35, FCS, ...WFL];   // critic r1: Grant's army (with his card) holds to the end
 CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.6 }, T_FATHER + 0.4));   // after the river-map flags are up (both flags on every frame)
 // ---------- 1c declutter ----------
 

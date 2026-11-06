@@ -40,6 +40,14 @@ const YAZW = LL([[33.52, -90.18], [33.20, -90.40], [32.85, -90.55], [32.60, -90.
 living(MZ.meters_per_px, [], { n: 6, clouds: 0.12 });   // STYLE W: the rivers are in the basemap
 // ---------- camera: the raid (wide, both sides visible) -> push in on Vicksburg for Sherman ----------
 const CW = L(32.85, -90.05), SW = 0.86, CV = L(32.40, -90.78), SV = 2.7;
+// critic r1: the river at Vicksburg on its 1863 course in the push-in: the z10 vicksburg_w map (its river layer carries the De Soto Point
+// hairpin) sits in this world at its true place and scale (1/4), edge-feathered, fading in with the zoom; this shot is a wide look (no close art)
+{ const VZ = GD.maps.vicksburg, VI = document.createElement("img"); VI.src = "assets/media/vk_vick_w.jpg"; VI.alt = "";
+  VI.style.cssText = `position:absolute;left:${VZ.origin_world_px[0] / 4 - MZ.origin_world_px[0]}px;top:${VZ.origin_world_px[1] / 4 - MZ.origin_world_px[1]}px;width:720px;height:405px;opacity:0;` +
+    "-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 62%, transparent 100%)";
+  WORLD.insertBefore(VI, document.getElementById("relief").nextSibling);
+  tl.to(VI, { opacity: 1, duration: 1.4, ease: "sine.inOut" }, T_SHER + 0.6);
+  window.__NOLENS = true; }
 camera([[0, CW[0] + 30, CW[1] + 20, SW * 0.97], [T_SHER - 0.3, CW[0], CW[1], SW], [T_SHER + 2.2, CV[0], CV[1], SV, "power2.inOut"], [END, CV[0] + 4, CV[1] - 2, SV * 1.04]]);
 SFX("whoosh", T_SHER - 0.35);
 // ---------- HUD ----------
