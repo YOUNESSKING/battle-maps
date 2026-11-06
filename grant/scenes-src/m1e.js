@@ -294,7 +294,7 @@ const ESCAPE = [[1555, 815], [1586, 846], [1620, 890], [1660, 950], [1712, 1050]
 const LICK = [[1614, 712], [1614, 790], [1532, 890], [1525, 1000], [1500, 1100]];   // the flooded backwater (Lick Creek, baked as water)
 // ---------- camera ----------
 camera([[0, 1470, 760, 2.15], [T_STEAM + 0.4, 1560, 745, 2.0], [T_FEAR, 1600, 765, 1.9], [T_FOR, 1570, 860, 2.05], [T_BACKW + 0.6, 1590, 905, 2.0],
-  [T_CMD, 1440, 770, 2.2], [T_DAWN + 0.3, 1370, 760, 1.85], [T_ANS + 0.4, 1360, 712, 1.8], [T_ACC, 1390, 760, 2.0], [T_TELE, 1380, 760, 1.4],
+  [T_CMD, 1440, 770, 2.2], [T_DAWN + 0.3, 1370, 760, 1.85], [T_ANS + 0.4, 1360, 688, 1.8], [T_BCALL, 1365, 690, 1.8], [T_ACC, 1390, 760, 2.0], [T_TELE, 1380, 760, 1.4],
   [T_LET, 1360, 760, 1.25], [END, 1340, 760, 1.15]]);
 // ---------- date scroll ----------
 gsap.set(document.getElementById("date"), { autoAlpha: 1 });
@@ -313,15 +313,15 @@ unitS("wb1", "rome", [1384, 710], "artillery", null, { w: 40, h: 27 }); unitS("w
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];
 const FR = frontNow(front2(RING3, 2.1, 0, { dur: 0.01, until: T_ACC + 1.0 }));
 [["uSm", [1305, 690], "XX"], ["uWa", [1262, 862], "XX"], ["m1", [1290, 885], "X"], ["m2", [1374, 948], "X"], ["m3", [1442, 985], "X"]].forEach(([id, p, sz]) => unitS(id, "carth", p, "infantry", null, { size: sz }));
-cardNow(pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", 0.05, T_NO - 0.3, "up"));   // his part is over; steps out before the letter cards   // up: clear of Grant's card at the headquarters   // steps out when the battle ends and the camera pulls out
-unitS("hq", "carth", [1222, 832], "infantry", null); cavIcon("hq");   // Grant rode back to his headquarters at the end of m1d (same horseman counter)
+cardNow(pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", 0.05, T_NO - 0.3, "left"));   // his part is over; steps out before the letter cards   // up: clear of Grant's card at the headquarters   // steps out when the battle ends and the camera pulls out
+unitS("hq", "carth", [1205, 840], "infantry", null); cavIcon("hq");   // Grant rode back to his headquarters at the end of m1d (same horseman counter)
 cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_LOSS - 0.2, "up"));
 // the GIVE UP stamp m1d ended on carries into the first second here (same screen place), then leaves
 { const el = scr(stampHTML("GIVE UP", CREAM, 84, -4, "THE COUNCIL"), "right:200px;top:230px;", null, null); gsap.set(el, { autoAlpha: 1 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.9); }
 const RED = [["bu", [1336, 736]], ["fl", [1440, 772]], ["pi", [1487, 814]], ["c1", [1413, 786]], ["c4", [1428, 818]], ["c5", [1520, 800]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null));
 unitS("cF", "rome", ESCAPE[0], "infantry", "FORREST"); cavIcon("cF"); tagAt("cF", T_FOR + 1.0);
-cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, T_LOSS - 0.2, "up"));   // up: clear of the red units east of him
+cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, T_LET - 0.3, "up"));   // up: clear of the red units east of him
 const CFL = cardNow(pinPortrait("fl", PHOTO("floyd"), FL.csa, "Floyd", 0.05, T_STEAM + 0.3, "up"));
 const CPI = cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, T_STEAM + 0.3, "up"));
 // =====================================================================================================================
@@ -338,7 +338,7 @@ const SCP = portraitEl(ST[1].host, PHOTO("pillow"), FL.csa, "Pillow", T_STEAM + 
   K.smoke(LANDG[k][0] + 8, LANDG[k][1] - 10, T_STEAM + 0.7 + k * 1.4, { n: 2, r: 5, rise: 14, life: 2.0, alpha: 0.5 });
   if (!k) arw({ pts: UPR.slice(0, 8).map(([x, y]) => [x, y - 16]), side: "rome", t: T_STEAM + 0.6, dur: 3.6, until: T_FOR + 1.0 }, 2.0, 6); });
 B.caption("FLOYD: PRESIDENT BUCHANAN'S SECRETARY OF WAR", T_SEC, T_SEC + 3.5, "rome");
-hideU(["uSm"], T_STEAM + 0.4); showU(["uSm"], T_CMD + 0.3);   // C. F. Smith steps out while the camera follows Forrest (he would sit under the date scroll)
+hideU(["m3"], T_DAWN); hideU(["uSm", "bu"], T_STEAM + 0.4); showU(["uSm", "bu"], T_CMD + 0.3);   // cropped under the date scroll while the camera follows the steamers and Forrest   // C. F. Smith steps out while the camera follows Forrest (he would sit under the date scroll)
 // =====================================================================================================================
 // Forrest leads several hundred cavalry out through the flooded backwater
 // =====================================================================================================================
@@ -360,9 +360,9 @@ B.caption("ASKING FOR TERMS", T_TERMS, T_TERMS + 2.1, "rome");
 const L2 = pinAt(`<div>${LTR}</div>`, HQ[0] + 30, HQ[1] + 6, T_ANS + 0.2, T_BCALL + 0.4); reg(L2.firstElementChild);
 pinAlong(L2, [[HQ[0] + 30, HQ[1] + 6], [1270, 822], [1310, 800], [1336, 760]], T_ANS + 0.5, 2.2, 16);
 const QH = (txt, sz) => `<div style="max-width:1300px;text-align:left;border-left:8px solid #1f4fc4;padding-left:28px;margin-left:-28px"><div style="font-size:${sz}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">GRANT TO BUCKNER</div></div>`;
-const Q1 = bigCard(QH(`“No terms except an unconditional and <b class="imm">immediate</b> surrender can be accepted.`, 44), T_NO - 0.1, T_PROP - 0.25, { col: "#1f4fc4", top: 230 });
+const Q1 = bigCard(QH(`“No terms except an unconditional and <b class="imm">immediate</b> surrender can be accepted.`, 44), T_NO - 0.1, T_PROP - 0.25, { col: "#1f4fc4", top: 212 });
 tl.fromTo(Q1.querySelector(".imm"), { color: "#f7f3ea" }, { color: "#9fc0ea", duration: 0.2, immediateRender: false }, T_IMM); SFX("hit", T_IMM + 0.05); K.shake(T_IMM + 0.05, 5, 0.3);
-const Q2 = bigCard(QH(`I propose to move immediately upon your works.”`, 44), T_PROP - 0.1, T_BCALL - 0.2, { col: "#1f4fc4", top: 230 });
+const Q2 = bigCard(QH(`I propose to move immediately upon your works.”`, 44), T_PROP - 0.1, T_BCALL - 0.2, { col: "#1f4fc4", top: 212 });
 // Buckner: ungenerous and unchivalrous, but he accepted
 const UN = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">BUCKNER CALLED THE TERMS</div><div style="font-size:50px;letter-spacing:.08em;margin-top:4px">UNGENEROUS AND UNCHIVALROUS</div>`,
   T_UNG - 0.1, Math.min(T_ACC - 0.1, T_UNG + 3.4), { col: "#c4121f", pos: "left:0;right:0;bottom:110px;display:flex;justify-content:center;" });   // low: clear of the generals' cards

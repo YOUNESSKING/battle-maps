@@ -341,10 +341,11 @@ const T_PLAN = at(P2, "The plan was to disappear"), T_TELL = at(P2, "Grant did n
   T_LCAV = at(P2, "Lee sent his own cavalry"), T_DARK = at(P2, "After dark"), T_12 = at(P2, "twelfth of June"), T_WAR = at(P2, "Gouverneur Warren"),
   T_CHICK = at(P2, "crossed the Chickahominy"), T_FACED = at(P2, "faced toward Richmond"), T_REST = at(P2, "the rest of the army slipped out"),
   T_SOUTH2 = at(P2, "marched south by back roads"), T_MEADE = at(P2, "General Meade"), T_LEAD = at(P2, "in the lead");
+const T_SHN = at(P2, "Sheridan's cavalry"), T_WARN = at(P2, "Warren's Fifth"), T_MEADN = at(P2, "Meade's Army"), T_DIS = at(P2, "disappear"), T_CHN = at(P2, "Chickahominy"), T_STOP2 = at(P2, "south by back roads");
 // ---------- the map: one green Style W map (richmond_w + close), clean (no territory: no ground changes hands here) ----------
 camera([[0, 1434, 812, 4.4], [T_TRENCH, 1432, 815, 4.7], [T_GRANT + 1.0, 1436, 816, 4.9], [T_SOUTH, 1430, 870, 4.0], [T_PET, 1428, 905, 3.8], [T_TOG, 1428, 912, 3.8],
   [T_STARVE + 0.6, 1430, 905, 3.8], [T_TELL + 1.0, 1428, 840, 4.4], [T_LOOK + 0.8, 1400, 800, 3.5], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
-  [T_12 + 0.4, 1470, 855, 4.3], [T_CHICK + 1.5, 1475, 868, 4.6], [T_REST + 0.6, 1490, 880, 4.2], [T_LEAD, 1491, 888, 4.05], [END, 1492, 890, 4.0]]);
+  [T_12 + 0.4, 1470, 855, 4.3], [T_CHICK + 1.5, 1475, 868, 4.6], [T_REST + 0.6, 1490, 880, 4.2], [T_LEAD, 1491, 888, 4.05], [END, 1489, 891, 4.0]]);
 // date scroll on the spoken date (clean first frame: nothing before it)
 B.showDate(T_JUNE + 0.6); B.date("JUNE 1864", T_JUNE + 0.7, T_12 - 0.1, 34); B.date("12 JUNE 1864", T_12, null, 34);
 // ---------- flags (48 px, behind each side's lines, one pair per shot) ----------
@@ -362,8 +363,8 @@ RU.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "XX
 unitS("v5", "carth", [1490, 830], "infantry", null, { t: 0, size: "XXX" });            // Warren's Fifth Corps in reserve (named in m3-2)
 unitS("rr", "rome", [1398, 822], "infantry", null, { t: 0, size: "XXX" }); B.move("rr", 0, 4.0, 1408, 819);   // moving at frame 0
 // Grant cannot break through Lee's lines: a probe that breaks on the line (visible guns, powder smoke, ink crosses)
-pinPortrait("u6", PHOTO("grant"), FL.us, "Grant", T_GRANT - 0.05, null, true, "right");
-pinPortrait("rr", PHOTO("lee"), FL.cs, "Lee", T_LEE - 0.05, null, true, "up");
+pinPortrait("u6", PHOTO("grant"), FL.us, "Grant", T_GRANT + 0.05, null, true, "right");
+pinPortrait("rr", PHOTO("lee"), FL.cs, "Lee", T_LEE + 0.05, null, true, "up");
 arw({ pts: [[1468, 806], [1454, 808], [1446, 810]], side: "carth", t: T_GRANT + 0.1, dur: 0.9, width: AW(4.9, 9), until: T_NOT + 0.4 });
 shoot([1426, 802], [1450, 808], T_GRANT + 0.9, { r: 2.2, width: 0.35, dur: 0.5, h: 3 });
 shoot([1428, 820], [1453, 815], T_LEE + 0.5, { r: 2.2, width: 0.35, dur: 0.5, h: 3 });
@@ -374,24 +375,26 @@ stampP("COULD NOT BREAK THROUGH", 1505, 772, T_GRANT + 1.3, T_NOT + 1.0, 22);
 const RICH = town("Richmond", G.RICHMOND, T_RICH, "l");
 glowPath(G.JAMES.slice(0, 11), T_JAMES - 0.2, T_JAMES + 2.9, { focus: false });
 const TT = B.title("MOVE 3", "THE JAMES RIVER", "", T_JAMES, T_JAMES + 2.6);
-curveLabel("James River", G.JAMES.slice(4, 9), T_JAMES + 2.7, T_RR + 0.4, 20);
+curveLabel("James River", G.JAMES.slice(4, 9), T_JAMES + 2.7, T_JAMES + 5.7, 20);
 const PETL = town("Petersburg", G.PETERSBURG, T_PET, "l");
 focus(G.PETERSBURG, 34, T_PET + 0.2, T_FED + 1.0);
 [G.RR_RP, G.RR_SS, G.RR_W, G.RR_NP, G.RR_CP].forEach((pts, k) => inkTrace(pts.slice().reverse(), T_RR + 0.1 + k * 0.3, T_IF, 2.2));
 // if Grant could take it, Richmond would starve: the line to Richmond re-inked, Richmond in focus
 inkTrace(G.RR_RP.slice().reverse(), T_STARVE - 0.4, T_PLAN + 0.6, 3.2);
 focus(G.RICHMOND, 30, T_STARVE, T_PLAN + 0.4);
-B.caption("IF GRANT COULD TAKE IT, RICHMOND WOULD STARVE", T_IF, T_PLAN - 0.2, "carth");
+B.caption("RICHMOND WOULD STARVE", T_STARVE - 0.1, T_STARVE + 3.4, "carth");
 // ---------- m3-2: the plan was to disappear ----------
-stampP("DISAPPEAR", 1500, 780, T_PLAN + 0.7, T_TELL + 2.0, 26);
+stampP("DISAPPEAR", 1545, 758, T_DIS + 0.05, T_DIS + 3.0, 26);
 BU.concat([["v5"]]).forEach(([id], k) => tl.to(B.units[id].el, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_PLAN + 0.4 + k * 0.15));
 // Lee looks in the wrong place: his line watches the empty ground to the north-west (ink question marks)
 [[1445, 776], [1461, 766], [1430, 768]].forEach((p, k) => { const q = pinS(GG.pin(`<div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:40px;color:#fbf8ef;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">?</div>`, p[0], p[1], { t: T_WRONG - 0.2 + k * 0.25 }));
   tl.to(q, { autoAlpha: 0, duration: 0.5 }, T_SHER - 0.2); });
 focus([1446, 772], 34, T_WRONG - 0.2, T_SHER - 0.2);
+// the wide shot (s ~2.3): seven Cold Harbor boxes would overlap; only the two that carry the portraits stay
+hideU(["u2", "u18", "r1", "r2", "r3", "v5"], T_LOOK + 0.9); showU(["u2", "u18", "r1", "r2", "r3", "v5"], T_12);
 // Sheridan's cavalry off to the west; Lee's cavalry after it
-unitS("sh", "carth", G.SHERIDAN[0], "infantry", "SHERIDAN", { t: T_SHER - 0.2, size: "XX" }); cavIcon("sh", { flip: true });
-pinPortrait("sh", PHOTO("sheridan"), FL.us, "Sheridan", T_SHER + 0.1, T_DARK + 0.2, true, "up");
+unitS("sh", "carth", G.SHERIDAN[0], "infantry", null, { t: T_SHER - 0.2, size: "XX" }); cavIcon("sh", { flip: true });
+pinPortrait("sh", PHOTO("sheridan"), FL.us, "Sheridan", T_SHN + 0.1, T_DARK + 0.2, true, "up");
 along("sh", G.SHERIDAN, T_SHER + 0.2, 5.5, 20);
 trailArw(G.SHERIDAN, "carth", T_SHER + 0.2, 5.3, 2.35);
 const HAMP = sub(G.HAMPTON, 0.2, 1, 12);
@@ -402,9 +405,9 @@ hideU(["sh", "hc"], T_DARK + 0.4);
 // ---------- after dark on the 12th: Warren crosses the Chickahominy and faces Richmond; the rest slips out south ----------
 nightWash(T_DARK, null, 0.42, 1.6);
 K.night({ lines: [FR], tOn: T_DARK });
-pinPortrait("v5", PHOTO("warren"), FL.us, "Warren", T_WAR - 0.05, null, true, [0, 150]);
+pinPortrait("v5", PHOTO("warren"), FL.us, "Warren", T_WARN + 0.15, null, true, [0, 150]);
 glowPath(G.CHICK.slice(2, 9), T_CHICK - 0.2, T_CHICK + 3.3, { pad: 20 });
-curveLabel("Chickahominy River", G.CHICK.slice(6, 10).map((q) => [q[0] + 5, q[1] - 8]), T_CHICK + 0.2, T_CHICK + 3.6, 20);
+curveLabel("Chickahominy River", G.CHICK.slice(6, 10).map((q) => [q[0] + 5, q[1] - 8]), T_CHN + 0.1, T_CHN + 3.4, 20);
 along("v5", [[1490, 830], ...G.WARREN.slice(1)], T_CHICK - 0.3, 4.2, 18);
 trailArw(G.WARREN.slice(0, 5), "carth", T_CHICK - 0.2, 3.6, 4.6);
 const WF = frontS({ pts: [[1452, 878], [1449, 890], [1451, 902]], sideA: "carth", sideB: "rome", t: T_FACED, dur: 1.2, width: FWw(4.6), until: END + 1 });
@@ -416,8 +419,8 @@ const M18 = sub(G.MARCH1.map((q) => [q[0] - 4, q[1] + 3]), 0, 0.35, 12), M6 = su
 [["u2", G.MARCH1, 6.0], ["u6", M6, 4.8], ["u18", M18, 3.6]].forEach(([id, pts, d], k) => along(id, [BU.find((b) => b[0] === id)[1], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, d, 20));
 trailArw(G.MARCH1, "carth", T_SOUTH2 - 0.6, 3.0, 4.2);
 trailArw(G.MARCH2, "carth", T_SOUTH2 - 0.2, 3.0, 4.2);
-B.caption("MARCHED SOUTH BY BACK ROADS", T_SOUTH2, T_MEADE - 0.2, "carth");
-pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADE - 0.05, null, true, [0, 150]);
+B.caption("MARCHED SOUTH BY BACK ROADS", T_STOP2 + 0.2, T_STOP2 + 2.8, "carth");
+pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADN + 0.1, null, true, [0, 150]);
 pulseU("u2", T_LEAD);
 fixImgs();
 B.finish();

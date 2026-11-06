@@ -334,6 +334,7 @@ const T_ATT = at(P5, "The first attack on Petersburg"), T_PB = at(P5, "on Peters
   T_SMITH = at(P5, "William F. Smith"), T_BLACK = at(P5, "a division of Black soldiers"), T_HINKS = at(P5, "Edward Hinks"), T_LEAD = at(P5, "in the lead"),
   T_FACED = at(P5, "They faced"), T_22 = at(P5, "twenty-two hundred"), T_BEAU = at(P5, "under General P."), T_BROKE = at(P5, "and broke through"),
   T_TWO = at(P5, "about two miles wide"), T_STOP = at(P5, "But Smith stopped"), T_NIGHT = at(P5, "for the night"), T_WAIT = at(P5, "waited for the morning");
+const T_SMN = at(P5, "Smith's corps"), T_HKN = at(P5, "Hinks"), T_BGN = at(P5, "Beauregard");
 // ---------- the lines (the Dimmock Line is drawn on petersburg_w as an earthwork ridge) ----------
 const DL = G.DIMMOCK.slice(0, 8);                                   // the eastern face of the Dimmock Line (Appomattox -> south)
 const DL2 = DL.map((q, i) => i >= 1 && i <= 5 ? [q[0] - [0, 18, 30, 34, 30, 14][i], q[1] + [0, 4, 2, 0, -2, -4][i]] : q);   // after the breach
@@ -359,12 +360,12 @@ const SU = [["s1", [1640, 640], [1560, 760]], ["s2", [1660, 700], [1565, 815]], 
 SU.forEach(([id, a, b]) => { unitS(id, "carth", a, "infantry", null, { t: 0, size: "XX" }); B.move(id, 0, T_FACED - 0.5, b[0], b[1]); });
 
 arw({ pts: G.CPROAD.slice(1).map((q) => [q[0] + 30, q[1] - 20]), side: "carth", t: 0.2, dur: 3.0, width: AW(2.6, 7), until: 7.0 });
-ticker("SMITH'S CORPS", 14000, "", "right:70px;top:300px;", T_SMITH + 0.4, 1.0, T_SMITH + 3.6, 5, { col: "#2e5cb2", lc: "#9fc0ea", pre: "~" });
-pinPortrait("s1", PHOTO("wfsmith"), FL.us, "Smith", T_SMITH - 0.05, null, true, "right");
-pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS - 0.05, null, true, "right");
+ticker("SMITH'S CORPS", 14000, "", "right:70px;top:300px;", T_SMN + 0.1, 1.0, T_SMN + 3.3, 5, { col: "#2e5cb2", lc: "#9fc0ea", pre: "~" });
+pinPortrait("s1", PHOTO("wfsmith"), FL.us, "Smith", T_SMN + 0.1, null, true, "up");
+pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HKN + 0.1, null, true, [0, 150]);
 pulseU("hk", T_LEAD); pulseU("hk", T_LEAD + 0.6);
 ticker("CONFEDERATES", 2200, "", "right:70px;top:300px;", T_22 - 0.1, 0.8, T_22 + 3.2, 4, { col: "#c4121f", lc: "#ff8a80", pre: "~" });
-pinPortrait("ri", PHOTO("beauregard"), FL.cs, "Beauregard", T_BEAU + 0.6, null, true, "left");
+pinPortrait("ri", PHOTO("beauregard"), FL.cs, "Beauregard", T_BGN + 0.1, null, true, "left");
 // ---------- the breakthrough: the batteries fire (visible, powder smoke), the line gives, about two miles wide ----------
 shoot([1494, 778], [1556, 770], T_FACED + 0.4, { r: 4, width: 0.6, dur: 0.6, h: 8 });
 shoot([1503, 838], [1556, 850], T_22 + 0.4, { r: 4, width: 0.6, dur: 0.6, h: 8 });
@@ -372,17 +373,17 @@ shoot([1508, 868], [1556, 870], T_BROKE - 0.2, { r: 4, width: 0.6, dur: 0.6, h: 
 smoke([[1497, 776], [1503, 806], [1506, 836], [1511, 866]], T_FACED + 0.3, 0.8);
 mg([1552, 852], [1512, 852], T_BROKE + 0.1, 5, 0.9); mg([1552, 800], [1505, 805], T_BROKE + 0.7, 5, 0.9);
 [["s1", [1494, 790]], ["s2", [1490, 828]], ["hk", [1496, 868]]].forEach(([id, p], k) => B.move(id, T_BROKE + 0.3 + k * 0.2, 2.6, p[0], p[1]));
-[[[1580, 770], [1540, 780], [1488, 790]], [[1585, 820], [1540, 822], [1482, 828]], [[1585, 868], [1540, 866], [1488, 866]]].forEach((pts, k) =>
+[[[1548, 776], [1520, 782], [1488, 790]], [[1552, 822], [1520, 824], [1482, 828]], [[1548, 864], [1520, 865], [1488, 866]]].forEach((pts, k) =>
   arw({ pts, side: "carth", t: T_BROKE + 0.2 + k * 0.25, dur: 1.4, width: AW(3.3, 8), until: T_BROKE + 3.8 + k * 0.25 }));
-greyU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 1.6); hideU(["bt0", "bt1", "bt2", "bt3"], T_STOP - 0.4);
+greyU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 0.8); hideU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 1.6);
 B.move("ri", T_BROKE + 1.0, 2.5, 1440, 832);
 glowPath(G.BREACH.map((q) => [q[0] + 10, q[1]]), T_TWO - 0.3, T_TWO + 3.0, { pad: 30 });
-boxP("About two miles wide", 1600, 815, T_TWO - 0.1, T_TWO + 3.2, { size: 24 });
+boxP("About two miles wide", 1585, 752, T_TWO - 0.1, T_TWO + 3.2, { size: 24 });
 // ---------- Smith stops for the night; the open road to the city he did not take ----------
 nightWash(T_STOP, null, 0.45, 1.6); K.night({ lines: [FR], tOn: T_STOP });
 [[[1470, 800], [1420, 820], [1392, 842]], [[1468, 845], [1430, 860], [1400, 868]]].forEach((pts, k) => {
   const a = arw({ pts, side: "carth", t: T_WAIT - 0.2 + k * 0.3, dur: 1.2, width: AW(2.6, 6), until: END + 1 }); gsap.set(a, { opacity: 0.45 }); });
 focus(G.PETERSBURG, 40, T_WAIT, END + 1);
-B.caption("SMITH STOPPED FOR THE NIGHT", T_STOP + 0.1, END + 1, "carth");
+B.caption("SMITH STOPPED FOR THE NIGHT", T_STOP + 0.9, END + 1, "carth");
 fixImgs();
 B.finish();

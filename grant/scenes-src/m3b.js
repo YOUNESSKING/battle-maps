@@ -339,6 +339,7 @@ const T_TWO = at(P4, "Over the next two days"), T_115 = at(P4, "a hundred and fi
   T_GUNS = at(P4, "with their guns and wagons"), T_GUESS = at(P4, "Lee had guessed"), T_PETE = at(P4, "might go for Petersburg"), T_BELIEVE = at(P4, "would not believe it"),
   T_KEPT = at(P4, "kept most of his army"), T_16 = at(P4, "On the sixteenth"), T_ASK = at(P4, "still asking"), T_17 = at(P4, "On the seventeenth"),
   T_WIRED = at(P4, "he wired Beauregard"), T_HAVE = at(P4, "Have no information");
+const T_PBN = at(P4, "Petersburg");
 // ---------- places (jamesriver css px, on the traced James ribbon of jamesriver_w: 21 px wide = ~2,100 ft) ----------
 const JR = [[1102, 793], [1156, 791], [1210, 796], [1246, 789], [1282, 772], [1318, 764], [1335, 774], [1340, 810], [1341, 846], [1344, 882], [1353, 900], [1370, 914], [1388, 916], [1406, 909], [1424, 895], [1456, 859], [1491, 825], [1527, 803], [1563, 800], [1599, 823]];
 const BR_N = [1389, 903], BR_S = [1387, 929], WIL = [1290, 752], FERRY_S = [1298, 783];
@@ -354,7 +355,7 @@ gsap.set(TOD_COOL, { opacity: 0.4 }); tl.to(TOD_COOL, { opacity: 0, duration: 2.
 tl.to(TOD_WARM, { opacity: 0.22, duration: 1.6 }, T_FOUR - 0.1); tl.to(TOD_WARM, { opacity: 0, duration: 1.6 }, T_ELEV - 1.2);
 // ---------- flags (48 px, behind each side's lines, one pair per shot) ----------
 flagS(FL.us, 1350, 560, 0, T_WIL + 1.2); flagS(FL.cs, 860, 860, 0, T_WIL + 1.2);
-flagS(FL.us, 1440, 830, T_WIL + 1.3, T_GUNS + 1.6); flagS(FL.cs, 1280, 990, T_WIL + 1.3, T_GUNS + 1.6);
+flagS(FL.us, 1440, 830, T_WIL + 1.3, T_GUNS + 1.6); flagS(FL.cs, 1312, 1002, T_WIL + 1.3, T_GUNS + 1.6);
 flagS(FL.us, 1150, 600, T_GUNS + 1.7, END + 1); flagS(FL.cs, 300, 640, T_GUNS + 1.7, END + 1);
 // ---------- the columns arrive at the James; the first troops ferried across at Wilcox's Landing ----------
 const COLS = [["c1", [1205, 420], [[1205, 420], [1250, 560], [1272, 690], [WIL[0] - 2, WIL[1] - 10]]], ["c2", [1330, 470], [[1330, 470], [1365, 600], [1320, 700], [WIL[0] + 22, WIL[1] - 14]]],
@@ -368,6 +369,7 @@ boxP("Wilcox's Landing", WIL[0] - 120, WIL[1] - 26, T_WIL, T_WEY + 1.0, { size: 
   const s = ship("steamer", "carth", a, 90, T_FERRY + 0.2 + k * 0.3, T_TWO + 4, { L: 44 });
   [0, 1, 2, 3, 4].forEach((r) => { const t0 = T_FERRY + 0.5 + k * 0.5 + r * 4.2; sail(s, [a, b], t0, 1.8, 6); sail(s, [b, a], t0 + 2.0, 1.8, 6); }); });
 unitS("f1", "carth", [FERRY_S[0] + 4, FERRY_S[1] + 16], "infantry", null, { t: T_FERRY + 2.6, size: "XX" });
+hideU(["c0", "c1", "c2", "c3", "f1"].filter((i) => B.units[i]), T_TWO + 1.0);
 unitS("f2", "carth", [FERRY_S[0] + 34, FERRY_S[1] + 20], "infantry", null, { t: T_WEY, size: "XX" });
 // ---------- Weyanoke: the engineers build the bridge (101 pontoons, ~2,100 ft, up to 90 ft of water), 4 PM -> 11 PM ----------
 boxP("Weyanoke", BR_N[0] + 34, BR_N[1] - 26, T_WEY, T_ENG + 3.0, { size: 26 });
@@ -375,31 +377,31 @@ focus([1388, 914], 30, T_WEY + 0.2, T_ENG + 2.0);
 unitS("en1", "carth", [BR_N[0] + 24, BR_N[1] - 10], "infantry", "ENGINEERS", { t: T_ENG, size: "II" });
 unitS("en2", "carth", [BR_S[0] + 24, BR_S[1] + 12], "infantry", null, { t: T_ENG + 0.3, size: "II" });
 pontoons(BR_N, BR_S, T_ENG + 0.4, T_READY, 22, { bw: 1.4, bl: 3.6 });
-const TK = ticker("PONTOON BOATS", 101, "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_101 - 0.1, 2.0, T_TIDE - 0.5, 8, { col: "#2e5cb2", lc: "#9fc0ea" });
+const TK = ticker("PONTOON BOATS", 101, "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_101 - 0.1, 2.0, T_101 + 3.4, 8, { col: "#2e5cb2", lc: "#9fc0ea" });
 // the move's ONE profile strip (the terrain beat): the tidal river in section, the bridge on top
 const PS = scr(`<div style="width:520px;height:150px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="520" height="150" viewBox="0 0 520 150"><path d="M10 52 L70 54 C 110 58, 150 92, 210 116 C 250 132, 300 134, 340 118 C 390 96, 430 62, 470 54 L510 52" fill="rgba(77,125,154,.35)" stroke="#2a2410" stroke-width="2.4" stroke-linecap="round"/>
   <path d="M60 44 L480 44" stroke="#2a2410" stroke-width="3"/>${[...Array(18)].map((_, i) => `<ellipse cx="${72 + i * 23.5}" cy="49" rx="9" ry="4" fill="#4a3c26"/>`).join("")}
   <path d="M60 30 L60 22 L480 22 L480 30" fill="none" stroke="#463a1e" stroke-width="1.4"/><path d="M290 54 L290 132" stroke="#463a1e" stroke-width="1.4" stroke-dasharray="4 4"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" fill="#2a2410" text-anchor="middle"><text x="270" y="17" font-size="19">About 2,100 feet</text><text class="deep" x="390" y="128" font-size="19" opacity="0">Up to 90 feet</text></g></svg></div>`,
-  "left:56px;bottom:56px;", T_TIDE - 0.4, T_90 + 2.0);
+  "left:56px;bottom:56px;", T_TIDE - 0.4, T_90 + 1.4);
 tl.to(PS.querySelector(".deep"), { opacity: 1, duration: 0.4 }, T_90);
-const CK = clockCard([[T_FOUR, 4, "4 PM"], [T_ELEV, 11, "11 PM"]], "right:60px;top:60px;", T_FOUR - 0.1, T_READY + 1.6);
+const CK = clockCard([[T_FOUR, 4, "4 PM"], [T_ELEV, 11, "11 PM"]], "right:60px;top:60px;", T_FOUR - 0.1, T_ELEV + 2.0);
 nightWash(T_FOUR + 1.0, T_TWO, 0.36, 2.2);
 inkTrace([BR_N, BR_S], T_READY, T_READY + 2.5, 3.0);
 hideU(["en1", "en2"], T_TWO + 2.0);
 stampP("READY", BR_S[0] + 70, BR_S[1] + 8, T_READY + 0.3, T_TWO + 1.2, 28);
 // ---------- m3-4: about 115,000 men cross with their guns and wagons ----------
 for (let k = 0; k < 6; k++) { const id = "x" + k; unitS(id, "carth", BR_N, k % 3 === 2 ? "artillery" : "infantry", null, { t: T_TWO + k * 0.9, size: k % 3 === 2 ? "" : "XX" });
-  along(id, [BR_N, BR_S, ...ROAD_S.slice(1, 3 + (k % 3))], T_TWO + k * 0.9, 7.0, 20); hideU([id], T_GUESS + 3 + k * 0.2); }
-const N115 = numCard("CROSSED THE RIVER", "ABOUT 115,000 MEN", "BY GRANT'S OWN COUNT", "left:0;right:0;top:240px;display:flex;justify-content:center;", T_115, T_GUNS - 0.2);
+  along(id, [BR_N, BR_S, ...sub(ROAD_S, 0, 0.1 + 0.13 * (5 - k), 10)], T_TWO + k * 0.9, 7.0, 20); hideU([id], T_GUESS + 3 + k * 0.2); }
+const N115 = numCard("", "ABOUT 115,000 MEN", "", "left:0;right:0;top:240px;display:flex;justify-content:center;", T_115, T_115 + 3.5);   // spoken number only (critic: no sub-lines before their words, <= 3.5 s)
 arw({ pts: [[BR_S[0] - 6, BR_S[1] + 8], [1200, 952], [900, 976], [760, 992]], side: "carth", t: T_GUNS + 0.4, dur: 4.0, width: AW(1.2, 7), until: T_GUNS + 6.4 });
 // ---------- Lee: guessed Petersburg on the 14th, would not believe it, kept his army around Richmond ----------
 [["l1", [470, 480]], ["l2", [570, 440]], ["l3", [660, 410]], ["l4", [420, 570]]].forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: T_GUESS - 0.4, size: "XXX" }));
-pinPortrait("l3", PHOTO("lee"), FL.cs, "Lee", T_GUESS + 0.1, null, true, "up");
+pinPortrait("l3", PHOTO("lee"), FL.cs, "Lee", T_GUESS + 0.1, null, true, [0, -70]);
 unitS("pb", "rome", [470, 1010], "infantry", null, { t: T_GUESS - 0.2, size: "X" });
-town("Petersburg", G.PETERSBURG, T_PETE - 0.2, "l");
-const GQ = arw({ pts: [[470, 530], [440, 700], [430, 900], [445, 990]], side: "rome", t: T_PETE, dur: 2.0, width: AW(1.05, 6), until: T_BELIEVE + 0.8 });
+town("Petersburg", G.PETERSBURG, T_PBN + 0.05, "l");
+const GQ = arw({ pts: [[470, 530], [440, 700], [430, 900], [445, 990]], side: "rome", t: T_PETE, dur: 2.0, width: AW(1.05, 6), until: T_KEPT + 1.0 });
 gsap.set(GQ, { opacity: 0.6 });
 focus(G.PETERSBURG, 60, T_PETE + 0.3, T_KEPT);
 B.caption("BUT HE WOULD NOT BELIEVE IT", T_BELIEVE, T_KEPT + 1.2, "rome");

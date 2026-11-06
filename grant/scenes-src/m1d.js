@@ -290,7 +290,7 @@ const RIDE = [[1210, 600], [1205, 640], [1200, 720], [1215, 800], [1250, 880], [
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];   // Smith's lodgement in the outer works
 // ---------- camera ----------
 camera([[0, 1250, 720, 2.0], [T_TOLD, 1265, 718, 2.1], [T_WHO + 3.6, 1280, 800, 2.1], [T_FILL, 1340, 930, 2.35], [T_REPORT, 1390, 880, 2.15], [T_PULLED + 0.6, 1380, 830, 2.0],
-  [T_LEFT + 0.4, 1290, 672, 2.5], [T_FELLED, 1288, 662, 2.85], [T_TOOK + 2.2, 1300, 672, 2.65], [T_TOOK + 3.2, 1400, 722, 2.2], [END, 1420, 732, 2.15]]);
+  [T_LEFT + 0.4, 1290, 672, 2.5], [T_FELLED, 1288, 662, 2.85], [T_TOOK + 2.4, 1300, 672, 2.65], [T_TOOK + 3.3, 1400, 722, 2.2], [END, 1420, 732, 2.15]]);
 // ---------- date scroll ----------
 gsap.set(document.getElementById("date"), { autoAlpha: 1 });
 dateSet("15 FEB 1862 · DAWN", 0, T_RODE + 0.4, 0.3, 30); dateSet("15 FEBRUARY 1862", T_RODE + 0.5, T_NIGHT - 0.1, 0.3, 34); dateSet("15 FEB 1862 · NIGHT", T_NIGHT, null, 0.3, 30);
@@ -372,7 +372,7 @@ go("uSm", T_FRONT, 3.0, [1305, 690]);   // (his card, staked left, stays clear o
 volley([1318, 690], [1318, 720], T_UP + 0.6, 1 / 2.6, 4);
 go("bu", T_TOOK - 0.2, 2.2, [1336, 736]);
 hatch("assets/media/gn_donelson_ctl_smith_mx.png", T_TOOK - 0.1, 3.0);
-stampP("TOOK THE OUTER WORKS", 1200, 548, T_TOOK + 0.1, T_TOOK + 2.15, 24);   // the camera holds until it has gone
+stampP("TOOK THE OUTER WORKS", 1200, 548, T_TOOK + 0.1, T_TOOK + 2.05, 24);   // the camera holds until it has gone
 hideU(["m1"], T_LEFT + 0.1); showU(["m1"], T_NIGHT + 0.3);
 // =====================================================================================================================
 // night: the Confederate council chooses to give up
@@ -382,7 +382,7 @@ const COUN = pinAt(`<div style="width:60px;height:60px;border-radius:50%;backgro
 reg(COUN.firstElementChild); tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_COUNCIL);
 focus(DOV, 50, T_COUNCIL, T_GU);
 sstamp("GIVE UP", "right:200px;top:230px;", T_GU - 0.05, { size: 84, sub: "THE COUNCIL", until: END + 1 });   // carried on into m1e's first second (same place)
-go("gr", T_TOOK + 3.2, 2.5, [1222, 832]); hideU(["gr"], T_COUNTER + 0.6); showU(["gr"], T_TOOK + 4.4); hideU(["m3"], T_LEFT + 0.1);   // Grant shows again only once his ride brings him into frame; m3 stays out (cropped at the bottom)   // Grant steps out while the camera dives to the left (cropped at the bottom edge)   // Grant back to his headquarters for the night (m1e opens with him there)
+go("gr", T_TOOK + 3.2, 2.5, [1205, 840]); hideU(["gr"], T_COUNTER + 0.6); showU(["gr"], T_TOOK + 4.4); hideU(["m3"], T_LEFT + 0.1); hideU(["uWa"], T_LEFT + 0.1); showU(["uWa"], T_TOOK + 3.4);   // Grant shows again only once his ride brings him into frame; m3 stays out (cropped at the bottom)   // Grant steps out while the camera dives to the left (cropped at the bottom edge)   // Grant back to his headquarters for the night (m1e opens with him there)
 fixImgs();
 K.raiseTerritory();
 B.finish();

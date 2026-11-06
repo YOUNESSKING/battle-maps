@@ -337,6 +337,7 @@ const T_SMITH = at(P6, "By the time Smith's men"), T_HAN = at(P6, "Hancock's cor
 const T_EVEN = at(P7, "Even so"), T_CHG = at(P7, "the move changed the war"), T_ACROSS = at(P7, "was across the James"), T_PIN = at(P7, "pinned in a siege"),
   T_NINE = at(P7, "more than nine months"), T_ABAN = at(P7, "abandon both Petersburg and Richmond"), T_STALE = at(P7, "out of a stalemate"), T_RIVER = at(P7, "over a river"),
   T_INIT = at(P7, "the initiative again"), T_ASK = at(P7, "He had stopped asking"), T_FOLLOW = at(P7, "where Lee could not follow");
+const T_RICHN = at(P7, "Richmond");
 // ---------- camera over BOTH maps (petersburg world px; the richmond close map sits under it at its true place and scale, 8x) ----------
 const T_Z0 = T_CHG - 0.4, T_Z1 = T_PIN + 1.0;
 const VK = { k: 0 };   // once the petersburg map has feathered out, the richmond close map (seen at ~4x its own scale) keeps the close-look vignette
@@ -364,9 +365,9 @@ tl.to(VK, { k: 1, duration: 2.6, ease: "sine.inOut", onUpdate: CAMAPPLY }, T_Z0 
 SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (48 px, behind each side's lines; re-placed for the overview) ----------
-flagS(FL.us, 1640, 905, 0, T_VET - 0.8); flagS(FL.cs, 1300, 760, 0, T_VET - 0.8);
+flagS(FL.us, 1650, 990, 0, T_VET - 0.8); flagS(FL.cs, 1300, 760, 0, T_VET - 0.8);
 flagS(FL.us, 1700, 640, T_VET - 0.6, T_18 + 0.2); flagS(FL.cs, 1290, 520, T_VET - 0.6, T_18 + 0.2);
-flagS(FL.us, 1640, 905, T_18 + 0.3, T_Z1 - 1.0); flagS(FL.cs, 1300, 760, T_18 + 0.3, T_Z1 - 1.0);
+flagS(FL.us, 1650, 990, T_18 + 0.3, T_Z1 - 1.0); flagS(FL.cs, 1300, 760, T_18 + 0.3, T_Z1 - 1.0);
 flagS(FL.us, 2300, 1000, T_Z1 - 0.9, END + 1); flagS(FL.cs, 600, 600, T_Z1 - 0.9, END + 1);
 // ---------- 16-18 June: Smith's men and Hancock's corps; Lee's veterans arrive; the assaults break on the new line ----------
 const NL = G.NEWLINE;
@@ -389,11 +390,12 @@ shoot([1438, 915], [1478, 916], T_18 + 3.1, { r: 4, width: 0.6, dur: 0.5, h: 6 }
 smoke([[1456, 788], [1450, 858], [1442, 913]], T_18 + 0.8, 1.2);
 crosses([[1484, 790], [1490, 796], [1480, 866], [1487, 860], [1475, 915], [1482, 920]], T_18 + 1.4, T_EVEN, 4.5);
 // casualty card (K.casualties, real numbers only: ~11,400 Union, 15-18 Jun; the Confederate loss is not spoken -> Union column only)
-casualty({ head: "FOUR DAYS OF ASSAULTS", rows: [["", "~11,400"]], single: true, foot: "MEN LOST", t: T_LOST - 0.1, until: T_GONE - 0.1, top: 250 });
+{ const CC = casualty({ head: "FOUR DAYS OF ASSAULTS", rows: [["", "~11,400"]], single: true, foot: "MEN LOST", t: T_LOST - 0.1, until: T_LOST + 3.3, top: 36 });   // top band, off the battle
+  const inner = CC.firstElementChild; inner.style.background = "rgba(18,16,12,0.97)"; const hd = inner.firstElementChild; gsap.set(hd, { opacity: 0 }); tl.to(hd, { opacity: 1, duration: 0.3 }, T_FOUR); }
 trench(NL.map((q) => [q[0] + 7, q[1]]), T_GONE - 0.2, 2.0, T_Z0 + 1.0, { s: 2.0 }); trench(NL.map((q) => [q[0] - 7, q[1]]), T_GONE, 2.0, T_Z0 + 1.0, { s: 2.0 });
-stampP("THE CHANCE WAS GONE", 1590, 990, T_GONE + 0.1, T_WROTE - 0.1, 26);
+stampP("THE CHANCE WAS GONE", 1590, 990, T_GONE + 0.1, T_GONE + 2.4, 26);
 // Grant is not on this map: corner badge (<= 3.5 s), then his later verdict (indirect speech in the script -> no quote marks)
-const GB = badge({ name: "ULYSSES S. GRANT", role: "YEARS LATER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_WROTE - 0.1, until: T_EASY - 0.5 });
+const GB = badge({ name: "ULYSSES S. GRANT", role: "YEARS LATER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_GONE + 2.5, until: T_EASY - 0.5 });
 const PET = town("Petersburg", G.PETERSBURG, T_EASY - 1.2, "l");
 focus(G.PETERSBURG, 50, T_EASY - 1.0, T_EVEN);
 quote("PETERSBURG COULD HAVE BEEN EASILY CAPTURED AT THAT TIME", "GRANT WROTE YEARS LATER", T_EASY - 0.3, T_EVEN + 0.2, { col: "#1f4fc4", size: 40 });
@@ -407,12 +409,12 @@ frontS({ pts: G.SIEGE_N, sideA: "carth", sideB: "rome", t: T_PIN, dur: 2.0, widt
 frontS({ pts: G.HOWLETT, sideA: "carth", sideB: "rome", t: T_PIN + 0.4, dur: 1.6, width: W5, until: END + 1 });
 frontS({ pts: [...NL, ...G.SIEGE_S.slice(1)], sideA: "carth", sideB: "rome", t: T_PIN + 0.6, dur: 3.0, width: W5, until: END + 1 });
 numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_NINE - 0.1, T_ABAN - 0.6, { col: "#c4121f", lc: "#ff8a80" });
-town("Richmond", G.RICHMOND, T_ABAN + 0.4, "l");
+town("Richmond", G.RICHMOND, T_RICHN + 0.05, "l");
 focus([(G.RICHMOND[0] + G.PETERSBURG[0]) / 2, (G.RICHMOND[1] + G.PETERSBURG[1]) / 2], 640, T_ABAN + 0.2, T_STALE - 0.4);
 // method card on the spoken words of m3-7 (each move ends on its result card + method card)
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["OUT OF A STALEMATE", "OVER A RIVER", "WHERE LEE COULD NOT FOLLOW"];   // spoken words only (m3-7)
 GG.method(3, T_STALE - 0.3, END + 1, [T_STALE, T_RIVER, T_FOLLOW]);
-declutter([GB], [[T_LOST - 0.1, T_GONE - 0.1], [T_EASY - 0.3, T_EVEN + 0.2], [T_NINE - 0.1, T_ABAN - 0.6], [T_STALE - 0.3, END + 1]]);
+declutter([GB], [[T_LOST - 0.1, T_LOST + 3.3], [T_EASY - 0.3, T_EVEN + 0.2], [T_NINE - 0.1, T_ABAN - 0.6], [T_STALE - 0.3, END + 1]]);
 fixImgs();
 B.finish();
