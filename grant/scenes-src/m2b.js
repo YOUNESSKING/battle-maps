@@ -394,7 +394,7 @@ const bonfire = (x, y, t, until, s = 16) => { const el = pinS(GG.pin(`<div style
   tl.to(el.firstElementChild.firstElementChild || el.firstElementChild, { scale: 1.3, opacity: 0.7, duration: 0.17, yoyo: true, repeat: Math.max(1, Math.round(((until || t + 6) - t) / 0.17)), ease: "sine.inOut" }, t + 0.3); return el; };
 [[1300, 700], [1280, 770], [1250, 650], [1305, 840]].forEach((p, k) => { fireGlowS(p[0], p[1], 30, T_FIRE + k * 0.3, T_NOONE + 1.0); K.smoke(p[0], p[1] - 6, T_FIRE + 0.3 + k * 0.3, { n: 3, r: 10, rise: 28, life: 3 }); });
 [[1372, 610], [1404, 712], [1390, 790], [1374, 860], [1336, 925], [1262, 990]].forEach((p, k) => { bonfire(p[0], p[1], T_BONF + k * 0.22, T_NOONE + 1.0, 16); });
-boxL("HOUSES ON FIRE", 1100, 655, T_FIRE + 0.1, null);
+boxL("HOUSES ON FIRE", 1060, 625, T_FIRE + 0.1, null);
 // ---------- Porter (named): his portrait card on a side stake at his flagship, the Benton, leading the line (2d item 6) ----------
 // portrait card on a stake at the host (card centre at (cx, cy) screen px from the host centre), drawn above boats and fire glows
 const portraitAt = (host, photo, flag, name, t, until, cx, cy) => {

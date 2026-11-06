@@ -493,7 +493,8 @@ flagC(FL.csa, 700, 440, T_LEE - 0.6, null);
   Object.entries({ fill: "none", stroke: col, "stroke-linecap": "butt", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v)); OVL.appendChild(p); swReg(p, px); tl.set(p, { opacity: 1 }, T3); });
 const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1414, 940], [1416, 962]];
 [0, 1, 2].forEach((k) => { const id = unitS("j" + k, "carth", XR[0], "infantry", null, { t: T3 + k * 0.3 }); along(id, XR, T3 + k * 0.45, 4.2, 24); });
-pinPortrait("j0", PHOTO("grant"), FL.us35, "Grant", T3 + 0.2, null, "up");
+pinPortrait("j0", PHOTO("grant"), FL.us35, "Grant", T3 + 0.2, null, "left");   // side stake away from the column (critic H r2)
+B.units.j0.el.style.zIndex = 50;
 arw({ pts: XR, side: "carth", t: T3 + 0.2, dur: 1.4, until: T_LEE - 0.5 }, S3b, 9);
 arw({ pts: XR, side: "carth", t: T_LEE - 0.4, dur: 0.01, until: null }, S3c, 9);
 // Lee (portrait on a stake at his own unit, on his name) and his army, facing the other way (north, toward Richmond)

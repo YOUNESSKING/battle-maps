@@ -346,7 +346,7 @@ zoom(TZ0, TZ1 - TZ0, C0b, S0b, CF, SF, FD, "power2.inOut");
 inkTrace(CUMB_D, T_CUMB - 0.1, S2 + 0.6, 2.4);
 place("Cumberland River", 1150, 420, T_CUMB, null, { size: 24 });
 // mid-zoom flags: the Union flag rides with the gunboats coming up the Cumberland; the Confederate flag on Tennessee ground east of the river
-const GB2 = [0, 1].map((k) => gunboat(CUMB_D.slice(2, 14).map(([x, y]) => [x + 2, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), T_WEEK + 3.9, { L: 54 }));
+const GB2 = [0, 1].map((k) => gunboat(CUMB_D.slice(2, 14).map(([x, y]) => [x + 2, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), T_WEEK + 3.3, { L: 54 }));
 const FB = flagC(FL.us, 1060, 230, TZ0 + 0.8, TZ1 - 0.3); pinAlong(FB, [[1060, 230], [1110, 380]], TZ0 + 0.8, 6.0, 8);
 const FM = flagC(FL.csa, ...LD(36.40, -87.72), TZ0 + 0.8, TZ1 + 0.4);
 // arriving on Fort Donelson: the fort, its water batteries, Dover (permanent town); "Fort Donelson" on its word
@@ -382,7 +382,7 @@ const RF = front2(RING, SR, T_WEEK + 2.2, { dur: 1.4, until: T_SURR + 0.4 });
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 60px 18px;background:rgba(14,12,10,0.9);border-top:8px solid #c4121f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div style="font-size:26px;letter-spacing:0.36em;color:#d8cfb8">MORE THAN</div>
   <div class="n" style="font-size:132px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
-  <div class="w0" style="font-size:40px;letter-spacing:0.14em;color:#6e675c">CONFEDERATE SOLDIERS</div></div>`, "right:70px;top:250px;transform-origin:50% 40%;");   // on the empty ground east of Dover (critic H: clear of the ring, the river and the shot)
+  <div class="w0" style="font-size:40px;letter-spacing:0.14em;color:#6e675c">CONFEDERATE SOLDIERS</div></div>`, "right:70px;top:330px;transform-origin:50% 40%;");   // on the empty ground east of Dover (critic H: clear of the ring, the river and the shot)
 slam(BIG, T_12 - 0.15, { from: 1.9, dur: 0.22, shake: 6, until: T_SURR - 0.45 });
 tick(BIG, ".n", 12000, T_12 + 0.1, T_CSOL + 0.2, (v) => (Math.round(v / 100) * 100).toLocaleString("en-US"));
 gsap.set(BIG.querySelector(".w0"), { autoAlpha: 0 }); tl.to(BIG.querySelector(".w0"), { autoAlpha: 1, color: "#ef8a82", duration: 0.2 }, T_CSOL);
@@ -412,7 +412,7 @@ camTo(T_BEGAN - 0.4, END - T_BEGAN + 0.4, CE, SE, "sine.inOut");
 sstamp("A DISASTER", BAND(760), T_DIS - 0.1, { size: 80, shake: 6 });   // held to the scene end; hook-b keeps it ~1.2 s more (critic H)
 pulse(T_DIS + 0.15);
 // flags for the close push (both on screen to the end; hook-b starts with this pair)
-const F3 = flags2([1190, 905], [1760, 600], T_12 + 0.5, null);
+const F3 = flags2([1190, 905], [1760, 600], T_SURR - 0.3, null);   // after the number card leaves (critic H r2)
 // the HUD steps out while a big card is up (1c); the date scroll stays
 declutter([QB], [[T_SURR - 0.05, T_SURR + 2.1]]);
 fixImgs();

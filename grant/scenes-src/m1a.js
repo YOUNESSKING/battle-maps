@@ -296,7 +296,7 @@ const HITS = [[FH[0] - 6, FH[1] - 4], [FH[0] + 6, FH[1] + 6], [FH[0] - 2, FH[1] 
 smoke(IRON.map((o) => o.p), T_FIRE + 0.2, 1 / 2.6);
 smoke([[FH[0] - 8, FH[1] - 8], [FH[0] + 4, FH[1] - 4], [FH[0] - 2, FH[1] + 6]], T_FLOOD + 0.3, 1 / 3.0);
 focus(FH, 40, T_FIRE, T_FIRE + 3.0);
-stampP("TWO FEET DEEP IN WATER", FH[0] + 10, FH[1] + 52, T_TWO, T_TWO + 2.15, 22);
+stampP("TWO FEET DEEP IN WATER", FH[0] + 40, FH[1] + 74, T_TWO, T_TWO + 2.15, 22);
 // ---------- Tilghman had already sent his men away (toward Fort Donelson); he gives the fort to the navy ----------
 unitS("til", "rome", [FH[0] + 10, FH[1] + 40], "infantry", null, { t: 0.4, w: 40, h: 27 });       // the few left in the fort (unspoken: bare box)
 pinPortrait("til", PHOTO("tilghman"), FL.csa, "Tilghman", T_TIL - 0.05, END + 1, "left");   // above: clear of the garrison trail (critic H)
