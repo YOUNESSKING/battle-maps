@@ -28,4 +28,13 @@ bash tools/finalize.sh                                              # 1080p mast
 Needs `/opt/models/depth_anything_v2_small.onnx` (huggingface onnx-community/depth-anything-v2-small, onnx/model.onnx) + `pip install onnxruntime opencv-python-headless scikit-image rasterio`.
 
 ## Open / known
-MASTER_NOTES_PLACEHOLDER
+- Master (not in git, not uploaded): `cleburne/build/cleburne.mp4` (1080p, 14:26 = 866.2 s, 394 MB, md5 a4336f0fe7a49a562d5ce44341ae3ecd)
+  + preview `cleburne/build/cleburne-720p.mp4`. Loudness -14.1 LUFS integrated, true peak -1.3 dBFS (finalize.sh came out at -14.4;
+  `build/mix_final.wav` + 0.7 dB through `alimiter limit=0.79 level=disabled`, remuxed).
+- Scene renders and `build/seg` were deleted after assembly to save disk (rebuild with `render_all.sh`, ~2.5 h on 4 CPUs).
+- Small items both critics accepted as non-blocking: bg-a Howard corner badge ~4.5 s (badge limit 4 s), move2a tiny "Dalton" label, two items just
+  under the 2 s minimum because of short narration gaps (bg-a Hooker badge 1.7 s, ending Stonewall Jackson card 1.9 s); move3a close-ups are mostly
+  plain turf with one drawn wood (no creek in the source data); move3b carries ~8 text items at its busiest beat because every named general's
+  card stays up (owner rule 2d.6 outranks the C4 count); the move3a -> move3b and move2b -> move2c cuts are hard cuts between framings (as in v4).
+- No Granbury photo exists in assets: he gets a name tag only.
+- Thumbnails / title / description unchanged from v4 (`cleburne/youtube/`).
