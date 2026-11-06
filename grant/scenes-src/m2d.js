@@ -369,6 +369,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, R ? { left: "40px", bottom: "auto", top: "56px" } : { left: "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   }
+  if (side === "west" || side === "ne") {   // critic r4: card level with the unit to the west, or up-right of it
+    const card = w.firstElementChild, stake = w.lastElementChild; w.style.top = "4px";
+    if (side === "west") { w.style.left = "0px"; Object.assign(card.style, { left: "-158px", bottom: "auto", top: "-62px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "82px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(180deg)" }); }
+    else { w.style.left = "calc(100% + 0px)"; Object.assign(card.style, { left: "40px", bottom: "auto", top: "-150px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-54deg)" }); }
+  }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 }); { const pe = host.closest(".gg-pin, .unit"); if (pe) pe.style.zIndex = 40; }   // critic r2: cards above the fire / glow layers
   const tg = typeof id === "string" && B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
@@ -489,7 +494,7 @@ const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
 TR.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.2));
 pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true, "right");   // side stake: clear of the top edge   // Grant with the waiting transports (named on "The first place Grant picked")
-pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "right");   // Porter leads the night run
+const PNW = pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "right"); PNW.firstElementChild.style.top = "84px"; Object.assign(PNW.lastElementChild.style, { width: "100px" });   // Porter leads the night run
 // critic r1: the Grand Gulf batteries + their infantry step out at the landing (they would sit cut at the top edge)
 ["bt0", "bt1", "bt2", "bt3", "cs1"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, T_NDEF - 0.5));
 GBT.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.3));
@@ -504,7 +509,7 @@ NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
 const LU = [["l13", "XIII", 1095, 905], ["l9", "", 1105, 965], ["l17", "XVII", 1060, 1005]];
 LU.forEach(([id, lb, x, y], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", lb, { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); along(id, [[x - 70, y - 5], [x, y]], T_ASH + k * 0.3, 1.6, 8); tagAt(id, null); });
 pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 0.3, null, true, "right");   // Grant with the landed army (named again on "Grant later wrote")
-const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
+const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "right:90px;top:300px;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "ABOUT " });   // critic r4: spoken words, clear of the landing
 boxL("EAST BANK", 1265, 860, T_EAST, null, { size: 18 });
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
 const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">

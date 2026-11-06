@@ -380,6 +380,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, R ? { left: "40px", bottom: "auto", top: "56px" } : { left: "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   }
+  if (side === "west" || side === "ne") {   // critic r4: card level with the unit to the west, or up-right of it
+    const card = w.firstElementChild, stake = w.lastElementChild; w.style.top = "4px";
+    if (side === "west") { w.style.left = "0px"; Object.assign(card.style, { left: "-158px", bottom: "auto", top: "-62px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "82px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(180deg)" }); }
+    else { w.style.left = "calc(100% + 0px)"; Object.assign(card.style, { left: "40px", bottom: "auto", top: "-150px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-54deg)" }); }
+  }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 }); { const pe = host.closest(".gg-pin, .unit"); if (pe) pe.style.zIndex = 40; }   // critic r2: cards above the fire / glow layers
   const tg = typeof id === "string" && B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
@@ -443,7 +448,7 @@ hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/m
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 const LGD = null;   // STYLE W: no key
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
-const DS = [["MAY 1863", null], ["1 MAY 1863", T_PG], ["12 MAY 1863", T_RAY], ["14 MAY 1863", T_JAX + 0.3], ["16 MAY 1863", T_CH + 0.3], ["17 MAY 1863", T_NEXT + 0.2], ["MAY 1863", T_COUNT], ["18 MAY 1863", T_18M + 0.3]];
+const DS = [["MAY 1863", null], ["1 MAY 1863", T_PG], ["12 MAY 1863", T_RAY], ["14 MAY 1863", at(P9, "on the fourteenth")], ["16 MAY 1863", T_CH + 0.3], ["17 MAY 1863", T_NEXT + 0.2], ["MAY 1863", T_COUNT], ["18 MAY 1863", T_18M + 0.3]];
 DS.forEach(([txt, t], k) => { const nx = DS[k + 1]; if (t == null) dateNow(txt, nx[1] - 0.05); else B.date(txt, t, nx ? nx[1] - 0.05 : null, 32); });
 // ---------- camera ----------
 const KA = [1300, 1175, 1.3], KB = [1300, 930, 1.5], KW = [1540, 820, 1.72], KC = [1615, 700, 2.7], KBB = [1520, 700, 2.7], KW2 = [1560, 810, 1.7], KV = [1450, 700, 2.5];
@@ -506,7 +511,7 @@ tl.fromTo(GRC.querySelector(".l2"), { scale: 1.15 }, { scale: 1, duration: 0.3, 
 B.caption("ABOUT TWO DAYS OF FOOD", T_TWO - 0.1, T_BEEF - 0.2, "carth");
 const COW = `<svg width="64" height="45" viewBox="0 0 40 28" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><path d="M4 9 Q4 5 9 5 L28 5 Q31 2 34 3 L37 6 Q39 9 35 10 L33 11 L33 18 L30 18 L30 25 L27 25 L27 18 L12 18 L12 25 L9 25 L9 18 Q4 17 4 13 Z" fill="#6b4a2a" stroke="#f3eee2" stroke-width="1.4"/><circle cx="18" cy="11" r="3" fill="#f3eee2"/></svg>`;
 const CORN = `<svg width="34" height="59" viewBox="0 0 22 38" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><ellipse cx="11" cy="14" rx="6" ry="12" fill="#f1c84a" stroke="#6b4a1a" stroke-width="1.4"/>${[6, 10, 14, 18, 22].map((y) => `<line x1="6" y1="${y}" x2="16" y2="${y}" stroke="#b8902a" stroke-width="1"/>`).join("")}<path d="M11 36 Q3 26 4 12 Q8 24 11 30 Q14 24 18 12 Q19 26 11 36 Z" fill="#6c8a3a" stroke="#2a3a1a" stroke-width="1"/></svg>`;
-const ICP = [[COW, L(31.95, -90.84), T_BEEF], [CORN, L(31.99, -90.70), T_CORN - 0.2], [COW, L(32.02, -90.60), T_CORN + 0.4], [CORN, L(31.93, -90.76), T_CORN + 0.9], [COW, L(32.0, -90.52), T_INL + 0.3]];   // critic r2: clear of the corps boxes
+const ICP = [[COW, L(31.95, -90.84), T_BEEF], [CORN, L(31.99, -90.745), T_CORN - 0.2], [COW, L(32.02, -90.60), T_CORN + 0.4], [CORN, L(31.93, -90.76), T_CORN + 0.9], [COW, L(32.0, -90.52), T_INL + 0.3]];   // critic r2: clear of the corps boxes
 const ICE = ICP.map(([svg, p, t]) => { const el = pinS(GG.pin(svg, p[0], p[1], { t, pop: true, until: T_PG })); SFX("ref:pop", t + 0.05); return el; });
 const MV0 = T_SET + 0.2;
 arw({ pts: [L(31.99, -90.95), L(32.04, -90.84), L(32.09, -90.74)], side: "carth", t: MV0, dur: 2.2, width: AW(1.5, 12), until: T_PG });
@@ -524,7 +529,7 @@ B.greyArrow(J1, T_ONE + 0.9, T_PG + 0.8); B.greyArrow(J2, T_ONE + 1.0, T_PG + 0.
 // the five battles: one stamp per spoken name + its date (dates under the names = the narrator's dates)
 const BAT = (txt, p, t, sub, dx = 0, dy = -34) => { K.target(p[0], p[1], t, { r: 26, side: "rome", until: t + 2.6 }); return wstampL(txt, p[0] + dx, p[1] + dy, t, null, "#e3232f", 30); };   // critic r1: no dates in the stamps (the scroll carries the date)
 BAT("PORT GIBSON", PG, T_PG, "1 MAY");
-BAT("RAYMOND", RAY, T_RAY, "", 60, 70);
+{ K.target(RAY[0], RAY[1], T_RAY, { r: 26, until: T_RAY + 2.2 }); const st = wstampS("RAYMOND", RAY[0] + 60, RAY[1] + 70, T_RAY, at(P9, "on the fourteenth") - 0.15, "#e3232f", 30); }   // critic r4: gone before the scroll turns to 14 MAY
 B.move("u17", T_RAY - 0.4, 1.4, ...L(32.25, -90.44));
 B.move("rj", T_RAY + 0.3, 1.0, ...L(32.27, -90.30));
 const AJ = arw({ pts: [L(32.25, -90.43), L(32.29, -90.33), L(32.30, -90.22)], side: "carth", t: T_JAX - 0.4, dur: 1.0, width: AW(1.72, 14), until: T_WEST + 0.6 });
@@ -562,8 +567,7 @@ const V1 = vs("CHAMPION HILL", "ABOUT 15,000", "FULLY ENGAGED", "ABOUT 25,000", 
 // one Union division lost more than a third of its men
 const hvB = B.units.hv.el.querySelector(".blk");
 tl.to(hvB, { scale: 1.35, duration: 0.25, yoyo: true, repeat: 3 }, T_DIV + 0.1);
-const DRN = pinS(GG.pin(`<div style="width:72px;height:12px;background:#1f4fc4;border:2px solid #f3eee2;box-shadow:0 1px 4px #000;position:relative;overflow:hidden"><div class="d" style="position:absolute;right:0;top:0;bottom:0;width:0;background:#77746c"></div></div>`, ...L(32.3835, -90.545), { t: T_DIV + 0.1, until: T_CUTOFF + 0.2 }));
-tl.to(DRN.querySelector(".d"), { width: "38%", duration: 1.0, ease: "power2.out" }, T_THIRD);
+// critic r4: no division-strength bar (read as a stray bar); the caption carries it
 B.caption("MORE THAN A THIRD OF ITS MEN", T_THIRD - 0.1, T_CUTOFF - 0.3, "carth");
 // a whole Confederate division cut off: it is pushed south-east, its road back to Vicksburg greys
 B.move("rv", T_CUTOFF - 1.0, 2.2, ...L(32.36, -90.66)); B.move("re", T_CUTOFF - 0.9, 2.2, ...L(32.325, -90.665));

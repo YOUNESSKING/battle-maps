@@ -367,6 +367,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, R ? { left: "40px", bottom: "auto", top: "56px" } : { left: "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   }
+  if (side === "west" || side === "ne") {   // critic r4: card level with the unit to the west, or up-right of it
+    const card = w.firstElementChild, stake = w.lastElementChild; w.style.top = "4px";
+    if (side === "west") { w.style.left = "0px"; Object.assign(card.style, { left: "-158px", bottom: "auto", top: "-62px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "82px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(180deg)" }); }
+    else { w.style.left = "calc(100% + 0px)"; Object.assign(card.style, { left: "40px", bottom: "auto", top: "-150px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-54deg)" }); }
+  }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 }); { const pe = host.closest(".gg-pin, .unit"); if (pe) pe.style.zIndex = 40; }   // critic r2: cards above the fire / glow layers
   const tg = typeof id === "string" && B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
@@ -469,7 +474,8 @@ B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_MEAN + 0.2, T_GRI 
 const GB = null;
 const TK = ticker("CAVALRYMEN", 1700, "", "right:92px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 2.2, 5, { col: "#7fb0ff", pre: "ABOUT " });   // critic 1 r2: spoken words, >= 40 px from the edge
 unitS("gri", "carth", LG, "infantry", "", { t: T_GRI + 0.2, size: "III" }); cavIcon("gri");
-pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_SHER + 0.8, true, "right");   // steps out before the raid reaches the frame edge   // STYLE W: his portrait rides with his cavalry
+const GRW = pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_SHER + 0.8, true, "right");
+{ const TM = T_RAID + (T_BR - T_RAID) * 0.45; tl.to(GRW.firstElementChild, { top: -150, duration: 0.8, ease: "sine.inOut" }, TM); tl.to(GRW.lastElementChild, { rotation: -54, duration: 0.8, ease: "sine.inOut" }, TM); }   // critic r4: as the raid nears the bottom edge the card swings up-right of the box   // steps out before the raid reaches the frame edge   // STYLE W: his portrait rides with his cavalry
 boxL("LA GRANGE", LG[0] - 95, LG[1] - 34, T_LG, null, { size: 16 });
 along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
 trail(GRI, "#2c57b7", 3, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");

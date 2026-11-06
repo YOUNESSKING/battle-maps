@@ -105,7 +105,7 @@ const TV = town("VICKSBURG", VKS, "l", TZ1 + 0.2); tl.to(TV.querySelector(".tn")
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_FREE + 0.8, TZ0 + 0.6, { s: 20, t0: 0 }));
 // overview: one army counter each side (spread apart); the corps counters appear when the camera reaches the Vicksburg map
-unitS("oa", "carth", L(31.95, -91.85), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.05, -90.42), "infantry", "", { size: "XXXX" });
+unitS("oa", "carth", L(31.95, -91.85), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(31.85, -90.30), "infantry", "", { size: "XXXX" });
 ["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 })); B.hideUnits(["oa", "ov"], TZ0 + 0.3, 0.4);
 along("oa", LL([[31.95, -91.85], [31.95, -91.95]]), 0, 10, 10);   // below the title card
 unitS("ga", "carth", L(32.62, -91.25), "infantry", "XV", { size: "XXX", t: TZ0 + 1.0 }); unitS("gb", "carth", L(32.95, -91.30), "infantry", "XVII", { size: "XXX", t: TZ0 + 1.1 });
@@ -119,8 +119,8 @@ along("vk", LL([[32.44, -90.62], [32.42, -90.70]]), 0, 6, 10);
 glowPath(RIV, "#8fc3ff", 6.5 / 0.185, T_RIV - 0.3, T_WEST + 0.5, 2, 0.95, { draw: 1.6, top: true });
 K.target(VKS[0], VKS[1], T_BLUFF, { r: 230, side: "#ff3b30", until: T_WINT + 0.4 });
 // "As long as the Confederates held it": the batteries pulse, a shot at the lead gunboat; the boats stop short of the city
-unitS("bt0", "rome", L(32.24, -90.80), "artillery", "", { t: T_HELD - 0.2, w: 44, h: 29, until: TZ0 + 0.5 });
-shootS(L(32.24, -90.80), GBN[0].at(T_FREE + 1.2), T_FREE + 0.3, 0.183, { dur: 0.9, h: 50, r: 12 });
+unitS("bt0", "rome", L(32.28, -90.62), "artillery", "", { t: T_HELD - 0.2, w: 44, h: 29, until: TZ0 + 0.5 });
+shootS(L(32.28, -90.62), GBN[0].at(T_FREE + 1.2), T_FREE + 0.3, 0.183, { dur: 0.9, h: 50, r: 12 });
 // BATCH 3: the one side-view profile strip of this move, on the terrain beat ("on a bluff high above ... the Mississippi River")
 profileStrip(`<path d="M10 100 L150 100 C 175 100, 182 96, 190 88" fill="none" stroke="#2a2410" stroke-width="2.6"/><path d="M14 101 L186 101" stroke="#4d7d9a" stroke-width="7"/>
   <path d="M190 88 C 200 60, 205 34, 222 30 C 260 26, 330 32, 470 36" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>

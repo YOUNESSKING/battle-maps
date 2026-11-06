@@ -375,6 +375,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, R ? { left: "40px", bottom: "auto", top: "56px" } : { left: "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   }
+  if (side === "west" || side === "ne") {   // critic r4: card level with the unit to the west, or up-right of it
+    const card = w.firstElementChild, stake = w.lastElementChild; w.style.top = "4px";
+    if (side === "west") { w.style.left = "0px"; Object.assign(card.style, { left: "-158px", bottom: "auto", top: "-62px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "82px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(180deg)" }); }
+    else { w.style.left = "calc(100% + 0px)"; Object.assign(card.style, { left: "40px", bottom: "auto", top: "-150px" }); Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-54deg)" }); }
+  }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 }); { const pe = host.closest(".gg-pin, .unit"); if (pe) pe.style.zIndex = 40; }   // critic r2: cards above the fire / glow layers
   const tg = typeof id === "string" && B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
@@ -457,7 +462,7 @@ B.greyArrow(JOIN, T_PH + 0.2, T_TENTH + 0.6);
 const PHB = boxL("PORT HUDSON ▼", PHX[0] - 10, 1560, T_PH, null, { size: 20 });
 const BKA = arw({ pts: [ALX, L(31.38, -91.95), L(31.29, -91.62)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 11), dash: "14 10", until: END + 1 });
 // critic r2: the two captions sit in the top band here (the bottom band holds Banks's column, his arrow and the Port Hudson label)
-[B.caption("CANNOT GET TO PORT HUDSON BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth"), B.caption("ONLY FIFTEEN THOUSAND MEN", T_15K, T_DO - 0.25, "carth")].forEach((c) => { c.style.bottom = "auto"; c.style.top = "205px"; });
+[B.caption("CANNOT GET TO PORT HUDSON BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth"), B.caption("ONLY FIFTEEN THOUSAND MEN", T_15K, T_DO - 0.25, "carth")].forEach((c) => { Object.assign(c.style, { bottom: "auto", top: "205px", left: "110px", right: "auto" }); c.firstElementChild.style.fontSize = "30px"; })   // critic r4: top band, left of the northern red boxes;
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
 // ---------- E.decide (B3) on "Do you wait for Banks" ----------
 const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: T_DO - 0.2, tCount: T_TELL, tReveal: END + 0.9, until: END + 1 });
@@ -471,8 +476,8 @@ const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
 pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.2); pulse(OB, T_INL + 0.2); pulse(DEC.querySelector(".cd"), T_WHAT, "#c9b48a"); pulse(OA, T_THEN - 0.2); pulse(OB, T_THEN + 0.3);
 // the map keeps moving under the card: the inland ghost arrows draw (toward Jackson / toward Vicksburg), Banks' column crawls, rings
-const GH1 = arw({ pts: LL([[32.02, -90.93], [32.12, -90.72], [32.22, -90.50], [32.28, -90.30]]), side: "carth", t: T_CUT + 0.1, dur: 3.2, width: AW(1.1, 12), dash: "16 12", until: END + 1 });
-const GH2 = arw({ pts: LL([[32.08, -90.89], [32.20, -90.82], [32.30, -90.80]]), side: "carth", t: T_INL + 0.3, dur: 2.6, width: AW(1.1, 12), dash: "16 12", until: END + 1 });
+// critic r4: the inland march lines wait for "cut loose" (m2f)
+// critic r4: the inland march lines wait for "cut loose" (m2f)
 B.move("bk", T_DO + 0.4, END - T_DO, ...L(31.36, -92.12));
 const RINGS = [[L(32.02, -90.96), "carth"], [JAX, "rome"], [VKS, "rome"], [L(32.02, -90.96), "carth"]];
 for (let k = 0, tt = T_DO + 0.9; tt < END - 0.6 && k < RINGS.length; k++, tt += 2.4) K.target(RINGS[k][0][0], RINGS[k][0][1], tt, { r: 26, side: RINGS[k][1], until: tt + 1.8 });

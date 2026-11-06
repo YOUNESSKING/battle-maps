@@ -13,7 +13,7 @@ if 'minus' in O: m &= ~owned(O['minus'])
 if 'clip' in O:
     c = np.zeros(m.shape, np.uint8); cv2.fillPoly(c, [np.array([[float(v) for v in q.split(',')] for q in O['clip'].split(';')], np.int32)], 1); m &= c.astype(bool)
 rl = np.asarray(Image.open(relief).convert('RGB').resize((2880, 1620), Image.BILINEAR)).astype(np.int16)
-water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 25) & (rl[..., 2] > 110)).astype(np.uint8), np.ones((19, 19), np.uint8)).astype(bool)
+water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 25) & (rl[..., 2] > 110)).astype(np.uint8), np.ones((int(O.get('margin', 19)),) * 2, np.uint8)).astype(bool)   # margin= kernel px (39 = 19 px off the water)
 # critic r2 (2d item 3): woods left clear too (ink trees on the wide relief; canopy woods on the close relief given as relief2=)
 dk = rl.mean(-1) < 70
 if 'relief2' in O:
