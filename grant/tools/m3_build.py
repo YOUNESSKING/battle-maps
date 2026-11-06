@@ -2,6 +2,7 @@
 tools/build_scene.py, extra basemaps for the scene (copied as assets/ext_<map>.jpg), then checks every at(...) phrase.
 Uses <map>_hd_lift when its bake is done (logs/<map>.done), else the quick preview bake (m3x_ric / ghx_jam / m3x_pet / m3x_mis).
 usage: python3 tools/m3_build.py SCENE MAP FIRST LAST [EXTRA_MAP ...]"""
+import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(_o.path.abspath(__file__))); import _linkcopy  # noqa: hard-link assets (disk)
 import json, os, re, shutil, subprocess, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 PREV = {"richmond": "m3x_ric", "petersburg": "m3x_pet", "jamesriver": "ghx_jam", "mississippi": "m3x_mis"}

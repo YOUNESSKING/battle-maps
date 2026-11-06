@@ -3,6 +3,7 @@ then builds the scene with build_scene.py.  usage (from grant/): python3 tools/g
   reads tools/gh_kit.js and tools/gh_body_<SCENE>.js; GD.riv = traced rivers (tools/gh_rivers.py) of the tennessee map (map px).
   Extra layers (copied when present): gh_ten_relief.jpg (tennessee), gh_hen_relief.jpg (henry), gh_vks_relief.jpg (vicksburg_siege),
   gh_jam_relief.jpg (jamesriver); a missing map falls back to its plain bake (assets/<map>.jpg) or a neutral placeholder."""
+import sys as _s, os as _o; _s.path.insert(0, _o.path.dirname(_o.path.abspath(__file__))); import _linkcopy  # noqa: hard-link assets (disk)
 import json, os, shutil, subprocess, sys
 from PIL import Image
 scene, base, first, last = sys.argv[1:5]
