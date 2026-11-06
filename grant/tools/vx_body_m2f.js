@@ -39,26 +39,26 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // STYLE W: clean map; the ground that changes hands hatches blue for ~3 s (tools/stylew_vk/make_hatches.sh: gn_vick_may14cap / may16cap / may18cap)
-hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 0.3, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_BEAT + 0.4, 3.0); hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
+hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_CUTOFF + 1.3, 2.0);   // critic r1: only once the ground is taken hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 const LGD = null;   // STYLE W: no key
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
 const DS = [["MAY 1863", null], ["1 MAY 1863", T_PG], ["12 MAY 1863", T_RAY], ["14 MAY 1863", T_JAX + 0.3], ["16 MAY 1863", T_CH + 0.3], ["17 MAY 1863", T_NEXT + 0.2], ["MAY 1863", T_COUNT], ["18 MAY 1863", T_18M + 0.3]];
 DS.forEach(([txt, t], k) => { const nx = DS[k + 1]; if (t == null) dateNow(txt, nx[1] - 0.05); else B.date(txt, t, nx ? nx[1] - 0.05 : null, 32); });
 // ---------- camera ----------
-const KA = [1290, 960, 1.22], KB = [1300, 930, 1.5], KW = [1540, 820, 1.72], KC = [1615, 700, 2.7], KBB = [1520, 700, 2.7], KW2 = [1560, 810, 1.7], KV = [1450, 700, 2.5];
+const KA = [1300, 1175, 1.3], KB = [1300, 930, 1.5], KW = [1540, 820, 1.72], KC = [1615, 700, 2.7], KBB = [1520, 700, 2.7], KW2 = [1560, 810, 1.7], KV = [1450, 700, 2.5];
 camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], [T_WEDGE + 0.8, ...KW], [T_CH - 0.3, ...KW], [T_BEAT + 0.8, ...KC], [T_NEXT, ...KC],
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 const FX = (a, b) => [a, b];
-const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1560, 800], [1680, 600], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
+const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1530, 640], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
 U("rv", "rome", L(32.36, -90.84), "PEMBERTON", "XX"); tagAt("rv", null); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "JOHNSTON", "XX"); tagAt("rj", null); U("rs", "rome", L(32.14, -90.80), "", "XX");
 ["u13", "u17", "u15"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the generals' portraits on stakes at their armies, from their names to the end of the scene (no corner badges)
-pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_DEC - 0.05, null, true);
+pinPortrait("u17", PHOTO("grant"), FL.us, "Grant", T_DEC - 0.05, null, true, "right");   // critic r1: at the lead corps, side stake
 pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "left");
 pinPortrait("rj", PHOTO("johnston"), FL.cs, "Johnston", T_JOH + 0.3, null, true, "right"); tl.to(B.units.rj.el, { autoAlpha: 0, duration: 0.5 }, T_JAX + 0.3);   // he and his card leave as he is driven out of Jackson
 // ---------- m2-8: the real choice ----------
@@ -66,6 +66,8 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 [DEC, BACK, OA, OB].forEach((el) => tl.getTweensOf(el).filter((tw) => tw.startTime() < 1.0).forEach((tw) => tw.kill()));
 gsap.set(DEC, { autoAlpha: 1, scale: 1 }); gsap.set([OA, OB], { autoAlpha: 1, y: 0 }); gsap.set(BACK, { autoAlpha: 0.56 }); dropCues(0, 1.0);
+Object.assign(DEC.style, { top: "585px", background: "rgba(14,13,10,0.95)", padding: "16px 34px 18px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
+BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 45%, rgba(6,8,12,0.7) 60%)";
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 // the supply line back to Grand Gulf (the base) flickers and is cut
 const SUP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.04, -90.93), L(31.995, -90.955)];
@@ -73,13 +75,13 @@ const SUPL = document.createElementNS(NSs, "path"); SUPL.setAttribute("d", "M" +
 Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": (2.4 / KA[2]).toFixed(2), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.8 }).forEach(([k, v]) => SUPL.setAttribute(k, v)); OVL.appendChild(SUPL);
 const GGB = boxL("HIS BASE", GGF[0] - 120, GGF[1] + 40, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
 tl.to(SUPL, { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 5, ease: "none" }, T_CUTL + 1.5); tl.to(SUPL, { opacity: 0, duration: 0.4 }, T_CUTL + 2.4);
-const CUTS = wstampL("CUT LOOSE", ...L(32.21, -91.13), T_CUTL + 1.6, null, "#9fc0ea", 28);
+// critic r1: no separate CUT LOOSE stamp (the card lights CUT LOOSE; Sherman's card follows at once)
 // Sherman's warning: one road, the wagons bunch on it
 const SHB = null;   // Sherman's photo sits in his card (a corner badge would have to step out for the card at once)
 const ROADP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.09, -90.80)];
 const RD = glowPath(ROADP, "#ffd27a", 4, T_ROAD - 0.2, T_SET + 0.5, 2, 0.85, { draw: 1.2 });
 const WG = [0, 1, 2, 3, 4].map((k) => wagon(sub(ROADP, 0, 0.30 + k * 0.13, 10), T_ROAD - 0.3 + k * 0.2, 2.6, T_SET + 0.4, { s: 17 }));
-const SHC = belief("ONE ROAD COULD NOT FEED THE ARMY", "SHERMAN WARNED", T_ROAD - 0.1, T_ANS - 0.2, { size: 50, top: 215 });
+const SHC = belief("ONE ROAD COULD NOT FEED THE ARMY", "SHERMAN WARNED", T_ROAD - 0.1, T_ANS - 0.2, { size: 50, top: 800 });   // critic r1: clear of the units
 SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.firstElementChild.style.color = "#9fc0ea";
 { const c = SHC.firstElementChild, ph = document.createElement("div"); c.style.display = "flex"; c.style.alignItems = "center"; c.style.gap = "26px"; c.style.textAlign = "left";
   const txt = document.createElement("div"); while (c.firstChild) txt.appendChild(c.firstChild); c.appendChild(ph); c.appendChild(txt);
@@ -120,9 +122,9 @@ const J1 = arw({ pts: [L(32.29, -90.26), L(32.29, -90.36), L(32.28, -90.44)], si
 const J2 = arw({ pts: [L(32.33, -90.80), L(32.31, -90.68), L(32.29, -90.60)], side: "rome", t: T_ONE - 0.2, dur: 1.0, width: AW(1.72, 11), dash: "12 9", until: T_PG + 1 });
 B.greyArrow(J1, T_ONE + 0.9, T_PG + 0.8); B.greyArrow(J2, T_ONE + 1.0, T_PG + 0.8);
 // the five battles: one stamp per spoken name + its date (dates under the names = the narrator's dates)
-const BAT = (txt, p, t, sub, dx = 0, dy = -34) => { K.target(p[0], p[1], t, { r: 26, side: "rome", until: t + 2.6 }); return wstampL(txt, p[0] + dx, p[1] + dy, t, null, "#e3232f", 30, sub); };
+const BAT = (txt, p, t, sub, dx = 0, dy = -34) => { K.target(p[0], p[1], t, { r: 26, side: "rome", until: t + 2.6 }); return wstampL(txt, p[0] + dx, p[1] + dy, t, null, "#e3232f", 30); };   // critic r1: no dates in the stamps (the scroll carries the date)
 BAT("PORT GIBSON", PG, T_PG, "1 MAY");
-BAT("RAYMOND", RAY, T_RAY, "12 MAY", 0, 40);
+BAT("RAYMOND", RAY, T_RAY, "", 60, 70);
 B.move("u17", T_RAY - 0.4, 1.4, ...L(32.25, -90.44));
 B.move("rj", T_RAY + 0.3, 1.0, ...L(32.27, -90.30));
 const AJ = arw({ pts: [L(32.25, -90.43), L(32.29, -90.33), L(32.30, -90.22)], side: "carth", t: T_JAX - 0.4, dur: 1.0, width: AW(1.72, 14), until: T_WEST + 0.6 });
@@ -184,7 +186,7 @@ B.move("rv", T_18G - 0.2, 1.6, ...L(32.37, -90.78)); B.move("re", T_18G, 1.6, ..
 const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div class="a"><div style="font-size:60px;line-height:1.05">18</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">GUNS</div></div>
   <div class="b"><div style="font-size:60px;line-height:1.05">1,700+</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">PRISONERS</div></div></div>`,
-  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_18G - 0.2, T_COUNT - 0.3);
+  "right:90px;bottom:140px;", T_18G - 0.2, T_COUNT - 0.3);
 { const b = BBC.querySelector(".b"); gsap.set(b, { autoAlpha: 0 }); tl.fromTo(b, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_1700 - 0.5); SFX("hit", T_18G); SFX("hit", T_1700 - 0.4); }
 // ---------- m2-10: the numbers ----------
 const V2 = vs("GRANT HIMSELF COUNTED", "OVER 60,000", "CONFEDERATES IN MISSISSIPPI", "ABOUT 33,000", "OF HIS OWN", T_60 - 0.3, T_60 - 0.2, T_33, T_18D - 0.2, { redFirst: true });
@@ -199,7 +201,7 @@ B.move("u13", T_COUNT, 6, ...L(32.33, -90.80)); B.move("u17", T_COUNT + 0.3, 6, 
 B.move("rv", T_COUNT + 1, 5, ...L(32.345, -90.852)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 3);
 const RING = LL([[32.405, -90.875], [32.40, -90.835], [32.37, -90.82], [32.335, -90.825], [32.30, -90.845], [32.28, -90.88], [32.29, -90.905]]);
 glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_18M + 0.4 });
-wstampL("SHUT INSIDE VICKSBURG", ...L(32.43, -90.66), T_SHUT + 0.2, null, "#e3232f", 28);
+wstampL("SHUT INSIDE VICKSBURG", ...L(32.25, -90.68), T_SHUT + 0.2, null, "#e3232f", 28);
 // ---------- 1c declutter: one big card at a time ----------
 
 fixImgs();
