@@ -465,8 +465,8 @@ const snap = () => new Set([...OVL.children, ...PINS.children]);
 const endScope = (s0, until) => { const els = [...OVL.children, ...PINS.children].filter((e) => !s0.has(e) && e.tagName.toLowerCase() !== "defs"); tl.set(els, { autoAlpha: 0 }, until - 0.01); };
 // ---------- places (donelson map px) ----------
 const FD = [1395, 758], HQ = [1170, 700], BOATP = [1300, 470], LAND = [1255, 560];
-const RING = [[1300, 735], [1290, 790], [1305, 850], [1360, 885], [1440, 900], [1520, 892], [1580, 860], [1600, 800]];
-const RING2 = [[1300, 735], [1290, 790], [1300, 860], [1335, 930], [1405, 975], [1490, 995], [1565, 955], [1600, 800]];
+const RING = [[1290, 790], [1305, 850], [1360, 885], [1440, 900], [1520, 892], [1580, 860], [1600, 800]];
+const RING2 = [[1290, 790], [1300, 860], [1335, 930], [1405, 975], [1490, 995], [1565, 955], [1600, 800]];
 const FORGE = [[1510, 775], [1525, 850], [1532, 930], [1522, 1010], [1502, 1090], [1484, 1180], [1474, 1290], [1470, 1400]];
 // =====================================================================================================================
 // FRAME 0 = hook-a's last frame (16 Feb 1862, after the surrender; A DISASTER still up)
@@ -542,12 +542,11 @@ arw({ pts: FORGE.slice(2), side: "rome", t: T_OPEN, dur: 1.0, width: AW(SC, 8), 
 // =====================================================================================================================
 // "The Union commander was not even there": the "?" badge, the empty headquarters
 // =====================================================================================================================
-const CH = [1300, 800], SH = 2.15;
+const CH = [1300, 860], SH = 2.15;   // every box inside the frame (critics r3)
 camTo(T_CMDR - 0.5, 1.4, CH, SH, "sine.inOut");
 const QB = qBadge("THE UNION COMMANDER", "", T_CMDR + 0.05, T_AWAY + 0.2);
 const F5 = [flagS(FL.us, "", 1110, 820, T_CMDR - 0.3, T_RODE + 0.2), flagS(FL.csa, "", 1455, 815, T_CMDR - 0.3, T_RODE + 0.2)];
 const HQU = unitS("hq", "carth", HQ, "hq", "", { t: T_CMDR + 0.2 });
-tl.to(B.units.hq.el, { autoAlpha: 0.35, duration: 0.5 }, T_NOT);
 focus(HQ, 90, T_NOT, T_AWAY);
 wstampL("NOT EVEN THERE", HQ[0], HQ[1] + 62, T_NOT + 0.05, T_AWAY - 0.1, null, 26);
 // "away on a gunboat, in a conference with the admiral": up the river to the flagship; a small "?" marker sits on it
@@ -570,17 +569,16 @@ tl.to(F6[0], { autoAlpha: 0, duration: 0.3 }, S4 - 0.25);
 tl.to(Object.values(B.units).map((u) => u.el), { autoAlpha: 0, duration: 0.3 }, S4 - 0.25);   // the map clears for the name slam (nothing under the big "?")
 // "standing in knots, holding muskets": the broken brigades bunch up and stand (no units split into dots), focus on them
 [["m1", [1262, 942]], ["m2", [1290, 972]], ["m3", [1318, 996]]].forEach(([id, p], k) => go(id, T_KNOTS - 0.2 + k * 0.08, 0.9, p));
-tl.to(["m1", "m2", "m3"].map((id) => B.units[id].el), { autoAlpha: 0.55, duration: 0.5 }, T_MUSK);
 ["m1", "m2", "m3"].forEach((id, k) => tl.fromTo(B.units[id].el.querySelector(".blk"), { x: 0 }, { x: 2, duration: 0.09, yoyo: true, repeat: 5, immediateRender: false }, T_MUSK + k * 0.08));
 focus([1290, 970], 80, T_KNOTS, T_NOAMMO + 0.2);
-sstamp("NO AMMUNITION", 205, T_NOAMMO - 0.05, { size: 72, until: T_TONS - 0.15, shake: 5 });
+sstamp("NO AMMUNITION", 205, T_NOAMMO - 0.05, { css: "left:130px;top:240px;", size: 72, until: T_TONS - 0.15, shake: 5 });
 pulse(T_NOAMMO + 0.2);
 // "while tons of it lay close at hand": ammunition crates just behind the line (no glow), a short thin arrow toward the men
 const CRATE = `<svg width="34" height="26" viewBox="0 0 34 26" style="display:block;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.8))"><rect x="1" y="4" width="32" height="20" fill="#8a6a44" stroke="#2a2420" stroke-width="2"/><path d="M1 4 L33 24 M33 4 L1 24" stroke="#5a4428" stroke-width="1.6"/><rect x="1" y="1" width="32" height="5" fill="#a07c50" stroke="#2a2420" stroke-width="1.5"/></svg>`;
 const CR = [[1190, 925], [1212, 950], [1182, 952], [1205, 975]];
 CR.forEach(([x, y], k) => pinS(GG.pin(CRATE, x, y, { t: T_TONS + k * 0.1, pop: true, until: T_NAME - 1.0 })));
 focus([1200, 950], 60, T_TONS + 0.1, S4 - 0.3);
-sstamp("TONS OF IT", 205, T_TONS + 0.05, { size: 72, sub: "CLOSE AT HAND", until: S4 - 0.3, shake: 4 });
+sstamp("TONS OF IT", 205, T_TONS + 0.05, { css: "left:180px;top:240px;", size: 72, sub: "CLOSE AT HAND", until: S4 - 0.3, shake: 4 });
 arw({ pts: [[1220, 945], [1240, 950], [1258, 955]], side: "carth", t: T_HAND, dur: 0.6, width: AW(SK, 7), until: T_NAME - 1.0 });
 // =====================================================================================================================
 // hook-4: the name slam (the "?" turns into the real photo)
@@ -682,7 +680,7 @@ camTo(T3, 0.01, C3b, S3b); camTo(T3 + 0.02, T_LEE - 0.7 - T3, [C3b[0], C3b[1] + 
 camTo(T_LEE - 0.6, 1.3, C3, S3c, "power2.inOut"); camTo(T_LEE + 0.75, T4 - T_LEE, [C3[0] - 10, C3[1] - 8], S3c * 1.03, "sine.out");
 SFX("ref:whoosh", T3 - 0.2); SFX("hit", T3 + 0.02); K.shake(T3 + 0.02, 3, 0.25);
 dateSet("JUNE 1864", T3, null);
-[flagS(FL.us35, "", WEY[0] + 140, WEY[1] - 95, T3, null), flagS(FL.csa, "", WIN[0] - 60, WIN[1] + 95, T3, T_LEE - 0.4)].forEach(vis(T3, null));   // the south bank was still Confederate country
+[flagS(FL.us35, "", WEY[0] + 200, WEY[1] - 40, T3, null), flagS(FL.csa, "", WIN[0] - 60, WIN[1] + 95, T3, T_LEE - 0.4)].forEach(vis(T3, null));   // the south bank was still Confederate country
 flagS(FL.csa, "", LEEP[0] - 230, LEEP[1] + 40, T_LEE - 0.6, null);
 // the pontoon bridge: a plank line with a dark casing (solid, no glow)
 const BR = document.createElementNS(NS, "g");

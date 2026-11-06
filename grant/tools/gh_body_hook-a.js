@@ -76,12 +76,13 @@ const CF = [1395, 745], SF = 1.1;                           // arrival: the fort
 camTo(0, TZ0, C0b, S0b, "sine.inOut");
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 // date scroll: filled from frame 0 and never blank (critic fix, cleburne hook-a); the spoken season + year
-const D0 = document.createElement("div"); D0.className = "d"; D0.textContent = "WINTER 1862"; D0.style.fontSize = "32px"; document.getElementById("date").appendChild(D0);
+const D0 = document.createElement("div"); D0.className = "d"; D0.textContent = "1862"; D0.style.fontSize = "32px"; document.getElementById("date").appendChild(D0);
 tl.to(D0, { autoAlpha: 0, y: -14, duration: 0.35 }, T_SURR + 0.05);
 // stamp in the first second, in the narrator's words ("In the winter of eighteen sixty-two"); top band, clear of the scroll
-sstamp("WINTER 1862", 205, 0.55, { css: "left:600px;right:0;top:100px;display:flex;justify-content:center;", size: 72, until: T_RIV - 0.15, shake: 5 });
+sstamp("WINTER", 205, 0.42, {   // the spoken "In the winter" (the scroll carries the year: no fact twice, critics r3)
+  css: "left:600px;right:0;top:100px;display:flex;justify-content:center;", size: 72, until: 2.5, shake: 5 });
 // flags (48 px, no names): one pair on each side's ground, on screen from frame 0
-const F0 = [flagS(FL.us, "", ...LD(37.05, -87.60), 0, TZ0 + 0.9), flagS(FL.csa, "", ...LD(36.15, -87.25), 0, TZ0 + 0.9)];
+const F0 = [flagS(FL.us, "", ...LD(37.05, -87.60), 0, TZ0 + 0.45), flagS(FL.csa, "", ...LD(36.15, -87.25), 0, TZ0 + 0.45)];   // out before the zoom pair comes in
 // ---------- units already moving at frame 0 (no names: nothing spoken yet) ----------
 const B1 = upTo(RTEN, FH), B2 = upTo(RCUM, FD);
 const GBT = [gunboat(B1.slice(Math.round(B1.length * 0.14), Math.round(B1.length * 0.75)), 0, T_SHUT + 0.3, TZ0 + 0.8, { s: 18 }),
@@ -127,12 +128,12 @@ SFX("whoosh", TZ0 - 0.05);
 zoom(TZ0, TZ1 - TZ0, C0b, S0b, CF, SF, FD, "power2.inOut");
 // the Cumberland is named on its words: re-inked at the donelson scale + a white serif river label (<= 3.5 s)
 inkTrace(CUMB_D, T_CUMB - 0.1, T_CUMB + 3.0, 2.4);
-boxL("CUMBERLAND RIVER", 1385, 470, T_CUMB, null, { size: 16 });
+boxL("CUMBERLAND RIVER", 1385, 470, T_CUMB + 0.7, null, { size: 16 });   // once the zoom has opened the river (clear of the fort star)
 // mid-zoom flags: the Union flag rides the gunboats coming up the Cumberland; the Confederate flag on Tennessee ground east of the river
 const BOATR2 = [[1150, 150], [1200, 300], [1240, 400], [1275, 480], [1300, 545]];
 const GB2 = [0, 1].map((k) => gunboat(BOATR2.map(([x, y]) => [x - k * 22, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), T_BEGAN - 0.5, { s: 17 }));
-const FB = flagS(FL.us, "", 1060, 230, TZ0 + 0.8, TZ1 - 0.3); pinAlong(FB, [[1060, 230], [1110, 380]], TZ0 + 0.8, 6.0, 8);
-const FM = flagS(FL.csa, "", ...LD(36.40, -87.72), TZ0 + 0.8, TZ1 + 0.4);
+const FB = flagS(FL.us, "", 700, 250, TZ0 + 1.0, TZ1 - 0.3); pinAlong(FB, [[700, 250], [760, 420]], TZ0 + 1.0, 4.0, 8);   // clear of the fort star and the river label
+const FM = flagS(FL.csa, "", ...LD(36.40, -87.72), TZ0 + 1.0, TZ1 + 0.4);
 // arriving on Fort Donelson: the fort (named objective, permanent small serif label), flags behind each side's lines
 const F2 = [flagS(FL.us, "", 900, 690, TZ1 - 0.5, null), flagS(FL.csa, "", 1745, 445, TZ1 - 0.5, null)];
 const FDL = pinS(box("FORT DONELSON", FD[0] - 150, FD[1] - 44, T_FD - 0.05, 26, T_BEGAN - 0.3));
@@ -142,7 +143,8 @@ SFX("hit", TZ1); K.shake(TZ1, 4, 0.3);
 const GR = [unitS("g1", "rome", [1320, 810], "infantry", "", { t: TZ1 - 0.5 }), unitS("g2", "rome", [1440, 845], "infantry", "", { t: TZ1 - 0.4 }),
   unitS("g3", "rome", [1545, 815], "infantry", "", { t: TZ1 - 0.3 }), unitS("g4", "rome", [1482, 726], "artillery", "", { t: TZ1 - 0.35, w: 44, h: 29 })];
 // the colour key: first map of the video, the unit colours are new; ~3.5 s, out before the number card
-legend(TZ1 - 0.2, T_12 - 0.4);
+// the colour key (top right, clear of the gunboats and the scroll; same look as the kit legend), ~3 s
+{ const LG = scr(`<div style="display:flex;gap:26px;font-family:Oswald;font-weight:700;font-size:20px;letter-spacing:0.1em;align-items:center;color:#f7f3ea;padding:10px 26px;background:rgba(18,16,12,0.9);box-shadow:0 10px 24px rgba(0,0,0,.5)">${[["#2e5cb2", "UNION"], ["#be3a2a", "CONFEDERACY"]].map(([sq, nm]) => `<span><b style="display:inline-block;width:20px;height:20px;background:${sq};vertical-align:-3px;border:1px solid #f7f3ea;margin-right:8px"></b>${nm}</span>`).join("")}</div>`, "right:60px;top:60px;", TZ1 - 0.2, T_12 - 0.9, { autoAlpha: 0 }); }
 // =====================================================================================================================
 // hook-2: within a week -- the ring closes; 12,000+; SURRENDERED; the "?" general; first major victory; a disaster
 // =====================================================================================================================
@@ -167,13 +169,11 @@ front2(RING, SR, T_WEEK + 2.2, { dur: 1.4, until: T_SURR + 0.4 });
 // the big number card (top right, clear of the scroll and the pocket): slams on "twelve thousand", ticks; CONFEDERATE SOLDIERS lights on its words
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 56px 18px;background:rgba(14,12,10,0.9);border-top:8px solid #c4121f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div style="font-size:26px;letter-spacing:0.36em;color:#d8cfb8">MORE THAN</div>
-  <div class="n" style="font-size:132px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
-  <div class="w0" style="font-size:38px;letter-spacing:0.14em;color:#6e675c">CONFEDERATE SOLDIERS</div></div>`, "right:60px;top:150px;transform-origin:50% 40%;", T_12 - 0.15, T_SURR - 0.2, { autoAlpha: 0 });
-slam(BIG, T_12 - 0.15, { from: 1.9, dur: 0.22, shake: 6 });
-const tickN = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySelector(sel);
-  tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt(v.v); } }, t0); for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
-tickN(BIG, ".n", 12000, T_12 + 0.1, T_CSOL + 0.2, (v) => (Math.round(v / 100) * 100).toLocaleString("en-US"));
-tl.to(BIG.querySelector(".w0"), { color: "#ef8a82", duration: 0.15 }, T_CSOL);
+  <div class="n" style="font-size:132px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">12,000</div>
+  <div class="w0" style="font-size:38px;letter-spacing:0.14em;color:#ef8a82">CONFEDERATE SOLDIERS</div></div>`, "right:80px;top:150px;transform-origin:50% 40%;", T_12 - 0.15, T_SURR - 0.2, { autoAlpha: 0 });
+// static card (critics r3): lands in place on "twelve thousand" (no slide, no counting through unspoken numbers); the second line on its words
+slam(BIG, T_12 - 0.15, { from: 1.06, dur: 0.18, shake: 5 });
+gsap.set(BIG.querySelector(".w0"), { autoAlpha: 0 }); tl.to(BIG.querySelector(".w0"), { autoAlpha: 1, duration: 0.2 }, T_CSOL - 0.05);
 // "surrendered": the ground passes to the Union = blue ink hatching ~3 s (the one hand-over of this scene), the garrison greys,
 // a white flag over the fort, prisoners
 sstamp("SURRENDERED", 205, T_SURR - 0.05, { size: 86, shake: 6, until: T_GEN - 0.05 });
@@ -201,8 +201,8 @@ camTo(T_BEGAN - 0.4, END - T_BEGAN + 0.4, CE, SE, "sine.inOut");
 sstamp("A DISASTER", 205, T_DIS - 0.1, { size: 80, until: END + 1, shake: 6 });   // stays over the cut: hook-b frame 0 shows it and takes it out (>= 2 s in all)
 pulse(T_DIS + 0.15);
 // flags for the close push (both on the screen to the end; hook-b starts with this pair)
-tl.to(F2, { autoAlpha: 0, duration: 0.4 }, T_12 + 0.6);
-const F3 = [flagS(FL.us, "", 1190, 905, T_12 + 0.5, null), flagS(FL.csa, "", 1680, 760, T_12 + 0.5, null)];
+tl.to(F2, { autoAlpha: 0, duration: 0.35 }, T_12 - 1.0);   // the pair hands over before the card (one pair at a time, nothing under the card)
+const F3 = [flagS(FL.us, "", 1190, 905, T_12 - 0.55, null), flagS(FL.csa, "", 1680, 760, T_12 - 0.55, null)];
 // the HUD steps out while a big card is up (1c); the date scroll stays
 declutter([QB], [[T_FIRST - 0.05, T_BEGAN - 0.2]]);
 B.finish();

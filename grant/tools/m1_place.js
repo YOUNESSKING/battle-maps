@@ -16,12 +16,15 @@ const sc = process.argv[2];
     const times = []; for (let t = 0.05; t < dur; t += 0.5) times.push(t); times.push(dur - 0.05);
     const frames = times.map((t) => { tl.seek(t, false);
       const obs = [];
-      document.querySelectorAll(".unit .blk").forEach((e) => { if (vis(e)) { const r = e.getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 1]); } });
-      document.querySelectorAll(".fortico").forEach((e) => { if (vis(e)) { const r = e.getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 1]); } });
+      document.querySelectorAll(".unit .blk").forEach((e) => { if (vis(e)) { const r = e.getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 3]); } });
+      document.querySelectorAll(".sflag").forEach((e) => { if (vis(e)) { const r = e.querySelector("img").getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 2]); } });
+      document.querySelectorAll(".arwg").forEach((g) => { if (!vis(g)) return; const pth = g.querySelectorAll("path")[1]; if (!pth) return; const L = pth.getTotalLength(), M = pth.getScreenCTM(); if (!L) return;
+        for (let k = 0; k <= 20; k++) { const q = pth.getPointAtLength(L * k / 20), x = M.a * q.x + M.c * q.y + M.e, y = M.b * q.x + M.d * q.y + M.f; obs.push([x - 6, y - 6, x + 6, y + 6, 1]); } });
+      document.querySelectorAll(".fortico").forEach((e) => { if (vis(e)) { const r = e.querySelector("svg").getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 1]); } });
       document.querySelectorAll(".frontg").forEach((g) => { if (!vis(g)) return; const pth = g.querySelector("path"); if (!pth) return; const L = pth.getTotalLength(), M = pth.getScreenCTM();
         for (let k = 0; k <= 40; k++) { const q = pth.getPointAtLength(L * k / 40), x = M.a * q.x + M.c * q.y + M.e, y = M.b * q.x + M.d * q.y + M.f; obs.push([x - 9, y - 9, x + 9, y + 9, 1, 1]); } });   // [.., 1] = front line: a stake must not cross it
       document.querySelectorAll(".scrcard, .wstamp, .wlabel, .card, .caption, .fxk-badge").forEach((e) => { if (!vis(e)) return; const r = (e.firstElementChild || e).getBoundingClientRect(); if (r.width > 4 && r.width < 1900) obs.push([r.left, r.top, r.right, r.bottom, 1, 0, e.classList.contains("caption") ? "cap" : ""]); });
-      const d = document.getElementById("date"); if (d && vis(d)) { const r = d.getBoundingClientRect(); if (r.width) obs.push([r.left, r.top, r.right, r.bottom, 2]); }
+      const d = document.getElementById("date"); if (d && vis(d)) { const r = d.getBoundingClientRect(); if (r.width) obs.push([r.left - 28, r.top - 28, r.right + 28, r.bottom + 28, 30]); }   // the date scroll: never under it (no step-out toggling)
       const units = C.map((c) => (t >= c.t - 0.05 && t <= c.until && vis(c.unit) ? ctr(c.unit) : null));
       return { t, obs, units }; });
     const cands = []; for (const R of [100, 130, 165, 205, 245, 290]) for (let a = 0; a < 360; a += 15) cands.push([Math.round(R * Math.cos(a * Math.PI / 180)), Math.round(R * Math.sin(a * Math.PI / 180))]);
@@ -29,12 +32,13 @@ const sc = process.argv[2];
     const out = {}, placed = [];
     C.map((c, i) => [c, i]).sort((x, y) => x[0].t - y[0].t).forEach(([c, i]) => {
       let best = null;
+      if (c.fixed) { out[c.key] = c.fixed; placed.push([i, c.fixed[0], c.fixed[1]]); return; }
       cands.forEach(([dx, dy]) => { let cost = Math.hypot(dx, dy) * 2;
         frames.forEach((f) => { const u = f.units[i]; if (!u) return;
           if (u[0] < 0 || u[0] > W || u[1] < 0 || u[1] > H) return;   // unit off frame: the card steps out
           const r = [u[0] + dx - CW / 2, u[1] + dy - CH / 2, u[0] + dx + CW / 2, u[1] + dy + CH / 2], rp = [r[0] - PAD, r[1] - PAD, r[2] + PAD, r[3] + PAD];
           f.obs.forEach((o) => { cost += ov(rp, o) * o[4]; });
-          const m = Math.min(r[0], r[1], W - r[2], H - r[3]); if (m < 40) cost += (40 - m) * 400;
+          const m = Math.min(r[0], r[1], W - r[2], H - r[3]); if (m < 44) cost += (44 - m) * 1500;
           placed.forEach(([pi, pdx, pdy]) => { const v = f.units[pi]; if (!v) return; cost += 2 * ov(rp, [v[0] + pdx - CW / 2, v[1] + pdy - CH / 2, v[0] + pdx + CW / 2, v[1] + pdy + CH / 2]); });
           // the stake should not run over another counter's centre: sample the stake line
           for (let k = 0.15; k < 1; k += 0.08) { const x = u[0] + dx * k, y = u[1] + dy * k; f.obs.forEach((o) => { if (o[4] === 1 && x > o[0] && x < o[2] && y > o[1] && y < o[3]) cost += o[5] ? 900 : 60; }); } });

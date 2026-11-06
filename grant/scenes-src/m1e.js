@@ -6,7 +6,7 @@
 // (gn_don_ctl_feb16cap, ~3 s). Portraits: Floyd and Pillow ride their steamers out, Buckner at his command, Grant at his headquarters
 // (then at his army on the pull-out). Captions cut to one; the cards (reply, Buckner, telegram, U.S., casualties) one at a time.
 // Built with: python3 tools/m1_build.py m1e donelson_w m1-7 m1-8
-window.CARDPOS = {"C. F. Smith@sm1":[-198,53],"Floyd@el1":[-100,0],"Pillow@el2":[-63,237],"Buckner@bu":[212,-123],"Grant@ghq":[-34,126],"Grant@gA":[0,130],"cap0":"right"};
+window.CARDPOS = {"C. F. Smith@sm1":[165,0],"Floyd@el1":[-100,0],"Pillow@el2":[-130,0],"Buckner@bu":[212,-123],"Grant@ghq":[-100,0],"Buckner@pr":[100,0],"Grant@gA":[-100,0],"cap0":"right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -43,7 +43,7 @@ const unit = (id, side, p, icon, label, o = {}) => {
 };
 const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
   o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
-  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path"); g.classList.add("arwg");
   ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
   const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
@@ -179,13 +179,13 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 8) / 32)).toFixed(3);   // also steps out under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
         const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
-        const o = under || edge ? "0" : ""; b.style.opacity = o; const tg = b.parentElement.querySelector(".tag"); if (tg) tg.style.opacity = o; }); }
+        const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
@@ -195,7 +195,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => { const el = pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o)); el.classList.add("wlabel"); return el; };   // STYLE W label; passing labels <= 3.5 s
-const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
+const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.classList.add("sflag"); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
   const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {})); el.classList.add("wstamp");
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
@@ -343,13 +343,13 @@ const pinPortrait = (id, photo, flagSrc, name, t, until, keep = false, side = "u
   // critic r2: placement pass. tools/m1_place.js solves a screen offset per card (window.CARDPOS[key] = [dx, dy] from the unit centre):
   // the card stands on a side stake clear of counters, fort stars, front lines, the date scroll and the other cards
   const key = name + "@" + (typeof id === "string" ? id : (id.dataset.pk || (id.dataset.pk = "el" + (window.__PK = (window.__PK || 0) + 1))));
-  const P = (window.CARDPOS || {})[key];
+  const P = Array.isArray(side) ? side : (window.CARDPOS || {})[key];   // a fixed [dx, dy] side stake wins over the solver
   if (P) { const [dx, dy] = P, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, hostRect = typeof id === "string";
     w.style.left = "50%"; w.style.top = hostRect ? "18px" : "0px";
     Object.assign(card.style, { left: (dx - 38).toFixed(1) + "px", top: (dy - 59).toFixed(1) + "px", bottom: "auto" });
     Object.assign(stake.style, { left: (ux * 20).toFixed(1) + "px", top: (uy * 20).toFixed(1) + "px", bottom: "auto", width: Math.max(4, L - 20).toFixed(1) + "px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1)}deg)` }); }
   card.style.zIndex = "2"; card.classList.add("pcard"); stake.classList.add("pstake");
-  (window.__CARDS = window.__CARDS || []).push({ key, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
+  (window.__CARDS = window.__CARDS || []).push({ key, fixed: Array.isArray(side) ? side : null, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = typeof id === "string" ? B.units[id].el.querySelector(".tag") : null;
   if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -404,18 +404,18 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 const NW = nightWash(0, T_DAWN - 0.2, 0.5); gsap.set(NW, { autoAlpha: 1 }); tl.getTweensOf(NW).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill());
 dawnWash(T_DAWN - 0.3, T_TELE);
 hand("assets/media/gn_don_ctl_feb16cap_mx.png", T_ACC + 0.9);   // the surrender: the pocket and the ground behind it pass to the Union (blue ink)
-camera([[0, 1480, 760, 2.2], [T_STEAM + 0.4, 1560, 740, 2.0], [T_FEAR, 1600, 760, 1.9], [T_FOR, 1560, 860, 2.1], [T_BACKW + 0.6, 1590, 900, 2.0],
+camera([[0, 1480, 760, 2.2], [T_STEAM + 0.4, 1560, 740, 2.0], [T_FEAR, 1600, 760, 1.9], [T_FOR, 1500, 860, 1.6], [T_BACKW + 0.6, 1520, 880, 1.6]   /* critic r2: wider, so the pocket and its cards stay in frame (no toggling) */,
   [T_CMD, 1450, 770, 2.2], [T_DAWN + 0.3, 1380, 790, 1.8], [T_ANS + 0.4, 1340, 850, 1.8], [T_BCALL, 1340, 850, 1.8], [T_ACC, 1400, 760, 2.0], [T_TELE, 1380, 760, 1.35],
   [T_LET, 1360, 740, 1.2], [T_LOSS - 0.4, 1350, 705, 1.12], [END, 1340, 700, 1.12]]);   // the result card has the upper band to itself
 dateNow("15 FEB · NIGHT", T_DAWN - 0.1); B.date("16 FEB · DAWN", T_DAWN, T_ANS - 0.1, 34); B.date("16 FEBRUARY 1862", T_ANS, null, 34);
 // ---------- flags ----------
 flagS(FL.us, 1290, 880, 0, T_ACC + 1.6); flagS(FL.cs, 1600, 790, 0, T_ACC + 1.6);
-flagS(FL.us, 1060, 660, T_ACC + 1.4, END + 1); flagS(FL.cs, 1800, 900, T_ACC + 1.5, END + 1);
+flagS(FL.us, 1060, 780, T_ACC + 1.4, END + 1); flagS(FL.cs, 1800, 900, T_ACC + 1.5, END + 1);
 // ---------- the pocket as m1d left it ----------
 const DONI = fortIcon(DON, 0, null, { s: 24 }); DONI.toBlue(T_ACC + 0.3); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], T_ACC - 1.2, T_ACC + 0.4, 28); poleFlag(FL.us, [DON[0] + 4, DON[1] - 8], T_ACC + 0.45, T_ACC + 3.6, 30);   // the flag switch only at the surrender beat
 const FR = frontS({ pts: MID2, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.1), until: T_ACC + 1.0 });
 tl.to(FR, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_ACC + 1.0);
-[["sm1", [1305, 660]], ["sm2", [1302, 700]], ["wal", [1268, 790]], ["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
+[["sm1", [1305, 660]], ["sm2", [1302, 700]], ["wal", [1268, 790]], ["mc1", [1275, 905]], ["mc2", [1375, 975]], ["mc3", [1465, 985]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
 pinPortrait("sm1", PHOTO("csmith"), FL.us, "C. F. Smith", 0, T_TELE + 0.4, true, "left");   // critic r1: named generals keep their cards (same map)
 const RED = [["bu", [1350, 712]], ["c1", [1352, 790]], ["c2", [1420, 805]], ["c3", [1490, 812]], ["c4", [1455, 780]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
@@ -454,7 +454,8 @@ const UN = belief("UNGENEROUS AND UNCHIVALROUS", "", T_UNG - 0.1, T_ACC - 0.1, {
 greyU(["bu", "c1", "c2", "c3", "c4"], T_ACC + 0.3);
 wstampS("ACCEPTED", 1585, 872, T_ACC + 0.1, null);   // empty ground north of the river
 hideU(["bu", "c1", "c2", "c3", "c4", "mc1", "mc2", "mc3", "wal", "sm1", "sm2", "ghq"], T_TELE + 0.4);
-unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
+unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); pinPortrait("pr", PHOTO("buckner"), FL.cs, "Buckner", T_TELE + 0.45, END + 1, true);   // Buckner stays staked to his surrendered garrison
+tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
 pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });

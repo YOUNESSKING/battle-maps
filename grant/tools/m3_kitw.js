@@ -376,6 +376,10 @@ const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.joi
   mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
   OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
   if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
+// night wash on the MAP only (inside the world, under the overlay): labels, stamps, units and cards keep full strength
+const nightWashMap = (t, until, a = 0.4, dur = 1.2) => { const el = document.createElement("div");
+  el.style.cssText = `position:absolute;left:-3000px;top:-3000px;width:9000px;height:8000px;background:rgba(6,10,26,${a});pointer-events:none`;
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 }); tl.to(el, { autoAlpha: 1, duration: dur }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 1.5 }, until); return el; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------

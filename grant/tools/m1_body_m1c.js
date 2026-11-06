@@ -64,7 +64,7 @@ const SH = [0, 1, 2, 3].map((k) => { const d1 = RL - 6 - k * 24, path = sub(RIVC
   sail(s, path, 0, T_BATTER + 0.2 + k * 0.15, 14); return { s, p: path[14], d: d1 }; });
 [0, 1].forEach((k) => { const d1 = RL - 130 - k * 24, path = sub(RIVC, Math.max(0, d1 - 400) / RL, d1 / RL, 12);   // two timberclads behind
   const s = ship("timber", "carth", path[0], 70, null, null, { L: 48 }); tl.set(s.el, { autoAlpha: 1 }, 0); sail(s, path, 0, T_BATTER + 0.6, 12); });
-const FPP = pinPortrait(SH[1].s.el, PHOTO("foote"), FL.us, "Foote", T_FOOTE, T_NIGHT - 0.2, true, "upleft");   // Foote on his flagship
+const FPP = pinPortrait(SH[1].s.el, PHOTO("foote"), FL.us, "Foote", T_FOOTE, T_NIGHT - 0.2, true, [-175, 30]);   // fixed side stake over the west bank, clear of the gunboats   // Foote on his flagship
 SH.forEach(({ p }) => stackSmoke([p[0] - 4, p[1] - 6], T_BATTER, T_DRIFT + 3, 1.7));
 // the duel (visible, big): bow guns -> batteries; batteries -> ships (plunging fire from the bluff); powder smoke at the firing beats
 const bow = (k) => [SH[k].p[0] + 4, SH[k].p[1] + 8];
@@ -90,7 +90,7 @@ tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", dur
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
 B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
 const BLK = `<svg width="26" height="18" viewBox="0 0 26 18" style="display:block;filter:drop-shadow(0 1px 2px #000)"><path d="M2 4 Q8 1 13 4 Q18 7 24 3 L24 14 Q18 17 13 14 Q8 11 2 14 Z" fill="#8d7a5e" stroke="#efe6cf" stroke-width="1.2"/><path d="M5 8 L21 8 M5 11 L21 11" stroke="#5a4a36" stroke-width="1"/></svg>`;
-[[1150, 640], [1100, 610], [1040, 590], [1180, 760], [1120, 740], [1060, 720], [990, 700]].forEach((p, k) => pinS(GG.pin(`<div style="transform:scale(1.5)">${BLK}</div>`, p[0], p[1], { t: T_BLANK + k * 0.15, pop: true, until: T_CHANCE + 0.4 })));
+// critic r2: blanket glyphs dropped (unreadable specks)
 // ---------- 15 Feb dawn: the breakout against the Union right ----------
 dawnWash(T_DAWN - 0.2, END + 1);
 [[[1440, 822], [1432, 860], [1418, 900]], [[1495, 828], [1498, 868], [1494, 900]], [[1380, 802], [1350, 838], [1318, 864]]].forEach((pts, k) =>

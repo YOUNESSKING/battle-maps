@@ -26,7 +26,8 @@ dateNow("JUNE 1864", T_12 - 0.1); B.date("12 JUNE 1864", T_12, null, 34);   // c
 // ---------- flags (48 px, behind each side's lines, both on every frame) ----------
 flagS(FL.us, 1488, 806, 0, T_LOOK + 1.2); flagS(FL.cs, 1380, 800, 0, T_SOUTH + 1.0);
 flagS(FL.cs, 1350, 930, T_SOUTH + 0.6, T_LOOK + 1.2);
-flagS(FL.us, 1530, 792, T_LOOK + 0.9, T_DARK + 1.4);   // off the start of Sheridan's trail flagS(FL.cs, 1250, 800, T_LOOK + 0.9, T_DARK + 1.4);
+flagS(FL.us, 1530, 792, T_LOOK + 0.9, T_DARK + 1.4);   // off the start of Sheridan's trail
+flagS(FL.cs, 1250, 800, T_LOOK + 0.9, T_DARK + 1.4);
 flagS(FL.us, 1520, 860, T_DARK + 1.1, END + 1); flagS(FL.cs, 1405, 905, T_DARK + 1.1, END + 1);
 // ---------- Cold Harbor: the two lines (the locked two-colour front where the sides touch) + the ink trenches ----------
 const FR = frontS({ pts: G.CH_FRONT, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(5.6), until: T_REST + 2.0 });
@@ -75,7 +76,7 @@ unitS("hc", "rome", HMP[0], "infantry", null, { t: T_LCAV - 0.2, size: "XX" }); 
 along("hc", HMP, T_LCAV + 0.2, 4.4, 18);
 arw({ pts: HMP, side: "rome", t: T_LCAV + 0.2, dur: 4.0, width: AW(2.35, 8), until: T_DARK - 0.5 });
 // critic r1: at the wide scale one box per side at Cold Harbor (the others step out, back when the camera returns)
-hideU(["u6", "u18", "v5", "r2", "r3", "rr"], T_LOOK + 0.3); showU(["u6", "u18", "v5", "r2", "r3", "rr"], T_12 + 0.2);
+hideU(["u6", "u18", "v5", "r2", "r3", "rr"], T_LOOK + 0.3); showU(["v5"], T_12 + 0.2);   // critic 2: one box per side for the rest of the scene (+ Warren's corps, which the narration follows)
 // ---------- after dark on the 12th: Warren crosses the Chickahominy and faces Richmond; the rest slips out south ----------
 nightWash(T_DARK, null, 0.42, 1.6);
 K.night({ lines: [FR], tOn: T_DARK });

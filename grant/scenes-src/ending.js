@@ -388,6 +388,10 @@ const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.joi
   mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
   OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
   if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
+// night wash on the MAP only (inside the world, under the overlay): labels, stamps, units and cards keep full strength
+const nightWashMap = (t, until, a = 0.4, dur = 1.2) => { const el = document.createElement("div");
+  el.style.cssText = `position:absolute;left:-3000px;top:-3000px;width:9000px;height:8000px;background:rgba(6,10,26,${a});pointer-events:none`;
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 }); tl.to(el, { autoAlpha: 1, duration: dur }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 1.5 }, until); return el; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------
@@ -476,7 +480,7 @@ const GT = ship("iron", "carth", [1460, 905], 20, 0, T_X2 + 0.6, { L: 40 }); sai
 // both armies on the map from frame 0: Grant's army between the forts, the garrison at Fort Donelson (step out at the map change)
 { const FH = G.ten.FORT_HENRY, FD = G.ten.FORT_DONELSON;
   unitS("ug", "carth", [FH[0] + (FD[0] - FH[0]) * 0.55, FH[1] + (FD[1] - FH[1]) * 0.55 - 14], "infantry", null, { t: 0, size: "XXX" });
-  unitS("cg", "rome", [FD[0] + 16, FD[1] + 14], "infantry", null, { t: 0, size: "XXX" }); hideU(["ug", "cg"], T_X2 + 0.3); }
+  unitS("cg", "rome", [FD[0] + 28, FD[1] + 22], "infantry", null, { t: 0, size: "XXX" }); hideU(["ug", "cg"], T_X2 + 0.3); }
 boxS("DONELSON", G.ten.FORT_DONELSON[0] + 30, G.ten.FORT_DONELSON[1] + 34, T_DON, null, { size: 28 });
 K.target(G.ten.FORT_DONELSON[0], G.ten.FORT_DONELSON[1], T_DON + 0.1, { r: 30, side: "#ffd54a", until: T_X2 });
 stampP("STILL DECIDING", G.ten.FORT_DONELSON[0] + 40, G.ten.FORT_DONELSON[1] + 70, at(P1, "still deciding"), T_VICK - 0.2, 26);
@@ -496,7 +500,7 @@ arw({ pts: R.MOVE, side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 8),
 // critic 2: the armies on the James map (a blue box rides the trail; Lee's army at Cold Harbor, then before Petersburg) + Richmond and Petersburg
 const RICHT = town("RICHMOND", R.RICHMOND, T_X3 + 0.4, "l", { keep: true });
 // critic: Richmond steps out while a big card would cover it (the two nickname cards, the question card)
-[[T_NICK + 0.05, T_NICK + 3.9], [T_1865 - 0.05, Math.min(T_1865 + 3.9, T_SURR)], [F_Q - 0.2, Math.max(F_TELL + 1.2, END - 20) + 0.9]].forEach(([a, b]) => { tl.to(RICHT.el, { autoAlpha: 0, duration: 0.25 }, a); tl.to(RICHT.el, { autoAlpha: 1, duration: 0.4 }, b); }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
+[[T_NICK + 0.05, T_NICK + 3.9], [T_1865 - 0.05, Math.min(T_1865 + 3.9, T_SURR)], [T_SURW - 0.2, T_E1END + 0.5], [F_Q - 0.2, Math.max(F_TELL + 1.2, END - 20) + 0.9]].forEach(([a, b]) => { tl.to(RICHT.el, { autoAlpha: 0, duration: 0.25 }, a); tl.to(RICHT.el, { autoAlpha: 1, duration: 0.4 }, b); }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
 unitS("eb", "carth", R.MOVE[0], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); along("eb", [...R.MOVE.slice(0, -1), [1450, 968]], T_JAMES - 0.1, 2.6, 24);
 unitS("er", "rome", [R.CH_FRONT[2][0] - 10, R.CH_FRONT[2][1]], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); B.move("er", T_SLIP + 0.8, 1.6, 1412, 955);
 glowPath([R.WEYANOKE, [R.WEYANOKE[0] - 1, R.WEYANOKE[1] + 5]], "", 2.0, T_JAMES + 0.8, T_JAMES + 3.8);
@@ -519,7 +523,7 @@ const NK2 = scr(`<div style="padding:16px 46px 18px;background:rgba(18,16,12,0.9
 tl.to(NK2.querySelector(".b"), { opacity: 1, color: "#ffd54a", duration: 0.35 }, T_METH); SFX("ref:boom", T_METH + 0.1);
 // ---------- the three surrenders, each named only as it is spoken ----------
 const row = (cls, name) => `<div class="${cls}" style="display:flex;justify-content:space-between;gap:30px;padding:0 6px;max-height:0;overflow:hidden;border-top:0 solid rgba(201,180,138,.35);opacity:0"><span>${name}</span><span class="y" style="color:#c9b48a;opacity:0"></span></div>`;
-const SC = scr(`<div style="width:900px;padding:16px 40px 18px;background:rgba(18,16,12,0.92);border-top:6px solid #4f8bff;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const SC = scr(`<div style="width:900px;padding:16px 40px 18px;background:rgba(18,16,12,0.97);border-top:6px solid #4f8bff;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:30px;letter-spacing:.4em;color:#c9b48a;text-align:center;margin-bottom:6px">THE SURRENDER</div>
   <div style="font-size:44px;letter-spacing:.05em">${row("r1", "THE DONELSON GARRISON")}${row("r2", "PEMBERTON'S ARMY · VICKSBURG")}${row("r3", "LEE'S ARMY")}</div></div>`,
   "left:0;right:0;top:250px;display:flex;justify-content:center;", T_SURW, T_EACH - 0.2, { autoAlpha: 0, y: 20 });
@@ -536,14 +540,16 @@ flagS(FL.us, 1100, 1010, T_LEE - 0.3, END + 1); flagS(FL.cs, 1010, 790, T_LEE - 
 // ---------- each time: the method, in the last sentence's own words ----------
 GG.METHOD_TITLE = "EACH TIME";
 GG.METHOD = ["HE MOVED BEFORE THE ENEMY WAS READY", "HE WENT WHERE THE ENEMY SAID HE COULD NOT GO"];
-const MC = GG.method(2, T_EACH, T_E1END + 0.4, [T_MOVED, T_COULD]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
+const MC = GG.method(2, T_EACH, T_E1END + 0.4, [T_MOVED, T_COULD]); MC.querySelector(".inner").style.background = "rgba(18,16,12,0.97)"; MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
 SFX("ref:pop", T_MOVED); SFX("ref:pop", T_COULD);
 const WIN = [[T_NICK + 0.2, T_SURR - 0.2], [T_SURW, T_EACH - 0.2], [T_EACH, T_E1END + 0.4]];
 // ---------- end-2: the final question ----------
 const E = EngageK(B);
 const FC = E.final({ moves: [["THE TWO RIVER FORTS", ""], ["VICKSBURG", ""], ["THE JAMES", ""]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL,
   tFamily: F_FAM, tSub: F_SUB, until: END + 1 });
-FC.querySelector(".fam").innerHTML = `FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY</span>`; FC.querySelector(".fam").style.fontSize = "56px";   // critic r1: >= 22 px in the end-screen band (scale 0.5)
+FC.querySelector(".fam").innerHTML = `FAMILY SERVED IN THE CIVIL WAR?<br><span style="color:#c9b48a">TELL US THEIR STORY</span>`;   // critic: break after the question
+FC.querySelectorAll(".m > div:nth-child(2)").forEach((d) => { d.style.fontSize = "46px"; d.style.lineHeight = "1.1"; });   // option labels >= 22 px in the band
+FC.querySelector(".fam").style.fontSize = "56px";   // critic r1: >= 22 px in the end-screen band (scale 0.5)
 // end screen: the last ~20 s the card shrinks to a top band and the dark backing lifts, the map alive under it
 FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?"; FC.querySelector(".q").style.fontSize = "72px";   // one line   // critic 2: the narration's words
 const tBand = Math.max(F_TELL + 1.2, END - 20);

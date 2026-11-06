@@ -64,12 +64,11 @@ const UL = frontS({ pts: ULINE.map((q, i) => [(q[0] + WORKS[i][0]) / 2, (q[1] + 
 unitS("wa", "carth", [1225, 760], "infantry", null, { t: T_HOLD });
 // ---------- 15,000 on the 8th > 50,000 a month later (one big card; the HUD steps out) ----------
 const CMP = scr(`<div style="display:flex;align-items:center;gap:40px;padding:24px 50px 26px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="text-align:center"><div style="font-size:78px;color:#9fc0ea">15,000</div></div>
-  <div class="gt" style="font-size:90px;color:#c9b48a">&gt;</div>
-  <div class="r" style="text-align:center"><div style="font-size:78px;color:#a8a294">50,000</div><div style="font-size:24px;letter-spacing:.24em">A MONTH LATER</div></div></div>`,
+  <div style="text-align:left"><div style="font-size:72px;color:#9fc0ea;line-height:1">15,000</div>
+  <div class="r" style="font-size:30px;letter-spacing:.12em;margin-top:8px">WOULD DO MORE THAN <span style="color:#c9b48a">50,000</span> · A MONTH LATER</div></div></div>`,
   "left:76px;top:224px;", T_50K - 1.6, END - 0.1);   // empty top-left (under the date scroll), off the works
-const R50 = CMP.querySelector(".r"), GT = CMP.querySelector(".gt"); gsap.set([R50, GT], { autoAlpha: 0 });
-tl.to(R50, { autoAlpha: 1, duration: 0.4 }, T_50K); tl.fromTo(GT, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.25, immediateRender: false }, T_MONTH + 0.3);
+const R50 = CMP.querySelector(".r"); gsap.set(R50, { autoAlpha: 0 });   // the spoken words, no ">"
+tl.to(R50, { autoAlpha: 1, duration: 0.4 }, T_50K - 0.6);
 SFX("hit", T_MONTH + 0.5);
 fixImgs();
 K.raiseTerritory();

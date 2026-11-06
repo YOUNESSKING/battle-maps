@@ -35,13 +35,14 @@ const PT = document.getElementById("relief2");   // (the lens drives it; s < 1.5
 tl.set(REL, { webkitMaskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)", maskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)" }, T_Z0);
 tl.to([REL, PT], { opacity: 0, duration: 2.6, ease: "sine.inOut" }, T_Z0 + 1.2);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
-camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 600, 1.0], [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
+camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 680, 1.6],   // critic: wide enough for the arriving veterans, every box/card >= 12 px apart [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
   [T_EVEN, 1480, 760, 1.5], [T_Z0 + 0.6, 1500, 700, 1.3], [T_Z1 + 1.4, 1760, 230, 0.55, "power2.inOut"], [T_ABAN + 1.0, 1700, 260, 0.56], [END, 1720, 250, 0.53]]);
 SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (both on every frame, re-placed for the overview) ----------
-flagS(FL.us, 1640, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1330, 720, 0, T_Z1 - 1.0);
-flagS(FL.us, 1660, 1000, T_Z1 - 1.2, END + 1);   // near the Union box, clear of the method card flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
+flagS(FL.us, 1720, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1330, 720, 0, T_Z0 + 0.3);
+flagS(FL.us, 1660, 1000, T_Z1 - 1.2, END + 1);   // near the Union box, clear of the method card
+flagS(FL.cs, 600, 900, T_Z0 + 0.3, END + 1);
 // ---------- 16-18 June: Smith's men and Hancock's corps; Lee's veterans arrive; the assaults fail ----------
 const NL = G.NEWLINE;
 const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(2.1), until: T_Z0 + 1.0 });
@@ -52,11 +53,11 @@ now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z0 + 0.2, tru
 B.move("s1", T_VET - 1.6, 1.2, 1494, 770); B.move("hk", T_VET - 1.6, 1.2, 1496, 885);   // critic 2: the three Union cards spaced
 unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1488, 940);
 const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 0.2, true, "east");
-unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET, 2.0, 1432, 842);
+unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET - 1.6, 1.2, 1420, 848);
 now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, true, "left"));
-const VET = [["v1", [1458, 768]], ["v2", [1456, 812]], ["v3", [1446, 880]], ["v4", [1430, 948]]];
-VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.4, size: "XXX" });
-  along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.4, 5.0, 22); });
+const VET = [["v1", [1448, 768]], ["v2", [1446, 812]], ["v3", [1440, 880]], ["v4", [1430, 948]]];
+VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.8, size: "XXX" });
+  along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.8, 5.0 - k * 0.3, 22); });   // staggered: never on top of each other
 [0, 1].forEach((k) => arw({ pts: G.LEE_S.map((q) => [q[0] + (k ? 26 : -20), q[1]]), side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(1.6, 9), until: T_VET + 4.6 + k * 0.5 }));
 stampP("LEE'S VETERANS", 1640, 470, T_VET + 0.1, T_18 - 0.1, 26);   // critic r1: on empty ground, not on the front
 // the assaults of the 16th-18th bounce off the line (visible guns, impacts)
@@ -89,8 +90,8 @@ const W5 = FWw(0.55);
 // critic 2: ONE continuous siege line from east of Richmond across the James and the Appomattox to south-west of Petersburg (both ends on land)
 frontS({ pts: [...G.SIEGE_N, ...G.HOWLETT, ...NL, ...G.SIEGE_S.slice(1)], sideA: "carth", sideB: "rome", t: T_PIN, dur: 3.2, width: W5, until: END + 1 });
 // "Lee was pinned in a siege": his army in the line (his card), the Union army facing it
-unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_PIN + 0.3, size: "XXXX" }); pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
-unitS("bp", "carth", [1530, 895], "infantry", null, { t: T_PIN + 0.5, size: "XXXX" });
+unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_Z0 + 0.4, size: "XXXX" });   // one army box per side through the zoom-out pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
+unitS("bp", "carth", [1530, 895], "infantry", null, { t: T_Z0 + 0.4, size: "XXXX" });
 const NM = numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "right:100px;top:560px;", T_NINE - 0.1, T_ABAN - 0.2, { col: "#c4121f", lc: "#ff8a80" });
 const RT = town("RICHMOND", G.RICHMOND, T_ABAN + 0.4, "l", { keep: true });
 focus([(G.RICHMOND[0] + G.PETERSBURG[0]) / 2, (G.RICHMOND[1] + G.PETERSBURG[1]) / 2], Math.abs(G.PETERSBURG[1] - G.RICHMOND[1]) / 2 + 160, T_ABAN + 0.2, T_ABAN + 3.4);

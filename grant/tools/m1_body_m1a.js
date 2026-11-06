@@ -30,7 +30,7 @@ water([FH[0] - 4, FH[1] + 4], 95, 62, -10, T_FLOOD - 0.1, null);
 const FHI = fortIcon(FH, 0, null, { s: 26 }); FHI.toBlue(T_SURR + 0.2);   // captured: the star turns blue
 poleFlag(FL.cs, [FH[0] + 4, FH[1] - 8], T_SURR - 1.0, T_SURR + 0.5, 30); poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], T_SURR + 0.55, T_SURR + 3.6, 30);   // flag switch only at the surrender beat
 boxS("FORT HENRY", FH[0] + 34, FH[1] + 30, T_FHN + 2.8, null, { size: 26 });
-curveLabel("Tennessee River", [[1150, 300], [1185, 380], [1222, 455]], T_STEAM + 0.2, T_STEAM + 3.6, 22);
+curveLabel("Tennessee River", [[1262, 600], [1270, 650], [1278, 700]], T_STEAM + 0.2, T_STEAM + 3.6, 22);   // fully in frame through the push-in
 // ---------- Foote's flotilla: four ironclads in line ahead, three timberclads behind (Memoirs: seven gunboats), on the river ----------
 let RL = 0; for (let j = 1; j < TENN.length; j++) RL += Math.hypot(TENN[j][0] - TENN[j - 1][0], TENN[j][1] - TENN[j - 1][1]);
 const at_ = (d) => posOn(TENN, Math.max(0, Math.min(1, d / RL)));   // a point d map px down the river from the top edge
@@ -57,14 +57,13 @@ profileStrip(`<path d="M0 70 L120 70 C140 70 150 96 170 98 L310 98 C330 96 340 7
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="270" y="44">Fort Henry</text><text x="270" y="119">two feet deep in water</text><text x="70" y="104">the river in flood</text></g>`,
   T_TWO, T_CMDR + 0.2);
 // ---------- Tilghman had already sent his men away (toward Fort Donelson); he gives the fort to the navy ----------
-unitS("til", "rome", [FH[0] + 18, FH[1] + 16], "artillery", null, { t: 0, w: 44, h: 30 }); hideU(["til"], T_SURR + 0.5);   // gone when the flag switches
-pinPortrait("til", PHOTO("tilghman"), FL.cs, "Tilghman", T_TIL - 0.05, T_SURR + 0.5, true, "left");
+unitS("til", "rome", [FH[0] + 30, FH[1] + 22], "artillery", "ABOUT 90 MEN", { t: 0, w: 44, h: 30 });   // the small garrison; surrendered, it stays with its tag
+pinPortrait("til", PHOTO("tilghman"), FL.cs, "Tilghman", T_TIL - 0.05, END + 1, true, "left"); tagAt("til", T_NINETY);   // card stays all battle; the tag on "about ninety men"
 unitS("gar", "rome", [FH[0] + 52, FH[1] + 12], "infantry", null, { t: 0 });
 const OUT = [[FH[0] + 52, FH[1] + 12], [1400, 806], [1470, 818], [1520, 826], [1556, 830]];
 along("gar", OUT, T_MARCH - 0.2, 3.4, 18); hideU(["gar"], T_MARCH + 3.6);
 arw({ pts: [[FH[0] + 48, FH[1] + 2], [1410, 798], [1480, 812], [1540, 822]], side: "rome", t: T_MARCH - 0.2, dur: 3.2, width: AW(2.2), until: T_MARCH + 4.4 });   // real move: thin trail, fades ~2 s after arrival
 wstampS("SURRENDERED", 1214, 838, T_SURR + 0.15, T_SURR + 3.4);   // on empty ground west of the river
-boxS("ABOUT 90 MEN", 1418, 790, T_NINETY, null, { size: 22 });
 // ---------- Grant had not needed to storm the fort: his columns, still on the road from the landing ----------
 unitS("g1", "carth", [LAND[0] + 6, LAND[1] - 20], "infantry", null, { t: 0 }); unitS("g2", "carth", [LAND[0] + 40, LAND[1] - 4], "infantry", null, { t: 0 });
 along("g1", [[LAND[0] + 6, LAND[1] - 20], [1354, 730], [1356, 742]], 0.6, T_SURR, 10);

@@ -43,7 +43,7 @@ const unit = (id, side, p, icon, label, o = {}) => {
 };
 const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
   o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
-  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path"); g.classList.add("arwg");
   ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
   const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
@@ -179,13 +179,13 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 8) / 32)).toFixed(3);   // also steps out under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
         const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
-        const o = under || edge ? "0" : ""; b.style.opacity = o; const tg = b.parentElement.querySelector(".tag"); if (tg) tg.style.opacity = o; }); }
+        const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
@@ -195,7 +195,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => { const el = pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o)); el.classList.add("wlabel"); return el; };   // STYLE W label; passing labels <= 3.5 s
-const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
+const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.classList.add("sflag"); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
   const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {})); el.classList.add("wstamp");
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
@@ -343,13 +343,13 @@ const pinPortrait = (id, photo, flagSrc, name, t, until, keep = false, side = "u
   // critic r2: placement pass. tools/m1_place.js solves a screen offset per card (window.CARDPOS[key] = [dx, dy] from the unit centre):
   // the card stands on a side stake clear of counters, fort stars, front lines, the date scroll and the other cards
   const key = name + "@" + (typeof id === "string" ? id : (id.dataset.pk || (id.dataset.pk = "el" + (window.__PK = (window.__PK || 0) + 1))));
-  const P = (window.CARDPOS || {})[key];
+  const P = Array.isArray(side) ? side : (window.CARDPOS || {})[key];   // a fixed [dx, dy] side stake wins over the solver
   if (P) { const [dx, dy] = P, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, hostRect = typeof id === "string";
     w.style.left = "50%"; w.style.top = hostRect ? "18px" : "0px";
     Object.assign(card.style, { left: (dx - 38).toFixed(1) + "px", top: (dy - 59).toFixed(1) + "px", bottom: "auto" });
     Object.assign(stake.style, { left: (ux * 20).toFixed(1) + "px", top: (uy * 20).toFixed(1) + "px", bottom: "auto", width: Math.max(4, L - 20).toFixed(1) + "px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1)}deg)` }); }
   card.style.zIndex = "2"; card.classList.add("pcard"); stake.classList.add("pstake");
-  (window.__CARDS = window.__CARDS || []).push({ key, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
+  (window.__CARDS = window.__CARDS || []).push({ key, fixed: Array.isArray(side) ? side : null, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = typeof id === "string" ? B.units[id].el.querySelector(".tag") : null;
   if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -424,7 +424,7 @@ hideU(["r1", "r2", "r3"], T_WAIT);   // they have fallen back off the stage befo
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["HE MOVED FAST", "HIT THE SECOND FORT BEFORE HELP COULD COME", "ATTACKED THE MOMENT THE ENEMY HESITATED"];   // spoken words only (m1-9)
 const MC = GG.method(3, T_FAST - 0.1, T_ATT + 3.0, [T_FAST, T_HIT2, T_ATT]);   // holds ~3 s after line 3
-MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "32px"; r.style.lineHeight = "1.25"; }); { const inr = MC.querySelector(".inner"); if (inr) inr.style.padding = "14px 34px 16px"; }   // critic r2: <= 25 % of the frame
+MC.style.top = "600px"; MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "32px"; r.style.lineHeight = "1.25"; }); { const inr = MC.querySelector(".inner"); if (inr) inr.style.padding = "14px 34px 16px"; }   // critic r2: <= 25 % of the frame
 SFX("ref:pop", T_FAST + 0.1); SFX("ref:pop", T_HIT2 + 0.1); SFX("ref:boom", T_ATT + 0.2);
 // ---------- move1-sub: only the beginning; the question (dark-to-bluff transition); subscribe; NEXT ----------
 const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:url(assets/media/m1f_bluff_w.jpg) center / cover no-repeat;pointer-events:none";   // critic r2: the question scene on the REAL Style W map (crop of vicksburg_siege_w: the river bend under the hachured bluff)
@@ -433,24 +433,24 @@ document.getElementById("fx").appendChild(DK); gsap.set(DK, { autoAlpha: 0 }); t
 const BLF = "M 1333 168 L 1293 355 L 1267 541 L 1213 728 L 1147 861 L 1067 1008";
 const BS = scr(`<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="display:block">
   <path class="bl" d="${BLF}" fill="none" stroke="#463a1e" stroke-width="3" stroke-linecap="round" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0"/>
-  <g class="guns">${[[1352, 250], [1322, 420], [1292, 590], [1243, 740], [1176, 890]].map(([x, y]) => `<g transform="translate(${x} ${y})"><rect x="-16" y="-10" width="32" height="20" fill="#c4121f" stroke="#1a1712" stroke-width="1.5"/><path d="M-9 -6 L9 6 M9 -6 L-9 6" stroke="#f7f3ea" stroke-width="2"/><circle class="fl" cx="-24" cy="0" r="12" fill="#ffd27a" opacity="0"/></g>`).join("")}</g>
+  <g class="guns">${[[1372, 250], [1342, 420], [1312, 590], [1263, 740], [1196, 890]].map(([x, y]) => `<g transform="translate(${x} ${y})"><rect x="-27" y="-18" width="54" height="36" fill="#c4121f" stroke="#1a1712" stroke-width="2"/><circle cx="0" cy="0" r="7" fill="#f7f3ea"/><circle class="fl" cx="-36" cy="0" r="13" fill="#ffd27a" opacity="0"/></g>`).join("")}</g>
   </svg>`, "left:0;top:0;width:1920px;height:1080px;", T_HOW + 0.4, END + 1, { autoAlpha: 0 });
 gsap.set(BS.querySelector(".guns"), { autoAlpha: 0 });
 { const bl = BS.querySelector(".bl"); tl.to(bl, { opacity: 0.75, duration: 0.2 }, T_BLUFF); tl.to(bl, { attr: { "stroke-dashoffset": 0 }, duration: 1.0, ease: "sine.out" }, T_BLUFF); tl.to(bl, { opacity: 0, duration: 0.8 }, T_BLUFF + 3.2); }
 const FLB = flag(FL.cs, 0, 0, null, null, 48); SCN.insertBefore(FLB, document.getElementById("credit")); FLB.classList.remove("gg-pin");
-Object.assign(FLB.style, { position: "absolute", left: "1560px", top: "430px" }); gsap.set(FLB, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLB, { autoAlpha: 1, duration: 0.5 }, T_BLUFF);
+Object.assign(FLB.style, { position: "absolute", left: "1560px", top: "430px" }); gsap.set(FLB, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLB, { autoAlpha: 1, duration: 0.5 }, T_HOW + 0.4);   // both flags from the cut
 const FLU = flag(FL.us, 0, 0, null, null, 48); SCN.insertBefore(FLU, document.getElementById("credit")); FLU.classList.remove("gg-pin");
-Object.assign(FLU.style, { position: "absolute", left: "420px", top: "640px" }); gsap.set(FLU, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLU, { autoAlpha: 1, duration: 0.5 }, T_RIVER);
+Object.assign(FLU.style, { position: "absolute", left: "420px", top: "640px" }); gsap.set(FLU, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLU, { autoAlpha: 1, duration: 0.5 }, T_HOW + 0.4);
 B.caption("A FORTRESS ON A HIGH BLUFF", T_BLUFF, T_BLUFF + 2.6, "rome");
 // the supply steamer (blue) comes down the river, right under the guns
 const SUP = document.createElement("div"); SUP.style.cssText = "position:absolute;left:0;top:0;width:0;height:0"; SUP.innerHTML = `<div style="position:absolute;left:-55px;top:-19px;width:110px">${shipSVG("steamer", "carth", 110)}</div>`;
 SCN.insertBefore(SUP, document.getElementById("credit")); gsap.set(SUP, { autoAlpha: 0 });
-const RP = [[453, -40], [560, 48], [800, 168], [1040, 261], [1187, 355], [1147, 488], [1040, 675], [907, 808], [827, 968], [787, 1120]];   // the river in the crop
-tl.set(SUP, { autoAlpha: 1, left: RP[0][0], top: RP[0][1] }, T_RIVER - 0.2);
+const RP = [[800, 168], [1040, 261], [1187, 355], [1147, 488], [1040, 675], [907, 808], [827, 968], [787, 1120]];   // the river in the crop
+tl.set(SUP, { left: RP[0][0], top: RP[0][1] }, 0); tl.to(SUP, { autoAlpha: 1, duration: 0.5 }, T_HOW + 0.4);   // the supply steamer on the river from the cut
 for (let k = 1; k <= 24; k++) { const a = posOn(RP, (k - 1) / 24), b = posOn(RP, k / 24), tt = T_RIVER - 0.2 + (k - 1) * 0.3;
   tl.to(SUP, { left: b[0], top: b[1], duration: 0.3, ease: "none" }, tt); tl.to(SUP.firstElementChild, { rotation: Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI, duration: 0.3, ease: "none" }, tt); }
 tl.to(SUP, { autoAlpha: 0, duration: 0.6 }, END - 0.4);
-tl.to(BS.querySelector(".guns"), { autoAlpha: 1, duration: 0.4 }, T_GUNS - 0.3);
+tl.to(BS.querySelector(".guns"), { autoAlpha: 1, duration: 0.4 }, T_HOW + 0.4);   // batteries from the cut; they fire on "under its guns"
 [...BS.querySelectorAll(".fl")].forEach((f, k) => { [0, 1.6, 3.2].forEach((d) => { const t = T_GUNS + 0.2 + k * 0.28 + d;
   tl.fromTo(f, { opacity: 1, scale: 0.4 }, { opacity: 0, scale: 1.6, duration: 0.35, immediateRender: false, transformOrigin: "50% 50%" }, t); if (d === 0) SFX("fire", t); }); });
 // woven subscribe: small button bottom-right, cursor click, bell; never a full-screen card

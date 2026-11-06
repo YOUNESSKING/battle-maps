@@ -6,7 +6,7 @@
 // where the sides touch; the ground the breakout takes hatches RED (gn_don_ctl_feb15acap, ~3 s). Foote's portrait rides his flagship (greys
 // on "wounded"); Grant (no unit here) = one corner badge <= 3.5 s. Captions cut to the two claims to remember.
 // Built with: python3 tools/m1_build.py m1c donelson_w m1-3 m1-4
-window.CARDPOS = {"Grant@ghq":[-198,-53],"Floyd@fl":[198,53],"Pillow@c2":[75,-280],"Buckner@bu":[50,-87],"Foote@el1":[71,71],"cap1":"right"};
+window.CARDPOS = {"Grant@ghq":[-87,-50],"Floyd@fl":[237,63],"Pillow@c2":[75,-280],"Buckner@bu":[50,-87],"Foote@el1":[-175,30],"cap1":"right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -43,7 +43,7 @@ const unit = (id, side, p, icon, label, o = {}) => {
 };
 const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
   o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
-  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path"); g.classList.add("arwg");
   ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
   const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
@@ -179,13 +179,13 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 8) / 32)).toFixed(3);   // also steps out under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
         const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
-        const o = under || edge ? "0" : ""; b.style.opacity = o; const tg = b.parentElement.querySelector(".tag"); if (tg) tg.style.opacity = o; }); }
+        const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
@@ -195,7 +195,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => { const el = pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o)); el.classList.add("wlabel"); return el; };   // STYLE W label; passing labels <= 3.5 s
-const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
+const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.classList.add("sflag"); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
   const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {})); el.classList.add("wstamp");
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
@@ -343,13 +343,13 @@ const pinPortrait = (id, photo, flagSrc, name, t, until, keep = false, side = "u
   // critic r2: placement pass. tools/m1_place.js solves a screen offset per card (window.CARDPOS[key] = [dx, dy] from the unit centre):
   // the card stands on a side stake clear of counters, fort stars, front lines, the date scroll and the other cards
   const key = name + "@" + (typeof id === "string" ? id : (id.dataset.pk || (id.dataset.pk = "el" + (window.__PK = (window.__PK || 0) + 1))));
-  const P = (window.CARDPOS || {})[key];
+  const P = Array.isArray(side) ? side : (window.CARDPOS || {})[key];   // a fixed [dx, dy] side stake wins over the solver
   if (P) { const [dx, dy] = P, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, hostRect = typeof id === "string";
     w.style.left = "50%"; w.style.top = hostRect ? "18px" : "0px";
     Object.assign(card.style, { left: (dx - 38).toFixed(1) + "px", top: (dy - 59).toFixed(1) + "px", bottom: "auto" });
     Object.assign(stake.style, { left: (ux * 20).toFixed(1) + "px", top: (uy * 20).toFixed(1) + "px", bottom: "auto", width: Math.max(4, L - 20).toFixed(1) + "px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1)}deg)` }); }
   card.style.zIndex = "2"; card.classList.add("pcard"); stake.classList.add("pstake");
-  (window.__CARDS = window.__CARDS || []).push({ key, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
+  (window.__CARDS = window.__CARDS || []).push({ key, fixed: Array.isArray(side) ? side : null, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = typeof id === "string" ? B.units[id].el.querySelector(".tag") : null;
   if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -437,7 +437,7 @@ const SH = [0, 1, 2, 3].map((k) => { const d1 = RL - 6 - k * 24, path = sub(RIVC
   sail(s, path, 0, T_BATTER + 0.2 + k * 0.15, 14); return { s, p: path[14], d: d1 }; });
 [0, 1].forEach((k) => { const d1 = RL - 130 - k * 24, path = sub(RIVC, Math.max(0, d1 - 400) / RL, d1 / RL, 12);   // two timberclads behind
   const s = ship("timber", "carth", path[0], 70, null, null, { L: 48 }); tl.set(s.el, { autoAlpha: 1 }, 0); sail(s, path, 0, T_BATTER + 0.6, 12); });
-const FPP = pinPortrait(SH[1].s.el, PHOTO("foote"), FL.us, "Foote", T_FOOTE, T_NIGHT - 0.2, true, "upleft");   // Foote on his flagship
+const FPP = pinPortrait(SH[1].s.el, PHOTO("foote"), FL.us, "Foote", T_FOOTE, T_NIGHT - 0.2, true, [-175, 30]);   // fixed side stake over the west bank, clear of the gunboats   // Foote on his flagship
 SH.forEach(({ p }) => stackSmoke([p[0] - 4, p[1] - 6], T_BATTER, T_DRIFT + 3, 1.7));
 // the duel (visible, big): bow guns -> batteries; batteries -> ships (plunging fire from the bluff); powder smoke at the firing beats
 const bow = (k) => [SH[k].p[0] + 4, SH[k].p[1] + 8];
@@ -463,7 +463,7 @@ tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", dur
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
 B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
 const BLK = `<svg width="26" height="18" viewBox="0 0 26 18" style="display:block;filter:drop-shadow(0 1px 2px #000)"><path d="M2 4 Q8 1 13 4 Q18 7 24 3 L24 14 Q18 17 13 14 Q8 11 2 14 Z" fill="#8d7a5e" stroke="#efe6cf" stroke-width="1.2"/><path d="M5 8 L21 8 M5 11 L21 11" stroke="#5a4a36" stroke-width="1"/></svg>`;
-[[1150, 640], [1100, 610], [1040, 590], [1180, 760], [1120, 740], [1060, 720], [990, 700]].forEach((p, k) => pinS(GG.pin(`<div style="transform:scale(1.5)">${BLK}</div>`, p[0], p[1], { t: T_BLANK + k * 0.15, pop: true, until: T_CHANCE + 0.4 })));
+// critic r2: blanket glyphs dropped (unreadable specks)
 // ---------- 15 Feb dawn: the breakout against the Union right ----------
 dawnWash(T_DAWN - 0.2, END + 1);
 [[[1440, 822], [1432, 860], [1418, 900]], [[1495, 828], [1498, 868], [1494, 900]], [[1380, 802], [1350, 838], [1318, 864]]].forEach((pts, k) =>

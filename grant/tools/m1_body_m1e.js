@@ -31,18 +31,18 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 const NW = nightWash(0, T_DAWN - 0.2, 0.5); gsap.set(NW, { autoAlpha: 1 }); tl.getTweensOf(NW).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill());
 dawnWash(T_DAWN - 0.3, T_TELE);
 hand("assets/media/gn_don_ctl_feb16cap_mx.png", T_ACC + 0.9);   // the surrender: the pocket and the ground behind it pass to the Union (blue ink)
-camera([[0, 1480, 760, 2.2], [T_STEAM + 0.4, 1560, 740, 2.0], [T_FEAR, 1600, 760, 1.9], [T_FOR, 1560, 860, 2.1], [T_BACKW + 0.6, 1590, 900, 2.0],
+camera([[0, 1480, 760, 2.2], [T_STEAM + 0.4, 1560, 740, 2.0], [T_FEAR, 1600, 760, 1.9], [T_FOR, 1500, 860, 1.6], [T_BACKW + 0.6, 1520, 880, 1.6]   /* critic r2: wider, so the pocket and its cards stay in frame (no toggling) */,
   [T_CMD, 1450, 770, 2.2], [T_DAWN + 0.3, 1380, 790, 1.8], [T_ANS + 0.4, 1340, 850, 1.8], [T_BCALL, 1340, 850, 1.8], [T_ACC, 1400, 760, 2.0], [T_TELE, 1380, 760, 1.35],
   [T_LET, 1360, 740, 1.2], [T_LOSS - 0.4, 1350, 705, 1.12], [END, 1340, 700, 1.12]]);   // the result card has the upper band to itself
 dateNow("15 FEB · NIGHT", T_DAWN - 0.1); B.date("16 FEB · DAWN", T_DAWN, T_ANS - 0.1, 34); B.date("16 FEBRUARY 1862", T_ANS, null, 34);
 // ---------- flags ----------
 flagS(FL.us, 1290, 880, 0, T_ACC + 1.6); flagS(FL.cs, 1600, 790, 0, T_ACC + 1.6);
-flagS(FL.us, 1060, 660, T_ACC + 1.4, END + 1); flagS(FL.cs, 1800, 900, T_ACC + 1.5, END + 1);
+flagS(FL.us, 1060, 780, T_ACC + 1.4, END + 1); flagS(FL.cs, 1800, 900, T_ACC + 1.5, END + 1);
 // ---------- the pocket as m1d left it ----------
 const DONI = fortIcon(DON, 0, null, { s: 24 }); DONI.toBlue(T_ACC + 0.3); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], T_ACC - 1.2, T_ACC + 0.4, 28); poleFlag(FL.us, [DON[0] + 4, DON[1] - 8], T_ACC + 0.45, T_ACC + 3.6, 30);   // the flag switch only at the surrender beat
 const FR = frontS({ pts: MID2, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.1), until: T_ACC + 1.0 });
 tl.to(FR, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_ACC + 1.0);
-[["sm1", [1305, 660]], ["sm2", [1302, 700]], ["wal", [1268, 790]], ["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
+[["sm1", [1305, 660]], ["sm2", [1302, 700]], ["wal", [1268, 790]], ["mc1", [1275, 905]], ["mc2", [1375, 975]], ["mc3", [1465, 985]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
 pinPortrait("sm1", PHOTO("csmith"), FL.us, "C. F. Smith", 0, T_TELE + 0.4, true, "left");   // critic r1: named generals keep their cards (same map)
 const RED = [["bu", [1350, 712]], ["c1", [1352, 790]], ["c2", [1420, 805]], ["c3", [1490, 812]], ["c4", [1455, 780]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
@@ -81,7 +81,8 @@ const UN = belief("UNGENEROUS AND UNCHIVALROUS", "", T_UNG - 0.1, T_ACC - 0.1, {
 greyU(["bu", "c1", "c2", "c3", "c4"], T_ACC + 0.3);
 wstampS("ACCEPTED", 1585, 872, T_ACC + 0.1, null);   // empty ground north of the river
 hideU(["bu", "c1", "c2", "c3", "c4", "mc1", "mc2", "mc3", "wal", "sm1", "sm2", "ghq"], T_TELE + 0.4);
-unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
+unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); pinPortrait("pr", PHOTO("buckner"), FL.cs, "Buckner", T_TELE + 0.45, END + 1, true);   // Buckner stays staked to his surrendered garrison
+tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
 pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });

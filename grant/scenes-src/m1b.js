@@ -4,7 +4,7 @@
 // Fort Henry at the left edge, Fort Donelson on the Cumberland. Clean map; the ground the Union closes in on hatches BLUE on "within gunshot"
 // (gn_don_ctl_feb13cap, ~3 s). Portraits: Grant at his column, Floyd / Pillow / Buckner at their commands inside the works.
 // Built with: python3 tools/m1_build.py m1b donelson_w m1-2 m1-2
-window.CARDPOS = {"Grant@mc":[-212,-123],"Floyd@fl":[34,-126],"Pillow@pi":[103,-178],"Buckner@bu":[0,-245],"cap0":"left"};
+window.CARDPOS = {"Grant@mc":[-251,-145],"Floyd@fl":[87,-50],"Pillow@pi":[145,-145],"Buckner@bu":[0,-205],"cap0":"left"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -41,7 +41,7 @@ const unit = (id, side, p, icon, label, o = {}) => {
 };
 const arw = (o) => { delete o.dash;   // STYLE W (critic r1): thin solid trail, thin dark edge (no white casing), fades ~2 s after arrival
   o.until = Math.min(o.until != null ? o.until : 1e9, o.t + (o.dur || 1) + 2.2);
-  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path"); g.classList.add("arwg");
   ps[0].setAttribute("stroke", "rgba(30,26,14,0.55)"); ps[0].setAttribute("stroke-width", (w * 1.35).toFixed(2));
   const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("stroke", "rgba(30,26,14,0.55)"); hd.setAttribute("stroke-width", (w * 0.25).toFixed(2)); } return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
@@ -177,13 +177,13 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const dr = document.getElementById("date").getBoundingClientRect(), md = dr.width ? Math.max(r.left - dr.right, dr.left - r.right, r.top - dr.bottom, dr.top - r.bottom) : 99;
-      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 8) / 32)).toFixed(3);   // also steps out under the date scroll
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom, md + 28), k = Math.max(0, Math.min(1, (m - 30) / 14)).toFixed(3);   // steps out (only) while cropped (< 40 px) or under the date scroll
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
         const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
-        const o = under || edge ? "0" : ""; b.style.opacity = o; const tg = b.parentElement.querySelector(".tag"); if (tg) tg.style.opacity = o; }); }
+        const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
@@ -193,7 +193,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
 const boxS = (txt, x, y, t, until, o = {}) => { const el = pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o)); el.classList.add("wlabel"); return el; };   // STYLE W label; passing labels <= 3.5 s
-const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
+const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.classList.add("sflag"); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
   const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {})); el.classList.add("wstamp");
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
@@ -341,13 +341,13 @@ const pinPortrait = (id, photo, flagSrc, name, t, until, keep = false, side = "u
   // critic r2: placement pass. tools/m1_place.js solves a screen offset per card (window.CARDPOS[key] = [dx, dy] from the unit centre):
   // the card stands on a side stake clear of counters, fort stars, front lines, the date scroll and the other cards
   const key = name + "@" + (typeof id === "string" ? id : (id.dataset.pk || (id.dataset.pk = "el" + (window.__PK = (window.__PK || 0) + 1))));
-  const P = (window.CARDPOS || {})[key];
+  const P = Array.isArray(side) ? side : (window.CARDPOS || {})[key];   // a fixed [dx, dy] side stake wins over the solver
   if (P) { const [dx, dy] = P, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, hostRect = typeof id === "string";
     w.style.left = "50%"; w.style.top = hostRect ? "18px" : "0px";
     Object.assign(card.style, { left: (dx - 38).toFixed(1) + "px", top: (dy - 59).toFixed(1) + "px", bottom: "auto" });
     Object.assign(stake.style, { left: (ux * 20).toFixed(1) + "px", top: (uy * 20).toFixed(1) + "px", bottom: "auto", width: Math.max(4, L - 20).toFixed(1) + "px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1)}deg)` }); }
   card.style.zIndex = "2"; card.classList.add("pcard"); stake.classList.add("pstake");
-  (window.__CARDS = window.__CARDS || []).push({ key, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
+  (window.__CARDS = window.__CARDS || []).push({ key, fixed: Array.isArray(side) ? side : null, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = typeof id === "string" ? B.units[id].el.querySelector(".tag") : null;
   if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -437,12 +437,11 @@ const UL = frontS({ pts: ULINE.map((q, i) => [(q[0] + WORKS[i][0]) / 2, (q[1] + 
 unitS("wa", "carth", [1225, 760], "infantry", null, { t: T_HOLD });
 // ---------- 15,000 on the 8th > 50,000 a month later (one big card; the HUD steps out) ----------
 const CMP = scr(`<div style="display:flex;align-items:center;gap:40px;padding:24px 50px 26px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="text-align:center"><div style="font-size:78px;color:#9fc0ea">15,000</div></div>
-  <div class="gt" style="font-size:90px;color:#c9b48a">&gt;</div>
-  <div class="r" style="text-align:center"><div style="font-size:78px;color:#a8a294">50,000</div><div style="font-size:24px;letter-spacing:.24em">A MONTH LATER</div></div></div>`,
+  <div style="text-align:left"><div style="font-size:72px;color:#9fc0ea;line-height:1">15,000</div>
+  <div class="r" style="font-size:30px;letter-spacing:.12em;margin-top:8px">WOULD DO MORE THAN <span style="color:#c9b48a">50,000</span> · A MONTH LATER</div></div></div>`,
   "left:76px;top:224px;", T_50K - 1.6, END - 0.1);   // empty top-left (under the date scroll), off the works
-const R50 = CMP.querySelector(".r"), GT = CMP.querySelector(".gt"); gsap.set([R50, GT], { autoAlpha: 0 });
-tl.to(R50, { autoAlpha: 1, duration: 0.4 }, T_50K); tl.fromTo(GT, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.25, immediateRender: false }, T_MONTH + 0.3);
+const R50 = CMP.querySelector(".r"); gsap.set(R50, { autoAlpha: 0 });   // the spoken words, no ">"
+tl.to(R50, { autoAlpha: 1, duration: 0.4 }, T_50K - 0.6);
 SFX("hit", T_MONTH + 0.5);
 fixImgs();
 K.raiseTerritory();

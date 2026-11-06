@@ -58,10 +58,11 @@ const C1 = belief("WHOEVER ATTACKED FIRST NOW WOULD WIN", "", T_WHO, T_WHO + 3.4
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line: "it acted like a charm" (narrated; the caption carries no quote marks)
 const CBOX = `<svg width="26" height="20" viewBox="0 0 26 20" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="2" y="3" width="22" height="15" rx="2" fill="#2a2420" stroke="#efe6cf" stroke-width="1.4"/><rect x="2" y="3" width="22" height="5" fill="#4a3c2c" stroke="#efe6cf" stroke-width="1.2"/><circle cx="13" cy="12" r="2.6" fill="#c9b48a"/></svg>`;
-[[1265, 925], [1365, 975], [1455, 990], [1300, 960], [1405, 985]].forEach((p, k) => pinS(GG.pin(`<div style="transform:scale(1.5)">${CBOX}</div>`, p[0], p[1], { t: T_FILL + k * 0.18, pop: true, until: T_CHARM + 2.5 })));
+// critic r2: crate glyphs dropped (drawn over the cards)
 SFX("ref:pop", T_FILL + 0.2);
 ungreyU(["mc1", "mc2", "mc3"], T_BACK);
-[["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p], k) => B.move(id, T_BACK + 0.1 + k * 0.15, 2.0, p[0], p[1]));
+[["mc1", [1275, 905]], ["mc2", [1375, 975]], ["mc3", [1465, 985]]].forEach(([id, p], k) => B.move(id, T_BACK + 0.1 + k * 0.15, 2.0, p[0], p[1]));   // >= 12 px off the red boxes across the line
+along("gr", [[1390, 960], [1330, 920], [1280, 860], [1240, 825]], T_REPORT, 3.0, 12);   // Grant rides back to his headquarters (stays in frame for the night shot)
 B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_REPORT - 0.1, "carth");
 // the official report: the confusion on the Confederate side as great as his own, possibly greater
 const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "OFFICIAL REPORT", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 40, pos: "right:60px;bottom:70px;" });
