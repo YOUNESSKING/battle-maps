@@ -65,7 +65,7 @@ const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 const BACK = DEC.previousElementSibling;
 // critic r1: the card sits on the empty lower half with its own opaque backing; the dim only covers the lower half, Grant + his army stay visible above
-Object.assign(DEC.style, { top: "470px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
+Object.assign(DEC.style, { top: "530px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
 BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
