@@ -27,7 +27,7 @@ zoomBox(1335, 800, 1.75, T_FERRY - 1.4);   // where the camera is about to dive
 camera([[0, 1180, 640, 1.6], [T_FERRY, 1250, 700, 2.1], [T_WIL + 0.8, 1310, 780, 3.2], [T_WEY + 0.6, 1360, 830, 3.4], [T_101, 1385, 842, 4.2], [T_90, 1385, 850, 4.0],
   [T_ELEV, 1380, 865, 3.8], [T_TWO, 1360, 870, 3.0], [T_GUNS + 1.0, 1250, 880, 2.4], [T_GUESS - 0.3, 940, 720, 1.05],   // settled before Lee's army appears
   [T_16, 920, 730, 1.0], [END, 930, 735, 1.02]]);
-dateNow("12 JUNE 1864", T_MORN + 0.8); B.date("14 JUNE 1864", T_MORN + 0.9, T_16 - 0.1, 34); B.date("16 JUNE 1864", T_16, T_17 - 0.1, 34); B.date("17 JUNE 1864", T_17, null, 34);
+dateNow("12 JUNE 1864", T_MORN + 0.8); B.date("14 JUNE 1864", T_MORN + 0.9, T_FOUR - 0.1, 34); B.date("14 JUNE 1864 · 4 PM", T_FOUR, T_ELEV - 0.1, 30); B.date("14 JUNE 1864 · 11 PM", T_ELEV, T_TWO - 0.1, 30); B.date("14 JUNE 1864", T_TWO, T_16 - 0.1, 34);   // critic: the time in the scroll (no clock badge on the scroll) B.date("16 JUNE 1864", T_16, T_17 - 0.1, 34); B.date("17 JUNE 1864", T_17, null, 34);
 // dawn of the 14th (the night of m3a fades)
 nightWash(0, 1.2, 0.42, 0.01);
 const TODC = todDiv("rgba(100,135,205,0.55)"); tl.to(TODC, { opacity: 0.4, duration: 1.5 }, 0.2); tl.to(TODC, { opacity: 0, duration: 2.0 }, T_FERRY + 3);   // cool morning light
@@ -56,12 +56,12 @@ unitS("en1", "carth", [BR_N[0] + 26, BR_N[1] - 14], "infantry", "ENGINEERS", { t
 unitS("en2", "carth", [BR_S[0] + 28, BR_S[1] + 14], "infantry", null, { t: T_ENG + 0.3, size: "II" });
 pontoons(BR_N, BR_S, T_ENG + 0.4, T_READY, 22, { bw: 2.2, bl: 5.5 });
 const TK = ticker("PONTOON BOATS", 101, "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_101 - 0.1, 2.0, T_FT - 0.1, 8, { col: "#2e5cb2" });
-curveLabel("About 2,100 feet", [[BR_N[0] + 12, BR_N[1] - 4], [BR_S[0] + 12, BR_S[1] + 4]], T_READY + 0.5, T_READY + 3.6, 22);   // critic r1: an ink label along the bridge once it spans the river
+boxS("ABOUT 2,100 FEET", 1440, 912, T_READY + 0.5, null, { size: 28 });   // critic: horizontal, on the open water beside the bridge, clear of the ENGINEERS tag   // critic r1: an ink label along the bridge once it spans the river
 const CH = glowPath([[1338, 820], [1345, 870], [1376, 888], [1430, 878], [1470, 840]], "#3c74d8", 2.2, T_TIDE, T_FOUR, 2, 0.8);
 // side-view profile strip (once in move 3, on the terrain beat): the tidal channel at the bridge site
 profileStrip("M10 38 L62 50 C120 66, 190 78, 250 104 C290 116, 340 104, 378 72 L420 52 L470 42", [[70, 26, "Weyanoke"], [245, 40, "ninety feet of water"]], T_90 - 0.3, T_FOUR - 0.2,
   `<path d="M62 50 C120 66, 190 78, 250 104 C290 116, 340 104, 378 72 L420 52 Z" fill="rgba(77,125,154,.55)"/><line x1="62" y1="50" x2="420" y2="52" stroke="#3c6478" stroke-width="1.6"/>`, "right:80px;bottom:120px;");   // critic r1: >= 40 px in, off the flag
-const CK = clockCard([[T_FOUR, 4, "4 PM"], [T_ELEV, 11, "11 PM"]], "left:60px;top:150px;", T_FOUR - 0.1, T_READY + 2.2);
+
 nightWash(T_FOUR + 1.0, T_TWO, 0.38, 2.2);
 const BRG = glowPath([BR_N, BR_S], "#6f9bff", 2.6, T_READY, END + 1, 3, 0.95, { top: true });
 wstampS("READY", BR_S[0] + 60, BR_S[1] + 10, T_READY + 0.3, null, "#9fc0ea", 30);

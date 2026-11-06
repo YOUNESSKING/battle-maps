@@ -337,7 +337,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   } else if (/^(west|east)/.test(side)) {   // card beside the unit on a horizontal stake: west/east (34 px), -far (90 px), -up / -down (70 px, card raised / lowered)
-    const E = side.startsWith("east"), L = /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
+    const E = side.startsWith("east"), L = /far2/.test(side) ? 140 : /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
     w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: E ? L + "px" : (-L - 76) + "px", bottom: "auto", top: top + "px" });

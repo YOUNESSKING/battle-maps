@@ -41,15 +41,17 @@ SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (both on every frame, re-placed for the overview) ----------
 flagS(FL.us, 1640, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1330, 720, 0, T_Z1 - 1.0);
-flagS(FL.us, 2500, 600, T_Z1 - 1.2, END + 1); flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
+flagS(FL.us, 1660, 1000, T_Z1 - 1.2, END + 1);   // near the Union box, clear of the method card flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
 // ---------- 16-18 June: Smith's men and Hancock's corps; Lee's veterans arrive; the assaults fail ----------
 const NL = G.NEWLINE;
 const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(2.1), until: T_Z0 + 1.0 });
 // critic r1: carry over m3c's end state (same units, same cards): Smith's two brigades + Hinks's division at the breach, Beauregard's line west
 [["s1", [1494, 790]], ["s2", [1490, 828]], ["hk", [1496, 862]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "XX" }));
-now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z0 + 0.2, true, "east-up")); now(pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", 0, T_Z0 + 0.2, true, "east-down"));   // critic 2: the three Union cards spaced
-unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1488, 900);
-const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 0.2, true, "right");
+now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z0 + 0.2, true, "east-up")); now(pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", 0, T_Z0 + 0.2, true, "east-far2"));
+// critic: before the wide shot the Union units spread along the line (>= 12 px apart even at s 1.0); the three cards fan out east
+B.move("s1", T_VET - 1.6, 1.2, 1494, 770); B.move("hk", T_VET - 1.6, 1.2, 1496, 885);   // critic 2: the three Union cards spaced
+unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1488, 940);
+const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 0.2, true, "east");
 unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET, 2.0, 1432, 842);
 now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, true, "left"));
 const VET = [["v1", [1458, 768]], ["v2", [1456, 812]], ["v3", [1446, 880]], ["v4", [1430, 948]]];

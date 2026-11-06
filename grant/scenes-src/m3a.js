@@ -346,7 +346,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   } else if (/^(west|east)/.test(side)) {   // card beside the unit on a horizontal stake: west/east (34 px), -far (90 px), -up / -down (70 px, card raised / lowered)
-    const E = side.startsWith("east"), L = /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
+    const E = side.startsWith("east"), L = /far2/.test(side) ? 140 : /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
     w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: E ? L + "px" : (-L - 76) + "px", bottom: "auto", top: top + "px" });
@@ -524,9 +524,11 @@ K.night({ lines: [WF], tOn: T_FACED });
 unitS("rw", "rome", [1432, 889], "infantry", null, { t: T_FACED + 0.3, size: "XXX" });
 arw({ pts: [[1460, 892], [1446, 890], [1436, 887]], side: "carth", t: T_FACED + 0.2, dur: 0.9, width: AW(4.6, 8), until: T_FACED + 3.1 });
 // the rest of the army slips out of the trenches and marches south by back roads (thin trails, fade ~2 s after arrival)
-[["u2", G.MARCH1], ["u6", G.MARCH2], ["u18", G.MARCH1.map((q) => [q[0] - 6, q[1] + 4])]].forEach(([id, pts], k) => along(id, [[BU[k][1][0], BU[k][1][1]], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, 6.0, 22));
+[["u2", G.MARCH1], ["u6", G.MARCH2], ["u18", G.MARCH1.map((q) => [q[0] - 18, q[1] + 8])]].forEach(([id, pts], k) => along(id, [[BU[k][1][0], BU[k][1][1]], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, 6.0, 22));
 arw({ pts: G.MARCH1, side: "carth", t: T_SOUTH2 - 0.6, dur: 3.0, width: AW(4.3, 8), until: T_SOUTH2 + 4.4 });
-pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADE, END + 1, true, "right");
+hideU(["u18"], T_MEADE - 0.6);   // critic: the trailing column merges into Meade's lead column (no overlapping boxes)
+const MDP = pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADE, END + 1, true, "right");
+MDP.firstElementChild.style.top = "76px"; MDP.lastElementChild.style.width = "94px";   // critic: Meade's stake ~20 px lower, clear of the boxes
 pulseU("u2", T_LEAD); pulseU("u2", T_LEAD + 0.6);
 fixImgs();
 K.raiseTerritory();

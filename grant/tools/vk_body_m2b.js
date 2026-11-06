@@ -115,7 +115,6 @@ const pS = CONV[SINK].at(tSink);
 tl.to(CONV[SINK].el, { autoAlpha: 0, duration: 1.4, ease: "power1.in" }, tSink + 0.2);
 tl.to(CONV[SINK].sv, { scale: 0.5, rotation: "+=40", duration: 1.4 }, tSink + 0.2);
 // critic r1: no ring where the steamer sank (it simply goes down)
-  gsap.set(rip, { autoAlpha: 0 }); tl.set(rip, { autoAlpha: 1 }, tSink + 0.4); tl.fromTo(r, { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 2.0, duration: 1.6, immediateRender: false }, tSink + 0.4); }
 boxL("SIX MORE SUPPLY STEAMERS", 1120, 580, T_SIX, null, { size: 18 });
 const FIVEX = placeCard("ARMY VOLUNTEERS", "FIVE TIMES THE NUMBER", "left:110px;top:330px;", T_FIVEX - 0.1, T_THRU - 0.4);
 const THRU = sstamp("FIVE GOT THROUGH", 790, T_THRU, { size: 64, shake: 5, css: "left:110px;top:780px;" });

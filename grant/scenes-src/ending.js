@@ -349,7 +349,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   } else if (/^(west|east)/.test(side)) {   // card beside the unit on a horizontal stake: west/east (34 px), -far (90 px), -up / -down (70 px, card raised / lowered)
-    const E = side.startsWith("east"), L = /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
+    const E = side.startsWith("east"), L = /far2/.test(side) ? 140 : /far/.test(side) ? 90 : /up|down/.test(side) ? 70 : 34, top = /up/.test(side) ? -100 : /down/.test(side) ? -18 : -58;
     w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: E ? L + "px" : (-L - 76) + "px", bottom: "auto", top: top + "px" });
@@ -463,8 +463,8 @@ extW("richmond", T_X3, null, { dur: 0.9 });
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 const R = G.ric, AP = R.APPOMATTOX;
 const KEYS = [[0, 1440, 905, 1.7], [T_X1 + 0.6, 1440, 900, 2.1], [T_X2 - 0.1, 1440, 905, 2.25], [T_X2 + 0.6, 1440, 990, 1.75], [T_X3 - 0.1, 1420, 980, 1.95],
-  [T_X3 + 0.8, 1470, 905, 3.4], [T_NICK, 1470, 900, 3.6], [T_SURR, 1430, 905, 3.0], [T_LEE - 0.4, 1330, 900, 2.3], [T_APP + 0.3, 1200, 890, 2.05],
-  [T_EACH, 1220, 890, 2.0], [F_Q, 1250, 885, 1.9], [END, 1260, 885, 1.85]];
+  [T_X3 + 0.8, 1470, 905, 3.4], [T_NICK, 1470, 900, 3.6], [T_SURR, 1430, 905, 3.0], [T_LEE - 0.4, 1330, 900, 2.3], [T_APP + 0.3, 1200, 872, 2.05],
+  [T_EACH, 1220, 860, 2.0], [F_Q, 1250, 860, 1.9], [END, 1260, 860, 1.85]];   // critic: Appomattox clear below the cards
 camera(KEYS);
 dateNow("FEBRUARY 1862", T_VICK - 0.1); B.date("1863", T_VICK, T_JAMES - 0.1, 34); B.date("JUNE 1864", T_JAMES, T_NICK - 0.1, 34); B.date("1862", T_NICK, T_1865 - 0.1, 34);   // critic r1: Feb 1862 from the cut; 1862 under the nickname card
 B.date("1865", T_1865, T_SURW - 0.1, 34); B.date("1862 – 1865", T_SURW, T_EACH - 0.2, 34); B.date("1865", T_EACH - 0.1, null, 34);   // critic 2: the scroll spans the surrender years while that card is up
@@ -494,11 +494,13 @@ stampP("NO ARMY COULD GO", VK[0] + 150, VK[1] + 110, at(P1, "no army could go"),
 flagS(FL.us, 1590, 960, T_X3 + 0.5, T_LEE - 0.3); flagS(FL.cs, 1260, 930, T_X3 + 0.5, T_LEE - 0.3);   // moved off the U. S. GRANT card (both flags visible)
 arw({ pts: R.MOVE, side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 8), until: T_JAMES + 4.5 });   // thin trail, fades ~2 s after arrival
 // critic 2: the armies on the James map (a blue box rides the trail; Lee's army at Cold Harbor, then before Petersburg) + Richmond and Petersburg
-town("RICHMOND", R.RICHMOND, T_X3 + 0.4, "l", { keep: true }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
+const RICHT = town("RICHMOND", R.RICHMOND, T_X3 + 0.4, "l", { keep: true });
+// critic: Richmond steps out while a big card would cover it (the two nickname cards, the question card)
+[[T_NICK + 0.05, T_NICK + 3.9], [T_1865 - 0.05, Math.min(T_1865 + 3.9, T_SURR)], [F_Q - 0.2, Math.max(F_TELL + 1.2, END - 20) + 0.9]].forEach(([a, b]) => { tl.to(RICHT.el, { autoAlpha: 0, duration: 0.25 }, a); tl.to(RICHT.el, { autoAlpha: 1, duration: 0.4 }, b); }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
 unitS("eb", "carth", R.MOVE[0], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); along("eb", [...R.MOVE.slice(0, -1), [1450, 968]], T_JAMES - 0.1, 2.6, 24);
 unitS("er", "rome", [R.CH_FRONT[2][0] - 10, R.CH_FRONT[2][1]], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); B.move("er", T_SLIP + 0.8, 1.6, 1412, 955);
 glowPath([R.WEYANOKE, [R.WEYANOKE[0] - 1, R.WEYANOKE[1] + 5]], "", 2.0, T_JAMES + 0.8, T_JAMES + 3.8);
-boxS("THE JAMES", R.WEYANOKE[0] + 14, R.WEYANOKE[1] + 14, T_JAMES, null, { size: 26 });
+boxS("THE JAMES", R.WEYANOKE[0] + 19, R.WEYANOKE[1] + 14, T_JAMES, null, { size: 26 });
 frontS({ pts: R.CH_FRONT, sideA: "carth", sideB: "rome", t: T_X3 + 0.4, dur: 0.6, width: FWw(3.4), until: T_SLIP + 2.0 });
 frontS({ pts: [[1436, 958], [1432, 968], [1426, 978], [1418, 987]], sideA: "carth", sideB: "rome", t: T_SLIP + 1.2, dur: 1.5, width: FWw(3.6), until: END + 1 });   // starts on land
 stampP("AWAY FROM A STALEMATE", 1480, 1000, at(P1, "away from a stalemate"), T_NICK - 0.3, 26);
@@ -541,13 +543,14 @@ const WIN = [[T_NICK + 0.2, T_SURR - 0.2], [T_SURW, T_EACH - 0.2], [T_EACH, T_E1
 const E = EngageK(B);
 const FC = E.final({ moves: [["THE TWO RIVER FORTS", ""], ["VICKSBURG", ""], ["THE JAMES", ""]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL,
   tFamily: F_FAM, tSub: F_SUB, until: END + 1 });
-FC.querySelector(".fam").innerHTML = `FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY</span>`; FC.querySelector(".fam").style.fontSize = "46px";   // critic r1: >= 22 px in the end-screen band (scale 0.5)
+FC.querySelector(".fam").innerHTML = `FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY</span>`; FC.querySelector(".fam").style.fontSize = "56px";   // critic r1: >= 22 px in the end-screen band (scale 0.5)
 // end screen: the last ~20 s the card shrinks to a top band and the dark backing lifts, the map alive under it
 FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?"; FC.querySelector(".q").style.fontSize = "72px";   // one line   // critic 2: the narration's words
 const tBand = Math.max(F_TELL + 1.2, END - 20);
 // Confederate flag clear of the EACH TIME card and the big final-question card, back to its place once the card shrinks to the top band
 flagS(FL.cs, 950, 975, T_EACH - 0.2, tBand); flagS(FL.cs, 1010, 790, tBand, END + 1);
-tl.to(FC, { scale: 0.5, y: -100, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);   // header >= 40 px from the top
+tl.to(FC.firstElementChild, { autoAlpha: 0, duration: 0.3 }, tBand - 0.1);   // critic: the small header leaves in the band (the question says it)
+tl.to(FC, { scale: 0.5, y: -75, duration: 0.8, ease: "power2.inOut", transformOrigin: "50% 0%" }, tBand);   // header >= 40 px from the top
 document.getElementById("date").style.zIndex = 60;   // the date scroll stays at full strength above the question's dark backing
 const back = FC.previousElementSibling; if (back) tl.to(back, { autoAlpha: 0.12, duration: 0.8 }, tBand);
 WIN.push([F_Q, END + 1]);
