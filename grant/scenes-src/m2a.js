@@ -32,6 +32,7 @@ const E = EngageK(B);
 const FL = { us: "assets/media/us34_flag.png", cs: "assets/media/csa1_13_flag.png" };
 const PHOTO = (n) => `assets/media/${n}_head.png`;
 const SCN = document.getElementById("scene");
+document.getElementById("date").style.zIndex = "60";   // the date scroll never disappears (stays above the decision-card dim)
 const NS = "http://www.w3.org/2000/svg", NSs = NS;
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
@@ -90,7 +91,7 @@ const U = (id, side, p, lab, sz, t = 0, o = {}) => { unitS(id, side, p, o.icon |
 // ---------- screen cards ----------
 const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {
   const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html;
-  SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);
+  el.style.zIndex = "40"; SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);   // cards above every map pin (flags)
   tl.fromTo(el, from, { autoAlpha: 1, y: 0, x: 0, duration: 0.5, ease: "power3.out" }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el; };
 const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1">${txt}</div>${sub ? `<div style="font-size:${(size * 0.34).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 const CREAM = "#f0e6c8";
@@ -108,14 +109,14 @@ const wstamp = (txt, x, y, t, until, c, size = 22, sub) => { const el = GG.pin(s
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, Math.min(until ?? 1e9, t + 3.5)); return el; };
 const wstampS = (txt, x, y, t, until, c, size = 22, sub) => pinS(wstamp(txt, x, y, t, until, c, Math.min(size, 24), sub));
 const wstampL = wstampS;
-const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgb(18,16,12);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
-const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgb(18,16,12);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">${sub}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
-  const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
+  const el = scr(`<div style="padding:10px 26px 12px;background:rgb(18,16,12);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
@@ -428,7 +429,7 @@ B.caption("THE UNION COULD NOT USE THE RIVER FREELY", T_FREE - 0.1, T_LINK - 0.1
 // "the South stayed linked to its western states": the rail line Monroe - De Soto Point - Vicksburg - Jackson as an ink trace, red arrows across
 const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.33, -90.95], [32.352, -90.878], [32.33, -90.55], [32.30, -90.19]]);
 glowPath(LINK, "", 0, T_LINK - 0.2, T_WINT + 0.4);
-[[[32.0, -94.4], [32.25, -92.9], [32.36, -91.6], [32.35, -90.95]], [[33.6, -93.6], [33.0, -92.4], [32.55, -91.4], [32.38, -90.95]], [[31.2, -93.6], [31.7, -92.4], [32.2, -91.5], [32.33, -90.97]]]
+[[[32.0, -93.9], [32.25, -92.7], [32.34, -91.7]], [[33.4, -93.4], [32.95, -92.4], [32.55, -91.75]], [[31.3, -93.4], [31.75, -92.4], [32.15, -91.75]]]   // arrowheads stop on the west bank, clear of Vicksburg
   .forEach((q, k) => arw({ pts: LL(q), side: "rome", t: T_LINK + 0.1 + k * 0.25, dur: 1.4, width: AW(OVS * 1.12, 9), until: T_WINT + 0.5 }));
 boxL("WESTERN STATES", ...L(32.2, -94.9), T_WEST - 0.1, null);
 // "All winter, every attempt from the north failed in the swamps": three routes draw, stop short, grey; ink crosses where each broke
@@ -453,7 +454,7 @@ STK.forEach((b, k) => tl.to(b.sv, { rotation: `+=${k % 2 ? 9 : -9}`, duration: 0
 K.target(...L(32.75, -90.89), T_STUCK, { r: 50, until: T_NOTH - 0.2 });
 const NOTH = sstamp("NOTHING WORKED", 760, T_NOTH, { size: 76, shake: 4, until: T_NOTH + 1.6 });
 // "Many in the North believed Grant had run out of ideas" (belief card)
-const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.7, T_DIFF - 0.15, { top: 160, size: 52 });
+const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.1, T_DIFF - 0.15, { top: 160, size: 52 });
 // =================== m2-2: Grant's idea ===================
 // Grant's portrait card on a stake at his leading corps for the rest of the campaign shot (2d item 6)
 pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_DIFF + 0.3, END + 1, true);
@@ -463,7 +464,7 @@ tl.to(B.units.gb.el, { autoAlpha: 0, duration: 0.4 }, T_DIFF);
 along("gc", [L(32.46, -91.24), MARCH[0]], T_DIFF - 0.2, 1.0, 6); along("gc", MARCH, T_MARCH, T_CROSS + 1.2 - T_MARCH, 24);
 along("ga", [L(32.56, -91.20), L(32.53, -91.13)], T_DIFF, 1.2, 6); along("ga", [L(32.53, -91.13), ...sub(MARCH, 0, 0.7, 16)], T_MARCH + 1.4, T_CROSS + 1.6 - T_MARCH, 20);
 arw({ pts: MARCH, side: "carth", t: T_MARCH, dur: 2.6, width: AW(S3, 10), until: T_CROSS + 1.6, keep: true });
-boxL("WEST BANK", ...L(32.40, -91.33), T_MARCH + 0.6, null);
+boxL("WEST BANK", ...L(32.40, -91.33), at(P2, "west bank"), null);
 // the west bank won on the march: red ink hatching on the ground that changed hands (1 Apr -> 20 Apr), ~3 s, then it dissolves
 hatch("assets/media/gn_vicksburg_apr20_mx.png", T_MARCH + 1.2, 3.0);
 boxL("LOUISIANA SWAMPS", ...L(32.22, -91.45), T_LA, null);

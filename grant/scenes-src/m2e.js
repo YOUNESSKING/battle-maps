@@ -25,6 +25,7 @@ const E = EngageK(B);
 const FL = { us: "assets/media/us34_flag.png", cs: "assets/media/csa1_13_flag.png" };
 const PHOTO = (n) => `assets/media/${n}_head.png`;
 const SCN = document.getElementById("scene");
+document.getElementById("date").style.zIndex = "60";   // the date scroll never disappears (stays above the decision-card dim)
 const NS = "http://www.w3.org/2000/svg", NSs = NS;
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
@@ -83,7 +84,7 @@ const U = (id, side, p, lab, sz, t = 0, o = {}) => { unitS(id, side, p, o.icon |
 // ---------- screen cards ----------
 const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {
   const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html;
-  SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);
+  el.style.zIndex = "40"; SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);   // cards above every map pin (flags)
   tl.fromTo(el, from, { autoAlpha: 1, y: 0, x: 0, duration: 0.5, ease: "power3.out" }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el; };
 const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1">${txt}</div>${sub ? `<div style="font-size:${(size * 0.34).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 const CREAM = "#f0e6c8";
@@ -101,14 +102,14 @@ const wstamp = (txt, x, y, t, until, c, size = 22, sub) => { const el = GG.pin(s
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, Math.min(until ?? 1e9, t + 3.5)); return el; };
 const wstampS = (txt, x, y, t, until, c, size = 22, sub) => pinS(wstamp(txt, x, y, t, until, c, Math.min(size, 24), sub));
 const wstampL = wstampS;
-const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgb(18,16,12);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
-const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgb(18,16,12);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">${sub}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
-  const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
+  const el = scr(`<div style="padding:10px 26px 12px;background:rgb(18,16,12);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
@@ -362,15 +363,24 @@ const BKA = arw({ pts: [ALX, L(31.38, -91.95), L(31.29, -91.62)], side: "carth",
 B.caption("NOT BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth r");
 wstampL("FIFTEEN THOUSAND MEN", ALX[0] + 10, ALX[1] + 70, T_15K, T_DO - 0.25, null, 22);
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
-// ---------- E.decide (B3) on "Do you wait for Banks" ----------
-const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: T_DO - 0.2, tCount: T_TELL, tReveal: END + 0.9, until: END + 1 });
+// ---------- the decision card on "Do you wait for Banks" (critic A: opaque, <= 3.5 s, each option on its own words, no repeated subtitle) ----------
+// A lands on "wait for Banks", B on "cut loose"; the card leaves after "go inland alone"; "Tell us in the comments" is a caption on its words.
+// No reveal here: m2f re-shows the card for ~2 s and lights B on "cut loose from his base".
+const T_DEC0 = T_DO + 0.1, T_DEC1 = T_DEC0 + 3.5;
+const DEC = E.decide({ title: "", sub: "", note: "", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: T_DEC0, tReveal: END + 5, until: T_DEC1 });
 const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
-DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
-const BACK = DEC.previousElementSibling;
-tl.to(BACK, { autoAlpha: 0.56, duration: 0.8 }, T_DO + 0.4);                       // lighter dim: the moving map shows through
+[...DEC.children].forEach((c) => { if (!c.querySelector(".o")) c.style.display = "none"; });   // empty title / sub / note rows out
+Object.assign(DEC.style, { background: "rgb(18,16,12)", padding: "30px 40px", borderTop: "6px solid #c9b48a", boxShadow: "0 20px 40px rgba(0,0,0,.6)", top: "300px" });
+DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill";
+[OA, OB].forEach((o) => tl.getTweensOf(o).forEach((tw) => tw.kill()));
+gsap.set([OA, OB], { autoAlpha: 0 });
+tl.fromTo(OA, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_WAIT - 0.1);
+tl.fromTo(OB, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_CUT - 0.1);
+dropCues(END - 0.01, END + 10);   // the unused reveal cue
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
-pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.2); pulse(OB, T_INL + 0.2); pulse(DEC.querySelector(".cd"), T_WHAT, "#c9b48a"); pulse(OA, T_THEN - 0.2); pulse(OB, T_THEN + 0.3);
+pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.3); pulse(OB, T_INL + 0.2);
+B.caption("TELL US IN THE COMMENTS", T_TELL, T_THEN, "carth");
 // the map keeps moving under the card: the two inland options draw (toward Jackson / toward Vicksburg), Banks' column crawls, the focus moves
 const GH1 = arw({ pts: LL([[32.02, -90.93], [32.12, -90.72], [32.22, -90.50], [32.28, -90.30]]), side: "carth", t: T_CUT + 0.1, dur: 3.2, width: AW(1.1, 9), until: END + 1, keep: true });
 const GH2 = arw({ pts: LL([[32.08, -90.89], [32.20, -90.82], [32.30, -90.80]]), side: "carth", t: T_INL + 0.3, dur: 2.6, width: AW(1.1, 9), until: END + 1, keep: true });

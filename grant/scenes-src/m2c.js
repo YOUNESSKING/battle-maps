@@ -22,6 +22,7 @@ const E = EngageK(B);
 const FL = { us: "assets/media/us34_flag.png", cs: "assets/media/csa1_13_flag.png" };
 const PHOTO = (n) => `assets/media/${n}_head.png`;
 const SCN = document.getElementById("scene");
+document.getElementById("date").style.zIndex = "60";   // the date scroll never disappears (stays above the decision-card dim)
 const NS = "http://www.w3.org/2000/svg", NSs = NS;
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
@@ -80,7 +81,7 @@ const U = (id, side, p, lab, sz, t = 0, o = {}) => { unitS(id, side, p, o.icon |
 // ---------- screen cards ----------
 const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {
   const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html;
-  SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);
+  el.style.zIndex = "40"; SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);   // cards above every map pin (flags)
   tl.fromTo(el, from, { autoAlpha: 1, y: 0, x: 0, duration: 0.5, ease: "power3.out" }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el; };
 const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1">${txt}</div>${sub ? `<div style="font-size:${(size * 0.34).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 const CREAM = "#f0e6c8";
@@ -98,14 +99,14 @@ const wstamp = (txt, x, y, t, until, c, size = 22, sub) => { const el = GG.pin(s
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, Math.min(until ?? 1e9, t + 3.5)); return el; };
 const wstampS = (txt, x, y, t, until, c, size = 22, sub) => pinS(wstamp(txt, x, y, t, until, c, Math.min(size, 24), sub));
 const wstampL = wstampS;
-const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgb(18,16,12);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
-const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgb(18,16,12);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">${sub}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
-  const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
+  const el = scr(`<div style="padding:10px 26px 12px;background:rgb(18,16,12);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.to(st, { x: to, duration: dur, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
@@ -340,7 +341,8 @@ camera([[0, CW[0] + 30, CW[1] + 20, SW * 0.97], [T_SHER - 0.3, CW[0], CW[1], SW]
 SFX("whoosh", T_SHER - 0.35);
 zoomBox(CV[0], CV[1], T_SHER - 1.5, 170, 100);
 // ---------- HUD (date scroll; no legend: no new symbol) ----------
-B.showDate(T_LG); B.date("17 APRIL 1863", T_LG + 0.05, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
+dateNow("22 APRIL 1863", T_LG);   // carries the m2b date in from frame 0 (the scroll never disappears), rolls back to the raid's start on "from La Grange"
+B.date("17 APRIL 1863", T_LG + 0.05, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
 B.date("17 APRIL - 2 MAY 1863", T_SHER, END + 1, 32);
 // flags (48 px, no names): wide pair, then the Vicksburg pair
 flagS(FL.us, "", ...L(35.45, -87.6), 0, T_SHER + 1.0); flagS(FL.cs, "", ...L(32.05, -88.1), 0, T_SHER + 1.0);
@@ -358,13 +360,12 @@ unitS("pv", "rome", L(32.58, -90.52), "infantry", "", { size: "XXX" }); gsap.set
 unitS("pj", "rome", L(32.08, -90.22), "infantry", "", { size: "XX" }); gsap.set(B.units.pj.el, { autoAlpha: 1 });
 B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_MEAN + 0.2, T_GRI - 0.2, "carth");
 // ---------- Grierson: about 1,700 cavalrymen from La Grange through Mississippi to Baton Rouge; his portrait rides with his column ----------
-const TK = ticker("CAVALRYMEN", 1700, "", "right:70px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 1.6, 5, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
+const TK = ticker("CAVALRYMEN", 1700, "", "right:70px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 1.6, 5, { col: "#7fb0ff", pre: "~" });
 unitS("gri", "carth", LG, "infantry", "", { t: T_GRI + 0.2, size: "III" }); cavIcon("gri");
-pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_SHER + 0.2, true, "right");
+pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_MS + 1.0, true, "right");   // steps out before the column reaches the frame bottom
 townL("LA GRANGE", LG, "r", T_LG);
-along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
+along("gri", sub(GRI, 0, 0.93, 40), T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);   // stops just short of Baton Rouge (its name stays clear)
 arw({ pts: GRI, side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 9), until: T_SHER - 0.2 });
-boxL("MISSISSIPPI", ...L(33.05, -88.40), T_MS, null);
 // the Confederates look the wrong way: the Jackson force turns east after the raiders
 along("pj", LL([[32.08, -90.22], [32.15, -89.85]]), T_MS + 0.3, 2.2, 8);
 arw({ pts: LL([[32.30, -90.10], [32.33, -89.65], [32.33, -89.30]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 9), until: T_SHER - 0.2 });
@@ -376,9 +377,9 @@ unitS("sh", "carth", L(32.44, -90.99), "infantry", "", { t: T_SHER + 1.6, size: 
 pinPortrait("sh", PHOTO("sherman"), FL.us, "Sherman", T_SHER + 1.8, END + 1, true);
 along("sh", [L(32.44, -90.99), L(32.48, -90.92), L(32.52, -90.84)], T_YAZ - 0.2, 2.8, 12);
 arw({ pts: sub(YAZ, 0.05, 0.8, 10), side: "carth", t: T_YAZ, dur: 1.6, width: AW(SV, 8) });
-boxL("YAZOO RIVER", ...L(32.50, -91.0), T_YAZ + 0.2, null);
+boxL("YAZOO RIVER", ...L(32.47, -91.08), T_YAZ + 0.2, null);
 unitS("hb", "rome", [HB[0] + 8, HB[1] + 5], "artillery", "", { t: T_THR - 0.4, w: 40, h: 27 });
-inkTrace(BLUFF, T_THR - 0.1, T_THR + 3.2); boxL("THE BLUFFS", ...L(32.45, -90.74), T_THR, null);
+inkTrace(BLUFF, T_THR - 0.1, T_THR + 3.2); boxL("THE BLUFFS", ...L(32.42, -90.69), T_THR, null);
 shootS(BOATS[0].at(T_THR + 0.4), [HB[0] + 8, HB[1] + 5], T_THR + 0.4, SV, { dur: 0.7, h: 30, r: 9 });
 shootS([HB[0] + 8, HB[1] + 5], BOATS[0].at(T_THR + 1.9), T_THR + 1.2, SV, { dur: 0.7, h: 30, r: 9 });
 smoke([[HB[0] + 8, HB[1] + 3]], T_THR + 1.2, 0.8);

@@ -339,7 +339,7 @@ const T_NIGHT = at(P1, "night of the sixteenth"), T_16 = at(P1, "sixteenth of Ap
   T_22 = at(P1, "the twenty-second"), T_SIX = at(P1, "six more supply steamers"), T_RAN = at(P1, "ran the guns"), T_VOL = at(P1, "manned by army volunteers"),
   T_FIVEX = at(P1, "five times the number"), T_THRU = at(P1, "Five got through");
 // ---------- places (vicksburg_siege z12 scene px) ----------
-const VKS = [1430, 736];
+const VKS = [1468, 744];
 // the Mississippi as drawn on the Style W map (assets/src/vicksburg_siege_rivW.json "main", every 3rd point): the 1863 course from Milliken's
 // Bend down past the Yazoo mouth, NE to Fort Hill, the hairpin, then SW along the city front and south toward Warrenton. The boats follow it.
 const RIVW = [[760, -30], [761.5, 11.7], [764, 71.5], [771, 132.4], [785.6, 182.6], [806.6, 229.4], [831.8, 273], [859.6, 312.6], [892, 346.9], [926.6, 378.3], [960, 410],
@@ -372,7 +372,7 @@ const BATP = [[1452, 626], [1424, 700], [1410, 770], [1394, 840], [1370, 905], [
 BATP.forEach((p, k) => unitS("bt" + k, "rome", p, "artillery", "", { t: T_PAST - 0.2 + k * 0.1, w: 40, h: 27 }));
 BATP.forEach((p, k) => tagAt("bt" + k, null));
 // ---------- the fleet, 16 Apr: 6 gunboats, 3 transports, Tuscumbia last (lights out; a little stack smoke) ----------
-const fAt = (p) => nearestF(RUN, p), GAP = 80 / RLEN;
+const fAt = (p) => nearestF(RUN, p), GAP = 112 / RLEN;
 const F0 = fAt([905, 362]), F1 = fAt([1030, 1490]), TEND = T_NOONE + 2.0;
 const ORDER = ["gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "transport", "transport", "transport", "gunboat"];
 const HCI = 8, F_HC = fAt([1366, 790]);   // the Henry Clay (9th in line) is hit abreast of the city
@@ -397,13 +397,14 @@ const bonfire = (x, y, t, until, s = 16) => { const el = pinS(GG.pin(`<div style
 [[1372, 610], [1404, 712], [1390, 790], [1374, 860], [1336, 925], [1262, 990]].forEach((p, k) => { bonfire(p[0], p[1], T_BONF + k * 0.22, END + 1, 16); });
 boxL("HOUSES ON FIRE", 1150, 690, T_FIRE + 0.1, null);
 // ---------- Porter (named): his portrait card on a side stake at his flagship, the Benton, leading the line (2d item 6) ----------
+// side stake up and to the west (De Soto Point side): the card never covers the river ahead of the fleet or the batteries on the east bank
 const portraitShip = (host, photo, flag, name, t, until, side = "left") => {
   const w = document.createElement("div"), sg = side === "right" ? 1 : -1;
   w.style.cssText = `position:absolute;left:${sg > 0 ? "100%" : "0%"};top:4px;width:0;height:0;pointer-events:none;z-index:5`;
-  w.innerHTML = `<div style="position:absolute;left:${sg > 0 ? "40px" : "-116px"};top:56px;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:0;top:0;width:70px;height:1.5px;background:#463a1e;transform-origin:0 0;transform:rotate(${sg > 0 ? 54 : 126}deg)"></div>`;
+  w.innerHTML = `<div style="position:absolute;left:${sg > 0 ? "40px" : "-116px"};top:-178px;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:0;top:0;width:70px;height:1.5px;background:#463a1e;transform-origin:0 0;transform:rotate(${sg > 0 ? -54 : -126}deg)"></div>`;
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
-portraitShip(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, null, "left");
+portraitShip(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, T_ONE - 0.2, "left");   // steps out once the Benton runs off the bottom of the frame
 boxL("7 GUNBOATS · 3 TRANSPORTS", 1060, 430, T_SEVEN + 0.1, null);
 // ---------- the guns (visible, ~1 shot per second): batteries at the boats, impacts on the boats; gunboats answer at the bluff ----------
 const vis = (k) => FLEET[k] || HC1;
@@ -435,7 +436,9 @@ K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
 focus(HCP, 70, T_HC - 0.1, T_EDGE - 0.3);
 boxL("HENRY CLAY", HCP[0] - 150, HCP[1] + 30, T_HC, T_EDGE - 0.25);
 const T_EDGE_OUT = Math.min(T_EDGE + 2.4, T_NOONE - 0.35);   // 1c rule 3: the stamp is gone before the caption lands
-const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 60, shake: 5, until: T_EDGE_OUT });
+// big stamps on the empty ground east of the city (screen right), not over the river (2d item 8)
+const sstampR = (txt, left, top, t, o = {}) => slam(scr(stampHTML(txt, CREAM, o.size || 60, 0), `left:${left}px;width:${1880 - left}px;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }), t, o);
+const EDGE = sstampR("BURNED TO THE WATER'S EDGE", 900, 640, T_EDGE, { size: 50, shake: 5, until: T_EDGE_OUT });
 B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth");
 // ---------- 22 April: six supply steamers (army volunteers) run the guns; one sinks, five get through ----------
 const C2T0 = T_22 - 0.3, C2T1 = END - 0.4;
@@ -452,7 +455,7 @@ tl.to(CONV[SINK].sv, { scale: 0.5, rotation: "+=40", duration: 1.4 }, tSink + 0.
 boxL("SIX MORE SUPPLY STEAMERS", 1060, 520, T_SIX, T_FIVEX - 0.3);
 const placeCard = (kick, txt, css, t, until) => scr(`<div style="padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div>`, css, t, until);
 const FIVEX = placeCard("ARMY VOLUNTEERS", "FIVE TIMES THE NUMBER", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_FIVEX - 0.1, T_THRU - 0.4);
-const THRU = sstamp("FIVE GOT THROUGH", 790, T_THRU, { size: 74, shake: 5 });
+const THRU = sstampR("FIVE GOT THROUGH", 960, 640, T_THRU, { size: 70, shake: 5 });
 fixImgs();
 K.raiseTerritory();
 B.finish();
