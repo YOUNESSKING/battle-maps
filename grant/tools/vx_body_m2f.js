@@ -66,7 +66,7 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 [DEC, BACK, OA, OB].forEach((el) => tl.getTweensOf(el).filter((tw) => tw.startTime() < 1.0).forEach((tw) => tw.kill()));
 gsap.set(DEC, { autoAlpha: 1, scale: 1 }); gsap.set([OA, OB], { autoAlpha: 1, y: 0 }); gsap.set(BACK, { autoAlpha: 0.56 }); dropCues(0, 1.0);
-Object.assign(DEC.style, { top: "575px", width: "1060px", marginLeft: "-530px", background: "rgba(14,13,10,0.95)", padding: "2px 0 6px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
+Object.assign(DEC.style, { top: "665px", zoom: "0.86", background: "rgba(14,13,10,0.95)", padding: "4px 0 8px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
 BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 // the supply line back to Grand Gulf (the base) flickers and is cut

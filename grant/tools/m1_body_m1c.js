@@ -108,8 +108,8 @@ const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20
 SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
 // not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word
-arw({ pts: ROAD_OUT.slice(2, 6).map((q) => [q[0] + 60, q[1]]), side: "rome", t: T_ROAD + 0.2, dur: 1.8,   /* beside the road, clear of the red boxes */ width: AW(2.0, 9), until: T_KNOW + 0.4 });
-boxS("THE ROAD", ROAD_OUT[2][0] + 66, ROAD_OUT[2][1] + 10, T_ROAD + 0.3, null, { size: 24 });
+arw({ pts: [[1542, 886], [1526, 960], [1518, 1028]], side: "rome", t: T_ROAD + 0.2, dur: 1.8,   /* beside the road, clear of the red boxes */ width: AW(2.0, 9), until: T_KNOW + 0.4 });
+boxS("THE ROAD", ROAD_OUT[2][0] + 140, ROAD_OUT[2][1] + 10, T_ROAD + 0.3, null, { size: 24 });
 hideU(["sm1"], T_DAWN - 0.6);   // under the date scroll in the dawn framing: steps out
 B.caption("NOT A LAST STAND · PLANNING TO LEAVE", T_LEAVE, T_KNOW - 0.1, "rome");
 // Grant did not know that yet; his right wing breaking, no cartridges
