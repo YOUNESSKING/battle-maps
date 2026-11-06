@@ -358,7 +358,7 @@ SH.forEach(({ s }) => tl.to(s.el, { autoAlpha: 0, duration: 0.6 }, T_NIGHT + 0.4
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
 B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
 const BLK = `<svg width="26" height="18" viewBox="0 0 26 18" style="display:block;filter:drop-shadow(0 1px 2px #000)"><path d="M2 4 Q8 1 13 4 Q18 7 24 3 L24 14 Q18 17 13 14 Q8 11 2 14 Z" fill="#8d7a5e" stroke="#efe6cf" stroke-width="1.2"/><path d="M5 8 L21 8 M5 11 L21 11" stroke="#5a4a36" stroke-width="1"/></svg>`;
-[[1150, 640], [1100, 615], [1045, 595], [1175, 760], [1120, 742], [1062, 722], [995, 702]].forEach((p, k) => { const el = pinAt(`<div style="transform:scale(2.1)">${BLK}</div>`, p[0], p[1], T_BLANK + k * 0.15, T_CHANCE + 0.4); reg(el.firstElementChild); });
+[[1150, 640], [1100, 615], [1045, 595], [1175, 760], [1120, 742], [1062, 722], [995, 702]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.6)">${BLK}</div></div>`, p[0], p[1], T_BLANK + k * 0.15, T_CHANCE + 0.4); reg(el.firstElementChild); });
 B.caption("THROWN AWAY THEIR BLANKETS ON THE MARCH", T_BLANK + 0.1, T_CHANCE - 0.1, "carth");
 // =====================================================================================================================
 // 15 Feb dawn: the breakout against the Union right (cool morning light)
