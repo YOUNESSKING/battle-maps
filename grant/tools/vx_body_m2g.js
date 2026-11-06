@@ -97,10 +97,10 @@ const FUS35 = flagS("assets/media/us35_flag.png", "", ...L(32.36, -90.81), T_SIE
 const FCS = now(flagS(FL.cs, "", ...L(32.335, -90.872), 0, null)); tl.to(FCS, { opacity: 0.55, duration: 0.8 }, T_PEM + 0.6);
 // units: three Union corps outside, Pemberton's army inside (his name tag from his spoken name)
 U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, -90.826), "XVII", "XXX"); U("u13", "carth", L(32.318, -90.836), "XIII", "XXX");
-U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX", 0, { tagAt: T_PEM + 0.1 }); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
+U("rp", "rome", L(32.357, -90.866), "", "XX");   // STYLE W: his portrait card carries the name U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true, "right")); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- 19 and 22 May: the assaults bounce off ----------
 const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); tl.to(a, { opacity: 0.25, duration: 0.25, yoyo: true, repeat: 1 }, t + 0.8); return a; };
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
@@ -119,13 +119,13 @@ const SAPS = [[[32.380, -90.853], [32.378, -90.857], [32.376, -90.856], [32.374,
   [[32.352, -90.834], [32.352, -90.839], [32.350, -90.840], [32.350, -90.845]], [[32.336, -90.838], [32.337, -90.843], [32.335, -90.845], [32.336, -90.849]],
   [[32.322, -90.846], [32.323, -90.851], [32.321, -90.853], [32.322, -90.857]]];
 SAPS.forEach((p, k) => inkTrace(LL(p), T_SG + k * 0.18, T_LIN + 1.0, 2.4));   // STYLE W: the saps as sepia ink traces
-wstampL("SIEGE", ...L(32.30, -90.83), T_SG + 0.1, null, "#9fc0ea", 36);
+wstampL("SIEGE", ...L(32.40, -90.80), T_SG + 0.1, null, "#9fc0ea", 36);
 // ---------- 4 July: white flags, Pemberton surrendered ----------
 const WFL = [];
 const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 1px 2px #000)"><line x1="3" y1="2" x2="3" y2="34" stroke="#3a2c1c" stroke-width="2.4"/><path d="M4 3 Q12 0 19 4 Q24 6 28 4 L28 17 Q22 19 18 16 Q11 13 4 16 Z" fill="#fbfaf4" stroke="#8a8478" stroke-width="0.8"/></svg>`;
 [[32.380, -90.866], [32.365, -90.856], [32.350, -90.851], [32.334, -90.855], [32.318, -90.867], [32.306, -90.881]].forEach(([la, lo], k) => {
   const el = pinS(GG.pin(WF, ...L(la, lo), { t: T_JUL + 0.15 + k * 0.18, pop: true })); WFL.push(el); SFX("ref:pop", T_JUL + 0.2 + k * 0.18); });
-wstampL("SURRENDERED", ...L(32.345, -90.866), T_PEM + 0.4, null, "#f7f3ea", 34);
+wstampL("SURRENDERED", ...L(32.385, -90.905), T_PEM + 0.4, null, "#f7f3ea", 34);
 ["rp", "r2", "r3"].forEach((id, k) => B.grey([id], T_PEM + 0.6 + k * 0.1, 0.8));
 const POLE = poleFlag("assets/media/us35_flag.png", L(32.352, -90.880), T_172 + 0.6, END + 1, 46);
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
@@ -162,6 +162,7 @@ const CLOSE = [...["u15", "u17", "u13", "rp", "r2", "r3"].map((id) => B.units[id
 CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.6 }, T_FATHER + 0.4));   // after the river-map flags are up (both flags on every frame)
 // ---------- 1c declutter ----------
 
+applyCam(); tl.call(applyCam, null, 0);   // counter-scale the units/portraits made after the first camera call (frame 0)
 fixImgs();
 K.raiseTerritory();
 B.finish();

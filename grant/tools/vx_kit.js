@@ -386,7 +386,7 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
 // STYLE W territory = ink hatching (gn_*: blue = ground the Union takes, red = ground the Confederates take), only at the hand-over, ~3 s, then dissolve
 const hatch = (file, t, hold = 3.0, box_ = [0, 0, 2880, 1620], parent = null) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
   Object.assign(el.style, { position: "absolute", left: box_[0] + "px", top: box_[1] + "px", width: box_[2] + "px", height: box_[3] + "px", mixBlendMode: "normal" });
-  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 });
+  if (parent) { el.className = ""; parent.appendChild(el); } else WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: 0 });   // in a giant world group: no img.terr filter (a filter on a 46k-px layer crashes the page)
   tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: false }, t); tl.to(el, { autoAlpha: 0, duration: 1.2, ease: "sine.inOut" }, t + 0.8 + hold); return el; };
 const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min(u ?? 1e9, t + 3.5), "#f0e6c8", sz, sub);
 // ================= end of @@STYLEW =================

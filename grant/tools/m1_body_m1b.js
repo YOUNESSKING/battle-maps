@@ -30,7 +30,7 @@ flagS(FL.us, 1160, 640, T_INSIDE + 0.4, END + 1); flagS(FL.cs, 1600, 790, T_INSI
 // ---------- the forts ----------
 fortIcon(FH, 0, null, { s: 22, col: "#4f8bff" }); poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], 0, null, 28);
 fortIcon(DON, 0, null, { s: 26 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 30);
-boxS("FORT DONELSON", DON[0] + 8, DON[1] - 46, T_TODON, END + 1, { size: 22, keep: true });   // the named objective: stays (C6)
+boxS("FORT DONELSON", DON[0] - 74, DON[1] - 4, T_TODON, END + 1, { size: 22, keep: true });   // the named objective: stays (C6)
 K.target(DON[0], DON[1], T_WANT + 0.6, { r: 44, until: T_REINF + 2.0 });
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side)
 unitS("rf", "rome", [2150, 900], "infantry", null, { t: 0 });
@@ -43,8 +43,8 @@ tl.to(B.units.mc.el, { y: -4, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.
 pinPortrait("mc", PHOTO("grant"), FL.us, "Grant", T_WANT + 0.3, END + 1, true, "up");   // Grant rides with his army for the whole move
 along("mc", [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], ...ROAD_S.slice(1), [1360, 880]], T_15K, T_INSIDE + 1.8 - T_15K, 24);
 along("sm", [[ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], ...ROAD_N.slice(1), [1262, 620]], T_15K + 0.3, T_INSIDE + 2.2 - T_15K, 24);
-arw({ pts: ROAD_S, side: "carth", t: T_15K, dur: 3.0, width: AW(1.0, 9), until: T_INSIDE + 2.0 });   // real moves: thin trails, fade ~2 s after arrival
-arw({ pts: ROAD_N, side: "carth", t: T_15K + 0.3, dur: 3.0, width: AW(1.0, 9), until: T_INSIDE + 2.4 });
+arw({ pts: ROAD_S, side: "carth", t: T_15K, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.0 });   // real moves: thin trails, fade ~2 s after arrival
+arw({ pts: ROAD_N, side: "carth", t: T_15K + 0.3, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.4 });
 const TK = ticker("GRANT'S ARMY", 15000, "", "right:70px;top:240px;", T_15K - 0.1, 1.2, T_INSIDE - 0.2, 6, { col: "#9fc0ea", sub: "MEN · 12 FEBRUARY" });
 // ---------- inside: Floyd, Pillow, Buckner ----------
 const WL = glowPath(WORKS, "", 0, T_INSIDE, T_INSIDE + 3.4);   // the outer works (drawn ridge on the basemap): focus + ink trace
