@@ -356,7 +356,7 @@ const VT = town("VICKSBURG", VKS, "r", 0);
 unitS("gr", "carth", L(32.25, -91.45), "infantry", "", { size: "XXXX" }); gsap.set(B.units.gr.el, { autoAlpha: 1 });
 along("gr", LL([[32.25, -91.45], [32.10, -91.38], [31.98, -91.26]]), 0, T_SHER - 0.5, 16);
 arw({ pts: LL([[32.48, -91.20], [32.25, -91.26], [32.09, -91.16]]), side: "carth", t: 0.1, dur: 2.4, width: AW(SW, 9) });
-unitS("pv", "rome", L(32.58, -90.52), "infantry", "", { size: "XXX" }); gsap.set(B.units.pv.el, { autoAlpha: 1 });
+unitS("pv", "rome", L(32.62, -90.33), "infantry", "", { size: "XXX" }); gsap.set(B.units.pv.el, { autoAlpha: 1 });
 unitS("pj", "rome", L(32.08, -90.22), "infantry", "", { size: "XX" }); gsap.set(B.units.pj.el, { autoAlpha: 1 });
 B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_WRONG, T_WRONG + 3.4, "carth");
 // ---------- Grierson: about 1,700 cavalrymen from La Grange through Mississippi to Baton Rouge; his portrait rides with his column ----------

@@ -360,7 +360,7 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 zoomBox(...CH, T_CH - 0.2, 190, 110);
 // ---------- flags (48 px, both on every frame; re-placed when the camera changes ground) ----------
-const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1560, 900], [1300, 600], T_INL, T_CH + 0.3], [[1760, 765], [1540, 620], T_CH, T_1700 + 2.2], [[1580, 790], [1330, 610], T_1700 + 2.0, END + 1]];
+const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1560, 900], [1300, 600], T_INL, T_CH + 0.3], [[1760, 765], [1500, 730], T_CH, T_1700 + 2.2], [[1580, 790], [1330, 610], T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- towns: Vicksburg (the objective, permanent, continues m2e); Jackson permanent from its name (the army heads for it) ----------
 const VT = town("VICKSBURG", VKS, "l", 0);

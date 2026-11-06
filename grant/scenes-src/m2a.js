@@ -350,7 +350,7 @@ const AR = [MZ.origin_world_px[0] * 4 - VZ.origin_world_px[0], MZ.origin_world_p
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
 const gimg = (src, parent) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;"; parent.appendChild(i); return i; };
 const RELIEF = document.getElementById("relief");
-const PU = group(WORLD, RELIEF); gimg("assets/media/gw_mississippi_w.jpg", PU); PU.style.filter = "blur(40px)";
+const PU = group(WORLD, RELIEF); gimg("assets/media/gw_mississippi_w.jpg", PU); PU.style.filter = "blur(20px)";
 const PW = group(WORLD, OVL); gimg("assets/media/gw_mississippi_w.jpg", PW);
 living(VZ.meters_per_px, [], { n: 5 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%)";
@@ -429,7 +429,7 @@ B.caption("THE UNION COULD NOT USE THE RIVER FREELY", T_FREE - 0.1, T_FREE + 3.3
 // "the South stayed linked to its western states": the rail line Monroe - De Soto Point - Vicksburg - Jackson as an ink trace, red arrows across
 const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.33, -90.95], [32.352, -90.878], [32.33, -90.55], [32.30, -90.19]]);
 glowPath(LINK, "", 0, T_LINK - 0.2, T_WINT + 0.4);
-[[[32.15, -94.0], [32.25, -93.0], [32.30, -92.15]], [[33.1, -93.7], [32.75, -92.9], [32.50, -92.25]], [[31.3, -93.6], [31.75, -92.8], [32.10, -92.15]]]   // arrowheads stop on the west bank, clear of Vicksburg
+[[[32.15, -94.3], [32.25, -93.4], [32.30, -92.65]], [[33.0, -94.0], [32.75, -93.3], [32.52, -92.75]], [[31.3, -93.9], [31.75, -93.2], [32.08, -92.65]]]   // arrowheads stop on the west bank, clear of Vicksburg
   .forEach((q, k) => arw({ pts: LL(q), side: "rome", t: T_LINK + 0.1 + k * 0.25, dur: 1.4, width: AW(OVS * 1.12, 9), until: T_WINT + 0.5 }));
 boxL("WESTERN STATES", ...L(32.2, -94.9), T_WEST - 0.1, null);
 // "All winter, every attempt from the north failed in the swamps": three routes draw, stop short, grey; ink crosses where each broke

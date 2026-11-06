@@ -367,7 +367,7 @@ tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, durat
 // ---------- the decision card on "Do you wait for Banks" (critic A: opaque, <= 3.5 s, each option on its own words, no repeated subtitle) ----------
 // A lands on "wait for Banks", B on "cut loose"; the card leaves after "go inland alone"; "Tell us in the comments" is a caption on its words.
 // No reveal here: m2f re-shows the card for ~2 s and lights B on "cut loose from his base".
-const T_DEC0 = T_DO + 0.1, T_DEC1 = T_DEC0 + 3.5;
+const T_DEC0 = T_WAIT - 0.2, T_DEC1 = T_DEC0 + 3.5;
 const DEC = E.decide({ title: "", sub: "", note: "", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: T_DEC0, tReveal: END + 5, until: T_DEC1 });
 const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 [...DEC.children].forEach((c) => { if (!c.querySelector(".o")) c.style.display = "none"; });   // empty title / sub / note rows out
@@ -377,6 +377,7 @@ DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill";
 gsap.set([OA, OB], { autoAlpha: 0 });
 tl.fromTo(OA, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_WAIT - 0.1);
 tl.fromTo(OB, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_CUT - 0.1);
+{ const OR = OA.nextElementSibling; gsap.set(OR, { autoAlpha: 0 }); tl.to(OR, { autoAlpha: 1, duration: 0.3 }, T_CUT - 0.3); }   // "or" with its own words
 dropCues(END - 0.01, END + 10);   // the unused reveal cue
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
