@@ -430,10 +430,10 @@ const smoke = (pts, t) => pts.slice(0, 5).forEach((q, i) => { const e = document
   const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + 10, cy: q[1] - 3, rx: 9, ry: 6 }, duration: 3.6, ease: "sine.out" }, t0);
   tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
 // (d) side-view profile strip (once per move, on the terrain beat): Taylor's Ridge, the narrow gap, Taylor's Ridge (Ringgold version)
-const profileStrip = (t, until) => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
-  <svg width="480" height="124" viewBox="0 0 480 124"><path d="M10 106 C 60 104, 95 50, 140 32 C 175 22, 200 60, 222 98 C 232 106, 248 106, 258 98 C 280 60, 305 22, 340 32 C 385 50, 420 104, 470 106" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
+const profileStrip = (t, until) => scr(`<div style="width:480px;height:146px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+  <svg width="480" height="146" viewBox="0 0 480 146"><path d="M10 106 C 60 104, 95 50, 140 32 C 175 22, 200 60, 222 98 C 232 106, 248 106, 258 98 C 280 60, 305 22, 340 32 C 385 50, 420 104, 470 106" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <path d="M10 106 L470 106" stroke="#463a1e" stroke-width="1" stroke-dasharray="3 4"/>
-  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="140" y="22">Taylor's Ridge</text><text x="240" y="121">The gap</text><text x="340" y="22">Taylor's Ridge</text></g></svg></div>`,
+  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="140" y="22">Taylor's Ridge</text><text x="240" y="132">The gap</text><text x="340" y="22">Taylor's Ridge</text></g></svg></div>`,
   "left:56px;bottom:56px;", t, until);
 // BATCH 1 (three-agent review): one passing word item at a time, each at most 3.5 s
 { const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
@@ -471,9 +471,11 @@ tl.to(RT.el, { autoAlpha: 0, duration: 0.4 }, 0); tl.to(RT.el, { autoAlpha: 1, d
 tl.to(RT.el, { autoAlpha: 0, duration: 0.4 }, T_MARCH + 2.2);   // Osterhaus marches through the town: its name steps out   // steps out while the camera crops it, and stays out (Osterhaus's card and the Union guns sit on it later)
 
 // ---------- move2-3: the trap is set ----------
-const FRONT = [[1470, 845], [1465, 875], [1460, 900], [1455, 925], [1450, 950], [1443, 972], [1424, 995], [1413, 1020], [1404, 1045]];
-const front = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: 0.6, dur: 1.6, width: FWc(4.8), until: T_NOON + 0.6 });
-const front3 = frontS({ pts: FRONT, sideA: "carth", sideB: "rome", t: T_UART + 1.1, dur: 0.8, width: FWc(3.6), until: T_PULL + 1.4 });   // back on the close-up (the wide noon shot shows no front: it would end at the frame edge on the creek)
+// critic r3: the front is broken where the creek runs through the gap; both pieces start and end on dry ground (checked on ringgold_w_close)
+const FRONT_N = [[1466, 862], [1462, 880], [1460, 900], [1455, 925], [1449, 954]], FRONT_S = [[1428, 991], [1424, 997], [1413, 1020], [1404, 1045]];
+const fronts = (t, dur, width, until) => [FRONT_N, FRONT_S].map((pts) => frontS({ pts, sideA: "carth", sideB: "rome", t, dur, width, until }));
+fronts(0.6, 1.6, FWc(4.8), T_NOON + 0.6);
+fronts(T_UART + 1.1, 0.8, FWc(3.6), T_PULL + 1.4);   // back on the close-up (the wide noon shot shows no front)   // back on the close-up (the wide noon shot shows no front: it would end at the frame edge on the creek)
 const GV = [1464, 990], GR = [1458, 917], PO = [1424, 1010], LO = [1508, 1012], GN = [1447, 958], CL = [1494, 952];
 unitS("cle", "carth", CL, "infantry", "CLEBURNE", { t: 0, size: "XX" }); now0(B.units.cle.el); tagAt("cle", null);
 pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0.3, END + 1, true);   // owner: the general's portrait at his unit for the whole battle
@@ -551,8 +553,8 @@ along("gea", [GE1, [1432, 885], GE2], T_DROVE, 1.6, 8);
 arw({ pts: [[1442, 886], [1414, 886]], side: "rome", t: T_DROVE + 0.2, dur: 0.8, width: AW(5, 8), until: T_DROVE + 3.2 });
 crosses([[1438, 882], [1445, 888], [1434, 890], [1442, 878]], T_DROVE + 0.3, T_NOON);   // where Geary's assault broke
 B.caption("PLANTED A FLAG, BUT COULD NOT HOLD IT", T_HOLD + 0.8, T_HOLD + 4.3, "rome");
-stampP("CREIGHTON KILLED", 1345, 995, at(P5, "were killed") + 0.4, T6 + 1.4, null, 20);
-stampP("CRANE KILLED", 1345, 1015, at(P5, "were killed") + 0.6, T6 + 1.4, null, 20);
+stampP("CREIGHTON KILLED", 1510, 862, at(P5, "were killed") + 0.4, T6 + 1.4, null, 20);
+stampP("CRANE KILLED", 1510, 888, at(P5, "were killed") + 0.6, T6 + 1.4, null, 20);
 
 // ---------- move2-6: noon; the train is safe, the pull-back, the price ----------
 SFX("static", T_NOON); SFX("hit", T_SAFE);
@@ -573,7 +575,7 @@ const BACK = [[1478, 976], [1505, 990], [1545, 1010], [1580, 1045]];
 arw({ pts: BACK, side: "carth", t: T_PULL + 0.2, dur: 1.6, width: AW(3.4, 9), until: T_PULL + 3.8 });
 [[1468, 972], [1497, 962], [1509, 993]].forEach((q, k) => { fireGlow(q[0], q[1], 14, T_BURN + k * 0.3, T_DALTON); K.smoke(q[0], q[1], T_BURN + k * 0.3, { n: 5, r: 7, rise: 26, life: 3.2 }); K.smoke(q[0], q[1], T_BURN + 2 + k * 0.3, { n: 4, r: 7, rise: 26, life: 3.2 }); });
 SFX("hit", T_BURN + 0.1);
-B.caption("THE BRIDGES BURN BEHIND THEM", T_BURN, T_GRANT - 0.1, "carth");
+B.caption("BURNED THE BRIDGES BEHIND IT", at(P6, "behind it") + 0.4, at(P6, "behind it") + 3.9, "carth");   // the narrator's words
 // the gap changes hands: Union troops walk into it (STYLE W: red ink hatching on the captured patch only, ~3 s, then dissolve)
 along("ost", [OP2, [1412, 940], [1436, 958]], T_PULL + 1.0, 2.4, 8);   // Osterhaus's division follows into the gap as Cleburne pulls back (card stays inside the frame when the camera drops)   // Osterhaus's division walks into the gap
 const HM = T_GRANT + 0.4;
