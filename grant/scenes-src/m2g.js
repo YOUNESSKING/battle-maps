@@ -401,14 +401,17 @@ const FUS34 = now(flagS(FL.us, "", ...L(32.36, -90.81), 0, T_SIEGE + 0.3));
 const FUS35 = flagS("assets/media/us35_flag.png", "", ...L(32.36, -90.81), T_SIEGE + 0.2, null);
 const FCS = now(flagS(FL.cs, "", ...L(32.362, -90.882), 0, null)); tl.to(FCS, { opacity: 0.55, duration: 0.8 }, T_PEM + 0.6);
 // Vicksburg: the permanent town symbol (continues)
-const TV = town("VICKSBURG", VKS, "r", 0);
+const TV = town("VICKSBURG", VKS, "l", 0);   // name on the river side: clear of the works ridge and the front
 // units: three Union corps outside (bare boxes: never named), Pemberton's army inside; the portrait cards continue from m2f
 U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, -90.826), "XVII", "XXX"); U("u13", "carth", L(32.311, -90.822), "XIII", "XXX");
 U("rp", "rome", L(32.326, -90.874), "PEMBERTON", "XX"); U("r2", "rome", L(32.374, -90.876), "", "XX"); U("r3", "rome", L(32.306, -90.886), "", "XX");
 now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true));
 now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "up"));
 // ---------- 19 and 22 May: the assaults bounce off the works ----------
-const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 9), until: t + back + 0.6, keep: true }); tl.to(a, { opacity: 0.25, duration: 0.25, yoyo: true, repeat: 1 }, t + 0.8); return a; };
+// each assault ends ~5 world px (~14 screen px) outside the front line, on the attackers' side; crosses there
+const outside = (pts) => { const P = LL(pts), S = P[0], E = P[P.length - 1], q = posOn(FRT, nearestF(FRT, E)), d = Math.hypot(S[0] - q[0], S[1] - q[1]);
+  const e = [q[0] + (S[0] - q[0]) / d * 5, q[1] + (S[1] - q[1]) / d * 5]; return [S, [(S[0] + e[0]) / 2, (S[1] + e[1]) / 2], e]; };
+const AS = (pts, t, back = 1.2) => { const a = arw({ pts: outside(pts), side: "carth", t, dur: 0.7, width: AW(S1, 9), until: t + back + 0.6, keep: true }); tl.to(a, { opacity: 0.25, duration: 0.25, yoyo: true, repeat: 1 }, t + 0.8); return a; };
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
 const A22 = [[[32.382, -90.846], [32.376, -90.857], [32.371, -90.863]], [[32.355, -90.828], [32.353, -90.839], [32.352, -90.845]], [[32.336, -90.831], [32.337, -90.842], [32.339, -90.848]],
   [[32.324, -90.840], [32.327, -90.850], [32.329, -90.854]]];
@@ -420,10 +423,10 @@ A22.forEach((p, k) => AS(p, T_22 - 0.1 + k * 0.25));
 smoke(LL([[32.370, -90.859], [32.366, -90.856]]), T_19 + 0.4, 0.9);
 smoke(LL([[32.352, -90.849], [32.340, -90.852], [32.330, -90.858]]), T_22 + 0.5, 0.9);
 // ink crosses where the attacks broke (the arrow tips, just short of the works)
-crosses([...A19, ...A22].map((p) => L(...p[p.length - 1])), T_FAIL - 0.1, T_SIEGE + 0.6, 2.4);
+crosses([...A19, ...A22].map((p) => outside(p)[2]), T_FAIL - 0.1, T_SIEGE + 0.6, 2.4);
 const FAIL = wstampL("FAILED", ...L(32.335, -90.815), T_FAIL, null, null, 24);
 // Grant later wrote that he regretted the second one (paraphrase: no quote marks)
-B.caption("HE REGRETTED THE SECOND ONE", T_REG - 0.2, T_SIEGE - 0.2, "carth r");
+B.caption("HE REGRETTED THE SECOND ONE", T_REG - 0.2, T_REG + 2.3, "carth r");   // 2.5 s; gone before the SIEGE stamp
 // ---------- the siege: saps creep toward the works (ink lines drawn in) ----------
 const SAPS = [[[32.380, -90.853], [32.378, -90.857], [32.376, -90.856], [32.374, -90.860]], [[32.366, -90.840], [32.364, -90.845], [32.362, -90.844], [32.360, -90.849]],
   [[32.352, -90.834], [32.352, -90.839], [32.350, -90.840], [32.350, -90.845]], [[32.336, -90.838], [32.337, -90.843], [32.335, -90.845], [32.336, -90.849]],
@@ -436,11 +439,12 @@ const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block
 [[32.380, -90.866], [32.365, -90.856], [32.350, -90.851], [32.334, -90.855], [32.318, -90.867], [32.306, -90.881]].forEach(([la, lo], k) => {
   const el = pinS(GG.pin(WF, ...L(la, lo), { t: T_JUL + 0.15 + k * 0.18, pop: true })); WFL.push(el); });
 hatch("assets/media/gn_vsiege_jul4_mx.png", T_PEM - 0.2, 3.0);
-wstampL("SURRENDERED", ...L(32.30, -90.905), T_PEM + 0.4, null, null, 24);
+// (no SURRENDERED stamp: the result card says PEMBERTON SURRENDERED; one channel per fact)
 ["rp", "r2", "r3"].forEach((id, k) => B.grey([id], T_PEM + 0.6 + k * 0.1, 0.8));
 // the US flag on a pole over the city (35 stars), constant size
 const poleFlag = (src, p, t, until, w = 46) => pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-1.5px;top:${-w * 1.25}px;width:3px;height:${w * 1.25}px;background:#efe6cf;box-shadow:0 0 3px #000"></div><img src="${src}" style="position:absolute;left:1px;top:${-w * 1.25}px;width:${w}px;border:1px solid #1a1712;box-shadow:0 2px 5px rgba(0,0,0,.6)"></div>`, p[0], p[1], { t, pop: true, until }));
 const POLE = poleFlag("assets/media/us35_flag.png", [VKS[0] - 4, VKS[1] - 8], T_172 + 0.6, END + 1, 46);
+tl.to(FUS35, { autoAlpha: 0, duration: 0.4 }, T_172 + 0.4);   // the US flag moves onto the city (one pair per shot: the pole flag + the Confederate flag)
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
 const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT · 4 JULY 1863</div>
@@ -448,7 +452,7 @@ const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.9
   <div style="display:flex;gap:56px;justify-content:center;margin-top:8px">
   <div class="a"><div class="v" style="font-size:62px;line-height:1.05">~0</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">MEN</div></div>
   <div class="b"><div style="font-size:62px;line-height:1.05">172</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">CANNON</div></div></div></div>`,
-  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_295 - 0.2, T_LIN - 0.2);
+  "left:150px;top:215px;display:flex;", T_295 - 0.2, Math.min(T_LIN - 0.2, T_295 + 3.3));   // <= 3.5 s, on the Louisiana side (clear of the corps)
 SFX("hit", T_295 - 0.05);
 { const v = NUM.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 29500, duration: 1.0, ease: "none", onUpdate: () => { v.textContent = "~" + (Math.round(st.x / 100) * 100).toLocaleString("en-US"); } }, T_295);
   for (let k = 0; k < 6; k++) SFX("tick", T_295 + k * 0.17);
@@ -460,18 +464,20 @@ const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">LINCOLN WROTE</div><div style="font-size:48px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">THE FATHER OF WATERS AGAIN WENT UNVEXED TO THE SEA</div></div>`,
   "left:0;right:0;bottom:130px;display:flex;justify-content:center;", T_FATHER - 0.2, T_EVERY - 0.3);
 // flags on the river map (48 px, no names): the US on the river, the Confederacy on both sides of it (cut in two from July: shown, not spoken)
-const MFL = [flagS("assets/media/us35_flag.png", "", ...L(33.55, -91.0), T_FATHER, END + 1), flagS(FL.cs, "", ...L(31.6, -94.2), T_FATHER + 0.1, END + 1), flagS(FL.cs, "", ...L(32.3, -87.6), T_FATHER + 0.2, END + 1)];
+const MFL = [flagS("assets/media/us35_flag.png", "", ...L(33.3, -91.75), T_FATHER + 0.4, END + 1), flagS(FL.cs, "", ...L(32.3, -88.4), T_FATHER + 0.45, END + 1)];   // one pair: the US west of the river, the Confederacy east
 // ---------- m2-12: the supply line he cut; method card line 2 on the spoken words ----------
 K.target(VKS[0], VKS[1], T_GATES, { r: 30 / S3, until: T_GATES + 2.6 });
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["ATTACKED THE MOMENT THE ENEMY HESITATED", "CUT HIS SUPPLY LINE · FED HIS MEN OFF THE LAND", ""];   // line 1 = move 1 (m1-9), line 2 = spoken here (m2-12)
-const MC = GG.method(2, T_CUT - 0.2, T_FEW - 0.2, [T_CUT - 0.1, T_CUT + 0.1]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
+const MC = GG.method(2, T_CUT - 0.2, T_FEW - 0.2, [T_CUT - 0.1, T_FED - 0.1]);   // line 2 lands on "fed his men off the land" MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
 { const r1 = MC.querySelectorAll(".row.lit")[0]; r1.style.opacity = "0.6"; }
 const FEW = [L(32.35, -90.88), L(32.30, -90.19)];
 K.target(FEW[0][0], FEW[0][1], T_FEW + 0.3, { r: 28 / S3, until: END + 0.5 });
 // the siege close-up layer leaves as the camera goes out (units + their cards, flags, white flags, the pole flag, the town stay readable only up close)
 const CLOSE = [...["u15", "u17", "u13", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS35, FCS, ...WFL, POLE, TV];
-CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.6 }, T_FATHER + 0.4));   // after the river-map flags are up (both flags on every frame)
+CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.5 }, T_FATHER - 0.1));   // out just before the river-map pair lands (one pair per shot)
+// Vicksburg stays a permanent town symbol on the river map
+town("VICKSBURG", VKS, "r", T_FATHER + 0.4);   // after the river-map flags are up (both flags on every frame)
 // every constant-size element exists now: apply the camera once more so frame 0 is right
 applyCam(); tl.call(applyCam, null, 0);
 fixImgs();

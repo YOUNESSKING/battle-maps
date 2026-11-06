@@ -351,7 +351,8 @@ const ROAD = [[1000, 930], [1060, 922], [1120, 920], [1190, 908], [1260, 906], [
 // ---------- layers: living map (clouds only), night, dawn ----------
 living(GZ.meters_per_px, [], { n: 5 });
 const NL = GG.night(T_NIGHT - 0.3, T_NDEF - 0.6, { dur: 2.0, outDur: 2.6 });
-const DAWN = GG.dawn(T_NDEF - 1.0, T_EAST + 1.0);
+// dawn light: a light warm tint from the east, the map stays green
+const DAWN = GG.layer("background: linear-gradient(to left, rgba(255,190,140,0.15), rgba(255,210,170,0.06) 55%, rgba(255,220,180,0));", T_NDEF - 1.0, T_EAST + 1.0, { dur: 3.0, outDur: 3.0 });
 // ---------- camera ----------
 const sKeys = [[0, 1300, 560, 1.1], [T_POR, 1300, 560, 1.3], [T_SIL, 1310, 580, 1.45], [T_10K, 1280, 560, 1.3], [T_NIGHT, 1250, 720, 1.05], [T_BRU, 1240, 780, 1.05],
   [T_NDEF, 1120, 920, 1.45], [T_EAST, 1110, 930, 1.5], [T_LATER, 1230, 880, 1.25], [END, 1250, 870, 1.2]];
@@ -371,10 +372,12 @@ unitS("cs1", "rome", [1530, 640], "infantry", "", { size: "XX" }); gsap.set(B.un
 // the transports with ~10,000 men wait above, off Hard Times; frame 0: boats already moving
 const TR = [0, 1, 2, 3].map((k) => { const f = fAt([1205, 345]) + k * 0.018; return ship("transport", sub(RIVB, f - 0.012, f, 4), 0, 6, null, { s: 20, t0: 0 }); });
 // the plan: land at Grand Gulf (a planned move = solid thin arrow, greyed when the plan shifts)
-const PLAN = arw({ pts: [[1232, 470], [1266, 540], [1300, 600]], side: "carth", t: T_FIRST + 0.2, dur: 1.0, width: AW(1.15, 9), until: T_LAND + 0.8, keep: true });
+const PLAN = arw({ pts: [[1110, 450], [1150, 540], [1200, 615]],   // from Hard Times toward Grand Gulf, ends on the west bank (off the boats)
+ side: "carth", t: T_FIRST + 0.2, dur: 1.0, width: AW(1.15, 9), until: T_LAND + 0.8, keep: true });
 K.target(GGF[0] - 20, GGF[1] - 10, T_GG, { r: 34, until: T_GG + 3.0 });
 // Porter's eight gunboats come down from upstream and take station off the batteries
-const STF = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => fAt([1272, 520]) + k * 0.0135);
+const RBL = (() => { let s = 0; for (let j = 1; j < RIVB.length; j++) s += Math.hypot(RIVB[j][0] - RIVB[j - 1][0], RIVB[j][1] - RIVB[j - 1][1]); return s; })();
+const STF = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => fAt([1268, 632]) - k * 58 / RBL);   // stations spaced ~58 px up the river from off the lower batteries
 const GBT = STF.map((f, k) => ship("gunboat", sub(RIVB, Math.max(0, f - 0.2), f, 24), 0.2 + k * 0.3, T_ATT - 0.2 - k * 0.15, null, { s: 18, t0: 0.2 + k * 0.3, smoke: 1.4, n: 24 }));
 // Porter (named): his portrait card on a side stake at his flagship, the Benton (west of the line: never over the batteries)
 const portraitShip = (host, photo, flag, name, t, until, side = "left", up = true) => {
@@ -394,15 +397,19 @@ smoke(BATP.map((p) => [p[0] + 4, p[1] - 6]), T_ATT, 1.6);
 smoke(BATP.map((p) => [p[0] + 4, p[1] - 6]), T_HRS + 1.0, 1.6);
 const HRS = scr(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)">
   <div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">NEARLY</div><div class="v" style="font-size:64px;letter-spacing:.04em;line-height:1.05">0 HOURS</div><div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">PORTER'S EIGHT GUNBOATS</div></div>`,
-  "left:0;right:0;top:160px;display:flex;justify-content:center;", T_HRS - 0.2, T_SIL - 0.2);
-{ const v = HRS.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 5.5, duration: 1.2, ease: "power1.out", onUpdate: () => { v.textContent = (st.x >= 5.45 ? "5½" : Math.floor(st.x)) + " HOURS"; } }, T_HRS);
-  for (let k = 0; k < 6; k++) SFX("tick", T_HRS + k * 0.2); }
+  "left:0;right:0;top:160px;display:flex;justify-content:center;", at(P1, "nearly five") - 0.05, T_SIL - 0.15);   // ~2.1 s up; out before the stamp
+{ const v = HRS.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 5.5, duration: 0.6, ease: "power1.out", onUpdate: () => { v.textContent = (st.x >= 5.45 ? "5½" : Math.floor(st.x)) + " HOURS"; } }, T_HRS);
+  for (let k = 0; k < 6; k++) SFX("tick", T_HRS + k * 0.1); }
 // big stamps on the empty ground east of the bluffs (screen right), not over the river (2d item 8)
 const sstampR = (txt, left, top, t, o = {}) => slam(scr(stampHTML(txt, CREAM, o.size || 60, 0), `left:${left}px;width:${1880 - left}px;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }), t, o);
-const SIL = sstampR("DID NOT SILENCE A SINGLE GUN", 900, 760, T_SIL, { size: 46, shake: 5, until: T_SIL + 2.4 });
+// one big card at a time: the hours card has cleared (T_SIL + 0.35), the stamp holds 2.0 s and clears 0.15 s before the 10,000 ticker
+const T_SILS = T_SIL + 0.5;
+const SIL = sstampR("DID NOT SILENCE A SINGLE GUN", 900, 760, T_SILS, { size: 46, shake: 5, until: T_SILS + 2.0 });
 BATP.forEach((p, k) => tl.fromTo(B.units["bt" + k].el.querySelector(".blk"), { scale: 1 }, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_SIL + 0.3 + k * 0.12));
 // "Ten thousand soldiers waited on transports and watched"
-const TK = ticker("SOLDIERS ON THE TRANSPORTS", 10000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_10K - 0.1, 1.0, T_NIGHT - 0.2, 6, { col: "#7fb0ff", sub: "WAITED AND WATCHED" });
+const TK = ticker("SOLDIERS", 10000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_SILS + 2.0 + 0.5, 0.8, T_NIGHT - 0.2, 6, { col: "#7fb0ff", sub: "WAITED ON TRANSPORTS AND WATCHED" });
+const subAt = (card, t) => { const sb = card.firstElementChild.children[2]; gsap.set(sb, { autoAlpha: 0 }); tl.to(sb, { autoAlpha: 1, duration: 0.3 }, t); };
+subAt(TK, at(P1, "transports and watched"));
 TR.forEach((b, k) => tl.fromTo(b.sv, { filter: "brightness(1)" }, { filter: "brightness(1.9)", duration: 0.25, yoyo: true, repeat: 3, immediateRender: false }, T_WAIT + k * 0.12));
 // ---------- that night: a local Black man comes to Grant's camp; the plan shifts south to Bruinsburg ----------
 const CAMP = [1080, 740];
@@ -414,8 +421,8 @@ gsap.set(FIG, { autoAlpha: 0 }); tl.to(FIG, { autoAlpha: 1, duration: 0.5 }, T_M
 tl.to(FIG, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.8);
 B.greyArrow(PLAN, T_LAND - 0.2, T_LAND + 0.8);
 const SHIFT = arw({ pts: [[1060, 800], [1048, 860], [1036, 915]], side: "carth", t: T_LAND, dur: 1.0, width: AW(1.05, 9), until: T_ASH + 0.4, keep: true });
-K.target(BRU[0], BRU[1], T_BRU, { r: 34, until: T_BRU + 3.0 });
-town("BRUINSBURG", BRU, "r", T_BRU);
+K.target(BRU[0], BRU[1], at(P1, "Bruinsburg"), { r: 34, until: at(P1, "Bruinsburg") + 3.0 });
+town("BRUINSBURG", BRU, "r", at(P1, "Bruinsburg"));
 inkTrace(ROAD, T_ROAD - 0.1, T_ROAD + 3.4);
 town("PORT GIBSON", PG, "r", T_PG);
 // the boats run past Grand Gulf in the dark (two visible shots) and gather at Disharoon's, above Bruinsburg
@@ -432,17 +439,18 @@ LANDP.forEach((s, k) => { const b = [s[0] - 22, s[1] + 4 * (k - 1)];
   ship("transport", [b], T_NDEF - 0.6, 1, T_LATER + 0.6, { s: 20, t0: T_NDEF - 0.6 });
   arw({ pts: [[b[0] + 14, b[1]], [s[0] + 4, s[1]], [s[0] + 34, s[1] - 6]], side: "carth", t: T_ASH - 0.3 + k * 0.25, dur: 0.8, width: AW(1.5, 8) }); });
 NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
-const LU = [["l13", 1172, 878], ["l9", 1196, 962], ["l17", 1122, 1018]];   // inland of the Bruinsburg dot, clear of its name
+const LU = [["l13", 1172, 878], ["l9", 1226, 992], ["l17", 1122, 1018]];   // inland of the Bruinsburg dot, clear of its name
 LU.forEach(([id, x, y], k) => { unitS(id, "carth", [x - 110, y + 10], "infantry", "", { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); tagAt(id, null); along(id, [[x - 110, y + 10], [x, y]], T_ASH + k * 0.3, 1.8, 8); });
 pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 1.2, END + 1, true);
 // the ground changes hands: the Bruinsburg bridgehead in red ink hatching (~3 s, then it dissolves)
 hatch("assets/media/gn_grandgulf_bruinsburg_mx.png", T_ASH + 0.6, 3.0);
-const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, Math.min(T_LATER - 0.2, T_17K + 3.3), 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT · 30 APRIL 1863" });
+const TK17 = ticker("ABOUT", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K + 0.3, 0.9, T_ASH + 1.6, 7, { col: "#7fb0ff", pre: "~", sub: "UNION SOLDIERS ASHORE" });
+subAt(TK17, T_ASH - 0.1);
 boxL("EAST BANK", 1270, 1060, T_EAST, null);
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
 const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,
-  "left:0;right:0;top:160px;display:flex;justify-content:center;", T_REL - 0.2, END + 1);
+  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_REL - 0.2, END + 1);
 fixImgs();
 K.raiseTerritory();
 B.finish();

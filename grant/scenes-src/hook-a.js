@@ -412,7 +412,7 @@ camTo(T_BEGAN - 0.4, END - T_BEGAN + 0.4, CE, SE, "sine.inOut");
 sstamp("A DISASTER", BAND(760), T_DIS - 0.1, { size: 80, shake: 6 });   // held to the scene end; hook-b keeps it ~1.2 s more (critic H)
 pulse(T_DIS + 0.15);
 // flags for the close push (both on screen to the end; hook-b starts with this pair)
-const F3 = flags2([1190, 905], [1760, 600], T_SURR - 0.3, null);   // after the number card leaves (critic H r2)
+const F3 = flags2([1190, 905], [1700, 950], T_12 + 0.5, null);   // CSA flag below the number card (critic H r2)
 // the HUD steps out while a big card is up (1c); the date scroll stays
 declutter([QB], [[T_SURR - 0.05, T_SURR + 2.1]]);
 fixImgs();

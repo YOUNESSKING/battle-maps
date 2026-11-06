@@ -305,7 +305,7 @@ GR.forEach((id) => { const el = B.units[id].el, blk = el.querySelector(".blk"), 
 const UB = [unitS("uSm", "carth", [1250, 690], "infantry", null, { size: "XX" }), unitS("uWa", "carth", [1282, 850], "infantry", null, { size: "XX" }), unitS("uMc", "carth", [1440, 900], "infantry", null, { size: "XX" })];
 const WF = pinAt(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, FD[0] + 8, FD[1] - 40, 0, null);
 reg(WF.firstElementChild);
-const F3 = flags2([1190, 905], [1760, 600], 0, null);
+const F3 = flags2([1190, 905], [1700, 950], 0, null);
 { const AD = scr0(stampHTML("A DISASTER", CREAM, 80, -4), BAND(760)); gsap.set(AD, { autoAlpha: 1 }); tl.to(AD, { autoAlpha: 0, duration: 0.3 }, 1.15); }   // continues hook-a's last stamp (critic H)
 // =====================================================================================================================
 // hook-3: "But a week is not how it looked..." -- the clock rolls back to dawn, 15 February
