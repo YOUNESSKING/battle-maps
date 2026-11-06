@@ -43,8 +43,8 @@ const RED = [["r1", L(32.36, -90.84), "XX"], ["r2", L(32.33, -90.64), "XX"], ["r
 RED.forEach(([id, p, sz]) => U(id, "rome", p, "", sz));
 B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.hideUnits(["r1", "r2", "r3"], T_DO - 0.4, 0.3); B.move("r4", 0.6, 12, ...L(32.14, -90.80));   // critic r2: step out before the camera crops them at the top edge
 // Banks' column on the Red River (Alexandria), far from Port Hudson
-unitS("bk", "carth", ALX, "infantry", "BANKS", { t: T_BANKS + 0.1, size: "XX" });
-pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, T_DO + 0.3, true);   // steps out as his column crawls off the frame under the card   // STYLE W: Banks' portrait at his column (no corner badge)
+unitS("bk", "carth", ALX, "infantry", "BANKS", { t: T_BANKS + 0.1, size: "XX" }); B.hideUnits(["bk"], T_DO - 0.3, 0.4);   // critic r2: Banks steps out before the frame crops him
+pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, null, true);   // steps out as his column crawls off the frame under the card   // STYLE W: Banks' portrait at his column (no corner badge)
 // ---------- m2-7 beats ----------
 pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, null, true, "left");   // side stake: clear of the corps boxes   // STYLE W: Grant's portrait at his army in the bridgehead
 // across the river: the crossing pulses; deep in enemy country: red rings close round the bridgehead
@@ -57,7 +57,7 @@ B.greyArrow(JOIN, T_PH + 0.2, T_TENTH + 0.6);
 const PHB = boxL("PORT HUDSON ▼", PHX[0] - 10, 1560, T_PH, null, { size: 20 });
 const BKA = arw({ pts: [ALX, L(31.38, -91.95), L(31.29, -91.62)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 11), dash: "14 10", until: END + 1 });
 // critic r2: the two captions sit in the top band here (the bottom band holds Banks's column, his arrow and the Port Hudson label)
-[B.caption("CANNOT GET TO PORT HUDSON BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth"), B.caption("ONLY FIFTEEN THOUSAND MEN", T_15K, T_DO - 0.25, "carth")].forEach((c) => { c.style.bottom = "auto"; c.style.top = "150px"; });
+[B.caption("CANNOT GET TO PORT HUDSON BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth"), B.caption("ONLY FIFTEEN THOUSAND MEN", T_15K, T_DO - 0.25, "carth")].forEach((c) => { c.style.bottom = "auto"; c.style.top = "205px"; });
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
 // ---------- E.decide (B3) on "Do you wait for Banks" ----------
 const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: T_DO - 0.2, tCount: T_TELL, tReveal: END + 0.9, until: END + 1 });
@@ -65,7 +65,7 @@ const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 const BACK = DEC.previousElementSibling;
 // critic r1: the card sits on the empty lower half with its own opaque backing; the dim only covers the lower half, Grant + his army stay visible above
-Object.assign(DEC.style, { top: "565px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
+Object.assign(DEC.style, { top: "575px", width: "1060px", marginLeft: "-530px", background: "rgba(14,13,10,0.95)", padding: "2px 0 6px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
 BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };

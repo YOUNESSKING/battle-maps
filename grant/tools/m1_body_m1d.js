@@ -48,7 +48,8 @@ const RED = [["bu", [1306, 722], [1306, 722]], ["c1", [1305, 870], [1352, 790]],
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
 unitS("fl", "rome", [1510, 744], "infantry", null, { t: 0, size: "X" });
 pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");   // critic r1: named generals keep their cards (same map)
-pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "upright");
+const PPW = pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, [-80, -130]);   // north-west of his box, off the bulge front
+restake(PPW, [-80, -130], [0, -150], T_PULLED - 0.2, 2.8);   // slides with him back inside the ring (off the star, the boxes and the line)
 pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
 // ---------- Grant rides back along the line ----------
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");

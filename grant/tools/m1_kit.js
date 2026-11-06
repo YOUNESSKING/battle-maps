@@ -347,6 +347,12 @@ const pinPortrait = (id, photo, flagSrc, name, t, until, keep = false, side = "u
   if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   if (t <= 0.05) gsap.set(w, { autoAlpha: 1 }); else tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t);
   tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
+// restake(w, from, to, t, dur): slide a pinned card to a new side-stake offset (screen px) while its unit moves; no toggling
+const restake = (w, from, to, t, dur = 2.8) => { const card = w.firstElementChild, stake = w.lastElementChild, P = { dx: from[0], dy: from[1] };
+  const put = () => { const L = Math.hypot(P.dx, P.dy) || 1, ux = P.dx / L, uy = P.dy / L;
+    Object.assign(card.style, { left: (P.dx - 38).toFixed(1) + "px", top: (P.dy - 59).toFixed(1) + "px" });
+    Object.assign(stake.style, { left: (ux * 20).toFixed(1) + "px", top: (uy * 20).toFixed(1) + "px", width: Math.max(4, L - 20).toFixed(1) + "px", transform: `rotate(${(Math.atan2(P.dy, P.dx) * 180 / Math.PI).toFixed(1)}deg)` }); };
+  tl.to(P, { dx: to[0], dy: to[1], duration: dur, ease: "sine.inOut", onUpdate: put, immediateRender: false }, t); };
 // (6) powder smoke puffs at the firing beats (visual only; the locked shot sounds stay as they are)
 const SMK = document.createElementNS(NSs, "filter"); SMK.setAttribute("id", "smkblur"); SMK.innerHTML = '<feGaussianBlur stdDeviation="1.6"/>';
 { let defs = OVL.querySelector("defs"); if (!defs) { defs = document.createElementNS(NSs, "defs"); OVL.insertBefore(defs, OVL.firstChild); } defs.appendChild(SMK); }

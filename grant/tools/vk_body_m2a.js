@@ -93,7 +93,7 @@ dateNow("WINTER 1862 - 63", T_DIFF - 0.1); B.date("20 APRIL 1863", T_DIFF, END +
 const LGD = null, LGD2 = null;   // STYLE W: no key (no new symbol in this scene)
 // ---------- flags: overview pair, delta pair, Vicksburg-map pair (both on every frame) ----------
 flagS(FL.us, "", ...L(35.45, -88.9), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
-flagS(FL.us, "", ...L(32.36, -91.38), T_WINT + 0.5, TZ0 + 1.1); flagS(FL.cs, "", ...L(32.95, -89.7), T_WINT + 0.55, TZ0 + 1.1);
+flagS(FL.us, "", ...L(32.80, -91.85), T_WINT + 0.5, TZ0 + 1.1); flagS(FL.cs, "", ...L(32.95, -89.7), T_WINT + 0.55, TZ0 + 1.1);
 flagS(FL.us, "", ...L(32.62, -91.36), TZ0 + 1.2, T_DIFF - 0.2); flagS(FL.cs, "", ...L(32.58, -90.45), TZ0 + 1.25, T_DIFF - 0.2);
 flagS(FL.us, "", ...L(32.44, -91.40), T_DIFF - 0.1, T_ONLY + 0.4); flagS(FL.cs, "", ...L(32.20, -90.62), T_DIFF - 0.05, T_ONLY + 0.4);
 flagS(FL.us, "", ...L(32.42, -91.20), T_ONLY + 0.5, END + 1); flagS(FL.cs, "", ...L(32.30, -90.80), T_ONLY + 0.55, END + 1);
@@ -105,9 +105,9 @@ const TV = town("VICKSBURG", VKS, "l", TZ1 + 0.2); tl.to(TV.querySelector(".tn")
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_FREE + 0.8, TZ0 + 0.6, { s: 20, t0: 0 }));
 // overview: one army counter each side (spread apart); the corps counters appear when the camera reaches the Vicksburg map
-unitS("oa", "carth", L(32.45, -91.85), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.55, -90.42), "infantry", "", { size: "XXXX" });
+unitS("oa", "carth", L(32.45, -91.85), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.62, -90.28), "infantry", "", { size: "XXXX" });
 ["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 })); B.hideUnits(["oa", "ov"], TZ0 + 0.3, 0.4);
-along("oa", LL([[32.45, -91.85], [32.38, -91.67]]), 0, 10, 10);   // below the title card
+along("oa", LL([[32.45, -91.85], [32.45, -91.95]]), 0, 10, 10);   // below the title card
 unitS("ga", "carth", L(32.62, -91.25), "infantry", "XV", { size: "XXX", t: TZ0 + 1.0 }); unitS("gb", "carth", L(32.95, -91.30), "infantry", "XVII", { size: "XXX", t: TZ0 + 1.1 });
 unitS("gc", "carth", L(32.46, -91.24), "infantry", "XIII", { size: "XXX", t: TZ0 + 1.2 });
 along("gb", LL([[32.95, -91.30], [32.85, -91.26]]), 0, 8, 10); along("ga", LL([[32.62, -91.25], [32.56, -91.20]]), 0, 9, 10);
@@ -119,8 +119,8 @@ along("vk", LL([[32.44, -90.62], [32.42, -90.70]]), 0, 6, 10);
 glowPath(RIV, "#8fc3ff", 6.5 / 0.185, T_RIV - 0.3, T_WEST + 0.5, 2, 0.95, { draw: 1.6, top: true });
 K.target(VKS[0], VKS[1], T_BLUFF, { r: 230, side: "#ff3b30", until: T_WINT + 0.4 });
 // "As long as the Confederates held it": the batteries pulse, a shot at the lead gunboat; the boats stop short of the city
-unitS("bt0", "rome", L(32.42, -90.80), "artillery", "", { t: T_HELD - 0.2, w: 44, h: 29, until: TZ0 + 0.5 });
-shootS(L(32.42, -90.80), GBN[0].at(T_FREE + 1.2), T_FREE + 0.3, 0.183, { dur: 0.9, h: 50, r: 12 });
+unitS("bt0", "rome", L(32.32, -90.86), "artillery", "", { t: T_HELD - 0.2, w: 44, h: 29, until: TZ0 + 0.5 });
+shootS(L(32.32, -90.86), GBN[0].at(T_FREE + 1.2), T_FREE + 0.3, 0.183, { dur: 0.9, h: 50, r: 12 });
 // BATCH 3: the one side-view profile strip of this move, on the terrain beat ("on a bluff high above ... the Mississippi River")
 profileStrip(`<path d="M10 100 L150 100 C 175 100, 182 96, 190 88" fill="none" stroke="#2a2410" stroke-width="2.6"/><path d="M14 101 L186 101" stroke="#4d7d9a" stroke-width="7"/>
   <path d="M190 88 C 200 60, 205 34, 222 30 C 260 26, 330 32, 470 36" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
@@ -140,7 +140,7 @@ const TRY = [[[34.40, -90.62], [34.10, -90.40], [33.80, -90.30], [33.56, -90.20]
 const TRYA = TRY.map((q, k) => arw({ pts: LL(q), side: "carth", t: T_WINT + 0.3 + k * 0.55, dur: 1.2, width: AW(0.2, 13), dash: k === 0 ? "18 10" : null, until: TZ0 + 0.6 }));
 TRYA.forEach((g, k) => B.greyArrow(g, T_FAIL + 0.1 + k * 0.2, TZ0 + 0.6));
 crosses(TRY.map((q) => L(...q[q.length - 1])), T_FAIL + 0.15, TZ0 + 0.4, 14 / S1);   // STYLE W: small ink crosses where each attempt broke
-wstampL("FAILED IN THE SWAMPS", ...L(33.2, -90.0), T_FAIL + 0.2, null, "#e3232f", 26);
+wstampL("FAILED IN THE SWAMPS", ...L(33.45, -90.0), T_FAIL + 0.2, null, "#e3232f", 26);
 // =================== the dive onto the Vicksburg map ===================
 // "Canals dug in the mud": the canal across De Soto Point; "bayous cleared for gunboats": Lake Providence + Steele's Bayou; "boats stuck among the trees"
 const CANAL = LL([[32.375, -90.925], [32.355, -90.928], [32.335, -90.925], [32.318, -90.918]]);
@@ -155,7 +155,7 @@ STK.forEach((b, k) => tl.to(b.sv, { rotation: `+=${k % 2 ? 9 : -9}`, duration: 0
 boxL("STUCK", ...L(32.80, -90.70), T_STUCK + 0.2, null, { size: 18 });
 const NOTH = sstamp("NOTHING WORKED", 760, T_NOTH, { size: 76, shake: 4, until: T_NOTH + 1.6 });
 // "Many in the North believed Grant had run out of ideas" (belief card; Grant's badge waits until it leaves)
-const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.7, T_DIFF - 0.15, { top: 160, size: 52 });
+const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.7, T_DIFF - 0.15, { top: 130, size: 52 });
 // STYLE W: no fronts along the water (the hand-over of the west bank is the blue hatch at CUE)
 // =================== m2-2: Grant's idea ===================
 const GB = null; pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_DIFF + 0.3, null, true, "left");   // critic r1: up for the rest of the move, side stake (clear of the corps)   // STYLE W: Grant's portrait on a stake at his marching corps (no corner badge)

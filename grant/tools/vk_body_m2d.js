@@ -90,7 +90,7 @@ const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
 TR.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.2));
 pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true, "right");   // side stake: clear of the top edge   // Grant with the waiting transports (named on "The first place Grant picked")
-pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "left");   // Porter leads the night run
+pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "right");   // Porter leads the night run
 // critic r1: the Grand Gulf batteries + their infantry step out at the landing (they would sit cut at the top edge)
 ["bt0", "bt1", "bt2", "bt3", "cs1"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, T_NDEF - 0.5));
 GBT.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.3));
