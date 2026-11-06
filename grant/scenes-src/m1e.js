@@ -184,7 +184,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
-        const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
+        const under = r.right > dr.left - 30 && r.left < dr.right + 30 && r.bottom > dr.top - 30 && r.top < dr.bottom + 30 && dr.width > 0;   // scroll ends/ornaments included
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
         const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
@@ -440,8 +440,8 @@ B.caption("FLOYD: BUCHANAN'S SECRETARY OF WAR", T_SEC, T_FOR - 0.2, "rome");
 // ---------- Forrest's cavalry out through the flooded backwater ----------
 const BW = water([1566, 838], 96, 30, 116, T_BACKW - 0.2, T_DAWN + 1, 0.75);   // the flooded backwater (Lick Creek), in the map's own water colour
 unitS("for", "rome", [1562, 884], "cavalry", "FORREST", { t: T_FOR }); cavIcon("for");   /* clear of the red box at the works */
-along("for", [[1562, 884], ...ESCAPE.slice(2, 6)], T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
-arw({ pts: [[1562, 884], ...ESCAPE.slice(2, 6)], side: "rome", t: T_SEV, dur: T_CMD - T_SEV + 1.6, width: AW(2.0, 9), until: T_CMD + 3.4 });   // trail grows with the box, ends at it
+along("for", [[1562, 884], ...ESCAPE.slice(2, 5)], T_SEV, T_CMD - T_SEV - 0.4, 16); hideU(["for"], T_CMD + 1.6);   /* stays in frame */
+arw({ pts: [[1562, 884], ...ESCAPE.slice(2, 5)], side: "rome", t: T_SEV, dur: T_CMD - T_SEV - 0.4, width: AW(2.0, 9), until: T_CMD + 1.4 });   /* ends at the box, fades ~2 s after arrival */   // trail grows with the box, ends at it
 // ---------- the command falls to Buckner; at dawn he writes asking for terms ----------
 pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, T_TELE + 0.4, true, "up");
 pulseU("bu", T_BUCK + 0.2);
@@ -465,7 +465,7 @@ unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, siz
 tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
 pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
-pinPortrait("gA", PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, T_LOSS - 0.1, true, [10, -140]);   // steps out under the result card   // Smith stays on the merged Union box
+pinPortrait(B.units.gA.el, PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, T_LOSS - 0.1, true, [10, -140]);   // steps out under the result card   // Smith stays on the merged Union box
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });
 // ---------- the telegram to Halleck ----------
 // the telegram (spoken numbers only), two short cards <= 3.5 s each, top-left under the date scroll, off the fort and Grant's card

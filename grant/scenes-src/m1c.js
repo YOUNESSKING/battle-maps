@@ -184,7 +184,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
-        const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
+        const under = r.right > dr.left - 30 && r.left < dr.right + 30 && r.bottom > dr.top - 30 && r.top < dr.bottom + 30 && dr.width > 0;   // scroll ends/ornaments included
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
         const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
@@ -488,7 +488,7 @@ const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20
 SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
 // not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word
-arw({ pts: ROAD_OUT.slice(1, 6).map((q) => [q[0] + 18, q[1]]), side: "rome", t: T_ROAD + 0.2, dur: 1.8, width: AW(2.0, 9), until: T_KNOW + 0.4 });
+arw({ pts: ROAD_OUT.slice(2, 6).map((q) => [q[0] + 60, q[1]]), side: "rome", t: T_ROAD + 0.2, dur: 1.8,   /* beside the road, clear of the red boxes */ width: AW(2.0, 9), until: T_KNOW + 0.4 });
 boxS("THE ROAD", ROAD_OUT[2][0] + 66, ROAD_OUT[2][1] + 10, T_ROAD + 0.3, null, { size: 24 });
 hideU(["sm1"], T_DAWN - 0.6);   // under the date scroll in the dawn framing: steps out
 B.caption("NOT A LAST STAND · PLANNING TO LEAVE", T_LEAVE, T_KNOW - 0.1, "rome");

@@ -175,7 +175,7 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
     { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
       document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
-        const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
+        const under = r.right > dr.left - 30 && r.left < dr.right + 30 && r.bottom > dr.top - 30 && r.top < dr.bottom + 30 && dr.width > 0;   // scroll ends/ornaments included
         const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
         const o = under || edge ? "0" : ""; [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.opacity = o; }); }); }   // the whole counter (box, echelon mark, tag), not the card
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
