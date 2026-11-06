@@ -28,7 +28,7 @@ bash tools/finalize.sh                                              # 1080p mast
 Needs `/opt/models/depth_anything_v2_small.onnx` (huggingface onnx-community/depth-anything-v2-small, onnx/model.onnx) + `pip install onnxruntime opencv-python-headless scikit-image rasterio`.
 
 ## Open / known
-- Master (not in git, not uploaded): `cleburne/build/cleburne.mp4` (1080p, 14:26 = 866.2 s, 394 MB, md5 a4336f0fe7a49a562d5ce44341ae3ecd)
+- Master uploaded 2026-11-06: https://gofile.io/d/hWMzEbha (1080p + 720p preview). Local: `cleburne/build/cleburne.mp4` (1080p, 14:26 = 866.2 s, 394 MB, md5 a4336f0fe7a49a562d5ce44341ae3ecd)
   + preview `cleburne/build/cleburne-720p.mp4`. Loudness -14.1 LUFS integrated, true peak -1.3 dBFS (finalize.sh came out at -14.4;
   `build/mix_final.wav` + 0.7 dB through `alimiter limit=0.79 level=disabled`, remuxed).
 - Scene renders and `build/seg` were deleted after assembly to save disk (rebuild with `render_all.sh`, ~2.5 h on 4 CPUs).
