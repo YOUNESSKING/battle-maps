@@ -348,8 +348,8 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
   }
   if (side === "farupleft") {   // long side stake up-left: the card stands on the Union slope, clear of the ravine and the front
     w.style.top = "4px"; w.style.left = "0px"; const card = w.firstElementChild, stake = w.lastElementChild;
-    Object.assign(card.style, { left: "-230px", bottom: "auto", top: "-175px" });
-    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "165px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-158.7deg)" });
+    Object.assign(card.style, { left: "-230px", bottom: "auto", top: "-190px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "171px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-154deg)" });
   }
   if (side === "left" || side === "upleft") {   // mirrored side stakes (Cleburne #14 restyle): card below-left / above-left of the unit
     w.style.top = "4px"; w.style.left = "0px";
@@ -420,8 +420,8 @@ B.date("28 MAY 1864", T_TRY - 0.1, END + 1, 32);
 tl.to(TOD_WARM, { opacity: 0.22, duration: 2.0 }, T_ATT - 0.1); tl.to(TOD_WARM, { opacity: 0, duration: 2.0 }, T_DARK - 0.4);
 
 // ---------- flags (48 px, behind each side's lines, one pair per shot) ----------
-const FLS = [[0, T_WORSE + 0.8, [1033, 600], [1965, 1232]], [T_WORSE + 1.0, T_WOOD - 0.3, [1525, 790], [1560, 935]], [T_WOOD - 0.1, T_WLOST - 0.1, [1700, 820], [1640, 910]],
-  [T_WLOST + 0.1, END + 1, [1660, 760], [1725, 965]]];
+const FLS = [[0, T_WORSE + 0.8, [1033, 600], [1965, 1232]], [T_WORSE + 1.0, T_WOOD - 0.3, [1525, 790], [1560, 935]], [T_WOOD - 0.1, T_WLOST - 0.1, [1712, 835], [1745, 880]],
+  [T_WLOST + 0.1, END + 1, [1600, 745], [1725, 965]]];
 FLS.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, k ? t0 + 0.1 : 0, t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, k ? t0 + 0.2 : 0, t1); });
 
 // ---------- move3-2b: the march ends at the creek; the works half-built ----------
@@ -567,7 +567,7 @@ scr(`<div style="padding:18px 40px 20px;background:#efe6cf;color:#1b1812;text-al
 SFX("hit", T_ESSAY);
 banner("SHERMAN'S FLANK MARCH HAD FAILED", "left:0;right:0;top:860px;", T_FAIL, at(P6, "the Confederate line stood") - 0.3, 40);
 stampP("THE CONFEDERATE LINE STOOD", 1585, 955, at(P6, "the Confederate line stood"), at(P6, "the Confederate line stood") + 3.4, null, 22);
-arw({ pts: [[1600, 740], [1545, 726], [1495, 742]], side: "rome", t: T_TRY + 0.2, dur: 1.4, width: AW(2.9, 9), until: T_LET - 0.7 });   // done before the method card lands
+arw({ pts: [[1640, 770], [1700, 745], [1760, 770]], side: "rome", t: T_TRY + 0.2, dur: 1.4, width: AW(2.9, 9), until: T_LET - 0.7 });   // done before the method card lands
 hideU(Object.keys(B.units), T_LET - 0.65);   // the units (and their cards) step out 0.15 s before the method card; the date scroll stays
 method(3, T_LET - 0.5, END + 1, T_LET - 0.2);
 zeroIn();
