@@ -381,7 +381,7 @@ const COUN = pinAt(`<div style="width:60px;height:60px;border-radius:50%;backgro
 reg(COUN.firstElementChild); tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_COUNCIL);
 focus(DOV, 50, T_COUNCIL, T_GU);
 sstamp("GIVE UP", "right:200px;top:230px;", T_GU - 0.05, { size: 84, sub: "THE COUNCIL", until: END + 1 });   // carried on into m1e's first second (same place)
-go("gr", T_NIGHT + 0.3, 3.0, HQ);   // Grant back to his headquarters for the night (m1e opens with him there)
+go("gr", T_NIGHT + 0.3, 3.0, HQ); hideU(["gr"], T_COUNTER + 0.6); showU(["gr"], T_NIGHT + 0.3);   // Grant steps out while the camera dives to the left (cropped at the bottom edge)   // Grant back to his headquarters for the night (m1e opens with him there)
 fixImgs();
 K.raiseTerritory();
 B.finish();
