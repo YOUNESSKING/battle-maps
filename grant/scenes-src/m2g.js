@@ -541,7 +541,7 @@ SFX("hit", T_295 - 0.05);
   const b = NUM.querySelector(".b"); gsap.set(b, { autoAlpha: 0 }); tl.fromTo(b, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_172 - 0.1); SFX("hit", T_172); }
 // ---------- Lincoln: the one zoom-out; the river turns blue top to bottom ----------
 // STYLE W: the river corridor the Union now holds hatches blue on the zoom-out (wide view: stronger hatch), ~3.5 s, then dissolves
-hatch("assets/media/gn_miss_julcap_mx.png", TZ1 - 1.6, 3.5, [0, 0, AR[2], AR[3]], PW);
+focus(VKS, 900, TZ1 - 1.0, TZ1 + 2.4);   // critic r2: no corridor hatch on the zoom-out (its fragments read as ghosts); a focus wash on the river city
 const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">LINCOLN WROTE</div><div style="font-size:48px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">THE FATHER OF WATERS AGAIN WENT UNVEXED TO THE SEA</div></div>`,
   "left:0;right:0;bottom:130px;display:flex;justify-content:center;", T_FATHER - 0.2, T_EVERY - 0.3);

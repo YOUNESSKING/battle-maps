@@ -28,7 +28,8 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");   // STYLE W: solid arrows only, thin
+const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  ps.forEach((p) => { const L = p.getTotalLength(); gsap.set(p, { strokeDasharray: `${L} ${L + 40}` }); });   // no round-cap dot at the arrow end before it draws   // STYLE W: solid arrows only, thin
   ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1));
   const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares

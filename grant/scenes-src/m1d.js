@@ -427,10 +427,10 @@ frontIn(PUSH2, 0, T_PULLED + 1.0); frontIn(MID, T_PULLED + 0.6, T_TOOK + 0.6); f
 const RED = [["bu", [1306, 722], [1306, 722]], ["c1", [1305, 870], [1352, 790]], ["c2", [1405, 925], [1420, 805]], ["c3", [1485, 930], [1490, 812]], ["c4", [1440, 860], [1455, 780]], ["c5", [1500, 860], [1525, 790]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
 unitS("fl", "rome", [1510, 744], "infantry", null, { t: 0, size: "X" });
-pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");   // critic r1: named generals keep their cards (same map)
+const FLW = pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, [-102, -64]);   // critic r1: named generals keep their cards (same map)
 const PPW = pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, [-80, -130]);   // north-west of his box, off the bulge front
 restake(PPW, [-80, -130], [0, -150], T_PULLED - 0.2, 2.8);   // slides with him back inside the ring (off the star, the boxes and the line)
-pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
+const BUW = pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, [100, -30]);
 // ---------- Grant rides back along the line ----------
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
@@ -474,6 +474,8 @@ tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: t
 boxS("COUNCIL", DOV[0] + 60, DOV[1] - 6, T_COUNCIL, null, { size: 24 });
 const GU = sstamp("GIVE UP", 250, T_GU - 0.05, { size: 64, until: END - 0.1, pos: "right:90px;top:80px;" });   // empty upper right
 // ---------- clean screen ----------
+// night (the camera pulls back, the pocket tightens): the three cards fan apart (Buckner up, Pillow up between, Floyd up-right)
+restake(BUW, [100, -30], [80, -150], T_NIGHT - 0.6, 1.6); restake(PPW, [0, -150], [40, -190], T_NIGHT - 0.6, 1.6); restake(FLW, [-102, -64], [20, -150], T_NIGHT - 0.6, 1.6);
 fixImgs();
 K.raiseTerritory();
 B.finish();

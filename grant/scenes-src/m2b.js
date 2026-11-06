@@ -487,12 +487,12 @@ SH.forEach(([b, k, t]) => { const s = sAt(t), boat = vis(k), dur = 0.75; shootS(
   tl.fromTo(boat.sv, { filter: "brightness(1)" }, { filter: "brightness(2.2)", duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t + dur); });
 // the gunboats answer (bow guns -> the bluff)
 [[T_HIT + 1.0, 0, 3], [T_HIT + 2.0, 1, 4], [T_YAWL + 0.2, 2, 4], [T_RESC + 0.3, 3, 5]].forEach(([t, k, b]) => shootS(FLEET[k].at(t), [BATP[b][0] + 10, BATP[b][1] + 6], t, sAt(t), { dur: 0.7, h: 40, r: 9 }));
-wstampL("EVERY GUNBOAT HIT", 1150, 930, T_HIT + 0.2, null, "#e3232f", 22);
+wstampL("EVERY GUNBOAT HIT", 980, 1010, T_HIT + 0.2, null, "#e3232f", 22);
 // ---------- Sherman's yawl boats hauled across the swamp, manned by soldiers, waiting below the city ----------
 const SB = null;
 const YAWL = (k) => pinS(GG.pin(`<svg width="26" height="12" viewBox="-13 -6 26 12" style="display:block;overflow:visible;filter:drop-shadow(0 0 3px #6f9bff)"><path d="M-11 0 Q-6 -5 9 -3 L12 0 L9 3 Q-6 5 -11 0 Z" fill="#c9a26a" stroke="#1f4fc4" stroke-width="1.4"/><line x1="-3" y1="-8" x2="-1" y2="8" stroke="#f3eee2" stroke-width="1.2"/><line x1="3" y1="-8" x2="5" y2="8" stroke="#f3eee2" stroke-width="1.2"/></svg>`, 0, 0, { t: null }));
 const YPATH = (k) => [[960 + k * 14, 760 + k * 10], [1030, 840], [1100, 905], [1160, 950], [1205 - k * 10, 985 + k * 18]];
-[0, 1, 2, 3].forEach((k) => { const el = YAWL(k), P = YPATH(k); if (k === 0) { const H = document.createElement("div"); H.style.cssText = "position:absolute;left:50%;top:0;width:0;height:0"; el.appendChild(H); reg(H, "0 0"); pinPortrait(H, PHOTO("sherman"), FL.us, "Sherman", T_SHER, T_22 - 0.3, true); } gsap.set(el, { left: P[0][0], top: P[0][1] }); tl.set(el, { autoAlpha: 1 }, T_YAWL + k * 0.2);
+[0, 1, 2, 3].forEach((k) => { const el = YAWL(k), P = YPATH(k); if (k === 0) { const H = document.createElement("div"); H.style.cssText = "position:absolute;left:50%;top:0;width:0;height:0"; el.appendChild(H); reg(H, "0 0"); const SW = pinPortrait(H, PHOTO("sherman"), FL.us, "Sherman", T_SHER, T_22 - 0.3, true); SW.style.top = "-84px"; Object.assign(SW.lastElementChild.style, { height: "80px", bottom: "-80px" }); } gsap.set(el, { left: P[0][0], top: P[0][1] }); tl.set(el, { autoAlpha: 1 }, T_YAWL + k * 0.2);
   pinAlong(el, P, T_YAWL + k * 0.2, T_RESC + 0.4 - T_YAWL, 16); tl.to(el, { autoAlpha: 0, duration: 0.6 }, T_22 - 0.3); });
 trail(YPATH(1), "#8fb2ff", 2.6, T_YAWL, T_RESC + 0.4 - T_YAWL, T_ONE, "3 8");
 boxL("YAWL BOATS", 1010, 950, T_YAWL + 0.2, null, { size: 16 });
@@ -503,7 +503,7 @@ K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
 const HCL = boxL("HENRY CLAY", HCP[0] - 66, HCP[1], T_HC, null, { size: 18 }); pinAlong(HCL, DRIFT.map((q) => [q[0] - 66, q[1]]), HCt, T_22 - 0.6 - HCt, 20);   // critic r1: pinned to the boat
 const T_EDGE_OUT = Math.min(T_EDGE + 2.4, T_NOONE - 0.35);   // 1c rule 3: the stamp is gone before the caption lands
 const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 52, sub: "ONE TRANSPORT", shake: 5, until: T_EDGE_OUT, css: "right:110px;top:820px;" });   // critic r2: level, on the empty bluff ground lower-right
-B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth");
+B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth").style.bottom = "92px";
 // ---------- 22 April: six supply steamers (army volunteers) run the guns; one sinks, five get through ----------
 const C2T0 = T_22 - 0.3, C2T1 = END - 0.4;
 const CONV = [0, 1, 2, 3, 4, 5].map((k) => ship("cotton", sub(RUN, Math.max(0, 0.32 - k * 0.035), 0.97 - k * 0.06, 40), C2T0, C2T1 - C2T0, k === 3 ? null : END + 1, { s: 22, t0: C2T0, smoke: 1.8 }));

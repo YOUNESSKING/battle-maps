@@ -7,7 +7,7 @@ $H $M/vk_gg_ctl_apr30_mx.png $M/gn_gg_ctl_apr30cap_mx.png assets/grandgulf_w.jpg
 $H $M/vx_vick_may14_mx.png $M/gn_vick_may14cap_mx.png assets/vicksburg_w.jpg minus=$M/vx_vick_may12_mx.png side=blue largest=1
 $H $M/vx_vick_may16_mx.png $M/gn_vick_may16cap_mx.png assets/vicksburg_w.jpg minus=$M/vx_vick_may14_mx.png side=blue largest=1
 $H $M/vx_vick_may18_mx.png $M/gn_vick_may18cap_mx.png assets/vicksburg_w.jpg minus=$M/vx_vick_may16_mx.png side=blue largest=1
-$H $M/vx_siege_jul_mx.png $M/gn_siege_julcap_mx.png assets/vicksburg_siege_w.jpg minus=$M/vx_siege_may_mx.png side=blue minpx=3000 largest=1
+$H $M/vx_siege_jul_mx.png $M/gn_siege_julcap_mx.png assets/vicksburg_siege_w.jpg minus=$M/vx_siege_may_mx.png side=blue relief2=assets/vicksburg_siege_w_close.jpg minpx=3000 largest=1
 $H $M/vx_miss_jul_mx.png $M/gn_miss_julcap_mx.png assets/mississippi_w.jpg minus=$M/vx_miss_apr_mx.png side=blue step=12 lw=3 minpx=400
 ln -f assets/mississippi_w.jpg $M/vk_miss_w.jpg
 python3 -c "from PIL import Image; Image.open('assets/mississippi_w.jpg').convert('RGB').resize((2880, 1620), Image.LANCZOS).save('assets/media/vx_miss_w.jpg', quality=92)"   # m2g: half-size copy for the 46080-px world layer

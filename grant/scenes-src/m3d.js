@@ -40,7 +40,8 @@ const unit = (id, side, p, icon, label, o = {}) => {
   if (o.until != null) B.hideUnits([id], o.until);
   return id;
 };
-const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");   // STYLE W: solid arrows only, thin
+const arw = (o) => { delete o.dash; const g = B.arrow(o), w = o.width || 22, ps = g.querySelectorAll("path");
+  ps.forEach((p) => { const L = p.getTotalLength(); gsap.set(p, { strokeDasharray: `${L} ${L + 40}` }); });   // no round-cap dot at the arrow end before it draws   // STYLE W: solid arrows only, thin
   ps[0].setAttribute("stroke-width", (w + Math.min(10, w * 0.6)).toFixed(1));
   const hd = g.querySelector("polygon"); if (hd) hd.setAttribute("stroke-width", Math.min(5, w * 0.3).toFixed(1)); return g; };
 // legend (UNION blue / CONFEDERACY red); opt2 = two short glowing lines instead of squares
@@ -496,9 +497,9 @@ const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 
 unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET - 1.6, 1.2, 1420, 848);
 now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, true, "left"));
 const VET = [["v1", [1448, 768]], ["v2", [1446, 812]], ["v3", [1440, 880]], ["v4", [1430, 948]]];
-VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.8, size: "XXX" });
-  along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.8, 5.0 - k * 0.3, 22); });   // staggered: never on top of each other
-[0, 1].forEach((k) => arw({ pts: G.LEE_S.map((q) => [q[0] + (k ? 26 : -20), q[1]]), side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(2.1, 5), until: T_VET + 4.4 + k * 0.5 }));   // critic: thin trails, gone ~2 s after arrival
+VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.5, size: "XXX" });
+  along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.5, 2.6, 22); });   // staggered: never on top of each other
+[0, 2].forEach((k) => arw({ pts: [...G.LEE_S, VET[k][1]], side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(2.1, 5), until: T_VET - 0.2 + k * 0.5 + 2.6 + 2.0 }));   // critic: each thin trail rides with its brigade and ends at its box, gone ~2 s after arrival
 stampP("LEE'S VETERANS", 1640, 470, T_VET + 0.1, T_18 - 0.1, 26);   // critic r1: on empty ground, not on the front
 // the assaults of the 16th-18th bounce off the line (visible guns, impacts)
 // the assaults of the 16th-18th break on the new line: the guns fire (below), ink crosses on the line where each broke (critic: no stray arrow strokes)

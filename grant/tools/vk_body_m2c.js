@@ -68,9 +68,9 @@ unitS("pj", "rome", L(32.08, -90.22), "infantry", "", { size: "XX" }); gsap.set(
 B.caption("GRANT MADE THE CONFEDERATES LOOK THE WRONG WAY", T_MEAN + 0.2, T_GRI - 0.2, "carth");
 // ---------- Grierson: about 1,700 cavalrymen from La Grange through Mississippi to Baton Rouge ----------
 const GB = null;
-const TK = ticker("CAVALRYMEN", 1700, "", "right:70px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 2.2, 5, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
+const TK = ticker("CAVALRYMEN", 1700, "", "right:92px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 2.2, 5, { col: "#7fb0ff", pre: "ABOUT " });   // critic 1 r2: spoken words, >= 40 px from the edge
 unitS("gri", "carth", LG, "infantry", "", { t: T_GRI + 0.2, size: "III" }); cavIcon("gri");
-pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_BR - 0.6, true, "right");   // steps out before the raid reaches the frame edge   // STYLE W: his portrait rides with his cavalry
+pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_SHER + 0.8, true, "right");   // steps out before the raid reaches the frame edge   // STYLE W: his portrait rides with his cavalry
 boxL("LA GRANGE", LG[0] - 95, LG[1] - 34, T_LG, null, { size: 16 });
 along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
 trail(GRI, "#2c57b7", 3, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");

@@ -51,7 +51,7 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 const FX = (a, b) => [a, b];
-const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1490, 600], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.21, -90.90), T_1700 + 2.0, END + 1]];
+const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1490, 600], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.21, -90.93), T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
@@ -73,7 +73,7 @@ DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; D
 const SUP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.04, -90.93), L(31.995, -90.955)];
 const SUPL = document.createElementNS(NSs, "path"); SUPL.setAttribute("d", "M" + SUP.map((q) => q.join(" ")).join(" L"));   // STYLE W: the supply line = a thin solid sepia ink line
 Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": (2.4 / KA[2]).toFixed(2), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.8 }).forEach(([k, v]) => SUPL.setAttribute(k, v)); OVL.appendChild(SUPL);
-const GGB = boxL("HIS BASE", GGF[0] + 40, GGF[1] + 48, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
+const GGB = boxL("HIS BASE", GGF[0] - 30, GGF[1] + 75, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
 tl.to(SUPL, { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 5, ease: "none" }, T_CUTL + 1.5); tl.to(SUPL, { opacity: 0, duration: 0.4 }, T_CUTL + 2.4);
 // critic r1: no separate CUT LOOSE stamp (the card lights CUT LOOSE; Sherman's card follows at once)
 // Sherman's warning: one road, the wagons bunch on it
@@ -106,7 +106,7 @@ tl.fromTo(GRC.querySelector(".l2"), { scale: 1.15 }, { scale: 1, duration: 0.3, 
 B.caption("ABOUT TWO DAYS OF FOOD", T_TWO - 0.1, T_BEEF - 0.2, "carth");
 const COW = `<svg width="64" height="45" viewBox="0 0 40 28" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><path d="M4 9 Q4 5 9 5 L28 5 Q31 2 34 3 L37 6 Q39 9 35 10 L33 11 L33 18 L30 18 L30 25 L27 25 L27 18 L12 18 L12 25 L9 25 L9 18 Q4 17 4 13 Z" fill="#6b4a2a" stroke="#f3eee2" stroke-width="1.4"/><circle cx="18" cy="11" r="3" fill="#f3eee2"/></svg>`;
 const CORN = `<svg width="34" height="59" viewBox="0 0 22 38" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><ellipse cx="11" cy="14" rx="6" ry="12" fill="#f1c84a" stroke="#6b4a1a" stroke-width="1.4"/>${[6, 10, 14, 18, 22].map((y) => `<line x1="6" y1="${y}" x2="16" y2="${y}" stroke="#b8902a" stroke-width="1"/>`).join("")}<path d="M11 36 Q3 26 4 12 Q8 24 11 30 Q14 24 18 12 Q19 26 11 36 Z" fill="#6c8a3a" stroke="#2a3a1a" stroke-width="1"/></svg>`;
-const ICP = [[COW, L(31.99, -90.84), T_BEEF], [CORN, L(32.05, -90.70), T_CORN - 0.2], [COW, L(32.09, -90.62), T_CORN + 0.4], [CORN, L(31.97, -90.76), T_CORN + 0.9], [COW, L(32.05, -90.55), T_INL + 0.3]];   // critic r2: clear of the corps boxes
+const ICP = [[COW, L(31.95, -90.84), T_BEEF], [CORN, L(31.99, -90.70), T_CORN - 0.2], [COW, L(32.02, -90.60), T_CORN + 0.4], [CORN, L(31.93, -90.76), T_CORN + 0.9], [COW, L(32.0, -90.52), T_INL + 0.3]];   // critic r2: clear of the corps boxes
 const ICE = ICP.map(([svg, p, t]) => { const el = pinS(GG.pin(svg, p[0], p[1], { t, pop: true, until: T_PG })); SFX("ref:pop", t + 0.05); return el; });
 const MV0 = T_SET + 0.2;
 arw({ pts: [L(31.99, -90.95), L(32.04, -90.84), L(32.09, -90.74)], side: "carth", t: MV0, dur: 2.2, width: AW(1.5, 12), until: T_PG });
@@ -140,7 +140,7 @@ B.move("rv", T_WEST, 1.8, ...L(32.36, -90.585)); B.move("re", T_WEST + 0.2, 1.8,
 // option 2 front between the lines (Union east, red west); slides west as the Confederates are pushed off the hill
 const FCH = front2(LL([[32.405, -90.563], [32.37, -90.565], [32.335, -90.567], [32.30, -90.570], [32.265, -90.572]]), KC[2], T_BEAT - 0.2,
   { flip: true, dur: 1.4, until: T_NEXT - 0.3, to: LL([[32.405, -90.625], [32.37, -90.628], [32.335, -90.632], [32.30, -90.630], [32.265, -90.620]]), moveT: T_CUTOFF - 1.0, moveDur: 2.2 });
-BAT("CHAMPION HILL", L(32.40, -90.60), T_CH + 0.1, "16 MAY", 0, 0);
+BAT("CHAMPION HILL", L(32.44, -90.50), T_CH + 0.1, "", 0, 0);   // clear of the front line
 smoke(LL([[32.335, -90.522], [32.332, -90.535], [32.29, -90.545], [32.36, -90.58], [32.325, -90.585]]), T_BEAT + 0.6);   // BATCH 3: powder smoke at the firing beat
 const sCH = KC[2];
 U("hv", "carth", L(32.375, -90.52), "", "XX", T_BIG - 0.4); B.move("hv", T_BIG - 0.3, 2.0, ...L(32.365, -90.545));
@@ -153,10 +153,10 @@ shootS(L(32.32, -90.60), L(32.345, -90.54), T_BIG + 1.6, sCH, { dur: 0.7, h: 30,
 const vs = (kick, aNum, aSub, bNum, bSub, t, tA, tB, until, o = {}) => {   // o.redFirst: the red column on the left
   const el = scr(`<div style="background:rgb(18,16,12);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center"><div style="padding-top:10px;font-size:19px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="display:flex;gap:0">
     <div class="a" style="padding:14px 40px 16px;border-bottom:6px solid ${o.redFirst ? "#be3a2a" : "#2e5cb2"};min-width:360px"><div style="font-size:58px;letter-spacing:.03em;line-height:1.05">${aNum}</div><div style="font-size:18px;letter-spacing:.24em;color:${o.redFirst ? "#ff8a80" : "#9fc0ea"}">${aSub}</div></div>
-    <div style="align-self:center;font-size:30px;color:#c9b48a;padding:0 10px">VS</div>
+    <div class="vs" style="align-self:center;font-size:30px;color:#c9b48a;padding:0 10px">VS</div>
     <div class="b" style="padding:14px 40px 16px;border-bottom:6px solid ${o.redFirst ? "#2e5cb2" : "#be3a2a"};min-width:360px"><div style="font-size:58px;letter-spacing:.03em;line-height:1.05">${bNum}</div><div style="font-size:18px;letter-spacing:.24em;color:${o.redFirst ? "#9fc0ea" : "#ff8a80"}">${bSub}</div></div></div></div>`,
     o.css || "left:0;right:0;bottom:150px;display:flex;justify-content:center;", t, until);
-  [[".a", tA], [".b", tB]].forEach(([q, tt]) => { const e = el.querySelector(q); gsap.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.1); });
+  [[".a", tA], [".vs", tB], [".b", tB]].forEach(([q, tt]) => { const e = el.querySelector(q); gsap.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, tt); SFX("hit", tt + 0.1); });
   return el; };
 const V1 = vs("CHAMPION HILL", "ABOUT 15,000", "FULLY ENGAGED", "ABOUT 25,000", "CONFEDERATES", T_15 - 0.2, T_15 - 0.1, T_25, T_DIV - 0.3);
 // one Union division lost more than a third of its men
@@ -197,7 +197,7 @@ const CK = ticker("THE FIVE BATTLES COST HIM", 4500, "", "right:110px;top:260px;
   pre.style.cssText = "font-size:20px;letter-spacing:.3em;color:#f7f3ea"; pre.textContent = "FEWER THAN"; v.parentNode.insertBefore(pre, v); gsap.set(pre, { autoAlpha: 0 });
   tl.to(pre, { autoAlpha: 1, duration: 0.3 }, T_4500 - 0.1); }
 // 18 May: Pemberton's army shut inside Vicksburg; the ring closes
-B.move("u13", T_COUNT, 6, ...L(32.33, -90.80)); B.move("u17", T_COUNT + 0.3, 6, ...L(32.37, -90.80)); B.move("u15", T_COUNT + 0.5, 6, ...L(32.45, -90.79));
+B.move("u13", T_COUNT, 6, ...L(32.37, -90.80)); B.move("u17", T_COUNT + 0.3, 6, ...L(32.33, -90.80)); B.move("u15", T_COUNT + 0.5, 6, ...L(32.45, -90.79));   // critic r2: no crossing paths
 B.move("rv", T_COUNT + 1, 5, ...L(32.345, -90.852)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 3);
 const RING = LL([[32.405, -90.875], [32.40, -90.835], [32.37, -90.82], [32.335, -90.825], [32.30, -90.845], [32.28, -90.88], [32.29, -90.905]]);
 glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_18M + 0.4 });
