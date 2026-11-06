@@ -299,7 +299,8 @@ gsap.set(document.getElementById("date"), { autoAlpha: 1 });
 dateSet("16 FEBRUARY 1862", 0, T_FALL - 0.1, 0.3, 34); dateSet("FEBRUARY–MARCH 1862", T_FALL, SWITCH - 0.3, 0.3, 30); dateSet("1863", SWITCH + 0.1, null, 0.3, 34);   // the teaser is move 2 (1863, as m2a opens)
 // ---------- flags (48 px, behind each side's lines) ----------
 flags2([1360, 830], [1500, 1010], 0, T_TALK + 0.5);
-flags2([1480, 640], [1650, 1510], T_TALK + 0.3, T_HOW + 0.6);   // the CSA flag south of the ground they gave up
+const FB = flags2([1480, 640], [1650, 1440], T_TALK + 0.3, T_HOW + 0.6);   // the CSA flag south of the ground they gave up
+tl.to(FB[1], { autoAlpha: 0, duration: 0.3 }, T_FAST - 0.4);   // steps out when the camera lifts for the method card (cropped at the bottom)
 // ---------- the two forts, both Union now; Grant's card at his army ----------
 [FH, FD].forEach((p) => fortIcon(p, 0, null, { s: 24, side: "carth" }));
 unitS("gA", "carth", [1452, 962], "infantry", null, { size: "XXX" });
@@ -315,6 +316,7 @@ const GC = gunboat(CUMB_UP, T_BOATS + 0.3, 8.0, T_HOW + 0.6, { L: 52 });
 place("Tennessee", 1650, 1260, T_INTO + 0.1, T_INTO + 2.3, { size: 30 });
 // ---------- the Confederates fall back from Kentucky and much of middle Tennessee (the ground they gave up: red ink hatching) ----------
 [["r1", BG, [1880, 1330]], ["r2", COL, [975, 1070]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { size: "XXX" }); go(id, T_FALL + 0.4 + k * 0.5, 4.0, b); });
+{ const R = ["r1", "r2"]; R.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 0 })); showU(R, T_FALL - 0.6); hideU(["r1"], T_FAST - 0.4); }   // the Confederate armies step in when the camera is wide enough, r1 out again when cropped
 [[BG, [1890, 900], [1860, 1100], [1880, 1300]], [COL, [990, 900], [975, 1040]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, until: T_WAIT + 1.0 }, 0.85, 10));
 hatch("assets/media/gn_tennessee_ctl_fallback_mx.png", T_KY + 0.2, 3.4);

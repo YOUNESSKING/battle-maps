@@ -290,7 +290,7 @@ const RIDE = [[1210, 600], [1205, 640], [1200, 720], [1215, 800], [1250, 880], [
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];   // Smith's lodgement in the outer works
 // ---------- camera ----------
 camera([[0, 1250, 720, 2.0], [T_TOLD, 1265, 718, 2.1], [T_WHO + 3.6, 1280, 800, 2.1], [T_FILL, 1340, 930, 2.35], [T_REPORT, 1390, 880, 2.15], [T_PULLED + 0.6, 1380, 830, 2.0],
-  [T_LEFT + 0.4, 1290, 672, 2.5], [T_FELLED, 1288, 662, 2.85], [T_TOOK + 1.2, 1300, 672, 2.65], [T_TOOK + 2.4, 1400, 722, 2.2], [END, 1420, 732, 2.15]]);
+  [T_LEFT + 0.4, 1290, 672, 2.5], [T_FELLED, 1288, 662, 2.85], [T_TOOK + 2.2, 1300, 672, 2.65], [T_TOOK + 3.2, 1400, 722, 2.2], [END, 1420, 732, 2.15]]);
 // ---------- date scroll ----------
 gsap.set(document.getElementById("date"), { autoAlpha: 1 });
 dateSet("15 FEB 1862 · DAWN", 0, T_RODE + 0.4, 0.3, 30); dateSet("15 FEBRUARY 1862", T_RODE + 0.5, T_NIGHT - 0.1, 0.3, 34); dateSet("15 FEB 1862 · NIGHT", T_NIGHT, null, 0.3, 30);
@@ -309,7 +309,8 @@ BROKE.forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { size: "X" }
 // cropped at the bottom edge until the camera comes down to them: m2/m3 step out; m1 steps out while the camera dives to the left
 gsap.set([B.units.m2.el, B.units.m3.el], { autoAlpha: 0 }); showU(["m2", "m3"], 11.5);
 // the stamp m1c ended on (NO CARTRIDGES) carries 0.7 s into this scene at the same screen place, then leaves
-{ const el = scr(stampHTML("NO CARTRIDGES", CREAM, 30, -5), "left:535px;top:948px;transform:translate(-50%,-50%);", null, null); gsap.set(el, { autoAlpha: 1 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.7); }
+{ const el = scr(stampHTML("NO CARTRIDGES", CREAM, 30, 0),   // rotation 0 = as m1c shows it (reg() replaces the map stamp's rotate)
+  "left:535px;top:948px;transform:translate(-50%,-50%);", null, null); gsap.set(el, { autoAlpha: 1 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.7); }
 tl.set(BROKE.map(([id]) => B.units[id].el.querySelector(".blk")), { filter: "grayscale(1) brightness(0.75)" }, 0);
 const RED = [["bu", [1325, 712], [1325, 712]], ["fl", [1440, 772], [1440, 772]], ["pi", [1452, 912], [1487, 814]], ["c1", [1380, 880], [1413, 786]], ["cF", [1530, 918], [1555, 815]],
   ["c4", [1415, 852], [1428, 818]], ["c5", [1492, 880], [1520, 800]]];
@@ -336,7 +337,7 @@ BROKE.forEach(([id, , q], k) => go(id, T_BACK + 0.1 + k * 0.15, 2.0, q));
 B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_CHARM + 2.3, "carth");
 // the official report: the confusion on the Confederate side as great as his own, possibly greater
 const C2 = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">HIS OFFICIAL REPORT · THE CONFUSION ON THE CONFEDERATE SIDE</div><div style="font-size:46px;letter-spacing:.08em;margin-top:4px">AS GREAT AS HIS OWN<span class="pg"> · POSSIBLY GREATER</span></div>`,
-  T_GREAT - 0.1, Math.min(T_GONE - 0.2, T_GREAT + 3.4), { col: "#c4121f", pos: "left:0;right:0;bottom:110px;display:flex;justify-content:center;" });   // low: clear of the Confederate cards
+  T_GREAT - 0.1, Math.min(T_GONE - 0.2, T_GREAT + 3.4), { col: "#c4121f", pos: "left:0;right:0;bottom:40px;display:flex;justify-content:center;" });   // low: clear of the Confederate cards and the Union units
 { const pg = C2.querySelector(".pg"); gsap.set(pg, { autoAlpha: 0 }); tl.to(pg, { autoAlpha: 1, duration: 0.3 }, T_POSS); }
 ["c1", "c4", "c5", "pi", "cF"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { rotation: k % 2 ? 7 : -7, duration: 0.25, yoyo: true, repeat: 5, ease: "sine.inOut" }, T_GREAT + k * 0.12));
 // they had gone out to break the ring, then pulled back inside it (the bulge goes back: the ground changes hands again)
@@ -363,15 +364,15 @@ const PRF = scr(`<div style="width:480px;height:124px;background:rgba(233,223,19
   "left:56px;bottom:56px;", T_FELLED - 0.1, T_FELLED + 3.4);   // the terrain beat: up on "through the felled trees", <= 3.5 s
 { const lw = PRF.querySelector('text[x="380"]'); gsap.set(lw, { opacity: 0 }); tl.to(lw, { opacity: 1, duration: 0.3 }, T_TOOK); }
 const ABT = `<svg width="18" height="12" viewBox="0 0 18 12" style="display:block"><path d="M1 10 L9 2 L17 10 M5 10 L9 5 L13 10" fill="none" stroke="#3e3220" stroke-width="2.2" stroke-linecap="round"/></svg>`;
-[[1290, 690], [1286, 676], [1290, 662], [1296, 648], [1302, 636], [1310, 624], [1282, 704], [1284, 716]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.4)">${ABT}</div></div>`, p[0] - 16, p[1], T_FELLED - 0.4 + k * 0.06, T_NIGHT + 1); reg(el.firstElementChild); });
+[[1290, 690], [1286, 676], [1290, 662], [1296, 648], [1302, 636], [1310, 624]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.4)">${ABT}</div></div>`, p[0] - 16, p[1], T_FELLED - 0.4 + k * 0.06, T_NIGHT + 1); reg(el.firstElementChild); });
 [[[1225, 640], [1262, 648], [1300, 650]], [[1220, 690], [1258, 690], [1296, 684]], [[1240, 610], [1275, 622], [1310, 632]]].forEach((pts, k) =>
   arw({ pts, side: "carth", t: T_UP + k * 0.35, dur: 1.6, until: T_TOOK + 2.0 }, 2.8, 9));
-go("uSm", T_FRONT, 3.0, [1312, 664]);
+go("uSm", T_FRONT, 3.0, [1305, 690]);   // (his card, staked left, stays clear of the felled-tree marks)
 [[T_FELLED + 0.2, [1268, 650], [1268, 690]], [T_FELLED + 1.1, [1300, 640], [1302, 680]]].forEach(([t, a, b]) => { volley(a, b, t, 1 / 2.8, 5); smoke([a, b], t + 0.05, 1 / 2.8); });
 volley([1318, 690], [1318, 720], T_UP + 0.6, 1 / 2.6, 4);
 go("bu", T_TOOK - 0.2, 2.2, [1336, 736]);
 hatch("assets/media/gn_donelson_ctl_smith_mx.png", T_TOOK - 0.1, 3.0);
-stampP("TOOK THE OUTER WORKS", 1200, 548, T_TOOK + 0.1, T_TOOK + 2.3, 24);
+stampP("TOOK THE OUTER WORKS", 1200, 548, T_TOOK + 0.1, T_TOOK + 2.15, 24);   // the camera holds until it has gone
 hideU(["m1"], T_LEFT + 0.1); showU(["m1"], T_NIGHT + 0.3);
 // =====================================================================================================================
 // night: the Confederate council chooses to give up
@@ -381,7 +382,7 @@ const COUN = pinAt(`<div style="width:60px;height:60px;border-radius:50%;backgro
 reg(COUN.firstElementChild); tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_COUNCIL);
 focus(DOV, 50, T_COUNCIL, T_GU);
 sstamp("GIVE UP", "right:200px;top:230px;", T_GU - 0.05, { size: 84, sub: "THE COUNCIL", until: END + 1 });   // carried on into m1e's first second (same place)
-go("gr", T_NIGHT + 0.3, 3.0, HQ); hideU(["gr"], T_COUNTER + 0.6); showU(["gr"], T_NIGHT + 0.3);   // Grant steps out while the camera dives to the left (cropped at the bottom edge)   // Grant back to his headquarters for the night (m1e opens with him there)
+go("gr", T_TOOK + 3.2, 2.5, [1222, 832]); hideU(["gr"], T_COUNTER + 0.6); showU(["gr"], T_TOOK + 4.4); hideU(["m3"], T_LEFT + 0.1);   // Grant shows again only once his ride brings him into frame; m3 stays out (cropped at the bottom)   // Grant steps out while the camera dives to the left (cropped at the bottom edge)   // Grant back to his headquarters for the night (m1e opens with him there)
 fixImgs();
 K.raiseTerritory();
 B.finish();

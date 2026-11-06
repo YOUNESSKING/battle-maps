@@ -303,7 +303,8 @@ dateSet("15 FEB 1862 · NIGHT", 0, T_DAWN - 0.1, 0.3, 30); dateSet("16 FEB 1862 
 const NW = nightWash(0, T_DAWN - 0.2, 0.5);
 const TOD_COOL = todDiv("rgba(100,135,205,0.55)"); tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_DAWN - 0.2); tl.to(TOD_COOL, { opacity: 0, duration: 2.5 }, T_TELE);
 // ---------- flags ----------
-flags2([1180, 600], [1592, 772], 0, T_ACC + 1.4);
+const FA = flags2([1180, 600], [1592, 772], 0, T_ACC + 1.4);
+tl.to(FA[0], { autoAlpha: 0, duration: 0.3 }, T_FOR - 0.6); tl.to(FA[0], { autoAlpha: 1, duration: 0.3 }, T_CMD + 0.4);   // the US flag steps out while the camera follows Forrest
 flags2([1000, 620], [1950, 980], T_ACC + 1.2, END + 1);
 // ---------- the pocket as m1d left it ----------
 const FT = fortIcon(DON, 0, null, { s: 30, side: "rome" });
@@ -311,16 +312,16 @@ town("Dover", DOV, 0, null);
 unitS("wb1", "rome", [1384, 710], "artillery", null, { w: 40, h: 27 }); unitS("wb2", "rome", WB, "artillery", null, { w: 40, h: 27 });
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];
 const FR = frontNow(front2(RING3, 2.1, 0, { dur: 0.01, until: T_ACC + 1.0 }));
-[["uSm", [1312, 664], "XX"], ["uWa", [1262, 862], "XX"], ["m1", [1290, 885], "X"], ["m2", [1374, 948], "X"], ["m3", [1442, 985], "X"]].forEach(([id, p, sz]) => unitS(id, "carth", p, "infantry", null, { size: sz }));
+[["uSm", [1305, 690], "XX"], ["uWa", [1262, 862], "XX"], ["m1", [1290, 885], "X"], ["m2", [1374, 948], "X"], ["m3", [1442, 985], "X"]].forEach(([id, p, sz]) => unitS(id, "carth", p, "infantry", null, { size: sz }));
 cardNow(pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", 0.05, T_NO - 0.3, "up"));   // his part is over; steps out before the letter cards   // up: clear of Grant's card at the headquarters   // steps out when the battle ends and the camera pulls out
-unitS("hq", "carth", HQ, "infantry", null); cavIcon("hq");   // Grant rode back to his headquarters at the end of m1d (same horseman counter)
+unitS("hq", "carth", [1222, 832], "infantry", null); cavIcon("hq");   // Grant rode back to his headquarters at the end of m1d (same horseman counter)
 cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_LOSS - 0.2, "up"));
 // the GIVE UP stamp m1d ended on carries into the first second here (same screen place), then leaves
 { const el = scr(stampHTML("GIVE UP", CREAM, 84, -4, "THE COUNCIL"), "right:200px;top:230px;", null, null); gsap.set(el, { autoAlpha: 1 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.9); }
 const RED = [["bu", [1336, 736]], ["fl", [1440, 772]], ["pi", [1487, 814]], ["c1", [1413, 786]], ["c4", [1428, 818]], ["c5", [1520, 800]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null));
 unitS("cF", "rome", ESCAPE[0], "infantry", "FORREST"); cavIcon("cF"); tagAt("cF", T_FOR + 1.0);
-cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, T_LOSS - 0.2, "right"));
+cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, T_LOSS - 0.2, "up"));   // up: clear of the red units east of him
 const CFL = cardNow(pinPortrait("fl", PHOTO("floyd"), FL.csa, "Floyd", 0.05, T_STEAM + 0.3, "up"));
 const CPI = cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, T_STEAM + 0.3, "up"));
 // =====================================================================================================================
@@ -337,7 +338,7 @@ const SCP = portraitEl(ST[1].host, PHOTO("pillow"), FL.csa, "Pillow", T_STEAM + 
   K.smoke(LANDG[k][0] + 8, LANDG[k][1] - 10, T_STEAM + 0.7 + k * 1.4, { n: 2, r: 5, rise: 14, life: 2.0, alpha: 0.5 });
   if (!k) arw({ pts: UPR.slice(0, 8).map(([x, y]) => [x, y - 16]), side: "rome", t: T_STEAM + 0.6, dur: 3.6, until: T_FOR + 1.0 }, 2.0, 6); });
 B.caption("FLOYD: PRESIDENT BUCHANAN'S SECRETARY OF WAR", T_SEC, T_SEC + 3.5, "rome");
-hideU(["uSm"], T_FOR - 0.3); showU(["uSm"], T_CMD + 0.3);   // C. F. Smith steps out while the camera follows Forrest (he would sit under the date scroll)
+hideU(["uSm"], T_STEAM + 0.4); showU(["uSm"], T_CMD + 0.3);   // C. F. Smith steps out while the camera follows Forrest (he would sit under the date scroll)
 // =====================================================================================================================
 // Forrest leads several hundred cavalry out through the flooded backwater
 // =====================================================================================================================

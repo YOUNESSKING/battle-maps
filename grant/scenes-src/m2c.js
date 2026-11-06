@@ -391,6 +391,9 @@ along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along
 arw({ pts: LL([[32.15, -90.83], [32.20, -90.815], [32.245, -90.80]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 8) });
 pinPortrait("ps", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, END + 1, true, "right");
 const TIED = wstampL("TIED DOWN", ...L(32.40, -90.52), T_TIED, null, null, 24);
+// carried over from m2b: the FIVE GOT THROUGH stamp (same screen place/size as m2b's sstampR, level) holds ~0.4 s so it is up >= 2.0 s in all (no sound, no slam)
+{ const el = scr(stampHTML("FIVE GOT THROUGH", CREAM, 70, 0), "left:960px;width:920px;top:640px;display:flex;justify-content:center;", 0, null, { autoAlpha: 1 });
+  tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.4); }
 fixImgs();
 K.raiseTerritory();
 B.finish();
