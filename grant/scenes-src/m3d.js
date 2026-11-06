@@ -479,7 +479,7 @@ camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440,
 SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (both on every frame, re-placed for the overview) ----------
-flagS(FL.us, 1720, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1330, 720, 0, T_Z0 + 0.3);
+flagS(FL.us, 1720, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1250, 690, 0, T_Z0 + 0.3);   // off the road the veterans arrive on
 flagS(FL.us, 1660, 1000, T_Z1 - 1.2, END + 1);   // near the Union box, clear of the method card
 flagS(FL.cs, 600, 900, T_Z0 + 0.3, END + 1);
 // ---------- 16-18 June: Smith's men and Hancock's corps; Lee's veterans arrive; the assaults fail ----------
