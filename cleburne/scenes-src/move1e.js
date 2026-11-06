@@ -435,7 +435,7 @@ boxP("A NARROW PASS", 2215, 1352, T_PASS + 0.1, T_PASS + 3.3, { size: 22 });   /
 // woven subscribe: small button bottom-right, cursor click, bell, slides out (never a full-screen card)
 const E = EngageK(B); gsap.set(E.subscribe(T_SUBS - 1.0, T_HERE + 0.2), { autoAlpha: 0 });   // hidden until it slides in
 // "Here's how Cleburne did it": his portrait card goes up on his own unit (stays for the move that follows)
-pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0, END + 1, true, "right");   // already named in move 1: his card from the first frame, tag hidden
+pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", 0, END + 1, true, "up");   // already named in move 1: his card from the first frame, tag hidden
 zeroIn();
 fixImgs();
 K.raiseTerritory();
