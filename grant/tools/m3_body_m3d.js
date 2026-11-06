@@ -32,11 +32,11 @@ const REL = document.getElementById("relief");
 const T_Z0 = T_CHG - 0.4, T_Z1 = T_PIN + 1.0;
 // owner 2026-11-03 rule: the 16-18 June ground (east of the new line) is coloured from the start: Lee's veterans arrive, the line freezes, the zoom-out
 const PT = document.getElementById("relief2");   // (the lens drives it; s < 1.5 on the zoom-out keeps it hidden)
-tl.set(REL, { webkitMaskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)", maskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)" }, T_Z0);
-tl.to([REL, PT], { opacity: 0, duration: 1.6, ease: "sine.inOut" }, T_Z1 - 0.6);   // critic: the richmond map shows only once the camera is far enough out (no blurred river band)
+const T_CUT = T_ACROSS - 0.6;   // critic: the camera pulls out over the petersburg map until it fills the frame, then a HARD CUT to the richmond map (no blurred cross-fade)
+tl.set([REL, PT], { opacity: 0 }, T_CUT);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
-camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 680, 1.6],   // critic: wide enough for the arriving veterans, every box/card >= 12 px apart [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
-  [T_EVEN, 1480, 760, 1.5], [T_Z0 + 0.6, 1500, 700, 1.3], [T_Z1 + 1.4, 1760, 230, 0.55, "power2.inOut"], [T_ABAN + 1.0, 1700, 260, 0.56], [END, 1720, 250, 0.53]]);
+camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 680, 1.6], [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
+  [T_EVEN, 1480, 760, 1.5], [T_Z0 + 0.6, 1500, 700, 1.3], [T_CUT, 1440, 810, 0.667], [T_Z1 + 1.4, 1760, 230, 0.55], [T_ABAN + 1.0, 1700, 260, 0.56], [END, 1720, 250, 0.53]]);
 SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (both on every frame, re-placed for the overview) ----------
@@ -59,7 +59,7 @@ now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, t
 const VET = [["v1", [1448, 768]], ["v2", [1446, 812]], ["v3", [1440, 880]], ["v4", [1430, 948]]];
 VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.8, size: "XXX" });
   along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.8, 5.0 - k * 0.3, 22); });   // staggered: never on top of each other
-[0, 1].forEach((k) => arw({ pts: G.LEE_S.map((q) => [q[0] + (k ? 26 : -20), q[1]]), side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(1.6, 9), until: T_VET + 4.6 + k * 0.5 }));
+[0, 1].forEach((k) => arw({ pts: G.LEE_S.map((q) => [q[0] + (k ? 26 : -20), q[1]]), side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(2.1, 5), until: T_VET + 4.4 + k * 0.5 }));   // critic: thin trails, gone ~2 s after arrival
 stampP("LEE'S VETERANS", 1640, 470, T_VET + 0.1, T_18 - 0.1, 26);   // critic r1: on empty ground, not on the front
 // the assaults of the 16th-18th bounce off the line (visible guns, impacts)
 // the assaults of the 16th-18th break on the new line: the guns fire (below), ink crosses on the line where each broke (critic: no stray arrow strokes)
@@ -85,14 +85,15 @@ const MOVE = G.MOVE;
 arw({ pts: MOVE, side: "carth", t: T_ACROSS - 0.4, dur: 3.0, width: 15, until: Math.min(T_ACROSS + 4.6, T_NINE - 0.7) });   // the whole move: thin trail, gone before the nine-months card
 glowPath([[2347, 657], [2329, 679]], "", 14, T_ACROSS - 0.2, T_ACROSS + 3.2);
 boxS("THE JAMES", 2200, 470, T_ACROSS, null, { size: 26 });
-hatch("assets/media/gn_ric_ctl_jun18gain_mx.png", T_Z1 + 0.2, 3.0, { box: BOX });   // once the richmond map is in (critic: never over the petersburg map's river)   // the ground south of the James now Union (blue hatching, ~3 s)
+hatch("assets/media/gn_ric_ctl_jun18gain_mx.png", T_ACROSS + 0.4, 3.0, { box: BOX });   // once the richmond map is in (critic: never over the petersburg map's river)   // the ground south of the James now Union (blue hatching, ~3 s)
 const W5 = FWw(0.55);
 // critic 2: ONE continuous siege line from east of Richmond across the James and the Appomattox to south-west of Petersburg (both ends on land)
 // critic: the siege lines on land only (east of Richmond / the Howlett line on Bermuda Hundred / Petersburg), broken where they meet water (msw river data), fading in with the richmond map
 const SIEGE = [[[1586.0, -235.8], [1586.0, -212.4], [1586.0, -179.0], [1586.0, -142.3], [1586.0, -105.6], [1585.4, -68.9], [1582.7, -32.2], [1578.1, 4.5], [1571.5, 41.2], [1564.0, 77.9], [1555.8, 114.6], [1547.0, 151.3], [1539.4, 188.3], [1536.8, 225.4], [1537.3, 253.8], [1538.0, 261.0]], [[1522.6, 468.9], [1523.9, 505.6], [1526.8, 542.2], [1520.3, 577.2], [1520.3, 577.2]], [[1475.3, 830.0], [1471.3, 854.3], [1463.5, 887.9], [1451.0, 923.5], [1434.1, 957.4], [1411.8, 988.3], [1385.1, 1016.8], [1354.5, 1040.8], [1321.5, 1059.7], [1287.0, 1074.4], [1251.1, 1084.9], [1214.7, 1092.4], [1178.3, 1094.8], [1141.9, 1092.4], [1105.5, 1084.9], [1072.4, 1076.6], [1049.2, 1070.8], [1049.2, 1070.8]]];
-SIEGE.forEach((pts, k) => frontS({ pts, sideA: "carth", sideB: "rome", t: T_Z1 - 0.5 + k * 0.3, dur: 2.4, width: W5, until: END + 1 }));
+SIEGE.forEach((pts, k) => frontS({ pts, sideA: "carth", sideB: "rome", t: T_PIN + k * 0.3, dur: 2.4, width: W5, until: END + 1 }));
 // "Lee was pinned in a siege": his army in the line (his card), the Union army facing it
-unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_Z0 + 0.4, size: "XXXX" });   // one army box per side through the zoom-out pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
+unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_Z0 + 0.4, size: "XXXX" });   // one army box per side through the zoom-out
+pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
 unitS("bp", "carth", [1530, 895], "infantry", null, { t: T_Z0 + 0.4, size: "XXXX" });
 const NM = numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "right:100px;top:560px;", T_NINE - 0.1, T_ABAN - 0.2, { col: "#c4121f", lc: "#ff8a80" });
 const RT = town("RICHMOND", G.RICHMOND, T_ABAN + 0.4, "l", { keep: true });

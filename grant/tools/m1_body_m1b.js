@@ -29,7 +29,7 @@ flagS(FL.us, 560, 420, 0, T_INSIDE + 0.6); flagS(FL.cs, 1700, 900, 0, T_INSIDE +
 flagS(FL.us, 1160, 640, T_INSIDE + 0.4, END + 1); flagS(FL.cs, 1600, 790, T_INSIDE + 0.5, END + 1);
 // ---------- the forts ----------
 fortIcon(FH, 0, null, { s: 22, col: "#4f8bff" });   // critic r1: fort flags only at the surrender beats
-fortIcon(DON, 0, null, { s: 26 });   // critic r1: fort flags only at the surrender beats
+fortIcon([DON[0], DON[1] - 22], 0, null, { s: 26 });   // lifted clear of the red boxes   // critic r1: fort flags only at the surrender beats
 boxS("FORT DONELSON", DON[0] - 100, DON[1] - 4, T_TODON, null, { size: 22 });
 K.target(DON[0], DON[1], T_WANT + 0.6, { r: 44, until: T_REINF + 2.0 });
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side)
@@ -43,8 +43,8 @@ tl.to(B.units.mc.el, { y: -4, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.
 pinPortrait("mc", PHOTO("grant"), FL.us, "Grant", T_WANT + 0.3, END + 1, true, "upleft");   // side stake, off the front   // Grant rides with his army for the whole move
 along("mc", [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], ...ROAD_S.slice(1), [1330, 930]], T_15K, T_INSIDE + 1.8 - T_15K, 24);
 along("sm", [[ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], ...ROAD_N.slice(1), [1262, 620]], T_15K + 0.3, T_INSIDE + 2.2 - T_15K, 24);
-arw({ pts: ROAD_S, side: "carth", t: T_15K, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.0 });   // real moves: thin trails, fade ~2 s after arrival
-arw({ pts: ROAD_N, side: "carth", t: T_15K + 0.3, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.4 });
+arw({ pts: [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], ...ROAD_S.slice(1)], side: "carth", t: T_15K, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.0 });   // real moves: thin trails, fade ~2 s after arrival
+arw({ pts: [[ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], ...ROAD_N.slice(1)], side: "carth", t: T_15K + 0.3, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.4 });
 const TK = ticker("", 15000, " MEN", "right:70px;top:240px;", T_15K, 0, T_15K + 3.2, 1, { col: "#9fc0ea" });   // only the spoken number
 // ---------- inside: Floyd, Pillow, Buckner ----------
 const WL = glowPath(WORKS, "", 0, T_INSIDE, T_INSIDE + 3.4);   // the outer works (drawn ridge on the basemap): focus + ink trace
