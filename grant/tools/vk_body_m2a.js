@@ -99,15 +99,15 @@ flagS(FL.us, "", ...L(32.44, -91.40), T_DIFF - 0.1, T_ONLY + 0.4); flagS(FL.cs, 
 flagS(FL.us, "", ...L(32.42, -91.20), T_ONLY + 0.5, END + 1); flagS(FL.cs, "", ...L(32.30, -90.80), T_ONLY + 0.55, END + 1);
 // ---------- big towns (A2, constant ~36 px; names leave after ~3.5 s, clean screen) ----------
 // STYLE W: Vicksburg (the objective) = permanent town symbol from its name; Jackson passing (spoken "western states" link); unspoken towns left out
-const TV = town("VICKSBURG", VKS, "l", TZ1 + 0.2);   // critic r2: the name on the Vicksburg map (at the overview it would sit on the boats/batteries; the profile strip names it) tl.to(TV.querySelector(".tn"), { autoAlpha: 0, duration: 0.4 }, T_ONLY - 0.3); townL("JACKSON", JAX, "r", T_LINK + 0.2);   // the Vicksburg name steps out when the batteries line the bluff
+const TV = town("VICKSBURG", VKS, "l", TZ1 + 0.2); tl.to(TV.querySelector(".tn"), { autoAlpha: 0, duration: 0.4 }, T_ONLY - 0.3); townL("JACKSON", JAX, "r", T_LINK + 0.2);   // the Vicksburg name steps out when the batteries line the bluff   // critic r2: the name on the Vicksburg map (at the overview it would sit on the boats/batteries; the profile strip names it)
 // =================== m2-1 ===================
 // frame 0: the river war already moving: Union gunboats come down from Memphis; Grant's army above the city; the batteries on the bluff
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_FREE + 0.8, TZ0 + 0.6, { s: 20, t0: 0 }));
 // overview: one army counter each side (spread apart); the corps counters appear when the camera reaches the Vicksburg map
-unitS("oa", "carth", L(32.62, -91.80), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.55, -90.42), "infantry", "", { size: "XXXX" });
+unitS("oa", "carth", L(32.45, -91.85), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.55, -90.42), "infantry", "", { size: "XXXX" });
 ["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 })); B.hideUnits(["oa", "ov"], TZ0 + 0.3, 0.4);
-along("oa", LL([[32.62, -91.80], [32.55, -91.62]]), 0, 10, 10);   // below the title card
+along("oa", LL([[32.45, -91.85], [32.38, -91.67]]), 0, 10, 10);   // below the title card
 unitS("ga", "carth", L(32.62, -91.25), "infantry", "XV", { size: "XXX", t: TZ0 + 1.0 }); unitS("gb", "carth", L(32.95, -91.30), "infantry", "XVII", { size: "XXX", t: TZ0 + 1.1 });
 unitS("gc", "carth", L(32.46, -91.24), "infantry", "XIII", { size: "XXX", t: TZ0 + 1.2 });
 along("gb", LL([[32.95, -91.30], [32.85, -91.26]]), 0, 8, 10); along("ga", LL([[32.62, -91.25], [32.56, -91.20]]), 0, 9, 10);

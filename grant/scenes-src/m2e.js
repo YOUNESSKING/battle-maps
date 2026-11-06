@@ -441,7 +441,7 @@ along("u15", [L(32.18, -91.17), L(32.10, -91.13), L(32.06, -91.10)], 0.2, 12, 12
 ["u13", "u17", "u15"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes   // Sherman's corps still coming down the west bank
 const RED = [["r1", L(32.36, -90.84), "XX"], ["r2", L(32.33, -90.64), "XX"], ["r3", L(32.30, -90.24), "XX"], ["r4", L(32.18, -90.75), "XX"]];
 RED.forEach(([id, p, sz]) => U(id, "rome", p, "", sz));
-B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.hideUnits(["r1", "r2", "r3"], T_DO - 0.4, 0.3);   // critic r2: step out before the camera crops them at the top edge B.move("r4", 0.6, 12, ...L(32.14, -90.80));
+B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.hideUnits(["r1", "r2", "r3"], T_DO - 0.4, 0.3); B.move("r4", 0.6, 12, ...L(32.14, -90.80));   // critic r2: step out before the camera crops them at the top edge
 // Banks' column on the Red River (Alexandria), far from Port Hudson
 unitS("bk", "carth", ALX, "infantry", "BANKS", { t: T_BANKS + 0.1, size: "XX" });
 pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, T_DO + 0.3, true);   // steps out as his column crawls off the frame under the card   // STYLE W: Banks' portrait at his column (no corner badge)

@@ -500,7 +500,7 @@ U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, 
 U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-const GCD = now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); tl.set(GCD.querySelector("img"), { attr: { src: "assets/media/us35_flag.png" } }, T_SIEGE + 0.2);   // the 35-star flag from June now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+const GCD = now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); tl.set(GCD.querySelector("img"), { attr: { src: "assets/media/us35_flag.png" } }, T_SIEGE + 0.2); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));   // the 35-star flag from June
 // ---------- 19 and 22 May: the assaults bounce off ----------
 const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); return a; };   // critic r1: no grey pulse; the thin trail fades
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
