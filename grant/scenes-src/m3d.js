@@ -348,6 +348,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
+  } else if (side === "west" || side === "east") {   // card level with the unit on a short horizontal stake (clear of what is above/below)
+    const E = side === "east"; w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: E ? "34px" : "-110px", bottom: "auto", top: "-58px" });
+    Object.assign(stake.style, { left: E ? "0px" : "-34px", bottom: "auto", top: "0px", width: "34px", height: "1.5px" });
   } else if (side === "down") { w.style.top = "40px"; const card = w.firstElementChild, stake = w.lastElementChild; Object.assign(card.style, { bottom: "auto", top: "40px" }); Object.assign(stake.style, { bottom: "auto", top: "0px" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -360,10 +365,10 @@ const smoke = (pts, t, r = 5.5) => pts.slice(0, 5).forEach((q, i) => { const e =
   const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + r * 1.8, cy: q[1] - r * 0.55, rx: r * 1.65, ry: r * 1.1 }, duration: 3.6, ease: "sine.out" }, t0);
   tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
 // (d) side-view profile strip (once per move, on the terrain beat): label = [x, y, text] on a 480 x 124 strip
-const profileStrip = (path, labels, t, until, extra = "") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+const profileStrip = (path, labels, t, until, extra = "", css = "left:56px;bottom:56px;") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="480" height="124" viewBox="0 0 480 124">${extra}<path d="${path}" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle">${labels.map(([x, y, s]) => `<text x="${x}" y="${y}">${s}</text>`).join("")}</g></svg></div>`,
-  "left:56px;bottom:56px;", t, Math.min(until, t + 3.5));
+  css, t, Math.min(until, t + 3.5));
 // BATCH 1: one passing word item at a time, each at most 3.5 s
 { const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
 // unit name tags only from the moment the name is spoken (null = never in this scene)
@@ -374,6 +379,14 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": a * 0.2, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// a railroad in ink: rail line + cross ties (constant screen size at camera scale s), fades in on its word, then held
+const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.join(" ")).join(" L"), g = document.createElementNS(NSs, "g");
+  const mkp = (attrs) => { const p = document.createElementNS(NSs, "path"); p.setAttribute("d", d); Object.entries({ fill: "none", "stroke-linecap": "butt", "stroke-linejoin": "round", ...attrs }).forEach(([k, v]) => p.setAttribute(k, v)); g.appendChild(p); return p; };
+  mkp({ stroke: "rgba(233,223,198,.55)", "stroke-width": (5.5 / s).toFixed(2) });                                            // pale bed
+  const ties = mkp({ stroke: "#2a2410", "stroke-width": (7 / s).toFixed(2), "stroke-dasharray": `${(1.6 / s).toFixed(2)} ${(6 / s).toFixed(2)}` });   // ties
+  mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
+  OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
+  if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------
@@ -456,26 +469,28 @@ const PT = document.getElementById("relief2");   // (the lens drives it; s < 1.5
 tl.set(REL, { webkitMaskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)", maskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)" }, T_Z0);
 tl.to([REL, PT], { opacity: 0, duration: 2.6, ease: "sine.inOut" }, T_Z0 + 1.2);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
-camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 560, 1.15], [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
+camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 600, 1.0], [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
   [T_EVEN, 1480, 760, 1.5], [T_Z0 + 0.6, 1500, 700, 1.3], [T_Z1 + 1.4, 1760, 230, 0.55, "power2.inOut"], [T_ABAN + 1.0, 1700, 260, 0.56], [END, 1720, 250, 0.53]]);
 SFX("whoosh", T_Z0 + 0.8);
 dateNow("15 JUNE 1864", T_18 - 0.1); B.date("18 JUNE 1864", T_18, T_PIN, 34); B.date("JUNE 1864 – APRIL 1865", T_PIN + 0.1, null, 30);
 // ---------- flags (both on every frame, re-placed for the overview) ----------
 flagS(FL.us, 1640, 905, 0, T_Z1 - 1.0); flagS(FL.cs, 1330, 720, 0, T_Z1 - 1.0);
-flagS(FL.us, 2200, 1000, T_Z1 - 1.2, END + 1); flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
+flagS(FL.us, 1950, 950, T_Z1 - 1.2, END + 1); flagS(FL.cs, 600, 900, T_Z1 - 1.2, END + 1);
 // ---------- 16-18 June: Smith's men and Hancock's corps; Lee's veterans arrive; the assaults fail ----------
 const NL = G.NEWLINE;
 const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(2.1), until: T_Z0 + 1.0 });
-[["s1", [1500, 785]], ["s2", [1497, 835]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "XXX" }));
+// critic r1: carry over m3c's end state (same units, same cards): Smith's two brigades + Hinks's division at the breach, Beauregard's line west
+[["s1", [1494, 790]], ["s2", [1490, 828]], ["hk", [1496, 862]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "XX" }));
+now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z1 - 1.6, true, "east")); now(pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", 0, T_Z1 - 1.6, true, "east"));
 unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1488, 900);
 const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z1 - 1.6, true, "right");
-tl.to(HCP, { autoAlpha: 0, duration: 0.3 }, T_VET - 0.7); tl.to(HCP, { autoAlpha: 1, duration: 0.35 }, T_18 + 0.3);   // steps out while the wide pan crops it at the bottom edge
-unitS("pr", "rome", [1445, 820], "infantry", null, { t: 0, size: "X" });
-const VET = [["v1", [1455, 770]], ["v2", [1450, 830]], ["v3", [1440, 890]], ["v4", [1425, 950]]];
+unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET, 2.0, 1432, 842);
+now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z1 - 1.6, true, "left"));
+const VET = [["v1", [1458, 768]], ["v2", [1456, 812]], ["v3", [1446, 880]], ["v4", [1430, 948]]];
 VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.4, size: "XXX" });
   along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.4, 5.0, 22); });
 [0, 1].forEach((k) => arw({ pts: G.LEE_S.map((q) => [q[0] + (k ? 26 : -20), q[1]]), side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(1.6, 9), until: T_VET + 4.6 + k * 0.5 }));
-B.caption("LEE'S VETERANS WERE ARRIVING", T_VET + 0.1, T_18 - 0.1, "rome");
+stampP("LEE'S VETERANS", 1640, 470, T_VET + 0.1, T_18 - 0.1, 26);   // critic r1: on empty ground, not on the front
 // the assaults of the 16th-18th bounce off the line (visible guns, impacts)
 [[1560, 790], [1560, 850], [1550, 910]].forEach((p, k) => { const t = T_18 + 0.4 + k * 1.1;
   const a = arw({ pts: [p, [p[0] - 50, p[1] + 2], [p[0] - 78, p[1] + 4]], side: "carth", t, dur: 0.8, width: AW(2.1, 9), until: t + 1.6 });
@@ -486,10 +501,11 @@ shoot([1446, 860], [1484, 866], T_18 + 2.0, { r: 4, width: 0.6, dur: 0.5, h: 6 }
 shoot([1438, 915], [1478, 916], T_18 + 3.1, { r: 4, width: 0.6, dur: 0.5, h: 6 }); smoke([[1439, 914], [1441, 911]], T_18 + 3.1, 3);
 // casualty card (the OLD clean K.casualties card, STYLE_LOCK 0b; real numbers only: FACTCHECK_C #9, ~11,400 Union, 15-18 Jun). Union column only:
 // the Confederate loss is not spoken, so column B is removed.
-const NC = K.casualties({ rows: [["", "~11,400"]], flagA: FL.us, headA: "UNION", flagB: FL.cs, t: T_LOST - 0.1, until: T_GONE - 0.1, top: 250 });
+const NC = K.casualties({ rows: [["", "~11,400"]], flagA: FL.us, headA: "UNION", flagB: FL.cs, t: T_LOST - 0.1, until: T_GONE - 0.1, top: 520 });
+NC.style.justifyContent = "flex-end"; NC.style.paddingRight = "70px";   // critic r1: on the empty ground east of the US flag
 { const inner = NC.firstElementChild; inner.removeChild(inner.lastElementChild); inner.style.flexWrap = "wrap"; inner.style.maxWidth = "520px"; inner.style.justifyContent = "center"; inner.style.background = "rgba(18,16,12,0.96)";
   const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FOUR DAYS OF ASSAULTS"; inner.insertBefore(h, inner.firstChild);
-  const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "MEN LOST"; inner.appendChild(f); }
+  const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:18px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "MEN LOST"; inner.appendChild(f); }
 const TRA = trench(NL.map((q) => [q[0] + 7, q[1]]), T_GONE - 0.2, 2.0, null, 2.0), TRB = trench(NL.map((q) => [q[0] - 7, q[1]]), T_GONE, 2.0, null, 2.0);
 wstampS("THE CHANCE WAS GONE", 1355, 995, T_GONE + 0.1, null, "#e3232f", 26);
 badgeC({ name: "ULYSSES S. GRANT", role: "YEARS LATER", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_WROTE - 0.1, until: T_EASY - 0.4 });   // no unit of his here
@@ -505,14 +521,15 @@ const W5 = FWw(0.55);
 frontS({ pts: G.SIEGE_N, sideA: "carth", sideB: "rome", t: T_PIN, dur: 2.0, width: W5, until: END + 1 });
 frontS({ pts: G.HOWLETT, sideA: "carth", sideB: "rome", t: T_PIN + 0.4, dur: 1.6, width: W5, until: END + 1 });
 frontS({ pts: [...NL, ...G.SIEGE_S.slice(1)], sideA: "carth", sideB: "rome", t: T_PIN + 0.6, dur: 3.0, width: W5, until: END + 1 });
-const NM = numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_NINE - 0.1, T_ABAN - 0.2, { col: "#c4121f", lc: "#ff8a80" });
+const NM = numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "right:100px;top:560px;", T_NINE - 0.1, T_ABAN - 0.2, { col: "#c4121f", lc: "#ff8a80" });
 const RT = town("RICHMOND", G.RICHMOND, T_ABAN + 0.4, "l", { keep: true });
 focus([(G.RICHMOND[0] + G.PETERSBURG[0]) / 2, (G.RICHMOND[1] + G.PETERSBURG[1]) / 2], Math.abs(G.PETERSBURG[1] - G.RICHMOND[1]) / 2 + 160, T_ABAN + 0.2, T_ABAN + 3.4);
-hideU(["s1", "s2", "h2", "pr", "v1", "v2", "v3", "v4"], T_Z1 - 1.5);
+hideU(["s1", "s2", "hk", "h2", "pr", "v1", "v2", "v3", "v4"], T_Z1 - 1.5);
 // method card on the spoken words of m3-7
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["OUT OF A STALEMATE", "OVER A RIVER", "WHERE LEE COULD NOT FOLLOW"];   // spoken words only (m3-7)
 const MC = GG.method(3, T_STALE - 0.3, END + 1, [T_STALE, T_RIVER, T_FOLLOW]); SFX("ref:boom", T_FOLLOW + 0.2);
+Object.assign(MC.style, { left: "auto", right: "70px", top: "auto", bottom: "80px" }); MC.firstElementChild.style.zoom = "0.78";   // critic r1: empty lower right, clear of the siege line
 // ---------- clean screen ----------
 fixImgs();
 K.raiseTerritory();

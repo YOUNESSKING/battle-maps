@@ -345,6 +345,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
+  } else if (side === "west" || side === "east") {   // card level with the unit on a short horizontal stake (clear of what is above/below)
+    const E = side === "east"; w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: E ? "34px" : "-110px", bottom: "auto", top: "-58px" });
+    Object.assign(stake.style, { left: E ? "0px" : "-34px", bottom: "auto", top: "0px", width: "34px", height: "1.5px" });
   } else if (side === "down") { w.style.top = "40px"; const card = w.firstElementChild, stake = w.lastElementChild; Object.assign(card.style, { bottom: "auto", top: "40px" }); Object.assign(stake.style, { bottom: "auto", top: "0px" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -357,10 +362,10 @@ const smoke = (pts, t, r = 5.5) => pts.slice(0, 5).forEach((q, i) => { const e =
   const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + r * 1.8, cy: q[1] - r * 0.55, rx: r * 1.65, ry: r * 1.1 }, duration: 3.6, ease: "sine.out" }, t0);
   tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
 // (d) side-view profile strip (once per move, on the terrain beat): label = [x, y, text] on a 480 x 124 strip
-const profileStrip = (path, labels, t, until, extra = "") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+const profileStrip = (path, labels, t, until, extra = "", css = "left:56px;bottom:56px;") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="480" height="124" viewBox="0 0 480 124">${extra}<path d="${path}" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle">${labels.map(([x, y, s]) => `<text x="${x}" y="${y}">${s}</text>`).join("")}</g></svg></div>`,
-  "left:56px;bottom:56px;", t, Math.min(until, t + 3.5));
+  css, t, Math.min(until, t + 3.5));
 // BATCH 1: one passing word item at a time, each at most 3.5 s
 { const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
 // unit name tags only from the moment the name is spoken (null = never in this scene)
@@ -371,6 +376,14 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": a * 0.2, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// a railroad in ink: rail line + cross ties (constant screen size at camera scale s), fades in on its word, then held
+const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.join(" ")).join(" L"), g = document.createElementNS(NSs, "g");
+  const mkp = (attrs) => { const p = document.createElementNS(NSs, "path"); p.setAttribute("d", d); Object.entries({ fill: "none", "stroke-linecap": "butt", "stroke-linejoin": "round", ...attrs }).forEach(([k, v]) => p.setAttribute(k, v)); g.appendChild(p); return p; };
+  mkp({ stroke: "rgba(233,223,198,.55)", "stroke-width": (5.5 / s).toFixed(2) });                                            // pale bed
+  const ties = mkp({ stroke: "#2a2410", "stroke-width": (7 / s).toFixed(2), "stroke-dasharray": `${(1.6 / s).toFixed(2)} ${(6 / s).toFixed(2)}` });   // ties
+  mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
+  OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
+  if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------
@@ -439,11 +452,11 @@ const T_PLAN = at(P2, "The plan was to disappear"), T_TELL = at(P2, "Grant did n
   T_SOUTH2 = at(P2, "marched south by back roads"), T_MEADE = at(P2, "General Meade"), T_LEAD = at(P2, "in the lead");
 // ---------- map: clean (no fills), living map ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
-camera([[0, 1432, 812, 5.6], [T_TRENCH, 1430, 816, 6.0], [T_GRANT + 1.0, 1436, 818, 6.2], [T_SOUTH, 1432, 860, 5.0], [T_PET, 1428, 915, 4.7], [T_TOG, 1428, 925, 4.9],
-  [T_STARVE + 0.6, 1430, 915, 4.6], [T_TELL + 1.0, 1428, 840, 4.9], [T_LOOK + 0.8, 1400, 800, 3.6], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
+camera([[0, 1432, 812, 5.6], [T_TRENCH, 1430, 816, 6.0], [T_GRANT + 1.0, 1436, 818, 6.2], [T_SOUTH, 1432, 872, 4.7], [T_PET, 1428, 890, 4.5], [T_TOG, 1428, 890, 4.5],
+  [T_STARVE + 0.6, 1430, 888, 4.5], [T_TELL + 1.0, 1428, 840, 4.9], [T_LOOK + 0.8, 1400, 800, 3.6], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
   [T_12 + 0.4, 1470, 855, 4.5], [T_CHICK + 1.5, 1475, 868, 4.9], [T_REST + 0.6, 1490, 880, 4.3], [T_LEAD, 1495, 888, 4.1], [END, 1497, 890, 4.05]]);
 // date scroll on the spoken date (clean first frame: nothing before it)
-B.showDate(T_JUNE + 0.6); B.date("JUNE 1864", T_JUNE + 0.7, T_12 - 0.1, 34); B.date("12 JUNE 1864", T_12, null, 34);
+dateNow("JUNE 1864", T_12 - 0.1); B.date("12 JUNE 1864", T_12, null, 34);   // critic r1: the date scroll is filled from frame 0
 // ---------- flags (48 px, behind each side's lines, both on every frame) ----------
 flagS(FL.us, 1488, 806, 0, T_LOOK + 1.2); flagS(FL.cs, 1380, 800, 0, T_SOUTH + 1.0);
 flagS(FL.cs, 1350, 930, T_SOUTH + 0.6, T_LOOK + 1.2);
@@ -461,7 +474,7 @@ unitS("rr", "rome", [1398, 822], "infantry", null, { t: 0, size: "XXX" }); B.mov
 B.move("v5", 0.3, 3.5, 1468, 818);
 // Grant cannot break through Lee's lines: a probe that bounces, the guns of the line fire (visible, powder smoke)
 badgeC({ name: "ULYSSES S. GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_GRANT - 0.1, until: T_NOT + 1.2 });   // no unit of his on this map
-pinPortrait("r1", PHOTO("lee"), FL.cs, "Lee", T_LEE - 0.1, T_DARK + 0.4, true, "up");   // Lee's card at his line while his part of the story runs (steps out before the night shot crops it at the top edge)
+pinPortrait("r1", PHOTO("lee"), FL.cs, "Lee", T_LEE - 0.1, END + 1, true, "west");   // Lee's card at his line while his part of the story runs (steps out before the night shot crops it at the top edge)
 arw({ pts: [[1466, 806], [1452, 808], [1444, 810]], side: "carth", t: T_GRANT + 0.1, dur: 0.9, width: AW(6.2, 9), until: T_NOT + 0.4 });
 shoot([1426, 802], [1450, 808], T_GRANT + 0.9, { r: 2.2, width: 0.35, dur: 0.5, h: 3 }); smoke([[1426, 801], [1427, 799]], T_GRANT + 0.9, 1.0);
 shoot([1428, 820], [1453, 815], T_LEE + 0.5, { r: 2.2, width: 0.35, dur: 0.5, h: 3 }); smoke([[1428, 819], [1429, 817]], T_LEE + 0.5, 1.0);
@@ -473,11 +486,12 @@ glowPath(G.JAMES, "", 1.3, T_JAMES - 0.2, T_JAMES + 3.0);                     //
 const TT = B.title("MOVE 3", "THE JAMES RIVER", "JUNE 1864", T_JAMES, T_JAMES + 2.6); SFX("ref:boom", T_JAMES + 0.15);
 const PETL = town("PETERSBURG", G.PETERSBURG, T_PET, "l", { keep: true });
 focus(G.PETERSBURG, 40, T_PET + 0.2, T_PET + 3.4);
-[G.RR_RP, G.RR_SS, G.RR_W, G.RR_NP, G.RR_CP].forEach((pts, k) => inkTrace(pts.slice().reverse(), T_RR + 0.1 + k * 0.3, T_RR + 3.5, 2.2));   // the railroads draw in to Petersburg
+// critic r1: the railroads as railroads (ink rail + cross ties), drawn in after "railroads", clear of the title card, held to "Richmond would starve"
+const RAILS = [G.RR_RP, G.RR_SS, G.RR_W, G.RR_NP, G.RR_CP].map((pts, k) => railInk(pts.slice().reverse(), T_RR + 0.1 + k * 0.25, T_STARVE + 1.2, 4.5));
+focus(G.PETERSBURG, 60, T_TOG, T_TOG + 3.0);
 // if Grant could take it, Richmond would starve (the one caption of this paragraph: the claim to remember)
-inkTrace(G.RR_RP.slice().reverse(), T_STARVE - 0.2, T_STARVE + 3.0, 2.6);
 RICH.grow(T_STARVE);
-B.caption("IF GRANT COULD TAKE IT, RICHMOND WOULD STARVE", T_IF, T_PLAN - 0.2, "carth");
+stampP("RICHMOND WOULD STARVE", 1478, 930, T_STARVE - 0.1, T_PLAN - 0.2, 26);   // the claim to remember, on empty ground east of Petersburg
 // ---------- m3-2: the plan was to disappear ----------
 stampP("THE PLAN WAS TO DISAPPEAR", 1418, 862, T_PLAN + 0.1, T_PLAN + 3.4, 24);
 BU.concat([["v5"]]).forEach(([id], k) => tl.to(B.units[id].el, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 1, ease: "sine.inOut" }, T_PLAN + 0.2 + k * 0.15));
@@ -486,19 +500,20 @@ BU.concat([["v5"]]).forEach(([id], k) => tl.to(B.units[id].el, { opacity: 0.45, 
   tl.to(q, { autoAlpha: 0, duration: 0.5 }, Math.min(T_SHER - 0.2, T_WRONG + 3.0)); });
 // Sheridan's cavalry off to the west (his card rides with it); Lee's cavalry after it; thin trails fade ~2 s after arrival
 unitS("sh", "carth", G.SHERIDAN[0], "infantry", "SHERIDAN", { t: T_SHER - 0.3, size: "XX" }); cavIcon("sh", { flip: true });
-pinPortrait("sh", PHOTO("sheridan"), FL.us, "Sheridan", T_SHER, T_DARK + 0.2, true, "up");
+pinPortrait("sh", PHOTO("sheridan"), FL.us, "Sheridan", T_SHER, END + 1, true, "up");
 along("sh", G.SHERIDAN, T_SHER + 0.2, 5.5, 20);
 arw({ pts: G.SHERIDAN, side: "carth", t: T_SHER + 0.2, dur: 5.0, width: AW(2.35, 8), until: T_SHER + 7.2 });
 unitS("hc", "rome", G.HAMPTON[0], "infantry", null, { t: T_LCAV - 0.2, size: "XX" }); cavIcon("hc", { flip: true });
 along("hc", G.HAMPTON, T_LCAV + 0.2, 4.4, 18);
 arw({ pts: G.HAMPTON, side: "rome", t: T_LCAV + 0.2, dur: 4.0, width: AW(2.35, 8), until: T_LCAV + 6.2 });
-hideU(["sh", "hc"], T_DARK + 0.4);
+// critic r1: at the wide scale one box per side at Cold Harbor (the others step out, back when the camera returns)
+hideU(["u6", "u18", "v5", "r2", "r3", "rr"], T_LOOK + 0.3); showU(["u6", "u18", "v5", "r2", "r3", "rr"], T_12 + 0.2);
 // ---------- after dark on the 12th: Warren crosses the Chickahominy and faces Richmond; the rest slips out south ----------
 nightWash(T_DARK, null, 0.42, 1.6);
 K.night({ lines: [FR], tOn: T_DARK });
 pinPortrait("v5", PHOTO("warren"), FL.us, "Warren", T_WAR, END + 1, true, "right");
 glowPath(G.CHICK.slice(2, 9), "", 1.3, T_CHICK - 0.2, T_CHICK + 3.2);
-curveLabel("Chickahominy River", G.CHICK.slice(4, 9).map((q) => [q[0] + 4, q[1] - 5]), T_CHICK, T_CHICK + 3.3, 22);
+curveLabel("Chickahominy River", G.CHICK.slice(8, 12).map((q) => [q[0] + 5, q[1] - 6]), T_CHICK, T_CHICK + 3.3, 22);   // downstream of Warren's card
 along("v5", [[1468, 818], ...G.WARREN.slice(1)], T_CHICK - 0.3, 4.2, 18);
 arw({ pts: G.WARREN.slice(0, 5), side: "carth", t: T_CHICK - 0.2, dur: 3.6, width: AW(4.6, 8), until: T_CHICK + 5.4 });
 const WF = frontS({ pts: [[1452, 878], [1449, 890], [1451, 902]], sideA: "carth", sideB: "rome", t: T_FACED, dur: 1.2, width: FWw(4.6), until: END + 1 });

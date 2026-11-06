@@ -55,7 +55,7 @@ const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 6
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
-U("rv", "rome", L(32.36, -90.84), "PEMBERTON", "XX"); tagAt("rv", null); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "JOHNSTON", "XX"); tagAt("rj", null);   // STYLE W: the portrait cards carry the names (no empty labels: they break the counter kit) U("rs", "rome", L(32.14, -90.80), "", "XX");
+U("rv", "rome", L(32.36, -90.84), "PEMBERTON", "XX"); tagAt("rv", null); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "JOHNSTON", "XX"); tagAt("rj", null); U("rs", "rome", L(32.14, -90.80), "", "XX");
 ["u13", "u17", "u15"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the generals' portraits on stakes at their armies, from their names to the end of the scene (no corner badges)
 pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_DEC - 0.05, null, true);

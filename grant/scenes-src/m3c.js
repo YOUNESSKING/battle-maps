@@ -345,6 +345,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
+  } else if (side === "west" || side === "east") {   // card level with the unit on a short horizontal stake (clear of what is above/below)
+    const E = side === "east"; w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: E ? "34px" : "-110px", bottom: "auto", top: "-58px" });
+    Object.assign(stake.style, { left: E ? "0px" : "-34px", bottom: "auto", top: "0px", width: "34px", height: "1.5px" });
   } else if (side === "down") { w.style.top = "40px"; const card = w.firstElementChild, stake = w.lastElementChild; Object.assign(card.style, { bottom: "auto", top: "40px" }); Object.assign(stake.style, { bottom: "auto", top: "0px" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -357,10 +362,10 @@ const smoke = (pts, t, r = 5.5) => pts.slice(0, 5).forEach((q, i) => { const e =
   const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + r * 1.8, cy: q[1] - r * 0.55, rx: r * 1.65, ry: r * 1.1 }, duration: 3.6, ease: "sine.out" }, t0);
   tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
 // (d) side-view profile strip (once per move, on the terrain beat): label = [x, y, text] on a 480 x 124 strip
-const profileStrip = (path, labels, t, until, extra = "") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+const profileStrip = (path, labels, t, until, extra = "", css = "left:56px;bottom:56px;") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="480" height="124" viewBox="0 0 480 124">${extra}<path d="${path}" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle">${labels.map(([x, y, s]) => `<text x="${x}" y="${y}">${s}</text>`).join("")}</g></svg></div>`,
-  "left:56px;bottom:56px;", t, Math.min(until, t + 3.5));
+  css, t, Math.min(until, t + 3.5));
 // BATCH 1: one passing word item at a time, each at most 3.5 s
 { const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
 // unit name tags only from the moment the name is spoken (null = never in this scene)
@@ -371,6 +376,14 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": a * 0.2, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// a railroad in ink: rail line + cross ties (constant screen size at camera scale s), fades in on its word, then held
+const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.join(" ")).join(" L"), g = document.createElementNS(NSs, "g");
+  const mkp = (attrs) => { const p = document.createElementNS(NSs, "path"); p.setAttribute("d", d); Object.entries({ fill: "none", "stroke-linecap": "butt", "stroke-linejoin": "round", ...attrs }).forEach(([k, v]) => p.setAttribute(k, v)); g.appendChild(p); return p; };
+  mkp({ stroke: "rgba(233,223,198,.55)", "stroke-width": (5.5 / s).toFixed(2) });                                            // pale bed
+  const ties = mkp({ stroke: "#2a2410", "stroke-width": (7 / s).toFixed(2), "stroke-dasharray": `${(1.6 / s).toFixed(2)} ${(6 / s).toFixed(2)}` });   // ties
+  mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
+  OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
+  if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------
@@ -434,9 +447,9 @@ const T_ATT = at(P5, "The first attack on Petersburg"), T_PB = at(P5, "on Peters
   T_TWO = at(P5, "about two miles wide"), T_STOP = at(P5, "But Smith stopped"), T_NIGHT = at(P5, "for the night"), T_WAIT = at(P5, "waited for the morning");
 // ---------- the lines ----------
 const DL = G.DIMMOCK.slice(0, 8);                                   // the eastern face of the Dimmock Line (Appomattox -> south)
-const DL2 = DL.map((q, i) => i >= 1 && i <= 5 ? [q[0] - [0, 18, 30, 34, 30, 14][i], q[1] + [0, 4, 2, 0, -2, -4][i]] : q);   // after the breach
+const DL2 = DL.map((q, i) => i >= 1 && i <= 6 ? [q[0] - [0, 24, 37, 42, 44, 39, 7][i], q[1] + [0, 4, 2, 0, -2, -4, 0][i]] : q);   // after the breach: west of the Union units (critic r1)
 // ---------- map: clean (no fills); the captured strip hatched blue on the breach, ~3 s ----------
-hatch("assets/media/gn_pet_ctl_breach_mx.png", T_BROKE + 0.6, 3.0);
+hatch("assets/media/gn_pet_ctl_breach_mx.png", T_BROKE + 2.6, 3.0);   // in as the Union units arrive on the line
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
 camera([[0, 1560, 790, 2.6], [T_14K, 1540, 805, 2.9], [T_HINKS, 1525, 825, 3.2], [T_22, 1510, 820, 3.0], [T_BROKE + 0.4, 1495, 822, 3.3], [T_STOP, 1480, 830, 3.0],
   [T_WAIT, 1450, 840, 2.6], [END, 1445, 842, 2.55]]);
@@ -456,12 +469,12 @@ const SU = [["s1", [1640, 640], [1560, 760]], ["s2", [1660, 700], [1565, 815]], 
 SU.forEach(([id, a, b], k) => { unitS(id, "carth", a, "infantry", id === "hk" ? "HINKS" : null, { t: 0, size: "XX" }); B.move(id, 0, T_FACED - 0.5, b[0], b[1]); });
 tagAt("hk", T_HINKS);
 arw({ pts: G.CPROAD.slice(1), side: "carth", t: 0.2, dur: 3.0, width: AW(2.6, 9), until: 5.2 });   // real move: thin trail, fades ~2 s after arrival
-boxS("ABOUT 14,000", 1650, 700, T_14K, null, { size: 24 });
+boxS("ABOUT 14,000", 1580, 912, T_14K, null, { size: 28 });   // below Hinks's column, clear of the cards
 // generals: portrait cards on stakes at their own units for the whole battle (Smith above his lead brigade, Hinks below his division, Beauregard west of his line)
-const SMP = pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", T_SMITH, END + 1, true, "up");
-pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS + 0.2, END + 1, true, "down");
+const SMP = pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", T_SMITH, END + 1, true, "east");   // critic r1: side stakes east, off the line
+pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS + 0.2, END + 1, true, "east");
 pulseU("hk", T_LEAD); pulseU("hk", T_LEAD + 0.6);
-boxS("ABOUT 2,200", 1445, 765, T_22, null, { size: 24 });
+boxS("ABOUT 2,200", 1440, 768, T_22, null, { size: 28 });
 pinPortrait("ri", PHOTO("beauregard"), FL.cs, "Beauregard", T_BEAU + 0.6, END + 1, true, "left");
 // ---------- the breakthrough: the batteries fire (visible, powder smoke), the line gives, about two miles wide ----------
 shoot([1494, 778], [1560, 770], T_FACED + 0.4, { r: 4, width: 0.6, dur: 0.6, h: 8 }); smoke([[1496, 776], [1498, 772]], T_FACED + 0.4, 3);
@@ -474,13 +487,12 @@ mg([1556, 852], [1512, 852], T_BROKE + 0.1, 5, 0.9); mg([1552, 800], [1505, 805]
 greyU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 1.6); hideU(["bt0", "bt1", "bt2", "bt3"], T_STOP - 0.4);
 B.move("ri", T_BROKE + 1.0, 2.5, 1440, 830);
 glowPath(G.BREACH.map((q) => [q[0] + 10, q[1]]), "", 1.4, T_TWO - 0.3, T_TWO + 3.2);   // STYLE W: focus wash + ink trace along the broken stretch
-boxS("ABOUT TWO MILES WIDE", 1610, 790, T_TWO - 0.1, null, { size: 24 });
+inkTrace([[1512, 774], [1530, 774]], T_TWO - 0.2, T_TWO + 3.2, 2.4); inkTrace([[1529, 873], [1546, 873]], T_TWO - 0.2, T_TWO + 3.2, 2.4);   // bracket ticks at both ends of the broken stretch
+boxS("ABOUT TWO MILES WIDE", 1492, 742, T_TWO - 0.1, null, { size: 28 });   // at the north end of the bracketed stretch, clear of the cards
 // ---------- Smith stops for the night; the open road to the city he did not take ----------
 nightWash(T_STOP, null, 0.45, 1.6); K.night({ lines: [FR], tOn: T_STOP });
 tl.to(SMP.querySelector(".ph"), { filter: "grayscale(1) brightness(0.7)", duration: 0.6 }, T_STOP + 0.3);
-stampP("STOPPED FOR THE NIGHT", 1585, 905, T_NIGHT - 0.1, T_WAIT + 1.6, 24);
-[[[1470, 800], [1420, 820], [1385, 845]], [[1468, 840], [1430, 860], [1395, 870]]].forEach((pts, k) => {
-  const a = arw({ pts, side: "carth", t: T_WAIT - 0.2 + k * 0.3, dur: 1.2, width: AW(2.6, 8), until: END + 1 }); tl.to(a, { opacity: 0.45, duration: 0.6 }, T_WAIT + 1.2); });   // faint: the road he did not take
+stampP("STOPPED", 1630, 800, T_STOP + 0.3, T_STOP + 3.6, 26);   // critic r1: the narrator's key word, reference size, on empty ground east
 PET.grow(T_WAIT);
 fixImgs();
 K.raiseTerritory();

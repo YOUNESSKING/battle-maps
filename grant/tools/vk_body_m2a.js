@@ -99,7 +99,7 @@ flagS(FL.us, "", ...L(32.44, -91.40), T_DIFF - 0.1, T_ONLY + 0.4); flagS(FL.cs, 
 flagS(FL.us, "", ...L(32.42, -91.20), T_ONLY + 0.5, END + 1); flagS(FL.cs, "", ...L(32.30, -90.80), T_ONLY + 0.55, END + 1);
 // ---------- big towns (A2, constant ~36 px; names leave after ~3.5 s, clean screen) ----------
 // STYLE W: Vicksburg (the objective) = permanent town symbol from its name; Jackson passing (spoken "western states" link); unspoken towns left out
-const TV = town("VICKSBURG", VKS, "l", T_MS - 0.05); tl.to(TV.querySelector(".tn"), { autoAlpha: 0, duration: 0.4 }, T_ONLY - 0.3);   // the name steps out when the batteries line the bluff townL("JACKSON", JAX, "r", T_LINK + 0.2);
+const TV = town("VICKSBURG", VKS, "l", T_MS - 0.05); tl.to(TV.querySelector(".tn"), { autoAlpha: 0, duration: 0.4 }, T_ONLY - 0.3); townL("JACKSON", JAX, "r", T_LINK + 0.2);   // the Vicksburg name steps out when the batteries line the bluff
 // =================== m2-1 ===================
 // frame 0: the river war already moving: Union gunboats come down from Memphis; Grant's army above the city; the batteries on the bluff
 const FYP = nearestF(RIV, YP);

@@ -13,9 +13,9 @@ const T_ATT = at(P5, "The first attack on Petersburg"), T_PB = at(P5, "on Peters
   T_TWO = at(P5, "about two miles wide"), T_STOP = at(P5, "But Smith stopped"), T_NIGHT = at(P5, "for the night"), T_WAIT = at(P5, "waited for the morning");
 // ---------- the lines ----------
 const DL = G.DIMMOCK.slice(0, 8);                                   // the eastern face of the Dimmock Line (Appomattox -> south)
-const DL2 = DL.map((q, i) => i >= 1 && i <= 5 ? [q[0] - [0, 18, 30, 34, 30, 14][i], q[1] + [0, 4, 2, 0, -2, -4][i]] : q);   // after the breach
+const DL2 = DL.map((q, i) => i >= 1 && i <= 6 ? [q[0] - [0, 24, 37, 42, 44, 39, 7][i], q[1] + [0, 4, 2, 0, -2, -4, 0][i]] : q);   // after the breach: west of the Union units (critic r1)
 // ---------- map: clean (no fills); the captured strip hatched blue on the breach, ~3 s ----------
-hatch("assets/media/gn_pet_ctl_breach_mx.png", T_BROKE + 0.6, 3.0);
+hatch("assets/media/gn_pet_ctl_breach_mx.png", T_BROKE + 2.6, 3.0);   // in as the Union units arrive on the line
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
 camera([[0, 1560, 790, 2.6], [T_14K, 1540, 805, 2.9], [T_HINKS, 1525, 825, 3.2], [T_22, 1510, 820, 3.0], [T_BROKE + 0.4, 1495, 822, 3.3], [T_STOP, 1480, 830, 3.0],
   [T_WAIT, 1450, 840, 2.6], [END, 1445, 842, 2.55]]);
@@ -35,12 +35,12 @@ const SU = [["s1", [1640, 640], [1560, 760]], ["s2", [1660, 700], [1565, 815]], 
 SU.forEach(([id, a, b], k) => { unitS(id, "carth", a, "infantry", id === "hk" ? "HINKS" : null, { t: 0, size: "XX" }); B.move(id, 0, T_FACED - 0.5, b[0], b[1]); });
 tagAt("hk", T_HINKS);
 arw({ pts: G.CPROAD.slice(1), side: "carth", t: 0.2, dur: 3.0, width: AW(2.6, 9), until: 5.2 });   // real move: thin trail, fades ~2 s after arrival
-boxS("ABOUT 14,000", 1650, 700, T_14K, null, { size: 24 });
+boxS("ABOUT 14,000", 1580, 912, T_14K, null, { size: 28 });   // below Hinks's column, clear of the cards
 // generals: portrait cards on stakes at their own units for the whole battle (Smith above his lead brigade, Hinks below his division, Beauregard west of his line)
-const SMP = pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", T_SMITH, END + 1, true, "up");
-pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS + 0.2, END + 1, true, "down");
+const SMP = pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", T_SMITH, END + 1, true, "east");   // critic r1: side stakes east, off the line
+pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", T_HINKS + 0.2, END + 1, true, "east");
 pulseU("hk", T_LEAD); pulseU("hk", T_LEAD + 0.6);
-boxS("ABOUT 2,200", 1445, 765, T_22, null, { size: 24 });
+boxS("ABOUT 2,200", 1440, 768, T_22, null, { size: 28 });
 pinPortrait("ri", PHOTO("beauregard"), FL.cs, "Beauregard", T_BEAU + 0.6, END + 1, true, "left");
 // ---------- the breakthrough: the batteries fire (visible, powder smoke), the line gives, about two miles wide ----------
 shoot([1494, 778], [1560, 770], T_FACED + 0.4, { r: 4, width: 0.6, dur: 0.6, h: 8 }); smoke([[1496, 776], [1498, 772]], T_FACED + 0.4, 3);
@@ -53,13 +53,12 @@ mg([1556, 852], [1512, 852], T_BROKE + 0.1, 5, 0.9); mg([1552, 800], [1505, 805]
 greyU(["bt0", "bt1", "bt2", "bt3"], T_BROKE + 1.6); hideU(["bt0", "bt1", "bt2", "bt3"], T_STOP - 0.4);
 B.move("ri", T_BROKE + 1.0, 2.5, 1440, 830);
 glowPath(G.BREACH.map((q) => [q[0] + 10, q[1]]), "", 1.4, T_TWO - 0.3, T_TWO + 3.2);   // STYLE W: focus wash + ink trace along the broken stretch
-boxS("ABOUT TWO MILES WIDE", 1610, 790, T_TWO - 0.1, null, { size: 24 });
+inkTrace([[1512, 774], [1530, 774]], T_TWO - 0.2, T_TWO + 3.2, 2.4); inkTrace([[1529, 873], [1546, 873]], T_TWO - 0.2, T_TWO + 3.2, 2.4);   // bracket ticks at both ends of the broken stretch
+boxS("ABOUT TWO MILES WIDE", 1492, 742, T_TWO - 0.1, null, { size: 28 });   // at the north end of the bracketed stretch, clear of the cards
 // ---------- Smith stops for the night; the open road to the city he did not take ----------
 nightWash(T_STOP, null, 0.45, 1.6); K.night({ lines: [FR], tOn: T_STOP });
 tl.to(SMP.querySelector(".ph"), { filter: "grayscale(1) brightness(0.7)", duration: 0.6 }, T_STOP + 0.3);
-stampP("STOPPED FOR THE NIGHT", 1585, 905, T_NIGHT - 0.1, T_WAIT + 1.6, 24);
-[[[1470, 800], [1420, 820], [1385, 845]], [[1468, 840], [1430, 860], [1395, 870]]].forEach((pts, k) => {
-  const a = arw({ pts, side: "carth", t: T_WAIT - 0.2 + k * 0.3, dur: 1.2, width: AW(2.6, 8), until: END + 1 }); tl.to(a, { opacity: 0.45, duration: 0.6 }, T_WAIT + 1.2); });   // faint: the road he did not take
+stampP("STOPPED", 1630, 800, T_STOP + 0.3, T_STOP + 3.6, 26);   // critic r1: the narrator's key word, reference size, on empty ground east
 PET.grow(T_WAIT);
 fixImgs();
 K.raiseTerritory();

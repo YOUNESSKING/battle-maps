@@ -336,6 +336,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
+  } else if (side === "west" || side === "east") {   // card level with the unit on a short horizontal stake (clear of what is above/below)
+    const E = side === "east"; w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: E ? "34px" : "-110px", bottom: "auto", top: "-58px" });
+    Object.assign(stake.style, { left: E ? "0px" : "-34px", bottom: "auto", top: "0px", width: "34px", height: "1.5px" });
   } else if (side === "down") { w.style.top = "40px"; const card = w.firstElementChild, stake = w.lastElementChild; Object.assign(card.style, { bottom: "auto", top: "40px" }); Object.assign(stake.style, { bottom: "auto", top: "0px" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -348,10 +353,10 @@ const smoke = (pts, t, r = 5.5) => pts.slice(0, 5).forEach((q, i) => { const e =
   const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + r * 1.8, cy: q[1] - r * 0.55, rx: r * 1.65, ry: r * 1.1 }, duration: 3.6, ease: "sine.out" }, t0);
   tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
 // (d) side-view profile strip (once per move, on the terrain beat): label = [x, y, text] on a 480 x 124 strip
-const profileStrip = (path, labels, t, until, extra = "") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+const profileStrip = (path, labels, t, until, extra = "", css = "left:56px;bottom:56px;") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="480" height="124" viewBox="0 0 480 124">${extra}<path d="${path}" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle">${labels.map(([x, y, s]) => `<text x="${x}" y="${y}">${s}</text>`).join("")}</g></svg></div>`,
-  "left:56px;bottom:56px;", t, Math.min(until, t + 3.5));
+  css, t, Math.min(until, t + 3.5));
 // BATCH 1: one passing word item at a time, each at most 3.5 s
 { const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
 // unit name tags only from the moment the name is spoken (null = never in this scene)
@@ -362,6 +367,14 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": a * 0.2, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// a railroad in ink: rail line + cross ties (constant screen size at camera scale s), fades in on its word, then held
+const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.join(" ")).join(" L"), g = document.createElementNS(NSs, "g");
+  const mkp = (attrs) => { const p = document.createElementNS(NSs, "path"); p.setAttribute("d", d); Object.entries({ fill: "none", "stroke-linecap": "butt", "stroke-linejoin": "round", ...attrs }).forEach(([k, v]) => p.setAttribute(k, v)); g.appendChild(p); return p; };
+  mkp({ stroke: "rgba(233,223,198,.55)", "stroke-width": (5.5 / s).toFixed(2) });                                            // pale bed
+  const ties = mkp({ stroke: "#2a2410", "stroke-width": (7 / s).toFixed(2), "stroke-dasharray": `${(1.6 / s).toFixed(2)} ${(6 / s).toFixed(2)}` });   // ties
+  mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
+  OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
+  if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------

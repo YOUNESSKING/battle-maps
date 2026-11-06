@@ -347,6 +347,11 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     const card = w.firstElementChild, stake = w.lastElementChild;
     Object.assign(card.style, { left: R ? "40px" : "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
+  } else if (side === "west" || side === "east") {   // card level with the unit on a short horizontal stake (clear of what is above/below)
+    const E = side === "east"; w.style.top = "50%"; w.style.left = E ? "100%" : "0px";
+    const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: E ? "34px" : "-110px", bottom: "auto", top: "-58px" });
+    Object.assign(stake.style, { left: E ? "0px" : "-34px", bottom: "auto", top: "0px", width: "34px", height: "1.5px" });
   } else if (side === "down") { w.style.top = "40px"; const card = w.firstElementChild, stake = w.lastElementChild; Object.assign(card.style, { bottom: "auto", top: "40px" }); Object.assign(stake.style, { bottom: "auto", top: "0px" }); }
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -359,10 +364,10 @@ const smoke = (pts, t, r = 5.5) => pts.slice(0, 5).forEach((q, i) => { const e =
   const t0 = t + i * 0.25; tl.to(e, { opacity: 0.55, duration: 0.4 }, t0); tl.to(e, { attr: { cx: q[0] + r * 1.8, cy: q[1] - r * 0.55, rx: r * 1.65, ry: r * 1.1 }, duration: 3.6, ease: "sine.out" }, t0);
   tl.to(e, { opacity: 0, duration: 1.4 }, t0 + 2.4); });
 // (d) side-view profile strip (once per move, on the terrain beat): label = [x, y, text] on a 480 x 124 strip
-const profileStrip = (path, labels, t, until, extra = "") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
+const profileStrip = (path, labels, t, until, extra = "", css = "left:56px;bottom:56px;") => scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="480" height="124" viewBox="0 0 480 124">${extra}<path d="${path}" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle">${labels.map(([x, y, s]) => `<text x="${x}" y="${y}">${s}</text>`).join("")}</g></svg></div>`,
-  "left:56px;bottom:56px;", t, Math.min(until, t + 3.5));
+  css, t, Math.min(until, t + 3.5));
 // BATCH 1: one passing word item at a time, each at most 3.5 s
 { const _cap = B.caption; B.caption = (txt, t, u, sd) => _cap(txt, t, Math.min(u, t + 3.5), sd); }
 // unit name tags only from the moment the name is spoken (null = never in this scene)
@@ -373,6 +378,14 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   g.setAttribute("d", `M${q[0] - a} ${q[1] - a} L${q[0] + a} ${q[1] + a} M${q[0] + a} ${q[1] - a} L${q[0] - a} ${q[1] + a}`);
   Object.entries({ stroke: "#322c14", "stroke-width": a * 0.2, "stroke-linecap": "round", fill: "none", opacity: 0 }).forEach(([k, v]) => g.setAttribute(k, v)); OVL.appendChild(g);
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
+// a railroad in ink: rail line + cross ties (constant screen size at camera scale s), fades in on its word, then held
+const railInk = (pts, t, until, s = 1) => { const d = "M" + pts.map((q) => q.join(" ")).join(" L"), g = document.createElementNS(NSs, "g");
+  const mkp = (attrs) => { const p = document.createElementNS(NSs, "path"); p.setAttribute("d", d); Object.entries({ fill: "none", "stroke-linecap": "butt", "stroke-linejoin": "round", ...attrs }).forEach(([k, v]) => p.setAttribute(k, v)); g.appendChild(p); return p; };
+  mkp({ stroke: "rgba(233,223,198,.55)", "stroke-width": (5.5 / s).toFixed(2) });                                            // pale bed
+  const ties = mkp({ stroke: "#2a2410", "stroke-width": (7 / s).toFixed(2), "stroke-dasharray": `${(1.6 / s).toFixed(2)} ${(6 / s).toFixed(2)}` });   // ties
+  mkp({ stroke: "#2a2410", "stroke-width": (2.0 / s).toFixed(2) });                                                         // rail
+  OVL.appendChild(g); gsap.set(g, { opacity: 0 }); tl.to(g, { opacity: 0.9, duration: 0.8, ease: "sine.out" }, t);
+  if (until != null) tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
 // a corner badge only for a commander with no unit on the map (<= 3.5 s)
 const badgeC = (o) => badge({ ...o, until: Math.min(o.until ?? 1e9, o.t + 3.5) });
 // ---------- end of kit ----------
@@ -445,7 +458,7 @@ const ROAD_S = [[1375, 930], [1330, 945], [1200, 950], [1050, 960], [900, 975], 
 // ---------- map: option 1 wide, dissolving into the close-up (v11), back on the zoom-out ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 zoomBox(1335, 800, 1.75, T_FERRY - 1.4);   // where the camera is about to dive
-camera([[0, 1180, 640, 1.6], [T_FERRY, 1250, 700, 2.1], [T_WIL + 0.8, 1310, 780, 3.2], [T_WEY + 0.6, 1360, 830, 3.4], [T_101, 1385, 860, 4.2], [T_90, 1385, 870, 4.0],
+camera([[0, 1180, 640, 1.6], [T_FERRY, 1250, 700, 2.1], [T_WIL + 0.8, 1310, 780, 3.2], [T_WEY + 0.6, 1360, 830, 3.4], [T_101, 1385, 842, 4.2], [T_90, 1385, 850, 4.0],
   [T_ELEV, 1380, 865, 3.8], [T_TWO, 1360, 870, 3.0], [T_GUNS + 1.0, 1250, 880, 2.4], [T_GUESS + 1.6, 940, 720, 1.05], [T_16, 920, 730, 1.0], [END, 930, 735, 1.02]]);
 dateNow("12 JUNE 1864", T_MORN + 0.8); B.date("14 JUNE 1864", T_MORN + 0.9, T_16 - 0.1, 34); B.date("16 JUNE 1864", T_16, T_17 - 0.1, 34); B.date("17 JUNE 1864", T_17, null, 34);
 // dawn of the 14th (the night of m3a fades)
@@ -455,14 +468,15 @@ const TODC = todDiv("rgba(100,135,205,0.55)"); tl.to(TODC, { opacity: 0.4, durat
 flagS(FL.us, 1420, 560, 0, T_WIL + 1.2); flagS(FL.cs, 760, 560, 0, T_FERRY + 1.2);
 flagS(FL.cs, 1080, 690, T_FERRY + 0.8, T_WIL + 1.5);
 flagS(FL.us, 1450, 760, T_WIL + 0.8, T_GUNS + 1.6); flagS(FL.cs, 1280, 960, T_WIL + 1.2, T_GUNS + 1.6);
-flagS(FL.us, 1150, 600, T_GUNS + 1.0, END + 1); flagS(FL.cs, 330, 560, T_GUNS + 1.0, END + 1);
+flagS(FL.us, 1150, 600, T_GUNS + 1.0, END + 1); flagS(FL.cs, 300, 690, T_GUNS + 1.0, END + 1);
 // ---------- the columns arrive at the James; the first troops ferried across at Wilcox's Landing ----------
 const COLS = [["c1", [1205, 420], [[1205, 420], [1250, 560], [1275, 700], WIL]], ["c2", [1330, 470], [[1330, 470], [1370, 600], [1320, 700], [WIL[0] + 18, WIL[1] - 8]]],
   ["c3", [1120, 480], [[1120, 480], [1180, 620], [1250, 720], [WIL[0] - 16, WIL[1] - 6]]]];
 COLS.forEach(([id, p, pts], k) => { unitS(id, "carth", p, "infantry", null, { t: 0, size: "XXX" }); along(id, pts, 0, T_FERRY + 1.2 + k * 0.6, 20); });
+hideU(COLS.map((c) => c[0]), T_101 - 0.4);   // ferried over (f1/f2 on the south bank carry them); clear of the date scroll on the dive
 arw({ pts: [[1180, 380], [1240, 560], [1278, 720]], side: "carth", t: 0.3, dur: 2.4, width: AW(1.6, 8), until: 4.7 });   // thin trail, fades ~2 s after arrival
 boxS("WILCOX'S LANDING", WIL[0] - 150, WIL[1] - 30, T_WIL, null, { size: 26 });
-const FB = [0, 1, 2].map((k) => { const s = ship("steamer", "carth", [WIL[0] - 14 + k * 18, WIL[1] + 8], 90, T_FERRY + 0.2 + k * 0.3, T_TWO + 4, { L: 40 });
+const FB = [0, 1, 2].map((k) => { const s = ship("steamer", "carth", [WIL[0] - 14 + k * 18, WIL[1] + 8], 90, T_FERRY + 0.2 + k * 0.3, T_101 - 0.4, { L: 40 });   // critic r1: ferries step out as the camera dives to the bridge (they would touch the date scroll)
   [0, 1, 2, 3].forEach((r) => { const t0 = T_FERRY + 0.5 + k * 0.5 + r * 4.6;
     sail(s, [[WIL[0] - 14 + k * 18, WIL[1] + 8], [FERRY_S[0] - 10 + k * 16, FERRY_S[1]]], t0, 2.0, 6); sail(s, [[FERRY_S[0] - 10 + k * 16, FERRY_S[1]], [WIL[0] - 14 + k * 18, WIL[1] + 8]], t0 + 2.3, 2.0, 6, { rev: false }); });
   return s; });
@@ -475,11 +489,11 @@ unitS("en1", "carth", [BR_N[0] + 26, BR_N[1] - 14], "infantry", "ENGINEERS", { t
 unitS("en2", "carth", [BR_S[0] + 28, BR_S[1] + 14], "infantry", null, { t: T_ENG + 0.3, size: "II" });
 pontoons(BR_N, BR_S, T_ENG + 0.4, T_READY, 22, { bw: 2.2, bl: 5.5 });
 const TK = ticker("PONTOON BOATS", 101, "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_101 - 0.1, 2.0, T_FT - 0.1, 8, { col: "#2e5cb2" });
-boxS("ABOUT 2,100 FEET", BR_N[0] - 150, (BR_N[1] + BR_S[1]) / 2 - 6, T_FT, null, { size: 26, bg: "#dcecf8" });
+curveLabel("About 2,100 feet", [[BR_N[0] + 12, BR_N[1] - 4], [BR_S[0] + 12, BR_S[1] + 4]], T_READY + 0.5, T_READY + 3.6, 22);   // critic r1: an ink label along the bridge once it spans the river
 const CH = glowPath([[1338, 820], [1345, 870], [1376, 888], [1430, 878], [1470, 840]], "#3c74d8", 2.2, T_TIDE, T_FOUR, 2, 0.8);
 // side-view profile strip (once in move 3, on the terrain beat): the tidal channel at the bridge site
-profileStrip("M10 38 L62 50 C120 66, 190 78, 250 104 C290 116, 340 104, 378 72 L420 52 L470 42", [[92, 30, "Weyanoke"], [262, 90, "ninety feet of water"]], T_90 - 0.3, T_FOUR - 0.2,
-  `<path d="M62 50 C120 66, 190 78, 250 104 C290 116, 340 104, 378 72 L420 52 Z" fill="rgba(77,125,154,.55)"/><line x1="62" y1="50" x2="420" y2="52" stroke="#3c6478" stroke-width="1.6"/>`);
+profileStrip("M10 38 L62 50 C120 66, 190 78, 250 104 C290 116, 340 104, 378 72 L420 52 L470 42", [[70, 26, "Weyanoke"], [245, 40, "ninety feet of water"]], T_90 - 0.3, T_FOUR - 0.2,
+  `<path d="M62 50 C120 66, 190 78, 250 104 C290 116, 340 104, 378 72 L420 52 Z" fill="rgba(77,125,154,.55)"/><line x1="62" y1="50" x2="420" y2="52" stroke="#3c6478" stroke-width="1.6"/>`, "right:80px;bottom:120px;");   // critic r1: >= 40 px in, off the flag
 const CK = clockCard([[T_FOUR, 4, "4 PM"], [T_ELEV, 11, "11 PM"]], "left:60px;top:150px;", T_FOUR - 0.1, T_READY + 2.2);
 nightWash(T_FOUR + 1.0, T_TWO, 0.38, 2.2);
 const BRG = glowPath([BR_N, BR_S], "#6f9bff", 2.6, T_READY, END + 1, 3, 0.95, { top: true });
@@ -488,19 +502,19 @@ wstampS("READY", BR_S[0] + 60, BR_S[1] + 10, T_READY + 0.3, null, "#9fc0ea", 30)
 const XS = [];
 for (let k = 0; k < 6; k++) { const id = "x" + k; unitS(id, "carth", BR_N, k % 3 === 2 ? "artillery" : "infantry", null, { t: T_TWO + k * 0.9, size: k % 3 === 2 ? "" : "XX" });
   along(id, [BR_N, BR_S, ...ROAD_S.slice(0, 3 + (k % 3))], T_TWO + k * 0.9, 7.0, 20); hideU([id], T_GUESS + 3 + k * 0.2); XS.push(id); }
-const N115 = numCard("CROSSED THE RIVER", "ABOUT 115,000 MEN", "BY GRANT'S OWN COUNT", "left:0;right:0;top:240px;display:flex;justify-content:center;", T_115, T_GUNS + 1.8);
+const N115 = numCard("CROSSED THE RIVER", "ABOUT 115,000 MEN", "", "right:120px;top:300px;", T_115, T_GUNS + 1.8);   // critic r1: on the empty river east of the crossing, no source line
 arw({ pts: [[BR_S[0] - 10, BR_S[1] + 10], [1200, 950], [900, 975], [760, 992]], side: "carth", t: T_GUNS + 0.4, dur: 4.0, width: AW(1.2, 8), until: T_GUNS + 6.4 });
 // ---------- Lee: guessed Petersburg on the 14th, would not believe it, kept his army around Richmond ----------
 [["l1", [470, 480]], ["l2", [570, 440]], ["l3", [660, 410]], ["l4", [420, 570]]].forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: T_GUESS - 0.4, size: "XXX" }));
 unitS("pb", "rome", [470, 1010], "infantry", null, { t: T_GUESS - 0.2, size: "X" });
-pinPortrait("l1", PHOTO("lee"), FL.cs, "Lee", T_GUESS + 0.1, END + 1, true, "down");   // Lee's card at his army north of the river
+pinPortrait("l4", PHOTO("lee"), FL.cs, "Lee", T_GUESS + 0.1, END + 1, true, "west");   // Lee's card at his army north of the river
 town("PETERSBURG", G.PETERSBURG, T_PETE - 0.3, "l", { keep: true });
 const GQ = arw({ pts: [[470, 530], [440, 700], [430, 900], [440, 1000]], side: "rome", t: T_PETE, dur: 2.0, width: AW(1.05, 8), until: T_BELIEVE + 0.6 }); gsap.set(GQ, { opacity: 0.5 });   // only a guess: faint
 K.target(G.PETERSBURG[0], G.PETERSBURG[1], T_PETE + 0.3, { r: 34, side: "#ffd54a", until: T_KEPT + 1 });
 B.caption("BUT HE WOULD NOT BELIEVE IT", T_BELIEVE, T_KEPT - 0.1, "rome");
 ["l1", "l2", "l3", "l4"].forEach((id, k) => pulseU(id, T_KEPT + 0.2 + k * 0.2));
 // the wire to Beauregard (verbatim, 17 June): card only on its spoken words
-const Q = quote(`"Have no information of Grant's crossing James River."`, "LEE TO BEAUREGARD", T_HAVE - 0.1, END + 1, { col: "#c4121f", size: 44, top: 470 });   // clear of Lee's army and his card
+const Q = quote(`"Have no information of Grant's crossing James River."`, "LEE TO BEAUREGARD", T_HAVE - 0.1, END + 1, { col: "#c4121f", size: 38, top: 850 }); Q.style.paddingLeft = "380px";   // critic r1: lower band, on empty ground clear of the crossing units and Lee's card
 for (let k = 0; k < 6; k++) SFX("tick", T_HAVE + k * 0.18);
 // ---------- clean screen ----------
 fixImgs();
