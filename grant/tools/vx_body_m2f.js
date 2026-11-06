@@ -201,7 +201,7 @@ B.move("u13", T_COUNT, 6, ...L(32.37, -90.80)); B.move("u17", T_COUNT + 0.3, 6, 
 B.move("rv", T_COUNT + 1, 5, ...L(32.345, -90.852)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 3);
 const RING = LL([[32.405, -90.875], [32.40, -90.835], [32.37, -90.82], [32.335, -90.825], [32.30, -90.845], [32.28, -90.88], [32.29, -90.905]]);
 glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_18M + 0.4 });
-wstampL("SHUT INSIDE VICKSBURG", ...L(32.25, -90.68), T_SHUT + 0.2, null, "#e3232f", 28);
+wstampL("SHUT INSIDE VICKSBURG", ...L(32.17, -90.55), T_SHUT + 0.2, null, "#e3232f", 28);
 // ---------- 1c declutter: one big card at a time ----------
 
 fixImgs();

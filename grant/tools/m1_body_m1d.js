@@ -96,6 +96,11 @@ const GU = sstamp("GIVE UP", 250, T_GU - 0.05, { size: 64, until: END - 0.1, pos
 // ---------- clean screen ----------
 // night (the camera pulls back, the pocket tightens): the three cards fan apart (Buckner up, Pillow up between, Floyd up-right)
 restake(BUW, [100, -30], [80, -150], T_NIGHT - 0.6, 1.6); restake(PPW, [0, -150], [40, -190], T_NIGHT - 0.6, 1.6); restake(FLW, [-102, -64], [20, -150], T_NIGHT - 0.6, 1.6);
+{ const scrollGuard = () => document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;   /* a counter inside the date-scroll area (+30 px) steps out */
+    const hit = r.right > 45 && r.left < 600 && r.bottom > 45 && r.top < 215;
+    [...b.parentElement.children].forEach((ch) => { if (!ch.querySelector(".pcard")) ch.style.visibility = hit ? "hidden" : ""; }); });
+  const flagGuard = () => document.querySelectorAll(".sflag img").forEach((im) => { const r = im.getBoundingClientRect(); im.style.visibility = r.width && r.right > 45 && r.left < 600 && r.bottom > 45 && r.top < 215 ? "hidden" : ""; });   /* side flags too */
+  tl.to({ k: 0 }, { k: 1, duration: END, ease: "none", onUpdate: () => { scrollGuard(); flagGuard(); } }, 0); tl.call(scrollGuard, null, END - 0.01); }
 fixImgs();
 K.raiseTerritory();
 B.finish();
