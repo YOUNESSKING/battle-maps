@@ -82,7 +82,10 @@ const HITS = ticker("HITS ON THE FLAGSHIP", 60, "", "right:70px;top:240px;", T_6
 [2, 3].forEach((k) => sail(SH[k].s, sub(RIVC, SH[k].d / RL, Math.max(0, SH[k].d - 140) / RL, 8), T_WOUND + 0.4, 4, 8, { keepRot: true }));
 // Foote himself wounded: his portrait greys, a small level stamp beside the flagship
 tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_WOUND + 0.4);
-{ const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); wstampS("WOUNDED", q[0] - 92, q[1] + 6, T_WOUND + 0.4, T_NIGHT - 0.3); }
+{ const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); }
+// the WOUNDED tag stands beside Foote's card (child of the card, so it moves with it)
+{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;left:84px;top:44px"; cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
+  tl.fromTo(st, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, immediateRender: false }, T_WOUND + 0.4); tl.to(st, { autoAlpha: 0, duration: 0.3 }, T_WOUND + 3.6); SFX("hit", T_WOUND + 0.58); }
 // ---------- night: rain and snow; blankets thrown away on the march ----------
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
 B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
@@ -101,7 +104,7 @@ smoke([[1428, 878], [1440, 872], [1495, 884]], T_STRUCK + 1.5, 0.8);
 const HAV = `<svg width="70" height="70" viewBox="0 0 100 100"><path d="M18 34 Q50 18 82 34 L78 86 Q50 96 22 86 Z" fill="#9a8460" stroke="#f7f3ea" stroke-width="4"/><path d="M18 34 Q50 56 82 34" fill="#b49c74" stroke="#f7f3ea" stroke-width="4"/><path d="M30 30 Q50 -6 70 30" fill="none" stroke="#f7f3ea" stroke-width="5"/></svg>`;
 const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20px 46px 22px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">${HAV}
   <div><div style="font-size:64px;letter-spacing:.06em;line-height:1">THREE DAYS OF RATIONS</div><div class="s2" style="font-size:24px;letter-spacing:.3em;color:#ff8a80;margin-top:6px">IN THEIR HAVERSACKS</div></div></div>`,
-  "right:60px;bottom:70px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
+  "right:60px;top:60px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
 SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
 // not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word

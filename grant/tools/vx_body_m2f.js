@@ -39,7 +39,7 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // STYLE W: clean map; the ground that changes hands hatches blue for ~3 s (tools/stylew_vk/make_hatches.sh: gn_vick_may14cap / may16cap / may18cap)
-hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_CUTOFF + 1.3, 2.0);   // critic r1: only once the ground is taken hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
+hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_NEXT - 0.2, 2.0);   // critic r1: only once the ground is taken hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 const LGD = null;   // STYLE W: no key
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
@@ -51,7 +51,7 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 const FX = (a, b) => [a, b];
-const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1530, 640], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
+const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1495, 725], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
@@ -66,8 +66,8 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 [DEC, BACK, OA, OB].forEach((el) => tl.getTweensOf(el).filter((tw) => tw.startTime() < 1.0).forEach((tw) => tw.kill()));
 gsap.set(DEC, { autoAlpha: 1, scale: 1 }); gsap.set([OA, OB], { autoAlpha: 1, y: 0 }); gsap.set(BACK, { autoAlpha: 0.56 }); dropCues(0, 1.0);
-Object.assign(DEC.style, { top: "585px", background: "rgba(14,13,10,0.95)", padding: "16px 34px 18px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
-BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 45%, rgba(6,8,12,0.7) 60%)";
+Object.assign(DEC.style, { top: "470px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
+BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 // the supply line back to Grand Gulf (the base) flickers and is cut
 const SUP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.04, -90.93), L(31.995, -90.955)];

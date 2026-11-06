@@ -6,6 +6,7 @@
 // where the sides touch; the ground the breakout takes hatches RED (gn_don_ctl_feb15acap, ~3 s). Foote's portrait rides his flagship (greys
 // on "wounded"); Grant (no unit here) = one corner badge <= 3.5 s. Captions cut to the two claims to remember.
 // Built with: python3 tools/m1_build.py m1c donelson_w m1-3 m1-4
+window.CARDPOS = {"Grant@ghq":[-198,-53],"Floyd@fl":[198,53],"Pillow@c2":[75,-280],"Buckner@bu":[50,-87],"Foote@el1":[71,71],"cap1":"right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -23,7 +24,9 @@ const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
 const LBL_LIFE = 3.5;   // clean screen v11: words on screen leave after ~3.5 s
-{ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt, t, Math.min(until ?? 1e9, t + LBL_LIFE), ...r); }
+{ const _cap0 = B.caption.bind(B); let nCap = 0; B.caption = (txt, t, until, ...r) => { const u = Math.min(until ?? 1e9, t + LBL_LIFE), el = _cap0(txt, t, u, ...r), k = "cap" + (nCap++);
+  const P = (window.CARDPOS || {})[k]; if (P === "left") Object.assign(el.style, { justifyContent: "flex-start", paddingLeft: "70px" }); if (P === "right") Object.assign(el.style, { justifyContent: "flex-end", paddingRight: "70px" });
+  (window.__CAPS = window.__CAPS || []).push({ key: k, el, t, until: u }); return el; }; }   // critic r2: caption side solved by tools/m1_place.js (off counters and cards)
 const box = (txt, x, y, t, size = 16, until, o = {}) => { size = Math.round(Math.max(20, Math.min(28, size * 0.85)));   // STYLE W: Warhawk labels (white serif + soft shadow, no box); no ref:pop (owner: no synthesized sounds)
   return GG.pin(`<div style="color:#fbf8ef;font-family:'Liberation Serif',Georgia,serif;font-weight:700;letter-spacing:.02em;font-size:${size}px;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">${txt.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase())}</div>`, x, y, { t, until }); };
 // v11: the flag only, no country name under it
@@ -94,7 +97,7 @@ const glowPathOld = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => { 
   if (until != null) tl.to(p, { opacity: 0, duration: 0.6 }, until); return p;
 };
 const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {   // screen-space element (above the map, under the credit)
-  const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html;
+  const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; el.classList.add("scrcard");
   SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);
   tl.fromTo(el, from, { autoAlpha: 1, y: 0, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el;
 };
@@ -122,7 +125,7 @@ const slam = (el, t, o = {}) => {
   return el;
 };
 const sstamp = (txt, top, t, o = {}) => { const u = Math.min(o.until != null ? o.until : 1e9, t + 3.5);   // STYLE W: level, cream on dark, <= 3.5 s
-  const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, 0, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, { ...o, from: 1.4, shake: o.shake || 3, until: u }); };
+  const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, 0, o.sub), o.pos || `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, { ...o, from: 1.4, shake: o.shake || 3, until: u }); };
 const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
@@ -156,7 +159,7 @@ const cavIcon = (id, o = {}) => { const sv = B.units[id].el.querySelector(".blk 
   sv.innerHTML = o.flip ? `<g transform="translate(100 0) scale(-1 1)">${CAV_SVG}</g>` : CAV_SVG; };
 // K.front with its OWN blur filter (each front keeps the locked width 15 / glow 0.47 on screen at its own camera scale)
 let __FID = 0;
-const frontS = (o) => { const g = K.front(o), id = "m1blur" + (++__FID), f = document.createElementNS(NS, "filter"), ov = document.getElementById("overlay");
+const frontS = (o) => { const g = K.front(o); g.classList.add("frontg"); const id = "m1blur" + (++__FID), f = document.createElementNS(NS, "filter"), ov = document.getElementById("overlay");
   f.setAttribute("id", id); f.setAttribute("x", "-20%"); f.setAttribute("y", "-20%"); f.setAttribute("width", "140%"); f.setAttribute("height", "140%");
   f.innerHTML = `<feGaussianBlur stdDeviation="${((o.width || 15) * 0.35).toFixed(2)}"/>`; ov.querySelector("defs").appendChild(f);
   g.querySelectorAll("[filter]").forEach((p) => p.setAttribute("filter", `url(#${id})`));
@@ -173,7 +176,16 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     const kc = Math.min(1, Math.max(0, (s - 1.5) / 0.7)); const R2 = document.getElementById("relief2");
     if (R2) { R2.style.opacity = Math.min(1, kc * 3).toFixed(3); const rad = 150 + kc * 2400;
       R2.style.webkitMaskImage = R2.style.maskImage = kc > 0 && kc < 1 ? `radial-gradient(circle at ${cx.toFixed(0)}px ${cy.toFixed(0)}px, #000 ${rad.toFixed(0)}px, transparent ${(rad + 380).toFixed(0)}px)` : "none"; }
-    CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); } document.getElementById("vignette").style.opacity = kc.toFixed(3); };
+    CAM_X0 = 960 - cx * s; CAM_Y0 = 540 - cy * s; if (typeof focApply === "function") { focApply(); curvApply(); inkApply(); }
+    (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
+      const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom), k = Math.max(0, Math.min(1, (m - 8) / 32)).toFixed(3);
+      c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
+    { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
+      document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
+        const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
+        const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
+        const o = under || edge ? "0" : ""; b.style.opacity = o; const tg = b.parentElement.querySelector(".tag"); if (tg) tg.style.opacity = o; }); }
+    document.getElementById("vignette").style.opacity = kc.toFixed(3); };
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
     tl.to(cam, { cx, cy, s, duration: Math.max(t1 - t0, 0.01), ease: "sine.inOut", onUpdate: apply }, t0); }
@@ -181,10 +193,10 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
 };
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
-const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o));   // STYLE W label; passing labels <= 3.5 s
+const boxS = (txt, x, y, t, until, o = {}) => { const el = pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o)); el.classList.add("wlabel"); return el; };   // STYLE W label; passing labels <= 3.5 s
 const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
-  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {}));
+  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {})); el.classList.add("wstamp");
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 px, name 19 px (screen)
@@ -241,7 +253,9 @@ const stackSmoke = (p, t, until, every = 1.6) => { for (let tt = t; tt < until; 
 const fortIcon = (p, t, until, o = {}) => { const s = o.s || 30, col = o.col || "#e3232f";
   const el = pinS(GG.pin(`<svg width="${s * 2}" height="${s * 2}" viewBox="-20 -20 40 40" style="display:block;overflow:visible;filter:drop-shadow(0 0 ${s * 0.18}px ${col})">
     <polygon points="0,-17 5,-6 17,-6 8,2 12,15 0,8 -12,15 -8,2 -17,-6 -5,-6" fill="rgba(60,10,10,.55)" stroke="${col}" stroke-width="3.2" stroke-linejoin="round"/></svg>`, p[0], p[1], { t: t > 0 ? t : null, pop: t > 0, until }));
-  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // on the map from frame 0
+  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.classList.add("fortico");
+  el.toBlue = (tt) => { const pg = el.querySelector("polygon"); tl.to(pg, { attr: { stroke: "#4f8bff", fill: "rgba(10,20,60,.55)" }, duration: 0.4 }, tt); tl.to(el.querySelector("svg"), { filter: "drop-shadow(0 0 4px #4f8bff)", duration: 0.4 }, tt); };   // captured fort turns blue
+  return el; };   // on the map from frame 0
 // a world-pinned mini flag on a pole (over a fort), constant size
 const poleFlag = (src, p, t, until, w = 46) => pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-1.5px;top:${-w * 1.25}px;width:3px;height:${w * 1.25}px;background:#efe6cf;box-shadow:0 0 3px #000"></div><img src="${src}" style="position:absolute;left:1px;top:${-w * 1.25}px;width:${w}px;border:1px solid #1a1712;box-shadow:0 2px 5px rgba(0,0,0,.6)"></div>`, p[0], p[1], { t, pop: true, until }));
 // mini commander chip (screen space): round photo + name, for naming several generals in a row without a big badge each
@@ -325,6 +339,16 @@ const pinPortrait = (id, photo, flagSrc, name, t, until, keep = false, side = "u
   if (side === "left" || side === "upleft") { w.style.top = "4px"; w.style.left = "0px"; const up = side === "upleft";
     Object.assign(card.style, { left: up ? "-150px" : "-116px", bottom: "auto", top: up ? "-175px" : "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: up ? "95px" : "69px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${up ? -141 : 125.5}deg)` }); }
+  // critic r2: placement pass. tools/m1_place.js solves a screen offset per card (window.CARDPOS[key] = [dx, dy] from the unit centre):
+  // the card stands on a side stake clear of counters, fort stars, front lines, the date scroll and the other cards
+  const key = name + "@" + (typeof id === "string" ? id : (id.dataset.pk || (id.dataset.pk = "el" + (window.__PK = (window.__PK || 0) + 1))));
+  const P = (window.CARDPOS || {})[key];
+  if (P) { const [dx, dy] = P, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L, hostRect = typeof id === "string";
+    w.style.left = "50%"; w.style.top = hostRect ? "18px" : "0px";
+    Object.assign(card.style, { left: (dx - 38).toFixed(1) + "px", top: (dy - 59).toFixed(1) + "px", bottom: "auto" });
+    Object.assign(stake.style, { left: (ux * 20).toFixed(1) + "px", top: (uy * 20).toFixed(1) + "px", bottom: "auto", width: Math.max(4, L - 20).toFixed(1) + "px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${(Math.atan2(dy, dx) * 180 / Math.PI).toFixed(1)}deg)` }); }
+  card.style.zIndex = "2"; card.classList.add("pcard"); stake.classList.add("pstake");
+  (window.__CARDS = window.__CARDS || []).push({ key, t, until, card, stake, unit: typeof id === "string" ? B.units[id].el.querySelector(".blk") : id.firstElementChild });
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   const tg = typeof id === "string" ? B.units[id].el.querySelector(".tag") : null;
   if (tg) { if (t <= 0.05) gsap.set(tg, { autoAlpha: 0 }); tl.to(tg, { autoAlpha: 0, duration: 0.2 }, Math.max(0, t - 0.1)); tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
@@ -430,7 +454,10 @@ const HITS = ticker("HITS ON THE FLAGSHIP", 60, "", "right:70px;top:240px;", T_6
 [2, 3].forEach((k) => sail(SH[k].s, sub(RIVC, SH[k].d / RL, Math.max(0, SH[k].d - 140) / RL, 8), T_WOUND + 0.4, 4, 8, { keepRot: true }));
 // Foote himself wounded: his portrait greys, a small level stamp beside the flagship
 tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_WOUND + 0.4);
-{ const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); wstampS("WOUNDED", q[0] - 92, q[1] + 6, T_WOUND + 0.4, T_NIGHT - 0.3); }
+{ const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); }
+// the WOUNDED tag stands beside Foote's card (child of the card, so it moves with it)
+{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;left:84px;top:44px"; cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
+  tl.fromTo(st, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, immediateRender: false }, T_WOUND + 0.4); tl.to(st, { autoAlpha: 0, duration: 0.3 }, T_WOUND + 3.6); SFX("hit", T_WOUND + 0.58); }
 // ---------- night: rain and snow; blankets thrown away on the march ----------
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
 B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
@@ -449,7 +476,7 @@ smoke([[1428, 878], [1440, 872], [1495, 884]], T_STRUCK + 1.5, 0.8);
 const HAV = `<svg width="70" height="70" viewBox="0 0 100 100"><path d="M18 34 Q50 18 82 34 L78 86 Q50 96 22 86 Z" fill="#9a8460" stroke="#f7f3ea" stroke-width="4"/><path d="M18 34 Q50 56 82 34" fill="#b49c74" stroke="#f7f3ea" stroke-width="4"/><path d="M30 30 Q50 -6 70 30" fill="none" stroke="#f7f3ea" stroke-width="5"/></svg>`;
 const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20px 46px 22px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">${HAV}
   <div><div style="font-size:64px;letter-spacing:.06em;line-height:1">THREE DAYS OF RATIONS</div><div class="s2" style="font-size:24px;letter-spacing:.3em;color:#ff8a80;margin-top:6px">IN THEIR HAVERSACKS</div></div></div>`,
-  "right:60px;bottom:70px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
+  "right:60px;top:60px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
 SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
 // not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word

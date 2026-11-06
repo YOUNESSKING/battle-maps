@@ -4,6 +4,7 @@
 // ground hatches BLUE on the surrender (gn_henry_ctl_feb06cap, ~3 s). Portraits on the map: Foote on his flagship, Tilghman at the fort,
 // Grant at his columns. The floodwater is drawn on its words; one profile strip (the fort in the flood) on the terrain beat.
 // Built with: python3 tools/m1_build.py m1a henry_w m1-1 m1-1     (kit: tools/m1_kit.js, body: tools/m1_body_m1a.js)
+window.CARDPOS = {"Foote@el1":[-100,0],"Tilghman@til":[0,165],"Grant@g2":[0,-130]};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -21,7 +22,9 @@ const NS = "http://www.w3.org/2000/svg";
 const tl = B.tl;
 const WORLD = document.getElementById("world"), OVL = document.getElementById("overlay");
 const LBL_LIFE = 3.5;   // clean screen v11: words on screen leave after ~3.5 s
-{ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt, t, Math.min(until ?? 1e9, t + LBL_LIFE), ...r); }
+{ const _cap0 = B.caption.bind(B); let nCap = 0; B.caption = (txt, t, until, ...r) => { const u = Math.min(until ?? 1e9, t + LBL_LIFE), el = _cap0(txt, t, u, ...r), k = "cap" + (nCap++);
+  const P = (window.CARDPOS || {})[k]; if (P === "left") Object.assign(el.style, { justifyContent: "flex-start", paddingLeft: "70px" }); if (P === "right") Object.assign(el.style, { justifyContent: "flex-end", paddingRight: "70px" });
+  (window.__CAPS = window.__CAPS || []).push({ key: k, el, t, until: u }); return el; }; }   // critic r2: caption side solved by tools/m1_place.js (off counters and cards)
 const box = (txt, x, y, t, size = 16, until, o = {}) => { size = Math.round(Math.max(20, Math.min(28, size * 0.85)));   // STYLE W: Warhawk labels (white serif + soft shadow, no box); no ref:pop (owner: no synthesized sounds)
   return GG.pin(`<div style="color:#fbf8ef;font-family:'Liberation Serif',Georgia,serif;font-weight:700;letter-spacing:.02em;font-size:${size}px;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">${txt.toLowerCase().replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase())}</div>`, x, y, { t, until }); };
 // v11: the flag only, no country name under it
@@ -92,7 +95,7 @@ const glowPathOld = (pts, col, w, t, until, pulses = 3, op = 0.95, o = {}) => { 
   if (until != null) tl.to(p, { opacity: 0, duration: 0.6 }, until); return p;
 };
 const scr = (html, css, t, until, from = { autoAlpha: 0, y: 30 }) => {   // screen-space element (above the map, under the credit)
-  const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html;
+  const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; el.classList.add("scrcard");
   SCN.insertBefore(el, document.getElementById("credit")); GG.hide(el);
   tl.fromTo(el, from, { autoAlpha: 1, y: 0, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el;
 };
@@ -120,7 +123,7 @@ const slam = (el, t, o = {}) => {
   return el;
 };
 const sstamp = (txt, top, t, o = {}) => { const u = Math.min(o.until != null ? o.until : 1e9, t + 3.5);   // STYLE W: level, cream on dark, <= 3.5 s
-  const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, 0, o.sub), `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, { ...o, from: 1.4, shake: o.shake || 3, until: u }); };
+  const el = scr(stampHTML(txt, "#f0e6c8", o.size || 60, 0, o.sub), o.pos || `left:0;right:0;top:${top}px;display:flex;justify-content:center;`, t, null, { autoAlpha: 0 }); return slam(el, t, { ...o, from: 1.4, shake: o.shake || 3, until: u }); };
 const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el = GG.pin(stampHTML(txt, c, size, -6, sub), x, y, {});
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
@@ -175,6 +178,11 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
     (window.__CARDS || []).forEach((c) => { const r = c.card.getBoundingClientRect(); if (!r.width) return;
       const m = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom), k = Math.max(0, Math.min(1, (m - 8) / 32)).toFixed(3);
       c.card.style.opacity = k; c.stake.style.opacity = k; });   // critic r2: a card steps out only while the camera crops it
+    { const dr = document.getElementById("date").getBoundingClientRect();   // critic r2: counters step out under the date scroll or at the frame edge
+      document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;
+        const under = r.right > dr.left - 12 && r.left < dr.right + 12 && r.bottom > dr.top - 12 && r.top < dr.bottom + 12 && dr.width > 0;
+        const edge = Math.min(r.left, r.top, 1920 - r.right, 1080 - r.bottom) < 30;
+        const o = under || edge ? "0" : ""; b.style.opacity = o; const tg = b.parentElement.querySelector(".tag"); if (tg) tg.style.opacity = o; }); }
     document.getElementById("vignette").style.opacity = kc.toFixed(3); };
   apply();
   for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
@@ -183,10 +191,10 @@ const camera = (keys) => {   // STYLE W camera (cleburne move1a): lens transitio
 };
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
-const boxS = (txt, x, y, t, until, o = {}) => pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o));   // STYLE W label; passing labels <= 3.5 s
+const boxS = (txt, x, y, t, until, o = {}) => { const el = pinS(box(txt, x, y, t, o.size || 26, o.keep ? until : Math.min(until ?? 1e9, t + LBL_LIFE), o)); el.classList.add("wlabel"); return el; };   // STYLE W label; passing labels <= 3.5 s
 const flagS = (src, x, y, t, until, w) => { const el = pinS(flag(src, x, y, t > 0 ? t : null, until, 48)); if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // STYLE W: 48 px, no names
 const wstampS = (txt, x, y, t, until, c, size = 22) => { until = Math.min(until ?? 1e9, t + LBL_LIFE);   // STYLE W stamp: level, cream on dark, on empty ground, <= 3.5 s
-  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {}));
+  const el = pinS(GG.pin(stampHTML(txt, "#f0e6c8", 28, 0), x, y, {})); el.classList.add("wstamp");
   tl.fromTo(el, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 const unitS = (id, side, p, icon, label, o = {}) => {   // A1: counter 54 x 36 px, name 19 px (screen)
@@ -386,12 +394,12 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 740, 2.6]
   [T_MARCH + 1.6, 1420, 790, 2.1], [T_SURR + 0.6, 1370, 780, 2.5], [T_GRANT, 1355, 760, 2.3], [END, 1345, 752, 2.2]]);
 // ---------- date (comes in on the spoken date) + title card ----------
 dateNow("6 FEBRUARY 1862");   // critic r1: date scroll filled from frame 0
-B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6);   // one date on screen (the scroll) SFX("ref:boom", T_FHN + 0.15);
+{ const TT = B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6); Object.assign(TT.style, { top: "auto", bottom: "110px", left: "90px", right: "auto" }); }   // critic r2: empty lower-left field, off the cards and units   // one date on screen (the scroll) SFX("ref:boom", T_FHN + 0.15);
 // ---------- flags (48 px, behind each side's lines; one pair for the whole scene) ----------
 flagS(FL.us, 1470, 640, 0, END + 1); flagS(FL.cs, 1450, 905, 0, END + 1);
 // ---------- the fort; the flood on its words ----------
 water([FH[0] - 4, FH[1] + 4], 95, 62, -10, T_FLOOD - 0.1, null);
-fortIcon(FH, 0, null, { s: 26 });
+const FHI = fortIcon(FH, 0, null, { s: 26 }); FHI.toBlue(T_SURR + 0.2);   // captured: the star turns blue
 poleFlag(FL.cs, [FH[0] + 4, FH[1] - 8], T_SURR - 1.0, T_SURR + 0.5, 30); poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], T_SURR + 0.55, T_SURR + 3.6, 30);   // flag switch only at the surrender beat
 boxS("FORT HENRY", FH[0] + 34, FH[1] + 30, T_FHN + 2.8, null, { size: 26 });
 curveLabel("Tennessee River", [[1150, 300], [1185, 380], [1222, 455]], T_STEAM + 0.2, T_STEAM + 3.6, 22);

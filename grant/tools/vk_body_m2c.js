@@ -51,7 +51,7 @@ const CW = L(32.85, -90.05), SW = 0.86, CV = L(32.40, -90.78), SV = 2.7;
 camera([[0, CW[0] + 30, CW[1] + 20, SW * 0.97], [T_SHER - 0.3, CW[0], CW[1], SW], [T_SHER + 2.2, CV[0], CV[1], SV, "power2.inOut"], [END, CV[0] + 4, CV[1] - 2, SV * 1.04]]);
 SFX("whoosh", T_SHER - 0.35);
 // ---------- HUD ----------
-B.showDate(0); B.date("17 APRIL 1863", 0.02, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
+dateNow("17 APRIL 1863", T_MS + 0.4); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
 B.date("17 APRIL - 2 MAY 1863", T_SHER, END + 1, 32);
 const LGD = null;   // STYLE W: no key
 // flags: wide pair, then the Vicksburg pair (both on every frame)
@@ -95,7 +95,7 @@ unitS("ps", "rome", L(32.20, -90.86), "infantry", "PEMBERTON'S ARMY", { t: T_SHE
 along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.26, -90.78]]), T_PEM, 1.8, 8);   // stops clear of the Vicksburg dot
 arw({ pts: LL([[32.18, -90.90], [32.22, -90.84], [32.25, -90.795]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 10), until: END + 1 });
 // (the unit tag carries "Pemberton's army")
-const TIED = wstampL("TIED DOWN", ...L(32.41, -90.60), T_TIED, null, "#e3232f", 24);
+const TIED = wstampL("TIED DOWN", ...L(32.52, -90.45), T_TIED, null, "#e3232f", 24);
 // ---------- 1c declutter (the ticker is a small corner counter; no big cards in this scene) ----------
 
 fixImgs();

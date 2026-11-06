@@ -25,10 +25,10 @@ hand("assets/media/gn_ten_ctl_marcap_mx.png", T_KY + 0.6, 3.6);   // the ground 
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 });
 camera([[0, 1430, 900, 2.1], [T_TEN + 0.6, 1440, 905, 1.9], [T_TALK, 1500, 930, 1.6], [T_INTO + 0.6, 1520, 1000, 1.05], [T_KY + 0.8, 1470, 920, 0.85],
   [T_MIDT + 1.2, 1460, 940, 0.82], [T_ONLY, 1400, 960, 0.9], [T_HOW + 2.5, 1000, 1250, 1.25], [END, 980, 1270, 1.3]]);
-dateNow("16 FEBRUARY 1862", T_FALL - 0.1); B.date("FEBRUARY–MARCH 1862", T_FALL, null, 30);
+dateNow("16 FEBRUARY 1862");   // critic r2: one date only (no other date is spoken in this scene)
 // ---------- flags ----------
 flagS(FL.us, 1430, 820, 0, T_TALK + 0.5); flagS(FL.cs, 1500, 1010, 0, T_TALK + 0.5);
-flagS(FL.us, 1500, 580, T_TALK + 0.3, END + 1); flagS(FL.cs, 1300, 1320, T_TALK + 0.4, T_HOW + 1.8);
+flagS(FL.us, 1440, 700, T_TALK + 0.3, END + 1); flagS(FL.cs, 1300, 1320, T_TALK + 0.4, T_HOW + 1.8);
 flagS(FL.cs, 860, 1380, T_HOW + 1.6, END + 1);
 // ---------- the two forts, both Union now ----------
 [FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); });
@@ -42,44 +42,38 @@ const GC = ship("iron", "carth", CUMB_E[7], 20, null, null, { L: 46 }); tl.set(G
 curveLabel("Tennessee River", [[1446, 1150], [1440, 1230], [1428, 1300]], T_BOATS + 0.4, T_BOATS + 3.8, 22);
 // ---------- the Kentucky line collapses ----------
 const KYL = glowPath([COL, [1200, 840], FH, FD, [1700, 830], BG], "", 0, T_FALL, T_FALL + 3.4);   // the old Kentucky line: focus + ink trace
-boxS("KENTUCKY", 1640, 560, T_KY, null, { size: 30 }); boxS("MIDDLE TENNESSEE", 1720, 1250, T_MIDT, null, { size: 30 });
+boxS("KENTUCKY", 1640, 560, T_KY, null, { size: 30 }); boxS("MIDDLE TENNESSEE", 1500, 1250, T_MIDT, null, { size: 30 });
 [[BG, [1880, 900], [1840, 1060], [1880, 1300]], [COL, [990, 900], [960, 1050]], [[1840, 1060], [1860, 1220], [1900, 1380]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, width: AW(0.85, 10), until: T_FALL + 7.0 }));
-[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060], T_TALK], ["r3", [1600, 1040], [1720, 1330]]].forEach(([id, a, b, t0], k) => { unitS(id, "rome", a, "infantry", null, { t: t0 || 0, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
+[["r1", BG, [1880, 1330], T_FALL - 0.4], ["r2", COL, [960, 1060], T_TALK], ["r3", [1600, 1040], [1720, 1330]]].forEach(([id, a, b, t0], k) => { unitS(id, "rome", a, "infantry", null, { t: t0 || 0, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
 hideU(["r1", "r2", "r3"], T_WAIT);   // they have fallen back off the stage before the method card
 // ---------- method card: line 1 lit on "attacked the moment the enemy hesitated" ----------
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["HE MOVED FAST", "HIT THE SECOND FORT BEFORE HELP COULD COME", "ATTACKED THE MOMENT THE ENEMY HESITATED"];   // spoken words only (m1-9)
-const MC = GG.method(3, T_FAST - 0.1, T_ATT + 3.0, [T_FAST, T_HIT2, T_ATT]);   // holds ~3 s after line 3 MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "50px"; });
+const MC = GG.method(3, T_FAST - 0.1, T_ATT + 3.0, [T_FAST, T_HIT2, T_ATT]);   // holds ~3 s after line 3
+MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "32px"; r.style.lineHeight = "1.25"; }); { const inr = MC.querySelector(".inner"); if (inr) inr.style.padding = "14px 34px 16px"; }   // critic r2: <= 25 % of the frame
 SFX("ref:pop", T_FAST + 0.1); SFX("ref:pop", T_HIT2 + 0.1); SFX("ref:boom", T_ATT + 0.2);
 // ---------- move1-sub: only the beginning; the question (dark-to-bluff transition); subscribe; NEXT ----------
-const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:url(assets/relief_close.jpg) 0px -640px / 5760px 3240px no-repeat;pointer-events:none";   // STYLE W: the question scene on the Style W turf (a clear patch of tennessee_w_close)   // STYLE W: the question scene on the same green ground
+const DK = document.createElement("div"); DK.style.cssText = "position:absolute;inset:0;background:url(assets/media/m1f_bluff_w.jpg) center / cover no-repeat;pointer-events:none";   // critic r2: the question scene on the REAL Style W map (crop of vicksburg_siege_w: the river bend under the hachured bluff)
 document.getElementById("fx").appendChild(DK); gsap.set(DK, { autoAlpha: 0 }); tl.to(DK, { autoAlpha: 1, duration: 1.6, ease: "sine.inOut" }, T_HOW - 0.2);
-// the bluff scene (screen space): a river bending under a high bluff, guns on the crest, a supply steamer under them
-const RIV = "M -40 250 C 400 300 700 200 860 420 C 1000 610 760 760 900 900 C 1000 1000 1300 980 1960 1040";
-const BLF = "M 820 160 C 980 300 1100 420 1060 600 C 1030 720 980 800 1060 880 C 1140 950 1300 930 1500 960";
+tl.fromTo(DK, { scale: 1.0 }, { scale: 1.06, duration: END - T_HOW, ease: "none", immediateRender: false }, T_HOW - 0.2);   // slow push-in
+// overlays in the crop's screen px: an ink trace along the bluff crest on "high bluff", guns on the crest on "under its guns"
+const BLF = "M 1333 168 L 1293 355 L 1267 541 L 1213 728 L 1147 861 L 1067 1008";
 const BS = scr(`<svg width="1920" height="1080" viewBox="0 0 1920 1080" style="display:block">
-  <defs><filter id="bfg" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter></defs>
-  <path d="${RIV}" fill="none" stroke="#2a2410" stroke-width="96" stroke-linecap="round" opacity=".8"/><path d="${RIV}" fill="none" stroke="#3c6378" stroke-width="92" stroke-linecap="round"/><path d="${RIV}" fill="none" stroke="#4d7d9a" stroke-width="80" stroke-linecap="round"/>
-  <path class="rsh" d="${RIV}" fill="none" stroke="rgba(200,220,232,.35)" stroke-width="2" stroke-dasharray="14 60"/>
-  <path d="M 900 120 C 1080 280 1190 420 1150 600 C 1120 730 1080 800 1150 860 C 1240 920 1400 900 1960 900 L 1960 120 Z" fill="rgba(52,50,22,.32)"/>
-  <path class="bg" d="${BLF}" fill="none" stroke="#2a2410" stroke-width="18" stroke-dasharray="2 7" transform="translate(-10 2)" opacity="0"/>
-  <path class="bl" d="${BLF}" fill="none" stroke="#2a2410" stroke-width="3.5" stroke-linecap="round" opacity="0"/>
-  <g class="guns">${[[930, 270], [1040, 400], [1075, 560], [1020, 760], [1110, 905]].map(([x, y]) => `<g transform="translate(${x} ${y})"><rect x="-16" y="-9" width="32" height="18" fill="#c4121f" stroke="#f7f3ea" stroke-width="2.5"/><circle class="fl" cx="-24" cy="0" r="14" fill="#ffd27a" opacity="0"/></g>`).join("")}</g>
+  <path class="bl" d="${BLF}" fill="none" stroke="#463a1e" stroke-width="3" stroke-linecap="round" stroke-dasharray="1400" stroke-dashoffset="1400" opacity="0"/>
+  <g class="guns">${[[1352, 250], [1322, 420], [1292, 590], [1243, 740], [1176, 890]].map(([x, y]) => `<g transform="translate(${x} ${y})"><rect x="-16" y="-10" width="32" height="20" fill="#c4121f" stroke="#1a1712" stroke-width="1.5"/><path d="M-9 -6 L9 6 M9 -6 L-9 6" stroke="#f7f3ea" stroke-width="2"/><circle class="fl" cx="-24" cy="0" r="12" fill="#ffd27a" opacity="0"/></g>`).join("")}</g>
   </svg>`, "left:0;top:0;width:1920px;height:1080px;", T_HOW + 0.4, END + 1, { autoAlpha: 0 });
-tl.to(BS.querySelector(".rsh"), { strokeDashoffset: -300, duration: 12, ease: "none" }, T_HOW + 0.4);
 gsap.set(BS.querySelector(".guns"), { autoAlpha: 0 });
-tl.to([BS.querySelector(".bg"), BS.querySelector(".bl")], { opacity: 1, duration: 0.8 }, T_BLUFF - 0.1);
-tl.to(BS.querySelector(".bg"), { opacity: 0.4, duration: 0.6, yoyo: true, repeat: 5, ease: "sine.inOut" }, T_BLUFF + 0.8);
+{ const bl = BS.querySelector(".bl"); tl.to(bl, { opacity: 0.75, duration: 0.2 }, T_BLUFF); tl.to(bl, { attr: { "stroke-dashoffset": 0 }, duration: 1.0, ease: "sine.out" }, T_BLUFF); tl.to(bl, { opacity: 0, duration: 0.8 }, T_BLUFF + 3.2); }
 const FLB = flag(FL.cs, 0, 0, null, null, 48); SCN.insertBefore(FLB, document.getElementById("credit")); FLB.classList.remove("gg-pin");
-Object.assign(FLB.style, { position: "absolute", left: "1360px", top: "330px" }); gsap.set(FLB, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLB, { autoAlpha: 1, duration: 0.5 }, T_BLUFF);
+Object.assign(FLB.style, { position: "absolute", left: "1560px", top: "430px" }); gsap.set(FLB, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLB, { autoAlpha: 1, duration: 0.5 }, T_BLUFF);
 const FLU = flag(FL.us, 0, 0, null, null, 48); SCN.insertBefore(FLU, document.getElementById("credit")); FLU.classList.remove("gg-pin");
-Object.assign(FLU.style, { position: "absolute", left: "300px", top: "560px" }); gsap.set(FLU, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLU, { autoAlpha: 1, duration: 0.5 }, T_RIVER);
+Object.assign(FLU.style, { position: "absolute", left: "420px", top: "640px" }); gsap.set(FLU, { autoAlpha: 0, xPercent: 0, yPercent: 0 }); tl.to(FLU, { autoAlpha: 1, duration: 0.5 }, T_RIVER);
 B.caption("A FORTRESS ON A HIGH BLUFF", T_BLUFF, T_BLUFF + 2.6, "rome");
 // the supply steamer (blue) comes down the river, right under the guns
 const SUP = document.createElement("div"); SUP.style.cssText = "position:absolute;left:0;top:0;width:0;height:0"; SUP.innerHTML = `<div style="position:absolute;left:-55px;top:-19px;width:110px">${shipSVG("steamer", "carth", 110)}</div>`;
 SCN.insertBefore(SUP, document.getElementById("credit")); gsap.set(SUP, { autoAlpha: 0 });
-const RP = [[-60, 252], [300, 285], [600, 260], [800, 360], [880, 520], [820, 700], [880, 880], [1050, 990], [1300, 1010]];
+const RP = [[453, -40], [560, 48], [800, 168], [1040, 261], [1187, 355], [1147, 488], [1040, 675], [907, 808], [827, 968], [787, 1120]];   // the river in the crop
 tl.set(SUP, { autoAlpha: 1, left: RP[0][0], top: RP[0][1] }, T_RIVER - 0.2);
 for (let k = 1; k <= 24; k++) { const a = posOn(RP, (k - 1) / 24), b = posOn(RP, k / 24), tt = T_RIVER - 0.2 + (k - 1) * 0.3;
   tl.to(SUP, { left: b[0], top: b[1], duration: 0.3, ease: "none" }, tt); tl.to(SUP.firstElementChild, { rotation: Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI, duration: 0.3, ease: "none" }, tt); }

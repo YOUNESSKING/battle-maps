@@ -400,6 +400,11 @@ const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min
 
 // @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
 B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
+// critic r1: frame-0 helpers (copied from tools/vx_kit.js): an element already on screen at frame 0; the date scroll filled at frame 0
+const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
+const dateNow = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d);
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
 const GD = {"base":"grandgulf","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -431,7 +436,7 @@ const sKeys = [[0, 1300, 560, 1.1], [T_POR, 1300, 560, 1.3], [T_SIL, 1310, 580, 
 const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]) { const [a, , , sa] = sKeys[i - 1], [b, , , sb] = sKeys[i], u = (t - a) / Math.max(0.01, b - a); return sa + (sb - sa) * u; } return sKeys[sKeys.length - 1][3]; };
 camera(sKeys);
 // ---------- HUD ----------
-B.showDate(0); B.date("29 APRIL 1863", 0.02, T_NIGHT - 0.1, 32); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
+dateNow("29 APRIL 1863", T_NIGHT - 0.1); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
 // STYLE W: clean map; the ground that changes hands (the Bruinsburg bridgehead) hatches blue on "stepped ashore", ~3 s, then dissolves
 hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_ASH - 0.2, 3.0);
 // flags (both on every frame): US on the Louisiana shore, then in the bridgehead; the Confederacy on the Mississippi bluffs
@@ -448,7 +453,7 @@ K.target(GGF[0] + 20, GGF[1], T_GG, { r: 34, side: "carth", until: T_NIGHT });
 // Porter's eight gunboats close in from upstream and take station off the batteries
 const STN = [[1225, 370], [1233, 412], [1250, 454], [1266, 496], [1278, 538], [1290, 580], [1284, 640], [1268, 680]];   // on the basemap river, off the batteries
 const GBT = STN.map((p, k) => ship("gunboat", [[1480 - k * 6, 205 + k * 4], [1400, 292], [1300, 318], [1225, 330], p], 0.2 + k * 0.3, T_ATT - k * 0.15, null, { s: 18, t0: 0.2 + k * 0.3, smoke: 1.4 }));
-pinPortrait(GBT[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR, T_NIGHT + 0.25, true, "right");   // STYLE W: Porter's portrait on his flagship
+pinPortrait(GBT[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR, T_NIGHT + 0.25, true, "left");   // STYLE W: Porter's portrait on his flagship
 // the duel (visible, ~1 shot per second, alternating: gunboats at the batteries / the batteries at the gunboats)
 const SHOTS = [];
 for (let t = T_ATT - 0.2, k = 0; t < T_10K + 0.8; t += 0.95, k++) SHOTS.push([t, k]);
@@ -482,7 +487,7 @@ const TPG = town("PORT GIBSON", PG, "r", T_PG);
 const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
 TR.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.2));
-pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true, "left");   // Grant with the waiting transports (named on "The first place Grant picked")
+pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true);   // Grant with the waiting transports (named on "The first place Grant picked")
 pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "right");   // Porter leads the night run
 // critic r1: the Grand Gulf batteries + their infantry step out at the landing (they would sit cut at the top edge)
 ["bt0", "bt1", "bt2", "bt3", "cs1"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, T_NDEF - 0.5));
@@ -499,7 +504,7 @@ const LU = [["l13", "XIII", 1095, 905], ["l9", "", 1105, 965], ["l17", "XVII", 1
 LU.forEach(([id, lb, x, y], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", lb, { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); along(id, [[x - 70, y - 5], [x, y]], T_ASH + k * 0.3, 1.6, 8); tagAt(id, null); });
 pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 0.3, null, true, "right");   // Grant with the landed army (named again on "Grant later wrote")
 const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
-boxL("EAST BANK", 1190, 990, T_EAST, null, { size: 18 });
+boxL("EAST BANK", 1265, 860, T_EAST, null, { size: 18 });
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
 const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,

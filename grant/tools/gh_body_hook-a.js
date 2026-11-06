@@ -69,7 +69,7 @@ const CUMB_D = [[1150, 150], [1200, 300], [1245, 410], [1290, 520], [1335, 605],
 // =====================================================================================================================
 // hook-1 (0 - S2): THE THEATRE, WINTER 1862, clean map; the rivers; ONE continuous zoom onto Fort Donelson
 // =====================================================================================================================
-const C0 = [1600, 0], S0 = 0.1, C0b = [1450, 150], S0b = 0.112;
+const C0 = [1600, -900], S0 = 0.1, C0b = [1450, -650], S0b = 0.112;   // framed so nothing sits under the date scroll (critic 2)
 cam.cx = C0[0]; cam.cy = C0[1]; cam.s = S0; applyCam();
 const TZ0 = T_ONE - 0.3, TZ1 = T_FD + 0.05;                 // the dive: lands on "Fort Donelson"
 const CF = [1395, 745], SF = 1.1;                           // arrival: the fort and the river
@@ -79,14 +79,14 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 const D0 = document.createElement("div"); D0.className = "d"; D0.textContent = "WINTER 1862"; D0.style.fontSize = "32px"; document.getElementById("date").appendChild(D0);
 tl.to(D0, { autoAlpha: 0, y: -14, duration: 0.35 }, T_SURR + 0.05);
 // stamp in the first second, in the narrator's words ("In the winter of eighteen sixty-two"); top band, clear of the scroll
-sstamp("WINTER 1862", 205, 0.55, { size: 72, until: T_RIV - 0.15, shake: 5 });
+sstamp("WINTER 1862", 205, 0.55, { css: "left:600px;right:0;top:100px;display:flex;justify-content:center;", size: 72, until: T_RIV - 0.15, shake: 5 });
 // flags (48 px, no names): one pair on each side's ground, on screen from frame 0
 const F0 = [flagS(FL.us, "", ...LD(37.05, -87.60), 0, TZ0 + 0.9), flagS(FL.csa, "", ...LD(36.15, -87.25), 0, TZ0 + 0.9)];
 // ---------- units already moving at frame 0 (no names: nothing spoken yet) ----------
 const B1 = upTo(RTEN, FH), B2 = upTo(RCUM, FD);
-const GBT = [gunboat(B1.slice(0, Math.round(B1.length * 0.75)), 0, T_SHUT + 0.3, TZ0 + 0.8, { s: 18 }),
-  gunboat(B1.slice(0, Math.round(B1.length * 0.62)), 0, T_SHUT + 0.2, TZ0 + 0.8, { s: 18 }),
-  gunboat(B2.slice(0, Math.round(B2.length * 0.78)), 0, T_SHUT + 0.3, TZ0 + 0.8, { s: 18 })];
+const GBT = [gunboat(B1.slice(Math.round(B1.length * 0.14), Math.round(B1.length * 0.75)), 0, T_SHUT + 0.3, TZ0 + 0.8, { s: 18 }),
+  gunboat(B1.slice(Math.round(B1.length * 0.1), Math.round(B1.length * 0.62)), 0, T_SHUT + 0.2, TZ0 + 0.8, { s: 18 }),
+  gunboat(B2.slice(Math.round(B2.length * 0.12), Math.round(B2.length * 0.78)), 0, T_SHUT + 0.3, TZ0 + 0.8, { s: 18 })];
 gsap.set(GBT, { autoAlpha: 1 });
 const UB = [unitS("ub1", "carth", CAI, "infantry", ""), unitS("ub2", "carth", LD(37.05, -88.75), "infantry", "")];
 UB.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
@@ -95,7 +95,7 @@ along("ub2", [LD(37.05, -88.75), ...B1.slice(0, Math.round(B1.length * 0.5))], 0
 const UR = [unitS("ur1", "rome", COL, "infantry", ""), unitS("ur2", "rome", BGR, "infantry", ""), unitS("ur3", "rome", FH, "infantry", "")];
 UR.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 along("ur2", [BGR, LD(36.80, -86.95), CLK, LD(36.50, -87.60)], 0, TZ0 + 0.3, 20);   // Bowling Green -> Clarksville -> the fort (reinforcing)
-go("ur3", 0, 4, [FH[0] - 120, FH[1] + 250]);
+go("ur3", 0, 4, [FH[0] - 600, FH[1] + 650]);   // clear of the fort star (>= 12 px)
 B.hideUnits([...UB, ...UR], TZ0 + 0.5, 0.4);
 // ---------- "two rivers": the Tennessee and the Cumberland are re-inked from the Ohio (thin sepia ink trace, drawn upstream) ----------
 inkTrace(RTEN, T_RIV - 0.2, T_RIV + 3.2, 2.6); inkTrace(RCUM, T_RIV, T_RIV + 3.3, 2.6);
@@ -103,7 +103,7 @@ inkTrace(RTEN, T_RIV - 0.2, T_RIV + 3.2, 2.6); inkTrace(RCUM, T_RIV, T_RIV + 3.3
 arw({ pts: RTEN.filter((_, i) => i % 6 === 0).slice(0, Math.round(RTEN.length / 6 * 0.7)), side: "carth", t: T_DOORS - 0.1, dur: 1.5, width: AW(S0, 9), until: T_SHUT - 0.05 });
 arw({ pts: RCUM.filter((_, i) => i % 6 === 0), side: "carth", t: T_DOORS + 0.1, dur: 1.5, width: AW(S0, 9), until: T_SHUT - 0.05 });
 SFX("ref:whoosh", T_DOORS - 0.1);
-sstamp("OPEN DOORS", 205, T_DOORS + 0.05, { size: 66, until: T_FORTS - 0.25, shake: 3 });
+sstamp("OPEN DOORS", 205, T_DOORS + 0.05, { css: "left:600px;right:0;top:100px;display:flex;justify-content:center;", size: 66, until: T_FORTS - 0.25, shake: 3 });
 // "heart of the Confederacy": the soft focus wash on Nashville (no ring, no glow)
 focus(NASH, 75 / S0, T_HEART, T_FORTS - 0.1);
 // ---------- "two forts": two red forts slam onto the rivers; "held them shut": short red booms across both rivers ----------
@@ -118,7 +118,7 @@ const boom = (pts, t, until) => { const g = document.createElementNS(NS, "g");  
   OVL.appendChild(g); gsap.set(g, { autoAlpha: 0 }); tl.fromTo(g, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15, immediateRender: false }, t); tl.to(g, { autoAlpha: 0, duration: 0.4 }, until); return g; };
 [bar(RTEN, iFH), bar(RCUM, iFD)].forEach((pts, k) => boom(pts, T_SHUT - 0.05 + k * 0.12, k ? TZ0 + 1.4 : TZ0 + 0.8));
 SFX("hit", T_SHUT + 0.1);
-sstamp("HELD SHUT", 205, T_SHUT + 0.05, { size: 70, until: TZ0 - 0.05, shake: 5 });
+sstamp("HELD SHUT", 205, T_SHUT + 0.05, { css: "left:600px;right:0;top:100px;display:flex;justify-content:center;", size: 70, until: TZ0 - 0.05, shake: 5 });
 pulse(T_SHUT + 0.25);
 // zoom box: the dive target (the fort on the Cumberland), ~1.5 s before and into the dive
 zoomBox(FDR, 80, 48, S0b, T_ONE - 0.9, TZ0 + 0.7);
@@ -152,11 +152,11 @@ camTo(TZ1 + 0.02, T_WEEK - TZ1 + 0.1, [CF[0] - 25, CF[1] + 5], SF * 1.04, "sine.
 camTo(T_WEEK + 0.1, 2.2, CW, SW, "sine.inOut");
 const RD1 = [[FH[0] + 60, FH[1] + 30], [700, 640], [1000, 700], [1180, 760], [1250, 760]], RD2 = [[FH[0] + 60, FH[1] + 60], [700, 700], [1000, 820], [1200, 870], [1290, 880]],
   RD3 = [[FH[0] + 40, FH[1] + 90], [650, 780], [950, 920], [1250, 960], [1420, 945]];
-const UC = [unitS("uSm", "carth", RD1[0], "infantry", "", { t: T_WEEK - 0.4, size: "XX" }), unitS("uWa", "carth", RD2[0], "infantry", "", { t: T_WEEK - 0.3, size: "XX" }),
-  unitS("uMc", "carth", RD3[0], "infantry", "", { t: T_WEEK - 0.2, size: "XX" })];
+// the columns fade in once they are inside the frame (never cut at the edge)
+const UC = [unitS("uSm", "carth", RD1[0], "infantry", "", { t: T_WEEK + 0.7, size: "XX" }), unitS("uWa", "carth", RD2[0], "infantry", "", { t: T_WEEK + 0.8, size: "XX" }),
+  unitS("uMc", "carth", RD3[0], "infantry", "", { t: T_WEEK + 0.9, size: "XX" })];
 [RD1, RD2, RD3].forEach((pts, k) => { along(UC[k], pts, T_WEEK - 0.2 + k * 0.15, 3.6, 16); arw({ pts, side: "carth", t: T_WEEK - 0.1 + k * 0.15, dur: 1.6, width: AW(SR, 9), until: T_12 - 0.3 }); });
 SFX("ref:whoosh", T_WEEK);
-const FH_I = fortIcon(FH[0] + 25, FH[1] - 10, T_WEEK - 0.2, T_SURR + 1.0, { s: 36, side: "carth" });     // Fort Henry already taken (blue)
 // the gunboats come up the river and fire on the water batteries (visible, on screen); powder smoke at the batteries
 shoot([1290, 520], [WB[0] - 6, WB[1] - 8], T_WEEK + 3.1, { r: 7, h: 30, width: 1.4, dur: 0.6 });
 smoke([[1290, 520], [1300, 528], [WB[0] + 10, WB[1] - 4]], T_WEEK + 3.15, 1 / SR);
@@ -179,8 +179,10 @@ tl.to(BIG.querySelector(".w0"), { color: "#ef8a82", duration: 0.15 }, T_CSOL);
 sstamp("SURRENDERED", 205, T_SURR - 0.05, { size: 86, shake: 6, until: T_GEN - 0.05 });
 pulse(T_SURR + 0.2);
 dateSet("16 FEBRUARY 1862", T_SURR + 0.1, null);
-hand("assets/media/gn_don_ctl_feb16cap_mx.png", T_SURR + 0.1, 2.8);
-B.grey(GR, T_SURR + 0.1, 0.8);
+hand("assets/media/gn_don_ctl_feb16fort_mx.png", T_SURR + 0.1, 2.8);   // only the ground inside the fort's outer works, on land (critic 2)
+// the fort passes to the Union: its star turns blue (as in move 1); the garrison stays red (the white flag + prisoners carry the surrender)
+tl.to(FTD.querySelector(".fi path"), { attr: { fill: "#1f4fc4" }, duration: 0.5 }, T_SURR + 0.2);
+tl.to(FTD.querySelector(".fi"), { filter: "drop-shadow(0px 0px 4.8px #1f4fc4) drop-shadow(0px 3px 4px rgba(0,0,0,0.7))", duration: 0.5 }, T_SURR + 0.2);
 const WF = pinS(GG.pin(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, FD[0] + 8, FD[1] - 48, { t: T_SURR + 0.2, pop: true }));
 const PRI = bars(FD[0] + 95, FD[1] + 40, T_SURR + 0.6, T_SURR + 0.6 + LBL_LIFE, 40);
 // the ring closes on the river: the counters step up to the works

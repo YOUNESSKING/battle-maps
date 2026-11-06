@@ -19,11 +19,12 @@ const sc = process.argv[2];
       document.querySelectorAll(".unit .blk").forEach((e) => { if (vis(e)) { const r = e.getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 1]); } });
       document.querySelectorAll(".fortico").forEach((e) => { if (vis(e)) { const r = e.getBoundingClientRect(); obs.push([r.left, r.top, r.right, r.bottom, 1]); } });
       document.querySelectorAll(".frontg").forEach((g) => { if (!vis(g)) return; const pth = g.querySelector("path"); if (!pth) return; const L = pth.getTotalLength(), M = pth.getScreenCTM();
-        for (let k = 0; k <= 40; k++) { const q = pth.getPointAtLength(L * k / 40), x = M.a * q.x + M.c * q.y + M.e, y = M.b * q.x + M.d * q.y + M.f; obs.push([x - 9, y - 9, x + 9, y + 9, 1]); } });
+        for (let k = 0; k <= 40; k++) { const q = pth.getPointAtLength(L * k / 40), x = M.a * q.x + M.c * q.y + M.e, y = M.b * q.x + M.d * q.y + M.f; obs.push([x - 9, y - 9, x + 9, y + 9, 1, 1]); } });   // [.., 1] = front line: a stake must not cross it
+      document.querySelectorAll(".scrcard, .wstamp, .wlabel, .card, .caption, .fxk-badge").forEach((e) => { if (!vis(e)) return; const r = (e.firstElementChild || e).getBoundingClientRect(); if (r.width > 4 && r.width < 1900) obs.push([r.left, r.top, r.right, r.bottom, 1, 0, e.classList.contains("caption") ? "cap" : ""]); });
       const d = document.getElementById("date"); if (d && vis(d)) { const r = d.getBoundingClientRect(); if (r.width) obs.push([r.left, r.top, r.right, r.bottom, 2]); }
       const units = C.map((c) => (t >= c.t - 0.05 && t <= c.until && vis(c.unit) ? ctr(c.unit) : null));
       return { t, obs, units }; });
-    const cands = []; for (const R of [100, 130, 165, 205]) for (let a = 0; a < 360; a += 22.5) cands.push([Math.round(R * Math.cos(a * Math.PI / 180)), Math.round(R * Math.sin(a * Math.PI / 180))]);
+    const cands = []; for (const R of [100, 130, 165, 205, 245, 290]) for (let a = 0; a < 360; a += 15) cands.push([Math.round(R * Math.cos(a * Math.PI / 180)), Math.round(R * Math.sin(a * Math.PI / 180))]);
     const ov = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
     const out = {}, placed = [];
     C.map((c, i) => [c, i]).sort((x, y) => x[0].t - y[0].t).forEach(([c, i]) => {
@@ -36,9 +37,17 @@ const sc = process.argv[2];
           const m = Math.min(r[0], r[1], W - r[2], H - r[3]); if (m < 40) cost += (40 - m) * 400;
           placed.forEach(([pi, pdx, pdy]) => { const v = f.units[pi]; if (!v) return; cost += 2 * ov(rp, [v[0] + pdx - CW / 2, v[1] + pdy - CH / 2, v[0] + pdx + CW / 2, v[1] + pdy + CH / 2]); });
           // the stake should not run over another counter's centre: sample the stake line
-          for (let k = 0.25; k < 1; k += 0.25) { const x = u[0] + dx * k, y = u[1] + dy * k; f.obs.forEach((o) => { if (o[4] === 1 && x > o[0] && x < o[2] && y > o[1] && y < o[3]) cost += 60; }); } });
+          for (let k = 0.15; k < 1; k += 0.08) { const x = u[0] + dx * k, y = u[1] + dy * k; f.obs.forEach((o) => { if (o[4] === 1 && x > o[0] && x < o[2] && y > o[1] && y < o[3]) cost += o[5] ? 900 : 60; }); } });
         if (!best || cost < best[0]) best = [cost, dx, dy]; });
       out[c.key] = [best[1], best[2]]; placed.push([i, best[1], best[2]]); out["_cost_" + c.key] = Math.round(best[0]); });
+    // captions: centre / left / right of the caption band, whichever covers no counter, fort or card over its life
+    (window.__CAPS || []).forEach((cp) => { tl.seek(cp.t + 0.6, false); const sp = cp.el.querySelector("span").getBoundingClientRect(), w = sp.width, h = sp.height, y0 = 1080 - 110 - h;
+      let best = null;
+      [["", (W - w) / 2], ["left", 70], ["right", W - 70 - w]].forEach(([k, x0]) => { let cost = k ? 50 : 0; const r = [x0 - PAD, y0 - PAD, x0 + w + PAD, y0 + h + PAD];
+        frames.forEach((f) => { if (f.t < cp.t || f.t > cp.until) return; f.obs.forEach((o) => { if (o[6] !== "cap") cost += ov(r, o) * o[4]; });
+          placed.forEach(([pi, pdx, pdy]) => { const v = f.units[pi]; if (!v) return; cost += 2 * ov(r, [v[0] + pdx - CW / 2, v[1] + pdy - CH / 2, v[0] + pdx + CW / 2, v[1] + pdy + CH / 2]); }); });
+        if (!best || cost < best[0]) best = [cost, k]; });
+      if (best[1]) out[cp.key] = best[1]; out["_cost_" + cp.key] = Math.round(best[0]); });
     return out; });
   const pos = {}, cost = {}; Object.entries(res).forEach(([k, v]) => { if (k.startsWith("_cost_")) cost[k.slice(6)] = v; else pos[k] = v; });
   fs.writeFileSync(`tools/m1_cardpos_${sc}.json`, JSON.stringify(pos)); console.log(sc, JSON.stringify(pos), JSON.stringify(cost));

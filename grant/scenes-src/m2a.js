@@ -407,6 +407,11 @@ const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min
 
 // @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
 B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
+// critic r1: frame-0 helpers (copied from tools/vx_kit.js): an element already on screen at frame 0; the date scroll filled at frame 0
+const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
+const dateNow = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d);
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
 const GD = {"base":"vicksburg","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -482,7 +487,7 @@ camTo(T_CROSS, T_ONLY - T_CROSS, [C3[0] + 20, C3[1] - 10], S3 * 1.08, "sine.inOu
 camTo(T_ONLY, END - T_ONLY, C4, S4, "sine.inOut");
 // ---------- HUD ----------
 B.title("MOVE 2", "THE MISSISSIPPI", "", T_MS, T_MS + 3.0);   // critic r1: one date on screen (the scroll) SFX("ref:boom", T_MS + 0.1);
-B.showDate(0); B.date("WINTER 1862 - 63", 0.02, T_DIFF - 0.1, 32); B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
+dateNow("WINTER 1862 - 63", T_DIFF - 0.1);   // critic r1: the scroll filled from frame 0 B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
 const LGD = null, LGD2 = null;   // STYLE W: no key (no new symbol in this scene)
 // ---------- flags: overview pair, delta pair, Vicksburg-map pair (both on every frame) ----------
 flagS(FL.us, "", ...L(35.45, -88.9), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
@@ -538,7 +543,7 @@ wstampL("FAILED IN THE SWAMPS", ...L(33.2, -90.0), T_FAIL + 0.2, null, "#e3232f"
 // "Canals dug in the mud": the canal across De Soto Point; "bayous cleared for gunboats": Lake Providence + Steele's Bayou; "boats stuck among the trees"
 const CANAL = LL([[32.375, -90.925], [32.355, -90.928], [32.335, -90.925], [32.318, -90.918]]);
 const cn = glowPath(CANAL, "#c9a26a", 7, T_CAN, T_DIFF - 0.3, 1, 0.95, { draw: 1.0, dash: "10 6", top: true });
-boxL("CANAL", ...L(32.405, -91.0), T_CAN + 0.2, null, { size: 18 });
+boxL("CANAL", ...L(32.315, -90.95), T_CAN + 0.2, null, { size: 18 });
 const LPR = LL([[32.80, -91.17], [32.72, -91.30], [32.60, -91.42], [32.45, -91.52], [32.30, -91.55]]);
 glowPath(LPR, "#8fc3ff", 6, T_BAY - 0.1, T_DIFF - 0.3, 1, 0.8, { draw: 1.4, dash: "4 7" });
 const STEE = LL([[32.42, -90.98], [32.55, -90.93], [32.68, -90.90], [32.80, -90.88], [32.86, -90.87]]);
@@ -551,7 +556,7 @@ const NOTH = sstamp("NOTHING WORKED", 760, T_NOTH, { size: 76, shake: 4, until: 
 const BEL = belief("RUN OUT OF IDEAS", "WHAT MANY IN THE NORTH BELIEVED", T_IDEAS - 0.7, T_DIFF - 0.15, { top: 160, size: 52 });
 // STYLE W: no fronts along the water (the hand-over of the west bank is the blue hatch at CUE)
 // =================== m2-2: Grant's idea ===================
-const GB = null; pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_DIFF + 0.3, null, true, "right");   // critic r1: up for the rest of the move, side stake (clear of the corps)   // STYLE W: Grant's portrait on a stake at his marching corps (no corner badge)
+const GB = null; pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_DIFF + 0.3, null, true, "left");   // critic r1: up for the rest of the move, side stake (clear of the corps)   // STYLE W: Grant's portrait on a stake at his marching corps (no corner badge)
 // "march his army down the west bank, through the Louisiana swamps": Milliken's Bend - Richmond - Perkins' plantation - Hard Times
 const MARCH = LL([[32.48, -91.08], [32.42, -91.15], [32.39, -91.18], [32.28, -91.20], [32.16, -91.17], [32.09, -91.13], [32.07, -91.09]]);
 tl.to(B.units.gb.el, { autoAlpha: 0, duration: 0.4 }, T_DIFF);

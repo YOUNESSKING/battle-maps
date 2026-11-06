@@ -402,6 +402,11 @@ const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min
 
 // @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
 B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
+// critic r1: frame-0 helpers (copied from tools/vx_kit.js): an element already on screen at frame 0; the date scroll filled at frame 0
+const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
+const dateNow = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d);
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // @@END-KIT
 // @@DATA (tools/vk_inline.py)
 const GD = {"base":"vicksburg_siege","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -427,7 +432,7 @@ const NCH = RIV63.slice(1, 8);   // the 1863-only stretch (drawn as water)
 const RUN = [[735, -870], [745, -260], [752, -60], [758, 100], [772, 210], [800, 310], ...RIV63];   // STYLE W: down the channel above the point (as on the basemap); same run length as before
 // ---------- layers: night (stars), the 1863 river, living map (shimmer on the 1863 river) ----------
 living(SZ.meters_per_px, [], { n: 5, clouds: 0.1 });
-const NL = GG.night(0, T_THRU + 0.6, { dur: 0.01, outDur: 3.0 });   // critic r1: frame 0 already at night (the scene's own look)
+const NL = now(GG.night(0, T_THRU + 0.6, { dur: 0.01, outDur: 3.0 }));   // critic r1: frame 0 already at night (the scene's own look)
 // the river lit by the fires (warm glow on the water, screen blend, world space)
 const LIT = GG.layer(`background:radial-gradient(ellipse 22% 30% at ${(VKS[0] / 28.8).toFixed(1)}% ${(VKS[1] / 16.2).toFixed(1)}%, rgba(255,150,60,0.30), rgba(255,120,40,0) 70%);mix-blend-mode:screen;`, T_BONF, T_NOONE + 1.0, { dur: 2.0, outDur: 2.5 });
 const LIT2 = GG.layer(`background:radial-gradient(ellipse 18% 26% at ${(VKS[0] / 28.8).toFixed(1)}% ${(VKS[1] / 16.2 + 6).toFixed(1)}%, rgba(255,150,60,0.24), rgba(255,120,40,0) 70%);mix-blend-mode:screen;`, T_RAN, END + 1, { dur: 2.0 });
@@ -437,7 +442,7 @@ const sKeys = [[0, 1260, 800, 0.72], [T_POR, 1280, 790, 0.8], [T_FIRE, 1320, 800
 const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]) { const [a, , , sa] = sKeys[i - 1], [b, , , sb] = sKeys[i], u = (t - a) / Math.max(0.01, b - a); return sa + (sb - sa) * u; } return sKeys[sKeys.length - 1][3]; };
 camera(sKeys);
 // ---------- HUD ----------
-B.showDate(0); B.date("16 APRIL 1863 · 10 PM", 0.02, T_22 - 0.1, 32); B.date("22 APRIL 1863 · NIGHT", T_22, END + 1, 32);
+dateNow("16 APRIL 1863 · 10 PM", T_22 - 0.1); B.date("22 APRIL 1863 · NIGHT", T_22, END + 1, 32);
 const LGD = null;   // STYLE W: no key (no new symbol)
 // STYLE W: no front along the water (the bluff and the river say who holds what)
 // flags (both on every frame): US on De Soto Point / the Louisiana shore, the Confederacy on the bluffs east of the city
@@ -447,7 +452,7 @@ town("VICKSBURG", [VKS[0] + 60, VKS[1]], "r", 0.2, { shrink: [[T_PAST + 0.2, nul
 const BATP = [[1470, 600], [1466, 680], [1452, 760], [1430, 840], [1408, 915], [1370, 990], [1318, 1070], [1290, 1140]];
 BATP.forEach((p, k) => unitS("bt" + k, "rome", p, "artillery", "", { t: T_PAST - 0.2 + k * 0.1, w: 46, h: 31 }));
 // ---------- the fleet, 16 Apr: 6 gunboats, 3 transports, Tuscumbia last (lights out; a little stack smoke) ----------
-const F0 = 0.36, F1 = 0.76, GAP = 0.03, TEND = T_NOONE + 2.0;
+const F0 = 0.48, F1 = 0.76, GAP = 0.03, TEND = T_NOONE + 2.0;
 const ORDER = ["gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "transport", "transport", "transport", "gunboat"];
 const HCI = 8, F_HC = nearestF(RUN, [1366, 790]);   // the Henry Clay (9th in line) is hit abreast of the city
 const ease = (u) => u;

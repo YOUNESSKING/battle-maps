@@ -33,7 +33,7 @@ hand("assets/media/gn_don_ctl_feb15bcap_mx.png", T_TOOK + 0.2);     // Smith's l
 dawnWash(0, T_NIGHT); { const d = document.getElementById("fx").lastElementChild; gsap.set(d, { autoAlpha: 1 }); tl.getTweensOf(d).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); }
 camera([[0, 1300, 820, 2.0], [T_TOLD, 1300, 860, 2.1], [T_FILL, 1360, 900, 2.4], [T_REPORT, 1400, 870, 2.2], [T_PULLED + 0.6, 1380, 820, 2.0],
   [T_LEFT + 0.4, 1290, 670, 2.5], [T_FELLED, 1285, 655, 2.9], [T_TOOK + 1.2, 1300, 670, 2.7], [T_NIGHT + 0.3, 1400, 720, 2.2], [END, 1420, 730, 2.15]]);
-dateNow("15 FEB · DAWN", T_RODE + 0.4); B.date("15 FEBRUARY 1862", T_RODE + 0.5, T_NIGHT - 0.1, 34); B.date("15 FEB · NIGHT", T_NIGHT, null, 34);
+dateNow("15 FEBRUARY 1862", T_NIGHT - 0.1); B.date("15 FEB · NIGHT", T_NIGHT, null, 34);   // critic r2: scroll fully opaque from frame 0
 // ---------- flags ----------
 flagS(FL.us, 1175, 745, 0, END + 1); flagS(FL.cs, 1560, 790, 0, END + 1);
 // ---------- the lines and units as m1c left them ----------
@@ -54,7 +54,7 @@ pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
 pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
-const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "", T_WHO, T_WHO + 3.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 46, pos: "right:60px;bottom:70px;" });   // empty lower right, off the front, the fort and the cards
+const C1 = belief("WHOEVER ATTACKED FIRST NOW WOULD WIN", "", T_WHO, T_WHO + 3.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 46, pos: "right:60px;bottom:70px;" });   // empty lower right, off the front, the fort and the cards
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line: "it acted like a charm" (narrated; the caption carries no quote marks)
 const CBOX = `<svg width="26" height="20" viewBox="0 0 26 20" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="2" y="3" width="22" height="15" rx="2" fill="#2a2420" stroke="#efe6cf" stroke-width="1.4"/><rect x="2" y="3" width="22" height="5" fill="#4a3c2c" stroke="#efe6cf" stroke-width="1.2"/><circle cx="13" cy="12" r="2.6" fill="#c9b48a"/></svg>`;
@@ -90,7 +90,7 @@ nightWash(T_NIGHT - 0.2, null, 0.5);
 const COUN = pinS(GG.pin(`<div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,140,.95) 0%,rgba(255,170,60,.55) 35%,rgba(255,120,20,0) 72%);mix-blend-mode:screen"></div>`, DOV[0] - 6, DOV[1] - 8, { t: T_COUNCIL - 0.3, until: END + 1 }));
 tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut" }, T_COUNCIL);
 boxS("COUNCIL", DOV[0] + 60, DOV[1] - 6, T_COUNCIL, null, { size: 24 });
-const GU = sstamp("GIVE UP", 250, T_GU - 0.05, { size: 72, until: END - 0.1 });
+const GU = sstamp("GIVE UP", 250, T_GU - 0.05, { size: 64, until: END - 0.1, pos: "right:90px;top:80px;" });   // empty upper right
 // ---------- clean screen ----------
 fixImgs();
 K.raiseTerritory();

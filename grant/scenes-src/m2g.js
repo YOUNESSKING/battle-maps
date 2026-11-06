@@ -499,7 +499,7 @@ U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, 
 U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true, "right")); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- 19 and 22 May: the assaults bounce off ----------
 const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); return a; };   // critic r1: no grey pulse; the thin trail fades
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
@@ -529,15 +529,14 @@ wstampL("SURRENDERED", ...L(32.345, -90.905), T_PEM + 0.4, null, "#f7f3ea", 34);
 // critic r1: one flag pair per shot (no extra pole flag)
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
 const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT · 4 JULY 1863</div>
+  <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT</div>
   <div style="font-size:30px;letter-spacing:.12em;margin-top:6px;color:#ff8a80">PEMBERTON SURRENDERED</div>
   <div style="display:flex;gap:56px;justify-content:center;margin-top:8px">
-  <div class="a"><div class="v" style="font-size:62px;line-height:1.05">~0</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">MEN</div></div>
+  <div class="a"><div class="v" style="font-size:62px;line-height:1.05">~29,500</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">MEN</div></div>
   <div class="b"><div style="font-size:62px;line-height:1.05">172</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">CANNON</div></div></div></div>`,
   "left:0;right:0;top:215px;display:flex;justify-content:center;", T_295 - 0.2, T_LIN - 0.2);
 SFX("hit", T_295 - 0.05);
-{ const v = NUM.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 29500, duration: 1.0, ease: "none", onUpdate: () => { v.textContent = "~" + (Math.round(st.x / 100) * 100).toLocaleString("en-US"); } }, T_295);
-  for (let k = 0; k < 6; k++) SFX("tick", T_295 + k * 0.17);
+{ SFX("tick", T_295);   // critic r1: the spoken figure only (no counting reel)
   const b = NUM.querySelector(".b"); gsap.set(b, { autoAlpha: 0 }); tl.fromTo(b, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_172 - 0.1); SFX("hit", T_172); }
 // ---------- Lincoln: the one zoom-out; the river turns blue top to bottom ----------
 // STYLE W: the river corridor the Union now holds hatches blue on the zoom-out (wide view: stronger hatch), ~3.5 s, then dissolves

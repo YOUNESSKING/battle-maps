@@ -22,12 +22,12 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 740, 2.6]
   [T_MARCH + 1.6, 1420, 790, 2.1], [T_SURR + 0.6, 1370, 780, 2.5], [T_GRANT, 1355, 760, 2.3], [END, 1345, 752, 2.2]]);
 // ---------- date (comes in on the spoken date) + title card ----------
 dateNow("6 FEBRUARY 1862");   // critic r1: date scroll filled from frame 0
-B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6);   // one date on screen (the scroll) SFX("ref:boom", T_FHN + 0.15);
+{ const TT = B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6); Object.assign(TT.style, { top: "auto", bottom: "110px", left: "90px", right: "auto" }); }   // critic r2: empty lower-left field, off the cards and units   // one date on screen (the scroll) SFX("ref:boom", T_FHN + 0.15);
 // ---------- flags (48 px, behind each side's lines; one pair for the whole scene) ----------
 flagS(FL.us, 1470, 640, 0, END + 1); flagS(FL.cs, 1450, 905, 0, END + 1);
 // ---------- the fort; the flood on its words ----------
 water([FH[0] - 4, FH[1] + 4], 95, 62, -10, T_FLOOD - 0.1, null);
-fortIcon(FH, 0, null, { s: 26 });
+const FHI = fortIcon(FH, 0, null, { s: 26 }); FHI.toBlue(T_SURR + 0.2);   // captured: the star turns blue
 poleFlag(FL.cs, [FH[0] + 4, FH[1] - 8], T_SURR - 1.0, T_SURR + 0.5, 30); poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], T_SURR + 0.55, T_SURR + 3.6, 30);   // flag switch only at the surrender beat
 boxS("FORT HENRY", FH[0] + 34, FH[1] + 30, T_FHN + 2.8, null, { size: 26 });
 curveLabel("Tennessee River", [[1150, 300], [1185, 380], [1222, 455]], T_STEAM + 0.2, T_STEAM + 3.6, 22);

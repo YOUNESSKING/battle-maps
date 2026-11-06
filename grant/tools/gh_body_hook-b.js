@@ -75,13 +75,14 @@ const FORGE = [[1510, 775], [1525, 850], [1532, 930], [1522, 1010], [1502, 1090]
 const DS = document.getElementById("date"), d16 = document.createElement("div"); d16.className = "d"; d16.textContent = "16 FEBRUARY 1862"; d16.style.fontSize = "32px"; DS.appendChild(d16);
 const DIS0 = scr0(stampHTML("A DISASTER", "#f0e6c8", 80, 0), "left:340px;right:0;top:205px;display:flex;justify-content:center;"); gsap.set(DIS0, { autoAlpha: 1 });
 tl.to(DIS0, { autoAlpha: 0, duration: 0.35 }, 1.5);
+SCN.appendChild(DS);   // the date scroll sits above every overlay (snap-cut darkening, night wash, dims): always full brightness (critic 2)
 const FT = fortIcon(...FD, null, null, { s: 40 }); gsap.set(FT, { autoAlpha: 1 });
+// frame 0: the fort star is blue (surrendered, hook-a); the rewind turns it red again
+{ const fi = FT.querySelector(".fi"), fp = fi.querySelector("path"); gsap.set(fp, { attr: { fill: "#1f4fc4" } }); gsap.set(fi, { filter: "drop-shadow(0px 0px 4.8px #1f4fc4) drop-shadow(0px 3px 4px rgba(0,0,0,0.7))" });
+  tl.to(fp, { attr: { fill: "#c4121f" }, duration: 0.6 }, 1.1); tl.to(fi, { filter: "drop-shadow(0px 0px 4.8px #c4121f) drop-shadow(0px 3px 4px rgba(0,0,0,0.7))", duration: 0.6 }, 1.1); }
 const GR = [unitS("g1", "rome", [1320, 810], "infantry", ""), unitS("g2", "rome", [1440, 845], "infantry", ""), unitS("g3", "rome", [1545, 815], "infantry", ""),
   unitS("g4", "rome", [1482, 726], "artillery", "", { w: 44, h: 29 })];
-const GREY = "#77746c";
-GR.forEach((id) => { const el = B.units[id].el, blk = el.querySelector(".blk"), c0 = getComputedStyle(blk).backgroundColor || "#c4121f";
-  gsap.set(el, { autoAlpha: 0.6 }); gsap.set(blk, { backgroundColor: GREY });
-  tl.to(blk, { backgroundColor: c0, duration: 0.8 }, 1.1); tl.to(el, { autoAlpha: 1, duration: 0.8 }, 1.1); });
+GR.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));   // the garrison stays red (no grey units)
 const UB = [unitS("uSm", "carth", [1270, 760], "infantry", "", { size: "XX" }), unitS("uWa", "carth", [1300, 870], "infantry", "", { size: "XX" }), unitS("uMc", "carth", [1450, 925], "infantry", "", { size: "XX" })];
 UB.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 const WF = pinS(GG.pin(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, FD[0] + 8, FD[1] - 48, {}));
@@ -111,18 +112,19 @@ camTo(T_15 - 0.2, T_BURST - T_15 + 0.2, CC, SC, "sine.inOut");
 const TOD = todDiv("rgba(100,135,205,0.55)"); tl.to(TOD, { opacity: 0.45, duration: 1.4 }, T_DAWN - 0.2); tl.to(TOD, { opacity: 0, duration: 1.6 }, T_CMDR + 1.0);
 const RF = front2(RING, SC, T_DAWN, { dur: 1.2, to: RING2, moveT: T_BURST + 0.2, moveDur: 2.6 });
 // flags for the close-up, behind each side's lines
-tl.to(F3, { autoAlpha: 0, duration: 0.4 }, T_DAWN + 0.4);
-const F4 = [flagS(FL.us, "", 1255, 1010, T_DAWN + 0.3, T_CMDR - 0.2), flagS(FL.csa, "", 1455, 815, T_DAWN + 0.3, T_CMDR - 0.2)];
+tl.to(F3, { autoAlpha: 0, duration: 0.35 }, T_DAWN + 0.05);   // one flag pair at a time (critic 2)
+const F4 = [flagS(FL.us, "", 1230, 1000, T_DAWN + 0.5, T_CMDR - 0.2), flagS(FL.csa, "", 1530, 860, T_DAWN + 0.5, T_CMDR - 0.2)];
 // the Confederate columns (the attack on the Union right; horse on the flank) -- no names: none spoken
 const CP = [unitS("cP1", "rome", [1420, 872], "infantry", "", { t: T_DAWN - 0.4 }), unitS("cP2", "rome", [1500, 862], "infantry", "", { t: T_DAWN - 0.3 }),
   unitS("cF", "rome", [1565, 880], "infantry", "", { t: T_DAWN - 0.2 })];
 cavIcon("cF");
-B.hideUnits(["g2", "g3"], T_DAWN - 0.4, 0.4);
+B.hideUnits(["g2", "g3", "g4", "uSm"], T_DAWN - 0.4, 0.4);   // off the close-up frame / under the date scroll
+B.hideUnits(["g1"], T_RODE, 0.4);
 // "burst out of the fort": thin red arrows break out south, the columns follow; volleys where the lines touch (visible, no artillery)
 const BA = [[[1420, 875], [1400, 945], [1350, 995]], [[1500, 868], [1490, 950], [1445, 1012]], [[1565, 885], [1568, 960], [1540, 1040]]];
 BA.forEach((pts, k) => arw({ pts, side: "rome", t: T_BURST - 0.15 + k * 0.18, dur: 1.2, width: AW(SC, 9), until: T_ROAD + 0.2 }));
 SFX("ref:whoosh", T_BURST - 0.15);
-go("cP1", T_BURST, 3.0, [1395, 965]); go("cP2", T_BURST + 0.1, 3.0, [1478, 990]); go("cF", T_BURST + 0.2, 3.0, [1560, 1005]);
+go("cP1", T_BURST, 3.0, [1395, 968]); go("cP2", T_BURST + 0.1, 3.0, [1480, 995]); go("cF", T_BURST + 0.2, 3.0, [1562, 1012]);
 [[T_BURST + 0.2, [1395, 935], [1445, 950]], [T_BURST + 1.3, [1460, 945], [1515, 945]], [T_BROKE + 0.5, [1360, 965], [1405, 985]], [T_ROAD + 0.2, [1440, 1000], [1490, 1010]]]
   .forEach(([t, a, b]) => volley(a, b, t, 6, 0.9));
 smoke([[1400, 938], [1425, 944], [1462, 946], [1500, 946]], T_BURST + 0.25, KC);
@@ -130,8 +132,9 @@ smoke([[1365, 968], [1400, 982], [1450, 1002]], T_BROKE + 0.55, KC);
 // the ground the breakout takes = RED ink hatching ~3 s (Confederate gain), then it dissolves
 hand("assets/media/gn_don_ctl_feb15acap_mx.png", T_BURST + 0.6, 3.0);
 // "broken the Union right": the three brigades fall back west, BROKEN
-go("m3", T_BROKE - 0.3, 2.2, [1330, 1015]); go("m2", T_BROKE - 0.2, 2.2, [1300, 985]); go("m1", T_BROKE - 0.1, 2.2, [1272, 945]);
-sstamp("BROKEN", 205, T_BROKE + 0.15, { size: 80, sub: "THE UNION RIGHT", until: T_ROAD - 0.15, shake: 5 });
+// the brigades give way as the columns come (they move first, so red and blue never sit on each other)
+go("m1", T_BURST + 0.3, 2.4, [1240, 950]); go("m2", T_BURST + 0.4, 2.4, [1272, 1000]); go("m3", T_BURST + 0.5, 2.6, [1318, 1040]);
+sstamp("BROKEN", 205, T_BROKE + 0.15, { top: 180, size: 80, sub: "THE UNION RIGHT", until: T_ROAD - 0.15, shake: 5 });
 pulse(T_BROKE + 0.35);
 // "the road out stood open": focus + thin ink trace down the Forge road toward Nashville, a thin red arrow runs down it
 glowPath(FORGE, "", 0, T_ROAD - 0.05, T_ROAD + 3.3);
@@ -163,7 +166,9 @@ trail(RIDE.map(([x, y]) => [x, y + 46]), "#2c57b7", 0, T_RODE, T_KNOTS - T_RODE 
 SFX("ref:whoosh", T_RODE);
 const CK = [1305, 930], SK = 2.55;
 camTo(T_RODE + 0.2, T_KNOTS - T_RODE, CK, SK, "sine.inOut");
-const F6 = [flagS(FL.us, "", 1150, 1010, T_RODE + 0.4, T_NAME - 1.0), flagS(FL.csa, "", 1430, 860, T_RODE + 0.4, T_NAME - 1.0)];
+const F6 = [flagS(FL.us, "", 1150, 1010, T_RODE + 0.4, T_NAME - 1.0), flagS(FL.csa, "", 1450, 885, T_RODE + 0.4, S4 - 0.25)];
+tl.to(F6[0], { autoAlpha: 0, duration: 0.3 }, S4 - 0.25);
+tl.to(Object.values(B.units).map((u) => u.el), { autoAlpha: 0, duration: 0.3 }, S4 - 0.25);   // the map clears for the name slam (nothing under the big "?")
 // "standing in knots, holding muskets": the broken brigades bunch up and stand (no units split into dots), focus on them
 [["m1", [1262, 942]], ["m2", [1290, 972]], ["m3", [1318, 996]]].forEach(([id, p], k) => go(id, T_KNOTS - 0.2 + k * 0.08, 0.9, p));
 tl.to(["m1", "m2", "m3"].map((id) => B.units[id].el), { autoAlpha: 0.55, duration: 0.5 }, T_MUSK);
@@ -181,7 +186,7 @@ arw({ pts: [[1220, 945], [1240, 950], [1258, 955]], side: "carth", t: T_HAND, du
 // =====================================================================================================================
 // hook-4: the name slam (the "?" turns into the real photo)
 // =====================================================================================================================
-const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); SCN.insertBefore(DK, document.getElementById("date"));   // the date scroll stays bright
+const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);");
 tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
 const BDG = scr0(`<div style="position:relative;width:300px;height:300px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 7px #1f4fc4,0 24px 48px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover">
   <img src="${PHOTO("grant")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
@@ -279,17 +284,18 @@ camTo(T_LEE - 0.6, 1.3, C3, S3c, "power2.inOut"); camTo(T_LEE + 0.75, T4 - T_LEE
 SFX("ref:whoosh", T3 - 0.2); SFX("hit", T3 + 0.02); K.shake(T3 + 0.02, 3, 0.25);
 dateSet("JUNE 1864", T3, null);
 [flagS(FL.us35, "", WEY[0] + 140, WEY[1] - 95, T3, null), flagS(FL.csa, "", WIN[0] - 60, WIN[1] + 95, T3, T_LEE - 0.4)].forEach(vis(T3, null));   // the south bank was still Confederate country
-flagS(FL.csa, "", LEEP[0] - 150, LEEP[1] + 40, T_LEE - 0.6, null);
+flagS(FL.csa, "", LEEP[0] - 230, LEEP[1] + 40, T_LEE - 0.6, null);
 // the pontoon bridge: a plank line with a dark casing (solid, no glow)
 const BR = document.createElementNS(NS, "g");
 BR.innerHTML = `<path d="M${WEY.join(" ")} L${WIN.join(" ")}" stroke="#2a2420" stroke-width="${(7 / S3b).toFixed(2)}" stroke-linecap="round"/><path d="M${WEY.join(" ")} L${WIN.join(" ")}" stroke="#d9c79d" stroke-width="${(4 / S3b).toFixed(2)}" stroke-linecap="round"/>`;
 OVL.appendChild(BR); vis(T3, null)(BR);
 const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1418, 975]];
-[0, 1, 2].forEach((k) => { const id = unitS("j" + k, "carth", XR[0], "infantry", "", { t: T3 + k * 0.3 }); along(id, XR, T3 + k * 0.45, 4.2, 24); });
+// three columns spaced along the march (constant gap, never stacked): column k runs from f = 0.36 - 0.18k to f = 1 - 0.18k
+[0, 1, 2].forEach((k) => { const pts = sub(XR, 0.36 - 0.18 * k, 1 - 0.18 * k, 24), id = unitS("j" + k, "carth", pts[0], "infantry", "", { t: T3 + 0.05 * k }); along(id, pts, T3 + 0.1, 4.2, 24); });
 arw({ pts: XR, side: "carth", t: T3 + 0.2, dur: 1.4, width: AW(S3b, 9), until: T_LEE - 0.5 });
 arw({ pts: XR, side: "carth", t: T_LEE - 0.4, dur: 0.01, width: AW(S3c, 9), until: null });
-pinPortrait("j2", PHOTO("grant"), FL.us35, "Grant", T3 + 0.75, T4 - 0.1, "up");   // on the last column (card above it, clear of the leading columns)
-placeN([(WEY[0] + WIN[0]) / 2, (WEY[1] + WIN[1]) / 2], "James River · 1864", 3, T_ACROSS, T_ACROSS + 2.4, "r");
+pinPortrait("j2", PHOTO("grant"), FL.us35, "Grant", T3 + 0.3, T4 - 0.1, "right");   // on the last column, card beside the march (clear of the arrow)
+placeN([(WEY[0] + WIN[0]) / 2 - 75, (WEY[1] + WIN[1]) / 2 + 10], "James River · 1864", 3, T_ACROSS, T_ACROSS + 2.4, "l");   // west of the bridge, clear of the columns and Grant's card
 // Lee (his portrait card on a stake at his own army, on his name) and his army, facing the other way (north, toward Richmond)
 const LR = [unitS("l0", "rome", LEEP, "infantry", "", { t: T3 + 0.1, until: T4 }), unitS("l1", "rome", [LEEP[0] + 120, LEEP[1] - 30], "infantry", "", { t: T3 + 0.2, until: T4 })];
 pinPortrait("l0", PHOTO("lee"), FL.csa, "Lee", T_LEE - 0.05, T4 - 0.1, "left");
@@ -299,7 +305,7 @@ wstampL("LOOKING THE OTHER WAY", LEEP[0] + 170, LEEP[1] + 90, T_OTHER + 0.1, T4 
 // the title (riser + boom): the James River shot dims at the top, the title card sits below the date scroll
 // =====================================================================================================================
 SFX("ref:riser", T4 + 0.1);
-const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.25) 0%,rgba(5,7,13,0.75) 70%);"); SCN.insertBefore(TDIM, document.getElementById("date"));
+const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.25) 0%,rgba(5,7,13,0.75) 70%);");
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T4);
 const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">ULYSSES S. GRANT'S</div>

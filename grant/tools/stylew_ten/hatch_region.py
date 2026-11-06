@@ -21,6 +21,7 @@ soft = cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), f) if f > 0 else m /
 soft = np.clip((soft - 0.15) / 0.7, 0, 1) * (m > 0 if f == 0 else 1)
 rl = np.asarray(Image.open(relief).convert("RGB").resize((W, H), Image.BILINEAR)).astype(np.int16)
 water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 20) & (rl[..., 2] > rl[..., 1] - 5)).astype(np.uint8), np.ones((int(O.get("wdil", 13)),) * 2, np.uint8)).astype(bool)
+water |= cv2.dilate((rl.mean(-1) < 72).astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)   # ink trees / tufts stay clear
 if "minus_ell" in O:
     cx, cy, rx, ry = map(float, O["minus_ell"].split(",")); mm = np.zeros((H, W), np.uint8); cv2.ellipse(mm, (int(cx), int(cy)), (int(rx), int(ry)), 0, 0, 360, 1, -1); water |= mm.astype(bool)
 yy, xx = np.mgrid[0:H, 0:W]

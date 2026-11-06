@@ -34,7 +34,7 @@ dateNow("MAY 1863", null);
 const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1290, 1170, 1.22], K4 = [1300, 1175, 1.3];   // critic r1: under the card the army sits in the upper half
 camera([[0, ...K0], [T_ACROSS, ...K0], [T_DEEP + 0.4, ...K1], [T_BANKS + 0.2, ...K1], [T_PH + 0.3, ...K2], [T_DO - 0.2, ...K2], [T_DO + 1.6, ...K3], [END, ...K4]]);
 // ---------- flags (both visible on every frame) ----------
-now(flagS(FL.us, "", 1010, 880, 0, END + 1)); now(flagS(FL.cs, "", 1700, 960, 0, END + 1));
+now(flagS(FL.us, "", 1080, 1000, 0, END + 1)); now(flagS(FL.cs, "", 1700, 960, 0, END + 1));
 // ---------- units: the army in the bridgehead, Confederates all round (no names: none spoken here) ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.18, -91.17), "XV", "XXX");
 along("u15", [L(32.18, -91.17), L(32.10, -91.13), L(32.06, -91.10)], 0.2, 12, 12);
@@ -65,8 +65,8 @@ const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 const BACK = DEC.previousElementSibling;
 // critic r1: the card sits on the empty lower half with its own opaque backing; the dim only covers the lower half, Grant + his army stay visible above
-Object.assign(DEC.style, { top: "585px", background: "rgba(14,13,10,0.95)", padding: "16px 34px 18px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
-BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 45%, rgba(6,8,12,0.7) 60%)";
+Object.assign(DEC.style, { top: "470px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
+BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
 pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.2); pulse(OB, T_INL + 0.2); pulse(DEC.querySelector(".cd"), T_WHAT, "#c9b48a"); pulse(OA, T_THEN - 0.2); pulse(OB, T_THEN + 0.3);

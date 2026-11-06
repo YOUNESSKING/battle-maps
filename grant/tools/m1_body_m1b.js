@@ -30,12 +30,12 @@ flagS(FL.us, 1160, 640, T_INSIDE + 0.4, END + 1); flagS(FL.cs, 1600, 790, T_INSI
 // ---------- the forts ----------
 fortIcon(FH, 0, null, { s: 22, col: "#4f8bff" });   // critic r1: fort flags only at the surrender beats
 fortIcon(DON, 0, null, { s: 26 });   // critic r1: fort flags only at the surrender beats
-boxS("FORT DONELSON", DON[0] - 76, DON[1] - 6, T_TODON, null, { size: 22 });
+boxS("FORT DONELSON", DON[0] - 100, DON[1] - 4, T_TODON, null, { size: 22 });
 K.target(DON[0], DON[1], T_WANT + 0.6, { r: 44, until: T_REINF + 2.0 });
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side)
-unitS("rf", "rome", [2150, 900], "infantry", null, { t: 0 });
-along("rf", [[2150, 900], [1980, 790], [1800, 760], [1620, 770], [1520, 790]], 0.1, T_INSIDE - 0.3, 16); hideU(["rf"], T_INSIDE);
-arw({ pts: [[2200, 960], [2040, 830], [1840, 790], [1640, 790]], side: "rome", t: T_REINF - 0.2, dur: 1.6, width: AW(1.0, 9), until: T_15K });
+unitS("rf", "rome", [1900, 812], "infantry", null, { t: 0 });   // >= 40 px inside the frame at t = 0
+along("rf", [[1900, 812], [1800, 770], [1620, 770], [1520, 790]], 0.1, T_INSIDE - 0.3, 16); hideU(["rf"], T_INSIDE);
+arw({ pts: [[1880, 806], [1760, 778], [1640, 786]], side: "rome", t: T_REINF - 0.2, dur: 1.6, width: AW(1.0, 9), until: T_15K });
 // ---------- the march (two columns, about a dozen miles) ----------
 unitS("mc", "carth", [ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], "infantry", null, { t: 0, size: "XX" });
 unitS("sm", "carth", [ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], "infantry", null, { t: 0, size: "XX" });
