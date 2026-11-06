@@ -7,3 +7,10 @@ Data: research/competitors/WarfareGeniuss.md (full scan 2026-10-30, 9 long video
 - 4. Length 19-21 min every time (ours 15-17): more minutes watched per click.
 - 5. Steady cadence: ~1 video every 4 days, all in one era (WWII).
 Takeaways for us: pick famous names (Grant first, then Sheridan or other household Civil War/WWII names even if a competitor covered them, labelled); keep one fixed thumbnail formula with ONE quoted emotional word; title with an injustice/paradox; aim ~18-20 min.
+
+## FootprintHistory: the same flop streak as ours (owner 2026-11-06)
+Scans: FootprintHistory.md (2026-10-30, 13 videos) + FootprintHistory_2026-11-06.md (newest; several videos failed to fetch).
+- Hits are all early and all household names: Chesty Puller 135k, Sherman 110k, "3 Moves That Saved Hitler's Army" (Manstein) 105k, Grant 44k, Ridgway 34k.
+- Recent run = flop after flop: Nelson 8k, Smedley Butler 7k, MacArthur's gambles 5.6k, Chosin 180, Pappy Boyington 859 (8 days). Lesser-known names, naval/air or episode topics, weaker titles.
+- Same picture as ours (Thomas 123k / Morgan 45k / 2 Para 39k early, then Gavin, Collins, Greene, Arnold flops). Two causes fit both channels: (1) after the first hits both moved to less famous names; (2) late Oct-Nov the "Top 3 Legendary Tactical Moves" title is now used by 4+ channels (TG, WarfareGenius, FootprintHistory, us), so the same viewers see the format again and again and click less. WarfareGenius keeps a floor because he stays on famous names with one strong recognisable thumbnail formula.
+- Note: FootprintHistory already did Grant (44k, "The 'Drunk' Who Won the Civil War") and Sheridan (22k). Our Grant must look and read clearly different.
