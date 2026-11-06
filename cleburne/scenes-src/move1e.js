@@ -415,7 +415,7 @@ const banner = (txt, css, t, until, size = 40) => { const el = scr(stampHTML(txt
   tl.fromTo(el, { scale: 1.6 }, { scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t); SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); return el; };
 // ---------- map: clean (STYLE W: no territory here), permanent towns, night as move1a ends ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.16 });   // BATCH 1: no scale bar / north arrow
-town("chattanooga", [1035, 983], 0, "l");
+const CHTT = town("chattanooga", [1035, 983], 0, "l"); tl.to(CHTT.el, { autoAlpha: 0, duration: 0.4 }, 1.3);   // steps out before the camera crops it at the left edge
 town("chickamauga station", [1725, 1055], 0, "r");
 camera([[0, 1560, 865, 1.3], [T_HOW, 1680, 1060, 1.2], [END, 1720, 1080, 1.15]]);   // the arrow tip + "A narrow pass" stay >= 40 px inside the frame
 B.showDate(0); B.date("25 NOV · NIGHT", 0, null, 34);
