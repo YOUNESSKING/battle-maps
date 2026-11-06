@@ -1,7 +1,7 @@
 """Style W hand-over hatching drawn from a REGION (critic r1, 2026-11-06): 45 deg ink lines only inside the ground actually taken,
 rivers / water left clear, soft feathered edge (no hard polygon edge), thin crisp boundary line omitted.
 usage (from grant/): python3 tools/stylew_ten/hatch_region.py OUT.png RELIEF_W.jpg colour=blue|red (poly='[[x,y],...]' | ell=cx,cy,rx,ry | from=LAYER_mx.png)
-       [step=9] [lw=2] [feather=10] [alpha=200]      coordinates in map px (2880 x 1620)"""
+       [step=9] [lw=2] [feather=10] [alpha=200] [wdil=13] [minus_ell=cx,cy,rx,ry (also keep clear, e.g. scene floodwater)]      coordinates in map px (2880 x 1620)"""
 import json, sys
 import numpy as np, cv2
 from PIL import Image
@@ -20,7 +20,9 @@ f = float(O.get("feather", 10))
 soft = cv2.GaussianBlur(m.astype(np.float32) / 255, (0, 0), f) if f > 0 else m / 255.0
 soft = np.clip((soft - 0.15) / 0.7, 0, 1) * (m > 0 if f == 0 else 1)
 rl = np.asarray(Image.open(relief).convert("RGB").resize((W, H), Image.BILINEAR)).astype(np.int16)
-water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 20) & (rl[..., 2] > rl[..., 1] - 5)).astype(np.uint8), np.ones((7, 7), np.uint8)).astype(bool)
+water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 20) & (rl[..., 2] > rl[..., 1] - 5)).astype(np.uint8), np.ones((int(O.get("wdil", 13)),) * 2, np.uint8)).astype(bool)
+if "minus_ell" in O:
+    cx, cy, rx, ry = map(float, O["minus_ell"].split(",")); mm = np.zeros((H, W), np.uint8); cv2.ellipse(mm, (int(cx), int(cy)), (int(rx), int(ry)), 0, 0, 360, 1, -1); water |= mm.astype(bool)
 yy, xx = np.mgrid[0:H, 0:W]
 step, lw = int(O.get("step", 9)), int(O.get("lw", 2))
 on = (((xx + yy) % step) < lw) & ~water

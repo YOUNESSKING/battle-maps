@@ -526,7 +526,7 @@ arw({ pts: [[1460, 892], [1446, 890], [1436, 887]], side: "carth", t: T_FACED + 
 // the rest of the army slips out of the trenches and marches south by back roads (thin trails, fade ~2 s after arrival)
 [["u2", G.MARCH1], ["u6", G.MARCH2], ["u18", G.MARCH1.map((q) => [q[0] - 18, q[1] + 8])]].forEach(([id, pts], k) => along(id, [[BU[k][1][0], BU[k][1][1]], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, 6.0, 22));
 arw({ pts: G.MARCH1, side: "carth", t: T_SOUTH2 - 0.6, dur: 3.0, width: AW(4.3, 8), until: T_SOUTH2 + 4.4 });
-hideU(["u18"], T_MEADE - 0.6);   // critic: the trailing column merges into Meade's lead column (no overlapping boxes)
+hideU(["u6", "u18"], T_MEADE - 0.6);   // critic: the trailing columns merge into Meade's lead column (no overlapping boxes)
 const MDP = pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADE, END + 1, true, "right");
 MDP.firstElementChild.style.top = "76px"; MDP.lastElementChild.style.width = "94px";   // critic: Meade's stake ~20 px lower, clear of the boxes
 pulseU("u2", T_LEAD); pulseU("u2", T_LEAD + 0.6);
