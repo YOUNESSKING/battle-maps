@@ -423,7 +423,7 @@ camera([[0, ...CD], [T_PAPER, ...CD], [T_ARGUED + 1.0, ...CD2], [T_MAY - 0.2, ..
 B.showDate(0);
 
 // ---------- title (alone, no date of its own: the date scroll carries the date) ----------
-{ const ti = B.title("MOVE 3", "PICKETT'S MILL", "", 0.1, T_CAMP - 0.2), inn = ti.querySelector(".inner"); inn.style.background = "#17150f"; inn.style.opacity = "1"; inn.style.marginTop = "80px"; }   // opaque panel, >= 12 px below the Union armies box
+{ const ti = B.title("MOVE 3", "PICKETT'S MILL", "", 0, T_CAMP - 0.2), inn = ti.querySelector(".inner"); inn.style.background = "#17150f"; inn.style.opacity = "1"; inn.style.marginTop = "80px"; }   // opaque panel, >= 12 px below the Union armies box
 SFX("hit", 0.4);
 
 // ---------- permanent towns + flags (48 px, one pair per shot) ----------

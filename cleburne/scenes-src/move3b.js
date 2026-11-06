@@ -421,7 +421,7 @@ tl.to(TOD_WARM, { opacity: 0.22, duration: 2.0 }, T_ATT - 0.1); tl.to(TOD_WARM, 
 
 // ---------- flags (48 px, behind each side's lines, one pair per shot) ----------
 const FLS = [[0, T_WORSE + 0.8, [1033, 600], [1965, 1232]], [T_WORSE + 1.0, T_WOOD - 0.3, [1525, 790], [1560, 935]], [T_WOOD - 0.1, T_WLOST - 0.1, [1700, 820], [1640, 910]],
-  [T_WLOST + 0.1, END + 1, [1580, 745], [1725, 965]]];
+  [T_WLOST + 0.1, END + 1, [1660, 760], [1725, 965]]];
 FLS.forEach(([t0, t1, us, cs], k) => { flagS(FL.us, "UNITED STATES", ...us, k ? t0 + 0.1 : 0, t1); flagS(FL.cs, "CONFEDERATE STATES", ...cs, k ? t0 + 0.2 : 0, t1); });
 
 // ---------- move3-2b: the march ends at the creek; the works half-built ----------
@@ -552,7 +552,7 @@ bars(1624, 858, T_PRIS, T_WLOST - 0.2, 44);
 B.caption("CLEBURNE'S MEN CLEARED THE RAVINE AND TOOK PRISONERS", T_PRIS - 0.2, T_WLOST - 0.2, "carth");
 // the cost: spoken figures only (FACT_NOTES: Wood's division 1,457; whole Union force ~1,600; Cleburne's report 448), one small card per figure, each <= 3.5 s
 const T_WHOLE = at(P6, "the whole Union force");
-B.move("wood", T_WLOST - 0.9, 1.0, 1485, 850);   // Wood's HQ steps west before the pull-out, so his card keeps >= 12 px from Cleburne's
+B.move("wood", T_WLOST - 0.9, 1.0, 1545, 790);   // Wood's HQ steps west before the pull-out, so his card keeps >= 12 px from Cleburne's
 const cas = (flag, head, num, sub, t, until) => { const el = scr(`<div style="padding:18px 46px 20px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="display:flex;align-items:center;justify-content:center;gap:14px;font-size:24px;letter-spacing:.14em"><img src="${flag}" style="height:30px;border:1px solid #f7f3ea">${head}</div>
   <div style="font-size:72px;letter-spacing:.04em;line-height:1.15">${num}</div><div style="font-size:20px;letter-spacing:.24em;color:#c9b48a">${sub}</div></div>`,
@@ -567,7 +567,7 @@ scr(`<div style="padding:18px 40px 20px;background:#efe6cf;color:#1b1812;text-al
 SFX("hit", T_ESSAY);
 banner("SHERMAN'S FLANK MARCH HAD FAILED", "left:0;right:0;top:860px;", T_FAIL, at(P6, "the Confederate line stood") - 0.3, 40);
 stampP("THE CONFEDERATE LINE STOOD", 1585, 955, at(P6, "the Confederate line stood"), at(P6, "the Confederate line stood") + 3.4, null, 22);
-arw({ pts: [[1545, 805], [1490, 790], [1440, 805]], side: "rome", t: T_TRY + 0.2, dur: 1.4, width: AW(2.9, 9), until: T_LET - 0.7 });   // done before the method card lands
+arw({ pts: [[1600, 740], [1545, 726], [1495, 742]], side: "rome", t: T_TRY + 0.2, dur: 1.4, width: AW(2.9, 9), until: T_LET - 0.7 });   // done before the method card lands
 hideU(Object.keys(B.units), T_LET - 0.65);   // the units (and their cards) step out 0.15 s before the method card; the date scroll stays
 method(3, T_LET - 0.5, END + 1, T_LET - 0.2);
 zeroIn();
