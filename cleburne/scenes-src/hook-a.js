@@ -96,11 +96,12 @@ const CREAM = "#f0e6c8";
 const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(${rot}deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(2, Math.round(size / 9))}px solid ${c};padding:${(size * 0.08).toFixed(1)}px ${(size * 0.42).toFixed(1)}px ${(size * 0.12).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 10px 26px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1">${txt}</div>${sub ? `<div style="font-size:${Math.round(size * 0.36)}px;letter-spacing:0.22em;color:#d8cfb8">${sub}</div>` : ""}</div>`;
 const stampAt = (txt, size, rot, css) => scr(stampHTML(txt, CREAM, size, rot, ""), css);
 // colour key: only ~4-6 s, first map of the video (new symbols), never with a big card (2d item 8, C14)
-const legend = (t, until) => GG.card(`<div style="display:flex;gap:26px;font-size:20px;letter-spacing:0.1em;align-items:center">${[["#2e5cb2", "CONFEDERATE"], ["#be3a2a", "UNION"]].map(([sq, nm]) => `<span><b style="display:inline-block;width:20px;height:20px;background:${sq};vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}</div>`, "", 34, t, until);
-const dateSet = (text, t, until) => { const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px";
+const legend = (t, until) => { const el = scr(`<div style="display:flex;gap:26px;font-family:Oswald;font-weight:700;font-size:20px;letter-spacing:0.1em;align-items:center;color:#f7f3ea;padding:10px 26px;background:rgba(18,16,12,0.9);box-shadow:0 10px 24px rgba(0,0,0,.5)">${[["#1f4fc4", "CONFEDERATE"], ["#c4121f", "UNION"]].map(([sq, nm]) => `<span><b style="display:inline-block;width:20px;height:20px;background:${sq};vertical-align:-3px;margin-right:8px;border:1px solid #f7f3ea"></b>${nm}</span>`).join("")}</div>`, "left:0;right:0;top:34px;display:flex;justify-content:center;");
+  tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, immediateRender: false }, t); tl.to(el, { autoAlpha: 0, duration: 0.12 }, until); return el; };   // unit-box colours, quick fade (critic r2b)
+const dateSet = (text, t, until, dur = 0.3) => { const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px";
   document.getElementById("date").appendChild(d);
-  if (t > 0) tl.fromTo(d, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: true }, t);
-  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.3 }, until); return d; };
+  if (t > 0) tl.fromTo(d, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: dur, immediateRender: true }, t);
+  if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: dur }, until); return d; };
 const tick = (el, sel, n, t0, t1, fmt) => { const v = { v: 0 }, e = el.querySelector(sel);
   tl.to(v, { v: n, duration: t1 - t0, ease: "power2.out", onUpdate: () => { e.textContent = fmt ? fmt(v.v) : Math.round(v.v).toLocaleString("en-US"); } }, t0);
   for (let t = t0; t < t1 - 0.05; t += 0.13) SFX("tick", t); };
@@ -238,9 +239,9 @@ const C0b = [1150, -250], SOb = 0.078;
 const TZ0 = T_LAST - 0.35, TZ1 = T_RG + 0.06;                       // the dive: ~5.5 s -> lands on "Ringgold"
 camTo(0, TZ0, C0b[0], C0b[1], SOb, "sine.inOut");
 // stamp in the first second, in the narrator's words (1a + 1c): NOVEMBER 1863 slams on "eighteen sixty-three", then the date scroll takes over
-const ST0 = stampAt("NOVEMBER 1863", 76, -4, "left:0;right:0;top:150px;display:flex;justify-content:center;");
+const ST0 = stampAt("NOVEMBER 1863", 76, -4, "left:340px;right:0;top:205px;display:flex;justify-content:center;");
 slam(ST0, Math.min(T_1863, 0.8), { shake: 5, until: T_1863 + 1.35 });
-const DT0 = dateSet("NOVEMBER 1863", 0, T_TWO);   // critic r2: the date scroll is never blank
+const DT0 = dateSet("NOVEMBER 1863", 0, T_27 - 0.08, 0.12);   // never blank; stays until the next date is spoken (critic r2b)
 const F0 = flagsC(L(35.30, -85.75), L(34.55, -84.55), 0.3, TZ0 + 0.1);
 // permanent towns (the army runs from Chattanooga toward Dalton; Ringgold on arrival)
 const TW0 = [town("CHATTANOOGA", ...P.chatt, 0, TZ0 + 1.6, { side: "l" }), town("DALTON", ...P.dalton, 0, TZ0 + 1.85)];
@@ -260,7 +261,7 @@ SFX("ref:whoosh", 0.35);
 tl.fromTo(B.units.aot.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_WEST + 0.1);
 focus(L(34.93, -85.10), 30 * K0, T_WEST, T_RUN + 0.4);
 // "running for its life" (stamp in the narrator's words)
-const ST2 = stampAt("RUNNING FOR ITS LIFE", 66, -3, "left:0;right:0;top:150px;display:flex;justify-content:center;");
+const ST2 = stampAt("RUNNING FOR ITS LIFE", 66, -3, "left:340px;right:0;top:205px;display:flex;justify-content:center;");
 slam(ST2, T_RUN - 0.05, { shake: 5, until: T_LAST - 0.15 });
 // "its last hope": red arrows converge on the notch in Taylor's Ridge; focus + the zoom box on the gap (the dive target)
 arw({ pts: [L(35.04, -85.33), L(34.96, -85.22), L(34.925, -85.13)], side: "rome", t: T_LAST - 0.6, dur: 0.9, until: TZ0 + 0.35 }, SOb, 9);
@@ -333,7 +334,7 @@ B.grey(["rc2"], T_SAVED - 0.3, 0.5);
 arw({ pts: [[1420, 950], [1390, 935], [1355, 915]], side: "rome", t: T_SAVED - 0.4, dur: 0.8, until: T_SAVED + 2.2 }, SG, 6);
 crosses([[1410, 958], [1430, 905]], T_SAVED - 0.2, T_TWO - 0.1, SG);
 // "and saved the army": stamp in the narrator's words; the wagons and guns get away through the gap (ink trace along the railroad)
-const STH = stampAt("SAVED THE ARMY", 74, -4, "left:0;right:0;top:150px;display:flex;justify-content:center;");
+const STH = stampAt("SAVED THE ARMY", 74, -4, "left:340px;right:0;top:205px;display:flex;justify-content:center;");
 slam(STH, T_SAVED - 0.05, { shake: 6, sfx: "ref:boom", until: T_TWO - 0.15 });
 const WG2 = [0, 1, 2].map((k) => { const w = wagon(1500 + k * 12, 1000 + k * 8, S2 + 1.2 + k * 0.15, T_TWO + 0.2, KG * 1.3);
   tl.to(w, { x: 70, y: 70, duration: T_TWO - S2 - 0.8, ease: "none" }, S2 + 1.3); return w; });
@@ -345,7 +346,6 @@ SFX("whoosh", TS0 - 0.05);
 zoom(TS0, TS1 - TS0, [CG[0] + 8, CG[1] + 4], SG * 1.05, CM, SM, P.gap, "power2.in");
 zoom(TS1, TS2 - TS1, CM, SM, CT, ST, P.th, "power2.out");
 B.hideUnits(["gun", "bg1", "bg2", "bg3", "rc1", "rc2", "rc3"], TS0 + 0.1, 0.35);
-dateSet("25 NOVEMBER 1863", T_TWO + 0.2, T_ABOVE + 0.3);
 const TDE = place("TWO DAYS EARLIER", 1080, 420, T_TWO + 0.35, TS2 - 0.3, { size: 28 });
 const THL = town("CHATTANOOGA", ...P.chatt, TS0 + 0.4, TS2 - 0.5, { side: "l" });
 const FT = flagsC([400, -330], [760, -150], TS1 - 0.35, T_ABOVE + 0.75);   // on screen at the pull-out, the swing and Tunnel Hill
@@ -381,7 +381,6 @@ SFX("whoosh", TB0 - 0.05);
 zoom(TB0, TB1 - TB0, [CT[0], CT[1]], ST, CM, SM, P.th, "power2.in");
 zoom(TB1, TB2 - TB1, CM, SM, CR, SR, P.gap, "power2.out");
 camTo(TB2 + 0.02, END - TB2, CR[0] + 10, CR[1] + 4, SR * 1.04, "sine.inOut");
-dateSet("27 NOVEMBER 1863", T_ABOVE + 0.3, T_DAWN + 0.3);
 const FR2 = flagsC([1210, 800], [1700, 850], TB1 - 0.2, S3 - 0.05);
 const GAPL2 = place("RINGGOLD GAP", P.gap[0] + 95, P.gap[1] + 60, TB2 - 0.3, S3 - 0.05, { size: 26 });
 // the pursuit: red columns at the gap mouth and the town, halted; the arrows toward Dalton fade
@@ -397,7 +396,7 @@ go("pu1", T_BROKE + 0.2, 1.5, [1325, 955]); go("pu3", T_BROKE + 0.3, 1.5, [1375,
 K.impact(1418, 958, T_BROKE - 0.4, { r: 11 * KR });
 // Grant named: his portrait on a stake at the pursuit column he halted (2d item 6)
 pinPortrait("pu1", PHOTO.grant, FL.us, "Grant", T_GRANT + 0.05, S3 - 0.1, KR);
-const SPO = stampAt("PURSUIT CALLED OFF", 74, -4, "left:0;right:0;top:150px;display:flex;justify-content:center;");
+const SPO = stampAt("PURSUIT CALLED OFF", 74, -4, "left:340px;right:0;top:205px;display:flex;justify-content:center;");
 slam(SPO, T_OFF - 0.1, { shake: 7, sfx: "ref:boom" }); pulse(T_OFF + 0.1);
 // =====================================================================================================================
 // hook-3 (S3 .. END): the story goes on (no CV): rewind to dawn, the danger at the gap, the order
@@ -412,13 +411,13 @@ const TOD_COOL = todDiv("rgba(100,135,205,0.55)"); tl.to(TOD_COOL, { opacity: 0.
 const SQ = 1.7, KQ = 1 / SQ, CQ = [(P.rg[0] + P.gap[0]) / 2 + 30, (P.rg[1] + P.gap[1]) / 2 + 40];
 camTo(S3 - 0.05, 1.1, CQ[0], CQ[1], SQ, "power2.inOut");
 camTo(S3 + 1.1, END - S3 - 1.1, CQ[0] + 40, CQ[1] + 20, SQ * 1.12, "sine.inOut");
-dateSet("DAWN · 27 NOVEMBER 1863", T_DAWN + 0.3, END + 1);   // the roll is done before "the twenty-seventh"
+dateSet("DAWN · 27 NOVEMBER 1863", T_27 + 0.05, END + 1, 0.12);   // on the spoken date, quick roll
 // the town name steps aside while Grant's card or the Union columns sit on it (C7: no overlap); the dot stays
 town("RINGGOLD", ...P.rg, S3 + 0.3, T_UNI - 0.3, { side: "l" }); town("", ...P.rg, T_GRANT - 0.25, null);
 const FR3 = flagsC([P.rg[0] - 300, P.rg[1] + 120], [P.gap[0] + 230, P.gap[1] + 150], S3 + 0.3, END + 1);
 const GAPL3 = place("RINGGOLD GAP", P.gap[0] + 150, P.gap[1] - 70, S3 + 0.5, END + 1, { size: 26 });
 // "it looked hopeless"
-slam(stampAt("IT LOOKED HOPELESS", 72, -4, "left:0;right:0;top:150px;display:flex;justify-content:center;"), T_HOPE + 0.25, { shake: 4, until: Math.min(T_GUNS + 1.2, T_HOPE + 3.2) }); pulse(T_HOPE + 0.4);
+slam(stampAt("IT LOOKED HOPELESS", 72, -4, "left:340px;right:0;top:205px;display:flex;justify-content:center;"), T_HOPE + 0.25, { shake: 4, until: Math.min(T_GUNS + 1.2, T_HOPE + 3.2) }); pulse(T_HOPE + 0.4);
 // "the army's guns and wagons were still stuck on the road behind the gap": a jam of wagons on the road to Dalton, focus on it
 const JAM = [[1505, 1000], [1522, 1026], [1540, 1052], [1556, 1078], [1572, 1104], [1588, 1130]];
 JAM.forEach((q, k) => { const w = wagon(q[0] + (k % 2 ? 6 : -6), q[1], T_GUNS + 0.05 + k * 0.12, END + 1, KQ * 1.5); tl.to(w, { x: 3, duration: 0.18, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_STUCK); });

@@ -207,7 +207,7 @@ tl.fromTo(PL, { autoAlpha: 0, scale: 1.9 }, { autoAlpha: 1, scale: 1, duration: 
 SFX("hit", T_NAME + 0.3); K.shake(T_NAME + 0.3, 6, 0.3); pulse(T_NAME + 0.32);
 // "born in Ireland": the narrator's words only
 const IRE = scr(`<div style="font-family:Oswald;font-weight:700;padding:8px 26px 10px;background:rgba(18,16,12,0.94);border-left:8px solid #c9b48a;color:#f7f3ea"><div style="font-size:40px;letter-spacing:0.08em">BORN IN IRELAND</div></div>`, "left:0;right:0;top:860px;display:flex;justify-content:center;");
-tl.fromTo(IRE, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, T_IRE - 0.05);
+tl.fromTo(IRE, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power3.out", immediateRender: false }, at(H, "Ireland"));   // lands on the word
 tl.to(IRE, { autoAlpha: 0, duration: 0.25 }, T_STOP - 0.5);
 // the big badge leaves (no corner badge: in every cut his portrait card stands on a stake at his own unit, 2d item 6)
 tl.to(BDG, { scale: 0.6, autoAlpha: 0, duration: 0.45, ease: "power3.in" }, T_STOP - 0.6); SFX("ref:whoosh", T_STOP - 0.55);
@@ -287,18 +287,18 @@ zoom(T_THESE, 0.9, [PM[0] - 6 + 10 / SC, PM[1] - 20], SC * 1.06, OC, OS, PM, "po
 camTo(T_THESE + 0.92, END - T_THESE - 0.9, OC[0] + 4, OC[1] - 3, OS * 1.04, "none");
 dateSet("1863 - 1864", T_THESE + 0.05, null);
 flagsC(L(35.1, -86.9), L(34.0, -83.6), T_THESE + 0.2, null);
-town("DALTON", ...L(34.7698, -84.9702), T_THESE + 0.3, null); town("ROME", ...L(34.257, -85.165), T_THESE + 0.3, null, { side: "l" });
+town("DALTON", ...L(34.7698, -84.9702), T_THESE + 0.3, null);
 // the three places: numbered dark dots + white serif names (no rings)
 [[TH, "Tunnel Hill · 1863", 1, -150, -6], [GP, "Ringgold Gap · 1863", 2, 160, -6], [PM, "Pickett's Mill · 1864", 3, 175, 0]].forEach(([p, txt, n, dx, dy], i) => {
   const el = pinAt(`<div style="display:flex;align-items:center;gap:8px;font-family:${SERIF};font-weight:700;color:#fbf8ef;${SHADOW}"><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:#1e1c14;border:2px solid #fbf8ef;align-items:center;justify-content:center;font-size:16px">${n}</span><span style="font-size:26px;white-space:nowrap">${txt}</span></div>`, p[0] + dx / OS, p[1] + dy / OS, T_THESE + 0.95 + i * 0.15, null);   // critic r2: names only once the camera has arrived (clear of the date scroll)
   reg(el.firstElementChild); tl.to(el, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45);   // the title card stands alone (2d item 8)
-  const d = pinAt(`<div style="width:12px;height:12px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 2px #fbf8ef"></div>`, p[0], p[1], T_THESE + 0.3 + i * 0.15, null); reg(d.firstElementChild); });
+  const d = pinAt(`<div style="width:12px;height:12px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 2px #fbf8ef"></div>`, p[0], p[1], T_THESE + 0.3 + i * 0.15, null); reg(d.firstElementChild); tl.to(d, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45); });   // dots leave with their names
 const TDIM = scr("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0) 55%,rgba(5,7,13,0.75) 85%);");
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THREE - 0.5);
 const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">PATRICK CLEBURNE'S</div>
   <div style="font-size:84px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
-  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 TUNNEL HILL · 2 RINGGOLD GAP · 3 PICKETT'S MILL</div></div>`, "left:0;right:0;top:170px;display:flex;justify-content:center;");
+  <div style="font-size:28px;letter-spacing:0.3em;color:#ffd54a;margin-top:8px">1 TUNNEL HILL · 2 RINGGOLD GAP · 3 PICKETT'S MILL</div></div>`, "left:0;right:0;top:210px;display:flex;justify-content:center;");   // clear of the date scroll (critic r2b)
 tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_THREE - 0.26);
 SFX("ref:boom", T_THREE); K.shake(T_THREE, 6, 0.4);
 K.raiseTerritory();
