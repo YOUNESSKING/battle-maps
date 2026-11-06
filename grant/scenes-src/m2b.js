@@ -355,7 +355,6 @@ const RLEN = (() => { let s = 0; for (let j = 1; j < RUN.length; j++) s += Math.
 living(SZ.meters_per_px, [], { n: 5 });
 const NL = GG.night(T_NIGHT - 0.4, T_THRU + 0.6, { dur: 2.2, outDur: 3.0 });
 const LIT = GG.layer(`background:radial-gradient(ellipse 22% 30% at ${(VKS[0] / 28.8).toFixed(1)}% ${(VKS[1] / 16.2).toFixed(1)}%, rgba(255,150,60,0.30), rgba(255,120,40,0) 70%);mix-blend-mode:screen;`, T_BONF, T_NOONE + 1.0, { dur: 2.0, outDur: 2.5 });
-const LIT2 = GG.layer(`background:radial-gradient(ellipse 18% 26% at ${(VKS[0] / 28.8).toFixed(1)}% ${(VKS[1] / 16.2 + 6).toFixed(1)}%, rgba(255,150,60,0.24), rgba(255,120,40,0) 70%);mix-blend-mode:screen;`, T_RAN, END + 1, { dur: 2.0 });
 // ---------- camera ----------
 const sKeys = [[0, 1260, 800, 0.72], [T_POR, 1280, 790, 0.8], [T_FIRE, 1320, 800, 0.95], [T_HIT + 1.0, 1330, 820, 1.05], [T_SHER, 1290, 850, 1.0],
   [T_ONE, 1350, 800, 1.2], [T_EDGE + 0.5, 1330, 880, 1.4], [T_22 - 0.3, 1300, 860, 1.0], [T_FIVEX, 1290, 880, 0.95], [END, 1280, 940, 1.05]];
@@ -364,11 +363,11 @@ camera(sKeys);
 // ---------- HUD: the date scroll (the only always-on furniture) ----------
 B.showDate(T_16); B.date("16 APRIL 1863 · 10 PM", T_16 + 0.05, T_22 - 0.1, 32); B.date("22 APRIL 1863 · NIGHT", T_22, END + 1, 32);
 // ---------- flags (48 px, behind each side's lines, no names): US on De Soto Point / the Louisiana shore, the Confederacy east of the city ----------
-flagS(FL.us, "", 900, 860, 0, END + 1); flagS(FL.cs, "", 1640, 900, 0, END + 1);
+flagS(FL.us, "", 840, 1010, 0, END + 1); flagS(FL.cs, "", 1640, 900, 0, END + 1);
 // Vicksburg: the permanent town symbol (named in m2-1/m2-2, on screen at the end of m2a; continues)
 town("VICKSBURG", VKS, "r", 0);
 // ---------- the Confederate batteries on the city front under the bluff (Fort Hill to below the city), on "past the Vicksburg batteries" ----------
-const BATP = [[1452, 626], [1424, 700], [1410, 770], [1394, 840], [1370, 905], [1300, 968], [1250, 1040], [1212, 1120]];
+const BATP = [[1477, 626], [1449, 700], [1435, 770], [1419, 840], [1395, 905], [1325, 968], [1275, 1040], [1237, 1120]];   // on the bank, clear of the waterline
 BATP.forEach((p, k) => unitS("bt" + k, "rome", p, "artillery", "", { t: T_PAST - 0.2 + k * 0.1, w: 40, h: 27 }));
 BATP.forEach((p, k) => tagAt("bt" + k, null));
 // ---------- the fleet, 16 Apr: 6 gunboats, 3 transports, Tuscumbia last (lights out; a little stack smoke) ----------
@@ -393,19 +392,25 @@ tl.to(HC2.sv, { filter: "brightness(0.35) sepia(0.6)", duration: 2.5 }, T_EDGE);
 // ---------- "set houses on fire (De Soto Point) and lit bonfires on the shore so they could see the river" ----------
 const bonfire = (x, y, t, until, s = 16) => { const el = pinS(GG.pin(`<div style="width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle,#fff3b0 0%,#ffb030 40%,rgba(255,80,0,0) 72%);box-shadow:0 0 ${s}px ${s * 0.4}px rgba(255,122,26,.55)"></div>`, x, y, { t, until }));
   tl.to(el.firstElementChild.firstElementChild || el.firstElementChild, { scale: 1.3, opacity: 0.7, duration: 0.17, yoyo: true, repeat: Math.max(1, Math.round(((until || t + 6) - t) / 0.17)), ease: "sine.inOut" }, t + 0.3); return el; };
-[[1300, 700], [1280, 770], [1250, 650], [1305, 840]].forEach((p, k) => { fireGlowS(p[0], p[1], 30, T_FIRE + k * 0.3, END + 1); K.smoke(p[0], p[1] - 6, T_FIRE + 0.3 + k * 0.3, { n: 3, r: 10, rise: 28, life: 3 }); });
-[[1372, 610], [1404, 712], [1390, 790], [1374, 860], [1336, 925], [1262, 990]].forEach((p, k) => { bonfire(p[0], p[1], T_BONF + k * 0.22, END + 1, 16); });
-boxL("HOUSES ON FIRE", 1150, 690, T_FIRE + 0.1, null);
+[[1300, 700], [1280, 770], [1250, 650], [1305, 840]].forEach((p, k) => { fireGlowS(p[0], p[1], 30, T_FIRE + k * 0.3, T_NOONE + 1.0); K.smoke(p[0], p[1] - 6, T_FIRE + 0.3 + k * 0.3, { n: 3, r: 10, rise: 28, life: 3 }); });
+[[1372, 610], [1404, 712], [1390, 790], [1374, 860], [1336, 925], [1262, 990]].forEach((p, k) => { bonfire(p[0], p[1], T_BONF + k * 0.22, T_NOONE + 1.0, 16); });
+boxL("HOUSES ON FIRE", 1100, 655, T_FIRE + 0.1, null);
 // ---------- Porter (named): his portrait card on a side stake at his flagship, the Benton, leading the line (2d item 6) ----------
-// side stake up and to the west (De Soto Point side): the card never covers the river ahead of the fleet or the batteries on the east bank
-const portraitShip = (host, photo, flag, name, t, until, side = "left") => {
-  const w = document.createElement("div"), sg = side === "right" ? 1 : -1;
-  w.style.cssText = `position:absolute;left:${sg > 0 ? "100%" : "0%"};top:4px;width:0;height:0;pointer-events:none;z-index:5`;
-  w.innerHTML = `<div style="position:absolute;left:${sg > 0 ? "40px" : "-116px"};top:-178px;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:0;top:0;width:70px;height:1.5px;background:#463a1e;transform-origin:0 0;transform:rotate(${sg > 0 ? -54 : -126}deg)"></div>`;
+// portrait card on a stake at the host (card centre at (cx, cy) screen px from the host centre), drawn above boats and fire glows
+const portraitAt = (host, photo, flag, name, t, until, cx, cy) => {
+  host.style.position = "relative"; const w = document.createElement("div");
+  w.style.cssText = "position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none;z-index:50";
+  const ex = Math.abs(cx) > 38 ? cx - Math.sign(cx) * 38 : cx, ey = Math.abs(cy) > 60 ? cy - Math.sign(cy) * 60 : cy;
+  w.innerHTML = `<svg width="1" height="1" style="position:absolute;left:0;top:0;overflow:visible"><line x1="0" y1="0" x2="${ex}" y2="${ey}" stroke="#463a1e" stroke-width="1.6"/></svg><div style="position:absolute;left:${cx - 38}px;top:${cy - 60}px;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div>`;
   host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
-portraitShip(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, T_ONE - 0.2, "left");   // steps out once the Benton runs off the bottom of the frame
-boxL("7 GUNBOATS · 3 TRANSPORTS", 1060, 430, T_SEVEN + 0.1, null);
+FLEET[0].el.style.zIndex = 40;   // the flagship (and its card) above the fire glows and the other boats
+// the Benton runs ESE to Fort Hill until ~13 s (card high up to the NE, over the empty ground toward the Yazoo), then south past the city
+// (card on the west side, beside the boat: the column trails north, the batteries are east); it steps out once she has passed the guns
+const T_TURN = 13.1;
+portraitAt(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, T_TURN, 100, -150);
+portraitAt(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_TURN + 0.2, T_SWAMP - 1.0, -135, 0);
+boxL("7 GUNBOATS · 3 TRANSPORTS", 870, 650, at(P1, "three transports"), null);   // spoken "seven gunboats and three transports"; on the empty Louisiana ground south of the column
 // ---------- the guns (visible, ~1 shot per second): batteries at the boats, impacts on the boats; gunboats answer at the bluff ----------
 const vis = (k) => FLEET[k] || HC1;
 const SH = [];   // [battery, boat index, time]
@@ -418,18 +423,18 @@ smoke([BATP[0], BATP[1], BATP[2]].map((p) => [p[0] + 4, p[1] - 6]), T_SEE - 0.3,
 smoke([BATP[2], BATP[3], BATP[4], BATP[5]].map((p) => [p[0] + 4, p[1] - 6]), T_HIT - 0.2, 2.0);
 // the gunboats answer (bow guns -> the bluff)
 [[T_HIT + 1.0, 0, 3], [T_HIT + 2.0, 1, 4], [T_YAWL + 0.2, 2, 4], [T_RESC + 0.3, 3, 5]].forEach(([t, k, b]) => shootS(FLEET[k].at(t), [BATP[b][0] + 10, BATP[b][1] + 6], t, sAt(t), { dur: 0.7, h: 40, r: 9 }));
-wstampL("EVERY GUNBOAT HIT", 1050, 960, T_HIT + 0.2, null, null, 22);
+wstampL("EVERY GUNBOAT HIT", 1590, 980, T_HIT + 0.2, null, null, 22);
 // ---------- Sherman's yawl boats hauled across the swamp (De Soto Point), manned by soldiers, waiting below the city ----------
-unitS("sh", "carth", [930, 735], "infantry", "", { t: T_SHER - 0.1, size: "XXX" }); tagAt("sh", null);
+unitS("sh", "carth", [930, 870], "infantry", "", { t: T_SHER - 0.1, size: "XXX" }); tagAt("sh", null);
 pinPortrait("sh", PHOTO("sherman"), FL.us, "Sherman", T_SHER + 0.15, T_22 - 0.3, true);
 B.hideUnits(["sh"], T_22 - 0.3, 0.5);
 const YAWL = (k) => pinS(GG.pin(`<svg width="26" height="12" viewBox="-13 -6 26 12" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))"><path d="M-11 0 Q-6 -5 9 -3 L12 0 L9 3 Q-6 5 -11 0 Z" fill="#c9a26a" stroke="#1f4fc4" stroke-width="1.4"/><line x1="-3" y1="-8" x2="-1" y2="8" stroke="#f3eee2" stroke-width="1.2"/><line x1="3" y1="-8" x2="5" y2="8" stroke="#f3eee2" stroke-width="1.2"/></svg>`, 0, 0, { t: null }));
-const YPATH = (k) => [[975 + k * 14, 770 + k * 10], [1040, 845], [1100, 905], [1160, 950], [1205 - k * 10, 985 + k * 18]];
+const YPATH = (k) => [[985 + k * 12, 885 + k * 8], [1050, 915], [1110, 945], [1150, 960 + k * 4], [1180 - k * 6, 968 + k * 10]];   // stops on the bank, short of the fleet's channel
 [0, 1, 2, 3].forEach((k) => { const el = YAWL(k), P = YPATH(k); gsap.set(el, { left: P[0][0], top: P[0][1] }); tl.set(el, { autoAlpha: 1 }, T_YAWL + k * 0.2);
   pinAlong(el, P, T_YAWL + k * 0.2, T_RESC + 0.4 - T_YAWL, 16); tl.to(el, { autoAlpha: 0, duration: 0.6 }, T_22 - 0.3); });
 arw({ pts: YPATH(1), side: "carth", t: T_YAWL, dur: T_RESC + 0.4 - T_YAWL, width: AW(1.0, 7) });   // the move = a thin solid trail, fades ~2 s after arrival
-boxL("YAWL BOATS", 930, 960, T_YAWL + 0.2, null);
-boxL("THE SWAMP", 1010, 800, T_SWAMP + 0.1, null, { px: 20 });
+boxL("YAWL BOATS", 1080, 1000, T_YAWL + 0.2, null);
+boxL("THE SWAMP", 1040, 838, T_SWAMP + 0.1, null, { px: 20 });
 // ---------- the Henry Clay: hit, set on fire, burns to the water's edge ----------
 shootS(BATP[2], HCP, HCt - 0.75, sAt(HCt), { dur: 0.75, h: 46, r: 12 });
 K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
@@ -452,9 +457,14 @@ tl.to(CONV[SINK].el, { autoAlpha: 0, duration: 1.4, ease: "power1.in" }, tSink +
 tl.to(CONV[SINK].sv, { scale: 0.5, rotation: "+=40", duration: 1.4 }, tSink + 0.2);
 { const rip = pinS(GG.pin(`<div style="width:44px;height:44px;border-radius:50%;border:2px solid rgba(200,225,255,.75)"></div>`, pS[0], pS[1], {})), r = rip.firstElementChild.firstElementChild || rip.firstElementChild;
   gsap.set(rip, { autoAlpha: 0 }); tl.set(rip, { autoAlpha: 1 }, tSink + 0.4); tl.fromTo(r, { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 2.0, duration: 1.6, immediateRender: false }, tSink + 0.4); }
-boxL("SIX MORE SUPPLY STEAMERS", 1060, 520, T_SIX, T_FIVEX - 0.3);
+boxL("SIX MORE SUPPLY STEAMERS", 950, 600, T_SIX, T_FIVEX - 0.3);
 const placeCard = (kick, txt, css, t, until) => scr(`<div style="padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div>`, css, t, until);
-const FIVEX = placeCard("ARMY VOLUNTEERS", "FIVE TIMES THE NUMBER", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_FIVEX - 0.1, T_THRU - 0.4);
+// in on "with enough men offering" showing ARMY VOLUNTEERS (said at 39.1); on "five times the number" it becomes kicker + the big line; out 0.15 s
+// before the stamp lands (up >= 3 s, the big line ~1.3 s)
+const FIVEX = scr(`<div style="position:relative;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div class="k" style="font-size:17px;letter-spacing:.32em;color:#c9b48a">ARMY VOLUNTEERS</div><div style="position:relative"><div class="a" style="position:absolute;left:0;right:0;top:0;font-size:40px;letter-spacing:.06em;line-height:1.1">ARMY VOLUNTEERS</div><div class="b" style="font-size:40px;letter-spacing:.06em;line-height:1.1">FIVE TIMES THE NUMBER</div></div></div>`,
+  "left:0;right:0;top:160px;display:flex;justify-content:center;", at(P1, "with enough men offering") - 0.1, T_THRU - 0.65);
+{ const k = FIVEX.querySelector(".k"), a = FIVEX.querySelector(".a"), b = FIVEX.querySelector(".b"); gsap.set([k, b], { autoAlpha: 0 });
+  tl.to(a, { autoAlpha: 0, duration: 0.25 }, T_FIVEX - 0.15); tl.to([k, b], { autoAlpha: 1, duration: 0.3 }, T_FIVEX - 0.1); }
 const THRU = sstampR("FIVE GOT THROUGH", 960, 640, T_THRU, { size: 70, shake: 5 });
 fixImgs();
 K.raiseTerritory();

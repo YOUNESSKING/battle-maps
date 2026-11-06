@@ -312,7 +312,7 @@ unitS("wb1", "rome", [1384, 710], "artillery", null, { w: 40, h: 27 }); unitS("w
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];
 const FR = frontNow(front2(RING3, 2.1, 0, { dur: 0.01, until: T_ACC + 1.0 }));
 [["uSm", [1312, 664], "XX"], ["uWa", [1262, 862], "XX"], ["m1", [1290, 885], "X"], ["m2", [1374, 948], "X"], ["m3", [1442, 985], "X"]].forEach(([id, p, sz]) => unitS(id, "carth", p, "infantry", null, { size: sz }));
-cardNow(pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", 0.05, T_TELE, "left"));   // steps out when the battle ends and the camera pulls out
+cardNow(pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", 0.05, T_NO - 0.3, "up"));   // his part is over; steps out before the letter cards   // up: clear of Grant's card at the headquarters   // steps out when the battle ends and the camera pulls out
 unitS("hq", "carth", HQ, "infantry", null); cavIcon("hq");   // Grant rode back to his headquarters at the end of m1d (same horseman counter)
 cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_LOSS - 0.2, "up"));
 // the GIVE UP stamp m1d ended on carries into the first second here (same screen place), then leaves
@@ -364,7 +364,7 @@ tl.fromTo(Q1.querySelector(".imm"), { color: "#f7f3ea" }, { color: "#9fc0ea", du
 const Q2 = bigCard(QH(`I propose to move immediately upon your works.”`, 44), T_PROP - 0.1, T_BCALL - 0.2, { col: "#1f4fc4", top: 230 });
 // Buckner: ungenerous and unchivalrous, but he accepted
 const UN = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">BUCKNER CALLED THE TERMS</div><div style="font-size:50px;letter-spacing:.08em;margin-top:4px">UNGENEROUS AND UNCHIVALROUS</div>`,
-  T_UNG - 0.1, Math.min(T_ACC - 0.1, T_UNG + 3.4), { col: "#c4121f", top: 200 });
+  T_UNG - 0.1, Math.min(T_ACC - 0.1, T_UNG + 3.4), { col: "#c4121f", pos: "left:0;right:0;bottom:110px;display:flex;justify-content:center;" });   // low: clear of the generals' cards
 // accepted: the fort turns blue under a white flag; the surrendered ground = red ink hatching (~3 s); the garrison greys (prisoners)
 recolorFort(FT, "carth", T_ACC + 0.2);
 const WF = pinAt(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, DON[0] + 8, DON[1] - 22, T_ACC + 0.1, END + 1);
