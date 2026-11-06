@@ -97,7 +97,7 @@ const FUS35 = flagS("assets/media/us35_flag.png", "", ...L(32.36, -90.81), T_SIE
 const FCS = now(flagS(FL.cs, "", ...L(32.335, -90.872), 0, null)); tl.to(FCS, { opacity: 0.55, duration: 0.8 }, T_PEM + 0.6);
 // units: three Union corps outside, Pemberton's army inside (his name tag from his spoken name)
 U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, -90.826), "XVII", "XXX"); U("u13", "carth", L(32.318, -90.836), "XIII", "XXX");
-U("rp", "rome", L(32.357, -90.866), "", "XX");   // STYLE W: his portrait card carries the name U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
+U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null);   // STYLE W: his portrait card carries the name (a unit with an empty label breaks the counter kit) U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
 now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));

@@ -450,12 +450,12 @@ const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 6
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
-U("rv", "rome", L(32.36, -90.84), "", "XX"); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "", "XX");   // STYLE W: the portrait cards carry the names U("rs", "rome", L(32.14, -90.80), "", "XX");
+U("rv", "rome", L(32.36, -90.84), "PEMBERTON", "XX"); tagAt("rv", null); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "JOHNSTON", "XX"); tagAt("rj", null);   // STYLE W: the portrait cards carry the names (no empty labels: they break the counter kit) U("rs", "rome", L(32.14, -90.80), "", "XX");
 ["u13", "u17", "u15"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the generals' portraits on stakes at their armies, from their names to the end of the scene (no corner badges)
 pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_DEC - 0.05, null, true);
 pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "left");
-pinPortrait("rj", PHOTO("johnston"), FL.cs, "Johnston", T_JOH + 0.3, T_JAX + 0.1, true, "right");   // steps out as he leaves Jackson (off the frame)
+pinPortrait("rj", PHOTO("johnston"), FL.cs, "Johnston", T_JOH + 0.3, null, true, "right"); tl.to(B.units.rj.el, { autoAlpha: 0, duration: 0.5 }, T_JAX + 0.3);   // he and his card leave as he is driven out of Jackson
 // ---------- m2-8: the real choice ----------
 const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: 0, tReveal: T_CUTL, until: T_CUTL + 1.35 });
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
