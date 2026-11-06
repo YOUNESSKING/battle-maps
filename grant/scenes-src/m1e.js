@@ -434,8 +434,8 @@ B.caption("FLOYD: BUCHANAN'S SECRETARY OF WAR", T_SEC, T_FOR - 0.2, "rome");
 // ---------- Forrest's cavalry out through the flooded backwater ----------
 const BW = water([1566, 838], 96, 30, 116, T_BACKW - 0.2, T_DAWN + 1, 0.75);   // the flooded backwater (Lick Creek), in the map's own water colour
 unitS("for", "rome", [1562, 884], "cavalry", "FORREST", { t: T_FOR });   // clear of the red box at the works cavIcon("for");
-along("for", [[1562, 884], ...ESCAPE.slice(2)], T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
-arw({ pts: ESCAPE.slice(0, 6).map((q) => [q[0] + 16, q[1] - 6]), side: "rome", t: T_SEV - 0.2, dur: 2.4, width: AW(2.0, 9), until: T_CMD + 3.0 });
+along("for", [[1562, 884], ...ESCAPE.slice(2, 6)], T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
+arw({ pts: [[1562, 884], ...ESCAPE.slice(2, 6)], side: "rome", t: T_SEV, dur: T_CMD - T_SEV + 1.6, width: AW(2.0, 9), until: T_CMD + 3.4 });   // trail grows with the box, ends at it
 // ---------- the command falls to Buckner; at dawn he writes asking for terms ----------
 pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, T_TELE + 0.4, true, "up");
 pulseU("bu", T_BUCK + 0.2);
@@ -447,7 +447,7 @@ unitS("ghq", "carth", GHQ, "infantry", null, { t: 0 });   // Grant's headquarter
 pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", 0, T_TELE + 0.4, true, "left");
 const L2 = pinS(GG.pin(`<div style="transform:scale(1.4)">${LTR}</div>`, GHQ[0], GHQ[1], { t: T_ANS + 0.2, pop: true, until: T_BCALL + 0.5 }));
 pinAlong(L2, [GHQ, [1330, 815], [1420, 790], DOV], T_ANS + 0.5, 2.0, 16);
-const Q = quote(`“No terms except an unconditional and <b class="imm" style="color:#9fc0ea">immediate</b> surrender can be accepted.<span class="q2"> I propose to move immediately upon your works.”</span>`, "", T_NO - 0.1, T_BCALL - 0.2, { size: 38, mw: 860, pos: "right:60px;bottom:96px;" });   // lower-right empty ground, no source line
+const Q = quote(`“No terms except an unconditional and <b class="imm" style="color:#9fc0ea">immediate</b> surrender can be accepted.<span class="q2"> I propose to move immediately upon your works.”</span>`, "", T_NO - 0.1, T_BCALL - 0.2, { size: 38, mw: 860, pos: "right:60px;bottom:52px;" });   // lower-right empty ground, no source line
 const Q2 = Q.querySelector(".q2"); gsap.set(Q2, { autoAlpha: 0 }); tl.to(Q2, { autoAlpha: 1, duration: 0.4 }, T_PROP - 0.1);
 tl.fromTo(Q.querySelector(".imm"), { color: "#f7f3ea" }, { color: "#9fc0ea", duration: 0.2, immediateRender: false }, T_IMM); SFX("hit", T_IMM + 0.05); K.shake(T_IMM + 0.05, 5, 0.3);
 // Buckner: ungenerous and unchivalrous, but he accepted
@@ -459,7 +459,7 @@ unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, siz
 tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
 pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
-pinPortrait("gA", PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, END + 1, true, [10, -140]);   // Smith stays on the merged Union box
+pinPortrait("gA", PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, T_LOSS - 0.1, true, [10, -140]);   // steps out under the result card   // Smith stays on the merged Union box
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });
 // ---------- the telegram to Halleck ----------
 // the telegram (spoken numbers only), two short cards <= 3.5 s each, top-left under the date scroll, off the fort and Grant's card

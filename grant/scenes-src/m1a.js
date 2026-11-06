@@ -396,7 +396,8 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 740, 2.6]
   [T_MARCH + 1.6, 1420, 790, 2.1], [T_SURR + 0.6, 1370, 780, 2.5], [T_GRANT, 1355, 760, 2.3], [END, 1345, 752, 2.2]]);
 // ---------- date (comes in on the spoken date) + title card ----------
 dateNow("6 FEBRUARY 1862");   // critic r1: date scroll filled from frame 0
-{ const TT = B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6); Object.assign(TT.style, { top: "auto", bottom: "110px", left: "90px", right: "auto" }); }   // critic r2: empty lower-left field, off the cards and units   // one date on screen (the scroll) SFX("ref:boom", T_FHN + 0.15);
+{ const TT = B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6); Object.assign(TT.style, { top: "auto", bottom: "110px", left: "90px", right: "auto" }); }
+SFX("ref:boom", T_FHN + 0.15);   // (restored: had been swallowed by a comment) title in the empty lower-left field; one date on screen
 // ---------- flags (48 px, behind each side's lines; one pair for the whole scene) ----------
 flagS(FL.us, 1470, 640, 0, END + 1); flagS(FL.cs, 1450, 905, 0, END + 1);
 // ---------- the fort; the flood on its words ----------
@@ -431,17 +432,17 @@ profileStrip(`<path d="M0 70 L120 70 C140 70 150 96 170 98 L310 98 C330 96 340 7
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="270" y="44">Fort Henry</text><text x="270" y="119">two feet deep in water</text><text x="70" y="104">the river in flood</text></g>`,
   T_TWO, T_CMDR + 0.2);
 // ---------- Tilghman had already sent his men away (toward Fort Donelson); he gives the fort to the navy ----------
-unitS("til", "rome", [FH[0] + 30, FH[1] + 22], "artillery", "ABOUT 90 MEN", { t: 0, w: 44, h: 30 });   // the small garrison; surrendered, it stays with its tag
+unitS("til", "rome", [FH[0] + 50, FH[1] + 50], "artillery", "ABOUT 90 MEN", { t: 0, w: 44, h: 30 }); { const tg = B.units.til.el.querySelector(".tag"); if (tg) tg.style.marginTop = "12px"; }   // the small garrison; surrendered, it stays with its tag
 pinPortrait("til", PHOTO("tilghman"), FL.cs, "Tilghman", T_TIL - 0.05, END + 1, true, "left"); tagAt("til", T_NINETY);   // card stays all battle; the tag on "about ninety men"
-unitS("gar", "rome", [FH[0] + 52, FH[1] + 12], "infantry", null, { t: 0 });
-const OUT = [[FH[0] + 52, FH[1] + 12], [1400, 806], [1470, 818], [1520, 826], [1556, 830]];
+unitS("gar", "rome", [FH[0] + 86, FH[1] - 6], "infantry", null, { t: 0 });
+const OUT = [[FH[0] + 86, FH[1] - 6], [1400, 806], [1470, 818], [1520, 826], [1556, 830]];
 along("gar", OUT, T_MARCH - 0.2, 3.4, 18); hideU(["gar"], T_MARCH + 3.6);
 arw({ pts: [[FH[0] + 48, FH[1] + 2], [1410, 798], [1480, 812], [1540, 822]], side: "rome", t: T_MARCH - 0.2, dur: 3.2, width: AW(2.2), until: T_MARCH + 4.4 });   // real move: thin trail, fades ~2 s after arrival
 wstampS("SURRENDERED", 1214, 838, T_SURR + 0.15, T_SURR + 3.4);   // on empty ground west of the river
 // ---------- Grant had not needed to storm the fort: his columns, still on the road from the landing ----------
-unitS("g1", "carth", [LAND[0] + 6, LAND[1] - 20], "infantry", null, { t: 0 }); unitS("g2", "carth", [LAND[0] + 40, LAND[1] - 4], "infantry", null, { t: 0 });
+unitS("g1", "carth", [LAND[0] + 6, LAND[1] - 20], "infantry", null, { t: 0 }); unitS("g2", "carth", [LAND[0] + 72, LAND[1] + 12], "infantry", null, { t: 0 });
 along("g1", [[LAND[0] + 6, LAND[1] - 20], [1354, 730], [1356, 742]], 0.6, T_SURR, 10);
-along("g2", [[LAND[0] + 40, LAND[1] - 4], [1384, 726], [1388, 744]], 0.8, T_SURR, 10);
+along("g2", [[LAND[0] + 72, LAND[1] + 12], [1400, 732], [1392, 746]], 0.8, T_SURR, 10);
 pinPortrait("g2", PHOTO("grant"), FL.us, "Grant", T_GRANT + 0.15, END + 1, true, "upright");
 // critic r3: Grant's arrival stub removed (his columns already stand at the fort)
 K.target(FH[0], FH[1], T_STORM, { r: 26, until: END + 1 });

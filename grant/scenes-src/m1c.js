@@ -6,7 +6,7 @@
 // where the sides touch; the ground the breakout takes hatches RED (gn_don_ctl_feb15acap, ~3 s). Foote's portrait rides his flagship (greys
 // on "wounded"); Grant (no unit here) = one corner badge <= 3.5 s. Captions cut to the two claims to remember.
 // Built with: python3 tools/m1_build.py m1c donelson_w m1-3 m1-4
-window.CARDPOS = {"Grant@ghq": [-87, -50], "Floyd@fl": [237, 63], "Pillow@c2": [20, -320], "Buckner@bu": [38, -112], "Foote@el1": [-175, 30], "cap1": "right"};
+window.CARDPOS = {"Grant@ghq": [-87, -50], "Floyd@fl": [237, 63], "Pillow@c2": [95, -255], "Buckner@bu": [38, -112], "Foote@el1": [-175, 30], "cap1": "right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -458,7 +458,7 @@ const HITS = ticker("HITS ON THE FLAGSHIP", 60, "", "right:70px;top:240px;", T_6
 tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_WOUND + 0.4);
 { const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); }
 // the WOUNDED tag stands beside Foote's card (child of the card, so it moves with it)
-{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;left:84px;top:44px"; cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
+{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;right:88px;top:44px";   // left of the card, off the ironclads cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
   tl.fromTo(st, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, immediateRender: false }, T_WOUND + 0.4); tl.to(st, { autoAlpha: 0, duration: 0.3 }, T_WOUND + 3.6); SFX("hit", T_WOUND + 0.58); }
 // ---------- night: rain and snow; blankets thrown away on the march ----------
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
@@ -467,7 +467,7 @@ const BLK = `<svg width="26" height="18" viewBox="0 0 26 18" style="display:bloc
 // critic r2: blanket glyphs dropped (unreadable specks)
 // ---------- 15 Feb dawn: the breakout against the Union right ----------
 dawnWash(T_DAWN - 0.2, END + 1);
-[[[1440, 822], [1432, 860], [1418, 900]], [[1495, 828], [1498, 868], [1494, 900]], [[1380, 802], [1350, 838], [1318, 864]]].forEach((pts, k) =>
+[[[1440, 822], [1434, 852], [1424, 876]], [[1495, 828], [1498, 856], [1496, 874]], [[1380, 802], [1356, 828], [1334, 846]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_STRUCK - 0.1 + k * 0.3, dur: 1.4, width: AW(2.4, 11), until: T_STRUCK + 5.2 }));
 [["c1", [1310, 860]], ["c2", [1410, 905]], ["c3", [1490, 910]]].forEach(([id, p], k) => B.move(id, T_STRUCK + 0.2 + k * 0.2, 3.0, p[0], p[1]));
 [["c4", [1460, 790]], ["c5", [1520, 790]]].forEach(([id, p], k) => { unitS(id, "rome", p, "infantry", null, { t: T_MOST + k * 0.2, size: "X" }); B.move(id, T_MOST + 0.6, 2.4, p[0] - 20, p[1] + 70); });
