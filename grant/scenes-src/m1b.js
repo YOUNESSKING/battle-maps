@@ -269,7 +269,7 @@ flags2([1170, 590], [1560, 650], T_INSIDE + 0.4, END + 1);
 // ---------- the forts: Fort Henry taken (blue), Fort Donelson (red) on its hill above the river; Dover = permanent town ----------
 fortIcon(FH, 0, null, { s: 26, side: "carth" });
 fortIcon(DON, 0, null, { s: 30, side: "rome" });
-const DONL = place("Fort Donelson", 1350, 708, T_TODON, null, { size: 24, keep: true });
+const DONL = place("Fort Donelson", 1328, 712, T_TODON, null, { size: 24, keep: true });
 const DOVT = town("Dover", DOV, T_TODON + 0.2, null);
 focus(DON, 60, T_WANT + 0.6, T_INSIDE);
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side): bare box, solid trail
@@ -281,7 +281,7 @@ unitS("mc", "carth", [ROAD_S[0][0] + 20, ROAD_S[0][1] + 22], "infantry", null, {
 unitS("sm", "carth", [ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], "infantry", null, { t: 0, size: "XX" });
 tl.to(B.units.mc.el, { y: -4, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.2);   // idling at Fort Henry
 pinPortrait("mc", PHOTO("grant"), FL.us, "Grant", T_WANT + 0.1, END + 1, "left");                 // Grant named: his card rides with his column
-along("mc", [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 22], ...ROAD_S.slice(1), [1236, 852]], T_15K, T_INSIDE + 1.8 - T_15K, 24);
+along("mc", [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 22], ...ROAD_S.slice(1), [1220, 800]], T_15K, T_INSIDE + 1.8 - T_15K, 24);
 along("sm", [[ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], ...ROAD_N.slice(1), [1250, 640]], T_15K + 0.3, T_INSIDE + 2.2 - T_15K, 24);
 arw({ pts: ROAD_S, side: "carth", t: T_15K, dur: 3.0, until: T_INSIDE + 0.9 }, 1.0, 6);   // the march trails fade ~2 s after arrival
 arw({ pts: ROAD_N, side: "carth", t: T_15K + 0.3, dur: 3.0, until: T_INSIDE + 1.1 }, 1.0, 6);
@@ -305,7 +305,7 @@ pulseU("pi", T_KNEW + 0.3); focus([1488, 806], 50, T_KNEW, T_SMALL);
   arw({ pts, side: "carth", t: T_GUNSHOT - 0.4 + k * 0.25, dur: 0.8, until: T_EIGHTH }, 1.9, 9));
 B.caption("RIGHT UP TO WITHIN GUNSHOT", T_GUNSHOT - 0.2, T_EIGHTH - 0.3, "carth");
 const UL = frontS({ pts: ULINE.map((q, i) => [(q[0] + WORKS[i][0]) / 2, (q[1] + WORKS[i][1]) / 2]), sideA: "carth", sideB: "rome", t: T_GUNSHOT + 0.6, dur: 2.0, width: +(15 / 1.6).toFixed(2), until: END + 1 });
-unitS("wa", "carth", [1225, 760], "infantry", null, { t: T_HOLD });
+unitS("wa", "carth", [1258, 735], "infantry", null, { t: T_HOLD });
 // ---------- 15,000 on the 8th > 50,000 a month later (one big card; nothing else steps in) ----------
 const CMP = scr(`<div style="display:flex;align-items:center;gap:40px;padding:24px 50px 26px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="text-align:center"><div style="font-size:78px;color:#9fc0ea">15,000</div><div style="font-size:24px;letter-spacing:.24em">ON THE 8TH</div></div>
