@@ -211,7 +211,7 @@ tl.fromTo(IRE, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.35, ea
 tl.to(IRE, { autoAlpha: 0, duration: 0.25 }, T_STOP - 0.5);
 // the big badge leaves (no corner badge: in every cut his portrait card stands on a stake at his own unit, 2d item 6)
 tl.to(BDG, { scale: 0.6, autoAlpha: 0, duration: 0.45, ease: "power3.in" }, T_STOP - 0.6); SFX("ref:whoosh", T_STOP - 0.55);
-dateSet("1863 - 1864", T_STOP - 0.3, T_STOP);
+dateSet("1863 - 1864", T_STOP - 0.65, T_STOP, 0.12);   // already showing its date while the dark lifts (critic r3)
 // hard CUT: a short black frame hides the instant camera jump into each close map (whoosh + hit)
 const CUTB = scr("", "inset:0;background:#030406;");
 const cut = (t, ins, holdTo, c, s) => {
@@ -288,11 +288,11 @@ camTo(T_THESE + 0.92, END - T_THESE - 0.9, OC[0] + 4, OC[1] - 3, OS * 1.04, "non
 dateSet("1863 - 1864", T_THESE + 0.05, null);
 flagsC(L(35.1, -86.9), L(34.0, -83.6), T_THESE + 0.2, null);
 town("DALTON", ...L(34.7698, -84.9702), T_THESE + 0.3, null);
-// the three places: numbered dark dots + white serif names (no rings)
-[[TH, "Tunnel Hill · 1863", 1, -150, -6], [GP, "Ringgold Gap · 1863", 2, 160, -6], [PM, "Pickett's Mill · 1864", 3, 175, 0]].forEach(([p, txt, n, dx, dy], i) => {
-  const el = pinAt(`<div style="display:flex;align-items:center;gap:8px;font-family:${SERIF};font-weight:700;color:#fbf8ef;${SHADOW}"><span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:#1e1c14;border:2px solid #fbf8ef;align-items:center;justify-content:center;font-size:16px">${n}</span><span style="font-size:26px;white-space:nowrap">${txt}</span></div>`, p[0] + dx / OS, p[1] + dy / OS, T_THESE + 0.95 + i * 0.15, null);   // critic r2: names only once the camera has arrived (clear of the date scroll)
-  reg(el.firstElementChild); tl.to(el, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45);   // the title card stands alone (2d item 8)
-  const d = pinAt(`<div style="width:12px;height:12px;border-radius:50%;background:#1e1c14;box-shadow:0 0 0 2px #fbf8ef"></div>`, p[0], p[1], T_THESE + 0.3 + i * 0.15, null); reg(d.firstElementChild); tl.to(d, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45); });   // dots leave with their names
+// the three places: the numbered disc IS the place marker (centred on the place), the name beside it; all three land together once
+// the camera has arrived, and leave together before the title card (critic r3)
+[[TH, "Tunnel Hill · 1863", 1, "l"], [GP, "Ringgold Gap · 1863", 2, "r"], [PM, "Pickett's Mill · 1864", 3, "r"]].forEach(([p, txt, n, side]) => {
+  const el = pinAt(`<div style="position:relative;width:0;height:0;font-family:${SERIF};font-weight:700;color:#fbf8ef"><span style="position:absolute;left:-14px;top:-14px;display:flex;width:24px;height:24px;border-radius:50%;background:#1e1c14;border:2px solid #fbf8ef;align-items:center;justify-content:center;font-size:15px">${n}</span><span style="position:absolute;top:-17px;${side === "l" ? "right:20px" : "left:20px"};font-size:26px;white-space:nowrap;${SHADOW}">${txt}</span></div>`, p[0], p[1], T_THESE + 0.95, null);
+  reg(el.firstElementChild); tl.to(el, { autoAlpha: 0, duration: 0.3 }, T_THREE - 0.45); });
 const TDIM = scr("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0) 55%,rgba(5,7,13,0.75) 85%);");
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T_THREE - 0.5);
 const TITLE = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">

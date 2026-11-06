@@ -416,12 +416,12 @@ const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelecto
 camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 556, 1.2], [END, 1440, 598, 1.35]]);   // under the card the action (and Hooker's portrait) sits below the card, above the bottom edge
 B.showDate(0); const D0 = B.date("27 NOVEMBER 1863", 0, null, 34); now0(document.getElementById("date")); document.querySelectorAll("#date .d").forEach(now0);
 // flags 48 px behind each side's lines (no country names)
-[flagS(FL.us, "UNITED STATES", 1080, 990, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1585, 1010, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
-flagS(FL.us, "UNITED STATES", 1080, 880, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1585, 935, T_DO - 0.2, END + 1);   // below the card, clear of the portraits
+[flagS(FL.us, "UNITED STATES", 1080, 990, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1660, 1000, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
+flagS(FL.us, "UNITED STATES", 1080, 880, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1665, 905, T_DO - 0.2, END + 1);   // below the card, clear of the portraits
 // ---------- Cleburne at the gap, two guns at its mouth (bare boxes until named) ----------
-unitS("cle", "carth", [GAP[0] + 48, GAP[1] - 22], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0); tagAt("cle", null);
-unitS("g1", "carth", [GN[0] - 18, GN[1] - 10], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g1.el, { autoAlpha: 1 }, 0);
-unitS("g2", "carth", [GN[0] + 14, GN[1] - 4], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g2.el, { autoAlpha: 1 }, 0);
+unitS("cle", "carth", [1602, 950], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0); tagAt("cle", null);
+unitS("g1", "carth", [1436, 952], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g1.el, { autoAlpha: 1 }, 0);
+unitS("g2", "carth", [1516, 958], "artillery", null, { t: 0, w: 44, h: 30 }); tl.set(B.units.g2.el, { autoAlpha: 1 }, 0);
 pinPortrait("cle", PHOTO.cleburne, FL.cs, "Cleburne", T_PLACE - 0.1, END + 1, true);   // owner: the general's portrait stays at his unit for the whole battle
 // ---------- Hooker's men are coming from the town ----------
 unitS("hk", "rome", [1150, 915], "infantry", "HOOKER", { t: 0, size: "XXX" }); tl.set(B.units.hk.el, { autoAlpha: 1 }, 0); tagAt("hk", null);
@@ -429,8 +429,8 @@ pinPortrait("hk", PHOTO.hooker, FL.us, "Hooker", T_COMING - 0.1, END + 1, true);
 // critic r1: three thin solid columns, spaced, separate heads, north and south of the town name, ending short of the Ringgold dot
 const COLS = [[[1200, 836], [1272, 826], [1335, 830]], [[1198, 872], [1272, 866], [1340, 868]], [[1198, 944], [1272, 946], [1340, 948]]];
 COLS.forEach((pts, k) => arw({ pts, side: "rome", t: T_COMING - 0.2 + k * 0.3, dur: 1.4, width: AW(1.1, 6), until: END + 1 }));
-pulseU("g1", T_TWO + 0.2); pulseU("g2", T_TWO + 0.5);
-stampP("ONLY TWO GUNS", 1625, 990, T_TWO + 0.1, T_DO - 0.5, null, 22);   // stamp on empty ground east of the ridge (a caption here would cover the guns)
+pulseU("g1", at(P2, "only two") + 0.3); pulseU("g2", at(P2, "only two") + 0.55);   // units spread >= 12 px apart and clear of the Ringgold dot (critic r3)
+// critic r3: no "ONLY TWO GUNS" stamp ("two" is spoken ~0.4 s before the decide card lands, no room for a >= 2 s stamp); the two guns pulse on "only two"
 // ---------- E.decide (B3) ----------
 const DEC = E.decide({ sub: "", a: "MEET THEM IN THE OPEN AT THE DEPOT", b: "HIDE IN THE GAP AND ON THE RIDGES", real: 1,
   t: T_DO - 0.4, tCount: T_TELL, tReveal: T_HERE, until: END - 0.3 });

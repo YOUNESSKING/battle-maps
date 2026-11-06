@@ -334,7 +334,7 @@ B.grey(["rc2"], T_SAVED - 0.3, 0.5);
 arw({ pts: [[1420, 950], [1390, 935], [1355, 915]], side: "rome", t: T_SAVED - 0.4, dur: 0.8, until: T_SAVED + 2.2 }, SG, 6);
 crosses([[1410, 958], [1430, 905]], T_SAVED - 0.2, T_TWO - 0.1, SG);
 // "and saved the army": stamp in the narrator's words; the wagons and guns get away through the gap (ink trace along the railroad)
-const STH = stampAt("SAVED THE ARMY", 74, -4, "left:340px;right:0;top:205px;display:flex;justify-content:center;");
+const STH = stampAt("SAVED THE ARMY", 74, -4, "right:80px;top:205px;")   // on empty ground right of the Union unit (critic r3);
 slam(STH, T_SAVED - 0.05, { shake: 6, sfx: "ref:boom", until: T_TWO - 0.15 });
 const WG2 = [0, 1, 2].map((k) => { const w = wagon(1500 + k * 12, 1000 + k * 8, S2 + 1.2 + k * 0.15, T_TWO + 0.2, KG * 1.3);
   tl.to(w, { x: 70, y: 70, duration: T_TWO - S2 - 0.8, ease: "none" }, S2 + 1.3); return w; });
