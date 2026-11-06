@@ -371,7 +371,7 @@ const MID = WORKS.map((q, i) => [(q[0] + ULINE[i][0]) / 2, (q[1] + ULINE[i][1]) 
 const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 66, 58, 40][i]] : (i === 4 ? [q[0] - 14, q[1] + 12] : q));
 const MID2 = MID.map((q, i) => i >= 5 ? [q[0] + [0, 0, 0, 36, 40, 30, 22, 10][i], q[1] + [0, 0, 0, 0, 0, 6, 14, 18][i]] : q);   // Smith's lodgement
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
-const RIDE = [[1215, 560], [1205, 640], [1200, 720], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
+const RIDE = [[1205, 640], [1200, 720], [1215, 800], [1260, 880], [1320, 935], [1390, 960]];
 // ---------- map: owner 2026-11-03 (territory when it helps): ground changes hands all scene -> option 1 (full strength) + fronts:
 // the breakout bulge (m1_don_feb15a, m1c's last frame) goes back to the ring as the Confederates pull back (m1_don_feb13), then
 // Smith's outer works turn blue (m1_don_feb15b); at night the colours dissolve (~2.8 s) into fronts only (m1e opens on the night) ----------
@@ -396,7 +396,7 @@ RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X
 // ---------- Grant rides back along the line ----------
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
-pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0.15, END + 1, true, "upleft");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
+pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0.15, END + 1, true, "left");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
 const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "GRANT TO AN OFFICER", T_WHO, T_FILL - 0.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 54 });
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line: "it acted like a charm" (narrated; the caption carries no quote marks)
@@ -415,7 +415,7 @@ RED.forEach(([id, , q], k) => { if (id !== "bu") B.move(id, T_PULLED - 0.2 + k *
 [[1440, 880], [1360, 860]].forEach((p, k) => arw({ pts: [p, [p[0] + 6, p[1] - 60]], side: "rome", t: T_PULLED + 0.1 + k * 0.3, dur: 1.0, width: AW(2.1, 9), until: T_PULLED + 3.2 }));
 // counterattacks: the first on the left
 K.target(1300, 655, T_LEFT, { r: 40, until: T_LEFT + 3.4 });
-boxS("THE LEFT", 1200, 618, T_LEFT + 0.2, null, { size: 24 });
+boxS("THE LEFT", 1186, 700, T_LEFT + 0.2, null, { size: 24 });
 // ---------- C. F. Smith storms the abatis and takes the outer works ----------
 pinPortrait("sm1", PHOTO("csmith"), FL.us, "C. F. Smith", T_SMITH + 0.1, END + 1, true, "upleft");   // Smith at his division, going in front himself
 const ABT = `<svg width="18" height="12" viewBox="0 0 18 12" style="display:block"><path d="M1 10 L9 2 L17 10 M5 10 L9 5 L13 10" fill="none" stroke="#5b4a30" stroke-width="2.2" stroke-linecap="round"/><path d="M1 10 L9 2 L17 10" fill="none" stroke="#cdb98e" stroke-width="0.9" stroke-linecap="round"/></svg>`;
@@ -427,7 +427,7 @@ B.move("sm1", T_FRONT, 3.0, 1305, 660); B.move("sm2", T_FRONT + 0.3, 3.0, 1302, 
 [0, 0.9].forEach((d) => mg([1262, 662], [1300, 668], T_FELLED + 0.2 + d, 5, 0.9)); mg([1318, 700], [1278, 690], T_UP + 0.6, 4, 0.9);
 smoke([[1318, 694], [1310, 668], [1300, 640]], T_UP + 0.5, 0.7);
 B.move("bu", T_TOOK - 0.2, 2.2, 1350, 712);
-wstampS("TOOK THE OUTER WORKS", 1236, 590, T_TOOK + 0.1, null, "#9fc0ea", 22);
+wstampS("TOOK THE OUTER WORKS", 1404, 604, T_TOOK + 0.1, null, "#9fc0ea", 22);
 // ---------- night: the Confederate council chooses to give up ----------
 nightWash(T_NIGHT - 0.2, null, 0.5);
 const COUN = pinS(GG.pin(`<div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,140,.95) 0%,rgba(255,170,60,.55) 35%,rgba(255,120,20,0) 72%);mix-blend-mode:screen"></div>`, DOV[0] - 6, DOV[1] - 8, { t: T_COUNCIL - 0.3, until: END + 1 }));

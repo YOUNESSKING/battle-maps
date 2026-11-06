@@ -348,7 +348,7 @@ const crosses = (pts, t, until, a = 3.6) => pts.forEach((q, i) => { const g = do
   tl.to(g, { opacity: 0.7, duration: 0.3 }, t + i * 0.15); tl.to(g, { opacity: 0, duration: 0.6 }, until); });
 const nowU = (...ids) => ids.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));   // a unit already on the map at t = 0
 // water on the Style W map (floodwater, backwater): the map's own water colour, soft edge, world space
-const water = (p, rx, ry, rot, t, until) => { const el = pinS(GG.pin(`<div style="width:${rx * 2}px;height:${ry * 2}px;border-radius:50%;transform:rotate(${rot}deg);background:radial-gradient(ellipse at center, rgba(77,125,154,.92) 0%, rgba(77,125,154,.88) 52%, rgba(77,125,154,0) 71%)"></div>`, p[0], p[1], { t: t > 0 ? t : null, until }));
+const water = (p, rx, ry, rot, t, until, op = 1) => { const el = pinS(GG.pin(`<div style="width:${rx * 2}px;height:${ry * 2}px;border-radius:50%;opacity:${op};transform:rotate(${rot}deg);background:radial-gradient(ellipse at center, rgba(77,125,154,.92) 0%, rgba(77,125,154,.88) 52%, rgba(77,125,154,0) 71%)"></div>`, p[0], p[1], { t: t > 0 ? t : null, until }));
   if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };
 // ---------- end of kit ----------
 // @@END-KIT
