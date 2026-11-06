@@ -2,10 +2,10 @@
 // enters as the TURN, name slam + 3 snap cuts + title; 1c: nothing before it is spoken, one big card at a time, visible fire only).
 // Map agent hook (prefix gh_). Built with:  python3 tools/gh_inline.py hook-b donelson_hd_lift hook-3 hook-4
 // World = the donelson map px (the relief). Snap-cut maps are full-size layers at the world origin, each shown only inside its cut (a black
-// frame hides every camera jump): `henry` (z11, option 2), `vicksburg_siege` (z12, night, option 2), `jamesriver` (z12, option 2).
+// frame hides every camera jump): `henry` (z11, option 1 feb14), `vicksburg_siege` (z12, night, option 2), `jamesriver` (z12, option 2).
 // hook-3: frame 0 = hook-a's last frame (16 Feb, the pocket blue, the garrison grey); "But a week is not how it looked": the clock rolls back
-//   (16 -> 15 FEB, ticks), the white flag drops, the units step back to their dawn places; "At dawn": dawn light,
-//   push in to the Union right, the two glowing front lines (option 2); "burst out": red columns break out
+//   (16 -> 15 FEB, ticks), the white flag drops, the pocket turns red again, the units step back to their dawn places; "At dawn": dawn light,
+//   push in to the Union right, the colours dissolve (~2.8 s) into the two glowing front lines (option 2); "burst out": red columns break out
 //   south, musket volleys where the lines touch (no artillery), the front bulges; "broken the Union right": McClernand's brigades fall back
 //   (BROKEN); "the road out stood open": the Forge road toward Nashville glows; "The Union commander": the "?" badge; "not even there": the
 //   empty headquarters (NOT EVEN THERE); "away on a gunboat ... the admiral": the camera follows the river to the flagship, the "?" rides
@@ -37,12 +37,12 @@ const T_NAME = at(H4, "Ulysses S. Grant"), T_FEW = at(H4, "a few weeks earlier")
 // =====================================================================================================================
 const RELIEF = document.getElementById("relief");
 const TG = document.createElement("div"); TG.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;"; WORLD.insertBefore(TG, OVL);
-// owner 2026-11-02 (territory minimised): every map in hook-b is a close-up -> option 2 only (front lines, no ground tint)
+const DC16 = terrImg("assets/media/gh_donelson_ctl_feb16_mx.png", TG, 0, null, 0.01), DC14 = terrImg("assets/media/m1_don_hb_ring_mx.png", TG, null, null);   // the ring (front RING), Union outside
 const layer = (src, ctl) => { const g = document.createElement("div"); g.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;isolation:isolate;";
   const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;"; g.appendChild(i);
   if (ctl) { const c = terrImg(ctl, g, 0, null, 0.01); }
   WORLD.insertBefore(g, OVL); gsap.set(g, { autoAlpha: 0 }); return g; };
-const LHE = layer("assets/media/gh_hen_relief.jpg"), LVK = layer("assets/media/gh_vks_relief.jpg"), LJA = layer("assets/media/gh_jam_relief.jpg");
+const LHE = layer("assets/media/gh_hen_relief.jpg", "assets/media/gh_henry_ctl_feb14_mx.png"), LVK = layer("assets/media/gh_vks_relief.jpg"), LJA = layer("assets/media/gh_jam_relief.jpg");
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); const NA = LV.north();
 // ---------- camera (every map is 2880 x 1620: clamped inside) ----------
 const cam = { cx: 1430, cy: 800, s: 1.9 };     // = hook-a's last camera
@@ -81,6 +81,7 @@ const F3 = [flagS(FL.us, "", 1190, 905, null, null), flagS(FL.csa, "", 1760, 600
 // =====================================================================================================================
 SFX("ref:whoosh", 0.25);
 tl.to(WF, { autoAlpha: 0, scale: 0.4, duration: 0.4 }, 0.5);
+tl.to(DC14, { autoAlpha: 1, duration: 1.0 }, 0.9); tl.to(DC16, { autoAlpha: 0, duration: 1.0 }, 0.9);
 // the date scroll rolls back with ticks (16 -> 15 FEB on "the fifteenth of February"), DAWN on "At dawn"
 tl.to(d16, { autoAlpha: 0, y: -14, duration: 0.3 }, T_15 - 0.35);
 for (let k = 0; k < 3; k++) SFX("tick", T_15 - 0.6 + k * 0.13);
@@ -91,12 +92,16 @@ go("uSm", 0.6, 1.6, [1250, 772]); go("uWa", 0.6, 1.6, [1268, 880]);
 const MC = [unitS("m1", "carth", [1340, 935], "infantry", "", { t: 2.0, size: "X" }), unitS("m2", "carth", [1420, 950], "infantry", "", { t: 2.1, size: "X" }),
   unitS("m3", "carth", [1505, 940], "infantry", "", { t: 2.2, size: "X" })];
 go("uMc", 0.6, 1.4, [1420, 950]); B.hideUnits(["uMc"], 1.9, 0.3);
-// the camera: hold, then push in on the Union right at dawn; the two glowing front lines (option 2)
+// the camera: hold, then push in on the Union right at dawn; colours + the two glowing front lines
 const CC = [1440, 905], SC = 2.7;
 camTo(0, T_15 - 0.2, [1432, 815], 1.98, "sine.inOut");
 camTo(T_15 - 0.2, T_BURST - T_15 + 0.2, CC, SC, "sine.inOut");
 GG.dawn(T_DAWN - 0.2, T_CMDR + 1.0);
-const LG2 = legend(T_DAWN + 1.4, null, true);                 // two glowing lines (option 2), after the camera has arrived
+// owner 2026-11-03 (territory when it helps): ground changes hands here -> the colours STAY (full strength) and the breakout bulge
+// turns red as the front moves (m1_make_control.py hookring: m1_don_hb_ring -> m1_don_hb_burst, the Union right lost, the road out inside the red ground)
+const DC15 = terrImg("assets/media/m1_don_hb_burst_mx.png", TG, T_BURST + 0.4, null, 2.4);   // the bulge (front RING2)
+tl.to(DC14, { autoAlpha: 0, duration: 2.4, ease: "sine.inOut" }, T_BURST + 0.6);
+const LG2 = legend(T_DAWN + 1.4, null, false);                // territory squares (option 1 + fronts), after the camera has arrived
 const RF = front2(RING, SC, T_DAWN, { dur: 1.2, to: RING2, moveT: T_BURST + 0.2, moveDur: 2.6 });
 // flags for the close-up (option 2: each on its side of the front)
 tl.to(F3, { autoAlpha: 0, duration: 0.4 }, T_DAWN + 0.4);
@@ -223,7 +228,7 @@ const ringN = (p, txt, n, t, until, dx, dy) => { K.target(p[0], p[1], t, { r: 34
   const el = GG.pin(`<div style="display:flex;align-items:center;gap:8px;font-family:Oswald;font-weight:700;color:#ffd54a;text-shadow:0 2px 4px #000,0 0 3px #000"><span style="display:inline-flex;width:38px;height:38px;border-radius:50%;border:3px solid #ffd54a;align-items:center;justify-content:center;font-size:21px">${n}</span><span style="font-size:36px;letter-spacing:.1em;white-space:nowrap">${txt}</span></div>`, p[0] + dx, p[1] + dy, { t: t + 0.1, pop: true, until });
   pinS(el); SFX("ref:pop", t + 0.12); return el; };
 let CAM_S0 = 1;
-// ---------- CUT 1: TWO RIVERS (henry map, Feb 1862, option 2, no tint): gunboats up both rivers, both forts blue ----------
+// ---------- CUT 1: TWO RIVERS (henry map, Feb 1862, option 1): gunboats up both rivers, both forts blue ----------
 const FHh = HP(36.515, -88.035), FDh = HP(36.4935, -87.861), S1c = 1.2, C1 = [(FHh[0] + FDh[0]) / 2 + 20, FDh[1] - 10];
 cut(T1, LHE, T2, C1, S1c, [6, -4, 1.07]); CAM_S0 = S1c;
 dateSet("FEBRUARY 1862", T1, T2 - 0.05);

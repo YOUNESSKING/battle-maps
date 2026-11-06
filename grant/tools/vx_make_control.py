@@ -9,7 +9,10 @@ Fronts hand-placed from FACTCHECK_B (#11, #14-#19, #24, #27) and Grant's Memoirs
   vx_miss_apr_mx    `mississippi` spring 1863 = the vk 1 Apr ground (west-bank strip, Memphis/Helena north, New Orleans - Baton Rouge south).
   vx_miss_jul_mx    `mississippi` July 1863: the whole river Union (a corridor along both banks Memphis - Vicksburg - Port Hudson - New Orleans):
                     the Confederacy cut in two.
-usage (from grant/): python3 tools/vx_make_control.py [vick] [miss]"""
+  vx_siege_may_mx   `vicksburg_siege` 18 May - 3 July 1863 (m2g, owner 2026-11-03 territory rule): Union all round; the pocket = Vicksburg inside the
+                    siege front (the m2g FRT line between the Confederate works and the Union siege line), open to the river, red.
+  vx_siege_jul_mx   4 July 1863: the pocket surrendered, all the ground Union.
+usage (from grant/): python3 tools/vx_make_control.py [vick] [miss] [siege]"""
 import json, math, sys, os
 import numpy as np
 from PIL import Image, ImageDraw
@@ -90,7 +93,16 @@ def miss():
     vj = [(32.45, -90.95), (32.42, -90.70), (32.36, -90.40), (32.20, -90.40), (32.20, -90.95)]
     render(land, mask(P, [north, westbank, south, vj], lines=[(riv, w)]), "vx_miss_jul_mx.png")
 
+def siege():
+    P = proj("vicksburg_siege"); land = land_of("vicksburg_siege")
+    frt = [(32.387, -90.880), (32.378, -90.858), (32.366, -90.846), (32.352, -90.840), (32.338, -90.843), (32.325, -90.850), (32.313, -90.861), (32.303, -90.875), (32.296, -90.889)]
+    river = [(32.296, -90.902), (32.320, -90.900), (32.345, -90.897), (32.368, -90.898), (32.380, -90.902), (32.390, -90.895)]   # closed along the 1863 east bank
+    pocket = mask(P, [frt + river])
+    render(land, ~pocket, "vx_siege_may_mx.png")
+    render(land, np.ones_like(land), "vx_siege_jul_mx.png")
+
 if __name__ == "__main__":
     a = sys.argv[1:] or ["vick", "miss"]
+    if "siege" in a: siege()
     if "vick" in a: vick()
     if "miss" in a: miss()

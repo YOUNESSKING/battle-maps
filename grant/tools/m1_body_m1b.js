@@ -1,7 +1,7 @@
 // m1b (m1-2), Grant #16: 12 Feb 1862, Grant marches ~15,000 men overland from Fort Henry to Fort Donelson (about a dozen miles) before
 // the Confederates can reinforce it; Floyd, Pillow and Buckner inside; "15,000 on the 8th > 50,000 a month later".
-// Basemap donelson_hd_lift (z13, v11): Fort Henry at the left edge, Fort Donelson + Dover on the Cumberland. Option 2 (owner
-// 2026-11-02: territory minimised; a battle map -> no ground tint): the two-colour front comes in where the columns reach the works.
+// Basemap donelson_hd_lift (z13, v11): Fort Henry at the left edge, Fort Donelson + Dover on the Cumberland. Option 1 territory
+// m1_don_feb12 -> m1_don_feb13 (the ring) as the columns arrive.
 // Built with: python3 tools/m1_build.py m1b donelson_hd_lift m1-2 m1-2
 // @@BODY
 const P2 = "m1-2";
@@ -18,8 +18,10 @@ const ROAD_N = [[430, 540], [640, 512], [860, 540], [1040, 590], [1170, 630], [1
 const ROAD_S = [[430, 580], [640, 650], [880, 710], [1080, 770], [1230, 800], [1330, 845]];      // Ridge / Dover road (south)
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820], [2200, 940], [2320, 1100], [2460, 1240], [2600, 1360], [2800, 1380]];
 // ---------- map ----------
+terr("assets/media/m1_don_feb12_mx.png", 0, T_GUNSHOT + 0.6, 0.01, 1.2);
+terr("assets/media/m1_don_feb13_mx.png", T_GUNSHOT + 0.4, null, 1.4);
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 }); LV.shimmer([CUMB], { width: 1.4 }); LV.scaleBar(15.37); LV.north();
-const LGD = now(legend(0, END + 1, true));
+const LGD = now(legend(0, END + 1, false));
 camera([[0, 900, 690, 0.9], [T_12, 880, 680, 0.95], [T_TODON + 0.5, 1080, 700, 1.15], [T_INSIDE + 0.3, 1390, 735, 2.0], [T_KNEW, 1395, 740, 2.2],
   [T_GUNSHOT, 1370, 740, 1.9], [T_EIGHTH, 1250, 720, 1.4], [END, 1220, 720, 1.35]]);
 dateNow("6 FEBRUARY 1862", T_12 - 0.1); B.date("12 FEBRUARY 1862", T_12, null, 34);

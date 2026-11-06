@@ -38,16 +38,24 @@ const RIVS = LL([[32.42, -90.96], [32.375, -90.93], [32.37, -90.895], [32.345, -
 // ---------- the world: mississippi layers under the feathered siege relief + on top of it ----------
 const AR = [MZ.origin_world_px[0] * 16 - SZ.origin_world_px[0], MZ.origin_world_px[1] * 16 - SZ.origin_world_px[1], 46080, 25920];
 const group = (parent, before) => { const g = document.createElement("div"); g.style.cssText = `position:absolute;left:${AR[0]}px;top:${AR[1]}px;width:${AR[2]}px;height:${AR[3]}px;isolation:isolate;`; parent.insertBefore(g, before); return g; };
-const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };   // owner 2026-11-02: the river-overview fill kept (Confederacy cut in two), subtler
+const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };   // owner 2026-11-03: the river-overview fill at full strength (Confederacy cut in two)
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vx_miss_relief.jpg", PU, false);
 const PW = group(WORLD, OVL); gimg("assets/media/vx_miss_relief.jpg", PW, false);
 const CA = gimg("assets/media/vx_miss_apr_mx.png", PW, true), CJ = gimg("assets/media/vx_miss_jul_mx.png", PW, true);
+// owner 2026-11-03 (STYLE_LOCK 2c item 2): the siege close-up keeps the territory colours at full strength (continues m2f's 18 May fill):
+// the Vicksburg pocket red inside the siege front (tools/vx_make_control.py siege), turning blue when the city surrenders on 4 July.
+// Placed under the mississippi layer and feathered with the relief, so the one zoom-out stays seamless.
+const sgImg = (src) => { const i = document.createElement("img"); i.className = "wimg terr"; i.src = src; i.alt = "";
+  i.style.cssText = `position:absolute;left:0;top:0;width:2880px;height:1620px;mix-blend-mode:multiply;filter:${SOFT};`; WORLD.insertBefore(i, PW); return i; };
+const SGM = sgImg("assets/media/vx_siege_may_mx.png"), SGJ = sgImg("assets/media/vx_siege_jul_mx.png");
+gsap.set(SGM, { autoAlpha: 1 }); gsap.set(SGJ, { autoAlpha: 0 });
+tl.to(SGJ, { autoAlpha: 1, duration: 2.0, ease: "sine.inOut" }, T_JUL + 0.3); tl.to(SGM, { autoAlpha: 0, duration: 2.0, ease: "sine.inOut" }, T_JUL + 0.3);
 gsap.set(CJ, { autoAlpha: 0 }); tl.to(CJ, { autoAlpha: 1, duration: 2.2, ease: "sine.inOut" }, T_EVERY - 0.2); tl.to(CA, { autoAlpha: 0, duration: 2.2, ease: "sine.inOut" }, T_EVERY - 0.2);
 living(SZ.meters_per_px, [RIVS], { n: 5, clouds: 0.12, sw: 5 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%)";
 let maskOn = null;
-const setMask = (on) => { if (on === maskOn) return; maskOn = on; [RELIEF].forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; }); };
+const setMask = (on) => { if (on === maskOn) return; maskOn = on; [RELIEF, SGM, SGJ].forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; }); };
 // ---------- the one camera ----------
 const OVS = 1920 / AR[2];
 const cam = { cx: 0, cy: 0, s: 2.6 };
@@ -76,7 +84,7 @@ zoom(TZ0, TZ1 - TZ0, [C1[0] - 20, C1[1] + 6], S1 * 0.92, C2, S2, VKS, "power2.in
 camTo(TZ1 + 0.02, END - TZ1, C3, S3, "sine.inOut");
 const sAt = (t) => t < TZ0 ? S1 : t > TZ1 ? S2 : Math.exp(Math.log(S1) + (Math.log(S2) - Math.log(S1)) * (t - TZ0) / (TZ1 - TZ0));
 // ---------- HUD: legend (option 2 lines on the close-up), the date scroll (35-star flag from 1 June) ----------
-const LGD = now(legend(0, T_LIN + 1.2, true)); const LG1 = legend(TZ1 - 0.2, END + 1, false);
+const LGD = now(legend(0, END + 1, false)), LG1 = null;   // territory squares throughout (the fill is on the close-up too)
 const D0 = dateNow("18 MAY 1863", T_19 - 0.05);
 B.date("19 MAY 1863", T_19, T_22 - 0.05, 32); B.date("22 MAY 1863", T_22, T_SIEGE - 0.05, 32);
 const dateF = (html, t, until) => { const box = document.getElementById("date"), d = document.createElement("div"); d.className = "d"; d.style.fontSize = "32px"; d.style.gap = "14px"; d.innerHTML = html; box.appendChild(d);
@@ -84,7 +92,7 @@ const dateF = (html, t, until) => { const box = document.getElementById("date"),
 const F35 = `<img src="assets/media/us35_flag.png" style="height:30px;border:1px solid #1a1712;box-shadow:0 1px 3px rgba(0,0,0,.5)">`;
 dateF(`${F35}<span>JUNE 1863</span>`, T_SIEGE + 0.2, T_JUL - 0.05);
 dateF(`${F35}<span>4 JULY 1863</span>`, T_JUL, null);
-// ---------- the siege lines (option 2: two glowing bands where the sides touch; no fill) ----------
+// ---------- the siege lines: two glowing bands where the sides touch, on top of the pocket fill ----------
 const FR = on0(front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_JUL + 1.6 }));
 tl.set(FR, { autoAlpha: 1 }, 0);
 // flags: US (34 stars until 31 May, 35 from 1 June) outside the lines, the Confederacy inside the city

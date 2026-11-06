@@ -221,8 +221,8 @@ const _cap0 = B.caption.bind(B); B.caption = (txt, t, until, ...r) => _cap0(txt,
 const boxL = (txt, x, y, t, until, o = {}) => boxS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), o);
 const wstampL = (txt, x, y, t, until, c, size = 22, sub) => wstampS(txt, x, y, t, Math.min(until ?? 1e9, t + LBL_LIFE), c, size, sub);
 const townL = (nm, p, side, t, o = {}) => town(nm, p, side, t, { ...o, until: Math.min(o.until ?? 1e9, t + LBL_LIFE + 0.5) });
-// owner 2026-11-02: territory fills only on the wide shots that need them, and subtler there (about half the old opacity, less orange)
-const SOFT = "saturate(0.4) opacity(0.5)";
+// owner 2026-11-03 (STYLE_LOCK 2c item 2): territory colours wherever they help the viewer, at the locked FULL strength (old saturate(0.8) tone, no half opacity)
+const SOFT = "saturate(0.8)";
 // a front already fully drawn at frame 0 (kills the 0.01 s draw-on at t = 0, which leaves frame 0 empty)
 const on0 = (g) => { const ps = [...g.querySelectorAll("path")]; tl.getTweensOf(ps).filter((tw) => tw.startTime() < 0.05 && tw.duration() < 0.05).forEach((tw) => tw.kill()); gsap.set(ps, { strokeDashoffset: 0 }); return g; };
 // option 1 territory layer with the seamless dissolve (out over ~2.8 s, back in over ~2.2 s)
@@ -336,16 +336,17 @@ const group = (parent, before) => { const g = document.createElement("div"); g.s
 const gimg = (src, parent, mx) => { const i = document.createElement("img"); i.src = src; i.alt = ""; i.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;${mx ? `mix-blend-mode:multiply;filter:${SOFT};` : ""}`; parent.appendChild(i); return i; };
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vk_miss_relief.jpg", PU, false); gimg("assets/media/vk_miss_ctl_apr1_mx.png", PU, true);
-// owner 2026-11-02: territory colours ONLY on the theatre wide shot (the river splits the Confederacy); the Vicksburg close-ups are option 2
-// (two glowing front bands round the Union west-bank ground, no fill). The colours dissolve over ~2.8 s during the dive (defined below at TZ0).
+// owner 2026-11-03 (STYLE_LOCK 2c item 2): territory colours at full strength on the theatre shot (the river splits the Confederacy) AND on the
+// Vicksburg close-ups, where the Union west-bank ground spreads south (1 Apr -> 20 Apr: ground won), with the two glowing front bands on top.
 const VC1 = terr0("assets/media/vk_vick_ctl_apr1_mx.png"); VC1.style.filter = SOFT;
-const CUE = T_MARCH + 0.4;
+const CUE = T_MARCH + 0.4, VC20 = ctlImg("assets/media/vk_vick_ctl_apr20_mx.png", CUE, null, 2.4); VC20.style.filter = SOFT;
+tl.to(VC1, { autoAlpha: 0, duration: 2.4 }, CUE);
 const PW = group(WORLD, OVL); gimg("assets/media/vk_miss_relief.jpg", PW, false); gimg("assets/media/vk_miss_ctl_apr1_mx.png", PW, true);
 landPatch(CUT, 16); riverLine(LOOP63, 6.5);
 const RLINE = riverLine(RIV, 9);   // the river on the theatre layer (that map shows no water); fades out with it
 living(VZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%)";
-const BL = [RELIEF, VC1];
+const BL = [RELIEF, VC1, VC20];
 let maskOn = null;
 const setMask = (on) => { if (on === maskOn) return; maskOn = on; BL.forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; }); };
 // ---------- the one camera (clamped inside the vicksburg map once the mississippi layer is gone) ----------
@@ -373,7 +374,6 @@ camTo(0, T_WINT - 0.2, [C0[0] + (VKS[0] - C0[0]) * 0.35, C0[1] + (VKS[1] - C0[1]
 camTo(T_WINT - 0.2, T_CAN - 0.6 - T_WINT + 0.2, C1, S1, "sine.inOut");
 const TZ0 = T_CAN - 0.6, TZ1 = T_CAN + 1.5;
 zoom(TZ0, TZ1 - TZ0, C1, S1, C2, S2, L(32.42, -90.95), "power2.inOut"); SFX("whoosh", TZ0 - 0.05);
-tl.to(VC1, { autoAlpha: 0, duration: 2.8, ease: "sine.inOut" }, TZ0);   // option 1 -> option 2, seamless during the dive
 camTo(TZ1 + 0.02, T_DIFF - TZ1, [C2[0] - 10, C2[1] + 30], S2 * 1.05, "sine.inOut");
 camTo(T_DIFF, T_CROSS - T_DIFF, C3, S3, "sine.inOut");
 camTo(T_CROSS, T_ONLY - T_CROSS, [C3[0] + 20, C3[1] - 10], S3 * 1.08, "sine.inOut");
@@ -381,7 +381,7 @@ camTo(T_ONLY, END - T_ONLY, C4, S4, "sine.inOut");
 // ---------- HUD ----------
 B.title("MOVE 2", "THE MISSISSIPPI", "1863", T_MS, T_MS + 3.0); SFX("ref:boom", T_MS + 0.1);
 B.showDate(T_WINT); B.date("WINTER 1862 - 63", T_WINT + 0.05, T_DIFF - 0.1, 32); B.date("20 APRIL 1863", T_DIFF, END + 1, 32);
-const LGD = legend(T_MS + 3.4, TZ0 + 1.0), LGD2 = legend(TZ0 + 1.5, END + 1, true);   // squares on the wide shot, glowing lines on the close-ups
+const LGD = legend(T_MS + 3.4, END + 1), LGD2 = null;   // territory squares throughout (the fill stays on the close-ups)
 // ---------- flags: overview pair, delta pair, Vicksburg-map pair (both on every frame) ----------
 flagS(FL.us, "", ...L(35.45, -88.9), 0, T_WINT + 0.6); flagS(FL.cs, "", ...L(32.2, -89.0), 0, T_WINT + 0.6);
 flagS(FL.us, "", ...L(32.36, -91.38), T_WINT + 0.5, TZ0 + 1.1); flagS(FL.cs, "", ...L(32.95, -89.7), T_WINT + 0.55, TZ0 + 1.1);

@@ -253,8 +253,8 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 // ---------- end of kit ----------
 // @@END-KIT
 // @@KITX (move-3 agent additions, appended after tools/m1_kit.js by tools/m3_build.py; FL.us is the 35-star flag for June 1864)
-// OWNER 2026-11-02 "minimize the territory colours": where a fill stays (wide shots only) it is about half as strong and less orange/saturated
-(() => { const st = document.createElement("style"); st.textContent = ".wimg.terr, .wimg.ext.terrx { filter: saturate(0.55) opacity(0.5); }"; document.head.appendChild(st); })();
+// OWNER 2026-11-03 (STYLE_LOCK 2c item 2): territory at the locked full strength (saturate(0.8) as battle.css img.terr), also on ext multiply layers
+(() => { const st = document.createElement("style"); st.textContent = ".wimg.ext.terrx { filter: saturate(0.8); }"; document.head.appendChild(st); })();
 // phrase lookup that never throws: first paragraph (of the scene) whose text has the phrase; null if none (the re-voiced ending may add a paragraph)
 const atAny = (phrase, off = 0) => { for (const k of Object.keys(B.T.paras)) if (B.T.text[k].indexOf(phrase) >= 0) return at(k, phrase, off); return null; };
 // another basemap (or a world-sized image) as a layer in the world, under the territory layers + overlay. box = [left, top, width, height] in world px

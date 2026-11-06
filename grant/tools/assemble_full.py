@@ -135,6 +135,11 @@ if not AUDIO_ONLY:
 
 # audio: mix voice + ducked music (peak-limited) -> build/mix.wav, then two-pass loudnorm to -14 LUFS
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
+# STYLE_LOCK 1c rule 4 (owner 2026-11-04 review): artillery shots/booms only where the guns are clearly visible; in the other scenes the
+# gun flashes are tiny or off screen, so their fire/impact sounds are dropped (musketry 'mg', counters, hits stay).
+_VIS_ARTY = {"m1a", "m1c", "m2b", "m2d", "hook-b"}
+_c = json.load(open("build/sfx_cues.json")); _k = [c for c in _c if c[1] not in ("fire", "impact") or c[2] in _VIS_ARTY]
+json.dump(_k, open("build/sfx_cues.json", "w")); print("artillery cues kept", sum(1 for c in _k if c[1] in ("fire", "impact")), "of", sum(1 for c in _c if c[1] in ("fire", "impact")))
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
 subprocess.run(["python3", "tools/ref_sounds.py"], check=True)
 if AUDIO_ONLY and os.path.exists("build/arch_events.json"): ARCH_EVENTS = [tuple(e) for e in json.load(open("build/arch_events.json"))]
@@ -147,11 +152,12 @@ def _place(name, t, db, dur=None, fade=0.4):
     if dur: a = np.tile(a, (int(dur * _sr / len(a)) + 1, 1))[:int(dur * _sr)]
     n = min(int(fade * _sr), len(a) // 2); a = a.copy(); a[-n:] *= np.linspace(1, 0, n)[:, None]
     s0 = int(t * _sr); e = min(len(_fx), s0 + len(a)); _fx[s0:e] += a[:max(0, e - s0)] * 10 ** (db / 20)
-_LV = {"ref:whoosh": ("whoosh_cinematic_tunnel.wav", -14), "ref:pop": ("label_pop_dry.wav", -20), "ref:boom": ("boom_big_cinematic_impact.wav", -11), "ref:riser": ("riser_reverse_swell.wav", -17)}
+_REF = os.environ.get("REF_SOUNDS") == "1"   # owner 2026-11-04: the synthesised reference sounds were NOT approved (odd boom on zoom-outs): off unless a test clip was approved
+_LV = {} if not _REF else {"ref:whoosh": ("whoosh_cinematic_tunnel.wav", -14), "ref:pop": ("label_pop_dry.wav", -20), "ref:boom": ("boom_big_cinematic_impact.wav", -11), "ref:riser": ("riser_reverse_swell.wav", -17)}
 _cues = json.load(open("build/sfx_cues.json")); _n = 0
 for _t, _k, _s in _cues:
     if _k in _LV: _place(_LV[_k][0], _t, _LV[_k][1]); _n += 1
-for _ts, _dd, _sh in ARCH_EVENTS:
+for _ts, _dd, _sh in (ARCH_EVENTS if _REF else []):
     if "headline" in _sh.get("photo", "") or _sh.get("headline_card"): _place("paper_newspaper_big_page.wav", _ts - 0.1, -12)
     if _sh.get("frame"): _place("projector_loop.wav", _ts + 0.3, -27, dur=max(0.5, _dd - 0.3))
 sf.write("build/sfx.wav", _fx, _sr); print("reference sound design:", _n, "ref cues,", len(ARCH_EVENTS), "archive shots")

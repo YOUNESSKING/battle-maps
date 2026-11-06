@@ -1,4 +1,4 @@
-// m3c (m3-5), Grant #16: the first attack on Petersburg, 15 Jun 1864. Close-up OPTION 2 (two-colour glowing fronts only) on the Dimmock Line east
+// m3c (m3-5), Grant #16: the first attack on Petersburg, 15 Jun 1864. Close-up with territory colours (ground changes hands; owner 2026-11-03) + glowing fronts on the Dimmock Line east
 // of the city: about 14,000 men of W. F. Smith's corps, Hinks's division of Black soldiers in the lead, against about 2,200 under Beauregard;
 // a stretch of the defences about two miles wide breaks (Batteries 3-11, NPS "two mile-long hole"); Smith stops for the night (night wash),
 // faint ghost arrows to the open city he did not take.
@@ -13,8 +13,13 @@ const T_ATT = at(P5, "The first attack on Petersburg"), T_PB = at(P5, "on Peters
 const DL = G.DIMMOCK.slice(0, 8);                                   // the eastern face of the Dimmock Line (Appomattox -> south)
 const DL2 = DL.map((q, i) => i >= 1 && i <= 5 ? [q[0] - [0, 18, 30, 34, 30, 14][i], q[1] + [0, 4, 2, 0, -2, -4][i]] : q);   // after the breach
 // ---------- map: option 2 (fronts only), living map ----------
+// owner 2026-11-03 territory rule: ground changes hands here, so option 1 colours (15 JUN, tools/m3_make_control.py petersburg15): Union east of the
+// Dimmock Line, Beauregard's thin line; on the breach the ~two-mile stretch Smith's men take turns blue (cross-fade in step with the front move)
+const TA = terr("assets/media/m3_pet_jun15a_mx.png", 0, null);
+terr("assets/media/m3_pet_jun15b_mx.png", T_BROKE + 0.5, null, 2.6);
+tl.to(TA, { autoAlpha: 0, duration: 1.2, ease: "sine.inOut" }, T_BROKE + 2.2);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 }); LV.shimmer([G.APPOM], { width: 1.2 }); LV.scaleBar(30.4); LV.north();
-const LGD = now(legend(0, END + 1, true));
+const LGD = now(legend(0, END + 1, false));
 camera([[0, 1560, 790, 2.6], [T_14K, 1540, 805, 2.9], [T_HINKS, 1525, 825, 3.2], [T_22, 1510, 820, 3.0], [T_BROKE + 0.4, 1495, 822, 3.3], [T_STOP, 1480, 830, 3.0],
   [T_WAIT, 1450, 840, 2.6], [END, 1445, 842, 2.55]]);
 dateNow("17 JUNE 1864", T_15 - 0.1); B.date("15 JUNE 1864", T_15, null, 34);
@@ -60,4 +65,5 @@ B.caption("SMITH STOPPED FOR THE NIGHT, AND WAITED FOR THE MORNING", T_NIGHT, EN
 // ---------- clean screen ----------
 declutter([LGD, SB, HB, BB, SB2], []);
 fixImgs();
+K.raiseTerritory();
 B.finish();

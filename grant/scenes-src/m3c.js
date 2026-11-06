@@ -1,4 +1,4 @@
-// m3c (m3-5), Grant #16: the first attack on Petersburg, 15 Jun 1864. Close-up OPTION 2 (two-colour glowing fronts only) on the Dimmock Line east
+// m3c (m3-5), Grant #16: the first attack on Petersburg, 15 Jun 1864. Close-up with territory colours (ground changes hands; owner 2026-11-03) + glowing fronts on the Dimmock Line east
 // of the city: about 14,000 men of W. F. Smith's corps, Hinks's division of Black soldiers in the lead, against about 2,200 under Beauregard;
 // a stretch of the defences about two miles wide breaks (Batteries 3-11, NPS "two mile-long hole"); Smith stops for the night (night wash),
 // faint ghost arrows to the open city he did not take.
@@ -196,19 +196,16 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
-// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
-// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
-const TERR_A = 0.5, TERR_F = "saturate(0.55)";
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -255,8 +252,8 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 // ---------- end of kit ----------
 // @@END-KIT
 // @@KITX (move-3 agent additions, appended after tools/m1_kit.js by tools/m3_build.py; FL.us is the 35-star flag for June 1864)
-// OWNER 2026-11-02 "minimize the territory colours": where a fill stays (wide shots only) it is about half as strong and less orange/saturated
-(() => { const st = document.createElement("style"); st.textContent = ".wimg.terr, .wimg.ext.terrx { filter: saturate(0.55) opacity(0.5); }"; document.head.appendChild(st); })();
+// OWNER 2026-11-03 (STYLE_LOCK 2c item 2): territory at the locked full strength (saturate(0.8) as battle.css img.terr), also on ext multiply layers
+(() => { const st = document.createElement("style"); st.textContent = ".wimg.ext.terrx { filter: saturate(0.8); }"; document.head.appendChild(st); })();
 // phrase lookup that never throws: first paragraph (of the scene) whose text has the phrase; null if none (the re-voiced ending may add a paragraph)
 const atAny = (phrase, off = 0) => { for (const k of Object.keys(B.T.paras)) if (B.T.text[k].indexOf(phrase) >= 0) return at(k, phrase, off); return null; };
 // another basemap (or a world-sized image) as a layer in the world, under the territory layers + overlay. box = [left, top, width, height] in world px
@@ -313,8 +310,13 @@ const T_ATT = at(P5, "The first attack on Petersburg"), T_PB = at(P5, "on Peters
 const DL = G.DIMMOCK.slice(0, 8);                                   // the eastern face of the Dimmock Line (Appomattox -> south)
 const DL2 = DL.map((q, i) => i >= 1 && i <= 5 ? [q[0] - [0, 18, 30, 34, 30, 14][i], q[1] + [0, 4, 2, 0, -2, -4][i]] : q);   // after the breach
 // ---------- map: option 2 (fronts only), living map ----------
+// owner 2026-11-03 territory rule: ground changes hands here, so option 1 colours (15 JUN, tools/m3_make_control.py petersburg15): Union east of the
+// Dimmock Line, Beauregard's thin line; on the breach the ~two-mile stretch Smith's men take turns blue (cross-fade in step with the front move)
+const TA = terr("assets/media/m3_pet_jun15a_mx.png", 0, null);
+terr("assets/media/m3_pet_jun15b_mx.png", T_BROKE + 0.5, null, 2.6);
+tl.to(TA, { autoAlpha: 0, duration: 1.2, ease: "sine.inOut" }, T_BROKE + 2.2);
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 }); LV.shimmer([G.APPOM], { width: 1.2 }); LV.scaleBar(30.4); LV.north();
-const LGD = now(legend(0, END + 1, true));
+const LGD = now(legend(0, END + 1, false));
 camera([[0, 1560, 790, 2.6], [T_14K, 1540, 805, 2.9], [T_HINKS, 1525, 825, 3.2], [T_22, 1510, 820, 3.0], [T_BROKE + 0.4, 1495, 822, 3.3], [T_STOP, 1480, 830, 3.0],
   [T_WAIT, 1450, 840, 2.6], [END, 1445, 842, 2.55]]);
 dateNow("17 JUNE 1864", T_15 - 0.1); B.date("15 JUNE 1864", T_15, null, 34);
@@ -360,4 +362,5 @@ B.caption("SMITH STOPPED FOR THE NIGHT, AND WAITED FOR THE MORNING", T_NIGHT, EN
 // ---------- clean screen ----------
 declutter([LGD, SB, HB, BB, SB2], []);
 fixImgs();
+K.raiseTerritory();
 B.finish();

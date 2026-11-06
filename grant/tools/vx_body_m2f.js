@@ -35,20 +35,20 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
   EDW = L(32.33, -90.605), BBR = L(32.347, -90.716), CLI = L(32.341, -90.322), BOL = L(32.35, -90.459), UTI = L(32.108, -90.623), RS = L(32.087, -90.80);
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
-// ---------- owner 2026-11-02: territory fills ONLY on the wide five-battles shot (the wedge between the two Confederate armies), subtler;
-// m2-8 (continuing m2e) and the Champion Hill / Big Black close-ups and the end are option 2 (glowing front bands, no fill) ----------
+// ---------- owner 2026-11-03 (STYLE_LOCK 2c item 2): territory by date at the locked full strength through the whole scene (the wedge between
+// the two Confederate armies, each battle's ground won, Pemberton shut in on 18 May), 1 s cross-fades; may03 on screen from frame 0 (continues m2e) ----------
 // may03 ground (tools/vx_make_control.py vick(): west bank + the bridgehead Bruinsburg - Port Gibson - Grand Gulf) as option 2 fronts:
 // the west edge of the west-bank strip, round the bridgehead, then up the river (Union inside / west, red band on the Confederate side)
 const F03P = LL([[33.40, -91.52], [32.90, -91.50], [32.55, -91.48], [32.25, -91.45], [32.02, -91.42], [31.96, -91.20], [31.90, -91.20], [31.87, -91.05], [31.90, -90.93],
   [31.97, -90.86], [32.06, -90.76], [32.12, -90.80], [32.15, -90.92], [32.10, -91.00], [32.045, -91.06], [32.06, -91.08], [32.12, -91.02], [32.20, -90.98], [32.28, -90.93],
   [32.32, -90.90], [32.36, -90.93], [32.47, -91.02], [32.62, -91.11], [32.82, -91.13], [33.05, -91.12], [33.40, -91.18]]);
 const F03 = on0(front2(F03P, 1.25, 0, { flip: true, dur: 0.01 }));
-const T_T0 = T_INL - 0.2, T_T1 = T_CH - 0.3;                      // fill in over ~2.2 s as the camera opens out; dissolves ~2.8 s into the Champion Hill dive
+const T_T0 = T_INL - 0.2;                                          // the may03 front band (m2e continuity) leaves as the march inland starts; the fill carries on
 tl.to(F03, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_T0);
-const TC = [["may03", T_T0], ["may12", T_RAY + 0.2], ["may14", T_JAX + 0.2], ["may16", T_WEST + 0.3]];
-TC.forEach(([d, t], k) => { const nx = TC[k + 1], el = terr(`assets/media/vx_vick_${d}_mx.png`, t, nx ? nx[1] : T_T1, k ? 1.0 : 2.2, nx ? 1.0 : 2.8); el.style.filter = SOFT; });
+const TC = [["may03", -1], ["may12", T_RAY + 0.2], ["may14", T_JAX + 0.2], ["may16", T_WEST + 0.3], ["may18", T_18M + 0.2]];
+TC.forEach(([d, t], k) => { const nx = TC[k + 1], el = terr(`assets/media/vx_vick_${d}_mx.png`, t, nx ? nx[1] : null, 1.0, 1.0); el.style.filter = SOFT; });   // old layer fades while the new one comes in
 living(VZ.meters_per_px, [RIV], { n: 6, clouds: 0.12, sw: 4 });
-const LGD = now(legend(0, T_T0, true)), LGS = legend(T_T0 + 0.6, T_T1 + 0.8, false), LGL = legend(T_T1 + 1.4, END + 1, true);
+const LGD = now(legend(0, END + 1, false));
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
 const DS = [["MAY 1863", null], ["1 MAY 1863", T_PG], ["12 MAY 1863", T_RAY], ["14 MAY 1863", T_JAX + 0.3], ["16 MAY 1863", T_CH + 0.3], ["17 MAY 1863", T_NEXT + 0.2], ["MAY 1863", T_COUNT], ["18 MAY 1863", T_18M + 0.3]];
 DS.forEach(([txt, t], k) => { const nx = DS[k + 1]; if (t == null) dateNow(txt, nx[1] - 0.05); else B.date(txt, t, nx ? nx[1] - 0.05 : null, 32); });
@@ -204,7 +204,7 @@ glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_1
 wstampL("SHUT INSIDE VICKSBURG", ...L(32.43, -90.66), T_SHUT + 0.2, null, "#e3232f", 28);
 const VTW2 = townL("VICKSBURG", L(32.352, -90.878), "l", T_18M + 0.3);
 // ---------- 1c declutter: one big card at a time ----------
-declutter([LGD, LGS, LGL, GRB, CHB], [[0.2, T_ANS - 0.2], [T_BREAD - 0.2, T_SET - 0.3], [T_15 - 0.2, T_DIV - 0.3], [T_18G - 0.2, T_COUNT - 0.3],
+declutter([LGD, GRB, CHB], [[0.2, T_ANS - 0.2], [T_BREAD - 0.2, T_SET - 0.3], [T_15 - 0.2, T_DIV - 0.3], [T_18G - 0.2, T_COUNT - 0.3],
   [T_60 - 0.3, T_18D - 0.2], [T_FIVE - 0.1, T_18M - 0.2]]);
 gsap.set(LGD, { filter: "opacity(0)" });   // frame 0: the m2e decision card is still up, the legend is stepped out
 fixImgs();

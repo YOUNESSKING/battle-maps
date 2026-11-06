@@ -1,4 +1,4 @@
-// m1c (m1-3..m1-4), Grant #16: Fort Donelson close-up, OPTION 2 (two-colour glowing front lines only, no fill).
+// m1c (m1-3..m1-4), Grant #16: Fort Donelson close-up, option 2 (fronts only) for the river fight + night, option 1 (territory) from dawn (the breakout).
 // 14 Feb 3 pm: Foote's four ironclads against the water batteries; the flagship hit ~60 times, two ironclads drift back, Foote wounded;
 // night: rain and snow, Grant's men without blankets. 15 Feb dawn (new angle, from the Union right): the breakout against the Union right,
 // three days' rations, the road out glows; the right wing breaks, no cartridges.
@@ -21,9 +21,13 @@ const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 
 const RIVER_N = [[1180, 200], [1240, 340], [1300, 460], [1340, 540], [1360, 590]];
 const ROAD_OUT = [[1500, 800], [1480, 880], [1462, 980], [1450, 1100], [1470, 1250], [1500, 1420], [1520, 1600]];
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
-// ---------- map (option 2: no territory fill) ----------
+// ---------- map: option 2 for the river fight and the night (the fronts say it); owner 2026-11-03 (territory when it helps):
+// at dawn the ring colours dissolve in (~2.8 s, m1_don_feb13), then the ground lost on the Union right turns red as the front
+// moves (m1_don_feb15a, the breakout bulge with the road out) ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.shimmer([CUMB], { width: 1.2 }); LV.scaleBar(15.37); LV.north();
-const LGD = now(legend(0, END + 1, true));
+const TR13 = terr("assets/media/m1_don_feb13_mx.png", T_DAWN - 0.4, null, 2.8);
+terr("assets/media/m1_don_feb15a_mx.png", T_STRUCK + 0.6, null, 2.4); tl.to(TR13, { autoAlpha: 0, duration: 2.4, ease: "sine.inOut" }, T_STRUCK + 0.8);
+const LGD2 = now(legend(0, T_DAWN + 0.6, true)), LGD = legend(T_DAWN + 0.8, END + 1, false);
 camera([[0, 1360, 640, 2.2], [T_FOOTE, 1355, 650, 2.4], [T_HIT, 1365, 655, 2.7], [T_DRIFT + 0.4, 1330, 600, 2.3], [T_WOUND + 0.4, 1340, 640, 2.2],
   [T_NIGHT + 0.4, 1350, 720, 1.9], [T_BLANK, 1300, 740, 2.0], [T_CHANCE - 0.6, 1310, 760, 2.0],
   [T_DAWN + 0.6, 1420, 850, 2.4], [T_RATIONS, 1420, 860, 2.5], [T_LEAVE, 1460, 940, 2.0], [T_KNOW, 1440, 900, 2.1], [T_BREAK + 0.4, 1410, 880, 2.5], [END, 1400, 880, 2.45]]);
@@ -98,7 +102,7 @@ greyU(["mc1", "mc2", "mc3"], T_BREAK + 0.2);
 wstampS("BREAKING", 1360, 990, T_BREAK + 0.3, null, "#e3232f", 24);
 B.caption("MUSKETS BUT NO CARTRIDGES", T_MUSK, END + 1, "carth");
 // ---------- clean screen ----------
-declutter([LGD, FB, GB, HITS], [[T_RATIONS, T_LAST - 0.3]]);
+declutter([LGD2, LGD, FB, GB, HITS], [[T_RATIONS, T_LAST - 0.3]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

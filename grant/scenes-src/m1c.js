@@ -1,4 +1,4 @@
-// m1c (m1-3..m1-4), Grant #16: Fort Donelson close-up, OPTION 2 (two-colour glowing front lines only, no fill).
+// m1c (m1-3..m1-4), Grant #16: Fort Donelson close-up, option 2 (fronts only) for the river fight + night, option 1 (territory) from dawn (the breakout).
 // 14 Feb 3 pm: Foote's four ironclads against the water batteries; the flagship hit ~60 times, two ironclads drift back, Foote wounded;
 // night: rain and snow, Grant's men without blankets. 15 Feb dawn (new angle, from the Union right): the breakout against the Union right,
 // three days' rations, the road out glows; the right wing breaks, no cartridges.
@@ -194,19 +194,16 @@ const town = (nm, p, t, side = "r", o = {}) => { const lft = side === "l";   // 
   if (o.keep !== true) tl.to(nmEl, { autoAlpha: 0, duration: 0.8 }, (o.life != null ? o.life : t + LBL_LIFE + 0.5));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
   return { el, shrink: (tt) => tl.to(nmEl, { scale: 0.5, opacity: 0.75, duration: 0.6 }, tt), grow: (tt) => tl.to(nmEl, { scale: 1, opacity: 1, duration: 0.6 }, tt) }; };
-// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut).
-// Owner 2026-11-02: territory only on wide shots where it helps, and SUBTLER there: about half the old opacity (TERR_A),
-// less saturated / orange (TERR_F, inline, overrides battle.css img.terr)
-const TERR_A = 0.5, TERR_F = "saturate(0.4)";
+// v11 territory layer (option 1) with a cross-fade in and a smooth dissolve out (sine.inOut)
 const terr = (file, t, until, dur = 1.0, outDur = dur) => { const el = document.createElement("img"); el.className = "wimg terr"; el.src = file; el.alt = "";
-  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply", filter: TERR_F });
-  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : TERR_A });
-  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: TERR_A, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
+  Object.assign(el.style, { left: "0px", top: "0px", width: "2880px", height: "1620px", mixBlendMode: "multiply" });
+  WORLD.insertBefore(el, OVL); gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 });
+  if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, ease: "sine.inOut", immediateRender: false }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: outDur, ease: "sine.inOut" }, until); return el; };
 // E2: ground about to be lost turns PALER first (to 40 % over ~1.3 s on the cue), then the winner's layer cross-fades in (~1 s)
 const terrLoss = (before, after, cue, move, until) => {
   const A = terr(before, 0, null, 0.01);
-  tl.to(A, { opacity: 0.4 * TERR_A, duration: 1.3, ease: "sine.inOut" }, cue);
+  tl.to(A, { opacity: 0.4, duration: 1.3, ease: "sine.inOut" }, cue);
   const Bn = terr(after, move, until, 1.0, 2.2);
   tl.to(A, { autoAlpha: 0, duration: 1.0 }, move + 0.2); return [A, Bn]; };
 // HUD declutter (STYLE_LOCK 1c rule 3): while a big card is up, the legend / corner badges step out via filter:opacity()
@@ -270,9 +267,13 @@ const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 
 const RIVER_N = [[1180, 200], [1240, 340], [1300, 460], [1340, 540], [1360, 590]];
 const ROAD_OUT = [[1500, 800], [1480, 880], [1462, 980], [1450, 1100], [1470, 1250], [1500, 1420], [1520, 1600]];
 const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
-// ---------- map (option 2: no territory fill) ----------
+// ---------- map: option 2 for the river fight and the night (the fronts say it); owner 2026-11-03 (territory when it helps):
+// at dawn the ring colours dissolve in (~2.8 s, m1_don_feb13), then the ground lost on the Union right turns red as the front
+// moves (m1_don_feb15a, the breakout bulge with the road out) ----------
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.shimmer([CUMB], { width: 1.2 }); LV.scaleBar(15.37); LV.north();
-const LGD = now(legend(0, END + 1, true));
+const TR13 = terr("assets/media/m1_don_feb13_mx.png", T_DAWN - 0.4, null, 2.8);
+terr("assets/media/m1_don_feb15a_mx.png", T_STRUCK + 0.6, null, 2.4); tl.to(TR13, { autoAlpha: 0, duration: 2.4, ease: "sine.inOut" }, T_STRUCK + 0.8);
+const LGD2 = now(legend(0, T_DAWN + 0.6, true)), LGD = legend(T_DAWN + 0.8, END + 1, false);
 camera([[0, 1360, 640, 2.2], [T_FOOTE, 1355, 650, 2.4], [T_HIT, 1365, 655, 2.7], [T_DRIFT + 0.4, 1330, 600, 2.3], [T_WOUND + 0.4, 1340, 640, 2.2],
   [T_NIGHT + 0.4, 1350, 720, 1.9], [T_BLANK, 1300, 740, 2.0], [T_CHANCE - 0.6, 1310, 760, 2.0],
   [T_DAWN + 0.6, 1420, 850, 2.4], [T_RATIONS, 1420, 860, 2.5], [T_LEAVE, 1460, 940, 2.0], [T_KNOW, 1440, 900, 2.1], [T_BREAK + 0.4, 1410, 880, 2.5], [END, 1400, 880, 2.45]]);
@@ -347,7 +348,7 @@ greyU(["mc1", "mc2", "mc3"], T_BREAK + 0.2);
 wstampS("BREAKING", 1360, 990, T_BREAK + 0.3, null, "#e3232f", 24);
 B.caption("MUSKETS BUT NO CARTRIDGES", T_MUSK, END + 1, "carth");
 // ---------- clean screen ----------
-declutter([LGD, FB, GB, HITS], [[T_RATIONS, T_LAST - 0.3]]);
+declutter([LGD2, LGD, FB, GB, HITS], [[T_RATIONS, T_LAST - 0.3]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();
