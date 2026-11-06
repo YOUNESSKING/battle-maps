@@ -348,8 +348,8 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
   }
   if (side === "farupleft") {   // long side stake up-left: the card stands on the Union slope, clear of the ravine and the front
     w.style.top = "4px"; w.style.left = "0px"; const card = w.firstElementChild, stake = w.lastElementChild;
-    Object.assign(card.style, { left: "-230px", bottom: "auto", top: "-190px" });
-    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "171px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-154deg)" });
+    Object.assign(card.style, { left: "-230px", bottom: "auto", top: "-210px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "181px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(-148.3deg)" });
   }
   if (side === "left" || side === "upleft") {   // mirrored side stakes (Cleburne #14 restyle): card below-left / above-left of the unit
     w.style.top = "4px"; w.style.left = "0px";
