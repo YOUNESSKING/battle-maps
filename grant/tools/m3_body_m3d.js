@@ -56,10 +56,14 @@ B.move("h2", T_HAN, 3.2, 1488, 940);
 const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 0.2, true, "east");
 unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET - 1.6, 1.2, 1420, 848);
 now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, true, "left"));
-const VET = [["v1", [1448, 768]], ["v2", [1446, 812]], ["v3", [1440, 880]], ["v4", [1430, 948]]];
+const VET = [["v1", [1441, 768]], ["v2", [1439, 812]], ["v3", [1433, 880]], ["v4", [1423, 948]]];   // >= 12 px west of the front
 VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.5, size: "XXX" });
   along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.5, 2.6, 22); });   // staggered: never on top of each other
-[0, 2].forEach((k) => arw({ pts: [...G.LEE_S, VET[k][1]], side: "rome", t: T_VET - 0.2 + k * 0.5, dur: 2.6, width: AW(2.1, 5), until: T_VET - 0.2 + k * 0.5 + 2.6 + 2.0 }));   // critic: each thin trail rides with its brigade and ends at its box, gone ~2 s after arrival
+// critic: the veterans' trails as ONE plain solid red stroke (~3 px, no casing, no core), drawn with their brigades, gone ~2 s after arrival (m3d only)
+[0, 2].forEach((k) => { const pts = [...G.LEE_S, VET[k][1]], t0 = T_VET - 0.2 + k * 0.5, p = document.createElementNS(NS, "path");
+  p.setAttribute("d", "M" + pts.map((q) => q.join(" ")).join(" L")); Object.entries({ fill: "none", stroke: "#c4121f", "stroke-width": 1.5, "stroke-linecap": "butt", "stroke-linejoin": "round" }).forEach(([a, b]) => p.setAttribute(a, b));
+  OVL.appendChild(p); const L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": `${L} ${L + 40}`, "stroke-dashoffset": L }, opacity: 0 });
+  tl.set(p, { opacity: 1 }, t0); tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: 2.6, ease: "none" }, t0); tl.to(p, { opacity: 0, duration: 0.6 }, t0 + 2.6 + 2.0); });
 stampP("LEE'S VETERANS", 1640, 470, T_VET + 0.1, T_18 - 0.1, 26);   // critic r1: on empty ground, not on the front
 // the assaults of the 16th-18th bounce off the line (visible guns, impacts)
 // the assaults of the 16th-18th break on the new line: the guns fire (below), ink crosses on the line where each broke (critic: no stray arrow strokes)
@@ -83,14 +87,15 @@ const QG = quote("PETERSBURG COULD HAVE BEEN EASILY CAPTURED AT THAT TIME", "GRA
 // ---------- m3-7: the zoom-out. The army across the James (the whole move + the bridge), the siege lines grow, more than nine months ----------
 const MOVE = G.MOVE;
 arw({ pts: MOVE, side: "carth", t: T_ACROSS - 0.4, dur: 3.0, width: 15, until: Math.min(T_ACROSS + 4.6, T_NINE - 0.7) });   // the whole move: thin trail, gone before the nine-months card
-glowPath([[2347, 657], [2329, 679]], "", 14, T_ACROSS - 0.2, T_ACROSS + 3.2);
 boxS("THE JAMES", 2200, 470, T_ACROSS, null, { size: 26 });
 hatch("assets/media/gn_ric_ctl_jun18gain_mx.png", T_ACROSS + 0.4, 3.0, { box: BOX });   // once the richmond map is in (critic: never over the petersburg map's river)   // the ground south of the James now Union (blue hatching, ~3 s)
 const W5 = FWw(0.55);
 // critic 2: ONE continuous siege line from east of Richmond across the James and the Appomattox to south-west of Petersburg (both ends on land)
 // critic: the siege lines on land only (east of Richmond / the Howlett line on Bermuda Hundred / Petersburg), broken where they meet water (msw river data), fading in with the richmond map
 const SIEGE = [[[1586.0, -235.8], [1586.0, -212.4], [1586.0, -179.0], [1586.0, -142.3], [1586.0, -105.6], [1585.4, -68.9], [1582.7, -32.2], [1578.1, 4.5], [1571.5, 41.2], [1564.0, 77.9], [1555.8, 114.6], [1547.0, 151.3], [1539.4, 188.3], [1536.8, 225.4], [1537.3, 253.8], [1538.0, 261.0]], [[1522.6, 468.9], [1523.9, 505.6], [1526.8, 542.2], [1520.3, 577.2], [1520.3, 577.2]], [[1475.3, 830.0], [1471.3, 854.3], [1463.5, 887.9], [1451.0, 923.5], [1434.1, 957.4], [1411.8, 988.3], [1385.1, 1016.8], [1354.5, 1040.8], [1321.5, 1059.7], [1287.0, 1074.4], [1251.1, 1084.9], [1214.7, 1092.4], [1178.3, 1094.8], [1141.9, 1092.4], [1105.5, 1084.9], [1072.4, 1076.6], [1049.2, 1070.8], [1049.2, 1070.8]]];
-SIEGE.forEach((pts, k) => frontS({ pts, sideA: "carth", sideB: "rome", t: T_PIN + k * 0.3, dur: 2.4, width: W5, until: END + 1 }));
+// the line east of Richmond on "pinned in a siege"; the Petersburg stretch once the move trail has gone (the short Howlett piece is dropped: it read as a stray fragment)
+frontS({ pts: SIEGE[0], sideA: "carth", sideB: "rome", t: T_PIN, dur: 2.0, width: W5, until: END + 1 });
+frontS({ pts: SIEGE[2], sideA: "carth", sideB: "rome", t: T_NINE - 0.5, dur: 2.0, width: W5, until: END + 1 });
 // "Lee was pinned in a siege": his army in the line (his card), the Union army facing it
 unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_Z0 + 0.4, size: "XXXX" });   // one army box per side through the zoom-out
 pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
