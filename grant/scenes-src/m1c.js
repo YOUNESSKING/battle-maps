@@ -309,11 +309,11 @@ unitS("m1", "carth", [1362, 884], "infantry", null, { size: "X" }); unitS("m2", 
 unitS("hq", "carth", HQ, "hq", null);
 cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_DAWN - 0.3, "up"));   // Grant at his headquarters on the 14th; at dawn he is away (hook-3)
 // Confederates: Buckner (their right), Floyd (centre, in command), Pillow (their left), one more brigade + horsemen (bare)
-unitS("bu", "rome", [1318, 690], "infantry", null); unitS("fl", "rome", [1452, 772], "infantry", null); unitS("pi", "rome", [1500, 818], "infantry", null);
+unitS("bu", "rome", [1300, 698], "infantry", null); unitS("fl", "rome", [1452, 772], "infantry", null); unitS("pi", "rome", [1500, 818], "infantry", null);
 unitS("c1", "rome", [1408, 822], "infantry", null); unitS("cF", "rome", [1562, 846], "infantry", null); cavIcon("cF");
-cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, END + 1, "up"));
+cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, END + 1, "left"));   // card off the river (the ironclads come in under it otherwise)
 cardNow(pinPortrait("fl", PHOTO("floyd"), FL.csa, "Floyd", 0.05, END + 1, "up"));
-cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, END + 1, "right"));
+cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, END + 1, "left"));
 // the river fight is framed tight on the river: the units south of the frame step out until the night shot widens (2d item 7)
 { const OUT = ["uWa", "m1", "m2", "m3", "hq", "pi", "c1", "cF"]; OUT.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 0 })); showU(OUT, T_NIGHT - 0.2); }
 // =====================================================================================================================
@@ -322,9 +322,9 @@ cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, END + 1, "rig
 const RIVN = RIVC.slice(0, 15);   // the reach north of the fort, down to the bend under the water batteries
 const SHIP_F = [0.84, 0.78, 0.72, 0.66];   // line ahead in the river, the lead closest to the batteries
 const SH = SHIP_F.map((f, k) => { const p = posOn(RIVN, f), a = posOn(RIVN, Math.max(0.02, f - 0.42));
-  const s = ship("iron", "carth", a, 60, 0, null, { L: 54 }); sail(s, sub(RIVN, Math.max(0.02, f - 0.42), f, 16), 0, T_BATTER + 0.2 + k * 0.2, 16); return { s, p }; });
+  const s = ship("iron", "carth", a, 60, 0, null, { L: 72 }); sail(s, sub(RIVN, Math.max(0.02, f - 0.42), f, 16), 0, T_BATTER + 0.2 + k * 0.2, 16); return { s, p }; });
 const TB = [0.32, 0.26].map((f, k) => { const p = posOn(RIVN, f), a = posOn(RIVN, 0.01 + k * 0.02);
-  const s = ship("timber", "carth", a, 70, 0, null, { L: 46 }); sail(s, sub(RIVN, 0.01 + k * 0.02, f, 10), 0.3, T_BATTER + 0.6, 10); return { s, p }; });
+  const s = ship("timber", "carth", a, 70, 0, null, { L: 62 }); sail(s, sub(RIVN, 0.01 + k * 0.02, f, 10), 0.3, T_BATTER + 0.6, 10); return { s, p }; });
 // Foote named: his portrait card rides on his flagship (the rear ironclad, so the card stays clear of the fight)
 const FLAG = SH[3];
 const FCARD = portraitEl(FLAG.s.host, PHOTO("foote"), FL.us, "Foote", T_FOOTE + 0.1, T_NIGHT - 0.2, "up");
@@ -339,7 +339,7 @@ smoke(SH.slice(0, 3).map(({ p }) => [p[0] + 4, p[1] - 4]), T_BATTER + 0.5, 1 / 2
 focus(FLAG.p, 34, T_HIT, T_DRIFT - 0.2);
 // "about sixty times": one number card (top right, alone)
 const HITS = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid #9fc0ea;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
-  <div class="v" style="font-size:54px;letter-spacing:.04em">0</div><div style="font-size:18px;letter-spacing:.3em;color:#9fc0ea">TIMES</div></div>`, "right:70px;top:150px;", T_60 - 0.1, Math.min(T_DRIFT + 0.4, T_60 + 3.4));
+  <div class="v" style="font-size:54px;letter-spacing:.04em">0</div><div style="font-size:18px;letter-spacing:.3em;color:#9fc0ea">TIMES</div></div>`, "right:70px;top:150px;", T_60 - 0.1, T_60 + 3.2);
 tick(HITS, ".v", 60, T_60 + 0.1, T_60 + 1.2, (v) => "~" + Math.round(v));
 // two ironclads drift back down the river, helpless (turning, smoking); the other two pull back
 [3, 2].forEach((k, j) => { const { s } = SH[k], f = SHIP_F[k];
@@ -372,7 +372,7 @@ hatch("assets/media/gn_donelson_ctl_burst_mx.png", T_STRUCK + 1.0, 3.0);
 // "most of their garrison": two more brigades come out of the works behind them
 [["c4", [1440, 790], [1415, 852]], ["c5", [1525, 792], [1492, 880]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { t: T_MOST + k * 0.2 }); go(id, T_MOST + 0.6, 2.4, b); });
 [[T_STRUCK + 1.6, [1360, 900], [1405, 925]], [T_MOST + 0.6, [1440, 950], [1495, 960]]].forEach(([t, a, b]) => { volley(a, b, t, 1 / 2.4, 6); smoke([a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], b], t + 0.05, 1 / 2.4); });
-go("m1", T_STRUCK + 0.6, 3.0, [1305, 885]); go("m2", T_STRUCK + 0.8, 3.0, [1378, 972]); go("m3", T_STRUCK + 1.0, 3.0, [1462, 1000]);
+go("m1", T_STRUCK + 0.6, 3.0, [1300, 885]); go("m2", T_STRUCK + 0.8, 3.0, [1360, 965]); go("m3", T_STRUCK + 1.0, 3.0, [1425, 1008]);
 // three days of rations in their haversacks (one big card; the screen around it stays clear)
 const HAV = `<svg width="70" height="70" viewBox="0 0 100 100"><path d="M18 34 Q50 18 82 34 L78 86 Q50 96 22 86 Z" fill="#9a8460" stroke="#f7f3ea" stroke-width="4"/><path d="M18 34 Q50 56 82 34" fill="#b49c74" stroke="#f7f3ea" stroke-width="4"/><path d="M30 30 Q50 -6 70 30" fill="none" stroke="#f7f3ea" stroke-width="5"/></svg>`;
 const RAT = bigCard(`<div style="display:flex;align-items:center;gap:26px;text-align:left">${HAV}<div><div style="font-size:64px;letter-spacing:.06em;line-height:1">THREE DAYS OF RATIONS</div><div class="s2" style="font-size:24px;letter-spacing:.3em;color:#ff8a80;margin-top:6px">IN THEIR HAVERSACKS</div></div></div>`,
@@ -381,16 +381,16 @@ SFX("hit", T_RATIONS + 0.3); { const S2 = RAT.querySelector(".s2"); gsap.set(S2,
 // not a last stand: they meant to leave, if the road opened (ink trace down the baked Forge road, a solid red arrow, its name small)
 inkTrace(FORGE, T_LEAVE - 0.1, T_ROAD + 3.0, 2.6);
 B.caption("NOT PLANNING A LAST STAND · PLANNING TO LEAVE", T_LEAVE + 0.1, T_KNOW - 0.1, "rome");
-place("The road", 1395, 1075, T_ROAD + 0.1, T_KNOW + 0.6, { size: 24 });
+place("The road", 1545, 1012, T_ROAD + 0.1, T_KNOW + 0.6, { size: 24 });
 arw({ pts: FORGE.slice(2, 6).map(([x, y]) => [x + 16, y]), side: "rome", t: T_ROAD, dur: 1.2, until: T_KNOW + 1.2 }, 2.05, 9);
 // Grant did not know that yet (no unit of his on the map now: one corner badge, <= 3.5 s)
 badge({ name: "ULYSSES S. GRANT", role: "DID NOT KNOW THAT YET", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_KNOW, until: T_BREAK - 0.1 });
 // his right wing breaking: the three brigades fall back, grey; ink crosses where they broke; no cartridges
 greyU(["m1", "m2", "m3"], T_BREAK + 0.2);
-go("m1", T_BREAK + 0.3, 2.2, [1250, 945]); go("m2", T_BREAK + 0.45, 2.2, [1318, 1025]); go("m3", T_BREAK + 0.6, 2.2, [1400, 1048]);
-crosses([[1318, 900], [1392, 985], [1470, 1012]], T_BREAK + 0.3, END + 1, 2.4);
-stampP("BREAKING", 1250, 1060, T_BREAK + 0.2, T_MUSK - 0.15, 24);
-stampP("NO CARTRIDGES", 1250, 1060, T_NOC, END + 1, 24);
+go("m1", T_BREAK + 0.3, 2.2, [1250, 945]); go("m2", T_BREAK + 0.45, 2.2, [1305, 1025]); go("m3", T_BREAK + 0.6, 2.2, [1375, 1055]);
+crosses([[1318, 900], [1375, 980], [1440, 1015]], T_BREAK + 0.3, END + 1, 2.4);
+stampP("BREAKING", 1215, 1075, T_BREAK + 0.2, T_MUSK - 0.15, 30);
+stampP("NO CARTRIDGES", 1215, 1075, T_NOC, END + 1, 30);
 fixImgs();
 K.raiseTerritory();
 B.finish();
