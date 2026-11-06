@@ -84,7 +84,7 @@ const HITS = ticker("HITS ON THE FLAGSHIP", 60, "", "right:70px;top:240px;", T_6
 tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_WOUND + 0.4);
 { const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); }
 // the WOUNDED tag stands beside Foote's card (child of the card, so it moves with it)
-{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;right:88px;top:44px";   // left of the card, off the ironclads cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
+{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;left:-130px;top:44px";   /* left of the card, off the ironclads */ cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
   tl.fromTo(st, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, immediateRender: false }, T_WOUND + 0.4); tl.to(st, { autoAlpha: 0, duration: 0.3 }, T_WOUND + 3.6); SFX("hit", T_WOUND + 0.58); }
 // ---------- night: rain and snow; blankets thrown away on the march ----------
 nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);

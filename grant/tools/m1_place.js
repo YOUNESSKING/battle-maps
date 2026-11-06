@@ -27,7 +27,7 @@ const sc = process.argv[2];
       const d = document.getElementById("date"); if (d && vis(d)) { const r = d.getBoundingClientRect(); if (r.width) obs.push([r.left - 28, r.top - 28, r.right + 28, r.bottom + 28, 30]); }   // the date scroll: never under it (no step-out toggling)
       const units = C.map((c) => (t >= c.t - 0.05 && t <= c.until && vis(c.unit) ? ctr(c.unit) : null));
       return { t, obs, units }; });
-    const cands = []; for (const R of [100, 130, 165, 205, 245, 290]) for (let a = 0; a < 360; a += 15) cands.push([Math.round(R * Math.cos(a * Math.PI / 180)), Math.round(R * Math.sin(a * Math.PI / 180))]);
+    const cands = []; for (const R of [100, 115, 130, 150, 165, 185, 205, 225, 245, 270, 290]) for (let a = 0; a < 360; a += 7.5) cands.push([Math.round(R * Math.cos(a * Math.PI / 180)), Math.round(R * Math.sin(a * Math.PI / 180))]);
     const ov = (a, b) => Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])) * Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
     const out = {}, placed = [];
     C.map((c, i) => [c, i]).sort((x, y) => x[0].t - y[0].t).forEach(([c, i]) => {

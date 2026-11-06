@@ -433,7 +433,7 @@ pinPortrait(ST[1].el, PHOTO("pillow"), FL.cs, "Pillow", 0, T_CMD + 0.6, true, "u
 B.caption("FLOYD: BUCHANAN'S SECRETARY OF WAR", T_SEC, T_FOR - 0.2, "rome");
 // ---------- Forrest's cavalry out through the flooded backwater ----------
 const BW = water([1566, 838], 96, 30, 116, T_BACKW - 0.2, T_DAWN + 1, 0.75);   // the flooded backwater (Lick Creek), in the map's own water colour
-unitS("for", "rome", [1562, 884], "cavalry", "FORREST", { t: T_FOR });   // clear of the red box at the works cavIcon("for");
+unitS("for", "rome", [1562, 884], "cavalry", "FORREST", { t: T_FOR }); cavIcon("for");   /* clear of the red box at the works */
 along("for", [[1562, 884], ...ESCAPE.slice(2, 6)], T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
 arw({ pts: [[1562, 884], ...ESCAPE.slice(2, 6)], side: "rome", t: T_SEV, dur: T_CMD - T_SEV + 1.6, width: AW(2.0, 9), until: T_CMD + 3.4 });   // trail grows with the box, ends at it
 // ---------- the command falls to Buckner; at dawn he writes asking for terms ----------
