@@ -13,7 +13,7 @@ if 'minus' in O: m &= ~owned(O['minus'])
 if 'clip' in O:
     c = np.zeros(m.shape, np.uint8); cv2.fillPoly(c, [np.array([[float(v) for v in q.split(',')] for q in O['clip'].split(';')], np.int32)], 1); m &= c.astype(bool)
 rl = np.asarray(Image.open(relief).convert('RGB').resize((2880, 1620), Image.BILINEAR)).astype(np.int16)
-water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 25) & (rl[..., 2] > 110)).astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
+water = cv2.dilate(((rl[..., 2] > rl[..., 0] + 25) & (rl[..., 2] > 110)).astype(np.uint8), np.ones((19, 19), np.uint8)).astype(bool)
 m = cv2.morphologyEx(m.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
 m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((11, 11), np.uint8)).astype(bool) & ~water
 m = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 3) > 0.55

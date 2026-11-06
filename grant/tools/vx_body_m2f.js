@@ -51,7 +51,7 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 const FX = (a, b) => [a, b];
-const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1495, 725], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
+const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1490, 600], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.21, -90.90), T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
@@ -197,7 +197,7 @@ const CK = ticker("THE FIVE BATTLES COST HIM", 4500, "", "right:110px;top:260px;
   pre.style.cssText = "font-size:20px;letter-spacing:.3em;color:#f7f3ea"; pre.textContent = "FEWER THAN"; v.parentNode.insertBefore(pre, v); gsap.set(pre, { autoAlpha: 0 });
   tl.to(pre, { autoAlpha: 1, duration: 0.3 }, T_4500 - 0.1); }
 // 18 May: Pemberton's army shut inside Vicksburg; the ring closes
-B.move("u13", T_COUNT, 6, ...L(32.33, -90.80)); B.move("u17", T_COUNT + 0.3, 6, ...L(32.37, -90.80)); B.move("u15", T_COUNT + 0.5, 6, ...L(32.42, -90.82));
+B.move("u13", T_COUNT, 6, ...L(32.33, -90.80)); B.move("u17", T_COUNT + 0.3, 6, ...L(32.37, -90.80)); B.move("u15", T_COUNT + 0.5, 6, ...L(32.45, -90.79));
 B.move("rv", T_COUNT + 1, 5, ...L(32.345, -90.852)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 3);
 const RING = LL([[32.405, -90.875], [32.40, -90.835], [32.37, -90.82], [32.335, -90.825], [32.30, -90.845], [32.28, -90.88], [32.29, -90.905]]);
 glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_18M + 0.4 });
