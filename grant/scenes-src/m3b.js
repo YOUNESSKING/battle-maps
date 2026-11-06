@@ -495,7 +495,7 @@ boxS("WEYANOKE", BR_N[0] + 40, BR_N[1] - 26, T_WEY, null, { size: 26 });
 unitS("en1", "carth", [BR_N[0] + 26, BR_N[1] - 14], "infantry", "ENGINEERS", { t: T_ENG, size: "II" });
 unitS("en2", "carth", [BR_S[0] + 28, BR_S[1] + 14], "infantry", null, { t: T_ENG + 0.3, size: "II" });
 pontoons(BR_N, BR_S, T_ENG + 0.4, T_READY, 22, { bw: 2.2, bl: 5.5 });
-const TK = ticker("PONTOON BOATS", 101, "", "left:0;right:0;top:250px;display:flex;justify-content:center;", T_101 - 0.1, 2.0, T_FT - 0.1, 8, { col: "#2e5cb2" });
+const TK = numCard("PONTOON BOATS", "101", "", "left:0;right:0;top:250px;display:flex;justify-content:center;", at(P3, "hundred and one"), T_FT - 0.1, { slam: false });   // critic: static 101 from "hundred" (no rolling number)
 curveLabel("about 2,100 feet", [[1400, 905], [1482, 905]], T_READY + 0.4, Math.min(T_READY + 3.6, T_115 - 0.4), 24);   // critic: 24 px, horizontal, on the open water beside the bridge, gone before the 115,000 card   // critic r1: an ink label along the bridge once it spans the river
 const CH = glowPath([[1338, 820], [1345, 870], [1376, 888], [1430, 878], [1470, 840]], "#3c74d8", 2.2, T_TIDE, T_FOUR, 2, 0.8);
 // side-view profile strip (once in move 3, on the terrain beat): the tidal channel at the bridge site

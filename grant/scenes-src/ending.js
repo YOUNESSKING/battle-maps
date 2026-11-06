@@ -499,8 +499,8 @@ flagS(FL.us, 1590, 960, T_X3 + 0.5, T_LEE - 0.3); flagS(FL.cs, 1260, 930, T_X3 +
 arw({ pts: R.MOVE, side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 8), until: T_JAMES + 4.5 });   // thin trail, fades ~2 s after arrival
 // critic 2: the armies on the James map (a blue box rides the trail; Lee's army at Cold Harbor, then before Petersburg) + Richmond and Petersburg
 const RICHT = town("RICHMOND", R.RICHMOND, T_X3 + 0.4, "l", { keep: true });
-// critic: Richmond steps out while a big card would cover it (the two nickname cards, the question card)
-[[T_NICK + 0.05, T_NICK + 3.9], [T_1865 - 0.05, Math.min(T_1865 + 3.9, T_SURR)], [T_SURW - 0.2, T_E1END + 0.5], [F_Q - 0.2, Math.max(F_TELL + 1.2, END - 20) + 0.9]].forEach(([a, b]) => { tl.to(RICHT.el, { autoAlpha: 0, duration: 0.25 }, a); tl.to(RICHT.el, { autoAlpha: 1, duration: 0.4 }, b); }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
+// critic: Richmond steps out while a big card would cover it (one window from the surrender card to the end band: no flicker) (the two nickname cards, the question card)
+[[T_NICK + 0.05, T_NICK + 3.9], [T_1865 - 0.05, Math.min(T_1865 + 3.9, T_SURR)], [T_SURW - 0.2, Math.max(F_TELL + 1.2, END - 20) + 0.9]].forEach(([a, b]) => { tl.to(RICHT.el, { autoAlpha: 0, duration: 0.25 }, a); tl.to(RICHT.el, { autoAlpha: 1, duration: 0.4 }, b); }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
 unitS("eb", "carth", R.MOVE[0], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); along("eb", [...R.MOVE.slice(0, -1), [1450, 968]], T_JAMES - 0.1, 2.6, 24);
 unitS("er", "rome", [R.CH_FRONT[2][0] - 10, R.CH_FRONT[2][1]], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); B.move("er", T_SLIP + 0.8, 1.6, 1412, 955);
 glowPath([R.WEYANOKE, [R.WEYANOKE[0] - 1, R.WEYANOKE[1] + 5]], "", 2.0, T_JAMES + 0.8, T_JAMES + 3.8);

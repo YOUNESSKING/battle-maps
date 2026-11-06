@@ -33,7 +33,7 @@ const T_Z0 = T_CHG - 0.4, T_Z1 = T_PIN + 1.0;
 // owner 2026-11-03 rule: the 16-18 June ground (east of the new line) is coloured from the start: Lee's veterans arrive, the line freezes, the zoom-out
 const PT = document.getElementById("relief2");   // (the lens drives it; s < 1.5 on the zoom-out keeps it hidden)
 tl.set(REL, { webkitMaskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)", maskImage: "radial-gradient(ellipse 62% 62% at 50% 50%, #000 70%, transparent 100%)" }, T_Z0);
-tl.to([REL, PT], { opacity: 0, duration: 2.6, ease: "sine.inOut" }, T_Z0 + 1.2);
+tl.to([REL, PT], { opacity: 0, duration: 1.6, ease: "sine.inOut" }, T_Z1 - 0.6);   // critic: the richmond map shows only once the camera is far enough out (no blurred river band)
 const LV = LivingK(B); LV.clouds({ n: 5, opacity: 0.12 });
 camera2([[0, 1480, 835, 2.2], [T_VET - 0.6, 1470, 700, 1.6], [T_VET + 1.0, 1440, 680, 1.6],   // critic: wide enough for the arriving veterans, every box/card >= 12 px apart [T_18 + 0.4, 1470, 850, 2.1], [T_GONE, 1460, 850, 2.0], [T_WROTE + 1.0, 1440, 850, 1.75],
   [T_EVEN, 1480, 760, 1.5], [T_Z0 + 0.6, 1500, 700, 1.3], [T_Z1 + 1.4, 1760, 230, 0.55, "power2.inOut"], [T_ABAN + 1.0, 1700, 260, 0.56], [END, 1720, 250, 0.53]]);
@@ -51,7 +51,8 @@ const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, wid
 now(pinPortrait("s1", PHOTO("wfsmith"), FL.us, "W. F. Smith", 0, T_Z0 + 0.2, true, "east-up")); now(pinPortrait("hk", PHOTO("hinks"), FL.us, "Hinks", 0, T_Z0 + 0.2, true, "east-far2"));
 // critic: before the wide shot the Union units spread along the line (>= 12 px apart even at s 1.0); the three cards fan out east
 B.move("s1", T_VET - 1.6, 1.2, 1494, 770); B.move("hk", T_VET - 1.6, 1.2, 1496, 885);   // critic 2: the three Union cards spaced
-unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1488, 940);
+unitS("h2", "carth", [1600, 965], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" });   // comes in clear of the US flag
+B.move("h2", T_HAN, 3.2, 1488, 940);
 const HCP = pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN, T_Z0 + 0.2, true, "east");
 unitS("pr", "rome", [1440, 830], "infantry", null, { t: 0, size: "X" }); B.move("pr", T_VET - 1.6, 1.2, 1420, 848);
 now(pinPortrait("pr", PHOTO("beauregard"), FL.cs, "Beauregard", 0, T_Z0 + 0.2, true, "left"));
