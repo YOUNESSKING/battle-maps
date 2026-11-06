@@ -27,6 +27,13 @@ bash tools/finalize.sh                                              # 1080p mast
 ```
 Needs `/opt/models/depth_anything_v2_small.onnx` (huggingface onnx-community/depth-anything-v2-small, onnx/model.onnx) + `pip install onnxruntime opencv-python-headless scikit-image rasterio`.
 
+## v6 (2026-11-06): voice A (owner request)
+Same video as v5 with the narration switched to **voice A** (Chatterbox conversion of the same Kokoro take, reference
+`tts/voices/test_A_chatterbox.mp3` because `owner_ref.wav` is missing): `tts/convert_voice.py audio/voice.wav ... audio/voice_owner.wav`
+(~23 min), `tools/assemble_full.py --audio-only` (+ `--preview`), finalize's +11.8 dB/limiter step, then -1.2 dB on `build/mix_final.wav`
+(voice A came out at -12.8) and a remux. Result: `build/cleburne-v6-voiceA.mp4` (+ `-720p`), 14:26, -14.0 LUFS, true peak -2.5 dBFS,
+md5 ce35f375d4e88ab2badbb106d90aa119. Timing identical (866.18 s), no re-render. v5 (plain Kokoro) kept as `build/cleburne-v5-kokoro*.mp4`.
+
 ## Open / known
 - Master uploaded 2026-11-06: https://gofile.io/d/hWMzEbha (1080p + 720p preview). Local: `cleburne/build/cleburne.mp4` (1080p, 14:26 = 866.2 s, 394 MB, md5 a4336f0fe7a49a562d5ce44341ae3ecd)
   + preview `cleburne/build/cleburne-720p.mp4`. Loudness -14.1 LUFS integrated, true peak -1.3 dBFS (finalize.sh came out at -14.4;
