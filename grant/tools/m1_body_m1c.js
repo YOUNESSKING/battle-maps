@@ -32,14 +32,14 @@ const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 hand("assets/media/gn_don_ctl_feb15acap_mx.png", T_STRUCK + 1.2);   // the ground the breakout takes (Confederate gain = red ink)
 camera([[0, 1360, 640, 2.2], [T_FOOTE, 1355, 650, 2.4], [T_HIT, 1365, 655, 2.7], [T_DRIFT + 0.4, 1320, 590, 2.2], [T_WOUND + 0.4, 1320, 570, 2.1],
   [T_NIGHT + 0.4, 1350, 720, 1.9], [T_BLANK, 1300, 740, 2.0], [T_CHANCE - 0.6, 1310, 760, 2.0],
-  [T_DAWN + 0.6, 1420, 850, 2.4], [T_RATIONS, 1420, 860, 2.5], [T_LEAVE, 1460, 940, 2.0], [T_KNOW, 1440, 900, 2.1], [T_BREAK + 0.4, 1410, 880, 2.5], [END, 1400, 880, 2.45]]);
+  [T_DAWN + 0.6, 1420, 820, 2.4], [T_RATIONS, 1420, 830, 2.5], [T_LEAVE, 1460, 900, 2.0], [T_KNOW, 1440, 870, 2.1], [T_BREAK + 0.4, 1410, 850, 2.3], [END, 1400, 850, 2.3]]);
 dateNow("12 FEBRUARY 1862", T_14 + 0.1); B.date("14 FEB · 3 PM", T_14 + 0.2, T_NIGHT - 0.1, 34); B.date("14 FEB · NIGHT", T_NIGHT, T_DAWN - 0.1, 34); B.date("15 FEB · DAWN", T_DAWN, null, 34);
 // ---------- flags (both on every frame) ----------
 flagS(FL.us, 1210, 600, 0, T_NIGHT + 0.6); flagS(FL.cs, 1470, 760, 0, T_NIGHT + 0.6);
 flagS(FL.us, 1215, 820, T_NIGHT + 0.4, END + 1); flagS(FL.cs, 1470, 720, T_NIGHT + 0.5, T_DAWN + 0.6);
 flagS(FL.cs, 1560, 770, T_DAWN + 0.4, END + 1);
 // ---------- the lines (option 2: the two-colour glowing front where the sides touch) ----------
-fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 28);
+fortIcon(DON, 0, null, { s: 24 });   // critic r1: fort flags only at the surrender beats
 WB.forEach((p) => unitS("wb" + p[0], "rome", p, "artillery", null, { t: 0, w: 40, h: 27 }));
 // critic r1: the front moves with the breakout (cross-fade between positions: MID -> PUSH on the strike, PUSH -> PUSH2 as the right wing breaks)
 const PUSH2 = PUSH.map((q, i) => i < 4 ? [q[0] - 10, q[1] + [40, 45, 40, 25][i]] : q);
@@ -51,10 +51,10 @@ UN.forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X
 const RD = [["bu", [1306, 722]], ["c1", [1360, 770]], ["c2", [1430, 800]], ["c3", [1490, 808]]];
 RD.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
 // critic r1: the generals named in m1b keep their cards for the whole battle (same map), from frame 0
-unitS("fl", "rome", [1462, 752], "infantry", null, { t: 0, size: "X" }); unitS("ghq", "carth", [1205, 800], "infantry", null, { t: 0, size: "X" });
-pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "left");
+unitS("fl", "rome", [1510, 744], "infantry", null, { t: 0, size: "X" }); unitS("ghq", "carth", [1205, 800], "infantry", null, { t: 0, size: "X" });
+pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");
 pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");
-pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "right");
+pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "upright");
 pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
 tl.to(B.units.c2.el, { y: -3, duration: 0.7, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0.1);
 // ---------- 14 Feb: Foote's ironclads against the water batteries ----------
@@ -101,7 +101,7 @@ smoke([[1428, 878], [1440, 872], [1495, 884]], T_STRUCK + 1.5, 0.8);
 const HAV = `<svg width="70" height="70" viewBox="0 0 100 100"><path d="M18 34 Q50 18 82 34 L78 86 Q50 96 22 86 Z" fill="#9a8460" stroke="#f7f3ea" stroke-width="4"/><path d="M18 34 Q50 56 82 34" fill="#b49c74" stroke="#f7f3ea" stroke-width="4"/><path d="M30 30 Q50 -6 70 30" fill="none" stroke="#f7f3ea" stroke-width="5"/></svg>`;
 const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20px 46px 22px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">${HAV}
   <div><div style="font-size:64px;letter-spacing:.06em;line-height:1">THREE DAYS OF RATIONS</div><div class="s2" style="font-size:24px;letter-spacing:.3em;color:#ff8a80;margin-top:6px">IN THEIR HAVERSACKS</div></div></div>`,
-  "left:0;right:0;top:230px;display:flex;justify-content:center;", T_RATIONS, T_LAST - 0.3);
+  "right:50px;top:400px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
 SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
 // not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word
@@ -114,7 +114,7 @@ pulseU("ghq", T_KNOW + 0.1);   // "Grant did not know that yet": his own card is
 [["mc1", [1280, 905], [1250, 950]], ["mc2", [1380, 950], [1350, 1000]], ["mc3", [1470, 965], [1440, 1015]]].forEach(([id, a, p], k) => { B.move(id, T_BREAK + 0.3 + k * 0.15, 2.2, p[0], p[1]);
   arw({ pts: [a, [(a[0] + p[0]) / 2, (a[1] + p[1]) / 2], [p[0] + (a[0] - p[0]) * 0.25, p[1] + (a[1] - p[1]) * 0.25]], side: "carth", t: T_BREAK + 0.3 + k * 0.15, dur: 2.0, width: AW(2.5) }); });   // short pull-back trails
 [["c1", [1305, 870]], ["c2", [1405, 925]], ["c3", [1485, 930]]].forEach(([id, p], k) => B.move(id, T_BREAK + 0.5 + k * 0.15, 2.0, p[0], p[1]));
-wstampS("BREAKING", 1220, 1050, T_BREAK + 0.3, null);
+wstampS("BREAKING", 1180, 1000, T_BREAK + 0.3, null);
 B.caption("MUSKETS BUT NO CARTRIDGES", T_MUSK, END + 1, "carth");
 // ---------- clean screen ----------
 fixImgs();

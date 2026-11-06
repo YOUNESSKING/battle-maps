@@ -31,7 +31,7 @@ flagS(FL.us, 1430, 820, 0, T_TALK + 0.5); flagS(FL.cs, 1500, 1010, 0, T_TALK + 0
 flagS(FL.us, 1500, 580, T_TALK + 0.3, END + 1); flagS(FL.cs, 1300, 1320, T_TALK + 0.4, T_HOW + 1.8);
 flagS(FL.cs, 860, 1380, T_HOW + 1.6, END + 1);
 // ---------- the two forts, both Union now ----------
-[FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); poleFlag(FL.us, [p[0] + 3, p[1] - 6], 0, null, 26); });
+[FH, FD].forEach((p, k) => { fortIcon(p, 0, null, { s: 20, col: "#4f8bff" }); });
 B.caption("TWO RIVER FORTS · TEN DAYS", T_TEN, T_TEN + 2.6, "carth");
 const GB = badge({ name: "GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_SNUB - 0.1, until: T_SNUB + 3.3 });   // no unit of his on this map
 // ---------- the rivers open: the gunboats steam far into Tennessee ----------
@@ -45,7 +45,7 @@ const KYL = glowPath([COL, [1200, 840], FH, FD, [1700, 830], BG], "", 0, T_FALL,
 boxS("KENTUCKY", 1640, 560, T_KY, null, { size: 30 }); boxS("MIDDLE TENNESSEE", 1720, 1250, T_MIDT, null, { size: 30 });
 [[BG, [1880, 900], [1840, 1060], [1880, 1300]], [COL, [990, 900], [960, 1050]], [[1840, 1060], [1860, 1220], [1900, 1380]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, width: AW(0.85, 10), until: T_FALL + 7.0 }));
-[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060]], ["r3", [1600, 1040], [1720, 1330]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { t: 0, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
+[["r1", BG, [1880, 1330]], ["r2", COL, [960, 1060], T_TALK], ["r3", [1600, 1040], [1720, 1330]]].forEach(([id, a, b, t0], k) => { unitS(id, "rome", a, "infantry", null, { t: t0 || 0, size: "XXX" }); B.move(id, T_FALL + 0.4 + k * 0.5, 4.0, b[0], b[1]); });
 hideU(["r1", "r2", "r3"], T_WAIT);   // they have fallen back off the stage before the method card
 // ---------- method card: line 1 lit on "attacked the moment the enemy hesitated" ----------
 GG.METHOD_TITLE = "GRANT'S METHOD";

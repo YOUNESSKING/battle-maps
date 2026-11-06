@@ -67,7 +67,7 @@ const BRG = glowPath([BR_N, BR_S], "#6f9bff", 2.6, T_READY, END + 1, 3, 0.95, { 
 wstampS("READY", BR_S[0] + 60, BR_S[1] + 10, T_READY + 0.3, null, "#9fc0ea", 30);
 // ---------- m3-4: about 115,000 men cross with their guns and wagons ----------
 // critic 2: three columns (one per ~1.6 s, never touching) cross and march on south toward Petersburg and stay there; the bridge parties step out
-const XEND = [[1000, 965], [880, 978], [760, 992]];
+const XEND = [[760, 992], [880, 978], [1000, 965]];   // the first column goes furthest: nobody passes anybody
 for (let k = 0; k < 3; k++) { const id = "x" + k; unitS(id, "carth", BR_N, k === 1 ? "artillery" : "infantry", null, { t: T_TWO + k * 1.6, size: k === 1 ? "" : "XX" });
   along(id, [BR_N, BR_S, ...ROAD_S.filter((q) => q[0] > XEND[k][0]), XEND[k]], T_TWO + k * 1.6, 7.0 + k * 0.8, 24); }
 hideU(["f1", "f2", "en1", "en2"], T_TWO + 1.0);

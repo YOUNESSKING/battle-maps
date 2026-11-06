@@ -37,7 +37,7 @@ dateNow("15 FEB · DAWN", T_RODE + 0.4); B.date("15 FEBRUARY 1862", T_RODE + 0.5
 // ---------- flags ----------
 flagS(FL.us, 1175, 745, 0, END + 1); flagS(FL.cs, 1560, 790, 0, END + 1);
 // ---------- the lines and units as m1c left them ----------
-fortIcon(DON, 0, null, { s: 24 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 28);
+fortIcon(DON, 0, null, { s: 24 });   // critic r1: fort flags only at the surrender beats
 // the front as m1c left it (PUSH2), back to the ring as they pull back (MID), then Smith's lodgement (MID2): cross-fades
 const PUSH2 = PUSH.map((q, i) => i < 4 ? [q[0] - 10, q[1] + [40, 45, 40, 25][i]] : q);
 const frontIn = (pts, t, until) => { const g = frontS({ pts, sideA: "carth", sideB: "rome", t, dur: 0.01, width: FWc(2.4), until }); if (t > 0) tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 1.2, immediateRender: false }, t); return g; };
@@ -46,15 +46,15 @@ frontIn(PUSH2, 0, T_PULLED + 1.0); frontIn(MID, T_PULLED + 0.6, T_TOOK + 0.6); f
 [["mc1", [1250, 950]], ["mc2", [1350, 1000]], ["mc3", [1440, 1015]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
 const RED = [["bu", [1306, 722], [1306, 722]], ["c1", [1305, 870], [1352, 790]], ["c2", [1405, 925], [1420, 805]], ["c3", [1485, 930], [1490, 812]], ["c4", [1440, 860], [1455, 780]], ["c5", [1500, 860], [1525, 790]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
-unitS("fl", "rome", [1462, 752], "infantry", null, { t: 0, size: "X" });
+unitS("fl", "rome", [1510, 744], "infantry", null, { t: 0, size: "X" });
 pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");   // critic r1: named generals keep their cards (same map)
-pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "right");
+pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "upright");
 pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
 // ---------- Grant rides back along the line ----------
 unitS("gr", "carth", RIDE[0], "infantry", "GRANT", { t: 0 }); cavIcon("gr");
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
 pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");   // Grant at his own counter for the whole battle (named at once: "Grant rode along the line")
-const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "", T_WHO, T_WHO + 3.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 46, pos: "right:60px;top:60px;" });   // empty upper right, off the front and the fort
+const C1 = belief("WHOEVER ATTACKS FIRST NOW WILL WIN", "", T_WHO, T_WHO + 3.4, { col: "#1f4fc4", subc: "#9fc0ea", size: 46, pos: "right:60px;bottom:70px;" });   // empty lower right, off the front, the fort and the cards
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line: "it acted like a charm" (narrated; the caption carries no quote marks)
 const CBOX = `<svg width="26" height="20" viewBox="0 0 26 20" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="2" y="3" width="22" height="15" rx="2" fill="#2a2420" stroke="#efe6cf" stroke-width="1.4"/><rect x="2" y="3" width="22" height="5" fill="#4a3c2c" stroke="#efe6cf" stroke-width="1.2"/><circle cx="13" cy="12" r="2.6" fill="#c9b48a"/></svg>`;
@@ -64,7 +64,7 @@ ungreyU(["mc1", "mc2", "mc3"], T_BACK);
 [["mc1", [1290, 885]], ["mc2", [1385, 935]], ["mc3", [1470, 945]]].forEach(([id, p], k) => B.move(id, T_BACK + 0.1 + k * 0.15, 2.0, p[0], p[1]));
 B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_REPORT - 0.1, "carth");
 // the official report: the confusion on the Confederate side as great as his own, possibly greater
-const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "OFFICIAL REPORT", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 40, pos: "right:60px;top:60px;" });
+const C2 = belief("AS GREAT AS HIS OWN · POSSIBLY GREATER", "OFFICIAL REPORT", T_GREAT - 0.2, T_GONE - 0.2, { col: "#c4121f", size: 40, pos: "right:60px;bottom:70px;" });
 ["c1", "c2", "c3", "c4", "c5"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { rotation: k % 2 ? 8 : -8, duration: 0.25, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_GREAT + k * 0.12));
 // they had gone out to break the ring, then pulled back inside it
 [[1310, 900], [1410, 950], [1490, 955]].forEach((p, k) => arw({ pts: [[p[0], p[1] - 70], [p[0] + 4, p[1] - 30]], side: "rome", t: T_GONE + k * 0.2, dur: 0.6, width: AW(2.2, 9), until: T_PULLED + 0.4 }));

@@ -1,7 +1,7 @@
 """Move-3 Style W check: one snapshot run per scene into the scratchpad + a labelled sheet grant/build/sheetW-<scene>.jpg.
 usage (from grant/): python3 tools/m3w_snap.py SCENE "t|what" "t|what" ...   (t in scene seconds; a second run wipes the folder)"""
 import json, os, shutil, subprocess, sys, tempfile
-SNAP = "/tmp/claude-0/-home-user-battle-maps/425685c4-6657-5109-8b39-25dbef768324/scratchpad/grant_snap2"
+SNAP = "/tmp/claude-0/-home-user-battle-maps/425685c4-6657-5109-8b39-25dbef768324/scratchpad/grant_snap3"
 sc, items = sys.argv[1], [a.split("|", 1) for a in sys.argv[2:]]
 t0 = json.loads(open(f"scenes/{sc}/timing.js").read().split("=", 1)[1].rstrip().rstrip(";"))["abs_start"]
 out = f"{SNAP}/{sc}"; shutil.rmtree(out, ignore_errors=True); os.makedirs(out)

@@ -61,11 +61,11 @@ arw({ pts: R.MOVE, side: "carth", t: T_JAMES - 0.1, dur: 2.6, width: AW(3.4, 8),
 // critic 2: the armies on the James map (a blue box rides the trail; Lee's army at Cold Harbor, then before Petersburg) + Richmond and Petersburg
 town("RICHMOND", R.RICHMOND, T_X3 + 0.4, "l", { keep: true }); town("PETERSBURG", R.PETERSBURG, T_X3 + 0.5, "l", { keep: true });
 unitS("eb", "carth", R.MOVE[0], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); along("eb", [...R.MOVE.slice(0, -1), [1450, 968]], T_JAMES - 0.1, 2.6, 24);
-unitS("er", "rome", [R.CH_FRONT[2][0] - 10, R.CH_FRONT[2][1]], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); B.move("er", T_SLIP + 0.8, 1.6, 1404, 970);
+unitS("er", "rome", [R.CH_FRONT[2][0] - 10, R.CH_FRONT[2][1]], "infantry", null, { t: T_X3 + 0.4, size: "XXXX" }); B.move("er", T_SLIP + 0.8, 1.6, 1412, 955);
 glowPath([R.WEYANOKE, [R.WEYANOKE[0] - 1, R.WEYANOKE[1] + 5]], "", 2.0, T_JAMES + 0.8, T_JAMES + 3.8);
 boxS("THE JAMES", R.WEYANOKE[0] + 14, R.WEYANOKE[1] + 14, T_JAMES, null, { size: 26 });
 frontS({ pts: R.CH_FRONT, sideA: "carth", sideB: "rome", t: T_X3 + 0.4, dur: 0.6, width: FWw(3.4), until: T_SLIP + 2.0 });
-frontS({ pts: [[1436, 958], [1432, 968], [1426, 978], [1418, 987]],   // starts on land sideA: "carth", sideB: "rome", t: T_SLIP + 1.2, dur: 1.5, width: FWw(3.6), until: END + 1 });
+frontS({ pts: [[1436, 958], [1432, 968], [1426, 978], [1418, 987]], sideA: "carth", sideB: "rome", t: T_SLIP + 1.2, dur: 1.5, width: FWw(3.6), until: END + 1 });   // starts on land
 stampP("AWAY FROM A STALEMATE", 1480, 1000, at(P1, "away from a stalemate"), T_NICK - 0.3, 26);
 // ---------- the nickname: his initials, 1862 -> 1865 "it described a method" (one card, spoken words) ----------
 const NK = scr(`<div style="padding:16px 46px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">

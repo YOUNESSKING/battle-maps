@@ -20,7 +20,7 @@ const T_PLAN = at(P2, "The plan was to disappear"), T_TELL = at(P2, "Grant did n
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
 camera([[0, 1432, 812, 5.6], [T_TRENCH, 1430, 816, 6.0], [T_GRANT + 1.0, 1436, 818, 6.2], [T_SOUTH, 1432, 872, 4.7], [T_PET, 1428, 890, 4.5], [T_TOG, 1428, 890, 4.5],
   [T_STARVE + 0.6, 1430, 888, 4.5], [T_TELL + 1.0, 1428, 840, 4.9], [T_LOOK + 0.8, 1400, 800, 3.6], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
-  [T_12 + 0.4, 1470, 840, 4.3], [T_CHICK + 1.5, 1475, 855, 4.5], [T_REST + 0.6, 1490, 865, 4.0], [T_LEAD, 1495, 870, 3.9], [END, 1497, 872, 3.85]]);   // critic 2: Lee's card clear of the date scroll in the night section
+  [T_12 + 0.4, 1470, 840, 4.3], [T_CHICK + 1.5, 1475, 855, 4.5], [T_REST + 0.6, 1490, 865, 4.0], [T_LEAD, 1495, 858, 3.9], [END, 1497, 860, 3.85]]);   // critic 2: Lee's card clear of the date scroll in the night section
 // date scroll on the spoken date (clean first frame: nothing before it)
 dateNow("JUNE 1864", T_12 - 0.1); B.date("12 JUNE 1864", T_12, null, 34);   // critic r1: the date scroll is filled from frame 0
 // ---------- flags (48 px, behind each side's lines, both on every frame) ----------

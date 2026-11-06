@@ -237,8 +237,9 @@ const sail = (s, pts, t, dur, n = 24, o = {}) => {   // move along a polyline, t
 const stackSmoke = (p, t, until, every = 1.6) => { for (let tt = t; tt < until; tt += every) K.smoke(p[0], p[1], tt, { n: 2, r: 5, rise: 14, life: 2.0, alpha: 0.55 }); };
 // small fort (star outline) world-pinned, constant screen size
 const fortIcon = (p, t, until, o = {}) => { const s = o.s || 30, col = o.col || "#e3232f";
-  return pinS(GG.pin(`<svg width="${s * 2}" height="${s * 2}" viewBox="-20 -20 40 40" style="display:block;overflow:visible;filter:drop-shadow(0 0 ${s * 0.18}px ${col})">
-    <polygon points="0,-17 5,-6 17,-6 8,2 12,15 0,8 -12,15 -8,2 -17,-6 -5,-6" fill="rgba(60,10,10,.55)" stroke="${col}" stroke-width="3.2" stroke-linejoin="round"/></svg>`, p[0], p[1], { t, pop: true, until })); };
+  const el = pinS(GG.pin(`<svg width="${s * 2}" height="${s * 2}" viewBox="-20 -20 40 40" style="display:block;overflow:visible;filter:drop-shadow(0 0 ${s * 0.18}px ${col})">
+    <polygon points="0,-17 5,-6 17,-6 8,2 12,15 0,8 -12,15 -8,2 -17,-6 -5,-6" fill="rgba(60,10,10,.55)" stroke="${col}" stroke-width="3.2" stroke-linejoin="round"/></svg>`, p[0], p[1], { t: t > 0 ? t : null, pop: t > 0, until }));
+  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); return el; };   // on the map from frame 0
 // a world-pinned mini flag on a pole (over a fort), constant size
 const poleFlag = (src, p, t, until, w = 46) => pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-1.5px;top:${-w * 1.25}px;width:3px;height:${w * 1.25}px;background:#efe6cf;box-shadow:0 0 3px #000"></div><img src="${src}" style="position:absolute;left:1px;top:${-w * 1.25}px;width:${w}px;border:1px solid #1a1712;box-shadow:0 2px 5px rgba(0,0,0,.6)"></div>`, p[0], p[1], { t, pop: true, until }));
 // mini commander chip (screen space): round photo + name, for naming several generals in a row without a big badge each
@@ -375,8 +376,8 @@ dateNow("6 FEBRUARY 1862", T_12 - 0.1); B.date("12 FEBRUARY 1862", T_12, null, 3
 flagS(FL.us, 560, 420, 0, T_INSIDE + 0.6); flagS(FL.cs, 1700, 900, 0, T_INSIDE + 0.6);
 flagS(FL.us, 1160, 640, T_INSIDE + 0.4, END + 1); flagS(FL.cs, 1600, 790, T_INSIDE + 0.5, END + 1);
 // ---------- the forts ----------
-fortIcon(FH, 0, null, { s: 22, col: "#4f8bff" }); poleFlag(FL.us, [FH[0] + 4, FH[1] - 8], 0, null, 28);
-fortIcon(DON, 0, null, { s: 26 }); poleFlag(FL.cs, [DON[0] + 4, DON[1] - 8], 0, null, 30);
+fortIcon(FH, 0, null, { s: 22, col: "#4f8bff" });   // critic r1: fort flags only at the surrender beats
+fortIcon(DON, 0, null, { s: 26 });   // critic r1: fort flags only at the surrender beats
 boxS("FORT DONELSON", DON[0] - 76, DON[1] - 6, T_TODON, null, { size: 22 });
 K.target(DON[0], DON[1], T_WANT + 0.6, { r: 44, until: T_REINF + 2.0 });
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side)
@@ -387,8 +388,8 @@ arw({ pts: [[2200, 960], [2040, 830], [1840, 790], [1640, 790]], side: "rome", t
 unitS("mc", "carth", [ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], "infantry", null, { t: 0, size: "XX" });
 unitS("sm", "carth", [ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], "infantry", null, { t: 0, size: "XX" });
 tl.to(B.units.mc.el, { y: -4, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, 0.2);   // idling at Fort Henry
-pinPortrait("mc", PHOTO("grant"), FL.us, "Grant", T_WANT + 0.3, END + 1, true, "left");   // side stake below his counter   // Grant rides with his army for the whole move
-along("mc", [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], ...ROAD_S.slice(1), [1352, 906]], T_15K, T_INSIDE + 1.8 - T_15K, 24);
+pinPortrait("mc", PHOTO("grant"), FL.us, "Grant", T_WANT + 0.3, END + 1, true, "upleft");   // side stake, off the front   // Grant rides with his army for the whole move
+along("mc", [[ROAD_S[0][0] + 20, ROAD_S[0][1] + 20], ...ROAD_S.slice(1), [1330, 930]], T_15K, T_INSIDE + 1.8 - T_15K, 24);
 along("sm", [[ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], ...ROAD_N.slice(1), [1262, 620]], T_15K + 0.3, T_INSIDE + 2.2 - T_15K, 24);
 arw({ pts: ROAD_S, side: "carth", t: T_15K, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.0 });   // real moves: thin trails, fade ~2 s after arrival
 arw({ pts: ROAD_N, side: "carth", t: T_15K + 0.3, dur: 3.0, width: AW(1.8, 8), until: T_INSIDE + 2.4 });
@@ -406,7 +407,7 @@ pulseU("pi", T_KNEW + 0.3); pulseU("pi", T_MEX);
 // "with any force, however small ... right up to within gunshot": the blue columns walk right up to the works
 [[[1240, 790], [1300, 812], [1345, 815]], [[1250, 690], [1275, 700], [1296, 706]], [[1270, 630], [1296, 640], [1310, 652]]].forEach((pts, k) =>
   arw({ pts, side: "carth", t: T_GUNSHOT - 0.1 + k * 0.25, dur: 0.8, width: AW(1.9, 9), until: T_EIGHTH }));
-B.caption("RIGHT UP TO WITHIN GUNSHOT", T_GUNSHOT, T_EIGHTH - 0.3, "carth");
+B.caption("RIGHT UP TO WITHIN GUNSHOT", T_GUNSHOT, T_EIGHTH - 0.3, "");
 const UL = frontS({ pts: ULINE.map((q, i) => [(q[0] + WORKS[i][0]) / 2, (q[1] + WORKS[i][1]) / 2]), sideA: "carth", sideB: "rome", t: T_GUNSHOT + 0.6, dur: 2.0, width: FWw(1.6), until: END + 1 });
 unitS("wa", "carth", [1225, 760], "infantry", null, { t: T_HOLD });
 // ---------- 15,000 on the 8th > 50,000 a month later (one big card; the HUD steps out) ----------

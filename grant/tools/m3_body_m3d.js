@@ -88,7 +88,7 @@ const W5 = FWw(0.55);
 frontS({ pts: [...G.SIEGE_N, ...G.HOWLETT, ...NL, ...G.SIEGE_S.slice(1)], sideA: "carth", sideB: "rome", t: T_PIN, dur: 3.2, width: W5, until: END + 1 });
 // "Lee was pinned in a siege": his army in the line (his card), the Union army facing it
 unitS("lp", "rome", [1350, 720], "infantry", null, { t: T_PIN + 0.3, size: "XXXX" }); pinPortrait("lp", PHOTO("lee"), FL.cs, "Lee", T_PIN + 0.5, END + 1, true, "west-up");
-unitS("bp", "carth", [1640, 860], "infantry", null, { t: T_PIN + 0.5, size: "XXXX" });
+unitS("bp", "carth", [1530, 895], "infantry", null, { t: T_PIN + 0.5, size: "XXXX" });
 const NM = numCard("A SIEGE", "MORE THAN NINE MONTHS", "", "right:100px;top:560px;", T_NINE - 0.1, T_ABAN - 0.2, { col: "#c4121f", lc: "#ff8a80" });
 const RT = town("RICHMOND", G.RICHMOND, T_ABAN + 0.4, "l", { keep: true });
 focus([(G.RICHMOND[0] + G.PETERSBURG[0]) / 2, (G.RICHMOND[1] + G.PETERSBURG[1]) / 2], Math.abs(G.PETERSBURG[1] - G.RICHMOND[1]) / 2 + 160, T_ABAN + 0.2, T_ABAN + 3.4);
@@ -97,7 +97,7 @@ hideU(["s1", "s2", "hk", "h2", "pr", "v1", "v2", "v3", "v4"], T_Z0 + 0.2);   // 
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["OUT OF A STALEMATE", "OVER A RIVER", "WHERE LEE COULD NOT FOLLOW"];   // spoken words only (m3-7)
 const MC = GG.method(3, T_STALE - 0.3, END + 1, [T_STALE, T_RIVER, T_FOLLOW]); SFX("ref:boom", T_FOLLOW + 0.2);
-Object.assign(MC.style, { left: "auto", right: "70px", top: "auto", bottom: "80px" }); MC.firstElementChild.style.zoom = "0.78";   // critic r1: empty lower right, clear of the siege line
+Object.assign(MC.style, { left: "auto", right: "70px", top: "auto", bottom: "80px" }); MC.firstElementChild.style.zoom = "0.72";   // critic r1: empty lower right, clear of the siege line
 // ---------- clean screen ----------
 fixImgs();
 K.raiseTerritory();
