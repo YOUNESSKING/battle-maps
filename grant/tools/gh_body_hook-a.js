@@ -127,7 +127,7 @@ SFX("whoosh", TZ0 - 0.05);
 zoom(TZ0, TZ1 - TZ0, C0b, S0b, CF, SF, FD, "power2.inOut");
 // the Cumberland is named on its words: re-inked at the donelson scale + a white serif river label (<= 3.5 s)
 inkTrace(CUMB_D, T_CUMB - 0.1, T_CUMB + 3.0, 2.4);
-boxL("CUMBERLAND RIVER", 1385, 470, T_CUMB, null, { size: 13 });
+boxL("CUMBERLAND RIVER", 1385, 470, T_CUMB, null, { size: 16 });
 // mid-zoom flags: the Union flag rides the gunboats coming up the Cumberland; the Confederate flag on Tennessee ground east of the river
 const BOATR2 = [[1150, 150], [1200, 300], [1240, 400], [1275, 480], [1300, 545]];
 const GB2 = [0, 1].map((k) => gunboat(BOATR2.map(([x, y]) => [x - k * 22, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), T_BEGAN - 0.5, { s: 17 }));

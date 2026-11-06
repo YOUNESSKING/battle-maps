@@ -135,7 +135,7 @@ sstamp("BROKEN", 205, T_BROKE + 0.15, { size: 80, sub: "THE UNION RIGHT", until:
 pulse(T_BROKE + 0.35);
 // "the road out stood open": focus + thin ink trace down the Forge road toward Nashville, a thin red arrow runs down it
 glowPath(FORGE, "", 0, T_ROAD - 0.05, T_ROAD + 3.3);
-boxL("THE ROAD OUT", 1610, 1030, T_ROAD, null, { size: 13 });
+boxL("THE ROAD OUT", 1610, 1030, T_ROAD, null, { size: 16 });
 arw({ pts: FORGE.slice(2), side: "rome", t: T_OPEN, dur: 1.0, width: AW(SC, 8), until: T_CMDR + 1.0 });
 // =====================================================================================================================
 // "The Union commander was not even there": the "?" badge, the empty headquarters
@@ -154,8 +154,8 @@ camTo(T_AWAY - 0.6, 1.5, CB, SB, "sine.inOut");
 const FLG = [gunboat([[BOATP[0] - 8, BOATP[1] - 70], BOATP], T_AWAY - 0.7, 1.2, T_RODE + 2.5, { s: 17 }), gunboat([[BOATP[0] - 30, BOATP[1] - 150], [BOATP[0] - 22, BOATP[1] - 80]], T_AWAY - 0.6, 1.2, T_RODE + 2.5, { s: 15 })];
 const QM = pinS(GG.pin(`<div style="width:54px;height:54px;border-radius:50%;background:radial-gradient(circle, rgba(10,12,24,0.95), rgba(10,12,24,0.8));border:4px solid #f3e7c4;box-shadow:0 0 0 3px #1f4fc4,0 6px 14px rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:34px;color:#f7f3ea">?</div>`, BOATP[0], BOATP[1] - 46, { t: T_AWAY + 0.05, pop: true, until: T_KNOTS + 1.2 }));
 focus(BOATP, 70, T_AWAY + 0.1, T_RODE);
-boxL("A GUNBOAT", BOATP[0] + 110, BOATP[1] + 8, T_AWAY + 0.2, T_ADM - 0.1, { size: 13 });
-boxL("THE ADMIRAL", BOATP[0] + 115, BOATP[1] + 8, T_ADM, T_RODE - 0.1, { size: 13 });
+boxL("A GUNBOAT", BOATP[0] + 110, BOATP[1] + 8, T_AWAY + 0.2, T_ADM - 0.1, { size: 16 });
+boxL("THE ADMIRAL", BOATP[0] + 115, BOATP[1] + 8, T_ADM, T_RODE - 0.1, { size: 16 });
 // "when he rode back": the "?" rides back along the line to the broken right (thin solid trail that fades ~2 s after), the camera follows
 const RIDE = [[BOATP[0], BOATP[1] - 46], [LAND[0], LAND[1] - 30], [1215, 640], [HQ[0] + 10, HQ[1] - 30], [1205, 800], [1250, 880], [1290, 915]];
 pinAlong(QM, RIDE, T_RODE, T_KNOTS - T_RODE + 0.1, 24);
@@ -181,7 +181,7 @@ arw({ pts: [[1220, 945], [1240, 950], [1258, 955]], side: "carth", t: T_HAND, du
 // =====================================================================================================================
 // hook-4: the name slam (the "?" turns into the real photo)
 // =====================================================================================================================
-const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
+const DK = scr0("", "inset:0;background:rgba(5,7,13,0.62);"); SCN.insertBefore(DK, document.getElementById("date"));   // the date scroll stays bright tl.fromTo(DK, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, S4 - 0.2);
 const BDG = scr0(`<div style="position:relative;width:300px;height:300px;border-radius:50%;overflow:hidden;border:9px solid #f3e7c4;box-shadow:0 0 0 7px #1f4fc4,0 24px 48px rgba(0,0,0,0.75);background:url(${FL.us}) center/cover">
   <img src="${PHOTO("grant")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">
   <div class="q" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,1), rgba(10,12,24,0.94));font-family:Oswald;font-weight:700;font-size:180px;color:#f7f3ea">?</div></div>`,
@@ -268,8 +268,8 @@ placeN(VKS, "Vicksburg · 1863", 2, T_MISS, T3 - 0.01, "r");
 endScope(SC2, T3);
 // ---------- CUT 3: James River · 1864 (jamesriver_w): the pontoon bridge, Lee's army facing the other way ----------
 // the bridge: Weyanoke Point (the tip of the north-bank peninsula) -> Windmill Point (south bank), traced on the jamesriver relief (map px)
-const WEY = [1403, 874], WIN = [1412, 905], S3c = 1.2, S3b = 2.4;
-const LEEP = JP(37.41, -77.25), C3 = [LEEP[0] + 280, LEEP[1] + 190], C3b = [1415, 865];
+const WEY = [1402, 874], WIN = [1414, 940], S3c = 1.2, S3b = 2.4;
+const LEEP = JP(37.41, -77.25), C3 = [LEEP[0] + 300, LEEP[1] + 255], C3b = [1412, 880];
 // close on the bridge first ("marched a whole army across a river"), then pull back to show Lee ("while Robert E. Lee...")
 tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, T3 - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, T3 + 0.04);
 tl.set(LJA, { autoAlpha: 1 }, T3 - 0.01);
@@ -283,7 +283,7 @@ flagS(FL.csa, "", LEEP[0] - 40, LEEP[1] + 270, T_LEE - 0.6, null);
 const BR = document.createElementNS(NS, "g");
 BR.innerHTML = `<path d="M${WEY.join(" ")} L${WIN.join(" ")}" stroke="#2a2420" stroke-width="${(7 / S3b).toFixed(2)}" stroke-linecap="round"/><path d="M${WEY.join(" ")} L${WIN.join(" ")}" stroke="#d9c79d" stroke-width="${(4 / S3b).toFixed(2)}" stroke-linecap="round"/>`;
 OVL.appendChild(BR); vis(T3, null)(BR);
-const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1416, 960], [1402, 1040]];
+const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1418, 975]];
 [0, 1, 2].forEach((k) => { const id = unitS("j" + k, "carth", XR[0], "infantry", "", { t: T3 + k * 0.3 }); along(id, XR, T3 + k * 0.45, 4.2, 24); });
 arw({ pts: XR, side: "carth", t: T3 + 0.2, dur: 1.4, width: AW(S3b, 9), until: T_LEE - 0.5 });
 arw({ pts: XR, side: "carth", t: T_LEE - 0.4, dur: 0.01, width: AW(S3c, 9), until: null });
@@ -292,13 +292,13 @@ placeN([(WEY[0] + WIN[0]) / 2, (WEY[1] + WIN[1]) / 2], "James River · 1864", 3,
 // Lee (his portrait card on a stake at his own army, on his name) and his army, facing the other way (north, toward Richmond)
 const LR = [unitS("l0", "rome", LEEP, "infantry", "", { t: T3 + 0.1, until: T4 }), unitS("l1", "rome", [LEEP[0] + 120, LEEP[1] - 30], "infantry", "", { t: T3 + 0.2, until: T4 })];
 pinPortrait("l0", PHOTO("lee"), FL.csa, "Lee", T_LEE - 0.05, T4 - 0.1, "left");
-[[LEEP, [LEEP[0] - 40, LEEP[1] - 200]], [[LEEP[0] + 120, LEEP[1] - 30], [LEEP[0] + 110, LEEP[1] - 230]]].forEach(([a, b], k) => arw({ pts: [a, b], side: "rome", t: T_OTHER + k * 0.15, dur: 0.7, width: AW(S3c, 9), until: T4 }));
+[[LEEP, [LEEP[0] - 40, LEEP[1] - 200]], [[LEEP[0] + 120, LEEP[1] - 30], [LEEP[0] + 110, LEEP[1] - 230]]].forEach(([a, b], k) => arw({ pts: [a, [b[0], a[1] - 110]], side: "rome", t: T_OTHER + k * 0.15, dur: 0.7, width: AW(S3c, 9), until: T4 }));
 wstampL("LOOKING THE OTHER WAY", LEEP[0] + 170, LEEP[1] + 90, T_OTHER + 0.1, T4 - 0.1, null, 26);
 // =====================================================================================================================
 // the title (riser + boom): the James River shot dims at the top, the title card sits below the date scroll
 // =====================================================================================================================
 SFX("ref:riser", T4 + 0.1);
-const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.25) 0%,rgba(5,7,13,0.75) 70%);");
+const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.25) 0%,rgba(5,7,13,0.75) 70%);"); SCN.insertBefore(TDIM, document.getElementById("date"));
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, immediateRender: false }, T4);
 const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:16px 64px 22px;background:rgba(14,12,10,0.9);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">ULYSSES S. GRANT'S</div>
