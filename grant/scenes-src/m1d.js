@@ -268,7 +268,7 @@ const CAV_SVG = `<g fill="#f7f3ea" stroke="none">
 const cavIcon = (id) => { const sv = B.units[id].el.querySelector(".blk svg"); if (!sv) return; sv.setAttribute("viewBox", "0 0 100 80"); sv.setAttribute("preserveAspectRatio", "xMidYMid meet"); sv.innerHTML = CAV_SVG; };
 // big card (one at a time, cream on dark, no source text)
 const bigCard = (inner, t, until, o = {}) => scr(`<div style="padding:${o.pad || "18px 46px 20px"};background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);${o.css || ""}">${inner}</div>`,
-  `left:0;right:0;top:${o.top || 200}px;display:flex;justify-content:center;`, t, until);
+  o.pos || `left:0;right:0;top:${o.top || 200}px;display:flex;justify-content:center;`, t, until);
 // a portrait card that cannot be laid on a B.unit (ships): host = the ship's constant-size pin
 const DON = [1385, 738], DOV = [1510, 764], WB = [1412, 722], HQ = [1237, 825], SMH = [1300, 662];
 const RING = [[1306, 615], [1280, 647], [1266, 705], [1289, 764], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];   // = hook-a / m1b's front
@@ -290,13 +290,13 @@ const RIDE = [[1210, 600], [1205, 640], [1200, 720], [1215, 800], [1250, 880], [
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];   // Smith's lodgement in the outer works
 // ---------- camera ----------
 camera([[0, 1250, 720, 2.0], [T_TOLD, 1265, 718, 2.1], [T_WHO + 3.6, 1280, 800, 2.1], [T_FILL, 1340, 930, 2.35], [T_REPORT, 1390, 880, 2.15], [T_PULLED + 0.6, 1380, 830, 2.0],
-  [T_LEFT + 0.4, 1290, 672, 2.5], [T_FELLED, 1288, 662, 2.85], [T_TOOK + 1.2, 1300, 672, 2.65], [T_NIGHT + 0.3, 1400, 722, 2.2], [END, 1420, 732, 2.15]]);
+  [T_LEFT + 0.4, 1290, 672, 2.5], [T_FELLED, 1288, 662, 2.85], [T_TOOK + 1.2, 1300, 672, 2.65], [T_TOOK + 2.4, 1400, 722, 2.2], [END, 1420, 732, 2.15]]);
 // ---------- date scroll ----------
 gsap.set(document.getElementById("date"), { autoAlpha: 1 });
 dateSet("15 FEB 1862 · DAWN", 0, T_RODE + 0.4, 0.3, 30); dateSet("15 FEBRUARY 1862", T_RODE + 0.5, T_NIGHT - 0.1, 0.3, 34); dateSet("15 FEB 1862 · NIGHT", T_NIGHT, null, 0.3, 30);
 // ---------- flags ----------
 flags2([1225, 975], [1590, 800], 0, T_LEFT);
-flags2([1180, 600], [1560, 795], T_LEFT - 0.2, END + 1);
+flags2([1180, 600], [1592, 772], T_LEFT - 0.2, END + 1);
 // ---------- the pocket as m1c left it (front bulged out by the breakout; the Union right broken) ----------
 const FT = fortIcon(DON, 0, null, { s: 30, side: "rome" });
 town("Dover", DOV, 0, null);
@@ -304,15 +304,19 @@ unitS("wb1", "rome", [1384, 710], "artillery", null, { w: 40, h: 27 }); unitS("w
 const F1 = frontNow(front2(RING2, 2.0, 0, { dur: 0.01, to: RING, moveT: T_PULLED - 0.2, moveDur: 3.0, until: T_TOOK - 0.3 }));
 const F2 = front2(RING, 2.8, T_TOOK - 0.5, { dur: 0.01, to: RING3, moveT: T_TOOK - 0.4, moveDur: 2.6, until: END + 1 });
 unitS("uSm", "carth", [1246, 700], "infantry", null, { size: "XX" }); unitS("uWa", "carth", [1262, 862], "infantry", null, { size: "XX" });
-const BROKE = [["m1", [1250, 945], [1290, 885]], ["m2", [1305, 1025], [1360, 948]], ["m3", [1375, 1055], [1430, 985]]];
+const BROKE = [["m1", [1250, 945], [1290, 885]], ["m2", [1305, 1025], [1374, 948]], ["m3", [1375, 1055], [1442, 985]]];
 BROKE.forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { size: "X" }));
+// cropped at the bottom edge until the camera comes down to them: m2/m3 step out; m1 steps out while the camera dives to the left
+gsap.set([B.units.m2.el, B.units.m3.el], { autoAlpha: 0 }); showU(["m2", "m3"], 11.5);
+// the stamp m1c ended on (NO CARTRIDGES) carries 0.7 s into this scene at the same screen place, then leaves
+{ const el = scr(stampHTML("NO CARTRIDGES", CREAM, 30, -5), "left:535px;top:948px;transform:translate(-50%,-50%);", null, null); gsap.set(el, { autoAlpha: 1 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.7); }
 tl.set(BROKE.map(([id]) => B.units[id].el.querySelector(".blk")), { filter: "grayscale(1) brightness(0.75)" }, 0);
-const RED = [["bu", [1325, 712], [1325, 712]], ["fl", [1440, 772], [1440, 772]], ["pi", [1452, 912], [1505, 812]], ["c1", [1380, 880], [1350, 790]], ["cF", [1530, 918], [1560, 820]],
-  ["c4", [1415, 852], [1405, 812]], ["c5", [1492, 880], [1452, 806]]];
+const RED = [["bu", [1325, 712], [1325, 712]], ["fl", [1440, 772], [1440, 772]], ["pi", [1452, 912], [1487, 814]], ["c1", [1380, 880], [1413, 786]], ["cF", [1530, 918], [1555, 815]],
+  ["c4", [1415, 852], [1428, 818]], ["c5", [1492, 880], [1520, 800]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null)); cavIcon("cF");
 cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, END + 1, "right"));   // side stake: clear of Smith's hill and the front
 cardNow(pinPortrait("fl", PHOTO("floyd"), FL.csa, "Floyd", 0.05, END + 1, "up"));
-cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, END + 1, "left"));
+cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, END + 1, "up"));   // inside the pocket
 // =====================================================================================================================
 // Grant rides back along the line (his card rides with him); he did not panic
 // =====================================================================================================================
@@ -321,18 +325,18 @@ cardNow(pinPortrait("gr", PHOTO("grant"), FL.us, "Grant", 0.05, END + 1, "up"));
 along("gr", RIDE, 0.2, T_FILL - 0.4, 20);
 arw({ pts: RIDE.slice(0, 6), side: "carth", t: 0.3, dur: T_TOLD - 0.3, until: T_FILL + 1.6 }, 2.0, 6);   // his ride: a thin trail that fades after he arrives
 focus([1330, 960], 70, T_PANIC, T_WHO - 0.1);
-const C1 = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#9fc0ea">GRANT TO AN OFFICER</div><div style="font-size:54px;letter-spacing:.08em;margin-top:4px">WHOEVER ATTACKS FIRST NOW WILL WIN</div>`,
+const C1 = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#9fc0ea">GRANT TO AN OFFICER</div><div style="font-size:54px;letter-spacing:.08em;margin-top:4px">WHOEVER ATTACKED FIRST NOW WOULD WIN</div>`,
   T_WHO, Math.min(T_FILL - 0.4, T_WHO + 3.4), { col: "#1f4fc4", top: 200 });
 SFX("hit", T_WHO + 0.3);
 // fill the cartridge boxes, back into line; "it acted like a charm" (narrated; one caption, no quote marks)
 const CBOX = `<svg width="26" height="20" viewBox="0 0 26 20" style="display:block;filter:drop-shadow(0 1px 2px #000)"><rect x="2" y="3" width="22" height="15" rx="2" fill="#2a2420" stroke="#efe6cf" stroke-width="1.4"/><rect x="2" y="3" width="22" height="5" fill="#4a3c2c" stroke="#efe6cf" stroke-width="1.2"/><circle cx="13" cy="12" r="2.6" fill="#c9b48a"/></svg>`;
-[[1268, 975], [1335, 1052], [1408, 1080], [1290, 1000], [1360, 1062]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.7)">${CBOX}</div></div>`, p[0], p[1], T_FILL + k * 0.18, T_CHARM + 2.0); reg(el.firstElementChild); });
+[[1268, 975], [1335, 1052], [1408, 1080], [1290, 1000], [1360, 1062]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.7)">${CBOX}</div></div>`, p[0], p[1], T_FILL + k * 0.18, T_CHARM - 0.1); reg(el.firstElementChild); });
 ungreyU(["m1", "m2", "m3"], T_BACK);
 BROKE.forEach(([id, , q], k) => go(id, T_BACK + 0.1 + k * 0.15, 2.0, q));
-B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_REPORT - 0.1, "carth");
+B.caption("IT ACTED LIKE A CHARM", T_CHARM, T_CHARM + 2.3, "carth");
 // the official report: the confusion on the Confederate side as great as his own, possibly greater
 const C2 = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">HIS OFFICIAL REPORT · THE CONFUSION ON THE CONFEDERATE SIDE</div><div style="font-size:46px;letter-spacing:.08em;margin-top:4px">AS GREAT AS HIS OWN<span class="pg"> · POSSIBLY GREATER</span></div>`,
-  T_GREAT - 0.1, Math.min(T_GONE - 0.2, T_GREAT + 3.4), { col: "#c4121f", top: 200 });
+  T_GREAT - 0.1, Math.min(T_GONE - 0.2, T_GREAT + 3.4), { col: "#c4121f", pos: "left:0;right:0;bottom:110px;display:flex;justify-content:center;" });   // low: clear of the Confederate cards
 { const pg = C2.querySelector(".pg"); gsap.set(pg, { autoAlpha: 0 }); tl.to(pg, { autoAlpha: 1, duration: 0.3 }, T_POSS); }
 ["c1", "c4", "c5", "pi", "cF"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { rotation: k % 2 ? 7 : -7, duration: 0.25, yoyo: true, repeat: 5, ease: "sine.inOut" }, T_GREAT + k * 0.12));
 // they had gone out to break the ring, then pulled back inside it (the bulge goes back: the ground changes hands again)
@@ -348,15 +352,16 @@ place("The left", 1190, 618, T_LEFT + 0.2, T_SMITH - 0.2, { size: 24 });
 // C. F. Smith leads his division up the hill, in front himself, through the felled trees; takes the outer works (warm afternoon light)
 // =====================================================================================================================
 const TOD_WARM = todDiv("rgba(255,165,80,0.6)"); tl.to(TOD_WARM, { opacity: 0.22, duration: 2.0 }, T_SMITH - 0.3); tl.to(TOD_WARM, { opacity: 0, duration: 1.6 }, T_NIGHT - 0.2);
-pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", T_SMITH + 0.1, END + 1, "left");
+pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", T_SMITH + 1.0, END + 1, "left");
 // the move-1 profile strip (the terrain beat): the hill, the felled trees on its slope, the outer works on the crest
 const PRF = scr(`<div style="width:480px;height:124px;background:rgba(233,223,198,.95);border:1.5px solid #463a1e;box-shadow:0 8px 20px rgba(0,0,0,.5)">
   <svg width="480" height="124" viewBox="0 0 480 124"><path d="M10 106 C 80 104, 150 98, 210 84 C 270 68, 320 42, 370 34 C 410 30, 440 36, 470 42" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   <g stroke="#5b4a30" stroke-width="2" fill="none" stroke-linecap="round">${[230, 250, 270, 290, 310].map((x, i) => { const y = [80, 74, 66, 58, 50][i]; return `<path d="M${x - 7} ${y} L${x} ${y - 8} L${x + 7} ${y}"/>`; }).join("")}</g>
   <path d="M352 36 L352 26 L392 24 L392 32" fill="none" stroke="#2a2410" stroke-width="2.4"/>
   <path d="M60 104 L150 96" stroke="#1f4fc4" stroke-width="4" stroke-linecap="round"/><path d="M150 96 L140 92 L142 101 Z" fill="#1f4fc4"/>
-  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="120" y="121">The hill</text><text x="268" y="102">The felled trees</text><text x="380" y="18">The outer works</text></g></svg></div>`,
-  "left:56px;bottom:56px;", T_UP, Math.min(T_TOOK + 0.6, T_UP + 6.0));
+  <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="120" y="121">The hill</text><text class="lft" x="268" y="102">The felled trees</text><text x="380" y="18">The outer works</text></g></svg></div>`,
+  "left:56px;bottom:56px;", T_FELLED - 0.1, T_FELLED + 3.4);   // the terrain beat: up on "through the felled trees", <= 3.5 s
+{ const lw = PRF.querySelector('text[x="380"]'); gsap.set(lw, { opacity: 0 }); tl.to(lw, { opacity: 1, duration: 0.3 }, T_TOOK); }
 const ABT = `<svg width="18" height="12" viewBox="0 0 18 12" style="display:block"><path d="M1 10 L9 2 L17 10 M5 10 L9 5 L13 10" fill="none" stroke="#3e3220" stroke-width="2.2" stroke-linecap="round"/></svg>`;
 [[1290, 690], [1286, 676], [1290, 662], [1296, 648], [1302, 636], [1310, 624], [1282, 704], [1284, 716]].forEach((p, k) => { const el = pinAt(`<div><div style="transform:scale(1.4)">${ABT}</div></div>`, p[0] - 16, p[1], T_FELLED - 0.4 + k * 0.06, T_NIGHT + 1); reg(el.firstElementChild); });
 [[[1225, 640], [1262, 648], [1300, 650]], [[1220, 690], [1258, 690], [1296, 684]], [[1240, 610], [1275, 622], [1310, 632]]].forEach((pts, k) =>
@@ -366,7 +371,8 @@ go("uSm", T_FRONT, 3.0, [1312, 664]);
 volley([1318, 690], [1318, 720], T_UP + 0.6, 1 / 2.6, 4);
 go("bu", T_TOOK - 0.2, 2.2, [1336, 736]);
 hatch("assets/media/gn_donelson_ctl_smith_mx.png", T_TOOK - 0.1, 3.0);
-stampP("TOOK THE OUTER WORKS", 1200, 548, T_TOOK + 0.1, T_NIGHT - 0.2, 24);
+stampP("TOOK THE OUTER WORKS", 1200, 548, T_TOOK + 0.1, T_TOOK + 2.3, 24);
+hideU(["m1"], T_LEFT + 0.1); showU(["m1"], T_NIGHT + 0.3);
 // =====================================================================================================================
 // night: the Confederate council chooses to give up
 // =====================================================================================================================
@@ -374,7 +380,8 @@ nightWash(T_NIGHT - 0.2, null, 0.5);
 const COUN = pinAt(`<div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,140,.95) 0%,rgba(255,170,60,.55) 35%,rgba(255,120,20,0) 72%);mix-blend-mode:screen"></div>`, DOV[0] - 6, DOV[1] - 8, T_COUNCIL - 0.3, END + 1, { pop: false });
 reg(COUN.firstElementChild); tl.to(COUN.firstElementChild, { scale: 1.2, opacity: 0.7, duration: 0.3, yoyo: true, repeat: 7, ease: "sine.inOut" }, T_COUNCIL);
 focus(DOV, 50, T_COUNCIL, T_GU);
-sstamp("GIVE UP", BAND(250), T_GU - 0.05, { size: 84, sub: "THE COUNCIL", until: END - 0.1 });
+sstamp("GIVE UP", "right:200px;top:230px;", T_GU - 0.05, { size: 84, sub: "THE COUNCIL", until: END + 1 });   // carried on into m1e's first second (same place)
+go("gr", T_NIGHT + 0.3, 3.0, HQ);   // Grant back to his headquarters for the night (m1e opens with him there)
 fixImgs();
 K.raiseTerritory();
 B.finish();

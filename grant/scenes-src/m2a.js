@@ -429,7 +429,7 @@ B.caption("THE UNION COULD NOT USE THE RIVER FREELY", T_FREE - 0.1, T_FREE + 3.3
 // "the South stayed linked to its western states": the rail line Monroe - De Soto Point - Vicksburg - Jackson as an ink trace, red arrows across
 const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.33, -90.95], [32.352, -90.878], [32.33, -90.55], [32.30, -90.19]]);
 glowPath(LINK, "", 0, T_LINK - 0.2, T_WINT + 0.4);
-[[[32.15, -94.3], [32.25, -93.4], [32.30, -92.65]], [[33.0, -94.0], [32.75, -93.3], [32.52, -92.75]], [[31.3, -93.9], [31.75, -93.2], [32.08, -92.65]]]   // arrowheads stop on the west bank, clear of Vicksburg
+[[[32.10, -94.2], [32.10, -93.0], [32.05, -91.85]], [[32.90, -93.9], [32.60, -92.9], [32.25, -91.85]], [[31.1, -93.8], [31.5, -92.8], [31.85, -91.85]]]   // heads on the Louisiana side of the river, clear of the Union box and the battery
   .forEach((q, k) => arw({ pts: LL(q), side: "rome", t: T_LINK + 0.1 + k * 0.25, dur: 1.4, width: AW(OVS * 1.12, 9), until: T_WINT + 0.5 }));
 boxL("WESTERN STATES", ...L(32.2, -94.9), T_WEST - 0.1, null);
 // "All winter, every attempt from the north failed in the swamps": three routes draw, stop short, grey; ink crosses where each broke
@@ -449,7 +449,7 @@ const waterTrace = (pts, t, until, px = 5) => { const g = document.createElement
   mk("#2c4a5c", px + 2); mk("#4d7d9a", px); g.setAttribute("opacity", "0"); OVL.insertBefore(g, OVL.firstChild);
   tl.to(g, { opacity: 1, duration: 0.6 }, t); tl.to(g, { opacity: 0, duration: 0.8 }, until); return g; };
 waterTrace(CANAL, T_CAN, T_DIFF - 0.2);
-curveLabel("Canal", CANAL.map((q) => [q[0] - 9, q[1]]), T_CAN + 0.2, T_CAN + 3.4, 20);
+curveLabel("Canal", CANAL.map((q) => [q[0] - 9, q[1]]), T_CAN + 0.6, T_CAN + 3.6, 20);
 const LPR = LL([[32.80, -91.17], [32.72, -91.30], [32.60, -91.42], [32.45, -91.52], [32.30, -91.55]]);
 waterTrace(LPR, T_BAY - 0.1, T_DIFF - 0.2);
 const STEE = LL([[32.42, -90.98], [32.55, -90.93], [32.68, -90.90], [32.80, -90.88], [32.86, -90.87]]);

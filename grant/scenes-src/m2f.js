@@ -360,7 +360,7 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 zoomBox(...CH, T_CH - 0.2, 190, 110);
 // ---------- flags (48 px, both on every frame; re-placed when the camera changes ground) ----------
-const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1560, 900], [1300, 600], T_INL, T_CH + 0.3], [[1760, 765], [1500, 730], T_CH, T_1700 + 2.2], [[1580, 790], [1330, 610], T_1700 + 2.0, END + 1]];
+const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1560, 900], [1300, 600], T_INL, T_CH + 0.3], [[1760, 765], [1440, 640], T_CH, T_1700 + 2.2], [[1580, 790], [1330, 610], T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- towns: Vicksburg (the objective, permanent, continues m2e); Jackson permanent from its name (the army heads for it) ----------
 const VT = town("VICKSBURG", VKS, "l", 0);
@@ -449,7 +449,7 @@ B.move("rv", T_WEST, 1.8, ...L(32.36, -90.585)); B.move("re", T_WEST + 0.2, 1.8,
 pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_CH + 0.1, END + 1, true, "right");
 const FCH = front2(LL([[32.39, -90.564], [32.37, -90.565], [32.335, -90.567], [32.295, -90.570]]), KC[2], T_BEAT - 0.2,
   { flip: true, dur: 1.4, until: T_NEXT - 0.3, to: LL([[32.39, -90.626], [32.37, -90.628], [32.335, -90.632], [32.295, -90.629]]), moveT: T_CUTOFF - 1.0, moveDur: 2.2 });
-BAT("CHAMPION HILL", L(32.435, -90.51), T_CH + 0.3, null, 0, 0, T_BEAT + 0.6);
+BAT("CHAMPION HILL", L(32.17, -90.60), T_CH + 0.3, null, 0, 0, T_BEAT + 0.6);
 const sCH = KC[2];
 U("hv", "carth", L(32.375, -90.52), "", "XX", T_BIG - 0.4); B.move("hv", T_BIG - 0.3, 2.0, ...L(32.365, -90.545));
 B.move("u17", T_BIG, 2.0, ...L(32.33, -90.545)); B.move("u13", T_BIG, 2.5, ...L(32.29, -90.55));
@@ -478,7 +478,7 @@ B.caption("MORE THAN A THIRD OF ITS MEN", T_THIRD - 0.1, T_THIRD + 2.45, "carth"
 // a whole Confederate division cut off: it is pushed south-east, its road back to Vicksburg greys
 B.move("rv", T_CUTOFF - 1.0, 2.2, ...L(32.36, -90.66)); B.move("re", T_CUTOFF - 0.9, 2.2, ...L(32.325, -90.665));
 B.move("rs", T_CUTOFF - 0.2, 2.6, ...L(32.245, -90.575));
-arw({ pts: [L(32.345, -90.60), L(32.345, -90.63), L(32.35, -90.655)], side: "rome", t: T_CUTOFF - 1.0, dur: 1.0, width: AW(sCH, 9) });
+arw({ pts: [L(32.345, -90.64), L(32.35, -90.67), L(32.355, -90.70)], side: "rome", t: T_CUTOFF - 1.0, dur: 1.0, width: AW(sCH, 9) });
 const NEV = arw({ pts: [L(32.245, -90.59), L(32.27, -90.66), L(32.30, -90.74)], side: "rome", t: T_NEVER - 0.3, dur: 1.0, width: AW(sCH, 9), until: T_NEXT + 0.4, keep: true });
 B.greyArrow(NEV, T_NEVER + 0.9, T_NEXT + 0.4);
 wstampL("CUT OFF", ...L(32.21, -90.57), at(P9, "was cut off") + 0.25, T_NEXT - 0.2, null, 24);
@@ -487,7 +487,7 @@ tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.8 }, T_NEXT + 0.4);
 B.move("rv", T_NEXT - 0.4, 1.4, ...L(32.36, -90.70)); B.move("re", T_NEXT - 0.3, 1.4, ...L(32.325, -90.705));
 B.move("u13", T_NEXT, 1.8, ...L(32.36, -90.66)); B.move("u17", T_NEXT + 0.2, 1.8, ...L(32.32, -90.655)); tl.to(B.units.hv.el, { autoAlpha: 0, duration: 0.5 }, T_NEXT);
 inkTrace(BBRIV, T_BB - 0.1, T_BB + 3.2);
-BAT("BIG BLACK RIVER", L(32.28, -90.80), at(P9, "Big Black River"), "THE NEXT DAY", 0, 0, T_18G - 0.3);
+BAT("BIG BLACK RIVER", L(32.24, -90.66), at(P9, "Big Black River"), "THE NEXT DAY", 0, 0, T_18G - 0.3);
 mg(L(32.36, -90.665), L(32.36, -90.70), T_BB + 0.6, 5, 1.1 / KBB[2] * 2.2); shootS(L(32.34, -90.67), L(32.347, -90.712), T_BB + 1.0, KBB[2], { dur: 0.6, h: 30, r: 9 });
 smoke(LL([[32.34, -90.672], [32.36, -90.668]]), T_BB + 0.9, 2.2);
 fireGlowS(BBR[0] - 2, BBR[1], 10, T_BB + 1.4, T_1700 + 2.0);

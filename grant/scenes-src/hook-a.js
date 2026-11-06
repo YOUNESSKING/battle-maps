@@ -300,8 +300,8 @@ const TZ0 = T_ONE - 0.3, TZ1 = T_FD + 0.05;                 // the dive: lands o
 const CF = [1395, 745], SF = 1.1;                           // arrival: the fort, the river, Dover
 camTo(0, TZ0, C0b, S0b, "sine.inOut");
 // stamp on the spoken words (1a + 1c): WINTER 1862 slams on "eighteen sixty-two", then the date scroll takes over (never leaves)
-slam(scr(stampHTML("WINTER 1862", CREAM, 72, -4), "left:0;right:0;top:205px;display:flex;justify-content:center;"), T_1862 - 0.05, { shake: 4, until: T_1862 + 1.3 });
-B.showDate(T_1862 + 1.2); dateSet("FEBRUARY 1862", T_1862 + 1.25, T_SURR + 0.05);
+slam(scr(stampHTML("WINTER 1862", CREAM, 72, -4), "left:0;right:0;top:205px;display:flex;justify-content:center;"), T_1862 - 0.05, { shake: 4, until: T_1862 + 2.0 });
+B.showDate(T_1862 + 2.1); dateSet("FEBRUARY 1862", T_1862 + 2.15, T_SURR + 0.05);
 // flags (48 px, no names): overview pair on each side's ground; Nashville = the heart (permanent town on the overview)
 const F0 = flags2(LD(37.05, -87.60), LD(36.15, -87.25), 0, TZ0 + 0.9);
 const NAT = town("Nashville", NASH, 0, TZ0 + 0.6);
@@ -336,7 +336,7 @@ const bar = (pts, i) => { const a = pts[Math.max(0, i - 3)], b = pts[Math.min(pt
   Object.entries({ fill: "none", stroke: "#b3241f", "stroke-linecap": "round", opacity: 0 }).forEach(([kk, v]) => p.setAttribute(kk, v)); OVL.appendChild(p); swReg(p, 7);
   tl.to(p, { opacity: 0.95, duration: 0.15 }, T_SHUT - 0.05 + k * 0.12); tl.to(p, { opacity: 0, duration: 0.5 }, k ? TZ0 + 1.4 : TZ0 + 0.8); });
 SFX("hit", T_SHUT + 0.1);
-sstamp("HELD SHUT", BAND(820), T_SHUT + 0.05, { size: 66, until: TZ0 - 0.05, shake: 5 });
+sstamp("HELD SHUT", BAND(820), T_SHUT + 0.05, { size: 66, until: T_SHUT + 2.15, shake: 5 });
 pulse(T_SHUT + 0.25);
 zoomBox(FD, 60, 36, S0b, T_SHUT + 0.3, TZ0 + 0.5);   // the dive target, ~1.5 s before the zoom
 // ---------- ONE CONTINUOUS ZOOM (whoosh) from the theatre down the Cumberland onto Fort Donelson ----------
@@ -346,7 +346,7 @@ zoom(TZ0, TZ1 - TZ0, C0b, S0b, CF, SF, FD, "power2.inOut");
 inkTrace(CUMB_D, T_CUMB - 0.1, S2 + 0.6, 2.4);
 place("Cumberland River", 1150, 420, T_CUMB, null, { size: 24 });
 // mid-zoom flags: the Union flag rides with the gunboats coming up the Cumberland; the Confederate flag on Tennessee ground east of the river
-const GB2 = [0, 1].map((k) => gunboat(CUMB_D.slice(2, 14).map(([x, y]) => [x + 2, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), null, { L: 54 }));
+const GB2 = [0, 1].map((k) => gunboat(CUMB_D.slice(2, 14).map(([x, y]) => [x + 2, y - k * 60]), TZ0 + 0.8, T_WEEK + 3.0 - (TZ0 + 0.8), T_WEEK + 3.9, { L: 54 }));
 const FB = flagC(FL.us, 1060, 230, TZ0 + 0.8, TZ1 - 0.3); pinAlong(FB, [[1060, 230], [1110, 380]], TZ0 + 0.8, 6.0, 8);
 const FM = flagC(FL.csa, ...LD(36.40, -87.72), TZ0 + 0.8, TZ1 + 0.4);
 // arriving on Fort Donelson: the fort, its water batteries, Dover (permanent town); "Fort Donelson" on its word
@@ -382,12 +382,12 @@ const RF = front2(RING, SR, T_WEEK + 2.2, { dur: 1.4, until: T_SURR + 0.4 });
 const BIG = scr(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:14px 60px 18px;background:rgba(14,12,10,0.9);border-top:8px solid #c4121f;box-shadow:0 22px 44px rgba(0,0,0,.6)">
   <div style="font-size:26px;letter-spacing:0.36em;color:#d8cfb8">MORE THAN</div>
   <div class="n" style="font-size:132px;line-height:1;color:#f7f3ea;letter-spacing:0.02em">0</div>
-  <div class="w0" style="font-size:40px;letter-spacing:0.14em;color:#6e675c">CONFEDERATE SOLDIERS</div></div>`, "left:0;right:0;top:120px;display:flex;justify-content:center;transform-origin:50% 40%;");
-slam(BIG, T_12 - 0.15, { from: 1.9, dur: 0.22, shake: 6, until: T_SURR - 0.2 });
+  <div class="w0" style="font-size:40px;letter-spacing:0.14em;color:#6e675c">CONFEDERATE SOLDIERS</div></div>`, "right:70px;top:250px;transform-origin:50% 40%;");   // on the empty ground east of Dover (critic H: clear of the ring, the river and the shot)
+slam(BIG, T_12 - 0.15, { from: 1.9, dur: 0.22, shake: 6, until: T_SURR - 0.45 });
 tick(BIG, ".n", 12000, T_12 + 0.1, T_CSOL + 0.2, (v) => (Math.round(v / 100) * 100).toLocaleString("en-US"));
-tl.to(BIG.querySelector(".w0"), { color: "#ef8a82", duration: 0.15 }, T_CSOL);
+gsap.set(BIG.querySelector(".w0"), { autoAlpha: 0 }); tl.to(BIG.querySelector(".w0"), { autoAlpha: 1, color: "#ef8a82", duration: 0.2 }, T_CSOL);
 // "surrendered": the pocket changes hands (red ink hatching ~3 s), the garrison greys, a white flag over the fort
-sstamp("SURRENDERED", BAND(760), T_SURR - 0.05, { size: 88, shake: 6, until: T_GEN - 0.05 });
+sstamp("SURRENDERED", BAND(760), T_SURR - 0.05, { size: 88, shake: 6, until: T_SURR + 2.1 });
 pulse(T_SURR + 0.2);
 dateSet("16 FEBRUARY 1862", T_SURR + 0.1, null);
 hatch("assets/media/gn_donelson_ctl_surr_mx.png", T_SURR + 0.1, 3.0);
@@ -400,21 +400,21 @@ reg(WF.firstElementChild);
 // "to a general almost nobody in the North had heard of": the "?" mystery badge (stays until the name slam in hook-4)
 const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:150px;height:150px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.us}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.96), rgba(10,12,24,0.88));font-family:Oswald;font-weight:700;font-size:100px;color:#f7f3ea">?</div></div>
   <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">A GENERAL</div></div></div>`, "left:60px;bottom:120px;");
-tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_GEN + 0.25);
+tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_GEN + 0.25); tl.to(QB, { autoAlpha: 0, duration: 0.3 }, T_GEN + 3.6);   // <= 3.5 s
 tl.to(QB, { scale: 1.06, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: "0% 100%" }, T_NOBODY);
 focus([1250, 690], 60, T_GEN + 0.3, T_NORTH);
 // "the North's first major victory of the war"
-sstamp("FIRST MAJOR VICTORY", BAND(760), T_FIRST - 0.05, { size: 72, sub: "OF THE WAR", until: T_BEGAN - 0.2, shake: 5 });
+{ const FMV = sstamp("FIRST MAJOR VICTORY", BAND(760), T_FIRST - 0.05, { size: 72, sub: "OF THE WAR", until: T_BEGAN - 0.2, shake: 5 }); const sb = FMV.querySelector(".sb"); gsap.set(sb, { autoAlpha: 0 }); tl.to(sb, { autoAlpha: 1, duration: 0.2 }, at(H2, "of the war")); }
 focus(FD, 70, T_FIRST + 0.1, T_BEGAN);
 // "it began as a disaster": the camera pushes in on the Union right, where it began (hook-b starts on this frame)
 const CE = [1430, 800], SE = 1.9;                          // hook-b's first camera (keep in sync with hook-b.js)
 camTo(T_BEGAN - 0.4, END - T_BEGAN + 0.4, CE, SE, "sine.inOut");
-sstamp("A DISASTER", BAND(760), T_DIS - 0.1, { size: 80, until: END - 0.4, shake: 6 });
+sstamp("A DISASTER", BAND(760), T_DIS - 0.1, { size: 80, shake: 6 });   // held to the scene end; hook-b keeps it ~1.2 s more (critic H)
 pulse(T_DIS + 0.15);
 // flags for the close push (both on screen to the end; hook-b starts with this pair)
 const F3 = flags2([1190, 905], [1760, 600], T_12 + 0.5, null);
 // the HUD steps out while a big card is up (1c); the date scroll stays
-declutter([QB], [[T_FIRST - 0.05, T_BEGAN - 0.2], [T_DIS - 0.1, END + 1]]);
+declutter([QB], [[T_SURR - 0.05, T_SURR + 2.1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

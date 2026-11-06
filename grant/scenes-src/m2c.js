@@ -369,7 +369,7 @@ along("gri", sub([LG0, ...GRI.slice(1)], 0, 0.93, 40), T_RAID - 0.2, T_BR - T_RA
 arw({ pts: sub([LG0, ...GRI.slice(1)], 0, 0.955, 40), side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 9), until: T_SHER - 0.2 });
 // the Confederates look the wrong way: the Jackson force turns east after the raiders
 along("pj", LL([[32.08, -90.22], [32.05, -89.95]]), T_MS + 0.3, 2.2, 8);
-arw({ pts: LL([[32.12, -89.70], [32.18, -89.42], [32.22, -89.18]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 9), until: T_SHER - 0.2 });
+arw({ pts: LL([[32.28, -89.70], [32.34, -89.42], [32.38, -89.18]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 9), until: T_SHER - 0.2 });
 townL("BATON ROUGE", BR, "l", T_BR - 0.1);
 K.target(BR[0], BR[1], T_BR, { r: 30, until: T_SHER });
 // ---------- Sherman's corps up the Yazoo, threatening the bluffs north of Vicksburg; Pemberton's army tied down there ----------
@@ -378,7 +378,7 @@ unitS("sh", "carth", L(32.44, -90.99), "infantry", "", { t: T_SHER + 1.6, size: 
 pinPortrait("sh", PHOTO("sherman"), FL.us, "Sherman", T_SHER + 1.8, END + 1, true);
 along("sh", [L(32.44, -90.99), L(32.455, -90.955), L(32.47, -90.92)], T_YAZ - 0.2, 2.8, 12);
 arw({ pts: sub(YAZ, 0.05, 0.8, 10), side: "carth", t: T_YAZ, dur: 1.6, width: AW(SV, 8) });
-boxL("YAZOO RIVER", ...L(32.585, -90.60), T_YAZ + 0.2, null);   // beside the Yazoo, north-east
+boxL("YAZOO RIVER", ...L(32.585, -90.56), T_YAZ + 0.2, null);   // beside the Yazoo, north-east
 const HBP = L(32.53, -90.77);   // on the north end of the bluffs (Haines' Bluff)
 unitS("hb", "rome", HBP, "artillery", "", { t: T_THR - 0.4, w: 40, h: 27 });
 inkTrace(BLUFF, T_THR - 0.1, T_THR + 3.2); boxL("THE BLUFFS", ...L(32.42, -90.69), at(P1, "the bluffs"), null);

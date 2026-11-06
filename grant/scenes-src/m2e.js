@@ -362,7 +362,7 @@ B.greyArrow(JOIN, T_PH + 0.2, T_TENTH + 0.6);
 const PHB = boxL("PORT HUDSON ▼", PHX[0] - 10, 1560, T_PH, null);
 const BKA = arw({ pts: [ALX, L(31.43, -91.98), L(31.40, -91.76)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 9), until: END + 1, keep: true });
 B.caption("NOT BEFORE THE TENTH OF MAY", T_TENTH, T_TENTH + 2.45, "carth r");
-wstampL("FIFTEEN THOUSAND MEN", ALX[0] - 200, ALX[1] - 10, T_15K, T_15K + 2.05, null, 22);   // left of Banks, clear of his arrow
+wstampL("FIFTEEN THOUSAND MEN", ALX[0] - 200, ALX[1] - 10, T_15K, T_WAIT - 0.25, null, 22);   // ends just before the decision-card dim   // left of Banks, clear of his arrow
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
 // ---------- the decision card on "Do you wait for Banks" (critic A: opaque, <= 3.5 s, each option on its own words, no repeated subtitle) ----------
 // A lands on "wait for Banks", B on "cut loose"; the card leaves after "go inland alone"; "Tell us in the comments" is a caption on its words.

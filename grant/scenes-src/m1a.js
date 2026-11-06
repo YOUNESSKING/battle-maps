@@ -260,7 +260,7 @@ camera([[0, 1330, 640, 1.2], [T_STEAM, 1320, 700, 1.6], [T_FIRE, 1300, 748, 2.6]
   [T_MARCH + 1.6, 1420, 790, 2.1], [T_SURR + 0.6, 1360, 780, 2.5], [T_GRANT, 1350, 760, 2.3], [END, 1340, 750, 2.2]]);
 // ---------- date (on the spoken date) + title card (alone, no date on it: the scroll has it) ----------
 B.showDate(T_SIXTH); dateSet("6 FEBRUARY 1862", T_SIXTH + 0.1, null, 0.3, 34);
-const TT = B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6);
+const TT = B.title("MOVE 1", "FORT HENRY", "", T_FHN, T_FHN + 2.6); TT.style.top = "40px";   // top band: clear of the fort and the duel (critic H)
 // ---------- flags (48 px, behind each side's lines; re-placed for the close-up) ----------
 flags2([1180, 520], [1500, 1000], 0, T_STEAM + 0.8);
 flags2([1235, 640], [1420, 880], T_STEAM + 0.6, END + 1);
@@ -277,7 +277,7 @@ poleFlag(FL.us, [FH[0] + 4, FH[1] - 10], T_SURR + 0.55, END + 1);
 place("Fort Henry", FH[0] + 76, FH[1] + 30, T_FHN + 2.8, null, { size: 26 });
 // "steamed up the Tennessee": an ink trace along the river, its name small beside it
 inkTrace(TENN.slice(0, 16), T_STEAM - 0.1, T_STEAM + 3.2);
-place("Tennessee River", 1170, 560, T_STEAM + 0.1, null, { size: 22 });
+place("Tennessee River", 1200, 700, at(P1, "Tennessee"), null, { size: 22 });
 // ---------- Foote's flotilla: four ironclads in front, three timberclads behind (Memoirs: seven gunboats), simple top-down counters ----------
 const IRON = [], FOFF = [[-5, 0.62], [5, 0.66], [-5, 0.70], [5, 0.74]];
 FOFF.forEach(([dx, f], k) => { const path = TENN.map((q) => [q[0] + dx, q[1]]), f0 = f - 0.36, end = Math.min(0.99, f + 0.2);
@@ -296,10 +296,10 @@ const HITS = [[FH[0] - 6, FH[1] - 4], [FH[0] + 6, FH[1] + 6], [FH[0] - 2, FH[1] 
 smoke(IRON.map((o) => o.p), T_FIRE + 0.2, 1 / 2.6);
 smoke([[FH[0] - 8, FH[1] - 8], [FH[0] + 4, FH[1] - 4], [FH[0] - 2, FH[1] + 6]], T_FLOOD + 0.3, 1 / 3.0);
 focus(FH, 40, T_FIRE, T_FIRE + 3.0);
-stampP("TWO FEET DEEP IN WATER", FH[0] + 10, FH[1] + 52, T_TWO, T_CMDR - 0.2, 22);
+stampP("TWO FEET DEEP IN WATER", FH[0] + 10, FH[1] + 52, T_TWO, T_TWO + 2.15, 22);
 // ---------- Tilghman had already sent his men away (toward Fort Donelson); he gives the fort to the navy ----------
-unitS("til", "rome", [FH[0] + 30, FH[1] - 30], "infantry", null, { t: 0.4, w: 40, h: 27 });       // the few left in the fort (unspoken: bare box)
-pinPortrait("til", PHOTO("tilghman"), FL.csa, "Tilghman", T_TIL - 0.05, END + 1, "right");
+unitS("til", "rome", [FH[0] + 10, FH[1] + 40], "infantry", null, { t: 0.4, w: 40, h: 27 });       // the few left in the fort (unspoken: bare box)
+pinPortrait("til", PHOTO("tilghman"), FL.csa, "Tilghman", T_TIL - 0.05, END + 1, "left");   // above: clear of the garrison trail (critic H)
 unitS("gar", "rome", [FH[0] + 44, FH[1] + 14], "infantry", null, { t: 0.3 });
 const OUT = [[FH[0] + 44, FH[1] + 14], [1400, 806], [1470, 818], [1530, 826], [1600, 836]];
 along("gar", OUT, T_MARCH - 0.2, 3.4, 18); hideU(["gar"], T_MARCH + 3.6);
@@ -307,16 +307,16 @@ arw({ pts: [[FH[0] + 40, FH[1] + 4], [1410, 800], [1500, 814], [1560, 822]], sid
 // "He surrendered to the navy": the fort changes hands (red ink hatching ~3 s), the stamp in his words, the sub on "about ninety men"
 recolorFort(FT, "carth", T_SURR + 0.5);
 hatch("assets/media/gn_henry_ctl_fh_mx.png", T_SURR + 0.3, 3.0);
-const SST = stampP("SURRENDERED", FH[0] + 26, FH[1] + 80, T_SURR + 0.15, T_GRANT - 0.1, 26, "ABOUT 90 MEN");
+const SST = stampP("SURRENDERED", FH[0] + 66, FH[1] + 96, T_SURR + 0.15, T_GRANT - 0.1, 26, "ABOUT 90 MEN");
 const SSB = SST.querySelector(".sb"); gsap.set(SSB, { autoAlpha: 0 }); tl.to(SSB, { autoAlpha: 1, duration: 0.25 }, T_NINETY);
 B.grey(["til"], T_SURR + 0.4, 0.6);
 // ---------- Grant had not needed to storm the fort: his columns, still on the road from the landing ----------
 unitS("g1", "carth", [LAND[0] + 6, LAND[1] - 20], "infantry", null, { t: 0.2 }); unitS("g2", "carth", [LAND[0] + 40, LAND[1] - 4], "infantry", null, { t: 0.3 });
 along("g1", [[LAND[0] + 6, LAND[1] - 20], [1352, 730], [1352, 742]], 0.6, T_SURR, 10);
 along("g2", [[LAND[0] + 40, LAND[1] - 4], [1382, 726], [1385, 744]], 0.8, T_SURR, 10);
-pinPortrait("g2", PHOTO("grant"), FL.us, "Grant", T_GRANT + 0.25, END + 1, "up");
+pinPortrait("g2", PHOTO("grant"), FL.us, "Grant", T_GRANT + 0.25, END + 1, "right");
 arw({ pts: [[1356, 728], [1352, 752], [1342, 770]], side: "carth", t: T_GRANT + 0.2, dur: 1.2, until: END + 1 }, 2.3, 9);
-B.caption("GRANT HAD NOT NEEDED TO STORM THE FORT", Math.max(T_STORM - 0.9, T_GRANT + 0.3), END + 1, "carth");
+B.caption("GRANT HAD NOT NEEDED TO STORM THE FORT", T_GRANT, END + 1, "carth");   // the whole sentence, ~3.1 s
 focus(FH, 34, T_STORM, END + 1);
 fixImgs();
 K.raiseTerritory();

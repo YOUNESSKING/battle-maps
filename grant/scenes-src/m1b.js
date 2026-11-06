@@ -269,13 +269,13 @@ flags2([1170, 590], [1560, 650], T_INSIDE + 0.4, END + 1);
 // ---------- the forts: Fort Henry taken (blue), Fort Donelson (red) on its hill above the river; Dover = permanent town ----------
 fortIcon(FH, 0, null, { s: 26, side: "carth" });
 fortIcon(DON, 0, null, { s: 30, side: "rome" });
-const DONL = place("Fort Donelson", 1328, 712, T_TODON, null, { size: 24, keep: true });
+const DONL = place("Fort Donelson", 1328, 712, T_TODON, T_GUNSHOT + 0.3, { size: 24, keep: true });   // leaves before the front and the arrows reach it (critic H)
 const DOVT = town("Dover", DOV, T_TODON + 0.2, null);
 focus(DON, 60, T_WANT + 0.6, T_INSIDE);
 // Confederate reinforcements on their way in (from up the Cumberland, the Nashville side): bare box, solid trail
-unitS("rf", "rome", CUMB_UP[0], "infantry", null, { t: 0 });
-along("rf", CUMB_UP.map(([x, y]) => [x + 22, y + 18]), 0.1, T_INSIDE - 0.3, 16); hideU(["rf"], T_INSIDE);
-arw({ pts: CUMB_UP.slice(1).map(([x, y]) => [x + 22, y + 18]), side: "rome", t: T_REINF - 0.6, dur: 1.6, until: T_15K + 1.0 }, 1.0, 9);
+unitS("rf", "rome", [CUMB_UP[4][0] + 22, CUMB_UP[4][1] + 18], "infantry", null, { t: T_REINF - 0.7 });   // fades in once inside the frame (critic H)
+along("rf", CUMB_UP.slice(4).map(([x, y]) => [x + 22, y + 18]), T_REINF - 0.6, T_INSIDE - T_REINF + 0.3, 12); hideU(["rf"], T_INSIDE);
+arw({ pts: CUMB_UP.slice(4).map(([x, y]) => [x + 22, y + 18]), side: "rome", t: T_REINF - 0.6, dur: 1.6, until: T_15K + 1.0 }, 1.0, 9);
 // ---------- the march (two columns, about a dozen miles across country, on the two roads) ----------
 unitS("mc", "carth", [ROAD_S[0][0] + 20, ROAD_S[0][1] + 22], "infantry", null, { t: 0, size: "XX" });
 unitS("sm", "carth", [ROAD_N[0][0] + 10, ROAD_N[0][1] - 26], "infantry", null, { t: 0, size: "XX" });
@@ -311,7 +311,7 @@ const CMP = scr(`<div style="display:flex;align-items:center;gap:40px;padding:24
   <div style="text-align:center"><div style="font-size:78px;color:#9fc0ea">15,000</div><div style="font-size:24px;letter-spacing:.24em">ON THE 8TH</div></div>
   <div class="gt" style="font-size:90px;color:#c9b48a">&gt;</div>
   <div class="r" style="text-align:center"><div style="font-size:78px;color:#a8a294">50,000</div><div style="font-size:24px;letter-spacing:.24em">A MONTH LATER</div></div></div>`,
-  "left:0;right:0;top:170px;display:flex;justify-content:center;", Math.max(T_EIGHTH + 0.1, T_50K - 0.7), END - 0.1);
+  "left:60px;top:780px;", Math.max(T_EIGHTH + 0.1, T_50K - 0.7), END - 0.1);   // empty lower-left (critic H)
 const R50 = CMP.querySelector(".r"), GT = CMP.querySelector(".gt"); gsap.set([R50, GT], { autoAlpha: 0 });
 tl.to(R50, { autoAlpha: 1, duration: 0.4 }, T_50K); tl.fromTo(GT, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.25, immediateRender: false }, T_MONTH + 0.3);
 SFX("hit", T_MONTH + 0.5);

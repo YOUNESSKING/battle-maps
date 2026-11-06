@@ -306,6 +306,7 @@ const UB = [unitS("uSm", "carth", [1250, 690], "infantry", null, { size: "XX" })
 const WF = pinAt(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, FD[0] + 8, FD[1] - 40, 0, null);
 reg(WF.firstElementChild);
 const F3 = flags2([1190, 905], [1760, 600], 0, null);
+{ const AD = scr0(stampHTML("A DISASTER", CREAM, 80, -4), BAND(760)); gsap.set(AD, { autoAlpha: 1 }); tl.to(AD, { autoAlpha: 0, duration: 0.3 }, 1.15); }   // continues hook-a's last stamp (critic H)
 // =====================================================================================================================
 // hook-3: "But a week is not how it looked..." -- the clock rolls back to dawn, 15 February
 // =====================================================================================================================
@@ -345,11 +346,11 @@ go("cP1", T_BURST, 3.0, [1388, 925]); go("cP2", T_BURST + 0.1, 3.0, [1470, 945])
 // "broken the Union right": the three brigades fall back west, BROKEN (stamp in the narrator's words), ink crosses where they broke
 go("m1", T_BURST + 0.4, 2.2, [1290, 935]); go("m2", T_BURST + 0.5, 2.2, [1345, 985]); go("m3", T_BURST + 0.6, 2.2, [1430, 1010]);   // the right wing breaks and falls back
 crosses([[1432, 905], [1500, 905], [1370, 895]], T_BROKE + 0.2, T_CMDR, SC);
-sstamp("BROKEN", BAND(800), T_BROKE + 0.15, { size: 80, sub: "THE UNION RIGHT", until: T_ROAD - 0.15, shake: 5 });
+{ const BR = sstamp("BROKEN", BAND(800), T_BROKE + 0.15, { size: 80, sub: "THE UNION RIGHT", until: T_BROKE + 2.3, shake: 5 }); const sb = BR.querySelector(".sb"); gsap.set(sb, { autoAlpha: 0 }); tl.to(sb, { autoAlpha: 1, duration: 0.2 }, at(H3, "the Union right")); }
 pulse(T_BROKE + 0.35);
 // "the road out stood open": an ink trace runs down the baked Forge road, a red arrow down it (solid), its name small beside it
 inkTrace(FORGE, T_ROAD - 0.05, T_CMDR + 1.5, 2.6);
-place("The road out", 1560, 1040, T_ROAD, null, { size: 24 });
+place("The road out", 1540, 990, T_ROAD, T_ROAD + 2.1, { size: 24 });
 arw({ pts: FORGE.slice(2, 6).map(([x, y]) => [x + 16, y]), side: "rome", t: T_OPEN, dur: 1.0, until: T_CMDR + 1.0 }, SC, 9);
 // =====================================================================================================================
 // "The Union commander was not even there": the "?" badge (stays until the name slam), the empty headquarters
@@ -358,12 +359,12 @@ const CH = [1300, 800], SH = 2.15;
 camTo(T_CMDR - 0.5, 1.4, CH, SH, "sine.inOut");
 const QB = scr(`<div style="display:flex;align-items:center;gap:18px"><div style="position:relative;width:150px;height:150px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:url(${FL.us}) center/cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle, rgba(10,12,24,0.96), rgba(10,12,24,0.88));font-family:Oswald;font-weight:700;font-size:100px;color:#f7f3ea">?</div></div>
   <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-left:6px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700"><div style="font-size:34px;letter-spacing:0.06em">THE UNION COMMANDER</div></div></div>`, "left:60px;bottom:120px;");
-tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_CMDR + 0.05); tl.to(QB, { autoAlpha: 0, duration: 0.3 }, T_NAME - 1.0);
+tl.fromTo(QB, { autoAlpha: 0, x: -80 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, T_CMDR + 0.05); tl.to(QB, { autoAlpha: 0, duration: 0.3 }, T_CMDR + 3.55);   // <= 3.5 s (critic H)
 const F5 = flags2([1110, 820], [1455, 800], T_CMDR - 0.3, T_RODE + 0.2);
 unitS("hq", "carth", HQ, "hq", null, { t: T_CMDR + 0.2 });
 tl.to(B.units.hq.el, { autoAlpha: 0.35, duration: 0.5 }, T_NOT);
 focus(HQ, 50, T_NOT, T_AWAY);
-stampP("NOT EVEN THERE", HQ[0] - 10, HQ[1] + 62, T_NOT + 0.05, T_AWAY - 0.3, 28);
+sstamp("NOT EVEN THERE", BAND(800), T_NOT + 0.05, { size: 64, until: T_NOT + 2.15, shake: 3 });
 // "away on a gunboat, in a conference with the admiral": up the river to the flagship; the "?" marker sits on it
 const CB = [1280, 565], SB = 2.0;
 camTo(T_AWAY - 0.6, 1.5, CB, SB, "sine.inOut");
@@ -371,8 +372,7 @@ const FLG = [gunboat([[BOATP[0] - 6, BOATP[1] - 70], BOATP], T_AWAY - 0.7, 1.2, 
 const QM = pinAt(`<div style="width:58px;height:58px;border-radius:50%;background:radial-gradient(circle, rgba(10,12,24,0.95), rgba(10,12,24,0.8));border:4px solid #f3e7c4;box-shadow:0 0 0 3px #1f4fc4,0 6px 14px rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;font-family:Oswald;font-weight:700;font-size:38px;color:#f7f3ea">?</div>`, BOATP[0], BOATP[1] - 46, T_AWAY + 0.05, T_KNOTS + 1.2);
 reg(QM.firstElementChild);
 focus(BOATP, 40, T_AWAY + 0.1, T_RODE);
-place("A gunboat", BOATP[0] + 115, BOATP[1] + 6, T_AWAY + 0.2, T_ADM - 0.1, { size: 24 });
-place("The admiral", BOATP[0] + 120, BOATP[1] + 6, T_ADM, T_RODE - 0.1, { size: 24 });
+place("A gunboat", BOATP[0] + 115, BOATP[1] + 6, T_AWAY + 0.2, T_AWAY + 2.4, { size: 24 });
 // "when he rode back": the "?" rides back along the line to the broken right (solid thin trail, fades after arrival), the camera follows
 const RIDE = [[BOATP[0], BOATP[1] - 46], [LAND[0] - 8, LAND[1] - 30], [1240, 640], [1232, 700], [HQ[0], HQ[1] - 30], [1262, 880], [1290, 905]];
 pinAlong(QM, RIDE, T_RODE, T_KNOTS - T_RODE + 0.1, 24);
@@ -384,12 +384,11 @@ const F6 = flags2([1150, 1010], [1440, 830], T_RODE + 0.4, T_NAME - 1.0);
 tl.to(["m1", "m2", "m3"].map((id) => B.units[id].el), { autoAlpha: 0.55, duration: 0.5 }, T_KNOTS);
 ["m1", "m2", "m3"].forEach((id, k) => tl.to(B.units[id].el.querySelector(".blk"), { x: 3, duration: 0.18, yoyo: true, repeat: 5, ease: "sine.inOut" }, T_MUSK + k * 0.08));
 focus([1300, 955], 70, T_KNOTS, T_NOAMMO + 0.4);
-sstamp("NO AMMUNITION", BAND(800), T_NOAMMO - 0.05, { size: 72, until: T_TONS - 0.15, shake: 5 });
+{ const NA = sstamp("NO AMMUNITION", BAND(800), T_NOAMMO - 0.05, { size: 72, sub: "CLOSE AT HAND", until: S4 - 0.3, shake: 5 }); const sb = NA.querySelector(".sb"); gsap.set(sb, { autoAlpha: 0 }); tl.to(sb, { autoAlpha: 1, duration: 0.2 }, T_HAND); }   // TONS OF IT stamp dropped: the crates show it; one stamp ~3.3 s
 pulse(T_NOAMMO + 0.2);
 // "while tons of it lay close at hand": ammunition crates (ink icons) just behind the line; TONS OF IT · CLOSE AT HAND
 const CRATE = `<svg width="34" height="26" viewBox="0 0 34 26" style="display:block;overflow:visible;filter:drop-shadow(0 2px 2px rgba(0,0,0,.8))"><rect x="1" y="4" width="32" height="20" fill="#8a6a44" stroke="#2a2420" stroke-width="2"/><path d="M1 4 L33 24 M33 4 L1 24" stroke="#5a4428" stroke-width="1.6"/><rect x="1" y="1" width="32" height="5" fill="#a07c50" stroke="#2a2420" stroke-width="1.5"/></svg>`;
 [[1205, 925], [1226, 948], [1196, 952], [1219, 975]].forEach(([x, y], k) => reg(pinAt(CRATE, x, y, T_TONS + k * 0.1, T_NAME - 1.0).firstElementChild));
-sstamp("TONS OF IT", BAND(800), T_TONS + 0.05, { size: 72, sub: "CLOSE AT HAND", until: S4 - 0.3, shake: 4 });
 arw({ pts: [[1228, 945], [1252, 950], [1272, 955]], side: "carth", t: T_HAND, dur: 0.6, until: T_NAME - 1.0 }, SK, 7);
 // =====================================================================================================================
 // hook-4: the name slam (the "?" turns into the real photo)
@@ -403,9 +402,9 @@ tl.fromTo(BDG, { autoAlpha: 0, scale: 0.4, x: -620, y: 520 }, { autoAlpha: 1, sc
 tl.to(BDG.querySelector(".q"), { autoAlpha: 0, duration: 0.15 }, T_NAME - 0.2);
 const NAME = scr0(`<div style="padding:12px 44px 14px;background:rgba(18,16,12,0.95);border-top:7px solid #1f4fc4;color:#f7f3ea;font-family:Oswald;font-weight:700;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)"><div style="font-size:90px;letter-spacing:0.08em;line-height:1.1">ULYSSES S. GRANT</div><div style="font-size:24px;letter-spacing:0.26em;color:#d8cfb8">THE UNION COMMANDER</div></div>`,
   "left:0;right:0;top:500px;display:flex;justify-content:center;transform-origin:50% 40%;");
-slam(NAME, T_NAME - 0.1, { from: 1.9, shake: 6, until: T_FEW - 0.1 }); pulse(T_NAME + 0.15);
+slam(NAME, T_NAME - 0.1, { from: 1.9, shake: 6, until: T_SUP }); pulse(T_NAME + 0.15);   // ~2.8 s
 // "a few weeks earlier his own superior had brushed off his plan": the plan sketch + BRUSHED OFF (the superior is not named: no photo)
-tl.to(BDG, { x: -560, y: 60, scale: 0.72, duration: 0.5, ease: "power3.inOut" }, T_FEW - 0.1);
+tl.to(BDG, { autoAlpha: 0, duration: 0.3 }, T_SUP);   // the badge leaves with the name card (critic H: one card at a time)
 dateSet("JANUARY 1862", T_FEW, T_TWO - 0.1);
 const PLAN = scr(`<div style="position:relative;width:640px;height:400px;background:#ece3cc;border:2px solid #b9a77f;box-shadow:0 22px 46px rgba(0,0,0,.7);transform:rotate(-2deg);font-family:'Special Elite',monospace;color:#2a2420">
   <svg width="640" height="400" viewBox="0 0 640 400" style="position:absolute;left:0;top:0">
@@ -417,14 +416,16 @@ const PLAN = scr(`<div style="position:relative;width:640px;height:400px;backgro
     <g fill="#c4121f" stroke="#2a2420" stroke-width="1.5"><path d="M238 205 l7 14 15 1 -11 10 4 15 -15 -8 -15 8 4 -15 -11 -10 15 -1 Z"/><path d="M462 182 l7 14 15 1 -11 10 4 15 -15 -8 -15 8 4 -15 -11 -10 15 -1 Z"/></g>
   </svg>
   <div class="tt" style="position:absolute;left:24px;top:330px;font-size:44px;letter-spacing:.06em">HIS PLAN</div></div>`,
-  "left:700px;top:360px;", T_BRUSH - 0.25, T_TWO - 0.12, { autoAlpha: 0, x: 120 });
+  "left:640px;top:300px;", T_SUP + 0.1, T_TWO - 0.12, { autoAlpha: 0, x: 120 });
 gsap.set(PLAN.querySelector(".tt"), { autoAlpha: 0 }); tl.to(PLAN.querySelector(".tt"), { autoAlpha: 1, duration: 0.2 }, T_PLAN - 0.05);
-slam(scr0(stampHTML("BRUSHED OFF", CREAM, 70, -9), "left:870px;top:520px;transform-origin:50% 50%;"), T_BRUSH, { from: 2.2, shake: 5, until: T_TWO - 0.12 }); pulse(T_BRUSH + 0.2);
+// "brushed off": the plan is struck through in red ink on its words (no stamp: too short a gap, critic H)
+{ const X = PLAN.firstElementChild.querySelector("svg"); X.insertAdjacentHTML("beforeend", `<path class="st" d="M60 60 L590 350 M590 60 L60 350" stroke="#b3241f" stroke-width="14" stroke-linecap="round" fill="none"/>`);
+  const st = X.querySelector(".st"), L = 1300; gsap.set(st, { strokeDasharray: `${L} ${L}`, strokeDashoffset: L }); tl.to(st, { strokeDashoffset: 0, duration: 0.35, ease: "power2.in" }, T_BRUSH); SFX("hit", T_BRUSH + 0.3); K.shake(T_BRUSH + 0.3, 5, 0.3); pulse(T_BRUSH + 0.3); }
 // "his own superior": an unnamed officer (no name is spoken, so no photo and no name plate)
 const SUP = scr(`<div style="display:flex;align-items:center;gap:18px;flex-direction:row-reverse"><div style="position:relative;width:170px;height:170px;border-radius:50%;overflow:hidden;border:6px solid #f3e7c4;box-shadow:0 0 0 4px #1f4fc4,0 12px 26px rgba(0,0,0,0.6);background:radial-gradient(circle at 50% 40%, #3a4458, #10141c)">
   <svg width="170" height="170" viewBox="0 0 100 100" style="position:absolute;left:0;top:0"><circle cx="50" cy="40" r="17" fill="#0a0d13"/><path d="M14 100 C16 72 32 62 50 62 C68 62 84 72 86 100 Z" fill="#0a0d13"/><path d="M30 70 L36 64 M70 70 L64 64" stroke="#c9b48a" stroke-width="3"/></svg></div>
   <div style="padding:10px 20px 12px;background:rgba(18,16,12,0.9);border-right:6px solid #1f4fc4;color:#f7f3ea;font-weight:700;font-family:Oswald"><div style="font-size:34px;letter-spacing:0.06em;white-space:nowrap">HIS OWN SUPERIOR</div></div></div>`,
-  "right:90px;top:330px;", T_SUP - 0.05, T_BRUSH - 0.3, { autoAlpha: 0, x: 80 });
+  "right:90px;top:330px;", null, null, { autoAlpha: 0, x: 80 });   // dropped (critic H: 1.1 s, clutter); kept hidden
 // =====================================================================================================================
 // the three snap cuts (whoosh + hit; a black frame hides each camera jump); Grant's portrait card on a stake at his own unit in each cut
 // =====================================================================================================================
@@ -453,7 +454,6 @@ const TENh = [[1238, 446], [1258, 494], [1266, 542], [1274, 590], [1285, 638], [
 const FTs = [vis(T1, T2)(fortIcon([FHh[0] + 8, FHh[1]], null, null, { s: 34, side: "carth" })), vis(T1, T2)(fortIcon([FDh[0] - 10, FDh[1]], null, null, { s: 34, side: "carth" }))];
 unitS("cu1", "carth", [FHh[0] + 70, FHh[1] - 40], "infantry", null, { t: T1 + 0.05, until: T2 - 0.01 });
 pinPortrait("cu1", PHOTO("grant"), FL.us, "Grant", T1 + 0.15, T2 - 0.4, "up");
-numLabel([C1[0] - 120, C1[1] + 150], "Two rivers", 1, T_TWO + 0.35, T2 - 0.45);
 endScope(SC1, T2);
 // ---------- CUT 2: THE MISSISSIPPI (vicksburg_siege_w, night): the gunboats run past the bluff batteries (visible shots) ----------
 const VKS = VP(32.3526, -90.8779), S2c = 1.5;
@@ -466,18 +466,18 @@ const NW = todDiv("rgba(6,10,30,0.5)", "normal"); gsap.set(NW, { opacity: 1 }); 
 flags2([RUN[2][0] - 260, RUN[2][1] + 60], [VKS[0] + 230, VKS[1] - 40], T2, T3).forEach(vis(T2, T3));
 vis(T2, T3)(town("Vicksburg", VKS, T2, T3 - 0.45));
 const GBV = [0, 1, 2].map((k) => { const s = gunboat(sub(RUN, 0.12 + k * 0.08, 0.62 + k * 0.08), T2 + k * 0.25, T3 - T2 - 0.3, T3 - 0.01, { L: 56 }); vis(T2, T3)(s.el); return s; });
-portraitEl(GBV[1].host, PHOTO("grant"), FL.us, "Grant", T2 + 0.15, T3 - 0.4, "left");
+unitS("va", "carth", [RUN[2][0] - 170, RUN[2][1] + 30], "infantry", null, { t: T2 + 0.02, until: T3 - 0.01 });   // Grant's army on the west bank
+pinPortrait("va", PHOTO("grant"), FL.us, "Grant", T2 + 0.15, T3 - 0.4, "up");
 const BAT = [[VKS[0] + 70, VKS[1] - 50], [VKS[0] + 80, VKS[1] + 60]];
 BAT.forEach((p, k) => unitS("vb" + k, "rome", p, "artillery", null, { t: T2 + 0.02, until: T3 - 0.01, w: 44, h: 29 }));
 shoot(BAT[0], posOn(RUN, 0.38), T2 + 0.5, { s: S2c, h: 30, dur: 0.6 });
 shoot(BAT[1], posOn(RUN, 0.55), T_MISS + 0.1, { s: S2c, h: 30, dur: 0.6 });
 smoke(BAT, T2 + 0.55, 1 / S2c);
-numLabel([VKS[0] - 60, VKS[1] + 120], "The Mississippi", 2, T_MISS, T3 - 0.45);
 endScope(SC2, T3);
 // ---------- CUT 3: ACROSS A RIVER (jamesriver_w, June 1864): the pontoon bridge, Lee's army facing the other way ----------
 // the bridge: Weyanoke Point (the tip of the north-bank peninsula) -> Windmill Point (south bank), on the jamesriver map px
 const WEY = [1403, 874], WIN = [1412, 905], S3c = 1.2, S3b = 2.4;
-const LEEP = JP(37.41, -77.25), C3 = [LEEP[0] + 280, LEEP[1] + 190], C3b = [1415, 865];
+const LEEP = JP(37.41, -77.25), C3 = [LEEP[0] + 280, LEEP[1] + 260], C3b = [1415, 865];
 // close on the bridge first ("marched a whole army across a river"; close look), then pull back to show Lee ("while Robert E. Lee...")
 tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, T3 - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, T3 + 0.04);
 tl.set(LJA, { autoAlpha: 1 }, T3 - 0.01); tl.set(LJA.close, { opacity: 1 }, T3 - 0.01); tl.to(LJA.close, { opacity: 0, duration: 1.0, ease: "sine.inOut" }, T_LEE - 0.4);
@@ -486,22 +486,20 @@ camTo(T_LEE - 0.6, 1.3, C3, S3c, "power2.inOut"); camTo(T_LEE + 0.75, T4 - T_LEE
 SFX("hit", T3 + 0.02); K.shake(T3 + 0.02, 3, 0.25);
 dateSet("JUNE 1864", T3, null);
 const SC3 = snap();
-[flagC(FL.us35, WEY[0] + 140, WEY[1] - 95, T3, null), flagC(FL.csa, WIN[0] - 60, WIN[1] + 95, T3, T_LEE - 0.4)].forEach(vis(T3, null));   // the south bank was still Confederate country
-flagC(FL.csa, LEEP[0] - 40, LEEP[1] + 270, T_LEE - 0.6, null);
+[flagC(FL.us35, 1580, 700, T3, null), flagC(FL.csa, WIN[0] - 60, WIN[1] + 95, T3, T_LEE - 0.4)].forEach(vis(T3, null));   // the south bank was still Confederate country
+flagC(FL.csa, 700, 440, T_LEE - 0.6, null);
 // the pontoon bridge: a solid ink line (pale deck, dark edges) across the river
 [[5.5, "#2a2410"], [3.2, "#e3cf9a"]].forEach(([px, col]) => { const p = document.createElementNS(NS, "path"); p.setAttribute("d", dpath([WEY, WIN]));
   Object.entries({ fill: "none", stroke: col, "stroke-linecap": "butt", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v)); OVL.appendChild(p); swReg(p, px); tl.set(p, { opacity: 1 }, T3); });
-const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1416, 960], [1402, 1040]];
+const XR = [[1470, 700], [1440, 780], [1412, 840], WEY, WIN, [1414, 940], [1416, 962]];
 [0, 1, 2].forEach((k) => { const id = unitS("j" + k, "carth", XR[0], "infantry", null, { t: T3 + k * 0.3 }); along(id, XR, T3 + k * 0.45, 4.2, 24); });
-pinPortrait("j0", PHOTO("grant"), FL.us35, "Grant", T3 + 0.2, null, "right");
+pinPortrait("j0", PHOTO("grant"), FL.us35, "Grant", T3 + 0.2, null, "up");
 arw({ pts: XR, side: "carth", t: T3 + 0.2, dur: 1.4, until: T_LEE - 0.5 }, S3b, 9);
 arw({ pts: XR, side: "carth", t: T_LEE - 0.4, dur: 0.01, until: null }, S3c, 9);
-numLabel([WIN[0] + 60, WIN[1] + 30], "Across a river", 3, T_ACROSS, null);
 // Lee (portrait on a stake at his own unit, on his name) and his army, facing the other way (north, toward Richmond)
 unitS("l0", "rome", LEEP, "infantry", null, { t: T3 + 0.1, until: T4 }); unitS("l1", "rome", [LEEP[0] + 120, LEEP[1] - 30], "infantry", null, { t: T3 + 0.2, until: T4 });
 pinPortrait("l0", PHOTO("lee"), FL.csa, "Lee", T_LEE - 0.05, T4 - 0.1, "left");
-[[LEEP, [LEEP[0] - 40, LEEP[1] - 200]], [[LEEP[0] + 120, LEEP[1] - 30], [LEEP[0] + 110, LEEP[1] - 230]]].forEach(([a, b], k) => arw({ pts: [a, b], side: "rome", t: T_OTHER + k * 0.15, dur: 0.7, until: T4 }, S3c, 9));
-stampP("LOOKING THE OTHER WAY", LEEP[0] + 170, LEEP[1] + 90, T_OTHER + 0.1, T4 - 0.1, 30);
+[[[LEEP[0] + 30, LEEP[1]], [LEEP[0] + 50, LEEP[1] - 95]], [[LEEP[0] + 120, LEEP[1] - 30], [LEEP[0] + 135, LEEP[1] - 125]]].forEach(([a, b], k) => arw({ pts: [a, b], side: "rome", t: T_OTHER + k * 0.15, dur: 0.7, until: T4 }, S3c, 9));
 // =====================================================================================================================
 // the title (hit + shake): the James River shot dims, the three moves in one line; the title card alone (no date on it)
 // =====================================================================================================================
@@ -510,10 +508,11 @@ const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight
   <div style="font-size:30px;letter-spacing:0.42em;color:#c9b48a">ULYSSES S. GRANT'S</div>
   <div style="font-size:84px;letter-spacing:0.06em;line-height:1.08;color:#f7f3ea">3 GREATEST TACTICAL MOVES</div>
   <div style="font-size:28px;letter-spacing:0.3em;color:#f0e6c8;margin-top:8px">1 TWO RIVERS · 2 THE MISSISSIPPI · 3 ACROSS A RIVER</div></div>`, "left:0;right:0;top:300px;display:flex;justify-content:center;");
-tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_GREAT - 0.26);
-SFX("hit", T_GREAT); K.shake(T_GREAT, 6, 0.4);
+tl.fromTo(TITLE, { autoAlpha: 0, scale: 1.7 }, { autoAlpha: 1, scale: 1, duration: 0.26, ease: "power4.in", immediateRender: false }, T_GREAT - 0.06);
+tl.to(document.getElementById("date"), { autoAlpha: 0, duration: 0.3 }, T4);   // the title card alone (critic H)
+SFX("hit", T_GREAT + 0.2); K.shake(T_GREAT + 0.2, 6, 0.4);
 // the HUD steps out while a big card is up (1c); the date scroll stays
-declutter([QB], [[T_BROKE + 0.15, T_ROAD - 0.15], [T_NOAMMO - 0.05, T_TONS - 0.15], [T_TONS + 0.05, S4 - 0.3]]);
+// the "?" badge (bottom-left) and the NOT EVEN THERE stamp (centre band) share ~2 s side by side: no declutter, else the badge would show < 1.5 s
 fixImgs();
 K.raiseTerritory();
 B.finish();

@@ -268,7 +268,7 @@ const CAV_SVG = `<g fill="#f7f3ea" stroke="none">
 const cavIcon = (id) => { const sv = B.units[id].el.querySelector(".blk svg"); if (!sv) return; sv.setAttribute("viewBox", "0 0 100 80"); sv.setAttribute("preserveAspectRatio", "xMidYMid meet"); sv.innerHTML = CAV_SVG; };
 // big card (one at a time, cream on dark, no source text)
 const bigCard = (inner, t, until, o = {}) => scr(`<div style="padding:${o.pad || "18px 46px 20px"};background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);${o.css || ""}">${inner}</div>`,
-  `left:0;right:0;top:${o.top || 200}px;display:flex;justify-content:center;`, t, until);
+  o.pos || `left:0;right:0;top:${o.top || 200}px;display:flex;justify-content:center;`, t, until);
 // a portrait card that cannot be laid on a B.unit (ships): host = the ship's constant-size pin
 const DON = [1385, 738], DOV = [1510, 764], WB = [1412, 722], HQ = [1237, 825], SMH = [1300, 662];
 const RING = [[1306, 615], [1280, 647], [1266, 705], [1289, 764], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];   // = hook-a / m1b's front
@@ -290,11 +290,11 @@ const T_ANS = at(P8, "Grant answered the same day"), T_NO = at(P8, "No terms exc
   T_LOSS = at(P8, "His own side's losses"), T_2800 = at(P8, "nearly twenty-eight hundred");
 const LANDG = [[1495, 721], [1532, 729]];
 const UPR = [[1537, 728], [1562, 725], [1587, 715], [1612, 700], [1637, 684], [1662, 675], [1700, 660], [1750, 640], [1800, 620], [1880, 640], [2000, 700], [2100, 820]];
-const ESCAPE = [[1560, 820], [1586, 846], [1620, 890], [1660, 950], [1712, 1050], [1760, 1160], [1800, 1280]];
+const ESCAPE = [[1555, 815], [1586, 846], [1620, 890], [1660, 950], [1712, 1050], [1760, 1160], [1800, 1280]];
 const LICK = [[1614, 712], [1614, 790], [1532, 890], [1525, 1000], [1500, 1100]];   // the flooded backwater (Lick Creek, baked as water)
 // ---------- camera ----------
 camera([[0, 1470, 760, 2.15], [T_STEAM + 0.4, 1560, 745, 2.0], [T_FEAR, 1600, 765, 1.9], [T_FOR, 1570, 860, 2.05], [T_BACKW + 0.6, 1590, 905, 2.0],
-  [T_CMD, 1440, 770, 2.2], [T_DAWN + 0.3, 1370, 790, 1.85], [T_ANS + 0.4, 1360, 790, 1.8], [T_ACC, 1390, 760, 2.0], [T_TELE, 1380, 760, 1.4],
+  [T_CMD, 1440, 770, 2.2], [T_DAWN + 0.3, 1370, 760, 1.85], [T_ANS + 0.4, 1360, 712, 1.8], [T_ACC, 1390, 760, 2.0], [T_TELE, 1380, 760, 1.4],
   [T_LET, 1360, 760, 1.25], [END, 1340, 760, 1.15]]);
 // ---------- date scroll ----------
 gsap.set(document.getElementById("date"), { autoAlpha: 1 });
@@ -303,7 +303,7 @@ dateSet("15 FEB 1862 · NIGHT", 0, T_DAWN - 0.1, 0.3, 30); dateSet("16 FEB 1862 
 const NW = nightWash(0, T_DAWN - 0.2, 0.5);
 const TOD_COOL = todDiv("rgba(100,135,205,0.55)"); tl.to(TOD_COOL, { opacity: 0.4, duration: 2.0 }, T_DAWN - 0.2); tl.to(TOD_COOL, { opacity: 0, duration: 2.5 }, T_TELE);
 // ---------- flags ----------
-flags2([1180, 600], [1590, 640], 0, T_ACC + 1.4);
+flags2([1180, 600], [1592, 772], 0, T_ACC + 1.4);
 flags2([1000, 620], [1950, 980], T_ACC + 1.2, END + 1);
 // ---------- the pocket as m1d left it ----------
 const FT = fortIcon(DON, 0, null, { s: 30, side: "rome" });
@@ -311,16 +311,18 @@ town("Dover", DOV, 0, null);
 unitS("wb1", "rome", [1384, 710], "artillery", null, { w: 40, h: 27 }); unitS("wb2", "rome", WB, "artillery", null, { w: 40, h: 27 });
 const RING3 = [[1340, 622], [1322, 656], [1314, 700], [1312, 748], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];
 const FR = frontNow(front2(RING3, 2.1, 0, { dur: 0.01, until: T_ACC + 1.0 }));
-[["uSm", [1312, 664], "XX"], ["uWa", [1262, 862], "XX"], ["m1", [1290, 885], "X"], ["m2", [1360, 948], "X"], ["m3", [1430, 985], "X"]].forEach(([id, p, sz]) => unitS(id, "carth", p, "infantry", null, { size: sz }));
+[["uSm", [1312, 664], "XX"], ["uWa", [1262, 862], "XX"], ["m1", [1290, 885], "X"], ["m2", [1374, 948], "X"], ["m3", [1442, 985], "X"]].forEach(([id, p, sz]) => unitS(id, "carth", p, "infantry", null, { size: sz }));
 cardNow(pinPortrait("uSm", PHOTO("csmith"), FL.us, "C. F. Smith", 0.05, T_TELE, "left"));   // steps out when the battle ends and the camera pulls out
-unitS("hq", "carth", HQ, "hq", null);
-cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, END + 1, "up"));
-const RED = [["bu", [1336, 736]], ["fl", [1440, 772]], ["pi", [1505, 812]], ["c1", [1350, 790]], ["c4", [1405, 812]], ["c5", [1452, 806]]];
+unitS("hq", "carth", HQ, "infantry", null); cavIcon("hq");   // Grant rode back to his headquarters at the end of m1d (same horseman counter)
+cardNow(pinPortrait("hq", PHOTO("grant"), FL.us, "Grant", 0.05, T_LOSS - 0.2, "up"));
+// the GIVE UP stamp m1d ended on carries into the first second here (same screen place), then leaves
+{ const el = scr(stampHTML("GIVE UP", CREAM, 84, -4, "THE COUNCIL"), "right:200px;top:230px;", null, null); gsap.set(el, { autoAlpha: 1 }); tl.to(el, { autoAlpha: 0, duration: 0.3 }, 0.9); }
+const RED = [["bu", [1336, 736]], ["fl", [1440, 772]], ["pi", [1487, 814]], ["c1", [1413, 786]], ["c4", [1428, 818]], ["c5", [1520, 800]]];
 RED.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null));
-unitS("cF", "rome", ESCAPE[0], "infantry", "FORREST"); cavIcon("cF"); tagAt("cF", T_FOR + 0.1);
-cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, END + 1, "right"));
+unitS("cF", "rome", ESCAPE[0], "infantry", "FORREST"); cavIcon("cF"); tagAt("cF", T_FOR + 1.0);
+cardNow(pinPortrait("bu", PHOTO("buckner"), FL.csa, "Buckner", 0.05, T_LOSS - 0.2, "right"));
 const CFL = cardNow(pinPortrait("fl", PHOTO("floyd"), FL.csa, "Floyd", 0.05, T_STEAM + 0.3, "up"));
-const CPI = cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, T_STEAM + 0.3, "left"));
+const CPI = cardNow(pinPortrait("pi", PHOTO("pillow"), FL.csa, "Pillow", 0.05, T_STEAM + 0.3, "up"));
 // =====================================================================================================================
 // Floyd and Pillow leave on the river steamers in the night (their cards go with them)
 // =====================================================================================================================
@@ -328,13 +330,14 @@ const ST = LANDG.map((p) => ship("steamer", "rome", p, -8, 0, null, { L: 64 }));
 focus([1480, 760], 70, T_FP, T_STEAM);
 go("fl", T_FP + 0.3, 1.6, [1495, 742]); go("pi", T_PIL, 1.6, [1548, 752]);
 hideU(["fl", "pi"], T_STEAM + 0.3);
-const SCF = portraitEl(ST[0].host, PHOTO("floyd"), FL.csa, "Floyd", T_STEAM + 0.35, T_CMD, "up");
-const SCP = portraitEl(ST[1].host, PHOTO("pillow"), FL.csa, "Pillow", T_STEAM + 0.35, T_CMD, "right");
+const SCF = portraitEl(ST[0].host, PHOTO("floyd"), FL.csa, "Floyd", T_STEAM + 0.35, T_FEAR + 1.5, "up");
+const SCP = portraitEl(ST[1].host, PHOTO("pillow"), FL.csa, "Pillow", T_STEAM + 0.35, T_FEAR + 1.5, "right");
 [0, 1].forEach((k) => { const pts = [LANDG[k], ...UPR.map(([x, y]) => [x, y + k * 4])].slice(k ? 1 : 0);
-  sail(ST[k], [LANDG[k], ...pts.slice(k ? 0 : 1)], T_STEAM + 0.6 + k * 2.2, T_CMD - T_STEAM + 1.6, 24); tl.to(ST[k].el, { autoAlpha: 0, duration: 0.5 }, T_CMD + 1.0);
+  sail(ST[k], [LANDG[k], ...pts.slice(k ? 0 : 1)], T_STEAM + 0.6 + k * 2.2, T_CMD - T_STEAM + 1.6, 24); tl.to(ST[k].el, { autoAlpha: 0, duration: 0.5 }, T_FOR + 0.3);   // they step out before the frame edge crops them
   K.smoke(LANDG[k][0] + 8, LANDG[k][1] - 10, T_STEAM + 0.7 + k * 1.4, { n: 2, r: 5, rise: 14, life: 2.0, alpha: 0.5 });
   if (!k) arw({ pts: UPR.slice(0, 8).map(([x, y]) => [x, y - 16]), side: "rome", t: T_STEAM + 0.6, dur: 3.6, until: T_FOR + 1.0 }, 2.0, 6); });
-B.caption("FLOYD: PRESIDENT BUCHANAN'S SECRETARY OF WAR", T_SEC - 0.6, T_FOR - 0.2, "rome");
+B.caption("FLOYD: PRESIDENT BUCHANAN'S SECRETARY OF WAR", T_SEC, T_SEC + 3.5, "rome");
+hideU(["uSm"], T_FOR - 0.3); showU(["uSm"], T_CMD + 0.3);   // C. F. Smith steps out while the camera follows Forrest (he would sit under the date scroll)
 // =====================================================================================================================
 // Forrest leads several hundred cavalry out through the flooded backwater
 // =====================================================================================================================
@@ -349,7 +352,7 @@ focus([1336, 736], 50, T_BUCK, T_DAWN); pulseU("bu", T_BUCK + 0.2);
 const LTR = `<svg width="34" height="24" viewBox="0 0 34 24" style="display:block;filter:drop-shadow(0 2px 3px #000)"><rect x="1" y="1" width="32" height="22" rx="2" fill="#efe6cf" stroke="#1a1712" stroke-width="1.4"/><path d="M1 2 L17 13 L33 2" fill="none" stroke="#1a1712" stroke-width="1.4"/></svg>`;
 const L1 = pinAt(`<div>${LTR}</div>`, 1336, 760, T_DAWN, T_TERMS + 2.4); reg(L1.firstElementChild);
 pinAlong(L1, [[1336, 760], [1310, 800], [1270, 822], [HQ[0] + 30, HQ[1] + 6]], T_DAWN + 0.4, 2.4, 16);
-B.caption("ASKING FOR TERMS", T_TERMS, T_ANS - 0.1, "rome");
+B.caption("ASKING FOR TERMS", T_TERMS, T_TERMS + 2.1, "rome");
 // =====================================================================================================================
 // Grant's answer (verbatim; quote marks), in two cards on the spoken words
 // =====================================================================================================================
@@ -366,7 +369,7 @@ const UN = bigCard(`<div style="font-size:17px;letter-spacing:.32em;color:#ff8a8
 recolorFort(FT, "carth", T_ACC + 0.2);
 const WF = pinAt(`<svg width="40" height="54" viewBox="0 0 40 54" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M6 54 L6 2" stroke="#2a2420" stroke-width="3.5"/><path d="M7 3 C18 0 26 8 38 4 L38 24 C26 28 18 20 7 23 Z" fill="#fbfaf5" stroke="#2a2420" stroke-width="1.6"/></svg>`, DON[0] + 8, DON[1] - 22, T_ACC + 0.1, END + 1);
 reg(WF.firstElementChild);
-stampP("ACCEPTED", 1405, 652, T_ACC + 0.15, T_TELE - 0.2, 26);
+stampP("ACCEPTED", 1405, 652, T_ACC + 0.15, T_ACC + 2.3, 26);
 hatch("assets/media/gn_donelson_ctl_surr_mx.png", T_ACC + 0.4, 3.0);
 greyU(["bu", "c1", "c4", "c5", "wb1", "wb2"], T_ACC + 0.4);
 tl.to(FR, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_ACC + 1.0);
@@ -385,7 +388,7 @@ const TG2 = bigCard(`<div style="display:flex;justify-content:center;gap:44px;fo
 // =====================================================================================================================
 const NN = bigCard(`<div class="us" style="font-size:110px;letter-spacing:.12em;line-height:1;color:#c9b48a">U.S.</div>
   <div class="full" style="font-size:66px;letter-spacing:.06em;line-height:1.1"><b style="color:#c9b48a">U</b>NCONDITIONAL <b style="color:#c9b48a">S</b>URRENDER GRANT</div>`,
-  T_US - 0.3, T_LOSS - 0.2, { col: "#1f4fc4", top: 200, pad: "20px 56px 24px" });
+  T_US, T_LOSS - 0.2, { col: "#1f4fc4", top: 200, pad: "20px 56px 24px" });
 { const US = NN.querySelector(".us"), FULL = NN.querySelector(".full"); gsap.set(FULL, { autoAlpha: 0, height: 0 });
   tl.to(US, { autoAlpha: 0, height: 0, duration: 0.3 }, T_USG - 0.2); tl.to(FULL, { autoAlpha: 1, height: "auto", duration: 0.01 }, T_USG - 0.05);
   slam(FULL, T_USG - 0.05, { shake: 5 }); }
@@ -393,6 +396,7 @@ const NN = bigCard(`<div class="us" style="font-size:110px;letter-spacing:.12em;
 const CAS = K.casualties({ rows: [["", "~2,800", "12,000–15,000"]], flagA: FL.us, flagB: FL.csa, headA: "UNION", headB: "CONFEDERATE", t: T_LOSS, until: END + 1, top: 230 });
 { const inner = CAS.firstElementChild; inner.style.flexWrap = "wrap"; inner.style.maxWidth = "980px";
   const h = document.createElement("div"); h.style.cssText = "width:100%;text-align:center;font-size:22px;letter-spacing:.3em;color:#c9b48a;order:-1;margin-bottom:-30px"; h.textContent = "FORT DONELSON"; inner.insertBefore(h, inner.firstChild);
+  { const v = [...inner.querySelectorAll("span")].find((e) => e.textContent.trim() === "~2,800"); if (v) { gsap.set(v, { autoAlpha: 0 }); tl.to(v, { autoAlpha: 1, duration: 0.3 }, T_2800); } }
   const f = document.createElement("div"); f.style.cssText = "width:100%;text-align:center;font-size:15px;letter-spacing:.22em;color:#a8a294;margin-top:-26px"; f.textContent = "UNION: LOSSES · CONFEDERATE: PRISONERS"; inner.appendChild(f); }
 fixImgs();
 K.raiseTerritory();

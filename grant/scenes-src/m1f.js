@@ -268,7 +268,7 @@ const CAV_SVG = `<g fill="#f7f3ea" stroke="none">
 const cavIcon = (id) => { const sv = B.units[id].el.querySelector(".blk svg"); if (!sv) return; sv.setAttribute("viewBox", "0 0 100 80"); sv.setAttribute("preserveAspectRatio", "xMidYMid meet"); sv.innerHTML = CAV_SVG; };
 // big card (one at a time, cream on dark, no source text)
 const bigCard = (inner, t, until, o = {}) => scr(`<div style="padding:${o.pad || "18px 46px 20px"};background:rgba(18,16,12,0.93);border-top:6px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55);${o.css || ""}">${inner}</div>`,
-  `left:0;right:0;top:${o.top || 200}px;display:flex;justify-content:center;`, t, until);
+  o.pos || `left:0;right:0;top:${o.top || 200}px;display:flex;justify-content:center;`, t, until);
 // a portrait card that cannot be laid on a B.unit (ships): host = the ship's constant-size pin
 const DON = [1385, 738], DOV = [1510, 764], WB = [1412, 722], HQ = [1237, 825], SMH = [1300, 662];
 const RING = [[1306, 615], [1280, 647], [1266, 705], [1289, 764], [1350, 814], [1417, 847], [1487, 854], [1540, 836], [1568, 836]];   // = hook-a / m1b's front
@@ -296,15 +296,15 @@ camera([[0, 1430, 905, 2.1], [T_TEN + 0.6, 1440, 910, 1.9], [T_TALK, 1500, 930, 
   [T_MIDT + 1.2, 1460, 940, 0.82], [T_FAST - 0.2, 1460, 700, 0.86], [T_ONLY, 1440, 720, 0.9], [SWITCH - 0.01, 1430, 740, 0.95], [SWITCH, 1340, 650, 1.3], [END, 1350, 660, 1.5]]);
 // ---------- date scroll ----------
 gsap.set(document.getElementById("date"), { autoAlpha: 1 });
-dateSet("16 FEBRUARY 1862", 0, T_FALL - 0.1, 0.3, 34); dateSet("FEBRUARY–MARCH 1862", T_FALL, null, 0.3, 30);
+dateSet("16 FEBRUARY 1862", 0, T_FALL - 0.1, 0.3, 34); dateSet("FEBRUARY–MARCH 1862", T_FALL, SWITCH - 0.3, 0.3, 30); dateSet("1863", SWITCH + 0.1, null, 0.3, 34);   // the teaser is move 2 (1863, as m2a opens)
 // ---------- flags (48 px, behind each side's lines) ----------
 flags2([1360, 830], [1500, 1010], 0, T_TALK + 0.5);
-flags2([1480, 640], [1600, 1300], T_TALK + 0.3, T_HOW + 0.6);
+flags2([1480, 640], [1650, 1510], T_TALK + 0.3, T_HOW + 0.6);   // the CSA flag south of the ground they gave up
 // ---------- the two forts, both Union now; Grant's card at his army ----------
 [FH, FD].forEach((p) => fortIcon(p, 0, null, { s: 24, side: "carth" }));
 unitS("gA", "carth", [1452, 962], "infantry", null, { size: "XXX" });
 cardNow(pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", 0.05, T_HOW + 0.6, "right"));
-B.caption("TWO RIVER FORTS HAD FALLEN IN TEN DAYS", T_TEN, T_GONE + 1.5, "carth");
+B.caption("TWO RIVER FORTS HAD FALLEN IN TEN DAYS", T_TEN, T_TEN + 3.3, "carth");
 focus([1452, 962], 40, T_SNUB - 0.2, T_BOATS - 0.2); pulseU("gA", T_TALK + 0.2);
 // ---------- the rivers open: the gunboats steam far into Tennessee (focus + ink trace along each river, ship counters) ----------
 inkTrace(TENN_UP, T_BOATS - 0.1, T_INTO + 2.0, 2.4);
@@ -312,14 +312,14 @@ inkTrace(CUMB_UP, T_BOATS + 0.2, T_INTO + 2.2, 2.4);
 focus([1600, 1100], 330, T_BOATS, T_FALL - 0.2);
 const GT = gunboat(TENN_UP.slice(0, 11), T_BOATS, 9.0, T_HOW + 0.6, { L: 52 });
 const GC = gunboat(CUMB_UP, T_BOATS + 0.3, 8.0, T_HOW + 0.6, { L: 52 });
-place("Tennessee", 1650, 1260, T_INTO + 0.1, T_FALL - 0.2, { size: 30 });
+place("Tennessee", 1650, 1260, T_INTO + 0.1, T_INTO + 2.3, { size: 30 });
 // ---------- the Confederates fall back from Kentucky and much of middle Tennessee (the ground they gave up: red ink hatching) ----------
 [["r1", BG, [1880, 1330]], ["r2", COL, [975, 1070]]].forEach(([id, a, b], k) => { unitS(id, "rome", a, "infantry", null, { size: "XXX" }); go(id, T_FALL + 0.4 + k * 0.5, 4.0, b); });
 [[BG, [1890, 900], [1860, 1100], [1880, 1300]], [COL, [990, 900], [975, 1040]]].forEach((pts, k) =>
   arw({ pts, side: "rome", t: T_FALL + 0.2 + k * 0.5, dur: 2.2, until: T_WAIT + 1.0 }, 0.85, 10));
 hatch("assets/media/gn_tennessee_ctl_fallback_mx.png", T_KY + 0.2, 3.4);
-place("Kentucky", 1700, 560, T_KY, T_MIDT + 0.6, { size: 30 });
-place("Middle Tennessee", 1780, 1230, T_MIDT + 0.2, T_WAIT + 1.0, { size: 30 });
+place("Kentucky", 1700, 560, T_KY, T_KY + 2.3, { size: 30 });
+place("Middle Tennessee", 1640, 1385, T_MIDT + 0.2, T_WAIT + 1.0, { size: 30 });
 // ---------- method card: the three spoken lines, lit on their words ----------
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["HE MOVED FAST", "HIT THE SECOND FORT BEFORE HELP COULD COME", "ATTACKED THE MOMENT THE ENEMY HESITATED"];   // spoken words only (m1-9)
@@ -344,7 +344,7 @@ GUNS.forEach((p, k) => unitS("bt" + k, "rome", [p[0] + 14, p[1]], "artillery", n
 inkTrace(BLUFF, T_BLUFF - 0.05, T_BLUFF + 3.4, 2.8);
 focus([1400, 655], 120, T_BLUFF, T_RIVER);
 flags2([1180, 760], [1540, 600], T_BLUFF + 0.1, END + 1);
-B.caption("A FORTRESS BUILT ON A HIGH BLUFF", T_BLUFF + 0.1, T_RIVER - 0.1, "rome");
+B.caption("A FORTRESS BUILT ON A HIGH BLUFF", T_BLUFF + 0.1, T_BLUFF + 2.9, "rome");
 // the supply steamer comes down the river, right under the guns
 inkTrace(VKRIV, T_RIVER, T_GUNS + 0.6, 2.4);
 const SUP = ship("steamer", "carth", VKRIV[0], 80, T_RIVER - 0.2, END + 1, { L: 60 });
@@ -353,8 +353,7 @@ sail(SUP, VKRIV, T_RIVER, END - T_RIVER, 24);
   shoot([GUNS[g][0] + 6, GUNS[g][1]], [q[0] - 10, q[1] + 6], t, { s: 1.4, h: 20 }); });
 smoke(GUNS.slice(1).map(([x, y]) => [x + 10, y - 6]), T_GUNS + 0.4, 1 / 1.4);
 // woven subscribe: small button bottom-right, cursor click, bell; never a full-screen card
-const E = EngageK(B); E.subscribe(T_SUBS - 1.0, T_HERE + 0.2);
-scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:4px solid #c9b48a;color:#f7f3ea;font-family:Oswald;font-weight:700;letter-spacing:.2em;font-size:32px;box-shadow:0 6px 20px rgba(0,0,0,.6)">NEXT: MOVE 2 →</div>`, "right:80px;bottom:150px;", T_HERE + 0.3, END + 1);
+const E = EngageK(B); E.subscribe(T_SUBS + 0.3, T_HERE + 0.2);   // slides in on "subscribing"
 fixImgs();
 K.raiseTerritory();
 B.finish();
