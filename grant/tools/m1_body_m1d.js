@@ -35,7 +35,9 @@ camera([[0, 1300, 820, 2.0], [T_TOLD, 1300, 860, 2.1], [T_FILL, 1360, 900, 2.4],
   [T_LEFT + 0.4, 1290, 670, 2.5], [T_FELLED, 1285, 655, 2.9], [T_TOOK + 1.2, 1300, 670, 2.7], [T_NIGHT + 0.3, 1400, 720, 2.2], [END, 1420, 730, 2.15]]);
 dateNow("15 FEBRUARY 1862", T_NIGHT - 0.1); B.date("15 FEB · NIGHT", T_NIGHT, null, 34);   // critic r2: scroll fully opaque from frame 0
 // ---------- flags ----------
-flagS(FL.us, 1175, 745, 0, END + 1); flagS(FL.cs, 1560, 790, 0, END + 1);
+const USF = flagS(FL.us, 1175, 745, 0, END + 1);
+// the camera would put the US flag under the date scroll (~8-17 s): it slides across to sit beside the westernmost Union box, then back
+tl.to(USF, { left: 1222, top: 968, duration: 1.2, ease: "sine.inOut" }, 6.6); tl.to(USF, { left: 1175, top: 745, duration: 1.2, ease: "sine.inOut" }, 17.0); flagS(FL.cs, 1560, 790, 0, END + 1);
 // ---------- the lines and units as m1c left them ----------
 fortIcon(DON, 0, null, { s: 24 });   // critic r1: fort flags only at the surrender beats
 // the front as m1c left it (PUSH2), back to the ring as they pull back (MID), then Smith's lodgement (MID2): cross-fades
@@ -99,9 +101,8 @@ restake(BUW, [100, -30], [80, -150], T_NIGHT - 0.6, 1.6); restake(PPW, [0, -150]
 { const scrollGuard = () => document.querySelectorAll(".unit .blk").forEach((b) => { const r = b.getBoundingClientRect(); if (!r.width) return;   /* a counter inside the date-scroll area (+30 px) steps out */
     const hit = r.right > 45 && r.left < 600 && r.bottom > 45 && r.top < 215;
     [...b.parentElement.children].forEach((ch) => { if (ch.querySelector(".pcard")) return; if (hit) { ch.dataset.sg = "1"; ch.style.visibility = "hidden"; } else if (ch.dataset.sg) { delete ch.dataset.sg; ch.style.visibility = ""; } }); });   /* restores only what it hid (tags stay as pinPortrait set them) */
-  const flagGuard = () => document.querySelectorAll(".sflag img").forEach((im) => { const r = im.getBoundingClientRect(); im.style.visibility = r.width && r.right > 45 && r.left < 600 && r.bottom > 45 && r.top < 215 ? "hidden" : ""; });   /* side flags too */
-  tl.to({ k: 0 }, { k: 1, duration: END, ease: "none", onUpdate: () => { scrollGuard(); flagGuard(); } }, 0);
-  { const prev = tl.eventCallback("onUpdate"); tl.eventCallback("onUpdate", () => { if (prev) prev(); scrollGuard(); flagGuard(); }); }   /* run again after every child has rendered (camera moved) */ tl.call(scrollGuard, null, END - 0.01); }
+  tl.to({ k: 0 }, { k: 1, duration: END, ease: "none", onUpdate: () => { scrollGuard(); } }, 0);
+  { const prev = tl.eventCallback("onUpdate"); tl.eventCallback("onUpdate", () => { if (prev) prev(); scrollGuard(); }); }   /* run again after every child has rendered (camera moved) */ tl.call(scrollGuard, null, END - 0.01); }
 fixImgs();
 K.raiseTerritory();
 B.finish();
