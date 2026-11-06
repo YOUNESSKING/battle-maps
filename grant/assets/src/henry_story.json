@@ -1,0 +1,2 @@
+{"_note": "Style W story ground for the henry map (Grant #16 m1a, scene css px). The narration names only the flooded fort ('the river was in flood, parts of the fort stood two feet deep in water'): no hills, ridges, rails or fields are named, so the basemap carries none; the floodwater at Fort Henry is drawn in the scene (m1_body_m1a.js FLOOD) on its words. Because the story is empty the basemap is generated WITHOUT story= (make_style_w.py fails on an empty hill set).",
+ "hills": [], "ridge": [], "ravine": [], "rail": [], "fields": []}

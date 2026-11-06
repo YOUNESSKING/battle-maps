@@ -1,0 +1,4 @@
+{"_note": "Grant #16 m2b/m2g (vicksburg_siege): only the narrated ground = the Vicksburg bluff (Fort Hill / the city / the river batteries down to Warrenton) and the high ground of the Confederate siege line east of the city. Scene css px (x2 = 5760 map px).",
+ "hills": [[1500, 640, 40], [1470, 760, 34], [1520, 880, 30]],
+ "ridge": [[[1520, 520], [1500, 600], [1492, 680], [1480, 760], [1458, 840], [1436, 915], [1400, 990], [1350, 1070], [1322, 1140]]],
+ "ridge_w": 36, "ravine": [], "rail": [], "fields": []}

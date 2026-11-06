@@ -1,7 +1,10 @@
-// MOVE 2b (m2-3), Grant #16: the night of 16 April 1863, Porter's run past the Vicksburg batteries; the 22 April run of six supply steamers.
+// MOVE 2b (m2-3), Grant #16, STYLE W (STYLE_LOCK 2d, restyled 2026-11-06; story, beats and every B.at phrase of the approved v2 kept): the night of 16 April 1863, Porter's run past the Vicksburg batteries; the 22 April run of six supply steamers.
 // Map agent "vk". Basemap vicksburg_siege_hd_lift (z12). NIGHT MODE (locked: GG.night + K.night on the fronts), option 2 (two glowing front
 // bands along the east bank: the Union navy holds the river above the city, the Confederates the bluffs). Built with:
-//   python3 tools/vk_inline.py m2b vicksburg_siege_hd_lift m2-3 m2-3
+//   python3 tools/vk_inline.py m2b vicksburg_siege_w m2-3 m2-3
+// STYLE W: basemap vicksburg_siege_w (its river layer IS the 1863 course: tools/stylew_vk/prep_masks.py draws RIV63 + the channel above it, the
+// 1876 cut-off erased), night mode kept (GG.night), no fronts along the water, no legend, Porter's portrait on a stake at his flagship (Benton),
+// Sherman (no unit here) a corner badge <= 3.5 s, stamps cream on dark, solid trails, Vicksburg a permanent town symbol.
 // The river is drawn on its 1863 course (the hairpin round De Soto Point, cut off by the river in 1876; the modern channel is in the basemap).
 // Facts (FACTCHECK_B #1-#4, vivid details 1-3): about 10 p.m.; Benton leading, then Lafayette (with the captured Price lashed alongside),
 // Louisville, Mound City, Pittsburg, Carondelet, the transports Silver Wave, Forest Queen, Henry Clay (coal barges in tow), Tuscumbia last;
@@ -28,9 +31,8 @@ const VKS = [1416, 736], WAR = [1270, 1100], FTH = [1420, 668];
 const RIV63 = [[840, 390], [960, 424], [1060, 520], [1160, 560], [1260, 600], [1350, 630], [1400, 656], [1418, 676], [1392, 700], [1365, 780], [1342, 860], [1310, 920],
   [1230, 980], [1180, 1060], [1140, 1160], [1100, 1280], [1060, 1400], [1020, 1520], [1000, 1640]];
 const NCH = RIV63.slice(1, 8);   // the 1863-only stretch (drawn as water)
-const RUN = [[-400, 120], [100, 220], [500, 300], [700, 350], ...RIV63];
+const RUN = [[735, -870], [745, -260], [752, -60], [758, 100], [772, 210], [800, 310], ...RIV63];   // STYLE W: down the channel above the point (as on the basemap); same run length as before
 // ---------- layers: night (stars), the 1863 river, living map (shimmer on the 1863 river) ----------
-riverLine([[500, 300], [700, 350], ...RIV63], 40);   // the whole 1863 course as water (the modern channel matches it below the city)
 living(SZ.meters_per_px, [], { n: 5, clouds: 0.1 });
 const NL = GG.night(T_NIGHT - 0.4, T_THRU + 0.6, { dur: 2.2, outDur: 3.0 });
 // the river lit by the fires (warm glow on the water, screen blend, world space)
@@ -43,14 +45,11 @@ const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]
 camera(sKeys);
 // ---------- HUD ----------
 B.showDate(T_16); B.date("16 APRIL 1863 · 10 PM", T_16 + 0.05, T_22 - 0.1, 32); B.date("22 APRIL 1863 · NIGHT", T_22, END + 1, 32);
-const LGD = legend(T_POR - 0.4, END + 1, true);
-// the front (option 2): two glowing bands along the east bank (Confederate bluffs / the Union river); night palette
-const FR = front2([[1580, 300], [1530, 420], [1478, 560], [1450, 640], [1436, 700], [1412, 780], [1390, 860], [1356, 935], [1290, 1010], [1236, 1100], [1196, 1200], [1156, 1320], [1116, 1450], [1086, 1640]], 1.0, 0.0, { dur: 0.01 });
-K.night({ lines: [FR], tOn: T_NIGHT - 0.4, tOff: T_THRU + 0.6 });
+const LGD = null;   // STYLE W: no key (no new symbol)
+// STYLE W: no front along the water (the bluff and the river say who holds what)
 // flags (both on every frame): US on De Soto Point / the Louisiana shore, the Confederacy on the bluffs east of the city
 flagS(FL.us, "", 900, 820, 0, END + 1); flagS(FL.cs, "", 1650, 840, 0, END + 1);
-townL("VICKSBURG", [VKS[0] + 60, VKS[1]], "r", 0.2); townL("VICKSBURG", [VKS[0] + 60, VKS[1]], "r", T_PAST + 0.2, { shrink: [[T_PAST + 0.2, null]] });
-townL("WARRENTON", WAR, "l", T_PAST + 0.6);
+town("VICKSBURG", [VKS[0] + 60, VKS[1]], "r", 0.2, { shrink: [[T_PAST + 0.2, null]] });   // STYLE W: the objective = permanent town symbol
 // ---------- the Confederate batteries along the bluffs (Fort Hill to below the city), shown on "past the Vicksburg batteries" ----------
 const BATP = [[1470, 600], [1466, 680], [1452, 760], [1430, 840], [1408, 915], [1370, 990], [1318, 1070], [1290, 1140]];
 BATP.forEach((p, k) => unitS("bt" + k, "rome", p, "artillery", "", { t: T_PAST - 0.2 + k * 0.1, w: 46, h: 31 }));
@@ -76,9 +75,9 @@ tl.to(HC2.sv, { filter: "brightness(0.35) sepia(0.6)", duration: 2.5 }, T_EDGE);
 // ---------- "set houses on fire and lit bonfires on the shore so they could see the river" ----------
 [[1300, 700], [1280, 770], [1250, 650], [1305, 840]].forEach((p, k) => { fireGlowS(p[0], p[1], 34, T_FIRE + k * 0.3, END + 1); K.smoke(p[0], p[1] - 6, T_FIRE + 0.3 + k * 0.3, { n: 3, r: 10, rise: 28, life: 3 }); });
 [[1440, 640], [1418, 730], [1398, 805], [1378, 880], [1340, 955], [1330, 600]].forEach((p, k) => { bonfire(p[0] - 4, p[1], T_BONF + k * 0.22, END + 1, 18); });
-boxL("HOUSES ON FIRE", 1170, 690, T_FIRE + 0.1, null, { size: 16, bg: "#f3d6b8" });
+boxL("HOUSES ON FIRE", 1170, 690, T_FIRE + 0.1, null, { size: 16 });
 // ---------- Porter, the fleet ----------
-const PB = cmd("porter", "DAVID D. PORTER", "ACTING REAR ADMIRAL · THE FLEET", "carth", "tr", T_POR + 0.1, T_SHER - 0.3);
+const PB = null; pinPortrait(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, T_ONE - 0.3, true);   // STYLE W: on his flagship for the run (steps out before the fleet leaves the frame)
 boxL("7 GUNBOATS · 3 TRANSPORTS", 1130, 470, T_SEVEN + 0.1, null, { size: 18 });
 // ---------- the guns (visible, ~1 shot per second): batteries at the boats, impacts on the boats; gunboats answer at the bluff ----------
 const vis = (k) => FLEET[k] || HC1;
@@ -102,9 +101,9 @@ B.caption("MANNED BY SOLDIERS · TO RESCUE ANYONE IN THE WATER", T_RESC - 0.6, T
 // ---------- the Henry Clay: hit, set on fire, burns to the water's edge ----------
 shootS(BATP[2], HCP, HCt - 0.75, sAt(HCt), { dur: 0.75, h: 46, r: 12 });
 K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
-boxL("HENRY CLAY", HCP[0] - 120, HCP[1] + 34, T_HC, null, { size: 18, bg: "#f3d6c8" });
+boxL("HENRY CLAY", HCP[0] - 120, HCP[1] + 34, T_HC, null, { size: 18 });
 const T_EDGE_OUT = Math.min(T_EDGE + 2.4, T_NOONE - 0.35);   // 1c rule 3: the stamp is gone before the caption lands
-const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 60, sub: "ONE TRANSPORT · THE HENRY CLAY", shake: 5, until: T_EDGE_OUT });
+const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 60, sub: "ONE TRANSPORT", shake: 5, until: T_EDGE_OUT });
 B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth");
 // ---------- 22 April: six supply steamers (army volunteers) run the guns; one sinks, five get through ----------
 const C2T0 = T_22 - 0.3, C2T1 = END - 0.4;
@@ -121,7 +120,7 @@ boxL("SIX MORE SUPPLY STEAMERS", 1120, 580, T_SIX, null, { size: 18 });
 const FIVEX = placeCard("ARMY VOLUNTEERS", "FIVE TIMES THE NUMBER", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_FIVEX - 0.1, T_THRU - 0.4);
 const THRU = sstamp("FIVE GOT THROUGH", 790, T_THRU, { size: 74, color: "#9fc0ea", shake: 5 });
 // ---------- 1c declutter ----------
-declutter([LGD, PB, SB], [[T_EDGE, T_EDGE_OUT], [T_FIVEX - 0.1, T_THRU - 0.4], [T_THRU, END + 1]]);
+declutter([SB], [[T_EDGE, T_EDGE_OUT], [T_FIVEX - 0.1, T_THRU - 0.4], [T_THRU, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

@@ -1,8 +1,11 @@
-// MOVE 2d (m2-5 .. m2-6), Grant #16: 29 April 1863, Porter's eight gunboats against the Grand Gulf batteries (nearly five and a half hours, not a
+// MOVE 2d (m2-5 .. m2-6), Grant #16, STYLE W (STYLE_LOCK 2d, restyled 2026-11-06; story, beats and every B.at phrase of the approved v2 kept): 29 April 1863, Porter's eight gunboats against the Grand Gulf batteries (nearly five and a half hours, not a
 // single gun silenced, ~10,000 men waiting on the transports); that night a local Black man tells Grant of the landing at Bruinsburg and the road to
 // Port Gibson (the boats run past Grand Gulf in the dark); 30 April, about 17,000 men land unopposed on the east bank. Map agent "vk".
 // Basemap grandgulf_hd_lift (z12), option 2 (two glowing front bands: the river until the landing, then the Bruinsburg bridgehead). Night beat
-// (GG.night + K.night), dawn for the landing. Built with: python3 tools/vk_inline.py m2d grandgulf_hd_lift m2-5 m2-6
+// (GG.night), dawn for the landing. Built with: python3 tools/vk_inline.py m2d grandgulf_w m2-5 m2-6
+// STYLE W: basemap grandgulf_w (the Grand Gulf bluffs drawn from assets/src/grandgulf_story.json; its river = RIVB below), no fronts along the
+// water, no legend; the Bruinsburg bridgehead hatches blue (~3 s) as the men step ashore; Porter's portrait on his flagship, Grant's at his camp
+// then with his landed corps; Bruinsburg + Port Gibson permanent town symbols; stamps cream on dark; solid arrows.
 // Facts: FACTCHECK_B #9 (8 a.m. 29 Apr, eight gunboats, nearly five and a half hours, no gun silenced, ~10,000 of McClernand's men on
 // transports, Grant on a tug; that night the transports ran past Grand Gulf), #10 (the guide: no name, "a colored man", Bruinsburg + the road to
 // Port Gibson), #11 (embarkation at Disharoon's / De Shroon's, about 17,000 landed on 30 Apr; "a degree of relief scarcely ever equalled since").
@@ -23,10 +26,9 @@ const T_NDEF = at(P2, "was not defended"), T_30 = at(P2, "the thirtieth of April
 const GGF = [1340, 626], BRU = [1040, 940], PG = L(31.961, -90.984), HT = [1205, 470], DIS = [988, 776], LANDB = [1000, 935];
 const BAT = [[1352, 588], [1358, 622], [1352, 656], [1340, 690]];    // Fort Cobun (upper) .. Fort Wade (lower), on the bluff at the water
 // the river below Hard Times past Grand Gulf to Bruinsburg (boat track, approx. 1863 channel)
-const RIVB = [[1500, 200], [1330, 245], [1200, 290], [1215, 380], [1270, 500], [1308, 610], [1262, 700], [1180, 780], [1060, 840], [985, 915], [940, 1010], [905, 1100], [860, 1170]];
+const RIVB = [[1480, 210], [1420, 290], [1340, 325], [1250, 300], [1215, 380], [1262, 500], [1290, 600], [1262, 690], [1180, 770], [1070, 835], [985, 915], [935, 1010], [900, 1100], [850, 1175]];   // = the grandgulf_w main river (tools/stylew_vk/prep_masks.py GGRIV)
 const ROAD = [[1040, 940], [1150, 925], [1280, 905], [1420, 885], [PG[0], PG[1]]];
 // ---------- layers ----------
-riverLine(RIVB, 46);   // the channel (modern = 1863 here, from the NHD water layer); the LIFT bake shows no water
 living(GZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const NL = GG.night(T_NIGHT - 0.3, T_NDEF - 0.6, { dur: 2.0, outDur: 2.6 });
 const DAWN = GG.dawn(T_NDEF - 1.0, T_EAST + 1.0);
@@ -37,15 +39,8 @@ const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]
 camera(sKeys);
 // ---------- HUD ----------
 B.showDate(T_29); B.date("29 APRIL 1863", T_29 + 0.05, T_NIGHT - 0.1, 32); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
-// owner 2026-11-03 (STYLE_LOCK 2c item 2): the bombardment (river fight) and the night run stay fronts-only; at the landing the ground changes
-// hands: the territory colours (vk_gg_ctl_apr30: Louisiana west bank + the Bruinsburg bridgehead blue, the rest of the east bank red) dissolve in
-// over ~2.8 s at full strength as the bridgehead front draws, and stay to the end.
-const TT = terr("assets/media/vk_gg_ctl_apr30_mx.png", T_ASH - 0.2, null, 2.8); TT.style.filter = SOFT;
-const LGD = legend(0.6, T_ASH + 0.6, true), LGS = legend(T_ASH + 1.2, END + 1);   // glowing lines while fronts-only, squares once the ground is filled
-// the fronts (option 2): first along the river (Union west bank / Confederate east bank), then the Bruinsburg bridgehead
-const FRV = front2([[1520, 230], [1350, 268], [1240, 300], [1252, 380], [1302, 495], [1334, 610], [1292, 712], [1205, 800], [1085, 862], [1010, 935], [968, 1025], [930, 1115], [885, 1190]], 1.2, 0, { dur: 0.01, until: T_ASH + 0.6 });
-const FBH = front2([[1000, 868], [1060, 852], [1122, 880], [1150, 945], [1122, 1008], [1060, 1038], [972, 1040]], 1.6, T_ASH, { dur: 1.8 });
-K.night({ lines: [FRV], tOn: T_NIGHT - 0.3, tOff: T_NDEF - 0.6 });
+// STYLE W: clean map; the ground that changes hands (the Bruinsburg bridgehead) hatches blue on "stepped ashore", ~3 s, then dissolves
+hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_ASH - 0.2, 3.0);
 // flags (both on every frame): US on the Louisiana shore, then in the bridgehead; the Confederacy on the Mississippi bluffs
 flagS(FL.us, "", 760, 880, 0, END + 1); flagS(FL.cs, "", 1610, 760, 0, END + 1);
 // ---------- m2-5: Grand Gulf; the 29 April attack ----------
@@ -54,13 +49,13 @@ BAT.forEach((p, k) => unitS("bt" + k, "rome", [p[0] + 26, p[1]], "artillery", ""
 const BATP = BAT.map((p) => [p[0] + 26, p[1]]);
 unitS("cs1", "rome", [1560, 640], "infantry", "", { size: "XX" }); gsap.set(B.units.cs1.el, { autoAlpha: 1 });
 // the transports with ~10,000 men wait above (Hard Times); frame 0: boats already moving
-const TR = [0, 1, 2, 3].map((k) => ship("transport", [[1150 - k * 8, 330 + k * 50], [1165 - k * 8, 360 + k * 50]], 0, 6, null, { s: 21, t0: 0 }));
+const TR = [0, 1, 2, 3].map((k) => ship("transport", [[1338 - k * 28, 318 - k * 5], [1330 - k * 28, 322 - k * 5]], 0, 6, null, { s: 21, t0: 0 }));   // STYLE W: on the water of the bend above (the basemap river)
 const PLAN = arw({ pts: [[1180, 470], [1250, 540], [1318, 600]], side: "carth", t: T_FIRST + 0.2, dur: 1.0, width: AW(1.15, 13), dash: "14 10", until: T_LAND + 0.8 });
 K.target(GGF[0] + 20, GGF[1], T_GG, { r: 34, side: "carth", until: T_NIGHT });
 // Porter's eight gunboats close in from upstream and take station off the batteries
-const PB = cmd("porter", "DAVID D. PORTER", "ACTING REAR ADMIRAL", "carth", "tr", T_POR, T_10K - 0.3);
-const STN = [[1236, 370], [1252, 412], [1268, 454], [1283, 496], [1294, 538], [1303, 580], [1300, 640], [1282, 680]];
-const GBT = STN.map((p, k) => ship("gunboat", [[1480 - k * 6, 205 + k * 4], [1300, 250], [1218, 320], p], 0.2 + k * 0.3, T_ATT - k * 0.15, null, { s: 18, t0: 0.2 + k * 0.3, smoke: 1.4 }));
+const STN = [[1225, 370], [1233, 412], [1250, 454], [1266, 496], [1278, 538], [1290, 580], [1284, 640], [1268, 680]];   // on the basemap river, off the batteries
+const GBT = STN.map((p, k) => ship("gunboat", [[1480 - k * 6, 205 + k * 4], [1400, 292], [1300, 318], [1225, 330], p], 0.2 + k * 0.3, T_ATT - k * 0.15, null, { s: 18, t0: 0.2 + k * 0.3, smoke: 1.4 }));
+pinPortrait(GBT[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR, T_NIGHT + 0.2, true, "right");   // STYLE W: Porter's portrait on his flagship
 // the duel (visible, ~1 shot per second, alternating: gunboats at the batteries / the batteries at the gunboats)
 const SHOTS = [];
 for (let t = T_ATT - 0.2, k = 0; t < T_10K + 0.8; t += 0.95, k++) SHOTS.push([t, k]);
@@ -80,16 +75,17 @@ TR.forEach((b, k) => tl.fromTo(b.sv, { filter: "brightness(1)" }, { filter: "bri
 // ---------- that night: a local Black man comes to Grant's camp; the plan shifts south to Bruinsburg ----------
 const CAMP = [1090, 760];
 const TENT = pinS(GG.pin(`<svg width="40" height="34" viewBox="0 0 40 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #6f9bff)"><path d="M4 30 L20 4 L36 30 Z" fill="#e9e2cf" stroke="#1f4fc4" stroke-width="2.4"/><path d="M20 4 L20 30" stroke="#1f4fc4" stroke-width="1.6"/><line x1="20" y1="4" x2="20" y2="-6" stroke="#f3eee2" stroke-width="1.4"/><path d="M20 -6 L30 -3 L20 0 Z" fill="#2f6bff"/></svg>`, CAMP[0], CAMP[1], { t: T_NIGHT + 0.2, pop: true, until: END + 1 }));
-const GRB = cmd("grant", "ULYSSES S. GRANT", "ARMY OF THE TENNESSEE", "carth", "bl", T_TOLD, T_REL - 0.2);
+const TENTH = document.createElement("div"); TENTH.style.cssText = "position:absolute;left:50%;top:0;width:0;height:0"; TENT.appendChild(TENTH); reg(TENTH, "0 0");   // a counter-scaled host for the card (the tent pin holds a bare svg)
+pinPortrait(TENTH, PHOTO("grant"), FL.us, "Grant", T_TOLD, T_NDEF - 0.6, true);   // STYLE W: Grant's portrait at his camp (then with his landed corps)
 const FIG = pinS(GG.pin(`<svg width="22" height="42" viewBox="0 0 22 42" style="display:block;overflow:visible;filter:drop-shadow(0 0 5px rgba(255,230,170,.55))"><circle cx="11" cy="6" r="5" fill="#15130f"/><path d="M4 14 Q11 10 18 14 L17 28 L14 28 L14 41 L8 41 L8 28 L5 28 Z" fill="#15130f"/></svg>`, CAMP[0] - 150, CAMP[1] - 20, { t: null }));
 gsap.set(FIG, { autoAlpha: 0 }); tl.to(FIG, { autoAlpha: 1, duration: 0.5 }, T_MAN - 0.2); tl.to(FIG, { left: CAMP[0] - 34, top: CAMP[1] + 4, duration: T_TOLD - T_MAN + 0.6, ease: "none" }, T_MAN - 0.2);
 tl.to(FIG, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.8);
 B.greyArrow(PLAN, T_LAND - 0.2, T_LAND + 0.8);
 const SHIFT = arw({ pts: [[1110, 790], [1060, 860], [1035, 915]], side: "carth", t: T_LAND, dur: 1.0, width: AW(1.05, 13), dash: "14 10", until: T_ASH + 0.4 });
 K.target(BRU[0], BRU[1], T_BRU, { r: 34, side: "carth", until: T_NDEF + 1.0 });
-const TB = town("BRUINSBURG", BRU, "r", T_BRU, { until: T_BRU + LBL_LIFE + 0.4 });
+const TB = town("BRUINSBURG", BRU, "l", T_BRU); { const tn = TB.querySelector(".tn"); tl.to(tn, { autoAlpha: 0, duration: 0.4 }, T_NDEF - 0.8); tl.to(tn, { autoAlpha: 1, duration: 0.5 }, T_LATER); }   // the name steps out while the boats land on it   // label west of the dot, clear of the landed corps   // STYLE W: where the army heads = permanent town symbol
 glowPath(ROAD, "#ffd27a", 5, T_ROAD - 0.1, END + 1, 2, 0.85, { draw: 1.4 });
-const TPG = town("PORT GIBSON", PG, "r", T_PG, { until: T_PG + LBL_LIFE + 0.4 });
+const TPG = town("PORT GIBSON", PG, "r", T_PG);
 // the boats run past Grand Gulf in the dark (two visible shots) and gather at Disharoon's
 const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
@@ -104,7 +100,8 @@ LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
   arw({ pts: [[b[0] + 14, b[1]], [s[0] - 6, s[1]], [s[0] + 26, s[1] - 8]], side: "carth", t: T_ASH - 0.3 + k * 0.25, dur: 0.8, width: AW(1.65, 11), until: T_LATER + 0.4 }); });
 NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
 const LU = [["l13", "XIII", 1095, 905], ["l9", "", 1105, 965], ["l17", "XVII", 1060, 1005]];
-LU.forEach(([id, lb, x, y], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", lb, { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); along(id, [[x - 70, y - 5], [x, y]], T_ASH + k * 0.3, 1.6, 8); });
+LU.forEach(([id, lb, x, y], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", lb, { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); along(id, [[x - 70, y - 5], [x, y]], T_ASH + k * 0.3, 1.6, 8); tagAt(id, null); });
+pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_LATER - 0.1, null, true, "right");   // Grant with the landed army (named again on "Grant later wrote")
 const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT · 30 APRIL 1863" });
 boxL("EAST BANK", 1190, 990, T_EAST, null, { size: 18 });
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
@@ -112,7 +109,7 @@ const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,
   "left:0;right:0;top:160px;display:flex;justify-content:center;", T_REL - 0.2, END + 1);
 // ---------- 1c declutter ----------
-declutter([LGD, LGS, PB, GRB], [[T_HRS - 0.2, T_SIL - 0.2], [T_SIL, T_SIL + 2.4], [T_10K - 0.1, T_NIGHT - 0.2], [T_NDEF, T_NDEF + 2.2], [T_17K - 0.2, T_LATER - 0.2], [T_REL - 0.2, END + 1]]);
+declutter([], [[T_HRS - 0.2, T_SIL - 0.2], [T_SIL, T_SIL + 2.4], [T_10K - 0.1, T_NIGHT - 0.2], [T_NDEF, T_NDEF + 2.2], [T_17K - 0.2, T_LATER - 0.2], [T_REL - 0.2, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();

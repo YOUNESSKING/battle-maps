@@ -1,4 +1,4 @@
-// MOVE 2f (m2-8 .. m2-10), Grant #16: the real choice (cut loose), Sherman's warning and Grant's reply, the march inland between Pemberton and
+// MOVE 2f (m2-8 .. m2-10), Grant #16, STYLE W (STYLE_LOCK 2d, restyled 2026-11-06; story, beats, cards and every B.at phrase of v2 kept): the real choice (cut loose), Sherman's warning and Grant's reply, the march inland between Pemberton and
 // Johnston, five battles in eighteen days (Port Gibson, Raymond, Jackson, Champion Hill, Big Black River), the numbers, Pemberton shut inside
 // Vicksburg. Map agent "vx". Basemap vicksburg_hd_lift (z10), option 1 territory by date (tools/vx_make_control.py: may03 -> may12 -> may14 ->
 // may16 -> may18), one wide campaign shot -> push-ins on Champion Hill / Big Black -> wide -> push onto Vicksburg (hand-off to m2g).
@@ -10,7 +10,10 @@
 //          18 guns + 1,700+ prisoners.
 //   m2-10  numbers card (Grant's own count): over 60,000 Confederates vs about 33,000; IN EIGHTEEN DAYS; five battles cost him fewer than 4,500
 //          (Grant's table 695 + 3,425 + 259 = 4,379); 18 MAY: Pemberton's army shut inside Vicksburg, the ring closes.
-// Facts: FACTCHECK_B #13, #14, #15-#19, #21, #22, #25. Built with: python3 tools/vx_inline.py m2f vicksburg_hd_lift m2-8 m2-10
+// Facts: FACTCHECK_B #13, #14, #15-#19, #21, #22, #25. Built with: python3 tools/vx_inline.py m2f vicksburg_w m2-8 m2-10
+// STYLE W: basemap vicksburg_w (Champion Hill drawn as hachured high ground, assets/src/vicksburg_story.json); clean map: blue ink hatching only
+// where ground changes hands (Jackson 14 May, Champion Hill 16 May, up to the Vicksburg lines 18 May), ~3 s each; portraits on stakes (Grant at his
+// army, Pemberton + Johnston at theirs); no legend; the Champion Hill front kept (on land), none along the Big Black; stamps cream; solid arrows.
 // @@KIT
 // @@DATA
 const VZ = GD.maps.vicksburg;
@@ -35,20 +38,10 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
   EDW = L(32.33, -90.605), BBR = L(32.347, -90.716), CLI = L(32.341, -90.322), BOL = L(32.35, -90.459), UTI = L(32.108, -90.623), RS = L(32.087, -90.80);
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
-// ---------- owner 2026-11-03 (STYLE_LOCK 2c item 2): territory by date at the locked full strength through the whole scene (the wedge between
-// the two Confederate armies, each battle's ground won, Pemberton shut in on 18 May), 1 s cross-fades; may03 on screen from frame 0 (continues m2e) ----------
-// may03 ground (tools/vx_make_control.py vick(): west bank + the bridgehead Bruinsburg - Port Gibson - Grand Gulf) as option 2 fronts:
-// the west edge of the west-bank strip, round the bridgehead, then up the river (Union inside / west, red band on the Confederate side)
-const F03P = LL([[33.40, -91.52], [32.90, -91.50], [32.55, -91.48], [32.25, -91.45], [32.02, -91.42], [31.96, -91.20], [31.90, -91.20], [31.87, -91.05], [31.90, -90.93],
-  [31.97, -90.86], [32.06, -90.76], [32.12, -90.80], [32.15, -90.92], [32.10, -91.00], [32.045, -91.06], [32.06, -91.08], [32.12, -91.02], [32.20, -90.98], [32.28, -90.93],
-  [32.32, -90.90], [32.36, -90.93], [32.47, -91.02], [32.62, -91.11], [32.82, -91.13], [33.05, -91.12], [33.40, -91.18]]);
-const F03 = on0(front2(F03P, 1.25, 0, { flip: true, dur: 0.01 }));
-const T_T0 = T_INL - 0.2;                                          // the may03 front band (m2e continuity) leaves as the march inland starts; the fill carries on
-tl.to(F03, { opacity: 0, duration: 2.2, ease: "sine.inOut" }, T_T0);
-const TC = [["may03", -1], ["may12", T_RAY + 0.2], ["may14", T_JAX + 0.2], ["may16", T_WEST + 0.3], ["may18", T_18M + 0.2]];
-TC.forEach(([d, t], k) => { const nx = TC[k + 1], el = terr(`assets/media/vx_vick_${d}_mx.png`, t, nx ? nx[1] : null, 1.0, 1.0); el.style.filter = SOFT; });   // old layer fades while the new one comes in
-living(VZ.meters_per_px, [RIV], { n: 6, clouds: 0.12, sw: 4 });
-const LGD = now(legend(0, END + 1, false));
+// STYLE W: clean map; the ground that changes hands hatches blue for ~3 s (tools/stylew_vk/make_hatches.sh: gn_vick_may14cap / may16cap / may18cap)
+hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 0.3, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_BEAT + 0.4, 3.0); hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
+living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
+const LGD = null;   // STYLE W: no key
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
 const DS = [["MAY 1863", null], ["1 MAY 1863", T_PG], ["12 MAY 1863", T_RAY], ["14 MAY 1863", T_JAX + 0.3], ["16 MAY 1863", T_CH + 0.3], ["17 MAY 1863", T_NEXT + 0.2], ["MAY 1863", T_COUNT], ["18 MAY 1863", T_18M + 0.3]];
 DS.forEach(([txt, t], k) => { const nx = DS[k + 1]; if (t == null) dateNow(txt, nx[1] - 0.05); else B.date(txt, t, nx ? nx[1] - 0.05 : null, 32); });
@@ -58,11 +51,16 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 const FX = (a, b) => [a, b];
-const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1560, 800], [1680, 600], T_CH, T_1700 + 2.2], [[1180, 650], [1720, 860], T_1700 + 2.0, END + 1]];
+const FLS = [[[1010, 880], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1560, 800], [1680, 600], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
-U("rv", "rome", L(32.36, -90.84), "PEMBERTON", "XX", 0, { tagAt: T_PEM + 0.1 }); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "JOHNSTON", "XX", 0, { tagAt: T_JOH + 0.3 }); U("rs", "rome", L(32.14, -90.80), "", "XX");
+U("rv", "rome", L(32.36, -90.84), "", "XX"); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "", "XX");   // STYLE W: the portrait cards carry the names U("rs", "rome", L(32.14, -90.80), "", "XX");
+["u13", "u17", "u15"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
+// STYLE W: the generals' portraits on stakes at their armies, from their names to the end of the scene (no corner badges)
+pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_DEC - 0.05, null, true);
+pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "left");
+pinPortrait("rj", PHOTO("johnston"), FL.cs, "Johnston", T_JOH + 0.3, T_JAX + 0.1, true, "right");   // steps out as he leaves Jackson (off the frame)
 // ---------- m2-8: the real choice ----------
 const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAIT FOR BANKS", b: "CUT LOOSE", real: 1, t: 0, tReveal: T_CUTL, until: T_CUTL + 1.35 });
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
@@ -71,10 +69,11 @@ gsap.set(DEC, { autoAlpha: 1, scale: 1 }); gsap.set([OA, OB], { autoAlpha: 1, y:
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 // the supply line back to Grand Gulf (the base) flickers and is cut
 const SUP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.04, -90.93), L(31.995, -90.955)];
-const SUPL = glowPath(SUP, "#6f9bff", 4.5, 0, null, 0, 0.9, { dash: "10 7" }); tl.set(SUPL, { opacity: 0.9 }, 0);
-const GGB = boxL("GRAND GULF", GGF[0] - 120, GGF[1] + 40, T_CUTL + 1.4, null, { size: 18 });
+const SUPL = document.createElementNS(NSs, "path"); SUPL.setAttribute("d", "M" + SUP.map((q) => q.join(" ")).join(" L"));   // STYLE W: the supply line = a thin solid sepia ink line
+Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": (2.4 / KA[2]).toFixed(2), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.8 }).forEach(([k, v]) => SUPL.setAttribute(k, v)); OVL.appendChild(SUPL);
+const GGB = boxL("HIS BASE", GGF[0] - 120, GGF[1] + 40, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
 tl.to(SUPL, { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 5, ease: "none" }, T_CUTL + 1.5); tl.to(SUPL, { opacity: 0, duration: 0.4 }, T_CUTL + 2.4);
-const CUTS = wstampL("CUT LOOSE", ...L(32.12, -90.99), T_CUTL + 1.6, null, "#9fc0ea", 28);
+const CUTS = wstampL("CUT LOOSE", ...L(32.21, -91.13), T_CUTL + 1.6, null, "#9fc0ea", 28);
 // Sherman's warning: one road, the wagons bunch on it
 const SHB = null;   // Sherman's photo sits in his card (a corner badge would have to step out for the card at once)
 const ROADP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.09, -90.80)];
@@ -87,7 +86,6 @@ SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.fi
   ph.style.cssText = `width:96px;height:96px;border-radius:50%;overflow:hidden;position:relative;flex:none;border:4px solid #f3e7c4;box-shadow:0 0 0 3px #1f4fc4;background:url(${FL.us}) center/cover`;
   ph.innerHTML = `<img src="${PHOTO("sherman")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">`; }
 // Grant's reply (verbatim in the script: quote marks only on that line)
-const GRB = cmd("grant", "ULYSSES S. GRANT", "ARMY OF THE TENNESSEE", "carth", "bl", T_ANS - 0.1, T_SET - 0.2);
 B.caption("NOT WITH FULL RATIONS", T_FULL - 0.2, T_BREAD - 0.6, "carth");
 WG.forEach((w, k) => tl.to(w, { autoAlpha: 0.25, duration: 0.6 }, T_FULL + 0.3 + k * 0.1));
 const ICO = { bread: `<svg width="46" height="34" viewBox="0 0 46 34"><rect x="3" y="5" width="40" height="25" rx="4" fill="#e3c88f" stroke="#2a2420" stroke-width="2"/>${[12, 23, 34].map((x) => [12, 22].map((y) => `<circle cx="${x}" cy="${y}" r="2" fill="#8a6a3a"/>`).join("")).join("")}</svg>`,
@@ -116,7 +114,7 @@ const W1 = arw({ pts: LL([[32.08, -90.80], [32.13, -90.65], [32.21, -90.50], [32
 B.move("u17", T_WEDGE - 0.3, 3.5, ...L(32.20, -90.54)); B.move("u13", T_WEDGE - 0.1, 3.5, ...L(32.17, -90.68)); B.move("u15", T_WEDGE + 0.1, 4, ...L(32.10, -90.70));
 B.move("rs", T_WEDGE, 2.5, ...L(32.27, -90.74));
 K.target(VKS[0], VKS[1], T_PEM, { r: 30, side: "rome", until: T_PEM + 2.4 }); K.target(JAX[0], JAX[1], T_JOH + 0.2, { r: 30, side: "rome", until: T_JOH + 2.6 });
-const JTW = townL("JACKSON", JAX, "r", T_JOH + 0.2); const VTW = townL("VICKSBURG", VKS, "l", T_PEM);
+const JTW = townL("JACKSON", JAX, "r", T_JOH + 0.2); const VTW = town("VICKSBURG", VKS, "l", T_PEM);   // STYLE W: Vicksburg = permanent town symbol
 // two red armies cannot join: dashed red arrows toward each other, blocked by the wedge
 const J1 = arw({ pts: [L(32.29, -90.26), L(32.29, -90.36), L(32.28, -90.44)], side: "rome", t: T_ONE - 0.4, dur: 1.0, width: AW(1.72, 11), dash: "12 9", until: T_PG + 1 });
 const J2 = arw({ pts: [L(32.33, -90.80), L(32.31, -90.68), L(32.29, -90.60)], side: "rome", t: T_ONE - 0.2, dur: 1.0, width: AW(1.72, 11), dash: "12 9", until: T_PG + 1 });
@@ -141,7 +139,7 @@ B.move("rv", T_WEST, 1.8, ...L(32.36, -90.585)); B.move("re", T_WEST + 0.2, 1.8,
 const FCH = front2(LL([[32.405, -90.563], [32.37, -90.565], [32.335, -90.567], [32.30, -90.570], [32.265, -90.572]]), KC[2], T_BEAT - 0.2,
   { flip: true, dur: 1.4, until: T_NEXT - 0.3, to: LL([[32.405, -90.625], [32.37, -90.628], [32.335, -90.632], [32.30, -90.630], [32.265, -90.620]]), moveT: T_CUTOFF - 1.0, moveDur: 2.2 });
 BAT("CHAMPION HILL", L(32.40, -90.60), T_CH + 0.1, "16 MAY", 0, 0);
-const CHB = cmd("pemberton", "JOHN C. PEMBERTON", "CONFEDERATE ARMY", "rome", "tr", T_BEAT - 0.1, T_15 - 0.3);
+smoke(LL([[32.335, -90.522], [32.332, -90.535], [32.29, -90.545], [32.36, -90.58], [32.325, -90.585]]), T_BEAT + 0.6);   // BATCH 3: powder smoke at the firing beat
 const sCH = KC[2];
 U("hv", "carth", L(32.375, -90.52), "", "XX", T_BIG - 0.4); B.move("hv", T_BIG - 0.3, 2.0, ...L(32.365, -90.545));
 B.move("u17", T_BIG, 2.0, ...L(32.33, -90.545)); B.move("u13", T_BIG, 2.5, ...L(32.29, -90.55));
@@ -177,11 +175,11 @@ tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.8 }, T_NEXT + 0.4);
 const BBRIV = LL([[32.47, -90.62], [32.42, -90.67], [32.38, -90.70], [32.347, -90.716], [32.31, -90.74], [32.27, -90.78]]);
 B.move("rv", T_NEXT - 0.4, 1.4, ...L(32.36, -90.70)); B.move("re", T_NEXT - 0.3, 1.4, ...L(32.325, -90.705));
 B.move("u13", T_NEXT, 1.8, ...L(32.36, -90.66)); B.move("u17", T_NEXT + 0.2, 1.8, ...L(32.32, -90.655)); tl.to(B.units.hv.el, { autoAlpha: 0, duration: 0.5 }, T_NEXT);
-BAT("BIG BLACK RIVER", L(32.405, -90.715), T_BB - 0.1, "THE NEXT DAY", 0, 0);
+BAT("BIG BLACK RIVER", L(32.27, -90.73), T_BB - 0.1, "THE NEXT DAY", 0, 0);   // on empty ground south of the fight (clear of the portraits)
 mg(L(32.36, -90.665), L(32.36, -90.70), T_BB + 0.6, 5, 1.1 / KBB[2] * 2.2); shootS(L(32.34, -90.67), L(32.347, -90.712), T_BB + 1.0, KBB[2], { dur: 0.6, h: 30, r: 9 });
 fireGlowS(BBR[0] - 2, BBR[1], 10, T_BB + 1.4, T_1700 + 2.0);
 // option 2: once the Confederates are back across, the Big Black River is the line (Union east, red west)
-front2(BBRIV, KBB[2], T_18G - 0.1, { flip: true, dur: 1.4, until: T_COUNT + 0.4 });
+// STYLE W: no front along the river (the Big Black is the line on the map itself)
 B.move("rv", T_18G - 0.2, 1.6, ...L(32.37, -90.78)); B.move("re", T_18G, 1.6, ...L(32.33, -90.785));
 const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div class="a"><div style="font-size:60px;line-height:1.05">18</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">GUNS</div></div>
@@ -202,11 +200,8 @@ B.move("rv", T_COUNT + 1, 5, ...L(32.345, -90.852)); tl.to(B.units.re.el, { auto
 const RING = LL([[32.405, -90.875], [32.40, -90.835], [32.37, -90.82], [32.335, -90.825], [32.30, -90.845], [32.28, -90.88], [32.29, -90.905]]);
 glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_18M + 0.4 });
 wstampL("SHUT INSIDE VICKSBURG", ...L(32.43, -90.66), T_SHUT + 0.2, null, "#e3232f", 28);
-const VTW2 = townL("VICKSBURG", L(32.352, -90.878), "l", T_18M + 0.3);
 // ---------- 1c declutter: one big card at a time ----------
-declutter([LGD, GRB, CHB], [[0.2, T_ANS - 0.2], [T_BREAD - 0.2, T_SET - 0.3], [T_15 - 0.2, T_DIV - 0.3], [T_18G - 0.2, T_COUNT - 0.3],
-  [T_60 - 0.3, T_18D - 0.2], [T_FIVE - 0.1, T_18M - 0.2]]);
-gsap.set(LGD, { filter: "opacity(0)" });   // frame 0: the m2e decision card is still up, the legend is stepped out
+
 fixImgs();
 K.raiseTerritory();
 B.finish();
