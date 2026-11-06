@@ -30,7 +30,8 @@ const YAZ = LL([[32.415, -90.985], [32.44, -90.93], [32.47, -90.88], [32.50, -90
 // rides deep through Confederate ground): vk_miss_ctl_apr1, the B1 raid look apr1b while the cavalry is deep inside, back to apr1 for Sherman.
 // The two glowing front bands stay on top (same ground as tools/vk_make_control.py miss()).
 // STYLE W: clean map; on "on a long raid" the Confederate ground he rides through hatches red (wide view: stronger, ~3 s, then dissolves)
-hatch("assets/media/gn_miss_ctl_apr1cs_mx.png", T_RAID - 0.2, 3.0);
+// critic r1: no territory here (no ground changes hands): the focus wash follows the raid instead
+focus(L(32.4, -89.3), 520, T_RAID - 0.2, T_RAID + 3.2);
 // the Mississippi and the Yazoo (the z8 map shows no water): drawn as water lines
 const RIVM = LL([[35.15, -90.07], [34.80, -90.30], [34.53, -90.58], [34.15, -90.85], [33.75, -91.05], [33.40, -91.08], [33.05, -91.12], [32.80, -91.16], [32.60, -91.12],
   [32.48, -91.06], [32.40, -91.00], [32.385, -90.93], [32.37, -90.885], [32.345, -90.893], [32.30, -90.91], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07],
@@ -42,7 +43,7 @@ const CW = L(32.85, -90.05), SW = 0.86, CV = L(32.40, -90.78), SV = 2.7;
 camera([[0, CW[0] + 30, CW[1] + 20, SW * 0.97], [T_SHER - 0.3, CW[0], CW[1], SW], [T_SHER + 2.2, CV[0], CV[1], SV, "power2.inOut"], [END, CV[0] + 4, CV[1] - 2, SV * 1.04]]);
 SFX("whoosh", T_SHER - 0.35);
 // ---------- HUD ----------
-B.showDate(T_LG); B.date("17 APRIL 1863", T_LG + 0.05, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
+B.showDate(0); B.date("17 APRIL 1863", 0.02, T_MS + 0.4, 32); B.date("24 APRIL 1863", T_MS + 0.45, T_BR - 0.1, 32); B.date("2 MAY 1863", T_BR, T_SHER - 0.1, 32);
 B.date("17 APRIL - 2 MAY 1863", T_SHER, END + 1, 32);
 const LGD = null;   // STYLE W: no key
 // flags: wide pair, then the Vicksburg pair (both on every frame)
@@ -62,7 +63,7 @@ const GB = null;
 const TK = ticker("CAVALRYMEN", 1700, "", "right:70px;top:300px;", T_1700 - 0.2, 0.9, T_LG + 2.2, 5, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
 unitS("gri", "carth", LG, "infantry", "", { t: T_GRI + 0.2, size: "III" }); cavIcon("gri");
 pinPortrait("gri", PHOTO("grierson"), FL.us, "Grierson", T_GRI + 0.3, T_BR - 0.6, true, "right");   // steps out before the raid reaches the frame edge   // STYLE W: his portrait rides with his cavalry
-boxL("LA GRANGE", LG[0] + 70, LG[1] + 40, T_LG, null, { size: 16 });
+boxL("LA GRANGE", LG[0] - 95, LG[1] - 34, T_LG, null, { size: 16 });
 along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
 trail(GRI, "#8fb2ff", 4, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");
 arw({ pts: GRI, side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 11), dash: "18 10", until: T_SHER + 0.4 });
@@ -82,11 +83,11 @@ boxL("THE BLUFFS", HB[0] + 70, HB[1] - 22, T_THR, null, { size: 16 });   // spok
 shootS(BOATS[0].at(T_THR + 0.4), [HB[0] + 8, HB[1] + 6], T_THR + 0.4, SV, { dur: 0.7, h: 30, r: 9 });
 shootS([HB[0] + 10, HB[1] + 6], BOATS[0].at(T_THR + 1.9), T_THR + 1.2, SV, { dur: 0.7, h: 30, r: 9 });
 // Pemberton's army stays at Vicksburg (the column that had started south turns back north)
-unitS("ps", "rome", L(32.20, -90.86), "infantry", "", { t: T_SHER + 1.4, size: "XX" });
-along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.31, -90.84]]), T_PEM, 1.8, 8);
-arw({ pts: LL([[32.18, -90.90], [32.25, -90.86], [32.31, -90.84]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 10), until: END + 1 });
-boxL("PEMBERTON'S ARMY", ...L(32.12, -90.70), T_PEM, null, { size: 16 });
-const TIED = wstampL("TIED DOWN", ...L(32.26, -90.68), T_TIED, null, "#e3232f", 24);
+unitS("ps", "rome", L(32.20, -90.86), "infantry", "PEMBERTON'S ARMY", { t: T_SHER + 1.4, size: "XX" }); tagAt("ps", T_PEM);   // one tag, from the spoken name
+along("ps", LL([[32.20, -90.86], [32.17, -90.92]]), T_SHER + 1.5, 1.2, 6); along("ps", LL([[32.17, -90.92], [32.26, -90.78]]), T_PEM, 1.8, 8);   // stops clear of the Vicksburg dot
+arw({ pts: LL([[32.18, -90.90], [32.22, -90.84], [32.25, -90.795]]), side: "rome", t: T_PEM + 0.1, dur: 1.0, width: AW(SV, 10), until: END + 1 });
+// (the unit tag carries "Pemberton's army")
+const TIED = wstampL("TIED DOWN", ...L(32.41, -90.60), T_TIED, null, "#e3232f", 24);
 // ---------- 1c declutter (the ticker is a small corner counter; no big cards in this scene) ----------
 
 fixImgs();

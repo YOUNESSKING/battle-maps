@@ -543,7 +543,7 @@ const FC = E.final({ moves: [["THE TWO RIVER FORTS", ""], ["VICKSBURG", ""], ["T
   tFamily: F_FAM, tSub: F_SUB, until: END + 1 });
 FC.querySelector(".fam").innerHTML = `FAMILY SERVED IN THE CIVIL WAR? <span style="color:#c9b48a">TELL US THEIR STORY</span>`; FC.querySelector(".fam").style.fontSize = "46px";   // critic r1: >= 22 px in the end-screen band (scale 0.5)
 // end screen: the last ~20 s the card shrinks to a top band and the dark backing lifts, the map alive under it
-FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?";   // critic 2: the narration's words
+FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?"; FC.querySelector(".q").style.fontSize = "72px";   // one line   // critic 2: the narration's words
 const tBand = Math.max(F_TELL + 1.2, END - 20);
 // Confederate flag clear of the EACH TIME card and the big final-question card, back to its place once the card shrinks to the top band
 flagS(FL.cs, 950, 975, T_EACH - 0.2, tBand); flagS(FL.cs, 1010, 790, tBand, END + 1);

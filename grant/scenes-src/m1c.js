@@ -403,7 +403,7 @@ unitS("fl", "rome", [1510, 744], "infantry", null, { t: 0, size: "X" }); unitS("
 pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");
 pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");
 pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "upright");
-pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "up");
+pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "right");
 tl.to(B.units.c2.el, { y: -3, duration: 0.7, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0.1);
 // ---------- 14 Feb: Foote's ironclads against the water batteries ----------
 let RL = 0; for (let j = 1; j < RIVC.length; j++) RL += Math.hypot(RIVC[j][0] - RIVC[j - 1][0], RIVC[j][1] - RIVC[j - 1][1]);
@@ -449,7 +449,7 @@ smoke([[1428, 878], [1440, 872], [1495, 884]], T_STRUCK + 1.5, 0.8);
 const HAV = `<svg width="70" height="70" viewBox="0 0 100 100"><path d="M18 34 Q50 18 82 34 L78 86 Q50 96 22 86 Z" fill="#9a8460" stroke="#f7f3ea" stroke-width="4"/><path d="M18 34 Q50 56 82 34" fill="#b49c74" stroke="#f7f3ea" stroke-width="4"/><path d="M30 30 Q50 -6 70 30" fill="none" stroke="#f7f3ea" stroke-width="5"/></svg>`;
 const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20px 46px 22px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">${HAV}
   <div><div style="font-size:64px;letter-spacing:.06em;line-height:1">THREE DAYS OF RATIONS</div><div class="s2" style="font-size:24px;letter-spacing:.3em;color:#ff8a80;margin-top:6px">IN THEIR HAVERSACKS</div></div></div>`,
-  "right:50px;top:400px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
+  "right:60px;bottom:70px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
 SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
 // not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
 const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word

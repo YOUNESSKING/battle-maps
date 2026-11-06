@@ -30,16 +30,16 @@ CUT = [[32.383, -91.001], [32.366, -91.003], [32.352, -90.975], [32.343, -90.945
 def lakes(m, k=25):   # thick water bodies (oxbow lakes, reservoirs, the wide modern channel) -> removed from the creek source
     return cv2.dilate(cv2.morphologyEx(m.astype(np.uint8), cv2.MORPH_OPEN, np.ones((k, k), np.uint8)), np.ones((15, 15), np.uint8)) > 0
 
+R10 = RIV[:RIV.index([32.40, -91.00]) + 1] + LOOP63 + RIV[RIV.index([32.30, -90.90]):]   # the 1863 river: RIV with the De Soto Point hairpin
 # ---- mississippi (z8): main = the 1863 RIV line (the same polyline the scenes use for the boats); creeks = the S layer outside it (longest paths)
 M = proj("mississippi"); sea = cv2.dilate((np.asarray(Image.open("assets/mississippi_land.png").convert("L").resize((W, H))) < 128).astype(np.uint8), np.ones((9, 9), np.uint8)) > 0
 S0 = load("mississippi", "det_rivS") & ~sea
-big = line(np.zeros((H, W), np.uint8), [M(*p) for p in RIV], 10) > 0
-cor = line(np.zeros((H, W), np.uint8), [M(*p) for p in RIV], 90) > 0
+big = line(np.zeros((H, W), np.uint8), [M(*p) for p in R10], 10) > 0   # critic r1: the hairpin also on the z8 map (seen at s 2.7 in m2c)
+cor = line(np.zeros((H, W), np.uint8), [M(*p) for p in R10], 90) > 0
 save("mississippi", "det_rivS", big); save("mississippi", "det_riv", S0 & ~cor)
 
 # ---- vicksburg (z10): main = RIV with the 1863 hairpin (LOOP63) at the city (the 1876 cut-off never drawn); creeks = the S layer outside it
 V = proj("vicksburg"); S0 = load("vicksburg", "det_rivS").copy()
-R10 = RIV[:RIV.index([32.40, -91.00]) + 1] + LOOP63 + RIV[RIV.index([32.30, -90.90]):]
 big = line(np.zeros((H, W), np.uint8), [V(*p) for p in R10], 14) > 0
 cor = line(np.zeros((H, W), np.uint8), [V(*p) for p in R10], 140) > 0
 cut = line(np.zeros((H, W), np.uint8), [V(*p) for p in CUT], 60) > 0

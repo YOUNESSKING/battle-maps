@@ -38,7 +38,7 @@ const sKeys = [[0, 1300, 560, 1.1], [T_POR, 1300, 560, 1.3], [T_SIL, 1310, 580, 
 const sAt = (t) => { for (let i = 1; i < sKeys.length; i++) if (t <= sKeys[i][0]) { const [a, , , sa] = sKeys[i - 1], [b, , , sb] = sKeys[i], u = (t - a) / Math.max(0.01, b - a); return sa + (sb - sa) * u; } return sKeys[sKeys.length - 1][3]; };
 camera(sKeys);
 // ---------- HUD ----------
-B.showDate(T_29); B.date("29 APRIL 1863", T_29 + 0.05, T_NIGHT - 0.1, 32); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
+B.showDate(0); B.date("29 APRIL 1863", 0.02, T_NIGHT - 0.1, 32); B.date("29 APRIL 1863 · NIGHT", T_NIGHT, T_30 - 0.1, 32); B.date("30 APRIL 1863", T_30, END + 1, 32);
 // STYLE W: clean map; the ground that changes hands (the Bruinsburg bridgehead) hatches blue on "stepped ashore", ~3 s, then dissolves
 hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_ASH - 0.2, 3.0);
 // flags (both on every frame): US on the Louisiana shore, then in the bridgehead; the Confederacy on the Mississippi bluffs
@@ -55,7 +55,7 @@ K.target(GGF[0] + 20, GGF[1], T_GG, { r: 34, side: "carth", until: T_NIGHT });
 // Porter's eight gunboats close in from upstream and take station off the batteries
 const STN = [[1225, 370], [1233, 412], [1250, 454], [1266, 496], [1278, 538], [1290, 580], [1284, 640], [1268, 680]];   // on the basemap river, off the batteries
 const GBT = STN.map((p, k) => ship("gunboat", [[1480 - k * 6, 205 + k * 4], [1400, 292], [1300, 318], [1225, 330], p], 0.2 + k * 0.3, T_ATT - k * 0.15, null, { s: 18, t0: 0.2 + k * 0.3, smoke: 1.4 }));
-pinPortrait(GBT[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR, T_NIGHT + 0.2, true, "right");   // STYLE W: Porter's portrait on his flagship
+pinPortrait(GBT[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR, T_NIGHT + 0.25, true, "right");   // STYLE W: Porter's portrait on his flagship
 // the duel (visible, ~1 shot per second, alternating: gunboats at the batteries / the batteries at the gunboats)
 const SHOTS = [];
 for (let t = T_ATT - 0.2, k = 0; t < T_10K + 0.8; t += 0.95, k++) SHOTS.push([t, k]);
@@ -63,20 +63,19 @@ SHOTS.forEach(([t, k]) => { const s = sAt(t), g = GBT[(k * 3) % 8], b = BATP[k %
   if (k % 2 === 0) shootS(g.at(t), [b[0] + 4, b[1] + ((k * 5) % 9) - 4], t, s, { dur: 0.6, h: 30, r: 9 });
   else shootS(b, g.at(t + 0.6), t, s, { dur: 0.6, h: 30, r: 9 }); });
 const HRS = scr(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)">
-  <div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">NEARLY</div><div class="v" style="font-size:64px;letter-spacing:.04em;line-height:1.05">0 HOURS</div><div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">PORTER'S EIGHT GUNBOATS</div></div>`,
-  "left:0;right:0;top:160px;display:flex;justify-content:center;", T_HRS - 0.2, T_SIL - 0.2);
-{ const v = HRS.querySelector(".v"), st = { x: 0 }; tl.to(st, { x: 5.5, duration: 1.2, ease: "power1.out", onUpdate: () => { v.textContent = (st.x >= 5.45 ? "5½" : Math.floor(st.x)) + " HOURS"; } }, T_HRS);
-  for (let k = 0; k < 6; k++) SFX("tick", T_HRS + k * 0.2); }
+  <div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">NEARLY</div><div style="font-size:64px;letter-spacing:.04em;line-height:1.05">5½ HOURS</div></div>`,
+  "right:90px;top:430px;", T_HRS - 0.2, T_SIL - 0.2);   // critic r1: the spoken figure only, on empty ground right (clear of the gunboats + Porter)
+SFX("tick", T_HRS);
 const SIL = sstamp("DID NOT SILENCE A SINGLE GUN", 790, T_SIL, { size: 56, shake: 5, until: T_SIL + 2.4 });
 BAT.forEach((p, k) => tl.fromTo(B.units["bt" + k].el.querySelector(".blk"), { scale: 1 }, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_SIL + 0.3 + k * 0.12));
 // "Ten thousand soldiers waited on transports and watched"
-const TK = ticker("SOLDIERS ON THE TRANSPORTS", 10000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_10K - 0.1, 1.0, T_NIGHT - 0.2, 6, { col: "#7fb0ff", sub: "WAITED AND WATCHED" });
+const TK = ticker("SOLDIERS ON THE TRANSPORTS", 10000, "", "right:90px;top:430px;", T_10K - 0.1, 1.0, T_NIGHT - 0.2, 6, { col: "#7fb0ff", sub: "WAITED AND WATCHED" });
 TR.forEach((b, k) => tl.fromTo(b.sv, { filter: "brightness(1)" }, { filter: "brightness(1.9)", duration: 0.25, yoyo: true, repeat: 3, immediateRender: false }, T_WAIT + k * 0.12));
 // ---------- that night: a local Black man comes to Grant's camp; the plan shifts south to Bruinsburg ----------
 const CAMP = [1090, 760];
 const TENT = pinS(GG.pin(`<svg width="40" height="34" viewBox="0 0 40 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #6f9bff)"><path d="M4 30 L20 4 L36 30 Z" fill="#e9e2cf" stroke="#1f4fc4" stroke-width="2.4"/><path d="M20 4 L20 30" stroke="#1f4fc4" stroke-width="1.6"/><line x1="20" y1="4" x2="20" y2="-6" stroke="#f3eee2" stroke-width="1.4"/><path d="M20 -6 L30 -3 L20 0 Z" fill="#2f6bff"/></svg>`, CAMP[0], CAMP[1], { t: T_NIGHT + 0.2, pop: true, until: END + 1 }));
 const TENTH = document.createElement("div"); TENTH.style.cssText = "position:absolute;left:50%;top:0;width:0;height:0"; TENT.appendChild(TENTH); reg(TENTH, "0 0");   // a counter-scaled host for the card (the tent pin holds a bare svg)
-pinPortrait(TENTH, PHOTO("grant"), FL.us, "Grant", T_TOLD, T_NDEF - 0.6, true);   // STYLE W: Grant's portrait at his camp (then with his landed corps)
+pinPortrait(TENTH, PHOTO("grant"), FL.us, "Grant", T_NIGHT + 0.2, T_ASH + 0.2, true);   // critic r1: Grant's card stays up all scene: transports -> camp -> landed corps   // STYLE W: Grant's portrait at his camp (then with his landed corps)
 const FIG = pinS(GG.pin(`<svg width="22" height="42" viewBox="0 0 22 42" style="display:block;overflow:visible;filter:drop-shadow(0 0 5px rgba(255,230,170,.55))"><circle cx="11" cy="6" r="5" fill="#15130f"/><path d="M4 14 Q11 10 18 14 L17 28 L14 28 L14 41 L8 41 L8 28 L5 28 Z" fill="#15130f"/></svg>`, CAMP[0] - 150, CAMP[1] - 20, { t: null }));
 gsap.set(FIG, { autoAlpha: 0 }); tl.to(FIG, { autoAlpha: 1, duration: 0.5 }, T_MAN - 0.2); tl.to(FIG, { left: CAMP[0] - 34, top: CAMP[1] + 4, duration: T_TOLD - T_MAN + 0.6, ease: "none" }, T_MAN - 0.2);
 tl.to(FIG, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.8);
@@ -90,10 +89,14 @@ const TPG = town("PORT GIBSON", PG, "r", T_PG);
 const RUNB = (k) => sub(RIVB, 0.30 - k * 0.025, 0.74 - k * 0.03, 20);
 const NB = [0, 1, 2, 3].map((k) => ship(k % 2 ? "transport" : "gunboat", RUNB(k), T_NIGHT + 0.3 + k * 0.3, T_BRU - T_NIGHT + 0.6, null, { s: 22, t0: T_NIGHT + 0.3 + k * 0.3 }));
 TR.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.2));
+pinPortrait(TR[0].el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_FIRST, T_NIGHT + 0.15, true, "left");   // Grant with the waiting transports (named on "The first place Grant picked")
+pinPortrait(NB[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_NIGHT + 0.3, T_NDEF - 0.6, true, "right");   // Porter leads the night run
+// critic r1: the Grand Gulf batteries + their infantry step out at the landing (they would sit cut at the top edge)
+["bt0", "bt1", "bt2", "bt3", "cs1"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, T_NDEF - 0.5));
 GBT.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.8 }, T_NIGHT + 0.3));
 [[T_MAN + 0.2, 1, 0], [T_TOLD + 0.8, 2, 1]].forEach(([t, b, k]) => shootS(BATP[b], NB[k].at(t + 0.7), t, sAt(t), { dur: 0.7, h: 30, r: 9 }));
 // ---------- m2-6: dawn, 30 April: the landing is not defended; about 17,000 step ashore; the bridgehead ----------
-const NDEF = sstamp("NOT DEFENDED", 790, T_NDEF, { size: 74, color: "#9fc0ea", shake: 4, until: T_NDEF + 2.2 });
+const NDEF = sstamp("NOT DEFENDED", 790, T_NDEF, { size: 64, shake: 4, until: T_NDEF + 2.2 });
 const LANDP = [[1010, 905], [1000, 945], [985, 985], [1022, 875]];
 LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
   ship(k % 2 ? "transport" : "transport", [b], T_NDEF - 0.6, 1, T_LATER + 0.6, { s: 22, t0: T_NDEF - 0.6 });
@@ -101,13 +104,13 @@ LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
 NB.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.6 }, T_NDEF - 0.6));
 const LU = [["l13", "XIII", 1095, 905], ["l9", "", 1105, 965], ["l17", "XVII", 1060, 1005]];
 LU.forEach(([id, lb, x, y], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", lb, { t: T_ASH + k * 0.3, size: k === 1 ? "XX" : "XXX" }); along(id, [[x - 70, y - 5], [x, y]], T_ASH + k * 0.3, 1.6, 8); tagAt(id, null); });
-pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_LATER - 0.1, null, true, "right");   // Grant with the landed army (named again on "Grant later wrote")
-const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT · 30 APRIL 1863" });
+pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 0.3, null, true, "right");   // Grant with the landed army (named again on "Grant later wrote")
+const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
 boxL("EAST BANK", 1190, 990, T_EAST, null, { size: 18 });
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
 const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,
-  "left:0;right:0;top:160px;display:flex;justify-content:center;", T_REL - 0.2, END + 1);
+  "right:70px;bottom:110px;max-width:980px;", T_REL - 0.2, END + 1);
 // ---------- 1c declutter ----------
 declutter([], [[T_HRS - 0.2, T_SIL - 0.2], [T_SIL, T_SIL + 2.4], [T_10K - 0.1, T_NIGHT - 0.2], [T_NDEF, T_NDEF + 2.2], [T_17K - 0.2, T_LATER - 0.2], [T_REL - 0.2, END + 1]]);
 fixImgs();

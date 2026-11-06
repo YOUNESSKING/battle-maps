@@ -26,12 +26,12 @@ const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.0
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // ---------- map ----------
 // STYLE W: clean map; "deep in enemy country" = the Confederate ground all round the bridgehead hatches red for ~3 s
-hatch("assets/media/gn_vick_may03cs_mx.png", T_DEEP - 0.1, 3.0);
+focus(L(32.0, -90.95), 120, T_DEEP - 0.1, T_DEEP + 3.0);   // critic r1: no territory (nothing changes hands here): the focus wash on the bridgehead
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.13 });
 const LGD = null;   // STYLE W: no key
 dateNow("MAY 1863", null);
 // ---------- camera (B3: keeps moving under the card) ----------
-const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1240, 1000, 1.0], K4 = [1290, 960, 1.22];
+const K0 = [1310, 940, 1.55], K1 = [1350, 900, 1.3], K2 = [1150, 1100, 0.86], K3 = [1290, 1170, 1.22], K4 = [1300, 1175, 1.3];   // critic r1: under the card the army sits in the upper half
 camera([[0, ...K0], [T_ACROSS, ...K0], [T_DEEP + 0.4, ...K1], [T_BANKS + 0.2, ...K1], [T_PH + 0.3, ...K2], [T_DO - 0.2, ...K2], [T_DO + 1.6, ...K3], [END, ...K4]]);
 // ---------- flags (both visible on every frame) ----------
 now(flagS(FL.us, "", 1010, 880, 0, END + 1)); now(flagS(FL.cs, "", 1700, 960, 0, END + 1));
@@ -46,7 +46,7 @@ B.move("r2", 0.4, 10, ...L(32.30, -90.70)); B.move("r4", 0.6, 12, ...L(32.14, -9
 unitS("bk", "carth", ALX, "infantry", "BANKS", { t: T_BANKS + 0.1, size: "XX" });
 pinPortrait("bk", PHOTO("banks"), FL.us, "Banks", T_BANKS + 0.1, T_DO + 0.3, true);   // steps out as his column crawls off the frame under the card   // STYLE W: Banks' portrait at his column (no corner badge)
 // ---------- m2-7 beats ----------
-pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, null, true);   // STYLE W: Grant's portrait at his army in the bridgehead
+pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", T_PLACE - 0.1, null, true, "left");   // side stake: clear of the corps boxes   // STYLE W: Grant's portrait at his army in the bridgehead
 // across the river: the crossing pulses; deep in enemy country: red rings close round the bridgehead
 const XR = arw({ pts: [L(31.99, -91.24), L(31.965, -91.18), L(31.955, -91.13)], side: "carth", t: T_ACROSS - 0.1, dur: 0.9, width: AW(1.4, 12), until: T_BANKS });
 K.target(...L(32.02, -90.96), T_ACROSS + 0.4, { r: 40, side: "carth", until: T_DEEP + 2.5 });
@@ -56,7 +56,7 @@ const JOIN = arw({ pts: LL([[31.25, -91.58], [31.56, -91.42], [31.80, -91.28], [
 B.greyArrow(JOIN, T_PH + 0.2, T_TENTH + 0.6);
 const PHB = boxL("PORT HUDSON ▼", PHX[0] - 10, 1560, T_PH, null, { size: 20 });
 const BKA = arw({ pts: [ALX, L(31.38, -91.95), L(31.29, -91.62)], side: "carth", t: T_PH + 0.1, dur: 2.0, width: AW(0.86, 11), dash: "14 10", until: END + 1 });
-B.caption("NOT BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth r");
+B.caption("CANNOT GET TO PORT HUDSON BEFORE THE TENTH OF MAY", T_TENTH, T_15K - 0.1, "carth r");
 B.caption("ONLY FIFTEEN THOUSAND MEN", T_15K, T_DO - 0.25, "carth r");
 tl.fromTo(B.units.bk.el.querySelector(".blk"), { scale: 1 }, { scale: 1.3, duration: 0.22, yoyo: true, repeat: 1, immediateRender: false }, T_15K + 0.1);
 // ---------- E.decide (B3) on "Do you wait for Banks" ----------
@@ -64,7 +64,9 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 const BACK = DEC.previousElementSibling;
-tl.to(BACK, { autoAlpha: 0.56, duration: 0.8 }, T_DO + 0.4);                       // lighter dim: the moving map shows through
+// critic r1: the card sits on the empty lower half with its own opaque backing; the dim only covers the lower half, Grant + his army stay visible above
+Object.assign(DEC.style, { top: "585px", background: "rgba(14,13,10,0.95)", padding: "16px 34px 18px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
+BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 45%, rgba(6,8,12,0.7) 60%)";
 const pulse = (el, t, col = "#ffd54a") => { tl.to(el, { scale: 1.07, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" }, t);
   tl.fromTo(el, { boxShadow: "0 0 0px rgba(255,213,74,0)" }, { boxShadow: `0 0 28px ${col}`, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, t); SFX("tick", t); };
 pulse(OA, T_WAIT + 0.5); pulse(OB, T_CUT + 0.2); pulse(OB, T_INL + 0.2); pulse(DEC.querySelector(".cd"), T_WHAT, "#c9b48a"); pulse(OA, T_THEN - 0.2); pulse(OB, T_THEN + 0.3);
