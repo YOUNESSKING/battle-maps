@@ -69,7 +69,7 @@ const badge = (o) => {   // K.badge + initials (shown if no photo / photo missin
     ini.textContent = o.initials || ""; ini.style.display = "none"; ring.insertBefore(ini, img); img.addEventListener("error", () => { img.style.display = "none"; ini.style.display = "flex"; }); }
   return el;
 };
-const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
+const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgb(14,12,10);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 // grey a badge + slam a small stamp on it (RESIGNED / SUPPRESSED)
 const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
@@ -114,7 +114,7 @@ const trail = (pts, col, w, t, dur, until, dash) => { const p = trail0(pts, col,
 const along = (id, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); B.move(id, t + (k - 1) * dur / n, dur / n, q[0], q[1], "none"); } };
 // a counter that ticks up (screen space)
 const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
-  const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
+  const el = scr(`<div style="padding:10px 26px 12px;background:rgb(18,16,12);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.to(st, { x: to, duration: 0.05, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
@@ -143,11 +143,11 @@ const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only on verbatim text)
-const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgb(18,16,12);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 // belief card (red, what the enemy thought)
-const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgb(18,16,12);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">${sub}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => { im.addEventListener("error", () => { im.style.display = "none"; }, { once: true }); });
@@ -299,7 +299,7 @@ const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="
   GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: 1.8 / s, h: (o.h || 40) / s, impact: false });
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
-const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
+const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgb(18,16,12);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
 // ================= vx additions =================
 // already on screen at frame 0 (continuing scenes): kill the entry tween of a card/legend/flag; dateNow = the date scroll already showing (m1 kit)
 const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
@@ -380,7 +380,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, R ? { left: "40px", bottom: "auto", top: "56px" } : { left: "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   }
-  host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
+  host.appendChild(w); gsap.set(w, { autoAlpha: 0 }); { const pe = host.closest(".gg-pin, .unit"); if (pe) pe.style.zIndex = 40; }   // critic r2: cards above the fire / glow layers
   const tg = typeof id === "string" && B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
 // (c) powder smoke puffs drifting (visual only: the locked shot sounds stay as they are)
@@ -411,6 +411,7 @@ const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min
 
 // @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
 B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
+{ const st = document.createElement("style"); st.textContent = ".caption span{background:rgb(24,20,14) !important}.gg-card .inner{background:rgb(18,16,12) !important}"; document.head.appendChild(st); }   // critic r2: opaque big cards/captions
 // @@END-KIT
 // @@DATA (tools/vx_inline.py)
 const GD = {"base":"vicksburg","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -438,7 +439,7 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
 const RIV = LL([[33.05, -91.12], [32.80, -91.16], [32.60, -91.12], [32.48, -91.06], [32.40, -91.00], [32.375, -90.93], [32.37, -90.895], [32.345, -90.893],
   [32.30, -90.90], [32.247, -90.935], [32.13, -91.04], [32.04, -91.07], [31.95, -91.16], [31.80, -91.30], [31.56, -91.42], [31.25, -91.58]]);
 // STYLE W: clean map; the ground that changes hands hatches blue for ~3 s (tools/stylew_vk/make_hatches.sh: gn_vick_may14cap / may16cap / may18cap)
-hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_NEXT - 0.2, 2.0);   // critic r1: only once the ground is taken hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);
+hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 1.0, 3.0); hatch("assets/media/gn_vick_may16cap_mx.png", T_NEXT - 0.2, 2.0); hatch("assets/media/gn_vick_may18cap_mx.png", T_18M + 0.3, 3.0);   // critic r1: only once the ground is taken
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 const LGD = null;   // STYLE W: no key
 // ---------- date scroll (never leaves): MAY 1863 -> 1 / 12 / 14 / 16 / 17 / 18 MAY ----------
@@ -450,7 +451,7 @@ camera([[0, ...KA], [T_CUTL + 1.6, ...KA], [T_SH + 0.6, ...KB], [T_SET, ...KB], 
   [T_BB + 0.6, ...KBB], [T_1700 + 2.0, ...KBB], [T_60 + 0.4, ...KW2], [T_18M - 0.2, ...KW2], [T_SHUT + 1.2, ...KV], [END, KV[0] - 6, KV[1] + 2, KV[2] * 1.03]]);
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 const FX = (a, b) => [a, b];
-const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1495, 725], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.27, -90.95), T_1700 + 2.0, END + 1]];
+const FLS = [[[1080, 1000], [1700, 960], -1, T_INL + 0.3], [[1100, 760], [1770, 600], T_INL, T_CH + 0.3], [[1700, 760], [1490, 600], T_CH, T_1700 + 2.2], [L(32.42, -90.72), L(32.21, -90.90), T_1700 + 2.0, END + 1]];
 FLS.forEach(([us, cs, t, u]) => { const a = flagS(FL.us, "", us[0], us[1], Math.max(0, t), u), b = flagS(FL.cs, "", cs[0], cs[1], Math.max(0, t), u); if (t < 0) { now(a); now(b); } });
 // ---------- units ----------
 U("u13", "carth", L(31.985, -90.955), "XIII", "XXX"); U("u17", "carth", L(32.075, -90.905), "XVII", "XXX"); U("u15", "carth", L(32.06, -91.10), "XV", "XXX");
@@ -465,14 +466,14 @@ const DEC = E.decide({ sub: "ACROSS THE RIVER · DEEP IN ENEMY COUNTRY", a: "WAI
 const BACK = DEC.previousElementSibling, OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1");
 [DEC, BACK, OA, OB].forEach((el) => tl.getTweensOf(el).filter((tw) => tw.startTime() < 1.0).forEach((tw) => tw.kill()));
 gsap.set(DEC, { autoAlpha: 1, scale: 1 }); gsap.set([OA, OB], { autoAlpha: 1, y: 0 }); gsap.set(BACK, { autoAlpha: 0.56 }); dropCues(0, 1.0);
-Object.assign(DEC.style, { top: "530px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
+Object.assign(DEC.style, { top: "565px", background: "rgba(14,13,10,0.95)", padding: "8px 0 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });   // = m2e (critic r1)
 BACK.style.background = "linear-gradient(to bottom, rgba(6,8,12,0) 36%, rgba(6,8,12,0.7) 50%)";
 DEC.style.webkitTextStroke = "2px #000"; DEC.style.paintOrder = "stroke fill"; DEC.style.textShadow = "0 2px 6px rgba(0,0,0,0.9)";
 // the supply line back to Grand Gulf (the base) flickers and is cut
 const SUP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.04, -90.93), L(31.995, -90.955)];
 const SUPL = document.createElementNS(NSs, "path"); SUPL.setAttribute("d", "M" + SUP.map((q) => q.join(" ")).join(" L"));   // STYLE W: the supply line = a thin solid sepia ink line
 Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": (2.4 / KA[2]).toFixed(2), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0.8 }).forEach(([k, v]) => SUPL.setAttribute(k, v)); OVL.appendChild(SUPL);
-const GGB = boxL("HIS BASE", GGF[0] - 120, GGF[1] + 40, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
+const GGB = boxL("HIS BASE", GGF[0] + 40, GGF[1] + 48, T_CUTL + 1.4, null, { size: 18 });   // spoken words only ("cut loose from his base")
 tl.to(SUPL, { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 5, ease: "none" }, T_CUTL + 1.5); tl.to(SUPL, { opacity: 0, duration: 0.4 }, T_CUTL + 2.4);
 // critic r1: no separate CUT LOOSE stamp (the card lights CUT LOOSE; Sherman's card follows at once)
 // Sherman's warning: one road, the wagons bunch on it
@@ -492,12 +493,12 @@ WG.forEach((w, k) => tl.to(w, { autoAlpha: 0.25, duration: 0.6 }, T_FULL + 0.3 +
 const ICO = { bread: `<svg width="46" height="34" viewBox="0 0 46 34"><rect x="3" y="5" width="40" height="25" rx="4" fill="#e3c88f" stroke="#2a2420" stroke-width="2"/>${[12, 23, 34].map((x) => [12, 22].map((y) => `<circle cx="${x}" cy="${y}" r="2" fill="#8a6a3a"/>`).join("")).join("")}</svg>`,
   coffee: `<svg width="40" height="38" viewBox="0 0 40 38"><path d="M6 10 L30 10 L28 34 L8 34 Z" fill="#b9a27a" stroke="#2a2420" stroke-width="2"/><path d="M30 15 Q38 16 36 23 Q34 28 29 27" fill="none" stroke="#2a2420" stroke-width="2.5"/><path d="M13 7 Q11 3 14 0 M20 7 Q18 3 21 0" stroke="#efe6cf" stroke-width="2" fill="none"/></svg>`,
   salt: `<svg width="34" height="40" viewBox="0 0 34 40"><path d="M5 12 Q5 4 17 4 Q29 4 29 12 L27 38 L7 38 Z" fill="#f3eee2" stroke="#2a2420" stroke-width="2"/><rect x="5" y="16" width="24" height="6" fill="#c9b48a"/></svg>` };
-const GRC = scr(`<div style="max-width:1400px;padding:18px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
+const GRC = scr(`<div style="max-width:1400px;padding:18px 46px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT ANSWERED</div>
   <div class="l1" style="display:flex;gap:26px;justify-content:center;align-items:center;font-size:40px;font-weight:600;letter-spacing:.06em;margin-top:8px">
     <span class="i0" style="display:flex;align-items:center;gap:10px">${ICO.bread}HARD BREAD</span><span class="i1" style="display:flex;align-items:center;gap:10px">${ICO.coffee}COFFEE</span><span class="i2" style="display:flex;align-items:center;gap:10px">${ICO.salt}SALT</span></div>
   <div class="l2" style="font-size:52px;font-weight:700;line-height:1.15;letter-spacing:.03em;margin-top:12px">“MAKE THE COUNTRY FURNISH THE BALANCE”</div></div>`,
-  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_BREAD - 0.2, T_SET - 0.3);
+  "left:0;right:0;bottom:110px;display:flex;justify-content:center;", T_BREAD - 0.2, T_SET - 0.3);   // critic r2: lower band, clear of the units
 [[".i0", T_BREAD - 0.1], [".i1", T_COF - 0.1], [".i2", T_COF + 0.6], [".l2", T_FURN - 0.1]].forEach(([q, t]) => { const e = GRC.querySelector(q); gsap.set(e, { autoAlpha: 0 });
   tl.fromTo(e, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); SFX(q === ".l2" ? "hit" : "ref:pop", t + 0.05); });
 tl.fromTo(GRC.querySelector(".l2"), { scale: 1.15 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, T_FURN - 0.1);
@@ -505,7 +506,7 @@ tl.fromTo(GRC.querySelector(".l2"), { scale: 1.15 }, { scale: 1, duration: 0.3, 
 B.caption("ABOUT TWO DAYS OF FOOD", T_TWO - 0.1, T_BEEF - 0.2, "carth");
 const COW = `<svg width="64" height="45" viewBox="0 0 40 28" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><path d="M4 9 Q4 5 9 5 L28 5 Q31 2 34 3 L37 6 Q39 9 35 10 L33 11 L33 18 L30 18 L30 25 L27 25 L27 18 L12 18 L12 25 L9 25 L9 18 Q4 17 4 13 Z" fill="#6b4a2a" stroke="#f3eee2" stroke-width="1.4"/><circle cx="18" cy="11" r="3" fill="#f3eee2"/></svg>`;
 const CORN = `<svg width="34" height="59" viewBox="0 0 22 38" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><ellipse cx="11" cy="14" rx="6" ry="12" fill="#f1c84a" stroke="#6b4a1a" stroke-width="1.4"/>${[6, 10, 14, 18, 22].map((y) => `<line x1="6" y1="${y}" x2="16" y2="${y}" stroke="#b8902a" stroke-width="1"/>`).join("")}<path d="M11 36 Q3 26 4 12 Q8 24 11 30 Q14 24 18 12 Q19 26 11 36 Z" fill="#6c8a3a" stroke="#2a3a1a" stroke-width="1"/></svg>`;
-const ICP = [[COW, L(32.05, -90.84), T_BEEF], [CORN, L(32.11, -90.74), T_CORN - 0.2], [COW, L(32.16, -90.66), T_CORN + 0.4], [CORN, L(32.03, -90.73), T_CORN + 0.9], [COW, L(32.12, -90.58), T_INL + 0.3]];
+const ICP = [[COW, L(31.99, -90.84), T_BEEF], [CORN, L(32.05, -90.70), T_CORN - 0.2], [COW, L(32.09, -90.62), T_CORN + 0.4], [CORN, L(31.97, -90.76), T_CORN + 0.9], [COW, L(32.05, -90.55), T_INL + 0.3]];   // critic r2: clear of the corps boxes
 const ICE = ICP.map(([svg, p, t]) => { const el = pinS(GG.pin(svg, p[0], p[1], { t, pop: true, until: T_PG })); SFX("ref:pop", t + 0.05); return el; });
 const MV0 = T_SET + 0.2;
 arw({ pts: [L(31.99, -90.95), L(32.04, -90.84), L(32.09, -90.74)], side: "carth", t: MV0, dur: 2.2, width: AW(1.5, 12), until: T_PG });
@@ -550,7 +551,7 @@ shootS(L(32.33, -90.505), L(32.335, -90.575), T_BEAT + 1.4, sCH, { dur: 0.7, h: 
 shootS(L(32.32, -90.60), L(32.345, -90.54), T_BIG + 1.6, sCH, { dur: 0.7, h: 30, r: 9 });
 // 15,000 fully engaged vs 25,000 Confederates
 const vs = (kick, aNum, aSub, bNum, bSub, t, tA, tB, until, o = {}) => {   // o.redFirst: the red column on the left
-  const el = scr(`<div style="background:rgba(18,16,12,0.93);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center"><div style="padding-top:10px;font-size:19px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="display:flex;gap:0">
+  const el = scr(`<div style="background:rgb(18,16,12);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center"><div style="padding-top:10px;font-size:19px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="display:flex;gap:0">
     <div class="a" style="padding:14px 40px 16px;border-bottom:6px solid ${o.redFirst ? "#be3a2a" : "#2e5cb2"};min-width:360px"><div style="font-size:58px;letter-spacing:.03em;line-height:1.05">${aNum}</div><div style="font-size:18px;letter-spacing:.24em;color:${o.redFirst ? "#ff8a80" : "#9fc0ea"}">${aSub}</div></div>
     <div style="align-self:center;font-size:30px;color:#c9b48a;padding:0 10px">VS</div>
     <div class="b" style="padding:14px 40px 16px;border-bottom:6px solid ${o.redFirst ? "#2e5cb2" : "#be3a2a"};min-width:360px"><div style="font-size:58px;letter-spacing:.03em;line-height:1.05">${bNum}</div><div style="font-size:18px;letter-spacing:.24em;color:${o.redFirst ? "#9fc0ea" : "#ff8a80"}">${bSub}</div></div></div></div>`,
@@ -582,7 +583,7 @@ fireGlowS(BBR[0] - 2, BBR[1], 10, T_BB + 1.4, T_1700 + 2.0);
 // option 2: once the Confederates are back across, the Big Black River is the line (Union east, red west)
 // STYLE W: no front along the river (the Big Black is the line on the map itself)
 B.move("rv", T_18G - 0.2, 1.6, ...L(32.37, -90.78)); B.move("re", T_18G, 1.6, ...L(32.33, -90.785));
-const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
+const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgb(18,16,12);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div class="a"><div style="font-size:60px;line-height:1.05">18</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">GUNS</div></div>
   <div class="b"><div style="font-size:60px;line-height:1.05">1,700+</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">PRISONERS</div></div></div>`,
   "right:90px;bottom:140px;", T_18G - 0.2, T_COUNT - 0.3);
@@ -596,7 +597,7 @@ const CK = ticker("THE FIVE BATTLES COST HIM", 4500, "", "right:110px;top:260px;
   pre.style.cssText = "font-size:20px;letter-spacing:.3em;color:#f7f3ea"; pre.textContent = "FEWER THAN"; v.parentNode.insertBefore(pre, v); gsap.set(pre, { autoAlpha: 0 });
   tl.to(pre, { autoAlpha: 1, duration: 0.3 }, T_4500 - 0.1); }
 // 18 May: Pemberton's army shut inside Vicksburg; the ring closes
-B.move("u13", T_COUNT, 6, ...L(32.33, -90.80)); B.move("u17", T_COUNT + 0.3, 6, ...L(32.37, -90.80)); B.move("u15", T_COUNT + 0.5, 6, ...L(32.42, -90.82));
+B.move("u13", T_COUNT, 6, ...L(32.33, -90.80)); B.move("u17", T_COUNT + 0.3, 6, ...L(32.37, -90.80)); B.move("u15", T_COUNT + 0.5, 6, ...L(32.45, -90.79));
 B.move("rv", T_COUNT + 1, 5, ...L(32.345, -90.852)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 3);
 const RING = LL([[32.405, -90.875], [32.40, -90.835], [32.37, -90.82], [32.335, -90.825], [32.30, -90.845], [32.28, -90.88], [32.29, -90.905]]);
 glowPath(RING, "#4f8bff", 5, T_18M + 0.3, END + 1, 0, 0.95, { draw: T_SHUT - T_18M + 0.4 });

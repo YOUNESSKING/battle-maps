@@ -68,7 +68,7 @@ const badge = (o) => {   // K.badge + initials (shown if no photo / photo missin
     ini.textContent = o.initials || ""; ini.style.display = "none"; ring.insertBefore(ini, img); img.addEventListener("error", () => { img.style.display = "none"; ini.style.display = "flex"; }); }
   return el;
 };
-const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgba(14,12,10,0.78);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
+const stampHTML = (txt, c, size, rot, sub) => `<div style="transform:rotate(0deg);display:inline-block;text-align:center;font-family:Oswald;font-weight:700;color:${c};border:${Math.max(1, Math.round(size / 9))}px solid ${c};padding:${(size * 0.1).toFixed(1)}px ${(size * 0.5).toFixed(1)}px ${(size * 0.14).toFixed(1)}px;background:rgb(14,12,10);box-shadow:0 ${size * 0.2}px ${size * 0.5}px rgba(0,0,0,.55);white-space:nowrap"><div style="font-size:${size}px;letter-spacing:0.12em;line-height:1.1;-webkit-text-stroke:${c === "#f7f3ea" ? "1.5px #000" : "0"}">${txt}</div>${sub ? `<div style="font-size:${(size * 0.5).toFixed(1)}px;letter-spacing:0.2em;color:#f7f3ea;margin-top:${size * 0.05}px">${sub}</div>` : ""}</div>`;
 // grey a badge + slam a small stamp on it (RESIGNED / SUPPRESSED)
 const badgeStamp = (el, txt, t, o = {}) => {
   const ring = el.querySelector("div[style*='border-radius:50%']");
@@ -113,7 +113,7 @@ const trail = (pts, col, w, t, dur, until, dash) => { const p = trail0(pts, col,
 const along = (id, pts, t, dur, n = 24) => { for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); B.move(id, t + (k - 1) * dur / n, dur / n, q[0], q[1], "none"); } };
 // a counter that ticks up (screen space)
 const ticker = (label, to, suffix, css, t, dur, until, n = 8, o = {}) => {
-  const el = scr(`<div style="padding:10px 26px 12px;background:rgba(18,16,12,0.9);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
+  const el = scr(`<div style="padding:10px 26px 12px;background:rgb(18,16,12);border-top:5px solid ${o.col || "#c9b48a"};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center">
     <div style="font-size:18px;letter-spacing:.3em;color:${o.col || "#c9b48a"}">${label}</div><div class="v" style="font-size:54px;letter-spacing:.04em">${o.pre || ""}0${suffix}</div>${o.sub ? `<div style="font-size:15px;letter-spacing:.22em;color:#d8cfb8">${o.sub}</div>` : ""}</div>`, css, t, until);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.to(st, { x: to, duration: 0.05, ease: "none", onUpdate: () => { v.textContent = (o.pre || "") + Math.round(st.x).toLocaleString("en-US") + suffix; } }, t + 0.2);
@@ -142,11 +142,11 @@ const wstamp = (txt, x, y, t, until, c = "#e3232f", size = 9, sub) => { const el
   tl.fromTo(el, { autoAlpha: 0, scale: 2 }, { autoAlpha: 1, scale: 1, duration: 0.2, ease: "power4.in", immediateRender: false }, t);
   SFX("hit", t + 0.18); K.shake(t + 0.18, 3, 0.25); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
 // quote card (screen space): verbatim quote + attribution (quote marks only on verbatim text)
-const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const quote = (txt, who, t, until, o = {}) => scr(`<div style="max-width:${o.mw || 1280}px;padding:22px 46px 22px;background:rgb(18,16,12);border-left:8px solid ${o.col || "#1f4fc4"};font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:${o.size || 40}px;font-weight:500;line-height:1.28;letter-spacing:.02em">${txt}</div><div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">${who}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 // belief card (red, what the enemy thought)
-const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const belief = (txt, sub, t, until, o = {}) => scr(`<div style="padding:16px 40px 18px;background:rgb(18,16,12);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">${sub}</div><div style="font-size:${o.size || 46}px;letter-spacing:.08em;margin-top:4px">${txt}</div></div>`,
   `left:0;right:0;top:${o.top || 150}px;display:flex;justify-content:center;`, t, until);
 const fixImgs = () => document.querySelectorAll("img").forEach((im) => { im.addEventListener("error", () => { im.style.display = "none"; }, { once: true }); });
@@ -298,7 +298,7 @@ const shootS = (from, to, t, s, o = {}) => { const f = pinS(GG.pin(`<div style="
   GG.arc(from[0], from[1], to[0], to[1], t + 0.04, { dur: o.dur || 0.7, width: 1.8 / s, h: (o.h || 40) / s, impact: false });
   K.impact(to[0], to[1], t + 0.04 + (o.dur || 0.7), { r: (o.r || 9) / s, sfx: "impact", shake: 3, puffs: 2 }); };
 // small screen card: kicker + big text (patton kit)
-const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
+const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="display:flex;align-items:center;gap:16px;padding:12px 26px 14px;background:rgb(18,16,12);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 14px 30px rgba(0,0,0,.6)">${icon}<div><div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="font-size:40px;letter-spacing:.06em;line-height:1.1">${txt}</div></div></div>`, css, t, until);
 // ================= vx additions =================
 // already on screen at frame 0 (continuing scenes): kill the entry tween of a card/legend/flag; dateNow = the date scroll already showing (m1 kit)
 const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
@@ -379,7 +379,7 @@ const pinPortrait = (id, photo, flag, name, t, until, keep = false, side = "up")
     Object.assign(card.style, R ? { left: "40px", bottom: "auto", top: "56px" } : { left: "-116px", bottom: "auto", top: "56px" });
     Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: `rotate(${R ? 54 : 126}deg)` });
   }
-  host.appendChild(w); gsap.set(w, { autoAlpha: 0 });
+  host.appendChild(w); gsap.set(w, { autoAlpha: 0 }); { const pe = host.closest(".gg-pin, .unit"); if (pe) pe.style.zIndex = 40; }   // critic r2: cards above the fire / glow layers
   const tg = typeof id === "string" && B.units[id].el.querySelector(".tag"); if (tg) { tl.to(tg, { autoAlpha: 0, duration: 0.2 }, t - 0.1); if (until != null) tl.to(tg, { autoAlpha: 1, duration: 0.3 }, until + 0.2); }
   tl.fromTo(w, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, t); if (until != null) tl.to(w, { autoAlpha: 0, duration: 0.35 }, until); return w; };
 // (c) powder smoke puffs drifting (visual only: the locked shot sounds stay as they are)
@@ -410,6 +410,7 @@ const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min
 
 // @@STYLEW2 critic r1: no grey arrows/units (side colours only): a failed/abandoned arrow simply fades out
 B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
+{ const st = document.createElement("style"); st.textContent = ".caption span{background:rgb(24,20,14) !important}.gg-card .inner{background:rgb(18,16,12) !important}"; document.head.appendChild(st); }   // critic r2: opaque big cards/captions
 // @@END-KIT
 // @@DATA (tools/vx_inline.py)
 const GD = {"base":"vicksburg_siege","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -499,7 +500,7 @@ U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, 
 U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+const GCD = now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); tl.set(GCD.querySelector("img"), { attr: { src: "assets/media/us35_flag.png" } }, T_SIEGE + 0.2);   // the 35-star flag from June now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- 19 and 22 May: the assaults bounce off ----------
 const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); return a; };   // critic r1: no grey pulse; the thin trail fades
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
@@ -528,20 +529,20 @@ wstampL("SURRENDERED", ...L(32.345, -90.905), T_PEM + 0.4, null, "#f7f3ea", 34);
 // critic r1: the surrendered units stay red (white flags), no grey
 // critic r1: one flag pair per shot (no extra pole flag)
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
-const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const NUM = scr(`<div style="padding:22px 52px 22px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT</div>
   <div style="font-size:30px;letter-spacing:.12em;margin-top:6px;color:#ff8a80">PEMBERTON SURRENDERED</div>
   <div style="display:flex;gap:56px;justify-content:center;margin-top:8px">
   <div class="a"><div class="v" style="font-size:62px;line-height:1.05">~29,500</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">MEN</div></div>
   <div class="b"><div style="font-size:62px;line-height:1.05">172</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">CANNON</div></div></div></div>`,
-  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_295 - 0.2, T_LIN - 0.2);
+  "left:90px;bottom:120px;", T_295 - 0.2, T_LIN - 0.2);
 SFX("hit", T_295 - 0.05);
 { SFX("tick", T_295);   // critic r1: the spoken figure only (no counting reel)
   const b = NUM.querySelector(".b"); gsap.set(b, { autoAlpha: 0 }); tl.fromTo(b, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_172 - 0.1); SFX("hit", T_172); }
 // ---------- Lincoln: the one zoom-out; the river turns blue top to bottom ----------
 // STYLE W: the river corridor the Union now holds hatches blue on the zoom-out (wide view: stronger hatch), ~3.5 s, then dissolves
 hatch("assets/media/gn_miss_julcap_mx.png", TZ1 - 1.6, 3.5, [0, 0, AR[2], AR[3]], PW);
-const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">LINCOLN WROTE</div><div style="font-size:48px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">THE FATHER OF WATERS AGAIN WENT UNVEXED TO THE SEA</div></div>`,
   "left:0;right:0;bottom:130px;display:flex;justify-content:center;", T_FATHER - 0.2, T_EVERY - 0.3);
 // flags on the river map: the US north and on the river, the Confederacy on both sides of it (cut in two from July)
@@ -551,7 +552,7 @@ K.target(VKS[0], VKS[1], T_GATES, { r: 30 / S3, side: "carth", until: T_GATES + 
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["ATTACKED THE MOMENT THE ENEMY HESITATED", "CUT HIS SUPPLY LINE · FED HIS MEN OFF THE LAND", ""];   // line 1 = move 1 (m1-9), line 2 = spoken here (m2-12)
 const MC = GG.method(2, T_CUT - 0.2, T_FEW - 0.2, [T_CUT - 0.1, T_CUT + 0.1]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
-{ const r1 = MC.querySelectorAll(".row.lit")[0]; r1.style.opacity = "0.6"; }
+{ const r1 = MC.querySelectorAll(".row.lit")[0]; r1.style.opacity = "0.6"; MC.style.top = "650px"; MC.querySelector(".inner").style.background = "rgb(18,16,12)"; }   // critic r2: fully opaque, below Vicksburg + Grant's army
 SFX("ref:pop", T_CUT); SFX("ref:boom", T_FED);
 const FEW = [L(32.35, -90.88), L(32.30, -90.19)];
 K.target(FEW[0][0], FEW[0][1], T_FEW + 0.3, { r: 28 / S3, side: "carth", until: END + 0.5 });

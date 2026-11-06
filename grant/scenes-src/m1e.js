@@ -6,7 +6,7 @@
 // (gn_don_ctl_feb16cap, ~3 s). Portraits: Floyd and Pillow ride their steamers out, Buckner at his command, Grant at his headquarters
 // (then at his army on the pull-out). Captions cut to one; the cards (reply, Buckner, telegram, U.S., casualties) one at a time.
 // Built with: python3 tools/m1_build.py m1e donelson_w m1-7 m1-8
-window.CARDPOS = {"C. F. Smith@sm1": [165, 0], "Floyd@el1": [-40, -150], "Pillow@el2": [150, -90], "Buckner@bu": [212, -123], "Grant@ghq": [-100, 0], "Buckner@pr": [100, 0], "Grant@gA": [-100, 0], "cap0": "right"};
+window.CARDPOS = {"C. F. Smith@sm1": [-150, -20], "Floyd@el1": [-20, -170], "Pillow@el2": [160, -40], "Buckner@bu": [-20, -185], "Grant@ghq": [-100, 0], "Buckner@pr": [100, 0], "Grant@gA": [-100, 0], "cap0": "right"};
 // @@KIT (Grant #16 move-1 scenes m1a-m1f; inlined into scenes-src/<scene>.js by tools/m1_build.py)
 // STYLE W (STYLE_LOCK 2d, restyle 2026-11-06, grant/STYLEW_BRIEF.md): box/flag/arw/legend/badge/stamps/camera/town redefined as in
 // cleburne/scenes-src/move1a.js; territory fills are gone (terr/terrLoss are no-ops, hand() = ink hatching on hand-over); Style W block below.
@@ -433,8 +433,8 @@ pinPortrait(ST[1].el, PHOTO("pillow"), FL.cs, "Pillow", 0, T_CMD + 0.6, true, "u
 B.caption("FLOYD: BUCHANAN'S SECRETARY OF WAR", T_SEC, T_FOR - 0.2, "rome");
 // ---------- Forrest's cavalry out through the flooded backwater ----------
 const BW = water([1566, 838], 96, 30, 116, T_BACKW - 0.2, T_DAWN + 1, 0.75);   // the flooded backwater (Lick Creek), in the map's own water colour
-unitS("for", "rome", ESCAPE[0], "cavalry", "FORREST", { t: T_FOR }); cavIcon("for");
-along("for", ESCAPE, T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
+unitS("for", "rome", [1562, 884], "cavalry", "FORREST", { t: T_FOR });   // clear of the red box at the works cavIcon("for");
+along("for", [[1562, 884], ...ESCAPE.slice(2)], T_SEV, T_CMD - T_SEV + 1.6, 20); hideU(["for"], T_CMD + 1.8);
 arw({ pts: ESCAPE.slice(0, 6).map((q) => [q[0] + 16, q[1] - 6]), side: "rome", t: T_SEV - 0.2, dur: 2.4, width: AW(2.0, 9), until: T_CMD + 3.0 });
 // ---------- the command falls to Buckner; at dawn he writes asking for terms ----------
 pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, T_TELE + 0.4, true, "up");
@@ -459,7 +459,7 @@ unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, siz
 tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
 pinPortrait("gA", PHOTO("grant"), FL.us, "Grant", T_TELE + 0.5, END + 1, true, "left");
-pinPortrait("gA", PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, END + 1, true, [-112, -128]);   // Smith stays on the merged Union box
+pinPortrait("gA", PHOTO("csmith"), FL.us, "C. F. Smith", T_TELE + 0.6, END + 1, true, [10, -140]);   // Smith stays on the merged Union box
 K.target(DON[0], DON[1], T_TAKEN, { r: 60, until: T_TAKEN + 3.4 });
 // ---------- the telegram to Halleck ----------
 // the telegram (spoken numbers only), two short cards <= 3.5 s each, top-left under the date scroll, off the fort and Grant's card

@@ -100,7 +100,7 @@ U("u15", "carth", L(32.390, -90.842), "XV", "XXX"); U("u17", "carth", L(32.358, 
 U("rp", "rome", L(32.357, -90.866), "PEMBERTON", "XX"); tagAt("rp", null); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13"].forEach((id) => tagAt(id, null));   // STYLE W: corps numbers never spoken: bare boxes
 // STYLE W: the two generals' portraits on stakes at their armies (named in m2f: on screen from frame 0 of this continuing scene)
-now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+const GCD = now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); tl.set(GCD.querySelector("img"), { attr: { src: "assets/media/us35_flag.png" } }, T_SIEGE + 0.2);   // the 35-star flag from June now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- 19 and 22 May: the assaults bounce off ----------
 const AS = (pts, t, back = 1.2) => { const a = arw({ pts: LL(pts), side: "carth", t, dur: 0.7, width: AW(S1, 12), until: t + back + 0.6 }); return a; };   // critic r1: no grey pulse; the thin trail fades
 const A19 = [[[32.385, -90.848], [32.378, -90.856], [32.372, -90.862]], [[32.372, -90.836], [32.368, -90.846], [32.365, -90.851]]];
@@ -129,20 +129,20 @@ wstampL("SURRENDERED", ...L(32.345, -90.905), T_PEM + 0.4, null, "#f7f3ea", 34);
 // critic r1: the surrendered units stay red (white flags), no grey
 // critic r1: one flag pair per shot (no extra pole flag)
 // RESULT card (STYLE_LOCK 0b: no reliable Union figure is spoken, FACTCHECK_B #23): about 29,500 men (#28) and 172 cannon (#29); spoken words only
-const NUM = scr(`<div style="padding:22px 52px 22px;background:rgba(18,16,12,0.94);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const NUM = scr(`<div style="padding:22px 52px 22px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:21px;letter-spacing:.3em;color:#c9b48a">RESULT</div>
   <div style="font-size:30px;letter-spacing:.12em;margin-top:6px;color:#ff8a80">PEMBERTON SURRENDERED</div>
   <div style="display:flex;gap:56px;justify-content:center;margin-top:8px">
   <div class="a"><div class="v" style="font-size:62px;line-height:1.05">~29,500</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">MEN</div></div>
   <div class="b"><div style="font-size:62px;line-height:1.05">172</div><div style="font-size:20px;letter-spacing:.26em;color:#c9b48a">CANNON</div></div></div></div>`,
-  "left:0;right:0;top:215px;display:flex;justify-content:center;", T_295 - 0.2, T_LIN - 0.2);
+  "left:90px;bottom:120px;", T_295 - 0.2, T_LIN - 0.2);
 SFX("hit", T_295 - 0.05);
 { SFX("tick", T_295);   // critic r1: the spoken figure only (no counting reel)
   const b = NUM.querySelector(".b"); gsap.set(b, { autoAlpha: 0 }); tl.fromTo(b, { autoAlpha: 0, scale: 1.2 }, { autoAlpha: 1, scale: 1, duration: 0.3, immediateRender: false }, T_172 - 0.1); SFX("hit", T_172); }
 // ---------- Lincoln: the one zoom-out; the river turns blue top to bottom ----------
 // STYLE W: the river corridor the Union now holds hatches blue on the zoom-out (wide view: stronger hatch), ~3.5 s, then dissolves
 hatch("assets/media/gn_miss_julcap_mx.png", TZ1 - 1.6, 3.5, [0, 0, AR[2], AR[3]], PW);
-const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const LINC = scr(`<div style="max-width:1300px;padding:20px 44px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">LINCOLN WROTE</div><div style="font-size:48px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">THE FATHER OF WATERS AGAIN WENT UNVEXED TO THE SEA</div></div>`,
   "left:0;right:0;bottom:130px;display:flex;justify-content:center;", T_FATHER - 0.2, T_EVERY - 0.3);
 // flags on the river map: the US north and on the river, the Confederacy on both sides of it (cut in two from July)
@@ -152,7 +152,7 @@ K.target(VKS[0], VKS[1], T_GATES, { r: 30 / S3, side: "carth", until: T_GATES + 
 GG.METHOD_TITLE = "GRANT'S METHOD";
 GG.METHOD = ["ATTACKED THE MOMENT THE ENEMY HESITATED", "CUT HIS SUPPLY LINE · FED HIS MEN OFF THE LAND", ""];   // line 1 = move 1 (m1-9), line 2 = spoken here (m2-12)
 const MC = GG.method(2, T_CUT - 0.2, T_FEW - 0.2, [T_CUT - 0.1, T_CUT + 0.1]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
-{ const r1 = MC.querySelectorAll(".row.lit")[0]; r1.style.opacity = "0.6"; }
+{ const r1 = MC.querySelectorAll(".row.lit")[0]; r1.style.opacity = "0.6"; MC.style.top = "650px"; MC.querySelector(".inner").style.background = "rgb(18,16,12)"; }   // critic r2: fully opaque, below Vicksburg + Grant's army
 SFX("ref:pop", T_CUT); SFX("ref:boom", T_FED);
 const FEW = [L(32.35, -90.88), L(32.30, -90.19)];
 K.target(FEW[0][0], FEW[0][1], T_FEW + 0.3, { r: 28 / S3, side: "carth", until: END + 0.5 });

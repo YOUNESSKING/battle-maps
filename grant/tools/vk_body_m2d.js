@@ -62,7 +62,7 @@ for (let t = T_ATT - 0.2, k = 0; t < T_10K + 0.8; t += 0.95, k++) SHOTS.push([t,
 SHOTS.forEach(([t, k]) => { const s = sAt(t), g = GBT[(k * 3) % 8], b = BATP[k % 4];
   if (k % 2 === 0) shootS(g.at(t), [b[0] + 4, b[1] + ((k * 5) % 9) - 4], t, s, { dur: 0.6, h: 30, r: 9 });
   else shootS(b, g.at(t + 0.6), t, s, { dur: 0.6, h: 30, r: 9 }); });
-const HRS = scr(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.92);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)">
+const HRS = scr(`<div style="padding:10px 30px 12px;background:rgb(18,16,12);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.6)">
   <div style="font-size:17px;letter-spacing:.32em;color:#c9b48a">NEARLY</div><div style="font-size:64px;letter-spacing:.04em;line-height:1.05">5½ HOURS</div></div>`,
   "right:90px;top:430px;", T_HRS - 0.2, T_SIL - 0.2);   // critic r1: the spoken figure only, on empty ground right (clear of the gunboats + Porter)
 SFX("tick", T_HRS);
@@ -108,7 +108,7 @@ pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_ASH + 0.3, null, true, "rig
 const TK17 = ticker("UNION SOLDIERS ASHORE", 17000, "", "left:0;right:0;top:160px;display:flex;justify-content:center;", T_17K - 0.2, 1.1, T_LATER - 0.2, 7, { col: "#7fb0ff", pre: "~", sub: "ABOUT" });
 boxL("EAST BANK", 1265, 860, T_EAST, null, { size: 18 });
 // Grant's words (his Memoirs; no quote marks: not quoted in the script)
-const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+const REL = scr(`<div style="max-width:1300px;padding:20px 44px 20px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT LATER WROTE</div><div style="font-size:46px;font-weight:600;line-height:1.2;letter-spacing:.03em;margin-top:6px">A DEGREE OF RELIEF SCARCELY EVER EQUALLED SINCE</div></div>`,
   "right:70px;bottom:110px;max-width:980px;", T_REL - 0.2, END + 1);
 // ---------- 1c declutter ----------

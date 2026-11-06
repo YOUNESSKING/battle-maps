@@ -93,7 +93,7 @@ WG.forEach((w, k) => tl.to(w, { autoAlpha: 0.25, duration: 0.6 }, T_FULL + 0.3 +
 const ICO = { bread: `<svg width="46" height="34" viewBox="0 0 46 34"><rect x="3" y="5" width="40" height="25" rx="4" fill="#e3c88f" stroke="#2a2420" stroke-width="2"/>${[12, 23, 34].map((x) => [12, 22].map((y) => `<circle cx="${x}" cy="${y}" r="2" fill="#8a6a3a"/>`).join("")).join("")}</svg>`,
   coffee: `<svg width="40" height="38" viewBox="0 0 40 38"><path d="M6 10 L30 10 L28 34 L8 34 Z" fill="#b9a27a" stroke="#2a2420" stroke-width="2"/><path d="M30 15 Q38 16 36 23 Q34 28 29 27" fill="none" stroke="#2a2420" stroke-width="2.5"/><path d="M13 7 Q11 3 14 0 M20 7 Q18 3 21 0" stroke="#efe6cf" stroke-width="2" fill="none"/></svg>`,
   salt: `<svg width="34" height="40" viewBox="0 0 34 40"><path d="M5 12 Q5 4 17 4 Q29 4 29 12 L27 38 L7 38 Z" fill="#f3eee2" stroke="#2a2420" stroke-width="2"/><rect x="5" y="16" width="24" height="6" fill="#c9b48a"/></svg>` };
-const GRC = scr(`<div style="max-width:1400px;padding:18px 46px 22px;background:rgba(18,16,12,0.93);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
+const GRC = scr(`<div style="max-width:1400px;padding:18px 46px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div style="font-size:19px;font-weight:700;letter-spacing:.3em;color:#9fc0ea">GRANT ANSWERED</div>
   <div class="l1" style="display:flex;gap:26px;justify-content:center;align-items:center;font-size:40px;font-weight:600;letter-spacing:.06em;margin-top:8px">
     <span class="i0" style="display:flex;align-items:center;gap:10px">${ICO.bread}HARD BREAD</span><span class="i1" style="display:flex;align-items:center;gap:10px">${ICO.coffee}COFFEE</span><span class="i2" style="display:flex;align-items:center;gap:10px">${ICO.salt}SALT</span></div>
@@ -151,7 +151,7 @@ shootS(L(32.33, -90.505), L(32.335, -90.575), T_BEAT + 1.4, sCH, { dur: 0.7, h: 
 shootS(L(32.32, -90.60), L(32.345, -90.54), T_BIG + 1.6, sCH, { dur: 0.7, h: 30, r: 9 });
 // 15,000 fully engaged vs 25,000 Confederates
 const vs = (kick, aNum, aSub, bNum, bSub, t, tA, tB, until, o = {}) => {   // o.redFirst: the red column on the left
-  const el = scr(`<div style="background:rgba(18,16,12,0.93);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center"><div style="padding-top:10px;font-size:19px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="display:flex;gap:0">
+  const el = scr(`<div style="background:rgb(18,16,12);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center"><div style="padding-top:10px;font-size:19px;letter-spacing:.32em;color:#c9b48a">${kick}</div><div style="display:flex;gap:0">
     <div class="a" style="padding:14px 40px 16px;border-bottom:6px solid ${o.redFirst ? "#be3a2a" : "#2e5cb2"};min-width:360px"><div style="font-size:58px;letter-spacing:.03em;line-height:1.05">${aNum}</div><div style="font-size:18px;letter-spacing:.24em;color:${o.redFirst ? "#ff8a80" : "#9fc0ea"}">${aSub}</div></div>
     <div style="align-self:center;font-size:30px;color:#c9b48a;padding:0 10px">VS</div>
     <div class="b" style="padding:14px 40px 16px;border-bottom:6px solid ${o.redFirst ? "#2e5cb2" : "#be3a2a"};min-width:360px"><div style="font-size:58px;letter-spacing:.03em;line-height:1.05">${bNum}</div><div style="font-size:18px;letter-spacing:.24em;color:${o.redFirst ? "#9fc0ea" : "#ff8a80"}">${bSub}</div></div></div></div>`,
@@ -183,7 +183,7 @@ fireGlowS(BBR[0] - 2, BBR[1], 10, T_BB + 1.4, T_1700 + 2.0);
 // option 2: once the Confederates are back across, the Big Black River is the line (Union east, red west)
 // STYLE W: no front along the river (the Big Black is the line on the map itself)
 B.move("rv", T_18G - 0.2, 1.6, ...L(32.37, -90.78)); B.move("re", T_18G, 1.6, ...L(32.33, -90.785));
-const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgba(18,16,12,0.93);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
+const BBC = scr(`<div style="display:flex;gap:40px;padding:14px 40px 16px;background:rgb(18,16,12);border-top:5px solid #2e5cb2;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
   <div class="a"><div style="font-size:60px;line-height:1.05">18</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">GUNS</div></div>
   <div class="b"><div style="font-size:60px;line-height:1.05">1,700+</div><div style="font-size:18px;letter-spacing:.26em;color:#9fc0ea">PRISONERS</div></div></div>`,
   "right:90px;bottom:140px;", T_18G - 0.2, T_COUNT - 0.3);
