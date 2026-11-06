@@ -119,7 +119,7 @@ const SAPS = [[[32.380, -90.853], [32.378, -90.857], [32.376, -90.856], [32.374,
   [[32.352, -90.834], [32.352, -90.839], [32.350, -90.840], [32.350, -90.845]], [[32.336, -90.838], [32.337, -90.843], [32.335, -90.845], [32.336, -90.849]],
   [[32.322, -90.846], [32.323, -90.851], [32.321, -90.853], [32.322, -90.857]]];
 SAPS.forEach((p, k) => inkTrace(LL(p), T_SG + k * 0.18, T_LIN + 1.0, 2.4));   // STYLE W: the saps as sepia ink traces
-wstampL("SIEGE", ...L(32.335, -90.80), T_SG + 0.1, T_PEM, "#9fc0ea", 36);
+wstampL("SIEGE", ...L(32.335, -90.80), T_SG + 0.1, T_PEM - 0.45, "#9fc0ea", 36);
 // ---------- 4 July: white flags, Pemberton surrendered ----------
 const WFL = [];
 const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 1px 2px #000)"><line x1="3" y1="2" x2="3" y2="34" stroke="#3a2c1c" stroke-width="2.4"/><path d="M4 3 Q12 0 19 4 Q24 6 28 4 L28 17 Q22 19 18 16 Q11 13 4 16 Z" fill="#fbfaf4" stroke="#8a8478" stroke-width="0.8"/></svg>`;

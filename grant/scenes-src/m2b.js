@@ -458,7 +458,7 @@ town("VICKSBURG", [VKS[0] + 60, VKS[1]], "r", 0.2, { shrink: [[T_PAST + 0.2, nul
 const BATP = [[1470, 600], [1466, 680], [1452, 760], [1430, 840], [1408, 915], [1370, 990], [1318, 1070], [1290, 1140]];
 BATP.forEach((p, k) => unitS("bt" + k, "rome", p, "artillery", "", { t: T_PAST - 0.2 + k * 0.1, w: 46, h: 31 }));
 // ---------- the fleet, 16 Apr: 6 gunboats, 3 transports, Tuscumbia last (lights out; a little stack smoke) ----------
-const F0 = 0.56, F1 = 0.78, GAP = 0.016, TEND = T_NOONE + 2.0;
+const F0 = 0.60, F1 = 0.78, GAP = 0.016, TEND = T_NOONE + 2.0;
 const ORDER = ["gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "transport", "transport", "transport", "gunboat"];
 const HCI = 8, F_HC = nearestF(RUN, [1366, 790]);   // the Henry Clay (9th in line) is hit abreast of the city
 const ease = (u) => u;
@@ -479,9 +479,9 @@ tl.to(HC2.sv, { filter: "brightness(0.35) sepia(0.6)", duration: 2.5 }, T_EDGE);
 // ---------- "set houses on fire and lit bonfires on the shore so they could see the river" ----------
 [[1300, 700], [1280, 770], [1250, 650], [1305, 840]].forEach((p, k) => { fireGlowS(p[0], p[1], 34, T_FIRE + k * 0.3, END + 1); K.smoke(p[0], p[1] - 6, T_FIRE + 0.3 + k * 0.3, { n: 3, r: 10, rise: 28, life: 3 }); });
 [[1440, 640], [1418, 730], [1398, 805], [1378, 880], [1340, 955], [1330, 600]].forEach((p, k) => { bonfire(p[0] - 4, p[1], T_BONF + k * 0.22, END + 1, 18); });
-boxL("HOUSES ON FIRE", 1150, 900, T_FIRE + 0.1, null, { size: 16 });
+boxL("HOUSES ON FIRE", 1010, 990, T_FIRE + 0.1, null, { size: 16 });
 // ---------- Porter, the fleet ----------
-const PB = null; pinPortrait(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, null, true, "west");   // STYLE W: on his flagship for the run (steps out before the fleet leaves the frame)
+const PB = null; { const w = pinPortrait(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, null, true, "west"); w.firstElementChild.style.top = "34px"; Object.assign(w.lastElementChild.style, { width: "100px", transform: "rotate(148deg)" }); }   // critic r5: south-west of his flagship, below the column
 boxL("7 GUNBOATS · 3 TRANSPORTS", 1130, 470, T_SEVEN + 0.1, null, { size: 18 });
 // ---------- the guns (visible, ~1 shot per second): batteries at the boats, impacts on the boats; gunboats answer at the bluff ----------
 const vis = (k) => FLEET[k] || HC1;
@@ -505,7 +505,7 @@ B.caption("MANNED BY SOLDIERS · TO RESCUE ANYONE IN THE WATER", T_RESC - 0.6, T
 // ---------- the Henry Clay: hit, set on fire, burns to the water's edge ----------
 shootS(BATP[2], HCP, HCt - 0.75, sAt(HCt), { dur: 0.75, h: 46, r: 12 });
 K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
-const HCL = boxL("HENRY CLAY", HCP[0] + 40, HCP[1] + 46, T_HC, null, { size: 18 }); pinAlong(HCL, DRIFT.map((q) => [q[0] + 40, q[1] + 46]), HCt, T_22 - 0.6 - HCt, 20);   // critic r1: pinned to the boat
+const HCL = boxL("HENRY CLAY", HCP[0] - 88, HCP[1] + 6, T_HC, null, { size: 18 }); pinAlong(HCL, DRIFT.map((q) => [q[0] - 88, q[1] + 6]), HCt, T_22 - 0.6 - HCt, 20);   // critic r1: pinned to the boat
 const T_EDGE_OUT = Math.min(T_EDGE + 2.4, T_NOONE - 0.35);   // 1c rule 3: the stamp is gone before the caption lands
 const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 52, sub: "ONE TRANSPORT", shake: 5, until: T_EDGE_OUT, css: "right:80px;top:845px;" });   // critic r2: level, on the empty bluff ground lower-right
 B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth").style.bottom = "92px";

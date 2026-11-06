@@ -532,7 +532,7 @@ profileStrip(`<path d="M10 100 L150 100 C 175 100, 182 96, 190 88" fill="none" s
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="96" y="88">Mississippi River</text><text x="380" y="62">Vicksburg</text><text x="228" y="118">The bluff</text></g>`, T_MS + 3.1, T_FREE - 0.8);
 B.caption("THE UNION COULD NOT USE THE RIVER FREELY", T_FREE - 0.1, T_LINK - 0.1, "rome");
 // "the South stayed linked to its western states": the rail line Monroe - De Soto Point - Vicksburg - Jackson, red arrows across the river
-const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.33, -90.95], [32.352, -90.878], [32.33, -90.55], [32.30, -90.19]]);
+const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.37, -91.42]]);   // critic r5: the western link only, stopping clear of the counters at the river
 glowPath(LINK, "#ff6a5a", 3.4 / 0.19, T_LINK - 0.2, T_WINT + 0.6, 2, 0.9, { draw: 1.6, top: true });
 // critic r4: no arrows across the river here (they read as stray red bars at this scale); the ink trace + "Western States" carry it
 
@@ -541,7 +541,7 @@ boxL("WESTERN STATES", ...L(32.2, -94.9), T_WEST - 0.1, null, { size: 20 });
 const TRY = [[[34.40, -90.62], [34.10, -90.40], [33.80, -90.30], [33.56, -90.20]],                                   // Yazoo Pass -> Fort Pemberton
   [[32.42, -91.00], [32.60, -90.92], [32.80, -90.86], [32.92, -90.86]],                                               // Steele's Bayou (up the bayous)
   [[32.40, -90.97], [32.44, -90.88], [32.47, -90.82]]];                                                                // Chickasaw Bayou (Dec 1862)
-const TRYA = TRY.map((q, k) => arw({ pts: sub(LL(q), 0, 0.86, 12), side: "carth", t: T_WINT + 0.3 + k * 0.55, dur: 1.2, width: AW(0.2, 13), dash: k === 0 ? "18 10" : null, until: TZ0 + 0.6 }));
+const TRYA = TRY.map((q, k) => arw({ pts: sub(LL(q), 0, 0.72, 12), side: "carth", t: T_WINT + 0.3 + k * 0.55, dur: 1.2, width: AW(0.2, 13), dash: k === 0 ? "18 10" : null, until: TZ0 + 0.6 }));
 TRYA.forEach((g, k) => B.greyArrow(g, T_FAIL + 0.1 + k * 0.2, TZ0 + 0.6));
 crosses(TRY.map((q) => L(...q[q.length - 1])), T_FAIL + 0.15, TZ0 + 0.4, 14 / S1);   // STYLE W: small ink crosses where each attempt broke
 wstampL("FAILED IN THE SWAMPS", ...L(33.45, -90.0), T_FAIL + 0.2, null, "#e3232f", 26);

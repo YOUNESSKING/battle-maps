@@ -480,10 +480,10 @@ boxL("LA GRANGE", LG[0] - 95, LG[1] - 34, T_LG, null, { size: 16 });
 along("gri", GRI, T_RAID - 0.2, T_BR - T_RAID + 0.4, 34);
 trail(GRI, "#2c57b7", 3, T_RAID - 0.2, T_BR - T_RAID + 0.4, T_SHER + 0.3, "3 9");
 arw({ pts: GRI, side: "carth", t: T_RAID - 0.1, dur: T_BR - T_RAID + 0.4, width: AW(SW, 11), dash: "18 10", until: T_SHER + 0.4 });
-boxL("MISSISSIPPI", ...L(32.95, -88.55), T_MS, null, { size: 18 });
+boxL("MISSISSIPPI", ...L(32.95, -88.40), T_MS, null, { size: 18 });
 // the Confederates look the wrong way: the Jackson force turns east after the raiders
 along("pj", LL([[32.08, -90.22], [32.15, -89.85]]), T_MS + 0.3, 2.2, 8);
-arw({ pts: LL([[32.30, -90.10], [32.33, -89.65], [32.33, -89.30]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 11), until: T_SHER + 0.2 });
+arw({ pts: LL([[32.41, -90.10], [32.44, -89.65], [32.44, -89.45]]), side: "rome", t: T_MS + 0.2, dur: 1.4, width: AW(SW, 11), until: T_SHER + 0.2 });
 const TBR = town("BATON ROUGE", BR, "l", T_BR - 0.1, { until: T_BR + LBL_LIFE + 0.4 });
 K.target(BR[0], BR[1], T_BR, { r: 30, side: "carth", until: T_SHER });
 // ---------- Sherman up the Yazoo, threatening the bluffs north of Vicksburg; Pemberton's army tied down there ----------
