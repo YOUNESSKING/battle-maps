@@ -54,7 +54,7 @@ town("VICKSBURG", [VKS[0] + 60, VKS[1]], "r", 0.2, { shrink: [[T_PAST + 0.2, nul
 const BATP = [[1470, 600], [1466, 680], [1452, 760], [1430, 840], [1408, 915], [1370, 990], [1318, 1070], [1290, 1140]];
 BATP.forEach((p, k) => unitS("bt" + k, "rome", p, "artillery", "", { t: T_PAST - 0.2 + k * 0.1, w: 46, h: 31 }));
 // ---------- the fleet, 16 Apr: 6 gunboats, 3 transports, Tuscumbia last (lights out; a little stack smoke) ----------
-const F0 = 0.56, F1 = 0.78, GAP = 0.022, TEND = T_NOONE + 2.0;
+const F0 = 0.56, F1 = 0.78, GAP = 0.016, TEND = T_NOONE + 2.0;
 const ORDER = ["gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "gunboat", "transport", "transport", "transport", "gunboat"];
 const HCI = 8, F_HC = nearestF(RUN, [1366, 790]);   // the Henry Clay (9th in line) is hit abreast of the city
 const ease = (u) => u;
@@ -77,7 +77,7 @@ tl.to(HC2.sv, { filter: "brightness(0.35) sepia(0.6)", duration: 2.5 }, T_EDGE);
 [[1440, 640], [1418, 730], [1398, 805], [1378, 880], [1340, 955], [1330, 600]].forEach((p, k) => { bonfire(p[0] - 4, p[1], T_BONF + k * 0.22, END + 1, 18); });
 boxL("HOUSES ON FIRE", 1150, 900, T_FIRE + 0.1, null, { size: 16 });
 // ---------- Porter, the fleet ----------
-const PB = null; pinPortrait(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, null, true, "left");   // STYLE W: on his flagship for the run (steps out before the fleet leaves the frame)
+const PB = null; pinPortrait(FLEET[0].el.firstElementChild, PHOTO("porter"), FL.us, "Porter", T_POR + 0.1, null, true, "west");   // STYLE W: on his flagship for the run (steps out before the fleet leaves the frame)
 boxL("7 GUNBOATS · 3 TRANSPORTS", 1130, 470, T_SEVEN + 0.1, null, { size: 18 });
 // ---------- the guns (visible, ~1 shot per second): batteries at the boats, impacts on the boats; gunboats answer at the bluff ----------
 const vis = (k) => FLEET[k] || HC1;
@@ -103,7 +103,7 @@ shootS(BATP[2], HCP, HCt - 0.75, sAt(HCt), { dur: 0.75, h: 46, r: 12 });
 K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.25, { r: 22 / sAt(HCt), puffs: 3 });
 const HCL = boxL("HENRY CLAY", HCP[0] - 66, HCP[1], T_HC, null, { size: 18 }); pinAlong(HCL, DRIFT.map((q) => [q[0] - 66, q[1]]), HCt, T_22 - 0.6 - HCt, 20);   // critic r1: pinned to the boat
 const T_EDGE_OUT = Math.min(T_EDGE + 2.4, T_NOONE - 0.35);   // 1c rule 3: the stamp is gone before the caption lands
-const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 52, sub: "ONE TRANSPORT", shake: 5, until: T_EDGE_OUT, css: "right:110px;top:820px;" });   // critic r2: level, on the empty bluff ground lower-right
+const EDGE = sstamp("BURNED TO THE WATER'S EDGE", 790, T_EDGE, { size: 52, sub: "ONE TRANSPORT", shake: 5, until: T_EDGE_OUT, css: "right:80px;top:845px;" });   // critic r2: level, on the empty bluff ground lower-right
 B.caption("NO ONE ON THE TRANSPORTS WAS KILLED", Math.max(T_NOONE + 0.1, T_EDGE_OUT + 0.35), T_22 - 0.2, "carth").style.bottom = "92px";
 // ---------- 22 April: six supply steamers (army volunteers) run the guns; one sinks, five get through ----------
 const C2T0 = T_22 - 0.3, C2T1 = END - 0.4;
@@ -115,7 +115,7 @@ const pS = CONV[SINK].at(tSink);
 tl.to(CONV[SINK].el, { autoAlpha: 0, duration: 1.4, ease: "power1.in" }, tSink + 0.2);
 tl.to(CONV[SINK].sv, { scale: 0.5, rotation: "+=40", duration: 1.4 }, tSink + 0.2);
 // critic r1: no ring where the steamer sank (it simply goes down)
-boxL("SIX MORE SUPPLY STEAMERS", 1120, 580, T_SIX, null, { size: 18 });
+boxL("SIX MORE SUPPLY STEAMERS", 1120, 556, T_SIX, null, { size: 18 });
 const FIVEX = placeCard("ARMY VOLUNTEERS", "FIVE TIMES THE NUMBER", "left:110px;top:330px;", T_FIVEX - 0.1, T_THRU - 0.4);
 const THRU = sstamp("FIVE GOT THROUGH", 790, T_THRU, { size: 64, shake: 5, css: "left:110px;top:780px;" });
 // ---------- 1c declutter ----------
