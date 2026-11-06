@@ -416,7 +416,7 @@ const tagAt = (id, t) => { const tg = B.units[id] && B.units[id].el.querySelecto
 camera([[0, 1440, 950, 0.72], [T_COMING, 1440, 950, 1.1], [T_DO - 0.2, 1430, 556, 1.2], [END, 1440, 598, 1.35]]);   // under the card the action (and Hooker's portrait) sits below the card, above the bottom edge
 B.showDate(0); const D0 = B.date("27 NOVEMBER 1863", 0, null, 34); now0(document.getElementById("date")); document.querySelectorAll("#date .d").forEach(now0);
 // flags 48 px behind each side's lines (no country names)
-[flagS(FL.us, "UNITED STATES", 1080, 990, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1700, 1060, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
+[flagS(FL.us, "UNITED STATES", 1080, 990, 0, T_DO - 0.3), flagS(FL.cs, "CONFEDERATE STATES", 1760, 990, 0, T_DO - 0.3)].forEach(now0);   // one pair per shot, both at t=0
 flagS(FL.us, "UNITED STATES", 1080, 880, T_DO - 0.2, END + 1); flagS(FL.cs, "CONFEDERATE STATES", 1720, 880, T_DO - 0.2, END + 1);   // below the card, clear of the portraits
 // ---------- Cleburne at the gap, two guns at its mouth (bare boxes until named) ----------
 unitS("cle", "carth", [1642, 950], "infantry", "CLEBURNE", { t: 0, size: "XX" }); tl.set(B.units.cle.el, { autoAlpha: 1 }, 0); tagAt("cle", null);

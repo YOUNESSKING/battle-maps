@@ -410,7 +410,7 @@ document.documentElement.classList.add("terr-on");   // the hatch layer (class t
 const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.14 });
 // May 1864: the ground the Union took since January, as red ink hatching, ~3 s, then it dissolves (STYLE_LOCK 2d item 3)
 const HMAY = T_MAY + 0.9;
-const GMAY = lay("assets/media/gn_corridor_ctl_may26cap_mx.png", HMAY, HMAY + 3.1); tl.fromTo(GMAY, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, HMAY);   // dense red ink hatch (wide view), ~3 s
+const GMAY = lay("assets/media/gn_corridor_ctl_may26cap_mx.png", HMAY, HMAY + 3.1); tl.fromTo(GMAY, { opacity: 0 }, { opacity: 1, duration: 0.5, immediateRender: false }, HMAY);   // dense red ink hatch: tools/make_hatch.py spec, lines only, trees + rivers left clear), ~3 s
 tl.to(GMAY, { opacity: 0, duration: 0.5, ease: "sine.inOut" }, HMAY + 2.5);
 // "through the woods": the march route east of New Hope Church was wooded; the woods are drawn on the map there (canopy, close look)
 { const wd = document.createElement("img"); wd.className = "wimg"; wd.src = "assets/media/m3a_woods_canopy.png"; wd.alt = "";
@@ -427,7 +427,6 @@ B.title("MOVE 3", "PICKETT'S MILL", "", 0.1, T_CAMP - 0.2);
 SFX("hit", 0.4);
 
 // ---------- permanent towns + flags (48 px, one pair per shot) ----------
-town("chattanooga", CHT, "l", 0, { until: T_ARGUED - 0.2 });   // steps out before the camera crops it under the date scroll
 town("dalton", DAL, "r", 0, { until: T_STOP + 1.0 });
 town("marietta", MAR, "r", T_MAY + 1.0, { until: T_STOP });
 town("dallas", DLS, "l", T_MAY + 1.2, {});
@@ -464,7 +463,8 @@ banner("SUPPRESSED", "left:0;right:0;top:900px;", T_SUPP + 0.9, T_MAY - 0.1, 44)
 B.date("MAY 1864", T_MAY - 0.1, T2 + 0.2, 32);
 for (let k = 0; k < 5; k++) SFX("tick", T_MAY + k * 0.18);
 const FM = frontS({ pts: MD.fronts.may26, sideA: "rome", sideB: "carth", t: T_MAY + 1.0, dur: 1.4, width: FW(1.3), until: T_STOP + 1.2 });
-arw({ pts: LL([[34.70, -84.98], [34.40, -84.90], [34.10, -84.82], [33.98, -84.80]]), side: "rome", t: T_MAY + 0.4, dur: 1.8, width: AW(1.2, 10), until: T2 + 0.4 });
+arw({ pts: LL([[34.70, -84.98], [34.40, -84.90], [34.12, -84.82], [34.00, -84.80]]),   // ends >= 12 px clear of the Dallas label
+  side: "rome", t: T_MAY + 0.4, dur: 1.8, width: AW(1.2, 10), until: T2 + 0.4 });
 
 // ---------- move3-2: New Hope Church and the march around the flank ----------
 B.date("25-26 MAY 1864", T2 + 0.1, T_TIME - 0.3, 32); B.date("27 MAY 1864", T_TIME - 0.2, END + 1, 32);
@@ -481,7 +481,7 @@ unitS("how", "rome", HM[0], "infantry", "HOWARD", { t: T_HOW, size: "XXX" });
 pinPortrait("how", PHOTO("howard"), FL.us, "Howard", T_HOW + 0.2, END + 1, true);
 trail(HM.slice(0, 4), "#be3a2a", AW(5.6, 3), T_MARCH - 0.2, T_SAW - T_MARCH + 0.4, END + 1);
 along("how", HM.slice(0, 4), T_MARCH, T_SAW - T_MARCH, 20);
-boxP("THE WOODS", 1525, 1035, T_MARCH + 0.3, T_CAV, { size: 22 });
+boxP("THE WOODS", 1440, 1040, T_MARCH + 0.3, T_CAV, { size: 22 });
 scr(`<div style="padding:16px 40px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:17px;letter-spacing:.32em;color:#ff8a80">HOWARD BELIEVED</div><div style="font-size:32px;letter-spacing:.06em;margin-top:4px">AROUND THE END OF JOHNSTON'S LINE</div></div>`,
   "right:40px;top:560px;", T_BEL - 0.1, Math.min(T_CAV - 0.3, T_BEL + 3.4));   // on the empty ground east of the front, off the units
