@@ -79,7 +79,7 @@ tl.fromTo(Q.querySelector(".imm"), { color: "#f7f3ea" }, { color: "#9fc0ea", dur
 // Buckner: ungenerous and unchivalrous, but he accepted
 const UN = belief("UNGENEROUS AND UNCHIVALROUS", "", T_UNG - 0.1, T_ACC - 0.1, { size: 44, pos: "right:60px;top:60px;" });
 greyU(["bu", "c1", "c2", "c3", "c4"], T_ACC + 0.3);
-wstampS("ACCEPTED", 1500, 640, T_ACC + 0.1, null);   // empty ground north of the river
+wstampS("ACCEPTED", 1585, 872, T_ACC + 0.1, null);   // empty ground north of the river
 hideU(["bu", "c1", "c2", "c3", "c4", "mc1", "mc2", "mc3", "wal", "sm1", "sm2", "ghq"], T_TELE + 0.4);
 unitS("pr", "rome", [1440, 780], "infantry", "PRISONERS", { t: T_TELE + 0.4, size: "XX" }); tagAt("pr", T_17 + 1.6);   // the tag waits while the prisoner card is up
 unitS("gA", "carth", [1270, 760], "infantry", "GRANT", { t: T_TELE + 0.5, size: "XXX" });
