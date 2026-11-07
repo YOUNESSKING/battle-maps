@@ -1,7 +1,7 @@
 {
  "voice": "am_michael",
  "speed": 1.0,
- "duration": 73.92,
+ "duration": 75.46,
  "paragraphs": [
   {
    "section": "TEST (0:00 - ~1:07)",
@@ -14,28 +14,28 @@
    "section": "TEST (0:00 - ~1:07)",
    "tag": "MAP: s12-2 | (3) \"But... instead\": the army marches down the far bank; (6) human detail: the night run, the burning Henry Clay; (4) layer 1",
    "start": 13.04,
-   "end": 24.37,
-   "text": "But Grant did not attack the bluffs. Instead, he marched down the far bank. First, his gunboats ran past the guns at night, and Grant watched a burning steamer drift by."
+   "end": 25.9,
+   "text": "But the Union general did not attack the bluffs. Instead, he marched down the far bank. First, his gunboats ran past the guns at night, and the general watched a burning steamer drift by."
   },
   {
    "section": "TEST (0:00 - ~1:07)",
    "tag": "MAP: s12-3 | (4) layers 2-3: the crossing at Bruinsburg, then the march inland between two armies; (7) set-up: Sherman's warning; (8) punchline",
-   "start": 24.97,
-   "end": 39.47,
+   "start": 26.5,
+   "end": 41.01,
    "text": "Then the army crossed at Bruinsburg. Then he cut loose from his base. Sherman warned that the road would be jammed, as sure as life. And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant."
   },
   {
    "section": "TEST (0:00 - ~1:07)",
    "tag": "MAP: s12-4 | (9) day-by-day clock on the date scroll; (5) vivid rate; (7) pay-off; (11) hedge",
-   "start": 40.07,
-   "end": 61.96,
+   "start": 41.61,
+   "end": 63.5,
    "text": "May first, Port Gibson. The twelfth, Raymond. The fourteenth, Jackson. The sixteenth, Champion Hill. The seventeenth, the Big Black. A battle every three or four days, and the army ate off the country, just as Grant said it would. He counted over sixty thousand Confederates; modern counts are lower, but his army was still the smaller one."
   },
   {
    "section": "TEST (0:00 - ~1:07)",
    "tag": "MAP: s12-5 | (10) verdict + cliffhanger; (12) tie back to the opening stakes",
-   "start": 62.56,
-   "end": 72.52,
+   "start": 64.1,
+   "end": 74.06,
    "text": "On the fourth of July, Vicksburg surrendered, and the river that held the South together was Union water. But Robert E. Lee was still waiting in Virginia."
   }
  ]

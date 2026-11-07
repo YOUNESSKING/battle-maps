@@ -7,7 +7,7 @@ Point numbers in brackets are for the owner and are NOT spoken.
 The Confederate plan was simple: hold the guns on the bluff at Vicksburg, and no Union army could use the Mississippi. In other words, while Vicksburg stood, the South stayed in one piece.
 
 [MAP: s12-2 | (3) "But... instead": the army marches down the far bank; (6) human detail: the night run, the burning Henry Clay; (4) layer 1]
-But Grant did not attack the bluffs. Instead, he marched down the far bank. First, his gunboats ran past the guns at night, and Grant watched a burning steamer drift by.
+But the Union general did not attack the bluffs. Instead, he marched down the far bank. First, his gunboats ran past the guns at night, and the general watched a burning steamer drift by.
 
 [MAP: s12-3 | (4) layers 2-3: the crossing at Bruinsburg, then the march inland between two armies; (7) set-up: Sherman's warning; (8) punchline]
 Then the army crossed at Bruinsburg. Then he cut loose from his base. Sherman warned that the road would be jammed, as sure as life. And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant.
