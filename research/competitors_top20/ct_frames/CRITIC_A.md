@@ -77,3 +77,13 @@
 7. Section 2: archive "every ~30-60 s" -> "Model about every 1-2 min (10-40 s blocks); Napoleon a painting or clip every ~10-30 s". Canvas boat = photo inset.
 8. Add the missed items above, at least 3, 4, 5, 6, 7, 9 and 11, as candidates or notes.
 9. Method caveat: add (a)-(d) from row 35. State that both transcripts were checked (this review), and that the draft corrects three points of the earlier study (title cards exist; gaps are ~5-12 s, not 20-40 s; wpm is ~155, not 130-140 or 160-170).
+
+## Round 2 (v2 re-check, 2026-11-07)
+
+**VERDICT: YES. v2 is accurate enough to give the owner.** All nine Round 1 fixes are in: wpm, the dropped causal claim, the Manstein sponsor, the unspoken labels/sum/quote, the reworded cold-open candidate, dashed fire lines, mixed maps (Napoleon only), archive frequency, and the method caveat (a)-(d). The new numbers check out against the raw outputs. Move lengths: Model 5:41 / 5:02 / 6:44, Napoleon 3:22 / 3:14 / 3:29. "Ours 159-176 wpm" is sourced in CRITIC_B.md. The cited STYLE_LOCK rules (no globe, open on the 2D map) exist.
+
+Remaining real errors, all small (fix in one line each, not blocking):
+1. **§2 header "all verified in the shot lists/transcripts" overstates.** The visual items (lattice/funnel/question-mark drawings, props, glowing PiP frames, sound effects per action, film clips) come from the AI watcher only; transcripts cannot verify visuals. Write "spoken items verified in transcripts; visual items are AI-reported".
+2. **§2 names the feature films as fact** ("Napoleon 2023, Waterloo 1970"). That is the AI's identification. Write "clips that look like feature films (AI names Napoleon 2023 / Waterloo 1970)".
+3. **§1 Napoleon "move close" row:** the one-line lesson closes move 1 only. Move 2 closes on the Mack anecdote ("seen the world collapse on him") and move 3 on the legacy line ("most feared and respected general").
+4. **Minor:** the Napoleon card pauses are ~4-6 s (0:31-0:36, 3:54-4:00, ~7:09-7:13), shorter than Model's ~8-12 s. "Same pause" is close enough.

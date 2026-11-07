@@ -90,3 +90,20 @@ The list is right as far as it goes. Add these:
 5. **Closing quote card** (candidate 7) only when a primary-source quote exists; a stamp instead of the bubble (candidate 6).
 6. **Free monitoring, no change:** the retention dip at our 1b asks, to settle the "they have no asks" question with our own data.
 - Dropped: candidates 2 and 8 (they conflict with 1a, and the evidence points the other way). Candidate 9 needs no test.
+
+---
+
+## Round 2 (draft v2, 2026-11-07)
+**VERDICT: YES.** v2 makes every fix from round 1. Candidates 2 (opening on the general's real world) and 8 (earlier move 1) are gone.
+The pace is corrected, and it now agrees with our measured 159-176 wpm. The "same format on their hits and flops" caveat sits at the top.
+The Do-NOT list now covers the globe, film or photo openings, the thud, synthesized SFX, Nazi insignia and length. Candidate 1 is now
+spoken, on our Style W map card, with the locked hit sound. The closing quote must be a sourced, spoken stamp. The new candidates (the
+cliffhanger bridge, paying off the thumbnail's question, the human-detail beat, hedges) fit 1a/1b/1c and DATA_RULES 2. Three small points
+remain. None of them blocks the YES:
+1. **Thumbnail test (section 6, item 1): "1-3 words + one curiosity line"** must stay within PACKAGING 0b.3, which allows 1-3 words in
+   total. Make the curiosity line the 1-3 words (e.g. "A YEAR LONGER?"), or show the owner the longer version as a labelled exception.
+   Any claim in it must be true and sourced (0b.2).
+2. **Candidate 3 (cliffhanger bridge) after move 1** must merge with the locked D2 subscribe bridge (1b.1), which already closes move 1
+   and asks move 2's question. Do not add a second bridge there. Use the new line only after move 2 (and move 3 runs into the ending).
+3. **Candidate 5 (photo inset of a real object)** is a new screen element. It has to follow 2c.4 (3D depth, projector frame) and 2d.8
+   (one big card, <= 3.5 s), and it must pass the two-critic snapshot test (2d.10) before use.
