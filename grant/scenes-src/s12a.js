@@ -482,6 +482,7 @@ unitS("oa", "carth", L(32.75, -92.25), "infantry", "", { size: "XXXX" }); unitS(
 ["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 along("oa", LL([[32.75, -92.25], [32.60, -91.95]]), 0, 3, 10);
 B.hideUnits(["oa", "ov"], TZ0 + 0.5, 0.4); showU(["oa", "ov"], TO1 - 0.6); B.hideUnits(["oa", "ov"], TI0 + 0.4, 0.4);
+stampP("THE CONFEDERATE PLAN", ...L(31.15, -88.2), T_PLAN + 0.35, T_HOLD - 0.1, 28);
 // ---------- "hold the guns on the bluff at Vicksburg" ----------
 const BAT = LL([[32.405, -90.872], [32.352, -90.877], [32.30, -90.890]]).map((p) => [p[0] + 12, p[1]]);
 BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_GUNS + 0.15 + k * 0.15, w: 44, h: 29 }));
@@ -517,7 +518,7 @@ focus(L(32.25, -91.18), 170, T_FAR, END + 1);
 // the boats wait above the city for the run (hand-off to s12b)
 const UP = [0, 1, 2].map((k) => ship(k === 2 ? "transport" : "gunboat", sub(LL([[32.45, -91.02], [32.42, -91.0], [32.402, -90.994], [32.394, -90.960]]), 0.3 - k * 0.1, 0.8 - k * 0.12, 8), T_FAR - 0.2 + k * 0.2, 2.0, END + 1, { s: 20 }));
 GBN.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.5 }, T_FAR - 0.3));
-declutter([], [[T_PIECE, T_BUT - 0.3]]);
+declutter([], [[T_PLAN + 0.35, T_HOLD - 0.1], [T_PIECE, T_BUT - 0.3]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();
