@@ -4,6 +4,7 @@
 // Built with: python3 tools/s12_inline.py vk s12b vicksburg_siege_w s12-2 s12-2 18.8 26.2
 // @@KIT
 // @@DATA
+const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');   // round 3: mystery "?" silhouette until the name reveal (1c.1)
 const SZ = GD.maps.vicksburg_siege;
 const L = GG.proj(12, SZ.origin_world_px[0], SZ.origin_world_px[1]);
 const P1 = "s12-2";
@@ -50,7 +51,7 @@ shootS(BATP[1], HCP, HCt - 0.7, sAt(HCt), { dur: 0.7, h: 46, r: 12 });
   tl.fromTo(boat.sv, { filter: "brightness(1)" }, { filter: "brightness(2.2)", duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t + dur); });
 // ---------- Grant watched: his headquarters boat moored above the point, his portrait on it ----------
 const HQ = ship("transport", [[985, 452], [986, 453]], 0, 1, END + 1, { s: 24, t0: 0 });
-pinPortrait(HQ.el.firstElementChild, PHOTO("grant"), FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal
+pinPortrait(HQ.el.firstElementChild, MYST, FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal
 focus([1330, 800], 220, T_DRIFT - 0.3, END + 1);
 fixImgs();
 K.raiseTerritory();

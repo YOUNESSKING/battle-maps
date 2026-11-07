@@ -5,6 +5,7 @@
 // Built with: python3 tools/s12_inline.py vk s12a vicksburg_w s12-1 s12-2 0 18.8
 // @@KIT
 // @@DATA
+const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');   // round 3: mystery "?" silhouette until the name reveal (1c.1)
 const MZ = GD.maps.mississippi, VZ = GD.maps.vicksburg;
 const L = GG.proj(10, VZ.origin_world_px[0], VZ.origin_world_px[1]);
 const LL = (pts) => pts.map(([la, lo]) => L(la, lo));
@@ -37,7 +38,7 @@ const applyCam = () => { let s = cam.s, cx = cam.cx, cy = cam.cy;
   if (s >= 0.6) { const k = Math.min(1, (s - 0.6) / 0.2), cl = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
     const ccx = cl(cx, 960 / s, 2880 - 960 / s), ccy = cl(cy, 540 / s, 1620 - 540 / s); cx += (ccx - cx) * k; cy += (ccy - cy) * k; }
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s);
-  const op = s <= 0.27 ? 1 : s >= 0.56 ? 0 : 1 - Math.log(s / 0.27) / Math.log(0.56 / 0.27);
+  const op = s <= 0.40 ? 1 : s >= 0.50 ? 0 : 1 - Math.log(s / 0.40) / Math.log(0.50 / 0.40);   // round 3: a short, sharp cross-fade (no double image)
   PW.style.opacity = op.toFixed(3); setMask(s < 0.75); };
 const camTo = (t, dur, c, s, ease = "sine.inOut") => tl.to(cam, { cx: c[0], cy: c[1], s, duration: Math.max(dur, 0.01), ease, onUpdate: applyCam }, t);
 const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {
@@ -63,28 +64,28 @@ camTo(T_INST + 0.42, END - T_INST - 0.42, [C3[0] + 10, C3[1] + 40], S3 * 1.06, "
 // ---------- HUD: the date scroll (on from frame 0, never leaves) ----------
 dateNow("SPRING 1863", T_INST - 0.05); B.date("APRIL 1863", T_INST, END + 1, 32);
 // ---------- flags: one pair per shot (both on every frame) ----------
-const WIDE1 = TZ0 + 1.2;
+const TSW = TZ0 + 0.54 * (TZ1 - TZ0), WIDE1 = TSW;   // the instant the dive passes s ~0.45 (mid cross-fade): the flag pairs swap there, no overlap
 flagS(FL.us, "", ...L(35.45, -88.9), 0, WIDE1); flagS(FL.cs, "", ...L(32.0, -88.6), 0, WIDE1);
-flagS(FL.us, "", ...L(32.30, -91.40), WIDE1 - 0.1, END + 1); flagS(FL.cs, "", ...L(32.22, -90.62), WIDE1 - 0.05, END + 1);
+flagS(FL.us, "", ...L(32.30, -91.40), WIDE1, END + 1); flagS(FL.cs, "", ...L(32.22, -90.62), WIDE1, END + 1);
 // ---------- frame 0: the river war already moving (Union gunboats come down from Memphis; one army counter each side) ----------
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_USE + 0.6, END + 1, { s: 20, t0: 0 }));
-unitS("oa", "carth", L(32.75, -92.25), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.05, -89.95), "infantry", "", { size: "XXXX" });
-["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
-along("oa", LL([[32.75, -92.25], [32.60, -91.95]]), 0, 3, 10);
-B.hideUnits(["oa", "ov"], TZ0 + 0.1, 0.25);
+// round 3: the two armies stay solid through the dive (no fade): the Union box glides to its place above the city, the Confederate one to the bluff country
+unitS("gc", "carth", L(32.75, -92.25), "infantry", "", { size: "XXX" }); unitS("vk", "rome", L(32.05, -89.95), "infantry", "", { size: "XXX" });
+["gc", "vk"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
+along("gc", LL([[32.75, -92.25], [32.66, -92.0]]), 0, TZ0, 10); along("gc", LL([[32.66, -92.0], [32.48, -91.22]]), TZ0, TZ1 - TZ0, 16);
+along("vk", LL([[32.05, -89.95], [32.10, -90.1]]), 0, TZ0, 10); along("vk", LL([[32.10, -90.1], [32.40, -90.68]]), TZ0, TZ1 - TZ0, 16);
 stampP("THE CONFEDERATE PLAN", ...L(31.15, -88.2), T_PLAN + 0.35, T_HOLD - 0.15, 28);
 // ---------- "hold the guns on the bluff at Vicksburg" ----------
 const BAT = LL([[32.405, -90.872], [32.352, -90.877], [32.30, -90.890]]).map((p) => [p[0] + 12, p[1]]);
 BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_GUNS + 0.15 + k * 0.15, w: 44, h: 29 }));
-unitS("vk", "rome", L(32.40, -90.68), "infantry", "", { size: "XXX", t: T_VKS + 0.2 });
 const TV = town("VICKSBURG", VKS, "l", T_VKS);
 profileStrip(`<path d="M10 100 L150 100 C 175 100, 182 96, 190 88" fill="none" stroke="#2a2410" stroke-width="2.6"/><path d="M14 101 L186 101" stroke="#4d7d9a" stroke-width="7"/>
   <path d="M190 88 C 200 60, 205 34, 222 30 C 260 26, 330 32, 470 36" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
   ${[250, 268, 286, 304].map((x) => `<rect x="${x}" y="${18}" width="10" height="10" fill="#2a2410"/>`).join("")}
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="19" fill="#2a2410" text-anchor="middle"><text x="96" y="88">Mississippi River</text><text x="380" y="62">Vicksburg</text><text x="228" y="118">The bluff</text></g>`, T_BLUFF + 0.6, T_ARMY + 0.4);
 // "and no Union army could use the Mississippi": Grant's corps upriver (bare boxes), the guns fire at the lead gunboat, the boats hold short of the city
-unitS("ga", "carth", L(32.62, -91.25), "infantry", "", { size: "XXX", t: T_ARMY + 0.25 }); unitS("gc", "carth", L(32.48, -91.22), "infantry", "", { size: "XXX", t: T_ARMY + 0.4 });
+unitS("ga", "carth", L(32.62, -91.25), "infantry", "", { size: "XXX", t: T_ARMY + 0.25 });
 along("ga", LL([[32.62, -91.25], [32.57, -91.20]]), T_ARMY + 0.3, 6, 10);
 shootS(BAT[0], GBN[0].at(T_USE + 0.2), T_USE - 0.5, SV2, { dur: 0.7, h: 30, r: 9 });
 shootS(BAT[1], GBN[1].at(T_USE + 1.3), T_USE + 0.6, SV2, { dur: 0.7, h: 30, r: 9 });
@@ -94,7 +95,7 @@ const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.36, -90
 inkTrace(RIV, T_STOOD, T_BUT - 0.1, 4.2); inkTrace(LINK, T_SOUTH + 0.1, T_BUT - 0.1, 3.0);
 const ONE = stampP("IN ONE PIECE", ...L(32.62, -90.55), T_PIECE, T_BUT - 0.3, 30);
 // ---------- s12-2: "But the Union general did not attack the bluffs. Instead, he marched down the far bank." ----------
-pinPortrait("gc", PHOTO("grant"), FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal ("Ulysses Grant" in s12d)
+pinPortrait("gc", MYST, FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal ("Ulysses Grant" in s12d)
 BAT.forEach((p, k) => tl.fromTo(B.units["bat" + k].el.querySelector(".blk"), { scale: 1 }, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_NOT + 0.6 + k * 0.12));
 const MARCH = LL([[32.48, -91.08], [32.42, -91.15], [32.39, -91.18], [32.28, -91.20], [32.16, -91.17], [32.09, -91.13], [32.07, -91.09]]);
 along("gc", [L(32.48, -91.22), MARCH[0]], T_INST - 0.3, 0.8, 6); along("gc", MARCH, T_MARCH, END - T_MARCH + 0.4, 24);

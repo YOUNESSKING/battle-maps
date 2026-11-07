@@ -495,7 +495,8 @@ const MFL = [flagS(F35, "", ...L(34.6, -92.6), TZ0 + 1.2, END + 1), flagS(FL.cs,
 stampP("UNION WATER", ...L(33.95, -90.15), T_UW, T_LEE - 0.25, 30);   // right next to the river
 // ---------- the cliffhanger: Robert E. Lee, still waiting in Virginia (no unit on this map: a portrait badge at the east edge, pointing east) ----------
 // round 2: Lee has no unit on this map (Virginia is off it): a CORNER badge (2d.6), <= 3.5 s
-cmd("lee", "ROBERT E. LEE", "VIRGINIA", "rome", "tr", T_LEE - 0.05, END + 1);
+{ const LB = cmd("lee", "ROBERT E. LEE", "VIRGINIA", "rome", "tr", T_LEE - 0.05, END + 1); const rl = [...LB.querySelectorAll("div")].find((d) => d.textContent === "VIRGINIA");
+  gsap.set(rl, { autoAlpha: 0 }); tl.fromTo(rl, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, at(P1, "Virginia") - 0.05); }   // round 3: the sub-line ON "Virginia"
 declutter([], [[T_UW, T_LEE - 0.25]]);
 applyCam(); tl.call(applyCam, null, 0);
 fixImgs();

@@ -408,6 +408,7 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 // @@DATA (tools/s12_inline.py)
 const GD = {"base":"vicksburg_siege","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
 // @@END-DATA
+const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');   // round 3: mystery "?" silhouette until the name reveal (1c.1)
 const SZ = GD.maps.vicksburg_siege;
 const L = GG.proj(12, SZ.origin_world_px[0], SZ.origin_world_px[1]);
 const P1 = "s12-2";
@@ -454,7 +455,7 @@ shootS(BATP[1], HCP, HCt - 0.7, sAt(HCt), { dur: 0.7, h: 46, r: 12 });
   tl.fromTo(boat.sv, { filter: "brightness(1)" }, { filter: "brightness(2.2)", duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t + dur); });
 // ---------- Grant watched: his headquarters boat moored above the point, his portrait on it ----------
 const HQ = ship("transport", [[985, 452], [986, 453]], 0, 1, END + 1, { s: 24, t0: 0 });
-pinPortrait(HQ.el.firstElementChild, PHOTO("grant"), FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal
+pinPortrait(HQ.el.firstElementChild, MYST, FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal
 focus([1330, 800], 220, T_DRIFT - 0.3, END + 1);
 fixImgs();
 K.raiseTerritory();

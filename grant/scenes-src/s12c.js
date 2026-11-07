@@ -408,6 +408,7 @@ const dateNow = (text, until) => { const box = document.getElementById("date"); 
 // @@DATA (tools/s12_inline.py)
 const GD = {"base":"grandgulf","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
 // @@END-DATA
+const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');   // round 3: mystery "?" silhouette until the name reveal (1c.1)
 const GZ = GD.maps.grandgulf;
 const L = GG.proj(12, GZ.origin_world_px[0], GZ.origin_world_px[1]);
 const P1 = "s12-3";
@@ -427,7 +428,7 @@ LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
   arw({ pts: [[b[0] + 14, b[1]], [s[0] - 6, s[1]], [s[0] + 26, s[1] - 8]], side: "carth", t: T_CROSS + 0.3 + k * 0.2, dur: 0.7, width: AW(1.4, 11), until: END + 1 }); });
 const LU = [["l13", 1130, 885, "XXX"], ["l9", 1150, 940, "XX"], ["l17", 1110, 990, "XXX"]];
 LU.forEach(([id, x, y, sz], k) => { unitS(id, "carth", [x - 80, y - 5], "infantry", "", { t: T_CROSS + 0.35 + k * 0.2, size: sz }); along(id, [[x - 80, y - 5], [x, y]], T_CROSS + 0.35 + k * 0.2, 1.4, 8); tagAt(id, null); });
-pinPortrait("l13", PHOTO("grant"), FL.us, "Union General", T_CROSS + 0.7, null, true, "ne");   // round 2: side stake up-right, off the hatching; no name before the reveal
+pinPortrait("l13", MYST, FL.us, "Union General", T_CROSS + 0.7, null, true, "ne");   // round 2: side stake up-right, off the hatching; no name before the reveal
 hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_BRU, 1.6);
 town("", BRU, "l", T_BRU); boxL("Bruinsburg", BRU[0] - 40, BRU[1] + 120, T_BRU, null, { size: 24 });   // round 2: the name south of the landing, off the boats and arrows
 // ---------- "Then he cut loose from his base": the supply line back to Grand Gulf (ink) is cut; the column marches inland ON "cut loose" ----------

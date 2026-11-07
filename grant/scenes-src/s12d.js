@@ -409,6 +409,7 @@ B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); }
 // @@DATA (tools/s12_inline.py)
 const GD = {"base":"vicksburg","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
 // @@END-DATA
+const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');   // round 3: mystery "?" silhouette until the name reveal (1c.1)
 const VZ = GD.maps.vicksburg;
 const L = GG.proj(10, VZ.origin_world_px[0], VZ.origin_world_px[1]);
 const LL = (pts) => pts.map(([la, lo]) => L(la, lo));
@@ -459,7 +460,8 @@ SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.fi
 B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); B.move("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
 pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "up");   // round 2: stake straight up, off the Vicksburg name and the Union cards
 focus(L(32.07, -90.84), 150, T_BEH, T_UG + 1.6);
-const GW = now(pinPortrait("u17", PHOTO("grant"), FL.us, "Union General", 0, null, true, "right"));   // on his column from frame 0, unnamed (continuing from s12c)
+const GW = now(pinPortrait("u17", MYST, FL.us, "Union General", 0, null, true, "right"));   // on his column from frame 0, unnamed (continuing from s12c)
+{ const ph = GW.firstElementChild.querySelectorAll("img")[1]; tl.set(ph, { attr: { src: PHOTO("grant") } }, T_UG - 0.1); }   // the photo revealed ON "Ulysses Grant"
 { const nm = GW.firstElementChild.lastElementChild, n2 = document.createElement("div"); n2.textContent = "Ulysses Grant"; n2.style.cssText = nm.style.cssText + ";position:absolute;left:0;right:0;bottom:0;font-size:13px";
   GW.firstElementChild.appendChild(n2); gsap.set(n2, { autoAlpha: 0 }); tl.to(nm, { autoAlpha: 0, duration: 0.15 }, T_UG - 0.1); tl.to(n2, { autoAlpha: 1, duration: 0.15 }, T_UG - 0.1);
   nm.style.visibility = "inherit"; }
@@ -505,13 +507,13 @@ tl.fromTo(GW.firstElementChild, { scale: 1 }, { scale: 1.25, duration: 0.3, yoyo
 const CARD = (kick, big, sub, col, css, t, until) => scr(`<div style="background:rgb(18,16,12);border-top:5px solid ${col};font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center;padding:12px 46px 16px">
   <div style="font-size:22px;letter-spacing:.3em;color:${col}">${kick}</div><div class="n" style="font-size:66px;letter-spacing:.03em;line-height:1.08">${big}</div>${sub}</div>`, css, t, until);
 const CSS = "left:0;right:0;bottom:120px;display:flex;justify-content:center;";
-const N1 = CARD("HE COUNTED", "OVER 60,000", `<div style="font-size:28px;letter-spacing:.16em;color:#ff8a80">CONFEDERATES</div><div class="m" style="font-size:28px;letter-spacing:.12em;color:#e8dfc8;margin-top:6px">MODERN COUNTS ARE LOWER</div>`, "#be3a2a", CSS, T_60 - 0.05, Math.min(T_HIS - 0.15, T_60 + 3.0));
-{ const m = N1.querySelector(".m"); gsap.set(m, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_MOD); } SFX("hit", T_60 + 0.05);
+const N1 = CARD("HE COUNTED", "OVER 60,000", `<div style="font-size:28px;letter-spacing:.16em;color:#ff8a80">CONFEDERATES</div><div class="m" style="font-size:28px;letter-spacing:.12em;color:#e8dfc8;margin-top:6px">MODERN COUNTS ARE LOWER</div>`, "#be3a2a", CSS, T_60 + 0.45, Math.min(T_HIS - 0.15, T_60 + 3.3));
+{ const m = N1.querySelector(".m"); gsap.set(m, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_MOD); } SFX("hit", T_60 + 0.55);
 const N2 = CARD("HIS ARMY", "THE SMALLER ONE", "", "#2e5cb2", CSS, T_SMALL - 0.05, Math.min(END + 1, T_SMALL + 3.0)); SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
 B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
 B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
-declutter([], [[T_JAM - 0.1, SHC_U], [T_60 - 0.05, T_HIS - 0.15], [T_SMALL - 0.05, END + 1]]);
+declutter([], [[T_JAM - 0.1, SHC_U], [T_60 + 0.45, T_HIS - 0.15], [T_SMALL - 0.05, END + 1]]);
 fixImgs();
 K.raiseTerritory();
 B.finish();
