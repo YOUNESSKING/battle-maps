@@ -431,7 +431,7 @@ const gimg = (src, parent) => { const i = document.createElement("img"); i.src =
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vx_miss_w.jpg", PU);
 const PW = group(WORLD, OVL); gimg("assets/media/vx_miss_w.jpg", PW);
-hatch("assets/media/gn_siege_julcap_mx.png", T_SURW + 0.1, 1.6);   // the city changes hands: blue hatch, then dissolves
+hatch("assets/media/gn_siege_julcap_mx.png", T_SURW + 0.1, 1.0);   // form 1 (gone before form 2)   // the city changes hands: blue hatch, then dissolves
 living(SZ.meters_per_px, [], { n: 5, clouds: 0.12 });
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 8%, #000 92%, transparent 100%)";
 let maskOn = null;
@@ -499,6 +499,22 @@ stampP("UNION WATER", ...L(33.95, -90.15), T_UW, T_LEE - 0.25, 30);   // right n
   gsap.set(rl, { autoAlpha: 0 }); tl.fromTo(rl, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, at(P1, "Virginia") - 0.05); }   // round 3: the sub-line ON "Virginia"
 declutter([], [[T_UW, T_LEE - 0.25]]);
 applyCam(); tl.call(applyCam, null, 0);
+// ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
+  gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
+terrL("assets/media/t12m_miss2_jul", T_UW - 0.7, T_LEE + 0.2, PW);   // FORM 2 #3: "Union water", July 1863, until the Lee badge
 fixImgs();
 K.raiseTerritory();
 B.finish();

@@ -25,7 +25,7 @@ LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
 const LU = [["l13", 1130, 885, "XXX"], ["l9", 1150, 940, "XX"], ["l17", 1110, 990, "XXX"]];
 LU.forEach(([id, x, y, sz], k) => { unitS(id, "carth", [x - 80, y - 5], "infantry", "", { t: T_CROSS + 0.35 + k * 0.2, size: sz }); along(id, [[x - 80, y - 5], [x, y]], T_CROSS + 0.35 + k * 0.2, 1.4, 8); tagAt(id, null); });
 pinPortrait("l13", MYST, FL.us, "Union General", T_CROSS + 0.7, null, true, "ne");   // round 2: side stake up-right, off the hatching; no name before the reveal
-hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_BRU, 1.6);
+hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_BRU, 0.0);   // form 1 (shortened: gone before form 2 comes in)
 town("", BRU, "l", T_BRU); boxL("Bruinsburg", BRU[0] - 40, BRU[1] + 120, T_BRU, null, { size: 24 });   // round 2: the name south of the landing, off the boats and arrows
 // ---------- "Then he cut loose from his base": the supply line back to Grand Gulf (ink) is cut; the column marches inland ON "cut loose" ----------
 const SUP = [[GGF[0] - 30, GGF[1] + 20], [1290, 640], [1250, 720], [1200, 790], [1150, 850], [1120, 885]];
@@ -34,6 +34,22 @@ boxL("His Base", GGF[0] - 110, GGF[1] - 10, T_BASE, null, { size: 24 });
 crosses([[1225, 755]], T_BASE + 0.5, END + 1, 14);
 arw({ pts: [[1150, 900], [1260, 895], [1380, 885]], side: "carth", t: T_LOOSE - 0.1, dur: 1.2, width: AW(1.25, 13), until: END + 1 });
 B.move("l13", T_LOOSE, 2.2, 1270, 880); B.move("l9", T_LOOSE + 0.15, 2.2, 1250, 935); B.move("l17", T_LOOSE + 0.3, 2.2, 1215, 980);
+// ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
+  gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
+terrL("assets/media/t12m_gg_apr30", T_BRU + 1.85, null);   // FORM 2 #2 (part 1): on "cut loose", the Union bridgehead against the Confederate east bank; continues on the May map (s12d)
 fixImgs();
 K.raiseTerritory();
 B.finish();
