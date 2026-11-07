@@ -1,0 +1,55 @@
+{
+ "_note": "Style W story ground for the donelson map (Grant #16 m1b-m1e, scene css px = donelson map px of the bodies). Named: the Confederate outer works on their ridge around Fort Donelson and Dover (WORKS polyline of the bodies), 'the hill on the Union left' that C. F. Smith's division climbed (m1-6). The road out (m1-4) is traced in the scene on its words.",
+ "hills": [
+  [
+   1290,
+   686,
+   30
+  ]
+ ],
+ "ridge": [
+  [
+   [
+    1556,
+    806
+   ],
+   [
+    1540,
+    811
+   ],
+   [
+    1487,
+    832
+   ],
+   [
+    1429,
+    825
+   ],
+   [
+    1371,
+    796
+   ],
+   [
+    1312,
+    753
+   ],
+   [
+    1289,
+    702
+   ],
+   [
+    1300,
+    668
+   ],
+   [
+    1312,
+    652
+   ]
+  ]
+ ],
+ "ridge_w": 20,
+ "ridge_h": 0.62,
+ "ravine": [],
+ "rail": [],
+ "fields": []
+}

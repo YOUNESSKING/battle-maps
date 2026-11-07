@@ -4,7 +4,7 @@ usage (from grant/): python3 tools/vk_inline.py SCENE BASEMAP FIRST_TAG LAST_TAG
   GD.maps[<map>] = json of every other baked map (for the extra map layer of a continuous zoom, e.g. mississippi inside vicksburg)."""
 import json, os, subprocess, sys, glob
 scene, base, first, last = sys.argv[1:5]
-m0 = base.replace("_hd_lift", "")
+m0 = base.replace("_hd_lift", "").removesuffix("_w")
 GD = {"base": m0, "maps": {}}
 for f in glob.glob("assets/*_hd_lift.json"):
     J = json.load(open(f)); GD["maps"][J["name"].replace("_hd_lift", "")] = {k: J[k] for k in ("zoom", "origin_world_px", "meters_per_px")}

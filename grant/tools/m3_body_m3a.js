@@ -1,9 +1,10 @@
-// m3a (m3-1..m3-2), Grant #16 MOVE 3 opens: the armies in their trenches at Cold Harbor outside Richmond (12 Jun 1864), Lee's lines hold;
-// south across the James lies Petersburg where the railroads meet (title card on "the wide James River"); m3-2: the plan to disappear:
-// Sheridan's cavalry west, Lee's cavalry after it (wide), after dark on the 12th Warren's Fifth Corps crosses the Chickahominy and faces
-// Richmond while the rest of the army slips out south by back roads, Meade's Army of the Potomac in the lead.
-// Basemap richmond_hd_lift (z9, v11; quick preview bake m3x_ric until it is baked). Option 1 territory 12 JUN (tools/m3_make_control.py).
-// Built with: python3 tools/m3_build.py m3a richmond m3-1 m3-2
+// m3a (m3-1..m3-2), Grant #16 MOVE 3 opens. STYLE W (STYLE_LOCK 2d, restyled 2026-11-06; story, beats and every at() phrase of the approved v2
+// kept): one green ink map (richmond_w z9 + close twin: the camera works at s 2.3-6, so the close battle look carries the scene).
+// The armies in their trenches at Cold Harbor outside Richmond (Lee's lines hold; Grant = corner badge only, he has no unit here; Lee's card on
+// a stake at his line); south across the James lies Petersburg where the railroads meet (title card on "the wide James River"); m3-2: the plan
+// to disappear: Sheridan's cavalry west (his card rides with it), Lee's cavalry after it; after dark on the 12th Warren's Fifth Corps crosses
+// the Chickahominy and faces Richmond (his card at his corps) while the rest slips out south by back roads, Meade's Army of the Potomac in the lead.
+// Clean map: nothing changes hands here (no territory). Built with: python3 tools/m3_build.py m3a richmond_w m3-1 m3-2
 // @@BODY
 const P1 = "m3-1", P2 = "m3-2", G = GEO.ric;
 const T_JUNE = at(P1, "second week of June"), T_TRENCH = at(P1, "sat in trenches"), T_RICH = at(P1, "outside Richmond"), T_GRANT = at(P1, "Grant could not"),
@@ -15,20 +16,20 @@ const T_PLAN = at(P2, "The plan was to disappear"), T_TELL = at(P2, "Grant did n
   T_LCAV = at(P2, "Lee sent his own cavalry"), T_DARK = at(P2, "After dark"), T_12 = at(P2, "twelfth of June"), T_WAR = at(P2, "Gouverneur Warren"),
   T_CHICK = at(P2, "crossed the Chickahominy"), T_FACED = at(P2, "faced toward Richmond"), T_REST = at(P2, "the rest of the army slipped out"),
   T_SOUTH2 = at(P2, "marched south by back roads"), T_MEADE = at(P2, "General Meade"), T_LEAD = at(P2, "in the lead");
-// ---------- map: option 1 (12 JUN 1864), living map ----------
-terr("assets/media/m3_ric_jun12_mx.png", 0, null);
-const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 }); LV.shimmer([G.JAMES, G.CHICK, G.APPOM], { width: 0.9 }); LV.scaleBar(242.2); LV.north();
-camera([[0, 1432, 812, 5.6], [T_TRENCH, 1430, 816, 6.0], [T_GRANT + 1.0, 1436, 818, 6.2], [T_SOUTH, 1432, 860, 5.0], [T_PET, 1428, 915, 4.7], [T_TOG, 1428, 925, 4.9],
-  [T_STARVE + 0.6, 1430, 880, 4.6], [T_TELL + 1.0, 1428, 840, 4.9], [T_LOOK + 0.8, 1400, 800, 3.6], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
-  [T_12 + 0.4, 1470, 855, 4.5], [T_CHICK + 1.5, 1475, 868, 4.9], [T_REST + 0.6, 1490, 880, 4.3], [T_LEAD, 1495, 888, 4.1], [END, 1497, 890, 4.05]]);
+// ---------- map: clean (no fills), living map ----------
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
+camera([[0, 1432, 812, 5.6], [T_TRENCH, 1430, 816, 6.0], [T_GRANT + 1.0, 1436, 818, 6.2], [T_SOUTH, 1432, 872, 4.7], [T_PET, 1428, 890, 4.5], [T_TOG, 1428, 890, 4.5],
+  [T_STARVE + 0.6, 1430, 888, 4.5], [T_TELL + 1.0, 1428, 840, 4.9], [T_LOOK + 0.8, 1400, 800, 3.6], [T_SHER, 1320, 740, 2.35], [T_LCAV + 2.2, 1318, 744, 2.3],
+  [T_12 + 0.4, 1470, 840, 4.3], [T_CHICK + 1.5, 1475, 855, 4.5], [T_REST + 0.6, 1490, 865, 4.0], [T_LEAD, 1495, 858, 3.9], [END, 1497, 860, 3.85]]);   // critic 2: Lee's card clear of the date scroll in the night section
 // date scroll on the spoken date (clean first frame: nothing before it)
-B.showDate(T_JUNE + 0.6); B.date("JUNE 1864", T_JUNE + 0.7, T_12 - 0.1, 34); B.date("12 JUNE 1864", T_12, null, 34);
-// ---------- flags (US 35-star + CSA first national, both on every frame) ----------
-flagS(FL.us, 1588, 868, 0, T_LOOK + 1.2, 100); flagS(FL.cs, 1335, 800, 0, T_SOUTH + 1.0, 100);
-flagS(FL.cs, 1318, 948, T_SOUTH + 0.6, T_LOOK + 1.2, 100);
-flagS(FL.us, 1640, 850, T_LOOK + 0.9, T_DARK + 1.4, 110); flagS(FL.cs, 1210, 800, T_LOOK + 0.9, T_DARK + 1.4, 110);
-flagS(FL.us, 1620, 866, T_DARK + 1.1, END + 1, 100); flagS(FL.cs, 1350, 905, T_DARK + 1.1, END + 1, 100);
-// ---------- Cold Harbor: the two lines (option 1 + the two-colour front where the sides touch), trenches ----------
+dateNow("JUNE 1864", T_12 - 0.1); B.date("12 JUNE 1864", T_12, null, 34);   // critic r1: the date scroll is filled from frame 0
+// ---------- flags (48 px, behind each side's lines, both on every frame) ----------
+flagS(FL.us, 1488, 806, 0, T_LOOK + 1.2); flagS(FL.cs, 1380, 800, 0, T_SOUTH + 1.0);
+flagS(FL.cs, 1350, 930, T_SOUTH + 0.6, T_LOOK + 1.2);
+flagS(FL.us, 1530, 792, T_LOOK + 0.9, T_DARK + 1.4);   // off the start of Sheridan's trail
+flagS(FL.cs, 1250, 800, T_LOOK + 0.9, T_DARK + 1.4);
+flagS(FL.us, 1520, 860, T_DARK + 1.1, END + 1); flagS(FL.cs, 1405, 905, T_DARK + 1.1, END + 1);
+// ---------- Cold Harbor: the two lines (the locked two-colour front where the sides touch) + the ink trenches ----------
 const FR = frontS({ pts: G.CH_FRONT, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWw(5.6), until: T_REST + 2.0 });
 const TR1 = trench(G.CH_FRONT.map((q) => [q[0] + 5.5, q[1]]), T_TRENCH - 0.1, 1.4, T_REST + 2.0, 5.6);
 const TR2 = trench(G.CH_FRONT.map((q) => [q[0] - 5.5, q[1]]), T_TRENCH + 0.2, 1.4, T_REST + 6.0, 5.6);
@@ -37,70 +38,64 @@ BU.forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X
 RU.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "XXX" }));
 unitS("v5", "carth", [1470, 822], "infantry", null, { t: 0, size: "XXX" });            // Warren's Fifth Corps in reserve
 unitS("rr", "rome", [1398, 822], "infantry", null, { t: 0, size: "XXX" }); B.move("rr", 0, 4.0, 1414, 818);   // moving at frame 0
-B.move("v5", 0.3, 3.5, 1468, 818);
-// Grant cannot break through Lee's lines: a probe that bounces, the guns of the line fire (visible, close)
-const GB = badge({ name: "ULYSSES S. GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "bl", t: T_GRANT - 0.1, until: T_NOT + 1.2 });
-const LB = badge({ name: "ROBERT E. LEE", role: "", initials: "REL", photo: PHOTO("lee"), flag: FL.cs, side: "rome", corner: "br", t: T_LEE - 0.1, until: T_NOT + 1.2 });
-const PRB = arw({ pts: [[1466, 806], [1452, 808], [1444, 810]], side: "carth", t: T_GRANT + 0.1, dur: 0.9, width: AW(6.2, 13), until: T_NOT + 0.4 });
-shoot([1426, 802], [1450, 808], T_GRANT + 0.9, { r: 2.2, width: 0.35, dur: 0.5, h: 3 });
-shoot([1428, 820], [1453, 815], T_LEE + 0.5, { r: 2.2, width: 0.35, dur: 0.5, h: 3 });
-wstampS("COULD NOT BREAK THROUGH", 1440, 846, T_GRANT + 1.3, null, "#e3232f", 24);
+B.move("v5", 0.3, 3.5, 1480, 812);   // critic: Warren's reserve >= 12 px clear of the trench boxes
+// Grant cannot break through Lee's lines: a probe that bounces, the guns of the line fire (visible, powder smoke)
+badgeC({ name: "ULYSSES S. GRANT", role: "", initials: "USG", photo: PHOTO("grant"), flag: FL.us, side: "carth", corner: "tr", t: T_GRANT - 0.1, until: T_NOT + 1.2 });   // no unit of his on this map
+pinPortrait("r1", PHOTO("lee"), FL.cs, "Lee", T_LEE - 0.1, END + 1, true, "west");   // Lee's card at his line while his part of the story runs (steps out before the night shot crops it at the top edge)
+arw({ pts: [[1466, 803], [1452, 804], [1445, 805]], side: "carth", t: T_GRANT + 0.1, dur: 0.9, width: AW(6.2, 9), until: T_NOT + 0.4 });
+shoot([1426, 802], [1450, 808], T_GRANT + 0.9, { r: 2.2, width: 0.35, dur: 0.5, h: 3 }); smoke([[1426, 801], [1427, 799]], T_GRANT + 0.9, 1.0);
+shoot([1428, 820], [1453, 815], T_LEE + 0.5, { r: 2.2, width: 0.35, dur: 0.5, h: 3 }); smoke([[1428, 819], [1429, 817]], T_LEE + 0.5, 1.0);
+crosses([[1446, 809]], T_NOT, T_NOT + 3.0, 1.2);
+stampP("COULD NOT BREAK THROUGH", 1448, 848, T_GRANT + 1.3, T_GRANT + 4.6, 24);
 // ---------- south across the wide James lies Petersburg; the railroads meet there ----------
-const RICH = town("RICHMOND", G.RICHMOND, T_RICH, "l", { size: 34 });
-glowPath(G.JAMES, "#7fb0ff", 1.3, T_JAMES - 0.2, T_PLAN + 1.0, 2, 0.85, { draw: 1.8 });
+const RICH = town("RICHMOND", G.RICHMOND, T_RICH, "l", { keep: true });
+glowPath(G.JAMES, "", 1.3, T_JAMES - 0.2, T_JAMES + 3.0);                     // STYLE W: focus + ink trace along the James on its word
 const TT = B.title("MOVE 3", "THE JAMES RIVER", "JUNE 1864", T_JAMES, T_JAMES + 2.6); SFX("ref:boom", T_JAMES + 0.15);
-const LGD = legend(T_JAMES + 3.0, END + 1, false);
-const PETL = town("PETERSBURG", G.PETERSBURG, T_PET, "l", { size: 34 });
-K.target(G.PETERSBURG[0], G.PETERSBURG[1], T_PET + 0.2, { r: 30, side: "#ffd54a", until: T_STARVE + 1.6 });
-const RRS = [G.RR_RP, G.RR_SS, G.RR_W, G.RR_NP, G.RR_CP].map((pts, k) => { const q = pts.slice().reverse();
-  glowPath(q, "#2a2118", 1.1, T_RR + 0.1 + k * 0.35, T_PLAN + 0.6, 0, 0.95, { draw: 1.6, top: true });
-  return glowPath(q, "#ffd54a", 0.5, T_RR + 0.1 + k * 0.35, T_PLAN + 0.6, 2, 0.9, { draw: 1.6, dash: "1.2 1.6", top: true }); });
-B.caption("WHERE THE RAILROADS THAT FED LEE'S ARMY CAME TOGETHER", T_FED - 0.4, T_IF - 0.2, "rome");
-// if Grant could take it, Richmond would starve: the Petersburg ring turns blue, the line to Richmond goes dark
-K.target(G.PETERSBURG[0], G.PETERSBURG[1], T_IF + 0.2, { r: 22, side: "#2e5cb2", until: T_PLAN + 0.5 });
-tl.to(RRS[0], { stroke: "#e3232f", duration: 0.5 }, T_STARVE - 0.2);
-RICH.grow(T_STARVE); tl.to(RICH.el.querySelector(".nm"), { autoAlpha: 1, duration: 0.3 }, T_STARVE);
-B.caption("IF GRANT COULD TAKE IT, RICHMOND WOULD STARVE", T_IF, T_PLAN - 0.2, "carth");
+const PETL = town("PETERSBURG", G.PETERSBURG, T_PET, "l", { keep: true });
+tl.to(PETL.el, { autoAlpha: 0, duration: 0.4 }, T_LOOK + 0.4); tl.to(PETL.el, { autoAlpha: 1, duration: 0.5 }, T_REST + 0.6);   // steps out while the camera crops it at the bottom edge
+focus(G.PETERSBURG, 40, T_PET + 0.2, T_PET + 3.4);
+// critic r1: the railroads as railroads (ink rail + cross ties), drawn in after "railroads", clear of the title card, held to "Richmond would starve"
+const RAILS = [G.RR_RP, G.RR_SS, G.RR_W, G.RR_NP, G.RR_CP].map((pts, k) => railInk(pts.slice().reverse(), T_RR + 0.1 + k * 0.25, T_STARVE + 1.2, 4.5));
+focus(G.PETERSBURG, 60, T_TOG, T_TOG + 3.0);
+// if Grant could take it, Richmond would starve (the one caption of this paragraph: the claim to remember)
+RICH.grow(T_STARVE);
+stampP("RICHMOND WOULD STARVE", 1478, 930, T_STARVE - 0.1, T_PLAN - 0.2, 26);   // the claim to remember, on empty ground east of Petersburg
 // ---------- m3-2: the plan was to disappear ----------
-B.caption("THE PLAN WAS TO DISAPPEAR", T_PLAN + 0.1, T_TELL + 1.5, "carth");
-BU.concat([["v5"]]).forEach(([id], k) => tl.to(B.units[id].el, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_PLAN + 0.2 + k * 0.15));
-// Lee looks in the wrong place: his line watches the trenches; question marks over the empty ground to the north-west
-const LB2 = badge({ name: "ROBERT E. LEE", role: "", initials: "REL", photo: PHOTO("lee"), flag: FL.cs, side: "rome", corner: "br", t: T_LOOK + 0.4, until: T_SHER - 0.3 });
-[[1402, 790], [1388, 772], [1416, 770]].forEach((p, k) => { const q = pinS(GG.pin(`<div style="font-family:Oswald;font-weight:700;font-size:44px;color:#ff8a7a;text-shadow:0 0 8px #000,0 2px 4px #000">?</div>`, p[0], p[1], { t: T_WRONG - 0.3 + k * 0.25 }));
-  tl.to(q, { autoAlpha: 0, duration: 0.5 }, T_SHER - 0.2); });
-B.caption("LEE LOOKS IN THE WRONG PLACE", T_WRONG, T_SHER - 0.3, "rome");
-// Sheridan's cavalry off to the west; Lee's cavalry after it
-const SB = badge({ name: "PHILIP SHERIDAN", role: "CAVALRY", initials: "PS", photo: PHOTO("sheridan"), flag: FL.us, side: "carth", corner: "bl", t: T_SHER - 0.1, until: T_DARK - 0.3 });
+stampP("THE PLAN WAS TO DISAPPEAR", 1418, 862, T_PLAN + 0.1, T_PLAN + 3.4, 24);
+BU.concat([["v5"]]).forEach(([id], k) => tl.to(B.units[id].el, { opacity: 0.45, duration: 0.6, yoyo: true, repeat: 1, ease: "sine.inOut" }, T_PLAN + 0.2 + k * 0.15));
+// Lee looks in the wrong place: question marks over the empty ground to the north-west (<= 3.5 s)
+[[1386, 770], [1414, 760]].forEach((p, k) => { const q = pinS(GG.pin(`<div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:40px;color:#fbf8ef;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">?</div>`, p[0], p[1], { t: T_WRONG - 0.3 + k * 0.25 }));
+  tl.to(q, { autoAlpha: 0, duration: 0.5 }, Math.min(T_SHER - 0.2, T_WRONG + 3.0)); });
+// Sheridan's cavalry off to the west (his card rides with it); Lee's cavalry after it; thin trails fade ~2 s after arrival
 unitS("sh", "carth", G.SHERIDAN[0], "infantry", "SHERIDAN", { t: T_SHER - 0.3, size: "XX" }); cavIcon("sh", { flip: true });
+pinPortrait("sh", PHOTO("sheridan"), FL.us, "Sheridan", T_SHER, END + 1, true, "up");
 along("sh", G.SHERIDAN, T_SHER + 0.2, 5.5, 20);
-arw({ pts: G.SHERIDAN, side: "carth", t: T_SHER + 0.2, dur: 5.0, width: AW(2.35, 13), until: T_DARK + 0.6 });
-unitS("hc", "rome", G.HAMPTON[0], "infantry", null, { t: T_LCAV - 0.2, size: "XX" }); cavIcon("hc", { flip: true });
-along("hc", G.HAMPTON, T_LCAV + 0.2, 4.4, 18);
-arw({ pts: G.HAMPTON, side: "rome", t: T_LCAV + 0.2, dur: 4.0, width: AW(2.35, 13), until: T_DARK + 0.6 });
-hideU(["sh", "hc"], T_DARK + 0.4);
-B.caption("LEE SENT HIS OWN CAVALRY AFTER IT", T_LCAV + 0.2, T_DARK - 0.2, "rome");
+arw({ pts: G.SHERIDAN, side: "carth", t: T_SHER + 0.2, dur: 5.0, width: AW(2.35, 8), until: T_DARK - 0.5 });   // fades before the camera dives back (~2 s after the riders leave the frame)
+const HMP = G.HAMPTON.slice(1);   // critic 2: the trail starts clear of Lee's card
+unitS("hc", "rome", HMP[0], "infantry", null, { t: T_LCAV - 0.2, size: "XX" }); cavIcon("hc", { flip: true });
+along("hc", HMP, T_LCAV + 0.2, 4.4, 18);
+arw({ pts: HMP, side: "rome", t: T_LCAV + 0.2, dur: 4.0, width: AW(2.35, 8), until: T_DARK - 0.5 });
+// critic r1: at the wide scale one box per side at Cold Harbor (the others step out, back when the camera returns)
+hideU(["u6", "u18", "v5", "r2", "r3", "rr"], T_LOOK + 0.3); showU(["v5"], T_12 + 0.2);   // critic 2: one box per side for the rest of the scene (+ Warren's corps, which the narration follows)
 // ---------- after dark on the 12th: Warren crosses the Chickahominy and faces Richmond; the rest slips out south ----------
 nightWash(T_DARK, null, 0.42, 1.6);
 K.night({ lines: [FR], tOn: T_DARK });
-const WB = badge({ name: "GOUVERNEUR WARREN", role: "FIFTH CORPS", initials: "GKW", photo: PHOTO("warren"), flag: FL.us, side: "carth", corner: "bl", t: T_WAR - 0.1, until: T_MEADE - 0.4 });
-const CHG = glowPath(G.CHICK.slice(2, 9), "#7fb0ff", 1.3, T_CHICK - 0.2, T_CHICK + 4.0, 2, 0.9, { draw: 1.2 });
-boxS("CHICKAHOMINY RIVER", G.CHICK[5][0] + 12, G.CHICK[5][1] - 14, T_CHICK, null, { size: 24, bg: "#dcecf8" });
-along("v5", [[1468, 818], ...G.WARREN.slice(1)], T_CHICK - 0.3, 4.2, 18);
-arw({ pts: G.WARREN.slice(0, 5), side: "carth", t: T_CHICK - 0.2, dur: 3.6, width: AW(4.6, 12), dash: "9 6", until: T_REST + 3 });
+pinPortrait("v5", PHOTO("warren"), FL.us, "Warren", T_WAR, END + 1, true, "right");
+glowPath(G.CHICK.slice(2, 9), "", 1.3, T_CHICK - 0.2, T_CHICK + 3.2);
+curveLabel("Chickahominy River", G.CHICK.slice(8, 12).map((q) => [q[0] + 5, q[1] - 6]), T_CHICK, T_CHICK + 3.3, 22);   // downstream of Warren's card
+along("v5", [[1480, 812], ...G.WARREN.slice(1)], T_CHICK - 0.3, 4.2, 18);
+arw({ pts: G.WARREN.slice(0, 5), side: "carth", t: T_CHICK - 0.2, dur: 3.6, width: AW(4.6, 8), until: T_CHICK + 5.4 });
 const WF = frontS({ pts: [[1452, 878], [1449, 890], [1451, 902]], sideA: "carth", sideB: "rome", t: T_FACED, dur: 1.2, width: FWw(4.6), until: END + 1 });
 K.night({ lines: [WF], tOn: T_FACED });
 unitS("rw", "rome", [1432, 889], "infantry", null, { t: T_FACED + 0.3, size: "XXX" });
-arw({ pts: [[1460, 892], [1446, 890], [1436, 887]], side: "carth", t: T_FACED + 0.2, dur: 0.9, width: AW(4.6, 11), until: T_REST + 2.5 });
-B.caption("FACED TOWARD RICHMOND", T_FACED + 0.1, T_REST - 0.2, "carth");
-// the rest of the army slips out of the trenches and marches south by back roads (Cold Harbor line given up; the red line stays and watches)
-[["u2", G.MARCH1], ["u6", G.MARCH2], ["u18", G.MARCH1.map((q) => [q[0] - 6, q[1] + 4])]].forEach(([id, pts], k) => along(id, [B.units[id] ? [BU[k][1][0], BU[k][1][1]] : pts[0], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, 6.0, 22));
-arw({ pts: G.MARCH1, side: "carth", t: T_SOUTH2 - 0.6, dur: 3.0, width: AW(4.3, 12), dash: "9 6", until: END + 1 });
-arw({ pts: G.MARCH2, side: "carth", t: T_SOUTH2 - 0.2, dur: 3.0, width: AW(4.3, 12), dash: "9 6", until: END + 1 });
-B.caption("MARCHED SOUTH BY BACK ROADS", T_SOUTH2, T_MEADE - 0.2, "carth");
-const MB = badge({ name: "GEORGE G. MEADE", role: "ARMY OF THE POTOMAC", initials: "GGM", photo: PHOTO("meade"), flag: FL.us, side: "carth", corner: "bl", t: T_MEADE - 0.1, until: END + 1 });
-pulseU("u2", T_LEAD); boxS("ARMY OF THE POTOMAC", 1528, 905, T_LEAD - 0.4, null, { size: 22 });
-// ---------- clean screen: title card up -> legend + badges step out (the date scroll stays) ----------
-declutter([LGD, GB, LB, LB2, SB, WB, MB], [[T_JAMES, T_JAMES + 2.6]]);
+arw({ pts: [[1460, 892], [1446, 890], [1436, 887]], side: "carth", t: T_FACED + 0.2, dur: 0.9, width: AW(4.6, 8), until: T_FACED + 3.1 });
+// the rest of the army slips out of the trenches and marches south by back roads (thin trails, fade ~2 s after arrival)
+[["u2", G.MARCH1], ["u6", G.MARCH2], ["u18", G.MARCH1.map((q) => [q[0] - 18, q[1] + 8])]].forEach(([id, pts], k) => along(id, [[BU[k][1][0], BU[k][1][1]], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, 6.0, 22));
+arw({ pts: G.MARCH1, side: "carth", t: T_SOUTH2 - 0.6, dur: 3.0, width: AW(4.3, 8), until: T_SOUTH2 + 4.4 });
+hideU(["u6", "u18"], T_MEADE - 0.6);   // critic: the trailing columns merge into Meade's lead column (no overlapping boxes)
+const MDP = pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADE, END + 1, true, "right");
+MDP.firstElementChild.style.top = "76px"; MDP.lastElementChild.style.width = "94px";   // critic: Meade's stake ~20 px lower, clear of the boxes
+pulseU("u2", T_LEAD); pulseU("u2", T_LEAD + 0.6);
 fixImgs();
 K.raiseTerritory();
 B.finish();

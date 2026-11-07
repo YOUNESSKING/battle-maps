@@ -5,7 +5,9 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 name, base, first, last = sys.argv[1:5]
 kit = open(f"{ROOT}/tools/m1_kit.js").read(); body = open(f"{ROOT}/tools/m1_body_{name}.js").read()
 hdr = body.split("\n// @@BODY", 1)[0] if "// @@BODY" in body else ""
-src = hdr + "\n" + kit + body.split("// @@BODY", 1)[-1]
+cp = f"{ROOT}/tools/m1_cardpos_{name}.json"
+pre = ("window.CARDPOS = " + open(cp).read().strip() + ";\n") if os.path.exists(cp) else ""
+src = hdr + "\n" + pre + kit + body.split("// @@BODY", 1)[-1]
 open(f"{ROOT}/scenes-src/{name}.js", "w").write(src)
 subprocess.run([sys.executable, f"{ROOT}/tools/build_scene.py", name, base, first, last], check=True, cwd=ROOT)
 t = json.loads(open(f"{ROOT}/scenes/{name}/timing.js").read().split("=", 1)[1].rstrip().rstrip(";"))

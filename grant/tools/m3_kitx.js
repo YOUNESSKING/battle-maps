@@ -17,7 +17,9 @@ const trench = (pts, t, dur, until, s = 1, o = {}) => { const zz = [];
     const nx = -(b[1] - a[1]) / L, ny = (b[0] - a[0]) / L;
     for (let k = 0; k < n; k++) { const f = k / n, z = (k % 2 ? 1 : -1) * 2.2 / s; zz.push([a[0] + (b[0] - a[0]) * f + nx * z, a[1] + (b[1] - a[1]) * f + ny * z]); } }
   zz.push(pts[pts.length - 1]);
-  return glowPath(zz, o.col || "#2a2118", (o.w || 2.6) / s, t, until, 0, o.op || 0.9, { draw: dur, top: true }); };
+  const gp = (typeof glowPathOld === "function" ? glowPathOld : glowPath)(zz, o.col || "#2a2118", (o.w || 2.6) / s, t, until, 0, o.op || 0.9, { draw: dur, top: true });
+  if (typeof glowPathOld === "function") gp.style.filter = "none";   // STYLE W: an ink earthwork line, no glow
+  return gp; };
 // a screen-space clock card: label + an analogue face whose hour hand turns between the keys [[t, hour, "4 PM"], ...]
 const clockCard = (keys, css, t, until) => {
   const el = scr(`<div style="display:flex;align-items:center;gap:16px;padding:10px 22px 10px 14px;background:rgba(18,16,12,0.9);border-top:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea">

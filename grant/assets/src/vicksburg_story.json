@@ -1,0 +1,4 @@
+{"_note": "Grant #16 m2a/m2e/m2f (vicksburg z10): only the narrated ground = the bluff line (Haines' Bluff - Vicksburg - Warrenton) and Champion Hill. Scene css px (x2 = 5760 map px).",
+ "hills": [[1634, 707, 16]],
+ "ridge": [[1460, 532], [1430, 580], [1405, 630], [1393, 680], [1380, 725], [1362, 770]],
+ "ridge_w": 14, "ravine": [], "rail": [], "fields": []}

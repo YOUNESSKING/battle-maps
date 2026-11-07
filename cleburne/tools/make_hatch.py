@@ -35,7 +35,7 @@ yy, xx = np.mgrid[0:1620, 0:2880]
 STEP, LW = int(O.get('step', 9)), int(O.get('lw', 2))   # step=/lw= (optional): wider spacing for far-out views so the lines stay crisp lines on screen
 hatch = ((xx + yy) % STEP) < LW
 on = m & hatch & ~clear
-col = (200, 50, 40) if O.get('colour', 'red') == 'red' else (40, 80, 190)
+col = (200, 50, 40) if O.get('colour', side) == 'red' else (40, 80, 190)   # colour follows side= unless colour= is given
 o = np.zeros((1620, 2880, 4), np.uint8); o[on] = col + (191,)
 # thin crisp edge line along the hand-over boundary (helps it read at 3 s)
 edge = cv2.morphologyEx(m.astype(np.uint8), cv2.MORPH_GRADIENT, np.ones((3, 3), np.uint8)).astype(bool) & ~clear

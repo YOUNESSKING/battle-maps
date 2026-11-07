@@ -35,3 +35,13 @@ Bragg's resignation date; Helena druggist/lawyer; Hooker's column delayed by a b
 
 ## Correction 2026-10-30 (map agent + web check)
 - Col. Charles L. Matthies was WOUNDED (head wound) at Missionary Ridge and died in 1868 (Wikipedia, prabook, Find a Grave). The NPS "mortally wounded" wording is wrong. Script move1-4 now says "wounded". Paragraph needs re-voicing (batch with any other fixes) BEFORE render.
+
+## Packaging TEST claims (2026-11-06, PACKAGING_GUIDE 0b; see youtube/PACKAGING_v6.md)
+| Claim | Verdict | Source |
+|---|---|---|
+| "Saved the Confederacy's Western Army" / "Saved an Army at Ringgold Gap" | TRUE as the stand's purpose and result: Bragg's order to hold "until the artillery and transportation of the army are secure"; train got away, Grant halted the pursuit, army reached Dalton | ECW Ringgold; city of Ringgold; script hook |
+| "Stopped / Beat Sherman at Missionary Ridge" | TRUE for Tunnel Hill: Sherman's attacks failed, ~2,000 Union lost vs ~220 | NPS Battles for Chattanooga; Wikipedia; ABT |
+| "Sherman's 16,000" | TRUE (NPS "roughly 16,000"; Wikipedia 16,600) | NPS; Wikipedia |
+| "One Confederate division" (Cleburne's held Tunnel Hill while the centre broke) | TRUE; do NOT say "the only division" | NPS; script bg-1 |
+| Thumbnail label "HUNDREDS SURRENDER" (video frame) | TRUE ("surrendered in large numbers") | NPS |
+| "Stonewall of the West" | NOT USED (origin unsourced) | see Biography line above |
