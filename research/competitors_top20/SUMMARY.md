@@ -2,7 +2,7 @@
 Data: vidIQ channel pulls (top ~10 popular + ~10 recent long videos per channel), 457 videos, 20 thumbnail sheets (`thumbs/<handle>_sheet.jpg`, one overview `thumbs/ALL_top3_per_channel.jpg`), 2 transcripts per channel where narrated (`<handle>.md` / `.json`). Channel list + ids: `channels.json`. Our baseline: `research/COMPETITOR_ANALYSIS.md` (Tactical Genius), `research/NICHE_ANALYSIS.md`.
 **Caveats (read first):** (1) "outlier" = views / median of the last ~10-50 uploads, so 2018-2021 winners are inflated (years of views vs days): use for ranking and patterns, not as a forecast. (2) Words per minute and "% of winners with X" are agent estimates from ~12 thumbnails per channel (the agents' labels are not uniform); treat percentages as direction, not statistics. (3) 5 of the 20 are not comparable: Wartime (feature films), Johnny's War Stories (film clips), War Archives (dormant newsreels), Animarchy (1-3 h commentary), Timeline (non-war evergreens); History Hit is a presenter/documentary channel. Most comparable to us: HistoryMarche, Eastory, Operations Room, Kings and Generals, Armchair Historian, Epic History.
 
-## The 20 channels at a glance
+## The 21 channels at a glance (21 = Commanders and Tactics, added by the owner 2026-11-07, see its own section below)
 | # | Channel | Subs | Recent median | Best long video | Thumbnail trait | Format trait |
 |---|---|---|---|---|---|---|
 | 1 | Kings and Generals | 4.2M | 327k | Rome conquers Greece 20.3M | illustration over a faded map + 3-5 word caps headline | background-first chronology, sponsor at 0:10, 30-170 min |
@@ -25,6 +25,7 @@ Data: vidIQ channel pulls (top ~10 popular + ~10 recent long videos per channel)
 | 18 | Liveth for Evermore | 313k | 34k | Pirates mistook a warship 13.6M | one clean photo + red label bar 2-6 words | slow context opening, 5-6 min |
 | 19 | History Hit | 2.0M | 189k | (history, not war-specific) 11.3M | host face + a quote as the text | explicit promise in 60 s, date cold open then rewind |
 | 20 | World History | 557k | 179k | Irma Grese 5.0M | faces, no text | dated shock scene at 0:00, then ~8 min background |
+| 21 | **Commanders and Tactics** | 38k | 250k | Napoleon's Top 3 815k | ALL 9: one big colourised face + saturated red-arrow map + 2-5 caps words, winners add a curiosity line | 'Top 3 Tactical Masterpieces' mini-documentary, general named <30 s, no recap, abrupt ending; 1 video / ~56 days |
 
 ## What works: THUMBNAILS (patterns across the 20)
 1. **One focal subject, readable at feed size.** Every winner reads in 168x94: ONE face, ONE iconic object or ONE map with one named place. Busy maps with 6-7 words and small icons are the common weak thumbnail (Operations Room, HistoryMarche weak videos, Epic's 12-word Tsarist Russia).
@@ -49,6 +50,15 @@ Data: vidIQ channel pulls (top ~10 popular + ~10 recent long videos per channel)
 - **Series fatigue:** a second/third part of the same subject, or many near-identical videos in a row, falls 15-50 % (Ops Room, MHV 2026 StuG series, Eastory RCW parts).
 - **Topic beats packaging:** the same channel's best and worst differ 5-60x mostly by topic fame (Caesar x3 in K&G's top 6; Desert Storm/Midway at Ops Room; obscure battles 0.3-0.5x of median). Lead our Top-3 with the most famous move.
 - **Decline of the old winners:** 14 of the 20 channels' 2026 uploads sit at 0.1-0.5x of their old winners; the Armchair Historian owner announced retirement end of 2026. Evergreen back-catalogue carries many of these channels, new videos do not.
+
+## Channel 21: Commanders and Tactics (our nearest rival: the same "<General>'s Top 3 ..." format) — details in `commandersandtactics.md`
+- 37.9k subs, only 9 long videos, one upload every ~56 days, median 250k views. Best: Napoleon 815k (3.3x, the SHORTEST at 11:09); the three Eastern Front WW2 videos (Zhukov, Model, Manstein) are all hits (1.9-2.4x); ancient generals are mid (Caesar 229k, Alexander 143k); Lee only 43k (low-contrast thumbnail, no "Top 3", 20:38).
+- **Thumbnail recipe on all 9:** ONE large colourised face + a saturated red-arrow map + 2-5 caps words; winners add a curiosity line ("PROLONGED WW2 BY A YEAR?"). Their title is identical for hits and flops: the GENERAL'S NAME is the lever, not the wording.
+- **"(No AI)" label:** in the titles of Zhukov, Model, Manstein (their hits), never on a thumbnail; confounded with topic, so no proof it adds views. We use an AI voice: do NOT copy it unless it becomes true.
+- **Format:** thesis hook, general named within 30 s, three dated battles, NO recap, abrupt ending; Manstein has a 90 s sponsor read inside move 1 (watch-time risk). Newest video: 482k in 19 days, stable rate fell from 36k/day (day 11) to ~10.8k/day.
+- **They cover none of our 10 generals.** Eastern Front is their audience: Patton and Rokossovsky look like the best next pair for us; Civil War is their weak spot (Lee 43k).
+- **What they do better:** the thumbnail recipe, name demand, Eastern Front topics. **What we do better:** stakes + number hook (not a CV-style thesis), map + sound design, recap and casualty/result cards, move-end cards.
+- **Apply:** test their recipe on ours (colourised portrait + our red front-line map + 2-5 caps words + one curiosity line); keep our length at ~16 min (their shortest hit was the best); put the most famous general first.
 
 ## What this means for us (to apply, in priority order)
 1. **Thumbnail test set** (fits Test & Compare): (A) general's portrait + 1-3 caps words + ONE red accent; (B) our own Style W map frame with ONE named place + ONE arrow + 1-3 words (HistoryMarche/Eastory pattern, "HATTIN, 1187" style) — check it reads at 168x94; (C) a real archive face with NO text (Felton/Dark Docs) or a circled mystery detail. Use ONE brand template (colour + logo corner) on every video of the channel.
