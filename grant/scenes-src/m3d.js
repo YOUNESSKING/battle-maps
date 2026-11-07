@@ -375,7 +375,7 @@ const FR = frontS({ pts: NL, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, wid
 [["s1", [1500, 785]], ["s2", [1497, 835]]].forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "XXX" }));
 unitS("h2", "carth", [1660, 900], "infantry", "HANCOCK", { t: T_HAN - 0.2, size: "XXX" }); B.move("h2", T_HAN, 3.2, 1500, 900);
 pinPortrait("h2", PHOTO("hancock"), FL.us, "Hancock", T_HAN + 0.1, null, true, "right");
-unitS("pr", "rome", [1445, 820], "infantry", null, { t: 0, size: "X" });
+unitS("pr", "rome", [1445, 820], "infantry", null, { t: 0, size: "X" }); hideU(["pr"], T_VET + 4.0);   // v2 takes its place on the line
 const VET = [["v1", [1455, 770]], ["v2", [1450, 830]], ["v3", [1440, 890]], ["v4", [1425, 950]]];
 VET.forEach(([id, p], k) => { unitS(id, "rome", G.LEE_S[0], "infantry", null, { t: T_VET - 0.3 + k * 0.4, size: "XXX" });
   along(id, [...G.LEE_S, p], T_VET - 0.2 + k * 0.4, 5.0, 22); });
@@ -390,7 +390,7 @@ shoot([1438, 915], [1478, 916], T_18 + 3.1, { r: 4, width: 0.6, dur: 0.5, h: 6 }
 smoke([[1456, 788], [1450, 858], [1442, 913]], T_18 + 0.8, 1.2);
 crosses([[1484, 790], [1490, 796], [1480, 866], [1487, 860], [1475, 915], [1482, 920]], T_18 + 1.4, T_EVEN, 4.5);
 // casualty card (K.casualties, real numbers only: ~11,400 Union, 15-18 Jun; the Confederate loss is not spoken -> Union column only)
-{ const CC = casualty({ head: "FOUR DAYS OF ASSAULTS", rows: [["", "~11,400"]], single: true, foot: "MEN LOST", t: T_LOST - 0.1, until: T_LOST + 3.3, top: 36 });   // top band, off the battle
+{ const CC = casualty({ head: "FOUR DAYS OF ASSAULTS", rows: [["", "~11,400"]], single: true, foot: "MEN LOST", t: T_LOST - 0.1, until: T_LOST + 3.3, top: 14 });   // top band, off the battle
   const inner = CC.firstElementChild; inner.style.background = "rgba(18,16,12,0.97)"; const hd = inner.firstElementChild; gsap.set(hd, { opacity: 0 }); tl.to(hd, { opacity: 1, duration: 0.3 }, T_FOUR); }
 trench(NL.map((q) => [q[0] + 7, q[1]]), T_GONE - 0.2, 2.0, T_Z0 + 1.0, { s: 2.0 }); trench(NL.map((q) => [q[0] - 7, q[1]]), T_GONE, 2.0, T_Z0 + 1.0, { s: 2.0 });
 stampP("THE CHANCE WAS GONE", 1590, 990, T_GONE + 0.1, T_GONE + 2.4, 26);

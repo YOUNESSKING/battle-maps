@@ -419,7 +419,7 @@ const M18 = sub(G.MARCH1.map((q) => [q[0] - 4, q[1] + 3]), 0, 0.35, 12), M6 = su
 [["u2", G.MARCH1, 6.0], ["u6", M6, 4.8], ["u18", M18, 3.6]].forEach(([id, pts, d], k) => along(id, [BU.find((b) => b[0] === id)[1], ...pts.slice(1)], T_REST + 0.2 + k * 0.6, d, 20));
 trailArw(G.MARCH1, "carth", T_SOUTH2 - 0.6, 3.0, 4.2);
 trailArw(G.MARCH2, "carth", T_SOUTH2 - 0.2, 3.0, 4.2);
-B.caption("MARCHED SOUTH BY BACK ROADS", T_STOP2 + 0.2, T_STOP2 + 2.8, "carth");
+{ const c = B.caption("MARCHED SOUTH BY BACK ROADS", T_STOP2 + 0.2, T_STOP2 + 2.8, "carth"); c.style.left = "300px"; }   // shifted right, clear of Petersburg
 pinPortrait("u2", PHOTO("meade"), FL.us, "Meade", T_MEADN + 0.1, null, true, [100, 4]);
 pulseU("u2", T_LEAD);
 fixImgs();

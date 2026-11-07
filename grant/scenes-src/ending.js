@@ -363,8 +363,9 @@ const T_DON = at(P1, "At Donelson"), T_STRUCK = at(P1, "he struck while"), T_VIC
   T_LEE = at(P1, "of Lee's army"), T_APP = at(P1, "Appomattox in"), T_L65 = at(P1, "eighteen sixty-five. Each"),
   T_EACH = at(P1, "Each time"), T_MOVED = at(P1, "he moved before the enemy was ready"), T_COULD = at(P1, "and he went where the enemy said he could not go"),
   T_E1END = B.T.paras[P1][1];
+const T_62 = at(P1, "eighteen sixty-two was"), T_ATVK = at(P1, "at Vicksburg in");
 const F_Q = at(P2, "So which was Grant's greatest move"), F_1 = at(P2, "One, the two river forts"), F_2 = at(P2, "Two, Vicksburg"), F_3 = at(P2, "Or three, the crossing"),
-  F_TELL = at(P2, "Tell us in the comments"), F_FAM = at(P2, "And if someone in your family"), F_SUB = at(P2, "Subscribe, so you");
+  F_TELL = at(P2, "Tell us in the comments"), F_FAM = at(P2, "And if someone in your family"), F_SUB = at(P2, "Subscribe, so you"), F_SERV = at(P2, "served in the Civil War"), F_STORY = at(P2, "tell us their story");
 const T_X2 = T_VICK - 0.6, T_X3 = T_JAMES - 0.5;        // map dissolves (each lands on the spoken place)
 const nowEl = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0 }); return el; };
 const near = (pts, p) => { let bi = 0, bd = 1e18; pts.forEach((q, i) => { const d = (q[0] - p[0]) ** 2 + (q[1] - p[1]) ** 2; if (d < bd) { bd = d; bi = i; } }); return bi; };
@@ -383,7 +384,7 @@ B.date("1862 – 1865", T_NICK, null, 34);
 // 1. DONELSON (tennessee_w, Feb 1862): Grant's column from Fort Henry, the gunboats up the Cumberland, the fort under fire
 // =====================================================================================================================
 const TN = G.ten, FH = TN.FORT_HENRY, FD = TN.FORT_DONELSON, OUT1 = T_X2 + 0.1;
-flagS(FL34, 1350, 935, 0, OUT1); flagS(FL.cs, 1495, 965, 0, OUT1);
+flagS(FL34, 1320, 960, 0, OUT1); flagS(FL.cs, 1495, 965, 0, OUT1);
 fortIcon(FH, 0, OUT1, { s: 36, side: "carth" });     // Fort Henry already taken (blue)
 fortIcon(FD, 0, OUT1, { s: 40, side: "rome" });
 unitS("d1", "rome", [FD[0] + 6, FD[1] + 30], "infantry", null, { t: 0, size: "XX", until: OUT1 });
@@ -404,7 +405,7 @@ arw({ pts: [[FH[0] + 2, FH[1] + 6], [FH[0] + 18, FH[1] + 10], [FH[0] + 40, FH[1]
 const B1 = UP1[UP1.length - 1], B2 = UP2[UP2.length - 1];
 shoot(B1, [FD[0] + 2, FD[1] - 3], T_STRUCK + 0.6, { r: 4, width: 0.6, dur: 0.55, h: 8 });
 shoot(B2, [FD[0] - 3, FD[1] + 1], T_STRUCK + 1.4, { r: 4, width: 0.6, dur: 0.6, h: 8 });
-shoot([FD[0] + 1, FD[1] - 4], [B1[0] + 3, B1[1] + 2], T_STRUCK + 2.0, { r: 3.5, width: 0.6, dur: 0.55, h: 7 });
+shoot([FD[0] + 1, FD[1] - 4], [B1[0] + 3, B1[1] + 2], T_STRUCK + 1.5, { r: 3.5, width: 0.6, dur: 0.55, h: 7 });
 smoke([[B1[0] + 3, B1[1]], [B2[0] + 3, B2[1]], [FD[0] + 4, FD[1] - 6]], T_STRUCK + 0.6, 0.7);
 
 // =====================================================================================================================
@@ -412,9 +413,9 @@ smoke([[B1[0] + 3, B1[1]], [B2[0] + 3, B2[1]], [FD[0] + 4, FD[1] - 6]], T_STRUCK
 // =====================================================================================================================
 const MS = G.mis, VK = MS.VICKSBURG, IN2 = T_X2 + 0.4, OUT2 = T_X3 + 0.1;
 flagS(FL34, 1300, 1060, IN2, OUT2); flagS(FL.cs, 1520, 1050, IN2, OUT2);
-unitS("rp", "rome", [VK[0] + 16, VK[1] + 18], "infantry", null, { t: IN2, size: "XXX", until: OUT2 });
+unitS("rp", "rome", [VK[0] + 16, VK[1] + 27], "infantry", null, { t: IN2, size: "XXX", until: OUT2 });
 unitS("g2", "carth", MS.MILLIKENS, "infantry", null, { t: IN2, size: "XXXX", until: OUT2 });
-pinPortrait("g2", PHOTO("grant"), FL34, "Grant", IN2 + 0.1, null, true, "left");
+pinPortrait("g2", PHOTO("grant"), FL34, "Grant", IN2 + 0.1, null, true, "up");   // above the unit: clear of the Vicksburg dot, label and red unit
 const VT = town("Vicksburg", VK, T_VICK, "r"); VT.out(OUT2 - 0.3);
 focus(VK, 40, T_VICK, T_WENT + 1.2);
 const VROUTE = [...MS.VKS.slice(0, -1), [VK[0] + 34, VK[1] + 5]];
@@ -445,32 +446,37 @@ frontS({ pts: R.NEWLINE, sideA: "carth", sideB: "rome", t: T_BREATH + 2.2, dur: 
 // the nickname: his initials, 1862 -> 1865 "it described a method" (one card, spoken words)
 // =====================================================================================================================
 const NK = scr(`<div style="padding:16px 46px 18px;background:rgba(18,16,12,0.93);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-  <div style="font-size:84px;letter-spacing:.08em"><span class="i1">U.</span> <span class="i2">S.</span> GRANT</div>
-  <div style="position:relative;height:34px;min-width:640px;white-space:nowrap;font-size:26px;letter-spacing:.3em;color:#c9b48a"><span class="y62" style="position:absolute;left:0;right:0">1862</span><span class="y65" style="position:absolute;left:0;right:0;opacity:0">1865 · IT DESCRIBED A METHOD</span></div></div>`,
+  <div style="font-size:84px;letter-spacing:.08em"><span class="us" style="display:inline-block;max-width:0;overflow:hidden;vertical-align:bottom;white-space:pre;opacity:0"><span class="i1">U.</span> <span class="i2">S.</span> </span>GRANT</div>
+  <div style="position:relative;height:34px;min-width:640px;white-space:nowrap;font-size:26px;letter-spacing:.3em;color:#c9b48a"><span class="y62" style="position:absolute;left:0;right:0;opacity:0">1862</span><span class="y65" style="position:absolute;left:0;right:0;opacity:0">1865 · IT DESCRIBED A METHOD</span></div></div>`,
   "left:0;right:0;top:250px;display:flex;justify-content:center;", T_NICK + 0.2, T_SURR - 0.2, { autoAlpha: 0, y: 20 });
 SFX("hit", T_NICK + 0.4);
-tl.to([NK.querySelector(".i1"), NK.querySelector(".i2")], { color: "#ffd54a", textShadow: "0 0 18px rgba(255,213,74,.8)", duration: 0.4 }, T_INIT);
+tl.to(NK.querySelector(".y62"), { opacity: 1, duration: 0.3 }, T_62);   // 1862 on its word
+tl.to(NK.querySelector(".us"), { maxWidth: 400, opacity: 1, duration: 0.4 }, T_INIT);   // GRANT stays centred until then
+tl.to([NK.querySelector(".i1"), NK.querySelector(".i2")], { color: "#ffd54a", textShadow: "0 0 18px rgba(255,213,74,.8)", duration: 0.4 }, T_INIT);   // U. S. on "his initials"
 tl.to(NK.querySelector(".y62"), { opacity: 0, y: -12, duration: 0.3 }, T_1865 + 0.1);
-const Y65 = NK.querySelector(".y65"); Y65.innerHTML = `<span class="a">1865</span><span class="b" style="opacity:0"> · IT DESCRIBED A METHOD</span>`;
+const Y65 = NK.querySelector(".y65"); Y65.innerHTML = `<span class="a">1865</span><span class="b" style="opacity:0;display:inline-block;max-width:0;overflow:hidden;vertical-align:bottom;white-space:pre"> · IT DESCRIBED A METHOD</span>`;
 tl.fromTo(Y65, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3, immediateRender: false }, T_1865 + 0.2);
-tl.to(Y65.querySelector(".b"), { opacity: 1, color: "#ffd54a", duration: 0.35 }, T_METH);
+tl.to(Y65.querySelector(".b"), { opacity: 1, maxWidth: 700, color: "#ffd54a", duration: 0.35 }, T_METH);   // takes no width until spoken: 1865 centred
 // ---------- the three surrenders, each named only as it is spoken ----------
 const row = (cls, name) => `<div class="${cls}" style="display:flex;justify-content:space-between;gap:30px;padding:8px 6px;border-top:1px solid rgba(201,180,138,.35);opacity:0"><span>${name}</span><span class="y" style="color:#c9b48a;opacity:0"></span></div>`;
 const SC = scr(`<div style="width:900px;padding:16px 40px 18px;background:rgba(18,16,12,0.92);border-top:6px solid #4f8bff;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
   <div style="font-size:30px;letter-spacing:.4em;color:#c9b48a;text-align:center;margin-bottom:6px">THE SURRENDER</div>
-  <div style="font-size:44px;letter-spacing:.05em">${row("r1", "THE DONELSON GARRISON")}${row("r2", "PEMBERTON'S ARMY · VICKSBURG")}${row("r3", "LEE'S ARMY")}</div></div>`,
+  <div style="font-size:44px;letter-spacing:.05em">${row("r1", "THE DONELSON GARRISON")}${row("r2", "PEMBERTON'S ARMY")}${row("r3", "LEE'S ARMY")}</div></div>`,
   "left:0;right:0;top:250px;display:flex;justify-content:center;", T_SURW, T_EACH - 0.2, { autoAlpha: 0, y: 20 });
 [[".r1", T_DG, T_D62, "1862"], [".r2", T_PEM, T_P63, "1863"], [".r3", T_LEE, T_L65, "1865"]].forEach(([c, tn, ty, yr]) => {
   const r = SC.querySelector(c), y = r.querySelector(".y"); y.textContent = yr;
   tl.fromTo(r, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.4, immediateRender: false }, tn + 0.1); SFX("hit", tn + 0.1);
   tl.to(y, { opacity: 1, duration: 0.3 }, ty); });
+{ const s2 = SC.querySelector(".r2 span"), vk = document.createElement("span"); vk.textContent = " · VICKSBURG"; vk.style.opacity = 0; s2.appendChild(vk); tl.to(vk, { opacity: 1, duration: 0.3 }, T_ATVK); }
 const R3 = SC.querySelector(".r3 span"); const AT = document.createElement("span"); AT.textContent = " AT APPOMATTOX"; AT.style.opacity = 0; R3.appendChild(AT);
 tl.to(AT, { opacity: 1, duration: 0.3 }, T_APP);
 // on the map under the card: Lee's army marches west along the Southside Railroad to Appomattox (permanent town on its word), Grant follows; it greys
 const LEE_W = [[1405, 970], ...R.RR_SS.slice(1), [912, 940]];
 along("lee", LEE_W, T_LEE - 0.1, 2.2, 24);
-arw({ pts: LEE_W, side: "rome", t: T_LEE - 0.1, dur: 2.2, width: AW(2.3, 7), until: T_LEE + 4.1 });
-arw({ pts: [[1418, 992], [1300, 1012], [1120, 992], [965, 945]], side: "carth", t: T_LEE + 0.3, dur: 2.0, width: AW(2.3, 7), until: T_LEE + 4.3 });
+arw({ pts: LEE_W, side: "rome", t: T_LEE - 0.1, dur: 2.2, width: AW(2.3, 7), until: T_LEE + 2.4 });   // gone before Grant's card passes over it
+const G3F = [[1434, 972], [1425, 1005], [1300, 1032], [1120, 1018], [1015, 985]];   // ~45 px south of Lee's trail   // Grant follows, stopping short of Lee's trail
+arw({ pts: G3F, side: "carth", t: T_LEE + 0.3, dur: 2.0, width: AW(2.3, 7), until: T_LEE + 4.3 }); along("g3", G3F, T_LEE + 0.3, 2.0, 20);
+flagS(FL.us, 1060, 1060, T_LEE + 1.6, null); tl.to(F3U, { autoAlpha: 0, duration: 0.4 }, T_LEE + 1.2);
 flagS(FL.cs, 840, 985, T_LEE + 1.6, null);
 const APT = town("Appomattox", AP, T_APP, "r");
 focus(AP, 40, T_APP, T_APP + 3.0);
@@ -478,7 +484,7 @@ greyU(["lee"], T_L65); greyCard(LEEC, T_L65);
 // ---------- each time: the method, in the last sentence's own words ----------
 GG.METHOD_TITLE = "EACH TIME";
 GG.METHOD = ["HE MOVED BEFORE THE ENEMY WAS READY", "HE WENT WHERE THE ENEMY SAID HE COULD NOT GO"];
-const MC = GG.method(2, T_EACH, T_E1END - 0.1, [T_MOVED, T_COULD]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; });
+const MC = GG.method(2, T_EACH, T_E1END - 0.1, [T_MOVED, T_COULD]); MC.querySelectorAll(".row").forEach((r) => { r.style.fontSize = "46px"; }); MC.style.top = "305px";
 
 // =====================================================================================================================
 // end-2: the final question (E.final). The whole paragraph lies in the last 20 s, so (C3, cleburne ending model) the card shrinks into the
@@ -486,9 +492,12 @@ const MC = GG.method(2, T_EACH, T_E1END - 0.1, [T_MOVED, T_COULD]); MC.querySele
 // =====================================================================================================================
 const E = EngageK(B);
 const FC = E.final({ moves: [["THE TWO RIVER FORTS", "FEB 1862"], ["VICKSBURG", "1863"], ["THE JAMES", "JUNE 1864"]], tShow: F_Q, tNums: [F_1, F_2, F_3], tAsk: F_TELL,
-  tFamily: F_FAM, tSub: F_SUB, until: END - 0.2 });
+  tFamily: F_SERV, tSub: F_SUB, until: END - 0.2 });
 FC.querySelector(".q").textContent = "WHICH WAS GRANT'S GREATEST MOVE?"; FC.querySelector(".q").style.fontSize = "68px";
 FC.querySelector(".fam").innerHTML = `SOMEONE IN YOUR FAMILY SERVED IN THE CIVIL WAR?<div style="font-size:26px;letter-spacing:0.3em;color:#c9b48a;margin-top:4px">TELL US THEIR STORY · WE READ EVERY ONE</div>`;
+{ const sl = FC.querySelector(".fam div"); gsap.set(sl, { autoAlpha: 0 }); tl.fromTo(sl, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, F_STORY); }   // sub-line on its words
+// C1: each option card only on its spoken number (cleburne model)
+[0, 1, 2].forEach((i) => { const c = FC.querySelector(".m" + i); gsap.set(c, { autoAlpha: 0 }); tl.set(c, { autoAlpha: 0 }, 0); });
 // C1: the header only on "Tell us in the comments"; readable comment lines
 { const hd = FC.firstElementChild; gsap.set(hd, { autoAlpha: 0 }); tl.fromTo(hd, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, F_TELL); hd.style.fontSize = "40px"; }
 FC.querySelector(".ans").style.fontSize = "70px"; FC.querySelector(".fam").style.fontSize = "38px";

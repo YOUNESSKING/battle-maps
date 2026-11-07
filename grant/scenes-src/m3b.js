@@ -384,7 +384,7 @@ const PS = scr(`<div style="width:520px;height:150px;background:rgba(233,223,198
   <path d="M60 44 L480 44" stroke="#2a2410" stroke-width="3"/>${[...Array(18)].map((_, i) => `<ellipse cx="${72 + i * 23.5}" cy="49" rx="9" ry="4" fill="#4a3c26"/>`).join("")}
   <path d="M60 30 L60 22 L480 22 L480 30" fill="none" stroke="#463a1e" stroke-width="1.4"/><path d="M290 54 L290 132" stroke="#463a1e" stroke-width="1.4" stroke-dasharray="4 4"/>
   <g font-family="Liberation Serif, Georgia, serif" font-weight="700" fill="#2a2410" text-anchor="middle"><text x="270" y="17" font-size="19">About 2,100 feet</text><text class="deep" x="390" y="128" font-size="19" opacity="0">Up to 90 feet</text></g></svg></div>`,
-  "left:56px;bottom:56px;", T_TIDE - 0.4, T_90 + 1.4);
+  "left:56px;bottom:56px;", T_TIDE - 0.4, T_90 + 1.0);
 tl.to(PS.querySelector(".deep"), { opacity: 1, duration: 0.4 }, T_90);
 const CK = clockCard([[T_FOUR, 4, "4 PM"], [T_ELEV, 11, "11 PM"]], "right:60px;top:60px;", T_FOUR - 0.1, T_ELEV + 2.0);
 nightWash(T_FOUR + 1.0, T_TWO, 0.36, 2.2);
