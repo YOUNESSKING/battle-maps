@@ -20,8 +20,8 @@ inserts are unchanged from v2 (https://gofile.io/d/bZlvwa4F); only the look chan
   A strict "// comment trap" check (`tools/stylew_vk/trapcheck.py`) caught several lines of code silently disabled by a comment typed before them.
 
 ## Master
-`build/grant.mp4` (1080p, 16:14 = 974.1 s, md5 30db202f4f9d6c27eccc265c89e4161f) + `build/grant-720p.mp4`. Loudness -14.1 LUFS integrated, true peak -1.2 dBFS
-(finalize.sh gave -14.5; +0.5 dB and +0.3 dB on `build/mix_final.wav` through `alimiter level=disabled`, remuxed). Not uploaded yet (owner decides).
+`build/grant.mp4` (1080p, 16:14 = 974.1 s, md5 30db202f4f9d6c27eccc265c89e4161f) + `build/grant-720p.mp4`. Uploaded 2026-11-07: https://gofile.io/d/hrC3Y7PW (`Grant-Top3-1080p-v3-StyleW.mp4`, 1080p only). Loudness -14.1 LUFS integrated, true peak -1.2 dBFS
+(finalize.sh gave -14.5; +0.5 dB and +0.3 dB on `build/mix_final.wav` through `alimiter level=disabled`, remuxed). 
 Scene renders deleted after assembly to save disk (rebuild: `cd scenes/<s> && hyperframes render . -o renders/<s>.mp4`).
 
 ## Rebuild notes
