@@ -1,14 +1,14 @@
-// SCRIPT-12 TEST, scene s12b (17.80 - 24.60 s): "First, his gunboats ran past the guns at night, and Grant watched a burning steamer drift by."
+// SCRIPT-12 TEST, scene s12b (17.80 - 24.60 s): "First, his gunboats ran past the guns at night, and the general watched a burning steamer drift by."
 // Re-cut of the approved tools/vk_body_m2b.js (night run past the Vicksburg batteries, vicksburg_siege_w, night mode, the Henry Clay burning).
 // Only spoken names on screen: no Porter (not named), no boat names; Grant's portrait on his headquarters boat above the point on "Grant watched".
-// Built with: python3 tools/s12_inline.py vk s12b vicksburg_siege_w s12-2 s12-2 17.8 24.6
+// Built with: python3 tools/s12_inline.py vk s12b vicksburg_siege_w s12-2 s12-2 18.8 26.2
 // @@KIT
 // @@DATA
 const SZ = GD.maps.vicksburg_siege;
 const L = GG.proj(12, SZ.origin_world_px[0], SZ.origin_world_px[1]);
 const P1 = "s12-2";
 const T_FIRST = at(P1, "First,"), T_GB = at(P1, "his gunboats"), T_RAN = at(P1, "ran past the guns"), T_GUNS = at(P1, "the guns at"), T_NIGHT = at(P1, "at night"),
-  T_GW = at(P1, "and Grant watched"), T_GR = at(P1, "Grant watched"), T_BURN = at(P1, "a burning steamer"), T_DRIFT = at(P1, "drift by");
+  T_GW = at(P1, "and the general watched"), T_GR = at(P1, "general watched"), T_BURN = at(P1, "a burning steamer"), T_DRIFT = at(P1, "drift by");
 // ---------- places (vicksburg_siege z12 px, from m2b) ----------
 const VKS = [1416, 736];
 const RIV63 = [[840, 390], [960, 424], [1060, 520], [1160, 560], [1260, 600], [1350, 630], [1400, 656], [1418, 676], [1392, 700], [1365, 780], [1342, 860], [1310, 920],
@@ -44,15 +44,13 @@ const HC2 = ship("cotton", DRIFT, HCt, END - HCt, END + 1, { s: 22, t0: HCt });
 const HCG = fireGlowS(HCP[0], HCP[1], 44, HCt, END + 1); pinAlong(HCG, DRIFT, HCt, END - HCt, 20);
 for (let tt = HCt + 0.2; tt < END; tt += 0.5) { const q = HC2.at(tt); K.smoke(q[0], q[1] - 4, tt, { n: 1, r: 10, rise: 26, life: 2.6, alpha: 0.6, drift: 8 }); }
 shootS(BATP[1], HCP, HCt - 0.7, sAt(HCt), { dur: 0.7, h: 46, r: 12 });
-K.impact(HCP[0] + 4, HCP[1] - 3, HCt + 0.05, { r: 22 / sAt(HCt), puffs: 3 });
 // ---------- the run past the guns: visible shots (~1 per second) ----------
-[[T_RAN + 0.3, 0, 0], [T_GUNS + 0.6, 1, 1], [T_NIGHT + 0.3, 2, 2], [T_GW + 0.1, 0, 3], [T_DRIFT - 0.2, 3, 4], [T_DRIFT + 0.8, 2, 5]].forEach(([t, b, k]) => {
+[[T_GUNS + 0.2, 1, 0], [T_NIGHT + 0.4, 2, 1], [T_DRIFT + 0.2, 3, 3]].forEach(([t, b, k]) => {
   const boat = FLEET[k], dur = 0.75; shootS(BATP[b], boat.at(t + dur), t, sAt(t), { dur, h: 46, r: 10 });
   tl.fromTo(boat.sv, { filter: "brightness(1)" }, { filter: "brightness(2.2)", duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, t + dur); });
-[[T_NIGHT + 0.8, 1, 2], [T_BURN + 0.6, 2, 3]].forEach(([t, k, b]) => shootS(FLEET[k].at(t), [BATP[b][0] + 10, BATP[b][1] + 6], t, sAt(t), { dur: 0.7, h: 40, r: 9 }));
 // ---------- Grant watched: his headquarters boat moored above the point, his portrait on it ----------
 const HQ = ship("transport", [[985, 452], [986, 453]], 0, 1, END + 1, { s: 24, t0: 0 });
-pinPortrait(HQ.el.firstElementChild, PHOTO("grant"), FL.us, "Grant", T_GR + 0.1, null, true, "left");
+pinPortrait(HQ.el.firstElementChild, PHOTO("grant"), FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal
 focus([1330, 800], 220, T_DRIFT - 0.3, END + 1);
 fixImgs();
 K.raiseTerritory();

@@ -1,8 +1,8 @@
 // SCRIPT-12 TEST, scene s12a (0 - 17.80 s of research/style_tests/script12: all of s12-1 + s12-2 up to "First,"), Grant's Vicksburg move, STYLE W.
 // Re-cut of the approved tools/vk_body_m2a.js (kit, one camera over the mississippi + vicksburg layers, places) to the new narration:
 //   s12-1 the Confederate plan (guns on the bluff, the river closed) -> dive onto Vicksburg; "in other words": pull out, the South in one piece
-//   s12-2 "But Grant did not attack the bluffs. Instead, he marched down the far bank." -> dive back in, Grant's portrait at his corps, the march.
-// Built with: python3 tools/s12_inline.py vk s12a vicksburg_w s12-1 s12-2 0 17.8
+//   s12-2 "But the Union general did not attack the bluffs. Instead, he marched down the far bank." -> dive back in, Grant's portrait at his corps, the march.
+// Built with: python3 tools/s12_inline.py vk s12a vicksburg_w s12-1 s12-2 0 18.8
 // @@KIT
 // @@DATA
 const MZ = GD.maps.mississippi, VZ = GD.maps.vicksburg;
@@ -12,7 +12,7 @@ const P1 = "s12-1", P2 = "s12-2";
 const T_PLAN = at(P1, "The Confederate plan"), T_HOLD = at(P1, "hold the guns"), T_GUNS = at(P1, "the guns on"), T_BLUFF = at(P1, "the bluff at"), T_VKS = at(P1, "Vicksburg, and"),
   T_ARMY = at(P1, "no Union army"), T_USE = at(P1, "use the Mississippi"), T_OW = at(P1, "In other words"), T_STOOD = at(P1, "while Vicksburg stood"),
   T_SOUTH = at(P1, "the South stayed"), T_PIECE = at(P1, "in one piece");
-const T_BUT = at(P2, "But Grant"), T_GR = at(P2, "Grant did not"), T_NOT = at(P2, "did not attack the bluffs"), T_INST = at(P2, "Instead"), T_MARCH = at(P2, "he marched down"),
+const T_BUT = at(P2, "But the Union general"), T_GR = at(P2, "Union general"), T_NOT = at(P2, "did not attack the bluffs"), T_INST = at(P2, "Instead"), T_MARCH = at(P2, "he marched down"),
   T_FAR = at(P2, "the far bank");
 // ---------- places (vicksburg z10 world px) ----------
 const VKS = L(32.352, -90.878), JAX = L(32.299, -90.185), YP = L(32.385, -91.0);
@@ -26,7 +26,7 @@ const gimg = (src, parent) => { const i = document.createElement("img"); i.src =
 const RELIEF = document.getElementById("relief");
 const PU = group(WORLD, RELIEF); gimg("assets/media/vk_miss_w.jpg", PU);
 const PW = group(WORLD, OVL); gimg("assets/media/vk_miss_w.jpg", PW);
-living(VZ.meters_per_px, [], { n: 5, clouds: 0.12 });
+living(VZ.meters_per_px, [], { n: 5, clouds: 0 });   // round 2: no cloud shadows (read as dark smudges)
 const FEATHER = "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%)";
 let maskOn = null;
 const setMask = (on) => { if (on === maskOn) return; maskOn = on; [RELIEF].forEach((el) => { const v = on ? FEATHER : "none"; el.style.webkitMaskImage = v; el.style.maskImage = v; el.style.webkitMaskComposite = on ? "source-in" : ""; el.style.maskComposite = on ? "intersect" : ""; }); };
@@ -47,38 +47,33 @@ const zoom = (t, dur, c0, s0, c1, s1, P, ease = "power2.inOut") => {
 const OC0 = [AR[0] + AR[2] / 2, AR[1] + AR[3] / 2];
 const C0 = OC0, S0 = OVS * 1.04;
 const C0b = [C0[0] + (VKS[0] - C0[0]) * 0.3, C0[1] + (VKS[1] - C0[1]) * 0.3], S0b = OVS * 1.14;
-const CV = L(32.36, -90.95), SV = 1.15;                          // Vicksburg on its bluff, the gunboats stopped above it
-const CV2 = L(32.355, -90.94), SV2 = 1.28;
-const CM = L(32.25, -90.9), SM = 0.205;                          // "in other words": the South both sides of the river
-const C3 = L(32.30, -91.04), S3 = 1.25;                          // s12-2: the far (west) bank, Milliken's Bend to Hard Times
-const TZ0 = T_HOLD - 0.15, TZ1 = T_VKS + 0.5;                    // dive 1 (by ~4.6 s)
-const TO0 = T_OW - 0.1, TO1 = T_STOOD + 1.0;                     // pull out
-const TI0 = T_BUT - 0.15, TI1 = T_NOT + 1.0;                     // dive 2
+// round 2: ONE continuous inward camera (no pull-out): overview -> the Vicksburg map (s 0.84: the river across the whole frame, the mask and the
+// mississippi layer already gone, no feathered edge on screen) -> slow push -> the far (west) bank on "the Union general"
+const CV = L(32.42, -91.0), SV = 0.84;
+const CV2 = L(32.38, -91.0), SV2 = 0.95;
+const C3 = L(32.30, -91.04), S3 = 1.25;
+const TZ0 = T_HOLD - 0.15, TZ1 = T_VKS + 0.6;
 cam.cx = C0[0]; cam.cy = C0[1]; cam.s = S0; applyCam();
 camTo(0, TZ0, C0b, S0b, "sine.inOut");
 zoom(TZ0, TZ1 - TZ0, C0b, S0b, CV, SV, VKS, "power2.inOut"); SFX("whoosh", TZ0 - 0.05);
 zoomBox(...VKS, 300, 170, 0.5);   // the dive target framed before the dive
-camTo(TZ1 + 0.02, TO0 - TZ1 - 0.02, CV2, SV2, "sine.inOut");
-zoom(TO0, TO1 - TO0, CV2, SV2, CM, SM, VKS, "power2.inOut");
-camTo(TO1 + 0.02, TI0 - TO1 - 0.02, [CM[0] + 40, CM[1]], SM * 1.06, "sine.inOut");
-zoom(TI0, TI1 - TI0, [CM[0] + 40, CM[1]], SM * 1.06, C3, S3, VKS, "power2.inOut"); SFX("whoosh", TI0 - 0.05);
-camTo(TI1 + 0.02, END - TI1, [C3[0] + 10, C3[1] + 40], S3 * 1.06, "sine.inOut");
+camTo(TZ1 + 0.02, T_BUT - TZ1 - 0.02, CV2, SV2, "sine.inOut");
+camTo(T_BUT, T_INST + 0.4 - T_BUT, C3, S3, "sine.inOut");
+camTo(T_INST + 0.42, END - T_INST - 0.42, [C3[0] + 10, C3[1] + 40], S3 * 1.06, "sine.inOut");
 // ---------- HUD: the date scroll (on from frame 0, never leaves) ----------
 dateNow("SPRING 1863", T_INST - 0.05); B.date("APRIL 1863", T_INST, END + 1, 32);
 // ---------- flags: one pair per shot (both on every frame) ----------
-const WIDE1 = TZ0 + 1.0, CLOSE1 = TO0 + 1.2, CLOSE2 = TI0 + 1.0;
+const WIDE1 = TZ0 + 1.2;
 flagS(FL.us, "", ...L(35.45, -88.9), 0, WIDE1); flagS(FL.cs, "", ...L(32.0, -88.6), 0, WIDE1);
-flagS(FL.us, "", ...L(32.47, -91.30), WIDE1 - 0.1, CLOSE1); flagS(FL.cs, "", ...L(32.30, -90.70), WIDE1 - 0.05, CLOSE1);
-flagS(FL.us, "", ...L(34.6, -91.9), CLOSE1 - 0.1, CLOSE2); flagS(FL.cs, "", ...L(31.3, -88.9), CLOSE1 - 0.05, CLOSE2);
-flagS(FL.us, "", ...L(32.44, -91.40), CLOSE2 - 0.1, END + 1); flagS(FL.cs, "", ...L(32.24, -90.70), CLOSE2 - 0.05, END + 1);
+flagS(FL.us, "", ...L(32.30, -91.40), WIDE1 - 0.1, END + 1); flagS(FL.cs, "", ...L(32.22, -90.62), WIDE1 - 0.05, END + 1);
 // ---------- frame 0: the river war already moving (Union gunboats come down from Memphis; one army counter each side) ----------
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_USE + 0.6, END + 1, { s: 20, t0: 0 }));
 unitS("oa", "carth", L(32.75, -92.25), "infantry", "", { size: "XXXX" }); unitS("ov", "rome", L(32.05, -89.95), "infantry", "", { size: "XXXX" });
 ["oa", "ov"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
 along("oa", LL([[32.75, -92.25], [32.60, -91.95]]), 0, 3, 10);
-B.hideUnits(["oa", "ov"], TZ0 + 0.5, 0.4); showU(["oa", "ov"], TO1 - 0.6); B.hideUnits(["oa", "ov"], TI0 + 0.4, 0.4);
-stampP("THE CONFEDERATE PLAN", ...L(31.15, -88.2), T_PLAN + 0.35, T_HOLD - 0.1, 28);
+B.hideUnits(["oa", "ov"], TZ0 + 0.1, 0.25);
+stampP("THE CONFEDERATE PLAN", ...L(31.15, -88.2), T_PLAN + 0.35, T_HOLD - 0.15, 28);
 // ---------- "hold the guns on the bluff at Vicksburg" ----------
 const BAT = LL([[32.405, -90.872], [32.352, -90.877], [32.30, -90.890]]).map((p) => [p[0] + 12, p[1]]);
 BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_GUNS + 0.15 + k * 0.15, w: 44, h: 29 }));
@@ -94,23 +89,19 @@ along("ga", LL([[32.62, -91.25], [32.57, -91.20]]), T_ARMY + 0.3, 6, 10);
 shootS(BAT[0], GBN[0].at(T_USE + 0.2), T_USE - 0.5, SV2, { dur: 0.7, h: 30, r: 9 });
 shootS(BAT[1], GBN[1].at(T_USE + 1.3), T_USE + 0.6, SV2, { dur: 0.7, h: 30, r: 9 });
 B.caption("NO UNION ARMY COULD USE THE MISSISSIPPI", T_USE, T_OW - 0.1, "rome");
-const CL = ["bat0", "bat1", "bat2", "vk", "ga", "gc"];
-hideU(CL, TO0 + 0.5); showU(CL, TI0 + 0.9);
 // ---------- "In other words, while Vicksburg stood, the South stayed in one piece" (wide) ----------
-focus(VKS, 260, T_STOOD, T_SOUTH + 0.2);
 const LINK = LL([[32.525, -93.75], [32.50, -92.12], [32.40, -91.50], [32.36, -90.95], [32.33, -90.55], [32.30, -90.19], [32.36, -88.70]]);
-inkTrace(LINK, T_SOUTH + 0.1, T_BUT - 0.2, 3.0);
-const ONE = stampP("IN ONE PIECE", ...L(31.05, -90.4), T_PIECE, T_BUT - 0.3, 30);
-// ---------- s12-2: "But Grant did not attack the bluffs. Instead, he marched down the far bank." ----------
-pinPortrait("gc", PHOTO("grant"), FL.us, "Grant", T_GR + 0.9, null, true, "left");   // on his corps once it is back in view; stays for the rest of the scene
-focus([VKS[0] + 10, VKS[1]], 120, T_NOT + 0.4, T_INST);
+inkTrace(RIV, T_STOOD, T_BUT - 0.1, 4.2); inkTrace(LINK, T_SOUTH + 0.1, T_BUT - 0.1, 3.0);
+const ONE = stampP("IN ONE PIECE", ...L(32.62, -90.55), T_PIECE, T_BUT - 0.3, 30);
+// ---------- s12-2: "But the Union general did not attack the bluffs. Instead, he marched down the far bank." ----------
+pinPortrait("gc", PHOTO("grant"), FL.us, "Union General", T_GR + 0.1, null, true, "left");   // round 2: no name before the reveal ("Ulysses Grant" in s12d)
 BAT.forEach((p, k) => tl.fromTo(B.units["bat" + k].el.querySelector(".blk"), { scale: 1 }, { scale: 1.25, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, T_NOT + 0.6 + k * 0.12));
 const MARCH = LL([[32.48, -91.08], [32.42, -91.15], [32.39, -91.18], [32.28, -91.20], [32.16, -91.17], [32.09, -91.13], [32.07, -91.09]]);
 along("gc", [L(32.48, -91.22), MARCH[0]], T_INST - 0.3, 0.8, 6); along("gc", MARCH, T_MARCH, END - T_MARCH + 0.4, 24);
 along("ga", [L(32.57, -91.20), L(32.53, -91.13)], T_INST, 1.0, 6); along("ga", [L(32.53, -91.13), ...sub(MARCH, 0, 0.55, 16)], T_MARCH + 0.8, END - T_MARCH, 20);
 arw({ pts: MARCH, side: "carth", t: T_MARCH, dur: 2.0, width: AW(S3, 13), until: END + 1 });
-boxL("The Far Bank", ...L(32.24, -91.42), T_FAR + 0.1, null, { size: 20 });
-focus(L(32.25, -91.18), 170, T_FAR, END + 1);
+boxL("The Far Bank", ...L(32.20, -91.38), T_FAR, null, { size: 24 });
+inkTrace(LL([[32.47, -91.10], [32.40, -91.06], [32.30, -91.0], [32.22, -91.0], [32.13, -91.06], [32.06, -91.10]]), T_FAR, END + 1, 3.0);   // the west bank, on "the far bank"
 // the boats wait above the city for the run (hand-off to s12b)
 const UP = [0, 1, 2].map((k) => ship(k === 2 ? "transport" : "gunboat", sub(LL([[32.45, -91.02], [32.42, -91.0], [32.402, -90.994], [32.394, -90.960]]), 0.3 - k * 0.1, 0.8 - k * 0.12, 8), T_FAR - 0.2 + k * 0.2, 2.0, END + 1, { s: 20 }));
 GBN.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.5 }, T_FAR - 0.3));

@@ -1,7 +1,7 @@
 // SCRIPT-12 TEST, scene s12c (24.60 - 29.70 s): "Then the army crossed at Bruinsburg. Then he cut loose from his base."
 // Re-cut of the approved tools/vk_body_m2d.js (grandgulf_w; the landing at Bruinsburg, the blue bridgehead hatch) + the supply line of
 // tools/vx_body_m2f.js (thin sepia ink line back to the base at Grand Gulf, flickers and goes on "cut loose from his base").
-// Built with: python3 tools/s12_inline.py vk s12c grandgulf_w s12-3 s12-3 24.6 29.7
+// Built with: python3 tools/s12_inline.py vk s12c grandgulf_w s12-3 s12-3 26.2 31.2
 // @@KIT
 // @@DATA
 const GZ = GD.maps.grandgulf;
@@ -11,7 +11,7 @@ const T_CROSS = at(P1, "crossed at"), T_BRU = at(P1, "Bruinsburg"), T_CUT = at(P
 // ---------- places (grandgulf z12 px, from m2d) ----------
 const GGF = [1340, 626], BRU = [1040, 940], PG = L(31.961, -90.984), DIS = [988, 776];
 living(GZ.meters_per_px, [], { n: 5, clouds: 0.12 });
-camera([[0, 1060, 880, 1.3], [T_BRU + 0.3, 1090, 880, 1.42], [END, 1200, 820, 1.18]]);
+camera([[0, 1080, 880, 1.3], [T_BRU + 0.3, 1100, 880, 1.38], [END, 1230, 800, 1.15]]);
 dateNow("30 APRIL 1863", T_CUT - 0.05); B.date("MAY 1863", T_CUT, END + 1, 32);
 flagS(FL.us, "", 760, 900, 0, END + 1); flagS(FL.cs, "", 1610, 760, 0, END + 1);
 // the Grand Gulf batteries on their bluff (seen in move 2 before; bare boxes)
@@ -21,21 +21,18 @@ const LANDP = [[1010, 905], [1000, 945], [985, 985], [1022, 875]];
 const TRS = LANDP.map((s, k) => ship("transport", [[DIS[0] - 60 + k * 18, DIS[1] - 20 + k * 22], [s[0] - 26, s[1] + 8 * (k - 1)]], 0, T_CROSS + 0.6, END + 1, { s: 22, t0: 0 }));
 LANDP.forEach((s, k) => { const b = [s[0] - 26, s[1] + 8 * (k - 1)];
   arw({ pts: [[b[0] + 14, b[1]], [s[0] - 6, s[1]], [s[0] + 26, s[1] - 8]], side: "carth", t: T_CROSS + 0.3 + k * 0.2, dur: 0.7, width: AW(1.4, 11), until: END + 1 }); });
-const LU = [["l13", 1095, 905, "XXX"], ["l9", 1105, 965, "XX"], ["l17", 1060, 1005, "XXX"]];
-LU.forEach(([id, x, y, sz], k) => { unitS(id, "carth", [x - 70, y - 5], "infantry", "", { t: T_CROSS + 0.7 + k * 0.25, size: sz }); along(id, [[x - 70, y - 5], [x, y]], T_CROSS + 0.7 + k * 0.25, 1.4, 8); tagAt(id, null); });
-pinPortrait("l13", PHOTO("grant"), FL.us, "Grant", T_CROSS + 1.0, null, true, "right");
+const LU = [["l13", 1130, 885, "XXX"], ["l9", 1150, 940, "XX"], ["l17", 1110, 990, "XXX"]];
+LU.forEach(([id, x, y, sz], k) => { unitS(id, "carth", [x - 80, y - 5], "infantry", "", { t: T_CROSS + 0.35 + k * 0.2, size: sz }); along(id, [[x - 80, y - 5], [x, y]], T_CROSS + 0.35 + k * 0.2, 1.4, 8); tagAt(id, null); });
+pinPortrait("l13", PHOTO("grant"), FL.us, "Union General", T_CROSS + 0.7, null, true, "ne");   // round 2: side stake up-right, off the hatching; no name before the reveal
 hatch("assets/media/gn_gg_ctl_apr30cap_mx.png", T_BRU, 1.6);
-town("BRUINSBURG", BRU, "l", T_BRU);
-// ---------- "Then he cut loose from his base": the line back to Grand Gulf flickers and goes; the army turns inland ----------
-const SUP = [[GGF[0] - 20, GGF[1] + 30], [1250, 760], [1180, 860], [1110, 905]];
-const SUPL = document.createElementNS(NSs, "path"); SUPL.setAttribute("d", "M" + SUP.map((q) => q.join(" ")).join(" L"));
-Object.entries({ fill: "none", stroke: "#463a1e", "stroke-width": (2.6 / 1.3).toFixed(2), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => SUPL.setAttribute(k, v)); OVL.appendChild(SUPL);
-tl.to(SUPL, { opacity: 0.85, duration: 0.3 }, T_CUT); boxL("His Base", GGF[0] + 70, GGF[1] + 70, T_BASE, null, { size: 20 });
-focus(GGF, 120, T_BASE, END + 1);
-tl.to(SUPL, { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 5, ease: "none" }, T_BASE + 0.4); tl.to(SUPL, { opacity: 0, duration: 0.3 }, T_BASE + 0.9);
-crosses([[1215, 812]], T_BASE + 0.9, END + 1, 9);
-arw({ pts: [[1110, 905], [1200, 900], [1290, 890]], side: "carth", t: T_LOOSE + 0.6, dur: 1.4, width: AW(1.25, 13), until: END + 1 });
-B.move("l13", T_LOOSE + 0.8, 2.0, 1200, 880);
+town("", BRU, "l", T_BRU); boxL("Bruinsburg", BRU[0] - 40, BRU[1] + 120, T_BRU, null, { size: 24 });   // round 2: the name south of the landing, off the boats and arrows
+// ---------- "Then he cut loose from his base": the supply line back to Grand Gulf (ink) is cut; the column marches inland ON "cut loose" ----------
+const SUP = [[GGF[0] - 30, GGF[1] + 20], [1290, 640], [1250, 720], [1200, 790], [1150, 850], [1120, 885]];
+inkTrace(SUP, T_CUT - 0.2, T_BASE + 1.0, 4.4);
+boxL("His Base", GGF[0] - 110, GGF[1] - 10, T_BASE, null, { size: 24 });
+crosses([[1225, 755]], T_BASE + 0.5, END + 1, 14);
+arw({ pts: [[1150, 900], [1260, 895], [1380, 885]], side: "carth", t: T_LOOSE - 0.1, dur: 1.2, width: AW(1.25, 13), until: END + 1 });
+B.move("l13", T_LOOSE, 2.2, 1270, 880); B.move("l9", T_LOOSE + 0.15, 2.2, 1250, 935); B.move("l17", T_LOOSE + 0.3, 2.2, 1215, 980);
 fixImgs();
 K.raiseTerritory();
 B.finish();
