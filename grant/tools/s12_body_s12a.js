@@ -71,14 +71,14 @@ flagS(FL.us, "", ...L(32.30, -91.40), WIDE1, END + 1); flagS(FL.cs, "", ...L(32.
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_USE + 0.6, END + 1, { s: 20, t0: 0 }));
 // round 3: the two armies stay solid through the dive (no fade): the Union box glides to its place above the city, the Confederate one to the bluff country
-unitS("gc", "carth", L(32.75, -92.25), "infantry", "", { size: "XXX" }); unitS("vk", "rome", L(32.05, -89.95), "infantry", "", { size: "XXX" });
+unitS("gc", "carth", L(32.74, -91.36), "infantry", "", { size: "XXX" }); /* final: on the Union-held west bank */ unitS("vk", "rome", L(32.05, -89.95), "infantry", "", { size: "XXX" });
 ["gc", "vk"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
-along("gc", LL([[32.75, -92.25], [32.66, -92.0]]), 0, TZ0, 10); along("gc", LL([[32.66, -92.0], [32.48, -91.22]]), TZ0, TZ1 - TZ0, 16);
+along("gc", LL([[32.74, -91.36], [32.64, -91.30]]), 0, TZ0, 10); along("gc", LL([[32.64, -91.30], [32.48, -91.22]]), TZ0, TZ1 - TZ0, 16);
 along("vk", LL([[32.05, -89.95], [32.10, -90.1]]), 0, TZ0, 10); along("vk", LL([[32.10, -90.1], [32.40, -90.68]]), TZ0, TZ1 - TZ0, 16);
 stampP("THE CONFEDERATE PLAN", ...L(31.15, -88.2), T_PLAN + 0.35, T_HOLD - 0.15, 28);
 // ---------- "hold the guns on the bluff at Vicksburg" ----------
 const BAT = LL([[32.405, -90.872], [32.352, -90.877], [32.30, -90.890]]).map((p) => [p[0] + 12, p[1]]);
-BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_GUNS + 0.15 + k * 0.15, w: 44, h: 29 }));
+BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: k === 1 ? T_GUNS + 0.15 : TZ1 - 0.4 + k * 0.1, w: 44, h: 29 }));   // final: one gun box on the wide view (no stacked blob), all three once the camera is close
 const TV = town("VICKSBURG", VKS, "l", T_VKS);
 profileStrip(`<path d="M10 100 L150 100 C 175 100, 182 96, 190 88" fill="none" stroke="#2a2410" stroke-width="2.6"/><path d="M14 101 L186 101" stroke="#4d7d9a" stroke-width="7"/>
   <path d="M190 88 C 200 60, 205 34, 222 30 C 260 26, 330 32, 470 36" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>

@@ -461,16 +461,16 @@ zoom(TZ0, TZ1 - TZ0, C1, S1, C2, S2, VKS, "power2.inOut"); SFX("whoosh", TZ0 - 0
 camTo(TZ1 + 0.02, T_BUT - TZ1 - 0.02, [C2[0] + 200, C2[1]], S2 * 1.03, "sine.inOut");
 camTo(T_BUT, END - T_BUT, C3, S3, "sine.inOut");
 // ---------- HUD: the date scroll ----------
-dateNow("JUNE 1863", T_4 - 0.05); B.date("4 JULY 1863", T_4, null, 32);
+dateNow("MAY 1863", T_4 - 0.05); B.date("4 JULY 1863", T_4, null, 32);   // final: no unspoken June date
 // ---------- the siege lines, units and portraits (on screen from frame 0: the hand-off from s12d) ----------
 const FR = on0(front2(FRT, S1, 0, { dur: 0.01, flip: true, until: T_SURW + 0.8 }));
 tl.set(FR, { autoAlpha: 1 }, 0);
-const FUS = now(flagS(F35, "", ...L(32.36, -90.81), 0, null));
+const FUS34 = now(flagS(FL.us, "", ...L(32.36, -90.81), 0, T_4 + 0.3)); const FUS = flagS(F35, "", ...L(32.36, -90.81), T_4, null);   // the 35-star flag with the July date
 const FCS = now(flagS(FL.cs, "", ...L(32.335, -90.872), 0, null)); tl.to(FCS, { opacity: 0.55, duration: 0.8 }, T_SURW + 0.6);
 U("u15", "carth", L(32.390, -90.842), "", "XXX"); U("u17", "carth", L(32.358, -90.826), "", "XXX"); U("u13", "carth", L(32.318, -90.836), "", "XXX");
 U("rp", "rome", L(32.357, -90.866), "", "XX"); U("r2", "rome", L(32.375, -90.875), "", "XX"); U("r3", "rome", L(32.318, -90.874), "", "XX");
 ["u15", "u17", "u13", "rp", "r2", "r3"].forEach((id) => tagAt(id, null));
-now(pinPortrait("u13", PHOTO("grant"), F35, "Grant", 0, null, true)); now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
+{ const g = now(pinPortrait("u13", PHOTO("grant"), FL.us, "Grant", 0, null, true)); tl.set(g.querySelector("img"), { attr: { src: F35 } }, T_4); } now(pinPortrait("rp", PHOTO("pemberton"), FL.cs, "Pemberton", 0, null, true, "left"));
 // ---------- "Vicksburg surrendered": white flags along the works, the stamp ----------
 const WFL = [];
 const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 1px 2px #000)"><line x1="3" y1="2" x2="3" y2="34" stroke="#3a2c1c" stroke-width="2.4"/><path d="M4 3 Q12 0 19 4 Q24 6 28 4 L28 17 Q22 19 18 16 Q11 13 4 16 Z" fill="#fbfaf4" stroke="#8a8478" stroke-width="0.8"/></svg>`;
@@ -478,7 +478,7 @@ const WF = `<svg width="30" height="34" viewBox="0 0 30 34" style="display:block
   WFL.push(pinS(GG.pin(WF, ...L(la, lo), { t: T_SURW + 0.05 + k * 0.12, pop: true }))); });
 const SUR = wstampL("SURRENDERED", ...L(32.345, -90.905), T_SURW + 0.15, TZ0 + 0.6, "#f7f3ea", 34);
 // ---------- the one zoom-out: the river that held the South together becomes Union water (drawn blue top to bottom) ----------
-const CLOSE = [...["u15", "u17", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS, FCS, ...WFL];
+const CLOSE = [...["u15", "u17", "rp", "r2", "r3"].map((id) => B.units[id].el), FUS, FUS34, FCS, ...WFL];
 CLOSE.forEach((el) => tl.to(el, { autoAlpha: 0, duration: 0.5 }, TZ0 + 0.8));
 const MFL = [flagS(F35, "", ...L(34.6, -92.6), TZ0 + 1.2, END + 1), flagS(FL.cs, "", ...L(31.6, -87.3), TZ0 + 1.25, END + 1)];
 { const sv = document.createElementNS(NSs, "svg"); sv.setAttribute("viewBox", `0 0 ${AR[2]} ${AR[3]}`);   // inside the mississippi layer group (its own box: no clipping)
