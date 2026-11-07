@@ -53,11 +53,11 @@ const C0b = [C0[0] + (VKS[0] - C0[0]) * 0.3, C0[1] + (VKS[1] - C0[1]) * 0.3], S0
 const CV = L(32.42, -91.0), SV = 0.84;
 const CV2 = L(32.38, -91.0), SV2 = 0.95;
 const C3 = L(32.30, -91.04), S3 = 1.25;
-const TZ0 = T_HOLD - 0.15, TZ1 = T_VKS + 0.6;
+const TZ0 = T_ARMY - 0.2, TZ1 = TZ0 + 2.3;   // final: the wide opening holds for the form-2 territory moment, the dive starts on "no Union army" (by ~5 s)
 cam.cx = C0[0]; cam.cy = C0[1]; cam.s = S0; applyCam();
 camTo(0, TZ0, C0b, S0b, "sine.inOut");
 zoom(TZ0, TZ1 - TZ0, C0b, S0b, CV, SV, VKS, "power2.inOut"); SFX("whoosh", TZ0 - 0.05);
-zoomBox(...VKS, 300, 170, 0.5);   // the dive target framed before the dive
+zoomBox(...VKS, 300, 170, TZ0 - 1.5);   // the dive target framed before the dive
 camTo(TZ1 + 0.02, T_BUT - TZ1 - 0.02, CV2, SV2, "sine.inOut");
 camTo(T_BUT, T_INST + 0.4 - T_BUT, C3, S3, "sine.inOut");
 camTo(T_INST + 0.42, END - T_INST - 0.42, [C3[0] + 10, C3[1] + 40], S3 * 1.06, "sine.inOut");
@@ -71,14 +71,14 @@ flagS(FL.us, "", ...L(32.30, -91.40), WIDE1, END + 1); flagS(FL.cs, "", ...L(32.
 const FYP = nearestF(RIV, YP);
 const GBN = [0, 1, 2].map((k) => ship("gunboat", sub(RIV, 0.03 + k * 0.03, FYP - 0.012 - k * 0.012, 20), 0, T_USE + 0.6, END + 1, { s: 20, t0: 0 }));
 // round 3: the two armies stay solid through the dive (no fade): the Union box glides to its place above the city, the Confederate one to the bluff country
-unitS("gc", "carth", L(32.75, -92.25), "infantry", "", { size: "XXX" }); unitS("vk", "rome", L(32.05, -89.95), "infantry", "", { size: "XXX" });
+unitS("gc", "carth", L(32.74, -91.36), "infantry", "", { size: "XXX" }); /* final: on the Union-held west bank */ unitS("vk", "rome", L(32.05, -89.95), "infantry", "", { size: "XXX" });
 ["gc", "vk"].forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 1 }));
-along("gc", LL([[32.75, -92.25], [32.66, -92.0]]), 0, TZ0, 10); along("gc", LL([[32.66, -92.0], [32.48, -91.22]]), TZ0, TZ1 - TZ0, 16);
+along("gc", LL([[32.74, -91.36], [32.64, -91.30]]), 0, TZ0, 10); along("gc", LL([[32.64, -91.30], [32.48, -91.22]]), TZ0, TZ1 - TZ0, 16);
 along("vk", LL([[32.05, -89.95], [32.10, -90.1]]), 0, TZ0, 10); along("vk", LL([[32.10, -90.1], [32.40, -90.68]]), TZ0, TZ1 - TZ0, 16);
 stampP("THE CONFEDERATE PLAN", ...L(31.15, -88.2), T_PLAN + 0.35, T_HOLD - 0.15, 28);
 // ---------- "hold the guns on the bluff at Vicksburg" ----------
 const BAT = LL([[32.405, -90.872], [32.352, -90.877], [32.30, -90.890]]).map((p) => [p[0] + 12, p[1]]);
-BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: T_GUNS + 0.15 + k * 0.15, w: 44, h: 29 }));
+BAT.forEach((p, k) => unitS("bat" + k, "rome", p, "artillery", "", { t: k === 1 ? T_GUNS + 0.15 : TZ1 - 0.4 + k * 0.1, w: 44, h: 29 }));   // final: one gun box on the wide view (no stacked blob), all three once the camera is close
 const TV = town("VICKSBURG", VKS, "l", T_VKS);
 profileStrip(`<path d="M10 100 L150 100 C 175 100, 182 96, 190 88" fill="none" stroke="#2a2410" stroke-width="2.6"/><path d="M14 101 L186 101" stroke="#4d7d9a" stroke-width="7"/>
   <path d="M190 88 C 200 60, 205 34, 222 30 C 260 26, 330 32, 470 36" fill="none" stroke="#2a2410" stroke-width="2.6" stroke-linecap="round"/>
@@ -107,6 +107,22 @@ inkTrace(LL([[32.47, -91.10], [32.40, -91.06], [32.30, -91.0], [32.22, -91.0], [
 const UP = [0, 1, 2].map((k) => ship(k === 2 ? "transport" : "gunboat", sub(LL([[32.45, -91.02], [32.42, -91.0], [32.402, -90.994], [32.394, -90.960]]), 0.3 - k * 0.1, 0.8 - k * 0.12, 8), T_FAR - 0.2 + k * 0.2, 2.0, END + 1, { s: 20 }));
 GBN.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.5 }, T_FAR - 0.3));
 declutter([], [[T_PLAN + 0.35, T_HOLD - 0.1], [T_PIECE, T_BUT - 0.3]]);
+// ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
+  gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
+terrL("assets/media/t12m_miss_apr1", 0.5, TZ0 - 0.3, PW);   // FORM 2 #1: who holds what, 1 April 1863 (fades out as the dive starts)
 fixImgs();
 K.raiseTerritory();
 B.finish();
