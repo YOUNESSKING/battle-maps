@@ -1,0 +1,390 @@
+{
+ "channel": "WARTIME",
+ "handle": "wartimechannel",
+ "rank": 10,
+ "subs": 1150000,
+ "recent_median_views": 63752.5,
+ "recent_n": 34,
+ "thumbnail_summary": {
+  "winners": {
+   "n": 8,
+   "pct_face_clear": 75,
+   "pct_face_any": 88,
+   "avg_text_words": 0.0,
+   "pct_text": 0,
+   "pct_map": 0
+  },
+  "weak": {
+   "n": 4,
+   "pct_face_clear": 25,
+   "pct_face_any": 50,
+   "avg_text_words": 0.0,
+   "pct_text": 0,
+   "pct_map": 0
+  }
+ },
+ "title_summary": {
+  "winners": {
+   "avg_chars": 74,
+   "pct_year_or_number": 25,
+   "pct_caps": 100,
+   "pct_colon": 25,
+   "pct_dash": 0,
+   "pct_pipe": 100,
+   "pct_howwhy": 0,
+   "pct_animated": 0
+  },
+  "weak": {
+   "avg_chars": 56,
+   "pct_year_or_number": 0,
+   "pct_caps": 75,
+   "pct_colon": 0,
+   "pct_dash": 0,
+   "pct_pipe": 100,
+   "pct_howwhy": 0,
+   "pct_animated": 0
+  }
+ },
+ "videos": [
+  {
+   "id": "anQPXpPh0cI",
+   "title": "SUBMARINE ALERT | Richard Arlen | Full Length War Movie | English | HD | 720p",
+   "views": 1031936,
+   "len_s": 4016,
+   "published": "2018-08-06",
+   "outlier": 16.19,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "B&W film still (submarine awash), letterboxed",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "DQ8IL84kUFE",
+   "title": "Hitler's S.S.: PORTRAIT IN EVIL | John Shea | Full Length War Movie",
+   "views": 722772,
+   "len_s": 8698,
+   "published": "2019-02-11",
+   "outlier": 11.34,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "film still (soldier seated, barbed wire)",
+    "face": "yes, medium",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "4ZTpzLgCu00",
+   "title": "IRON ANGEL | Korean War | Jim Davis | Don Barry | Full Length War Movie",
+   "views": 638504,
+   "len_s": 4855,
+   "published": "2018-10-26",
+   "outlier": 10.02,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "colourised film still (soldier aiming)",
+    "face": "yes, close",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "gl530mi83bc",
+   "title": "GUNG HO!: THE STORY OF CARLSON'S MAKIN ISLAND RAIDERS | Robert Mitchum | War Movie",
+   "views": 576419,
+   "len_s": 5180,
+   "published": "2018-10-05",
+   "outlier": 9.04,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "colourised film still (marines on beach)",
+    "face": "yes, small",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "3c1-DcBGUU8",
+   "title": "THE BATTLE OF THE LAST PANZER | The Last Panzer Battalion | Full Length War Movie",
+   "views": 531624,
+   "len_s": 5373,
+   "published": "2018-03-02",
+   "outlier": 8.34,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "film still (two tank crew, binoculars)",
+    "face": "yes, medium",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "ixj5kHO7Crg",
+   "title": "1939 BATTLE OF WESTERPLATTE (2013) | Full Length War Movie | English Subtitles",
+   "views": 400010,
+   "len_s": 6663,
+   "published": "2026-07-11",
+   "outlier": 6.27,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "film still (Polish soldier in trench)",
+    "face": "yes, close",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "8e68OQJAcD8",
+   "title": "THREE CAME HOME | Claudette Colbert | Patric Knowles | Full Length War Movie",
+   "views": 339789,
+   "len_s": 6302,
+   "published": "2019-01-28",
+   "outlier": 5.33,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "colourised film still (jungle fighters)",
+    "face": "yes, small",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "1f_0fccVV8E",
+   "title": "THEY RAID BY NIGHT | Lyle Talbot | Full Length War Movie",
+   "views": 260325,
+   "len_s": 4139,
+   "published": "2019-07-13",
+   "outlier": 4.08,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "B&W film still (landing craft)",
+    "face": "small",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "m8AURXShyZc",
+   "title": "THE NAVY WAY | Robert Lowery | Full Length War Movie",
+   "views": 207500,
+   "len_s": 4449,
+   "published": "2017-11-23",
+   "outlier": 3.25,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "WQU6Q0F1xPo",
+   "title": "DEATH RACE | World War II | Full Length War Movie | English",
+   "views": 201733,
+   "len_s": 4374,
+   "published": "2026-06-13",
+   "outlier": 3.16,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular",
+    "recent"
+   ]
+  },
+  {
+   "id": "DxQaS6e9SZI",
+   "title": "TORNADO / THE LAST BLOOD | Full Length Vietnam War Movie",
+   "views": 1175,
+   "len_s": 5603,
+   "published": "2026-11-07",
+   "outlier": 0.02,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "V_vRkvhFeQA",
+   "title": "PRIVATE WAR / OPERATION PARATROOPER | Full Length War Movie | English",
+   "views": 159033,
+   "len_s": 5068,
+   "published": "2026-10-10",
+   "outlier": 2.49,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "2xULVrFCCSY",
+   "title": "WAR BUS | Vietnam War | Full Length War Movie",
+   "views": 18306,
+   "len_s": 5500,
+   "published": "2026-09-12",
+   "outlier": 0.29,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "film still (muscular man with M60)",
+    "face": "yes, medium",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "pqcq1IcSksg",
+   "title": "BLACK BRIGADE | World War II in Europe | Full Length War Movie",
+   "views": 15339,
+   "len_s": 4213,
+   "published": "2026-08-15",
+   "outlier": 0.24,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "film still (infantry, motorbike)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "ixj5kHO7Crg",
+   "title": "1939 BATTLE OF WESTERPLATTE (2013) | Full Length War Movie | English Subtitles",
+   "views": 400010,
+   "len_s": 6663,
+   "published": "2026-07-11",
+   "outlier": 6.27,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "film still (Polish soldier in trench)",
+    "face": "yes, close",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "WQU6Q0F1xPo",
+   "title": "DEATH RACE | World War II | Full Length War Movie | English",
+   "views": 201733,
+   "len_s": 4374,
+   "published": "2026-06-13",
+   "outlier": 3.16,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "popular",
+    "recent"
+   ]
+  },
+  {
+   "id": "8BIBU18R00c",
+   "title": "THEN THERE WERE THREE | World War II in Europe | Full Length War Movie",
+   "views": 70112,
+   "len_s": 4893,
+   "published": "2026-05-17",
+   "outlier": 1.1,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "ouiC7YpD3xc",
+   "title": "HEROES IN HELL | World War II in Europe | Full Length War Movie",
+   "views": 10607,
+   "len_s": 4893,
+   "published": "2026-01-04",
+   "outlier": 0.17,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "film still (tank, truck)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  },
+  {
+   "id": "CktRw--Yifw",
+   "title": "YELLOWNECK | Lin McCarthy | Full Length Civil War Movie",
+   "views": 34803,
+   "len_s": 4926,
+   "published": "2017-11-04",
+   "outlier": 0.55,
+   "type": "full-length feature film (licensed/public-domain), not documentary",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "film poster inset",
+    "face": "small, poster",
+    "text_words": 0,
+    "text": "(none; poster shows YELLOWNECK)",
+    "palette": "muted/colourised",
+    "map": "no"
+   }
+  }
+ ]
+}

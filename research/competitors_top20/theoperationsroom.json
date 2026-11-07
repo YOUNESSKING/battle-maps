@@ -1,0 +1,423 @@
+{
+ "channel": "The Operations Room",
+ "handle": "theoperationsroom",
+ "rank": 6,
+ "subs": 1450000,
+ "recent_median_views": 538369.0,
+ "recent_n": 50,
+ "thumbnail_summary": {
+  "winners": {
+   "n": 8,
+   "pct_face_clear": 12,
+   "pct_face_any": 12,
+   "avg_text_words": 4.9,
+   "pct_text": 100,
+   "pct_map": 38
+  },
+  "weak": {
+   "n": 4,
+   "pct_face_clear": 0,
+   "pct_face_any": 0,
+   "avg_text_words": 6.5,
+   "pct_text": 100,
+   "pct_map": 75
+  }
+ },
+ "title_summary": {
+  "winners": {
+   "avg_chars": 56,
+   "pct_year_or_number": 50,
+   "pct_caps": 0,
+   "pct_colon": 0,
+   "pct_dash": 100,
+   "pct_pipe": 0,
+   "pct_howwhy": 0,
+   "pct_animated": 88
+  },
+  "weak": {
+   "avg_chars": 56,
+   "pct_year_or_number": 50,
+   "pct_caps": 0,
+   "pct_colon": 0,
+   "pct_dash": 75,
+   "pct_pipe": 0,
+   "pct_howwhy": 25,
+   "pct_animated": 50
+  }
+ },
+ "videos": [
+  {
+   "id": "zxRgfBXn6Mg",
+   "title": "Desert Storm - The Air War, Day 1 - Animated",
+   "views": 14032520,
+   "len_s": 1320,
+   "published": "2020-08-08",
+   "outlier": 26.06,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "AI/painted art (F-14 over burning oil fields)",
+    "face": "no",
+    "text_words": 6,
+    "text": "DESERT STORM / THE AIR WAR - DAY 1",
+    "palette": "sand, grey, black smoke",
+    "map": "no"
+   }
+  },
+  {
+   "id": "6HkBW7X7LaU",
+   "title": "The Battle of Midway - Animated",
+   "views": 7461408,
+   "len_s": 929,
+   "published": "2019-10-20",
+   "outlier": 13.86,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "painted top-down carrier + planes",
+    "face": "no",
+    "text_words": 3,
+    "text": "Battle Of Midway",
+    "palette": "teal/blue",
+    "map": "no"
+   }
+  },
+  {
+   "id": "RSqKx3FG0Lw",
+   "title": "Desert Storm - The Ground War, Day 1 - Crush the Saddam Line - Animated",
+   "views": 6412960,
+   "len_s": 1068,
+   "published": "2020-10-17",
+   "outlier": 11.91,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "real photo (M1 Abrams, desert)",
+    "face": "no",
+    "text_words": 7,
+    "text": "DESERT STORM / THE GROUND WAR - DAY 1",
+    "palette": "tan, pale sky",
+    "map": "no"
+   }
+  },
+  {
+   "id": "1ApfDyeP7Zk",
+   "title": "Black Hawk Down - The Battle of Mogadishu 1993, Part 1 - Animated",
+   "views": 6241075,
+   "len_s": 1366,
+   "published": "2021-05-29",
+   "outlier": 11.59,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "sepia top-down map-render with helicopter",
+    "face": "no",
+    "text_words": 8,
+    "text": "BLACK HAWK DOWN / The Battle of Mogadishu 1993",
+    "palette": "sepia, black",
+    "map": "yes (aerial map)"
+   }
+  },
+  {
+   "id": "my3oaSqfIEU",
+   "title": "Sinking of the Battleship Bismarck - Animated",
+   "views": 4999500,
+   "len_s": 623,
+   "published": "2019-07-07",
+   "outlier": 9.29,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "painting of Bismarck firing",
+    "face": "no",
+    "text_words": 1,
+    "text": "BISMARCK",
+    "palette": "steel grey, orange flash",
+    "map": "no"
+   }
+  },
+  {
+   "id": "g9rMTlJNcIQ",
+   "title": "Battle of Iwo Jima - Complete Animated Documentary",
+   "views": 4551152,
+   "len_s": 3599,
+   "published": "2023-09-20",
+   "outlier": 8.45,
+   "type": "compilation (complete 1h documentary)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "stylised relief map with unit markers",
+    "face": "no",
+    "text_words": 4,
+    "text": "IWO JIMA ANIMATED DOCUMENTARY",
+    "palette": "cream/sand, black smoke dots, green ships",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "DR0UWc_uN0I",
+   "title": "Desert Storm - The Annihilation of the Iraqi Navy at the Battle of Bubiyan - Animated",
+   "views": 4158204,
+   "len_s": 448,
+   "published": "2021-01-03",
+   "outlier": 7.72,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "game-style map (blue sea, ship icons) + inset photo of F/A-18",
+    "face": "no",
+    "text_words": 3,
+    "text": "IRAQI NAVY DESTROYED",
+    "palette": "flat blue",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "6i4zLTiwTWA",
+   "title": "The REAL Battle from We Were Soldiers - Ia Drang 65 (1/2)",
+   "views": 4129337,
+   "len_s": 1085,
+   "published": "2021-12-17",
+   "outlier": 7.67,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "real photo (soldier + Huey)",
+    "face": "yes, partial (soldier, medium shot)",
+    "text_words": 7,
+    "text": "IA DRANG 65 / US AIR CAV'S FIRST FIGHT",
+    "palette": "jungle green, brown",
+    "map": "no"
+   }
+  },
+  {
+   "id": "79F_Mu4-oQk",
+   "title": "Battle of the Philippine Sea - The Largest Carrier Battle Ever (1/2) - Animated",
+   "views": 4020727,
+   "len_s": 1362,
+   "published": "2023-04-07",
+   "outlier": 7.47,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "_ouE7SRvF0Y",
+   "title": "The Atomic Bombings of Hiroshima and Nagasaki - Animated",
+   "views": 3924110,
+   "len_s": 1355,
+   "published": "2023-07-21",
+   "outlier": 7.29,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "EU-nV5FxKf0",
+   "title": "Pearl Harbor (3/3) - US Fighters Strike Back - Animated",
+   "views": 431677,
+   "len_s": 2233,
+   "published": "2026-10-03",
+   "outlier": 0.8,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "25v3B2TUXFo",
+   "title": "Pearl Harbor (2/3) - Battleship Row - Animated",
+   "views": 876685,
+   "len_s": 2154,
+   "published": "2026-09-13",
+   "outlier": 1.63,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "DgoKIknmiGI",
+   "title": "Pearl Harbor (1/3) - Tora! Tora! Tora! - Animated",
+   "views": 607988,
+   "len_s": 2844,
+   "published": "2026-08-22",
+   "outlier": 1.13,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "yAPgxUmRm-w",
+   "title": "The Battle of Midway (2/2) - Sink the Japanese Carriers! - Animated",
+   "views": 635481,
+   "len_s": 2897,
+   "published": "2026-08-20",
+   "outlier": 1.18,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "cxh4II6zN4s",
+   "title": "The Battle of Midway (1/2) - The Turning Point of the Pacific War - Animated",
+   "views": 646137,
+   "len_s": 2707,
+   "published": "2026-08-15",
+   "outlier": 1.2,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "7Uq_xILtiKU",
+   "title": "US Navy New Georgia Campaign (2/2) - JFK's PT Boat Gets Rammed",
+   "views": 170976,
+   "len_s": 1904,
+   "published": "2026-08-07",
+   "outlier": 0.32,
+   "type": "single-subject war video",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "illustrated sea map (PT boats, ramming flash) + flag + arrow label",
+    "face": "no",
+    "text_words": 6,
+    "text": "NEW GEORGIA CAMPAIGN / JFK AT WAR (+ LT. J.F. KENNEDY label)",
+    "palette": "teal, orange",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "iMXt1RY_KjQ",
+   "title": "US Navy New Georgia Campaign (1/2) - Knife Fighting Japanese Destroyers",
+   "views": 346309,
+   "len_s": 1895,
+   "published": "2026-07-31",
+   "outlier": 0.64,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "IfwtRlZ7UMw",
+   "title": "Medal of Honor - The Heroic Last Stand of John Chapman - Operation Anaconda",
+   "views": 430139,
+   "len_s": 3107,
+   "published": "2026-07-11",
+   "outlier": 0.8,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "RuDFd3Y_CeM",
+   "title": "Kokoda 1942 - Brutal Jungle Combat with the Japanese",
+   "views": 398114,
+   "len_s": 2544,
+   "published": "2026-06-11",
+   "outlier": 0.74,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "f7PhWgQoVi0",
+   "title": "Gallipoli - The Battle of Anzac Cove",
+   "views": 340639,
+   "len_s": 2148,
+   "published": "2026-06-06",
+   "outlier": 0.63,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "dVgmA-_UYH4",
+   "title": "How a Weatherman Saved the D-Day Invasion from Catastrophe",
+   "views": 177120,
+   "len_s": 932,
+   "published": "2026-05-28",
+   "outlier": 0.33,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "weather map (blue arrow, isobars, red land)",
+    "face": "no",
+    "text_words": 7,
+    "text": "THE MOST IMPORTANT WEATHER REPORT IN HISTORY",
+    "palette": "blue/red",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "LxFY5OdirK8",
+   "title": "Black Knight Squadron Defends the World - Animated",
+   "views": 247127,
+   "len_s": 1344,
+   "published": "2025-04-01",
+   "outlier": 0.46,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "3D render (jet, explosion, crater)",
+    "face": "no",
+    "text_words": 6,
+    "text": "BLACK KNIGHT SQUADRON DEFENDS THE WORLD",
+    "palette": "green, orange, teal",
+    "map": "no"
+   }
+  },
+  {
+   "id": "lv6FbmiRyCE",
+   "title": "The Bay of Pigs (2/2) - Castro Strikes Back - Animated",
+   "views": 286847,
+   "len_s": 1172,
+   "published": "2024-11-01",
+   "outlier": 0.53,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "top-down map render (tanks, paratroopers, fire)",
+    "face": "no",
+    "text_words": 7,
+    "text": "THE BAY OF PIGS / CASTRO STRIKES BACK",
+    "palette": "olive green, orange",
+    "map": "yes"
+   }
+  }
+ ]
+}

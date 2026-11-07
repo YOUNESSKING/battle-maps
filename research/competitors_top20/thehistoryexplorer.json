@@ -1,0 +1,396 @@
+{
+ "handle": "@thehistoryexplorer",
+ "channel": "The History Explorer",
+ "rank": 14,
+ "subs": 553000,
+ "median_views_recent50": 116741.0,
+ "note": "outlier = views / median views of the channel's most recent 50 long uploads (vidIQ recent list). Old viral videos have inflated outliers.",
+ "thumbnail_stats": {
+  "winners_with_face_pct": 38,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 4.0,
+  "winners_with_map_pct": 0,
+  "winners_with_red_circle_arrow_pct": 25,
+  "weak_with_face_pct": 100,
+  "weak_with_text_pct": 100,
+  "weak_avg_text_words": 3.25,
+  "winners_avg_title_chars": 72,
+  "weak_avg_title_chars": 66,
+  "winners_titles_with_digit_pct": 62,
+  "winners_titles_with_allcaps_word_pct": 62
+ },
+ "videos": [
+  {
+   "id": "izLReteeFn0",
+   "title": "The Horror of D-Day Through German Eyes! | WWII Normandy",
+   "views": 2186222,
+   "len_s": 1802,
+   "len": "30:02",
+   "published": "2025-06-06",
+   "outlier": 18.73,
+   "type": "single-subject war (Omaha German strongpoints tour)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "AI illustration/photo",
+    "face": "close-up (frightened German)",
+    "text_words": 4,
+    "text": "D-DAY: THE GERMAN VIEW",
+    "palette": "dark green/grey + red word",
+    "map": false,
+    "notes": "bottom black bar, white+red condensed caps"
+   }
+  },
+  {
+   "id": "2vaAE8Y79OE",
+   "title": "The Lost German Girl: Unraveling the Mystery of Her 1945 Footage | The End of WW2",
+   "views": 2162195,
+   "len_s": 550,
+   "len": "9:10",
+   "published": "2025-05-02",
+   "outlier": 18.52,
+   "type": "single-subject (footage mystery)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised/enhanced film frame",
+    "face": "close-up (woman)",
+    "text_words": 4,
+    "text": "THE LOST GERMAN GIRL",
+    "palette": "green/grey + red word",
+    "map": false,
+    "notes": "face looks at camera; bottom bar"
+   }
+  },
+  {
+   "id": "Jb-K3N6h3QI",
+   "title": "ORIGINAL FOOTAGE | Omaha Beach Assault Wave | WN60 and the German Defenders | Normandy WW2",
+   "views": 2093855,
+   "len_s": 1619,
+   "len": "26:59",
+   "published": "2023-11-04",
+   "outlier": 17.94,
+   "type": "single-subject war (one strongpoint)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still + red circle",
+    "face": "small",
+    "text_words": 7,
+    "text": "ORIGINAL FOOTAGE FROM OMAHA BEACH / WALKING THE GROUND",
+    "palette": "grey/white + red",
+    "map": false,
+    "notes": "red ring on soldier; top and bottom bars; channel logo"
+   }
+  },
+  {
+   "id": "Sym4bYxugdI",
+   "title": "The most BRUTAL wounds from the Battle of Waterloo",
+   "views": 978616,
+   "len_s": 539,
+   "len": "8:59",
+   "published": "2023-06-09",
+   "outlier": 8.38,
+   "type": "single-subject (battle injuries)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo skeleton + portrait",
+    "face": "portrait (Wellington)",
+    "text_words": 3,
+    "text": "TERRIBLE WOUNDS WATERLOO",
+    "palette": "sand/brown + red + white",
+    "map": false,
+    "notes": "skull + portrait, big white text bottom-left"
+   }
+  },
+  {
+   "id": "MiBklu1dXpo",
+   "title": "The Salem Witch Trials - The Real Locations | American History (No AI Documentary)",
+   "views": 918688,
+   "len_s": 853,
+   "len": "14:13",
+   "published": "2026-01-23",
+   "outlier": 7.87,
+   "type": "generic (not war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "AI/photo scene",
+    "face": "back view",
+    "text_words": 2,
+    "text": "SALEM 1692",
+    "palette": "brown/gold",
+    "map": false,
+    "notes": "cream serif text; moody; no bar"
+   }
+  },
+  {
+   "id": "vZInzI_6aGQ",
+   "title": "ORIGINAL FOOTAGE! Ultimate Then & Now Compilation | Cherbourg | Normandy WW2",
+   "views": 779664,
+   "len_s": 811,
+   "len": "13:31",
+   "published": "2024-04-04",
+   "outlier": 6.68,
+   "type": "compilation (then/now)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "B&W/colour photo + red circle",
+    "face": "small faces",
+    "text_words": 4,
+    "text": "ULTIMATE THEN & NOW CHERBOURG",
+    "palette": "grey/green + red",
+    "map": false,
+    "notes": "split then/now feel; circle on runner"
+   }
+  },
+  {
+   "id": "hUGc5FjhUKc",
+   "title": "Exploring Omaha Beach In Search Of Ultimate 'Then and Now' Photo | D-Day History | WW2",
+   "views": 656872,
+   "len_s": 1402,
+   "len": "23:22",
+   "published": "2024-07-26",
+   "outlier": 5.63,
+   "type": "single-subject (location tour)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "AI/render of Omaha beach + circle",
+    "face": "none",
+    "text_words": 5,
+    "text": "OMAHA BEACH / ULTIMATE THEN & NOW",
+    "palette": "blue/green + red",
+    "map": false,
+    "notes": "wide beach scene; two text blocks"
+   }
+  },
+  {
+   "id": "9fyop__7tvU",
+   "title": "The Deadliest EXPLOSIONS of WW2 | Caught on Film | WW2",
+   "views": 639857,
+   "len_s": 503,
+   "len": "8:23",
+   "published": "2024-12-20",
+   "outlier": 5.48,
+   "type": "compilation / list",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still of explosion + circle",
+    "face": "none",
+    "text_words": 3,
+    "text": "862 LIVES LOST!",
+    "palette": "grey/orange + white",
+    "map": false,
+    "notes": "number in text; red circle on ship"
+   }
+  },
+  {
+   "id": "3kXrWve5Dr4",
+   "title": "William Wallace Brutal Revenge! | What The Movie Doesn't Tell You | SCOTLAND",
+   "views": 577421,
+   "len_s": 1196,
+   "len": "19:56",
+   "published": "2025-03-14",
+   "outlier": 4.95,
+   "type": "single-subject war",
+   "list": "popular"
+  },
+  {
+   "id": "yDrsOKIuXcU",
+   "title": "THE SAS | 1987 PETERHEAD PRISON RAID | EPIC SPECIAL FORCES MISSION",
+   "views": 532884,
+   "len_s": 749,
+   "len": "12:29",
+   "published": "2023-06-03",
+   "outlier": 4.56,
+   "type": "single-subject (one raid)",
+   "list": "popular"
+  },
+  {
+   "id": "c92akC8GZaM",
+   "title": "They REMOVED the Danger Tree! | Battle of the Somme | WW1",
+   "views": 133319,
+   "len_s": 742,
+   "len": "12:22",
+   "published": "2026-08-21",
+   "outlier": 1.14,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "J1EXubrQSM8",
+   "title": "What It Was REALLY Like to Go Over the Top? | Battle of the Somme | WW1",
+   "views": 44981,
+   "len_s": 713,
+   "len": "11:53",
+   "published": "2026-08-14",
+   "outlier": 0.39,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "uwCEo0FYu8Y",
+   "title": "The German Gun That Refused To Die! | WWII Normandy",
+   "views": 62574,
+   "len_s": 1020,
+   "len": "17:00",
+   "published": "2026-06-26",
+   "outlier": 0.54,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "avM_a3ozvgE",
+   "title": "THE ULTIMATE D-DAY TOUR - Every Landing Beach | WWII Normandy",
+   "views": 48900,
+   "len_s": 7353,
+   "len": "2:02:33",
+   "published": "2026-04-17",
+   "outlier": 0.42,
+   "type": "long tour",
+   "list": "recent"
+  },
+  {
+   "id": "IUyPIIOK_00",
+   "title": "The Forgotten Massacre That Shocked the Allied Command | WW2 (No AI)",
+   "views": 8899,
+   "len_s": 856,
+   "len": "14:16",
+   "published": "2026-04-09",
+   "outlier": 0.08,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "xX4lJM_PccQ",
+   "title": "This Blunder Killed Thousands At Gettysburg | Civil War (No AI)",
+   "views": 13019,
+   "len_s": 641,
+   "len": "10:41",
+   "published": "2026-04-02",
+   "outlier": 0.11,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "CXMA4RxzZyU",
+   "title": "Why This Field Was A Gettysburg Death Trap | Civil War (No AI)",
+   "views": 28256,
+   "len_s": 976,
+   "len": "16:16",
+   "published": "2026-03-25",
+   "outlier": 0.24,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "Uy4HQ4y3jLo",
+   "title": "Walk The Bayonet Charge With Me At Gettysburg | Civil War (No AI)",
+   "views": 10847,
+   "len_s": 960,
+   "len": "16:00",
+   "published": "2026-03-06",
+   "outlier": 0.09,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "gUkURKBn7Fc",
+   "title": "Who Shot Jennie Wade? The Only Civilian Killed At Gettysburg | Civil War (No AI)",
+   "views": 51206,
+   "len_s": 1607,
+   "len": "26:47",
+   "published": "2026-02-27",
+   "outlier": 0.44,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "eJG7B3dpg9g",
+   "title": "The Gettysburg Sharpshooter Identity Revealed? | Civil War (No AI)",
+   "views": 26485,
+   "len_s": 646,
+   "len": "10:46",
+   "published": "2026-02-20",
+   "outlier": 0.23,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "IUyPIIOK_00",
+   "title": "The Forgotten Massacre That Shocked the Allied Command | WW2 (No AI)",
+   "views": 8899,
+   "len_s": 856,
+   "len": "14:16",
+   "published": "2026-04-09",
+   "outlier": 0.08,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "photo collage",
+    "face": "close-up (SS officer)",
+    "text_words": 4,
+    "text": "IT WAS A MASSACRE",
+    "palette": "brown/olive + red word",
+    "map": false,
+    "notes": "two surrendering soldiers + officer"
+   }
+  },
+  {
+   "id": "Uy4HQ4y3jLo",
+   "title": "Walk The Bayonet Charge With Me At Gettysburg | Civil War (No AI)",
+   "views": 10847,
+   "len_s": 960,
+   "len": "16:00",
+   "published": "2026-03-06",
+   "outlier": 0.09,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "AI soldier + map with arrows",
+    "face": "close-up (screaming soldier)",
+    "text_words": 2,
+    "text": "BAYONET CHARGE!",
+    "palette": "blue/green + red",
+    "map": true,
+    "notes": "blue and red arrows on a tactical map"
+   }
+  },
+  {
+   "id": "xX4lJM_PccQ",
+   "title": "This Blunder Killed Thousands At Gettysburg | Civil War (No AI)",
+   "views": 13019,
+   "len_s": 641,
+   "len": "10:41",
+   "published": "2026-04-02",
+   "outlier": 0.11,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "colourised portrait + map arrows",
+    "face": "close-up (general)",
+    "text_words": 3,
+    "text": "THE BIGGEST MISTAKE?",
+    "palette": "green/blue + red",
+    "map": true,
+    "notes": "arrows on terrain map, general portrait"
+   }
+  },
+  {
+   "id": "ENaGnZv6zdg",
+   "title": "What Was The Hell In The Hedgerows? | Major of St Lo | Normandy WW2",
+   "views": 13922,
+   "len_s": 929,
+   "len": "15:29",
+   "published": "2025-10-17",
+   "outlier": 0.12,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "photo + portrait",
+    "face": "close-up (portrait)",
+    "text_words": 4,
+    "text": "HELL IN THE HEDGEROWS",
+    "palette": "green + red word",
+    "map": false,
+    "notes": "Sherman in hedgerow + portrait"
+   }
+  }
+ ]
+}

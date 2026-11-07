@@ -1,0 +1,363 @@
+{
+ "channel": {
+  "handle": "@historyhit",
+  "name": "History Hit",
+  "subs": "2.02M",
+  "videos": 853,
+  "avg_long_len": "49 min",
+  "flag": "NOT our format: documentary / presenter channel (Dan Snow), 20-110 min, 1 video every 3-4 days, many non-war (medieval life, archaeology, movie reactions). Only 2 winners are narrated single-subject war videos (Barbarossa and Stalingrad diaries). Mark: presenter/talking-head/compilation."
+ },
+ "recent_median_views": 188883.0,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 75,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 5.0,
+  "winners_with_map_pct": 0,
+  "weak_with_face_pct": 75,
+  "weak_avg_text_words": 4.2,
+  "weak_with_map_pct": 0,
+  "recent_median_views": 188883.0
+ },
+ "videos": [
+  {
+   "id": "R8JPN9tWVPQ",
+   "title": "What Was Sex Really Like in the Middle Ages?",
+   "views": 11267396,
+   "len_s": 2031,
+   "published": "2022-05-02",
+   "outlier": 59.65,
+   "type": "generic (not war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "presenter talking head, location",
+    "face": true,
+    "text_words": 3,
+    "text": "MEDIEVAL SEX LIVES",
+    "palette": "red/leopard/teal label",
+    "map": false
+   }
+  },
+  {
+   "id": "Hw-VUaeNmgw",
+   "title": "Uncensored Nazi Account From Hitler's Invasion of Russia",
+   "views": 9656235,
+   "len_s": 5254,
+   "published": "2023-04-21",
+   "outlier": 51.12,
+   "type": "war (diary reading over archive)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised archive photo",
+    "face": false,
+    "text_words": 6,
+    "text": "RARE FOOTAGE AND ACCOUNT OF BARBAROSSA",
+    "palette": "grey/teal label",
+    "map": false
+   }
+  },
+  {
+   "id": "ssaVVGYpbPQ",
+   "title": "Nazis Frozen Alive: Brutal Uncensored Accounts From Stalingrad",
+   "views": 6927435,
+   "len_s": 6741,
+   "published": "2024-10-10",
+   "outlier": 36.68,
+   "type": "war (letters over archive)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised archive photo, German soldiers",
+    "face": true,
+    "text_words": 6,
+    "text": "COLOUR FOOTAGE AND LETTERS FROM STALINGRAD",
+    "palette": "green/grey/teal",
+    "map": false
+   }
+  },
+  {
+   "id": "Lsdm8VyWlbk",
+   "title": "Military Historian Reviews the Best Movie Battle Scenes of All Time",
+   "views": 6617327,
+   "len_s": 2466,
+   "published": "2022-12-23",
+   "outlier": 35.03,
+   "type": "movie-reaction (war-adjacent)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still + host close-up",
+    "face": true,
+    "text_words": 4,
+    "text": "A COMPLETELY HORRIFIC DEPICTION (quote)",
+    "palette": "navy/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "WSXaCkQ9sF8",
+   "title": "How much Damage can this Napoleonic Cannon Do?",
+   "views": 5249091,
+   "len_s": 529,
+   "published": "2021-10-21",
+   "outlier": 27.79,
+   "type": "weapon test (war-adjacent)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "staged photo (cannon firing) + arrow",
+    "face": false,
+    "text_words": 4,
+    "text": "THE SOUND IS DEAFENING! (quote)",
+    "palette": "sky blue/orange",
+    "map": false
+   }
+  },
+  {
+   "id": "Lm9Qx1A3U6s",
+   "title": "WW2 Luftwaffe Ace Flies RAF Spitfire For the First Time",
+   "views": 5010461,
+   "len_s": 2336,
+   "published": "2025-05-05",
+   "outlier": 26.53,
+   "type": "war story (on-location)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "portrait (old Luftwaffe pilot) + Spitfire inset",
+    "face": true,
+    "text_words": 5,
+    "text": "HITLER'S LAST LIVING FLYING ACE",
+    "palette": "white/grey/teal",
+    "map": false
+   }
+  },
+  {
+   "id": "j1nOQZDDqqE",
+   "title": "Age of Empires Historian Dan Snow Reviews Famous Movie Scenes",
+   "views": 4363759,
+   "len_s": 1868,
+   "published": "2022-05-13",
+   "outlier": 23.1,
+   "type": "movie-reaction",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still + host",
+    "face": true,
+    "text_words": 6,
+    "text": "I'VE NEVER SEEN A BETTER DEPICTION (quote)",
+    "palette": "navy/gold/teal",
+    "map": false
+   }
+  },
+  {
+   "id": "vZ1d7ESdlZs",
+   "title": "Dan Snow Rates the Best Historical Films of All Time",
+   "views": 4136659,
+   "len_s": 1694,
+   "published": "2023-03-12",
+   "outlier": 21.9,
+   "type": "movie-reaction",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still (Schindler) + host",
+    "face": true,
+    "text_words": 6,
+    "text": "THE MOVIE IS KIND TO SCHINDLER (quote)",
+    "palette": "b/w + navy",
+    "map": false
+   }
+  },
+  {
+   "id": "yh9I9NRckIA",
+   "title": "The Dark and True Story of The Peaky Blinders Gang",
+   "views": 3956212,
+   "len_s": 1249,
+   "published": "2021-12-08",
+   "outlier": 20.95,
+   "type": "generic (not war)",
+   "list": "popular"
+  },
+  {
+   "id": "MDN-DtJMs4Y",
+   "title": "A Brief History Of Ukraine (And Why Russia Wants To Control It)",
+   "views": 3802098,
+   "len_s": 1109,
+   "published": "2022-03-21",
+   "outlier": 20.13,
+   "type": "explainer (map)",
+   "list": "popular"
+  },
+  {
+   "id": "T4Smtx7eOcM",
+   "title": "Historian Explains Scotland's Facts, Myths & History",
+   "views": 31021,
+   "len_s": 1881,
+   "published": "2026-11-06",
+   "outlier": 0.16,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "hqi7T1DKXlA",
+   "title": "Historian Guided Tour of the Houses of Parliament",
+   "views": 270423,
+   "len_s": 1677,
+   "published": "2026-11-02",
+   "outlier": 1.43,
+   "type": "generic (tour)",
+   "list": "recent"
+  },
+  {
+   "id": "SDY3ikU1zmA",
+   "title": "The King Obsessed With Witches",
+   "views": 91115,
+   "len_s": 2984,
+   "published": "2026-10-29",
+   "outlier": 0.48,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "094gqimqEe4",
+   "title": "WW2 Historian Reacts To Darkest Hour | Deep Dives",
+   "views": 146389,
+   "len_s": 3142,
+   "published": "2026-10-26",
+   "outlier": 0.78,
+   "type": "movie-reaction",
+   "list": "recent"
+  },
+  {
+   "id": "ZsGRE0bXoUE",
+   "title": "Ancient Historian Reacts to Assassins Creed Odyssey Battle",
+   "views": 83026,
+   "len_s": 1465,
+   "published": "2026-10-22",
+   "outlier": 0.44,
+   "type": "game-reaction",
+   "list": "recent"
+  },
+  {
+   "id": "05b2MEFs_xI",
+   "title": "What Was Medieval London Really Like? | History Hit Compilation",
+   "views": 279127,
+   "len_s": 7632,
+   "published": "2026-10-19",
+   "outlier": 1.48,
+   "type": "compilation",
+   "list": "recent"
+  },
+  {
+   "id": "D0aoso4RetA",
+   "title": "The WILD Medieval History Of Eleanor of Aquitaine",
+   "views": 183095,
+   "len_s": 3316,
+   "published": "2026-10-15",
+   "outlier": 0.97,
+   "type": "person (not war)",
+   "list": "recent"
+  },
+  {
+   "id": "xTLTrHF4be0",
+   "title": "We Fired a Soviet-Era SVD Sniper Rifle",
+   "views": 440302,
+   "len_s": 1318,
+   "published": "2026-10-12",
+   "outlier": 2.33,
+   "type": "weapon test",
+   "list": "recent"
+  },
+  {
+   "id": "XQ0euM7QGjs",
+   "title": "How Robert the Bruce Humiliated England | Battle of Bannockburn 1314",
+   "views": 817101,
+   "len_s": 3017,
+   "published": "2026-10-08",
+   "outlier": 4.33,
+   "type": "single battle",
+   "list": "recent"
+  },
+  {
+   "id": "Om-wfQ3Ac4I",
+   "title": "Viking Expert Answers Your Questions About Norse Mythology",
+   "views": 194671,
+   "len_s": 1651,
+   "published": "2026-10-05",
+   "outlier": 1.03,
+   "type": "Q&A",
+   "list": "recent"
+  },
+  {
+   "id": "kB2J9KxB95c",
+   "title": "Top Secret D-Day Documents Reveal How the Allies Fooled Hitler",
+   "views": 34456,
+   "len_s": 1722,
+   "published": "2026-06-03",
+   "outlier": 0.18,
+   "type": "war (documents)",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "host + document photo + arrow",
+    "face": true,
+    "text_words": 6,
+    "text": "REAL DOCUMENTS FROM THE SECRET MISSION",
+    "palette": "cream/teal",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "uCNsJJuJXIY",
+   "title": "Expert Explains How Humans Outlasted The Neanderthals",
+   "views": 47427,
+   "len_s": 2022,
+   "published": "2026-06-08",
+   "outlier": 0.25,
+   "type": "generic",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "two hosts + skull + DNA",
+    "face": true,
+    "text_words": 2,
+    "text": "HUMAN EVOLUTION",
+    "palette": "blue/purple",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "TqnRN-Jb6uY",
+   "title": "The Fall Of Babylon and Rise of Persia's Achaemenid Empire",
+   "views": 48815,
+   "len_s": 2852,
+   "published": "2026-06-24",
+   "outlier": 0.26,
+   "type": "war/ancient history",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "host (shouting) + ziggurat + lightning",
+    "face": true,
+    "text_words": 4,
+    "text": "THE PERSIANS BROUGHT HELLFIRE",
+    "palette": "orange/black",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "WSj1ZO9fsyU",
+   "title": "The Archaeological Discovery of Petra: The Hidden City",
+   "views": 50774,
+   "len_s": 2871,
+   "published": "2026-07-30",
+   "outlier": 0.27,
+   "type": "generic",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "Petra photo, tiny person",
+    "face": false,
+    "text_words": 5,
+    "text": "WE GO INSIDE THE FORBIDDEN CITY",
+    "palette": "orange/black",
+    "map": false
+   },
+   "weak_thumb": true
+  }
+ ]
+}

@@ -1,0 +1,396 @@
+{
+ "handle": "@historyatwar",
+ "channel": "HistoryAtWar",
+ "rank": 13,
+ "subs": 225000,
+ "median_views_recent50": 95529.5,
+ "note": "outlier = views / median views of the channel's most recent 50 long uploads (vidIQ recent list). Old viral videos have inflated outliers.",
+ "thumbnail_stats": {
+  "winners_with_face_pct": 62,
+  "winners_with_text_pct": 25,
+  "winners_avg_text_words": 0.75,
+  "winners_with_map_pct": 0,
+  "winners_with_red_circle_arrow_pct": 0,
+  "weak_with_face_pct": 75,
+  "weak_with_text_pct": 75,
+  "weak_avg_text_words": 2.0,
+  "winners_avg_title_chars": 52,
+  "weak_avg_title_chars": 57,
+  "winners_titles_with_digit_pct": 88,
+  "winners_titles_with_allcaps_word_pct": 0
+ },
+ "videos": [
+  {
+   "id": "2pbR2JzMn2E",
+   "title": "WW2: Battle Of Kursk (Intense Footage)",
+   "views": 2956598,
+   "len_s": 573,
+   "len": "9:33",
+   "published": "2021-09-25",
+   "outlier": 30.95,
+   "type": "short footage montage (2021 format, 5-9 min)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised WW2 photo",
+    "face": "group (side/back)",
+    "text_words": 0,
+    "text": "",
+    "palette": "warm olive/yellow",
+    "map": false,
+    "notes": "Soviet infantry advancing, smoke"
+   }
+  },
+  {
+   "id": "Li_2NscTmVw",
+   "title": "WW2: ''Waffen SS'' (Intense Combat Footage)",
+   "views": 2638214,
+   "len_s": 389,
+   "len": "6:29",
+   "published": "2021-07-18",
+   "outlier": 27.62,
+   "type": "short footage montage",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised WW2 photo (letterboxed)",
+    "face": "partial",
+    "text_words": 0,
+    "text": "",
+    "palette": "earth tones",
+    "map": false,
+    "notes": "two soldiers in trench; black bars top/bottom"
+   }
+  },
+  {
+   "id": "CzfuLb0PYY0",
+   "title": "WW2: The Eastern Front (Brutal Footage)",
+   "views": 2261571,
+   "len_s": 306,
+   "len": "5:06",
+   "published": "2021-07-05",
+   "outlier": 23.67,
+   "type": "short footage montage",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised photo, landscape",
+    "face": "none (back view)",
+    "text_words": 0,
+    "text": "",
+    "palette": "teal/green mountains",
+    "map": false,
+    "notes": "lone soldier, mountains; letterboxed"
+   }
+  },
+  {
+   "id": "DEyosuWHBmw",
+   "title": "WW2: Battle Of France (Invasion of France) (Intense Footage)",
+   "views": 1796900,
+   "len_s": 211,
+   "len": "3:31",
+   "published": "2021-08-19",
+   "outlier": 18.81,
+   "type": "short footage montage",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised photo",
+    "face": "partial",
+    "text_words": 0,
+    "text": "",
+    "palette": "blue/beige",
+    "map": false,
+    "notes": "MG34 crew at fence"
+   }
+  },
+  {
+   "id": "xiDKUTWV9eY",
+   "title": "WW2: Battle Of Stalingrad (Intense Footage)",
+   "views": 1704029,
+   "len_s": 484,
+   "len": "8:04",
+   "published": "2021-09-18",
+   "outlier": 17.84,
+   "type": "short footage montage",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised photo",
+    "face": "yes (profile)",
+    "text_words": 0,
+    "text": "",
+    "palette": "beige/green/blue",
+    "map": false,
+    "notes": "soldier throwing grenade"
+   }
+  },
+  {
+   "id": "BDgvISqlp9o",
+   "title": "Germany's Most Infamous Division: Deaths Head, 3rd SS Totenkopf | WW2",
+   "views": 1356941,
+   "len_s": 4462,
+   "len": "1:14:22",
+   "published": "2025-01-23",
+   "outlier": 14.2,
+   "type": "single-subject war (one division, long doc)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "collage of 2 colourised photos + insignia",
+    "face": "yes",
+    "text_words": 4,
+    "text": "\"ELITE OF THE ELITE\"",
+    "palette": "green camo + white",
+    "map": false,
+    "notes": "large white Totenkopf skull centre"
+   }
+  },
+  {
+   "id": "xIlJUJYrMB0",
+   "title": "The Hell of Prokhorovka: Waffen SS Vs Soviet Elite | World War II",
+   "views": 1329143,
+   "len_s": 3241,
+   "len": "54:01",
+   "published": "2024-02-06",
+   "outlier": 13.91,
+   "type": "single-subject war (one battle)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "collage: photo + Tiger tank + insignia",
+    "face": "yes",
+    "text_words": 2,
+    "text": "GREATEST BATTLE",
+    "palette": "green/grey + white",
+    "map": false,
+    "notes": "SS runes logo, white outlined text"
+   }
+  },
+  {
+   "id": "RmkVHBTSRos",
+   "title": "WW2: \"Hitlerjugend\" (12th Panzer Division) (HD Footage)",
+   "views": 1282585,
+   "len_s": 325,
+   "len": "5:25",
+   "published": "2021-11-18",
+   "outlier": 13.43,
+   "type": "short footage montage",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised group photo",
+    "face": "yes (group, smiling)",
+    "text_words": 0,
+    "text": "",
+    "palette": "green camo/grey sky",
+    "map": false,
+    "notes": "young soldiers with Iron Crosses"
+   }
+  },
+  {
+   "id": "m19r4ZCcHq8",
+   "title": "WW2: Operation Barbarossa (Combat Footage)",
+   "views": 1247258,
+   "len_s": 267,
+   "len": "4:27",
+   "published": "2021-07-24",
+   "outlier": 13.06,
+   "type": "short footage montage",
+   "list": "popular"
+  },
+  {
+   "id": "z1dknbqOadU",
+   "title": "Men of Blood: What the Waffen SS Really Were | Full Story Explained, WW2",
+   "views": 1165554,
+   "len_s": 8400,
+   "len": "2:20:00",
+   "published": "2025-06-23",
+   "outlier": 12.2,
+   "type": "long generic documentary (2h20)",
+   "list": "popular"
+  },
+  {
+   "id": "Ajag_S3rEYU",
+   "title": "Why Germany Lost the Eastern Front: Told by Hitler's Generals",
+   "views": 11242,
+   "len_s": 2231,
+   "len": "37:11",
+   "published": "2026-11-05",
+   "outlier": 0.12,
+   "type": "generic (2 days old)",
+   "list": "recent"
+  },
+  {
+   "id": "uqx6LcBMbg4",
+   "title": "5 Hours of Pure Brutal Eastern Front Battles",
+   "views": 62908,
+   "len_s": 18700,
+   "len": "5:11:40",
+   "published": "2026-10-28",
+   "outlier": 0.66,
+   "type": "compilation (5h)",
+   "list": "recent"
+  },
+  {
+   "id": "Za2mifDH498",
+   "title": "The BloodBath of Monte Cassino (UNCENSORED FOOTAGE)",
+   "views": 25101,
+   "len_s": 3932,
+   "len": "1:05:32",
+   "published": "2026-10-23",
+   "outlier": 0.26,
+   "type": "single-subject battle",
+   "list": "recent"
+  },
+  {
+   "id": "S9fNtyrjGaA",
+   "title": "The Last Great Battles of the Eastern Front (No AI)",
+   "views": 63406,
+   "len_s": 4293,
+   "len": "1:11:33",
+   "published": "2026-10-18",
+   "outlier": 0.66,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "gklUZA1cyiw",
+   "title": "The Japanese Land Invasion of America",
+   "views": 11176,
+   "len_s": 2439,
+   "len": "40:39",
+   "published": "2026-10-11",
+   "outlier": 0.12,
+   "type": "single-subject (odd topic)",
+   "list": "recent"
+  },
+  {
+   "id": "0y3aQB7FR_c",
+   "title": "The War Crimes of Normandy (UNCENSORED FOOTAGE)",
+   "views": 117671,
+   "len_s": 2465,
+   "len": "41:05",
+   "published": "2026-10-05",
+   "outlier": 1.23,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "e1HFZ5h18ik",
+   "title": "The First Battles Inside Germany Were Worse Than You Think (UNCENSORED FOOTAGE)",
+   "views": 384383,
+   "len_s": 4421,
+   "len": "1:13:41",
+   "published": "2026-09-28",
+   "outlier": 4.02,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "Gasmd9dP8p4",
+   "title": "3 Hours of Brutal WW2 Battles & Accounts (Uncensored Footage)",
+   "views": 222874,
+   "len_s": 12296,
+   "len": "3:24:56",
+   "published": "2026-09-23",
+   "outlier": 2.33,
+   "type": "compilation (3h25)",
+   "list": "recent"
+  },
+  {
+   "id": "m7jJp-BIYW4",
+   "title": "The European Elite of the Waffen SS: Full Story",
+   "views": 101281,
+   "len_s": 5743,
+   "len": "1:35:43",
+   "published": "2026-09-18",
+   "outlier": 1.06,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "8QS1RFnYMDw",
+   "title": "When the US Army First Faced the Wehrmacht (WW2) (UNCENSORED FOOTAGE)",
+   "views": 108519,
+   "len_s": 2613,
+   "len": "43:33",
+   "published": "2026-09-11",
+   "outlier": 1.14,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "O5Ci9hJ6SeM",
+   "title": "Battle of Castle Itter Explained (UNCENSORED FOOTAGE)",
+   "views": 5747,
+   "len_s": 2051,
+   "len": "34:11",
+   "published": "2026-08-08",
+   "outlier": 0.06,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "3-photo collage",
+    "face": "yes (3 portraits)",
+    "text_words": 2,
+    "text": "(NO AI)",
+    "palette": "dark + red/white",
+    "map": false,
+    "notes": "SS officer, handshake, US officer; small badge text"
+   }
+  },
+  {
+   "id": "gGLnQWcItAw",
+   "title": "Why the British Respected German Soldiers",
+   "views": 8990,
+   "len_s": 1682,
+   "len": "28:02",
+   "published": "2026-06-15",
+   "outlier": 0.09,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "film-still collage (AI/film)",
+    "face": "yes (Rommel-like officer, close)",
+    "text_words": 3,
+    "text": "WAR WITHOUT HATE",
+    "palette": "sand/brown + white, red accent",
+    "map": false,
+    "notes": "film still of Desert War + officer"
+   }
+  },
+  {
+   "id": "gklUZA1cyiw",
+   "title": "The Japanese Land Invasion of America",
+   "views": 11176,
+   "len_s": 2439,
+   "len": "40:39",
+   "published": "2026-10-11",
+   "outlier": 0.12,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "colourised battle photo",
+    "face": "none",
+    "text_words": 0,
+    "text": "",
+    "palette": "red/green/grey",
+    "map": false,
+    "notes": "Rising Sun flag; no text"
+   }
+  },
+  {
+   "id": "1E4nT6ZHrq4",
+   "title": "Why Did the German Army Keep Getting Encircled Again and Again on the Eastern Front (World War II)",
+   "views": 14866,
+   "len_s": 2338,
+   "len": "38:58",
+   "published": "2026-06-23",
+   "outlier": 0.16,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "colourised photo",
+    "face": "yes (general, snowy)",
+    "text_words": 3,
+    "text": "TRAPPED IN HELL",
+    "palette": "white/grey + big red text",
+    "map": false,
+    "notes": "bold red blurry text bottom"
+   }
+  }
+ ]
+}

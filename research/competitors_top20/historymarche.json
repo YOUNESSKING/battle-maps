@@ -1,0 +1,423 @@
+{
+ "channel": "HistoryMarche",
+ "handle": "historymarche",
+ "rank": 7,
+ "subs": 1340000,
+ "recent_median_views": 343433.5,
+ "recent_n": 50,
+ "thumbnail_summary": {
+  "winners": {
+   "n": 8,
+   "pct_face_clear": 12,
+   "pct_face_any": 12,
+   "avg_text_words": 3.9,
+   "pct_text": 100,
+   "pct_map": 75
+  },
+  "weak": {
+   "n": 4,
+   "pct_face_clear": 0,
+   "pct_face_any": 75,
+   "avg_text_words": 7.2,
+   "pct_text": 100,
+   "pct_map": 100
+  }
+ },
+ "title_summary": {
+  "winners": {
+   "avg_chars": 78,
+   "pct_year_or_number": 100,
+   "pct_caps": 38,
+   "pct_colon": 0,
+   "pct_dash": 100,
+   "pct_pipe": 0,
+   "pct_howwhy": 12,
+   "pct_animated": 0
+  },
+  "weak": {
+   "avg_chars": 72,
+   "pct_year_or_number": 100,
+   "pct_caps": 0,
+   "pct_colon": 50,
+   "pct_dash": 75,
+   "pct_pipe": 0,
+   "pct_howwhy": 25,
+   "pct_animated": 0
+  }
+ },
+ "videos": [
+  {
+   "id": "ndXuRoJd6hQ",
+   "title": "Battle of Hattin, 1187 AD - Saladin's Greatest Victory",
+   "views": 5425633,
+   "len_s": 1690,
+   "published": "2018-11-17",
+   "outlier": 15.8,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "own animated map frame: coloured unit dots, red arrow",
+    "face": "no",
+    "text_words": 2,
+    "text": "HATTIN, 1187 (+ H logo top-left)",
+    "palette": "brown parchment, red/yellow",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "WBAGWgu4ceA",
+   "title": "Battle of Agincourt, 1415 (ALL PARTS) - England vs France - Hundred Years' War DOCUMENTARY",
+   "views": 3857723,
+   "len_s": 2026,
+   "published": "2022-09-30",
+   "outlier": 11.23,
+   "type": "multi-part single battle (ALL PARTS, 34 min)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "two armoured knight miniatures over map blocks + white arrows",
+    "face": "no (miniature figures, small faces)",
+    "text_words": 5,
+    "text": "A BATTLE LIKE NO OTHER",
+    "palette": "olive/blue/grey",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "OtrClsZy724",
+   "title": "The Lion Awakens! History of the Third Crusade (ALL PARTS - ALL BATTLES) FULL DOCUMENTARY 1h 30m",
+   "views": 3663379,
+   "len_s": 5552,
+   "published": "2023-12-16",
+   "outlier": 10.67,
+   "type": "compilation (all parts, 1h32)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "AI/painted marching soldiers in a gate",
+    "face": "no (backs/helmets)",
+    "text_words": 4,
+    "text": "WHEN MEN BECAME BEASTS",
+    "palette": "brown, dusty, dark vignette",
+    "map": "no"
+   }
+  },
+  {
+   "id": "e3JPe75W-Eg",
+   "title": "Hannibal (PARTS 1 - 5) - Rome's Greatest Enemy - Second Punic War",
+   "views": 3444652,
+   "len_s": 3454,
+   "published": "2020-06-20",
+   "outlier": 10.03,
+   "type": "compilation (parts 1-5 of a campaign series)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "painted extreme close-up of Hannibal's eyes",
+    "face": "yes, extreme close-up",
+    "text_words": 7,
+    "text": "HANNIBAL / ROME'S GREATEST ENEMY / PARTS 1 - 5",
+    "palette": "black, skin brown",
+    "map": "no"
+   }
+  },
+  {
+   "id": "zNZofJbM0Q4",
+   "title": "Battle of Ain Jalut, 1260 AD - The Battle that saved Islam and stopped the Mongols",
+   "views": 3120248,
+   "len_s": 1438,
+   "published": "2019-08-31",
+   "outlier": 9.09,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "own map frame with red arrow, 3 commander banners",
+    "face": "no",
+    "text_words": 2,
+    "text": "AIN JALUT",
+    "palette": "olive green, red",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "zioVlE8Vt_s",
+   "title": "Battle of Badr, 624 AD - Islam's first arrow",
+   "views": 2848895,
+   "len_s": 1357,
+   "published": "2021-07-25",
+   "outlier": 8.3,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "parchment map: unit blocks, calligraphy, white arrows",
+    "face": "no",
+    "text_words": 4,
+    "text": "BADR / ISLAM'S FIRST ARROW",
+    "palette": "parchment beige/black",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "SGZFAeSrWj8",
+   "title": "Battle of Keresztes, 1596 AD - ALL PARTS - What happens when you don't give up - Full Documentary",
+   "views": 2787232,
+   "len_s": 3493,
+   "published": "2022-07-16",
+   "outlier": 8.12,
+   "type": "compilation (all parts, 58 min)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "two painted miniature warriors + map blocks",
+    "face": "no (miniatures, masked/helmeted)",
+    "text_words": 2,
+    "text": "SEESAW MASSACRE",
+    "palette": "olive, red, black",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "I08sN8_dp_k",
+   "title": "Battle of Kosovo, 1389 - The Last stand of the Christians against Ottoman expansion - DOCUMENTARY",
+   "views": 2769750,
+   "len_s": 1078,
+   "published": "2022-05-27",
+   "outlier": 8.06,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "own map frame, two commander banners (Lazar, Murad), big arrows",
+    "face": "no (small banner portraits)",
+    "text_words": 5,
+    "text": "LAST STAND OF THE CHRISTIANS",
+    "palette": "olive green, red/green blocks",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "AVZNTJ7RL80",
+   "title": "Story of Michael the Brave - ALL PARTS 1 - 5",
+   "views": 2731455,
+   "len_s": 5597,
+   "published": "2020-04-04",
+   "outlier": 7.95,
+   "type": "compilation (biography parts 1-5, 1h33)",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "nw7bGe35c80",
+   "title": "Caesar's Civil War (ALL PARTS 1 - 5) FULL DOCUMENTARY",
+   "views": 2530868,
+   "len_s": 5834,
+   "published": "2020-09-19",
+   "outlier": 7.37,
+   "type": "compilation (war parts 1-5, 1h37)",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "mi5rzCpHgP8",
+   "title": "The Road to Vienna: Battle of St. Gotthard 1664",
+   "views": 250566,
+   "len_s": 2777,
+   "published": "2026-10-31",
+   "outlier": 0.73,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "CBIGgKGmQdk",
+   "title": "They Brought Mistresses. He Brought an Army - Turin 1706",
+   "views": 522862,
+   "len_s": 2128,
+   "published": "2026-10-10",
+   "outlier": 1.52,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "2iY1DrjsdEk",
+   "title": "How One Rifle Destroyed the Austrian Empire: Battle of Koniggratz, 1866",
+   "views": 2280393,
+   "len_s": 1958,
+   "published": "2026-09-19",
+   "outlier": 6.64,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "IC3R0Refk5U",
+   "title": "Led by a Madman - Battle of Villaviciosa, 1710",
+   "views": 381622,
+   "len_s": 1866,
+   "published": "2026-09-05",
+   "outlier": 1.11,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "MN_zfGJrDH0",
+   "title": "Battle of Ascalon 1099: The First Crusade's Final Clash",
+   "views": 276576,
+   "len_s": 1765,
+   "published": "2026-08-22",
+   "outlier": 0.81,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "LiCXmItneF0",
+   "title": "Don't Look Down! The Battle of Old Byland, 1322",
+   "views": 184069,
+   "len_s": 1835,
+   "published": "2026-08-09",
+   "outlier": 0.54,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "eFWmkSlmm0k",
+   "title": "Battle That Sparked the Golden Age of Georgia: Shamkor 1195 AD",
+   "views": 185961,
+   "len_s": 1247,
+   "published": "2026-07-25",
+   "outlier": 0.54,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "tjWhCMvE3ck",
+   "title": "How Cyrus the Great Built the Persian Empire - Battle of Thymbra 547 BC",
+   "views": 177407,
+   "len_s": 1770,
+   "published": "2026-07-18",
+   "outlier": 0.52,
+   "type": "single-subject war video",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "map frame with two ruler portraits + arrows",
+    "face": "small portraits",
+    "text_words": 2,
+    "text": "SUPERPOWER BORN",
+    "palette": "olive, green/red blocks",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "UKxEBtGMSeI",
+   "title": "Forget Waterloo: The Original Low Countries Meat Grinder - Landen, 1693",
+   "views": 251625,
+   "len_s": 1551,
+   "published": "2026-07-11",
+   "outlier": 0.73,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "VONQ5mC__Eo",
+   "title": "Rome's Strategic Masterstroke: The Divided Retreat That Fooled Hannibal, 212 BC (Part 23)",
+   "views": 285890,
+   "len_s": 1449,
+   "published": "2026-06-27",
+   "outlier": 0.83,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "xSbOVDnr4vU",
+   "title": "Bloodbath at the Colline Gate, 82 BC - Decisive battle of Sulla's Civil War (Part 3)",
+   "views": 140426,
+   "len_s": 1372,
+   "published": "2026-01-24",
+   "outlier": 0.41,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "map frame with Sulla portrait, gate label, circle",
+    "face": "small portrait",
+    "text_words": 10,
+    "text": "BLOODBATH AT THE COLLINE GATE / SULLA'S CIVIL WAR (PART 3)",
+    "palette": "olive, red/blue blocks",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "jwLkwnqunV4",
+   "title": "Psychology over steel: Battle of Faventia 82 BC - Sulla's Civil War (Part 2)",
+   "views": 145298,
+   "len_s": 1434,
+   "published": "2026-01-10",
+   "outlier": 0.42,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "map frame with two portraits + eagle badge + arrows",
+    "face": "small portraits",
+    "text_words": 8,
+    "text": "PSYCHOLOGY OVER STEEL / SULLA'S CIVIL WAR (PART 2)",
+    "palette": "olive, purple/red",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "-wYm_5wlLUg",
+   "title": "The Day the Mediterranean Burned: Battle of Cape Bon, 468",
+   "views": 164222,
+   "len_s": 1590,
+   "published": "2026-03-01",
+   "outlier": 0.48,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "painting of ships + warriors (collage)",
+    "face": "no (faces tiny)",
+    "text_words": 9,
+    "text": "THE DAY THE MEDITERRANEAN BURNED / CAPE BON, 468 AD",
+    "palette": "blue sea, orange fire",
+    "map": "partial (sea map)"
+   }
+  }
+ ]
+}

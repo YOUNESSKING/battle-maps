@@ -1,0 +1,351 @@
+{
+ "channel": {
+  "rank": 2,
+  "handle": "@epichistorytv",
+  "channelId": "UCvPXiKxH-eH9xq-80vpgmKQ",
+  "title": "Epic History",
+  "subs": 3200000,
+  "avgViews": 1161867,
+  "videos": 388,
+  "avgLong30d_s": 128,
+  "growth30d_views": 2.05
+ },
+ "recent_median_views": 926552,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 62,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 5.5,
+  "winners_with_map_pct": 62,
+  "weak_with_face_pct": 25,
+  "weak_avg_text_words": 4.2,
+  "recent_median_views": 926552
+ },
+ "videos": [
+  {
+   "id": "K7lb6KWBanI",
+   "title": "The Greatest General in History? Alexander the Great (All Parts)",
+   "views": 29322197,
+   "len_s": 3193,
+   "published": "2017-11-10",
+   "outlier": 31.65,
+   "type": "person/war (compiled)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "painting + map",
+    "face": true,
+    "text_words": 7,
+    "text": "ALEXANDER THE GREAT ALL PARTS 334-323 BC",
+    "palette": "cream/red/black",
+    "map": true
+   }
+  },
+  {
+   "id": "G1p6rlDCxq0",
+   "title": "World War 1 (All Parts, 4k)",
+   "views": 23952269,
+   "len_s": 3890,
+   "published": "2022-10-07",
+   "outlier": 25.85,
+   "type": "war (compilation)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "map with arrows and flags",
+    "face": false,
+    "text_words": 4,
+    "text": "WORLD WAR ONE 1914-1918",
+    "palette": "grey-blue/cream/red",
+    "map": true
+   }
+  },
+  {
+   "id": "w0Wmc8C0Eq0",
+   "title": "History of Russia - Rurik to Revolution",
+   "views": 17266663,
+   "len_s": 2820,
+   "published": "2016-12-24",
+   "outlier": 18.64,
+   "type": "generic",
+   "list": "popular",
+   "thumb": {
+    "image_type": "painting (tsar on horse) + faint map",
+    "face": true,
+    "text_words": 12,
+    "text": "COMPLETE HISTORY OF TSARIST RUSSIA PRINCE RURIK TO THE REVOLUTION 650-1917",
+    "palette": "cream/red/white",
+    "map": true
+   }
+  },
+  {
+   "id": "GG0LY8OLBG8",
+   "title": "World War One (All Parts) (age-restricted)",
+   "views": 16645508,
+   "len_s": 3890,
+   "published": "2021-07-01",
+   "outlier": 17.97,
+   "type": "war (compilation)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "map with arrows and flags",
+    "face": false,
+    "text_words": 4,
+    "text": "WORLD WAR ONE 1914-1918",
+    "palette": "grey-blue/cream/red",
+    "map": true
+   }
+  },
+  {
+   "id": "RlKJDwViNKs",
+   "title": "The Greatest Speech in History? Alexander the Great and the Opis Mutiny",
+   "views": 16102119,
+   "len_s": 459,
+   "published": "2018-08-10",
+   "outlier": 17.38,
+   "type": "single event (speech)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "sketch/painting (Alexander shouting, close face)",
+    "face": true,
+    "text_words": 8,
+    "text": "THE GREATEST SPEECH IN HISTORY? ALEXANDER THE GREAT",
+    "palette": "cream/red/black",
+    "map": false
+   }
+  },
+  {
+   "id": "vBSGSkIasRY",
+   "title": "Napoleonic Wars: Downfall 1809 - 14",
+   "views": 16084231,
+   "len_s": 12251,
+   "published": "2021-07-09",
+   "outlier": 17.36,
+   "type": "war (compilation)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "object (bicorne hat on tricolour, blood)",
+    "face": false,
+    "text_words": 1,
+    "text": "DOWNFALL",
+    "palette": "blue/white/red/black",
+    "map": false
+   }
+  },
+  {
+   "id": "91OmO2YMiDM",
+   "title": "Napoleonic Wars: March of the Eagles 1805 - 09",
+   "views": 14293588,
+   "len_s": 5703,
+   "published": "2019-10-09",
+   "outlier": 15.43,
+   "type": "war (compilation)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "oil painting (Napoleon and marshals)",
+    "face": true,
+    "text_words": 4,
+    "text": "MARCH OF THE EAGLES",
+    "palette": "brown/cream/white",
+    "map": false
+   }
+  },
+  {
+   "id": "IpkBuI1FkpM",
+   "title": "The Last Great Roman General? Belisarius and the Wars of Justinian (All Parts)",
+   "views": 9565939,
+   "len_s": 8087,
+   "published": "2022-10-15",
+   "outlier": 10.32,
+   "type": "person/war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "3D/painted portraits of two rulers + map arrows",
+    "face": true,
+    "text_words": 4,
+    "text": "BELISARIUS THE LAST ROMAN",
+    "palette": "blue/gold",
+    "map": true
+   }
+  },
+  {
+   "id": "KUERUnx2lms",
+   "title": "3D Guide to an 18th century Ship-of-the-Line",
+   "views": 8559256,
+   "len_s": 3184,
+   "published": "2023-10-21",
+   "outlier": 9.24,
+   "type": "explainer (not a war story)",
+   "list": "popular"
+  },
+  {
+   "id": "byH2WhzXjcQ",
+   "title": "Napoleonic Wars: The Invasion of Russia (All Parts)",
+   "views": 7311211,
+   "len_s": 3776,
+   "published": "2020-06-19",
+   "outlier": 7.89,
+   "type": "war",
+   "list": "popular"
+  },
+  {
+   "id": "dCt7NYI4_00",
+   "title": "The Hundred Days: Battle of Waterloo",
+   "views": 738270,
+   "len_s": 2113,
+   "published": "2026-10-22",
+   "outlier": 0.8,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "gqIXlEhXmrg",
+   "title": "England's Greatest Naval Disaster - Medway Raid 1667",
+   "views": 1250307,
+   "len_s": 2312,
+   "published": "2026-09-30",
+   "outlier": 1.35,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "va8q9-YwnHY",
+   "title": "World War 2: 1939",
+   "views": 1114834,
+   "len_s": 2170,
+   "published": "2026-09-03",
+   "outlier": 1.2,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "2Ih1ffiuwj0",
+   "title": "Alexander’s Speech That Crushed a Mutiny",
+   "views": 4320182,
+   "len_s": 534,
+   "published": "2026-08-27",
+   "outlier": 4.66,
+   "type": "single event (speech; re-upload)",
+   "list": "recent"
+  },
+  {
+   "id": "_C3-OK0Y2eQ",
+   "title": "The Hundred Days: Ligny and Quatre Bras",
+   "views": 597487,
+   "len_s": 2067,
+   "published": "2026-08-20",
+   "outlier": 0.64,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "-jF5w6ndVeY",
+   "title": "5 Ancient Mysteries That These Lost Works Would Solve",
+   "views": 137351,
+   "len_s": 1625,
+   "published": "2026-07-30",
+   "outlier": 0.15,
+   "type": "generic/non-war",
+   "list": "recent",
+   "thumb": {
+    "image_type": "real photo (gloved hands, manuscript)",
+    "face": false,
+    "text_words": 2,
+    "text": "LOST KNOWLEDGE",
+    "palette": "dark brown/white",
+    "map": false
+   }
+  },
+  {
+   "id": "roNC2MfV7fU",
+   "title": "Battle of Verdun 3D: France Fights Back",
+   "views": 389016,
+   "len_s": 1609,
+   "published": "2026-06-18",
+   "outlier": 0.42,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "Wyip07JxiT4",
+   "title": "American Revolution: Road to Independence",
+   "views": 1968076,
+   "len_s": 7776,
+   "published": "2026-06-12",
+   "outlier": 2.12,
+   "type": "war (compilation)",
+   "list": "recent"
+  },
+  {
+   "id": "2gfPSs0WpKs",
+   "title": "Road to WW2: 1938",
+   "views": 549016,
+   "len_s": 1343,
+   "published": "2026-05-14",
+   "outlier": 0.59,
+   "type": "war (lead-up)",
+   "list": "recent"
+  },
+  {
+   "id": "CQaa4SfFFck",
+   "title": "Battle of Verdun 3D",
+   "views": 1414135,
+   "len_s": 1256,
+   "published": "2026-04-30",
+   "outlier": 1.53,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "oPwGq8MH4pU",
+   "title": "Eagles in the Snow: Napoleonic Wars",
+   "views": 152705,
+   "len_s": 356,
+   "published": "2025-11-13",
+   "outlier": 0.16,
+   "type": "war (short)",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "animated film still (column of soldiers)",
+    "face": false,
+    "text_words": 6,
+    "text": "EAGLES IN THE SNOW ANIMATED SHORT FILM",
+    "palette": "green/red",
+    "map": false
+   }
+  },
+  {
+   "id": "YAOD0Q_lBXY",
+   "title": "How Codebreakers Helped Beat the U-boats",
+   "views": 235165,
+   "len_s": 1596,
+   "published": "2025-09-12",
+   "outlier": 0.25,
+   "type": "war",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "photo-real render (U-boat in storm)",
+    "face": false,
+    "text_words": 2,
+    "text": "ENIGMA EXPOSED",
+    "palette": "blue/white",
+    "map": false
+   }
+  },
+  {
+   "id": "qss9EirQ170",
+   "title": "Stumbling to Disaster: Battle of the Wabash",
+   "views": 319345,
+   "len_s": 1429,
+   "published": "2024-06-21",
+   "outlier": 0.34,
+   "type": "war",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "painted portrait (St. Clair) + battle diagram",
+    "face": true,
+    "text_words": 7,
+    "text": "BATTLE OF THE WABASH 1791 ST. CLAIR'S DEFEAT",
+    "palette": "cream/red/black",
+    "map": true
+   }
+  }
+ ]
+}

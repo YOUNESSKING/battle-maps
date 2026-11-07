@@ -1,0 +1,351 @@
+{
+ "channel": {
+  "rank": 4,
+  "handle": "@markfeltonproductions",
+  "channelId": "UCfCKvREB11-fxyotS1ONgww",
+  "title": "Mark Felton Productions",
+  "subs": 2440000,
+  "avgViews": 1038505,
+  "videos": 1015,
+  "avgLong30d_s": 758.7777777777778,
+  "growth30d_views": 1.14
+ },
+ "recent_median_views": 328252,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 62,
+  "winners_with_text_pct": 0,
+  "winners_avg_text_words": 0.0,
+  "winners_with_map_pct": 0,
+  "weak_with_face_pct": 25,
+  "weak_avg_text_words": 0.0,
+  "recent_median_views": 328252
+ },
+ "videos": [
+  {
+   "id": "2YONpJzybto",
+   "title": "Nazi Princesses - The Fates of Top Nazis' Wives & Mistresses",
+   "views": 12106361,
+   "len_s": 1331,
+   "published": "2021-02-22",
+   "outlier": 36.88,
+   "type": "non-war / people",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised archive photo (Hitler, Eva Braun, children)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "warm brown, black bars",
+    "map": false
+   }
+  },
+  {
+   "id": "BsjJ5AAKGP0",
+   "title": "Captured Soviet Female Soldiers - How Did the Germans Treat Them?",
+   "views": 10824992,
+   "len_s": 515,
+   "published": "2021-09-21",
+   "outlier": 32.98,
+   "type": "war (people)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo (captured Soviet women)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "olive/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "At7IA19fXHc",
+   "title": "Nuremberg Executions 1946 - What Happened to the Bodies?",
+   "views": 10579548,
+   "len_s": 602,
+   "published": "2020-03-23",
+   "outlier": 32.23,
+   "type": "post-war / non-battle",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo (Goering in dock)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "brown/black bars",
+    "map": false
+   }
+  },
+  {
+   "id": "Jr-PuuKYn8c",
+   "title": "Top Nazis \"Everyday\" Voices",
+   "views": 9826276,
+   "len_s": 599,
+   "published": "2020-02-17",
+   "outlier": 29.94,
+   "type": "non-war / curiosity",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo (Himmler, Hitler close)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "blue/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "aRk2FZbsMxw",
+   "title": "Liberating Dachau 1945",
+   "views": 9771935,
+   "len_s": 966,
+   "published": "2020-06-28",
+   "outlier": 29.77,
+   "type": "war event",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised archive photo (US medics)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "olive/grey, black bars",
+    "map": false
+   }
+  },
+  {
+   "id": "yJj6qBC3h5w",
+   "title": "At the Gates of Moscow - Furthest German Advance 1941",
+   "views": 8215759,
+   "len_s": 604,
+   "published": "2020-02-25",
+   "outlier": 25.03,
+   "type": "war (battle)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo (snow, Panzer II, infantry)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "white/grey/brown, black bars",
+    "map": false
+   }
+  },
+  {
+   "id": "qiFvWoM5Sb0",
+   "title": "Reichstag Assault 1945",
+   "views": 8180129,
+   "len_s": 617,
+   "published": "2019-05-28",
+   "outlier": 24.92,
+   "type": "war (battle)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised archive photo (Reichstag, soldier)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "blue/green/red, black bars",
+    "map": false
+   }
+  },
+  {
+   "id": "u7Yy-NG2o_A",
+   "title": "Eagle's Nest - Hitler's Mountaintop Headquarters Today",
+   "views": 8013963,
+   "len_s": 1253,
+   "published": "2019-05-02",
+   "outlier": 24.41,
+   "type": "non-war / place",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised photo (mountain, tiny figures)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "blue/brown, black bars",
+    "map": false
+   }
+  },
+  {
+   "id": "qBYLJAToBJM",
+   "title": "Hitler's \"Everyday\" Voice",
+   "views": 7632109,
+   "len_s": 236,
+   "published": "2018-09-22",
+   "outlier": 23.25,
+   "type": "non-war / curiosity",
+   "list": "popular"
+  },
+  {
+   "id": "ymWyPX7ARD0",
+   "title": "Inside The Fuhrerbunker - The Photographs 1945 - 1988",
+   "views": 6851842,
+   "len_s": 248,
+   "published": "2018-05-21",
+   "outlier": 20.87,
+   "type": "non-war / place",
+   "list": "popular"
+  },
+  {
+   "id": "ahvMIxojtrk",
+   "title": "The Hitler Bunker Balloon - The Führer's Last Hope 1945",
+   "views": 236568,
+   "len_s": 462,
+   "published": "2026-11-05",
+   "outlier": 0.72,
+   "type": "curiosity",
+   "list": "recent"
+  },
+  {
+   "id": "FCoJXTUVP6Q",
+   "title": "How Much Were WW2 Leaders Paid?",
+   "views": 293178,
+   "len_s": 455,
+   "published": "2026-11-01",
+   "outlier": 0.89,
+   "type": "curiosity",
+   "list": "recent"
+  },
+  {
+   "id": "mScSp_dHKE4",
+   "title": "Inside the Burned Eagle's Nest! - First Film Footage",
+   "views": 559309,
+   "len_s": 712,
+   "published": "2026-10-30",
+   "outlier": 1.7,
+   "type": "place",
+   "list": "recent"
+  },
+  {
+   "id": "JOAt-PHuiis",
+   "title": "The Eagle's Nest Fire - Erasing History at Obersalzberg",
+   "views": 1819178,
+   "len_s": 886,
+   "published": "2026-10-25",
+   "outlier": 5.54,
+   "type": "place",
+   "list": "recent"
+  },
+  {
+   "id": "jS3ETRZV1HI",
+   "title": "Skorzeny's Last Battle - The Oder Bridgehead 1945 (OMNIBUS EDITION)",
+   "views": 511782,
+   "len_s": 1574,
+   "published": "2026-10-22",
+   "outlier": 1.56,
+   "type": "war (compilation)",
+   "list": "recent"
+  },
+  {
+   "id": "tPv-vQ552Ag",
+   "title": "Hitler's Forgotten FIRST Jail Term",
+   "views": 270485,
+   "len_s": 568,
+   "published": "2026-10-18",
+   "outlier": 0.82,
+   "type": "people",
+   "list": "recent"
+  },
+  {
+   "id": "B7KQyXolTDI",
+   "title": "Weimar Germany's War Against France - The 1923 Ruhr Uprising",
+   "views": 340416,
+   "len_s": 746,
+   "published": "2026-10-15",
+   "outlier": 1.04,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "3pFec2OelBE",
+   "title": "WW2's Biggest F.U. - The Tiny Polish Ship That Attacked Germany's Mighty Bismarck",
+   "views": 316089,
+   "len_s": 692,
+   "published": "2026-10-11",
+   "outlier": 0.96,
+   "type": "war (curiosity)",
+   "list": "recent"
+  },
+  {
+   "id": "PnAjISVVZu4",
+   "title": "Where Eagles Dare Relics - Surviving Uniforms, Weapons & Vehicles",
+   "views": 347875,
+   "len_s": 734,
+   "published": "2026-10-08",
+   "outlier": 1.06,
+   "type": "artifact",
+   "list": "recent"
+  },
+  {
+   "id": "8A4WQ-uR7Ac",
+   "title": "The Rudolf Hess Uniform Mystery - Missing Luftwaffe Disguise from 1941 Scotland Flight",
+   "views": 207479,
+   "len_s": 497,
+   "published": "2026-10-04",
+   "outlier": 0.63,
+   "type": "mystery",
+   "list": "recent",
+   "thumb": {
+    "image_type": "triptych of archive photos (Hess, uniform, man)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "sepia/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "SYY5cWFyJ9Y",
+   "title": "The Reichstag Red Flag - How the Soviets Faked An Iconic WW2 Image",
+   "views": 112532,
+   "len_s": 790,
+   "published": "2026-06-25",
+   "outlier": 0.34,
+   "type": "history myth",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "colourised archive photo (flag over Reichstag)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "red/brown",
+    "map": false
+   }
+  },
+  {
+   "id": "Hv7az7nY-OQ",
+   "title": "'Guided Missile' Attack UK! Fritz X Strikes Britain 1944",
+   "views": 173046,
+   "len_s": 670,
+   "published": "2026-08-09",
+   "outlier": 0.53,
+   "type": "war (weapon)",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "painting (bomber, glide bomb)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "blue/white",
+    "map": false
+   }
+  },
+  {
+   "id": "T7j14S1Logs",
+   "title": "Nazi Killer Missile Base - V-1 Rocket Nerve Gas Attack?",
+   "views": 211992,
+   "len_s": 1091,
+   "published": "2026-05-24",
+   "outlier": 0.65,
+   "type": "war (weapon)",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "painting (V-1 over city)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "blue/grey",
+    "map": false
+   }
+  }
+ ]
+}
