@@ -485,17 +485,17 @@ const MFL = [flagS(F35, "", ...L(34.6, -92.6), TZ0 + 1.2, END + 1), flagS(FL.cs,
   sv.style.cssText = "position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none"; PW.appendChild(sv);
   const p = document.createElementNS(NSs, "path"); p.setAttribute("d", "M" + RIVM.map((q) => [(q[0] - AR[0]).toFixed(1), (q[1] - AR[1]).toFixed(1)].join(" ")).join(" L")); sv.appendChild(p);
   Object.entries({ fill: "none", stroke: "#3c6fe0", "stroke-width": (8 / S2).toFixed(1), "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }).forEach(([k, v]) => p.setAttribute(k, v));
-  tl.to(p, { opacity: 0.9, duration: 0.2 }, T_UW - 0.1); const RL = RIVM.map((q) => [q[0] - AR[0], q[1] - AR[1]]), dr = { u: 0.001 }; p.setAttribute("d", "M" + sub(RL, 0, 0.001, 2).map((q) => q.map((v) => v.toFixed(1)).join(" ")).join(" L"));
-  tl.fromTo(dr, { u: 0.001 }, { u: 1, duration: 1.6, ease: "sine.inOut", immediateRender: false, onUpdate: () => p.setAttribute("d", "M" + sub(RL, 0, dr.u, 60).map((q) => q.map((v) => v.toFixed(1)).join(" ")).join(" L")) }, T_UW - 0.1);
-  tl.to(p, { opacity: 0.55, duration: 1.0 }, T_BUT + 0.2); }
-stampP("UNION WATER", ...L(33.6, -88.2), T_UW + 0.25, T_BUT - 0.1, 30);
+  tl.to(p, { opacity: 0.95, duration: 0.2 }, T_UW - 0.4); const RL = RIVM.map((q) => [q[0] - AR[0], q[1] - AR[1]]), dr = { u: 0.001 }; p.setAttribute("d", "M" + sub(RL, 0, 0.001, 2).map((q) => q.map((v) => v.toFixed(1)).join(" ")).join(" L"));
+  tl.fromTo(dr, { u: 0.001 }, { u: 1, duration: 1.6, ease: "sine.inOut", immediateRender: false, onUpdate: () => p.setAttribute("d", "M" + sub(RL, 0, dr.u, 60).map((q) => q.map((v) => v.toFixed(1)).join(" ")).join(" L")) }, T_UW - 0.4);
+  tl.to(p, { opacity: 0.75, duration: 1.0 }, T_LEE + 0.5); }
+stampP("UNION WATER", ...L(33.6, -88.2), T_UW, T_LEE - 0.25, 30);
 // ---------- the cliffhanger: Robert E. Lee, still waiting in Virginia (no unit on this map: a portrait badge at the east edge, pointing east) ----------
 const LEE = scr(`<div style="display:flex;align-items:center;gap:14px">
   <div style="width:96px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 6px 14px rgba(0,0,0,.6)"><img src="${FL.cs}" style="display:block;width:96px;height:19px;object-fit:cover"><img src="${PHOTO("lee")}" style="display:block;width:96px;height:104px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:16px;color:#fbf8ef;text-align:center;padding:2px 0 4px">Lee</div></div>
   <div class="va" style="display:flex;align-items:center;gap:8px;font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:34px;color:#fbf8ef;text-shadow:0 2px 3px rgba(0,0,0,.8),0 0 5px rgba(0,0,0,.6)">Virginia<svg width="84" height="26" viewBox="0 0 84 26" style="overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.8))"><path d="M2 13 L66 13" stroke="#fbf8ef" stroke-width="4" stroke-linecap="round"/><path d="M60 3 L80 13 L60 23 Z" fill="#fbf8ef"/></svg></div></div>`,
   "right:56px;top:380px;", T_LEE - 0.05, null, { autoAlpha: 0, x: 40 });
 { const va = LEE.querySelector(".va"); gsap.set(va, { autoAlpha: 0 }); tl.fromTo(va, { autoAlpha: 0, x: -10 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, T_VA); }
-declutter([], [[T_UW + 0.25, T_BUT - 0.1]]);
+declutter([], [[T_UW, T_LEE - 0.25]]);
 applyCam(); tl.call(applyCam, null, 0);
 fixImgs();
 K.raiseTerritory();
