@@ -1,4 +1,4 @@
-// SCRIPT-12 TEST, TERRITORY VARIANT (both sides hatched; snapshots only), scene s12a (0 - 17.80 s of research/style_tests/script12: all of s12-1 + s12-2 up to "First,"), Grant's Vicksburg move, STYLE W.
+// SCRIPT-12 TEST, TERRITORY VARIANT v2 (both sides striped; snapshots only), scene s12a (0 - 17.80 s of research/style_tests/script12: all of s12-1 + s12-2 up to "First,"), Grant's Vicksburg move, STYLE W.
 // Re-cut of the approved tools/vk_body_m2a.js (kit, one camera over the mississippi + vicksburg layers, places) to the new narration:
 //   s12-1 the Confederate plan (guns on the bluff, the river closed) -> dive onto Vicksburg; "in other words": pull out, the South in one piece
 //   s12-2 "But the Union general did not attack the bluffs. Instead, he marched down the far bank." -> dive back in, Grant's portrait at his corps, the march.
@@ -505,22 +505,31 @@ const MARCH = LL([[32.48, -91.08], [32.42, -91.15], [32.39, -91.18], [32.28, -91
 along("gc", [L(32.48, -91.22), MARCH[0]], T_INST - 0.3, 0.8, 6); along("gc", MARCH, T_MARCH, END - T_MARCH + 0.4, 24);
 along("ga", [L(32.57, -91.20), L(32.53, -91.13)], T_INST, 1.0, 6); along("ga", [L(32.53, -91.13), ...sub(MARCH, 0, 0.55, 16)], T_MARCH + 0.8, END - T_MARCH, 20);
 arw({ pts: MARCH, side: "carth", t: T_MARCH, dur: 2.0, width: AW(S3, 13), until: END + 1 });
-boxL("The Far Bank", ...L(32.20, -91.38), T_FAR, null, { size: 24 });
+boxL("The Far Bank", ...L(32.47, -91.36), T_FAR, null, { size: 24 });   // v2: north of the march, clear of the portrait card
 inkTrace(LL([[32.47, -91.10], [32.40, -91.06], [32.30, -91.0], [32.22, -91.0], [32.13, -91.06], [32.06, -91.10]]), T_FAR, END + 1, 3.0);   // the west bank, on "the far bank"
 // the boats wait above the city for the run (hand-off to s12b)
 const UP = [0, 1, 2].map((k) => ship(k === 2 ? "transport" : "gunboat", sub(LL([[32.45, -91.02], [32.42, -91.0], [32.402, -90.994], [32.394, -90.960]]), 0.3 - k * 0.1, 0.8 - k * 0.12, 8), T_FAR - 0.2 + k * 0.2, 2.0, END + 1, { s: 20 }));
 GBN.forEach((b) => tl.to(b.el, { autoAlpha: 0, duration: 0.5 }, T_FAR - 0.3));
 declutter([], [[T_PLAN + 0.35, T_HOLD - 0.1], [T_PIECE, T_BUT - 0.3]]);
 
-// ===== TERRITORY TEST (owner 2026-11-07: hatching for BOTH sides, Union BLUE / Confederate RED, shown on the wide shots and growing as ground changes hands) =====
-const terrL = (file, t, until, parent = null, dur = 0.8) => { const el = document.createElement("img"); el.src = file; el.alt = "";
-  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none" });
-  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL);
+// ===== TERRITORY TEST v2 (owner 2026-11-07): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
   gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
-  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; };
-terrL("assets/media/t12_miss_apr1.png", 0, null, PW);                               // the theatre, 1 April 1863 (inside the mississippi layer: fades with it)
-terrL("assets/media/t12_vick_apr1.png", TSW, T_MARCH + 0.4, null, 0.5);                    // the Vicksburg map, 1 April
-terrL("assets/media/t12_vick_apr20.png", T_MARCH + 0.2, null, null, 2.0);                  // the Union ground grows down the west bank with the march (20 April)
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
+terrL("assets/media/t12m_miss_apr1", 0, null, PW);                                   // the theatre, 1 April 1863 (inside the mississippi layer: fades with it)
+terrL("assets/media/t12m_vick_apr1", TSW, T_MARCH + 0.4, null, 0.5);                    // the Vicksburg map, 1 April
+terrL("assets/media/t12m_vick_apr20", T_MARCH + 0.2, null, null, 2.0);                  // the Union ground grows down the west bank with the march (20 April)
 fixImgs();
 K.raiseTerritory();
 B.finish();

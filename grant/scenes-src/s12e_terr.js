@@ -1,4 +1,4 @@
-// SCRIPT-12 TEST, TERRITORY VARIANT (both sides hatched; snapshots only), scene s12e (62.30 - 73.93 s): "On the fourth of July, Vicksburg surrendered, and the river that held the South together was Union
+// SCRIPT-12 TEST, TERRITORY VARIANT v2 (both sides striped; snapshots only), scene s12e (62.30 - 73.93 s): "On the fourth of July, Vicksburg surrendered, and the river that held the South together was Union
 // water. But Robert E. Lee was still waiting in Virginia." Re-cut of the approved tools/vx_body_m2g.js (vicksburg_siege_w + the mississippi layer,
 // ONE continuous zoom-out from the siege lines to the whole river, no cut): white flags + SURRENDERED on the spoken word, the city hatches blue
 // (the only ground changing hands), the river drawn blue top to bottom on "Union water"; cliffhanger: Lee's portrait card at the east edge with an
@@ -500,16 +500,25 @@ stampP("UNION WATER", ...L(33.95, -90.15), T_UW, T_LEE - 0.25, 30);   // right n
 declutter([], [[T_UW, T_LEE - 0.25]]);
 applyCam(); tl.call(applyCam, null, 0);
 
-// ===== TERRITORY TEST (owner 2026-11-07: hatching for BOTH sides, Union BLUE / Confederate RED, shown on the wide shots and growing as ground changes hands) =====
-const terrL = (file, t, until, parent = null, dur = 0.8) => { const el = document.createElement("img"); el.src = file; el.alt = "";
-  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none" });
-  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL);
+// ===== TERRITORY TEST v2 (owner 2026-11-07): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
   gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
-  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; };
-terrL("assets/media/t12_siege_may.png", 0, T_SURW + 0.6);                                // the siege: the Confederate pocket
-terrL("assets/media/t12_siege_jul.png", T_SURW, null, null, 1.2);                          // 4 July: the city changes hands
-terrL("assets/media/t12_miss2_apr.png", 0, T_UW + 0.6, PW);                                 // the river war before Vicksburg fell (inside the river layer)
-terrL("assets/media/t12_miss2_jul.png", T_UW - 0.2, null, PW, 1.4);                         // "Union water": the river corridor turns blue
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
+terrL("assets/media/t12m_siege_may", 0, T_SURW + 0.6);                                 // the siege: the Confederate pocket
+terrL("assets/media/t12m_siege_jul", T_SURW, null, null, 1.2);                           // 4 July: the city changes hands
+terrL("assets/media/t12m_miss2_apr", 0, T_UW + 0.6, PW);                                  // the river before Vicksburg fell (inside the river layer)
+terrL("assets/media/t12m_miss2_jul", T_UW - 0.2, null, PW, 1.4);                          // "Union water": the river corridor turns blue
 fixImgs();
 K.raiseTerritory();
 B.finish();

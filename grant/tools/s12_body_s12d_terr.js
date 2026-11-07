@@ -1,4 +1,4 @@
-// SCRIPT-12 TEST, TERRITORY VARIANT (both sides hatched; snapshots only), scene s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
+// SCRIPT-12 TEST, TERRITORY VARIANT v2 (both sides striped; snapshots only), scene s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
 // each battle marked on the map as its date is spoken); a battle every three or four days; the army ate off the country; Grant's count + the hedge.
 // Re-cut of the approved tools/vx_body_m2f.js (vicksburg_w, units, moves, Sherman card, forage icons, vs card, blue hatches at Jackson + Champion Hill).
 // Built with: python3 tools/s12_inline.py vx s12d vicksburg_w s12-3 s12-4 31.2 63.8
@@ -110,14 +110,23 @@ B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, 
 B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
 declutter([], [[T_JAM - 0.1, SHC_U], [T_60 + 0.45, T_HIS - 0.15], [T_SMALL - 0.05, END + 1]]);
 
-// ===== TERRITORY TEST (owner 2026-11-07: hatching for BOTH sides, Union BLUE / Confederate RED, shown on the wide shots and growing as ground changes hands) =====
-const terrL = (file, t, until, parent = null, dur = 0.8) => { const el = document.createElement("img"); el.src = file; el.alt = "";
-  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none" });
-  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL);
+// ===== TERRITORY TEST v2 (owner 2026-11-07): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
   gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
-  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; };
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
 const TT = [["may03", 0], ["may12", T_RAY], ["may14", T_JAX], ["may16", T_CH], ["may18", T_COUNT + 1.0]];
-TT.forEach(([d, t], k) => terrL(`assets/media/t12_vick_${d}.png`, t, TT[k + 1] ? TT[k + 1][1] + 0.6 : null, null, k ? 1.0 : 0.8));   // the Union ground grows battle by battle
+TT.forEach(([d, t], k) => terrL(`assets/media/t12m_vick_${d}`, t, TT[k + 1] ? TT[k + 1][1] + 0.6 : null, null, k ? 1.0 : 0.8));   // the Union ground grows battle by battle
 fixImgs();
 K.raiseTerritory();
 B.finish();

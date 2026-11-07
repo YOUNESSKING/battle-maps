@@ -1,4 +1,4 @@
-// SCRIPT-12 TEST, TERRITORY VARIANT (both sides hatched; snapshots only), scene s12c (24.60 - 29.70 s): "Then the army crossed at Bruinsburg. Then he cut loose from his base."
+// SCRIPT-12 TEST, TERRITORY VARIANT v2 (both sides striped; snapshots only), scene s12c (24.60 - 29.70 s): "Then the army crossed at Bruinsburg. Then he cut loose from his base."
 // Re-cut of the approved tools/vk_body_m2d.js (grandgulf_w; the landing at Bruinsburg, the blue bridgehead hatch) + the supply line of
 // tools/vx_body_m2f.js (thin sepia ink line back to the base at Grand Gulf, flickers and goes on "cut loose from his base").
 // Built with: python3 tools/s12_inline.py vk s12c grandgulf_w s12-3 s12-3 26.2 31.2
@@ -439,14 +439,23 @@ crosses([[1225, 755]], T_BASE + 0.5, END + 1, 14);
 arw({ pts: [[1150, 900], [1260, 895], [1380, 885]], side: "carth", t: T_LOOSE - 0.1, dur: 1.2, width: AW(1.25, 13), until: END + 1 });
 B.move("l13", T_LOOSE, 2.2, 1270, 880); B.move("l9", T_LOOSE + 0.15, 2.2, 1250, 935); B.move("l17", T_LOOSE + 0.3, 2.2, 1215, 980);
 
-// ===== TERRITORY TEST (owner 2026-11-07: hatching for BOTH sides, Union BLUE / Confederate RED, shown on the wide shots and growing as ground changes hands) =====
-const terrL = (file, t, until, parent = null, dur = 0.8) => { const el = document.createElement("img"); el.src = file; el.alt = "";
-  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none" });
-  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL);
+// ===== TERRITORY TEST v2 (owner 2026-11-07): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
+// the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
+const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
+const stripeApply = (k) => STR.forEach(([el, c]) => { const w = SW * k, p = SP * k, e = 0.5 * k;
+  el.style.backgroundImage = `repeating-linear-gradient(45deg, ${c} 0px, ${c} ${w.toFixed(2)}px, rgba(0,0,0,0) ${(w + e).toFixed(2)}px, rgba(0,0,0,0) ${(p - e).toFixed(2)}px, ${c} ${p.toFixed(2)}px)`; });
+CURV.push([{ setAttribute: (a, v) => stripeApply(+v) }, 1]);   // rides on the kit's per-camera-update hook (curvApply: px / CAM_S)
+const terrL = (pre, t, until, parent = null, dur = 0.8) => ["red", "blue"].map((sd) => { const el = document.createElement("div");
+  Object.assign(el.style, { position: "absolute", left: "0px", top: "0px", width: parent ? "100%" : "2880px", height: parent ? "100%" : "1620px", pointerEvents: "none",
+    webkitMaskImage: `url(${pre}_${sd}.png)`, maskImage: `url(${pre}_${sd}.png)`, webkitMaskSize: "100% 100%", maskSize: "100% 100%" });
+  if (parent) parent.appendChild(el); else WORLD.insertBefore(el, OVL); STR.push([el, SCOL[sd]]);
   gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur, immediateRender: false }, t);
-  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; };
-terrL("assets/media/t12_gg_apr29.png", 0, T_BRU + 0.6);                                  // 29 April: the river is the line
-terrL("assets/media/t12_gg_apr30.png", T_BRU, null, null, 1.2);                            // 30 April: the Bruinsburg bridgehead turns blue
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: dur }, until); return el; });
+stripeApply(1 / CAM_S);
+// labels stay readable over the stripes: a tighter, darker halo round every serif map label
+document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Liberation Serif/.test(d.style.fontFamily || "")) d.style.textShadow = "0 0 2px #000, 0 0 5px rgba(0,0,0,.95), 0 0 9px rgba(0,0,0,.8), 0 2px 3px #000"; });
+terrL("assets/media/t12m_gg_apr29", 0, T_BRU + 0.6);                                   // 29 April: the river is the line
+terrL("assets/media/t12m_gg_apr30", T_BRU, null, null, 1.2);                             // 30 April: the Bruinsburg bridgehead turns blue
 fixImgs();
 K.raiseTerritory();
 B.finish();
