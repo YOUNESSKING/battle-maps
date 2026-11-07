@@ -1,0 +1,396 @@
+{
+ "handle": "@darkdocs",
+ "channel": "Dark Docs",
+ "rank": 11,
+ "subs": 1200000,
+ "median_views_recent50": 101098.0,
+ "note": "outlier = views / median views of the channel's most recent 50 long uploads (vidIQ recent list). Old viral videos have inflated outliers.",
+ "thumbnail_stats": {
+  "winners_with_face_pct": 38,
+  "winners_with_text_pct": 0,
+  "winners_avg_text_words": 0.0,
+  "winners_with_map_pct": 0,
+  "winners_with_red_circle_arrow_pct": 38,
+  "weak_with_face_pct": 50,
+  "weak_with_text_pct": 25,
+  "weak_avg_text_words": 0.5,
+  "winners_avg_title_chars": 50,
+  "weak_avg_title_chars": 51,
+  "winners_titles_with_digit_pct": 0,
+  "winners_titles_with_allcaps_word_pct": 0
+ },
+ "videos": [
+  {
+   "id": "v_-bW8F7E6M",
+   "title": "The First Concorde Crash was Soviet",
+   "views": 9542977,
+   "len_s": 786,
+   "len": "13:06",
+   "published": "2019-07-06",
+   "outlier": 94.39,
+   "type": "generic (Cold War aviation accident, not war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still (2-frame split)",
+    "face": "none",
+    "text_words": 0,
+    "text": "",
+    "palette": "muted green/sky/white",
+    "map": false,
+    "notes": "plane in mid-crash, crowd bottom; no text"
+   }
+  },
+  {
+   "id": "g9W5OjQK_4c",
+   "title": "The Most Terrifying Man of the Vietnam War",
+   "views": 9112247,
+   "len_s": 778,
+   "len": "12:58",
+   "published": "2024-03-05",
+   "outlier": 90.13,
+   "type": "single-subject war (Jerry \"Mad Dog\" Shriver)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (colourised)",
+    "face": "close-up",
+    "text_words": 0,
+    "text": "",
+    "palette": "olive green/skin",
+    "map": false,
+    "notes": "grinning gap-toothed soldier face filling frame"
+   }
+  },
+  {
+   "id": "7wCmtr4GFFc",
+   "title": "The Most Hard Core American Sniper - One Shot One Kill",
+   "views": 7534120,
+   "len_s": 771,
+   "len": "12:51",
+   "published": "2022-06-01",
+   "outlier": 74.52,
+   "type": "single-subject war (Carlos Hathcock)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo",
+    "face": "profile/partial",
+    "text_words": 0,
+    "text": "",
+    "palette": "warm tan + blue sky",
+    "map": false,
+    "notes": "shirtless sniper aiming; action pose"
+   }
+  },
+  {
+   "id": "sVnhbxnBmIo",
+   "title": "The Nastiest Soldiers to Ever Fight for America",
+   "views": 6448136,
+   "len_s": 721,
+   "len": "12:01",
+   "published": "2022-12-14",
+   "outlier": 63.78,
+   "type": "single-subject war (one unit)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo portrait",
+    "face": "close-up",
+    "text_words": 0,
+    "text": "",
+    "palette": "olive/grey + white face-paint",
+    "map": false,
+    "notes": "war-paint stripes, direct stare; tight crop"
+   }
+  },
+  {
+   "id": "EuThvjefCTk",
+   "title": "Puff the Magic Dragon - The U.S. Gunship So Powerful It Got Banned",
+   "views": 5279431,
+   "len_s": 601,
+   "len": "10:01",
+   "published": "2019-05-04",
+   "outlier": 52.22,
+   "type": "single-subject weapon/war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive aerial photo",
+    "face": "none",
+    "text_words": 0,
+    "text": "",
+    "palette": "grey/white",
+    "map": false,
+    "notes": "single aircraft on dark ground; very simple"
+   }
+  },
+  {
+   "id": "ws5pq_QNCWE",
+   "title": "The Filthiest Chernobyl Men You've Never Heard Of",
+   "views": 5166569,
+   "len_s": 767,
+   "len": "12:47",
+   "published": "2019-06-25",
+   "outlier": 51.1,
+   "type": "generic (disaster, not war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo + overlay",
+    "face": "none (glowing figure)",
+    "text_words": 0,
+    "text": "",
+    "palette": "dark amber + red",
+    "map": false,
+    "notes": "RED ARROW + RED CIRCLE on a glowing figure"
+   }
+  },
+  {
+   "id": "SgiXLwTAyXU",
+   "title": "The Insane Move Germany Never Expected America to Make",
+   "views": 3892562,
+   "len_s": 741,
+   "len": "12:21",
+   "published": "2022-05-07",
+   "outlier": 38.5,
+   "type": "single-subject war (one operation)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised photo + overlay",
+    "face": "small",
+    "text_words": 0,
+    "text": "",
+    "palette": "warm beige + red",
+    "map": false,
+    "notes": "RED ARROW + RED CIRCLE on a man being kicked into a door"
+   }
+  },
+  {
+   "id": "Zv9qJ63URSQ",
+   "title": "Operation Acid Gambit - The Delta Force Raid Declassified",
+   "views": 3711334,
+   "len_s": 810,
+   "len": "13:30",
+   "published": "2020-06-30",
+   "outlier": 36.71,
+   "type": "single-subject war (one raid)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "AI/game-style render + overlay",
+    "face": "small",
+    "text_words": 0,
+    "text": "",
+    "palette": "grey/olive + red",
+    "map": false,
+    "notes": "RED ARROW + RED CIRCLE on helicopter and soldier"
+   }
+  },
+  {
+   "id": "-v5tymzKrIY",
+   "title": "The Mystery of the Other Atomic Bomb",
+   "views": 3614846,
+   "len_s": 713,
+   "len": "11:53",
+   "published": "2023-03-21",
+   "outlier": 35.76,
+   "type": "generic (Cold War mystery)",
+   "list": "popular"
+  },
+  {
+   "id": "74rqIWy6kkA",
+   "title": "800 US Marines Shatter 2,500 Japanese Troops - Battle of Edson's Ridge",
+   "views": 3600131,
+   "len_s": 855,
+   "len": "14:15",
+   "published": "2020-07-31",
+   "outlier": 35.61,
+   "type": "single-subject war (one battle)",
+   "list": "popular"
+  },
+  {
+   "id": "fIHvpOO33R0",
+   "title": "The Dangerous Little Man Who Picked a Fight With the President",
+   "views": 96725,
+   "len_s": 1489,
+   "len": "24:49",
+   "published": "2026-11-03",
+   "outlier": 0.96,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "tCctxqLO7pc",
+   "title": "The Terrifying Flying Killer No One Saw Coming",
+   "views": 51521,
+   "len_s": 1556,
+   "len": "25:56",
+   "published": "2026-10-27",
+   "outlier": 0.51,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "pD23gbUvXxs",
+   "title": "The Only Pilot to Kill 12 Tanks in a Day",
+   "views": 176688,
+   "len_s": 1406,
+   "len": "23:26",
+   "published": "2026-10-21",
+   "outlier": 1.75,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "8yQLIB38Vic",
+   "title": "The Engineer Who Built Himself a 36,000-Man Army",
+   "views": 83477,
+   "len_s": 1111,
+   "len": "18:31",
+   "published": "2026-10-13",
+   "outlier": 0.83,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "Gq6lP89qlsY",
+   "title": "So Feared His Own Army Denied He Existed",
+   "views": 224510,
+   "len_s": 1226,
+   "len": "20:26",
+   "published": "2026-10-06",
+   "outlier": 2.22,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "RBzqWJuv3-s",
+   "title": "The Man Too Savage For His Rank",
+   "views": 242491,
+   "len_s": 1424,
+   "len": "23:44",
+   "published": "2026-09-29",
+   "outlier": 2.4,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "k1kx7YWtRjw",
+   "title": "The Man Who Taught America True Violence",
+   "views": 1318113,
+   "len_s": 1295,
+   "len": "21:35",
+   "published": "2026-09-22",
+   "outlier": 13.04,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "t89s0FTeYpU",
+   "title": "So Ruthless His Own Men Put a Bounty on His Head",
+   "views": 329318,
+   "len_s": 1325,
+   "len": "22:05",
+   "published": "2026-09-15",
+   "outlier": 3.26,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "f2MyYFZKPFY",
+   "title": "The One Man Army Who Taunted Germany for Fun",
+   "views": 278899,
+   "len_s": 1226,
+   "len": "20:26",
+   "published": "2026-09-08",
+   "outlier": 2.76,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "CajxbRWGAlc",
+   "title": "The General Who Answered To Nobody",
+   "views": 1092501,
+   "len_s": 985,
+   "len": "16:25",
+   "published": "2026-09-01",
+   "outlier": 10.81,
+   "type": "single-subject",
+   "list": "recent"
+  },
+  {
+   "id": "t9LKYMGTT2k",
+   "title": "The Tactical Disaster that 10 Presidents Haven't Been Able to Solve",
+   "views": 10680,
+   "len_s": 852,
+   "len": "14:12",
+   "published": "2026-05-14",
+   "outlier": 0.11,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "AI/film-still close-up",
+    "face": "close-up",
+    "text_words": 0,
+    "text": "",
+    "palette": "muted brown/grey",
+    "map": false,
+    "notes": "worried face, burning city; no hook element"
+   }
+  },
+  {
+   "id": "x5rVoV9OuDY",
+   "title": "The One Man Who Held Off 1,000 Chinese Soldiers",
+   "views": 11777,
+   "len_s": 632,
+   "len": "10:32",
+   "published": "2026-05-30",
+   "outlier": 0.12,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "colourised portrait",
+    "face": "close-up",
+    "text_words": 0,
+    "text": "",
+    "palette": "teal/olive",
+    "map": false,
+    "notes": "neutral formal Marine portrait; calm face"
+   }
+  },
+  {
+   "id": "W_eRhXSPZxw",
+   "title": "The US Soldier Who Went Completely Insane",
+   "views": 16619,
+   "len_s": 1332,
+   "len": "22:12",
+   "published": "2026-02-28",
+   "outlier": 0.16,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "B&W photo + overlay",
+    "face": "small",
+    "text_words": 0,
+    "text": "",
+    "palette": "grey + red circle",
+    "map": false,
+    "notes": "red circle on soldier mid-stride"
+   }
+  },
+  {
+   "id": "UBn2iIwMMHs",
+   "title": "The Brutal Reality of Being a WWII Tank Commander",
+   "views": 16823,
+   "len_s": 716,
+   "len": "11:56",
+   "published": "2026-05-26",
+   "outlier": 0.17,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "B&W photo + overlay + text",
+    "face": "none",
+    "text_words": 2,
+    "text": "WAR DADDY",
+    "palette": "grey + red + white",
+    "map": false,
+    "notes": "red circle+arrow on Sherman; heavy white condensed text, top right"
+   }
+  }
+ ]
+}

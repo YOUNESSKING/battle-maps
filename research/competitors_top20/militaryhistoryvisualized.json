@@ -1,0 +1,361 @@
+{
+ "channel": {
+  "rank": 5,
+  "handle": "@militaryhistoryvisualized",
+  "channelId": "UCK09g6gYGMvU-0x1VCF1hgA",
+  "title": "Military History Visualized",
+  "subs": 787000,
+  "avgViews": 299148,
+  "videos": 477,
+  "avgLong30d_s": 709,
+  "growth30d_views": 0.33
+ },
+ "recent_median_views": 79236,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 12,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 5.5,
+  "winners_with_map_pct": 12,
+  "weak_with_face_pct": 75,
+  "weak_avg_text_words": 7.0,
+  "recent_median_views": 79236
+ },
+ "videos": [
+  {
+   "id": "ENc2ZDgkv7Q",
+   "title": "Panzerfaust - How Effective was it? - Military History",
+   "views": 4093559,
+   "len_s": 445,
+   "published": "2017-02-14",
+   "outlier": 51.66,
+   "type": "weapon explainer",
+   "list": "popular",
+   "thumb": {
+    "image_type": "line drawing (weapon cutaway)",
+    "face": false,
+    "text_words": 5,
+    "text": "Panzerfaust How Effective was it?",
+    "palette": "sage green/red/white",
+    "map": false
+   }
+  },
+  {
+   "id": "-rKRt5zVZgw",
+   "title": "German Squad Tactics in World War 2",
+   "views": 3325894,
+   "len_s": 722,
+   "published": "2016-08-26",
+   "outlier": 41.97,
+   "type": "tactics explainer",
+   "list": "popular",
+   "thumb": {
+    "image_type": "line drawing (rifles, squad diagram)",
+    "face": false,
+    "text_words": 3,
+    "text": "German Squad Tactics",
+    "palette": "sage green/red/white",
+    "map": false
+   }
+  },
+  {
+   "id": "aELkvDPhQU8",
+   "title": "[Weapons 101] How does a Mortar work?",
+   "views": 2494644,
+   "len_s": 172,
+   "published": "2016-03-25",
+   "outlier": 31.48,
+   "type": "weapon explainer",
+   "list": "popular",
+   "thumb": {
+    "image_type": "line drawing (mortar)",
+    "face": false,
+    "text_words": 5,
+    "text": "HOW DOES A MORTAR WORK?",
+    "palette": "blue/red/white",
+    "map": false
+   }
+  },
+  {
+   "id": "6jgvkzD8d3k",
+   "title": "Flak Towers: Effective or not?",
+   "views": 2105386,
+   "len_s": 476,
+   "published": "2017-07-14",
+   "outlier": 26.57,
+   "type": "weapon/structure explainer",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (flak tower) + label boxes",
+    "face": false,
+    "text_words": 5,
+    "text": "FLAK TOWERS How did they work?",
+    "palette": "grey/red/black",
+    "map": false
+   }
+  },
+  {
+   "id": "5JxQhxOJa5U",
+   "title": "Top 11 Misconceptions of World War 2 #Eurocentric Edition",
+   "views": 2042610,
+   "len_s": 686,
+   "published": "2016-12-20",
+   "outlier": 25.78,
+   "type": "list/myths",
+   "list": "popular",
+   "thumb": {
+    "image_type": "silhouette drawings (aircraft, halftrack)",
+    "face": false,
+    "text_words": 6,
+    "text": "Top 11 Misconceptions about World War 2",
+    "palette": "sage green/red/white",
+    "map": false
+   }
+  },
+  {
+   "id": "IxGKhGLUpNI",
+   "title": "Soviet Defensive Tactics - Kursk 43",
+   "views": 1827705,
+   "len_s": 722,
+   "published": "2019-03-19",
+   "outlier": 23.07,
+   "type": "tactics (battle)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "tactical diagram (tanks, arrows)",
+    "face": false,
+    "text_words": 6,
+    "text": "HOW THE RED ARMY STOPPED PANZERS",
+    "palette": "green/red/yellow",
+    "map": true
+   }
+  },
+  {
+   "id": "kC0gf7oWRUU",
+   "title": "Why does Russian Explosive Reactive Armor not explode?",
+   "views": 1606119,
+   "len_s": 688,
+   "published": "2022-04-26",
+   "outlier": 20.27,
+   "type": "weapon explainer",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (burned T-72) + red arrow + labels",
+    "face": false,
+    "text_words": 8,
+    "text": "Why Russian Explosive Reactive Armor does not explode",
+    "palette": "grey/red",
+    "map": false
+   }
+  },
+  {
+   "id": "SYZfvi0Ab78",
+   "title": "Leopard 1s for Ukraine: Still useful?",
+   "views": 1590623,
+   "len_s": 1014,
+   "published": "2022-04-18",
+   "outlier": 20.07,
+   "type": "weapon explainer",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (Leopard 1, crew) + labels",
+    "face": true,
+    "text_words": 6,
+    "text": "LEOPARDS for UKRAINE? Junk or Wunderwaffe?",
+    "palette": "green/white/red",
+    "map": false
+   }
+  },
+  {
+   "id": "z3UHrnTUgZE",
+   "title": "On D-Day what did the Germans know?",
+   "views": 1450479,
+   "len_s": 780,
+   "published": "2019-05-28",
+   "outlier": 18.31,
+   "type": "battle question",
+   "list": "popular"
+  },
+  {
+   "id": "wOt2qrctA5Q",
+   "title": "Urban Combat: Fighting Positions",
+   "views": 1421044,
+   "len_s": 550,
+   "published": "2017-09-22",
+   "outlier": 17.93,
+   "type": "tactics explainer",
+   "list": "popular"
+  },
+  {
+   "id": "VkD3h9XFnkE",
+   "title": "Why a Swiss Hetzer? Panzerjäger G 13",
+   "views": 75969,
+   "len_s": 695,
+   "published": "2026-11-03",
+   "outlier": 0.96,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "MtWlvPMOuDk",
+   "title": "German-run Italian Tank Factory: What could go wrong...",
+   "views": 115855,
+   "len_s": 723,
+   "published": "2026-10-20",
+   "outlier": 1.46,
+   "type": "industry",
+   "list": "recent"
+  },
+  {
+   "id": "CL3iimguRa4",
+   "title": "More than Just the Gun: Early vs. Late Panzer IVs",
+   "views": 112381,
+   "len_s": 761,
+   "published": "2026-10-06",
+   "outlier": 1.42,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "E_M3WSivUQM",
+   "title": "Panzer I: Cute but Deadly",
+   "views": 167219,
+   "len_s": 817,
+   "published": "2026-09-22",
+   "outlier": 2.11,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "vKPe6dnefpk",
+   "title": "\"Hetzer\": The StuG from Wish - Jagdpanzer 38",
+   "views": 119974,
+   "len_s": 1470,
+   "published": "2026-09-08",
+   "outlier": 1.51,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "5WevNzS_RR0",
+   "title": "Wrong: Defying Hitlers orders was a Death Sentence",
+   "views": 41887,
+   "len_s": 932,
+   "published": "2026-08-25",
+   "outlier": 0.53,
+   "type": "myth",
+   "list": "recent"
+  },
+  {
+   "id": "QiQvyjbfsoY",
+   "title": "Why 2 medium Panzers? Pz III & IV",
+   "views": 82503,
+   "len_s": 840,
+   "published": "2026-08-11",
+   "outlier": 1.04,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "63yjMl_8yw8",
+   "title": "StuG: What the Grenadier must know about it",
+   "views": 23857,
+   "len_s": 777,
+   "published": "2026-07-28",
+   "outlier": 0.3,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "H3OJRg2fyj4",
+   "title": "Manstein's StuG Memo",
+   "views": 31491,
+   "len_s": 606,
+   "published": "2026-07-21",
+   "outlier": 0.4,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "uVzG9gKtEKo",
+   "title": "StuG III: Artillery for the Infantry",
+   "views": 36927,
+   "len_s": 1151,
+   "published": "2026-07-14",
+   "outlier": 0.47,
+   "type": "weapon",
+   "list": "recent"
+  },
+  {
+   "id": "1esgy3YAtko",
+   "title": "Kettenkrad: Snow & Mud Experience",
+   "views": 17288,
+   "len_s": 645,
+   "published": "2026-02-24",
+   "outlier": 0.22,
+   "type": "weapon (experience)",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "real photo (host on Kettenkrad) + labels",
+    "face": true,
+    "text_words": 6,
+    "text": "Kettenkrad Ostfront Drift Driving in Snow",
+    "palette": "white/brown/red",
+    "map": false
+   }
+  },
+  {
+   "id": "t9b62ZROgms",
+   "title": "From the Front to Field Hospital: German Medical Services WW2",
+   "views": 17416,
+   "len_s": 513,
+   "published": "2025-04-29",
+   "outlier": 0.22,
+   "type": "generic",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "real photo (wounded soldier) + labels",
+    "face": true,
+    "text_words": 7,
+    "text": "From the Front to Field Hospital German Medical Services WW2",
+    "palette": "tan/red/black",
+    "map": false
+   }
+  },
+  {
+   "id": "x65q_VnmFp0",
+   "title": "Panzer Defense vs Soviet Tanks 1944",
+   "views": 19237,
+   "len_s": 690,
+   "published": "2026-06-30",
+   "outlier": 0.24,
+   "type": "tactics",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "real photo (host standing on T-34) + labels",
+    "face": true,
+    "text_words": 10,
+    "text": "Discussing Panzer Tactics vs Soviet Tanks While standing on a T-34/85",
+    "palette": "grey/red/black",
+    "map": false
+   }
+  },
+  {
+   "id": "ErWLdjjOm2c",
+   "title": "So NATO invited me to a Live Fire Exercise in the Baltic",
+   "views": 20059,
+   "len_s": 882,
+   "published": "2026-03-03",
+   "outlier": 0.25,
+   "type": "vlog",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "real photo (helicopters, beach) + labels",
+    "face": false,
+    "text_words": 5,
+    "text": "Amphibious Landing NATO invited me",
+    "palette": "blue/white/red",
+    "map": false
+   }
+  }
+ ]
+}

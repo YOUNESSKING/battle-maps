@@ -1,0 +1,351 @@
+{
+ "channel": {
+  "rank": 1,
+  "handle": "@kingsandgenerals",
+  "channelId": "UCMmaBzfCCwZ2KqaBJjkj0fw",
+  "title": "Kings and Generals",
+  "subs": 4220000,
+  "avgViews": 482947,
+  "videos": 2287,
+  "avgLong30d_s": 1834,
+  "growth30d_views": 1.48
+ },
+ "recent_median_views": 326673,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 38,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 4.2,
+  "winners_with_map_pct": 62,
+  "weak_with_face_pct": 50,
+  "weak_avg_text_words": 4.5,
+  "recent_median_views": 326673
+ },
+ "videos": [
+  {
+   "id": "v5q1rerf-qw",
+   "title": "How Rome Conquered Greece - Roman History DOCUMENTARY",
+   "views": 20339747,
+   "len_s": 7529,
+   "published": "2020-11-29",
+   "outlier": 62.26,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (soldiers over map)",
+    "face": false,
+    "text_words": 4,
+    "text": "ROMAN CONQUEST OF GREECE",
+    "palette": "brown/gold/cream",
+    "map": true
+   }
+  },
+  {
+   "id": "bzatw32j-i4",
+   "title": "Mongols Season 1 Full - from Genghis to Kublai",
+   "views": 13353523,
+   "len_s": 4098,
+   "published": "2018-08-26",
+   "outlier": 40.88,
+   "type": "series/compilation",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (warriors, faint map)",
+    "face": false,
+    "text_words": 5,
+    "text": "MONGOLS FROM GENGHIS TO KUBLAI",
+    "palette": "pink/purple/steel",
+    "map": true
+   }
+  },
+  {
+   "id": "hHqJ6pgdE-c",
+   "title": "Six-Day War (1967) - Third Arab-Israeli War DOCUMENTARY",
+   "views": 12565242,
+   "len_s": 959,
+   "published": "2018-08-28",
+   "outlier": 38.46,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "map + flags (versus layout)",
+    "face": false,
+    "text_words": 5,
+    "text": "1967 ARAB-ISRAELI WAR SIX-DAY WAR",
+    "palette": "olive/red/white/blue",
+    "map": true
+   }
+  },
+  {
+   "id": "LRV185XaMIM",
+   "title": "Caesar in Gaul - Roman History DOCUMENTARY",
+   "views": 10549441,
+   "len_s": 5053,
+   "published": "2020-01-09",
+   "outlier": 32.29,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (Caesar full figure) + map",
+    "face": true,
+    "text_words": 3,
+    "text": "CAESAR IN GAUL",
+    "palette": "red/black/orange",
+    "map": true
+   }
+  },
+  {
+   "id": "_O5DshzvUsk",
+   "title": "Caesar against Pompey - Great Roman Civil War DOCUMENTARY",
+   "views": 9895493,
+   "len_s": 8119,
+   "published": "2021-11-27",
+   "outlier": 30.29,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (two rivals on horses, versus)",
+    "face": true,
+    "text_words": 5,
+    "text": "CAESAR'S CIVIL WAR / CAESAR vs POMPEY",
+    "palette": "gold/white/red",
+    "map": false
+   }
+  },
+  {
+   "id": "o8F8IajtW9U",
+   "title": "How Caesar Won the Great Roman Civil War - Animated DOCUMENTARY",
+   "views": 9308257,
+   "len_s": 10075,
+   "published": "2021-11-28",
+   "outlier": 28.49,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (Caesar profile bust + soldiers)",
+    "face": true,
+    "text_words": 5,
+    "text": "GREAT ROMAN CIVIL WAR CAESAR'S TRIUMPH",
+    "palette": "red/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "r2cEIDZwG5M",
+   "title": "Early Muslim Expansion - Khalid, Yarmouk, al-Qadisiyyah DOCUMENTARY",
+   "views": 8583040,
+   "len_s": 6792,
+   "published": "2020-05-03",
+   "outlier": 26.27,
+   "type": "war (multi-battle)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (crescent) + map with arrows",
+    "face": false,
+    "text_words": 3,
+    "text": "EARLY MUSLIM EXPANSION",
+    "palette": "orange/purple/green",
+    "map": true
+   }
+  },
+  {
+   "id": "pvoejM-cls0",
+   "title": "Hundred Years' War - Full Story, Every Battle - Animated Medieval History",
+   "views": 6901401,
+   "len_s": 12840,
+   "published": "2023-11-30",
+   "outlier": 21.13,
+   "type": "war (full war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration (knights and archers)",
+    "face": false,
+    "text_words": 4,
+    "text": "HUNDRED YEARS' WAR 1337-1453",
+    "palette": "green/steel/white",
+    "map": false
+   }
+  },
+  {
+   "id": "pU-kFUJoJEU",
+   "title": "Thomas Cochrane: Craziest Sea Captain in History",
+   "views": 6630039,
+   "len_s": 4656,
+   "published": "2021-01-14",
+   "outlier": 20.3,
+   "type": "biography",
+   "list": "popular"
+  },
+  {
+   "id": "-85dXjgMiSU",
+   "title": "Muslim Schism: How Islam Split into the Sunni and Shia Branches",
+   "views": 6213703,
+   "len_s": 1073,
+   "published": "2021-04-20",
+   "outlier": 19.02,
+   "type": "generic/non-war",
+   "list": "popular"
+  },
+  {
+   "id": "U8qHNk0xPss",
+   "title": "Not only Janissaries - The Ottoman Empire’s Elite Army",
+   "views": 199984,
+   "len_s": 1141,
+   "published": "2026-11-05",
+   "outlier": 0.61,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "HARdgJiR7s",
+   "title": "From India to Europe: The Romani Odyssey",
+   "views": 166923,
+   "len_s": 1204,
+   "published": "2026-11-03",
+   "outlier": 0.51,
+   "type": "non-war",
+   "list": "recent"
+  },
+  {
+   "id": "ytmwsMU1DMA",
+   "title": "Yugoslavia 1991: How the Wars Began",
+   "views": 290222,
+   "len_s": 1459,
+   "published": "2026-11-01",
+   "outlier": 0.89,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "QE8KlIHvmk0",
+   "title": "Medieval Horror Stories",
+   "views": 96922,
+   "len_s": 1122,
+   "published": "2026-10-29",
+   "outlier": 0.3,
+   "type": "non-war",
+   "list": "recent",
+   "thumb": {
+    "image_type": "illustration (ghost, graveyard)",
+    "face": false,
+    "text_words": 3,
+    "text": "MEDIEVAL GHOST STORIES",
+    "palette": "grey/blue (torn-paper border)",
+    "map": false
+   }
+  },
+  {
+   "id": "H2xV6FnbSkQ",
+   "title": "Why Spain Collapsed Into Civil War - Kings and Generals Modern",
+   "views": 439444,
+   "len_s": 1193,
+   "published": "2026-10-27",
+   "outlier": 1.35,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "hSMwc_RRqiQ",
+   "title": "How the Ottomans Became a Superpower and Tripled in Size",
+   "views": 363125,
+   "len_s": 9267,
+   "published": "2026-10-25",
+   "outlier": 1.11,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "VKZRmSTqI0U",
+   "title": "The Forgotten Viking War That United England",
+   "views": 221734,
+   "len_s": 1158,
+   "published": "2026-10-22",
+   "outlier": 0.68,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "kd-ZNqGaajg",
+   "title": "The Biggest Rebellion Against the British Empire in History",
+   "views": 473191,
+   "len_s": 1360,
+   "published": "2026-10-20",
+   "outlier": 1.45,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "efyxLW1Yeqo",
+   "title": "Largest Land Battle Before WWI Caused the First Russian Revolution",
+   "views": 722214,
+   "len_s": 965,
+   "published": "2026-10-18",
+   "outlier": 2.21,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "YcE50-LemSM",
+   "title": "Saddam Expected a Quick Victory Against Iran",
+   "views": 397746,
+   "len_s": 1070,
+   "published": "2026-10-15",
+   "outlier": 1.22,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "89WmcZfMrFQ",
+   "title": "Did Cyrus the Great Create Human Rights?",
+   "views": 55155,
+   "len_s": 1200,
+   "published": "2026-07-30",
+   "outlier": 0.17,
+   "type": "non-war",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "illustration (king on throne)",
+    "face": true,
+    "text_words": 2,
+    "text": "CYRUS CYLINDER",
+    "palette": "gold/brown (torn-paper border)",
+    "map": false
+   }
+  },
+  {
+   "id": "Ho43avSpulU",
+   "title": "Why Hollywood Always Gets Armour and Weapons Wrong",
+   "views": 78629,
+   "len_s": 1337,
+   "published": "2026-07-16",
+   "outlier": 0.24,
+   "type": "generic",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "illustration (armour fitting)",
+    "face": false,
+    "text_words": 5,
+    "text": "THEY NEVER GET IT RIGHT",
+    "palette": "maroon/grey (torn-paper border)",
+    "map": false
+   }
+  },
+  {
+   "id": "Rk7QV9Gto-c",
+   "title": "Fall of Jerusalem - How Britain Broke the Ottoman Front",
+   "views": 94483,
+   "len_s": 1309,
+   "published": "2026-08-23",
+   "outlier": 0.29,
+   "type": "war",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "colourised real photo (soldier group) + small map",
+    "face": true,
+    "text_words": 8,
+    "text": "OTTOMANS IN WORLD WAR I FALL OF JERUSALEM 1917",
+    "palette": "khaki/muted (torn-paper border)",
+    "map": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,323 @@
+{
+ "channel": {
+  "handle": "@eastory",
+  "name": "Eastory",
+  "subs": "482k",
+  "videos": 61,
+  "avg_long_len": "9.4 min",
+  "flag": "Animated-map channel; MOST RELEVANT to us. Winners are single-theatre year-by-year animated maps. Cartoon (Q-1H5), 55-min compilation and 1-min timelapse are non-standard formats. Back catalogue (2017-2021) is 30-60x the current ~180k median: the channel is cooling (61 videos, cadence ~1/month)."
+ },
+ "recent_median_views": 180382.5,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 0,
+  "winners_with_text_pct": 88,
+  "winners_avg_text_words": 2.0,
+  "winners_with_map_pct": 88,
+  "weak_with_face_pct": 25,
+  "weak_avg_text_words": 2.8,
+  "weak_with_map_pct": 75,
+  "recent_median_views": 180382.5
+ },
+ "videos": [
+  {
+   "id": "-AUdP-QVEKA",
+   "title": "Eastern Front animated: 1944/1945",
+   "views": 10300397,
+   "len_s": 1026,
+   "published": "2019-06-22",
+   "outlier": 57.1,
+   "type": "single-theatre animated map",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map (arrows, unit boxes)",
+    "face": false,
+    "text_words": 1,
+    "text": "Berlin",
+    "palette": "blue/red/sand",
+    "map": true
+   }
+  },
+  {
+   "id": "wu3p7dxrhl8",
+   "title": "Eastern Front animated: 1941",
+   "views": 9955604,
+   "len_s": 591,
+   "published": "2018-05-20",
+   "outlier": 55.19,
+   "type": "single-theatre animated map",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map",
+    "face": false,
+    "text_words": 1,
+    "text": "Moscow",
+    "palette": "sand/red/grey",
+    "map": true
+   }
+  },
+  {
+   "id": "VA9QBHDtfCQ",
+   "title": "Eastern Front animated: 1943/44",
+   "views": 6076311,
+   "len_s": 663,
+   "published": "2019-02-02",
+   "outlier": 33.69,
+   "type": "single-theatre animated map",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map",
+    "face": false,
+    "text_words": 1,
+    "text": "Kursk",
+    "palette": "sand/red/black",
+    "map": true
+   }
+  },
+  {
+   "id": "pucJTYK7_Yo",
+   "title": "Eastern Front animated: 1942",
+   "views": 5790036,
+   "len_s": 784,
+   "published": "2018-09-06",
+   "outlier": 32.1,
+   "type": "single-theatre animated map",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map",
+    "face": false,
+    "text_words": 1,
+    "text": "Stalingrad",
+    "palette": "pale blue/red",
+    "map": true
+   }
+  },
+  {
+   "id": "36UrLDiTLvU",
+   "title": "World War Two animated: Western Front 1940",
+   "views": 3886022,
+   "len_s": 787,
+   "published": "2020-04-30",
+   "outlier": 21.54,
+   "type": "single-campaign animated map",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map",
+    "face": false,
+    "text_words": 1,
+    "text": "Dunkirk",
+    "palette": "grey-blue/red",
+    "map": true
+   }
+  },
+  {
+   "id": "Q-1H5FuB3fo",
+   "title": "\"Brilliant\" plans to win WWII: How France planned to win the war?",
+   "views": 2676828,
+   "len_s": 443,
+   "published": "2017-05-12",
+   "outlier": 14.84,
+   "type": "war-plan explainer (map)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon (stick-style soldiers, French flag)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "white/brown/red",
+    "map": false
+   }
+  },
+  {
+   "id": "PVbHBtmkdFA",
+   "title": "Battle of France in 44 seconds",
+   "views": 2476026,
+   "len_s": 67,
+   "published": "2020-03-18",
+   "outlier": 13.73,
+   "type": "short map timelapse",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map",
+    "face": false,
+    "text_words": 8,
+    "text": "Battle of France 1940 / 1 Second = 1 Day",
+    "palette": "blue/yellow/red",
+    "map": true
+   }
+  },
+  {
+   "id": "HwYZQ8BVUSM",
+   "title": "WW2 in animated maps: Sept 1939 - Aug 1940",
+   "views": 2312329,
+   "len_s": 3349,
+   "published": "2020-05-16",
+   "outlier": 12.82,
+   "type": "multi-campaign compilation (map)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "animated map",
+    "face": false,
+    "text_words": 3,
+    "text": "1939-1940 / Year 1",
+    "palette": "red/grey/gold",
+    "map": true
+   }
+  },
+  {
+   "id": "HBA0xDHZjko",
+   "title": "Estonian War of Independence animated",
+   "views": 2301417,
+   "len_s": 1059,
+   "published": "2018-01-21",
+   "outlier": 12.76,
+   "type": "single-war animated map",
+   "list": "popular"
+  },
+  {
+   "id": "aC5Xo6rleZM",
+   "title": "Germany's plans to win WWI",
+   "views": 2245962,
+   "len_s": 617,
+   "published": "2018-10-13",
+   "outlier": 12.45,
+   "type": "war-plan explainer (map)",
+   "list": "popular"
+  },
+  {
+   "id": "cD2XpNWjjyo",
+   "title": "Eastern front losses mapped",
+   "views": 601196,
+   "len_s": 566,
+   "published": "2026-07-11",
+   "outlier": 3.33,
+   "type": "stats/map",
+   "list": "recent"
+  },
+  {
+   "id": "ecJWb2C0ew8",
+   "title": "Spanish Civil War animated",
+   "views": 171857,
+   "len_s": 612,
+   "published": "2026-05-09",
+   "outlier": 0.95,
+   "type": "single-war animated map",
+   "list": "recent",
+   "thumb": {
+    "image_type": "animated map (Spain)",
+    "face": false,
+    "text_words": 3,
+    "text": "SPAIN vs SPAIN",
+    "palette": "dark/yellow/green",
+    "map": true
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "SuzeEW9vSu0",
+   "title": "Why did the Soviet and Russian leaders fail?",
+   "views": 37233,
+   "len_s": 535,
+   "published": "2026-03-14",
+   "outlier": 0.21,
+   "type": "essay/explainer",
+   "list": "recent",
+   "thumb": {
+    "image_type": "four leader portraits (Brezhnev, Gorbachev, Yeltsin, Putin)",
+    "face": true,
+    "text_words": 1,
+    "text": "LOSERS?",
+    "palette": "dark red/gold",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "3H1WMH24_qI",
+   "title": "RCW VII: The Polish-Soviet War",
+   "views": 361498,
+   "len_s": 911,
+   "published": "2025-11-29",
+   "outlier": 2.0,
+   "type": "series part (animated map)",
+   "list": "recent"
+  },
+  {
+   "id": "DcuqIwQAipQ",
+   "title": "Russian Civil War VI: the defeat of the Whites",
+   "views": 159979,
+   "len_s": 617,
+   "published": "2025-09-06",
+   "outlier": 0.89,
+   "type": "series part (animated map)",
+   "list": "recent",
+   "thumb": {
+    "image_type": "animated map, red arrows",
+    "face": false,
+    "text_words": 5,
+    "text": "The Reds win 1919/20",
+    "palette": "dark/orange/red",
+    "map": true
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "Y8KbucMO6Aw",
+   "title": "Russian Civil War V: Soviet Russia encircled by fronts",
+   "views": 176853,
+   "len_s": 697,
+   "published": "2025-07-19",
+   "outlier": 0.98,
+   "type": "series part (animated map)",
+   "list": "recent"
+  },
+  {
+   "id": "8nd9CmSdv9Y",
+   "title": "Russian Civil War IV: The Red Army marches West",
+   "views": 133939,
+   "len_s": 755,
+   "published": "2025-06-08",
+   "outlier": 0.74,
+   "type": "series part (animated map)",
+   "list": "recent",
+   "thumb": {
+    "image_type": "animated map, red arrows",
+    "face": false,
+    "text_words": 2,
+    "text": "1919 MOSCOW",
+    "palette": "dark/red/orange",
+    "map": true
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "SyaZge5vcu0",
+   "title": "Russian Civil War III: The Whites Strike Back",
+   "views": 183912,
+   "len_s": 1055,
+   "published": "2025-03-29",
+   "outlier": 1.02,
+   "type": "series part (animated map)",
+   "list": "recent"
+  },
+  {
+   "id": "WyfSZ1TOGZI",
+   "title": "Russian Civil War II: The Central Powers attack",
+   "views": 204494,
+   "len_s": 774,
+   "published": "2025-02-08",
+   "outlier": 1.13,
+   "type": "series part (animated map)",
+   "list": "recent"
+  },
+  {
+   "id": "vEMa2rSrYZ4",
+   "title": "Russian Civil War I: the Reds take Power",
+   "views": 203611,
+   "len_s": 631,
+   "published": "2024-12-21",
+   "outlier": 1.13,
+   "type": "series part (animated map)",
+   "list": "recent"
+  }
+ ]
+}

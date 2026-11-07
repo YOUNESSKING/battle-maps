@@ -1,0 +1,363 @@
+{
+ "channel": {
+  "handle": "@worldhistoryvideos",
+  "name": "World History (World History Videos)",
+  "subs": "557k",
+  "videos": 814,
+  "avg_long_len": "15 min",
+  "flag": "Faceless slideshow documentaries (colourised archive photos + TTS-style narration) on Nazi / Axis criminals and their punishment: 'execution of X', victim stories. Not battles, no maps; war-crimes aftermath. Very high cadence (every 2 days, ~15 min). Shock-value titles; do not copy the topic, copy the engine."
+ },
+ "recent_median_views": 179476.5,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 100,
+  "winners_with_text_pct": 0,
+  "winners_avg_text_words": 0.0,
+  "winners_with_map_pct": 0,
+  "weak_with_face_pct": 100,
+  "weak_avg_text_words": 0.0,
+  "weak_with_map_pct": 0,
+  "recent_median_views": 179476.5
+ },
+ "videos": [
+  {
+   "id": "95F1k6YIh80",
+   "title": "Final Reckoning of Auschwitz's Most Feared Nazi Guard: Irma Grese",
+   "views": 5030795,
+   "len_s": 1291,
+   "published": "2023-01-23",
+   "outlier": 28.03,
+   "type": "person (war crimes aftermath)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "2-panel colourised/archive photo, face",
+    "face": true,
+    "text_words": 0,
+    "text": "(W logo only)",
+    "palette": "grey/colour mix",
+    "map": false
+   }
+  },
+  {
+   "id": "RTCs1-hOK_U",
+   "title": "Dachau Massacre - Execution of Nazi Guards during Dachau Liberation Reprisals - World War 2",
+   "views": 4061333,
+   "len_s": 856,
+   "published": "2022-12-16",
+   "outlier": 22.63,
+   "type": "single event (war crimes)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo, soldiers",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "b/w",
+    "map": false
+   }
+  },
+  {
+   "id": "wPeiqfV9Zd4",
+   "title": "The Jew who survived Auschwitz because a Nazi guard fell in love with her - Helena Citrónová",
+   "views": 3442984,
+   "len_s": 813,
+   "published": "2023-12-14",
+   "outlier": 19.18,
+   "type": "person (survivor)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "2-panel: gate photo + woman portrait",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "sepia/blue",
+    "map": false
+   }
+  },
+  {
+   "id": "bgv-_OJqaF4",
+   "title": "Execution of Japanese soldier who beheaded 300 people",
+   "views": 3208623,
+   "len_s": 943,
+   "published": "2023-09-07",
+   "outlier": 17.88,
+   "type": "person (war crimes)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "2-panel: execution photo + portrait",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "b/w",
+    "map": false
+   }
+  },
+  {
+   "id": "MmHQ0uE2OK8",
+   "title": "Fall of Stutthof Guards - Public Justice That 200,000 People Watched",
+   "views": 2720540,
+   "len_s": 746,
+   "published": "2024-03-28",
+   "outlier": 15.16,
+   "type": "single event (war crimes)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "colourised group photo",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "pastel/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "1zhze3cdVW0",
+   "title": "Nazi SS Officer Burned Alive for his WW2 Crimes: Peiper",
+   "views": 2640863,
+   "len_s": 1344,
+   "published": "2023-11-10",
+   "outlier": 14.71,
+   "type": "person (war crimes)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "2-panel: SS portrait + burning building",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "b/w/colour",
+    "map": false
+   }
+  },
+  {
+   "id": "W6zN3BRFoj4",
+   "title": "How did Nazis murder Anne Frank? Life of Anne Frank in the Secret Annex and her painful death - WW2",
+   "views": 2632320,
+   "len_s": 961,
+   "published": "2022-07-16",
+   "outlier": 14.67,
+   "type": "person (victim)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "2-panel: Anne Frank portrait + deportation",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "colour/b/w",
+    "map": false
+   }
+  },
+  {
+   "id": "3hB6l6d314k",
+   "title": "Nazi victim slaps Nazi guard who murdered her son during WW2",
+   "views": 2586534,
+   "len_s": 96,
+   "published": "2022-02-20",
+   "outlier": 14.41,
+   "type": "short clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo, women",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "b/w",
+    "map": false
+   }
+  },
+  {
+   "id": "tFGodTJH4ws",
+   "title": "Appalling death of sadistic Nazi guard & sexual deviant Ilse Koch - Nazi \"Queen\" of Buchenwald",
+   "views": 2444722,
+   "len_s": 881,
+   "published": "2022-10-16",
+   "outlier": 13.62,
+   "type": "person (war crimes)",
+   "list": "popular"
+  },
+  {
+   "id": "ZuOtYYQsWFY",
+   "title": "Nazi torture of black German boy & his Revenge: Gert Schramm",
+   "views": 2274943,
+   "len_s": 1181,
+   "published": "2023-03-21",
+   "outlier": 12.68,
+   "type": "person (victim)",
+   "list": "popular"
+  },
+  {
+   "id": "IqWX_K7nU2o",
+   "title": "She Ruled Auschwitz — Then Her Body Became an Experiment",
+   "views": 76791,
+   "len_s": 1003,
+   "published": "2026-11-05",
+   "outlier": 0.43,
+   "type": "person (war crimes)",
+   "list": "recent"
+  },
+  {
+   "id": "G-4mzj_2wZ8",
+   "title": "Reckoning of Nazi Collaborator Who Sold Her Brother to the SS",
+   "views": 71390,
+   "len_s": 928,
+   "published": "2026-11-03",
+   "outlier": 0.4,
+   "type": "person",
+   "list": "recent"
+  },
+  {
+   "id": "A8-o8VZSDRk",
+   "title": "When Hitler's Old Men & Boys Paid For What They Did: Volkssturm",
+   "views": 92178,
+   "len_s": 1031,
+   "published": "2026-11-01",
+   "outlier": 0.51,
+   "type": "unit",
+   "list": "recent"
+  },
+  {
+   "id": "Y6w9af1B-xs",
+   "title": "The Final Reckoning: How Norway Dealt with Nazi Collaborators",
+   "views": 377593,
+   "len_s": 953,
+   "published": "2026-10-29",
+   "outlier": 2.1,
+   "type": "country series",
+   "list": "recent"
+  },
+  {
+   "id": "yYyLBIlm36U",
+   "title": "When Hitler's SS General Paid for What He Did: Moscow 1947",
+   "views": 105345,
+   "len_s": 947,
+   "published": "2026-10-27",
+   "outlier": 0.59,
+   "type": "person",
+   "list": "recent"
+  },
+  {
+   "id": "MfCtl2MH1qs",
+   "title": "From Nazi Princess to Cleaning Toilets: The Fall of Schirach",
+   "views": 214956,
+   "len_s": 1055,
+   "published": "2026-10-25",
+   "outlier": 1.2,
+   "type": "person",
+   "list": "recent"
+  },
+  {
+   "id": "0-mBRqMl2vA",
+   "title": "Too Much Even for the SS: Fall of SS Division Handschar",
+   "views": 143997,
+   "len_s": 902,
+   "published": "2026-10-22",
+   "outlier": 0.8,
+   "type": "unit",
+   "list": "recent"
+  },
+  {
+   "id": "9n8I3pvFmnI",
+   "title": "When the SS \"King of the Warsaw Ghetto\" Finally Paid—Warsaw 1952",
+   "views": 288587,
+   "len_s": 902,
+   "published": "2026-10-20",
+   "outlier": 1.61,
+   "type": "person",
+   "list": "recent"
+  },
+  {
+   "id": "e5JriPdMWks",
+   "title": "She Hunted for the SS — Then Smiled at Trial Before Reckoning Came",
+   "views": 339752,
+   "len_s": 911,
+   "published": "2026-10-18",
+   "outlier": 1.89,
+   "type": "person",
+   "list": "recent"
+  },
+  {
+   "id": "sMzEv8yYFTE",
+   "title": "The Final Reckoning: How Czechs Dealt With Hitler's Soldiers",
+   "views": 320472,
+   "len_s": 913,
+   "published": "2026-10-15",
+   "outlier": 1.79,
+   "type": "country series",
+   "list": "recent"
+  },
+  {
+   "id": "Glb_xeHzoxM",
+   "title": "WWII's Most Overlooked Incident: The Death of Fake Nazi Martyr",
+   "views": 22352,
+   "len_s": 795,
+   "published": "2026-08-04",
+   "outlier": 0.12,
+   "type": "person/incident",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "2-panel: group + portrait",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "green/black",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "SBa7BxErR5M",
+   "title": "Soviet Prime Minister Who Starved Ukraine—Then Paid the Price",
+   "views": 43256,
+   "len_s": 931,
+   "published": "2026-09-13",
+   "outlier": 0.24,
+   "type": "person",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "2-panel: portrait + peasants",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "colour/sepia",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "NWLC5DKU0Z0",
+   "title": "Too Much Even for the SS: Fall of Soviet Nazi Frolov (1946)",
+   "views": 43661,
+   "len_s": 818,
+   "published": "2026-07-28",
+   "outlier": 0.24,
+   "type": "person",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "2-panel: German officers + street",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "green/grey",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "XwW8odje68I",
+   "title": "Worse Than Nazis: End of the Russian General Who Chose Hitler",
+   "views": 45962,
+   "len_s": 888,
+   "published": "2026-08-25",
+   "outlier": 0.26,
+   "type": "person",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "2-panel: Russian general + officers",
+    "face": true,
+    "text_words": 0,
+    "text": "(logo only)",
+    "palette": "olive/red",
+    "map": false
+   },
+   "weak_thumb": true
+  }
+ ]
+}

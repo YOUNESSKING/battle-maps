@@ -1,0 +1,434 @@
+{
+ "channel": "War Stories",
+ "handle": "warstorieschannel",
+ "rank": 9,
+ "subs": 1360000,
+ "recent_median_views": 49755.5,
+ "recent_n": 50,
+ "thumbnail_summary": {
+  "winners": {
+   "n": 8,
+   "pct_face_clear": 38,
+   "pct_face_any": 50,
+   "avg_text_words": 0.0,
+   "pct_text": 0,
+   "pct_map": 0
+  },
+  "weak": {
+   "n": 4,
+   "pct_face_clear": 25,
+   "pct_face_any": 75,
+   "avg_text_words": 1.2,
+   "pct_text": 25,
+   "pct_map": 0
+  }
+ },
+ "title_summary": {
+  "winners": {
+   "avg_chars": 71,
+   "pct_year_or_number": 12,
+   "pct_caps": 0,
+   "pct_colon": 50,
+   "pct_dash": 0,
+   "pct_pipe": 62,
+   "pct_howwhy": 12,
+   "pct_animated": 0
+  },
+  "weak": {
+   "avg_chars": 55,
+   "pct_year_or_number": 50,
+   "pct_caps": 0,
+   "pct_colon": 50,
+   "pct_dash": 0,
+   "pct_pipe": 0,
+   "pct_howwhy": 0,
+   "pct_animated": 0
+  }
+ },
+ "videos": [
+  {
+   "id": "mSUQ-0iRctM",
+   "title": "Uncensored Footage of the Atomic Bomb's Devastation in Hiroshima",
+   "views": 13897839,
+   "len_s": 2733,
+   "published": "2025-11-07",
+   "outlier": 279.32,
+   "type": "raw-footage reel (not a single narrated story)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "colourised archive photo (injured children, Hiroshima)",
+    "face": "yes, close-up, emotional",
+    "text_words": 0,
+    "text": "(none; WAR STORIES logo absent)",
+    "palette": "sepia/grey, red blood",
+    "map": "no"
+   }
+  },
+  {
+   "id": "-gwJ8Y1XoSs",
+   "title": "What Were The Critical Battles Of World War II? | Battles Won And Lost Complete Series",
+   "views": 9835196,
+   "len_s": 11842,
+   "published": "2022-03-23",
+   "outlier": 197.67,
+   "type": "compilation (3h series)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "collage: Hitler B&W portrait + Stalingrad, D-Day, Iwo Jima flag",
+    "face": "yes, Hitler large",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "B&W + red flag, green logo",
+    "map": "no"
+   }
+  },
+  {
+   "id": "xGlIQ_IH5-s",
+   "title": "Afghanistan Uncensored: Rare Footage From The Battle For Marjah",
+   "views": 9391646,
+   "len_s": 5042,
+   "published": "2026-08-20",
+   "outlier": 188.76,
+   "type": "raw-footage reel",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "real photo (Marine crouching, explosion)",
+    "face": "partial (helmet profile)",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "tan, blue sky",
+    "map": "no"
+   }
+  },
+  {
+   "id": "Okhd_ijkI6k",
+   "title": "Golan Heights: Israel's Legendary Tank Defence Against Syria | Greatest Tank Battles",
+   "views": 7739617,
+   "len_s": 2785,
+   "published": "2021-01-29",
+   "outlier": 155.55,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "real photo (Israeli tank, flag)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "green/tan",
+    "map": "no"
+   }
+  },
+  {
+   "id": "x6v757NwqxM",
+   "title": "The Complete Story Of The Collapse Of Nazi Germany",
+   "views": 5875622,
+   "len_s": 13438,
+   "published": "2023-10-25",
+   "outlier": 118.09,
+   "type": "compilation (3h43 overview)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "colourised Hitler portrait + swastika/Soviet flag collage",
+    "face": "yes, Hitler large",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "grey, red",
+    "map": "no"
+   }
+  },
+  {
+   "id": "kCwCPeUknd4",
+   "title": "The Human Cost Of The Second World War | World War II In Numbers",
+   "views": 5536058,
+   "len_s": 10730,
+   "published": "2023-08-20",
+   "outlier": 111.27,
+   "type": "compilation (3h 'in numbers')",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "composite: man from behind, red falling-graph arrows, ruins",
+    "face": "no (back view)",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "red/grey/blue storm",
+    "map": "no (chart arrows)"
+   }
+  },
+  {
+   "id": "I4b7yl99wlo",
+   "title": "Battle of 73 Easting: The Gulf War Tank Battle In A Sandstorm | Greatest Tank Battles",
+   "views": 5110523,
+   "len_s": 2783,
+   "published": "2021-01-22",
+   "outlier": 102.71,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "real photo (burning T-72, smoke)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "tan, black smoke, orange",
+    "map": "no"
+   }
+  },
+  {
+   "id": "IEzCl2vpa4M",
+   "title": "The War For The Seas: The U-Boats That Stalked The Atlantic | Battlezone",
+   "views": 4702723,
+   "len_s": 3000,
+   "published": "2021-01-20",
+   "outlier": 94.52,
+   "type": "generic theme (U-boats overview)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "painting (U-boat vs ship)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "blue/grey, red",
+    "map": "no"
+   }
+  },
+  {
+   "id": "tvSz9jyJSgM",
+   "title": "Uncensored Raw Footage From The Attack On Pearl Harbor",
+   "views": 4411000,
+   "len_s": 2867,
+   "published": "2025-08-13",
+   "outlier": 88.65,
+   "type": "raw-footage reel",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "0F93Ymjv198",
+   "title": "The Battle Of The Best Tank Commanders Of WWII | Greatest Tank Battles",
+   "views": 4323822,
+   "len_s": 2606,
+   "published": "2020-12-11",
+   "outlier": 86.9,
+   "type": "generic (tank commanders list)",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "d6dL1Vnen4A",
+   "title": "Why The Willys Jeep Was America's Unsung Hero Of WW2",
+   "views": 10849,
+   "len_s": 2655,
+   "published": "2026-11-06",
+   "outlier": 0.22,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "E0scCBEkmzw",
+   "title": "Why America's High-Tech Weapons Lost the Battle for the Ho Chi Minh Trail",
+   "views": 18386,
+   "len_s": 2650,
+   "published": "2026-11-05",
+   "outlier": 0.37,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "8T-r5r6Ox_M",
+   "title": "Six-Day War: How Israel Defeated The Arab Coalition In Under A Week",
+   "views": 49440,
+   "len_s": 8658,
+   "published": "2026-11-04",
+   "outlier": 0.99,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "Cz7okVkqlik",
+   "title": "The Battle of the Somme: The Bloodiest Day In British Military History",
+   "views": 26767,
+   "len_s": 2606,
+   "published": "2026-11-03",
+   "outlier": 0.54,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "0CWXfHIDHJw",
+   "title": "The Bizarre Nazi Technology That Failed To Win WW2",
+   "views": 111348,
+   "len_s": 2674,
+   "published": "2026-11-02",
+   "outlier": 2.24,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "Nu-al3WOAeM",
+   "title": "Minute by Minute: The Uncensored Devastation of Hiroshima",
+   "views": 43094,
+   "len_s": 2919,
+   "published": "2026-11-01",
+   "outlier": 0.87,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "vZDDYYZVwf8",
+   "title": "100 Days In Hell: Uncensored Footage From The Battle Of Normandy",
+   "views": 1328724,
+   "len_s": 5799,
+   "published": "2026-10-31",
+   "outlier": 26.71,
+   "type": "raw-footage reel (1h36)",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "B-pzMdvPyGE",
+   "title": "Operation Show of Force: Inside The Israeli Hunt For A PLO Commander",
+   "views": 46469,
+   "len_s": 2925,
+   "published": "2026-10-30",
+   "outlier": 0.93,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "-1yLU6rsCxE",
+   "title": "1945: How The World Order Changed In Just 365 Days",
+   "views": 29642,
+   "len_s": 3001,
+   "published": "2026-10-29",
+   "outlier": 0.6,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "U1t2RN_tOno",
+   "title": "How Patton Won The Most Pivotal Tank Battle Of The Western Front",
+   "views": 816990,
+   "len_s": 2812,
+   "published": "2026-10-28",
+   "outlier": 16.42,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "z_bFmj6u5-M",
+   "title": "Uncensored Photos From The Forgotten Lichtenburg Camp",
+   "views": 8942,
+   "len_s": 3372,
+   "published": "2026-08-14",
+   "outlier": 0.18,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised photo (guards lined up)",
+    "face": "small (soldiers)",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "grey/olive",
+    "map": "no"
+   }
+  },
+  {
+   "id": "4JH7E6CB6oI",
+   "title": "Toulon 1942: The Darkest Day In French Naval History",
+   "views": 9337,
+   "len_s": 3092,
+   "published": "2026-10-09",
+   "outlier": 0.19,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "photo of wrecked ships + red/white text",
+    "face": "no",
+    "text_words": 5,
+    "text": "85 SHIPS LOST IN A DAY",
+    "palette": "blue/rust, red text",
+    "map": "no"
+   }
+  },
+  {
+   "id": "bx-i2AgYe-g",
+   "title": "The Bizarre Nazi Obsession To Recreate An Extinct Prehistoric Beast",
+   "views": 9337,
+   "len_s": 3067,
+   "published": "2026-08-28",
+   "outlier": 0.19,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "odd photo (man + lion cub)",
+    "face": "yes, medium",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "green/orange",
+    "map": "no"
+   }
+  },
+  {
+   "id": "BncfIv1rF8k",
+   "title": "Uncensored Newsreels: America's Crisis After WW2",
+   "views": 11871,
+   "len_s": 6446,
+   "published": "2026-08-23",
+   "outlier": 0.24,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised newsreel crowd with signs",
+    "face": "small",
+    "text_words": 0,
+    "text": "(none; logo)",
+    "palette": "muted",
+    "map": "no"
+   }
+  }
+ ]
+}

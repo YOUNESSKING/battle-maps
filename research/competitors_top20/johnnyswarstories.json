@@ -1,0 +1,343 @@
+{
+ "channel": {
+  "handle": "@johnnyswarstories",
+  "name": "Johnny's War Stories",
+  "subs": "274k",
+  "videos": 841,
+  "avg_long_len": "5 min",
+  "flag": "CLIP CHANNEL: movie/TV battle-scene clips (1-8 min), no narration, no original research. NOT comparable to our format; not a 'long single-subject war video' channel. Almost every long video is a film clip with the 'Title - Film name' pattern."
+ },
+ "recent_median_views": 5941.0,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 75,
+  "winners_with_text_pct": 0,
+  "winners_avg_text_words": 0.0,
+  "winners_with_map_pct": 0,
+  "weak_with_face_pct": 75,
+  "weak_avg_text_words": 0.0,
+  "weak_with_map_pct": 0,
+  "recent_median_views": 5941.0
+ },
+ "videos": [
+  {
+   "id": "3ziikUYi03I",
+   "title": "The sidewalk is not for you - The Pianist",
+   "views": 10760020,
+   "len_s": 56,
+   "published": "2021-01-15",
+   "outlier": 1811.15,
+   "type": "film clip (short)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "grey-green",
+    "map": false
+   }
+  },
+  {
+   "id": "LyZK8k4gzyg",
+   "title": "Band of Brothers - Defeat March",
+   "views": 7397275,
+   "len_s": 154,
+   "published": "2021-01-08",
+   "outlier": 1245.12,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": false,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "grey/green",
+    "map": false
+   }
+  },
+  {
+   "id": "ZONFIhPbYnQ",
+   "title": "Hitler's Last Moment Outside - Downfall",
+   "views": 7305175,
+   "len_s": 114,
+   "published": "2021-01-24",
+   "outlier": 1229.62,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "olive/grey",
+    "map": false
+   }
+  },
+  {
+   "id": "ONH-pxBMJu4",
+   "title": "Vietnam Basic Training - Forrest Gump",
+   "views": 6626473,
+   "len_s": 131,
+   "published": "2021-01-25",
+   "outlier": 1115.38,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "warm skin/white",
+    "map": false
+   }
+  },
+  {
+   "id": "4VuGRBraMb0",
+   "title": "Japanese Soldiers vs Russian Tanks - Battle Scene",
+   "views": 5745583,
+   "len_s": 472,
+   "published": "2022-04-08",
+   "outlier": 967.11,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "tan/red headband",
+    "map": false
+   }
+  },
+  {
+   "id": "Ov_qaESpkOo",
+   "title": "Panzerfaust Vs KV-1",
+   "views": 5357699,
+   "len_s": 139,
+   "published": "2020-12-30",
+   "outlier": 901.82,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "dark green",
+    "map": false
+   }
+  },
+  {
+   "id": "iH9VAfZvfkI",
+   "title": "Saving Private Ryan Half-Track Scene",
+   "views": 4860987,
+   "len_s": 137,
+   "published": "2021-02-03",
+   "outlier": 818.21,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "khaki/yellow",
+    "map": false
+   }
+  },
+  {
+   "id": "c4BFnq1lCgg",
+   "title": "Band of Brothers \"Textbook Position\"",
+   "views": 4633533,
+   "len_s": 113,
+   "published": "2021-01-22",
+   "outlier": 779.92,
+   "type": "film clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "brown/olive",
+    "map": false
+   }
+  },
+  {
+   "id": "YuNsb_d-aqQ",
+   "title": "Band of Brothers - You have one round",
+   "views": 4570029,
+   "len_s": 100,
+   "published": "2021-02-24",
+   "outlier": 769.24,
+   "type": "film clip",
+   "list": "popular"
+  },
+  {
+   "id": "EDOIzK8NuoU",
+   "title": "The Death of Stalin - The Coup",
+   "views": 4243928,
+   "len_s": 301,
+   "published": "2021-01-01",
+   "outlier": 714.35,
+   "type": "film clip",
+   "list": "popular"
+  },
+  {
+   "id": "uWqeIzouB9A",
+   "title": "Charge! - Cromwell",
+   "views": 4131,
+   "len_s": 306,
+   "published": "2026-10-29",
+   "outlier": 0.7,
+   "type": "film clip",
+   "list": "recent",
+   "thumb": {
+    "image_type": "film still",
+    "face": false,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "blue/gold",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "sPZVpgH9fJk",
+   "title": "Vietnam Scene - The Men Who Stare at Goats",
+   "views": 11064,
+   "len_s": 182,
+   "published": "2026-10-02",
+   "outlier": 1.86,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "uBCqnp36o3M",
+   "title": "I'm your date tonight Captain - Under Siege",
+   "views": 7742,
+   "len_s": 305,
+   "published": "2026-09-07",
+   "outlier": 1.3,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "IdymDClzKDQ",
+   "title": "Incoming - The Forgotten Battle",
+   "views": 9891,
+   "len_s": 133,
+   "published": "2026-08-16",
+   "outlier": 1.66,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "vu0HlKr7z3M",
+   "title": "NaPolA Training - Germany WW2 - Before the Fall",
+   "views": 5108,
+   "len_s": 129,
+   "published": "2026-08-02",
+   "outlier": 0.86,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "KnouWPjaq58",
+   "title": "Here to Help - Whiskey Tango Foxtrot",
+   "views": 5891,
+   "len_s": 244,
+   "published": "2026-07-19",
+   "outlier": 0.99,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "Wrod7bKWUVM",
+   "title": "Joining the Operation - The counterfeiters",
+   "views": 4216,
+   "len_s": 159,
+   "published": "2026-07-08",
+   "outlier": 0.71,
+   "type": "film clip",
+   "list": "recent",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "grey",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "qJ6y1U9fFgE",
+   "title": "Robin Hood Fights Little John - Prince of Thieves",
+   "views": 6035,
+   "len_s": 279,
+   "published": "2026-06-28",
+   "outlier": 1.02,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "U5fy6f1yzr8",
+   "title": "A New Life - The Counterfeiters",
+   "views": 5991,
+   "len_s": 303,
+   "published": "2026-06-18",
+   "outlier": 1.01,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "oRWWGaGLiLk",
+   "title": "Nun flees Spanish Anarchists - Libertarias",
+   "views": 5656,
+   "len_s": 232,
+   "published": "2026-06-10",
+   "outlier": 0.95,
+   "type": "film clip",
+   "list": "recent"
+  },
+  {
+   "id": "BVK8eZdxlEQ",
+   "title": "Hover Tank Test - Sgt. Bilko",
+   "views": 3400,
+   "len_s": 151,
+   "published": "2026-01-13",
+   "outlier": 0.57,
+   "type": "film clip",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "khaki",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "Zm-HJ82wWok",
+   "title": "Helicopter Scene - You Only Live Twice",
+   "views": 3470,
+   "len_s": 411,
+   "published": "2026-04-12",
+   "outlier": 0.58,
+   "type": "film clip",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "film still",
+    "face": true,
+    "text_words": 0,
+    "text": "(HD logo)",
+    "palette": "blue/yellow",
+    "map": false
+   },
+   "weak_thumb": true
+  }
+ ]
+}
