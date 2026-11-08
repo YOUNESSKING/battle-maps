@@ -109,14 +109,18 @@ def water_mask(rgb):
 def ink_mask(rgb, region):
     """dark ink marks (hachures etc.) inside `region` (bool), to be painted out."""
     lum = rgb.astype(np.float32).mean(2)
-    med = cv2.medianBlur(np.clip(lum, 0, 255).astype(np.uint8), 61).astype(np.float32)
-    m = ((lum < med - 9) & region).astype(np.uint8)
-    m = cv2.dilate(m, np.ones((7, 7), np.uint8))
-    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
+    sm = cv2.resize(np.clip(lum, 0, 255).astype(np.uint8), None, fx=0.25, fy=0.25, interpolation=cv2.INTER_AREA)
+    sm = cv2.dilate(sm, np.ones((5, 5), np.uint8))                      # grass level ignoring dark ink (local upper envelope)
+    med = cv2.resize(cv2.medianBlur(sm, 9), (lum.shape[1], lum.shape[0]), interpolation=cv2.INTER_LINEAR).astype(np.float32)
+    m = ((lum < med * 0.74) & region).astype(np.uint8)
+    m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+    m = cv2.dilate(m, np.ones((5, 5), np.uint8))
+    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8))
     return m.astype(bool)
 
 
 def clean_ground(full, ox0, oy0, crop, region, block=160):
+    ys, xs = np.where(region); fb = (xs.min() + ox0 - 20, ys.min() + oy0 - 20, xs.max() + ox0 + 20, ys.max() + oy0 + 20)   # never copy from the area being cleaned
     """replace `region` (bool, crop coords; crop = full[oy0:, ox0:]) with grass texture copied block by block from nearby
     clean patches of the full basemap, low-frequency matched to the surroundings so the seams vanish."""
     f = crop.astype(np.float32); out = f.copy(); H, W = region.shape; FH, FW = full.shape[:2]
@@ -124,20 +128,26 @@ def clean_ground(full, ox0, oy0, crop, region, block=160):
     # local colour from the clean surroundings (masked blur)
     keep = (~cv2.dilate(region.astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool) & ~water_mask(crop)).astype(np.float32)
     sig = 18
-    lowd = cv2.GaussianBlur(f * keep[..., None], (0, 0), sig) / (cv2.GaussianBlur(keep, (0, 0), sig)[..., None] + 1e-4)
+    lowd = None
+    for sg in (90, 45, sig):                                         # coarse-to-fine masked blur fills big holes without a dark spot
+        den = cv2.GaussianBlur(keep, (0, 0), sg)[..., None]
+        est = cv2.GaussianBlur(f * keep[..., None], (0, 0), sg) / np.maximum(den, 1e-6)
+        if lowd is None: lowd = np.where(den > 1e-5, est, f.mean((0, 1)))
+        else: wgt = np.clip(den / 0.25, 0, 1); lowd = est * wgt + lowd * (1 - wgt)
     for by in range(0, H, block):
         for bx in range(0, W, block):
             r = region[by:by + block, bx:bx + block]
             if not r.any(): continue
             bh, bw = r.shape; best = None
             gx0, gy0 = ox0 + bx, oy0 + by
-            for rad in (1.5, 2.2, 3.0, 4.0, 5.5):
+            for rad in (1.5, 2.2, 3.0, 4.0, 5.5, 7.0, 9.0):
                 for ang in range(0, 360, 30):
                     sx = int(gx0 + np.cos(np.radians(ang)) * rad * block); sy = int(gy0 + np.sin(np.radians(ang)) * rad * block)
                     if sx < 0 or sy < 0 or sx + bw > FW or sy + bh > FH: continue
+                    if sx < fb[2] and sx + bw > fb[0] and sy < fb[3] and sy + bh > fb[1]: continue
                     src = full[sy:sy + bh, sx:sx + bw]
                     sl = src.astype(np.float32).mean(2)
-                    inkq = cv2.dilate((sl < cv2.medianBlur(np.clip(sl, 0, 255).astype(np.uint8), 61) - 9).astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
+                    inkq = cv2.dilate((sl < cv2.medianBlur(np.clip(sl, 0, 255).astype(np.uint8), 61) * 0.72).astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
                     bad = 20 * (water_mask(src) | inkq)[r].mean() \
                         + abs(sl.mean() - lowd[by:by + bh, bx:bx + bw].mean()) / 255
                     if best is None or bad < best[0]: best = (bad, sx, sy)
@@ -168,7 +178,7 @@ def rgba_from(base, comp, core):
 
 
 # ---------------------------------------------------------------- the painter
-def render_hills(base, shapes, clean=True, seed=1, rough=1.0, shadow=1.0, halo=1.0, light_az=315.0, light_el=38.0):
+def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1.0, halo=1.0, light_az=315.0, light_el=38.0):
     base = np.asarray(base)[..., :3]
     Hh, Ww = base.shape[:2]
     ex = np.array([s.extent() for s in shapes]); size = max(ex[:, 2].max() - ex[:, 0].min(), ex[:, 3].max() - ex[:, 1].min())
@@ -190,13 +200,22 @@ def render_hills(base, shapes, clean=True, seed=1, rough=1.0, shadow=1.0, halo=1
             prof = np.where(side < 0, np.clip(1 - d, 0, 1) ** 0.7 * np.clip(1 - d * d, 0, 1) ** 0.5, prof) * 1.0
         hgt = np.maximum(hgt, sh * prof)
         body = np.maximum(body, smoothstep(1.15, 0.35, d))
+    # keep the hill on its own bank: only the land pieces (between rivers) that hold the shape's anchor points
+    nl, lab = cv2.connectedComponents((~cv2.dilate(wat.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)).astype(np.uint8), connectivity=4)
+    anchors = []
+    for s_ in shapes:
+        anchors += [(s_.cx, s_.cy)] if isinstance(s_, Blob) else [tuple(q) for q in s_.p]
+    ids = {int(lab[int(np.clip(ay - y0, 0, h - 1)), int(np.clip(ax - x0, 0, w - 1))]) for ax, ay in anchors} - {0}
+    bank = np.isin(lab, list(ids)).astype(np.float32)
+    bank = cv2.GaussianBlur(bank, (0, 0), 3) * bank
+    hgt *= bank; body *= bank
     lumps = fbm(h, w, rsz * 0.45, 3, seed + 3)                                           # knolls and spurs
-    n1 = fbm(h, w, rsz * 0.22, 5, seed + 4, persistence=0.62)
-    crumple = 1 - np.abs(n1); crumple = crumple - crumple.mean()                         # ridged noise = crumpled rock
+    n1 = fbm(h, w, rsz * 0.12, 5, seed + 4, persistence=0.62)
+    crumple = (1 - np.abs(n1)) ** 3; crumple = crumple - crumple.mean()                         # ridged noise = crumpled rock
     fine = fbm(h, w, 4.0, 3, seed + 5, persistence=0.6)
-    n2 = fbm(h, w, rsz * 0.07, 4, seed + 8, persistence=0.6); fine2 = (1 - np.abs(n2)) - 0.6
+    n2 = fbm(h, w, rsz * 0.05, 3, seed + 8, persistence=0.6); fine2 = (1 - np.abs(n2)) ** 3 - 0.35
     env = np.clip(hgt * 1.6, 0, 1) ** 0.6
-    z = hgt * (1 + 0.30 * lumps) + env * rough * (0.11 * crumple + 0.05 * fine2 + 0.03 * fine)
+    z = hgt * (1 + 0.18 * lumps) + env * rough * (0.10 * crumple + 0.05 * fine2 + 0.02 * fine)
     z = cv2.GaussianBlur(z, (0, 0), 1.0)
     relief = rsz * 0.55                                                                   # vertical exaggeration in px
     gy, gx = np.gradient(z * relief)
@@ -210,42 +229,47 @@ def render_hills(base, shapes, clean=True, seed=1, rough=1.0, shadow=1.0, halo=1
     region = cv2.dilate(region.astype(np.uint8), np.ones((15, 15), np.uint8)).astype(bool)
     inkreg = cv2.dilate((hgt > 0.02).astype(np.uint8), np.ones((45, 45), np.uint8)).astype(bool)
     G0 = crop
-    if clean:
+    if True:
         im = ink_mask(base[y0:y1, x0:x1], ~wat)
         # only ink marks lying wholly under the hill (the old hachures); marsh tufts, trees etc. that poke out stay
+        er = np.zeros(im.shape, np.uint8)                                  # explicit footprint of the old hachure symbol
+        for e in erase:
+            if e[0] == 'circle': cv2.circle(er, (int(e[1] - x0), int(e[2] - y0)), int(e[3]), 1, -1)
+            else: cv2.polylines(er, [np.array([[px - x0, py - y0] for px, py in e[1]], np.int32)], False, 1, int(2 * e[2]))
+        im = im | (er.astype(bool) & ~wat)
         nl, lab = cv2.connectedComponents(im.astype(np.uint8))
         cnt_all = np.bincount(lab.ravel(), minlength=nl); cnt_in = np.bincount(lab[inkreg], minlength=nl)
         good = (cnt_in / np.maximum(cnt_all, 1)) >= 0.85; good[0] = False; im = good[lab]
-        if im.any(): G0 = clean_ground(base, x0, y0, base[y0:y1, x0:x1], im)
+        if clean and im.any(): G0 = clean_ground(base, x0, y0, base[y0:y1, x0:x1], im)
     # ---- colours from the ground itself
     G = cv2.GaussianBlur(G0, (0, 0), max(6, rsz * 0.12))                                  # local grass colour
     grain = np.clip(G0 / np.maximum(G, 1), 0.7, 1.3)                                       # painterly grain of the basemap
     lumG = G.mean(2, keepdims=True)
     desat = lambda c, k: c * (1 - k) + c.mean(2, keepdims=True) * k
-    hi = desat(G, 0.6) * np.array([1.16, 1.10, 0.96]) + np.array([10, 8, 4])            # tan-grey lit faces
+    hi = desat(G, 0.7) * np.array([1.12, 1.09, 1.0]) + np.array([12, 10, 6])            # tan-grey lit faces
     bodyc = desat(G, 0.35) * 0.86                                                          # the hill reads a touch darker than grass
     lo = desat(G, 0.25) * 0.55 * np.array([1.0, 1.0, 0.85])                                # olive-charcoal shade
     s3 = shade[..., None]
-    col = np.where(s3 > 0, bodyc + (hi - bodyc) * np.clip(s3, 0, 1), bodyc + (lo - bodyc) * np.clip(-s3, 0, 1))
+    col = np.where(s3 > 0, bodyc + (hi - bodyc) * np.clip(s3 * 1.25, 0, 1) ** 1.6, bodyc + (lo - bodyc) * np.clip(-s3, 0, 1))
     col = col * (grain ** 0.6)
     col = cv2.GaussianBlur(col, (0, 0), 0.7)
     # broad tonal mass: SE half of the hill is darker overall, NW crest a little lighter
     big = cv2.GaussianBlur(hgt, (0, 0), rsz * 0.35); bgy, bgx = np.gradient(big)
     bm = np.hypot(bgx, bgy).max() + 1e-6; bshade = (-(bgx * lx + bgy * ly) / bm)[..., None]
-    col = col * (1 + 0.30 * np.clip(bshade, -1, 1))
-    col *= 1 - 0.10 * env[..., None] * height_scale(hgt)[..., None]
+    col = col * (1 + 0.42 * np.clip(bshade * 1.3, -1, 1) - 0.05)
+    col *= 1 - 0.04 * env[..., None] * height_scale(hgt)[..., None]
     # ---- alpha of the painted body: very soft, ragged edge
     edge_n = fbm(h, w, rsz * 0.25, 3, seed + 6)
-    a_body = smoothstep(-0.05, 0.75, hgt + 0.10 * edge_n) ** 1.4
+    a_body = smoothstep(-0.08, 0.85, hgt + 0.12 * edge_n) ** 1.3
     a_body = np.clip(a_body * (0.9 + 0.1 * np.clip(crumple * 2 + 0.5, 0, 1)), 0, 1)
     # ---- halo + cast shadow (wide feather into the grass, heavier to the SE)
     sup = smoothstep(0.0, 0.25, hgt)
     off = rsz * 0.22
     Mshift = np.float32([[1, 0, off * 0.7], [0, 1, off * 0.7]])
     cast = cv2.warpAffine(sup, Mshift, (w, h))
-    halo_m = 0.6 * cv2.GaussianBlur(sup, (0, 0), rsz * 0.7 * halo) + 0.7 * cv2.GaussianBlur(cast, (0, 0), rsz * 0.5 * halo)
+    halo_m = 0.95 * cv2.GaussianBlur(sup, (0, 0), rsz * 0.75 * halo) + 0.7 * cv2.GaussianBlur(cast, (0, 0), rsz * 0.5 * halo)
     halo_m = np.clip(halo_m, 0, 1) * (1 + 0.25 * fbm(h, w, rsz * 0.5, 3, seed + 7))
-    halo_m = np.clip(halo_m * shadow * 0.34, 0, 0.38)
+    halo_m = np.clip(halo_m * shadow * 0.6, 0, 0.55) * cv2.GaussianBlur(bank, (0, 0), 6)
     dark = desat(G0, 0.2) * np.array([0.58, 0.58, 0.50])
     ground = G0 * (1 - halo_m[..., None]) + dark * halo_m[..., None]
     comp = ground * (1 - a_body[..., None]) + col * a_body[..., None]
@@ -282,9 +306,9 @@ def champion_shapes(scale=1.0):
     arc = [(cx - 96 * k, cy + 70 * k), (cx - 84 * k, cy + 8 * k), (cx - 46 * k, cy - 40 * k), (cx + 8 * k, cy - 56 * k),
            (cx + 60 * k, cy - 36 * k), (cx + 92 * k, cy + 12 * k), (cx + 100 * k, cy + 72 * k)]
     return [Ridge(arc, 60 * k, widths=[44 * k, 62 * k, 72 * k, 76 * k, 70 * k, 60 * k, 42 * k],
-                  heights=[0.5, 0.75, 0.95, 1.0, 0.9, 0.7, 0.48], irregular=0.38),
-            Blob(cx - 4 * k, cy - 30 * k, 88 * k, 72 * k, rot=-15, height=1.0, irregular=0.4),
-            Blob(cx + 6 * k, cy + 30 * k, 56 * k, 40 * k, rot=10, height=0.55, irregular=0.5)]   # saddle: keeps only a shallow notch
+                  heights=[0.5, 0.75, 0.95, 1.0, 0.9, 0.7, 0.48], irregular=0.26),
+            Blob(cx - 4 * k, cy - 30 * k, 88 * k, 72 * k, rot=-15, height=1.0, irregular=0.28),
+            Blob(cx + 2 * k, cy + 16 * k, 70 * k, 50 * k, rot=10, height=0.72, irregular=0.5)]   # saddle: keeps only a shallow notch
 
 
 def bluffs_shapes():
@@ -293,9 +317,9 @@ def bluffs_shapes():
     # extend a little south towards Warrenton
     (xa, ya), (xb, yb) = pts[-2], pts[-1]; pts.append((xb + (xb - xa) * 0.8, yb + (yb - ya) * 0.8))
     n = len(pts)
-    widths = [30, 42, 48, 50, 48, 44, 30][:n]
+    widths = [52, 72, 82, 84, 80, 72, 46][:n]
     heights = [0.7, 0.9, 1.0, 1.0, 0.95, 0.85, 0.6][:n]
-    return [Ridge(pts, 46, widths=widths, heights=heights, irregular=0.30, steep_west=1.0)]
+    return [Ridge(pts, 70, widths=widths, heights=heights, irregular=0.30, steep_west=0.6)]
 
 
 def main():
@@ -303,10 +327,10 @@ def main():
     imgs = {k: np.asarray(Image.open(f'{ASSETS}/vicksburg_{k}.jpg').convert('RGB')) for k in ('w', 'w_close')}
     for key, suffix in (('w', ''), ('w_close', '_close')):
         base = imgs[key]
-        rgba, comp, bb = render_hills(base, champion_shapes(), seed=11, rough=1.0, shadow=1.0)
+        rgba, comp, bb = render_hills(base, champion_shapes(), erase=[('circle', 3268, 1414, 74)], seed=11, rough=1.0, shadow=1.0)
         out[f'champion_hill{suffix}'] = save_overlay(rgba, f'{HERE}/champion_hill{suffix}.png', bb, dict(basemap=f'vicksburg_{key}.jpg'))
         Image.fromarray(comp[bb[1]:bb[3], bb[0]:bb[2]]).save(f'{HERE}/preview_champion{suffix}.jpg', quality=92)
-        rgba2, comp2, bb2 = render_hills(base, bluffs_shapes(), seed=5, rough=1.0, shadow=0.9)
+        rgba2, comp2, bb2 = render_hills(base, bluffs_shapes(), erase=[('line', [(x * 2, y * 2) for x, y in json.load(open(f'{REPO}/grant/assets/src/vicksburg_story.json'))['ridge']], 46)], seed=5, rough=1.0, shadow=0.9)
         out[f'vicksburg_bluffs{suffix}'] = save_overlay(rgba2, f'{HERE}/vicksburg_bluffs{suffix}.png', bb2, dict(basemap=f'vicksburg_{key}.jpg'))
         Image.fromarray(comp2[bb2[1]:bb2[3], bb2[0]:bb2[2]]).save(f'{HERE}/preview_bluffs{suffix}.jpg', quality=92)
         if key == 'w':

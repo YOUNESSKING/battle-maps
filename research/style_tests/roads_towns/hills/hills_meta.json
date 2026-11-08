@@ -20,16 +20,16 @@
   "file": "vicksburg_bluffs.png",
   "crop": "vicksburg_bluffs_crop.png",
   "crop_xy_image_px": [
-   2216,
-   585
+   2100,
+   469
   ],
   "crop_xy_map_px": [
-   1108.0,
-   292.5
+   1050.0,
+   234.5
   ],
   "crop_size_image_px": [
-   1183,
-   1506
+   1415,
+   1738
   ],
   "basemap": "vicksburg_w.jpg"
  },
@@ -54,16 +54,16 @@
   "file": "vicksburg_bluffs_close.png",
   "crop": "vicksburg_bluffs_close_crop.png",
   "crop_xy_image_px": [
-   2216,
-   585
+   2100,
+   469
   ],
   "crop_xy_map_px": [
-   1108.0,
-   292.5
+   1050.0,
+   234.5
   ],
   "crop_size_image_px": [
-   1183,
-   1506
+   1415,
+   1738
   ],
   "basemap": "vicksburg_w_close.jpg"
  }
