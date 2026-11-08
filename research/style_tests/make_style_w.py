@@ -10,7 +10,7 @@ from scipy import ndimage
 from skimage.morphology import skeletonize
 import cv2
 base, out = sys.argv[1], sys.argv[2]
-P = dict(mult=0, tint=1, green=0, story='', close='', curated=0, creeks=4, main_r=6.5, creek_r=3.5, forest=0.12, patches=55, K=1.5, seed=5, ground='162,159,112')
+P = dict(mult=0, tint=1, green=0, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.12, patches=55, K=1.5, seed=5, ground='162,159,112')
 for kv in sys.argv[3:]:
     k, v = kv.split('='); P[k] = type(P[k])(v) if not isinstance(P[k], str) else v
 W, H = 5760, 3240; rng = np.random.default_rng(P['seed']); K = P['K']
@@ -39,11 +39,8 @@ def biggest(sk, n, minlen):
     if m == 0: return sk
     ln = ndimage.sum(sk, lab, range(1, m + 1)); keep = 1 + np.argsort(ln)[::-1][:n]
     return np.isin(lab, keep[ln[keep - 1] > minlen])
-if P['curated']:   # Grant #16 (m3 maps): hand-traced river masks (grant/tools/m3w_rivers.py): keep every traced line, no pruning
-    skB = skel_half(big)[120:-120, 120:-120]; skD = skel_half(det & ~ndimage.binary_dilation(big, iterations=6))[120:-120, 120:-120]   # creeks run into the main river
-else:
-    skB = biggest(prune(skel_half(big), 520), 2, 150)
-    skD = biggest(prune(skel_half(det & ~ndimage.binary_dilation(big, iterations=40)), 220), P['creeks'], 900)
+skB = biggest(prune(skel_half(big), 520), 2, 150)
+skD = biggest(prune(skel_half(det & ~ndimage.binary_dilation(big, iterations=40)), 220), P['creeks'], 900)
 def band(sk, r):
     full = cv2.resize(sk.astype(np.uint8), (W, H), interpolation=cv2.INTER_NEAREST)
     full = cv2.GaussianBlur(full.astype(np.float32), (0, 0), 2.5) > 0.06
@@ -100,7 +97,7 @@ def story_draw(d, SSf, ink, close=False):
     c = lambda p: (p[0] * 2 * SSf, p[1] * 2 * SSf)
     rng2 = np.random.default_rng(3); gys, gxs = np.gradient(hgt)
     # 1) contour-row hachures
-    step_lev = 0.09 if not close else 0.054; gmag = np.hypot(gxs, gys); p95 = np.percentile(gmag[hgt > 0.12], 95) if (hgt > 0.12).any() else 1.0   # story with rail only (no hills/ridge)
+    step_lev = 0.09 if not close else 0.054; gmag = np.hypot(gxs, gys); p95 = np.percentile(gmag[hgt > 0.12], 95)
     for li, lev in enumerate(np.arange(0.10, 0.92, step_lev)):
         cs, _ = cv2.findContours((hgt > lev).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
         sp = max(1, round((3.2 if not close else 6.0) * u))

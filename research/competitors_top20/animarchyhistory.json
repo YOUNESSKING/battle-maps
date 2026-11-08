@@ -1,0 +1,396 @@
+{
+ "handle": "@animarchyhistory",
+ "channel": "Animarchy History",
+ "rank": 12,
+ "subs": 225000,
+ "median_views_recent50": 228635.0,
+ "note": "outlier = views / median views of the channel's most recent 50 long uploads (vidIQ recent list). Old viral videos have inflated outliers.",
+ "thumbnail_stats": {
+  "winners_with_face_pct": 50,
+  "winners_with_text_pct": 75,
+  "winners_avg_text_words": 2.25,
+  "winners_with_map_pct": 0,
+  "winners_with_red_circle_arrow_pct": 0,
+  "weak_with_face_pct": 25,
+  "weak_with_text_pct": 100,
+  "weak_avg_text_words": 2.25,
+  "winners_avg_title_chars": 57,
+  "weak_avg_title_chars": 52,
+  "winners_titles_with_digit_pct": 12,
+  "winners_titles_with_allcaps_word_pct": 0
+ },
+ "videos": [
+  {
+   "id": "Sceufd1Xutc",
+   "title": "B-17G and P-63 Collide at the Wings Over Dallas Air Show - A Speculative/Cursory Analysis",
+   "views": 2316989,
+   "len_s": 1608,
+   "len": "26:48",
+   "published": "2022-11-13",
+   "outlier": 10.13,
+   "type": "single-subject, aviation accident (not war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (wreckage)",
+    "face": "none",
+    "text_words": 2,
+    "text": "What Happened?",
+    "palette": "olive/yellow-green",
+    "map": false,
+    "notes": "white serif text top-left"
+   }
+  },
+  {
+   "id": "6MNf4fNfVTI",
+   "title": "The Scariest Movie Ever Made...",
+   "views": 1166620,
+   "len_s": 3438,
+   "len": "57:18",
+   "published": "2023-11-30",
+   "outlier": 5.1,
+   "type": "generic (film essay)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "film still",
+    "face": "close-up",
+    "text_words": 2,
+    "text": "True Horror.",
+    "palette": "dark grey/green + white",
+    "map": false,
+    "notes": "actor in SS uniform, direct stare; white bold text right"
+   }
+  },
+  {
+   "id": "ny4AYOv-nUk",
+   "title": "The Horrible History of Russian Fighter Planes",
+   "views": 1042600,
+   "len_s": 5425,
+   "len": "1:30:25",
+   "published": "2024-01-29",
+   "outlier": 4.56,
+   "type": "long series entry (single theme: Soviet fighters)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo + banner",
+    "face": "none",
+    "text_words": 3,
+    "text": "A COMMUNIST CATASTROPHE",
+    "palette": "B&W + red + gold",
+    "map": false,
+    "notes": "red banner with Soviet star"
+   }
+  },
+  {
+   "id": "_gyrFCWAjoQ",
+   "title": "The War in Ukraine According to Russia: A Deconstruction of Putin's Propaganda Narrative",
+   "views": 942660,
+   "len_s": 4180,
+   "len": "1:09:40",
+   "published": "2022-11-12",
+   "outlier": 4.12,
+   "type": "generic explainer (current war)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "stylised poster illustration",
+    "face": "stylised",
+    "text_words": 0,
+    "text": "",
+    "palette": "red/white/blue",
+    "map": false,
+    "notes": "Putin propaganda-poster pastiche, flags"
+   }
+  },
+  {
+   "id": "MkKO3Dx2sDc",
+   "title": "A Veterans Reaction to Violet Evergarden",
+   "views": 807721,
+   "len_s": 4260,
+   "len": "1:11:00",
+   "published": "2019-10-31",
+   "outlier": 3.53,
+   "type": "reaction (not war history)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "split: photo + anime",
+    "face": "close-up (anime)",
+    "text_words": 0,
+    "text": "",
+    "palette": "desert tan + orange/yellow",
+    "map": false,
+    "notes": "soldier | anime girl split-screen"
+   }
+  },
+  {
+   "id": "Iew9cu_9nf4",
+   "title": "Rare Luftwaffe Gun Camera: Analysis and Breakdown (Documentary)",
+   "views": 741567,
+   "len_s": 1861,
+   "len": "31:01",
+   "published": "2022-01-31",
+   "outlier": 3.24,
+   "type": "single-subject war (gun-camera footage + commentary)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive gun-cam still + graphic",
+    "face": "none",
+    "text_words": 3,
+    "text": "GUN CAMERA ANALYSIS",
+    "palette": "grey + orange-red",
+    "map": false,
+    "notes": "orange crosshair, Luftwaffe eagle logo"
+   }
+  },
+  {
+   "id": "nLR15rFICQY",
+   "title": "The Horrible History of Russian Fighter Jets: Beginnings",
+   "views": 712346,
+   "len_s": 8280,
+   "len": "2:18:00",
+   "published": "2024-12-13",
+   "outlier": 3.12,
+   "type": "long series entry",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive photo + banner",
+    "face": "none",
+    "text_words": 4,
+    "text": "A SOCIALIST SCREW UP",
+    "palette": "B&W + red + gold",
+    "map": false,
+    "notes": "same banner template as series"
+   }
+  },
+  {
+   "id": "A66m_c9N0zc",
+   "title": "Every Time Someone Touched America's Boats",
+   "views": 648021,
+   "len_s": 12121,
+   "len": "3:22:01",
+   "published": "2025-01-09",
+   "outlier": 2.83,
+   "type": "compilation / mega-video (3h22)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "illustration/composite",
+    "face": "portrait (JPJ) + eagle",
+    "text_words": 4,
+    "text": "DON'T TOUCH THEIR BOATS",
+    "palette": "blue/red/yellow",
+    "map": false,
+    "notes": "eagle, burning ship, yellow heavy text"
+   }
+  },
+  {
+   "id": "9pGzDAfOgU0",
+   "title": "Torturing YouTube's Biggest Naval Historian @Drachinifel with Anime Ship Girls: A Historical Hangout",
+   "views": 619878,
+   "len_s": 12600,
+   "len": "3:30:00",
+   "published": "2022-10-29",
+   "outlier": 2.71,
+   "type": "collab / livestream (3h30)",
+   "list": "popular"
+  },
+  {
+   "id": "ksZJytaqpAY",
+   "title": "\"The Bear Trap\" - The War in Ukraine Explained: 1 Month into the Russian Invasion",
+   "views": 617885,
+   "len_s": 3151,
+   "len": "52:31",
+   "published": "2022-03-25",
+   "outlier": 2.7,
+   "type": "generic explainer (current war)",
+   "list": "popular"
+  },
+  {
+   "id": "TWpyUhfo-2I",
+   "title": "The Tandem Wing Madman: Pyotr Grushin - Crazy Commie Contraptions",
+   "views": 98982,
+   "len_s": 3657,
+   "len": "1:00:57",
+   "published": "2026-10-31",
+   "outlier": 0.43,
+   "type": "single-subject (aviation designer)",
+   "list": "recent"
+  },
+  {
+   "id": "7z4t8m81itE",
+   "title": "MiG-17: The Soviet Fighter that REFUSES to Die - The Horrible History of Russian Fighter Jets",
+   "views": 211666,
+   "len_s": 3979,
+   "len": "1:06:19",
+   "published": "2026-10-03",
+   "outlier": 0.93,
+   "type": "series entry",
+   "list": "recent"
+  },
+  {
+   "id": "gAhTT2ZvF-U",
+   "title": "Slavjanking Through the Sound Barrier: The Horrible History of Russian Fighter Jets",
+   "views": 265756,
+   "len_s": 3800,
+   "len": "1:03:20",
+   "published": "2026-09-05",
+   "outlier": 1.16,
+   "type": "series entry",
+   "list": "recent"
+  },
+  {
+   "id": "CJP7uI4nRTI",
+   "title": "Tom Clancy is Garbage, And Here's Why",
+   "views": 121196,
+   "len_s": 12265,
+   "len": "3:24:25",
+   "published": "2026-08-21",
+   "outlier": 0.53,
+   "type": "generic (3h20 rant/review)",
+   "list": "recent"
+  },
+  {
+   "id": "uTOIZn8eJ1g",
+   "title": "Every OTHER Time Someone Touched America's Boats",
+   "views": 105286,
+   "len_s": 9370,
+   "len": "2:36:10",
+   "published": "2026-07-10",
+   "outlier": 0.46,
+   "type": "compilation (2h36)",
+   "list": "recent"
+  },
+  {
+   "id": "veBDxlXnz5A",
+   "title": "The Soviet Flying Wing Fiasco: The Horrible History of Russian Fighter Jets",
+   "views": 328990,
+   "len_s": 5228,
+   "len": "1:27:08",
+   "published": "2026-05-29",
+   "outlier": 1.44,
+   "type": "series entry",
+   "list": "recent"
+  },
+  {
+   "id": "8fvX1nv63zQ",
+   "title": "The Most Humiliating Parade in History: VICTORY DAY 2026 feat. @LazerPig @Zach_Hazard and MORE",
+   "views": 174827,
+   "len_s": 4610,
+   "len": "1:16:50",
+   "published": "2026-05-10",
+   "outlier": 0.76,
+   "type": "collab / reaction",
+   "list": "recent"
+  },
+  {
+   "id": "G6-dGEwQUnk",
+   "title": "6 Hours of Soviet Aviation History to Sleep or Study to",
+   "views": 159505,
+   "len_s": 20650,
+   "len": "5:44:10",
+   "published": "2026-04-03",
+   "outlier": 0.7,
+   "type": "compilation (5h44)",
+   "list": "recent"
+  },
+  {
+   "id": "1rWqkscvlqA",
+   "title": "Operation Tehran Tango: The Iran War Explained",
+   "views": 161218,
+   "len_s": 6673,
+   "len": "1:51:13",
+   "published": "2026-03-28",
+   "outlier": 0.71,
+   "type": "current-war explainer",
+   "list": "recent"
+  },
+  {
+   "id": "VM7x9hjQ53w",
+   "title": "YE-152 - The Soviet Starfighter : The Horrible History of Russian Fighter Jets",
+   "views": 256455,
+   "len_s": 3988,
+   "len": "1:06:28",
+   "published": "2026-02-07",
+   "outlier": 1.12,
+   "type": "series entry",
+   "list": "recent"
+  },
+  {
+   "id": "goevtHKcTv8",
+   "title": "How Did We Recover Apollo 11?",
+   "views": 29319,
+   "len_s": 1601,
+   "len": "26:41",
+   "published": "2023-03-17",
+   "outlier": 0.13,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "real photo (carrier)",
+    "face": "none",
+    "text_words": 3,
+    "text": "RECOVERING APOLLO 11",
+    "palette": "blue sea/white",
+    "map": false,
+    "notes": "italic white text top-left"
+   }
+  },
+  {
+   "id": "rbkY_-fdDm8",
+   "title": "Crazy Naval History Stories feat. World of Warships",
+   "views": 38170,
+   "len_s": 1546,
+   "len": "25:46",
+   "published": "2023-03-01",
+   "outlier": 0.17,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "game art + anime",
+    "face": "anime",
+    "text_words": 3,
+    "text": "CRAZY NAVAL HISTORY",
+    "palette": "blue/grey + black/white",
+    "map": false,
+    "notes": "anime girl + battleships"
+   }
+  },
+  {
+   "id": "mHWr0jEjgLg",
+   "title": "The M1911 vs AIRCRAFT: The Pistol with a CONFIRMED Air to Air Kill",
+   "views": 45346,
+   "len_s": 1861,
+   "len": "31:01",
+   "published": "2023-12-30",
+   "outlier": 0.2,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "archive photo + gun cutout + banner",
+    "face": "small",
+    "text_words": 2,
+    "text": "CONFIRMED KILL",
+    "palette": "B&W + red",
+    "map": false,
+    "notes": "M1911 cutout, red banner"
+   }
+  },
+  {
+   "id": "2vYuZZ2zXYM",
+   "title": "Ukraine Update: Resistance Fighters & F-16's as Bakhmut Holds",
+   "views": 92268,
+   "len_s": 1250,
+   "len": "20:50",
+   "published": "2023-03-31",
+   "outlier": 0.4,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "news-style photo",
+    "face": "small",
+    "text_words": 1,
+    "text": "RESISTANCE!",
+    "palette": "blue/yellow flag + black smoke",
+    "map": false,
+    "notes": "Ukraine flag, fire"
+   }
+  }
+ ]
+}

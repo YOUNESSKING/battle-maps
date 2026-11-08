@@ -1,0 +1,396 @@
+{
+ "handle": "@wararchives",
+ "channel": "War Archives",
+ "rank": 15,
+ "subs": 272000,
+ "median_views_recent50": 93482.0,
+ "note": "outlier = views / median views of the channel's most recent 50 long uploads (vidIQ recent list). Old viral videos have inflated outliers.",
+ "thumbnail_stats": {
+  "winners_with_face_pct": 62,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 4.25,
+  "winners_with_map_pct": 0,
+  "winners_with_red_circle_arrow_pct": 0,
+  "weak_with_face_pct": 50,
+  "weak_with_text_pct": 100,
+  "weak_avg_text_words": 4.5,
+  "winners_avg_title_chars": 70,
+  "weak_avg_title_chars": 65,
+  "winners_titles_with_digit_pct": 75,
+  "winners_titles_with_allcaps_word_pct": 25
+ },
+ "videos": [
+  {
+   "id": "lK8gYGg0dkE",
+   "title": "President Franklin D. Roosevelt Declares War on Japan (Full Speech) | War Archives",
+   "views": 11754666,
+   "len_s": 288,
+   "len": "4:48",
+   "published": "2011-08-26",
+   "outlier": 125.74,
+   "type": "archive clip (speech)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "yes (FDR at mics)",
+    "text_words": 5,
+    "text": "AMERICA DECLARES WAR ON JAPAN",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "template blue gradient bar + rooster logo"
+   }
+  },
+  {
+   "id": "S7Jll9_EiyA",
+   "title": "World War 1 Shell Shock Victim Recovery (1910s) | War Archives",
+   "views": 10007210,
+   "len_s": 63,
+   "len": "1:03",
+   "published": "2011-09-22",
+   "outlier": 107.05,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "small",
+    "text_words": 4,
+    "text": "WWI SHELL SHOCK VICTIM (1910S)",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "man on floor"
+   }
+  },
+  {
+   "id": "IWHbF5jGJY0",
+   "title": "The Effects of Shell Shock: WWI Nueroses | War Archives",
+   "views": 6981733,
+   "len_s": 174,
+   "len": "2:54",
+   "published": "2012-09-27",
+   "outlier": 74.69,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "close-up (wide-eyed man)",
+    "text_words": 5,
+    "text": "THE EFFECTS OF SHELL SHOCK",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "extreme face close-up"
+   }
+  },
+  {
+   "id": "eypJfOKeSJU",
+   "title": "Hitler Dancing and Playing: Found Footage (1930s) | War Archives",
+   "views": 4754037,
+   "len_s": 60,
+   "len": "1:00",
+   "published": "2012-09-24",
+   "outlier": 50.86,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "close-up (Hitler)",
+    "text_words": 3,
+    "text": "HITLER'S HOME MOVIES (1930s)",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "Hitler with child"
+   }
+  },
+  {
+   "id": "lioRCye2Dug",
+   "title": "B24 Liberator Bomber Shot Down In Carolines Raid In WWII (1945) | War Archives",
+   "views": 4726625,
+   "len_s": 77,
+   "len": "1:17",
+   "published": "2011-08-26",
+   "outlier": 50.56,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "none",
+    "text_words": 5,
+    "text": "B24 BOMBER SHOT DOWN (1945)",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "aerial view of bomber"
+   }
+  },
+  {
+   "id": "C0hq8xBPrZA",
+   "title": "Hitler's Bunker Revealed by the British (1945) | War Archives",
+   "views": 4685132,
+   "len_s": 271,
+   "len": "4:31",
+   "published": "2011-08-30",
+   "outlier": 50.12,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "yes (man)",
+    "text_words": 3,
+    "text": "HITLER'S BUNKER (1945)",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "soldier at bunker"
+   }
+  },
+  {
+   "id": "ojzTBjPTHuk",
+   "title": "Gestapo Torture Chamber Found Under Eiffel Tower (1944) | War Archives",
+   "views": 3880491,
+   "len_s": 60,
+   "len": "1:00",
+   "published": "2011-08-23",
+   "outlier": 41.51,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "yes (two men)",
+    "text_words": 5,
+    "text": "GESTAPO TORTURE CHAMBER (1944)",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "men holding objects"
+   }
+  },
+  {
+   "id": "XeRXre_FG1w",
+   "title": "Cameraman Accidentally Killed In Explosion on US Aircraft Carrier (1953) | War Archives",
+   "views": 3233138,
+   "len_s": 22,
+   "len": "0:22",
+   "published": "2011-08-30",
+   "outlier": 34.59,
+   "type": "archive clip",
+   "list": "popular",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "none",
+    "text_words": 4,
+    "text": "ACCIDENTAL EXPLOSION (1953)",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "Corsair on carrier deck"
+   }
+  },
+  {
+   "id": "jEvyEM0JdSc",
+   "title": "French Nazi Collaborators Are Tried & Executed | War Archives",
+   "views": 3070195,
+   "len_s": 59,
+   "len": "0:59",
+   "published": "2012-05-17",
+   "outlier": 32.84,
+   "type": "archive clip",
+   "list": "popular"
+  },
+  {
+   "id": "5QZFEi29OZo",
+   "title": "Italian Chief of Fascist Police Pietro Caruso's Execution | War Archives",
+   "views": 2070182,
+   "len_s": 171,
+   "len": "2:51",
+   "published": "2012-10-03",
+   "outlier": 22.15,
+   "type": "archive clip",
+   "list": "popular"
+  },
+  {
+   "id": "HqKdL56JTVE",
+   "title": "The Birth of NATO and The Treaty of Dunkirk (1947-1952) | War Archives",
+   "views": 123242,
+   "len_s": 571,
+   "len": "9:31",
+   "published": "2015-09-29",
+   "outlier": 1.32,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "0IJYsIUmmJ8",
+   "title": "Vietnam Protesters Clash with Police in Grosvenor Square, London (1968) | War Archives",
+   "views": 53626,
+   "len_s": 105,
+   "len": "1:45",
+   "published": "2015-09-22",
+   "outlier": 0.57,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "pzu2R_yHDMs",
+   "title": "Suez Canal Crisis: Anglo-French Soldiers March In (1956) | War Archives",
+   "views": 94976,
+   "len_s": 215,
+   "len": "3:35",
+   "published": "2015-09-15",
+   "outlier": 1.02,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "I_RtBJ-ZCAE",
+   "title": "Tanks of WWI: Renault FT, French Schneider CA1 and More | War Archives",
+   "views": 62400,
+   "len_s": 125,
+   "len": "2:05",
+   "published": "2015-09-08",
+   "outlier": 0.67,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "tq9r8SjKYUI",
+   "title": "Documenting The US Army in Post-World War II Germany (1966) | War Archives",
+   "views": 111164,
+   "len_s": 393,
+   "len": "6:33",
+   "published": "2015-08-25",
+   "outlier": 1.19,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "F5bpw4yyEI8",
+   "title": "Miniature Military Models Carved and Painted by Historian Marcus Hinton (1966) | War Archives",
+   "views": 20756,
+   "len_s": 168,
+   "len": "2:48",
+   "published": "2015-08-18",
+   "outlier": 0.22,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "9W2AfMbPv5U",
+   "title": "Life Aboard the Nuclear Submarine HMS Dreadnought (1968) | War Archives",
+   "views": 52115,
+   "len_s": 480,
+   "len": "8:00",
+   "published": "2015-08-11",
+   "outlier": 0.56,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "0dj8A4fXxw8",
+   "title": "The \"Dam Buster\" Pilots Reunite on the 24th Anniversary (1967) | War Archives",
+   "views": 30228,
+   "len_s": 94,
+   "len": "1:34",
+   "published": "2015-08-04",
+   "outlier": 0.32,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "_HHZERAu5Ko",
+   "title": "Battle of Salamanca Re-Enacted By British Soldiers (1969) | War Archives",
+   "views": 17994,
+   "len_s": 53,
+   "len": "0:53",
+   "published": "2015-07-28",
+   "outlier": 0.19,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "3C-q8dvf-gk",
+   "title": "Dramatic Footage of Britain Testing An Atomic Bomb (1952) | War Archives",
+   "views": 198389,
+   "len_s": 224,
+   "len": "3:44",
+   "published": "2015-07-22",
+   "outlier": 2.12,
+   "type": "archive clip",
+   "list": "recent"
+  },
+  {
+   "id": "3FyXlOwHq88",
+   "title": "Christmas Celebrations in Tobruk (1943) | War Archives",
+   "views": 5728,
+   "len_s": 137,
+   "len": "2:17",
+   "published": "2012-05-16",
+   "outlier": 0.06,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "small group",
+    "text_words": 4,
+    "text": "CHRISTMAS IN TOBRUK (1943)",
+    "palette": "B&W/sepia + blue bar",
+    "map": false,
+    "notes": "soldiers at table"
+   }
+  },
+  {
+   "id": "nkCpA91NqBw",
+   "title": "Incredible Stunts By Royal Signals Motorbike Display Team (1962) | War Archives",
+   "views": 10383,
+   "len_s": 63,
+   "len": "1:03",
+   "published": "2015-04-08",
+   "outlier": 0.11,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "archive colour film",
+    "face": "small",
+    "text_words": 5,
+    "text": "MOTORCYCLE STUNTS BY ROYAL SIGNALS",
+    "palette": "green/colour + blue bar",
+    "map": false,
+    "notes": "human pyramid on bikes"
+   }
+  },
+  {
+   "id": "HHXYH2qXaQ4",
+   "title": "Life on The Falklands (1960s) | War Archives",
+   "views": 11198,
+   "len_s": 174,
+   "len": "2:54",
+   "published": "2015-04-28",
+   "outlier": 0.12,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "archive colour film",
+    "face": "none",
+    "text_words": 4,
+    "text": "LIFE ON THE FALKLANDS (1960S)",
+    "palette": "white/grey + blue bar",
+    "map": false,
+    "notes": "penguins"
+   }
+  },
+  {
+   "id": "lWFblWuweis",
+   "title": "The United States Marine Corps Celebrates It's 160th Birthday (1935) | War Archives",
+   "views": 13387,
+   "len_s": 150,
+   "len": "2:30",
+   "published": "2012-05-16",
+   "outlier": 0.14,
+   "type": "weak recent",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "archive film still",
+    "face": "yes (bugler)",
+    "text_words": 5,
+    "text": "US MARINE CORPS 160TH B-DAY",
+    "palette": "B&W + blue bar",
+    "map": false,
+    "notes": "marine with bugle"
+   }
+  }
+ ]
+}

@@ -1,0 +1,412 @@
+{
+ "channel": "Timeline - World History Documentaries",
+ "handle": "timelinechannel",
+ "rank": 8,
+ "subs": 5910000,
+ "recent_median_views": 49359.0,
+ "recent_n": 50,
+ "thumbnail_summary": {
+  "winners": {
+   "n": 8,
+   "pct_face_clear": 50,
+   "pct_face_any": 50,
+   "avg_text_words": 0.0,
+   "pct_text": 0,
+   "pct_map": 12
+  },
+  "weak": {
+   "n": 4,
+   "pct_face_clear": 50,
+   "pct_face_any": 50,
+   "avg_text_words": 0.0,
+   "pct_text": 0,
+   "pct_map": 50
+  }
+ },
+ "title_summary": {
+  "winners": {
+   "avg_chars": 55,
+   "pct_year_or_number": 25,
+   "pct_caps": 0,
+   "pct_colon": 0,
+   "pct_dash": 0,
+   "pct_pipe": 50,
+   "pct_howwhy": 12,
+   "pct_animated": 0
+  },
+  "weak": {
+   "avg_chars": 61,
+   "pct_year_or_number": 25,
+   "pct_caps": 0,
+   "pct_colon": 75,
+   "pct_dash": 0,
+   "pct_pipe": 0,
+   "pct_howwhy": 0,
+   "pct_animated": 0
+  }
+ },
+ "videos": [
+  {
+   "id": "1T0xpD7J8nA",
+   "title": "The Giant WW2 Factories Of The United States | War Factories",
+   "views": 16261225,
+   "len_s": 10135,
+   "published": "2022-06-02",
+   "outlier": 329.45,
+   "type": "compilation (series, 2h48)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "stock photo composite (smokestacks, US flag)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none; TIMELINE logo only)",
+    "palette": "blue/red/grey",
+    "map": "no"
+   }
+  },
+  {
+   "id": "XObk07uabLI",
+   "title": "Is There Scientific Proof Of The Bible's Plagues | The Exodus Decoded",
+   "views": 15753301,
+   "len_s": 5523,
+   "published": "2018-11-17",
+   "outlier": 319.16,
+   "type": "generic/non-war",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "scrapbook collage (locust diagram + painting, pushpins)",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "sepia, grey",
+    "map": "no"
+   }
+  },
+  {
+   "id": "NOEBVWc8crI",
+   "title": "The Ancient City Frozen In Ash | Lost World Of Pompeii | Timeline",
+   "views": 15394304,
+   "len_s": 2884,
+   "published": "2018-05-20",
+   "outlier": 311.88,
+   "type": "generic/non-war",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "CGI/photo of Pompeii under ash, Vesuvius",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "white/grey",
+    "map": "no"
+   }
+  },
+  {
+   "id": "k3QiW0gEpYM",
+   "title": "What Caused The End Of The Pyramid Age?",
+   "views": 14231282,
+   "len_s": 3529,
+   "published": "2018-07-24",
+   "outlier": 288.32,
+   "type": "generic/non-war",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "photo/CGI pyramid at sunset",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "red/orange sky, dark",
+    "map": "no"
+   }
+  },
+  {
+   "id": "Qyrrdoqspdg",
+   "title": "Have Archeologists Finally Found The Lost Tomb Of Christ?",
+   "views": 12654680,
+   "len_s": 6199,
+   "published": "2018-07-28",
+   "outlier": 256.38,
+   "type": "generic/non-war",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "painting of Jesus + old map with red circles, compass",
+    "face": "yes, medium (painting)",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "gold/brown",
+    "map": "yes (old map, red circles)"
+   }
+  },
+  {
+   "id": "HA-iJ7sB7m4",
+   "title": "3+ Hours Of WW2 Facts To Fall Asleep To",
+   "views": 12487300,
+   "len_s": 12332,
+   "published": "2024-07-10",
+   "outlier": 252.99,
+   "type": "compilation (3h sleep facts)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "colourised WW2 photo (AA gun crew)",
+    "face": "yes, small (group)",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "blue sky, olive",
+    "map": "no"
+   }
+  },
+  {
+   "id": "E3aNbNxKS6s",
+   "title": "The Story Of Ancient Egypt's Mysterious Queens | Lost Queens | Timeline",
+   "views": 12288677,
+   "len_s": 3533,
+   "published": "2017-06-14",
+   "outlier": 248.97,
+   "type": "generic/non-war",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "photo of Nefertiti bust, black background",
+    "face": "yes, statue close-up",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "black, bronze",
+    "map": "no"
+   }
+  },
+  {
+   "id": "Rai0urG_KGw",
+   "title": "The Real Human Cost To End World War I",
+   "views": 11845350,
+   "len_s": 8017,
+   "published": "2022-06-11",
+   "outlier": 239.98,
+   "type": "compilation (2h13)",
+   "list": [
+    "popular"
+   ],
+   "thumbnail": {
+    "image_type": "archive photos letterboxed (soldier, machine gun)",
+    "face": "yes, small",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "grey, muted",
+    "map": "no"
+   }
+  },
+  {
+   "id": "JOWFPTzK7D4",
+   "title": "Have Muslims Been Praying In The Wrong Direction For Over 1000 Years? | Sacred City",
+   "views": 10446125,
+   "len_s": 5109,
+   "published": "2019-01-26",
+   "outlier": 211.64,
+   "type": "generic/non-war",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "XmjKODQYYfg",
+   "title": "Battle Of Britain: The 13-Hour Dogfight That Denied Luftwaffe Air Superiority | Timeline",
+   "views": 8241349,
+   "len_s": 2915,
+   "published": "2018-02-03",
+   "outlier": 166.97,
+   "type": "single-subject war video",
+   "list": [
+    "popular"
+   ]
+  },
+  {
+   "id": "eLwuFQTyMO4",
+   "title": "Inside The 2,000-Year Search For The Holy Grail",
+   "views": 23081,
+   "len_s": 2618,
+   "published": "2026-11-05",
+   "outlier": 0.47,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "-IRrsmBcc3E",
+   "title": "Inside The Assassination Of Martin Luther King Jr.: Mintue-By-Minute",
+   "views": 16512,
+   "len_s": 1187,
+   "published": "2026-11-03",
+   "outlier": 0.33,
+   "type": "single-subject war video",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "archive B&W photo (King + Abernathy)",
+    "face": "yes, two faces",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "B&W",
+    "map": "no"
+   }
+  },
+  {
+   "id": "InmsIStQpAU",
+   "title": "The Oldest Papyrus In Human History: The Diary That Built Giza",
+   "views": 41384,
+   "len_s": 2661,
+   "published": "2026-11-02",
+   "outlier": 0.84,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "1wK-Q15P2VM",
+   "title": "Bismarck's Final 24 Hours: The Downfall Of Hitler's Deadliest Battleship",
+   "views": 158337,
+   "len_s": 2804,
+   "published": "2026-11-01",
+   "outlier": 3.21,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "DGtE0IAWyss",
+   "title": "Hitler's Countdown To War: The 18 Months That Plunged The World Into WW2",
+   "views": 110605,
+   "len_s": 8041,
+   "published": "2026-10-31",
+   "outlier": 2.24,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "rKOOP3xgy3s",
+   "title": "Archeologists Investigate The Mystery Of The Buried City Beneath Ancient Petra",
+   "views": 44044,
+   "len_s": 2414,
+   "published": "2026-10-29",
+   "outlier": 0.89,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "YgCTX8hevjo",
+   "title": "1700 - 1851: The Complete Story Of The Industrial Revolution",
+   "views": 123683,
+   "len_s": 3494,
+   "published": "2026-10-27",
+   "outlier": 2.51,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "Z1opazz2U4Q",
+   "title": "Charles de Gaulle: The President Who Survived 30 Assassination Attempts In 10 Years",
+   "views": 20808,
+   "len_s": 1561,
+   "published": "2026-10-26",
+   "outlier": 0.42,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "s-Kd1D0BRdg",
+   "title": "Inside Beijing's 600-Year Central Axis",
+   "views": 37563,
+   "len_s": 2373,
+   "published": "2026-10-25",
+   "outlier": 0.76,
+   "type": "single-subject war video",
+   "list": [
+    "recent"
+   ]
+  },
+  {
+   "id": "fyZBc_ODvkY",
+   "title": "Rare Footage Of Britain's Historic Naval Dockyards",
+   "views": 17880,
+   "len_s": 1576,
+   "published": "2026-10-25",
+   "outlier": 0.36,
+   "type": "single-subject war video",
+   "list": [
+    "recent",
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "aerial stock photo of dockyard",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none)",
+    "palette": "blue/grey",
+    "map": "no"
+   }
+  },
+  {
+   "id": "QLy8hdp0aTE",
+   "title": "France vs Germany: The Culinary Border That Shaped Europe",
+   "views": 17248,
+   "len_s": 1548,
+   "published": "2026-10-12",
+   "outlier": 0.35,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "stylised map with food icons",
+    "face": "no",
+    "text_words": 0,
+    "text": "(none; FRANCE/GERMANY map labels)",
+    "palette": "red/brown",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "3x4MYAafvCg",
+   "title": "The Bloody History Of The Franco-German Border: From Louis XIV To WW2",
+   "views": 18285,
+   "len_s": 1566,
+   "published": "2026-09-21",
+   "outlier": 0.37,
+   "type": "single-subject war video",
+   "list": [
+    "weak_recent"
+   ],
+   "thumbnail": {
+    "image_type": "map + Hitler cut-out",
+    "face": "yes (Hitler)",
+    "text_words": 0,
+    "text": "(none; map labels)",
+    "palette": "red/brown",
+    "map": "yes"
+   }
+  }
+ ]
+}

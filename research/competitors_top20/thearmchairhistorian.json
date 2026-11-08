@@ -1,0 +1,341 @@
+{
+ "channel": {
+  "rank": 3,
+  "handle": "@thearmchairhistorian",
+  "channelId": "UCeUJFQ0D9qs6aVNyUt9fkeQ",
+  "title": "The Armchair Historian",
+  "subs": 2540000,
+  "avgViews": 1285788,
+  "videos": 337,
+  "avgLong30d_s": 886,
+  "growth30d_views": 0.74
+ },
+ "recent_median_views": 429699,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 75,
+  "winners_with_text_pct": 38,
+  "winners_avg_text_words": 1.1,
+  "winners_with_map_pct": 38,
+  "weak_with_face_pct": 75,
+  "weak_avg_text_words": 1.2,
+  "recent_median_views": 429699
+ },
+ "videos": [
+  {
+   "id": "OdiUezHJNI0",
+   "title": "D-Day From the German Perspective (REMASTER IN DESCRIPTION)",
+   "views": 8425163,
+   "len_s": 652,
+   "published": "2019-01-11",
+   "outlier": 19.61,
+   "type": "war (battle, other side)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon portrait (German general, close face)",
+    "face": true,
+    "text_words": 5,
+    "text": "D-DAY FROM THE GERMAN PERSPECTIVE",
+    "palette": "yellow/white on grey-green",
+    "map": true
+   }
+  },
+  {
+   "id": "N8ZesKsbhJA",
+   "title": "Life in German-Occupied France",
+   "views": 7705504,
+   "len_s": 885,
+   "published": "2020-07-24",
+   "outlier": 17.93,
+   "type": "generic/home front",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon scene (Paris night, swastika flag)",
+    "face": false,
+    "text_words": 0,
+    "text": "",
+    "palette": "dark blue/orange",
+    "map": false
+   }
+  },
+  {
+   "id": "EUTo1urxwPo",
+   "title": "D-Day From the German Perspective (remake)",
+   "views": 7153581,
+   "len_s": 1488,
+   "published": "2021-08-21",
+   "outlier": 16.65,
+   "type": "war (battle, other side)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon (screaming MG gunner, close face)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "orange/brown/yellow",
+    "map": false
+   }
+  },
+  {
+   "id": "_pgcFqraekE",
+   "title": "Vietnam War from the North Vietnamese Perspective",
+   "views": 6159751,
+   "len_s": 1176,
+   "published": "2020-11-27",
+   "outlier": 14.34,
+   "type": "war (other side)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon (Vietnamese soldier with AK, face)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "yellow/green/orange",
+    "map": false
+   }
+  },
+  {
+   "id": "aQvd2uhpZRI",
+   "title": "2001 Invasion of Afghanistan (REMASTER IN DESCRIPTION)",
+   "views": 5787446,
+   "len_s": 1173,
+   "published": "2020-02-25",
+   "outlier": 13.47,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon portrait (Bush) + map with arrows",
+    "face": true,
+    "text_words": 1,
+    "text": "AFGHANISTAN",
+    "palette": "red/blue/olive",
+    "map": true
+   }
+  },
+  {
+   "id": "yeHo-3Klmx0",
+   "title": "The North African Campaign",
+   "views": 5511865,
+   "len_s": 2500,
+   "published": "2019-09-27",
+   "outlier": 12.83,
+   "type": "war",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon (Tiger tank in desert)",
+    "face": false,
+    "text_words": 3,
+    "text": "NORTH AFRICA CAMPAIGN",
+    "palette": "orange/yellow",
+    "map": false
+   }
+  },
+  {
+   "id": "5nX9uVBi95s",
+   "title": "Evolution of German Army Uniforms (REMASTER IN DESCRIPTION)",
+   "views": 5401510,
+   "len_s": 651,
+   "published": "2020-07-31",
+   "outlier": 12.57,
+   "type": "explainer (uniforms)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon (three soldier faces)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "red/yellow/black",
+    "map": false
+   }
+  },
+  {
+   "id": "ZMUYH21Lmg4",
+   "title": "WW2 From the German Perspective (Full Documentary)",
+   "views": 4873938,
+   "len_s": 5429,
+   "published": "2023-04-16",
+   "outlier": 11.34,
+   "type": "war (compilation)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "cartoon (Hitler over world map)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "red/black",
+    "map": true
+   }
+  },
+  {
+   "id": "xVISzFmBiPU",
+   "title": "How Prussia Ended The French Empire: Franco-Prussian War",
+   "views": 4454074,
+   "len_s": 1676,
+   "published": "2021-04-09",
+   "outlier": 10.37,
+   "type": "war",
+   "list": "popular"
+  },
+  {
+   "id": "gAxSVdQofS0",
+   "title": "How did Germany Get so Strong after Losing WW1?",
+   "views": 4281931,
+   "len_s": 908,
+   "published": "2020-05-30",
+   "outlier": 9.96,
+   "type": "generic/inter-war",
+   "list": "popular"
+  },
+  {
+   "id": "EtGLIBsJuec",
+   "title": "Korea Under Japanese Rule",
+   "views": 703893,
+   "len_s": 886,
+   "published": "2026-10-28",
+   "outlier": 1.64,
+   "type": "generic/occupation",
+   "list": "recent"
+  },
+  {
+   "id": "o9sr8sviSIs",
+   "title": "Mỹ Lai Massacre",
+   "views": 411944,
+   "len_s": 694,
+   "published": "2026-09-20",
+   "outlier": 0.96,
+   "type": "atrocity event",
+   "list": "recent"
+  },
+  {
+   "id": "-B1emleGujk",
+   "title": "Soviets Who Helped the Nazis (Uncensored Version)",
+   "views": 512027,
+   "len_s": 1192,
+   "published": "2026-09-05",
+   "outlier": 1.19,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "CtPGZxaSnv4",
+   "title": "Malmedy Massacre",
+   "views": 536369,
+   "len_s": 573,
+   "published": "2026-08-28",
+   "outlier": 1.25,
+   "type": "atrocity event",
+   "list": "recent"
+  },
+  {
+   "id": "J9H_BOe5suY",
+   "title": "Boer Wars (Full Documentary)",
+   "views": 775664,
+   "len_s": 3132,
+   "published": "2026-08-01",
+   "outlier": 1.81,
+   "type": "war (compilation)",
+   "list": "recent"
+  },
+  {
+   "id": "0s0N8BrxCok",
+   "title": "Germany's Last Ditch 1945 Units (Uncensored Version)",
+   "views": 418644,
+   "len_s": 1176,
+   "published": "2026-07-04",
+   "outlier": 0.97,
+   "type": "generic",
+   "list": "recent"
+  },
+  {
+   "id": "b_aL0-R2z3Y",
+   "title": "Wars of South American Independence",
+   "views": 195248,
+   "len_s": 1030,
+   "published": "2026-06-21",
+   "outlier": 0.45,
+   "type": "war (multi)",
+   "list": "recent",
+   "thumb": {
+    "image_type": "cartoon (Bolivar portrait + S. America map)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "tan/red",
+    "map": true
+   }
+  },
+  {
+   "id": "pp7l-JQQ2IY",
+   "title": "The Great Northern War",
+   "views": 440754,
+   "len_s": 3297,
+   "published": "2026-06-01",
+   "outlier": 1.03,
+   "type": "war",
+   "list": "recent"
+  },
+  {
+   "id": "hqt96HLH6PM",
+   "title": "WW1's Forgotten Middle Eastern Theater (Uncensored Version)",
+   "views": 148870,
+   "len_s": 1108,
+   "published": "2026-05-24",
+   "outlier": 0.35,
+   "type": "war (theater)",
+   "list": "recent",
+   "thumb": {
+    "image_type": "cartoon (Lawrence on horse, face)",
+    "face": true,
+    "text_words": 2,
+    "text": "NO PRISONERS",
+    "palette": "tan/teal",
+    "map": false
+   }
+  },
+  {
+   "id": "vcg1WMzr9xw",
+   "title": "U.S. Island Hopping Strategy",
+   "views": 231461,
+   "len_s": 803,
+   "published": "2026-05-17",
+   "outlier": 0.54,
+   "type": "strategy explainer",
+   "list": "recent"
+  },
+  {
+   "id": "nc4tcJL6-W0",
+   "title": "British Tank Development in WWI",
+   "views": 111161,
+   "len_s": 823,
+   "published": "2026-04-26",
+   "outlier": 0.26,
+   "type": "explainer",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "cartoon (WWI tank)",
+    "face": false,
+    "text_words": 3,
+    "text": "BRITISH TANKS WW1",
+    "palette": "blue/red on olive",
+    "map": false
+   }
+  },
+  {
+   "id": "p-gleC7WxNY",
+   "title": "Life in German-Occupied Poland (Uncensored Version)",
+   "views": 171780,
+   "len_s": 1113,
+   "published": "2026-03-22",
+   "outlier": 0.4,
+   "type": "generic/home front",
+   "list": "recent-weak",
+   "thumb": {
+    "image_type": "cartoon (partisan + German officer silhouette)",
+    "face": true,
+    "text_words": 0,
+    "text": "",
+    "palette": "black/yellow",
+    "map": false
+   }
+  }
+ ]
+}

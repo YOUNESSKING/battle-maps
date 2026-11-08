@@ -1,0 +1,333 @@
+{
+ "channel": {
+  "handle": "@livethforevermore",
+  "name": "Liveth For Evermore",
+  "subs": "313k",
+  "videos": 168,
+  "avg_long_len": "6 min",
+  "flag": "Single-subject special-forces / incident stories, modern era (1990-2023) win; WW2 small-unit stories (the 2024-26 pivot) do 10-100k. Back catalogue 30-400x the current ~34k median: the channel has collapsed ~90 percent in views per video. Mostly photo-montage + narration (no maps)."
+ },
+ "recent_median_views": 33740.0,
+ "thumbnail_stats": {
+  "winners_with_face_pct": 50,
+  "winners_with_text_pct": 100,
+  "winners_avg_text_words": 3.4,
+  "winners_with_map_pct": 0,
+  "weak_with_face_pct": 75,
+  "weak_avg_text_words": 5.8,
+  "weak_with_map_pct": 0,
+  "recent_median_views": 33740.0
+ },
+ "videos": [
+  {
+   "id": "i3FQplpIcX8",
+   "title": "When Pirates Mistook a Warship for a Cargo Ship | January 2012",
+   "views": 13583820,
+   "len_s": 350,
+   "published": "2022-07-03",
+   "outlier": 402.6,
+   "type": "single incident (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (ship) + crests",
+    "face": false,
+    "text_words": 6,
+    "text": "Pirates Attack a Warship by Mistake",
+    "palette": "grey-blue/red",
+    "map": false
+   }
+  },
+  {
+   "id": "hFXHZieJmVs",
+   "title": "The Longest Recorded Sniper Shot: Joint Task Force 2 | May 2017",
+   "views": 8315992,
+   "len_s": 356,
+   "published": "2019-12-14",
+   "outlier": 246.47,
+   "type": "single incident (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (sniper, rifle)",
+    "face": true,
+    "text_words": 3,
+    "text": "Longest Sniper Kill",
+    "palette": "green/red",
+    "map": false
+   }
+  },
+  {
+   "id": "77v4Mupht-Q",
+   "title": "Philippines Special Forces & the Marawi Operation | October 2017",
+   "views": 3932599,
+   "len_s": 466,
+   "published": "2020-03-15",
+   "outlier": 116.56,
+   "type": "single operation (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (soldiers, goggles)",
+    "face": true,
+    "text_words": 3,
+    "text": "The Marawi Raid",
+    "palette": "green/red",
+    "map": false
+   }
+  },
+  {
+   "id": "QsQhdCkzoHs",
+   "title": "When Pirates Attacked 2 American Warships | March 2006",
+   "views": 3046005,
+   "len_s": 298,
+   "published": "2022-11-18",
+   "outlier": 90.28,
+   "type": "single incident (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (2 warships) + flag + crests",
+    "face": false,
+    "text_words": 5,
+    "text": "Pirates Attack 2 American Warships",
+    "palette": "grey-blue/red",
+    "map": false
+   }
+  },
+  {
+   "id": "WM5azkNw2wE",
+   "title": "Operation Buckthorn: UK Special Forces retake hijacked Cargo Ship | December 2018",
+   "views": 2699825,
+   "len_s": 371,
+   "published": "2019-10-04",
+   "outlier": 80.02,
+   "type": "single operation (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (SBS operator) + badges",
+    "face": true,
+    "text_words": 2,
+    "text": "Operation Buckthorn",
+    "palette": "grey/navy label",
+    "map": false
+   }
+  },
+  {
+   "id": "x3VKiCsvBMc",
+   "title": "Operation Trent: The largest S.A.S. operation since 1945 | November 2001",
+   "views": 2281505,
+   "len_s": 585,
+   "published": "2020-05-12",
+   "outlier": 67.62,
+   "type": "single operation (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (masked SAS) + badge",
+    "face": false,
+    "text_words": 2,
+    "text": "Operation Trent",
+    "palette": "tan/red",
+    "map": false
+   }
+  },
+  {
+   "id": "dSJni7zeiN0",
+   "title": "The S.A.S. in Nairobi | January 2019",
+   "views": 2113624,
+   "len_s": 378,
+   "published": "2019-01-24",
+   "outlier": 62.64,
+   "type": "single operation (modern)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (operator + woman running)",
+    "face": true,
+    "text_words": 3,
+    "text": "S.A.S. in Nairobi",
+    "palette": "green/red",
+    "map": false
+   }
+  },
+  {
+   "id": "WAZlPbVay28",
+   "title": "The Longest Recorded Tank-on-Tank Hit | February 1991",
+   "views": 2010060,
+   "len_s": 398,
+   "published": "2019-11-21",
+   "outlier": 59.57,
+   "type": "single incident (record)",
+   "list": "popular",
+   "thumb": {
+    "image_type": "real photo (Challenger tank)",
+    "face": false,
+    "text_words": 3,
+    "text": "Longest Tank Kill",
+    "palette": "sand/blue/red",
+    "map": false
+   }
+  },
+  {
+   "id": "R6ox-ANgCIk",
+   "title": "Thunder Run into Baghdad | April 2003",
+   "views": 1576693,
+   "len_s": 683,
+   "published": "2021-01-07",
+   "outlier": 46.73,
+   "type": "single operation (modern)",
+   "list": "popular"
+  },
+  {
+   "id": "w2nskVlbq5Q",
+   "title": "S.E.A.L. Team 6 Hostage Rescue in Nigeria | October 2020",
+   "views": 1575533,
+   "len_s": 455,
+   "published": "2021-01-28",
+   "outlier": 46.7,
+   "type": "single operation (modern)",
+   "list": "popular"
+  },
+  {
+   "id": "EaUtTxNGftU",
+   "title": "Ambush at Boissey-le-Châtel | August 1944",
+   "views": 46069,
+   "len_s": 374,
+   "published": "2026-10-27",
+   "outlier": 1.37,
+   "type": "single action WW2",
+   "list": "recent"
+  },
+  {
+   "id": "RrP1KmlCkgI",
+   "title": "Serjeant Charles Boyce & the Battle for the Clüversborstel Bridge | April 1945",
+   "views": 42771,
+   "len_s": 349,
+   "published": "2026-10-09",
+   "outlier": 1.27,
+   "type": "single action WW2",
+   "list": "recent"
+  },
+  {
+   "id": "P5WTUEQYbUM",
+   "title": "Serjeant Robert Curley & the Battle for La Senaudière | June 1944",
+   "views": 28514,
+   "len_s": 410,
+   "published": "2026-09-18",
+   "outlier": 0.85,
+   "type": "single action WW2",
+   "list": "recent"
+  },
+  {
+   "id": "DzRbcmA5WUo",
+   "title": "The Extraordinary Stand of a Lone Cromwell Tank | April 1945",
+   "views": 93588,
+   "len_s": 476,
+   "published": "2026-09-04",
+   "outlier": 2.77,
+   "type": "single action WW2",
+   "list": "recent"
+  },
+  {
+   "id": "5liOfDRwRmE",
+   "title": "A PIAT Gunner at Arnhem Bridge: The Heroic Actions of Private Robert Lygo | September 1944",
+   "views": 36811,
+   "len_s": 423,
+   "published": "2026-08-10",
+   "outlier": 1.09,
+   "type": "single action WW2",
+   "list": "recent"
+  },
+  {
+   "id": "6X9BSPzvPpk",
+   "title": "Operations Deep Cut & Chopper: Pre D-Day Commando Raids in Normandy | September 1941",
+   "views": 8641,
+   "len_s": 365,
+   "published": "2026-07-16",
+   "outlier": 0.26,
+   "type": "single raid WW2",
+   "list": "recent",
+   "thumb": {
+    "image_type": "archive WW2 photo, desaturated",
+    "face": true,
+    "text_words": 4,
+    "text": "Commando Raids in Normandy",
+    "palette": "grey/red",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "Ozu3ntzgFGk",
+   "title": "Slaughter at Eerde | September 1944",
+   "views": 58764,
+   "len_s": 477,
+   "published": "2026-06-18",
+   "outlier": 1.74,
+   "type": "single action WW2",
+   "list": "recent"
+  },
+  {
+   "id": "ew7WCqfRUe8",
+   "title": "How 1 Royal Marine Took on 9 German Machine Guns | April 1945 | Victoria Cross",
+   "views": 11046,
+   "len_s": 544,
+   "published": "2026-06-02",
+   "outlier": 0.33,
+   "type": "single action WW2",
+   "list": "recent",
+   "thumb": {
+    "image_type": "colourised portrait + crest",
+    "face": true,
+    "text_words": 8,
+    "text": "Royal Marine who took on 9 German Machine Guns",
+    "palette": "olive/red",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "UAxAXbKihFM",
+   "title": "Operation Dragoon: The British Airborne Assault into Southern France | August 1944",
+   "views": 30669,
+   "len_s": 765,
+   "published": "2026-05-15",
+   "outlier": 0.91,
+   "type": "operation WW2",
+   "list": "recent"
+  },
+  {
+   "id": "SXzqblEAdvE",
+   "title": "The Battle for Longues Gun Battery | June 1944",
+   "views": 9865,
+   "len_s": 770,
+   "published": "2026-04-24",
+   "outlier": 0.29,
+   "type": "single battle WW2",
+   "list": "recent",
+   "thumb": {
+    "image_type": "photo (bunker)",
+    "face": false,
+    "text_words": 6,
+    "text": "The Battle for Longues Gun Battery",
+    "palette": "grey-green/red",
+    "map": false
+   },
+   "weak_thumb": true
+  },
+  {
+   "id": "PNgluck4WAs",
+   "title": "How an Allied General Evaded Capture Behind Enemy Lines",
+   "views": 10598,
+   "len_s": 731,
+   "published": "2026-02-20",
+   "outlier": 0.31,
+   "type": "person WW2",
+   "list": "weak_recent",
+   "thumb": {
+    "image_type": "portrait (general) + paratroops photo",
+    "face": true,
+    "text_words": 5,
+    "text": "A Generals Escape from Arnhem",
+    "palette": "sepia/grey/purple",
+    "map": false
+   },
+   "weak_thumb": true
+  }
+ ]
+}

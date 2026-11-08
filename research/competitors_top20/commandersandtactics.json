@@ -1,0 +1,236 @@
+{
+ "channel": "Commanders and Tactics",
+ "handle": "commandersandtactics",
+ "rank": 21,
+ "channelId": "UCywsMmwicbaKAYwEZHo2dhA",
+ "subs": 37900,
+ "total_views": 3745066,
+ "video_count": 13,
+ "long_videos": 9,
+ "recent_median_views": 249750,
+ "recent_n": 9,
+ "note": "Only 9 long videos exist, so popular and recent lists are the same set. Outlier = views / median of all 9 (249,750). Data 2026-11-07.",
+ "thumbnail_summary": {
+  "winners_top4": {
+   "n": 4,
+   "pct_face": 100,
+   "pct_text": 100,
+   "avg_text_words": 3.25,
+   "pct_map": 100
+  },
+  "others": {
+   "n": 5,
+   "pct_face": 100,
+   "pct_text": 100,
+   "avg_text_words": 3.2,
+   "pct_map": 100
+  }
+ },
+ "title_summary": {
+  "pattern": "<General>'s Top 3 Tactical Masterpieces [(No AI)]",
+  "avg_chars": 46,
+  "no_ai_label_videos": [
+   "SJXvSB_xKOk",
+   "nwB1Njcw0jw",
+   "cqArbvbxudw"
+  ],
+  "avg_views_no_ai": 525190,
+  "avg_views_others": 285356
+ },
+ "transcripts": {
+  "nwB1Njcw0jw": "en, full",
+  "SJXvSB_xKOk": "en, full",
+  "cqArbvbxudw": "ar (vidIQ returned the Arabic track; structure still readable)"
+ },
+ "videos": [
+  {
+   "id": "FrZsp16pemk",
+   "title": "Napoleon's Top 3 Tactical Masterpieces",
+   "views": 815060,
+   "len_s": 669,
+   "published": "2025-09-29",
+   "outlier": 3.26,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised/painted portrait",
+    "face": "yes, big close-up left",
+    "text_words": 3,
+    "text": "Top 3 MOVES",
+    "palette": "blue glow on green-grey aerial map, blue vs red arrows",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "SJXvSB_xKOk",
+   "title": "Zhukov's Top 3 Tactical Masterpieces (No AI)",
+   "views": 596376,
+   "len_s": 945,
+   "published": "2025-12-10",
+   "outlier": 2.39,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised portrait",
+    "face": "yes, big close-up left",
+    "text_words": 2,
+    "text": "ZHUKOV's BRILLIANCE",
+    "palette": "red, yellow-green, olive; Japanese/Soviet flags",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "nwB1Njcw0jw",
+   "title": "Walter Model's Top 3 Defensive Masterpieces (No AI)",
+   "views": 497042,
+   "len_s": 1141,
+   "published": "2026-06-06",
+   "outlier": 1.99,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised photo, pointing at map",
+    "face": "yes, big, left",
+    "text_words": 5,
+    "text": "Prolonged WW 2 by a YEAR?",
+    "palette": "dark red/olive, yellow arrows, question headline",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "cqArbvbxudw",
+   "title": "Manstein's Top 3 Tactical Masterpieces (No AI)",
+   "views": 482151,
+   "len_s": 1322,
+   "published": "2026-10-19",
+   "outlier": 1.93,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised photo leaning over map table",
+    "face": "yes, medium, right",
+    "text_words": 3,
+    "text": "TOP 3 MOVES",
+    "palette": "dark red map, white arrows, green/red counters",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "0oaJq6iui4c",
+   "title": "Rommel's Top 3 Tactical Masterpieces",
+   "views": 249750,
+   "len_s": 676,
+   "published": "2025-06-04",
+   "outlier": 1.0,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "cut-out colourised full figure on pale vintage map",
+    "face": "yes, full body left",
+    "text_words": 3,
+    "text": "Top 3 Moves",
+    "palette": "white/cream map, red arrows (different palette from the rest)",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "PURiiijfB0Y",
+   "title": "Suvorov's Top 3 Tactical Masterpieces",
+   "views": 231904,
+   "len_s": 1433,
+   "published": "2026-08-28",
+   "outlier": 0.93,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "painted portrait",
+    "face": "yes, left",
+    "text_words": 2,
+    "text": "RUSSIA's NAPOLEON",
+    "palette": "green/red unit blocks on aerial fields",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "5a67-ybko_Q",
+   "title": "Caesar's Top 3 Tactical Masterpieces",
+   "views": 229286,
+   "len_s": 1169,
+   "published": "2026-02-14",
+   "outlier": 0.92,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "AI painting, Caesar on white horse",
+    "face": "yes, right",
+    "text_words": 3,
+    "text": "IMPOSSIBLE to BEAT",
+    "palette": "red/green/orange coast map",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "3TlDRjQPlQI",
+   "title": "Alexander's Top 3 Tactical Masterpieces",
+   "views": 143474,
+   "len_s": 976,
+   "published": "2025-11-11",
+   "outlier": 0.57,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "AI painting, Alexander on horse",
+    "face": "yes, left",
+    "text_words": 6,
+    "text": "ALEXANDER THE GREAT 3 LEGENDARY TACTICS",
+    "palette": "brown terrain, blue/red blocks",
+    "map": "yes"
+   }
+  },
+  {
+   "id": "_SUqZHUhrOg",
+   "title": "Robert E. Lee's Top 3 Tactical Masterpieces",
+   "views": 42663,
+   "len_s": 1238,
+   "published": "2026-04-15",
+   "outlier": 0.17,
+   "type": "single-subject general",
+   "list": [
+    "popular",
+    "recent"
+   ],
+   "thumbnail": {
+    "image_type": "colourised portrait, small, right",
+    "face": "yes, small, right",
+    "text_words": 2,
+    "text": "LINCOLN's NIGHTMARE",
+    "palette": "dark navy/brown, low contrast, small US flag icons",
+    "map": "yes"
+   }
+  }
+ ]
+}
