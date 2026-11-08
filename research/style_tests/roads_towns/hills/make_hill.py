@@ -178,7 +178,10 @@ def rgba_from(base, comp, core):
 
 
 # ---------------------------------------------------------------- the painter
-def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1.0, halo=1.0, light_az=315.0, light_el=38.0):
+def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1.0, halo=1.0, light_az=315.0, light_el=38.0,
+                 blur=0.7, warm=1.0):
+    """blur = softening of the painted colour in image px (0.7 default; ~1.2 = ~1 px at 1080p on s12d_rt);
+    warm = highlight warmth (1.0 default; <1 cooler / greyer lit faces)."""
     base = np.asarray(base)[..., :3]
     Hh, Ww = base.shape[:2]
     ex = np.array([s.extent() for s in shapes]); size = max(ex[:, 2].max() - ex[:, 0].min(), ex[:, 3].max() - ex[:, 1].min())
@@ -246,13 +249,13 @@ def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1
     grain = np.clip(G0 / np.maximum(G, 1), 0.7, 1.3)                                       # painterly grain of the basemap
     lumG = G.mean(2, keepdims=True)
     desat = lambda c, k: c * (1 - k) + c.mean(2, keepdims=True) * k
-    hi = desat(G, 0.7) * np.array([1.12, 1.09, 1.0]) + np.array([12, 10, 6])            # tan-grey lit faces
+    hi = desat(G, 0.7) * (1 + (np.array([1.12, 1.09, 1.0]) - 1) * warm) + np.array([12, 10, 6]) * (0.4 + 0.6 * warm)            # tan-grey lit faces
     bodyc = desat(G, 0.35) * 0.86                                                          # the hill reads a touch darker than grass
     lo = desat(G, 0.25) * 0.55 * np.array([1.0, 1.0, 0.85])                                # olive-charcoal shade
     s3 = shade[..., None]
     col = np.where(s3 > 0, bodyc + (hi - bodyc) * np.clip(s3 * 1.25, 0, 1) ** 1.6, bodyc + (lo - bodyc) * np.clip(-s3, 0, 1))
     col = col * (grain ** 0.6)
-    col = cv2.GaussianBlur(col, (0, 0), 0.7)
+    col = cv2.GaussianBlur(col, (0, 0), blur)
     # broad tonal mass: SE half of the hill is darker overall, NW crest a little lighter
     big = cv2.GaussianBlur(hgt, (0, 0), rsz * 0.35); bgy, bgx = np.gradient(big)
     bm = np.hypot(bgx, bgy).max() + 1e-6; bshade = (-(bgx * lx + bgy * ly) / bm)[..., None]
@@ -262,6 +265,8 @@ def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1
     edge_n = fbm(h, w, rsz * 0.25, 3, seed + 6)
     a_body = smoothstep(-0.08, 0.85, hgt + 0.12 * edge_n) ** 1.3
     a_body = np.clip(a_body * (0.9 + 0.1 * np.clip(crumple * 2 + 0.5, 0, 1)), 0, 1)
+    if blur > 0.7:
+        a_body = cv2.GaussianBlur(a_body, (0, 0), blur)
     # ---- halo + cast shadow (wide feather into the grass, heavier to the SE)
     sup = smoothstep(0.0, 0.25, hgt)
     off = rsz * 0.22

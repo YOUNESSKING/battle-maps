@@ -29,6 +29,16 @@ const RTM = %s, RTD = %s, RW = %s;
 let RTSV = null; const RTIMG = {};
 const RTL = document.createElement("div"); RTL.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
 document.getElementById("relief2").after(RTL);   // above both basemaps, under hatching / territory / overlay / pins
+// painted hills (research/style_tests/roads_towns/hills, softened copy in hills/soft): wide art right above #relief (so #relief2 covers it
+// when the close look takes over), close art right above #relief2 with #relief2's own opacity + lens mask; towns + roads stay above both
+const RTH = [], RTHC = [];
+["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png`; im.alt = "";
+  im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
+const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
+  im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
+CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
 { const sv = document.createElementNS("http://www.w3.org/2000/svg", "svg"); sv.setAttribute("viewBox", "0 0 2880 1620"); sv.setAttribute("width", "2880"); sv.setAttribute("height", "1620");
   sv.style.cssText = "position:absolute;left:0;top:0;overflow:visible";
   const lay = [["#c4ba80", 5.0, 0.07], ["#2b2712", RW[0], RW[2]], ["#8e8656", RW[1], RW[3]]], PS = [];
