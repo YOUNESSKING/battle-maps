@@ -124,7 +124,7 @@ def _shift(a, dx, dy):
 
 
 def render_label_curve(text, curve, size=34, ppu=2.0, font="garamond600", tracking=0.34, align=0.5,
-                       colour=(232, 220, 160), face_alpha=0.86, seed=1, jitter=1.0):
+                       colour=(232, 220, 160), face_alpha=0.93, seed=1, jitter=1.0):
     """Hand-lettered, ENGRAVED town name (owner 2026-11-08: "carved into the map in an arc, natural").
 
     curve   3 or 4 control points (quadratic / cubic Bezier) in 1080p px, relative to the anchor (0, 0)
@@ -189,7 +189,7 @@ def render_label_curve(text, curve, size=34, ppu=2.0, font="garamond600", tracki
     # worn edges: noise eats a little of the stroke edge
     nz = ndi.gaussian_filter(rng.standard_normal(M.shape), 0.9 * k) * 5.0
     Mb = ndi.gaussian_filter(M, 0.35 * k)
-    M = np.clip((Mb - 0.5 + 0.10 * nz) * 3.0 + 0.5, 0, 1) * (Mb > 0.05)
+    M = np.clip((Mb - 0.42 + 0.08 * nz) * 3.0 + 0.5, 0, 1) * (Mb > 0.05)
     # inset bevel: light from the top-left, so the cut's top-left wall is in shade, bottom-right wall catches light
     o = max(1, int(round(0.55 * k)))
     inner_dark = np.clip(M - _shift(M, o, o), 0, 1)         # pixels whose top-left neighbour is outside

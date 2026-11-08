@@ -9,7 +9,7 @@ from skimage.morphology import skeletonize
 TW = "/home/user/battle-maps/research/style_tests/roads_towns/towns"
 sys.path.insert(0, TW)
 from make_town import render_town, map_to_local  # noqa
-from label import render_label  # noqa
+from label import render_label, render_label_curve  # noqa
 
 Image.MAX_IMAGE_PIXELS = None
 OUT = sys.argv[1]
@@ -22,14 +22,17 @@ os.makedirs(OUT, exist_ok=True)
 base = np.asarray(Image.open("/home/user/battle-maps/grant/assets/vicksburg_w.jpg").convert("RGB")).astype(int)
 R_, G_, B_ = base[..., 0], base[..., 1], base[..., 2]
 BLUE = (B_ > R_ + 45) & (B_ > G_ + 10)        # pale-blue river ribbons (image px, 2 per map px)
-roads = json.load(open("/home/user/battle-maps/research/style_tests/roads_towns/roads/roads_px.json"))["roads"]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from road_fix import fixed_roads, ED1  # noqa
+roads = fixed_roads()
 
-TOWNS = {   # name: (label, centre map px, radius u, size, seed, grid, (label dx, dy u, arc, rot), sprite offset map px)
-    "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, (66, 64, 8, -5), (7, 2)),
-    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, (14, 58, 9, -4), (0, 0)),
-    "raymond": ("Raymond", (1716, 759), 40, "village", 1829, None, (6, 52, 9, -4), (0, 0)),
-    "port_gibson": ("Port Gibson", (1306, 1015), 40, "village", 1803, None, (8, 52, 9, -4), (0, 0)),
-    "edwards": ("Edwards", (1581, 698), 36, "village", 1840, None, (4, 48, 9, -4), (0, 0)),
+TOWNS = {   # name: (label, centre map px, radius u, size, seed, grid, label curve (Bezier, 1080p px from the town point), sprite offset map px)
+    # curves hug the town edge / follow the river or road beside it (hand-lettered look, each different)
+    "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, [(-6, 140), (50, 160), (130, 164), (190, 150)], (7, 2)),
+    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, [(-205, 66), (-140, 94), (-66, 100), (-14, 86)], (0, 0)),
+    "raymond": ("Raymond", (1716, 759), 40, "village", 1829, None, [(-80, 58), (-10, 80), (80, 74), (140, 44)], (0, 0)),
+    "port_gibson": ("Port Gibson", (1306, 1015), 40, "village", 1803, None, [(-110, 62), (-10, 90), (110, 84), (190, 46)], (0, 0)),
+    "edwards": ("Edwards", ED1, 36, "village", 1840, None, [(-60, 50), (0, 64), (60, 58), (110, 34)], (0, 0)),
 }
 
 
@@ -104,12 +107,12 @@ for key, (name, c0, Ru, size, seed, grid, lp, off) in TOWNS.items():
     bb = im.getbbox(); im = im.crop(bb); cx -= bb[0]; cy -= bb[1]
     im.save(f"{OUT}/town_{key}.png")
     k = MAP_PPU / PPU     # map px per image px
-    dx, dy, arc, rot = lp
-    li, (ax, ay) = render_label(name, size=LBL, ppu=2.0, arc=arc, rotate=rot, colour=(232, 220, 160), font=os.environ.get("FONT", "garamond600"), tracking=float(os.environ.get("TRK", 0.48)))
+    lsz, ltr = {"vicksburg": (36, 0.2)}.get(key, (LBL, float(os.environ.get("TRK", 0.32))))   # Vicksburg: fits between the bluff hachures and the Big Black
+    li, (ax, ay) = render_label_curve(name, lp, size=lsz, ppu=2.0, tracking=ltr, seed=seed)
     li.save(f"{OUT}/label_{key}.png")
     meta["towns"][key] = dict(name=name, c=c0, R_u=Ru, river=bool(riv), river_w_u=kw.get("river_width"), roads=angs,
                               img=[im.width, im.height], left=round(c[0] - cx * k, 2), top=round(c[1] - cy * k, 2),
                               w=round(im.width * k, 2), h=round(im.height * k, 2),
-                              label=dict(w=li.width / 2, h=li.height / 2, ax=ax / 2, ay=ay / 2, dx=dx + off[0] * S, dy=dy + off[1] * S))
+                              label=dict(w=li.width / 2, h=li.height / 2, ax=ax / 2, ay=ay / 2, dx=0, dy=0))
     print(key, meta["towns"][key])
 json.dump(meta, open(f"{OUT}/rt_meta.json", "w"), indent=1)

@@ -3,7 +3,9 @@ import json, os, sys
 G = "/home/user/battle-maps/grant"
 meta = json.load(open(os.path.join(sys.argv[1], "rt_meta.json")))
 RW = json.loads(os.environ.get("RW", "[2.8, 0.9, 0.5, 0.28]"))   # dark width, centre width (on screen px), dark alpha, centre alpha
-roads = json.load(open("/home/user/battle-maps/research/style_tests/roads_towns/roads/roads_px.json"))["roads"]
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from road_fix import fixed_roads
+roads = fixed_roads()
 import math, random
 TC = [t["c"] for t in meta["towns"].values()]
 def meander(P, seed):
@@ -15,7 +17,7 @@ def meander(P, seed):
         L = math.hypot(b[0] - a[0], b[1] - a[1]) + 1e-9; nx, ny = -(b[1] - a[1]) / L, (b[0] - a[0]) / L
         dt = min(math.hypot(x - cx, y - cy) for cx, cy in TC)
         tap = min(1, max(0, (dt - 26) / 30)) * min(1, i / 8, (len(P) - 1 - i) / 8)
-        o = tap * (1.5 * math.sin(acc / 46 + ph[0]) + 0.8 * math.sin(acc / 17 + ph[1]) + 0.35 * math.sin(acc / 7 + ph[2]))
+        o = tap * (2.6 * math.sin(acc / 70 + ph[0]) + 1.1 * math.sin(acc / 23 + ph[1]) + 0.35 * math.sin(acc / 8 + ph[2]))
         out.append((x + nx * o, y + ny * o))
     return out
 D = [("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in meander(r["pts"], k))) for k, r in enumerate(roads)]
@@ -65,10 +67,11 @@ rep('const VTW = town("VICKSBURG", VKS, "l", 0);', 'const VTW = rtLabel("vicksbu
 rep('const BAT = (txt, p, t, until, dx = 0, dy = -40, mp = p) => {', 'const BATT = (k, p, t, until, mo) => { MARK([p[0] + mo[0], p[1] + mo[1]], t); return rtLabel(k, t + 0.05, until); };\nconst BAT = (txt, p, t, until, dx = 0, dy = -40, mp = p) => {')
 rep('BAT("PORT GIBSON", PG, T_PG, T_12 + 0.6, -110, 40);', 'BATT("port_gibson", PG, T_PG, Math.min(T_12 + 0.6, T_PG + LBL_LIFE), [-26, -10]);')
 rep('BAT("RAYMOND", RAY, T_RAY, T_14 + 0.6, -40, 46);', 'BATT("raymond", RAY, T_RAY, Math.min(T_14 + 0.6, T_RAY + LBL_LIFE), [-26, 12]);')
-rep('BAT("JACKSON", JAX, T_JAX, T_16 + 0.6, 0, -46);', 'BATT("jackson", JAX, T_JAX, null, [-34, -4]);')
+rep('BAT("JACKSON", JAX, T_JAX, T_16 + 0.6, 0, -46);', 'BATT("jackson", JAX, T_JAX, null, [-45, -27]);')
 for a, b in [('arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], [32.25, -90.43]])', 'arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], [32.247, -90.452]])'), ('arw({ pts: LL([[32.25, -90.42], [32.29, -90.32], [32.30, -90.21]])', 'arw({ pts: LL([[32.25, -90.40], [32.29, -90.32], [32.297, -90.232]])'), ('B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.585)); B.move("re", T_16 - 0.5, 1.2, ...L(32.325, -90.59)); B.move("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.595));', 'B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); B.move("re", T_16 - 0.5, 1.2, ...L(32.325, -90.568)); B.move("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.573));   // s12d_rt: ~30 px east so Edwards shows')]:
     rep(a, b)
-rep('B.move("u17", T_17 + 0.1, 1.2, ...L(32.31, -90.64));', 'B.move("u17", T_17 + 0.1, 1.2, ...L(32.282, -90.68));   // s12d_rt: off Edwards')
+rep('B.move("u17", T_17 + 0.1, 1.2, ...L(32.31, -90.64));', 'B.move("u17", T_17 + 0.1, 1.2, ...L(32.282, -90.68));   /* s12d_rt: off Edwards */')
+rep('B.move("u13", T_17, 1.2, ...L(32.39, -90.66));', 'B.move("u13", T_17, 1.2, ...L(32.39, -90.638));   /* s12d_rt: off Pemberton card */')
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)
 src = src.replace("B.finish();", "window.__RT_T = { T_CH, T_17, T_16, T_BB };\nB.finish();")
 open(f"{G}/tools/s12_body_s12d_rt.js", "w").write(src)
