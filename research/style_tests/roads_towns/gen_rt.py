@@ -28,8 +28,8 @@ roads = fixed_roads()
 
 TOWNS = {   # name: (label, centre map px, radius u, size, seed, grid, label curve (Bezier, 1080p px from the town point), sprite offset map px)
     # curves hug the town edge / follow the river or road beside it (hand-lettered look, each different)
-    "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, [(-6, 140), (50, 160), (130, 164), (190, 150)], (7, 2)),
-    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, [(-205, 66), (-140, 94), (-66, 100), (-14, 86)], (0, 0)),
+    "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, [(-60, 128), (10, 148), (90, 150), (160, 132)], (7, 2)),
+    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, [(40, 100), (100, 116), (180, 114), (240, 96)], (0, 0)),
     "raymond": ("Raymond", (1716, 759), 40, "village", 1829, None, [(-80, 58), (-10, 80), (80, 74), (140, 44)], (0, 0)),
     "port_gibson": ("Port Gibson", (1306, 1015), 40, "village", 1803, None, [(-110, 62), (-10, 90), (110, 84), (190, 46)], (0, 0)),
     "edwards": ("Edwards", ED1, 36, "village", 1840, None, [(-60, 50), (0, 64), (60, 58), (110, 34)], (0, 0)),
@@ -108,7 +108,7 @@ for key, (name, c0, Ru, size, seed, grid, lp, off) in TOWNS.items():
     im.save(f"{OUT}/town_{key}.png")
     k = MAP_PPU / PPU     # map px per image px
     lsz, ltr = {"vicksburg": (36, 0.2)}.get(key, (LBL, float(os.environ.get("TRK", 0.32))))   # Vicksburg: fits between the bluff hachures and the Big Black
-    li, (ax, ay) = render_label_curve(name, lp, size=lsz, ppu=2.0, tracking=ltr, seed=seed)
+    li, (ax, ay) = render_label_curve(name, lp, size=lsz, ppu=2.0, tracking=ltr, seed=seed, shadow=0.62)
     li.save(f"{OUT}/label_{key}.png")
     meta["towns"][key] = dict(name=name, c=c0, R_u=Ru, river=bool(riv), river_w_u=kw.get("river_width"), roads=angs,
                               img=[im.width, im.height], left=round(c[0] - cx * k, 2), top=round(c[1] - cy * k, 2),

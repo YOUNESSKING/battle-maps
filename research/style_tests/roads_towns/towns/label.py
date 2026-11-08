@@ -124,7 +124,7 @@ def _shift(a, dx, dy):
 
 
 def render_label_curve(text, curve, size=34, ppu=2.0, font="garamond600", tracking=0.34, align=0.5,
-                       colour=(232, 220, 160), face_alpha=0.93, seed=1, jitter=1.0):
+                       colour=(232, 220, 160), face_alpha=1.0, seed=1, jitter=1.0, shadow=0.5):
     """Hand-lettered, ENGRAVED town name (owner 2026-11-08: "carved into the map in an arc, natural").
 
     curve   3 or 4 control points (quadratic / cubic Bezier) in 1080p px, relative to the anchor (0, 0)
@@ -202,8 +202,8 @@ def render_label_curve(text, curve, size=34, ppu=2.0, font="garamond600", tracki
     face = face * (1 - 0.35 * inner_lite[..., None]) + np.array([252, 246, 214]) * 0.35 * inner_lite[..., None]
     a_face = M * face_alpha
     # tight soft shadow hugging the strokes (outside only), slightly toward the bottom-right
-    sh = ndi.gaussian_filter(_shift(M, int(0.35 * k), int(0.45 * k)), 0.7 * k)
-    sh = np.clip(sh * 1.6, 0, 1) * 0.5 * (1 - M)
+    sh = ndi.gaussian_filter(_shift(M, int(0.35 * k), int(0.45 * k)), 0.7 * k) + 0.6 * ndi.gaussian_filter(M, 1.6 * k)
+    sh = np.clip(sh * 1.6, 0, 1) * shadow * (1 - M)
     out_a = a_face + sh * (1 - a_face)
     shc = np.array([24, 22, 10], float)
     rgb = (face * a_face[..., None] + shc * (sh * (1 - a_face))[..., None]) / np.maximum(out_a, 1e-6)[..., None]
