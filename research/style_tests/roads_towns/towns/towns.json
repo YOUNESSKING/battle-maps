@@ -1,0 +1,26 @@
+{
+ "raymond": {
+  "png": "raymond.png",
+  "ppu": 2.0,
+  "size_px": [
+   233,
+   222
+  ],
+  "centre_px": [
+   100.0,
+   112.0
+  ]
+ },
+ "vicksburg": {
+  "png": "vicksburg.png",
+  "ppu": 2.0,
+  "size_px": [
+   495,
+   578
+  ],
+  "centre_px": [
+   208.5,
+   253.5
+  ]
+ }
+}
