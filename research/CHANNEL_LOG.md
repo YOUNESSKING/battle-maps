@@ -141,3 +141,13 @@ Title: "Benedict Arnold's Top 3 Legendary Tactical Moves | He Saved the Revoluti
 | 4 (Nov 6, partial) | 2 / 1 | 1 / 0 | 0:21 |
 Retention (whole history): 0:30 56.9%, 0:40 51.3%. Date of the title/thumbnail change and Test & Compare result: not available through Studio AI (check the Details tab).
 Reading against DATA_RULES: watch time per Browse impression ~2.6% x ~275 s = ~7 s (expansion needs ~18 s); Suggested CTR 0.8-1.5% (needs ~3.5%). YouTube tested the sidebar on day 2 (3,330 Suggested impressions) and the click failed, so it stopped. Retention at 0:30 (57%) is also below Morgan (68%) and 2 Para (65%). A click problem first, opening second.
+
+## Cleburne #14 (Style W + voice A, 14:27): lifetime retention (Studio screenshot, read 2026-11-08)
+Average view duration 3:22 = 23.4 %; Studio: 67 % at 0:30. Curve read from the screenshot (pixel method, about 3 points uncertain; the 0:30 point reads 63 vs Studio's 67):
+0:40 ~47-50 | 1:00 ~35-38 | 1:30 ~31 | 2:00 ~30 | 3:00 ~25 | 4:00 ~24 | 5:00 ~23 | 7:30 ~21 | 9:00 ~19 | 10:00 ~18.5 | 12:00 ~16 | 14:20 ~13.
+Body hold = average % viewed / retention at 1:00: Cleburne ~0.63 vs Morgan 0.74, 2 Para 0.76, Gavin 0.81, Greene 0.81. The owner is right: the opening holds as
+well as before (1:00 between Greene and 2 Para), but the body leaks more than on every earlier video. No cliff; the steepest part is 2:00-3:00
+(move 1 setup, about -5 points), then a slow leak of about 1 point a minute to the end (earlier videos went nearly flat after 1:00).
+Changed at once on this upload, so the cause can't be separated: Style W maps (first full video), voice A, first Confederate hero,
+less famous name. Next step: compare the same Studio graph for Morgan / Greene / Patton at 2:00, 5:00 and 10:00, and keep Style W vs the v11
+look as a test (one Style W video and one v11 video with the same voice) before deciding.
