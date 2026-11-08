@@ -179,14 +179,14 @@ def rgba_from(base, comp, core):
 
 # ---------------------------------------------------------------- the painter
 def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1.0, halo=1.0, light_az=315.0, light_el=38.0,
-                 blur=0.7, warm=1.0, crest=0.0, weight=1.0, lit=1.0, hi_desat=0.7, mass=1.0, clean_extra=()):
+                 blur=0.7, warm=1.0, crest=0.0, weight=1.0, lit=1.0, hi_desat=0.7, mass=1.0, clean_extra=(), rim=0.0):
     """blur = softening of the painted colour in image px (0.7 default; ~1.2 = ~1 px at 1080p on s12d_rt);
     warm = highlight warmth (1.0 default; <1 cooler / greyer lit faces).
     crest = lighter tan-grey crumpled lit top (0 default; ~0.5 = like the reference);
     weight = body darkness + halo strength (1.0 default; 0.8 = ~20 % lighter, less heavy);
     lit = brightness of the lit faces + crest (1.0 default); hi_desat = greyness of the lit faces (0.7 default, lower = more olive-tan);
     mass = strength of the broad SE-dark / NW-light tonal mass (1.0 default); clean_extra = [(x, y, r), ...] image-px circles whose
-    baked ink (old hachures) is painted out even where the hill itself is smaller."""
+    baked ink (old hachures) is painted out even where the hill itself is smaller; rim = faint warm light rim on the NW edge (0 default)."""
     base = np.asarray(base)[..., :3]
     Hh, Ww = base.shape[:2]
     ex = np.array([s.extent() for s in shapes]); size = max(ex[:, 2].max() - ex[:, 0].min(), ex[:, 3].max() - ex[:, 1].min())
@@ -277,6 +277,11 @@ def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1
     edge_n = fbm(h, w, rsz * 0.25, 3, seed + 6)
     a_body = smoothstep(-0.08, 0.85, hgt + 0.12 * edge_n) ** 1.3
     a_body = np.clip(a_body * (0.9 + 0.1 * np.clip(crumple * 2 + 0.5, 0, 1)), 0, 1)
+    if rim > 0:   # faint warm rim on the NW (lit) edge so the mound separates from the grass
+        band = np.clip(4 * a_body * (1 - a_body), 0, 1) * np.clip(bshade[..., 0] * 1.6, 0, 1)
+        band = cv2.GaussianBlur(band, (0, 0), 1.2)
+        warmc = desat(G, 0.5) * np.array([1.22, 1.16, 1.0]) + np.array([18, 14, 4])
+        col = col + (warmc - col) * np.clip(band * rim, 0, 0.7)[..., None]
     if blur > 0.7:
         a_body = cv2.GaussianBlur(a_body, (0, 0), blur)
     # ---- halo + cast shadow (wide feather into the grass, heavier to the SE)
