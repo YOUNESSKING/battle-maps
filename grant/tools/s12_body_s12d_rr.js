@@ -23,9 +23,9 @@ hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 0.4, 1.6); hatch("assets/m
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 // ---------- the date scroll: the day-by-day clock (never leaves) ----------
 // RR: the permanent date plate (top-left) + ONE big centred date card where the day-by-day clock starts ("May first"); the later dates roll in the plate
-RR.datePlate("MAY 1863");
-RR.dateCard("1 MAY 1863", T_M1 - 0.05, Math.min(1.05, T_12 - T_M1 - 0.75));
-RR.dateRoll("12 MAY 1863", T_12); RR.dateRoll("14 MAY 1863", T_14); RR.dateRoll("16 MAY 1863", T_16); RR.dateRoll("17 MAY 1863", T_17); RR.dateRoll("MAY 1863", T_COUNT);
+RR.datePlate("1863");   // round 2: only the year until a day is spoken
+RR.dateCard("1 MAY 1863", T_M1 - 0.05, { hold: 0.7, dimEnd: T_PG - 0.05 });   // light dim, gone before "Port Gibson"
+RR.dateRoll("12 MAY 1863", T_12); RR.dateRoll("14 MAY 1863", T_14); RR.dateRoll("16 MAY 1863", T_16); RR.dateRoll("17 MAY 1863", T_17);   // keeps the last day (no step back)
 // ---------- camera ----------
 const K_ = (t, la, lo, s) => [t, ...L(la, lo), s];
 camera([K_(0, 32.02, -90.93, 1.55), K_(T_LIFE + 0.8, 32.03, -90.90, 1.6), K_(T_GEN - 0.2, 32.20, -90.64, 1.3), K_(T_M1 - 0.3, 32.16, -90.66, 1.36),
@@ -47,7 +47,7 @@ const WG = [0, 1, 2, 3, 4, 5].map((k) => wagon(sub(ROADP, 0, 0.42 + k * 0.035, 1
 WG.forEach((w, k) => tl.to(w, { y: (k % 2 ? 3 : -3), duration: 0.2, yoyo: true, repeat: 5 }, T_JAM + k * 0.05));
 const SHC_U = T_JAM + 3.1;   // same window as the approved Sherman card
 // RR quote card: the narrator's words; quote marks ONLY on the verbatim part ("as sure as life", Sherman to Grant, May 1863; FACT_NOTES)
-RR.quote({ lines: [["The road would be jammed,", null], ["&ldquo;as sure as life.&rdquo;", T_LIFE]], who: "SHERMAN WARNED", photo: PHOTO("sherman"), t: T_JAM - 0.1, until: SHC_U, size: 70 });
+RR.quote({ pre: ["The road would be jammed,", T_JAM - 0.1], verb: ["as sure as life.", T_LIFE], who: "SHERMAN WARNED", photo: PHOTO("sherman"), t: T_JAM - 0.1, until: SHC_U, size: 66 });
 // ---------- "And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant." ----------
 B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); B.move("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
 pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "up");   // round 2: stake straight up, off the Vicksburg name and the Union cards
@@ -89,8 +89,8 @@ BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));
 B.move("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); B.move("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
 // ---------- "A battle every three or four days" (wide: all five marks + the route) ----------
 inkTrace(LL([[31.961, -90.984], [32.08, -90.74], [32.259, -90.422], [32.299, -90.185], [32.34, -90.36], [32.333, -90.535], [32.347, -90.716]]), T_EVERY + 0.3, T_ATE + 0.6, 2.6);
-const ST_U = Math.min(T_EVERY + 3.4, T_COUNT - 0.3);
-RR.statement({ lines: [["A battle every", null], ["three or four days", null]], sub: "and the army ate off the country", subT: T_ATE, t: T_EVERY + 0.1, until: ST_U, size: 92, top: 300 });
+const T_34 = at(P4, "three or four days"), ST_U = Math.min(T_EVERY + 3.4, T_COUNT - 0.3);
+RR.lower({ parts: [["A BATTLE EVERY", null], ["THREE OR FOUR DAYS", T_34]], t: T_EVERY + 0.1, until: ST_U, size: 50 });   // round 2: lower third, no dim (route + marks stay bright)
 // ---------- "and the army ate off the country, just as Grant said it would" ----------
 const COW = `<svg width="64" height="45" viewBox="0 0 40 28" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><path d="M4 9 Q4 5 9 5 L28 5 Q31 2 34 3 L37 6 Q39 9 35 10 L33 11 L33 18 L30 18 L30 25 L27 25 L27 18 L12 18 L12 25 L9 25 L9 18 Q4 17 4 13 Z" fill="#6b4a2a" stroke="#f3eee2" stroke-width="1.4"/><circle cx="18" cy="11" r="3" fill="#f3eee2"/></svg>`;
 const CORN = `<svg width="34" height="59" viewBox="0 0 22 38" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><ellipse cx="11" cy="14" rx="6" ry="12" fill="#f1c84a" stroke="#6b4a1a" stroke-width="1.4"/>${[6, 10, 14, 18, 22].map((y) => `<line x1="6" y1="${y}" x2="16" y2="${y}" stroke="#b8902a" stroke-width="1"/>`).join("")}<path d="M11 36 Q3 26 4 12 Q8 24 11 30 Q14 24 18 12 Q19 26 11 36 Z" fill="#6c8a3a" stroke="#2a3a1a" stroke-width="1"/></svg>`;
@@ -100,15 +100,17 @@ tl.fromTo(GW.firstElementChild, { scale: 1 }, { scale: 1.25, duration: 0.3, yoyo
 const CARD = (kick, big, sub, col, css, t, until) => scr(`<div style="background:rgb(18,16,12);border-top:5px solid ${col};font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center;padding:12px 46px 16px">
   <div style="font-size:22px;letter-spacing:.3em;color:${col}">${kick}</div><div class="n" style="font-size:66px;letter-spacing:.03em;line-height:1.08">${big}</div>${sub}</div>`, css, t, until);
 const CSS = "left:0;right:0;bottom:120px;display:flex;justify-content:center;";
-const N1_U = Math.min(T_HIS - 0.15, T_60 + 3.3), N2_U = Math.min(END + 1, T_SMALL + 3.0);
-const N1 = RR.statement({ kick: "HE COUNTED", lines: [["OVER 60,000", null], ["CONFEDERATES", null]], sizes: [150, 46], lineCol: [null, "#ff8a80"], sub: "modern counts are lower", subT: T_MOD, t: T_60 + 0.45, until: N1_U, ruleW: 160 });
-SFX("hit", T_60 + 0.55);
-const N2 = RR.statement({ kick: "HIS ARMY", kickCol: "#9fc0ea", lines: [["THE SMALLER ONE", null]], size: 112, t: T_SMALL - 0.05, until: N2_U }); SFX("hit", T_SMALL + 0.05);
+const T_CONF = at(P4, "Confederates"), N_U = Math.min(B.T.paras["s12-4"][1], END - 0.3);   // ends with paragraph s12-4
+RR.card({ t: T_60 + 0.1, until: N_U, max: 6.5, items: [{ k: "kick", text: "HE COUNTED" }, { k: "title", text: "OVER 60,000", size: 140 },
+  { k: "line", text: "CONFEDERATES", t: T_CONF }, { k: "sub", text: "modern counts are lower", t: T_MOD }, { k: "rule", t: T_HIS - 0.2 },
+  { k: "kick", text: "HIS ARMY", t: T_HIS }, { k: "title", text: "THE SMALLER ONE", size: 96, t: T_SMALL }] });   // round 2: ONE card, two beats
+SFX("hit", T_60 + 0.2);
+SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
 B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
 B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
-declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.9], [T_EVERY + 0.1, ST_U], [T_60 + 0.45, N1_U], [T_SMALL - 0.05, N2_U]]);
-document.documentElement.setAttribute("data-rrt", JSON.stringify({ T_SH, T_JAM, T_LIFE, T_UNF, T_UG, T_M1, T_PG, T_12, T_14, T_16, T_CH, T_17, T_EVERY, T_ATE, T_COUNT, T_60, T_MOD, T_HIS, T_SMALL, END, SHC_U }));
+declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.4], [T_EVERY + 0.1, ST_U], [T_60 + 0.1, N_U]]);
+document.documentElement.setAttribute("data-rrt", JSON.stringify({ T_JAM, T_LIFE, T_UNF, T_M1, T_PG, T_12, T_16, T_17, T_EVERY, T_34, T_ATE, T_COUNT, T_60, T_CONF, T_MOD, T_HIS, T_SMALL, N_U, END, SHC_U }));
 // ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
 // the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
 const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
@@ -127,4 +129,5 @@ document.querySelectorAll("div").forEach((d) => { if (d.style.textShadow && /Lib
 terrL("assets/media/t12m_vick_may03", 0, T_JAM - 0.95);   // FORM 2 #2 (part 2): the army's corridor in blue cutting into red; gone before the Sherman card
 fixImgs();
 K.raiseTerritory();
+RR.finish();
 B.finish();

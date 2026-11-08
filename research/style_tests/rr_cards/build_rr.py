@@ -16,6 +16,6 @@ try:
 finally:
     open(body, "w").write(src)
 fd = f"{G}/scenes/s12d_rr/assets/fonts"
-for f in ("EBGaramond-400.woff2", "EBGaramond-700.woff2"):
+for f in ("cinzel-latin-600-normal.woff2", "cinzel-latin-700-normal.woff2", "eb-garamond-latin-400-italic.woff2", "eb-garamond-latin-500-italic.woff2"):
     shutil.copy(f"{HERE}/fonts/{f}", f"{fd}/{f}")
 print("fonts ->", fd)

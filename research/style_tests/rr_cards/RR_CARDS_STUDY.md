@@ -1,5 +1,7 @@
 # R&R cards study: date card + statement cards (TEST, 2026-11-08)
 
+**Recreated from vidIQ's AI description + R&R's thumbnail** (no frames of the video were captured).
+
 Source: Redcoats & Rebels, "Lee Saw a Chance to Win the War at Gettysburg. Meade Saw It Coming" (https://youtu.be/5REtz7sDS2k, 29 min).
 
 **IMPORTANT: this study is based on vidIQ's AI description of the video (two `vidiq_video_watch` runs, 25 credits each) plus its
@@ -69,15 +71,22 @@ follow our rule 1c.1 strictly. Our version keeps 1c.1: card words are spoken wor
 | quote | Oswald on a black box, blue left bar | italic serif, giant red quote mark, attribution with red bar, portrait behind |
 | motion | 0.5 s slide-up 30 px | 0.5 s fade + slow ~2 % push |
 
-## 3. The test build (what we made from this)
-See `rr_cards.js` (helpers), the scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`), the snapshots in `snapshots/`,
-`compare_sheet.jpg` and `rr_cards_demo.mp4`. To keep our rules:
-- **Date always on screen** (R&R's is not): a big centred R&R date card on the date change ("1 MAY 1863", on "May first",
-  ~1 s), which then flies into a small **permanent date plate** top-left (dark plate, red left bar, white serif caps) that replaces the
-  parchment scroll; later dates of the fast day-by-day clock just roll inside the plate (old date up and out, new up in, the bar flicks
-  amber). One big date card per real date change only; a fast clock rolls the plate.
-- **Statement cards** in the R&R recipe, but the map is never fully replaced (dim to ~25 % in the centre, darker edges), card words =
-  the narrator's words, each line/sub-line lands on its own spoken word, <= 3.5 s, one at a time (the declutter windows cover them).
-- **Quote card**: R&R layout; the red hanging quote mark only for verbatim text (here only *as sure as life* is in quotes, the rest
-  is the narrator's reported speech).
-- No new sounds (2c.5): the cards reuse only the existing `hit` cues of the original cards.
+## 3. The test build, round 2 (after 3 critics; recreated from vidIQ's AI description + R&R's thumbnail)
+Helpers `rr_cards.js`, scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`), `snapshots/`, `compare_sheet.jpg`, `rr_cards_demo.mp4`.
+- **Type**: Cinzel 600/700 (OFL, Trajan-style caps) for titles, kickers and the date plate; EB Garamond Italic 400/500 (OFL, real
+  italic woff2) for sub-lines and quotes (`fonts/`, licences included). Gold kicker #d4b06a 42 px with hairlines either side and a
+  negative right margin equal to its tracking; red only for the 5 px rule and the bars; text lines cream/white; sub-lines 52 px.
+- **Date system**: the plate (top-left, 52 px Cinzel, red bar) shows only the YEAR "1863" until a day is spoken; the big "1 MAY 1863"
+  card lands on "May first" with a light dim (<= ~40 %), the plate rolls to "1 MAY 1863" as it lands, the card holds ~0.7 s and fades
+  in place (no fly, so it cannot miss the plate); the dim is gone before "Port Gibson", whose label lands on its word. The clock then
+  rolls the plate (12, 14, 16, 17 MAY) and it KEEPS "17 MAY 1863" (never steps back).
+- **Map vs cards**: lighter dim (centre ~48 %, edges ~72 %) + a feathered dark plate (~66 %) right behind the text; every map pin
+  (units, flags, portrait cards, labels) that sits under a card's text fades out while the card is up (`RR.guard`, run on every camera
+  update + every frame).
+- **Fewer full cards**: Sherman quote (~3 s), the 1 MAY date card (light), ONE merged numbers card. "A BATTLE EVERY / THREE OR FOUR
+  DAYS" is a lower third (no dim; "THREE OR FOUR DAYS" lands on its words); the "ate off the country" sub-line is dropped.
+- **Merged numbers card**: HE COUNTED / OVER 60,000 / CONFEDERATES (on "Confederates") / *modern counts are lower* (on its words, ~3.7 s)
+  / rule / HIS ARMY (on "his army") / THE SMALLER ONE (on "the smaller one"); ends with paragraph s12-4 (63.5 s voice time).
+- **Quote card**: darkened, desaturated Sherman portrait on the left, narrator's words in italic, the VERBATIM part *as sure as life*
+  with a big red hanging opening mark in the margin, attribution SHERMAN WARNED (40 px) with a red bar matched to its height.
+- No new sounds: only the original `hit` cues.
