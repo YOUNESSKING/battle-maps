@@ -226,6 +226,17 @@ These rules REPLACE C1 ("stamp in the first second") and the "legend and date st
 6. **The name slam by ~1:00 and move 1 by ~2:00** (1a). Keep each narrated line in the hook short enough for that.
 Packaging experiments (Test & Compare titles/thumbnails, `research/CONSIDERING.md` and `research/PACKAGING_TEST_PATTON.md`) are NOT part of these rules yet.
 
+## 1d. SCRIPT DEVICES (LOCKED, owner 2026-11-08, from the Commanders and Tactics study + the s12 test `research/style_tests/script12/`)
+Words only (no change to the look). They work INSIDE 1a/1b/1c: the hook stays stakes-first (1a), no hero name before the name slam (1c), every line still reads sensibly cold. Backup of the rules before this section: `research/rules_backup/STYLE_LOCK_before_script_devices_2026-11-08.md` (restore it if the owner drops these).
+1. **Enemy plan first** (each move): open the move on what the enemy intended ("The Confederate plan was simple: ..."), so the hero's answer has something to beat.
+2. **"In other words" stakes**: right after the plan, one plain sentence of what it meant ("In other words, while Vicksburg stood, the South stayed in one piece").
+3. **"But... instead" twist**: the hero's move is introduced as the opposite of what everyone expected ("But he did not attack the bluffs. Instead, ...").
+4. **Set-up -> pay-off**: plant one line early (a warning, a doubt, a promise) and pay it off later in the same move ("Sherman warned ... jammed" -> "just as Grant said it would").
+5. **Day-by-day clock** for fast campaigns: spoken dates in a row, each shown on the date scroll and marked on the map as it is said.
+6. **Cliffhanger** at the end of each move: one line that opens the next threat or the next move.
+7. **WITH LIMITS**: the "Unfortunately for X, ..." punchline at most ONCE per move; "First... then... then..." layered gains at most ONCE per move.
+8. Keep the honest hedge where sources differ ("he counted over sixty thousand; modern counts are lower"), logged in FACT_NOTES.
+
 ## 2. Visuals (locked)
 - **Opening:** every video opens on an animated MAP with units on screen in the first second. Never a photo. Photos only after the hook. The whole first minute follows the LOCKED HOOK (section 1a).
 - **Map:** parchment shaded relief (`bake.py`), faint dashed grid (`K.grid`), vignette + grain, date top-left. Flat, no 3D tilt.
