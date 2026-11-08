@@ -179,9 +179,11 @@ def rgba_from(base, comp, core):
 
 # ---------------------------------------------------------------- the painter
 def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1.0, halo=1.0, light_az=315.0, light_el=38.0,
-                 blur=0.7, warm=1.0):
+                 blur=0.7, warm=1.0, crest=0.0, weight=1.0):
     """blur = softening of the painted colour in image px (0.7 default; ~1.2 = ~1 px at 1080p on s12d_rt);
-    warm = highlight warmth (1.0 default; <1 cooler / greyer lit faces)."""
+    warm = highlight warmth (1.0 default; <1 cooler / greyer lit faces).
+    crest = lighter tan-grey crumpled lit top (0 default; ~0.5 = like the reference);
+    weight = body darkness + halo strength (1.0 default; 0.8 = ~20 % lighter, less heavy)."""
     base = np.asarray(base)[..., :3]
     Hh, Ww = base.shape[:2]
     ex = np.array([s.extent() for s in shapes]); size = max(ex[:, 2].max() - ex[:, 0].min(), ex[:, 3].max() - ex[:, 1].min())
@@ -250,11 +252,15 @@ def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1
     lumG = G.mean(2, keepdims=True)
     desat = lambda c, k: c * (1 - k) + c.mean(2, keepdims=True) * k
     hi = desat(G, 0.7) * (1 + (np.array([1.12, 1.09, 1.0]) - 1) * warm) + np.array([12, 10, 6]) * (0.4 + 0.6 * warm)            # tan-grey lit faces
-    bodyc = desat(G, 0.35) * 0.86                                                          # the hill reads a touch darker than grass
-    lo = desat(G, 0.25) * 0.55 * np.array([1.0, 1.0, 0.85])                                # olive-charcoal shade
+    bodyc = desat(G, 0.35) * (1 - 0.14 * weight)                                                          # the hill reads a touch darker than grass
+    lo = desat(G, 0.25) * (1 - 0.45 * weight) * np.array([1.0, 1.0, 0.85])                                # olive-charcoal shade
     s3 = shade[..., None]
     col = np.where(s3 > 0, bodyc + (hi - bodyc) * np.clip(s3 * 1.25, 0, 1) ** 1.6, bodyc + (lo - bodyc) * np.clip(-s3, 0, 1))
     col = col * (grain ** 0.6)
+    if crest > 0:   # lighter crumpled crest: tan-grey lift on the high ground, broken by the crumple, strongest on lit faces
+        ck = crest * np.clip(hgt * 1.4 - 0.25, 0, 1) * np.clip(0.55 + crumple * 2.2, 0, 1) * np.clip(0.6 + shade, 0, 1.4)
+        tan = desat(G, 0.75) * np.array([1.2, 1.17, 1.07]) + np.array([16, 14, 8])
+        col = col + (tan - col) * np.clip(ck, 0, 0.8)[..., None]
     col = cv2.GaussianBlur(col, (0, 0), blur)
     # broad tonal mass: SE half of the hill is darker overall, NW crest a little lighter
     big = cv2.GaussianBlur(hgt, (0, 0), rsz * 0.35); bgy, bgx = np.gradient(big)
@@ -274,7 +280,7 @@ def render_hills(base, shapes, clean=True, erase=(), seed=1, rough=1.0, shadow=1
     cast = cv2.warpAffine(sup, Mshift, (w, h))
     halo_m = 0.95 * cv2.GaussianBlur(sup, (0, 0), rsz * 0.75 * halo) + 0.7 * cv2.GaussianBlur(cast, (0, 0), rsz * 0.5 * halo)
     halo_m = np.clip(halo_m, 0, 1) * (1 + 0.25 * fbm(h, w, rsz * 0.5, 3, seed + 7))
-    halo_m = np.clip(halo_m * shadow * 0.6, 0, 0.55) * cv2.GaussianBlur(bank, (0, 0), 6)
+    halo_m = np.clip(halo_m * shadow * weight * 0.6, 0, 0.55) * cv2.GaussianBlur(bank, (0, 0), 6)
     dark = desat(G0, 0.2) * np.array([0.58, 0.58, 0.50])
     ground = G0 * (1 - halo_m[..., None]) + dark * halo_m[..., None]
     comp = ground * (1 - a_body[..., None]) + col * a_body[..., None]
