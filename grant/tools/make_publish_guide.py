@@ -35,26 +35,26 @@ def page(c, d):
     c.drawString(18 * mm, 10 * mm, "Ulysses S. Grant's Top 3 Legendary Tactical Moves  |  publishing guide"); c.drawRightString(A4[0] - 18 * mm, 10 * mm, str(d.page)); c.restoreState()
 desc = open("youtube/youtube_title_and_description.txt").read().strip(); TITLE = desc.splitlines()[0].strip()
 chapters = [l for l in desc.splitlines() if re.match(r"^\d+:\d\d\s", l)]
-TA, TB, TC = ("youtube/grant-thumb-A_UNCONDITIONAL_SURRENDER.jpg", "youtube/grant-thumb-B_CUT_LOOSE.jpg", "youtube/grant-thumb-C_ACROSS_THE_JAMES.jpg")
+TA, TB = ("youtube/grant-thumb-X1_THE_BACK_DOOR.jpg", "youtube/grant-thumb-X3_NO_WAY_IN.jpg")
 LINK = os.environ.get("GOFILE_LINK", "(Gofile link: see chat)")
 story = [Spacer(1, 18 * mm), P("ULYSSES S. GRANT", "cover"), P("TOP 3 LEGENDARY TACTICAL MOVES", "cover"), Spacer(1, 4 * mm),
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm), img(TA, 150), Spacer(1, 3 * mm),
-         P("Thumbnail A (UNCONDITIONAL SURRENDER, vidIQ 93). The owner picks the main title and thumbnail; B and C are for Test &amp; compare.", "coversub"), PageBreak()]
+         P("Main thumbnail: THE BACK DOOR. Alternate for Test &amp; compare: NO WAY IN?", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"),
-          table([["Item", "Details"], ["File", "Grant-Top3-1080p.mp4 (1920x1080, 30 fps, H.264 + AAC; -14.3 LUFS, true peak -1.0 dB)"], ["Download", LINK], ["Length", "16:14"],
+          table([["Item", "Details"], ["File", "Grant-Top3-1080p-v5-StyleW-mine.mp4 (1920x1080, 30 fps, H.264 + AAC; -14.2 LUFS, true peak -1.3 dB)"], ["Download", LINK], ["Length", "16:14"],
                  ["Voice", "Plain Kokoro am_michael narration (owner decision 2026-11-02: keep this voice)"], ["Music", "Kevin MacLeod, 4 tracks, CC BY 4.0, ducked under the voice (locked level 0.08)"],
                  ["Sound effects", "The channel's locked kit (Freesound CC BY / CC0, Mixkit, original effects)"], ["Flags", "US star flag of the date (34 stars to May 1863, 35 stars from June 1863) + Confederate First National; Union blue, Confederates red"],
-                 ["Look", "Map look v11, no trees, no modern reservoirs, territory colours only on wide overhead shots"]], [32, 138]),
+                 ["Look", "Style W (locked 2026-11-05): ink map on one green, generals' portrait cards on the map, red hatching only where ground changes hands"]], [32, 138]),
           Spacer(1, 5 * mm), P("Chapters", "h2"), table([["Starts", "Chapter"]] + [[c.split(" ", 1)[0], c.split(" ", 1)[1]] for c in chapters], [20, 150]),
           Spacer(1, 5 * mm), P("Key frames", "h2"), img("build/guide_frames.jpg", 170), PageBreak()]
 story += [P("2. Titles and thumbnails (Test &amp; compare)", "h1"),
           table([["", "Title", "vidIQ", "Claim check (FACT_NOTES, Packaging TEST claims)"],
-                 ["A", "Ulysses S. Grant's Top 3 Legendary Tactical Moves | The Man Who Accepted Three Confederate Surrenders", "87", "Donelson garrison 1862, Pemberton 1863, Lee 1865: true (never 'only general in history')"],
+                 ["A", "Ulysses S. Grant's Top 3 Legendary Tactical Moves | The Man Who Won the Civil War", "93", "Historian's judgement: general-in-chief of all Union armies March 1864 to Appomattox (FACT_NOTES)"],
                  ["B", "Vicksburg: How Grant Cut Loose From His Supply Base and Took the Mississippi", "88", "'cut loose from my base' = Grant's own words; leaves the locked format"],
                  ["C", "Ulysses S. Grant: Fort Donelson, Vicksburg and the Crossing of the James", "86", "Three places named in the video"]], [8, 82, 12, 68]),
           P("The owner picks the main title and main thumbnail; the other two titles and thumbnails go into Test &amp; compare. Judge on CTR and impressions on days 1-3, SEPARATELY from retention at 0:30 and 1:00.", "warn"),
-          Table([[img(TA, 82), img(TB, 82)], [img(TC, 82), img("youtube/thumbs_feed_strip.jpg", 82)]], colWidths=[85 * mm, 85 * mm]),
-          P("Thumbnails by vidIQ in one go (references: 3 Tactical Genius thumbnails): A UNCONDITIONAL SURRENDER (93, gunboats at a river fort; fits titles A, C), B CUT LOOSE (65, Vicksburg night run; fits title B), C ACROSS THE JAMES (84, pontoon bridge; fits titles A, C). The portrait is an AI-generated generic Union general in colour, not a photograph of Grant; no insignia; face inside the frame; banner spelling checked. The last picture is the 168x94 feed-size strip.", "warn"), PageBreak()]
+          Table([[img(TA, 82), img(TB, 82)], [img("youtube/thumbs_feed_strip_X.jpg", 82), ""]], colWidths=[85 * mm, 85 * mm]),
+          P("Main: THE BACK DOOR (fits titles A and B). Test &amp; compare: NO WAY IN? (fits B, then A). Our usual template: vidIQ aerial battlefield of Vicksburg (no people), the REAL Brady portrait of Grant (Library of Congress, public domain; rank strap removed, dust cleaned, colour graded), torn red banner. Both texts true (FACT_NOTES: Grant took Vicksburg from the land side after every river approach failed). Two independent critic agents: YES on both. Last picture: the 168x94 feed-size strip.", "warn"), PageBreak()]
 story += [P("3. Description (copy and paste)", "h1"), P("The first line is the title. NO links (channel rule). Keep the credit lines. Fill in the business email.", "warn"), Preformatted(desc, S["mono"], maxLineLength=100), PageBreak()]
 story += [P("4. Upload settings", "h1"),
           table([["Setting", "Value"], ["Tags", open("youtube/tags.txt").read().strip()], ["Category", "Education"], ["Audience", "Not made for kids"],
