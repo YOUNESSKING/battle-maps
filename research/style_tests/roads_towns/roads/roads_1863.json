@@ -1,0 +1,98 @@
+{
+  "_note": "1863 roads of the Vicksburg campaign, control points [lat, lon]. Smoothed with Catmull-Rom + a small wobble by make_roads.py. 'snap' = indices of points snapped to the nearest river pixel of the basemap (ferries / bridge). 'approx' = how sure the line is (see README.md). 'end_fade' = which ends taper out inside the map (0 = start, 1 = end); ends at the map frame fade automatically.",
+  "map": "vicksburg_w",
+  "roads": [
+    {
+      "id": "jackson_road",
+      "name": "Jackson Road (Vicksburg - Bovina - Big Black bridge - Edwards - Champion Hill - Bolton - Clinton - Jackson), continuing east (Brandon - Morton) off the map",
+      "approx": "route good (towns on it are certain); bends between towns approximate; the Big Black crossing is placed where THIS basemap draws the river (~32.325, -90.709), ~2 km south of the real railroad bridge (32.347, -90.716)",
+      "pts": [[32.350, -90.872], [32.343, -90.840], [32.351, -90.805], [32.346, -90.770], [32.339, -90.736], [32.325, -90.709], [32.324, -90.676],
+              [32.330, -90.607], [32.336, -90.572], [32.329, -90.548], [32.341, -90.528], [32.352, -90.495], [32.349, -90.459], [32.338, -90.392],
+              [32.341, -90.322], [32.322, -90.258], [32.300, -90.190], [32.284, -90.090], [32.273, -89.986], [32.318, -89.820], [32.354, -89.655],
+              [32.364, -89.474], [32.322, -89.163], [32.36, -88.70]],
+      "snap": [],
+      "end_fade": [0]
+    },
+    {
+      "id": "raymond_edwards_road",
+      "name": "Raymond Road (Raymond - Coker house - Edwards; the southern road at Champion Hill)",
+      "approx": "approximate (bends sketched from the campaign maps)",
+      "pts": [[32.259, -90.422], [32.274, -90.462], [32.290, -90.500], [32.303, -90.535], [32.314, -90.568], [32.330, -90.607]],
+      "snap": [],
+      "end_fade": []
+    },
+    {
+      "id": "raymond_jackson_road",
+      "name": "Raymond - Mississippi Springs - Jackson",
+      "approx": "approximate (Mississippi Springs position approximate)",
+      "pts": [[32.259, -90.422], [32.275, -90.370], [32.289, -90.300], [32.292, -90.245], [32.300, -90.190]],
+      "snap": [],
+      "end_fade": []
+    },
+    {
+      "id": "port_gibson_raymond_cayuga",
+      "name": "Port Gibson - Grindstone Ford - Willow Springs - Rocky Springs - Cayuga - Dillon's - Raymond (McClernand / Sherman)",
+      "approx": "approximate: Grindstone Ford, Willow Springs, Cayuga, Dillon's are placed by eye from the campaign maps",
+      "pts": [[31.962, -90.984], [31.990, -90.955], [32.012, -90.922], [32.045, -90.872], [32.070, -90.838], [32.088, -90.806], [32.112, -90.760],
+              [32.140, -90.700], [32.168, -90.640], [32.198, -90.575], [32.230, -90.490], [32.259, -90.422]],
+      "snap": [],
+      "end_fade": []
+    },
+    {
+      "id": "rocky_springs_utica_raymond",
+      "name": "Rocky Springs - Utica - Raymond (McPherson)",
+      "approx": "approximate",
+      "pts": [[32.088, -90.806], [32.094, -90.740], [32.102, -90.672], [32.108, -90.623], [32.150, -90.560], [32.205, -90.480], [32.259, -90.422]],
+      "snap": [],
+      "end_fade": []
+    },
+    {
+      "id": "bruinsburg_port_gibson",
+      "name": "Bruinsburg - Windsor - Shaifer house - Port Gibson (the Rodney/Bruinsburg road)",
+      "approx": "approximate",
+      "pts": [[31.952, -91.112], [31.958, -91.080], [31.950, -91.050], [31.944, -91.020], [31.955, -91.000], [31.962, -90.984]],
+      "snap": [0],
+      "end_fade": [0]
+    },
+    {
+      "id": "grand_gulf_port_gibson",
+      "name": "Grand Gulf - Port Gibson",
+      "approx": "approximate",
+      "pts": [[32.031, -91.048], [32.012, -91.030], [31.993, -91.012], [31.975, -90.995], [31.962, -90.984]],
+      "snap": [0],
+      "end_fade": [0]
+    },
+    {
+      "id": "port_gibson_natchez",
+      "name": "Port Gibson - Natchez (south-west, off the action; a long trail toward the map edge)",
+      "approx": "approximate",
+      "pts": [[31.962, -90.984], [31.900, -91.030], [31.820, -91.080], [31.740, -91.180], [31.640, -91.300], [31.560, -91.395]],
+      "snap": [],
+      "end_fade": [1]
+    },
+    {
+      "id": "baldwins_ferry_road",
+      "name": "Baldwin's Ferry Road (Big Black at Baldwin's Ferry - Vicksburg, entering at the Railroad Redoubt side)",
+      "approx": "approximate: ferry snapped to the Big Black of the basemap",
+      "pts": [[32.262, -90.770], [32.282, -90.795], [32.300, -90.822], [32.322, -90.845], [32.345, -90.866]],
+      "snap": [0],
+      "end_fade": [0]
+    },
+    {
+      "id": "halls_ferry_road",
+      "name": "Hall's Ferry Road (Big Black at Hall's Ferry - Vicksburg, from the south-east)",
+      "approx": "approximate: ferry snapped to the Big Black of the basemap",
+      "pts": [[32.190, -90.835], [32.225, -90.850], [32.262, -90.862], [32.300, -90.872], [32.340, -90.878]],
+      "snap": [0],
+      "end_fade": [0]
+    },
+    {
+      "id": "jackson_canton",
+      "name": "Jackson - Canton (north, long trail to the map edge)",
+      "approx": "approximate",
+      "pts": [[32.300, -90.190], [32.400, -90.130], [32.500, -90.080], [32.612, -90.036], [32.800, -89.900], [33.000, -89.700], [33.20, -89.55]],
+      "snap": [],
+      "end_fade": []
+    }
+  ]
+}
