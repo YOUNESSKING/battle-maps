@@ -155,3 +155,6 @@ Owner decision 2026-11-08: post Grant #16 in Style W as the test. If its body le
 Pass/fail set in advance (Studio retention graph, read at day 3-7): KEEP Style W if body hold (avg % viewed / retention at 1:00) >= ~0.74
 (Morgan/2 Para level) and the curve is nearly flat after 3:00; DROP it if body hold <= ~0.65 with the same slow leak as Cleburne (0.63).
 In between = one more Style W video before deciding. Keep the default plain Kokoro voice on Grant so the voice is not a second change.
+Note 2026-11-08: the owner is considering merging the 12 Commanders and Tactics script points (research/style_tests/script12/script.md,
+research/competitors_top20/ct_frames/CT_SCRIPT_AND_EDIT.md) into Grant. They target the body leak (open loops, set-up/pay-off, day clock).
+If Grant carries both Style W and the 12 points: pass = keep both; fail = drop Style W first, keep the 12 points for one more video.
