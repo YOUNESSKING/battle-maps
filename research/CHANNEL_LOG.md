@@ -151,3 +151,7 @@ well as before (1:00 between Greene and 2 Para), but the body leaks more than on
 Changed at once on this upload, so the cause can't be separated: Style W maps (first full video), voice A, first Confederate hero,
 less famous name. Next step: compare the same Studio graph for Morgan / Greene / Patton at 2:00, 5:00 and 10:00, and keep Style W vs the v11
 look as a test (one Style W video and one v11 video with the same voice) before deciding.
+Owner decision 2026-11-08: post Grant #16 in Style W as the test. If its body leaks the same way, Style W is dropped.
+Pass/fail set in advance (Studio retention graph, read at day 3-7): KEEP Style W if body hold (avg % viewed / retention at 1:00) >= ~0.74
+(Morgan/2 Para level) and the curve is nearly flat after 3:00; DROP it if body hold <= ~0.65 with the same slow leak as Cleburne (0.63).
+In between = one more Style W video before deciding. Keep the default plain Kokoro voice on Grant so the voice is not a second change.
