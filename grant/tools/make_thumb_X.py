@@ -5,15 +5,30 @@ W, H = 1280, 720
 bg = Image.open('bg_usual.png').convert('RGB').resize((W, H), Image.LANCZOS)
 # darken right third further for the portrait
 g = Image.new('L', (W, H), 0); gd = ImageDraw.Draw(g)
-for x in range(W): gd.line([(x, 0), (x, H)], fill=int(min(170, max(0, (x - 720) * 0.45))))
+for x in range(W): gd.line([(x, 0), (x, H)], fill=int(min(70, max(0, (x - 760) * 0.18))))
 bg = Image.composite(Image.new('RGB', (W, H), (12, 12, 14)), bg, g)
 # ---- real Brady portrait, natural colourisation, face pop, cool rim
 cut = Image.open('cut.png').convert('RGBA'); sc = 1.95
 cut = cut.resize((int(cut.width * sc), int(cut.height * sc)), Image.LANCZOS)
 gr = np.array(cut.convert('L')).astype(np.float32) / 255
-gr = cv2.bilateralFilter(gr, 5, 0.08, 4)                      # soften scan specks
+g8 = (gr * 255).astype(np.uint8)
+bh = cv2.morphologyEx(g8, cv2.MORPH_BLACKHAT, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
+th_ = cv2.morphologyEx(g8, cv2.MORPH_TOPHAT, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 7)))
+Hh0, Ww0 = g8.shape; yy0, xx0 = np.mgrid[0:Hh0, 0:Ww0]
+X, Y = xx0 / sc, yy0 / sc                                      # source coords
+fore = (Y > 228) & (Y < 300) & (X > 255) & (X < 420)            # forehead above the brows
+cheek = (Y >= 300) & (Y < 420) & (((X > 225) & (X < 290)) | ((X > 395) & (X < 445)))   # outer cheeks / temple / ear, not eyes, nose, mouth
+spk = (((bh > 34) | (th_ > 40)) & (fore | cheek)).astype(np.uint8)
+n_, lab_, st_, _ = cv2.connectedComponentsWithStats(spk)
+keep = np.zeros_like(spk)
+for i in range(1, n_):
+    if st_[i, 4] < 90 * sc * sc: keep[lab_ == i] = 255
+spk = cv2.dilate(keep, np.ones((3, 3), np.uint8))
+g8 = cv2.inpaint(g8, spk, 6, cv2.INPAINT_TELEA)
+gr = g8.astype(np.float32) / 255
+gr = cv2.bilateralFilter(gr, 5, 0.08, 4)
 gr = np.clip((gr - 0.08) / 0.82, 0, 1) ** 1.12                  # highlights down, contrast up
-lut_s = np.array([[20, 12, 12], [112, 64, 46], [196, 140, 112], [240, 210, 186]], np.float32)  # natural skin, auburn beard
+lut_s = np.array([[20, 14, 12], [108, 70, 48], [190, 146, 112], [236, 214, 188]], np.float32)  # natural skin, auburn beard
 lut_c = np.array([[6, 10, 20], [26, 40, 72], [70, 90, 132], [170, 186, 210]], np.float32)       # dark blue coat
 def gm(x, lut):
     y = x * 3; i = np.clip(y.astype(int), 0, 2); f = (y - i)[..., None]; return lut[i] * (1 - f) + lut[i + 1] * f
@@ -23,6 +38,8 @@ fm = cv2.GaussianBlur(fm, (0, 0), 14)[..., None]
 col = gm(gr, lut_s) * fm + gm(gr, lut_c) * (1 - fm)
 eyes = np.exp(-(((xx - 340 * sc) / (60 * sc)) ** 2 + ((yy - 325 * sc) / (12 * sc)) ** 2))[..., None]   # blue-grey eyes hint
 col = col * (1 - 0.25 * eyes) + np.array([120, 140, 160]) * 0.25 * eyes
+kl = np.exp(-(((xx - 250 * sc) / (90 * sc)) ** 2 + ((yy - 330 * sc) / (170 * sc)) ** 2))[..., None]
+col = col + kl * np.array([40, 18, 0])
 por = ImageEnhance.Sharpness(Image.fromarray(np.clip(col, 0, 255).astype(np.uint8))).enhance(1.5)
 alpha = cut.getchannel('A').filter(ImageFilter.MinFilter(5)).filter(ImageFilter.GaussianBlur(1.2))
 cutoff = int(560 * sc); fade = Image.new('L', cut.size, 255); fd = ImageDraw.Draw(fade)
@@ -32,9 +49,9 @@ sm_ = Image.new('L', cut.size, 255); ImageDraw.Draw(sm_).rectangle([int(100 * sc
 alpha = ImageChops.multiply(alpha, sm_.filter(ImageFilter.GaussianBlur(int(22 * sc))))
 ox, oy = int(1060 - 335 * sc), int(18 - 200 * sc)
 canvas = bg.convert('RGBA')
-sh = Image.new('RGBA', cut.size, (0, 0, 0, 0)); sh.putalpha(alpha.filter(ImageFilter.GaussianBlur(18)).point(lambda v: int(v * 0.75)))
+sh = Image.new('RGBA', cut.size, (0, 0, 0, 0)); sh.putalpha(alpha.filter(ImageFilter.GaussianBlur(18)).point(lambda v: int(v * 0.35)))
 canvas.alpha_composite(sh, (ox - 16, oy + 10))
-rim = Image.new('RGBA', cut.size, (255, 236, 205, 0)); rim.putalpha(ImageChops.subtract(alpha.filter(ImageFilter.MaxFilter(5)), alpha).filter(ImageFilter.GaussianBlur(3)).point(lambda v: int(v * 0.35)))
+rim = Image.new('RGBA', cut.size, (255, 196, 130, 0)); rim.putalpha(ImageChops.subtract(alpha.filter(ImageFilter.MaxFilter(5)), alpha).filter(ImageFilter.GaussianBlur(3)).point(lambda v: int(v * 0.5)))
 canvas.alpha_composite(rim, (ox, oy))
 pa = por.convert('RGBA'); pa.putalpha(alpha); canvas.alpha_composite(pa, (ox, oy))
 base = canvas.convert('RGB')
@@ -70,10 +87,10 @@ def distressed_text(img, txt, box, size, seed):
     wl = Image.new('RGBA', (W, H), (250, 248, 240, 0)); wl.putalpha(Image.fromarray(Larr))
     sl = Image.new('RGBA', (W, H), (0, 0, 0, 0)); sl.putalpha(L.filter(ImageFilter.GaussianBlur(4)).point(lambda v: int(v * 0.55)))
     img.alpha_composite(sl, (3, 5)); img.alpha_composite(wl); return img
-for name, txt in [('X1', 'THE BACK DOOR'), ('X2', '29,500 SURRENDERED'), ('X3', 'NO WAY IN?')]:
+for name, txt in [('X1', 'THE BACK DOOR'), ('X3', 'NO WAY IN?')]:
     c = brush_banner(base, 0, 540, 800, 688, 11)
     c = distressed_text(c, txt, (10, 540, 790, 688), 132, 4)
     c.convert('RGB').save(f'{name}.jpg', quality=95)
-s = Image.new('RGB', (W, H * 3 + 20), (25, 25, 25))
-for i, n in enumerate(['X1', 'X2', 'X3']): s.paste(Image.open(n + '.jpg'), (0, i * (H + 10)))
-s.resize((640, (H * 3 + 20) // 2)).save('sheet_X.jpg'); print('ok')
+s = Image.new('RGB', (W, H * 2 + 10), (25, 25, 25))
+for i, n in enumerate(['X1', 'X3']): s.paste(Image.open(n + '.jpg'), (0, i * (H + 10)))
+s.resize((640, (H * 2 + 10) // 2)).save('sheet_X.jpg'); print('ok')
