@@ -536,9 +536,9 @@ const RR = ((tl, gsap, SCN, CURV) => {
     el.style.cssText = "position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none";
     el.innerHTML = `${o.photo ? `<div style="position:absolute;left:150px;top:150px;width:560px;height:780px;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%)">
         <img src="${o.photo}" style="width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(1) sepia(.15) brightness(.55) contrast(1.1);opacity:.85"></div>` : ""}
-      <div class="qb" style="position:absolute;left:720px;top:50%;transform:translateY(-50%);width:1080px;padding:54px 60px 44px 140px;${feather}">
+      <div class="qb" style="position:absolute;left:720px;top:50%;transform:translateY(-50%);width:1080px;padding:54px 60px 44px 180px;${feather}">
         ${o.pre ? `<div class="rr-s q0" style="font-size:${o.size || 66}px;line-height:1.18;color:${C.white}">${o.pre[0]}</div>` : ""}
-        <div class="q1" style="position:relative"><div style="position:absolute;left:-128px;top:-62px;font-family:'EB Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:300px;line-height:1;color:${C.red}">&ldquo;</div>
+        <div class="q1" style="position:relative"><div style="position:absolute;left:-166px;top:-62px;font-family:'EB Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:300px;line-height:1;color:${C.red}">&ldquo;</div>
           <div class="rr-s" style="font-size:${o.size || 66}px;line-height:1.18;color:${C.white}">${o.verb[0]}&rdquo;</div></div>
         <div class="at" style="display:flex;align-items:stretch;gap:18px;margin-top:30px"><div style="width:5px;background:${C.red}"></div><div class="rr-t" style="font-size:40px;letter-spacing:.16em;line-height:1.15;padding:2px 0">${o.who}</div></div></div>`;
     add(el, 61);
@@ -647,15 +647,16 @@ const CARD = (kick, big, sub, col, css, t, until) => scr(`<div style="background
   <div style="font-size:22px;letter-spacing:.3em;color:${col}">${kick}</div><div class="n" style="font-size:66px;letter-spacing:.03em;line-height:1.08">${big}</div>${sub}</div>`, css, t, until);
 const CSS = "left:0;right:0;bottom:120px;display:flex;justify-content:center;";
 const T_CONF = at(P4, "Confederates"), N_U = Math.min(B.T.paras["s12-4"][1], END - 0.3);   // ends with paragraph s12-4
-RR.card({ t: T_60 + 0.1, until: N_U, max: 6.5, items: [{ k: "kick", text: "HE COUNTED" }, { k: "title", text: "OVER 60,000", size: 140 },
-  { k: "line", text: "CONFEDERATES", t: T_CONF }, { k: "sub", text: "modern counts are lower", t: T_MOD }, { k: "rule", t: T_HIS - 0.2 },
-  { k: "kick", text: "HIS ARMY", t: T_HIS }, { k: "title", text: "THE SMALLER ONE", size: 96, t: T_SMALL }] });   // round 2: ONE card, two beats
+const N1_U = Math.min(T_60 + 0.1 + 3.5, T_HIS);
+RR.card({ t: T_60 + 0.1, until: N1_U, items: [{ k: "kick", text: "HE COUNTED" }, { k: "title", text: "OVER 60,000", size: 140 },
+  { k: "line", text: "CONFEDERATES", t: T_CONF }, { k: "rule" }, { k: "sub", text: "modern counts are lower", t: T_MOD }] });   // round 3: beat 1 = centred card <= 3.5 s
+RR.lower({ kick: "HIS ARMY", parts: [["THE SMALLER ONE", T_SMALL]], t: T_HIS, until: N_U });   // round 3: beat 2 = lower third, no dim, on "his army", ends with s12-4
 SFX("hit", T_60 + 0.2);
 SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
 B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
 B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
-declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.4], [T_EVERY + 0.1, ST_U], [T_60 + 0.1, N_U]]);
+declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.4], [T_EVERY + 0.1, ST_U], [T_60 + 0.1, N1_U], [T_HIS, N_U]]);
 document.documentElement.setAttribute("data-rrt", JSON.stringify({ T_JAM, T_LIFE, T_UNF, T_M1, T_PG, T_12, T_16, T_17, T_EVERY, T_34, T_ATE, T_COUNT, T_60, T_CONF, T_MOD, T_HIS, T_SMALL, N_U, END, SHC_U }));
 // ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
 // the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale

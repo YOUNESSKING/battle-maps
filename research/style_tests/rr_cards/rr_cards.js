@@ -124,9 +124,9 @@ const RR = ((tl, gsap, SCN, CURV) => {
     el.style.cssText = "position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none";
     el.innerHTML = `${o.photo ? `<div style="position:absolute;left:150px;top:150px;width:560px;height:780px;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%)">
         <img src="${o.photo}" style="width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(1) sepia(.15) brightness(.55) contrast(1.1);opacity:.85"></div>` : ""}
-      <div class="qb" style="position:absolute;left:720px;top:50%;transform:translateY(-50%);width:1080px;padding:54px 60px 44px 140px;${feather}">
+      <div class="qb" style="position:absolute;left:720px;top:50%;transform:translateY(-50%);width:1080px;padding:54px 60px 44px 180px;${feather}">
         ${o.pre ? `<div class="rr-s q0" style="font-size:${o.size || 66}px;line-height:1.18;color:${C.white}">${o.pre[0]}</div>` : ""}
-        <div class="q1" style="position:relative"><div style="position:absolute;left:-128px;top:-62px;font-family:'EB Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:300px;line-height:1;color:${C.red}">&ldquo;</div>
+        <div class="q1" style="position:relative"><div style="position:absolute;left:-166px;top:-62px;font-family:'EB Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:300px;line-height:1;color:${C.red}">&ldquo;</div>
           <div class="rr-s" style="font-size:${o.size || 66}px;line-height:1.18;color:${C.white}">${o.verb[0]}&rdquo;</div></div>
         <div class="at" style="display:flex;align-items:stretch;gap:18px;margin-top:30px"><div style="width:5px;background:${C.red}"></div><div class="rr-t" style="font-size:40px;letter-spacing:.16em;line-height:1.15;padding:2px 0">${o.who}</div></div></div>`;
     add(el, 61);

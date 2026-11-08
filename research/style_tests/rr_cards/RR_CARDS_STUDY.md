@@ -85,8 +85,8 @@ Helpers `rr_cards.js`, scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`
   update + every frame).
 - **Fewer full cards**: Sherman quote (~3 s), the 1 MAY date card (light), ONE merged numbers card. "A BATTLE EVERY / THREE OR FOUR
   DAYS" is a lower third (no dim; "THREE OR FOUR DAYS" lands on its words); the "ate off the country" sub-line is dropped.
-- **Merged numbers card**: HE COUNTED / OVER 60,000 / CONFEDERATES (on "Confederates") / *modern counts are lower* (on its words, ~3.7 s)
+- **Numbers (round 3, split again)**: beat 1 = centred card HE COUNTED / OVER 60,000 / CONFEDERATES (on "Confederates") / *modern counts are lower* (on its words), <= 3.5 s, ends on "his army"; beat 2 = lower third HIS ARMY / THE SMALLER ONE (no dim; lands on "his army", the title on "the smaller one"), ~2.2 s, ends with paragraph s12-4 (63.5 s voice time).
   / rule / HIS ARMY (on "his army") / THE SMALLER ONE (on "the smaller one"); ends with paragraph s12-4 (63.5 s voice time).
 - **Quote card**: darkened, desaturated Sherman portrait on the left, narrator's words in italic, the VERBATIM part *as sure as life*
-  with a big red hanging opening mark in the margin, attribution SHERMAN WARNED (40 px) with a red bar matched to its height.
+  with a big red hanging opening mark in the margin (round 3: more space before the text), attribution SHERMAN WARNED (40 px) with a red bar matched to its height.
 - No new sounds: only the original `hit` cues.
