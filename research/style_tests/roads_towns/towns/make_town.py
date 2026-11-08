@@ -53,6 +53,11 @@ GROUND = np.array([90, 80, 59], float)
 GROUND_LIGHT = np.array([114, 103, 76], float)
 GROUND_DARK = np.array([58, 49, 37], float)
 RIM = np.array([62, 58, 36], float)
+# round 2 (critic 2, s12d_rt): warm mottled tan sampled from ref_town_zoom.png (patch ~ (100, 90, 70), warm spots (92, 77, 49))
+GROUND_SOFT = np.array([104, 91, 67], float)
+GROUND_SOFT_LIGHT = np.array([124, 110, 82], float)
+GROUND_SOFT_WARM = np.array([96, 78, 50], float)
+GROUND_SOFT_DARK = np.array([78, 66, 48], float)
 ROOFS = [  # (weight, base rgb, jitter)
     (0.56, (56, 47, 38), 10),     # dark brown / charcoal flat roofs
     (0.15, (42, 40, 40), 6),      # charcoal
@@ -60,6 +65,12 @@ ROOFS = [  # (weight, base rgb, jitter)
     (0.04, (116, 52, 40), 10),    # terracotta red (more inside the accent spots)
     (0.07, (176, 168, 148), 10),  # off-white
     (0.03, (72, 74, 76), 5),      # slate grey
+]
+ROOFS_SOFT = [  # round 2: only dark brown / charcoal, ~10 % muted red, a few off-white
+    (0.62, (60, 48, 38), 9),
+    (0.22, (47, 41, 35), 6),
+    (0.10, (112, 56, 42), 8),
+    (0.06, (170, 160, 140), 8),
 ]
 LIGHT = np.array([-1.0, -1.0]) / math.sqrt(2)  # light from the NW (image y down)
 
@@ -136,10 +147,27 @@ def _side(x, y, segs):
 
 
 # ----------------------------------------------------------------- layout
-def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid):
+def _clip_line(poly, rmax):
+    """keep the part of a polyline within rmax of the town centre (longest run)"""
+    out, cur = [], []
+    for p in poly:
+        if math.hypot(*p) <= rmax:
+            cur.append(p)
+        elif cur:
+            out.append(cur); cur = []
+    if cur:
+        out.append(cur)
+    return max(out, key=len) if out else []
+
+
+def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid, road_lines=None, lobes=False):
     lanes = []  # polylines in u
-    hub = (rng.uniform(-0.12, 0.12) * R, rng.uniform(-0.12, 0.12) * R)
-    for a in roads:
+    hub = (0.0, 0.0) if (road_lines or lobes) else (rng.uniform(-0.12, 0.12) * R, rng.uniform(-0.12, 0.12) * R)
+    for pl in (road_lines or []):
+        c = _clip_line(pl, R * 1.6)
+        if len(c) >= 2:
+            lanes.append(c)
+    for a in ([] if road_lines else roads):
         r = math.radians(a)
         edge = (math.cos(r) * R * 1.35, math.sin(r) * R * 1.35)
         end = hub if (grid is None or grid is False) else (math.cos(r) * R * 0.5, math.sin(r) * R * 0.5)
@@ -167,6 +195,47 @@ def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid
     riv_segs = _segs(river) if river else []
     centre_side = _side(0, 0, riv_segs) if riv_segs else 1
 
+    # round 2: 2-4 irregular lobes grown ALONG the roads (and the river), dense core, broken rim
+    field = None
+    if lobes:
+        dirs = []
+        for pl in lanes[:len(road_lines or roads)]:
+            for far in (pl[0], pl[-1]):
+                if math.hypot(*far) > R * 0.4:
+                    dirs.append(math.atan2(far[1], far[0]))
+        if riv_segs:
+            for (x0, y0), (x1, y1) in riv_segs:
+                if math.hypot((x0 + x1) / 2, (y0 + y1) / 2) < R * 0.9:
+                    a0 = math.atan2(y1 - y0, x1 - x0)
+                    dirs += [a0, a0 + math.pi]
+                    break
+        rng.shuffle(dirs)
+        uniq = []
+        for d in dirs:
+            if all(abs(math.atan2(math.sin(d - u), math.cos(d - u))) > 0.7 for u in uniq):
+                uniq.append(d)
+        while len(uniq) < 2:
+            uniq.append(rng.uniform(0, 6.28))
+        uniq = uniq[:4]
+        LB = []
+        for k, d in enumerate(uniq):
+            ln = R * rng.uniform(0.95, 1.3) * (1.0 if k < 2 else 0.7)
+            wd = R * rng.uniform(0.22, 0.32)
+            off = ln * rng.uniform(0.35, 0.5)
+            LB.append((math.cos(d) * off, math.sin(d) * off, d, ln * 0.62, wd))
+        core_r = R * rng.uniform(0.3, 0.38)
+
+        def field(x, y):
+            x = np.asarray(x, float); y = np.asarray(y, float)
+            f = np.exp(-(x * x + y * y) / (core_r ** 2))
+            for (lx, ly, d, a_, b_) in LB:
+                cd, sd = math.cos(d), math.sin(d)
+                u_ = (x - lx) * cd + (y - ly) * sd
+                v_ = -(x - lx) * sd + (y - ly) * cd
+                wob = 1 + 0.25 * np.sin(u_ / (R * 0.17) + d * 3)
+                f = np.maximum(f, np.exp(-(u_ / a_) ** 2 - (v_ / (b_ * wob)) ** 2))
+            return f
+
     # organic outline: noisy radius, swollen along roads (arms)
     harm = [(k, rng.normal(0, 0.11 / k ** 0.5), rng.uniform(0, 6.28)) for k in range(2, 7)]
     road_r = [math.radians(a) for a in roads]
@@ -179,6 +248,15 @@ def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid
         return R * 0.82 * r
 
     def inside_p(x, y):
+        if field is not None:
+            f = float(field(x, y))
+            p = 1.0 if f > 0.55 else (f / 0.55) ** 1.8 * 0.85
+            if lane_segs:
+                _, dl = _nearest_dir(x, y, lane_segs)
+                p *= 0.55 + 0.45 * math.exp(-dl / (R * 0.2))
+            if riv_segs and one_bank and _side(x, y, riv_segs) != centre_side:
+                return 0.0
+            return p
         rr = math.hypot(x, y)
         e = rr / outline(math.atan2(y, x))
         if e > 1.15:
@@ -311,12 +389,16 @@ def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid
             if rng.random() > inside_p(x, y):
                 continue
         try_place(x, y, ang, a, b, gap=gap)
-    return lanes, blds, yards, outline, riv_segs, centre_side
+    return lanes, blds, yards, (field if field is not None else outline), riv_segs, centre_side
 
 
 # ----------------------------------------------------------------- render
 def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
-                roads=(), grid=None, ppu=2.0, radius=None):
+                roads=(), grid=None, ppu=2.0, radius=None, road_lines=None, lobes=False,
+                soft=0.0, feather=0.0, palette="v1"):
+    """round 2 options (s12d_rt critic): road_lines = real road polylines in u (lanes follow them through the town),
+    lobes = town grown as 2-4 lobes along roads/river, soft = extra blur of the house layer in u (~1-1.5),
+    feather = dust-patch feather in u (~15-25), palette = "soft" (warm tan ground, no blue roofs, lower contrast)."""
     rng = np.random.default_rng(seed)
     cfg = dict(SIZES[size])
     if radius:
@@ -324,9 +406,11 @@ def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
         cfg["R"] = radius
     R = cfg["R"]
     lanes, blds, yards, outline, riv_segs, cside = _layout(
-        rng, R, cfg["n"], cfg["lanes"], cfg["bs"], river, river_width, one_bank, list(roads), grid)
+        rng, R, cfg["n"], cfg["lanes"], cfg["bs"], river, river_width, one_bank, list(roads), grid,
+        road_lines=road_lines, lobes=lobes)
+    is_field = lobes
 
-    half = R * 1.45
+    half = R * 1.45 + 1.6 * feather
     W = H = int(2 * half * ppu)
     cx = cy = W / 2
     yy, xx = np.mgrid[0:H, 0:W].astype(float)
@@ -340,14 +424,21 @@ def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
         _draw_rect_cov(foot, bx, by, ang, a, b, ppu, cx, cy, value_only=True)
     th = np.arctan2(Y, X)
     rad = np.hypot(X, Y)
-    out_r = np.vectorize(outline)(th)
-    core = np.clip(1.0 - rad / (out_r * 1.0), 0, 1)
+    if is_field:
+        core = np.clip((outline(X, Y) - 0.12) / 0.6, 0, 1)
+    else:
+        out_r = np.vectorize(outline)(th)
+        core = np.clip(1.0 - rad / (out_r * 1.0), 0, 1)
     patch = np.maximum(core * 0.8, np.maximum(ndi.gaussian_filter(foot, 3.0 * ppu) * 2.4, ndi.gaussian_filter(foot, 7.0 * ppu) * 3.2))
     patch = ndi.gaussian_filter(patch, 1.6 * ppu) + 0.14 * nz
     solid = ndi.binary_fill_holes(patch > 0.42)
     patch = np.maximum(patch, ndi.gaussian_filter(solid.astype(float), 1.5 * ppu) * 0.75)
     alpha = np.clip((patch - 0.16) / 0.55, 0, 1)
     alpha = alpha * alpha * (3 - 2 * alpha)
+    if feather:
+        # wide soft feather: no visible edge (sigma ~ feather / 2.5), core kept solid, mottled
+        alpha = np.clip(ndi.gaussian_filter(alpha, feather / 2.5 * ppu) * 1.15 * (1 + 0.22 * nz), 0, 1)
+        alpha = np.maximum(alpha, np.clip(ndi.gaussian_filter(foot, 2.0 * ppu) * 1.5, 0, 1) * 0.9)
     if riv_segs:
         rd = _seg_dist(X, Y, riv_segs)
         cut = np.clip((rd - river_width / 2 + 0.3) / 1.2, 0, 1)
@@ -369,9 +460,14 @@ def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
     alpha *= np.clip(1.0 + 0.0 * nz, 0, 1)
 
     # ground colour
-    g = GROUND[None, None, :] * (1 + 0.07 * nz[..., None]) + 9 * nz2[..., None]
+    SOFTP = palette == "soft"
+    GR, GL, GD = (GROUND_SOFT, GROUND_SOFT_LIGHT, GROUND_SOFT_DARK) if SOFTP else (GROUND, GROUND_LIGHT, GROUND_DARK)
+    g = GR[None, None, :] * (1 + 0.07 * nz[..., None]) + 9 * nz2[..., None]
     lightness = np.clip(0.5 + 0.9 * nz2, 0, 1)[..., None]
-    g = g * (1 - 0.35 * lightness) + GROUND_LIGHT * 0.35 * lightness
+    g = g * (1 - 0.35 * lightness) + GL * 0.35 * lightness
+    if SOFTP:   # warm mottling (the reference patch has brown-orange spots)
+        warm = np.clip(0.5 - 1.2 * nz, 0, 1)[..., None] * 0.45
+        g = g * (1 - warm) + GROUND_SOFT_WARM * warm
     # pale dusty lanes
     if lanes:
         ld = _seg_dist(X, Y, [s for p in lanes for s in _segs(p)])
@@ -385,10 +481,10 @@ def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
         g = g * (1 - m) + np.array([150, 136, 104]) * m
     # dark alleys / ambient occlusion around buildings
     occl = np.clip(ndi.gaussian_filter(foot, 1.3 * ppu) * 1.6, 0, 1)[..., None]
-    g = g * (1 - 0.82 * occl) + GROUND_DARK * 0.82 * occl
+    g = g * (1 - (0.55 if SOFTP else 0.82) * occl) + GD * (0.55 if SOFTP else 0.82) * occl
     # dark rim on the feathered edge
     rim = np.clip(1 - np.abs(alpha - 0.45) / 0.45, 0, 1)[..., None]
-    g = g * (1 - 0.3 * rim) + RIM * 0.3 * rim
+    g = g * (1 - (0.0 if SOFTP else 0.3) * rim) + RIM * (0.0 if SOFTP else 0.3) * rim
 
     # drop shadows (SE)
     sh = np.zeros((H, W))
@@ -400,22 +496,28 @@ def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
 
     img = np.dstack([g, np.maximum(alpha, sh_alpha * 0)])
     # buildings
-    weights = np.array([w for w, _, _ in ROOFS])
+    RF = ROOFS_SOFT if SOFTP else ROOFS
+    weights = np.array([w for w, _, _ in RF])
     weights /= weights.sum()
     # a few accent spots where the red / pale roofs gather (as in the reference)
     spots = [blds[i][:2] for i in rng.choice(len(blds), size=min(len(blds), 1 + len(blds) // 60), replace=False)]
     for (bx, by, ang, a, b) in blds:
         near = min(math.hypot(bx - sx, by - sy) for sx, sy in spots) < 11
-        k = rng.choice(len(ROOFS), p=weights)
-        if near and rng.random() < 0.5:
+        k = rng.choice(len(RF), p=weights)
+        if near and rng.random() < 0.5 and not SOFTP:
             k = 3 if rng.random() < 0.6 else (4 if rng.random() < 0.5 else 2)
-        base = np.array(ROOFS[k][1], float) * rng.normal(1, ROOFS[k][2] / 120) + rng.normal(0, 2.5, 3)
+        if near and SOFTP and rng.random() < 0.12:
+            k = 2
+        base = np.array(RF[k][1], float) * rng.normal(1, RF[k][2] / 120) + rng.normal(0, 2.5, 3)
+        if SOFTP:   # lower contrast: pull roofs toward the dust colour; never blue/teal (b <= g <= r)
+            base = base * 0.78 + GROUND_SOFT * 0.22
+            base[1] = min(base[1], base[0]); base[2] = min(base[2], base[1] * 0.97)
         style = "gable" if (rng.random() < 0.35 and a > 3.2) else "flat"
         _draw_building(img, bx, by, ang, a, b, ppu, cx, cy, base, style, rng)
 
     # soften a touch: the reference reads as a painted miniature, not vector art
     pm = img[..., :3] * img[..., 3:4]
-    sig = 0.28 * ppu
+    sig = (0.28 + soft) * ppu
     a_s = ndi.gaussian_filter(img[..., 3], sig)
     pm = np.dstack([ndi.gaussian_filter(pm[..., i], sig) for i in range(3)])
     img = np.dstack([pm / np.maximum(a_s, 1e-4)[..., None], a_s])

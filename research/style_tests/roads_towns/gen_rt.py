@@ -25,11 +25,11 @@ BLUE = (B_ > R_ + 45) & (B_ > G_ + 10)        # pale-blue river ribbons (image p
 roads = json.load(open("/home/user/battle-maps/research/style_tests/roads_towns/roads/roads_px.json"))["roads"]
 
 TOWNS = {   # name: (label, centre map px, radius u, size, seed, grid, (label dx, dy u, arc, rot), sprite offset map px)
-    "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, (36, 76, 9, -5), (7, 2)),
-    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, (12, 68, 9, -4), (0, 0)),
-    "raymond": ("Raymond", (1716, 759), 40, "village", 1829, None, (6, 62, 9, -4), (0, 0)),
-    "port_gibson": ("Port Gibson", (1306, 1015), 40, "village", 1803, None, (8, 62, 9, -4), (0, 0)),
-    "edwards": ("Edwards", (1581, 698), 36, "village", 1840, None, (4, 56, 9, -4), (0, 0)),
+    "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, (66, 64, 8, -5), (7, 2)),
+    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, (14, 58, 9, -4), (0, 0)),
+    "raymond": ("Raymond", (1716, 759), 40, "village", 1829, None, (6, 52, 9, -4), (0, 0)),
+    "port_gibson": ("Port Gibson", (1306, 1015), 40, "village", 1803, None, (8, 52, 9, -4), (0, 0)),
+    "edwards": ("Edwards", (1581, 698), 36, "village", 1840, None, (4, 48, 9, -4), (0, 0)),
 }
 
 
@@ -98,12 +98,14 @@ for key, (name, c0, Ru, size, seed, grid, lp, off) in TOWNS.items():
     if riv:
         kw = dict(river=map_to_local(riv, c, MAP_PPU), river_width=max(2.5, 2 * wmap / MAP_PPU * 0.5), one_bank=True)
     angs = road_angles(c, r_map * 1.1)
-    im, (cx, cy) = render_town(seed, size, roads=angs, grid=grid, ppu=PPU, radius=Ru, **kw)
+    rl = [map_to_local(rd["pts"], c, MAP_PPU) for rd in roads if min(math.hypot(x - c[0], y - c[1]) for x, y in rd["pts"]) < r_map * 1.2]
+    im, (cx, cy) = render_town(seed, size, roads=angs, grid=grid, ppu=PPU, radius=Ru, road_lines=rl, lobes=True,
+                               soft=float(os.environ.get("SOFT", 0.9)), feather=float(os.environ.get("FEATHER", 18)), palette="soft", **kw)
     bb = im.getbbox(); im = im.crop(bb); cx -= bb[0]; cy -= bb[1]
     im.save(f"{OUT}/town_{key}.png")
     k = MAP_PPU / PPU     # map px per image px
     dx, dy, arc, rot = lp
-    li, (ax, ay) = render_label(name, size=LBL, ppu=2.0, arc=arc, rotate=rot, font=os.environ.get("FONT", "garamond600"), tracking=float(os.environ.get("TRK", 0.48)))
+    li, (ax, ay) = render_label(name, size=LBL, ppu=2.0, arc=arc, rotate=rot, colour=(232, 220, 160), font=os.environ.get("FONT", "garamond600"), tracking=float(os.environ.get("TRK", 0.48)))
     li.save(f"{OUT}/label_{key}.png")
     meta["towns"][key] = dict(name=name, c=c0, R_u=Ru, river=bool(riv), river_w_u=kw.get("river_width"), roads=angs,
                               img=[im.width, im.height], left=round(c[0] - cx * k, 2), top=round(c[1] - cy * k, 2),

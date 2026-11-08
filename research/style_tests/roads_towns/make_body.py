@@ -2,31 +2,55 @@
 import json, os, sys
 G = "/home/user/battle-maps/grant"
 meta = json.load(open(os.path.join(sys.argv[1], "rt_meta.json")))
-RW = json.loads(os.environ.get("RW", "[4.4, 1.7, 0.62, 0.5]"))   # dark width, centre width (on screen px), dark alpha, centre alpha
+RW = json.loads(os.environ.get("RW", "[2.8, 0.9, 0.5, 0.28]"))   # dark width, centre width (on screen px), dark alpha, centre alpha
 roads = json.load(open("/home/user/battle-maps/research/style_tests/roads_towns/roads/roads_px.json"))["roads"]
-D = [("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in r["pts"])) for r in roads]
+import math, random
+TC = [t["c"] for t in meta["towns"].values()]
+def meander(P, seed):
+    rnd = random.Random(seed); ph = [rnd.uniform(0, 6.28) for _ in range(3)]
+    out, acc = [], 0.0
+    for i, (x, y) in enumerate(P):
+        if i: acc += math.hypot(x - P[i - 1][0], y - P[i - 1][1])
+        a, b = P[max(0, i - 2)], P[min(len(P) - 1, i + 2)]
+        L = math.hypot(b[0] - a[0], b[1] - a[1]) + 1e-9; nx, ny = -(b[1] - a[1]) / L, (b[0] - a[0]) / L
+        dt = min(math.hypot(x - cx, y - cy) for cx, cy in TC)
+        tap = min(1, max(0, (dt - 26) / 30)) * min(1, i / 8, (len(P) - 1 - i) / 8)
+        o = tap * (1.5 * math.sin(acc / 46 + ph[0]) + 0.8 * math.sin(acc / 17 + ph[1]) + 0.35 * math.sin(acc / 7 + ph[2]))
+        out.append((x + nx * o, y + ny * o))
+    return out
+D = [("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in meander(r["pts"], k))) for k, r in enumerate(roads)]
 src = open(f"{G}/tools/s12_body_s12d.js").read()
 
 RT = """
 // ===== s12d_rt TEST (roads + painted towns, research/style_tests/roads_towns): never in the approved s12d =====
 const RTM = %s, RTD = %s, RW = %s;
+let RTSV = null; const RTIMG = {};
 const RTL = document.createElement("div"); RTL.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
 document.getElementById("relief2").after(RTL);   // above both basemaps, under hatching / territory / overlay / pins
 { const sv = document.createElementNS("http://www.w3.org/2000/svg", "svg"); sv.setAttribute("viewBox", "0 0 2880 1620"); sv.setAttribute("width", "2880"); sv.setAttribute("height", "1620");
   sv.style.cssText = "position:absolute;left:0;top:0;overflow:visible";
-  const lay = [["#c4ba80", 8.5, 0.16], ["#26230c", RW[0], RW[2]], ["#8a8452", RW[1], RW[3]]], PS = [];
+  const lay = [["#c4ba80", 5.0, 0.07], ["#2b2712", RW[0], RW[2]], ["#8e8656", RW[1], RW[3]]], PS = [];
   lay.forEach(([c, w, a]) => RTD.forEach((d) => { const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", d);
     p.setAttribute("fill", "none"); p.setAttribute("stroke", c); p.setAttribute("stroke-opacity", a); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round");
     p.__w = w; sv.appendChild(p); PS.push(p); }));
-  RTL.appendChild(sv);
-  const rtApply = (k) => PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3)));
+  const fl = document.createElementNS("http://www.w3.org/2000/svg", "filter"); fl.setAttribute("id", "rtsoft"); fl.setAttribute("x", "-5%%"); fl.setAttribute("y", "-5%%"); fl.setAttribute("width", "110%%"); fl.setAttribute("height", "110%%");
+  fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
+  const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
+  RTL.appendChild(sv); RTSV = sv;
+  const rtApply = (k) => { PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3))); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
   CURV.push([{ setAttribute: (a, v) => rtApply(+v) }, 1]); rtApply(1 / CAM_S); }
 Object.entries(RTM.towns).forEach(([k, T]) => { const im = document.createElement("img"); im.src = `assets/rt/town_${k}.png`; im.alt = "";
-  im.style.cssText = `position:absolute;left:${T.left}px;top:${T.top}px;width:${T.w}px;height:${T.h}px`; RTL.appendChild(im); });
+  im.style.cssText = `position:absolute;left:${T.left}px;top:${T.top}px;width:${T.w}px;height:${T.h}px`; RTL.insertBefore(im, RTSV); RTIMG[k] = im; });
+// towns cut by the frame edge step out like labels (sprite + its label), smoothly as the camera moves
+const RTLBL = {};
+const rtEdge = () => Object.entries(RTM.towns).forEach(([k, T]) => { const x0 = CAM_X0 + T.left * CAM_S, y0 = CAM_Y0 + T.top * CAM_S, x1 = x0 + T.w * CAM_S, y1 = y0 + T.h * CAM_S;
+  const m = Math.min(x0, y0, 1920 - x1, 1080 - y1), op = Math.max(0, Math.min(1, 1 + (m + 6) / 40)).toFixed(3);
+  RTIMG[k].style.opacity = op; if (RTLBL[k]) RTLBL[k].style.opacity = op; });
+CURV.push([{ setAttribute: () => rtEdge() }, 1]);
 // reference-style town name (spaced cream serif on a gentle arc, beside the town; constant on screen)
 const rtLabel = (k, t = 0, until = null) => { const T = RTM.towns[k], Lb = T.label;
   const el = GG.pin(`<div style="position:relative;width:0;height:0"><img src="assets/rt/label_${k}.png" alt="" style="position:absolute;left:${(Lb.dx - Lb.ax).toFixed(1)}px;top:${(Lb.dy - Lb.ay).toFixed(1)}px;width:${Lb.w}px;height:${Lb.h}px;max-width:none"></div>`, T.c[0], T.c[1], { t: t > 0 ? t : null });
-  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); pinS(el); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el; };
+  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); pinS(el); RTLBL[k] = el.querySelector("img"); rtEdge(); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el; };
 """ % (json.dumps(meta), json.dumps(D), json.dumps(RW))
 
 def rep(a, b):
@@ -39,9 +63,12 @@ rep('const VTW = town("VICKSBURG", VKS, "l", 0);', 'const VTW = rtLabel("vicksbu
 # battle names at the three towns -> reference town labels (same timing rule: Port Gibson / Raymond pass, Jackson stays: the army heads for it);
 # the crossed-sabres mark moves to the town's edge so the town stays readable
 rep('const BAT = (txt, p, t, until, dx = 0, dy = -40, mp = p) => {', 'const BATT = (k, p, t, until, mo) => { MARK([p[0] + mo[0], p[1] + mo[1]], t); return rtLabel(k, t + 0.05, until); };\nconst BAT = (txt, p, t, until, dx = 0, dy = -40, mp = p) => {')
-rep('BAT("PORT GIBSON", PG, T_PG, T_12 + 0.6, -110, 40);', 'BATT("port_gibson", PG, T_PG, Math.min(T_12 + 0.6, T_PG + LBL_LIFE), [-22, -8]);')
-rep('BAT("RAYMOND", RAY, T_RAY, T_14 + 0.6, -40, 46);', 'BATT("raymond", RAY, T_RAY, Math.min(T_14 + 0.6, T_RAY + LBL_LIFE), [-20, 12]);')
-rep('BAT("JACKSON", JAX, T_JAX, T_16 + 0.6, 0, -46);', 'BATT("jackson", JAX, T_JAX, null, [-26, -6]);')
+rep('BAT("PORT GIBSON", PG, T_PG, T_12 + 0.6, -110, 40);', 'BATT("port_gibson", PG, T_PG, Math.min(T_12 + 0.6, T_PG + LBL_LIFE), [-26, -10]);')
+rep('BAT("RAYMOND", RAY, T_RAY, T_14 + 0.6, -40, 46);', 'BATT("raymond", RAY, T_RAY, Math.min(T_14 + 0.6, T_RAY + LBL_LIFE), [-26, 12]);')
+rep('BAT("JACKSON", JAX, T_JAX, T_16 + 0.6, 0, -46);', 'BATT("jackson", JAX, T_JAX, null, [-34, -4]);')
+for a, b in [('arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], [32.25, -90.43]])', 'arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], [32.247, -90.452]])'), ('arw({ pts: LL([[32.25, -90.42], [32.29, -90.32], [32.30, -90.21]])', 'arw({ pts: LL([[32.25, -90.40], [32.29, -90.32], [32.297, -90.232]])'), ('B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.585)); B.move("re", T_16 - 0.5, 1.2, ...L(32.325, -90.59)); B.move("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.595));', 'B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); B.move("re", T_16 - 0.5, 1.2, ...L(32.325, -90.568)); B.move("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.573));   // s12d_rt: ~30 px east so Edwards shows')]:
+    rep(a, b)
+rep('B.move("u17", T_17 + 0.1, 1.2, ...L(32.31, -90.64));', 'B.move("u17", T_17 + 0.1, 1.2, ...L(32.282, -90.68));   // s12d_rt: off Edwards')
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)
 src = src.replace("B.finish();", "window.__RT_T = { T_CH, T_17, T_16, T_BB };\nB.finish();")
 open(f"{G}/tools/s12_body_s12d_rt.js", "w").write(src)
