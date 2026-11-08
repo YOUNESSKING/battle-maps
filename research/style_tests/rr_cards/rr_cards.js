@@ -88,7 +88,7 @@ const RR = ((tl, gsap, SCN, CURV) => {
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:0;right:0;top:${o.top ?? 150}px;display:flex;justify-content:center;pointer-events:none`;
     el.innerHTML = `<div class="b" style="padding:30px 130px 34px;text-align:center;${feather}"><div class="rr-t" style="font-size:118px;letter-spacing:.06em">${o.big}</div>
-      <div class="rr-dia"><i></i><b></b><i></i></div>${o.sub ? `<div class="rr-kick" style="font-size:48px"><span>${o.sub}</span></div>` : ""}</div>`;
+      <div class="rr-dia"><i></i><b></b><i></i></div>${o.sub ? `<div class="rr-kick" style="font-size:52px;color:${C.goldHi}"><span>${o.sub}</span></div>` : ""}</div>`;
     add(el, 61);
     tl.fromTo(el, { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out", immediateRender: false }, t);
     const dia = el.querySelector(".rr-dia"); gsap.set(dia, { scaleX: 0 }); tl.to(dia, { scaleX: 1, duration: 0.35 }, t + 0.12);
@@ -122,7 +122,7 @@ const RR = ((tl, gsap, SCN, CURV) => {
   const lower = (o) => { const t = o.t, until = Math.min(o.until, t + 3.5), fo = o.fade ?? 0.3;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:90px;bottom:96px;display:flex;align-items:stretch;background:${C.ink};border:1px solid rgba(200,168,106,.55);border-left:none;box-shadow:0 12px 30px rgba(10,6,2,.5);pointer-events:none`;
-    el.innerHTML = `<div style="width:6px;background:linear-gradient(180deg, ${C.goldHi}, ${C.gold} 40%, ${C.goldLo})"></div><div style="padding:16px 34px 18px 28px">${o.kick ? `<div class="rr-kick" style="justify-content:flex-start;font-size:${o.kickSize || 34}px;margin-bottom:2px"><span>${o.kick}</span></div>` : ""}
+    el.innerHTML = `<div style="width:6px;flex:none;background:linear-gradient(180deg, ${C.goldHi}, ${C.gold} 40%, ${C.goldLo})"></div><div style="padding:16px 34px 18px 28px">${o.kick ? `<div class="rr-kick" style="justify-content:flex-start;font-size:${o.kickSize || 36}px;line-height:1.2;white-space:nowrap;flex:none;margin-bottom:2px"><span>${o.kick}</span></div>` : ""}
       <div class="rr-t" style="font-size:${o.size || 50}px;white-space:nowrap">${o.parts.map(([tx], i) => `<span class="p${i}">${tx}</span>`).join(" ")}</div></div>`;
     add(el, 61);
     o.parts.forEach(([, pt], i) => { if (pt != null && pt > t + 0.05) { const sp = el.querySelector(".p" + i); gsap.set(sp, { autoAlpha: 0, display: "none" });

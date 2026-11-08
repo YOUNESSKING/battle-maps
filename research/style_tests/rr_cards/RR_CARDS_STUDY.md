@@ -71,7 +71,7 @@ follow our rule 1c.1 strictly. Our version keeps 1c.1: card words are spoken wor
 | quote | Oswald on a black box, blue left bar | italic serif, giant red quote mark, attribution with red bar, portrait behind |
 | motion | 0.5 s slide-up 30 px | 0.5 s fade + slow ~2 % push |
 
-## 3. The test build, round 4 (after 3 critic rounds + the owner's colour note; recreated from vidIQ's AI description + R&R's thumbnails)
+## 3. The test build, round 5 (after 3 critic rounds + the owner's colour note; recreated from vidIQ's AI description + R&R's thumbnails)
 Helpers `rr_cards.js`, scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`), `snapshots/`, `compare_sheet.jpg`, `rr_cards_demo.mp4`.
 - **Colours (owner: keep R&R's colours)**, sampled from R&R's real thumbnails (Gettysburg "OPEN FIELD", Antietam "SECRET ORDERS"):
   title ivory ~#e6d1b4 (used #efe3c8 -> #e2d1ac with a light grain, warm dark shadow), muted gold kicker/rules ~#bda98a-#c8b48e
@@ -89,7 +89,8 @@ Helpers `rr_cards.js`, scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`
   fade out while it is up (`RR.guard`).
 - **Cards**: Sherman quote (~3 s; darkened portrait with a strong bottom fade, narrator's words + the verbatim *as sure as life* with
   the big red hanging mark, gold bar matched to SHERMAN WARNED); "A BATTLE EVERY / THREE OR FOUR DAYS" lower third (no dim; the box comes
-  in with its first words and grows when "THREE OR FOUR DAYS" lands on its words); centred card HE COUNTED / OVER 60,000 / CONFEDERATES /
-  *modern counts are lower* (<= 3.5 s, fully gone before "his army"); lower third HIS ARMY / THE SMALLER ONE (on "his army" / "the
+  in with its first words and grows when "THREE OR FOUR DAYS" lands on its words); the numbers card HE COUNTED / OVER 60,000 / CONFEDERATES / MODERN COUNTS ARE LOWER KEEPS THE OLD APPROVED LOOK and timing (owner decision, round 5; verbatim from the approved s12d); lower third HIS ARMY / THE SMALLER ONE (on "his army", right after the old card's fade-out / "the
   smaller one"), held to the scene cut (63.6 s voice; the s12d/s12e cut at 63.8 s stops it going further into the pause).
 - No new sounds: only the original `hit` cues.
+- Round 5 polish: "1863" under the big date card brighter gold #ead39a at 52 px; big date card held 0.4 s (fades 0.3 s sooner);
+  lower-third gold bar 6 px; the HIS ARMY kicker keeps 40 px; no TEST caption in the video frames (label only here and on the sheet).

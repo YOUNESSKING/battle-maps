@@ -500,7 +500,7 @@ const RR = ((tl, gsap, SCN, CURV) => {
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:0;right:0;top:${o.top ?? 150}px;display:flex;justify-content:center;pointer-events:none`;
     el.innerHTML = `<div class="b" style="padding:30px 130px 34px;text-align:center;${feather}"><div class="rr-t" style="font-size:118px;letter-spacing:.06em">${o.big}</div>
-      <div class="rr-dia"><i></i><b></b><i></i></div>${o.sub ? `<div class="rr-kick" style="font-size:48px"><span>${o.sub}</span></div>` : ""}</div>`;
+      <div class="rr-dia"><i></i><b></b><i></i></div>${o.sub ? `<div class="rr-kick" style="font-size:52px;color:${C.goldHi}"><span>${o.sub}</span></div>` : ""}</div>`;
     add(el, 61);
     tl.fromTo(el, { autoAlpha: 0, y: -10 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out", immediateRender: false }, t);
     const dia = el.querySelector(".rr-dia"); gsap.set(dia, { scaleX: 0 }); tl.to(dia, { scaleX: 1, duration: 0.35 }, t + 0.12);
@@ -534,7 +534,7 @@ const RR = ((tl, gsap, SCN, CURV) => {
   const lower = (o) => { const t = o.t, until = Math.min(o.until, t + 3.5), fo = o.fade ?? 0.3;
     const el = document.createElement("div");
     el.style.cssText = `position:absolute;left:90px;bottom:96px;display:flex;align-items:stretch;background:${C.ink};border:1px solid rgba(200,168,106,.55);border-left:none;box-shadow:0 12px 30px rgba(10,6,2,.5);pointer-events:none`;
-    el.innerHTML = `<div style="width:6px;background:linear-gradient(180deg, ${C.goldHi}, ${C.gold} 40%, ${C.goldLo})"></div><div style="padding:16px 34px 18px 28px">${o.kick ? `<div class="rr-kick" style="justify-content:flex-start;font-size:${o.kickSize || 34}px;margin-bottom:2px"><span>${o.kick}</span></div>` : ""}
+    el.innerHTML = `<div style="width:6px;flex:none;background:linear-gradient(180deg, ${C.goldHi}, ${C.gold} 40%, ${C.goldLo})"></div><div style="padding:16px 34px 18px 28px">${o.kick ? `<div class="rr-kick" style="justify-content:flex-start;font-size:${o.kickSize || 36}px;line-height:1.2;white-space:nowrap;flex:none;margin-bottom:2px"><span>${o.kick}</span></div>` : ""}
       <div class="rr-t" style="font-size:${o.size || 50}px;white-space:nowrap">${o.parts.map(([tx], i) => `<span class="p${i}">${tx}</span>`).join(" ")}</div></div>`;
     add(el, 61);
     o.parts.forEach(([, pt], i) => { if (pt != null && pt > t + 0.05) { const sp = el.querySelector(".p" + i); gsap.set(sp, { autoAlpha: 0, display: "none" });
@@ -584,7 +584,7 @@ living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 // ---------- the date scroll: the day-by-day clock (never leaves) ----------
 // RR: the permanent date plate (top-left) + ONE big centred date card where the day-by-day clock starts ("May first"); the later dates roll in the plate
 RR.datePlate("1863");   // round 2: only the year until a day is spoken
-RR.dateCard({ t: T_M1 - 0.05, big: "MAY FIRST", sub: "1863", plate: "1 MAY 1863", hold: 0.7, dimEnd: T_PG - 0.05, top: 150 });   // round 4: Antietam-style card, upper third, light top dim gone before "Port Gibson"; the plate rolls at the card start
+RR.dateCard({ t: T_M1 - 0.05, big: "MAY FIRST", sub: "1863", plate: "1 MAY 1863", hold: 0.4, dimEnd: T_PG - 0.05, top: 150 });   // round 4: Antietam-style card, upper third, light top dim gone before "Port Gibson"; the plate rolls at the card start
 RR.dateRoll("12 MAY 1863", T_12); RR.dateRoll("14 MAY 1863", T_14); RR.dateRoll("16 MAY 1863", T_16); RR.dateRoll("17 MAY 1863", T_17);   // keeps the last day (no step back)
 // ---------- camera ----------
 const K_ = (t, la, lo, s) => [t, ...L(la, lo), s];
@@ -661,16 +661,17 @@ const CARD = (kick, big, sub, col, css, t, until) => scr(`<div style="background
   <div style="font-size:22px;letter-spacing:.3em;color:${col}">${kick}</div><div class="n" style="font-size:66px;letter-spacing:.03em;line-height:1.08">${big}</div>${sub}</div>`, css, t, until);
 const CSS = "left:0;right:0;bottom:120px;display:flex;justify-content:center;";
 const T_CONF = at(P4, "Confederates"), N_U = Math.min(B.T.paras["s12-4"][1], END - 0.3);   // ends with paragraph s12-4
-const N1_U = Math.min(T_60 + 0.1 + 3.5, T_HIS - 0.3);   // round 4: fully gone before the HIS ARMY lower third
-RR.card({ t: T_60 + 0.1, until: N1_U, items: [{ k: "kick", text: "HE COUNTED" }, { k: "title", text: "OVER 60,000", size: 140 },
-  { k: "line", text: "CONFEDERATES", t: T_CONF }, { k: "rule" }, { k: "sub", text: "modern counts are lower", t: T_MOD }] });   // round 3: beat 1 = centred card <= 3.5 s
-RR.lower({ kick: "HIS ARMY", parts: [["THE SMALLER ONE", T_SMALL]], t: T_HIS, until: END - 0.2, fade: 0.2 });   // round 4: held into the pause (the scene cut at 63.8 s ends it)   // round 3: beat 2 = lower third, no dim, on "his army", ends with s12-4
-SFX("hit", T_60 + 0.2);
+// round 5 (owner): the numbers card KEEPS THE OLD APPROVED LOOK + TIMING (verbatim from tools/s12_body_s12d.js)
+const N1_U = Math.min(T_HIS - 0.15, T_60 + 3.3);
+const N1 = CARD("HE COUNTED", "OVER 60,000", `<div style="font-size:28px;letter-spacing:.16em;color:#ff8a80">CONFEDERATES</div><div class="m" style="font-size:28px;letter-spacing:.12em;color:#e8dfc8;margin-top:6px">MODERN COUNTS ARE LOWER</div>`, "#be3a2a", CSS, T_60 + 0.45, N1_U);
+{ const m = N1.querySelector(".m"); gsap.set(m, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_MOD); } SFX("hit", T_60 + 0.55);
+const T_HA = Math.max(T_HIS, N1_U + 0.5);   // R&R lower third lands on "his army", after the old card's 0.5 s fade-out (no overlap)
+RR.lower({ kick: "HIS ARMY", kickSize: 40, parts: [["THE SMALLER ONE", T_SMALL]], t: T_HA, until: END - 0.2, fade: 0.2 });   // held to the scene cut
 SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
 B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
 B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
-declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.4], [T_EVERY + 0.1, ST_U], [T_60 + 0.1, N1_U], [T_HIS, N_U]]);
+declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.4], [T_EVERY + 0.1, ST_U], [T_60 + 0.45, N1_U], [T_HA, N_U]]);
 document.documentElement.setAttribute("data-rrt", JSON.stringify({ T_JAM, T_LIFE, T_UNF, T_M1, T_PG, T_12, T_16, T_17, T_EVERY, T_34, T_ATE, T_COUNT, T_60, T_CONF, T_MOD, T_HIS, T_SMALL, N_U, END, SHC_U }));
 // ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
 // the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
