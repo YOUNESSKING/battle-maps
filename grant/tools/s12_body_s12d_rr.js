@@ -24,7 +24,7 @@ living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 // ---------- the date scroll: the day-by-day clock (never leaves) ----------
 // RR: the permanent date plate (top-left) + ONE big centred date card where the day-by-day clock starts ("May first"); the later dates roll in the plate
 RR.datePlate("1863");   // round 2: only the year until a day is spoken
-RR.dateCard("1 MAY 1863", T_M1 - 0.05, { hold: 0.7, dimEnd: T_PG - 0.05 });   // light dim, gone before "Port Gibson"
+RR.dateCard({ t: T_M1 - 0.05, big: "MAY FIRST", sub: "1863", plate: "1 MAY 1863", hold: 0.7, dimEnd: T_PG - 0.05, top: 150 });   // round 4: Antietam-style card, upper third, light top dim gone before "Port Gibson"; the plate rolls at the card start
 RR.dateRoll("12 MAY 1863", T_12); RR.dateRoll("14 MAY 1863", T_14); RR.dateRoll("16 MAY 1863", T_16); RR.dateRoll("17 MAY 1863", T_17);   // keeps the last day (no step back)
 // ---------- camera ----------
 const K_ = (t, la, lo, s) => [t, ...L(la, lo), s];
@@ -101,10 +101,10 @@ const CARD = (kick, big, sub, col, css, t, until) => scr(`<div style="background
   <div style="font-size:22px;letter-spacing:.3em;color:${col}">${kick}</div><div class="n" style="font-size:66px;letter-spacing:.03em;line-height:1.08">${big}</div>${sub}</div>`, css, t, until);
 const CSS = "left:0;right:0;bottom:120px;display:flex;justify-content:center;";
 const T_CONF = at(P4, "Confederates"), N_U = Math.min(B.T.paras["s12-4"][1], END - 0.3);   // ends with paragraph s12-4
-const N1_U = Math.min(T_60 + 0.1 + 3.5, T_HIS);
+const N1_U = Math.min(T_60 + 0.1 + 3.5, T_HIS - 0.3);   // round 4: fully gone before the HIS ARMY lower third
 RR.card({ t: T_60 + 0.1, until: N1_U, items: [{ k: "kick", text: "HE COUNTED" }, { k: "title", text: "OVER 60,000", size: 140 },
   { k: "line", text: "CONFEDERATES", t: T_CONF }, { k: "rule" }, { k: "sub", text: "modern counts are lower", t: T_MOD }] });   // round 3: beat 1 = centred card <= 3.5 s
-RR.lower({ kick: "HIS ARMY", parts: [["THE SMALLER ONE", T_SMALL]], t: T_HIS, until: N_U });   // round 3: beat 2 = lower third, no dim, on "his army", ends with s12-4
+RR.lower({ kick: "HIS ARMY", parts: [["THE SMALLER ONE", T_SMALL]], t: T_HIS, until: END - 0.2, fade: 0.2 });   // round 4: held into the pause (the scene cut at 63.8 s ends it)   // round 3: beat 2 = lower third, no dim, on "his army", ends with s12-4
 SFX("hit", T_60 + 0.2);
 SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)

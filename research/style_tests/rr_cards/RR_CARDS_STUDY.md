@@ -71,22 +71,25 @@ follow our rule 1c.1 strictly. Our version keeps 1c.1: card words are spoken wor
 | quote | Oswald on a black box, blue left bar | italic serif, giant red quote mark, attribution with red bar, portrait behind |
 | motion | 0.5 s slide-up 30 px | 0.5 s fade + slow ~2 % push |
 
-## 3. The test build, round 2 (after 3 critics; recreated from vidIQ's AI description + R&R's thumbnail)
+## 3. The test build, round 4 (after 3 critic rounds + the owner's colour note; recreated from vidIQ's AI description + R&R's thumbnails)
 Helpers `rr_cards.js`, scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`), `snapshots/`, `compare_sheet.jpg`, `rr_cards_demo.mp4`.
-- **Type**: Cinzel 600/700 (OFL, Trajan-style caps) for titles, kickers and the date plate; EB Garamond Italic 400/500 (OFL, real
-  italic woff2) for sub-lines and quotes (`fonts/`, licences included). Gold kicker #d4b06a 42 px with hairlines either side and a
-  negative right margin equal to its tracking; red only for the 5 px rule and the bars; text lines cream/white; sub-lines 52 px.
-- **Date system**: the plate (top-left, 52 px Cinzel, red bar) shows only the YEAR "1863" until a day is spoken; the big "1 MAY 1863"
-  card lands on "May first" with a light dim (<= ~40 %), the plate rolls to "1 MAY 1863" as it lands, the card holds ~0.7 s and fades
-  in place (no fly, so it cannot miss the plate); the dim is gone before "Port Gibson", whose label lands on its word. The clock then
-  rolls the plate (12, 14, 16, 17 MAY) and it KEEPS "17 MAY 1863" (never steps back).
-- **Map vs cards**: lighter dim (centre ~48 %, edges ~72 %) + a feathered dark plate (~66 %) right behind the text; every map pin
-  (units, flags, portrait cards, labels) that sits under a card's text fades out while the card is up (`RR.guard`, run on every camera
-  update + every frame).
-- **Fewer full cards**: Sherman quote (~3 s), the 1 MAY date card (light), ONE merged numbers card. "A BATTLE EVERY / THREE OR FOUR
-  DAYS" is a lower third (no dim; "THREE OR FOUR DAYS" lands on its words); the "ate off the country" sub-line is dropped.
-- **Numbers (round 3, split again)**: beat 1 = centred card HE COUNTED / OVER 60,000 / CONFEDERATES (on "Confederates") / *modern counts are lower* (on its words), <= 3.5 s, ends on "his army"; beat 2 = lower third HIS ARMY / THE SMALLER ONE (no dim; lands on "his army", the title on "the smaller one"), ~2.2 s, ends with paragraph s12-4 (63.5 s voice time).
-  / rule / HIS ARMY (on "his army") / THE SMALLER ONE (on "the smaller one"); ends with paragraph s12-4 (63.5 s voice time).
-- **Quote card**: darkened, desaturated Sherman portrait on the left, narrator's words in italic, the VERBATIM part *as sure as life*
-  with a big red hanging opening mark in the margin (round 3: more space before the text), attribution SHERMAN WARNED (40 px) with a red bar matched to its height.
+- **Colours (owner: keep R&R's colours)**, sampled from R&R's real thumbnails (Gettysburg "OPEN FIELD", Antietam "SECRET ORDERS"):
+  title ivory ~#e6d1b4 (used #efe3c8 -> #e2d1ac with a light grain, warm dark shadow), muted gold kicker/rules ~#bda98a-#c8b48e
+  (used #c8a86a with a #ead39a highlight), near-black warm background (used rgba(21,17,12,.85) plates with a gold hairline border),
+  red only as an accent (used ONLY for the big quote mark). Note: on the Antietam thumbnail the date block is DARK ink on a pale sky,
+  not ivory; we kept its layout (place/day line, thin rules with a centre diamond, month/year under) in ivory + gold on the map.
+- **Type**: Cinzel 600/700 (OFL) for titles, kickers (48 px, hairlines either side, negative right margin = tracking) and the plate
+  (52 px); EB Garamond Italic 500 (OFL, real italic) for sub-lines (56 px) and quotes (66 px). `fonts/`, licences included.
+- **Date system**: the plate (top-left, sized to its text, gold bar) shows only "1863" until a day is spoken. On "May first" the big
+  card "MAY FIRST / gold rule + diamond / 1863" lands in the empty upper third (light top dim, gone before "Port Gibson", whose label
+  lands on its word; the army at Port Gibson stays visible) and the plate rolls to "1 MAY 1863" at the card's start (never two
+  different dates); the card fades in place after ~0.7 s. The clock rolls the plate (12, 14, 16, 17 MAY; each roll 0.3 s) and it keeps
+  "17 MAY 1863".
+- **Map vs cards**: warm light dim (centre ~48 %, edges ~72 %) + a feathered dark plate behind the text; map pins under a card's text
+  fade out while it is up (`RR.guard`).
+- **Cards**: Sherman quote (~3 s; darkened portrait with a strong bottom fade, narrator's words + the verbatim *as sure as life* with
+  the big red hanging mark, gold bar matched to SHERMAN WARNED); "A BATTLE EVERY / THREE OR FOUR DAYS" lower third (no dim; the box comes
+  in with its first words and grows when "THREE OR FOUR DAYS" lands on its words); centred card HE COUNTED / OVER 60,000 / CONFEDERATES /
+  *modern counts are lower* (<= 3.5 s, fully gone before "his army"); lower third HIS ARMY / THE SMALLER ONE (on "his army" / "the
+  smaller one"), held to the scene cut (63.6 s voice; the s12d/s12e cut at 63.8 s stops it going further into the pause).
 - No new sounds: only the original `hit` cues.
