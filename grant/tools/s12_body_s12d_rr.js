@@ -1,9 +1,10 @@
-// SCRIPT-12 TEST, scene s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
+// R&R CARDS TEST COPY (research/style_tests/rr_cards/; built by build_rr.py) of scene s12d. ORIGINAL HEADER: SCRIPT-12 TEST, scene s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
 // each battle marked on the map as its date is spoken); a battle every three or four days; the army ate off the country; Grant's count + the hedge.
 // Re-cut of the approved tools/vx_body_m2f.js (vicksburg_w, units, moves, Sherman card, forage icons, vs card, blue hatches at Jackson + Champion Hill).
 // Built with: python3 tools/s12_inline.py vx s12d vicksburg_w s12-3 s12-4 31.2 63.8
 // @@KIT
 // @@DATA
+// @@RR
 const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');   // round 3: mystery "?" silhouette until the name reveal (1c.1)
 const VZ = GD.maps.vicksburg;
 const L = GG.proj(10, VZ.origin_world_px[0], VZ.origin_world_px[1]);
@@ -21,8 +22,10 @@ const VKS = L(32.352, -90.878), GGF = L(32.033, -91.053), PG = L(31.961, -90.984
 hatch("assets/media/gn_vick_may14cap_mx.png", T_JAX + 0.4, 1.6); hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 1.6);
 living(VZ.meters_per_px, [], { n: 6, clouds: 0.12 });
 // ---------- the date scroll: the day-by-day clock (never leaves) ----------
-const DS = [["MAY 1863", null], ["1 MAY 1863", T_M1], ["12 MAY 1863", T_12], ["14 MAY 1863", T_14], ["16 MAY 1863", T_16], ["17 MAY 1863", T_17], ["MAY 1863", T_COUNT]];
-DS.forEach(([txt, t], k) => { const nx = DS[k + 1]; if (t == null) dateNow(txt, nx[1] - 0.05); else B.date(txt, t, nx ? nx[1] - 0.05 : null, 32); });
+// RR: the permanent date plate (top-left) + ONE big centred date card where the day-by-day clock starts ("May first"); the later dates roll in the plate
+RR.datePlate("MAY 1863");
+RR.dateCard("1 MAY 1863", T_M1 - 0.05, Math.min(1.05, T_12 - T_M1 - 0.75));
+RR.dateRoll("12 MAY 1863", T_12); RR.dateRoll("14 MAY 1863", T_14); RR.dateRoll("16 MAY 1863", T_16); RR.dateRoll("17 MAY 1863", T_17); RR.dateRoll("MAY 1863", T_COUNT);
 // ---------- camera ----------
 const K_ = (t, la, lo, s) => [t, ...L(la, lo), s];
 camera([K_(0, 32.02, -90.93, 1.55), K_(T_LIFE + 0.8, 32.03, -90.90, 1.6), K_(T_GEN - 0.2, 32.20, -90.64, 1.3), K_(T_M1 - 0.3, 32.16, -90.66, 1.36),
@@ -42,15 +45,9 @@ const ROADP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.0
 inkTrace(ROADP, T_SH + 0.2, T_UNF, 2.6);
 const WG = [0, 1, 2, 3, 4, 5].map((k) => wagon(sub(ROADP, 0, 0.42 + k * 0.035, 10), T_SH + 0.2 + k * 0.2, 2.4, T_GEN, { s: 23 }));
 WG.forEach((w, k) => tl.to(w, { y: (k % 2 ? 3 : -3), duration: 0.2, yoyo: true, repeat: 5 }, T_JAM + k * 0.05));
-const SHC_U = T_JAM + 3.1; const SHC = belief("THE ROAD WOULD BE JAMMED", "SHERMAN WARNED", T_JAM - 0.1, SHC_U, { size: 50, top: 790 });   // round 2: the card comes in ON "jammed", ~3 s
-SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.firstElementChild.style.color = "#9fc0ea";
-{ const c = SHC.firstElementChild, ph = document.createElement("div"); c.style.display = "flex"; c.style.alignItems = "center"; c.style.gap = "26px"; c.style.textAlign = "left";
-  const txt = document.createElement("div"); while (c.firstChild) txt.appendChild(c.firstChild); c.appendChild(ph); c.appendChild(txt);
-  ph.style.cssText = `width:96px;height:96px;border-radius:50%;overflow:hidden;position:relative;flex:none;border:4px solid #f3e7c4;box-shadow:0 0 0 3px #1f4fc4;background:url(${FL.us}) center/cover`;
-  ph.innerHTML = `<img src="${PHOTO("sherman")}" style="position:absolute;left:0;right:0;bottom:0;margin:auto;height:112%;filter:grayscale(1) contrast(1.1)">`;
-  const l2 = document.createElement("div"); l2.textContent = "AS SURE AS LIFE"; l2.style.cssText = "font-size:30px;letter-spacing:.12em;color:#c9b48a;margin-top:4px"; txt.appendChild(l2);
-  gsap.set(l2, { autoAlpha: 0 }); tl.fromTo(l2, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_LIFE);
-  }
+const SHC_U = T_JAM + 3.1;   // same window as the approved Sherman card
+// RR quote card: the narrator's words; quote marks ONLY on the verbatim part ("as sure as life", Sherman to Grant, May 1863; FACT_NOTES)
+RR.quote({ lines: [["The road would be jammed,", null], ["&ldquo;as sure as life.&rdquo;", T_LIFE]], who: "SHERMAN WARNED", photo: PHOTO("sherman"), t: T_JAM - 0.1, until: SHC_U, size: 70 });
 // ---------- "And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant." ----------
 B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); B.move("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
 pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "up");   // round 2: stake straight up, off the Vicksburg name and the Union cards
@@ -92,7 +89,8 @@ BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));
 B.move("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); B.move("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
 // ---------- "A battle every three or four days" (wide: all five marks + the route) ----------
 inkTrace(LL([[31.961, -90.984], [32.08, -90.74], [32.259, -90.422], [32.299, -90.185], [32.34, -90.36], [32.333, -90.535], [32.347, -90.716]]), T_EVERY + 0.3, T_ATE + 0.6, 2.6);
-B.caption("A BATTLE EVERY THREE OR FOUR DAYS", T_EVERY + 0.1, T_ATE - 0.1, "carth");
+const ST_U = Math.min(T_EVERY + 3.4, T_COUNT - 0.3);
+RR.statement({ lines: [["A battle every", null], ["three or four days", null]], sub: "and the army ate off the country", subT: T_ATE, t: T_EVERY + 0.1, until: ST_U, size: 92, top: 300 });
 // ---------- "and the army ate off the country, just as Grant said it would" ----------
 const COW = `<svg width="64" height="45" viewBox="0 0 40 28" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><path d="M4 9 Q4 5 9 5 L28 5 Q31 2 34 3 L37 6 Q39 9 35 10 L33 11 L33 18 L30 18 L30 25 L27 25 L27 18 L12 18 L12 25 L9 25 L9 18 Q4 17 4 13 Z" fill="#6b4a2a" stroke="#f3eee2" stroke-width="1.4"/><circle cx="18" cy="11" r="3" fill="#f3eee2"/></svg>`;
 const CORN = `<svg width="34" height="59" viewBox="0 0 22 38" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd27a) drop-shadow(0 1px 2px #000)"><ellipse cx="11" cy="14" rx="6" ry="12" fill="#f1c84a" stroke="#6b4a1a" stroke-width="1.4"/>${[6, 10, 14, 18, 22].map((y) => `<line x1="6" y1="${y}" x2="16" y2="${y}" stroke="#b8902a" stroke-width="1"/>`).join("")}<path d="M11 36 Q3 26 4 12 Q8 24 11 30 Q14 24 18 12 Q19 26 11 36 Z" fill="#6c8a3a" stroke="#2a3a1a" stroke-width="1"/></svg>`;
@@ -102,13 +100,15 @@ tl.fromTo(GW.firstElementChild, { scale: 1 }, { scale: 1.25, duration: 0.3, yoyo
 const CARD = (kick, big, sub, col, css, t, until) => scr(`<div style="background:rgb(18,16,12);border-top:5px solid ${col};font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center;padding:12px 46px 16px">
   <div style="font-size:22px;letter-spacing:.3em;color:${col}">${kick}</div><div class="n" style="font-size:66px;letter-spacing:.03em;line-height:1.08">${big}</div>${sub}</div>`, css, t, until);
 const CSS = "left:0;right:0;bottom:120px;display:flex;justify-content:center;";
-const N1 = CARD("HE COUNTED", "OVER 60,000", `<div style="font-size:28px;letter-spacing:.16em;color:#ff8a80">CONFEDERATES</div><div class="m" style="font-size:28px;letter-spacing:.12em;color:#e8dfc8;margin-top:6px">MODERN COUNTS ARE LOWER</div>`, "#be3a2a", CSS, T_60 + 0.45, Math.min(T_HIS - 0.15, T_60 + 3.3));
-{ const m = N1.querySelector(".m"); gsap.set(m, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_MOD); } SFX("hit", T_60 + 0.55);
-const N2 = CARD("HIS ARMY", "THE SMALLER ONE", "", "#2e5cb2", CSS, T_SMALL - 0.05, Math.min(END + 1, T_SMALL + 3.0)); SFX("hit", T_SMALL + 0.05);
+const N1_U = Math.min(T_HIS - 0.15, T_60 + 3.3), N2_U = Math.min(END + 1, T_SMALL + 3.0);
+const N1 = RR.statement({ kick: "HE COUNTED", lines: [["OVER 60,000", null], ["CONFEDERATES", null]], sizes: [150, 46], lineCol: [null, "#ff8a80"], sub: "modern counts are lower", subT: T_MOD, t: T_60 + 0.45, until: N1_U, ruleW: 160 });
+SFX("hit", T_60 + 0.55);
+const N2 = RR.statement({ kick: "HIS ARMY", kickCol: "#9fc0ea", lines: [["THE SMALLER ONE", null]], size: 112, t: T_SMALL - 0.05, until: N2_U }); SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
 B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
 B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
-declutter([], [[T_JAM - 0.1, SHC_U], [T_60 + 0.45, T_HIS - 0.15], [T_SMALL - 0.05, END + 1]]);
+declutter([], [[T_JAM - 0.1, SHC_U], [T_M1 - 0.05, T_M1 + 1.9], [T_EVERY + 0.1, ST_U], [T_60 + 0.45, N1_U], [T_SMALL - 0.05, N2_U]]);
+document.documentElement.setAttribute("data-rrt", JSON.stringify({ T_SH, T_JAM, T_LIFE, T_UNF, T_UG, T_M1, T_PG, T_12, T_14, T_16, T_CH, T_17, T_EVERY, T_ATE, T_COUNT, T_60, T_MOD, T_HIS, T_SMALL, END, SHC_U }));
 // ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
 // the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
 const SW = 2.8, SP = 14, SCOL = { red: "rgba(214,30,26,0.95)", blue: "rgba(26,74,232,0.95)" }, STR = [];
