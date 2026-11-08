@@ -57,7 +57,7 @@ ROOFS = [  # (weight, base rgb, jitter)
     (0.56, (56, 47, 38), 10),     # dark brown / charcoal flat roofs
     (0.15, (42, 40, 40), 6),      # charcoal
     (0.14, (86, 71, 54), 10),     # mid brown
-    (0.04, (128, 56, 42), 12),    # terracotta red (more inside the accent spots)
+    (0.04, (116, 52, 40), 10),    # terracotta red (more inside the accent spots)
     (0.07, (176, 168, 148), 10),  # off-white
     (0.03, (72, 74, 76), 5),      # slate grey
 ]
@@ -191,27 +191,28 @@ def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid
                 return 0.0
         return p
 
-    # occupancy raster at 0.5 u
-    S = int(R * 3.2)
+    # occupancy raster at 0.25 u
+    Q = 4
+    S = int(R * 1.6 * Q)
     occ = np.zeros((S * 2, S * 2), bool)
     off = S
 
     def rect_cells(cx, cy, ang, a, b, pad):
         ca, sa = math.cos(ang), math.sin(ang)
         rad = math.hypot(a, b) + pad
-        x0, x1 = int((cx - rad) * 2 + off), int((cx + rad) * 2 + off) + 1
-        y0, y1 = int((cy - rad) * 2 + off), int((cy + rad) * 2 + off) + 1
+        x0, x1 = int((cx - rad) * Q + off), int((cx + rad) * Q + off) + 1
+        y0, y1 = int((cy - rad) * Q + off), int((cy + rad) * Q + off) + 1
         if x0 < 0 or y0 < 0 or x1 >= 2 * S or y1 >= 2 * S:
             return None
         yy, xx = np.mgrid[y0:y1, x0:x1]
-        X, Y = (xx - off) / 2 - cx, (yy - off) / 2 - cy
+        X, Y = (xx - off) / Q - cx, (yy - off) / Q - cy
         s, t = X * ca + Y * sa, -X * sa + Y * ca
         m = (np.abs(s) <= a + pad) & (np.abs(t) <= b + pad)
         return (slice(y0, y1), slice(x0, x1)), m
 
     # keep lanes and river clear
     yy, xx = np.mgrid[0:2 * S, 0:2 * S]
-    X, Y = (xx - off) / 2, (yy - off) / 2
+    X, Y = (xx - off) / Q, (yy - off) / Q
     if lane_segs:
         occ |= _seg_dist(X, Y, lane_segs) < 1.5 * bs
     if riv_segs:
@@ -220,13 +221,13 @@ def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid
     blds, yards = [], []
 
     def try_place(cx, cy, ang, a, b, gap=0.55):
-        rc = rect_cells(cx, cy, ang, a, b, gap)
+        rc = rect_cells(cx, cy, ang, a, b, max(0.05, gap - 0.3))
         if rc is None:
             return False
         sl, m = rc
         if (occ[sl] & m).any():
             return False
-        rc2 = rect_cells(cx, cy, ang, a, b, 0.15)
+        rc2 = rect_cells(cx, cy, ang, a, b, 0.0)
         occ[rc2[0]] |= rc2[1]
         blds.append((cx, cy, ang, a, b))
         return True
@@ -291,22 +292,24 @@ def _layout(rng, R, n_target, n_lanes, bs, river, river_w, one_bank, roads, grid
             if rng.random() > inside_p(x, y) ** 0.7:
                 continue
         else:
-            if lane_segs and rng.random() < 0.7:
-                (x0, y0), (x1, y1) = lane_segs[rng.integers(len(lane_segs))]
-                t = rng.random()
-                L = math.hypot(x1 - x0, y1 - y0) + 1e-9
-                nx, ny = -(y1 - y0) / L, (x1 - x0) / L
-                o = (1.8 * bs + 3 + rng.exponential(R * 0.08)) * rng.choice([-1, 1])
-                x, y = x0 + (x1 - x0) * t + nx * o, y0 + (y1 - y0) * t + ny * o
-            else:
-                x, y = rng.normal(0, R * 0.5, 2)
-            if rng.random() > inside_p(x, y):
-                continue
-            ang = orient(x, y)
             big = rng.random() < 0.08
             a = rng.uniform(2.8, 5.4) * bs * (1.45 if big else 1)
             b = a * rng.uniform(0.5, 0.85)
             gap = rng.choice([0.45, 0.8])
+            on_lane = lane_segs and rng.random() < 0.7
+            if on_lane:
+                (x0, y0), (x1, y1) = lane_segs[rng.integers(len(lane_segs))]
+                t = rng.random()
+                L = math.hypot(x1 - x0, y1 - y0) + 1e-9
+                nx, ny = -(y1 - y0) / L, (x1 - x0) / L
+                o = (1.5 * bs + b + gap + 0.2 + rng.exponential(R * 0.04)) * rng.choice([-1, 1])
+                x, y = x0 + (x1 - x0) * t + nx * o, y0 + (y1 - y0) * t + ny * o
+                ang = math.atan2(y1 - y0, x1 - x0) + rng.normal(0, 0.04)
+            else:
+                x, y = rng.normal(0, R * 0.5, 2)
+                ang = orient(x, y)
+            if rng.random() > inside_p(x, y):
+                continue
         try_place(x, y, ang, a, b, gap=gap)
     return lanes, blds, yards, outline, riv_segs, centre_side
 
@@ -405,7 +408,7 @@ def render_town(seed, size="town", river=None, river_width=6.0, one_bank=False,
         near = min(math.hypot(bx - sx, by - sy) for sx, sy in spots) < 11
         k = rng.choice(len(ROOFS), p=weights)
         if near and rng.random() < 0.5:
-            k = 3 if rng.random() < 0.75 else 4
+            k = 3 if rng.random() < 0.6 else (4 if rng.random() < 0.5 else 2)
         base = np.array(ROOFS[k][1], float) * rng.normal(1, ROOFS[k][2] / 120) + rng.normal(0, 2.5, 3)
         style = "gable" if (rng.random() < 0.35 and a > 3.2) else "flat"
         _draw_building(img, bx, by, ang, a, b, ppu, cx, cy, base, style, rng)
@@ -489,7 +492,7 @@ CAMPAIGN = {
         river_width=10, one_bank=True, roads=[0, 60, -50, 150], grid=-82)),
     "jackson": (1822, "town", dict(
         river=[(78, -110), (66, -30), (72, 40), (60, 110)], river_width=5,
-        one_bank=True, roads=[180, 90, -90, 20], grid=4)),
+        one_bank=True, roads=[180, 90, -90, 20, 145])),
     "raymond": (1829, "village", dict(roads=[0, 180, 100, -70])),
     "port_gibson": (1803, "village", dict(
         river=[(-80, 30), (-30, 14), (10, 22), (80, 8)], river_width=3.5,
