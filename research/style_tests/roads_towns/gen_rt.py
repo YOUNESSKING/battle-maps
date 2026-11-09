@@ -29,10 +29,10 @@ roads = fixed_roads()
 TOWNS = {   # name: (label, centre map px, radius u, size, seed, grid, label curve (Bezier, 1080p px from the town point), sprite offset map px)
     # curves hug the town edge / follow the river or road beside it (hand-lettered look, each different)
     "vicksburg": ("Vicksburg", (1388, 681), 66, "city", 1863, None, [(-60, 128), (10, 148), (90, 150), (160, 132)], (7, 2)),
-    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, [(40, 100), (100, 116), (180, 114), (240, 96)], (0, 0)),
+    "jackson": ("Jackson", (1885, 724), 56, "town", 1822, None, [(26, 84), (86, 100), (166, 98), (226, 80)], (0, 0)),
     "raymond": ("Raymond", (1716, 759), 40, "village", 1829, None, [(-80, 58), (-10, 80), (80, 74), (140, 44)], (0, 0)),
     "port_gibson": ("Port Gibson", (1306, 1015), 40, "village", 1803, None, [(-110, 62), (-10, 90), (110, 84), (190, 46)], (0, 0)),
-    "edwards": ("Edwards", ED1, 36, "village", 1840, None, [(-60, 50), (0, 64), (60, 58), (110, 34)], (0, 0)),
+    "edwards": ("Edwards", ED1, 27, "village", 1840, None, [(-60, 50), (0, 64), (60, 58), (110, 34)], (0, 0)),
 }
 
 

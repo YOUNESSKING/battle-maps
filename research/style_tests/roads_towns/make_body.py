@@ -33,7 +33,7 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 // when the close look takes over), close art right above #relief2 with #relief2's own opacity + lens mask; towns + roads stay above both
 const RTH = [], RTHC = [];
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=__BUILDID__`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
@@ -83,7 +83,11 @@ for a, b in [('arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], 
 rep('B.move("u17", T_17 + 0.1, 1.2, ...L(32.31, -90.64));', 'B.move("u17", T_17 + 0.1, 1.2, ...L(32.282, -90.68));   /* s12d_rt: off Edwards */')
 rep('B.move("u13", T_17, 1.2, ...L(32.39, -90.66));', 'B.move("u13", T_17, 1.2, ...L(32.39, -90.638));   /* s12d_rt: off Pemberton card */')
 rep('hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 1.6);', 'hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 0.2);   /* s12d_rt: form 1 ~2 s, mostly faded by the test frame */')
+rep('BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50);', 'BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, L(32.286, -90.525));   /* s12d_rt: battle mark on the road below the hill, so its lit top stays visible */')
+rep('smoke(LL([[32.335, -90.552], [32.33, -90.565], [32.29, -90.56]]), T_CH);', 'smoke(LL([[32.292, -90.538], [32.286, -90.552], [32.281, -90.528]]), T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */')
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)
 src = src.replace("B.finish();", "window.__RT_T = { T_CH, T_17, T_16, T_BB };\nB.finish();")
+import time
+src = src.replace("__BUILDID__", str(int(time.time())))
 open(f"{G}/tools/s12_body_s12d_rt.js", "w").write(src)
 print("ok", len(src) // 1024, "KB")

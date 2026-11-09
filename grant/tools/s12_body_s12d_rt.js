@@ -18,7 +18,7 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 // when the close look takes over), close art right above #relief2 with #relief2's own opacity + lens mask; towns + roads stay above both
 const RTH = [], RTHC = [];
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794182634`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
