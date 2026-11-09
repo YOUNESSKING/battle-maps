@@ -21,6 +21,9 @@ def meander(P, seed):
         out.append((x + nx * o, y + ny * o))
     return out
 D = [("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in meander(r["pts"], k))) for k, r in enumerate(roads)]
+CXJ = os.path.join(sys.argv[1], "crossings.json")
+if os.path.exists(CXJ):   # crossings.py: same meandered roads, ferry roads carried across the Big Black (split at the water)
+    D = [" ".join("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in c) for c in r["paths"]) for r in json.load(open(CXJ))["roads"]]
 src = open(f"{G}/tools/s12_body_s12d.js").read()
 
 RT = """
@@ -32,10 +35,15 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 // painted hills (research/style_tests/roads_towns/hills, softened copy in hills/soft): wide art right above #relief (so #relief2 covers it
 // when the close look takes over), close art right above #relief2 with #relief2's own opacity + lens mask; towns + roads stay above both
 const RTH = [], RTHC = [];
+
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
   const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=__BUILDID__`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
+// cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
+[["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
+  im.src = `assets/rt/${n}___BUILDID__.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
 CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
@@ -49,6 +57,8 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   RTL.appendChild(sv); RTSV = sv;
+  const bi = document.createElement("img"); bi.src = "assets/rt/bridges___BUILDID__.png"; bi.alt = "";   // plank bridges, ferries, landings (crossings.py)
+  bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi);
   const rtApply = (k) => { PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3))); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
   CURV.push([{ setAttribute: (a, v) => rtApply(+v) }, 1]); rtApply(1 / CAM_S); }
 Object.entries(RTM.towns).forEach(([k, T]) => { const im = document.createElement("img"); im.src = `assets/rt/town_${k}.png`; im.alt = "";
@@ -88,6 +98,6 @@ rep('smoke(LL([[32.335, -90.552], [32.33, -90.565], [32.29, -90.56]]), T_CH);', 
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)
 src = src.replace("B.finish();", "window.__RT_T = { T_CH, T_17, T_16, T_BB };\nB.finish();")
 import time
-src = src.replace("__BUILDID__", str(int(time.time())))
+BID = str(int(time.time())); src = src.replace("__BUILDID__", BID); open(os.path.join(sys.argv[1], "buildid.txt"), "w").write(BID)
 open(f"{G}/tools/s12_body_s12d_rt.js", "w").write(src)
 print("ok", len(src) // 1024, "KB")
