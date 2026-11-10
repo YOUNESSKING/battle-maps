@@ -418,10 +418,10 @@ const BN = (() => {
   background:repeating-linear-gradient(90deg,${C.goldHi} 0 1px,${C.goldLo} 1px 2px),${C.gold};box-shadow:0 -0.75px 0 ${C.goldDk}}
 .bn-sheen{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(100deg,rgba(255,250,235,0) 30%,rgba(255,250,235,.13) 46%,rgba(255,250,235,0) 62%) -40px 0/160% 100% no-repeat;mix-blend-mode:screen}
 .bn-ph{position:absolute;left:4px;right:4px;top:4px;bottom:7px;overflow:hidden;z-index:1;
-  background:radial-gradient(ellipse 75% 62% at 50% 38%,var(--bn-hi) 0%,var(--bn-cloth) 62%,var(--bn-lo) 100%);
+  background:radial-gradient(ellipse 75% 62% at 50% 38%,#cdb486 0%,#8c7149 62%,#3c2e1e 100%);
   box-shadow:inset 0 0 0 .8px rgba(234,211,154,.75),inset 0 0 0 1.8px rgba(20,12,4,.45),inset 0 0 8px rgba(10,6,2,.55)}
 .bn-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%;
-  filter:grayscale(1) sepia(.62) contrast(1.3) brightness(.86) saturate(1.15) drop-shadow(0 0 2px rgba(10,6,2,.35))}
+  filter:grayscale(1) sepia(.55) contrast(1.32) brightness(.95) saturate(1.05) drop-shadow(0 0 2px rgba(10,6,2,.35))}
 .bn-ph::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse 80% 72% at 50% 42%,rgba(20,12,4,0) 55%,rgba(20,12,4,.38) 100%),
     repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,rgba(0,0,0,.035) 1px 2px)}
@@ -431,7 +431,7 @@ const BN = (() => {
 .bn-pen{left:${X - L.peW / 2}px;top:${L.peT}px;width:${L.peW}px;height:${L.peH}px;
   background:linear-gradient(90deg,rgba(0,0,0,.3),rgba(255,255,255,.08) 40%,rgba(0,0,0,.3)),var(--bn-pen);
   clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
-.bn-pen img{position:absolute;left:4px;top:2.5px;width:${L.peW - 8}px;height:${L.peH - 6}px;object-fit:cover;
+.bn-pen img{position:absolute;left:4px;top:2.5px;width:${L.peW - 8}px;height:${L.peH - 6}px;object-fit:fill;
   box-shadow:0 0 0 .7px ${C.gold},0 0 0 1.4px rgba(0,0,0,.55);filter:saturate(.85) contrast(1.03) brightness(.97)}
 .bn-pen::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:repeating-linear-gradient(90deg,${C.goldHi} 0 1px,${C.goldLo} 1px 2px)}
 .bn-name,.bn-name~div{position:absolute !important;top:${L.plT}px !important;bottom:auto !important;right:auto !important;left:var(--pl-l) !important;width:var(--pl-w) !important;

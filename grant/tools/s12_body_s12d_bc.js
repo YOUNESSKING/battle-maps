@@ -19,16 +19,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794351572`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794352214`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794351572.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794352214.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
 [["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"], ["rivers_w", RTH, "relief"], ["rivers_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794351572.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794352214.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -46,7 +46,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.filter((p) => p.tagName === "g").forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794351572.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794352214.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => { if (p.__w) p.setAttribute("stroke-width", (p.__w * k).toFixed(3)); }); SH.forEach(([g, dx, dy]) => g.setAttribute("transform", `translate(${(dx * k).toFixed(3)} ${(dy * k).toFixed(3)})`)); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -60,7 +60,7 @@ const rtEdge = () => Object.entries(RTM.towns).forEach(([k, T]) => { const x0 = 
   RTIMG[k].style.opacity = op; if (RTLBL[k]) RTLBL[k].style.opacity = op; });
 CURV.push([{ setAttribute: () => rtEdge() }, 1]);
 // reference-style town name (spaced cream serif on a gentle arc, beside the town; constant on screen)
-const BCC = [{"png": "bc_wagon_park.png", "left": 1628.53, "top": 738.79, "w": 78.68, "h": 58.95}, {"png": "bc_camp_union.png", "left": 1565.79, "top": 767.0, "w": 63.95, "h": 54.74}, {"png": "bc_depot_cs.png", "left": 1431.18, "top": 706.55, "w": 54.74, "h": 42.37}];
+const BCC = [{"png": "bc_wagon_park.png", "left": 1600.53, "top": 778.79, "w": 78.68, "h": 58.95}, {"png": "bc_camp_union.png", "left": 1530.79, "top": 775.0, "w": 63.95, "h": 54.74}, {"png": "bc_depot_cs.png", "left": 1432.47, "top": 771.84, "w": 52.37, "h": 36.58}];
 BCC.forEach((c) => { const im = document.createElement("img"); im.src = `assets/rt/${c.png}`; im.alt = "";
   im.style.cssText = `position:absolute;left:${c.left}px;top:${c.top}px;width:${c.w}px;height:${c.h}px;pointer-events:none`; RTL.appendChild(im); });
 const rtLabel = (k, t = 0, until = null) => { const T = RTM.towns[k], Lb = T.label;
@@ -89,7 +89,7 @@ camera([K_(0, 32.02, -90.93, 1.55), K_(T_LIFE + 0.8, 32.03, -90.90, 1.6), K_(T_G
 // ---------- flags (both on every frame; re-placed when the camera changes ground) ----------
 [[[31.90, -91.13], [32.17, -90.70], 0, T_GEN + 0.2], [[31.92, -90.95], [32.43, -90.75], T_GEN - 0.3, T_PG + 0.4], [[32.02, -90.62], [32.40, -90.45], T_PG + 0.2, T_CH - 0.3],
  [[32.20, -90.50], [32.50, -90.86], T_CH - 0.5, T_EVERY + 1.0], [[32.42, -90.55], [32.16, -90.86], T_EVERY + 0.8, END + 1]].forEach(([us, cs, t, u]) => {
-  const a = flagS(FL.us, "", ...L(...us), t, u), b = flagS(FL.cs, "", ...L(...cs), t, u); if (!(t > 0)) { now(a); now(b); } });
+  const a = flagS(FL.us, "", ...L(...us), t, u), b = flagS(FL.cs, "", ...L(...cs), t, u); if (!(t > 0)) { now(a); now(b); } a.style.display = "none"; if (u > T_PEM) tl.set(b, { display: "none" }, Math.max(t, T_PEM + 0.1)); });   /* s12d_bc: one flag per side = the banner pennant */
 // ---------- units (bare boxes: corps numbers are never spoken) ----------
 U("u13", "carth", L(31.985, -90.955), "", "XXX"); U("u17", "carth", L(32.03, -90.97), "", "XXX"); U("u15", "carth", L(32.02, -91.03), "", "XXX");
 U("rv", "rome", L(32.36, -90.84), "", "XX"); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "", "XX"); U("rs", "rome", L(32.14, -90.80), "", "XX");
@@ -111,7 +111,7 @@ SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.fi
   }
 // ---------- "And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant." ----------
 B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); B.move("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
-pinPortrait("rv", PHOTO("pemberton"), BN.flagFor("cs", "1863-05-17"), "Pemberton", T_PEM + 0.1, null, true, "west");   /* s12d_bc: banner on a side stake, west of his box */   // round 2: stake straight up, off the Vicksburg name and the Union cards
+pinPortrait("rv", PHOTO("pemberton"), BN.flagFor("cs", "1863-05-17"), "Pemberton", T_PEM + 0.1, null, true, "up");   /* s12d_bc: banner over his box on the west bank by the bridge (off Vicksburg) */   // round 2: stake straight up, off the Vicksburg name and the Union cards
 focus(L(32.07, -90.84), 150, T_BEH, T_UG + 1.6);
 const GW = now(pinPortrait("u17", MYST, BN.flagFor("us", "1863-05-17"), "Union General", 0, null, true, "ne"));   /* s12d_bc: banner up-right of his corps */   // on his column from frame 0, unnamed (continuing from s12c)
 BN.reveal(GW, PHOTO("grant"), "Ulysses Grant", T_UG - 0.1);   /* s12d_rt: portrait card v2 reveal (research/style_tests/roads_towns/portraits) */
@@ -141,7 +141,7 @@ B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); B.move("re", T_16 - 0.5, 1.
 smoke([[1627, 719], [1620, 722], [1633, 724]], T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */
 mg(L(32.335, -90.525), L(32.36, -90.58), T_CH + 0.3, 5, 1.1 / 1.9 * 2.2);
 BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, [1627, 719]);   /* s12d_rt polish: south foot of Champion Hill (~40 px below the lit crest), between the Jackson and Raymond roads */
-B.move("rv", T_17 - 0.3, 1.0, 1497, 688); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.6 }, T_17 - 0.1);   /* s12d_bc: one division box at the bridge, its brigades in front */
+B.move("rv", T_17 - 0.3, 1.0, 1494, 690); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.6 }, T_17 - 0.1);   /* s12d_bc: one division box at the bridge, its brigades in front */
 const BCX = (ids, t, until) => ids.forEach((id) => { tl.fromTo(B.units[id].el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, t); if (until != null) tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, until); });
 // standard map symbols inside the same Style W box: infantry X (kit), cavalry = one slash, artillery = the kit's approved gun box, engineers = the bridge "E", train = a wheel
 const SYM = (id, kind) => { const sv = B.units[id].el.querySelector(".blk svg"); sv.setAttribute("viewBox", "0 0 100 100"); sv.setAttribute("preserveAspectRatio", "none");
@@ -151,13 +151,15 @@ const SYM = (id, kind) => { const sv = B.units[id].el.querySelector(".blk svg");
 const BOX = (id, side, x, y, ech, kind) => { if (kind === "art") unitS(id, side, [x, y], "artillery", "", { w: 44, h: 29 });   // the approved Style W gun box (s12a/m2a bluff batteries)
   else { U(id, side, [x, y], "", ech, 0); if (kind) SYM(id, kind); } gsap.set(B.units[id].el, { autoAlpha: 0 }); return id; };
 // Confederate bridgehead (east bank): 4 brigades + 2 of its batteries in the line (~18 guns were dug in there)
-BCX([BOX("cb1", "rome", 1538, 636, "X"), BOX("ca1", "rome", 1538, 662, "I", "art"), BOX("cb2", "rome", 1538, 688, "X"), BOX("cb3", "rome", 1538, 714, "X"),
-     BOX("ca2", "rome", 1538, 740, "I", "art"), BOX("cb4", "rome", 1540, 766, "X")], T_17 + 0.3, T_BB + 0.9); tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
-B.move("u13", T_17, 1.2, 1632, 660);   /* s12d_bc: McClernand's corps box behind his divisions */
+// critic: a shallow arc bulging east, >= 8 px between each echelon mark and the box above, guns on the flanks
+BCX([BOX("ca1", "rome", 1540, 618, "", "art"), BOX("cb1", "rome", 1534, 648, "X"), BOX("cb2", "rome", 1540, 680, "X"), BOX("cb3", "rome", 1540, 712, "X"),
+     BOX("cb4", "rome", 1534, 744, "X"), BOX("ca2", "rome", 1528, 774, "", "art")], T_17 + 0.3, T_BB + 0.9); tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
+B.move("u13", T_17, 1.2, 1640, 680);   /* s12d_bc: McClernand's corps box behind his divisions */
 // Union: McClernand's 3 divisions in front with 2 batteries, cavalry on the north flank, McPherson and Sherman behind, pioneers bridging the river near Bridgeport
-BCX([BOX("d13a", "carth", 1592, 664, "XX"), BOX("d13b", "carth", 1592, 690, "XX"), BOX("d13c", "carth", 1592, 716, "XX"),
-     BOX("ub1", "carth", 1592, 638, "I", "art"), BOX("ub2", "carth", 1592, 742, "I", "art"), BOX("ucav", "carth", 1626, 628, "II", "cav"),
-     BOX("d17a", "carth", 1650, 694, "XX"), BOX("d15a", "carth", 1612, 576, "XX"), BOX("ueng", "carth", 1530, 600, "II", "eng")], T_17 + 0.6, T_COUNT - 0.3);   /* s12d_rt: off Pemberton card */ B.move("u17", T_17 + 0.1, 1.2, 1691, 702);   /* s12d_bc: McPherson on the Jackson road behind */   /* s12d_rt: off Edwards */ B.move("u15", T_17 + 0.1, 1.4, 1550, 598);   /* s12d_bc: Sherman north-west for Bridgeport */
+// critic: ~60-70 px between the red and blue boxes, a shallow arc (ends forward), guns on the flanks; Sherman + his pioneers EAST of the Big Black at Bridgeport (no pontoon before the night of 17 May)
+BCX([BOX("d13a", "carth", 1604, 650, "XX"), BOX("d13b", "carth", 1600, 682, "XX"), BOX("d13c", "carth", 1604, 714, "XX"),
+     BOX("ub1", "carth", 1610, 622, "", "art"), BOX("ub2", "carth", 1606, 746, "", "art"), BOX("ucav", "carth", 1664, 630, "II", "cav"),
+     BOX("d17a", "carth", 1692, 690, "XX"), BOX("d15a", "carth", 1664, 576, "XX"), BOX("ueng", "carth", 1600, 596, "II", "eng")], T_17 + 0.6, T_COUNT - 0.3);   /* s12d_rt: off Pemberton card */ B.move("u17", T_17 + 0.1, 1.2, 1726, 700);   /* s12d_bc: McPherson on the Jackson road behind */   /* s12d_rt: off Edwards */ B.move("u15", T_17 + 0.1, 1.4, 1632, 584);   /* s12d_bc: Sherman north-west for Bridgeport */
 mg(L(32.385, -90.67), L(32.37, -90.70), T_BB + 0.3, 5, 1.1 / 1.9 * 2.2);
 BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, [1534, 708]);   /* s12d_rt polish: mark on the Big Black bridge approach, east bank (the Confederate unit stands on the bridge until it falls back) */
 { const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */

@@ -1,10 +1,10 @@
 import json, sys
-sys.path.insert(0, "/home/user/battle-maps/research/style_tests/banners_units_camps/camps")
-from make_camp import render_camp, crop
+sys.path.insert(0, "/tmp/claude-0/-home-user-battle-maps/30cbeb75-6ac3-5d4d-bd68-7dfc496a4a58/scratchpad/rt")
+from camp_bc_lib import render_camp, crop   # scratch copy: lighter canvas + visible smoke (the camps agent's file untouched)
 S, PPU = 1.9, 2.0
-C = [("bc_wagon_park.png", dict(seed=518, kind="wagon_park", size=115, orientation=20, side="union", date="1863-05-17"), (1668, 768)),
-     ("bc_camp_union.png", dict(seed=1863, kind="camp", size=105, orientation=10, side="union", date="1863-05-17"), (1600, 792)),
-     ("bc_depot_cs.png", dict(seed=522, kind="supply_depot", size=95, orientation=0, side="confederate", date="1863-04-20"), (1460, 728))]
+C = [("bc_wagon_park.png", dict(seed=518, kind="wagon_park", size=115, orientation=20, side="union", date="1863-05-17", flag=False), (1640, 808)),
+     ("bc_camp_union.png", dict(seed=1863, kind="camp", size=105, orientation=10, side="union", date="1863-05-17", flag=False), (1565, 800)),
+     ("bc_depot_cs.png", dict(seed=522, kind="supply_depot", size=72, orientation=0, side="confederate", date="1863-04-20", soft=0.08), (1458, 790))]
 out = []
 for fn, kw, (mx, my) in C:
     im, c, g = render_camp(ppu=PPU, **kw); im, c, g = crop(im, c, g)
