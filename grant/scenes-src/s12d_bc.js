@@ -588,16 +588,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794350140`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794351572`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794350140.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794351572.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
 [["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"], ["rivers_w", RTH, "relief"], ["rivers_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794350140.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794351572.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -615,7 +615,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.filter((p) => p.tagName === "g").forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794350140.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794351572.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => { if (p.__w) p.setAttribute("stroke-width", (p.__w * k).toFixed(3)); }); SH.forEach(([g, dx, dy]) => g.setAttribute("transform", `translate(${(dx * k).toFixed(3)} ${(dy * k).toFixed(3)})`)); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -722,7 +722,7 @@ const BOX = (id, side, x, y, ech, kind) => { if (kind === "art") unitS(id, side,
 // Confederate bridgehead (east bank): 4 brigades + 2 of its batteries in the line (~18 guns were dug in there)
 BCX([BOX("cb1", "rome", 1538, 636, "X"), BOX("ca1", "rome", 1538, 662, "I", "art"), BOX("cb2", "rome", 1538, 688, "X"), BOX("cb3", "rome", 1538, 714, "X"),
      BOX("ca2", "rome", 1538, 740, "I", "art"), BOX("cb4", "rome", 1540, 766, "X")], T_17 + 0.3, T_BB + 0.9); tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
-B.move("u13", T_17, 1.2, 1622, 690);   /* s12d_bc: McClernand's corps box behind his divisions */
+B.move("u13", T_17, 1.2, 1632, 660);   /* s12d_bc: McClernand's corps box behind his divisions */
 // Union: McClernand's 3 divisions in front with 2 batteries, cavalry on the north flank, McPherson and Sherman behind, pioneers bridging the river near Bridgeport
 BCX([BOX("d13a", "carth", 1592, 664, "XX"), BOX("d13b", "carth", 1592, 690, "XX"), BOX("d13c", "carth", 1592, 716, "XX"),
      BOX("ub1", "carth", 1592, 638, "I", "art"), BOX("ub2", "carth", 1592, 742, "I", "art"), BOX("ucav", "carth", 1626, 628, "II", "cav"),
