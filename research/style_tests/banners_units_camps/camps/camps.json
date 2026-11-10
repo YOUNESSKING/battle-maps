@@ -1,0 +1,73 @@
+{
+ "camp_union": {
+  "png": "camp_union.png",
+  "ppu": 2.0,
+  "size_px": [
+   440,
+   343
+  ],
+  "centre_px": [
+   254.0,
+   167.0
+  ],
+  "glow": null,
+  "seed": 1863,
+  "kind": "camp",
+  "orientation": -12,
+  "side": "union"
+ },
+ "wagon_park": {
+  "png": "wagon_park.png",
+  "ppu": 2.0,
+  "size_px": [
+   480,
+   298
+  ],
+  "centre_px": [
+   249.0,
+   156.0
+  ],
+  "glow": null,
+  "seed": 518,
+  "kind": "wagon_park",
+  "orientation": 8,
+  "side": "union"
+ },
+ "supply_depot": {
+  "png": "supply_depot.png",
+  "ppu": 2.0,
+  "size_px": [
+   389,
+   278
+  ],
+  "centre_px": [
+   214.0,
+   136.0
+  ],
+  "glow": null,
+  "seed": 522,
+  "kind": "supply_depot",
+  "orientation": -25,
+  "side": "confederate",
+  "date": "1863-04-20"
+ },
+ "camp_night": {
+  "png": "camp_night.png",
+  "ppu": 2.0,
+  "size_px": [
+   513,
+   427
+  ],
+  "centre_px": [
+   258.0,
+   193.0
+  ],
+  "glow": "camp_night_glow.png",
+  "seed": 1864,
+  "kind": "camp",
+  "orientation": 20,
+  "side": "confederate",
+  "date": "1863-04-20",
+  "night": true
+ }
+}
