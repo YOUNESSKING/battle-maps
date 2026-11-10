@@ -14,7 +14,7 @@
 //              [[x,y], [x,y], ...]   a polyline the front follows (blocks follow its bends); opts.faceSide "left" | "right"
 //        n     number of blocks / dots / guns
 //        opts  { mark: "XX", t: appear time (null = from frame 0), groups: [4,4] brigade sizes, gap: px between brigades,
-//                w, d: block size (default 44 x 36), files: 1 | 2 (column width), markAt: "rear" | "front" | "up" | [dx,dy],
+//                w, d: block size (default 40 x 38), seam: px between blocks (5), files: 1 | 2 (column width, default 1), markAt: "rear" | "front" | "up" | [dx,dy],
 //                seed, until }
 //   U.move(h, t, dur, geom, { kind, ease })    translate + rotate the whole formation (rigid when both geoms are {x,y,face})
 //   U.morph(h, t, kind, { dur, geom, ease })   line <-> column (blocks slide into their new places, head first)
@@ -34,7 +34,7 @@
   const INK = "#1b1812";
   const CSS = `
 .uf-layer { position:absolute; left:0; top:0; width:0; height:0; overflow:visible; pointer-events:none;
-  filter: drop-shadow(calc(var(--uk) * 1.6px) calc(var(--uk) * 3px) calc(var(--uk) * 1.4px) rgba(14,10,4,.55)); }
+  filter: drop-shadow(calc(var(--uk) * 3px) calc(var(--uk) * 3.5px) calc(var(--uk) * 2px) rgba(14,10,2,.6)); }
 .uf-b { position:absolute; left:0; top:0; width:0; height:0; will-change:transform; }
 .uf-b > .in { position:absolute; left:0; top:0; }
 .uf-b svg { position:absolute; overflow:visible; display:block; }
@@ -101,10 +101,10 @@
     const k = U.k, o = h.opts, n = h.n, r = rng(h.seed + 11), w = h.w, d = h.d;
     const S = [];
     if (kind === "line" || kind === "battery" || kind === "column") {
-      const pitch = (kind === "battery" ? w + 10 * k : w + 1.5 * k), gap = o.gap != null ? o.gap * k : w * 0.55;
+      const pitch = (kind === "battery" ? w + 12 * k : w + (h.opts.seam != null ? h.opts.seam : 5) * k), gap = o.gap != null ? o.gap * k : w * 0.55;
       if (kind === "column") {
         const face = faceOf(G), [cx, cy] = centreOf(G), fv = [Math.cos(rad(face)), Math.sin(rad(face))], av = [-fv[1], fv[0]];
-        const files = h.files, rows = Math.ceil(n / files), rp = d + 2.5 * k, fp = w + 2 * k;
+        const files = h.files, rows = Math.ceil(n / files), rp = d + (h.opts.seam != null ? h.opts.seam : 5) * k, fp = w + 6 * k;
         for (let b = 0; b < n; b++) { const rk = h.rank[b], row = Math.floor(rk / files), fl = files === 1 ? 0 : (rk % files) - (files - 1) / 2;
           const along = ((rows - 1) / 2 - row) * rp; S.push({ x: cx + fv[0] * along + av[0] * fl * fp, y: cy + fv[1] * along + av[1] * fl * fp, rot: face + 90 }); }
         const side = av[1] < 0 ? 1 : -1;   // mark on the side of the column that is up on screen
@@ -131,8 +131,8 @@
       const info = G.poly ? polyInfo(G.poly) : null;
       for (let b = 0; b < n; b++) { const c = Math.floor(b / per), j = b % per, cs = nc === 1 ? 0 : (c / (nc - 1) - 0.5) * L;
         let px, py; if (info) { const p = polyAt(G.poly, info, info.L / 2 + cs); px = p.x; py = p.y; } else { px = cx + av[0] * cs; py = cy + av[1] * cs; }
-        const a = (j / per) * Math.PI * 2 + r() * 1.2, rr = R * (1.55 + r() * 0.6);
-        S.push({ x: px + Math.cos(a) * rr + (r() - 0.5) * 6 * k, y: py + Math.sin(a) * rr + (r() - 0.5) * 6 * k, rot: 0 }); }
+        const inC = Math.min(per, n - c * per), a = (j / inC) * Math.PI * 2 + c * 1.7 + (r() - 0.5) * 0.35, rr = inC === 1 ? 0 : (2 * R + 7 * k) / (2 * Math.sin(Math.PI / Math.max(2, inC))) + r() * 2.5 * k;
+        S.push({ x: px + Math.cos(a) * rr + (r() - 0.5) * 2 * k, y: py + Math.sin(a) * rr + (r() - 0.5) * 2 * k, rot: 0 }); }
     } else {   // cavalry: ranks of 3, every other rank shifted half a dot (hex packing), loose by a few px
       const per = o.perRank || 3, ranks = Math.ceil(n / per), pp = R * 2 + 5 * k;
       for (let b = 0; b < n; b++) { const rk = Math.floor(b / per), j = b % per, inRank = Math.min(per, n - rk * per);
@@ -153,48 +153,50 @@
 
   // ---------- drawing ----------
   function blockSVG(h, b, kind) {
-    const k = U.k, C = h.col, r = rng(h.seed * 31 + b * 977 + 3), w = h.w * (kind === "battery" ? 0.78 : 1), d = h.d * (kind === "battery" ? 0.78 : 1);
-    const sk = Math.tan(rad(h.opts.skew != null ? h.opts.skew : 9)), m = 6 * k, W = w + 2 * m + d * sk, H = d + 2 * m;
-    const j = () => (r() - 0.5) * 1.1 * k;
-    // ragged parallelogram: three points per edge, small jitter (painted, not CAD)
-    const corner = [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]].map(([x, y]) => [x - y * sk, y]);
-    const pts = []; for (let e = 0; e < 4; e++) { const a = corner[e], c2 = corner[(e + 1) % 4];
-      for (let q = 0; q < 3; q++) { const p = q / 3; pts.push([lerp(a[0], c2[0], p) + (q ? j() : j() * 0.4), lerp(a[1], c2[1], p) + (q ? j() : j() * 0.4)]); } }
-    const P = pts.map((p) => `${(p[0] + W / 2).toFixed(2)},${(p[1] + H / 2).toFixed(2)}`).join(" ");
-    const gid = `uf-g-${h.id}-${b}`, sid = `uf-s-${h.id}-${b}`, cx = W / 2, cy = H / 2;
-    const ins = 4.2 * k, tl = [corner[0][0] + ins + cx, corner[0][1] + ins + cy], tr = [corner[1][0] - ins + cx, corner[1][1] + ins + cy],
-      br = [corner[2][0] - ins + cx, corner[2][1] - ins + cy], bl = [corner[3][0] + ins + cx, corner[3][1] - ins + cy];
-    let sym = "";
-    if (kind === "battery") {   // gun: wheel dot + barrel pointing to the front
-      sym = `<line x1="${cx}" y1="${cy + d * 0.12}" x2="${cx + d * 0.30 * sk}" y2="${cy - d * 0.32}" stroke="${INK}" stroke-width="${2.6 * k}" stroke-linecap="round"/>` +
-        `<circle cx="${cx}" cy="${cy + d * 0.14}" r="${d * 0.17}" fill="${INK}"/>`;
-    } else {
-      const sw = 1.9 * k;
-      sym = `<g stroke="${INK}" stroke-width="${sw}" stroke-linecap="round" opacity=".92"><line x1="${tl[0]}" y1="${tl[1]}" x2="${br[0]}" y2="${br[1]}"/><line x1="${tr[0]}" y1="${tr[1]}" x2="${bl[0]}" y2="${bl[1]}"/></g>`;
+    // drawn square to the formation (x = along the front, -y = the facing side); place() then skews it so the cross
+    // edges lie on the screen axis like the reference (sides follow the line, top/bottom stay level on screen)
+    const k = U.k, C = h.col, r = rng(h.seed * 31 + b * 977 + 3), bat = kind === "battery", w = h.w * (bat ? 0.8 : 1), d = h.d * (bat ? 0.8 : 1);
+    const m = 8 * k, W = w * 2 + 2 * m, H = d * 2 + 2 * m, cx = W / 2, cy = H / 2;   // generous box: the skew can push corners out
+    const j = () => (r() - 0.5) * 1.0 * k;
+    const corner = [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]];
+    // ragged outline: 4 points per edge with small jitter; 1-2 "bites" torn out of a side or the rear edge (painted piece look)
+    const bites = {}; const nb = r() < 0.55 ? 1 : r() < 0.6 ? 2 : 0; for (let i = 0; i < nb; i++) bites[[1, 2, 3][Math.floor(r() * 3)]] = 0.2 + r() * 0.5;
+    const pts = [];
+    for (let e = 0; e < 4; e++) { const a = corner[e], c2 = corner[(e + 1) % 4], L = Math.hypot(c2[0] - a[0], c2[1] - a[1]);
+      const nx = -(c2[1] - a[1]) / L, ny = (c2[0] - a[0]) / L;   // inward normal (clockwise winding on screen)
+      const P = (p, inset = 0) => [lerp(a[0], c2[0], p) + nx * inset, lerp(a[1], c2[1], p) + ny * inset];
+      let E = [[0, 0, 0], [0.3, j(), j()], [0.65, j(), j()]];
+      if (bites[e] != null) { const p = bites[e], q = 0.14 + r() * 0.1, dd = (2.8 + r() * 2.4) * k;
+        E = E.filter((x) => x[0] < p - 0.02 || x[0] > p + q + 0.02).concat([[p, 0, 0, 0], [p + q * 0.25, 0, 0, dd], [p + q * 0.75, 0, 0, dd * (0.55 + r() * 0.4)], [p + q, 0, 0, 0]]); }
+      E.sort((u, v) => u[0] - v[0]).forEach(([pp, jx, jy, ins]) => { const q = P(pp, ins || 0); pts.push([q[0] + jx, q[1] + jy]); });
     }
-    // occasional paint chip on an edge (like the reference)
-    let chip = "";
-    if (r() < 0.45) { const e = Math.floor(r() * 4), a = corner[e], c2 = corner[(e + 1) % 4], p = 0.25 + r() * 0.5, q = 0.08 + r() * 0.06;
-      const ax = lerp(a[0], c2[0], p) + cx, ay = lerp(a[1], c2[1], p) + cy, bx = lerp(a[0], c2[0], p + q) + cx, by = lerp(a[1], c2[1], p + q) + cy;
-      const nx = -(by - ay), ny = bx - ax, nl = Math.hypot(nx, ny) || 1, dd = 2.4 * k;
-      chip = `<polygon points="${ax},${ay} ${bx},${by} ${(ax + bx) / 2 + (nx / nl) * dd},${(ay + by) / 2 + (ny / nl) * dd}" fill="${C.chip}" opacity=".75"/>`; }
+    const pt = pts.map((p) => `${(p[0] + cx).toFixed(2)},${(p[1] + cy).toFixed(2)}`).join(" ");
+    const gid = `uf-g-${h.id}-${b}`, sid = `uf-s-${h.id}-${b}`;
+    const ins = 2.2 * k, TL = [-w / 2 + ins + cx, -d / 2 + ins + cy], TR = [w / 2 - ins + cx, -d / 2 + ins + cy], BR = [w / 2 - ins + cx, d / 2 - ins + cy], BL = [-w / 2 + ins + cx, d / 2 - ins + cy];
+    let sym = "";
+    if (bat) {   // gun: wheel dot + barrel pointing to the front
+      sym = `<line x1="${cx}" y1="${cy + d * 0.14}" x2="${cx}" y2="${cy - d * 0.34}" stroke="${C.ink}" stroke-width="${2.8 * k}" stroke-linecap="round"/>` +
+        `<circle cx="${cx}" cy="${cy + d * 0.14}" r="${d * 0.19}" fill="${C.ink}"/>`;
+    } else {
+      sym = `<g stroke="${C.ink}" stroke-width="${2 * k}" stroke-linecap="round" opacity=".92"><line x1="${TL[0]}" y1="${TL[1]}" x2="${BR[0]}" y2="${BR[1]}"/><line x1="${TR[0]}" y1="${TR[1]}" x2="${BL[0]}" y2="${BL[1]}"/></g>`;
+    }
     return { W, H, html: `<svg width="${W}" height="${H}" style="left:${-W / 2}px;top:${-H / 2}px">
-<defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.hi}"/><stop offset=".45" stop-color="${C.base}"/><stop offset="1" stop-color="${C.lo}"/></linearGradient>
-<linearGradient id="${sid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient></defs>
-<polygon points="${P}" fill="url(#${gid})"/>
-<polygon points="${P}" fill="url(#uf-noise)" opacity=".16" style="mix-blend-mode:multiply"/>
-<polygon points="${P}" fill="none" stroke="url(#${sid})" stroke-width="${3.2 * k}" transform="translate(${cx} ${cy}) scale(.86) translate(${-cx} ${-cy})"/>
-${sym}${chip}
-<polygon points="${P}" fill="none" stroke="${C.ink}" stroke-width="${1.7 * k}" stroke-linejoin="round"/></svg>`, gids: [gid, sid] };
+<defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.hi}"/><stop offset=".5" stop-color="${C.base}"/><stop offset="1" stop-color="${C.lo}"/></linearGradient>
+<linearGradient id="${sid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient></defs>
+<polygon points="${pt}" fill="url(#${gid})"/>
+<polygon points="${pt}" fill="url(#uf-noise)" opacity=".26" style="mix-blend-mode:multiply"/>
+<polygon points="${pt}" fill="none" stroke="url(#${sid})" stroke-width="${3.6 * k}" transform="translate(${cx} ${cy}) scale(.86) translate(${-cx} ${-cy})"/>
+${sym}
+<polygon points="${pt}" fill="none" stroke="${C.ink}" stroke-width="${2.4 * k}" stroke-linejoin="round"/></svg>`, gids: [gid, sid] };
   }
   function dotSVG(h, b, kind) {
     const k = U.k, C = h.col, R = h.dot, m = 4 * k, S = 2 * (R + m), c = S / 2, gid = `uf-g-${h.id}-${b}`;
     const slash = kind === "cavalry" ? `<line x1="${c - R * 0.62}" y1="${c + R * 0.62}" x2="${c + R * 0.62}" y2="${c - R * 0.62}" stroke="${INK}" stroke-width="${1.9 * k}" stroke-linecap="round"/>` : "";
     return { W: S, H: S, html: `<svg width="${S}" height="${S}" style="left:${-S / 2}px;top:${-S / 2}px">
 <defs><radialGradient id="${gid}" cx=".36" cy=".32" r=".75"><stop offset="0" stop-color="${C.hi}"/><stop offset=".55" stop-color="${C.base}"/><stop offset="1" stop-color="${C.lo}"/></radialGradient></defs>
-<circle cx="${c}" cy="${c}" r="${R}" fill="url(#${gid})"/><circle cx="${c}" cy="${c}" r="${R}" fill="url(#uf-noise)" opacity=".14" style="mix-blend-mode:multiply"/>
-<path d="M ${c - R * 0.7} ${c + R * 0.05} A ${R * 0.72} ${R * 0.72} 0 0 1 ${c + R * 0.05} ${c - R * 0.7}" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="${1.4 * k}" stroke-linecap="round"/>
-${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="${1.6 * k}"/></svg>`, gids: [gid] };
+<circle cx="${c}" cy="${c}" r="${R}" fill="url(#${gid})"/><circle cx="${c}" cy="${c}" r="${R}" fill="url(#uf-noise)" opacity=".24" style="mix-blend-mode:multiply"/>
+<path d="M ${c - R * 0.7} ${c + R * 0.05} A ${R * 0.72} ${R * 0.72} 0 0 1 ${c + R * 0.05} ${c - R * 0.7}" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="${1.3 * k}" stroke-linecap="round"/>
+${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="${2 * k}"/></svg>`, gids: [gid] };
   }
 
   // ---------- formation ----------
@@ -202,10 +204,11 @@ ${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" strok
   U.formation = (id, side, kind, geom, n, opts = {}) => {
     const k = U.k, sd = SIDE_ALIAS[side] || side;
     const h = { id: String(id).replace(/[^\w-]/g, "_"), side: sd, col: SIDES[sd], kind, n, opts, seed: opts.seed != null ? opts.seed : hash(id),
-      w: (opts.w || 44) * k, d: (opts.d || 36) * k, dot: (opts.r || (kind === "cavalry" ? 12 : 10.5)) * k,
-      files: opts.files || (n > 6 ? 2 : 1), rank: centreOutRank(n), ops: [], tagEl: null };
+      w: (opts.w || 40) * k, d: (opts.d || 38) * k, dot: (opts.r || (kind === "cavalry" ? 12 : 10.5)) * k,
+      files: opts.files || 1, rank: centreOutRank(n), ops: [], tagEl: null };
     const layer = document.createElement("div"); layer.className = "uf-layer"; layer.style.setProperty("--uk", k); layer.dataset.id = id;
     (U.parent || document.body).appendChild(layer); h.layer = layer;
+    h.isBlk = !isDots(kind) && opts.skew !== false;
     h.blocks = []; h.blockKind = isDots(kind) ? kind : kind === "battery" ? "battery" : "block";
     for (let b = 0; b < n; b++) {
       const el = document.createElement("div"); el.className = "uf-b"; const inn = document.createElement("div"); inn.className = "in";
@@ -214,7 +217,7 @@ ${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" strok
       h.blocks.push({ el, inn, grads: s.gids.map((g) => inn.querySelector("#" + g)), rot: null });
     }
     const hq = document.createElement("div"); hq.className = "uf-hq"; layer.appendChild(hq); h.hq = hq;
-    if (opts.mark) { const m = document.createElement("div"); m.className = "uf-mark"; m.textContent = opts.mark; m.style.fontSize = (opts.markSize || 16) * k + "px"; hq.appendChild(m); h.markEl = m; }
+    if (opts.mark) { const m = document.createElement("div"); m.className = "uf-mark"; m.textContent = opts.mark; m.style.fontSize = (opts.markSize || 17) * k + "px"; hq.appendChild(m); h.markEl = m; }
     const G = normGeom(geom, opts); h.state = { kind, G, ...slotsFor(h, kind, G) }; h.state0 = h.state;
     U.list[id] = h; place(h, h.state.s, h.state.mark);
     // appear: blocks pop in one after another along the line (or from frame 0)
@@ -228,10 +231,16 @@ ${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" strok
     return h;
   };
 
+  // skew that puts a block's cross edges on the nearest screen axis (horizontal when the line runs up/down, vertical when it runs
+  // across), as in the reference; clamped so a line near 45 deg never flips hard
+  function skewFor(rot) { const a = rad(rot), ax = Math.cos(a), ay = Math.sin(a), c = Math.abs(ay) > Math.abs(ax) ? [1, 0] : [0, 1];
+    const sx = c[0] * ax + c[1] * ay, sy = -c[0] * ay + c[1] * ax; if (Math.abs(sy) < 1e-3) return 0;
+    return Math.max(-U.maxSkew, Math.min(U.maxSkew, deg(Math.atan(sx / sy)))); }
+  U.maxSkew = 34;
   function place(h, S, mark) {
     for (let b = 0; b < h.n; b++) {
       const B = h.blocks[b], p = S[b];
-      B.el.style.transform = `translate(${p.x.toFixed(2)}px,${p.y.toFixed(2)}px) rotate(${p.rot.toFixed(2)}deg)`;
+      B.el.style.transform = `translate(${p.x.toFixed(2)}px,${p.y.toFixed(2)}px) rotate(${p.rot.toFixed(2)}deg)` + (h.isBlk ? ` skewX(${skewFor(p.rot).toFixed(2)}deg)` : "");
       if (B.rot == null || Math.abs(B.rot - p.rot) > 0.8) {   // keep the light coming from the top-left of the SCREEN
         B.grads.forEach((g) => g && g.setAttribute("gradientTransform", `rotate(${(-p.rot).toFixed(1)} .5 .5)`)); B.rot = p.rot; }
     }
@@ -243,8 +252,10 @@ ${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" strok
     const A = h.state, B = { kind, G, ...slotsFor(h, kind, G) };
     const rigid = A.kind === kind && !A.G.poly && !G.poly && !o.slide;
     const polyLerp = A.kind === kind && A.G.poly && G.poly && A.G.poly.length === G.poly.length;
-    const ease = easeFn(o.ease || "power1.inOut"), stag = o.stagger != null ? o.stagger : A.kind !== kind ? 0.45 : 0;
+    const ease = easeFn(o.ease || "power1.inOut"), stag = o.stagger != null ? o.stagger : A.kind !== kind ? 0.3 : 0;
     const delay = (b) => (stag ? (h.rank[b] / Math.max(1, h.n - 1)) * stag : 0);
+    const twoPhase = (A.kind === "column" && kind === "line") || (A.kind === "line" && kind === "column"), toLine = kind === "line";
+    const fB = faceOf(G), ff = [Math.cos(rad(fB)), Math.sin(rad(fB))], fa = [-ff[1], ff[0]];
     const proxy = { p: 0 };
     const render = () => {
       const p = proxy.p; let S, M;
@@ -252,6 +263,12 @@ ${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" strok
         const r = slotsFor(h, kind, g); S = r.s; M = r.mark; }
       else if (polyLerp) { const e = ease(p), g = { poly: A.G.poly.map((q, i) => [lerp(q[0], G.poly[i][0], e), lerp(q[1], G.poly[i][1], e)]), faceSide: G.faceSide };
         const r = slotsFor(h, kind, g); S = r.s; M = r.mark; }
+      else if (twoPhase) { S = A.s.map((a, b) => { const q = clamp01((p - delay(b)) / (1 - stag)), z = B.s[b];
+          // column -> line: slide sideways first, then step up into the line; line -> column: step back first, then file in
+          const dx = z.x - a.x, dy = z.y - a.y, lat = dx * fa[0] + dy * fa[1], dep = dx * ff[0] + dy * ff[1];
+          const q1 = ease(clamp01(q / 0.62)), q2 = ease(clamp01((q - 0.38) / 0.62)), ql = toLine ? q1 : q2, qd = toLine ? q2 : q1;
+          return { x: a.x + fa[0] * lat * ql + ff[0] * dep * qd, y: a.y + fa[1] * lat * ql + ff[1] * dep * qd, rot: lerpAng(a.rot, z.rot, ease(q)) }; });
+        M = [lerp(A.mark[0], B.mark[0], ease(p)), lerp(A.mark[1], B.mark[1], ease(p))]; }
       else { S = A.s.map((a, b) => { const q = ease(clamp01((p - delay(b)) / (1 - stag))), z = B.s[b];
           return { x: lerp(a.x, z.x, q), y: lerp(a.y, z.y, q), rot: lerpAng(a.rot, z.rot, q) }; });
         const e = ease(p); M = [lerp(A.mark[0], B.mark[0], e), lerp(A.mark[1], B.mark[1], e)]; }
@@ -278,7 +295,7 @@ ${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" strok
   U.skirmishers = (h, n, o = {}) => {   // a screen of dots o.ahead px in front of line h (same side unless o.side)
     const k = U.k, G = h.state.G, face = faceOf(G), [cx, cy] = centreOf(G), fv = [Math.cos(rad(face)), Math.sin(rad(face))], ah = (o.ahead || 58) * k;
     let len = o.len; if (len == null) { const xs = h.state.s; len = Math.hypot(xs[0].x - xs[h.n - 1].x, xs[0].y - xs[h.n - 1].y) * 0.92; }
-    const geom = G.poly ? G.poly.map(() => null) && { x: cx + fv[0] * ah, y: cy + fv[1] * ah, face, len } : { x: cx + fv[0] * ah, y: cy + fv[1] * ah, face, len };
+    const geom = { x: cx + fv[0] * ah, y: cy + fv[1] * ah, face, len };
     return U.formation(h.id + "_sk", o.side || h.side, "skirmish", geom, n, Object.assign({ t: h.opts.t }, o));
   };
 })();

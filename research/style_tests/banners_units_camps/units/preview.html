@@ -20,10 +20,10 @@ U.init({ tl, parent: document.getElementById("world"), k: 1 });
 
 // ---- Confederate division: a line of 8 blocks (two brigades of 4) facing west, running NNE like the reference ----
 const cs = U.formation("csdiv", "rome", "line", { x: 790, y: 520, face: -165 }, 8, { mark: "XX", groups: [4, 4] });
-const csk = U.skirmishers(cs, 9, { ahead: 72 });
+const csk = U.skirmishers(cs, 11, { ahead: 78, cluster: 4 });
 const csb = U.formation("csbat", "rome", "battery", { x: 905, y: 255, face: -165 }, 2, {});
 const csc = U.formation("cscav", "rome", "cavalry", { x: 740, y: 110, face: -165 }, 6, { mark: "X" });
-U.tag(cs, "STEVENSON", 0);
+U.tag(cs, "STEVENSON", 1.0);   // only from the spoken name
 
 // ---- Union corps: column of 8 (two files) marching east, then deploys into line facing the Confederates ----
 const us = U.formation("uscorps", "carth", "column", { x: 190, y: 600, face: 0 }, 8, { mark: "XXX", groups: [4, 4] });
@@ -31,7 +31,7 @@ U.move(us, 0.5, 1.4, { x: 330, y: 580, face: 8 });
 U.morph(us, 2.2, "line", { dur: 1.8, geom: { x: 400, y: 560, face: 15 } });
 U.tag(us, "McPHERSON", 4.4);
 const usb = U.formation("usbat", "carth", "battery", { x: 470, y: 250, face: 15 }, 3, {});
-const usk = U.formation("ussk", "carth", "skirmish", { x: 505, y: 860, face: 15, len: 120 }, 5, {});
+const usk = U.skirmishers(us, 8, { ahead: 70, cluster: 4, t: 4.0 });   // thrown out once deployed
 
 // ---- the OLD kit boxes for comparison (bottom left) ----
 const old = (x, y, col, sz) => { const d = document.createElement("div"); d.className = "old"; d.style.left = x - 27 + "px"; d.style.top = y - 18 + "px";
@@ -39,6 +39,6 @@ const old = (x, y, col, sz) => { const d = document.createElement("div"); d.clas
   document.getElementById("world").appendChild(d); };
 old(150, 975, "#1f4fc4", "XXX"); old(240, 975, "#c4121f", "XX");
 
-window.seek = (t) => tl.seek(t, false);
+window.seek = (t) => { tl.seek(t, false); };
 const q = new URLSearchParams(location.search); seek(parseFloat(q.get("t") || "6"));
 </script></body></html>
