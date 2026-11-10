@@ -19,12 +19,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794340837`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794341844`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794340837.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794341844.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
+// ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
+[["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
+  im.src = `assets/rt/${n}_1794341844.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -39,7 +43,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794340837.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794341844.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3))); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -104,10 +108,7 @@ B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L
 pinPortrait("rv", PHOTO("pemberton"), FL.cs, "Pemberton", T_PEM + 0.1, null, true, "up");   // round 2: stake straight up, off the Vicksburg name and the Union cards
 focus(L(32.07, -90.84), 150, T_BEH, T_UG + 1.6);
 const GW = now(pinPortrait("u17", MYST, FL.us, "Union General", 0, null, true, "right"));   // on his column from frame 0, unnamed (continuing from s12c)
-{ const ph = GW.firstElementChild.querySelectorAll("img")[1]; tl.set(ph, { attr: { src: PHOTO("grant") } }, T_UG - 0.1); }   // the photo revealed ON "Ulysses Grant"
-{ const nm = GW.firstElementChild.lastElementChild, n2 = document.createElement("div"); n2.textContent = "Ulysses Grant"; n2.style.cssText = nm.style.cssText + ";position:absolute;left:0;right:0;bottom:0;font-size:13px";
-  GW.firstElementChild.appendChild(n2); gsap.set(n2, { autoAlpha: 0 }); tl.to(nm, { autoAlpha: 0, duration: 0.15 }, T_UG - 0.1); tl.to(n2, { autoAlpha: 1, duration: 0.15 }, T_UG - 0.1);
-  nm.style.visibility = "inherit"; }
+PC.reveal(GW, PHOTO("grant"), "Ulysses Grant", T_UG - 0.1);   /* s12d_rt: portrait card v2 reveal (research/style_tests/roads_towns/portraits) */
 tl.fromTo(GW.firstElementChild, { scale: 1 }, { scale: 1.6, duration: 0.25, ease: "power2.out", immediateRender: false }, T_UG - 0.1);
 tl.to(GW.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, T_UG + 1.2); SFX("hit", T_UG - 0.15);   // the name reveal
 // ---------- the clock: each battle marked as its date is spoken (a crossed-sabres ink mark stays; the name leaves) ----------
