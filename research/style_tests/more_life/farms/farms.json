@@ -1,0 +1,311 @@
+{
+ "_note": "placement on grant/assets/vicksburg_w.jpg map px (0..2880 x 0..1620), sprites made for camera s = 1.9; left/top/w/h = the <img> box in map px (as the towns' RTM); layer with the towns (under the road SVG)",
+ "S": 1.9,
+ "ppu": 2.0,
+ "farms": {
+  "coker_house": {
+   "png": "coker_house.png",
+   "label": "Coker House",
+   "size_px": [
+    123,
+    134
+   ],
+   "centre_px": [
+    61.0,
+    65.6
+   ],
+   "house_px": [
+    59.6,
+    44.4
+   ],
+   "map_px_per_img_px": 0.263158,
+   "size_u": 62,
+   "n_fields": 4,
+   "season": "may",
+   "orientation_deg": -160.7,
+   "fields": [
+    {
+     "rect": [
+      -5.5,
+      -17.7,
+      32.7,
+      12.9
+     ],
+     "crop": "cotton",
+     "furrows_deg": -160.7
+    },
+    {
+     "rect": [
+      -29.3,
+      -19.7,
+      23.8,
+      16.3
+     ],
+     "crop": "cotton",
+     "furrows_deg": -160.7
+    },
+    {
+     "rect": [
+      -25.4,
+      -3.4,
+      19.9,
+      20.9
+     ],
+     "crop": "wheat",
+     "furrows_deg": -126.4
+    },
+    {
+     "rect": [
+      17.7,
+      -4.8,
+      13.3,
+      24.5
+     ],
+     "crop": "plough",
+     "furrows_deg": -70.7
+    }
+   ],
+   "c": [
+    1652.0,
+    768.0
+   ],
+   "left": 1635.93,
+   "top": 750.73,
+   "w": 32.37,
+   "h": 35.26,
+   "label_png": {
+    "png": "label_coker_house.png",
+    "w": 155.0,
+    "h": 24.0,
+    "ax": 77.43071246817276,
+    "ay": -17.82862208324018,
+    "note": "ax/ay = the farm block centre inside the label image, in 1080p px (u)"
+   }
+  },
+  "champion_house": {
+   "png": "champion_house.png",
+   "label": "Champion House",
+   "size_px": [
+    182,
+    165
+   ],
+   "centre_px": [
+    88.9,
+    83.9
+   ],
+   "house_px": [
+    94.9,
+    43.1
+   ],
+   "map_px_per_img_px": 0.263158,
+   "size_u": 82,
+   "n_fields": 5,
+   "season": "may",
+   "orientation_deg": -8.4,
+   "fields": [
+    {
+     "rect": [
+      -38.8,
+      -28.9,
+      32.1,
+      24.3
+     ],
+     "crop": "wheat",
+     "furrows_deg": -8.4
+    },
+    {
+     "rect": [
+      -41.0,
+      -4.6,
+      34.4,
+      33.5
+     ],
+     "crop": "corn",
+     "furrows_deg": 14.2
+    },
+    {
+     "rect": [
+      18.7,
+      -27.0,
+      17.4,
+      28.1
+     ],
+     "crop": "cotton",
+     "furrows_deg": 28.7
+    },
+    {
+     "rect": [
+      -6.6,
+      1.1,
+      27.9,
+      27.8
+     ],
+     "crop": "corn",
+     "furrows_deg": -8.4
+    },
+    {
+     "rect": [
+      21.3,
+      1.1,
+      19.7,
+      23.7
+     ],
+     "crop": "wheat",
+     "furrows_deg": -8.4
+    }
+   ],
+   "c": [
+    1666.0,
+    700.0
+   ],
+   "left": 1642.61,
+   "top": 677.93,
+   "w": 47.89,
+   "h": 43.42,
+   "label_png": {
+    "png": "label_champion_house.png",
+    "w": 205.5,
+    "h": 29.0,
+    "ax": 102.74655528173693,
+    "ay": -26.178282094781093,
+    "note": "ax/ay = the farm block centre inside the label image, in 1080p px (u)"
+   }
+  },
+  "generic_1": {
+   "png": "generic_1.png",
+   "label": null,
+   "size_px": [
+    155,
+    128
+   ],
+   "centre_px": [
+    74.3,
+    60.2
+   ],
+   "house_px": [
+    41.7,
+    30.5
+   ],
+   "map_px_per_img_px": 0.263158,
+   "size_u": 58,
+   "n_fields": 3,
+   "season": "may",
+   "orientation_deg": 24.0,
+   "fields": [
+    {
+     "rect": [
+      -0.9,
+      -21.6,
+      29.9,
+      21.7
+     ],
+     "crop": "corn",
+     "furrows_deg": 114.0
+    },
+    {
+     "rect": [
+      -0.9,
+      0.1,
+      29.9,
+      21.6
+     ],
+     "crop": "cotton",
+     "furrows_deg": -3.9
+    },
+    {
+     "rect": [
+      -28.8,
+      0.6,
+      27.9,
+      21.0
+     ],
+     "crop": "wheat",
+     "furrows_deg": 49.6
+    }
+   ]
+  },
+  "generic_2": {
+   "png": "generic_2.png",
+   "label": null,
+   "size_px": [
+    122,
+    122
+   ],
+   "centre_px": [
+    57.4,
+    59.5
+   ],
+   "house_px": [
+    61.7,
+    75.6
+   ],
+   "map_px_per_img_px": 0.263158,
+   "size_u": 48,
+   "n_fields": 6,
+   "season": "may",
+   "orientation_deg": -62.0,
+   "fields": [
+    {
+     "rect": [
+      4.3,
+      -18.6,
+      19.7,
+      15.8
+     ],
+     "crop": "plough",
+     "furrows_deg": 28.0
+    },
+    {
+     "rect": [
+      -20.9,
+      -0.6,
+      11.5,
+      19.2
+     ],
+     "crop": "cotton",
+     "furrows_deg": 28.0
+    },
+    {
+     "rect": [
+      -22.9,
+      -18.0,
+      9.6,
+      17.4
+     ],
+     "crop": "wheat",
+     "furrows_deg": -83.2
+    },
+    {
+     "rect": [
+      -13.3,
+      -18.6,
+      17.6,
+      18.0
+     ],
+     "crop": "cotton",
+     "furrows_deg": 28.0
+    },
+    {
+     "rect": [
+      4.3,
+      -2.8,
+      19.7,
+      12.7
+     ],
+     "crop": "cotton",
+     "furrows_deg": -62.0
+    },
+    {
+     "rect": [
+      4.3,
+      9.8,
+      19.7,
+      8.0
+     ],
+     "crop": "corn",
+     "furrows_deg": -62.0
+    }
+   ]
+  }
+ }
+}
