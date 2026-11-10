@@ -147,7 +147,7 @@ def stone_sprite(r, base_rgb, elong=1.0, flat=0.55):
     # thin darker rim on the SE (painted outline feel)
     rim = np.clip(m - cv2.erode(m, np.ones((SS + 1, SS + 1), np.uint8)), 0, 1)
     yy, xx = np.mgrid[0:s, 0:s]; se = np.clip(((xx - s / 2) + (yy - s / 2)) / (s / 2), 0, 1)
-    rgb = rgb * (1 - 0.35 * (rim * se)[..., None])
+    rgb = rgb * (1 - (0.22 + 0.33 * se) * rim)[..., None]
     # contact shadow: offset SE, soft, darker than ground
     M = np.float32([[1, 0, 1.3 * SS], [0, 1, 1.6 * SS]])
     sh = cv2.warpAffine(m, M, (s, s)); sh = cv2.GaussianBlur(sh, (0, 0), SS * 1.1)
@@ -217,9 +217,9 @@ def layout(terr, rock_off):
     p = np.clip(terr * clump * (1 - rock_off), 0, 1)
     clusters = poisson(95, int(30000 * DENS), np.clip(p * 1.6, 0, 1))
     big = poisson(300, int(6000 * DENS), np.clip(p * 1.0, 0, 1))
-    trails = poisson(170, int(14000 * DENS), np.clip(p * 1.4, 0, 1))
+    trails = poisson(150, int(14000 * DENS), np.clip(p * 1.4, 0, 1))
     dirt_p = np.clip(terr * (0.35 + 0.65 * clump), 0, 1)
-    dirt = poisson(650, 1400, dirt_p * 0.5)
+    dirt = poisson(480, 3000, dirt_p * 0.6)
     return clusters, big, trails, dirt
 
 
@@ -254,9 +254,9 @@ def render(key, lay, base, base_blur, riv, wood, hard, rock_off):
 
     # (c) dirt / dust patches: irregular, soft, grain inside
     grain = rng.random((H, W)).astype(np.float32)
-    grain = cv2.GaussianBlur(grain, (0, 0), 0.8); grain = (grain - grain.mean()) / (grain.std() + 1e-6)
+    grain = cv2.GaussianBlur(grain, (0, 0), 3.0); grain = (grain - grain.mean()) / (grain.std() + 1e-6)
     for (x, y) in dirt:
-        R = rng.uniform(70, 210); s = int(R * 2.6); x0, y0 = int(x - s / 2), int(y - s / 2)
+        R = rng.uniform(60, 190); s = int(R * 2.6); x0, y0 = int(x - s / 2), int(y - s / 2)
         yy, xx = np.mgrid[0:s, 0:s].astype(np.float32)
         ang = rng.uniform(0, np.pi); el = rng.uniform(1.2, 2.2)
         u = ((xx - s / 2) * np.cos(ang) + (yy - s / 2) * np.sin(ang)) / (R * el / 1.3)
@@ -274,29 +274,41 @@ def render(key, lay, base, base_blur, riv, wood, hard, rock_off):
         loc = base_blur[int(y), int(x)]
         dusty = rng.random() < 0.7
         if dusty:   # pale dust: ochre-tan
-            col = np.clip(0.55 * loc + 0.45 * np.array([0.66, 0.58, 0.38]), 0, 1); amax = rng.uniform(0.24, 0.36)
+            col = np.clip(0.55 * loc + 0.45 * np.array([0.66, 0.58, 0.38]), 0, 1); amax = rng.uniform(0.30, 0.44)
         else:       # darker bare earth smudge (like the ref's top-right patch)
-            col = np.clip(loc * 0.62 + np.array([0.02, 0.0, -0.01]), 0, 1); amax = rng.uniform(0.22, 0.34)
-        rgb = np.clip(col[None, None, :] * (1 + 0.10 * g[..., None]), 0, 1)
-        cv.over_patch(xa, ya, rgb, np.clip(a * amax * DIRT * (1 + 0.35 * g), 0, 1))
+            col = np.clip(loc * 0.62 + np.array([0.02, 0.0, -0.01]), 0, 1); amax = rng.uniform(0.26, 0.38)
+        rgb = np.clip(col[None, None, :] * (1 + 0.05 * g[..., None]), 0, 1)
+        cv.over_patch(xa, ya, rgb, np.clip(a * amax * DIRT * (1 + 0.18 * g), 0, 1))
     del grain
 
-    # tiny dark speckle trails (grit): 10-30 specks along a gentle curve
+    # tiny dark speckle trails (grit): 12-34 brown specks strewn along a gentle curve, a few paired
     for (x, y) in trails:
-        n = rng.integers(10, 30); L = rng.uniform(40, 130); ang = rng.uniform(0, np.pi); bend = rng.uniform(-0.6, 0.6)
-        loc = base_blur[int(y), int(x)]; col = np.clip(loc * 0.40 + np.array([0.01, 0.0, -0.01]), 0, 1)
+        n = rng.integers(22, 56); L = rng.uniform(70, 220); ang = rng.uniform(0, np.pi); bend = rng.uniform(-0.8, 0.8)
+        loc = base_blur[int(y), int(x)]
+        col = np.clip(loc * rng.uniform(0.42, 0.55) + np.array([0.025, 0.008, -0.01]), 0, 1)
+        # faint pale dust haze under the trail (the ref's specks sit on lighter, drier ground)
+        hs = int(L * 1.6); yy, xx = np.mgrid[0:hs, 0:hs].astype(np.float32) - hs / 2
+        u = (xx * np.cos(ang) + yy * np.sin(ang)) / (L * 0.62); v = (-xx * np.sin(ang) + yy * np.cos(ang)) / (L * 0.22)
+        hz = np.clip(1 - np.sqrt(u * u + v * v), 0, 1) ** 1.3
+        hz = hz * (0.75 + 0.5 * cv2.resize(rng.random((6, 6)).astype(np.float32), (hs, hs), interpolation=cv2.INTER_CUBIC))
+        x0h, y0h = int(x - hs / 2), int(y - hs / 2)
+        ya, yb, xa, xb = max(0, y0h), min(H, y0h + hs), max(0, x0h), min(W, x0h + hs)
+        if ya < yb and xa < xb:
+            hz = hz[ya - y0h:yb - y0h, xa - x0h:xb - x0h] * (1 - soft_hard[ya:yb, xa:xb]) * (1 - wood[ya:yb, xa:xb])
+            dust = np.clip(0.6 * loc + 0.4 * np.array([0.72, 0.66, 0.46]), 0, 1)
+            cv.over_patch(xa, ya, np.broadcast_to(dust, hz.shape + (3,)), np.clip(hz * 0.22, 0, 1))
         for i in range(n):
-            t = rng.uniform(-0.5, 0.5); a2 = ang + bend * t
-            px = x + np.cos(a2) * L * t + rng.normal(0, 7); py = y + np.sin(a2) * L * t + rng.normal(0, 7)
+            t = rng.uniform(-0.5, 0.5) * (1 if rng.random() < 0.8 else 0.4); a2 = ang + bend * t
+            off = rng.normal(0, 3.5 + 6 * (0.5 - abs(t)))
+            px = x + np.cos(a2) * L * t - np.sin(ang) * off; py = y + np.sin(a2) * L * t + np.cos(ang) * off
             if not (0 <= px < W and 0 <= py < H) or rock_off[int(py), int(px)] > 0.5:
                 continue
-            r = rng.uniform(0.9, 2.3)
-            s = int(np.ceil(r * 2 + 4)) * SS; mm = np.zeros((s, s), np.uint8)
-            cv2.ellipse(mm, (s // 2, s // 2), (max(1, int(r * SS * rng.uniform(0.8, 1.4))), max(1, int(r * SS))),
-                        rng.uniform(0, 180), 0, 360, 255, -1)
-            mm = cv2.resize(mm, (s // SS, s // SS), interpolation=cv2.INTER_AREA).astype(np.float32) / 255
-            cv.over_patch(int(px - s / SS / 2), int(py - s / SS / 2), np.broadcast_to(col, mm.shape + (3,)),
-                          mm * rng.uniform(0.6, 0.88))
+            r = rng.uniform(0.8, 2.2) if rng.random() < 0.85 else rng.uniform(2.2, 3.0)
+            mm = blob_mask(r * rng.uniform(1.0, 1.5), r, rng.uniform(0, np.pi), 0.35, n=7)
+            s2 = mm.shape[0] // SS; mm = cv2.resize(mm, (s2, s2), interpolation=cv2.INTER_AREA)
+            c2 = np.clip(col * rng.uniform(0.85, 1.15), 0, 1)
+            cv.over_patch(int(px - s2 / 2), int(py - s2 / 2), np.broadcast_to(c2, mm.shape + (3,)),
+                          mm * rng.uniform(0.55, 0.85))
 
     # (a) rock clusters
     for (x, y) in clusters:
@@ -379,7 +391,7 @@ def previews(tex_w, tex_c):
     sheet.save(os.path.join(HERE, "compare.jpg"), quality=92)
     # 3x zoom of a small patch (to judge the pebble shading)
     al = tex_c[box[1]:box[3], box[0]:box[2], 3]
-    al = cv2.resize((al > 140).astype(np.float32), (1920, 1080), interpolation=cv2.INTER_AREA)
+    al = cv2.resize((al > 200).astype(np.float32), (1920, 1080), interpolation=cv2.INTER_AREA)
     dens = cv2.boxFilter(al, -1, (320, 180), normalize=False)
     zy, zx = np.unravel_index(np.argmax(dens[90:-90, 160:-160]), dens[90:-90, 160:-160].shape)
     z = tc.crop((zx, zy, zx + 320, zy + 180)).resize((960, 540), Image.LANCZOS)
