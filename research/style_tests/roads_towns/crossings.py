@@ -146,7 +146,7 @@ def bridge(cr, target=None, burned=False):
         L0, L1 = -span / 2, span / 2
         pieces = [(L0, L1)] if not burned else [(L0, -span * 0.16), (span * 0.13, L1)]   # burned: the middle of the span is gone
         for (u0, u1) in pieces:
-            soft_shadow(im, [P(u0, -hw), P(u1, -hw), P(u1, hw), P(u0, hw)], k)
+            soft_shadow(im, [P(u0, -hw), P(u1, -hw), P(u1, hw), P(u0, hw)], k, a=140 if cr.get("big") else 95)
         d = ImageDraw.Draw(im)
         for (u0, u1) in pieces:
             if burned:   # ragged, charred ends at the gap
@@ -230,7 +230,7 @@ road_img = np.zeros((H2, W2), np.uint8)
 for rr in final:
     for c in rr["paths"]:
         pts = np.array([[x * 2, y * 2] for x, y in c], np.int32)
-        cv2.polylines(road_img, [pts], False, 255, 1, cv2.LINE_AA)
+        cv2.polylines(road_img, [pts], False, 255, 3 if rr["id"] == "grand_gulf_port_gibson" else 1, cv2.LINE_AA)   # polish: Grand Gulf forest lane ~2 px wider
 dist = cv2.distanceTransform((road_img < 128).astype(np.uint8), cv2.DIST_L2, 5)     # image px from the road centre line
 CORE, EDGE = float(os.environ.get("LANE_CORE", 3.2)), float(os.environ.get("LANE_EDGE", 7.0))   # half-widths, image px (road ~2.7)
 lane_n = MH.fbm(H2 // 4, W2 // 4, 12, 3, 7)

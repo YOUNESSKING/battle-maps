@@ -22,6 +22,8 @@ def fixed_roads():
                 cum.append(cum[-1] + math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]))
             Lr = cum[-1]
             P = [(x + dx * max(0, 1 - c / (0.75 * Lr)) ** 1.5, y + dy * max(0, 1 - c / (0.75 * Lr)) ** 1.5) for (x, y), c in zip(P, cum)]
+        if r["id"] == "baldwins_ferry_road":   # polish: carry the road on east from the ferry to join the Raymond road (no dangling end)
+            P = [(1621.5, 733.4), (1596.0, 745.0), (1568.0, 758.0), (1540.0, 772.0), (1516.0, 781.0)] + P
         Q = []
         for x, y in P:
             w = math.exp(-((x - ED0[0]) ** 2 + (y - ED0[1]) ** 2) / (34.0 ** 2))
