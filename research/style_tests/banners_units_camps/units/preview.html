@@ -1,0 +1,44 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Unit formations test</title>
+<style>
+@font-face { font-family: Oswald; font-weight: 700; src: url(../../../../grant/scenes/s12d_rt/assets/fonts/oswald-latin-700-normal.woff2) format("woff2"); }
+html, body { margin: 0; background: #222; }
+#stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: url(bg_crop.jpg) 0 0 / 1920px 1080px; font-family: Oswald, sans-serif; }
+#world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+/* the OLD kit box, as built by vx_kit unitS (54 x 36, ink border w/14, cream X, echelon above) */
+.old { position: absolute; width: 54px; }
+.old .blk { width: 54px; height: 36px; box-sizing: border-box; border: 3.86px solid #2a241b; box-shadow: 0 4px 6px rgba(0,0,0,.35); position: relative; overflow: hidden; }
+.old .blk svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.old .sz { position: absolute; left: 0; right: 0; top: -20px; text-align: center; font-weight: 700; font-size: 15px; color: #1b1812; letter-spacing: .05em; text-shadow: 0 0 2px #f7f3ea, 0 0 2px #f7f3ea; }
+</style></head>
+<body><div id="stage"><div id="world"></div></div>
+<script src="../../../../grant/scenes/s12d_rt/vendor/gsap.min.js"></script>
+<script src="units.js"></script>
+<script>
+const tl = gsap.timeline({ paused: true });
+U.init({ tl, parent: document.getElementById("world"), k: 1 });
+
+// ---- Confederate division: a line of 8 blocks (two brigades of 4) facing west, running NNE like the reference ----
+const cs = U.formation("csdiv", "rome", "line", { x: 790, y: 520, face: -165 }, 8, { mark: "XX", groups: [4, 4] });
+const csk = U.skirmishers(cs, 11, { ahead: 78, cluster: 4 });
+const csb = U.formation("csbat", "rome", "battery", { x: 905, y: 255, face: -165 }, 2, {});
+const csc = U.formation("cscav", "rome", "cavalry", { x: 740, y: 110, face: -165 }, 6, { mark: "X" });
+U.tag(cs, "STEVENSON", 1.0);   // only from the spoken name
+
+// ---- Union corps: column of 8 (two files) marching east, then deploys into line facing the Confederates ----
+const us = U.formation("uscorps", "carth", "column", { x: 190, y: 600, face: 0 }, 8, { mark: "XXX", groups: [4, 4] });
+U.move(us, 0.5, 1.4, { x: 330, y: 580, face: 8 });
+U.morph(us, 2.2, "line", { dur: 1.8, geom: { x: 400, y: 560, face: 15 } });
+U.tag(us, "McPHERSON", 4.4);
+const usb = U.formation("usbat", "carth", "battery", { x: 470, y: 250, face: 15 }, 3, {});
+const usk = U.skirmishers(us, 8, { ahead: 70, cluster: 4, t: 4.0 });   // thrown out once deployed
+
+// ---- the OLD kit boxes for comparison (bottom left) ----
+const old = (x, y, col, sz) => { const d = document.createElement("div"); d.className = "old"; d.style.left = x - 27 + "px"; d.style.top = y - 18 + "px";
+  d.innerHTML = `<div class="sz">${sz}</div><div class="blk" style="background:${col}"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="4" y1="4" x2="96" y2="96" stroke="#f7f3ea" stroke-width="8"/><line x1="96" y1="4" x2="4" y2="96" stroke="#f7f3ea" stroke-width="8"/></svg></div>`;
+  document.getElementById("world").appendChild(d); };
+old(150, 975, "#1f4fc4", "XXX"); old(240, 975, "#c4121f", "XX");
+
+window.seek = (t) => { tl.seek(t, false); };
+const q = new URLSearchParams(location.search); seek(parseFloat(q.get("t") || "6"));
+</script></body></html>
