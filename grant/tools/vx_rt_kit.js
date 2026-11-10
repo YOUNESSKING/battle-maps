@@ -381,7 +381,7 @@ const zoomBox = (cx, cy, hw, hh, t) => { const g = document.createElementNS(NSs,
 const PC = (() => {
   const C = { ivory: "#efe3c8", gold: "#c8a86a", goldHi: "#ead39a", goldLo: "#8f6f36", goldDk: "#5e4620", char: "#15110c", char2: "#221b12" };
   const FB = typeof PC_FONT_BASE === "string" ? PC_FONT_BASE : "assets/fonts/";
-  const IW = 80, BW = 3, W = IW + 2 * BW;   // inner width, frame width, outer width (86)
+  const IW = 90, BW = 3, W = IW + 2 * BW;   // inner width, frame width, outer width (86)
   const css = `
 @font-face{font-family:"Cinzel";font-weight:700;src:url("${FB}cinzel-latin-700-normal.woff2") format("woff2")}
 @font-face{font-family:"Cinzel";font-weight:600;src:url("${FB}cinzel-latin-600-normal.woff2") format("woff2")}
