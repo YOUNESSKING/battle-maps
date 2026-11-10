@@ -44,6 +44,10 @@ const RTH = [], RTHC = [];
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
   im.src = `assets/rt/${n}___BUILDID__.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
+// ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
+[["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
+  im.src = `assets/rt/${n}___BUILDID__.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
 CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
@@ -97,6 +101,8 @@ rep('hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 1.6);', 'hatch("a
 rep('BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50);', 'BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, [1627, 719]);   /* s12d_rt polish: south foot of Champion Hill (~40 px below the lit crest), between the Jackson and Raymond roads */')
 rep('smoke(LL([[32.335, -90.552], [32.33, -90.565], [32.29, -90.56]]), T_CH);', 'smoke([[1627, 719], [1620, 722], [1633, 724]], T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */')
 rep('BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));', 'BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));\n{ const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */\n  tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 0.2); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 0.2); }')
+rep('{ const ph = GW.firstElementChild.querySelectorAll("img")[1]; tl.set(ph, { attr: { src: PHOTO("grant") } }, T_UG - 0.1); }   // the photo revealed ON "Ulysses Grant"\n', '')
+rep('{ const nm = GW.firstElementChild.lastElementChild, n2 = document.createElement("div"); n2.textContent = "Ulysses Grant"; n2.style.cssText = nm.style.cssText + ";position:absolute;left:0;right:0;bottom:0;font-size:13px";\n  GW.firstElementChild.appendChild(n2); gsap.set(n2, { autoAlpha: 0 }); tl.to(nm, { autoAlpha: 0, duration: 0.15 }, T_UG - 0.1); tl.to(n2, { autoAlpha: 1, duration: 0.15 }, T_UG - 0.1);\n  nm.style.visibility = "inherit"; }', 'PC.reveal(GW, PHOTO("grant"), "Ulysses Grant", T_UG - 0.1);   /* s12d_rt: portrait card v2 reveal (research/style_tests/roads_towns/portraits) */')
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)
 src = src.replace("B.finish();", "window.__RT_T = { T_CH, T_17, T_16, T_BB };\nB.finish();")
 import time

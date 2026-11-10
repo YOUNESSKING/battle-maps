@@ -181,11 +181,11 @@ def bridge(cr, target=None, burned=False):
     stamp((cr["x"], cr["y"]), fn, R, target)
 
 
-def boat_and_landings(cr, banks):
+def boat_and_landings(cr, banks, sc=1.0):
     a = math.radians(cr["ang"])
 
     def fn_boat(im, d, cx, cy, k):
-        P = lambda x, y: rot(x * k, y * k, a + math.pi / 2, cx, cy)   # flatboat lies across the road line, beside it
+        P = lambda x, y: rot(x * k * sc, y * k * sc, a + math.pi / 2, cx, cy)   # flatboat lies across the road line, beside it
         # tiny pale wake on the downstream side + soft shadow
         wk = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(wk).polygon([P(4.6, -1.6), P(8.5, -2.6), P(8.5, 2.6), P(4.6, 1.6)], fill=(200, 214, 220, 60))
         im.alpha_composite(wk.filter(ImageFilter.GaussianBlur(1.0 * k)))
@@ -207,7 +207,7 @@ def boat_and_landings(cr, banks):
     for b in banks:
         stamp(b, fn_land, 8)
     nx, ny = -math.sin(a), math.cos(a)
-    stamp((cr["x"] + nx * 2.4, cr["y"] + ny * 2.4), fn_boat, 12)
+    stamp((cr["x"] + nx * 2.4 * sc, cr["y"] + ny * 2.4 * sc), fn_boat, 12 * sc)
 
 
 for cr in crossings:
@@ -220,7 +220,7 @@ for cr in crossings:
         a = math.radians(cr["ang"]); dx, dy = math.cos(a), math.sin(a); h = cr["w"] / 2
         boat_and_landings(cr, [(cr["x"] - dx * (h + 0.8), cr["y"] - dy * (h + 0.8)), (cr["x"] + dx * (h + 0.8), cr["y"] + dy * (h + 0.8))])
     else:   # landing on the Mississippi bank + a moored boat
-        boat_and_landings(cr, [cr["bank"]])
+        boat_and_landings(cr, [cr["bank"]], sc=1.6)   # owner: the river landing must read as a landing (bigger moored boat)
 ov.save(os.path.join(OUT, "bridges.png"), optimize=True)
 ov_bb.save(os.path.join(OUT, "bb_ok.png"), optimize=True)
 ov_bbx.save(os.path.join(OUT, "bb_burned.png"), optimize=True)
