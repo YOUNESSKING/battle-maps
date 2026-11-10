@@ -19,16 +19,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794341844`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794342230`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794341844.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794342230.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
 [["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794341844.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794342230.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -43,7 +43,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794341844.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794342230.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3))); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -138,7 +138,7 @@ BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, [1627, 719]);   /* s12d_rt po
 B.move("rv", T_17 - 0.3, 1.0, ...L(32.36, -90.70)); B.move("re", T_17 - 0.2, 1.0, ...L(32.325, -90.705)); tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
 B.move("u13", T_17, 1.2, ...L(32.39, -90.638));   /* s12d_rt: off Pemberton card */ B.move("u17", T_17 + 0.1, 1.2, ...L(32.282, -90.68));   /* s12d_rt: off Edwards */ B.move("u15", T_17 + 0.1, 1.4, ...L(32.44, -90.55));
 mg(L(32.385, -90.67), L(32.37, -90.70), T_BB + 0.3, 5, 1.1 / 1.9 * 2.2);
-BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));
+BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, [1513, 690]);   /* s12d_rt polish: mark at the Big Black bridge (just north of the deck) */
 { const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */
   tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 0.2); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 0.2); }
 B.move("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); B.move("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));

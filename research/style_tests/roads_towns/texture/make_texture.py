@@ -32,6 +32,8 @@ SEED = int(os.environ.get("SEED", 1863))
 DENS = float(os.environ.get("DENS", 1.0))      # rock / speckle density multiplier
 MOTTLE = float(os.environ.get("MOTTLE", 1.0))  # mottle opacity multiplier
 DIRT = float(os.environ.get("DIRT", 1.0))      # dirt patch opacity multiplier
+SPECK = float(os.environ.get("SPECK", 0.6))    # dark speck trails: count multiplier (polish 2026-11-10: -40 %)
+SPECK_LIFT = float(os.environ.get("SPECK_LIFT", 0.35))   # 0 = old dark specks, 1 = grass tone
 SS = 4                                          # supersampling for the little sprites
 
 rng = np.random.default_rng(SEED)
@@ -283,9 +285,10 @@ def render(key, lay, base, base_blur, riv, wood, hard, rock_off):
 
     # tiny dark speckle trails (grit): 12-34 brown specks strewn along a gentle curve, a few paired
     for (x, y) in trails:
-        n = rng.integers(22, 56); L = rng.uniform(70, 220); ang = rng.uniform(0, np.pi); bend = rng.uniform(-0.8, 0.8)
+        n = max(4, int(rng.integers(22, 56) * SPECK)); L = rng.uniform(70, 220); ang = rng.uniform(0, np.pi); bend = rng.uniform(-0.8, 0.8)
         loc = base_blur[int(y), int(x)]
         col = np.clip(loc * rng.uniform(0.42, 0.55) + np.array([0.025, 0.008, -0.01]), 0, 1)
+        col = col * (1 - SPECK_LIFT) + loc * 0.78 * SPECK_LIFT   # lifted toward the grass
         # faint pale dust haze under the trail (the ref's specks sit on lighter, drier ground)
         hs = int(L * 1.6); yy, xx = np.mgrid[0:hs, 0:hs].astype(np.float32) - hs / 2
         u = (xx * np.cos(ang) + yy * np.sin(ang)) / (L * 0.62); v = (-xx * np.sin(ang) + yy * np.cos(ang)) / (L * 0.22)
@@ -303,7 +306,7 @@ def render(key, lay, base, base_blur, riv, wood, hard, rock_off):
             px = x + np.cos(a2) * L * t - np.sin(ang) * off; py = y + np.sin(a2) * L * t + np.cos(ang) * off
             if not (0 <= px < W and 0 <= py < H) or rock_off[int(py), int(px)] > 0.5:
                 continue
-            r = rng.uniform(0.8, 2.2) if rng.random() < 0.85 else rng.uniform(2.2, 3.0)
+            r = rng.choice([rng.uniform(0.6, 1.2), rng.uniform(1.2, 2.2), rng.uniform(2.2, 3.2)], p=[0.45, 0.42, 0.13])   # varied sizes
             mm = blob_mask(r * rng.uniform(1.0, 1.5), r, rng.uniform(0, np.pi), 0.35, n=7)
             s2 = mm.shape[0] // SS; mm = cv2.resize(mm, (s2, s2), interpolation=cv2.INTER_AREA)
             c2 = np.clip(col * rng.uniform(0.85, 1.15), 0, 1)

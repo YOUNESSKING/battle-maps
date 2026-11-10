@@ -398,11 +398,11 @@ const PC = (() => {
 .pc-flag{display:block;width:${IW - 6}px;height:13px;margin:3px 3px 0;object-fit:cover;box-shadow:0 0 0 .75px ${C.gold},0 0 0 1.5px rgba(0,0,0,.6);filter:saturate(.82) contrast(1.02)}
 .pc-ph{position:relative;width:${IW - 6}px;height:74px;margin:3px 3px 3px;overflow:hidden;box-shadow:0 0 0 .75px ${C.gold},0 0 0 1.5px rgba(0,0,0,.6);
   background:radial-gradient(ellipse 70% 62% at 50% 38%,#cdb68a 0%,#a88a5a 48%,#5f4828 100%)}
-.pc-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 20%;filter:grayscale(1) sepia(.62) contrast(1.12) brightness(.96) saturate(1.05)}
+.pc-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 20%;filter:grayscale(1) sepia(.55) contrast(1.32) brightness(.9) saturate(1.05)}
 .pc-ph::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse 78% 70% at 50% 42%,rgba(40,26,10,0) 52%,rgba(40,26,10,.30) 80%,rgba(28,18,6,.62) 100%),
     linear-gradient(180deg,rgba(255,236,190,.10),rgba(255,236,190,0) 40%)}
-.pc-card>.pc-name,.pc-card>.pc-name~div{box-sizing:border-box;height:17px;line-height:16px;padding:1px 2px 0;text-align:center;white-space:nowrap;overflow:visible;
+.pc-card>.pc-name,.pc-card>.pc-name~div{box-sizing:border-box;height:19px;line-height:18px;padding:1px 2px 0;text-align:center;white-space:nowrap;overflow:visible;
   font-family:"Cinzel","Liberation Serif",Georgia,serif !important;font-weight:700;font-size:var(--pc-fs,11px) !important;letter-spacing:var(--pc-ls,.02em);color:${C.ivory};
   background:linear-gradient(180deg,#1d1710,${C.char});border-top:.75px solid ${C.gold};text-shadow:0 1px 1px rgba(0,0,0,.85)}
 .pc-stake{position:absolute;pointer-events:none;background:linear-gradient(90deg,#20150b 0%,#5a3f22 38%,#8a6a44 50%,#4a321b 64%,#1c1209 100%);
@@ -417,8 +417,8 @@ const PC = (() => {
     U: .82, V: .73, W: .97, X: .73, Y: .7, Z: .66, a: .64, b: .6, c: .68, d: .75, e: .56, f: .53, g: .73, h: .75, i: .35, j: .34, k: .67, l: .55, m: .86, n: .78, o: .78, p: .59,
     q: .77, r: .66, s: .51, t: .6, u: .7, v: .64, w: .87, x: .65, y: .64, z: .61, " ": .25, ".": .22, "'": .2, "-": .38 };
   const fit = (name) => { const s = String(name), n = s.length, em = [...s].reduce((a, ch) => a + (ADV[ch] ?? .7), 0) + 0.02 * n, room = IW - 6;
-    const f = Math.max(8.5, Math.min(11.5, room / Math.max(em, 1))), over = f * em - room;
-    return `--pc-fs:${f.toFixed(2)}px;--pc-ls:${over > 0 ? (0.02 * f - Math.min(0.9, over / n)).toFixed(2) + "px" : ".02em"}`; };
+    const f = Math.max(10.4, Math.min(14, 1.22 * room / Math.max(em * 1.06, 1))), over = f * em - room;
+    return `--pc-fs:${f.toFixed(2)}px;--pc-ls:${over > 0 ? (-0.01 * f - Math.min(1.1, over / n)).toFixed(2) + "px" : "-.01em"}`; };
   const build = (photo, flag, name, side = "up") => { inject();
     const w = document.createElement("div");
     w.style.cssText = "position:absolute;left:50%;top:-44px;width:0;height:0;pointer-events:none;z-index:5";
