@@ -61,7 +61,7 @@ IRON = np.array([30, 28, 27], float)
 FIRE_GLOW = np.array([255, 138, 48], float)
 OUTLINE = np.array([25, 21, 18], float)
 
-DEFAULT_SIZE = {"camp": 200.0, "wagon_park": 175.0, "supply_depot": 165.0}
+DEFAULT_SIZE = {"camp": 230.0, "wagon_park": 195.0, "supply_depot": 180.0}
 DEFAULT_FIRES = {"camp": 3, "wagon_park": 2, "supply_depot": 1}
 
 
@@ -451,7 +451,7 @@ def layout_camp(rng, L, W, n_fires):
                                      col=CANVAS if rng.random() < 0.8 else CANVAS_DIRTY))
             x += rng.uniform(5.6, 6.6)
     # officers' line behind the companies
-    yo = W * 0.22
+    yo = W * 0.27
     x = -hl * 0.55
     while x < hl * 0.55:
         if rng.random() < keep(x, yo) * 0.9:
@@ -460,7 +460,7 @@ def layout_camp(rng, L, W, n_fires):
         x += rng.uniform(10.5, 13)
     lanes.append([(-hl * 0.6, yo - 5.5), (hl * 0.6, yo - 5.5)])
     # rear: cook fires with kettles, log huts, crates, a few wagons and mules
-    yr = W * 0.36
+    yr = W * 0.40
     fx_list = list(np.linspace(-hl * 0.45, hl * 0.45, max(1, n_fires)) + rng.normal(0, 4, max(1, n_fires)))
     for fx in fx_list[:n_fires]:
         fy = yr + rng.normal(0, 2)
@@ -734,10 +734,10 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
     glow = np.zeros((Hpx, Wpx))
     for fx, fy, k in fires:
         d2 = (X - fx) ** 2 + (Y - fy) ** 2
-        s1, s2 = (2.0 * ks, 5.5 * ks) if not night else (3.2 * ks, 11.0 * ks)
+        s1, s2 = (2.4 * ks, 6.0 * ks) if not night else (3.2 * ks, 11.0 * ks)
         glow += k * (np.exp(-d2 / (2 * s1 ** 2)) * 0.9 + np.exp(-d2 / (2 * s2 ** 2)) * (0.35 if not night else 0.75))
     glow = np.clip(glow, 0, 1.6)
-    gk = (0.55 if not night else 1.25) * glow[..., None]
+    gk = (0.7 if not night else 1.25) * glow[..., None]
     warmlight = np.array([1.0, 0.62, 0.28])
     cv.rgb = cv.rgb * (1 + gk * warmlight * (0.6 if not night else 1.6)) + FIRE_GLOW * gk * (0.22 if not night else 0.35)
     cv.a = np.maximum(cv.a, np.clip(glow * (0.25 if not night else 0.75), 0, 1) * np.clip(cv.a * 2 + 0.3, 0, 1))

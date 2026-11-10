@@ -51,12 +51,13 @@ refA = refA.resize((round(refA.width * k * 1.4), round(refA.height * k * 1.4)), 
 W, H = 1180, 640
 day = map_crop(3020, 2330, W, H)
 camp, wag, dep = at_screen(load("camp_union.png")), at_screen(load("wagon_park.png")), at_screen(load("supply_depot.png"))
-place(day, camp, (250, 330))
-place(day, wag, (640, 420))
-place(day, dep, (980, 230))
+CAMP_AT, WAG_AT, DEP_AT = (260, 330), (620, 440), (1010, 330)
+place(day, camp, CAMP_AT)
+place(day, wag, WAG_AT)
+place(day, dep, DEP_AT)
 
 # --- panel C: night
-night_bg = map_crop(1700, 2500, 560, 420)
+night_bg = map_crop(3350, 2600, 560, 420)
 arr = np.array(night_bg).astype(float)
 lum = arr[..., :3].mean(axis=2, keepdims=True)
 arr[..., :3] = (arr[..., :3] * 0.45 + lum * 0.25) * np.array([0.78, 0.86, 1.08])
@@ -70,17 +71,18 @@ g = np.array(gl).astype(float)
 glow_rgb = Image.fromarray((g[..., :3] * g[..., 3:4] / 255).astype(np.uint8), "RGB")
 night_bg = Image.merge("RGBA", (*ImageChops.screen(night_bg.convert("RGB"), glow_rgb).split(), Image.new("L", night_bg.size, 255)))
 
-# --- row 2: 3x zoom of our camp on the map vs the reference zoom
+# --- row 2: 3x zoom cut straight out of the day panel (same pixels as the screen view) vs the reference zoom
 Z = 3
-zbg = map_crop(3020 + 40, 2330 + 160, 300, 200)
-zoom_src = zbg.copy()
-place(zoom_src, at_screen(load("camp_union.png")), (210, 170))
-zoom = zoom_src.crop((60, 70, 300, 230)).resize((240 * Z, 160 * Z), Image.LANCZOS)
-refz = Image.open(REF_ZOOM).convert("RGBA").resize((720, 480), Image.LANCZOS)
-dz_src = map_crop(3020 + 600, 2330 + 250, 300, 200)
-place(dz_src, at_screen(load("wagon_park.png")), (150, 120))
-dzoom = dz_src.crop((40, 40, 280, 200)).resize((240 * Z, 160 * Z), Image.LANCZOS)
 
+
+def zoom_at(panel, c, w=240, h=160):
+    return panel.crop((c[0] - w // 2, c[1] - h // 2, c[0] + w // 2, c[1] + h // 2)).resize((w * Z, h * Z), Image.LANCZOS)
+
+
+refz = Image.open(REF_ZOOM).convert("RGBA").resize((720, 480), Image.LANCZOS)
+zoom = zoom_at(day, CAMP_AT)
+dzoom = zoom_at(day, WAG_AT)
+depz = zoom_at(day, DEP_AT, 186, 140)
 pad = 20
 sheet_w = refA.width + W + 3 * pad
 row1_h = max(refA.height, H)
@@ -103,9 +105,11 @@ sheet.alpha_composite(refz, (pad, y))
 sheet.alpha_composite(zoom, (2 * pad + 720, y))
 sheet.alpha_composite(dzoom, (3 * pad + 1440, y))
 y += row2_h + 15
-d.text((pad, y), "camp_night on a K.night-style map (sprite + camp_night_glow.png screen-blended above the night overlay)", font=font, fill=(235, 225, 190))
+d.text((pad, y), "camp_night (+ glow layer, screen blend)", font=font, fill=(235, 225, 190))
 y += 45
 sheet.alpha_composite(night_bg, (pad, y))
+d.text((2 * pad + 560, y - 45), "3x zoom: supply_depot", font=font, fill=(235, 225, 190))
+sheet.alpha_composite(depz, (2 * pad + 560, y))
 nz = night_bg.crop((140, 90, 420, 330)).resize((280 * 2, 240 * 2), Image.LANCZOS) if False else None
 sheet.convert("RGB").save(os.path.join(HERE, "preview.jpg"), quality=90)
 print("preview", sheet.size)
