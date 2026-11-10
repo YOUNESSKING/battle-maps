@@ -1,0 +1,70 @@
+{
+ "champion_hill": {
+  "file": "champion_hill.png",
+  "crop": "champion_hill_crop.png",
+  "crop_xy_image_px": [
+   2845,
+   1035
+  ],
+  "crop_xy_map_px": [
+   1422.5,
+   517.5
+  ],
+  "crop_size_image_px": [
+   850,
+   782
+  ],
+  "basemap": "vicksburg_w.jpg"
+ },
+ "vicksburg_bluffs": {
+  "file": "vicksburg_bluffs.png",
+  "crop": "vicksburg_bluffs_crop.png",
+  "crop_xy_image_px": [
+   2100,
+   469
+  ],
+  "crop_xy_map_px": [
+   1050.0,
+   234.5
+  ],
+  "crop_size_image_px": [
+   1415,
+   1738
+  ],
+  "basemap": "vicksburg_w.jpg"
+ },
+ "champion_hill_close": {
+  "file": "champion_hill_close.png",
+  "crop": "champion_hill_close_crop.png",
+  "crop_xy_image_px": [
+   2845,
+   1035
+  ],
+  "crop_xy_map_px": [
+   1422.5,
+   517.5
+  ],
+  "crop_size_image_px": [
+   850,
+   782
+  ],
+  "basemap": "vicksburg_w_close.jpg"
+ },
+ "vicksburg_bluffs_close": {
+  "file": "vicksburg_bluffs_close.png",
+  "crop": "vicksburg_bluffs_close_crop.png",
+  "crop_xy_image_px": [
+   2100,
+   469
+  ],
+  "crop_xy_map_px": [
+   1050.0,
+   234.5
+  ],
+  "crop_size_image_px": [
+   1415,
+   1738
+  ],
+  "basemap": "vicksburg_w_close.jpg"
+ }
+}

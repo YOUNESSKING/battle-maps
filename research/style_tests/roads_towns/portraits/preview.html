@@ -1,0 +1,59 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Portrait card v2 preview</title>
+<style>
+html,body{margin:0;background:#111}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;
+  background:url("../../../../grant/assets/vicksburg_w.jpg") -2250px -760px/4800px 2700px no-repeat}
+.half{position:absolute;top:0;bottom:0;width:960px}
+.lbl{position:absolute;top:26px;left:30px;font:700 22px "Liberation Sans",Arial,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:4px 12px;letter-spacing:.06em}
+.sep{position:absolute;left:959px;top:0;bottom:0;width:2px;background:rgba(0,0,0,.6)}
+/* a stand-in for a Style W unit block (B.unit): the card is pinned to its first child */
+.unit{position:absolute;width:0;height:0}
+.unit>.blk{position:absolute;left:-17px;top:-7px;width:34px;height:14px;border:1.6px solid #15110c;box-sizing:border-box}
+.unit.us>.blk{background:#2f55a4}.unit.cs>.blk{background:#b3322c}
+.cap{position:absolute;font:600 14px "Liberation Sans",Arial,sans-serif;color:#fff;background:rgba(0,0,0,.5);padding:2px 7px;transform:translateX(-50%);white-space:nowrap}
+</style></head>
+<body>
+<div id="stage">
+  <div class="half" id="old" style="left:0"><div class="lbl">OLD (kit pinPortrait)</div></div>
+  <div class="half" id="new" style="left:960px"><div class="lbl">NEW (portrait_card.js)</div></div>
+  <div class="sep"></div>
+</div>
+<script>var PC_FONT_BASE = "../../rr_cards/fonts/";</script>
+<script src="portrait_card.js"></script>
+<script>
+const FL = { us: "../../../../grant/assets/media/us34_flag.png", cs: "../../../../grant/assets/media/csa1_13_flag.png" };
+const PHOTO = (n) => `../../../../grant/assets/media/${n}_head.png`;
+// the scenes' own mystery image (grant/tools/s12_body_s12d.js MYST)
+const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="82" viewBox="0 0 76 82"><rect width="76" height="82" fill="#2b2822"/><path d="M38 14 C27 14 22 22 22 31 C22 40 27 47 31 50 L31 54 C18 57 10 65 8 82 L68 82 C66 65 58 57 45 54 L45 50 C49 47 54 40 54 31 C54 22 49 14 38 14 Z" fill="#141210"/><text x="38" y="46" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#e9dfc6">?</text></svg>');
+// OLD = the kit's markup, verbatim (grant/tools/vx_kit.js pinPortrait), "up" and "right"
+const oldBuild = (photo, flag, name, side = "up") => { const w = document.createElement("div");
+  w.style.cssText = "position:absolute;left:50%;top:-44px;width:0;height:0;pointer-events:none;z-index:5";
+  w.innerHTML = `<div style="position:absolute;left:-38px;bottom:0;width:76px;background:#1a1712;border:1.5px solid #e9dfc6;box-shadow:0 4px 10px rgba(0,0,0,.6)"><img src="${flag}" style="display:block;width:76px;height:15px;object-fit:cover"><img src="${photo}" style="display:block;width:76px;height:82px;object-fit:cover;object-position:50% 20%;filter:sepia(.35) contrast(1.05)"><div style="font-family:'Liberation Serif',Georgia,serif;font-weight:700;font-size:13px;color:#fbf8ef;text-align:center;padding:2px 0 3px;white-space:nowrap">${name}</div></div><div style="position:absolute;left:-1px;bottom:-40px;width:1.5px;height:40px;background:#463a1e"></div>`;
+  if (side === "right") { w.style.top = "4px"; w.style.left = "calc(100% + 0px)"; const card = w.firstElementChild, stake = w.lastElementChild;
+    Object.assign(card.style, { left: "40px", bottom: "auto", top: "56px" });
+    Object.assign(stake.style, { left: "0px", bottom: "auto", top: "0px", width: "70px", height: "1.5px", transformOrigin: "0 0", transform: "rotate(54deg)" }); }
+  return w; };
+// the scenes' name reveal, verbatim minus the timeline (s12_body_s12d.js lines 59-61): proves the DOM contract still holds
+const compatReveal = (GW, photo, name) => { const ph = GW.firstElementChild.querySelectorAll("img")[1]; ph.setAttribute("src", photo);
+  const nm = GW.firstElementChild.lastElementChild, n2 = document.createElement("div"); n2.textContent = name;
+  n2.style.cssText = nm.style.cssText + ";position:absolute;left:0;right:0;bottom:0;font-size:13px"; GW.firstElementChild.appendChild(n2); nm.style.visibility = "hidden"; };
+const unit = (parent, side, x, y) => { const u = document.createElement("div"); u.className = "unit " + side; u.style.left = x + "px"; u.style.top = y + "px";
+  u.innerHTML = '<div class="blk"></div>'; parent.appendChild(u); return u.firstElementChild; };
+const cap = (parent, txt, x, y) => { const c = document.createElement("div"); c.className = "cap"; c.textContent = txt; c.style.left = x + "px"; c.style.top = y + "px"; parent.appendChild(c); };
+const row = (root, mk) => {
+  // Grant (US, stake up), Pemberton (CS, stake up), mystery "?" (US, side "right"), the same after the reveal
+  unit(root, "us", 150, 330).appendChild(mk(PHOTO("grant"), FL.us, "Grant", "up")); cap(root, "Grant, up", 150, 360);
+  unit(root, "cs", 380, 330).appendChild(mk(PHOTO("pemberton"), FL.cs, "Pemberton", "up")); cap(root, "Pemberton, up", 380, 360);
+  unit(root, "us", 560, 140).appendChild(mk(MYST, FL.us, "Union General", "right")); cap(root, "mystery, right", 600, 320);
+  const g = mk(MYST, FL.us, "Union General", "right"); unit(root, "us", 740, 140).appendChild(g); compatReveal(g, PHOTO("grant"), "Ulysses Grant"); cap(root, "after reveal", 790, 320);
+  // second band: as small as on a phone feed is judged from the downscaled strip; here the full-name cards
+  unit(root, "cs", 200, 760).appendChild(mk(PHOTO("pemberton"), FL.cs, "John C. Pemberton", "up")); cap(root, "long name", 200, 790);
+  unit(root, "us", 470, 760).appendChild(mk(PHOTO("grant"), FL.us, "Ulysses Grant", "up")); cap(root, "Ulysses Grant", 470, 790);
+  unit(root, "us", 720, 760).appendChild(mk(PC.MYST, FL.us, "Union General", "up")); cap(root, "PC.MYST option", 720, 790);
+};
+row(document.getElementById("old"), oldBuild);
+row(document.getElementById("new"), PC.build);
+document.fonts.ready.then(() => { document.body.dataset.ready = "1"; });
+</script>
+</body></html>

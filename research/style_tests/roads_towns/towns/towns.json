@@ -1,0 +1,62 @@
+{
+ "raymond": {
+  "png": "raymond.png",
+  "ppu": 2.0,
+  "size_px": [
+   266,
+   260
+  ],
+  "centre_px": [
+   133.0,
+   133.0
+  ]
+ },
+ "vicksburg": {
+  "png": "vicksburg.png",
+  "ppu": 2.0,
+  "size_px": [
+   544,
+   600
+  ],
+  "centre_px": [
+   242.5,
+   298.5
+  ]
+ },
+ "jackson": {
+  "png": "jackson.png",
+  "ppu": 2.0,
+  "size_px": [
+   324,
+   404
+  ],
+  "centre_px": [
+   184.5,
+   208.5
+  ]
+ },
+ "port_gibson": {
+  "png": "port_gibson.png",
+  "ppu": 2.0,
+  "size_px": [
+   261,
+   266
+  ],
+  "centre_px": [
+   128.0,
+   133.0
+  ]
+ },
+ "edwards": {
+  "png": "edwards.png",
+  "ppu": 2.0,
+  "size_px": [
+   246,
+   229
+  ],
+  "centre_px": [
+   113.0,
+   119.0
+  ]
+ }
+}
