@@ -28,7 +28,9 @@ ARGS = dict(a.split("=", 1) for a in sys.argv[1:] if "=" in a)
 MAP = ARGS.get("MAP", "vicksburg_w")
 BIG_HW = float(ARGS.get("BIG_HW", 9.0))      # old half-width (img px) above which a river counts as "big"
 CREEK_HW = float(ARGS.get("CREEK_HW", 2.3))  # new water half-width of creeks (img px; ~0.95 screen px each at s 1.9)
-BIG_K = float(ARGS.get("BIG_K", 0.9))        # Mississippi: new half-width = BIG_K * old
+BIG_K = float(ARGS.get("BIG_K", 1.0))        # Mississippi: new half-width = BIG_K * old
+BLUE_MIX = float(ARGS.get("BLUE_MIX", 0.5))  # water colour: 0 = muted reference grey-blue, 1 = the old saturated Style W blue
+WIDTH = float(ARGS.get("WIDTH", 0.65))        # creek width: 0 = thin reference line (CREEK_HW), 1 = the old ribbon width
 SEED = int(ARGS.get("SEED", 5))
 
 meta = json.load(open(f"{REPO}/grant/assets/{MAP}.json"))
@@ -63,9 +65,20 @@ def value_noise(h, w, cell, rng):
     return n / (n.std() + 1e-6)
 
 
-def build(img, rng):
+def old_blue(img):
+    """median colour of the old ribbon's core (the saturated Style W blue)."""
+    m = blue_mask(img); dt = cv2.distanceTransform(m, cv2.DIST_L2, 5)
+    return np.median(img[dt > 2.5].reshape(-1, 3), axis=0).astype(np.float32)
+
+
+def build(img, rng, blue_mix=None, width=None, ob=None, big_k=None):
+    big_k = BIG_K if big_k is None else big_k
+    blue_mix = BLUE_MIX if blue_mix is None else blue_mix; width = WIDTH if width is None else width
     H, W, _ = img.shape
     base = img.astype(np.float32)
+    ob = old_blue(img) if ob is None else ob
+    mixc = lambda muted, old: muted * (1 - blue_mix) + old * blue_mix
+    WATER_ = mixc(WATER, ob); WATER_DEEP_ = mixc(WATER_DEEP, ob * 0.84); SHIMMER_ = mixc(SHIMMER, np.minimum(ob * 1.22, 255))
     m = blue_mask(img)
     m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
     # old ribbon incl. its dark outline stroke -> what we cover
@@ -86,7 +99,8 @@ def build(img, rng):
     old_hw = hw_sk[lab]
     old_hw = cv2.blur(old_hw, (15, 15))                       # steadier width along the river
     big = smoothstep(BIG_HW - 1.5, BIG_HW + 1.0, old_hw)        # 0 creek .. 1 Mississippi
-    hw = CREEK_HW * (1 - big) + BIG_K * old_hw * big           # new water half-width
+    creek_hw = CREEK_HW + width * np.maximum(old_hw - CREEK_HW, 0)
+    hw = creek_hw * (1 - big) + big_k * old_hw * big           # new water half-width
     hw *= 1 + 0.10 * value_noise(H, W, 40, rng)                 # slight natural width variation
     d = d.astype(np.float32)
 
@@ -139,7 +153,7 @@ def build(img, rng):
     # ---------------- 3. water colour
     rel = np.clip(d / np.maximum(hw, 0.5), 0, 1)
     deep = big * (1 - smoothstep(0.0, 0.85, rel)) * 0.75
-    water = WATER * (1 - deep[..., None]) + WATER_DEEP * deep[..., None]
+    water = WATER_ * (1 - deep[..., None]) + WATER_DEEP_ * deep[..., None]
     water *= (1 + 0.035 * value_noise(H, W, 18, rng))[..., None]
     # shimmer: streaks parallel to the flow (iso-lines of the centre distance), broken by low-freq noise
     ph = value_noise(H, W, 90, rng) * 1.2
@@ -147,7 +161,7 @@ def build(img, rng):
     streak = streak ** 6
     brk = smoothstep(0.2, 1.4, value_noise(H, W, 70, rng))
     shim = streak * brk * (0.05 + 0.20 * big) * (1 - smoothstep(0.8, 1.0, rel))
-    water = water * (1 - shim[..., None]) + SHIMMER * shim[..., None]
+    water = water * (1 - shim[..., None]) + SHIMMER_ * shim[..., None]
     walpha = np.clip(hw - d + 0.5, 0, 1)                         # anti-aliased water edge
 
     # ---------------- 4. compose the final look
@@ -208,25 +222,38 @@ def main():
         src, ov = outs["rivers_w"]
         pv = crop_view(src, ov, CX, CY, S); pv.save(f"{HERE}/preview.jpg", quality=92)
         crop_view(src, None, CX, CY, S).save(f"{HERE}/preview_before.jpg", quality=88)
-        # compare: reference crops (as shot) next to ours at the same on-screen magnification
-        mag = 2.26                          # the owner's phone shots are ~2.26x a 1080p frame
+        # compare: columns old | middle (this build) | reference-like (BLUE_MIX 0, WIDTH 0) | owner reference,
+        # rows Big Black meander / Mississippi at Vicksburg; all at the phone shots' magnification (~2.26x a 1080p frame)
+        from PIL import ImageDraw, ImageFont
+        mag = 2.26
+        w_, h_ = 1920 / S * HD, 1080 / S * HD; x0, y0 = int(CX * HD - w_ / 2), int(CY * HD - h_ / 2)
+        pad = 120; arr = np.asarray(src)
+        sub = arr[y0 - pad:y0 + int(h_) + pad, x0 - pad:x0 + int(w_) + pad]
+        refl = Image.fromarray(build(sub, np.random.default_rng(SEED), blue_mix=0.0, width=0.0, ob=old_blue(arr), big_k=0.9), "RGBA")
+        bl = Image.fromarray(sub).convert("RGBA"); bl.alpha_composite(refl)
+        pr = bl.crop((pad, pad, pad + int(w_), pad + int(h_))).convert("RGB").resize((1920, 1080), Image.LANCZOS)
+        pr.save(f"{HERE}/preview_reflike.jpg", quality=88)
+        pb = crop_view(src, None, CX, CY, S)
         refs = [Image.open(f"{HERE}/../{f}").convert("RGB") for f in ("ref_river_zoom.png", "ref_town_zoom.png")]
-        tiles = []
-        # ours: Big Black meander + Mississippi bend at Vicksburg (frame coords of preview.jpg)
-        for (fx, fy, fw, fh) in ((1060, 120, 292, 708), (420, 330, 491, 358)):
-            tiles.append(pv.crop((fx, fy, fx + fw, fy + fh)).resize((int(fw * mag), int(fh * mag)), Image.LANCZOS))
-        if "rivers_close" in outs:
-            src2, ov2 = outs["rivers_close"]; pv2 = crop_view(src2, ov2, CX, CY, S)
-            pv2.save(f"{HERE}/preview_close.jpg", quality=90)
-            tiles.append(pv2.crop((1060, 120, 1352, 828)).resize((int(292 * mag), int(708 * mag)), Image.LANCZOS))
-        Wc = refs[0].width + tiles[0].width + (tiles[2].width if len(tiles) > 2 else 0) + 40
-        top = max(refs[0].height, tiles[0].height)
-        Hc = top + 20 + max(refs[1].height, tiles[1].height)
-        Wc = max(Wc, refs[1].width + tiles[1].width + 20)
-        cmp_ = Image.new("RGB", (Wc, Hc), (18, 18, 18))
-        cmp_.paste(refs[0], (0, 0)); cmp_.paste(tiles[0], (refs[0].width + 20, 0))
-        if len(tiles) > 2: cmp_.paste(tiles[2], (refs[0].width + tiles[0].width + 40, 0))
-        cmp_.paste(refs[1], (0, top + 20)); cmp_.paste(tiles[1], (refs[1].width + 20, top + 20))
+        boxes = ((1060, 120, 292, 708), (420, 330, 491, 358))
+        cols = [("old (current)", pb), ("middle (BLUE_MIX %.2g, WIDTH %.2g)" % (BLUE_MIX, WIDTH), pv), ("reference-like", pr)]
+        rows = []
+        for k, (fx, fy, fw, fh) in enumerate(boxes):
+            tl = [im.crop((fx, fy, fx + fw, fy + fh)).resize((int(fw * mag), int(fh * mag)), Image.LANCZOS) for _, im in cols] + [refs[k]]
+            rows.append(tl)
+        gap, lab = 20, 60
+        Wc = max(sum(t.width for t in r) + gap * (len(r) - 1) for r in rows)
+        Hc = sum(max(t.height for t in r) + lab for r in rows) + gap
+        cmp_ = Image.new("RGB", (Wc, Hc), (18, 18, 18)); dr = ImageDraw.Draw(cmp_)
+        try: font = ImageFont.load_default(size=40)
+        except TypeError: font = ImageFont.load_default()
+        names = [c[0] for c in cols] + ["owner reference"]
+        y = 0
+        for r in rows:
+            x = 0
+            for t, nm in zip(r, names):
+                dr.text((x + 10, y + 8), nm, fill=(235, 235, 235), font=font); cmp_.paste(t, (x, y + lab)); x += t.width + gap
+            y += max(t.height for t in r) + lab + gap
         cmp_.save(f"{HERE}/compare.jpg", quality=90)
 
 
