@@ -56,9 +56,10 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   const fl = document.createElementNS("http://www.w3.org/2000/svg", "filter"); fl.setAttribute("id", "rtsoft"); fl.setAttribute("x", "-5%%"); fl.setAttribute("y", "-5%%"); fl.setAttribute("width", "110%%"); fl.setAttribute("height", "110%%");
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
-  RTL.appendChild(sv); RTSV = sv;
-  const bi = document.createElement("img"); bi.src = "assets/rt/bridges___BUILDID__.png"; bi.alt = "";   // plank bridges, ferries, landings (crossings.py)
-  bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi);
+  // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}___BUILDID__.png`; bi.alt = ""; bi.id = "rt_" + n;
+    bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
+  RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3))); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
   CURV.push([{ setAttribute: (a, v) => rtApply(+v) }, 1]); rtApply(1 / CAM_S); }
 Object.entries(RTM.towns).forEach(([k, T]) => { const im = document.createElement("img"); im.src = `assets/rt/town_${k}.png`; im.alt = "";
@@ -93,8 +94,9 @@ for a, b in [('arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], 
 rep('B.move("u17", T_17 + 0.1, 1.2, ...L(32.31, -90.64));', 'B.move("u17", T_17 + 0.1, 1.2, ...L(32.282, -90.68));   /* s12d_rt: off Edwards */')
 rep('B.move("u13", T_17, 1.2, ...L(32.39, -90.66));', 'B.move("u13", T_17, 1.2, ...L(32.39, -90.638));   /* s12d_rt: off Pemberton card */')
 rep('hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 1.6);', 'hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 0.2);   /* s12d_rt: form 1 ~2 s, mostly faded by the test frame */')
-rep('BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50);', 'BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, L(32.286, -90.525));   /* s12d_rt: battle mark on the road below the hill, so its lit top stays visible */')
-rep('smoke(LL([[32.335, -90.552], [32.33, -90.565], [32.29, -90.56]]), T_CH);', 'smoke(LL([[32.292, -90.538], [32.286, -90.552], [32.281, -90.528]]), T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */')
+rep('BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50);', 'BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, L(32.325, -90.54));   /* s12d_rt: battle mark on the road below the hill, so its lit top stays visible */')
+rep('smoke(LL([[32.335, -90.552], [32.33, -90.565], [32.29, -90.56]]), T_CH);', 'smoke(LL([[32.321, -90.546], [32.317, -90.556], [32.315, -90.538]]), T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */')
+rep('BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));', 'BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));\n{ const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */\n  tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 0.2); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 0.2); }')
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)
 src = src.replace("B.finish();", "window.__RT_T = { T_CH, T_17, T_16, T_BB };\nB.finish();")
 import time

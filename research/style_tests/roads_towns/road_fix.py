@@ -15,6 +15,13 @@ def fixed_roads():
                 cum.append(cum[-1] + math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]))
             L = cum[-1]
             P = [(x, y + 21.0 * math.sin(math.pi * c / L) ** 1.3) for (x, y), c in zip(P, cum)]
+        if r["id"] == "grand_gulf_port_gibson":   # round 7: landing ~100 px (screen) north, just below the mouth of the Big Black
+            x0, y0 = P[0]; dx, dy = 1264.0 - x0, 906.0 - y0
+            cum = [0.0]
+            for i in range(1, len(P)):
+                cum.append(cum[-1] + math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]))
+            Lr = cum[-1]
+            P = [(x + dx * max(0, 1 - c / (0.75 * Lr)) ** 1.5, y + dy * max(0, 1 - c / (0.75 * Lr)) ** 1.5) for (x, y), c in zip(P, cum)]
         Q = []
         for x, y in P:
             w = math.exp(-((x - ED0[0]) ** 2 + (y - ED0[1]) ** 2) / (34.0 ** 2))
