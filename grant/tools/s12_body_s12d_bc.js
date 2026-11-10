@@ -1,4 +1,4 @@
-// SCRIPT-12 TEST, scene s12d_bc = s12d_rt + banners, troop formations, camps (bc_patch.py) = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
+// SCRIPT-12 TEST, scene s12d_bc = s12d_rt + general banners, more unit boxes, camps (bc_patch.py) = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
 // each battle marked on the map as its date is spoken); a battle every three or four days; the army ate off the country; Grant's count + the hedge.
 // Re-cut of the approved tools/vx_body_m2f.js (vicksburg_w, units, moves, Sherman card, forage icons, vs card, blue hatches at Jackson + Champion Hill).
 // Built with: python3 tools/s12_inline.py vx s12d vicksburg_w s12-3 s12-4 31.2 63.8
@@ -19,16 +19,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794349412`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794349524`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794349412.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794349524.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
 [["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"], ["rivers_w", RTH, "relief"], ["rivers_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794349412.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794349524.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -46,7 +46,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.filter((p) => p.tagName === "g").forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794349412.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794349524.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => { if (p.__w) p.setAttribute("stroke-width", (p.__w * k).toFixed(3)); }); SH.forEach(([g, dx, dy]) => g.setAttribute("transform", `translate(${(dx * k).toFixed(3)} ${(dy * k).toFixed(3)})`)); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -60,7 +60,7 @@ const rtEdge = () => Object.entries(RTM.towns).forEach(([k, T]) => { const x0 = 
   RTIMG[k].style.opacity = op; if (RTLBL[k]) RTLBL[k].style.opacity = op; });
 CURV.push([{ setAttribute: () => rtEdge() }, 1]);
 // reference-style town name (spaced cream serif on a gentle arc, beside the town; constant on screen)
-const BCC = [{"png": "bc_wagon_park.png", "left": 1628.53, "top": 738.79, "w": 78.68, "h": 58.95}, {"png": "bc_camp_union.png", "left": 1555.79, "top": 745.0, "w": 63.95, "h": 54.74}, {"png": "bc_depot_cs.png", "left": 1431.18, "top": 706.55, "w": 54.74, "h": 42.37}];
+const BCC = [{"png": "bc_wagon_park.png", "left": 1628.53, "top": 738.79, "w": 78.68, "h": 58.95}, {"png": "bc_camp_union.png", "left": 1565.79, "top": 767.0, "w": 63.95, "h": 54.74}, {"png": "bc_depot_cs.png", "left": 1431.18, "top": 706.55, "w": 54.74, "h": 42.37}];
 BCC.forEach((c) => { const im = document.createElement("img"); im.src = `assets/rt/${c.png}`; im.alt = "";
   im.style.cssText = `position:absolute;left:${c.left}px;top:${c.top}px;width:${c.w}px;height:${c.h}px;pointer-events:none`; RTL.appendChild(im); });
 const rtLabel = (k, t = 0, until = null) => { const T = RTM.towns[k], Lb = T.label;
@@ -91,27 +91,9 @@ camera([K_(0, 32.02, -90.93, 1.55), K_(T_LIFE + 0.8, 32.03, -90.90, 1.6), K_(T_G
  [[32.20, -90.50], [32.50, -90.86], T_CH - 0.5, T_EVERY + 1.0], [[32.42, -90.55], [32.16, -90.86], T_EVERY + 0.8, END + 1]].forEach(([us, cs, t, u]) => {
   const a = flagS(FL.us, "", ...L(...us), t, u), b = flagS(FL.cs, "", ...L(...cs), t, u); if (!(t > 0)) { now(a); now(b); } });
 // ---------- units (bare boxes: corps numbers are never spoken) ----------
-// ===== s12d_bc TEST (research/style_tests/banners_units_camps): troop formations (units.js), general banners (banner.js), camps =====
-const UF = window.U; UF.init({ tl, parent: WORLD, k: 1 / 1.9 });   // block sizes in screen px at the 17 May camera (s 1.9)
-const BLK = { w: 30, d: 28, seam: 4 };   // brigade blocks (campaign scale: 1 block = 1 brigade)
-const xyf = (p, face) => ({ x: p[0], y: p[1], face });
-const F = {
-  u13: UF.formation("u13", "carth", "column", xyf(L(31.985, -90.955), -60), 4, { mark: "XXX", ...BLK }),   // McClernand (XIII)
-  u17: UF.formation("u17", "carth", "column", xyf(L(32.03, -90.97), -60), 4, { mark: "XXX", ...BLK }),    // McPherson (XVII), Grant rides with him
-  u15: UF.formation("u15", "carth", "column", xyf(L(32.02, -91.03), -60), 4, { mark: "XXX", ...BLK }),    // Sherman (XV)
-  rv: UF.formation("rv", "rome", "column", xyf(L(32.36, -90.84), 90), 4, { mark: "XX", ...BLK }),        // Pemberton's field army
-  re: UF.formation("re", "rome", "column", xyf(L(32.30, -90.70), 90), 3, { mark: "XX", ...BLK }),
-  rj: UF.formation("rj", "rome", "column", xyf(L(32.30, -90.24), 90), 3, { mark: "XX", ...BLK }),
-  rs: UF.formation("rs", "rome", "column", xyf(L(32.14, -90.80), 90), 3, { mark: "XX", ...BLK }),
-};
-// B.move drop-in: columns turn to march along the move; lines keep their facing on short shifts and form column for long marches
-const MV = (id, t, dur, x, y, o = {}) => { const h = F[id], [cx, cy] = UF.center(h), dist = Math.hypot(x - cx, y - cy);
-  if (o.geom) return UF.move(h, t, dur, o.geom, { kind: o.kind });
-  if (h.state.kind === "line" && dist < 40) return UF.bmove(h, t, dur, x, y);
-  const face = dist > 0.5 ? Math.atan2(y - cy, x - cx) * 180 / Math.PI : 0;
-  return UF.move(h, t, dur, { x, y, face }, { kind: "column" }); };
-// banners ride on the formation's HQ point, counter-scaled so they stay ~200 px on screen like the old cards
-const BH = (h) => { const d = document.createElement("div"); d.style.cssText = "position:absolute;left:0;top:0;width:0;height:0"; h.hq.appendChild(d); reg(d, "0 0"); return d; };
+U("u13", "carth", L(31.985, -90.955), "", "XXX"); U("u17", "carth", L(32.03, -90.97), "", "XXX"); U("u15", "carth", L(32.02, -91.03), "", "XXX");
+U("rv", "rome", L(32.36, -90.84), "", "XX"); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "", "XX"); U("rs", "rome", L(32.14, -90.80), "", "XX");
+["u13", "u17", "u15", "rv", "re", "rj", "rs"].forEach((id) => tagAt(id, null));
 const VTW = rtLabel("vicksburg", 0);   // s12d_rt: painted town + reference label (permanent: the army heads for it)
 // ---------- "Sherman warned that the road would be jammed, as sure as life" ----------
 const ROADP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.09, -90.80)];
@@ -128,10 +110,10 @@ SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.fi
   gsap.set(l2, { autoAlpha: 0 }); tl.fromTo(l2, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_LIFE);
   }
 // ---------- "And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant." ----------
-MV("u13", T_UNF, 3, ...L(32.04, -90.86)); MV("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); MV("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
-pinPortrait(BH(F.rv), PHOTO("pemberton"), BN.flagFor("cs", "1863-05-17"), "Pemberton", T_PEM + 0.1, null, true, "west");   /* s12d_bc: banner on a side stake, west of his line */   // round 2: stake straight up, off the Vicksburg name and the Union cards
+B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); B.move("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
+pinPortrait("rv", PHOTO("pemberton"), BN.flagFor("cs", "1863-05-17"), "Pemberton", T_PEM + 0.1, null, true, "west");   /* s12d_bc: banner on a side stake, west of his box */   // round 2: stake straight up, off the Vicksburg name and the Union cards
 focus(L(32.07, -90.84), 150, T_BEH, T_UG + 1.6);
-const GW = now(pinPortrait(BH(F.u17), MYST, BN.flagFor("us", "1863-05-17"), "Union General", 0, null, true, "ne"));   /* s12d_bc: banner up-right of his column */   // on his column from frame 0, unnamed (continuing from s12c)
+const GW = now(pinPortrait("u17", MYST, BN.flagFor("us", "1863-05-17"), "Union General", 0, null, true, "ne"));   /* s12d_bc: banner up-right of his corps */   // on his column from frame 0, unnamed (continuing from s12c)
 BN.reveal(GW, PHOTO("grant"), "Ulysses Grant", T_UG - 0.1);   /* s12d_rt: portrait card v2 reveal (research/style_tests/roads_towns/portraits) */
 tl.fromTo(GW.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, T_UG - 0.1);
 tl.to(GW.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, T_UG + 1.2); SFX("hit", T_UG - 0.15);   // the name reveal
@@ -141,34 +123,38 @@ const MARK = (p, t) => { const el = pinS(GG.pin(SAB, p[0], p[1], { t, pop: true 
 const BATT = (k, p, t, until, mo) => { MARK([p[0] + mo[0], p[1] + mo[1]], t); return rtLabel(k, t + 0.05, until); };
 const BAT = (txt, p, t, until, dx = 0, dy = -40, mp = p) => { MARK(mp, t); return boxL(tc(txt), p[0] + dx, p[1] + dy, t + 0.05, until, { size: 24 }); };   // round 2: small white serif names (2d.7), no stamps
 // moves (compressed from m2f): Port Gibson -> Raymond -> Jackson -> back west -> Champion Hill -> Big Black
-MV("u13", T_M1 - 0.4, 1.0, ...L(31.985, -90.93)); MV("u17", T_M1 - 0.3, 1.0, ...L(31.99, -90.96));
-MV("rs", T_M1 - 0.4, 1.0, ...L(32.0, -90.90));
-MV("rv", T_M1 - 2.2, 1.6, ...L(32.26, -90.82));   // round 2: Pemberton (and his card) stay inside the frame while the camera follows the battles south and east
+B.move("u13", T_M1 - 0.4, 1.0, ...L(31.985, -90.93)); B.move("u17", T_M1 - 0.3, 1.0, ...L(31.99, -90.96));
+B.move("rs", T_M1 - 0.4, 1.0, ...L(32.0, -90.90));
+B.move("rv", T_M1 - 2.2, 1.6, ...L(32.26, -90.82));   // round 2: Pemberton (and his card) stay inside the frame while the camera follows the battles south and east
 BATT("port_gibson", PG, T_PG, Math.min(T_12 + 0.6, T_PG + LBL_LIFE), [-26, -10]);
-MV("rs", T_PG + 0.6, 1.2, ...L(32.14, -90.80));
+B.move("rs", T_PG + 0.6, 1.2, ...L(32.14, -90.80));
 arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], [32.247, -90.452]]), side: "carth", t: T_12 - 0.2, dur: 1.2, width: AW(1.7, 13), until: T_14 + 1.6 });
-MV("u17", T_12 - 0.2, 1.4, ...L(32.24, -90.45)); MV("u13", T_12, 1.6, ...L(32.15, -90.62)); MV("u15", T_12 + 0.1, 1.6, ...L(32.10, -90.70));
+B.move("u17", T_12 - 0.2, 1.4, ...L(32.24, -90.45)); B.move("u13", T_12, 1.6, ...L(32.15, -90.62)); B.move("u15", T_12 + 0.1, 1.6, ...L(32.10, -90.70));
 BATT("raymond", RAY, T_RAY, Math.min(T_14 + 0.6, T_RAY + LBL_LIFE), [-26, 12]);
 arw({ pts: LL([[32.25, -90.40], [32.29, -90.32], [32.297, -90.232]]), side: "carth", t: T_14 - 0.2, dur: 0.9, width: AW(1.7, 13), until: T_16 + 1.2 });
-MV("u17", T_14, 1.0, ...L(32.30, -90.22)); MV("u15", T_14 - 0.1, 1.3, ...L(32.26, -90.26)); MV("rj", T_14 + 0.3, 1.4, ...L(32.45, -90.10));
-tl.to(F.rj.layer, { autoAlpha: 0, duration: 0.6 }, T_16 - 0.3);
+B.move("u17", T_14, 1.0, ...L(32.30, -90.22)); B.move("u15", T_14 - 0.1, 1.3, ...L(32.26, -90.26)); B.move("rj", T_14 + 0.3, 1.4, ...L(32.45, -90.10));
+tl.to(B.units.rj.el, { autoAlpha: 0, duration: 0.6 }, T_16 - 0.3);
 BATT("jackson", JAX, T_JAX, null, [-45, -27]);
 arw({ pts: LL([[32.30, -90.22], [32.34, -90.33], [32.35, -90.46], [32.34, -90.51]]), side: "carth", t: T_16 - 0.2, dur: 1.0, width: AW(1.9, 13), until: T_17 + 1.4 });
-MV("u17", T_16 - 0.2, 1.2, ...L(32.335, -90.515)); MV("u15", T_16, 1.4, ...L(32.40, -90.47)); MV("u13", T_16, 1.4, ...L(32.29, -90.53));
-MV("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); MV("re", T_16 - 0.5, 1.2, ...L(32.325, -90.568)); MV("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.573));   // s12d_rt: ~30 px east so Edwards shows
+B.move("u17", T_16 - 0.2, 1.2, ...L(32.335, -90.515)); B.move("u15", T_16, 1.4, ...L(32.40, -90.47)); B.move("u13", T_16, 1.4, ...L(32.29, -90.53));
+B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); B.move("re", T_16 - 0.5, 1.2, ...L(32.325, -90.568)); B.move("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.573));   // s12d_rt: ~30 px east so Edwards shows
 smoke([[1627, 719], [1620, 722], [1633, 724]], T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */
 mg(L(32.335, -90.525), L(32.36, -90.58), T_CH + 0.3, 5, 1.1 / 1.9 * 2.2);
 BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, [1627, 719]);   /* s12d_rt polish: south foot of Champion Hill (~40 px below the lit crest), between the Jackson and Raymond roads */
-MV("rv", T_17 - 0.3, 1.0, 0, 0, { kind: "line", geom: { x: 1534, y: 684, face: 0 } }); MV("re", T_17 - 0.2, 1.0, 0, 0, { kind: "line", geom: { x: 1536, y: 718, face: 0 } });   /* s12d_bc: the bridgehead line on the east bank, facing east */
-const SKR = UF.skirmishers(F.rv, 6, { ahead: 34, t: T_17 + 0.7 });   /* skirmish screen in front of the bridgehead */ tl.to(F.rs.layer, { autoAlpha: 0, duration: 0.6 }, T_17);
-MV("u13", T_17, 1.2, 0, 0, { kind: "line", geom: { x: 1578, y: 700, face: 180 } });   /* s12d_bc: McClernand deploys in line facing the bridgehead */   /* s12d_rt: off Pemberton card */ MV("u17", T_17 + 0.1, 1.2, 1660, 690);   /* s12d_bc: McPherson in column on the Jackson road behind */   /* s12d_rt: off Edwards */ MV("u15", T_17 + 0.1, 1.4, 1560, 592);   /* s12d_bc: Sherman marching north-west for Bridgeport */
+B.move("rv", T_17 - 0.3, 1.0, 1497, 688); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.6 }, T_17 - 0.1);   /* s12d_bc: one division box at the bridge, its brigades in front */
+const BCX = (ids, t, until) => ids.forEach((id) => { tl.fromTo(B.units[id].el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, t); if (until != null) tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, until); });
+[["cb1", 1536, 650], ["cb2", 1536, 676], ["cb3", 1536, 702], ["cb4", 1538, 728]].forEach(([id, x, y]) => { U(id, "rome", [x, y], "", "X", 0); gsap.set(B.units[id].el, { autoAlpha: 0 }); });
+BCX(["cb1", "cb2", "cb3", "cb4"], T_17 + 0.3, T_BB + 0.9); tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
+B.move("u13", T_17, 1.2, 1614, 690);   /* s12d_bc: McClernand's corps box behind his divisions */
+[["d13a", 1578, 662], ["d13b", 1578, 690], ["d13c", 1578, 718], ["d17a", 1660, 696], ["d17b", 1722, 708], ["d15a", 1592, 584], ["d15b", 1624, 576]].forEach(([id, x, y]) => { U(id, "carth", [x, y], "", "XX", 0); gsap.set(B.units[id].el, { autoAlpha: 0 }); });
+U("ubat", "carth", [1584, 636], "", "", 0, { icon: "artillery" }); gsap.set(B.units.ubat.el, { autoAlpha: 0 });   /* one Union battery at the Big Black */
+U("ucav", "carth", [1586, 745], "", "", 0, { icon: "cavalry" }); cavIcon("ucav"); gsap.set(B.units.ucav.el, { autoAlpha: 0 });   /* Union cavalry on the southern flank */
+BCX(["d13a", "d13b", "d13c", "ubat", "ucav", "d17a", "d17b", "d15a", "d15b"], T_17 + 0.6, T_COUNT - 0.3);   /* s12d_rt: off Pemberton card */ B.move("u17", T_17 + 0.1, 1.2, 1691, 702);   /* s12d_bc: McPherson on the Jackson road behind */   /* s12d_rt: off Edwards */ B.move("u15", T_17 + 0.1, 1.4, 1560, 592);   /* s12d_bc: Sherman north-west for Bridgeport */
 mg(L(32.385, -90.67), L(32.37, -90.70), T_BB + 0.3, 5, 1.1 / 1.9 * 2.2);
-const BAT1 = UF.formation("ubat", "carth", "battery", { x: 1572, y: 742, face: 180 }, 3, { t: T_17 + 0.5, w: 24, d: 22, until: T_EVERY + 0.6 });   /* s12d_bc: Union battery at the Big Black */
-const CAV1 = UF.formation("ucav", "carth", "cavalry", { x: 1598, y: 645, face: 180 }, 6, { t: T_17 + 0.5, until: T_EVERY + 0.6 });   /* s12d_bc: Union cavalry on the northern flank */
 BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, [1534, 708]);   /* s12d_rt polish: mark on the Big Black bridge approach, east bank (the Confederate unit stands on the bridge until it falls back) */
 { const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */
   tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 1.5); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 1.5); }
-UF.hide(SKR, T_BB + 0.6); MV("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); MV("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
+B.move("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); B.move("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
 // ---------- "A battle every three or four days" (wide: all five marks + the route) ----------
 inkTrace(LL([[31.961, -90.984], [32.08, -90.74], [32.259, -90.422], [32.299, -90.185], [32.34, -90.36], [32.333, -90.535], [32.347, -90.716]]), T_EVERY + 0.3, T_ATE + 0.6, 2.6);
 B.caption("A BATTLE EVERY THREE OR FOUR DAYS", T_EVERY + 0.1, T_ATE - 0.1, "carth");
@@ -185,8 +171,8 @@ const N1 = CARD("HE COUNTED", "OVER 60,000", `<div style="font-size:28px;letter-
 { const m = N1.querySelector(".m"); gsap.set(m, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_MOD); } SFX("hit", T_60 + 0.55);
 const N2 = CARD("HIS ARMY", "THE SMALLER ONE", "", "#2e5cb2", CSS, T_SMALL - 0.05, Math.min(END + 1, T_SMALL + 3.0)); SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
-MV("u13", T_COUNT, 5, ...L(32.41, -90.76)); MV("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); MV("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
-MV("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(F.re.layer, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
+B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
+B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
 declutter([], [[T_JAM - 0.1, SHC_U], [T_60 + 0.45, T_HIS - 0.15], [T_SMALL - 0.05, END + 1]]);
 // ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
 // the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale

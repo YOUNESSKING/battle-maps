@@ -1,9 +1,9 @@
-// SCRIPT-12 TEST, scene s12d_bc = s12d_rt + banners, troop formations, camps (bc_patch.py) = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
+// SCRIPT-12 TEST, scene s12d_bc = s12d_rt + general banners, more unit boxes, camps (bc_patch.py) = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d (29.70 - 62.30 s): Sherman's warning, Pemberton, "Ulysses Grant"; the day-by-day clock (1 -> 17 MAY on the date scroll,
 // each battle marked on the map as its date is spoken); a battle every three or four days; the army ate off the country; Grant's count + the hedge.
 // Re-cut of the approved tools/vx_body_m2f.js (vicksburg_w, units, moves, Sherman card, forage icons, vs card, blue hatches at Jackson + Champion Hill).
 // Built with: python3 tools/s12_inline.py vx s12d vicksburg_w s12-3 s12-4 31.2 63.8
 // @@KIT (tools/vx_bc_kit.js)
-// TEST COPY for s12d_bc only (make_kit_bc.py): vx_kit.js + banner.js + units.js
+// TEST COPY for s12d_bc only (make_kit_bc.py): vx_kit.js + banner.js (units.js dropped: owner)
 // ---------- vx kit (Grant #16 map agent for m2e-m2g; copy of tools/vk_kit.js) = patton/tools/pc_kit.js (A1/A2 constant story layer) + v11 clean screen
 // (templates/clean_screen_v11.js) + 1c declutter + river-war additions (top-down gunboats / transports, bonfires, 1863 river). Inlined by tools/vx_inline.py.
 // SIDES (grant/SCENES.md): Union / Grant = BLUE "carth" + US 34 stars; Confederates = RED "rome" + the First National (13 stars).
@@ -569,308 +569,6 @@ const stampP = (txt, x, y, t, u, sz = 22, sub) => wstampS(txt, x, y, t, Math.min
 B.greyArrow = (g, t, until) => { tl.to(g, { autoAlpha: 0, duration: 0.6 }, t); };
 { const st = document.createElement("style"); st.textContent = ".caption span{background:rgb(24,20,14) !important}.gg-card .inner{background:rgb(18,16,12) !important}"; document.head.appendChild(st); }   // critic r2: opaque big cards/captions
 
-// units.js : painted troop formations for Style W / 2e battle maps (TEST, research/style_tests/banners_units_camps/units/).
-// Replaces the single kit box (B.unit + K.counter + echelon) with formations drawn like the owner's Yarmouk reference:
-// a battle line = a LONG ROW of small bevelled blocks (side colour, NATO infantry X, dark outline, drop shadow) laid edge to
-// edge along the line; skirmishers / light horse = loose round dots; batteries = small blocks with a gun; cavalry = dots + slash.
-// One echelon mark (XX, XXX) per formation, never per block. Name tag only from U.tag(t) (the spoken word). No flags on units.
-//
-// API (all times are timeline seconds; every size is in SCREEN px at the reference camera scale, multiplied by U.k):
-//   U.init({ tl, parent, k })                 tl = the scene's GSAP timeline, parent = the world layer, k = world px per screen px
-//   const h = U.formation(id, side, kind, geom, n, opts)
-//        side  "carth" | "union" | "blue"  -> Union blue #1f4fc4      "rome" | "cs" | "red" -> Confederate red #c4121f
-//        kind  "line" | "column" | "skirmish" | "cavalry" | "battery"
-//        geom  { x, y, face, len? }  face = direction the troops face / march, degrees (0 = east, 90 = south, -90 = north)
-//              { x, y, angle, len? } angle = direction the front runs (face = angle - 90)
-//              [[x,y], [x,y], ...]   a polyline the front follows (blocks follow its bends); opts.faceSide "left" | "right"
-//        n     number of blocks / dots / guns
-//        opts  { mark: "XX", t: appear time (null = from frame 0), groups: [4,4] brigade sizes, gap: px between brigades,
-//                w, d: block size (default 40 x 38), seam: px between blocks (5), files: 1 | 2 (column width, default 1), markAt: "rear" | "front" | "up" | [dx,dy],
-//                seed, until }
-//   U.move(h, t, dur, geom, { kind, ease })    translate + rotate the whole formation (rigid when both geoms are {x,y,face})
-//   U.morph(h, t, kind, { dur, geom, ease })   line <-> column (blocks slide into their new places, head first)
-//   U.tag(h, text, t, until)                   name tag beside the echelon mark, only from t
-//   U.show(h, t) / U.hide(h, t)                fade the formation in / out
-//   U.skirmishers(h, n, { ahead, side })       a skirmish screen of n dots in front of a line formation
-//   U.center(h) -> [x, y]                      current (last scheduled) centre; h.hq is a div that rides with the formation
-//                                              (attach portrait stakes / anything else to it)
-// Ops on one formation must be scheduled in time order and must not overlap (each starts from the previous end state).
-(function () {
-  const NS = "http://www.w3.org/2000/svg";
-  const SIDES = {
-    carth: { base: "#1f4fc4", hi: "#4d79dc", lo: "#163a95", ink: "#0a1636", chip: "#dfe6f4" },
-    rome: { base: "#c4121f", hi: "#de3a44", lo: "#8f0c17", ink: "#2c0609", chip: "#f2dcd4" },
-  };
-  const SIDE_ALIAS = { union: "carth", blue: "carth", us: "carth", cs: "rome", red: "rome", confederate: "rome" };
-  const INK = "#1b1812";
-  const CSS = `
-.uf-layer { position:absolute; left:0; top:0; width:0; height:0; overflow:visible; pointer-events:none;
-  filter: drop-shadow(calc(var(--uk) * 3px) calc(var(--uk) * 3.5px) calc(var(--uk) * 2px) rgba(14,10,2,.6)); }
-.uf-b { position:absolute; left:0; top:0; width:0; height:0; will-change:transform; }
-.uf-b > .in { position:absolute; left:0; top:0; }
-.uf-b svg { position:absolute; overflow:visible; display:block; }
-.uf-hq { position:absolute; left:0; top:0; width:0; height:0; z-index:5; }
-.uf-mark { position:absolute; transform:translate(-50%,-50%); white-space:nowrap; font-family:Oswald,'Liberation Sans Narrow','Arial Narrow',sans-serif;
-  font-weight:700; color:${INK}; letter-spacing:.06em; line-height:1; text-shadow:0 0 2px #f7f3ea,0 0 2px #f7f3ea,0 0 3px rgba(247,243,234,.8); }
-.uf-tag { position:absolute; white-space:nowrap; font-family:Oswald,'Liberation Sans Narrow','Arial Narrow',sans-serif; font-weight:700; letter-spacing:.06em;
-  color:#f7f3ea; line-height:1.15; border-radius:2px; box-shadow:0 2px 4px rgba(0,0,0,.45); }
-`;
-  const U = (window.U = { k: 1, tl: null, parent: null, list: {} });
-
-  // ---------- helpers ----------
-  function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  const hash = (s) => { let h = 2166136261; for (const c of String(s)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; };
-  const rad = (a) => (a * Math.PI) / 180, deg = (a) => (a * 180) / Math.PI;
-  const lerp = (a, b, p) => a + (b - a) * p;
-  const lerpAng = (a, b, p) => { let d = ((b - a) % 360 + 540) % 360 - 180; return a + d * p; };
-  const clamp01 = (v) => Math.max(0, Math.min(1, v));
-  const easeFn = (e) => (e && window.gsap ? gsap.parseEase(e) : (p) => p);
-
-  function defs() {   // shared paint texture (seeded noise) used by every block
-    if (document.getElementById("uf-defs")) return;
-    const st = document.createElement("style"); st.textContent = CSS; document.head.appendChild(st);
-    const c = document.createElement("canvas"); c.width = c.height = 96; const g = c.getContext("2d"), r = rng(7), im = g.createImageData(96, 96);
-    for (let i = 0; i < 96 * 96; i++) { const v = 128 + (r() - 0.5) * 120 + (r() < 0.04 ? -70 : 0); im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = v; im.data[i * 4 + 3] = 255; }
-    g.putImageData(im, 0, 0); g.globalAlpha = 0.25; for (let i = 0; i < 40; i++) { g.fillStyle = r() < 0.5 ? "#fff" : "#000"; g.fillRect(r() * 96, r() * 96, 2 + r() * 10, 1 + r() * 2); }
-    const svg = document.createElementNS(NS, "svg"); svg.id = "uf-defs"; svg.setAttribute("width", 0); svg.setAttribute("height", 0); svg.style.position = "absolute";
-    svg.innerHTML = `<defs><pattern id="uf-noise" patternUnits="userSpaceOnUse" width="48" height="48"><image href="${c.toDataURL()}" width="48" height="48"/></pattern></defs>`;
-    document.body.appendChild(svg);
-  }
-
-  U.init = (o = {}) => { U.tl = o.tl; U.parent = o.parent; U.k = o.k || 1; defs(); };
-
-  // ---------- geometry -> slots ----------
-  function normGeom(g, opts) {
-    if (Array.isArray(g)) return { poly: g.map((p) => [p[0], p[1]]), faceSide: opts.faceSide || "left" };
-    const face = g.face != null ? g.face : g.angle != null ? g.angle - 90 : 0;
-    return { x: g.x, y: g.y, face, len: g.len };
-  }
-  function polyInfo(pts) {   // cumulative arc length
-    const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
-    return { cum, L: cum[cum.length - 1] };
-  }
-  function polyAt(pts, info, s) {
-    s = Math.max(0, Math.min(info.L, s)); let i = 1; while (i < pts.length - 1 && info.cum[i] < s) i++;
-    const a = pts[i - 1], b = pts[i], seg = info.cum[i] - info.cum[i - 1] || 1, p = (s - info.cum[i - 1]) / seg;
-    return { x: lerp(a[0], b[0], p), y: lerp(a[1], b[1], p), ang: deg(Math.atan2(b[1] - a[1], b[0] - a[0])) };
-  }
-  function centreOf(G) { if (!G.poly) return [G.x, G.y]; const info = polyInfo(G.poly), m = polyAt(G.poly, info, info.L / 2); return [m.x, m.y]; }
-  function faceOf(G) { if (!G.poly) return G.face; const info = polyInfo(G.poly), m = polyAt(G.poly, info, info.L / 2); return m.ang + (G.faceSide === "right" ? 90 : -90); }
-
-  // offsets of n blocks along a front, centred on 0 (in px), honouring brigade groups and gaps
-  function frontOffsets(n, pitch, groups, gap) {
-    const out = []; let s = 0, gi = 0, left = groups ? groups[0] : n;
-    for (let i = 0; i < n; i++) { out.push(s); s += pitch; if (groups && --left === 0 && i < n - 1) { gi++; left = groups[gi] || n; s += gap; } }
-    const mid = (out[0] + out[n - 1]) / 2; return out.map((v) => v - mid);
-  }
-  // center-out rank of each line slot (deploy order: column head -> centre of the line)
-  function centreOutRank(n) { const idx = [...Array(n).keys()].sort((a, b) => Math.abs(a - (n - 1) / 2) - Math.abs(b - (n - 1) / 2) || b - a);
-    const rank = Array(n); idx.forEach((b, r) => (rank[b] = r)); return rank; }
-
-  function slotsFor(h, kind, G) {   // -> { s: [{x,y,rot}], mark: [x,y] }  in world px
-    const k = U.k, o = h.opts, n = h.n, r = rng(h.seed + 11), w = h.w, d = h.d;
-    const S = [];
-    if (kind === "line" || kind === "battery" || kind === "column") {
-      const pitch = (kind === "battery" ? w + 12 * k : w + (h.opts.seam != null ? h.opts.seam : 5) * k), gap = o.gap != null ? o.gap * k : w * 0.55;
-      if (kind === "column") {
-        const face = faceOf(G), [cx, cy] = centreOf(G), fv = [Math.cos(rad(face)), Math.sin(rad(face))], av = [-fv[1], fv[0]];
-        const files = h.files, rows = Math.ceil(n / files), rp = d + (h.opts.seam != null ? h.opts.seam : 5) * k, fp = w + 6 * k;
-        for (let b = 0; b < n; b++) { const rk = h.rank[b], row = Math.floor(rk / files), fl = files === 1 ? 0 : (rk % files) - (files - 1) / 2;
-          const along = ((rows - 1) / 2 - row) * rp; S.push({ x: cx + fv[0] * along + av[0] * fl * fp, y: cy + fv[1] * along + av[1] * fl * fp, rot: face + 90 }); }
-        const side = av[1] < 0 ? 1 : -1;   // mark on the side of the column that is up on screen
-        const off = (files * fp) / 2 + 14 * k; return { s: S, mark: [cx + av[0] * off * side, cy + av[1] * off * side] };
-      }
-      if (G.poly) {
-        const info = polyInfo(G.poly), nat = frontOffsets(n, pitch, o.groups, gap), natL = nat[n - 1] - nat[0] + pitch;
-        const st = info.L / natL; const fill = st;   // spread evenly over the whole polyline
-        for (let b = 0; b < n; b++) { const p = polyAt(G.poly, info, info.L / 2 + nat[b] * fill); S.push({ x: p.x, y: p.y, rot: p.ang + (G.faceSide === "right" ? 180 : 0) }); }
-        h.stretch = Math.min(1.25, Math.max(0.75, fill));
-      } else {
-        let off = frontOffsets(n, pitch, o.groups, gap);
-        if (G.len) { const natL = off[n - 1] - off[0] + pitch, f = G.len / natL; off = off.map((v) => v * f); }
-        const rot = G.face + 90, av = [Math.cos(rad(rot)), Math.sin(rad(rot))];
-        for (let b = 0; b < n; b++) S.push({ x: G.x + av[0] * off[b], y: G.y + av[1] * off[b], rot });
-      }
-      return { s: S, mark: markPos(h, G, S, d) };
-    }
-    // dots: skirmish (loose clusters along a front) / cavalry (compact staggered ranks)
-    const face = faceOf(G), [cx, cy] = centreOf(G), fv = [Math.cos(rad(face)), Math.sin(rad(face))], av = [-fv[1], fv[0]];
-    const R = h.dot;
-    if (kind === "skirmish") {
-      const per = o.cluster || 3, nc = Math.ceil(n / per), L = G.len || (G.poly ? polyInfo(G.poly).L : nc * 70 * k);
-      const info = G.poly ? polyInfo(G.poly) : null;
-      for (let b = 0; b < n; b++) { const c = Math.floor(b / per), j = b % per, cs = nc === 1 ? 0 : (c / (nc - 1) - 0.5) * L;
-        let px, py; if (info) { const p = polyAt(G.poly, info, info.L / 2 + cs); px = p.x; py = p.y; } else { px = cx + av[0] * cs; py = cy + av[1] * cs; }
-        const inC = Math.min(per, n - c * per), a = (j / inC) * Math.PI * 2 + c * 1.7 + (r() - 0.5) * 0.35, rr = inC === 1 ? 0 : (2 * R + 7 * k) / (2 * Math.sin(Math.PI / Math.max(2, inC))) + r() * 2.5 * k;
-        S.push({ x: px + Math.cos(a) * rr + (r() - 0.5) * 2 * k, y: py + Math.sin(a) * rr + (r() - 0.5) * 2 * k, rot: 0 }); }
-    } else {   // cavalry: ranks of 3, every other rank shifted half a dot (hex packing), loose by a few px
-      const per = o.perRank || 3, ranks = Math.ceil(n / per), pp = R * 2 + 5 * k;
-      for (let b = 0; b < n; b++) { const rk = Math.floor(b / per), j = b % per, inRank = Math.min(per, n - rk * per);
-        const a = (j - (inRank - 1) / 2) * pp + (rk % 2 ? pp * 0.25 : -pp * 0.25), f = ((ranks - 1) / 2 - rk) * pp * 0.88;
-        S.push({ x: cx + av[0] * a + fv[0] * f + (r() - 0.5) * 3 * k, y: cy + av[1] * a + fv[1] * f + (r() - 0.5) * 3 * k, rot: 0 }); }
-    }
-    let minY = 1e9, sx = 0; S.forEach((p) => { minY = Math.min(minY, p.y); sx += p.x; });
-    return { s: S, mark: typeof o.markAt === "object" && o.markAt ? [cx + o.markAt[0] * k, cy + o.markAt[1] * k] : [sx / n, minY - R - 11 * k] };
-  }
-  function markPos(h, G, S, d) {
-    const k = U.k, o = h.opts; let sx = 0, sy = 0; S.forEach((p) => { sx += p.x; sy += p.y; }); const c = [sx / S.length, sy / S.length];
-    if (Array.isArray(o.markAt)) return [c[0] + o.markAt[0] * k, c[1] + o.markAt[1] * k];
-    const face = faceOf(G), fv = [Math.cos(rad(face)), Math.sin(rad(face))];
-    if (o.markAt === "up") { let minY = 1e9; S.forEach((p) => (minY = Math.min(minY, p.y))); return [c[0], minY - d * 0.6 - 12 * k]; }
-    const sgn = o.markAt === "front" ? 1 : -1, off = d / 2 + 15 * k;
-    return [c[0] + fv[0] * off * sgn, c[1] + fv[1] * off * sgn];
-  }
-
-  // ---------- drawing ----------
-  function blockSVG(h, b, kind) {
-    // drawn square to the formation (x = along the front, -y = the facing side); place() then skews it so the cross
-    // edges lie on the screen axis like the reference (sides follow the line, top/bottom stay level on screen)
-    const k = U.k, C = h.col, r = rng(h.seed * 31 + b * 977 + 3), bat = kind === "battery", w = h.w * (bat ? 0.8 : 1), d = h.d * (bat ? 0.8 : 1);
-    const m = 8 * k, W = w * 2 + 2 * m, H = d * 2 + 2 * m, cx = W / 2, cy = H / 2;   // generous box: the skew can push corners out
-    const j = () => (r() - 0.5) * 1.0 * k;
-    const corner = [[-w / 2, -d / 2], [w / 2, -d / 2], [w / 2, d / 2], [-w / 2, d / 2]];
-    // ragged outline: 4 points per edge with small jitter; 1-2 "bites" torn out of a side or the rear edge (painted piece look)
-    const bites = {}; const nb = r() < 0.55 ? 1 : r() < 0.6 ? 2 : 0; for (let i = 0; i < nb; i++) bites[[1, 2, 3][Math.floor(r() * 3)]] = 0.2 + r() * 0.5;
-    const pts = [];
-    for (let e = 0; e < 4; e++) { const a = corner[e], c2 = corner[(e + 1) % 4], L = Math.hypot(c2[0] - a[0], c2[1] - a[1]);
-      const nx = -(c2[1] - a[1]) / L, ny = (c2[0] - a[0]) / L;   // inward normal (clockwise winding on screen)
-      const P = (p, inset = 0) => [lerp(a[0], c2[0], p) + nx * inset, lerp(a[1], c2[1], p) + ny * inset];
-      let E = [[0, 0, 0], [0.3, j(), j()], [0.65, j(), j()]];
-      if (bites[e] != null) { const p = bites[e], q = 0.14 + r() * 0.1, dd = (2.8 + r() * 2.4) * k;
-        E = E.filter((x) => x[0] < p - 0.02 || x[0] > p + q + 0.02).concat([[p, 0, 0, 0], [p + q * 0.25, 0, 0, dd], [p + q * 0.75, 0, 0, dd * (0.55 + r() * 0.4)], [p + q, 0, 0, 0]]); }
-      E.sort((u, v) => u[0] - v[0]).forEach(([pp, jx, jy, ins]) => { const q = P(pp, ins || 0); pts.push([q[0] + jx, q[1] + jy]); });
-    }
-    const pt = pts.map((p) => `${(p[0] + cx).toFixed(2)},${(p[1] + cy).toFixed(2)}`).join(" ");
-    const gid = `uf-g-${h.id}-${b}`, sid = `uf-s-${h.id}-${b}`;
-    const ins = 2.2 * k, TL = [-w / 2 + ins + cx, -d / 2 + ins + cy], TR = [w / 2 - ins + cx, -d / 2 + ins + cy], BR = [w / 2 - ins + cx, d / 2 - ins + cy], BL = [-w / 2 + ins + cx, d / 2 - ins + cy];
-    let sym = "";
-    if (bat) {   // gun: wheel dot + barrel pointing to the front
-      sym = `<line x1="${cx}" y1="${cy + d * 0.14}" x2="${cx}" y2="${cy - d * 0.34}" stroke="${C.ink}" stroke-width="${2.8 * k}" stroke-linecap="round"/>` +
-        `<circle cx="${cx}" cy="${cy + d * 0.14}" r="${d * 0.19}" fill="${C.ink}"/>`;
-    } else {
-      sym = `<g stroke="${C.ink}" stroke-width="${2 * k}" stroke-linecap="round" opacity=".92"><line x1="${TL[0]}" y1="${TL[1]}" x2="${BR[0]}" y2="${BR[1]}"/><line x1="${TR[0]}" y1="${TR[1]}" x2="${BL[0]}" y2="${BL[1]}"/></g>`;
-    }
-    return { W, H, html: `<svg width="${W}" height="${H}" style="left:${-W / 2}px;top:${-H / 2}px">
-<defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.hi}"/><stop offset=".5" stop-color="${C.base}"/><stop offset="1" stop-color="${C.lo}"/></linearGradient>
-<linearGradient id="${sid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient></defs>
-<polygon points="${pt}" fill="url(#${gid})"/>
-<polygon points="${pt}" fill="url(#uf-noise)" opacity=".26" style="mix-blend-mode:multiply"/>
-<polygon points="${pt}" fill="none" stroke="url(#${sid})" stroke-width="${3.6 * k}" transform="translate(${cx} ${cy}) scale(.86) translate(${-cx} ${-cy})"/>
-${sym}
-<polygon points="${pt}" fill="none" stroke="${C.ink}" stroke-width="${2.4 * k}" stroke-linejoin="round"/></svg>`, gids: [gid, sid] };
-  }
-  function dotSVG(h, b, kind) {
-    const k = U.k, C = h.col, R = h.dot, m = 4 * k, S = 2 * (R + m), c = S / 2, gid = `uf-g-${h.id}-${b}`;
-    const slash = kind === "cavalry" ? `<line x1="${c - R * 0.62}" y1="${c + R * 0.62}" x2="${c + R * 0.62}" y2="${c - R * 0.62}" stroke="${INK}" stroke-width="${1.9 * k}" stroke-linecap="round"/>` : "";
-    return { W: S, H: S, html: `<svg width="${S}" height="${S}" style="left:${-S / 2}px;top:${-S / 2}px">
-<defs><radialGradient id="${gid}" cx=".36" cy=".32" r=".75"><stop offset="0" stop-color="${C.hi}"/><stop offset=".55" stop-color="${C.base}"/><stop offset="1" stop-color="${C.lo}"/></radialGradient></defs>
-<circle cx="${c}" cy="${c}" r="${R}" fill="url(#${gid})"/><circle cx="${c}" cy="${c}" r="${R}" fill="url(#uf-noise)" opacity=".24" style="mix-blend-mode:multiply"/>
-<path d="M ${c - R * 0.7} ${c + R * 0.05} A ${R * 0.72} ${R * 0.72} 0 0 1 ${c + R * 0.05} ${c - R * 0.7}" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="${1.3 * k}" stroke-linecap="round"/>
-${slash}<circle cx="${c}" cy="${c}" r="${R}" fill="none" stroke="${C.ink}" stroke-width="${2 * k}"/></svg>`, gids: [gid] };
-  }
-
-  // ---------- formation ----------
-  const isDots = (kind) => kind === "skirmish" || kind === "cavalry";
-  U.formation = (id, side, kind, geom, n, opts = {}) => {
-    const k = U.k, sd = SIDE_ALIAS[side] || side;
-    const h = { id: String(id).replace(/[^\w-]/g, "_"), side: sd, col: SIDES[sd], kind, n, opts, seed: opts.seed != null ? opts.seed : hash(id),
-      w: (opts.w || 40) * k, d: (opts.d || 38) * k, dot: (opts.r || (kind === "cavalry" ? 12 : 10.5)) * k,
-      files: opts.files || 1, rank: centreOutRank(n), ops: [], tagEl: null };
-    const layer = document.createElement("div"); layer.className = "uf-layer"; layer.style.setProperty("--uk", k); layer.dataset.id = id;
-    (U.parent || document.body).appendChild(layer); h.layer = layer;
-    h.isBlk = !isDots(kind) && opts.skew !== false;
-    h.blocks = []; h.blockKind = isDots(kind) ? kind : kind === "battery" ? "battery" : "block";
-    for (let b = 0; b < n; b++) {
-      const el = document.createElement("div"); el.className = "uf-b"; const inn = document.createElement("div"); inn.className = "in";
-      const s = isDots(kind) ? dotSVG(h, b, kind) : blockSVG(h, b, kind === "battery" ? "battery" : "line");
-      inn.innerHTML = s.html; el.appendChild(inn); layer.appendChild(el);
-      h.blocks.push({ el, inn, grads: s.gids.map((g) => inn.querySelector("#" + g)), rot: null });
-    }
-    const hq = document.createElement("div"); hq.className = "uf-hq"; layer.appendChild(hq); h.hq = hq;
-    if (opts.mark) { const m = document.createElement("div"); m.className = "uf-mark"; m.textContent = opts.mark; m.style.fontSize = (opts.markSize || 17) * k + "px"; hq.appendChild(m); h.markEl = m; }
-    const G = normGeom(geom, opts); h.state = { kind, G, ...slotsFor(h, kind, G) }; h.state0 = h.state;
-    U.list[id] = h; place(h, h.state.s, h.state.mark);
-    // appear: blocks pop in one after another along the line (or from frame 0)
-    if (opts.t != null && U.tl) {
-      gsap.set(layer, { autoAlpha: 0 }); U.tl.set(layer, { autoAlpha: 1 }, opts.t);
-      const order = [...Array(n).keys()];
-      order.forEach((b, i) => U.tl.fromTo(h.blocks[b].inn, { autoAlpha: 0, scale: 1.35 }, { autoAlpha: 1, scale: 1, duration: 0.32, ease: "back.out(2)", immediateRender: false }, opts.t + (i / Math.max(1, n - 1)) * 0.45));
-      U.tl.fromTo(hq, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, opts.t + 0.3);
-    }
-    if (opts.until != null) U.hide(h, opts.until);
-    return h;
-  };
-
-  // skew that puts a block's cross edges on the nearest screen axis (horizontal when the line runs up/down, vertical when it runs
-  // across), as in the reference; clamped so a line near 45 deg never flips hard
-  function skewFor(rot) { const a = rad(rot), ax = Math.cos(a), ay = Math.sin(a), c = Math.abs(ay) > Math.abs(ax) ? [1, 0] : [0, 1];
-    const sx = c[0] * ax + c[1] * ay, sy = -c[0] * ay + c[1] * ax; if (Math.abs(sy) < 1e-3) return 0;
-    return Math.max(-U.maxSkew, Math.min(U.maxSkew, deg(Math.atan(sx / sy)))); }
-  U.maxSkew = 34;
-  function place(h, S, mark) {
-    for (let b = 0; b < h.n; b++) {
-      const B = h.blocks[b], p = S[b];
-      B.el.style.transform = `translate(${p.x.toFixed(2)}px,${p.y.toFixed(2)}px) rotate(${p.rot.toFixed(2)}deg)` + (h.isBlk ? ` skewX(${skewFor(p.rot).toFixed(2)}deg)` : "");
-      if (B.rot == null || Math.abs(B.rot - p.rot) > 0.8) {   // keep the light coming from the top-left of the SCREEN
-        B.grads.forEach((g) => g && g.setAttribute("gradientTransform", `rotate(${(-p.rot).toFixed(1)} .5 .5)`)); B.rot = p.rot; }
-    }
-    h.hq.style.transform = `translate(${mark[0].toFixed(2)}px,${mark[1].toFixed(2)}px)`;
-  }
-
-  // one op = a tween from the previous state to a new one; rigid when both ends are {x,y,face} geoms of the same kind
-  function schedule(h, t, dur, kind, G, o = {}) {
-    const A = h.state, B = { kind, G, ...slotsFor(h, kind, G) };
-    const rigid = A.kind === kind && !A.G.poly && !G.poly && !o.slide;
-    const polyLerp = A.kind === kind && A.G.poly && G.poly && A.G.poly.length === G.poly.length;
-    const ease = easeFn(o.ease || "power1.inOut"), stag = o.stagger != null ? o.stagger : A.kind !== kind ? 0.3 : 0;
-    const delay = (b) => (stag ? (h.rank[b] / Math.max(1, h.n - 1)) * stag : 0);
-    const twoPhase = (A.kind === "column" && kind === "line") || (A.kind === "line" && kind === "column"), toLine = kind === "line";
-    const fB = faceOf(G), ff = [Math.cos(rad(fB)), Math.sin(rad(fB))], fa = [-ff[1], ff[0]];
-    const proxy = { p: 0 };
-    const render = () => {
-      const p = proxy.p; let S, M;
-      if (rigid) { const g = { x: lerp(A.G.x, G.x, ease(p)), y: lerp(A.G.y, G.y, ease(p)), face: lerpAng(A.G.face, G.face, ease(p)), len: G.len != null && A.G.len != null ? lerp(A.G.len, G.len, ease(p)) : G.len };
-        const r = slotsFor(h, kind, g); S = r.s; M = r.mark; }
-      else if (polyLerp) { const e = ease(p), g = { poly: A.G.poly.map((q, i) => [lerp(q[0], G.poly[i][0], e), lerp(q[1], G.poly[i][1], e)]), faceSide: G.faceSide };
-        const r = slotsFor(h, kind, g); S = r.s; M = r.mark; }
-      else if (twoPhase) { S = A.s.map((a, b) => { const q = clamp01((p - delay(b)) / (1 - stag)), z = B.s[b];
-          // column -> line: slide sideways first, then step up into the line; line -> column: step back first, then file in
-          const dx = z.x - a.x, dy = z.y - a.y, lat = dx * fa[0] + dy * fa[1], dep = dx * ff[0] + dy * ff[1];
-          const q1 = ease(clamp01(q / 0.62)), q2 = ease(clamp01((q - 0.38) / 0.62)), ql = toLine ? q1 : q2, qd = toLine ? q2 : q1;
-          return { x: a.x + fa[0] * lat * ql + ff[0] * dep * qd, y: a.y + fa[1] * lat * ql + ff[1] * dep * qd, rot: lerpAng(a.rot, z.rot, ease(q)) }; });
-        M = [lerp(A.mark[0], B.mark[0], ease(p)), lerp(A.mark[1], B.mark[1], ease(p))]; }
-      else { S = A.s.map((a, b) => { const q = ease(clamp01((p - delay(b)) / (1 - stag))), z = B.s[b];
-          return { x: lerp(a.x, z.x, q), y: lerp(a.y, z.y, q), rot: lerpAng(a.rot, z.rot, q) }; });
-        const e = ease(p); M = [lerp(A.mark[0], B.mark[0], e), lerp(A.mark[1], B.mark[1], e)]; }
-      place(h, S, M);
-    };
-    U.tl.to(proxy, { p: 1, duration: Math.max(0.01, dur), ease: "none", onUpdate: render, onStart: render, immediateRender: false }, t);
-    h.state = B; h.kind = kind; return h;
-  }
-  U.move = (h, t, dur, geom, o = {}) => schedule(h, t, dur, o.kind || h.state.kind, normGeom(geom, Object.assign({}, h.opts, o)), o);
-  U.morph = (h, t, kind, o = {}) => schedule(h, t, o.dur || 1.6, kind, o.geom ? normGeom(o.geom, h.opts) : h.state.G, Object.assign({ ease: "power2.inOut" }, o));
-  U.bmove = (h, t, dur, x, y, ease) => U.move(h, t, dur, { x, y, face: faceOf(h.state.G) }, { ease });   // drop-in for B.move(id, t, dur, x, y)
-  U.center = (h) => centreOf(h.state.G);
-  U.show = (h, t) => U.tl.fromTo(h.layer, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, t);
-  U.hide = (h, t) => U.tl.to(h.layer, { autoAlpha: 0, duration: 0.5 }, t);
-  U.tag = (h, text, t, until) => {
-    const k = U.k, el = document.createElement("div"); el.className = "uf-tag"; el.textContent = text;
-    Object.assign(el.style, { background: h.col.base, fontSize: (h.opts.tagSize || 18) * k + "px", padding: `${1 * k}px ${8 * k}px ${1.5 * k}px`,
-      left: (h.markEl ? (h.markEl.textContent.length * 4.6 + 8) * k : 0) + "px", top: -11 * k + "px", border: `${1 * k}px solid ${h.col.ink}` });
-    if (!h.markEl) Object.assign(el.style, { left: "0", transform: "translateX(-50%)" });
-    h.hq.appendChild(el); gsap.set(el, { autoAlpha: 0 });
-    U.tl.to(el, { autoAlpha: 1, duration: 0.3 }, t); if (until != null) U.tl.to(el, { autoAlpha: 0, duration: 0.3 }, until);
-    h.tagEl = el; return el;
-  };
-  U.skirmishers = (h, n, o = {}) => {   // a screen of dots o.ahead px in front of line h (same side unless o.side)
-    const k = U.k, G = h.state.G, face = faceOf(G), [cx, cy] = centreOf(G), fv = [Math.cos(rad(face)), Math.sin(rad(face))], ah = (o.ahead || 58) * k;
-    let len = o.len; if (len == null) { const xs = h.state.s; len = Math.hypot(xs[0].x - xs[h.n - 1].x, xs[0].y - xs[h.n - 1].y) * 0.92; }
-    const geom = { x: cx + fv[0] * ah, y: cy + fv[1] * ah, face, len };
-    return U.formation(h.id + "_sk", o.side || h.side, "skirmish", geom, n, Object.assign({ t: h.opts.t }, o));
-  };
-})();
-
 // @@END-KIT
 // @@DATA (tools/s12_inline.py)
 const GD = {"base":"vicksburg","maps":{"henry":{"zoom":11,"origin_world_px":[132617,204167],"meters_per_px":61.44},"donelson":{"zoom":13,"origin_world_px":[535372,819244],"meters_per_px":15.37},"jamesriver":{"zoom":12,"origin_world_px":[298423,406231],"meters_per_px":30.4},"tennessee":{"zoom":9,"origin_world_px":[32092,50343],"meters_per_px":245.14},"petersburg":{"zoom":12,"origin_world_px":[297462,406450],"meters_per_px":30.43},"vicksburg_siege":{"zoom":12,"origin_world_px":[258169,423874],"meters_per_px":32.29},"mississippi":{"zoom":8,"origin_world_px":[14798,25587],"meters_per_px":512.84},"richmond":{"zoom":9,"origin_world_px":[35951,49932],"meters_per_px":242.24},"vicksburg":{"zoom":10,"origin_world_px":[63513,105473],"meters_per_px":129.36},"grandgulf":{"zoom":12,"origin_world_px":[257733,425078],"meters_per_px":32.42}}};
@@ -890,16 +588,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794349412`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794349524`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794349412.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794349524.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
 [["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"], ["rivers_w", RTH, "relief"], ["rivers_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794349412.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794349524.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -917,7 +615,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.filter((p) => p.tagName === "g").forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794349412.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794349524.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => { if (p.__w) p.setAttribute("stroke-width", (p.__w * k).toFixed(3)); }); SH.forEach(([g, dx, dy]) => g.setAttribute("transform", `translate(${(dx * k).toFixed(3)} ${(dy * k).toFixed(3)})`)); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -931,7 +629,7 @@ const rtEdge = () => Object.entries(RTM.towns).forEach(([k, T]) => { const x0 = 
   RTIMG[k].style.opacity = op; if (RTLBL[k]) RTLBL[k].style.opacity = op; });
 CURV.push([{ setAttribute: () => rtEdge() }, 1]);
 // reference-style town name (spaced cream serif on a gentle arc, beside the town; constant on screen)
-const BCC = [{"png": "bc_wagon_park.png", "left": 1628.53, "top": 738.79, "w": 78.68, "h": 58.95}, {"png": "bc_camp_union.png", "left": 1555.79, "top": 745.0, "w": 63.95, "h": 54.74}, {"png": "bc_depot_cs.png", "left": 1431.18, "top": 706.55, "w": 54.74, "h": 42.37}];
+const BCC = [{"png": "bc_wagon_park.png", "left": 1628.53, "top": 738.79, "w": 78.68, "h": 58.95}, {"png": "bc_camp_union.png", "left": 1565.79, "top": 767.0, "w": 63.95, "h": 54.74}, {"png": "bc_depot_cs.png", "left": 1431.18, "top": 706.55, "w": 54.74, "h": 42.37}];
 BCC.forEach((c) => { const im = document.createElement("img"); im.src = `assets/rt/${c.png}`; im.alt = "";
   im.style.cssText = `position:absolute;left:${c.left}px;top:${c.top}px;width:${c.w}px;height:${c.h}px;pointer-events:none`; RTL.appendChild(im); });
 const rtLabel = (k, t = 0, until = null) => { const T = RTM.towns[k], Lb = T.label;
@@ -962,27 +660,9 @@ camera([K_(0, 32.02, -90.93, 1.55), K_(T_LIFE + 0.8, 32.03, -90.90, 1.6), K_(T_G
  [[32.20, -90.50], [32.50, -90.86], T_CH - 0.5, T_EVERY + 1.0], [[32.42, -90.55], [32.16, -90.86], T_EVERY + 0.8, END + 1]].forEach(([us, cs, t, u]) => {
   const a = flagS(FL.us, "", ...L(...us), t, u), b = flagS(FL.cs, "", ...L(...cs), t, u); if (!(t > 0)) { now(a); now(b); } });
 // ---------- units (bare boxes: corps numbers are never spoken) ----------
-// ===== s12d_bc TEST (research/style_tests/banners_units_camps): troop formations (units.js), general banners (banner.js), camps =====
-const UF = window.U; UF.init({ tl, parent: WORLD, k: 1 / 1.9 });   // block sizes in screen px at the 17 May camera (s 1.9)
-const BLK = { w: 30, d: 28, seam: 4 };   // brigade blocks (campaign scale: 1 block = 1 brigade)
-const xyf = (p, face) => ({ x: p[0], y: p[1], face });
-const F = {
-  u13: UF.formation("u13", "carth", "column", xyf(L(31.985, -90.955), -60), 4, { mark: "XXX", ...BLK }),   // McClernand (XIII)
-  u17: UF.formation("u17", "carth", "column", xyf(L(32.03, -90.97), -60), 4, { mark: "XXX", ...BLK }),    // McPherson (XVII), Grant rides with him
-  u15: UF.formation("u15", "carth", "column", xyf(L(32.02, -91.03), -60), 4, { mark: "XXX", ...BLK }),    // Sherman (XV)
-  rv: UF.formation("rv", "rome", "column", xyf(L(32.36, -90.84), 90), 4, { mark: "XX", ...BLK }),        // Pemberton's field army
-  re: UF.formation("re", "rome", "column", xyf(L(32.30, -90.70), 90), 3, { mark: "XX", ...BLK }),
-  rj: UF.formation("rj", "rome", "column", xyf(L(32.30, -90.24), 90), 3, { mark: "XX", ...BLK }),
-  rs: UF.formation("rs", "rome", "column", xyf(L(32.14, -90.80), 90), 3, { mark: "XX", ...BLK }),
-};
-// B.move drop-in: columns turn to march along the move; lines keep their facing on short shifts and form column for long marches
-const MV = (id, t, dur, x, y, o = {}) => { const h = F[id], [cx, cy] = UF.center(h), dist = Math.hypot(x - cx, y - cy);
-  if (o.geom) return UF.move(h, t, dur, o.geom, { kind: o.kind });
-  if (h.state.kind === "line" && dist < 40) return UF.bmove(h, t, dur, x, y);
-  const face = dist > 0.5 ? Math.atan2(y - cy, x - cx) * 180 / Math.PI : 0;
-  return UF.move(h, t, dur, { x, y, face }, { kind: "column" }); };
-// banners ride on the formation's HQ point, counter-scaled so they stay ~200 px on screen like the old cards
-const BH = (h) => { const d = document.createElement("div"); d.style.cssText = "position:absolute;left:0;top:0;width:0;height:0"; h.hq.appendChild(d); reg(d, "0 0"); return d; };
+U("u13", "carth", L(31.985, -90.955), "", "XXX"); U("u17", "carth", L(32.03, -90.97), "", "XXX"); U("u15", "carth", L(32.02, -91.03), "", "XXX");
+U("rv", "rome", L(32.36, -90.84), "", "XX"); U("re", "rome", L(32.30, -90.70), "", "XX"); U("rj", "rome", L(32.30, -90.24), "", "XX"); U("rs", "rome", L(32.14, -90.80), "", "XX");
+["u13", "u17", "u15", "rv", "re", "rj", "rs"].forEach((id) => tagAt(id, null));
 const VTW = rtLabel("vicksburg", 0);   // s12d_rt: painted town + reference label (permanent: the army heads for it)
 // ---------- "Sherman warned that the road would be jammed, as sure as life" ----------
 const ROADP = [GGF, L(32.07, -90.99), L(32.13, -90.92), L(32.10, -90.86), L(32.09, -90.80)];
@@ -999,10 +679,10 @@ SHC.firstElementChild.style.borderTopColor = "#1f4fc4"; SHC.firstElementChild.fi
   gsap.set(l2, { autoAlpha: 0 }); tl.fromTo(l2, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_LIFE);
   }
 // ---------- "And unfortunately for Pemberton, the general now behind Vicksburg was Ulysses Grant." ----------
-MV("u13", T_UNF, 3, ...L(32.04, -90.86)); MV("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); MV("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
-pinPortrait(BH(F.rv), PHOTO("pemberton"), BN.flagFor("cs", "1863-05-17"), "Pemberton", T_PEM + 0.1, null, true, "west");   /* s12d_bc: banner on a side stake, west of his line */   // round 2: stake straight up, off the Vicksburg name and the Union cards
+B.move("u13", T_UNF, 3, ...L(32.04, -90.86)); B.move("u17", T_UNF + 0.2, 3, ...L(32.08, -90.82)); B.move("u15", T_UNF + 0.4, 3, ...L(32.02, -90.93));
+pinPortrait("rv", PHOTO("pemberton"), BN.flagFor("cs", "1863-05-17"), "Pemberton", T_PEM + 0.1, null, true, "west");   /* s12d_bc: banner on a side stake, west of his box */   // round 2: stake straight up, off the Vicksburg name and the Union cards
 focus(L(32.07, -90.84), 150, T_BEH, T_UG + 1.6);
-const GW = now(pinPortrait(BH(F.u17), MYST, BN.flagFor("us", "1863-05-17"), "Union General", 0, null, true, "ne"));   /* s12d_bc: banner up-right of his column */   // on his column from frame 0, unnamed (continuing from s12c)
+const GW = now(pinPortrait("u17", MYST, BN.flagFor("us", "1863-05-17"), "Union General", 0, null, true, "ne"));   /* s12d_bc: banner up-right of his corps */   // on his column from frame 0, unnamed (continuing from s12c)
 BN.reveal(GW, PHOTO("grant"), "Ulysses Grant", T_UG - 0.1);   /* s12d_rt: portrait card v2 reveal (research/style_tests/roads_towns/portraits) */
 tl.fromTo(GW.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, T_UG - 0.1);
 tl.to(GW.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, T_UG + 1.2); SFX("hit", T_UG - 0.15);   // the name reveal
@@ -1012,34 +692,38 @@ const MARK = (p, t) => { const el = pinS(GG.pin(SAB, p[0], p[1], { t, pop: true 
 const BATT = (k, p, t, until, mo) => { MARK([p[0] + mo[0], p[1] + mo[1]], t); return rtLabel(k, t + 0.05, until); };
 const BAT = (txt, p, t, until, dx = 0, dy = -40, mp = p) => { MARK(mp, t); return boxL(tc(txt), p[0] + dx, p[1] + dy, t + 0.05, until, { size: 24 }); };   // round 2: small white serif names (2d.7), no stamps
 // moves (compressed from m2f): Port Gibson -> Raymond -> Jackson -> back west -> Champion Hill -> Big Black
-MV("u13", T_M1 - 0.4, 1.0, ...L(31.985, -90.93)); MV("u17", T_M1 - 0.3, 1.0, ...L(31.99, -90.96));
-MV("rs", T_M1 - 0.4, 1.0, ...L(32.0, -90.90));
-MV("rv", T_M1 - 2.2, 1.6, ...L(32.26, -90.82));   // round 2: Pemberton (and his card) stay inside the frame while the camera follows the battles south and east
+B.move("u13", T_M1 - 0.4, 1.0, ...L(31.985, -90.93)); B.move("u17", T_M1 - 0.3, 1.0, ...L(31.99, -90.96));
+B.move("rs", T_M1 - 0.4, 1.0, ...L(32.0, -90.90));
+B.move("rv", T_M1 - 2.2, 1.6, ...L(32.26, -90.82));   // round 2: Pemberton (and his card) stay inside the frame while the camera follows the battles south and east
 BATT("port_gibson", PG, T_PG, Math.min(T_12 + 0.6, T_PG + LBL_LIFE), [-26, -10]);
-MV("rs", T_PG + 0.6, 1.2, ...L(32.14, -90.80));
+B.move("rs", T_PG + 0.6, 1.2, ...L(32.14, -90.80));
 arw({ pts: LL([[32.0, -90.92], [32.09, -90.72], [32.21, -90.50], [32.247, -90.452]]), side: "carth", t: T_12 - 0.2, dur: 1.2, width: AW(1.7, 13), until: T_14 + 1.6 });
-MV("u17", T_12 - 0.2, 1.4, ...L(32.24, -90.45)); MV("u13", T_12, 1.6, ...L(32.15, -90.62)); MV("u15", T_12 + 0.1, 1.6, ...L(32.10, -90.70));
+B.move("u17", T_12 - 0.2, 1.4, ...L(32.24, -90.45)); B.move("u13", T_12, 1.6, ...L(32.15, -90.62)); B.move("u15", T_12 + 0.1, 1.6, ...L(32.10, -90.70));
 BATT("raymond", RAY, T_RAY, Math.min(T_14 + 0.6, T_RAY + LBL_LIFE), [-26, 12]);
 arw({ pts: LL([[32.25, -90.40], [32.29, -90.32], [32.297, -90.232]]), side: "carth", t: T_14 - 0.2, dur: 0.9, width: AW(1.7, 13), until: T_16 + 1.2 });
-MV("u17", T_14, 1.0, ...L(32.30, -90.22)); MV("u15", T_14 - 0.1, 1.3, ...L(32.26, -90.26)); MV("rj", T_14 + 0.3, 1.4, ...L(32.45, -90.10));
-tl.to(F.rj.layer, { autoAlpha: 0, duration: 0.6 }, T_16 - 0.3);
+B.move("u17", T_14, 1.0, ...L(32.30, -90.22)); B.move("u15", T_14 - 0.1, 1.3, ...L(32.26, -90.26)); B.move("rj", T_14 + 0.3, 1.4, ...L(32.45, -90.10));
+tl.to(B.units.rj.el, { autoAlpha: 0, duration: 0.6 }, T_16 - 0.3);
 BATT("jackson", JAX, T_JAX, null, [-45, -27]);
 arw({ pts: LL([[32.30, -90.22], [32.34, -90.33], [32.35, -90.46], [32.34, -90.51]]), side: "carth", t: T_16 - 0.2, dur: 1.0, width: AW(1.9, 13), until: T_17 + 1.4 });
-MV("u17", T_16 - 0.2, 1.2, ...L(32.335, -90.515)); MV("u15", T_16, 1.4, ...L(32.40, -90.47)); MV("u13", T_16, 1.4, ...L(32.29, -90.53));
-MV("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); MV("re", T_16 - 0.5, 1.2, ...L(32.325, -90.568)); MV("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.573));   // s12d_rt: ~30 px east so Edwards shows
+B.move("u17", T_16 - 0.2, 1.2, ...L(32.335, -90.515)); B.move("u15", T_16, 1.4, ...L(32.40, -90.47)); B.move("u13", T_16, 1.4, ...L(32.29, -90.53));
+B.move("rv", T_16 - 0.6, 1.2, ...L(32.36, -90.565)); B.move("re", T_16 - 0.5, 1.2, ...L(32.325, -90.568)); B.move("rs", T_16 - 0.5, 1.2, ...L(32.29, -90.573));   // s12d_rt: ~30 px east so Edwards shows
 smoke([[1627, 719], [1620, 722], [1633, 724]], T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */
 mg(L(32.335, -90.525), L(32.36, -90.58), T_CH + 0.3, 5, 1.1 / 1.9 * 2.2);
 BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, [1627, 719]);   /* s12d_rt polish: south foot of Champion Hill (~40 px below the lit crest), between the Jackson and Raymond roads */
-MV("rv", T_17 - 0.3, 1.0, 0, 0, { kind: "line", geom: { x: 1534, y: 684, face: 0 } }); MV("re", T_17 - 0.2, 1.0, 0, 0, { kind: "line", geom: { x: 1536, y: 718, face: 0 } });   /* s12d_bc: the bridgehead line on the east bank, facing east */
-const SKR = UF.skirmishers(F.rv, 6, { ahead: 34, t: T_17 + 0.7 });   /* skirmish screen in front of the bridgehead */ tl.to(F.rs.layer, { autoAlpha: 0, duration: 0.6 }, T_17);
-MV("u13", T_17, 1.2, 0, 0, { kind: "line", geom: { x: 1578, y: 700, face: 180 } });   /* s12d_bc: McClernand deploys in line facing the bridgehead */   /* s12d_rt: off Pemberton card */ MV("u17", T_17 + 0.1, 1.2, 1660, 690);   /* s12d_bc: McPherson in column on the Jackson road behind */   /* s12d_rt: off Edwards */ MV("u15", T_17 + 0.1, 1.4, 1560, 592);   /* s12d_bc: Sherman marching north-west for Bridgeport */
+B.move("rv", T_17 - 0.3, 1.0, 1497, 688); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.6 }, T_17 - 0.1);   /* s12d_bc: one division box at the bridge, its brigades in front */
+const BCX = (ids, t, until) => ids.forEach((id) => { tl.fromTo(B.units[id].el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, t); if (until != null) tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, until); });
+[["cb1", 1536, 650], ["cb2", 1536, 676], ["cb3", 1536, 702], ["cb4", 1538, 728]].forEach(([id, x, y]) => { U(id, "rome", [x, y], "", "X", 0); gsap.set(B.units[id].el, { autoAlpha: 0 }); });
+BCX(["cb1", "cb2", "cb3", "cb4"], T_17 + 0.3, T_BB + 0.9); tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
+B.move("u13", T_17, 1.2, 1614, 690);   /* s12d_bc: McClernand's corps box behind his divisions */
+[["d13a", 1578, 662], ["d13b", 1578, 690], ["d13c", 1578, 718], ["d17a", 1660, 696], ["d17b", 1722, 708], ["d15a", 1592, 584], ["d15b", 1624, 576]].forEach(([id, x, y]) => { U(id, "carth", [x, y], "", "XX", 0); gsap.set(B.units[id].el, { autoAlpha: 0 }); });
+U("ubat", "carth", [1584, 636], "", "", 0, { icon: "artillery" }); gsap.set(B.units.ubat.el, { autoAlpha: 0 });   /* one Union battery at the Big Black */
+U("ucav", "carth", [1586, 745], "", "", 0, { icon: "cavalry" }); cavIcon("ucav"); gsap.set(B.units.ucav.el, { autoAlpha: 0 });   /* Union cavalry on the southern flank */
+BCX(["d13a", "d13b", "d13c", "ubat", "ucav", "d17a", "d17b", "d15a", "d15b"], T_17 + 0.6, T_COUNT - 0.3);   /* s12d_rt: off Pemberton card */ B.move("u17", T_17 + 0.1, 1.2, 1691, 702);   /* s12d_bc: McPherson on the Jackson road behind */   /* s12d_rt: off Edwards */ B.move("u15", T_17 + 0.1, 1.4, 1560, 592);   /* s12d_bc: Sherman north-west for Bridgeport */
 mg(L(32.385, -90.67), L(32.37, -90.70), T_BB + 0.3, 5, 1.1 / 1.9 * 2.2);
-const BAT1 = UF.formation("ubat", "carth", "battery", { x: 1572, y: 742, face: 180 }, 3, { t: T_17 + 0.5, w: 24, d: 22, until: T_EVERY + 0.6 });   /* s12d_bc: Union battery at the Big Black */
-const CAV1 = UF.formation("ucav", "carth", "cavalry", { x: 1598, y: 645, face: 180 }, 6, { t: T_17 + 0.5, until: T_EVERY + 0.6 });   /* s12d_bc: Union cavalry on the northern flank */
 BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, [1534, 708]);   /* s12d_rt polish: mark on the Big Black bridge approach, east bank (the Confederate unit stands on the bridge until it falls back) */
 { const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */
   tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 1.5); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 1.5); }
-UF.hide(SKR, T_BB + 0.6); MV("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); MV("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
+B.move("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); B.move("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
 // ---------- "A battle every three or four days" (wide: all five marks + the route) ----------
 inkTrace(LL([[31.961, -90.984], [32.08, -90.74], [32.259, -90.422], [32.299, -90.185], [32.34, -90.36], [32.333, -90.535], [32.347, -90.716]]), T_EVERY + 0.3, T_ATE + 0.6, 2.6);
 B.caption("A BATTLE EVERY THREE OR FOUR DAYS", T_EVERY + 0.1, T_ATE - 0.1, "carth");
@@ -1056,8 +740,8 @@ const N1 = CARD("HE COUNTED", "OVER 60,000", `<div style="font-size:28px;letter-
 { const m = N1.querySelector(".m"); gsap.set(m, { autoAlpha: 0 }); tl.fromTo(m, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_MOD); } SFX("hit", T_60 + 0.55);
 const N2 = CARD("HIS ARMY", "THE SMALLER ONE", "", "#2e5cb2", CSS, T_SMALL - 0.05, Math.min(END + 1, T_SMALL + 3.0)); SFX("hit", T_SMALL + 0.05);
 // the ring closes on Vicksburg (hand-off to s12e: the siege)
-MV("u13", T_COUNT, 5, ...L(32.41, -90.76)); MV("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); MV("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
-MV("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(F.re.layer, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
+B.move("u13", T_COUNT, 5, ...L(32.41, -90.76)); B.move("u17", T_COUNT + 0.3, 5, ...L(32.30, -90.74)); B.move("u15", T_COUNT + 0.5, 5, ...L(32.48, -90.72));
+B.move("rv", T_COUNT + 0.5, 4, ...L(32.37, -90.845)); tl.to(B.units.re.el, { autoAlpha: 0, duration: 0.8 }, T_COUNT + 2.5);
 declutter([], [[T_JAM - 0.1, SHC_U], [T_60 + 0.45, T_HIS - 0.15], [T_SMALL - 0.05, END + 1]]);
 // ===== FORM 2 (owner 2026-11-07, approved v2 stripes, used SPARINGLY: 3 short perspective moments in the clip): clear STRIPES for BOTH sides (Confederate ground red lines, Union ground blue lines), no fill between
 // the lines; the stripes are drawn through alpha masks (tools/s12_make_mask.py) and keep a constant on-screen width/spacing at every camera scale
