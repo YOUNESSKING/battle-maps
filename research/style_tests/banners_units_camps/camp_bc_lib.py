@@ -752,7 +752,7 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
             dd = (1.8 + i * 1.7) * k
             sx_, sy_ = fx + dd * math.cos(wa), fy + dd * math.sin(wa) - i * 0.25 * k
             cv.paint(sx_, sy_, wa, 2.2 * k, sd_circle((0.8 + i * 0.3) * k), lambda s, t, d: np.array([150, 146, 140.]) * (1.3 if night else 1.0),
-                     outline=0, opacity=(0.34 if not night else 0.09) * (1 - i / 6))   # s12d_bc: visible smoke wisp
+                     outline=0, opacity=(0.42 if not night else 0.09) * (1 - i / 6))   # s12d_bc: visible smoke wisp
 
     # painterly softening (premultiplied blur, as the towns)
     img = np.dstack([cv.rgb, cv.a])
