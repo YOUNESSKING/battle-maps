@@ -24,11 +24,28 @@ D = [("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in meander(r["pts"], k))) for 
 CXJ = os.path.join(sys.argv[1], "crossings.json")
 if os.path.exists(CXJ):   # crossings.py: same meandered roads, ferry roads carried across the Big Black (split at the water)
     D = [" ".join("M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in c) for c in r["paths"]) for r in json.load(open(CXJ))["roads"]]
+    # owner 2026-11-10: embossed double cart ruts (ref_road_zoom2.png): two ruts ~3.4 px apart at 1080p (s 1.9 -> +-0.9 map px), wobbling, merging now and then
+    def ruts(c, seed):
+        rnd = random.Random(seed); ph = [rnd.uniform(0, 6.28) for _ in range(4)]
+        L_, R_, acc = [], [], 0.0
+        for i, (x, y) in enumerate(c):
+            if i: acc += math.hypot(x - c[i - 1][0], y - c[i - 1][1])
+            a, b = c[max(0, i - 2)], c[min(len(c) - 1, i + 2)]
+            Ln = math.hypot(b[0] - a[0], b[1] - a[1]) + 1e-9; nx, ny = -(b[1] - a[1]) / Ln, (b[0] - a[0]) / Ln
+            half = 0.9 * (0.82 + 0.3 * math.sin(acc / 37 + ph[0]) + 0.12 * math.sin(acc / 11 + ph[1]))
+            half = max(0.25, half)
+            wob = 0.18 * math.sin(acc / 15 + ph[2])
+            L_.append((x + nx * (half + wob), y + ny * (half + wob))); R_.append((x - nx * (half - wob), y - ny * (half - wob)))
+        f = lambda P: "M" + " L".join(f"{x:.2f} {y:.2f}" for x, y in P)
+        return f(L_) + " " + f(R_)
+    DR = [" ".join(ruts(c, 100 * k + j) for j, c in enumerate(r["paths"])) for k, r in enumerate(json.load(open(CXJ))["roads"])]
+else:
+    DR = D
 src = open(f"{G}/tools/s12_body_s12d.js").read()
 
 RT = """
 // ===== s12d_rt TEST (roads + painted towns, research/style_tests/roads_towns): never in the approved s12d =====
-const RTM = %s, RTD = %s, RW = %s;
+const RTM = %s, RTD = %s, RTDR = %s, RW = %s;
 let RTSV = null; const RTIMG = {};
 const RTL = document.createElement("div"); RTL.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
 document.getElementById("relief2").after(RTL);   // above both basemaps, under hatching / territory / overlay / pins
@@ -45,7 +62,7 @@ const RTH = [], RTHC = [];
   im.src = `assets/rt/${n}___BUILDID__.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
-[["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
+[["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"], ["rivers_w", RTH, "relief"], ["rivers_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
   im.src = `assets/rt/${n}___BUILDID__.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
@@ -53,18 +70,21 @@ const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.f
 CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
 { const sv = document.createElementNS("http://www.w3.org/2000/svg", "svg"); sv.setAttribute("viewBox", "0 0 2880 1620"); sv.setAttribute("width", "2880"); sv.setAttribute("height", "1620");
   sv.style.cssText = "position:absolute;left:0;top:0;overflow:visible";
-  const lay = [["#c4ba80", 5.0, 0.07], ["#2b2712", RW[0], RW[2]], ["#8e8656", RW[1], RW[3]]], PS = [];
-  lay.forEach(([c, w, a]) => RTD.forEach((d) => { const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", d);
+  // embossed cart track (lit from the NW): dusty band, then each rut = dark groove edge (shifted NW) + light rim (shifted SE) + olive floor
+  const lay = [[RTD, "#a99c6a", 5.5, 0.12, 0, 0], [RTD, "#4a4522", 3.4, 0.14, 0, 0],
+               [RTDR, "#2a2810", 1.2, 0.72, -0.4, -0.4], [RTDR, "#d6cc98", 0.8, 0.26, 0.65, 0.65], [RTDR, "#4e4824", 0.85, 0.6, 0, 0]], PS = [], SH = [];
+  lay.forEach(([DD, c, w, a, dx, dy]) => { const g = document.createElementNS("http://www.w3.org/2000/svg", "g"); if (dx || dy) SH.push([g, dx, dy]);
+    DD.forEach((d) => { const p = document.createElementNS("http://www.w3.org/2000/svg", "path"); p.setAttribute("d", d);
     p.setAttribute("fill", "none"); p.setAttribute("stroke", c); p.setAttribute("stroke-opacity", a); p.setAttribute("stroke-linecap", "round"); p.setAttribute("stroke-linejoin", "round");
-    p.__w = w; sv.appendChild(p); PS.push(p); }));
+    p.__w = w; g.appendChild(p); PS.push(p); }); sv.appendChild(g); PS.push(g); });
   const fl = document.createElementNS("http://www.w3.org/2000/svg", "filter"); fl.setAttribute("id", "rtsoft"); fl.setAttribute("x", "-5%%"); fl.setAttribute("y", "-5%%"); fl.setAttribute("width", "110%%"); fl.setAttribute("height", "110%%");
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
-  const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
+  const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.filter((p) => p.tagName === "g").forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
   ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}___BUILDID__.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
-  const rtApply = (k) => { PS.forEach((p) => p.setAttribute("stroke-width", (p.__w * k).toFixed(3))); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
+  const rtApply = (k) => { PS.forEach((p) => { if (p.__w) p.setAttribute("stroke-width", (p.__w * k).toFixed(3)); }); SH.forEach(([g, dx, dy]) => g.setAttribute("transform", `translate(${(dx * k).toFixed(3)} ${(dy * k).toFixed(3)})`)); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
   CURV.push([{ setAttribute: (a, v) => rtApply(+v) }, 1]); rtApply(1 / CAM_S); }
 Object.entries(RTM.towns).forEach(([k, T]) => { const im = document.createElement("img"); im.src = `assets/rt/town_${k}.png`; im.alt = "";
   im.style.cssText = `position:absolute;left:${T.left}px;top:${T.top}px;width:${T.w}px;height:${T.h}px`; RTL.insertBefore(im, RTSV); RTIMG[k] = im; });
@@ -78,7 +98,7 @@ CURV.push([{ setAttribute: () => rtEdge() }, 1]);
 const rtLabel = (k, t = 0, until = null) => { const T = RTM.towns[k], Lb = T.label;
   const el = GG.pin(`<div style="position:relative;width:0;height:0"><img src="assets/rt/label_${k}.png" alt="" style="position:absolute;left:${(Lb.dx - Lb.ax).toFixed(1)}px;top:${(Lb.dy - Lb.ay).toFixed(1)}px;width:${Lb.w}px;height:${Lb.h}px;max-width:none"></div>`, T.c[0], T.c[1], { t: t > 0 ? t : null });
   if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); pinS(el); RTLBL[k] = el.querySelector("img"); rtEdge(); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, until); return el; };
-""" % (json.dumps(meta), json.dumps(D), json.dumps(RW))
+""" % (json.dumps(meta), json.dumps(D), json.dumps(DR), json.dumps(RW))
 
 def rep(a, b):
     global src
@@ -100,7 +120,7 @@ rep('B.move("u13", T_17, 1.2, ...L(32.39, -90.66));', 'B.move("u13", T_17, 1.2, 
 rep('hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 1.6);', 'hatch("assets/media/gn_vick_may16cap_mx.png", T_CH + 0.5, 0.2);   /* s12d_rt: form 1 ~2 s, mostly faded by the test frame */')
 rep('BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50);', 'BAT("CHAMPION HILL", CH, T_CH, T_17 + 0.6, 0, -50, [1627, 719]);   /* s12d_rt polish: south foot of Champion Hill (~40 px below the lit crest), between the Jackson and Raymond roads */')
 rep('smoke(LL([[32.335, -90.552], [32.33, -90.565], [32.29, -90.56]]), T_CH);', 'smoke([[1627, 719], [1620, 722], [1633, 724]], T_CH);   /* s12d_rt: powder smoke at the battle mark below the hill (it sat on the hill crest and read as a dark hole) */')
-rep('BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));', 'BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));\n{ const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */\n  tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 0.2); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 0.2); }')
+rep('BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, L(32.33, -90.722));', 'BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, [1534, 708]);   /* s12d_rt polish: mark on the Big Black bridge approach, east bank (the Confederate unit stands on the bridge until it falls back) */\n{ const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */\n  tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 0.2); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 0.2); }')
 rep('{ const ph = GW.firstElementChild.querySelectorAll("img")[1]; tl.set(ph, { attr: { src: PHOTO("grant") } }, T_UG - 0.1); }   // the photo revealed ON "Ulysses Grant"\n', '')
 rep('{ const nm = GW.firstElementChild.lastElementChild, n2 = document.createElement("div"); n2.textContent = "Ulysses Grant"; n2.style.cssText = nm.style.cssText + ";position:absolute;left:0;right:0;bottom:0;font-size:13px";\n  GW.firstElementChild.appendChild(n2); gsap.set(n2, { autoAlpha: 0 }); tl.to(nm, { autoAlpha: 0, duration: 0.15 }, T_UG - 0.1); tl.to(n2, { autoAlpha: 1, duration: 0.15 }, T_UG - 0.1);\n  nm.style.visibility = "inherit"; }', 'PC.reveal(GW, PHOTO("grant"), "Ulysses Grant", T_UG - 0.1);   /* s12d_rt: portrait card v2 reveal (research/style_tests/roads_towns/portraits) */')
 src = src.replace("// SCRIPT-12 TEST, scene s12d", "// SCRIPT-12 TEST, scene s12d_rt = COPY of s12d + roads + painted towns (make_body.py in the roads_towns test); original s12d", 1)

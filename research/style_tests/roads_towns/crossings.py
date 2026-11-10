@@ -23,6 +23,10 @@ BC = np.asarray(Image.open(f"{A}/vicksburg_w_close.jpg").convert("RGB"))
 f = BW.astype(np.int32)
 WATER = (f[..., 2] > f[..., 0] + 30) & (f[..., 2] > f[..., 1] + 4)          # image px (2 per map px)
 WATER = cv2.morphologyEx(WATER.astype(np.uint8), cv2.MORPH_OPEN, np.ones((2, 2), np.uint8)).astype(bool)
+OLDWATER = WATER
+NW_ = os.path.join(OUT, "newwater_w.npy")
+if os.path.exists(NW_):   # owner 2026-11-10: the carved rivers overlay (rivers/make_rivers.py) draws narrower water: cut/extend roads at the NEW edge
+    WATER = np.load(NW_)
 H2, W2 = WATER.shape
 
 
@@ -62,7 +66,9 @@ for k, r in enumerate(roads):
     for end in (0, -1):
         e, q = P[end], P[end + 1 if end == 0 else end - 1]
         dx, dy = e[0] - q[0], e[1] - q[1]; L = math.hypot(dx, dy) + 1e-9; dx, dy = dx / L, dy / L
-        hit = next((s for s in np.arange(0, 6, 0.5) if wet(e[0] + dx * s, e[1] + dy * s)), None)
+        if min(math.hypot(e[0] - c[0], e[1] - c[1]) for c in TC) < 20:   # road ends in a town: no landing / ferry
+            continue
+        hit = next((s for s in np.arange(0, 14, 0.5) if wet(e[0] + dx * s, e[1] + dy * s)), None)
         if hit is None:
             continue
         s = hit
@@ -73,6 +79,9 @@ for k, r in enumerate(roads):
             ext = [(e[0] + dx * t, e[1] + dy * t) for t in np.arange(0.5, s + 12, 0.5)]
             P = (ext[::-1] + P) if end == 0 else (P + ext)
         else:
+            if hit > 0.5:   # the road runs on to the new water edge
+                ext = [(e[0] + dx * t, e[1] + dy * t) for t in np.arange(0.5, hit + 0.01, 0.5)]
+                P = (ext[::-1] + P) if end == 0 else (P + ext)
             crossings.append(dict(kind="landing", road=r["id"], x=e[0] + dx * (hit + 1.5), y=e[1] + dy * (hit + 1.5),
                                   ang=math.degrees(math.atan2(dy, dx)), w=span, bank=(e[0] + dx * hit, e[1] + dy * hit)))
     # walk the road: runs over water = crossings
