@@ -65,3 +65,4 @@ thomas/build/
 # Epidemic Sound files: licensed to the owner's subscription, never in this PUBLIC repo (kept outside git)
 library/epidemic/sfx/
 library/epidemic/music/
+yorktown/logs/
