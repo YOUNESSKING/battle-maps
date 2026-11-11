@@ -28,11 +28,11 @@ const camAt = (t) => { let c = SEGS[0].a;
   for (const g of SEGS) { if (t < g.t0) break; const u = g.e(Math.min(1, (t - g.t0) / Math.max(g.t1 - g.t0, 1e-3))), a = g.a, b = g.b;
     c = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
   return c; };
-const C0 = [1400, 880, 0.95], C1 = [1395, 900, 0.97], CCAPE = [1300, 1250, 1.55], CW = [1380, 900, 0.97], CW2 = [1350, 905, 1.02];
+const C0 = [1400, 880, 0.95], C1 = [1395, 900, 0.97], CCAPE = [1300, 1250, 1.55], CWD = [1380, 900, 0.97], CW2 = [1350, 905, 1.02];
 seg(0, T_REACH - 0.4, C0, C1);
 seg(T_REACH - 0.3, T_24 + 1.0, C1, CCAPE);
-seg(T_TURN + 0.2, T_LAST + 0.6, CCAPE, CW);
-seg(T_LAST + 0.7, END, CW, CW2);
+seg(T_TURN + 0.2, T_LAST + 0.6, CCAPE, CWD);
+seg(T_LAST + 0.7, END, CWD, CW2);
 camera([...Array(Math.ceil(END * 20) + 1)].map((_, i) => { const t = Math.min(END, i / 20); return [t, ...camAt(t), "none"]; }));
 // ---------------------------------------------------------------------------------------------------------------------------------
 // cards (same helpers as p3b/p3c)
@@ -66,7 +66,8 @@ const OUT = [[1560, 590], [1640, 700], [1620, 880], [1520, 1060], [1400, 1210]];
 const STOP = [[1300, 1270], [1316, 1316], [1304, 1360]];
 RS0.forEach((p, k) => march("rs" + k, [p, ...OUT.map(([x, y]) => [x + (k - 1) * 26, y + (k - 1) * 10]), STOP[k]], T_SAIL + 0.1 + k * 0.25, T_24 - T_SAIL - 0.2, { dust: false }));
 // they find the French line across the bay mouth: the two-colour front between the two lines
-FRONT([[1258, 1250], [1262, 1316], [1256, 1385]], T_24 + 0.2, { red: "right" });
+const SEAF = FRONT([[1258, 1250], [1262, 1316], [1256, 1385]], T_24 + 0.2, { enemy: [1330, 1316], until: T_TURN + 1.6 });
+if (SEAF && SEAF.nodeType) tl.to(SEAF, { autoAlpha: 0, duration: 0.6 }, T_TURN + 1.6);
 focus([1255, 1320], 120, T_24 + 0.3, T_TURN);
 CARD("", "5 DAYS TOO LATE", "#c4121f", T_LATE - 0.05, T_TURN + 1.4, { size: 64 });
 // "It turned back to New York"
