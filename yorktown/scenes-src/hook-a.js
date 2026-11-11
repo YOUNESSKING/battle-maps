@@ -27,23 +27,33 @@ const SP = (s) => s / PEN.k;                                                    
 // clouds over the peninsula too (the east cloud deck is hidden once the frame is inside the inset): a small deck in the inset's box
 { const L2 = LivingW({ tl, world: WORLD, before: OVL, box: PEN.box }); const c2 = L2.clouds({ n: 6, opacity: 0.1, seed: 5, size: [380 * PEN.k, 760 * PEN.k], wind: [9 * PEN.k, -2.5 * PEN.k] });
   c2.className = "lv2-clouds"; onCam((s) => { c2.style.opacity = Math.max(0, Math.min(1, (s - SP(0.7)) / SP(0.3))).toFixed(3); }); }
-const camApply = () => { const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
+// camera driver: the camera is a pure function of the timeline time (segments below), applied after every render, so any seek gives the
+// right frame. seg(t0, t1, a, b, ease, path): a/b = [cx, cy, s]; with a path, the scale changes geometrically and the centre runs along the
+// path with v = (1/sa - 1/s)/(1/sa - 1/sb) (every point heads straight for its place on screen: one continuous zoom, no swing at high zoom).
+const SEGS = [], seg = (t0, t1, a, b, ease = "sine.inOut", path = null) => { SEGS.push({ t0, t1, a, b, e: gsap.parseEase(ease), path }); SEGS.sort((p, q) => p.t0 - q.t0); };
+const camAt = (t) => { let c = SEGS[0].a;
+  for (const g of SEGS) { if (t < g.t0) break; const u = g.e(Math.min(1, (t - g.t0) / Math.max(g.t1 - g.t0, 1e-3))), a = g.a, b = g.b;
+    if (g.path) { const s = a[2] * (b[2] / a[2]) ** u, v = (1 / a[2] - 1 / s) / (1 / a[2] - 1 / b[2]), q = posOn(g.path, v); c = [q[0], q[1], s]; }
+    else c = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
+  return c; };
+const camApply = () => { const c = camAt(tl.time()); CAM.cx = c[0]; CAM.cy = c[1]; CAM.s = c[2];
+  const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
+tl.eventCallback("onUpdate", ((prev) => function () { if (prev) prev.apply(this, arguments); camApply(); })(tl.eventCallback("onUpdate")));
+tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: END, ease: "none", immediateRender: false, onUpdate: camApply }, 0);
 const C0 = [1340, 830, 0.9], C1 = [1400, 745, 1.0];
 camera([[0, ...C0]]);
-tl.fromTo(CAM, { cx: C0[0], cy: C0[1], s: C0[2] }, { cx: C1[0], cy: C1[1], s: C1[2], duration: T_DOWN - 0.35, ease: "sine.inOut", immediateRender: false, onUpdate: camApply }, 0);
+seg(0, T_DOWN - 0.35, C0, C1);
 // THE DIVE: scale grows geometrically; the centre runs along the coast path with v = (1/s0 - 1/s)/(1/s0 - 1/s1), so every point heads
 // straight for its place on screen (no swing at high zoom): down the coast -> the capes -> up the York -> Yorktown
 const PEN_C = [1830, 870], S_PEN = 1.45, CEND = PP(...PEN_C), SEND = SP(S_PEN);
 const ZPATH = [[C1[0], C1[1]], [1230, 1060], ...LLYT([[36.98, -76.02], [37.13, -76.30]]), CEND];
 const TZ0 = T_DOWN - 0.3, TZ1 = T_YT + 0.05;
-{ const pr = { u: 0 }, s0 = C1[2];
-  tl.fromTo(pr, { u: 0 }, { u: 1, duration: TZ1 - TZ0, ease: "power2.inOut", immediateRender: false, onUpdate: () => {
-    const s = s0 * (SEND / s0) ** pr.u, v = (1 / s0 - 1 / s) / (1 / s0 - 1 / SEND), q = posOn(ZPATH, v); CAM.cx = q[0]; CAM.cy = q[1]; CAM.s = s; camApply(); } }, TZ0); }
+seg(TZ0, TZ1, C1, [...CEND, SEND], "power2.inOut", ZPATH);
 SFX("whoosh", TZ0 - 0.15);
 // hook-2: slow push over the town while the trap closes
 const PEN_C2 = [1822, 878], S_PEN2 = 1.58, CE2 = PP(...PEN_C2);
-tl.fromTo(CAM, { cx: CEND[0], cy: CEND[1], s: SEND }, { cx: CE2[0], cy: CE2[1], s: SP(S_PEN2), duration: END - TZ1 - 0.1, ease: "sine.inOut", immediateRender: false, onUpdate: camApply }, TZ1 + 0.02);
+seg(TZ1 + 0.02, END - 0.08, [...CEND, SEND], [...CE2, SP(S_PEN2)]);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the date scroll: comes in on "seventeen eighty-one" and lands with a hit (a date on screen in the first second)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -65,7 +75,7 @@ UNIT("ny1", "british", [1490, 520], "infantry", { ech: "XX" });
 UNIT("rs1", "british", [1556, 548], "ship", { ech: "" }); UNIT("rs2", "british", [1606, 566], "ship", { ech: "" });
 B.move("rs1", 0, 7, 1540, 530); B.move("rs2", 0, 7, 1588, 552);
 UNIT("cw1", "british", [1100, 1262], "infantry", { ech: "XX" });
-const FUS = SIDEFLAG("us", [1722, 398], 0, T_DOWN + 1.2), FGB = SIDEFLAG("gb", [1665, 640], 0, T_DOWN + 1.2);
+const FUS = SIDEFLAG("us", [1738, 350], 0, T_DOWN + 1.2), FGB = SIDEFLAG("gb", [1700, 700], 0, T_DOWN + 1.2);
 // "its army": soft focus on the camp; UNPAID / MUTINY stamps on the empty ground west of the Hudson (one at a time, <= 3.5 s)
 focus([1615, 350], 95, T_ARMY, T_MUTINY + 1.0);
 wstampL("UNPAID", 1395, 330, T_UNPAID, T_MUTINY - 0.25, null, 30);
@@ -112,3 +122,5 @@ HATCH([PP(1650, 880), PP(1700, 850), PP(1760, 838), PP(1830, 845), PP(1870, 880)
 // the east cloud deck + water shimmer are hidden once the frame is inside the peninsula inset (they would be giant blobs at 20x; the kit's
 // INSET compares style.opacity with "1.000" but the browser stores "1", so it never hides them: reported, handled here)
 onCam((s) => { const k = s > SP(0.95); document.querySelectorAll(".lv-water,.lv-clouds").forEach((l) => { l.style.visibility = k ? "hidden" : "visible"; }); });
+
+camApply();

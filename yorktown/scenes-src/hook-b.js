@@ -28,22 +28,31 @@ const T_NAME = at(H4, "His name was"), T_GW = at(H4, "George Washington"), T_BUI
 // maps + camera
 // ---------------------------------------------------------------------------------------------------------------------------------
 LIVING({ clouds: 0.1 });
-const PEN = INSET("peninsula");
+const CHI = INSET("chesapeake"), PEN = INSET("peninsula");
 const PP = (x, y) => [PEN.box[0] + x * PEN.k, PEN.box[1] + y * PEN.k], SP = (s) => s / PEN.k;
-const camApply = () => { const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
+// camera driver: the camera is a pure function of the timeline time (segments below), applied after every render, so any seek gives the
+// right frame. seg(t0, t1, a, b, ease, path): a/b = [cx, cy, s]; with a path, the scale changes geometrically and the centre runs along the
+// path with v = (1/sa - 1/s)/(1/sa - 1/sb) (every point heads straight for its place on screen: one continuous zoom, no swing at high zoom).
+const SEGS = [], seg = (t0, t1, a, b, ease = "sine.inOut", path = null) => { SEGS.push({ t0, t1, a, b, e: gsap.parseEase(ease), path }); SEGS.sort((p, q) => p.t0 - q.t0); };
+const camAt = (t) => { let c = SEGS[0].a;
+  for (const g of SEGS) { if (t < g.t0) break; const u = g.e(Math.min(1, (t - g.t0) / Math.max(g.t1 - g.t0, 1e-3))), a = g.a, b = g.b;
+    if (g.path) { const s = a[2] * (b[2] / a[2]) ** u, v = (1 / a[2] - 1 / s) / (1 / a[2] - 1 / b[2]), q = posOn(g.path, v); c = [q[0], q[1], s]; }
+    else c = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
+  return c; };
+const camApply = () => { const c = camAt(tl.time()); CAM.cx = c[0]; CAM.cy = c[1]; CAM.s = c[2];
+  const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
-const camTo = (t, dur, c, ease = "sine.inOut", from = null) => tl.fromTo(CAM, from ? { cx: from[0], cy: from[1], s: from[2] } : {}, { cx: c[0], cy: c[1], s: c[2], duration: Math.max(dur, 0.01), ease, immediateRender: false, onUpdate: camApply }, t);
+tl.eventCallback("onUpdate", ((prev) => function () { if (prev) prev.apply(this, arguments); camApply(); })(tl.eventCallback("onUpdate")));
+tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: END, ease: "none", immediateRender: false, onUpdate: camApply }, 0);
 const CA = [...PP(1822, 878), SP(1.58)];            // = hook-a's last camera
-const CW = [1350, 850, 0.85], CW2 = [1350, 905, 0.82], CCAMP = [1585, 455, 1.45], CSLAM = [1572, 445, 1.62];
+const CW = [1350, 800, 0.85], CW2 = [1350, 850, 0.82], CCAMP = [1585, 455, 1.45], CSLAM = [1572, 445, 1.62];
 camera([[0, ...CA]]);
 // the hard pull back (zoom whoosh): geometric scale, the centre runs back down the York, out of the capes, up to the wide frame
-{ const pr = { u: 0 }, s0 = CA[2], s1 = CW[2], ZP = [[CA[0], CA[1]], ...LLYT([[37.13, -76.30], [36.98, -76.02]]), [1230, 1060], [CW[0], CW[1]]];
-  tl.fromTo(pr, { u: 0 }, { u: 1, duration: 1.45, ease: "power2.inOut", immediateRender: false, onUpdate: () => {
-    const s = s0 * (s1 / s0) ** pr.u, v = (1 / s0 - 1 / s) / (1 / s0 - 1 / s1), q = posOn(ZP, v); CAM.cx = q[0]; CAM.cy = q[1]; CAM.s = s; camApply(); } }, 0.05); }
+seg(0.05, 1.5, CA, CW, "power2.inOut", [[CA[0], CA[1]], ...LLYT([[37.13, -76.30], [36.98, -76.02]]), [1230, 1060], [CW[0], CW[1]]]);
 SFX("whoosh", 0.05);
-camTo(T_SEA, 1.6, CW2, "sine.inOut", CW);
-camTo(T_MAN, 2.2, CCAMP, "power2.inOut", CW2);
-camTo(T_MAN + 2.25, T_GW - T_MAN - 2.3, CSLAM, "sine.inOut", CCAMP);
+seg(T_SEA, T_SEA + 1.6, CW, CW2);
+seg(T_MAN, T_MAN + 2.2, CW2, CCAMP, "power2.inOut");
+seg(T_MAN + 2.25, T_GW - 0.05, CCAMP, CSLAM);
 // clouds + water shimmer of `east` hidden while the frame is inside the peninsula inset or on a snap-cut layer (their masks are east's)
 let CUTL = [[1e9, 1e9]]; const inCut = () => CUTL.some(([a, b]) => tl.time() >= a && tl.time() < b);
 onCam((s) => { const k = s > SP(0.95) || inCut(); document.querySelectorAll(".lv-water,.lv-clouds,.lv-dust").forEach((l) => { l.style.visibility = k ? "hidden" : "visible"; }); });
@@ -65,10 +74,10 @@ UNIT("amA", "allies", [1622, 300], "artillery", { ech: "" });
 march("am1", [[1576, 352], [1586, 368], [1594, 380]], 1.0, 9.0, { dustSize: 48, dustOp: 0.45 });
 march("am2", [[1668, 336], [1660, 346], [1652, 356]], 1.2, 9.0, { dustSize: 48, dustOp: 0.45 });
 // the British in New York: Staten Island + Manhattan, the fleet in the harbour
-UNIT("ny1", "british", [1490, 522], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1508, 452], "infantry", { ech: "XX" });
-UNIT("rs1", "british", [1556, 548], "ship", { ech: "" }); UNIT("rs2", "british", [1606, 566], "ship", { ech: "" });
-B.move("rs1", T_NY, 4.5, 1536, 528);
-const FUS = SIDEFLAG("us", [1722, 398], 0.9), FGB = SIDEFLAG("gb", [1665, 640], 0.9);
+UNIT("ny1", "british", [1474, 536], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1514, 455], "infantry", { ech: "XX" });
+UNIT("rs1", "british", [1560, 560], "ship", { ech: "" }); UNIT("rs2", "british", [1606, 566], "ship", { ech: "" });
+B.move("rs1", T_NY, 4.5, 1546, 548);
+const FUS = SIDEFLAG("us", [1738, 350], 0.9), FGB = SIDEFLAG("gb", [1700, 700], 0.9);
 focus([1615, 345], 90, T_ARMY, T_WRONG - 0.2);
 focus([1505, 480], 80, T_WRONG, T_MILES - 0.1);
 // "more than four hundred miles to the north": a thin route line from the camp south to the Chesapeake and Yorktown (fades)
@@ -76,8 +85,7 @@ const ROUTE = [[1585, 372], [1538, 352], [1500, 400], [1463, 468], [1393, 592], 
 trail(ROUTE, "#1f4fc4", 3.4 / CW[2], T_MILES, 1.8, null);
 PLACE_LABEL("Virginia", [935, 1150], T_VA, { size: 26 });
 // "the strongest British army in America": more red boxes round New York
-UNIT("ny3", "british", [1812, 452], "infantry", { ech: "XX", t: T_STRONG }); UNIT("ny4", "british", [1438, 498], "infantry", { ech: "X", t: T_STRONG + 0.25 });
-UNIT("ny5", "british", [1548, 494], "artillery", { ech: "", t: T_STRONG + 0.5 });
+UNIT("ny3", "british", [1882, 436], "infantry", { ech: "XX", t: T_STRONG }); UNIT("ny4", "british", [1418, 468], "infantry", { ech: "X", t: T_STRONG + 0.25 });
 // "without being stopped": a thin red arrow out of New York into New Jersey, across the route
 arw({ pts: [[1440, 520], [1405, 560], [1372, 600]], side: "rome", t: T_STOP, dur: 0.8, width: AW(CW[2], 9) });
 // "a French fleet ... from the Caribbean": a blue ship box from the south, the arrow from the bottom edge of the map up to the capes
@@ -90,7 +98,7 @@ B.move("rs2", T_RN, 5.5, 1505, 860);
 arw({ pts: [[1600, 585], [1570, 700], [1500, 860]], side: "rome", t: T_RN + 0.1, dur: 1.0, width: AW(CW2[2], 9) });
 // "The man who bet everything on it": the "?" banner on a pole by the American camp (revealed on the spoken name)
 BANNER("washington", "George Washington", "us", "am1", T_MAN, { myst: T_GW, side: "west" });
-wstampL("SIX YEARS", 1440, 380, T_SIX, T_GW - 0.35, null, 26);
+wstampL("SIX YEARS", 1700, 300, T_SIX, T_GW - 0.35, null, 26);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-4: the name slam
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -103,8 +111,8 @@ slam(NAME, T_GW - 0.1, { from: 1.9, shake: 6, until: T_BUILD - 0.2 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 const CUTB = scr0("", "inset:0;background:#030406;");
 const PINS = document.getElementById("pins");
-const cut = (t, c) => { tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, t + 0.04);
-  camTo(t, 0.01, c, "none"); SFX("whoosh", t - 0.25); SFX("hit", t + 0.02); K.shake(t + 0.02, 3, 0.25); };
+const cut = (t, c, until, drift) => { tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, t + 0.04);
+  seg(t, until, c, [c[0] + drift[0], c[1] + drift[1], c[2] * drift[2]], "sine.out"); SFX("whoosh", t - 0.25); SFX("hit", t + 0.02); K.shake(t + 0.02, 3, 0.25); };
 const hideAll = (t) => { const els = [...OVL.children, ...PINS.children].filter((e) => !["defs", "style"].includes(e.tagName.toLowerCase())); tl.set(els, { autoAlpha: 0 }, t - 0.01); };
 const layer = (map) => { const im = document.createElement("img"); im.src = `assets/inset_${map}.jpg`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;max-width:none;pointer-events:none"; WORLD.insertBefore(im, document.querySelector(".lv-water") || OVL); gsap.set(im, { autoAlpha: 0 }); return im; };
@@ -112,9 +120,9 @@ const LT = (map) => (la, lo) => YT.L(la, lo, map);
 const T1 = T_BUILD - 0.04, T2 = T_BSEA - 0.04, T3 = T_NIGHT - 0.04, T4 = T_HOW - 0.05;
 CUTL = [[T2 - 0.01, 1e9]];
 // ---------- CUT 1 (east): the march: across the Hudson at King's Ferry, curling toward Staten Island, then wheeling south ----------
-const C1 = [1470, 470, 1.35];
-cut(T1, C1);
-hideU(["ny3", "ny4", "ff1", "rs2", "cw1"], T1 - 0.02);
+const C1 = [1478, 470, 1.12];
+cut(T1, C1, T2, [-10, 12, 1.05]);
+tl.set(["ny3", "ny4", "ff1", "rs2", "cw1"].map((id) => B.units[id].el), { autoAlpha: 0 }, T1 - 0.01);
 const MR = [[1594, 380], [1560, 360], [1538, 346], [1512, 362], [1490, 400], [1468, 440], [1462, 470], [1478, 492], [1470, 512], [1440, 528], [1418, 560], [1393, 592]];
 march("am1", sub(MR, 0.30, 1.0, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
 B.move("am1", T1, 0.01, ...posOn(MR, 0.30));
@@ -122,13 +130,13 @@ march("am2", sub(MR, 0.12, 0.80, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, 
 B.move("am2", T1, 0.01, ...posOn(MR, 0.12));
 march("amA", sub(MR, 0.0, 0.60, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
 B.move("amA", T1, 0.01, ...posOn(MR, 0.0));
-wstampL("FOOL THE BRITISH", 1330, 410, T_FOOL, T2 - 0.1, null, 28);
+wstampL("FOOL THE BRITISH", 1655, 585, T_FOOL, T2 - 0.1, null, 28);
 // ---------- CUT 2 (chesapeake layer, 5 Sep 1781, clear): two lines of ships off Cape Henry ----------
 hideAll(T2);
 const LCH = layer("chesapeake"), CHP = LT("chesapeake");
 tl.set(LCH, { autoAlpha: 1 }, T2 - 0.01); tl.set(LCH, { autoAlpha: 0 }, T3 - 0.01);
-const C2 = [1745, 930, 1.3];
-cut(T2, C2);
+const C2 = [1745, 935, 1.3];
+cut(T2, C2, T3, [12, 4, 1.05]);
 B.date("5 SEP 1781", T2, T3 - 0.08, 32);
 const SC2 = [];
 const FR = [[1590, 990], [1665, 1002], [1740, 1014], [1815, 1026]], GBL = [[1650, 870], [1725, 878], [1800, 886], [1875, 894]];
@@ -143,8 +151,8 @@ tl.set(SC2.map((id) => B.units[id].el), { autoAlpha: 0 }, T3 - 0.01);
 // ---------- CUT 3 (yorktown layer, night of 14 Oct 1781, clear): the night assault on Redoubts 9 + 10 ----------
 const LYK = layer("yorktown"), YK = LT("yorktown");
 tl.set(LYK, { autoAlpha: 1 }, T3 - 0.01);
-const C3 = [1450, 815, 1.65];
-cut(T3, C3);
+const C3 = [1440, 800, 2.0];
+cut(T3, C3, T4 + 4, [10, 4, 1.06]);
 B.date("14 OCT 1781", T3, T4, 32);
 LIGHT("night", T3, 0.01, 0.6); if (typeof NIGHT_DIM === "function") NIGHT_DIM(T3, 0.8, 0.01);
 const SC3 = [];
@@ -153,7 +161,7 @@ const PAR2 = [[37.2262, -76.5150], [37.2262, -76.5080], [37.2270, -76.5030], [37
 SC3.push(TRENCH(BLINE, T3, { face: 1, dur: 0.01 }), TRENCH(PAR2, T3, { dur: 0.01 }));
 const R9p = YK(...GD.places.redoubt_9), R10p = YK(...GD.places.redoubt_10);
 const R9 = REDOUBT("r9", R9p, T3, { side: "british", rot: 12 }), R10 = REDOUBT("r10", R10p, T3, { side: "british", rot: -8 });
-UNIT("yb1", "british", YK(37.2340, -76.5105), "infantry", { ech: "X", t: T3 + 0.02 }); UNIT("yb2", "british", YK(37.2360, -76.5150), "infantry", { ech: "X", t: T3 + 0.02 });
+UNIT("yb1", "british", [1318, 812], "infantry", { ech: "X", t: T3 + 0.02 }); UNIT("yb2", "british", [1420, 832], "infantry", { ech: "X", t: T3 + 0.02 });
 // the two assault columns from the second parallel: Americans on Redoubt 10 (by the river), French on Redoubt 9
 const A10 = [R10p[0] + 75, R10p[1] + 115], A9 = [R9p[0] - 30, R9p[1] + 130];
 UNIT("as10", "allies", A10, "infantry", { ech: "II", t: T3 + 0.02 }); UNIT("as9", "allies", A9, "infantry", { ech: "II", t: T3 + 0.02 });
@@ -171,8 +179,10 @@ wstampL("A NIGHT ATTACK", ...YK(37.2238, -76.5160), T_NATT, T_MUSK + 0.3, null, 
 // the title: the night shot dims, YORKTOWN 1781 slams on "Yorktown was won"
 // ---------------------------------------------------------------------------------------------------------------------------------
 B.date("1781", T4 + 0.02, null, 40);
-const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.3) 0%,rgba(5,7,13,0.72) 70%);");
+const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.3) 0%,rgba(5,7,13,0.72) 70%);"); SCN.insertBefore(TDIM, document.getElementById("date"));
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, T4);
 const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:18px 70px 24px;background:rgb(14,12,10);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">
   <div style="font-size:128px;letter-spacing:0.06em;line-height:1.05;color:#f7f3ea">YORKTOWN <span style="color:#c9b48a">1781</span></div></div>`, "left:0;right:0;top:330px;display:flex;justify-content:center;");
 slam(TITLE, T_WON - 0.22, { from: 1.7, shake: 6 });
+
+camApply();
