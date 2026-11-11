@@ -72,15 +72,17 @@ B.date("1 AUG 1781", T_AUG1, null, 32); SFX("tick", T_AUG1 + 0.1);
 // p1-1 on `east`: the two armies at frame 0, moving
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the allied camp above New York (Philipsburg, east of the Hudson): Americans, French, guns; columns shuffling (dust)
-UNIT("am1", "allies", [1560, 356], "infantry", { ech: "XX" }); UNIT("amA", "allies", [1625, 420], "artillery", { ech: "" });
-UNIT("fr1", "allies", [1702, 372], "infantry", { ech: "XX" });
-march("am1", [[1560, 356], [1565, 364], [1570, 372]], 0, 7.0, { dustSize: 44, dustOp: 0.42 });
-march("fr1", [[1702, 372], [1696, 381], [1690, 390]], 0.3, 7.0, { dustSize: 44, dustOp: 0.42 });
+UNIT("am1", "allies", [1572, 352], "infantry", { ech: "XX" }); UNIT("amA", "allies", [1640, 360], "artillery", { ech: "" });
+UNIT("fr1", "allies", [1730, 352], "infantry", { ech: "XX" });
+march("am1", [[1572, 352], [1566, 362], [1560, 372]], 0, 7.0, { dustSize: 44, dustOp: 0.42 });
+march("fr1", [[1730, 352], [1725, 356], [1720, 360]], 0.3, 7.0, { dustSize: 44, dustOp: 0.42 });
 // Washington (named in hook-4) rides with the American army on a side stake (NE, over empty Connecticut ground)
-const BW = BANNER("washington", "George Washington", "us", "am1", 0, { side: "nw" });
+// banners on free stakes (the same stake points as p1b frame 0): BFREE = banner on its own pin (moved with pinAlong when the army moves)
+const BFREE = (key, name, nation, p, t, o = {}) => { const w = BANNER(key, name, nation, p, t, { side: "up", ...o }); return { w, pin: w.closest(".gg-pin") }; };
+const BW = BFREE("washington", "George Washington", "us", [1500, 335], 0);
 // the British: New York garrison (Staten Island shore, Manhattan, Long Island), ships in the harbour
-UNIT("ny1", "british", [1488, 528], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1540, 446], "infantry", { ech: "XX" });
-UNIT("ny3", "british", [1710, 442], "infantry", { ech: "X" });
+UNIT("ny1", "british", [1488, 528], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1505, 458], "infantry", { ech: "XX" });
+UNIT("ny3", "british", [1850, 410], "infantry", { ech: "X" });
 UNIT("rs1", "british", [1572, 598], "ship", { ech: "" }); UNIT("rs2", "british", [1640, 610], "ship", { ech: "" });
 B.move("rs1", 0, 9, 1556, 588);
 SIDEFLAG("gb", "ny1", 0);
@@ -89,11 +91,11 @@ const BC = BANNER("clinton", "Sir Henry Clinton", "gb", "ny3", T_CLIN + 0.35, { 
 focus([1610, 355], 95, T_COMING - 0.1, T_JULY + 1.2);
 // Virginia: Cornwallis's army marching east down the peninsula, a small blue force shadowing it (Lafayette, not named in Part 1)
 UNIT("cwE", "british", [968, 1250], "infantry", { ech: "XX" }); UNIT("cwE2", "british", [925, 1238], "infantry", { ech: "X" });
-UNIT("lf1", "allies", [872, 1196], "infantry", { ech: "X" });
+UNIT("lf1", "allies", [790, 1150], "infantry", { ech: "X" });
 march("cwE", [[968, 1250], [1000, 1258], [1035, 1262], [1062, 1262]], 0.2, T_CHOSE - 0.6, { dustSize: 40, dustOp: 0.42 });
-march("cwE2", [[925, 1238], [960, 1250], [995, 1257], [1018, 1260]], 0.4, T_CHOSE - 0.8, { dustSize: 40, dustOp: 0.42 });
-march("lf1", [[860, 1188], [880, 1198], [898, 1206]], 1.0, T_CHOSE - 2.0, { dustSize: 36, dustOp: 0.38 });
-const BK1 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cwE", T_CORN, { side: "nw", until: TZ0 + 0.5 });
+march("cwE2", [[925, 1238], [960, 1250], [975, 1254], [990, 1256]], 0.4, T_CHOSE - 0.8, { dustSize: 40, dustOp: 0.42 });
+march("lf1", [[790, 1150], [808, 1160], [824, 1168]], 1.0, T_CHOSE - 2.0, { dustSize: 36, dustOp: 0.38 });
+const BK1 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cwE", T_CORN, { side: "up", until: TZ0 + 0.5 });
 focus([1010, 1255], 90, T_CHASE, T_DEEP - 0.1);
 // "a base on deep water, where the navy's big warships could shelter": red ships sail from the sea into the bay
 UNIT("rs3", "british", [1330, 1420], "ship", { ech: "", t: T_SHIPS - 0.1 });
@@ -106,7 +108,7 @@ UNIT("ghost", "allies", [1420, 1560], "ship", { ech: "", t: T_FOE });
 march("ghost", [[1420, 1560], [1330, 1450], [1255, 1385]], T_FOE + 0.3, 3.4, { dust: false });
 gsap.set(B.units.ghost.el.querySelector(".blk"), { opacity: 0.6 }); hideU(["ghost"], T_OBEY);
 // the units of p1-1 that leave the frame in the dive fade out (they would sit as huge-spaced boxes at the frame edge)
-hideU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2", "lf1"], TZ0 + 0.3);
+hideU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2", "lf1"], TZ0 + 0.3); tl.to(BW.pin, { autoAlpha: 0, duration: 0.4 }, TZ0 + 0.3);
 hideU(["cwE", "cwE2", "rs3"], TZ1 - 1.0);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Yorktown (peninsula map px via PP)
@@ -116,17 +118,17 @@ UNITF("cw2", "british", PP(1700, 958), "infantry", { ech: "X", t: TZ1 - 0.8 });
 UNITF("cwA", "british", PP(1748, 902), "artillery", { ech: "", t: TZ1 - 0.6 });
 UNITF("cw3", "british", PP(1880, 960), "infantry", { ech: "X", t: TZ1 - 0.7 });
 const BK2 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cw2", TZ1 - 0.3, { side: "sw", until: TP0 + 0.4 });
-RIVER("york", "York River", T_YR, { s: SP(S_PEN), near: PP(1690, 760), side: "left", hw: 14 });
+RLB.push([riverLabel("yorkP", "York River", PPL([[1200, 200], [1400, 420], [1550, 600], [1700, 760], [1770, 830]]), T_YR, { s: SP(S_PEN), size: 30, near: PP(1540, 600), side: "right", hw: 40, tl }), "York River"]);
 // "Gloucester Point across the narrows": the place name + a red box crosses the ferry to the Gloucester side
-PLACE_LABEL("Gloucester Point", PP(1760, 790), T_GP, { dy: -64, dx: -40 });
+PLACE_LABEL("Gloucester Point", PP(1935, 748), T_GP, { dy: -10, size: 26 });
 UNITF("cwG", "british", PP(1790, 862), "infantry", { ech: "X", t: T_GP - 0.1 });
 B.move("cwG", T_NARR - 0.1, 1.6, ...PP(1812, 776));
 // red ships in the river at the town
 UNITF("rv1", "british", PP(1712, 792), "ship", { ech: "", t: TZ1 - 0.5 });
 B.move("rv1", TZ1, 12, ...PP(1700, 782));
 // "dig in": the British works dug round the town (south side) and at Gloucester Point
-const WK1 = PPL([[1648, 902], [1676, 928], [1730, 952], [1790, 966], [1846, 950], [1882, 914], [1890, 880]]);
-const WK2 = PPL([[1760, 742], [1790, 728], [1830, 736], [1852, 760]]);
+const WK1 = PPL([[1648, 902], [1676, 928], [1730, 952], [1790, 966], [1846, 950], [1876, 922]]);
+const WK2 = PPL([[1792, 752], [1812, 740], [1834, 746], [1842, 764]]);
 TRENCH(WK1, T_DIG - 0.1, { dur: 2.2, face: -1, until: TP0 + 0.3 });
 TRENCH(WK2, T_DIG + 0.5, { dur: 1.4, face: 1, until: TP0 + 0.3 });
 B.move("cw1", T_DIG, 2.0, ...PP(1800, 924)); B.move("cw3", T_DIG + 0.2, 2.0, ...PP(1866, 940)); B.move("cw2", T_DIG + 0.1, 2.0, ...PP(1712, 934));
@@ -148,7 +150,7 @@ hideU(["cw1", "cw2", "cw3", "cwA", "cwG", "rv1", "rs4", "rs5", "rs6"], TP0 + 0.2
 UNITF("cwW", "british", [1092, 1258], "infantry", { ech: "XX", t: TP1 - 1.0, fade: 0.5 });
 const BK3 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cwW", TP1 - 0.6, { side: "west" });
 // the wide map after the pull back: the garrison at New York and the allied camp are back, red ships sail the open sea freely
-showU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2"], TP1 - 1.2);
+showU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2"], TP1 - 1.2); tl.to(BW.pin, { autoAlpha: 1, duration: 0.4 }, TP1 - 1.2);
 UNITF("rs7", "british", [1640, 700], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5 }); B.move("rs7", TP1 - 1.0, END - TP1 + 1.0, 1560, 880);
 UNITF("rs8", "british", [1400, 1260], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5 }); B.move("rs8", TP1 - 1.0, END - TP1 + 1.0, 1470, 1150);
 wstampL("THE SEA", 1900, 1000, T_SEA - 0.05, null, null, 34);

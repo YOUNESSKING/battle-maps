@@ -15,7 +15,6 @@
 //   title card YORKTOWN 1781 on "Yorktown was won" (hit + shake).
 // No Clinton banner (not named in the hook); Washington only as "?" until the slam. Flags: US 13-star + British 1606; the French flag in cut 2.
 const H3 = "hook-3", H4 = "hook-4";
-const atx = (k, ph, off = 0) => { const A = B.T.anchors, la = A[A.length - 1], e = B.at(k, ph); return (e > la[0] + 0.5 ? e + (la[1] - la[0]) : at(k, ph)) + off; };
 const T_AUG = at(H3, "August"), T_ARMY = at(H3, "The American army"), T_NY = at(H3, "New York"), T_WRONG = at(H3, "watching the wrong city"),
   T_MILES = at(H3, "four hundred miles"), T_VA = at(H3, "To reach Virginia", 0.55), T_STRONG = at(H3, "the strongest British army"),
   T_STOP = at(H3, "without being stopped"), T_SEA = at(H3, "And at sea"), T_FLEET = at(H3, "a French fleet"), T_FIRST = at(H3, "get there first"),
@@ -23,7 +22,7 @@ const T_AUG = at(H3, "August"), T_ARMY = at(H3, "The American army"), T_NY = at(
   T_SIX = at(H3, "six years");
 const T_NAME = at(H4, "His name was"), T_GW = at(H4, "George Washington"), T_BUILD = at(H4, "To build the trap"), T_FOOL = at(H4, "fool the British"),
   T_BSEA = at(H4, "He would need a battle at sea"), T_NIGHT = at(H4, "And he would end it"), T_NATT = at(H4, "a night attack"),
-  T_MUSK = at(H4, "unloaded muskets"), T_HOW = at(H4, "This is how"), T_WON = atx(H4, "Yorktown was won");
+  T_MUSK = at(H4, "unloaded muskets"), T_HOW = at(H4, "This is how"), T_WON = at(H4, "Yorktown was won");
 // ---------------------------------------------------------------------------------------------------------------------------------
 // maps + camera
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -33,8 +32,7 @@ const UNITF = (id, side, p, type, o = {}) => { UNIT(id, side, p, type, { ...o, t
 LIVING({ clouds: 0.1 });
 const CHI = INSET("chesapeake"), PEN = INSET("peninsula");
 const PP = (x, y) => [PEN.box[0] + x * PEN.k, PEN.box[1] + y * PEN.k], SP = (s) => s / PEN.k;
-// camera driver: the camera is a pure function of the timeline time (segments below), applied after every render, so any seek gives the
-// right frame. seg(t0, t1, a, b, ease, path): a/b = [cx, cy, s]; with a path, the scale changes geometrically and the centre runs along the
+// camera path segments. seg(t0, t1, a, b, ease, path): a/b = [cx, cy, s]; with a path, the scale changes geometrically and the centre runs along the
 // path with v = (1/sa - 1/s)/(1/sa - 1/sb) (every point heads straight for its place on screen: one continuous zoom, no swing at high zoom).
 const SEGS = [], seg = (t0, t1, a, b, ease = "sine.inOut", path = null) => { SEGS.push({ t0, t1, a, b, e: gsap.parseEase(ease), path }); SEGS.sort((p, q) => p.t0 - q.t0); };
 const camAt = (t) => { let c = SEGS[0].a;
@@ -42,20 +40,25 @@ const camAt = (t) => { let c = SEGS[0].a;
     if (g.path) { const s = a[2] * (b[2] / a[2]) ** u, v = (1 / a[2] - 1 / s) / (1 / a[2] - 1 / b[2]), q = posOn(g.path, v); c = [q[0], q[1], s]; }
     else c = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
   return c; };
-const camApply = () => { const c = camAt(tl.time()); CAM.cx = c[0]; CAM.cy = c[1]; CAM.s = c[2];
-  const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
-  gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
-tl.eventCallback("onUpdate", ((prev) => function () { if (prev) prev.apply(this, arguments); camApply(); })(tl.eventCallback("onUpdate")));
-tl.fromTo({ k: 0 }, { k: 0 }, { k: 1, duration: END, ease: "none", immediateRender: false, onUpdate: camApply }, 0);
+// the kit camera (r3) is one timeline-driven path; it gets this scene's path sampled every 0.05 s (+ both sides of every segment start,
+// so the snap cuts jump exactly on their frame)
+const camKeys = () => { const ts = new Set(); for (let t = 0; t <= END + 1e-6; t += 0.05) ts.add(+t.toFixed(3));
+  SEGS.forEach((g) => { ts.add(g.t0); if (g.t0 > 0.003) ts.add(+(g.t0 - 0.002).toFixed(4)); ts.add(Math.min(END, g.t1)); });
+  return [...ts].filter((t) => t >= 0 && t <= END).sort((a, b) => a - b).map((t) => [t, ...camAt(t), "none"]); };
 const CA = [...PP(1822, 878), SP(1.58)];            // = hook-a's last camera
 const CW = [1350, 800, 0.85], CW2 = [1350, 850, 0.82], CCAMP = [1585, 455, 1.45], CSLAM = [1572, 445, 1.62];
-camera([[0, ...CA]]);
 // the hard pull back (zoom whoosh): geometric scale, the centre runs back down the York, out of the capes, up to the wide frame
 seg(0.05, 1.5, CA, CW, "power2.inOut", [[CA[0], CA[1]], ...LLYT([[37.13, -76.30], [36.98, -76.02]]), [1230, 1060], [CW[0], CW[1]]]);
 SFX("whoosh", 0.05);
 seg(T_SEA, T_SEA + 1.6, CW, CW2);
 seg(T_MAN, T_MAN + 2.2, CW2, CCAMP, "power2.inOut");
 seg(T_MAN + 2.25, T_GW - 0.05, CCAMP, CSLAM);
+const T1 = T_BUILD - 0.04, T2 = T_BSEA - 0.04, T3 = T_NIGHT - 0.04, T4 = T_HOW - 0.05;
+const C1 = [1478, 470, 1.12], C2 = [1745, 935, 1.3], C3 = [1462, 828, 2.3];
+const cseg = (t, c, until, d) => seg(t, until, c, [c[0] + d[0], c[1] + d[1], c[2] * d[2]], "sine.out");
+cseg(T1, C1, T2, [-10, 12, 1.05]); cseg(T2, C2, T3, [12, 4, 1.05]); cseg(T3, C3, END + 1, [8, 3, 1.05]);
+camera(camKeys());
+
 // clouds + water shimmer of `east` hidden while the frame is inside the peninsula inset or on a snap-cut layer (their masks are east's)
 let CUTL = [[1e9, 1e9]]; const inCut = () => CUTL.some(([a, b]) => tl.time() >= a && tl.time() < b);
 onCam((s) => { const k = s > SP(0.95) || inCut(); document.querySelectorAll(".lv-water,.lv-clouds,.lv-dust").forEach((l) => { l.style.visibility = k ? "hidden" : "visible"; }); });
@@ -74,13 +77,13 @@ hideU(["cw2", "cw3", "rv1"], 0.25); B.move("cw1", 0.3, 1.1, 1100, 1262);
 // the allied army in camp above New York (east of the Hudson), shuffling (dust)
 UNIT("am1", "allies", [1576, 352], "infantry", { ech: "XX" }); UNIT("am2", "allies", [1668, 336], "infantry", { ech: "XX" });
 UNIT("amA", "allies", [1622, 300], "artillery", { ech: "" });
-march("am1", [[1576, 352], [1586, 368], [1594, 380]], 1.0, 9.0, { dustSize: 48, dustOp: 0.45 });
+march("am1", [[1576, 352], [1582, 362], [1588, 370]], 1.0, 9.0, { dustSize: 48, dustOp: 0.45 });
 march("am2", [[1668, 336], [1660, 346], [1652, 356]], 1.2, 9.0, { dustSize: 48, dustOp: 0.45 });
 // the British in New York: Staten Island + Manhattan, the fleet in the harbour
 UNIT("ny1", "british", [1478, 526], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1505, 440], "infantry", { ech: "XX" });
 UNIT("rs1", "british", [1562, 600], "ship", { ech: "" }); UNIT("rs2", "british", [1618, 608], "ship", { ech: "" });
 B.move("rs1", T_NY, 4.5, 1548, 592);
-const FUS = SIDEFLAG("us", [1738, 350], 0.9), FGB = SIDEFLAG("gb", [1700, 700], 0.9);
+const FUS = SIDEFLAG("us", "am2", 0.9), FGB = SIDEFLAG("gb", "ny1", 0.9);
 focus([1615, 345], 90, T_ARMY, T_WRONG - 0.2);
 focus([1505, 480], 80, T_WRONG, T_MILES - 0.1);
 // "more than four hundred miles to the north": a thin route line from the camp south to the Chesapeake and Yorktown (fades)
@@ -114,19 +117,17 @@ slam(NAME, T_GW - 0.1, { from: 1.9, shake: 6, until: T_BUILD - 0.2 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 const CUTB = scr0("", "inset:0;background:#030406;");
 const PINS = document.getElementById("pins");
-const cut = (t, c, until, drift) => { tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, t + 0.04);
-  seg(t, until, c, [c[0] + drift[0], c[1] + drift[1], c[2] * drift[2]], "sine.out"); SFX("whoosh", t - 0.25); SFX("hit", t + 0.02); K.shake(t + 0.02, 3, 0.25); };
+const cut = (t) => { tl.fromTo(CUTB, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.05, immediateRender: false }, t - 0.06); tl.to(CUTB, { autoAlpha: 0, duration: 0.16 }, t + 0.04);
+  SFX("whoosh", t - 0.25); SFX("hit", t + 0.02); K.shake(t + 0.02, 3, 0.25); };
 const hideAll = (t) => { const els = [...OVL.children, ...PINS.children].filter((e) => !["defs", "style"].includes(e.tagName.toLowerCase())); tl.set(els, { autoAlpha: 0 }, t - 0.01); };
-const layer = (map) => { const im = document.createElement("img"); im.src = `assets/inset_${map}.jpg`; im.alt = "";
+const layer = (map, close) => { const im = document.createElement("img"); im.src = `assets/inset_${map}${close ? "_close" : ""}.jpg`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;max-width:none;pointer-events:none"; WORLD.insertBefore(im, document.querySelector(".lv-water") || OVL); gsap.set(im, { autoAlpha: 0 }); return im; };
 const LT = (map) => (la, lo) => YT.L(la, lo, map);
-const T1 = T_BUILD - 0.04, T2 = T_BSEA - 0.04, T3 = T_NIGHT - 0.04, T4 = T_HOW - 0.05;
 CUTL = [[T2 - 0.01, 1e9]];
 // ---------- CUT 1 (east): the march: across the Hudson at King's Ferry, curling toward Staten Island, then wheeling south ----------
-const C1 = [1478, 470, 1.12];
-cut(T1, C1, T2, [-10, 12, 1.05]);
-tl.set(["ny3", "ny4", "ff1", "rs2", "cw1"].map((id) => B.units[id].el), { autoAlpha: 0 }, T1 - 0.01);
-const MR = [[1594, 380], [1560, 360], [1538, 346], [1512, 362], [1488, 398], [1466, 436], [1452, 466], [1446, 486], [1430, 506], [1410, 540], [1400, 566], [1393, 592]];
+cut(T1);
+tl.set(["ny2", "ny3", "ny4", "ff1", "rs2", "cw1"].map((id) => B.units[id].el), { autoAlpha: 0 }, T1 - 0.01);
+const MR = [[1588, 370], [1560, 360], [1538, 346], [1512, 362], [1488, 398], [1466, 436], [1452, 466], [1446, 486], [1430, 506], [1410, 540], [1400, 566], [1393, 592]];
 march("am1", sub(MR, 0.30, 1.0, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
 B.move("am1", T1, 0.01, ...posOn(MR, 0.30));
 march("am2", sub(MR, 0.12, 0.80, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
@@ -138,8 +139,7 @@ wstampL("FOOL THE BRITISH", 1700, 618, T_FOOL, T2 - 0.1, null, 28);
 hideAll(T2);
 const LCH = layer("chesapeake"), CHP = LT("chesapeake");
 tl.set(LCH, { autoAlpha: 1 }, T2 - 0.01); tl.set(LCH, { autoAlpha: 0 }, T3 - 0.01);
-const C2 = [1745, 935, 1.3];
-cut(T2, C2, T3, [12, 4, 1.05]);
+cut(T2);
 B.date("5 SEP 1781", T2, T3 - 0.08, 32);
 const SC2 = [];
 const FR = [[1590, 990], [1665, 1002], [1740, 1014], [1815, 1026]], GBL = [[1650, 870], [1725, 878], [1800, 886], [1875, 894]];
@@ -148,14 +148,13 @@ GBL.forEach((p, i) => { const id = "gb" + i; UNITF(id, "british", p, "ship", { e
 const posAt = (p, t) => { const k = Math.min(1, Math.max(0, (t - T2 - 0.05) / (T3 - T2))); return [p[0] + 70 * k, p[1] + 12 * k]; };
 shoot(posAt(GBL[1], T2 + 0.5), posAt(FR[1], T2 + 1.3), T2 + 0.5, { dur: 0.75, r: 7, h: 30 });
 shoot(posAt(FR[2], T2 + 2.2), posAt(GBL[2], T2 + 3.0), T2 + 2.2, { dur: 0.75, r: 7, h: 30 });
-const F2 = [flagS(FL.fr, "", 1480, 1110, T2, T3), flagS(FL.gb, "", 1985, 800, T2, T3)];
+SIDEFLAG("fr", "fr0", T2 - 0.02); SIDEFLAG("gb", "gb3", T2 - 0.02);
 wstampL("A BATTLE AT SEA", 1745, 1150, at(H4, "a battle at sea"), T3 - 0.1, null, 28);
 tl.set(SC2.map((id) => B.units[id].el), { autoAlpha: 0 }, T3 - 0.01);
 // ---------- CUT 3 (yorktown layer, night of 14 Oct 1781, clear): the night assault on Redoubts 9 + 10 ----------
-const LYK = layer("yorktown"), YK = LT("yorktown");
+const LYK = layer("yorktown", true), YK = LT("yorktown");
 tl.set(LYK, { autoAlpha: 1 }, T3 - 0.01);
-const C3 = [1440, 800, 2.0];
-cut(T3, C3, T4 + 4, [10, 4, 1.06]);
+cut(T3);
 B.date("14 OCT 1781", T3, T4, 32);
 LIGHT("night", T3, 0.01, 1.0); if (typeof NIGHT_DIM === "function") NIGHT_DIM(T3, 0.8, 0.01);
 const SC3 = [];
@@ -163,7 +162,7 @@ const BLINE = [[37.2385, -76.5178], [37.2332, -76.5155], [37.2305, -76.5105], [3
 const PAR2 = [[37.2262, -76.5150], [37.2262, -76.5080], [37.2270, -76.5030], [37.2285, -76.5005]].map(([a, b]) => YK(a, b));
 SC3.push(TRENCH(BLINE, T3, { face: 1, dur: 0.01 }), TRENCH(PAR2, T3, { dur: 0.01 }));
 const R9p = YK(...GD.places.redoubt_9), R10p = YK(...GD.places.redoubt_10);
-const R9 = REDOUBT("r9", R9p, T3, { side: "british", rot: 12 }), R10 = REDOUBT("r10", R10p, T3, { side: "british", rot: -8 });
+const R9 = REDOUBT("r9", R9p, T3, { side: "british", rot: 12, px: 62 }), R10 = REDOUBT("r10", R10p, T3, { side: "british", rot: -8, px: 62 });
 UNITF("yb1", "british", [1318, 812], "infantry", { ech: "X", t: T3 - 0.02, fade: 0.01 }); UNITF("yb2", "british", [1420, 832], "infantry", { ech: "X", t: T3 - 0.02, fade: 0.01 });
 // the two assault columns from the second parallel: Americans on Redoubt 10 (by the river), French on Redoubt 9
 const A10 = [R10p[0] + 75, R10p[1] + 115], A9 = [R9p[0] - 30, R9p[1] + 130];
@@ -175,8 +174,8 @@ smoke([[R10p[0] + 4, R10p[1] - 2]], T_NATT + 0.45, 0.6);
 tl.to(["yb1", "yb2"].map((id) => B.units[id].el), { autoAlpha: 0, duration: 0.4 }, T_MUSK + 0.5);
 REDOUBT_TAKEN(R10, T_MUSK + 0.4); REDOUBT_TAKEN(R9, T_MUSK + 0.7);
 const hb = (p, r) => [[p[0] - r, p[1] - r * 0.8], [p[0] + r * 1.1, p[1] - r], [p[0] + r, p[1] + r], [p[0] - r * 1.1, p[1] + r * 0.9]];
-HATCH([hb(R10p, 16), hb(R9p, 16)], "allies", T_MUSK + 0.4, { hold: 1.0 });
-SC3.push(flagS(FL.us, "", ...YK(37.2215, -76.5000), T3, null), flagS(FL.gb, "", ...YK(37.2395, -76.5185), T3, null));
+HATCH([hb(R10p, 30), hb(R9p, 30)], "allies", T_MUSK + 0.4, { hold: 1.6 });
+SIDEFLAG("us", "as9", T3 - 0.02); SIDEFLAG("gb", "yb1", T3 - 0.02);
 wstampL("A NIGHT ATTACK", ...YK(37.2238, -76.5160), T_NATT, T_MUSK + 0.3, null, 28);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the title: the night shot dims, YORKTOWN 1781 slams on "Yorktown was won"
@@ -188,7 +187,3 @@ const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight
   <div style="font-size:128px;letter-spacing:0.06em;line-height:1.05;color:#f7f3ea">YORKTOWN <span style="color:#c9b48a">1781</span></div></div>`, "left:0;right:0;top:330px;display:flex;justify-content:center;");
 slam(TITLE, T_WON - 0.22, { from: 1.7, shake: 6 });
 
-camApply();
-// the kit's water glint (a 900 px soft band sweeping over all water) composites with hard vertical edges on the east wide frames (seen at
-// 11-20 s): hidden in this scene until the kit fixes it (reported)
-document.querySelectorAll(".lv-water > div > div").forEach((g) => { if (g.style.width === "900px") g.style.display = "none"; });
