@@ -1,5 +1,7 @@
 # battle-maps
 
+**THE MAIN STYLE (owner 2026-11-11: "make it the main style") = Style W (STYLE_LOCK 2d) + the living painted map (2e) + the map extras (2f), exactly as in `reference/style-reference-living-map.mp4` (20 s, Vicksburg 17 May 1863; scene `grant/tools/s12_body_s12d_full2.js`, build notes `research/style_tests/full/`).** Every new video uses it. Where any older rule conflicts, 2f > 2e > 2d > older sections. Our own parchment date scroll and cards stay (no Redcoats & Rebels cards). Old rules backed up in `research/rules_backup/`.
+
 **STYLE W IS THE LOCKED LOOK (owner 2026-11-05: "Perfect. Now, this is the locked style.")**: Warhawk-style ink map on one green, clean screen, generals' portraits on the map, territory only as red hatching when ground changes hands, no unit flags, no dashed arrows. Read STYLE_LOCK.md section 2d FIRST; reference `reference/style-reference-stylew-tunnelhill.mp4` + `reference/style_w/`. Where older rules below conflict (map look v11, territory colours, legend/furniture, corner badges), 2d wins.
 
 Faceless military-history YouTube channel ("[General]'s Top 3 Legendary Tactical Moves", Tactical Genius style).
