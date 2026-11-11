@@ -248,6 +248,9 @@ FIRE.forEach(([a, b, t]) => { const p = POSAT(a, t), q = POSAT(b, t + 0.8), dir 
   shoot([p[0] + dir[0] / n * 14, p[1] + dir[1] / n * 10], [q[0] - dir[0] / n * 6, q[1] - dir[1] / n * 6], t, { dur: 0.75, r: 7, h: 26 });
   smoke([[p[0] + dir[0] / n * 16, p[1] + dir[1] / n * 12], [p[0] + dir[0] / n * 26, p[1] + dir[1] / n * 18]], t + 0.05, 1.6);
   for (let k = 0; k < 3; k++) K.smoke(p[0] + dir[0] / n * (12 + 8 * k), p[1] + dir[1] / n * (10 + 6 * k), t + 0.05 + k * 0.12, { n: 1, r: 7, rise: 6, life: 2.8, alpha: 0.55, drift: 7 }); });
+// the van lines facing each other at close range: the two-colour front between them (red toward the British), on "close range", gone with the dark
+{ const FP = [0, 1, 2, 3, 4].map((i) => { const r = POSAT("r" + i, T_RANGE + 1.0), b = POSAT("b" + i, T_RANGE + 1.0); return [(r[0] + b[0]) / 2, (r[1] + b[1]) / 2]; }).sort((p, q) => p[0] - q[0]);
+  FRONT(FP, T_RANGE, { enemy: POSAT("r2", T_RANGE + 1.0), dur: 1.0, until: T_DAYS - 0.6 }); }
 // "His rear division, under Admiral Samuel Hood, stayed in line, far away": Hood's banner on the rear, focus there
 STAKE(BANNER("hood", "Admiral Samuel Hood", "gb", "r8", T_HOOD + 0.1, { side: "ne", until: T_DAYS + 0.4 }), -40, -70);
 focus(POSAT("r8", T_STAYED), 95, T_STAYED - 0.1, T_HARDLY + 1.4);
@@ -295,7 +298,7 @@ const NORTH = { r5: [[2340, 1235], [2430, 900], [2520, 480]], r6: [[2440, 1290],
 Object.entries(NORTH).forEach(([id, pts]) => { KEY(id, T_13 + 0.2, [pts[0][0] + 12, pts[0][1] + 4], "none"); KPATH(id, pts, T_13 + 0.25, T_NYB + 2.0 - T_13, 16, "sine.in"); });
 hideU(["r5", "r6", "r7"], T_NYB + 1.6);
 BANNER("graves", "Admiral Thomas Graves", "gb", "r6", T_GAVE - 0.05, { side: "west", until: T_NYB + 1.6 });
-trail([[2440, 1250], [2520, 900], [2610, 540]], "#c4121f", 3.0 / CWD[2], T_NYB - 0.2, 1.4, T_NYB + 1.6);
+trail([[2440, 1250], [2520, 900], [2610, 540]], SIDECOL("british"), 3.0 / CWD[2], T_NYB - 0.2, 1.4, T_NYB + 1.6);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p2-7: casualties; the door to the sea shut (French line across the bay mouth, FORM 1 blue hatching on the water); Cornwallis on the wrong side;
 // the quote callback; method card THE TRAP · 2. CLOSE THE SEA
@@ -321,10 +324,7 @@ const Q = quote("&ldquo;&hellip;a temporary superiority at sea&rdquo;", "CORNWAL
 GG.METHOD = ["FOOL NEW YORK", "CLOSE THE SEA", "CLOSE THE LAND"]; GG.METHOD_TITLE = "THE TRAP";
 const MC = GG.method(2, T_SECOND - 0.1, null, [T_SECOND + 0.3, T_CSEA - 0.15]); MC.querySelector(".inner").style.background = "rgba(18,16,12,0.97)"; MC.style.top = "210px";
 // ---------------------------------------------------------------------------------------------------------------------------------
-const FLAGWIN = (el, wins) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: wins.length && wins[0][0] <= 0 ? 1 : 0 });
-  wins.forEach(([a, b]) => { if (a > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, a); if (b != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, b); }); };
-FLAGWIN(FL_GB, [[0, T_GRAVES]]); FLAGWIN(FL_FR, [[0, T_PLAN - 0.2]]);
+// one flag per side: the kit (r5 FLAGSYNC) hides each side's flag while that side has a banner up
 FLUSH();
 camApply();
-window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([2, 8, 14, 20, 26, 32, 38, 44, 50, 56, 62, 68, 74, 80, 86, 92, 98, 104, 110, 116, 122, 128, 134, 140, 146, 152, 158], { show: true });

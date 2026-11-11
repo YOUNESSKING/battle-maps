@@ -123,10 +123,9 @@ showU(["cw1", "cw2", "cwA", "lf", "fr1", "fr2"], T_REACH - 0.6);
 BANNER("lafayette", "Marquis de Lafayette", "fr", "lf", T_REACH - 0.3, { side: "up" });
 BANNER("cornwallis", "Lord Cornwallis", "gb", "cw1", T_12 + 0.6, { side: "east" });
 focus(PP(1761, 880), 110, T_12 + 0.8, T_NAVY + 0.6);
-TRENCH(PPL([[1722, 905], [1758, 942], [1810, 950], [1852, 918], [1866, 878]]), T_STILL - 0.1, { dur: 2.0, face: -1 });
-TRENCH(PPL([[1745, 790], [1772, 775], [1800, 784]]), T_STILL + 0.6, { dur: 1.2, face: 1 });
+TRENCH(PPL([[1722, 905], [1758, 942], [1810, 950], [1852, 918], [1866, 878]]), T_STILL - 0.1, { dur: 2.0, side: "british" });
+TRENCH(PPL([[1745, 790], [1772, 775], [1800, 784]]), T_STILL + 0.6, { dur: 1.2, side: "british" });
 // ---------------------------------------------------------------------------------------------------------------------------------
 camApply();
 dropCues(0, 0.2);
-window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([1, 4, 8, 12, 16, 20, 24, 28, 32, 36, 39, 42], { show: true });

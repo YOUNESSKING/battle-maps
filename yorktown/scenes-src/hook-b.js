@@ -88,7 +88,7 @@ focus([1615, 345], 90, T_ARMY, T_WRONG - 0.2);
 focus([1505, 480], 80, T_WRONG, T_MILES - 0.1);
 // "more than four hundred miles to the north": a thin route line from the camp south to the Chesapeake and Yorktown (fades)
 const ROUTE = [[1585, 372], [1538, 352], [1500, 400], [1463, 468], [1393, 592], [1320, 656], [1284, 680], [1198, 737], [1150, 800], [1120, 900], [1112, 1040], [1105, 1180], [1100, 1250]];
-trail(ROUTE, "#1f4fc4", 3.4 / CW[2], T_MILES, 1.8, null);
+trail(ROUTE, SIDECOL("allies"), 3.4 / CW[2], T_MILES, 1.8, null);
 PLACE_LABEL("Virginia", [935, 1150], T_VA, { size: 26 });
 // "the strongest British army in America": more red boxes round New York
 UNIT("ny3", "british", [1882, 436], "infantry", { ech: "XX", t: T_STRONG }); UNIT("ny4", "british", [1418, 468], "infantry", { ech: "X", t: T_STRONG + 0.25 });
@@ -145,6 +145,8 @@ const SC2 = [];
 const FR = [[1590, 990], [1665, 1002], [1740, 1014], [1815, 1026]], GBL = [[1650, 870], [1725, 878], [1800, 886], [1875, 894]];
 FR.forEach((p, i) => { const id = "fr" + i; UNITF(id, "allies", p, "ship", { ech: "", t: T2 - 0.02, fade: 0.01 }); B.move(id, T2 + 0.05, T3 - T2, p[0] + 70, p[1] + 10); SC2.push(id); });
 GBL.forEach((p, i) => { const id = "gb" + i; UNITF(id, "british", p, "ship", { ech: "", t: T2 - 0.02, fade: 0.01 }); B.move(id, T2 + 0.05, T3 - T2, p[0] + 70, p[1] + 14); SC2.push(id); });
+// the two lines facing each other: the two-colour front between them (red toward the British line)
+{ const fg = FRONT([[1625, 936], [1795, 952], [1965, 970]], T2 + 0.3, { enemy: [1800, 860], dur: 0.9 }); gsap.set(fg, { autoAlpha: 1 }); tl.set(fg, { autoAlpha: 0 }, T3 - 0.01); }
 const posAt = (p, t) => { const k = Math.min(1, Math.max(0, (t - T2 - 0.05) / (T3 - T2))); return [p[0] + 70 * k, p[1] + 12 * k]; };
 shoot(posAt(GBL[1], T2 + 0.5), posAt(FR[1], T2 + 1.3), T2 + 0.5, { dur: 0.75, r: 7, h: 30 });
 shoot(posAt(FR[2], T2 + 2.2), posAt(GBL[2], T2 + 3.0), T2 + 2.2, { dur: 0.75, r: 7, h: 30 });
@@ -156,12 +158,12 @@ const LYK = layer("yorktown", true), YK = LT("yorktown");
 tl.set(LYK, { autoAlpha: 1 }, T3 - 0.01);
 cut(T3);
 B.date("14 OCT 1781", T3, null, 32);   // stays under the title card
-LIGHT("night", T3, 0.01, 1.0); if (typeof NIGHT_DIM === "function") NIGHT_DIM(T3, 0.8, 0.01);
+LIGHT("night", T3, 0.01, 1.0);
 const SC3 = [];
+const R9p = YK(...GD.places.redoubt_9), R10p = YK(...GD.places.redoubt_10);
 const BLINE = [[37.2385, -76.5178], [37.2332, -76.5155], [37.2305, -76.5105], [37.2309, -76.5060], [37.2330, -76.5030], [37.2356, -76.5008]].map(([a, b]) => YK(a, b));
 const PAR2 = [[37.2262, -76.5150], [37.2262, -76.5080], [37.2270, -76.5030], [37.2285, -76.5005]].map(([a, b]) => YK(a, b));
-SC3.push(TRENCH(BLINE, T3, { face: 1, dur: 0.01 }), TRENCH(PAR2, T3, { dur: 0.01 }));
-const R9p = YK(...GD.places.redoubt_9), R10p = YK(...GD.places.redoubt_10);
+SC3.push(TRENCH(BLINE, T3, { side: "british", dur: 0.01 }), TRENCH(PAR2, T3, { side: "allies", dur: 0.01, front: R10p }));
 const R9 = REDOUBT("r9", R9p, T3, { side: "british", rot: 12, px: 62 }), R10 = REDOUBT("r10", R10p, T3, { side: "british", rot: -8, px: 62 });
 UNITF("yb1", "british", [1318, 812], "infantry", { ech: "X", t: T3 - 0.02, fade: 0.01 }); UNITF("yb2", "british", [1420, 832], "infantry", { ech: "X", t: T3 - 0.02, fade: 0.01 });
 // the two assault columns from the second parallel: Americans on Redoubt 10 (by the river), French on Redoubt 9

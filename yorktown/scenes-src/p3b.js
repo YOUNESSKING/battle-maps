@@ -113,7 +113,7 @@ UNIT("charon", "british", [1286, 612], "ship", { ech: "", t: T_10 - 0.2 });   //
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-4: the first parallel, night of 6-7 Oct, rain
 // ---------------------------------------------------------------------------------------------------------------------------------
-LIGHT("night", T_6 + 0.2, 1.8, 0.85); NIGHT_DIM(T_6 + 0.2, 0.8, 1.8);
+LIGHT("night", T_6 + 0.2, 1.8, 0.85);
 RAIN(T_RAIN, T_DAWN + 0.6, 0.4);
 UNIT("e1", "allies", [1412, 1062], "engineers", { ech: "", t: T_PICKS }); UNIT("e2", "allies", [1502, 1056], "engineers", { ech: "", t: T_PICKS + 0.25 });
 march("e1", [[1412, 1062], [1404, 1010], [1395, 958]], T_PICKS + 0.7, T_GUARD - T_PICKS - 0.6, { dustOp: 0.25 });
@@ -129,7 +129,7 @@ mg([1150, 640], [RFUS[0] - 6, RFUS[1] + 2], T_NOISY + 2.8, 4, 0.9);
 focus([1170, 640], 70, T_FAR + 0.6, T_DAWN - 0.4);
 B.move("f1", T_DAWN, 1.0, 1120, 650);
 // "By dawn the diggers had a trench almost two thousand yards long, only six to eight hundred yards from the British line"
-LIGHT("morning", T_DAWN, 1.8, 0.6); NIGHT_DIM(T_DAWN, 1.0, 1.8);
+LIGHT("morning", T_DAWN, 1.8, 0.6);
 const PAR1 = [[1283, 895], [1359, 931], [1428, 935], [1491, 922], [1554, 895], [1590, 878]];
 TRENCH(PAR1, T_TRENCH, { dur: 2.4, side: "allies", front: [1428, 830] });   // the real front: red toward the British, blue toward the allies
 CARD("", "ALMOST 2,000 YARDS", "#1f4fc4", T_2000 - 0.05, T_600 - 0.35, { size: 42, css: CR1 });
@@ -155,7 +155,7 @@ shoot(G.ag1, [1408, 768], T_FIRSTAM + 0.5, { unit: "ag1", r: 7 });
 const SH = (g, u, to, t) => shoot(G[g], to, t, { unit: u, r: 6 });
 SH("fg1", "fa", [1318, 793], T_DOZ + 0.4); SH("ag2", "aa", [1430, 826], T_DOZ + 2.5); SH("fg2", "fg2", [1350, 760], T_DOZ + 4.6);
 // 10 Oct, night: the French battery on the left fires red-hot shot at the Charon; the ship burns
-LIGHT("night", T_10, 1.6, 0.85); NIGHT_DIM(T_10, 0.8, 1.6);
+LIGHT("night", T_10, 1.6, 0.85);
 UNIT("fg0", "allies", [1160, 708], "artillery", { ech: "", t: T_10 + 0.3 });
 const CH = [1286, 612];
 shoot([1160, 708], [CH[0] - 4, CH[1] + 4], T_HOT + 0.2, { unit: "fg0", r: 6, color: "#ff6a1a" });
@@ -167,7 +167,6 @@ GREY("charon", T_CHARON + 2.6); hideU(["charon"], T_STORY + 0.2);
 SH("ag1", "ag1", [1463, 796], T_HOT + 1.6); SH("fg2", "fg2", [1300, 745], T_CHARON + 2.4);
 // the Nelson house (a story told years later): the house marked in the town, Nelson's banner at the American battery, one shot at it
 LIGHT("day", T_INSIDE - 0.2, 2.0);
-NIGHT_DIM(T_INSIDE - 0.2, 1.0, 2.0);
 const NH = [1404, 724];
 POP(`<svg width="22" height="18" viewBox="-11 -9 22 18" style="display:block;overflow:visible;filter:drop-shadow(0 0 3px #fff2c0) drop-shadow(0 1px 2px rgba(0,0,0,.8))"><path d="M-8 -1 L0 -8 L8 -1 Z" fill="#6b2a1c" stroke="#f3e6c4" stroke-width="1"/><rect x="-7" y="-1" width="14" height="9" fill="#a8553a" stroke="#f3e6c4" stroke-width="1"/></svg>`, NH, T_HOUSE + 0.1, T_ONE - 0.2);
 PLACE_LABEL("Nelson House", NH, T_HOUSE + 0.15, { dx: 150, dy: -66, size: 24 });
@@ -182,7 +181,7 @@ GREY("bg3", T_SILENT + 1.3);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-6: the second parallel (night 11 Oct), Redoubts 9 + 10
 // ---------------------------------------------------------------------------------------------------------------------------------
-LIGHT("night", T_11, 1.6, 0.85); NIGHT_DIM(T_11, 0.8, 1.6);
+LIGHT("night", T_11, 1.6, 0.85);
 // the two redoubts read bigger on the close-ups (a larger work replaces the small one)
 const R9 = REDOUBT("r9", R9P, T_11 + 1.2, { side: "british", rot: 12, px: 48 }), R10 = REDOUBT("r10", R10P, T_11 + 1.2, { side: "british", rot: -8, px: 48 });
 tl.to([r9s, r10s], { autoAlpha: 0, duration: 0.4 }, T_11 + 1.3);
@@ -253,7 +252,6 @@ march("ag1", [[1462, 929], [1446, 906], [1428, 896]], T_GUNS, 1.6, { dustOp: 0.2
 march("aa", [[1530, 906], [1526, 880], [1522, 860]], T_GUNS + 0.15, 1.6, { dustOp: 0.2 });
 shoot([1428, 896], [1376, 830], T_CLOSE + 0.1, { unit: "ag1", r: 6 });
 shoot([1522, 860], [1440, 790], T_CLOSE + 2.0, { unit: "aa", r: 6, dur: 0.9 });
-LIGHT("morning", T_CLOSE + 1.0, 2.5, 0.5); NIGHT_DIM(T_CLOSE + 1.0, 0.92, 2.5);
+LIGHT("morning", T_CLOSE + 1.0, 2.5, 0.5);
 // ---------------------------------------------------------------------------------------------------------------------------------
-window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([0.5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160], { show: true });

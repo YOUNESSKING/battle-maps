@@ -130,8 +130,8 @@ B.move("rv1", TZ1, 12, ...PP(1700, 782));
 // "dig in": the British works dug round the town (south side) and at Gloucester Point
 const WK1 = PPL([[1648, 902], [1676, 928], [1730, 952], [1790, 966], [1846, 950], [1876, 922]]);
 const WK2 = PPL([[1792, 752], [1812, 740], [1834, 746], [1842, 764]]);
-TRENCH(WK1, T_DIG - 0.1, { dur: 2.2, face: -1, until: TP0 + 0.3 });
-TRENCH(WK2, T_DIG + 0.5, { dur: 1.4, face: 1, until: TP0 + 0.3 });
+TRENCH(WK1, T_DIG - 0.1, { dur: 2.2, side: "british", until: TP0 + 0.3 });
+TRENCH(WK2, T_DIG + 0.5, { dur: 1.4, side: "british", until: TP0 + 0.3 });
 B.move("cw1", T_DIG, 2.0, ...PP(1800, 924)); B.move("cw3", T_DIG + 0.2, 2.0, ...PP(1866, 940)); B.move("cw2", T_DIG + 0.1, 2.0, ...PP(1712, 934));
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-2: "In other words": the ships come and go freely; supply line + escape route as ink traces along the water
@@ -157,5 +157,4 @@ UNITF("rs8", "british", [1400, 1260], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5
 wstampL("THE SEA", 1900, 1000, T_SEA - 0.05, END - 0.35, null, 34);
 // ---------------------------------------------------------------------------------------------------------------------------------
 camApply();
-window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([2, 6, 10, 14, 18, 22, 26, 30, 33, 36, 39, 44, 48, 52, 56], { show: true });

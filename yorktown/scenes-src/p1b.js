@@ -110,7 +110,6 @@ const BR = BFREE("rochambeau", "Comte de Rochambeau", "fr", [1792, 330], T_ROCH)
 const DG1 = [[1500, 1640], [1470, 1480], [1440, 1330]];
 UNIT("ff1", "allies", DG1[0], "ship", { ech: "" });
 march("ff1", DG1, T_DG - 0.1, 3.2, { dust: false });
-trail(DG1, "#1f4fc4", 3.2 / CW2[2], T_DG, 3.0, null);
 // "fourteenth of August, at Dobbs Ferry on the Hudson, the answer arrived"
 B.date("14 AUG 1781", T_14, T_20 - 0.08, 32); SFX("tick", T_14 + 0.1);
 PLACE_LABEL("Dobbs Ferry", [1555, 402], T_DOBBS, { dx: -112, dy: -12, size: 22 });
@@ -132,7 +131,7 @@ GLINT([1450, 1335], T_SILVER, 6, 60);
 // "But not to New York. To the Chesapeake Bay.": focus on New York, then the fleet line bends into the bay; carved bay name
 focus([1560, 470], 85, T_NOTNY - 0.1, T_BAY - 0.15);
 const FH = [[1268, 1262], [1340, 1282], [1300, 1330]];
-trail([[1440, 1335], [1380, 1320], [1300, 1325], [1215, 1335]], "#1f4fc4", 3.2 / CW3[2], T_BAY, 1.4, null);
+trail([[1440, 1335], [1380, 1320], [1300, 1325], [1215, 1335]], SIDECOL("allies"), 3.2 / CW3[2], T_BAY, 1.4, null);
 B.move("ff1", T_BAY, 3.0, ...FH[0]); B.move("ff2", T_BAY + 0.15, 3.0, ...FH[1]); B.move("ff3", T_BAY + 0.3, 3.0, ...FH[2]);
 RIVER("chesapeake", "Chesapeake Bay", T_BAY + 0.2, { s: CW3[2], near: LYT(38.95, -76.36), side: "right", hw: 16, size: 22 });
 // "only until the middle of October"
@@ -158,7 +157,7 @@ pulse(OA, T_ATT2 + 0.2); pulse(OB, T_SOUTH + 0.5); pulse(OA, T_LISTEN); pulse(OB
 arw({ pts: [[1578, 398], [1560, 425], [1548, 438]], side: "carth", t: T_ATT1 + 0.1, dur: 0.6, width: AW(CD[2], 8) });
 focus([1200, 1300], 110, T_FFW, T_400 - 0.1);
 const ROUTE = [[1560, 395], [1520, 420], [1463, 468], [1411, 561], [1393, 592], [1320, 656], [1284, 680], [1198, 737], [1150, 820], [1122, 940], [1110, 1060], [1100, 1180], [1095, 1235]];
-trail(ROUTE, "#1f4fc4", 3.0 / CD[2], T_400, 2.0, null);
+trail(ROUTE, SIDECOL("allies"), 3.0 / CD[2], T_400, 2.0, null);
 arw({ pts: [[1470, 470], [1420, 540], [1395, 600], [1340, 650]], side: "carth", t: T_SOUTH + 0.1, dur: 1.0, width: AW(CD[2], 9) });
 focus([1560, 470], 90, T_ATT2, T_SOUTH - 0.2);
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -292,4 +291,3 @@ GBF.forEach(([a, b], i) => { const id = "gf" + i; UNIT(id, "british", a, "ship",
 focus([1220, 1290], 120, T_MOUTH, null);
 // ---------------------------------------------------------------------------------------------------------------------------------
 camApply();
-window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));

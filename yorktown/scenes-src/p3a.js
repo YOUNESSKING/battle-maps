@@ -138,7 +138,7 @@ PLACE_LABEL("Gloucester Point", YK(1610, 618), T_GP, { size: 28 });
 // p3-2: Cornwallis holds on; Clinton's letter by boat at night; the pull back from the outer works; at dawn the allies walk in
 // ---------------------------------------------------------------------------------------------------------------------------------
 const BK = BANNER("cornwallis", "Lord Cornwallis", "gb", YK(1392, 694), T_CORN + 0.3, { side: "nw", until: T_ACR3 - 0.1 });
-LIGHT("night", T_29 + 0.4, 1.8, 0.85); NIGHT_DIM(T_29 + 0.4, 0.8, 1.8);
+LIGHT("night", T_29 + 0.4, 1.8, 0.85);
 BOAT(YKL([[1760, 780], [1660, 745], [1560, 712], [1468, 700]]), T_29 + 0.6, T_REACHED - T_29 + 0.2, { until: T_SAIL + 1.0, px: 22 });
 // the letter: a small sealed dispatch pops at the wharf when the boat comes in
 const LET = pinS(GG.pin(`<svg width="40" height="30" viewBox="-20 -15 40 30" style="display:block;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.7))"><rect x="-17" y="-12" width="34" height="24" rx="1.5" fill="#efe3c2" stroke="#6b5532" stroke-width="1.4"/><path d="M-17 -12 L0 2 L17 -12" fill="none" stroke="#6b5532" stroke-width="1.3"/><circle cx="0" cy="3" r="4.2" fill="#a3221b"/></svg>`, ...YK(1466, 672), { t: T_REACHED, pop: true, until: T_REACHED + 2.6 }));
@@ -151,7 +151,7 @@ march("o1", YKL([[1190, 782], [1250, 800], [1320, 818], PIN.o1]), T_PULL, 2.6, {
 march("o2", YKL([[1350, 988], [1385, 900], PIN.o2]), T_PULL + 0.2, 2.6, { dustSize: 8, dustOp: 0.35 });
 march("o3", YKL([[1494, 982], [1500, 880], PIN.o3]), T_PULL + 0.35, 2.6, { dustSize: 8, dustOp: 0.35 });
 // "At dawn, the French and Americans walked into the empty earthworks without a fight"
-LIGHT("morning", T_DAWN - 0.2, 1.6, 0.6); NIGHT_DIM(T_DAWN - 0.2, 1.0, 1.6);
+LIGHT("morning", T_DAWN - 0.2, 1.6, 0.6);
 const DAWNP = { f2: [1190, 778], a1: [1350, 988], a2: [1494, 980] };
 march("f2", YKL([RING.f2, [1120, 772], DAWNP.f2]), T_WALK - 0.3, 2.4, { dustSize: 8, dustOp: 0.4 });
 march("a1", YKL([RING.a1, [1325, 1025], DAWNP.a1]), T_WALK - 0.2, 2.4, { dustSize: 8, dustOp: 0.4 });
@@ -193,5 +193,4 @@ hideU(["ys1", "ys2", "yr1", "gr1", "tc1", "tc2", "lz1", "lz2"], END - 2.4);
 showU([...ALL, ...BRIT.filter((id) => id !== "g1")], END - 2.0);   // the Gloucester boxes stay off (out of the p3b frame)
 BANNER("cornwallis", "Lord Cornwallis", "gb", YK(1392, 694), END - 1.5, { side: "nw" });
 // ---------------------------------------------------------------------------------------------------------------------------------
-window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([1, 4, 8, 10, 12, 16, 20, 24, 30, 36, 44, 48, 52, 58, 64, 70, 76], { show: true });

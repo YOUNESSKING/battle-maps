@@ -256,8 +256,8 @@ focus([1330, 770], 70, T_NOTC + 0.1, T_ILL + 1.4);
 // the sword: O'Hara offers it to Rochambeau, who points to Washington; Washington points to Lincoln; Lincoln takes it and hands it back
 const BOH = BANNER("ohara", "Charles O'Hara", "gb", "r1", T_OHARA + 0.05, { side: "sw", until: T_7K - 0.4 });
 const BRO = BANNER("rochambeau", "Rochambeau", "fr", FR[1], T_ROCH, { side: "west", until: T_PD + 0.6 });
-const BW2 = BANNER("washington", "George Washington", "us", AM[1], T_PW + 0.05, { side: "ne", until: T_TOOK });
-const BLI = BANNER("lincoln", "Benjamin Lincoln", "us", AM[3], T_LINC + 0.05, { side: "se", until: T_7K - 0.4 });
+const BW2 = BANNER("washington", "George Washington", "us", [AM[1][0] + 40, AM[1][1] - 10], T_PW + 0.05, { side: "east", until: T_TOOK });
+const BLI = BANNER("lincoln", "Benjamin Lincoln", "us", [AM[3][0] + 20, AM[3][1] + 20], T_LINC + 0.05, { side: "se", until: T_7K - 0.4 });
 const SWORD = pinS(GG.pin(`<svg width="72" height="25" viewBox="-23 -8 46 16" style="display:block;overflow:visible;filter:drop-shadow(0 0 3px rgba(255,236,170,.9)) drop-shadow(0 1px 2px rgba(0,0,0,.8))"><path d="M-12 -1.4 L19 -0.6 L22 0 L19 0.6 L-12 1.4 Z" fill="#eef0f2" stroke="#5a5a5a" stroke-width="0.5"/><rect x="-14" y="-5" width="2.4" height="10" rx="1" fill="#c9a24a"/><rect x="-21" y="-1.6" width="7" height="3.2" rx="1.2" fill="#6b4a2a"/><circle cx="-21.5" cy="0" r="2" fill="#c9a24a"/></svg>`, 1334, 1196, {}));
 gsap.set(SWORD, { autoAlpha: 0 });
 const SW_O = [1334, 1196], SW_R = [FR[1][0] + 2, FR[1][1] + 22], SW_W = [AM[1][0] - 4, AM[1][1] + 22], SW_L = [AM[3][0] - 4, AM[3][1] + 22];
