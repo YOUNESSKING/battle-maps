@@ -98,10 +98,10 @@ UNIT("yw", "british", [1800, 884], "infantry", { ech: "XX" }); hideU(["yw"], 6.6
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-1: the allied army marches out of Williamsburg on the two roads and closes the ring
 // ---------------------------------------------------------------------------------------------------------------------------------
-const NROAD = LLYT([[37.2707, -76.7075], [37.2640, -76.6800], [37.2520, -76.6400], [37.2450, -76.6000]]);
-const SROAD = LLYT([[37.2707, -76.7075], [37.2640, -76.6800], [37.2520, -76.6400], [37.2320, -76.6100], [37.2140, -76.5780], [37.2040, -76.5480], [37.2035, -76.5250]]);
+const NROAD = LLYT([[37.2707, -76.7075], [37.2640, -76.6800], [37.2520, -76.6400]]);
+const SROAD = [...LLYT([[37.2707, -76.7075], [37.2640, -76.6800], [37.2520, -76.6400]]), [1398, 852], ...LLYT([[37.2140, -76.5780], [37.2040, -76.5480], [37.2035, -76.5250]])];   // swings south at Halfway House, clear of the carved Yorktown name
 // the French leave the road west of Yorktown and come in north of the carved name (it is hidden only once the inset covers the frame)
-const NWAY = [[1450, 786], [1560, 772], [1650, 788]];
+const NWAY = [[1420, 772], [1540, 752], [1690, 815]];
 const RING = { f1: [1120, 650], f2: [1050, 760], fa: [1080, 880], a1: [1300, 1060], a2: [1450, 1040], aa: [1580, 1035], a3: [1640, 990] };
 const T_M0 = 0.6, T_M1 = 9.3;
 // each column = two boxes on ONE path, the second 0.65 s behind the first (same speed: they never bunch); at the staging point (the frame is
@@ -109,10 +109,12 @@ const T_M0 = 0.6, T_M1 = 9.3;
 const FPATH = [...NROAD, ...NWAY], SPATH = [...SROAD];
 const TRAIN = (id, type, path, f0, t0, tStage, tgt) => { const pts = sub(path, f0, 1, 30); UNIT(id, "allies", pts[0], type, { ech: type === "infantry" ? "XX" : "" });
   march(id, pts, t0, tStage - t0, { dustSize: 34, dustOp: 0.45 }); march(id, [path[path.length - 1], YK(...tgt)], tStage + 0.05, T_M1 + 0.4 - tStage, { dustSize: 8, dustOp: 0.4 }); };
-TRAIN("f1", "infantry", FPATH, 0.085, T_M0, 7.6, RING.f1);
-TRAIN("f2", "infantry", FPATH, 0.0, T_M0 + 0.65, 8.25, RING.f2);
-TRAIN("a2", "infantry", SPATH, 0.085, T_M0, 7.6, RING.a2);
-TRAIN("a1", "infantry", SPATH, 0.0, T_M0 + 0.65, 8.25, RING.a1);
+const PLEN = (pts) => pts.reduce((acc, q, i) => i ? acc + Math.hypot(q[0] - pts[i - 1][0], q[1] - pts[i - 1][1]) : acc, 0);
+const LF = PLEN(FPATH), LSP = PLEN(SPATH);   // on the shared road out of Williamsburg the Americans lead (they turn off first at Halfway House)
+TRAIN("f1", "infantry", FPATH, 135 / LF, T_M0, 7.6, RING.f1);
+TRAIN("f2", "infantry", FPATH, 60 / LF, T_M0, 8.25, RING.f2);
+TRAIN("a2", "infantry", SPATH, 288 / LSP, T_M0, 7.6, RING.a2);
+TRAIN("a1", "infantry", SPATH, 212 / LSP, T_M0, 8.25, RING.a1);
 const TFILL = 7.9;
 UNITF("fa", "allies", YK(...RING.fa), "artillery", { ech: "", t: TFILL, fade: 0.5 });
 UNITF("aa", "allies", YK(...RING.aa), "artillery", { ech: "", t: TFILL + 0.15, fade: 0.5 });
@@ -122,7 +124,7 @@ CARD("", "OVER 16,000", "#1f4fc4", T_16K - 0.05, Math.min(T_16K + 3.0, T_CLOSED 
 // FORM 2 (once): the whole siege map in two-side stripes when the ring is closed (allied ground blue, the British pocket red)
 const REDP = [[1100, 560], [1140, 800], [1250, 965], [1400, 1015], [1560, 1005], [1720, 935], [1850, 800], [1700, 560], [1600, 520], [1500, 462], [1420, 462], [1380, 560]];
 const RECT = [[600, 150], [2300, 150], [2300, 1400], [600, 1400]];
-const BLUEP = [...RECT, RECT[0], REDP[0], ...REDP.slice(1).reverse(), REDP[0], RECT[0]];
+const BLUEP = [...RECT, RECT[0], ...REDP, REDP[0], RECT[0]];   // keyhole: REDP runs counter to RECT, so it is a hole (nonzero rule)
 STRIPES(YKL(BLUEP), YKL(REDP), T_BELOW + 0.4);
 // the nation flags ride with the wings: French pennant west, US flag east
 SIDEFLAG("fr", "f2", T_LEFT + 0.1); SIDEFLAG("us", "a2", T_RIGHT + 0.1);
@@ -131,7 +133,7 @@ SIDEFLAG("gb", "bg1", T_CLOSED);
 UNITF("gc", "allies", YK(1478, 360), "cavalry", { ech: "", t: T_CAV - 0.1 }); UNITF("gm", "allies", YK(1585, 372), "infantry", { ech: "X", t: T_CAV + 0.2 });
 march("gc", YKL([[1478, 360], [1474, 390], [1470, 418]]), T_CAV + 0.2, T_SHUT - T_CAV + 0.6, { dustSize: 8, dustOp: 0.4 });
 march("gm", YKL([[1585, 372], [1578, 405], [1570, 436]]), T_CAV + 0.4, T_SHUT - T_CAV + 0.6, { dustSize: 8, dustOp: 0.4 });
-PLACE_LABEL("Gloucester Point", YK(1610, 618), T_GP, { size: 28, until: T_CORN });
+PLACE_LABEL("Gloucester Point", YK(1610, 618), T_GP, { size: 28 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-2: Cornwallis holds on; Clinton's letter by boat at night; the pull back from the outer works; at dawn the allies walk in
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -170,7 +172,7 @@ UNITF("tc1", "british", [1786, 772], "cavalry", { ech: "", t: TB + 0.2, fade: 0.
 const GROAD = LLYT([[37.2580, -76.5040], [37.2760, -76.4950], [37.2917, -76.4847]]);
 BANNER("tarleton", "Banastre Tarleton", "gb", "tc1", T_TARL + 0.4, { side: "west", until: T_STAYED + 0.6 });
 march("tc1", [[1786, 772], ...GROAD.slice(0, 2), [HOOK[0] - 10, HOOK[1] + 14]], T_RODE, 3.0, { dustSize: 26, dustOp: 0.5 });
-march("tc2", [[1840, 784], [1826, 760], ...GROAD.slice(1, 2), [HOOK[0] + 26, HOOK[1] + 24]], T_RODE + 0.2, 3.0, { dustSize: 26, dustOp: 0.5 });
+march("tc2", [[1840, 784], [1858, 735], [1866, 700], [HOOK[0] + 30, HOOK[1] + 26]], T_RODE + 0.2, 3.0, { dustSize: 26, dustOp: 0.5 });
 UNITF("lz1", "allies", [1872, 520], "cavalry", { ech: "", t: T_HUSS - 0.1 }); UNITF("lz2", "allies", [1820, 506], "cavalry", { ech: "", t: T_HUSS + 0.15 });
 BANNER("lauzun", "Duc de Lauzun", "fr", "lz1", T_LAUZ + 0.4, { side: "east", until: T_STAYED + 0.6 });
 march("lz1", [[1872, 520], [1860, 580], [HOOK[0] + 20, HOOK[1] - 22]], T_HOOK - 0.6, 1.8, { dustSize: 26, dustOp: 0.55 });
@@ -180,14 +182,14 @@ mg([HOOK[0] + 18, HOOK[1] - 18], [HOOK[0] - 6, HOOK[1] + 10], T_HOOK + 1.3, 4, 0
 MARK([HOOK[0] + 4, HOOK[1] - 4], T_DOWN, T_AFTER + 1.0); smoke([[HOOK[0] + 4, HOOK[1] - 2], [HOOK[0] - 6, HOOK[1] + 4]], T_DOWN + 0.05, 0.7);
 // "he barely escaped": the red cavalry ride back fast inside the Gloucester works; the hussars follow to the neck and stop
 march("tc1", [[HOOK[0] - 10, HOOK[1] + 14], ...GROAD.slice(0, 2).reverse(), [1786, 772]], T_ESC, 1.3, { dustSize: 26, dustOp: 0.55 });
-march("tc2", [[HOOK[0] + 26, HOOK[1] + 24], [1846, 712], [1842, 786]], T_ESC + 0.1, 1.3, { dustSize: 26, dustOp: 0.55 });
+march("tc2", [[HOOK[0] + 30, HOOK[1] + 26], [1862, 712], [1842, 786]], T_ESC + 0.1, 1.3, { dustSize: 26, dustOp: 0.55 });
 march("lz1", [[HOOK[0] + 20, HOOK[1] - 22], [1846, 690], [1838, 720]], T_ESC + 0.4, 1.8, { dustSize: 26, dustOp: 0.5 });
 march("lz2", [[HOOK[0] - 22, HOOK[1] - 24], [1806, 690], [1796, 718]], T_ESC + 0.5, 1.8, { dustSize: 26, dustOp: 0.5 });
 focus([1790, 795], 70, T_STAYED - 0.4, T_STAYED + 1.8);
 // the dive back: the peninsula-scale boxes leave, the siege boxes come back (p3b frame 0 = the ring of 30 Sep - 3 Oct)
 const TD = T_STAYED - 0.6;
-hideU(["ys1", "ys2", "yr1", "gr1", "tc1", "tc2", "lz1", "lz2"], TD + 1.2);
-showU([...ALL, ...BRIT.filter((id) => id !== "g1")], END - 1.7);   // the Gloucester boxes stay off (out of the p3b frame)
+hideU(["ys1", "ys2", "yr1", "gr1", "tc1", "tc2", "lz1", "lz2"], END - 2.4);
+showU([...ALL, ...BRIT.filter((id) => id !== "g1")], END - 2.0);   // the Gloucester boxes stay off (out of the p3b frame)
 BANNER("cornwallis", "Lord Cornwallis", "gb", YK(1392, 694), END - 1.5, { side: "nw" });
 // ---------------------------------------------------------------------------------------------------------------------------------
 window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));

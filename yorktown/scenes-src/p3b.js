@@ -133,7 +133,6 @@ LIGHT("morning", T_DAWN, 1.8, 0.6); NIGHT_DIM(T_DAWN, 1.0, 1.8);
 const PAR1 = [[1283, 895], [1359, 931], [1428, 935], [1491, 922], [1554, 895], [1590, 878]];
 TRENCH(PAR1, T_TRENCH, { dur: 2.4 });
 CARD("", "ALMOST 2,000 YARDS", "#1f4fc4", T_2000 - 0.05, T_600 - 0.35, { size: 42, css: CR1 });
-inkTrace([[1428, 928], [1428, 840]], T_600, T_NOTSEEN + 0.6, 2.6);
 CARD("", "600-800 YARDS FROM THE BRITISH", "#c9b48a", T_600 - 0.05, T_9 - 0.4, { size: 40, css: CR1 });
 focus([1400, 790], 110, T_NOTSEEN, T_9 - 0.3);
 LIGHT("day", T_NOTSEEN, 2.0);
@@ -250,7 +249,6 @@ const CAS = CARD("", "AMERICANS ~40 KILLED &amp; WOUNDED", "#c9b48a", T_LOST, T_
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FR100); SFX("tick", T_FR100 + 0.1); }
 const LINK = [[1455, 872], [1469, 852], [1498, 812], [1514, 796], [1534, 788]];
 TRENCH(LINK, T_JOINED - 0.2, { dur: 1.8 });
-inkTrace(LINK, T_JOINED + 1.7, T_GUNS + 0.3, 2.2);
 march("ag1", [[1462, 929], [1446, 906], [1428, 896]], T_GUNS, 1.6, { dustOp: 0.2 });
 march("aa", [[1530, 906], [1526, 880], [1522, 860]], T_GUNS + 0.15, 1.6, { dustOp: 0.2 });
 shoot([1428, 896], [1376, 830], T_CLOSE + 0.1, { unit: "ag1", r: 6 });
