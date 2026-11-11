@@ -1,5 +1,7 @@
 # STYLE LOCK: the channel's fixed look, sound and music (owner-approved on Goose Green, 2026-09-29)
 
+> **MAIN STYLE (owner 2026-11-11):** 2d + 2e + 2f together are the channel's main style for every new video. Reference: `reference/style-reference-living-map.mp4`. Precedence: 2f > 2e > 2d > older sections.
+
 **Owner: "I love this video. Lock it in. Don't reinvent the wheel every time."**
 Every new video uses EXACTLY what is below. Don't search for new music or sounds, don't restyle, and don't re-test
 anything on this page. Only NEW ideas go through "test before applying" (snapshots / 1-min clip, then owner approval).
