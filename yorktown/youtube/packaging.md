@@ -16,3 +16,6 @@ Our difference: the animated painted MAP of the trap (march + the bay sealed + s
 - T1 "THE TRAP" — Washington (colour) + map of the sealed Chesapeake (French line across the capes, red army boxed at Yorktown). Fits A, C.
 - T2 "SAFE HARBOR?" — Cornwallis-side framing: the York River with the French fleet closing the mouth. Fits A.
 - T3 "SURROUNDED" — the siege ring on the map + Washington. Fits B.
+
+## Delivered 2026-11-11
+Master + PDF + thumbnails: https://gofile.io/d/roGkUWAa (Yorktown-1781-1080p.mp4, md5 36ae371524c46487b28676a9d7a3ca65, 16:02, 1920x1080, -14.2 LUFS, TP -1.4). Uploaded with the owner's explicit OK.
