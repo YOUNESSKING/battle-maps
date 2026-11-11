@@ -40,11 +40,13 @@ MAPS = {
                 ("Schuylkill River", 1.6, (39.9, 40.2, -75.6, -75.15)), ("James River", 2.4, (37.0, 37.7, -77.5, -76.6)),
                 ("Rappahannock River", 2.0, (37.6, 38.4, -77.6, -76.4))],
         creeks=0,
+        wet=[(3.2, [(40.88, -73.93), (40.80, -73.97), (40.74, -74.015), (40.70, -74.03)]), (5.5, [(40.70, -74.03), (40.665, -74.05), (40.62, -74.045), (40.58, -74.04)]),
+             (2.2, [(40.70, -74.005), (40.745, -73.97), (40.785, -73.935), (40.80, -73.88), (40.805, -73.80)])],   # Hudson mouth, Upper Bay + Narrows, East River
         towns={
-            "new_york": ("New York", 40.712, -74.006, 34, True, "E", 1776),
-            "philadelphia": ("Philadelphia", 39.952, -75.165, 34, True, "W", 1682),
-            "williamsburg": ("Williamsburg", 37.2707, -76.7075, 22, True, "W", 1699),
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 18, True, "SE", 1691),
+            "new_york": ("New York", 40.712, -74.006, 34, True, "E", 1776, [(46, 6), (116, -4), (186, -14), (256, -26)]),   # along Long Island, off the march route
+            "philadelphia": ("Philadelphia", 39.952, -75.165, 34, True, "W", 1682, [(-262, -4), (-192, -11), (-122, -13), (-52, -8)]),   # west of the town, off the post road (which runs NE-SW through it)
+            "williamsburg": ("Williamsburg", 37.2707, -76.7075, 22, False, "", 1699),   # 42 map px from Yorktown at z8: one name only (Yorktown)
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 18, True, "S", 1691),
             "newport": ("Newport", 41.49, -71.31, 20, False, "", 1639),
             "providence": ("Providence", 41.824, -71.412, 18, False, "", 1636),
             "hartford": ("Hartford", 41.764, -72.685, 18, False, "", 1635),
@@ -84,7 +86,9 @@ MAPS = {
     "chesapeake": dict(
         s=1.3,
         water=dict(blur=3.0, pier=3, chan=4, island=1500, lake=20000),
-        rivers=[], creeks=0,
+        rivers=[("James River", 2.2, (36.8, 38.0, -78.1, -76.6)), ("Pamunkey River", 1.6, (37.4, 38.0, -77.6, -76.75)),
+                ("Mattaponi River", 1.5, (37.5, 38.0, -77.6, -76.75)), ("Rappahannock River", 1.8, (37.9, 38.3, -78.1, -76.9))],
+        creeks=0,
         towns={
             "williamsburg": ("Williamsburg", 37.2707, -76.7075, 20, True, "W", 1699),
             "yorktown": ("Yorktown", 37.2382, -76.5098, 15, True, "NE", 1691),
@@ -111,8 +115,8 @@ MAPS = {
         rivers=[], creeks=0,
         towns={
             "williamsburg": ("Williamsburg", 37.2707, -76.7075, 30, True, "S", 1699),
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 20, True, "SW", 1691),
-            "gloucester": ("Gloucester", 37.2468, -76.5025, 12, True, "NE", 1707),
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 20, True, "S", 1691),
+            "gloucester": ("Gloucester", 37.2468, -76.5025, 12, False, "", 1707),   # 15 map px from Yorktown at z12: one name (Yorktown)
             "jamestown": ("Jamestown", 37.2093, -76.7775, 10, False, "", 1607),
         },
         roads=ROADS_YT + [
@@ -124,15 +128,39 @@ MAPS = {
         relief=RELIEF_YT, keep=KEEP_YT + [(37.2707, -76.7075, 900)],
     ),
     "yorktown": dict(
-        s=1.6, ferry_scale=2.4,
+        s=2.0, ferry_scale=2.0,
         water=dict(blur=26.0, pier=7, chan=7, island=6000, lake=60000, dry=[(37.176, 37.205, -76.615, -76.575)]),   # Lee Hall reservoir (modern)
         rivers=[], creeks=2, creek_pick=[(37.2290, -76.5200), (37.2130, -76.4800)],   # Yorktown Creek, Wormley Creek
         towns={
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 50, True, "SE", 1691),
-            "gloucester": ("Gloucester", 37.2468, -76.5025, 26, True, "N", 1707),
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 58, True, "S", 1691, [(-30, 100), (50, 110), (130, 111), (210, 101)]),
+            "gloucester": ("Gloucester", 37.2468, -76.5025, 30, True, "NE", 1707, [(80, -66), (150, -80), (220, -94), (295, -114)]),
         },
         roads=ROADS_YT,
         ferries=FERRY_YT,
         relief=RELIEF_YT, keep=KEEP_YT,
     ),
+}
+
+# ---------------------------------------------------------------- named story points (lat, lon) for PLACE("...") in the scenes
+# corrected against the relief (kit/PLACES.md): Redoubt 10 + 9 moved ~400 m west onto the river bluff (the dossier values fall in the river),
+# the Fusiliers' Redoubt moved ~270 m south onto the bluff edge.
+PLACES = {
+    "yorktown": (37.2382, -76.5098), "gloucester_point": (37.2468, -76.5025), "the_hook": (37.2917, -76.4847),
+    "fusiliers_redoubt": (37.2440, -76.5261), "hornwork": (37.2325, -76.5092), "british_line_east": (37.2352, -76.5040),
+    "redoubt_9": (37.2292, -76.5025), "redoubt_10": (37.2319, -76.5000), "first_parallel": (37.2244, -76.5006),
+    "first_parallel_w": (37.2262, -76.5185), "first_parallel_e": (37.2262, -76.4952),
+    "moore_house": (37.2189, -76.4858), "surrender_field": (37.2111, -76.5131), "allied_hq": (37.2067, -76.5350),
+    "williamsburg": (37.2707, -76.7075), "halfway_house": (37.2520, -76.6400), "trebells_landing": (37.2044, -76.6669), "jamestown": (37.2093, -76.7775),
+    "cape_henry": (36.9261, -76.0061), "cape_charles": (37.1333, -75.9667), "lynnhaven_bay": (36.9167, -76.0833), "hampton": (37.03, -76.345),
+    "dobbs_ferry": (41.01, -73.87), "kings_ferry": (41.25, -73.965), "chatham": (40.74, -74.38), "trenton": (40.22, -74.76), "philadelphia": (39.952, -75.165),
+    "chester": (39.85, -75.36), "head_of_elk": (39.608, -75.833), "baltimore": (39.29, -76.61), "annapolis": (38.978, -76.492), "mount_vernon": (38.71, -77.09),
+    "newport": (41.49, -71.31), "new_york": (40.712, -74.006), "staten_island": (40.58, -74.15),
+}
+# river / bay centre-lines (lat, lon) for the carved river names (RIVER(...) in the kit); York + James traced on the peninsula water mask
+RIVER_LINES = {
+    "york": [(37.4601, -76.7505), (37.4302, -76.7093), (37.3901, -76.6681), (37.3451, -76.6269), (37.3101, -76.5857), (37.2765, -76.5445), (37.2425, -76.5060),
+             (37.2339, -76.4621), (37.2437, -76.4209), (37.2582, -76.3797)],
+    "james": [(37.235, -76.8741), (37.2251, -76.8329), (37.2082, -76.7917), (37.1726, -76.7505), (37.157, -76.6681), (37.1187, -76.6269), (37.0749, -76.5857)],
+    "hudson": [(41.70, -73.94), (41.50, -73.98), (41.35, -73.97), (41.24, -73.96), (41.10, -73.90), (41.00, -73.89), (40.88, -73.93), (40.75, -74.01)],
+    "chesapeake": [(39.40, -76.20), (39.00, -76.40), (38.60, -76.40), (38.20, -76.30), (37.80, -76.18), (37.40, -76.10), (37.10, -76.05)],
 }

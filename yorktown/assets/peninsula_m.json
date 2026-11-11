@@ -1,0 +1,21 @@
+{
+ "name": "peninsula_m",
+ "center": [
+  37.25,
+  -76.62
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  299676,
+  406414
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 30.42,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2,
+ "baked_for_scale": 1.3
+}

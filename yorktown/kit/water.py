@@ -104,6 +104,12 @@ def build_water(m):
                 if dsea[ys[j], xs[j]] < 260: cd.line([(xs[j], ys[j]), (ix[ys[j], xs[j]], iy[ys[j], xs[j]])], fill=255, width=6)
             creek = np.asarray(cim) > 0
             riv |= creek.astype(np.uint8)
+    if C.get("wet"):   # hand-set water the land mask misses at this zoom (New York harbour, the East River): (half-width image px, [(lat, lon), ...])
+        im = Image.new("L", (W, H), 0); d = ImageDraw.Draw(im)
+        for hw, pts in C["wet"]:
+            q = [(ll2px(m, la, lo)[0] * 2, ll2px(m, la, lo)[1] * 2) for la, lo in pts]; d.line(q, fill=255, width=int(2 * hw), joint="curve")
+            for p in q: d.ellipse([p[0] - hw, p[1] - hw, p[0] + hw, p[1] + hw], fill=255)
+        sea |= cv2.GaussianBlur(np.asarray(im).astype(np.float32), (0, 0), 1.5) > 110
     water = sea | riv.astype(bool)
     return water, riv.astype(bool) & ~cv2.erode(sea.astype(np.uint8), disk(2)).astype(bool)
 

@@ -1,0 +1,85 @@
+# Yorktown map kit (main style = STYLE_LOCK 2d + 2e + 2f, precedence 2f > 2e > 2d)
+
+Reference look: `reference/style-reference-living-map.mp4`. Proof frames: `build/sheet-kit.jpg` (kit test a/b next to the reference).
+
+## What is where
+| file | what |
+|---|---|
+| `kit/data/places.py` | everything baked or named: per map the camera scale the art is drawn for, water clean-up, rivers, towns (+ carved names), period roads, ferries, painted relief areas, woods keep-off; `PLACES` (story points, lat/lon) and `RIVER_LINES` (for the carved river names) |
+| `kit/water.py` | coastal water: cleaned land mask (no piers, grids, dredged cuts, spoil islands, ponds, modern reservoirs) + NHD rivers + few creeks; `carve()` paints the 2e carved middle blue |
+| `kit/make_w.py` | Style W green basemaps (copy of `make_style_w.py`, green=1 tint=0 mult=1) with the coastal water: `assets/<map>_w.jpg`, `_w_close.jpg` |
+| `kit/make_m.py` | bakes the STATIC 2e layers into NEW files `assets/<map>_m.jpg`, `_m_close.jpg`, `_m.json`, `_m_water.png`, `_m_land.png` + `kit/data/<map>_bake.json` (towns, label boxes, roads, crossings, dead-end check) |
+| `kit/js/*.js` + `kit/make_kit.py` | sources of `kit/yt_kit.js` (generated; never edit it): Grant banner kit copy patched for 1781, LivingW, riverLabel, weather, `js/yt_block.js` (the Yorktown API) |
+| `kit/build_scene.py` | `scenes-src/<scene>.js` -> `scenes/<scene>/index.html` (hard-linked assets, timing + anchors, GD data) |
+| `kit/PLACES.md` | every place in px per map + the corrections made (`python3 kit/places_report.py`) |
+| `kit/weather/` | weather.js assets for `yorktown_m` / `peninsula_m` (rain + storm scenes; `kit/lib/make_weather_assets.py` with `WX_OUT=kit/weather`, masks from `kit/data/masks_<map>/`) |
+| `scenes-src/test-kit*.js` | the proof scenes (frames a/b, storm, inset) = worked examples of every call |
+
+Baked into the basemaps (do NOT draw them again in a scene): painted towns, carved PERMANENT town names (east: New York, Philadelphia,
+Williamsburg, Yorktown; chesapeake: Williamsburg, Yorktown; peninsula: Williamsburg, Yorktown, Gloucester; yorktown: Yorktown, Gloucester),
+unlabelled town sprites (Newport, Providence, Hartford, Dobbs Ferry, Trenton, Chester, Head of Elk, Baltimore, Annapolis, Alexandria,
+Fredericksburg, Richmond, Hampton, Norfolk, Jamestown), rut roads (no dead ends), timber bridges, the York ferry (Yorktown <-> Gloucester Point)
+and King's Ferry (Hudson) with landings + flatboat, lanes through the woods, painted relief (Yorktown bluffs, Yorktown Creek + Wormley Creek
+ravines), ground texture, carved water. Everything that changes with the story is LIVE in the scene (below).
+
+## Build + snapshot
+```bash
+cd /home/user/battle-maps/yorktown
+python3 kit/make_kit.py                                    # after editing kit/js/*.js
+python3 kit/build_scene.py p3b yorktown p3-4 p3-9          # narrated scene (audio/timing.json + voice.wav anchors)
+python3 kit/build_scene.py hook-a east hook-1 hook-2 --inset peninsula   # + a nested higher-zoom map for the one continuous zoom
+python3 kit/build_scene.py test-kit-b yorktown --dur 10 --src test-kit   # test scene without narration
+cd scenes/p3b && hyperframes snapshot . --at "2,6.5,11" --no-end -o /tmp/claude-0/.../scratchpad/snap_p3b   # then delete the snapshot folder
+```
+Basemap rebuild (only if places.py changes): `python3 kit/make_w.py <map> assets/<map>_w.jpg close=assets/<map>_w_close.jpg` (~1.5 min; only for
+water / woods keep-off changes), then `python3 kit/make_m.py <map>` (~3 min). make_m always writes new files (unlinks a hard-linked target first),
+so scene folders built earlier keep their old copy until rebuilt.
+
+## Coordinates
+`LYT(lat, lon)` -> map px of the scene's basemap (2880 x 1620 world). `LLYT([[lat, lon], ...])`. `PLACE("redoubt_10")` (names in places.py
+`PLACES`: yorktown, gloucester_point, the_hook, fusiliers_redoubt, hornwork, british_line_east, redoubt_9, redoubt_10, first_parallel(_w/_e),
+moore_house, surrender_field, allied_hq, williamsburg, halfway_house, trebells_landing, jamestown, cape_henry, cape_charles, lynnhaven_bay,
+hampton, dobbs_ferry, kings_ferry, chatham, trenton, philadelphia, chester, head_of_elk, baltimore, annapolis, mount_vernon, newport, new_york,
+staten_island). `GD.bake.towns[k].c` / `.label.box` = baked town centre / carved-name box in map px (keep units and cards >= 20 px off them).
+Camera: `camera([[t, x, y, s], ...])` (kit); the close (canopy) look cross-fades in from s 1.5 to 2.2 (lens). The art is baked for
+s = 1.2 (east), 1.3 (chesapeake, peninsula), 2.0 (yorktown): town names read ~27-30 px there and scale with the camera.
+
+## API (all times in scene seconds; use `at(para, "spoken words")` for every beat)
+| call | one-line example |
+|---|---|
+| `UNIT(id, side, p, type, o)` | `UNIT("lafa", "allies", PLACE("williamsburg"), "infantry", { ech: "XX", name: "LAFAYETTE", nameAt: at("p1-2", "Lafayette") })` types: infantry (X), cavalry (slash), engineers (white gear), artillery (kit gun box), supply (wheel), ship (sail); `ech` "II"/"X"/"XX"/"XXX"/""; `t` drop-in time (0 = on screen at frame 0) |
+| `march(id, pts, t, dur, o)` | `march("am1", LLYT([[40.22,-74.76],[39.95,-75.17]]), at("p1-5","south"), 6)` moves along the road with dust behind (LIVING first; dust is sized for the camera scale at build time, `o.dustOp`, `o.dustSize`, `o.dust: false`) |
+| `B.move(id, t, dur, x, y)` / `along(id, pts, t, dur)` | plain moves (no dust) |
+| `BANNER(key, name, nation, at, t, o)` | `BANNER("washington", "George Washington", "us", "am1", at("p1-3","Washington"), { side: "right" })` nation us / fr / gb; `at` = unit id or [x, y]; `side` up / right / left / west / east / ne / nw / sw / se (stake offset off the action); stays (2d.6) unless `o.until`; `o.myst: tSlam` shows the "?" banner until the name slam; portrait `assets/media/<key>_head.png`, initials if missing |
+| `SIDEFLAG(nation, p, t, until)` | `SIDEFLAG("us", LYT(37.21,-76.53))` 48 px nation flag behind a side's lines; auto-hidden while that side has a banner up (one flag per side) |
+| `TRENCH(pts, t, o)` | `TRENCH(LLYT(PAR1), at("p3-5","first parallel"), { dur: 2.4 })` dug on its word (ditch + parapet, `o.face` +1/-1 parapet side) |
+| `REDOUBT(id, p, t, o)` / `REDOUBT_TAKEN(el, t)` | `const r10 = REDOUBT("r10", PLACE("redoubt_10"), 0, { side: "british" }); REDOUBT_TAKEN(r10, at("p3-8","taken"))` |
+| `HATCH(polys, side, t, o)` | FORM 1: `HATCH(LLYT(R10_GROUND), "allies", at("p3-8","Redoubt 10"))` taker's colour, ~3 s, water cut out |
+| `STRIPES(blueP, redP, t)` | FORM 2 (p3-1 ring closes, end-1 only): whole map two-side stripes ~2.5 s |
+| `LIVING(o)` | once per scene: `LIVING({ clouds: 0.1, light: "dusk" })` cloud shadows, water shimmer, enables `march` dust |
+| `LIGHT(preset, t, dur)` | `LIGHT("night", at("p3-7","night"), 2)` presets day / morning / afternoon / dusk / night |
+| `RAIN(t0, t1, k)` / `STORM(t0, t1)` | only 6-7 Oct night (rain) and 16-17 Oct from ~midnight (storm), FACT_NOTES; visual only |
+| `RIVER(name, text, t, o)` | `RIVER("york", "York River", at("p2-2","York River"), { s: 1.3, near: PLACE("yorktown"), side: "below", hw: 14 })` carved italic, ~3.5 s; names: york, james, hudson, chesapeake |
+| `PLACE_LABEL(text, p, t, o)` | story place on its spoken word (not a permanent town), ~3.5 s: `PLACE_LABEL("Head of Elk", PLACE("head_of_elk"), at("p1-6","Head of Elk"))` |
+| `INSET(map, o)` | nested higher-zoom basemap for one continuous zoom (build with `--inset map`): `INSET("peninsula")` |
+| kit (Grant) helpers still there | `shoot(from, to, t)` (K.gun -> arc -> K.impact: boom on impact + locked shake), `arw({...})` solid thin arrow, `focus(p, r, t)`, `inkTrace`, `crosses`, `smoke`, `stampP`, `B.caption`, `dateNow` / `B.date`, `declutter`, `GG.card`, engagement `E.decide/E.subscribe/E.final`, `K.casualties` |
+
+Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + shake; `SFX("hit")` on a banner/name pop). No `ref:*` sounds
+(the old `box()` label helper calls `SFX("ref:pop")`: do not use `box`/`boxS`; use `PLACE_LABEL`).
+
+## Gotchas
+- One basemap per scene (`relief`/`relief_close`); a cross-map zoom uses `INSET` (feathered nested image, fades in by camera scale).
+  Tested east -> peninsula (16x, `build/kit-inset-strip.jpg`): end the zoom with the frame INSIDE the inset box (centre it on the inset,
+  s >= ~0.75 x 2^dz), else the feathered edge and the blurry east map show at the frame edge. east -> yorktown (64x) untested.
+- Baked names are FIXED art: keep units, banners, cards >= 20 px off `GD.bake.towns[k].label.box`; never place a live label for a baked town.
+- Banners are 124 x 209 screen px: put them on a side stake (`side: "right"|"left"|"ne"|"west"`) off towns and labels.
+- `PLACE` coordinates for the siege works were checked against the relief, NOT yet against the Bauman plan (not delivered): see PLACES.md.
+- `B.at` is a proportional estimate; the kit's `at` corrects it with the measured sentence starts. Re-grep every `at(...)` phrase after any script change (1c.5).
+- Weather needs `kit/weather/<base>_m_*` (made for yorktown + peninsula); calling `RAIN` on another base shows only the screen rain.
+- A march through a town crosses its baked name: pick the frame times / unit spacing so no box sits on a name when it matters (2f.2: boxes
+  >= ~60 px apart; a 350 px route holds ~5 boxes).
+- Banners: Clinton has no portrait yet (initials "HC" show automatically); the French pennant is the white royal flag (reads as a white
+  rectangle at banner size: historically right). Generals not in the image agent's list get initials until a `<key>_head.png` exists.
+- The builder runs `node --check` on the page script (prints "SCENE SCRIPT SYNTAX ERROR"); an inline `</script>` anywhere (even in a comment)
+  breaks the page: make_kit.py escapes it in the kit, keep it out of scene sources.
+- Snapshots: `hyperframes snapshot` only; never render full scenes in the kit; delete snapshot folders after looking.

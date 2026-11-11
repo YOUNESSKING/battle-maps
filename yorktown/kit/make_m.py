@@ -76,7 +76,7 @@ def catmull(pts, step):
     return out
 
 
-TOWNS = {k: dict(key=k, name=t[0], c=P(t[1], t[2]), R=t[3] * US, label=t[4], side=t[5], seed=t[6]) for k, t in C["towns"].items()}
+TOWNS = {k: dict(key=k, name=t[0], c=P(t[1], t[2]), R=t[3] * US, label=t[4], side=t[5], seed=t[6], curve=(t[7] if len(t) > 7 else None)) for k, t in C["towns"].items()}
 
 
 def meander(Pp, seed):
@@ -116,10 +116,11 @@ for fid, a, b in FER:   # explicit ferries: landings snapped to the two banks, f
 for k, (rid, pts) in enumerate(C["roads"]):
     raw = [P(la, lo) for la, lo in pts]
     # a road that starts/ends at an explicit ferry bank ends at its landing
-    for fc in [c for c in CROSS if c["kind"] == "ferry"]:
-        for end in (0, -1):
-            for lnd, orig in ((fc["a"], None), (fc["b"], None)):
-                if math.hypot(raw[end][0] - lnd[0], raw[end][1] - lnd[1]) < 40 * US: raw[end] = lnd
+    lands = [l for c in CROSS if c["kind"] == "ferry" for l in (c["a"], c["b"])]
+    for end in (0, -1):                                     # the NEAREST landing only (both banks can be close at a narrows)
+        if lands:
+            lnd = min(lands, key=lambda l: math.hypot(raw[end][0] - l[0], raw[end][1] - l[1]))
+            if math.hypot(raw[end][0] - lnd[0], raw[end][1] - lnd[1]) < 40 * US: raw[end] = lnd
     path = meander(catmull(raw, 1.5 * US), 7 * k + 3)
     segs, cur, i = [], [], 0
     while i < len(path):
@@ -127,12 +128,17 @@ for k, (rid, pts) in enumerate(C["roads"]):
         if wet(x, y):
             j = i
             while j < len(path) and wet(*path[j]): j += 1
+            kend = int(22 / 1.5) + 1                     # ~22 screen px: a wet run that close to a road end is the end (trim, no crossing)
+            if j >= len(path) - kend and cur and j < len(path):   # the road wobbles into the water just before its end (a landing): stop at the bank
+                segs.append(cur); cur = []; i = len(path); continue
+            if i < kend and not cur:
+                i = j; continue
             if j >= len(path) or not cur:   # the road runs off into water at an end: stop at the bank (landing)
                 if cur: segs.append(cur); CROSS.append(dict(kind="landing", id=rid, x=cur[-1][0], y=cur[-1][1], bank=cur[-1], ang=0, w=0))
                 cur = []; i = j; continue
             a, b = cur[-1], path[j]; wd = math.hypot(b[0] - a[0], b[1] - a[1])
             ang = math.degrees(math.atan2(b[1] - a[1], b[0] - a[0]))
-            if wd < 16 * US:      # narrow: timber bridge, the road runs on over the deck
+            if wd < 34 * US:      # narrow (creek, river up to ~34 screen px): timber bridge, the road runs on over the deck
                 CROSS.append(dict(kind="bridge", id=rid, x=(a[0] + b[0]) / 2, y=(a[1] + b[1]) / 2, ang=ang, w=wd))
                 cur += path[i:j]
             else:                 # wide: ferry (landings on both banks + a flatboat)
@@ -288,13 +294,15 @@ def labels_layer(tmeta, occupied):
         f = ImageFont.truetype(FONTS["garamond600"], 100); Lt = (f.getlength(T["name"]) / 100 + trk * (len(T["name"]) - 1)) * size   # u
         Ru = T["R"] / US; best = None
         order = [T["side"]] + [s for s in ("S", "N", "SW", "SE", "W", "E", "NW", "NE") if s != T["side"]]
-        for side, gm in [(sd, g) for g in (1.0, 1.5, 2.1) for sd in order]:
-            sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm
-            if sx == 0:                                    # under / over the town: a gentle arc hugging its edge
+        for side, gm in ([("hand", 1)] if T["curve"] else []) + [(sd, g) for g in (1.0, 1.5, 2.1) for sd in order]:
+            if side == "hand": curve = T["curve"]   # hand-set curve (u, from the town centre), places.py
+            elif SIDES[side][0] == 0:
+                sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm                                    # under / over the town: a gentle arc hugging its edge
                 yb = sy * (gap + (size * 0.72 if sy > 0 else 4)); arc = 0.07 * Lt * sy
                 curve = [(-Lt / 2 - 6, yb), (-Lt / 6, yb + arc), (Lt / 6, yb + arc), (Lt / 2 + 6, yb)]
-            else:                                          # beside: the word runs away from the town, slight rise/fall
-                x_a = sx * gap; x_b = x_a + sx * (Lt + 12); yy = sy * gap * 0.75 + size * 0.3
+            else:                                          # beside
+                sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm   # the word runs away from the town, slight rise/fall
+                x_a = sx * gap; x_b = x_a + (1 if sx > 0 else -1) * (Lt + 12); yy = sy * gap * 0.75 + size * 0.3
                 p0, p3 = (min(x_a, x_b), yy + (6 if sx > 0 else -6) * (1 if sy >= 0 else -1)), (max(x_a, x_b), yy)
                 curve = [p0, (p0[0] + (p3[0] - p0[0]) / 3, p0[1] - 6), (p0[0] + 2 * (p3[0] - p0[0]) / 3, p3[1] - 6), p3]
             li, (ax, ay) = render_label_curve(T["name"].upper() if False else T["name"], curve, size=size, ppu=US, tracking=trk, seed=T["seed"], shadow=0.62)
@@ -307,11 +315,12 @@ def labels_layer(tmeta, occupied):
             occ = (occupied[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
             edge = xa != x0 or ya != y0 or xb != x0 + li.width or yb != y0 + li.height
             woodf = (WOODS[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
+            if side == "hand": best = (0, side, li, x0, y0, wetf, occ); break
             score = wetf * 3 + occ * 2 + woodf * 1.5 + (1 if edge else 0) + (0.05 if side != T["side"] else 0) + 0.04 * (gm - 1)
             if best is None or score < best[0]: best = (score, side, li, x0, y0, wetf, occ)
             if score < 0.06: break
         score, side, li, x0, y0, wetf, occ = best
-        if side != T["side"] or wetf > 0.02: LOG.append(f"label {k}: side {T['side']} -> {side} (water {wetf:.0%}, overlap {occ:.0%})")
+        if (side != T["side"] and side != "hand") or wetf > 0.02: LOG.append(f"label {k}: side {T['side']} -> {side} (water {wetf:.0%}, overlap {occ:.0%})")
         ov.alpha_composite(li, (max(0, x0), max(0, y0)), (max(0, -x0), max(0, -y0)))
         a = np.asarray(li)[..., 3] > 20; ys, xs = np.nonzero(a)
         out[k] = dict(side=side, box=[round((x0 + xs.min()) / 2, 1), round((y0 + ys.min()) / 2, 1), round((x0 + xs.max()) / 2, 1), round((y0 + ys.max()) / 2, 1)])
@@ -403,5 +412,20 @@ bake = dict(map=m, s=S, towns={k: dict(**tmeta[k], label=lmeta.get(k)) for k in 
             crossings=[{k: (round(v / 2, 1) if isinstance(v, float) and k in ("x", "y", "w") else ([round(v[0] / 2, 1), round(v[1] / 2, 1)] if k in ("a", "b", "bank") else v)) for k, v in c.items()} for c in CROSS],
             ends=[dict(road=r[0], seg=r[1], px=[r[2], r[3]], ok=r[4]) for r in ok], log=LOG)
 json.dump(bake, open(f"{HERE}/data/{m}_bake.json", "w"), indent=1)
+# exclusion masks for the weather assets (weather.js / make_weather_assets.py): water, roads, towns, labels, woods
+MD = f"{HERE}/data/masks_{m}"; os.makedirs(MD, exist_ok=True)
+Image.fromarray(WATER.astype(np.uint8) * 255).save(f"{MD}/rivers_w.png", optimize=True)
+Image.fromarray((tw[..., 3] > 60).astype(np.uint8) * 255).save(f"{MD}/towns.png", optimize=True)
+Image.fromarray((lb[..., 3] > 60).astype(np.uint8) * 255).save(f"{MD}/labels.png", optimize=True)
+Image.fromarray(WOODS.astype(np.uint8) * 255).save(f"{MD}/woods_w.png", optimize=True)
+_r = Image.new("L", (W, H), 0); _d = ImageDraw.Draw(_r)
+for r in ROADS:
+    for c in r["paths"]: _d.line(c, fill=255, width=max(2, int(8 * US)))
+_r.save(f"{MD}/roads.png", optimize=True)
+# map-px water / land alpha masks for the scenes (living-map water shimmer, hatching kept off the water): assets/<map>_m_water.png, _m_land.png
+_wm = cv2.resize(WATER.astype(np.float32), (W // 2, H // 2), interpolation=cv2.INTER_AREA)
+for nm_, a_ in (("water", _wm), ("land", 1 - _wm)):
+    rgba = np.zeros((H // 2, W // 2, 4), np.uint8); rgba[..., :3] = 255; rgba[..., 3] = (np.clip(a_, 0, 1) * 255).astype(np.uint8)
+    Image.fromarray(rgba).save(f"{YT}/assets/{m}_m_{nm_}.png", optimize=True)
 for l in LOG: print("  !", l)
 print("done", m, round(time.time() - t0), "s")
