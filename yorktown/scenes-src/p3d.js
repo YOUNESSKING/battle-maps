@@ -72,7 +72,7 @@ focus([1255, 1320], 120, T_24 + 0.3, T_TURN);
 CARD("", "5 DAYS TOO LATE", "#c4121f", T_LATE - 0.05, T_TURN + 1.4, { size: 64 });
 // "It turned back to New York"
 const BACK = [[1420, 1190], [1560, 1010], [1660, 820], [1700, 640]];
-RS0.forEach((p, k) => march("rs" + k, [STOP[k], ...BACK.map(([x, y]) => [x + (k - 1) * 24, y + (k - 1) * 12])], T_TURN + 0.1 + k * 0.2, 5.6, { dust: false }));
+RS0.forEach((p, k) => march("rs" + k, [STOP[k], ...BACK.map(([x, y]) => [x + (k - 1) * 24, y + (k - 1) * 12])], T_TURN + 0.1 + k * 0.2, 5.6, { dust: false, trail: false }));
 hideU(["rs0", "rs1", "rs2"], T_TURN + 5.2);
 // method card THE TRAP · 3. CLOSE THE LAND (1 + 2 lit, 3 lights on its words)
 GG.METHOD = ["FOOL NEW YORK", "CLOSE THE SEA", "CLOSE THE LAND"]; GG.METHOD_TITLE = "THE TRAP";
@@ -82,7 +82,7 @@ const MC = GG.method(3, T_LAST - 0.1, T_NEWS - 0.3, [T_LAST + 0.3, T_LAST + 0.9,
 // ---------------------------------------------------------------------------------------------------------------------------------
 quote("&ldquo;Oh God! It is all over!&rdquo;", "LORD NORTH, PRIME MINISTER &middot; SO IT IS SAID", T_OHGOD - 0.05, T_NOTQ + 1.0, { col: "#c4121f", size: 56, top: 190, mw: 1100 });
 // FORM 2 (once): the coast as of late 1781 in two-side stripes: the British hold only New York (Manhattan, Staten Island, Long Island)
-const REDP = [[1440, 452], [1500, 418], [1560, 420], [1680, 398], [1800, 372], [1960, 352], [1975, 400], [1820, 440], [1680, 478], [1580, 500], [1545, 545], [1490, 545], [1470, 505]];
+const REDP = [[1425, 470], [1430, 405], [1500, 395], [1560, 420], [1680, 398], [1800, 372], [1960, 352], [1975, 400], [1820, 440], [1680, 478], [1580, 500], [1545, 545], [1490, 545], [1470, 505]];
 const RECT = [[-200, -200], [3080, -200], [3080, 1820], [-200, 1820]];
 const BLUEP = [...RECT, RECT[0], ...REDP.slice().reverse(), REDP[REDP.length - 1], RECT[0]];
 STRIPES(BLUEP, REDP, T_NEVER);
@@ -104,11 +104,11 @@ tl.to(EBACK, { autoAlpha: 0, duration: 0.8 }, TB - 0.2);
 document.getElementById("date").style.zIndex = 60;   // the date scroll never disappears
 tl.to(EF, { scale: 0.66, x: 70, y: -128, transformOrigin: "50% 0%", duration: 0.7, ease: "power3.inOut" }, TB);
 Object.assign(PILL.style, { right: "50px", top: "34px", bottom: "auto" });
-hideU(["yk"], T_SO - 0.2);   // clean map under the end screen (the French line + New York stay as the living map)
+hideU(["yk", "ny"], T_SO - 0.2);   // clean map under the end screen (the French line + New York stay as the living map)
 // ---------------------------------------------------------------------------------------------------------------------------------
 const FLAGWIN = (el, wins) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: wins.length && wins[0][0] <= 0 ? 1 : 0 });
   wins.forEach(([a, b]) => { if (a > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, a); if (b != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, b); }); };
-FLAGWIN(FL_GB, [[0, T_CLF + 0.05], [T_LAST, null]]);
+FLAGWIN(FL_GB, [[0, T_CLF + 0.05], [T_LAST, T_SO - 0.2]]);
 FLAGWIN(FL_US, [[0, T_WSEEN + 0.05], [T_FRANCE - 0.2, T_SO - 0.2]]);
 FLAGWIN(FL_FR, [[T_FRANCE + 0.1, null]]);
 window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
