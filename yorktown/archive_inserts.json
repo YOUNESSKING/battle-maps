@@ -1,0 +1,77 @@
+{
+ "p1-6": {
+  "from": "On the third and fourth",
+  "to": "while the crowds cheered.",
+  "shots": [
+   {
+    "photo": "assets/media/headline_march.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.45
+    ]
+   },
+   {
+    "photo": "assets/media/archw_rochambeau.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.45
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "LT. GEN. COMTE DE ROCHAMBEAU"
+   }
+  ]
+ },
+ "p2-7": {
+  "from": "It was not a famous victory.",
+  "to": "not even there to see it.",
+  "shots": [
+   {
+    "photo": "assets/archive/capes_battle.jpg",
+    "move": "left",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "THE BATTLE OF THE CAPES \u00b7 5 SEPTEMBER 1781"
+   },
+   {
+    "photo": "assets/media/headline_capes.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.45
+    ]
+   }
+  ]
+ },
+ "p3-13": {
+  "from": "Legend says",
+  "to": "beat a British march.",
+  "shots": [
+   {
+    "photo": "assets/archive/trumbull_surrender.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.55
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "YORKTOWN \u00b7 19 OCTOBER 1781"
+   },
+   {
+    "photo": "assets/media/headline_surrender.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.45
+    ]
+   }
+  ]
+ }
+}
