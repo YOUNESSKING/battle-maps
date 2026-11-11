@@ -88,7 +88,10 @@ UNIT("cwW", "british", [1092, 1258], "infantry", { ech: "XX" });
 // banners (all named earlier): Washington with his army (NW stake), Clinton at New York (SE stake, over Long Island), Cornwallis at Yorktown
 // Washington + Rochambeau on free stakes (own pins) that travel with their armies, placed off the action at every camera scale
 const BFREE = (key, name, nation, p, t, o = {}) => { const w = BANNER(key, name, nation, p, t, { side: "up", ...o }); return { w, pin: w.closest(".gg-pin") }; };
-const BMOVE = (b, pts, t, dur) => pinAlong(b.pin, pts, t, dur, Math.max(4, pts.length * 6));
+// pins move by transform (x/y from their creation point), not left/top (lint gsap_non_transform_motion)
+const pinAlongX = (el, pts, t, dur, n = 24) => { const x0 = parseFloat(el.style.left), y0 = parseFloat(el.style.top);
+  for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); tl.to(el, { x: q[0] - x0, y: q[1] - y0, duration: dur / n, ease: "none" }, t + (k - 1) * dur / n); } };
+const BMOVE = (b, pts, t, dur) => pinAlongX(b.pin, pts, t, dur, Math.max(4, pts.length * 6));
 const BW = BFREE("washington", "George Washington", "us", [1500, 335], 0);
 const BC = BANNER("clinton", "Sir Henry Clinton", "gb", "ny3", 0, { side: "se" });
 BANNER("cornwallis", "Lord Cornwallis", "gb", "cwW", 0, { side: "west" });
@@ -119,8 +122,8 @@ const C28 = CARD("", "28 SHIPS OF THE LINE", "#1f4fc4", T_28 - 0.05, T_PAY - 0.2
 { const s = document.createElement("div"); s.style.cssText = "font-size:30px;letter-spacing:.24em;color:#9fc0ea;margin-top:4px"; s.textContent = "3,000+ SOLDIERS"; C28.firstElementChild.appendChild(s);
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_3K + 0.1); SFX("tick", T_3K + 0.15); }
 // "he had sailed to Havana": a short arrow up from the bottom edge to the fleet, marked HAVANA; silver glints on the fleet
-arw({ pts: [[1290, 1650], [1330, 1500], [1395, 1385]], side: "carth", t: T_HAV - 0.25, dur: 0.9, width: AW(CW3[2], 9) });
-PLACE_LABEL("Havana", [1262, 1400], T_HAV, { size: 24 });
+arw({ pts: [[1640, 1650], [1590, 1440], [1480, 1350]], side: "carth", t: T_HAV - 0.25, dur: 0.9, width: AW(CW3[2], 9) });
+PLACE_LABEL("Havana", [1660, 1380], T_HAV, { size: 24 });
 const GLINT = (p, t, n = 5, r = 30) => { for (let k = 0; k < n; k++) { const a = k * 2.4, q = [p[0] + Math.cos(a) * r * (0.4 + (k % 3) * 0.3), p[1] + Math.sin(a) * r * 0.6];
     const el = pinS(GG.pin(`<svg width="22" height="22" viewBox="-11 -11 22 22" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd66a)"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2 Z" fill="#fff4c4"/></svg>`, q[0], q[1], {}));
     gsap.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.3, rotation: 0 }, { autoAlpha: 1, scale: 1.1, rotation: 45, duration: 0.3, immediateRender: false }, t + k * 0.18);
@@ -131,7 +134,7 @@ focus([1560, 470], 85, T_NOTNY - 0.1, T_BAY - 0.15);
 const FH = [[1268, 1262], [1340, 1282], [1300, 1330]];
 trail([[1440, 1335], [1380, 1320], [1300, 1325], [1215, 1335]], "#1f4fc4", 3.2 / CW3[2], T_BAY, 1.4, null);
 B.move("ff1", T_BAY, 3.0, ...FH[0]); B.move("ff2", T_BAY + 0.15, 3.0, ...FH[1]); B.move("ff3", T_BAY + 0.3, 3.0, ...FH[2]);
-RIVER("chesapeake", "Chesapeake Bay", T_BAY + 0.2, { s: CW3[2], near: LYT(38.45, -76.36), side: "left", hw: 16, size: 24 });
+RIVER("chesapeake", "Chesapeake Bay", T_BAY + 0.2, { s: CW3[2], near: LYT(38.95, -76.36), side: "right", hw: 16, size: 22 });
 // "only until the middle of October"
 CARD("", "UNTIL MID-OCTOBER", "#c9b48a", T_OCT - 0.05, T_PUT - 0.6, { size: 64, css: "right:130px;top:560px;transform-origin:50% 30%;" });
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -195,7 +198,7 @@ const WBOAT = (pts, t, dur) => { const el = pinS(GG.pin(`<svg width="44" height=
   <path d="M-14 -2 L-11 -8 L11 -8 L14 -2 Z" fill="#b08a5c" stroke="#2e2216" stroke-width="1.2"/><rect x="-12" y="-2" width="24" height="3" fill="#6e543a"/>
   <circle cx="-7" cy="5" r="4" fill="none" stroke="#2e2216" stroke-width="2"/><circle cx="7" cy="5" r="4" fill="none" stroke="#2e2216" stroke-width="2"/>
   <circle cx="-7" cy="5" r="1" fill="#2e2216"/><circle cx="7" cy="5" r="1" fill="#2e2216"/></svg>`, pts[0][0], pts[0][1], {}));
-  tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, t); pinAlong(el, pts, t, dur, 16); return el; };
+  tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, t); pinAlongX(el, pts, t, dur, 16); return el; };
 const WB = [[1418, 452], [1424, 476], [1432, 498], [1440, 518], [1446, 532]];
 const WBS = [0, 1, 2, 3].map((k) => WBOAT(sub(WB, 0, 1 - k * 0.16, 12), T_FLAT + k * 0.45, T_WHEELS + 1.6 - T_FLAT - k * 0.2));
 tl.to(WBS, { autoAlpha: 0, duration: 0.5 }, T_29 + 0.4);
@@ -221,7 +224,7 @@ B.date("29 AUG 1781", T_29, T_SEP2 - 0.08, 32); SFX("tick", T_29 + 0.1);
 B.date("2 SEP 1781", T_SEP2, T_34 - 0.08, 32); SFX("tick", T_SEP2 + 0.1);
 B.date("3-4 SEP 1781", T_34, T_SEP5 - 0.08, 32); SFX("tick", T_34 + 0.1);
 // Washington's stake moves to the south-east side for the march south (off Philadelphia and its carved name)
-BMOVE(BW, [[1385, 450], [1355, 560], [1330, 700], [1300, 800], [1290, 910]], T_TURN, T_THEN + 1.8 - T_TURN);
+BMOVE(BW, [[1385, 450], [1355, 560], [1330, 700], [1290, 820], [1262, 900], [1250, 980]], T_TURN, T_THEN + 1.8 - T_TURN);
 const SOUTH = [[1462, 496], [1440, 522], [1424, 545], [1411, 561], [1400, 580], [1393, 592], [1370, 612], [1345, 632], [1320, 656], [1300, 670], [1284, 682]];
 const ELK = [[1284, 682], [1262, 694], [1240, 708], [1222, 722]];
 // the American columns wheel south (dust): Washington's column to Chester, the others on to the head of the bay
@@ -238,12 +241,12 @@ focus([1700, 470], 90, T_CLU - 0.1, T_34 - 0.1);
 march("fr1", [STG.fr1, [1470, 440], [1462, 470], ...SOUTH.slice(0, 7), [1372, 606], [1365, 600]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6, { dustSize: 34, dustOp: 0.45 });
 march("frA", [STG.frA, [1470, 420], [1462, 470], ...SOUTH.slice(0, 5), [1414, 568], [1405, 572]], T_FRF - 0.3, T_CHEER - T_FRF + 1.6, { dustSize: 34, dustOp: 0.45 });
 hideU(["hg1", "hg2"], T_29 + 2.2);
-BMOVE(BR, [[1700, 290], [1560, 400], [1480, 600], [1470, 780]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6);
+BMOVE(BR, [[1700, 290], [1560, 400], [1490, 640], [1540, 870]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-7: the head of the bay: hard money from the French war chest, Head of Elk, a month's pay in coin
 // ---------------------------------------------------------------------------------------------------------------------------------
 focus([1225, 735], 80, T_UNPAID, T_MORRIS - 0.2);
-CARD("", "HARD MONEY", "#c9b48a", T_HARD - 0.05, T_HARD + 3.0, { size: 64, css: "right:150px;top:740px;transform-origin:50% 30%;" });
+CARD("", "HARD MONEY", "#c9b48a", T_HARD - 0.05, T_HARD + 3.0, { size: 64, css: "left:170px;top:760px;transform-origin:50% 30%;" });
 // "the French army's war chest": a French supply box (wheel) rolls from the French column down to Head of Elk
 UNIT("frS", "allies", [1352, 620], "supply", { ech: "", t: T_CHEST - 0.6 });
 march("frS", [[1352, 620], [1320, 656], [1300, 670], [1284, 682], [1262, 694], [1246, 712], [1250, 728]], T_CHEST - 0.1, T_ELK + 1.6 - T_CHEST, { dustSize: 22, dustOp: 0.45 });
@@ -276,7 +279,7 @@ tl.to(BW.w.firstElementChild, { rotation: 4, duration: 0.25, yoyo: true, repeat:
 tl.to(BW.w.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, T_HAT + 1.3);
 SFX("hit", T_HAT + 0.1);
 // result card (spoken words): THE ARMY HAD SLIPPED AWAY · CLINTON STILL WAITING IN NEW YORK; focus on New York under it
-const RES = CARD("", "THE ARMY HAD SLIPPED AWAY", "#1f4fc4", T_SLIP - 0.05, T_PART - 0.35, { size: 66, css: "right:110px;top:560px;transform-origin:50% 30%;" });
+const RES = CARD("", "THE ARMY HAD SLIPPED AWAY", "#1f4fc4", T_SLIP - 0.05, T_PART - 0.35, { size: 66, css: "right:40px;top:560px;transform-origin:50% 30%;" });
 { const s = document.createElement("div"); s.style.cssText = "font-size:34px;letter-spacing:.2em;color:#ff8a80;margin-top:6px"; s.textContent = "CLINTON STILL WAITING IN NEW YORK"; RES.firstElementChild.appendChild(s);
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_STILL); SFX("tick", T_STILL + 0.1); }
 focus([1690, 470], 95, T_STILL, T_PART - 0.3);

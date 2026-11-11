@@ -102,7 +102,8 @@ UNIT("rs3", "british", [1330, 1420], "ship", { ech: "", t: T_SHIPS - 0.1 });
 march("rs3", [[1330, 1420], [1250, 1345], [1160, 1325]], T_SHIPS + 0.2, 4.5, { dust: false });
 focus([1130, 1300], 90, T_DEEP, T_DISL);
 // the quoted warning (verbatim): quote card while Cornwallis's words are spoken
-const Q = quote("&ldquo;&hellip;a temporary superiority at sea&rdquo;", "CORNWALLIS", T_TEMP - 0.15, Math.min(T_TEMP + 3.35, T_OBEY - 0.15), { col: "#c4121f", size: 46, top: 190, mw: 1100 });
+const Q = quote("&ldquo;&hellip;a temporary superiority at sea&rdquo;", "CORNWALLIS", T_TEMP - 0.15, Math.min(T_TEMP + 3.35, T_OBEY - 0.15), { col: "#c4121f", size: 46, top: 620, mw: 1000 });
+Object.assign(Q.style, { left: "860px", right: "auto", justifyContent: "flex-start" });
 // "a prey to a foreign enemy": a ghosted blue ship box comes up from the south toward the capes (the threat, not yet real), gone on "obeyed"
 UNIT("ghost", "allies", [1420, 1560], "ship", { ech: "", t: T_FOE });
 march("ghost", [[1420, 1560], [1330, 1450], [1255, 1385]], T_FOE + 0.3, 3.4, { dust: false });
@@ -118,7 +119,7 @@ UNITF("cw2", "british", PP(1700, 958), "infantry", { ech: "X", t: TZ1 - 0.8 });
 UNITF("cwA", "british", PP(1748, 902), "artillery", { ech: "", t: TZ1 - 0.6 });
 UNITF("cw3", "british", PP(1880, 960), "infantry", { ech: "X", t: TZ1 - 0.7 });
 const BK2 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cw2", TZ1 - 0.3, { side: "sw", until: TP0 + 0.4 });
-RLB.push([riverLabel("yorkP", "York River", PPL([[1200, 200], [1400, 420], [1550, 600], [1700, 760], [1770, 830]]), T_YR, { s: SP(S_PEN), size: 30, near: PP(1540, 600), side: "right", hw: 40, tl }), "York River"]);
+RLB.push([riverLabel("yorkP", "York River", PPL([[1200, 200], [1400, 420], [1550, 600], [1700, 760], [1770, 830]]), T_YR, { s: SP(S_PEN), size: 30, near: PP(1640, 712), side: "right", hw: 40, tl }), "York River"]);
 // "Gloucester Point across the narrows": the place name + a red box crosses the ferry to the Gloucester side
 PLACE_LABEL("Gloucester Point", PP(1935, 748), T_GP, { dy: -10, size: 26 });
 UNITF("cwG", "british", PP(1790, 862), "infantry", { ech: "X", t: T_GP - 0.1 });
@@ -153,7 +154,7 @@ const BK3 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cwW", TP1 - 0.6, { si
 showU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2"], TP1 - 1.2); tl.to(BW.pin, { autoAlpha: 1, duration: 0.4 }, TP1 - 1.2);
 UNITF("rs7", "british", [1640, 700], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5 }); B.move("rs7", TP1 - 1.0, END - TP1 + 1.0, 1560, 880);
 UNITF("rs8", "british", [1400, 1260], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5 }); B.move("rs8", TP1 - 1.0, END - TP1 + 1.0, 1470, 1150);
-wstampL("THE SEA", 1900, 1000, T_SEA - 0.05, null, null, 34);
+wstampL("THE SEA", 1900, 1000, T_SEA - 0.05, END - 0.35, null, 34);
 // ---------------------------------------------------------------------------------------------------------------------------------
 camApply();
 window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
