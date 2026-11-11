@@ -30,11 +30,17 @@ const SYMS = {
 // UNIT(id, side, p, type, o): type = infantry | cavalry | engineers | artillery | supply | ship;  side = "allies"/"carth" (blue) or "british"/"rome" (red)
 //   o.ech = echelon mark ("II", "X", "XX", "XXX"; "" none), o.t = drop-in time (0 = on screen at frame 0), o.name + o.nameAt = tag text + its spoken time
 const SIDEK = (s) => (s === "allies" || s === "carth" || s === "blue" ? "carth" : "rome");
+// yorktown r3: unit moves are transforms (x/y from the creation point; lint gsap_non_transform_motion), drop-in distance constant on screen
+B.move = (k, t, dur, x, y, ease = "power1.inOut") => { const u = B.units[k]; tl.to(u.el, { x: x - u.x, y: y - u.y, duration: dur, ease }, t); };
+const UPOS = (id) => { const u = B.units[id], el = u.el; return [u.x + (+gsap.getProperty(el, "x") || 0), u.y + (+gsap.getProperty(el, "y") || 0)]; };   // current centre (map px)
 const UNIT = (id, side, p, type = "infantry", o = {}) => {
   U(id, SIDEK(side), p, o.name || "", o.ech ?? "X", o.t ?? 0, { icon: type === "artillery" ? "artillery" : "infantry", tagAt: o.name ? (o.nameAt ?? o.t ?? 0) : null });
   const S = SYMS[type]; if (S) { const sv = B.units[id].el.querySelector(".blk svg"); sv.setAttribute("viewBox", S.vb); sv.setAttribute("preserveAspectRatio", S.ar); sv.innerHTML = typeof S.svg === "function" ? S.svg(id) : S.svg;
     sv.style.color = SIDEK(side) === "carth" ? "#1f4fc4" : "#c4121f"; }
   const sz = B.units[id].el.querySelector(".fxk-size"); if (sz && !(o.ech ?? "X")) sz.remove();
+  if ((o.t ?? 0) > 0) { const el = B.units[id].el, sc = Math.max(CAM_AT(o.t)[2], 1920 / 2880);
+    tl.getTweensOf(el).filter((tw) => Math.abs(tw.startTime() - o.t) < 1e-3 && tw.vars.ease === "bounce.out").forEach((tw) => tw.kill());
+    tl.fromTo(el, { autoAlpha: 0, y: -45 / sc, scale: 1.25 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "bounce.out", immediateRender: false }, o.t); }
   return id; };
 // march a unit along a polyline (map px) with dust behind it (2f.5): t..t+dur
 let LV = null;   // LivingW instance (living())
@@ -58,7 +64,7 @@ const NUDGE = (p, o = {}) => { let [x, y] = p; const sc = o.s ?? CAM_S, hw = (o.
   return [x, y]; };
 const LABEL_AUDIT = (times, o = {}) => { const cur = tl.time(), bad = [];
   times.forEach((t) => { tl.seek(t, true); Object.entries(B.units).forEach(([id, u]) => { const el = u.el; if (gsap.getProperty(el, "autoAlpha") < 0.05 && gsap.getProperty(el, "opacity") < 0.05) return;
-    const x = gsap.getProperty(el, "left") + u.w / 2, y = gsap.getProperty(el, "top") + u.h / 2, hw = 27 / CAM_S, hh = 18 / CAM_S, top = 16 / CAM_S;
+    const x = gsap.getProperty(el, "left") + (+gsap.getProperty(el, "x") || 0) + u.w / 2, y = gsap.getProperty(el, "top") + (+gsap.getProperty(el, "y") || 0) + u.h / 2, hw = 27 / CAM_S, hh = 18 / CAM_S, top = 16 / CAM_S;
     const rb = RLB.filter(([g]) => +getComputedStyle(g).opacity > 0.1).map(([g, nm]) => { const b = g.getBBox(), m = 20 / CAM_S; return [b.x - m, b.y - m, b.x + b.width + m, b.y + b.height + m, nm]; });
     LABEL_BOXES(20).concat(rb).forEach(([x0, y0, x1, y1, nm]) => { if (x + hw > x0 && x - hw < x1 && y + hh > y0 && y - hh - top < y1) bad.push([+t.toFixed(2), id, nm]); }); }); });
   tl.seek(cur, true); window.__LABEL_AUDIT = bad; if (bad.length) console.warn("LABEL_AUDIT", JSON.stringify(bad));
@@ -171,17 +177,17 @@ const PLACE_LABEL = (text, p, t, o = {}) => { const el = pinS(GG.pin(`<div style
 const INSETS = [];
 const INSET = (map, o = {}) => { const A = YT.MAPS[YT.BASE], M = YT.MAPS[map], k = 2 ** (A.zoom - M.zoom);
   const x = M.origin_world_px[0] * k - A.origin_world_px[0], y = M.origin_world_px[1] * k - A.origin_world_px[1], w = 2880 * k, h = 1620 * k;
-  const im = document.createElement("img"); im.src = `assets/inset_${map}.jpg`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/inset_${map}${o.close ? "_close" : ""}.jpg`; im.alt = "";   // o.close: the close (canopy) art for full-frame inset cuts
   im.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;max-width:none;opacity:0;pointer-events:none`;
   const prev = INSETS.length ? INSETS[INSETS.length - 1].el : document.getElementById("relief2"); prev.after(im);
-  const sFill = 0.667 / k, s0 = o.s0 ?? sFill * 0.45, s1 = o.s1 ?? sFill * 0.8, rec = { el: im, box: [x, y, w, h], k, s1, map }; INSETS.push(rec);
+  const sFill = 0.667 / k, s0 = o.s0 ?? sFill * 0.6, s1 = o.s1 ?? sFill * 0.85, rec = { el: im, box: [x, y, w, h], k, s1, map }; INSETS.push(rec);
   const R1 = document.getElementById("relief"), R2 = document.getElementById("relief2");
   onCam((s) => { const a = Math.max(0, Math.min(1, (s - s0) / (s1 - s0))); im.style.opacity = a.toFixed(3);
     // feathered edge while it grows in; once the frame lies inside the inset (s past s1) the edge is hard and everything under it is hidden
     const inside = CAM_X0 + x * s <= 4 && CAM_Y0 + y * s <= 4 && CAM_X0 + (x + w) * s >= 1916 && CAM_Y0 + (y + h) * s >= 1076;
     const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 100%)" : "none";
     im.style.webkitMaskImage = im.style.maskImage = feather;
-    const top = INSETS.filter((r) => r.el.style.opacity === "1.000" && r.el.style.maskImage === "none").pop();
+    const top = INSETS.filter((r) => parseFloat(r.el.style.opacity) >= 0.999 && (r.el.style.maskImage || r.el.style.webkitMaskImage || "none") === "none").pop();   // r3: the browser stores "1", not "1.000"
     const hideBelow = top ? INSETS.indexOf(top) : -1;
     [R1, R2].forEach((r) => { r.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; });
     INSETS.forEach((r, i) => { if (i < hideBelow) r.el.style.visibility = "hidden"; else r.el.style.visibility = "visible"; });

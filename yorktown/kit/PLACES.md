@@ -56,8 +56,8 @@ In a scene use `LYT(lat, lon)` or `PLACE("name")` (kit) instead of hard-coded px
 ## Baked towns (permanent painted towns; label = carved permanent name)
 
 - `east` (baked for camera scale 0.9): New York (name), Philadelphia (name), Williamsburg, Yorktown (name), Newport, Providence, Hartford, Princeton, Chatham, Dobbs Ferry, Trenton, Chester, Head of Elk, Baltimore, Annapolis, Alexandria, Fredericksburg, Richmond
-- `chesapeake` (baked for camera scale 1.3): Williamsburg (name), Yorktown (name), Hampton, Norfolk, Richmond
-- `peninsula` (baked for camera scale 1.3): Williamsburg (name), Yorktown (name), Gloucester, Jamestown
+- `chesapeake` (baked for camera scale 1.0): Williamsburg (name), Yorktown (name), Hampton, Norfolk, Richmond
+- `peninsula` (baked for camera scale 1.0): Williamsburg (name), Yorktown (name), Gloucester, Jamestown
 - `yorktown` (baked for camera scale 2.0): Yorktown (name), Gloucester (name)
 
 Roads, bridges, ferries and the dead-end check per map: `kit/data/<map>_bake.json` (`roads`, `crossings`, `ends`).

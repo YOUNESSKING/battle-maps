@@ -8,7 +8,7 @@ const END = B.T.duration;
 const K = FXK(B);
 const GG = GGK(B);
 const E = EngageK(B);
-const FL = { us: "assets/media/us_flag_13star.png", fr: "assets/media/fr_royal_flag.png", gb: "assets/media/gb_flag_1606.png", cs: "assets/media/gb_flag_1606.png" };
+const FL = { us: "assets/media/us_flag_13star.png", fr: "assets/media/fr_royal_pennant.png", gb: "assets/media/gb_flag_1606.png", cs: "assets/media/gb_flag_1606.png" };
 const PHOTO = (n) => `assets/media/${n}_head.png`;
 const SCN = document.getElementById("scene");
 const NS = "http://www.w3.org/2000/svg";
@@ -171,14 +171,21 @@ const frontS = (o) => { const g = K.front(o), id = "pcblur" + (++__FID), f = doc
 const SCL = []; let CAM_S = 1;
 const setInv = () => { const k = (1 / CAM_S).toFixed(4); SCL.forEach((el) => { el.style.transform = `scale(${k})`; }); };
 const CAM = { cx: 1440, cy: 810, s: 1 };
+let CAM_KEYS = [[0, 1440, 810, 1]];
+// CAM_AT(t) -> [cx, cy, s] of the camera path at time t (pure; keys [t, x, y, s, ease] as camera() takes them)
+const CAM_AT = (t) => { const K = CAM_KEYS; if (t <= K[0][0]) return K[0].slice(1, 4);
+  for (let i = 1; i < K.length; i++) { const [t0, x0, y0, s0] = K[i - 1], [t1, x1, y1, s1] = K[i];
+    if (t <= t1) { const e = gsap.parseEase(K[i][4] || "sine.inOut")(Math.min(1, Math.max(0, (t - t0) / Math.max(t1 - t0, 0.01)))); return [x0 + (x1 - x0) * e, y0 + (y1 - y0) * e, s0 + (s1 - s0) * e]; } }
+  return K[K.length - 1].slice(1, 4); };
 const camera = (keys) => {
   const cam = CAM; cam.cx = keys[0][1]; cam.cy = keys[0][2]; cam.s = keys[0][3]; const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
   const apply = () => { const s = Math.max(cam.s, 1920 / 2880), cx = clamp(cam.cx, 960 / s, 2880 - 960 / s), cy = clamp(cam.cy, 540 / s, 1620 - 540 / s);
     gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
   apply();
-  for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
-    tl.to(cam, { cx, cy, s, duration: Math.max(t1 - t0, 0.01), ease: keys[i][4] || "sine.inOut", onUpdate: apply }, t0); }
-  tl.call(apply, null, 0);
+  // yorktown r3: ONE timeline-driven path (a pure function of the time) instead of chained tweens of the same object, so any seek shows the right frame
+  CAM_KEYS = keys; const P = { u: 0 }, go = () => { const [x, y, s] = CAM_AT(P.u); cam.cx = x; cam.cy = y; cam.s = s; apply(); };
+  tl.fromTo(P, { u: 0 }, { u: END, duration: END, ease: "none", onUpdate: go, immediateRender: false }, 0);
+  tl.call(go, null, 0);
 };
 const reg = (el, origin = "50% 50%") => { el.style.transformOrigin = origin; SCL.push(el); return el; };
 const pinS = (el) => { reg(el.firstElementChild); return el; };
@@ -670,7 +677,8 @@ window.LivingW = function (cfg = {}) {
       const gl = document.createElement("div");
       const gw = 900;
       gl.style.cssText = `position:absolute;left:${-gw}px;top:0;width:${gw}px;height:${BH}px;` +
-        `background:linear-gradient(100deg, rgba(240,248,244,0) 0%, rgba(240,248,244,${(o.glintOpacity ?? 0.16).toFixed(3)}) 50%, rgba(240,248,244,0) 100%)`;
+        `background:linear-gradient(90deg, rgba(240,248,244,0) 0%, rgba(240,248,244,${(o.glintOpacity ?? 0.16).toFixed(3)}) 50%, rgba(240,248,244,0) 100%);` +   // yorktown r3: 90deg + feathered ends: the 100deg band showed hard vertical edges
+        `-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 82%,transparent 100%)`;
       box.appendChild(gl);
       const per = o.glintPeriod ?? 26, sweeps = Math.max(1, Math.ceil(dur / per));
       tl.fromTo(gl, { x: 0 }, { x: BW + gw, duration: per, ease: "none", repeat: sweeps - 1, immediateRender: true }, t0);
@@ -693,7 +701,7 @@ window.LivingW = function (cfg = {}) {
       const cache = new Map();
       pos = (tt) => { const key = tt.toFixed(3); if (cache.has(key)) return cache.get(key);
         const cur = tl.time(); tl.seek(tt, true);
-        const p = [gsap.getProperty(unitEl, "left") + w / 2, gsap.getProperty(unitEl, "top") + h / 2];
+        const p = [gsap.getProperty(unitEl, "left") + (+gsap.getProperty(unitEl, "x") || 0) + w / 2, gsap.getProperty(unitEl, "top") + (+gsap.getProperty(unitEl, "y") || 0) + h / 2];   // left/top + transform (yorktown r3 moves)
         tl.seek(cur, true); cache.set(key, p); return p; };
     }
     const back = o.back ?? w * 0.5, out = [];
@@ -1143,11 +1151,17 @@ const SYMS = {
 // UNIT(id, side, p, type, o): type = infantry | cavalry | engineers | artillery | supply | ship;  side = "allies"/"carth" (blue) or "british"/"rome" (red)
 //   o.ech = echelon mark ("II", "X", "XX", "XXX"; "" none), o.t = drop-in time (0 = on screen at frame 0), o.name + o.nameAt = tag text + its spoken time
 const SIDEK = (s) => (s === "allies" || s === "carth" || s === "blue" ? "carth" : "rome");
+// yorktown r3: unit moves are transforms (x/y from the creation point; lint gsap_non_transform_motion), drop-in distance constant on screen
+B.move = (k, t, dur, x, y, ease = "power1.inOut") => { const u = B.units[k]; tl.to(u.el, { x: x - u.x, y: y - u.y, duration: dur, ease }, t); };
+const UPOS = (id) => { const u = B.units[id], el = u.el; return [u.x + (+gsap.getProperty(el, "x") || 0), u.y + (+gsap.getProperty(el, "y") || 0)]; };   // current centre (map px)
 const UNIT = (id, side, p, type = "infantry", o = {}) => {
   U(id, SIDEK(side), p, o.name || "", o.ech ?? "X", o.t ?? 0, { icon: type === "artillery" ? "artillery" : "infantry", tagAt: o.name ? (o.nameAt ?? o.t ?? 0) : null });
   const S = SYMS[type]; if (S) { const sv = B.units[id].el.querySelector(".blk svg"); sv.setAttribute("viewBox", S.vb); sv.setAttribute("preserveAspectRatio", S.ar); sv.innerHTML = typeof S.svg === "function" ? S.svg(id) : S.svg;
     sv.style.color = SIDEK(side) === "carth" ? "#1f4fc4" : "#c4121f"; }
   const sz = B.units[id].el.querySelector(".fxk-size"); if (sz && !(o.ech ?? "X")) sz.remove();
+  if ((o.t ?? 0) > 0) { const el = B.units[id].el, sc = Math.max(CAM_AT(o.t)[2], 1920 / 2880);
+    tl.getTweensOf(el).filter((tw) => Math.abs(tw.startTime() - o.t) < 1e-3 && tw.vars.ease === "bounce.out").forEach((tw) => tw.kill());
+    tl.fromTo(el, { autoAlpha: 0, y: -45 / sc, scale: 1.25 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "bounce.out", immediateRender: false }, o.t); }
   return id; };
 // march a unit along a polyline (map px) with dust behind it (2f.5): t..t+dur
 let LV = null;   // LivingW instance (living())
@@ -1171,7 +1185,7 @@ const NUDGE = (p, o = {}) => { let [x, y] = p; const sc = o.s ?? CAM_S, hw = (o.
   return [x, y]; };
 const LABEL_AUDIT = (times, o = {}) => { const cur = tl.time(), bad = [];
   times.forEach((t) => { tl.seek(t, true); Object.entries(B.units).forEach(([id, u]) => { const el = u.el; if (gsap.getProperty(el, "autoAlpha") < 0.05 && gsap.getProperty(el, "opacity") < 0.05) return;
-    const x = gsap.getProperty(el, "left") + u.w / 2, y = gsap.getProperty(el, "top") + u.h / 2, hw = 27 / CAM_S, hh = 18 / CAM_S, top = 16 / CAM_S;
+    const x = gsap.getProperty(el, "left") + (+gsap.getProperty(el, "x") || 0) + u.w / 2, y = gsap.getProperty(el, "top") + (+gsap.getProperty(el, "y") || 0) + u.h / 2, hw = 27 / CAM_S, hh = 18 / CAM_S, top = 16 / CAM_S;
     const rb = RLB.filter(([g]) => +getComputedStyle(g).opacity > 0.1).map(([g, nm]) => { const b = g.getBBox(), m = 20 / CAM_S; return [b.x - m, b.y - m, b.x + b.width + m, b.y + b.height + m, nm]; });
     LABEL_BOXES(20).concat(rb).forEach(([x0, y0, x1, y1, nm]) => { if (x + hw > x0 && x - hw < x1 && y + hh > y0 && y - hh - top < y1) bad.push([+t.toFixed(2), id, nm]); }); }); });
   tl.seek(cur, true); window.__LABEL_AUDIT = bad; if (bad.length) console.warn("LABEL_AUDIT", JSON.stringify(bad));
@@ -1284,17 +1298,17 @@ const PLACE_LABEL = (text, p, t, o = {}) => { const el = pinS(GG.pin(`<div style
 const INSETS = [];
 const INSET = (map, o = {}) => { const A = YT.MAPS[YT.BASE], M = YT.MAPS[map], k = 2 ** (A.zoom - M.zoom);
   const x = M.origin_world_px[0] * k - A.origin_world_px[0], y = M.origin_world_px[1] * k - A.origin_world_px[1], w = 2880 * k, h = 1620 * k;
-  const im = document.createElement("img"); im.src = `assets/inset_${map}.jpg`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/inset_${map}${o.close ? "_close" : ""}.jpg`; im.alt = "";   // o.close: the close (canopy) art for full-frame inset cuts
   im.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;max-width:none;opacity:0;pointer-events:none`;
   const prev = INSETS.length ? INSETS[INSETS.length - 1].el : document.getElementById("relief2"); prev.after(im);
-  const sFill = 0.667 / k, s0 = o.s0 ?? sFill * 0.45, s1 = o.s1 ?? sFill * 0.8, rec = { el: im, box: [x, y, w, h], k, s1, map }; INSETS.push(rec);
+  const sFill = 0.667 / k, s0 = o.s0 ?? sFill * 0.6, s1 = o.s1 ?? sFill * 0.85, rec = { el: im, box: [x, y, w, h], k, s1, map }; INSETS.push(rec);
   const R1 = document.getElementById("relief"), R2 = document.getElementById("relief2");
   onCam((s) => { const a = Math.max(0, Math.min(1, (s - s0) / (s1 - s0))); im.style.opacity = a.toFixed(3);
     // feathered edge while it grows in; once the frame lies inside the inset (s past s1) the edge is hard and everything under it is hidden
     const inside = CAM_X0 + x * s <= 4 && CAM_Y0 + y * s <= 4 && CAM_X0 + (x + w) * s >= 1916 && CAM_Y0 + (y + h) * s >= 1076;
     const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 100%)" : "none";
     im.style.webkitMaskImage = im.style.maskImage = feather;
-    const top = INSETS.filter((r) => r.el.style.opacity === "1.000" && r.el.style.maskImage === "none").pop();
+    const top = INSETS.filter((r) => parseFloat(r.el.style.opacity) >= 0.999 && (r.el.style.maskImage || r.el.style.webkitMaskImage || "none") === "none").pop();   // r3: the browser stores "1", not "1.000"
     const hideBelow = top ? INSETS.indexOf(top) : -1;
     [R1, R2].forEach((r) => { r.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; });
     INSETS.forEach((r, i) => { if (i < hideBelow) r.el.style.visibility = "hidden"; else r.el.style.visibility = "visible"; });

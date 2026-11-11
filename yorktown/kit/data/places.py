@@ -43,7 +43,7 @@ MAPS = {
         wet=[(3.2, [(40.88, -73.93), (40.80, -73.97), (40.74, -74.015), (40.70, -74.03)]), (5.5, [(40.70, -74.03), (40.665, -74.05), (40.62, -74.045), (40.58, -74.04)]),
              (2.2, [(40.70, -74.005), (40.745, -73.97), (40.785, -73.935), (40.80, -73.88), (40.805, -73.80)])],   # Hudson mouth, Upper Bay + Narrows, East River
         towns={
-            "new_york": ("New York", 40.712, -74.006, 40, True, "SE", 1776, [(12, 38), (72, 54), (137, 54), (198, 40)]),   # arced at the Manhattan tip (over Brooklyn)   # along Long Island, off the march route
+            "new_york": ("New York", 40.712, -74.006, 40, True, "E", 1776, [(34, 10), (102, -8), (170, -18), (240, -22)]),   # from the Manhattan tip along western Long Island (the only open land beside the city at z8)   # along Long Island, off the march route
             "philadelphia": ("Philadelphia", 39.952, -75.165, 52, True, "W", 1682, [(-322, 14), (-257, -16), (-182, -18), (-104, 6)]),   # west of the town, off the post road (which runs NE-SW through it)
             "williamsburg": ("Williamsburg", 37.2707, -76.7075, 22, False, "", 1699),   # 42 map px from Yorktown at z8: one name only (Yorktown)
             "yorktown": ("Yorktown", 37.2382, -76.5098, 26, True, "S", 1691),
@@ -91,8 +91,8 @@ MAPS = {
                 ("Mattaponi River", 1.5, (37.5, 38.0, -77.6, -76.75)), ("Rappahannock River", 1.8, (37.9, 38.3, -78.1, -76.9))],
         creeks=0,
         towns={
-            "williamsburg": ("Williamsburg", 37.2707, -76.7075, 20, True, "W", 1699),
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 15, True, "NE", 1691),
+            "williamsburg": ("Williamsburg", 37.2707, -76.7075, 20, True, "NW", 1699, [(-380, -30), (-260, -52), (-140, -56), (-20, -44)]),   # r3: apart from
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 15, True, "S", 1691),   # auto (land, clear of the Williamsburg name)
             "hampton": ("Hampton", 37.03, -76.345, 15, False, "", 1610),
             "norfolk": ("Norfolk", 36.848, -76.29, 18, False, "", 1682),
             "richmond": ("Richmond", 37.54, -77.436, 22, False, "", 1737),

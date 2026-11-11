@@ -102,3 +102,22 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
   edge is hard and the maps under it (and their carved names) are hidden, so no stray giant letters or blurred bands. End the zoom inside the inset.
 - Builder: `--var key=value` -> `GD.var.key` (one source, several test variants).
 - Test scenes: `test-kit-a`, `test-kit-b`, `test-kit-storm` (`--var mode=storm`), `test-kit-inset` (`scenes-src/test-kit.js`, `test-kit-inset.js`).
+
+**r3 (2026-11-11, critic round 2 `build/critic-kit-r2.md` + hook-agent bug list; proof `build/sheet-kit-r3.jpg`).** Backwards-compatible.
+- `chesapeake_m3` (Williamsburg name set NW, Yorktown auto: the two names no longer run together; supersedes `chesapeake_m2`).
+- `INSET` fades in later (0.6..0.85 of the fill scale) so a nested map is opaque before it fills the frame; pass quickly through the
+  in-between scales (the outer map's carved names grow there). Proof strip frames: 1 s, 3.2 s, 6 s.
+- New basemaps: `east_m4` (New York name from the Manhattan tip along western Long Island; bigger Philadelphia town), `chesapeake_m2` and
+  `peninsula_m2` (baked for camera scale 1.0 with names 1.25x: readable as nested maps in the hook zoom; arcs match). `east_m3` was an
+  intermediate bake (its New York name fell on the harbour): never use it (the builder skips to m4). `make_m.py <map> check=1` = fast road/dead-end check.
+- `at()` (builder): past the last measured anchor a phrase keeps that anchor's correction (no more 1.6 clamp collapsing late phrases onto one time).
+- `camera()` is now ONE timeline-driven path (a pure function of time, `CAM_AT(t)`), so seeking any frame shows the right camera; same keys as before.
+- Unit moves (`B.move`, `along`, `march`) are transforms (x/y) instead of left/top (lint `gsap_non_transform_motion`); `UPOS(id)` = current centre.
+  The drop-in (`UNIT(..., { t })`) falls a constant ~45 px on screen at any camera scale.
+- `INSET`: the layers under a covering inset are now really hidden (opacity check fixed: the browser stores "1"); `INSET(map, { close: true })`
+  uses the close art; the builder copies `inset_<map>_close.jpg` too.
+- Living map: the water glint band is feathered (no hard vertical edges on wide frames); dust follows transform moves.
+- Flags: `FL.fr` and `BN.flagFor("fr")` = `fr_royal_pennant.png`; `SIDEFLAG(nation, unitId)` plants a pole flag at a wing's lead box (no lone flags on grass).
+- Redoubts: the garrison colour now fills the work (`REDOUBT_TAKEN` turns it allied blue).
+- `BOAT(pts, t, dur, o)`: live flatboats on the water (e.g. the failed escape across the York, night 16-17 Oct; `o.drift` = blown downstream).
+- `LABEL_AUDIT` also checks live river names (`RIVER`) while they are visible.

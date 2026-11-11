@@ -53,7 +53,9 @@ shutil.copy(f"{ROOT}/assets/grain.png", f"{out}/assets/grain.png")
 shutil.copy(f"{ROOT}/assets/{base}{BV}.jpg", f"{out}/assets/relief.jpg")
 shutil.copy(f"{ROOT}/assets/{base}{BV}_close.jpg", f"{out}/assets/relief_close.jpg")
 for suf in ("water", "land"): shutil.copy(f"{ROOT}/assets/{base}{BV}_{suf}.png", f"{out}/assets/{base}_m_{suf}.png")   # scene-side name stays <base>_m_*.png
-for m in insets: shutil.copy(f"{ROOT}/assets/{m}{VER(m)}.jpg", f"{out}/assets/inset_{m}.jpg")
+for m in insets:
+    shutil.copy(f"{ROOT}/assets/{m}{VER(m)}.jpg", f"{out}/assets/inset_{m}.jpg")
+    shutil.copy(f"{ROOT}/assets/{m}{VER(m)}_close.jpg", f"{out}/assets/inset_{m}_close.jpg")   # r3: INSET(map, { close: true }) for full-frame inset cuts
 for f in os.listdir(f"{ROOT}/assets/media"):   # flags, portraits (heads), card art; not the big music / sfx
     p = f"{ROOT}/assets/media/{f}"
     if os.path.isfile(p) and f.lower().endswith((".png", ".jpg", ".jpeg", ".webp")) and "_det_" not in f: shutil.copy(p, f"{out}/assets/media/{f}")
@@ -76,8 +78,10 @@ for m in insets:
     if os.path.exists(_f): GD["insetBake"][m] = {k: {"label": t.get("label"), "name": t["name"]} for k, t in json.load(open(_f))["towns"].items()}
 open(f"{out}/timing.js", "w").write("window.SCENE_TIMING = " + json.dumps(scene_t) + ";\n")
 kit = open(f"{KIT}/yt_kit.js").read()
-AT = ("const at = (k, ph, off = 0) => { const e = B.at(k, ph), A = B.T.anchors || [[0, 0]]; let i = 0; while (i < A.length - 2 && e > A[i + 1][0]) i++;"
-      " const a = A[i], b = A[Math.min(i + 1, A.length - 1)]; const v = b[0] > a[0] ? a[1] + (b[1] - a[1]) * Math.min(1.6, (e - a[0]) / (b[0] - a[0])) : a[1] + (e - a[0]); return v + off; };")
+AT = ("const at = (k, ph, off = 0) => { const e = B.at(k, ph), A = B.T.anchors || [[0, 0]], Z = A[A.length - 1];"   # r3: past the last measured
+      " if (e >= Z[0]) return Z[1] + (e - Z[0]) + off;"                                                                      # anchor: keep its correction
+      " let i = 0; while (i < A.length - 2 && e > A[i + 1][0]) i++; const a = A[i], b = A[i + 1];"
+      " const v = b[0] > a[0] ? a[1] + (b[1] - a[1]) * (e - a[0]) / (b[0] - a[0]) : a[1] + (e - a[0]); return v + off; };")
 assert kit.count("const { at } = B;") == 1
 kit = kit.replace("const { at } = B;", AT)
 body = open(f"{ROOT}/scenes-src/{src or name}.js").read()

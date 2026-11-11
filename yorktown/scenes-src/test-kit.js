@@ -14,7 +14,7 @@ if (GD.base === "east") {
   // the two nation flags (hidden while that side's general banner is up: one flag per side)
   SIDEFLAG("us", LYT(40.10, -76.60)); SIDEFLAG("gb", LYT(41.25, -72.60));
   // British garrison of New York (Clinton) + the allied army marching south on the post road (Americans ahead, French behind)
-  UNIT("ny1", "british", NUDGE(LYT(41.03, -73.90)), "infantry", { ech: "XX" }); UNIT("ny2", "british", NUDGE(LYT(40.90, -72.15)), "infantry", { ech: "XX" });
+  UNIT("ny1", "british", NUDGE(LYT(40.92, -73.56)), "infantry", { ech: "XX" }); UNIT("ny2", "british", NUDGE(LYT(40.90, -72.15)), "infantry", { ech: "XX" });
   BANNER("clinton", "Henry Clinton", "gb", "ny1", 0, { side: "right" });
   const ROUTE = LLYT([[40.74, -74.38], [40.57, -74.53], [40.35, -74.66], [40.22, -74.76], [40.10, -74.92], [39.952, -75.165], [39.85, -75.36], [39.74, -75.55], [39.608, -75.833], [39.57, -76.00], [39.55, -76.09], [39.42, -76.35]]);
   const RT = (f0, f1) => sub(ROUTE, f0, f1, 24);
@@ -28,10 +28,10 @@ if (GD.base === "east") {
   BANNER("washington", "George Washington", "us", "am1", 0, { side: "sw" });
   BANNER("rochambeau", "Rochambeau", "fr", "fr1", 0, { side: "west" });
   // de Grasse's fleet at anchor inside the capes, in Lynnhaven Bay behind Cape Henry (ship box; no flags on units)
-  UNIT("fl1", "allies", LYT(37.05, -75.70), "ship", { ech: "" }); B.move("fl1", 0.5, 4.5, ...NUDGE(LYT(37.00, -76.03)));   // inside the capes, off Lynnhaven Bay
-  RIVER("hudson", "Hudson", 1.0, { s: 0.88, size: 22, near: LYT(41.72, -73.95), side: "left", hw: 3, hold: 6 });   // up the river, clear of Clinton
+  UNIT("fl1", "allies", LYT(37.30, -75.45), "ship", { ech: "" }); B.move("fl1", 0.5, 4.5, ...NUDGE(LYT(37.00, -76.03)));   // inside the capes, off Lynnhaven Bay
+  RIVER("hudson", "Hudson", 1.0, { s: 0.88, size: 22, near: LYT(41.36, -73.96), side: "left", hw: 3, hold: 6 });   // up the river, clear of Clinton
   RIVER("chesapeake", "Chesapeake Bay", 1.5, { s: 0.91, size: 22, near: LYT(38.25, -76.30), side: "above", hw: -10, gap: 0, hold: 6, face: "#d6e2ec" });
-  if (GD.var.audit) LABEL_AUDIT([2, 6], { show: true });
+  if (GD.var.audit) LABEL_AUDIT([6], { show: true });
 } else {
   const STORMV = GD.var.mode === "storm";
   LIVING({ clouds: 0.1, light: STORMV ? "night" : "dusk", lightK: STORMV ? 0.8 : 0.45 });

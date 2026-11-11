@@ -131,7 +131,7 @@ for k, (rid, pts) in enumerate(C["roads"]):
             while j < len(path) and wet(*path[j]): j += 1
             kend = int(22 / 1.5) + 1                     # ~22 screen px: a wet run that close to a road end is the end (trim, no crossing)
             if j >= len(path) - kend and cur and j < len(path):   # the road wobbles into the water just before its end (a landing): stop at the bank
-                segs.append(cur); cur = []; i = len(path); continue
+                segs.append(cur); CROSS.append(dict(kind="landing", id=rid, x=cur[-1][0], y=cur[-1][1], bank=cur[-1], ang=0, w=0)); cur = []; i = len(path); continue
             if i < kend and not cur:
                 i = j; continue
             if j >= len(path) or not cur:   # the road runs off into water at an end: stop at the bank (landing)
@@ -389,6 +389,8 @@ def ends_check():
 ok = ends_check(); dead = [r for r in ok if not r[4]]
 for r in dead: LOG.append(f"DEAD END road {r[0]}[{r[1]}] at map px ({r[2]}, {r[3]})")
 print(m, "roads", len(ROADS), "crossings", {k: sum(1 for c in CROSS if c["kind"] == k) for k in ("bridge", "ferry", "landing")}, "dead ends", len(dead), flush=True)
+for r in dead: print("  DEAD END", r, flush=True)
+if OPT.get("check") == "1": sys.exit(0)   # check=1: roads / crossings / dead ends only (fast)
 TEX = textures() if OPT.get("notex") != "1" else None
 print("texture", round(time.time() - t0), flush=True)
 cross = crossings_layer(); tw, tmeta = towns_layer()

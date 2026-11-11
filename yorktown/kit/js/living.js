@@ -102,7 +102,8 @@ window.LivingW = function (cfg = {}) {
       const gl = document.createElement("div");
       const gw = 900;
       gl.style.cssText = `position:absolute;left:${-gw}px;top:0;width:${gw}px;height:${BH}px;` +
-        `background:linear-gradient(100deg, rgba(240,248,244,0) 0%, rgba(240,248,244,${(o.glintOpacity ?? 0.16).toFixed(3)}) 50%, rgba(240,248,244,0) 100%)`;
+        `background:linear-gradient(90deg, rgba(240,248,244,0) 0%, rgba(240,248,244,${(o.glintOpacity ?? 0.16).toFixed(3)}) 50%, rgba(240,248,244,0) 100%);` +   // yorktown r3: 90deg + feathered ends: the 100deg band showed hard vertical edges
+        `-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 18%,#000 82%,transparent 100%)`;
       box.appendChild(gl);
       const per = o.glintPeriod ?? 26, sweeps = Math.max(1, Math.ceil(dur / per));
       tl.fromTo(gl, { x: 0 }, { x: BW + gw, duration: per, ease: "none", repeat: sweeps - 1, immediateRender: true }, t0);
@@ -125,7 +126,7 @@ window.LivingW = function (cfg = {}) {
       const cache = new Map();
       pos = (tt) => { const key = tt.toFixed(3); if (cache.has(key)) return cache.get(key);
         const cur = tl.time(); tl.seek(tt, true);
-        const p = [gsap.getProperty(unitEl, "left") + w / 2, gsap.getProperty(unitEl, "top") + h / 2];
+        const p = [gsap.getProperty(unitEl, "left") + (+gsap.getProperty(unitEl, "x") || 0) + w / 2, gsap.getProperty(unitEl, "top") + (+gsap.getProperty(unitEl, "y") || 0) + h / 2];   // left/top + transform (yorktown r3 moves)
         tl.seek(cur, true); cache.set(key, p); return p; };
     }
     const back = o.back ?? w * 0.5, out = [];
