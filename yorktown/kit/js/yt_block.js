@@ -255,3 +255,41 @@ const BOAT = (pts, t, dur, o = {}) => { const s = o.px || 34;
   if (o.drift) tl.to(el, { left: `+=${o.drift[0]}`, top: `+=${o.drift[1]}`, duration: 1.6, ease: "sine.inOut" }, Math.max(t, 0) + dur);
   if (o.rock !== false) tl.to(sv, { rotation: `+=${o.rockDeg ?? 7}`, duration: 0.45, yoyo: true, repeat: Math.max(1, Math.round((o.until ?? END) - Math.max(t, 0)) * 2), ease: "sine.inOut" }, Math.max(t, 0));
   if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, o.until); return el; };
+
+// ---------- SHIP OPTIONS (owner 2026-11-11: "I don't like the symbol of the ships"): 3 candidate 1781 ship-of-the-line symbols. NOT the default yet. ----------
+// SHIPV(id, side, p, o): a ship with the UNIT position / move API (B.move, along, march({ trail, dust: false }) all work on id).
+//   o.style "A" painted side-view ship of the line (hull, gunport stripe in the side colour, three masts with square sails, side pennant)
+//           "B" painted top-down sailing ship (hull + yards and sails seen from above, side-coloured hull edge, faint wake), o.heading deg (0 = east)
+//           "C" = A on a small glowing base plate in the side colour (blue vs red reads at once)
+//   o.px width on screen (default 70), o.facing "right" | "left" (A/C), o.t drop-in time (0 = there at frame 0)
+const SHIP_ART = (style, side, px, o = {}) => { const c = SIDECOL(side), cd = SIDEK(side) === "carth" ? "#173a7a" : "#7c1712", ink = "#24190c";
+  const flip = o.facing === "left" ? ' transform="translate(100 0) scale(-1 1)"' : "";
+  if (style === "B") { const h = o.heading || 0;
+    return `<svg width="${px}" height="${px}" viewBox="-50 -50 100 100" style="display:block;overflow:visible;filter:drop-shadow(2px 3px 2px rgba(10,16,20,.55))"><g transform="rotate(${h})">
+      <path d="M-33 -6 Q-48 -10 -64 -16 M-33 6 Q-48 10 -64 16" fill="none" stroke="rgba(235,244,240,.6)" stroke-width="2.4" stroke-linecap="round"/><path d="M-36 0 L-58 0" stroke="rgba(235,244,240,.35)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M-34 0 C-34 -10 -10 -12 18 -10 C32 -8 42 -4 46 0 C42 4 32 8 18 10 C-10 12 -34 10 -34 0 Z" fill="#6a4c2e" stroke="${c}" stroke-width="3.2"/>
+      <path d="M-28 0 C-28 -6 -8 -7 16 -6 C28 -5 36 -3 39 0 C36 3 28 5 16 6 C-8 7 -28 6 -28 0 Z" fill="#9a7650" stroke="${ink}" stroke-width=".8"/>
+      ${[-16, 4, 24].map((x, i) => `<path d="M${x - 3} ${-19 + i * 1.5} Q${x + 3} 0 ${x - 3} ${19 - i * 1.5}" fill="#efe6cc" stroke="${ink}" stroke-width="1.1"/><circle cx="${x}" cy="0" r="1.8" fill="${ink}"/>`).join("")}
+      <path d="M-30 0 L-36 0" stroke="${ink}" stroke-width="1.4"/><path d="M27 -1 L35 -6 L33 -1 Z" fill="${c}" stroke="${ink}" stroke-width=".5"/></g></svg>`; }
+  const A = `<svg width="${px}" height="${px * 0.82}" viewBox="0 0 100 82" style="display:block;overflow:visible;filter:drop-shadow(1.5px 2.5px 1.5px rgba(10,16,20,.55))"><g${flip}>
+    <path d="M6 66 Q50 72 94 66" fill="none" stroke="rgba(235,244,240,.6)" stroke-width="2"/>
+    <path d="M8 52 L92 52 L86 64 Q50 68 14 64 Z" fill="#5e432a" stroke="${ink}" stroke-width="1.6"/>
+    <path d="M10 55 L90 55 L88 59 L12 59 Z" fill="${c}"/>${[16, 26, 36, 46, 56, 66, 76].map((x) => `<rect x="${x}" y="56" width="3.4" height="2.4" fill="${ink}"/>`).join("")}
+    <path d="M84 52 L96 48 L92 54 Z" fill="#5e432a" stroke="${ink}" stroke-width="1"/><path d="M8 52 L6 44 L18 46 L18 52 Z" fill="#6e5032" stroke="${ink}" stroke-width="1"/>
+    ${[[28, 12, 13], [52, 4, 15], [74, 14, 12]].map(([x, top, w]) => `<line x1="${x}" y1="${top}" x2="${x}" y2="52" stroke="${ink}" stroke-width="1.8"/>
+      <path d="M${x - w} ${top + 6} Q${x} ${top + 9} ${x + w} ${top + 6} L${x + w - 1} ${top + 19} Q${x} ${top + 22} ${x - w + 1} ${top + 19} Z" fill="#efe6cc" stroke="${ink}" stroke-width="1"/>
+      <path d="M${x - w + 1} ${top + 22} Q${x} ${top + 25} ${x + w - 1} ${top + 22} L${x + w - 2} ${top + 36} Q${x} ${top + 39} ${x - w + 2} ${top + 36} Z" fill="#e2d6b4" stroke="${ink}" stroke-width="1"/>`).join("")}
+    <path d="M52 4 L64 7 L52 10 Z" fill="${c}" stroke="${ink}" stroke-width=".6"/><path d="M84 52 L98 40" stroke="${ink}" stroke-width="1.4"/></g></svg>`;
+  if (style === "C") return `<div style="position:relative;width:${px}px;height:${px * 0.82}px"><div style="position:absolute;left:${-px * 0.12}px;right:${-px * 0.12}px;top:${px * 0.38}px;height:${px * 0.5}px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%, ${c} 0%, ${c}cc 38%, ${cd}66 62%, rgba(0,0,0,0) 72%);box-shadow:0 0 ${px * 0.12}px ${c}"></div><div style="position:absolute;left:0;top:0">${A}</div></div>`;
+  return A; };
+const SHIPV = (id, side, p, o = {}) => { const style = o.style || "A", px = o.px || 70;
+  UNIT(id, side, p, "ship", { ech: "", t: o.t ?? 0, name: o.name, nameAt: o.nameAt });
+  const u = B.units[id], blk = u.el.querySelector(".blk"); blk.style.visibility = "hidden";
+  const art = document.createElement("div"); art.className = "ytship"; art.innerHTML = SHIP_ART(style, side, px, o);
+  const a = art.firstElementChild; const w = px, h = style === "B" ? px : px * 0.82;
+  art.style.cssText = `position:absolute;left:${(54 - w) / 2}px;top:${(36 - h) / 2 - (style === "B" ? 0 : px * 0.12)}px;width:${w}px;height:${h}px;pointer-events:none;z-index:2`;
+  blk.parentElement.appendChild(art); u.ship = { style, px, art }; return id; };
+// BROADSIDE(id, t, o): a broadside from a SHIPV: muzzle flashes along the hull (quiet launch sound via K.gun) + rolling powder smoke. o.n (5), o.side 1/-1 (B only)
+const BROADSIDE = (id, t, o = {}) => { const [x, y] = UPOS(id), n = o.n || 5, sp = (o.len || 46) / CAM_AT(t)[2] / n, dy = (o.dy ?? 4) / CAM_AT(t)[2];
+  for (let i = 0; i < n; i++) { const px = x - (n - 1) * sp / 2 + i * sp, tt = t + i * 0.09; K.gun(px, y + dy, tt, { dx: 0, dy: 0, sfx: i === 0 ? undefined : false });
+    K.smoke(px, y + dy, tt + 0.05, { n: 3, r: 7 / CAM_AT(t)[2], rise: 10 / CAM_AT(t)[2], drift: 8 / CAM_AT(t)[2], life: 3.2, alpha: 0.75 }); } };

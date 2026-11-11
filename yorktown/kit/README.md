@@ -141,3 +141,10 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
   live layers (`NIGHT_DIM`), and back to day colours at dawn; works in any call order (lines created before or after the `LIGHT` call).
   New helpers: `NIGHT_AT(t)`, `SIDECOL(side, t)`, `TINT(el, side, attrs, t0)` (register your own coloured SVG element).
 - `SFX("ref:*")` is dropped inside the kit for every caller (`E.decide`, `E.subscribe`, `E.final`, `box`, cards): scenes need no filter.
+
+**Ship options (2026-11-11, owner: "I don't like the symbol of the ships"; sheet `build/ship-options.jpg` + `build/ship-options-1to1.jpg`). NOT the default.**
+- `SHIPV(id, side, p, { style: "A" | "B" | "C", px: 70, facing: "right"|"left", heading: deg, t })`: same position / move API as a unit
+  (`B.move`, `along`, `march(id, pts, t, dur, { dust: false })`). A = painted side-view ship of the line (gunport stripe + pennant in the side
+  colour); B = painted top-down ship (side-coloured hull edge, wake; `heading`); C = A on a glowing side-colour plate.
+- `BROADSIDE(id, t, { n, dy })`: muzzle flashes along the hull (quiet launch via K.gun) + rolling powder smoke.
+- Test source: `scenes-src/test-ships.js` (`--var style=A|B|C --var view=big|capes|east`).

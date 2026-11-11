@@ -50,7 +50,7 @@ const camAt = (t) => { let c = SEGS[0].a;
 const camApply = () => { const c = camAt(tl.time()); CAM.cx = c[0]; CAM.cy = c[1]; CAM.s = c[2];
   const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
-const CW = [1400, 735, 0.76], CW2 = [1400, 780, 0.76], CW3 = [1405, 850, 0.86], CD = [1432, 772, 0.79], CH1 = [1505, 425, 2.0], CH2 = [1492, 445, 2.0],
+const CW = [1400, 735, 0.76], CW2 = [1400, 740, 0.77], CW3 = [1415, 728, 0.8], CD = [1432, 728, 0.79], CH1 = [1505, 425, 2.0], CH2 = [1492, 445, 2.0],
   CS1 = [1420, 600, 1.2], CS2 = [1385, 620, 1.2], CE1 = [1262, 712, 1.6], CE2 = [1252, 722, 1.65], CC1 = [1300, 930, 0.8], CC2 = [1290, 945, 0.82], CB = [1240, 1225, 1.15];
 camera([[0, ...CW]]);
 seg(0, T_ADM, CW, CW2); seg(T_ADM, T_PUT, CW2, CW3); seg(T_PUT, T_DID, CW3, CD);
@@ -94,7 +94,9 @@ const pinAlongX = (el, pts, t, dur, n = 24) => { const x0 = parseFloat(el.style.
 const BMOVE = (b, pts, t, dur) => pinAlongX(b.pin, pts, t, dur, Math.max(4, pts.length * 6));
 const BW = { w: BANNER("washington", "George Washington", "us", "am1", 0, { side: "up" }) };   // rides with his army: east of the Hudson until King's Ferry, then south with the column
 const MANH = [1525, 450];   // Clinton at New York: banner planted on Manhattan, side stake over New Jersey (land at every camera scale)
-const BC = BANNER("clinton", "Sir Henry Clinton", "gb", MANH, 0, { side: [-110, 70] });
+const BC = BANNER("clinton", "Sir Henry Clinton", "gb", MANH, 0, { side: [-60, 230] });
+// Clinton's banner steps out for the Hudson / New Jersey close-up (it would stand on Staten Island and the flatboats), back for the march south
+{ const pin = BC.closest(".gg-pin"); tl.to(pin, { autoAlpha: 0, duration: 0.4 }, T_INST + 0.3); tl.to(pin, { autoAlpha: 1, duration: 0.4 }, T_29 + 0.4); }
 BANNER("cornwallis", "Lord Cornwallis", "gb", "cwW", 0, { side: "west" });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-3: the French, de Grasse, Dobbs Ferry, Havana, the Chesapeake, mid-October
@@ -213,7 +215,7 @@ march("amE", [STG.amE, [1480, 440], [1500, 500]], T_COLS + 0.3, 2.6, { dustSize:
 arw({ pts: [[1478, 506], [1484, 520], [1486, 532]], side: "carth", t: T_HARB, dur: 0.7, width: AW(CH2[2], 9) });
 // Clinton's banner at New York: a small "?" over it ("as if to attack")
 const MARK = (uid, txt, col, t, until) => { const [x, y] = Array.isArray(uid) ? uid : [B.units[uid].x, B.units[uid].y];
-  const el = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-82px;top:-172px;width:44px;height:44px;border-radius:50%;background:rgb(18,16,12);border:3px solid ${col};color:${col};font:700 32px/38px Oswald;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.6)">${txt}</div></div>`, x, y, {}));
+  const el = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-44px;top:-42px;width:44px;height:44px;border-radius:50%;background:rgb(18,16,12);border:3px solid ${col};color:${col};font:700 32px/38px Oswald;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.6)">${txt}</div></div>`, x, y, {}));
   el.style.zIndex = 60; gsap.set(el, { autoAlpha: 0 });
   tl.fromTo(el.firstElementChild.firstElementChild, { scale: 1.8 }, { scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t); tl.set(el, { autoAlpha: 1 }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };

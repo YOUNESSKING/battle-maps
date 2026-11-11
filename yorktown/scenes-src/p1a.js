@@ -88,7 +88,7 @@ B.move("rs1", 0, 9, 1556, 588);
 SIDEFLAG("gb", "ny1", 0);
 // "Sir Henry Clinton": his banner at New York (west stake, over the empty New Jersey ground)
 const MANH = [1525, 450];   // Clinton at New York: banner planted on Manhattan, side stake over New Jersey (land at every camera scale)
-const BC = BANNER("clinton", "Sir Henry Clinton", "gb", MANH, T_CLIN + 0.35, { side: [-110, 70] }), BCP = BC.closest(".gg-pin");
+const BC = BANNER("clinton", "Sir Henry Clinton", "gb", MANH, T_CLIN + 0.35, { side: [-60, 230] }), BCP = BC.closest(".gg-pin");
 focus([1610, 355], 95, T_COMING - 0.1, T_JULY + 1.2);
 // Virginia: Cornwallis's army marching east down the peninsula, a small blue force shadowing it (Lafayette, not named in Part 1)
 UNIT("cwE", "british", [968, 1250], "infantry", { ech: "XX" }); UNIT("cwE2", "british", [925, 1238], "infantry", { ech: "X" });
