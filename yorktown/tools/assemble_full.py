@@ -135,11 +135,11 @@ if not AUDIO_ONLY:
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
 # STYLE_LOCK 1c rule 4 (owner 2026-11-04 review): artillery shots/booms only where the guns are clearly visible; in the other scenes the
 # gun flashes are tiny or off screen, so their fire/impact sounds are dropped (musketry 'mg', counters, hits stay).
-_VIS_ARTY = {"m1a", "m1c", "m2b", "m2d", "hook-b"}
+_VIS_ARTY = {"hook-b", "p2a", "p3b", "p3c"}  # Yorktown: scenes whose guns/broadsides are on screen (agents fire only visible guns)
 _c = json.load(open("build/sfx_cues.json")); _k = [c for c in _c if c[1] not in ("fire", "impact") or c[2] in _VIS_ARTY]
 json.dump(_k, open("build/sfx_cues.json", "w")); print("artillery cues kept", sum(1 for c in _k if c[1] in ("fire", "impact")), "of", sum(1 for c in _c if c[1] in ("fire", "impact")))
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
-subprocess.run(["python3", "tools/ref_sounds.py"], check=True)
+if os.environ.get("REF_SOUNDS") == "1": subprocess.run(["python3", "tools/ref_sounds.py"], check=True)  # never set (STYLE_LOCK 2c item 5)
 if AUDIO_ONLY and os.path.exists("build/arch_events.json"): ARCH_EVENTS = [tuple(e) for e in json.load(open("build/arch_events.json"))]
 elif not AUDIO_ONLY: json.dump([list(e) for e in ARCH_EVENTS], open("build/arch_events.json", "w"))
 import numpy as np, soundfile as sf
