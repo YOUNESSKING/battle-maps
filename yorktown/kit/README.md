@@ -130,3 +130,14 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
 - Colours: allies #2c57b7 / British #bc2528 by day; slate #4a6a9a / brick #a8503c at night (`LIVING({ light: "night" })` sets the night palette).
 - `REDOUBT` is filled + glowing in its garrison colour; `REDOUBT_TAKEN` switches fill + glow to allied blue.
 - `march()` draws the advance trail in the side colour (solid, thin, fades ~2 s after arrival); `{ trail: false }` turns it off. `arw()` arrows were already solid side colour.
+
+**r5 (2026-11-11; proof `build/sheet-kit-r5.jpg` = kit-b + storm).** Backwards-compatible; rebuild scenes.
+- Weather: the snow image loads only when `W.snow()` is called (no 404 for `assets/wx/<map>_snow.png` in rain/storm scenes).
+- Banners: the stake side is honoured for every host (unit box or [x, y]): `side` = up / right / left / west / east / ne / nw / sw / se or
+  `[dx, dy]` screen px; off-anchor banners get a thin guy-rope from the pole foot back to the anchor (pinned to the unit, standing off the action).
+- One flag per side: `FLAGSYNC(side)` rebuilds the flag windows on every `BANNER` / `SIDEFLAG` call; a side's flag comes back only when the LAST
+  banner of that side has left (scene FLAGWIN workarounds can go).
+- `LIGHT(preset, t, dur, k)` now also switches every side-coloured line, front band and redoubt to the night palette (slate / brick) and dims the
+  live layers (`NIGHT_DIM`), and back to day colours at dawn; works in any call order (lines created before or after the `LIGHT` call).
+  New helpers: `NIGHT_AT(t)`, `SIDECOL(side, t)`, `TINT(el, side, attrs, t0)` (register your own coloured SVG element).
+- `SFX("ref:*")` is dropped inside the kit for every caller (`E.decide`, `E.subscribe`, `E.final`, `box`, cards): scenes need no filter.

@@ -58,7 +58,7 @@
       puddles: lay("img", "", `${k}_puddles.png`),
       cool: lay("div", "background:rgb(168,180,198);mix-blend-mode:multiply"),          // rain: darker + cooler
       desat: lay("div", "background:rgb(128,128,128);mix-blend-mode:saturation"),      // rain/snow/fog: less saturated
-      snow: lay("img", "", `${k}_snow.png`),
+      snow: lay("img", "", null),   // yorktown r5: the snow image loads only when W.snow() is called (no 404 for scenes without snow)
       snowLight: lay("div", "background:rgb(46,54,66);mix-blend-mode:screen"),          // snow: cold, lifted light
       fogA: lay("img", "", `${k}_fog.png`),
       fogB: lay("img", "transform-origin:50% 50%", `${k}_fog.png`),
@@ -85,6 +85,7 @@
 
   // ---------- effects ----------
   function add(kind, o) {
+    if (kind === "snow" && !S.L.snow.getAttribute("src")) S.L.snow.src = S.cfg.assets + `${S.cfg.key}_snow.png`;
     if (!S.cfg) throw new Error("W.init first");
     const e = Object.assign({ kind }, DEF[kind], o || {}); e.keys = [];
     if (e.t0 == null) e.t0 = 0;

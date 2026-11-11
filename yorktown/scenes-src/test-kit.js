@@ -34,7 +34,8 @@ if (GD.base === "east") {
   if (GD.var.audit) LABEL_AUDIT([6], { show: true });
 } else {
   const STORMV = GD.var.mode === "storm";
-  LIVING({ clouds: 0.1, light: STORMV ? "night" : "dusk", lightK: STORMV ? 0.8 : 0.45 });
+  LIVING({ clouds: 0.1, light: "dusk", lightK: 0.45 });
+  if (STORMV) LIGHT("night", 0.3, 1.0, 0.8);   // r5: LIGHT switches the lines + works to the night palette and dims the live layers
   dateNow(STORMV ? "16 OCTOBER 1781" : "14 OCTOBER 1781");
   // storm night: frame the narrows (Yorktown <-> Gloucester Point, both ferry landings); 14 Oct: the siege lines
   if (STORMV) camera([[0, ...LYT(37.2385, -76.5060), 2.25], [END, ...LYT(37.2388, -76.5058), 2.3]]);

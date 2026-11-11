@@ -512,8 +512,9 @@ const BN = (() => {
       + `<div style="left:${X - b2 - 11.5}px;top:${L.bar2 - 5.3}px">${end(k + "c", false)}</div><div style="left:${X + b2 - 3.5}px;top:${L.bar2 - 5.3}px">${end(k + "d", true)}</div>`
       + `<div class="bn-name">${name}</div></div>`
       + `<div class="bn-gnd" style="left:-13px;top:-4px"></div><div class="bn-cast" style="left:0;top:-8px"></div>`;
-    const off = { up: [0, -1], right: [58, 38], left: [-58, 38], west: [-92, 18], ne: [64, -6], nw: [-64, -6], sw: [-120, 135], se: [120, 135], east: [92, 18] }[side] || [0, -1];   // yorktown: + nw / sw / se / east stakes
-    if (side !== "up") { w.style.left = `calc(50% + ${off[0]}px)`; w.style.top = off[1] + "px"; }
+    const off = Array.isArray(side) ? side : ({ up: [0, -1], right: [58, 38], left: [-58, 38], west: [-92, 18], ne: [64, -6], nw: [-64, -6], sw: [-120, 135], se: [120, 135], east: [92, 18] }[side] || [0, -1]);   // yorktown: + nw / sw / se / east stakes, or [dx, dy] screen px
+    if (side !== "up") { w.style.left = `calc(50% + ${off[0]}px)`; w.style.top = off[1] + "px";   // r5: a thin guy-rope from the pole foot back to the anchor (the unit box): the banner is pinned to it, standing off the action
+      const L = Math.hypot(off[0], off[1]); if (L > 12) { const rp = document.createElement("div"); rp.style.cssText = `position:absolute;left:0;top:0;width:${L.toFixed(1)}px;height:1.6px;background:linear-gradient(90deg,rgba(60,44,22,.9),rgba(205,180,130,.75));transform-origin:0 50%;transform:rotate(${(Math.atan2(-off[1], -off[0]) * 180 / Math.PI).toFixed(1)}deg);box-shadow:0 1px 1px rgba(0,0,0,.5);pointer-events:none`; w.appendChild(rp); } }
     return w; };
   // the cloth sway: ONE linear tween of the card's --bn-sw (seconds since t) on the scene timeline; CSS turns it into sin() poses
   // (cloth +-0.9 deg + tiny skew, streamers +-2.3 deg and pennant +-2.2 deg out of phase, a sheen drifting across; period 3.6 s).
@@ -978,7 +979,7 @@ window.LivingW = function (cfg = {}) {
       puddles: lay("img", "", `${k}_puddles.png`),
       cool: lay("div", "background:rgb(168,180,198);mix-blend-mode:multiply"),          // rain: darker + cooler
       desat: lay("div", "background:rgb(128,128,128);mix-blend-mode:saturation"),      // rain/snow/fog: less saturated
-      snow: lay("img", "", `${k}_snow.png`),
+      snow: lay("img", "", null),   // yorktown r5: the snow image loads only when W.snow() is called (no 404 for scenes without snow)
       snowLight: lay("div", "background:rgb(46,54,66);mix-blend-mode:screen"),          // snow: cold, lifted light
       fogA: lay("img", "", `${k}_fog.png`),
       fogB: lay("img", "transform-origin:50% 50%", `${k}_fog.png`),
@@ -1005,6 +1006,7 @@ window.LivingW = function (cfg = {}) {
 
   // ---------- effects ----------
   function add(kind, o) {
+    if (kind === "snow" && !S.L.snow.getAttribute("src")) S.L.snow.src = S.cfg.assets + `${S.cfg.key}_snow.png`;
     if (!S.cfg) throw new Error("W.init first");
     const e = Object.assign({ kind }, DEF[kind], o || {}); e.keys = [];
     if (e.t0 == null) e.t0 = 0;
@@ -1119,6 +1121,8 @@ window.LivingW = function (cfg = {}) {
   window.W = W;
 })();
 
+// yorktown r5: synthesized ref:* sounds are not used (STYLE_LOCK 2c item 5): filtered here for every caller (E.decide / E.* / box / cards)
+{ const _sfx = window.SFX; window.SFX = (k, ...r) => (String(k).startsWith("ref:") ? undefined : _sfx(k, ...r)); }
 // ================= YORKTOWN BLOCK (yorktown/kit/js/yt_block.js): 1781 helpers on top of the Style W + 2e + 2f kit =================
 // Data injected by kit/build_scene.py as GD = { base, maps: {name: {zoom, origin_world_px, meters_per_px}}, bake: kit/data/<base>_bake.json,
 //   places: {name: [lat, lon]}, rivers: {name: [[x, y], ...] map px of the base map} }.
@@ -1167,7 +1171,7 @@ const UNIT = (id, side, p, type = "infantry", o = {}) => {
 let LV = null;   // LivingW instance (living())
 const march = (id, pts, t, dur, o = {}) => { along(id, pts, t, dur, o.n || 24);
   if (o.trail !== false) { const side = B.units[id].el.classList.contains("carth") ? "allies" : "british";   // owner r4: the advance trail in the side colour (solid, thin, fades ~2 s after arrival)
-    LINE_LAYERS(pts, [{ col: SIDECOL(side), w: 3.2, op: 0.85 }], t, { dur, until: t + dur + 2.0 }); }
+    LINE_LAYERS(pts, [{ col: SIDECOL(side, t), side, w: 3.2, op: 0.85 }], t, { dur, until: t + dur + 2.0 }); }
   if (o.dust !== false && LV) LV.dust(B.units[id].el, t, t + dur, { opacity: o.dustOp ?? 0.5, size: o.dustSize ?? 60 / CAM_S, every: 0.15 })
     .forEach((d) => { const r = parseFloat(d.style.width) / 2, x = parseFloat(d.style.left) + r, y = parseFloat(d.style.top) + r;   // no dust on a carved town name
       if (LABEL_BOXES(12, r).some(([x0, y0, x1, y1]) => x > x0 && x < x1 && y > y0 && y < y1)) d.remove(); }); };
@@ -1210,9 +1214,14 @@ const BANNER = (key, name, nation, at, t, o = {}) => {
   if (!(t > 0)) now(w);
   if (o.myst != null) { BN.reveal(w, ph, name, o.myst); tl.fromTo(w.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, o.myst);
     tl.to(w.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, o.myst + 1.2); }
-  const rec = { w, side: nation === "gb" ? "rome" : "carth", t: Math.max(0, t), until: o.until ?? 1e9 }; BANNERS.push(rec);
-  FLAGS.filter((f) => f.side === rec.side).forEach((f) => { tl.to(f.el, { autoAlpha: 0, duration: 0.3 }, rec.t); if (rec.until < 1e8) tl.to(f.el, { autoAlpha: 1, duration: 0.4 }, rec.until + 0.2); });
+  const rec = { w, side: nation === "gb" ? "rome" : "carth", t: Math.max(0, t), until: o.until ?? 1e9 }; BANNERS.push(rec); FLAGSYNC(rec.side);
   return w; };
+// one flag per side: a side's nation flags are hidden while ANY banner of that side is up (r5: windows merged; a flag only comes back when the
+//   last banner of its side has left). Rebuilt on every BANNER / SIDEFLAG call, so the order of the calls does not matter.
+const FLAGSYNC = (side) => { const W = BANNERS.filter((b) => b.side === side).map((b) => [b.t, b.until]).sort((a, b) => a[0] - b[0]), M = [];
+  W.forEach(([a, b]) => { const L = M[M.length - 1]; if (L && a <= L[1] + 0.3) L[1] = Math.max(L[1], b); else M.push([a, b]); });
+  FLAGS.filter((f) => f.side === side).forEach((f) => { (f.tws || []).forEach((tw) => tw.kill()); f.tws = [];
+    M.forEach(([a, b]) => { f.tws.push(tl.to(f.el, { autoAlpha: 0, duration: 0.3 }, a)); if (b < 1e8) f.tws.push(tl.to(f.el, { autoAlpha: 1, duration: 0.4 }, b + 0.2)); }); }); };
 // ---------- the two nation flags (48 px behind each side's lines; hidden while that side has a banner up: one flag per side) ----------
 const FLAGS = [];
 // SIDEFLAG(nation, p | unitId, t, until): p = [x, y] -> the free-standing 48 px nation flag (as before); unitId -> a pole flag planted at that
@@ -1224,14 +1233,21 @@ const SIDEFLAG = (nation, p, t = 0, until = null) => { let el;
       + `<img src="${BN.flagFor(nation)}" alt="" style="position:absolute;left:1.5px;top:1px;width:${fw}px;height:${fh}px;border:1px solid #1a1712;box-shadow:0 2px 4px rgba(0,0,0,.55)">`;
     host.appendChild(el); host.style.overflow = "visible"; gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.to(el, { autoAlpha: 1, duration: 0.4 }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, until); }
   else { el = flagS(BN.flagFor(nation), "", p[0], p[1], t > 0 ? t : 0, until); if (!(t > 0)) now(el); }
-  const rec = { el, side: nation === "gb" ? "rome" : "carth" }; FLAGS.push(rec);
-  BANNERS.filter((b) => b.side === rec.side).forEach((b) => { tl.to(el, { autoAlpha: 0, duration: 0.3 }, b.t); }); return el; };
+  const rec = { el, side: nation === "gb" ? "rome" : "carth" }; FLAGS.push(rec); FLAGSYNC(rec.side); return el; };
 
 // ---------- 1781 siege works (live, drawn on their spoken word) ----------
 // ---------- front + siege lines in the SIDE COLOUR (owner 2026-11-11: "the front lines would be in colours"; locked glow: 15 px on screen, 0.47) ----------
 // SIDECOL(side) -> allied #2c57b7 / British #bc2528 by day; slate #4a6a9a / brick #a8503c at night (LIVING({ light: "night" }) or NIGHT_DIM at 0).
 let YT_NIGHT = false;
-const SIDECOL = (side) => SIDEK(side) === "carth" ? (YT_NIGHT ? "#4a6a9a" : "#2c57b7") : (YT_NIGHT ? "#a8503c" : "#bc2528");
+const NIGHT_SCHED = [];   // [t, isNight] from LIGHT() calls (r5): every side-coloured line / work re-tints at each switch, whatever the call order
+const PAL = (side, night) => SIDEK(side) === "carth" ? (night ? "#4a6a9a" : "#2c57b7") : (night ? "#a8503c" : "#bc2528");
+const NIGHT_AT = (t) => { let n = YT_NIGHT; NIGHT_SCHED.filter(([ts]) => ts <= t).sort((a, b) => a[0] - b[0]).forEach(([, v]) => { n = v; }); return n; };
+const SIDECOL = (side, t) => PAL(side, t == null ? YT_NIGHT : NIGHT_AT(t));
+const TINT_REG = [];   // [el, side, attrs, t0, takenAt]
+const TINT = (el, side, attrs, t0 = 0, o = {}) => { const r = { el, side, attrs, t0, taken: o.taken ?? null }; TINT_REG.push(r);
+  NIGHT_SCHED.filter(([ts]) => ts > t0).forEach(([ts, v]) => TINT_AT(r, ts, v)); return r; };
+const TINT_AT = (r, ts, night, dur = 2.0) => { const sd = r.taken != null && ts >= r.taken ? "allies" : r.side, c = PAL(sd, night), a = {}; r.attrs.forEach((k) => { a[k] = c; });
+  tl.to(r.el, { attr: a, duration: dur, ease: "sine.inOut" }, ts); };
 let __LID = 0;
 // LINE_LAYERS(pts, layers, t, o): draws stroke layers {col, w, op, blur, off} (w / off in SCREEN px, constant at every camera scale; off = normal
 //   offset, + = right of travel) along pts (map px), drawn on over o.dur from t (or present at 0), o.until fades it. Returns the <g>.
@@ -1240,7 +1256,7 @@ const LINE_LAYERS = (pts, layers, t, o = {}) => { const g = document.createEleme
   let defs = OVL.querySelector("defs"); if (!defs) { defs = document.createElementNS(NSs, "defs"); OVL.insertBefore(defs, OVL.firstChild); } defs.appendChild(fl);
   const off = (d) => pts.map((p, i) => { const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
     return [p[0] - (dy / L) * d, p[1] + (dx / L) * d]; });
-  const ps = layers.map((L) => { const p = document.createElementNS(NSs, "path");
+  const ps = layers.map((L) => { const p = document.createElementNS(NSs, "path"); if (L.side) TINT(p, L.side, ["stroke"], t);
     Object.entries({ fill: "none", stroke: L.col, opacity: L.op, "stroke-linecap": "round", "stroke-linejoin": "round", pathLength: 1 }).forEach(([k, v]) => p.setAttribute(k, v));
     if (L.blur) p.setAttribute("filter", `url(#${id})`); g.appendChild(p); return [p, L]; });
   OVL.appendChild(g);
@@ -1254,27 +1270,27 @@ const SIDE_OF = (pts, e) => { const i = Math.floor((pts.length - 1) / 2), a = pt
 // FRONT(pts, t, o): the REAL front where the two sides face each other: the locked two-colour glowing band (15 px, glow 0.47), red on the British
 //   side, blue on the allied side. o.enemy = a point on the British side (map px), or o.red = "left" | "right" (of travel). o.ink: thin trench core.
 const FRONT = (pts, t, o = {}) => { const r = o.red ? (o.red === "right" ? 1 : -1) : SIDE_OF(pts, o.enemy || PLACE("yorktown")), W = 15, gl = o.glow ?? 0.47;
-  const R = SIDECOL("british"), Bl = SIDECOL("allies");
-  return LINE_LAYERS(pts, [{ col: R, w: W, op: gl, blur: true, off: r * W * 0.55 }, { col: Bl, w: W, op: gl, blur: true, off: -r * W * 0.55 },
-    { col: "rgba(20,16,10,0.55)", w: W * 0.3, op: 1 }, { col: R, w: W * 0.16, op: 1, off: r * W * 0.09 }, { col: Bl, w: W * 0.16, op: 1, off: -r * W * 0.09 },
+  const R = SIDECOL("british", t), Bl = SIDECOL("allies", t), rs = "british", bs = "allies";
+  return LINE_LAYERS(pts, [{ col: R, side: rs, w: W, op: gl, blur: true, off: r * W * 0.55 }, { col: Bl, side: bs, w: W, op: gl, blur: true, off: -r * W * 0.55 },
+    { col: "rgba(20,16,10,0.55)", w: W * 0.3, op: 1 }, { col: R, side: rs, w: W * 0.16, op: 1, off: r * W * 0.09 }, { col: Bl, side: bs, w: W * 0.16, op: 1, off: -r * W * 0.09 },
     ...(o.ink !== false ? [{ col: "#1e180c", w: 1.3, op: 0.85 }] : [])], t, o); };
 // TRENCH(pts, t, o): a trench / parallel / line of works in the SIDE COLOUR (o.side "allies" | "british"; default from o.face: +1 = British
 //   line, else allies): coloured glow (15 px, 0.47) + coloured line + thin dark ink core + pale parapet toward the enemy (still reads as a trench).
 //   o.front = a point on the enemy side -> this trench IS the contact line: drawn as the two-colour FRONT band (+ ink core). o.dur draw-on, o.until.
 const TRENCH = (pts, t, o = {}) => { const side = o.side || (o.face === 1 ? "british" : "allies");
   if (o.front) return FRONT(pts, t, { ...o, enemy: o.front });
-  const c = SIDECOL(side), face = SIDE_OF(pts, o.enemy || (SIDEK(side) === "carth" ? PLACE("yorktown") : PLACE("first_parallel")));
-  return LINE_LAYERS(pts, [{ col: c, w: 15, op: o.glow ?? 0.47, blur: true }, { col: c, w: 4.2, op: 0.95 }, { col: "#1e180c", w: 1.6, op: 0.9 },
+  const c = SIDECOL(side, t), face = SIDE_OF(pts, o.enemy || (SIDEK(side) === "carth" ? PLACE("yorktown") : PLACE("first_parallel")));
+  return LINE_LAYERS(pts, [{ col: c, side, w: 15, op: o.glow ?? 0.47, blur: true }, { col: c, side, w: 4.2, op: 0.95 }, { col: "#1e180c", w: 1.6, op: 0.9 },
     { col: "#e2d3a0", w: 1.1, op: 0.85, off: face * 2.8 }], t, o); };
 // REDOUBT(id, p, t, o): a closed earthwork (pentagonal parapet + ditch), constant ~o.px screen px (default 30); o.side colours its garrison edge
 //   (rome = British held); REDOUBT_TAKEN(el, t) flips it to the allies (blue edge) on the spoken capture word
-const REDOUBT = (id, p, t = 0, o = {}) => { const s = o.px || 40, col = SIDECOL(o.side || "rome");
+const REDOUBT = (id, p, t = 0, o = {}) => { const s = o.px || 40, col = SIDECOL(o.side || "rome", t);
   const el = pinS(GG.pin(`<svg width="${s}" height="${s}" viewBox="-20 -20 40 40" class="rd-svg" style="display:block;overflow:visible;transform:rotate(${o.rot || 0}deg);filter:drop-shadow(0 0 5px ${col}) drop-shadow(0 1px 1.5px rgba(0,0,0,.55))">
     <path d="M0 -16 L15 -5 L10 14 L-10 14 L-15 -5 Z" fill="none" stroke="#2a2312" stroke-width="6.5" opacity=".55"/>
     <path d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="rgba(160,140,90,.55)" stroke="#d6c693" stroke-width="3.2"/>
     <path class="rd-edge" d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="${col}" fill-opacity=".75" stroke="${col}" stroke-width="2.8"/></svg>`, p[0], p[1], { t: t > 0 ? t : null }));
-  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.dataset.rid = id; return el; };
-const REDOUBT_TAKEN = (el, t) => { const c = SIDECOL("allies"); tl.set(el.querySelector(".rd-edge"), { attr: { stroke: c, fill: c } }, t); tl.set(el.querySelector(".rd-svg"), { filter: `drop-shadow(0 0 5px ${c}) drop-shadow(0 1px 1.5px rgba(0,0,0,.55))` }, t); };
+  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.dataset.rid = id; el.__tint = TINT(el.querySelector(".rd-edge"), o.side || "rome", ["stroke", "fill"], t); return el; };
+const REDOUBT_TAKEN = (el, t) => { const c = SIDECOL("allies", t); if (el.__tint) { el.__tint.taken = t; } tl.set(el.querySelector(".rd-edge"), { attr: { stroke: c, fill: c } }, t); tl.set(el.querySelector(".rd-svg"), { filter: `drop-shadow(0 0 5px ${c}) drop-shadow(0 1px 1.5px rgba(0,0,0,.55))` }, t); };
 
 // ---------- territory (STYLE_LOCK 2d.3 / 3b) ----------
 // FORM 1: HATCH(polys, side, t, o) ink line hatching ONLY on the ground taken, in the TAKER's colour (allied gains = blue), ~3 s then dissolves.
@@ -1303,7 +1319,11 @@ const LIVING = (o = {}) => { LV = LivingW({ tl, world: WORLD, before: OVL }); LV
 //   but reads as night (k = brightness, 0.72 default); NIGHT_DIM(t, 1) brings them back. LIVING({ light: "night" }) calls it at 0.
 const NIGHT_DIM = (t, k = 0.72, dur = 1.5) => ["pins", "overlay"].forEach((id) => { const el = document.getElementById(id);
   if (t > 0) tl.to(el, { filter: `brightness(${k}) saturate(${0.6 + 0.4 * k})`, duration: dur }, t); else gsap.set(el, { filter: `brightness(${k}) saturate(${0.6 + 0.4 * k})` }); });
-const LIGHT = (preset, t, dur = 2.0, k = 0.45) => LV && LV.light(preset, t, { dur, k });   // k 0.6: the kit presets at full strength drown the map in brown
+// r5: LIGHT also switches the side-coloured lines + works to the night palette (and back at dawn) and dims / restores the live layers
+const LIGHT = (preset, t, dur = 2.0, k = 0.45) => { const night = preset === "night", was = NIGHT_AT(t); NIGHT_SCHED.push([t, night]);
+  if (night !== was) { TINT_REG.forEach((r) => TINT_AT(r, t, night, dur)); NIGHT_DIM(t, night ? 0.72 : 1, dur); }
+  return LIGHT0(preset, t, dur, k); };
+const LIGHT0 = (preset, t, dur = 2.0, k = 0.45) => LV && LV.light(preset, t, { dur, k });   // k 0.6: the kit presets at full strength drown the map in brown
 // ---------- weather (2f.6): ONLY where FACT_NOTES confirm (6-7 Oct night rain; 16-17 Oct storm from ~midnight). Visual only, no sounds ----------
 let __WX = false;
 const WXI = () => { if (!__WX) { W.init({ tl, key: YT.BASE + "_m", assets: "assets/wx/" }); __WX = true; } };
