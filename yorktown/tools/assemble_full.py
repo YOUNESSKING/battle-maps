@@ -5,7 +5,7 @@ usage (from goosegreen/): python3 tools/assemble_full.py [--preview]
 - Archive paragraphs use the images listed in archive.json {"<para index>": ["archive_x.jpg", ...]} from
   assets/media/; images split the paragraph evenly, each with a slow zoom. Missing -> placeholder card.
 - Music: assets/media/music.wav (optional), ducked under the voice with a sidechain. Loudness -14 LUFS.
-Writes build/grant.mp4 (1080p master) or build/grant-720p.mp4 (--preview) + build/chapters.txt.
+Writes build/yorktown.mp4 (1080p master) or build/yorktown-720p.mp4 (--preview) + build/chapters.txt.
 """
 import json, os, subprocess, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
@@ -23,23 +23,21 @@ key = lambda p: p["tag"].split("|")[0].replace("MAP:", "").replace("ARCHIVE:", "
 idx = {key(p): i for i, p in enumerate(paras)}
 SCENES = {  # scene name -> (first tag, last tag)
     "hook-a": ("hook-1", "hook-2"), "hook-b": ("hook-3", "hook-4"),
-    "m1a": ("m1-1", "m1-1"), "m1b": ("m1-2", "m1-2"), "m1c": ("m1-3", "m1-4"), "m1d": ("m1-5", "m1-6"),
-    "m1e": ("m1-7", "m1-8"), "m1f": ("m1-9", "move1-sub"),
-    "m2a": ("m2-1", "m2-2"), "m2b": ("m2-3", "m2-3"), "m2c": ("m2-4", "m2-4"), "m2d": ("m2-5", "m2-6"),
-    "m2e": ("m2-7", "m2-7"), "m2f": ("m2-8", "m2-10"), "m2g": ("m2-11", "m2-12"),
-    "m3a": ("m3-1", "m3-2"), "m3b": ("m3-3", "m3-4"), "m3c": ("m3-5", "m3-5"), "m3d": ("m3-6", "m3-7"),
-    "ending": ("end-1", "end-2"),
+    "p1a": ("p1-1", "p1-2"), "p1b": ("p1-3", "p1-8"),
+    "p2a": ("sub", "p2-7"), "p2b": ("p2-8", "p2-8"),
+    "p3a": ("p3-1", "p3-3"), "p3b": ("p3-4", "p3-9"), "p3c": ("p3-10", "p3-13"),
+    "p3d": ("p3-14", "end-2"),
 }
-CHAPTERS = [("hook-1", "Intro: Fort Donelson and the Man Nobody Knew"), ("m1-1", "Move 1: Fort Henry and Fort Donelson (Feb 1862)"),
-            ("m2-1", "Move 2: The Vicksburg Campaign (1863)"), ("m3-1", "Move 3: Across the James River (Jun 1864)"),
+CHAPTERS = [("hook-1", "Intro: The Safe Harbor"), ("p1-1", "Part 1: The March (Aug-Sep 1781)"),
+            ("p2-1", "Part 2: The Battle of the Capes (5 Sep 1781)"), ("p3-1", "Part 3: The Siege (28 Sep - 19 Oct 1781)"),
             ("end-1", "Legacy")]
 ARCH_FILE = os.environ.get("ARCHIVE", "archive.json")  # FRONTLINES test: build/frontlines/archive_frontlines.json
 ARCH = json.load(open(ARCH_FILE)) if os.path.exists(ARCH_FILE) else {}
-NAME = os.environ.get("NAME", "grant")  # output name: build/<NAME>.mp4 (+ its own video-only track and segment folder)
+NAME = os.environ.get("NAME", "yorktown")  # output name: build/<NAME>.mp4 (+ its own video-only track and segment folder)
 FLY = json.loads(os.environ.get("FLY", "{}"))  # {"move1-1": "scenes/fly1/renders/fly1.mp4", ...}: 3D flyover for the first 9.5 s, 1 s dissolve into the map
 starts = [p["start"] for p in paras] + [total]
 enc = ["-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an"]
-SEG = "build/seg" if NAME == "grant" else f"build/seg_{NAME}"
+SEG = "build/seg" if NAME == "yorktown" else f"build/seg_{NAME}"
 os.makedirs(SEG, exist_ok=True)
 FONT = "tools/oswald-latin-700-normal.ttf"
 
@@ -77,7 +75,7 @@ def still(src, dur, out, n):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-loop", "1", "-i", src, "-vf", vf, "-frames:v", str(frames), *enc, out], check=True)
 
 
-VONLY = f"build/video_only_{H}p.mp4" if NAME == "grant" else f"build/{NAME}_video_only_{H}p.mp4"
+VONLY = f"build/video_only_{H}p.mp4" if NAME == "yorktown" else f"build/{NAME}_video_only_{H}p.mp4"
 ARCH_EVENTS = []   # (absolute time, duration, shot) of archive shots: paper sound on headline cards, projector loop under framed shots
 INSERTS = json.load(open('archive_inserts.json')) if os.path.exists('archive_inserts.json') else {}
 segs, i = [], 0
@@ -137,11 +135,11 @@ if not AUDIO_ONLY:
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
 # STYLE_LOCK 1c rule 4 (owner 2026-11-04 review): artillery shots/booms only where the guns are clearly visible; in the other scenes the
 # gun flashes are tiny or off screen, so their fire/impact sounds are dropped (musketry 'mg', counters, hits stay).
-_VIS_ARTY = {"m1a", "m1c", "m2b", "m2d", "hook-b"}
+_VIS_ARTY = {"hook-b", "p2a", "p3b", "p3c"}  # Yorktown: scenes whose guns/broadsides are on screen (agents fire only visible guns)
 _c = json.load(open("build/sfx_cues.json")); _k = [c for c in _c if c[1] not in ("fire", "impact") or c[2] in _VIS_ARTY]
 json.dump(_k, open("build/sfx_cues.json", "w")); print("artillery cues kept", sum(1 for c in _k if c[1] in ("fire", "impact")), "of", sum(1 for c in _c if c[1] in ("fire", "impact")))
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
-subprocess.run(["python3", "tools/ref_sounds.py"], check=True)
+if os.environ.get("REF_SOUNDS") == "1": subprocess.run(["python3", "tools/ref_sounds.py"], check=True)  # never set (STYLE_LOCK 2c item 5)
 if AUDIO_ONLY and os.path.exists("build/arch_events.json"): ARCH_EVENTS = [tuple(e) for e in json.load(open("build/arch_events.json"))]
 elif not AUDIO_ONLY: json.dump([list(e) for e in ARCH_EVENTS], open("build/arch_events.json", "w"))
 import numpy as np, soundfile as sf

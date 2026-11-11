@@ -1,0 +1,61 @@
+{
+ "4": [
+  {
+   "photo": "assets/media/headline_charleston.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 4.0
+  },
+  {
+   "photo": "assets/media/archw_lincoln.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 4.5,
+   "depth": true,
+   "frame": true,
+   "label": "MAJ. GEN. BENJAMIN LINCOLN"
+  },
+  {
+   "photo": "assets/archive/trumbull_surrender.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 5.0,
+   "depth": true,
+   "frame": true,
+   "label": "SURRENDER: THE HONORS OF WAR"
+  },
+  {
+   "photo": "assets/media/archw_cornwallis.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 5.0,
+   "depth": true,
+   "frame": true,
+   "label": "LT. GEN. CHARLES, EARL CORNWALLIS"
+  },
+  {
+   "photo": "assets/media/archw_clinton.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 6.8,
+   "depth": true,
+   "frame": true,
+   "label": "GEN. SIR HENRY CLINTON"
+  }
+ ]
+}

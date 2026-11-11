@@ -1,0 +1,51 @@
+"""Builds yorktown/kit/yt_kit.js = the Grant banner kit (kit/js/vx_bc_kit.src.js, a COPY of grant/tools/vx_bc_kit.js) patched for 1781
+(allies blue + US / French flags, British red + the 1606 Union flag) + LivingW (living.js) + riverLabel (river_label.js) + weather.js
++ the Yorktown block (kit/js/yt_block.js). Run after editing any of those: python3 kit/make_kit.py"""
+import os
+HERE = os.path.dirname(os.path.abspath(__file__)); J = f"{HERE}/js"
+k = open(f"{J}/vx_bc_kit.src.js").read()
+def rep(a, b, n=1):
+    global k
+    assert k.count(a) == n, (a[:60], k.count(a)); k = k.replace(a, b)
+rep("// TEST COPY for s12d_bc only (make_kit_bc.py): vx_kit.js + banner.js (units.js dropped: owner)\n", "")
+rep('// SIDES (grant/SCENES.md): Union / Grant = BLUE "carth" + US 34 stars; Confederates = RED "rome" + the First National (13 stars).',
+    '// SIDES (yorktown/MAP_BRIEF.md): Allies (Americans AND French) = BLUE "carth" + US 13-star / French royal flag; British + Germans = RED "rome" + the 1606 Union flag.')
+rep('const FL = { us: "assets/media/us34_flag.png", cs: "assets/media/csa1_13_flag.png" };   // 34-star US until 31 May 1863 (all of move 2a-2d is Apr 1863)',
+    'const FL = { us: "assets/media/us_flag_13star.png", fr: "assets/media/fr_royal_flag.png", gb: "assets/media/gb_flag_1606.png", cs: "assets/media/gb_flag_1606.png" };')
+rep('flag: o.flag || (side === "carth" ? FL.us : FL.cs)', 'flag: o.flag || (side === "carth" ? FL.us : FL.gb)')
+rep('[["#2e5cb2", "#2c57b7", "UNION"], ["#be3a2a", "#bc2528", "CONFEDERACY"]]', '[["#2e5cb2", "#2c57b7", "ALLIES"], ["#be3a2a", "#bc2528", "BRITISH"]]')
+rep('flag: side === "carth" ? FL.us : FL.cs, side, corner', 'flag: side === "carth" ? FL.us : FL.gb, side, corner')
+rep('const isUnion = (flag) => !/csa|cs_|conf|_cs|cs\\d/i.test(String(flag));', 'const isUnion = (flag) => !/gb_|_gb|brit|csa/i.test(String(flag));   // 1781: blue = allies (US / French pennant), red = British')
+rep('const flagFor = (side, iso, base = "assets/media/") => base + (side === "cs" ? "csa1_13_flag.png" : String(iso) >= "1863-07-04" ? "us35_flag.png" : "us34_flag.png");',
+    'const flagFor = (side, iso, base = "assets/media/") => base + ({ gb: "gb_flag_1606.png", cs: "gb_flag_1606.png", fr: "fr_royal_flag.png" }[side] || "us_flag_13star.png");')
+rep('const off = { up: [0, -1], right: [58, 38], left: [-58, 38], west: [-92, 18], ne: [64, -6] }[side] || [0, -1];',
+    'const off = Array.isArray(side) ? side : ({ up: [0, -1], right: [58, 38], left: [-58, 38], west: [-92, 18], ne: [64, -6], nw: [-64, -6], sw: [-120, 135], se: [120, 135], east: [92, 18] }[side] || [0, -1]);   // yorktown: + nw / sw / se / east stakes, or [dx, dy] screen px')
+rep('if (side !== "up") { w.style.left = `calc(50% + ${off[0]}px)`; w.style.top = off[1] + "px"; }',
+    'if (side !== "up") { w.style.left = `calc(50% + ${off[0]}px)`; w.style.top = off[1] + "px";   // r5: a thin guy-rope from the pole foot back to the anchor (the unit box): the banner is pinned to it, standing off the action\n      const L = Math.hypot(off[0], off[1]); if (L > 12) { const rp = document.createElement("div"); rp.style.cssText = `position:absolute;left:0;top:0;width:${L.toFixed(1)}px;height:1.6px;background:linear-gradient(90deg,rgba(60,44,22,.9),rgba(205,180,130,.75));transform-origin:0 50%;transform:rotate(${(Math.atan2(-off[1], -off[0]) * 180 / Math.PI).toFixed(1)}deg);box-shadow:0 1px 1px rgba(0,0,0,.5);pointer-events:none`; w.appendChild(rp); } }')
+rep('cs: { cloth: "#8c2520", clothHi: "#b23a30", clothLo: "#55130f", str: "#8f8b80", strLo: "#55524a", pen: "#7a201c" },',
+    'cs: { cloth: "#a82a20", clothHi: "#c8402f", clothLo: "#5e140e", str: "#a12a21", strLo: "#5e140e", pen: "#8c221b" },   // yorktown r2: clear British red cloth + red streamers')
+rep('fr: "fr_royal_flag.png" }[side]', 'fr: "fr_royal_pennant.png" }[side]')
+rep('fr: "assets/media/fr_royal_flag.png", gb:', 'fr: "assets/media/fr_royal_pennant.png", gb:')
+rep('''  apply();
+  for (let i = 1; i < keys.length; i++) { const [t0] = keys[i - 1], [t1, cx, cy, s] = keys[i];
+    tl.to(cam, { cx, cy, s, duration: Math.max(t1 - t0, 0.01), ease: keys[i][4] || "sine.inOut", onUpdate: apply }, t0); }
+  tl.call(apply, null, 0);''', '''  apply();
+  // yorktown r3: ONE timeline-driven path (a pure function of the time) instead of chained tweens of the same object, so any seek shows the right frame
+  CAM_KEYS = keys; const P = { u: 0 }, go = () => { const [x, y, s] = CAM_AT(P.u); cam.cx = x; cam.cy = y; cam.s = s; apply(); };
+  tl.fromTo(P, { u: 0 }, { u: END, duration: END, ease: "none", onUpdate: go, immediateRender: false }, 0);
+  tl.call(go, null, 0);''')
+rep('const CAM = { cx: 1440, cy: 810, s: 1 };', '''const CAM = { cx: 1440, cy: 810, s: 1 };
+let CAM_KEYS = [[0, 1440, 810, 1]];
+// CAM_AT(t) -> [cx, cy, s] of the camera path at time t (pure; keys [t, x, y, s, ease] as camera() takes them)
+const CAM_AT = (t) => { const K = CAM_KEYS; if (t <= K[0][0]) return K[0].slice(1, 4);
+  for (let i = 1; i < K.length; i++) { const [t0, x0, y0, s0] = K[i - 1], [t1, x1, y1, s1] = K[i];
+    if (t <= t1) { const e = gsap.parseEase(K[i][4] || "sine.inOut")(Math.min(1, Math.max(0, (t - t0) / Math.max(t1 - t0, 0.01)))); return [x0 + (x1 - x0) * e, y0 + (y1 - y0) * e, s0 + (s1 - s0) * e]; } }
+  return K[K.length - 1].slice(1, 4); };''')
+rep('const { at } = B;', 'const { at } = B;   // replaced by build_scene.py with the anchor-corrected at (measured sentence starts)')
+out = ["// YORKTOWN MAP KIT (generated by yorktown/kit/make_kit.py; edit kit/js/*.js, never this file). README: yorktown/kit/README.md\n", k,
+       "\n// ================= LIVING MAP (research/style_tests/more_life/living/living.js, copy) =================\n", open(f"{J}/living.js").read(),
+       "\n// ================= RIVER NAMES (research/style_tests/more_life/living/river_label.js, copy) =================\n", open(f"{J}/river_label.js").read(),
+       "\n// ================= WEATHER (research/style_tests/more_life/weather/weather.js, copy; visual only) =================\n", open(f"{J}/weather.js").read(),
+       "\n", open(f"{J}/yt_block.js").read()]
+open(f"{HERE}/yt_kit.js", "w").write("".join(out).replace("</script>", "<\\/script>"))   # an inline </script> (even in a comment) ends the page script
+print("yt_kit.js", sum(len(x) for x in out) // 1024, "KB")
