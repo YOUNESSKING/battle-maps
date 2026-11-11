@@ -14,7 +14,9 @@ os.makedirs(B, exist_ok=True)
 st = json.loads(open(f"scenes/{SC}/timing.js").read().split("=", 1)[1].strip().rstrip(";"))
 A0 = st["abs_start"] + T0                       # absolute time in the test voice / music
 VID = f"{B}/small_video.mp4"
-subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{T0:.3f}", "-i", f"scenes/{SC}/renders/{SC}.mp4", "-t", f"{D:.3f}",
+PRE = f"scenes/{SC}/renders/{SC}_{T0:g}_{T1:g}.mp4"   # rendered with hyperframes render --start T0 --end T1 (clip starts at 0)
+SRC = ["-i", PRE] if os.path.exists(PRE) else ["-ss", f"{T0:.3f}", "-i", f"scenes/{SC}/renders/{SC}.mp4"]
+subprocess.run(["ffmpeg", "-v", "error", "-y", *SRC, "-t", f"{D:.3f}",
                 "-vf", "scale=1920:1080,fps=30", "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-an", VID], check=True)
 CHROME = glob.glob("/root/.cache/hyperframes/chrome/chrome-headless-shell/*/chrome-headless-shell-linux64/chrome-headless-shell")[0]
 dom = subprocess.run([CHROME, "--headless", "--no-sandbox", "--disable-gpu", "--allow-file-access-from-files", "--virtual-time-budget=3000",
