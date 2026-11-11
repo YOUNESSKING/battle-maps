@@ -1,0 +1,19 @@
+{
+ "name": "chesapeake",
+ "center": [
+  37.1,
+  -76.1
+ ],
+ "zoom": 10,
+ "origin_world_px": [
+  74217,
+  101133
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 121.93,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
