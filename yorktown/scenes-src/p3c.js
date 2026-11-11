@@ -50,7 +50,7 @@ const camAt = (t) => { let c = SEGS[0].a;
     c = [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
   return c; };
 const C0 = [1462, 852, 1.9], CSO = [1405, 868, 2.3], CSO2 = [1410, 872, 2.32], CN = [1452, 600, 2.2], CN2 = [1458, 610, 2.24],
-  CB = [1405, 800, 2.4], CB2 = [1400, 806, 2.45], CM = [1500, 930, 1.6], CL = [1390, 960, 1.75], CSW = [1378, 1010, 1.95], CE = [1392, 980, 1.72], CE2 = [1388, 985, 1.76];
+  CB = [1405, 800, 2.4], CB2 = [1400, 806, 2.45], CM = [1500, 930, 1.6], CL = [1385, 975, 1.7], CSW = [1380, 1060, 1.95], CE = [1388, 1000, 1.7], CE2 = [1385, 1005, 1.74];
 seg(0, T_BDAWN - 0.3, C0, [1455, 856, 1.95]);
 seg(T_BDAWN - 0.2, T_BDAWN + 1.8, [1455, 856, 1.95], CSO);
 seg(T_BDAWN + 1.9, T_NIGHT - 0.2, CSO, CSO2);
@@ -162,14 +162,14 @@ UNITF("gm", "allies", [1532, 470], "infantry", { ech: "X", t: T_MIL });
 const FL_GC = SIDEFLAG("fr", "gc", T_FRENCH + 0.4);
 const ARB = ARWS([[1452, 598], [1454, 540], [1452, 480], [1449, 405]], T_NORTH, 1.4, true);
 // the first boats cross and land a red box at Gloucester Point
-const WV1 = [[[1414, 700], [1440, 622]], [[1426, 708], [1452, 628]], [[1404, 694], [1428, 616]]].map((pts, k) => RBOAT(pts, T_FIRST - 0.4 + k * 0.35, 2.3, { until: T_MORN + 0.2 }));
+const WV1 = [[[1394, 690], [1424, 612]], [[1416, 704], [1446, 624]], [[1438, 714], [1468, 632]]].map((pts, k) => RBOAT(pts, T_FIRST - 0.4 + k * 0.5, 2.3, { until: T_MORN + 0.2 }));
 UNITF("gw", "british", [1448, 580], "infantry", { ech: "X", t: T_FIRST + 2.0 });
 // the second wave pulls out; "around midnight" the storm sweeps down the river and scatters it (BOAT drift = blown downstream)
 STORM(T_MID - 0.1, T_MORN + 0.3);
 NIGHT_DIM(T_MID, 0.7, 1.2);
-const WV2 = [[[1412, 706], [1430, 668], [40, 26]], [[1424, 712], [1444, 676], [58, 34]], [[1402, 700], [1416, 664], [30, 40]], [[1430, 716], [1452, 688], [70, 22]]]
+const WV2 = [[[1398, 696], [1414, 656], [44, 18]], [[1418, 708], [1434, 668], [30, 44]], [[1436, 718], [1452, 678], [72, 30]], [[1450, 726], [1466, 688], [24, 62]]]
   .map(([a, b, dr], k) => RBOAT([a, b], T_MID - 0.8 + k * 0.3, T_SWEPT - T_MID + 0.4, { drift: dr, until: T_MORN + 0.2 }));
-[[34, 18, -40], [22, 30, 35], [44, 12, -70], [28, 36, 60]].forEach(([dx, dy, rot], k) => { tl.to(WV2[k], { left: `+=${dx}`, top: `+=${dy}`, duration: 1.4, ease: "sine.inOut" }, T_SCAT - 0.1 + k * 0.1);
+[[30, 4, -40], [6, 34, 35], [52, 16, -70], [-10, 30, 60]].forEach(([dx, dy, rot], k) => { tl.to(WV2[k], { left: `+=${dx}`, top: `+=${dy}`, duration: 1.4, ease: "sine.inOut" }, T_SCAT - 0.1 + k * 0.1);
   tl.to(WV2[k].querySelector("svg"), { rotation: `+=${rot}`, duration: 1.4, ease: "sine.inOut" }, T_SCAT - 0.1 + k * 0.1); });
 // the escape arrow breaks
 [ARA, ARB].forEach((g) => tl.to(g, { x: 6, duration: 0.07, yoyo: true, repeat: 5 }, T_SCAT));
@@ -190,19 +190,19 @@ const BAR = [["fg2", [1352, 772]], ["aa", [1446, 806]], ["ag1", [1410, 770]], ["
 const BARRAGE_T = [];
 for (let t = T_17M + 0.3, k = 0; t < T_STOP - 1.3 && k < 40; t += 2.15, k++) { const [g, to] = BAR[k % BAR.length]; shoot(GUN[g], to, t, { unit: g, r: 6 }); BARRAGE_T.push([to, t + 1.05]); }
 // "four years to the day after the British surrender at Saratoga"
-const C4 = CARD("TO THE DAY", "4 YEARS", "#c9b48a", T_4Y + 0.05, T_DRUM + 2.2, { size: 70 });
+const C4 = CARD("TO THE DAY", "4 YEARS", "#c9b48a", T_4Y + 0.05, T_DRUM + 2.2, { size: 70, css: "right:70px;top:170px;transform-origin:50% 30%;" });
 ADDLINE(C4, "AFTER SARATOGA", T_SARA + 0.05, 46);
 // the drummer: a lone red figure box climbs onto the hornwork parapet and beats for a parley (rings = the drum beat, no sound)
-const DRUMMER = `<div style="width:24px;height:24px;margin:-12px 0 0 -12px;background:#bc2528;border:1.5px solid #f3eee2;box-shadow:0 2px 4px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="-8 -8 16 16"><ellipse cx="0" cy="2" rx="5.5" ry="4" fill="#f3eee2"/><path d="M-6 -7 L-1 -1 M6 -7 L1 -1" stroke="#f3eee2" stroke-width="1.4" stroke-linecap="round"/></svg></div>`;
+const DRUMMER = `<div style="width:34px;height:34px;margin:-17px 0 0 -17px;background:#bc2528;border:2px solid #f3eee2;box-shadow:0 2px 4px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="-8 -8 16 16"><ellipse cx="0" cy="2" rx="5.5" ry="4" fill="#f3eee2"/><path d="M-6 -7 L-1 -1 M6 -7 L1 -1" stroke="#f3eee2" stroke-width="1.4" stroke-linecap="round"/></svg></div>`;
 const DR = pinS(GG.pin(DRUMMER, 1378, 822, { t: T_DRUM, pop: true }));
 tl.to(DR, { top: 834, duration: 0.8, ease: "power2.out" }, T_CLIMB);
-for (let t = T_PARLEY; t < T_STOP + 0.4; t += 0.62) { const r = pinS(GG.pin(`<div style="width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px solid rgba(255,244,214,.9)"></div>`, 1378, 834, {}));
+for (let t = T_PARLEY; t < T_STOP + 0.4; t += 0.62) { const r = pinS(GG.pin(`<div style="width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2.5px solid rgba(255,244,214,.9)"></div>`, 1378, 834, {}));
   gsap.set(r, { autoAlpha: 0 }); tl.fromTo(r, { autoAlpha: 0.9, scale: 0.7 }, { autoAlpha: 0, scale: 2.4, duration: 0.6, ease: "sine.out", immediateRender: false }, t); }
 focus([1385, 832], 46, T_SEE - 0.1, T_STOP + 1.6);
-const OFFICER = `<div style="width:22px;height:22px;margin:-11px 0 0 -11px;background:#bc2528;border:1.5px solid #e8d58a;box-shadow:0 2px 4px rgba(0,0,0,.6)"></div>`;
-const OF = pinS(GG.pin(OFFICER, 1398, 834, { t: T_OFF, pop: true }));
-const HK = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-1px;top:-40px;width:2.5px;height:40px;background:#cdb48a;box-shadow:1px 1px 2px rgba(0,0,0,.6)"></div>
-  <div class="hk" style="position:absolute;left:1.5px;top:-40px;width:22px;height:15px;background:#fbfaf3;border:1px solid #9a9480;transform-origin:0 50%;box-shadow:0 1px 3px rgba(0,0,0,.5)"></div></div>`, 1406, 830, { t: T_HANK, pop: true }));
+const OFFICER = `<div style="width:30px;height:30px;margin:-15px 0 0 -15px;background:#bc2528;border:2px solid #e8d58a;box-shadow:0 2px 4px rgba(0,0,0,.6)"></div>`;
+const OF = pinS(GG.pin(OFFICER, 1400, 834, { t: T_OFF, pop: true }));
+const HK = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-1.5px;top:-58px;width:3px;height:58px;background:#cdb48a;box-shadow:1px 1px 2px rgba(0,0,0,.6)"></div>
+  <div class="hk" style="position:absolute;left:1.5px;top:-58px;width:32px;height:22px;background:#fbfaf3;border:1px solid #9a9480;transform-origin:0 50%;box-shadow:0 1px 3px rgba(0,0,0,.5)"></div></div>`, 1410, 830, { t: T_HANK, pop: true }));
 tl.to(HK.querySelector(".hk"), { skewY: 14, scaleX: 0.8, duration: 0.3, yoyo: true, repeat: 40, ease: "sine.inOut" }, T_HANK);
 // "The guns stopped": no more shots; the smoke over the town drifts away
 BARRAGE_T.slice(-4).forEach(([p]) => { for (let t = T_STOP - 0.4; t < T_STOP + 3.4; t += 0.7) K.smoke(p[0], p[1] - 3, t, { n: 1, r: 9, rise: 26, life: 3.0, alpha: 0.45, drift: 22 }); });
@@ -211,15 +211,15 @@ tl.to([DR, OF, HK], { autoAlpha: 0, duration: 0.6 }, T_18 + 0.4);
 // p3-13: 18 Oct the Moore House; 19 Oct the surrender
 // ---------------------------------------------------------------------------------------------------------------------------------
 const MH = [1664, 1002];
-POP(`<svg width="40" height="32" viewBox="-20 -16 40 32" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(10,8,4,.7))">
+POP(`<svg width="60" height="48" viewBox="-20 -16 40 32" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(10,8,4,.7))">
   <rect x="-9" y="-15" width="3" height="7" fill="#6b3a26"/><rect x="6" y="-15" width="3" height="7" fill="#6b3a26"/>
   <path d="M-17 -3 L-12 -12 L12 -12 L17 -3 Z" fill="#5a3a2a" stroke="#2c1d14" stroke-width="0.8"/>
   <rect x="-15" y="-3" width="30" height="15" fill="#e6dcc4" stroke="#6b5a40" stroke-width="0.8"/>
   ${[-11, -5, 3, 9].map((x) => `<rect x="${x}" y="0" width="3" height="4" fill="#3b3226"/>`).join("")}<rect x="-1.5" y="5" width="3.5" height="7" fill="#4a3424"/></svg>`, MH, T_MOORE - 0.05);
-PLACE_LABEL("Moore House", MH, T_MOORE, { dx: 0, dy: 26, size: 24 });
+PLACE_LABEL("Moore House", MH, T_MOORE, { dx: 0, dy: 34, size: 26 });
 UNITF("ofR", "british", [1440, 812], "infantry", { ech: "", t: T_OFFS - 0.1 }); UNITF("ofB", "allies", [1640, 1070], "infantry", { ech: "", t: T_OFFS });
-march("ofR", [[1440, 812], [1520, 900], [1590, 960], [1620, 985]], T_OFFS + 0.2, T_MOORE - T_OFFS + 0.2, { dustOp: 0.25 });
-march("ofB", [[1640, 1070], [1690, 1040], [1708, 1014]], T_OFFS + 0.4, T_MOORE - T_OFFS, { dustOp: 0.25 });
+march("ofR", [[1440, 812], [1520, 900], [1590, 950], [1626, 968]], T_OFFS + 0.2, T_MOORE - T_OFFS + 0.2, { dustOp: 0.25 });
+march("ofB", [[1640, 1070], [1700, 1030], [1704, 970]], T_OFFS + 0.4, T_MOORE - T_OFFS, { dustOp: 0.25 });
 focus(MH, 60, T_MOORE, T_REF + 0.6);
 const BW1 = BANNER("washington", "George Washington", "us", [1745, 1035], T_REF + 0.1, { side: "ne", until: T_TWO - 0.2 });
 wstampL("NO HONORS OF WAR", 1500, 860, T_HON - 0.05, T_CASED - 0.3, null, 26);
@@ -228,39 +228,39 @@ hideU(["ofR", "ofB"], T_TWO - 0.2);
 // 19 Oct, two in the afternoon: the allied guns step out of the picture; the two lines form along the road south
 LIGHT("afternoon", T_TWO, 2.0, 0.6);
 hideU(["fa", "fg2", "ag1", "aa", "fg0"], T_TWO + 0.2);
-const RX = (y) => y <= 874 ? 1391 : y <= 1034 ? 1391 + (1363 - 1391) * (y - 874) / 160 : 1363 + (1366 - 1363) * (y - 1034) / 61;   // the Hampton road x at y
-const LY = [915, 965, 1015, 1065], OFS = 44;
+const RX = (y) => y <= 874 ? 1391 : y <= 1034 ? 1391 + (1363 - 1391) * (y - 874) / 160 : y <= 1110 ? 1363 + 3 * (y - 1034) / 76 : 1366 + 5 * (y - 1110) / 85;   // the Hampton road x at y
+const LY = [985, 1035, 1085, 1135], OFS = 44;
 const FR = LY.map((y) => [RX(y) - OFS, y]), AM = LY.map((y) => [RX(y) + OFS, y]);
 // French line (west): fr9 leads (it carries the French pennant), a1 + two more boxes; American line (east): am10 leads (US flag), a2, a3 + one more
-march("fr9", [[1448, 866], [1420, 872], [1395, 900], FR[0]], T_19 - 0.6, 2.6, { dustOp: 0.3 });
-march("a1", [[1300, 952], [1318, 960], FR[1]], T_19 - 0.4, 2.2, { dustOp: 0.3 });
-UNITF("f3", "allies", [1250, 1000], "infantry", { ech: "X", t: T_19 - 0.6 }); march("f3", [[1250, 1000], [1290, 1012], FR[2]], T_19 - 0.3, 2.2, { dustOp: 0.3 });
-UNITF("f4", "allies", [1252, 1080], "infantry", { ech: "X", t: T_19 - 0.5 }); march("f4", [[1252, 1080], [1290, 1070], FR[3]], T_19 - 0.2, 2.2, { dustOp: 0.3 });
-march("am10", [[1518, 822], [1490, 860], [1450, 895], AM[0]], T_19 - 0.6, 2.6, { dustOp: 0.3 });
-march("a2", [[1562, 940], [1510, 958], AM[1]], T_19 - 0.4, 2.4, { dustOp: 0.3 });
-march("a3", [[1640, 990], [1520, 1010], AM[2]], T_19 - 0.3, 2.6, { dustOp: 0.3 });
-UNITF("a4", "allies", [1560, 1090], "infantry", { ech: "X", t: T_19 - 0.5 }); march("a4", [[1560, 1090], [1480, 1072], AM[3]], T_19 - 0.2, 2.4, { dustOp: 0.3 });
+march("fr9", [[1448, 866], [1420, 872], [1325, 940], FR[0]], T_19 - 0.6, 2.6, { dustOp: 0.3, trail: false });
+march("a1", [[1300, 952], [1300, 1000], FR[1]], T_19 - 0.4, 2.2, { dustOp: 0.3, trail: false });
+UNITF("f3", "allies", [1240, 1080], "infantry", { ech: "X", t: T_19 - 0.6 }); march("f3", [[1240, 1080], [1290, 1084], FR[2]], T_19 - 0.3, 2.2, { dustOp: 0.3, trail: false });
+UNITF("f4", "allies", [1244, 1140], "infantry", { ech: "X", t: T_19 - 0.5 }); march("f4", [[1244, 1140], [1290, 1136], FR[3]], T_19 - 0.2, 2.2, { dustOp: 0.3, trail: false });
+march("am10", [[1518, 822], [1500, 880], [1440, 950], AM[0]], T_19 - 0.6, 2.6, { dustOp: 0.3, trail: false });
+march("a2", [[1562, 940], [1500, 1000], AM[1]], T_19 - 0.4, 2.4, { dustOp: 0.3, trail: false });
+march("a3", [[1640, 990], [1520, 1060], AM[2]], T_19 - 0.3, 2.6, { dustOp: 0.3, trail: false });
+UNITF("a4", "allies", [1560, 1150], "infantry", { ech: "X", t: T_19 - 0.5 }); march("a4", [[1560, 1150], [1480, 1140], AM[3]], T_19 - 0.2, 2.4, { dustOp: 0.3, trail: false });
 // the British march out of the works down the road between the lines (they replace the garrison boxes)
 hideU(["o1", "o2"], T_OUT - 0.2);
-const ROAD = [[1391, 792], [1391, 874], [1378, 950], [1363, 1034], [1365, 1095], [1342, 1122]];
-const RSLOT = [1.0, 0.82, 0.62, 0.42, 0.24];   // fraction along ROAD where each box stops (head at the field)
+const ROAD = [[1391, 792], [1391, 874], [1378, 950], [1363, 1034], [1366, 1110], [1368, 1160], [1344, 1182]];
+const RSLOT = [1.0, 0.86, 0.73, 0.6, 0.47];   // fraction along ROAD where each box stops (head at the field)
 RSLOT.forEach((f, k) => { const id = "r" + (k + 1), t0 = T_OUT + k * 1.15;
   UNITF(id, "british", ROAD[0], "infantry", { ech: k === 2 ? "" : "X", t: t0 - 0.05, fade: 0.4 });
   march(id, sub(ROAD, 0, f, 18), t0 + 0.1, 3.6 + f * 7.0, { dustOp: 0.35 }); });
 tl.fromTo([FL_FR], { scale: 1 }, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 1, immediateRender: false }, T_FSIDE + 0.1);
 tl.fromTo([FL_US], { scale: 1 }, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 1, immediateRender: false }, T_ASIDE + 0.1);
 // "Cornwallis did not come. He said he was ill": his banner, greyed, stays in the town
-const BCW2 = BANNER("cornwallis", "Lord Cornwallis", "gb", [1322, 742], T_NOTC + 0.1, { side: "west", until: T_7K - 0.4 });
+const BCW2 = BANNER("cornwallis", "Lord Cornwallis", "gb", [1300, 800], T_NOTC + 0.1, { side: "west", until: T_7K - 0.4 });
 tl.to(BCW2, { filter: "grayscale(1) brightness(0.72)", duration: 0.8 }, T_NOTC + 0.9);
-focus([1340, 742], 60, T_NOTC + 0.1, T_ILL + 1.4);
+focus([1330, 770], 70, T_NOTC + 0.1, T_ILL + 1.4);
 // the sword: O'Hara offers it to Rochambeau, who points to Washington; Washington points to Lincoln; Lincoln takes it and hands it back
 const BOH = BANNER("ohara", "Charles O'Hara", "gb", "r1", T_OHARA + 0.05, { side: "sw", until: T_7K - 0.4 });
-const BRO = BANNER("rochambeau", "Rochambeau", "fr", FR[3], T_ROCH, { side: "west", until: T_PD + 0.6 });
+const BRO = BANNER("rochambeau", "Rochambeau", "fr", FR[1], T_ROCH, { side: "west", until: T_PD + 0.6 });
 const BW2 = BANNER("washington", "George Washington", "us", AM[1], T_PW + 0.05, { side: "ne", until: T_TOOK });
 const BLI = BANNER("lincoln", "Benjamin Lincoln", "us", AM[3], T_LINC + 0.05, { side: "se", until: T_7K - 0.4 });
-const SWORD = pinS(GG.pin(`<svg width="46" height="16" viewBox="-23 -8 46 16" style="display:block;overflow:visible;filter:drop-shadow(0 0 3px rgba(255,236,170,.9)) drop-shadow(0 1px 2px rgba(0,0,0,.8))"><path d="M-12 -1.4 L19 -0.6 L22 0 L19 0.6 L-12 1.4 Z" fill="#eef0f2" stroke="#5a5a5a" stroke-width="0.5"/><rect x="-14" y="-5" width="2.4" height="10" rx="1" fill="#c9a24a"/><rect x="-21" y="-1.6" width="7" height="3.2" rx="1.2" fill="#6b4a2a"/><circle cx="-21.5" cy="0" r="2" fill="#c9a24a"/></svg>`, 1352, 1104, {}));
+const SWORD = pinS(GG.pin(`<svg width="72" height="25" viewBox="-23 -8 46 16" style="display:block;overflow:visible;filter:drop-shadow(0 0 3px rgba(255,236,170,.9)) drop-shadow(0 1px 2px rgba(0,0,0,.8))"><path d="M-12 -1.4 L19 -0.6 L22 0 L19 0.6 L-12 1.4 Z" fill="#eef0f2" stroke="#5a5a5a" stroke-width="0.5"/><rect x="-14" y="-5" width="2.4" height="10" rx="1" fill="#c9a24a"/><rect x="-21" y="-1.6" width="7" height="3.2" rx="1.2" fill="#6b4a2a"/><circle cx="-21.5" cy="0" r="2" fill="#c9a24a"/></svg>`, 1334, 1196, {}));
 gsap.set(SWORD, { autoAlpha: 0 });
-const SW_O = [1352, 1100], SW_R = [FR[3][0] + 2, FR[3][1] + 22], SW_W = [AM[1][0] - 4, AM[1][1] + 22], SW_L = [AM[3][0] - 4, AM[3][1] + 22];
+const SW_O = [1334, 1196], SW_R = [FR[1][0] + 2, FR[1][1] + 22], SW_W = [AM[1][0] - 4, AM[1][1] + 22], SW_L = [AM[3][0] - 4, AM[3][1] + 22];
 tl.to(SWORD, { autoAlpha: 1, duration: 0.3 }, T_OFFER);
 const SWTO = (p, t, dur = 0.9) => tl.to(SWORD, { left: p[0], top: p[1], duration: dur, ease: "power2.inOut" }, t);
 SWTO(SW_R, T_ROCH - 0.3); SWTO([(SW_R[0] + SW_W[0]) / 2, SW_R[1] - 18], T_PW + 0.1, 0.5); SWTO(SW_W, T_PW + 0.6, 0.5);
@@ -272,7 +272,7 @@ tl.to(SWORD, { autoAlpha: 0, duration: 0.5 }, T_7K - 0.4);
 const C7 = CARD("", "OVER 7,000", "#c9b48a", T_7K, T_LEG - 0.35, { size: 80 });
 ADDLINE(C7, "SURRENDER", T_ARMS, 50, "#ff8a80");
 ["r1", "r2", "r3", "r4", "r5", "bg1", "bg3", "o3", "gR"].forEach((id, k) => GREY(id, T_ARMS + 0.1 + k * 0.08));
-wstampL("LEGEND", 1250, 1150, T_LEG + 0.05, T_LEG + 3.3, null, 24);
+wstampL("LEGEND", 1240, 1210, T_LEG + 0.05, T_LEG + 3.3, null, 24);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // flags: explicit windows (one flag per side while a banner of that side is up)
 // ---------------------------------------------------------------------------------------------------------------------------------
