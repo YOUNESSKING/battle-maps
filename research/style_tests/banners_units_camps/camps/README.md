@@ -1,6 +1,36 @@
 # Painted camps, wagon parks, supply depots (1863, Style W + 2e)
 
-Procedural (numpy/scipy/PIL, no AI images). Same method and palette family as the painted towns
+## v2 (owner 2026-11-11, DEFAULT): the reference-camp look
+`render_camp(..., style="v2")` (default). Matches `ref_camp.png` / `owner_ref_yarmouk.png` bottom-left: a compact,
+chunky cluster on a dark trampled brown-grey patch (84,75,58) with a soft, irregular, feathered edge and a greyish
+worn rim; FEW big simple objects: weathered khaki / grey-brown canvas tents and dark log huts, one long plank
+shed (planks along its length), a few big crates and barrels, 1-2 warm fires with a soft halo and a thin smoke wisp;
+low contrast (outlines x0.55), soft ~1.5 px painting. NO flag (pass `flag=True` to get the v1 pole flag).
+- camp: one long shed at an end, 6-8 tents in two loose rows, 1-2 dull officers' wall tents, 2-3 huts, crates,
+  barrels, cordwood, 1-2 horses, fires + kettle.
+- wagon_park: 8-10 big covered wagons (dull canvas, dark wheels, tongue) in two loose rows, a few swung out,
+  mules as small dark blobs in 2-3 loose groups, hay, crates, one fire.
+- supply_depot: 1-2 long plank sheds, a short stockade of dark posts, 3-4 stacks of big crates, barrel groups,
+  a tarpaulin pile, 2-3 wagons, a few mules, one fire.
+v2 defaults: size camp 250 / wagon_park 240 / depot 230 u (layout built at size/obj_scale, obj_scale 2.5),
+soft 0.75, feather 16, n_fires camp 2 / others 1. Night: blue-muted, moderate warm light + `*_glow.png`
+(gentler than v1).
+
+| file (ppu 2) | size px | centre px | on the 2880-px map at S 1.9 |
+|---|---|---|---|
+| `camp_union.png` | 570 x 373 | 291, 181 | 150 x 98 map px |
+| `wagon_park.png` | 614 x 377 | 307, 187 | 162 x 99 |
+| `supply_depot.png` | 512 x 383 | 276.5, 192.5 | 135 x 101 |
+| `camp_night.png` + `camp_night_glow.png` | 586 x 397 | 285, 197 | 154 x 104 |
+Old v1 sprites kept as `*_v1.png` (+ `camp_night_glow_v1.png`); `style="v1"` regenerates that look.
+`preview_v2.jpg` (`make_preview_v2.py`): per kind, reference | v1 | v2 at 1x screen scale on vicksburg_w, then 3x.
+(`preview.jpg` / `make_preview.py` are the v1 sheet; that script now shows the v2 PNGs.)
+Placement, layer order and the night glow blend are as in the v1 notes below.
+
+---
+# v1 notes (first test, 2026-11-10)
+
+v1 below is superseded by v2 above. Procedural (numpy/scipy/PIL, no AI images). Same method and palette family as the painted towns
 (`research/style_tests/roads_towns/towns/make_town.py`): tiny top-down objects lit from the NW, soft SE drop
 shadows scaled by object height, ambient occlusion, a warm mottled dust patch (sampled from `ref_camp.png`, lifted
 to sit on the vicksburg_w green) feathered into the grass, pale trampled lanes, then a ~1 px premultiplied blur.

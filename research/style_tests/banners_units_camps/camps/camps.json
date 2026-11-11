@@ -3,12 +3,12 @@
   "png": "camp_union.png",
   "ppu": 2.0,
   "size_px": [
-   588,
-   411
+   570,
+   373
   ],
   "centre_px": [
-   295.0,
-   206.0
+   291.0,
+   181.0
   ],
   "glow": null,
   "seed": 1863,
@@ -20,12 +20,12 @@
   "png": "wagon_park.png",
   "ppu": 2.0,
   "size_px": [
-   529,
-   336
+   614,
+   377
   ],
   "centre_px": [
-   256.5,
-   176.5
+   307.0,
+   187.0
   ],
   "glow": null,
   "seed": 518,
@@ -37,12 +37,12 @@
   "png": "supply_depot.png",
   "ppu": 2.0,
   "size_px": [
-   375,
-   325
+   512,
+   383
   ],
   "centre_px": [
-   193.0,
-   176.0
+   276.5,
+   192.5
   ],
   "glow": null,
   "seed": 522,
@@ -55,12 +55,12 @@
   "png": "camp_night.png",
   "ppu": 2.0,
   "size_px": [
-   621,
-   466
+   586,
+   397
   ],
   "centre_px": [
-   309.0,
-   211.0
+   285.0,
+   197.0
   ],
   "glow": "camp_night_glow.png",
   "seed": 1864,

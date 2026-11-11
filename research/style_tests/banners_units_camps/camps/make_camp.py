@@ -127,6 +127,7 @@ class Canvas:
         self.W, self.H, self.ppu, self.cx, self.cy = W, H, ppu, cx, cy
         self.rgb = np.zeros((H, W, 3))
         self.a = np.zeros((H, W))
+        self.ol_k = 1.0           # v2: softer, lower-contrast outlines
 
     def region(self, x, y, ang, rad):
         p = self.ppu
@@ -159,6 +160,7 @@ class Canvas:
         if not cov.any():
             return
         col = np.broadcast_to(colfn(s, t, d), s.shape + (3,)).astype(float)
+        outline = outline * self.ol_k
         if outline:
             edge = np.clip(1 - np.abs(d * self.ppu + 0.5) / 0.9, 0, 1)[..., None]
             col = col * (1 - outline * edge) + OUTLINE * outline * edge
@@ -251,7 +253,11 @@ def draw_object(cv, o, rng):
             n = np.where(t < 0, -1.0, 1.0)
             sh = 1 + 0.28 * n * lv
             sh = sh * (1 + 0.10 * np.clip(1 - np.abs(t) * cv.ppu / 0.9, 0, 1))
-            sh = sh * (1 - 0.10 * (np.abs(np.sin(s * math.pi / plank)) < 0.18))              # plank seams
+            if o.get("planks") == "long":   # v2: planks run the length of the roof (ref shed), weathered boards
+                sh = sh * (1 - 0.13 * (np.abs(np.sin(t * math.pi / 0.95)) < 0.22))
+                sh = sh * (1 + 0.07 * np.sin(np.floor(t / 0.95) * 2.7 + s * 0.35))
+            else:
+                sh = sh * (1 - 0.10 * (np.abs(np.sin(s * math.pi / plank)) < 0.18))              # plank seams
             if k == "shed":
                 sh = sh * (1 + 0.06 * np.sin(s * 1.7 + rng.uniform(0, 6)) * np.sin(t * 2.3))
             hip = np.abs(s) - (a - b * 0.6) > np.abs(t) * 0.6
@@ -619,25 +625,231 @@ def layout_supply_depot(rng, L, W, n_fires):
 LAYOUTS = {"camp": layout_camp, "wagon_park": layout_wagon_park, "supply_depot": layout_supply_depot}
 
 
+# ----------------------------------------------------------------- v2 (owner 2026-11-11): the reference camp look
+# ref_camp.png / owner_ref_yarmouk bottom-left: a compact chunky cluster on a dark trampled brown-grey patch with a
+# soft irregular edge; FEW big simple objects (dark tents and huts, one long plank shed, a few crates/barrels),
+# one warm fire with a soft halo; low contrast, soft (~1-1.5 px) painting. 1863: weathered khaki canvas + log huts.
+PAL_V1 = dict(dust=DUST, light=DUST_LIGHT, warm=DUST_WARM, dark=DUST_DARK, mud=MUD, rim=DUST_DARK)
+PAL_V2 = dict(dust=np.array([84., 75, 58]), light=np.array([100., 91, 71]), warm=np.array([88., 72, 50]),
+              dark=np.array([60., 52, 40]), mud=np.array([62., 53, 40]), rim=np.array([104., 99, 80]))
+TENTS_V2 = [np.array(c, float) for c in ((104, 93, 74), (86, 78, 64), (112, 101, 80), (74, 66, 54), (94, 83, 64), (66, 57, 46))]
+WAGON_CANVAS_V2 = [np.array(c, float) for c in ((118, 109, 89), (104, 97, 81), (126, 115, 93))]
+HUTS_V2 = [np.array(c, float) for c in ((58, 47, 37), (48, 41, 35), (66, 54, 41))]
+DEFAULT_SIZE_V2 = {"camp": 250.0, "wagon_park": 240.0, "supply_depot": 230.0}
+DEFAULT_FIRES_V2 = {"camp": 2, "wagon_park": 1, "supply_depot": 1}
+FIRE_K_V2 = 1.15    # fire size in v2 (x the v1 base fire, x obj_scale)
+
+
+class _Placer:
+    """loose, non-overlapping placement (circle test) inside the noisy camp ellipse"""
+
+    def __init__(self, rng, L, W):
+        self.rng, self.L, self.W, self.items = rng, L, W, []
+
+    def free(self, x, y, r, gap=1.2):
+        if math.hypot(x / (self.L * 0.47), y / (self.W * 0.47)) > 1.0:
+            return False
+        return all(math.hypot(x - a, y - b) > r + rb + gap for a, b, rb in self.items)
+
+    def add(self, x, y, r):
+        self.items.append((x, y, r))
+
+    def put(self, objs, o, r, cx, cy, sx, sy, tries=60, gap=1.2):
+        for _ in range(tries):
+            x, y = cx + self.rng.normal(0, sx), cy + self.rng.normal(0, sy)
+            if self.free(x, y, r, gap):
+                o["x"], o["y"] = x, y
+                objs.append(o)
+                self.add(x, y, r)
+                return True
+        return False
+
+
+def _v2_clutter(rng, pl, objs, n_crates, n_barrels, near, spread=6.0):
+    """crates and barrels in little groups around the given anchor points"""
+    for i in range(n_crates):
+        ax, ay = near[i % len(near)]
+        a = rng.uniform(1.3, 1.7)
+        pl.put(objs, _obj("crate", 0, 0, rng.uniform(0, 3.14), a=a, b=a * rng.uniform(0.8, 1.0), h=1.2,
+                          tone=rng.uniform(0.62, 0.82)), a * 1.3, ax, ay, spread, spread, gap=0.4)
+    for i in range(n_barrels):
+        ax, ay = near[(i + 1) % len(near)]
+        pl.put(objs, _obj("barrel", 0, 0, 0, r=rng.uniform(1.05, 1.3), h=1.3, tone=rng.uniform(0.72, 0.9)),
+               1.3, ax, ay, spread, spread, gap=0.3)
+
+
+def layout_camp_v2(rng, L, W, n_fires):
+    objs, lanes, fires = [], [], []
+    pl = _Placer(rng, L, W)
+    hl, hw = L / 2, W / 2
+    # one long plank shed / stockade along one end of the patch
+    sx = rng.choice([-1, 1]) * hl * rng.uniform(0.5, 0.6)
+    sa = rng.uniform(13, 16)
+    shed = _obj("shed", sx, hw * rng.uniform(0.0, 0.35), rng.normal(0, 0.12), a=sa, b=rng.uniform(5.5, 6.5), h=3.0,
+                planks="long", tone=rng.uniform(0.82, 0.92))
+    objs.append(shed); pl.add(shed["x"], shed["y"], sa * 0.75); pl.add(shed["x"] + sa * 0.5 * math.cos(shed["ang"]), shed["y"], sa * 0.5)
+    pl.add(shed["x"] - sa * 0.5 * math.cos(shed["ang"]), shed["y"], sa * 0.5)
+    # fires near the middle
+    for i in range(n_fires):
+        for _ in range(40):
+            fx, fy = rng.normal(-sx * 0.25, hl * 0.18), rng.normal(0, hw * 0.25)
+            if pl.free(fx, fy, 4.5, 1.0):
+                fires.append((fx, fy, rng.uniform(0.9, 1.1))); pl.add(fx, fy, 4.0)
+                break
+    # weathered canvas tents (dull khaki / grey-brown) in two loose rows along the road
+    n_t = rng.integers(6, 9)
+    for i in range(n_t):
+        row = (-0.3 if i % 2 == 0 else 0.25) * W
+        a = rng.uniform(3.6, 4.5)
+        o = _obj("tent", 0, 0, math.pi / 2 + rng.normal(0, 0.22), a=a, b=a * rng.uniform(0.74, 0.86), h=2.2,
+                 door=rng.choice([-1, 1]), col=TENTS_V2[rng.integers(len(TENTS_V2))], tone=rng.uniform(0.9, 1.04))
+        pl.put(objs, o, a * 1.15, -sx * 0.15 + rng.uniform(-hl * 0.75, hl * 0.6) * 0.9, row, hl * 0.12, hw * 0.12)
+    # a couple of officers' wall tents, also dull
+    for i in range(rng.integers(1, 3)):
+        o = _obj("wall", 0, 0, math.pi / 2 + rng.normal(0, 0.15), a=4.6, b=3.6, h=2.6, tone=rng.uniform(0.52, 0.6))
+        pl.put(objs, o, 5.8, -sx * 0.6, rng.normal(0, hw * 0.3), hl * 0.2, hw * 0.25)
+    # dark log huts
+    for i in range(rng.integers(2, 4)):
+        a = rng.uniform(4.2, 5.4)
+        o = _obj("hut", 0, 0, rng.normal(0, 0.3), a=a, b=a * rng.uniform(0.7, 0.85), h=2.6,
+                 col=HUTS_V2[rng.integers(len(HUTS_V2))], tone=rng.uniform(0.9, 1.1))
+        pl.put(objs, o, a * 1.2, rng.uniform(-hl * 0.6, hl * 0.6), rng.uniform(-hw * 0.6, hw * 0.6), 4, 4)
+    near = [(f[0], f[1]) for f in fires] + [(shed["x"] - sx * 0.5, shed["y"] + rng.normal(0, 4))]
+    _v2_clutter(rng, pl, objs, rng.integers(4, 7), rng.integers(2, 4), near)
+    for (fx, fy, _) in fires:
+        objs.append(_obj("kettle", fx + 2.8, fy - 0.8, r=0.85, h=0.8))
+    for _ in range(rng.integers(1, 3)):
+        pl.put(objs, _obj("cord", 0, 0, rng.normal(0, 0.3), a=2.6, b=1.2, h=1.2, tone=0.8), 2.6,
+               rng.uniform(-hl * 0.5, hl * 0.5), rng.uniform(-hw * 0.5, hw * 0.5), 6, 6)
+    for _ in range(rng.integers(1, 3)):   # a horse or two as dark blobs
+        pl.put(objs, _obj("horse", 0, 0, rng.uniform(0, 6.28), a=1.5, b=0.7, h=1.0, tone=0.8), 1.6,
+               rng.uniform(-hl * 0.7, hl * 0.7), hw * rng.choice([-0.75, 0.75]), 6, 3, gap=0.6)
+    lanes.append([(rng.uniform(-hl * 0.2, hl * 0.2), 0), (rng.uniform(-hl * 0.3, hl * 0.3), -W * 0.75)])
+    return objs, lanes, fires, (0, -hw)
+
+
+def layout_wagon_park_v2(rng, L, W, n_fires):
+    objs, lanes, fires = [], [], []
+    pl = _Placer(rng, L, W)
+    hl, hw = L / 2, W / 2
+    for i in range(n_fires):
+        fx, fy = rng.choice([-1, 1]) * hl * 0.55, rng.normal(hw * 0.3, 3)
+        fires.append((fx, fy, 1.0)); pl.add(fx, fy, 4.0)
+    # fewer, bigger covered wagons in two loose rows, dull canvas
+    n_w = rng.integers(8, 11)
+    for i in range(n_w):
+        row = (-0.26 if i % 2 == 0 else 0.1) * W
+        col = WAGON_CANVAS_V2[rng.integers(len(WAGON_CANVAS_V2))]
+        o = _obj("wagon", 0, 0, -math.pi / 2 + rng.normal(0, 0.18) + (0.6 * rng.choice([-1, 1]) if rng.random() < 0.2 else 0),
+                 a=5.4, b=2.5, h=2.4, sc=1.7, tongue=1, tongue_swing=rng.normal(0, 0.3), col=col, tone=rng.uniform(0.9, 1.02))
+        pl.put(objs, o, 5.6, -hl * 0.72 + (i // 2) * hl * 1.44 / max(1, (n_w - 1) // 2), row, 2.5, 2.0, tries=120, gap=0.6)
+    # mules as small dark blobs in loose groups by a picket rope
+    for gi in range(rng.integers(2, 4)):
+        gx, gy = rng.uniform(-hl * 0.55, hl * 0.55), hw * rng.uniform(0.45, 0.62)
+        for _ in range(rng.integers(3, 6)):
+            pl.put(objs, _obj("mule", 0, 0, rng.normal(math.pi / 2, 0.5), a=1.35, b=0.68, h=1.1,
+                              tone=rng.uniform(0.75, 1.1)), 1.3, gx, gy, 3.5, 1.6, gap=0.5)
+    pl.put(objs, _obj("hay", 0, 0, rng.normal(0, 0.3), a=3.6, b=2.4, h=1.6, tone=0.78), 3.8, hl * 0.6 * rng.choice([-1, 1]), hw * 0.2, 6, 5)
+    near = [(f[0], f[1]) for f in fires] + [(0, hw * 0.45)]
+    _v2_clutter(rng, pl, objs, rng.integers(2, 5), rng.integers(1, 3), near)
+    lanes.append([(-hl * 0.7, -hw * 0.02), (hl * 0.7, -hw * 0.02)])
+    lanes.append([(rng.uniform(-hl * 0.2, hl * 0.2), 0), (rng.uniform(-hl * 0.3, hl * 0.3), -W * 0.75)])
+    return objs, lanes, fires, (0, -hw)
+
+
+def layout_supply_depot_v2(rng, L, W, n_fires):
+    objs, lanes, fires = [], [], []
+    pl = _Placer(rng, L, W)
+    hl, hw = L / 2, W / 2
+    # one or two long plank sheds
+    for i, (sx, sy) in enumerate(((-hl * 0.18, -hw * 0.18), (hl * 0.22, hw * 0.35))):
+        if i == 1 and rng.random() < 0.35:
+            continue
+        sa = rng.uniform(15, 19) if i == 0 else rng.uniform(10, 13)
+        o = _obj("shed", sx, sy, rng.normal(0, 0.08), a=sa, b=rng.uniform(5.6, 6.6), h=3.0, planks="long",
+                 tone=rng.uniform(0.82, 0.95))
+        objs.append(o)
+        for f in (-0.55, 0, 0.55):
+            pl.add(sx + f * sa, sy, sa * 0.42)
+    # a short stockade fence of dark posts along one side
+    fy = -hw * 0.62
+    x = -hl * 0.55
+    while x < -hl * 0.05:
+        objs.append(_obj("barrel", x, fy + rng.normal(0, 0.15), 0, r=0.75, h=2.0, tone=0.55))
+        x += 1.45
+    for i in range(n_fires):
+        fx, fy2 = hl * rng.uniform(0.45, 0.6) * rng.choice([-1, 1]), rng.normal(-hw * 0.15, 3)
+        if pl.free(fx, fy2, 4.0, 0.5):
+            fires.append((fx, fy2, 1.0)); pl.add(fx, fy2, 4.0)
+    # crate stacks (2x2 .. 3x3 of big crates) and barrel groups
+    for _ in range(rng.integers(3, 5)):
+        nx, ny = rng.integers(2, 4), rng.integers(2, 3)
+        cs = rng.uniform(1.3, 1.6)
+        for _t in range(40):
+            px, py = rng.uniform(-hl * 0.75, hl * 0.75), rng.uniform(-hw * 0.6, hw * 0.6)
+            if pl.free(px, py, cs * max(nx, ny) * 1.1, 1.0):
+                break
+        else:
+            continue
+        pl.add(px, py, cs * max(nx, ny) * 1.1)
+        ang, tone = rng.normal(0, 0.15), rng.uniform(0.62, 0.8)
+        for i in range(nx):
+            for j in range(ny):
+                ox, oy = (i - (nx - 1) / 2) * cs * 2.1, (j - (ny - 1) / 2) * cs * 2.1
+                objs.append(_obj("crate", px + ox * math.cos(ang) - oy * math.sin(ang), py + ox * math.sin(ang) + oy * math.cos(ang),
+                                 ang, a=cs, b=cs, h=1.4, tone=tone * rng.uniform(0.92, 1.08)))
+    for _ in range(rng.integers(1, 3)):
+        px, py = rng.uniform(-hl * 0.6, hl * 0.6), rng.uniform(-hw * 0.5, hw * 0.5)
+        if not pl.free(px, py, 4, 0.5):
+            continue
+        pl.add(px, py, 4)
+        for i in range(3):
+            for j in range(2):
+                objs.append(_obj("barrel", px + i * 2.3 + j * 1.15, py + j * 2.0, 0, r=1.1, h=1.3, tone=rng.uniform(0.7, 0.88)))
+    pl.put(objs, _obj("tarp", 0, 0, rng.normal(0, 0.2), a=4.5, b=3.0, h=2.0, tone=0.72), 4.8, hl * 0.4, -hw * 0.2, 10, 6)
+    for i in range(rng.integers(2, 4)):
+        col = WAGON_CANVAS_V2[rng.integers(len(WAGON_CANVAS_V2))]
+        pl.put(objs, _obj("wagon", 0, 0, rng.normal(0, 0.25) + (math.pi if rng.random() < 0.5 else 0), a=5.4, b=2.5, h=2.4, sc=1.7,
+                          tongue=1, col=col, tone=rng.uniform(0.88, 1.0)), 6.0, rng.uniform(-hl * 0.6, hl * 0.6), hw * 0.62, 4, 2, gap=1.0)
+    for _ in range(rng.integers(2, 4)):
+        pl.put(objs, _obj("mule", 0, 0, rng.uniform(0, 6.28), a=1.35, b=0.68, h=1.1, tone=rng.uniform(0.8, 1.1)), 1.3,
+               rng.uniform(-hl * 0.5, hl * 0.5), hw * 0.75, 6, 2, gap=0.5)
+    lanes.append([(-hl * 0.7, hw * 0.62 - 5), (hl * 0.7, hw * 0.62 - 5)])
+    return objs, lanes, fires, (0, -hw)
+
+
+LAYOUTS_V2 = {"camp": layout_camp_v2, "wagon_park": layout_wagon_park_v2, "supply_depot": layout_supply_depot_v2}
+
+
 # ----------------------------------------------------------------- render
 def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", date="1863-05-18",
-                night=False, flag=True, n_fires=None, wind=-20.0, ppu=2.0, soft=0.25, feather=12.0, obj_scale=1.8):
+                night=False, flag=None, n_fires=None, wind=-20.0, ppu=2.0, soft=None, feather=None, obj_scale=None,
+                style="v2"):
+    """style "v2" (default, owner 2026-11-11): few, big, dark, weathered objects on a dark trampled patch, like the
+    reference camp; no flag. style "v1": the first test (rows of many white tents, flag pole)."""
     rng = np.random.default_rng(seed)
-    L = float(size or DEFAULT_SIZE[kind])
-    W = L * (0.62 if kind != "supply_depot" else 0.6)
-    nf = int(np.clip(DEFAULT_FIRES[kind] if n_fires is None else n_fires, 0, 3))
-    # the layout is built at 1/obj_scale and blown up, so objects read at map scale like the reference
-    # (a few dozen chunky tents per camp, not hundreds of specks)
-    ks = float(obj_scale)
-    objs, lanes, fires, pole = LAYOUTS[kind](rng, L / ks, W / ks, nf)
+    v2 = style == "v2"
+    flag = (not v2) if flag is None else flag
+    soft = (0.75 if v2 else 0.25) if soft is None else soft
+    feather = (16.0 if v2 else 12.0) if feather is None else feather
+    L = float(size or (DEFAULT_SIZE_V2 if v2 else DEFAULT_SIZE)[kind])
+    W = L * ((0.6 if kind != "supply_depot" else 0.62) if v2 else (0.62 if kind != "supply_depot" else 0.6))
+    nf = int(np.clip((DEFAULT_FIRES_V2 if v2 else DEFAULT_FIRES)[kind] if n_fires is None else n_fires, 0, 3))
+    # v1: the layout is built at 1/obj_scale and blown up (a few dozen chunky tents per camp, not hundreds of specks)
+    # v2: layouts are already in final u (obj_scale 1 = as designed; >1 makes the objects bigger)
+    ks = float(obj_scale or (2.5 if v2 else 1.8))
+    if v2:
+        objs, lanes, fires, pole = LAYOUTS_V2[kind](rng, L / ks, W / ks, nf)
+    else:
+        objs, lanes, fires, pole = LAYOUTS[kind](rng, L / ks, W / ks, nf)
     for o in objs:
         o["x"] *= ks; o["y"] *= ks
-        o["sc"] = ks
+        o["sc"] = o.get("sc", 1.0) * ks
         for key in ("a", "b", "r", "h"):
             if key in o:
                 o[key] *= ks
     lanes = [[(x * ks, y * ks) for x, y in pl] for pl in lanes]
-    fires = [(x * ks, y * ks, f) for x, y, f in fires]
+    fires = [(x * ks, y * ks, f * (FIRE_K_V2 * ks if v2 else 1.0)) for x, y, f in fires]
     pole = (pole[0] * ks, pole[1] * ks)
 
     # local frame -> image frame (rows follow the road angle)
@@ -657,6 +869,9 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
     Wpx = Hpx = int(2 * half * ppu)
     cx = cy = Wpx / 2
     cv = Canvas(Wpx, Hpx, ppu, cx, cy)
+    if v2:
+        cv.ol_k = 0.55
+    P = PAL_V2 if v2 else PAL_V1
     yy, xx = np.mgrid[0:Hpx, 0:Wpx].astype(float)
     X, Y = (xx + 0.5 - cx) / ppu, (yy + 0.5 - cy) / ppu
     nz = _fbm((Hpx, Wpx), rng, scales=(18 * ppu, 7 * ppu, 2.5 * ppu), amps=(1, 0.6, 0.35))
@@ -667,10 +882,11 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
     for o in objs:
         sdf, rad = shape_of(o)
         cv.mask(foot, o["x"], o["y"], o["ang"], rad, sdf)
-    for fx, fy, _ in fires:
-        cv.mask(foot, fx, fy, 0, 3 * ks, sd_circle(2.5 * ks))
+    for fx, fy, fk in fires:
+        cv.mask(foot, fx, fy, 0, 3 * fk, sd_circle(2.5 * fk))
     lx, ly = X * ct + Y * st, -X * st + Y * ct          # back to the layout frame for the ellipse core
-    core = np.clip(1.0 - np.hypot(lx / (L * 0.47), ly / (W * 0.47)), 0, 1) * 1.6 + 0.25 * nz
+    nz3 = _fbm((Hpx, Wpx), rng, scales=(45 * ppu, 20 * ppu), amps=(1, 0.5)) if v2 else 0 * nz
+    core = np.clip(1.0 - np.hypot(lx / (L * 0.47), ly / (W * 0.47)) + 0.45 * nz3, 0, 1) * 1.6 + 0.25 * nz
     patch = np.maximum(np.clip(core, 0, 1) * 0.85, np.maximum(ndi.gaussian_filter(foot, 3.0 * ppu) * 2.4,
                                                               ndi.gaussian_filter(foot, 7.0 * ppu) * 3.2))
     patch = ndi.gaussian_filter(patch, 1.6 * ppu) + 0.16 * nz
@@ -683,37 +899,41 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
     lane_segs = [(pl[i], pl[i + 1]) for pl in lanes for i in range(len(pl) - 1)]
     ld = _seg_dist(X, Y, lane_segs) if lane_segs else np.full(X.shape, 1e9)
     lane = np.clip(1 - (ld - 0.8) / 1.6, 0, 1) * (0.75 + 0.25 * nz2)
-    e_out = np.hypot(lx / (L * 0.5), ly / (W * 0.5))
+    e_raw = np.hypot(lx / (L * 0.5), ly / (W * 0.5))
+    e_out = e_raw - (0.28 * nz3 if v2 else 0)   # v2: irregular outline
     alpha = np.maximum(alpha, np.clip((0.95 - e_out) / 0.35, 0, 1) * (0.88 + 0.12 * nz))       # solid trampled core
     alpha = np.maximum(alpha, lane * 0.55 * np.clip((1.45 - np.hypot(lx / (L * 0.62), ly / (W * 0.62))) / 0.6, 0, 1))
 
-    alpha *= np.clip((1.45 - e_out) / 0.35, 0, 1)             # nothing stray far outside the camp
+    alpha *= np.clip(((1.3 if v2 else 1.45) - (e_raw if v2 else e_out)) / 0.3, 0, 1)             # nothing stray far outside the camp
     # ground colour: warm mottled dust, darker trampled mud, pale paths
-    g = DUST[None, None, :] * (1 + 0.07 * nz[..., None]) + 9 * nz2[..., None]
+    g = P["dust"][None, None, :] * (1 + 0.07 * nz[..., None]) + 9 * nz2[..., None]
     lightness = np.clip(0.5 + 0.9 * nz2, 0, 1)[..., None]
-    g = g * (1 - 0.32 * lightness) + DUST_LIGHT * 0.32 * lightness
+    g = g * (1 - 0.32 * lightness) + P["light"] * 0.32 * lightness
     warm = np.clip(0.5 - 1.2 * nz, 0, 1)[..., None] * 0.42
-    g = g * (1 - warm) + DUST_WARM * warm
+    g = g * (1 - warm) + P["warm"] * warm
     trample = np.clip(ndi.gaussian_filter(foot, 4.0 * ppu) * 2.0, 0, 1) * np.clip(0.6 + nz, 0, 1)
-    g = g * (1 - 0.25 * trample[..., None]) + MUD * 0.25 * trample[..., None]
+    g = g * (1 - 0.25 * trample[..., None]) + P["mud"] * 0.25 * trample[..., None]
+    if v2:   # greyish worn rim where the trampled earth meets the grass (as in the reference)
+        rim = np.clip(1 - np.abs(alpha - 0.5) / 0.35, 0, 1)[..., None] * 0.35
+        g = g * (1 - rim) + P["rim"] * rim
     if kind == "wagon_park":   # wheel ruts: faint dark streaks across the rows
         rut = np.clip(np.sin(lx * 1.9 + 3 * nz) * 3 - 2.2, 0, 1) * np.clip(nz2 + 0.3, 0, 1) * 0.22
         g = g * (1 - rut[..., None]) + MUD * rut[..., None]
-    g = g * (1 - lane[..., None] * 0.42) + (DUST_LIGHT + 8) * lane[..., None] * 0.42
-    for fx, fy, _ in fires:   # ash circle round each fire
+    g = g * (1 - lane[..., None] * (0.25 if v2 else 0.42)) + (P["light"] + 8) * lane[..., None] * (0.25 if v2 else 0.42)
+    for fx, fy, fk in fires:   # ash circle round each fire
         d = np.hypot(X - fx, Y - fy)
-        ash = np.clip(1 - d / (2.6 * ks), 0, 1)[..., None] * 0.55
+        ash = np.clip(1 - d / (2.6 * fk), 0, 1)[..., None] * 0.55
         g = g * (1 - ash) + np.array([62, 56, 50.]) * ash
     occl = np.clip(ndi.gaussian_filter(foot, 1.2 * ppu) * 1.5, 0, 1)[..., None]
-    g = g * (1 - 0.42 * occl) + DUST_DARK * 0.42 * occl
+    g = g * (1 - 0.42 * occl) + P["dark"] * 0.42 * occl
     # soft SE drop shadows (offset by object height)
     sh = np.zeros((Hpx, Wpx))
     for o in objs:
         sdf, rad = shape_of(o)
         h = o.get("h", 1.0)
         cv.mask(sh, o["x"] + 0.65 * h, o["y"] + 0.9 * h, o["ang"], rad, sdf)
-    sh = np.clip(ndi.gaussian_filter(sh, 0.6 * ppu), 0, 1)
-    g = g * (1 - 0.5 * sh[..., None])
+    sh = np.clip(ndi.gaussian_filter(sh, (1.1 if v2 else 0.6) * ppu), 0, 1)
+    g = g * (1 - (0.42 if v2 else 0.5) * sh[..., None])
     cv.rgb[:] = g
     cv.a[:] = alpha
 
@@ -734,25 +954,30 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
     glow = np.zeros((Hpx, Wpx))
     for fx, fy, k in fires:
         d2 = (X - fx) ** 2 + (Y - fy) ** 2
-        s1, s2 = (2.4 * ks, 6.0 * ks) if not night else (3.2 * ks, 11.0 * ks)
-        glow += k * (np.exp(-d2 / (2 * s1 ** 2)) * 0.9 + np.exp(-d2 / (2 * s2 ** 2)) * (0.35 if not night else 0.75))
+        kk = k if v2 else k * ks
+        s1, s2 = (2.4 * kk, 6.0 * kk) if not night else (3.2 * kk, 11.0 * kk)
+        if v2:
+            s1, s2 = (1.6 * kk, 4.2 * kk) if not night else (2.4 * kk, 8.0 * kk)
+        glow += min(k, 1.2) * (np.exp(-d2 / (2 * s1 ** 2)) * 0.9 + np.exp(-d2 / (2 * s2 ** 2)) * (0.35 if not night else 0.75))
     glow = np.clip(glow, 0, 1.6)
-    gk = (0.7 if not night else 1.25) * glow[..., None]
+    gk = ((0.7 if not night else 1.25) if not v2 else (0.95 if not night else 0.42)) * glow[..., None]
     warmlight = np.array([1.0, 0.62, 0.28])
     cv.rgb = cv.rgb * (1 + gk * warmlight * (0.6 if not night else 1.6)) + FIRE_GLOW * gk * (0.22 if not night else 0.35)
-    cv.a = np.maximum(cv.a, np.clip(glow * (0.25 if not night else 0.75), 0, 1) * np.clip(cv.a * 2 + 0.3, 0, 1))
+    cv.a = np.maximum(cv.a, np.clip(glow * (0.25 if not night else (0.75 if not v2 else 0.3)), 0, 1) * np.clip(cv.a * 2 + (0.3 if not v2 else 0.0), 0, 1))
     for fx, fy, k in fires:
-        k = k * ks
+        k = k if v2 else k * ks
         cv.paint(fx, fy, 0, 1.3 * k, sd_circle(1.05 * k), lambda s, t, d: np.array([44, 32, 24.]), outline=0)     # char ring
         cv.paint(fx, fy, 0, 1.0 * k, sd_circle(0.72 * k), lambda s, t, d: np.array([236, 118, 36.]) * (1.0 + 0.25 * np.clip(-d, 0, 1))[..., None], outline=0)
         cv.paint(fx + 0.1, fy - 0.05, 0, 0.6 * k, sd_circle(0.36 * k), lambda s, t, d: np.array([255, 214, 120.]), outline=0)
         # thin drifting smoke wisp downwind
         wa = math.radians(wind)
-        for i in range(0 if night else 5):
-            dd = (1.8 + i * 1.7) * k
+        nsm = (0 if night else 5) if not v2 else 7
+        for i in range(nsm):
+            dd = (1.8 + i * 1.7) * k * (0.8 if v2 else 1.0)
             sx_, sy_ = fx + dd * math.cos(wa), fy + dd * math.sin(wa) - i * 0.25 * k
-            cv.paint(sx_, sy_, wa, 2.2 * k, sd_circle((0.8 + i * 0.3) * k), lambda s, t, d: np.array([150, 146, 140.]) * (1.3 if night else 1.0),
-                     outline=0, opacity=(0.16 if not night else 0.09) * (1 - i / 6))
+            rr_ = (0.8 + i * 0.3) * k * (0.6 if v2 else 1.0)       # v2: a THIN wisp
+            cv.paint(sx_, sy_, wa, 2.2 * k, sd_circle(rr_), lambda s, t, d: np.array([150, 146, 140.]) * (1.3 if night else 1.0),
+                     outline=0, opacity=((0.16 if not night else 0.09) if not v2 else (0.20 if not night else 0.10)) * (1 - i / (nsm + 1)))
 
     # painterly softening (premultiplied blur, as the towns)
     img = np.dstack([cv.rgb, cv.a])
@@ -769,7 +994,7 @@ def render_camp(seed, kind="camp", size=None, orientation=0.0, side="union", dat
     glow_im = None
     if night:   # separate additive layer to put ABOVE the K.night overlay (mix-blend-mode: screen)
         gl = ndi.gaussian_filter(glow, 0.8 * ppu)
-        ga = np.clip(gl * 0.85, 0, 1)
+        ga = np.clip(gl * (0.4 if v2 else 0.85), 0, 1)
         grgb = np.broadcast_to(FIRE_GLOW, gl.shape + (3,)) * np.clip(0.75 + 0.35 * gl, 0, 1.2)[..., None]
         glow_im = Image.fromarray(np.dstack([np.clip(grgb, 0, 255), ga * 255]).astype(np.uint8), "RGBA")
     return im, (cx, cy), glow_im
