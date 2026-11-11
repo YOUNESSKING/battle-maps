@@ -43,9 +43,11 @@ if (GD.base === "east") {
   const PAR1 = LLYT([[37.2262, -76.5185], [37.2238, -76.5120], [37.2235, -76.5060], [37.2244, -76.5006], [37.2262, -76.4952]]);
   const PAR2 = LLYT([[37.2290, -76.5178], [37.2270, -76.5120], [37.2266, -76.5068], [37.2278, -76.5037]]);
   const LINK = LLYT([[37.2278, -76.5037], [37.2292, -76.5025], [37.2319, -76.5000], [37.2329, -76.4988]]);
-  TRENCH(PAR1, 0); TRENCH(PAR2, 0); TRENCH(LINK, STORMV ? 0 : 5.2, { dur: 0.8 });
+  // owner r4: lines in the side colour; the second parallel (+ its link to Redoubts 9/10 and the river) faces the British inner line = the REAL
+  // front (two-colour band, red toward the town); the first parallel behind it is one colour (allied blue); the British line is red
+  TRENCH(PAR1, 0); TRENCH(PAR2, 0, { front: PLACE("yorktown") }); TRENCH(LINK, STORMV ? 0 : 5.2, { dur: 0.8, front: PLACE("yorktown") });
   // the British inner line round the town (hornwork on the Hampton road)
-  TRENCH(LLYT([[37.2385, -76.5178], [37.2332, -76.5155], [37.2305, -76.5105], [37.2309, -76.5060], [37.2330, -76.5030], [37.2356, -76.5008]]), 0, { face: 1 });
+  TRENCH(LLYT([[37.2385, -76.5178], [37.2332, -76.5155], [37.2305, -76.5105], [37.2309, -76.5060], [37.2330, -76.5030], [37.2356, -76.5008]]), 0, { side: "british" });
   const R9 = REDOUBT("r9", PLACE("redoubt_9"), 0, { side: STORMV ? "allies" : "british", rot: 12 }), R10 = REDOUBT("r10", PLACE("redoubt_10"), 0, { side: STORMV ? "allies" : "british", rot: -8 });
   // 14 Oct: everybody up in the trenches. French wing (west): infantry + guns on both parallels; Americans (east) toward Redoubts 9 + 10, sappers in front
   UNIT("f1", "allies", LYT(37.2284, -76.5160), "infantry", { ech: "XX" }); UNIT("gF2", "allies", LYT(37.2268, -76.5100), "artillery", { ech: "" });

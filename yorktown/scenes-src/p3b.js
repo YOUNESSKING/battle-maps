@@ -94,8 +94,8 @@ dateNow("3 OCT 1781", T_6 - 0.05);
 // frame 0 = p3a's last frame
 // ---------------------------------------------------------------------------------------------------------------------------------
 const BLINE = [[1291, 715], [1318, 793], [1376, 832], [1428, 827], [1463, 796], [1489, 758]];
-TRENCH(BLINE, 0, { face: 1 });
-[[[1162, 770], [1185, 800], [1215, 806]], [[1318, 1002], [1350, 1010], [1384, 1002]], [[1462, 998], [1494, 1004], [1526, 994]]].forEach((pts) => TRENCH(pts, 0, { face: 1 }));
+TRENCH(BLINE, 0, { side: "british" });
+[[[1162, 770], [1185, 800], [1215, 806]], [[1318, 1002], [1350, 1010], [1384, 1002]], [[1462, 998], [1494, 1004], [1526, 994]]].forEach((pts) => TRENCH(pts, 0, { side: "allies" }));   // the old outer works, allied since 30 Sep
 const R9P = [1469, 852], R10P = [1498, 812];
 const r9s = REDOUBT("r9s", R9P, 0, { side: "british", rot: 12, px: 26 }), r10s = REDOUBT("r10s", R10P, 0, { side: "british", rot: -8, px: 26 });
 REDOUBT("rfus", [1194, 635], 0, { side: "british", rot: 4, px: 26 });
@@ -131,7 +131,7 @@ B.move("f1", T_DAWN, 1.0, 1120, 650);
 // "By dawn the diggers had a trench almost two thousand yards long, only six to eight hundred yards from the British line"
 LIGHT("morning", T_DAWN, 1.8, 0.6); NIGHT_DIM(T_DAWN, 1.0, 1.8);
 const PAR1 = [[1283, 895], [1359, 931], [1428, 935], [1491, 922], [1554, 895], [1590, 878]];
-TRENCH(PAR1, T_TRENCH, { dur: 2.4 });
+TRENCH(PAR1, T_TRENCH, { dur: 2.4, side: "allies", front: [1428, 830] });   // the real front: red toward the British, blue toward the allies
 CARD("", "ALMOST 2,000 YARDS", "#1f4fc4", T_2000 - 0.05, T_600 - 0.35, { size: 42, css: CR1 });
 CARD("", "600-800 YARDS FROM THE BRITISH", "#c9b48a", T_600 - 0.05, T_9 - 0.4, { size: 40, css: CR1 });
 focus([1400, 790], 110, T_NOTSEEN, T_9 - 0.3);
@@ -189,7 +189,7 @@ tl.to([r9s, r10s], { autoAlpha: 0, duration: 0.4 }, T_11 + 1.3);
 const PAR2 = [[1291, 854], [1359, 884], [1419, 890], [1455, 872]];
 march("e1", [[1416, 1006], [1380, 940], [1362, 902]], T_11 + 0.4, T_SECOND - T_11 + 0.2, { dustOp: 0.2 });
 march("e2", [[1530, 1000], [1460, 950], [1428, 908]], T_11 + 0.5, T_SECOND - T_11 + 0.2, { dustOp: 0.2 });
-TRENCH(PAR2, T_SECOND + 0.2, { dur: 2.4 });
+TRENCH(PAR2, T_SECOND + 0.2, { dur: 2.4, side: "allies", front: [1420, 830] });
 focus([1515, 845], 70, T_RIVER, T_TWO);
 focus([1484, 832], 64, T_TWO + 0.2, T_SWEPT + 1.8);
 PLACE_LABEL("Redoubt 9", R9P, T_R9 + 0.2, { dx: -112, dy: -14, size: 24 });
@@ -248,7 +248,7 @@ const CAS = CARD("", "AMERICANS ~40 KILLED &amp; WOUNDED", "#c9b48a", T_LOST, T_
 { const s = document.createElement("div"); s.style.cssText = "font-size:46px;letter-spacing:.06em;color:#f7f3ea;margin-top:6px"; s.textContent = "FRENCH ~100"; CAS.firstElementChild.appendChild(s);
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FR100); SFX("tick", T_FR100 + 0.1); }
 const LINK = [[1455, 872], [1469, 852], [1498, 812], [1514, 796], [1534, 788]];
-TRENCH(LINK, T_JOINED - 0.2, { dur: 1.8 });
+TRENCH(LINK, T_JOINED - 0.2, { dur: 1.8, side: "allies", front: [1460, 800] });
 march("ag1", [[1462, 929], [1446, 906], [1428, 896]], T_GUNS, 1.6, { dustOp: 0.2 });
 march("aa", [[1530, 906], [1526, 880], [1522, 860]], T_GUNS + 0.15, 1.6, { dustOp: 0.2 });
 shoot([1428, 896], [1376, 830], T_CLOSE + 0.1, { unit: "ag1", r: 6 });

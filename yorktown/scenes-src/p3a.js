@@ -81,10 +81,10 @@ B.date("3 OCT 1781", T_3OCT, null, 32); SFX("tick", T_3OCT + 0.1);
 // the Fusiliers' Redoubt upriver, the Gloucester works across the narrows
 // ---------------------------------------------------------------------------------------------------------------------------------
 const BLINE = YKL([[1291, 715], [1318, 793], [1376, 832], [1428, 827], [1463, 796], [1489, 758]]);
-TRENCH(BLINE, 0, { face: 1 });
+TRENCH(BLINE, 0, { side: "british" });
 const OW = [YKL([[1162, 770], [1185, 800], [1215, 806]]), YKL([[1318, 1002], [1350, 1010], [1384, 1002]]), YKL([[1462, 998], [1494, 1004], [1526, 994]])];
-OW.forEach((pts) => TRENCH(pts, 0, { face: 1 }));
-TRENCH(YKL([[1432, 486], [1468, 474], [1500, 484]]), 0, { face: -1 });   // Gloucester works across the neck
+const OWB = OW.map((pts) => TRENCH(pts, 0, { side: "british" }));   // British outer works (allied colour once the allies walk in, p3-2)
+TRENCH(YKL([[1432, 486], [1468, 474], [1500, 484]]), 0, { side: "british" });   // Gloucester works across the neck
 REDOUBT("r9", YK(1469, 852), 0, { side: "british", rot: 12, px: 26 }); REDOUBT("r10", YK(1498, 812), 0, { side: "british", rot: -8, px: 26 });
 REDOUBT("rfus", YK(1194, 635), 0, { side: "british", rot: 4, px: 26 });
 const S5 = { s: SY(1.45) };
@@ -156,6 +156,7 @@ const DAWNP = { f2: [1190, 778], a1: [1350, 988], a2: [1494, 980] };
 march("f2", YKL([RING.f2, [1120, 772], DAWNP.f2]), T_WALK - 0.3, 2.4, { dustSize: 8, dustOp: 0.4 });
 march("a1", YKL([RING.a1, [1325, 1025], DAWNP.a1]), T_WALK - 0.2, 2.4, { dustSize: 8, dustOp: 0.4 });
 march("a2", YKL([RING.a2, [1478, 1012], DAWNP.a2]), T_WALK - 0.1, 2.4, { dustSize: 8, dustOp: 0.4 });
+tl.to(OWB, { opacity: 0, duration: 0.6 }, T_WALK + 0.6); OW.forEach((pts) => TRENCH(pts, T_WALK + 0.6, { side: "allies", dur: 0.6 }));
 HATCH(YKL([[1120, 690], [1250, 690], [1300, 800], [1370, 860], [1440, 885], [1530, 865], [1600, 900], [1640, 960], [1560, 1030], [1400, 1040], [1250, 1020], [1120, 880]]), "allies", T_WALK + 0.6, { hold: 2.2 });
 LIGHT("day", T_WALK + 2.8, 2.5);
 // ---------------------------------------------------------------------------------------------------------------------------------

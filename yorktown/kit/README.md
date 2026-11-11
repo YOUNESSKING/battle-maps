@@ -121,3 +121,12 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
 - Redoubts: the garrison colour now fills the work (`REDOUBT_TAKEN` turns it allied blue).
 - `BOAT(pts, t, dur, o)`: live flatboats on the water (e.g. the failed escape across the York, night 16-17 Oct; `o.drift` = blown downstream).
 - `LABEL_AUDIT` also checks live river names (`RIVER`) while they are visible.
+
+**r4 (2026-11-11, owner: "the front lines would be in colours"; proof `build/sheet-kit-r4.jpg`).** Backwards-compatible (same signatures); rebuild scenes.
+- `TRENCH(pts, t, o)` now draws in the SIDE COLOUR with the locked glow (15 px on screen, 0.47) + coloured line + thin dark ink core + pale parapet
+  (still reads as a trench). Side: `o.side` "allies" | "british"; old calls without it: `face: 1` = British, else allies. `o.front = [x, y]` (a point on the
+  British side) makes that trench the REAL front: the two-colour band (red toward the British, blue toward the allies).
+- New `FRONT(pts, t, { enemy | red: "left"|"right" })` (two-colour band, constant 15 px), `SIDECOL(side)`, `LINE_LAYERS(...)` (generic constant-width lines).
+- Colours: allies #2c57b7 / British #bc2528 by day; slate #4a6a9a / brick #a8503c at night (`LIVING({ light: "night" })` sets the night palette).
+- `REDOUBT` is filled + glowing in its garrison colour; `REDOUBT_TAKEN` switches fill + glow to allied blue.
+- `march()` draws the advance trail in the side colour (solid, thin, fades ~2 s after arrival); `{ trail: false }` turns it off. `arw()` arrows were already solid side colour.

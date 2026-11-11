@@ -1166,6 +1166,8 @@ const UNIT = (id, side, p, type = "infantry", o = {}) => {
 // march a unit along a polyline (map px) with dust behind it (2f.5): t..t+dur
 let LV = null;   // LivingW instance (living())
 const march = (id, pts, t, dur, o = {}) => { along(id, pts, t, dur, o.n || 24);
+  if (o.trail !== false) { const side = B.units[id].el.classList.contains("carth") ? "allies" : "british";   // owner r4: the advance trail in the side colour (solid, thin, fades ~2 s after arrival)
+    LINE_LAYERS(pts, [{ col: SIDECOL(side), w: 3.2, op: 0.85 }], t, { dur, until: t + dur + 2.0 }); }
   if (o.dust !== false && LV) LV.dust(B.units[id].el, t, t + dur, { opacity: o.dustOp ?? 0.5, size: o.dustSize ?? 60 / CAM_S, every: 0.15 })
     .forEach((d) => { const r = parseFloat(d.style.width) / 2, x = parseFloat(d.style.left) + r, y = parseFloat(d.style.top) + r;   // no dust on a carved town name
       if (LABEL_BOXES(12, r).some(([x0, y0, x1, y1]) => x > x0 && x < x1 && y > y0 && y < y1)) d.remove(); }); };
@@ -1226,26 +1228,53 @@ const SIDEFLAG = (nation, p, t = 0, until = null) => { let el;
   BANNERS.filter((b) => b.side === rec.side).forEach((b) => { tl.to(el, { autoAlpha: 0, duration: 0.3 }, b.t); }); return el; };
 
 // ---------- 1781 siege works (live, drawn on their spoken word) ----------
-// TRENCH(pts, t, o): a parallel / approach trench dug along pts (map px): dark ditch + pale parapet thrown up toward the enemy, drawn over o.dur s
-//   (o.dur default 2.0; o.face = +1 / -1 which side the parapet is on; widths constant on screen)
-const TRENCH = (pts, t, o = {}) => { const g = document.createElementNS(NSs, "g"), d = "M" + pts.map((q) => q.map((v) => v.toFixed(1)).join(" ")).join(" L");
-  const mk = (col, w, op, off) => { const p = document.createElementNS(NSs, "path"); p.setAttribute("d", d); Object.entries({ fill: "none", stroke: col, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: op }).forEach(([k, v]) => p.setAttribute(k, v)); p.__w = w; p.__off = off; g.appendChild(p); return p; };
-  const ps = [mk("#2a2312", 9, 0.6, 0), mk("#d3c290", 3.6, 0.95, (o.face ?? -1) * 4.2), mk("#33280f", 4.4, 0.95, 0)];
-  OVL.appendChild(g); gsap.set(g, { opacity: 0 });
-  onCam((s) => ps.forEach((p) => { p.setAttribute("stroke-width", (p.__w / s).toFixed(3)); if (p.__off) p.setAttribute("transform", `translate(${(p.__off * 0.6 / s).toFixed(3)} ${(p.__off * 0.8 / s).toFixed(3)})`); }));
-  if (t > 0) { tl.set(g, { opacity: 1 }, t); let Lt = 0; for (let j = 1; j < pts.length; j++) Lt += Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
-    ps.forEach((p) => { gsap.set(p, { attr: { "stroke-dasharray": `${Lt} ${Lt + 10}`, "stroke-dashoffset": Lt } }); tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: o.dur ?? 2.0, ease: "power1.inOut" }, t); }); }
-  else gsap.set(g, { opacity: 1 });
+// ---------- front + siege lines in the SIDE COLOUR (owner 2026-11-11: "the front lines would be in colours"; locked glow: 15 px on screen, 0.47) ----------
+// SIDECOL(side) -> allied #2c57b7 / British #bc2528 by day; slate #4a6a9a / brick #a8503c at night (LIVING({ light: "night" }) or NIGHT_DIM at 0).
+let YT_NIGHT = false;
+const SIDECOL = (side) => SIDEK(side) === "carth" ? (YT_NIGHT ? "#4a6a9a" : "#2c57b7") : (YT_NIGHT ? "#a8503c" : "#bc2528");
+let __LID = 0;
+// LINE_LAYERS(pts, layers, t, o): draws stroke layers {col, w, op, blur, off} (w / off in SCREEN px, constant at every camera scale; off = normal
+//   offset, + = right of travel) along pts (map px), drawn on over o.dur from t (or present at 0), o.until fades it. Returns the <g>.
+const LINE_LAYERS = (pts, layers, t, o = {}) => { const g = document.createElementNS(NSs, "g"), id = "ytl" + (++__LID), fl = document.createElementNS(NSs, "filter");
+  fl.setAttribute("id", id); ["x", "y"].forEach((k) => fl.setAttribute(k, "-30%")); ["width", "height"].forEach((k) => fl.setAttribute(k, "160%")); fl.innerHTML = '<feGaussianBlur stdDeviation="2"/>';
+  let defs = OVL.querySelector("defs"); if (!defs) { defs = document.createElementNS(NSs, "defs"); OVL.insertBefore(defs, OVL.firstChild); } defs.appendChild(fl);
+  const off = (d) => pts.map((p, i) => { const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+    return [p[0] - (dy / L) * d, p[1] + (dx / L) * d]; });
+  const ps = layers.map((L) => { const p = document.createElementNS(NSs, "path");
+    Object.entries({ fill: "none", stroke: L.col, opacity: L.op, "stroke-linecap": "round", "stroke-linejoin": "round", pathLength: 1 }).forEach(([k, v]) => p.setAttribute(k, v));
+    if (L.blur) p.setAttribute("filter", `url(#${id})`); g.appendChild(p); return [p, L]; });
+  OVL.appendChild(g);
+  onCam((s) => { ps.forEach(([p, L]) => { p.setAttribute("stroke-width", (L.w / s).toFixed(3)); p.setAttribute("d", "M" + off((L.off || 0) / s).map((q) => q[0].toFixed(2) + " " + q[1].toFixed(2)).join(" L")); });
+    fl.firstChild.setAttribute("stdDeviation", (15 * 0.35 / s).toFixed(3)); });
+  if (t > 0) { const P = ps.map(([p]) => p); gsap.set(P, { attr: { "stroke-dasharray": "1 2", "stroke-dashoffset": 1 } }); tl.to(P, { attr: { "stroke-dashoffset": 0 }, duration: o.dur ?? 2.0, ease: "power1.inOut" }, t); }
   if (o.until != null) tl.to(g, { opacity: 0, duration: 0.6 }, o.until); return g; };
+// which side of the polyline a point lies on: +1 right of travel, -1 left (screen coords, y down)
+const SIDE_OF = (pts, e) => { const i = Math.floor((pts.length - 1) / 2), a = pts[i], b = pts[Math.min(i + 1, pts.length - 1)];
+  return ((b[0] - a[0]) * (e[1] - a[1]) - (b[1] - a[1]) * (e[0] - a[0])) > 0 ? 1 : -1; };
+// FRONT(pts, t, o): the REAL front where the two sides face each other: the locked two-colour glowing band (15 px, glow 0.47), red on the British
+//   side, blue on the allied side. o.enemy = a point on the British side (map px), or o.red = "left" | "right" (of travel). o.ink: thin trench core.
+const FRONT = (pts, t, o = {}) => { const r = o.red ? (o.red === "right" ? 1 : -1) : SIDE_OF(pts, o.enemy || PLACE("yorktown")), W = 15, gl = o.glow ?? 0.47;
+  const R = SIDECOL("british"), Bl = SIDECOL("allies");
+  return LINE_LAYERS(pts, [{ col: R, w: W, op: gl, blur: true, off: r * W * 0.55 }, { col: Bl, w: W, op: gl, blur: true, off: -r * W * 0.55 },
+    { col: "rgba(20,16,10,0.55)", w: W * 0.3, op: 1 }, { col: R, w: W * 0.16, op: 1, off: r * W * 0.09 }, { col: Bl, w: W * 0.16, op: 1, off: -r * W * 0.09 },
+    ...(o.ink !== false ? [{ col: "#1e180c", w: 1.3, op: 0.85 }] : [])], t, o); };
+// TRENCH(pts, t, o): a trench / parallel / line of works in the SIDE COLOUR (o.side "allies" | "british"; default from o.face: +1 = British
+//   line, else allies): coloured glow (15 px, 0.47) + coloured line + thin dark ink core + pale parapet toward the enemy (still reads as a trench).
+//   o.front = a point on the enemy side -> this trench IS the contact line: drawn as the two-colour FRONT band (+ ink core). o.dur draw-on, o.until.
+const TRENCH = (pts, t, o = {}) => { const side = o.side || (o.face === 1 ? "british" : "allies");
+  if (o.front) return FRONT(pts, t, { ...o, enemy: o.front });
+  const c = SIDECOL(side), face = SIDE_OF(pts, o.enemy || (SIDEK(side) === "carth" ? PLACE("yorktown") : PLACE("first_parallel")));
+  return LINE_LAYERS(pts, [{ col: c, w: 15, op: o.glow ?? 0.47, blur: true }, { col: c, w: 4.2, op: 0.95 }, { col: "#1e180c", w: 1.6, op: 0.9 },
+    { col: "#e2d3a0", w: 1.1, op: 0.85, off: face * 2.8 }], t, o); };
 // REDOUBT(id, p, t, o): a closed earthwork (pentagonal parapet + ditch), constant ~o.px screen px (default 30); o.side colours its garrison edge
 //   (rome = British held); REDOUBT_TAKEN(el, t) flips it to the allies (blue edge) on the spoken capture word
-const REDOUBT = (id, p, t = 0, o = {}) => { const s = o.px || 40, col = SIDEK(o.side || "rome") === "carth" ? "#2c57b7" : "#bc2528";
-  const el = pinS(GG.pin(`<svg width="${s}" height="${s}" viewBox="-20 -20 40 40" style="display:block;overflow:visible;transform:rotate(${o.rot || 0}deg);filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.55))">
+const REDOUBT = (id, p, t = 0, o = {}) => { const s = o.px || 40, col = SIDECOL(o.side || "rome");
+  const el = pinS(GG.pin(`<svg width="${s}" height="${s}" viewBox="-20 -20 40 40" class="rd-svg" style="display:block;overflow:visible;transform:rotate(${o.rot || 0}deg);filter:drop-shadow(0 0 5px ${col}) drop-shadow(0 1px 1.5px rgba(0,0,0,.55))">
     <path d="M0 -16 L15 -5 L10 14 L-10 14 L-15 -5 Z" fill="none" stroke="#2a2312" stroke-width="6.5" opacity=".55"/>
     <path d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="rgba(160,140,90,.55)" stroke="#d6c693" stroke-width="3.2"/>
-    <path class="rd-edge" d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="${col}" fill-opacity=".45" stroke="${col}" stroke-width="2.6"/></svg>`, p[0], p[1], { t: t > 0 ? t : null }));
+    <path class="rd-edge" d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="${col}" fill-opacity=".75" stroke="${col}" stroke-width="2.8"/></svg>`, p[0], p[1], { t: t > 0 ? t : null }));
   if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.dataset.rid = id; return el; };
-const REDOUBT_TAKEN = (el, t) => tl.set(el.querySelector(".rd-edge"), { attr: { stroke: "#2c57b7", fill: "#2c57b7" } }, t);
+const REDOUBT_TAKEN = (el, t) => { const c = SIDECOL("allies"); tl.set(el.querySelector(".rd-edge"), { attr: { stroke: c, fill: c } }, t); tl.set(el.querySelector(".rd-svg"), { filter: `drop-shadow(0 0 5px ${c}) drop-shadow(0 1px 1.5px rgba(0,0,0,.55))` }, t); };
 
 // ---------- territory (STYLE_LOCK 2d.3 / 3b) ----------
 // FORM 1: HATCH(polys, side, t, o) ink line hatching ONLY on the ground taken, in the TAKER's colour (allied gains = blue), ~3 s then dissolves.
@@ -1269,7 +1298,7 @@ const STRIPES = (blueP, redP, t, o = {}) => [[blueP, "#2c57b7"], [redP, "#bc2528
 // LIVING(o) once per scene: o.clouds (0.1), o.water (true), o.light = initial preset (day | morning | afternoon | dusk | night)
 const LIVING = (o = {}) => { LV = LivingW({ tl, world: WORLD, before: OVL }); LV.clouds({ n: o.n || 6, opacity: o.clouds ?? 0.1, seed: o.seed || 7 });
   if (o.water !== false) LV.water(`assets/${YT.BASE}_m_water.png`, { opacity: o.waterOp ?? 0.18, paths: o.flow || [] });
-  if (o.light && o.light !== "day") LV.light(o.light, 0, { dur: 0.01, k: o.lightK ?? 0.45 }); if (o.light === "night" && o.dim !== false) NIGHT_DIM(0, o.dim ?? 0.72); return LV; };
+  if (o.light && o.light !== "day") LV.light(o.light, 0, { dur: 0.01, k: o.lightK ?? 0.45 }); if (o.light === "night") YT_NIGHT = true; if (o.light === "night" && o.dim !== false) NIGHT_DIM(0, o.dim ?? 0.72); return LV; };
 // NIGHT_DIM(t, k, dur): dims the live layers (units, banners, works, labels in #pins + #overlay) with the night, so the siege stays on screen
 //   but reads as night (k = brightness, 0.72 default); NIGHT_DIM(t, 1) brings them back. LIVING({ light: "night" }) calls it at 0.
 const NIGHT_DIM = (t, k = 0.72, dur = 1.5) => ["pins", "overlay"].forEach((id) => { const el = document.getElementById(id);
