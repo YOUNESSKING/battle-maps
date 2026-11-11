@@ -103,8 +103,8 @@ const BAY = [[1160, 772], [1128, 805], [1104, 850], [1100, 900], [1100, 950], [1
 [0, 1, 2, 3].forEach((k) => BOAT(sub(BAY, 0, 1, 20), T_MOST - 0.3 + k * 0.9, 8.0, { until: T_14 - 0.2, px: 30 }));
 BOAT([[1080, 893], [1098, 905], ...sub(BAY, 0.33, 1, 14)], T_BOATS - 1.4, 6.0, { until: T_14 - 0.2, px: 30 });
 // "Most of the troops sailed down the bay in boats": the troop transports as blue boxes sailing down the bay (with their trails)
-[0, 1, 2, 3, 4].forEach((k) => { const id = "tb" + k, f0 = 0.05 * k, pts = sub(BAY, f0, 0.62 + 0.07 * k, 16); UNIT(id, "allies", pts[0], "ship", { ech: "", t: T_MOST - 0.2 + k * 0.25 });
-  march(id, pts, T_MOST + k * 0.25, T_14 - T_MOST - 0.6, { dust: false }); });
+[0, 1, 2, 3, 4].forEach((k) => { const id = "tb" + k, f0 = 0.11 * k, pts = sub(BAY, f0, 0.48 + 0.11 * k, 16);   /* spaced ~60 px apart */ UNIT(id, "allies", pts[0], "ship", { ech: "", t: T_MOST - 0.2 + k * 0.25 });
+  march(id, pts, T_MOST + k * 0.25, T_14 - T_MOST - 0.6, { dust: false, trail: false }); });
 hideU(["tb0", "tb1", "tb2", "tb3", "tb4"], T_14 - 0.1);
 // "Washington rode": his banner rides south from the head of the bay (the rider box carries it)
 const R1 = [[1185, 748], [1125, 782], [1060, 812], [1012, 872], [982, 922], [972, 944]];

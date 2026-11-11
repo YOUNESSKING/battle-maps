@@ -316,7 +316,7 @@ const ARC = [[1548, 948], [1598, 912], [1626, 868], [1626, 820]];
 ["x3", "x2", "x0", "x1"].forEach((id, k) => { const p = POSAT(id, T_DOOR); KEY(id, T_DOOR - 0.3 + k * 0.15, p, "none"); KEY(id, T_DOOR + 1.6 + k * 0.15, ARC[k], "power2.inOut"); });
 HATCHW([[[1500, 768], [1650, 760], [1700, 870], [1660, 1000], [1505, 990], [1470, 880]]], "allies", T_SHUT - 0.05, 2.3);
 // the shut door as the owner's coloured line: a blue line from Cape Henry to Cape Charles through the French ships (stays)
-LINE_LAYERS([PLACE("cape_henry"), ...ARC, PLACE("cape_charles")], [{ col: SIDECOL("allies", T_SHUT), side: "allies", w: 15, op: 0.5, blur: true }, { col: SIDECOL("allies", T_SHUT), side: "allies", w: 4.6, op: 0.95 }, { col: "#1e180c", w: 1.4, op: 0.8 }], T_SHUT - 0.05, { dur: 1.2 });
+LINE_LAYERS([PLACE("cape_henry"), ...ARC, PLACE("cape_charles")], [{ col: SIDECOL("allies", T_SHUT), side: "allies", w: 24, op: 0.75, blur: true }, { col: SIDECOL("allies", T_SHUT), side: "allies", w: 7.5, op: 1 }, { col: "#e8eefc", w: 1.6, op: 0.8 }], T_SHUT - 0.05, { dur: 1.2 });
 // "Cornwallis was on the wrong side of it": his banner back at Yorktown
 BANNER("cornwallis", "Lord Cornwallis", "gb", [1152, 622], T_WRONG - 0.1, { side: "up" });
 focus([1170, 720], 90, T_WRONG - 0.1, T_WARN - 0.1);
