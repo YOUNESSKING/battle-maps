@@ -51,7 +51,7 @@ const camApply = () => { const c = camAt(tl.time()); CAM.cx = c[0]; CAM.cy = c[1
   const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
 const CW = [1400, 735, 0.76], CW2 = [1400, 780, 0.76], CW3 = [1420, 790, 0.77], CD = [1432, 772, 0.79], CH1 = [1505, 425, 2.0], CH2 = [1492, 445, 2.0],
-  CS1 = [1420, 600, 1.2], CS2 = [1385, 620, 1.2], CE1 = [1250, 712, 1.7], CE2 = [1238, 722, 1.75], CC1 = [1300, 930, 0.8], CC2 = [1290, 945, 0.82], CB = [1240, 1225, 1.15];
+  CS1 = [1420, 600, 1.2], CS2 = [1385, 620, 1.2], CE1 = [1262, 712, 1.6], CE2 = [1252, 722, 1.65], CC1 = [1300, 930, 0.8], CC2 = [1290, 945, 0.82], CB = [1240, 1225, 1.15];
 camera([[0, ...CW]]);
 seg(0, T_ADM, CW, CW2); seg(T_ADM, T_PUT, CW2, CW3); seg(T_PUT, T_DID, CW3, CD);
 seg(T_INST - 0.1, T_INST + 2.6, CD, CH1, "power2.inOut"); seg(T_INST + 2.7, T_29 - 0.4, CH1, CH2);
@@ -71,7 +71,7 @@ const scr0 = (html, css) => { const el = document.createElement("div"); el.style
 const CARD = (kick, big, col, t, until, o = {}) => { const el = scr0(`<div style="padding:12px 46px 16px;background:rgb(18,16,12);border-top:6px solid ${col};font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 44px rgba(0,0,0,.6)">
     ${kick ? `<div class="k" style="font-size:24px;letter-spacing:.34em;color:#d8c9a3">${kick}</div>` : ""}<div class="b" style="font-size:${o.size || 72}px;letter-spacing:.05em;line-height:1.08">${big}</div>
     ${o.sub ? `<div class="s" style="font-size:30px;letter-spacing:.24em;color:#d8c9a3;margin-top:4px">${o.sub}</div>` : ""}</div>`,
-    `left:0;right:0;top:${o.top ?? 150}px;display:flex;justify-content:center;transform-origin:50% 30%;`);
+    o.css || `left:0;right:0;top:${o.top ?? 150}px;display:flex;justify-content:center;transform-origin:50% 30%;`);
   slam(el, t, { from: o.from || 1.6, shake: o.shake ?? 4, until }); return el; };
 // ---------------------------------------------------------------------------------------------------------------------------------
 // frame 0 = p1a's last frame
@@ -104,7 +104,7 @@ arw({ pts: NPT, side: "carth", t: T_ALLY + 0.1, dur: 2.2, width: AW(CW[2], 9) })
 SIDEFLAG("fr", "fr2", T_ALLY + 0.4);
 const BR = BFREE("rochambeau", "Comte de Rochambeau", "fr", [1792, 330], T_ROCH);
 // "the Comte de Grasse": a blue ship box + a thin line from the bottom edge (the Caribbean), north to the open sea off the capes
-const DG1 = [[1500, 1640], [1470, 1500], [1440, 1380]];
+const DG1 = [[1500, 1640], [1470, 1480], [1440, 1330]];
 UNIT("ff1", "allies", DG1[0], "ship", { ech: "" });
 march("ff1", DG1, T_DG - 0.1, 3.2, { dust: false });
 trail(DG1, "#1f4fc4", 3.2 / CW2[2], T_DG, 3.0, null);
@@ -114,26 +114,26 @@ PLACE_LABEL("Dobbs Ferry", [1555, 402], T_DOBBS, { dx: -112, dy: -12, size: 22 }
 focus([1600, 395], 85, T_DOBBS, T_ANS + 1.6);
 // "De Grasse was coming, with twenty-eight ships of the line and more than three thousand soldiers"
 UNIT("ff2", "allies", [1500, 1460], "ship", { ech: "", t: T_COMING + 0.1 }); UNIT("ff3", "allies", [1388, 1470], "ship", { ech: "", t: T_COMING + 0.3 });
-B.move("ff2", T_COMING + 0.4, 3.0, 1505, 1395); B.move("ff3", T_COMING + 0.5, 3.0, 1380, 1405);
-const C28 = CARD("", "28 SHIPS OF THE LINE", "#1f4fc4", T_28 - 0.05, T_PAY - 0.2, { size: 64, top: 160 });
+B.move("ff2", T_COMING + 0.4, 3.0, 1508, 1318); B.move("ff3", T_COMING + 0.5, 3.0, 1395, 1360);
+const C28 = CARD("", "28 SHIPS OF THE LINE", "#1f4fc4", T_28 - 0.05, T_PAY - 0.2, { size: 64, css: "right:130px;top:560px;transform-origin:50% 30%;" });
 { const s = document.createElement("div"); s.style.cssText = "font-size:30px;letter-spacing:.24em;color:#9fc0ea;margin-top:4px"; s.textContent = "3,000+ SOLDIERS"; C28.firstElementChild.appendChild(s);
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_3K + 0.1); SFX("tick", T_3K + 0.15); }
 // "he had sailed to Havana": a short arrow up from the bottom edge to the fleet, marked HAVANA; silver glints on the fleet
-arw({ pts: [[1290, 1650], [1340, 1520], [1400, 1440]], side: "carth", t: T_HAV - 0.25, dur: 0.9, width: AW(CW3[2], 9) });
-PLACE_LABEL("Havana", [1262, 1462], T_HAV, { size: 24 });
+arw({ pts: [[1290, 1650], [1330, 1500], [1395, 1385]], side: "carth", t: T_HAV - 0.25, dur: 0.9, width: AW(CW3[2], 9) });
+PLACE_LABEL("Havana", [1262, 1400], T_HAV, { size: 24 });
 const GLINT = (p, t, n = 5, r = 30) => { for (let k = 0; k < n; k++) { const a = k * 2.4, q = [p[0] + Math.cos(a) * r * (0.4 + (k % 3) * 0.3), p[1] + Math.sin(a) * r * 0.6];
     const el = pinS(GG.pin(`<svg width="22" height="22" viewBox="-11 -11 22 22" style="display:block;overflow:visible;filter:drop-shadow(0 0 4px #ffd66a)"><path d="M0 -10 L2 -2 L10 0 L2 2 L0 10 L-2 2 L-10 0 L-2 -2 Z" fill="#fff4c4"/></svg>`, q[0], q[1], {}));
     gsap.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.3, rotation: 0 }, { autoAlpha: 1, scale: 1.1, rotation: 45, duration: 0.3, immediateRender: false }, t + k * 0.18);
     tl.to(el, { autoAlpha: 0, scale: 0.4, duration: 0.35 }, t + k * 0.18 + 0.35); } };
-GLINT([1440, 1395], T_SILVER, 6, 60);
+GLINT([1450, 1335], T_SILVER, 6, 60);
 // "But not to New York. To the Chesapeake Bay.": focus on New York, then the fleet line bends into the bay; carved bay name
 focus([1560, 470], 85, T_NOTNY - 0.1, T_BAY - 0.15);
 const FH = [[1268, 1262], [1340, 1282], [1300, 1330]];
-trail([[1440, 1385], [1380, 1340], [1300, 1325], [1215, 1335]], "#1f4fc4", 3.2 / CW3[2], T_BAY, 1.4, null);
+trail([[1440, 1335], [1380, 1320], [1300, 1325], [1215, 1335]], "#1f4fc4", 3.2 / CW3[2], T_BAY, 1.4, null);
 B.move("ff1", T_BAY, 3.0, ...FH[0]); B.move("ff2", T_BAY + 0.15, 3.0, ...FH[1]); B.move("ff3", T_BAY + 0.3, 3.0, ...FH[2]);
-RIVER("chesapeake", "Chesapeake Bay", T_BAY + 0.2, { s: CW3[2], near: [1125, 1060], side: "left", hw: 16 });
+RIVER("chesapeake", "Chesapeake Bay", T_BAY + 0.2, { s: CW3[2], near: LYT(38.45, -76.36), side: "left", hw: 16, size: 24 });
 // "only until the middle of October"
-CARD("", "UNTIL MID-OCTOBER", "#c9b48a", T_OCT - 0.05, T_PUT - 0.6, { size: 64, top: 160 });
+CARD("", "UNTIL MID-OCTOBER", "#c9b48a", T_OCT - 0.05, T_PUT - 0.6, { size: 64, css: "right:130px;top:560px;transform-origin:50% 30%;" });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-4: the ONE "What would you do?" card (E.decide), the map keeps moving under it
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -165,11 +165,10 @@ focus([1560, 470], 90, T_ATT2, T_SOUTH - 0.2);
 UNIT("amE", "allies", [1600, 330], "engineers", { ech: "", t: T_INST + 1.6 }); UNIT("amS", "allies", [1680, 330], "supply", { ech: "", t: T_INST + 1.8 });
 UNIT("frA", "allies", [1760, 334], "artillery", { ech: "", t: T_INST + 2.0 });
 // the two allied stakes move west of the Hudson with the armies (off the crossing): Washington SW of the staging ground, Rochambeau NW
-BMOVE(BW, [[1500, 335], [1385, 450]], T_INST - 0.1, 2.7); BMOVE(BR, [[1792, 330], [1470, 300]], T_INST - 0.1, 2.7);
+BMOVE(BW, [[1500, 335], [1385, 450]], T_INST - 0.1, 2.7); BMOVE(BR, [[1792, 330], [1700, 290]], T_INST - 0.1, 2.7);
 hideU(["ff1", "ff2", "ff3"], T_INST + 0.3);
 // "Leaving part of his army to guard the Hudson": two boxes stay in the Highlands (north, West Point)
-const HG = LYT(41.39, -73.956);
-UNIT("hg1", "allies", [HG[0] - 6, HG[1] + 6], "infantry", { ech: "X", t: T_LEAVE + 0.2 }); UNIT("hg2", "allies", [HG[0] + 30, HG[1] - 10], "artillery", { ech: "", t: T_LEAVE + 0.5 });
+UNIT("hg1", "allies", [1575, 296], "infantry", { ech: "X", t: T_LEAVE + 0.2 }); UNIT("hg2", "allies", [1612, 288], "artillery", { ech: "", t: T_LEAVE + 0.5 });
 RIVER("hudson", "Hudson", T_HUD, { s: CH1[2], near: LYT(41.30, -73.95), side: "right", hw: 10 });
 B.date("20 AUG 1781", T_20, T_25 - 0.06, 32); SFX("tick", T_20 + 0.1);
 B.date("25 AUG 1781", T_25, T_29 - 0.08, 32); SFX("tick", T_25 + 0.1);
@@ -178,22 +177,22 @@ const KF_E = [1553, 348], KF_W = [1529, 341];
 const XP = (from, to) => [from, [from[0], 346], KF_E, KF_W, [1512, 360], [1496, 382], to];
 const STG = { am1: [1488, 425], amE: [1452, 414], amA: [1470, 452], amS: [1436, 452], fr1: [1508, 392], frA: [1474, 384] };
 const ORDER = [["am1", [1560, 372]], ["amE", [1600, 330]], ["amA", [1640, 360]], ["amS", [1680, 330]], ["fr1", [1720, 360]], ["frA", [1760, 334]]];
-ORDER.forEach(([id, p], i) => march(id, XP(p, STG[id]), T_67K + 0.35 * i, (T_DEC + 1.2 - T_67K) - 0.25 * i, { dustSize: 22, dustOp: 0.45 }));
+ORDER.forEach(([id, p], i) => march(id, XP(p, STG[id]), T_67K - 0.4 + 0.8 * i, 4.4, { dustSize: 22, dustOp: 0.45 }));
 [0, 1, 2].forEach((k) => BOAT([KF_E, KF_W], T_CROSS - 0.6 + k * 1.1, 1.4, { until: T_DEC + 1.2 + k * 0.3, px: 30 }));
-PLACE_LABEL("King's Ferry", [1541, 338], T_KF - 0.05, { dx: 84, dy: -30, size: 22 });
+PLACE_LABEL("King's Ferry", [1541, 338], T_KF - 0.05, { dx: -90, dy: -40, size: 22 });
 focus([1541, 350], 60, T_CROSS, T_DEC - 0.1);
 // "French bakers built big brick ovens at Chatham": three small brick ovens with smoke at Chatham; the place name
-const OVEN = (p, t) => { const el = pinS(GG.pin(`<svg width="22" height="16" viewBox="-11 -10 22 16" style="display:block;overflow:visible;filter:drop-shadow(1px 1.5px 1px rgba(0,0,0,.55))">
+const OVEN = (p, t) => { const el = pinS(GG.pin(`<svg width="34" height="25" viewBox="-11 -10 22 16" style="display:block;overflow:visible;filter:drop-shadow(1px 1.5px 1px rgba(0,0,0,.55))">
   <path d="M-10 5 L-10 -1 Q0 -11 10 -1 L10 5 Z" fill="#9a4a2e" stroke="#3a1a10" stroke-width="1.2"/><path d="M-3.5 5 L-3.5 1 Q0 -3 3.5 1 L3.5 5 Z" fill="#1d120c"/>
   <path d="M-7 0 L7 0 M-8 3 L8 3" stroke="#6b2e1c" stroke-width=".7"/></svg>`, p[0], p[1], {}));
   tl.fromTo(el, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: "back.out(2)", immediateRender: false }, t); return el; };
 const OV = [[1430, 478], [1444, 486], [1458, 479]];
 OV.forEach((p, i) => OVEN(p, T_OVENS + i * 0.2));
-for (let tt = T_OVENS + 0.5; tt < T_FLAT + 4; tt += 0.55) OV.forEach((p, i) => K.smoke(p[0] + i * 0.3, p[1] - 4, tt + i * 0.17, { n: 1, r: 3.2, rise: 9, life: 2.2, alpha: 0.4, drift: 3 }));
+for (let tt = T_OVENS + 0.5; tt < T_FLAT + 4; tt += 0.55) OV.forEach((p, i) => K.smoke(p[0] + i * 0.3, p[1] - 4, tt + i * 0.17, { n: 1, r: 6, rise: 14, life: 2.4, alpha: 0.6, drift: 4 }));
 PLACE_LABEL("Chatham", [1444, 486], T_CHAT, { dy: 10, size: 22 });
 // "Thirty flatboats rolled across New Jersey on wheels": a row of flatboats on wheels rolling toward the Staten Island shore
-const WBOAT = (pts, t, dur) => { const el = pinS(GG.pin(`<svg width="30" height="20" viewBox="-15 -10 30 20" style="display:block;overflow:visible;filter:drop-shadow(1px 1.5px 1px rgba(0,0,0,.55))">
-  <path d="M-14 -2 L-11 -8 L11 -8 L14 -2 Z" fill="#6e543a" stroke="#2e2216" stroke-width="1.2"/><rect x="-12" y="-2" width="24" height="3" fill="#4a3826"/>
+const WBOAT = (pts, t, dur) => { const el = pinS(GG.pin(`<svg width="44" height="30" viewBox="-15 -10 30 20" style="display:block;overflow:visible;filter:drop-shadow(1px 1.5px 1px rgba(0,0,0,.55))">
+  <path d="M-14 -2 L-11 -8 L11 -8 L14 -2 Z" fill="#b08a5c" stroke="#2e2216" stroke-width="1.2"/><rect x="-12" y="-2" width="24" height="3" fill="#6e543a"/>
   <circle cx="-7" cy="5" r="4" fill="none" stroke="#2e2216" stroke-width="2"/><circle cx="7" cy="5" r="4" fill="none" stroke="#2e2216" stroke-width="2"/>
   <circle cx="-7" cy="5" r="1" fill="#2e2216"/><circle cx="7" cy="5" r="1" fill="#2e2216"/></svg>`, pts[0][0], pts[0][1], {}));
   tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, t); pinAlong(el, pts, t, dur, 16); return el; };
@@ -204,17 +203,17 @@ tl.to(WBS, { autoAlpha: 0, duration: 0.5 }, T_29 + 0.4);
 PLACE_LABEL("Staten Island", [1500, 528], T_STATEN, { dx: 18, dy: 30, size: 22 });
 focus([1490, 515], 70, T_STATEN - 0.1, T_COLS + 0.4);
 // "And the columns marched toward New York harbor, as if to attack": three columns curl east toward Staten Island
-march("am1", [STG.am1, [1484, 456], [1490, 492]], T_COLS + 0.1, 2.6, { dustSize: 22, dustOp: 0.45 });
-march("amE", [STG.amE, [1466, 450], [1472, 478]], T_COLS + 0.3, 2.6, { dustSize: 22, dustOp: 0.45 });
-march("amA", [STG.amA, [1468, 490], [1474, 522]], T_COLS + 0.5, 2.4, { dustSize: 22, dustOp: 0.45 });
-arw({ pts: [[1494, 500], [1496, 516], [1494, 530]], side: "carth", t: T_HARB, dur: 0.7, width: AW(CH2[2], 9) });
+march("am1", [STG.am1, [1478, 460], [1470, 496]], T_COLS + 0.1, 2.6, { dustSize: 22, dustOp: 0.45 });
+march("amE", [STG.amE, [1480, 440], [1500, 500]], T_COLS + 0.3, 2.6, { dustSize: 22, dustOp: 0.45 });
+
+arw({ pts: [[1478, 506], [1484, 520], [1486, 532]], side: "carth", t: T_HARB, dur: 0.7, width: AW(CH2[2], 9) });
 // Clinton's banner at New York: a small "?" over it ("as if to attack")
-const MARK = (w, txt, col, t, until) => { const m = document.createElement("div");
-  m.style.cssText = `position:absolute;left:50%;top:-58px;transform:translateX(-50%);width:44px;height:44px;border-radius:50%;background:rgb(18,16,12);border:3px solid ${col};color:${col};font:700 32px/38px Oswald;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.6)`;
-  m.textContent = txt; w.firstElementChild.appendChild(m); gsap.set(m, { autoAlpha: 0 });
-  tl.fromTo(m, { autoAlpha: 0, scale: 1.8 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t);
-  if (until != null) tl.to(m, { autoAlpha: 0, duration: 0.3 }, until); return m; };
-MARK(BC, "?", "#f0e6c8", T_ASIF, T_CLU - 0.05);
+const MARK = (uid, txt, col, t, until) => { const [x, y] = [B.units[uid].x, B.units[uid].y];
+  const el = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:97px;top:-147px;width:44px;height:44px;border-radius:50%;background:rgb(18,16,12);border:3px solid ${col};color:${col};font:700 32px/38px Oswald;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.6)">${txt}</div></div>`, x, y, {}));
+  el.style.zIndex = 60; gsap.set(el, { autoAlpha: 0 });
+  tl.fromTo(el.firstElementChild.firstElementChild, { scale: 1.8 }, { scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t); tl.set(el, { autoAlpha: 1 }, t);
+  if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
+MARK("ny3", "?", "#f0e6c8", T_ASIF, T_CLU - 0.05);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-6: the day-by-day clock: 29 AUG wheel south (Trenton), 2 SEP Philadelphia, "!" over Clinton, 3-4 SEP the French follow
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -222,29 +221,29 @@ B.date("29 AUG 1781", T_29, T_SEP2 - 0.08, 32); SFX("tick", T_29 + 0.1);
 B.date("2 SEP 1781", T_SEP2, T_34 - 0.08, 32); SFX("tick", T_SEP2 + 0.1);
 B.date("3-4 SEP 1781", T_34, T_SEP5 - 0.08, 32); SFX("tick", T_34 + 0.1);
 // Washington's stake moves to the south-east side for the march south (off Philadelphia and its carved name)
-BMOVE(BW, [[1385, 450], [1350, 560], [1380, 700], [1420, 860]], T_TURN, T_THEN + 1.8 - T_TURN);
+BMOVE(BW, [[1385, 450], [1355, 560], [1330, 700], [1300, 800], [1290, 910]], T_TURN, T_THEN + 1.8 - T_TURN);
 const SOUTH = [[1462, 496], [1440, 522], [1424, 545], [1411, 561], [1400, 580], [1393, 592], [1370, 612], [1345, 632], [1320, 656], [1300, 670], [1284, 682]];
 const ELK = [[1284, 682], [1262, 694], [1240, 708], [1222, 722]];
 // the American columns wheel south (dust): Washington's column to Chester, the others on to the head of the bay
-march("am1", [[1490, 492], ...SOUTH], T_TURN - 0.1, T_THEN - T_TURN + 1.8, { dustSize: 34, dustOp: 0.45 });
-march("amA", [[1474, 522], ...SOUTH, ...ELK, [1232, 748]], T_TURN + 0.2, T_CHEER - T_TURN + 1.5, { dustSize: 34, dustOp: 0.45 });
-march("amE", [[1472, 478], ...SOUTH, ...ELK, [1196, 718]], T_TURN + 0.5, T_CHEER - T_TURN + 1.0, { dustSize: 34, dustOp: 0.45 });
+march("am1", [[1470, 496], ...SOUTH], T_TURN - 0.1, T_THEN - T_TURN + 1.8, { dustSize: 34, dustOp: 0.45 });
+march("amA", [STG.amA, ...SOUTH, ...ELK, [1232, 748]], T_TURN + 0.2, T_CHEER - T_TURN + 1.5, { dustSize: 34, dustOp: 0.45 });
+march("amE", [[1500, 500], ...SOUTH, ...ELK, [1196, 718]], T_TURN + 0.5, T_CHEER - T_TURN + 1.0, { dustSize: 34, dustOp: 0.45 });
 march("amS", [STG.amS, [1440, 480], ...SOUTH, ...ELK, [1262, 744]], T_TURN + 0.8, T_CHEER - T_TURN + 1.6, { dustSize: 34, dustOp: 0.45 });
 focus([1330, 650], 80, T_PHIL - 0.1, T_THEN + 0.2);
 // "only around then did Clinton understand": a red "!" replaces the "?" over Clinton's banner
-MARK(BC, "!", "#ff5a4a", T_CLU - 0.05, T_SLIP + 4.5);
+MARK("ny3", "!", "#ff5a4a", T_CLU - 0.05, T_SLIP + 4.5);
 SFX("hit", T_CLU + 0.15);
 focus([1700, 470], 90, T_CLU - 0.1, T_34 - 0.1);
 // "On the third and fourth, the French followed": the French column (Rochambeau's banner) and guns follow the same road (dust)
 march("fr1", [STG.fr1, [1470, 440], [1462, 470], ...SOUTH.slice(0, 7), [1372, 606], [1365, 600]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6, { dustSize: 34, dustOp: 0.45 });
 march("frA", [STG.frA, [1470, 420], [1462, 470], ...SOUTH.slice(0, 5), [1414, 568], [1405, 572]], T_FRF - 0.3, T_CHEER - T_FRF + 1.6, { dustSize: 34, dustOp: 0.45 });
 hideU(["hg1", "hg2"], T_29 + 2.2);
-BMOVE(BR, [[1470, 300], [1462, 420], [1450, 560]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6);
+BMOVE(BR, [[1700, 290], [1560, 400], [1480, 600], [1470, 780]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-7: the head of the bay: hard money from the French war chest, Head of Elk, a month's pay in coin
 // ---------------------------------------------------------------------------------------------------------------------------------
 focus([1225, 735], 80, T_UNPAID, T_MORRIS - 0.2);
-CARD("", "HARD MONEY", "#c9b48a", T_HARD - 0.05, T_HARD + 3.0, { size: 64, top: 160 });
+CARD("", "HARD MONEY", "#c9b48a", T_HARD - 0.05, T_HARD + 3.0, { size: 64, css: "right:150px;top:740px;transform-origin:50% 30%;" });
 // "the French army's war chest": a French supply box (wheel) rolls from the French column down to Head of Elk
 UNIT("frS", "allies", [1352, 620], "supply", { ech: "", t: T_CHEST - 0.6 });
 march("frS", [[1352, 620], [1320, 656], [1300, 670], [1284, 682], [1262, 694], [1246, 712], [1250, 728]], T_CHEST - 0.1, T_ELK + 1.6 - T_CHEST, { dustSize: 22, dustOp: 0.45 });
@@ -264,10 +263,10 @@ UNIT("msg", "allies", [1205, 900], "cavalry", { ech: "", t: T_MSG - 0.5 });
 march("msg", [[1205, 900], [1196, 820], [1215, 760], [1250, 714], [1272, 696]], T_MSG - 0.3, 2.2, { dustSize: 26, dustOp: 0.45 });
 hideU(["msg"], T_DGIN + 1.2);
 // "De Grasse was in the Chesapeake": the French fleet INSIDE the capes (moved there off camera), a big blue ring pulses, French flag
-const FIN = [[1125, 1172], [1137, 1236], [1150, 1298]];
+const FIN = [[1168, 1135], [1162, 1200], [1160, 1268]];
 ["ff1", "ff2", "ff3"].forEach((id, i) => { B.move(id, T_SEP5 - 4, 2.5, ...FIN[i]); showU([id], T_DGIN - 0.4); });
 SIDEFLAG("fr", "ff2", T_DGIN);
-K.target(1140, 1236, T_DGIN + 0.1, { r: 75, side: "carth", until: T_DGIN + 4.6 });
+K.target(1162, 1200, T_DGIN + 0.1, { r: 75, side: "carth", until: T_DGIN + 4.6 });
 SFX("hit", T_DGIN + 0.25);
 // "When Rochambeau's boat came up to the wharf": a boat down the Delaware from Philadelphia to Chester
 BOAT([[1326, 668], [1312, 676], [1298, 688], [1290, 696]], T_BOAT, T_WHARF - T_BOAT + 0.4, { until: T_SLIP, px: 30 });
@@ -277,7 +276,7 @@ tl.to(BW.w.firstElementChild, { rotation: 4, duration: 0.25, yoyo: true, repeat:
 tl.to(BW.w.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, T_HAT + 1.3);
 SFX("hit", T_HAT + 0.1);
 // result card (spoken words): THE ARMY HAD SLIPPED AWAY · CLINTON STILL WAITING IN NEW YORK; focus on New York under it
-const RES = CARD("", "THE ARMY HAD SLIPPED AWAY", "#1f4fc4", T_SLIP - 0.05, T_PART - 0.35, { size: 66, top: 150 });
+const RES = CARD("", "THE ARMY HAD SLIPPED AWAY", "#1f4fc4", T_SLIP - 0.05, T_PART - 0.35, { size: 66, css: "right:110px;top:560px;transform-origin:50% 30%;" });
 { const s = document.createElement("div"); s.style.cssText = "font-size:34px;letter-spacing:.2em;color:#ff8a80;margin-top:6px"; s.textContent = "CLINTON STILL WAITING IN NEW YORK"; RES.firstElementChild.appendChild(s);
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_STILL); SFX("tick", T_STILL + 0.1); }
 focus([1690, 470], 95, T_STILL, T_PART - 0.3);

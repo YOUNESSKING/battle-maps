@@ -155,7 +155,7 @@ tl.set(SC2.map((id) => B.units[id].el), { autoAlpha: 0 }, T3 - 0.01);
 const LYK = layer("yorktown", true), YK = LT("yorktown");
 tl.set(LYK, { autoAlpha: 1 }, T3 - 0.01);
 cut(T3);
-B.date("14 OCT 1781", T3, T4, 32);
+B.date("14 OCT 1781", T3, null, 32);   // stays under the title card
 LIGHT("night", T3, 0.01, 1.0); if (typeof NIGHT_DIM === "function") NIGHT_DIM(T3, 0.8, 0.01);
 const SC3 = [];
 const BLINE = [[37.2385, -76.5178], [37.2332, -76.5155], [37.2305, -76.5105], [37.2309, -76.5060], [37.2330, -76.5030], [37.2356, -76.5008]].map(([a, b]) => YK(a, b));
@@ -175,12 +175,11 @@ tl.to(["yb1", "yb2"].map((id) => B.units[id].el), { autoAlpha: 0, duration: 0.4 
 REDOUBT_TAKEN(R10, T_MUSK + 0.4); REDOUBT_TAKEN(R9, T_MUSK + 0.7);
 const hb = (p, r) => [[p[0] - r, p[1] - r * 0.8], [p[0] + r * 1.1, p[1] - r], [p[0] + r, p[1] + r], [p[0] - r * 1.1, p[1] + r * 0.9]];
 HATCH([hb(R10p, 30), hb(R9p, 30)], "allies", T_MUSK + 0.4, { hold: 1.6 });
-SIDEFLAG("us", "as9", T3 - 0.02); SIDEFLAG("gb", "yb1", T3 - 0.02);
+SIDEFLAG("us", "as10", T3 - 0.02); SIDEFLAG("fr", "as9", T3 - 0.02); SIDEFLAG("gb", "yb1", T3 - 0.02);   // Americans on Redoubt 10, French on Redoubt 9
 wstampL("A NIGHT ATTACK", ...YK(37.2238, -76.5160), T_NATT, T_MUSK + 0.3, null, 28);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the title: the night shot dims, YORKTOWN 1781 slams on "Yorktown was won"
 // ---------------------------------------------------------------------------------------------------------------------------------
-B.date("1781", T4 + 0.02, null, 40);
 const TDIM = scr0("", "inset:0;background:linear-gradient(0deg,rgba(5,7,13,0.3) 0%,rgba(5,7,13,0.72) 70%);"); SCN.insertBefore(TDIM, document.getElementById("date"));
 tl.fromTo(TDIM, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, T4);
 const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight:700;padding:18px 70px 24px;background:rgb(14,12,10);border-top:7px solid #c9b48a;box-shadow:0 24px 50px rgba(0,0,0,.6)">

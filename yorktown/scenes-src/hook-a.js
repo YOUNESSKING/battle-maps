@@ -64,10 +64,9 @@ camera(camKeys());
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the allied army in camp above New York (Philipsburg / Dobbs Ferry, east of the Hudson): Americans + French, guns; columns shuffling
 const NYB = GD.bake.towns.new_york.label.box;   // New York carved name (keep >= 20 px off)
-UNIT("am1", "allies", [1576, 352], "infantry", { ech: "XX" }); UNIT("am2", "allies", [1668, 336], "infantry", { ech: "XX" });
-UNIT("amA", "allies", [1612, 318], "artillery", { ech: "" });
-march("am1", [[1576, 352], [1582, 362], [1588, 370]], 0, 6.0, { dustSize: 46, dustOp: 0.45 });
-march("am2", [[1668, 336], [1658, 346], [1648, 356]], 0.2, 6.0, { dustSize: 46, dustOp: 0.45 });
+UNIT("am1", "allies", [1606, 312], "infantry", { ech: "XX" }); UNIT("am2", "allies", [1712, 318], "infantry", { ech: "XX" });
+march("am1", [[1606, 312], [1592, 340], [1580, 368]], 0, 6.2, { dustSize: 58, dustOp: 0.6 });
+march("am2", [[1712, 318], [1684, 338], [1652, 356]], 0.1, 6.2, { dustSize: 58, dustOp: 0.6 });
 // the British: garrison on Staten Island + New York, the fleet in the harbour (red ship boxes on the move), Cornwallis's army at Yorktown
 UNIT("ny1", "british", [1478, 522], "infantry", { ech: "XX" });
 UNIT("rs1", "british", [1562, 600], "ship", { ech: "" }); UNIT("rs2", "british", [1618, 608], "ship", { ech: "" });
@@ -75,11 +74,11 @@ B.move("rs1", 0, 7, 1548, 590); B.move("rs2", 0, 7, 1602, 598);
 UNIT("cw1", "british", [1100, 1262], "infantry", { ech: "XX" });
 const FUS = SIDEFLAG("us", "am2", 0, T_DOWN + 1.2), FGB = SIDEFLAG("gb", "ny1", 0, T_DOWN + 1.2);
 // "its army": soft focus on the camp; UNPAID / MUTINY stamps on the empty ground west of the Hudson (one at a time, <= 3.5 s)
-focus([1615, 350], 95, T_ARMY, T_MUTINY + 1.0);
+focus([1630, 345], 100, at(H1, "broke"), T_MUTINY + 1.0);   // "broke": soft focus pulse on the camp (holds through "its army")
 wstampL("UNPAID", 1395, 330, T_UNPAID, T_MUTINY - 0.25, null, 30);
 wstampL("MUTINY", 1405, 405, T_MUTINY, T_DOWN + 0.2, null, 34);
 // the units of hook-1 that leave the frame in the dive fade out (they would sit as huge-spaced boxes at the frame edge)
-hideU(["am1", "am2", "amA", "ny1", "rs1", "rs2"], TZ0 + 0.6);
+hideU(["am1", "am2", "ny1", "rs1", "rs2"], TZ0 + 0.6);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-2: Yorktown (peninsula map px via PP)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -99,7 +98,7 @@ const RTYPE = ["infantry", "infantry", "infantry", "artillery", "infantry", "eng
 RING.forEach((p, i) => { const id = "al" + i, from = i === 0 ? [1562, 768] : [p[0] + (p[0] - 1761) * 0.55, p[1] + Math.max(20, (p[1] - 853) * 0.55)];
   UNIT(id, "allies", PP(...from), RTYPE[i], { ech: RECH[i], t: T_WEEKS + 0.08 * i });
   march(id, [PP(...from), PP(...p)], T_WEEKS + 0.2 + 0.08 * i, T_TRAP - T_WEEKS - 0.2 - 0.08 * i + 0.25, { dustSize: 40, dustOp: 0.45 }); });
-SIDEFLAG("us", "al1", T_WEEKS + 0.6, null);
+SIDEFLAG("us", "al6", T_WEEKS + 0.6, null); SIDEFLAG("fr", "al2", T_WEEKS + 0.6, null);   // Americans east (toward Redoubt 10), French west
 // French ships block the river mouth (ship boxes sail in from the bay)
 [[2150, 806], [2158, 856], [2148, 906]].forEach((p, i) => { const id = "fs" + i; UNIT(id, "allies", PP(p[0] + 430, p[1] - 30), "ship", { ech: "", t: T_WEEKS + 0.3 });
   B.move(id, T_WEEKS + 0.4, T_TRAP - T_WEEKS - 0.15, ...PP(...p)); });
