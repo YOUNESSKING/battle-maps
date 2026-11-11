@@ -1,0 +1,2 @@
+flock /tmp/stylew_map.lock python3 msw_vk.py mississippi /home/user/battle-maps/grant/assets/mississippi_w.jpg close=/home/user/battle-maps/grant/assets/mississippi_w_close.jpg green=1 tint=0 mult=1 main_r=5 prB=12 nB=1 creeks=8 prD=300 sea=/home/user/battle-maps/grant/assets/mississippi_land.png
+python3 -c "from PIL import Image; Image.open(\"/home/user/battle-maps/grant/assets/mississippi_w.jpg\").convert(\"RGB\").resize((2880, 1620), Image.LANCZOS).save(\"/home/user/battle-maps/grant/assets/media/vx_miss_w.jpg\", quality=92)"; echo MISSDONE

@@ -1,0 +1,20 @@
+{
+ "name": "yorktown_hd_lift",
+ "center": [
+  37.232,
+  -76.505
+ ],
+ "zoom": 14,
+ "origin_world_px": [
+  1204364,
+  1628349
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 7.61,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)",
+ "hd_scale": 2
+}

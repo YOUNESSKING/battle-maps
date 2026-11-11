@@ -1,0 +1,125 @@
+// m1c (m1-3..m1-4), Grant #16: Fort Donelson close-up, option 2 (fronts only) for the river fight + night, option 1 (territory) from dawn (the breakout).
+// 14 Feb 3 pm: Foote's four ironclads against the water batteries; the flagship hit ~60 times, two ironclads drift back, Foote wounded;
+// night: rain and snow, Grant's men without blankets. 15 Feb dawn (new angle, from the Union right): the breakout against the Union right,
+// three days' rations, the road out glows; the right wing breaks, no cartridges.
+// STYLE W (STYLE_LOCK 2d, restyle 2026-11-06): basemap donelson_w (z13, rivers rebuilt, works ridge drawn). Clean map; the two-colour front
+// where the sides touch; the ground the breakout takes hatches RED (gn_don_ctl_feb15acap, ~3 s). Foote's portrait rides his flagship (greys
+// on "wounded"); Grant (no unit here) = one corner badge <= 3.5 s. Captions cut to the two claims to remember.
+// Built with: python3 tools/m1_build.py m1c donelson_w m1-3 m1-4
+// @@BODY
+const P3 = "m1-3", P4 = "m1-4";
+const T_14 = at(P3, "On the fourteenth"), T_FOOTE = at(P3, "Foote brought"), T_BATTER = at(P3, "to batter the fort"), T_HIT = at(P3, "hit his flagship"),
+  T_60 = at(P3, "about sixty times"), T_DRIFT = at(P3, "Two of the ironclads drifted"), T_HELP = at(P3, "helpless"), T_WOUND = at(P3, "Foote himself was wounded"),
+  T_NIGHT = at(P3, "That night"), T_RAIN = at(P3, "rain and snow"), T_FREEZE = at(P3, "freezing and thawing"), T_BLANK = at(P3, "thrown away their blankets");
+const T_CHANCE = at(P4, "The Confederates saw their chance"), T_DAWN = at(P4, "At dawn on the fifteenth"), T_STRUCK = at(P4, "they struck the Union right"),
+  T_MOST = at(P4, "most of their garrison"), T_RATIONS = at(P4, "three days of rations"), T_HAVER = at(P4, "in their haversacks"),
+  T_LAST = at(P4, "not planning a last stand"), T_LEAVE = at(P4, "planning to leave"), T_ROAD = at(P4, "if the road opened"),
+  T_KNOW = at(P4, "Grant did not know that yet"), T_BREAK = at(P4, "his right wing was breaking"), T_MUSK = at(P4, "muskets but no cartridges"), T_NOC = at(P4, "no cartridges");
+// ---------- places (donelson map px) ----------
+const DON = [1388, 738], DOV = [1508, 756], WB = [[1362, 698], [1402, 714]];
+const WORKS = [[1540, 811], [1487, 832], [1429, 825], [1371, 796], [1312, 753], [1289, 702], [1307, 651], [1324, 630]];
+const ULINE = [[1557, 854], [1487, 876], [1406, 869], [1330, 832], [1266, 775], [1243, 709], [1254, 644], [1289, 601]];
+const MID = WORKS.map((q, i) => [(q[0] + ULINE[i][0]) / 2, (q[1] + ULINE[i][1]) / 2]);
+const PUSH = MID.map((q, i) => i < 4 ? [q[0] - [10, 20, 38, 46][i], q[1] + [60, 66, 58, 40][i]] : (i === 4 ? [q[0] - 14, q[1] + 12] : q));   // the breakout bulge
+const RIVC = [[1103, -16], [1132, 63], [1140, 134], [1164, 188], [1202, 238], [1242, 287], [1271, 323], [1291, 359], [1290, 395], [1285, 431], [1283, 467],
+  [1283, 503], [1293, 539], [1302, 553], [1318, 562], [1332, 597], [1340, 615]];   // the Cumberland from the north edge to the water batteries (donelson_rivers.json)
+const ROAD_OUT = [[1500, 800], [1480, 880], [1462, 980], [1450, 1100], [1470, 1250], [1500, 1420], [1520, 1600]];
+const CUMB = [[1120, 0], [1180, 200], [1240, 340], [1320, 500], [1400, 620], [1480, 690], [1600, 680], [1720, 640], [1840, 624], [1980, 700], [2100, 820]];
+// ---------- map: option 2 for the river fight and the night (the fronts say it); owner 2026-11-03 (territory when it helps):
+// at dawn the ring colours dissolve in (~2.8 s, m1_don_feb13), then the ground lost on the Union right turns red as the front
+// moves (m1_don_feb15a, the breakout bulge with the road out) ----------
+const LV = LivingK(B); LV.clouds({ n: 6, opacity: 0.12 });
+hand("assets/media/gn_don_ctl_feb15acap_mx.png", T_STRUCK + 1.2);   // the ground the breakout takes (Confederate gain = red ink)
+camera([[0, 1360, 640, 2.2], [T_FOOTE, 1355, 650, 2.4], [T_HIT, 1365, 655, 2.7], [T_DRIFT + 0.4, 1320, 590, 2.2], [T_WOUND + 0.4, 1320, 570, 2.1],
+  [T_NIGHT + 0.4, 1350, 720, 1.9], [T_BLANK, 1300, 740, 2.0], [T_CHANCE - 0.6, 1310, 760, 2.0],
+  [T_DAWN + 0.6, 1420, 820, 2.4], [T_RATIONS, 1420, 830, 2.5], [T_LEAVE, 1460, 900, 2.0], [T_KNOW, 1440, 870, 2.1], [T_BREAK + 0.4, 1410, 850, 2.3], [END, 1400, 850, 2.3]]);
+dateNow("12 FEBRUARY 1862", T_14 + 0.1); B.date("14 FEB · 3 PM", T_14 + 0.2, T_NIGHT - 0.1, 34); B.date("14 FEB · NIGHT", T_NIGHT, T_DAWN - 0.1, 34); B.date("15 FEB · DAWN", T_DAWN, null, 34);
+// ---------- flags (both on every frame) ----------
+flagS(FL.us, 1210, 600, 0, T_NIGHT + 0.6); flagS(FL.cs, 1470, 760, 0, T_NIGHT + 0.6);
+flagS(FL.us, 1215, 820, T_NIGHT + 0.4, END + 1); flagS(FL.cs, 1470, 720, T_NIGHT + 0.5, T_DAWN + 0.6);
+flagS(FL.cs, 1560, 770, T_DAWN + 0.4, END + 1);
+// ---------- the lines (option 2: the two-colour glowing front where the sides touch) ----------
+fortIcon(DON, 0, null, { s: 24 });   // critic r1: fort flags only at the surrender beats
+WB.forEach((p) => unitS("wb" + p[0], "rome", p, "artillery", null, { t: 0, w: 40, h: 27 }));
+// critic r1: the front moves with the breakout (cross-fade between positions: MID -> PUSH on the strike, PUSH -> PUSH2 as the right wing breaks)
+const PUSH2 = PUSH.map((q, i) => i < 4 ? [q[0] - 10, q[1] + [40, 45, 40, 25][i]] : q);
+const FR = frontS({ pts: MID, sideA: "carth", sideB: "rome", t: 0, dur: 0.01, width: FWc(2.3), until: T_STRUCK + 1.4 });
+const frontIn = (pts, t, until) => { const g = frontS({ pts, sideA: "carth", sideB: "rome", t, dur: 0.01, width: FWc(2.4), until }); tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 1.2, immediateRender: false }, t); return g; };
+frontIn(PUSH, T_STRUCK + 0.9, T_BREAK + 1.0); frontIn(PUSH2, T_BREAK + 0.7, END + 1);
+const UN = [["sm1", [1250, 660]], ["sm2", [1243, 720]], ["wal", [1268, 790]], ["mc1", [1340, 858]], ["mc2", [1420, 893]], ["mc3", [1500, 893]]];
+UN.forEach(([id, p]) => unitS(id, "carth", p, "infantry", null, { t: 0, size: "X" }));
+const RD = [["bu", [1306, 722]], ["c1", [1360, 770]], ["c2", [1430, 800]], ["c3", [1490, 808]]];
+RD.forEach(([id, p]) => unitS(id, "rome", p, "infantry", null, { t: 0, size: "X" }));
+// critic r1: the generals named in m1b keep their cards for the whole battle (same map), from frame 0
+unitS("fl", "rome", [1510, 744], "infantry", null, { t: 0, size: "X" }); unitS("ghq", "carth", [1205, 800], "infantry", null, { t: 0, size: "X" });
+pinPortrait("ghq", PHOTO("grant"), FL.us, "Grant", 0, END + 1, true, "upleft");
+pinPortrait("fl", PHOTO("floyd"), FL.cs, "Floyd", 0, END + 1, true, "upright");
+pinPortrait("c2", PHOTO("pillow"), FL.cs, "Pillow", 0, END + 1, true, "upright");
+pinPortrait("bu", PHOTO("buckner"), FL.cs, "Buckner", 0, END + 1, true, "right");
+tl.to(B.units.c2.el, { y: -3, duration: 0.7, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0.1);
+// ---------- 14 Feb: Foote's ironclads against the water batteries ----------
+let RL = 0; for (let j = 1; j < RIVC.length; j++) RL += Math.hypot(RIVC[j][0] - RIVC[j - 1][0], RIVC[j][1] - RIVC[j - 1][1]);
+const SH = [0, 1, 2, 3].map((k) => { const d1 = RL - 6 - k * 24, path = sub(RIVC, Math.max(0, d1 - 420) / RL, d1 / RL, 14);   // four ironclads in line ahead
+  const s = ship("iron", "carth", path[0], 70, null, null, { L: 58 }); tl.set(s.el, { autoAlpha: 1 }, 0);
+  sail(s, path, 0, T_BATTER + 0.2 + k * 0.15, 14); return { s, p: path[14], d: d1 }; });
+[0, 1].forEach((k) => { const d1 = RL - 130 - k * 24, path = sub(RIVC, Math.max(0, d1 - 400) / RL, d1 / RL, 12);   // two timberclads behind
+  const s = ship("timber", "carth", path[0], 70, null, null, { L: 48 }); tl.set(s.el, { autoAlpha: 1 }, 0); sail(s, path, 0, T_BATTER + 0.6, 12); });
+const FPP = pinPortrait(SH[1].s.el, PHOTO("foote"), FL.us, "Foote", T_FOOTE, T_NIGHT - 0.2, true, [-175, 30]);   // fixed side stake over the west bank, clear of the gunboats   // Foote on his flagship
+SH.forEach(({ p }) => stackSmoke([p[0] - 4, p[1] - 6], T_BATTER, T_DRIFT + 3, 1.7));
+// the duel (visible, big): bow guns -> batteries; batteries -> ships (plunging fire from the bluff); powder smoke at the firing beats
+const bow = (k) => [SH[k].p[0] + 4, SH[k].p[1] + 8];
+[[T_BATTER + 0.3, 0, 0], [T_BATTER + 1.4, 2, 1], [T_HIT + 1.2, 3, 0], [T_60 + 1.6, 0, 1], [T_DRIFT + 0.4, 3, 1]].forEach(([t, k, w]) =>
+  shoot(bow(k), [WB[w][0] + 4, WB[w][1] + 2], t, { r: 6, width: 0.9, dur: 0.5, h: 10 }));
+[[T_BATTER + 0.8, 0, 1], [T_HIT + 0.1, 1, 1], [T_HIT + 0.8, 0, 1], [T_60 + 0.3, 1, 1], [T_60 + 1.0, 1, 0], [T_DRIFT - 0.3, 0, 3], [T_HELP, 1, 1]].forEach(([t, w, k]) =>
+  shoot([WB[w][0] - 2, WB[w][1] - 8], [SH[k].p[0] + 2, SH[k].p[1]], t, { r: 6, width: 0.9, dur: 0.6, h: 14, color: "#ffd1b8" }));
+smoke([[WB[0][0] - 4, WB[0][1] - 6], [WB[1][0] - 4, WB[1][1] - 6]], T_HIT, 0.7); smoke([bow(0), bow(2)], T_BATTER + 0.3, 0.6);
+const HITS = ticker("HITS ON THE FLAGSHIP", 60, "", "right:70px;top:240px;", T_60, 0, T_60 + 3.2, 1, { col: "#ff8a80", pre: "~" });   // only "~60" on "sixty"
+// two ironclads drift back down the river (north), helpless (turning, smoking)
+[1, 0].forEach((k, j) => { const { s, d } = SH[k], back = sub(RIVC, d / RL, Math.max(0, d - 150) / RL, 16);
+  sail(s, back, T_DRIFT + 0.3 + j * 0.3, 7.5, 16, { keepRot: true });
+  tl.to(s.rot, { rotation: "+=140", duration: 7.5, ease: "sine.inOut" }, T_DRIFT + 0.3 + j * 0.3);
+  [0.2, 0.45, 0.7].forEach((f, i) => { const q = posOn(back, f); K.smoke(q[0], q[1], T_DRIFT + 0.6 + i * 1.6, { n: 3, r: 7, rise: 18, life: 2.4 }); }); });
+[2, 3].forEach((k) => sail(SH[k].s, sub(RIVC, SH[k].d / RL, Math.max(0, SH[k].d - 140) / RL, 8), T_WOUND + 0.4, 4, 8, { keepRot: true }));
+// Foote himself wounded: his portrait greys, a small level stamp beside the flagship
+tl.to(FPP.querySelectorAll("img"), { filter: "grayscale(1) brightness(0.7)", duration: 0.4 }, T_WOUND + 0.4);
+{ const q = posOn(sub(RIVC, SH[1].d / RL, Math.max(0, SH[1].d - 150) / RL, 16), 0.75); }
+// the WOUNDED tag stands beside Foote's card (child of the card, so it moves with it)
+{ const cd = FPP.querySelector(".pcard"), st = document.createElement("div"); st.innerHTML = stampHTML("WOUNDED", "#f0e6c8", 20, 0); st.style.cssText = "position:absolute;left:-130px;top:44px";   /* left of the card, off the ironclads */ cd.appendChild(st); gsap.set(st, { autoAlpha: 0 });
+  tl.fromTo(st, { autoAlpha: 0, scale: 1.4 }, { autoAlpha: 1, scale: 1, duration: 0.2, immediateRender: false }, T_WOUND + 0.4); tl.to(st, { autoAlpha: 0, duration: 0.3 }, T_WOUND + 3.6); SFX("hit", T_WOUND + 0.58); }
+// ---------- night: rain and snow; blankets thrown away on the march ----------
+nightWash(T_NIGHT - 0.2, T_DAWN - 0.4, 0.5);
+B.snow(T_RAIN - 0.3, T_DAWN + 0.6);
+const BLK = `<svg width="26" height="18" viewBox="0 0 26 18" style="display:block;filter:drop-shadow(0 1px 2px #000)"><path d="M2 4 Q8 1 13 4 Q18 7 24 3 L24 14 Q18 17 13 14 Q8 11 2 14 Z" fill="#8d7a5e" stroke="#efe6cf" stroke-width="1.2"/><path d="M5 8 L21 8 M5 11 L21 11" stroke="#5a4a36" stroke-width="1"/></svg>`;
+// critic r2: blanket glyphs dropped (unreadable specks)
+// ---------- 15 Feb dawn: the breakout against the Union right ----------
+dawnWash(T_DAWN - 0.2, END + 1);
+[[[1440, 822], [1434, 852], [1424, 876]], [[1495, 828], [1498, 856], [1496, 874]], [[1380, 802], [1356, 828], [1334, 846]]].forEach((pts, k) =>
+  arw({ pts, side: "rome", t: T_STRUCK - 0.1 + k * 0.3, dur: 1.4, width: AW(2.4, 11), until: T_STRUCK + 5.2 }));
+[["c1", [1310, 860]], ["c2", [1410, 905]], ["c3", [1490, 910]]].forEach(([id, p], k) => B.move(id, T_STRUCK + 0.2 + k * 0.2, 3.0, p[0], p[1]));
+[["c4", [1460, 790]], ["c5", [1520, 790]]].forEach(([id, p], k) => { unitS(id, "rome", p, "infantry", null, { t: T_MOST + k * 0.2, size: "X" }); B.move(id, T_MOST + 0.6, 2.4, p[0] - 20, p[1] + 70); });
+mg([1430, 880], [1410, 900], T_STRUCK + 1.6, 5, 1.0); mg([1495, 885], [1495, 905], T_MOST + 0.6, 5, 1.0);
+smoke([[1428, 878], [1440, 872], [1495, 884]], T_STRUCK + 1.5, 0.8);
+[["mc1", [1280, 905]], ["mc2", [1380, 950]], ["mc3", [1470, 965]]].forEach(([id, p], k) => B.move(id, T_STRUCK + 0.6 + k * 0.2, 3.0, p[0], p[1]));
+// the haversack card (one big card; the HUD steps out)
+const HAV = `<svg width="70" height="70" viewBox="0 0 100 100"><path d="M18 34 Q50 18 82 34 L78 86 Q50 96 22 86 Z" fill="#9a8460" stroke="#f7f3ea" stroke-width="4"/><path d="M18 34 Q50 56 82 34" fill="#b49c74" stroke="#f7f3ea" stroke-width="4"/><path d="M30 30 Q50 -6 70 30" fill="none" stroke="#f7f3ea" stroke-width="5"/></svg>`;
+const RAT = scr(`<div style="display:flex;align-items:center;gap:26px;padding:20px 46px 22px;background:rgba(18,16,12,0.93);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">${HAV}
+  <div><div style="font-size:64px;letter-spacing:.06em;line-height:1">THREE DAYS OF RATIONS</div><div class="s2" style="font-size:24px;letter-spacing:.3em;color:#ff8a80;margin-top:6px">IN THEIR HAVERSACKS</div></div></div>`,
+  "right:60px;top:60px;", T_RATIONS, Math.min(T_LAST - 0.3, T_RATIONS + 3.4));   // off the generals' cards and the front
+SFX("hit", T_RATIONS + 0.3); const S2 = RAT.querySelector(".s2"); gsap.set(S2, { autoAlpha: 0 }); tl.to(S2, { autoAlpha: 1, duration: 0.3 }, T_HAVER);
+// not a last stand: they meant to leave, if the road opened (an ink trace along the road out; a thin red arrow toward Nashville)
+const RO = glowPath(ROAD_OUT, "", 0, T_ROAD, T_ROAD + 3.4);   // the road out: focus + ink trace on its word
+arw({ pts: [[1542, 886], [1526, 960], [1518, 1028]], side: "rome", t: T_ROAD + 0.2, dur: 1.8,   /* beside the road, clear of the red boxes */ width: AW(2.0, 9), until: T_KNOW + 0.4 });
+boxS("THE ROAD", ROAD_OUT[2][0] + 140, ROAD_OUT[2][1] + 10, T_ROAD + 0.3, null, { size: 24 });
+hideU(["sm1"], T_DAWN - 0.6);   // under the date scroll in the dawn framing: steps out
+B.caption("NOT A LAST STAND · PLANNING TO LEAVE", T_LEAVE, T_KNOW - 0.1, "rome");
+// Grant did not know that yet; his right wing breaking, no cartridges
+pulseU("ghq", T_KNOW + 0.1);   // "Grant did not know that yet": his own card is on the map
+[["mc1", [1280, 905], [1250, 950]], ["mc2", [1380, 950], [1350, 1000]], ["mc3", [1470, 965], [1440, 1015]]].forEach(([id, a, p], k) => { B.move(id, T_BREAK + 0.3 + k * 0.15, 2.2, p[0], p[1]);
+  arw({ pts: [a, [(a[0] + p[0]) / 2, (a[1] + p[1]) / 2], [p[0] + (a[0] - p[0]) * 0.25, p[1] + (a[1] - p[1]) * 0.25]], side: "carth", t: T_BREAK + 0.3 + k * 0.15, dur: 2.0, width: AW(2.5) }); });   // short pull-back trails
+[["c1", [1305, 870]], ["c2", [1405, 925]], ["c3", [1485, 930]]].forEach(([id, p], k) => B.move(id, T_BREAK + 0.5 + k * 0.15, 2.0, p[0], p[1]));
+wstampS("BREAKING", 1180, 1000, T_BREAK + 0.3, null);
+B.caption("MUSKETS BUT NO CARTRIDGES", T_MUSK, END + 1, "carth");
+// ---------- clean screen ----------
+fixImgs();
+K.raiseTerritory();
+B.finish();
