@@ -140,7 +140,7 @@ def carve(img, water, seed=5):
     # water colour: deeper away from the shore, faint shimmer streaks parallel to the banks (kept near the shore on open water)
     deep = smoothstep(2.0, 40.0, dw) * (0.35 + 0.4 * big)
     wcol = WATER[None, None] * (1 - deep[..., None]) + WATER_DEEP[None, None] * deep[..., None]
-    wcol = wcol * (1 + 0.035 * vnoise(18, rng))[..., None]
+    wcol = wcol * (1 + 0.018 * vnoise(60, rng))[..., None]
     streak = (0.5 + 0.5 * np.sin(2 * np.pi * dw / 5.5 + vnoise(90, rng) * 1.2)) ** 6
     shim = streak * smoothstep(0.2, 1.4, vnoise(70, rng)) * (0.05 + 0.18 * big) * (1 - smoothstep(30, 90, dw)) * (dw > 1.5)
     wcol = wcol * (1 - shim[..., None]) + SHIMMER * shim[..., None]
