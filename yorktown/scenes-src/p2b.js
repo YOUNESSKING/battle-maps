@@ -111,7 +111,10 @@ const R1 = [[1185, 748], [1125, 782], [1060, 812], [1012, 872], [982, 922], [972
 const R2 = [[972, 944], [955, 1010], [958, 1100], [985, 1185], [1015, 1245], PP(1080, 645)];
 UNITF("wr", "allies", R1[0], "cavalry", { ech: "", t: T_RODE - 0.2 });
 along("wr", R1, T_RODE, T_MV + 0.6 - T_RODE, 16);
-along("wr", R2, T_14 + 0.1, T_REACH + 0.3 - T_14 - 0.1, 24);
+// the ride on to Williamsburg follows the camera's geometric zoom (same progress v), so the rider + banner stay in frame (no empty frame mid-zoom)
+{ const u = B.units.wr, s0 = EW2[2], s1 = PB[2], P = { k: 0 };
+  tl.fromTo(P, { k: 0 }, { k: 1, duration: T_REACH + 0.4 - T_14, ease: "none", immediateRender: false, onUpdate: () => { const sc = camAt(tl.time())[2];
+    const v = Math.min(1, Math.max(0, (1 / s0 - 1 / sc) / (1 / s0 - 1 / s1))), q = posOn(R2, v); gsap.set(u.el, { x: q[0] - u.x, y: q[1] - u.y }); } }, T_14); }
 const BWR = BANNER("washington", "George Washington", "us", "wr", T_RODE + 0.05, { side: "west" });   // stays on screen through the ride to Williamsburg (no empty frame)
 // "he stopped at Mount Vernon, his home": place name + a soft warm glow (~3 s)
 PLACE_LABEL("Mount Vernon", [969, 948], T_MV + 0.2, { dx: -10, dy: 34, size: 24 });
