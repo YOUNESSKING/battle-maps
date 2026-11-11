@@ -211,8 +211,9 @@ def soft_shadow(im, poly, k, off=(1.6, 2.0), a=95, blur=1.4):
 
 def crossings_layer():
     """timber bridges + ferry landings + flatboats (crossings.py look), scaled to the map's camera scale (crossings.py was drawn for ~0.95 screen px / image px)"""
-    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0)); f = US / 1.05
+    ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     for cr in CROSS:
+        f = US / 1.05 * (C.get("ferry_scale", 1.0) if cr["kind"] != "bridge" else 1.0)
         a = math.radians(cr["ang"])
         if cr["kind"] == "bridge":
             span = max(cr["w"] + 6 * f, 9 * f); hw = 3.8 * f
@@ -287,8 +288,8 @@ def labels_layer(tmeta, occupied):
         f = ImageFont.truetype(FONTS["garamond600"], 100); Lt = (f.getlength(T["name"]) / 100 + trk * (len(T["name"]) - 1)) * size   # u
         Ru = T["R"] / US; best = None
         order = [T["side"]] + [s for s in ("S", "N", "SW", "SE", "W", "E", "NW", "NE") if s != T["side"]]
-        for side in order:
-            sx, sy = SIDES[side]; gap = Ru * 0.78 + 8
+        for side, gm in [(sd, g) for g in (1.0, 1.5, 2.1) for sd in order]:
+            sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm
             if sx == 0:                                    # under / over the town: a gentle arc hugging its edge
                 yb = sy * (gap + (size * 0.72 if sy > 0 else 4)); arc = 0.07 * Lt * sy
                 curve = [(-Lt / 2 - 6, yb), (-Lt / 6, yb + arc), (Lt / 6, yb + arc), (Lt / 2 + 6, yb)]
@@ -305,7 +306,8 @@ def labels_layer(tmeta, occupied):
             wetf = (WATER[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
             occ = (occupied[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
             edge = xa != x0 or ya != y0 or xb != x0 + li.width or yb != y0 + li.height
-            score = wetf * 3 + occ * 2 + (1 if edge else 0) + (0.05 if side != T["side"] else 0)
+            woodf = (WOODS[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
+            score = wetf * 3 + occ * 2 + woodf * 1.5 + (1 if edge else 0) + (0.05 if side != T["side"] else 0) + 0.04 * (gm - 1)
             if best is None or score < best[0]: best = (score, side, li, x0, y0, wetf, occ)
             if score < 0.06: break
         score, side, li, x0, y0, wetf, occ = best
@@ -379,9 +381,11 @@ print(m, "roads", len(ROADS), "crossings", {k: sum(1 for c in CROSS if c["kind"]
 TEX = textures() if OPT.get("notex") != "1" else None
 print("texture", round(time.time() - t0), flush=True)
 cross = crossings_layer(); tw, tmeta = towns_layer()
-occupied = np.zeros((H, W), bool)
-for T in tmeta.values():
-    x0, y0, x1, y1 = [int(v * 2) for v in T["box"]]; occupied[y0:y1, x0:x1] = True
+occupied = cv2.dilate((tw[..., 3] > 90).astype(np.uint8), np.ones((int(8 * US), int(8 * US)), np.uint8)).astype(bool)   # town houses (+ ~4 px)
+_rd = Image.new("L", (W, H), 0); _d = ImageDraw.Draw(_rd)
+for c in CROSS: _d.ellipse([c["x"] - 14 * US, c["y"] - 14 * US, c["x"] + 14 * US, c["y"] + 14 * US], fill=255)
+occupied |= np.asarray(_rd) > 0
+WOODS = cv2.dilate((cv2.GaussianBlur(BASES["w"].mean(2), (0, 0), 2) < 74).astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
 lb, lmeta = labels_layer(tmeta, occupied)
 for key, base in BASES.items():
     img = relief(base, key == "close")

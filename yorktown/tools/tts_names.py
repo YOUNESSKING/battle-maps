@@ -4,7 +4,7 @@ import re
 PRON = {}
 PHON = {"Rochambeau": "ɹˌoʊʃæmbˈoʊ", "Barras": "bɑːɹˈɑː", "Banastre": "bˈænɪstɚ", "Tarleton": "tˈɑːɹltən",
         "Cornwallis": "kɔːɹnwˈɑːlɪs", "Charon": "kˈɛɹən", "grenadiers": "ɡɹˌɛnədˈɪɹz", "Staten": "stˈætən", "Lauzun": "loʊzˈʌn",
-        "chasseurs": "ʃæsˈɜːɹz", "livres": "lˈiːvɹəz", "Duc": "dˈuːk", "Marquis": "mɑːɹkˈiː", "O'Hara": "oʊhˈɛɹə"}
+        "chasseurs": "ʃæsˈɜːɹz", "livres": "lˈiːvɹəz", "Duc": "dˈuːk", "Revolution": "ɹˌɛvɪlˈuːʃən", "Marquis": "mɑːɹkˈiː", "O'Hara": "oʊhˈɛɹə"}
 
 
 def speak(k, text, voice, speed):

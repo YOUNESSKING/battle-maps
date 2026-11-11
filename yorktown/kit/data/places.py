@@ -33,7 +33,7 @@ KEEP_YT = [(37.2290, -76.5040, 1400), (37.2382, -76.5098, 500), (37.2111, -76.51
 
 MAPS = {
     "east": dict(
-        s=1.2,
+        s=1.2, ferry_scale=1.4,
         water=dict(blur=3.0, pier=2, chan=3, island=900, lake=6000),
         rivers=[("Hudson River", 3.2, (40.55, 42.7, -74.4, -73.6)), ("Delaware River", 2.6, (39.6, 41.2, -75.6, -74.6)),
                 ("Susquehanna River", 2.6, (39.5, 40.4, -77.0, -76.0)), ("Potomac River", 2.6, (38.2, 39.6, -77.6, -76.9)),
@@ -106,7 +106,7 @@ MAPS = {
         relief=[], keep=[(37.2382, -76.5098, 2500)],
     ),
     "peninsula": dict(
-        s=1.3,
+        s=1.3, ferry_scale=1.5,
         water=dict(blur=2.5, pier=3, chan=3, island=600, lake=12000, dry=[(37.30, 37.48, -76.95, -76.78), (37.176, 37.205, -76.615, -76.575)]),   # Diascund + Little Creek reservoirs (modern)
         rivers=[], creeks=0,
         towns={
@@ -124,11 +124,11 @@ MAPS = {
         relief=RELIEF_YT, keep=KEEP_YT + [(37.2707, -76.7075, 900)],
     ),
     "yorktown": dict(
-        s=1.6,
+        s=1.6, ferry_scale=2.4,
         water=dict(blur=26.0, pier=7, chan=7, island=6000, lake=60000, dry=[(37.176, 37.205, -76.615, -76.575)]),   # Lee Hall reservoir (modern)
         rivers=[], creeks=2, creek_pick=[(37.2290, -76.5200), (37.2130, -76.4800)],   # Yorktown Creek, Wormley Creek
         towns={
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 50, True, "SW", 1691),
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 50, True, "SE", 1691),
             "gloucester": ("Gloucester", 37.2468, -76.5025, 26, True, "N", 1707),
         },
         roads=ROADS_YT,
