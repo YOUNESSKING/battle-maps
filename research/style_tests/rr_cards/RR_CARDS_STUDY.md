@@ -94,3 +94,6 @@ Helpers `rr_cards.js`, scene copy `grant/scenes/s12d_rr` (built by `build_rr.py`
 - No new sounds: only the original `hit` cues.
 - Round 5 polish: "1863" under the big date card brighter gold #ead39a at 52 px; big date card held 0.4 s (fades 0.3 s sooner);
   lower-third gold bar 6 px; the HIS ARMY kicker keeps 40 px; no TEST caption in the video frames (label only here and on the sheet).
+
+## OWNER DECISION 2026-11-11
+Rejected: do NOT use the R&R-style date and statement cards. Keep our existing date scroll and cards.

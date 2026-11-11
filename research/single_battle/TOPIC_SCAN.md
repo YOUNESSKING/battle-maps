@@ -115,3 +115,6 @@ Not recommended now: **Gettysburg** (R&R just made 102K with the exact format on
 - Outliers: American Civil War battle (3 mo), American Revolution battle (3 mo), and per-battle 1-year view lists for Vicksburg, Saratoga, Chancellorsville, Yorktown, Shiloh, Antietam, Trenton, Alamo, Lexington & Concord (6 mo).
 - Repo: `research/DATA_RULES.md`, `research/CHANNEL_LOG.md`, `research/competitors_top20/{channels.json,SUMMARY.md}`, folder listing of `*/assets` for basemaps.
 - Not done (to stay inside the credit budget or because the tool has no data): Brooklyn/Long Island, Fort Sumter, Cold Harbor, Chickamauga, Bull Run video-level searches; Shiloh/Alamo/Thermopylae keyword variants beyond the seed; demand-by-country for US-only (most seeds show no top markets).
+
+## OWNER DECISION 2026-11-11
+Yorktown chosen for the single-battle test. Gemini brief: research/single_battle/GEMINI_BRIEF_YORKTOWN.md
