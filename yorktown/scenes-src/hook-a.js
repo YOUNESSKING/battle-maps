@@ -85,22 +85,27 @@ hideU(["am1", "am2", "ny1", "rs1", "rs2"], TZ0 + 0.6);
 // Cornwallis's army dug in round the town, the river behind them (cw1 rides the dive in and becomes the centre box)
 B.move("cw1", TZ0 + 1.0, TZ1 - TZ0 - 1.2, ...PP(1800, 930));
 UNIT("cw2", "british", PP(1690, 922), "infantry", { ech: "X", t: T_YT - 0.6 });
-UNIT("cw3", "british", PP(1858, 978), "infantry", { ech: "X", t: T_YT - 0.45 });
+UNIT("cw3", "british", PP(1852, 958), "infantry", { ech: "X", t: T_YT - 0.45 });
 UNIT("cwG", "british", PP(1792, 768), "infantry", { ech: "X", t: T_YT - 0.3 });   // Gloucester Point, across the narrows
 UNIT("cwA", "british", PP(1745, 948), "artillery", { ech: "", t: T_THERE });
 // red ships in the river below the town
 UNIT("rv1", "british", PP(1735, 792), "ship", { ech: "", t: T_YT - 0.5 }); UNIT("rv2", "british", PP(1688, 745), "ship", { ech: "", t: T_YT - 0.35 });
 B.move("rv1", T_YT, 8, ...PP(1742, 800)); B.move("rv2", T_YT, 8, ...PP(1696, 752));
 SIDEFLAG("gb", "cwG", T_THERE, null);
+// the British works round the town (owner: lines in the side colour): red, dug on arrival
+const BWK = [[1645, 893], [1665, 950], [1720, 985], [1790, 990], [1860, 1005], [1900, 975], [1905, 945]];
+TRENCH(BWK.map((q) => PP(...q)), T_YT + 0.4, { side: "british", dur: 1.4 });
 // "in three weeks ... became a trap": the allied army comes in from Williamsburg and closes a half circle from river to river (on "trap")
-const RING = [[1662, 762], [1560, 905], [1612, 968], [1692, 1018], [1780, 1032], [1866, 1030], [1926, 988]];
+const RING = [[1490, 732], [1418, 880], [1450, 1000], [1610, 1080], [1780, 1098], [1890, 1090], [1985, 1020]];
 const RTYPE = ["infantry", "infantry", "infantry", "artillery", "infantry", "engineers", "infantry"], RECH = ["XX", "XX", "XX", "", "XX", "", "XX"];
-RING.forEach((p, i) => { const id = "al" + i, from = i === 0 ? [1562, 768] : [p[0] + (p[0] - 1761) * 0.55, p[1] + Math.max(20, (p[1] - 853) * 0.55)];
+RING.forEach((p, i) => { const id = "al" + i, from = [p[0] + (p[0] - 1761) * 0.35, p[1] + Math.max(20, (p[1] - 853) * 0.35)];
   UNIT(id, "allies", PP(...from), RTYPE[i], { ech: RECH[i], t: T_WEEKS + 0.08 * i });
   march(id, [PP(...from), PP(...p)], T_WEEKS + 0.2 + 0.08 * i, T_TRAP - T_WEEKS - 0.2 - 0.08 * i + 0.25, { dustSize: 40, dustOp: 0.45 }); });
-SIDEFLAG("us", "al6", T_WEEKS + 0.6, null); SIDEFLAG("fr", "al2", T_WEEKS + 0.6, null);   // Americans east (toward Redoubt 10), French west
+SIDEFLAG("us", "al6", T_WEEKS + 0.6, null); SIDEFLAG("fr", "al2", T_WEEKS + 0.6, null);
+// on "trap": the allied ring as one line from the river above the town to the river below it, two-colour where it faces the works
+FRONT([[1585, 725], [1475, 790], [1458, 880], [1500, 965], [1640, 1040], [1780, 1058], [1880, 1050], [1935, 922]].map((q) => PP(...q)), T_TRAP - 0.3, { enemy: PP(1761, 900), dur: 1.0 });   // Americans east (toward Redoubt 10), French west
 // French ships block the river mouth (ship boxes sail in from the bay)
-[[2150, 806], [2158, 856], [2148, 906]].forEach((p, i) => { const id = "fs" + i; UNIT(id, "allies", PP(p[0] + 430, p[1] - 30), "ship", { ech: "", t: T_WEEKS + 0.3 });
+[[1990, 815], [2030, 850], [2070, 872]].forEach((p, i) => { const id = "fs" + i; UNIT(id, "allies", PP(p[0] + 430, p[1] - 30), "ship", { ech: "", t: T_WEEKS + 0.3 });
   B.move(id, T_WEEKS + 0.4, T_TRAP - T_WEEKS - 0.15, ...PP(...p)); });
 SFX("hit", T_TRAP + 0.25); K.shake(T_TRAP + 0.25, 5, 0.35);
 // "About eight thousand British soldiers": the big number card (slam + hit + shake, ticks up)
@@ -116,5 +121,7 @@ focus(PP(1715, 772), 70, T_NAVY, T_SURR - 0.2);
 // "surrendered": stamp (on the open water north-east of the town), the British boxes go, blue hatching on the town ground (taken)
 wstampL("SURRENDERED", ...PP(2230, 620), T_SURR, null, null, 40);
 hideU(["cw1", "cw2", "cw3", "cwG", "cwA"], T_SURR + 0.15);
-HATCH([PP(1650, 880), PP(1700, 850), PP(1760, 838), PP(1830, 845), PP(1870, 880), PP(1830, 945), PP(1720, 950), PP(1660, 925)], "allies", T_SURR + 0.2, { hold: 0.7 });
+// the ground taken (FORM 1, taker blue, full strength): the town ground inside the works (no land mask: the coarse east mask washed it out at 20x)
+{ const d = HATCH_LAYER([[1645, 893], [1665, 950], [1720, 985], [1790, 990], [1860, 1005], [1900, 975], [1905, 945], [1850, 930], [1800, 892], [1765, 862], [1740, 880]].map((q) => PP(...q)), "#2c57b7", 3, 10, 0.95);
+  d.style.webkitMaskImage = d.style.maskImage = "none"; tl.to(d, { autoAlpha: 1, duration: 0.4 }, T_SURR + 0.2); }
 

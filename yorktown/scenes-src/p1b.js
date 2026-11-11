@@ -50,7 +50,7 @@ const camAt = (t) => { let c = SEGS[0].a;
 const camApply = () => { const c = camAt(tl.time()); CAM.cx = c[0]; CAM.cy = c[1]; CAM.s = c[2];
   const s = Math.max(CAM.s, 1920 / 2880), cx = Math.min(Math.max(CAM.cx, 960 / s), 2880 - 960 / s), cy = Math.min(Math.max(CAM.cy, 540 / s), 1620 - 540 / s);
   gsap.set(WORLD, { x: 960 - cx * s, y: 540 - cy * s, scale: s }); CAM_S = s; setInv(); lens(cx, cy, s); };
-const CW = [1400, 735, 0.76], CW2 = [1400, 780, 0.76], CW3 = [1420, 790, 0.77], CD = [1432, 772, 0.79], CH1 = [1505, 425, 2.0], CH2 = [1492, 445, 2.0],
+const CW = [1400, 735, 0.76], CW2 = [1400, 780, 0.76], CW3 = [1405, 850, 0.86], CD = [1432, 772, 0.79], CH1 = [1505, 425, 2.0], CH2 = [1492, 445, 2.0],
   CS1 = [1420, 600, 1.2], CS2 = [1385, 620, 1.2], CE1 = [1262, 712, 1.6], CE2 = [1252, 722, 1.65], CC1 = [1300, 930, 0.8], CC2 = [1290, 945, 0.82], CB = [1240, 1225, 1.15];
 camera([[0, ...CW]]);
 seg(0, T_ADM, CW, CW2); seg(T_ADM, T_PUT, CW2, CW3); seg(T_PUT, T_DID, CW3, CD);
@@ -92,8 +92,9 @@ const BFREE = (key, name, nation, p, t, o = {}) => { const w = BANNER(key, name,
 const pinAlongX = (el, pts, t, dur, n = 24) => { const x0 = parseFloat(el.style.left), y0 = parseFloat(el.style.top);
   for (let k = 1; k <= n; k++) { const q = posOn(pts, k / n); tl.to(el, { x: q[0] - x0, y: q[1] - y0, duration: dur / n, ease: "none" }, t + (k - 1) * dur / n); } };
 const BMOVE = (b, pts, t, dur) => pinAlongX(b.pin, pts, t, dur, Math.max(4, pts.length * 6));
-const BW = BFREE("washington", "George Washington", "us", [1500, 335], 0);
-const BC = BANNER("clinton", "Sir Henry Clinton", "gb", "ny3", 0, { side: "se" });
+const BW = { w: BANNER("washington", "George Washington", "us", "am1", 0, { side: "up" }) };   // rides with his army: east of the Hudson until King's Ferry, then south with the column
+const MANH = [1525, 450];   // Clinton at New York: banner planted on Manhattan, side stake over New Jersey (land at every camera scale)
+const BC = BANNER("clinton", "Sir Henry Clinton", "gb", MANH, 0, { side: [-110, 70] });
 BANNER("cornwallis", "Lord Cornwallis", "gb", "cwW", 0, { side: "west" });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-3: the French, de Grasse, Dobbs Ferry, Havana, the Chesapeake, mid-October
@@ -105,7 +106,7 @@ UNIT("fr2", "allies", NPT[0], "infantry", { ech: "XX", t: T_ALLY });
 march("fr2", NPT, T_ALLY + 0.2, 2.3, { dustSize: 42, dustOp: 0.42 }); hideU(["fr2"], T_ALLY + 2.5);
 arw({ pts: NPT, side: "carth", t: T_ALLY + 0.1, dur: 2.2, width: AW(CW[2], 9) });
 SIDEFLAG("fr", "fr2", T_ALLY + 0.4);
-const BR = BFREE("rochambeau", "Comte de Rochambeau", "fr", [1792, 330], T_ROCH);
+const BR = { w: BANNER("rochambeau", "Comte de Rochambeau", "fr", "fr1", T_ROCH, { side: "up", until: T_BOAT }) };   // with the French column (land), until his boat to Chester
 // "the Comte de Grasse": a blue ship box + a thin line from the bottom edge (the Caribbean), north to the open sea off the capes
 const DG1 = [[1500, 1640], [1470, 1480], [1440, 1330]];
 UNIT("ff1", "allies", DG1[0], "ship", { ech: "" });
@@ -117,6 +118,8 @@ focus([1600, 395], 85, T_DOBBS, T_ANS + 1.6);
 // "De Grasse was coming, with twenty-eight ships of the line and more than three thousand soldiers"
 UNIT("ff2", "allies", [1500, 1460], "ship", { ech: "", t: T_COMING + 0.1 }); UNIT("ff3", "allies", [1388, 1470], "ship", { ech: "", t: T_COMING + 0.3 });
 B.move("ff2", T_COMING + 0.4, 3.0, 1508, 1318); B.move("ff3", T_COMING + 0.5, 3.0, 1395, 1360);
+// the fleet keeps sailing north toward the capes while the narration runs (movement every few seconds, 183-214 s)
+B.move("ff1", T_COMING + 3.6, T_BAY - T_COMING - 3.7, 1452, 1296); B.move("ff2", T_COMING + 3.6, T_BAY - T_COMING - 3.7, 1500, 1282); B.move("ff3", T_COMING + 3.7, T_BAY - T_COMING - 3.8, 1405, 1322);
 const C28 = CARD("", "28 SHIPS OF THE LINE", "#1f4fc4", T_28 - 0.05, T_PAY - 0.2, { size: 64, css: "right:130px;top:560px;transform-origin:50% 30%;" });
 { const s = document.createElement("div"); s.style.cssText = "font-size:30px;letter-spacing:.24em;color:#9fc0ea;margin-top:4px"; s.textContent = "3,000+ SOLDIERS"; C28.firstElementChild.appendChild(s);
   gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_3K + 0.1); SFX("tick", T_3K + 0.15); }
@@ -143,7 +146,7 @@ const DEC = E.decide({ sub: "", a: "ATTACK NEW YORK", b: "MARCH SOUTH", real: 1,
 const OA = DEC.querySelector(".o0"), OB = DEC.querySelector(".o1"), CDN = DEC.querySelector(".cd"), BACK = DEC.previousElementSibling;
 [OA, OB].forEach((o) => tl.getTweensOf(o).filter((tw) => tw.startTime() < T_PUT + 1.5).forEach((tw) => tw.kill()));
 gsap.set([OA, OB, CDN], { autoAlpha: 0 });
-tl.fromTo(OA, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_ATT1);
+tl.fromTo(OA, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_ATT2);   // on the question's own "attack New York"
 tl.fromTo(OB, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_SOUTH);
 tl.fromTo(CDN, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_TELL);
 Object.assign(DEC.style, { left: "1190px", marginLeft: "0", top: "600px", zoom: "0.78", background: "rgba(14,13,10,0.95)", padding: "6px 22px 12px", boxShadow: "0 20px 40px rgba(0,0,0,.6)" });
@@ -167,7 +170,6 @@ focus([1560, 470], 90, T_ATT2, T_SOUTH - 0.2);
 UNIT("amE", "allies", [1600, 330], "engineers", { ech: "", t: T_INST + 1.6 }); UNIT("amS", "allies", [1680, 330], "supply", { ech: "", t: T_INST + 1.8 });
 UNIT("frA", "allies", [1760, 334], "artillery", { ech: "", t: T_INST + 2.0 });
 // the two allied stakes move west of the Hudson with the armies (off the crossing): Washington SW of the staging ground, Rochambeau NW
-BMOVE(BW, [[1500, 335], [1385, 450]], T_INST - 0.1, 2.7); BMOVE(BR, [[1792, 330], [1700, 290]], T_INST - 0.1, 2.7);
 hideU(["ff1", "ff2", "ff3"], T_INST + 0.3);
 // "Leaving part of his army to guard the Hudson": two boxes stay in the Highlands (north, West Point)
 UNIT("hg1", "allies", [1575, 296], "infantry", { ech: "X", t: T_LEAVE + 0.2 }); UNIT("hg2", "allies", [1612, 288], "artillery", { ech: "", t: T_LEAVE + 0.5 });
@@ -210,12 +212,12 @@ march("amE", [STG.amE, [1480, 440], [1500, 500]], T_COLS + 0.3, 2.6, { dustSize:
 
 arw({ pts: [[1478, 506], [1484, 520], [1486, 532]], side: "carth", t: T_HARB, dur: 0.7, width: AW(CH2[2], 9) });
 // Clinton's banner at New York: a small "?" over it ("as if to attack")
-const MARK = (uid, txt, col, t, until) => { const [x, y] = [B.units[uid].x, B.units[uid].y];
-  const el = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:97px;top:-147px;width:44px;height:44px;border-radius:50%;background:rgb(18,16,12);border:3px solid ${col};color:${col};font:700 32px/38px Oswald;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.6)">${txt}</div></div>`, x, y, {}));
+const MARK = (uid, txt, col, t, until) => { const [x, y] = Array.isArray(uid) ? uid : [B.units[uid].x, B.units[uid].y];
+  const el = pinS(GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-82px;top:-172px;width:44px;height:44px;border-radius:50%;background:rgb(18,16,12);border:3px solid ${col};color:${col};font:700 32px/38px Oswald;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.6)">${txt}</div></div>`, x, y, {}));
   el.style.zIndex = 60; gsap.set(el, { autoAlpha: 0 });
   tl.fromTo(el.firstElementChild.firstElementChild, { scale: 1.8 }, { scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, t); tl.set(el, { autoAlpha: 1 }, t);
   if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, until); return el; };
-MARK("ny3", "?", "#f0e6c8", T_ASIF, T_CLU - 0.05);
+MARK(MANH, "?", "#f0e6c8", T_ASIF, T_CLU - 0.05);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-6: the day-by-day clock: 29 AUG wheel south (Trenton), 2 SEP Philadelphia, "!" over Clinton, 3-4 SEP the French follow
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -223,7 +225,6 @@ B.date("29 AUG 1781", T_29, T_SEP2 - 0.08, 32); SFX("tick", T_29 + 0.1);
 B.date("2 SEP 1781", T_SEP2, T_34 - 0.08, 32); SFX("tick", T_SEP2 + 0.1);
 B.date("3-4 SEP 1781", T_34, T_SEP5 - 0.08, 32); SFX("tick", T_34 + 0.1);
 // Washington's stake moves to the south-east side for the march south (off Philadelphia and its carved name)
-BMOVE(BW, [[1385, 450], [1355, 560], [1330, 700], [1290, 820], [1262, 900], [1250, 980]], T_TURN, T_THEN + 1.8 - T_TURN);
 const SOUTH = [[1462, 496], [1440, 522], [1424, 545], [1411, 561], [1400, 580], [1393, 592], [1370, 612], [1345, 632], [1320, 656], [1300, 670], [1284, 682]];
 const ELK = [[1284, 682], [1262, 694], [1240, 708], [1222, 722]];
 // the American columns wheel south (dust): Washington's column to Chester, the others on to the head of the bay
@@ -233,14 +234,13 @@ march("amE", [[1500, 500], ...SOUTH, ...ELK, [1196, 718]], T_TURN + 0.5, T_CHEER
 march("amS", [STG.amS, [1440, 480], ...SOUTH, ...ELK, [1262, 744]], T_TURN + 0.8, T_CHEER - T_TURN + 1.6, { dustSize: 34, dustOp: 0.45 });
 focus([1330, 650], 80, T_PHIL - 0.1, T_THEN + 0.2);
 // "only around then did Clinton understand": a red "!" replaces the "?" over Clinton's banner
-MARK("ny3", "!", "#ff5a4a", T_CLU - 0.05, T_SLIP + 4.5);
+MARK(MANH, "!", "#ff5a4a", T_CLU - 0.05, T_SLIP + 4.5);
 SFX("hit", T_CLU + 0.15);
 focus([1700, 470], 90, T_CLU - 0.1, T_34 - 0.1);
 // "On the third and fourth, the French followed": the French column (Rochambeau's banner) and guns follow the same road (dust)
 march("fr1", [STG.fr1, [1470, 440], [1462, 470], ...SOUTH.slice(0, 7), [1372, 606], [1365, 600]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6, { dustSize: 34, dustOp: 0.45 });
 march("frA", [STG.frA, [1470, 420], [1462, 470], ...SOUTH.slice(0, 5), [1414, 568], [1405, 572]], T_FRF - 0.3, T_CHEER - T_FRF + 1.6, { dustSize: 34, dustOp: 0.45 });
 hideU(["hg1", "hg2"], T_29 + 2.2);
-BMOVE(BR, [[1700, 290], [1560, 400], [1490, 640], [1540, 870]], T_FRF - 0.6, T_CHEER - T_FRF + 1.6);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p1-7: the head of the bay: hard money from the French war chest, Head of Elk, a month's pay in coin
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -272,6 +272,7 @@ K.target(1162, 1200, T_DGIN + 0.1, { r: 75, side: "carth", until: T_DGIN + 4.6 }
 SFX("hit", T_DGIN + 0.25);
 // "When Rochambeau's boat came up to the wharf": a boat down the Delaware from Philadelphia to Chester
 BOAT([[1326, 668], [1312, 676], [1298, 688], [1290, 696]], T_BOAT, T_WHARF - T_BOAT + 0.4, { until: T_SLIP, px: 30 });
+BANNER("rochambeau", "Comte de Rochambeau", "fr", [1300, 672], T_WHARF, { side: "ne" });   // Rochambeau ashore at Chester, beside Washington
 // "he found Washington standing there, waving his hat": Washington's banner pops
 tl.fromTo(BW.w.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, T_HAT - 0.1);
 tl.to(BW.w.firstElementChild, { rotation: 4, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_HAT + 0.15);

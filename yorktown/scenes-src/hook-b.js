@@ -71,9 +71,20 @@ B.date("AUG 1781", T_AUG, T_BSEA - 0.08, 32); SFX("tick", T_AUG + 0.1);
 // hook-3 on `east`
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Yorktown at frame 0: Cornwallis's army dug in round the town (as in hook-a, before the trap), they ride the pull back into one box
+// hook-a's last frame (the ring closed, the works, the hatching, the French ships at the mouth) fades out over ~0.4 s during the pull back,
+// while the British boxes of the rewind ("that August, there was no trap") fade in
+{ const OUT = [];
+  [[1490, 732], [1418, 880], [1450, 1000], [1610, 1080], [1780, 1098], [1890, 1090], [1985, 1020]].forEach((p, i) => { UNIT("al" + i, "allies", PP(...p), ["infantry", "infantry", "infantry", "artillery", "infantry", "engineers", "infantry"][i], { ech: ["XX", "XX", "XX", "", "XX", "", "XX"][i] }); OUT.push(B.units["al" + i].el); });
+  [[1990, 815], [2030, 850], [2070, 872]].forEach((p, i) => { UNIT("fs" + i, "allies", PP(...p), "ship", { ech: "" }); OUT.push(B.units["fs" + i].el); });
+  OUT.push(TRENCH([[1645, 893], [1665, 950], [1720, 985], [1790, 990], [1860, 1005], [1900, 975], [1905, 945]].map((q) => PP(...q)), 0, { side: "british" }));
+  OUT.push(FRONT([[1585, 725], [1475, 790], [1458, 880], [1500, 965], [1640, 1040], [1780, 1058], [1880, 1050], [1935, 922]].map((q) => PP(...q)), 0, { enemy: PP(1761, 900) }));
+  const d = HATCH_LAYER([[1645, 893], [1665, 950], [1720, 985], [1790, 990], [1860, 1005], [1900, 975], [1905, 945], [1850, 930], [1800, 892], [1765, 862], [1740, 880]].map((q) => PP(...q)), "#2c57b7", 3, 10, 0.95);
+  d.style.webkitMaskImage = d.style.maskImage = "none"; gsap.set(d, { autoAlpha: 1 }); OUT.push(d);
+  tl.to(OUT, { autoAlpha: 0, duration: 0.4 }, 0.05); }
 UNIT("cw1", "british", PP(1800, 930), "infantry", { ech: "XX" }); UNIT("cw2", "british", PP(1690, 922), "infantry", { ech: "X" });
-UNIT("cw3", "british", PP(1858, 978), "infantry", { ech: "X" }); UNIT("rv1", "british", PP(1742, 800), "ship", { ech: "" });
-hideU(["cw2", "cw3", "rv1"], 0.25); B.move("cw1", 0.3, 1.1, 1100, 1262);
+UNIT("cw3", "british", PP(1852, 958), "infantry", { ech: "X" }); UNIT("rv1", "british", PP(1742, 800), "ship", { ech: "" });
+gsap.set(["cw1", "cw2", "cw3"].map((id) => B.units[id].el), { autoAlpha: 0 }); tl.to(["cw1", "cw2", "cw3"].map((id) => B.units[id].el), { autoAlpha: 1, duration: 0.4 }, 0.05);
+hideU(["cw2", "cw3", "rv1"], 0.5); B.move("cw1", 0.3, 1.1, 1100, 1262);
 // the allied army in camp above New York (east of the Hudson), shuffling (dust)
 UNIT("am1", "allies", [1576, 352], "infantry", { ech: "XX" }); UNIT("am2", "allies", [1668, 336], "infantry", { ech: "XX" });
 UNIT("amA", "allies", [1622, 300], "artillery", { ech: "" });

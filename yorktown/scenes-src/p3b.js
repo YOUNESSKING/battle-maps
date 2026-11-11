@@ -95,7 +95,8 @@ dateNow("3 OCT 1781", T_6 - 0.05);
 // ---------------------------------------------------------------------------------------------------------------------------------
 const BLINE = [[1291, 715], [1318, 793], [1376, 832], [1428, 827], [1463, 796], [1489, 758]];
 TRENCH(BLINE, 0, { side: "british" });
-[[[1162, 770], [1185, 800], [1215, 806]], [[1318, 1002], [1350, 1010], [1384, 1002]], [[1462, 998], [1494, 1004], [1526, 994]]].forEach((pts) => TRENCH(pts, 0, { side: "allies" }));   // the old outer works, allied since 30 Sep
+// the allied siege line from p3a (one continuous blue line river to river, two-colour toward the red works); it hands the front over to the first parallel
+const RINGL = TRENCH([[1090, 555], [1120, 650], [1065, 760], [1085, 880], [1170, 975], [1300, 1055], [1450, 1040], [1580, 1032], [1640, 990], [1692, 948]], 0, { side: "allies", front: [1384, 760] });   // the old outer works, allied since 30 Sep
 const R9P = [1469, 852], R10P = [1498, 812];
 const r9s = REDOUBT("r9s", R9P, 0, { side: "british", rot: 12, px: 26 }), r10s = REDOUBT("r10s", R10P, 0, { side: "british", rot: -8, px: 26 });
 REDOUBT("rfus", [1194, 635], 0, { side: "british", rot: 4, px: 26 });
@@ -131,7 +132,8 @@ B.move("f1", T_DAWN, 1.0, 1120, 650);
 // "By dawn the diggers had a trench almost two thousand yards long, only six to eight hundred yards from the British line"
 LIGHT("morning", T_DAWN, 1.8, 0.6);
 const PAR1 = [[1283, 895], [1359, 931], [1428, 935], [1491, 922], [1554, 895], [1590, 878]];
-TRENCH(PAR1, T_TRENCH, { dur: 2.4, side: "allies", front: [1428, 830] });   // the real front: red toward the British, blue toward the allies
+TRENCH(PAR1, T_TRENCH, { dur: 2.4, side: "allies", front: [1428, 830] });
+tl.to(RINGL, { opacity: 0, duration: 1.4 }, T_TRENCH + 2.6);   // one front: the first parallel takes over from the ring line   // the real front: red toward the British, blue toward the allies
 CARD("", "ALMOST 2,000 YARDS", "#1f4fc4", T_2000 - 0.05, T_600 - 0.35, { size: 42, css: CR1 });
 CARD("", "600-800 YARDS FROM THE BRITISH", "#c9b48a", T_600 - 0.05, T_9 - 0.4, { size: 40, css: CR1 });
 focus([1400, 790], 110, T_NOTSEEN, T_9 - 0.3);
@@ -166,7 +168,7 @@ for (let t = T_HOT + 1.4; t < T_STORY; t += 0.55) K.smoke(CH[0] + 2, CH[1] - 6, 
 GREY("charon", T_CHARON + 2.6); hideU(["charon"], T_STORY + 0.2);
 SH("ag1", "ag1", [1463, 796], T_HOT + 1.6); SH("fg2", "fg2", [1300, 745], T_CHARON + 2.4);
 // the Nelson house (a story told years later): the house marked in the town, Nelson's banner at the American battery, one shot at it
-LIGHT("day", T_INSIDE - 0.2, 2.0);
+LIGHT("day", T_STORY - 0.3, 2.0);   // the Charon burns at night (10 Oct); day comes back with the Nelson story
 const NH = [1404, 724];
 POP(`<svg width="22" height="18" viewBox="-11 -9 22 18" style="display:block;overflow:visible;filter:drop-shadow(0 0 3px #fff2c0) drop-shadow(0 1px 2px rgba(0,0,0,.8))"><path d="M-8 -1 L0 -8 L8 -1 Z" fill="#6b2a1c" stroke="#f3e6c4" stroke-width="1"/><rect x="-7" y="-1" width="14" height="9" fill="#a8553a" stroke="#f3e6c4" stroke-width="1"/></svg>`, NH, T_HOUSE + 0.1, T_ONE - 0.2);
 PLACE_LABEL("Nelson House", NH, T_HOUSE + 0.15, { dx: 150, dy: -66, size: 24 });
@@ -177,6 +179,14 @@ SH("fg1", "fa", [1340, 818], T_POINTED + 2.7);
 // "One by one, Cornwallis's guns fell silent": the British gun boxes go grey, the last shots land on them
 SH("fg2", "fg2", [1330, 736], T_ONE - 0.9); GREY("bg1", T_ONE + 0.3);
 SH("ag1", "ag1", [1485, 770], T_ONE + 0.6); GREY("o3", T_ONE + 1.9);
+// a steady VISIBLE barrage through p3-5 (critic: the sound cues must be seen): every gap > ~3 s gets a shot from a gun on screen onto the
+// British line (<= 1 shot / 2 s); none between "Washington himself" and his first American gun
+{ const ST = [T_FFIRST + 0.3, T_FFIRST + 2.2, T_FIRSTAM + 0.5, T_DOZ + 0.4, T_DOZ + 2.5, T_DOZ + 4.6, T_HOT + 0.2, T_CHARON + 0.6, T_HOT + 1.6, T_CHARON + 2.4,
+    T_INSIDE + 0.6, T_POINTED + 0.5, T_POINTED + 2.7, T_ONE - 0.9, T_ONE + 0.6].sort((a, b) => a - b);
+  const GUNS = [["fg1", "fa"], ["ag2", "aa"], ["fg2", "fg2"], ["ag1", "ag1"]], TG = [[1318, 796], [1376, 830], [1428, 827], [1463, 796], [1340, 772], [1404, 815]];
+  let k = 0; const add = (t) => { if (t > T_WASH - 0.6 && t < T_FIRSTAM + 1.4) return; const [g, u] = GUNS[k % 4]; SH(g, u, TG[k % TG.length], t); k++; };
+  for (let i = 0; i < ST.length - 1; i++) for (let t = ST[i] + 2.0; t < ST[i + 1] - 1.2; t += 2.0) add(t);
+  for (let t = ST[ST.length - 1] + 2.0; t < T_SILENT + 1.0; t += 2.0) add(t); }
 GREY("bg3", T_SILENT + 1.3);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-6: the second parallel (night 11 Oct), Redoubts 9 + 10
@@ -208,7 +218,7 @@ march("am10", [[1566, 884], [1540, 864], [1524, 848]], T_GO10 - 0.3, 1.6, { dust
 SIDEFLAG("us", "am10", T_400A + 0.3); tl.to(FUS, { autoAlpha: 0, duration: 0.3 }, T_400A);   // one US flag: it moves to the assault column
 CARD("FRENCH", "400", "#1f4fc4", T_400F + 0.4, T_400A - 0.3, { size: 84, css: CR2 });
 CARD("AMERICANS", "400", "#1f4fc4", T_400A + 0.4, T_BEGGED + 0.6, { size: 84, css: CR2 });
-BANNER("hamilton", "Alexander Hamilton", "us", [1610, 915], T_HAM + 0.3);
+BANNER("hamilton", "Alexander Hamilton", "us", "am10", T_HAM + 0.3, { side: [40, 370], until: T_BDAWN });   // on land below his R10 column (guy-rope to the column); leaves before p3c
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-8: the assault
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -219,7 +229,7 @@ mg([R10P[0] + 2, R10P[1] + 6], [1520, 846], T_OVER + 0.2, 4, 0.8);
 wstampL("UNLOADED MUSKETS", 1640, 952, T_UNL, T_UNL + 3.2, null, 26);
 // "John Laurens took a party around to the rear and captured the British commander"
 UNIT("lp", "allies", [1530, 836], "infantry", { ech: "I", t: T_LAUR });
-BANNER("laurens", "John Laurens", "us", [1540, 792], T_LAUR + 0.3, { until: T_FR9 });
+BANNER("laurens", "John Laurens", "us", "lp", T_LAUR + 0.3, { side: [-180, -62], until: T_FR9 });   // on land behind R10 (not over the river)
 march("lp", [[1530, 836], [1538, 812], [1526, 790], [1506, 790]], T_REAR - 0.1, 2.2, { dust: false });
 hideU(["lp"], T_FR9 - 0.1); tl.to(FUS, { autoAlpha: 0, duration: 0.2 }, T_FR9 + 0.7);   // the kit re-shows every allied flag when Laurens's banner leaves
 CARD("", "UNDER 10 MINUTES", "#1f4fc4", T_U10 + 0.1, T_FR9 + 0.4, { size: 56, css: CR2 });
@@ -243,9 +253,14 @@ crosses([[1450, 890], [1460, 884], [1444, 880]], T_100 + 0.1, T_LOST + 2.0);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-9: the cost; the second parallel joined to the river; the guns move up
 // ---------------------------------------------------------------------------------------------------------------------------------
-const CAS = CARD("", "AMERICANS ~40 KILLED &amp; WOUNDED", "#c9b48a", T_LOST, T_BDAWN - 0.3, { size: 50, css: CR2 });
-{ const s = document.createElement("div"); s.style.cssText = "font-size:46px;letter-spacing:.06em;color:#f7f3ea;margin-top:6px"; s.textContent = "FRENCH ~100"; CAS.firstElementChild.appendChild(s);
-  gsap.set(s, { autoAlpha: 0 }); tl.fromTo(s, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FR100); SFX("tick", T_FR100 + 0.1); }
+// casualty card in the p2-7 style (flags, both sides on their words)
+{ const row = (flag, side, num) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:10px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">
+    <div style="font-size:40px;letter-spacing:.1em;min-width:250px">${side}</div><div style="font-size:64px;color:#9fc0ea">${num}</div></div>`;
+  const CAS = scr0(`<div style="padding:22px 54px 26px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 44px rgba(0,0,0,.6)">
+    <div style="font-size:26px;letter-spacing:.34em;color:#d8c9a3;text-align:center">KILLED &amp; WOUNDED</div>${row("us_flag_13star.png", "AMERICANS", "~40")}${row("fr_royal_flag.png", "FRENCH", "~100")}</div>`, CR2);
+  const rows = CAS.querySelectorAll(".cr"); gsap.set(rows[1], { autoAlpha: 0 });
+  slam(CAS, T_LOST, { from: 1.4, shake: 3, until: T_BDAWN - 0.3 });
+  tl.fromTo(rows[1], { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FR100); SFX("tick", T_FR100 + 0.1); }
 const LINK = [[1455, 872], [1469, 852], [1498, 812], [1514, 796], [1534, 788]];
 TRENCH(LINK, T_JOINED - 0.2, { dur: 1.8, side: "allies", front: [1460, 800] });
 march("ag1", [[1462, 929], [1446, 906], [1428, 896]], T_GUNS, 1.6, { dustOp: 0.2 });
@@ -254,4 +269,5 @@ shoot([1428, 896], [1376, 830], T_CLOSE + 0.1, { unit: "ag1", r: 6 });
 shoot([1522, 860], [1440, 790], T_CLOSE + 2.0, { unit: "aa", r: 6, dur: 0.9 });
 LIGHT("morning", T_CLOSE + 1.0, 2.5, 0.5);
 // ---------------------------------------------------------------------------------------------------------------------------------
+tl.to(FUS, { autoAlpha: 0, duration: 0.3 }, T_BDAWN + 0.4);   // one US flag (on the R10 column) once the banners have gone (FLAGSYNC re-shows it)
 if (GD.var.audit) LABEL_AUDIT([0.5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160], { show: true });

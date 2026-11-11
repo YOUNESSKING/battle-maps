@@ -109,9 +109,9 @@ const RESTAKE = (w, ddx, ddy, t, dur = 1.0) => tl.to(w, { x: ddx, y: ddy, durati
 const HATCHW = (polys, side, t, hold = 2.2) => { const id = "p2hw" + Math.round(t * 100), d = document.createElement("div"), col = side === "allies" ? "#2c57b7" : "#bc2528";
   d.style.cssText = `position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;-webkit-mask-image:url(assets/${YT.BASE}_m_water.png);mask-image:url(assets/${YT.BASE}_m_water.png);-webkit-mask-size:2880px 1620px;mask-size:2880px 1620px`;
   d.innerHTML = `<svg width="2880" height="1620" viewBox="0 0 2880 1620" style="position:absolute;left:0;top:0;overflow:visible"><defs><pattern id="${id}" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)">
-    <rect x="0" y="0" width="2" height="9" fill="${col}"/></pattern></defs>${polys.map((pl) => `<polygon points="${pl.map((q) => q.join(",")).join(" ")}" fill="url(#${id})" opacity="0.75"/>`).join("")}</svg>`;
+    <rect x="0" y="0" width="2.6" height="9" fill="${col}"/></pattern></defs>${polys.map((pl) => `<polygon points="${pl.map((q) => q.join(",")).join(" ")}" fill="url(#${id})" opacity="0.95"/>`).join("")}</svg>`;
   WORLD.insertBefore(d, OVL); const pat = d.querySelector("pattern"), rc = d.querySelector("rect");
-  onCam((s) => { pat.setAttribute("width", (9 / s).toFixed(3)); pat.setAttribute("height", (9 / s).toFixed(3)); rc.setAttribute("width", (2 / s).toFixed(3)); rc.setAttribute("height", (9 / s).toFixed(3)); });
+  onCam((s) => { pat.setAttribute("width", (9 / s).toFixed(3)); pat.setAttribute("height", (9 / s).toFixed(3)); rc.setAttribute("width", (2.6 / s).toFixed(3)); rc.setAttribute("height", (9 / s).toFixed(3)); });
   gsap.set(d, { autoAlpha: 0 }); tl.to(d, { autoAlpha: 1, duration: 0.5 }, t); tl.to(d, { autoAlpha: 0, duration: 0.8, ease: "sine.inOut" }, t + 0.5 + hold); return d; };
 const DARKEN = (id, t) => tl.to(B.units[id].el.querySelector(".blk"), { filter: "brightness(0.5) saturate(0.7)", duration: 0.8 }, t);
 const SMOKECOL = (id, t0, t1, every = 0.45) => { for (let tt = t0; tt < t1; tt += every) { const q = POSAT(id, tt); K.smoke(q[0] + 2, q[1] - 8, tt, { n: 1, r: 12, rise: 34, life: 2.6, alpha: 0.7, drift: 12 }); } };
@@ -315,6 +315,8 @@ trail([[2440, 1250], [2520, 900], [2610, 540]], SIDECOL("british"), 3.0 / CWD[2]
 const ARC = [[1548, 948], [1598, 912], [1626, 868], [1626, 820]];
 ["x3", "x2", "x0", "x1"].forEach((id, k) => { const p = POSAT(id, T_DOOR); KEY(id, T_DOOR - 0.3 + k * 0.15, p, "none"); KEY(id, T_DOOR + 1.6 + k * 0.15, ARC[k], "power2.inOut"); });
 HATCHW([[[1500, 768], [1650, 760], [1700, 870], [1660, 1000], [1505, 990], [1470, 880]]], "allies", T_SHUT - 0.05, 2.3);
+// the shut door as the owner's coloured line: a blue line from Cape Henry to Cape Charles through the French ships (stays)
+LINE_LAYERS([PLACE("cape_henry"), ...ARC, PLACE("cape_charles")], [{ col: SIDECOL("allies", T_SHUT), side: "allies", w: 15, op: 0.5, blur: true }, { col: SIDECOL("allies", T_SHUT), side: "allies", w: 4.6, op: 0.95 }, { col: "#1e180c", w: 1.4, op: 0.8 }], T_SHUT - 0.05, { dur: 1.2 });
 // "Cornwallis was on the wrong side of it": his banner back at Yorktown
 BANNER("cornwallis", "Lord Cornwallis", "gb", [1152, 622], T_WRONG - 0.1, { side: "up" });
 focus([1170, 720], 90, T_WRONG - 0.1, T_WARN - 0.1);

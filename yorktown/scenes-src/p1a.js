@@ -79,7 +79,7 @@ march("fr1", [[1730, 352], [1725, 356], [1720, 360]], 0.3, 7.0, { dustSize: 44, 
 // Washington (named in hook-4) rides with the American army on a side stake (NE, over empty Connecticut ground)
 // banners on free stakes (the same stake points as p1b frame 0): BFREE = banner on its own pin (moved with pinAlong when the army moves)
 const BFREE = (key, name, nation, p, t, o = {}) => { const w = BANNER(key, name, nation, p, t, { side: "up", ...o }); return { w, pin: w.closest(".gg-pin") }; };
-const BW = BFREE("washington", "George Washington", "us", [1500, 335], 0);
+const BW = { w: BANNER("washington", "George Washington", "us", "am1", 0, { side: "up" }) };   // rides with his army (east of the Hudson)
 // the British: New York garrison (Staten Island shore, Manhattan, Long Island), ships in the harbour
 UNIT("ny1", "british", [1488, 528], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1505, 458], "infantry", { ech: "XX" });
 UNIT("ny3", "british", [1850, 410], "infantry", { ech: "X" });
@@ -87,7 +87,8 @@ UNIT("rs1", "british", [1572, 598], "ship", { ech: "" }); UNIT("rs2", "british",
 B.move("rs1", 0, 9, 1556, 588);
 SIDEFLAG("gb", "ny1", 0);
 // "Sir Henry Clinton": his banner at New York (west stake, over the empty New Jersey ground)
-const BC = BANNER("clinton", "Sir Henry Clinton", "gb", "ny3", T_CLIN + 0.35, { side: "se" });
+const MANH = [1525, 450];   // Clinton at New York: banner planted on Manhattan, side stake over New Jersey (land at every camera scale)
+const BC = BANNER("clinton", "Sir Henry Clinton", "gb", MANH, T_CLIN + 0.35, { side: [-110, 70] }), BCP = BC.closest(".gg-pin");
 focus([1610, 355], 95, T_COMING - 0.1, T_JULY + 1.2);
 // Virginia: Cornwallis's army marching east down the peninsula, a small blue force shadowing it (Lafayette, not named in Part 1)
 UNIT("cwE", "british", [968, 1250], "infantry", { ech: "XX" }); UNIT("cwE2", "british", [925, 1238], "infantry", { ech: "X" });
@@ -109,7 +110,7 @@ UNIT("ghost", "allies", [1420, 1560], "ship", { ech: "", t: T_FOE });
 march("ghost", [[1420, 1560], [1330, 1450], [1255, 1385]], T_FOE + 0.3, 3.4, { dust: false });
 gsap.set(B.units.ghost.el.querySelector(".blk"), { opacity: 0.6 }); hideU(["ghost"], T_OBEY);
 // the units of p1-1 that leave the frame in the dive fade out (they would sit as huge-spaced boxes at the frame edge)
-hideU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2", "lf1"], TZ0 + 0.3); tl.to(BW.pin, { autoAlpha: 0, duration: 0.4 }, TZ0 + 0.3);
+hideU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2", "lf1"], TZ0 + 0.3); tl.to(BCP, { autoAlpha: 0, duration: 0.4 }, TZ0 + 0.3);
 hideU(["cwE", "cwE2", "rs3"], TZ1 - 1.0);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // Yorktown (peninsula map px via PP)
@@ -151,10 +152,10 @@ hideU(["cw1", "cw2", "cw3", "cwA", "cwG", "rv1", "rs4", "rs5", "rs6"], TP0 + 0.2
 UNITF("cwW", "british", [1092, 1258], "infantry", { ech: "XX", t: TP1 - 1.0, fade: 0.5 });
 const BK3 = BANNER("cornwallis", "Lord Cornwallis", "gb", "cwW", TP1 - 0.6, { side: "west" });
 // the wide map after the pull back: the garrison at New York and the allied camp are back, red ships sail the open sea freely
-showU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2"], TP1 - 1.2); tl.to(BW.pin, { autoAlpha: 1, duration: 0.4 }, TP1 - 1.2);
+showU(["am1", "amA", "fr1", "ny1", "ny2", "ny3", "rs1", "rs2"], TP1 - 1.2); tl.to(BCP, { autoAlpha: 1, duration: 0.4 }, TP1 - 1.2);
 UNITF("rs7", "british", [1640, 700], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5 }); B.move("rs7", TP1 - 1.0, END - TP1 + 1.0, 1560, 880);
 UNITF("rs8", "british", [1400, 1260], "ship", { ech: "", t: TP1 - 1.0, fade: 0.5 }); B.move("rs8", TP1 - 1.0, END - TP1 + 1.0, 1470, 1150);
-wstampL("THE SEA", 1900, 1000, T_SEA - 0.05, END - 0.35, null, 34);
+wstampL("THE SEA", 1900, 1000, T_SEA - 0.05, END - 0.1, null, 46);
 // ---------------------------------------------------------------------------------------------------------------------------------
 camApply();
 if (GD.var.audit) LABEL_AUDIT([2, 6, 10, 14, 18, 22, 26, 30, 33, 36, 39, 44, 48, 52, 56], { show: true });

@@ -85,7 +85,7 @@ quote("&ldquo;Oh God! It is all over!&rdquo;", "LORD NORTH, PRIME MINISTER &midd
 const REDP = [[1425, 470], [1430, 405], [1500, 395], [1560, 420], [1680, 398], [1800, 372], [1960, 352], [1975, 400], [1820, 440], [1680, 478], [1580, 500], [1545, 545], [1490, 545], [1470, 505]];
 const RECT = [[-200, -200], [3080, -200], [3080, 1820], [-200, 1820]];
 const BLUEP = [...RECT, RECT[0], ...REDP.slice().reverse(), REDP[REDP.length - 1], RECT[0]];
-STRIPES(BLUEP, REDP, T_NEVER);
+STRIPES(BLUEP, REDP, T_NEVER).forEach((d, i) => { d.style.filter = i ? "brightness(1.1) saturate(1.35)" : "brightness(1.5) saturate(1.3)"; });   // readable strength (2d 3b)
 BANNER("washington", "George Washington", "us", "yk", T_WSEEN + 0.05, { side: "west", until: T_FRANCE - 0.4 });
 focus([1235, 1325], 140, T_SAFE - 0.1, T_FRANCE + 1.6);
 const FL_FR = SIDEFLAG("fr", "ff0", T_FRANCE + 0.1);
@@ -106,10 +106,6 @@ tl.to(EF, { scale: 0.66, x: 70, y: -128, transformOrigin: "50% 0%", duration: 0.
 Object.assign(PILL.style, { right: "50px", top: "34px", bottom: "auto" });
 hideU(["yk", "ny"], T_SO - 0.2);   // clean map under the end screen (the French line + New York stay as the living map)
 // ---------------------------------------------------------------------------------------------------------------------------------
-const FLAGWIN = (el, wins) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: wins.length && wins[0][0] <= 0 ? 1 : 0 });
-  wins.forEach(([a, b]) => { if (a > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, a); if (b != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, b); }); };
-FLAGWIN(FL_GB, [[0, T_CLF + 0.05], [T_LAST, T_SO - 0.2]]);
-FLAGWIN(FL_US, [[0, T_WSEEN + 0.05], [T_FRANCE - 0.2, T_SO - 0.2]]);
-FLAGWIN(FL_FR, [[T_FRANCE + 0.1, null]]);
+tl.to(FL_GB, { autoAlpha: 0, duration: 0.3 }, T_SO - 0.2);   // clean map under the end screen (FLAGSYNC keeps one flag per side before that)
 window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([0.5, 5, 9.5, 14, 20, 27, 33, 40, 46, 52, 58, 64], { show: true });

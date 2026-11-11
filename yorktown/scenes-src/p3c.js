@@ -1,8 +1,8 @@
 // P3C (p3-10 .. p3-13), Yorktown 1781, PART 3 THE SIEGE, the end. Main style (STYLE_LOCK 2d/2e/2f via the Yorktown map kit), 1c clean screen.
 // Build: python3 kit/build_scene.py p3c yorktown p3-10 p3-13
 // Frame 0 = p3b's last frame (15 OCT, morning: both parallels, R9/R10 allied, guns up in the second parallel, French west / Americans east,
-//   Hamilton's banner still up, camera [1462, 852, 1.9]).
-// p3-10: "Cornwallis wrote": his banner at the town (Hamilton's steps out); the French battery moves up into the second parallel; "Before dawn":
+//   no banners up (Hamilton left at "Before dawn" in p3-9), the ring line handed over to the parallels, camera [1462, 852, 1.9]).
+// p3-10: "Cornwallis wrote": his banner at the town ; the French battery moves up into the second parallel; "Before dawn":
 //   night, caption BEFORE DAWN, 16 OCT on "sixteenth"; "three hundred and fifty men": a red sortie box slips out of the hornwork (card ~350 MEN);
 //   "to spike the allied guns": bayonet glints, two gun boxes go grey; blue reserves close in, musket flashes, "driven back": it pulls back;
 //   "Within hours": morning; "firing again": the two guns light up and fire (visible shots).
@@ -99,7 +99,6 @@ dateNow("15 OCT 1781", T_16 - 0.05);
 // ---------------------------------------------------------------------------------------------------------------------------------
 const BLINE = [[1291, 715], [1318, 793], [1376, 832], [1428, 827], [1463, 796], [1489, 758]];
 TRENCH(BLINE, 0, { side: "british" });
-[[[1162, 770], [1185, 800], [1215, 806]], [[1318, 1002], [1350, 1010], [1384, 1002]], [[1462, 998], [1494, 1004], [1526, 994]]].forEach((pts) => TRENCH(pts, 0, { side: "allies" }));
 TRENCH([[1283, 895], [1359, 931], [1428, 935], [1491, 922], [1554, 895], [1590, 878]], 0, { side: "allies", front: [1428, 830] });
 TRENCH([[1291, 854], [1359, 884], [1419, 890], [1455, 872]], 0, { side: "allies", front: [1420, 830] });
 TRENCH([[1455, 872], [1469, 852], [1498, 812], [1514, 796], [1534, 788]], 0, { side: "allies", front: [1460, 800] });
@@ -119,11 +118,10 @@ UNIT("aa", "allies", [1522, 860], "artillery", { ech: "" }); UNIT("a3", "allies"
 UNIT("ag1", "allies", [1428, 896], "artillery", { ech: "" });
 UNIT("fr9", "allies", [1448, 866], "infantry", { ech: "II" }); UNIT("am10", "allies", [1518, 822], "infantry", { ech: "II" });
 const FL_FR = SIDEFLAG("fr", "fr9", 0), FL_US = SIDEFLAG("us", "am10", 0), FL_GB = SIDEFLAG("gb", "bg1", 0);
-BANNER("hamilton", "Alexander Hamilton", "us", [1610, 915], 0, { until: T_CW + 0.3 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-10: the sortie before dawn on 16 Oct
 // ---------------------------------------------------------------------------------------------------------------------------------
-const BCW = BANNER("cornwallis", "Lord Cornwallis", "gb", [1392, 694], T_CW + 0.15, { side: "nw", until: T_18 - 0.3 });
+const BCW = BANNER("cornwallis", "Lord Cornwallis", "gb", [1392, 694], T_CW + 0.6, { side: "nw", until: T_18 - 0.3 });
 march("fg2", [[1392, 934], [1378, 914], [1362, 898]], T_CRIT - 2.4, 2.2, { dustOp: 0.25 });   // the French battery moves up into the second parallel
 LIGHT("night", T_BDAWN - 0.1, 1.4, 0.85); NIGHT_DIM(T_BDAWN - 0.1, 0.8, 1.4);
 wstampL("BEFORE DAWN", 1556, 1012, T_BDAWN + 0.05, T_BDAWN + 3.2, null, 26);
@@ -276,12 +274,7 @@ wstampL("LEGEND", 1240, 1210, T_LEG + 0.05, T_LEG + 3.3, null, 24);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // flags: explicit windows (one flag per side while a banner of that side is up)
 // ---------------------------------------------------------------------------------------------------------------------------------
-const FLAGWIN = (el, wins) => { tl.getTweensOf(el).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: wins.length && wins[0][0] <= 0 ? 1 : 0 });
-  wins.forEach(([a, b]) => { if (a > 0) tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, immediateRender: false }, a); if (b != null) tl.to(el, { autoAlpha: 0, duration: 0.3 }, b); }); };
-FLAGWIN(FL_GB, [[0, T_CW + 0.15], [T_18 - 0.1, T_NOTC + 0.1], [T_7K - 0.2, null]]);
-FLAGWIN(FL_FR, [[0, T_REF + 0.1], [T_TWO, T_ROCH], [T_7K - 0.2, null]]);
-FLAGWIN(FL_US, [[0, T_REF + 0.1], [T_TWO, T_ROCH], [T_7K - 0.2, null]]);
-FLAGWIN(FL_GC, [[T_FRENCH + 0.4, null]]);
+// one flag per side: the kit (r5 FLAGSYNC) hides a side's flags while any banner of that side is up
 // ---------------------------------------------------------------------------------------------------------------------------------
 window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([0.5, 8, 16, 24, 30, 36, 44, 52, 58, 64, 72, 80, 88, 96, 104, 112, 120], { show: true });

@@ -43,7 +43,7 @@ const camAt = (t) => { let c = SEGS[0].a;
 const camKeys = () => { const ts = []; for (let t = 0; t <= END + 1e-6; t += 0.05) ts.push(+t.toFixed(3)); if (ts[ts.length - 1] < END) ts.push(END);
   return ts.map((t) => [t, ...camAt(t), "none"]); };
 const CY = (x, y, s) => [...YK(x, y), SY(s)];                  // camera key in yorktown map px + yorktown scale
-const C0 = [1470, 822, 1.32], C1 = [1525, 840, 1.4];
+const C0 = [1580, 788, 1.03], C1 = [1525, 840, 1.4];   // C0 = p2b's last camera (peninsula px)
 const CRING = CY(1385, 800, 1.45), CGLO = CY(1430, 725, 1.32), CTOWN = CY(1400, 800, 1.5), CDAWN = CY(1370, 860, 1.45);
 const CHOOK = [1812, 735, 1.5], CEND = CY(1440, 830, 1.6);     // CEND = p3b frame 0
 seg(0, 5.4, C0, C1);
@@ -72,7 +72,7 @@ const MARK = (p, t, until) => { const el = pinS(GG.pin(SAB, p[0], p[1], { t, pop
 // ---------------------------------------------------------------------------------------------------------------------------------
 // date scroll: SEP 1781 (from p2b) -> 28 SEP -> 29 SEP -> 3 OCT
 // ---------------------------------------------------------------------------------------------------------------------------------
-dateNow("SEP 1781", T_28 - 0.05);
+dateNow("14 SEP 1781", T_28 - 0.05);   // = p2b's last date
 B.date("28 SEP 1781", T_28 + 0.1, T_29 - 0.08, 32); SFX("tick", T_28 + 0.2);
 B.date("29 SEP 1781", T_29, T_3OCT - 0.08, 32); SFX("tick", T_29 + 0.1);
 B.date("3 OCT 1781", T_3OCT, null, 32); SFX("tick", T_3OCT + 0.1);
@@ -94,7 +94,17 @@ UNIT("o3", "british", YK(1494, 982), "artillery", { ech: "" });
 UNIT("g1", "british", NUDGE(YK(1466, 506), S5), "infantry", { ech: "X" });
 const BRIT = ["bg1", "bg3", "o1", "o2", "o3", "g1"];
 BRIT.forEach((id) => gsap.set(B.units[id].el, { autoAlpha: 0 })); showU(BRIT, 7.6);
-UNIT("yw", "british", [1800, 884], "infantry", { ech: "XX" }); hideU(["yw"], 6.6);
+// frame 0 = p2b's last frame (peninsula px): Cornwallis's boxes + red works at Yorktown, Lafayette + the French at Williamsburg, Washington arrived;
+// the three banners fade out under the title card (no pop at the cut), the blue boxes hand over to the marching columns, the red ones to the siege map
+const CARRY = [["c_cw1", "british", [1800, 888], "infantry", "XX"], ["c_cw2", "british", [1690, 940], "infantry", "X"], ["c_cwA", "british", [1832, 940], "artillery", ""],
+  ["c_lf", "allies", [1275, 690], "infantry", "X"], ["c_fr1", "allies", [1235, 800], "infantry", "X"], ["c_fr2", "allies", [1335, 770], "infantry", "X"], ["c_wr", "allies", [1080, 645], "cavalry", ""]];
+CARRY.forEach(([id, side, p, type, ech]) => UNIT(id, side, p, type, { ech }));
+BANNER("washington", "George Washington", "us", "c_wr", 0, { side: "west", until: 0.35 });
+BANNER("lafayette", "Marquis de Lafayette", "fr", "c_lf", 0, { side: "up", until: 0.35 });
+BANNER("cornwallis", "Lord Cornwallis", "gb", "c_cw1", 0, { side: "east", until: 0.35 });
+hideU(["c_lf", "c_fr1", "c_fr2", "c_wr"], 0.7); hideU(["c_cw1", "c_cw2", "c_cwA"], 6.6);
+const W2B = [TRENCH([[1722, 905], [1758, 942], [1810, 950], [1852, 918], [1866, 878]], 0, { side: "british" }), TRENCH([[1745, 790], [1772, 775], [1800, 784]], 0, { side: "british" })];
+tl.to(W2B, { opacity: 0, duration: 0.8 }, 6.4);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // p3-1: the allied army marches out of Williamsburg on the two roads and closes the ring
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -115,6 +125,7 @@ TRAIN("f1", "infantry", FPATH, 135 / LF, T_M0, 7.6, RING.f1);
 TRAIN("f2", "infantry", FPATH, 60 / LF, T_M0, 8.25, RING.f2);
 TRAIN("a2", "infantry", SPATH, 288 / LSP, T_M0, 7.6, RING.a2);
 TRAIN("a1", "infantry", SPATH, 212 / LSP, T_M0, 8.25, RING.a1);
+["f1", "f2", "a2", "a1"].forEach((id) => { const el = B.units[id].el; gsap.set(el, { autoAlpha: 0 }); tl.to(el, { autoAlpha: 1, duration: 0.45 }, 0.35); });   // hand-over from p2b's boxes
 const TFILL = 7.9;
 UNITF("fa", "allies", YK(...RING.fa), "artillery", { ech: "", t: TFILL, fade: 0.5 });
 UNITF("aa", "allies", YK(...RING.aa), "artillery", { ech: "", t: TFILL + 0.15, fade: 0.5 });
@@ -125,7 +136,10 @@ CARD("", "OVER 16,000", "#1f4fc4", T_16K - 0.05, Math.min(T_16K + 3.0, T_CLOSED 
 const REDP = [[1100, 560], [1140, 800], [1250, 965], [1400, 1015], [1560, 1005], [1720, 935], [1850, 800], [1700, 560], [1600, 520], [1500, 462], [1420, 462], [1380, 560]];
 const RECT = [[600, 150], [2300, 150], [2300, 1400], [600, 1400]];
 const BLUEP = [...RECT, RECT[0], ...REDP, REDP[0], RECT[0]];   // keyhole: REDP runs counter to RECT, so it is a hole (nonzero rule)
-STRIPES(YKL(BLUEP), YKL(REDP), T_BELOW + 0.4);
+STRIPES(YKL(BLUEP), YKL(REDP), T_BELOW + 0.4).forEach((d, i) => { d.style.filter = i ? "brightness(1.1) saturate(1.35)" : "brightness(1.5) saturate(1.3)"; });   // readable strength (2d 3b) on the dark green
+// the allied siege line: ONE continuous blue line from the river above the town to the river below it, two-colour where it faces the red works
+const RINGL = YKL([[1090, 555], [1120, 650], [1065, 760], [1085, 880], [1170, 975], [1300, 1055], [1450, 1040], [1580, 1032], [1640, 990], [1692, 948]]);
+TRENCH(RINGL, T_HALF, { dur: 2.4, side: "allies", front: YK(1384, 760) });
 // the nation flags ride with the wings: French pennant west, US flag east
 SIDEFLAG("fr", "f2", T_LEFT + 0.1); SIDEFLAG("us", "a2", T_RIGHT + 0.1);
 SIDEFLAG("gb", "bg1", T_CLOSED);
@@ -156,7 +170,7 @@ const DAWNP = { f2: [1190, 778], a1: [1350, 988], a2: [1494, 980] };
 march("f2", YKL([RING.f2, [1120, 772], DAWNP.f2]), T_WALK - 0.3, 2.4, { dustSize: 8, dustOp: 0.4 });
 march("a1", YKL([RING.a1, [1325, 1025], DAWNP.a1]), T_WALK - 0.2, 2.4, { dustSize: 8, dustOp: 0.4 });
 march("a2", YKL([RING.a2, [1478, 1012], DAWNP.a2]), T_WALK - 0.1, 2.4, { dustSize: 8, dustOp: 0.4 });
-tl.to(OWB, { opacity: 0, duration: 0.6 }, T_WALK + 0.6); OW.forEach((pts) => TRENCH(pts, T_WALK + 0.6, { side: "allies", dur: 0.6 }));
+tl.to(OWB, { opacity: 0, duration: 0.6 }, T_WALK + 0.6);   // the abandoned red outer works go; the allies hold them behind the one blue line (no stray dashes)
 HATCH(YKL([[1120, 690], [1250, 690], [1300, 800], [1370, 860], [1440, 885], [1530, 865], [1600, 900], [1640, 960], [1560, 1030], [1400, 1040], [1250, 1020], [1120, 880]]), "allies", T_WALK + 0.6, { hold: 2.2 });
 LIGHT("day", T_WALK + 2.8, 2.5);
 // ---------------------------------------------------------------------------------------------------------------------------------

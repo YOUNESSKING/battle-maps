@@ -102,15 +102,17 @@ UNITF("ewF", "allies", [1185, 1306], "ship", { ech: "", t: T_MAIN + 1.8 });
 const BAY = [[1160, 772], [1128, 805], [1104, 850], [1100, 900], [1100, 950], [1098, 1000], [1125, 1050], [1135, 1110], [1130, 1170], [1125, 1215], [1135, 1245]];
 [0, 1, 2, 3].forEach((k) => BOAT(sub(BAY, 0, 1, 20), T_MOST - 0.3 + k * 0.9, 8.0, { until: T_14 - 0.2, px: 30 }));
 BOAT([[1080, 893], [1098, 905], ...sub(BAY, 0.33, 1, 14)], T_BOATS - 1.4, 6.0, { until: T_14 - 0.2, px: 30 });
+// "Most of the troops sailed down the bay in boats": the troop transports as blue boxes sailing down the bay (with their trails)
+[0, 1, 2, 3, 4].forEach((k) => { const id = "tb" + k, f0 = 0.05 * k, pts = sub(BAY, f0, 0.62 + 0.07 * k, 16); UNIT(id, "allies", pts[0], "ship", { ech: "", t: T_MOST - 0.2 + k * 0.25 });
+  march(id, pts, T_MOST + k * 0.25, T_14 - T_MOST - 0.6, { dust: false }); });
+hideU(["tb0", "tb1", "tb2", "tb3", "tb4"], T_14 - 0.1);
 // "Washington rode": his banner rides south from the head of the bay (the rider box carries it)
 const R1 = [[1185, 748], [1125, 782], [1060, 812], [1012, 872], [982, 922], [972, 944]];
 const R2 = [[972, 944], [955, 1010], [958, 1100], [985, 1185], [1015, 1245], PP(1080, 645)];
 UNITF("wr", "allies", R1[0], "cavalry", { ech: "", t: T_RODE - 0.2 });
 along("wr", R1, T_RODE, T_MV + 0.6 - T_RODE, 16);
 along("wr", R2, T_14 + 0.1, T_REACH + 0.3 - T_14 - 0.1, 24);
-BANNER("washington", "George Washington", "us", "wr", T_RODE + 0.05, { side: "west", until: T_14 + 0.1 });
-tl.to(B.units.wr.el, { autoAlpha: 0, duration: 0.3 }, T_14 + 0.2); tl.to(B.units.wr.el, { autoAlpha: 1, duration: 0.4 }, T_REACH - 0.4);
-BANNER("washington", "George Washington", "us", "wr", T_REACH - 0.2, { side: "west" });
+const BWR = BANNER("washington", "George Washington", "us", "wr", T_RODE + 0.05, { side: "west" });   // stays on screen through the ride to Williamsburg (no empty frame)
 // "he stopped at Mount Vernon, his home": place name + a soft warm glow (~3 s)
 PLACE_LABEL("Mount Vernon", [969, 948], T_MV + 0.2, { dx: -10, dy: 34, size: 24 });
 { const g = pinS(GG.pin(`<div style="width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;background:radial-gradient(circle,rgba(255,214,140,.55) 0%,rgba(255,190,110,.28) 40%,rgba(255,170,90,0) 72%);mix-blend-mode:screen"></div>`, 969, 948, {}));
@@ -120,7 +122,9 @@ PLACE_LABEL("Mount Vernon", [969, 948], T_MV + 0.2, { dx: -10, dy: 34, size: 24 
 // ---------------------------------------------------------------------------------------------------------------------------------
 hideU(["ewR", "ewB", "ewF"], T_14 + 0.8);
 showU(["cw1", "cw2", "cwA", "lf", "fr1", "fr2"], T_REACH - 0.6);
-BANNER("lafayette", "Marquis de Lafayette", "fr", "lf", T_REACH - 0.3, { side: "up" });
+const BLF2 = BANNER("lafayette", "Marquis de Lafayette", "fr", "lf", T_REACH - 0.3, { side: "up" });
+// the cut to p3a: Washington and Lafayette fade out over ~0.4 s instead of popping off
+tl.to([BWR, BLF2], { autoAlpha: 0, duration: 0.4 }, END - 0.45);
 BANNER("cornwallis", "Lord Cornwallis", "gb", "cw1", T_12 + 0.6, { side: "east" });
 focus(PP(1761, 880), 110, T_12 + 0.8, T_NAVY + 0.6);
 TRENCH(PPL([[1722, 905], [1758, 942], [1810, 950], [1852, 918], [1866, 878]]), T_STILL - 0.1, { dur: 2.0, side: "british" });
