@@ -38,3 +38,19 @@ window.__RT_T = {''', 1)
 src = src.replace("scene s12d_bc = s12d_rt +", "scene s12d_ml = s12d_bc + farms, river label, living map (ml_patch.py); s12d_bc = s12d_rt +", 1)
 # the river now carries its own carved name on "the Big Black": drop the duplicate white battle name (it sat on the Vicksburg label); the mark stays
 rep('BAT("BIG BLACK", BBR, T_BB, T_EVERY + 0.4, -40, 85, [1534, 708]);', 'MARK([1534, 708], T_BB);   /* s12d_ml: name given by the river label */')
+# ---- critic fix 1: the bridgehead rout as ACTION on "the Big Black" (mark -> retreat over the bridge -> bridge burns -> captured boxes fade)
+rep('''BOX("ca1", "rome", 1526, 724, "", "art"), BOX("ca2", "rome", 1526, 754, "", "art")], T_17 + 0.3, T_BB + 0.9);''',
+    '''BOX("ca1", "rome", 1526, 724, "", "art"), BOX("ca2", "rome", 1526, 754, "", "art")], T_17 + 0.3, null);''')
+rep('''  tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 1.5); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 1.5); }''',
+'''  tl.to(bx, { autoAlpha: 1, duration: 0.3 }, T_BB + 1.55); tl.to(ok, { autoAlpha: 0, duration: 0.3 }, T_BB + 1.55); }   /* s12d_ml: burns as the last box crosses */
+{ const TR = T_BB + 0.6;   /* s12d_ml: ~0.8 s after the mark the bridgehead falls back west over the bridge (1.5 s); cb4 + its battery are cut off (captured) */
+  [["cb1", 1466, 634, 0], ["ca1", 1494, 663, 0.1], ["cb2", 1466, 693, 0.2], ["cb3", 1494, 724, 0.3]].forEach(([id, x, y, d]) => {
+    tl.to(B.units[id].el, { keyframes: [{ left: 1522 - B.units[id].w / 2, top: 706 - B.units[id].h / 2, duration: 0.6, ease: "power1.in" }, { left: x - B.units[id].w / 2, top: y - B.units[id].h / 2, duration: 0.6, ease: "power1.out" }] }, TR + d);
+    tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, Math.max(T_EVERY, TR + 1.7)); });
+  ["cb4", "ca2"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.4 }, TR + 0.4)); }''')
+# ---- fix 2: river label further up the river, clear of the pioneers and Sherman
+rep('near: [1597, 554], side: "left", tl }', 'near: [1712, 479], side: "left", tl }')
+# ---- fix 3: afternoon light as a broad, weaker diagonal gradient from the west; fix 4: clouds ~10.5 %
+rep('  LV.light("afternoon", 0, { dur: 0 });', '''  { const lg = document.createElement("div"); lg.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;mix-blend-mode:soft-light;opacity:0.12;" +
+      "background:linear-gradient(110deg, rgba(255,165,80,.6) 0%, rgba(255,165,80,.35) 45%, rgba(255,165,80,0) 85%)"; WORLD.insertBefore(lg, OVL); }   /* warm 4 PM light from the west */''')
+rep('LV.clouds({ t0: 0, t1: END });', 'LV.clouds({ t0: 0, t1: END, opacity: 0.105 });')

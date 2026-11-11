@@ -933,16 +933,16 @@ document.getElementById("relief2").after(RTL);   // above both basemaps, under h
 const RTH = [], RTHC = [];
 
 ["champion_hill", "vicksburg_bluffs"].forEach((h) => { [["", RTH, "relief"], ["_close", RTHC, "relief2"]].forEach(([suf, arr, after]) => {
-  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794355456`; im.alt = "";
+  const im = document.createElement("img"); im.src = `assets/rt/hill_${h}${suf}.png?v=1794356630`; im.alt = "";
   im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   const ref = document.getElementById(after); (arr.length ? arr[arr.length - 1] : ref).after(im); arr.push(im); }); });
 // cleared lanes through the woods (crossings.py), ABOVE the hill art (the hills' halo repaints the ground under it): wide above the wide hills, close above the close hills
 [["lanes_w", RTH, "relief"], ["lanes_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794355456.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794356630.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 // ground texture (research/style_tests/roads_towns/texture): above the hills + lanes, under the roads/towns; the close one follows #relief2
 [["texture_w", RTH, "relief"], ["texture_close", RTHC, "relief2"], ["rivers_w", RTH, "relief"], ["rivers_close", RTHC, "relief2"]].forEach(([n, arr, after]) => { const im = document.createElement("img");
-  im.src = `assets/rt/${n}_1794355456.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
+  im.src = `assets/rt/${n}_1794356630.png`; im.alt = ""; im.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none";
   (arr.length ? arr[arr.length - 1] : document.getElementById(after)).after(im); arr.push(im); });
 const rtHillSync = () => { const R2 = document.getElementById("relief2"); RTHC.forEach((im) => { im.style.opacity = R2.style.opacity;
   im.style.webkitMaskImage = im.style.maskImage = R2.style.maskImage || "none"; }); };
@@ -960,7 +960,7 @@ CURV.push([{ setAttribute: () => rtHillSync() }, 1]); rtHillSync();
   fl.innerHTML = '<feGaussianBlur stdDeviation="0.3"/>'; const df = document.createElementNS("http://www.w3.org/2000/svg", "defs"); df.appendChild(fl); sv.appendChild(df);
   const gg = document.createElementNS("http://www.w3.org/2000/svg", "g"); gg.setAttribute("filter", "url(#rtsoft)"); PS.filter((p) => p.tagName === "g").forEach((p) => gg.appendChild(p)); sv.appendChild(gg);
   // timber bridges, ferries, landings (crossings.py) UNDER the road line, so the road runs on over the deck at the same weight
-  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794355456.png`; bi.alt = ""; bi.id = "rt_" + n;
+  ["bridges", "bb_ok", "bb_burned"].forEach((n) => { const bi = document.createElement("img"); bi.src = `assets/rt/${n}_1794356630.png`; bi.alt = ""; bi.id = "rt_" + n;
     bi.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none"; RTL.appendChild(bi); });
   RTL.appendChild(sv); RTSV = sv; RTL.appendChild(document.getElementById("rt_bb_burned"));   // the burned span sits ABOVE the road: the road breaks at the gap
   const rtApply = (k) => { PS.forEach((p) => { if (p.__w) p.setAttribute("stroke-width", (p.__w * k).toFixed(3)); }); SH.forEach(([g, dx, dy]) => g.setAttribute("transform", `translate(${(dx * k).toFixed(3)} ${(dy * k).toFixed(3)})`)); fl.firstChild.setAttribute("stdDeviation", (0.35 * k).toFixed(3)); };
@@ -1079,7 +1079,7 @@ const BOX = (id, side, x, y, ech, kind) => { if (kind === "art") unitS(id, side,
 // Confederate bridgehead (east bank): 4 brigades + 2 of its batteries in the line (~18 guns were dug in there)
 // critic: a shallow arc bulging east, >= 8 px between each echelon mark and the box above, guns on the flanks
 BCX([BOX("cb1", "rome", 1550, 680, "X"), BOX("cb2", "rome", 1555, 710, "X"), BOX("cb3", "rome", 1555, 740, "X"), BOX("cb4", "rome", 1550, 770, "X"),
-     BOX("ca1", "rome", 1526, 724, "", "art"), BOX("ca2", "rome", 1526, 754, "", "art")], T_17 + 0.3, T_BB + 0.9);   /* polish: the whole line inside the bend east of the river (Vaughn, Green, Cockrell); guns behind + on the south flank */ tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
+     BOX("ca1", "rome", 1526, 724, "", "art"), BOX("ca2", "rome", 1526, 754, "", "art")], T_17 + 0.3, null);   /* polish: the whole line inside the bend east of the river (Vaughn, Green, Cockrell); guns behind + on the south flank */ tl.to(B.units.rs.el, { autoAlpha: 0, duration: 0.6 }, T_17);
 B.move("u13", T_17, 1.2, 1652, 650);   /* s12d_bc: McClernand's corps box behind his divisions */
 // Union: McClernand's 3 divisions in front with 2 batteries, cavalry on the north flank, McPherson and Sherman behind, pioneers bridging the river near Bridgeport
 // critic: ~60-70 px between the red and blue boxes, a shallow arc (ends forward), guns on the flanks; Sherman + his pioneers EAST of the Big Black at Bridgeport (no pontoon before the night of 17 May)
@@ -1089,7 +1089,12 @@ BCX([BOX("d13a", "carth", 1616, 650, "XX"), BOX("d13b", "carth", 1612, 682, "XX"
 mg(L(32.385, -90.67), L(32.37, -90.70), T_BB + 0.3, 5, 1.1 / 1.9 * 2.2);
 MARK([1534, 708], T_BB);   /* s12d_ml: name given by the river label */   /* s12d_rt polish: mark on the Big Black bridge approach, east bank (the Confederate unit stands on the bridge until it falls back) */
 { const ok = document.getElementById("rt_bb_ok"), bx = document.getElementById("rt_bb_burned"); gsap.set(bx, { autoAlpha: 0 });   /* s12d_rt: the Confederates burn the Big Black bridge */
-  tl.to(bx, { autoAlpha: 1, duration: 0.6 }, T_BB + 1.5); tl.to(ok, { autoAlpha: 0, duration: 0.6 }, T_BB + 1.5); }
+  tl.to(bx, { autoAlpha: 1, duration: 0.3 }, T_BB + 1.55); tl.to(ok, { autoAlpha: 0, duration: 0.3 }, T_BB + 1.55); }   /* s12d_ml: burns as the last box crosses */
+{ const TR = T_BB + 0.6;   /* s12d_ml: ~0.8 s after the mark the bridgehead falls back west over the bridge (1.5 s); cb4 + its battery are cut off (captured) */
+  [["cb1", 1466, 634, 0], ["ca1", 1494, 663, 0.1], ["cb2", 1466, 693, 0.2], ["cb3", 1494, 724, 0.3]].forEach(([id, x, y, d]) => {
+    tl.to(B.units[id].el, { keyframes: [{ left: 1522 - B.units[id].w / 2, top: 706 - B.units[id].h / 2, duration: 0.6, ease: "power1.in" }, { left: x - B.units[id].w / 2, top: y - B.units[id].h / 2, duration: 0.6, ease: "power1.out" }] }, TR + d);
+    tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.5 }, Math.max(T_EVERY, TR + 1.7)); });
+  ["cb4", "ca2"].forEach((id) => tl.to(B.units[id].el, { autoAlpha: 0, duration: 0.4 }, TR + 0.4)); }
 B.move("rv", T_BB + 1.0, 1.2, ...L(32.40, -90.79)); B.move("re", T_BB + 1.1, 1.2, ...L(32.30, -90.79));
 // ---------- "A battle every three or four days" (wide: all five marks + the route) ----------
 inkTrace(LL([[31.961, -90.984], [32.08, -90.74], [32.259, -90.422], [32.299, -90.185], [32.34, -90.36], [32.333, -90.535], [32.347, -90.716]]), T_EVERY + 0.3, T_ATE + 0.6, 2.6);
@@ -1130,9 +1135,10 @@ fixImgs();
 K.raiseTerritory();
 { const LV = LivingW({ tl });   /* s12d_ml: living map (no weather: the Big Black weather is unverified) */
   LV.water("assets/mask_water.png", { paths: [RIVERS_PX.mississippi.pts, RIVERS_PX.big_black.pts, RIVERS_PX.pearl.pts], lanes: { 0: [-5, 0, 5] } });
-  LV.clouds({ t0: 0, t1: END });
+  LV.clouds({ t0: 0, t1: END, opacity: 0.105 });
   ["u13", "u17", "u15"].forEach((id) => LV.dust(B.units[id].el, 0.2, END, { opacity: 0.55, size: 52 }));   // dust behind the Union columns while they march
-  LV.light("afternoon", 0, { dur: 0 });
-  riverLabel("bb", "Big Black River", RIVERS_PX.big_black.pts, T_BB, { s: 1.9, size: 25, hw: 4.5, near: [1597, 554], side: "left", tl }); }
+  { const lg = document.createElement("div"); lg.style.cssText = "position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;mix-blend-mode:soft-light;opacity:0.12;" +
+      "background:linear-gradient(110deg, rgba(255,165,80,.6) 0%, rgba(255,165,80,.35) 45%, rgba(255,165,80,0) 85%)"; WORLD.insertBefore(lg, OVL); }   /* warm 4 PM light from the west */
+  riverLabel("bb", "Big Black River", RIVERS_PX.big_black.pts, T_BB, { s: 1.9, size: 25, hw: 4.5, near: [1712, 479], side: "left", tl }); }
 window.__RT_T = { T_CH, T_17, T_16, T_BB };
 B.finish();
