@@ -289,10 +289,10 @@ BANNER("degrasse", "Comte de Grasse", "fr", "b5", T_BACK + 0.2, { side: "up" });
 // 11 SEP: the British fleet off the capes; "the British burned the wrecked HMS Terrible" (r2): fire, smoke, label, it sinks
 const RS = { r2: [2235, 1330], r5: [2340, 1235], r6: [2440, 1290], r7: [2530, 1215] };
 Object.entries(RS).forEach(([id, p]) => { KEY(id, T_11 - 0.3, p, "none"); KEY(id, T_13, [p[0] + 12, p[1] + 4], "none"); tl.to(B.units[id].el, { autoAlpha: 1, duration: 0.5 }, T_11 - 0.2); });
-bonfire(RS.r2[0], RS.r2[1] - 4, T_BURN, T_TERR + 1.9, 44);
+SHIP_BURN("r2", T_BURN, { until: T_TERR + 1.9, sink: T_TERR + 0.7 });
 for (let tt = T_BURN + 0.1; tt < T_TERR + 2.0; tt += 0.3) K.smoke(RS.r2[0] + 3, RS.r2[1] - 10, tt, { n: 1, r: 14, rise: 40, life: 2.6, alpha: 0.7, drift: 14 });
 PLACE_LABEL("HMS Terrible", RS.r2, T_TERR - 0.05, { dx: -10, dy: 30, size: 24, hold: 3.0 });
-tl.to(B.units.r2.el, { autoAlpha: 0, scale: 0.35, duration: 1.4, ease: "power2.in" }, T_TERR + 0.7);
+// r2 sinks via SHIP_BURN (kit r6)
 // 13 SEP: "Graves gave up and sailed back to New York": his banner, the red ships turn north and leave
 const NORTH = { r5: [[2340, 1235], [2430, 900], [2520, 480]], r6: [[2440, 1290], [2520, 950], [2610, 540]], r7: [[2530, 1215], [2600, 880], [2690, 470]] };
 Object.entries(NORTH).forEach(([id, pts]) => { KEY(id, T_13 + 0.2, [pts[0][0] + 12, pts[0][1] + 4], "none"); KPATH(id, pts, T_13 + 0.25, T_NYB + 2.0 - T_13, 16, "sine.in"); });

@@ -33,13 +33,16 @@ const SYMS = {
 //   o.ech = echelon mark ("II", "X", "XX", "XXX"; "" none), o.t = drop-in time (0 = on screen at frame 0), o.name + o.nameAt = tag text + its spoken time
 const SIDEK = (s) => (s === "allies" || s === "carth" || s === "blue" ? "carth" : "rome");
 // yorktown r3: unit moves are transforms (x/y from the creation point; lint gsap_non_transform_motion), drop-in distance constant on screen
-B.move = (k, t, dur, x, y, ease = "power1.inOut") => { const u = B.units[k]; tl.to(u.el, { x: x - u.x, y: y - u.y, duration: dur, ease }, t); };
+B.move = (k, t, dur, x, y, ease = "power1.inOut") => { const u = B.units[k]; tl.to(u.el, { x: x - u.x, y: y - u.y, duration: dur, ease }, t);
+  if (u.ship && u.ship.style !== "B" && !u.ship.fixed) { const dx = x - u.ship.lx; u.ship.lx = x;   // r6: a ship faces its direction of travel (flips on a real heading change)
+    if (Math.abs(dx) > 1.5) { const f = dx < 0 ? -1 : 1; if (f !== u.ship.face) { u.ship.face = f; tl.set(u.ship.art, { scaleX: f }, t); } } } };
 const UPOS = (id) => { const u = B.units[id], el = u.el; return [u.x + (+gsap.getProperty(el, "x") || 0), u.y + (+gsap.getProperty(el, "y") || 0)]; };   // current centre (map px)
 const UNIT = (id, side, p, type = "infantry", o = {}) => {
   U(id, SIDEK(side), p, o.name || "", o.ech ?? "X", o.t ?? 0, { icon: type === "artillery" ? "artillery" : "infantry", tagAt: o.name ? (o.nameAt ?? o.t ?? 0) : null });
   const S = SYMS[type]; if (S) { const sv = B.units[id].el.querySelector(".blk svg"); sv.setAttribute("viewBox", S.vb); sv.setAttribute("preserveAspectRatio", S.ar); sv.innerHTML = typeof S.svg === "function" ? S.svg(id) : S.svg;
     sv.style.color = SIDEK(side) === "carth" ? "#1f4fc4" : "#c4121f"; }
   const sz = B.units[id].el.querySelector(".fxk-size"); if (sz && !(o.ech ?? "X")) sz.remove();
+  if (type === "ship" && o.box !== true) SHIP_INTO(id, side, o);
   if ((o.t ?? 0) > 0) { const el = B.units[id].el, sc = Math.max(CAM_AT(o.t)[2], 1920 / 2880);
     tl.getTweensOf(el).filter((tw) => Math.abs(tw.startTime() - o.t) < 1e-3 && tw.vars.ease === "bounce.out").forEach((tw) => tw.kill());
     tl.fromTo(el, { autoAlpha: 0, y: -45 / sc, scale: 1.25 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: "bounce.out", immediateRender: false }, o.t); }
@@ -274,22 +277,42 @@ const SHIP_ART = (style, side, px, o = {}) => { const c = SIDECOL(side), cd = SI
   const A = `<svg width="${px}" height="${px * 0.82}" viewBox="0 0 100 82" style="display:block;overflow:visible;filter:drop-shadow(1.5px 2.5px 1.5px rgba(10,16,20,.55))"><g${flip}>
     <path d="M6 66 Q50 72 94 66" fill="none" stroke="rgba(235,244,240,.6)" stroke-width="2"/>
     <path d="M8 52 L92 52 L86 64 Q50 68 14 64 Z" fill="#5e432a" stroke="${ink}" stroke-width="1.6"/>
-    <path d="M10 55 L90 55 L88 59 L12 59 Z" fill="${c}"/>${[16, 26, 36, 46, 56, 66, 76].map((x) => `<rect x="${x}" y="56" width="3.4" height="2.4" fill="${ink}"/>`).join("")}
+    <path d="M9 54 L91 54 L88.5 61 L11.5 61 Z" fill="${c}" stroke="${ink}" stroke-width=".7"/>${[16, 26, 36, 46, 56, 66, 76].map((x) => `<rect x="${x}" y="56.2" width="3.6" height="2.8" fill="${ink}"/>`).join("")}
+    <path d="M14 64 Q50 68 86 64" fill="none" stroke="${c}" stroke-width="3"/>
     <path d="M84 52 L96 48 L92 54 Z" fill="#5e432a" stroke="${ink}" stroke-width="1"/><path d="M8 52 L6 44 L18 46 L18 52 Z" fill="#6e5032" stroke="${ink}" stroke-width="1"/>
     ${[[28, 12, 13], [52, 4, 15], [74, 14, 12]].map(([x, top, w]) => `<line x1="${x}" y1="${top}" x2="${x}" y2="52" stroke="${ink}" stroke-width="1.8"/>
       <path d="M${x - w} ${top + 6} Q${x} ${top + 9} ${x + w} ${top + 6} L${x + w - 1} ${top + 19} Q${x} ${top + 22} ${x - w + 1} ${top + 19} Z" fill="#efe6cc" stroke="${ink}" stroke-width="1"/>
       <path d="M${x - w + 1} ${top + 22} Q${x} ${top + 25} ${x + w - 1} ${top + 22} L${x + w - 2} ${top + 36} Q${x} ${top + 39} ${x - w + 2} ${top + 36} Z" fill="#e2d6b4" stroke="${ink}" stroke-width="1"/>`).join("")}
-    <path d="M52 4 L64 7 L52 10 Z" fill="${c}" stroke="${ink}" stroke-width=".6"/><path d="M84 52 L98 40" stroke="${ink}" stroke-width="1.4"/></g></svg>`;
+    <path d="M52 0.5 L76 6 L52 11.5 Z" fill="${c}" stroke="${ink}" stroke-width=".7"/><path d="M84 52 L98 40" stroke="${ink}" stroke-width="1.4"/></g></svg>`;
   if (style === "C") return `<div style="position:relative;width:${px}px;height:${px * 0.82}px"><div style="position:absolute;left:${-px * 0.12}px;right:${-px * 0.12}px;top:${px * 0.38}px;height:${px * 0.5}px;border-radius:50%;background:radial-gradient(ellipse at 50% 50%, ${c} 0%, ${c}cc 38%, ${cd}66 62%, rgba(0,0,0,0) 72%);box-shadow:0 0 ${px * 0.12}px ${c}"></div><div style="position:absolute;left:0;top:0">${A}</div></div>`;
   return A; };
-const SHIPV = (id, side, p, o = {}) => { const style = o.style || "A", px = o.px || 70;
-  UNIT(id, side, p, "ship", { ech: "", t: o.t ?? 0, name: o.name, nameAt: o.nameAt });
-  const u = B.units[id], blk = u.el.querySelector(".blk"); blk.style.visibility = "hidden";
-  const art = document.createElement("div"); art.className = "ytship"; art.innerHTML = SHIP_ART(style, side, px, o);
-  const a = art.firstElementChild; const w = px, h = style === "B" ? px : px * 0.82;
-  art.style.cssText = `position:absolute;left:${(54 - w) / 2}px;top:${(36 - h) / 2 - (style === "B" ? 0 : px * 0.12)}px;width:${w}px;height:${h}px;pointer-events:none;z-index:2`;
-  blk.parentElement.appendChild(art); u.ship = { style, px, art }; return id; };
+// r6 (owner picked option A): SHIP_INTO paints the ship INSIDE the unit's .blk (box styling removed), so scene filters on .blk (grey, darken,
+//   burn) and fades / scale-outs still act on the ship. Default size 100 px wide; o.facing "left" | "right" (else it turns with B.move); o.fixedFacing.
+const SHIP_INTO = (id, side, o = {}) => { const u = B.units[id], blk = u.el.querySelector(".blk"), style = o.style || "A", px = o.px || 100;
+  Object.assign(blk.style, { background: "none", border: "none", boxShadow: "none", overflow: "visible" });
+  const h = style === "B" ? px : px * 0.82, art = document.createElement("div"); art.className = "ytship"; art.innerHTML = SHIP_ART(style, side, px, { ...o, facing: "right" });
+  art.style.cssText = `position:absolute;left:${(54 - px) / 2}px;top:${style === "B" ? (36 - h) / 2 : 18 - h * 0.72}px;width:${px}px;height:${h}px;pointer-events:none;transform-origin:50% 72%`;
+  blk.innerHTML = ""; blk.appendChild(art); const face = o.facing === "left" ? -1 : 1; gsap.set(art, { scaleX: face });
+  u.ship = { style, px, art, face, lx: u.x, fixed: !!o.fixedFacing }; return id; };
+const SHIPV = (id, side, p, o = {}) => { UNIT(id, side, p, "ship", { ech: "", t: o.t ?? 0, name: o.name, nameAt: o.nameAt, style: o.style || "A", px: o.px, facing: o.facing, heading: o.heading, fixedFacing: o.fixedFacing }); return id; };
 // BROADSIDE(id, t, o): a broadside from a SHIPV: muzzle flashes along the hull (quiet launch sound via K.gun) + rolling powder smoke. o.n (5), o.side 1/-1 (B only)
-const BROADSIDE = (id, t, o = {}) => { const [x, y] = UPOS(id), n = o.n || 5, sp = (o.len || 46) / CAM_AT(t)[2] / n, dy = (o.dy ?? 4) / CAM_AT(t)[2];
+const BROADSIDE = (id, t, o = {}) => { const [x, y] = UPOS(id), sh = B.units[id].ship, n = o.n || (sh ? 7 : 5), sp = (o.len || (sh ? sh.px * 0.72 : 46)) / CAM_AT(t)[2] / n, dy = (o.dy ?? (sh ? 2 : 4)) / CAM_AT(t)[2];
   for (let i = 0; i < n; i++) { const px = x - (n - 1) * sp / 2 + i * sp, tt = t + i * 0.09; K.gun(px, y + dy, tt, { dx: 0, dy: 0, sfx: i === 0 ? undefined : false });
     K.smoke(px, y + dy, tt + 0.05, { n: 3, r: 7 / CAM_AT(t)[2], rise: 10 / CAM_AT(t)[2], drift: 8 / CAM_AT(t)[2], life: 3.2, alpha: 0.75 }); } };
+// SHIP_BURN(id, t, o): a ship set on fire: flames along the hull and in the rigging (flickering, on the ship art), the ship darkens, a smoke
+//   column rises; o.until stops it; o.sink = time it sinks (heels over, shrinks, fades ~1.4 s). Works on any UNIT ship (default art) and SHIPV.
+const SHIP_BURN = (id, t, o = {}) => { const u = B.units[id], blk = u.el.querySelector(".blk"), px = u.ship ? u.ship.px : 54;
+  tl.to(blk, { filter: "brightness(0.55) saturate(0.6) sepia(0.3)", duration: 0.8 }, t + 0.2);
+  const fl = document.createElement("div");   // flames sit OUTSIDE .blk (the darkening filter must not dim them), exactly over the ship art
+  fl.style.cssText = u.ship ? `position:absolute;left:${u.ship.art.style.left};top:${u.ship.art.style.top};width:${u.ship.art.style.width};height:${u.ship.art.style.height};pointer-events:none;z-index:3`
+    : "position:absolute;left:0;top:0;width:54px;height:36px;pointer-events:none;z-index:3"; blk.parentElement.appendChild(fl);
+  [[0.30, 0.55, 0.20], [0.52, 0.40, 0.26], [0.74, 0.58, 0.18], [0.45, 0.68, 0.16], [0.62, 0.70, 0.15]].forEach(([fx, fy, fr], i) => {
+    const f = document.createElement("div"), r = px * fr;
+    f.style.cssText = `position:absolute;left:${(fx * px - r / 2).toFixed(1)}px;top:${(fy * px * 0.82 - r * 0.8).toFixed(1)}px;width:${r.toFixed(1)}px;height:${(r * 1.3).toFixed(1)}px;border-radius:50% 50% 45% 45%;background:radial-gradient(ellipse at 50% 70%, #fff4c0 0%, #ffbf3a 30%, rgba(240,90,20,.85) 55%, rgba(160,30,0,0) 75%);mix-blend-mode:screen;transform-origin:50% 90%`;
+    fl.appendChild(f); gsap.set(f, { autoAlpha: 0 }); tl.to(f, { autoAlpha: 1, duration: 0.4 }, t + i * 0.15);
+    tl.to(f, { scaleY: 1.25, scaleX: 0.85, duration: 0.22 + i * 0.03, yoyo: true, repeat: Math.max(2, Math.round(((o.until ?? END) - t) / 0.25)), ease: "sine.inOut" }, t + i * 0.15); });
+  const [x, y] = UPOS(id), sc = CAM_AT(t)[2];
+  for (let tt = t + 0.3; tt < (o.until ?? END); tt += 0.35) K.smoke(x + 2 / sc, y - 26 / sc, tt, { n: 1, r: 13 / sc, rise: 46 / sc, life: 2.8, alpha: 0.7, drift: 14 / sc });
+  if (o.until != null) tl.to(fl, { autoAlpha: 0, duration: 0.6 }, o.until);
+  if (o.sink != null) tl.to(u.el, { autoAlpha: 0, scale: 0.4, rotation: 14, duration: 1.4, ease: "power2.in" }, o.sink);
+  return fl; };

@@ -163,7 +163,7 @@ const CH = [1286, 612];
 shoot([1160, 708], [CH[0] - 4, CH[1] + 4], T_HOT + 0.2, { unit: "fg0", r: 6, color: "#ff6a1a" });
 shoot([1160, 708], [CH[0] + 4, CH[1] - 2], T_CHARON + 0.6, { unit: "fg0", r: 6, color: "#ff6a1a" });
 PLACE_LABEL("Charon", CH, T_CHARON, { dx: -96, dy: -30, size: 26 });
-fireGlowS(CH[0], CH[1], 26, T_HOT + 1.3, T_STORY);
+SHIP_BURN("charon", T_HOT + 1.3, { until: T_STORY });
 for (let t = T_HOT + 1.4; t < T_STORY; t += 0.55) K.smoke(CH[0] + 2, CH[1] - 6, t, { n: 1, r: 9, rise: 46, life: 2.8, alpha: 0.6, drift: 14 });
 GREY("charon", T_CHARON + 2.6); hideU(["charon"], T_STORY + 0.2);
 SH("ag1", "ag1", [1463, 796], T_HOT + 1.6); SH("fg2", "fg2", [1300, 745], T_CHARON + 2.4);

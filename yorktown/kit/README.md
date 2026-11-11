@@ -148,3 +148,14 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
   colour); B = painted top-down ship (side-coloured hull edge, wake; `heading`); C = A on a glowing side-colour plate.
 - `BROADSIDE(id, t, { n, dy })`: muzzle flashes along the hull (quiet launch via K.gun) + rolling powder smoke.
 - Test source: `scenes-src/test-ships.js` (`--var style=A|B|C --var view=big|capes|east`).
+
+**r6 (2026-11-11, owner picked ship option A; proof `build/ship-A-final.jpg`).** Backwards-compatible; rebuild every scene with ships.
+- DEFAULT: every `UNIT(id, side, p, "ship", o)` (fleets, transports, Charon, Terrible ...) now renders the painted side-view ship of the line
+  (option A, ~100 px wide; stronger side colour: gunport stripe, waterline and a bigger pennant in blue/red; no plate). The art is drawn INSIDE the
+  unit's `.blk`, so scene filters on `.blk` (grey / darken), fades, scale-outs and outlines still act on the ship. `o.box: true` = the old ship box.
+  Options: `o.px` size, `o.facing` "left" | "right"; ships turn to face their course on `B.move` / `along` / `march` (flip when the x direction
+  changes; `o.fixedFacing: true` disables). `BOAT()` flatboats are unchanged.
+- `BROADSIDE(id, t, { n })` fits the new hull (7 flashes along it + rolling smoke). New `SHIP_BURN(id, t, { until, sink })`: flames on the hull and in the
+  rigging (not dimmed), the ship darkens, smoke column, optional sinking. Scenes that burned a ship with a big `bonfire()` glow should switch to
+  `SHIP_BURN` (the glow hides the new ship).
+- `SHIPV(id, side, p, { style })` stays for the B / C options.
