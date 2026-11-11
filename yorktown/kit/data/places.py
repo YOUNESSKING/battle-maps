@@ -43,8 +43,8 @@ MAPS = {
         wet=[(3.2, [(40.88, -73.93), (40.80, -73.97), (40.74, -74.015), (40.70, -74.03)]), (5.5, [(40.70, -74.03), (40.665, -74.05), (40.62, -74.045), (40.58, -74.04)]),
              (2.2, [(40.70, -74.005), (40.745, -73.97), (40.785, -73.935), (40.80, -73.88), (40.805, -73.80)])],   # Hudson mouth, Upper Bay + Narrows, East River
         towns={
-            "new_york": ("New York", 40.712, -74.006, 40, True, "E", 1776, [(56, 10), (126, -12), (196, -22), (268, -24)]),   # along Long Island, off the march route
-            "philadelphia": ("Philadelphia", 39.952, -75.165, 40, True, "W", 1682, [(-300, 14), (-235, -16), (-160, -18), (-82, 6)]),   # west of the town, off the post road (which runs NE-SW through it)
+            "new_york": ("New York", 40.712, -74.006, 40, True, "SE", 1776, [(12, 38), (72, 54), (137, 54), (198, 40)]),   # arced at the Manhattan tip (over Brooklyn)   # along Long Island, off the march route
+            "philadelphia": ("Philadelphia", 39.952, -75.165, 52, True, "W", 1682, [(-322, 14), (-257, -16), (-182, -18), (-104, 6)]),   # west of the town, off the post road (which runs NE-SW through it)
             "williamsburg": ("Williamsburg", 37.2707, -76.7075, 22, False, "", 1699),   # 42 map px from Yorktown at z8: one name only (Yorktown)
             "yorktown": ("Yorktown", 37.2382, -76.5098, 26, True, "S", 1691),
             "newport": ("Newport", 41.49, -71.31, 24, False, "", 1639),
@@ -85,7 +85,7 @@ MAPS = {
         relief=[], keep=[],
     ),
     "chesapeake": dict(
-        s=1.3,
+        s=1.0, label_k=1.25,   # r3: also the nested map of the east -> peninsula zoom: names read at 1080p
         water=dict(blur=3.0, pier=3, chan=4, island=1500, lake=20000),
         rivers=[("James River", 2.2, (36.8, 38.0, -78.1, -76.6)), ("Pamunkey River", 1.6, (37.4, 38.0, -77.6, -76.75)),
                 ("Mattaponi River", 1.5, (37.5, 38.0, -77.6, -76.75)), ("Rappahannock River", 1.8, (37.9, 38.3, -78.1, -76.9))],
@@ -111,7 +111,7 @@ MAPS = {
         relief=[], keep=[(37.2382, -76.5098, 2500)],
     ),
     "peninsula": dict(
-        s=1.3, ferry_scale=1.5,
+        s=1.0, ferry_scale=1.5, label_k=1.25,   # r3: nested map of the hook zoom (names readable)
         water=dict(blur=2.5, pier=3, chan=3, island=600, lake=12000, dry=[(37.30, 37.48, -76.95, -76.78), (37.176, 37.205, -76.615, -76.575)]),   # Diascund + Little Creek reservoirs (modern)
         rivers=[], creeks=0,
         towns={

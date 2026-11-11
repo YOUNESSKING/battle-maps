@@ -59,7 +59,8 @@ const NUDGE = (p, o = {}) => { let [x, y] = p; const sc = o.s ?? CAM_S, hw = (o.
 const LABEL_AUDIT = (times, o = {}) => { const cur = tl.time(), bad = [];
   times.forEach((t) => { tl.seek(t, true); Object.entries(B.units).forEach(([id, u]) => { const el = u.el; if (gsap.getProperty(el, "autoAlpha") < 0.05 && gsap.getProperty(el, "opacity") < 0.05) return;
     const x = gsap.getProperty(el, "left") + u.w / 2, y = gsap.getProperty(el, "top") + u.h / 2, hw = 27 / CAM_S, hh = 18 / CAM_S, top = 16 / CAM_S;
-    LABEL_BOXES(20).forEach(([x0, y0, x1, y1, nm]) => { if (x + hw > x0 && x - hw < x1 && y + hh > y0 && y - hh - top < y1) bad.push([+t.toFixed(2), id, nm]); }); }); });
+    const rb = RLB.filter(([g]) => +getComputedStyle(g).opacity > 0.1).map(([g, nm]) => { const b = g.getBBox(), m = 20 / CAM_S; return [b.x - m, b.y - m, b.x + b.width + m, b.y + b.height + m, nm]; });
+    LABEL_BOXES(20).concat(rb).forEach(([x0, y0, x1, y1, nm]) => { if (x + hw > x0 && x - hw < x1 && y + hh > y0 && y - hh - top < y1) bad.push([+t.toFixed(2), id, nm]); }); }); });
   tl.seek(cur, true); window.__LABEL_AUDIT = bad; if (bad.length) console.warn("LABEL_AUDIT", JSON.stringify(bad));
   if (o.show) { const el = document.createElement("div"); el.style.cssText = "position:absolute;left:600px;top:10px;z-index:99;font:20px monospace;color:#fff;background:#000c;padding:4px 8px"; el.textContent = "LABEL_AUDIT " + (bad.length ? JSON.stringify(bad) : "OK"); SCN.appendChild(el); }
   return bad; };
@@ -85,7 +86,15 @@ const BANNER = (key, name, nation, at, t, o = {}) => {
   return w; };
 // ---------- the two nation flags (48 px behind each side's lines; hidden while that side has a banner up: one flag per side) ----------
 const FLAGS = [];
-const SIDEFLAG = (nation, p, t = 0, until = null) => { const el = flagS(BN.flagFor(nation), "", p[0], p[1], t > 0 ? t : 0, until); if (!(t > 0)) now(el);
+// SIDEFLAG(nation, p | unitId, t, until): p = [x, y] -> the free-standing 48 px nation flag (as before); unitId -> a pole flag planted at that
+//   wing's lead box (rides with it; r3: no lone flags on the grass). Hidden while that side has a banner up (one flag per side).
+const SIDEFLAG = (nation, p, t = 0, until = null) => { let el;
+  if (typeof p === "string") { const host = B.units[p].el.firstElementChild, fw = 44, fh = Math.round(fw * 0.56);
+    el = document.createElement("div"); el.style.cssText = `position:absolute;left:-14px;top:${-fh - 30}px;width:0;height:0;pointer-events:none;z-index:3`;
+    el.innerHTML = `<div style="position:absolute;left:-1.5px;top:0;width:3px;height:${fh + 34}px;background:linear-gradient(90deg,#5a4126,#c9a46a,#5a4126);box-shadow:1px 1px 2px rgba(0,0,0,.6)"></div>`
+      + `<img src="${BN.flagFor(nation)}" alt="" style="position:absolute;left:1.5px;top:1px;width:${fw}px;height:${fh}px;border:1px solid #1a1712;box-shadow:0 2px 4px rgba(0,0,0,.55)">`;
+    host.appendChild(el); host.style.overflow = "visible"; gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.to(el, { autoAlpha: 1, duration: 0.4 }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, until); }
+  else { el = flagS(BN.flagFor(nation), "", p[0], p[1], t > 0 ? t : 0, until); if (!(t > 0)) now(el); }
   const rec = { el, side: nation === "gb" ? "rome" : "carth" }; FLAGS.push(rec);
   BANNERS.filter((b) => b.side === rec.side).forEach((b) => { tl.to(el, { autoAlpha: 0, duration: 0.3 }, b.t); }); return el; };
 
@@ -107,9 +116,9 @@ const REDOUBT = (id, p, t = 0, o = {}) => { const s = o.px || 40, col = SIDEK(o.
   const el = pinS(GG.pin(`<svg width="${s}" height="${s}" viewBox="-20 -20 40 40" style="display:block;overflow:visible;transform:rotate(${o.rot || 0}deg);filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.55))">
     <path d="M0 -16 L15 -5 L10 14 L-10 14 L-15 -5 Z" fill="none" stroke="#2a2312" stroke-width="6.5" opacity=".55"/>
     <path d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="rgba(160,140,90,.55)" stroke="#d6c693" stroke-width="3.2"/>
-    <path class="rd-edge" d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="none" stroke="${col}" stroke-width="1.6"/></svg>`, p[0], p[1], { t: t > 0 ? t : null }));
+    <path class="rd-edge" d="M0 -12 L11 -4 L7 10 L-7 10 L-11 -4 Z" fill="${col}" fill-opacity=".45" stroke="${col}" stroke-width="2.6"/></svg>`, p[0], p[1], { t: t > 0 ? t : null }));
   if (!(t > 0)) gsap.set(el, { autoAlpha: 1 }); el.dataset.rid = id; return el; };
-const REDOUBT_TAKEN = (el, t) => tl.set(el.querySelector(".rd-edge"), { attr: { stroke: "#2c57b7" } }, t);
+const REDOUBT_TAKEN = (el, t) => tl.set(el.querySelector(".rd-edge"), { attr: { stroke: "#2c57b7", fill: "#2c57b7" } }, t);
 
 // ---------- territory (STYLE_LOCK 2d.3 / 3b) ----------
 // FORM 1: HATCH(polys, side, t, o) ink line hatching ONLY on the ground taken, in the TAKER's colour (allied gains = blue), ~3 s then dissolves.
@@ -148,7 +157,8 @@ const STORM = (t0, t1, k = 1.0) => { WXI(); return W.rain({ t0, t1, intensity: k
 // ---------- names on their spoken word ----------
 // RIVER(name, text, t, o): carved italic river name along GD.rivers[name] (river_label.js), ~3.5 s, beside the water (o.side, o.near, o.hw, o.s = camera scale then)
 riverLabel.fontUrl = "assets/fonts/eb-garamond-latin-500-italic.woff2";
-const RIVER = (name, text, t, o = {}) => { const pts = GD.rivers[name]; if (!pts) throw new Error("no river line " + name); return riverLabel(name.replace(/\W/g, "") + (++__HID), text, pts, t, { s: o.s || CAM_S, ...o, tl }); };
+const RLB = [];   // live river names (LABEL_AUDIT checks them while visible)
+const RIVER = (name, text, t, o = {}) => { const pts = GD.rivers[name]; if (!pts) throw new Error("no river line " + name); return ((g) => { RLB.push([g, text]); return g; })(riverLabel(name.replace(/\W/g, "") + (++__HID), text, pts, t, { s: o.s || CAM_S, ...o, tl })); };
 // PLACE_LABEL(text, p, t, o): a story place that is not a permanent town: carved-look ivory serif, ~3.5 s (1c / 2d.8), o.size 24, o.dx/o.dy screen px
 { const st = document.createElement("style"); st.textContent = `@font-face{font-family:"YT Garamond";font-weight:600;src:url("assets/fonts/eb-garamond-latin-600-normal.ttf")}
 .ytpl{font-family:"YT Garamond",Georgia,serif;font-weight:600;color:#e8dca0;white-space:nowrap;letter-spacing:.22em;text-shadow:-.6px -.6px 0 rgba(60,58,40,.75),.6px .8px 0 rgba(250,248,230,.35),0 1px 2px rgba(18,16,8,.85),0 0 6px rgba(18,16,8,.45)}`; document.head.appendChild(st); }
@@ -177,3 +187,18 @@ const INSET = (map, o = {}) => { const A = YT.MAPS[YT.BASE], M = YT.MAPS[map], k
     INSETS.forEach((r, i) => { if (i < hideBelow) r.el.style.visibility = "hidden"; else r.el.style.visibility = "visible"; });
     document.querySelectorAll(".lv-water,.lv-clouds").forEach((l) => { l.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; }); });
   return rec; };
+
+// BOAT(pts, t, dur, o): a top-down flatboat (constant ~34 px on screen) rowing along pts (map px) from t over dur s; o.until, o.rot0 (deg),
+//   o.drift = [dx, dy] map px pushed downstream at the end (storm). No flags (2d.4). The baked ferry flatboat stays where it is.
+const BOAT = (pts, t, dur, o = {}) => { const s = o.px || 34;
+  const el = pinS(GG.pin(`<svg width="${s}" height="${s * 0.5}" viewBox="-20 -10 40 20" style="display:block;overflow:visible;filter:drop-shadow(1.5px 2px 1.5px rgba(8,14,18,.6))">
+    <path d="M-19 0 L-15 -7 L15 -7 L19 0 L15 7 L-15 7 Z" fill="#3a2c1e"/><path d="M-14 -4.5 L14 -4.5 L14 4.5 L-14 4.5 Z" fill="#6e543a"/>
+    ${[-9, -3, 3, 9].map((x) => `<line x1="${x}" y1="-4.5" x2="${x}" y2="4.5" stroke="#4a3826" stroke-width="1"/>`).join("")}
+    <line x1="-6" y1="-7" x2="-10" y2="-13" stroke="#cdb48a" stroke-width="1.2"/><line x1="6" y1="-7" x2="2" y2="-13" stroke="#cdb48a" stroke-width="1.2"/>
+    <line x1="-6" y1="7" x2="-10" y2="13" stroke="#cdb48a" stroke-width="1.2"/><line x1="6" y1="7" x2="2" y2="13" stroke="#cdb48a" stroke-width="1.2"/></svg>`, pts[0][0], pts[0][1], { t: t > 0 ? t : null }));
+  if (!(t > 0)) gsap.set(el, { autoAlpha: 1 });
+  const sv = el.querySelector("svg"), ang = (a, b) => Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI; gsap.set(sv, { rotation: o.rot0 ?? ang(pts[0], pts[1] || pts[0]) });
+  if (pts.length > 1) { pinAlong(el, pts, Math.max(t, 0), dur, 24); }
+  if (o.drift) tl.to(el, { left: `+=${o.drift[0]}`, top: `+=${o.drift[1]}`, duration: 1.6, ease: "sine.inOut" }, Math.max(t, 0) + dur);
+  if (o.rock !== false) tl.to(sv, { rotation: `+=${o.rockDeg ?? 7}`, duration: 0.45, yoyo: true, repeat: Math.max(1, Math.round((o.until ?? END) - Math.max(t, 0)) * 2), ease: "sine.inOut" }, Math.max(t, 0));
+  if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, o.until); return el; };

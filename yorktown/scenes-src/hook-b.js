@@ -27,6 +27,9 @@ const T_NAME = at(H4, "His name was"), T_GW = at(H4, "George Washington"), T_BUI
 // ---------------------------------------------------------------------------------------------------------------------------------
 // maps + camera
 // ---------------------------------------------------------------------------------------------------------------------------------
+// units that appear at high zoom fade in (the kit drop-in falls from far above at 20x) or appear on a snap cut
+const UNITF = (id, side, p, type, o = {}) => { UNIT(id, side, p, type, { ...o, t: 0 }); const el = B.units[id].el; gsap.set(el, { autoAlpha: 0 });
+  tl.to(el, { autoAlpha: 1, duration: o.fade ?? 0.35 }, o.t); return id; };
 LIVING({ clouds: 0.1 });
 const CHI = INSET("chesapeake"), PEN = INSET("peninsula");
 const PP = (x, y) => [PEN.box[0] + x * PEN.k, PEN.box[1] + y * PEN.k], SP = (s) => s / PEN.k;
@@ -74,9 +77,9 @@ UNIT("amA", "allies", [1622, 300], "artillery", { ech: "" });
 march("am1", [[1576, 352], [1586, 368], [1594, 380]], 1.0, 9.0, { dustSize: 48, dustOp: 0.45 });
 march("am2", [[1668, 336], [1660, 346], [1652, 356]], 1.2, 9.0, { dustSize: 48, dustOp: 0.45 });
 // the British in New York: Staten Island + Manhattan, the fleet in the harbour
-UNIT("ny1", "british", [1474, 536], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1514, 455], "infantry", { ech: "XX" });
-UNIT("rs1", "british", [1560, 560], "ship", { ech: "" }); UNIT("rs2", "british", [1606, 566], "ship", { ech: "" });
-B.move("rs1", T_NY, 4.5, 1546, 548);
+UNIT("ny1", "british", [1478, 526], "infantry", { ech: "XX" }); UNIT("ny2", "british", [1505, 440], "infantry", { ech: "XX" });
+UNIT("rs1", "british", [1562, 600], "ship", { ech: "" }); UNIT("rs2", "british", [1618, 608], "ship", { ech: "" });
+B.move("rs1", T_NY, 4.5, 1548, 592);
 const FUS = SIDEFLAG("us", [1738, 350], 0.9), FGB = SIDEFLAG("gb", [1700, 700], 0.9);
 focus([1615, 345], 90, T_ARMY, T_WRONG - 0.2);
 focus([1505, 480], 80, T_WRONG, T_MILES - 0.1);
@@ -95,10 +98,10 @@ focus([1180, 1350], 70, T_FIRST, T_CARIB - 0.1);
 arw({ pts: [[1500, 1640], [1440, 1500], [1330, 1410], [1225, 1362]], side: "carth", t: T_CARIB, dur: 1.2, width: AW(CW2[2], 9) });
 // "before the Royal Navy did": the red fleet box sails south from New York (race)
 B.move("rs2", T_RN, 5.5, 1505, 860);
-arw({ pts: [[1600, 585], [1570, 700], [1500, 860]], side: "rome", t: T_RN + 0.1, dur: 1.0, width: AW(CW2[2], 9) });
+arw({ pts: [[1612, 630], [1570, 720], [1500, 860]], side: "rome", t: T_RN + 0.1, dur: 1.0, width: AW(CW2[2], 9) });
 // "The man who bet everything on it": the "?" banner on a pole by the American camp (revealed on the spoken name)
 BANNER("washington", "George Washington", "us", "am1", T_MAN, { myst: T_GW, side: "west" });
-wstampL("SIX YEARS", 1700, 300, T_SIX, T_GW - 0.35, null, 26);
+wstampL("SIX YEARS", 1760, 330, T_SIX, T_GW - 0.35, null, 26);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-4: the name slam
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -123,14 +126,14 @@ CUTL = [[T2 - 0.01, 1e9]];
 const C1 = [1478, 470, 1.12];
 cut(T1, C1, T2, [-10, 12, 1.05]);
 tl.set(["ny3", "ny4", "ff1", "rs2", "cw1"].map((id) => B.units[id].el), { autoAlpha: 0 }, T1 - 0.01);
-const MR = [[1594, 380], [1560, 360], [1538, 346], [1512, 362], [1490, 400], [1468, 440], [1462, 470], [1478, 492], [1470, 512], [1440, 528], [1418, 560], [1393, 592]];
+const MR = [[1594, 380], [1560, 360], [1538, 346], [1512, 362], [1488, 398], [1466, 436], [1452, 466], [1446, 486], [1430, 506], [1410, 540], [1400, 566], [1393, 592]];
 march("am1", sub(MR, 0.30, 1.0, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
 B.move("am1", T1, 0.01, ...posOn(MR, 0.30));
 march("am2", sub(MR, 0.12, 0.80, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
 B.move("am2", T1, 0.01, ...posOn(MR, 0.12));
 march("amA", sub(MR, 0.0, 0.60, 24), T1 + 0.05, T2 - T1 - 0.2, { dustSize: 40, dustOp: 0.5 });
 B.move("amA", T1, 0.01, ...posOn(MR, 0.0));
-wstampL("FOOL THE BRITISH", 1655, 585, T_FOOL, T2 - 0.1, null, 28);
+wstampL("FOOL THE BRITISH", 1700, 618, T_FOOL, T2 - 0.1, null, 28);
 // ---------- CUT 2 (chesapeake layer, 5 Sep 1781, clear): two lines of ships off Cape Henry ----------
 hideAll(T2);
 const LCH = layer("chesapeake"), CHP = LT("chesapeake");
@@ -140,8 +143,8 @@ cut(T2, C2, T3, [12, 4, 1.05]);
 B.date("5 SEP 1781", T2, T3 - 0.08, 32);
 const SC2 = [];
 const FR = [[1590, 990], [1665, 1002], [1740, 1014], [1815, 1026]], GBL = [[1650, 870], [1725, 878], [1800, 886], [1875, 894]];
-FR.forEach((p, i) => { const id = "fr" + i; UNIT(id, "allies", p, "ship", { ech: "", t: T2 + 0.02 }); B.move(id, T2 + 0.05, T3 - T2, p[0] + 70, p[1] + 10); SC2.push(id); });
-GBL.forEach((p, i) => { const id = "gb" + i; UNIT(id, "british", p, "ship", { ech: "", t: T2 + 0.02 }); B.move(id, T2 + 0.05, T3 - T2, p[0] + 70, p[1] + 14); SC2.push(id); });
+FR.forEach((p, i) => { const id = "fr" + i; UNITF(id, "allies", p, "ship", { ech: "", t: T2 - 0.02, fade: 0.01 }); B.move(id, T2 + 0.05, T3 - T2, p[0] + 70, p[1] + 10); SC2.push(id); });
+GBL.forEach((p, i) => { const id = "gb" + i; UNITF(id, "british", p, "ship", { ech: "", t: T2 - 0.02, fade: 0.01 }); B.move(id, T2 + 0.05, T3 - T2, p[0] + 70, p[1] + 14); SC2.push(id); });
 const posAt = (p, t) => { const k = Math.min(1, Math.max(0, (t - T2 - 0.05) / (T3 - T2))); return [p[0] + 70 * k, p[1] + 12 * k]; };
 shoot(posAt(GBL[1], T2 + 0.5), posAt(FR[1], T2 + 1.3), T2 + 0.5, { dur: 0.75, r: 7, h: 30 });
 shoot(posAt(FR[2], T2 + 2.2), posAt(GBL[2], T2 + 3.0), T2 + 2.2, { dur: 0.75, r: 7, h: 30 });
@@ -154,17 +157,17 @@ tl.set(LYK, { autoAlpha: 1 }, T3 - 0.01);
 const C3 = [1440, 800, 2.0];
 cut(T3, C3, T4 + 4, [10, 4, 1.06]);
 B.date("14 OCT 1781", T3, T4, 32);
-LIGHT("night", T3, 0.01, 0.6); if (typeof NIGHT_DIM === "function") NIGHT_DIM(T3, 0.8, 0.01);
+LIGHT("night", T3, 0.01, 1.0); if (typeof NIGHT_DIM === "function") NIGHT_DIM(T3, 0.8, 0.01);
 const SC3 = [];
 const BLINE = [[37.2385, -76.5178], [37.2332, -76.5155], [37.2305, -76.5105], [37.2309, -76.5060], [37.2330, -76.5030], [37.2356, -76.5008]].map(([a, b]) => YK(a, b));
 const PAR2 = [[37.2262, -76.5150], [37.2262, -76.5080], [37.2270, -76.5030], [37.2285, -76.5005]].map(([a, b]) => YK(a, b));
 SC3.push(TRENCH(BLINE, T3, { face: 1, dur: 0.01 }), TRENCH(PAR2, T3, { dur: 0.01 }));
 const R9p = YK(...GD.places.redoubt_9), R10p = YK(...GD.places.redoubt_10);
 const R9 = REDOUBT("r9", R9p, T3, { side: "british", rot: 12 }), R10 = REDOUBT("r10", R10p, T3, { side: "british", rot: -8 });
-UNIT("yb1", "british", [1318, 812], "infantry", { ech: "X", t: T3 + 0.02 }); UNIT("yb2", "british", [1420, 832], "infantry", { ech: "X", t: T3 + 0.02 });
+UNITF("yb1", "british", [1318, 812], "infantry", { ech: "X", t: T3 - 0.02, fade: 0.01 }); UNITF("yb2", "british", [1420, 832], "infantry", { ech: "X", t: T3 - 0.02, fade: 0.01 });
 // the two assault columns from the second parallel: Americans on Redoubt 10 (by the river), French on Redoubt 9
 const A10 = [R10p[0] + 75, R10p[1] + 115], A9 = [R9p[0] - 30, R9p[1] + 130];
-UNIT("as10", "allies", A10, "infantry", { ech: "II", t: T3 + 0.02 }); UNIT("as9", "allies", A9, "infantry", { ech: "II", t: T3 + 0.02 });
+UNITF("as10", "allies", A10, "infantry", { ech: "II", t: T3 - 0.02, fade: 0.01 }); UNITF("as9", "allies", A9, "infantry", { ech: "II", t: T3 - 0.02, fade: 0.01 });
 march("as10", [A10, [R10p[0] + 30, R10p[1] + 50], [R10p[0] + 6, R10p[1] + 12]], T3 + 0.3, T_MUSK - T3 + 0.2, { dust: false });
 march("as9", [A9, [R9p[0] - 12, R9p[1] + 55], [R9p[0] - 4, R9p[1] + 14]], T3 + 0.45, T_MUSK - T3 + 0.35, { dust: false });
 mg(R10p, [R10p[0] + 40, R10p[1] + 60], T_NATT + 0.4, 4, 0.9);
@@ -186,3 +189,6 @@ const TITLE = scr0(`<div style="text-align:center;font-family:Oswald;font-weight
 slam(TITLE, T_WON - 0.22, { from: 1.7, shake: 6 });
 
 camApply();
+// the kit's water glint (a 900 px soft band sweeping over all water) composites with hard vertical edges on the east wide frames (seen at
+// 11-20 s): hidden in this scene until the kit fixes it (reported)
+document.querySelectorAll(".lv-water > div > div").forEach((g) => { if (g.style.width === "900px") g.style.display = "none"; });

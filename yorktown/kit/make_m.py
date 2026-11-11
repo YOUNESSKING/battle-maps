@@ -292,7 +292,7 @@ def labels_layer(tmeta, occupied):
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0)); out = {}
     for k, T in TOWNS.items():
         if not T["label"]: continue
-        size = 30 if T["R"] / US >= 28 else 27; trk = 0.3
+        size = (30 if T["R"] / US >= 28 else 27) * C.get("label_k", 1.0); trk = 0.3
         f = ImageFont.truetype(FONTS["garamond600"], 100); Lt = (f.getlength(T["name"]) / 100 + trk * (len(T["name"]) - 1)) * size   # u
         Ru = T["R"] / US; best = None
         order = [T["side"]] + [s for s in ("S", "N", "SW", "SE", "W", "E", "NW", "NE") if s != T["side"]]
