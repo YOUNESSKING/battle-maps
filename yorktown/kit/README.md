@@ -83,3 +83,22 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
 - The builder runs `node --check` on the page script (prints "SCENE SCRIPT SYNTAX ERROR"); an inline `</script>` anywhere (even in a comment)
   breaks the page: make_kit.py escapes it in the kit, keep it out of scene sources.
 - Snapshots: `hyperframes snapshot` only; never render full scenes in the kit; delete snapshot folders after looking.
+
+## CHANGES
+**r2 (2026-11-11, critic round 1 `build/critic-kit.md`; proof `build/sheet-kit-r2.jpg`).** API is backwards-compatible; rebuild a scene to pick up the new art.
+- New basemap version `assets/<map>_m2*.jpg|png|json` for `east` and `yorktown` (written as NEW files; `_m` files untouched, so scenes
+  built earlier keep working). `build_scene.py` now picks the newest version per map (`_m9` .. `_m2`, else `_m`) for the base and every `--inset`,
+  and the matching `kit/data/<map>_bake_m2.json`. `make_m.py <map> v=N` writes version N.
+- `east` baked for the wide march shots (s 0.9): bigger painted towns (+ Princeton, Chatham as sprites), stronger and wider post-road ruts
+  (`roads_k` 1.5); names arced (Philadelphia west of the town, off the post road; New York along Long Island).
+- `yorktown`: the Yorktown name arcs under the town; the Gloucester name moved inland off the shoreline; the York ferry landings + flatboat
+  are 1.8x bigger (visible at s 2.4).
+- Label keep-out: `LABEL_BOXES()`, `NUDGE(p, { s })` (move a static position >= 20 px off every carved name, also names on insets),
+  `LABEL_AUDIT(times, { show })` (lists units within 20 px of a name; `--var audit=1` in the test scene), and `march()` no longer drops dust on names.
+- Banners: the default stake is `ne` (off the key spot; extra stakes `nw`, `sw`, `se`, `east`); British cloth + streamers are now clear red;
+  the French pennant is `assets/media/fr_royal_pennant.png` (big gold fleurs-de-lis, gold edge; `kit/make_pennant.py`), also used by `SIDEFLAG("fr")`.
+- Night: `NIGHT_DIM(t, k)` dims units, banners and works with the night (they stay on screen); `LIVING({ light: "night" })` calls it.
+- `INSET`: several nested maps in a row (`--inset chesapeake --inset peninsula`), each at its own resolution; once an inset covers the frame its
+  edge is hard and the maps under it (and their carved names) are hidden, so no stray giant letters or blurred bands. End the zoom inside the inset.
+- Builder: `--var key=value` -> `GD.var.key` (one source, several test variants).
+- Test scenes: `test-kit-a`, `test-kit-b`, `test-kit-storm` (`--var mode=storm`), `test-kit-inset` (`scenes-src/test-kit.js`, `test-kit-inset.js`).

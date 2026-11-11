@@ -383,7 +383,7 @@ const BN = (() => {
   const C = { ivory: "#efe3c8", gold: "#c8a86a", goldHi: "#ead39a", goldLo: "#8f6f36", goldDk: "#5e4620", char: "#15110c", ink: "#2a1c0d" };
   const SIDE = {
     us: { cloth: "#25407e", clothHi: "#3a5ca3", clothLo: "#132551", str: "#1b3168", strLo: "#0f1d40", pen: "#1d356c" },
-    cs: { cloth: "#8c2520", clothHi: "#b23a30", clothLo: "#55130f", str: "#8f8b80", strLo: "#55524a", pen: "#7a201c" },
+    cs: { cloth: "#a82a20", clothHi: "#c8402f", clothLo: "#5e140e", str: "#a12a21", strLo: "#5e140e", pen: "#8c221b" },   // yorktown r2: clear British red cloth + red streamers
   };
   const FB = typeof BN_FONT_BASE === "string" ? BN_FONT_BASE : (typeof PC_FONT_BASE === "string" ? PC_FONT_BASE : "assets/fonts/");
   // layout (px, card coordinates; card = 124 x 200, pole axis at X, foot at the bottom)
@@ -518,7 +518,7 @@ const BN = (() => {
   const reveal = (w, photo, name, t) => { const card = w.firstElementChild, ph = card.querySelectorAll("img")[1], nm = card.lastElementChild, f = fit(name);
     const n2 = document.createElement("div"); n2.textContent = name; n2.style.cssText = f.s; card.appendChild(n2);
     gsap.set(n2, { autoAlpha: 0 }); tl.set(ph, { attr: { src: photo } }, t); tl.to(nm, { autoAlpha: 0, duration: 0.15 }, t); tl.to(n2, { autoAlpha: 1, duration: 0.15 }, t); return n2; };
-  const flagFor = (side, iso, base = "assets/media/") => base + ({ gb: "gb_flag_1606.png", cs: "gb_flag_1606.png", fr: "fr_royal_flag.png" }[side] || "us_flag_13star.png");
+  const flagFor = (side, iso, base = "assets/media/") => base + ({ gb: "gb_flag_1606.png", cs: "gb_flag_1606.png", fr: "fr_royal_pennant.png" }[side] || "us_flag_13star.png");
   const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="100" viewBox="0 0 76 100"><path d="M38 18 C27 18 22 26 22 35 C22 44 27 51 31 54 L31 58 C18 61 8 70 6 100 L70 100 C68 70 58 61 45 58 L45 54 C49 51 54 44 54 35 C54 26 49 18 38 18 Z" fill="#120e09" fill-opacity=".86"/><text x="38" y="49" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="30" fill="#e2c88e">?</text></svg>');
   return { build, reveal, sway, fit, flagFor, MYST, inject, CW, CH };
 })();
@@ -1151,7 +1151,31 @@ const UNIT = (id, side, p, type = "infantry", o = {}) => {
   return id; };
 // march a unit along a polyline (map px) with dust behind it (2f.5): t..t+dur
 let LV = null;   // LivingW instance (living())
-const march = (id, pts, t, dur, o = {}) => { along(id, pts, t, dur, o.n || 24); if (o.dust !== false && LV) LV.dust(B.units[id].el, t, t + dur, { opacity: o.dustOp ?? 0.5, size: o.dustSize ?? 60 / CAM_S, every: 0.15 }); };
+const march = (id, pts, t, dur, o = {}) => { along(id, pts, t, dur, o.n || 24);
+  if (o.dust !== false && LV) LV.dust(B.units[id].el, t, t + dur, { opacity: o.dustOp ?? 0.5, size: o.dustSize ?? 60 / CAM_S, every: 0.15 })
+    .forEach((d) => { const r = parseFloat(d.style.width) / 2, x = parseFloat(d.style.left) + r, y = parseFloat(d.style.top) + r;   // no dust on a carved town name
+      if (LABEL_BOXES(12, r).some(([x0, y0, x1, y1]) => x > x0 && x < x1 && y > y0 && y < y1)) d.remove(); }); };
+// ---------- label keep-out (2e.2: units, banners, dust and trails >= 20 px from the carved town names) ----------
+// LABEL_BOXES(pad, extra) -> [[x0, y0, x1, y1], ...] map px of every baked name of this basemap, grown by pad SCREEN px (at the current camera
+//   scale) + extra map px. NUDGE(p, o) -> p moved out of every name box (+ a unit box half-size + o.pad, default 20 px): use it for every static
+//   position near a town. LABEL_AUDIT(times) -> list of [t, unit id, town] where a unit box comes within 20 px of a name (seeks the timeline;
+//   call it at the END of the scene source while testing; o.show = true draws the report on screen).
+const LABEL_BOXES = (pad = 20, extra = 0, sc = CAM_S) => { const m = pad / sc + extra, out = Object.values((GD.bake && GD.bake.towns) || {}).filter((T) => T.label && T.label.box)
+    .map((T) => { const [x0, y0, x1, y1] = T.label.box; return [x0 - m, y0 - m, x1 + m, y1 + m, T.name]; });
+  (typeof INSETS !== "undefined" ? INSETS : []).forEach((r) => Object.values((GD.insetBake || {})[r.map] || {}).filter((T) => T.label && T.label.box)   // names on nested maps
+    .forEach((T) => { const [x0, y0, x1, y1] = T.label.box; out.push([r.box[0] + x0 * r.k - m, r.box[1] + y0 * r.k - m, r.box[0] + x1 * r.k + m, r.box[1] + y1 * r.k + m, T.name]); }));
+  return out; };
+const NUDGE = (p, o = {}) => { let [x, y] = p; const sc = o.s ?? CAM_S, hw = (o.w ?? 27) / sc, hh = (o.h ?? 18) / sc, top = (o.top ?? 16) / sc;   // o.s: camera scale where it matters (default: now); top: echelon mark
+  for (let it = 0; it < 3; it++) LABEL_BOXES(o.pad ?? 26, 0, sc).forEach(([x0, y0, x1, y1]) => { const a = x0 - hw, b = x1 + hw, c = y0 - hh, d = y1 + hh + top;
+    if (x > a && x < b && y > c && y < d) { const opts = [[a - x, 0], [b - x, 0], [0, c - y], [0, d - y]]; const [dx, dy] = opts.sort((u, v) => Math.hypot(...u) - Math.hypot(...v))[0]; x += dx; y += dy; } });
+  return [x, y]; };
+const LABEL_AUDIT = (times, o = {}) => { const cur = tl.time(), bad = [];
+  times.forEach((t) => { tl.seek(t, true); Object.entries(B.units).forEach(([id, u]) => { const el = u.el; if (gsap.getProperty(el, "autoAlpha") < 0.05 && gsap.getProperty(el, "opacity") < 0.05) return;
+    const x = gsap.getProperty(el, "left") + u.w / 2, y = gsap.getProperty(el, "top") + u.h / 2, hw = 27 / CAM_S, hh = 18 / CAM_S, top = 16 / CAM_S;
+    LABEL_BOXES(20).forEach(([x0, y0, x1, y1, nm]) => { if (x + hw > x0 && x - hw < x1 && y + hh > y0 && y - hh - top < y1) bad.push([+t.toFixed(2), id, nm]); }); }); });
+  tl.seek(cur, true); window.__LABEL_AUDIT = bad; if (bad.length) console.warn("LABEL_AUDIT", JSON.stringify(bad));
+  if (o.show) { const el = document.createElement("div"); el.style.cssText = "position:absolute;left:600px;top:10px;z-index:99;font:20px monospace;color:#fff;background:#000c;padding:4px 8px"; el.textContent = "LABEL_AUDIT " + (bad.length ? JSON.stringify(bad) : "OK"); SCN.appendChild(el); }
+  return bad; };
 
 // ---------- generals = banners on poles (2f.1): side colour, sepia portrait, national-flag pennant; "?" mystery banner + reveal on the spoken name ----------
 // BANNER(key, name, nation, at, t, o): key = portrait key (assets/media/<key>_head.png); nation = "us" | "fr" | "gb"; at = unit id or [x, y] map px;
@@ -1164,7 +1188,7 @@ const BANNER = (key, name, nation, at, t, o = {}) => {
   if (Array.isArray(at) && !(t > 0)) gsap.set(host.parentElement, { autoAlpha: 1 });
   if (Array.isArray(at)) tl.set(host.parentElement, { autoAlpha: 1 }, Math.max(0, t - 0.01));
   const ph = o.photo || PHOTO(key), flag = BN.flagFor(nation);
-  const w = pinBanner(host, o.myst != null ? BN.MYST : ph, flag, o.myst != null ? (o.mystName || (nation === "gb" ? "British General" : "General")) : name, Math.max(0, t), o.until ?? null, true, o.side || "up");
+  const w = pinBanner(host, o.myst != null ? BN.MYST : ph, flag, o.myst != null ? (o.mystName || (nation === "gb" ? "British General" : "General")) : name, Math.max(0, t), o.until ?? null, true, o.side || "ne");   // default: side stake up-right, off the key spot
   const img = w.querySelectorAll("img")[1]; img.addEventListener("error", () => { img.src = INITIALS(name); }, { once: true });
   if (!(t > 0)) now(w);
   if (o.myst != null) { BN.reveal(w, ph, name, o.myst); tl.fromTo(w.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, o.myst);
@@ -1222,7 +1246,11 @@ const STRIPES = (blueP, redP, t, o = {}) => [[blueP, "#2c57b7"], [redP, "#bc2528
 // LIVING(o) once per scene: o.clouds (0.1), o.water (true), o.light = initial preset (day | morning | afternoon | dusk | night)
 const LIVING = (o = {}) => { LV = LivingW({ tl, world: WORLD, before: OVL }); LV.clouds({ n: o.n || 6, opacity: o.clouds ?? 0.1, seed: o.seed || 7 });
   if (o.water !== false) LV.water(`assets/${YT.BASE}_m_water.png`, { opacity: o.waterOp ?? 0.18, paths: o.flow || [] });
-  if (o.light && o.light !== "day") LV.light(o.light, 0, { dur: 0.01, k: o.lightK ?? 0.45 }); return LV; };
+  if (o.light && o.light !== "day") LV.light(o.light, 0, { dur: 0.01, k: o.lightK ?? 0.45 }); if (o.light === "night" && o.dim !== false) NIGHT_DIM(0, o.dim ?? 0.72); return LV; };
+// NIGHT_DIM(t, k, dur): dims the live layers (units, banners, works, labels in #pins + #overlay) with the night, so the siege stays on screen
+//   but reads as night (k = brightness, 0.72 default); NIGHT_DIM(t, 1) brings them back. LIVING({ light: "night" }) calls it at 0.
+const NIGHT_DIM = (t, k = 0.72, dur = 1.5) => ["pins", "overlay"].forEach((id) => { const el = document.getElementById(id);
+  if (t > 0) tl.to(el, { filter: `brightness(${k}) saturate(${0.6 + 0.4 * k})`, duration: dur }, t); else gsap.set(el, { filter: `brightness(${k}) saturate(${0.6 + 0.4 * k})` }); });
 const LIGHT = (preset, t, dur = 2.0, k = 0.45) => LV && LV.light(preset, t, { dur, k });   // k 0.6: the kit presets at full strength drown the map in brown
 // ---------- weather (2f.6): ONLY where FACT_NOTES confirm (6-7 Oct night rain; 16-17 Oct storm from ~midnight). Visual only, no sounds ----------
 let __WX = false;
@@ -1243,10 +1271,22 @@ const PLACE_LABEL = (text, p, t, o = {}) => { const el = pinS(GG.pin(`<div style
 // ---------- inset map: a higher-zoom basemap placed inside this one (for the one continuous zoom east -> peninsula, 1a) ----------
 // INSET(map, o): assets/inset_<map>.jpg (build_scene.py --inset map) in its true place; fades in as the camera scale passes o.s0 .. o.s1
 //   (defaults: the inset fills the frame at s = 0.667 * 2^(dz)); feathered edge so there is no hard frame
+const INSETS = [];
 const INSET = (map, o = {}) => { const A = YT.MAPS[YT.BASE], M = YT.MAPS[map], k = 2 ** (A.zoom - M.zoom);
   const x = M.origin_world_px[0] * k - A.origin_world_px[0], y = M.origin_world_px[1] * k - A.origin_world_px[1], w = 2880 * k, h = 1620 * k;
   const im = document.createElement("img"); im.src = `assets/inset_${map}.jpg`; im.alt = "";
-  im.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;max-width:none;opacity:0;pointer-events:none;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%)`;
-  document.getElementById("relief2").after(im);
-  const sFill = 0.667 / k, s0 = o.s0 ?? sFill * 0.35, s1 = o.s1 ?? sFill * 0.75;
-  onCam((s) => { im.style.opacity = Math.max(0, Math.min(1, (s - s0) / (s1 - s0))).toFixed(3); }); return { el: im, box: [x, y, w, h], k }; };
+  im.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;max-width:none;opacity:0;pointer-events:none`;
+  const prev = INSETS.length ? INSETS[INSETS.length - 1].el : document.getElementById("relief2"); prev.after(im);
+  const sFill = 0.667 / k, s0 = o.s0 ?? sFill * 0.45, s1 = o.s1 ?? sFill * 0.8, rec = { el: im, box: [x, y, w, h], k, s1, map }; INSETS.push(rec);
+  const R1 = document.getElementById("relief"), R2 = document.getElementById("relief2");
+  onCam((s) => { const a = Math.max(0, Math.min(1, (s - s0) / (s1 - s0))); im.style.opacity = a.toFixed(3);
+    // feathered edge while it grows in; once the frame lies inside the inset (s past s1) the edge is hard and everything under it is hidden
+    const inside = CAM_X0 + x * s <= 4 && CAM_Y0 + y * s <= 4 && CAM_X0 + (x + w) * s >= 1916 && CAM_Y0 + (y + h) * s >= 1076;
+    const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 100%)" : "none";
+    im.style.webkitMaskImage = im.style.maskImage = feather;
+    const top = INSETS.filter((r) => r.el.style.opacity === "1.000" && r.el.style.maskImage === "none").pop();
+    const hideBelow = top ? INSETS.indexOf(top) : -1;
+    [R1, R2].forEach((r) => { r.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; });
+    INSETS.forEach((r, i) => { if (i < hideBelow) r.el.style.visibility = "hidden"; else r.el.style.visibility = "visible"; });
+    document.querySelectorAll(".lv-water,.lv-clouds").forEach((l) => { l.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; }); });
+  return rec; };

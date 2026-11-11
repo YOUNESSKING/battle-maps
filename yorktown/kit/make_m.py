@@ -1,7 +1,7 @@
 """YORKTOWN MAP KIT: bake the STATIC 2e layers into NEW copies of the Style W basemaps (render speed: no overlay layers in the scenes).
 usage (from yorktown/):  python3 kit/make_m.py <map>  [notex=1]
 in : assets/<map>_w.jpg, assets/<map>_w_close.jpg (kit/make_w.py), assets/<map>.json, assets/src/<map>_hd_elev.npy, kit/data/places.py
-out: assets/<map>_m.jpg, assets/<map>_m_close.jpg, assets/<map>_m.json  (ALWAYS new files: never writes into a file a scene may hard-link)
+out: assets/<map>_m[v].jpg, _m[v]_close.jpg, _m[v].json, _m[v]_water/_land.png  (v=N option; ALWAYS new files: never writes into a file a scene may hard-link)
      kit/data/<map>_bake.json (towns / labels / roads / crossings in map px, for the JS kit and the checks)
 Layer order (STYLE_LOCK 2e item 9): basemap -> painted relief (DEM, named ground only) -> ground texture -> lanes -> roads + timber
 bridges / ferry landings + flatboats -> painted towns -> carved arced town names. Everything is drawn for the map's typical camera
@@ -20,6 +20,7 @@ from label import render_label_curve, FONTS  # noqa
 Image.MAX_IMAGE_PIXELS = None
 W, H = 5760, 3240
 m = sys.argv[1]; OPT = dict(a.split("=", 1) for a in sys.argv[2:] if "=" in a)
+VS = "_m" + OPT.get("v", "")   # output version: v=2 -> assets/<map>_m2*.jpg (new files; scenes built on _m keep their links). build_scene.py picks the highest version
 C = MAPS[m]; S = C["s"]; US = 2.0 / S
 J = json.load(open(f"{YT}/assets/{m}.json"))
 P = lambda la, lo: tuple(v * 2 for v in ll2px(m, la, lo))            # lat/lon -> basemap image px
@@ -166,7 +167,7 @@ def draw_roads(img):
                 sp = 1 + 0.3 * math.sin(s_ / 78 + ph[6]) * math.sin(s_ / 25 + ph[7])
                 pinch = 0.25 + 0.75 * min(1, max(0, (math.sin(s_ / 120 + ph[8]) + 0.92) / 0.3))
                 own = 0.42 * math.sin(s_ / (36 + 11 * k0) + ph[k0]) + 0.19 * math.sin(s_ / (13 + 2 * k0) + ph[k0 + 1])
-                o = (side * 1.7 * sp * pinch + own) * US
+                o = (side * 1.7 * C.get('roads_k', 1.0) * sp * pinch + own) * US
                 if math.sin(s_ / (32 + 8 * k0) + ph[k0 + 2]) > 0.93:
                     if len(cur) > 1: sg.append(cur)
                     cur = []
@@ -176,8 +177,9 @@ def draw_roads(img):
         return out
     D = [p for r in ROADS for p in r["paths"]]
     DR = [rp for k, r in enumerate(ROADS) for j, p in enumerate(r["paths"]) for rp in ruts(p, 100 * k + j)]
-    lay = [(D, (169, 156, 106), 10.4, 0.15, 0), (D, (74, 69, 34), 6.5, 0.17, 0), (DR, (36, 34, 12), 2.4, 0.86, -0.75),
-           (DR, (221, 211, 160), 1.6, 0.31, 1.2), (DR, (70, 64, 30), 1.7, 0.7, 0)]
+    RK = C.get("roads_k", 1.0)   # >1 on wide maps: wider + stronger ruts so the post roads read at full frame
+    lay = [(D, (169, 156, 106), 10.4 * RK, min(0.4, 0.15 * RK), 0), (D, (74, 69, 34), 6.5 * RK, min(0.45, 0.17 * RK), 0), (DR, (36, 34, 12), 2.4 * RK, 0.86, -0.75),
+           (DR, (221, 211, 160), 1.6 * RK, 0.31, 1.2), (DR, (70, 64, 30), 1.7 * RK, 0.7, 0)]
     for DD, col, w, a, off in lay:
         L_ = Image.new("L", (Wd, Hd), 0); d = ImageDraw.Draw(L_); wpx = max(1, int(round(w * US * SS * 0.5)))
         for c in DD:
@@ -298,13 +300,13 @@ def labels_layer(tmeta, occupied):
             if side == "hand": curve = T["curve"]   # hand-set curve (u, from the town centre), places.py
             elif SIDES[side][0] == 0:
                 sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm                                    # under / over the town: a gentle arc hugging its edge
-                yb = sy * (gap + (size * 0.72 if sy > 0 else 4)); arc = 0.07 * Lt * sy
+                yb = sy * (gap + (size * 0.72 if sy > 0 else 4)); arc = 0.13 * Lt * sy
                 curve = [(-Lt / 2 - 6, yb), (-Lt / 6, yb + arc), (Lt / 6, yb + arc), (Lt / 2 + 6, yb)]
             else:                                          # beside
                 sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm   # the word runs away from the town, slight rise/fall
                 x_a = sx * gap; x_b = x_a + (1 if sx > 0 else -1) * (Lt + 12); yy = sy * gap * 0.75 + size * 0.3
                 p0, p3 = (min(x_a, x_b), yy + (6 if sx > 0 else -6) * (1 if sy >= 0 else -1)), (max(x_a, x_b), yy)
-                curve = [p0, (p0[0] + (p3[0] - p0[0]) / 3, p0[1] - 6), (p0[0] + 2 * (p3[0] - p0[0]) / 3, p3[1] - 6), p3]
+                curve = [p0, (p0[0] + (p3[0] - p0[0]) / 3, p0[1] - 0.09 * Lt), (p0[0] + 2 * (p3[0] - p0[0]) / 3, p3[1] - 0.09 * Lt), p3]
             li, (ax, ay) = render_label_curve(T["name"].upper() if False else T["name"], curve, size=size, ppu=US, tracking=trk, seed=T["seed"], shadow=0.62)
             x0, y0 = int(round(T["c"][0] - ax)), int(round(T["c"][1] - ay))
             alpha = np.asarray(li)[..., 3] > 40
@@ -401,17 +403,17 @@ for key, base in BASES.items():
     if TEX: img = over(img, TEX[key])
     img = lanes(img); img = draw_roads(img); img = over(img, cross); img = over(img, tw); img = over(img, lb)
     suf = "" if key == "w" else "_close"
-    out = f"{YT}/assets/{m}_m{suf}.jpg"
+    out = f"{YT}/assets/{m}{VS}{suf}.jpg"
     if os.path.exists(out) and os.stat(out).st_nlink > 1: os.unlink(out)   # never write through a hard link into a scene folder
     Image.fromarray(np.clip(img, 0, 255).astype(np.uint8)).save(out + ".tmp.jpg", quality=92); os.replace(out + ".tmp.jpg", out)
     print("wrote", out, round(time.time() - t0), flush=True)
-J2 = dict(J); J2.update(name=f"{m}_m", hd_scale=2, baked_for_scale=S, credit=J.get("credit", ""))
-json.dump(J2, open(f"{YT}/assets/{m}_m.json", "w"), indent=1)
+J2 = dict(J); J2.update(name=f"{m}{VS}", hd_scale=2, baked_for_scale=S, credit=J.get("credit", ""))
+json.dump(J2, open(f"{YT}/assets/{m}{VS}.json", "w"), indent=1)
 bake = dict(map=m, s=S, towns={k: dict(**tmeta[k], label=lmeta.get(k)) for k in tmeta},
             roads=[dict(id=r["id"], paths=[[[round(x / 2, 1), round(y / 2, 1)] for x, y in p[::3] + [p[-1]]] for p in r["paths"]]) for r in ROADS],
             crossings=[{k: (round(v / 2, 1) if isinstance(v, float) and k in ("x", "y", "w") else ([round(v[0] / 2, 1), round(v[1] / 2, 1)] if k in ("a", "b", "bank") else v)) for k, v in c.items()} for c in CROSS],
             ends=[dict(road=r[0], seg=r[1], px=[r[2], r[3]], ok=r[4]) for r in ok], log=LOG)
-json.dump(bake, open(f"{HERE}/data/{m}_bake.json", "w"), indent=1)
+json.dump(bake, open(f"{HERE}/data/{m}_bake{VS[2:] and VS}.json", "w"), indent=1)
 # exclusion masks for the weather assets (weather.js / make_weather_assets.py): water, roads, towns, labels, woods
 MD = f"{HERE}/data/masks_{m}"; os.makedirs(MD, exist_ok=True)
 Image.fromarray(WATER.astype(np.uint8) * 255).save(f"{MD}/rivers_w.png", optimize=True)
@@ -426,6 +428,6 @@ _r.save(f"{MD}/roads.png", optimize=True)
 _wm = cv2.resize(WATER.astype(np.float32), (W // 2, H // 2), interpolation=cv2.INTER_AREA)
 for nm_, a_ in (("water", _wm), ("land", 1 - _wm)):
     rgba = np.zeros((H // 2, W // 2, 4), np.uint8); rgba[..., :3] = 255; rgba[..., 3] = (np.clip(a_, 0, 1) * 255).astype(np.uint8)
-    Image.fromarray(rgba).save(f"{YT}/assets/{m}_m_{nm_}.png", optimize=True)
+    Image.fromarray(rgba).save(f"{YT}/assets/{m}{VS}_{nm_}.png", optimize=True)
 for l in LOG: print("  !", l)
 print("done", m, round(time.time() - t0), "s")

@@ -33,7 +33,7 @@ KEEP_YT = [(37.2290, -76.5040, 1400), (37.2382, -76.5098, 500), (37.2111, -76.51
 
 MAPS = {
     "east": dict(
-        s=1.2, ferry_scale=1.4,
+        s=0.9, ferry_scale=1.6, roads_k=1.5,   # baked for the wide march shots (s ~0.9): towns + post-road ruts read at full frame
         water=dict(blur=3.0, pier=2, chan=3, island=900, lake=6000),
         rivers=[("Hudson River", 3.2, (40.55, 42.7, -74.4, -73.6)), ("Delaware River", 2.6, (39.6, 41.2, -75.6, -74.6)),
                 ("Susquehanna River", 2.6, (39.5, 40.4, -77.0, -76.0)), ("Potomac River", 2.6, (38.2, 39.6, -77.6, -76.9)),
@@ -43,18 +43,19 @@ MAPS = {
         wet=[(3.2, [(40.88, -73.93), (40.80, -73.97), (40.74, -74.015), (40.70, -74.03)]), (5.5, [(40.70, -74.03), (40.665, -74.05), (40.62, -74.045), (40.58, -74.04)]),
              (2.2, [(40.70, -74.005), (40.745, -73.97), (40.785, -73.935), (40.80, -73.88), (40.805, -73.80)])],   # Hudson mouth, Upper Bay + Narrows, East River
         towns={
-            "new_york": ("New York", 40.712, -74.006, 34, True, "E", 1776, [(46, 6), (116, -4), (186, -14), (256, -26)]),   # along Long Island, off the march route
-            "philadelphia": ("Philadelphia", 39.952, -75.165, 34, True, "W", 1682, [(-262, -4), (-192, -11), (-122, -13), (-52, -8)]),   # west of the town, off the post road (which runs NE-SW through it)
+            "new_york": ("New York", 40.712, -74.006, 40, True, "E", 1776, [(56, 10), (126, -12), (196, -22), (268, -24)]),   # along Long Island, off the march route
+            "philadelphia": ("Philadelphia", 39.952, -75.165, 40, True, "W", 1682, [(-300, 14), (-235, -16), (-160, -18), (-82, 6)]),   # west of the town, off the post road (which runs NE-SW through it)
             "williamsburg": ("Williamsburg", 37.2707, -76.7075, 22, False, "", 1699),   # 42 map px from Yorktown at z8: one name only (Yorktown)
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 18, True, "S", 1691),
-            "newport": ("Newport", 41.49, -71.31, 20, False, "", 1639),
-            "providence": ("Providence", 41.824, -71.412, 18, False, "", 1636),
-            "hartford": ("Hartford", 41.764, -72.685, 18, False, "", 1635),
-            "dobbs_ferry": ("Dobbs Ferry", 41.014, -73.872, 13, False, "", 1781),
-            "trenton": ("Trenton", 40.22, -74.76, 16, False, "", 1719),
-            "chester": ("Chester", 39.85, -75.36, 13, False, "", 1682),
-            "head_of_elk": ("Head of Elk", 39.608, -75.833, 13, False, "", 1781),
-            "baltimore": ("Baltimore", 39.29, -76.61, 22, False, "", 1729),
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 26, True, "S", 1691),
+            "newport": ("Newport", 41.49, -71.31, 24, False, "", 1639),
+            "providence": ("Providence", 41.824, -71.412, 20, False, "", 1636),
+            "hartford": ("Hartford", 41.764, -72.685, 20, False, "", 1635),
+            "princeton": ("Princeton", 40.349, -74.659, 16, False, "", 1756), "chatham": ("Chatham", 40.741, -74.383, 14, False, "", 1781),
+            "dobbs_ferry": ("Dobbs Ferry", 41.014, -73.872, 16, False, "", 1781),
+            "trenton": ("Trenton", 40.22, -74.76, 22, False, "", 1719),
+            "chester": ("Chester", 39.85, -75.36, 16, False, "", 1682),
+            "head_of_elk": ("Head of Elk", 39.608, -75.833, 18, False, "", 1781),
+            "baltimore": ("Baltimore", 39.29, -76.61, 26, False, "", 1729),
             "annapolis": ("Annapolis", 38.978, -76.492, 16, False, "", 1708),
             "alexandria": ("Alexandria", 38.805, -77.047, 15, False, "", 1749),
             "fredericksburg": ("Fredericksburg", 38.303, -77.46, 15, False, "", 1728),
@@ -128,12 +129,12 @@ MAPS = {
         relief=RELIEF_YT, keep=KEEP_YT + [(37.2707, -76.7075, 900)],
     ),
     "yorktown": dict(
-        s=2.0, ferry_scale=2.0,
+        s=2.0, ferry_scale=3.6,
         water=dict(blur=26.0, pier=7, chan=7, island=6000, lake=60000, dry=[(37.176, 37.205, -76.615, -76.575)]),   # Lee Hall reservoir (modern)
         rivers=[], creeks=2, creek_pick=[(37.2290, -76.5200), (37.2130, -76.4800)],   # Yorktown Creek, Wormley Creek
         towns={
-            "yorktown": ("Yorktown", 37.2382, -76.5098, 58, True, "S", 1691, [(-30, 100), (50, 110), (130, 111), (210, 101)]),
-            "gloucester": ("Gloucester", 37.2468, -76.5025, 30, True, "NE", 1707, [(80, -66), (150, -80), (220, -94), (295, -114)]),
+            "yorktown": ("Yorktown", 37.2382, -76.5098, 58, True, "S", 1691, [(-140, 72), (-55, 120), (55, 120), (140, 72)]),
+            "gloucester": ("Gloucester", 37.2468, -76.5025, 30, True, "NE", 1707, [(70, -92), (145, -112), (220, -122), (300, -140)]),
         },
         roads=ROADS_YT,
         ferries=FERRY_YT,
