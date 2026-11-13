@@ -19,3 +19,6 @@ Our difference: the animated painted MAP of the trap (march + the bay sealed + s
 
 ## Delivered 2026-11-11
 Master + PDF + thumbnails: https://gofile.io/d/roGkUWAa (Yorktown-1781-1080p.mp4, md5 36ae371524c46487b28676a9d7a3ca65, 16:02, 1920x1080, -14.2 LUFS, TP -1.4). Uploaded with the owner's explicit OK.
+
+## Thumbnails v2 (owner 2026-11-13): the Grant #16 "D" combination (~7% day-1 CTR)
+Bright golden vidIQ battlefield (bg_vidiq_D.jpg, no text), YORKTOWN · 1781 tag, small map labels, Washington's real PD portrait (Peale) in colour on the right, red brush banner: THE TRAP / SAFE HARBOR? / NO WAY OUT (`tools/make_thumb_d.py`, sheet `youtube/thumb/thumbD_sheet.jpg`). These replace the dark map-frame thumbnails as the main set. Claims: trap + failed escape (FACT_NOTES: storm 16-17 Oct, surrender 19 Oct).
