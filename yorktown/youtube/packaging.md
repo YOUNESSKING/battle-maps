@@ -22,3 +22,7 @@ Master + PDF + thumbnails: https://gofile.io/d/roGkUWAa (Yorktown-1781-1080p.mp4
 
 ## Thumbnails v2 (owner 2026-11-13): the Grant #16 "D" combination (~7% day-1 CTR)
 Bright golden vidIQ battlefield (bg_vidiq_D.jpg, no text), YORKTOWN · 1781 tag, small map labels, Washington's real PD portrait (Peale) in colour on the right, red brush banner: THE TRAP / SAFE HARBOR? / NO WAY OUT (`tools/make_thumb_d.py`, sheet `youtube/thumb/thumbD_sheet.jpg`). These replace the dark map-frame thumbnails as the main set. Claims: trap + failed escape (FACT_NOTES: storm 16-17 Oct, surrender 19 Oct).
+
+## Thumbnails v3 (owner 2026-11-13): Grant #16 close-up face style = the MAIN set
+Washington's real Peale portrait as a big close-up face (left), golden vidIQ battle (town, ships, fires) right, huge text on a red banner top-right + small tag: THE TRAP / YORKTOWN / NO WAY OUT (`tools/make_thumb_face.py`, sheet `youtube/thumb/thumbF_sheet.jpg`).
+Competitor battle-thumbnail study (last 6 months, `youtube/competitor_battle_thumbs.jpg`): (1) wide game-engine formations, no text (Bellum et Historia, up to 3.5M); (2) big close-up face + battle action + big text (Ulundi "THE SQUARE HELD" 861K on a 941-sub channel; AI Yorktown film face + "YORKTOWN 1781" 414K); (3) the battle name as headline (PragerU "YORKTOWN: VICTORY AT LAST" 2.5M, PBS "THE BRITISH SURRENDER").
