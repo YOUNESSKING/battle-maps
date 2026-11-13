@@ -51,17 +51,12 @@ tw = d.textlength("THE TRAP", font=f); bw = int(tw + 70); bx, by = W - bw - 36, 
 brush(d, bx, by, bw, 150, 3); d.text((bx + bw / 2, by + 14), "THE TRAP", font=f, fill=(252, 248, 238), anchor="ma", stroke_width=3, stroke_fill=(30, 8, 8))
 d.text((bx + bw / 2, by + 168), "YORKTOWN", font=f2, fill=(255, 255, 255), anchor="ma", stroke_width=5, stroke_fill=(10, 8, 6))
 A.convert("RGB").save("youtube/thumb/yorktown-thumb5-A_MAIN.jpg", quality=94)
-# ---------- B
-fr = Image.open(sys.argv[1]).convert("RGB").crop((420, 300, 420 + 1250, 300 + 703)).resize((W, H), Image.LANCZOS)
-fr = ImageEnhance.Contrast(ImageEnhance.Color(fr).enhance(1.15)).enhance(1.1).convert("RGBA")
+# ---------- B (owner 2026-11-13: generated with vidIQ from the HistoryMarche HATTIN reference, not a real frame)
+B = Image.open("youtube/thumb/bg_vidiq_B_map.jpg").convert("RGB").resize((W, H), Image.LANCZOS).convert("RGBA")
 ov = Image.new("RGBA", (W, H), (0, 0, 0, 0)); o = ImageDraw.Draw(ov)
-for i in range(250): o.line([(0, i), (W, i)], fill=(10, 9, 7, int(250 if i < 175 else 250 * (1 - (i - 175) / 75))))
-B = Image.alpha_composite(fr, ov)
-arrow(B, ell(700, 330, 420, 270, 192, 12, -1), width=36, head=70)   # inside the frame, round the British works, ends at the river east of the redoubts
-d = ImageDraw.Draw(B)
-d.text((W / 2, 14), "YORKTOWN · 1781", font=ImageFont.truetype(F, 116), fill=(255, 255, 255), anchor="ma", stroke_width=6, stroke_fill=(10, 8, 6))
-fs = ImageFont.truetype(F, 66); t = "THE TRAP"; tw = d.textlength(t, font=fs)
-d.rectangle([W / 2 - tw / 2 - 26, 166, W / 2 + tw / 2 + 26, 252], fill=(196, 22, 28)); d.text((W / 2, 170), t, font=fs, fill=(255, 255, 255), anchor="ma")
+for i in range(190): o.line([(0, i), (W, i)], fill=(10, 9, 7, int(170 * (1 - i / 190))))
+B = Image.alpha_composite(B, ov); d = ImageDraw.Draw(B)
+d.text((W / 2, 18), "YORKTOWN, 1781", font=ImageFont.truetype(F, 120), fill=(255, 255, 255), anchor="ma", stroke_width=7, stroke_fill=(10, 8, 6))
 B.convert("RGB").save("youtube/thumb/yorktown-thumb5-B_MAP.jpg", quality=94)
 # ---------- C
 tr = Image.open("assets/archive/trumbull_surrender.jpg").convert("RGB")
@@ -73,15 +68,28 @@ dark = ImageEnhance.Color(ImageEnhance.Brightness(tr).enhance(0.55)).enhance(0.5
 C = Image.composite(tr, dark, m).convert("RGBA")
 c = Image.new("RGBA", (W * 2, H * 2), (0, 0, 0, 0)); ImageDraw.Draw(c).ellipse([2 * (ox - rx), 2 * (oy - ry), 2 * (ox + rx), 2 * (oy + ry)], outline=(225, 20, 28, 255), width=28)
 C.alpha_composite(c.resize((W, H), Image.LANCZOS))
+# Dark Docs pattern: one thick red block arrow pointing at the circled detail
+ar = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ad = ImageDraw.Draw(ar)
+ax0, ax1, ay, th = 820, 455, 560, 96
+ad.rectangle([ax1 + 120, ay - th // 2, ax0, ay + th // 2], fill=(235, 12, 20, 255))
+ad.polygon([(ax1, ay), (ax1 + 140, ay - 125), (ax1 + 140, ay + 125)], fill=(235, 12, 20, 255))
+C.alpha_composite(ar)
 d = ImageDraw.Draw(C); f = ImageFont.truetype(F, 104)
 d.text((960, 110), "WHERE'S", font=f, fill=(255, 255, 255), anchor="ma", stroke_width=6, stroke_fill=(10, 8, 6))
 d.text((960, 220), "CORNWALLIS?", font=f, fill=(255, 220, 210), anchor="ma", stroke_width=6, stroke_fill=(120, 10, 14))
 C.convert("RGB").save("youtube/thumb/yorktown-thumb5-C_CIRCLE.jpg", quality=94)
-# ---------- sheet
-F2 = ImageFont.truetype(F, 22)
-s = Image.new("RGB", (3 * 640 + 80, 560), (24, 22, 20)); d = ImageDraw.Draw(s)
-for i, (p, t) in enumerate([("A_MAIN", "A (main) face + THE TRAP + arrow"), ("B_MAP", "B our map: YORKTOWN, 1781 + one arrow"), ("C_CIRCLE", "C Trumbull: O'Hara circled")]):
-    im = Image.open(f"youtube/thumb/yorktown-thumb5-{p}.jpg"); x = 20 + i * 660
-    s.paste(im.resize((640, 360), Image.LANCZOS), (x, 40)); d.text((x, 10), t, font=F2, fill=(230, 220, 200))
-    s.paste(im.resize((168, 94), Image.LANCZOS), (x, 420)); d.text((x + 180, 455), "feed size 168x94", font=F2, fill=(170, 160, 140))
-s.save("youtube/thumb/thumb5_sheet.jpg", quality=92); print("ok")
+# ---------- comparison sheet: each of ours next to its reference, big + feed size
+F2 = ImageFont.truetype(F, 24)
+rows = [("A_MAIN", "ref_A_grant16.jpg", "A  ours  |  reference: our Grant #16 thumbnail (~7% day-1 CTR)"),
+        ("B_MAP", "ref_B_historymarche_hattin.jpg", "B  ours  |  reference: HistoryMarche 'HATTIN, 1187' (5.4M, 15.8x)"),
+        ("C_CIRCLE", "ref_C_darkdocs_circle.jpg", "C  ours  |  reference: Dark Docs red arrow + circle (3.9M, 38.5x)")]
+s = Image.new("RGB", (2 * 640 + 2 * 168 + 100, 3 * 410 + 20), (24, 22, 20)); d = ImageDraw.Draw(s)
+for r, (p, ref, lab) in enumerate(rows):
+    y = 14 + r * 410; d.text((20, y), lab, font=F2, fill=(235, 225, 205))
+    for k, f in enumerate([f"youtube/thumb/yorktown-thumb5-{p}.jpg", "youtube/thumb/" + ref]):
+        im = Image.open(f).convert("RGB"); x = 20 + k * 660
+        s.paste(im.resize((640, 360), Image.LANCZOS), (x, y + 38))
+    for k, f in enumerate([f"youtube/thumb/yorktown-thumb5-{p}.jpg", "youtube/thumb/" + ref]):
+        im = Image.open(f).convert("RGB"); s.paste(im.resize((168, 94), Image.LANCZOS), (1340 + k * 188, y + 38))
+    d.text((1340, y + 140), "feed size: ours | ref", font=ImageFont.truetype(F, 18), fill=(170, 160, 140))
+s.save("youtube/thumb/thumb5_vs_refs.jpg", quality=92); print("ok")
