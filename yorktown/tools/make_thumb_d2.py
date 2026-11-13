@@ -20,13 +20,18 @@ for (x, y, n) in ():
     counter(x, y, n, (246, 196, 190), (130, 20, 20))
 # big place name (as before)
 d.text((668, 330), "Yorktown", font=ImageFont.truetype(MONO, 118), fill=(24, 40, 110), anchor="mm", stroke_width=7, stroke_fill=(255, 255, 255))
-# corner logo badge: stencil-like '1781' over 'MAPPED' (yellow), like the reference's 'WWII MAPPED'
-bx, by = 22, 16
-d.rectangle([bx, by, bx + 190, by + 104], fill=(35, 38, 45, 230), outline=(230, 200, 60), width=3)
-d.text((bx + 95, by + 40), "1781", font=ImageFont.truetype(O, 60), fill=(240, 236, 226), anchor="mm", stroke_width=2, stroke_fill=(20, 20, 20))
-d.text((bx + 95, by + 84), "MAPPED", font=ImageFont.truetype(O, 32), fill=(240, 205, 50), anchor="mm")
+# corner date plate (owner 2026-11-13: the old D2, only this badge redone elegantly, no logo)
+SERIF = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf"
+px, py, pw, ph = 20, 18, 190, 112
+plate = Image.new("RGBA", (W, H), (0, 0, 0, 0)); pd = ImageDraw.Draw(plate)
+pd.rounded_rectangle([px + 4, py + 6, px + pw + 4, py + ph + 6], radius=16, fill=(0, 0, 0, 110))
+im.alpha_composite(plate.filter(ImageFilter.GaussianBlur(5))); d = ImageDraw.Draw(im)
+d.rounded_rectangle([px, py, px + pw, py + ph], radius=16, fill=(22, 24, 28, 238), outline=(205, 168, 82), width=3)
+d.text((px + 95, py + 44), "1781", font=ImageFont.truetype(O, 62), fill=(246, 240, 226), anchor="mm")
+d.line([(px + 20, py + 72), (px + 170, py + 72)], fill=(205, 168, 82), width=2)
+d.text((px + 95, py + 89), "M A P P E D", font=ImageFont.truetype(SERIF, 22), fill=(214, 176, 88), anchor="mm")
 # gold frame
-d.rectangle([3, 3, W - 4, H - 4], outline=(214, 170, 60), width=8); d.rectangle([11, 11, W - 12, H - 12], outline=(60, 40, 20), width=2)
+d.rectangle([3, 3, W - 4, H - 4], outline=(205, 168, 82), width=8); d.rectangle([11, 11, W - 12, H - 12], outline=(60, 40, 20), width=2)
 im.convert("RGB").save("youtube/thumb/yorktown-thumb7-D2.jpg", quality=94)
 F2 = ImageFont.truetype(O, 24)
 s = Image.new("RGB", (2 * 640 + 2 * 168 + 100, 360 + 60), (24, 22, 20)); dd = ImageDraw.Draw(s)

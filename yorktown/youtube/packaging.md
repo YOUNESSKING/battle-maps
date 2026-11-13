@@ -34,3 +34,5 @@ A face + 1-3 caps words + one red accent: `yorktown-thumbF-THE_TRAP.jpg` (Peale 
 - MAIN: `yorktown-thumb5-A_MAIN.jpg` (Peale close-up, THE TRAP / YORKTOWN, blue arrow round the town) with title A.
 - Test & Compare: `yorktown-thumb5-B_MAP.jpg` (our map, YORKTOWN · 1781, THE TRAP, one arrow; titles B/C) and `yorktown-thumb5-C_CIRCLE.jpg` (Trumbull, O'Hara circled, WHERE'S CORNWALLIS?; titles B/C, not A).
 - Packaging TEST claims (0b.2): THE TRAP = allied ring + French fleet (FACT_NOTES); WHERE'S CORNWALLIS? = Cornwallis stayed away claiming illness, O'Hara led the surrender (Thacher; Johnston); circled figure = O'Hara per Architect of the Capitol description of Trumbull's painting.
+
+## Owner pick 2026-11-13: D2 (Eastory-style map), as made, with only the corner badge redone as an elegant "1781 MAPPED" plate (no logo). File `youtube/thumb/yorktown-thumb7-D2.jpg` (`tools/make_thumb_d2.py`).
