@@ -29,3 +29,8 @@ Competitor battle-thumbnail study (last 6 months, `youtube/competitor_battle_thu
 
 ## Thumbnails v4 (owner 2026-11-13): the test set from the repo's competitor study (research/competitors_top20/SUMMARY.md, item 1) = MAIN SET
 A face + 1-3 caps words + one red accent: `yorktown-thumbF-THE_TRAP.jpg` (Peale close-up). B our own map frame, ONE named place + ONE arrow (HistoryMarche "HATTIN, 1187" / Eastory): `yorktown-thumbS-B_MAP.jpg` "YORKTOWN, 1781" + red THE TRAP. C archive with NO text + one circled detail (Dark Docs/Felton): `yorktown-thumbS-C_CIRCLE.jpg`, Trumbull's surrender with the British officer (O'Hara, who came instead of Cornwallis) circled. Sheet `youtube/thumb/thumbS_sheet.jpg`. Study: maps win for battle topics only with one named place + one arrow; winners ~2.6 words; one red accent.
+
+## FINAL thumbnails v5 (2026-11-13), approved by two independent reviewers (youtube/thumb_review_1.md, thumb_review_2.md, rounds 1-2)
+- MAIN: `yorktown-thumb5-A_MAIN.jpg` (Peale close-up, THE TRAP / YORKTOWN, blue arrow round the town) with title A.
+- Test & Compare: `yorktown-thumb5-B_MAP.jpg` (our map, YORKTOWN · 1781, THE TRAP, one arrow; titles B/C) and `yorktown-thumb5-C_CIRCLE.jpg` (Trumbull, O'Hara circled, WHERE'S CORNWALLIS?; titles B/C, not A).
+- Packaging TEST claims (0b.2): THE TRAP = allied ring + French fleet (FACT_NOTES); WHERE'S CORNWALLIS? = Cornwallis stayed away claiming illness, O'Hara led the surrender (Thacher; Johnston); circled figure = O'Hara per Architect of the Capitol description of Trumbull's painting.

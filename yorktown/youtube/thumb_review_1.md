@@ -48,3 +48,17 @@ I looked at each file at full size, at 168x94 (PIL, LANCZOS) and at 3x zoom. I c
 - **Main: A with title A.** Do the tag fix first; the arrow is optional.
 - **Test & Compare: A + fixed B.** Replace C with the fixed version above, or leave it out.
 - **Title pairs:** A with title A (also B and C), B with title B or C, C with title B only.
+
+## Round 2 (v5 files, checked at full size and 168x94)
+- **A `thumb5-A_MAIN`: APPROVE, MAIN.** Feed 9/10, click 8/10. THE TRAP and YORKTOWN both read at feed size, and the blue arrow shows the trap as a move.
+  - Last defect (optional): the arrow starts at Washington's shoulder and ends pointing into open water at the upper right (x 1030, y 330). It looks like a route out to sea, not a ring.
+  - Fix: bend the head back to the shore just right of the town (about x 760, y 300) so the arrow closes around Yorktown. Also smooth the two small seams in the arrow body (x~630 and ~810, y~490).
+- **B `thumb5-B_MAP`: APPROVE after 2 small fixes.** Feed 7/10, click 6/10.
+  1. The red THE TRAP plate covers the comma's tail, so the headline reads "YORKTOWN. 1781". Move the plate down about 15 px or use a 2-px gap.
+  2. The arrow half-covers a red X box (x 450, y 595) and runs off the frame at the bottom right. Remove that box, or end the arrowhead on the river shore inside the frame (about x 1000, y 640).
+  - A blue box ghosts through the dark band (x 130, y 140). It can stay.
+- **C `thumb5-C_CIRCLE`: APPROVE (third test slot).** Feed 7/10, click 7/10.
+  - At feed size the circle and WHERE'S CORNWALLIS? both read, and the question is true (FACT_NOTES: Cornwallis "ill", O'Hara came instead).
+  - Minor: the circle still takes in the second officer's shoulder (x 380-460). Narrow it about 30 px on the right if that's easy.
+  - Fits titles B and C ("Trapped Cornwallis"). It doesn't fit A.
+- **Final:** A is the main thumbnail, with title A. B and C go into Test & Compare.

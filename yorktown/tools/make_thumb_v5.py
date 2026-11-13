@@ -12,8 +12,13 @@ def arrow(img, pts, col=(31, 79, 196), width=44, head=86):
     x1, y1 = P[-1]; x0, y0 = P[-4]; ang = math.atan2(y1 - y0, x1 - x0)
     tip = (x1 + 2 * head * math.cos(ang), y1 + 2 * head * math.sin(ang))
     l = (x1 + 2 * head * 0.8 * math.cos(ang + 1.95), y1 + 2 * head * 0.8 * math.sin(ang + 1.95)); r = (x1 + 2 * head * 0.8 * math.cos(ang - 1.95), y1 + 2 * head * 0.8 * math.sin(ang - 1.95))
+    dense = []
+    for (xa, ya), (xb, yb) in zip(P, P[1:]):
+        n = max(1, int(math.hypot(xb - xa, yb - ya) / 3))
+        dense += [(xa + (xb - xa) * k / n, ya + (yb - ya) * k / n) for k in range(n)]
     for c, wv, grow in (((255, 255, 255, 255), 2 * width + 22, 14), (col + (255,), 2 * width, 0)):
-        d.line(P, fill=c, width=wv, joint="curve")
+        rr = wv / 2
+        for (xq, yq) in dense: d.ellipse([xq - rr, yq - rr, xq + rr, yq + rr], fill=c)
         cxp = (tip[0] + l[0] + r[0]) / 3; cyp = (tip[1] + l[1] + r[1]) / 3
         g = lambda p: (p[0] + (p[0] - cxp) * grow / 60, p[1] + (p[1] - cyp) * grow / 60)
         d.polygon([g(tip), g(l), g(r)], fill=c)
@@ -34,7 +39,7 @@ for i in range(620): sd.line([(i, 0), (i, H)], fill=(8, 6, 4, int(235 * (1 - i /
 sh2 = Image.new("L", (W, H), 0); ImageDraw.Draw(sh2).ellipse([-260, -260, 560, 300], fill=120); sh2 = sh2.filter(ImageFilter.GaussianBlur(70))
 sh = Image.alpha_composite(sh, Image.merge("RGBA", (Image.new("L", (W, H), 8),) * 3 + (sh2,)))   # soft: plume off the wig
 A = Image.alpha_composite(bg, sh)
-arrow(A, ell(720, 300, 300, 215, 172, 22), width=36, head=70)              # round the town + fort, from the land side to the shore
+arrow(A, ell(600, 340, 250, 150, 162, 6, -1), width=34, head=62)   # closes round the town (ring), head points back in              # round the town + fort, from the land side to the shore
 cut = Image.open("youtube/thumb/washington_cut.png").convert("RGBA").crop((540, 120, 1330, 1020))
 hh = int(H * 1.04); ww = int(cut.width * hh / cut.height); face = cut.resize((ww, hh), Image.LANCZOS); a = face.split()[3]
 rgb = ImageEnhance.Sharpness(ImageEnhance.Contrast(ImageEnhance.Color(face.convert("RGB")).enhance(1.22)).enhance(1.2)).enhance(1.6)
@@ -52,25 +57,25 @@ fr = ImageEnhance.Contrast(ImageEnhance.Color(fr).enhance(1.15)).enhance(1.1).co
 ov = Image.new("RGBA", (W, H), (0, 0, 0, 0)); o = ImageDraw.Draw(ov)
 for i in range(250): o.line([(0, i), (W, i)], fill=(10, 9, 7, int(250 if i < 175 else 250 * (1 - (i - 175) / 75))))
 B = Image.alpha_composite(fr, ov)
-arrow(B, ell(1010, 400, 760, 330, 172, 70), width=40, head=80)
+arrow(B, ell(700, 330, 420, 270, 192, 12, -1), width=36, head=70)   # inside the frame, round the British works, ends at the river east of the redoubts
 d = ImageDraw.Draw(B)
-d.text((W / 2, 14), "YORKTOWN, 1781", font=ImageFont.truetype(F, 116), fill=(255, 255, 255), anchor="ma", stroke_width=6, stroke_fill=(10, 8, 6))
+d.text((W / 2, 14), "YORKTOWN · 1781", font=ImageFont.truetype(F, 116), fill=(255, 255, 255), anchor="ma", stroke_width=6, stroke_fill=(10, 8, 6))
 fs = ImageFont.truetype(F, 66); t = "THE TRAP"; tw = d.textlength(t, font=fs)
-d.rectangle([W / 2 - tw / 2 - 26, 150, W / 2 + tw / 2 + 26, 236], fill=(196, 22, 28)); d.text((W / 2, 154), t, font=fs, fill=(255, 255, 255), anchor="ma")
+d.rectangle([W / 2 - tw / 2 - 26, 166, W / 2 + tw / 2 + 26, 252], fill=(196, 22, 28)); d.text((W / 2, 170), t, font=fs, fill=(255, 255, 255), anchor="ma")
 B.convert("RGB").save("youtube/thumb/yorktown-thumb5-B_MAP.jpg", quality=94)
 # ---------- C
 tr = Image.open("assets/archive/trumbull_surrender.jpg").convert("RGB")
-tr = tr.crop((560, 520, 560 + 960, 520 + 540)).resize((W, H), Image.LANCZOS)
+tr = tr.crop((560, 470, 560 + 960, 470 + 540)).resize((W, H), Image.LANCZOS)
 tr = ImageEnhance.Contrast(tr).enhance(1.12)
-ox, oy, rx, ry = 345, 400, 120, 250
+ox, oy, rx, ry = 330, 470, 100, 250
 m = Image.new("L", (W, H), 0); ImageDraw.Draw(m).ellipse([ox - rx, oy - ry, ox + rx, oy + ry], fill=255); m = m.filter(ImageFilter.GaussianBlur(10))
 dark = ImageEnhance.Color(ImageEnhance.Brightness(tr).enhance(0.55)).enhance(0.5)
 C = Image.composite(tr, dark, m).convert("RGBA")
 c = Image.new("RGBA", (W * 2, H * 2), (0, 0, 0, 0)); ImageDraw.Draw(c).ellipse([2 * (ox - rx), 2 * (oy - ry), 2 * (ox + rx), 2 * (oy + ry)], outline=(225, 20, 28, 255), width=28)
 C.alpha_composite(c.resize((W, H), Image.LANCZOS))
 d = ImageDraw.Draw(C); f = ImageFont.truetype(F, 104)
-d.text((900, 70), "WHERE'S", font=f, fill=(255, 255, 255), anchor="ma", stroke_width=6, stroke_fill=(10, 8, 6))
-d.text((900, 180), "CORNWALLIS?", font=f, fill=(255, 220, 210), anchor="ma", stroke_width=6, stroke_fill=(120, 10, 14))
+d.text((960, 110), "WHERE'S", font=f, fill=(255, 255, 255), anchor="ma", stroke_width=6, stroke_fill=(10, 8, 6))
+d.text((960, 220), "CORNWALLIS?", font=f, fill=(255, 220, 210), anchor="ma", stroke_width=6, stroke_fill=(120, 10, 14))
 C.convert("RGB").save("youtube/thumb/yorktown-thumb5-C_CIRCLE.jpg", quality=94)
 # ---------- sheet
 F2 = ImageFont.truetype(F, 22)
