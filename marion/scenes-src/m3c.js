@@ -10,11 +10,21 @@
 //   banner + a sealed letter leaves his camp down the road (ink trace), the camera follows it south; "Marion": his banner at Fort Watson;
 //   quote card 1, lines on their words; quote card 2, lines on their words (the skipped clause = ellipsis); the letter reaches Marion
 //   on "a talent peculiar to yourself" (his box pulses).
+// ---------------------------------------------------------------------------------------------------------------------------------
+// EXPORT for m3d (frame 0 carries this card, all three lines on; screen space, sibling of #credit inside SCN):
+//   wrapper css: "position:absolute;left:0;right:0;top:640px;display:flex;justify-content:center;"
+//   inner: <div style="max-width:1560px;padding:24px 50px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+//     <div style="font-size:38px;font-weight:500;line-height:1.28;letter-spacing:.02em">&ldquo;To fight the enemy bravely with the prospect of victory is nothing,</div>
+//     <div style="font-size:38px;font-weight:500;line-height:1.28;letter-spacing:.02em">but to fight with intrepidity under the constant impression of a defeat &hellip;</div>
+//     <div style="font-size:38px;line-height:1.28;letter-spacing:.02em;color:#e8cf8a;font-weight:600">is a talent peculiar to yourself.&rdquo;</div>
+//     <div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">NATHANAEL GREENE TO MARION &middot; 24 APRIL 1781</div></div>
+// ---------------------------------------------------------------------------------------------------------------------------------
 {
 const P6 = "m3-6";
 const T_NEXT = at(P6, "The next day"), T_NEWS = at(P6, "before he had even heard the news"), T_GW = at(P6, "Greene wrote to Marion"), T_TOM = at(P6, "to Marion"),
   T_HIST = at(P6, "History affords no instance"), T_WHEREIN = at(P6, "wherein an officer"), T_UNDER = at(P6, "under so many disadvantages"),
-  T_FIGHT = at(P6, "To fight the enemy bravely"), T_BUT = at(P6, "but to fight with intrepidity"), T_TALENT = at(P6, "is a talent peculiar to yourself");
+  T_FIGHT = at(P6, "To fight the enemy bravely"), T_BUT = at(P6, "but to fight with intrepidity"), T_TALENT = at(P6, "is a talent peculiar to yourself"),
+  T_PROSP = at(P6, "with the prospect of victory"), T_INSP = at(P6, "inspire irregular troops");
 // ---------------------------------------------------------------------------------------------------------------------------------
 LIVING({ clouds: 0.1 });
 const CAM = PLACE("camden"), FWL = PLACE("fort_watson");
@@ -37,8 +47,9 @@ const scr0 = (html, css) => { const el = document.createElement("div"); el.style
 const GR = [1062, 158];
 UNIT("gre", "allies", GR, "infantry", { ech: "XX" });
 UNIT("rcam", "british", [CAM[0] - 4, CAM[1] + 34], "infantry", { ech: "XX" });
-SIDEFLAG("gb", [CAM[0] - 30, CAM[1] + 100]); SIDEFLAG("us", [GR[0] - 70, GR[1] - 30]);
+SIDEFLAG("gb", [CAM[0] + 30, CAM[1] + 112]);   // critic r2: ~80 px behind (south of) the red line SIDEFLAG("us", [GR[0] - 70, GR[1] - 30]);
 UNIT("mar", "allies", [FWL[0] + 34, FWL[1] + 14], "cavalry", { ech: "" });
+UNIT("mar2", "allies", [FWL[0] - 28, FWL[1] + 40], "infantry", { ech: "" });   // Marion's militia at the taken fort
 // the road Camden -> Fort Watson (the baked Nelson's Ferry - Camden road)
 const R = GD.bake.roads.find((r) => r.id === "nelson_camden").paths[0];
 const kF = R.reduce((b, q, k) => (Math.hypot(q[0] - FWL[0], q[1] - FWL[1]) < Math.hypot(R[b][0] - FWL[0], R[b][1] - FWL[1]) ? k : b), 0);
@@ -75,6 +86,12 @@ const QCARD = (lines, who, t0, until) => { const el = scr0(`<div style="max-widt
 const WHO = "NATHANAEL GREENE TO MARION &middot; 24 APRIL 1781";
 QCARD([["&ldquo;History affords no instance", T_HIST], ["wherein an officer has kept possession of a country", T_WHEREIN], ["under so many disadvantages as you have.&rdquo;", T_UNDER]], WHO, T_HIST, T_FIGHT - 0.25);
 QCARD([["&ldquo;To fight the enemy bravely with the prospect of victory is nothing,", T_FIGHT], ["but to fight with intrepidity under the constant impression of a defeat &hellip;", T_BUT],
-  ["&hellip; is a talent peculiar to yourself.&rdquo;", T_TALENT, true]], WHO, T_FIGHT, null);
+  ["is a talent peculiar to yourself.&rdquo;", T_TALENT, true]], WHO, T_FIGHT, null);
+// critic r2: "with the prospect of victory": the taken fort glows blue (FORM 1 hatching on Fort Watson, Marion's win of the day before);
+//   "inspire irregular troops": Marion's militia boxes glow (filter, not scale)
+HATCH([[FWL[0] - 40, FWL[1] - 30], [FWL[0] + 40, FWL[1] - 32], [FWL[0] + 46, FWL[1] + 30], [FWL[0] - 44, FWL[1] + 32]], "allies", T_PROSP + 0.1, { hold: 2.2 });
+["mar", "mar2"].forEach((id, i) => { const b = B.units[id].el.querySelector(".blk");
+  tl.to(b, { filter: "drop-shadow(0 0 10px #9fd0ff) drop-shadow(0 0 4px #ffffff) brightness(1.25)", duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_INSP + 0.1 + i * 0.12); });
+SFX("tick", T_INSP + 0.15);
 if (GD.var.audit) LABEL_AUDIT([2, 8, 14, 20, 25], { show: true });
 }

@@ -143,7 +143,7 @@ const DROP = `<svg width="34" height="44" viewBox="-12 -18 24 30" style="display
 const DR = ICON(DROP, [FW[0] + 9, FW[1] - 14], T_WELL + 0.15, T_BATTER + 0.2, { hit: true });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m3-4: "They could not starve the fort, and they could not batter it"
-tl.to(DR.firstElementChild, { scale: 1.35, duration: 0.2, yoyo: true, repeat: 1, ease: "power2.out" }, T_STARVE + 0.1);
+tl.to(DR.querySelector("svg"), { scale: 1.35, transformOrigin: "50% 60%", duration: 0.2, yoyo: true, repeat: 1, ease: "power2.out" }, T_STARVE + 0.1);
 const GUNX = `<svg width="78" height="52" viewBox="-26 -17 52 34" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))">
   <rect x="-24" y="-15" width="48" height="30" rx="3" fill="rgba(18,16,12,.9)" stroke="#c9b48a" stroke-width="1.4"/>
   <g fill="#9a9488" stroke="#2a2420" stroke-width="1"><path d="M-16 -2 L12 -6 L12 0 L-16 4 Z"/><circle cx="-6" cy="6" r="6" fill="none" stroke="#9a9488" stroke-width="2.2"/></g>
@@ -211,8 +211,8 @@ B.move("rif", T_CLIMB + 0.2, 1.4, TOP[0], TOP[1] - 6);
 tl.to(B.units.rif.el.querySelector(".tag"), { autoAlpha: 0, duration: 0.4 }, T_KEPT + 0.2);
 const YARD = [[FW[0] - 10, FW[1] + 2], [FW[0] + 2, FW[1] - 2], [FW[0] + 10, FW[1] + 4], [FW[0] - 4, FW[1] + 6], [FW[0] + 14, FW[1] - 3]];
 const MUZ = [TOP[0] - 12, TOP[1] - 4];
-[0, 1, 2].forEach((k) => { FLASH(MUZ, T_FIRED + 0.1 + k * 0.45, 0.8); mg(MUZ, YARD[k], T_FIRED + 0.12 + k * 0.45, 3, 1.6); });
-[3, 4, 0, 2].forEach((j, k) => { FLASH(MUZ, T_SWEEP + 0.1 + k * 0.4, 0.8); mg(MUZ, YARD[j], T_SWEEP + 0.12 + k * 0.4, 3, 1.6); });
+[0, 1, 2].forEach((k) => { FLASH(MUZ, T_FIRED + 0.1 + k * 0.45, 1.3); mg(MUZ, YARD[k], T_FIRED + 0.12 + k * 0.45, 3, 1.6); });
+[3, 4, 0, 2].forEach((j, k) => { FLASH(MUZ, T_SWEEP + 0.1 + k * 0.4, 1.3); mg(MUZ, YARD[j], T_SWEEP + 0.12 + k * 0.4, 3, 1.6); });
 smoke([[MUZ[0] + 2, MUZ[1] - 2]], T_FIRED + 0.3, 0.6); smoke([[MUZ[0], MUZ[1] - 3]], T_SWEEP + 0.4, 0.6);
 // "kept the defenders down": the garrison box sinks and dims
 tl.to(B.units.gar.el.querySelector(".blk"), { scale: 0.8, opacity: 0.6, filter: "brightness(.7)", duration: 0.5 }, T_KEPT + 0.1);

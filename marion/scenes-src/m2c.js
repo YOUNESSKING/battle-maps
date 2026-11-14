@@ -60,11 +60,11 @@ UNIT("mb", "allies", MB0, "cavalry", { ech: "" });
 march("mb", [MB0, LYT(33.735, -79.93)], 0, T_COL - 0.2, { dustOp: 0.3, trail: false });
 // side flags free-standing behind each side's line (round-1 lesson: never on the box): Marion's to the east, the Legion's behind it (south-east)
 const FLAGBACK = (el, dx, dy) => { el.style.left = dx + "px"; el.style.top = dy + "px"; return el; };
-FLAGBACK(SIDEFLAG("sc", "mb"), 62, 4); FLAGBACK(SIDEFLAG("gb", "tl", 0, T_SNOW), -20, 52);
+FLAGBACK(SIDEFLAG("sc", "mb"), 92, 8); FLAGBACK(SIDEFLAG("gb", "tl", 0, T_SNOW), 78, 72);   // critic r2: 60-90 px behind the line
 // "Cornwallis had to explain it all": his army box + banner at Winnsborough (not labelled: not spoken)
 const WIN = NUDGE(PLACE("winnsborough"), { s: 0.8 });
 UNIT("cw", "british", WIN, "infantry", { ech: "XX", t: T_CORN + 0.1 });
-BANNER("cornwallis", "Lord Cornwallis", "gb", "cw", T_CORN + 0.4, { side: [200, 200], until: T_SCARCE - 0.3 });
+BANNER("cornwallis", "Lord Cornwallis", "gb", "cw", T_CORN + 0.4, { side: [-20, 330], until: T_SCARCE - 0.3 }   /* critic r2: stake below Winnsborough, clear of the carved Camden name */);
 // "Remember the plan to awe the country?": the m1-1 chain of posts (same places) drops back in, ink trace joins them
 const POSTS = [["pG", LYT(33.445, -79.285)], ["pN", LYT(33.405, -80.335)], ["pM", LYT(33.175, -80.05)], ["pC", LYT(34.205, -80.545)], ["pO", LYT(33.49, -80.86)]];
 const PP = {};

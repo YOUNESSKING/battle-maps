@@ -58,10 +58,17 @@ const S = 0.76;
 const Q = { pC: NUDGE(LYT(34.205, -80.56), { s: S }), pN: NUDGE(LYT(33.405, -80.335), { s: S }), pM: NUDGE(LYT(33.175, -80.05), { s: S }),
   pW: NUDGE(PLACE("fort_watson"), { s: S }), pF: NUDGE(PLACE("fort_motte"), { s: S }) };
 const post = (id, t, ech = "") => { UNIT(id, "british", Q[id], "infantry", { ech, t }); FORT([Q[id][0] - 46 / S, Q[id][1] + 4 / S], t + 0.1); SFX("tick", t + 0.15); };
+// critic r2: "rested on a chain of forts": a faint preview of the chain (dim red dots + faint ink along the road), each post then lights on its name
+const T_REST = at(P1, "rested on a chain of forts");
+[["pC", T_CAMDEN], ["pN", T_STRING + 0.2], ["pM", T_STRING + 0.5], ["pW", T_FW], ["pF", T_FM]].forEach(([id, tOn], k) => {
+  const d = pinS(GG.pin(`<div style="width:14px;height:14px;border-radius:50%;background:#bc2528;border:2px solid #f3eee2;box-shadow:0 0 8px rgba(255,70,50,.7)"></div>`, Q[id][0], Q[id][1], {}));
+  tl.fromTo(d, { autoAlpha: 0 }, { autoAlpha: 0.6, duration: 0.5, immediateRender: false }, T_REST + 0.2 + k * 0.18); tl.to(d, { autoAlpha: 0, duration: 0.3 }, tOn); });
+{ const pv = inkTrace([LYT(33.0, -80.0), Q.pM, Q.pN, Q.pW, LYT(33.80, -80.40), LYT(34.05, -80.55), Q.pC], T_REST + 0.3, T_CAMDEN + 1.2, 2.0); pv.setAttribute("stroke", "#bc2528"); }
 post("pC", T_CAMDEN + 0.1, "XX");
 BANNER("rawdon", "Lord Rawdon", "gb", "pC", T_RAWDON + 0.2, { side: "sw", until: T_OW + 0.2 });
 post("pN", T_STRING + 0.2); post("pM", T_STRING + 0.5);
-SIDEFLAG("gb", "pM", T_STRING + 0.9);   // hidden while Rawdon's banner is up (one flag per side)
+// critic r2: a side flag started while a same-side banner is up escapes the kit hide: start it after Rawdon's banner leaves, 60-90 px behind the line
+{ const f = SIDEFLAG("gb", "pM", T_OW + 0.45); f.style.left = "60px"; f.style.top = "62px"; }
 post("pW", T_FW + 0.05); post("pF", T_FM + 0.05);
 PLACE_LABEL("Fort Watson", Q.pW, T_FW + 0.1, { dx: 122, dy: -14, size: 24 });
 PLACE_LABEL("Fort Motte", Q.pF, T_FM + 0.1, { dx: -112, dy: -14, size: 24 });

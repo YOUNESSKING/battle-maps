@@ -30,12 +30,12 @@ const T_PACK = at(P2, "The riders were packed so tight"), T_NARROW = at(P2, "on 
   T_LOST = at(P2, "He lost one man killed"), T_3W = at(P2, "three wounded"), T_BIG = at(P2, "When a bigger British column"), T_GUN = at(P2, "with a field gun"),
   T_SLIP = at(P2, "slipped away"), T_INTO = at(P2, "into the woods");
 // ---------------------------------------------------------------------------------------------------------------------------------
-LIVING({ clouds: 0.08, light: "afternoon", lightK: 0.35 });
-LIGHT("dusk", T_30 - 0.3, 4.0, 0.5);   // 30 Aug "very hot", at sunset: warm dusk light (the only weather)
+LIVING({ clouds: 0.08, light: "afternoon", lightK: 0.25 });
+LIGHT("dusk", T_30 - 0.3, 4.0, 0.36);   // 30 Aug "very hot", at sunset: warm dusk light (the only weather)
 const FER = PLACE("parkers_ferry"), RY = 808;
-const C0 = [1468, 842, 1.5], C1 = [1478, 826, 1.95], C2 = [1522, 832, 2.3], C3 = [1530, 862, 2.45], C4 = [1500, 860, 2.2];
-camera([[0, ...C0], [T_PF - 0.2, 1470, 838, 1.6], [T_ED + 1.2, ...C1, "power2.inOut"], [T_HID + 2.2, ...C2, "power2.inOut"], [T_CHARGE, 1526, 834, 2.32],
-  [T_EVERY - 0.4, 1530, 846, 2.42], [T_COUNT, ...C3, "power2.inOut"], [T_BIG + 0.2, 1528, 864, 2.42], [T_BIG + 2.6, ...C4, "power2.inOut"], [END, 1504, 858, 2.22]]);
+const C0 = [1468, 842, 1.5], C1 = [1470, 830, 2.4], C2 = [1512, 832, 3.0], C3 = [1515, 848, 3.0], C4 = [1482, 846, 2.9];   // close enough that the ambush reads (~100 px between boxes)
+camera([[0, ...C0], [T_PF - 0.2, 1462, 836, 1.7], [T_ED + 1.2, ...C1, "power2.inOut"], [T_HID + 2.2, ...C2, "power2.inOut"], [T_CHARGE, 1515, 834, 3.0],
+  [T_EVERY - 0.4, 1525, 838, 3.15], [T_COUNT, ...C3, "power2.inOut"], [T_BIG + 0.2, 1512, 848, 3.0], [T_BIG + 2.6, ...C4, "power2.inOut"], [END, 1484, 846, 2.9]]);
 dateNow("7 JUNE 1781", T_30 - 0.05);
 B.date("30 AUGUST 1781", T_30 + 0.05, null, 32); SFX("tick", T_30 + 0.15);
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ march("rg", [[1292, 940], [1306, 926], [1320, 913]], 0.3, T_PF, { dust: false, t
 SIDEFLAG("gb", [1270, 880]);
 // "Parker's Ferry" (the baked landings + flatboat) / "the Edisto River" (carved name, beside the water north of the crossing)
 PLACE_LABEL("Parker's Ferry", FER, T_PF + 0.1, { dy: 34, size: 24 });
-RIVER("edisto", "Edisto", T_ED + 0.15, { s: 1.95, near: [1418, 724], side: "left", hw: 5, face: "#f4f7ef", size: 26 });
+RIVER("edisto", "Edisto", T_ED + 0.15, { s: 2.4, near: [1418, 760], side: "left", hw: 5, face: "#f4f7ef", size: 26 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // "Marion hid his men in a thick wood": four blue boxes in the wood north of the causeway, dimmed (hidden: only their blue edges read)
 const AMB = [[1498, 782], [1528, 780], [1558, 781], [1588, 783]], AIDS = ["a1", "a2", "a3", "a4"], HIDE = "brightness(.62) saturate(.55) opacity(.6)";
