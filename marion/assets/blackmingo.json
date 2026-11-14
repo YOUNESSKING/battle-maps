@@ -1,0 +1,19 @@
+{
+ "name": "blackmingo",
+ "center": [
+  33.63,
+  -79.47
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  584189,
+  839530
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 15.91,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

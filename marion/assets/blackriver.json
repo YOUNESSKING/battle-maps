@@ -1,0 +1,19 @@
+{
+ "name": "blackriver",
+ "center": [
+  33.72,
+  -80.12
+ ],
+ "zoom": 12,
+ "origin_world_px": [
+  289481,
+  419045
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 31.79,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}
