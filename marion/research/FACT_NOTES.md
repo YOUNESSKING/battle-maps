@@ -23,7 +23,7 @@ Tarleton 1787, Ross 1859 (Correspondence of Cornwallis vol 1), Lee 1812 Memoirs 
 | Camden 16 Aug 1780, Gates routed | C | greene2 notes |
 | Fishing Creek 18 Aug 1780: Tarleton surprised Sumter's camp | C (standard; not re-read) | general, Gemini; consistent with greene2 |
 | Human detail: at a Charleston dinner the host locked the doors to keep the officers drinking; Marion jumped from a second-story window and injured his ankle (James "dislocated", Simms "broken ankle"); Lincoln's order sent unfit officers out of the town, so he was not captured | C (core) / host name McQueen = TRAD, not used | Simms ch. 3; James ch. 2 |
-| Marion ~48 in 1780; small, "lean and swarthy", "still limped upon one leg" | C | James |
+| Marion ~48 in 1780; small, "lean and swarthy", "still limped upon one leg" (narration hook-3: "was still limping on an injured ankle"; was "could barely walk", softened 2026-11-14 after critic) | C | James |
 | Otho Williams: "twenty men and boys ... small black leather caps ... so burlesque" ; Gates "glad of an opportunity of detaching" him | C (verbatim) | Otho Williams, Narrative |
 | Marion: Continental officer since 1775 (2nd SC Regiment), Fort Sullivan 1776, Savannah 1779 | C (standard) | James |
 
