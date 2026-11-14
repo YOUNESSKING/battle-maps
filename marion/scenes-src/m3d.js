@@ -70,7 +70,7 @@ const DOT = (p, col, t, r = 5, until) => { const el = GG.pin(`<div style="width:
 // frame 0: m3c's last quote card (continuity), leaves at once
 { const ln = (txt, gold) => `<div style="font-size:38px;font-weight:${gold ? 600 : 500};line-height:1.28;letter-spacing:.02em;${gold ? "color:#e8cf8a" : ""}">${txt}</div>`;
   const QC = scr0(`<div style="max-width:1560px;padding:24px 50px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
-    ${ln("&ldquo;To fight the enemy bravely with the prospect of victory is nothing,")}${ln("but to fight with intrepidity under the constant impression of a defeat &hellip;")}${ln("&hellip; is a talent peculiar to yourself.&rdquo;", true)}
+    ${ln("&ldquo;To fight the enemy bravely with the prospect of victory is nothing,")}${ln("but to fight with intrepidity under the constant impression of a defeat &hellip;")}${ln("is a talent peculiar to yourself.&rdquo;", true)}
     <div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">NATHANAEL GREENE TO MARION &middot; 24 APRIL 1781</div></div>`, "left:0;right:0;top:640px;display:flex;justify-content:center;");
   gsap.set(QC, { autoAlpha: 1 }); tl.to(QC, { autoAlpha: 0, duration: 0.4 }, 2.2); }
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -192,10 +192,10 @@ tl.to(RM, { autoAlpha: 0, duration: 0.4 }, T_NOON);
 // "the dry shingle roof caught fire": three fire arrows arc from Lee's men onto the roof
 const ROOF = [SV(-6, -20), SV(2, -21), SV(9, -20)];
 const ARCF = (a, b, t, h) => { const p = document.createElementNS(NSs, "path"), m = [(a[0] + b[0]) / 2, Math.min(a[1], b[1]) - h];
-  p.setAttribute("d", `M${a[0]} ${a[1]} Q${m[0]} ${m[1]} ${b[0]} ${b[1]}`); Object.entries({ fill: "none", stroke: "#ffcf7a", "stroke-width": 0.9, "stroke-linecap": "round" }).forEach(([k, v]) => p.setAttribute(k, v)); OVL.appendChild(p);
+  p.setAttribute("d", `M${a[0]} ${a[1]} Q${m[0]} ${m[1]} ${b[0]} ${b[1]}`); Object.entries({ fill: "none", stroke: "#ffcf7a", "stroke-width": 1.5, "stroke-linecap": "round" }).forEach(([k, v]) => p.setAttribute(k, v)); OVL.appendChild(p);
   const L = p.getTotalLength(); gsap.set(p, { strokeDasharray: L, strokeDashoffset: L, opacity: 0 });
   tl.set(p, { opacity: 0.95 }, t); tl.to(p, { strokeDashoffset: 0, duration: 0.6, ease: "none" }, t); tl.to(p, { opacity: 0, duration: 0.5 }, t + 0.9);
-  const f = pinS(GG.pin(`<div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,#fff3b0 0%,#ffa030 50%,rgba(255,80,0,0) 75%)"></div>`, a[0], a[1], {}));
+  const f = pinS(GG.pin(`<div style="width:24px;height:24px;border-radius:50%;background:radial-gradient(circle,#fff3b0 0%,#ffa030 45%,rgba(255,80,0,0) 75%)"></div>`, a[0], a[1], {}));
   tl.set(f, { autoAlpha: 1 }, t); const n = 12; for (let k = 1; k <= n; k++) { const u = k / n, x = (1 - u) * (1 - u) * a[0] + 2 * u * (1 - u) * m[0] + u * u * b[0], y = (1 - u) * (1 - u) * a[1] + 2 * u * (1 - u) * m[1] + u * u * b[1];
     tl.to(f, { left: x, top: y, duration: 0.6 / n, ease: "none" }, t + (k - 1) * 0.6 / n); } tl.to(f, { autoAlpha: 0, duration: 0.3 }, t + 0.65); };
 const SHOOT_FROM = [[1442, 760], [1448, 766], [1436, 768]];
@@ -270,7 +270,7 @@ const CROWD = [[-26, -12], [-22, 14], [0, 24], [22, 16], [26, -6], [6, -22], [-1
   const p0 = [LOY[0] + d[0] * 2.3, LOY[1] + d[1] * 2.3], el = DOT(p0, "#1f4fc4", T_HANG - 0.2 + k * 0.05, 3.4);
   tl.to(el, { left: LOY[0] + d[0] * 0.6, top: LOY[1] + d[1] * 0.6, duration: 1.4, ease: "power2.in" }, T_HANG);
   tl.to(el, { left: LOY[0] + d[0] * 2.0, top: LOY[1] + d[1] * 2.0, duration: 1.0, ease: "power2.out" }, T_STEP + 0.5);
-  tl.to(el, { autoAlpha: 0, duration: 0.6 }, END - 1.0); return el; });
+  return el; });
 tl.fromTo(LD.firstElementChild, { boxShadow: "0 0 0px rgba(255,80,60,0)" }, { boxShadow: "0 0 12px rgba(255,80,60,.95)", duration: 0.4, yoyo: true, repeat: 3, immediateRender: false }, T_HANG + 0.4);
 // "a man accused of burning his neighbors' houses": the accusation (a small burning house) over him
 ICON(`<svg width="44" height="44" viewBox="-12 -14 24 24" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.85))">
