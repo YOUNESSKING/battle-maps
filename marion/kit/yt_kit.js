@@ -764,7 +764,8 @@ window.LivingW = function (cfg = {}) {
     const dur = o.dur ?? 2.0, k = o.k ?? 1;
     Object.entries(lightEls).forEach(([name, arr]) => arr.forEach(({ el, op }) => {
       const target = name === preset ? op * k : 0;
-      if (dur <= 0) tl.set(el, { opacity: target }, t); else tl.to(el, { opacity: target, duration: dur, ease: "sine.inOut" }, t);
+      if (t <= 0.05) gsap.set(el, { opacity: target });   // Marion r1: light already on at frame 0 (no bright first frame at a cut)
+      else if (dur <= 0) tl.set(el, { opacity: target }, t); else tl.to(el, { opacity: target, duration: dur, ease: "sine.inOut" }, t);
     }));
   };
   L.presets = PRESETS; L.layers = LAY;
@@ -1214,7 +1215,7 @@ const LABEL_AUDIT = (times, o = {}) => { const cur = tl.time(), bad = [];
 
 // ---------- generals = banners on poles (2f.1): side colour, sepia portrait, national-flag pennant; "?" mystery banner + reveal on the spoken name ----------
 // BANNER(key, name, nation, at, t, o): key = portrait key (assets/media/<key>_head.png); nation = "us" | "fr" | "gb"; at = unit id or [x, y] map px;
-//   o.until (default: stays, 2d.6), o.side = up|right|left|west|ne (offset from the unit, off the action), o.myst = reveal time (banner shows "?" until then)
+//   o.until (default: stays, 2d.6), o.side = up|right|left|west|east|ne|nw|se|sw or [dx, dy] px (offset from the unit, off the action), o.myst = reveal time (banner shows "?" until then)
 //   A missing portrait shows the general's initials on the cloth (image agent may still be delivering).
 const BANNERS = [];
 const INITIALS = (name) => "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="76" height="100" viewBox="0 0 76 100"><rect width="76" height="100" fill="#3a3326"/><text x="38" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="700" fill="#e8dca0">${name.split(/\s+/).filter((w) => /^[A-Z]/.test(w)).map((w) => w[0]).join("").slice(0, 3)}</text></svg>`);

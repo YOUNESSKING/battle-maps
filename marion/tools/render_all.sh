@@ -41,7 +41,7 @@ for spec in "$@"; do
     echo "=== $(date -u +%T) skip $name (already rendered; FORCE=1 to redo)"; continue
   fi
   echo "=== $(date -u +%T) build $name"
-  python3 tools/build_scene.py "$@" || { echo "BUILD FAILED $name"; FAILED=1; continue; }
+  python3 kit/build_scene.py "$@" || { echo "BUILD FAILED $name"; FAILED=1; continue; }
   (cd "scenes/$name" && hyperframes lint . 2>&1 | tail -2)
   echo "=== $(date -u +%T) render $name"
   (cd "scenes/$name" && nice -n 5 hyperframes render . -o "renders/$name.mp4" > render.log 2>&1) &

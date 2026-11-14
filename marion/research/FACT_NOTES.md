@@ -23,7 +23,7 @@ Tarleton 1787, Ross 1859 (Correspondence of Cornwallis vol 1), Lee 1812 Memoirs 
 | Camden 16 Aug 1780, Gates routed | C | greene2 notes |
 | Fishing Creek 18 Aug 1780: Tarleton surprised Sumter's camp | C (standard; not re-read) | general, Gemini; consistent with greene2 |
 | Human detail: at a Charleston dinner the host locked the doors to keep the officers drinking; Marion jumped from a second-story window and injured his ankle (James "dislocated", Simms "broken ankle"); Lincoln's order sent unfit officers out of the town, so he was not captured | C (core) / host name McQueen = TRAD, not used | Simms ch. 3; James ch. 2 |
-| Marion ~48 in 1780; small, "lean and swarthy", "still limped upon one leg" | C | James |
+| Marion ~48 in 1780; small, "lean and swarthy", "still limped upon one leg" (narration hook-3: "was still limping on an injured ankle"; was "could barely walk", softened 2026-11-14 after critic) | C | James |
 | Otho Williams: "twenty men and boys ... small black leather caps ... so burlesque" ; Gates "glad of an opportunity of detaching" him | C (verbatim) | Otho Williams, Narrative |
 | Marion: Continental officer since 1775 (2nd SC Regiment), Fort Sullivan 1776, Savannah 1779 | C (standard) | James |
 
@@ -96,7 +96,7 @@ Tarleton 1787, Ross 1859 (Correspondence of Cornwallis vol 1), Lee 1812 Memoirs 
 |---|---|---|
 | A civil war of neighbours; both sides burned and killed (Wemyss's 50 houses; Marion's orders to take every horse "whether friend or foe"; his nephew Gabriel killed after capture) | C | James; Wemyss |
 | Marion was a slaveholder (Pond Bluff, on the Santee); number of enslaved people NOT documented (no number in script) | C / number UNV | James |
-| Oscar: Marion's enslaved servant through the war (James names him twice); 15 Dec 2006: a proclamation signed by President George W. Bush was read at a Capitol ceremony recognising him | C (not an act of Congress; no "trumpeter/soldier") | James; Washington Post via HNN |
+| Oscar (honoured in 2006 as "Oscar Marion"; on-screen caption m3h end-1: OSCAR MARION · HONORED AT THE CAPITOL, 2006): Marion's enslaved servant through the war (James names him twice); 15 Dec 2006: a proclamation signed by President George W. Bush was read at a Capitol ceremony recognising him | C (not an act of Congress; no "trumpeter/soldier") | James; Washington Post via HNN |
 | No portrait made in his lifetime is known; every image is a later artist's (label on screen "PAINTED LONG AFTER HIS DEATH") | C (phrase as "no portrait from his lifetime is known") | Commons/Senate dates |
 | The Patriot (2000): never used | rule | |
 | Sweet-potato dinner with a British officer = Weems 1809 story (TRAD); James's real meal (sweet potatoes + lean beef, served by Oscar) had no British officer | FIX | James; Weems |
