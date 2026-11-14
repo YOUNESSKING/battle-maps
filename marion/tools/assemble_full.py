@@ -135,7 +135,7 @@ if not AUDIO_ONLY:
 subprocess.run(["python3", "tools/sfx_cues.py"], check=True)
 # STYLE_LOCK 1c rule 4 (owner 2026-11-04 review): artillery shots/booms only where the guns are clearly visible; in the other scenes the
 # gun flashes are tiny or off screen, so their fire/impact sounds are dropped (musketry 'mg', counters, hits stay).
-_VIS_ARTY = {"hook-b", "p2a", "p3b", "p3c"}  # Yorktown: scenes whose guns/broadsides are on screen (agents fire only visible guns)
+_VIS_ARTY = {"m3d"}  # Marion: only the Fort Motte six-pounder fires, on screen (agents fire only visible guns)
 _c = json.load(open("build/sfx_cues.json")); _k = [c for c in _c if c[1] not in ("fire", "impact") or c[2] in _VIS_ARTY]
 json.dump(_k, open("build/sfx_cues.json", "w")); print("artillery cues kept", sum(1 for c in _k if c[1] in ("fire", "impact")), "of", sum(1 for c in _c if c[1] in ("fire", "impact")))
 subprocess.run(["python3", "tools/sfx_mix.py"], check=True)
