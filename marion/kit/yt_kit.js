@@ -1360,11 +1360,14 @@ const INSET = (map, o = {}) => { const A = YT.MAPS[YT.BASE], M = YT.MAPS[map], k
   onCam((s) => { const a = Math.max(0, Math.min(1, (s - s0) / (s1 - s0))); im.style.opacity = a.toFixed(3);
     // feathered edge while it grows in; once the frame lies inside the inset (s past s1) the edge is hard and everything under it is hidden
     const inside = CAM_X0 + x * s <= 4 && CAM_Y0 + y * s <= 4 && CAM_X0 + (x + w) * s >= 1916 && CAM_Y0 + (y + h) * s >= 1076;
-    const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 100%)" : "none";
+    const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 52%,transparent 100%)" : "none";
     im.style.webkitMaskImage = im.style.maskImage = feather;
     const top = INSETS.filter((r) => parseFloat(r.el.style.opacity) >= 0.999 && (r.el.style.maskImage || r.el.style.webkitMaskImage || "none") === "none").pop();   // r3: the browser stores "1", not "1.000"
     const hideBelow = top ? INSETS.indexOf(top) : -1;
     [R1, R2].forEach((r) => { r.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; });
+    // r3: while a nested map grows in, the outer map is magnified 2-4x past the scale it was baked for: soften it (its rut pairs and
+    // carved names would read as doubled roads beside the inset's own)
+    if (rec === INSETS[0]) { const b = Math.min(1.4, Math.max(0, (s - s0 * 0.85) / (s1 - s0 * 0.85)) * 1.4); [R1, R2].forEach((r) => { r.style.filter = b > 0.01 ? `blur(${b.toFixed(2)}px)` : ""; }); }
     INSETS.forEach((r, i) => { if (i < hideBelow) r.el.style.visibility = "hidden"; else r.el.style.visibility = "visible"; });
     document.querySelectorAll(".lv-water,.lv-clouds").forEach((l) => { l.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; }); });
   return rec; };

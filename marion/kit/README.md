@@ -142,3 +142,12 @@ See `yorktown/kit/README.md` CHANGES r2-r6 (all included in this copy: versions 
   brightness(o.bright ?? 1.08)` (night scenes: `{ pop: 1.4, bright: 1.18 }`).
 - INSET: the hook zoom uses `INSET("santee", { s0: 2.2, s1: 2.8 })` (the nested map takes over early and fast; the two maps' roads are never doubled
   for long). Per-map make_w options: `w_args` in places.py.
+
+## CHANGES r3 (2026-11-14; proof `build/sheet-kit.jpg`)
+- Swamp clip / add polygons are feathered (`swamp.feather`, default 14 quarter-px) and noise-broken: no straight or rectangular swamp edges.
+  `dry_south` now runs to the dam line (-80.40 .. -80.15: the drowned south basin was upland on the 1920 quads; below the dam both banks are swamp);
+  `SANTEE_N_EDGE` east end wobbled and extended to -79.70; `SWAMP_DAM` widened and also on blackriver; blackriver Santee keep box to -79.00.
+- lowcountry roads `meander_k` 0.3 (they register with the nested maps' roads in the hook zoom).
+- INSET: wider feather (52 %); while the first nested map grows in, the outer basemap is softened (CSS blur up to 1.4 px) so its magnified rut
+  pairs and names do not read as doubled roads.
+- Town names: Camden now on the east (NE) side, away from the Wateree.

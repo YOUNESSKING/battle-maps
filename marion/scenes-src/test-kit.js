@@ -31,7 +31,7 @@ if (GD.base === "lowcountry") {
   UNIT("c1", "allies", LYT(33.468, -80.372), "cavalry", { ech: "" }); UNIT("c2", "allies", LYT(33.461, -80.362), "cavalry", { ech: "" });
   UNIT("c3", "allies", LYT(33.474, -80.360), "cavalry", { ech: "" });
   march("c1", LLYT([[33.468, -80.372], [33.476, -80.354], [33.4805, -80.344]]), 0.3, 6.5, { trail: false, dust: false });
-  march("c2", LLYT([[33.461, -80.362], [33.470, -80.346], [33.4785, -80.333]]), 0.4, 6.0, { trail: false, dust: false });
+  march("c2", LLYT([[33.461, -80.362], [33.470, -80.346], [33.4818, -80.3335]]), 0.4, 6.0, { trail: false, dust: false });
   march("c3", LLYT([[33.474, -80.360], [33.479, -80.350], [33.4835, -80.338]]), 0.5, 6.5, { trail: false, dust: false });
   BANNER("marion", "Francis Marion", "sc", "c1", 0, { side: "nw", pop: 1.4, bright: 1.18 });
   if (GD.var.audit) LABEL_AUDIT([5], { show: true });

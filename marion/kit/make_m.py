@@ -98,7 +98,7 @@ def meander(Pp, seed):
         nx, ny = -(b[1] - a[1]) / Ln, (b[0] - a[0]) / Ln
         dt = min([math.hypot(x - T["c"][0], y - T["c"][1]) / US - T["R"] / US for T in TOWNS.values()] + [99])
         tap = min(1, max(0, dt / 20)) * min(1, i / 8, (len(Pp) - 1 - i) / 8)
-        o = tap * US * (3.2 * math.sin(acc / 120 + ph[0]) + 1.4 * math.sin(acc / 40 + ph[1]) + 0.45 * math.sin(acc / 14 + ph[2]))
+        o = tap * US * C.get("meander_k", 1.0) * (3.2 * math.sin(acc / 120 + ph[0]) + 1.4 * math.sin(acc / 40 + ph[1]) + 0.45 * math.sin(acc / 14 + ph[2]))   # MARION r3: meander_k (lowcountry 0.3: registers with the nested maps)
         out.append((x + nx * o, y + ny * o))
     return out
 
