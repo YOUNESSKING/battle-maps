@@ -21,5 +21,11 @@ done
 for p in hannibal ridgway; do  # the pipeline reads voice.wav; the repo stores mp3
   [ -f "$ROOT/$p/audio/voice.wav" ] || ffmpeg -v error -y -i "$ROOT/$p/audio/voice.mp3" -ar 24000 "$ROOT/$p/audio/voice.wav"
 done
+# depth model for the 3D-depth archive photos (archive_shots.py): assembly fails without it
+if [ ! -f /opt/models/depth_anything_v2_small.onnx ]; then
+  log "depth model"; mkdir -p /opt/models
+  curl -sSL -o /opt/models/depth_anything_v2_small.onnx "https://huggingface.co/onnx-community/depth-anything-v2-small/resolve/main/onnx/model.onnx"
+fi
+python3 -c "import onnxruntime, cv2" 2>/dev/null || pip install -q onnxruntime opencv-python-headless >/dev/null 2>&1
 [ -f "$ROOT/ridgway/assets/media/music.wav" ] || ffmpeg -v error -y -i "$ROOT/ridgway/assets/media/music.mp3" -ar 48000 "$ROOT/ridgway/assets/media/music.wav"
 log "done"; touch /tmp/battle-maps-setup.done
