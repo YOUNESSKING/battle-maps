@@ -176,7 +176,7 @@ tl.to(VIG, { autoAlpha: 0, duration: 0.45 }, T_SENT - 0.05);
 // "unfit": the stamp beside the limping box (critic r1), where the box is at that moment
 { const R = GD.bake.roads.find((r) => r.id === "chs_nelson").paths[0], LIMP = sub(R, 0.02, 0.24, 30), steps = 6, t0 = T_SENT + 0.35, span = T_NAME - t0 - 0.2, st = span / steps;
   const k = Math.max(0, Math.min(steps - 1, Math.floor((T_UNFIT - t0) / st))), pr = Math.max(0, Math.min(1, (T_UNFIT - t0 - k * st) / (st * 0.6)));
-  const q = posOn(LIMP, (k + pr) / steps); wstampL("UNFIT", q[0] + 78 / CCH[2], q[1] - 6 / CCH[2], T_UNFIT, T_NAME - 0.2, null, 36); }
+  const q = posOn(LIMP, (k + pr) / steps); wstampL("UNFIT", q[0] + 120 / CCH[2], q[1] - 34 / CCH[2], T_UNFIT, T_NAME - 0.2, null, 36); }
 // "the surrender": the siege boxes close on the town, the garrison goes, red hatching on the town ground
 RING.forEach((p, i) => B.move("rc" + i, T_SURR - 0.3, 0.7, p[0] + (CHS[0] - p[0]) * 0.35, p[1] + (CHS[1] - p[1]) * 0.35));
 tl.to(B.units.bA.el, { autoAlpha: 0, duration: 0.4 }, T_SURR + 0.4);
