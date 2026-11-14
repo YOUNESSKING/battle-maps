@@ -40,3 +40,9 @@ Add new rows for every video. Names from earlier videos with known fixes: see ea
 Web check 2026-10-31 confirmed only Bastogne (Merriam-Webster ba-STONE); the rest follow standard English/WWII-documentary usage and Gemini's guide (Avranches ah-VRAHNSH, Sélune say-LOON, Mortain mor-TAN, Argentan ar-zhahn-TAHN, Assenois ah-sen-WAH, Chaumont shoh-MOHN, Nierstein NEER-shtine, Oppenheim OP-en-hime).
 | Donelson / Tilghman / Grierson / Beauregard / Weyanoke / Trevilian / Gouverneur (Warren) | exact phonemes `dˈɑːnəlsən` (DON-ul-sun), `tˈɪlmən` (TIL-mun, silent g), `ɡɹˈɪɹsən` (GREER-sun), `bˈoʊɹəɡˌɑːɹd` (BOH-ruh-gard), `wˈaɪɐnˌoʊk` (WYE-uh-noke), `tɹəvˈɪljən` (truh-VIL-yun), `ɡˈʌvɚnɪɹ` (GUV-er-neer) | Kokoro said DOHN-elson, TIL-g-man, GRY-er-son | Grant (Weyanoke: Virginia DOE WYE-uh-nok; Tilghman/Trevilian/Grierson/Beauregard: standard usage, unverified, owner ear-check) |
 | Vicksburg, Yazoo, Chickahominy, Bruinsburg, Hinks, Dimmock, Drewry, Hovey, Forrest, Halleck, Foote, Buckner, Pemberton, Hankinson | (as written) | fine in Kokoro | Grant |
+| Santee / Pee Dee / Pedee (Marion) | `sˌæntˈiː` (san-TEE), `pˌiː dˈiː`, `pˌiːdˈiː` (pee-DEE) | stress fixed | Marion |
+| Horry (Hugh/Peter Horry) | `ˈɔːɹi` (OR-ee, silent H, as Horry County SC) | `hˈɔɹi` → `ˈɔːɹi` | Marion |
+| Wemyss | `wˈiːmz` (WEEMZ) | `wˈɛmɪs` → `wˈiːmz` | Marion |
+| Maham (Hezekiah) | `mˈeɪhæm` (MAY-ham) | `mˈæhæm` → `mˈeɪhæm` | Marion |
+| Edisto / Eutaw | `ˈɛdɪstoʊ` (ED-is-toe), `jˈuːtɔː` (YOO-taw) | `ɛdˈɪstoʊ` → fixed | Marion |
+| Kingstree, Black Mingo, Tearcoat, Benbow's, Motte, Rawdon, Pickens, Charlestown | (as written) | fine | Marion |
