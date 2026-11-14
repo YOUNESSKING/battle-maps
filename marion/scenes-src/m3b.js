@@ -58,7 +58,8 @@ const FLASH = (p, t, k = 1) => { const el = pinS(GG.pin(`<div style="width:${54 
   tl.to(el, { autoAlpha: 0, scale: 1.4, duration: 0.6, ease: "power1.in" }, t + 0.12); return el; };
 const ARWL = (o) => { const g = arw(o), ps = g.querySelectorAll("path"); ps[0].setAttribute("stroke", "rgba(236,242,255,0.9)"); for (let i = 1; i < ps.length; i++) ps[i].setAttribute("stroke", "#6f9cff");
   const hd = g.querySelector("polygon"); if (hd) { hd.setAttribute("fill", "#6f9cff"); hd.setAttribute("stroke", "rgba(236,242,255,0.9)"); } return g; };
-const ICON = (svg, p, t, until, o = {}) => { const el = pinS(GG.pin(svg, p[0], p[1], { t, pop: o.pop ?? true, until })); if (o.hit) SFX("hit", t + 0.15); return el; };
+// critic r2: ICON wraps the svg in a div = the counter-scaled node (pulse the inner svg, never the wrapper)
+const ICON = (svg, p, t, until, o = {}) => { const el = pinS(GG.pin(`<div class="icw">${svg}</div>`, p[0], p[1], { t, pop: o.pop ?? true, until })); if (o.hit) SFX("hit", t + 0.15); return el; };
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the painted fort (map px, scales with the map): the mound, the log stockade (oblique), the abatis ring, the flagpole
 // ---------------------------------------------------------------------------------------------------------------------------------

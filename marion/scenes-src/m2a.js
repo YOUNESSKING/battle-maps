@@ -17,8 +17,8 @@
 // m2-3: "the seventh of November": night falls + 7 NOVEMBER 1780; Marion rides down from Tearcoat and west along the Benbow's road toward the house
 //   (camera follows into the close look); "a great light in the sky": a big orange glow over the house; "General Richardson": label RICHARDSON'S;
 //   the Legion boxes sit dark around the house (unseen), "were waiting at the plantation": they light up; "a rider came in out of the dark": a small
-//   blue rider gallops in to Marion; card AT LEAST TWICE HIS NUMBERS / TWO FIELD GUNS on the spoken words; "deserted to guide them": one blue dot
-//   leaves Marion's band, turns red and walks to the Legion.
+//   blue rider gallops in to Marion; card AT LEAST TWICE HIS NUMBERS / TWO FIELD GUNS on the spoken words; "deserted to guide them": one blue box
+//   leaves Marion's band, turns red and walks to the Legion (unit size, critic r2).
 // m2-4: E.decide on "put yourself in Marion's place" (A on "hit him in the dark", B on "vanish into the swamp", 3 ticks on "Tell us in the comments");
 //   three small night-attack marks tick in under the title on "three night attacks in a row"; the camera keeps a slow push on the glow.
 // m2-5: reveal B on the paragraph start (hit). "turned his men around": Marion's box turns back east, "the Woodyard swamp": a dark wet patch + label,
@@ -55,7 +55,6 @@ camera([[0, ...CW], [T_SOUTH - 0.3, ...CW], [T_SOUTH + 1.8, ...CS, "power2.inOut
 const NIGHTB = { pop: 1.4, bright: 1.18 };
 const scr0 = (html, css) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; SCN.insertBefore(el, document.getElementById("credit")); gsap.set(el, { autoAlpha: 0 }); return el; };
 const pulse = (id, t, k = 1.25) => tl.fromTo(B.units[id].el.querySelector(".blk"), { scale: 1 }, { scale: k, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, t);
-const DOT = (p, col, t) => pinS(GG.pin(`<div style="width:11px;height:11px;border-radius:50%;background:${col};border:1.5px solid #f3eee2;box-shadow:0 1px 3px rgba(0,0,0,.7)"></div>`, p[0], p[1], { t }));
 // a thin ring (constant ~3 px on screen) around p: closes from r0 to r1 (map px)
 const RING = (p, r0, r1, t, dur, until, col = "#e0473f") => { const c = document.createElementNS(NS, "circle");
   Object.entries({ cx: p[0], cy: p[1], r: r0, fill: "none", stroke: col, opacity: 0 }).forEach(([k, v]) => c.setAttribute(k, v));
@@ -142,7 +141,8 @@ PLACE_LABEL("Richardson's", HOUSE, T_RICH + 0.4, { dy: 150, size: 26 });
 // "Then a rider came in out of the dark": one small blue rider gallops in from the south-west dark to Marion's box
 UNIT("rd", "allies", [560, 1110], "cavalry", { ech: "", t: T_RIDER + 0.1 });
 march("rd", [[560, 1110], [600, 1030], [632, 962]], T_RIDER + 0.4, 1.5, { trail: false, dust: false });
-tl.fromTo(B.units.rd.el.firstElementChild, { filter: "drop-shadow(0 0 0px #9fc0ff)" }, { filter: "drop-shadow(0 0 12px #9fc0ff)", duration: 0.4, yoyo: true, repeat: 3, immediateRender: false }, T_SON);
+const BIG = (id) => { const b = B.units[id].el.querySelector(".blk"); gsap.set(b, { scale: 1.45, filter: "drop-shadow(0 0 6px rgba(236,242,255,.85))" }); return b; };   // critic r2: reads at night, phone size
+{ const b = BIG("rd"); tl.fromTo(b, { filter: "drop-shadow(0 0 6px rgba(236,242,255,.85))" }, { filter: "drop-shadow(0 0 16px #9fc0ff)", duration: 0.4, yoyo: true, repeat: 3, immediateRender: false }, T_SON); }
 hideU(["rd"], T_TWICE - 0.3);
 // card on the spoken words: AT LEAST TWICE HIS NUMBERS / TWO FIELD GUNS
 { const C = scr0(`<div style="padding:16px 46px 18px;background:rgb(18,16,12);border-top:6px solid #c4121f;font-family:Oswald;font-weight:700;color:#f7f3ea;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.55)">
@@ -154,8 +154,10 @@ hideU(["rd"], T_TWICE - 0.3);
   ["lg4", "lg5"].forEach((id, i) => pulse(id, T_2G + 0.15 + i * 0.15, 1.35));
   tl.to(C, { autoAlpha: 0, duration: 0.35 }, Math.min(T_2G + 3.0, T_DES - 0.1)); }
 // "one of Marion's own men had deserted to guide them": a blue dot leaves the band, turns red, walks to the Legion
-{ const d = DOT([HALT[0] - 10, HALT[1] + 22], "#1f4fc4", T_DES + 0.1); tl.to(d.firstElementChild, { background: "#c4121f", duration: 0.5 }, T_DES + 0.9);
-  tl.to(d, { left: 512, top: 960, duration: 2.2, ease: "sine.inOut" }, T_DES + 1.0); tl.to(d, { autoAlpha: 0, duration: 0.5 }, T_GUIDE + 2.4); }
+{ const P0 = [HALT[0] - 6, HALT[1] + 40];   // critic r2: unit-size box (the dot was too small at night): leaves the band blue, turns red, walks to the Legion
+  UNIT("ds", "allies", P0, "cavalry", { ech: "", t: T_DES + 0.1 }); BIG("ds"); march("ds", [P0, [P0[0] - 40, P0[1] + 4]], T_DES + 0.5, 0.5, { trail: false, dust: false }); hideU(["ds"], T_DES + 1.0);
+  const Q0 = [P0[0] - 40, P0[1] + 4]; UNIT("dr", "british", Q0, "cavalry", { ech: "", t: T_DES + 1.0 }); BIG("dr");
+  march("dr", [Q0, [560, 970], [520, 958]], T_DES + 1.4, 2.2, { trail: false, dust: false }); hideU(["dr"], T_GUIDE + 2.2); }
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m2-4: the decision card (each option on its own spoken words; B revealed on the m2-5 start); the glow keeps flickering behind
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -167,7 +169,7 @@ const DC = E.decide({ sub: "RICHARDSON'S · THE NIGHT OF 7 NOVEMBER", a: "ATTACK
   tl.fromTo(os[1], { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, T_VAN + 0.6); SFX("tick", T_VAN + 0.65);
   // "three night attacks in a row": three small crossed-sabre marks tick in under the title
   const row = document.createElement("div"); row.style.cssText = "display:flex;justify-content:center;gap:26px;margin:-10px 0 18px";
-  const SAB = `<svg width="46" height="46" viewBox="-17 -17 34 34" style="display:block;overflow:visible"><g stroke="#c9b48a" stroke-width="3" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><path d="M-14 -6 L-6 -14 M14 -6 L6 -14" stroke="#c9b48a" stroke-width="2.4"/></svg>`;
+  const SAB = `<svg width="54" height="46" viewBox="-20 -17 40 34" style="display:block;overflow:visible"><path d="M-6 -14 A13 13 0 1 0 6 10 A10 10 0 1 1 -6 -14 Z" fill="#c9b48a"/><g transform="translate(9 -3)" fill="#ffd27a"><path d="M0 -9 L2.2 -2.6 L9 -2.6 L3.5 1.4 L5.6 8 L0 4 L-5.6 8 L-3.5 1.4 L-9 -2.6 L-2.2 -2.6 Z"/></g></svg>`;   // critic r2: a night strike (moon + burst), not a "wrong" tick
   for (let k = 0; k < 3; k++) { const s = document.createElement("div"); s.innerHTML = SAB; row.appendChild(s); gsap.set(s, { autoAlpha: 0 });
     tl.fromTo(s, { autoAlpha: 0, scale: 1.8 }, { autoAlpha: 1, scale: 1, duration: 0.22, ease: "power4.in", immediateRender: false }, T_3N + 0.3 + k * 0.45); SFX("tick", T_3N + 0.5 + k * 0.45); }
   DC.children[1].after(row);
@@ -175,6 +177,15 @@ const DC = E.decide({ sub: "RICHARDSON'S · THE NIGHT OF 7 NOVEMBER", a: "ATTACK
 SCN.insertBefore(document.getElementById("date"), document.getElementById("credit"));   // the date scroll stays above the decision card's dim layer
 // "The enemy is somewhere around that fire": the glow swells behind the card
 tl.to(GLOW.firstElementChild, { scale: 1.3, duration: 1.2, ease: "sine.inOut" }, T_FIRE);
+{ const [cx, cy, cs] = CAM_AT(T_FIRE + 0.5), x = 960 + (HOUSE[0] - cx) * cs, y = 540 + (HOUSE[1] - 10 - cy) * cs;   // critic r2: the fire flares up behind the card (above its dim layer, below the card)
+  const F = document.createElement("div"); F.style.cssText = `position:absolute;left:${x - 330}px;top:${y - 330}px;width:660px;height:660px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,200,90,.75) 0%,rgba(255,120,30,.45) 30%,rgba(200,50,0,.18) 55%,rgba(120,20,0,0) 72%);mix-blend-mode:screen`;
+  SCN.insertBefore(F, DC); gsap.set(F, { autoAlpha: 0 });
+  tl.fromTo(F, { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.8, ease: "power2.out", immediateRender: false }, T_FIRE + 0.1);
+  tl.to(F, { scale: 1.1, autoAlpha: 0.7, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_FIRE + 0.9);
+  tl.to(F, { autoAlpha: 0.35, duration: 1.0 }, T_HIT - 0.2); tl.to(F, { autoAlpha: 0, duration: 0.6 }, T_P5 + 2.0);
+  // "And then listen to what Marion did": the card's title pulses (and the B option, still undecided, breathes once)
+  const ti = DC.children[1]; tl.fromTo(ti, { scale: 1 }, { scale: 1.07, duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, T_LISTEN + 0.1); SFX("tick", T_LISTEN + 0.15);
+  tl.to(F, { autoAlpha: 0.8, duration: 0.4, yoyo: true, repeat: 1 }, T_LISTEN + 0.8); }
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m2-5: he turns back east into the Woodyard swamp, over the mill dam on Jack's Creek; the trap closes on nothing; the house burns
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -194,7 +205,7 @@ PLACE_LABEL("Woodyard swamp", WOODY, T_WOOD + 0.25, { dy: 40, size: 22 });
 LIGHT0("night", T_DARK, 1.6, 1.0);
 quote("&ldquo;&hellip;the most profound darkness&rdquo;", "ONE OF MARION'S MEN", T_DARK + 0.05, Math.min(T_DARK + 3.3, T_DAM - 0.15), { size: 44, top: 150, mw: 1000 });
 // "a mill dam on Jack's Creek": the dam bar across the creek head + label; the band crosses it
-{ const g = pinS(GG.pin(`<svg width="40" height="18" viewBox="-20 -9 40 18" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))"><rect x="-17" y="-3.5" width="34" height="7" rx="1.5" fill="#8a6a44" stroke="#2a2014" stroke-width="1.6"/><path d="M-14 -3.5 V3.5 M-6 -3.5 V3.5 M2 -3.5 V3.5 M10 -3.5 V3.5" stroke="#2a2014" stroke-width="1"/></svg>`, DAM[0], DAM[1], { t: T_DAM + 0.1, pop: true })); g.style.transform += " rotate(-20deg)"; }
+{ const g = pinS(GG.pin(`<svg width="40" height="18" viewBox="-20 -9 40 18" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))"><g transform="rotate(-20)"><rect x="-17" y="-3.5" width="34" height="7" rx="1.5" fill="#8a6a44" stroke="#2a2014" stroke-width="1.6"/><path d="M-14 -3.5 V3.5 M-6 -3.5 V3.5 M2 -3.5 V3.5 M10 -3.5 V3.5" stroke="#2a2014" stroke-width="1"/></g></svg>`, DAM[0], DAM[1], { t: T_DAM + 0.1, pop: true })); }
 PLACE_LABEL("Jack's Creek", DAM, T_JACK + 0.1, { dx: -100, dy: -6, size: 22 });
 quote("&ldquo;Now we are safe!&rdquo;", "MARION", T_SAFE - 0.05, Math.min(T_SAFE + 3.0, T_TRAP - 0.15), { size: 52, top: 150, mw: 900 });
 // "When Tarleton's trap was sprung, it closed on nothing": dawn; the Legion rides in on the empty wood; a red ring closes on nothing
@@ -206,6 +217,6 @@ RING(HALT, 120, 26, T_TRAP + 0.6, 1.8, T_NOTH + 2.4);
 tl.to([GLOW, GLOW2], { autoAlpha: 0, duration: 1.5 }, T_TRAP + 0.2);
 const BURN = fireGlow(HOUSE[0], HOUSE[1] - 6, 38, T_BURN + 0.1, null);
 { const fl = pinS(GG.pin(`<svg width="44" height="52" viewBox="-11 -16 22 26" style="display:block;overflow:visible;filter:drop-shadow(0 0 6px rgba(255,140,40,.9))"><path d="M0 -15 C6 -7 9 -2 7 4 C5 9 -5 9 -7 4 C-9 -2 -4 -6 -2 -11 C-1 -6 1 -4 2 -6 C3 -9 1 -12 0 -15 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width="1.2"/><path d="M0 -6 C3 -2 4 1 2 4 C0 6 -3 5 -3 2 C-3 -1 -1 -3 0 -6 Z" fill="#ffe08a"/></svg>`, HOUSE[0], HOUSE[1] - 4, { t: T_BURN + 0.05, pop: true }));
-  tl.to(fl.firstElementChild, { scaleY: 1.15, duration: 0.3, yoyo: true, repeat: 20, ease: "sine.inOut", transformOrigin: "50% 100%" }, T_BURN + 0.6); SFX("hit", T_BURN + 0.25); }
+  tl.to(fl.querySelectorAll("path"), { scaleY: 1.15, duration: 0.3, yoyo: true, repeat: 20, ease: "sine.inOut", transformOrigin: "50% 100%" }, T_BURN + 0.6); SFX("hit", T_BURN + 0.25); }
 smoke([[HOUSE[0], HOUSE[1] - 14], [HOUSE[0] + 4, HOUSE[1] - 26], [HOUSE[0] + 8, HOUSE[1] - 38], [HOUSE[0] + 12, HOUSE[1] - 50]], T_BURN + 0.4, 1.4);
 if (GD.var.audit) LABEL_AUDIT([2, 10, 20, 30, 45, 60, 95, 105], { show: true });

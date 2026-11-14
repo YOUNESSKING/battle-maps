@@ -89,9 +89,10 @@ QCARD([["&ldquo;To fight the enemy bravely with the prospect of victory is nothi
   ["is a talent peculiar to yourself.&rdquo;", T_TALENT, true]], WHO, T_FIGHT, null);
 // critic r2: "with the prospect of victory": the taken fort glows blue (FORM 1 hatching on Fort Watson, Marion's win of the day before);
 //   "inspire irregular troops": Marion's militia boxes glow (filter, not scale)
-HATCH([[FWL[0] - 40, FWL[1] - 30], [FWL[0] + 40, FWL[1] - 32], [FWL[0] + 46, FWL[1] + 30], [FWL[0] - 44, FWL[1] + 32]], "allies", T_PROSP + 0.1, { hold: 2.2 });
-["mar", "mar2"].forEach((id, i) => { const b = B.units[id].el.querySelector(".blk");
-  tl.to(b, { filter: "drop-shadow(0 0 10px #9fd0ff) drop-shadow(0 0 4px #ffffff) brightness(1.25)", duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut" }, T_INSP + 0.1 + i * 0.12); });
+HATCH([[FWL[0] - 80, FWL[1] - 40], [FWL[0] - 20, FWL[1] - 62], [FWL[0] + 30, FWL[1] - 50], [FWL[0] + 20, FWL[1] + 10], [FWL[0] - 10, FWL[1] + 70], [FWL[0] - 70, FWL[1] + 66], [FWL[0] - 96, FWL[1] + 10]], "allies", T_PROSP + 0.1, { hold: 2.4 });
+["mar", "mar2"].forEach((id, i) => { const u = B.units[id], g = pinS(GG.pin(`<div style="width:120px;height:90px;border-radius:50%;background:radial-gradient(ellipse,rgba(200,228,255,.95) 0%,rgba(140,190,255,.6) 38%,rgba(120,170,255,0) 70%)"></div>`, u.x, u.y, {}));
+  u.el.parentElement.insertBefore(g, u.el);   // the glow sits under the box
+  tl.fromTo(g, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.35, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, T_INSP + 0.1 + i * 0.12); });
 SFX("tick", T_INSP + 0.15);
 if (GD.var.audit) LABEL_AUDIT([2, 8, 14, 20, 25], { show: true });
 }

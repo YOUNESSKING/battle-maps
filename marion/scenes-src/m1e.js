@@ -47,7 +47,7 @@ const RIDE2 = [RIDE[3], ...LLYT([[33.69, -80.36], [33.58, -80.33], [33.50, -80.3
 march("hx", RIDE2, R2T0, R2DUR, { dustOp: 0.45 });
 const HPOS = posOn(RIDE2, Math.min(1, (T_HUNT + 0.1 - R2T0) / R2DUR));
 // sub: "Tearcoat was only the beginning": Marion's box pulses; "hunting only them": thin red arrow from the hunter toward Marion's box
-tl.fromTo(B.units.mb.el.firstElementChild, { scale: 1 }, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, T_TEAR + 0.2);
+tl.fromTo(B.units.mb.el.querySelector(".blk"), { scale: 1 }, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, T_TEAR + 0.2);
 arw({ pts: [HPOS, [HPOS[0] + 60, HPOS[1] - 40], [B.units.mb.x - 34, B.units.mb.y + 14]], side: "rome", t: T_HUNT + 0.1, dur: 1.0, width: AW(CW2[2], 9) });
 // subscribe bridge (1b): the button on the subscribing clause, then NEXT: THE CHASE
 E.subscribe(T_SUBS - 0.35, T_HERE + 0.1);

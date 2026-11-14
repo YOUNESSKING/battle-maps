@@ -33,10 +33,10 @@ const T_P8 = B.T.paras[P8][0], T_DIFF = at(P8, "Tarleton told it differently"), 
 // ---------------------------------------------------------------------------------------------------------------------------------
 LIVING({ clouds: 0.1, light: "morning" });
 const HOUSE = [421, 978], DAM = [664, 1138], HALT = [652, 936], FERRY = [1757, 879];
-const C0 = [525, 1000, 2.3], CW = [1180, 985, 1.25], CC = [1452, 872, 2.0], CW8 = [1150, 820, 0.88];
+const C0 = [525, 1000, 2.3], CW = [1180, 985, 1.25], CC = [1452, 872, 2.0], CW8 = [1092, 820, 0.88];
 camera([[0, ...C0], [T_NEXT + 0.3, ...C0], [T_TRAIL + 0.4, 690, 1040, 1.9, "power2.inOut"], [T_CHASE + 3.2, ...CW, "power2.inOut"], [T_AROUND + 0.4, 1205, 975, 1.3],
   [T_P7 + 0.1, 1235, 960, 1.32], [T_BEN + 1.6, ...CC, "power2.inOut"], [T_FOX, 1440, 868, 2.08], [T_P8 + 0.2, 1430, 866, 2.05], [T_HIST + 1.6, ...CW8, "power2.inOut"],
-  [END, 1160, 830, 0.9]]);
+  [END, 1100, 830, 0.9]]);
 dateNow("7 NOVEMBER 1780", T_NEXT + 0.55);
 B.date("8 NOVEMBER 1780", T_NEXT + 0.6, null, 32); SFX("tick", T_NEXT + 0.7);
 LIGHT("day", T_CHASE, 3.0);
@@ -71,7 +71,7 @@ SIDEFLAG("sc", [770, 1230]); SIDEFLAG("gb", [470, 1080]);   // hidden while the 
 // the burning house (from m2a) dies down; the Woodyard wet patch fades
 { const BURN = fireGlow(HOUSE[0], HOUSE[1] - 6, 38, 0, null); gsap.set(BURN, { autoAlpha: 1 }); tl.to(BURN, { autoAlpha: 0, duration: 2.5 }, T_TRAIL + 1.0);
   const fl = pinS(GG.pin(`<svg width="44" height="52" viewBox="-11 -16 22 26" style="display:block;overflow:visible;filter:drop-shadow(0 0 6px rgba(255,140,40,.9))"><path d="M0 -15 C6 -7 9 -2 7 4 C5 9 -5 9 -7 4 C-9 -2 -4 -6 -2 -11 C-1 -6 1 -4 2 -6 C3 -9 1 -12 0 -15 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width="1.2"/><path d="M0 -6 C3 -2 4 1 2 4 C0 6 -3 5 -3 2 C-3 -1 -1 -3 0 -6 Z" fill="#ffe08a"/></svg>`, HOUSE[0], HOUSE[1] - 4, {}));
-  gsap.set(fl, { autoAlpha: 1 }); tl.to(fl.firstElementChild, { scaleY: 1.15, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut", transformOrigin: "50% 100%" }, 0); tl.to(fl, { autoAlpha: 0, duration: 1.5 }, T_TRAIL + 1.2);
+  gsap.set(fl, { autoAlpha: 1 }); tl.to(fl.querySelectorAll("path"), { scaleY: 1.15, duration: 0.3, yoyo: true, repeat: 9, ease: "sine.inOut", transformOrigin: "50% 100%" }, 0); tl.to(fl, { autoAlpha: 0, duration: 1.5 }, T_TRAIL + 1.2);
   smoke([[HOUSE[0], HOUSE[1] - 14], [HOUSE[0] + 4, HOUSE[1] - 26], [HOUSE[0] + 8, HOUSE[1] - 38]], 0.1, 1.2);
   const p = document.createElementNS(NS, "ellipse");
   Object.entries({ cx: 696, cy: 1026, rx: 70, ry: 44, fill: "rgba(14,32,30,0.62)" }).forEach(([k, v]) => p.setAttribute(k, v)); p.style.filter = "blur(7px)"; OVL.insertBefore(p, OVL.firstChild);
@@ -101,14 +101,14 @@ arw({ pts: sub(RED, 0.0, 0.55, 14), side: "rome", t: T_CHASE + 0.2, dur: 1.4, wi
 GLOWL(BR0, T_NOROAD + 0.1); GLOWL(BR, T_NOROAD + 0.1); GLOWL(BR2, T_STR + 0.4);
 GLOWL(RR, T_AROUND + 0.1);
 // the chase card (top-right): clock + 7 HOURS; Tarleton's words; the two mileages on their spoken numbers
-{ const C = scr0(`<div style="width:540px;padding:16px 30px 18px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+{ const C = scr0(`<div style="width:620px;padding:16px 30px 18px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
     <div style="display:flex;align-items:center;gap:20px"><svg width="70" height="70" viewBox="-35 -35 70 70"><circle r="31" fill="#f0e6c8" stroke="#c9b48a" stroke-width="4"/>
       ${[...Array(12)].map((_, k) => `<line x1="0" y1="-26" x2="0" y2="-21" stroke="#2a2410" stroke-width="2.4" transform="rotate(${k * 30})"/>`).join("")}
       <line class="hh" x1="0" y1="0" x2="0" y2="-15" stroke="#2a2410" stroke-width="4" stroke-linecap="round"/><line class="mh" x1="0" y1="0" x2="0" y2="-24" stroke="#c4121f" stroke-width="2.6" stroke-linecap="round"/><circle r="3" fill="#2a2410"/></svg>
       <div><div style="font-size:66px;letter-spacing:.04em;line-height:1">7 HOURS</div></div></div>
-    <div class="q" style="font-size:26px;font-weight:500;color:#e8dcc0;margin-top:10px">&ldquo;&hellip;through swamps and defiles&rdquo; <span style="font-size:15px;letter-spacing:.22em;color:#ff8a80;font-weight:700">TARLETON</span></div>
-    <div class="r1" style="display:flex;justify-content:space-between;margin-top:10px;font-size:34px;letter-spacing:.06em"><span style="color:#ff8a80">TARLETON</span><span>ABOUT 25 MILES</span></div>
-    <div class="r2" style="display:flex;justify-content:space-between;margin-top:4px;font-size:34px;letter-spacing:.06em"><span style="color:#9fc0ea">MARION</span><span>35 MILES</span></div></div>`, "right:70px;top:120px;");
+    <div class="q" style="font-size:26px;font-weight:500;color:#e8dcc0;margin-top:10px">&ldquo;&hellip;through swamps and defiles&rdquo; <span style="font-size:21px;letter-spacing:.2em;color:#ff8a80;font-weight:700">TARLETON</span></div>
+    <div class="r1" style="display:flex;justify-content:space-between;margin-top:10px;font-size:34px;letter-spacing:.06em"><span style="color:#ff8a80">TARLETON</span><span>ABOUT 25 MILES<span style="font-size:17px;letter-spacing:.2em;color:#c9b48a;margin-left:12px;font-weight:700">JAMES</span></span></div>
+    <div class="r2" style="display:flex;justify-content:space-between;margin-top:4px;font-size:34px;letter-spacing:.06em"><span style="color:#9fc0ea">MARION</span><span>35 MILES<span style="font-size:17px;letter-spacing:.2em;color:#c9b48a;margin-left:12px;font-weight:700">JAMES</span></span></div></div>`, "right:70px;top:120px;");
   const [q, r1, r2] = ["q", "r1", "r2"].map((k) => C.querySelector("." + k)); gsap.set([q, r1, r2], { autoAlpha: 0 });
   tl.fromTo(C, { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, T_7H - 0.05); SFX("hit", T_7H + 0.15);
   tl.fromTo(C.querySelector(".mh"), { rotation: 0, svgOrigin: "0 0" }, { rotation: 360 * 7, svgOrigin: "0 0", duration: 2.4, ease: "power2.inOut", immediateRender: false }, T_7H + 0.2);
@@ -124,9 +124,9 @@ GLOWL(RR, T_AROUND + 0.1);
 PLACE_LABEL("Benbow's Ferry", FERRY, T_BEN + 0.3, { dx: 30, dy: 40, size: 24 });
 RIVER("black_river", "Black River", T_BR + 0.1, { s: 2.0, near: [1640, 760], side: "left", hw: 6, size: 25 });
 B.caption("BY ONE VETERAN'S ACCOUNT", T_VET, T_VET + 3.2);
-const LOGS = [[1688, 848], [1672, 843], [1702, 853]];
-LOGS.forEach((p, i) => { const el = pinS(GG.pin(`<svg width="62" height="22" viewBox="-23 -8 46 16" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.7))"><rect x="-20" y="-4" width="40" height="8" rx="4" fill="#7a5532" stroke="#2a1c10" stroke-width="1.6"/><ellipse cx="20" cy="0" rx="2.6" ry="4" fill="#c9a46a" stroke="#2a1c10" stroke-width="1.2"/><path d="M-12 -4 l-5 -5 M2 -4 l3 -6 M-4 4 l-4 5" stroke="#3a2a18" stroke-width="1.6" stroke-linecap="round"/></svg>`, p[0], p[1], { t: T_FELL + 0.6 + i * 0.25, pop: true }));
-  el.firstElementChild.style.transform = `rotate(${[62, 48, 75][i]}deg)`; SFX("tick", T_FELL + 0.7 + i * 0.25); });
+const LOGS = [[1690, 849], [1662, 840], [1716, 856]];
+LOGS.forEach((p, i) => { const el = pinS(GG.pin(`<svg width="150" height="150" viewBox="-23 -23 46 46" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.7))"><g transform="rotate(${[62, 48, 75][i]})"><rect x="-20" y="-4" width="40" height="8" rx="4" fill="#7a5532" stroke="#2a1c10" stroke-width="1.6"/><ellipse cx="20" cy="0" rx="2.6" ry="4" fill="#c9a46a" stroke="#2a1c10" stroke-width="1.2"/><path d="M-12 -4 l-5 -5 M2 -4 l3 -6 M-4 4 l-4 5" stroke="#3a2a18" stroke-width="1.6" stroke-linecap="round"/></g></svg>`, p[0], p[1], { t: T_FELL + 0.6 + i * 0.25, pop: true }));
+  SFX("tick", T_FELL + 0.7 + i * 0.25); });
 UNIT("mb4", "allies", [1752, 858], "cavalry", { ech: "", t: T_WAITF + 0.1 });
 march("mb", [[1745, 874], [1726, 868]], T_WAITF + 0.2, 0.8, { trail: false, dust: false });
 pulse("mb", T_WAITF + 1.1); pulse("mb3", T_WAITF + 1.25); pulse("mb4", T_WAITF + 1.4);
@@ -143,15 +143,15 @@ quote("&ldquo;&hellip;as for this damned old fox, the devil himself could not ca
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m2-8 (wide): the recall; the Legion rides away north-west; Marion still free
 // ---------------------------------------------------------------------------------------------------------------------------------
-tl.fromTo(TB.firstElementChild, { scale: 1 }, { scale: 1.15, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, T_DIFF + 0.2);
-B.caption("TARLETON'S OWN ACCOUNT", T_HIST, T_HIST + 3.0);
+// m2-8 "Tarleton told it differently." .. "the Gamecock,": ARCHIVE INSERT over the map (background only: the camera pulls wide, the messenger rides in)
+// (under the archive insert: no caption)
 const RNC = GD.bake.roads.find((r) => r.id === "nelson_camden").paths[0].slice().reverse().filter((q) => q[1] > -200 && q[1] < 1000);   // Camden road, north -> Richardson's
 UNIT("ex", "british", [326, 470], "cavalry", { ech: "", t: T_MSG + 0.05 });
 march("ex", [[326, 470], [380, 700], [424, 900], ...ROADSEG(430, 1060)], T_MSG + 0.3, T_BACK - T_MSG + 1.4, { trail: true, dustOp: 0.4, dustSize: 30 });
 pulse("lg1", T_BACK + 1.7);
-UNIT("su", "allies", [150, 700], "cavalry", { ech: "", name: "SUMTER", nameAt: T_SUMT + 0.1, t: T_SUMT });
-UNIT("po", "british", [130, 940], "infantry", { ech: "", t: T_POST + 0.1 });
-arw({ pts: [[156, 740], [150, 820], [138, 900]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
+UNIT("su", "allies", [210, 700], "cavalry", { ech: "", name: "SUMTER", nameAt: T_POST - 0.1, t: T_POST - 0.1 });   // after the insert (Sumter is named under it)
+UNIT("po", "british", [190, 940], "infantry", { ech: "", t: T_POST + 0.4 });
+arw({ pts: [[216, 740], [210, 820], [198, 900]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
 // "Either way": the Legion turns north-west and rides off up the Camden road (fast); the messenger with them
 const AWAY = (x0) => [...ROADSEG(430, x0).reverse(), [424, 978], ...RNC.slice().reverse().filter((q) => q[1] > 560)];
 [["lg1", 1096], ["lg2", 1050], ["lg3", 990], ["ex", 1060]].forEach(([id, x0], i) => {

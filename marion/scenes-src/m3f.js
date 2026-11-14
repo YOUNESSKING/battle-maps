@@ -62,8 +62,8 @@ march("ri", [[1318, 916], [1334, 900], [1348, 888]], 0.3, T_PF, { dust: false, t
 march("rg", [[1292, 940], [1306, 926], [1320, 913]], 0.3, T_PF, { dust: false, trail: false });
 SIDEFLAG("gb", [1270, 880]);
 // "Parker's Ferry" (the baked landings + flatboat) / "the Edisto River" (carved name, beside the water north of the crossing)
-PLACE_LABEL("Parker's Ferry", FER, T_PF + 0.1, { dy: 34, size: 24 });
-RIVER("edisto", "Edisto", T_ED + 0.15, { s: 2.4, near: [1418, 760], side: "left", hw: 5, face: "#f4f7ef", size: 26 });
+PLACE_LABEL("Parker's Ferry", FER, T_PF + 0.1, { dx: 96, dy: 20, size: 26 });   // east-south of the landing, off the red column
+RIVER("edisto", "Edisto", T_ED + 0.15, { s: 2.4, near: [1418, 760], side: "left", hw: 5, face: "#f4f7ef", size: 34 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // "Marion hid his men in a thick wood": four blue boxes in the wood north of the causeway, dimmed (hidden: only their blue edges read)
 const AMB = [[1498, 782], [1528, 780], [1558, 781], [1588, 783]], AIDS = ["a1", "a2", "a3", "a4"], HIDE = "brightness(.62) saturate(.55) opacity(.6)";
