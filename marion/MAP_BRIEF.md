@@ -89,7 +89,7 @@ Winnsborough 34.38,-81.09 (off-map) · Amis's Mill (Drowning Creek NC) ~34.7,-79
 | m3f | m3-11, m3-12 | edisto |
 | m3g | m3-13 | santee |
 | m3h | m3-14, end-1, end-2 | lowcountry |
-Cards on spoken words only (1c); one big card at a time; captions/stamps <= 3.5 s; date scroll always on; each move ends on the casualty/result card +
+**Date scroll = the exact spoken date, updated on each spoken date word** (owner 2026-11-14: hook = "1780" from "seventeen eighty"; m1-1 20 AUGUST 1780; m1-3 25 AUGUST 1780; m1-7 28 SEPTEMBER 1780; m1-8 25 OCTOBER 1780; m2 7 NOVEMBER 1780 ...; never a month-only date when the day is spoken, never a date not yet spoken). Cards on spoken words only (1c); one big card at a time; captions/stamps <= 3.5 s; date scroll always on; each move ends on the casualty/result card +
 the method card `THE SWAMP FOX METHOD` (1. STRIKE IN THE DARK / 2. LET THE SWAMP FIGHT / 3. HIT THE CHAIN WITH THE ARMY). Artillery cues only where
 guns are visible (Tarleton's two light guns are NOT fired; Fort Motte six-pounder fires once, visible; Parker's Ferry field gun not fired). Musketry
 = visual flashes + `mg`/hit only on visible beats. Engagement: `E.subscribe` (sub), `E.decide` (m2-4, reveal on m2-5 start), `E.final` (end-2).

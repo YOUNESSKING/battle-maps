@@ -9,7 +9,7 @@
 // (c) blackriver close, 8 Nov 1780: Tarleton's Legion column (cavalry, infantry, two light guns) on the road at Ox Swamp; Marion at Benbow's Ferry.
 if (GD.base === "lowcountry") {
   LIVING({ clouds: 0.1 });
-  dateNow("AUGUST 1780");
+  dateNow("1780");
   camera([[0, ...LYT(33.505, -80.27), 0.715], [END, ...LYT(33.50, -80.265), 0.725]]);
   SIDEFLAG("gb", LYT(32.98, -80.52)); SIDEFLAG("sc", LYT(33.86, -79.55));
   // red posts on the chain (Charleston, Monck's Corner, Nelson's Ferry, Camden), wagons rolling up the road from Charleston toward Camden
