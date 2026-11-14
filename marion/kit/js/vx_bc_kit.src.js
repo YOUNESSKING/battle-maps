@@ -3,6 +3,18 @@
 // (templates/clean_screen_v11.js) + 1c declutter + river-war additions (top-down gunboats / transports, bonfires, 1863 river). Inlined by tools/vx_inline.py.
 // SIDES (grant/SCENES.md): Union / Grant = BLUE "carth" + US 34 stars; Confederates = RED "rome" + the First National (13 stars).
 const B = Battle();
+// DATE PLATE flow (owner 2026-11-14): only the current date line is in the flow, so the plate sizes to it; the plate appears on the first spoken date
+(() => { const box = document.getElementById("date"), tl = B.tl; let last = null; window.__datePlateShown = false;
+  gsap.set(box, { autoAlpha: 0 });
+  const orig = B.date;
+  B.date = (text, t, until, size) => { orig(text, t, until); const ds = box.querySelectorAll(".d"), d = ds[ds.length - 1];
+    if (last && last.d !== d) { tl.set(last.d, { position: "absolute" }, t); tl.to(last.d, { autoAlpha: 0, y: -60, duration: 0.22, ease: "power2.in" }, t); }
+    tl.set(d, { position: "relative" }, t);
+    if (!window.__datePlateShown) { window.__datePlateShown = true; tl.fromTo(box, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, t); }
+    else tl.fromTo(box, { borderLeftColor: "#ead39a" }, { borderLeftColor: "#c8a86a", duration: 0.6, immediateRender: false }, t);
+    last = { d, t }; return d; };
+  window.__datePlateNow = (d) => { if (last && last.d !== d) gsap.set(last.d, { position: "absolute" }); d.style.position = "relative"; window.__datePlateShown = true; last = { d, t: 0 }; };
+})();
 const { at } = B;
 const END = B.T.duration;
 const K = FXK(B);
@@ -288,7 +300,7 @@ const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="disp
 // already on screen at frame 0 (continuing scenes): kill the entry tween of a card/legend/flag; dateNow = the date scroll already showing (m1 kit)
 const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
 const dateNow = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });
-  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d);
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d); if (window.__datePlateNow) window.__datePlateNow(d);
   if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // drop sound cues queued before t (e.g. a card re-shown at frame 0 of a continuing scene must not hit again)
 const dropCues = (t0, t1) => { window.SFX_CUES = (window.SFX_CUES || []).filter(([k, t]) => !(t >= t0 && t < t1)); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES)); };
