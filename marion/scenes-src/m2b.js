@@ -88,9 +88,9 @@ const BLUE = [[690, 1176], [780, 1140], [880, 1102], [985, 1072], [1080, 1044], 
 const RED = [[650, 1120], [700, 1060], [752, 990], [806, 930], ...ROADSEG(830, 1120), [1132, 848]];
 const tC = 0.3, tB1 = T_P7 + 1.2, tR1 = T_HALT + 0.1;
 const tSw = T_STR + 0.6, B3 = BLUE.map(([x, y]) => [x - 26, y + 22]).slice(0, -1).concat([[1728, 892]]);   // in the Ox Swamp creek swamp on "straight through a swamp"
-march("mb", BLUE.slice(0, 6), tC, tSw - tC, { trail: false, dust: false }); march("mb", BLUE.slice(5), tSw, tB1 - tSw, { trail: false, dust: false });
-march("mb3", B3.slice(0, 6), tC + 0.5, tSw - tC, { trail: false, dust: false }); march("mb3", B3.slice(5), tSw + 0.5, tB1 - tSw, { trail: false, dust: false });
-const BR = ROUTE(BLUE.slice(0, 6), "#2c57b7", tC, tSw - tC, T_FELL + 0.5), BR2 = ROUTE(BLUE.slice(5), "#2c57b7", tSw, tB1 - tSw, T_FELL + 0.5);
+march("mb", BLUE.slice(0, 3), tC, 2.9, { trail: false, dust: false }); march("mb", BLUE.slice(2, 6), tC + 2.9, tSw - tC - 2.9, { trail: false, dust: false }); march("mb", BLUE.slice(5), tSw, tB1 - tSw, { trail: false, dust: false });
+march("mb3", B3.slice(0, 3), tC + 0.3, 2.9, { trail: false, dust: false }); march("mb3", B3.slice(2, 6), tC + 3.2, tSw - tC - 2.9, { trail: false, dust: false }); march("mb3", B3.slice(5), tSw + 0.5, tB1 - tSw, { trail: false, dust: false });
+const BR0 = ROUTE(BLUE.slice(0, 3), "#2c57b7", tC, 2.9, T_FELL + 0.5), BR = ROUTE(BLUE.slice(2, 6), "#2c57b7", tC + 2.9, tSw - tC - 2.9, T_FELL + 0.5), BR2 = ROUTE(BLUE.slice(5), "#2c57b7", tSw, tB1 - tSw, T_FELL + 0.5);
 // the red column: lead cavalry, cavalry, light infantry (the guns stay behind the chase, they leave the frame on the road west)
 march("lg1", RED, T_CHASE + 0.8, tR1 - T_CHASE - 0.8, { trail: false, dustOp: 0.45, dustSize: 30 });
 march("lg2", [L0.lg2, [650, 1110], ...RED.slice(1, -1).map(([x, y]) => [x - 34, y + 8])], T_CHASE + 1.0, tR1 - T_CHASE - 0.9, { trail: false, dustOp: 0.45, dustSize: 30 });
@@ -98,7 +98,7 @@ march("lg3", [L0.lg3, [640, 1080], ...RED.slice(1, -2).map(([x, y]) => [x - 70, 
 march("lg4", [L0.lg4, [470, 958], [424, 978]], tC + 0.4, 3.0, { trail: false, dust: false }); hideU(["lg4", "lg5"], tC + 3.0);
 const RR = ROUTE(RED, "#bc2528", T_CHASE + 0.8, tR1 - T_CHASE - 0.8, T_FELL + 0.5);
 arw({ pts: sub(RED, 0.0, 0.55, 14), side: "rome", t: T_CHASE + 0.2, dur: 1.4, width: AW(1.6, 11) });
-GLOWL(BR, T_NOROAD + 0.1); GLOWL(BR2, T_STR + 0.4);
+GLOWL(BR0, T_NOROAD + 0.1); GLOWL(BR, T_NOROAD + 0.1); GLOWL(BR2, T_STR + 0.4);
 GLOWL(RR, T_AROUND + 0.1);
 // the chase card (top-right): clock + 7 HOURS; Tarleton's words; the two mileages on their spoken numbers
 { const C = scr0(`<div style="width:540px;padding:16px 30px 18px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
@@ -133,7 +133,7 @@ pulse("mb", T_WAITF + 1.1); pulse("mb3", T_WAITF + 1.25); pulse("mb4", T_WAITF +
 PLACE_LABEL("Ox Swamp", [1176, 940], T_OX + 0.3, { dy: 0, size: 24 });
 { const g = document.createElement("div");   // the cypress swamps glow faintly (as m2-2)
   g.style.cssText = `position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;background:rgba(170,235,210,1);-webkit-mask-image:url(assets/blackriver_m_swamp.png);mask-image:url(assets/blackriver_m_swamp.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;opacity:0`;
-  WORLD.insertBefore(g, OVL); tl.to(g, { opacity: 0.13, duration: 0.8 }, T_OX); tl.to(g, { opacity: 0, duration: 1.2 }, T_OX + 2.6); }
+  WORLD.insertBefore(g, OVL); tl.to(g, { opacity: 0.08, duration: 0.8 }, T_OX); tl.to(g, { opacity: 0, duration: 1.2 }, T_OX + 2.6); }
 pulse("lg1", T_HALT + 0.3);
 B.caption("BY TRADITION", T_TRAD, T_TRAD + 3.0);
 march("lg1", [[1132, 848], [1096, 856]], T_TURN + 0.2, 1.0, { trail: false, dust: false });
@@ -149,9 +149,9 @@ const RNC = GD.bake.roads.find((r) => r.id === "nelson_camden").paths[0].slice()
 UNIT("ex", "british", [326, 470], "cavalry", { ech: "", t: T_MSG + 0.05 });
 march("ex", [[326, 470], [380, 700], [424, 900], ...ROADSEG(430, 1060)], T_MSG + 0.3, T_BACK - T_MSG + 1.4, { trail: true, dustOp: 0.4, dustSize: 30 });
 pulse("lg1", T_BACK + 1.7);
-UNIT("su", "allies", [190, 560], "cavalry", { ech: "", name: "SUMTER", nameAt: T_SUMT + 0.1, t: T_SUMT });
-UNIT("po", "british", [150, 790], "infantry", { ech: "", t: T_POST + 0.1 });
-arw({ pts: [[196, 600], [188, 680], [162, 750]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
+UNIT("su", "allies", [150, 700], "cavalry", { ech: "", name: "SUMTER", nameAt: T_SUMT + 0.1, t: T_SUMT });
+UNIT("po", "british", [130, 940], "infantry", { ech: "", t: T_POST + 0.1 });
+arw({ pts: [[156, 740], [150, 820], [138, 900]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
 // "Either way": the Legion turns north-west and rides off up the Camden road (fast); the messenger with them
 const AWAY = (x0) => [...ROADSEG(430, x0).reverse(), [424, 978], ...RNC.slice().reverse().filter((q) => q[1] > 560)];
 [["lg1", 1096], ["lg2", 1050], ["lg3", 990], ["ex", 1060]].forEach(([id, x0], i) => {

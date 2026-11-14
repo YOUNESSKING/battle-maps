@@ -3,7 +3,7 @@
 //   python3 kit/build_scene.py m2a blackriver m2-1 m2-5
 // Map px of `blackriver`: Richardson's house 421,978 (baked plantation house on the Camden - Nelson's Ferry road, Rimini; LOW); the Camden road comes
 //   in at the top edge (249,0) and runs down to the house; the Benbow's road runs east from the house; Tearcoat (Marion, 25 Oct, m1d2) 1426,519;
-//   Woodyard swamp = the marsh-tuft ground south-east of the house (~520,1015; UNV, a live wet patch on the word); the mill dam on Jack's Creek = the
+//   Woodyard swamp = a live wet patch EAST of Marion's halt (~702,1022; UNV; he turns back east, away from the house); the mill dam on Jack's Creek = the
 //   head of the drawn creek ~664,1138 (Richbourg's mill, LOW).
 // Frame 0 = cut from m1e (lowcountry, the "?" hunter riding toward the Santee, date 25 OCTOBER 1780). Here: blackriver wide, the Legion already riding
 //   down the Camden road from the top edge (units moving), Marion's band at Tearcoat; title card MOVE 2 · LET THE SWAMP FIGHT slams at once (masks
@@ -138,7 +138,7 @@ tl.to(TB, { opacity: 0.35, duration: 1.2 }, T_LIGHT - 0.6); tl.to(TB, { opacity:
 const GLOW = fireGlow(HOUSE[0], HOUSE[1] - 10, 80, T_LIGHT + 0.05, null);
 GLOW.firstElementChild.style.filter = "brightness(1.35)";
 const GLOW2 = fireGlow(HOUSE[0], HOUSE[1] - 4, 30, T_LIGHT + 0.35, null);
-PLACE_LABEL("Richardson's", HOUSE, T_RICH + 0.4, { dy: 26, size: 24 });
+PLACE_LABEL("Richardson's", HOUSE, T_RICH + 0.4, { dy: 150, size: 26 });
 // "Then a rider came in out of the dark": one small blue rider gallops in from the south-west dark to Marion's box
 UNIT("rd", "allies", [560, 1110], "cavalry", { ech: "", t: T_RIDER + 0.1 });
 march("rd", [[560, 1110], [600, 1030], [632, 962]], T_RIDER + 0.4, 1.5, { trail: false, dust: false });
