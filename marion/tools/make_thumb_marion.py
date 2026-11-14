@@ -118,7 +118,7 @@ rn = ImageEnhance.Brightness(ImageEnhance.Color(rn).enhance(0.6)).enhance(0.72)
 rn = ImageEnhance.Contrast(rn).enhance(1.1)
 A = rn.convert("RGBA"); shade(A, "left", 640)
 face(A, -60, 735)
-banner(A, "SWAMP FOX", 900, 40, size=132, tag="1780")
+banner(A, "SWAMP FOX", 900, 40, size=132, tag="FRANCIS MARION")
 pA = save(A, "A_SWAMP_FOX")
 
 # ---------- B: INTO THE SWAMP (our map, 8 Nov 1780 chase)
