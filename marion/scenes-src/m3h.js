@@ -12,7 +12,7 @@
 //   "3. HIT THE CHAIN WITH THE ARMY" lights on "of his method"); "Together with a real army": Marion rides in beside Greene (both glow); "cut the
 //   enemy's chain": the old red chain Camden - Charleston inks in; "one link at a time": cut marks walk down it, each post goes out;
 //   "until there is nothing left to hold": the chain is gone, only Charleston glows.
-// end-1 (calm, wide): "By the end of seventeen eighty-one": plate 1781; FORM 2 stripes ONCE (~2.5 s) on "shut up in Charleston": red only around
+// end-1 (calm, wide): "By the end of seventeen eighty-one": plate LATE 1781; FORM 2 stripes ONCE (~2.5 s) on "shut up in Charleston": red only around
 //   Charleston, blue over the rest of the state; "a man of his time": Marion's banner by the Santee; the ledger lines are spoken only, except one
 //   small caption OSCAR MARION · HONORED AT THE CAPITOL, 2006 on its words; the three spoken method lines light the method card 1-2-3.
 // end-2: E.final (STRIKE IN THE DARK / THE CHASE / THE CHAIN on the spoken numbers, 1, 2 OR 3?, "which commander next", corner subscribe); the
@@ -34,7 +34,7 @@ LIVING({ clouds: 0.1 });
 const C0 = [1330, 975, 1.05], C1 = [1350, 960, 0.98], CW = [1420, 860, 0.72], CW2 = [1400, 870, 0.74], CS = [1395, 900, 0.8], CE = [1420, 880, 0.75];
 camera([[0, ...C0], [T_NEXT - 0.3, ...C1], [T_FELL - 0.6, ...CW, "power2.inOut"], [T_INS_END, 1415, 862, 0.725], [T_HOLD + 1.5, ...CW2],
   [T_SHUT + 3.2, 1405, 868, 0.74], [T_TIME + 1.5, ...CS, "power2.inOut"], [T_OSCAR, ...CS], [T_S1 - 0.3, 1330, 925, 0.88, "sine.inOut"], [T_SO - 0.4, 1335, 920, 0.88], [T_SO + 1.6, ...CE, "power2.inOut"], [END, 1425, 878, 0.76]]);
-// date plate: 8 SEPTEMBER 1781 (from m3g) -> 9 SEPTEMBER 1781 ("the next evening", under the insert) -> 1781 ("By the end of seventeen eighty-one")
+// date plate: 8 SEPTEMBER 1781 (from m3g) -> 9 SEPTEMBER 1781 ("the next evening", under the insert) -> LATE 1781 ("By the end of seventeen eighty-one")
 dateNow("8 SEPTEMBER 1781", T_NEXT + 0.25);
 B.date("9 SEPTEMBER 1781", T_NEXT + 0.3, T_1781 - 0.08, 32); SFX("tick", T_NEXT + 0.4);
 B.date("LATE 1781", T_1781 + 0.05, null, 32); SFX("tick", T_1781 + 0.15);
@@ -104,7 +104,8 @@ LIGHT("dusk", T_CIVIL + 0.2, 3.0, 0.22);
 // "Marion was a man of his time": his banner by the Santee
 const BM = BANNER("marion", "Francis Marion", "sc", "mb", T_TIME + 0.05, { side: "ne", until: T_S1 - 0.3 });   // r3: leaves before the method card (it would cover the banner)
 // "Oscar, the enslaved man who rode beside him": a small unlabelled rider dot glows beside Marion's box (no text)
-{ const MB = B.units.mb ? [EUT[0] - 112, EUT[1] + 52] : null; const od = pinS(GG.pin(`<div style="width:13px;height:13px;border-radius:50%;background:#1f4fc4;border:2px solid #f3eee2;box-shadow:0 0 10px rgba(150,190,255,.9)"></div>`, MB[0] - 44, MB[1] + 4, {}));
+{ const MB = [EUT[0] - 112, EUT[1] + 52];   // Marion's box after "Together with a real army"
+  const od = pinS(GG.pin(`<div style="width:19px;height:19px;border-radius:50%;background:#1f4fc4;border:2.5px solid #f3eee2;box-shadow:0 0 10px rgba(150,190,255,.9)"></div>`, MB[0] - 62, MB[1] + 4, {}));
   tl.fromTo(od, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, at(E1, "rode beside him"));
   tl.fromTo(od.firstElementChild, { boxShadow: "0 0 4px rgba(150,190,255,.4)" }, { boxShadow: "0 0 16px rgba(170,205,255,1)", duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, at(E1, "rode beside him") + 0.3);
   tl.to(od, { autoAlpha: 0, duration: 0.4 }, T_SO - 0.2); }
