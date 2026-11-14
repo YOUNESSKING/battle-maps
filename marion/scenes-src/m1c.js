@@ -44,7 +44,7 @@ const MBE = [[1932, 468], [1902, 506], [1948, 424]];
 [["mb", 0], ["mb2", 1], ["mb3", 2]].forEach(([id, i], k) => { const a = MB[i], b = [a[0] + 8, a[1] - 10];
   march(id, [a, b], 0.2 + k * 0.1, T_KING - 0.4, { dustSize: 40, dustOp: 0.35 });
   march(id, [b, MBE[i]], T_KING + 0.2 + k * 0.15, T_BAND - T_KING - 0.6, { dustSize: 40, dustOp: 0.35 }); });
-SIDEFLAG("sc", LYT(34.00, -79.80)); SIDEFLAG("gb", LYT(33.98, -80.95));
+SIDEFLAG("sc", "mb");   // pole flags on the lead boxes (no lone flags on the grass)
 const CAMP = NUDGE([1072, 248], { s: 0.75 });
 BANNER("cornwallis", "Lord Cornwallis", "gb", [CAMP[0] - 60, CAMP[1] + 200], T_CSB + 0.3, { side: "up", until: T_WEM - 0.05 });   // hands over to Wemyss (both stand at Camden)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -54,9 +54,10 @@ const W0 = [1195, 360];
 UNIT("wc", "british", W0, "cavalry", { ech: "", t: T_WEM + 0.1 });
 UNIT("wi", "british", [W0[0] - 50, W0[1] - 34], "infantry", { ech: "", name: "63RD", nameAt: T_63 + 0.1, t: T_63 + 0.05 });
 UNIT("wl", "british", [W0[0] - 98, W0[1] - 66], "cavalry", { ech: "", name: "LOYALISTS", nameAt: T_LOY + 0.1, t: T_LOY + 0.05 });
+SIDEFLAG("gb", "wc", T_WEM + 0.5);
 BANNER("wemyss", "James Wemyss", "gb", "wc", T_WEM + 0.45, { side: "left", until: T_UNF + 3.0 });
 const KG = PLACE("kingstree");
-const ROUTE = [W0, [1330, 470], [1480, 590], [1610, 690], [KG[0] + 10, KG[1] - 18], [1720, 680], [1755, 660], [1785, 648]];
+const ROUTE = [W0, [1330, 470], [1480, 590], [1610, 690], [KG[0] + 10, KG[1] - 18], [1740, 676], [1790, 656], [1830, 640]];
 const R1 = ROUTE.slice(0, 5), R2 = ROUTE.slice(4);
 const tK = T_KING + 0.4, tE = T_BAND - 0.2;
 march("wc", R1, T_63 + 0.6, tK - T_63 - 0.6, { dustSize: 40, dustOp: 0.4 });
@@ -64,10 +65,10 @@ march("wi", [[W0[0] - 50, W0[1] - 34], ...R1.slice(1, 4), [KG[0] - 48, KG[1] - 3
 march("wl", [[W0[0] - 98, W0[1] - 66], ...R1.slice(1, 4), [KG[0] - 100, KG[1] - 50]], T_LOY + 0.6, tK - T_LOY - 0.1, { dustSize: 40, dustOp: 0.4 });
 PLACE_LABEL("Kingstree", KG, T_KING + 0.15, { dy: 26, size: 24 });
 march("wc", R2, T_PD + 0.3, tE - T_PD - 0.3, { dustSize: 40, dustOp: 0.4 });
-march("wi", [[KG[0] - 48, KG[1] - 30], [1690, 640], [1725, 618], [1752, 604]], T_PD + 0.6, tE - T_PD - 0.3, { dustSize: 40, dustOp: 0.4 });
-march("wl", [[KG[0] - 100, KG[1] - 50], [1680, 760], [1730, 742], [1770, 716]], T_PD + 0.8, tE - T_PD - 0.4, { dustSize: 40, dustOp: 0.4 });
+march("wi", [[KG[0] - 48, KG[1] - 30], [1712, 640], [1760, 614], [1800, 598]], T_PD + 0.6, tE - T_PD - 0.3, { dustSize: 40, dustOp: 0.4 });
+march("wl", [[KG[0] - 100, KG[1] - 50], [1700, 760], [1770, 728], [1822, 700]], T_PD + 0.8, tE - T_PD - 0.4, { dustSize: 40, dustOp: 0.4 });
 // "burned and laid waste": fire marks bloom one after another along the swept country (visual only), smoke over them
-const FIRES = [[1696, 690], [1724, 740], [1736, 640], [1760, 700], [1712, 604], [1800, 676], [1772, 600], [1806, 736]];
+const FIRES = [[1694, 702], [1712, 742], [1730, 690], [1748, 736], [1766, 704], [1704, 764], [1782, 748], [1726, 718]];   // behind the column, on the ground it has swept
 const tF0 = T_BURN - 0.1, tFend = T_DAYS + 0.5;
 FIRES.forEach((p, k) => { const t = tF0 + k * 0.32;
   bonfire(p[0], p[1], t, tFend - 0.6 + k * 0.05, 16);
@@ -90,9 +91,9 @@ focus([2050, 110], 110, T_END - 0.1, T_HOUSES);
 // ---------------------------------------------------------------------------------------------------------------------------------
 focus([1810, 660], 170, T_HOUSES - 0.1, T_CAME - 0.2);
 // the red column withdraws west (its work done) and leaves the map before the band comes back
-march("wc", [ROUTE[7], [1740, 670], [1690, 710]], T_UNF + 0.4, 3.0, { trail: false, dustSize: 36, dustOp: 0.35 });
-march("wi", [[1752, 604], [1710, 640], [1660, 690]], T_UNF + 0.5, 3.0, { trail: false, dustSize: 36, dustOp: 0.35 });
-march("wl", [[1770, 716], [1730, 740], [1680, 770]], T_UNF + 0.6, 3.0, { trail: false, dustSize: 36, dustOp: 0.35 });
+march("wc", [ROUTE[7], [1750, 670], [1690, 710]], T_UNF + 0.4, 3.0, { trail: false, dustSize: 36, dustOp: 0.35 });
+march("wi", [[1800, 598], [1730, 630], [1660, 690]], T_UNF + 0.5, 3.0, { trail: false, dustSize: 36, dustOp: 0.35 });
+march("wl", [[1822, 700], [1750, 740], [1680, 770]], T_UNF + 0.6, 3.0, { trail: false, dustSize: 36, dustOp: 0.35 });
 hideU(["wc", "wi", "wl"], T_CAME - 0.5);
 const DOTS = FIRES.slice(0, 7).map((p, k) => { const t = T_CAME + 0.1 + k * 0.12, el = pinS(GG.pin(`<div style="width:12px;height:12px;border-radius:50%;background:#2c57b7;border:1.5px solid #f3eee2;box-shadow:0 1px 2px rgba(0,0,0,.6)"></div>`, p[0] + 14, p[1] + 10, { t, pop: true }));
   const q = [NCP[0] + ((k % 3) - 1) * 26, NCP[1] + 50 + (k % 2) * 16];

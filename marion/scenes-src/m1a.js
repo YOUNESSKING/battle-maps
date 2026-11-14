@@ -50,7 +50,7 @@ B.date("20 AUGUST 1780", T_20, null, 32); SFX("tick", T_20 + 0.1);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // frame 0: the British hold the state; supplies roll up the Charleston road; Cornwallis's army at Camden; a small blue band east of the Black River
 // ---------------------------------------------------------------------------------------------------------------------------------
-SIDEFLAG("gb", LYT(33.02, -80.62)); SIDEFLAG("sc", LYT(33.98, -79.78));
+
 const ROAD = LLYT([[33.08, -80.03], [33.196, -80.013], [33.25, -80.10], [33.33, -80.20], [33.385, -80.27], [33.408, -80.304], [33.428, -80.326]]);
 UNIT("w1", "british", ROAD[1], "supply", { ech: "" }); UNIT("w2", "british", ROAD[0], "supply", { ech: "" });
 march("w1", ROAD.slice(1, 6), 0.2, 9.0); march("w2", ROAD.slice(0, 4), 0.5, 9.0); hideU(["w1", "w2"], T_CHAIN - 0.2);   // the wagons leave before the posts drop
@@ -61,6 +61,7 @@ BANNER("cornwallis", "Lord Cornwallis", "gb", [CAMP[0] + 70, CAMP[1] + 190], T_C
 // Marion's band (not yet named in this scene): one blue box riding in the Williamsburg country, between the Black River and the Pee Dee
 const MB0 = LYT(33.78, -79.66);
 UNIT("mb", "allies", MB0, "cavalry", { ech: "" });
+SIDEFLAG("sc", "mb"); SIDEFLAG("gb", "cw");   // pole flags on the lead boxes (one flag per side; hidden while that side has a banner up)
 march("mb", [MB0, LYT(33.76, -79.64), LYT(33.735, -79.62)], 0.3, T_INST - 1.0, { dustSize: 40, dustOp: 0.35 });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // "a chain of posts ... from the Pee Dee River to the Savannah": posts drop east -> west, each with a fort mark; ink traces join them
@@ -94,6 +95,7 @@ march("mb3", [LYT(33.64, -79.70), LYT(33.655, -79.68)], T_REB + 1.0, 5.0, { dust
 // "But Marion did not try to raise an army": his banner on the band; the two other boxes melt back into the country
 BANNER("marion", "Francis Marion", "sc", "mb", T_MAR + 0.35, { side: "sw" });
 hideU(["mb2", "mb3"], T_INST - 0.6);
+hideU(["cw", "pC"], T_BETW - 1.2);   // Camden (and its pole flag) is cropped at the top edge once the camera leans in
 // "Instead, he went for the crossings themselves": Marion rides to the Santee at Murray's, then down the north bank; the boats vanish as he passes
 const SANTEE = GD.rivers.santee;
 const near = (p) => { let b = SANTEE[0], d = 1e9; SANTEE.forEach((q) => { const e = Math.hypot(q[0] - p[0], q[1] - p[1]); if (e < d) { d = e; b = q; } }); return b; };
@@ -106,7 +108,7 @@ const tB0 = T_ALL + 0.4, tB1 = T_MOUTH + 1.6;
 BOATS.forEach((p, k) => { const t = tB0 + (tB1 - tB0) * k / (BOATS.length - 1);
   if (k > 0) march("mb", [NB(BOATS[k - 1]), NB(BOATS[k])], t - (tB1 - tB0) / (BOATS.length - 1), (tB1 - tB0) / (BOATS.length - 1) - 0.05, { dustSize: 34, dustOp: 0.4 });
   tl.to(p.el, { autoAlpha: 0, scale: 0.6, duration: 0.45, ease: "power2.in" }, t + 0.15); SPLASH(p, t + 0.2); });
-stampP("ALL THE BOATS", ...LYT(33.18, -79.92), T_ALL - 0.05, T_ALL + 3.1, 44);
+stampP("ALL THE BOATS", ...LYT(33.06, -80.24), T_ALL - 0.05, T_ALL + 3.1, 44);
 RIVER("santee", "Santee", T_MOUTH + 0.3, { s: 1.1, near: LYT(33.36, -79.79), side: "below", hw: 6 });
 // "every river was a wall": the Santee, the Black River and the Pee Dee inked; "only Marion knew where the gaps were": focus on him
 // pale ink (a sepia trace disappears on the dark swamp along the rivers)
