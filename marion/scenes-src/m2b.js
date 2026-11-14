@@ -124,8 +124,8 @@ GLOWL(RR, T_AROUND + 0.1);
 PLACE_LABEL("Benbow's Ferry", FERRY, T_BEN + 0.3, { dx: 30, dy: 40, size: 24 });
 RIVER("black_river", "Black River", T_BR + 0.1, { s: 2.0, near: [1640, 760], side: "left", hw: 6, size: 25 });
 B.caption("BY ONE VETERAN'S ACCOUNT", T_VET, T_VET + 3.2);
-const LOGS = [[1690, 849], [1662, 840], [1716, 856]];
-LOGS.forEach((p, i) => { const el = pinS(GG.pin(`<svg width="150" height="150" viewBox="-23 -23 46 46" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.7))"><g transform="rotate(${[62, 48, 75][i]})"><rect x="-20" y="-4" width="40" height="8" rx="4" fill="#7a5532" stroke="#2a1c10" stroke-width="1.6"/><ellipse cx="20" cy="0" rx="2.6" ry="4" fill="#c9a46a" stroke="#2a1c10" stroke-width="1.2"/><path d="M-12 -4 l-5 -5 M2 -4 l3 -6 M-4 4 l-4 5" stroke="#3a2a18" stroke-width="1.6" stroke-linecap="round"/></g></svg>`, p[0], p[1], { t: T_FELL + 0.6 + i * 0.25, pop: true }));
+const LOGS = [[1692, 850], [1652, 838], [1730, 860]];
+LOGS.forEach((p, i) => { const el = pinS(GG.pin(`<svg width="104" height="104" viewBox="-23 -23 46 46" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.7))"><g transform="rotate(${[62, 48, 75][i]})"><rect x="-20" y="-4" width="40" height="8" rx="4" fill="#7a5532" stroke="#2a1c10" stroke-width="1.6"/><ellipse cx="20" cy="0" rx="2.6" ry="4" fill="#c9a46a" stroke="#2a1c10" stroke-width="1.2"/><path d="M-12 -4 l-5 -5 M2 -4 l3 -6 M-4 4 l-4 5" stroke="#3a2a18" stroke-width="1.6" stroke-linecap="round"/></g></svg>`, p[0], p[1], { t: T_FELL + 0.6 + i * 0.25, pop: true }));
   SFX("tick", T_FELL + 0.7 + i * 0.25); });
 UNIT("mb4", "allies", [1752, 858], "cavalry", { ech: "", t: T_WAITF + 0.1 });
 march("mb", [[1745, 874], [1726, 868]], T_WAITF + 0.2, 0.8, { trail: false, dust: false });
@@ -153,7 +153,7 @@ UNIT("su", "allies", [210, 700], "cavalry", { ech: "", name: "SUMTER", nameAt: T
 UNIT("po", "british", [190, 940], "infantry", { ech: "", t: T_POST + 0.4 });
 arw({ pts: [[216, 740], [210, 820], [198, 900]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
 // "Either way": the Legion turns north-west and rides off up the Camden road (fast); the messenger with them
-const AWAY = (x0) => [...ROADSEG(430, x0).reverse(), [424, 978], ...RNC.slice().reverse().filter((q) => q[1] > 560)];
+const AWAY = (x0) => [...ROADSEG(430, x0).reverse(), [424, 978], ...RNC.slice().reverse().filter((q) => q[1] > 760)];
 [["lg1", 1096], ["lg2", 1050], ["lg3", 990], ["ex", 1060]].forEach(([id, x0], i) => {
   march(id, AWAY(x0), T_EITHER + 0.1 + i * 0.25, END - T_EITHER - 0.6, { trail: id === "lg1", dustOp: 0.4, dustSize: 30 }); });
 pulse("mb", T_FREE + 0.15, 1.35); SFX("hit", T_FREE + 0.3);

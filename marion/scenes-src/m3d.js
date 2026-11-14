@@ -40,11 +40,11 @@ const T_150 = at(P9, "About a hundred and fifty"), T_BLOOD = at(P9, "not a drop 
 // ---------------------------------------------------------------------------------------------------------------------------------
 LIVING({ clouds: 0.08 });
 const H = [1391, 726], FARM = [1459, 775];
-const C0 = [1452, 760, 2.25], C1 = [1408, 742, 2.75], C2 = [1404, 732, 3.15], CW = [1790, 520, 0.92];
-camera([[0, ...C0], [T_FM - 0.4, 1440, 754, 2.3], [T_FM + 1.6, ...C1, "power2.inOut"], [T_SENT, 1420, 748, 2.7], [T_NOTIME + 0.2, 1424, 744, 2.65],
-  [T_RAW - 0.1, 1430, 742, 2.55], [T_RAW + 2.4, ...CW, "power2.inOut"], [T_FIRES + 0.4, 1810, 530, 0.95], [T_HARD + 0.2, 1820, 540, 0.96],
-  [T_LEE + 2.2, 1426, 752, 2.6, "power2.inOut"], [T_NOON, 1420, 748, 2.65], [T_ROOF + 0.4, ...C2, "power2.inOut"], [T_WHITE + 0.6, 1400, 734, 3.2],
-  [T_150 + 0.4, 1404, 744, 2.8], [T_MIL, 1408, 752, 2.75], [T_STEP + 0.5, 1398, 762, 3.0], [END, 1398, 762, 3.05]]);
+const C0 = [1452, 764, 2.6], C1 = [1414, 750, 3.2], C2 = [1404, 744, 3.6], CW = [1790, 560, 0.92];
+camera([[0, ...C0], [T_FM - 0.4, 1444, 760, 2.65], [T_FM + 1.6, ...C1, "power2.inOut"], [T_SENT, 1424, 756, 3.15], [T_NOTIME + 0.2, 1428, 752, 3.1],
+  [T_RAW - 0.1, 1432, 750, 3.0], [T_RAW + 2.4, ...CW, "power2.inOut"], [T_FIRES + 0.4, 1810, 566, 0.95], [T_HARD + 0.2, 1820, 572, 0.96],
+  [T_LEE + 2.2, 1430, 758, 3.05, "power2.inOut"], [T_NOON, 1424, 754, 3.1], [T_ROOF + 0.4, ...C2, "power2.inOut"], [T_WHITE + 0.6, 1400, 742, 3.6],
+  [T_150 + 0.4, 1404, 760, 3.1], [T_MIL, 1394, 778, 3.15], [T_STEP + 0.5, 1384, 790, 3.4], [END, 1384, 790, 3.45]]);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // date plate: m3c's 24 APRIL -> 8 MAY ("Two weeks later") -> 11 MAY (night) -> 12 MAY (noon)
 dateNow("24 APRIL 1781", T_2W + 0.4);
@@ -53,7 +53,10 @@ B.date("11 MAY 1781", T_11, null, 32); SFX("tick", T_11 + 0.1);
 B.date("12 MAY 1781", T_12, null, 32); SFX("tick", T_12 + 0.1);
 // light: day -> the night of the 11th -> a bright, warm noon on the 12th (FACT_NOTES "scorching sun": the only weather)
 LIGHT("night", T_NIGHT + 0.1, 1.6, 0.85);
-LIGHT("afternoon", T_NOON - 0.1, 2.0, 0.75);
+LIGHT("afternoon", T_NOON - 0.1, 2.0, 0.6);
+{ const mk = (bg, blend) => { const d = document.createElement("div"); d.style.cssText = `position:absolute;left:-3000px;top:-3000px;width:9000px;height:8000px;background:${bg};mix-blend-mode:${blend};opacity:0`; LV.layers.light.appendChild(d); return d; };
+  const a = mk("rgba(255,226,150,.9)", "soft-light"), b = mk("rgba(255,222,160,1)", "screen");
+  tl.to(a, { opacity: 0.38, duration: 2.0 }, T_NOON - 0.1); tl.to(b, { opacity: 0.1, duration: 2.0 }, T_NOON - 0.1); }
 // ---------------------------------------------------------------------------------------------------------------------------------
 // scene-local helpers
 const scr0 = (html, css) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; SCN.insertBefore(el, document.getElementById("credit")); gsap.set(el, { autoAlpha: 0 }); return el; };
@@ -73,17 +76,20 @@ const DOT = (p, col, t, r = 5, until) => { const el = GG.pin(`<div style="width:
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the LIVE mansion + works (map px, scale with the map). Oblique view: back parapet, the house, front parapet; ditch outside.
 // ---------------------------------------------------------------------------------------------------------------------------------
-const RX = 40, RY = 23;
+const RX = 40, RY = 23, KM = 1.3;
+const SV = (x, y) => [H[0] + x * KM, H[1] + 6 + (y + 10) * KM];   // mansion svg coords -> map px
 const ell = (rx, ry, a0, a1, n = 40, cy = 0) => [...Array(n + 1)].map((_, k) => { const a = a0 + (a1 - a0) * k / n; return [rx * Math.cos(a), cy + ry * Math.sin(a)]; });
 const pathOf = (pts) => "M" + pts.map((q) => q[0].toFixed(2) + " " + q[1].toFixed(2)).join(" L");
 const BACK = pathOf(ell(RX, RY, Math.PI, Math.PI * 2)), FRONTP = pathOf(ell(RX, RY, 0, Math.PI)), DITCH = pathOf(ell(RX + 6, RY + 4.5, 0, Math.PI * 2, 64));
 const WINS = [-12, -6, 0, 6, 12].map((x) => `<rect x="${x - 1.3}" y="-10.5" width="2.6" height="3.2" fill="#2a2216"/><rect x="${x - 1.3}" y="-5.4" width="2.6" height="3.2" fill="#2a2216"/>`).join("");
-const MAN = GG.pin(`<svg width="120" height="90" viewBox="-60 -55 120 90" style="display:block;overflow:visible">
+const MAN = GG.pin(`<svg width="${120 * KM}" height="${90 * KM}" viewBox="-60 -55 120 90" style="display:block;overflow:visible">
   <defs><filter id="fmsh" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2"/></filter>
    <radialGradient id="fmy" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#c2ad74"/><stop offset="1" stop-color="#97834e"/></radialGradient></defs>
   <ellipse cx="2" cy="6" rx="${RX + 8}" ry="${RY + 7}" fill="rgba(30,26,10,.28)" filter="url(#fmsh)"/>
   <path class="ditch" d="${DITCH}" fill="none" stroke="#2c2412" stroke-width="3.4" stroke-linecap="round" opacity=".9"/>
   <ellipse class="yard" cx="0" cy="0" rx="${RX - 3}" ry="${RY - 2}" fill="url(#fmy)"/>
+  <pattern id="fmhp" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)"><rect x="0" y="0" width="1.2" height="5" fill="#2c57b7"/></pattern>
+  <ellipse class="hyard" cx="0" cy="0" rx="${RX + 4}" ry="${RY + 3}" fill="url(#fmhp)" opacity="0"/>
   <g class="pback"><path d="${BACK}" fill="none" stroke="#5e4a26" stroke-width="5.6" stroke-linecap="round"/><path d="${BACK}" fill="none" stroke="#b39a62" stroke-width="3" stroke-linecap="round" transform="translate(0,-1.6)"/></g>
   <g class="house">
    <rect x="-17" y="-14" width="34" height="15" fill="#d8ccae" stroke="#3a2c18" stroke-width=".8"/>${WINS}
@@ -112,7 +118,7 @@ tl.fromTo([MSV.querySelector(".pback"), MSV.querySelector(".pfront")], { autoAlp
 SFX("hit", T_WALL + 0.5);
 gsap.set(MSV.querySelector(".wflag"), { autoAlpha: 0 });
 // the garrison inside the works (red, frame 0; no name, no number until spoken)
-UNIT("gar", "british", [H[0] + 22, H[1] + 12], "infantry", { ech: "" });
+UNIT("gar", "british", SV(0, 10), "infantry", { ech: "" });
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m3-7: the blue columns ride in on the farm road from the south-east and take post round the hill
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -120,20 +126,20 @@ const RD = [[1640, 930], [1580, 880], [1530, 840], [1490, 808], [1462, 782]];
 UNIT("b1", "allies", RD[2], "cavalry", { ech: "" });
 UNIT("b2", "allies", RD[1], "infantry", { ech: "" });
 UNIT("b3", "allies", RD[0], "infantry", { ech: "" });
-SIDEFLAG("sc", [1560, 940]);
+SIDEFLAG("sc", [1530, 872]);
 march("b1", [RD[2], RD[3], [1470, 770], [1452, 742]], 0.1, T_FM + 1.0, { dustSize: 30, dustOp: 0.38 });
 march("b2", [RD[1], RD[2], RD[3], [1440, 800], [1405, 790]], 0.2, T_FM + 1.6, { dustSize: 30, dustOp: 0.38 });
 march("b3", [RD[0], RD[1], [1500, 840], [1420, 830], [1345, 772]], 0.3, T_TRENCH + 0.4, { dustSize: 30, dustOp: 0.38 });
-PLACE_LABEL("Fort Motte", H, T_FM + 0.1, { dy: -128, size: 26 });
+PLACE_LABEL("Fort Motte", H, T_FM + 0.1, { dy: -170, size: 26 });
 // "a big new mansion on a hill": the house pulses; "into a fortress": the garrison glows
 tl.fromTo(MSV.querySelector(".house"), { scale: 1 }, { scale: 1.1, transformOrigin: "50% 100%", duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, T_MANSION + 0.1);
 PULSE("gar", T_FORT + 0.1, 1.3);
 // "The owner, the widow Rebecca Motte": a cream figure + name tag at the house; "had been sent to live in an old farmhouse nearby": she walks there
 const RM = GG.pin(`<div style="position:relative;width:0;height:0"><div style="position:absolute;left:-6px;top:-6px;width:12px;height:12px;border-radius:50%;background:#efe3c4;border:2px solid #3a2c18;box-shadow:0 0 3px rgba(0,0,0,.8)"></div>
   <div class="rmt" style="position:absolute;left:0;top:10px;transform:translateX(-50%);white-space:nowrap;font-family:Oswald;font-weight:700;font-size:19px;letter-spacing:.06em;color:#f7f3ea;background:#6e5a32;border:1px solid #e8cf8a;border-radius:3px;padding:1px 9px">REBECCA MOTTE</div></div>`,
-  H[0] - 6, H[1] + 10, { t: T_REB - 0.05, pop: true });
+  ...SV(-24, 6), { t: T_REB - 0.05, pop: true });
 pinS(RM); SFX("hit", T_REB + 0.1);
-{ const W = [[H[0] - 6, H[1] + 10], [H[0] + 14, H[1] + 30], LYT(33.758, -80.662), [FARM[0] - 4, FARM[1] + 8]];
+{ const W = [SV(-24, 6), SV(20, 32), LYT(33.758, -80.662), [FARM[0] - 4, FARM[1] + 8]];
   for (let k = 1; k < W.length; k++) tl.to(RM, { left: W[k][0], top: W[k][1], duration: (T_FARM + 1.0 - T_SENT) / (W.length - 1), ease: "none" }, T_SENT + 0.1 + (k - 1) * (T_FARM + 1.0 - T_SENT) / (W.length - 1));
   tl.to(RM.querySelector(".rmt"), { autoAlpha: 0, duration: 0.4 }, T_GREENE + 0.6); }
 ICON(`<svg width="54" height="54" viewBox="-20 -20 40 40" style="display:block;overflow:visible"><circle r="15" fill="none" stroke="#e8cf8a" stroke-width="2.4" opacity=".9"/></svg>`, [FARM[0], FARM[1] - 2], T_FARM + 0.1, T_FARM + 1.8);
@@ -150,7 +156,7 @@ const RW = [[2330, -40], [2300, 80], [2260, 200], [2220, 320], [2190, 420]];
 UNIT("raw", "british", RW[0], "infantry", { ech: "XX", t: T_RAW + 0.3 });
 UNIT("raw2", "british", RW[0], "cavalry", { ech: "", t: T_CAMDEN + 0.4 });
 BANNER("rawdon", "Lord Rawdon", "gb", "raw", T_RAW + 0.6, { side: "west", until: T_HARD + 0.6 });
-PLACE_LABEL("&#9650; Camden", [2330, 40], T_CAMDEN + 0.1, { dy: 0, dx: -150, size: 26 });
+PLACE_LABEL("&#9650; Camden", [2330, 96], T_CAMDEN + 0.1, { dy: 0, dx: -150, size: 26 });
 march("raw", RW, T_CAMDEN + 0.3, T_FIRES - T_CAMDEN, { dustSize: 70, dustOp: 0.45 });
 march("raw2", RW.slice(0, 4), T_CAMDEN + 0.8, T_FIRES - T_CAMDEN - 0.4, { dustSize: 70, dustOp: 0.45 });
 ARWC({ pts: [[2310, 60], [2260, 220], [2150, 420], [1980, 580]], side: "rome", t: T_RESCUE + 0.05, dur: 1.4, width: AW(CW[2], 11) }, "#e0473f", "rgba(255,236,230,.9)");
@@ -184,7 +190,7 @@ tl.to(RM, { autoAlpha: 0, duration: 0.4 }, T_NOON);
 { const g = pinS(GG.pin(`<div style="width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,236,170,.32) 0%,rgba(255,210,120,.14) 40%,rgba(255,200,100,0) 70%);mix-blend-mode:screen"></div>`, H[0] + 10, H[1] - 10, {}));
   tl.fromTo(g, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, immediateRender: false }, T_SUN); tl.to(g, { autoAlpha: 0, duration: 1.5 }, T_CLIMB); }
 // "the dry shingle roof caught fire": three fire arrows arc from Lee's men onto the roof
-const ROOF = [[H[0] - 6, H[1] - 13], [H[0] + 2, H[1] - 14], [H[0] + 9, H[1] - 13]];
+const ROOF = [SV(-6, -20), SV(2, -21), SV(9, -20)];
 const ARCF = (a, b, t, h) => { const p = document.createElementNS(NSs, "path"), m = [(a[0] + b[0]) / 2, Math.min(a[1], b[1]) - h];
   p.setAttribute("d", `M${a[0]} ${a[1]} Q${m[0]} ${m[1]} ${b[0]} ${b[1]}`); Object.entries({ fill: "none", stroke: "#ffcf7a", "stroke-width": 0.9, "stroke-linecap": "round" }).forEach(([k, v]) => p.setAttribute(k, v)); OVL.appendChild(p);
   const L = p.getTotalLength(); gsap.set(p, { strokeDasharray: L, strokeDashoffset: L, opacity: 0 });
@@ -198,21 +204,21 @@ ROOF.forEach((r, k) => ARCF(SHOOT_FROM[k], r, T_ROOF + 0.1 + k * 0.4, 26));
 const T_IGN = T_ROOF + 0.9;
 const FLAME = (k) => `<div><svg width="${26 * k}" height="${32 * k}" viewBox="-11 -16 22 26" style="display:block;overflow:visible;filter:drop-shadow(0 0 5px rgba(255,140,40,.9))"><path d="M0 -15 C6 -7 9 -2 7 4 C5 9 -5 9 -7 4 C-9 -2 -4 -6 -2 -11 C-1 -6 1 -4 2 -6 C3 -9 1 -12 0 -15 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width="1.2"/><path d="M0 -6 C3 -2 4 1 2 4 C0 6 -3 5 -3 2 C-3 -1 -1 -3 0 -6 Z" fill="#ffe08a"/></svg></div>`;
 const FL = [];
-[[H[0] - 4, H[1] - 14, 0, 1.0], [H[0] + 4, H[1] - 15, 0.35, 1.15], [H[0] + 11, H[1] - 13, 0.7, 0.9], [H[0] - 11, H[1] - 12, 1.2, 0.85]].forEach(([x, y, d, k]) => {
+[[...SV(-4, -21), 0, 1.2], [...SV(4, -22), 0.35, 1.4], [...SV(11, -19), 0.7, 1.1], [...SV(-11, -18), 1.2, 1.05], [...SV(15, -16), 1.6, 0.9]].forEach(([x, y, d, k]) => {
   const el = GG.pin(FLAME(k), x, y, {}); pinS(el); FL.push(el);
   tl.fromTo(el, { autoAlpha: 0, scale: 0.3 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(2)", immediateRender: false }, T_IGN + d);
   tl.to(el.querySelector("svg"), { scaleY: 1.18, transformOrigin: "50% 100%", duration: 0.28, yoyo: true, repeat: 24, ease: "sine.inOut" }, T_IGN + d + 0.4); });
 tl.to(MSV.querySelector(".char"), { opacity: 0.7, duration: 2.5 }, T_IGN + 0.2);
-const RGLOW = fireGlowS(H[0] + 2, H[1] - 16, 70, T_IGN + 0.1, null);
-smoke([[H[0], H[1] - 22], [H[0] + 4, H[1] - 34], [H[0] + 9, H[1] - 46], [H[0] + 14, H[1] - 58]], T_IGN + 0.5, 1.2);
-smoke([[H[0] + 6, H[1] - 24], [H[0] + 11, H[1] - 38], [H[0] + 17, H[1] - 52], [H[0] + 22, H[1] - 66]], T_CLIMB + 0.2, 1.2);
+const RGLOW = fireGlowS(...SV(2, -20), 36, T_IGN + 0.1, null);
+{ const s0 = SV(0, -26); smoke([[s0[0], s0[1]], [s0[0] + 4, s0[1] - 12], [s0[0] + 9, s0[1] - 24], [s0[0] + 14, s0[1] - 36]], T_IGN + 0.5, 1.2);
+  smoke([[s0[0] + 6, s0[1] - 2], [s0[0] + 11, s0[1] - 16], [s0[0] + 17, s0[1] - 30], [s0[0] + 22, s0[1] - 44]], T_CLIMB + 0.2, 1.2); }
 SFX("hit", T_CAUGHT + 0.1);
 // "When British soldiers climbed up to tear the burning shingles away": red figures on the roof
 const RFIG = MSV.querySelector(".rfig");
 tl.fromTo(RFIG, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, T_CLIMB + 0.2);
 tl.fromTo(RFIG.querySelectorAll(".rf"), { rotation: -8 }, { rotation: 8, transformOrigin: "50% 100%", duration: 0.25, yoyo: true, repeat: 7, stagger: 0.07, immediateRender: false }, T_TEAR);
 // "the six-pounder drove them off the roof": the gun fires ONCE (visible: flash, shot arc, impact on the gable; locked K.gun / K.impact sound)
-const GABLE = [H[0] + 15, H[1] - 13];
+const GABLE = SV(15, -18);
 shoot([GUN[0] - 6, GUN[1] - 2], GABLE, T_GUN + 0.15, { dur: 0.5, width: 1.0, h: 10, r: 6 });
 smoke([[GUN[0] - 8, GUN[1] - 6], [GUN[0] - 12, GUN[1] - 10]], T_GUN + 0.2, 0.9);
 PULSE("gun", T_GUN + 0.12, 1.25);
@@ -227,10 +233,11 @@ FL.forEach((el, k) => tl.to(el, { autoAlpha: 0, duration: 1.4 }, T_150 + 0.4 + k
 // m3-9: surrender, FORM 1 hatching, result card; dinner; Marion keeps the Loyalist safe
 // ---------------------------------------------------------------------------------------------------------------------------------
 const PRIS = [1376, 790];
-march("gar", [[H[0] + 22, H[1] + 12], [H[0] + 8, H[1] + 40], PRIS], T_150 + 0.2, 1.6, { trail: false, dust: false });
+march("gar", [SV(0, 10), SV(4, 30), PRIS], T_150 + 0.2, 1.6, { trail: false, dust: false });
 tl.to(B.units.gar.el.querySelector(".blk"), { backgroundColor: "#77746c", duration: 0.6 }, T_150 + 1.2);
-HATCH([[H[0] - 58, H[1] - 6], [H[0] - 40, H[1] - 30], [H[0], H[1] - 40], [H[0] + 42, H[1] - 30], [H[0] + 60, H[1] - 4], [H[0] + 48, H[1] + 26],
-  [H[0] + 6, H[1] + 38], [H[0] - 42, H[1] + 28]], "allies", T_150 + 0.3, { hold: 2.6 });
+HATCH([[H[0] - 96, H[1] + 4], [H[0] - 60, H[1] - 30], [H[0], H[1] - 40], [H[0] + 46, H[1] - 26], [H[0] + 66, H[1] + 4], [H[0] + 54, H[1] + 50],
+  [H[0] + 6, H[1] + 64], [H[0] - 60, H[1] + 50]], "allies", T_150 + 0.3, { hold: 2.6 });
+tl.to(MSV.querySelector(".hyard"), { opacity: 0.75, duration: 0.5 }, T_150 + 0.3); tl.to(MSV.querySelector(".hyard"), { opacity: 0, duration: 0.8, ease: "sine.inOut" }, T_150 + 3.4);
 let CC;
 { const row = (flag, side, txt, col) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:10px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">
     <div style="font-size:38px;letter-spacing:.1em;min-width:250px">${side}</div><div style="font-size:46px;color:${col};letter-spacing:.04em">${txt}</div></div>`;
@@ -254,9 +261,9 @@ ICON(TABLE, [FARM[0] - 2, FARM[1] - 20], T_DINNER + 0.05, T_MIL + 0.2, { hit: tr
   tl.to(o2, { left: FARM[0] + 6, top: FARM[1] - 10, duration: 1.2, ease: "sine.inOut" }, T_BOTH + 0.1); }
 // "When Marion's own militia wanted to hang one of the Loyalist prisoners": Marion banner; blue militia dots close on one red prisoner
 UNIT("mar", "allies", [1600, 900], "cavalry", { ech: "", t: 0.4 });
-march("mar", [[1600, 900], [1500, 840], [1345, 812]], 0.4, T_TRENCH + 1.0, { dustSize: 30, dustOp: 0.38 });
-BANNER("marion", "Francis Marion", "sc", "mar", T_MIL + 0.05, { side: "west" });
-const LOY = [PRIS[0] - 30, PRIS[1] + 14];
+march("mar", [[1600, 900], [1500, 860], [1420, 846]], 0.4, T_TRENCH + 1.0, { dustSize: 30, dustOp: 0.38 });
+BANNER("marion", "Francis Marion", "sc", "mar", T_MIL + 0.05, { side: "east" });
+const LOY = [PRIS[0] - 34, PRIS[1] + 34];
 const LD = DOT([PRIS[0] - 8, PRIS[1] + 4], "#c4121f", T_MIL + 0.1, 4.2);
 tl.to(LD, { left: LOY[0], top: LOY[1], duration: 0.7, ease: "sine.out" }, T_MIL + 0.3);
 const CROWD = [[-26, -12], [-22, 14], [0, 24], [22, 16], [26, -6], [6, -22], [-12, -26]].map((d, k) => {
@@ -270,7 +277,7 @@ ICON(`<svg width="44" height="44" viewBox="-12 -14 24 24" style="display:block;o
   <path d="M-8 8 L-8 -1 L0 -7 L8 -1 L8 8 Z" fill="#d8ccae" stroke="#2a2014" stroke-width="1.2"/><path d="M2 -9 C5 -5 7 -2 5 2 C3 5 -1 4 -1 1 C-1 -2 1 -4 2 -9 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width=".8"/></svg>`,
   [LOY[0] + 2, LOY[1] - 34], T_NEIGH + 0.05, T_STEP + 0.6, { hit: false });
 // "Marion stepped in and kept him safe": his box rides next to the prisoner; a blue ring guards him
-march("mar", [[1345, 812], [LOY[0] + 4, LOY[1] + 30], [LOY[0] + 14, LOY[1] + 14]], T_STEP - 0.1, 0.9, { trail: false, dustSize: 24, dustOp: 0.3 });
+march("mar", [[1420, 846], [LOY[0] + 34, LOY[1] + 16], [LOY[0] + 15, LOY[1] + 3]], T_STEP - 0.1, 0.9, { trail: false, dustSize: 24, dustOp: 0.3 });
 ICON(`<svg width="64" height="64" viewBox="-20 -20 40 40" style="display:block;overflow:visible"><circle r="16" fill="none" stroke="#f0e6c8" stroke-width="4.2"/><circle r="16" fill="none" stroke="#2c57b7" stroke-width="2.4"/></svg>`,
   LOY, T_SAFE - 0.05, null, { hit: true });
 if (GD.var.audit) LABEL_AUDIT([2, 10, 20, 30, 40, 50, 60, 70], { show: true });

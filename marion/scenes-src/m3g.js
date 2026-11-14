@@ -49,9 +49,9 @@ const CARD = (big, col, t, until, o = {}) => { const el = scr0(`<div style="padd
 //   along the road in column (militia in the lead, the Continentals behind)
 const RL = [["r1", [1648, 1186]], ["r2", [1642, 1230]], ["r3", [1646, 1276]]];
 RL.forEach(([id, p]) => UNIT(id, "british", p, "infantry", { ech: "" }));
-SIDEFLAG("gb", [1690, 1306]);
+SIDEFLAG("gb", [1680, 1314]);   // ~80 px behind the red line, south of the house
 const COL = { m: [1556, 1215], p: [1528, 1205], a2: [1500, 1193], a1: [1472, 1181], c1: [1444, 1170], c2: [1416, 1160], c3: [1388, 1150] };
-const L1 = { a1: [1568, 1164], a2: [1574, 1210], m: [1580, 1256], p: [1586, 1300] }, L2 = { c1: [1500, 1174], c2: [1508, 1220], c3: [1516, 1266] };
+const L1 = { a1: [1568, 1164], a2: [1574, 1210], m: [1580, 1256], p: [1586, 1300] }, L2 = { c1: [1470, 1174], c2: [1478, 1220], c3: [1486, 1266] };
 Object.entries(COL).forEach(([id, q]) => UNIT(id, "allies", q, "infantry", { ech: "", ...(id === "p" ? { name: "PICKENS", nameAt: T_PICK + 0.1 } : {}) }));
 Object.keys(COL).forEach((id, i) => march(id, [COL[id], [COL[id][0] + 24, COL[id][1] + 9]], 0.1 + i * 0.05, T_LINE - 0.2, { dustSize: 30, dustOp: 0.35, trail: false }));
 // "at Eutaw Springs": place name over the house; the springs (a small pale water glint just north-east of the house)
@@ -61,9 +61,9 @@ PLACE_LABEL("Eutaw Springs", H, T_EUTAW + 0.1, { dy: -64, size: 26 });
 // "Marion stood in a real battle line": the column deploys (militia line in front, Continentals behind); Marion's banner on his box
 Object.entries({ ...L1, ...L2 }).forEach(([id, q]) => { const c = [COL[id][0] + 24, COL[id][1] + 9], back = L1[id] ? [q[0] - 34, q[1]] : q;
   march(id, [c, back], T_LINE, 1.8, { dustSize: 30, dustOp: 0.35, trail: false }); });
-BANNER("marion", "Francis Marion", "sc", "m", T_LINE + 0.4, { side: "sw" });
+BANNER("marion", "Francis Marion", "sc", "m", T_LINE + 0.4, { side: [-110, 40] });   // stake in the gap between the two lines, off Pickens and the militia boxes
 // "Greene put his militia in front": his banner on the second line; the militia line steps forward
-BANNER("greene", "Nathanael Greene", "us", "c1", T_GREENE + 0.1, { side: "nw" });
+BANNER("greene", "Nathanael Greene", "us", "c1", T_GREENE + 0.1, { side: "ne" });   // up-right: clear of the date plate
 Object.entries(L1).forEach(([id, q], i) => march(id, [[q[0] - 34, q[1]], q], T_FRONT + 0.1 + i * 0.06, 1.0, { dust: false, trail: false }));
 // "on the right": the South Carolina wing (Marion + Pickens)
 focus([1583, 1278], 70, T_RIGHT + 0.1, T_HOT + 0.4);
@@ -79,17 +79,17 @@ smoke(L1F, T_ROUNDS + 0.3, 0.7); smoke(L1F.map((q) => [q[0] + 6, q[1] - 6]), T_R
 { const c = CARD(`15 TO 20 ROUNDS<span class="ea"> EACH</span>`, "#c9b48a", T_ROUNDS + 0.1, T_CONT + 0.6, { size: 68, top: 820 }); const ea = c.querySelector(".ea");
   gsap.set(ea, { autoAlpha: 0 }); tl.fromTo(ea, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, immediateRender: false }, T_EACH + 0.45); }
 // "before they fell back": the militia go back through the gaps of the second line
-const BACK = { a1: [1462, 1150], a2: [1468, 1197], m: [1474, 1243], p: [1480, 1289] };
-Object.entries(BACK).forEach(([id, q], i) => { const s0 = [L1[id][0] + 14, L1[id][1]]; march(id, [s0, [s0[0] - 50, q[1]], q], T_FELL + 0.1 + i * 0.08, 1.8, { dustSize: 26, dustOp: 0.3, trail: false }); });
+const BACK = { a1: [1424, 1150], a2: [1430, 1197], m: [1436, 1243], p: [1442, 1289] };
+Object.entries(BACK).forEach(([id, q], i) => { const s0 = [L1[id][0] + 14, L1[id][1]]; march(id, [s0, [s0[0] - 60, q[1]], q], T_FELL + 0.1 + i * 0.08, 1.8, { dustSize: 26, dustOp: 0.3, trail: false }); });
 // "Greene's Continentals charged through them": the second line charges into the red line (arrow along the road, battle mark), the red line breaks back
 const CH = { c1: [1622, 1186], c2: [1616, 1230], c3: [1622, 1274] };
 Object.entries(CH).forEach(([id, q], i) => march(id, [L2[id], q], T_CONT + 0.3 + i * 0.08, 1.4, { dustSize: 30, dustOp: 0.4 }));
-arw({ pts: [[1524, 1222], [1570, 1228], [1610, 1232]], side: "allies", t: T_CONT + 0.2, dur: 1.2, width: 9 / 2.7 });
+arw({ pts: [[1496, 1222], [1570, 1228], [1610, 1232]], side: "allies", t: T_CONT + 0.2, dur: 1.2, width: 9 / 2.7 });
 MARK([1636, 1232], T_CONT + 1.6, T_CAMP + 1.0);
 [[1652, 1188], [1646, 1232], [1650, 1276]].forEach((q, i) => FLASH(q, T_CONT + 1.4 + i * 0.1, 1.0)); SFX("mg", T_CONT + 1.4);
 march("r1", [[1648, 1186], [1672, 1170], [1700, 1158]], T_CONT + 1.7, 1.0, { dust: false, trail: false });
 march("r2", [[1642, 1230], [1690, 1214], [1730, 1206]], T_CONT + 1.75, 1.2, { dust: false, trail: false });
-march("r3", [[1646, 1276], [1672, 1288], [1700, 1300]], T_CONT + 1.8, 1.0, { dust: false, trail: false });
+march("r3", [[1646, 1276], [1672, 1280], [1704, 1270]], T_CONT + 1.8, 1.0, { dust: false, trail: false });
 // "The British camp was overrun": FORM 1 blue hatching on the camp ground west of the house (no tents: 2f), the Continentals on it; r1 + r3 break
 HATCH([[[1594, 1156], [1676, 1150], [1688, 1206], [1690, 1290], [1676, 1316], [1598, 1312]]], "allies", T_CAMP + 0.1, { hold: 2.6 });
 Object.entries(CH).forEach(([id, q]) => B.move(id, T_CAMP + 0.1, 1.0, q[0] + 30, q[1]));
