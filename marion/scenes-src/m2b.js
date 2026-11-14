@@ -37,8 +37,8 @@ const C0 = [525, 1000, 2.3], CW = [1180, 985, 1.25], CC = [1452, 872, 2.0], CW8 
 camera([[0, ...C0], [T_NEXT + 0.3, ...C0], [T_TRAIL + 0.4, 690, 1040, 1.9, "power2.inOut"], [T_CHASE + 3.2, ...CW, "power2.inOut"], [T_AROUND + 0.4, 1205, 975, 1.3],
   [T_P7 + 0.1, 1235, 960, 1.32], [T_BEN + 1.6, ...CC, "power2.inOut"], [T_FOX, 1440, 868, 2.08], [T_P8 + 0.2, 1430, 866, 2.05], [T_HIST + 1.6, ...CW8, "power2.inOut"],
   [END, 1160, 830, 0.9]]);
-dateNow("7 NOVEMBER 1780", T_NEXT - 0.05);
-B.date("8 NOVEMBER 1780", T_NEXT + 0.05, null, 32); SFX("tick", T_NEXT + 0.15);
+dateNow("7 NOVEMBER 1780", T_NEXT + 0.55);
+B.date("8 NOVEMBER 1780", T_NEXT + 0.6, null, 32); SFX("tick", T_NEXT + 0.7);
 LIGHT("day", T_CHASE, 3.0);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // scene-local helpers (as m2a)
@@ -79,29 +79,29 @@ SIDEFLAG("sc", [770, 1230]); SIDEFLAG("gb", [470, 1080]);   // hidden while the 
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m2-6: the trail, the chase: blue straight through bog + swamp (no road), red round by the road (dust behind red only)
 // ---------------------------------------------------------------------------------------------------------------------------------
-RING(DAM, 70, 24, T_TRAIL + 0.1, 1.0, T_CHASE + 1.6);
+RING(DAM, 70, 24, T_TRAIL + 0.4, 1.0, T_CHASE + 1.8);
 march("lg1", [L0.lg1, [600, 1000], [640, 1086], [650, 1120]], T_TRAIL + 0.1, T_CHASE - T_TRAIL + 0.6, { trail: false, dustOp: 0.4, dustSize: 26 });
 const RBR = GD.bake.roads.find((r) => r.id === "benbow_richardson").paths[0].slice().reverse();   // Richardson's (west) -> Benbow's (east)
 const ROADSEG = (x0, x1) => RBR.filter((q) => q[0] >= x0 && q[0] <= x1);
 const BLUE = [[690, 1176], [780, 1140], [880, 1102], [985, 1072], [1080, 1044], [1140, 1008], [1192, 968], [1250, 936], [1320, 914], [1400, 912], [1480, 904],
   [1560, 890], [1640, 868], [1700, 860], [1745, 874]];
 const RED = [[650, 1120], [700, 1060], [752, 990], [806, 930], ...ROADSEG(830, 1120), [1132, 848]];
-const tC = T_CHASE + 0.5, tB1 = T_P7 + 1.2, tR1 = T_HALT + 0.1;
+const tC = 0.3, tB1 = T_P7 + 1.2, tR1 = T_HALT + 0.1;
 const tSw = T_STR + 0.6, B3 = BLUE.map(([x, y]) => [x - 26, y + 22]).slice(0, -1).concat([[1728, 892]]);   // in the Ox Swamp creek swamp on "straight through a swamp"
 march("mb", BLUE.slice(0, 6), tC, tSw - tC, { trail: false, dust: false }); march("mb", BLUE.slice(5), tSw, tB1 - tSw, { trail: false, dust: false });
 march("mb3", B3.slice(0, 6), tC + 0.5, tSw - tC, { trail: false, dust: false }); march("mb3", B3.slice(5), tSw + 0.5, tB1 - tSw, { trail: false, dust: false });
 const BR = ROUTE(BLUE.slice(0, 6), "#2c57b7", tC, tSw - tC, T_FELL + 0.5), BR2 = ROUTE(BLUE.slice(5), "#2c57b7", tSw, tB1 - tSw, T_FELL + 0.5);
 // the red column: lead cavalry, cavalry, light infantry (the guns stay behind the chase, they leave the frame on the road west)
-march("lg1", RED, tC + 0.6, tR1 - tC - 0.6, { trail: false, dustOp: 0.45, dustSize: 30 });
-march("lg2", [L0.lg2, [650, 1110], ...RED.slice(1, -1).map(([x, y]) => [x - 34, y + 8])], tC + 0.9, tR1 - tC - 0.8, { trail: false, dustOp: 0.45, dustSize: 30 });
-march("lg3", [L0.lg3, [640, 1080], ...RED.slice(1, -2).map(([x, y]) => [x - 70, y + 14])], tC + 1.2, tR1 - tC - 1.0, { trail: false, dustOp: 0.45, dustSize: 30 });
+march("lg1", RED, T_CHASE + 0.8, tR1 - T_CHASE - 0.8, { trail: false, dustOp: 0.45, dustSize: 30 });
+march("lg2", [L0.lg2, [650, 1110], ...RED.slice(1, -1).map(([x, y]) => [x - 34, y + 8])], T_CHASE + 1.0, tR1 - T_CHASE - 0.9, { trail: false, dustOp: 0.45, dustSize: 30 });
+march("lg3", [L0.lg3, [640, 1080], ...RED.slice(1, -2).map(([x, y]) => [x - 70, y + 14])], T_CHASE + 1.3, tR1 - T_CHASE - 1.1, { trail: false, dustOp: 0.45, dustSize: 30 });
 march("lg4", [L0.lg4, [470, 958], [424, 978]], tC + 0.4, 3.0, { trail: false, dust: false }); hideU(["lg4", "lg5"], tC + 3.0);
-const RR = ROUTE(RED, "#bc2528", tC + 0.6, tR1 - tC - 0.6, T_FELL + 0.5);
+const RR = ROUTE(RED, "#bc2528", T_CHASE + 0.8, tR1 - T_CHASE - 0.8, T_FELL + 0.5);
 arw({ pts: sub(RED, 0.0, 0.55, 14), side: "rome", t: T_CHASE + 0.2, dur: 1.4, width: AW(1.6, 11) });
 GLOWL(BR, T_NOROAD + 0.1); GLOWL(BR2, T_STR + 0.4);
 GLOWL(RR, T_AROUND + 0.1);
 // the chase card (top-right): clock + 7 HOURS; Tarleton's words; the two mileages on their spoken numbers
-{ const C = scr0(`<div style="width:470px;padding:16px 30px 18px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
+{ const C = scr0(`<div style="width:540px;padding:16px 30px 18px;background:rgb(18,16,12);border-top:6px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
     <div style="display:flex;align-items:center;gap:20px"><svg width="70" height="70" viewBox="-35 -35 70 70"><circle r="31" fill="#f0e6c8" stroke="#c9b48a" stroke-width="4"/>
       ${[...Array(12)].map((_, k) => `<line x1="0" y1="-26" x2="0" y2="-21" stroke="#2a2410" stroke-width="2.4" transform="rotate(${k * 30})"/>`).join("")}
       <line class="hh" x1="0" y1="0" x2="0" y2="-15" stroke="#2a2410" stroke-width="4" stroke-linecap="round"/><line class="mh" x1="0" y1="0" x2="0" y2="-24" stroke="#c4121f" stroke-width="2.6" stroke-linecap="round"/><circle r="3" fill="#2a2410"/></svg>
@@ -113,9 +113,10 @@ GLOWL(RR, T_AROUND + 0.1);
   tl.fromTo(C, { autoAlpha: 0, x: 60 }, { autoAlpha: 1, x: 0, duration: 0.4, ease: "power3.out", immediateRender: false }, T_7H - 0.05); SFX("hit", T_7H + 0.15);
   tl.fromTo(C.querySelector(".mh"), { rotation: 0, svgOrigin: "0 0" }, { rotation: 360 * 7, svgOrigin: "0 0", duration: 2.4, ease: "power2.inOut", immediateRender: false }, T_7H + 0.2);
   tl.fromTo(C.querySelector(".hh"), { rotation: 0, svgOrigin: "0 0" }, { rotation: 210, svgOrigin: "0 0", duration: 2.4, ease: "power2.inOut", immediateRender: false }, T_7H + 0.2);
-  tl.fromTo(q, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_DEF);
-  tl.fromTo(r1, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_25 + 0.1); SFX("tick", T_25 + 0.15);
-  tl.fromTo(r2, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.35, immediateRender: false }, T_35 + 0.5); SFX("tick", T_35 + 0.55);
+  const H = (el) => { el.style.overflow = "hidden"; const h = el === q ? 36 : 46; gsap.set(el, { height: 0, marginTop: 0 }); return h; };   // rows open on their words (no empty card)
+  [[q, T_DEF, 10], [r1, T_25 + 0.1, 10], [r2, T_35 + 0.5, 4]].forEach(([el, t, mt]) => { const h = H(el);
+    tl.fromTo(el, { autoAlpha: 0, height: 0, marginTop: 0 }, { autoAlpha: 1, height: h, marginTop: mt, duration: 0.35, immediateRender: false }, t); });
+  SFX("tick", T_25 + 0.15); SFX("tick", T_35 + 0.55);
   tl.to(C, { autoAlpha: 0, duration: 0.4 }, T_STR - 0.1); }
 // ---------------------------------------------------------------------------------------------------------------------------------
 // m2-7 (close): Benbow's Ferry, the felled trees, Tarleton halts at Ox Swamp
@@ -124,7 +125,7 @@ PLACE_LABEL("Benbow's Ferry", FERRY, T_BEN + 0.3, { dx: 30, dy: 40, size: 24 });
 RIVER("black_river", "Black River", T_BR + 0.1, { s: 2.0, near: [1640, 760], side: "left", hw: 6, size: 25 });
 B.caption("BY ONE VETERAN'S ACCOUNT", T_VET, T_VET + 3.2);
 const LOGS = [[1688, 848], [1672, 843], [1702, 853]];
-LOGS.forEach((p, i) => { const el = pinS(GG.pin(`<svg width="46" height="16" viewBox="-23 -8 46 16" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.7))"><rect x="-20" y="-4" width="40" height="8" rx="4" fill="#7a5532" stroke="#2a1c10" stroke-width="1.6"/><ellipse cx="20" cy="0" rx="2.6" ry="4" fill="#c9a46a" stroke="#2a1c10" stroke-width="1.2"/><path d="M-12 -4 l-5 -5 M2 -4 l3 -6 M-4 4 l-4 5" stroke="#3a2a18" stroke-width="1.6" stroke-linecap="round"/></svg>`, p[0], p[1], { t: T_FELL + 0.6 + i * 0.25, pop: true }));
+LOGS.forEach((p, i) => { const el = pinS(GG.pin(`<svg width="62" height="22" viewBox="-23 -8 46 16" style="display:block;overflow:visible;filter:drop-shadow(1px 2px 1.5px rgba(0,0,0,.7))"><rect x="-20" y="-4" width="40" height="8" rx="4" fill="#7a5532" stroke="#2a1c10" stroke-width="1.6"/><ellipse cx="20" cy="0" rx="2.6" ry="4" fill="#c9a46a" stroke="#2a1c10" stroke-width="1.2"/><path d="M-12 -4 l-5 -5 M2 -4 l3 -6 M-4 4 l-4 5" stroke="#3a2a18" stroke-width="1.6" stroke-linecap="round"/></svg>`, p[0], p[1], { t: T_FELL + 0.6 + i * 0.25, pop: true }));
   el.firstElementChild.style.transform = `rotate(${[62, 48, 75][i]}deg)`; SFX("tick", T_FELL + 0.7 + i * 0.25); });
 UNIT("mb4", "allies", [1752, 858], "cavalry", { ech: "", t: T_WAITF + 0.1 });
 march("mb", [[1745, 874], [1726, 868]], T_WAITF + 0.2, 0.8, { trail: false, dust: false });
@@ -132,7 +133,7 @@ pulse("mb", T_WAITF + 1.1); pulse("mb3", T_WAITF + 1.25); pulse("mb4", T_WAITF +
 PLACE_LABEL("Ox Swamp", [1176, 940], T_OX + 0.3, { dy: 0, size: 24 });
 { const g = document.createElement("div");   // the cypress swamps glow faintly (as m2-2)
   g.style.cssText = `position:absolute;left:0;top:0;width:2880px;height:1620px;pointer-events:none;background:rgba(170,235,210,1);-webkit-mask-image:url(assets/blackriver_m_swamp.png);mask-image:url(assets/blackriver_m_swamp.png);-webkit-mask-size:100% 100%;mask-size:100% 100%;opacity:0`;
-  WORLD.insertBefore(g, OVL); tl.to(g, { opacity: 0.24, duration: 0.8 }, T_OX); tl.to(g, { opacity: 0, duration: 1.2 }, T_OX + 2.6); }
+  WORLD.insertBefore(g, OVL); tl.to(g, { opacity: 0.13, duration: 0.8 }, T_OX); tl.to(g, { opacity: 0, duration: 1.2 }, T_OX + 2.6); }
 pulse("lg1", T_HALT + 0.3);
 B.caption("BY TRADITION", T_TRAD, T_TRAD + 3.0);
 march("lg1", [[1132, 848], [1096, 856]], T_TURN + 0.2, 1.0, { trail: false, dust: false });
@@ -145,14 +146,14 @@ quote("&ldquo;&hellip;as for this damned old fox, the devil himself could not ca
 tl.fromTo(TB.firstElementChild, { scale: 1 }, { scale: 1.15, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out", immediateRender: false }, T_DIFF + 0.2);
 B.caption("TARLETON'S OWN ACCOUNT", T_HIST, T_HIST + 3.0);
 const RNC = GD.bake.roads.find((r) => r.id === "nelson_camden").paths[0].slice().reverse().filter((q) => q[1] > -200 && q[1] < 1000);   // Camden road, north -> Richardson's
-UNIT("ex", "british", [330, 360], "cavalry", { ech: "", t: T_MSG + 0.05 });
-march("ex", [[330, 360], [380, 700], [424, 900], ...ROADSEG(430, 1060)], T_MSG + 0.3, T_BACK - T_MSG + 1.4, { trail: true, dustOp: 0.4, dustSize: 30 });
+UNIT("ex", "british", [326, 470], "cavalry", { ech: "", t: T_MSG + 0.05 });
+march("ex", [[326, 470], [380, 700], [424, 900], ...ROADSEG(430, 1060)], T_MSG + 0.3, T_BACK - T_MSG + 1.4, { trail: true, dustOp: 0.4, dustSize: 30 });
 pulse("lg1", T_BACK + 1.7);
-UNIT("su", "allies", [150, 330], "cavalry", { ech: "", name: "SUMTER", nameAt: T_SUMT + 0.1, t: T_SUMT });
-UNIT("po", "british", [110, 560], "infantry", { ech: "", t: T_POST + 0.1 });
-arw({ pts: [[160, 370], [150, 450], [124, 520]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
+UNIT("su", "allies", [190, 560], "cavalry", { ech: "", name: "SUMTER", nameAt: T_SUMT + 0.1, t: T_SUMT });
+UNIT("po", "british", [150, 790], "infantry", { ech: "", t: T_POST + 0.1 });
+arw({ pts: [[196, 600], [188, 680], [162, 750]], side: "carth", t: T_POST + 0.5, dur: 0.9, width: AW(0.88, 11) });
 // "Either way": the Legion turns north-west and rides off up the Camden road (fast); the messenger with them
-const AWAY = (x0) => [...ROADSEG(430, x0).reverse(), [424, 978], ...RNC.slice().reverse()];
+const AWAY = (x0) => [...ROADSEG(430, x0).reverse(), [424, 978], ...RNC.slice().reverse().filter((q) => q[1] > 560)];
 [["lg1", 1096], ["lg2", 1050], ["lg3", 990], ["ex", 1060]].forEach(([id, x0], i) => {
   march(id, AWAY(x0), T_EITHER + 0.1 + i * 0.25, END - T_EITHER - 0.6, { trail: id === "lg1", dustOp: 0.4, dustSize: 30 }); });
 pulse("mb", T_FREE + 0.15, 1.35); SFX("hit", T_FREE + 0.3);
