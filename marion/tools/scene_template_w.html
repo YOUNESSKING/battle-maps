@@ -18,6 +18,13 @@
     <style>
 @font-face { font-family: "Oswald"; font-weight: 500; src: url("assets/fonts/oswald-latin-500-normal.woff2") format("woff2"); }
 @font-face { font-family: "Oswald"; font-weight: 700; src: url("assets/fonts/oswald-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cinzel"; font-weight: 600; src: url("assets/fonts/cinzel-latin-600-normal.woff2") format("woff2"); }
+/* DATE PLATE (owner 2026-11-14, replaces the parchment scroll): warm charcoal plate, gold hairline + gold left bar, ivory Cinzel caps, sized to the current date */
+#date { width: auto !important; height: 100px; box-sizing: border-box; overflow: hidden; background: rgba(21,17,12,.85); border: 1px solid rgba(200,168,106,.55);
+        border-left: 5px solid #c8a86a; box-shadow: 0 10px 26px rgba(10,6,2,.5); z-index: 62; }
+#date .scroll, #date .roll { display: none !important; }
+#date .d { position: absolute; left: 0; top: 0; inset: auto; height: 100px; padding: 0 34px 0 30px; display: flex; align-items: center; justify-content: flex-start;
+           font-family: "Cinzel", Georgia, serif !important; font-weight: 600; font-size: 52px !important; letter-spacing: .07em; color: #efe3c8; white-space: nowrap; }
 @font-face { font-family: "Special Elite"; font-weight: 400; src: url("assets/fonts/special-elite-latin-400-normal.woff2") format("woff2"); }
     </style>
   </head>

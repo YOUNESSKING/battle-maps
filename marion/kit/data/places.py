@@ -52,9 +52,10 @@ WATEREE_COUNTY = [("Sumter", "Richland"), ("Kershaw", "Richland"), ("Kershaw", "
 SANTEE_N_EDGE = [(33.5860, -80.4800), (33.5700, -80.4600), (33.5500, -80.4480), (33.5391, -80.4420), (33.5300, -80.4440), (33.5150, -80.4400),
                  (33.4997, -80.4325), (33.4861, -80.4196), (33.4826, -80.3981), (33.4797, -80.3638), (33.4826, -80.3380), (33.4811, -80.3209),
                  (33.4826, -80.3037), (33.4904, -80.2865), (33.4969, -80.2694), (33.5012, -80.2522), (33.5040, -80.2265), (33.5091, -80.2093),
-                 (33.5219, -80.1964), (33.5277, -80.1750), (33.5284, -80.1320), (33.5291, -80.0805), (33.5298, -80.0290), (33.5298, -79.9500)]
+                 (33.5219, -80.1964), (33.5277, -80.1750), (33.5350, -80.1550), (33.5260, -80.1320), (33.5330, -80.1050), (33.5250, -80.0800),
+                 (33.5340, -80.0550), (33.5270, -80.0290), (33.5330, -80.0000), (33.5260, -79.9750), (33.5320, -79.9500), (33.5250, -79.9000), (33.5300, -79.8500), (33.5200, -79.7000)]   # r3: wobbled (no ruler edge)
 
-SWAMP_DAM = [(33.4950, -80.1740), (33.4950, -80.1460), (33.4470, -80.1460), (33.4470, -80.1740)]   # the Santee dam embankment strip (a modern ridge in the DEM): forced swamp
+SWAMP_DAM = [(33.5100, -80.1880), (33.5100, -80.1350), (33.4470, -80.1350), (33.4470, -80.1880)]   # the Santee dam embankment strip (a modern ridge in the DEM): forced swamp
 
 # the Charleston - Nelson's Ferry - Camden road (east bank of the Santee / Wateree after the ferry), the spine of the whole story
 ROAD_CHS_NEL = [CHS, (32.800, -79.948), (32.870, -79.990), (32.980, -80.030), (33.080, -80.030), MC, (33.250, -80.100), (33.330, -80.200),
@@ -76,7 +77,7 @@ ROAD_MCC_CAM = [MCCORD_N, (33.800, -80.690), (33.830, -80.600), (33.850, -80.520
 
 MAPS = {
     "lowcountry": dict(
-        s=0.8, ferry_scale=1.5, roads_k=1.4, label_k=1.1,   # baked for the wide opening framing (Charleston - Nelson's Ferry - Camden fits at s ~0.75-0.8)
+        s=0.8, ferry_scale=1.5, roads_k=1.4, label_k=1.1, meander_k=0.3,   # baked for the wide opening framing (Charleston - Nelson's Ferry - Camden fits at s ~0.75-0.8)
         water=dict(blur=3.0, pier=2, chan=3, island=1500, lake=20000),
         nhd=["Wateree River", "Broad River", "Saluda River", "Great Pee Dee River", "Little Pee Dee River", "Lynches River", "Black River",
              "Black Mingo Creek", "Pocotaligo River", "Edisto River", "North Fork Edisto River", "South Fork Edisto River", "Cooper River",
@@ -94,7 +95,7 @@ MAPS = {
         creeks=0,
         swamp=dict(on=["Santee 1780", "Congaree 1780", "Wateree 1780", "Wateree River", "Great Pee Dee River", "Lynches River", "Black River", "Black Mingo Creek",
                        "Pocotaligo River", "Edisto River", "Little Pee Dee River", "Waccamaw River", "Cooper River", "West Branch Cooper River"],
-                   hand=3.0, dist=2600, close=4, dry_south=[("Santee 1780", -80.400, -80.300, 33.30)], dry_north=[SANTEE_N_EDGE]),
+                   hand=3.0, dist=2600, close=4, dry_south=[("Santee 1780", -80.400, -80.150, 33.30)], dry_north=[SANTEE_N_EDGE]),
         towns={
             "charleston": ("Charleston", *CHS, 60, True, "N", 1670),   # r2: the most visible town; name snug beside it (no hand curve)
             "camden": ("Camden", *CAM, 38, True, "E", 1733),
@@ -122,7 +123,7 @@ MAPS = {
         ponds=[[(33.5452, -80.4458), (33.5440, -80.4472), (33.5416, -80.4492), (33.5390, -80.4503), (33.5370, -80.4509), (33.5345, -80.4507), (33.5327, -80.4499),
                 (33.5300, -80.4480), (33.5294, -80.4470), (33.5304, -80.4466), (33.5330, -80.4484), (33.5368, -80.4490), (33.5410, -80.4476), (33.5440, -80.4456)]],   # Scott's Lake
         creeks=0,
-        swamp=dict(on=["Santee 1780", "Halfway Swamp Creek", "wet0"], hand=4.0, dist=5200, close=10, dry_south=[("Santee 1780", -80.400, -80.300, 33.30)], dry_north=[SANTEE_N_EDGE], add=[SWAMP_DAM]),   # r2: Chicora 1920 = swamp on both banks below Nelson's
+        swamp=dict(on=["Santee 1780", "Halfway Swamp Creek", "wet0"], hand=4.0, dist=5200, close=10, dry_south=[("Santee 1780", -80.400, -80.150, 33.30)], dry_north=[SANTEE_N_EDGE], add=[SWAMP_DAM]),   # r3: bluff side to the dam line (the drowned south basin was upland: Ferguson, 1920); below the dam both banks = swamp (Chicora 1920)
         towns={
             "great_savannah": ("Great Savannah", *SAV, 7, False, "", 1754),     # Sumter's house (single house sprite)
             "eutaw": ("Eutaw Springs", *EUT, 7, False, "", 1781),               # the brick house by the springs
@@ -141,12 +142,12 @@ MAPS = {
         water=dict(blur=4.0, pier=3, chan=3, island=2000, lake=30000, nosea=True),
         nhd=["Black River", "Pocotaligo River", "Ox Swamp", "Tearcoat Branch", "Jacks Creek", "Pudding Swamp", "Halfway Swamp Creek"],
         county={"Santee 1780": SANTEE_COUNTY},
-        rivers=[("Santee 1780", 6.0, (33.30, 33.80, -80.80, -80.00)), ("Black River", 4.6, (33.45, 34.00, -80.40, -79.50)),
+        rivers=[("Santee 1780", 6.0, (33.30, 33.80, -80.80, -79.00)), ("Black River", 4.6, (33.45, 34.00, -80.40, -79.50)),
                 ("Pocotaligo River", 3.4, (33.60, 33.95, -80.40, -79.90)), ("Ox Swamp", 2.6, (33.66, 33.75, -80.25, -80.10)),
                 ("Tearcoat Branch", 2.4, (33.78, 33.90, -80.30, -80.10)), ("Jacks Creek", 2.2, (33.60, 33.70, -80.50, -80.38)),
                 ("Pudding Swamp", 2.2, (33.60, 33.90, -80.20, -79.90)), ("Halfway Swamp Creek", 2.2, (33.55, 33.75, -80.70, -80.50))],
         creeks=0,
-        swamp=dict(on=["Santee 1780", "Black River", "Pocotaligo River", "Ox Swamp", "Tearcoat Branch", "Jacks Creek", "Pudding Swamp"], hand=5.0, dist=2600, close=6, dry_north=[SANTEE_N_EDGE]),
+        swamp=dict(on=["Santee 1780", "Black River", "Pocotaligo River", "Ox Swamp", "Tearcoat Branch", "Jacks Creek", "Pudding Swamp"], hand=5.0, dist=2600, close=6, dry_north=[SANTEE_N_EDGE], add=[SWAMP_DAM]),
         towns={
             "kingstree": ("Kingstree", *KT, 22, True, "SE", 1732),
             "richardson": ("Richardson's", *RICH, 5, False, "", 1758),          # Gen. Richardson's plantation house (burns at m2-3: the glow is live)

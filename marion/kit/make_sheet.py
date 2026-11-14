@@ -9,7 +9,7 @@ out, frames = a[0], a[1:5]
 LAB = ["(a) lowcountry wide: the opening framing (Charleston - Nelson's Ferry - Camden road, red wagons, the two flags)",
        "(b) santee close, night 25 Aug 1780: Nelson's Ferry + the Great Savannah house, cypress swamp, Marion banner",
        "(c) blackriver close, 8 Nov 1780: Tarleton's Legion at Ox Swamp, Marion at Benbow's Ferry",
-       "(d) the continuous zoom lowcountry -> santee (INSET) mid-way"]
+       "(d) the continuous zoom lowcountry -> santee (INSET) mid-way, hook (spoken: \"seventeen eighty\")"]
 tiles = list(zip(frames, LAB))
 if ref:
     REF = "/home/user/battle-maps/reference/style-reference-living-map.mp4"; tmp = tempfile.mkdtemp()

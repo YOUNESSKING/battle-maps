@@ -3,6 +3,18 @@
 // (templates/clean_screen_v11.js) + 1c declutter + river-war additions (top-down gunboats / transports, bonfires, 1863 river). Inlined by tools/vx_inline.py.
 // SIDES (yorktown/MAP_BRIEF.md): Allies (Americans AND French) = BLUE "carth" + US 13-star / French royal flag; British + Germans = RED "rome" + the 1606 Union flag.
 const B = Battle();
+// DATE PLATE flow (owner 2026-11-14): only the current date line is in the flow, so the plate sizes to it; the plate appears on the first spoken date
+(() => { const box = document.getElementById("date"), tl = B.tl; let last = null; window.__datePlateShown = false;
+  gsap.set(box, { autoAlpha: 0 });
+  const orig = B.date;
+  B.date = (text, t, until, size) => { orig(text, t, until); const ds = box.querySelectorAll(".d"), d = ds[ds.length - 1];
+    if (last && last.d !== d) { tl.set(last.d, { position: "absolute" }, t); tl.to(last.d, { autoAlpha: 0, y: -60, duration: 0.22, ease: "power2.in" }, t); }
+    tl.set(d, { position: "relative" }, t);
+    if (!window.__datePlateShown) { window.__datePlateShown = true; tl.fromTo(box, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.4, immediateRender: false }, t); }
+    else tl.fromTo(box, { borderLeftColor: "#ead39a" }, { borderLeftColor: "#c8a86a", duration: 0.6, immediateRender: false }, t);
+    last = { d, t }; return d; };
+  window.__datePlateNow = (d) => { if (last && last.d !== d) gsap.set(last.d, { position: "absolute" }); d.style.position = "relative"; window.__datePlateShown = true; last = { d, t: 0 }; };
+})();
 const { at } = B;   // replaced by build_scene.py with the anchor-corrected at (measured sentence starts)
 const END = B.T.duration;
 const K = FXK(B);
@@ -295,7 +307,7 @@ const placeCard = (kick, txt, css, t, until, icon = "") => scr(`<div style="disp
 // already on screen at frame 0 (continuing scenes): kill the entry tween of a card/legend/flag; dateNow = the date scroll already showing (m1 kit)
 const now = (el) => { tl.getTweensOf(el).filter((tw) => tw.startTime() < 0.05).forEach((tw) => tw.kill()); gsap.set(el, { autoAlpha: 1, y: 0, x: 0, scale: 1 }); return el; };
 const dateNow = (text, until) => { const box = document.getElementById("date"); gsap.set(box, { autoAlpha: 1 });
-  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d);
+  const d = document.createElement("div"); d.className = "d"; d.textContent = text; d.style.fontSize = "32px"; box.appendChild(d); if (window.__datePlateNow) window.__datePlateNow(d);
   if (until != null) tl.to(d, { autoAlpha: 0, y: -14, duration: 0.35 }, until); return d; };
 // drop sound cues queued before t (e.g. a card re-shown at frame 0 of a continuing scene must not hit again)
 const dropCues = (t0, t1) => { window.SFX_CUES = (window.SFX_CUES || []).filter(([k, t]) => !(t >= t0 && t < t1)); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES)); };
@@ -1360,11 +1372,14 @@ const INSET = (map, o = {}) => { const A = YT.MAPS[YT.BASE], M = YT.MAPS[map], k
   onCam((s) => { const a = Math.max(0, Math.min(1, (s - s0) / (s1 - s0))); im.style.opacity = a.toFixed(3);
     // feathered edge while it grows in; once the frame lies inside the inset (s past s1) the edge is hard and everything under it is hidden
     const inside = CAM_X0 + x * s <= 4 && CAM_Y0 + y * s <= 4 && CAM_X0 + (x + w) * s >= 1916 && CAM_Y0 + (y + h) * s >= 1076;
-    const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 78%,transparent 100%)" : "none";
+    const feather = a < 1 || !inside ? "radial-gradient(ellipse 50% 50% at 50% 50%,#000 52%,transparent 100%)" : "none";
     im.style.webkitMaskImage = im.style.maskImage = feather;
     const top = INSETS.filter((r) => parseFloat(r.el.style.opacity) >= 0.999 && (r.el.style.maskImage || r.el.style.webkitMaskImage || "none") === "none").pop();   // r3: the browser stores "1", not "1.000"
     const hideBelow = top ? INSETS.indexOf(top) : -1;
     [R1, R2].forEach((r) => { r.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; });
+    // r3: while a nested map grows in, the outer map is magnified 2-4x past the scale it was baked for: soften it (its rut pairs and
+    // carved names would read as doubled roads beside the inset's own)
+    if (rec === INSETS[0]) { const b = Math.min(1.4, Math.max(0, (s - s0 * 0.85) / (s1 - s0 * 0.85)) * 1.4); [R1, R2].forEach((r) => { r.style.filter = b > 0.01 ? `blur(${b.toFixed(2)}px)` : ""; }); }
     INSETS.forEach((r, i) => { if (i < hideBelow) r.el.style.visibility = "hidden"; else r.el.style.visibility = "visible"; });
     document.querySelectorAll(".lv-water,.lv-clouds").forEach((l) => { l.style.visibility = hideBelow >= 0 ? "hidden" : "visible"; }); });
   return rec; };
