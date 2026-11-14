@@ -33,8 +33,8 @@ const T_PACK = at(P2, "The riders were packed so tight"), T_NARROW = at(P2, "on 
 LIVING({ clouds: 0.08, light: "afternoon", lightK: 0.25 });
 LIGHT("dusk", T_30 - 0.3, 4.0, 0.36);   // 30 Aug "very hot", at sunset: warm dusk light (the only weather)
 const FER = PLACE("parkers_ferry"), RY = 808;
-const C0 = [1468, 842, 1.5], C1 = [1470, 830, 2.4], C2 = [1512, 832, 3.0], C3 = [1515, 848, 3.0], C4 = [1482, 846, 2.9];   // close enough that the ambush reads (~100 px between boxes)
-camera([[0, ...C0], [T_PF - 0.2, 1462, 836, 1.7], [T_ED + 1.2, ...C1, "power2.inOut"], [T_HID + 2.2, ...C2, "power2.inOut"], [T_CHARGE, 1515, 834, 3.0],
+const C0 = [1468, 842, 2.25], C1 = [1470, 830, 2.4], C2 = [1512, 832, 3.0], C3 = [1515, 848, 3.0], C4 = [1482, 846, 2.9];   // critic r3: frame 0 already in the close look (no wide->close art pop at the cut); close enough that the ambush reads (~100 px between boxes)
+camera([[0, ...C0], [T_PF - 0.2, 1464, 838, 2.3], [T_ED + 1.2, ...C1, "power2.inOut"], [T_HID + 2.2, ...C2, "power2.inOut"], [T_CHARGE, 1515, 834, 3.0],
   [T_EVERY - 0.4, 1525, 838, 3.15], [T_COUNT, ...C3, "power2.inOut"], [T_BIG + 0.2, 1512, 848, 3.0], [T_BIG + 2.6, ...C4, "power2.inOut"], [END, 1484, 846, 2.9]]);
 dateNow("JUNE 1781", T_30 - 0.05);
 B.date("30 AUGUST 1781", T_30 + 0.05, null, 32); SFX("tick", T_30 + 0.15);
@@ -108,7 +108,7 @@ tl.to(B.units.fr.el, { autoAlpha: 0, duration: 0.45 }, T_20 + 0.3);
     <div style="font-size:26px;letter-spacing:.34em;color:#d8c9a3;text-align:center">BY MARION'S OWN COUNT</div>
     ${row("gb_flag_1606.png", "LOYALISTS", `<span class="p1">~20 KILLED</span><span class="p2"> &middot; ~80 WOUNDED</span>`, "#ff8a80")}
     ${row("moultrie_flag.png", "MARION", `<span class="p3">1 KILLED</span><span class="p4"> &middot; 3 WOUNDED</span>`, "#9fc0ea")}</div>`,
-    "left:0;right:0;top:650px;display:flex;justify-content:center;transform-origin:50% 30%;");
+    "left:0;right:0;top:700px;display:flex;justify-content:center;transform-origin:50% 30%;");   // critic r3: below the red reserve at the ferry
   const rows = CC.querySelectorAll(".cr"), P = (c) => CC.querySelector(c); gsap.set([rows[0], rows[1], P(".p2"), P(".p4")], { autoAlpha: 0 });
   slam(CC, T_COUNT - 0.05, { from: 1.4, shake: 3, until: T_GUN + 0.4 });   // r2 (e): the last row (40.3 s) holds >= 2.5 s
   const IN = (el, t) => { tl.fromTo(el, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.28, immediateRender: false }, t); SFX("tick", t + 0.05); };

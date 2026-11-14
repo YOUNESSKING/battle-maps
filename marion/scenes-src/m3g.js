@@ -49,7 +49,8 @@ const CARD = (big, col, t, until, o = {}) => { const el = scr0(`<div style="padd
 //   along the road in column (militia in the lead, the Continentals behind)
 const RL = [["r1", [1648, 1186]], ["r2", [1642, 1230]], ["r3", [1646, 1276]]];
 RL.forEach(([id, p]) => UNIT(id, "british", p, "infantry", { ech: "" }));
-SIDEFLAG("gb", [1680, 1314]);   // ~80 px behind the red line, south of the house
+SIDEFLAG("gb", [1680, 1314], 0, T_CAMP);   // ~80 px behind the red line, south of the house
+SIDEFLAG("gb", [1760, 1250], T_CAMP + 0.3);   // critic r3: after the charge, behind the house (off the hatched camp)
 const COL = { m: [1556, 1215], p: [1528, 1205], a2: [1500, 1193], a1: [1472, 1181], c1: [1444, 1170], c2: [1416, 1160], c3: [1388, 1150] };
 const L1 = { a1: [1568, 1164], a2: [1574, 1210], m: [1580, 1256], p: [1586, 1300] }, L2 = { c1: [1470, 1174], c2: [1478, 1220], c3: [1486, 1266] };
 Object.entries(COL).forEach(([id, q]) => UNIT(id, "allies", q, "infantry", { ech: "", ...(id === "p" ? { name: "PICKENS", nameAt: T_PICK + 0.1 } : {}) }));
@@ -61,7 +62,7 @@ PLACE_LABEL("Eutaw Springs", H, T_EUTAW + 0.1, { dy: -64, size: 26 });
 // "Marion stood in a real battle line": the column deploys (militia line in front, Continentals behind); Marion's banner on his box
 Object.entries({ ...L1, ...L2 }).forEach(([id, q]) => { const c = [COL[id][0] + 24, COL[id][1] + 9], back = L1[id] ? [q[0] - 34, q[1]] : q;
   march(id, [c, back], T_LINE, 1.8, { dustSize: 30, dustOp: 0.35, trail: false }); });
-BANNER("marion", "Francis Marion", "sc", "m", T_LINE + 0.4, { side: [-110, 40] });   // stake in the gap between the two lines, off Pickens and the militia boxes
+BANNER("marion", "Francis Marion", "sc", "m", T_LINE + 0.4, { side: "sw" });   // critic r3: stake on the south wing ("on the right")
 // "Greene put his militia in front": his banner on the second line; the militia line steps forward
 BANNER("greene", "Nathanael Greene", "us", "c1", T_GREENE + 0.1, { side: "ne" });   // up-right: clear of the date plate
 Object.entries(L1).forEach(([id, q], i) => march(id, [[q[0] - 34, q[1]], q], T_FRONT + 0.1 + i * 0.06, 1.0, { dust: false, trail: false }));

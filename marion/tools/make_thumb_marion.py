@@ -113,7 +113,7 @@ def save(img, name):
 
 # ---------- A: SWAMP FOX (Ranney 1850 + White's Marion)
 rn = Image.open(M + "arch_ranney.jpg").convert("RGB")             # 1613x1112, frame cropped off
-rn = rn.crop((300, 200, 300 + 1313, 200 + 739)).resize((W, H), Image.LANCZOS)
+rn = rn.crop((250, 210, 250 + 1290, 210 + 726)).resize((W, H), Image.LANCZOS)
 rn = ImageEnhance.Brightness(ImageEnhance.Color(rn).enhance(0.6)).enhance(0.72)
 rn = ImageEnhance.Contrast(rn).enhance(1.1)
 A = rn.convert("RGBA"); shade(A, "left", 640)
@@ -125,8 +125,7 @@ pA = save(A, "A_SWAMP_FOX")
 mp = Image.open(T + "frame_m2b_21s.jpg").convert("RGBA")
 # the scene's small Union flag under Tarleton's banner shows St Patrick's red saltire (post-1801): our 1606 flag on top
 mp.alpha_composite(Image.open(M + "gb_flag_1606.png").convert("RGBA").resize((41, 19), Image.LANCZOS), (660, 494))
-# hide Marion's small map banner (lithograph head) so only one Marion face is on the thumbnail
-mp.paste(mp.crop((1290, 0, 1460, 215)), (1290, 215))
+# (Marion's small map banner stays: a patch would cut the river and the road; its head is unreadable at feed size)
 mp = mp.convert("RGB").resize((W, H), Image.LANCZOS)  # full frame x0.667
 mp = ImageEnhance.Brightness(mp).enhance(0.88)
 B = mp.convert("RGBA")

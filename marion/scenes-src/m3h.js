@@ -33,11 +33,11 @@ const T_INS_END = T_THIRD - 0.05;   // the archive insert ends with "...by name.
 LIVING({ clouds: 0.1 });
 const C0 = [1330, 975, 1.05], C1 = [1350, 960, 0.98], CW = [1420, 860, 0.72], CW2 = [1400, 870, 0.74], CS = [1395, 900, 0.8], CE = [1420, 880, 0.75];
 camera([[0, ...C0], [T_NEXT - 0.3, ...C1], [T_FELL - 0.6, ...CW, "power2.inOut"], [T_INS_END, 1415, 862, 0.725], [T_HOLD + 1.5, ...CW2],
-  [T_SHUT + 3.2, 1405, 868, 0.74], [T_TIME + 1.5, ...CS, "power2.inOut"], [T_SO - 0.4, 1398, 895, 0.8], [T_SO + 1.6, ...CE, "power2.inOut"], [END, 1425, 878, 0.76]]);
+  [T_SHUT + 3.2, 1405, 868, 0.74], [T_TIME + 1.5, ...CS, "power2.inOut"], [T_OSCAR, ...CS], [T_S1 - 0.3, 1330, 925, 0.88, "sine.inOut"], [T_SO - 0.4, 1335, 920, 0.88], [T_SO + 1.6, ...CE, "power2.inOut"], [END, 1425, 878, 0.76]]);
 // date plate: 8 SEPTEMBER 1781 (from m3g) -> 9 SEPTEMBER 1781 ("the next evening", under the insert) -> 1781 ("By the end of seventeen eighty-one")
 dateNow("8 SEPTEMBER 1781", T_NEXT + 0.25);
 B.date("9 SEPTEMBER 1781", T_NEXT + 0.3, T_1781 - 0.08, 32); SFX("tick", T_NEXT + 0.4);
-B.date("1781", T_1781 + 0.05, null, 32); SFX("tick", T_1781 + 0.15);
+B.date("LATE 1781", T_1781 + 0.05, null, 32); SFX("tick", T_1781 + 0.15);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // helpers (as m1d2 / m3a / m3f)
 const scr0 = (html, css) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;" + css; el.innerHTML = html; SCN.insertBefore(el, document.getElementById("credit")); gsap.set(el, { autoAlpha: 0 }); return el; };
@@ -51,8 +51,8 @@ const EUT = PLACE("eutaw_springs");   // 1328,934
 UNIT("rs", "british", [EUT[0] + 22, EUT[1] + 4], "infantry", { ech: "XX" });
 UNIT("gr", "allies", [EUT[0] - 120, EUT[1] - 20], "infantry", { ech: "XX" });
 UNIT("mb", "allies", [EUT[0] - 40, EUT[1] + 62], "cavalry", { ech: "" });
-const FL_GB = SIDEFLAG("gb", [EUT[0] + 82, EUT[1] + 18]);    // ~60 px behind the red line (east), off the box
-const FL_US = SIDEFLAG("us", [EUT[0] - 190, EUT[1] - 36]);   // ~60 px behind Greene's box (west)
+const FL_GB = SIDEFLAG("gb", [EUT[0] + 130, EUT[1] + 18]);   // critic r3: clear of the red box (east, behind the line)
+const FL_US = SIDEFLAG("us", [EUT[0] - 260, EUT[1] - 40]);   // critic r3: clear of Greene's box (west, behind the line)
 // casualty card (both sides spoken; each row on its numbers)
 { const row = (flag, side, txt, col) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:12px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">
     <div style="font-size:38px;letter-spacing:.1em;min-width:250px">${side}</div><div style="font-size:44px;letter-spacing:.04em;color:${col}">${txt}</div></div>`;
@@ -70,11 +70,11 @@ const CHS = NUDGE([1586, 1405], { s: 0.73 });   // just north of the baked Charl
 const BACKR = [[EUT[0] + 22, EUT[1] + 4], [1395, 985], [1460, 1050], [1520, 1105], [1556, 1190], [1570, 1290], CHS];
 march("rs", BACKR, T_NEXT + 0.6, T_THANK - T_NEXT + 0.6, { dustOp: 0.4, trail: false });
 tl.to(FL_GB, { autoAlpha: 0, duration: 0.4 }, T_NEXT + 0.5);
-const FL_GB2 = SIDEFLAG("gb", [CHS[0] + 70, CHS[1] + 26], T_THANK + 1.0);   // the Union flag at Charleston (behind the box, off the name)
+const FL_GB2 = SIDEFLAG("gb", [CHS[0] + 120, CHS[1] + 40], T_THANK + 1.0);   // the Union flag at Charleston (behind the box, off the name)
 // ---------------------------------------------------------------------------------------------------------------------------------
 // after the insert: method card THE SWAMP FOX METHOD (1 + 2 lit; 3 lights on "of his method")
 GG.METHOD = ["STRIKE IN THE DARK", "LET THE SWAMP FIGHT", "HIT THE CHAIN WITH THE ARMY"]; GG.METHOD_TITLE = "THE SWAMP FOX METHOD";
-{ const MC = GG.method(3, T_INS_END + 0.05, T_TOG - 0.25, [T_INS_END + 0.05, T_INS_END + 0.05, T_METHOD + 0.1]); MC.querySelector(".inner").style.background = "rgba(18,16,12,0.97)"; MC.style.top = "210px"; }
+{ const MC = GG.method(3, T_INS_END + 0.05, T_TOG - 0.25, [T_INS_END + 0.05, T_INS_END + 0.05, T_METHOD + 0.1]); MC.querySelector(".inner").style.background = "rgba(18,16,12,0.97)"; MC.style.top = "170px"; }   // r3: clears the Eutaw boxes
 // "Together with a real army": Marion rides up beside Greene, both glow
 march("mb", [[EUT[0] - 40, EUT[1] + 62], [EUT[0] - 80, EUT[1] + 58], [EUT[0] - 112, EUT[1] + 52]], T_TOG + 0.1, 1.4, { dustOp: 0.4, trail: false });
 GLOW("gr", T_TOG + 0.3, 2, BLUEGLOW); GLOW("mb", T_TOG + 0.5, 2, BLUEGLOW);
@@ -102,7 +102,12 @@ STRIPES(BLUEP, REDP, T_SHUT + 0.05).forEach((d, i) => { d.style.filter = i ? "br
 // "It had been a cruel civil war between neighbors": the light cools a little (calm, no action)
 LIGHT("dusk", T_CIVIL + 0.2, 3.0, 0.22);
 // "Marion was a man of his time": his banner by the Santee
-const BM = BANNER("marion", "Francis Marion", "sc", "mb", T_TIME + 0.05, { side: "ne", until: T_SO - 0.3 });
+const BM = BANNER("marion", "Francis Marion", "sc", "mb", T_TIME + 0.05, { side: "ne", until: T_S1 - 0.3 });   // r3: leaves before the method card (it would cover the banner)
+// "Oscar, the enslaved man who rode beside him": a small unlabelled rider dot glows beside Marion's box (no text)
+{ const MB = B.units.mb ? [EUT[0] - 112, EUT[1] + 52] : null; const od = pinS(GG.pin(`<div style="width:13px;height:13px;border-radius:50%;background:#1f4fc4;border:2px solid #f3eee2;box-shadow:0 0 10px rgba(150,190,255,.9)"></div>`, MB[0] - 44, MB[1] + 4, {}));
+  tl.fromTo(od, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, at(E1, "rode beside him"));
+  tl.fromTo(od.firstElementChild, { boxShadow: "0 0 4px rgba(150,190,255,.4)" }, { boxShadow: "0 0 16px rgba(170,205,255,1)", duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, at(E1, "rode beside him") + 0.3);
+  tl.to(od, { autoAlpha: 0, duration: 0.4 }, T_SO - 0.2); }
 // "was honored at the Capitol only in two thousand six": one small caption, restrained
 { const CAP = scr0(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.92);border-left:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;font-size:30px;letter-spacing:.14em;box-shadow:0 12px 30px rgba(0,0,0,.5)">
     OSCAR MARION <span style="color:#c9b48a">&middot; HONORED AT THE CAPITOL, 2006</span></div>`, "left:0;right:0;top:790px;display:flex;justify-content:center;");
