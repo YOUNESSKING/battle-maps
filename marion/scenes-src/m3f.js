@@ -61,6 +61,9 @@ march("fr2", [[1346, 892], [1362, 876], [1376, 864]], 0.2, T_PF, { dustSize: 26,
 march("ri", [[1318, 916], [1334, 900], [1348, 888]], 0.3, T_PF, { dust: false, trail: false });
 march("rg", [[1292, 940], [1306, 926], [1320, 913]], 0.3, T_PF, { dust: false, trail: false });
 SIDEFLAG("gb", [1270, 880]);
+// critic r3: once Fraser's horse has crossed, the reserve closes up toward the ferry (clear of the casualty card, which sits below it)
+march("ri", [[1348, 888], [1368, 870], [1388, 853]], T_CHARGE + 0.4, 2.4, { dust: false, trail: false });
+march("rg", [[1320, 913], [1344, 892], [1366, 872]], T_CHARGE + 0.6, 2.4, { dust: false, trail: false });
 // "Parker's Ferry" (the baked landings + flatboat) / "the Edisto River" (carved name, beside the water north of the crossing)
 PLACE_LABEL("Parker's Ferry", FER, T_PF + 0.1, { dx: 96, dy: 20, size: 26 });   // east-south of the landing, off the red column
 RIVER("edisto", "Edisto", T_ED + 0.15, { s: 2.4, near: [1418, 760], side: "left", hw: 5, face: "#f4f7ef", size: 34 });
