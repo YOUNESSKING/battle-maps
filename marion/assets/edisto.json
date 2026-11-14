@@ -1,0 +1,19 @@
+{
+ "name": "edisto",
+ "center": [
+  32.86,
+  -80.4
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  578772,
+  844893
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 16.05,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

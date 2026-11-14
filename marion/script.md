@@ -35,7 +35,7 @@ His name was Francis Marion. To keep the war alive, he would strike only in the 
 ## BACKGROUND (~1:00 – ~1:20)
 
 [ARCHIVE: ~18 s: headline card "AUGUST 1780 / AMERICAN ARMY ROUTED AT CAMDEN"; J. B. White's painting of Marion's camp (3D depth, projector frame, label PAINTED LONG AFTER HIS DEATH); Ranney's "Marion Crossing the Pedee" (3D depth, projector frame, label PAINTED IN 1850); cuts every ~3 s; no birth or career cards]
-Marion was forty-eight, a small, lean planter from the Santee, and a Continental officer since the war began. A few weeks before Camden, he had ridden into the American camp with about twenty men and boys in small black leather caps. An American officer wrote that they looked so ridiculous, the soldiers could hardly keep from laughing. The general was glad to send them away.
+Marion was forty-eight, a small, lean planter from the Santee, and a Continental officer since the war began. That summer, he had ridden into the American camp with about twenty men and boys in black leather caps, so ragged that the soldiers laughed. The general was glad to send them away.
 
 ---
 
@@ -59,7 +59,7 @@ Cornwallis struck back. In September he sent Major James Wemyss with the Sixty-t
 [MAP: m1-6 | `lowcountry` wide: unfortunately for Wemyss: on "burned houses" small grey smoke rises over Williamsburg, then blue dots gather toward Marion's box on "came back"; the blue box rides south fast (dust) on "sixty miles" (caption 60 MILES)]
 Unfortunately for Wemyss, the burned houses belonged to the men who had followed Marion. Instead of giving up, they came back to him, angrier than before. Within days he was riding south again, about sixty miles at a forced march.
 
-[MAP: m1-7 | `blackriver` close, NIGHT (dark, no moon): day-by-day clock: date scroll 28 SEP on "twenty-eighth of September"; BLACK MINGO creek (carved name on the word); a plank bridge over the creek a mile above SHEPHERD'S FERRY (label on the word); blue column on the bridge; on "alarm gun" one red musket flash at the Loyalist camp; the red box forms up in an open old field (no farms/fields art: a plain clearing in the woods); a red volley flash pushes the front blue box back; a second blue box swings round the flank on "the side"; red breaks into the swamp (fast move, fade 0.4 s); battle mark on "broke"]
+[MAP: m1-7 | `blackmingo` close, NIGHT (dark, no moon): day-by-day clock: date scroll 28 SEP on "twenty-eighth of September"; BLACK MINGO creek (carved name on the word); a plank bridge over the creek a mile above SHEPHERD'S FERRY (label on the word); blue column on the bridge; on "alarm gun" one red musket flash at the Loyalist camp; the red box forms up in an open old field (no farms/fields art: a plain clearing in the woods); a red volley flash pushes the front blue box back; a second blue box swings round the flank on "the side"; red breaks into the swamp (fast move, fade 0.4 s); battle mark on "broke"]
 Then came the nights. On the twenty-eighth of September, near midnight, Marion's men crossed a plank bridge over Black Mingo Creek, a mile above a Loyalist camp. Someone in the camp heard them and fired an alarm gun. The Loyalists were waiting in an open field, and their first volley drove Marion's front back. But a second party came in from the side, and the Loyalists broke and ran into the swamp. Marion took the Loyalist commander's horse for his own.
 
 [MAP: m1-8 | `blackriver` close, NIGHT: date scroll 25 OCT on "twenty-fifth of October"; TEARCOAT SWAMP label on the word, in the fork of the Black River (carved river name); a red Loyalist box (~cards) at a small clearing; three blue arrows (solid, thin) converge from left, centre and right on "three columns"; one pistol flash on "a pistol shot"; all three hit at once (battle mark, hit); red scatters into the swamp; small grey box of captured horses + muskets turns blue on "horses"]
@@ -68,7 +68,7 @@ On the twenty-fifth of October, he found more Loyalists camped at Tearcoat Swamp
 [MAP: m1-9 | `blackriver` close: casualty card: LOYALISTS 6 KILLED · 14 WOUNDED · 23 CAPTURED / MARION: NONE LOST; then on "joined Marion" several red dots turn blue and walk to Marion's box; result + method card: THE SWAMP FOX METHOD · 1. STRIKE IN THE DARK]
 Six Loyalists were killed, fourteen wounded, and twenty-three captured, along with their horses, muskets and baggage. Marion did not lose a man. And soon afterwards, most of the men he had beaten that night came over and joined him. That was the first part of his method. Never meet the enemy's strength in daylight. Strike in the dark, where he sleeps.
 
-[ARCHIVE: insert (archive_inserts.json) in m1-9 from "Six Loyalists" to "joined him": ~8 s: Ranney's Marion Crossing the Pedee (detail, 3D depth, projector frame, PAINTED IN 1850)]
+> ARCHIVE INSERT (archive_inserts.json): in m1-9 from "Six Loyalists" to "joined him": ~8 s: Ranney's Marion Crossing the Pedee (detail, 3D depth, projector frame, PAINTED IN 1850)
 
 [MAP: m1-10 | `lowcountry` wide, cliffhanger: Cornwallis banner at Camden (camera pushes in); a red cavalry box with a ? tag rides out of Camden toward the Santee; date scroll NOV 1780]
 Cornwallis had seen enough. He needed a hunter. And he had the most feared one in America.
@@ -159,7 +159,7 @@ Nine days later, at Eutaw Springs, Marion stood in a real battle line. Greene pu
 [MAP: m3-14 | `lowcountry` wide: casualty card (both sides spoken): BRITISH 693 KILLED, WOUNDED & MISSING / AMERICANS 522; date scroll 9 SEP: the red army leaves EUTAW toward CHARLESTON (fast move); pay-off: card on the spoken words "THANKED HIM BY NAME"; the method card adds 3. HIT THE CHAIN WITH THE ARMY; small FORM 2 stripes (~2.5 s) on "Charleston": red only around Charleston, blue across the rest of the state]
 The British lost six hundred and ninety-three men killed, wounded or missing. The Americans lost five hundred and twenty-two. Neither side could call it a clean win. But the next evening, the British army left Eutaw Springs and fell back toward Charleston. Congress thanked Marion by name. That was the third part of his method. Alone, a partisan can only raid. Together with a real army, he can cut the enemy's chain one link at a time, until there is nothing left to hold.
 
-[ARCHIVE: insert (archive_inserts.json) in m3-14 from "Congress thanked" to "by name": ~6 s: John Blake White's painting of Marion's camp (3D depth, projector frame, PAINTED LONG AFTER HIS DEATH)]
+> ARCHIVE INSERT (archive_inserts.json): in m3-14 from "Congress thanked" to "by name": ~6 s: John Blake White's painting of Marion's camp (3D depth, projector frame, PAINTED LONG AFTER HIS DEATH)
 
 ---
 
