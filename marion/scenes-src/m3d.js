@@ -7,7 +7,7 @@
 //   spoken words; James's rival version = rosin ball, logged, not shown); the six-pounder drove the men off the roof (fires ONCE, visible, the
 //   locked K.gun / K.impact sound); white flag; no blood shed; dinner for the officers of both sides; Marion protected a Loyalist prisoner.
 // congaree map px: the Motte house 1391,726 (baked painted house: covered by the LIVE mansion + works here), the farmhouse 1459,775 (baked).
-// Frame 0 = cut from m3c's last frame: its Greene quote card (2) is carried (payoff line, lesson 2e) and fades at ~2.2 s; date plate 24 APRIL 1781 (m3c).
+// Frame 0 = cut from m3c's last frame: its Greene quote card (2) is carried (payoff line, lesson 2e) and fades at T_2W + 0.3 (critic r3); date plate 24 APRIL 1781 (m3c).
 // m3-7 (day): blue columns ride in on the farm road from the south-east; "Two weeks later": 8 MAY 1781 (24 Apr + 14 days; FACT_NOTES 8-12 May);
 //   "Fort Motte": label; "big new mansion": the mansion pulses; "a trench": the ditch is dug round it; "a high wall of earth": the parapet rises;
 //   "Rebecca Motte": a cream figure + name tag at the house; "an old farmhouse nearby": she walks to the farmhouse; "six-pounder": the kit gun
@@ -72,7 +72,7 @@ const DOT = (p, col, t, r = 5, until) => { const el = GG.pin(`<div style="width:
   const QC = scr0(`<div style="max-width:1560px;padding:24px 50px 22px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55)">
     ${ln("&ldquo;To fight the enemy bravely with the prospect of victory is nothing,")}${ln("but to fight with intrepidity under the constant impression of a defeat &hellip;")}${ln("is a talent peculiar to yourself.&rdquo;", true)}
     <div style="font-size:19px;font-weight:700;letter-spacing:.24em;color:#9fc0ea;margin-top:12px">NATHANAEL GREENE TO MARION &middot; 24 APRIL 1781</div></div>`, "left:0;right:0;top:640px;display:flex;justify-content:center;");
-  gsap.set(QC, { autoAlpha: 1 }); tl.to(QC, { autoAlpha: 0, duration: 0.4 }, 2.2); }
+  gsap.set(QC, { autoAlpha: 1 }); tl.to(QC, { autoAlpha: 0, duration: 0.4 }, T_2W + 0.3); }
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the LIVE mansion + works (map px, scale with the map). Oblique view: back parapet, the house, front parapet; ditch outside.
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -191,15 +191,21 @@ tl.to(RM, { autoAlpha: 0, duration: 0.4 }, T_NOON);
   tl.fromTo(g, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, immediateRender: false }, T_SUN); tl.to(g, { autoAlpha: 0, duration: 1.5 }, T_CLIMB); }
 // "the dry shingle roof caught fire": three fire arrows arc from Lee's men onto the roof
 const ROOF = [SV(-6, -20), SV(2, -21), SV(9, -20)];
-const ARCF = (a, b, t, h) => { const p = document.createElementNS(NSs, "path"), m = [(a[0] + b[0]) / 2, Math.min(a[1], b[1]) - h];
-  p.setAttribute("d", `M${a[0]} ${a[1]} Q${m[0]} ${m[1]} ${b[0]} ${b[1]}`); Object.entries({ fill: "none", stroke: "#ffcf7a", "stroke-width": 1.5, "stroke-linecap": "round" }).forEach(([k, v]) => p.setAttribute(k, v)); OVL.appendChild(p);
-  const L = p.getTotalLength(); gsap.set(p, { strokeDasharray: L, strokeDashoffset: L, opacity: 0 });
-  tl.set(p, { opacity: 0.95 }, t); tl.to(p, { strokeDashoffset: 0, duration: 0.6, ease: "none" }, t); tl.to(p, { opacity: 0, duration: 0.5 }, t + 0.9);
-  const f = pinS(GG.pin(`<div style="width:24px;height:24px;border-radius:50%;background:radial-gradient(circle,#fff3b0 0%,#ffa030 45%,rgba(255,80,0,0) 75%)"></div>`, a[0], a[1], {}));
-  tl.set(f, { autoAlpha: 1 }, t); const n = 12; for (let k = 1; k <= n; k++) { const u = k / n, x = (1 - u) * (1 - u) * a[0] + 2 * u * (1 - u) * m[0] + u * u * b[0], y = (1 - u) * (1 - u) * a[1] + 2 * u * (1 - u) * m[1] + u * u * b[1];
-    tl.to(f, { left: x, top: y, duration: 0.6 / n, ease: "none" }, t + (k - 1) * 0.6 / n); } tl.to(f, { autoAlpha: 0, duration: 0.3 }, t + 0.65); };
-const SHOOT_FROM = [[1442, 760], [1448, 766], [1436, 768]];
-ROOF.forEach((r, k) => ARCF(SHOOT_FROM[k], r, T_ROOF + 0.1 + k * 0.4, 26));
+// (pinned map-scaled SVG above the mansion pin, so the arcs are not hidden under the fort art; critic r3: from Lee's box, stroke ~3 + pale edge)
+const ARCF = (a, b, t, h) => { const m = [(a[0] + b[0]) / 2, Math.min(a[1], b[1]) - h], bx = b[0] - a[0], by = b[1] - a[1], mx = m[0] - a[0], my = m[1] - a[1];
+  const D = `M0 0 Q${mx} ${my} ${bx} ${by}`, K = 1 / C2[2];
+  const g = GG.pin(`<svg width="2" height="2" viewBox="0 0 2 2" style="display:block;overflow:visible"><path class="o" d="${D}" fill="none" stroke="rgba(255,248,225,.9)" stroke-width="${(5.4 * K).toFixed(2)}" stroke-linecap="round"/>
+    <path class="c" d="${D}" fill="none" stroke="#ff9a2a" stroke-width="${(3 * K).toFixed(2)}" stroke-linecap="round"/></svg>`, a[0], a[1], {});
+  gsap.set(g, { autoAlpha: 1 }); const ps = g.querySelectorAll("path"), L = ps[0].getTotalLength();   // the arc draws on behind the fireball
+  ps.forEach((q) => { gsap.set(q, { strokeDasharray: L, strokeDashoffset: L }); tl.to(q, { strokeDashoffset: 0, duration: 0.6, ease: "none" }, t); });
+  tl.to(g, { autoAlpha: 0, duration: 0.7 }, t + 0.9);
+  const pt = (u) => [(1 - u) * (1 - u) * a[0] + 2 * u * (1 - u) * m[0] + u * u * b[0], (1 - u) * (1 - u) * a[1] + 2 * u * (1 - u) * m[1] + u * u * b[1]];
+  [[34, 1, 0], [22, 0.6, 0.06], [14, 0.35, 0.12]].forEach(([sz, op, lag]) => {   // the fireball + a short fading trail
+    const f = pinS(GG.pin(`<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:radial-gradient(circle,#fff6c8 0%,#ffb030 42%,rgba(255,80,0,0) 74%)"></div>`, a[0], a[1], {}));
+    tl.set(f, { autoAlpha: op }, t + lag); const n = 12; for (let k = 1; k <= n; k++) { const q = pt(k / n); tl.to(f, { left: q[0], top: q[1], duration: 0.6 / n, ease: "none" }, t + lag + (k - 1) * 0.6 / n); }
+    tl.to(f, { autoAlpha: 0, duration: 0.3 }, t + lag + 0.62); }); };
+const LEEP = [FARM[0] + 22, FARM[1] - 6];
+ROOF.forEach((r, k) => ARCF([LEEP[0] - 4 + k * 3, LEEP[1] - 4], r, T_ROOF + 0.1 + k * 0.4, 30));
 // the roof burns: flames along the roof, the char spreads, a glow + smoke column
 const T_IGN = T_ROOF + 0.9;
 const FLAME = (k) => `<div><svg width="${26 * k}" height="${32 * k}" viewBox="-11 -16 22 26" style="display:block;overflow:visible;filter:drop-shadow(0 0 5px rgba(255,140,40,.9))"><path d="M0 -15 C6 -7 9 -2 7 4 C5 9 -5 9 -7 4 C-9 -2 -4 -6 -2 -11 C-1 -6 1 -4 2 -6 C3 -9 1 -12 0 -15 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width="1.2"/><path d="M0 -6 C3 -2 4 1 2 4 C0 6 -3 5 -3 2 C-3 -1 -1 -3 0 -6 Z" fill="#ffe08a"/></svg></div>`;
@@ -220,6 +226,8 @@ tl.fromTo(RFIG.querySelectorAll(".rf"), { rotation: -8 }, { rotation: 8, transfo
 // "the six-pounder drove them off the roof": the gun fires ONCE (visible: flash, shot arc, impact on the gable; locked K.gun / K.impact sound)
 const GABLE = SV(15, -18);
 shoot([GUN[0] - 6, GUN[1] - 2], GABLE, T_GUN + 0.15, { dur: 0.5, width: 1.0, h: 10, r: 6 });
+{ const mf = pinS(GG.pin(`<div style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle,#fffbe6 0%,#ffe08a 22%,rgba(255,190,80,.55) 44%,rgba(255,160,60,0) 72%)"></div>`, GUN[0] - 8, GUN[1] - 4, {}));
+  tl.fromTo(mf, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.06, immediateRender: false }, T_GUN + 0.15); tl.to(mf, { autoAlpha: 0, duration: 0.5, ease: "power1.in" }, T_GUN + 0.25); }
 smoke([[GUN[0] - 8, GUN[1] - 6], [GUN[0] - 12, GUN[1] - 10]], T_GUN + 0.2, 0.9);
 PULSE("gun", T_GUN + 0.12, 1.25);
 tl.to(RFIG, { opacity: 0, y: 8, duration: 0.35, ease: "power2.in" }, T_GUN + 0.72);
@@ -269,7 +277,7 @@ tl.to(LD, { left: LOY[0], top: LOY[1], duration: 0.7, ease: "sine.out" }, T_MIL 
 const CROWD = [[-26, -12], [-22, 14], [0, 24], [22, 16], [26, -6], [6, -22], [-12, -26]].map((d, k) => {
   const p0 = [LOY[0] + d[0] * 2.3, LOY[1] + d[1] * 2.3], el = DOT(p0, "#1f4fc4", T_HANG - 0.2 + k * 0.05, 3.4);
   tl.to(el, { left: LOY[0] + d[0] * 0.6, top: LOY[1] + d[1] * 0.6, duration: 1.4, ease: "power2.in" }, T_HANG);
-  tl.to(el, { left: LOY[0] + d[0] * 2.0, top: LOY[1] + d[1] * 2.0, duration: 1.0, ease: "power2.out" }, T_STEP + 0.5);
+  tl.to(el, { left: LOY[0] + d[0] * 2.0, top: LOY[1] + d[1] * 2.0, duration: 1.0, ease: "power2.out" }, T_STEP + 0.2);
   return el; });
 tl.fromTo(LD.firstElementChild, { boxShadow: "0 0 0px rgba(255,80,60,0)" }, { boxShadow: "0 0 12px rgba(255,80,60,.95)", duration: 0.4, yoyo: true, repeat: 3, immediateRender: false }, T_HANG + 0.4);
 // "a man accused of burning his neighbors' houses": the accusation (a small burning house) over him
@@ -277,8 +285,8 @@ ICON(`<svg width="44" height="44" viewBox="-12 -14 24 24" style="display:block;o
   <path d="M-8 8 L-8 -1 L0 -7 L8 -1 L8 8 Z" fill="#d8ccae" stroke="#2a2014" stroke-width="1.2"/><path d="M2 -9 C5 -5 7 -2 5 2 C3 5 -1 4 -1 1 C-1 -2 1 -4 2 -9 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width=".8"/></svg>`,
   [LOY[0] + 2, LOY[1] - 34], T_ACCUSED + 0.1, T_STEP + 0.6, { hit: false });
 // "Marion stepped in and kept him safe": his box rides next to the prisoner; a blue ring guards him
-march("mar", [[1420, 846], [LOY[0] + 34, LOY[1] + 16], [LOY[0] + 15, LOY[1] + 3]], T_STEP - 0.1, 0.9, { trail: false, dustSize: 24, dustOp: 0.3 });
+march("mar", [[1420, 846], [LOY[0] + 34, LOY[1] + 16], [LOY[0] + 15, LOY[1] + 3]], T_STEP - 0.4, 0.6, { trail: false, dustSize: 24, dustOp: 0.3 });
 ICON(`<svg width="64" height="64" viewBox="-20 -20 40 40" style="display:block;overflow:visible"><circle r="16" fill="none" stroke="#f0e6c8" stroke-width="4.2"/><circle r="16" fill="none" stroke="#2c57b7" stroke-width="2.4"/></svg>`,
-  LOY, T_SAFE - 0.05, null, { hit: true });
+  LOY, T_STEP + 0.2, null, { hit: true });   // critic r3: pops when Marion arrives (~2.8 s before the cut)
 if (GD.var.audit) LABEL_AUDIT([2, 10, 20, 30, 40, 50, 60, 70], { show: true });
 }

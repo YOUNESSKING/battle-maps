@@ -7,7 +7,7 @@
 //   Camden), Fort Watson and Fort Motte already grey (taken), Camden / Nelson's Ferry / Monck's Corner / Georgetown still red.
 // "Without its chain": the trace snaps at Fort Watson and Fort Motte (blue cut marks) and both get a short blue hatching (the two links gone);
 // "the inland country fell apart": the Nelson's Ferry post dims; "Rawdon had already given up Camden": Camden goes grey + blue hatching ~3 s, its
-//   fall date 10 MAY under it (past perfect: the plate does not roll back), Rawdon's red XX leaves south; "In June": the plate rolls to JUNE 1781
+//   no date on screen (10 May not spoken; the plate does not roll back), Rawdon's red XX leaves south; "In June": the plate rolls to JUNE 1781
 //   (no day spoken; FACT_NOTES 6-7 June); "Georgetown": focus ring on the baked town (baked name: no live label); "sailed away": a red ship leaves
 //   down Winyah Bay to sea; "without a fight": Georgetown grey + blue hatching. Hands to m3f (edisto, 30 AUG).
 {
@@ -54,12 +54,11 @@ tl.to(tr2, { opacity: 0, duration: 0.8 }, T_WITHOUT + 0.6);
 tl.to(tr1, { opacity: 0.35, duration: 1.0 }, T_WITHOUT + 0.6);
 // "the inland country fell apart for the British": the Nelson's Ferry post dims and goes
 tl.to(B.units.pN.el, { autoAlpha: 0.3, duration: 0.8 }, T_INLAND + 0.6); tl.to(FK.pN, { autoAlpha: 0.35, duration: 0.8 }, T_INLAND + 0.6);
-// "Rawdon had already given up Camden": Camden falls (grey + hatching), its date 10 MAY under it; the red XX leaves south down the road
+// "Rawdon had already given up Camden": Camden falls (grey + hatching; no date chip: never spoken, critic r3); the red XX leaves south down the road
 march("pC", [Q.pC, LYT(34.05, -80.55), LYT(33.86, -80.45)], T_RAW + 0.2, 2.6, { dustOp: 0.45 });
 tl.to(B.units.pC.el, { autoAlpha: 0, duration: 0.6 }, T_JUNE + 0.6);
 FALL("pC", T_CAM + 0.25, [Q.pC[0] - 30, Q.pC[1] - 10], 120, true);
-{ const d = pinS(GG.pin(`<div style="font-family:Oswald;font-weight:700;font-size:26px;letter-spacing:.12em;color:#f7f3ea;background:rgb(18,16,12);border:1px solid #c9b48a;border-radius:3px;padding:2px 12px;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,.5)">10 MAY</div>`,
-    Q.pC[0] - 70, Q.pC[1] + 64, { t: T_CAM + 0.3, pop: true, until: T_CAM + 3.2 })); }
+
 // "In June, the British garrison at Georgetown, on the coast": the post glows, a focus ring on the baked town; "sailed away": the ship leaves
 tl.fromTo(B.units.pG.el.querySelector(".blk"), { filter: "drop-shadow(0 0 0px rgba(255,70,50,0))" }, { filter: "drop-shadow(0 0 14px rgba(255,70,50,.95))", duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, T_GAR + 0.1);
 focus(PLACE("georgetown"), 120, T_GEO + 0.1, T_SAILED);
