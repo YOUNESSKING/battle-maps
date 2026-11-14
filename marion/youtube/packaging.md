@@ -43,3 +43,9 @@ Log in `research/CHANNEL_LOG.md`: winning title + thumbnail, CTR, impressions da
 2. Busiest-video end screen: Morgan (same era) or Thomas (most views), or both?
 3. The face is a crop from White's 1810 painting (the sweet-potato dinner scene, a Weems tradition); only the head and coat are used, so the thumbnail does not show the myth. OK?
 4. Map scenes m2b/m3b: their small Union flags show the post-1801 St Patrick's saltire (wrong for 1780-81, STYLE rule). Fixed on the thumbnails only; the scene kit should be checked before the final render.
+
+## OWNER DECISION (2026-11-14: "Approved")
+- Main title: **A** — "Francis Marion's Top 3 Legendary Tactical Moves | The Swamp Fox Tarleton Couldn't Catch". B and C go into Test & Compare.
+- Main thumbnail: **marion-thumb-A_SWAMP_FOX.jpg**; B and C as Test & Compare alternatives.
+- Face crop from John Blake White's 1810 painting: OK (head + coat only; the Weems dinner scene is not shown).
+- End screen: the Morgan video carries the Marion element (same war, Tarleton at Cowpens); Marion's own end screen points to Morgan.
