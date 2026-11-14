@@ -49,10 +49,10 @@ const BLUEGLOW = "120,170,255";
 // frame 0: the British army at Eutaw Springs, Greene's army drawn back west of it, Marion's men with them (south)
 const EUT = PLACE("eutaw_springs");   // 1328,934
 UNIT("rs", "british", [EUT[0] + 22, EUT[1] + 4], "infantry", { ech: "XX" });
-UNIT("gr", "allies", [EUT[0] - 88, EUT[1] - 18], "infantry", { ech: "XX" });
-UNIT("mb", "allies", [EUT[0] - 70, EUT[1] + 34], "cavalry", { ech: "" });
+UNIT("gr", "allies", [EUT[0] - 120, EUT[1] - 20], "infantry", { ech: "XX" });
+UNIT("mb", "allies", [EUT[0] - 40, EUT[1] + 62], "cavalry", { ech: "" });
 const FL_GB = SIDEFLAG("gb", [EUT[0] + 82, EUT[1] + 18]);    // ~60 px behind the red line (east), off the box
-const FL_US = SIDEFLAG("us", [EUT[0] - 150, EUT[1] - 34]);   // ~60 px behind Greene's box (west)
+const FL_US = SIDEFLAG("us", [EUT[0] - 190, EUT[1] - 36]);   // ~60 px behind Greene's box (west)
 // casualty card (both sides spoken; each row on its numbers)
 { const row = (flag, side, txt, col) => `<div class="cr" style="display:flex;align-items:center;gap:20px;margin-top:12px"><img src="assets/media/${flag}" alt="" style="height:40px;border:1px solid #f7f3ea">
     <div style="font-size:38px;letter-spacing:.1em;min-width:250px">${side}</div><div style="font-size:44px;letter-spacing:.04em;color:${col}">${txt}</div></div>`;
@@ -66,8 +66,8 @@ const FL_US = SIDEFLAG("us", [EUT[0] - 150, EUT[1] - 34]);   // ~60 px behind Gr
 GLOW("rs", T_NEITHER + 0.1, 2); GLOW("gr", T_NEITHER + 0.25, 2, BLUEGLOW);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // under the archive insert (background only): the red army leaves Eutaw the next evening and falls back to Charleston (Monck's Corner road)
-const CHS = NUDGE([1588, 1440], { s: 0.73 });   // just north of the baked Charleston (name kept clear)
-const BACKR = [[EUT[0] + 22, EUT[1] + 4], [1395, 985], [1460, 1050], [1520, 1105], [1556, 1190], [1572, 1300], CHS];
+const CHS = NUDGE([1586, 1405], { s: 0.73 });   // just north of the baked Charleston (name kept clear)
+const BACKR = [[EUT[0] + 22, EUT[1] + 4], [1395, 985], [1460, 1050], [1520, 1105], [1556, 1190], [1570, 1290], CHS];
 march("rs", BACKR, T_NEXT + 0.6, T_THANK - T_NEXT + 0.6, { dustOp: 0.4, trail: false });
 tl.to(FL_GB, { autoAlpha: 0, duration: 0.4 }, T_NEXT + 0.5);
 const FL_GB2 = SIDEFLAG("gb", [CHS[0] + 70, CHS[1] + 26], T_THANK + 1.0);   // the Union flag at Charleston (behind the box, off the name)
@@ -76,14 +76,14 @@ const FL_GB2 = SIDEFLAG("gb", [CHS[0] + 70, CHS[1] + 26], T_THANK + 1.0);   // t
 GG.METHOD = ["STRIKE IN THE DARK", "LET THE SWAMP FIGHT", "HIT THE CHAIN WITH THE ARMY"]; GG.METHOD_TITLE = "THE SWAMP FOX METHOD";
 { const MC = GG.method(3, T_INS_END + 0.05, T_TOG - 0.25, [T_INS_END + 0.05, T_INS_END + 0.05, T_METHOD + 0.1]); MC.querySelector(".inner").style.background = "rgba(18,16,12,0.97)"; MC.style.top = "210px"; }
 // "Together with a real army": Marion rides up beside Greene, both glow
-march("mb", [[EUT[0] - 70, EUT[1] + 34], [EUT[0] - 66, EUT[1] + 10], [EUT[0] - 40, EUT[1] - 8]], T_TOG + 0.1, 1.4, { dustOp: 0.4, trail: false });
+march("mb", [[EUT[0] - 40, EUT[1] + 62], [EUT[0] - 80, EUT[1] + 58], [EUT[0] - 112, EUT[1] + 52]], T_TOG + 0.1, 1.4, { dustOp: 0.4, trail: false });
 GLOW("gr", T_TOG + 0.3, 2, BLUEGLOW); GLOW("mb", T_TOG + 0.5, 2, BLUEGLOW);
 // "cut the enemy's chain": the old red chain Camden - Charleston inks in (posts as dim red dots); "one link at a time": cut marks walk down it
 const S = 0.73;
 const LINKS = [NUDGE(LYT(34.205, -80.56), { s: S }), NUDGE(PLACE("fort_motte"), { s: S }), NUDGE(PLACE("fort_watson"), { s: S }), NUDGE(LYT(33.405, -80.335), { s: S }), NUDGE(LYT(33.175, -80.05), { s: S })];
-const CHAIN = [...LINKS, [1572, 1300], CHS];
-inkTrace(CHAIN, T_CUT + 0.05, T_HOLD + 0.9, 3.0).setAttribute("stroke", "#bc2528");
-const DOTS = LINKS.map((p, k) => { const d = pinS(GG.pin(`<div style="width:14px;height:14px;border-radius:50%;background:#bc2528;border:2px solid #f3eee2;box-shadow:0 0 8px rgba(255,70,50,.7)"></div>`, p[0], p[1], {}));
+const CHAIN = [...LINKS, [1570, 1290], CHS];
+inkTrace(CHAIN, T_CUT + 0.05, T_HOLD + 0.9, 4.5).setAttribute("stroke", "#bc2528");
+const DOTS = LINKS.map((p, k) => { const d = pinS(GG.pin(`<div style="width:18px;height:18px;border-radius:50%;background:#bc2528;border:2px solid #f3eee2;box-shadow:0 0 8px rgba(255,70,50,.7)"></div>`, p[0], p[1], {}));
   tl.fromTo(d, { autoAlpha: 0 }, { autoAlpha: 0.9, duration: 0.3, immediateRender: false }, T_CUT + 0.2 + k * 0.12); return d; });
 const XM = `<svg width="34" height="34" viewBox="-20 -20 40 40" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.7))">
   <path d="M-11 -11 L11 11 M11 -11 L-11 11" stroke="#f0e6c8" stroke-width="5" stroke-linecap="round"/><path d="M-11 -11 L11 11 M11 -11 L-11 11" stroke="#1f4fc4" stroke-width="2.4" stroke-linecap="round"/></svg>`;
@@ -105,7 +105,7 @@ LIGHT("dusk", T_CIVIL + 0.2, 3.0, 0.22);
 const BM = BANNER("marion", "Francis Marion", "sc", "mb", T_TIME + 0.05, { side: "ne", until: T_SO - 0.3 });
 // "was honored at the Capitol only in two thousand six": one small caption, restrained
 { const CAP = scr0(`<div style="padding:10px 30px 12px;background:rgba(18,16,12,0.92);border-left:5px solid #c9b48a;font-family:Oswald;font-weight:700;color:#f7f3ea;font-size:30px;letter-spacing:.14em;box-shadow:0 12px 30px rgba(0,0,0,.5)">
-    OSCAR MARION <span style="color:#c9b48a">&middot; HONORED AT THE CAPITOL, 2006</span></div>`, "left:0;right:0;top:880px;display:flex;justify-content:center;");
+    OSCAR MARION <span style="color:#c9b48a">&middot; HONORED AT THE CAPITOL, 2006</span></div>`, "left:0;right:0;top:790px;display:flex;justify-content:center;");
   tl.fromTo(CAP, { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: "power2.out", immediateRender: false }, T_CAP + 0.05);
   tl.to(CAP, { autoAlpha: 0, duration: 0.4 }, T_S1 - 0.35); }
 // the three spoken method lines light the card 1-2-3
@@ -115,7 +115,7 @@ const BM = BANNER("marion", "Francis Marion", "sc", "mb", T_TIME + 0.05, { side:
 const EF = E.final({ moves: [["STRIKE IN THE DARK", "1780"], ["THE CHASE", "1780"], ["THE CHAIN", "1781"]], tShow: T_SO - 0.1,
   tNums: [T_ONE, T_TWO, T_THREE], tAsk: T_TELL - 0.3, tFamily: T_WHICH - 0.2, tSub: T_SUB - 0.5, until: END - 0.2 });
 EF.querySelector(".fam").innerHTML = `TELL US WHICH COMMANDER WE SHOULD COVER NEXT`;
-EF.querySelector(".q").textContent = "WHICH WAS MARION'S GREATEST MOVE?";
+EF.querySelector(".q").textContent = "WHICH WAS MARION'S GREATEST MOVE?"; EF.querySelector(".q").style.fontSize = "68px";
 [0, 1, 2].forEach((i) => { const c = EF.querySelector(".m" + i); gsap.set(c, { autoAlpha: 0 }); tl.set(c, { autoAlpha: 0 }, 0); });
 { const hd = EF.firstElementChild; gsap.set(hd, { autoAlpha: 0 }); tl.set(hd, { autoAlpha: 0 }, 0); tl.fromTo(hd, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T_TELL); hd.style.fontSize = "40px"; }
 EF.querySelector(".ans").style.fontSize = "70px"; EF.querySelector(".fam").style.fontSize = "40px";
@@ -125,7 +125,8 @@ document.getElementById("date").style.zIndex = 60;   // the date scroll never di
 tl.to(EF, { scale: 0.66, x: 70, y: -128, transformOrigin: "50% 0%", duration: 0.7, ease: "power3.inOut" }, TB);
 Object.assign(PILL.style, { right: "50px", top: "34px", bottom: "auto" });
 hideU(["rs", "gr", "mb"], T_SO - 0.2);   // clean living map under the end screen
-[FL_US, FL_GB2].forEach((f) => tl.to(f, { autoAlpha: 0, duration: 0.3 }, T_SO - 0.2));
+tl.to(FL_GB2, { autoAlpha: 0, duration: 0.3 }, T_SO - 0.2);
+tl.to(FL_US, { autoAlpha: 0, duration: 0.3 }, T_SO + 0.4);   // after FLAGSYNC brings it back when Marion's banner leaves
 // ---------------------------------------------------------------------------------------------------------------------------------
 window.SFX_CUES = (window.SFX_CUES || []).filter(([k]) => !String(k).startsWith("ref:")); document.documentElement.setAttribute("data-sfx", JSON.stringify(window.SFX_CUES));
 if (GD.var.audit) LABEL_AUDIT([1, 6, 18, 23, 26, 31, 35, 40, 47, 52, 58, 66, 74], { show: true });
