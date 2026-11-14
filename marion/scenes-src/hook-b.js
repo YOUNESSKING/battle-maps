@@ -114,7 +114,7 @@ cut(T_SPRING, { whoosh: false, slow: 0.35 });
 LIGHT("night", T_SPRING - 0.01, 0.01, 0.8);
 // the town before the surrender: the American garrison inside, the British siege boxes outside on the neck (rc0..rc2 already there)
 tl.set(B.units.bA.el, { autoAlpha: 1 }, T_SPRING - 0.01);
-tl.set(["pM", "pN", "p96", "pG", "pF"].map((id) => B.units[id].el), { autoAlpha: 0 }, T_SPRING - 0.01);
+tl.set(["pM", "pN", "pG", "pF"].map((id) => B.units[id].el), { autoAlpha: 0 }, T_SPRING - 0.01);
 // the night vignette (screen space): a Charleston town house, lit windows, guests; the lock, the jump, the ankle
 const VIG = scr0(`<div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 62% at 50% 52%, rgba(6,8,16,.55) 0%, rgba(4,5,10,.9) 70%)"></div>
 <svg viewBox="0 0 400 280" width="1000" height="700" style="position:absolute;left:460px;top:200px;overflow:visible">

@@ -21,7 +21,7 @@ const T_TWO = at(P2, "Two of the guard"), T_20T = at(P2, "twenty taken"), T_LOST
   T_CONT = at(P2, "Continental regulars"), T_KNEW = at(P2, "Marion knew it"), T_DES = at(P2, "They will desert"), T_OF = at(P2, "Of a hundred and fifty"),
   T_ONLY = at(P2, "only three stayed");
 // ---------------------------------------------------------------------------------------------------------------------------------
-LIVING({ clouds: 0.06, light: "night" });
+LIVING({ clouds: 0.06, light: "night", lightK: 0.85 });   // a dark, moonless night (stronger than the kit default 0.45)
 LIGHT("morning", T_TWO - 0.6, 3.0, 0.5);   // m1-4: dawn after the raid ("a little before daylight")
 const H = PLACE("great_savannah");          // the house (baked painted plantation house), santee map px
 const C0 = [1565, 840, 1.5], C1 = [1585, 700, 1.85], C2 = [1585, 680, 1.8];
