@@ -47,6 +47,17 @@ def vnoise(cell, rng):
     return n / (n.std() + 1e-6)
 
 
+def smooth_line(p, step=6.0):
+    """Catmull-Rom through the hand-traced points, resampled every ~step image px (no straight kinks)"""
+    if len(p) < 3: return p
+    ext = [p[0]] + list(p) + [p[-1]]; out = []
+    for i in range(1, len(ext) - 2):
+        p0, p1, p2, p3 = [np.array(v, float) for v in ext[i - 1:i + 3]]; n = max(2, int(np.hypot(*(p2 - p1)) / step))
+        for t in np.linspace(0, 1, n, endpoint=False):
+            out.append(tuple(0.5 * ((2 * p1) + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t * t + (-p0 + 3 * p1 - 3 * p2 + p3) * t ** 3)))
+    out.append(tuple(p[-1])); return out
+
+
 def build_water(m):
     C = MAPS[m]; wc = C["water"]
     land = np.asarray(Image.open(f"{YT}/assets/{m}_land.png").convert("L")).astype(np.float32) / 255
@@ -67,6 +78,7 @@ def build_water(m):
         x0, y0 = ll2px(m, la1, lo0); x1, y1 = ll2px(m, la0, lo1)
         sea[max(0, int(y0 * 2)):int(y1 * 2), max(0, int(x0 * 2)):int(x1 * 2)] = False
     sea = cv2.GaussianBlur(sea.astype(np.float32), (0, 0), 1.5) > 0.5
+    if wc.get("nosea"): sea[:] = False   # MARION: inland maps have no sea; DEM tile seams (0 m columns) would otherwise read as edge-to-edge water
     riv = np.zeros((H, W), np.uint8)
     rj = f"{HERE}/data/rivers_{m}.json"
     RIVMASK.clear()
@@ -92,9 +104,10 @@ def build_water(m):
                 cur = np.asarray(im) > 0; one_a = np.asarray(one) > 0; others = cur & ~cv2.dilate(one_a.astype(np.uint8), disk(hw + 2)).astype(bool)
                 if others.any():
                     dist, (iy, ix) = ndimage.distance_transform_edt(~others[::4, ::4], return_indices=True)
-                    best = min(ends, key=lambda p: dist[min(int(p[1] // 4), dist.shape[0] - 1), min(int(p[0] // 4), dist.shape[1] - 1)])
-                    by, bx = min(int(best[1] // 4), dist.shape[0] - 1), min(int(best[0] // 4), dist.shape[1] - 1)
-                    if 2 < dist[by, bx] * 4 < C.get("tie", 260):
+                    ends = [p for p in ends if 8 < p[0] < W - 8 and 8 < p[1] < H - 8]   # an end at the map edge is not a mouth (and negative px would wrap)
+                    best = min(ends, key=lambda p: dist[int(p[1] // 4), int(p[0] // 4)]) if ends else None
+                    by, bx = (int(best[1] // 4), int(best[0] // 4)) if best else (0, 0)
+                    if best and 2 < dist[by, bx] * 4 < C.get("tie", 260):
                         q = (ix[by, bx] * 4 + 2, iy[by, bx] * 4 + 2)
                         for dd in (d, d1): dd.line([best, q], fill=255, width=int(round(2 * hw)))
             RIVMASK[name] = np.asarray(one) > 0
@@ -135,7 +148,7 @@ def build_water(m):
     if C.get("wet"):   # hand-set water the land mask misses at this zoom (New York harbour, the East River): (half-width image px, [(lat, lon), ...])
         im = Image.new("L", (W, H), 0); d = ImageDraw.Draw(im)
         for hw, pts in C["wet"]:
-            q = [(ll2px(m, la, lo)[0] * 2, ll2px(m, la, lo)[1] * 2) for la, lo in pts]; d.line(q, fill=255, width=int(2 * hw), joint="curve")
+            q = smooth_line([(ll2px(m, la, lo)[0] * 2, ll2px(m, la, lo)[1] * 2) for la, lo in pts])   # MARION: hand traces drawn as smooth curves; d.line(q, fill=255, width=int(2 * hw), joint="curve")
             for p in q: d.ellipse([p[0] - hw, p[1] - hw, p[0] + hw, p[1] + hw], fill=255)
             one = Image.new("L", (W, H), 0); ImageDraw.Draw(one).line(q, fill=255, width=int(2 * hw), joint="curve"); RIVMASK[f"wet{len([k for k in RIVMASK if k.startswith('wet')])}"] = np.asarray(one) > 0
         riv |= (cv2.GaussianBlur(np.asarray(im).astype(np.float32), (0, 0), 1.5) > 110).astype(np.uint8)   # MARION: creeks, not sea (woods may hug them)

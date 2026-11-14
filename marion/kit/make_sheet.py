@@ -1,19 +1,27 @@
-"""Contact sheet: kit test frames next to the reference clip. usage: python3 kit/make_sheet.py OUT.jpg A.png B.png [ref_t1 ref_t2]"""
-import subprocess, sys, tempfile, os
+"""Kit proof sheets. usage (from marion/):
+  python3 kit/make_sheet.py build/sheet-kit.jpg a.png b.png c.png d.png                      labelled 2x2 sheet, 1920 px wide
+  python3 kit/make_sheet.py build/sheet-kit-ref.jpg a.png b.png c.png d.png --ref 2 12      the same frames next to reference/style-reference-living-map.mp4 frames"""
+import subprocess, sys, tempfile
 from PIL import Image, ImageDraw, ImageFont
-out, a, b = sys.argv[1:4]; ts = sys.argv[4:6] or ["2", "12"]
-REF = "/home/user/battle-maps/reference/style-reference-living-map.mp4"
-tmp = tempfile.mkdtemp()
-refs = []
-for t in ts:
-    p = f"{tmp}/r{t}.png"; subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", t, "-i", REF, "-frames:v", "1", p], check=True); refs.append(p)
-tiles = [(a, "KIT (a) east wide"), (b, "KIT (b) yorktown close, dusk"), (refs[0], f"REFERENCE living-map {ts[0]} s"), (refs[1], f"REFERENCE living-map {ts[1]} s")]
-w, h, lab = 960, 540, 34
-S = Image.new("RGB", (2 * w + 10, 2 * (h + lab) + 10), (16, 16, 16)); d = ImageDraw.Draw(S)
-try: f = ImageFont.truetype("/home/user/battle-maps/yorktown/kit/fonts/eb-garamond-latin-600-normal.ttf", 24)
+a = sys.argv[1:]; ref = None
+if "--ref" in a: i = a.index("--ref"); ref = a[i + 1:]; a = a[:i]
+out, frames = a[0], a[1:5]
+LAB = ["(a) lowcountry wide: the opening framing (Charleston - Nelson's Ferry - Camden road, red wagons, the two flags)",
+       "(b) santee close, night 25 Aug 1780: Nelson's Ferry + the Great Savannah house, cypress swamp, Marion banner",
+       "(c) blackriver close, 8 Nov 1780: Tarleton's Legion at Ox Swamp, Marion at Benbow's Ferry",
+       "(d) the continuous zoom lowcountry -> santee (INSET) mid-way"]
+tiles = list(zip(frames, LAB))
+if ref:
+    REF = "/home/user/battle-maps/reference/style-reference-living-map.mp4"; tmp = tempfile.mkdtemp()
+    for t in ref:
+        p = f"{tmp}/r{t}.png"; subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", t, "-i", REF, "-frames:v", "1", p], check=True)
+        tiles.append((p, f"REFERENCE style-reference-living-map.mp4 at {t} s"))
+cols = 2; w = 955; h = w * 9 // 16; lab = 30; rows = (len(tiles) + 1) // 2
+S = Image.new("RGB", (1920, rows * (h + lab + 10)), (16, 16, 16)); d = ImageDraw.Draw(S)
+try: f = ImageFont.truetype("/home/user/battle-maps/marion/kit/fonts/eb-garamond-latin-600-normal.ttf", 19)
 except Exception: f = ImageFont.load_default()
 for i, (p, t) in enumerate(tiles):
-    x, y = (i % 2) * (w + 10), (i // 2) * (h + lab + 10)
-    d.text((x + 8, y + 4), t, fill=(235, 228, 200), font=f)
+    x, y = (i % cols) * (w + 10), (i // cols) * (h + lab + 10)
+    d.text((x + 6, y + 4), t, fill=(235, 228, 200), font=f)
     S.paste(Image.open(p).convert("RGB").resize((w, h), Image.LANCZOS), (x, y + lab))
-S.save(out, quality=90); print(out)
+S.save(out, quality=90); print(out, S.size)

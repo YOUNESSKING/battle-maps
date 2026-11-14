@@ -39,7 +39,33 @@ def build_swamp(m, water):
     lab, n = ndimage.label(sw)
     if n:   # small pockets go (the swamp is a band along the river, not speckle)
         sz = ndimage.sum(np.ones_like(lab), lab, range(1, n + 1)); sw = np.isin(lab, 1 + np.nonzero(sz >= 400)[0])
-    full = cv2.resize(cv2.GaussianBlur(sw.astype(np.float32), (0, 0), 1.2), (W, H), interpolation=cv2.INTER_LINEAR) > 0.5
+    for poly in S.get("add", []):   # forced swamp (lat/lon polygons): e.g. the Wilson dam embankment strip (a modern ridge in the DEM)
+        from proj import ll2px
+        from PIL import Image, ImageDraw
+        im = Image.new("L", (w, h), 0); ImageDraw.Draw(im).polygon([(ll2px(m, la, lo)[0] * 2 / f, ll2px(m, la, lo)[1] * 2 / f) for la, lo in poly], fill=255); sw |= np.asarray(im) > 0
+    for nm, lo0, lo1, la_bot in S.get("dry_south", []):   # bluff side of the river (1920 quads): no swamp south of the channel in [lo0, lo1]
+        from proj import ll2px
+        Rj = json.load(open(f"{HERE}/data/rivers_{m}.json")).get(nm, [])
+        pts = sorted([p for seg in Rj for p in seg if lo0 <= p[1] <= lo1], key=lambda p: p[1])
+        if len(pts) > 1:
+            from PIL import Image, ImageDraw
+            im = Image.new("L", (w, h), 0); q = [(ll2px(m, la, lo)[0] * 2 / f, ll2px(m, la, lo)[1] * 2 / f + 6) for la, lo in pts]
+            q += [(q[-1][0], ll2px(m, la_bot, lo1)[1] * 2 / f), (q[0][0], ll2px(m, la_bot, lo0)[1] * 2 / f)]
+            ImageDraw.Draw(im).polygon(q, fill=255); sw &= ~(np.asarray(im) > 0)
+    for edge in S.get("dry_north", []):   # upland north of the 1920 swamp edge (Lake Marion drowned it; it was never swamp)
+        from proj import ll2px
+        from PIL import Image, ImageDraw
+        q = [(ll2px(m, la, lo)[0] * 2 / f, ll2px(m, la, lo)[1] * 2 / f) for la, lo in edge]
+        ytop = ll2px(m, max(la for la, lo in edge) + 0.012, 0)[1] * 2 / f   # close the polygon just above the edge (never the whole map north of it)
+        q += [(q[-1][0], ytop), (q[0][0], ytop)]
+        im = Image.new("L", (w, h), 0); ImageDraw.Draw(im).polygon(q, fill=255); sw &= ~(np.asarray(im) > 0)
+    # organic edge: blur + low-frequency noise before the threshold (no ruler-straight edges where a clip line cuts the floodplain)
+    g_ = np.random.default_rng(7).standard_normal((h // 8 + 2, w // 8 + 2)).astype(np.float32)
+    nz = cv2.resize(cv2.GaussianBlur(g_, (0, 0), 1.2), (w, h), interpolation=cv2.INTER_CUBIC); nz /= nz.std() + 1e-6
+    swf = cv2.GaussianBlur(sw.astype(np.float32), (0, 0), 3.0) + 0.16 * nz
+    sw = swf > 0.5; lab, n = ndimage.label(sw)
+    if n: sz = ndimage.sum(np.ones_like(lab), lab, range(1, n + 1)); sw = np.isin(lab, 1 + np.nonzero(sz >= 600)[0])
+    full = cv2.resize(cv2.GaussianBlur(sw.astype(np.float32), (0, 0), 0.8), (W, H), interpolation=cv2.INTER_LINEAR) > 0.5
     full &= ~water
     _CACHE[m] = full
     return full

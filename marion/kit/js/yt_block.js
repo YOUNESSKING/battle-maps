@@ -1,6 +1,6 @@
 // yorktown r5: synthesized ref:* sounds are not used (STYLE_LOCK 2c item 5): filtered here for every caller (E.decide / E.* / box / cards)
 { const _sfx = window.SFX; window.SFX = (k, ...r) => (String(k).startsWith("ref:") ? undefined : _sfx(k, ...r)); }
-// ================= YORKTOWN BLOCK (yorktown/kit/js/yt_block.js): 1781 helpers on top of the Style W + 2e + 2f kit =================
+// ================= MARION BLOCK (marion/kit/js/yt_block.js, copy of the Yorktown block; nations sc / us / gb): 1781 helpers on top of the Style W + 2e + 2f kit =================
 // Data injected by kit/build_scene.py as GD = { base, maps: {name: {zoom, origin_world_px, meters_per_px}}, bake: kit/data/<base>_bake.json,
 //   places: {name: [lat, lon]}, rivers: {name: [[x, y], ...] map px of the base map} }.
 // The basemap (#relief = assets/<base>_m.jpg, #relief2 = <base>_m_close.jpg) already carries the towns, carved permanent names, rut roads,
@@ -106,13 +106,15 @@ const FLAGSYNC = (side) => { const W = BANNERS.filter((b) => b.side === side).ma
 const FLAGS = [];
 // SIDEFLAG(nation, p | unitId, t, until): p = [x, y] -> the free-standing 48 px nation flag (as before); unitId -> a pole flag planted at that
 //   wing's lead box (rides with it; r3: no lone flags on the grass). Hidden while that side has a banner up (one flag per side).
+// MARION: the side flag of "sc" is the Moultrie FLAG (assets/media/moultrie_flag.png); the banner pennant (BN.flagFor) is the gold-edged moultrie_pennant.png
+const SIDEFLAG_IMG = (nation) => (nation === "sc" ? "assets/media/moultrie_flag.png" : BN.flagFor(nation));
 const SIDEFLAG = (nation, p, t = 0, until = null) => { let el;
   if (typeof p === "string") { const host = B.units[p].el.firstElementChild, fw = 44, fh = Math.round(fw * 0.56);
     el = document.createElement("div"); el.style.cssText = `position:absolute;left:-14px;top:${-fh - 30}px;width:0;height:0;pointer-events:none;z-index:3`;
     el.innerHTML = `<div style="position:absolute;left:-1.5px;top:0;width:3px;height:${fh + 34}px;background:linear-gradient(90deg,#5a4126,#c9a46a,#5a4126);box-shadow:1px 1px 2px rgba(0,0,0,.6)"></div>`
-      + `<img src="${BN.flagFor(nation)}" alt="" style="position:absolute;left:1.5px;top:1px;width:${fw}px;height:${fh}px;border:1px solid #1a1712;box-shadow:0 2px 4px rgba(0,0,0,.55)">`;
+      + `<img src="${SIDEFLAG_IMG(nation)}" alt="" style="position:absolute;left:1.5px;top:1px;width:${fw}px;height:${fh}px;border:1px solid #1a1712;box-shadow:0 2px 4px rgba(0,0,0,.55)">`;
     host.appendChild(el); host.style.overflow = "visible"; gsap.set(el, { autoAlpha: t > 0 ? 0 : 1 }); if (t > 0) tl.to(el, { autoAlpha: 1, duration: 0.4 }, t); if (until != null) tl.to(el, { autoAlpha: 0, duration: 0.4 }, until); }
-  else { el = flagS(BN.flagFor(nation), "", p[0], p[1], t > 0 ? t : 0, until); if (!(t > 0)) now(el); }
+  else { el = flagS(SIDEFLAG_IMG(nation), "", p[0], p[1], t > 0 ? t : 0, until); if (!(t > 0)) now(el); }
   const rec = { el, side: nation === "gb" ? "rome" : "carth" }; FLAGS.push(rec); FLAGSYNC(rec.side); return el; };
 
 // ---------- 1781 siege works (live, drawn on their spoken word) ----------

@@ -1,8 +1,9 @@
-"""YORKTOWN MAP KIT scene builder: scenes-src/<scene>.js (+ kit/yt_kit.js + data) -> scenes/<scene>/index.html, assets hard-linked.
+"""MARION MAP KIT scene builder (copy of the Yorktown builder: Marion maps, + assets/<base>_m_swamp.png).
+Original: YORKTOWN MAP KIT scene builder: scenes-src/<scene>.js (+ kit/yt_kit.js + data) -> scenes/<scene>/index.html, assets hard-linked.
 usage (from yorktown/):
   python3 kit/build_scene.py SCENE BASE FIRST_TAG LAST_TAG [--inset MAP ...]      a narrated scene (audio/timing.json)
   python3 kit/build_scene.py SCENE BASE --dur 12 [--inset MAP ...]                  a test scene (no narration; B.at not usable)
-BASE = east | chesapeake | peninsula | yorktown (uses assets/BASE_m.jpg + BASE_m_close.jpg from kit/make_m.py).
+BASE = lowcountry | santee | blackriver | blackmingo | congaree | edisto (uses assets/BASE_m.jpg + BASE_m_close.jpg from kit/make_m.py).
 The scene runs from the start of FIRST_TAG to the start of the paragraph after LAST_TAG. `at(para, phrase)` in the kit = B.at corrected
 by SCENE_TIMING.anchors (sentence starts measured from the silences in audio/voice.wav), as in grant's s12 builder.
 The scene source is plain JS run after the kit (GD, B, K, GG, E, tl, camera(), UNIT(), BANNER(), ... are in scope)."""
@@ -52,7 +53,7 @@ for fdir in (f"{ROOT}/assets/fonts", f"{KIT}/fonts"):
 shutil.copy(f"{ROOT}/assets/grain.png", f"{out}/assets/grain.png")
 shutil.copy(f"{ROOT}/assets/{base}{BV}.jpg", f"{out}/assets/relief.jpg")
 shutil.copy(f"{ROOT}/assets/{base}{BV}_close.jpg", f"{out}/assets/relief_close.jpg")
-for suf in ("water", "land"): shutil.copy(f"{ROOT}/assets/{base}{BV}_{suf}.png", f"{out}/assets/{base}_m_{suf}.png")   # scene-side name stays <base>_m_*.png
+for suf in ("water", "land", "swamp"): shutil.copy(f"{ROOT}/assets/{base}{BV}_{suf}.png", f"{out}/assets/{base}_m_{suf}.png")   # scene-side name stays <base>_m_*.png
 for m in insets:
     shutil.copy(f"{ROOT}/assets/{m}{VER(m)}.jpg", f"{out}/assets/inset_{m}.jpg")
     shutil.copy(f"{ROOT}/assets/{m}{VER(m)}_close.jpg", f"{out}/assets/inset_{m}_close.jpg")   # r3: INSET(map, { close: true }) for full-frame inset cuts
@@ -67,7 +68,7 @@ if os.path.isdir(wx):
 WXDATA = open(f"{wx}/{base}_m_data.js").read() if os.path.exists(f"{wx}/{base}_m_data.js") else ""   # WEATHER_DATA (ripple seeds), inlined
 GD = {"base": base, "var": VARS, "maps": {}, "places": PLACES, "rivers": {k: [[round(v, 1) for v in ll2px(base, la, lo)] for la, lo in pts] for k, pts in RIVER_LINES.items()}}
 for f in os.listdir(f"{ROOT}/assets"):
-    if re.fullmatch(r"(east|chesapeake|peninsula|yorktown)\.json", f):
+    if re.fullmatch(r"(lowcountry|santee|blackriver|blackmingo|congaree|edisto)\.json", f):
         J = json.load(open(f"{ROOT}/assets/{f}")); GD["maps"][J["name"]] = {k: J[k] for k in ("zoom", "origin_world_px", "meters_per_px")}
 bj = f"{KIT}/data/{base}_bake{BV if BV != '_m' else ''}.json"
 GD["bake"] = json.load(open(bj)) if os.path.exists(bj) else {}

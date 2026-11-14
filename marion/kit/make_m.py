@@ -1,4 +1,6 @@
-"""YORKTOWN MAP KIT: bake the STATIC 2e layers into NEW copies of the Style W basemaps (render speed: no overlay layers in the scenes).
+"""MARION MAP KIT (copy of the Yorktown kit make_m.py; MARION: synthetic relief mounds (Fort Watson), plantation-house sprites, the Edisto
+causeway (a pale raised bank under the ruts where a road crosses the cypress swamp), assets/<map>_m*_swamp.png for the scenes).
+Original: YORKTOWN MAP KIT: bake the STATIC 2e layers into NEW copies of the Style W basemaps (render speed: no overlay layers in the scenes).
 usage (from yorktown/):  python3 kit/make_m.py <map>  [notex=1]
 in : assets/<map>_w.jpg, assets/<map>_w_close.jpg (kit/make_w.py), assets/<map>.json, assets/src/<map>_hd_elev.npy, kit/data/places.py
 out: assets/<map>_m[v].jpg, _m[v]_close.jpg, _m[v].json, _m[v]_water/_land.png  (v=N option; ALWAYS new files: never writes into a file a scene may hard-link)
@@ -26,6 +28,8 @@ J = json.load(open(f"{YT}/assets/{m}.json"))
 P = lambda la, lo: tuple(v * 2 for v in ll2px(m, la, lo))            # lat/lon -> basemap image px
 t0 = time.time()
 WATER, _riv = build_water(m)
+from swamp import build_swamp
+SWAMP = build_swamp(m, WATER)
 BASES = {k: np.asarray(Image.open(f"{YT}/assets/{m}_w{suf}.jpg").convert("RGB")).astype(np.float32) for k, suf in (("w", ""), ("close", "_close"))}
 LOG = []
 
@@ -36,8 +40,12 @@ def smoothstep(e0, e1, x):
 
 # ------------------------------------------------------------------ 1. painted relief (2e item 4) from the real DEM, named ground only
 def relief(img, close):
-    if not C["relief"]: return img
+    if not C["relief"] and not C.get("mounds"): return img
     e = np.load(f"{YT}/assets/src/{m}_hd_elev.npy").astype(np.float32); e[e < -100] = 0; e = np.maximum(e, 0)
+    mpp0 = J["meters_per_px"] / 2
+    for la, lo, rm, hm in C.get("mounds", []):   # MARION: a synthetic bump (the Santee Indian Mound under Fort Watson: too small for the DEM)
+        cx, cy = P(la, lo); yy, xx = np.ogrid[:H, :W]; r2 = ((xx - cx) ** 2 + (yy - cy) ** 2) * mpp0 * mpp0
+        e += hm * np.clip(1 - r2 / (rm * rm), 0, 1) ** 0.6
     e = cv2.GaussianBlur(e, (0, 0), 2.2)
     mpp = J["meters_per_px"] / 2
     gy, gx = np.gradient(e, mpp)
@@ -48,6 +56,8 @@ def relief(img, close):
     sh = np.clip(sh * 1.6, -0.55, 0.45)
     mask = Image.new("L", (W // 4, H // 4), 0); d = ImageDraw.Draw(mask)
     for poly in C["relief"]: d.polygon([(P(la, lo)[0] / 4, P(la, lo)[1] / 4) for la, lo in poly], fill=255)
+    for la, lo, rm, hm in C.get("mounds", []):
+        cx, cy = P(la, lo); rr = rm * 2.2 / mpp0 / 4; d.ellipse([cx / 4 - rr, cy / 4 - rr, cx / 4 + rr, cy / 4 + rr], fill=255)
     mk = cv2.resize(cv2.GaussianBlur(np.asarray(mask).astype(np.float32) / 255, (0, 0), 18), (W, H)) * (~WATER)
 
     lit = np.clip(sh, 0, None)[..., None] * mk[..., None]; shd = np.clip(-sh, 0, None)[..., None] * mk[..., None]
@@ -121,7 +131,7 @@ for k, (rid, pts) in enumerate(C["roads"]):
     for end in (0, -1):                                     # the NEAREST landing only (both banks can be close at a narrows)
         if lands:
             lnd = min(lands, key=lambda l: math.hypot(raw[end][0] - l[0], raw[end][1] - l[1]))
-            if math.hypot(raw[end][0] - lnd[0], raw[end][1] - lnd[1]) < 40 * US: raw[end] = lnd
+            if math.hypot(raw[end][0] - lnd[0], raw[end][1] - lnd[1]) < 110 * US: raw[end] = lnd   # MARION: 110 (was 40): the ferry points are set ~0.5-1 km off the bank
     path = meander(catmull(raw, 1.5 * US), 7 * k + 3)
     segs, cur, i = [], [], 0
     while i < len(path):
@@ -176,6 +186,14 @@ def draw_roads(img):
             out += sg
         return out
     D = [p for r in ROADS for p in r["paths"]]
+    if C.get("causeway") and SWAMP.any():   # MARION: the causeway = a pale raised bank (light top, dark toe) where the road runs through the swamp
+        L_ = Image.new("L", (W, H), 0); d_ = ImageDraw.Draw(L_)
+        for c in D: d_.line(c, fill=255, width=max(2, int(round(14 * US * 0.5))), joint="curve")
+        cw = np.asarray(L_).astype(np.float32) / 255 * cv2.dilate(SWAMP.astype(np.uint8), np.ones((9, 9), np.uint8))
+        toe = np.clip(cv2.GaussianBlur(cw, (0, 0), 2.2 * US) * 1.4 - cw, 0, 1) * 0.55
+        img = img * (1 - toe[..., None]) + np.array([30, 36, 26], np.float32) * toe[..., None]
+        top = cv2.GaussianBlur(cw, (0, 0), 0.6 * US) * 0.7
+        img = img * (1 - top[..., None]) + np.array([164, 152, 106], np.float32) * top[..., None]
     DR = [rp for k, r in enumerate(ROADS) for j, p in enumerate(r["paths"]) for rp in ruts(p, 100 * k + j)]
     RK = C.get("roads_k", 1.0)   # >1 on wide maps: wider + stronger ruts so the post roads read at full frame
     lay = [(D, (169, 156, 106), 10.4 * RK, min(0.4, 0.15 * RK), 0), (D, (74, 69, 34), 6.5 * RK, min(0.45, 0.17 * RK), 0), (DR, (36, 34, 12), 2.4 * RK, 0.86, -0.75),
@@ -274,7 +292,21 @@ def towns_layer():
                         while 0 <= j + dirn < len(pth) and dd[j] < T["R"]: j += dirn
                         if j != i0 and dd[j] >= T["R"] * 0.7: angs.append(round(math.degrees(math.atan2(pth[j][1] - c[1], pth[j][0] - c[0])), 1))
         size = "city" if Ru >= 30 else "town" if Ru >= 18 else "village"
-        im, (cx, cy) = render_town(T["seed"], size, roads=angs, ppu=ppu, radius=Ru, road_lines=rl, lobes=True, soft=0.9, feather=min(18, Ru * 0.5), palette="soft")
+        if Ru < 9:   # MARION: a plantation house / tavern = one painted house (dark roof, light ridge, soft shadow) + a small tan dust yard
+            k = US; n = int(Ru * 6 * k) + 8; im = Image.new("RGBA", (n * 4, n * 4), (0, 0, 0, 0)); dd = ImageDraw.Draw(im); cx = cy = n * 2
+            rnd = random.Random(T["seed"]); ang = math.radians(rnd.uniform(-25, 25)); hw, hh = Ru * 1.5 * k * 4, Ru * 0.95 * k * 4
+            yard = [(cx + math.cos(t) * hw * 2.0 * (1 + 0.15 * math.sin(3 * t + T["seed"])), cy + math.sin(t) * hh * 2.3) for t in np.linspace(0, 2 * math.pi, 40)]
+            dd.polygon(yard, fill=(176, 156, 108, 120))
+            Rr = lambda pts: [(cx + x * math.cos(ang) - y * math.sin(ang), cy + x * math.sin(ang) + y * math.cos(ang)) for x, y in pts]
+            dd.polygon(Rr([(-hw + 3 * k, -hh + 4 * k), (hw + 3 * k, -hh + 4 * k), (hw + 3 * k, hh + 4 * k), (-hw + 3 * k, hh + 4 * k)]), fill=(20, 24, 14, 110))   # shadow
+            roof = (72, 50, 40, 255) if rnd.random() < 0.5 else (58, 52, 48, 255)
+            dd.polygon(Rr([(-hw, -hh), (hw, -hh), (hw, hh), (-hw, hh)]), fill=roof)
+            dd.polygon(Rr([(-hw, -hh), (hw, -hh), (hw, 0), (-hw, 0)]), fill=tuple(min(255, int(v * 1.35)) for v in roof[:3]) + (255,))   # lit north slope
+            dd.line(Rr([(-hw, 0), (hw, 0)]), fill=(196, 182, 150, 255), width=max(1, int(1.2 * k * 4)))                                   # ridge
+            dd.polygon(Rr([(-hw * 1.5, hh * 1.2), (-hw * 0.7, hh * 1.2), (-hw * 0.7, hh * 2.0), (-hw * 1.5, hh * 2.0)]), fill=(66, 54, 44, 255))   # outbuilding
+            im = im.resize((n, n), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5)); cx = cy = n / 2
+        else:
+          im, (cx, cy) = render_town(T["seed"], size, roads=angs, ppu=ppu, radius=Ru, road_lines=rl, lobes=True, soft=0.9, feather=min(18, Ru * 0.5), palette="soft")
         bb = im.getbbox(); im = im.crop(bb); cx -= bb[0]; cy -= bb[1]
         x0, y0 = int(round(c[0] - cx)), int(round(c[1] - cy))
         a = np.asarray(im).astype(np.float32).copy()
@@ -428,7 +460,8 @@ for r in ROADS:
 _r.save(f"{MD}/roads.png", optimize=True)
 # map-px water / land alpha masks for the scenes (living-map water shimmer, hatching kept off the water): assets/<map>_m_water.png, _m_land.png
 _wm = cv2.resize(WATER.astype(np.float32), (W // 2, H // 2), interpolation=cv2.INTER_AREA)
-for nm_, a_ in (("water", _wm), ("land", 1 - _wm)):
+_sm = cv2.resize(SWAMP.astype(np.float32), (W // 2, H // 2), interpolation=cv2.INTER_AREA)   # MARION: the cypress swamp (scenes: m2-2 "the swamps glow")
+for nm_, a_ in (("water", _wm), ("land", 1 - _wm), ("swamp", _sm)):
     rgba = np.zeros((H // 2, W // 2, 4), np.uint8); rgba[..., :3] = 255; rgba[..., 3] = (np.clip(a_, 0, 1) * 255).astype(np.uint8)
     Image.fromarray(rgba).save(f"{YT}/assets/{m}{VS}_{nm_}.png", optimize=True)
 for l in LOG: print("  !", l)

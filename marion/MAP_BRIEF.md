@@ -44,7 +44,7 @@ new files / unlink first. Delete snapshot folders after looking; purge `/root/.c
 |---|---|---|---|
 | `lowcountry` | 10 | 33.52, -80.15 | Camden, Charleston, Georgetown, the Santee + Wateree/Congaree, Pee Dee, Lynches Creek, Black River, Kingstree, Snow's Island, Nelson's Ferry, Eutaw, Fort Motte, Parker's Ferry/Edisto; Winnsborough + NC off the edge (arrows from the edge) |
 | `santee` | 13 | 33.47, -80.35 | Nelson's Ferry, Great Savannah (Sumter's house), Horse Creek, Fort Watson + Scott's Lake, Eutaw Springs |
-| `blackriver` | 12 | 33.70, -79.85 | Richardson's, Woodyard swamp, Jack's Creek, Ox Swamp, Tearcoat Swamp (fork of the Black River), Benbow's Ferry, Kingstree, Black Mingo / Shepherd's Ferry |
+| `blackriver` | 12 | 33.72, -80.12 (final) | Richardson's, Woodyard swamp, Jack's Creek, Ox Swamp, Tearcoat Swamp (fork of the Black River), Benbow's Ferry, Kingstree, Black Mingo / Shepherd's Ferry |
 | `congaree` | 13 | 33.75, -80.66 | Fort Motte (Motte house on Buckhead hill), the Congaree/Wateree fork, the old farmhouse opposite |
 | `edisto` | 13 | 32.86, -80.40 | Parker's Ferry on the Edisto (Pon Pon), the causeway road through the swamp |
 **THE 1780 SANTEE (critical):** today Lake Marion (from near Fort Motte down to Santee dam) and Lake Moultrie flood exactly where the story happens.
@@ -75,7 +75,8 @@ Winnsborough 34.38,-81.09 (off-map) · Amis's Mill (Drowning Creek NC) ~34.7,-79
 | m1a | m1-1, m1-2 | lowcountry |
 | m1b | m1-3, m1-4 | santee |
 | m1c | m1-5, m1-6 | lowcountry |
-| m1d | m1-7, m1-8, m1-9 | blackriver |
+| m1d | m1-7 | blackmingo (new map, z13 33.63,-79.47) |
+| m1d2 | m1-8, m1-9 | blackriver |
 | m1e | m1-10, sub | lowcountry |
 | m2a | m2-1 .. m2-5 | blackriver |
 | m2b | m2-6 .. m2-8 | blackriver |

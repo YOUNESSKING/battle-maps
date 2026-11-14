@@ -1,4 +1,6 @@
-"""YORKTOWN MAP KIT basemap generator (copy of research/style_tests/make_style_w.py, Style W green turf, STYLE_LOCK 2d/2e) for COASTAL maps:
+"""MARION MAP KIT basemap generator (copy of the Yorktown kit make_w.py + the CYPRESS SWAMP: kit/swamp.py mask -> darker wet ground with
+water glints between dense dark dome canopies, wide AND close looks; upland woods unchanged).
+Original: YORKTOWN MAP KIT basemap generator (copy of research/style_tests/make_style_w.py, Style W green turf, STYLE_LOCK 2d/2e) for COASTAL maps:
 the Chesapeake, the York + James estuaries and the Atlantic are wide water painted in the 2e carved middle blue (kit/water.py), the
 named rivers come from NHD (kit/fetch_rivers.py), creeks are few and narrow; woods kept (2e item 7) but cleared along the period roads
 (lanes), around the towns and on the siege ground (kit/data/places.py). The hachure story ground of make_style_w is not used (2e hills).
@@ -35,6 +37,9 @@ from water import build_water, carve
 from proj import ll2px
 from places import MAPS
 water, RIV = build_water(base); wB = water; wD = np.zeros_like(water)
+from swamp import build_swamp
+SWP = build_swamp(base, water)   # MARION: cypress swamp (bool, image px)
+print('swamp %.1f%%' % (100 * SWP.mean()), flush=True)
 CFG = MAPS[base]; US = 2.0 / CFG["s"]                       # image px per screen px at the map's typical camera scale
 KEEPI = Image.new("L", (W // 4, H // 4), 0); _kd = ImageDraw.Draw(KEEPI)
 for _id, _pts in CFG["roads"]:                             # cleared lanes: no trees within ~9 screen px of a road
@@ -194,6 +199,26 @@ if P['green']:                                            # owner 2026-11-05: on
 else:
     a = story_paint(a)
 a = cv2.GaussianBlur(a, (0, 0), 0.6)
+# ---------- MARION: cypress swamp ground (wide): darker wet olive-teal under the canopies + water glints in the gaps ----------
+SWC = np.array([46, 62, 52], np.float32); GLINT = np.array([150, 178, 186], np.float32)
+def glints(img, dens, L0, L1, th, alpha, seed):
+    """short pale water glints (slightly tilted dashes) scattered inside the swamp; dens = glints per 10^4 swamp px"""
+    g_ = np.random.default_rng(seed); ys_, xs_ = np.nonzero(SWP[::4, ::4]); n_ = int(len(ys_) * 16 * dens / 1e4)
+    if not n_: return img
+    pk = g_.choice(len(ys_), n_, replace=False if n_ <= len(ys_) else True); M = np.zeros((H, W), np.uint8); Dk = np.zeros((H, W), np.uint8)
+    for i in pk:
+        x0_, y0_ = xs_[i] * 4 + g_.uniform(0, 4), ys_[i] * 4 + g_.uniform(0, 4); L_ = g_.uniform(L0, L1); an = g_.uniform(-0.25, 0.25)
+        p0 = (int(x0_), int(y0_)); p1 = (int(x0_ + L_ * np.cos(an)), int(y0_ + L_ * np.sin(an)))
+        cv2.line(Dk, (p0[0], p0[1] - max(1, int(th))), (p1[0], p1[1] - max(1, int(th))), 255, max(1, int(round(th))), cv2.LINE_AA)
+        cv2.line(M, p0, p1, 255, max(1, int(round(th))), cv2.LINE_AA)
+    m_ = (cv2.GaussianBlur(M.astype(np.float32), (0, 0), 0.7) / 255 * alpha * SWP)[..., None]
+    k_ = (cv2.GaussianBlur(Dk.astype(np.float32), (0, 0), 0.7) / 255 * alpha * 0.6 * SWP)[..., None]
+    img = img * (1 - k_) + np.array([24, 32, 26], np.float32) * k_          # dark lip above (a little hollow)
+    return img * (1 - m_) + GLINT * m_
+if SWP.any():
+    swf = cv2.GaussianBlur(SWP.astype(np.float32), (0, 0), 4 * K)[..., None] * (0.85 + 0.15 * fbm(30))[..., None]
+    a = a * (1 - 0.32 * swf) + SWC * 0.32 * swf
+    a = glints(a, 11.0, 6 * K, 13 * K, 1.4 * K, 0.6, 17)
 a[water] = (77, 125, 154) if P['green'] else (213, 229, 240); a[top] = (60, 100, 126) if P['green'] else (154, 173, 183)
 wm = cv2.GaussianBlur(cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(np.float32), (0, 0), 2)[..., None]
 a = a * (1 - wm) + cv2.GaussianBlur(a, (0, 0), 1.0) * wm
@@ -217,15 +242,15 @@ def jit(pts, s, amt=0.08): return [(x + rng.normal(0, amt) * s, y + rng.normal(0
 def streak(x, y, s):
     if MULT: dF.line([(x - 2 * s, y + 1 * s), (x + 14 * s, y + 2 * s)], fill=150, width=max(2, round(3 * s))); return
     d.line([(x - 2 * s, y + 1 * s), (x + 14 * s, y + 2 * s)], fill=(60, 55, 30, 110), width=max(2, round(3 * s)))
-def dome(x, y, s):                                   # mushroom dome ~21x15 screen px: thick dark arch, light hollow inside, open base, dark base smudge
-    rx, ry = 8.5 * s * rng.uniform(0.85, 1.15), 8.5 * s * rng.uniform(0.85, 1.12); bump = rng.uniform(0, 6.28); lean = rng.uniform(-0.25, 0.25); arch = []
+def dome(x, y, s, wet=False):                                   # mushroom dome ~21x15 screen px: thick dark arch, light hollow inside, open base, dark base smudge
+    rx, ry = 8.5 * s * rng.uniform(0.85, 1.15) * (0.8 if wet else 1), 8.5 * s * rng.uniform(0.85, 1.12) * (0.8 if wet else 1); bump = rng.uniform(0, 6.28); lean = rng.uniform(-0.25, 0.25); arch = []
     cy = y - ry * 0.95
     for i in range(55):                                # lumpy ~300-degree crown, open at the bottom-left where the trunk goes
         t = 0.6 * np.pi + 1.8 * np.pi * i / 54; sc = 1 + 0.18 * abs(np.sin(1.5 * (t - 0.6 * np.pi) * 2 + bump)) - 0.06
         arch.append((x + rx * np.cos(t) * sc - lean * rx * np.sin(t) * 0.3, cy + ry * 0.92 * np.sin(t) * sc))
     arch = jit(arch, s * 5, 0.05)
     if MULT:                                         # ink-and-wash on green: fills shade the turf, outline stays sepia
-        dF.polygon(arch, fill=186); dF.chord([x - rx * 0.6, cy - ry * 0.1, x + rx * 1.05, cy + ry * 1.05], -10, 120, fill=135)
+        dF.polygon(arch, fill=174 if wet else 186); dF.chord([x - rx * 0.6, cy - ry * 0.1, x + rx * 1.05, cy + ry * 1.05], -10, 120, fill=118 if wet else 135)   # MARION: swamp canopies darker
         d.line(arch, fill=INK, width=max(2, round(2.0 * s)), joint='curve')
         d.line([(x - rx * 0.1, cy + ry * 0.7), (x, y + 2 * s)], fill=INK, width=max(2, round(2 * s)))
         for k in range(2):
@@ -255,7 +280,7 @@ def pine(x, y, s):                                   # plain A-frame ~15x24 scre
 clumps = []; tries = 0
 while tries < 60000:
     tries += 1; x, y = rng.uniform(30, W - 30), rng.uniform(60, H - 20)
-    if fn[int(y), int(x)] < thr or wdist(x, y) < 10 * K or KEEP[int(y), int(x)]: continue
+    if fn[int(y), int(x)] < thr or wdist(x, y) < 10 * K or KEEP[int(y), int(x)] or SWP[int(y), int(x)]: continue   # MARION: swamp woods are placed below
     R = rng.uniform(30, 60) * K
     if any((x - cx) ** 2 + (y - cy) ** 2 < (R + cr + rng.uniform(15, 50) * K) ** 2 for cx, cy, cr, _ in clumps): continue
     clumps.append((x, y, R, 'pine' if rng.random() < 0.45 else 'dome'))
@@ -267,7 +292,7 @@ for cx, cy, R, t in clumps:
             x, y = xx_ + rng.uniform(-0.45, 0.45) * step, yy_ + rng.uniform(-0.45, 0.45) * step
             if rng.random() < (0.2 if t == 'pine' else 0.06): continue
             dx, dy = (x - cx) / (R * 1.2), (y - cy) / R; th = np.arctan2(dy, dx)
-            if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K or KEEP[min(int(y), H - 1), min(int(x), W - 1)]: continue
+            if dx * dx + dy * dy > (1 + lob * np.sin(rng_k * th + ang) + 0.15 * np.sin(7 * th)) ** 2 or wdist(x, y) < (19 if t == 'pine' else 14) * K or KEEP[min(int(y), H - 1), min(int(x), W - 1)] or SWP[min(int(y), H - 1), min(int(x), W - 1)]: continue
             trees.append((y, x, t))
     for k in range(rng.integers(8, 14)):
         y = cy + rng.uniform(0.3, 1.1) * R; x0 = cx + rng.uniform(-1.0, 0.7) * R
@@ -275,11 +300,19 @@ for cx, cy, R, t in clumps:
 for _ in range(8):                                     # a few lone pines near clumps
     cx, cy, R, _t = clumps[rng.integers(0, len(clumps))]; x, y = cx + rng.uniform(-1, 1) * (R + 60 * K), cy + rng.uniform(-1, 1) * (R + 40 * K)
     if 0 < x < W and 0 < y < H and wdist(x, y) > 14 * K: trees.append((y, x, 'pine'))
+# MARION: the cypress swamp = dense dark domes on a jittered grid (gaps let the water glints show), right down to the river bank
+_st = 12.5 * K
+for yy_ in np.arange(20, H - 10, _st * 0.72):
+    for xx_ in np.arange(20, W - 10, _st):
+        x, y = xx_ + rng.uniform(-0.45, 0.45) * _st, yy_ + rng.uniform(-0.45, 0.45) * _st
+        xi, yi = min(int(x), W - 1), min(int(y), H - 1)
+        if not SWP[yi, xi] or KEEP[yi, xi] or wdist(x, y) < 6 * K or rng.random() < 0.48: continue
+        trees.append((y, x, 'wet'))
 for x0, y, L in hatch:
     if MULT: dF.line([(x0 * SS, y * SS), ((x0 + L) * SS, y * SS)], fill=150, width=max(2, round(1.7 * S)))
     else: d.line([(x0 * SS, y * SS), ((x0 + L) * SS, y * SS)], fill=(70, 64, 35, 120), width=max(2, round(2.2 * S)))
 for y, x, t in sorted(trees, key=lambda p: p[0]):
-    s = S * rng.uniform(0.88, 1.12); streak(x * SS, y * SS, s); (pine if t == 'pine' else dome)(x * SS, y * SS, s)
+    s = S * rng.uniform(0.88, 1.12); streak(x * SS, y * SS, s); (pine(x * SS, y * SS, s) if t == 'pine' else dome(x * SS, y * SS, s, wet=(t == 'wet')))
 # grass patches: faint long hatch rows first, calligraphic tufts sitting on them
 def blade(x, y, h, bend, s):
     pts_l, pts_r = [], []
@@ -331,30 +364,35 @@ if P['close']:
     bank = (cv2.dilate(water.astype(np.uint8), np.ones((5, 5), np.uint8)) > 0) & ~water
     bs = cv2.GaussianBlur(sh2(water, round(2 * K), round(1.5 * K)).astype(np.float32) * (~water), (0, 0), 2)[..., None]
     c = c * (1 - 0.35 * bs); c[water] = (77, 125, 154); c[top] = (60, 100, 126)
+    if SWP.any():   # MARION: dark wet ground under the swamp canopies + glints (seen between the crowns)
+        swf = cv2.GaussianBlur(SWP.astype(np.float32), (0, 0), 3)[..., None] * (0.85 + 0.15 * fbm(20))[..., None]
+        c = c * (1 - 0.6 * swf) + np.array([34, 48, 46], np.float32) * 0.6 * swf
+        c = glints(c, 9.0, 5, 12, 1.3, 0.55, 29)
     img = Image.fromarray(np.clip(c, 0, 255).astype(np.uint8))
     G = Image.new('RGBA', (W * SS, H * SS), (0, 0, 0, 0)); d = ImageDraw.Draw(G)
     Sh = Image.new('L', (W * SS, H * SS), 0); ds = ImageDraw.Draw(Sh)
     cans = []
-    ctrees = [(y + rng.uniform(-14, 14) * K, x + rng.uniform(-16, 16) * K, t) for y, x, t in trees for _ in range(3)]
-    ctrees = [p_ for p_ in ctrees if wdist(p_[1], p_[0]) > 9 * K]
+    ctrees = [(y + rng.uniform(-14, 14) * K, x + rng.uniform(-16, 16) * K, t) for y, x, t in trees for _ in range((1 + int(rng.random() < 0.6)) if t == 'wet' else 3)]
+    ctrees = [p_ for p_ in ctrees if wdist(p_[1], p_[0]) > (5 if p_[2] == 'wet' else 9) * K]
     for y, x, t in ctrees:
-        R = rng.uniform(12, 20) * q * SS * (0.85 if t == 'pine' else 1); X, Y = x * SS, y * SS
+        R = rng.uniform(12, 20) * q * SS * (0.85 if t == 'pine' else 0.82 if t == 'wet' else 1); X, Y = x * SS, y * SS
         cs = [(X + rng.uniform(-0.45, 0.45) * R, Y + rng.uniform(-0.45, 0.45) * R, R * rng.uniform(0.3, 0.8)) for _ in range(rng.integers(8, 15))]
-        cans.append(cs)
+        cans.append((cs, t == 'wet'))
         for cx, cy, r in cs: ds.ellipse([cx - r + 3 * SS * q, cy - r + 3 * SS * q, cx + r + 3 * SS * q, cy + r + 3 * SS * q], fill=255)
     Sh = Sh.resize((W, H), Image.BILINEAR).filter(ImageFilter.GaussianBlur(6 * q))
     img = Image.composite(Image.new('RGB', (W, H), (15, 20, 10)), img, Sh.point(lambda v: int(v * 0.35)))
-    for cs in cans:                                    # dark rim on the south-east half of each lobe
-        for cx, cy, r in cs: d.ellipse([cx - r + 1.2 * SS * q, cy - r + 1.2 * SS * q, cx + r + 1.2 * SS * q, cy + r + 1.2 * SS * q], fill=(34, 44, 24, 255))
-    for cs in cans:
-        for cx, cy, r in cs: d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(46, 58, 32, 255))
-    for cs in cans:                                    # lit north-west disc + stipple only inside it
+    # MARION: swamp crowns (wet) in darker, cooler greens (bald cypress / tupelo), upland crowns unchanged
+    for cs, wt_ in cans:                               # dark rim on the south-east half of each lobe
+        for cx, cy, r in cs: d.ellipse([cx - r + 1.2 * SS * q, cy - r + 1.2 * SS * q, cx + r + 1.2 * SS * q, cy + r + 1.2 * SS * q], fill=(24, 36, 28, 255) if wt_ else (34, 44, 24, 255))
+    for cs, wt_ in cans:
+        for cx, cy, r in cs: d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(34, 50, 38, 255) if wt_ else (46, 58, 32, 255))
+    for cs, wt_ in cans:                               # lit north-west disc + stipple only inside it
         for cx, cy, r in cs:
             lx, ly, lr = cx - 0.25 * r, cy - 0.25 * r, r * 0.7
-            d.ellipse([lx - lr, ly - lr, lx + lr, ly + lr], fill=(62, 76, 40, 160))
+            d.ellipse([lx - lr, ly - lr, lx + lr, ly + lr], fill=(48, 66, 48, 160) if wt_ else (62, 76, 40, 160))
             for k in range(rng.integers(3, 8)):
                 a_, rr = rng.uniform(0, 6.28), lr * np.sqrt(rng.uniform(0, 1)); pr = max(1.0, rng.uniform(0.7, 1.4) * q) * SS
-                px, py = lx + rr * np.cos(a_), ly + rr * np.sin(a_); d.ellipse([px - pr, py - pr, px + pr, py + pr], fill=(74, 90, 48, 220))
+                px, py = lx + rr * np.cos(a_), ly + rr * np.sin(a_); d.ellipse([px - pr, py - pr, px + pr, py + pr], fill=(60, 80, 58, 220) if wt_ else (74, 90, 48, 220))
     story_draw(d, SS, (45, 40, 18), close=True)
     G = G.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5)); _Ga = np.asarray(G).copy(); _Ga[water, 3] = 0; G = Image.fromarray(_Ga); img.paste(G, (0, 0), G)
     img = Image.fromarray(carve(np.asarray(img).astype(np.float32), water).astype(np.uint8))
