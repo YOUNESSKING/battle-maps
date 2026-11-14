@@ -764,7 +764,8 @@ window.LivingW = function (cfg = {}) {
     const dur = o.dur ?? 2.0, k = o.k ?? 1;
     Object.entries(lightEls).forEach(([name, arr]) => arr.forEach(({ el, op }) => {
       const target = name === preset ? op * k : 0;
-      if (dur <= 0) tl.set(el, { opacity: target }, t); else tl.to(el, { opacity: target, duration: dur, ease: "sine.inOut" }, t);
+      if (t <= 0.05) gsap.set(el, { opacity: target });   // Marion r1: light already on at frame 0 (no bright first frame at a cut)
+      else if (dur <= 0) tl.set(el, { opacity: target }, t); else tl.to(el, { opacity: target, duration: dur, ease: "sine.inOut" }, t);
     }));
   };
   L.presets = PRESETS; L.layers = LAY;

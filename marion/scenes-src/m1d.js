@@ -17,15 +17,18 @@ const T_28 = at(P, "twenty-eighth of September"), T_MID = at(P, "near midnight")
   T_BACK = at(P, "drove Marion's front back"), T_SECOND = at(P, "But a second party"), T_SIDE = at(P, "from the side"), T_BROKE = at(P, "the Loyalists broke"),
   T_SWAMP = at(P, "ran into the swamp"), T_HORSE = at(P, "Marion took the Loyalist commander's horse");
 // ---------------------------------------------------------------------------------------------------------------------------------
-LIVING({ clouds: 0.06, light: "night" });
+LIVING({ clouds: 0.06, light: "night", lightK: 0.85 });   // a dark, moonless night (as m1b)
+// kit workaround: LIVING's night light is a 0.01 s tween AT t = 0, so a seek to frame 0 shows it unlit: set the night layers directly
+[...LV.layers.light.children].forEach((d) => { const bg = d.style.background || d.style.backgroundColor; if (/6, 10, 26/.test(bg)) gsap.set(d, { opacity: 0.4 * 0.85 }); else if (/70, 100, 170/.test(bg)) gsap.set(d, { opacity: 0.25 * 0.85 }); });
 camera([[0, 1712, 760, 2.25], [T_PLANK + 0.6, 1620, 792, 2.45], [T_CAMP + 1.0, 1600, 840, 2.35], [T_WAIT + 0.6, 1556, 858, 2.75], [T_BROKE + 1.5, 1562, 866, 2.8], [END, 1560, 862, 2.75]]);
 // date plate (SEPTEMBER 1780 from m1c, rolls on the spoken day)
 dateNow("SEPTEMBER 1780", T_28 - 0.05);
 B.date("28 SEPTEMBER 1780", T_28, null, 32); SFX("tick", T_28 + 0.1);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // scene-local helpers
+const FLAGBACK = (el, dx = 26, dy = 22) => { el.style.left = dx + "px"; el.style.top = dy + "px"; return el; };   // critic r1: the Union flag behind the line (below-right of the box, away from the attack)
 const NIGHTB = { pop: 1.4, bright: 1.18 };
-const SAB = `<svg width="46" height="46" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.6))"><g stroke="#2a2410" stroke-width="3.2" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><g stroke="#f3eee2" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><path d="M-14 -6 L-6 -14 M14 -6 L6 -14" stroke="#2a2410" stroke-width="2.4"/></svg>`;
+const SAB = `<svg width="70" height="70" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.6))"><g stroke="#2a2410" stroke-width="3.2" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><g stroke="#f3eee2" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><path d="M-14 -6 L-6 -14 M14 -6 L6 -14" stroke="#2a2410" stroke-width="2.4"/></svg>`;
 const MARK = (p, t, until) => { const el = pinS(GG.pin(SAB, p[0], p[1], { t, pop: true, until })); SFX("hit", t + 0.1); return el; };
 // a single gun flash (light only; the sound is the caller's choice)
 const FLASH = (p, t, k = 1) => { const el = pinS(GG.pin(`<div style="width:${54 * k}px;height:${54 * k}px;border-radius:50%;background:radial-gradient(circle,#fffbe6 0%,#ffe08a 20%,rgba(255,190,80,.5) 42%,rgba(255,160,60,0) 72%)"></div>`, p[0], p[1], {}));
@@ -60,7 +63,7 @@ RIVER("black_mingo", "Black Mingo Creek", T_BMC, { s: 2.45, near: [1500, 690], s
 // "a mile above a Loyalist camp": the camp at Dollard's (red boxes drop in), the ink measure bridge -> camp
 UNIT("r1", "british", [1606, 892], "infantry", { ech: "", t: T_CAMP });
 UNIT("r2", "british", [1640, 918], "infantry", { ech: "", t: T_CAMP + 0.12 });
-SIDEFLAG("gb", "r2", T_CAMP + 0.4);
+FLAGBACK(SIDEFLAG("gb", "r2", T_CAMP + 0.4));
 MEASURE([1600, 806], [1630, 896], "1 MILE", T_MILE + 0.1, T_MILE + 3.3);
 // "Someone in the camp heard them and fired an alarm gun": one red flash at the camp
 FLASH([1622, 878], T_ALARM + 0.15, 0.9); SFX("mg", T_ALARM + 0.15);
@@ -71,10 +74,10 @@ march("bs", [posOn(NE, 0.85), [1500, 790], [1478, 800]], T_HEARD, 2.0, { trail: 
 march("r1", [[1606, 892], [1560, 900], [1528, 896]], T_WAIT - 0.2, 1.6, { trail: false, dust: false });
 march("r2", [[1640, 918], [1600, 918], [1572, 912]], T_WAIT - 0.1, 1.7, { trail: false, dust: false });
 // "their first volley drove Marion's front back"
-mg([1532, 884], [1552, 856], T_VOLLEY + 0.1, 5, 0.9); mg([1570, 900], [1560, 862], T_VOLLEY + 0.25, 5, 0.9);
-FLASH([1532, 886], T_VOLLEY + 0.1, 0.7); FLASH([1572, 902], T_VOLLEY + 0.25, 0.7);
+mg([1532, 884], [1552, 856], T_VOLLEY + 0.1, 6, 1.1); mg([1570, 900], [1560, 862], T_VOLLEY + 0.25, 6, 1.1);
+[[1520, 888], [1532, 886], [1546, 890], [1560, 904], [1572, 902], [1584, 908]].forEach((p, i) => FLASH(p, T_VOLLEY + 0.1 + (i % 3) * 0.06 + (i > 2 ? 0.15 : 0), 1.1));
 smoke([[1534, 884], [1572, 900]], T_VOLLEY + 0.2, 0.5);
-march("bf", [[1556, 852], [1540, 836], [1522, 818]], T_BACK + 0.2, 1.1, { trail: false, dust: false });
+march("bf", [[1556, 852], [1540, 834], [1522, 814]], T_VOLLEY + 0.55, 0.7, { trail: false, dust: false });   // a clear push-back right after the volley (~120 px on screen)
 // "But a second party came in from the side": the flank party swings round the west of the field into the Loyalists' flank (solid thin trail)
 march("bs", [[1478, 800], [1462, 846], [1468, 888], [1494, 904]], T_SECOND, T_BROKE - T_SECOND + 0.1, { dust: false });
 march("bf", [[1522, 818], [1530, 840]], T_SIDE + 0.2, 1.2, { trail: false, dust: false });

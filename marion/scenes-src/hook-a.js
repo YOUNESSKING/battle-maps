@@ -16,7 +16,9 @@ const T_DATE = at(H1, "seventeen eighty"), T_GRIP = at(H1, "Britain"), T_ROAD = 
   T_SANTEE = at(H1, "across the Santee"), T_NF = at(H1, "Nelson's Ferry");
 const T_THERE = at(H2, "There"), T_DAWN = at(H2, "before dawn"), T_70 = at(H2, "seventy men"), T_150 = at(H2, "a hundred and fifty"),
   T_FREE = at(H2, "free"), T_GUNS = at(H2, "under the guns"), T_GUARD = at(H2, "British guard"), T_4M = at(H2, "Within four months"),
-  T_ADMIT = at(H2, "would admit"), T_RIVERS = at(H2, "between two rivers"), T_SCARCE = at(H2, "scarce an inhabitant"), T_ARMS = at(H2, "not in arms");
+  T_CMDR = at(H2, "the British commander"), T_RIVERS = at(H2, "between two rivers", -0.6), T_SCARCE = at(H2, "scarce an inhabitant", -0.58), T_ARMS = at(H2, "not in arms", -0.55);
+// (critic r1) the last sentence has no measured anchor after 17.96 s; its pauses in voice.wav (19.04-19.41, 21.52-21.68, 23.15-23.33) put "that between
+// two rivers" at ~21.7-23.1 and "there was scarce an inhabitant" from ~23.4: the three phrases above are shifted onto those pauses
 // ---------------------------------------------------------------------------------------------------------------------------------
 // maps + camera (one camera over `lowcountry`; the santee map sits in its true place inside it, 8x)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +47,7 @@ seg(TZ0, TZ1, C1, CEND, "power2.inOut", [[C1[0], C1[1]], [1370, 940], [CEND[0], 
 SFX("whoosh", TZ0 - 0.1);
 seg(TZ1 + 0.02, T_DAWN + 1.4, CEND, CH2, "sine.inOut");
 seg(T_DAWN + 1.42, T_4M - 0.05, CH2, [CH2[0] + 2, CH2[1] - 1, CH2[2] * 1.05]);
-const TP0 = T_4M, TP1 = T_4M + 1.9;
+const TP0 = T_4M - 0.15, TP1 = T_4M + 1.6;
 seg(TP0, TP1, CH2, CW, "power2.inOut", [[CH2[0], CH2[1]], [1360, 880], [CW[0], CW[1]]]);
 SFX("whoosh", TP0 - 0.1);
 seg(TP1 + 0.02, END, CW, [CW[0] + 6, CW[1] - 4, CW[2] * 1.02]);
@@ -114,7 +116,8 @@ const CARD = (big, l1, l2, col) => `<div style="padding:12px 54px 18px;backgroun
 { const el = scr(CARD("70", "MEN ON HORSEBACK"), "right:140px;top:110px;display:flex;justify-content:center;transform-origin:50% 30%;", T_70, null, { autoAlpha: 0 });
   slam(el, T_70 - 0.05, { from: 1.9, shake: 5, until: T_150 - 0.3 }); }
 { const el = scr(CARD("0", "AMERICAN PRISONERS", "SET FREE"), "right:140px;top:110px;display:flex;justify-content:center;transform-origin:50% 30%;", T_150, null, { autoAlpha: 0 });
-  slam(el, T_150, { from: 1.9, shake: 5, until: T_GUARD + 0.4 });
+  slam(el, T_150, { from: 1.9, shake: 5, until: Math.min(T_GUARD, 16.9) });
+  const sf = el.firstElementChild.lastElementChild; gsap.set(sf, { autoAlpha: 0 }); tl.fromTo(sf, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.3, immediateRender: false }, T_FREE);
   const v = el.querySelector(".v"), st = { x: 0 };
   tl.fromTo(st, { x: 0 }, { x: 150, duration: 0.9, ease: "power2.out", immediateRender: false, onUpdate: () => { v.textContent = String(Math.round(st.x / 10) * 10); } }, T_150 + 0.2);
   for (let k = 0; k < 7; k++) SFX("tick", T_150 + 0.25 + k * 0.12); }
@@ -131,7 +134,11 @@ hideU(["g1"], T_GUARD + 0.35);
 // "Within four months": the pull back to the wide map, daylight; "between two rivers": the ground between the Santee and the Pee Dee
 // ---------------------------------------------------------------------------------------------------------------------------------
 LIGHT("day", T_4M + 0.2, 1.4);
-hideU(["q1", "q2", "r1", "r2", "r3", "r4"], T_4M + 0.15);
+hideU(["q1", "q2", "r2", "r3", "r4"], T_4M + 0.15);
+// (critic r1) the riders stay on screen as ONE blue box at the Great Savannah through the pull back (Marion's men; the Moultrie side flag stays up on the wide map)
+B.move("r1", T_4M - 0.1, 1.2, ...PP(1540, 735));
+// "the British commander in the South": the red garrisons of Charleston and Camden come back on the wide map
+tl.to([B.units.pC.el, B.units.pK.el], { autoAlpha: 1, duration: 0.4 }, T_CMDR); SFX("hit", T_CMDR + 0.1);
 const RS = GD.rivers.santee, RPD = GD.rivers.pee_dee, RWL = GD.rivers.wateree_low, YTOP = 330;
 TRACE(RS, T_RIVERS - 0.15, T_RIVERS + 3.0, 4, 0.9);
 TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
@@ -142,7 +149,7 @@ TRACE(RPD.filter((p) => p[1] >= 300), T_RIVERS - 0.05, T_RIVERS + 3.0, 4, 0.9);
   const d = HATCH_LAYER(poly, "#2c57b7", 2.4, 10, 0.9); tl.to(d, { autoAlpha: 1, duration: 0.5 }, T_RIVERS + 0.15); tl.to(d, { autoAlpha: 0, duration: 0.8, ease: "sine.inOut" }, T_RIVERS + 2.9); }
 // quote card on the spoken words (no credit line: only spoken words)
 { const el = scr(`<div style="padding:18px 46px 20px;background:rgb(18,16,12);border-left:8px solid #1f4fc4;font-family:Oswald;color:#f7f3ea;box-shadow:0 20px 40px rgba(0,0,0,.55);text-align:center">
-    <div style="font-size:44px;font-weight:600;line-height:1.2;letter-spacing:.05em">SCARCE AN INHABITANT<br>NOT IN ARMS</div></div>`,
+    <div style="font-size:44px;font-weight:600;line-height:1.2;letter-spacing:.05em">SCARCE AN INHABITANT &hellip;<br>NOT IN ARMS</div></div>`,
     "left:0;right:0;top:820px;display:flex;justify-content:center;", T_SCARCE - 0.05, END - 0.35);
   SFX("hit", T_SCARCE + 0.2); }
 // "not in arms against him": blue militia boxes rise between the two rivers

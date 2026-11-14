@@ -20,8 +20,10 @@ const T_OW = at(P2, "In other words"), T_ROAD = at(P2, "every road and every riv
   T_STILL = at(P2, "The British could still march"), T_WALL = at(P2, "every river was a wall"), T_GAPS = at(P2, "only Marion knew where the gaps were");
 // ---------------------------------------------------------------------------------------------------------------------------------
 LIVING({ clouds: 0.1 });
-const C0 = [1440, 810, 0.667], C1 = [1700, 740, 0.86], C2 = [1760, 905, 1.1], C3 = [1745, 900, 1.12];
-camera([[0, ...C0], [T_BETW - 1.4, ...C0], [T_BETW + 0.9, ...C1, "power2.inOut"], [T_OW - 0.2, 1705, 742, 0.87], [T_OW + 2.6, ...C2, "power2.inOut"], [END, ...C3]]);
+const C0 = [1440, 810, 0.667], C1 = [1700, 740, 0.86], C2 = [1760, 905, 1.1], CB = [1830, 1030, 1.4], C3 = [1745, 900, 1.05];
+// critic r1: a push-in on the lower Santee for the boat beats (boats + splashes readable), back out for "every river was a wall"
+camera([[0, ...C0], [T_BETW - 1.4, ...C0], [T_BETW + 0.9, ...C1, "power2.inOut"], [T_OW - 0.2, 1705, 742, 0.87], [T_OW + 2.6, ...C2, "power2.inOut"], [T_ALL - 1.0, 1765, 910, 1.12],
+  [T_ALL + 0.6, ...CB, "power2.inOut"], [T_STILL + 0.6, 1845, 1040, 1.42], [T_WALL - 0.1, ...C3, "power2.inOut"], [END, 1740, 900, 1.06]]);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // screen helpers: title card, cards, splash, fort mark
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -36,7 +38,7 @@ const FORT = (p, t) => { const el = pinS(GG.pin(`<svg width="26" height="26" vie
   <path d="M-7 -7 L-2 -10 L2 -10 L7 -7 L10 -2 L10 2 L7 7 L2 10 L-2 10 L-7 7 L-10 2 L-10 -2 Z" fill="none" stroke="#bc2528" stroke-width="1.8"/>
   <rect x="-3.2" y="-3.2" width="6.4" height="6.4" fill="#2a2312"/></svg>`, p[0], p[1], { t, pop: true })); return el; };
 // splash rings where a boat goes under (no sound but a tick)
-const SPLASH = (p, t) => { const el = pinS(GG.pin(`<svg width="60" height="60" viewBox="-30 -30 60 60" style="display:block;overflow:visible">
+const SPLASH = (p, t) => { const el = pinS(GG.pin(`<svg width="96" height="96" viewBox="-30 -30 60 60" style="display:block;overflow:visible">
   <circle class="r1" r="6" fill="none" stroke="#eef4f6" stroke-width="2.2"/><circle class="r2" r="4" fill="none" stroke="#eef4f6" stroke-width="1.6"/></svg>`, p[0], p[1], {}));
   tl.set(el, { autoAlpha: 1 }, t); const r1 = el.querySelector(".r1"), r2 = el.querySelector(".r2");
   tl.fromTo(r1, { attr: { r: 4 }, opacity: 0.95 }, { attr: { r: 22 }, opacity: 0, duration: 1.1, ease: "power2.out", immediateRender: false }, t);
@@ -80,8 +82,8 @@ quote("&ldquo;&hellip;to awe the disaffected&rdquo;", "CORNWALLIS", T_AWE - 0.1,
 // "between the Pee Dee and the Black River ... openly avowed rebellion": focus on that country, river names, the band grows
 // ---------------------------------------------------------------------------------------------------------------------------------
 focus(LYT(33.72, -79.62), 230, T_BETW - 0.1, T_OW - 0.3);
-RIVER("pee_dee", "Pee Dee", T_BETW + 0.25, { s: 0.86, near: LYT(33.95, -79.48), side: "right", hw: 6 });
-RIVER("black_river", "Black River", T_BR + 0.1, { s: 0.86, near: LYT(33.60, -79.80), side: "left", hw: 6 });
+RIVER("pee_dee", "Pee Dee", T_BETW + 0.25, { s: 0.86, near: LYT(33.95, -79.48), side: "right", hw: 6, size: 30 });
+RIVER("black_river", "Black River", T_BR + 0.1, { s: 0.86, near: LYT(33.60, -79.80), side: "left", hw: 6, size: 30 });
 UNIT("mb2", "allies", LYT(33.86, -79.56), "cavalry", { ech: "", t: T_REB + 0.1 });
 UNIT("mb3", "allies", LYT(33.64, -79.70), "cavalry", { ech: "", t: T_REB + 0.45 });
 march("mb2", [LYT(33.86, -79.56), LYT(33.84, -79.57)], T_REB + 0.8, 5.0, { dustSize: 40, dustOp: 0.35 });
@@ -100,7 +102,7 @@ hideU(["cw", "pC"], T_BETW - 1.2);   // Camden (and its pole flag) is cropped at
 const SANTEE = GD.rivers.santee;
 const near = (p) => { let b = SANTEE[0], d = 1e9; SANTEE.forEach((q) => { const e = Math.hypot(q[0] - p[0], q[1] - p[1]); if (e < d) { d = e; b = q; } }); return b; };
 const BOATS = [[33.4537, -79.894], [33.401, -79.845], [33.336, -79.759], [33.296, -79.638], [33.252, -79.548], [33.222, -79.455]].map(([a, b]) => near(LYT(a, b)));
-BOATS.forEach((p, k) => { const el = BOAT([p, [p[0] + 0.8, p[1] + 0.3]], 0, 0.1, { px: 30, rot0: k % 2 ? 72 : 20, rockDeg: 4 }); el.dataset.k = k; BOATS[k].el = el; });
+BOATS.forEach((p, k) => { const el = BOAT([p, [p[0] + 0.8, p[1] + 0.3]], 0, 0.1, { px: 48, rot0: k % 2 ? 72 : 20, rockDeg: 4 }); el.dataset.k = k; BOATS[k].el = el; });
 const NB = (p) => [p[0] + 4, p[1] + 34];   // the box rides on the south bank, below the boat (the north bank carries the carved Georgetown name)
 const RIDE0 = [LYT(33.735, -79.62), LYT(33.58, -79.80), NB(BOATS[0])];
 march("mb", RIDE0, T_INST - 0.2, Math.max(1.5, T_ALL - T_INST + 0.4), { dustSize: 34, dustOp: 0.4 });
@@ -109,7 +111,7 @@ BOATS.forEach((p, k) => { const t = tB0 + (tB1 - tB0) * k / (BOATS.length - 1);
   if (k > 0) march("mb", [NB(BOATS[k - 1]), NB(BOATS[k])], t - (tB1 - tB0) / (BOATS.length - 1), (tB1 - tB0) / (BOATS.length - 1) - 0.05, { dustSize: 34, dustOp: 0.4 });
   tl.to(p.el, { autoAlpha: 0, scale: 0.6, duration: 0.45, ease: "power2.in" }, t + 0.15); SPLASH(p, t + 0.2); });
 stampP("ALL THE BOATS", ...LYT(33.06, -80.24), T_ALL - 0.05, T_ALL + 3.1, 44);
-RIVER("santee", "Santee", T_MOUTH + 0.3, { s: 1.1, near: LYT(33.36, -79.79), side: "below", hw: 6 });
+RIVER("santee", "Santee", T_MOUTH + 0.3, { s: 1.4, near: LYT(33.36, -79.79), side: "below", hw: 8, size: 30 });
 // "every river was a wall": the Santee, the Black River and the Pee Dee inked; "only Marion knew where the gaps were": focus on him
 // pale ink (a sepia trace disappears on the dark swamp along the rivers)
 [[SANTEE, 0], [GD.rivers.black_river, 0.25], [GD.rivers.pee_dee, 0.45]].forEach(([R, d]) => inkTrace(R.filter((q, i) => i % 2 === 0), T_WALL - 0.05 + d, T_GAPS - 0.1, 3.4).setAttribute("stroke", "#efe3c8"));

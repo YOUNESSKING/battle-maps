@@ -34,7 +34,7 @@ const CARD = (kick, big, col, t, until, o = {}) => { const el = scr0(`<div style
     ${kick ? `<div style="font-size:26px;letter-spacing:.34em;color:#d8c9a3">${kick}</div>` : ""}<div style="font-size:${o.size || 72}px;letter-spacing:.05em;line-height:1.08">${big}</div></div>`,
     `left:0;right:0;top:${o.top ?? 150}px;display:flex;justify-content:center;transform-origin:50% 30%;`);
   slam(el, t, { from: o.from || 1.6, shake: o.shake ?? 3, until }); return el; };
-const SAB = `<svg width="46" height="46" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.6))"><g stroke="#2a2410" stroke-width="3.2" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><g stroke="#f3eee2" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><path d="M-14 -6 L-6 -14 M14 -6 L6 -14" stroke="#2a2410" stroke-width="2.4"/></svg>`;
+const SAB = `<svg width="84" height="84" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.6))"><g stroke="#2a2410" stroke-width="3.2" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><g stroke="#f3eee2" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-12 -12 L12 12 M12 -12 L-12 12"/></g><path d="M-14 -6 L-6 -14 M14 -6 L6 -14" stroke="#2a2410" stroke-width="2.4"/></svg>`;
 const MARK = (p, t, until) => { const el = pinS(GG.pin(SAB, p[0], p[1], { t, pop: true, until })); SFX("hit", t + 0.1); return el; };
 // the guard's muskets piled at the door: a stand of three muskets on a disc in the holder's colour (red -> blue when Marion's men seize them)
 const MUSKETS = (p, t) => { const el = pinS(GG.pin(`<svg width="46" height="46" viewBox="-17 -17 34 34" style="display:block;overflow:visible;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.7))">
@@ -62,7 +62,7 @@ SIDEFLAG("sc", "b1", 0, T_MS);
 // ---------------------------------------------------------------------------------------------------------------------------------
 const GP = [H[0] - 52, H[1] + 22], PR = [H[0] + 56, H[1] + 20], MK = [H[0] + 2, H[1] + 30];
 UNIT("g1", "british", GP, "infantry", { ech: "", t: T_GUARD + 0.1 });
-SIDEFLAG("gb", "g1", T_GUARD + 0.5, T_20T);
+SIDEFLAG("gb", [GP[0] - 58, GP[1] - 4], T_GUARD + 0.5, T_20T);   // critic r1: free flag ~48 px behind the guard (west), not on the box
 PLACE_LABEL("Great Savannah", H, T_GS + 0.1, { dy: -64, size: 24 });
 PLACE_LABEL("Nelson's Ferry", PLACE("nelsons_ferry"), T_NF + 0.1, { dy: 22, size: 24 });
 { const R = GD.bake.roads.find((r) => r.id === "nelson_camden").paths[0], k = R.findIndex((q) => Math.hypot(q[0] - H[0], q[1] - H[1]) < 12);
@@ -81,8 +81,10 @@ PLACE_LABEL("Horse Creek", [1745, 705], T_HC + 0.1, { dy: 0, size: 22 });
 march("b1", [[1405, 790], [1428, 720], [1452, 664], [1488, 628], [H[0] - 30, H[1] - 50]], T_REST + 0.1, T_SENTRY - T_REST + 0.6, { trail: true, dust: false });
 march("b2", [[1446, 826], [1470, 748], [1496, 690], [1530, 640], [H[0] + 34, H[1] - 54]], T_REST + 0.3, T_SENTRY - T_REST + 0.6, { trail: true, dust: false });
 // "A sentry heard them and fired": one musket flash from the guard at the house toward the blue boxes behind it
-mg([GP[0] + 6, GP[1] - 10], [H[0] - 24, H[1] - 44], T_FIRED + 0.15, 3, 0.9);
-smoke([[GP[0] + 8, GP[1] - 12]], T_FIRED + 0.2, 0.6);
+mg([GP[0] + 6, GP[1] - 10], [H[0] - 24, H[1] - 44], T_FIRED + 0.15, 3, 2.2);
+smoke([[GP[0] + 8, GP[1] - 12]], T_FIRED + 0.2, 1.2);
+{ const f = pinS(GG.pin(`<div style="width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,#fffbe0 0%,#ffd060 28%,rgba(255,120,20,.55) 50%,rgba(255,80,0,0) 72%)"></div>`, GP[0] + 8, GP[1] - 10, {}));   // muzzle flash (reads at night)
+  tl.fromTo(f, { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1.1, duration: 0.08, immediateRender: false }, T_FIRED + 0.15); tl.to(f, { autoAlpha: 0, scale: 1.4, duration: 0.45 }, T_FIRED + 0.25); }
 // "Marion's men rushed the house": blue onto both sides of the house, battle mark
 B.move("b1", T_RUSH + 0.1, 0.7, H[0] - 22, H[1] - 14, "power2.in");
 B.move("b2", T_RUSH + 0.2, 0.7, H[0] + 28, H[1] - 12, "power2.in");
@@ -111,9 +113,12 @@ B.move("b2", T_BUT, 1.2, MK[0] - 14, MK[1] + 62);
 // "They will desert, to a man, he wrote." (Marion to Gates, verbatim)
 quote("&ldquo;&hellip;they will desert, to a man&rdquo;", "MARION", T_DES - 0.1, T_OF - 0.15, { col: "#1f4fc4", size: 46, top: 700, mw: 1000 });
 // "only three stayed": the box walks off north and fades; three small blue dots stay by the house; card
-const DOTS = [[PR[0] - 10, PR[1] + 2], [PR[0] + 2, PR[1] + 10], [PR[0] + 12, PR[1] + 1]].map((p, k) => { const el = pinS(GG.pin(`<div style="width:13px;height:13px;border-radius:50%;background:#2c57b7;border:1.6px solid #f3eee2;box-shadow:0 1px 2px rgba(0,0,0,.6)"></div>`, p[0], p[1], { t: T_ONLY + 0.3 + k * 0.12, pop: true })); return el; });
-march("pr", [PR, [PR[0] - 4, PR[1] - 60], [PR[0] - 10, PR[1] - 130]], T_ONLY + 0.15, 1.7, { trail: false, dust: false });
-tl.to(B.units.pr.el, { autoAlpha: 0, duration: 1.0 }, T_ONLY + 0.7);
-CARD("OF 150", "ONLY 3 STAYED", "#c9b48a", T_ONLY - 0.05, END - 0.1, { size: 64, top: 760 });
+const DOTS = [[PR[0] - 10, PR[1] + 2], [PR[0] + 2, PR[1] + 10], [PR[0] + 12, PR[1] + 1]].map((p, k) => { const el = pinS(GG.pin(`<div style="width:13px;height:13px;border-radius:50%;background:#2c57b7;border:1.6px solid #f3eee2;box-shadow:0 1px 2px rgba(0,0,0,.6)"></div>`, p[0], p[1], { t: T_OF + 0.5 + k * 0.15, pop: true })); return el; });
+// critic r1: starts on "Of a hundred and fifty" so the walk-off reads; gone by "only three stayed", the three dots stay
+march("pr", [PR, [PR[0] - 4, PR[1] - 70], [PR[0] - 10, PR[1] - 150]], T_OF + 0.2, 2.6, { trail: false, dust: false });
+tl.to(B.units.pr.el, { autoAlpha: 0, duration: 1.4 }, T_OF + 1.3);
+{ const c = CARD("OF 150", "ONLY 3 STAYED", "#c9b48a", T_OF - 0.05, END - 0.1, { size: 64, top: 760 });   // kicker on "Of a hundred and fifty" (~3.4 s card)
+  const big = c.firstElementChild.lastElementChild; gsap.set(big, { autoAlpha: 0 });                          // the big line only on "only three stayed" (1c)
+  tl.fromTo(big, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.25, ease: "power3.in", immediateRender: false }, T_ONLY); SFX("hit", T_ONLY + 0.22); }
 // ---------------------------------------------------------------------------------------------------------------------------------
 if (GD.var.audit) LABEL_AUDIT([4, 10, 16, 22, 28, 34, 40, 46, 50], { show: true });

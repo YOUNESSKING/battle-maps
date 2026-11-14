@@ -5,7 +5,7 @@
 //   state one by one (Camden, toward Ninety Six, Georgetown, Monck's Corner, Nelson's Ferry; unlabelled); "The British had captured ... at
 //   Charleston": a blue army box in Charleston, red boxes close round it, on "captured" it is taken (fast fade) + red FORM 1 hatching + stamp
 //   CAPTURED; "destroyed another at Camden": a blue army box comes down on Camden, the Camden garrison meets it (musket flashes), it is gone +
-//   stamp DESTROYED; "And the man leading those seventy riders": camera in on the Santee swamp, the "?" banner on a pole; stamp COULD BARELY WALK.
+//   stamp DESTROYED; "And the man leading those seventy riders": camera in on the Santee swamp, the "?" banner on a pole; (no stamp: critic r1).
 // hook-4 (the twist as action): hard cut to dark; "That spring": the date plate rolls back to SPRING 1780 (ticks); Charleston at night, besieged;
 //   "in Charleston": a night vignette of a town house slams over the map (lit windows, guests); "locked his doors": a padlock slams on the door
 //   (hit); "jumped": a small figure drops from the second-storey window (hit + shake); "ankle": stamp ANKLE; "Sent out of the city": the vignette
@@ -70,7 +70,7 @@ B.date("1780", T_NAME + 0.02, null, 32);
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-3 on `lowcountry`
 // ---------------------------------------------------------------------------------------------------------------------------------
-SIDEFLAG("gb", LYT(32.98, -80.52)); SIDEFLAG("sc", LYT(33.86, -79.55));
+SIDEFLAG("gb", LYT(32.98, -80.52), 0, T1 - 0.05); SIDEFLAG("sc", LYT(33.86, -79.55), 0, T1 - 0.05);
 // hook-a's last frame: the militia risen between the rivers -> they fade (rewind to "that summer")
 [[1395, 640], [1545, 820], [1700, 590], [1790, 790], [1560, 480], [1870, 655]].forEach((p, i) => { UNIT("m" + i, "allies", NUDGE(p, { s: CA[2] }), "cavalry", { ech: "" }); });
 hideU(["m0", "m1", "m2", "m3", "m4", "m5"], 0.1);
@@ -97,8 +97,8 @@ mg([CAMP[0] + 15, CAMP[1] - 45], [1150, 150], T_DESTR + 0.1, 5, 1.4 / CWB[2]);
 tl.to(B.units.bB.el, { autoAlpha: 0, duration: 0.4 }, T_DESTR + 0.55);
 wstampL("DESTROYED", 830, 430, T_DESTR + 0.35, T_MAN - 0.1, null, 44);
 // "And the man leading those seventy riders": the "?" banner on a pole by the Santee swamp (revealed on the spoken name in hook-5)
-const BAN = BANNER("marion", "Francis Marion", "sc", BANP, T_MAN + 0.25, { myst: T_FM, side: "ne", pop: 1.3, bright: 1.12 });
-wstampL("COULD BARELY WALK", BANP[0] - 52 / CBAN[2] * 1, BANP[1] + 150 / CBAN[2], T_WALK, T_SPRING - 0.1, null, 30);
+const BAN = BANNER("marion", "Francis Marion", "sc", BANP, T_MAN + 0.25, { myst: T_FM, mystName: "?", side: "ne", pop: 1.3, bright: 1.12, until: T1 - 0.02 });   // (critic r1) no unspoken "GENERAL" plate
+// (critic r1) no stamp on "could barely walk" (the ankle detail is told, and stamped, in hook-4)
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the hard cuts (black frame hides each camera jump)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -116,25 +116,35 @@ LIGHT("night", T_SPRING - 0.01, 0.01, 0.8);
 tl.set(B.units.bA.el, { autoAlpha: 1 }, T_SPRING - 0.01);
 tl.set(["pM", "pN", "pG", "pF"].map((id) => B.units[id].el), { autoAlpha: 0 }, T_SPRING - 0.01);
 // the night vignette (screen space): a Charleston town house, lit windows, guests; the lock, the jump, the ankle
-const VIG = scr0(`<div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 62% at 50% 52%, rgba(6,8,16,.55) 0%, rgba(4,5,10,.9) 70%)"></div>
-<svg viewBox="0 0 400 280" width="1000" height="700" style="position:absolute;left:460px;top:200px;overflow:visible">
+// (critic r1) painted 2e treatment: no black void (the darkened Charleston map shows round it), warm painted stucco + roof, Charleston-green
+//   shutters, lit windows, filled silhouettes; the house stands over the town on the map
+const VIG = scr0(`<div style="position:absolute;inset:0;background:radial-gradient(ellipse 46% 52% at 53% 58%, rgba(6,8,16,0) 0%, rgba(6,8,16,.18) 45%, rgba(4,5,10,.62) 100%)"></div>
+<svg viewBox="0 0 400 280" width="760" height="532" style="position:absolute;left:586px;top:333px;overflow:visible;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))">
  <defs><filter id="hgl" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="3.2"/></filter>
-  <linearGradient id="hbr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3b2c"/><stop offset="1" stop-color="#3b261c"/></linearGradient></defs>
- ${[[40, 30], [90, 18], [330, 26], [365, 60], [300, 12], [60, 70]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#e8dca0" opacity=".7"/>`).join("")}
- <rect x="0" y="246" width="400" height="34" fill="#1b1a12"/>
- <path d="M0 246 L400 246" stroke="#3a3626" stroke-width="1.2"/>
- <g id="hpiazza" fill="none" stroke="#c9b48a" stroke-opacity=".55" stroke-width="1.6">
-  <rect x="96" y="70" width="62" height="176" fill="#241a14" fill-opacity=".85"/>${[100, 120, 140, 156].map((x) => `<line x1="${x}" y1="70" x2="${x}" y2="246"/>`).join("")}
-  <line x1="96" y1="156" x2="158" y2="156"/><line x1="96" y1="164" x2="158" y2="164"/></g>
- <path d="M150 64 L230 26 L310 64 Z" fill="#2a2220" stroke="#120c08" stroke-width="2"/>
- <rect x="158" y="62" width="146" height="184" fill="url(#hbr)" stroke="#120c08" stroke-width="2"/>
- <line x1="158" y1="156" x2="304" y2="156" stroke="#2a1a12" stroke-width="2"/>
+  <filter id="hsoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="hn" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .12  0 0 0 0 .08  0 0 0 0 .04  0 0 0 .9 -.28"/></filter>
+  <linearGradient id="hwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a87a52"/><stop offset=".55" stop-color="#8a5f3e"/><stop offset="1" stop-color="#5a3c26"/></linearGradient>
+  <linearGradient id="hroof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e4c2e"/><stop offset="1" stop-color="#4c2616"/></linearGradient>
+  <radialGradient id="hlit" cx=".5" cy=".55" r=".7"><stop offset="0" stop-color="#ffe7a0"/><stop offset=".6" stop-color="#f6b955"/><stop offset="1" stop-color="#c9822e"/></radialGradient>
+  <clipPath id="hclip"><path d="M96 70 L158 62 L150 64 L230 24 L310 64 L304 62 L304 246 L96 246 Z"/></clipPath></defs>
+ <ellipse cx="205" cy="250" rx="150" ry="14" fill="rgba(0,0,0,.5)" filter="url(#hsoft)"/>
+ ${[[176, 238], [256, 238], [230, 250]].map(([x, y]) => `<ellipse cx="${x + 13}" cy="${y}" rx="34" ry="8" fill="rgba(255,190,90,.22)" filter="url(#hsoft)"/>`).join("")}
+ <g id="hpiazza"><rect x="96" y="70" width="62" height="176" fill="#2e2219"/><path d="M92 70 L160 66 L160 72 L92 74 Z" fill="#5e3a24"/>
+  ${[100, 120, 140, 156].map((x) => `<rect x="${x - 1.6}" y="72" width="3.2" height="174" fill="#d4c39c" opacity=".72"/>`).join("")}
+  <rect x="96" y="154" width="62" height="5" fill="#d4c39c" opacity=".55"/><rect x="96" y="240" width="62" height="6" fill="#5e4632"/></g>
+ <rect x="276" y="30" width="12" height="30" fill="#5a3422" stroke="#2a160c" stroke-width="1"/>
+ <path d="M150 64 L230 24 L310 64 Z" fill="url(#hroof)" stroke="#2a140a" stroke-width="1.4" stroke-linejoin="round"/>
+ ${[36, 46, 56].map((y) => `<path d="M${230 - (y - 24) * 2} ${y} L${230 + (y - 24) * 2} ${y}" stroke="rgba(30,12,4,.35)" stroke-width="1"/>`).join("")}
+ <rect x="158" y="62" width="146" height="184" fill="url(#hwall)" stroke="#2a1a10" stroke-width="1.4"/>
+ <rect x="158" y="152" width="146" height="5" fill="#6e4a30"/>
  ${[[176, 84], [216, 84], [256, 84], [176, 176], [256, 176]].map(([x, y], i) => `<g class="hw${i}"><rect x="${x - 4}" y="${y - 4}" width="34" height="50" fill="#ffc45a" opacity=".55" filter="url(#hgl)"/>
-   <rect x="${x}" y="${y}" width="26" height="42" fill="#ffcf6a" stroke="#1b120c" stroke-width="2"/><line x1="${x + 13}" y1="${y}" x2="${x + 13}" y2="${y + 42}" stroke="#7a5a2a" stroke-width="1.2"/><line x1="${x}" y1="${y + 21}" x2="${x + 26}" y2="${y + 21}" stroke="#7a5a2a" stroke-width="1.2"/></g>`).join("")}
- ${[[186, 104], [226, 102], [236, 106], [266, 104]].map(([x, y], i) => `<g class="hg hg${i}" fill="#1a110a"><circle cx="${x}" cy="${y}" r="3.6"/><path d="M${x - 5} ${y + 16} Q${x} ${y + 2} ${x + 5} ${y + 16} Z"/></g>`).join("")}
- <rect x="216" y="184" width="28" height="62" fill="#22160e" stroke="#120c08" stroke-width="2"/><circle cx="238" cy="216" r="1.6" fill="#c9a46a"/>
+   <rect x="${x}" y="${y}" width="26" height="42" fill="url(#hlit)" stroke="#2a1a0e" stroke-width="1.6"/><line x1="${x + 13}" y1="${y}" x2="${x + 13}" y2="${y + 42}" stroke="#8a6230" stroke-width="1"/><line x1="${x}" y1="${y + 21}" x2="${x + 26}" y2="${y + 21}" stroke="#8a6230" stroke-width="1"/>
+   <rect x="${x - 9}" y="${y}" width="8" height="42" fill="#28382a" stroke="#141c14" stroke-width=".8"/><rect x="${x + 27}" y="${y}" width="8" height="42" fill="#28382a" stroke="#141c14" stroke-width=".8"/></g>`).join("")}
+ ${[[186, 104], [226, 102], [236, 106], [266, 104]].map(([x, y], i) => `<g class="hg hg${i}" fill="#2a1608" opacity=".85"><ellipse cx="${x}" cy="${y}" rx="3.3" ry="3.8"/><path d="M${x - 7} ${y + 19} C${x - 7} ${y + 8} ${x - 4} ${y + 5} ${x} ${y + 5} C${x + 4} ${y + 5} ${x + 7} ${y + 8} ${x + 7} ${y + 19} Z"/></g>`).join("")}
+ <rect x="216" y="184" width="28" height="62" fill="#24301f" stroke="#141a10" stroke-width="1.6"/><path d="M216 184 A14 10 0 0 1 244 184 Z" fill="url(#hlit)" opacity=".85"/><circle cx="238" cy="216" r="1.6" fill="#c9a46a"/>
+ <rect x="92" y="20" width="222" height="228" clip-path="url(#hclip)" filter="url(#hn)" opacity=".9"/>
  <g id="hlock" transform="translate(230 206)"><path d="M-7 -4 L-7 -10 A7 7 0 0 1 7 -10 L7 -4" fill="none" stroke="#e8dca0" stroke-width="3"/><rect x="-10" y="-5" width="20" height="16" rx="2" fill="#c9a46a" stroke="#120c08" stroke-width="1.5"/><circle cx="0" cy="2" r="2.2" fill="#2a1a10"/></g>
- <g id="hfig" fill="#0d0905" stroke="#0d0905"><circle cx="0" cy="-12" r="3.6"/><path d="M0 -8 L0 4 M0 -5 L-6 1 M0 -5 L6 -1 M0 4 L-4 13 M0 4 L5 12" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>
+ <g id="hfig" fill="#140b05"><ellipse cx="0" cy="-12" rx="3.4" ry="3.9"/><path d="M-6 6 C-6 -4 -4 -7 0 -7 C4 -7 6 -4 6 6 L3.5 6 L4.5 14 L1.5 14 L0 7 L-1.5 14 L-4.5 14 L-3.5 6 Z"/><path d="M-6 -3 L-10 3 L-8.5 4 L-5 0 Z M6 -3 L10 -8 L11.5 -7 L7 0 Z"/></g>
 </svg>`, "inset:0;");
 const svg = VIG.querySelector("svg"), LOCK = svg.querySelector("#hlock"), FIG = svg.querySelector("#hfig"), WIN2 = svg.querySelector(".hw2"), GUESTS = svg.querySelectorAll(".hg");
 tl.to(VIG, { autoAlpha: 1, duration: 0.45 }, T_INCHS - 0.1);
@@ -155,7 +165,7 @@ tl.to(FIG, { y: 236, duration: 0.5, ease: "power2.in" }, T_JUMP + 0.25);
 tl.to(FIG, { rotation: 74, svgOrigin: "296 236", duration: 0.25, ease: "power2.out" }, T_JUMP + 0.77);
 SFX("hit", T_JUMP + 0.75); K.shake(T_JUMP + 0.75, 5, 0.3);
 // "ankle": stamp ANKLE (cream on dark) beside him
-{ const st = scr0(stampHTML("ANKLE", "#f0e6c8", 52, -6), "left:1260px;top:770px;");
+{ const st = scr0(stampHTML("ANKLE", "#f0e6c8", 52, -6), "left:1190px;top:740px;");
   slam(st, T_ANKLE - 0.05, { from: 2.2, shake: 3, until: T_SENT - 0.1 }); }
 tl.to(VIG, { autoAlpha: 0, duration: 0.45 }, T_SENT - 0.05);
 // "Sent out of the city as unfit": a single blue box limps out of Charleston up the road (stop-start)
@@ -163,12 +173,15 @@ tl.to(VIG, { autoAlpha: 0, duration: 0.45 }, T_SENT - 0.05);
   UNIT("bM", "allies", LIMP[0], "infantry", { ech: "", t: 0 }); gsap.set(B.units.bM.el, { autoAlpha: 0 }); tl.to(B.units.bM.el, { autoAlpha: 1, duration: 0.3 }, T_SENT + 0.1);
   const steps = 6, t0 = T_SENT + 0.35, span = T_NAME - t0 - 0.2;
   for (let k = 0; k < steps; k++) { const a = Math.round(k * 30 / steps), b = Math.round((k + 1) * 30 / steps); along("bM", LIMP.slice(a, b + 1), t0 + k * span / steps, span / steps * 0.6, 6); } }
-wstampL("UNFIT", 1330, 1215, T_UNFIT, T_NAME - 0.2, null, 40);
+// "unfit": the stamp beside the limping box (critic r1), where the box is at that moment
+{ const R = GD.bake.roads.find((r) => r.id === "chs_nelson").paths[0], LIMP = sub(R, 0.02, 0.24, 30), steps = 6, t0 = T_SENT + 0.35, span = T_NAME - t0 - 0.2, st = span / steps;
+  const k = Math.max(0, Math.min(steps - 1, Math.floor((T_UNFIT - t0) / st))), pr = Math.max(0, Math.min(1, (T_UNFIT - t0 - k * st) / (st * 0.6)));
+  const q = posOn(LIMP, (k + pr) / steps); wstampL("UNFIT", q[0] + 78 / CCH[2], q[1] - 6 / CCH[2], T_UNFIT, T_NAME - 0.2, null, 36); }
 // "the surrender": the siege boxes close on the town, the garrison goes, red hatching on the town ground
 RING.forEach((p, i) => B.move("rc" + i, T_SURR - 0.3, 0.7, p[0] + (CHS[0] - p[0]) * 0.35, p[1] + (CHS[1] - p[1]) * 0.35));
 tl.to(B.units.bA.el, { autoAlpha: 0, duration: 0.4 }, T_SURR + 0.4);
 SFX("hit", T_SURR + 0.4);
-HATCH(CHS_GROUND, "british", T_SURR + 0.4, { hold: 1.0 });
+HATCH(CHS_GROUND, "british", T_SURR - 0.15, { hold: Math.max(1.0, T_NAME - T_SURR - 0.6) });   // (critic r1) up until the cut to the name (~1.9 s: the cut on "His name was" ends it)
 // ---------------------------------------------------------------------------------------------------------------------------------
 // hook-5: the name slam at the banner (day)
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -207,7 +220,7 @@ R1.forEach((P, i) => { UNITF("x" + (i + 2), "allies", P[0], "cavalry", { ech: ""
   march("x" + (i + 2), P, T1 + 0.1 + 0.08 * i, T_DARK - T1 + 0.3, { trail: false, dust: false }); });
 mg([1625, 1045], [1565, 1030], T_DARK + 0.15, 4, 1.3 / C1[2]);
 tl.to(B.units.x1.el, { autoAlpha: 0, duration: 0.35 }, T_DARK + 0.75);
-SIDEFLAG("sc", "x3", T1 - 0.02, T2 - 0.01);
+SIDEFLAG("sc", [1335, 940], T1 - 0.02, T2 - 0.01); SIDEFLAG("gb", [1700, 1000], T1 - 0.02, T2 - 0.01);   // ~48 px behind each side, not on a unit (critic r1)
 wstampL("ONLY IN THE DARK", 1505, 1210, T_DARK - 0.05, T2 - 0.1, null, 36);
 // ---------- CUT 2 (blackriver layer, day): Britain's most feared cavalry commander chases one blue box along the road into Ox Swamp ----------
 const LB = layer("blackriver"); tl.set(LB, { autoAlpha: 1 }, T2 - 0.01); tl.set(LB, { autoAlpha: 0 }, T3 - 0.01);
@@ -218,7 +231,7 @@ UNITF("y0", "allies", posOn(RD, 0.42), "cavalry", { ech: "", t: T2 - 0.02, until
 march("y0", sub(RD, 0.42, 0.95, 20), T2 + 0.1, T3 - T2 - 0.4, { dustSize: 34, dustOp: 0.4 });
 [0.22, 0.13, 0.04].forEach((f, i) => { UNITF("yr" + i, "british", posOn(RD, f), "cavalry", { ech: "II", t: T2 - 0.02, until: T3 - 0.01 });
   march("yr" + i, sub(RD, f, f + 0.48, 20), T2 + 0.25 + 0.05 * i, T3 - T2 - 0.5, { trail: i === 0, dustSize: 34, dustOp: 0.4 }); });
-SIDEFLAG("gb", "yr2", T2 - 0.02, T3 - 0.01); SIDEFLAG("sc", "y0", T2 - 0.02, T3 - 0.01);
+SIDEFLAG("gb", [395, 930], T2 - 0.02, T3 - 0.01); SIDEFLAG("sc", [1335, 765], T2 - 0.02, T3 - 0.01);
 arw({ pts: sub(RD, 0.24, 0.62, 12), side: "rome", t: T_FEARED, dur: 1.2, width: 9 / C2[2] });
 wstampL("A CHASE INTO THE SWAMPS", 1010, 1080, T_CHASE - 0.05, T3 - 0.1, null, 34);
 // ---------- CUT 3 (santee layer, day): Fort Watson: the stockade on the mound, a log tower rises beside it, fire from the tower, taken ----------
@@ -229,7 +242,7 @@ const FORT = REDOUBT("fw", FW, T3 - 0.02, { side: "british", px: 64 }); tl.set(F
 UNITF("z0", "allies", [1030, 410], "engineers", { ech: "", t: T3 - 0.02 });
 UNITF("z1", "allies", [835, 432], "cavalry", { ech: "", t: T3 - 0.02 });
 UNITF("z2", "allies", [1042, 300], "infantry", { ech: "", t: T3 - 0.02 });
-SIDEFLAG("sc", "z1", T3 - 0.02); SIDEFLAG("gb", [FW[0] - 50, FW[1] - 70], T3 - 0.02);
+SIDEFLAG("sc", [1110, 365], T3 - 0.02); SIDEFLAG("gb", [FW[0] - 55, FW[1] - 62], T3 - 0.02);
 // the log tower (constant on screen): rises from the ground beside the fort, log by log
 const TOW = pinS(GG.pin(`<svg width="70" height="168" viewBox="0 0 46 110" style="display:block;overflow:visible;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.55))">
   <g class="tw" style="transform-origin:23px 110px">${[...Array(11)].map((_, k) => `<rect x="${4 + (k % 2) * 1.5}" y="${100 - k * 9}" width="${37 - (k % 2) * 3}" height="8" rx="3" fill="${k % 2 ? "#7a5a36" : "#8e6a40"}" stroke="#2a1a0c" stroke-width="1.2"/>`).join("")}
