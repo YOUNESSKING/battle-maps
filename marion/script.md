@@ -35,7 +35,7 @@ His name was Francis Marion. To keep the war alive, he would strike only in the 
 ## BACKGROUND (~1:00 – ~1:20)
 
 [ARCHIVE: ~18 s: headline card "AUGUST 1780 / AMERICAN ARMY ROUTED AT CAMDEN"; J. B. White's painting of Marion's camp (3D depth, projector frame, label PAINTED LONG AFTER HIS DEATH); Ranney's "Marion Crossing the Pedee" (3D depth, projector frame, label PAINTED IN 1850); cuts every ~3 s; no birth or career cards]
-Marion was forty-eight, a small, lean planter from the Santee, and a Continental officer since the war began. A few weeks before Camden, he had ridden into the American camp with about twenty men and boys in small black leather caps. An American officer wrote that they looked so ridiculous, the soldiers could hardly keep from laughing. The general was glad to send them away.
+Marion was forty-eight, a small, lean planter from the Santee, and a Continental officer since the war began. That summer, he had ridden into the American camp with about twenty men and boys in black leather caps, so ragged that the soldiers laughed. The general was glad to send them away.
 
 ---
 
@@ -68,7 +68,7 @@ On the twenty-fifth of October, he found more Loyalists camped at Tearcoat Swamp
 [MAP: m1-9 | `blackriver` close: casualty card: LOYALISTS 6 KILLED · 14 WOUNDED · 23 CAPTURED / MARION: NONE LOST; then on "joined Marion" several red dots turn blue and walk to Marion's box; result + method card: THE SWAMP FOX METHOD · 1. STRIKE IN THE DARK]
 Six Loyalists were killed, fourteen wounded, and twenty-three captured, along with their horses, muskets and baggage. Marion did not lose a man. And soon afterwards, most of the men he had beaten that night came over and joined him. That was the first part of his method. Never meet the enemy's strength in daylight. Strike in the dark, where he sleeps.
 
-[ARCHIVE: insert (archive_inserts.json) in m1-9 from "Six Loyalists" to "joined him": ~8 s: Ranney's Marion Crossing the Pedee (detail, 3D depth, projector frame, PAINTED IN 1850)]
+> ARCHIVE INSERT (archive_inserts.json): in m1-9 from "Six Loyalists" to "joined him": ~8 s: Ranney's Marion Crossing the Pedee (detail, 3D depth, projector frame, PAINTED IN 1850)
 
 [MAP: m1-10 | `lowcountry` wide, cliffhanger: Cornwallis banner at Camden (camera pushes in); a red cavalry box with a ? tag rides out of Camden toward the Santee; date scroll NOV 1780]
 Cornwallis had seen enough. He needed a hunter. And he had the most feared one in America.
@@ -159,7 +159,7 @@ Nine days later, at Eutaw Springs, Marion stood in a real battle line. Greene pu
 [MAP: m3-14 | `lowcountry` wide: casualty card (both sides spoken): BRITISH 693 KILLED, WOUNDED & MISSING / AMERICANS 522; date scroll 9 SEP: the red army leaves EUTAW toward CHARLESTON (fast move); pay-off: card on the spoken words "THANKED HIM BY NAME"; the method card adds 3. HIT THE CHAIN WITH THE ARMY; small FORM 2 stripes (~2.5 s) on "Charleston": red only around Charleston, blue across the rest of the state]
 The British lost six hundred and ninety-three men killed, wounded or missing. The Americans lost five hundred and twenty-two. Neither side could call it a clean win. But the next evening, the British army left Eutaw Springs and fell back toward Charleston. Congress thanked Marion by name. That was the third part of his method. Alone, a partisan can only raid. Together with a real army, he can cut the enemy's chain one link at a time, until there is nothing left to hold.
 
-[ARCHIVE: insert (archive_inserts.json) in m3-14 from "Congress thanked" to "by name": ~6 s: John Blake White's painting of Marion's camp (3D depth, projector frame, PAINTED LONG AFTER HIS DEATH)]
+> ARCHIVE INSERT (archive_inserts.json): in m3-14 from "Congress thanked" to "by name": ~6 s: John Blake White's painting of Marion's camp (3D depth, projector frame, PAINTED LONG AFTER HIS DEATH)
 
 ---
 
