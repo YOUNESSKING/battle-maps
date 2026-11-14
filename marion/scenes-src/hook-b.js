@@ -21,7 +21,7 @@
 { // scene block (local names never clash with the kit)
 const H3 = "hook-3", H4 = "hook-4", H5 = "hook-5";
 const T_HOPE = at(H3, "hopeless", -0.15), T_BRIT = at(H3, "The British had captured"), T_CAPT = at(H3, "captured"), T_DESTR = at(H3, "destroyed another"),
-  T_ATCAM = at(H3, "at Camden"), T_MAN = at(H3, "And the man"), T_WALK = at(H3, "could barely walk");
+  T_ATCAM = at(H3, "at Camden"), T_MAN = at(H3, "And the man"), T_WALK = at(H3, "still limping");
 const T_SPRING = at(H4, "That spring"), T_INCHS = at(H4, "in Charleston"), T_HOST = at(H4, "a dinner host"), T_LOCK = at(H4, "locked his doors"),
   T_DRINK = at(H4, "guests drinking"), T_OFFICER = at(H4, "One officer"), T_JUMP = at(H4, "jumped"), T_WINDOW = at(H4, "second-story window"),
   T_ANKLE = at(H4, "ankle"), T_SENT = at(H4, "Sent out of the city"), T_UNFIT = at(H4, "unfit"), T_SURR = at(H4, "the surrender");
@@ -98,7 +98,7 @@ tl.to(B.units.bB.el, { autoAlpha: 0, duration: 0.4 }, T_DESTR + 0.55);
 wstampL("DESTROYED", 830, 430, T_DESTR + 0.35, T_MAN - 0.1, null, 44);
 // "And the man leading those seventy riders": the "?" banner on a pole by the Santee swamp (revealed on the spoken name in hook-5)
 const BAN = BANNER("marion", "Francis Marion", "sc", BANP, T_MAN + 0.25, { myst: T_FM, mystName: "?", side: "ne", pop: 1.3, bright: 1.12, until: T1 - 0.02 });   // (critic r1) no unspoken "GENERAL" plate
-// (critic r1) no stamp on "could barely walk" (the ankle detail is told, and stamped, in hook-4)
+// (critic r1) no stamp on "still limping on an injured ankle" (the ankle detail is told, and stamped, in hook-4)
 // ---------------------------------------------------------------------------------------------------------------------------------
 // the hard cuts (black frame hides each camera jump)
 // ---------------------------------------------------------------------------------------------------------------------------------
