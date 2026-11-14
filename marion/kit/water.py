@@ -89,6 +89,8 @@ def build_water(m):
             for seg in R.get(name, []):
                 # split a segment where it leaves the keep box (no straight jumps across the gap)
                 run = []
+                if name.endswith("1780") and len(seg) > 6:   # MARION r2: TIGER county lines are sawtoothed: 5-point moving average
+                    _a = np.array(seg, float); _k = np.ones(5) / 5; _s = _a.copy(); _s[2:-2, 0] = np.convolve(_a[:, 0], _k, 'valid'); _s[2:-2, 1] = np.convolve(_a[:, 1], _k, 'valid'); seg = _s.tolist()
                 for pt in seg + [None]:
                     la, lo = pt if pt else (None, None)
                     if la is not None and la0 <= la <= la1 and lo0 <= lo <= lo1: run.append((ll2px(m, la, lo)[0] * 2, ll2px(m, la, lo)[1] * 2)); continue

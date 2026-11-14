@@ -496,7 +496,7 @@ const BN = (() => {
       + `<svg class="bn-svg" style="left:0;top:0" width="${CW}" height="${CH}" viewBox="0 0 ${CW} ${CH}"><g fill="none" stroke="#3a2a14" stroke-width="1" stroke-dasharray="1.6 .9" stroke-linecap="round">`
       + `<path d="M${X - 1.5} 21 L${X - plHalf} ${plY}"/><path d="M${X + 1.5} 21 L${X + plHalf} ${plY}"/></g>`
       + `<g fill="none" stroke="#d6bf86" stroke-width=".45" stroke-dasharray="1.6 .9" stroke-dashoffset=".3"><path d="M${X - 1.5} 21 L${X - plHalf} ${plY}"/><path d="M${X + 1.5} 21 L${X + plHalf} ${plY}"/></g></svg>`
-      + `<div style="left:${X - 20}px;top:${L.finT}px">${U ? EAGLE(k + "f") : SPEAR(k + "f")}</div>`
+      + `<div style="left:${X - 20}px;top:${L.finT}px">${SPEAR(k + "f")}</div>`
       + `<div class="bn-str" style="left:${X - sx - L.stW}px"></div><div class="bn-str" style="left:${X + sx}px"></div>`
       + `<div class="bn-cloth"><div class="bn-ph"><img src="${photo}" alt=""></div><div class="bn-sheen"></div></div>`
       + `<div class="bn-bar" style="left:${X - b1}px;top:${L.bar1}px;width:${2 * b1}px"></div>`

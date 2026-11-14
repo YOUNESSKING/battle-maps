@@ -19,7 +19,9 @@ from skimage.morphology import skeletonize
 import cv2
 base, out = sys.argv[1], sys.argv[2]
 P = dict(mult=1, tint=0, green=1, story='', close='', creeks=4, main_r=6.5, creek_r=3.5, forest=0.12, patches=55, K=1.5, seed=5, ground='162,159,112')
-for kv in sys.argv[3:]:
+import os as _os0, sys as _sys0; _sys0.path.insert(0, _os0.path.join(_os0.path.dirname(_os0.path.abspath(__file__)), 'data'))
+from places import MAPS as _M0
+for kv in [f'{k}={v}' for k, v in _M0[base].get('w_args', {}).items()] + sys.argv[3:]:   # MARION r2: per-map make_w options (places.py w_args)
     k, v = kv.split('='); P[k] = type(P[k])(v) if not isinstance(P[k], str) else v
 W, H = 5760, 3240; rng = np.random.default_rng(P['seed']); K = P['K']
 
@@ -43,7 +45,7 @@ print('swamp %.1f%%' % (100 * SWP.mean()), flush=True)
 CFG = MAPS[base]; US = 2.0 / CFG["s"]                       # image px per screen px at the map's typical camera scale
 KEEPI = Image.new("L", (W // 4, H // 4), 0); _kd = ImageDraw.Draw(KEEPI)
 for _id, _pts in CFG["roads"]:                             # cleared lanes: no trees within ~9 screen px of a road
-    _p = [(ll2px(base, la, lo)[0] / 2, ll2px(base, la, lo)[1] / 2) for la, lo in _pts]; _kd.line(_p, fill=255, width=max(2, int(round(18 * US / 4))), joint="curve")
+    _p = [(ll2px(base, la, lo)[0] / 2, ll2px(base, la, lo)[1] / 2) for la, lo in _pts]; _kd.line(_p, fill=255, width=max(2, int(round(CFG.get('lane', 18) * US / 4))), joint="curve")
 for _k, _t in CFG["towns"].items():
     _x, _y = ll2px(base, _t[1], _t[2]); _r = _t[3] * 1.5 * US / 4; _kd.ellipse([_x / 2 - _r, _y / 2 - _r, _x / 2 + _r, _y / 2 + _r], fill=255)
 for la, lo, rm in CFG["keep"]:
@@ -373,7 +375,7 @@ if P['close']:
     Sh = Image.new('L', (W * SS, H * SS), 0); ds = ImageDraw.Draw(Sh)
     cans = []
     ctrees = [(y + rng.uniform(-14, 14) * K, x + rng.uniform(-16, 16) * K, t) for y, x, t in trees for _ in range((1 + int(rng.random() < 0.6)) if t == 'wet' else 3)]
-    ctrees = [p_ for p_ in ctrees if wdist(p_[1], p_[0]) > (5 if p_[2] == 'wet' else 9) * K]
+    ctrees = [p_ for p_ in ctrees if wdist(p_[1], p_[0]) > (5 if p_[2] == 'wet' else 9) * K and not KEEP[min(max(int(p_[0]), 0), H - 1), min(max(int(p_[1]), 0), W - 1)]]   # MARION r2: lanes stay clear
     for y, x, t in ctrees:
         R = rng.uniform(12, 20) * q * SS * (0.85 if t == 'pine' else 0.82 if t == 'wet' else 1); X, Y = x * SS, y * SS
         cs = [(X + rng.uniform(-0.45, 0.45) * R, Y + rng.uniform(-0.45, 0.45) * R, R * rng.uniform(0.3, 0.8)) for _ in range(rng.integers(8, 15))]

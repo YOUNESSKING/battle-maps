@@ -91,6 +91,7 @@ const BANNER = (key, name, nation, at, t, o = {}) => {
   const ph = o.photo || PHOTO(key), flag = BN.flagFor(nation);
   const w = pinBanner(host, o.myst != null ? BN.MYST : ph, flag, o.myst != null ? (o.mystName || (nation === "gb" ? "British General" : "General")) : name, Math.max(0, t), o.until ?? null, true, o.side || "ne");   // default: side stake up-right, off the key spot
   const img = w.querySelectorAll("img")[1]; img.addEventListener("error", () => { img.src = INITIALS(name); }, { once: true });
+  img.style.filter = `contrast(${o.pop ?? 1.25}) brightness(${o.bright ?? 1.08})`;   // MARION r2: portrait reads at night / small (o.pop, o.bright)
   if (!(t > 0)) now(w);
   if (o.myst != null) { BN.reveal(w, ph, name, o.myst); tl.fromTo(w.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, o.myst);
     tl.to(w.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, o.myst + 1.2); }

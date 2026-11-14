@@ -124,3 +124,21 @@ Sounds: only the locked kit (`K.gun` quiet launch, `K.impact` boom on impact + s
 
 ## Yorktown kit history
 See `yorktown/kit/README.md` CHANGES r2-r6 (all included in this copy: versions `_m2`.., LABEL_BOXES / NUDGE / LABEL_AUDIT, NIGHT_DIM, INSET r3, BOAT, side-coloured TRENCH / FRONT, LIGHT palette switch, ships option A).
+
+## CHANGES r2 (2026-11-14, critic round 1; proof `build/sheet-kit.jpg`, `build/sheet-kit-ref.jpg`). Rebuild scenes to pick up the new art.
+- Towns crisp (render_town soft 0.3, feather <= 7 u; was 0.9 / 18) and bigger: Charleston 60 u, Camden 38, Georgetown 32 (lowcountry, s 0.8),
+  Jacksonborough 30 (edisto); roofs only on the town centre's own land (no Georgetown houses across Winyah Bay).
+- Carved names snug (gap 0.8-1.25 x), never on water (x40), a road (x6) or across a river from their town; Charleston's far hand curve removed.
+- Crossings closer than 15 screen px merge into one bridge; roads re-routed off the rivers (lowcountry McCord's - Camden road crosses the Wateree
+  once and joins the Camden road; Black Mingo - Georgetown; blackriver Ox Swamp - north road). No Congaree bridge at Fort Motte: the Monck's Corner road
+  runs below the Motte house to McCord's Ferry (moved to 33.759 / 33.771, -80.721, a straight reach), `motte_spur` up to the house.
+- Swamp roads: wider cleared lane (`lane` u) + causeway (pale raised bank, `causeway_w`) on santee, blackriver, blackmingo, congaree, edisto; the close
+  canopies keep off the lane; Nelson's Ferry road winds through the swamp. Flatboats never span the river (<= 42 % of the crossing), landings stronger.
+- TIGER county-line rivers (Santee / Congaree / Wateree) smoothed (5-point moving average: no sawtooth loops). Horse Creek re-baked (hw 3.0, smooth).
+- Relief stronger where named (`relief_ex`: santee 7, congaree 6). Santee swamp on both banks below Nelson's Ferry (`dry_south` only -80.40 .. -80.30,
+  the Eutaw / Vance bluffs; Chicora 1920 shows swamp both sides further down).
+- lowcountry wide woods lighter (`w_args`: forest 0.07, 12 grass patches; the tufts read as marsh).
+- Banners: every banner has the plain gilt SPEAR finial (the US eagle is the 1782 Great Seal); no guy-rope line; portraits get `contrast(o.pop ?? 1.25)
+  brightness(o.bright ?? 1.08)` (night scenes: `{ pop: 1.4, bright: 1.18 }`).
+- INSET: the hook zoom uses `INSET("santee", { s0: 2.2, s1: 2.8 })` (the nested map takes over early and fast; the two maps' roads are never doubled
+  for long). Per-map make_w options: `w_args` in places.py.

@@ -503,7 +503,7 @@ const BN = (() => {
       + `<svg class="bn-svg" style="left:0;top:0" width="${CW}" height="${CH}" viewBox="0 0 ${CW} ${CH}"><g fill="none" stroke="#3a2a14" stroke-width="1" stroke-dasharray="1.6 .9" stroke-linecap="round">`
       + `<path d="M${X - 1.5} 21 L${X - plHalf} ${plY}"/><path d="M${X + 1.5} 21 L${X + plHalf} ${plY}"/></g>`
       + `<g fill="none" stroke="#d6bf86" stroke-width=".45" stroke-dasharray="1.6 .9" stroke-dashoffset=".3"><path d="M${X - 1.5} 21 L${X - plHalf} ${plY}"/><path d="M${X + 1.5} 21 L${X + plHalf} ${plY}"/></g></svg>`
-      + `<div style="left:${X - 20}px;top:${L.finT}px">${U ? EAGLE(k + "f") : SPEAR(k + "f")}</div>`
+      + `<div style="left:${X - 20}px;top:${L.finT}px">${SPEAR(k + "f")}</div>`
       + `<div class="bn-str" style="left:${X - sx - L.stW}px"></div><div class="bn-str" style="left:${X + sx}px"></div>`
       + `<div class="bn-cloth"><div class="bn-ph"><img src="${photo}" alt=""></div><div class="bn-sheen"></div></div>`
       + `<div class="bn-bar" style="left:${X - b1}px;top:${L.bar1}px;width:${2 * b1}px"></div>`
@@ -513,8 +513,7 @@ const BN = (() => {
       + `<div class="bn-name">${name}</div></div>`
       + `<div class="bn-gnd" style="left:-13px;top:-4px"></div><div class="bn-cast" style="left:0;top:-8px"></div>`;
     const off = Array.isArray(side) ? side : ({ up: [0, -1], right: [58, 38], left: [-58, 38], west: [-92, 18], ne: [64, -6], nw: [-64, -6], sw: [-120, 135], se: [120, 135], east: [92, 18] }[side] || [0, -1]);   // yorktown: + nw / sw / se / east stakes, or [dx, dy] screen px
-    if (side !== "up") { w.style.left = `calc(50% + ${off[0]}px)`; w.style.top = off[1] + "px";   // r5: a thin guy-rope from the pole foot back to the anchor (the unit box): the banner is pinned to it, standing off the action
-      const L = Math.hypot(off[0], off[1]); if (L > 12) { const rp = document.createElement("div"); rp.style.cssText = `position:absolute;left:0;top:0;width:${L.toFixed(1)}px;height:1.6px;background:linear-gradient(90deg,rgba(60,44,22,.9),rgba(205,180,130,.75));transform-origin:0 50%;transform:rotate(${(Math.atan2(-off[1], -off[0]) * 180 / Math.PI).toFixed(1)}deg);box-shadow:0 1px 1px rgba(0,0,0,.5);pointer-events:none`; w.appendChild(rp); } }
+    if (side !== "up") { w.style.left = `calc(50% + ${off[0]}px)`; w.style.top = off[1] + "px"; }
     return w; };
   // the cloth sway: ONE linear tween of the card's --bn-sw (seconds since t) on the scene timeline; CSS turns it into sin() poses
   // (cloth +-0.9 deg + tiny skew, streamers +-2.3 deg and pennant +-2.2 deg out of phase, a sheen drifting across; period 3.6 s).
@@ -1214,6 +1213,7 @@ const BANNER = (key, name, nation, at, t, o = {}) => {
   const ph = o.photo || PHOTO(key), flag = BN.flagFor(nation);
   const w = pinBanner(host, o.myst != null ? BN.MYST : ph, flag, o.myst != null ? (o.mystName || (nation === "gb" ? "British General" : "General")) : name, Math.max(0, t), o.until ?? null, true, o.side || "ne");   // default: side stake up-right, off the key spot
   const img = w.querySelectorAll("img")[1]; img.addEventListener("error", () => { img.src = INITIALS(name); }, { once: true });
+  img.style.filter = `contrast(${o.pop ?? 1.25}) brightness(${o.bright ?? 1.08})`;   // MARION r2: portrait reads at night / small (o.pop, o.bright)
   if (!(t > 0)) now(w);
   if (o.myst != null) { BN.reveal(w, ph, name, o.myst); tl.fromTo(w.firstElementChild, { scale: 1 }, { scale: 1.2, duration: 0.25, ease: "power2.out", immediateRender: false }, o.myst);
     tl.to(w.firstElementChild, { scale: 1, duration: 0.5, ease: "power2.inOut" }, o.myst + 1.2); }

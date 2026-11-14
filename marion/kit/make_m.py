@@ -49,7 +49,7 @@ def relief(img, close):
     e = cv2.GaussianBlur(e, (0, 0), 2.2)
     mpp = J["meters_per_px"] / 2
     gy, gx = np.gradient(e, mpp)
-    ex = 2.6                                                         # vertical exaggeration (low coastal bluffs, 10-25 m)
+    ex = C.get("relief_ex", 2.6)                                  # vertical exaggeration (MARION r2: per map, the low bluffs need more)
     nx, ny, nz = -gx * ex, -gy * ex, np.ones_like(gx); nn = np.sqrt(nx * nx + ny * ny + 1)
     L = np.array([-0.62, -0.62, 0.48]); L /= np.linalg.norm(L)
     sh = (nx * L[0] + ny * L[1] + nz * L[2]) / nn - L[2]             # 0 flat, + lit NW faces, - shaded SE faces
@@ -160,6 +160,14 @@ for k, (rid, pts) in enumerate(C["roads"]):
     ROADS.append(dict(id=rid, paths=[s for s in segs if len(s) > 1]))
 
 
+_kept = []   # MARION r2: crossings closer than 15 screen px (a road wobbling along a bank) count once
+for c in CROSS:
+    if c["kind"] == "bridge" and any(k["kind"] != "landing" and math.hypot(c["x"] - k["x"], c["y"] - k["y"]) < 15 * US for k in _kept): continue
+    _kept.append(c)
+CROSS = _kept
+for c in CROSS:
+    if c["kind"] == "bridge": print("  bridge", c["id"], round(c["x"] / 2), round(c["y"] / 2))
+
 # ------------------------------------------------------------------ 3. drawing helpers
 def draw_roads(img):
     """embossed double cart ruts (make_body.py layers): dusty band, darker band, each rut = dark groove (NW) + light rim (SE) + olive floor"""
@@ -188,7 +196,7 @@ def draw_roads(img):
     D = [p for r in ROADS for p in r["paths"]]
     if C.get("causeway") and SWAMP.any():   # MARION: the causeway = a pale raised bank (light top, dark toe) where the road runs through the swamp
         L_ = Image.new("L", (W, H), 0); d_ = ImageDraw.Draw(L_)
-        for c in D: d_.line(c, fill=255, width=max(2, int(round(14 * US * 0.5))), joint="curve")
+        for c in D: d_.line(c, fill=255, width=max(2, int(round(C.get("causeway_w", 14) * US * 0.5))), joint="curve")
         cw = np.asarray(L_).astype(np.float32) / 255 * cv2.dilate(SWAMP.astype(np.uint8), np.ones((9, 9), np.uint8))
         toe = np.clip(cv2.GaussianBlur(cw, (0, 0), 2.2 * US) * 1.4 - cw, 0, 1) * 0.55
         img = img * (1 - toe[..., None]) + np.array([30, 36, 26], np.float32) * toe[..., None]
@@ -259,7 +267,8 @@ def crossings_layer():
                 d.polygon([Pp(-2.2, -2.4), Pp(2.2, -2.4), Pp(2.2, 2.4), Pp(-2.2, 2.4)], fill=TIMBER + (240,))
                 d.polygon([Pp(-1.9, -2.0), Pp(1.9, -2.0), Pp(1.9, 0.2), Pp(-1.9, 0.2)], fill=TOP + (200,))
                 for xx in (-1.0, 0, 1.0): d.line([Pp(xx, -2.2), Pp(xx, 2.2)], fill=PLANK + (110,), width=max(1, int(0.3 * k * f)))
-            def fn_boat(im, d, cx, cy, k, sc=1.25):
+            sc_b = min(1.25, 0.42 * cr["w"] / (8.5 * f)) if cr["kind"] == "ferry" else 1.25   # MARION r2: the flatboat never spans bank to bank
+            def fn_boat(im, d, cx, cy, k, sc=sc_b):
                 Pp = lambda x, y: rot(x * k * f * sc, y * k * f * sc, a, cx, cy)   # flatboat lies along the crossing, on the water
                 wk = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(wk).polygon([Pp(-4.6, -1.6), Pp(-8.5, -2.6), Pp(-8.5, 2.6), Pp(-4.6, 1.6)], fill=(200, 214, 220, 60))
                 im.alpha_composite(wk.filter(ImageFilter.GaussianBlur(1.0 * k * f))); soft_shadow(im, [Pp(-4.0, -1.8), Pp(4.0, -1.8), Pp(4.0, 1.8), Pp(-4.0, 1.8)], k * f, off=(1.2, 1.5), a=110)
@@ -268,6 +277,7 @@ def crossings_layer():
                 for xx in (-1.6, 0, 1.6): d.line([Pp(xx, -1.1), Pp(xx, 0.9)], fill=(58, 46, 32, 120), width=max(1, int(0.3 * k * f)))
             banks = [cr["a"], cr["b"]] if cr["kind"] == "ferry" else [cr["bank"]]
             for b in banks: stamp(ov, b, fn_land, 9 * f)
+            for b in banks: stamp(ov, b, fn_land, 9 * f)   # MARION r2: landings drawn twice (stronger)
             if cr["kind"] == "ferry":   # the flatboat a third of the way across (it is crossing), never in the middle of a label
                 bx, by = cr["a"][0] + (cr["b"][0] - cr["a"][0]) * 0.38, cr["a"][1] + (cr["b"][1] - cr["a"][1]) * 0.38
                 stamp(ov, (bx, by), fn_boat, 16 * f)
@@ -306,12 +316,15 @@ def towns_layer():
             dd.polygon(Rr([(-hw * 1.5, hh * 1.2), (-hw * 0.7, hh * 1.2), (-hw * 0.7, hh * 2.0), (-hw * 1.5, hh * 2.0)]), fill=(66, 54, 44, 255))   # outbuilding
             im = im.resize((n, n), Image.LANCZOS).filter(ImageFilter.GaussianBlur(0.5)); cx = cy = n / 2
         else:
-          im, (cx, cy) = render_town(T["seed"], size, roads=angs, ppu=ppu, radius=Ru, road_lines=rl, lobes=True, soft=0.9, feather=min(18, Ru * 0.5), palette="soft")
+          im, (cx, cy) = render_town(T["seed"], size, roads=angs, ppu=ppu, radius=Ru, road_lines=rl, lobes=True, soft=0.3, feather=min(7, Ru * 0.22), palette="soft")   # MARION r2: crisp (was soft 0.9, feather <=18)
         bb = im.getbbox(); im = im.crop(bb); cx -= bb[0]; cy -= bb[1]
         x0, y0 = int(round(c[0] - cx)), int(round(c[1] - cy))
         a = np.asarray(im).astype(np.float32).copy()
         ya, yb, xa, xb = max(0, y0), min(H, y0 + im.height), max(0, x0), min(W, x0 + im.width)
         a = a[ya - y0:yb - y0, xa - x0:xb - x0]; a[..., 3] *= landk[ya:yb, xa:xb]                 # no houses on the water
+        from scipy import ndimage as _nd   # MARION r2: no roofs across the water (Georgetown / the Winyah Bay peninsula): keep the town centre's land only
+        _lab, _n = _nd.label(~WATER[ya:yb, xa:xb]); _cl = _lab[min(max(int(c[1]) - ya, 0), yb - ya - 1), min(max(int(c[0]) - xa, 0), xb - xa - 1)]
+        if _cl: a[..., 3] *= cv2.GaussianBlur((_lab == _cl).astype(np.float32), (0, 0), 1.0)
         ov.alpha_composite(Image.fromarray(a.astype(np.uint8)), (xa, ya))
         meta[k] = dict(name=T["name"], c=[round(c[0] / 2, 1), round(c[1] / 2, 1)], R=round(T["R"] / 2, 1), box=[xa / 2, ya / 2, xb / 2, yb / 2])
     return np.asarray(ov).astype(np.float32), meta
@@ -328,7 +341,7 @@ def labels_layer(tmeta, occupied):
         f = ImageFont.truetype(FONTS["garamond600"], 100); Lt = (f.getlength(T["name"]) / 100 + trk * (len(T["name"]) - 1)) * size   # u
         Ru = T["R"] / US; best = None
         order = [T["side"]] + [s for s in ("S", "N", "SW", "SE", "W", "E", "NW", "NE") if s != T["side"]]
-        for side, gm in ([("hand", 1)] if T["curve"] else []) + [(sd, g) for g in (1.0, 1.5, 2.1) for sd in order]:
+        for side, gm in ([("hand", 1)] if T["curve"] else []) + [(sd, g) for g in (0.8, 1.0, 1.25) for sd in order]:   # MARION r2: snug (2e.2 <= ~20 px)
             if side == "hand": curve = T["curve"]   # hand-set curve (u, from the town centre), places.py
             elif SIDES[side][0] == 0:
                 sx, sy = SIDES[side]; gap = (Ru * 0.78 + 8) * gm                                    # under / over the town: a gentle arc hugging its edge
@@ -350,7 +363,10 @@ def labels_layer(tmeta, occupied):
             edge = xa != x0 or ya != y0 or xb != x0 + li.width or yb != y0 + li.height
             woodf = (WOODS[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
             if side == "hand": best = (0, side, li, x0, y0, wetf, occ); break
-            score = wetf * 3 + occ * 2 + woodf * 1.5 + (1 if edge else 0) + (0.05 if side != T["side"] else 0) + 0.04 * (gm - 1)
+            roadf = (ROADM[ya:yb, xa:xb] & sub).sum() / max(1, sub.sum())
+            _ys, _xs = np.nonzero(sub); _lc = (xa + _xs.mean(), ya + _ys.mean()) if len(_xs) else T["c"]   # MARION r2: never across a river from its town
+            across = any(wet(T["c"][0] + (_lc[0] - T["c"][0]) * q_, T["c"][1] + (_lc[1] - T["c"][1]) * q_) for q_ in np.linspace(0.15, 1, 24))
+            score = wetf * 40 + (3 if across else 0) + occ * 2 + roadf * 6 + woodf * 1.0 + (1 if edge else 0) + (0.05 if side != T["side"] else 0) + 0.3 * (gm - 0.8)   # MARION r2: never on water / a road
             if best is None or score < best[0]: best = (score, side, li, x0, y0, wetf, occ)
             if score < 0.06: break
         score, side, li, x0, y0, wetf, occ = best
@@ -430,6 +446,10 @@ occupied = cv2.dilate((tw[..., 3] > 90).astype(np.uint8), np.ones((int(8 * US), 
 _rd = Image.new("L", (W, H), 0); _d = ImageDraw.Draw(_rd)
 for c in CROSS: _d.ellipse([c["x"] - 14 * US, c["y"] - 14 * US, c["x"] + 14 * US, c["y"] + 14 * US], fill=255)
 occupied |= np.asarray(_rd) > 0
+_rm = Image.new("L", (W, H), 0); _rd_ = ImageDraw.Draw(_rm)
+for r in ROADS:
+    for c in r["paths"]: _rd_.line(c, fill=255, width=max(2, int(9 * US)))
+ROADM = np.asarray(_rm) > 0
 WOODS = cv2.dilate((cv2.GaussianBlur(BASES["w"].mean(2), (0, 0), 2) < 74).astype(np.uint8), np.ones((9, 9), np.uint8)).astype(bool)
 lb, lmeta = labels_layer(tmeta, occupied)
 for key, base in BASES.items():
