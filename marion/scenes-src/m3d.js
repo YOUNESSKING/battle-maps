@@ -150,21 +150,21 @@ march("gun", [[1500, 742], [1478, 718], GUN], T_SIX + 0.1, 1.4, { dustSize: 24, 
 SFX("hit", T_SIX + 0.15);
 tl.to(B.units.gun.el.querySelector(".tag"), { autoAlpha: 0, duration: 0.4 }, T_RAW);
 // "but there was no time for a siege": stamp
-wstampL("NO TIME FOR A SIEGE", H[0] - 10, H[1] + 120, T_NOTIME + 0.05, T_RAW + 0.4, null, 30);
+wstampL("NO TIME FOR A SIEGE", 1290, 850, T_NOTIME + 0.05, T_RAW + 0.4, null, 30);
 // "Lord Rawdon had abandoned Camden and was marching to the rescue": pull back; the red column comes down from the top edge (Camden is ~50 km N)
-const RW = [[2330, -40], [2300, 80], [2260, 200], [2220, 320], [2190, 420]];
+const RW = [[2310, 250], [2280, 320], [2245, 380], [2210, 420], [2190, 440]];
 UNIT("raw", "british", RW[0], "infantry", { ech: "XX", t: T_RAW + 0.3 });
-UNIT("raw2", "british", RW[0], "cavalry", { ech: "", t: T_CAMDEN + 0.4 });
+UNIT("raw2", "british", [2340, 170], "cavalry", { ech: "", t: T_CAMDEN + 0.4 });
 BANNER("rawdon", "Lord Rawdon", "gb", "raw", T_RAW + 0.6, { side: "west", until: T_HARD + 0.6 });
-PLACE_LABEL("&#9650; Camden", [2330, 96], T_CAMDEN + 0.1, { dy: 0, dx: -150, size: 26 });
+PLACE_LABEL("&#9650; Camden", [2330, 70], T_CAMDEN + 0.1, { dy: 0, dx: -230, size: 26 });
 march("raw", RW, T_CAMDEN + 0.3, T_FIRES - T_CAMDEN, { dustSize: 70, dustOp: 0.45 });
-march("raw2", RW.slice(0, 4), T_CAMDEN + 0.8, T_FIRES - T_CAMDEN - 0.4, { dustSize: 70, dustOp: 0.45 });
-ARWC({ pts: [[2310, 60], [2260, 220], [2150, 420], [1980, 580]], side: "rome", t: T_RESCUE + 0.05, dur: 1.4, width: AW(CW[2], 11) }, "#e0473f", "rgba(255,236,230,.9)");
+march("raw2", [[2340, 170], [2310, 250], [2280, 320], [2250, 370]], T_CAMDEN + 0.8, T_FIRES - T_CAMDEN - 0.4, { dustSize: 70, dustOp: 0.45 });
+ARWC({ pts: [[2330, 30], [2300, 200], [2200, 440], [2030, 600]], side: "rome", t: T_RESCUE + 0.05, dur: 1.4, width: AW(CW[2], 11) }, "#e0473f", "rgba(255,236,230,.9)");
 // "On the night of the eleventh of May, the defenders could see his campfires across the river": glows on the hills east of the Wateree
-const FIRES = [[2140, 470], [2190, 452], [2236, 488], [2170, 520], [2262, 430], [2112, 520]];
+const FIRES = [[2130, 500], [2180, 520], [2232, 500], [2160, 560], [2266, 470], [2104, 548]];
 FIRES.forEach((p, k) => { bonfire(p[0], p[1], T_FIRES + 0.05 + k * 0.18, T_LEE + 1.2, 30); fireGlowS(p[0], p[1], 46, T_FIRES + 0.1 + k * 0.18, T_LEE + 1.2); });
 tl.fromTo(B.units.gar.el.querySelector(".blk"), { filter: "drop-shadow(0 0 0px rgba(255,200,120,0))" }, { filter: "drop-shadow(0 0 16px rgba(255,200,120,.95))", duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, T_SEE + 0.1);
-{ const ln = document.createElementNS(NSs, "path"); ln.setAttribute("d", `M${H[0] + 30} ${H[1] - 12} Q${(H[0] + 2140) / 2} ${H[1] - 260} 2130 ${470}`);
+{ const ln = document.createElementNS(NSs, "path"); ln.setAttribute("d", `M${H[0] + 30} ${H[1] - 12} Q${(H[0] + 2140) / 2} ${H[1] - 260} 2120 ${500}`);
   Object.entries({ fill: "none", stroke: "#ffd890", "stroke-width": 2.6, "stroke-dasharray": "8 8", opacity: 0 }).forEach(([k, v]) => ln.setAttribute(k, v)); OVL.appendChild(ln);
   tl.to(ln, { opacity: 0.85, duration: 0.5 }, T_ACROSS - 0.1); tl.to(ln, { opacity: 0, duration: 0.6 }, T_ACROSS + 2.4); }
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ tl.fromTo(LD.firstElementChild, { boxShadow: "0 0 0px rgba(255,80,60,0)" }, { bo
 // "a man accused of burning his neighbors' houses": the accusation (a small burning house) over him
 ICON(`<svg width="44" height="44" viewBox="-12 -14 24 24" style="display:block;overflow:visible;filter:drop-shadow(0 1px 2px rgba(0,0,0,.85))">
   <path d="M-8 8 L-8 -1 L0 -7 L8 -1 L8 8 Z" fill="#d8ccae" stroke="#2a2014" stroke-width="1.2"/><path d="M2 -9 C5 -5 7 -2 5 2 C3 5 -1 4 -1 1 C-1 -2 1 -4 2 -9 Z" fill="#ff8a1e" stroke="#7a1d05" stroke-width=".8"/></svg>`,
-  [LOY[0] + 2, LOY[1] - 34], T_NEIGH + 0.05, T_STEP + 0.6, { hit: false });
+  [LOY[0] + 2, LOY[1] - 34], T_ACCUSED + 0.1, T_STEP + 0.6, { hit: false });
 // "Marion stepped in and kept him safe": his box rides next to the prisoner; a blue ring guards him
 march("mar", [[1420, 846], [LOY[0] + 34, LOY[1] + 16], [LOY[0] + 15, LOY[1] + 3]], T_STEP - 0.1, 0.9, { trail: false, dustSize: 24, dustOp: 0.3 });
 ICON(`<svg width="64" height="64" viewBox="-20 -20 40 40" style="display:block;overflow:visible"><circle r="16" fill="none" stroke="#f0e6c8" stroke-width="4.2"/><circle r="16" fill="none" stroke="#2c57b7" stroke-width="2.4"/></svg>`,

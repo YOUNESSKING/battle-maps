@@ -27,9 +27,9 @@ const T_NINE = at(P, "Nine days later"), T_EUTAW = at(P, "at Eutaw Springs"), T_
 LIVING({ clouds: 0.08, light: "afternoon", lightK: 0.2 });
 LIGHT("afternoon", T_HOT - 0.1, 2.5, 0.42);   // "On a day so hot" ("extremely sultry", Lee): the light warms (no shimmer, no other weather)
 const H = PLACE("eutaw_springs");   // 1708,1244: the baked house = the brick house
-const C0 = [1540, 1220, 2.2], C1 = [1600, 1236, 2.6], C2 = [1612, 1250, 2.75], C3 = [1640, 1246, 2.6], C4 = [1610, 1240, 2.45];
-camera([[0, ...C0], [T_EUTAW + 0.6, 1580, 1232, 2.4, "power2.inOut"], [T_LINE + 2.4, ...C1, "power2.inOut"], [T_RIGHT, 1600, 1240, 2.6], [T_RIGHT + 1.2, 1596, 1250, 2.7, "power2.inOut"],
-  [T_ROUNDS - 0.2, ...C2, "power2.inOut"], [T_CONT, 1616, 1250, 2.75], [T_CAMP + 0.6, ...C3, "power2.inOut"], [T_HOUSE + 2.0, 1650, 1246, 2.65], [T_EXH + 0.8, ...C4, "power2.inOut"], [END, 1606, 1240, 2.42]]);
+const C0 = [1530, 1200, 2.2], C1 = [1580, 1206, 2.6], C2 = [1590, 1212, 2.75], C3 = [1622, 1214, 2.6], C4 = [1596, 1210, 2.45];   // lines kept below the date plate
+camera([[0, ...C0], [T_EUTAW + 0.6, 1564, 1206, 2.4, "power2.inOut"], [T_LINE + 2.4, ...C1, "power2.inOut"], [T_RIGHT, 1580, 1208, 2.6], [T_RIGHT + 1.2, 1580, 1214, 2.7, "power2.inOut"],
+  [T_ROUNDS - 0.2, ...C2, "power2.inOut"], [T_CONT, 1596, 1214, 2.75], [T_CAMP + 0.6, ...C3, "power2.inOut"], [T_HOUSE + 2.0, 1630, 1214, 2.65], [T_EXH + 0.8, ...C4, "power2.inOut"], [END, 1592, 1210, 2.42]]);
 dateNow("30 AUGUST 1781", T_NINE + 0.1);
 B.date("8 SEPTEMBER 1781", T_NINE + 0.2, null, 32); SFX("tick", T_NINE + 0.3);
 // ---------------------------------------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ const L1F = Object.values(L1).map((q) => [q[0] + 30, q[1]]);
 [0, 1, 2, 3].forEach((k) => { const t = T_ROUNDS + 0.05 + k * 0.85; L1F.forEach((q, i) => FLASH([q[0], q[1] + (k % 2 ? 8 : -8)], t + i * 0.07, 1.05));
   mg(L1F[k % 4], [1636, 1188 + 30 * k], t + 0.05, 4, 1.0); });
 smoke(L1F, T_ROUNDS + 0.3, 0.7); smoke(L1F.map((q) => [q[0] + 6, q[1] - 6]), T_ROUNDS + 2.2, 0.6);
-{ const c = CARD(`15 TO 20 ROUNDS<span class="ea"> EACH</span>`, "#c9b48a", T_ROUNDS + 0.1, T_CONT + 0.6, { size: 68, top: 820 }); const ea = c.querySelector(".ea");
+{ const c = CARD(`15 TO 20 ROUNDS<span class="ea"> EACH</span>`, "#c9b48a", T_ROUNDS + 0.1, T_CONT + 0.6, { size: 68, top: 868 }); const ea = c.querySelector(".ea");
   gsap.set(ea, { autoAlpha: 0 }); tl.fromTo(ea, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, immediateRender: false }, T_EACH + 0.45); }
 // "before they fell back": the militia go back through the gaps of the second line
 const BACK = { a1: [1424, 1150], a2: [1430, 1197], m: [1436, 1243], p: [1442, 1289] };
