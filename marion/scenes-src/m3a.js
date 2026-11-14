@@ -62,7 +62,7 @@ const post = (id, t, ech = "") => { UNIT(id, "british", Q[id], "infantry", { ech
 const T_REST = at(P1, "rested on a chain of forts");
 [["pC", T_CAMDEN], ["pN", T_STRING + 0.2], ["pM", T_STRING + 0.5], ["pW", T_FW], ["pF", T_FM]].forEach(([id, tOn], k) => {
   const d = pinS(GG.pin(`<div style="width:14px;height:14px;border-radius:50%;background:#bc2528;border:2px solid #f3eee2;box-shadow:0 0 8px rgba(255,70,50,.7)"></div>`, Q[id][0], Q[id][1], {}));
-  tl.fromTo(d, { autoAlpha: 0 }, { autoAlpha: 0.6, duration: 0.5, immediateRender: false }, T_REST + 0.2 + k * 0.18); tl.to(d, { autoAlpha: 0, duration: 0.3 }, tOn); });
+  tl.fromTo(d, { autoAlpha: 0 }, { autoAlpha: 0.6, duration: 0.5, immediateRender: false }, T_PLAN + 0.4 + k * 0.35); tl.to(d, { autoAlpha: 0, duration: 0.3 }, tOn); });
 { const pv = inkTrace([LYT(33.0, -80.0), Q.pM, Q.pN, Q.pW, LYT(33.80, -80.40), LYT(34.05, -80.55), Q.pC], T_REST + 0.3, T_CAMDEN + 1.2, 2.0); pv.setAttribute("stroke", "#bc2528"); }
 post("pC", T_CAMDEN + 0.1, "XX");
 BANNER("rawdon", "Lord Rawdon", "gb", "pC", T_RAWDON + 0.2, { side: "sw", until: T_OW + 0.2 });
