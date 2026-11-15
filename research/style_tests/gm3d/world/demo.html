@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>GM3D world demo</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #1b1a16; }
+  #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #d9d6c8; }
+  #gl { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+  #ovl { position: absolute; inset: 0; pointer-events: none; }
+  .lbl { position: absolute; left: 0; top: 0; white-space: nowrap; font-family: "Liberation Serif", Georgia, serif; font-weight: 700; color: #fbf8ef;
+         text-shadow: 0 2px 3px rgba(0,0,0,.8), 0 0 6px rgba(0,0,0,.55); letter-spacing: .02em; will-change: transform; }
+  .dot { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #1e1c14; box-shadow: 0 0 0 1.5px rgba(240,236,220,.9); }
+  .ub { position: absolute; left: 0; top: 0; width: 64px; height: 44px; border: 3px solid #14120e; box-shadow: 0 6px 10px rgba(0,0,0,.45); }
+</style>
+<script>
+  // register the build promise before the runtime looks for it (resolved by the module below once the world is built)
+  window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+  window.__hf.buildReady.gm3dWorld = new Promise((res) => { window.__gm3dBuilt = res; });
+</script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/gsap.min.js"></script>
+<script src="assets/world_data.js"></script>
+</head>
+<body>
+<div id="root" data-composition-id="gm3d-demo" data-width="1920" data-height="1080" data-start="0" data-duration="10">
+  <canvas id="gl" width="1920" height="1080"></canvas>
+  <div id="ovl"></div>
+</div>
+<script type="module">
+  import { initWorld } from "./world.js";
+  // 10 s camera move: wide drift over Vicksburg - Big Black, dive onto the bridge (region swap at 5.6 s), close drift; bridge burns at 8.5 s
+  const keys = [
+    { t: 0.0, region: "wide", at: [1478, 703], dist: 600, tilt: 44, yaw: -4, fov: 30 },
+    { t: 4.2, region: "wide", at: [1508, 706], dist: 430, tilt: 42, yaw: 2, fov: 30 },
+    { t: 5.6, region: "close", at: [1514, 705], dist: 92, tilt: 34, yaw: 1, fov: 31, ease: "in" },
+    { t: 6.8, region: "close", at: [1518.4, 704.6], dist: 40, tilt: 30, yaw: 0, fov: 32, ease: "out" },
+    { t: 10.0, region: "close", at: [1515.6, 705.0], dist: 33, tilt: 29, yaw: -5, fov: 32 },
+  ];
+  const world = initWorld(document.getElementById("gl"), { base: "assets/", keys, bridgeBurnT: 8.5, shadowSize: 2048 });
+  // overlay demo: labels + two unit boxes stuck to the ground through world.projectMap (map units) / world.project (lat, lon)
+  const ovl = document.getElementById("ovl"); const T = window.GM3D_DATA.towns; const BR = window.GM3D_DATA.regions.close.bridge;
+  const pins = [];
+  const pin = (html, x, y, o = {}) => { const el = document.createElement("div"); el.style.cssText = "position:absolute;left:0;top:0;will-change:transform"; el.innerHTML = html; ovl.appendChild(el); pins.push({ el, x, y, ...o }); };
+  const lbl = (txt, size) => `<div class="dot"></div><div class="lbl" style="font-size:${size}px;transform:translate(12px,-${size * 0.62}px)">${txt}</div>`;
+  pin(lbl("Vicksburg", 34), ...T.Vicksburg, { only: "wide" });
+  pin(lbl("Edwards", 26), ...T.Edwards, { only: "wide" });
+  pin(lbl("Bovina", 26), ...T.Bovina);
+  pin(`<div class="lbl" style="font-size:30px;font-style:italic;transform:translate(-50%,-50%)">Big Black River</div>`, 1514.6, 694.2, { only: "close" });
+  pin(`<div class="ub" style="background:#be3a2a;transform:translate(-50%,-100%)"></div>`, 1518.6, 702.5, { only: "close", h: 0.05 });
+  pin(`<div class="ub" style="background:#2e5cb2;transform:translate(-50%,-100%)"></div>`, 1526.2, 703.8, { only: "close", h: 0.05 });
+  world.onFrame((w) => { for (const p of pins) { const s = w.projectMap(p.x, p.y, p.h || 0); const on = s.visible && (!p.only || p.only === w.region);
+    p.el.style.transform = `translate(${s.x.toFixed(1)}px, ${s.y.toFixed(1)}px)`; p.el.style.opacity = on ? 1 : 0; } });
+  // GSAP clock (paused; the renderer seeks it frame by frame)
+  const st = { t: 0 }; let ready = false;
+  const tl = gsap.timeline({ paused: true });
+  tl.to(st, { t: 10, duration: 10, ease: "none", onUpdate: () => { if (ready) world.update(st.t); } }, 0);
+  window.__timelines = window.__timelines || {}; window.__timelines["gm3d-demo"] = tl;
+  world.ready.then(() => { ready = true; world.update(tl.time()); window.__gm3dBuilt(); });
+  window.__gm3dWorld = world;
+</script>
+</body>
+</html>
