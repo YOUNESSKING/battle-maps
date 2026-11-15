@@ -11,16 +11,16 @@ REF = "/home/user/gm_ref/f2s"
 CW, CH, Z = 200, 112, 2.5
 # (sector, his t, his x, y, our t, our x, y)
 SECTORS = [
-    ("close: forest edge", 670, 470, 400, 40, 300, 420),
-    ("close: wood interior + clearing", 800, 240, 400, 62, 120, 330),
-    ("close: town", 800, 820, 250, 24, 160, 140),
-    ("close: farmstead", 670, 930, 110, 32, 840, 70),
-    ("close: open field + hedge", 670, 820, 440, 40, 640, 460),
-    ("close: river bank", 800, 300, 260, 40, 380, 260),
-    ("close: horizon haze (top band)", 800, 900, 0, 40, 900, 0),
-    ("wide: field / wood patch", 1090, 600, 450, 6, 900, 520),
-    ("wide: hill relief", 620, 700, 250, 6, 420, 150),
-    ("wide: river + floodplain", 620, 120, 300, 6, 120, 330),
+    ("close: forest edge", 670, 470, 400, 40, 230, 380),
+    ("close: wood interior", 800, 120, 400, 62, 120, 380),
+    ("close: town", 800, 460, 260, 62, 0, 150),
+    ("close: farmstead", 670, 900, 100, 40, 200, 200),
+    ("close: open field + hedge", 670, 820, 440, 40, 560, 420),
+    ("close: river bank", 800, 260, 260, 40, 400, 140),
+    ("close: horizon haze (top band)", 930, 300, 0, 40, 480, 0),
+    ("wide: field / wood patch", 1090, 600, 450, 6, 880, 540),
+    ("wide: hill relief", 620, 700, 250, 6, 480, 150),
+    ("wide: river + floodplain", 620, 60, 280, 6, 30, 220),
 ]
 
 

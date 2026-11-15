@@ -157,7 +157,7 @@ export function initWorld(canvas, opts = {}) {
     // so a wood reads as one irregular dark mass with a shadowed edge and a broken outline. Hedgerows / lone / garden trees: smaller clusters
     // standing on the ground. Wide: no instanced crowns (the woods are texture + raised canopy).
     // tree record: [x, z, h_m, kind (0 wood, 1 conifer, 2 hedge, 3 lone), scale, colour 0..1, edge 0..1 (wood edge .. deep inside)]
-    const trees = d.trees, ts = (name === "wide" ? 1.3 : 0.15) * O.treeScale;
+    const trees = d.trees, ts = (name === "wide" ? 1.3 : 0.125) * O.treeScale;   // v4: smaller crowns (GM canopy grain is fine)
     const tmat = new THREE.MeshLambertMaterial();
     const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x56603a), teal = new THREE.Color(0x24423e);
     const GREENS = [0x1e342e, 0x223a32, 0x284236, 0x1b3029, 0x2c4638, 0x243a33, 0x30483a, 0x20403a];   // GM woods ~(50-58, 71-78, 64-72) rendered

@@ -210,6 +210,8 @@ def bake(name):
         img = img * (1 - 0.55 * lit) + hexc("#c4c4ae") * 0.55 * lit; del lit
     else:
         img *= (1 + 0.45 * (shade - 1))[..., None]
+    if name == "wide": img *= np.array([0.78, 0.85, 0.88], np.float32)
+    else: img *= np.array([0.95, 0.99, 1.01], np.float32)   # close: a touch cooler / greener (GM 660-670 s olive-grey)   # the warm sun lifts the wide map: pre-cool it to GM ~(84,93,77)
     del shade, ht
     img = np.clip(img + (fbm(TH, TW, 3, 60, seed + 9)[..., None] - 0.5) * 7, 0, 255)
     lum = img.mean(-1, keepdims=True); img = np.clip((img * 0.86 + lum * 0.14) * np.array([0.98, 1.0, 1.02], np.float32), 0, 255)   # GM: muted, slightly cool
@@ -232,7 +234,7 @@ def bake(name):
         G = np.array([(x + (0.5 * spacing if j % 2 else 0), y) for j, y in enumerate(gys) for x in gxs], np.float32)   # hex grid
         G += r.uniform(-0.42, 0.42, G.shape).astype(np.float32) * spacing
         fval = sample(cv2.resize(forest, (TW // 2, TH // 2), interpolation=cv2.INTER_AREA), box, G)
-        keep = r.random(len(G)) < np.clip((fval - 0.25) * 3.0, 0, 1)
+        fin_g = sample(fin, box, G); keep = r.random(len(G)) < np.clip((fval - 0.45) * 3.5, 0, 1) * np.where(fin_g > 0.5, 0.62, 1.0)   # deep inside: thinner, the speckled canopy blanket shows
         T = G[keep]; e = np.clip(sample(fin, box, T) / 0.7, 0, 1)
         kind = (r.random(len(T)) < 0.08).astype(int)
         sc = np.exp(r.normal(0.12, 0.22, len(T))).clip(0.6, 1.9) * (0.9 + 0.15 * e)
@@ -245,7 +247,7 @@ def bake(name):
             ok &= sample(cv2.resize(forest, (TW // 2, TH // 2)), box, HP.astype(np.float32)) < 0.3
             ok &= (HP[:, 0] > win[0]) & (HP[:, 0] < win[1]) & (HP[:, 1] > win[2]) & (HP[:, 1] < win[3])
             HP, hk_ = HP[ok], hk_[ok]
-            lists.append((HP.astype(np.float32), hk_, np.where(hk_ == 2, r.uniform(0.55, 1.05, len(HP)), r.uniform(0.8, 1.3, len(HP))), r.uniform(0, 1, len(HP)), np.zeros(len(HP))))
+            lists.append((HP.astype(np.float32), hk_, np.where(hk_ == 2, r.uniform(0.45, 0.85, len(HP)), r.uniform(0.8, 1.3, len(HP))), r.uniform(0, 1, len(HP)), np.zeros(len(HP))))
         if town and town["trees"]:
             TT = np.array(town["trees"], np.float32); lists.append((TT[:, :2], np.full(len(TT), 3), TT[:, 2], r.uniform(0, 1, len(TT)), np.zeros(len(TT))))
         for T_, k_, s_, c_, e_ in lists:
@@ -320,36 +322,36 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     hs_ = lambda v, k: (((v * 2654435761 + k * 40503) % 4294967296) / 4294967296.0).astype(np.float32)
     up = hs_(lab.astype(np.int64), 1); us = hs_(sub, 1)
     PAL = np.array([[140, 130, 101], [130, 120, 93], [121, 116, 91], [110, 110, 89], [98, 105, 90], [84, 96, 86], [134, 113, 90]], np.float32)
-    p0 = np.clip(0.18 + (zone - 0.45) * 0.8, 0.05, 0.4)   # ochre/tan share follows a big zone
+    p0 = np.clip(0.14 + (zone - 0.45) * 0.8, 0.04, 0.34)   # ochre/tan share follows a big zone
     def cp(u_):
         c = np.full(u_.shape, 3, np.int64)
         c = np.where(u_ < p0 + 0.48, 4, c); c = np.where(u_ < p0 + 0.32, 3, c); c = np.where(u_ < p0 + 0.16, 2, c)
         c = np.where(u_ < p0, 1, c); c = np.where(u_ < p0 * 0.45, 0, c); c = np.where(u_ > 0.9, 5, c); c = np.where(u_ > 0.975, 6, c)
         return c
     crop = np.where(hs_(sub, 7) < 0.25, cp(us), cp(up)); del up, us
-    img = PAL[crop] * (0.96 + 0.08 * hs_(sub, 3))[..., None]
-    img = cv2.GaussianBlur(img, (0, 0), 0.05 * s)   # soft field edges
+    img = PAL[crop] * (0.90 + 0.12 * hs_(lab.astype(np.int64), 4) + 0.14 * hs_(sub, 3) * split[lab])[..., None]   # strips read (GM 670 s)
+    img = cv2.GaussianBlur(img, (0, 0), 0.03 * s)   # soft field edges
     # big damp / dry mottles (green-grey patches drifting across fields), mid mottles, fine grain
     m1 = cv2.resize(fbm(TH // 4, TW // 4, 5, 5, seed + 41), (TW, TH)); m2 = cv2.resize(fbm(TH // 4, TW // 4, 4, 22, seed + 47), (TW, TH))
-    img *= (1 + (m1 * 0.6 + m2 * 0.4 - 0.5)[..., None] * 0.20)
+    img *= (1 + (m1 * 0.6 + m2 * 0.4 - 0.5)[..., None] * 0.34)
     g = np.clip((cv2.resize(fbm(TH // 4, TW // 4, 4, 8, seed + 48), (TW, TH)) - 0.45) * 2.0, 0, 1)[..., None]
-    img = img * (1 - 0.30 * g) + np.array([98, 108, 94], np.float32) * 0.30 * g; del g, m1, m2
+    img = img * (1 - 0.42 * g) + np.array([92, 104, 92], np.float32) * 0.42 * g; del g, m1, m2
     img *= (1 + (fbm(TH, TW, 3, 90, seed + 42) - 0.5) * 0.08)[..., None]
     img += (np.random.default_rng(seed + 43).random((TH, TW), np.float32)[..., None] - 0.5) * 6
     # furrows / drill rows: faint, direction follows the strip
     fang = np.where(r.random(n) < 0.7, sang, r.uniform(0, np.pi, n))[lab]
     fur = np.sin((xx * np.cos(fang) + yy * np.sin(fang)) / (0.07 * s) * np.pi + fbm(TH, TW, 3, 24, seed + 44) * 6)
-    famp = np.array([0.014, 0.014, 0.011, 0.006, 0.005, 0.004, 0.018], np.float32)[crop] * (0.4 + 1.2 * fbm(TH, TW, 3, 12, seed + 46))
+    famp = np.array([0.03, 0.03, 0.022, 0.012, 0.008, 0.006, 0.035], np.float32)[crop] * (0.4 + 1.2 * fbm(TH, TW, 3, 12, seed + 46))
     img *= (1 + fur * famp)[..., None]; del fur, fang, famp, xx, yy
     # boundaries: faint light grass verge + thin darker line on parcel edges, very faint on strip edges
     edge_sub = (cv2.Laplacian(sub.astype(np.float32), cv2.CV_32F) != 0).astype(np.float32)
     edge_par = (cv2.Laplacian(lab.astype(np.float32), cv2.CV_32F) != 0).astype(np.uint8)
     verge = np.clip(cv2.GaussianBlur(edge_sub, (0, 0), 0.015 * s) * 2.5, 0, 1)[..., None]
-    img = img * (1 - 0.10 * verge) + np.array([150, 148, 120], np.float32) * 0.10 * verge
+    img = img * (1 - 0.22 * verge) + np.array([156, 152, 124], np.float32) * 0.22 * verge   # pale tracks / verges
     pl = cv2.GaussianBlur(edge_par.astype(np.float32), (0, 0), 0.01 * s)[..., None]
     img *= (1 - 0.10 * np.clip(pl * 2, 0, 1)); del verge, pl, edge_sub
     # hedgerows: ~20 % of parcel edges, continuous tree lines (gaps come in runs, not single dots)
-    pid = lab.astype(np.int64); keep = (hs_(pid, 9) < 0.16) | (hs_(pid, 10) < 0.06)
+    pid = lab.astype(np.int64); keep = (hs_(pid, 9) < 0.12) | (hs_(pid, 10) < 0.05)
     hedge = cv2.dilate((edge_par * keep).astype(np.uint8), np.ones((3, 3), np.uint8)); del pid, keep, edge_par
     hb = np.clip(cv2.GaussianBlur(hedge.astype(np.float32), (0, 0), 0.04 * s) * 2.2, 0, 1)[..., None]
     img = img * (1 - 0.45 * hb) + np.array([52, 68, 56], np.float32) * 0.45 * hb   # dark under-canopy band so the line reads continuous
