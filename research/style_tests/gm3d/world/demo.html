@@ -32,11 +32,11 @@
   import { initWorld } from "./world.js";
   // 10 s camera move: wide drift over Vicksburg - Big Black, dive onto the bridge (region swap at 5.6 s), close drift; bridge burns at 8.5 s
   const keys = [
-    { t: 0.0, region: "wide", at: [1478, 703], dist: 600, tilt: 34, yaw: -4, fov: 30 },
-    { t: 4.2, region: "wide", at: [1508, 706], dist: 430, tilt: 36, yaw: 2, fov: 30 },
-    { t: 5.6, region: "close", at: [1514, 705], dist: 92, tilt: 32, yaw: 1, fov: 31, ease: "in" },
-    { t: 6.8, region: "close", at: [1518.4, 704.6], dist: 40, tilt: 40, yaw: 0, fov: 32, ease: "out" },
-    { t: 10.0, region: "close", at: [1515.6, 705.0], dist: 33, tilt: 41, yaw: -5, fov: 32 },
+    { t: 0.0, region: "wide", at: [1478, 703], dist: 600, tilt: 44, yaw: -4, fov: 30 },
+    { t: 4.2, region: "wide", at: [1508, 706], dist: 430, tilt: 42, yaw: 2, fov: 30 },
+    { t: 5.6, region: "close", at: [1514, 705], dist: 92, tilt: 34, yaw: 1, fov: 31, ease: "in" },
+    { t: 6.8, region: "close", at: [1518.4, 704.6], dist: 40, tilt: 30, yaw: 0, fov: 32, ease: "out" },
+    { t: 10.0, region: "close", at: [1515.6, 705.0], dist: 33, tilt: 29, yaw: -5, fov: 32 },
   ];
   const world = initWorld(document.getElementById("gl"), { base: "assets/", keys, bridgeBurnT: 8.5, shadowSize: 2048 });
   // overlay demo: labels + two unit boxes stuck to the ground through world.projectMap (map units) / world.project (lat, lon)
