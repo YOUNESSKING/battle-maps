@@ -86,14 +86,16 @@ const sstep = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * 
 // near top-down (tilt 44 -> 17) as the flat deck closes in from the frame edges (~14.95-15.85), then on through the deck tops at the same
 // speed (cool textured phase, the camera inside the cloud ~16.2) -> swap at 16.4 inside the white -> cream with a warm radial falloff ->
 // the battlefield snaps in (0.35 s) while the camera keeps descending and eases out over ~2.5 s through torn grey-blue stratus.
-const DV = { push: 12.6, deckIn: 14.7, full: 15.85, deck: 15.95, wIn: 16.05, inside: 16.25, SW: 16.4, warm: 16.55, emerge: 17.25, clear: 17.6, haze: 18.6, land: 19.8 };
+const DV = { push: 12.6, deckIn: 14.7, full: 15.85, deck: 15.95, wIn: 16.05, inside: 16.25, SW: 16.4, warm: 16.55, emerge: 17.25, clear: 17.55, haze: 18.2, land: 19.75 };
 const SW = DV.SW;   // region swap, inside the white-out
 const keys = [
   { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
   { t: DV.push, region: "wide", at: [1532, 709], dist: 545, tilt: 44, yaw: 0, fov: 30 },
   { t: DV.deck, region: "wide", at: [1518, 707], dist: 115, tilt: 11, yaw: 1, fov: 30, ease: "in" },
   { t: SW, region: "wide", at: [1518, 706], dist: 66, tilt: 8, yaw: 1, fov: 30, ease: "lin" },   // same log-speed as the end of the cubic
-  { t: SW, region: "close", at: [1518.2, 705.4], dist: 70, tilt: 18, yaw: 1, fov: 31, ease: "lin" },
+  // v6 (critic A v5 #4, #6): exit at ~1/3 of the dive's log-speed (0.5/s), steady through the white, then a cubic ease-out over 2.5 s after the snap
+  { t: SW, region: "close", at: [1518.0, 705.6], dist: 93, tilt: 16, yaw: 2, fov: 31, ease: "lin" },
+  { t: DV.emerge, region: "close", at: [1518.5, 705.2], dist: 61, tilt: 27, yaw: 0.5, fov: 31.5, ease: "lin" },
   { t: DV.land, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
 
   { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 36, tilt: 50, yaw: -5, fov: 30 },
@@ -129,19 +131,17 @@ const hsh = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; 
 const NOISE = await loadCloudNoise("cloudtex/noise128.bin");
 const BRC = [1518, 725];   // the bridge label stays clear (wide)
 // wide fair-weather cumulus: rejection-sampled scatter, clustered by a low-frequency field, log-normal radii ~10-60
-const wsp = [];
-for (let i = 0; i < 900 && wsp.length < 26; i++) {
-  const x = 1130 + hsh(i, 41) * 880, z = 330 + hsh(i, 42) * 650;
-  const g1 = hsh(i, 45), g2 = hsh(i, 46), gn = Math.sqrt(-2 * Math.log(Math.max(1e-4, g1))) * Math.cos(6.2832 * g2);
-  const r = Math.min(85, Math.max(12, 34 * Math.exp(0.5 * gn)));
-  const cl = 0.5 + 0.28 * Math.sin(x * 0.011 + 1.3) * Math.cos(z * 0.013 - 0.7) + 0.22 * Math.sin((x + z) * 0.006 + 2.1);   // clusters + clear areas
-  if (hsh(i, 43) > cl) continue;
-  if (Math.hypot(x - 1518, (z - 712) * 1.15) < 118 + 0.5 * r ||   // the bridge label and the dive deck's footprint stay to the deck (no group seams)
-     Math.hypot(x - 1388, z - 681) < 30 + r * 0.5) continue;
-  if (wsp.some(([a, b, q]) => Math.hypot(a - x, b - z) < 0.85 * (q + r))) continue;
-  wsp.push([x, z, r]); }
+// v6 (critic A v5 #5): Poisson clusters of 2-5 clouds (a big parent + smaller children), log-normal radii (sigma 0.6), irregular, clear sky between
+const wsp = [], lnr = (i, k, med, sg, lo, hi) => { const g1 = hsh(i, k), g2 = hsh(i, k + 1), gn = Math.sqrt(-2 * Math.log(Math.max(1e-4, g1))) * Math.cos(6.2832 * g2); return Math.min(hi, Math.max(lo, med * Math.exp(sg * gn))); };
+const offWide = (x, z, r) => Math.hypot(x - 1518, (z - 712) * 1.15) < 118 + 0.5 * r || Math.hypot(x - 1388, (z - 690) * 0.8) < 95 + r;   // the deck footprint + Vicksburg (the night flashback's frame: only the thin wisps there) stay clear
+for (let c = 0, n = 0; c < 600 && n < 14; c++) {
+  const cx = 1150 + hsh(c, 61) * 860, cz = 340 + hsh(c, 62) * 640, R0 = lnr(c, 63, 30, 0.6, 12, 90);
+  if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10)) continue;
+  n++; wsp.push([cx, cz, R0]); const kids = 1 + Math.floor(hsh(c, 65) * 4);   // 2-5 per cluster
+  for (let k = 0; k < kids; k++) { const a = hsh(c * 7 + k, 66) * 6.283, r = lnr(c * 7 + k, 67, R0 * 0.45, 0.6, 7, R0 * 0.9), d = R0 * (0.9 + 0.8 * hsh(c * 7 + k, 69)) + r * 0.6;
+    const x = cx + Math.cos(a) * d, z = cz + Math.sin(a) * d * 0.8; if (!offWide(x, z, r)) wsp.push([x, z, r]); } }
 // big soft clouds cut by the frame corners of the opening shot (near the lens, lower density)
-const edge = [[1300, 905, 80], [1800, 925, 90], [1170, 470, 75], [1990, 430, 80]];
+const edge = [[1290, 915, 95], [1815, 930, 85], [1175, 470, 70]];   // 3 big soft near-lens corner masses
 // flat wisps around Vicksburg (the night flashback's frame; small, thin, off the town name)
 const wisp = [[1318, 625, 34], [1290, 735, 40], [1440, 600, 30], [1335, 790, 32], [1470, 790, 26]];
 // the dive deck: flat (H/R ~0.3) sheet cumulus around the target, dense in the camera's column (no gap to fall through), ragged towards the rim
@@ -150,37 +150,38 @@ for (let i = 0, gx = 1400; gx < 1640; gx += 22) for (let gz = 600; gz < 820; gz 
   const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 712) * 1.15);
   if (hsh(i, 7) < lerp(0.95, 0.5, clamp((r - 30) / 90))) deck.push([x, z, 13 + hsh(i, 8) * 12]); }
 for (const c of [[1518, 706, 30], [1512, 717, 26], [1526, 699, 26], [1521, 726, 26], [1507, 697, 24], [1531, 713, 24]]) deck.push(c);   // the camera's own column: no gap to fall through
-const wideCl = wsp.map(([x, z, r], i) => [x, z, r, 3 + r * (0.24 + 0.08 * hsh(i, 13)), 50 + hsh(i, 11) * 6, 0])
-  .concat(edge.map(([x, z, r], i) => [x, z, r, r * 0.22, 56 + i * 3, 0]))
+const wideCl = wsp.map(([x, z, r], i) => [x, z, r, 3 + r * (0.18 + 0.16 * hsh(i, 13)), 49 + hsh(i, 11) * 9, 0])
+  .concat(edge.map(([x, z, r], i) => [x, z, r, r * 0.2, 58 + i * 4, 0]))
   .concat(wisp.map(([x, z, r], i) => [x, z, r, 4 + r * 0.12, 52 + i * 2, 0]))
   .concat(deck.map(([x, z, r], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - 1518, z - 710) / 60)), 58 + hsh(i, 12) * 3, 1]));   // thicker over the target
 // GM cloud colours: warm cream sunlit tops, grey cores, grey-blue undersides (critic A 4); night: flat grey-blue wisps (critic A 11)
-const CW_DAY = { sun: [1.0, 0.95, 0.85], ambTop: [0.55, 0.60, 0.70], ambBot: [0.30, 0.34, 0.42], nSun: [0.12, 0.15, 0.20], nAmbTop: [0.27, 0.32, 0.40], nAmbBot: [0.13, 0.16, 0.21] };
+const CW_DAY = { sun: [1.0, 0.95, 0.85], ambTop: [0.50, 0.55, 0.65], ambBot: [0.24, 0.28, 0.36], nSun: [0.12, 0.15, 0.20], nAmbTop: [0.27, 0.32, 0.40], nAmbBot: [0.13, 0.16, 0.21] };
 const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1080, 300, 2060, 1010], texel: 1, slab: [44, 104], tile: 125, groupScale: 3.0, amp: 5, soft: 1.7, flatPow: 0.3, sigma: 0.75,
-  stepIn: 0.25, stepK: 0.0035, lightStep: 1.4, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.06, fine: 0, wisp: 0.45, inner: 0.8,
-  weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.1, shadow: 0.8, shadowDir: [0.3, 1, 0.65], drift: [0.10, -0.035], evolve: 0.0025, floor: 0.05,
-  sunK: 1.05, ambK: 0.25, lightK: 2.4,
+  stepIn: 0.25, stepK: 0.0035, lightStep: 1.4, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.06, fine: 0.12, wisp: 0.45, inner: 0.8,
+  weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.0, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: [0.10, -0.035], evolve: 0.0025, floor: 0.05,
+  sunK: 1.4, ambK: 0.18, lightK: 3.2,
   // deck: no billow-up; group-1 erosion is a coverage FRONT that sweeps from the frame edges in to the camera's column, while the deck's
   // density ramps up from translucent grey veils (0.25 s); after the swap the deck is gone from the wide map (night flashback); night: half the wide clouds, flatter
   erode: (t) => { const n = sstep(T.p4 - 1, T.p4 - 0.6, t); return [0.4 * n, t > DV.SW + 0.5 ? 9 : lerp(1.6, 0, sstep(DV.deckIn - 0.1, DV.deckIn + 0.6, t))]; },
-  deck: (t) => ({ x: 1518, z: 706, r: 110, front: 3.5 * (1 - sstep(DV.deckIn + 0.1, DV.full, t)), k: lerp(0.25, 1, sstep(DV.deckIn, DV.deckIn + 0.35, t)) }),
+  deck: (t) => ({ x: 1518, z: 706, r: 110, front: 3.5 * (1 - sstep(DV.deckIn + 0.1, DV.full, t)), k: lerp(0, 1, sstep(DV.deckIn, DV.deckIn + 0.6, t)) }),   // v6: opacity ramp from 0 (no pop)
   ms: (t) => lerp(0.22, 0.42, sstep(DV.full - 0.2, DV.inside, t)), expo: (t) => lerp(1, 0.93, sstep(DV.full - 0.2, DV.inside, t)),
   colors: (t) => { const k = sstep(DV.full - 0.2, DV.inside, t);   // inside the cloud: cooler, bright grey with blue-grey mottles (his 637.0 s)
     const c = sstep(DV.deckIn, DV.deckIn + 0.5, t) * (1 - k), q = Math.max(k, c);   // his deck (636.0-636.6) reads neutral-cool grey-white, his wide clouds warm
-    return { sun: [lerp(1.0, 0.95, q), lerp(0.95, 0.97, q), lerp(0.85, 0.94, q)], ambTop: [lerp(0.55, 0.66, q), lerp(0.60, 0.71, q), lerp(0.70, 0.76, q)], ambBot: [lerp(0.30, 0.44, q), lerp(0.34, 0.50, q), lerp(0.42, 0.56, q)],
-      nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.25, 0.4, q), lightK: lerp(2.4, 1.0, k) * lerp(1, 0.75, c), sunK: lerp(1.05, 1.2, q) }; },
+    return { sun: [lerp(1.0, 0.95, q), lerp(0.95, 0.97, q), lerp(0.85, 0.94, q)], ambTop: [lerp(0.50, 0.66, q), lerp(0.55, 0.71, q), lerp(0.65, 0.76, q)], ambBot: [lerp(0.24, 0.40, q), lerp(0.28, 0.46, q), lerp(0.36, 0.54, q)],
+      nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.18, 0.36, q), lightK: lerp(3.2, 1.4, k) * lerp(1, 0.8, c), sunK: lerp(1.4, 1.2, q) }; },
   sigmaK: (t) => lerp(1, 0.5, sstep(DV.full, DV.inside, t)) });
-// close: flat torn stratus sheets (H ~2) just under the landing camera (tops ~22-26 vs camera ~33 at the landing), thin over the bridge
-const closeCl = [];
-for (let i = 0, gx = 1484; gx < 1556; gx += 7) for (let gz = 676; gz < 736; gz += 7, i++) {
-  const x = gx + (hsh(i, 21) - 0.5) * 6, z = gz + (hsh(i, 22) - 0.5) * 6, rc = Math.hypot(x - 1519, (z - 706) * 1.3);
-  if (rc > 6 && hsh(i, 26) < lerp(0.45, 0.9, clamp((rc - 6) / 16))) closeCl.push([x, z, 5 + hsh(i, 23) * 5, 2.4 + hsh(i, 24) * 1.6, 19 + hsh(i, 25) * 4, 1]); }
-const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1440, 640, 1600, 780], texel: 0.25, skip: 8, slab: [16, 30], tile: 16, amp: 1.6, soft: 1.0, sigma: 0.9, wisp: 0.7, inner: 0.6, flatPow: 0.35,
-  stepIn: 0.15, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 220, resolution: 0.7, warp: 0.12, fine: 0, weights: [0.7, 0.25, 1, 0.6], blur: 1.8,
-  shadow: 0.35, shadowDir: [0.3, 1, 0.65], drift: [0.35, -0.12], evolve: 0.004, sunK: 0.55, ambK: 0.62, lightK: 0.8,
-  colors: { sun: [0.95, 0.94, 0.9], ambTop: [0.68, 0.72, 0.77], ambBot: [0.50, 0.55, 0.62] },
-  erode: (t) => [0, lerp(0.15, 0.55, sstep(DV.emerge, DV.emerge + 1.0, t)) + lerp(0, 2.4, sstep(DV.emerge + 0.8, DV.emerge + 3.4, t))],
-  opacity: (t) => 1 - sstep(DV.emerge + 3.4, DV.emerge + 4.0, t) });
+// close (v6, critic A v5 #4): 10 separate torn stratus sheets with holes (~35-50 % of the frame at the snap), flat, low (tops ~19-24, about a
+// third of the way up to the camera = ~1.5x the ground's parallax), lit tops + grey-blue cores; they clear off the troop line after ~18.3 s and tear away by ~20.5
+const closeCl = [], SH = [[1509, 696, 9], [1531, 694, 8], [1505, 712, 10], [1534, 716, 9], [1519, 724, 8], [1520, 688, 7], [1497, 703, 7], [1541, 705, 7], [1512, 705, 6], [1527, 706, 6]];
+SH.forEach(([x, z, r], i) => closeCl.push([x, z, r * 1.25, 2.6 + hsh(i, 24) * 1.2, 16.5 + hsh(i, 25) * 3, 1]));
+const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1470, 660, 1570, 750], texel: 0.2, skip: 8, slab: [14, 26], tile: 9, amp: 1.5, soft: 0.8, sigma: 1.1, wisp: 0.8, inner: 0.7, flatPow: 0.35, blobs: 6,
+  stepIn: 0.12, stepK: 0.004, lightStep: 0.35, lodDist: 90, nearFade: 1.2, maxSteps: 220, resolution: 0.7, warp: 0.18, fine: 0.1, weights: [1.0, 0.5, 1, 0.6], blur: 1.0, sharp: 1,
+  shadow: 0.45, shadowDir: [0.3, 1, 0.65], drift: [0.5, -0.18], evolve: 0.006, sunK: 0.95, ambK: 0.5, lightK: 1.6,
+  colors: { sun: [1.0, 0.97, 0.9], ambTop: [0.62, 0.67, 0.74], ambBot: [0.30, 0.35, 0.44] },
+  erode: (t) => [0, lerp(0.35, 0.7, sstep(DV.emerge, DV.emerge + 1.2, t)) + lerp(0, 2.2, sstep(DV.emerge + 1.0, DV.emerge + 3.3, t))],
+  deck: (t) => ({ x: 1524, z: 705, r: 9, front: 3 * sstep(DV.emerge + 0.9, DV.emerge + 1.6, t), k: 1 }),   // the troop line clears first
+  opacity: (t) => 1 - sstep(DV.emerge + 3.2, DV.emerge + 3.8, t) });
+
 
 // the battle's drifting cloud shadows (as in v3): the old noise layer, shadows only (its own pass stays off)
 fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 0.40, opacity: 0, detail: 0.5 });
@@ -244,7 +245,9 @@ const mkTitleCanvas = (face) => { const c = document.createElement("canvas"); c.
   g.fillStyle = sp; g.fillRect(0, 0, TCW, TCH); g.globalCompositeOperation = "source-over"; return c; };
 const ttex = new THREE.CanvasTexture(mkTitleCanvas(true)); ttex.colorSpace = THREE.SRGBColorSpace; ttex.anisotropy = 4;
 const stex = new THREE.CanvasTexture(mkTitleCanvas(false)); stex.anisotropy = 4;
-const TTL = new THREE.Group(); world.regions.wide.scene.add(TTL);
+// v6 (critic A v5 #1): the title is the nearest thing to the lens, so it gets its own pass after the map + clouds (depth cleared): nothing draws over it
+const TSC = new THREE.Scene(), TTL = new THREE.Group(); TSC.add(TTL);
+world.onFrame((w) => { if (w.region !== "wide" || !TTL.visible) return; const r = w.renderer, ac = r.autoClear; r.autoClear = false; r.clearDepth(); r.render(TSC, w.camera); r.autoClear = ac; });
 const tA = 12.2; world.update(tA); world.camera.updateMatrixWorld();
 const cq = world.camera.quaternion.clone(), cpos = world.camera.position.clone(), cfw = new THREE.Vector3(0, 0, -1).applyQuaternion(cq), cup = new THREE.Vector3(0, 1, 0).applyQuaternion(cq);
 const tD = 0.28 * world.cameraAt(tA).dist, tW = 0.62 * tD, tH = tW * TCH / TCW;
@@ -257,7 +260,7 @@ for (let k = NL; k >= 0; k--) { const front = k === 0, f = k / NL, sh = 0.75 - 0
 // motion blur: ghosts of the face seen from the camera's poses a fraction of a frame earlier (the title is static, the camera rushes past it)
 const GH = 6, ghostMats = [], ghosts = [];
 for (let j = 0; j < GH; j++) { const m = new THREE.MeshBasicMaterial({ map: ttex, transparent: true, depthWrite: false, depthTest: false, fog: false, opacity: 0 });
-  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.renderOrder = 19; pl.matrixAutoUpdate = false; world.regions.wide.scene.add(pl); ghosts.push(pl); ghostMats.push(m); }
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.renderOrder = 19; pl.matrixAutoUpdate = false; TSC.add(pl); ghosts.push(pl); ghostMats.push(m); }
 const camAtT = new THREE.PerspectiveCamera(), tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4();
 const camPose = (t, out) => { const cs = world.cameraAt(t), ty = world.heightAt(cs.at[0], cs.at[1], cs.region), tl_ = cs.tilt * Math.PI / 180, yw = cs.yaw * Math.PI / 180;
   out.position.set(cs.at[0] + Math.sin(yw) * Math.sin(tl_) * cs.dist, ty + Math.cos(tl_) * cs.dist, cs.at[1] + Math.cos(yw) * Math.sin(tl_) * cs.dist);
@@ -270,7 +273,13 @@ const titleAt = (t) => { const a = sstep(T.story, T.story + 0.7, t) * (1 - sstep
   for (let j = 0; j < GH; j++) { ghosts[j].visible = blur > 0.01; if (!ghosts[j].visible) continue;
     const ts = t - (j + 1) * (0.5 / 30) / GH;   // 180-degree shutter
     tmpM.copy(now).multiply(tmpM2.copy(camPose(ts, camAtT)).invert()).multiply(TTL.matrixWorld);   // where the title sat in the frame at ts
-    ghosts[j].matrix.copy(tmpM); ghosts[j].matrixWorldNeedsUpdate = true; ghostMats[j].opacity = a * blur * 0.32 * (1 - j / GH); } };
+    ghosts[j].matrix.copy(tmpM); ghosts[j].matrixWorldNeedsUpdate = true; ghostMats[j].opacity = a * blur * 0.32 * (1 - j / GH); }
+  // screen box of the title (canvas px) + its alpha: pinned labels under it fade out
+  TBOX.a = TTL.visible ? a : 0; if (TBOX.a > 0) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; const cam = camPose(t, camAtT); camAtT.fov = world.cameraAt(t).fov; camAtT.aspect = W / H; camAtT.updateProjectionMatrix();
+    for (const [u, v] of [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]]) { const q = new THREE.Vector3(u * tW, v * tH * 0.7, 0).applyMatrix4(TTL.matrixWorld).project(camAtT);
+      if (q.z > 1) continue; const sx = (q.x + 1) / 2 * W, sy = (1 - q.y) / 2 * H; x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy); }
+    Object.assign(TBOX, { x0, y0, x1, y1 }); } };
+const TBOX = { a: 0, x0: 0, y0: 0, x1: 0, y1: 0 };
 
 
 // ---------------- 3D extras: boats on the Mississippi (flashback), three new bridges (next day) ----------------
@@ -469,7 +478,11 @@ function drawTroops(t, close) {
 }
 function drawPins(t, region) {
   for (const p of PINS) { const on = region === p.region && t >= p.t0 && t < p.t1, op = on ? Math.min(sstep(p.t0, p.t0 + 0.6, t), 1 - sstep(p.t1 - 0.6, p.t1, t)) : 0;
-    p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
+    if (op <= 0) { p.e.style.opacity = "0"; continue; } const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`;
+    // v6 (critic A v5 #1, #9): a name under the 3D title fades out; a name under a cloud is dimmed by the cloud's alpha there (his "Saint-Prix")
+    let k = 1; if (TBOX.a > 0 && region === "wide") { const ins = Math.min(s.x - TBOX.x0 + 30, TBOX.x1 + 30 - s.x, s.y - TBOX.y0 + 16, TBOX.y1 + 16 - s.y); k *= 1 - TBOX.a * clamp(ins / 30); }
+    if (t < 22 || region === "wide") k *= 1 - 0.9 * (region === "wide" ? fxW : fxC).cloudAlphaAt(s.x, s.y);
+    p.e.style.opacity = (op * k).toFixed(3); }
 }
 // v5 (critic A 3): the final grade = levels (black point 10 -> 0, white 248 -> 255) + a mild S-curve (15 % smoothstep), on the 3D image only
 // (the old contrast(1.12) brightness(0.95) is gone; the overlay's film layers now really blend, see filmHost). Never lifts the darks:

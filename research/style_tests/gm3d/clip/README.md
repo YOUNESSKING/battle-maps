@@ -97,5 +97,13 @@ smoke draws over them. Infantry merges 2 boxes into 1 block (GM has ~half as man
 - Night: half the wide clouds eroded, flat grey-blue wisps around Vicksburg, night tint (0.12-0.40 blue-grey).
 - Tools: `TAG=_v5 python3 make_dive.py <snapshot dir | mp4>` -> `dive_ours_v5.jpg`; `TAG=_v5 python3 make_sectors.py <dir>` -> `dive_sectors_v5.jpg` (local).
 
+**v6 clouds (2026-11-15, critic A round 2):** the 3D title renders in its own pass after map + clouds (depth cleared) so nothing draws over it,
+and pinned names under its screen box fade out; pinned names are dimmed by the cloud alpha under them (`fx.cloudAlphaAt`, 1-px readback of the
+cloud target). Composite blur is edge-aware (full blur only on fringes, `sharp`), the mid octave is back (`fine` 0.12). Wide: Poisson clusters of
+2-5 clouds (log-normal sigma 0.6), 3 big near-lens corner masses, deeper cores (lightK 3.2, ambK 0.18, sun (1,.95,.85) x1.4), shadow 0.75,
+clusters kept off the night frame (only the flat wisps there). Deck opacity ramps from 0 at 14.7 s (no pop). Emergence: 10 torn flat sheets
+(tops ~19-24, ~1.5x ground parallax), lit tops + grey-blue cores, clear off the troop line after ~18.2 s; camera exits at ~1/3 of the dive
+log-speed (keys SW dist 93 -> 17.25 dist 61 lin -> 19.75 dist 40 cubic out); fog snaps 17.2-17.65. Sheets: `dive_ours_v6.jpg`, `dive_sectors_v6.jpg` (local).
+
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).

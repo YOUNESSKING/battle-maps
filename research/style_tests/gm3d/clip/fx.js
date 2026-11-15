@@ -1036,15 +1036,18 @@ export function createFX(cfg = {}) {
     const rq = new THREE.Mesh(quadGeo, mat); rq.frustumCulled = false; rtScene.add(rq);
     const rt = new THREE.WebGLRenderTarget(16, 16, { type: THREE.HalfFloatType, depthBuffer: false });
     const compMat = new THREE.ShaderMaterial({
-      uniforms: { uTex: { value: rt.texture }, uTexel: { value: new THREE.Vector2() }, uBlur: { value: o.blur ?? 1.5 } },
+      uniforms: { uTex: { value: rt.texture }, uTexel: { value: new THREE.Vector2() }, uBlur: { value: o.blur ?? 1.5 }, uSharp: { value: o.sharp ?? 0 } },
       vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
-      fragmentShader: `uniform sampler2D uTex; uniform vec2 uTexel; uniform float uBlur; varying vec2 vUv;
+      fragmentShader: `uniform sampler2D uTex; uniform vec2 uTexel; uniform float uBlur; uniform float uSharp; varying vec2 vUv;
         void main(){
           // v5: 3x3 tent of bilinear taps (~5x5 texels) on the PREMULTIPLIED target = alpha-weighted blur: kills the step-jitter speckle
           vec2 o = uTexel * uBlur; vec4 c = texture2D(uTex, vUv) * 4.0;
           c += (texture2D(uTex, vUv + vec2(o.x, 0.0)) + texture2D(uTex, vUv - vec2(o.x, 0.0)) + texture2D(uTex, vUv + vec2(0.0, o.y)) + texture2D(uTex, vUv - vec2(0.0, o.y))) * 2.0;
           c += texture2D(uTex, vUv + o) + texture2D(uTex, vUv - o) + texture2D(uTex, vUv + vec2(o.x, -o.y)) + texture2D(uTex, vUv + vec2(-o.x, o.y));
-          c /= 16.0; if (c.a < 0.002) discard; vec3 col = c.rgb / max(c.a, 1e-4);
+          c /= 16.0;
+          // v6: edge-aware: full blur only on the translucent fringes (where the jitter noise lives), the opaque body keeps a light 50 % mix (mid lobes stay crisp)
+          vec4 c0 = texture2D(uTex, vUv); c = mix(c, mix(c, c0, 0.5), smoothstep(0.8, 0.97, c0.a) * uSharp);
+          if (c.a < 0.002) discard; vec3 col = c.rgb / max(c.a, 1e-4);
         col = linearToOutputTexel(vec4(col, 1.0)).rgb; gl_FragColor = vec4(col * c.a, c.a); }`,
       transparent: true, depthTest: false, depthWrite: false,
       blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
@@ -1064,7 +1067,7 @@ export function createFX(cfg = {}) {
         .replace('#include <common>', '#include <common>\nvarying vec3 vFxWorld;')
         .replace('#include <project_vertex>', '#include <project_vertex>\nvFxWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;');
       shader.fragmentShader = shader.fragmentShader
-        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\n${VC_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;\nuniform vec4 fxCu[64];\nuniform int fxCuN;\nuniform vec4 fxCuL;\nuniform sampler2D fxPlTex;\nuniform float fxPlOn;\nuniform vec3 fxPlO;\nuniform vec3 fxPlX;\nuniform vec3 fxPlY;\nuniform vec3 fxPlL;\nfloat fxHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\nfloat fxVN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fxHash(i), fxHash(i + vec2(1.0, 0.0)), f.x), mix(fxHash(i + vec2(0.0, 1.0)), fxHash(i + vec2(1.0, 1.0)), f.x), f.y); }`)
+        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\n${VC_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;\nuniform float fxNight;\nuniform vec4 fxCu[64];\nuniform int fxCuN;\nuniform vec4 fxCuL;\nuniform sampler2D fxPlTex;\nuniform float fxPlOn;\nuniform vec3 fxPlO;\nuniform vec3 fxPlX;\nuniform vec3 fxPlY;\nuniform vec3 fxPlL;\nfloat fxHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\nfloat fxVN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fxHash(i), fxHash(i + vec2(1.0, 0.0)), f.x), mix(fxHash(i + vec2(0.0, 1.0)), fxHash(i + vec2(1.0, 1.0)), f.x), f.y); }`)
         .replace('#include <opaque_fragment>', `
           {
             if (fxCloudQ.w > 0.5 && fxCloudQ.z > 0.0) {
@@ -1109,6 +1112,10 @@ export function createFX(cfg = {}) {
               }
             }
             vec3 fxPl = vec3(0.0);
+            if (fxNight > 0.0) {   // v6 (critic B 13): the rust roads would glow like veins in the moonlight: darken road-coloured ground at night
+              float rd = smoothstep(0.08, 0.15, diffuseColor.r - diffuseColor.g) * smoothstep(0.12, 0.2, diffuseColor.r - diffuseColor.b);   // linear: road (142,88,58) r-g 0.17, tan field 0.06
+              outgoingLight *= 1.0 - 0.65 * fxNight * rd;
+            }
             for (int i = 0; i < ${MAXPOOL}; i++) {
               if (i >= fxPoolN) break;
               vec3 dd = vFxWorld - fxPoolPos[i].xyz;
@@ -1128,7 +1135,7 @@ export function createFX(cfg = {}) {
 
   // ================================================================ environment
   function setNight(k) {
-    night = clamp01(k);
+    night = clamp01(k); shared.fxNight.value = night;
     const day = 1 - night;
     spriteU.uSunCol.value.setRGB(1.0 * day + 0.07 * night, 0.95 * day + 0.09 * night, 0.86 * day + 0.14 * night);
     spriteU.uShadeCol.value.setRGB(0.50 * day + 0.025 * night, 0.53 * day + 0.03 * night, 0.60 * day + 0.05 * night);
@@ -1224,7 +1231,7 @@ export function createFX(cfg = {}) {
         const size = renderer.getDrawingBufferSize(new THREE.Vector2());
         const w = Math.max(16, Math.round(size.x * vc.res)), h = Math.max(16, Math.round(size.y * vc.res));
         if (vc.rt.width !== w || vc.rt.height !== h) vc.rt.setSize(w, h);
-        vc.comp.material.uniforms.uTexel.value.set(1 / w, 1 / h); vc.comp.material.uniforms.uBlur.value = typeof o.blur === 'function' ? o.blur(t) : (o.blur ?? 1.5);
+        vc.comp.material.uniforms.uTexel.value.set(1 / w, 1 / h); vc.comp.material.uniforms.uBlur.value = typeof o.blur === 'function' ? o.blur(t) : (o.blur ?? 1.5); vc.comp.material.uniforms.uSharp.value = o.sharp ?? 0;
         vc.cu.uInvProj.value.copy(camera.projectionMatrixInverse); vc.cu.uCamWorld.value.copy(camera.matrixWorld); vc.cu.uCam.value.copy(tmpV);
         const f = scene.fog; if (f) { vc.cu.uFogC.value.copy(f.color).convertSRGBToLinear(); vc.cu.uFogN.value = f.near; vc.cu.uFogF.value = f.far; }
         const prevT = renderer.getRenderTarget(), prevC = renderer.getClearColor(new THREE.Color()), prevA = renderer.getClearAlpha(), prevAuto = renderer.autoClear;
@@ -1237,7 +1244,16 @@ export function createFX(cfg = {}) {
   }
 
   return {
-    vclouds, smokeLine, cannon, flash, custom, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
+  // v6: cloud alpha at a screen point (0..1, canvas px), read back from the cloud target of the last update (pinned labels fade under clouds)
+  const pxBuf = new Uint16Array(4);
+  function cloudAlphaAt(x, y) {
+    if (!vc || !vc.comp.visible || !renderer) return 0;
+    const sz = renderer.getSize(new THREE.Vector2()), ix = Math.floor(x / sz.x * vc.rt.width), iy = Math.floor((1 - y / sz.y) * vc.rt.height);
+    if (ix < 0 || iy < 0 || ix >= vc.rt.width || iy >= vc.rt.height) return 0;
+    try { renderer.readRenderTargetPixels(vc.rt, ix, iy, 1, 1, pxBuf); } catch (e) { return 0; }
+    return Math.min(1, Math.max(0, THREE.DataUtils.fromHalfFloat(pxBuf[3])));   // the target already carries the opacity
+  }
+    cloudAlphaAt, vclouds, smokeLine, cannon, flash, custom, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
     get spriteCount() { return batch.n; },
     sunDir, wind, shared, batch,
   };
