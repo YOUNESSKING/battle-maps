@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>GM overlay demo</title>
+<script src="vendor/gsap.min.js"></script>
+<script src="overlay.js"></script>
+<style>
+html, body { margin: 0; background: #000; }
+#root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#scene { position: absolute; inset: 0; overflow: hidden; }
+#bg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 960px 540px; }
+#haze { position: absolute; left: 0; right: 0; top: 0; height: 330px; background: linear-gradient(180deg, rgba(214,216,206,.95) 0%, rgba(214,212,196,.85) 40%, rgba(214,208,188,0) 100%); }
+#ov { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="62" data-width="1920" data-height="1080">
+ <div id="scene" class="clip" data-start="0" data-duration="62" data-track-index="0">
+  <img id="bg" src="assets/bg.jpg" alt="">
+  <div id="haze"></div>
+  <div id="ov"></div>
+ </div>
+</div>
+<script>
+// Demo: every overlay element cycling over a still battlefield (placeholder background; the real 3D world comes from gm3d/world).
+// Demo copy (quotes, numbers) is placeholder text drawn from GM_STUDY.md; check every line against sources before using it in a video.
+const D = 62, tl = gsap.timeline({ paused: true });
+// camera: a slow push-in on the still; the projector applies the same transform to world points (world = bg image px)
+const camAt = (t) => { const k = t / D; return { s: 1 + 0.08 * k, x: -60 * k, y: 18 * k }; };
+const cam = { t: 0 }; tl.to(cam, { t: D, duration: D, ease: "none", onUpdate: () => { const c = camAt(cam.t); document.getElementById("bg").style.transform = `translate(${c.x}px,${c.y}px) scale(${c.s})`; } }, 0);
+const project = (p, t) => { const c = camAt(t); return { x: 960 + (p[0] - 960) * c.s + c.x, y: 540 + (p[1] - 540) * c.s + c.y, visible: true }; };
+const O = GMOverlay.create(document.getElementById("ov"), { tl, project, duration: D, fontBase: "assets/fonts/" });
+const NAP = [1180, 640], KUT = [640, 330], FLE = [1290, 770], RED = [930, 470], MOSCOW = [1240, 250];
+
+// ---- cold open: candle-lit grade, centred quote, dark plate medallion
+O.film.grade(0, "candle", 0, { at: [560, 760] });
+O.quote(0.6, 5.6, { orig: "Voilà le soleil d'Austerlitz !", lang: "fr", en: "There is the sun of Austerlitz!", attr: "Napoleon · Borodino, 7 September 1812 · after Ségur", y: 560 });
+O.medallion({ kind: "plate", img: "assets/napoleon_head.jpg", side: "fr", role: "Emperor of the French", name: "Napoleon", titleCase: true, sub: "Grande Armée · at the gates of Moscow", screen: [160, 930], tIn: 3.0, tOut: 7.2 });
+O.film.grade(7.0, "day", 1.4);
+// ---- title card (Cinzel: lowercase sets as small caps, as in GM's title)
+O.title(7.4, 12.6, { lines: ["The Battle", "Napoleon Couldn't", "Afford to Win"], sub: "Borodino · 7 September 1812", y: 250 });
+// ---- date plaque, timeline, legend
+O.plaque.date(12.8, { month: "September 1812", day: "7", weekday: "Monday", note: "dawn · mist on the Kolocha" });
+O.timeline.show(13.2, { month: "Sept", year: "1812", days: ["5", "6", "7", "8", "9", "10"], at: 1.0 });
+O.timeline.seal(13.6, { at: 1.0, name: "Shevardino" });
+O.legend(13.8, 31, { entries: [{ name: "Grande Armée", sub: "Napoleon · Davout, Ney, Murat", color: "#3C6E9E" }, { name: "Russians", sub: "Kutuzov · Bagration, Barclay", color: "#3F6A47" }] });
+// ---- medallions with leader lines (ivory card), event label, place card
+O.medallion({ kind: "card", img: "assets/napoleon_head.jpg", side: "fr", role: "Emperor", name: "Napoleon", men: "130,000", world: NAP, offset: [190, -150], tIn: 15.0, tOut: 23.5 });
+O.medallion({ kind: "card", img: "assets/kutuzov_head.jpg", side: "ru", role: "Commander-in-chief", name: "Kutuzov", sub: "on the new Smolensk road", men: "120,000", world: KUT, offset: [210, -40], tIn: 16.4, tOut: 24.5 });
+O.plaque.clock(18.0, { time: "5:30", note: "Mist in the Kolocha valley" });
+O.plaque.run(18.6, 30.5, "9:45");
+O.plaque.note(24.0, "Mist lifting · smoke over the field");
+O.timeline.go(19.0, { at: 2.3, d: 1.6 });
+O.label(20.0, 26.5, { name: "The Bagration flèches", sub: "three earthworks, taken and lost again", world: FLE, side: "ru" });
+O.place(22.2, 28.5, { title: "The Great Redoubt", sub: "Raevsky's battery on the Kurgan hill", img: "assets/inset_painting.jpg", world: RED });
+// ---- oval painting inset with ribbon caption, 3D numbers
+O.inset(26.0, 31.8, { img: "assets/inset_painting.jpg", x: 1330, y: 150, w: 470, h: 350, caption: "Placeholder painting · W. Ranney, 1845" });
+O.number(27.0, 31.4, { value: 130000, side: "fr", world: [1280, 560], size: 104 });
+O.number(28.2, 31.6, { value: 120000, world: [560, 300], size: 104 });
+// ---- letter card (typed quote), dusk
+O.film.grade(31.0, "dusk", 1.6);
+O.letter(32.0, 38.6, { header: "6 September 1812 · Borodino", title: "Rapp to Napoleon", sub: "the eve of the battle", quote: "No doubt, but a bloody one." });
+O.plaque.run(32.0, 40.5, "20:35");
+O.timeline.go(36.0, { at: 2.85, d: 1.6 });
+// ---- night: ledger refrain + stamps, centred quote, timeline seal
+O.film.grade(39.0, "night", 1.6);
+O.ledger.show(39.6, { title: "Imperial Guard · not committed", sub: "Requests to send in the Guard" });
+O.ledger.add(40.2, { who: "Rapp" }); O.ledger.add(41.4, { who: "Ney · Murat" }); O.ledger.add(42.6, { who: "The staff" });
+O.ledger.note(44.2, 3, "artillery only"); O.ledger.add(45.4, { who: "Murat · 10 p.m." });
+O.ledger.final(47.0, { lines: ["The Guard", "saved"] });
+O.quote(41.4, 47.2, { orig: "Et s'il y a demain une seconde bataille, avec quoi la livrerai-je ?", lang: "fr", en: "And if there is another battle tomorrow, what shall I fight it with?", attr: "Napoleon · Borodino, 7 September 1812 · after Ségur", y: 600 });
+O.plaque.label(43.6, "And night"); O.plaque.note(43.6, "Campfires on the field · cold rain");
+O.timeline.go(45.0, { at: 3.0, d: 1.2 }); O.timeline.seal(46.0, { at: 3.0, name: "Borodino" });
+// ---- dark plate medallion + distance ruler, day again
+O.film.grade(48.0, "day", 1.6);
+O.plaque.date(48.4, { month: "September 1812", day: "8", weekday: "Tuesday", note: "the Russians fall back" });
+O.medallion({ kind: "plate", img: "assets/kutuzov_head.jpg", side: "ru", name: "Kutuzov", sub: "falls back towards Moscow", world: KUT, leader: false, screen: [560, 760], tIn: 48.6, tOut: 54.2 });
+O.distance(49.4, 55.6, { from: KUT, to: MOSCOW, value: 70, unit: "MILES", sub: "Borodino to Moscow · as the crow flies", stripes: ["#DEE6E3", "#3F6A47"] });
+O.timeline.go(50.0, { at: 4.0, d: 1.6 });
+O.plaque.hide(58.6); O.timeline.hide(58.8); O.ledger.hide(57.8);
+
+window.__timelines = window.__timelines || {}; window.__timelines["main"] = tl;
+tl.seek(0); O.update(0);
+</script>
+</body>
+</html>
