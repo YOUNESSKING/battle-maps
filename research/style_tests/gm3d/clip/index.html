@@ -25,8 +25,9 @@
   /* v3 cloud white-out: GM's is a soft warm off-white with a vignette (centre ~218/218/209, edges ~190/192/181), never pure #fff */
   #whiteout { position: absolute; inset: 0; opacity: 0; pointer-events: none; overflow: hidden; }
   #wcool, #wwarm, #wisps { position: absolute; inset: 0; }
-  #wcool { background: radial-gradient(ellipse 120% 120% at 50% 48%, rgb(212,215,208) 0%, rgb(209,212,205) 50%, rgb(201,204,196) 100%); }
-  #wwarm { opacity: 0; background: radial-gradient(ellipse 115% 115% at 50% 46%, rgb(220,216,203) 0%, rgb(215,211,197) 45%, rgb(203,200,184) 80%, rgb(194,191,174) 100%); }
+  /* v4: flat, no oval vignette (owner: his white-out is flat); cool interior ~(208,211,204), warm cream ~(217,214,201) */
+  #wcool { background: rgb(208,211,204); }
+  #wwarm { opacity: 0; background: radial-gradient(ellipse 160% 160% at 50% 48%, rgb(218,215,202) 0%, rgb(216,213,199) 55%, rgb(211,208,193) 100%); }
   .wsp { position: absolute; left: 0; top: 0; width: 600px; height: 300px; border-radius: 50%; filter: blur(38px); background: rgb(120,112,98); will-change: transform, opacity; }
   .blk { position: absolute; left: 0; top: 0; width: 100px; height: 40px; transform-origin: 50% 50%; box-sizing: border-box; border: 7px solid #15130f; will-change: transform; }
   .blk.u { background: #2c57b7; } .blk.r { background: #be3a2a; }
@@ -63,7 +64,7 @@
 <script type="module">
 import * as THREE from "three";
 import { initWorld } from "./world.js";
-import { createFX } from "./fx.js";
+import { createFX, loadCloudNoise } from "./fx.js";
 const T = window.T, EV = window.EV, tl = window.__tl, D = window.GM3D_DATA;
 const W = 1280, H = 720, SC = 1.5;   // overlay space = 1.5 x canvas px
 const U = 1 / D.geo.mpu;             // world units per metre (1 unit = 129.36 m)
@@ -115,10 +116,22 @@ for (let i = 0, gx = 1410; gx < 1630; gx += 25) for (let gz = 615; gz < 830; gz 
   const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 725) * 1.2);
   if (hsh(i, 7) < lerp(0.86, 0.42, clamp(r / 110))) deck.push([x, z, 13 + hsh(i, 8) * 14, 0.97 + hsh(i, 9) * 0.06]); }
 for (const c of [[1518, 706, 30], [1512, 717, 28], [1526, 699, 26], [1521, 726, 28], [1507, 697, 24], [1531, 713, 26], [1515, 738, 26]]) deck.push([c[0], c[1], c[2], 1]);   // the camera's own column: no gap to fall through
-fxW.cumulus({ clouds: sparse, base: 52, lift: 1.1, puffs: 26, refR: 18, puffSize: 0.9, seed: 71, drift: 0.5, shadowDir: [0.3, 1, 0.18], shadowH: 58 });
-fxW.cumulus({ clouds: deck, base: 68, lift: 1.25, puffs: 46, refR: 22, puffSize: 0.8, seed: 72, drift: 0.5, nearFade: 0.3, alpha: (t) => sstep(DV.deckIn, DV.deckIn + 0.15, t) * (1 - sstep(SW, SW + 0.2, t)) });
-const covC = (t) => lerp(0.85, 0.36, sstep(DV.emerge - 0.2, DV.clear + 0.3, t));
-fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covC, shadow: 0.40, resolution: 0.5, steps: 40, detail: 0.5, maxDist: 600 * M, maxSeg: 70 * M, lightStep: 3 * M, sigma: 0.05 / M });
+// v4: true volumetric cumulus (fx.vclouds: raymarched over an offline 3D Perlin-Worley / Worley noise volume, light-marched
+// self-shadowing, Beer-powder + Henyey-Greenstein, ground shadows from the same density). Wide: scattered clouds (group 0) +
+// the dive deck (group 1) that billows up 14.6-15.2 and swallows the camera; close: a low deck the camera falls through that
+// tears into patchy remnants (group 1) + high clouds that only cast shadows (group 0).
+const NOISE = await loadCloudNoise("cloudtex/noise128.bin");
+const wideCl = sparse.map(([x, z, r]) => [x, z, r, r * 0.55, 52 + hsh(x, 11) * 4, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 0.7, 68 + hsh(z, 12) * 3, 1]));
+const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1200, 520, 1920, 1010], texel: 1, slab: [46, 112], tile: 40, amp: 6, soft: 2.6, sigma: 0.9,
+  stepIn: 0.5, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 220, resolution: 0.5, shadow: 0.5, drift: [0.10, -0.035], evolve: 0.0025,
+  sunK: 0.9, ambK: 0.62, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))] });
+const closeCl = [];
+for (let i = 0, gx = 1478; gx < 1562; gx += 9) for (let gz = 670; gz < 742; gz += 9, i++) closeCl.push([gx + (hsh(i, 21) - 0.5) * 7, gz + (hsh(i, 22) - 0.5) * 7, 6 + hsh(i, 23) * 5, 6 + hsh(i, 24) * 6, 20 + hsh(i, 25) * 5, 1]);
+for (let i = 0, gx = 1440; gx < 1600; gx += 26) for (let gz = 640; gz < 780; gz += 26, i++) if (hsh(i, 31) < 0.45) closeCl.push([gx + hsh(i, 32) * 20, gz + hsh(i, 33) * 20, 9 + hsh(i, 34) * 6, 8, 82, 0]);
+const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [16, 96], tile: 14, amp: 2.4, soft: 1.0, sigma: 1.3,
+  stepIn: 0.2, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 240, resolution: 0.5, shadow: 0.42, drift: [0.06, -0.02], evolve: 0.004, sunK: 0.9, ambK: 0.62,
+  erode: (t) => [0, lerp(0, 1.5, sstep(DV.SW, DV.emerge + 0.9, t)) + lerp(0, 1.4, sstep(DV.emerge + 0.9, 21.5, t))],
+  opacity: (t) => 1 - sstep(21.0, 21.6, t) });
 
 // cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
 fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 6, flameK: 1.0, flameA: 0.7, flameRate: 6, emberRate: 1, glowSize: 2.2, smokeRate: 1.6, smokeLife: 14, rise: 2, light: false, ramp: 2, smokeTint: [0.16, 0.15, 0.14], smokeAlpha: 0.55, smokeS0: 0.9, smokeGrow: 1.6, smokeWind: 3 });
@@ -223,6 +236,11 @@ const BN = document.createElement("div"); TR.appendChild(BN);
 const banner = (img, name, keys, t0, t1) => { const e = document.createElement("div"); e.className = "bnr"; e.innerHTML = `<div class="pole" style="height:58px"></div><img src="${img}" style="width:42px;bottom:30px"><div class="nm" style="bottom:4px">${name}</div>`; BN.appendChild(e); return { e, keys, t0, t1 }; };
 const BANNERS = [banner("assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T.crossing + 2, 1530.6, 705.6]], ARR + 0.5, T.p4 - 0.6), banner("assets/csa1_13_flag.png", "Pemberton", [[0, BR.x - 1.2, 706.2], [TK + 1, BR.x - 3.6, 706.0]], T.pem - 0.2, EV.bridgeFire + 3),
   banner("assets/us34_flag.png", "Grant", [[T.p5 - 1, 1517.4, 705.5]], T.p5 - 0.5, T.D + 1)];
+// troops look: 'boxes' (Style W, default) | 'blocks' (GM 3D formation blocks, troops3d.js); same UNITS, same keys
+const TROOPS = window.TROOPS = window.TROOPS || new URLSearchParams(location.search).get("troops") || "boxes";
+for (const u of UNITS) if (u.t0 > T.p5 - 1 && u.keys.length > 2) u.march = 1;   // blocks: next-day brigades cross the new bridges in march column
+const T3 = TROOPS === "blocks" ? (await import("./troops3d.js")).createTroops3D({ THREE, scene: world.regions.close.scene, heightAt: hC, units: UNITS, posAt, sun: SUN,
+  shots: [...EV.usShots.map((t, i) => ({ t, x: EV.usGuns[i % 3][0] + 0.2, y: EV.usGuns[i % 3][1] })), ...EV.csShots.map((t, i) => ({ t, x: EV.csGuns[i % 3][0] - 0.15, y: EV.csGuns[i % 3][1] }))] }) : null;
 // solid arrows on the ground (assault, retreat, next-day crossing)
 const SVG = document.getElementById("arrows"), NSV = "http://www.w3.org/2000/svg", ARROWS = [];
 const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NSV, "g"); g.innerHTML = `<path fill="none" stroke="rgba(14,12,8,.6)" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="${col}"/><polygon fill="${col}" stroke="rgba(14,12,8,.6)" stroke-width="1.5"/>`;
@@ -287,7 +305,7 @@ tl.fromTo("#fade", { opacity: 1 }, { opacity: 0, duration: 0.8, ease: "power1.ou
 // ---------------- per-frame draw (pure function of t) ----------------
 const v2 = (a, b) => [b.x - a.x, b.y - a.y];
 function drawTroops(t, close) {
-  for (const u of UNITS) {
+  for (const u of T3 ? [] : UNITS) {
     const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
     if (op <= 0.001) { for (const e of u.els) e.style.opacity = 0; continue; }
     const [cx, cy] = posAt(u.keys, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;   // facing + front axis
@@ -326,17 +344,20 @@ function drawPins(t, region) {
     p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
 }
 const WO = document.getElementById("whiteout"), WW = document.getElementById("wwarm"), WS = document.getElementById("wisps"), FOGW = new THREE.Color(0.80, 0.79, 0.74);
-const whiteAt = (t) => t < DV.wIn ? 0.6 * sstep(DV.wIn - 0.35, DV.wIn, t) : t < DV.wFull ? lerp(0.6, 1, sstep(DV.wIn, DV.wFull, t)) : t < DV.emerge ? 1   // textured cloud seen through a milky veil, then flat
+// v4: the cool phase is the real cloud interior (the camera is inside the volumetric deck 15.6-16.3) under a thin cool veil;
+// the flat warm cream covers the cut (16.3-17.2), then the battlefield comes out through the dissolving close deck.
+const whiteAt = (t) => t < DV.wFull ? 0.35 * sstep(DV.wIn + 0.2, DV.wFull + 0.05, t) : t < DV.warm ? lerp(0.35, 1, sstep(DV.wFull + 0.05, DV.warm, t)) : t < DV.emerge ? 1
   : t < DV.clear ? lerp(1, 0.14, 1 - (1 - clamp((t - DV.emerge) / (DV.clear - DV.emerge))) ** 2) : lerp(0.14, 0, sstep(DV.clear, DV.haze, t));
 // dark wisps (cloud undersides) rushing outward past the lens during the warm phase, as in his dives
 const WSP = [[0.30, 0.42, 0.0, 1.0], [0.70, 0.55, 0.12, 0.8], [0.52, 0.30, 0.25, 0.9], [0.20, 0.70, 0.36, 0.7], [0.80, 0.25, 0.45, 0.8], [0.45, 0.66, 0.55, 1.0]].map((w) => {
   const e = document.createElement("div"); e.className = "wsp"; WS.appendChild(e); return { e, x: w[0], y: w[1], d: w[2], k: w[3] }; });
 const wispsAt = (t) => { for (const w of WSP) { const u = (t - (DV.warm + 0.1 + w.d)) / 0.75, on = u > 0 && u < 1;
-  w.e.style.opacity = on ? (Math.sin(Math.PI * u) * 0.36 * w.k).toFixed(3) : "0"; if (!on) continue;
+  w.e.style.opacity = "0";   // v4: no fake wisps (the real close deck tears past instead) if (!on) continue;
   const sc = 0.5 + 2.2 * u, cx = 640 + (w.x * 1280 - 640) * (1 + 1.6 * u), cy = 360 + (w.y * 720 - 360) * (1 + 1.6 * u);
   w.e.style.transform = `translate(${(cx - 300).toFixed(1)}px,${(cy - 150).toFixed(1)}px) scale(${sc.toFixed(3)},${(sc * 0.8).toFixed(3)})`; } };
 window.__draw = (t) => {
-  placeBoats(t); titleAt(t);
+  placeBoats(t); titleAt(t); if (T3) T3.update(t);
+  O.set({ vignette: (1 - 0.95 * sstep(DV.deckIn, DV.deck + 0.3, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // v4: no oval inside the cloud
   WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.25, t).toFixed(3); wispsAt(t);
   for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }
   world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0);

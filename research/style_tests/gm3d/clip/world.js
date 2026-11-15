@@ -152,33 +152,53 @@ export function initWorld(canvas, opts = {}) {
       const m = new THREE.Mesh(wg, wmat); m.receiveShadow = true; scene.add(m); R.water.push(m);
     }
     R.wmat = wmat;
-    // forests: instanced low-poly crowns (round broadleaf blobs + a few pines), per-instance colour
+    // forests (v4): close = massed canopy. The bake raises a ~3 m canopy blanket under every wood (dark crown-speckle texture), and
+    // instanced crown CLUSTERS (2-4 merged, displaced lobes, 4 shape variants, log-normal sizes, colour/hue jitter) sit half sunk in it,
+    // so a wood reads as one irregular dark mass with a shadowed edge and a broken outline. Hedgerows / lone / garden trees: smaller clusters
+    // standing on the ground. Wide: no instanced crowns (the woods are texture + raised canopy).
+    // tree record: [x, z, h_m, kind (0 wood, 1 conifer, 2 hedge, 3 lone), scale, colour 0..1, edge 0..1 (wood edge .. deep inside)]
     const trees = d.trees, ts = (name === "wide" ? 1.3 : 0.15) * O.treeScale;
-    const broad = trees.filter((q) => q[3] === 0), pine = trees.filter((q) => q[3] === 1);
-    const crownG = name === "wide" ? new THREE.SphereGeometry(1, 7, 5) : new THREE.IcosahedronGeometry(1, 0);
-    if (name === "close") { const p = crownG.attributes.position, nn = []; for (let i = 0; i < p.count; i++) { const v = new THREE.Vector3(p.getX(i), p.getY(i) * 0.6 + 0.4, p.getZ(i)).normalize(); nn.push(v.x, v.y, v.z); } crownG.setAttribute("normal", new THREE.Float32BufferAttribute(nn, 3)); }   // soft round crowns
-    const tmat = new THREE.MeshLambertMaterial({ flatShading: false });
-    const dummy = new THREE.Object3D(), col = new THREE.Color();
-    const GREENS = name === "close" ? [0x22382e, 0x2a4232, 0x304a36, 0x1e3428, 0x38503a, 0x2a3e30, 0x3e5236] : [0x22362a, 0x283c2c, 0x2e4230, 0x203226, 0x334834, 0x2a3a2a];
-    if (broad.length) {
-      const im = new THREE.InstancedMesh(crownG, tmat, broad.length); im.castShadow = true; im.receiveShadow = name === "close";
-      broad.forEach((q, i) => { const s = ts * q[4]; const y = heightAt(R, q[0], q[1]);
-        dummy.position.set(q[0], y + s * (name === "wide" ? 0.25 : 0.75), q[1]); dummy.rotation.set(0, hash(i, 7) * 6.28, 0);
-        dummy.scale.set(s * (0.9 + hash(i, 8) * 0.25), s * (name === "wide" ? 0.55 : 0.95), s * (0.9 + hash(i, 9) * 0.25)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
-        col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]).multiplyScalar(0.85 + hash(i, 10) * 0.3); im.setColorAt(i, col); });
-      scene.add(im); R.broad = im;
-      if (false) {   // trunks (off: GM woods read as dense canopy)
-        const tg = new THREE.CylinderGeometry(0.12, 0.16, 1, 5); tg.translate(0, 0.5, 0);
-        const tr = new THREE.InstancedMesh(tg, new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 1 }), broad.length);
-        broad.forEach((q, i) => { const s = ts * q[4]; dummy.position.set(q[0], heightAt(R, q[0], q[1]), q[1]); dummy.rotation.set(0, 0, 0); dummy.scale.set(s, s * 0.6, s); dummy.updateMatrix(); tr.setMatrixAt(i, dummy.matrix); });
-        scene.add(tr);
+    const tmat = new THREE.MeshLambertMaterial();
+    const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x56603a), teal = new THREE.Color(0x24423e);
+    const GREENS = [0x22382e, 0x28402f, 0x2e4834, 0x1f3529, 0x34503a, 0x2a3e30, 0x3a5036, 0x26443a];
+    const NV = 4, variants = [];
+    for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
+      const lobes = 2 + (v % 3), P = [], N = [];
+      for (let l = 0; l < lobes; l++) {
+        const g = new THREE.IcosahedronGeometry(1, 0).toNonIndexed(), p = g.attributes.position;
+        const a = hash(v * 7 + l, 31) * 6.283, rr = l === 0 ? 0 : 0.42 + hash(v * 7 + l, 32) * 0.3, sc = l === 0 ? 0.78 : 0.5 + hash(v * 7 + l, 33) * 0.28;
+        const cx = Math.cos(a) * rr, cz = Math.sin(a) * rr, cy = l === 0 ? 0 : -0.12 + hash(v * 7 + l, 34) * 0.18;
+        for (let i = 0; i < p.count; i++) {
+          const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+          const k = 1 + (Math.sin(x * 5.1 + v * 3 + l) * Math.sin(y * 4.3 + l * 2) * Math.sin(z * 4.7 + v)) * 0.22;   // lumpy
+          P.push(cx + x * sc * k, cy + y * sc * k * 0.82, cz + z * sc * k);
+          const nn = new THREE.Vector3(x, y * 0.7 + 0.35, z).normalize(); N.push(nn.x, nn.y, nn.z);   // soft, upward-biased normals
+        }
       }
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3)); g.setAttribute("normal", new THREE.Float32BufferAttribute(N, 3));
+      variants.push(g);
     }
-    if (pine.length) {
-      const pg = new THREE.ConeGeometry(0.75, 2.6, 6); pg.translate(0, 1.3, 0);
-      const im = new THREE.InstancedMesh(pg, tmat, pine.length); im.castShadow = true;
-      pine.forEach((q, i) => { const s = ts * q[4]; dummy.position.set(q[0], heightAt(R, q[0], q[1]) - 0.02, q[1]); dummy.rotation.set(0, hash(i, 11) * 6.28, 0); dummy.scale.set(s, s, s); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
-        col.setHex(0x26402a).multiplyScalar(0.8 + hash(i, 12) * 0.35); im.setColorAt(i, col); });
+    const crowns = trees.filter((q) => q[3] !== 1), pines = trees.filter((q) => q[3] === 1);
+    if (crowns.length && name === "close") {
+      const groups = variants.map(() => []);
+      crowns.forEach((q, i) => groups[Math.floor(hash(i, 40) * NV)].push(q));
+      R.trees = [];
+      groups.forEach((G, v) => { if (!G.length) return;
+        const im = new THREE.InstancedMesh(variants[v], tmat, G.length); im.castShadow = true; im.receiveShadow = true;
+        G.forEach((q, i) => { const j = i * NV + v, kind = q[3], e = q[6] || 0, wood = kind === 0;
+          const s = ts * q[4] * (wood ? 1.0 : kind === 2 ? 0.78 : 0.85), y = heightAt(R, q[0], q[1]);
+          dummy.position.set(q[0], y + (wood ? s * (0.12 + 0.18 * e) : s * 0.62), q[1]); dummy.rotation.set(0, hash(j, 7) * 6.28, 0);
+          dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
+          col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
+          const hv = hash(j, 12); if (hv < 0.18) col.lerp(olive, 0.25 + hv); else if (hv > 0.8) col.lerp(teal, 0.4);
+          col.multiplyScalar((0.78 + hash(j, 10) * 0.36) * (wood ? 0.9 + 0.12 * e : 1.0)); im.setColorAt(i, col); });
+        R.scene.add(im); R.trees.push(im); });
+    }
+    if (pines.length && name === "close") {
+      const pg = new THREE.ConeGeometry(0.75, 2.6, 7); pg.translate(0, 1.3, 0);
+      const im = new THREE.InstancedMesh(pg, tmat, pines.length); im.castShadow = true; im.receiveShadow = true;
+      pines.forEach((q, i) => { const s = ts * q[4] * 0.8; dummy.position.set(q[0], heightAt(R, q[0], q[1]) - s * 0.6, q[1]); dummy.rotation.set(0, hash(i, 11) * 6.28, 0); dummy.scale.set(s, s, s); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
+        col.setHex(0x203a2c).multiplyScalar(0.8 + hash(i, 12) * 0.35); im.setColorAt(i, col); });
       scene.add(im);
     }
     // villages: box houses + gable roofs
@@ -188,13 +208,15 @@ export function initWorld(canvas, opts = {}) {
       const walls = new THREE.InstancedMesh(wallG, new THREE.MeshLambertMaterial(), hs.length);
       const roofs = new THREE.InstancedMesh(roofGeometry(), new THREE.MeshLambertMaterial({ side: THREE.DoubleSide }), hs.length);
       walls.castShadow = roofs.castShadow = true; walls.receiveShadow = roofs.receiveShadow = true;
-      const WALL = [0xe0d6c0, 0xd4c8ac, 0xcabd9f, 0xe8e0cc], ROOF = [0xc4593a, 0xb8533a, 0xcc6844, 0xa84a34];
-      const wh = name === "wide" ? 0.75 : 0.13, rh = name === "wide" ? 0.55 : 0.11, hk = name === "wide" ? 1 : 1.35;   // clip: bigger close houses
-      hs.forEach((q, i) => { const [x, z, hm, w, dd, rot, rc] = q; const y = heightAt(R, x, z) - 0.01;
-        dummy.position.set(x, y, z); dummy.rotation.set(0, rot, 0); dummy.scale.set(w * hk, wh * (0.85 + hash(i, 3) * 0.5), dd * hk); dummy.updateMatrix(); walls.setMatrixAt(i, dummy.matrix);
+      // v4 roofs: GM's varied tile reds / oranges, some brown and slate; kind 1 = church nave (taller), 2 = church tower (tall, steep roof)
+      const WALL = [0xe0d6c0, 0xd4c8ac, 0xcabd9f, 0xe8e0cc], ROOF = [0xc4593a, 0xb8533a, 0xcc6844, 0xa84a34, 0x8e5a40, 0x6c6a68, 0xd27a4c];
+      const wh = name === "wide" ? 0.75 : 0.12, rh = name === "wide" ? 0.55 : 0.10, hk = name === "wide" ? 1 : 1.0;
+      hs.forEach((q, i) => { const [x, z, hm, w, dd, rot, rc] = q, kind = q[7] || 0; const y = heightAt(R, x, z) - 0.01;
+        const hh = wh * (kind === 2 ? 4.2 : kind === 1 ? 1.7 : 0.85 + hash(i, 3) * 0.5);
+        dummy.position.set(x, y, z); dummy.rotation.set(0, rot, 0); dummy.scale.set(w * hk, hh, dd * hk); dummy.updateMatrix(); walls.setMatrixAt(i, dummy.matrix);
         col.setHex(WALL[Math.floor(hash(i, 4) * WALL.length)]); walls.setColorAt(i, col);
-        dummy.position.set(x, y + wh * (0.85 + hash(i, 3) * 0.5), z); dummy.scale.set(w * 1.08 * hk, rh, dd * 1.12 * hk); dummy.updateMatrix(); roofs.setMatrixAt(i, dummy.matrix);
-        col.setHex(ROOF[rc % ROOF.length]).multiplyScalar(0.85 + hash(i, 5) * 0.3); roofs.setColorAt(i, col); });
+        dummy.position.set(x, y + hh, z); dummy.scale.set(w * 1.08 * hk, rh * (kind === 2 ? 2.6 : kind === 1 ? 1.4 : 0.9 + hash(i, 6) * 0.3), dd * 1.12 * hk); dummy.updateMatrix(); roofs.setMatrixAt(i, dummy.matrix);
+        col.setHex(ROOF[rc % ROOF.length]).multiplyScalar(0.82 + hash(i, 5) * 0.32); roofs.setColorAt(i, col); });
       scene.add(walls, roofs);
     }
     // the Big Black railroad bridge (close): timber trestle, deck, rails; burns at bridgeBurnT
@@ -251,6 +273,7 @@ export function initWorld(canvas, opts = {}) {
   }
 
   const DAY = { sun: new THREE.Color(0xfff2de), sunI: 1.0 * Math.PI, sky: new THREE.Color(0xe6ecf0), gnd: new THREE.Color(0x6a5a40), hemiI: 0.52 * Math.PI, fog: new THREE.Color(0xa9b3b4), water: new THREE.Color(0x46606e) };
+  const HAZE = new THREE.Color(0xb2bec4);
   const NIGHT = { sun: new THREE.Color(0x9fb4e0), sunI: 0.75 * Math.PI, sky: new THREE.Color(0x40507a), gnd: new THREE.Color(0x10141c), hemiI: 0.6 * Math.PI, fog: new THREE.Color(0x141c2c), water: new THREE.Color(0x1c2a40) };
 
   world.update = (t, o = {}) => {
@@ -265,7 +288,10 @@ export function initWorld(canvas, opts = {}) {
     const wk = cs.region === "wide" ? 1 : 0;   // clip critic: stronger relief on the wide map (more sun, less sky fill)
     R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + 0.35 * wk * (1 - n));
     R.hemi.color.copy(DAY.sky).lerp(NIGHT.sky, n); R.hemi.groundColor.copy(DAY.gnd).lerp(NIGHT.gnd, n); R.hemi.intensity = lerp(DAY.hemiI, NIGHT.hemiI, n) * (1 - 0.3 * wk * (1 - n));
-    R.scene.fog.color.copy(DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cs.region === "close" ? 1.05 : 0.95); R.scene.fog.far = sd * (cs.region === "close" ? 3.0 : 4.4);
+    // v4 haze: on the oblique close camera the far ground fades into a pale sky-blue haze (GM 640-700 / 800 / 910-950 s):
+    // smoothstep over view depth 0.85 d .. 2.6 d -> ~0 at the frame centre, ~0.3 at the top edge (tilt 52, fov 30)
+    const cl = cs.region === "close" ? 1 : 0;
+    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 0.85 : 0.95); R.scene.fog.far = sd * (cl ? 2.6 : 4.4);
     R.wmat.color.copy(DAY.water).lerp(NIGHT.water, n); R.wmat.envMapIntensity = lerp(0.3, 0.1, n);
     renderer.setClearColor(R.scene.fog.color);
     // water motion: normal map drifts downstream
