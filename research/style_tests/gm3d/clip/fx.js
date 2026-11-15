@@ -133,8 +133,10 @@ function makeCloudAtlas(seed) {
     for (let b = 0; b < nb; b++) { const a = rnd() * 6.283, d = 0.07 + rnd() * 0.17; lobes.push([0.5 + Math.cos(a) * d, 0.5 + Math.sin(a) * d * 0.85, 0.07 + rnd() * 0.09]); }
     const ox = rnd() * 50, oy = rnd() * 50;
     for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) {
-      const u = (x + 0.5) / C, v = (y + 0.5) / C; let s = 0;
-      for (const [bx, by, br] of lobes) { const dd = ((u - bx) ** 2 + (v - by) ** 2) / (br * br); if (dd < 1) s = Math.max(s, Math.sqrt(1 - dd) * br + (br > 0.2 ? 0 : 0.02)); }
+      const u = (x + 0.5) / C, v = (y + 0.5) / C; let e = 0;
+      // smooth union of the lobes (log-sum-exp): rounded valleys between lobes instead of straight max() creases
+      for (const [bx, by, br] of lobes) { const dd = ((u - bx) ** 2 + (v - by) ** 2) / (br * br); if (dd < 1) e += Math.exp(70 * (Math.sqrt(1 - dd) * br + (br > 0.2 ? 0 : 0.03))); }
+      const s = e > 0 ? Math.max(0, Math.log(e) / 70) : 0;
       const nz = fbm(u * 5 + ox, v * 5 + oy, 4);
       let hv = s * (0.8 + 0.4 * nz) - 0.012; hv *= smooth(0.5, 0.46, Math.hypot(u - 0.5, v - 0.5));
       h[y * C + x] = Math.max(0, hv);

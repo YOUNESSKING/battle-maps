@@ -25,8 +25,8 @@
   /* v3 cloud white-out: GM's is a soft warm off-white with a vignette (centre ~218/218/209, edges ~190/192/181), never pure #fff */
   #whiteout { position: absolute; inset: 0; opacity: 0; pointer-events: none; overflow: hidden; }
   #wcool, #wwarm, #wisps { position: absolute; inset: 0; }
-  #wcool { background: radial-gradient(ellipse 80% 75% at 50% 48%, rgb(211,214,207) 0%, rgb(208,211,204) 55%, rgb(198,202,193) 100%); }
-  #wwarm { opacity: 0; background: radial-gradient(ellipse 72% 68% at 50% 46%, rgb(220,216,203) 0%, rgb(214,210,196) 45%, rgb(198,195,178) 82%, rgb(186,183,166) 100%); }
+  #wcool { background: radial-gradient(ellipse 120% 120% at 50% 48%, rgb(212,215,208) 0%, rgb(209,212,205) 50%, rgb(201,204,196) 100%); }
+  #wwarm { opacity: 0; background: radial-gradient(ellipse 115% 115% at 50% 46%, rgb(220,216,203) 0%, rgb(215,211,197) 45%, rgb(203,200,184) 80%, rgb(194,191,174) 100%); }
   .wsp { position: absolute; left: 0; top: 0; width: 600px; height: 300px; border-radius: 50%; filter: blur(38px); background: rgb(120,112,98); will-change: transform, opacity; }
   .blk { position: absolute; left: 0; top: 0; width: 100px; height: 40px; transform-origin: 50% 50%; box-sizing: border-box; border: 7px solid #15130f; will-change: transform; }
   .blk.u { background: #2c57b7; } .blk.r { background: #be3a2a; }
@@ -76,12 +76,12 @@ const sstep = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * 
 // push-in on the wide 3D map (his gold numbers / our title float in world space) -> clouds appear and fill the frame in ~0.8 s ->
 // cool off-white cloud interior ~0.6 s (~#d0d4cc, flat) -> the cut hides in it -> warm cream ~0.7 s (centre ~#dad6c6, edge ~#c3c1b0)
 // with dark grey-brown wisps (cloud undersides) rushing past -> the battlefield snaps in within ~0.4 s, a thin haze clears over ~1 s.
-const DV = { push: 11.3, deckIn: 14.85, deck: 15.2, wIn: 15.45, wFull: 15.85, SW: 16.4, warm: 16.35, emerge: 17.2, clear: 17.6, haze: 18.7, land: 18.6 };
+const DV = { push: 11.3, deckIn: 14.85, deck: 15.2, wIn: 15.6, wFull: 16.0, SW: 16.4, warm: 16.35, emerge: 17.2, clear: 17.6, haze: 18.7, land: 18.6 };
 const SW = DV.SW;   // region swap, inside the flat white-out
 const keys = [
   { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
   { t: DV.push, region: "wide", at: [1532, 709], dist: 560, tilt: 44, yaw: 0, fov: 30 },
-  { t: DV.deck, region: "wide", at: [1518, 706], dist: 150, tilt: 28, yaw: 1, fov: 30, ease: "in" },
+  { t: DV.deck, region: "wide", at: [1518, 706], dist: 122, tilt: 26, yaw: 1, fov: 30, ease: "in" },
   { t: SW, region: "close", at: [1517.6, 705], dist: 75, tilt: 24, yaw: 1, fov: 31, ease: "lin" },
   { t: DV.land, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
   { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 35, tilt: 40, yaw: -5, fov: 32 },
@@ -114,8 +114,9 @@ for (let i = 0, gx = 1250; gx < 1820; gx += 62) for (let gz = 560; gz < 920; gz 
 for (let i = 0, gx = 1410; gx < 1630; gx += 25) for (let gz = 615; gz < 830; gz += 25, i++) {
   const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 725) * 1.2);
   if (hsh(i, 7) < lerp(0.86, 0.42, clamp(r / 110))) deck.push([x, z, 13 + hsh(i, 8) * 14, 0.97 + hsh(i, 9) * 0.06]); }
+for (const c of [[1518, 706, 30], [1512, 717, 28], [1526, 699, 26], [1521, 726, 28], [1507, 697, 24], [1531, 713, 26], [1515, 738, 26]]) deck.push([c[0], c[1], c[2], 1]);   // the camera's own column: no gap to fall through
 fxW.cumulus({ clouds: sparse, base: 52, lift: 1.1, puffs: 26, refR: 18, puffSize: 0.9, seed: 71, drift: 0.5, shadowDir: [0.3, 1, 0.18], shadowH: 58 });
-fxW.cumulus({ clouds: deck, base: 68, lift: 1.25, puffs: 46, refR: 22, puffSize: 0.8, seed: 72, drift: 0.5, alpha: (t) => sstep(DV.deckIn, DV.deckIn + 0.25, t) * (1 - sstep(SW, SW + 0.2, t)) });
+fxW.cumulus({ clouds: deck, base: 68, lift: 1.25, puffs: 46, refR: 22, puffSize: 0.8, seed: 72, drift: 0.5, nearFade: 0.3, alpha: (t) => sstep(DV.deckIn, DV.deckIn + 0.15, t) * (1 - sstep(SW, SW + 0.2, t)) });
 const covC = (t) => lerp(0.85, 0.36, sstep(DV.emerge - 0.2, DV.clear + 0.3, t));
 fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covC, shadow: 0.40, resolution: 0.5, steps: 40, detail: 0.5, maxDist: 600 * M, maxSeg: 70 * M, lightStep: 3 * M, sigma: 0.05 / M });
 
@@ -325,13 +326,13 @@ function drawPins(t, region) {
     p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
 }
 const WO = document.getElementById("whiteout"), WW = document.getElementById("wwarm"), WS = document.getElementById("wisps"), FOGW = new THREE.Color(0.80, 0.79, 0.74);
-const whiteAt = (t) => t < DV.wIn ? 0 : t < DV.wFull ? Math.pow(sstep(DV.wIn, DV.wFull, t), 1.4) : t < DV.emerge ? 1
+const whiteAt = (t) => t < DV.wIn ? 0.6 * sstep(DV.wIn - 0.35, DV.wIn, t) : t < DV.wFull ? lerp(0.6, 1, sstep(DV.wIn, DV.wFull, t)) : t < DV.emerge ? 1   // textured cloud seen through a milky veil, then flat
   : t < DV.clear ? lerp(1, 0.14, 1 - (1 - clamp((t - DV.emerge) / (DV.clear - DV.emerge))) ** 2) : lerp(0.14, 0, sstep(DV.clear, DV.haze, t));
 // dark wisps (cloud undersides) rushing outward past the lens during the warm phase, as in his dives
 const WSP = [[0.30, 0.42, 0.0, 1.0], [0.70, 0.55, 0.12, 0.8], [0.52, 0.30, 0.25, 0.9], [0.20, 0.70, 0.36, 0.7], [0.80, 0.25, 0.45, 0.8], [0.45, 0.66, 0.55, 1.0]].map((w) => {
   const e = document.createElement("div"); e.className = "wsp"; WS.appendChild(e); return { e, x: w[0], y: w[1], d: w[2], k: w[3] }; });
 const wispsAt = (t) => { for (const w of WSP) { const u = (t - (DV.warm + 0.1 + w.d)) / 0.75, on = u > 0 && u < 1;
-  w.e.style.opacity = on ? (Math.sin(Math.PI * u) * 0.55 * w.k).toFixed(3) : "0"; if (!on) continue;
+  w.e.style.opacity = on ? (Math.sin(Math.PI * u) * 0.36 * w.k).toFixed(3) : "0"; if (!on) continue;
   const sc = 0.5 + 2.2 * u, cx = 640 + (w.x * 1280 - 640) * (1 + 1.6 * u), cy = 360 + (w.y * 720 - 360) * (1 + 1.6 * u);
   w.e.style.transform = `translate(${(cx - 300).toFixed(1)}px,${(cy - 150).toFixed(1)}px) scale(${sc.toFixed(3)},${(sc * 0.8).toFixed(3)})`; } };
 window.__draw = (t) => {
