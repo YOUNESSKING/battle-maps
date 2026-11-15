@@ -9,7 +9,8 @@ P = {p["tag"].split("|")[0].replace("MAP:", "").strip(): p for p in t}
 END = P["end-2"]["start"]
 hide = [(e[0], e[0] + e[1]) for e in json.load(open("build/arch_events.json"))]
 hide += [(9.0, 17.3),        # hook-a: the 70 / 150 number cards sit top-right
-         (450.3, 464.7)]     # m2b: the 7 HOURS chase card sits top-right
+         (450.3, 464.7),      # m2b: the 7 HOURS chase card sits top-right
+         (570.9, 608.5)]      # m3a: Greene's banner stands at the top edge under the key
 hide.sort()
 show, cur = [], 1.0          # clean first second (1c)
 for a, b in hide:
