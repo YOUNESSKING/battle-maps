@@ -122,6 +122,36 @@ function makeAtlas(seed) {
   return tex;
 }
 
+// v3 cumulus atlas: 4x2 cells of cauliflower cloud lobes (RGB = packed normal, A = density) with soft but
+// defined edges and gentle, low-frequency relief (no rocky detail), so lit sprites read as GM's cumulus.
+function makeCloudAtlas(seed) {
+  const C = 256, W = C * 4, H = C * 2, data = new Uint8Array(W * H * 4), fbm = makeNoise2(seed + 5), h = new Float32Array(C * C);
+  for (let cell = 0; cell < 8; cell++) {
+    const cx0 = (cell % 4) * C, cy0 = Math.floor(cell / 4) * C, rnd = mulberry32(seed * 17 + cell * 131);
+    const lobes = [[0.5, 0.5, 0.21]];
+    const nb = 10 + Math.floor(rnd() * 6);
+    for (let b = 0; b < nb; b++) { const a = rnd() * 6.283, d = 0.07 + rnd() * 0.17; lobes.push([0.5 + Math.cos(a) * d, 0.5 + Math.sin(a) * d * 0.85, 0.07 + rnd() * 0.09]); }
+    const ox = rnd() * 50, oy = rnd() * 50;
+    for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) {
+      const u = (x + 0.5) / C, v = (y + 0.5) / C; let s = 0;
+      for (const [bx, by, br] of lobes) { const dd = ((u - bx) ** 2 + (v - by) ** 2) / (br * br); if (dd < 1) s = Math.max(s, Math.sqrt(1 - dd) * br + (br > 0.2 ? 0 : 0.02)); }
+      const nz = fbm(u * 5 + ox, v * 5 + oy, 4);
+      let hv = s * (0.8 + 0.4 * nz) - 0.012; hv *= smooth(0.5, 0.46, Math.hypot(u - 0.5, v - 0.5));
+      h[y * C + x] = Math.max(0, hv);
+    }
+    for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) {
+      const i = y * C + x, hx = h[y * C + Math.min(C - 1, x + 2)] - h[y * C + Math.max(0, x - 2)], hy = h[Math.min(C - 1, y + 2) * C + x] - h[Math.max(0, y - 2) * C + x];
+      let nx = -hx * C * 0.6, ny = -hy * C * 0.6, nz = 1; const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+      const o = ((cy0 + y) * W + cx0 + x) * 4;
+      data[o] = (nx * 0.5 + 0.5) * 255; data[o + 1] = (ny * 0.5 + 0.5) * 255; data[o + 2] = (nz * 0.5 + 0.5) * 255; data[o + 3] = smooth(0.0, 0.075, h[i] - 0.012 * fbm(x * 0.09 + 13, y * 0.09 + 7, 3)) * 255;   // soft, slightly ragged rims
+    }
+  }
+  const tex = new THREE.DataTexture(data, W, H, THREE.RGBAFormat);
+  tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.generateMipmaps = true;
+  tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping; tex.needsUpdate = true;
+  return tex;
+}
+
 // Tileable 3D noise for the clouds: R = perlin-worley style base, G = worley fbm detail.
 function makeCloudNoise3D(N, seed) {
   const rnd = mulberry32(seed);
@@ -234,7 +264,7 @@ void main() {
 const SPRITE_FS = /* glsl */`
 uniform sampler2D uAtlas;
 uniform vec3 uSunDir; uniform vec3 uSunCol; uniform vec3 uShadeCol; uniform vec3 uCamBack;
-uniform float uScatter;
+uniform float uScatter; uniform float uContrast;
 varying vec2 vUv; varying vec4 vB; varying vec3 vCol; varying vec3 vTx; varying vec3 vTy;
 varying vec3 vW; varying float vSoft;
 vec3 fxOut(vec3 c) {
@@ -255,7 +285,7 @@ void main() {
     float dens = haze > 0.5 ? smoothstep(0.02, 0.75, tx.a) : tx.a;
     vec3 n = normalize(vTx * (tx.r * 2.0 - 1.0) + vTy * (tx.g * 2.0 - 1.0) + uCamBack * (tx.b * 2.0 - 1.0));
     float ndl = dot(n, uSunDir) * (haze > 0.5 ? 0.45 : 1.0) + (haze > 0.5 ? 0.2 : 0.0);
-    float lit = clamp(ndl * 0.55 + 0.45, 0.0, 1.0);
+    float lit = clamp((ndl * 0.55 - 0.05) * uContrast + 0.5, 0.0, 1.0);
     lit = lit * lit * (3.0 - 2.0 * lit);
     vec3 col = mix(uShadeCol, uSunCol, lit) * vCol;
     vec3 V = normalize(cameraPosition - vW);
@@ -365,10 +395,12 @@ export function createFX(cfg = {}) {
   const spriteU = {
     uCamRight: { value: new THREE.Vector3() }, uCamUp: { value: new THREE.Vector3() }, uCamBack: { value: new THREE.Vector3() },
     uSunDir: { value: sunDir }, uSunCol: { value: new THREE.Color(1.0, 0.95, 0.86) }, uShadeCol: { value: new THREE.Color(0.50, 0.53, 0.60) },
-    uScatter: { value: 0.6 },
+    uScatter: { value: 0.6 }, uContrast: { value: 1 },
   };
   const batch = new SpriteBatch(cfg.maxSprites ?? 24000, atlas, spriteU);
   scene.add(batch.mesh);
+  const cloudU = Object.assign({}, spriteU, { uShadeCol: { value: new THREE.Color(0.40, 0.45, 0.55) }, uContrast: { value: 1.7 } });
+  const cbatch = new SpriteBatch(6000, makeCloudAtlas(seed), cloudU); cbatch.mesh.renderOrder = 11; scene.add(cbatch.mesh);   // v3 cumulus
 
   // shared uniforms for clouds / cloud shadows / light pools
   const MAXPOOL = 24;
@@ -681,8 +713,8 @@ export function createFX(cfg = {}) {
         const dome = Math.sqrt(Math.max(0, 1 - rr * rr));
         const y = base + (top ? (0.18 + 0.75 * dome * (0.6 + 0.4 * rnd())) : 0.06 * rnd()) * R * lift;
         const size = R * (top ? 0.42 + 0.3 * rnd() : 0.6 + 0.3 * rnd()) * (o.puffSize ?? 1);
-        const g = top ? 0.97 + 0.08 * rnd() : 0.78 + 0.08 * rnd();
-        P.push([x, y, z, size, rnd() * 6.283, Math.floor(rnd() * 4), g * sh, g * sh * (top ? 1.0 : 1.02), g * sh * (top ? 0.985 : 1.07)]);
+        const hf = (y - base) / (R * lift), g = top ? 0.74 + 0.36 * Math.min(1, hf * 1.15) + 0.04 * rnd() : 0.66 + 0.08 * rnd();   // lower lobes darker (self-shadowed creases)
+        P.push([x, y, z, size, rnd() * 6.283, Math.floor(rnd() * 8), g * sh, g * sh * (top ? 1.0 : 1.02), g * sh * (top ? 0.985 : 1.07)]);
       }
       return [cx, cz, R];
     });
@@ -696,7 +728,7 @@ export function createFX(cfg = {}) {
         for (const q of P) {
           const x = q[0] + dx, y = q[1], z = q[2] + dz, d = Math.hypot(x - cp.x, y - cp.y, z - cp.z);
           const a = A * smooth(q[3] * 0.18 * nf, q[3] * 0.75 * nf, d);
-          batch.push(x, y, z, q[3], q[4], a, q[5], 0, q[6], q[7], q[8], -1e9);
+          cbatch.push(x, y, z, q[3], q[4], a, q[5], 0, q[6], q[7], q[8], -1e9);
         }
         for (const c of CL) cuShadows.push([c[0] + dx, c[1] + dz, c[2], A]);
       },
@@ -817,7 +849,7 @@ export function createFX(cfg = {}) {
                 float nz = fxVN(cs / fxCu[i].z * 3.0 + float(i) * 7.1) * 0.55 + fxVN(cs / fxCu[i].z * 7.0) * 0.25;
                 sh = max(sh, fxCu[i].w * smoothstep(1.05, 0.55, length(dd) + (nz - 0.4) * 0.7));
               }
-              outgoingLight *= 1.0 - 0.42 * sh;
+              outgoingLight *= 1.0 - 0.5 * sh;
             }
             if (fxPlOn > 0.001) {
               vec3 pn = normalize(cross(fxPlX, fxPlY));
@@ -855,6 +887,7 @@ export function createFX(cfg = {}) {
     const day = 1 - night;
     spriteU.uSunCol.value.setRGB(1.0 * day + 0.07 * night, 0.95 * day + 0.09 * night, 0.86 * day + 0.14 * night);
     spriteU.uShadeCol.value.setRGB(0.50 * day + 0.025 * night, 0.53 * day + 0.03 * night, 0.60 * day + 0.05 * night);
+    cloudU.uShadeCol.value.setRGB(0.40 * day + 0.02 * night, 0.45 * day + 0.025 * night, 0.55 * day + 0.045 * night);
     spriteU.uScatter.value = 0.6 * day;
     if (cloud) {
       cloud.cu.uSunCol.value.setRGB(1.0 * day + 0.12 * night, 0.96 * day + 0.14 * night, 0.9 * day + 0.2 * night);
@@ -874,9 +907,9 @@ export function createFX(cfg = {}) {
     spriteU.uCamBack.value.set(e[8], e[9], e[10]).normalize();
     const P = shared.fxCloudP.value;
     shared.fxCloudWind.value.set(-wind.x * t * P.z * 1.6, 0, -wind.y * t * P.z * 1.6);
-    batch.clear(); pools.length = 0; cuShadows.length = 0;
+    batch.clear(); cbatch.clear(); pools.length = 0; cuShadows.length = 0;
     for (const em of emitters) em.update(t);
-    batch.flush(camera);
+    batch.flush(camera); cbatch.flush(camera);
     // light pools: keep the strongest near the camera, deterministic order
     camera.getWorldPosition(tmpV);
     pools.forEach((p, idx) => { p.k = p.i * p.r / (p.r + 0.08 * Math.hypot(p.x - tmpV.x, p.y - tmpV.y, p.z - tmpV.z)) - idx * 1e-9; });
