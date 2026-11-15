@@ -16,7 +16,7 @@
   @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
   html, body { margin: 0; padding: 0; background: #000; }
   #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
-  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; }
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: contrast(1.12) saturate(1.12) brightness(0.95); }
   #arrows { position: absolute; inset: 0; width: 1280px; height: 720px; overflow: visible; }
   #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
   #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
@@ -99,16 +99,16 @@ fxW.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covW, shadow: 
 fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covC, shadow: 0.40, resolution: 0.5, steps: 40, detail: 0.5, maxDist: 600 * M, maxSeg: 70 * M, lightStep: 3 * M, sigma: 0.05 / M });
 
 // cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
-fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 1.0, glowSize: 22, smokeRate: 2.2, smokeLife: 14, rise: 9, light: false, ramp: 2 });
+fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 6, flameK: 1.0, flameA: 0.7, flameRate: 6, emberRate: 1, glowSize: 2.2, smokeRate: 1.6, smokeLife: 14, rise: 2, light: false, ramp: 2, smokeTint: [0.16, 0.15, 0.14], smokeAlpha: 0.55, smokeS0: 0.9, smokeGrow: 1.6, smokeWind: 3 });
 // close: smoke lines, cannon, impacts, bridge fire
 const brDir = [Math.cos(-BR.angle), -Math.sin(-BR.angle)], deckY = (BR.deck * 6) / D.geo.mpu, L2 = BR.len / 2;
 const BA = [BR.x - brDir[0] * L2, deckY + 0.05, BR.z - brDir[1] * L2], BB = [BR.x + brDir[0] * L2, deckY + 0.05, BR.z + brDir[1] * L2];
 fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { to: BB, size: 1.0, flameK: 1.25, flameA: 0.5, glowSize: 4, flameRate: 16, emberRate: 14, smokeRate: 6.0, smokeLife: 12, rise: 5, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.14, 0.13, 0.12], smokeAlpha: 0.5, smokeS0: 2.2, smokeGrow: 6, smokeWind: 3.2 });
 fxC.fire(BA, T.p5 - 1, T.D + 2, { to: BB, size: 0.45, flameRate: 3, emberRate: 1, glowSize: 1.5, smokeRate: 1.2, smokeLife: 8, rise: 6, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28] });   // still smouldering next day
 const bwPts = BRW.filter((_, i) => i % 3 === 0).map((p) => G(p[0] + 0.12, p[1], 0.06));
-fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 2.2, volley: 1.6, roll: 0.9, size: 1.0, height: 3, alpha: 0.12 });
-fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 1.1, size: 1.0, alpha: 0.10, life: 10 });
-fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 1.6, size: 1.0, alpha: 0.10, life: 10 });
+fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 1.8, volley: 1.6, roll: 0.9, size: 1.0, height: 3, alpha: 0.10, tint: [0.6, 0.63, 0.68] });
+fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 0.8, size: 1.0, alpha: 0.08, life: 8, tint: [0.6, 0.63, 0.68] });
+fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 0.9, size: 1.0, alpha: 0.075, life: 8, tint: [0.6, 0.63, 0.68] });
 EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0, puffs: 8 });
   fxC.impact(G(1520.2 + ((i * 37) % 7) * 0.15, g[1] + ((i * 53) % 9 - 4) * 0.35, 0), t + 0.85, { size: 0.9 }); });
 EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0, puffs: 8 });
@@ -198,7 +198,7 @@ place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it")
 const O = GMOverlay.create(document.getElementById("ov"), { tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
 O.film.set({ grain: 0.14 });
 O.plaque.date(0.4, { month: "May 1863", day: "17", weekday: "Sunday", note: "east of Vicksburg" });
-O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x, BR.z], side: "cs" });
+O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x + 9, BR.z + 14], side: "cs", marker: false });
 O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", world: [1600, 716], offset: [150, -150], tIn: T.grant, tOut: T.story - 0.2 });
 O.title(T.story, T.dive - 1.2, { lines: ["The Bridge", "That Burned to", "Save Vicksburg"], sub: "Big Black River · 17 May 1863", y: 250 });
 O.plaque.clock(T.ch, { time: "8:30", note: "Big Black River bridge", header: "17 May 1863" });

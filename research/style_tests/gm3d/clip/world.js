@@ -262,9 +262,10 @@ export function initWorld(canvas, opts = {}) {
     const dir = new THREE.Vector3(-0.7, 0.48, -0.4).normalize();
     R.sun.target.position.set(cs.at[0], ty, cs.at[1] - sd * 0.25); R.sun.position.copy(R.sun.target.position).addScaledVector(dir, sd * 2.5);
     const sc = R.sun.shadow.camera, half = sd * 0.95; sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.near = sd * 0.5; sc.far = sd * 5; sc.updateProjectionMatrix();
-    R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n);
-    R.hemi.color.copy(DAY.sky).lerp(NIGHT.sky, n); R.hemi.groundColor.copy(DAY.gnd).lerp(NIGHT.gnd, n); R.hemi.intensity = lerp(DAY.hemiI, NIGHT.hemiI, n);
-    R.scene.fog.color.copy(DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cs.region === "close" ? 1.05 : 0.95); R.scene.fog.far = sd * (cs.region === "close" ? 3.0 : 3.4);
+    const wk = cs.region === "wide" ? 1 : 0;   // clip critic: stronger relief on the wide map (more sun, less sky fill)
+    R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + 0.35 * wk * (1 - n));
+    R.hemi.color.copy(DAY.sky).lerp(NIGHT.sky, n); R.hemi.groundColor.copy(DAY.gnd).lerp(NIGHT.gnd, n); R.hemi.intensity = lerp(DAY.hemiI, NIGHT.hemiI, n) * (1 - 0.3 * wk * (1 - n));
+    R.scene.fog.color.copy(DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cs.region === "close" ? 1.05 : 0.95); R.scene.fog.far = sd * (cs.region === "close" ? 3.0 : 4.4);
     R.wmat.color.copy(DAY.water).lerp(NIGHT.water, n); R.wmat.envMapIntensity = lerp(0.3, 0.1, n);
     renderer.setClearColor(R.scene.fog.color);
     // water motion: normal map drifts downstream

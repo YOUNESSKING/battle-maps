@@ -323,7 +323,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     P = P[first]; P = P[rr.random(len(P)) < 0.82]
     P += rr.uniform(-0.035, 0.035, P.shape).astype(np.float32) * s
     # lone field trees (GM dark dots)
-    L = rr.uniform(0, 1, (int(TW * TH / (s * s) * 0.9), 2)).astype(np.float32) * [TW, TH]
+    L = rr.uniform(0, 1, (int(TW * TH / (s * s) * 0.35), 2)).astype(np.float32) * [TW, TH]
     P = np.concatenate([P, L])
     img = cv2.GaussianBlur(img, (0, 0), 0.7)
     lum = img.mean(-1, keepdims=True); img = img * 0.85 + lum * 0.15
