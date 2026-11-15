@@ -22,6 +22,6 @@ window.CUES = (() => { const c = [], E = window.EV;
   for (const t of E.usShots) { c.push(["gun", t]); c.push(["boom", t + 0.85]); }
   for (const t of E.csShots) { c.push(["gun", t]); c.push(["boom", t + 0.8]); }
   for (const t of E.batteryShots) c.push(["gun", t]);
-  c.push(["fire", E.bridgeFireWide], ["fire", E.bridgeFire], ["fire", E.steamer], ["whoosh", 16.6]);
+  c.push(["fire", E.bridgeFireWide], ["fire", E.bridgeFire], ["fire", E.steamer], ["whoosh", 14.85]);
   for (let t = E.volleyCS[0]; t < E.volleyCS[1]; t += 1.6) c.push(["volley", t]);
   return c; })();

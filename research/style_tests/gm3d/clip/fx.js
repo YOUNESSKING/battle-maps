@@ -122,6 +122,38 @@ function makeAtlas(seed) {
   return tex;
 }
 
+// v3 cumulus atlas: 4x2 cells of cauliflower cloud lobes (RGB = packed normal, A = density) with soft but
+// defined edges and gentle, low-frequency relief (no rocky detail), so lit sprites read as GM's cumulus.
+function makeCloudAtlas(seed) {
+  const C = 256, W = C * 4, H = C * 2, data = new Uint8Array(W * H * 4), fbm = makeNoise2(seed + 5), h = new Float32Array(C * C);
+  for (let cell = 0; cell < 8; cell++) {
+    const cx0 = (cell % 4) * C, cy0 = Math.floor(cell / 4) * C, rnd = mulberry32(seed * 17 + cell * 131);
+    const lobes = [[0.5, 0.5, 0.21]];
+    const nb = 10 + Math.floor(rnd() * 6);
+    for (let b = 0; b < nb; b++) { const a = rnd() * 6.283, d = 0.07 + rnd() * 0.17; lobes.push([0.5 + Math.cos(a) * d, 0.5 + Math.sin(a) * d * 0.85, 0.07 + rnd() * 0.09]); }
+    const ox = rnd() * 50, oy = rnd() * 50;
+    for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) {
+      const u = (x + 0.5) / C, v = (y + 0.5) / C; let e = 0;
+      // smooth union of the lobes (log-sum-exp): rounded valleys between lobes instead of straight max() creases
+      for (const [bx, by, br] of lobes) { const dd = ((u - bx) ** 2 + (v - by) ** 2) / (br * br); if (dd < 1) e += Math.exp(70 * (Math.sqrt(1 - dd) * br + (br > 0.2 ? 0 : 0.03))); }
+      const s = e > 0 ? Math.max(0, Math.log(e) / 70) : 0;
+      const nz = fbm(u * 5 + ox, v * 5 + oy, 4);
+      let hv = s * (0.8 + 0.4 * nz) - 0.012; hv *= smooth(0.5, 0.46, Math.hypot(u - 0.5, v - 0.5));
+      h[y * C + x] = Math.max(0, hv);
+    }
+    for (let y = 0; y < C; y++) for (let x = 0; x < C; x++) {
+      const i = y * C + x, hx = h[y * C + Math.min(C - 1, x + 2)] - h[y * C + Math.max(0, x - 2)], hy = h[Math.min(C - 1, y + 2) * C + x] - h[Math.max(0, y - 2) * C + x];
+      let nx = -hx * C * 0.6, ny = -hy * C * 0.6, nz = 1; const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+      const o = ((cy0 + y) * W + cx0 + x) * 4;
+      data[o] = (nx * 0.5 + 0.5) * 255; data[o + 1] = (ny * 0.5 + 0.5) * 255; data[o + 2] = (nz * 0.5 + 0.5) * 255; data[o + 3] = smooth(0.0, 0.075, h[i] - 0.012 * fbm(x * 0.09 + 13, y * 0.09 + 7, 3)) * 255;   // soft, slightly ragged rims
+    }
+  }
+  const tex = new THREE.DataTexture(data, W, H, THREE.RGBAFormat);
+  tex.magFilter = THREE.LinearFilter; tex.minFilter = THREE.LinearMipmapLinearFilter; tex.generateMipmaps = true;
+  tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping; tex.needsUpdate = true;
+  return tex;
+}
+
 // Tileable 3D noise for the clouds: R = perlin-worley style base, G = worley fbm detail.
 function makeCloudNoise3D(N, seed) {
   const rnd = mulberry32(seed);
@@ -234,7 +266,7 @@ void main() {
 const SPRITE_FS = /* glsl */`
 uniform sampler2D uAtlas;
 uniform vec3 uSunDir; uniform vec3 uSunCol; uniform vec3 uShadeCol; uniform vec3 uCamBack;
-uniform float uScatter;
+uniform float uScatter; uniform float uContrast;
 varying vec2 vUv; varying vec4 vB; varying vec3 vCol; varying vec3 vTx; varying vec3 vTy;
 varying vec3 vW; varying float vSoft;
 vec3 fxOut(vec3 c) {
@@ -255,7 +287,7 @@ void main() {
     float dens = haze > 0.5 ? smoothstep(0.02, 0.75, tx.a) : tx.a;
     vec3 n = normalize(vTx * (tx.r * 2.0 - 1.0) + vTy * (tx.g * 2.0 - 1.0) + uCamBack * (tx.b * 2.0 - 1.0));
     float ndl = dot(n, uSunDir) * (haze > 0.5 ? 0.45 : 1.0) + (haze > 0.5 ? 0.2 : 0.0);
-    float lit = clamp(ndl * 0.55 + 0.45, 0.0, 1.0);
+    float lit = clamp((ndl * 0.55 - 0.05) * uContrast + 0.5, 0.0, 1.0);
     lit = lit * lit * (3.0 - 2.0 * lit);
     vec3 col = mix(uShadeCol, uSunCol, lit) * vCol;
     vec3 V = normalize(cameraPosition - vW);
@@ -365,10 +397,12 @@ export function createFX(cfg = {}) {
   const spriteU = {
     uCamRight: { value: new THREE.Vector3() }, uCamUp: { value: new THREE.Vector3() }, uCamBack: { value: new THREE.Vector3() },
     uSunDir: { value: sunDir }, uSunCol: { value: new THREE.Color(1.0, 0.95, 0.86) }, uShadeCol: { value: new THREE.Color(0.50, 0.53, 0.60) },
-    uScatter: { value: 0.6 },
+    uScatter: { value: 0.6 }, uContrast: { value: 1 },
   };
   const batch = new SpriteBatch(cfg.maxSprites ?? 24000, atlas, spriteU);
   scene.add(batch.mesh);
+  const cloudU = Object.assign({}, spriteU, { uShadeCol: { value: new THREE.Color(0.40, 0.45, 0.55) }, uContrast: { value: 1.7 } });
+  const cbatch = new SpriteBatch(6000, makeCloudAtlas(seed), cloudU); cbatch.mesh.renderOrder = 11; scene.add(cbatch.mesh);   // v3 cumulus
 
   // shared uniforms for clouds / cloud shadows / light pools
   const MAXPOOL = 24;
@@ -379,6 +413,10 @@ export function createFX(cfg = {}) {
     fxPoolPos: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
     fxPoolCol: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
     fxPoolN: { value: 0 },
+    // v3: sprite cumulus shadows (discs at cloud height, projected along fxCuL) + one floating plane's shadow (the 3D title)
+    fxCu: { value: Array.from({ length: 64 }, () => new THREE.Vector4()) }, fxCuN: { value: 0 }, fxCuL: { value: new THREE.Vector4(0.35, 1, 0.2, 0.55) },
+    fxPlTex: { value: null }, fxPlOn: { value: 0 }, fxPlO: { value: new THREE.Vector3() }, fxPlX: { value: new THREE.Vector3() }, fxPlY: { value: new THREE.Vector3() },
+    fxPlL: { value: new THREE.Vector3(0, 1, 0) },
   };
 
   const emitters = [];   // { update(t, batch, ctx) }
@@ -662,6 +700,48 @@ export function createFX(cfg = {}) {
     });
   }
 
+  // ================================================================ API: sprite cumulus (v3, the GM cloud dive)
+  // Dense cauliflower cumulus built from lit puff sprites: each cloud = a flat-bottomed base of wide grey-blue puffs
+  // + a dome of bright lobes. Clouds drift with the wind; puffs close to the lens fade (the camera can fly into the deck);
+  // every cloud drops a soft shadow disc on patched ground (fxCu*). o: {clouds: [[x, z, R, shade]], base, alpha(t), drift, lift, seed}
+  const cuShadows = [];
+  function cumulus(o = {}) {
+    const rnd = mulberry32(o.seed ?? nextSeed()), base = o.base ?? 50 * U, lift = o.lift ?? 1, P = [];
+    const CL = (o.clouds || []).map(([cx, cz, R, sh = 1]) => {
+      const n = Math.round((o.puffs ?? 30) * Math.min(2.2, Math.max(0.5, R / (o.refR ?? 30))));
+      for (let k = 0; k < n; k++) {
+        const top = k >= n * 0.38, a = rnd() * 6.283, rr = Math.sqrt(rnd()) * (top ? 0.62 : 0.92);
+        const x = cx + Math.cos(a) * rr * R, z = cz + Math.sin(a) * rr * R * 0.8;
+        const dome = Math.sqrt(Math.max(0, 1 - rr * rr));
+        const y = base + (top ? (0.18 + 0.75 * dome * (0.6 + 0.4 * rnd())) : 0.06 * rnd()) * R * lift;
+        const size = R * (top ? 0.42 + 0.3 * rnd() : 0.6 + 0.3 * rnd()) * (o.puffSize ?? 1);
+        const hf = (y - base) / (R * lift), g = top ? 0.74 + 0.36 * Math.min(1, hf * 1.15) + 0.04 * rnd() : 0.66 + 0.08 * rnd();   // lower lobes darker (self-shadowed creases)
+        P.push([x, y, z, size, rnd() * 6.283, Math.floor(rnd() * 8), g * sh, g * sh * (top ? 1.0 : 1.02), g * sh * (top ? 0.985 : 1.07)]);
+      }
+      return [cx, cz, R];
+    });
+    const sd = o.shadowDir || [0.35, 1, 0.2]; shared.fxCuL.value.set(sd[0], sd[1], sd[2], o.shadowH ?? base);
+    const drift = o.drift ?? 0.6, cp = new THREE.Vector3();
+    emitters.push({
+      update(t) {
+        const A = o.alpha ? o.alpha(t) : 1; if (A <= 0.002) return;
+        camera.getWorldPosition(cp);
+        const dx = wind.x * t * drift, dz = wind.y * t * drift, nf = o.nearFade ?? 1;
+        for (const q of P) {
+          const x = q[0] + dx, y = q[1], z = q[2] + dz, d = Math.hypot(x - cp.x, y - cp.y, z - cp.z);
+          const a = A * smooth(q[3] * 0.18 * nf, q[3] * 0.75 * nf, d);
+          cbatch.push(x, y, z, q[3], q[4], a, q[5], 0, q[6], q[7], q[8], -1e9);
+        }
+        for (const c of CL) cuShadows.push([c[0] + dx, c[1] + dz, c[2], A]);
+      },
+    });
+  }
+  // a floating plane (e.g. 3D title) casts its alpha texture onto patched ground along dirL (world, towards the light)
+  function planeShadow(o) {
+    shared.fxPlTex.value = o.tex; shared.fxPlL.value.set(...o.dir).normalize();
+    return (origin, xAxisOverW, yAxisOverH, on) => { shared.fxPlO.value.copy(origin); shared.fxPlX.value.copy(xAxisOverW); shared.fxPlY.value.copy(yAxisOverH); shared.fxPlOn.value = on; };
+  }
+
   // ================================================================ API: volumetric cloud layer
   let cloud = null;
   function clouds(o = {}) {
@@ -753,7 +833,7 @@ export function createFX(cfg = {}) {
         .replace('#include <common>', '#include <common>\nvarying vec3 vFxWorld;')
         .replace('#include <project_vertex>', '#include <project_vertex>\nvFxWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;');
       shader.fragmentShader = shader.fragmentShader
-        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;`)
+        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;\nuniform vec4 fxCu[64];\nuniform int fxCuN;\nuniform vec4 fxCuL;\nuniform sampler2D fxPlTex;\nuniform float fxPlOn;\nuniform vec3 fxPlO;\nuniform vec3 fxPlX;\nuniform vec3 fxPlY;\nuniform vec3 fxPlL;\nfloat fxHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\nfloat fxVN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fxHash(i), fxHash(i + vec2(1.0, 0.0)), f.x), mix(fxHash(i + vec2(0.0, 1.0)), fxHash(i + vec2(1.0, 1.0)), f.x), f.y); }`)
         .replace('#include <opaque_fragment>', `
           {
             if (fxCloudQ.w > 0.5 && fxCloudQ.z > 0.0) {
@@ -761,6 +841,29 @@ export function createFX(cfg = {}) {
               vec3 sp = vFxWorld + fxSunDir * (ym - vFxWorld.y) / max(fxSunDir.y, 0.08);
               float cd = fxCloudDensity(sp, false);
               outgoingLight *= 1.0 - fxCloudQ.z * smoothstep(0.0, 0.7, cd);
+            }
+            if (fxCuN > 0) {
+              vec2 cs = vFxWorld.xz + fxCuL.xz / fxCuL.y * (fxCuL.w - vFxWorld.y);
+              float sh = 0.0;
+              for (int i = 0; i < 64; i++) {
+                if (i >= fxCuN) break;
+                vec2 dd = (cs - fxCu[i].xy) / fxCu[i].z; dd.y *= 1.2;
+                float nz = fxVN(cs / fxCu[i].z * 3.0 + float(i) * 7.1) * 0.55 + fxVN(cs / fxCu[i].z * 7.0) * 0.25;
+                sh = max(sh, fxCu[i].w * smoothstep(1.05, 0.55, length(dd) + (nz - 0.4) * 0.7));
+              }
+              outgoingLight *= 1.0 - 0.5 * sh;
+            }
+            if (fxPlOn > 0.001) {
+              vec3 pn = normalize(cross(fxPlX, fxPlY));
+              float den = dot(fxPlL, pn);
+              if (abs(den) > 1e-3) {
+                float s_ = dot(fxPlO - vFxWorld, pn) / den;
+                if (s_ > 0.0) {
+                  vec3 q = vFxWorld + fxPlL * s_ - fxPlO;
+                  vec2 uvp = vec2(dot(q, fxPlX), dot(q, fxPlY)) + 0.5;
+                  if (uvp.x > 0.0 && uvp.x < 1.0 && uvp.y > 0.0 && uvp.y < 1.0) outgoingLight *= 1.0 - fxPlOn * 0.5 * texture2D(fxPlTex, uvp, 2.5).a;
+                }
+              }
             }
             vec3 fxPl = vec3(0.0);
             for (int i = 0; i < ${MAXPOOL}; i++) {
@@ -786,6 +889,7 @@ export function createFX(cfg = {}) {
     const day = 1 - night;
     spriteU.uSunCol.value.setRGB(1.0 * day + 0.07 * night, 0.95 * day + 0.09 * night, 0.86 * day + 0.14 * night);
     spriteU.uShadeCol.value.setRGB(0.50 * day + 0.025 * night, 0.53 * day + 0.03 * night, 0.60 * day + 0.05 * night);
+    cloudU.uShadeCol.value.setRGB(0.40 * day + 0.02 * night, 0.45 * day + 0.025 * night, 0.55 * day + 0.045 * night);
     spriteU.uScatter.value = 0.6 * day;
     if (cloud) {
       cloud.cu.uSunCol.value.setRGB(1.0 * day + 0.12 * night, 0.96 * day + 0.14 * night, 0.9 * day + 0.2 * night);
@@ -805,9 +909,9 @@ export function createFX(cfg = {}) {
     spriteU.uCamBack.value.set(e[8], e[9], e[10]).normalize();
     const P = shared.fxCloudP.value;
     shared.fxCloudWind.value.set(-wind.x * t * P.z * 1.6, 0, -wind.y * t * P.z * 1.6);
-    batch.clear(); pools.length = 0;
+    batch.clear(); cbatch.clear(); pools.length = 0; cuShadows.length = 0;
     for (const em of emitters) em.update(t);
-    batch.flush(camera);
+    batch.flush(camera); cbatch.flush(camera);
     // light pools: keep the strongest near the camera, deterministic order
     camera.getWorldPosition(tmpV);
     pools.forEach((p, idx) => { p.k = p.i * p.r / (p.r + 0.08 * Math.hypot(p.x - tmpV.x, p.y - tmpV.y, p.z - tmpV.z)) - idx * 1e-9; });
@@ -815,6 +919,10 @@ export function createFX(cfg = {}) {
     const n = Math.min(MAXPOOL, pools.length);
     for (let i = 0; i < n; i++) { const p = pools[i]; shared.fxPoolPos.value[i].set(p.x, p.y, p.z, p.r); shared.fxPoolCol.value[i].set(p.cr, p.cg, p.cb, p.i); }
     shared.fxPoolN.value = n;
+    cuShadows.sort((a, b) => Math.hypot(a[0] - tmpV.x, a[1] - tmpV.z) - Math.hypot(b[0] - tmpV.x, b[1] - tmpV.z));
+    const nc = Math.min(64, cuShadows.length);
+    for (let i = 0; i < nc; i++) shared.fxCu.value[i].set(cuShadows[i][0], cuShadows[i][1], cuShadows[i][2], cuShadows[i][3]);
+    shared.fxCuN.value = nc;
     // clouds: march at reduced resolution into a target, composite in the main pass
     if (cloud) {
       const op = typeof cloud.opacity === 'function' ? cloud.opacity(t) : cloud.opacity;
@@ -850,7 +958,7 @@ export function createFX(cfg = {}) {
   }
 
   return {
-    smokeLine, cannon, fire, campfire, impact, snow, clouds, patchGround, setNight, update,
+    smokeLine, cannon, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
     get spriteCount() { return batch.n; },
     sunDir, wind, shared, batch,
   };

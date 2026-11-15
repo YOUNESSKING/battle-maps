@@ -8,11 +8,11 @@ def frame(t, w=640):
     im = Image.open(io.BytesIO(b)).convert("RGB"); return im.resize((w, int(w * im.height / im.width)), Image.LANCZOS)
 def tag(im, s):
     d = ImageDraw.Draw(im); d.rectangle([0, 0, 9 * len(s) + 12, 22], fill=(0, 0, 0)); d.text((6, 5), s, fill=(255, 255, 255)); return im
-TS = [1.5, 9.5, 14.0, 16.9, 18.4, 21.5, 26.0, 31.5, 38.0, 50.5, 55.5, 62.0]
+TS = [1.5, 9.5, 12.8, 15.1, 15.9, 16.8, 17.5, 21.5, 31.5, 38.0, 50.5, 62.0]   # v3: the dive gets five frames
 sheet = Image.new("RGB", (640 * 4, 360 * 3))
 for i, t in enumerate(TS): sheet.paste(tag(frame(t), f"{t:.1f}s"), ((i % 4) * 640, (i // 4) * 360))
 sheet.save(f"{HERE}/contact_sheet.jpg", quality=86)
-PAIRS = [(4.0, 161), (16.9, 306), (21.5, 404), (31.5, 352), (38.0, 336), (50.5, 300)]   # ours t -> GM frame number
+PAIRS = [(6.0, 526), (15.1, 243), (17.5, 321), (31.5, 336), (38.0, 401), (50.5, 300)]   # ours t -> GM frame number
 cmp_ = Image.new("RGB", (640 * 2, 360 * len(PAIRS)))
 for i, (t, n) in enumerate(PAIRS):
     cmp_.paste(tag(frame(t), f"GM3D clip {t:.1f}s"), (0, i * 360))

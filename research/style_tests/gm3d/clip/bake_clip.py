@@ -184,12 +184,12 @@ def bake(name):
     bank = np.clip(1 - (dist_t - hw_t) / (0.7 if name == "wide" else 0.18), 0, 1)[..., None]
     img = img * (1 - bank * 0.85) + hexc("#7d7a68") * bank * 0.85
     # roads: thin red-brown dirt roads
-    road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((0.7 if name == "wide" else 0.15) * s))
+    road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((0.9 if name == "wide" else 0.24) * s))   # v3: wider, browner roads (GM's dirt roads read clearly)
     for rd in ROADS:
         pts = np.array([Pt(p) for p in rd], np.float32)
         cv2.polylines(road, [np.round(pts * 4).astype(np.int32)], False, 255, rwpx, cv2.LINE_AA, shift=2)
     rdm = road.astype(np.float32)[..., None] / 255
-    img = img * (1 - rdm * 0.92) + hexc("#8a6050") * rdm * 0.92
+    img = img * (1 - rdm * 0.92) + hexc("#7a5940") * rdm * 0.92
     tg = cv2.GaussianBlur(townmask, (0, 0), 0.004 * TW)[..., None] * 0.18; img = img * (1 - tg) + hexc("#8c7b66") * tg
     if bw_line is not None:   # trench spoil in front of the parapet
         sp = np.zeros((TH, TW), np.uint8); cv2.polylines(sp, [np.round(np.array([Pt((p[0] + 0.3, p[1])) for p in bw_line]) * 4).astype(np.int32)], False, 255, int(0.25 * s), cv2.LINE_AA, shift=2)
@@ -252,8 +252,8 @@ def bake(name):
         rr = np.random.default_rng(5)
         for fx, fy in [(1530.5, 701.5), (1534.0, 711.2), (1503.6, 711.8), (1505.2, 693.4), (1541.8, 704.4), (1526.6, 719.0), (1537.5, 696.0), (1546.0, 712.5), (1509.0, 700.2), (1527.5, 692.0), (1500.0, 716.5), (1536.0, 719.5), (1512.5, 690.0), (1548.5, 699.0)]:
             for j in range(int(rr.integers(3, 5))):
-                ang_ = j * math.pi / 2 + math.radians(11); px, py = fx + math.cos(ang_) * 0.28 + rr.uniform(-0.05, 0.05), fy + math.sin(ang_) * 0.22 + rr.uniform(-0.05, 0.05)
-                houses.append([round(px, 3), round(py, 3), round(float(sample(h, box, np.array([[px, py]], np.float32))[0]), 1), round(hsz[0] * rr.uniform(0.7, 1.2), 3), round(hsz[1] * rr.uniform(0.7, 1.1), 3), round(math.radians(11 + rr.uniform(-4, 4) + 90 * (j % 2)), 3), int(rr.integers(0, 4))])
+                ang_ = j * math.pi / 2 + math.radians(11); px, py = fx + math.cos(ang_) * 0.34 + rr.uniform(-0.03, 0.03), fy + math.sin(ang_) * 0.30 + rr.uniform(-0.03, 0.03)   # v3: courtyard (houses on the sides, not a red cross)
+                houses.append([round(px, 3), round(py, 3), round(float(sample(h, box, np.array([[px, py]], np.float32))[0]), 1), round(hsz[0] * rr.uniform(0.7, 1.2), 3), round(hsz[1] * rr.uniform(0.7, 1.1), 3), round(math.radians(11 + rr.uniform(-4, 4) + 90 * ((j + 1) % 2)), 3), int(rr.integers(0, 4))])
     extra = {}
     if name == "close":
         # railroad bridge: where the Vicksburg road (road 0) crosses the close river
