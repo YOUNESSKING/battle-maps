@@ -5,12 +5,16 @@ from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # phase-matched pairs (his t in gm_1814.mp4, our t): push, title/numbers, clouds in, filled, cool white, cut, warm + wisps, battlefield in
-PAIRS = [(632.0, 12.6), (634.0, 14.0), (635.9, 14.95), (636.1, 15.1), (636.3, 15.25), (636.6, 15.45),
-         (637.0, 15.95), (637.5, 16.4), (637.9, 16.75), (638.3, 17.1), (638.6, 17.4), (639.3, 18.1)]
+PAIRS = [(632.0, 12.6), (634.0, 14.0), (635.9, 15.25), (636.1, 15.45), (636.3, 15.6), (636.6, 15.85),
+         (637.0, 16.15), (637.5, 16.45), (637.9, 16.8), (638.3, 17.1), (638.6, 17.4), (639.3, 18.1)]   # v5 timeline (DV in index.html)
 LABEL = ["push-in", "push-in", "clouds in", "clouds", "clouds fill", "filled", "cool white", "cut", "warm + wisps", "warm", "battlefield in", "haze clears"]
 
 
 def grab(video, t, path):
+    if os.path.isdir(video):   # v5: a dir of `hyperframes snapshot --at` stills (frame-NN-at-<t>s.png): nearest still
+        import glob, re
+        fs = {float(re.search(r"at-([\d.]+)s", f).group(1)): f for f in glob.glob(f"{video}/*.png") if re.search(r"at-([\d.]+)s", f)}
+        return Image.open(fs[min(fs, key=lambda x: abs(x - t))]).convert("RGB").resize((640, 360))
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t:.3f}", "-i", video, "-frames:v", "1", "-vf", "scale=640:360", path], check=True)
     return Image.open(path).convert("RGB")
 

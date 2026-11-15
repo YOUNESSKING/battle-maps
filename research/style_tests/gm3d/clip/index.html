@@ -28,7 +28,8 @@
   #wcool, #wwarm, #wisps { position: absolute; inset: 0; }
   /* v4: flat, no oval vignette (owner: his white-out is flat); cool interior ~(208,211,204), warm cream ~(217,214,201) */
   #wcool { background: rgb(208,211,204); }
-  #wwarm { opacity: 0; background: radial-gradient(ellipse 160% 160% at 50% 48%, rgb(218,215,202) 0%, rgb(216,213,199) 55%, rgb(211,208,193) 100%); }
+  /* v5: his cream phase (637.9-638.2) has a smooth warm radial falloff: centre ~(218,216,203), edge midpoints ~(194,193,179), corners ~(186,184,170) */
+  #wwarm { opacity: 0; background: radial-gradient(ellipse farthest-corner at 50% 47%, rgb(220,218,205) 0%, rgb(215,213,200) 34%, rgb(195,194,180) 71%, rgb(184,182,167) 100%); }
   .wsp { position: absolute; left: 0; top: 0; width: 600px; height: 300px; border-radius: 50%; filter: blur(38px); background: rgb(120,112,98); will-change: transform, opacity; }
   .blk { position: absolute; left: 0; top: 0; width: 100px; height: 40px; transform-origin: 50% 50%; box-sizing: border-box; border: 7px solid #15130f; will-change: transform; }
   .blk.u { background: #2c57b7; } .blk.r { background: #be3a2a; }
@@ -54,9 +55,9 @@
 </head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="66" data-width="1280" data-height="720">
-  <canvas id="gl" width="1280" height="720"></canvas>
   <svg width="0" height="0" style="position:absolute"><filter id="gmgrade" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feComponentTransfer>
     <feFuncR type="table" tableValues="0 1"/><feFuncG type="table" tableValues="0 1"/><feFuncB type="table" tableValues="0 1"/></feComponentTransfer></filter></svg>
+  <canvas id="gl" width="1280" height="720"></canvas>
   <div id="pins"></div>
   <svg id="arrows" viewBox="0 0 1280 720"></svg>
   <div id="troops"></div>
@@ -80,17 +81,20 @@ const sstep = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * 
 // push-in on the wide 3D map (his gold numbers / our title float in world space) -> clouds appear and fill the frame in ~0.8 s ->
 // cool off-white cloud interior ~0.6 s (~#d0d4cc, flat) -> the cut hides in it -> warm cream ~0.7 s (centre ~#dad6c6, edge ~#c3c1b0)
 // with dark grey-brown wisps (cloud undersides) rushing past -> the battlefield snaps in within ~0.4 s, a thin haze clears over ~1 s.
-const DV = { push: 11.3, deckIn: 14.85, deck: 15.2, wIn: 15.6, wFull: 16.0, SW: 16.4, warm: 16.35, emerge: 17.2, clear: 17.6, haze: 18.7, land: 18.6 };
-const SW = DV.SW;   // region swap, inside the flat white-out
+// v5 (critic A 2, 8, 9, 13): ONE continuous cubic ease-in push from 12.6 s straight into the deck (no cruise plateau), the camera turning
+// near top-down (tilt 44 -> 17) as the flat deck closes in from the frame edges (~14.95-15.85), then on through the deck tops at the same
+// speed (cool textured phase, the camera inside the cloud ~16.2) -> swap at 16.4 inside the white -> cream with a warm radial falloff ->
+// the battlefield snaps in (0.35 s) while the camera keeps descending and eases out over ~2.5 s through torn grey-blue stratus.
+const DV = { push: 12.6, deckIn: 14.95, full: 15.85, deck: 15.95, wIn: 16.05, inside: 16.25, SW: 16.4, warm: 16.55, emerge: 17.25, clear: 17.6, haze: 18.6, land: 19.8 };
+const SW = DV.SW;   // region swap, inside the white-out
 const keys = [
   { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
-  { t: DV.push, region: "wide", at: [1532, 709], dist: 560, tilt: 44, yaw: 0, fov: 30 },
-  // v4: the v3 push path exactly until 14.4 s (ease-in k^3 split, so the 3D title still flies past the lens ~13.5-14.4), then a gentler last
-  // descent to dist 160 so the deck is seen from above before the camera sinks into its tops (~16.0 s)
-  { t: 14.4, region: "wide", at: [1524.97, 707.49], dist: 260.6, tilt: 34.96, yaw: 0.502, fov: 30, ease: "in" },
-  { t: DV.deck, region: "wide", at: [1518, 706], dist: 160, tilt: 26, yaw: 1, fov: 30, ease: "lin" },
-  { t: SW, region: "close", at: [1517.6, 705], dist: 75, tilt: 24, yaw: 1, fov: 31, ease: "lin" },
+  { t: DV.push, region: "wide", at: [1532, 709], dist: 545, tilt: 44, yaw: 0, fov: 30 },
+  { t: DV.deck, region: "wide", at: [1518, 707], dist: 115, tilt: 11, yaw: 1, fov: 30, ease: "in" },
+  { t: SW, region: "wide", at: [1518, 706], dist: 66, tilt: 8, yaw: 1, fov: 30, ease: "lin" },   // same log-speed as the end of the cubic
+  { t: SW, region: "close", at: [1518.2, 705.4], dist: 70, tilt: 18, yaw: 1, fov: 31, ease: "lin" },
   { t: DV.land, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
+
   { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 36, tilt: 50, yaw: -5, fov: 30 },
   { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 30, tilt: 52, yaw: -10, fov: 30 },
   { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 25, tilt: 54, yaw: -14, fov: 30 },
@@ -114,41 +118,68 @@ const mkFX = (r, seed, hf) => createFX({ scene: world.regions[r].scene, camera: 
   wind: [20, -7], sunDir: SUN, heightAt: hf, duration: T.D, seed });
 const fxW = mkFX("wide", 1863, hW), fxC = mkFX("close", 1517, hC);
 fxW.patchGround(world.regions.wide.terrain.material); fxC.patchGround(world.regions.close.terrain.material);
-// clouds (v3): sprite cumulus on the wide map = scattered fair-weather clouds + the dense dive deck around the bridge
-// (fades in at DV.deckIn, gone after the swap); each cloud shades the ground under it. Close map keeps the volumetric layer:
-// the camera falls out of its base during the emergence, then only its shadows drift over the battlefield.
+// clouds (v5, critic A 1-6, 9, 11): true volumetric cumulus (fx.vclouds) with GM's look: smooth low-frequency lobes (no fine octave,
+// mid-octave rim tearing, alpha-weighted blur of the cloud target, IGN jitter), warm cream tops, grey cores, grey-blue undersides, dark
+// soft ground shadows. Wide: scattered fair-weather clouds over the whole map (log-normal sizes, big soft ones cut by the frame
+// corners) + a FLAT dive deck (group 1) that closes in from the frame edges as the camera falls onto it (coverage front + density ramp,
+// no billow-up); close: flat torn grey-blue stratus sheets just under the landing camera that stream past and tear open (emergence).
 const M = 1 / U;   // metres per unit
 const hsh = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
-const sparse = [], deck = [];
-for (let i = 0, gx = 1250; gx < 1820; gx += 62) for (let gz = 560; gz < 920; gz += 62, i++) if (hsh(i, 1) < 0.26) sparse.push([gx + hsh(i, 2) * 54, gz + hsh(i, 3) * 54, 14 + hsh(i, 4) * 16]);
-for (let i = 0, gx = 1410; gx < 1630; gx += 25) for (let gz = 615; gz < 830; gz += 25, i++) {
-  const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 725) * 1.2);
-  if (hsh(i, 7) < lerp(0.86, 0.42, clamp(r / 110))) deck.push([x, z, 13 + hsh(i, 8) * 14, 0.97 + hsh(i, 9) * 0.06]); }
-for (const c of [[1518, 706, 30], [1512, 717, 28], [1526, 699, 26], [1521, 726, 28], [1507, 697, 24], [1531, 713, 26], [1515, 738, 26]]) deck.push([c[0], c[1], c[2], 1]);   // the camera's own column: no gap to fall through
-// v4: true volumetric cumulus (fx.vclouds: raymarched over an offline 3D Perlin-Worley / Worley noise volume, light-marched
-// self-shadowing, Beer-powder + Henyey-Greenstein, ground shadows from the same density). Wide: scattered clouds (group 0) +
-// the dive deck (group 1) that billows up 14.6-15.2 and swallows the camera; close: a low deck the camera falls through that
-// tears into patchy remnants (group 1) + high clouds that only cast shadows (group 0).
 const NOISE = await loadCloudNoise("cloudtex/noise128.bin");
-// wide fair-weather cumulus: big flat clouds (his wide map: ~1/5 frame across), kept off the bridge and Vicksburg so the story stays readable
+const BRC = [1518, 725];   // the bridge label stays clear (wide)
+// wide fair-weather cumulus: rejection-sampled scatter, clustered by a low-frequency field, log-normal radii ~10-60
 const wsp = [];
-for (let i = 0, gx = 1230; gx < 1880; gx += 95) for (let gz = 540; gz < 960; gz += 95, i++) {
-  const x = gx + hsh(i, 41) * 80, z = gz + hsh(i, 42) * 80;
-  if (hsh(i, 43) < 0.42 && Math.hypot(x - 1518, (z - 725) * 1.2) > 125 && Math.hypot(x - 1388, z - 681) > 45) wsp.push([x, z, 28 + hsh(i, 44) * 26]); }
-const wideCl = wsp.map(([x, z, r], i) => [x, z, r, r * 0.24, 50 + hsh(i, 11) * 5, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 1.0, 60 + hsh(z, 12) * 3, 1]));
-const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1200, 520, 1920, 1010], texel: 1, slab: [44, 104], tile: 70, groupScale: 3.5, amp: 9, soft: 3.5, sigma: 0.8,
-  stepIn: 0.25, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.08, fine: 0.35, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.10, -0.035], evolve: 0.0025,
-  sunK: 0.95, ambK: 0.36, lightK: 1.0, floor: 0.05, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))],
-  ms: (t) => lerp(0.22, 0.85, sstep(DV.deck, DV.wIn + 0.2, t)), expo: (t) => lerp(1, 1.1, sstep(DV.deck + 0.1, DV.wIn + 0.2, t)),
-  colors: (t) => { const k = sstep(DV.deck, DV.wIn + 0.2, t);   // inside the cloud: cooler, blue-grey mottles (his 637.0 s)
-    return { sun: [lerp(0.93, 0.94, k), lerp(0.96, 0.97, k), lerp(0.97, 0.94, k)], ambTop: [lerp(0.66, 0.68, k), lerp(0.72, 0.73, k), lerp(0.80, 0.75, k)], ambBot: [lerp(0.44, 0.45, k), lerp(0.50, 0.51, k), lerp(0.58, 0.55, k)] }; }, sigmaK: (t) => lerp(1, 0.85, sstep(DV.deck + 0.3, DV.wFull, t)) });
+for (let i = 0; i < 900 && wsp.length < 26; i++) {
+  const x = 1130 + hsh(i, 41) * 880, z = 330 + hsh(i, 42) * 650;
+  const g1 = hsh(i, 45), g2 = hsh(i, 46), gn = Math.sqrt(-2 * Math.log(Math.max(1e-4, g1))) * Math.cos(6.2832 * g2);
+  const r = Math.min(85, Math.max(12, 34 * Math.exp(0.5 * gn)));
+  const cl = 0.5 + 0.28 * Math.sin(x * 0.011 + 1.3) * Math.cos(z * 0.013 - 0.7) + 0.22 * Math.sin((x + z) * 0.006 + 2.1);   // clusters + clear areas
+  if (hsh(i, 43) > cl) continue;
+  if (Math.hypot(x - 1518, (z - 712) * 1.15) < 118 + 0.5 * r ||   // the bridge label and the dive deck's footprint stay to the deck (no group seams)
+     Math.hypot(x - 1388, z - 681) < 30 + r * 0.5) continue;
+  if (wsp.some(([a, b, q]) => Math.hypot(a - x, b - z) < 0.85 * (q + r))) continue;
+  wsp.push([x, z, r]); }
+// big soft clouds cut by the frame corners of the opening shot (near the lens, lower density)
+const edge = [[1300, 905, 80], [1800, 925, 90], [1170, 470, 75], [1990, 430, 80]];
+// flat wisps around Vicksburg (the night flashback's frame; small, thin, off the town name)
+const wisp = [[1318, 625, 34], [1290, 735, 40], [1440, 600, 30], [1335, 790, 32], [1470, 790, 26]];
+// the dive deck: flat (H/R ~0.3) sheet cumulus around the target, dense in the camera's column (no gap to fall through), ragged towards the rim
+const deck = [];
+for (let i = 0, gx = 1400; gx < 1640; gx += 22) for (let gz = 600; gz < 820; gz += 22, i++) {
+  const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 712) * 1.15);
+  if (hsh(i, 7) < lerp(0.95, 0.5, clamp((r - 30) / 90))) deck.push([x, z, 13 + hsh(i, 8) * 12]); }
+for (const c of [[1518, 706, 30], [1512, 717, 26], [1526, 699, 26], [1521, 726, 26], [1507, 697, 24], [1531, 713, 24]]) deck.push(c);   // the camera's own column: no gap to fall through
+const wideCl = wsp.map(([x, z, r], i) => [x, z, r, 3 + r * (0.24 + 0.08 * hsh(i, 13)), 50 + hsh(i, 11) * 6, 0])
+  .concat(edge.map(([x, z, r], i) => [x, z, r, r * 0.22, 56 + i * 3, 0]))
+  .concat(wisp.map(([x, z, r], i) => [x, z, r, 4 + r * 0.12, 52 + i * 2, 0]))
+  .concat(deck.map(([x, z, r], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - 1518, z - 710) / 60)), 58 + hsh(i, 12) * 3, 1]));   // thicker over the target
+// GM cloud colours: warm cream sunlit tops, grey cores, grey-blue undersides (critic A 4); night: flat grey-blue wisps (critic A 11)
+const CW_DAY = { sun: [1.0, 0.95, 0.85], ambTop: [0.55, 0.60, 0.70], ambBot: [0.30, 0.34, 0.42], nSun: [0.12, 0.15, 0.20], nAmbTop: [0.27, 0.32, 0.40], nAmbBot: [0.13, 0.16, 0.21] };
+const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1080, 300, 2060, 1010], texel: 1, slab: [44, 104], tile: 125, groupScale: 3.0, amp: 5, soft: 1.7, flatPow: 0.3, sigma: 0.75,
+  stepIn: 0.25, stepK: 0.0035, lightStep: 1.4, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.06, fine: 0, wisp: 0.45, inner: 0.8,
+  weights: [1.0, 0.5, 1, 0.5], group0: [0.55, 0.3, 1.4, 0.5], blur: 1.1, shadow: 0.8, shadowDir: [0.3, 1, 0.65], drift: [0.10, -0.035], evolve: 0.0025, floor: 0.05,
+  sunK: 1.05, ambK: 0.25, lightK: 2.4,
+  // deck: no billow-up; group-1 erosion is a coverage FRONT that sweeps from the frame edges in to the camera's column, while the deck's
+  // density ramps up from translucent grey veils (0.25 s); after the swap the deck is gone from the wide map (night flashback); night: half the wide clouds, flatter
+  erode: (t) => { const n = sstep(T.p4 - 1, T.p4 - 0.6, t); return [0.4 * n, t > DV.SW + 0.5 ? 9 : lerp(1.6, 0, sstep(DV.deckIn - 0.1, DV.deckIn + 0.6, t))]; },
+  deck: (t) => ({ x: 1518, z: 706, r: 110, front: 3.5 * (1 - sstep(DV.deckIn + 0.1, DV.full, t)), k: lerp(0.25, 1, sstep(DV.deckIn, DV.deckIn + 0.35, t)) }),
+  ms: (t) => lerp(0.22, 0.42, sstep(DV.full - 0.2, DV.inside, t)), expo: (t) => lerp(1, 0.93, sstep(DV.full - 0.2, DV.inside, t)),
+  colors: (t) => { const k = sstep(DV.full - 0.2, DV.inside, t);   // inside the cloud: cooler, bright grey with blue-grey mottles (his 637.0 s)
+    return { sun: [lerp(1.0, 0.95, k), lerp(0.95, 0.97, k), lerp(0.85, 0.94, k)], ambTop: [lerp(0.55, 0.66, k), lerp(0.60, 0.71, k), lerp(0.70, 0.76, k)], ambBot: [lerp(0.30, 0.44, k), lerp(0.34, 0.50, k), lerp(0.42, 0.56, k)],
+      nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.25, 0.4, k), lightK: lerp(2.4, 1.0, k), sunK: lerp(1.05, 1.2, k) }; },
+  sigmaK: (t) => lerp(1, 0.5, sstep(DV.full, DV.inside, t)) });
+// close: flat torn stratus sheets (H ~2) just under the landing camera (tops ~22-26 vs camera ~33 at the landing), thin over the bridge
 const closeCl = [];
-for (let i = 0, gx = 1478; gx < 1562; gx += 8) for (let gz = 670; gz < 742; gz += 8, i++) { const x = gx + (hsh(i, 21) - 0.5) * 7, z = gz + (hsh(i, 22) - 0.5) * 7, rc = Math.min(Math.hypot(x - 1518, (z - 705) * 1.4), Math.hypot(x - 1511, (z - 686) * 0.75) * 1.1);   // + the river name and the far side, where low clouds sit near eye level   // thin over the bridge / river name: the centre clears first, remnants stay at the frame edges
-  if (rc > 15 && !(z < 694 && x > 1486 && x < 1540)) closeCl.push([x, z, 5 + hsh(i, 23) * 5, Math.min(9, (4 + hsh(i, 24) * 4) * lerp(0.3, 1.5, clamp((rc - 15) / 18))), 13 + hsh(i, 25) * 4, 1]); }   // low (tops <= ~26, under the landing camera)
-const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [10, 42], tile: 10, amp: 2.0, soft: 1.1, sigma: 1.0, wisp: 0.9, inner: 0.7,
-  stepIn: 0.2, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 240, resolution: 0.7, warp: 0.1, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.06, -0.02], evolve: 0.004, sunK: 0.75, ambK: 0.38,
-  erode: (t) => [0, lerp(0, 1.3, sstep(DV.SW, DV.emerge + 0.9, t)) + lerp(0, 2.6, sstep(DV.emerge + 0.9, 21.5, t))],
-  opacity: (t) => 1 - sstep(21.0, 21.6, t) });
+for (let i = 0, gx = 1484; gx < 1556; gx += 7) for (let gz = 676; gz < 736; gz += 7, i++) {
+  const x = gx + (hsh(i, 21) - 0.5) * 6, z = gz + (hsh(i, 22) - 0.5) * 6, rc = Math.hypot(x - 1519, (z - 706) * 1.3);
+  if (rc > 6 && hsh(i, 26) < lerp(0.45, 0.9, clamp((rc - 6) / 16))) closeCl.push([x, z, 5 + hsh(i, 23) * 5, 2.4 + hsh(i, 24) * 1.6, 19 + hsh(i, 25) * 4, 1]); }
+const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1440, 640, 1600, 780], texel: 0.25, skip: 8, slab: [16, 30], tile: 16, amp: 1.6, soft: 1.0, sigma: 0.9, wisp: 0.7, inner: 0.6, flatPow: 0.35,
+  stepIn: 0.15, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 220, resolution: 0.7, warp: 0.12, fine: 0, weights: [0.7, 0.25, 1, 0.6], blur: 1.8,
+  shadow: 0.35, shadowDir: [0.3, 1, 0.65], drift: [0.35, -0.12], evolve: 0.004, sunK: 0.55, ambK: 0.62, lightK: 0.8,
+  colors: { sun: [0.95, 0.94, 0.9], ambTop: [0.68, 0.72, 0.77], ambBot: [0.50, 0.55, 0.62] },
+  erode: (t) => [0, lerp(0.15, 0.55, sstep(DV.emerge, DV.emerge + 1.0, t)) + lerp(0, 2.4, sstep(DV.emerge + 0.8, DV.emerge + 3.4, t))],
+  opacity: (t) => 1 - sstep(DV.emerge + 3.4, DV.emerge + 4.0, t) });
+
 // the battle's drifting cloud shadows (as in v3): the old noise layer, shadows only (its own pass stays off)
 fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 0.40, opacity: 0, detail: 0.5 });
 
@@ -192,30 +223,53 @@ EV.batteryShots.forEach((t, i) => { const r0 = riverAt(VB[1] - 6 + i * 2.6), g =
     flameColor: [1.05, 0.22, 0.04, 0.2, 0.35, 0.1], poolRadius: 4, smoke: false, visible: () => 1 })); }
 fxW.setNight(0);
 
-// ---------------- the 3D title: gold letters floating in world space over the map (GM's '70,000'), passing over the lens ----------------
-await document.fonts.load('600 120px "CG"');
-const TC = document.createElement("canvas"); TC.width = 2048; TC.height = 1024; { const g = TC.getContext("2d");
-  const lines = ["THE BRIDGE", "THAT BURNED TO", "SAVE VICKSBURG"], fs = [210, 150, 210], ys = [250, 520, 800];
-  g.textAlign = "center"; g.textBaseline = "middle"; g.lineJoin = "round";
-  lines.forEach((ln, i) => { g.font = `600 ${fs[i]}px "CG", Georgia, serif`; if ("letterSpacing" in g) g.letterSpacing = "8px";
-    const gr = g.createLinearGradient(0, ys[i] - fs[i] * 0.42, 0, ys[i] + fs[i] * 0.42); gr.addColorStop(0, "#fff3c8"); gr.addColorStop(0.45, "#e2bd62"); gr.addColorStop(0.55, "#b8862e"); gr.addColorStop(1, "#f0d488");
-    g.strokeStyle = "#2a1c08"; g.lineWidth = 16; g.strokeText(ln, 1024, ys[i]);
-    g.strokeStyle = "#8a6222"; g.lineWidth = 7; g.strokeText(ln, 1024, ys[i]);
-    g.fillStyle = gr; g.fillText(ln, 1024, ys[i]); }); }
-const ttex = new THREE.CanvasTexture(TC); ttex.colorSpace = THREE.SRGBColorSpace; ttex.anisotropy = 4;
+// ---------------- the 3D title (v5, critic A 7): GM's short hard words ("70,000") -> "ONE DAY", gold in world space over the map ----------------
+// smooth bevelled gold face (painted bevel: light upper-left rim, dark lower-right rim, no dark outline), a short smooth extrusion of 40 solid
+// silhouette layers shaded gold x0.75 -> x0.45 (no stacked-contour rings), its shadow on the map, motion-blur ghosts while it flies past the lens.
+const TF = new FontFace("CGT", "url(assets/fonts/cormorant-garamond-latin-700-normal.woff2)", { weight: "700" }); await TF.load(); document.fonts.add(TF);
+const TTXT = "ONE DAY", TCW = 2048, TCH = 640;
+const mkTitleCanvas = (face) => { const c = document.createElement("canvas"); c.width = TCW; c.height = TCH; const g = c.getContext("2d");
+  g.textAlign = "center"; g.textBaseline = "middle"; g.font = `700 400px "CGT", Georgia, serif`; if ("letterSpacing" in g) g.letterSpacing = "18px";
+  const X = TCW / 2, Y = TCH / 2 + 16;
+  if (!face) { g.fillStyle = "#fff"; g.fillText(TTXT, X, Y); g.lineJoin = "round"; g.lineWidth = 6; g.strokeStyle = "#fff"; g.strokeText(TTXT, X, Y); return c; }
+  const gr = g.createLinearGradient(0, Y - 170, 0, Y + 170); gr.addColorStop(0, "#fff1c4"); gr.addColorStop(0.38, "#e8c46c"); gr.addColorStop(0.62, "#c4923a"); gr.addColorStop(1, "#f2d48a");
+  g.lineJoin = "round"; g.fillStyle = gr; g.fillText(TTXT, X, Y); g.lineWidth = 6; g.strokeStyle = gr; g.strokeText(TTXT, X, Y);
+  g.globalCompositeOperation = "source-atop"; g.filter = "blur(5px)";   // painted bevel, inside the letters only
+  g.lineWidth = 22; g.strokeStyle = "rgba(255,246,214,0.85)"; g.save(); g.translate(-5, -6); g.strokeText(TTXT, X, Y); g.restore();
+  g.strokeStyle = "rgba(112,74,20,0.85)"; g.save(); g.translate(6, 7); g.strokeText(TTXT, X, Y); g.restore();
+  g.filter = "blur(2px)"; g.lineWidth = 3; g.strokeStyle = "rgba(120,84,28,0.9)"; g.strokeText(TTXT, X, Y);   // fine darker-gold edge, not a brown outline
+  g.filter = "none"; const sp = g.createLinearGradient(X - 700, 0, X + 700, 0); sp.addColorStop(0.35, "rgba(255,255,240,0)"); sp.addColorStop(0.5, "rgba(255,252,232,0.32)"); sp.addColorStop(0.65, "rgba(255,255,240,0)");
+  g.fillStyle = sp; g.fillRect(0, 0, TCW, TCH); g.globalCompositeOperation = "source-over"; return c; };
+const ttex = new THREE.CanvasTexture(mkTitleCanvas(true)); ttex.colorSpace = THREE.SRGBColorSpace; ttex.anisotropy = 4;
+const stex = new THREE.CanvasTexture(mkTitleCanvas(false)); stex.anisotropy = 4;
 const TTL = new THREE.Group(); world.regions.wide.scene.add(TTL);
 const tA = 12.2; world.update(tA); world.camera.updateMatrixWorld();
 const cq = world.camera.quaternion.clone(), cpos = world.camera.position.clone(), cfw = new THREE.Vector3(0, 0, -1).applyQuaternion(cq), cup = new THREE.Vector3(0, 1, 0).applyQuaternion(cq);
-const tD = 0.40 * world.cameraAt(tA).dist, tW = 0.58 * tD, tH = tW / 2;
-TTL.position.copy(cpos).addScaledVector(cfw, tD).addScaledVector(cup, 0.30 * 0.268 * tD); TTL.quaternion.copy(cq);
-const tMats = [];
-for (let k = 9; k >= 0; k--) { const front = k === 0;
-  const m = new THREE.MeshBasicMaterial({ map: ttex, transparent: true, alphaTest: 0.35, depthWrite: true, fog: false, color: front ? 0xffffff : new THREE.Color().setRGB(0.32 - k * 0.018, 0.22 - k * 0.013, 0.09) });
-  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.position.set(-k * tW * 0.0018, -k * tW * 0.0016, -k * tW * 0.0042); pl.renderOrder = 20 - k; TTL.add(pl); tMats.push(m); }
+const tD = 0.28 * world.cameraAt(tA).dist, tW = 0.62 * tD, tH = tW * TCH / TCW;
+TTL.position.copy(cpos).addScaledVector(cfw, tD).addScaledVector(cup, 0.06 * tD); TTL.quaternion.copy(cq);
+const tMats = [], NL = 40, depth = tW * 0.035;
+for (let k = NL; k >= 0; k--) { const front = k === 0, f = k / NL, sh = 0.75 - 0.3 * f;
+  const m = new THREE.MeshBasicMaterial({ map: front ? ttex : stex, transparent: true, alphaTest: 0.4, depthWrite: true, fog: false,
+    color: front ? 0xffffff : new THREE.Color().setRGB(0.80 * sh, 0.60 * sh, 0.26 * sh) });
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.position.set(-f * tW * 0.006, -f * tW * 0.008, -f * depth); pl.renderOrder = 20 + NL - k; TTL.add(pl); tMats.push(m); }
+// motion blur: ghosts of the face seen from the camera's poses a fraction of a frame earlier (the title is static, the camera rushes past it)
+const GH = 6, ghostMats = [], ghosts = [];
+for (let j = 0; j < GH; j++) { const m = new THREE.MeshBasicMaterial({ map: ttex, transparent: true, depthWrite: false, depthTest: false, fog: false, opacity: 0 });
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.renderOrder = 19; pl.matrixAutoUpdate = false; world.regions.wide.scene.add(pl); ghosts.push(pl); ghostMats.push(m); }
+const camAtT = new THREE.PerspectiveCamera(), tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4();
+const camPose = (t, out) => { const cs = world.cameraAt(t), ty = world.heightAt(cs.at[0], cs.at[1], cs.region), tl_ = cs.tilt * Math.PI / 180, yw = cs.yaw * Math.PI / 180;
+  out.position.set(cs.at[0] + Math.sin(yw) * Math.sin(tl_) * cs.dist, ty + Math.cos(tl_) * cs.dist, cs.at[1] + Math.cos(yw) * Math.sin(tl_) * cs.dist);
+  out.up.set(0, 1, 0); out.lookAt(cs.at[0], ty, cs.at[1]); out.updateMatrixWorld(true); return out.matrixWorld; };
 const tShadow = fxW.planeShadow({ tex: ttex, dir: [-0.22, 1, -0.12] });
 const tAx = new THREE.Vector3(1, 0, 0).applyQuaternion(cq).divideScalar(tW), tAy = new THREE.Vector3(0, 1, 0).applyQuaternion(cq).divideScalar(-tH);
-const titleAt = (t) => { const a = sstep(T.story, T.story + 0.7, t) * (1 - sstep(DV.deck - 0.4, DV.deck, t)); TTL.visible = a > 0.002 && world.region === "wide";
-  for (const m of tMats) m.opacity = a; TTL.scale.setScalar(0.94 + 0.06 * sstep(T.story, T.story + 1.2, t)); tShadow(TTL.position, tAx, tAy, TTL.visible ? a : 0); };
+const titleAt = (t) => { const a = sstep(T.story, T.story + 0.7, t) * (1 - sstep(DV.deckIn - 0.3, DV.deckIn + 0.05, t)); TTL.visible = a > 0.002 && world.region === "wide";
+  for (const m of tMats) m.opacity = a; TTL.scale.setScalar(0.94 + 0.06 * sstep(T.story, T.story + 1.2, t)); tShadow(TTL.position, tAx, tAy, TTL.visible ? a : 0);
+  TTL.updateMatrixWorld(true); const now = camPose(t, camAtT).clone(), blur = TTL.visible ? sstep(DV.push + 0.6, DV.push + 1.2, t) : 0;
+  for (let j = 0; j < GH; j++) { ghosts[j].visible = blur > 0.01; if (!ghosts[j].visible) continue;
+    const ts = t - (j + 1) * (0.5 / 30) / GH;   // 180-degree shutter
+    tmpM.copy(now).multiply(tmpM2.copy(camPose(ts, camAtT)).invert()).multiply(TTL.matrixWorld);   // where the title sat in the frame at ts
+    ghosts[j].matrix.copy(tmpM); ghosts[j].matrixWorldNeedsUpdate = true; ghostMats[j].opacity = a * blur * 0.32 * (1 - j / GH); } };
+
 
 // ---------------- 3D extras: boats on the Mississippi (flashback), three new bridges (next day) ----------------
 // v5 (critic B 9): river boats with a hull (pointed bow, low superstructure, two stacks), a warm deck lamp and a moonlit V wake
@@ -250,6 +304,10 @@ const SYM = {
 };
 const TR = document.getElementById("troops"), UNITS = [];
 // unit: side u|r, type inf|art, keys [[t, x, y]], face (radians, map plane, direction the line faces), n blocks, bw (block width, units)
+// v5 (critic B 5): the boxes and arrows live IN the close scene (troops3d.js createBoxes3D / createArrows3D: fogged, under the smoke and
+// clouds, soft contact shadow); ?troops=dom keeps the old DOM overlay boxes for comparison
+const TQ = new URLSearchParams(location.search).get("troops");
+const DOMBOX = TQ === "dom";
 const unit = (side, type, keys, o = {}) => { const n = o.n || 4, els = [];
   if (DOMBOX) for (let i = 0; i < n; i++) { const e = document.createElement("div"); e.className = `blk ${side}`; e.innerHTML = SYM[type]; TR.appendChild(e); els.push(e); }
   const u = { side, type, keys, face: o.face ?? (side === "u" ? Math.PI : 0), n, bw: o.bw || (type === "art" ? 0.42 : 0.7), bd: o.bd || (type === "art" ? 0.32 : 0.3), gap: o.gap || 0.12,
@@ -273,6 +331,11 @@ EV.usGuns.forEach((g, i) => unit("u", "art", [[ARR, g[0] + 5, g[1]], [T.crossing
 // v5 (critic B 16): ONE column per new bridge, boxes nose to tail along the bridge axis (perpendicular to the river), waiting on the east
 // bank until its bridge is down, then filing across it and on west; no column ever stands in the water off a bridge
 function posAtRiver(y) { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p; return b; }
+const bridgeAxis = (y) => { const b = posAtRiver(y), i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], l = Math.hypot(c[0] - a[0], c[1] - a[1]);
+  let ex = (c[1] - a[1]) / l, ey = -(c[0] - a[0]) / l; if (ex < 0) { ex = -ex; ey = -ey; } return { b, ex, ey }; };   // (ex, ey) points to the east bank
+const NEWBR = [[702.0, 0], [707.8, 1], [709.6, 2]];
+NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y), P = (d) => [b[0] + ex * d, b[1] + ey * d], tb = EV.bridgesNew[k];
+  unit("u", "inf", [[T.p5 - 1, ...P(3.6)], [tb + 0.7, ...P(3.6)], [tb + 4.2, ...P(-2.4)], [T.D, ...P(-3.4)]], { n: 4, face: Math.atan2(ey, ex) + Math.PI / 2, t0: T.p5 - 0.6, bw: 0.56, bd: 0.3, gap: 0.07, wob: 0 }); });
 [[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
 // army banners (one flag per side, on a pole, Style W)
 const BN = document.createElement("div"); TR.appendChild(BN);
@@ -300,14 +363,11 @@ for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y); arrow([[b[0] 
 // ---------------- place names pinned to the ground ----------------
 const PINS = [], PN = document.getElementById("pins");
 const place = (txt, x, y, size, t0, t1, region, cls = "") => { const e = document.createElement("div"); e.className = "pl " + cls; e.style.fontSize = size + "px"; e.textContent = txt; PN.appendChild(e); PINS.push({ e, x, y, t0, t1, region }); };
-place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, 9, "wide"); place("Edwards", ...D.towns.Edwards, 20, 1.2, 9, "wide"); place("Big Black River", 1506, 676, 19, 2.0, 9, "wide", "it");
+// v5 (critic A 12): the wide names stay on through the push until the deck covers them (his 635.7 s)
+place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, DV.full - 0.3, "wide"); place("Edwards", ...D.towns.Edwards, 20, 1.2, DV.full - 0.3, "wide"); place("Big Black River", 1506, 676, 19, 2.0, DV.full - 0.2, "wide", "it");
 place("Bovina", 1495.5, 700.4, 19, SW + 1, T.p4 - 1, "close"); place("Big Black River", 1512.2, 696.0, 18, SW + 1.2, 27, "close", "it");
 place("Vicksburg", 1392, 683, 24, T.p4 + 0.4, T.p4 + 5, "wide"); place("Mississippi River", 1362, 688, 18, T.p4 + 0.8, T.p4 + 5.5, "wide", "it");
 place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it");
-// v5 (critic B 5): the boxes and arrows live IN the close scene (troops3d.js createBoxes3D / createArrows3D: fogged, under the smoke and
-// clouds, soft contact shadow); ?troops=dom keeps the old DOM overlay boxes for comparison
-const TQ = new URLSearchParams(location.search).get("troops");
-const DOMBOX = TQ === "dom";
 
 // ---------------- GM overlay (1920x1080 space) ----------------
 const O = GMOverlay.create(document.getElementById("ov"), { tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
@@ -316,11 +376,13 @@ O.plaque.date(0.4, { month: "May 1863", day: "17", weekday: "Sunday", note: "eas
 O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x + 9, BR.z + 14], side: "cs", marker: false });
 O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", world: [1600, 716], offset: [150, -150], tIn: T.grant, tOut: T.story - 0.2 });
 // v3: the title is the 3D gold title in world space (see titleAt); the date plaque steps out for the dive and the clock plaque returns after the fog
-O.plaque.hide(DV.deckIn + 0.3);
-O.plaque.clock(T.ch, { time: "8:30", note: "Big Black River bridge", header: "17 May 1863" });
-O.timeline.show(T.ch + 0.2, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 1.0 });
+// v5 (critic A 8): HUD continuity as in his dives: legend + timeline stay on through the whole dive, the date plaque swaps to the clock plaque
+// INSIDE the white (his 637.3 s), the general's card fades in during the cream (his 638.1 s)
+O.plaque.clock(DV.SW + 0.05, { time: "8:30", note: "Big Black River bridge", header: "17 May 1863" });
+O.timeline.show(1.4, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 1.0 });
 O.timeline.seal(T.ch + 0.7, { at: 2.0, name: "Champion Hill" });
-O.legend(T.pem - 0.6, T.p4 - 0.8, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] });
+O.legend(1.9, T.p4 - 0.8, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] });
+O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", screen: [1585, 300], tIn: DV.warm + 0.25, tOut: T.crossing + 2.6 });
 O.medallion({ kind: "card", img: "assets/pemberton_head.png", side: "cs", role: "Lieutenant General", name: "John C. Pemberton", sub: "holds the crossing", world: [BR.x - 1.2, 706.2], offset: [-330, -170], tIn: T.pem, tOut: T.crossing + 2.6 });
 O.label(T.back, T.p3 + 0.6, { name: "The river at their back", sub: "one bridge behind the line", world: [BR.x, BR.z], side: "cs" });
 O.timeline.go(T.p3, { at: 2.6, d: 1.2 });
@@ -331,11 +393,6 @@ O.label(T.bburn, T.guns - 0.2, { name: "Big Black bridge burned", sub: "fired by
 O.ledger.show(T.guns - 0.6, { title: "Big Black River", sub: "17 - 18 May 1863" });
 O.ledger.add(T.guns, { who: "18 guns taken", stamp: false });
 O.ledger.add(T.pris, { who: "1,751 prisoners", note: "by Grant's count", stamp: false });
-const bridgeAxis = (y) => { const b = posAtRiver(y), i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], l = Math.hypot(c[0] - a[0], c[1] - a[1]);
-  let ex = (c[1] - a[1]) / l, ey = -(c[0] - a[0]) / l; if (ex < 0) { ex = -ex; ey = -ey; } return { b, ex, ey }; };   // (ex, ey) points to the east bank
-const NEWBR = [[702.0, 0], [707.8, 1], [709.6, 2]];
-NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y), P = (d) => [b[0] + ex * d, b[1] + ey * d], tb = EV.bridgesNew[k];
-  unit("u", "inf", [[T.p5 - 1, ...P(3.6)], [tb + 0.7, ...P(3.6)], [tb + 4.2, ...P(-2.4)], [T.D, ...P(-3.4)]], { n: 4, face: Math.atan2(ey, ex) + Math.PI / 2, t0: T.p5 - 0.6, bw: 0.42, bd: 0.24, gap: 0.06, wob: 0, col: 1 }); });
 O.number(T.pris, T.six - 0.3, { value: 1751, round: 1, world: [1519.0, 706.5], size: 104 });
 O.ledger.add(T.six, { who: "276 Union hit", note: "six prisoners for each", stamp: false });
 O.ledger.hide(T.p4 - 0.6);
@@ -361,7 +418,11 @@ tl.fromTo("#fade", { opacity: 1 }, { opacity: 0, duration: 0.8, ease: "power1.ou
 
 // ---------------- per-frame draw (pure function of t) ----------------
 const v2 = (a, b) => [b.x - a.x, b.y - a.y];
+const endK = () => 1;   // troops, arrows and banners belong to the world: they leave with it (the #fade), after the HUD
 function drawTroops(t, close) {
+  // v5: all boxes of all units for this frame, then a deterministic push-apart (critic B 16: boxes of different units never overlap),
+  // then either the in-scene boxes (default) or the old DOM boxes (?troops=dom)
+  const L = [];
   for (const u of T3 ? [] : UNITS) {
     const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) * endK(t) : 0;
     if (op <= 0.001) { for (const e of u.els) e.style.opacity = 0; continue; }
@@ -408,11 +469,23 @@ function drawPins(t, region) {
   for (const p of PINS) { const on = region === p.region && t >= p.t0 && t < p.t1, op = on ? Math.min(sstep(p.t0, p.t0 + 0.6, t), 1 - sstep(p.t1 - 0.6, p.t1, t)) : 0;
     p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
 }
+// v5 (critic A 3): the final grade = levels (black point 12 -> 0, white 250 -> 255) + S-curve (22 % smoothstep), on the 3D image only.
+// Measured (luma, central 980x520, ?grade=0 vs graded, terrain v5 as of this commit): close p1/p5/p50/p95 72/88/118/185 -> 60/78/114/185, std 27 -> 32
+// (his close 500-950 s: p5 43-77, p50 71-134, p95 107-177 (640-700 s: 177-198), std 21-32); wide 6 s p5/p95 63/177 std 32 -> 49/181 std 37 (his 42/199, 42.6);
+// night p50/p95 48/77 -> 33/65 (his 28-52 / 52-101). Off inside the dive cloud (its white-out levels are matched separately).
+const GRADE = (x) => { const y = clamp((x - 12 / 255) / ((250 - 12) / 255)); return y + (y * y * (3 - 2 * y) - y) * 0.22; };
+const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")]; let gradeK = -1;
+const GRADE_ON = new URLSearchParams(location.search).get("grade") !== "0";   // ?grade=0: raw image (for measuring)
+const gradeAt = (t) => { const k = GRADE_ON ? 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)) : 0; if (Math.abs(k - gradeK) < 1e-3) return; gradeK = k;
+  const tv = Array.from({ length: 33 }, (_, i) => { const x = i / 32; return lerp(x, GRADE(x), k).toFixed(4); }).join(" "); for (const f of GF) f.setAttribute("tableValues", tv); };
 const WO = document.getElementById("whiteout"), WW = document.getElementById("wwarm"), WS = document.getElementById("wisps"), FOGW = new THREE.Color(0.80, 0.79, 0.74);
 // v4: the cool phase is the real cloud interior (the camera is inside the volumetric deck 15.6-16.3) under a thin cool veil;
 // the flat warm cream covers the cut (16.3-17.2), then the battlefield comes out through the dissolving close deck.
-const whiteAt = (t) => t < DV.wFull ? 0.35 * sstep(DV.wIn + 0.2, DV.wFull + 0.05, t) : t < DV.warm ? lerp(0.35, 1, sstep(DV.wFull + 0.05, DV.warm, t)) : t < DV.emerge ? 1
-  : t < DV.clear ? lerp(1, 0.14, 1 - (1 - clamp((t - DV.emerge) / (DV.clear - DV.emerge))) ** 2) : lerp(0.14, 0, sstep(DV.clear, DV.haze, t));
+// v5 (critic A 8, 9; his 636.7-638.8 measured): no veil while the camera is still falling through the deck tops (textured, moving);
+// a cool veil only as it sinks inside (16.05-16.4), the close map ghosts through ~12 % right after the swap (his 637.5 dip), warm cream with a
+// smooth radial falloff (centre ~(218,216,203) -> edge midpoints ~(194,193,179), his 637.9-638.2) 16.6-17.25, then the battlefield snaps in (0.35 s)
+const whiteAt = (t) => t < DV.SW + 0.05 ? 0.45 * sstep(DV.wIn, DV.SW, t) : t < DV.warm + 0.1 ? lerp(0.86, 1, sstep(DV.warm - 0.05, DV.warm + 0.1, t)) : t < DV.emerge ? 1
+  : t < DV.clear ? lerp(1, 0.1, 1 - (1 - clamp((t - DV.emerge) / (DV.clear - DV.emerge))) ** 2) : lerp(0.1, 0, sstep(DV.clear, DV.haze, t));
 // dark wisps (cloud undersides) rushing outward past the lens during the warm phase, as in his dives
 const WSP = [[0.30, 0.42, 0.0, 1.0], [0.70, 0.55, 0.12, 0.8], [0.52, 0.30, 0.25, 0.9], [0.20, 0.70, 0.36, 0.7], [0.80, 0.25, 0.45, 0.8], [0.45, 0.66, 0.55, 1.0]].map((w) => {
   const e = document.createElement("div"); e.className = "wsp"; WS.appendChild(e); return { e, x: w[0], y: w[1], d: w[2], k: w[3] }; });
@@ -422,18 +495,15 @@ const wispsAt = (t) => { for (const w of WSP) { const u = (t - (DV.warm + 0.1 + 
   w.e.style.transform = `translate(${(cx - 300).toFixed(1)}px,${(cy - 150).toFixed(1)}px) scale(${sc.toFixed(3)},${(sc * 0.8).toFixed(3)})`; } };
 window.__draw = (t) => {
   placeBoats(t); titleAt(t); gradeAt(t); if (T3) T3.update(t);
-  O.film.set({ grain: lerp(0.04, 0.03, sstep(DV.wIn, DV.wFull, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
-const endK = () => 1;   // troops, arrows and banners belong to the world: they leave with it (the #fade), after the HUD
-  O.film.set({ vignette: (1 - 0.95 * sstep(DV.deckIn, DV.deck + 0.3, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // v4: no oval inside the cloud
-  // v5: all boxes of all units for this frame, then a deterministic push-apart (critic B 16: boxes of different units never overlap),
-  // then either the in-scene boxes (default) or the old DOM boxes (?troops=dom)
-  const L = [];
-  WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.25, t).toFixed(3); wispsAt(t);
+  O.film.set({ grain: lerp(0.04, 0.03, sstep(DV.full - 0.3, DV.wIn, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
+  O.film.set({ vignette: (1 - 0.95 * sstep(DV.full - 0.4, DV.wIn, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // no dark oval inside the cloud (the cream has its own warm falloff)
+  WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.15, t).toFixed(3); wispsAt(t);
   for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }
   world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0);
     if (w.region === "close" && tt > SW - 0.1 && tt < DV.haze + 0.1) {   // emergence: the battlefield comes out of fog (far ground whiter than near)
-      const k = sstep(DV.emerge - 0.1, DV.haze, tt), f = R.scene.fog, d = w.cam.dist;
+      const k = sstep(DV.emerge - 0.1, DV.clear + 0.6, tt), f = R.scene.fog, d = w.cam.dist;
       f.color.lerp(FOGW, 1 - k); f.near = lerp(d * 0.15, f.near, k); f.far = lerp(d * 1.7, f.far, k); w.renderer.setClearColor(f.color); }
+    drawTroops(tt, w.region === "close");   // v5: boxes / arrows are in the scene now -> set them BEFORE this frame renders (they lagged one frame)
     fx.update(tt, w.camera); } });
   const close = world.region === "close";
   drawPins(t, world.region);
@@ -444,11 +514,3 @@ window.__clipBuilt();
 </script>
 </body>
 </html>
-// v5 (critic A 3): the final grade = levels (black point 12 -> 0, white 236 -> 255) + S-curve (32 % smoothstep), on the 3D image only.
-// Measured on our close frames: p1 55-64 -> 40-52 (his 38-52), std 22-30 -> 28-38 (his 21-32), night p50 44 -> 29 (his 28-52); wide p5/p95 61/147 -> 48/157 (his 42/199).
-// Off inside the dive cloud (the white-out levels there are matched to his separately), back on as the battlefield clears.
-const GRADE = (x) => { const y = clamp((x - 12 / 255) / ((236 - 12) / 255)); return y + (y * y * (3 - 2 * y) - y) * 0.32; };
-const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")]; let gradeK = -1;
-const gradeAt = (t) => { const k = 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)); if (Math.abs(k - gradeK) < 1e-3) return; gradeK = k;
-  const tv = Array.from({ length: 33 }, (_, i) => { const x = i / 32; return lerp(x, GRADE(x), k).toFixed(4); }).join(" "); for (const f of GF) f.setAttribute("tableValues", tv); };
-    drawTroops(tt, w.region === "close");   // v5: boxes / arrows are in the scene now -> set them BEFORE this frame renders (they lagged one frame)

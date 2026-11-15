@@ -9,10 +9,10 @@ CW, CH, Z = 192, 108, 2.5
 # phase, his t, our t, sectors [(name, his x, y, our x, y)] in 1280x720 frames
 PHASES = [
     ("1 wide, scattered clouds", 1050.0, 2.0, [("cloud top", 620, 120, 790, 170), ("edge over map", 1130, 330, 690, 350), ("underside / crease", 760, 160, 800, 410), ("map + cloud shadow", 1100, 470, 860, 480)]),
-    ("2 deck rolling in", 635.9, 14.95, [("cloud top", 140, 380, 610, 190), ("edge over map", 520, 470, 250, 360), ("underside / crease", 330, 460, 800, 520), ("map in a gap", 430, 300, 470, 500)]),
-    ("3 mostly covered", 636.3, 15.25, [("cloud top", 760, 300, 840, 110), ("edge over map", 440, 220, 620, 590), ("underside / crease", 250, 480, 520, 430), ("map in a gap", 1100, 200, 400, 600)]),
-    ("4 full cloud interior", 637.0, 15.9, [("interior centre", 540, 300, 540, 300), ("interior top", 900, 140, 900, 140), ("interior low", 300, 480, 300, 480), ("interior edge", 1060, 520, 1060, 520)]),
-    ("5 white-out (warm)", 637.9, 16.75, [("centre", 540, 300, 540, 300), ("top right", 1060, 40, 1060, 40), ("bottom left", 240, 470, 240, 470), ("right edge", 1080, 400, 1080, 400)]),
+    ("2 deck rolling in", 635.9, 15.3, [("cloud top", 140, 380, 610, 190), ("edge over map", 520, 470, 250, 360), ("underside / crease", 330, 460, 800, 520), ("map in a gap", 430, 300, 470, 500)]),
+    ("3 mostly covered", 636.3, 15.65, [("cloud top", 760, 300, 840, 110), ("edge over map", 440, 220, 620, 590), ("underside / crease", 250, 480, 520, 430), ("map in a gap", 1100, 200, 400, 600)]),
+    ("4 full cloud interior", 637.0, 16.15, [("interior centre", 540, 300, 540, 300), ("interior top", 900, 140, 900, 140), ("interior low", 300, 480, 300, 480), ("interior edge", 1060, 520, 1060, 520)]),
+    ("5 white-out (warm)", 637.9, 16.85, [("centre", 540, 300, 540, 300), ("top right", 1060, 40, 1060, 40), ("bottom left", 240, 470, 240, 470), ("right edge", 1080, 400, 1080, 400)]),
     ("6 emergence", 639.3, 18.1, [("remnant over map", 380, 500, 120, 560), ("remnant edge", 860, 560, 1000, 540), ("thin haze", 500, 120, 200, 250), ("clear map", 760, 160, 1000, 520)]),
 ]
 
@@ -51,8 +51,9 @@ def main():
     sheet = Image.new("RGB", (tw * 4, sum(r.height for r in rows)))
     y = 0
     for r in rows: sheet.paste(r, (0, y)); y += r.height
-    sheet.save(f"{HERE}/dive_sectors.jpg", quality=85)
-    print("dive_sectors.jpg", sheet.size)
+    tag = os.environ.get("TAG", "")   # TAG=_v5 -> dive_sectors_v5.jpg
+    sheet.save(f"{HERE}/dive_sectors{tag}.jpg", quality=85)
+    print(f"dive_sectors{tag}.jpg", sheet.size)
 
 
 if __name__ == "__main__":
