@@ -82,7 +82,10 @@ const SW = DV.SW;   // region swap, inside the flat white-out
 const keys = [
   { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
   { t: DV.push, region: "wide", at: [1532, 709], dist: 560, tilt: 44, yaw: 0, fov: 30 },
-  { t: DV.deck, region: "wide", at: [1518, 706], dist: 160, tilt: 26, yaw: 1, fov: 30, ease: "in" },
+  // v4: the v3 push path exactly until 14.4 s (ease-in k^3 split, so the 3D title still flies past the lens ~13.5-14.4), then a gentler last
+  // descent to dist 160 so the deck is seen from above before the camera sinks into its tops (~16.0 s)
+  { t: 14.4, region: "wide", at: [1524.97, 707.49], dist: 260.6, tilt: 34.96, yaw: 0.502, fov: 30, ease: "in" },
+  { t: DV.deck, region: "wide", at: [1518, 706], dist: 160, tilt: 26, yaw: 1, fov: 30, ease: "lin" },
   { t: SW, region: "close", at: [1517.6, 705], dist: 75, tilt: 24, yaw: 1, fov: 31, ease: "lin" },
   { t: DV.land, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
   { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 36, tilt: 50, yaw: -5, fov: 30 },
@@ -126,13 +129,16 @@ const wsp = [];
 for (let i = 0, gx = 1230; gx < 1880; gx += 95) for (let gz = 540; gz < 960; gz += 95, i++) {
   const x = gx + hsh(i, 41) * 80, z = gz + hsh(i, 42) * 80;
   if (hsh(i, 43) < 0.42 && Math.hypot(x - 1518, (z - 725) * 1.2) > 125 && Math.hypot(x - 1388, z - 681) > 45) wsp.push([x, z, 28 + hsh(i, 44) * 26]); }
-const wideCl = wsp.map(([x, z, r], i) => [x, z, r, r * 0.34, 50 + hsh(i, 11) * 5, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 1.0, 60 + hsh(z, 12) * 3, 1]));
+const wideCl = wsp.map(([x, z, r], i) => [x, z, r, r * 0.24, 50 + hsh(i, 11) * 5, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 1.0, 60 + hsh(z, 12) * 3, 1]));
 const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1200, 520, 1920, 1010], texel: 1, slab: [44, 104], tile: 70, groupScale: 3.5, amp: 9, soft: 3.5, sigma: 0.8,
   stepIn: 0.25, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.08, fine: 0.35, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.10, -0.035], evolve: 0.0025,
-  sunK: 0.85, ambK: 0.32, lightK: 1.0, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))],
-  ms: (t) => lerp(0.22, 0.7, sstep(DV.deck, DV.wIn + 0.2, t)), colors: { sun: [0.93, 0.96, 0.97], ambTop: [0.66, 0.72, 0.80], ambBot: [0.44, 0.50, 0.58] }, sigmaK: (t) => lerp(1, 0.85, sstep(DV.deck + 0.3, DV.wFull, t)) });
+  sunK: 0.95, ambK: 0.36, lightK: 1.0, floor: 0.05, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))],
+  ms: (t) => lerp(0.22, 0.85, sstep(DV.deck, DV.wIn + 0.2, t)), expo: (t) => lerp(1, 1.1, sstep(DV.deck + 0.1, DV.wIn + 0.2, t)),
+  colors: (t) => { const k = sstep(DV.deck, DV.wIn + 0.2, t);   // inside the cloud: cooler, blue-grey mottles (his 637.0 s)
+    return { sun: [lerp(0.93, 0.94, k), lerp(0.96, 0.97, k), lerp(0.97, 0.94, k)], ambTop: [lerp(0.66, 0.68, k), lerp(0.72, 0.73, k), lerp(0.80, 0.75, k)], ambBot: [lerp(0.44, 0.45, k), lerp(0.50, 0.51, k), lerp(0.58, 0.55, k)] }; }, sigmaK: (t) => lerp(1, 0.85, sstep(DV.deck + 0.3, DV.wFull, t)) });
 const closeCl = [];
-for (let i = 0, gx = 1478; gx < 1562; gx += 8) for (let gz = 670; gz < 742; gz += 8, i++) closeCl.push([gx + (hsh(i, 21) - 0.5) * 7, gz + (hsh(i, 22) - 0.5) * 7, 5 + hsh(i, 23) * 5, 4 + hsh(i, 24) * 4, 20 + hsh(i, 25) * 6, 1]);
+for (let i = 0, gx = 1478; gx < 1562; gx += 8) for (let gz = 670; gz < 742; gz += 8, i++) { const x = gx + (hsh(i, 21) - 0.5) * 7, z = gz + (hsh(i, 22) - 0.5) * 7, rc = Math.min(Math.hypot(x - 1518, (z - 705) * 1.4), Math.hypot(x - 1511, (z - 686) * 0.75) * 1.1);   // + the river name and the far side, where low clouds sit near eye level   // thin over the bridge / river name: the centre clears first, remnants stay at the frame edges
+  if (rc > 15) closeCl.push([x, z, 5 + hsh(i, 23) * 5, (4 + hsh(i, 24) * 4) * lerp(0.3, 1.5, clamp((rc - 15) / 18)), 20 + hsh(i, 25) * 6, 1]); }
 const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [16, 50], tile: 10, amp: 2.0, soft: 1.1, sigma: 1.0, wisp: 0.9, inner: 0.7,
   stepIn: 0.2, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 240, resolution: 0.7, warp: 0.1, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.06, -0.02], evolve: 0.004, sunK: 0.75, ambK: 0.38,
   erode: (t) => [0, lerp(0, 1.3, sstep(DV.SW, DV.emerge + 0.9, t)) + lerp(0, 2.6, sstep(DV.emerge + 0.9, 21.5, t))],
@@ -292,6 +298,7 @@ O.number(T.pris, T.six - 0.3, { value: 1751, round: 1, world: [1519.0, 706.5], s
 O.ledger.add(T.six, { who: "276 Union hit", note: "six prisoners for each", stamp: false });
 O.ledger.hide(T.p4 - 0.6);
 // flashback: a month earlier, night run past the Vicksburg batteries
+O.film.grade(DV.deck, "none", 0.5); O.film.grade(DV.emerge, "day", 0.8);   // v4: no warm day grade inside the cloud (his interior is cool, his cream is flat)
 O.film.grade(T.p4 - 0.6, "night", 0.8);
 O.plaque.date(T.p4, { month: "April 1863", day: "16", weekday: "Thursday", note: "a month earlier · night" });
 O.timeline.hide(T.p4 - 0.6);
