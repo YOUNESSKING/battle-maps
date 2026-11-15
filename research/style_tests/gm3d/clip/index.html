@@ -16,8 +16,8 @@
   @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
   html, body { margin: 0; padding: 0; background: #000; }
   #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
-  /* v5 (critic A 3): + one levels / S-curve pass on the 3D image only (#gmgrade, tables written by gradeAt(t) in the module) */
-  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: contrast(1.12) saturate(1.12) brightness(0.95) url(#gmgrade); }
+  /* v5 (critic A 3): one levels / S-curve pass on the 3D image only (#gmgrade, tables written by gradeAt(t) in the module) */
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: saturate(1.05) url(#gmgrade); }
   #arrows { position: absolute; inset: 0; width: 1280px; height: 720px; overflow: visible; }
   #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
   #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
@@ -62,6 +62,7 @@
   <svg id="arrows" viewBox="0 0 1280 720"></svg>
   <div id="troops"></div>
   <div id="whiteout"><div id="wcool"></div><div id="wwarm"></div><div id="wisps"></div></div>
+  <div id="film" style="position:absolute;inset:0;pointer-events:none"></div>   <!-- v5: the overlay's film layers (grade, paper, grain, vignette), untransformed so their blend modes reach the map -->
   <div id="ovwrap"><div id="ov"></div></div>
   <div id="fade"></div>
 </div>
@@ -371,7 +372,7 @@ place("Vicksburg", 1392, 683, 24, T.p4 + 0.4, T.p4 + 5, "wide"); place("Mississi
 place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it");
 
 // ---------------- GM overlay (1920x1080 space) ----------------
-const O = GMOverlay.create(document.getElementById("ov"), { tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
+const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
 O.film.set({ grain: 0.04 });   // v5 (critic A 10 / B 18): grain <= 0.04 on the final frame (was 0.08)
 O.plaque.date(0.4, { month: "May 1863", day: "17", weekday: "Sunday", note: "east of Vicksburg" });
 O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x + 9, BR.z + 14], side: "cs", marker: false });
@@ -470,11 +471,12 @@ function drawPins(t, region) {
   for (const p of PINS) { const on = region === p.region && t >= p.t0 && t < p.t1, op = on ? Math.min(sstep(p.t0, p.t0 + 0.6, t), 1 - sstep(p.t1 - 0.6, p.t1, t)) : 0;
     p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
 }
-// v5 (critic A 3): the final grade = levels (black point 12 -> 0, white 250 -> 255) + S-curve (22 % smoothstep), on the 3D image only.
-// Measured (luma, central 980x520, ?grade=0 vs graded, terrain v5 as of this commit): close p1/p5/p50/p95 72/88/118/185 -> 60/78/114/185, std 27 -> 32
-// (his close 500-950 s: p5 43-77, p50 71-134, p95 107-177 (640-700 s: 177-198), std 21-32); wide 6 s p5/p95 63/177 std 32 -> 49/181 std 37 (his 42/199, 42.6);
-// night p50/p95 48/77 -> 33/65 (his 28-52 / 52-101). Off inside the dive cloud (its white-out levels are matched separately).
-const GRADE = (x) => { const y = clamp((x - 12 / 255) / ((250 - 12) / 255)); return y + (y * y * (3 - 2 * y) - y) * 0.22; };
+// v5 (critic A 3): the final grade = levels (black point 10 -> 0, white 248 -> 255) + a mild S-curve (15 % smoothstep), on the 3D image only
+// (the old contrast(1.12) brightness(0.95) is gone; the overlay's film layers now really blend, see filmHost). Never lifts the darks:
+// raw world -> final, darkest 3 %: 41 s (37,50,49) -> (35,46,42), 6 s (24,39,39) -> (18,34,31), night (5,16,25) -> (7,11,19).
+// Final luma p1/p5/p50/p95, std: close 41 s 38/53/91/165 33; 22 s 34/52/102/189 43 (his close 500-950 s: p5 43-77, p50 71-134, p95 107-198, std 21-32);
+// wide 6 s 25/30/79/153 37 (his 42 p5 / 199 p95 / 42.6); night 49.6 s p50 29 p95 71 (his 28-52 / 52-101). Off inside the dive cloud.
+const GRADE = (x) => { const y = clamp((x - 10 / 255) / ((248 - 10) / 255)); return y + (y * y * (3 - 2 * y) - y) * 0.15; };
 const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")]; let gradeK = -1;
 const GRADE_ON = new URLSearchParams(location.search).get("grade") !== "0";   // ?grade=0: raw image (for measuring)
 const gradeAt = (t) => { const k = GRADE_ON ? 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)) : 0; if (Math.abs(k - gradeK) < 1e-3) return; gradeK = k;

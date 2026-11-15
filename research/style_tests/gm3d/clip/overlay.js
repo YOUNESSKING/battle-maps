@@ -246,7 +246,15 @@
     const layer = () => { const d = document.createElement("div"); d.className = "L"; root.appendChild(d); return d; };
     // z-order (bottom -> top): grade, dim, map-anchored (lines, markers), paper, grain, vignette, medallions, cards, HUD
     // v5 (critic A 10): paper / grain / vignette belong to the MAP only; the plaques, cards and HUD sit clean on top (his plaque paper ~(227,217,193))
-    const Lgrade = layer(), Ldim = layer(), Lmap = layer(), Lpaper = layer(), Lgrain = layer(), Lvig = layer(), Lmed = layer(), Lcards = layer(), Lhud = layer();
+    // v5 (terrain agent: "the overlay lifts the darks by +40-50"): a mix-blend-mode layer inside a transformed host (the clip scales the
+    // 1920x1080 overlay by 2/3) blends only with the overlay's own isolated group, NOT with the map: soft-light / overlay / multiply then
+    // render as plain semi-transparent veils (the day grade was a ~30 % peach veil). opts.filmHost = an untransformed element right above
+    // the map: the grade / paper / grain / vignette layers live there, so they really blend with the 3D image.
+    let froot = root, flayer = layer;
+    if (opts.filmHost) { froot = document.createElement("div"); froot.className = "gmo gmofilm"; froot.style.cssText = "width:100%;height:100%";
+      froot.style.setProperty("--paperurl", `url(${paperTex(seed)})`); opts.filmHost.appendChild(froot);
+      flayer = () => { const d = document.createElement("div"); d.className = "L"; d.style.cssText = "width:100%;height:100%"; froot.appendChild(d); return d; }; }
+    const Lgrade = flayer(), Ldim = layer(), Lmap = layer(), Lpaper = flayer(), Lgrain = flayer(), Lvig = flayer(), Lmed = layer(), Lcards = layer(), Lhud = layer();
     const NS = "http://www.w3.org/2000/svg";
     const svgLayer = (parent, cls) => { const s = document.createElementNS(NS, "svg"); s.setAttribute("class", cls); s.setAttribute("viewBox", `0 0 ${W} ${H}`); parent.appendChild(s); return s; };
     const leadSVG = svgLayer(Lmap, "lead");
@@ -268,7 +276,7 @@
     const gCandle = mk(Lgrade, "", "", "inset:0;mix-blend-mode:soft-light");
     const paper = mk(Lpaper, "paper", ""), grain = mk(Lgrain, "grain", ""), vig = mk(Lvig, "vig", "");
     const grainURLs = [0, 1, 2, 3, 4, 5].map((i) => grainTex(seed * 31 + i));
-    const GW = { day: [1, 0, 0, 0], dusk: [0.3, 1, 0, 0], night: [0, 0, 0.45, 0],   /* clip: the 3D world already lights the night */ candle: [0, 0, 0, 1], none: [0, 0, 0, 0] };
+    const GW = { day: [0.55, 0, 0, 0], dusk: [0.3, 1, 0, 0], night: [0, 0, 0.12, 0],   /* v5: the film layers now REALLY blend (filmHost), so much lighter weights than the old veils */   /* clip: the 3D world already lights the night */ candle: [0, 0, 0, 1], none: [0, 0, 0, 0] };
     O.film = {
       grade(t, mode, d = 1.0, o = {}) { gradeKeys.push({ t, mode, d, o }); gradeKeys.sort((a, b) => a.t - b.t); return O; },
       set(o = {}) { if (o.grain != null) grain.style.opacity = o.grain; if (o.paper != null) paper.style.opacity = o.paper; if (o.vignette != null) vig.style.opacity = o.vignette; return O; },
