@@ -264,12 +264,13 @@ uniform vec4 vcDrift;  // map drift x, z; noise evolution; -
 uniform vec3 vcSun;
 uniform float vcInner;
 uniform float vcGS;     // billow scale of group 1 (finer)
-uniform vec3 vcShDir;   // direction the ground shadows are cast along (steeper than the sun, as in his map)
-vec4 vcMapAt(vec2 xz) { return texture(vcMap, (xz - vcDrift.xy - vcB.xy) * vcB.zw); }
+uniform vec3 vcShDir;
+uniform float vcTexel;   // direction the ground shadows are cast along (steeper than the sun, as in his map)
+vec4 vcMapAt(vec2 xz) { vec4 m = texture(vcMap, (xz - vcDrift.xy - vcB.xy) * vcB.zw); m.rg += vcS.x; return m; }   // heights stored relative to the slab base (half-float precision)
 float vcDens(vec3 p, vec4 m, float lod) {
   float amp = vcP.y;
   // distance below the dome surface measured along its normal (vertical distance / sqrt(1 + slope^2)): no extruded side walls
-  float e = 0.75 / vcB.z * 0.002 + 0.6;
+  float e = vcTexel * 3.0;   // wide central difference: no texel-edge kinks in the slope (no contour lines)
   vec2 gr = vec2(vcMapAt(p.xz + vec2(e, 0.0)).r - vcMapAt(p.xz - vec2(e, 0.0)).r, vcMapAt(p.xz + vec2(0.0, e)).r - vcMapAt(p.xz - vec2(0.0, e)).r) / (2.0 * e);
   float s = min((m.r - p.y) * inversesqrt(1.0 + dot(gr, gr)), (p.y - m.g) * vcQ.x);
   float er = mix(vcErode.x, vcErode.y, m.b) * amp;
@@ -281,7 +282,7 @@ float vcDens(vec3 p, vec4 m, float lod) {
   vec4 n1 = texture(vcNoise, q + w);
   float d = s + amp * (1.0 * (n0.r - 0.52) + mix(0.5, 0.62, m.b) * (n1.g - 0.5) + mix(0.14, 0.30, m.b) * (n1.b - 0.5)) - er;   // wide fair-weather clouds: softer, fewer small billows
   if (lod > 0.0 && d > -amp * 0.2 && d < amp * 0.7) d += amp * vcQ.y * lod * (texture(vcNoise, q * 3.3 + w * 1.7).b - 0.5);
-  float dn = clamp(d / (vcP.z * mix(1.7, 1.0, m.b)), 0.0, 1.0);   // group 0 (wide fair-weather): softer translucent rims
+  float dn = clamp(d / (vcP.z * mix(1.7, 0.75, m.b)), 0.0, 1.0);   // group 0 (wide fair-weather): softer translucent rims
   dn *= mix(1.0, 0.25 + 1.1 * n1.g, vcInner);   // mottled interior (never a flat card)
   // wispy fringe: the outer part of the soft edge is torn by the fine billows
   return dn * mix(1.0, smoothstep(0.15, 0.85, n1.b), vcQ.w * (1.0 - dn));
@@ -469,7 +470,7 @@ export function createFX(cfg = {}) {
     // v4 volumetric cumulus (vclouds)
     vcNoise: { value: null }, vcMap: { value: null }, vcB: { value: new THREE.Vector4(0, 0, 1, 1) }, vcP: { value: new THREE.Vector4(1, 1, 1, 1) },
     vcQ: { value: new THREE.Vector4(3, 0, 0, 0) }, vcS: { value: new THREE.Vector4(0, 1, 0, 0) }, vcErode: { value: new THREE.Vector2() },
-    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir }, vcInner: { value: 0 }, vcGS: { value: 1 }, vcShDir: { value: sunDir.clone() },
+    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir }, vcInner: { value: 0 }, vcGS: { value: 1 }, vcShDir: { value: sunDir.clone() }, vcTexel: { value: 1 },
   };
 
   const emitters = [];   // { update(t, batch, ctx) }
@@ -900,26 +901,26 @@ export function createFX(cfg = {}) {
         const k = j * MW + i; dist[k] = Math.min(dist[k], Math.max(0, rr - c.R * 1.35));
         if (rr > c.R * 1.6) continue;
         const ang = Math.atan2(dz, dx), lump = 1 + 0.3 * (fbm(Math.cos(ang) * 1.3 + c.ph, Math.sin(ang) * 1.3 + c.ph, 3) - 0.5) * 2;
-        const r = rr / (c.R * lump), prof = r < 1 ? Math.pow(1 - r * r, 0.5) : -(r - 1) * 3;
+        const r = rr / (c.R * lump), prof = r < 1 ? Math.pow(1 - r * r, 0.8) : -(r - 1) * 2;   // rounded domes, no vertical rim walls
         const tp = c.yb + c.H * prof;
         if (tp > top[k]) { top[k] = tp; grp[k] = c.g; bot[k] = c.yb + c.H * 0.06 * Math.min(1, r * r); }   // base of the cloud that owns the column
       }
     }
     const data = new Uint16Array(MW * MD * 4), H16 = THREE.DataUtils.toHalfFloat;
-    for (let k = 0; k < MW * MD; k++) { data[k * 4] = H16(top[k]); data[k * 4 + 1] = H16(bot[k]); data[k * 4 + 2] = H16(grp[k]); data[k * 4 + 3] = H16(Math.min(dist[k], 6e4)); }
+    for (let k = 0; k < MW * MD; k++) { data[k * 4] = H16(top[k] - y0); data[k * 4 + 1] = H16(bot[k] - y0); data[k * 4 + 2] = H16(grp[k]); data[k * 4 + 3] = H16(Math.min(dist[k], 6e4)); }
     const map = new THREE.DataTexture(data, MW, MD, THREE.RGBAFormat, THREE.HalfFloatType);
     map.minFilter = map.magFilter = THREE.LinearFilter; map.wrapS = map.wrapT = THREE.ClampToEdgeWrapping; map.needsUpdate = true;
     shared.vcNoise.value = o.noise; shared.vcMap.value = map; shared.vcB.value.set(x0, z0, 1 / (MW * tx), 1 / (MD * tx));
     shared.vcP.value.set(1 / (o.tile ?? 40), o.amp ?? 6, o.soft ?? 2.5, o.sigma ?? 0.8);
     shared.vcQ.value.set(o.baseSharp ?? 3, o.fine ?? 0.18, o.warp ?? 0.35, o.wisp ?? 0.6);
-    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1); shared.vcInner.value = o.inner ?? 0.5; shared.vcGS.value = o.groupScale ?? 1; if (o.shadowDir) shared.vcShDir.value.set(...o.shadowDir).normalize();
+    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1); shared.vcInner.value = o.inner ?? 0.5; shared.vcGS.value = o.groupScale ?? 1; shared.vcTexel.value = tx; if (o.shadowDir) shared.vcShDir.value.set(...o.shadowDir).normalize();
     const cu = Object.assign({
       uInvProj: { value: new THREE.Matrix4() }, uCamWorld: { value: new THREE.Matrix4() }, uCam: { value: new THREE.Vector3() },
       uSunCol: { value: new THREE.Color(1.0, 0.97, 0.92) }, uAmbTop: { value: new THREE.Color(0.66, 0.71, 0.80) }, uAmbBot: { value: new THREE.Color(0.34, 0.38, 0.46) },
       uOpacity: { value: 1 }, uStepIn: { value: o.stepIn ?? 0.6 }, uStepK: { value: o.stepK ?? 0.004 }, uLightStep: { value: o.lightStep ?? 1.2 },
       uNear: { value: o.nearFade ?? 2 }, uLodK: { value: 1 / (o.lodDist ?? 200) }, uMaxSteps: { value: o.maxSteps ?? 160 },
       uFogC: { value: new THREE.Color() }, uFogN: { value: 1e5 }, uFogF: { value: 2e5 }, uFogK: { value: o.fogK ?? 0.85 },
-      uSunK: { value: o.sunK ?? 1.6 }, uAmbK: { value: o.ambK ?? 1.0 }, uLightK: { value: o.lightK ?? 0.8 },
+      uSunK: { value: o.sunK ?? 1.6 }, uAmbK: { value: o.ambK ?? 1.0 }, uLightK: { value: o.lightK ?? 0.8 }, uMS: { value: 0.22 },
     }, shared);
     const vs = /* glsl */`
       uniform mat4 uInvProj; uniform mat4 uCamWorld; varying vec3 vDir;
@@ -930,7 +931,7 @@ export function createFX(cfg = {}) {
       ${VC_GLSL}
       uniform vec3 uCam; uniform vec3 uSunCol; uniform vec3 uAmbTop; uniform vec3 uAmbBot; uniform float uOpacity;
       uniform float uStepIn; uniform float uStepK; uniform float uLightStep; uniform float uNear; uniform float uLodK; uniform float uMaxSteps;
-      uniform float uLightK; uniform vec3 uFogC; uniform float uFogN; uniform float uFogF; uniform float uFogK; uniform float uSunK; uniform float uAmbK;
+      uniform float uLightK; uniform float uMS; uniform vec3 uFogC; uniform float uFogN; uniform float uFogF; uniform float uFogK; uniform float uSunK; uniform float uAmbK;
       varying vec3 vDir;
       float hg(float c, float g) { float g2 = g * g; return (1.0 - g2) / (12.566 * pow(1.0 + g2 - 2.0 * g * c, 1.5)); }
       void main() {
@@ -943,7 +944,8 @@ export function createFX(cfg = {}) {
         vec2 t0 = (bmin - ro.xz) * inv, t1 = (bmax - ro.xz) * inv, tn = min(t0, t1), tf = max(t0, t1);
         ta = max(ta, max(tn.x, tn.y)); tb = min(tb, min(tf.x, tf.y));
         if (tb <= ta) { gl_FragColor = vec4(0.0); return; }
-        float jit = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
+        vec3 h3 = fract(vec3(gl_FragCoord.xyx) * vec3(0.1031, 0.1030, 0.0973)); h3 += dot(h3, h3.yzx + 33.33);
+        float jit = fract((h3.x + h3.y) * h3.z);   // white-noise jitter (no structured IGN patterns in the slices)
         float cosT = dot(rd, vcSun);
         float phase = (mix(hg(cosT, 0.6), hg(cosT, -0.25), 0.35) * 12.566) * 0.55 + 0.45;
         float amp = vcP.y, sig = vcP.w;
@@ -958,10 +960,10 @@ export function createFX(cfg = {}) {
           if (gap > st) { t += gap; t = (ceil(t / st - jit) + jit) * st; continue; }   // land back on the jittered step grid (no contour banding)
           float d = vcDens(p, m, clamp(1.0 - t * uLodK, 0.0, 1.0)) * smoothstep(uNear * 0.3, uNear, t);
           if (d > 0.003) {
-            float tau = 0.0, ls = uLightStep; vec3 lp = p;
-            for (int k = 0; k < 5; k++) { lp += vcSun * ls; tau += vcDens(lp, vcMapAt(lp.xz), 0.0) * ls; ls *= 1.9; }
+            float tau = 0.0, ls = uLightStep * (0.6 + 0.8 * fract(jit + float(i) * 0.618)); vec3 lp = p;   // jittered light march: no shadow banding streaks
+            for (int k = 0; k < 6; k++) { lp += vcSun * ls; tau += vcDens(lp, vcMapAt(lp.xz), 0.0) * ls; ls *= 1.7; }
             float hn = clamp((p.y - m.g) / max(m.r - m.g, 1e-3), 0.0, 1.0);
-            float beer = exp(-tau * sig * uLightK) * 0.78 + exp(-tau * sig * uLightK * 0.2) * 0.22;   // multiple-scattering approx (two octaves)
+            float beer = exp(-tau * sig * uLightK) * (1.0 - uMS) + exp(-tau * sig * uLightK * 0.15) * uMS;   // two-octave multiple scattering (uMS rises inside the cloud: bright grey-white interior)   // multiple-scattering approx (two octaves)
             float powder = 1.0 - 0.6 * exp(-d * 3.0 - tau * sig * 0.6);
             float occl = clamp(1.0 - (m.r - p.y) / max(m.r - m.g, 1e-3) * 0.55, 0.35, 1.0);
             vec3 S = uSunCol * (phase * beer * powder * uSunK) + mix(uAmbBot, uAmbTop, smoothstep(0.0, 1.0, hn)) * occl * uAmbK;
@@ -1151,7 +1153,8 @@ export function createFX(cfg = {}) {
       const o = vc.o, on = o.on ? o.on(t) : 1, op = (o.opacity ? o.opacity(t) : 1) * on, dr = o.drift || [0, 0];
       const er = o.erode ? o.erode(t) : [0, 0];
       shared.vcErode.value.set(er[0], er[1]); shared.vcDrift.value.set(dr[0] * t, dr[1] * t, (o.evolve ?? 0.004) * t, 0);
-      vc.cu.uOpacity.value = op;
+      vc.cu.uOpacity.value = op; vc.cu.uMS.value = o.ms ? o.ms(t) : 0.22;
+      shared.vcP.value.w = (o.sigma ?? 0.8) * (o.sigmaK ? o.sigmaK(t) : 1);
       vc.comp.visible = op > 0.001;
       if (vc.comp.visible && renderer) {
         const size = renderer.getDrawingBufferSize(new THREE.Vector2());

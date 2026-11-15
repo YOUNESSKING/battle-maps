@@ -125,16 +125,17 @@ const NOISE = await loadCloudNoise("cloudtex/noise128.bin");
 const wsp = [];
 for (let i = 0, gx = 1230; gx < 1880; gx += 95) for (let gz = 540; gz < 960; gz += 95, i++) {
   const x = gx + hsh(i, 41) * 80, z = gz + hsh(i, 42) * 80;
-  if (hsh(i, 43) < 0.42 && Math.hypot(x - 1518, z - 706) > 70 && Math.hypot(x - 1388, z - 681) > 45) wsp.push([x, z, 28 + hsh(i, 44) * 26]); }
+  if (hsh(i, 43) < 0.42 && Math.hypot(x - 1518, (z - 725) * 1.2) > 125 && Math.hypot(x - 1388, z - 681) > 45) wsp.push([x, z, 28 + hsh(i, 44) * 26]); }
 const wideCl = wsp.map(([x, z, r], i) => [x, z, r, r * 0.34, 50 + hsh(i, 11) * 5, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 1.0, 60 + hsh(z, 12) * 3, 1]));
 const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1200, 520, 1920, 1010], texel: 1, slab: [44, 104], tile: 70, groupScale: 3.5, amp: 9, soft: 3.5, sigma: 0.8,
-  stepIn: 0.35, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.08, fine: 0.35, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.10, -0.035], evolve: 0.0025,
-  sunK: 0.75, ambK: 0.38, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))] });
+  stepIn: 0.25, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.08, fine: 0.35, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.10, -0.035], evolve: 0.0025,
+  sunK: 0.85, ambK: 0.32, lightK: 1.0, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))],
+  ms: (t) => lerp(0.22, 0.7, sstep(DV.deck, DV.wIn + 0.2, t)), colors: { sun: [0.93, 0.96, 0.97], ambTop: [0.66, 0.72, 0.80], ambBot: [0.44, 0.50, 0.58] }, sigmaK: (t) => lerp(1, 0.85, sstep(DV.deck + 0.3, DV.wFull, t)) });
 const closeCl = [];
-for (let i = 0, gx = 1478; gx < 1562; gx += 9) for (let gz = 670; gz < 742; gz += 9, i++) closeCl.push([gx + (hsh(i, 21) - 0.5) * 7, gz + (hsh(i, 22) - 0.5) * 7, 6 + hsh(i, 23) * 5, 6 + hsh(i, 24) * 6, 20 + hsh(i, 25) * 5, 1]);
-const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [16, 50], tile: 14, amp: 2.4, soft: 1.0, sigma: 1.3,
+for (let i = 0, gx = 1478; gx < 1562; gx += 8) for (let gz = 670; gz < 742; gz += 8, i++) closeCl.push([gx + (hsh(i, 21) - 0.5) * 7, gz + (hsh(i, 22) - 0.5) * 7, 5 + hsh(i, 23) * 5, 4 + hsh(i, 24) * 4, 20 + hsh(i, 25) * 6, 1]);
+const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [16, 50], tile: 10, amp: 2.0, soft: 1.1, sigma: 1.0, wisp: 0.9, inner: 0.7,
   stepIn: 0.2, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 240, resolution: 0.7, warp: 0.1, shadow: 0.42, shadowDir: [-0.35, 1, -0.6], drift: [0.06, -0.02], evolve: 0.004, sunK: 0.75, ambK: 0.38,
-  erode: (t) => [0, lerp(0, 3.2, sstep(DV.SW, DV.emerge + 0.9, t)) + lerp(0, 2.5, sstep(DV.emerge + 0.9, 21.5, t))],
+  erode: (t) => [0, lerp(0, 1.3, sstep(DV.SW, DV.emerge + 0.9, t)) + lerp(0, 2.6, sstep(DV.emerge + 0.9, 21.5, t))],
   opacity: (t) => 1 - sstep(21.0, 21.6, t) });
 // the battle's drifting cloud shadows (as in v3): the old noise layer, shadows only (its own pass stays off)
 fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 0.40, opacity: 0, detail: 0.5 });
@@ -363,6 +364,7 @@ const wispsAt = (t) => { for (const w of WSP) { const u = (t - (DV.warm + 0.1 + 
   w.e.style.transform = `translate(${(cx - 300).toFixed(1)}px,${(cy - 150).toFixed(1)}px) scale(${sc.toFixed(3)},${(sc * 0.8).toFixed(3)})`; } };
 window.__draw = (t) => {
   placeBoats(t); titleAt(t); if (T3) T3.update(t);
+  O.film.set({ grain: lerp(0.08, 0.03, sstep(DV.wIn, DV.wFull, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
   O.film.set({ vignette: (1 - 0.95 * sstep(DV.deckIn, DV.deck + 0.3, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // v4: no oval inside the cloud
   WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.25, t).toFixed(3); wispsAt(t);
   for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }

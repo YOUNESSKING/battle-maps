@@ -8,12 +8,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CW, CH, Z = 192, 108, 2.5
 # phase, his t, our t, sectors [(name, his x, y, our x, y)] in 1280x720 frames
 PHASES = [
-    ("1 wide, scattered clouds", 1050.0, 2.0, [("cloud top", 620, 120, 290, 250), ("edge over map", 1130, 330, 40, 260), ("underside / crease", 760, 160, 330, 120), ("map + cloud shadow", 1100, 470, 980, 400)]),
-    ("2 deck rolling in", 635.9, 14.95, [("cloud top", 140, 380, 980, 300), ("edge over map", 520, 470, 560, 380), ("underside / crease", 330, 460, 820, 120), ("map in a gap", 430, 300, 560, 250)]),
-    ("3 mostly covered", 636.3, 15.25, [("cloud top", 760, 300, 700, 300), ("edge over map", 440, 220, 300, 500), ("underside / crease", 250, 480, 1000, 120), ("map in a gap", 1100, 200, 80, 560)]),
+    ("1 wide, scattered clouds", 1050.0, 2.0, [("cloud top", 620, 120, 790, 170), ("edge over map", 1130, 330, 690, 350), ("underside / crease", 760, 160, 800, 410), ("map + cloud shadow", 1100, 470, 860, 480)]),
+    ("2 deck rolling in", 635.9, 14.95, [("cloud top", 140, 380, 610, 190), ("edge over map", 520, 470, 250, 360), ("underside / crease", 330, 460, 800, 520), ("map in a gap", 430, 300, 470, 500)]),
+    ("3 mostly covered", 636.3, 15.25, [("cloud top", 760, 300, 840, 110), ("edge over map", 440, 220, 620, 590), ("underside / crease", 250, 480, 520, 430), ("map in a gap", 1100, 200, 400, 600)]),
     ("4 full cloud interior", 637.0, 15.9, [("interior centre", 540, 300, 540, 300), ("interior top", 900, 140, 900, 140), ("interior low", 300, 480, 300, 480), ("interior edge", 1060, 520, 1060, 520)]),
     ("5 white-out (warm)", 637.9, 16.75, [("centre", 540, 300, 540, 300), ("top right", 1060, 40, 1060, 40), ("bottom left", 240, 470, 240, 470), ("right edge", 1080, 400, 1080, 400)]),
-    ("6 emergence", 639.3, 18.1, [("remnant over map", 380, 500, 200, 520), ("remnant edge", 860, 560, 1000, 560), ("thin haze", 500, 120, 500, 120), ("clear map", 760, 160, 760, 200)]),
+    ("6 emergence", 639.3, 18.1, [("remnant over map", 380, 500, 400, 100), ("remnant edge", 860, 560, 320, 400), ("thin haze", 500, 120, 200, 250), ("clear map", 760, 160, 1000, 520)]),
 ]
 
 

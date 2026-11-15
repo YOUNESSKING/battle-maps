@@ -18,20 +18,21 @@ def grab(video, t, path):
 def main():
     ours, gm = sys.argv[1], (sys.argv[2] if len(sys.argv) > 2 else "/home/user/gm_ref/dl/gm_1814.mp4")
     off = float(os.environ.get("OFFSET", "0"))   # start time of the file when it is one render chunk
+    tag = os.environ.get("TAG", "")              # e.g. TAG=_v4 -> dive_ours_v4.jpg + dive_compare_v4.jpg
     font = ImageFont.load_default()
     with tempfile.TemporaryDirectory() as td:
         O = [grab(ours, b - off, f"{td}/o{i}.png") for i, (_, b) in enumerate(PAIRS)]
         sheet = Image.new("RGB", (640 * 4, 360 * 3))
         for i, im in enumerate(O):
             ImageDraw.Draw(im).text((8, 8), f"{PAIRS[i][1]:.2f}s  {LABEL[i]}", fill="yellow", font=font); sheet.paste(im, ((i % 4) * 640, (i // 4) * 360))
-        sheet.save(f"{HERE}/dive_ours.jpg", quality=85)
+        sheet.save(f"{HERE}/dive_ours{tag}.jpg", quality=85)
         if os.path.exists(gm):
             cmp_ = Image.new("RGB", (640 * 4, 360 * 6))
             for i, (a, b) in enumerate(PAIRS):
                 g = grab(gm, a, f"{td}/g{i}.png"); ImageDraw.Draw(g).text((8, 8), f"GM {a:.1f}s  {LABEL[i]}", fill="yellow", font=font)
                 col, row = (i % 2) * 2, (i // 2)
                 cmp_.paste(g, (col * 640, row * 360)); cmp_.paste(O[i], ((col + 1) * 640, row * 360))
-            cmp_.save(f"{HERE}/dive_compare.jpg", quality=82)
+            cmp_.save(f"{HERE}/dive_compare{tag}.jpg", quality=82)
     print("dive sheets written")
 
 
