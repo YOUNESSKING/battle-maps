@@ -71,7 +71,7 @@ soft light, grey-cool haze, tilt ~44 deg wide / ~30 deg close. `compare.jpg` sho
 ## Performance and render
 
 - HyperFrames renders WebGL here with **software GL (SwiftShader, 4 CPU cores)**, so the frame cost depends on what else runs.
-  Measured: 0.56 s/frame on a quiet machine (first 1-s test, 1 worker); the final 10 s demo (300 frames) took **16 min = 3.1 s/frame**
+  Measured: 0.56 s/frame on a quiet machine (first 1-s test, 1 worker); the final 10 s demo (300 frames) took **14 min = 2.7 s/frame**
   while two other agents were rendering (load average 13-17). Snapshots of 2-5 stills take 20-60 s.
 - Cost: wide = terrain (~160k verts) + ~900 crowns + 125 houses; close = ~21k crowns (20 tris each) + ~48k-vert terrain.
   Lambert materials (water: Standard + env map), PCF shadow map 2048 following the view, MSAA on.

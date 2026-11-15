@@ -230,8 +230,8 @@
   },
   "renders": {
     "latest": {
-      "id": "9817aed7-3d6f-4538-80f2-ee3da2b0de20",
-      "completedAt": 1794707548384,
+      "id": "d50851d2-8c98-4310-9e15-33c290eaa356",
+      "completedAt": 1794708505866,
       "output": "/home/user/battle-maps/research/style_tests/gm3d/world/demo.mp4",
       "status": "completed",
       "revision": null
