@@ -164,7 +164,7 @@ export function initWorld(canvas, opts = {}) {
     const trees = d.trees, ts = (name === "wide" ? 1.3 : 0.125) * O.treeScale;   // v4: smaller crowns (GM canopy grain is fine)
     const tmat = new THREE.MeshLambertMaterial();
     const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x5e6648), teal = new THREE.Color(0x345e64);
-    const GREENS = [0x314f57, 0x35545a, 0x38565c, 0x2f4c55, 0x3a565d, 0x324f57, 0x3b585f, 0x2f5058];   // v6: teal (R -10 %, B +12 %)   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
+    const GREENS = [0x314f52, 0x355455, 0x385656, 0x2f4c50, 0x3a5657, 0x324f51, 0x3b5858, 0x2f5052];   // v6: teal (R -10 %, B +12 %)   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
     const NV = 4, variants = [];
     for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
       const lobes = 2 + (v % 3), P = [], N = [];

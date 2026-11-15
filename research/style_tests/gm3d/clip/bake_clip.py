@@ -226,7 +226,7 @@ def bake(name):
     forest = cv2.GaussianBlur(forest, (0, 0), 0.7 if name == "close" else 0.6 * TW / 4096)
     crown = fbm(TH, TW, 2, int(bw / (0.6 if name == "wide" else 0.09)), seed + 3)   # tree crowns speckle
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)   # darker inside, lighter rim
-    fcol = (hexc("#344f52") if name == "close" else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])   # v5: GM teal woods ~(51,70,70)
+    fcol = (hexc("#34504e") if name == "close" else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])   # v5: GM teal woods ~(51,70,70)
     img = img * (1 - forest[..., None]) + fcol * forest[..., None]; del fcol, crown, fdark
     ao = np.clip(cv2.GaussianBlur(forest, (0, 0), 0.0025 * TW) - forest, 0, 1)   # shade on the ground next to woods
     img *= (1 - 0.45 * ao)[..., None]; del ao
