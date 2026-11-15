@@ -66,6 +66,10 @@ smoke draws over them. Infantry merges 2 boxes into 1 block (GM has ~half as man
 - Method: `make_sectors.py <snapshot dir | mp4>` -> `dive_sectors.jpg` (local, git-ignored): 6 phases x 4 sectors, his | ours at 2.5x.
   `TAG=_v4 OFFSET=0 python3 make_dive.py <mp4>` -> `dive_ours_v4.jpg` (+ `dive_compare_v4.jpg`, local).
 
+**v8 (2026-11-15, owner): Confederate withdrawal + generals' banners.**
+- Withdrawal (`index.html` `escape`/`escAt`, `ESC_RD` = the baked Vicksburg road): the two centre brigades and half of each flank brigade are overrun at the breastworks: they stop and turn grey in place at "the line was taken" (34.2 s), Union boxes closing round them; the rest peel off their line slots from 28.7 s into a road column, cross the bridge nose to tail at 2.1 units/s (the last box is over by ~35.6 s; the fire catches at 35.68 s on "the bridge burned"), then march west at 1.2 units/s and fade over the west frame edge (screen-x fade, ~1.5-2 s). The reserve and Pemberton's banner ride off west the same way. Escaping boxes are exempt from the push-apart (the column stays on the road); the retreat arrow runs just north of the road.
+- Banners: `banner.js` = verbatim copy of `research/style_tests/banners_units_camps/banners/banner.js` (STYLE_LOCK 2f item 1); `BN.build` + `BN.sway` on the clip timeline, pinned to the 3D ground at the pole foot each frame, x2/3 (authored at 1080p). Grant (blue, eagle, US 34 stars) and Pemberton (red, spear, Stars and Bars) replace the flag markers. `battle_ours_v8.jpg` = v7 before / v8 after.
+
 **v7 battle FX (2026-11-15, critic B v6 4, 5, 7, 8, 9, 11, 13):** musketry in separate battalion curtains (`smokeLine` `cluster: [1.0, 1.0]`, LOOKS.gmTall x2 vertical) that thin to 12 % within 6 s of the last volley (`fadeAfter`); bridge smoke unlit warm grey (0.30,0.27,0.24), alpha 0.35, wind 1.8, wider top, flames x1.8 + flickering orange glow on the water; night battery plume small and high (the low big one was cut by the bluffs into the grey slab over the river), flash 4 frames; cannon flash 3 frames x1.5, plume x1.5 jetting ~2 boxes; arrows with a soft pale glow + 2 px light rim inside the ink edge; vignette softer (.2/.42); grade: close sat 0.98, contrast 1.0 (terrain v7 already puts the SD ~10 % under his), wide veil off (it greyed the clouds) with toe 14. `TAG=v7 make_battle_sectors.py` -> `battle_ours_v7.jpg`.
 
 **v6 grade + battle FX (2026-11-15, critics v5: B 1, 5, 6, 8, 9, 10, 13, 14; A 2, 10, 12):**
@@ -119,6 +123,13 @@ cloud pixels (177-180,176-178,169-171) p90 199-204 vs his (185,185,172) p90 206,
 map incl. two big masses upper middle (deck clouds dropped under wide ones: no group seams); deck detail `fine` 0.22, blur 0.75; title: names hidden
 in its screen box from its first frame, dark-gold rim + premultiplied edges (no halo), 72 side layers; exit ease 3.35 s (keys 16.4 dist 107 ->
 17.25 dist 70 -> 20.6 dist 40), warmer, more translucent remnants. `dive_ours_v7.jpg`, `dive_sectors_v7.jpg` (local).
+
+**v8 opening (owner: "keep the v6 clouds / opening; 'One day' showed late"):** the cloud code and the 0-22 s section are back to v6 (57495a5) except
+two glitch fixes kept from v7: the veil is opaque 2 frames either side of the 16.4 s region switch (30 fps stills 16.367-16.467: std 0.9, v6 had
+the close map flashing at std 8.2) with a flat -8 dip, and map names are hidden inside the title's screen box. The title now lands on the words:
+measured in `gm_test/audio/voice.wav` (10 ms energy / zero-crossing / centroid) 'It stopped him for | one day.' = 10.30-11.81 s, 'one' 11.29-11.52,
+/d/ burst 11.53, 'day' to 11.81, pause to 12.40; the title fades in 10.74-11.24 (readable from the start of 'one'), grows while it is said and flies
+past the lens as in v6; Grant's card leaves at 10.54. `opening_v8_vs_v6.jpg` = v6 render | v8 stills, 16 matched times.
 
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).
