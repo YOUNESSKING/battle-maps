@@ -502,7 +502,7 @@ function drawPins(t, region) {
 // that grows with depth (top of frame = far ground). Values are blended by the camera's night factor and region; the dive cloud
 // (deck -> haze) keeps the neutral look tuned for the white-out. ?grade=0 = raw.
 const GP = {   // sat, toe (0-255 lift at black), S strength, blue/green lift (table offsets at mid), veil rgb, veil alpha top/bottom
-  close: { sat: 0.98, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04, ct: 0.94 },   // v7: ct = contrast about mid-grey (critic B 13: spread 10 % high)
+  close: { sat: 0.98, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04, ct: 1.0 },   // v7: ct = contrast about mid-grey; kept 1.0 (with terrain v7 the close SD is already ~10 % under his)
   wide: { sat: 0.95, toe: 14, S: 0.1, bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },   // v7: no veil on the wide map (it greyed the clouds, critic A); toe up instead
   night: { sat: 0.95, toe: 2, S: 0.0, bl: 5, gl: 2, veil: [40, 60, 82], vt: 0.04, vb: 0.0, ct: 1.0 },
   off: { sat: 1.05, toe: 0, S: 0, bl: 0, gl: 0, veil: [150, 160, 165], vt: 0, vb: 0, ct: 1.0 } };
