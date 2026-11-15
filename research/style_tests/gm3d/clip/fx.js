@@ -264,6 +264,7 @@ uniform vec4 vcDrift;  // map drift x, z; noise evolution; -
 uniform vec3 vcSun;
 uniform float vcInner;
 uniform float vcGS;     // billow scale of group 1 (finer)
+uniform vec3 vcShDir;   // direction the ground shadows are cast along (steeper than the sun, as in his map)
 vec4 vcMapAt(vec2 xz) { return texture(vcMap, (xz - vcDrift.xy - vcB.xy) * vcB.zw); }
 float vcDens(vec3 p, vec4 m, float lod) {
   float amp = vcP.y;
@@ -280,7 +281,7 @@ float vcDens(vec3 p, vec4 m, float lod) {
   vec4 n1 = texture(vcNoise, q + w);
   float d = s + amp * (1.0 * (n0.r - 0.52) + mix(0.5, 0.62, m.b) * (n1.g - 0.5) + mix(0.14, 0.30, m.b) * (n1.b - 0.5)) - er;   // wide fair-weather clouds: softer, fewer small billows
   if (lod > 0.0 && d > -amp * 0.2 && d < amp * 0.7) d += amp * vcQ.y * lod * (texture(vcNoise, q * 3.3 + w * 1.7).b - 0.5);
-  float dn = clamp(d / vcP.z, 0.0, 1.0);
+  float dn = clamp(d / (vcP.z * mix(1.7, 1.0, m.b)), 0.0, 1.0);   // group 0 (wide fair-weather): softer translucent rims
   dn *= mix(1.0, 0.25 + 1.1 * n1.g, vcInner);   // mottled interior (never a flat card)
   // wispy fringe: the outer part of the soft edge is torn by the fine billows
   return dn * mix(1.0, smoothstep(0.15, 0.85, n1.b), vcQ.w * (1.0 - dn));
@@ -468,7 +469,7 @@ export function createFX(cfg = {}) {
     // v4 volumetric cumulus (vclouds)
     vcNoise: { value: null }, vcMap: { value: null }, vcB: { value: new THREE.Vector4(0, 0, 1, 1) }, vcP: { value: new THREE.Vector4(1, 1, 1, 1) },
     vcQ: { value: new THREE.Vector4(3, 0, 0, 0) }, vcS: { value: new THREE.Vector4(0, 1, 0, 0) }, vcErode: { value: new THREE.Vector2() },
-    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir }, vcInner: { value: 0 }, vcGS: { value: 1 },
+    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir }, vcInner: { value: 0 }, vcGS: { value: 1 }, vcShDir: { value: sunDir.clone() },
   };
 
   const emitters = [];   // { update(t, batch, ctx) }
@@ -911,7 +912,7 @@ export function createFX(cfg = {}) {
     shared.vcNoise.value = o.noise; shared.vcMap.value = map; shared.vcB.value.set(x0, z0, 1 / (MW * tx), 1 / (MD * tx));
     shared.vcP.value.set(1 / (o.tile ?? 40), o.amp ?? 6, o.soft ?? 2.5, o.sigma ?? 0.8);
     shared.vcQ.value.set(o.baseSharp ?? 3, o.fine ?? 0.18, o.warp ?? 0.35, o.wisp ?? 0.6);
-    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1); shared.vcInner.value = o.inner ?? 0.5; shared.vcGS.value = o.groupScale ?? 1;
+    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1); shared.vcInner.value = o.inner ?? 0.5; shared.vcGS.value = o.groupScale ?? 1; if (o.shadowDir) shared.vcShDir.value.set(...o.shadowDir).normalize();
     const cu = Object.assign({
       uInvProj: { value: new THREE.Matrix4() }, uCamWorld: { value: new THREE.Matrix4() }, uCam: { value: new THREE.Vector3() },
       uSunCol: { value: new THREE.Color(1.0, 0.97, 0.92) }, uAmbTop: { value: new THREE.Color(0.66, 0.71, 0.80) }, uAmbBot: { value: new THREE.Color(0.34, 0.38, 0.46) },
@@ -1016,15 +1017,15 @@ export function createFX(cfg = {}) {
             }
             if (vcS.w > 0.5 && vcS.z > 0.0) {   // v4: volumetric cumulus shadows (density sampled along the sun ray)
               float ym = mix(vcS.x, vcS.y, 0.3);
-              vec3 sp = vFxWorld + vcSun * (ym - vFxWorld.y) / max(vcSun.y, 0.08);
+              vec3 sp = vFxWorld + vcShDir * (ym - vFxWorld.y) / max(vcShDir.y, 0.08);
               vec4 mm = vcMapAt(sp.xz);
               float tau = 0.0;
               for (int k = 0; k < 3; k++) {
                 float yk = mix(mm.g, max(mm.r, mm.g + 1.0), 0.12 + 0.3 * float(k));
-                vec3 q = vFxWorld + vcSun * (yk - vFxWorld.y) / max(vcSun.y, 0.08);
+                vec3 q = vFxWorld + vcShDir * (yk - vFxWorld.y) / max(vcShDir.y, 0.08);
                 tau += vcDens(q, vcMapAt(q.xz), 0.0);
               }
-              outgoingLight *= 1.0 - vcS.z * (1.0 - exp(-tau * 1.6));
+              outgoingLight *= 1.0 - vcS.z * (1.0 - exp(-tau * 0.7));
             }
             if (fxCuN > 0) {
               vec2 cs = vFxWorld.xz + fxCuL.xz / fxCuL.y * (fxCuL.w - vFxWorld.y);

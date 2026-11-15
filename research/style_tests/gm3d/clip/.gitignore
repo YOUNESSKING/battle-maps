@@ -8,3 +8,6 @@ dive_sectors.jpg
 dive_compare_v4.jpg
 ground_sectors.jpg
 troops_sectors.jpg
+# anything holding Grand Maneuver frames stays local
+*_sectors.jpg
+*compare*.jpg
