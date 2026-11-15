@@ -1243,7 +1243,6 @@ export function createFX(cfg = {}) {
     return batch.n;
   }
 
-  return {
   // v6: cloud alpha at a screen point (0..1, canvas px), read back from the cloud target of the last update (pinned labels fade under clouds)
   const pxBuf = new Uint16Array(4);
   function cloudAlphaAt(x, y) {
@@ -1253,6 +1252,7 @@ export function createFX(cfg = {}) {
     try { renderer.readRenderTargetPixels(vc.rt, ix, iy, 1, 1, pxBuf); } catch (e) { return 0; }
     return Math.min(1, Math.max(0, THREE.DataUtils.fromHalfFloat(pxBuf[3])));   // the target already carries the opacity
   }
+  return {
     cloudAlphaAt, vclouds, smokeLine, cannon, flash, custom, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
     get spriteCount() { return batch.n; },
     sunDir, wind, shared, batch,
