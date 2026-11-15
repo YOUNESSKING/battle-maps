@@ -16,7 +16,8 @@
   @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
   html, body { margin: 0; padding: 0; background: #000; }
   #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
-  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: contrast(1.12) saturate(1.12) brightness(0.95); }
+  /* v5 (critic A 3): + one levels / S-curve pass on the 3D image only (#gmgrade, tables written by gradeAt(t) in the module) */
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: contrast(1.12) saturate(1.12) brightness(0.95) url(#gmgrade); }
   #arrows { position: absolute; inset: 0; width: 1280px; height: 720px; overflow: visible; }
   #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
   #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
@@ -54,6 +55,8 @@
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="66" data-width="1280" data-height="720">
   <canvas id="gl" width="1280" height="720"></canvas>
+  <svg width="0" height="0" style="position:absolute"><filter id="gmgrade" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feComponentTransfer>
+    <feFuncR type="table" tableValues="0 1"/><feFuncG type="table" tableValues="0 1"/><feFuncB type="table" tableValues="0 1"/></feComponentTransfer></filter></svg>
   <div id="pins"></div>
   <svg id="arrows" viewBox="0 0 1280 720"></svg>
   <div id="troops"></div>
@@ -92,10 +95,13 @@ const keys = [
   { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 30, tilt: 52, yaw: -10, fov: 30 },
   { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 25, tilt: 54, yaw: -14, fov: 30 },
   { t: T.p4 - 0.6, region: "close", at: [1514.6, 705.3], dist: 27.5, tilt: 53, yaw: -12, fov: 30 },
-  { t: T.p4 - 0.6, region: "wide", at: [1398, 688], dist: 300, tilt: 44, yaw: 0, fov: 30, night: 1, ease: "cut" },
-  { t: T.p5 - 0.6, region: "wide", at: [1378, 694], dist: 230, tilt: 46, yaw: -4, fov: 30, night: 1 },
+  // v5 (critic B 9): a more oblique night camera (tilt from vertical 44/46 -> 52/56, his night shots look across the land)
+  { t: T.p4 - 0.6, region: "wide", at: [1392, 690], dist: 280, tilt: 52, yaw: 0, fov: 30, night: 1, ease: "cut" },
+  { t: T.p5 - 0.6, region: "wide", at: [1376, 694], dist: 215, tilt: 56, yaw: -4, fov: 30, night: 1 },
   { t: T.p5 - 0.6, region: "close", at: [1514.0, 705.0], dist: 34, tilt: 50, yaw: -4, fov: 30, ease: "cut" },
-  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30 },
+  // v5 (critic B 17): the camera settles 1.4 s before the end (ease out), holds still while the overlays leave, then the world fades
+  { t: T.D - 1.4, region: "close", at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30 },
+  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30, ease: "lin" },
 ];
 const world = initWorld(document.getElementById("gl"), { base: "assets/", keys, width: W, height: H, antialias: false, shadowSize: 1536, bridgeBurnT: EV.bridgeFire + 3.2 });
 await world.ready;
@@ -147,30 +153,43 @@ const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 162
 fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 0.40, opacity: 0, detail: 0.5 });
 
 // cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
-fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 6, flameK: 1.0, flameA: 0.7, flameRate: 6, emberRate: 1, glowSize: 2.2, smokeRate: 1.6, smokeLife: 14, rise: 2, light: false, ramp: 2, smokeTint: [0.16, 0.15, 0.14], smokeAlpha: 0.55, smokeS0: 0.9, smokeGrow: 1.6, smokeWind: 3 });
+// v5 (critic B 6): orange flame tongues (no white clipping) under a dark leaning smoke column
+const FIRE_GM = { flameColor: [0.62, 0.1, 0.015, 0.1, 0.2, 0.04], glowColor: [1.0, 0.42, 0.12], glowA: 0.16, lightDay: 0.12 };
+fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { ...FIRE_GM, size: 6, tongues: 3, flameK: 0.75, flameA: 0.55, flameRate: 7, emberRate: 1, glowSize: 1.6, smokeRate: 2.2, smokeLife: 14, rise: 9, light: false, ramp: 2, smokeTint: [0.2, 0.185, 0.17], smokeAlpha: 0.5, smokeS0: 0.8, smokeGrow: 2.2, smokeWind: 1.0, smokeTurb: 1.2 });
 // close: smoke lines, cannon, impacts, bridge fire
 const brDir = [Math.cos(-BR.angle), -Math.sin(-BR.angle)], deckY = (BR.deck * 6) / D.geo.mpu, L2 = BR.len / 2;
 const BA = [BR.x - brDir[0] * L2, deckY + 0.05, BR.z - brDir[1] * L2], BB = [BR.x + brDir[0] * L2, deckY + 0.05, BR.z + brDir[1] * L2];
-fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { to: BB, size: 1.0, flameK: 1.25, flameA: 0.5, glowSize: 4, flameRate: 16, emberRate: 14, smokeRate: 6.0, smokeLife: 12, rise: 5, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.14, 0.13, 0.12], smokeAlpha: 0.5, smokeS0: 2.2, smokeGrow: 6, smokeWind: 3.2 });
-fxC.fire(BA, T.p5 - 1, T.D + 2, { to: BB, size: 0.45, flameRate: 3, emberRate: 1, glowSize: 1.5, smokeRate: 1.2, smokeLife: 8, rise: 6, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28] });   // still smouldering next day
+fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { ...FIRE_GM, to: BB, size: 1.0, tongues: 8, flameK: 1.5, flameA: 0.5, glowSize: 2.2, flameRate: 2.4, emberRate: 3, smokeRate: 7.0, smokeLife: 16, rise: 36, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.095, 0.094, 0.092], smokeAlpha: 0.55, smokeS0: 0.7, smokeGrow: 2.0, smokeWind: 1.1, smokeTurb: 0.6 });
+fxC.fire(BA, T.p5 - 1, T.D + 2, { ...FIRE_GM, to: BB, size: 0.45, tongues: 3, flameRate: 3, emberRate: 1, glowSize: 1.2, smokeRate: 1.2, smokeLife: 8, rise: 10, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28], smokeWind: 1.0, smokeTurb: 1.2 });   // still smouldering next day
 const bwPts = BRW.filter((_, i) => i % 3 === 0).map((p) => G(p[0] + 0.12, p[1], 0.06));
-fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 1.8, volley: 1.6, roll: 0.9, size: 1.35, height: 3, alpha: 0.15, tint: [0.58, 0.62, 0.68] });
-fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 0.8, size: 1.3, alpha: 0.12, life: 9, tint: [0.58, 0.62, 0.68] });
-fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 0.9, size: 1.3, alpha: 0.11, life: 9, tint: [0.58, 0.62, 0.68] });
-EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0, puffs: 8 });
+// v5 (critic B 4): GM curtain smoke (fx LOOKS.gm: unlit cool grey, soft, tall, hanging, slow sideways drift)
+fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 1.6, volley: 1.6, roll: 0.9, size: 1.35, height: 3, muzzle: 6, windK: 0.45 });
+fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 0.7, size: 1.3, alpha: 0.16, life: 12, muzzle: 6, windK: 0.45 });
+fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 0.8, size: 1.3, alpha: 0.16, life: 12, muzzle: 6, windK: 0.45 });
+EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0 });
   fxC.impact(G(1520.2 + ((i * 37) % 7) * 0.15, g[1] + ((i * 53) % 9 - 4) * 0.35, 0), t + 0.85, { size: 0.9 }); });
-EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0, puffs: 8 });
+EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0 });
   fxC.impact(G(1526.3 + ((i * 29) % 7) * 0.25, g[1] + ((i * 41) % 9 - 4) * 0.4, 0), t + 0.8, { size: 0.9 }); });
 // flashback: the burning steamer drifting down the Mississippi at Vicksburg, the batteries firing on the boats, town lights
 const MISS = D.regions.wide.rivers[0].pts;
 const riverAt = (y) => { let b = MISS[0]; for (const p of MISS) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b; };
 const st0 = riverAt(684), st1 = riverAt(703);
-fxW.fire(GWd(st0[0], st0[1], 0.4), EV.steamer, EV.steamer + 2.6, { to: GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), size: 0.55, glowSize: 26, smokeRate: 1.8, smokeLife: 10, rise: 7, ramp: 0.8, fadeOut: 0.6, lightIntensity: 3 });
-fxW.fire(GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), EV.steamer + 2.4, T.p5, { to: GWd(st1[0], st1[1], 0.4), size: 0.55, glowSize: 26, smokeRate: 1.8, smokeLife: 10, rise: 7, ramp: 0.4, lightIntensity: 3 });
+fxW.fire(GWd(st0[0], st0[1], 0.4), EV.steamer, EV.steamer + 2.6, { ...FIRE_GM, tongues: 3, to: GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), size: 0.55, glowSize: 18, smokeRate: 1.8, smokeLife: 10, rise: 12, smokeWind: 1.0, ramp: 0.8, fadeOut: 0.6, lightIntensity: 3 });
+fxW.fire(GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), EV.steamer + 2.4, T.p5, { ...FIRE_GM, tongues: 3, to: GWd(st1[0], st1[1], 0.4), size: 0.55, glowSize: 18, smokeRate: 1.8, smokeLife: 10, rise: 12, smokeWind: 1.0, ramp: 0.4, lightIntensity: 3 });
 const VB = D.towns.Vicksburg;
-EV.batteryShots.forEach((t, i) => { const a = (i * 0.9) % 3; fxW.cannon(GWd(VB[0] - 2 + a * 2.2, VB[1] - 5 + i * 1.9, 0.3), t, { dir: [-1, 0.1], size: 0.6, puffs: 6, dust: 0 });
+// v5 (critic B 9): battery flashes 3x bigger + a 0.15 s orange glow on the water under each shot; the batteries stand on the bluff edge
+EV.batteryShots.forEach((t, i) => { const r0 = riverAt(VB[1] - 6 + i * 2.6), g = [r0[0] + 3.2 + (i % 3) * 0.8, r0[1]];
+  fxW.cannon(GWd(g[0], g[1], 0.3), t, { dir: [-1, 0.1], size: 1.8, puffs: 8, dust: 0, life: 7, pool: 5, flash: 2.0 });
+  fxW.flash(GWd(r0[0] + 0.4, r0[1], 0.25), t, { size: 2.6, life: 0.15, color: [1.1, 0.45, 0.12], alpha: 1.0, pool: 3 });
   const r = riverAt(VB[1] - 3 + i * 3); fxW.impact(GWd(r[0], r[1], 0.1), t + 0.9, { size: 0.5 }); });
-for (let i = 0; i < 14; i++) { const a = i * 2.39996, rr = 1.2 + (i % 5) * 1.1; fxW.campfire(GWd(VB[0] + Math.cos(a) * rr * 1.3, VB[1] + Math.sin(a) * rr, 0.2), { t0: T.p4 - 1, t1: T.p5, size: 1.4, smoke: false, visible: () => 1 }); }
+// v5: 40 campfires in camps of 3-5 small orange dots (his 187 s night: dots ~3-5 px with a small soft halo; ours were 14 invisible ones):
+// Confederate camps on the bluffs round Vicksburg, Union camps on the Louisiana shore across the river
+{ const CF = [], camp = (cx, cy, n, s) => { for (let j = 0; j < n; j++) CF.push([cx + (hsh(s + j, 66) - 0.5) * 2.4, cy + (hsh(s + j, 67) - 0.5) * 1.8]); };
+  [[684, 4.5], [690, 3.6], [696, 4.2], [702, 5.0], [676, 7.0]].forEach(([y, dx], i) => camp(riverAt(y)[0] + dx + 2, y, 4, i * 10));
+  camp(VB[0] + 6, VB[1] + 3, 4, 60); camp(VB[0] + 5, VB[1] - 6, 3, 70);
+  [[672, -6], [679, -9], [686, -7], [692, -11], [698, -8], [705, -10]].forEach(([y, dx], i) => camp(riverAt(y)[0] + dx, y, 4, 100 + i * 10));
+  CF.forEach(([x, y], i) => fxW.campfire(GWd(x, y, 0.15), { t0: T.p4 - 1, t1: T.p5, size: 1.1 + hsh(i, 65) * 0.5, flameRate: 7, glowSize: 3.2, glowA: 0.3, glowColor: [1.1, 0.42, 0.12],
+    flameColor: [1.05, 0.22, 0.04, 0.2, 0.35, 0.1], poolRadius: 4, smoke: false, visible: () => 1 })); }
 fxW.setNight(0);
 
 // ---------------- the 3D title: gold letters floating in world space over the map (GM's '70,000'), passing over the lens ----------------
@@ -199,11 +218,22 @@ const titleAt = (t) => { const a = sstep(T.story, T.story + 0.7, t) * (1 - sstep
   for (const m of tMats) m.opacity = a; TTL.scale.setScalar(0.94 + 0.06 * sstep(T.story, T.story + 1.2, t)); tShadow(TTL.position, tAx, tAy, TTL.visible ? a : 0); };
 
 // ---------------- 3D extras: boats on the Mississippi (flashback), three new bridges (next day) ----------------
-const boatMat = new THREE.MeshLambertMaterial({ color: 0x1a1a1c }), boats = [];
-for (let i = 0; i < 6; i++) { const b = new THREE.Group(); const hull = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.5, 0.75), boatMat); b.add(hull);
-  const st = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 1.2, 6), boatMat); st.position.set(0.3, 0.8, 0); b.add(st); world.regions.wide.scene.add(b); boats.push(b); }
-const placeBoats = (t) => { for (let i = 0; i < boats.length; i++) { const y = 662 + (t - (T.p4 - 1)) * 1.6 - i * 4.2, p = riverAt(y), q = riverAt(y + 1);
-  boats[i].position.set(p[0] + (i % 2 ? 0.6 : -0.6), (p[2] * 14) / D.geo.mpu + 0.35, p[1]); boats[i].rotation.y = Math.atan2(-(q[1] - p[1]), q[0] - p[0]); boats[i].visible = t > T.p4 - 1 && t < T.p5; } };
+// v5 (critic B 9): river boats with a hull (pointed bow, low superstructure, two stacks), a warm deck lamp and a moonlit V wake
+const boatMat = new THREE.MeshLambertMaterial({ color: 0x2b2622 }), houseMat = new THREE.MeshLambertMaterial({ color: 0x6a6258 }), boats = [];
+const hullGeo = (() => { const sh = new THREE.Shape(); sh.moveTo(-1.1, -0.36); sh.lineTo(0.75, -0.36); sh.quadraticCurveTo(1.1, -0.3, 1.35, 0); sh.quadraticCurveTo(1.1, 0.3, 0.75, 0.36); sh.lineTo(-1.1, 0.36); sh.closePath();
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 0.32, bevelEnabled: false }); g.rotateX(-Math.PI / 2); g.translate(0, -0.12, 0); return g; })();
+for (let i = 0; i < 6; i++) { const b = new THREE.Group(); b.add(new THREE.Mesh(hullGeo, boatMat));
+  const hs = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.26, 0.5), houseMat); hs.position.set(-0.25, 0.33, 0); b.add(hs);
+  for (const sx of [0.15, 0.45]) { const st = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 0.9, 6), boatMat); st.position.set(sx, 0.8, 0); b.add(st); }
+  world.regions.wide.scene.add(b); boats.push(b); }
+const boatAt = (i, t) => { const y = 662 + (t - (T.p4 - 1)) * 1.6 - i * 4.2, p = riverAt(y), q = riverAt(y + 1), x = p[0] + (i % 2 ? 0.6 : -0.6);
+  return { x, y: p[1], h: (p[2] * 14) / D.geo.mpu + 0.35, dx: q[0] - p[0], dy: q[1] - p[1], on: t > T.p4 - 1 && t < T.p5 }; };
+const placeBoats = (t) => { for (let i = 0; i < boats.length; i++) { const B = boatAt(i, t); boats[i].position.set(B.x, B.h, B.y); boats[i].rotation.y = Math.atan2(-B.dy, B.dx); boats[i].visible = B.on; } };
+fxW.custom((t, push) => { for (let i = 0; i < boats.length; i++) { const B = boatAt(i, t); if (!B.on) continue; const l = Math.hypot(B.dx, B.dy) || 1, dx = B.dx / l, dy = B.dy / l;
+  push(B.x + dx * 0.5, B.h + 0.6, B.y + dy * 0.5, 1.5, 0.9, 1.3, 0.62, 0.22);   // deck lamp
+  push(B.x - dx * 0.2, B.h + 0.5, B.y - dy * 0.2, 4.2, 0.26, 1.0, 0.45, 0.15);    // its glow on the deck and water
+  for (let k = 1; k <= 8; k++) { const d = 1.0 + k * 0.7, s = 0.15 + k * 0.12, a = 0.45 * (1 - k / 9);   // the wake: two arms of moonlit foam behind the stern
+    for (const sg of [-1, 1]) push(B.x - dx * d - dy * sg * s, B.h - 0.1, B.y - dy * d + dx * sg * s, 0.9 + k * 0.12, a, 0.5, 0.58, 0.68); } } });
 const RIV = D.regions.close.rivers[0].pts, wood = new THREE.MeshLambertMaterial({ color: 0x6b5236 }), newBridges = [];
 [[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p;
   const i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], ang = Math.atan2(c[1] - a[1], c[0] - a[0]);
@@ -221,7 +251,7 @@ const SYM = {
 const TR = document.getElementById("troops"), UNITS = [];
 // unit: side u|r, type inf|art, keys [[t, x, y]], face (radians, map plane, direction the line faces), n blocks, bw (block width, units)
 const unit = (side, type, keys, o = {}) => { const n = o.n || 4, els = [];
-  for (let i = 0; i < n; i++) { const e = document.createElement("div"); e.className = `blk ${side}`; e.innerHTML = SYM[type]; TR.appendChild(e); els.push(e); }
+  if (DOMBOX) for (let i = 0; i < n; i++) { const e = document.createElement("div"); e.className = `blk ${side}`; e.innerHTML = SYM[type]; TR.appendChild(e); els.push(e); }
   const u = { side, type, keys, face: o.face ?? (side === "u" ? Math.PI : 0), n, bw: o.bw || (type === "art" ? 0.42 : 0.7), bd: o.bd || (type === "art" ? 0.32 : 0.3), gap: o.gap || 0.12,
     t0: o.t0 ?? 0, t1: o.t1 ?? 1e9, cap: o.cap, capN: o.capN ?? n, els, wob: o.wob ?? 1 };
   UNITS.push(u); return u; };
@@ -235,13 +265,13 @@ EV.csGuns.forEach((g, i) => unit("r", "art", [[0, g[0] - 0.15, g[1]]], { n: 2, c
 unit("r", "inf", [[0, BR.x - 1.6, 703.6], [TK + 1, BR.x - 3.0, 704.2]], { n: 3, face: 0, t1: EV.bridgeFire + 3.5 });
 const ARR = SW + 0.6;
 [[699.0, 0], [702.6, 1], [706.4, 2], [710.6, 3]].forEach(([y, i]) => unit("u", "inf",
-  [[ARR, 1534.5 + i * 0.6, y], [T.crossing + 1, 1526.6 + (i % 2) * 0.3, y], [30.4 + i * 0.3, 1526.0, y], [TK - 0.3 + i * 0.15, bwX(y) + 0.5, y], [TK + 1.4, bwX(y) - 1.0, y], [T.p4, BR.x + 1.6, y * 0.4 + 705 * 0.6]],
-  { n: 4, t0: ARR - 0.2 }));
+  [[ARR, 1534.5 + i * 0.6, y], [T.crossing + 1, 1526.6 + (i % 2) * 0.3, y], [30.4 + i * 0.3, 1526.0, y], [TK - 0.3 + i * 0.15, bwX(y) + 0.5, y], [TK + 1.4, bwX(y) - 1.0, y], [T.p4, BR.x + 2.4 + (i % 2) * 1.1, 699.2 + i * 3.5]],
+  { n: 4, t0: ARR - 0.2, t1: T.p5 - 1 }));   // v5: no longer converge on one spot by the bridge (critic B 16: stacked column)
 [[1529.2, 699.6], [1529.4, 704.8], [1529.0, 710.2], [1535.0, 702.0], [1535.4, 708.0]].forEach(([x, y], i) => unit("u", "inf", [[ARR, x + 6, y], [T.crossing + 2 + i * 0.3, x, y], [TK + 1, x - 3, y]], { n: 3, t0: ARR - 0.2 }));
 EV.usGuns.forEach((g, i) => unit("u", "art", [[ARR, g[0] + 5, g[1]], [T.crossing - 0.6 + i * 0.4, g[0] + 0.2, g[1]]], { n: 2, t0: ARR - 0.2 }));
 // next day: Union columns cross the three new bridges westward
-[[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { const r0 = posAtRiver(y); for (let j = 0; j < 2; j++)
-  unit("u", "inf", [[T.p5 - 1, r0[0] + 2.2 + j * 0.9, y], [EV.bridgesNew[k] + 0.6, r0[0] + 1.2 + j * 0.9, y], [T.D, r0[0] - 2.4 + j * 0.9, y + (705 - y) * 0.2]], { n: 3, face: Math.PI, t0: T.p5 - 0.6, bw: 0.5, gap: 0.08 }); });
+// v5 (critic B 16): ONE column per new bridge, boxes nose to tail along the bridge axis (perpendicular to the river), waiting on the east
+// bank until its bridge is down, then filing across it and on west; no column ever stands in the water off a bridge
 function posAtRiver(y) { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p; return b; }
 [[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
 // army banners (one flag per side, on a pole, Style W)
@@ -252,17 +282,20 @@ const BANNERS = [banner("assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T
 // troops look: 'boxes' (Style W, default) | 'blocks' (GM 3D formation blocks, troops3d.js); same UNITS, same keys
 const TROOPS = window.TROOPS = window.TROOPS || new URLSearchParams(location.search).get("troops") || "boxes";
 for (const u of UNITS) if (u.t0 > T.p5 - 1 && u.keys.length > 2) u.march = 1;   // blocks: next-day brigades cross the new bridges in march column
-const T3 = TROOPS === "blocks" ? (await import("./troops3d.js")).createTroops3D({ THREE, scene: world.regions.close.scene, heightAt: hC, units: UNITS, posAt, sun: SUN,
+const TM = await import("./troops3d.js");
+const BX = TROOPS !== "blocks" && !DOMBOX ? TM.createBoxes3D({ THREE, scene: world.regions.close.scene, sun: SUN }) : null;
+const AR3 = !DOMBOX ? TM.createArrows3D({ THREE, scene: world.regions.close.scene, heightAt: hC }) : null;
+const T3 = TROOPS === "blocks" ? TM.createTroops3D({ THREE, scene: world.regions.close.scene, heightAt: hC, units: UNITS, posAt, sun: SUN,
   shots: [...EV.usShots.map((t, i) => ({ t, x: EV.usGuns[i % 3][0] + 0.2, y: EV.usGuns[i % 3][1] })), ...EV.csShots.map((t, i) => ({ t, x: EV.csGuns[i % 3][0] - 0.15, y: EV.csGuns[i % 3][1] }))] }) : null;
 // solid arrows on the ground (assault, retreat, next-day crossing)
 const SVG = document.getElementById("arrows"), NSV = "http://www.w3.org/2000/svg", ARROWS = [];
 const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NSV, "g"); g.innerHTML = `<path fill="none" stroke="rgba(14,12,8,.6)" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="${col}"/><polygon fill="${col}" stroke="rgba(14,12,8,.6)" stroke-width="1.5"/>`;
-  SVG.appendChild(g); ARROWS.push({ g, pts, t0, dur, t1 }); };
+  SVG.appendChild(g); ARROWS.push({ g, pts, t0, dur, t1, a3: AR3 ? AR3.add(pts, col) : null }); };
 arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, "#3f6fd0");
 arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, "#3f6fd0");
 arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, "#3f6fd0");
 arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, "#c4483a");
-for (const [y, k] of [[702.0, 0], [707.8, 1], [709.6, 2]]) { const r0 = posAtRiver(y); arrow([[r0[0] + 2.2, y], [r0[0], y], [r0[0] - 2.4, y + (705 - y) * 0.2]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
+for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y); arrow([[b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0], b[1]], [b[0] - ex * 2.6, b[1] - ey * 2.6]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
 
 // ---------------- place names pinned to the ground ----------------
 const PINS = [], PN = document.getElementById("pins");
@@ -271,10 +304,14 @@ place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, 9, "wide"); place("Edwards", .
 place("Bovina", 1495.5, 700.4, 19, SW + 1, T.p4 - 1, "close"); place("Big Black River", 1512.2, 696.0, 18, SW + 1.2, 27, "close", "it");
 place("Vicksburg", 1392, 683, 24, T.p4 + 0.4, T.p4 + 5, "wide"); place("Mississippi River", 1362, 688, 18, T.p4 + 0.8, T.p4 + 5.5, "wide", "it");
 place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it");
+// v5 (critic B 5): the boxes and arrows live IN the close scene (troops3d.js createBoxes3D / createArrows3D: fogged, under the smoke and
+// clouds, soft contact shadow); ?troops=dom keeps the old DOM overlay boxes for comparison
+const TQ = new URLSearchParams(location.search).get("troops");
+const DOMBOX = TQ === "dom";
 
 // ---------------- GM overlay (1920x1080 space) ----------------
 const O = GMOverlay.create(document.getElementById("ov"), { tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
-O.film.set({ grain: 0.08 });   // v3: GM's grain is finer than ours was
+O.film.set({ grain: 0.04 });   // v5 (critic A 10 / B 18): grain <= 0.04 on the final frame (was 0.08)
 O.plaque.date(0.4, { month: "May 1863", day: "17", weekday: "Sunday", note: "east of Vicksburg" });
 O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x + 9, BR.z + 14], side: "cs", marker: false });
 O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", world: [1600, 716], offset: [150, -150], tIn: T.grant, tOut: T.story - 0.2 });
@@ -294,6 +331,11 @@ O.label(T.bburn, T.guns - 0.2, { name: "Big Black bridge burned", sub: "fired by
 O.ledger.show(T.guns - 0.6, { title: "Big Black River", sub: "17 - 18 May 1863" });
 O.ledger.add(T.guns, { who: "18 guns taken", stamp: false });
 O.ledger.add(T.pris, { who: "1,751 prisoners", note: "by Grant's count", stamp: false });
+const bridgeAxis = (y) => { const b = posAtRiver(y), i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], l = Math.hypot(c[0] - a[0], c[1] - a[1]);
+  let ex = (c[1] - a[1]) / l, ey = -(c[0] - a[0]) / l; if (ex < 0) { ex = -ex; ey = -ey; } return { b, ex, ey }; };   // (ex, ey) points to the east bank
+const NEWBR = [[702.0, 0], [707.8, 1], [709.6, 2]];
+NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y), P = (d) => [b[0] + ex * d, b[1] + ey * d], tb = EV.bridgesNew[k];
+  unit("u", "inf", [[T.p5 - 1, ...P(3.6)], [tb + 0.7, ...P(3.6)], [tb + 4.2, ...P(-2.4)], [T.D, ...P(-3.4)]], { n: 4, face: Math.atan2(ey, ex) + Math.PI / 2, t0: T.p5 - 0.6, bw: 0.42, bd: 0.24, gap: 0.06, wob: 0, col: 1 }); });
 O.number(T.pris, T.six - 0.3, { value: 1751, round: 1, world: [1519.0, 706.5], size: 104 });
 O.ledger.add(T.six, { who: "276 Union hit", note: "six prisoners for each", stamp: false });
 O.ledger.hide(T.p4 - 0.6);
@@ -312,34 +354,43 @@ O.timeline.seal(T.p5 + 0.4, { at: 3.0, name: "Big Black" });
 O.ledger.show(T.three - 0.4, {});
 O.ledger.add(T.three, { who: "Three new bridges", note: "18 May", stamp: false });
 O.ledger.final(T.oneday2, { lines: ["Stopped", "one day"], color: "#A8261B" });
-O.plaque.hide(T.D - 1.2); O.timeline.hide(T.D - 1.2); O.ledger.hide(T.D - 1.0);
-tl.to("#fade", { opacity: 1, duration: 0.9, ease: "power1.in" }, T.D - 1.0);
+// v5 (critic B 17): ending = overlays out first (65.95 - 2.1), camera already settled, then the world fades to black over the last second
+O.plaque.hide(T.D - 2.1); O.timeline.hide(T.D - 2.1); O.ledger.hide(T.D - 2.0);
+tl.to("#fade", { opacity: 1, duration: 1.0, ease: "power1.inOut" }, T.D - 1.05);
 tl.fromTo("#fade", { opacity: 1 }, { opacity: 0, duration: 0.8, ease: "power1.out", immediateRender: false }, 0);
 
 // ---------------- per-frame draw (pure function of t) ----------------
 const v2 = (a, b) => [b.x - a.x, b.y - a.y];
 function drawTroops(t, close) {
   for (const u of T3 ? [] : UNITS) {
-    const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
+    const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) * endK(t) : 0;
     if (op <= 0.001) { for (const e of u.els) e.style.opacity = 0; continue; }
     const [cx, cy] = posAt(u.keys, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;   // facing + front axis
     const span = u.n * u.bw + (u.n - 1) * u.gap;
     for (let i = 0; i < u.n; i++) {
       const off = -span / 2 + u.bw / 2 + i * (u.bw + u.gap), wob = u.wob * 0.05 * Math.sin(t * 1.3 + i * 1.7 + cx);
-      const bx = cx + px * off + fx * wob, by = cy + py * off + fy * wob;
-      const c = world.projectMap(bx, by, 0.02), a = world.projectMap(bx + px * u.bw / 2, by + py * u.bw / 2, 0.02), d = world.projectMap(bx + fx * u.bd / 2, by + fy * u.bd / 2, 0.02);
-      const ex = v2(c, a), ey = v2(c, d), e = u.els[i];
-      e.style.transform = `matrix(${(ex[0] / 50).toFixed(4)},${(ex[1] / 50).toFixed(4)},${(ey[0] / 20).toFixed(4)},${(ey[1] / 20).toFixed(4)},${(c.x - 50).toFixed(1)},${(c.y - 20).toFixed(1)})`;
       const capd = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
-      e.style.opacity = (op * (1 - 0.25 * capd)).toFixed(3);
-      e.style.backgroundColor = capd > 0 ? `rgb(${Math.round(lerp(190, 138, capd))},${Math.round(lerp(58, 133, capd))},${Math.round(lerp(42, 122, capd))})` : "";
+      L.push({ u, i, x: cx + px * off + fx * wob, y: cy + py * off + fy * wob, fx, fy, px, py, bw: u.bw, bd: u.bd, op: op * (1 - 0.25 * capd), capd });
     }
   }
-  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1, op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
+  const sup = (b, nx, ny) => b.bw / 2 * Math.abs(nx * b.px + ny * b.py) + b.bd / 2 * Math.abs(nx * b.fx + ny * b.fy);
+  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u) continue;
+    let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05;
+    if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
+  if (BX) BX.set(L.map((b) => ({ x: b.x, y: b.y, fx: b.fx, fy: b.fy, bw: b.bw, bd: b.bd, art: b.u.type === "art", op: b.op, h: hC(b.x, b.y),
+    color: b.capd > 0 ? `rgb(${Math.round(lerp(b.u.side === "u" ? 44 : 190, 138, b.capd))},${Math.round(lerp(b.u.side === "u" ? 87 : 58, 133, b.capd))},${Math.round(lerp(b.u.side === "u" ? 183 : 42, 122, b.capd))})` : b.u.side === "u" ? "#2c57b7" : "#be3a2a" })));
+  else for (const b of L) { const e = b.u.els[b.i]; if (!e) continue;
+    const c = world.projectMap(b.x, b.y, 0.02), a = world.projectMap(b.x + b.px * b.bw / 2, b.y + b.py * b.bw / 2, 0.02), d = world.projectMap(b.x + b.fx * b.bd / 2, b.y + b.fy * b.bd / 2, 0.02);
+    const ex = v2(c, a), ey = v2(c, d);
+    e.style.transform = `matrix(${(ex[0] / 50).toFixed(4)},${(ex[1] / 50).toFixed(4)},${(ey[0] / 20).toFixed(4)},${(ey[1] / 20).toFixed(4)},${(c.x - 50).toFixed(1)},${(c.y - 20).toFixed(1)})`;
+    e.style.opacity = b.op.toFixed(3);
+    e.style.backgroundColor = b.capd > 0 ? `rgb(${Math.round(lerp(190, 138, b.capd))},${Math.round(lerp(58, 133, b.capd))},${Math.round(lerp(42, 122, b.capd))})` : ""; }
+  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1, op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) * endK(t) : 0;
     b.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const [x, y] = posAt(b.keys, t), s = world.projectMap(x, y, 0.02); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`; }
-  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? 1 - sstep(A.t1 - 0.6, A.t1, t) : 0;
+  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? (1 - sstep(A.t1 - 0.6, A.t1, t)) * endK(t) : 0; const ke = 1 - (1 - k) ** 2;
+    if (A.a3) { A.g.style.opacity = 0; AR3.draw(A.a3, ke, op, 0.42); continue; }
     A.g.style.opacity = op.toFixed(3); if (op <= 0) continue;
-    const P = A.pts.map((p) => world.projectMap(p[0], p[1], 0.03)); const ke = 1 - (1 - k) ** 2;
+    const P = A.pts.map((p) => world.projectMap(p[0], p[1], 0.03));
     // cut the screen polyline at fraction ke of its length
     const seg = []; let L = 0; for (let i = 1; i < P.length; i++) { const d = Math.hypot(P[i].x - P[i - 1].x, P[i].y - P[i - 1].y); seg.push(d); L += d; }
     let rem = ke * L; const out = [[P[0].x, P[0].y]]; let tip = out[0], dir = [1, 0];
@@ -370,9 +421,13 @@ const wispsAt = (t) => { for (const w of WSP) { const u = (t - (DV.warm + 0.1 + 
   const sc = 0.5 + 2.2 * u, cx = 640 + (w.x * 1280 - 640) * (1 + 1.6 * u), cy = 360 + (w.y * 720 - 360) * (1 + 1.6 * u);
   w.e.style.transform = `translate(${(cx - 300).toFixed(1)}px,${(cy - 150).toFixed(1)}px) scale(${sc.toFixed(3)},${(sc * 0.8).toFixed(3)})`; } };
 window.__draw = (t) => {
-  placeBoats(t); titleAt(t); if (T3) T3.update(t);
-  O.film.set({ grain: lerp(0.08, 0.03, sstep(DV.wIn, DV.wFull, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
+  placeBoats(t); titleAt(t); gradeAt(t); if (T3) T3.update(t);
+  O.film.set({ grain: lerp(0.04, 0.03, sstep(DV.wIn, DV.wFull, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
+const endK = () => 1;   // troops, arrows and banners belong to the world: they leave with it (the #fade), after the HUD
   O.film.set({ vignette: (1 - 0.95 * sstep(DV.deckIn, DV.deck + 0.3, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // v4: no oval inside the cloud
+  // v5: all boxes of all units for this frame, then a deterministic push-apart (critic B 16: boxes of different units never overlap),
+  // then either the in-scene boxes (default) or the old DOM boxes (?troops=dom)
+  const L = [];
   WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.25, t).toFixed(3); wispsAt(t);
   for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }
   world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0);
@@ -381,7 +436,7 @@ window.__draw = (t) => {
       f.color.lerp(FOGW, 1 - k); f.near = lerp(d * 0.15, f.near, k); f.far = lerp(d * 1.7, f.far, k); w.renderer.setClearColor(f.color); }
     fx.update(tt, w.camera); } });
   const close = world.region === "close";
-  drawTroops(t, close); drawPins(t, world.region);
+  drawPins(t, world.region);
 };
 window.__draw(tl.time());
 window.__gm3d = { world, fxW, fxC, O };
@@ -389,3 +444,11 @@ window.__clipBuilt();
 </script>
 </body>
 </html>
+// v5 (critic A 3): the final grade = levels (black point 12 -> 0, white 236 -> 255) + S-curve (32 % smoothstep), on the 3D image only.
+// Measured on our close frames: p1 55-64 -> 40-52 (his 38-52), std 22-30 -> 28-38 (his 21-32), night p50 44 -> 29 (his 28-52); wide p5/p95 61/147 -> 48/157 (his 42/199).
+// Off inside the dive cloud (the white-out levels there are matched to his separately), back on as the battlefield clears.
+const GRADE = (x) => { const y = clamp((x - 12 / 255) / ((236 - 12) / 255)); return y + (y * y * (3 - 2 * y) - y) * 0.32; };
+const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")]; let gradeK = -1;
+const gradeAt = (t) => { const k = 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)); if (Math.abs(k - gradeK) < 1e-3) return; gradeK = k;
+  const tv = Array.from({ length: 33 }, (_, i) => { const x = i / 32; return lerp(x, GRADE(x), k).toFixed(4); }).join(" "); for (const f of GF) f.setAttribute("tableValues", tv); };
+    drawTroops(tt, w.region === "close");   // v5: boxes / arrows are in the scene now -> set them BEFORE this frame renders (they lagged one frame)

@@ -33,7 +33,7 @@ function gridLayout(cols, rows) { const P = []; for (let r = 0; r < rows; r++) f
 
 export function createTroops3D(o) {
   const { THREE, scene, heightAt, units, posAt } = o;
-  const S = { figH: 0.095, figW: 0.036, figD: 0.026, plateT: 0.014, lift: 0.004, shadowLen: 0.55, shadowA: 0.72, gunK: 2.8, ...o.style };
+  const S = { figH: 0.095, figW: 0.036, figD: 0.026, plateT: 0.014, lift: 0.004, shadowLen: 0.95, shadowA: 0.84, gunK: 2.8, ...o.style };   // v5: his low-sun shadows are about a block long and dark (0.55 / 0.72 before)
   const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();   // ground direction shadows fall
   const shots = (o.shots || []).slice().sort((a, b) => a.t - b.t);
   const NF = 60, INF_LINE = gridLayout(12, 5), INF_COL = gridLayout(4, 15), CAV_LINE = gridLayout(14, 2), CAV_COL = gridLayout(4, 7);
@@ -222,4 +222,90 @@ export function createTroops3D(o) {
   }
   // pre-index blocks so update() does not search (findIndex above stays O(n) but blocks are few hundred at most)
   return { update, blocks, meshes: { coats, pales, plateFill, plateRim, shadows, poles, flags, carriage, barrel, wheels, limber, horses } };
+}
+
+// =====================================================================================================================================
+// v5 (critic B 5): our Style W boxes and arrows drawn IN the close scene instead of as DOM overlays, so they sit in the world like his
+// blocks: the scene fog hazes them, the smoke sprites (renderOrder 10) and the cloud composite (10.5) draw OVER them, and each box throws
+// a soft contact shadow toward the low sun. The look stays Style W: flat side-colour box, ink border, cream X (infantry) / dot (guns).
+// They draw after the opaque world with depthTest off (no z-fighting with the coarse terrain, never cut by tree crowns), before the smoke.
+// Box texture = a mask (R fill, G symbol, B ink border) so captured boxes can fade to grey per instance (instanceColor = fill colour).
+export function createBoxes3D(o) {
+  const { THREE, scene } = o, MAX = o.max ?? 256;
+  const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();
+  const mask = (sym) => { const c = document.createElement("canvas"); c.width = 256; c.height = 104; const g = c.getContext("2d"), W = 256, H = 104, bx = W * 0.07, by = H * 0.175;
+    g.fillStyle = "#ff0000"; g.fillRect(0, 0, W, H);
+    g.fillStyle = "#00ff00"; g.strokeStyle = "#00ff00"; g.lineCap = "butt";
+    const cw = W - 2 * bx, ch = H - 2 * by;
+    if (sym === "inf") { g.lineWidth = 0.06 * cw * 0.86 * 1.15; g.beginPath(); g.moveTo(bx, by); g.lineTo(W - bx, H - by); g.moveTo(W - bx, by); g.lineTo(bx, H - by); g.stroke(); }
+    else { g.beginPath(); g.ellipse(W / 2, H / 2, cw * 0.11, ch * 0.275, 0, 0, Math.PI * 2); g.fill(); }
+    g.fillStyle = "#0000ff"; g.fillRect(0, 0, W, by); g.fillRect(0, H - by, W, by); g.fillRect(0, 0, bx, H); g.fillRect(W - bx, 0, bx, H);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace; t.anisotropy = 8; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; return t; };
+  const shadowTex = (() => { const c = document.createElement("canvas"); c.width = 64; c.height = 32; const g = c.getContext("2d"), im = g.createImageData(64, 32);
+    for (let y = 0; y < 32; y++) for (let x = 0; x < 64; x++) { const u = Math.abs(x / 63 - 0.5) * 2, v = Math.abs(y / 31 - 0.5) * 2, a = (1 - sstep(0.62, 1, u)) * (1 - sstep(0.35, 1, v)), k = (y * 64 + x) * 4;
+      im.data[k] = im.data[k + 1] = im.data[k + 2] = 255; im.data[k + 3] = 255 * a; }
+    g.putImageData(im, 0, 0); const t = new THREE.CanvasTexture(c); return t; })();
+  const quad = () => { const g = new THREE.PlaneGeometry(1, 1); g.rotateX(-Math.PI / 2); g.setAttribute("iOp", new THREE.InstancedBufferAttribute(new Float32Array(MAX), 1)); return g; };
+  const withOp = (m, extra) => { m.onBeforeCompile = (sh) => { sh.uniforms.uCream = { value: new THREE.Color("#f4eedd") }; sh.uniforms.uInk = { value: new THREE.Color("#15130f") };
+      sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
+      sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp; uniform vec3 uCream; uniform vec3 uInk;");
+      if (extra) sh.fragmentShader = extra(sh.fragmentShader);
+      sh.fragmentShader = sh.fragmentShader.replace("#include <alphamap_fragment>", "#include <alphamap_fragment>\ndiffuseColor.a *= vOp;"); };
+    m.customProgramCacheKey = () => "box3d" + (extra ? 1 : 0); return m; };
+  const boxMat = (sym) => withOp(new THREE.MeshBasicMaterial({ map: mask(sym), transparent: true, depthTest: false, depthWrite: false, fog: true }),
+    (fs) => fs.replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); mk.rgb /= max(mk.r + mk.g + mk.b, 1e-3);\n#ifdef USE_COLOR\nvec3 fillC = vColor;\n#else\nvec3 fillC = diffuse;\n#endif\ndiffuseColor.rgb = mk.r * fillC + mk.g * uCream + mk.b * uInk;").replace("#include <color_fragment>", ""));
+  const mkIM = (mat, ro) => { const m = new THREE.InstancedMesh(quad(), mat, MAX); m.count = 0; m.frustumCulled = false; m.renderOrder = ro; m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(m); return m; };
+  const inf = mkIM(boxMat("inf"), 3.1), art = mkIM(boxMat("art"), 3.1);
+  const shd = mkIM(withOp(new THREE.MeshBasicMaterial({ color: 0x0b0a08, map: shadowTex, transparent: true, opacity: o.shadowA ?? 0.42, depthTest: false, depthWrite: false, fog: true })), 3.0);
+  for (const m of [inf, art]) m.setColorAt(0, new THREE.Color());
+  const M4 = new THREE.Matrix4(), C = new THREE.Color(), lift = o.lift ?? 0.03, shOff = o.shadowOff ?? 0.075;
+  // list: [{x, y, fx, fy, bw, bd, art, op, color: '#rrggbb' | THREE.Color, h}] (map plane, fx/fy = facing, bw along the line, bd along the facing)
+  function set(list) {
+    let ni = 0, na = 0, ns = 0;
+    for (const b of list) { if (b.op <= 0.002) continue;
+      const px = -b.fy, py = b.fx, y = b.h + lift, m = b.art ? art : inf, k = b.art ? na++ : ni++;
+      // local x (quad width) -> lateral (bw), local z -> facing (bd)
+      M4.set(px * b.bw, 0, -b.fx * b.bd, b.x, 0, 1, 0, y, py * b.bw, 0, -b.fy * b.bd, b.y, 0, 0, 0, 1); m.setMatrixAt(k, M4);   // z = -facing keeps det > 0 (front face up)
+      m.setColorAt(k, b.color.isColor ? b.color : C.setStyle(b.color)); m.geometry.attributes.iOp.array[k] = b.op;
+      M4.set(px * b.bw * 1.08, 0, -b.fx * b.bd * 1.3, b.x + SUNG[0] * shOff, 0, 1, 0, y - 0.002, py * b.bw * 1.08, 0, -b.fy * b.bd * 1.3, b.y + SUNG[1] * shOff, 0, 0, 0, 1); shd.setMatrixAt(ns, M4);
+      shd.geometry.attributes.iOp.array[ns++] = b.op; }
+    inf.count = ni; art.count = na; shd.count = ns;
+    for (const m of [inf, art, shd]) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true; }
+  }
+  return { set, meshes: { inf, art, shd } };
+}
+
+// Arrows as ground ribbons in the close scene (same Style W arrow: side colour body + head, ink outline at 60 %), draped on the terrain,
+// fogged, under the smoke. pts in map units; grow = 0..1 drawn fraction; width w (units).
+export function createArrows3D(o) {
+  const { THREE, scene, heightAt } = o, N = 160;
+  const mk = (ro, col, a) => { const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(N * 2 * 3 + 9), 3).setUsage(THREE.DynamicDrawUsage));
+    const idx = []; for (let i = 0; i < N - 1; i++) idx.push(2 * i, 2 * i + 1, 2 * i + 2, 2 * i + 1, 2 * i + 3, 2 * i + 2); idx.push(2 * N, 2 * N + 1, 2 * N + 2); g.setIndex(idx);
+    const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: a, depthTest: false, depthWrite: false, fog: true, side: THREE.DoubleSide }));
+    m.frustumCulled = false; m.renderOrder = ro; scene.add(m); return m; };
+  const arrows = [];
+  // GM's arrows ride OVER the battle smoke (684 s) but under the clouds (10.5) and in the fog: renderOrder 10.2 / 10.3
+  function add(pts, color) { const A = { pts, out: mk(10.2, 0x0e0c08, 0.6), body: mk(10.3, color, 1) }; arrows.push(A); return A; }
+  // heights: the ground under the line smoothed over ~1.5 units (raw heights made the flat ribbon wiggle on screen over every bump and the river bed)
+  const smoothH = (P) => { const raw = P.map((p) => heightAt(p[0], p[1])), K = 9; return raw.map((_, i) => { let s = 0, c = 0; for (let j = Math.max(0, i - K); j <= Math.min(raw.length - 1, i + K); j++) { s += Math.max(raw[j], raw[i] - 0.02); c++; } return s / c; }); };
+  function fill(mesh, P, w, hl, hw, ox, HS) {   // P: resampled centre line [[x,y]], ribbon half width w/2 + ox, head at the end
+    const pa = mesh.geometry.attributes.position, a = pa.array, n = P.length, lift = 0.05;
+    for (let i = 0; i < N; i++) { const j = Math.min(i, n - 1), p = P[j], q = P[Math.min(j + 1, n - 1)], r = P[Math.max(j - 1, 0)];
+      let dx = q[0] - r[0], dy = q[1] - r[1]; const l = Math.hypot(dx, dy) || 1; dx /= l; dy /= l; const hx = -dy * (w / 2 + ox), hy = dx * (w / 2 + ox);
+      const h = HS[j] + lift; a.set([p[0] + hx, h, p[1] + hy, p[0] - hx, h, p[1] - hy], i * 6); }
+    const e = P[n - 1], f = P[Math.max(0, n - 2)]; let dx = e[0] - f[0], dy = e[1] - f[1]; const l = Math.hypot(dx, dy) || 1; dx /= l; dy /= l;
+    const tip = [e[0] + dx * (hl + ox * 1.6), e[1] + dy * (hl + ox * 1.6)], h = HS[n - 1] + lift, hw2 = hw + ox * 1.4, bxp = e[0] - dx * ox, byp = e[1] - dy * ox;
+    a.set([bxp - dy * hw2, h, byp + dx * hw2, bxp + dy * hw2, h, byp - dx * hw2, tip[0], h, tip[1]], N * 6);
+    pa.needsUpdate = true; }
+  // A, grow fraction k (0..1, eased by the caller), opacity op, shaft width w (units)
+  function draw(A, k, op, w) {
+    const vis = op > 0.002 && k > 0.001; A.out.visible = A.body.visible = vis; if (!vis) return;
+    A.out.material.opacity = 0.6 * op; A.body.material.opacity = op;
+    const pts = A.pts, seg = []; let L = 0; for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
+    const hl = w * 2.1, hw = w * 1.5, end = Math.max(0, k * L - hl), P = [];   // the shaft stops where the head starts
+    const at = (s) => { let i = 0; while (i < seg.length - 1 && s > seg[i]) { s -= seg[i]; i++; } const f = seg[i] ? Math.min(1, s / seg[i]) : 0; return [lerp(pts[i][0], pts[i + 1][0], f), lerp(pts[i][1], pts[i + 1][1], f)]; };
+    const n = Math.max(2, Math.min(N, Math.ceil(end / 0.08) + 1)); for (let i = 0; i < n; i++) P.push(at(end * i / (n - 1)));
+    if (end < 1e-3) { const d = at(Math.min(L, 0.01)); P[1] = [P[0][0] + (d[0] - P[0][0]) * 0.01 + 1e-4, P[0][1] + (d[1] - P[0][1]) * 0.01]; }
+    const HS = smoothH(P); fill(A.out, P, w, hl, hw, 0.035, HS); fill(A.body, P, w, hl, hw, 0, HS); }
+  return { add, draw, arrows };
 }
