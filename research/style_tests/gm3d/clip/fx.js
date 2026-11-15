@@ -379,6 +379,10 @@ export function createFX(cfg = {}) {
     fxPoolPos: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
     fxPoolCol: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
     fxPoolN: { value: 0 },
+    // v3: sprite cumulus shadows (discs at cloud height, projected along fxCuL) + one floating plane's shadow (the 3D title)
+    fxCu: { value: Array.from({ length: 64 }, () => new THREE.Vector4()) }, fxCuN: { value: 0 }, fxCuL: { value: new THREE.Vector4(0.35, 1, 0.2, 0.55) },
+    fxPlTex: { value: null }, fxPlOn: { value: 0 }, fxPlO: { value: new THREE.Vector3() }, fxPlX: { value: new THREE.Vector3() }, fxPlY: { value: new THREE.Vector3() },
+    fxPlL: { value: new THREE.Vector3(0, 1, 0) },
   };
 
   const emitters = [];   // { update(t, batch, ctx) }
@@ -662,6 +666,48 @@ export function createFX(cfg = {}) {
     });
   }
 
+  // ================================================================ API: sprite cumulus (v3, the GM cloud dive)
+  // Dense cauliflower cumulus built from lit puff sprites: each cloud = a flat-bottomed base of wide grey-blue puffs
+  // + a dome of bright lobes. Clouds drift with the wind; puffs close to the lens fade (the camera can fly into the deck);
+  // every cloud drops a soft shadow disc on patched ground (fxCu*). o: {clouds: [[x, z, R, shade]], base, alpha(t), drift, lift, seed}
+  const cuShadows = [];
+  function cumulus(o = {}) {
+    const rnd = mulberry32(o.seed ?? nextSeed()), base = o.base ?? 50 * U, lift = o.lift ?? 1, P = [];
+    const CL = (o.clouds || []).map(([cx, cz, R, sh = 1]) => {
+      const n = Math.round((o.puffs ?? 30) * Math.min(2.2, Math.max(0.5, R / (o.refR ?? 30))));
+      for (let k = 0; k < n; k++) {
+        const top = k >= n * 0.38, a = rnd() * 6.283, rr = Math.sqrt(rnd()) * (top ? 0.62 : 0.92);
+        const x = cx + Math.cos(a) * rr * R, z = cz + Math.sin(a) * rr * R * 0.8;
+        const dome = Math.sqrt(Math.max(0, 1 - rr * rr));
+        const y = base + (top ? (0.18 + 0.75 * dome * (0.6 + 0.4 * rnd())) : 0.06 * rnd()) * R * lift;
+        const size = R * (top ? 0.42 + 0.3 * rnd() : 0.6 + 0.3 * rnd()) * (o.puffSize ?? 1);
+        const g = top ? 0.97 + 0.08 * rnd() : 0.78 + 0.08 * rnd();
+        P.push([x, y, z, size, rnd() * 6.283, Math.floor(rnd() * 4), g * sh, g * sh * (top ? 1.0 : 1.02), g * sh * (top ? 0.985 : 1.07)]);
+      }
+      return [cx, cz, R];
+    });
+    const sd = o.shadowDir || [0.35, 1, 0.2]; shared.fxCuL.value.set(sd[0], sd[1], sd[2], o.shadowH ?? base);
+    const drift = o.drift ?? 0.6, cp = new THREE.Vector3();
+    emitters.push({
+      update(t) {
+        const A = o.alpha ? o.alpha(t) : 1; if (A <= 0.002) return;
+        camera.getWorldPosition(cp);
+        const dx = wind.x * t * drift, dz = wind.y * t * drift, nf = o.nearFade ?? 1;
+        for (const q of P) {
+          const x = q[0] + dx, y = q[1], z = q[2] + dz, d = Math.hypot(x - cp.x, y - cp.y, z - cp.z);
+          const a = A * smooth(q[3] * 0.18 * nf, q[3] * 0.75 * nf, d);
+          batch.push(x, y, z, q[3], q[4], a, q[5], 0, q[6], q[7], q[8], -1e9);
+        }
+        for (const c of CL) cuShadows.push([c[0] + dx, c[1] + dz, c[2], A]);
+      },
+    });
+  }
+  // a floating plane (e.g. 3D title) casts its alpha texture onto patched ground along dirL (world, towards the light)
+  function planeShadow(o) {
+    shared.fxPlTex.value = o.tex; shared.fxPlL.value.set(...o.dir).normalize();
+    return (origin, xAxisOverW, yAxisOverH, on) => { shared.fxPlO.value.copy(origin); shared.fxPlX.value.copy(xAxisOverW); shared.fxPlY.value.copy(yAxisOverH); shared.fxPlOn.value = on; };
+  }
+
   // ================================================================ API: volumetric cloud layer
   let cloud = null;
   function clouds(o = {}) {
@@ -753,7 +799,7 @@ export function createFX(cfg = {}) {
         .replace('#include <common>', '#include <common>\nvarying vec3 vFxWorld;')
         .replace('#include <project_vertex>', '#include <project_vertex>\nvFxWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;');
       shader.fragmentShader = shader.fragmentShader
-        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;`)
+        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;\nuniform vec4 fxCu[64];\nuniform int fxCuN;\nuniform vec4 fxCuL;\nuniform sampler2D fxPlTex;\nuniform float fxPlOn;\nuniform vec3 fxPlO;\nuniform vec3 fxPlX;\nuniform vec3 fxPlY;\nuniform vec3 fxPlL;\nfloat fxHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\nfloat fxVN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fxHash(i), fxHash(i + vec2(1.0, 0.0)), f.x), mix(fxHash(i + vec2(0.0, 1.0)), fxHash(i + vec2(1.0, 1.0)), f.x), f.y); }`)
         .replace('#include <opaque_fragment>', `
           {
             if (fxCloudQ.w > 0.5 && fxCloudQ.z > 0.0) {
@@ -761,6 +807,29 @@ export function createFX(cfg = {}) {
               vec3 sp = vFxWorld + fxSunDir * (ym - vFxWorld.y) / max(fxSunDir.y, 0.08);
               float cd = fxCloudDensity(sp, false);
               outgoingLight *= 1.0 - fxCloudQ.z * smoothstep(0.0, 0.7, cd);
+            }
+            if (fxCuN > 0) {
+              vec2 cs = vFxWorld.xz + fxCuL.xz / fxCuL.y * (fxCuL.w - vFxWorld.y);
+              float sh = 0.0;
+              for (int i = 0; i < 64; i++) {
+                if (i >= fxCuN) break;
+                vec2 dd = (cs - fxCu[i].xy) / fxCu[i].z; dd.y *= 1.2;
+                float nz = fxVN(cs / fxCu[i].z * 3.0 + float(i) * 7.1) * 0.55 + fxVN(cs / fxCu[i].z * 7.0) * 0.25;
+                sh = max(sh, fxCu[i].w * smoothstep(1.05, 0.55, length(dd) + (nz - 0.4) * 0.7));
+              }
+              outgoingLight *= 1.0 - 0.42 * sh;
+            }
+            if (fxPlOn > 0.001) {
+              vec3 pn = normalize(cross(fxPlX, fxPlY));
+              float den = dot(fxPlL, pn);
+              if (abs(den) > 1e-3) {
+                float s_ = dot(fxPlO - vFxWorld, pn) / den;
+                if (s_ > 0.0) {
+                  vec3 q = vFxWorld + fxPlL * s_ - fxPlO;
+                  vec2 uvp = vec2(dot(q, fxPlX), dot(q, fxPlY)) + 0.5;
+                  if (uvp.x > 0.0 && uvp.x < 1.0 && uvp.y > 0.0 && uvp.y < 1.0) outgoingLight *= 1.0 - fxPlOn * 0.5 * texture2D(fxPlTex, uvp, 2.5).a;
+                }
+              }
             }
             vec3 fxPl = vec3(0.0);
             for (int i = 0; i < ${MAXPOOL}; i++) {
@@ -805,7 +874,7 @@ export function createFX(cfg = {}) {
     spriteU.uCamBack.value.set(e[8], e[9], e[10]).normalize();
     const P = shared.fxCloudP.value;
     shared.fxCloudWind.value.set(-wind.x * t * P.z * 1.6, 0, -wind.y * t * P.z * 1.6);
-    batch.clear(); pools.length = 0;
+    batch.clear(); pools.length = 0; cuShadows.length = 0;
     for (const em of emitters) em.update(t);
     batch.flush(camera);
     // light pools: keep the strongest near the camera, deterministic order
@@ -815,6 +884,10 @@ export function createFX(cfg = {}) {
     const n = Math.min(MAXPOOL, pools.length);
     for (let i = 0; i < n; i++) { const p = pools[i]; shared.fxPoolPos.value[i].set(p.x, p.y, p.z, p.r); shared.fxPoolCol.value[i].set(p.cr, p.cg, p.cb, p.i); }
     shared.fxPoolN.value = n;
+    cuShadows.sort((a, b) => Math.hypot(a[0] - tmpV.x, a[1] - tmpV.z) - Math.hypot(b[0] - tmpV.x, b[1] - tmpV.z));
+    const nc = Math.min(64, cuShadows.length);
+    for (let i = 0; i < nc; i++) shared.fxCu.value[i].set(cuShadows[i][0], cuShadows[i][1], cuShadows[i][2], cuShadows[i][3]);
+    shared.fxCuN.value = nc;
     // clouds: march at reduced resolution into a target, composite in the main pass
     if (cloud) {
       const op = typeof cloud.opacity === 'function' ? cloud.opacity(t) : cloud.opacity;
@@ -850,7 +923,7 @@ export function createFX(cfg = {}) {
   }
 
   return {
-    smokeLine, cannon, fire, campfire, impact, snow, clouds, patchGround, setNight, update,
+    smokeLine, cannon, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
     get spriteCount() { return batch.n; },
     sunDir, wind, shared, batch,
   };
