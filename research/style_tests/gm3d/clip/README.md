@@ -66,5 +66,25 @@ smoke draws over them. Infantry merges 2 boxes into 1 block (GM has ~half as man
 - Method: `make_sectors.py <snapshot dir | mp4>` -> `dive_sectors.jpg` (local, git-ignored): 6 phases x 4 sectors, his | ours at 2.5x.
   `TAG=_v4 OFFSET=0 python3 make_dive.py <mp4>` -> `dive_ours_v4.jpg` (+ `dive_compare_v4.jpg`, local).
 
+**v5 clouds + dive (2026-11-15, critic A 1-2, 4-9, 11-13; `fx.js` vclouds, `index.html` 0-22 s):**
+- Texture: interleaved-gradient jitter + a 3x3 bilinear tent (~5x5 texels) on the premultiplied cloud target (alpha-weighted blur), no fine octave
+  (`fine: 0`), rim tearing from the mid Worley octave (`weights`), big soft interior mottles; per-group multipliers (`group0`: smoother wide lobes).
+- Colour/shadow: wide sun (1.0,0.95,0.85), ambient top (0.55,0.60,0.70) / bottom (0.30,0.34,0.42), ambK 0.25, lightK 2.4; shadows 0.8 cast down-left
+  next to each cloud (`shadowDir` [0.3,1,0.65]). Wide cloud pixels (L>165) ~(193,186,170), p50 180 vs his (196-203,193-197,171-176), p50 188-191;
+  grey-core fraction 0.067 vs his 0.065-0.105.
+- Layout: rejection-sampled scatter, log-normal radii 12-85, clusters + clear areas, 4 big near-lens corner clouds, the deck footprint kept to the deck.
+- Deck: flat sheets (`flatPow` 0.3, one flat base), no billow-up: a coverage FRONT (`deck(t)`) sweeps from the frame edges in to the camera's column
+  while the density ramps up from translucent grey (`k`); neutral-cool tint during the deck (~(198,195,186) vs his (198,201,194) at full cover).
+- Camera: one cubic ease-in from 12.6 s (dist 545 -> 115, tilt 44 -> 11) into the deck, then on at the same log-speed through the tops to the swap
+  (16.4); close landing eases out over 3.4 s (to 19.8).
+- Title: "ONE DAY", Cormorant 700, painted bevel face, 40 silhouette layers shaded gold x0.75 -> x0.45 (no contour rings), shadow on the map,
+  motion-blur ghosts from sub-frame camera poses while it flies past the lens (~14.3 s).
+- White-out: no veil until 16.05 (textured cloud tops, std 5.5 at 16.15 vs his 7.9), close map ghost at the swap, cream with a radial falloff
+  (centre (217,215,202), edges (197,196,182), corner (186,184,170); his (215-218,215,203) / (192-197) / (191)), snap 17.25 -> 17.55 (mean L 203 -> 172).
+- HUD: legend (1.9 s) + timeline (1.4 s) stay through the dive, date plaque -> clock inside the white (16.45), Grant card fades in in the cream.
+- Emergence: flat torn grey stratus sheets (close system, tops ~22-26) just under the landing camera, ~50 % cover at 17.4, torn by ~20.6.
+- Night: half the wide clouds eroded, flat grey-blue wisps around Vicksburg, night tint (0.12-0.40 blue-grey).
+- Tools: `TAG=_v5 python3 make_dive.py <snapshot dir | mp4>` -> `dive_ours_v5.jpg`; `TAG=_v5 python3 make_sectors.py <dir>` -> `dive_sectors_v5.jpg` (local).
+
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).

@@ -85,7 +85,7 @@ const sstep = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * 
 // near top-down (tilt 44 -> 17) as the flat deck closes in from the frame edges (~14.95-15.85), then on through the deck tops at the same
 // speed (cool textured phase, the camera inside the cloud ~16.2) -> swap at 16.4 inside the white -> cream with a warm radial falloff ->
 // the battlefield snaps in (0.35 s) while the camera keeps descending and eases out over ~2.5 s through torn grey-blue stratus.
-const DV = { push: 12.6, deckIn: 14.95, full: 15.85, deck: 15.95, wIn: 16.05, inside: 16.25, SW: 16.4, warm: 16.55, emerge: 17.25, clear: 17.6, haze: 18.6, land: 19.8 };
+const DV = { push: 12.6, deckIn: 14.7, full: 15.85, deck: 15.95, wIn: 16.05, inside: 16.25, SW: 16.4, warm: 16.55, emerge: 17.25, clear: 17.6, haze: 18.6, land: 19.8 };
 const SW = DV.SW;   // region swap, inside the white-out
 const keys = [
   { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
@@ -165,8 +165,9 @@ const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1080, 300, 2060
   deck: (t) => ({ x: 1518, z: 706, r: 110, front: 3.5 * (1 - sstep(DV.deckIn + 0.1, DV.full, t)), k: lerp(0.25, 1, sstep(DV.deckIn, DV.deckIn + 0.35, t)) }),
   ms: (t) => lerp(0.22, 0.42, sstep(DV.full - 0.2, DV.inside, t)), expo: (t) => lerp(1, 0.93, sstep(DV.full - 0.2, DV.inside, t)),
   colors: (t) => { const k = sstep(DV.full - 0.2, DV.inside, t);   // inside the cloud: cooler, bright grey with blue-grey mottles (his 637.0 s)
-    return { sun: [lerp(1.0, 0.95, k), lerp(0.95, 0.97, k), lerp(0.85, 0.94, k)], ambTop: [lerp(0.55, 0.66, k), lerp(0.60, 0.71, k), lerp(0.70, 0.76, k)], ambBot: [lerp(0.30, 0.44, k), lerp(0.34, 0.50, k), lerp(0.42, 0.56, k)],
-      nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.25, 0.4, k), lightK: lerp(2.4, 1.0, k), sunK: lerp(1.05, 1.2, k) }; },
+    const c = sstep(DV.deckIn, DV.deckIn + 0.5, t) * (1 - k), q = Math.max(k, c);   // his deck (636.0-636.6) reads neutral-cool grey-white, his wide clouds warm
+    return { sun: [lerp(1.0, 0.95, q), lerp(0.95, 0.97, q), lerp(0.85, 0.94, q)], ambTop: [lerp(0.55, 0.66, q), lerp(0.60, 0.71, q), lerp(0.70, 0.76, q)], ambBot: [lerp(0.30, 0.44, q), lerp(0.34, 0.50, q), lerp(0.42, 0.56, q)],
+      nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.25, 0.4, q), lightK: lerp(2.4, 1.0, k) * lerp(1, 0.75, c), sunK: lerp(1.05, 1.2, q) }; },
   sigmaK: (t) => lerp(1, 0.5, sstep(DV.full, DV.inside, t)) });
 // close: flat torn stratus sheets (H ~2) just under the landing camera (tops ~22-26 vs camera ~33 at the landing), thin over the bridge
 const closeCl = [];
@@ -365,6 +366,8 @@ const PINS = [], PN = document.getElementById("pins");
 const place = (txt, x, y, size, t0, t1, region, cls = "") => { const e = document.createElement("div"); e.className = "pl " + cls; e.style.fontSize = size + "px"; e.textContent = txt; PN.appendChild(e); PINS.push({ e, x, y, t0, t1, region }); };
 // v5 (critic A 12): the wide names stay on through the push until the deck covers them (his 635.7 s)
 place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, DV.full - 0.3, "wide"); place("Edwards", ...D.towns.Edwards, 20, 1.2, DV.full - 0.3, "wide"); place("Big Black River", 1506, 676, 19, 2.0, DV.full - 0.2, "wide", "it");
+const TW = D.towns_wide || {};   // a few small wide towns (his push-in keeps sparse town names readable to the deck)
+[["Bovina", 17, 2.6], ["Champion Hill", 17, 3.0], ["Warrenton", 16, 3.4], ["Bolton", 16, 3.8]].forEach(([n, sz, t0]) => { if (TW[n]) place(n, ...TW[n], sz, t0, DV.full - 0.3, "wide"); });
 place("Bovina", 1495.5, 700.4, 19, SW + 1, T.p4 - 1, "close"); place("Big Black River", 1512.2, 696.0, 18, SW + 1.2, 27, "close", "it");
 place("Vicksburg", 1392, 683, 24, T.p4 + 0.4, T.p4 + 5, "wide"); place("Mississippi River", 1362, 688, 18, T.p4 + 0.8, T.p4 + 5.5, "wide", "it");
 place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it");
