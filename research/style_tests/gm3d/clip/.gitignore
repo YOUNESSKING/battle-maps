@@ -1,0 +1,5 @@
+*.mp4
+.hyperframes/
+renders/
+compare_gm.jpg
+build/

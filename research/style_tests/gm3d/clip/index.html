@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280, height=720">
+<title>GM3D clip: Big Black River</title>
+<!-- GM3D clip (EXPERIMENT, free of STYLE_LOCK): 3D world (world.js) + fx (fx.js) + GM overlay (overlay.js) + our Style W troops,
+     all driven by ONE paused GSAP timeline. Composition 1280x720; the GM overlay is authored at 1920x1080 and scaled by 2/3. -->
+<script src="vendor/gsap.min.js"></script>
+<script src="overlay.js"></script>
+<script src="cues.js"></script>
+<script src="assets/world_data.js"></script>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+<style>
+  @font-face { font-family: "CG"; font-weight: 600; src: url("assets/fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
+  html, body { margin: 0; padding: 0; background: #000; }
+  #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; }
+  #arrows { position: absolute; inset: 0; width: 1280px; height: 720px; overflow: visible; }
+  #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
+  #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
+  #ov { position: absolute; inset: 0; }
+  #fade { position: absolute; inset: 0; background: #000; opacity: 0; }
+  .blk { position: absolute; left: 0; top: 0; width: 100px; height: 40px; transform-origin: 50% 50%; box-sizing: border-box; border: 7px solid #15130f; will-change: transform; }
+  .blk.u { background: #2c57b7; } .blk.r { background: #be3a2a; }
+  .blk svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .bnr { position: absolute; left: 0; top: 0; will-change: transform; }
+  .bnr .pole { position: absolute; left: -1px; bottom: 0; width: 2px; background: linear-gradient(#efe2b8, #8a6a2a); box-shadow: 0 0 2px rgba(0,0,0,.7); }
+  .bnr img { position: absolute; left: 1px; border: 1px solid #15130f; box-shadow: 0 2px 4px rgba(0,0,0,.5); }
+  .bnr .nm { position: absolute; left: 4px; white-space: nowrap; font: 600 15px "CG", Georgia, serif; color: #f6f1e2; letter-spacing: .06em; text-transform: uppercase; text-shadow: 0 1px 3px #000, 0 0 6px rgba(0,0,0,.7); }
+  .pl { position: absolute; left: 0; top: 0; white-space: nowrap; font-family: "CG", Georgia, serif; font-weight: 600; color: #f8f4e8; letter-spacing: .03em;
+        text-shadow: 0 2px 3px rgba(0,0,0,.85), 0 0 7px rgba(0,0,0,.6); will-change: transform; }
+  .pl.it { font-style: italic; letter-spacing: .12em; color: #e9eef0; }
+</style>
+<script>
+  // ONE paused timeline, registered synchronously; the module below draws world + fx + troops from it, the overlay chains O.update on it.
+  window.__timelines = window.__timelines || {};
+  window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+  window.__hf.buildReady.gm3dClip = new Promise((res) => { window.__clipBuilt = res; });
+  window.__clk = { t: 0 }; window.__draw = null;
+  const tl = gsap.timeline({ paused: true });
+  tl.to(window.__clk, { t: T.D, duration: T.D, ease: "none", onUpdate: () => { if (window.__draw) window.__draw(window.__clk.t); } }, 0);
+  window.__timelines["main"] = tl; window.__tl = tl;
+</script>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="66" data-width="1280" data-height="720">
+  <canvas id="gl" width="1280" height="720"></canvas>
+  <div id="pins"></div>
+  <svg id="arrows" viewBox="0 0 1280 720"></svg>
+  <div id="troops"></div>
+  <div id="ovwrap"><div id="ov"></div></div>
+  <div id="fade"></div>
+</div>
+<script type="module">
+import * as THREE from "three";
+import { initWorld } from "./world.js";
+import { createFX } from "./fx.js";
+const T = window.T, EV = window.EV, tl = window.__tl, D = window.GM3D_DATA;
+const W = 1280, H = 720, SC = 1.5;   // overlay space = 1.5 x canvas px
+const U = 1 / D.geo.mpu;             // world units per metre (1 unit = 129.36 m)
+const BR = D.regions.close.bridge, BRW = D.regions.close.breastworks;
+const lerp = (a, b, k) => a + (b - a) * k, clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const sstep = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * (3 - 2 * k); };
+
+// ---------------- camera beats (world units = map units) ----------------
+const SW = T.dive + 0.35;   // region swap, inside the cloud deck
+const keys = [
+  { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
+  { t: T.dive - 1.3, region: "wide", at: [1514, 706], dist: 455, tilt: 42, yaw: 2, fov: 30 },
+  { t: SW, region: "close", at: [1516, 705], dist: 95, tilt: 34, yaw: 1, fov: 31, ease: "in" },
+  { t: T.dive + 1.45, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
+  { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 35, tilt: 40, yaw: -5, fov: 32 },
+  { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 29, tilt: 42, yaw: -10, fov: 32 },
+  { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 24, tilt: 44, yaw: -14, fov: 32 },
+  { t: T.p4 - 0.6, region: "close", at: [1514.6, 705.3], dist: 26.5, tilt: 43, yaw: -12, fov: 32 },
+  { t: T.p4 - 0.6, region: "wide", at: [1398, 688], dist: 300, tilt: 44, yaw: 0, fov: 30, night: 1, ease: "cut" },
+  { t: T.p5 - 0.6, region: "wide", at: [1378, 694], dist: 230, tilt: 46, yaw: -4, fov: 30, night: 1 },
+  { t: T.p5 - 0.6, region: "close", at: [1514.0, 705.0], dist: 33, tilt: 40, yaw: -4, fov: 32, ease: "cut" },
+  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 29, tilt: 42, yaw: 4, fov: 32 },
+];
+const world = initWorld(document.getElementById("gl"), { base: "assets/", keys, width: W, height: H, antialias: false, shadowSize: 1536, bridgeBurnT: EV.bridgeFire + 3.2 });
+await world.ready;
+const hC = (x, y) => world.heightAt(x, y, "close"), hW = (x, y) => world.heightAt(x, y, "wide");
+const G = (x, y, h = 0) => [x, hC(x, y) + h, y], GWd = (x, y, h = 0) => [x, hW(x, y) + h, y];
+
+// ---------------- fx: one instance per region scene (same camera + renderer) ----------------
+const SUN = [-0.7, 0.48, -0.4];
+const mkFX = (r, seed, hf) => createFX({ scene: world.regions[r].scene, camera: world.camera, renderer: world.renderer, unitsPerMeter: U, fxScale: r === "close" ? 9 : 40,
+  wind: [20, -7], sunDir: SUN, heightAt: hf, duration: T.D, seed });
+const fxW = mkFX("wide", 1863, hW), fxC = mkFX("close", 1517, hC);
+fxW.patchGround(world.regions.wide.terrain.material); fxC.patchGround(world.regions.close.terrain.material);
+// clouds: scattered cumulus over the wide map, the deck closes during the dive (camera passes through it at the swap), opens below
+const M = 1 / U;   // metres per unit
+const covW = (t) => t < T.p4 - 1 ? lerp(0.40, 0.98, sstep(T.dive - 2.2, SW, t)) : 0.30;
+const covC = (t) => lerp(0.98, 0.34, sstep(SW, SW + 0.9, t));
+fxW.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covW, shadow: 0.45, resolution: 0.5, steps: 44, detail: 0.5, maxDist: 2600 * M, maxSeg: 70 * M, lightStep: 3 * M, sigma: 0.05 / M });
+fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covC, shadow: 0.40, resolution: 0.5, steps: 40, detail: 0.5, maxDist: 600 * M, maxSeg: 70 * M, lightStep: 3 * M, sigma: 0.05 / M });
+
+// cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
+fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 1.0, glowSize: 22, smokeRate: 2.2, smokeLife: 14, rise: 9, light: false, ramp: 2 });
+// close: smoke lines, cannon, impacts, bridge fire
+const brDir = [Math.cos(-BR.angle), -Math.sin(-BR.angle)], deckY = (BR.deck * 6) / D.geo.mpu, L2 = BR.len / 2;
+const BA = [BR.x - brDir[0] * L2, deckY + 0.05, BR.z - brDir[1] * L2], BB = [BR.x + brDir[0] * L2, deckY + 0.05, BR.z + brDir[1] * L2];
+fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { to: BB, size: 1.0, flameK: 1.25, flameA: 0.5, glowSize: 4, flameRate: 16, emberRate: 14, smokeRate: 6.0, smokeLife: 12, rise: 5, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.14, 0.13, 0.12], smokeAlpha: 0.5, smokeS0: 2.2, smokeGrow: 6, smokeWind: 3.2 });
+fxC.fire(BA, T.p5 - 1, T.D + 2, { to: BB, size: 0.45, flameRate: 3, emberRate: 1, glowSize: 1.5, smokeRate: 1.2, smokeLife: 8, rise: 6, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28] });   // still smouldering next day
+const bwPts = BRW.filter((_, i) => i % 3 === 0).map((p) => G(p[0] + 0.12, p[1], 0.06));
+fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 2.2, volley: 1.6, roll: 0.9, size: 1.0, height: 3, alpha: 0.12 });
+fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 1.1, size: 1.0, alpha: 0.10, life: 10 });
+fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 1.6, size: 1.0, alpha: 0.10, life: 10 });
+EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0, puffs: 8 });
+  fxC.impact(G(1520.2 + ((i * 37) % 7) * 0.15, g[1] + ((i * 53) % 9 - 4) * 0.35, 0), t + 0.85, { size: 0.9 }); });
+EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0, puffs: 8 });
+  fxC.impact(G(1526.3 + ((i * 29) % 7) * 0.25, g[1] + ((i * 41) % 9 - 4) * 0.4, 0), t + 0.8, { size: 0.9 }); });
+// flashback: the burning steamer drifting down the Mississippi at Vicksburg, the batteries firing on the boats, town lights
+const MISS = D.regions.wide.rivers[0].pts;
+const riverAt = (y) => { let b = MISS[0]; for (const p of MISS) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b; };
+const st0 = riverAt(684), st1 = riverAt(703);
+fxW.fire(GWd(st0[0], st0[1], 0.4), EV.steamer, EV.steamer + 2.6, { to: GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), size: 0.55, glowSize: 26, smokeRate: 1.8, smokeLife: 10, rise: 7, ramp: 0.8, fadeOut: 0.6, lightIntensity: 3 });
+fxW.fire(GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), EV.steamer + 2.4, T.p5, { to: GWd(st1[0], st1[1], 0.4), size: 0.55, glowSize: 26, smokeRate: 1.8, smokeLife: 10, rise: 7, ramp: 0.4, lightIntensity: 3 });
+const VB = D.towns.Vicksburg;
+EV.batteryShots.forEach((t, i) => { const a = (i * 0.9) % 3; fxW.cannon(GWd(VB[0] - 2 + a * 2.2, VB[1] - 5 + i * 1.9, 0.3), t, { dir: [-1, 0.1], size: 0.6, puffs: 6, dust: 0 });
+  const r = riverAt(VB[1] - 3 + i * 3); fxW.impact(GWd(r[0], r[1], 0.1), t + 0.9, { size: 0.5 }); });
+for (let i = 0; i < 14; i++) { const a = i * 2.39996, rr = 1.2 + (i % 5) * 1.1; fxW.campfire(GWd(VB[0] + Math.cos(a) * rr * 1.3, VB[1] + Math.sin(a) * rr, 0.2), { t0: T.p4 - 1, t1: T.p5, size: 1.4, smoke: false, visible: () => 1 }); }
+fxW.setNight(0);
+
+// ---------------- 3D extras: boats on the Mississippi (flashback), three new bridges (next day) ----------------
+const boatMat = new THREE.MeshLambertMaterial({ color: 0x1a1a1c }), boats = [];
+for (let i = 0; i < 6; i++) { const b = new THREE.Group(); const hull = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.5, 0.75), boatMat); b.add(hull);
+  const st = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 1.2, 6), boatMat); st.position.set(0.3, 0.8, 0); b.add(st); world.regions.wide.scene.add(b); boats.push(b); }
+const placeBoats = (t) => { for (let i = 0; i < boats.length; i++) { const y = 662 + (t - (T.p4 - 1)) * 1.6 - i * 4.2, p = riverAt(y), q = riverAt(y + 1);
+  boats[i].position.set(p[0] + (i % 2 ? 0.6 : -0.6), (p[2] * 14) / D.geo.mpu + 0.35, p[1]); boats[i].rotation.y = Math.atan2(-(q[1] - p[1]), q[0] - p[0]); boats[i].visible = t > T.p4 - 1 && t < T.p5; } };
+const RIV = D.regions.close.rivers[0].pts, wood = new THREE.MeshLambertMaterial({ color: 0x6b5236 }), newBridges = [];
+[[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p;
+  const i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], ang = Math.atan2(c[1] - a[1], c[0] - a[0]);
+  const g = new THREE.Group(); const wl = (b[2] * 6) / D.geo.mpu;
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.02, 1.5), wood); deck.castShadow = deck.receiveShadow = true; g.add(deck);
+  for (let j = -3; j <= 3; j++) { const pt = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.03, 0.07), new THREE.MeshLambertMaterial({ color: 0x3d3428 })); pt.position.set(0, -0.015, j * 0.21); g.add(pt); }
+  g.position.set(b[0], wl + 0.012, b[1]); g.rotation.y = -ang; world.regions.close.scene.add(g); newBridges.push({ g, t: EV.bridgesNew[k] }); });
+
+// ---------------- our troops: Style W boxes pinned to the ground (many small blocks per brigade) ----------------
+const INK = "#15130f";
+const SYM = {
+  inf: `<svg viewBox="0 0 100 40" preserveAspectRatio="none"><line x1="0" y1="0" x2="100" y2="40" stroke="#f4eedd" stroke-width="6"/><line x1="100" y1="0" x2="0" y2="40" stroke="#f4eedd" stroke-width="6"/></svg>`,
+  art: `<svg viewBox="0 0 100 40" preserveAspectRatio="none"><circle cx="50" cy="20" r="11" fill="#f4eedd"/></svg>`,
+};
+const TR = document.getElementById("troops"), UNITS = [];
+// unit: side u|r, type inf|art, keys [[t, x, y]], face (radians, map plane, direction the line faces), n blocks, bw (block width, units)
+const unit = (side, type, keys, o = {}) => { const n = o.n || 4, els = [];
+  for (let i = 0; i < n; i++) { const e = document.createElement("div"); e.className = `blk ${side}`; e.innerHTML = SYM[type]; TR.appendChild(e); els.push(e); }
+  const u = { side, type, keys, face: o.face ?? (side === "u" ? Math.PI : 0), n, bw: o.bw || (type === "art" ? 0.42 : 0.7), bd: o.bd || (type === "art" ? 0.32 : 0.3), gap: o.gap || 0.12,
+    t0: o.t0 ?? 0, t1: o.t1 ?? 1e9, cap: o.cap, capN: o.capN ?? n, els, wob: o.wob ?? 1 };
+  UNITS.push(u); return u; };
+const posAt = (K, t) => { if (t <= K[0][0]) return [K[0][1], K[0][2]]; for (let i = 1; i < K.length; i++) if (t < K[i][0]) { const k = sstep(K[i - 1][0], K[i][0], t); return [lerp(K[i - 1][1], K[i][1], k), lerp(K[i - 1][2], K[i][2], k)]; } const L = K[K.length - 1]; return [L[1], L[2]]; };
+// Confederates: three brigades on the breastworks (facing east), guns in the line, a reserve by the bridge; Union: four brigades + guns arrive from the east
+const bwX = (y) => { let b = BRW[0]; for (const p of BRW) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b[0]; };
+const TK = T.taken;
+[[699.4, 0], [702.9, 1], [706.6, 2], [710.4, 3]].forEach(([y, i]) => unit("r", "inf", [[0, bwX(y) - 0.25, y], [TK - 0.4, bwX(y) - 0.25, y], [TK + 1.6, bwX(y) - 2.6, y + (705 - y) * 0.6], [EV.bridgeFire, BR.x - 2.8, 705 + (i - 1.5) * 0.9]],
+  { n: 4, cap: TK - 0.2 + i * 0.25, capN: i === 3 ? 4 : 2, t1: EV.bridgeFire + 3.5 }));
+EV.csGuns.forEach((g, i) => unit("r", "art", [[0, g[0] - 0.15, g[1]]], { n: 2, cap: TK + 0.1 * i, capN: 2 }));
+unit("r", "inf", [[0, BR.x - 1.6, 703.6], [TK + 1, BR.x - 3.0, 704.2]], { n: 3, face: 0, t1: EV.bridgeFire + 3.5 });
+const ARR = SW + 0.6;
+[[699.0, 0], [702.6, 1], [706.4, 2], [710.6, 3]].forEach(([y, i]) => unit("u", "inf",
+  [[ARR, 1534.5 + i * 0.6, y], [T.crossing + 1, 1526.6 + (i % 2) * 0.3, y], [30.4 + i * 0.3, 1526.0, y], [TK - 0.3 + i * 0.15, bwX(y) + 0.5, y], [TK + 1.4, bwX(y) - 1.0, y], [T.p4, BR.x + 1.6, y * 0.4 + 705 * 0.6]],
+  { n: 4, t0: ARR - 0.2 }));
+[[1529.2, 699.6], [1529.4, 704.8], [1529.0, 710.2], [1535.0, 702.0], [1535.4, 708.0]].forEach(([x, y], i) => unit("u", "inf", [[ARR, x + 6, y], [T.crossing + 2 + i * 0.3, x, y], [TK + 1, x - 3, y]], { n: 3, t0: ARR - 0.2 }));
+EV.usGuns.forEach((g, i) => unit("u", "art", [[ARR, g[0] + 5, g[1]], [T.crossing - 0.6 + i * 0.4, g[0] + 0.2, g[1]]], { n: 2, t0: ARR - 0.2 }));
+// next day: Union columns cross the three new bridges westward
+[[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { const r0 = posAtRiver(y); for (let j = 0; j < 2; j++)
+  unit("u", "inf", [[T.p5 - 1, r0[0] + 2.2 + j * 0.9, y], [EV.bridgesNew[k] + 0.6, r0[0] + 1.2 + j * 0.9, y], [T.D, r0[0] - 2.4 + j * 0.9, y + (705 - y) * 0.2]], { n: 3, face: Math.PI, t0: T.p5 - 0.6, bw: 0.5, gap: 0.08 }); });
+function posAtRiver(y) { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p; return b; }
+[[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
+// army banners (one flag per side, on a pole, Style W)
+const BN = document.createElement("div"); TR.appendChild(BN);
+const banner = (img, name, keys, t0, t1) => { const e = document.createElement("div"); e.className = "bnr"; e.innerHTML = `<div class="pole" style="height:58px"></div><img src="${img}" style="width:42px;bottom:30px"><div class="nm" style="bottom:4px">${name}</div>`; BN.appendChild(e); return { e, keys, t0, t1 }; };
+const BANNERS = [banner("assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T.crossing + 2, 1530.6, 705.6]], ARR + 0.5, T.p4 - 0.6), banner("assets/csa1_13_flag.png", "Pemberton", [[0, BR.x - 1.2, 706.2], [TK + 1, BR.x - 3.6, 706.0]], T.pem - 0.2, EV.bridgeFire + 3),
+  banner("assets/us34_flag.png", "Grant", [[T.p5 - 1, 1517.4, 705.5]], T.p5 - 0.5, T.D + 1)];
+// solid arrows on the ground (assault, retreat, next-day crossing)
+const SVG = document.getElementById("arrows"), NSV = "http://www.w3.org/2000/svg", ARROWS = [];
+const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NSV, "g"); g.innerHTML = `<path fill="none" stroke="rgba(14,12,8,.6)" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="${col}"/><polygon fill="${col}" stroke="rgba(14,12,8,.6)" stroke-width="1.5"/>`;
+  SVG.appendChild(g); ARROWS.push({ g, pts, t0, dur, t1 }); };
+arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, "#3f6fd0");
+arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, "#3f6fd0");
+arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, "#3f6fd0");
+arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, "#c4483a");
+for (const [y, k] of [[702.0, 0], [707.8, 1], [709.6, 2]]) { const r0 = posAtRiver(y); arrow([[r0[0] + 2.2, y], [r0[0], y], [r0[0] - 2.4, y + (705 - y) * 0.2]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
+
+// ---------------- place names pinned to the ground ----------------
+const PINS = [], PN = document.getElementById("pins");
+const place = (txt, x, y, size, t0, t1, region, cls = "") => { const e = document.createElement("div"); e.className = "pl " + cls; e.style.fontSize = size + "px"; e.textContent = txt; PN.appendChild(e); PINS.push({ e, x, y, t0, t1, region }); };
+place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, 9, "wide"); place("Edwards", ...D.towns.Edwards, 20, 1.2, 9, "wide"); place("Big Black River", 1506, 676, 19, 2.0, 9, "wide", "it");
+place("Bovina", 1495.5, 700.4, 19, SW + 1, T.p4 - 1, "close"); place("Big Black River", 1512.2, 696.0, 18, SW + 1.2, 27, "close", "it");
+place("Vicksburg", 1392, 683, 24, T.p4 + 0.4, T.p4 + 5, "wide"); place("Mississippi River", 1362, 688, 18, T.p4 + 0.8, T.p4 + 5.5, "wide", "it");
+place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it");
+
+// ---------------- GM overlay (1920x1080 space) ----------------
+const O = GMOverlay.create(document.getElementById("ov"), { tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
+O.film.set({ grain: 0.14 });
+O.plaque.date(0.4, { month: "May 1863", day: "17", weekday: "Sunday", note: "east of Vicksburg" });
+O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x, BR.z], side: "cs" });
+O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", world: [1600, 716], offset: [150, -150], tIn: T.grant, tOut: T.story - 0.2 });
+O.title(T.story, T.dive - 1.2, { lines: ["The Bridge", "That Burned to", "Save Vicksburg"], sub: "Big Black River · 17 May 1863", y: 250 });
+O.plaque.clock(T.ch, { time: "8:30", note: "Big Black River bridge", header: "17 May 1863" });
+O.timeline.show(T.ch + 0.2, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 1.0 });
+O.timeline.seal(T.ch + 0.7, { at: 2.0, name: "Champion Hill" });
+O.legend(T.pem - 0.6, T.p4 - 0.8, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] });
+O.medallion({ kind: "card", img: "assets/pemberton_head.png", side: "cs", role: "Lieutenant General", name: "John C. Pemberton", sub: "holds the crossing", world: [BR.x - 1.2, 706.2], offset: [-330, -170], tIn: T.pem, tOut: T.crossing + 2.6 });
+O.label(T.back, T.p3 + 0.6, { name: "The river at their back", sub: "one bridge behind the line", world: [BR.x, BR.z], side: "cs" });
+O.timeline.go(T.p3, { at: 2.6, d: 1.2 });
+O.plaque.run(T.p3, T.taken, "9:05");
+O.plaque.note(T.p3 + 0.5, "Assault on the breastworks");
+O.label(T.taken - 0.2, T.bburn - 0.3, { name: "The line is taken", sub: "a little after nine · Grant's Memoirs", world: [1521.2, 709.6], side: "us" });
+O.label(T.bburn, T.guns - 0.2, { name: "Big Black bridge burned", sub: "fired by the retreating Confederates", world: [BR.x + 2.2, BR.z + 2.0], side: "cs", marker: false });
+O.ledger.show(T.guns - 0.6, { title: "Big Black River", sub: "17 - 18 May 1863" });
+O.ledger.add(T.guns, { who: "18 guns taken", stamp: false });
+O.ledger.add(T.pris, { who: "1,751 prisoners", note: "by Grant's count", stamp: false });
+O.number(T.pris, T.six - 0.3, { value: 1751, round: 1, world: [1519.0, 706.5], size: 104 });
+O.ledger.add(T.six, { who: "276 Union hit", note: "six prisoners for each", stamp: false });
+O.ledger.hide(T.p4 - 0.6);
+// flashback: a month earlier, night run past the Vicksburg batteries
+O.film.grade(T.p4 - 0.6, "night", 0.8);
+O.plaque.date(T.p4, { month: "April 1863", day: "16", weekday: "Thursday", note: "a month earlier · night" });
+O.timeline.hide(T.p4 - 0.6);
+O.inset(T.april, T.drift + 1.0, { img: "assets/inset_run.jpg", x: 1300, y: 170, w: 500, h: 360, caption: "Grant's transports running the batteries · Library of Congress" });
+O.quote(T.deck - 1.4, T.p5 - 0.7, { en: "The sight was magnificent, but terrible.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700 });
+// next day
+O.film.grade(T.p5 - 0.6, "day", 0.8);
+O.plaque.date(T.p5 - 0.3, { month: "May 1863", day: "18", weekday: "Monday", note: "three new bridges" });
+O.timeline.show(T.p5, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 3.0 });
+O.timeline.seal(T.p5 + 0.4, { at: 3.0, name: "Big Black" });
+O.ledger.show(T.three - 0.4, {});
+O.ledger.add(T.three, { who: "Three new bridges", note: "18 May", stamp: false });
+O.ledger.final(T.oneday2, { lines: ["Stopped", "one day"], color: "#A8261B" });
+O.plaque.hide(T.D - 1.2); O.timeline.hide(T.D - 1.2); O.ledger.hide(T.D - 1.0);
+tl.to("#fade", { opacity: 1, duration: 0.9, ease: "power1.in" }, T.D - 1.0);
+tl.fromTo("#fade", { opacity: 1 }, { opacity: 0, duration: 0.8, ease: "power1.out", immediateRender: false }, 0);
+
+// ---------------- per-frame draw (pure function of t) ----------------
+const v2 = (a, b) => [b.x - a.x, b.y - a.y];
+function drawTroops(t, close) {
+  for (const u of UNITS) {
+    const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
+    if (op <= 0.001) { for (const e of u.els) e.style.opacity = 0; continue; }
+    const [cx, cy] = posAt(u.keys, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;   // facing + front axis
+    const span = u.n * u.bw + (u.n - 1) * u.gap;
+    for (let i = 0; i < u.n; i++) {
+      const off = -span / 2 + u.bw / 2 + i * (u.bw + u.gap), wob = u.wob * 0.05 * Math.sin(t * 1.3 + i * 1.7 + cx);
+      const bx = cx + px * off + fx * wob, by = cy + py * off + fy * wob;
+      const c = world.projectMap(bx, by, 0.02), a = world.projectMap(bx + px * u.bw / 2, by + py * u.bw / 2, 0.02), d = world.projectMap(bx + fx * u.bd / 2, by + fy * u.bd / 2, 0.02);
+      const ex = v2(c, a), ey = v2(c, d), e = u.els[i];
+      e.style.transform = `matrix(${(ex[0] / 50).toFixed(4)},${(ex[1] / 50).toFixed(4)},${(ey[0] / 20).toFixed(4)},${(ey[1] / 20).toFixed(4)},${(c.x - 50).toFixed(1)},${(c.y - 20).toFixed(1)})`;
+      const capd = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
+      e.style.opacity = (op * (1 - 0.25 * capd)).toFixed(3);
+      e.style.backgroundColor = capd > 0 ? `rgb(${Math.round(lerp(190, 138, capd))},${Math.round(lerp(58, 133, capd))},${Math.round(lerp(42, 122, capd))})` : "";
+    }
+  }
+  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1, op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
+    b.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const [x, y] = posAt(b.keys, t), s = world.projectMap(x, y, 0.02); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`; }
+  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? 1 - sstep(A.t1 - 0.6, A.t1, t) : 0;
+    A.g.style.opacity = op.toFixed(3); if (op <= 0) continue;
+    const P = A.pts.map((p) => world.projectMap(p[0], p[1], 0.03)); const ke = 1 - (1 - k) ** 2;
+    // cut the screen polyline at fraction ke of its length
+    const seg = []; let L = 0; for (let i = 1; i < P.length; i++) { const d = Math.hypot(P[i].x - P[i - 1].x, P[i].y - P[i - 1].y); seg.push(d); L += d; }
+    let rem = ke * L; const out = [[P[0].x, P[0].y]]; let tip = out[0], dir = [1, 0];
+    for (let i = 1; i < P.length; i++) { const d = seg[i - 1]; dir = [(P[i].x - P[i - 1].x) / (d || 1), (P[i].y - P[i - 1].y) / (d || 1)];
+      if (rem <= d) { tip = [P[i - 1].x + dir[0] * rem, P[i - 1].y + dir[1] * rem]; out.push(tip); break; } rem -= d; out.push([P[i].x, P[i].y]); tip = out[out.length - 1]; }
+    const ppu = P[P.length - 1].ppu, w = Math.max(4, ppu * 0.42), hl = w * 2.1, hw = w * 1.5;
+    const base = [tip[0] - dir[0] * hl, tip[1] - dir[1] * hl]; out[out.length - 1] = base;
+    const d = "M" + out.map((q) => q[0].toFixed(1) + " " + q[1].toFixed(1)).join(" L");
+    const ps = A.g.querySelectorAll("path"); ps[0].setAttribute("d", d); ps[0].setAttribute("stroke-width", (w + 3).toFixed(1)); ps[1].setAttribute("d", d); ps[1].setAttribute("stroke-width", w.toFixed(1));
+    const nx = -dir[1], ny = dir[0];
+    A.g.querySelector("polygon").setAttribute("points", `${tip[0] + dir[0] * 2},${tip[1] + dir[1] * 2} ${base[0] + nx * hw},${base[1] + ny * hw} ${base[0] - nx * hw},${base[1] - ny * hw}`);
+  }
+}
+function drawPins(t, region) {
+  for (const p of PINS) { const on = region === p.region && t >= p.t0 && t < p.t1, op = on ? Math.min(sstep(p.t0, p.t0 + 0.6, t), 1 - sstep(p.t1 - 0.6, p.t1, t)) : 0;
+    p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
+}
+window.__draw = (t) => {
+  placeBoats(t);
+  for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }
+  world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0); fx.update(tt, w.camera); } });
+  const close = world.region === "close";
+  drawTroops(t, close); drawPins(t, world.region);
+};
+window.__draw(tl.time());
+window.__gm3d = { world, fxW, fxC, O };
+window.__clipBuilt();
+</script>
+</body>
+</html>
