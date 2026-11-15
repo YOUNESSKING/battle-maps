@@ -112,5 +112,13 @@ clusters kept off the night frame (only the flat wisps there). Deck opacity ramp
 (tops ~19-24, ~1.5x ground parallax), lit tops + grey-blue cores, clear off the troop line after ~18.2 s; camera exits at ~1/3 of the dive
 log-speed (keys SW dist 93 -> 17.25 dist 61 lin -> 19.75 dist 40 cubic out); fog snaps 17.2-17.65. Sheets: `dive_ours_v6.jpg`, `dive_sectors_v6.jpg` (local).
 
+**v7 clouds (critic A round 3):** cut hidden: veil opaque 16.35 s -> snap, flat -8 dip on the cool veil around the 16.4 s switch (30 fps stills 16.367-16.5:
+mean 200 -> 195.5 -> 199, std 1.0, no map); the camera stays just above the deck tops to ~16.3 s (wide keys dist 125 @15.95 -> 72 @16.4) under a
+veil <= 0.55 (lobe carpet std 25 / 15 / 6.7 at 16.0 / 16.1 / 16.2 s); warm cream clouds (sun (1,.95,.85) x1.45, ambient top (.62,.65,.70)): wide
+cloud pixels (177-180,176-178,169-171) p90 199-204 vs his (185,185,172) p90 206, deck (196,194,188) vs his (198,201,194); ~20 clusters across the
+map incl. two big masses upper middle (deck clouds dropped under wide ones: no group seams); deck detail `fine` 0.22, blur 0.75; title: names hidden
+in its screen box from its first frame, dark-gold rim + premultiplied edges (no halo), 72 side layers; exit ease 3.35 s (keys 16.4 dist 107 ->
+17.25 dist 70 -> 20.6 dist 40), warmer, more translucent remnants. `dive_ours_v7.jpg`, `dive_sectors_v7.jpg` (local).
+
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).
