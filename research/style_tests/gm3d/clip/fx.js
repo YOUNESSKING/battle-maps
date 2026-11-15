@@ -239,6 +239,63 @@ float fxCloudDensity(vec3 p, bool detail) {
 }
 `;
 
+// ---------------------------------------------------------------- v4 volumetric cumulus (vclouds)
+// Offline 3D noise (make_cloud_noise.py -> cloudtex/noise128.bin, 128^3 RGBA8, tileable):
+// R = Perlin-Worley, G = inverted Worley fbm 4/8/16, B = inverted Worley fbm 8/16/32, A = Perlin fbm (warp).
+export async function loadCloudNoise(url) {
+  const buf = await (await fetch(url)).arrayBuffer(), N = Math.round(Math.cbrt(buf.byteLength / 4));
+  const tex = new THREE.Data3DTexture(new Uint8Array(buf), N, N, N);
+  tex.format = THREE.RGBAFormat; tex.type = THREE.UnsignedByteType; tex.minFilter = tex.magFilter = THREE.LinearFilter;
+  tex.wrapS = tex.wrapT = tex.wrapR = THREE.RepeatWrapping; tex.unpackAlignment = 1; tex.needsUpdate = true;
+  return tex;
+}
+// Cloud shape = a 2D cloud map (R top height, G base height, B group, A horizontal distance to the nearest cloud, world units)
+// displaced by the 3D noise: big Perlin-Worley lumps + Worley billows at two scales (cauliflower) + a fine octave near the lens,
+// all on a domain-warped position (torn, wispy edges). Density = soft clamp of that signed distance (translucent fringes).
+const VC_GLSL = /* glsl */`
+uniform highp sampler3D vcNoise;
+uniform sampler2D vcMap;
+uniform vec4 vcB;      // map origin x, z, 1/width, 1/depth
+uniform vec4 vcP;      // 1/tile, displacement amp, soft edge, sigma
+uniform vec4 vcQ;      // base sharpness, fine amount, warp, wisp
+uniform vec4 vcS;      // slab y0, y1, ground shadow strength, enabled
+uniform vec2 vcErode;  // erosion (in units of amp) of group 0 / group 1
+uniform vec4 vcDrift;  // map drift x, z; noise evolution; -
+uniform vec3 vcSun;
+uniform float vcInner;
+uniform float vcGS;     // billow scale of group 1 (finer)
+uniform vec3 vcShDir;
+uniform float vcTexel;
+uniform float vcFloor;
+uniform vec4 vcDeck;    // v5 group-1 coverage front: centre x, z, 1/radius, extra erosion at the centre (the deck closes in from the frame edges)
+uniform float vcDeckK;  // v5 group-1 density multiplier (the deck fades in translucent grey, then thickens)
+uniform vec4 vcG0;      // v5 group-0 (wide fair-weather) multipliers: billows, fine billows, soft edge, rim tearing
+uniform vec4 vcW;       // v5: billow weight x (mid Worley), fine-billow weight x (fine Worley), wisp source (0 fine, 1 mid), interior mottle scale   // direction the ground shadows are cast along (steeper than the sun, as in his map)
+vec4 vcMapAt(vec2 xz) { vec4 m = texture(vcMap, (xz - vcDrift.xy - vcB.xy) * vcB.zw); m.rg += vcS.x; return m; }   // heights stored relative to the slab base (half-float precision)
+float vcDens(vec3 p, vec4 m, float lod) {
+  float amp = vcP.y;
+  // distance below the dome surface measured along its normal (vertical distance / sqrt(1 + slope^2)): no extruded side walls
+  float e = vcTexel * 3.0;   // wide central difference: no texel-edge kinks in the slope (no contour lines)
+  vec2 gr = vec2(vcMapAt(p.xz + vec2(e, 0.0)).r - vcMapAt(p.xz - vec2(e, 0.0)).r, vcMapAt(p.xz + vec2(0.0, e)).r - vcMapAt(p.xz - vec2(0.0, e)).r) / (2.0 * e);
+  float s = min((m.r - p.y) * inversesqrt(1.0 + dot(gr, gr)), (p.y - m.g) * vcQ.x);
+  float er = mix(vcErode.x, vcErode.y + vcDeck.w * (1.0 - smoothstep(0.0, 1.0, length(p.xz - vcDrift.xy - vcDeck.xy) * vcDeck.z)), m.b) * amp;
+  if (s < -amp * 1.05 + er) return 0.0;
+  vec3 q = vec3(p.x - vcDrift.x, p.y, p.z - vcDrift.y) * (vcP.x * mix(1.0, vcGS, m.b)) + vec3(0.0, vcDrift.z, 0.0);
+  amp *= mix(0.7, 1.0 / sqrt(vcGS), m.b);   // group 0 (wide fair-weather): lower relief, flatter tops
+  vec4 n0 = texture(vcNoise, q * 0.29);
+  vec3 w = (n0.agb - 0.5) * vcQ.z;
+  vec4 n1 = texture(vcNoise, q + w);
+  float d = s + amp * (1.0 * (n0.r - 0.52) + vcW.x * mix(0.5 * vcG0.x, 0.62, m.b) * (n1.g - 0.5) + vcW.y * mix(0.14 * vcG0.y, 0.30, m.b) * (n1.b - 0.5)) - er;   // wide fair-weather clouds: softer, fewer small billows
+  if (lod > 0.0 && vcQ.y > 0.0 && d > -amp * 0.2 && d < amp * 0.7) d += amp * vcQ.y * lod * (texture(vcNoise, q * 3.3 + w * 1.7).b - 0.5);
+  float dn = clamp(d / (vcP.z * mix(2.4 * vcG0.z, 0.75, m.b)), 0.0, 1.0);   // group 0 (wide fair-weather): softer translucent rims
+  dn *= mix(1.0, 0.25 + 1.1 * mix(n1.g, n0.g, vcW.w), vcInner);   // v5: vcW.w -> big soft mottles (lower-frequency octave)   // mottled interior (never a flat card)
+  // wispy fringe: the outer part of the soft edge is torn by the fine billows
+  dn *= mix(1.0, smoothstep(0.15, 0.85, mix(n1.b, n1.g, vcW.z)), vcQ.w * mix(vcG0.w, 1.0, m.b) * (1.0 - dn));   // v5: vcW.z = 1 tears the rim with the mid octave (no fur)
+  // milky fill inside a deck column (group 1): no hard terrain detail seen through the gaps between billows
+  return max(dn, vcFloor * m.b * smoothstep(0.0, amp, s - er)) * mix(1.0, vcDeckK, m.b);
+}
+`;
+
 // ---------------------------------------------------------------- sprite batch (one sorted draw call)
 const SPRITE_VS = /* glsl */`
 attribute vec4 iA; // world pos, size
@@ -246,10 +303,11 @@ attribute vec4 iB; // rotation, alpha, cell, mode (0 lit smoke, 1 emissive addit
 attribute vec4 iC; // tint rgb, ground height
 uniform vec3 uCamRight; uniform vec3 uCamUp;
 varying vec2 vUv; varying vec4 vB; varying vec3 vCol; varying vec3 vTx; varying vec3 vTy;
-varying vec3 vW; varying float vSoft;
+varying vec3 vW; varying float vSoft; varying float vFogD;
 void main() {
   float c = cos(iB.x), s = sin(iB.x);
   vec2 q = vec2(c * position.x - s * position.y, s * position.x + c * position.y);
+  if (iB.w > 3.5) q.y *= 1.0 + (iB.w - 4.0) * 2.0;   // v5 curtain smoke: mode 4 + (stretch - 1) / 2, stretched vertically on screen
   vec3 wp = iA.xyz + (uCamRight * q.x + uCamUp * q.y) * iA.w;
   vW = wp;
   vTx = uCamRight * c + uCamUp * s;
@@ -260,6 +318,7 @@ void main() {
   vB = iB; vCol = iC.rgb;
   // soft intersection with the ground: fade the part of the quad below ground + a band above it
   vSoft = (wp.y - iC.w) / max(iA.w * 0.22, 1e-3);
+  vFogD = -(viewMatrix * vec4(wp, 1.0)).z;
   gl_Position = projectionMatrix * viewMatrix * vec4(wp, 1.0);
 }
 `;
@@ -267,8 +326,10 @@ const SPRITE_FS = /* glsl */`
 uniform sampler2D uAtlas;
 uniform vec3 uSunDir; uniform vec3 uSunCol; uniform vec3 uShadeCol; uniform vec3 uCamBack;
 uniform float uScatter; uniform float uContrast;
+uniform vec3 uFogC; uniform vec2 uFogNF; uniform vec3 uCurtK;   // v5: scene fog (sprites used to stay crisp in the haze)
 varying vec2 vUv; varying vec4 vB; varying vec3 vCol; varying vec3 vTx; varying vec3 vTy;
-varying vec3 vW; varying float vSoft;
+varying vec3 vW; varying float vSoft; varying float vFogD;
+float fxFog() { return uFogNF.y > uFogNF.x ? clamp((vFogD - uFogNF.x) / (uFogNF.y - uFogNF.x), 0.0, 1.0) : 0.0; }   // three's linear Fog
 vec3 fxOut(vec3 c) {
 #ifdef TONE_MAPPING
   c = toneMapping(c);
@@ -279,6 +340,17 @@ void main() {
   float haze = step(2.5, vB.w);
   vec4 tx = haze > 0.5 ? texture2D(uAtlas, vUv, 2.6) : texture2D(uAtlas, vUv);
   float soft = clamp(vSoft, 0.0, 1.0);
+  if (vB.w > 3.5) {   // v5 curtain smoke (GM musketry / gun smoke): unlit cool grey, soft Gaussian body broken by a blurred puff, fogged
+    vec2 l = fract(vUv * vec2(4.0, 2.0)) - 0.5;
+    float g = exp(-dot(l, l) * 11.0) * smoothstep(0.5, 0.36, length(l));
+    float nz = texture2D(uAtlas, vUv, 3.2).a;
+    float a = g * (0.45 + 0.55 * nz) * vB.y * soft;
+    if (a < 0.003) discard;
+    vec3 col = vCol * uCurtK * (0.9 + 0.14 * (0.5 - l.y));   // a touch lighter at the top, never sunlit; uCurtK = moonlight at night
+    col = mix(col, uFogC, fxFog());
+    gl_FragColor = vec4(fxOut(col) * a, a);
+    return;
+  }
   if (vB.w > 1.5 && vB.w < 2.5) { // flat unlit (snow flakes)
     float a = tx.a * vB.y;
     if (a < 0.003) discard;
@@ -295,11 +367,12 @@ void main() {
     col += uSunCol * fwd * vCol;
     float a = dens * vB.y * soft;
     if (a < 0.003) discard;
+    col = mix(col, uFogC, fxFog());
     gl_FragColor = vec4(fxOut(col) * a, a);
   } else {
     float a = tx.a * vB.y * mix(1.0, soft, 0.6);
     if (a < 0.003) discard;
-    vec3 col = vCol * (0.55 + 0.9 * tx.r);
+    vec3 col = vCol * (0.55 + 0.9 * tx.r) * (1.0 - 0.8 * fxFog());
     gl_FragColor = vec4(fxOut(col) * a, 0.0); // alpha 0 -> purely additive under premultiplied blending
   }
 }
@@ -370,12 +443,17 @@ class Spawns {
   }
   range(t) { return [lowerBound(this.t, this.n, t - this.maxLife), lowerBound(this.t, this.n, t + 1e-9)]; }
 }
-const SMOKE_FIELDS = ['mode', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'k', 'rise', 'wk', 'turb', 'ph', 's0', 'grow', 'life', 'a0', 'rot', 'spin', 'cell', 'r', 'g', 'b', 'gy', 'fin'];
+const SMOKE_FIELDS = ['mode', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'k', 'rise', 'wk', 'turb', 'ph', 's0', 'grow', 'life', 'a0', 'rot', 'spin', 'cell', 'r', 'g', 'b', 'gy', 'fin', 'fo'];
 
 // Smoke looks. 'gm' = Grand Maneuver (France 1814): soft, translucent, cool blue-grey haze plumes
 // that rise and drift; 'billow' = dense sunlit white cauliflower powder smoke (Borodino paintings).
 const LOOKS = {
-  gm:     { tint: [0.66, 0.66, 0.67], alpha: 0.15, s0: 4.2, grow: 7.0, rise: 1.0, turb: 3.0, life: 16, mode: 3 },   // clip: greyer, thinner
+  // v5 (critic B 4): GM's musketry smoke is an UNLIT cool see-through grey curtain (~(120,125,122) over his fields, the ground shows through),
+  // soft-edged, taller than wide, hanging where it was fired and drifting sideways slowly: mode 4.3 = curtain sprite stretched x1.6
+  // v6 (critic B 6): neutral grey (his ratio 0.55:0.57:0.60, scaled for an UNLIT sprite: renders sRGB ~(150,153,157)), +40 % opacity, 1.5x wider, calmer
+  gm:     { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 10.0, grow: 4.4, rise: 0.22, turb: 0.4, life: 18, mode: 4.3 },
+  gmTall: { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 9.0, grow: 3.6, rise: 0.22, turb: 0.4, life: 18, mode: 4.5 },   // v7: x2 vertical curtains (battalion clusters stay apart)
+  gmOld:  { tint: [0.66, 0.66, 0.67], alpha: 0.15, s0: 4.2, grow: 7.0, rise: 1.0, turb: 3.0, life: 16, mode: 3 },   // v4 lit haze puffs
   billow: { tint: [0.93, 0.93, 0.92], alpha: 0.50, s0: 3.2, grow: 5.8, rise: 0.35, turb: 2.2, life: 16, mode: 0 },
 };
 
@@ -397,7 +475,7 @@ export function createFX(cfg = {}) {
   const spriteU = {
     uCamRight: { value: new THREE.Vector3() }, uCamUp: { value: new THREE.Vector3() }, uCamBack: { value: new THREE.Vector3() },
     uSunDir: { value: sunDir }, uSunCol: { value: new THREE.Color(1.0, 0.95, 0.86) }, uShadeCol: { value: new THREE.Color(0.50, 0.53, 0.60) },
-    uScatter: { value: 0.6 }, uContrast: { value: 1 },
+    uScatter: { value: 0.6 }, uContrast: { value: 1 }, uFogC: { value: new THREE.Color(0.7, 0.7, 0.7) }, uFogNF: { value: new THREE.Vector2(0, 0) }, uCurtK: { value: new THREE.Color(1, 1, 1) },
   };
   const batch = new SpriteBatch(cfg.maxSprites ?? 24000, atlas, spriteU);
   scene.add(batch.mesh);
@@ -412,11 +490,15 @@ export function createFX(cfg = {}) {
     fxSunDir: { value: sunDir },
     fxPoolPos: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
     fxPoolCol: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
-    fxPoolN: { value: 0 },
+    fxPoolN: { value: 0 }, fxNight: { value: 0 },   // v6: night factor for the ground patch (roads darken at night)
     // v3: sprite cumulus shadows (discs at cloud height, projected along fxCuL) + one floating plane's shadow (the 3D title)
     fxCu: { value: Array.from({ length: 64 }, () => new THREE.Vector4()) }, fxCuN: { value: 0 }, fxCuL: { value: new THREE.Vector4(0.35, 1, 0.2, 0.55) },
     fxPlTex: { value: null }, fxPlOn: { value: 0 }, fxPlO: { value: new THREE.Vector3() }, fxPlX: { value: new THREE.Vector3() }, fxPlY: { value: new THREE.Vector3() },
     fxPlL: { value: new THREE.Vector3(0, 1, 0) },
+    // v4 volumetric cumulus (vclouds)
+    vcNoise: { value: null }, vcMap: { value: null }, vcB: { value: new THREE.Vector4(0, 0, 1, 1) }, vcP: { value: new THREE.Vector4(1, 1, 1, 1) },
+    vcQ: { value: new THREE.Vector4(3, 0, 0, 0) }, vcS: { value: new THREE.Vector4(0, 1, 0, 0) }, vcErode: { value: new THREE.Vector2() },
+    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir }, vcInner: { value: 0 }, vcGS: { value: 1 }, vcShDir: { value: sunDir.clone() }, vcTexel: { value: 1 }, vcFloor: { value: 0 }, vcW: { value: new THREE.Vector4(1, 1, 0, 0) }, vcDeck: { value: new THREE.Vector4(0, 0, 1, 0) }, vcG0: { value: new THREE.Vector4(1, 1, 1, 1) }, vcDeckK: { value: 1 },
   };
 
   const emitters = [];   // { update(t, batch, ctx) }
@@ -425,7 +507,7 @@ export function createFX(cfg = {}) {
   let night = 0;
 
   // ---------------- generic smoke particle evaluation
-  function evalSmoke(P, i, age) {
+  function evalSmoke(P, i, age, am = 1) {
     const life = P.life[i]; if (age >= life || age < 0) return;
     const k = P.k[i], e = k > 0 ? (1 - Math.exp(-k * age)) / k : age;
     let x = P.x[i] + P.vx[i] * e, y = P.y[i] + P.vy[i] * e, z = P.z[i] + P.vz[i] * e;
@@ -435,12 +517,12 @@ export function createFX(cfg = {}) {
     x += Math.sin(age * 0.71 + ph) * ta; z += Math.sin(age * 0.53 + ph * 1.7) * ta; y += Math.sin(age * 0.61 + ph * 2.3) * ta * 0.35;
     const size = P.s0[i] + P.grow[i] * Math.sqrt(age);
     const u = age / life;
-    const a = P.a0[i] * Math.min(1, age / Math.max(P.fin[i], 1e-3)) * (1 - smooth(0.35, 1.0, u));
+    const a = am * P.a0[i] * Math.min(1, age / Math.max(P.fin[i], 1e-3)) * (1 - smooth(P.fo[i] || 0.35, 1.0, u));   // v6: fo = fade start (fire columns fade from low down: no flat cap)
     batch.push(x, y + size * 0.15, z, size, P.rot[i] + P.spin[i] * age, a, P.cell[i], P.mode[i], P.r[i], P.g[i], P.b[i], P.gy[i]);
   }
-  function smokeEmitter(list, maxLife, extra) {
+  function smokeEmitter(list, maxLife, extra, fade) {   // v7: fade(t) = global alpha multiplier (e.g. a bank thinning out after the volleys)
     const P = new Spawns(list, maxLife, SMOKE_FIELDS);
-    emitters.push({ update(t) { const [lo, hi] = P.range(t); for (let i = lo; i < hi; i++) evalSmoke(P, i, t - P.t[i]); if (extra) extra(t); } });
+    emitters.push({ update(t) { const am = fade ? fade(t) : 1; if (am <= 0.002) return; const [lo, hi] = P.range(t); for (let i = lo; i < hi; i++) evalSmoke(P, i, t - P.t[i], am); if (extra) extra(t); } });
     return P;
   }
   function puff(rnd, t, x, y, z, o) {
@@ -450,7 +532,7 @@ export function createFX(cfg = {}) {
       ph: rnd() * 100, s0: o.s0 * (0.75 + 0.5 * rnd()), grow: o.grow * (0.75 + 0.5 * rnd()), life: o.life * (0.75 + 0.5 * rnd()),
       a0: o.a0 * (0.75 + 0.5 * rnd()), rot: rnd() * 6.283, spin: (rnd() - 0.5) * (o.spin ?? 0.25), cell: Math.floor(rnd() * 4),
       r: o.tint[0] * (0.94 + 0.08 * rnd()), g: o.tint[1] * (0.94 + 0.08 * rnd()), b: o.tint[2] * (0.94 + 0.08 * rnd()),
-      gy: heightAt(x, z), fin: o.fin ?? 0.25, mode: o.mode ?? 0,
+      gy: heightAt(x, z), fin: o.fin ?? 0.25, mode: o.mode ?? 0, fo: o.fo ?? 0.35,
     };
   }
 
@@ -463,8 +545,8 @@ export function createFX(cfg = {}) {
         for (let i = lo; i < hi; i++) {
           const age = t - F.t[i], u = age / F.life[i]; if (u >= 1) continue;
           const a = F.a0[i] * (1 - u) * (1 - u);
-          batch.push(F.x[i], F.y[i], F.z[i], F.size[i] * (0.7 + 0.5 * u), F.rot[i], a, F.cell[i], 1, F.r[i], F.g[i], F.b[i], F.gy[i] - 1e3);
-          if (F.pool[i] > 0) pools.push({ x: F.x[i], y: F.y[i], z: F.z[i], r: F.pool[i], cr: 1, cg: 0.75, cb: 0.45, i: 2.2 * a });
+          batch.push(F.x[i], F.y[i] + F.size[i] * 0.22, F.z[i], F.size[i] * (0.7 + 0.5 * u), F.rot[i], a, F.cell[i], 1, F.r[i], F.g[i], F.b[i], F.gy[i] - 1e3);   // v5: lifted so the ground does not swallow its lower half
+          if (F.pool[i] > 0) pools.push({ x: F.x[i], y: F.y[i], z: F.z[i], r: F.pool[i], cr: 1, cg: 0.5, cb: 0.2, i: 1.4 * a });   // v5: small orange pool (no green-yellow ground light)
         }
       },
     });
@@ -485,45 +567,61 @@ export function createFX(cfg = {}) {
     const sz = (o.size ?? 1) * S;
     const list = [], flashes = [];
     const N = Math.max(1, Math.round(rate * (t1 - t0)));
+    // v7 (critic B 4): o.cluster = [width, gap] (world units): puffs only inside separate battalion-wide curtains along the line, not one ribbon
+    const CW_ = o.cluster ? o.cluster[0] : 0, CG_ = o.cluster ? o.cluster[1] : 0, NC = o.cluster ? Math.max(1, Math.floor((L + CG_) / (CW_ + CG_))) : 0, C0 = NC ? (L - (NC * CW_ + (NC - 1) * CG_)) / 2 : 0;
+    const inCl = (s) => NC ? C0 + Math.min(NC - 1, Math.floor(s / L * NC)) * (CW_ + CG_) + rnd() * CW_ : s;
     for (let k = 0; k < N; k++) {
       let t, s;
       if (o.volley) { // volleys rolling along the line
         const nv = Math.max(1, Math.floor((t1 - t0) / o.volley)), v = k % nv;
-        s = rnd() * L; t = t0 + v * o.volley + (s / L) * (o.roll ?? 0.8) + rnd() * 0.25;
-      } else { t = t0 + rnd() * (t1 - t0); s = rnd() * L; }
+        s = inCl(rnd() * L); t = t0 + v * o.volley + (s / L) * (o.roll ?? 0.8) + rnd() * 0.25;
+      } else { t = t0 + rnd() * (t1 - t0); s = inCl(rnd() * L); }
       const [p, si] = at(s); const d = dirAt(si);
       const mv = (o.muzzle ?? 14) * U * (0.6 + 0.8 * rnd());
       const h = (o.height ?? 1.6) * U;
       list.push(puff(rnd, t, p.x, p.y + h, p.z, { vx: d.x * mv, vz: d.y * mv, vy: 0.5 * U, k: 1.3, rise: L0.rise, turb: L0.turb, s0: L0.s0 * sz, grow: L0.grow * sz, life, a0: o.alpha ?? L0.alpha, tint, wk: o.windK ?? 1, mode: L0.mode }));
-      if (o.flash !== false && rnd() < 0.7) flashes.push({ t, x: p.x + d.x * 1.2 * U, y: p.y + h, z: p.z + d.y * 1.2 * U, size: 3.5 * sz, life: 0.09, r: 1.6, g: 1.05, b: 0.5, a0: 0.9, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
+      if (o.flash !== false && rnd() < 0.7) flashes.push({ t, x: p.x + d.x * 1.2 * U, y: p.y + h, z: p.z + d.y * 1.2 * U, size: 3.0 * sz, life: 0.07, r: 1.2, g: 0.58, b: 0.18, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
     }
-    smokeEmitter(list, life * 1.3);
+    smokeEmitter(list, life * 1.3, null, o.fadeAfter != null ? (t) => 1 - (1 - (o.fadeTo ?? 0.22)) * smooth(t1, t1 + o.fadeAfter, t) : null);   // v7: o.fadeAfter s: the bank thins to fadeTo after the last volley
     if (flashes.length) flashEmitter(flashes);
   }
 
   // ================================================================ API: cannon burst
   function cannon(pos, tBurst, o = {}) {
+    // v5 (critic B 7): a 2-3 frame ORANGE muzzle flash (no big ground light: the old 45-unit pool lit the green fields sickly yellow-green),
+    // then a grey curtain plume jetting 1-2 unit lengths forward that hangs 6-10 s and drifts off
     const rnd = mulberry32(o.seed ?? nextSeed());
     const d = new THREE.Vector2(...(o.dir || [1, 0])).normalize();
     const sz = (o.size ?? 1) * S, [px, py, pz] = pos, h = (o.height ?? 1.2) * U;
     const L0 = LOOKS[o.look || 'gm'];
-    const list = [], life = o.life ?? L0.life + 2;
-    const n = o.puffs ?? 11;
+    const list = [], life = o.life ?? 9;
+    const n = o.puffs ?? 14, jet = (o.jet ?? 1) * U;
     for (let k = 0; k < n; k++) {
-      const spread = (rnd() - 0.5) * 0.9, c = Math.cos(spread), s = Math.sin(spread);
+      const spread = (rnd() - 0.5) * 0.5, c = Math.cos(spread), s = Math.sin(spread);
       const dx = d.x * c - d.y * s, dz = d.x * s + d.y * c;
-      const v = (25 + 55 * rnd()) * U;
-      list.push(puff(rnd, tBurst + rnd() * 0.06, px, py + h, pz, { vx: dx * v, vz: dz * v, vy: (1 + 4 * rnd()) * U, k: 2.6, rise: L0.rise, turb: L0.turb, s0: L0.s0 * 1.2 * sz, grow: L0.grow * 1.15 * sz, life, a0: o.alpha ?? L0.alpha * 1.1, tint: o.tint || L0.tint, fin: 0.06, spin: 0.4, mode: L0.mode }));
+      const v = (360 + 390 * rnd()) * jet, fr = k / n;   // v7: x1.5 -> 140-290 m = 1.1-2.2 units (~2 box lengths)   // v6: k 2.6 -> travels v / 2.6 = 90-190 m = 0.7-1.5 units (1-2 box lengths)
+      list.push(puff(rnd, tBurst + fr * 0.08, px, py + h, pz, { vx: dx * v, vz: dz * v, vy: (1 + 3 * rnd()) * U, k: 2.6, rise: 0.35, turb: 0.9, s0: L0.s0 * 1.35 * sz * (o.plume ?? 1),
+        grow: L0.grow * 1.6 * sz * (o.plume ?? 1), life: life * (0.8 + 0.4 * rnd()), a0: o.alpha ?? L0.alpha * 1.6, tint: o.tint || L0.tint, fin: 0.05, spin: 0.05, mode: L0.mode, wk: o.windK ?? 0.6 }));
     }
-    for (let k = 0; k < (o.dust ?? 6); k++) { // ground dust kicked up around the gun
+    for (let k = 0; k < (o.dust ?? 4); k++) { // ground dust kicked up around the gun
       const a = rnd() * 6.283, v = (6 + 10 * rnd()) * U;
-      list.push(puff(rnd, tBurst + 0.02, px, py + 0.3 * U, pz, { vx: Math.cos(a) * v - d.x * 4 * U, vz: Math.sin(a) * v - d.y * 4 * U, vy: 0.5 * U, k: 2.0, rise: 0.15, turb: 1.2, s0: 2.5 * sz, grow: 3.5 * sz, life: 7, a0: 0.45, tint: [0.78, 0.70, 0.58], fin: 0.1 }));
+      list.push(puff(rnd, tBurst + 0.02, px, py + 0.3 * U, pz, { vx: Math.cos(a) * v - d.x * 4 * U, vz: Math.sin(a) * v - d.y * 4 * U, vy: 0.5 * U, k: 2.0, rise: 0.15, turb: 0.6, s0: 2.5 * sz, grow: 2.5 * sz, life: 5, a0: 0.25, tint: [0.42, 0.38, 0.32], fin: 0.1, mode: 4.0 }));
     }
     smokeEmitter(list, life * 1.3);
-    const fl = [];
-    fl.push({ t: tBurst, x: px + d.x * 3 * U, y: py + h, z: pz + d.y * 3 * U, size: 14 * sz, life: 0.16, r: 2.0, g: 1.4, b: 0.7, a0: 1, rot: 0, cell: 6, pool: 45 * sz, gy: 0 });
-    for (let k = 0; k < 3; k++) fl.push({ t: tBurst, x: px + d.x * (3 + 4 * k) * U, y: py + h, z: pz + d.y * (3 + 4 * k) * U, size: (6 - k) * sz, life: 0.09, r: 2.2, g: 1.6, b: 0.9, a0: 1, rot: rnd() * 6, cell: 4 + (k & 1), pool: 0, gy: 0 });
+    const fl = [], fk = (o.flash ?? 1) * 4.5, fc = o.flashColor || [0.85, 0.3, 0.06], fl0 = o.flashLife ?? 0.11;   // v7: x1.5 size, 3 frames   // v6 (critic B 5): flash 3x, no ground light
+    // orange core + a forward tongue: visible for 0.09 s (2-3 frames at 30 fps), never white (r <= 1.25 additive, g/b low)
+    fl.push({ t: tBurst, x: px + d.x * 2 * U, y: py + h, z: pz + d.y * 2 * U, size: 7 * sz * fk, life: fl0, r: fc[0], g: fc[1], b: fc[2], a0: 0.85, rot: 0, cell: 6, pool: (o.pool ?? 0) * sz, gy: 0 });
+    for (let k = 0; k < 2; k++) fl.push({ t: tBurst, x: px + d.x * (4 + 5 * k) * U, y: py + h, z: pz + d.y * (4 + 5 * k) * U, size: (4.5 - 1.5 * k) * sz * fk, life: fl0 * 0.8, r: 0.9, g: 0.36, b: 0.08, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
     flashEmitter(fl);
+  }
+  // v5: a bare additive glow (e.g. a gun flash reflected on the water at night): {size, life, color, alpha, pool}
+  function flash(pos, t, o = {}) {
+    const sz = (o.size ?? 1) * S, c = o.color || [1.2, 0.5, 0.14];
+    flashEmitter([{ t, x: pos[0], y: pos[1], z: pos[2], size: 10 * sz, life: o.life ?? 0.15, r: c[0], g: c[1], b: c[2], a0: o.alpha ?? 0.8, rot: 0, cell: 6, pool: (o.pool ?? 0) * sz, gy: 0 }]);
+  }
+  // v5: per-frame custom sprites (boats' lamps, wakes): fn(t, push(x, y, z, size, alpha, r, g, b, cell = 6, mode = 1))
+  function custom(fn) {
+    emitters.push({ update(t) { fn(t, (x, y, z, size, a, r, g, b, cell = 6, mode = 1) => batch.push(x, y, z, size, 0, a, cell, mode, r, g, b, -1e9)); } });
   }
 
   // ================================================================ API: fire (point, line e.g. a bridge, or area e.g. a building)
@@ -538,10 +636,16 @@ export function createFX(cfg = {}) {
     const env = (t) => smooth(t0, t0 + ramp, t) * (1 - smooth(t1, tEnd, t));
     const at = () => { const f = rnd(); const p = p0.clone().lerp(p1, f); p.x += (rnd() - 0.5) * area[0]; p.z += (rnd() - 0.5) * area[1]; return p; };
     // flames
+    // v5 (critic B 6): flames come from o.tongues separate seats along the line (a broken row of flame tongues, not one glowing slab);
+    // each seat has its own slow strength cycle, so the tongues flicker and grow/shrink independently
+    const NT = o.tongues ?? 0, seats = [];
+    for (let k = 0; k < NT; k++) { const f = NT === 1 ? 0.5 : (k + 0.2 + 0.6 * rnd()) / NT, p = p0.clone().lerp(p1, f); seats.push({ p, ph: rnd() * 50, k: 0.7 + 0.6 * rnd() }); }
+    const seatK = (si, t) => { const S_ = seats[si]; return S_.k * (0.55 + 0.45 * Math.sin(t * 1.7 + S_.ph) * Math.sin(t * 0.63 + S_.ph * 1.3)); };
     const flames = [], nf = Math.round((o.flameRate ?? 30) * span * (tEnd - t0));
     for (let k = 0; k < nf; k++) {
-      const t = t0 + rnd() * (tEnd - t0), p = at();
-      flames.push({ t, x: p.x, y: p.y, z: p.z, life: 0.45 + 0.7 * rnd(), s0: (2.6 + 2.2 * rnd()) * sz * (o.flameK ?? 1), vy: (3 + 3 * rnd()) * U * (o.size ?? 1), ph: rnd() * 50, cell: 4 + (rnd() < 0.5 ? 0 : 1), e: env(t), rot: (rnd() - 0.5) * 0.35 });
+      const t = t0 + rnd() * (tEnd - t0); let p, si = -1;
+      if (NT) { si = Math.floor(rnd() * NT); p = seats[si].p.clone(); p.x += (rnd() - 0.5) * 0.6 * sz; p.z += (rnd() - 0.5) * 0.6 * sz; } else p = at();
+      flames.push({ t, x: p.x, y: p.y, z: p.z, life: 0.45 + 0.7 * rnd(), s0: (2.6 + 2.2 * rnd()) * sz * (o.flameK ?? 1) * (si >= 0 ? seatK(si, t) : 1), vy: (3 + 3 * rnd()) * U * (o.size ?? 1), ph: rnd() * 50, cell: 4 + (rnd() < 0.5 ? 0 : 1), e: env(t) * (si >= 0 ? Math.min(1, 0.4 + seatK(si, t)) : 1), rot: (rnd() - 0.5) * 0.35 });
     }
     const F = new Spawns(flames, 1.2, ['x', 'y', 'z', 'life', 's0', 'vy', 'ph', 'cell', 'e', 'rot']);
     // embers
@@ -557,7 +661,7 @@ export function createFX(cfg = {}) {
     for (let k = 0; k < ns; k++) {
       const t = t0 + rnd() * (tSm - t0), p = at(), e = Math.max(env(t), 0.35 * (1 - smooth(tEnd, tSm, t)) * smooth(t0, t0 + ramp, t));
       const dark = o.smokeTint || [0.16, 0.15, 0.14];
-      const q = puff(rnd, t, p.x, p.y + 3 * U * (o.size ?? 1), p.z, { vy: 2 * U, k: 0.5, rise: (o.rise ?? 5.5) * (o.size ?? 1), wk: o.smokeWind ?? 1.1, turb: 3, s0: (o.smokeS0 ?? 5) * sz, grow: (o.smokeGrow ?? 9.5) * sz, life, a0: (o.smokeAlpha ?? 0.78) * e, tint: dark, fin: 0.6, spin: 0.15 });
+      const q = puff(rnd, t, p.x, p.y + 3 * U * (o.size ?? 1), p.z, { vy: 2 * U, k: 0.5, rise: (o.rise ?? 5.5) * (o.size ?? 1), wk: o.smokeWind ?? 1.1, turb: o.smokeTurb ?? 3, s0: (o.smokeS0 ?? 5) * sz, grow: (o.smokeGrow ?? 9.5) * sz, life, a0: (o.smokeAlpha ?? 0.78) * e, tint: dark, fin: 0.6, spin: 0.15, mode: o.smokeMode ?? 0, fo: o.smokeFade ?? 0.35 });
       q.fireLit = 1; smoke.push(q);
     }
     const SP = new Spawns(smoke, life * 1.3, SMOKE_FIELDS);
@@ -592,7 +696,8 @@ export function createFX(cfg = {}) {
           const size = F.s0[i] * (1 - 0.55 * u);
           const y = F.y[i] + F.vy[i] * age + size * 0.4;
           const heat = 1 - u;
-          const r = 1.5 + 0.7 * heat, g = 0.25 + 1.0 * heat * heat, b = 0.05 + 0.45 * heat * heat * heat;
+          const hot = o.flameColor || [1.5, 0.25, 0.05, 0.7, 1.0, 0.45];   // v4 default; v5 GM: o.flameColor [1.0, 0.18, 0.04, 0.2, 0.42, 0.12] (orange, no white core)
+          const r = hot[0] + hot[3] * heat, g = hot[1] + hot[4] * heat * heat, b = hot[2] + hot[5] * heat * heat * heat;
           const a = F.e[i] * Math.sin(Math.PI * Math.min(1, u * 1.15 + 0.05)) * (o.flameA ?? 0.95);
           batch.push(x, y, z, size, F.rot[i], a, F.cell[i], 1, r, g, b, F.y[i] - 1e3);
         }
@@ -612,10 +717,11 @@ export function createFX(cfg = {}) {
         const nseg = Math.max(1, Math.round(ext / (25 * U)));
         for (let s = 0; s < nseg; s++) {
           const p = p0.clone().lerp(p1, nseg === 1 ? 0.5 : s / (nseg - 1));
-          batch.push(p.x, p.y + 4 * sz, p.z, gs / Math.sqrt(nseg) * 1.4, 0, e * (0.35 + 0.35 * night) * (0.75 + 0.25 * fl), 6, 1, 1.6, 0.62, 0.22, -1e9);
+          const gc = o.glowColor || [1.6, 0.62, 0.22], ga = o.glowA ?? 0.35;
+          batch.push(p.x, p.y + 4 * sz, p.z, gs / Math.sqrt(nseg) * 1.4, 0, e * (ga + 0.35 * night) * (0.75 + 0.25 * fl), 6, 1, gc[0], gc[1], gc[2], -1e9);
         }
         pools.push({ x: center.x, y: center.y, z: center.z, r: (o.poolRadius ?? 60) * sz + ext * 0.6, cr: 1, cg: 0.5, cb: 0.18, i: e * (0.45 + 1.1 * night) * (0.7 + 0.3 * fl) });
-        if (light) light.intensity = e * lightPower * (0.7 + 0.3 * fl) * (0.5 + night) * U * U * 250;
+        if (light) light.intensity = e * lightPower * (0.7 + 0.3 * fl) * ((o.lightDay ?? 0.5) + night) * U * U * 250;
       },
     });
     return { light };
@@ -634,7 +740,7 @@ export function createFX(cfg = {}) {
       wisps.push(puff(rnd, t0 - 12 + rnd() * (t1 - t0 + 12), px, py + 1.2 * sz, pz, { vy: 0.5 * U, k: 0.5, rise: 1.4, wk: 0.8, turb: 1, s0: 1.4 * sz, grow: 2.6 * sz, life: 12, a0: o.smokeAlpha ?? 0.22, tint: [0.55, 0.55, 0.56], fin: 1.0 }));
     }
     const W = new Spawns(wisps, 16, SMOKE_FIELDS);
-    const ph0 = rnd() * 100;
+    const ph0 = rnd() * 100, fc = o.flameColor || [1.5, 0.3, 0.06, 0.7, 0.9, 0.4];   // v5: o.flameColor (GM: small orange dots, no white core)
     emitters.push({
       update(t) {
         if (t < t0 || t > t1) return;
@@ -645,9 +751,10 @@ export function createFX(cfg = {}) {
           const age = t - F.t[i], u = age / F.life[i]; if (u >= 1) continue;
           const size = F.s0[i] * (1 - 0.5 * u), heat = 1 - u;
           batch.push(px + F.ox[i] + Math.sin(age * 9 + F.ph[i]) * 0.15 * sz, py + size * 0.45 + age * 1.6 * sz, pz + F.oz[i], size, 0,
-            vis * Math.sin(Math.PI * Math.min(1, u + 0.08)), F.cell[i], 1, 1.5 + 0.7 * heat, 0.3 + 0.9 * heat * heat, 0.06 + 0.4 * heat * heat * heat, -1e9);
+            vis * Math.sin(Math.PI * Math.min(1, u + 0.08)), F.cell[i], 1, fc[0] + fc[3] * heat, fc[1] + fc[4] * heat * heat, fc[2] + fc[5] * heat * heat * heat, -1e9);
         }
-        batch.push(px, py + 1.2 * sz, pz, (o.glowSize ?? 5) * sz, 0, vis * (0.4 + 0.5 * night) * (0.7 + 0.3 * fl), 6, 1, 1.5, 0.6, 0.2, -1e9);
+        const gc = o.glowColor || [1.5, 0.6, 0.2];
+        batch.push(px, py + 1.2 * sz, pz, (o.glowSize ?? 5) * sz, 0, vis * (o.glowA ?? 0.4) * (1 + 1.25 * night) * (0.7 + 0.3 * fl), 6, 1, gc[0], gc[1], gc[2], -1e9);
         const [wlo, whi] = W.range(t);
         for (let i = wlo; i < whi; i++) evalSmoke(W, i, t - W.t[i]);
         pools.push({ x: px, y: py, z: pz, r: (o.poolRadius ?? 9) * sz, cr: 1, cg: 0.42, cb: 0.12, i: vis * (0.25 + 0.7 * night) * (0.75 + 0.25 * fl) });
@@ -660,10 +767,10 @@ export function createFX(cfg = {}) {
     const rnd = mulberry32(o.seed ?? nextSeed()), sz = (o.size ?? 1) * S, [px, py, pz] = pos, list = [];
     for (let k = 0; k < 10; k++) {
       const a = rnd() * 6.283, v = (4 + 10 * rnd()) * U;
-      list.push(puff(rnd, tHit + rnd() * 0.05, px, py + 0.5 * U, pz, { vx: Math.cos(a) * v, vz: Math.sin(a) * v, vy: (8 + 18 * rnd()) * U, k: 1.8, rise: -0.3, turb: 1.5, s0: 3 * sz, grow: 4.5 * sz, life: 8, a0: 0.6, tint: [0.62, 0.55, 0.45], fin: 0.05 }));
+      list.push(puff(rnd, tHit + rnd() * 0.05, px, py + 0.5 * U, pz, { vx: Math.cos(a) * v, vz: Math.sin(a) * v, vy: (8 + 18 * rnd()) * U, k: 1.8, rise: -0.3, turb: 1.0, s0: 3 * sz, grow: 3.2 * sz, life: 6, a0: 0.42, tint: [0.25, 0.22, 0.18], fin: 0.05, mode: 4.1 }));   // v5: unlit brown-grey earth (no cream cotton balls)
     }
     smokeEmitter(list, 11);
-    flashEmitter([{ t: tHit, x: px, y: py + 2 * U, z: pz, size: 10 * sz, life: 0.12, r: 2, g: 1.3, b: 0.6, a0: 1, rot: 0, cell: 6, pool: 25 * sz, gy: 0 }]);
+    flashEmitter([{ t: tHit, x: px, y: py + 2 * U, z: pz, size: 6 * sz, life: 0.08, r: 1.2, g: 0.55, b: 0.16, a0: 0.8, rot: 0, cell: 6, pool: 6 * sz, gy: 0 }]);   // v5: small orange burst
   }
 
   // ================================================================ API: falling snow (camera-anchored, world-stable flakes)
@@ -823,6 +930,138 @@ export function createFX(cfg = {}) {
     return cloud;
   }
 
+  // ================================================================ API: v4 volumetric cumulus (raymarched, light-marched)
+  // o: { noise (loadCloudNoise), clouds: [[x, z, R, H, baseY, group]], bounds: [x0, z0, x1, z1], texel, slab: [y0, y1],
+  //      tile, amp, soft, sigma, baseSharp, fine, warp, wisp, erode(t) -> [e0, e1], on(t), opacity(t), resolution, maxSteps,
+  //      stepIn, stepK, lightStep, nearFade, shadow, evolve, drift }
+  let vc = null;
+  function vclouds(o = {}) {
+    const [x0, z0, x1, z1] = o.bounds, tx = o.texel ?? 1, MW = Math.ceil((x1 - x0) / tx), MD = Math.ceil((z1 - z0) / tx);
+    const y0 = o.slab[0], y1 = o.slab[1], fbm = makeNoise2((o.seed ?? 5) + 99);
+    const top = new Float32Array(MW * MD).fill(y0 - 8), bot = new Float32Array(MW * MD).fill(y0), grp = new Float32Array(MW * MD), SK = o.skip ?? 30, dist = new Float32Array(MW * MD).fill(SK);
+    // each cloud = a main dome + satellite domes (irregular cauliflower cluster outline, towers of different heights)
+    const CL = [], br = mulberry32((o.seed ?? 5) * 31 + 7), NB = o.blobs ?? 5;
+    o.clouds.forEach(([x, z, R, H, yb, g = 0], i) => {
+      CL.push({ x, z, R: R * 0.62, H, yb, g, ph: i * 7.31 });
+      for (let b = 0; b < NB; b++) { const a = br() * 6.283, d = R * (0.3 + 0.38 * br());
+        CL.push({ x: x + Math.cos(a) * d, z: z + Math.sin(a) * d, R: R * (0.3 + 0.26 * br()), H: H * (0.4 + 0.45 * br()), yb: yb + (g ? 0 : (br() - 0.5) * H * 0.08), g, ph: i * 7.31 + b * 3.1 }); }   // v5: group 1 (deck) keeps one flat base (no base steps between domes)
+    });
+    CL.sort((a, b) => b.g - a.g);   // group 1 first, group 0 last (owns its footprint)
+    for (const c of CL) {
+      const reach = c.R * 1.6 + SK, ia = Math.max(0, Math.floor((c.x - reach - x0) / tx)), ib = Math.min(MW - 1, Math.ceil((c.x + reach - x0) / tx));
+      const ja = Math.max(0, Math.floor((c.z - reach - z0) / tx)), jb = Math.min(MD - 1, Math.ceil((c.z + reach - z0) / tx));
+      for (let j = ja; j <= jb; j++) for (let i = ia; i <= ib; i++) {
+        const px = x0 + (i + 0.5) * tx, pz = z0 + (j + 0.5) * tx, dx = px - c.x, dz = pz - c.z, rr = Math.hypot(dx, dz);
+        const k = j * MW + i; dist[k] = Math.min(dist[k], Math.max(0, rr - c.R * 1.35));
+        if (rr > c.R * 1.6) continue;
+        const ang = Math.atan2(dz, dx), lump = 1 + 0.3 * (fbm(Math.cos(ang) * 1.3 + c.ph, Math.sin(ang) * 1.3 + c.ph, 3) - 0.5) * 2;
+        const r = rr / (c.R * lump), prof = r < 1 ? Math.pow(1 - r * r, c.g ? (o.flatPow ?? 0.8) : 0.8) : -(r - 1) * 2;   // rounded domes, no vertical rim walls (v5: o.flatPow < 0.8 = flat-topped deck sheets)
+        const tp = c.yb + c.H * prof;
+        // the cloud that owns the column sets its top, base and group; a group-0 cloud always owns its own footprint (no straight cuts where an eroded deck cloud overlaps it)
+        if (tp > top[k] || (c.g === 0 && grp[k] > 0 && r < 1.1)) { top[k] = tp; grp[k] = c.g; bot[k] = c.yb + (c.g ? 0 : c.H * 0.06 * Math.min(1, r * r)); }
+      }
+    }
+    const data = new Uint16Array(MW * MD * 4), H16 = THREE.DataUtils.toHalfFloat;
+    for (let k = 0; k < MW * MD; k++) { data[k * 4] = H16(top[k] - y0); data[k * 4 + 1] = H16(bot[k] - y0); data[k * 4 + 2] = H16(grp[k]); data[k * 4 + 3] = H16(Math.min(dist[k], 6e4)); }
+    const map = new THREE.DataTexture(data, MW, MD, THREE.RGBAFormat, THREE.HalfFloatType);
+    map.minFilter = map.magFilter = THREE.LinearFilter; map.wrapS = map.wrapT = THREE.ClampToEdgeWrapping; map.needsUpdate = true;
+    shared.vcNoise.value = o.noise; shared.vcMap.value = map; shared.vcB.value.set(x0, z0, 1 / (MW * tx), 1 / (MD * tx));
+    shared.vcP.value.set(1 / (o.tile ?? 40), o.amp ?? 6, o.soft ?? 2.5, o.sigma ?? 0.8);
+    shared.vcQ.value.set(o.baseSharp ?? 3, o.fine ?? 0.18, o.warp ?? 0.35, o.wisp ?? 0.6);
+    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1); shared.vcInner.value = o.inner ?? 0.5; shared.vcGS.value = o.groupScale ?? 1; shared.vcTexel.value = tx; shared.vcFloor.value = o.floor ?? 0; shared.vcW.value.set(...(o.weights || [1, 1, 0, 0])); shared.vcG0.value.set(...(o.group0 || [1, 1, 1, 1])); if (o.shadowDir) shared.vcShDir.value.set(...o.shadowDir).normalize();
+    const cu = Object.assign({
+      uInvProj: { value: new THREE.Matrix4() }, uCamWorld: { value: new THREE.Matrix4() }, uCam: { value: new THREE.Vector3() },
+      uSunCol: { value: new THREE.Color(1.0, 0.97, 0.92) }, uAmbTop: { value: new THREE.Color(0.66, 0.71, 0.80) }, uAmbBot: { value: new THREE.Color(0.34, 0.38, 0.46) },
+      uOpacity: { value: 1 }, uStepIn: { value: o.stepIn ?? 0.6 }, uStepK: { value: o.stepK ?? 0.004 }, uLightStep: { value: o.lightStep ?? 1.2 },
+      uNear: { value: o.nearFade ?? 2 }, uLodK: { value: 1 / (o.lodDist ?? 200) }, uMaxSteps: { value: o.maxSteps ?? 160 },
+      uFogC: { value: new THREE.Color() }, uFogN: { value: 1e5 }, uFogF: { value: 2e5 }, uFogK: { value: o.fogK ?? 0.85 },
+      uSunK: { value: o.sunK ?? 1.6 }, uAmbK: { value: o.ambK ?? 1.0 }, uLightK: { value: o.lightK ?? 0.8 }, uMS: { value: 0.22 }, uExpo: { value: 1 },
+    }, shared);
+    const vs = /* glsl */`
+      uniform mat4 uInvProj; uniform mat4 uCamWorld; varying vec3 vDir;
+      void main() { vec4 v = uInvProj * vec4(position.xy, 1.0, 1.0); v /= v.w; vDir = (uCamWorld * vec4(v.xyz, 0.0)).xyz; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+    const fs = /* glsl */`
+      precision highp float;
+      precision highp sampler3D;
+      ${VC_GLSL}
+      uniform vec3 uCam; uniform vec3 uSunCol; uniform vec3 uAmbTop; uniform vec3 uAmbBot; uniform float uOpacity;
+      uniform float uStepIn; uniform float uStepK; uniform float uLightStep; uniform float uNear; uniform float uLodK; uniform float uMaxSteps;
+      uniform float uLightK; uniform float uMS; uniform float uExpo; uniform vec3 uFogC; uniform float uFogN; uniform float uFogF; uniform float uFogK; uniform float uSunK; uniform float uAmbK;
+      varying vec3 vDir;
+      float hg(float c, float g) { float g2 = g * g; return (1.0 - g2) / (12.566 * pow(1.0 + g2 - 2.0 * g * c, 1.5)); }
+      void main() {
+        vec3 rd = normalize(vDir), ro = uCam;
+        float ta = 0.0, tb = 1e6;
+        if (abs(rd.y) > 1e-5) { float a = (vcS.x - ro.y) / rd.y, b = (vcS.y - ro.y) / rd.y; ta = max(min(a, b), 0.0); tb = max(a, b); }
+        else if (ro.y < vcS.x || ro.y > vcS.y) { gl_FragColor = vec4(0.0); return; }
+        vec2 bmin = vcB.xy + vcDrift.xy, bmax = bmin + 1.0 / vcB.zw;
+        vec2 inv = 1.0 / (rd.xz + vec2(rd.x == 0.0 ? 1e-6 : 0.0, rd.z == 0.0 ? 1e-6 : 0.0));
+        vec2 t0 = (bmin - ro.xz) * inv, t1 = (bmax - ro.xz) * inv, tn = min(t0, t1), tf = max(t0, t1);
+        ta = max(ta, max(tn.x, tn.y)); tb = min(tb, min(tf.x, tf.y));
+        if (tb <= ta) { gl_FragColor = vec4(0.0); return; }
+        // v5: interleaved-gradient noise (blue-noise-like, low energy at low frequencies) instead of white noise: the composite's
+        // alpha-weighted blur averages it away completely, so the clouds read smooth and stop shimmering frame to frame
+        float jit = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
+        float cosT = dot(rd, vcSun);
+        float phase = (mix(hg(cosT, 0.6), hg(cosT, -0.25), 0.35) * 12.566) * 0.55 + 0.45;
+        float amp = vcP.y, sig = vcP.w;
+        float T = 1.0, dAcc = 0.0, wAcc = 0.0; vec3 col = vec3(0.0);
+        float t = ta + jit * max(uStepIn, ta * uStepK);
+        for (int i = 0; i < 400; i++) {
+          if (float(i) >= uMaxSteps || t > tb) break;
+          vec3 p = ro + rd * t;
+          vec4 m = vcMapAt(p.xz);
+          float st = max(uStepIn, t * uStepK);
+          float gap = max(m.a - amp * 1.2, max((p.y - m.r - amp * 1.1) * 0.7, (m.g - amp * 0.4 - p.y) * 0.7));
+          if (gap > st) { t += gap; t = (ceil(t / st - jit) + jit) * st; continue; }   // land back on the jittered step grid (no contour banding)
+          float d = vcDens(p, m, clamp(1.0 - t * uLodK, 0.0, 1.0)) * smoothstep(uNear * 0.3, uNear, t);
+          if (d > 0.003) {
+            float tau = 0.0, ls = uLightStep * (0.6 + 0.8 * fract(jit + float(i) * 0.618)); vec3 lp = p;   // jittered light march: no shadow banding streaks
+            for (int k = 0; k < 6; k++) { lp += vcSun * ls; tau += vcDens(lp, vcMapAt(lp.xz), 0.0) * ls; ls *= 1.7; }
+            float hn = clamp((p.y - m.g) / max(m.r - m.g, 1e-3), 0.0, 1.0);
+            float beer = exp(-tau * sig * uLightK) * (1.0 - uMS) + exp(-tau * sig * uLightK * 0.15) * uMS;   // two-octave multiple scattering (uMS rises inside the cloud: bright grey-white interior)   // multiple-scattering approx (two octaves)
+            float powder = 1.0 - 0.6 * exp(-d * 3.0 - tau * sig * 0.6);
+            float occl = clamp(1.0 - (m.r - p.y) / max(m.r - m.g, 1e-3) * 0.55, 0.35, 1.0);
+            vec3 S = uSunCol * (phase * beer * powder * uSunK) + mix(uAmbBot, uAmbTop, smoothstep(0.0, 1.0, hn)) * occl * uAmbK;
+            float a = 1.0 - exp(-d * sig * st);
+            col += T * a * S; dAcc += T * a * t; wAcc += T * a;
+            T *= 1.0 - a;
+            if (T < 0.01) break;
+          }
+          t += st;
+        }
+        float A = 1.0 - T;
+        if (A < 0.002) { gl_FragColor = vec4(0.0); return; }
+        float dz = dAcc / max(wAcc, 1e-5), fk = clamp((dz - uFogN) / max(uFogF - uFogN, 1e-3), 0.0, 1.0) * uFogK;
+        col = mix(col, uFogC * A, fk);
+        gl_FragColor = vec4(col * uExpo * uOpacity, A * uOpacity);
+      }`;
+    const mat = new THREE.ShaderMaterial({ vertexShader: vs, fragmentShader: fs, uniforms: cu, depthTest: false, depthWrite: false, transparent: true, blending: THREE.NoBlending });
+    const quadGeo = new THREE.PlaneGeometry(2, 2), rtScene = new THREE.Scene(), rtCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const rq = new THREE.Mesh(quadGeo, mat); rq.frustumCulled = false; rtScene.add(rq);
+    const rt = new THREE.WebGLRenderTarget(16, 16, { type: THREE.HalfFloatType, depthBuffer: false });
+    const compMat = new THREE.ShaderMaterial({
+      uniforms: { uTex: { value: rt.texture }, uTexel: { value: new THREE.Vector2() }, uBlur: { value: o.blur ?? 1.5 }, uSharp: { value: o.sharp ?? 0 } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+      fragmentShader: `uniform sampler2D uTex; uniform vec2 uTexel; uniform float uBlur; uniform float uSharp; varying vec2 vUv;
+        void main(){
+          // v5: 3x3 tent of bilinear taps (~5x5 texels) on the PREMULTIPLIED target = alpha-weighted blur: kills the step-jitter speckle
+          vec2 o = uTexel * uBlur; vec4 c = texture2D(uTex, vUv) * 4.0;
+          c += (texture2D(uTex, vUv + vec2(o.x, 0.0)) + texture2D(uTex, vUv - vec2(o.x, 0.0)) + texture2D(uTex, vUv + vec2(0.0, o.y)) + texture2D(uTex, vUv - vec2(0.0, o.y))) * 2.0;
+          c += texture2D(uTex, vUv + o) + texture2D(uTex, vUv - o) + texture2D(uTex, vUv + vec2(o.x, -o.y)) + texture2D(uTex, vUv + vec2(-o.x, o.y));
+          c /= 16.0;
+          // v6: edge-aware: full blur only on the translucent fringes (where the jitter noise lives), the opaque body keeps a light 50 % mix (mid lobes stay crisp)
+          vec4 c0 = texture2D(uTex, vUv); c = mix(c, mix(c, c0, 0.5), smoothstep(0.8, 0.97, c0.a) * uSharp);
+          if (c.a < 0.002) discard; vec3 col = c.rgb / max(c.a, 1e-4);
+        col = linearToOutputTexel(vec4(col, 1.0)).rgb; gl_FragColor = vec4(col * c.a, c.a); }`,
+      transparent: true, depthTest: false, depthWrite: false,
+      blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor, blendSrcAlpha: THREE.OneFactor, blendDstAlpha: THREE.OneMinusSrcAlphaFactor,
+    });
+    const comp = new THREE.Mesh(quadGeo, compMat); comp.frustumCulled = false; comp.renderOrder = o.renderOrder ?? 10.5; scene.add(comp);
+    vc = { o, cu, rt, rtScene, rtCam, comp, res: o.resolution ?? 0.5, ms: 0 };
+    return vc;
+  }
+
   // ================================================================ ground patch: cloud shadows + light pools
   function patchGround(material) {
     const prev = material.onBeforeCompile;
@@ -833,7 +1072,7 @@ export function createFX(cfg = {}) {
         .replace('#include <common>', '#include <common>\nvarying vec3 vFxWorld;')
         .replace('#include <project_vertex>', '#include <project_vertex>\nvFxWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;');
       shader.fragmentShader = shader.fragmentShader
-        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;\nuniform vec4 fxCu[64];\nuniform int fxCuN;\nuniform vec4 fxCuL;\nuniform sampler2D fxPlTex;\nuniform float fxPlOn;\nuniform vec3 fxPlO;\nuniform vec3 fxPlX;\nuniform vec3 fxPlY;\nuniform vec3 fxPlL;\nfloat fxHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\nfloat fxVN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fxHash(i), fxHash(i + vec2(1.0, 0.0)), f.x), mix(fxHash(i + vec2(0.0, 1.0)), fxHash(i + vec2(1.0, 1.0)), f.x), f.y); }`)
+        .replace('#include <common>', `#include <common>\nvarying vec3 vFxWorld;\n${CLOUD_GLSL}\n${VC_GLSL}\nuniform vec4 fxPoolPos[${MAXPOOL}];\nuniform vec4 fxPoolCol[${MAXPOOL}];\nuniform int fxPoolN;\nuniform float fxNight;\nuniform vec4 fxCu[64];\nuniform int fxCuN;\nuniform vec4 fxCuL;\nuniform sampler2D fxPlTex;\nuniform float fxPlOn;\nuniform vec3 fxPlO;\nuniform vec3 fxPlX;\nuniform vec3 fxPlY;\nuniform vec3 fxPlL;\nfloat fxHash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\nfloat fxVN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f); return mix(mix(fxHash(i), fxHash(i + vec2(1.0, 0.0)), f.x), mix(fxHash(i + vec2(0.0, 1.0)), fxHash(i + vec2(1.0, 1.0)), f.x), f.y); }`)
         .replace('#include <opaque_fragment>', `
           {
             if (fxCloudQ.w > 0.5 && fxCloudQ.z > 0.0) {
@@ -841,6 +1080,18 @@ export function createFX(cfg = {}) {
               vec3 sp = vFxWorld + fxSunDir * (ym - vFxWorld.y) / max(fxSunDir.y, 0.08);
               float cd = fxCloudDensity(sp, false);
               outgoingLight *= 1.0 - fxCloudQ.z * smoothstep(0.0, 0.7, cd);
+            }
+            if (vcS.w > 0.5 && vcS.z > 0.0) {   // v4: volumetric cumulus shadows (density sampled along the sun ray)
+              float ym = mix(vcS.x, vcS.y, 0.3);
+              vec3 sp = vFxWorld + vcShDir * (ym - vFxWorld.y) / max(vcShDir.y, 0.08);
+              vec4 mm = vcMapAt(sp.xz);
+              float tau = 0.0;
+              for (int k = 0; k < 3; k++) {
+                float yk = mix(mm.g, max(mm.r, mm.g + 1.0), 0.12 + 0.3 * float(k));
+                vec3 q = vFxWorld + vcShDir * (yk - vFxWorld.y) / max(vcShDir.y, 0.08);
+                tau += vcDens(q, vcMapAt(q.xz), 0.0);
+              }
+              outgoingLight *= 1.0 - vcS.z * (1.0 - exp(-tau * 0.7));
             }
             if (fxCuN > 0) {
               vec2 cs = vFxWorld.xz + fxCuL.xz / fxCuL.y * (fxCuL.w - vFxWorld.y);
@@ -865,6 +1116,10 @@ export function createFX(cfg = {}) {
                 }
               }
             }
+            if (fxNight > 0.0) {   // v6 (critic B 13): the rust roads would glow like veins in the moonlight: darken road-coloured ground at night
+              float rd = smoothstep(0.08, 0.15, diffuseColor.r - diffuseColor.g) * smoothstep(0.12, 0.2, diffuseColor.r - diffuseColor.b);   // linear: road (142,88,58) r-g 0.17, tan field 0.06
+              outgoingLight *= 1.0 - 0.65 * fxNight * rd;
+            }
             vec3 fxPl = vec3(0.0);
             for (int i = 0; i < ${MAXPOOL}; i++) {
               if (i >= fxPoolN) break;
@@ -885,12 +1140,13 @@ export function createFX(cfg = {}) {
 
   // ================================================================ environment
   function setNight(k) {
-    night = clamp01(k);
+    night = clamp01(k); shared.fxNight.value = night;
     const day = 1 - night;
     spriteU.uSunCol.value.setRGB(1.0 * day + 0.07 * night, 0.95 * day + 0.09 * night, 0.86 * day + 0.14 * night);
     spriteU.uShadeCol.value.setRGB(0.50 * day + 0.025 * night, 0.53 * day + 0.03 * night, 0.60 * day + 0.05 * night);
     cloudU.uShadeCol.value.setRGB(0.40 * day + 0.02 * night, 0.45 * day + 0.025 * night, 0.55 * day + 0.045 * night);
     spriteU.uScatter.value = 0.6 * day;
+    spriteU.uCurtK.value.setRGB(day + 0.16 * night, day + 0.19 * night, day + 0.27 * night);   // v5 curtain smoke at night
     if (cloud) {
       cloud.cu.uSunCol.value.setRGB(1.0 * day + 0.12 * night, 0.96 * day + 0.14 * night, 0.9 * day + 0.2 * night);
       cloud.cu.uAmbTop.value.setRGB(0.80 * day + 0.05 * night, 0.85 * day + 0.06 * night, 0.95 * day + 0.10 * night);
@@ -898,6 +1154,18 @@ export function createFX(cfg = {}) {
     }
   }
 
+  function vcColors(t) {
+    const day = 1 - night;
+    {
+      const c = (typeof vc.o.colors === 'function' ? vc.o.colors(t) : vc.o.colors) || {};
+      const sc = c.sun || [0.96, 0.97, 0.95], at = c.ambTop || [0.68, 0.72, 0.78], ab = c.ambBot || [0.46, 0.50, 0.56];
+      const ns = c.nSun || [0.10, 0.12, 0.18], nt = c.nAmbTop || [0.04, 0.05, 0.09], nb = c.nAmbBot || [0.015, 0.02, 0.04];   // v5: night colours per cloud system
+      vc.cu.uSunCol.value.setRGB(sc[0] * day + ns[0] * night, sc[1] * day + ns[1] * night, sc[2] * day + ns[2] * night);
+      vc.cu.uAmbTop.value.setRGB(at[0] * day + nt[0] * night, at[1] * day + nt[1] * night, at[2] * day + nt[2] * night);
+      vc.cu.uAmbBot.value.setRGB(ab[0] * day + nb[0] * night, ab[1] * day + nb[1] * night, ab[2] * day + nb[2] * night);
+      if (c.sunK != null) vc.cu.uSunK.value = c.sunK; if (c.ambK != null) vc.cu.uAmbK.value = c.ambK; if (c.lightK != null) vc.cu.uLightK.value = c.lightK;
+    }
+  }
   // ================================================================ per-frame
   const tmpV = new THREE.Vector3(), tmpD = new THREE.Vector3();
   function update(t, cam) {
@@ -909,6 +1177,7 @@ export function createFX(cfg = {}) {
     spriteU.uCamBack.value.set(e[8], e[9], e[10]).normalize();
     const P = shared.fxCloudP.value;
     shared.fxCloudWind.value.set(-wind.x * t * P.z * 1.6, 0, -wind.y * t * P.z * 1.6);
+    { const f = scene.fog; if (f && f.isFog) { spriteU.uFogC.value.copy(f.color); spriteU.uFogNF.value.set(f.near, f.far); } else spriteU.uFogNF.value.set(0, 0); }
     batch.clear(); cbatch.clear(); pools.length = 0; cuShadows.length = 0;
     for (const em of emitters) em.update(t);
     batch.flush(camera); cbatch.flush(camera);
@@ -954,11 +1223,42 @@ export function createFX(cfg = {}) {
         renderer.setRenderTarget(prevT); renderer.setClearColor(prevC, prevA);
       }
     }
+    // v4 volumetric cumulus: march at reduced resolution into a target, composite after the smoke (renderOrder 10.5)
+    if (vc) {
+      const o = vc.o, on = o.on ? o.on(t) : 1, op = (o.opacity ? o.opacity(t) : 1) * on, dr = o.drift || [0, 0];
+      const er = o.erode ? o.erode(t) : [0, 0];
+      shared.vcErode.value.set(er[0], er[1]);
+      const dk = o.deck ? o.deck(t) : null; if (dk) { shared.vcDeck.value.set(dk.x, dk.z, 1 / dk.r, dk.front); shared.vcDeckK.value = dk.k ?? 1; } else { shared.vcDeck.value.w = 0; shared.vcDeckK.value = 1; } shared.vcDrift.value.set(dr[0] * t, dr[1] * t, (o.evolve ?? 0.004) * t, 0);
+      vcColors(t); vc.cu.uOpacity.value = op; vc.cu.uMS.value = o.ms ? o.ms(t) : 0.22; vc.cu.uExpo.value = o.expo ? o.expo(t) : 1;
+      shared.vcP.value.w = (o.sigma ?? 0.8) * (o.sigmaK ? o.sigmaK(t) : 1);
+      vc.comp.visible = op > 0.001;
+      if (vc.comp.visible && renderer) {
+        const size = renderer.getDrawingBufferSize(new THREE.Vector2());
+        const w = Math.max(16, Math.round(size.x * vc.res)), h = Math.max(16, Math.round(size.y * vc.res));
+        if (vc.rt.width !== w || vc.rt.height !== h) vc.rt.setSize(w, h);
+        vc.comp.material.uniforms.uTexel.value.set(1 / w, 1 / h); vc.comp.material.uniforms.uBlur.value = typeof o.blur === 'function' ? o.blur(t) : (o.blur ?? 1.5); vc.comp.material.uniforms.uSharp.value = o.sharp ?? 0;
+        vc.cu.uInvProj.value.copy(camera.projectionMatrixInverse); vc.cu.uCamWorld.value.copy(camera.matrixWorld); vc.cu.uCam.value.copy(tmpV);
+        const f = scene.fog; if (f) { vc.cu.uFogC.value.copy(f.color).convertSRGBToLinear(); vc.cu.uFogN.value = f.near; vc.cu.uFogF.value = f.far; }
+        const prevT = renderer.getRenderTarget(), prevC = renderer.getClearColor(new THREE.Color()), prevA = renderer.getClearAlpha(), prevAuto = renderer.autoClear;
+        renderer.setRenderTarget(vc.rt); renderer.setClearColor(0x000000, 0); renderer.clear(true, false, false);
+        renderer.autoClear = false; renderer.render(vc.rtScene, vc.rtCam); renderer.autoClear = prevAuto;
+        renderer.setRenderTarget(prevT); renderer.setClearColor(prevC, prevA);
+      }
+    }
     return batch.n;
   }
 
+  // v6: cloud alpha at a screen point (0..1, canvas px), read back from the cloud target of the last update (pinned labels fade under clouds)
+  const pxBuf = new Uint16Array(4);
+  function cloudAlphaAt(x, y) {
+    if (!vc || !vc.comp.visible || !renderer) return 0;
+    const sz = renderer.getSize(new THREE.Vector2()), ix = Math.floor(x / sz.x * vc.rt.width), iy = Math.floor((1 - y / sz.y) * vc.rt.height);
+    if (ix < 0 || iy < 0 || ix >= vc.rt.width || iy >= vc.rt.height) return 0;
+    try { renderer.readRenderTargetPixels(vc.rt, ix, iy, 1, 1, pxBuf); } catch (e) { return 0; }
+    return Math.min(1, Math.max(0, THREE.DataUtils.fromHalfFloat(pxBuf[3])));   // the target already carries the opacity
+  }
   return {
-    smokeLine, cannon, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
+    cloudAlphaAt, vclouds, smokeLine, cannon, flash, custom, fire, campfire, impact, snow, clouds, cumulus, planeShadow, patchGround, setNight, update,
     get spriteCount() { return batch.n; },
     sunDir, wind, shared, batch,
   };

@@ -169,7 +169,7 @@
 /* ---- film look */
 .gmo .paper{position:absolute;inset:0;background:var(--paperurl) 0 0/512px 512px;mix-blend-mode:multiply;opacity:.1}
 .gmo .grain{position:absolute;left:-64px;top:-64px;width:${W + 128}px;height:${H + 128}px;mix-blend-mode:overlay;opacity:.16;background-size:512px 512px}
-.gmo .vig{position:absolute;inset:0;background:radial-gradient(ellipse 75% 72% at 50% 50%,rgba(0,0,0,0) 55%,rgba(8,10,12,.32) 80%,rgba(4,5,6,.62) 100%)}
+.gmo .vig{position:absolute;inset:0;background:radial-gradient(ellipse 80% 76% at 52% 50%,rgba(0,0,0,0) 60%,rgba(8,10,12,.2) 82%,rgba(4,5,6,.42) 100%)}
 `;
 
   // ------------------------------------------------------------------ helpers
@@ -244,8 +244,17 @@
     root.style.setProperty("--paperurl", `url(${paperTex(seed)})`); root.style.setProperty("--inkmask", `url(${inkMask(seed + 7)})`);
     host.appendChild(root);
     const layer = () => { const d = document.createElement("div"); d.className = "L"; root.appendChild(d); return d; };
-    // z-order (bottom -> top): grade, dim, map-anchored (lines, markers), medallions, cards, HUD, paper, grain, vignette
-    const Lgrade = layer(), Ldim = layer(), Lmap = layer(), Lmed = layer(), Lcards = layer(), Lhud = layer(), Lpaper = layer(), Lgrain = layer(), Lvig = layer();
+    // z-order (bottom -> top): grade, dim, map-anchored (lines, markers), paper, grain, vignette, medallions, cards, HUD. v7: vignette softer (.2/.42 at the rim, was .32/.62; critic B: left third ~20 % darker than his)
+    // v5 (critic A 10): paper / grain / vignette belong to the MAP only; the plaques, cards and HUD sit clean on top (his plaque paper ~(227,217,193))
+    // v5 (terrain agent: "the overlay lifts the darks by +40-50"): a mix-blend-mode layer inside a transformed host (the clip scales the
+    // 1920x1080 overlay by 2/3) blends only with the overlay's own isolated group, NOT with the map: soft-light / overlay / multiply then
+    // render as plain semi-transparent veils (the day grade was a ~30 % peach veil). opts.filmHost = an untransformed element right above
+    // the map: the grade / paper / grain / vignette layers live there, so they really blend with the 3D image.
+    let froot = root, flayer = layer;
+    if (opts.filmHost) { froot = document.createElement("div"); froot.className = "gmo gmofilm"; froot.style.cssText = "width:100%;height:100%";
+      froot.style.setProperty("--paperurl", `url(${paperTex(seed)})`); opts.filmHost.appendChild(froot);
+      flayer = () => { const d = document.createElement("div"); d.className = "L"; d.style.cssText = "width:100%;height:100%"; froot.appendChild(d); return d; }; }
+    const Lgrade = flayer(), Ldim = layer(), Lmap = layer(), Lpaper = flayer(), Lgrain = flayer(), Lvig = flayer(), Lmed = layer(), Lcards = layer(), Lhud = layer();
     const NS = "http://www.w3.org/2000/svg";
     const svgLayer = (parent, cls) => { const s = document.createElementNS(NS, "svg"); s.setAttribute("class", cls); s.setAttribute("viewBox", `0 0 ${W} ${H}`); parent.appendChild(s); return s; };
     const leadSVG = svgLayer(Lmap, "lead");
@@ -267,7 +276,7 @@
     const gCandle = mk(Lgrade, "", "", "inset:0;mix-blend-mode:soft-light");
     const paper = mk(Lpaper, "paper", ""), grain = mk(Lgrain, "grain", ""), vig = mk(Lvig, "vig", "");
     const grainURLs = [0, 1, 2, 3, 4, 5].map((i) => grainTex(seed * 31 + i));
-    const GW = { day: [1, 0, 0, 0], dusk: [0.3, 1, 0, 0], night: [0, 0, 0.45, 0],   /* clip: the 3D world already lights the night */ candle: [0, 0, 0, 1], none: [0, 0, 0, 0] };
+    const GW = { day: [0, 0, 0, 0],   /* v6: no warm push (critics: too warm/yellow) */ dusk: [0.3, 1, 0, 0], night: [0, 0, 0.12, 0],   /* v5: the film layers now REALLY blend (filmHost), so much lighter weights than the old veils */   /* clip: the 3D world already lights the night */ candle: [0, 0, 0, 1], none: [0, 0, 0, 0] };
     O.film = {
       grade(t, mode, d = 1.0, o = {}) { gradeKeys.push({ t, mode, d, o }); gradeKeys.sort((a, b) => a.t - b.t); return O; },
       set(o = {}) { if (o.grain != null) grain.style.opacity = o.grain; if (o.paper != null) paper.style.opacity = o.paper; if (o.vignette != null) vig.style.opacity = o.vignette; return O; },

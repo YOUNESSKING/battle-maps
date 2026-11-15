@@ -16,7 +16,8 @@
   @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
   html, body { margin: 0; padding: 0; background: #000; }
   #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
-  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: contrast(1.12) saturate(1.12) brightness(0.95); }
+  /* v6: saturation + toe/S-curve tables on the 3D image only (#gmgrade + #veil, written per frame by gradeAt(t) in the module) */
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: saturate(0.74) url(#gmgrade); }
   #arrows { position: absolute; inset: 0; width: 1280px; height: 720px; overflow: visible; }
   #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
   #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
@@ -25,13 +26,15 @@
   /* v3 cloud white-out: GM's is a soft warm off-white with a vignette (centre ~218/218/209, edges ~190/192/181), never pure #fff */
   #whiteout { position: absolute; inset: 0; opacity: 0; pointer-events: none; overflow: hidden; }
   #wcool, #wwarm, #wisps { position: absolute; inset: 0; }
-  #wcool { background: radial-gradient(ellipse 120% 120% at 50% 48%, rgb(212,215,208) 0%, rgb(209,212,205) 50%, rgb(201,204,196) 100%); }
-  #wwarm { opacity: 0; background: radial-gradient(ellipse 115% 115% at 50% 46%, rgb(220,216,203) 0%, rgb(215,211,197) 45%, rgb(203,200,184) 80%, rgb(194,191,174) 100%); }
+  /* v4: flat, no oval vignette (owner: his white-out is flat); cool interior ~(208,211,204), warm cream ~(217,214,201) */
+  #wcool { background: rgb(208,211,204); }
+  /* v5: his cream phase (637.9-638.2) has a smooth warm radial falloff: centre ~(218,216,203), edge midpoints ~(194,193,179), corners ~(186,184,170) */
+  #wwarm { opacity: 0; background: radial-gradient(ellipse farthest-corner at 50% 47%, rgb(220,218,205) 0%, rgb(215,213,200) 34%, rgb(195,194,180) 71%, rgb(184,182,167) 100%); }
   .wsp { position: absolute; left: 0; top: 0; width: 600px; height: 300px; border-radius: 50%; filter: blur(38px); background: rgb(120,112,98); will-change: transform, opacity; }
   .blk { position: absolute; left: 0; top: 0; width: 100px; height: 40px; transform-origin: 50% 50%; box-sizing: border-box; border: 7px solid #15130f; will-change: transform; }
   .blk.u { background: #2c57b7; } .blk.r { background: #be3a2a; }
   .blk svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .bnr { position: absolute; left: 0; top: 0; will-change: transform; }
+  .bnr { position: absolute; left: 0; top: 0; will-change: transform; transform-origin: 0 0; }
   .bnr .pole { position: absolute; left: -1px; bottom: 0; width: 2px; background: linear-gradient(#efe2b8, #8a6a2a); box-shadow: 0 0 2px rgba(0,0,0,.7); }
   .bnr img { position: absolute; left: 1px; border: 1px solid #15130f; box-shadow: 0 2px 4px rgba(0,0,0,.5); }
   .bnr .nm { position: absolute; left: 4px; white-space: nowrap; font: 600 15px "CG", Georgia, serif; color: #f6f1e2; letter-spacing: .06em; text-transform: uppercase; text-shadow: 0 1px 3px #000, 0 0 6px rgba(0,0,0,.7); }
@@ -49,21 +52,27 @@
   tl.to(window.__clk, { t: T.D, duration: T.D, ease: "none", onUpdate: () => { if (window.__draw) window.__draw(window.__clk.t); } }, 0);
   window.__timelines["main"] = tl; window.__tl = tl;
 </script>
+<script>var BN_FONT_BASE = "assets/fonts/";</script>
+<script src="banner.js"></script>   <!-- v8: the generals' banners on poles (STYLE_LOCK 2f item 1), copied verbatim -->
 </head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="66" data-width="1280" data-height="720">
+  <svg width="0" height="0" style="position:absolute"><filter id="gmgrade" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feComponentTransfer>
+    <feFuncR type="table" tableValues="0 1"/><feFuncG type="table" tableValues="0 1"/><feFuncB type="table" tableValues="0 1"/></feComponentTransfer></filter></svg>
   <canvas id="gl" width="1280" height="720"></canvas>
+  <div id="veil" style="position:absolute;inset:0;pointer-events:none"></div>   <!-- v6: depth-growing cool veil over the 3D image (gradeAt) -->
   <div id="pins"></div>
   <svg id="arrows" viewBox="0 0 1280 720"></svg>
   <div id="troops"></div>
   <div id="whiteout"><div id="wcool"></div><div id="wwarm"></div><div id="wisps"></div></div>
+  <div id="film" style="position:absolute;inset:0;pointer-events:none"></div>   <!-- v5: the overlay's film layers (grade, paper, grain, vignette), untransformed so their blend modes reach the map -->
   <div id="ovwrap"><div id="ov"></div></div>
   <div id="fade"></div>
 </div>
 <script type="module">
 import * as THREE from "three";
 import { initWorld } from "./world.js";
-import { createFX } from "./fx.js";
+import { createFX, loadCloudNoise } from "./fx.js";
 const T = window.T, EV = window.EV, tl = window.__tl, D = window.GM3D_DATA;
 const W = 1280, H = 720, SC = 1.5;   // overlay space = 1.5 x canvas px
 const U = 1 / D.geo.mpu;             // world units per metre (1 unit = 129.36 m)
@@ -76,22 +85,33 @@ const sstep = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * 
 // push-in on the wide 3D map (his gold numbers / our title float in world space) -> clouds appear and fill the frame in ~0.8 s ->
 // cool off-white cloud interior ~0.6 s (~#d0d4cc, flat) -> the cut hides in it -> warm cream ~0.7 s (centre ~#dad6c6, edge ~#c3c1b0)
 // with dark grey-brown wisps (cloud undersides) rushing past -> the battlefield snaps in within ~0.4 s, a thin haze clears over ~1 s.
-const DV = { push: 11.3, deckIn: 14.85, deck: 15.2, wIn: 15.6, wFull: 16.0, SW: 16.4, warm: 16.35, emerge: 17.2, clear: 17.6, haze: 18.7, land: 18.6 };
-const SW = DV.SW;   // region swap, inside the flat white-out
+// v5 (critic A 2, 8, 9, 13): ONE continuous cubic ease-in push from 12.6 s straight into the deck (no cruise plateau), the camera turning
+// near top-down (tilt 44 -> 17) as the flat deck closes in from the frame edges (~14.95-15.85), then on through the deck tops at the same
+// speed (cool textured phase, the camera inside the cloud ~16.2) -> swap at 16.4 inside the white -> cream with a warm radial falloff ->
+// the battlefield snaps in (0.35 s) while the camera keeps descending and eases out over ~2.5 s through torn grey-blue stratus.
+const DV = { push: 12.6, deckIn: 14.7, full: 15.85, deck: 15.95, wIn: 16.05, inside: 16.25, SW: 16.4, warm: 16.55, emerge: 17.25, clear: 17.55, haze: 18.2, land: 20.6 };
+const SW = DV.SW;   // region swap, inside the white-out
 const keys = [
   { t: 0.0, region: "wide", at: [1560, 712], dist: 640, tilt: 46, yaw: -3, fov: 30 },
-  { t: DV.push, region: "wide", at: [1532, 709], dist: 560, tilt: 44, yaw: 0, fov: 30 },
-  { t: DV.deck, region: "wide", at: [1518, 706], dist: 122, tilt: 26, yaw: 1, fov: 30, ease: "in" },
-  { t: SW, region: "close", at: [1517.6, 705], dist: 75, tilt: 24, yaw: 1, fov: 31, ease: "lin" },
+  { t: DV.push, region: "wide", at: [1532, 709], dist: 545, tilt: 44, yaw: 0, fov: 30 },
+  { t: DV.deck, region: "wide", at: [1518, 707], dist: 125, tilt: 11, yaw: 1, fov: 30, ease: "in" },
+  { t: SW, region: "wide", at: [1518, 706], dist: 72, tilt: 8, yaw: 1, fov: 30, ease: "lin" },   // same log-speed as the end of the cubic
+  // v6 (critic A v5 #4, #6): exit at ~1/3 of the dive's log-speed (0.5/s), steady through the white, then a cubic ease-out over 2.5 s after the snap
+  { t: SW, region: "close", at: [1518.0, 705.6], dist: 107, tilt: 16, yaw: 2, fov: 31, ease: "lin" },
+  { t: DV.emerge, region: "close", at: [1518.5, 705.2], dist: 70, tilt: 26, yaw: 0.5, fov: 31.5, ease: "lin" },
   { t: DV.land, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
-  { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 35, tilt: 40, yaw: -5, fov: 32 },
-  { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 29, tilt: 42, yaw: -10, fov: 32 },
-  { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 24, tilt: 44, yaw: -14, fov: 32 },
-  { t: T.p4 - 0.6, region: "close", at: [1514.6, 705.3], dist: 26.5, tilt: 43, yaw: -12, fov: 32 },
-  { t: T.p4 - 0.6, region: "wide", at: [1398, 688], dist: 300, tilt: 44, yaw: 0, fov: 30, night: 1, ease: "cut" },
-  { t: T.p5 - 0.6, region: "wide", at: [1378, 694], dist: 230, tilt: 46, yaw: -4, fov: 30, night: 1 },
-  { t: T.p5 - 0.6, region: "close", at: [1514.0, 705.0], dist: 33, tilt: 40, yaw: -4, fov: 32, ease: "cut" },
-  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 29, tilt: 42, yaw: 4, fov: 32 },
+
+  { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 36, tilt: 50, yaw: -5, fov: 30 },
+  { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 30, tilt: 52, yaw: -10, fov: 30 },
+  { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 25, tilt: 54, yaw: -14, fov: 30 },
+  { t: T.p4 - 0.6, region: "close", at: [1514.6, 705.3], dist: 27.5, tilt: 53, yaw: -12, fov: 30 },
+  // v5 (critic B 9): a more oblique night camera (tilt from vertical 44/46 -> 52/56, his night shots look across the land)
+  { t: T.p4 - 0.6, region: "wide", at: [1392, 690], dist: 280, tilt: 52, yaw: 0, fov: 30, night: 1, ease: "cut" },
+  { t: T.p5 - 0.6, region: "wide", at: [1376, 694], dist: 215, tilt: 56, yaw: -4, fov: 30, night: 1 },
+  { t: T.p5 - 0.6, region: "close", at: [1514.0, 705.0], dist: 34, tilt: 50, yaw: -4, fov: 30, ease: "cut" },
+  // v5 (critic B 17): the camera settles 1.4 s before the end (ease out), holds still while the overlays leave, then the world fades
+  { t: T.D - 1.4, region: "close", at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30 },
+  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30, ease: "lin" },
 ];
 const world = initWorld(document.getElementById("gl"), { base: "assets/", keys, width: W, height: H, antialias: false, shadowSize: 1536, bridgeBurnT: EV.bridgeFire + 3.2 });
 await world.ready;
@@ -104,87 +124,196 @@ const mkFX = (r, seed, hf) => createFX({ scene: world.regions[r].scene, camera: 
   wind: [20, -7], sunDir: SUN, heightAt: hf, duration: T.D, seed });
 const fxW = mkFX("wide", 1863, hW), fxC = mkFX("close", 1517, hC);
 fxW.patchGround(world.regions.wide.terrain.material); fxC.patchGround(world.regions.close.terrain.material);
-// clouds (v3): sprite cumulus on the wide map = scattered fair-weather clouds + the dense dive deck around the bridge
-// (fades in at DV.deckIn, gone after the swap); each cloud shades the ground under it. Close map keeps the volumetric layer:
-// the camera falls out of its base during the emergence, then only its shadows drift over the battlefield.
+// clouds (v5, critic A 1-6, 9, 11): true volumetric cumulus (fx.vclouds) with GM's look: smooth low-frequency lobes (no fine octave,
+// mid-octave rim tearing, alpha-weighted blur of the cloud target, IGN jitter), warm cream tops, grey cores, grey-blue undersides, dark
+// soft ground shadows. Wide: scattered fair-weather clouds over the whole map (log-normal sizes, big soft ones cut by the frame
+// corners) + a FLAT dive deck (group 1) that closes in from the frame edges as the camera falls onto it (coverage front + density ramp,
+// no billow-up); close: flat torn grey-blue stratus sheets just under the landing camera that stream past and tear open (emergence).
 const M = 1 / U;   // metres per unit
 const hsh = (i, k) => { const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
-const sparse = [], deck = [];
-for (let i = 0, gx = 1250; gx < 1820; gx += 62) for (let gz = 560; gz < 920; gz += 62, i++) if (hsh(i, 1) < 0.26) sparse.push([gx + hsh(i, 2) * 54, gz + hsh(i, 3) * 54, 14 + hsh(i, 4) * 16]);
-for (let i = 0, gx = 1410; gx < 1630; gx += 25) for (let gz = 615; gz < 830; gz += 25, i++) {
-  const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 725) * 1.2);
-  if (hsh(i, 7) < lerp(0.86, 0.42, clamp(r / 110))) deck.push([x, z, 13 + hsh(i, 8) * 14, 0.97 + hsh(i, 9) * 0.06]); }
-for (const c of [[1518, 706, 30], [1512, 717, 28], [1526, 699, 26], [1521, 726, 28], [1507, 697, 24], [1531, 713, 26], [1515, 738, 26]]) deck.push([c[0], c[1], c[2], 1]);   // the camera's own column: no gap to fall through
-fxW.cumulus({ clouds: sparse, base: 52, lift: 1.1, puffs: 26, refR: 18, puffSize: 0.9, seed: 71, drift: 0.5, shadowDir: [0.3, 1, 0.18], shadowH: 58 });
-fxW.cumulus({ clouds: deck, base: 68, lift: 1.25, puffs: 46, refR: 22, puffSize: 0.8, seed: 72, drift: 0.5, nearFade: 0.3, alpha: (t) => sstep(DV.deckIn, DV.deckIn + 0.15, t) * (1 - sstep(SW, SW + 0.2, t)) });
-const covC = (t) => lerp(0.85, 0.36, sstep(DV.emerge - 0.2, DV.clear + 0.3, t));
-fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: covC, shadow: 0.40, resolution: 0.5, steps: 40, detail: 0.5, maxDist: 600 * M, maxSeg: 70 * M, lightStep: 3 * M, sigma: 0.05 / M });
+const NOISE = await loadCloudNoise("cloudtex/noise128.bin");
+const BRC = [1518, 725];   // the bridge label stays clear (wide)
+// wide fair-weather cumulus: rejection-sampled scatter, clustered by a low-frequency field, log-normal radii ~10-60
+// v6 (critic A v5 #5): Poisson clusters of 2-5 clouds (a big parent + smaller children), log-normal radii (sigma 0.6), irregular, clear sky between
+const wsp = [], lnr = (i, k, med, sg, lo, hi) => { const g1 = hsh(i, k), g2 = hsh(i, k + 1), gn = Math.sqrt(-2 * Math.log(Math.max(1e-4, g1))) * Math.cos(6.2832 * g2); return Math.min(hi, Math.max(lo, med * Math.exp(sg * gn))); };
+const offWide = (x, z, r) => Math.hypot(x - 1518, (z - 712) * 1.15) < 62 + 0.5 * r ||   // v7: only the bridge label + the camera column stay clear
+   Math.hypot(x - 1388, (z - 690) * 0.8) < 95 + r;   // the deck footprint + Vicksburg (the night flashback's frame: only the thin wisps there) stay clear
+for (let c = 0, n = 0; c < 900 && n < 20; c++) {
+  const cx = 1150 + hsh(c, 61) * 860, cz = 340 + hsh(c, 62) * 640, R0 = lnr(c, 63, 30, 0.6, 12, 90);
+  if (offWide(cx, cz, R0) || wsp.some(([a, b, q]) => Math.hypot(a - cx, b - cz) < q + R0 + 10)) continue;
+  n++; wsp.push([cx, cz, R0]); const kids = 1 + Math.floor(hsh(c, 65) * 4);   // 2-5 per cluster
+  for (let k = 0; k < kids; k++) { const a = hsh(c * 7 + k, 66) * 6.283, r = lnr(c * 7 + k, 67, R0 * 0.45, 0.6, 7, R0 * 0.9), d = R0 * (0.9 + 0.8 * hsh(c * 7 + k, 69)) + r * 0.6;
+    const x = cx + Math.cos(a) * d, z = cz + Math.sin(a) * d * 0.8; if (!offWide(x, z, r)) wsp.push([x, z, r]); } }
+// big soft clouds cut by the frame corners of the opening shot (near the lens, lower density)
+const edge = [[1290, 915, 95], [1815, 930, 85], [1175, 470, 70], [1565, 470, 78], [1705, 545, 58]];   // 3 big soft near-lens corner masses + 2 big masses in the upper middle (his 620 / 1050 s)
+// flat wisps around Vicksburg (the night flashback's frame; small, thin, off the town name)
+const wisp = [[1318, 625, 34], [1290, 735, 40], [1440, 600, 30], [1335, 790, 32], [1470, 790, 26]];
+// the dive deck: flat (H/R ~0.3) sheet cumulus around the target, dense in the camera's column (no gap to fall through), ragged towards the rim
+const deck = [];
+for (let i = 0, gx = 1400; gx < 1640; gx += 22) for (let gz = 600; gz < 820; gz += 22, i++) {
+  const x = gx + (hsh(i, 5) - 0.5) * 18, z = gz + (hsh(i, 6) - 0.5) * 18, r = Math.hypot(x - 1518, (z - 712) * 1.15);
+  if (hsh(i, 7) < lerp(0.95, 0.5, clamp((r - 30) / 90))) deck.push([x, z, 13 + hsh(i, 8) * 12]); }
+// v7: no deck cloud under a wide cloud (one owner per column: no group seams), so the wide clouds may now sit inside the deck's rim
+for (let i = deck.length - 1; i >= 0; i--) if (wsp.some(([x, z, r]) => Math.hypot(x - deck[i][0], z - deck[i][1]) < r * 1.3 + deck[i][2] * 0.8)) deck.splice(i, 1);
+for (const c of [[1518, 706, 30], [1512, 717, 26], [1526, 699, 26], [1521, 726, 26], [1507, 697, 24], [1531, 713, 24]]) deck.push(c);   // the camera's own column: no gap to fall through
+const wideCl = wsp.map(([x, z, r], i) => [x, z, r, 3 + r * (0.18 + 0.16 * hsh(i, 13)), 49 + hsh(i, 11) * 9, 0])
+  .concat(edge.map(([x, z, r], i) => [x, z, r, r * 0.2, 58 + i * 4, 0]))
+  .concat(wisp.map(([x, z, r], i) => [x, z, r, 4 + r * 0.12, 52 + i * 2, 0]))
+  .concat(deck.map(([x, z, r], i) => [x, z, r, r * (0.26 + 0.1 * hsh(i, 14) + 0.12 * clamp(1 - Math.hypot(x - 1518, z - 710) / 60)), 58 + hsh(i, 12) * 3, 1]));   // thicker over the target
+// GM cloud colours: warm cream sunlit tops, grey cores, grey-blue undersides (critic A 4); night: flat grey-blue wisps (critic A 11)
+const CW_DAY = { sun: [1.0, 0.95, 0.85], ambTop: [0.62, 0.65, 0.70], ambBot: [0.24, 0.27, 0.33], nSun: [0.12, 0.15, 0.20], nAmbTop: [0.27, 0.32, 0.40], nAmbBot: [0.13, 0.16, 0.21] };
+const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1080, 300, 2060, 1010], texel: 1, slab: [44, 104], tile: 125, groupScale: 3.0, amp: 5, soft: 1.7, flatPow: 0.3, sigma: 0.75,
+  stepIn: 0.25, stepK: 0.0035, lightStep: 1.4, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.06, fine: 0.22, wisp: 0.45, inner: 0.8,
+  weights: [1.0, 0.8, 1, 0.5], group0: [0.85, 0.45, 1.2, 0.8], blur: 0.75, sharp: 1, shadow: 0.75, shadowDir: [0.3, 1, 0.65], drift: [0.10, -0.035], evolve: 0.0025, floor: 0.05,
+  sunK: 1.45, ambK: 0.18, lightK: 3.2,
+  // deck: no billow-up; group-1 erosion is a coverage FRONT that sweeps from the frame edges in to the camera's column, while the deck's
+  // density ramps up from translucent grey veils (0.25 s); after the swap the deck is gone from the wide map (night flashback); night: half the wide clouds, flatter
+  erode: (t) => { const n = sstep(T.p4 - 1, T.p4 - 0.6, t); return [0.4 * n, t > DV.SW + 0.5 ? 9 : lerp(1.6, 0, sstep(DV.deckIn - 0.1, DV.deckIn + 0.6, t))]; },
+  deck: (t) => ({ x: 1518, z: 706, r: 110, front: 3.5 * (1 - sstep(DV.deckIn + 0.1, DV.full, t)), k: lerp(0, 1, sstep(DV.deckIn, DV.deckIn + 0.6, t)) }),   // v6: opacity ramp from 0 (no pop)
+  ms: (t) => lerp(0.22, 0.42, sstep(DV.full - 0.2, DV.inside, t)), expo: (t) => lerp(1, 0.93, sstep(DV.full - 0.2, DV.inside, t)),
+  colors: (t) => { const k = sstep(DV.full - 0.2, DV.inside, t);   // inside the cloud: cooler, bright grey with blue-grey mottles (his 637.0 s)
+    const c = sstep(DV.deckIn, DV.deckIn + 0.5, t) * (1 - k), q = Math.max(k, c);   // his deck (636.0-636.6) reads neutral-cool grey-white, his wide clouds warm
+    return { sun: [lerp(1.0, 0.97, k), lerp(0.95, 0.96, k), lerp(0.85, 0.9, k)], ambTop: [lerp(0.62, 0.68, q), lerp(0.65, 0.70, q), lerp(0.70, 0.72, q)], ambBot: [lerp(0.24, 0.42, q), lerp(0.27, 0.45, q), lerp(0.33, 0.48, q)],   // v7: warm cream everywhere (his deck (199,202,192))
+      nSun: CW_DAY.nSun, nAmbTop: CW_DAY.nAmbTop, nAmbBot: CW_DAY.nAmbBot, ambK: lerp(0.18, 0.36, q), lightK: lerp(3.2, 1.4, k) * lerp(1, 0.8, c), sunK: lerp(1.45, 1.45, q) }; },
+  sigmaK: (t) => lerp(1, 0.5, sstep(DV.full, DV.inside, t)) });
+// close (v6, critic A v5 #4): 10 separate torn stratus sheets with holes (~35-50 % of the frame at the snap), flat, low (tops ~19-24, about a
+// third of the way up to the camera = ~1.5x the ground's parallax), lit tops + grey-blue cores; they clear off the troop line after ~18.3 s and tear away by ~20.5
+const closeCl = [], SH = [[1509, 696, 9], [1531, 694, 8], [1505, 712, 10], [1534, 716, 9], [1519, 724, 8], [1520, 688, 7], [1497, 703, 7], [1541, 705, 7], [1512, 705, 6], [1527, 706, 6]];
+SH.forEach(([x, z, r], i) => closeCl.push([x, z, r * 1.25, 2.6 + hsh(i, 24) * 1.2, 16.5 + hsh(i, 25) * 3, 1]));
+const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1470, 660, 1570, 750], texel: 0.2, skip: 8, slab: [14, 26], tile: 9, amp: 1.5, soft: 0.8, sigma: 0.85, wisp: 0.8, inner: 0.7, flatPow: 0.35, blobs: 6,
+  stepIn: 0.12, stepK: 0.004, lightStep: 0.35, lodDist: 90, nearFade: 1.2, maxSteps: 220, resolution: 0.7, warp: 0.18, fine: 0.1, weights: [1.0, 0.5, 1, 0.6], blur: 1.0, sharp: 1,
+  shadow: 0.45, shadowDir: [0.3, 1, 0.65], drift: [0.5, -0.18], evolve: 0.006, sunK: 0.95, ambK: 0.5, lightK: 1.6,
+  colors: { sun: [1.0, 0.97, 0.9], ambTop: [0.72, 0.72, 0.68], ambBot: [0.38, 0.40, 0.42] },   // v7: his remnants are warmer (~(.80,.80,.76))
+  erode: (t) => [0, lerp(0.35, 0.7, sstep(DV.emerge, DV.emerge + 1.2, t)) + lerp(0, 2.2, sstep(DV.emerge + 1.0, DV.emerge + 3.3, t))],
+  deck: (t) => ({ x: 1524, z: 705, r: 9, front: 3 * sstep(DV.emerge + 0.9, DV.emerge + 1.6, t), k: 1 }),   // the troop line clears first
+  opacity: (t) => 1 - sstep(DV.emerge + 3.2, DV.emerge + 3.8, t) });
+
+
+// the battle's drifting cloud shadows (as in v3): the old noise layer, shadows only (its own pass stays off)
+fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 0.40, opacity: 0, detail: 0.5 });
 
 // cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
-fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 6, flameK: 1.0, flameA: 0.7, flameRate: 6, emberRate: 1, glowSize: 2.2, smokeRate: 1.6, smokeLife: 14, rise: 2, light: false, ramp: 2, smokeTint: [0.16, 0.15, 0.14], smokeAlpha: 0.55, smokeS0: 0.9, smokeGrow: 1.6, smokeWind: 3 });
+// v5 (critic B 6): orange flame tongues (no white clipping) under a dark leaning smoke column
+const FIRE_GM = { flameColor: [0.62, 0.1, 0.015, 0.1, 0.2, 0.04], glowColor: [1.0, 0.42, 0.12], glowA: 0.16, lightDay: 0.12 };
+fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { ...FIRE_GM, size: 6, tongues: 3, flameK: 0.75, flameA: 0.55, flameRate: 7, emberRate: 1, glowSize: 1.6, smokeRate: 3.0, smokeLife: 14, rise: 18, light: false, ramp: 2, smokeTint: [0.12, 0.115, 0.11], smokeAlpha: 0.6, smokeS0: 0.3, smokeGrow: 0.8, smokeWind: 0.5, smokeTurb: 0.5, smokeFade: 0.2 });   // v6 (critic A 12): a thin dark column, not a grey disc, when the push-in nears the bridge
 // close: smoke lines, cannon, impacts, bridge fire
 const brDir = [Math.cos(-BR.angle), -Math.sin(-BR.angle)], deckY = (BR.deck * 6) / D.geo.mpu, L2 = BR.len / 2;
 const BA = [BR.x - brDir[0] * L2, deckY + 0.05, BR.z - brDir[1] * L2], BB = [BR.x + brDir[0] * L2, deckY + 0.05, BR.z + brDir[1] * L2];
-fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { to: BB, size: 1.0, flameK: 1.25, flameA: 0.5, glowSize: 4, flameRate: 16, emberRate: 14, smokeRate: 6.0, smokeLife: 12, rise: 5, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.14, 0.13, 0.12], smokeAlpha: 0.5, smokeS0: 2.2, smokeGrow: 6, smokeWind: 3.2 });
-fxC.fire(BA, T.p5 - 1, T.D + 2, { to: BB, size: 0.45, flameRate: 3, emberRate: 1, glowSize: 1.5, smokeRate: 1.2, smokeLife: 8, rise: 6, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28] });   // still smouldering next day
+fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { ...FIRE_GM, to: BB, size: 1.0, tongues: 8, flameK: 2.7, flameA: 0.5, glowSize: 2.2, flameRate: 2.4, emberRate: 3, smokeRate: 7.0, smokeLife: 16, rise: 58, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.30, 0.27, 0.24], smokeMode: 4.0, smokeAlpha: 0.35, smokeS0: 0.5, smokeGrow: 2.6, smokeWind: 1.8, smokeTurb: 0.6, smokeFade: 0.15 });   // v7 (critic B 5): unlit warm grey (no purple from the lighting), thinner, leaning, wider top   // v6 (critic B 14): 1.6x higher, leaning, fading out with height (no flat cap)
+fxC.fire(BA, T.p5 - 1, T.D + 2, { ...FIRE_GM, to: BB, size: 0.45, tongues: 3, flameRate: 3, emberRate: 1, glowSize: 1.2, smokeRate: 1.2, smokeLife: 8, rise: 10, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28], smokeWind: 1.0, smokeTurb: 1.2 });   // still smouldering next day
+// v7 (critic B 5): the burning trestle lights the water under it (flickering orange glow on the river)
+{ const wl = (BR.wl * 6) / D.geo.mpu + 0.01;
+  fxC.custom((t, push) => { if (t < EV.bridgeFire || t > T.p4 - 0.6) return; const e = sstep(EV.bridgeFire, EV.bridgeFire + 1.5, t) * (1 - sstep(T.p4 - 1.6, T.p4 - 0.8, t));
+    for (let j = 0; j < 3; j++) { const f = 0.75 + 0.25 * Math.sin(t * (7.3 + j) + j * 2.1) * Math.sin(t * 3.1 + j);
+      push(lerp(BA[0], BB[0], 0.25 + 0.25 * j), wl, lerp(BA[2], BB[2], 0.25 + 0.25 * j), 1.1, 0.42 * e * f, 1.0, 0.38, 0.08); } }); }
 const bwPts = BRW.filter((_, i) => i % 3 === 0).map((p) => G(p[0] + 0.12, p[1], 0.06));
-fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 1.8, volley: 1.6, roll: 0.9, size: 1.35, height: 3, alpha: 0.15, tint: [0.58, 0.62, 0.68] });
-fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 0.8, size: 1.3, alpha: 0.12, life: 9, tint: [0.58, 0.62, 0.68] });
-fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 0.9, size: 1.3, alpha: 0.11, life: 9, tint: [0.58, 0.62, 0.68] });
-EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0, puffs: 8 });
+// v5 (critic B 4): GM curtain smoke (fx LOOKS.gm: unlit cool grey, soft, tall, hanging, slow sideways drift)
+// v7 (critic B 4): separate curtains per battalion (1.0 units = ~1.5 boxes wide, ~1.0 gaps), taller puffs (LOOKS.gmTall: x2 vertical, so they stay apart), the bank thins to 12 % within 6 s after the last volley
+const SMK = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTall" };
+fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { ...SMK, dir: [1, 0.05], rate: 2.9, volley: 1.6, roll: 0.9, size: 1.45, height: 3, muzzle: 6, windK: 0.45 });
+fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { ...SMK, dir: [-1, 0], rate: 1.26, size: 1.4, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45 });
+fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { ...SMK, dir: [-1, 0], rate: 1.44, size: 1.4, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45 });
+EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0 });
   fxC.impact(G(1520.2 + ((i * 37) % 7) * 0.15, g[1] + ((i * 53) % 9 - 4) * 0.35, 0), t + 0.85, { size: 0.9 }); });
-EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0, puffs: 8 });
+EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0 });
   fxC.impact(G(1526.3 + ((i * 29) % 7) * 0.25, g[1] + ((i * 41) % 9 - 4) * 0.4, 0), t + 0.8, { size: 0.9 }); });
 // flashback: the burning steamer drifting down the Mississippi at Vicksburg, the batteries firing on the boats, town lights
 const MISS = D.regions.wide.rivers[0].pts;
 const riverAt = (y) => { let b = MISS[0]; for (const p of MISS) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b; };
 const st0 = riverAt(684), st1 = riverAt(703);
-fxW.fire(GWd(st0[0], st0[1], 0.4), EV.steamer, EV.steamer + 2.6, { to: GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), size: 0.55, glowSize: 26, smokeRate: 1.8, smokeLife: 10, rise: 7, ramp: 0.8, fadeOut: 0.6, lightIntensity: 3 });
-fxW.fire(GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), EV.steamer + 2.4, T.p5, { to: GWd(st1[0], st1[1], 0.4), size: 0.55, glowSize: 26, smokeRate: 1.8, smokeLife: 10, rise: 7, ramp: 0.4, lightIntensity: 3 });
+fxW.fire(GWd(st0[0], st0[1], 0.4), EV.steamer, EV.steamer + 2.6, { ...FIRE_GM, tongues: 3, to: GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), size: 0.55, glowSize: 18, smokeRate: 1.8, smokeLife: 10, rise: 12, smokeWind: 1.0, ramp: 0.8, fadeOut: 0.6, lightIntensity: 3 });
+fxW.fire(GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), EV.steamer + 2.4, T.p5, { ...FIRE_GM, tongues: 3, to: GWd(st1[0], st1[1], 0.4), size: 0.55, glowSize: 18, smokeRate: 1.8, smokeLife: 10, rise: 12, smokeWind: 1.0, ramp: 0.4, lightIntensity: 3 });
 const VB = D.towns.Vicksburg;
-EV.batteryShots.forEach((t, i) => { const a = (i * 0.9) % 3; fxW.cannon(GWd(VB[0] - 2 + a * 2.2, VB[1] - 5 + i * 1.9, 0.3), t, { dir: [-1, 0.1], size: 0.6, puffs: 6, dust: 0 });
+// v5 (critic B 9): battery flashes 3x bigger + a 0.15 s orange glow on the water under each shot; the batteries stand on the bluff edge
+EV.batteryShots.forEach((t, i) => { const r0 = riverAt(VB[1] - 6 + i * 2.6), g = [r0[0] + 3.2 + (i % 3) * 0.8, r0[1]];
+  fxW.cannon(GWd(g[0], g[1], 0.3), t, { dir: [-1, 0.1], size: 1.8, puffs: 8, dust: 0, life: 5, pool: 0, flash: 1.4, flashLife: 0.13, plume: 0.45, height: 45, alpha: 0.16 });   // v7 (critic B 7): 3x orange flash, 4 frames; small high plume (the big low one was clipped by the bluffs into a hard grey slab over the river)
+  fxW.flash(GWd(r0[0] + 0.4, r0[1], 0.25), t, { size: 2.6, life: 0.15, color: [1.1, 0.45, 0.12], alpha: 1.0, pool: 3 });
   const r = riverAt(VB[1] - 3 + i * 3); fxW.impact(GWd(r[0], r[1], 0.1), t + 0.9, { size: 0.5 }); });
-for (let i = 0; i < 14; i++) { const a = i * 2.39996, rr = 1.2 + (i % 5) * 1.1; fxW.campfire(GWd(VB[0] + Math.cos(a) * rr * 1.3, VB[1] + Math.sin(a) * rr, 0.2), { t0: T.p4 - 1, t1: T.p5, size: 1.4, smoke: false, visible: () => 1 }); }
+// v5: 40 campfires in camps of 3-5 small orange dots (his 187 s night: dots ~3-5 px with a small soft halo; ours were 14 invisible ones):
+// Confederate camps on the bluffs round Vicksburg, Union camps on the Louisiana shore across the river
+{ const CF = [], camp = (cx, cy, n, s) => { for (let j = 0; j < n; j++) CF.push([cx + (hsh(s + j, 66) - 0.5) * 2.4, cy + (hsh(s + j, 67) - 0.5) * 1.8]); };
+  [[684, 4.5], [690, 3.6], [696, 4.2], [702, 5.0], [676, 7.0]].forEach(([y, dx], i) => camp(riverAt(y)[0] + dx + 2, y, 4, i * 10));
+  camp(VB[0] + 6, VB[1] + 3, 4, 60); camp(VB[0] + 5, VB[1] - 6, 3, 70);
+  [[672, -6], [679, -9], [686, -7], [692, -11], [698, -8], [705, -10]].forEach(([y, dx], i) => camp(riverAt(y)[0] + dx, y, 4, 100 + i * 10));
+  CF.forEach(([x, y], i) => fxW.campfire(GWd(x, y, 0.15), { t0: T.p4 - 1, t1: T.p5, size: 1.1 + hsh(i, 65) * 0.5, flameRate: 7, glowSize: 3.2, glowA: 0.3, glowColor: [1.1, 0.42, 0.12],
+    flameColor: [1.05, 0.22, 0.04, 0.2, 0.35, 0.1], poolRadius: 4, smoke: false, visible: () => 1 })); }
 fxW.setNight(0);
 
-// ---------------- the 3D title: gold letters floating in world space over the map (GM's '70,000'), passing over the lens ----------------
-await document.fonts.load('600 120px "CG"');
-const TC = document.createElement("canvas"); TC.width = 2048; TC.height = 1024; { const g = TC.getContext("2d");
-  const lines = ["THE BRIDGE", "THAT BURNED TO", "SAVE VICKSBURG"], fs = [210, 150, 210], ys = [250, 520, 800];
-  g.textAlign = "center"; g.textBaseline = "middle"; g.lineJoin = "round";
-  lines.forEach((ln, i) => { g.font = `600 ${fs[i]}px "CG", Georgia, serif`; if ("letterSpacing" in g) g.letterSpacing = "8px";
-    const gr = g.createLinearGradient(0, ys[i] - fs[i] * 0.42, 0, ys[i] + fs[i] * 0.42); gr.addColorStop(0, "#fff3c8"); gr.addColorStop(0.45, "#e2bd62"); gr.addColorStop(0.55, "#b8862e"); gr.addColorStop(1, "#f0d488");
-    g.strokeStyle = "#2a1c08"; g.lineWidth = 16; g.strokeText(ln, 1024, ys[i]);
-    g.strokeStyle = "#8a6222"; g.lineWidth = 7; g.strokeText(ln, 1024, ys[i]);
-    g.fillStyle = gr; g.fillText(ln, 1024, ys[i]); }); }
-const ttex = new THREE.CanvasTexture(TC); ttex.colorSpace = THREE.SRGBColorSpace; ttex.anisotropy = 4;
-const TTL = new THREE.Group(); world.regions.wide.scene.add(TTL);
+// ---------------- the 3D title (v5, critic A 7): GM's short hard words ("70,000") -> "ONE DAY", gold in world space over the map ----------------
+// smooth bevelled gold face (painted bevel: light upper-left rim, dark lower-right rim, no dark outline), a short smooth extrusion of 40 solid
+// silhouette layers shaded gold x0.75 -> x0.45 (no stacked-contour rings), its shadow on the map, motion-blur ghosts while it flies past the lens.
+const TF = new FontFace("CGT", "url(assets/fonts/cormorant-garamond-latin-700-normal.woff2)", { weight: "700" }); await TF.load(); document.fonts.add(TF);
+const TTXT = "ONE DAY", TCW = 2048, TCH = 640;
+const mkTitleCanvas = (face) => { const c = document.createElement("canvas"); c.width = TCW; c.height = TCH; const g = c.getContext("2d");
+  g.textAlign = "center"; g.textBaseline = "middle"; g.font = `700 400px "CGT", Georgia, serif`; if ("letterSpacing" in g) g.letterSpacing = "18px";
+  const X = TCW / 2, Y = TCH / 2 + 16;
+  if (!face) { g.fillStyle = "#fff"; g.fillText(TTXT, X, Y); g.lineJoin = "round"; g.lineWidth = 6; g.strokeStyle = "#fff"; g.strokeText(TTXT, X, Y); return c; }
+  const gr = g.createLinearGradient(0, Y - 170, 0, Y + 170); gr.addColorStop(0, "#fff1c4"); gr.addColorStop(0.38, "#e8c46c"); gr.addColorStop(0.62, "#c4923a"); gr.addColorStop(1, "#f2d48a");
+  g.lineJoin = "round"; g.fillStyle = gr; g.fillText(TTXT, X, Y); g.lineWidth = 6; g.strokeStyle = "#9c7430"; g.strokeText(TTXT, X, Y);   // v7: dark-gold outer rim (no light halo)
+  g.globalCompositeOperation = "source-atop"; g.filter = "blur(5px)";   // painted bevel, inside the letters only
+  g.lineWidth = 22; g.strokeStyle = "rgba(255,246,214,0.85)"; g.save(); g.translate(-5, -6); g.strokeText(TTXT, X, Y); g.restore();
+  g.strokeStyle = "rgba(112,74,20,0.85)"; g.save(); g.translate(6, 7); g.strokeText(TTXT, X, Y); g.restore();
+  g.filter = "blur(2px)"; g.lineWidth = 3; g.strokeStyle = "rgba(120,84,28,0.9)"; g.strokeText(TTXT, X, Y);   // fine darker-gold edge, not a brown outline
+  g.filter = "none"; const sp = g.createLinearGradient(X - 700, 0, X + 700, 0); sp.addColorStop(0.35, "rgba(255,255,240,0)"); sp.addColorStop(0.5, "rgba(255,252,232,0.32)"); sp.addColorStop(0.65, "rgba(255,255,240,0)");
+  g.fillStyle = sp; g.fillRect(0, 0, TCW, TCH); g.globalCompositeOperation = "source-over"; return c; };
+const ttex = new THREE.CanvasTexture(mkTitleCanvas(true)); ttex.colorSpace = THREE.SRGBColorSpace; ttex.anisotropy = 4; ttex.premultiplyAlpha = true;   // v7: premultiplied edges (no bright fringe)
+const stex = new THREE.CanvasTexture(mkTitleCanvas(false)); stex.anisotropy = 4;
+// v6 (critic A v5 #1): the title is the nearest thing to the lens, so it gets its own pass after the map + clouds (depth cleared): nothing draws over it
+const TSC = new THREE.Scene(), TTL = new THREE.Group(); TSC.add(TTL);
+world.onFrame((w) => { if (w.region !== "wide" || !TTL.visible) return; const r = w.renderer, ac = r.autoClear; r.autoClear = false; r.clearDepth(); r.render(TSC, w.camera); r.autoClear = ac; });
 const tA = 12.2; world.update(tA); world.camera.updateMatrixWorld();
 const cq = world.camera.quaternion.clone(), cpos = world.camera.position.clone(), cfw = new THREE.Vector3(0, 0, -1).applyQuaternion(cq), cup = new THREE.Vector3(0, 1, 0).applyQuaternion(cq);
-const tD = 0.40 * world.cameraAt(tA).dist, tW = 0.58 * tD, tH = tW / 2;
-TTL.position.copy(cpos).addScaledVector(cfw, tD).addScaledVector(cup, 0.30 * 0.268 * tD); TTL.quaternion.copy(cq);
-const tMats = [];
-for (let k = 9; k >= 0; k--) { const front = k === 0;
-  const m = new THREE.MeshBasicMaterial({ map: ttex, transparent: true, alphaTest: 0.35, depthWrite: true, fog: false, color: front ? 0xffffff : new THREE.Color().setRGB(0.32 - k * 0.018, 0.22 - k * 0.013, 0.09) });
-  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.position.set(-k * tW * 0.0018, -k * tW * 0.0016, -k * tW * 0.0042); pl.renderOrder = 20 - k; TTL.add(pl); tMats.push(m); }
+const tD = 0.28 * world.cameraAt(tA).dist, tW = 0.62 * tD, tH = tW * TCH / TCW;
+TTL.position.copy(cpos).addScaledVector(cfw, tD).addScaledVector(cup, 0.06 * tD); TTL.quaternion.copy(cq);
+const tMats = [], NL = 72, depth = tW * 0.03;   // v7: 72 thinner layers (no striations on the sides)
+for (let k = NL; k >= 0; k--) { const front = k === 0, f = k / NL, sh = 0.75 - 0.3 * f;
+  const m = new THREE.MeshBasicMaterial({ map: front ? ttex : stex, transparent: true, alphaTest: 0.4, depthWrite: true, fog: false, premultipliedAlpha: front,
+    color: front ? 0xffffff : new THREE.Color().setRGB(0.80 * sh, 0.60 * sh, 0.26 * sh) });
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.position.set(-f * tW * 0.004, -f * tW * 0.005, -f * depth); pl.renderOrder = 20 + NL - k; TTL.add(pl); tMats.push(m); }
+// motion blur: ghosts of the face seen from the camera's poses a fraction of a frame earlier (the title is static, the camera rushes past it)
+const GH = 6, ghostMats = [], ghosts = [];
+for (let j = 0; j < GH; j++) { const m = new THREE.MeshBasicMaterial({ map: ttex, transparent: true, depthWrite: false, depthTest: false, fog: false, opacity: 0 });
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(tW, tH), m); pl.renderOrder = 19; pl.matrixAutoUpdate = false; TSC.add(pl); ghosts.push(pl); ghostMats.push(m); }
+const camAtT = new THREE.PerspectiveCamera(), tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4();
+const camPose = (t, out) => { const cs = world.cameraAt(t), ty = world.heightAt(cs.at[0], cs.at[1], cs.region), tl_ = cs.tilt * Math.PI / 180, yw = cs.yaw * Math.PI / 180;
+  out.position.set(cs.at[0] + Math.sin(yw) * Math.sin(tl_) * cs.dist, ty + Math.cos(tl_) * cs.dist, cs.at[1] + Math.cos(yw) * Math.sin(tl_) * cs.dist);
+  out.up.set(0, 1, 0); out.lookAt(cs.at[0], ty, cs.at[1]); out.updateMatrixWorld(true); return out.matrixWorld; };
 const tShadow = fxW.planeShadow({ tex: ttex, dir: [-0.22, 1, -0.12] });
 const tAx = new THREE.Vector3(1, 0, 0).applyQuaternion(cq).divideScalar(tW), tAy = new THREE.Vector3(0, 1, 0).applyQuaternion(cq).divideScalar(-tH);
-const titleAt = (t) => { const a = sstep(T.story, T.story + 0.7, t) * (1 - sstep(DV.deck - 0.4, DV.deck, t)); TTL.visible = a > 0.002 && world.region === "wide";
-  for (const m of tMats) m.opacity = a; TTL.scale.setScalar(0.94 + 0.06 * sstep(T.story, T.story + 1.2, t)); tShadow(TTL.position, tAx, tAy, TTL.visible ? a : 0); };
+const titleAt = (t) => { const a = sstep(T.story, T.story + 0.7, t) * (1 - sstep(DV.deckIn - 0.3, DV.deckIn + 0.05, t)); TTL.visible = a > 0.002 && world.region === "wide";
+  for (const m of tMats) m.opacity = a; TTL.scale.setScalar(0.94 + 0.06 * sstep(T.story, T.story + 1.2, t)); tShadow(TTL.position, tAx, tAy, TTL.visible ? a : 0);
+  TTL.updateMatrixWorld(true); const now = camPose(t, camAtT).clone(), blur = TTL.visible ? sstep(DV.push + 0.6, DV.push + 1.2, t) : 0;
+  for (let j = 0; j < GH; j++) { ghosts[j].visible = blur > 0.01; if (!ghosts[j].visible) continue;
+    const ts = t - (j + 1) * (0.5 / 30) / GH;   // 180-degree shutter
+    tmpM.copy(now).multiply(tmpM2.copy(camPose(ts, camAtT)).invert()).multiply(TTL.matrixWorld);   // where the title sat in the frame at ts
+    ghosts[j].matrix.copy(tmpM); ghosts[j].matrixWorldNeedsUpdate = true; ghostMats[j].opacity = a * blur * 0.32 * (1 - j / GH); }
+  // screen box of the title (canvas px) + its alpha: pinned labels under it fade out
+  TBOX.a = TTL.visible ? a : 0; if (TBOX.a > 0) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; const cam = camPose(t, camAtT); camAtT.fov = world.cameraAt(t).fov; camAtT.aspect = W / H; camAtT.updateProjectionMatrix();
+    for (const [u, v] of [[-0.5, -0.5], [0.5, -0.5], [-0.5, 0.5], [0.5, 0.5]]) { const q = new THREE.Vector3(u * tW, v * tH * 0.7, 0).applyMatrix4(TTL.matrixWorld).project(camAtT);
+      if (q.z > 1) continue; const sx = (q.x + 1) / 2 * W, sy = (1 - q.y) / 2 * H; x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy); }
+    Object.assign(TBOX, { x0, y0, x1, y1 }); } };
+const TBOX = { a: 0, x0: 0, y0: 0, x1: 0, y1: 0 };
+
 
 // ---------------- 3D extras: boats on the Mississippi (flashback), three new bridges (next day) ----------------
-const boatMat = new THREE.MeshLambertMaterial({ color: 0x1a1a1c }), boats = [];
-for (let i = 0; i < 6; i++) { const b = new THREE.Group(); const hull = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.5, 0.75), boatMat); b.add(hull);
-  const st = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 1.2, 6), boatMat); st.position.set(0.3, 0.8, 0); b.add(st); world.regions.wide.scene.add(b); boats.push(b); }
-const placeBoats = (t) => { for (let i = 0; i < boats.length; i++) { const y = 662 + (t - (T.p4 - 1)) * 1.6 - i * 4.2, p = riverAt(y), q = riverAt(y + 1);
-  boats[i].position.set(p[0] + (i % 2 ? 0.6 : -0.6), (p[2] * 14) / D.geo.mpu + 0.35, p[1]); boats[i].rotation.y = Math.atan2(-(q[1] - p[1]), q[0] - p[0]); boats[i].visible = t > T.p4 - 1 && t < T.p5; } };
-const RIV = D.regions.close.rivers[0].pts, wood = new THREE.MeshLambertMaterial({ color: 0x6b5236 }), newBridges = [];
-[[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p;
-  const i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], ang = Math.atan2(c[1] - a[1], c[0] - a[0]);
-  const g = new THREE.Group(); const wl = (b[2] * 6) / D.geo.mpu;
-  const deck = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.02, 1.5), wood); deck.castShadow = deck.receiveShadow = true; g.add(deck);
-  for (let j = -3; j <= 3; j++) { const pt = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.03, 0.07), new THREE.MeshLambertMaterial({ color: 0x3d3428 })); pt.position.set(0, -0.015, j * 0.21); g.add(pt); }
-  g.position.set(b[0], wl + 0.012, b[1]); g.rotation.y = -ang; world.regions.close.scene.add(g); newBridges.push({ g, t: EV.bridgesNew[k] }); });
+// v5 (critic B 9): river boats with a hull (pointed bow, low superstructure, two stacks), a warm deck lamp and a moonlit V wake
+const boatMat = new THREE.MeshLambertMaterial({ color: 0x2b2622 }), houseMat = new THREE.MeshLambertMaterial({ color: 0x6a6258 }), boats = [];
+const hullGeo = (() => { const sh = new THREE.Shape(); sh.moveTo(-1.1, -0.36); sh.lineTo(0.75, -0.36); sh.quadraticCurveTo(1.1, -0.3, 1.35, 0); sh.quadraticCurveTo(1.1, 0.3, 0.75, 0.36); sh.lineTo(-1.1, 0.36); sh.closePath();
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 0.32, bevelEnabled: false }); g.rotateX(-Math.PI / 2); g.translate(0, -0.12, 0); return g; })();
+for (let i = 0; i < 6; i++) { const b = new THREE.Group(); b.add(new THREE.Mesh(hullGeo, boatMat));
+  const hs = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.26, 0.5), houseMat); hs.position.set(-0.25, 0.33, 0); b.add(hs);
+  for (const sx of [0.15, 0.45]) { const st = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 0.9, 6), boatMat); st.position.set(sx, 0.8, 0); b.add(st); }
+  world.regions.wide.scene.add(b); boats.push(b); }
+const boatAt = (i, t) => { const y = 662 + (t - (T.p4 - 1)) * 1.6 - i * 4.2, p = riverAt(y), q = riverAt(y + 1), x = p[0] + (i % 2 ? 0.6 : -0.6);
+  return { x, y: p[1], h: (p[2] * 14) / D.geo.mpu + 0.35, dx: q[0] - p[0], dy: q[1] - p[1], on: t > T.p4 - 1 && t < T.p5 }; };
+const placeBoats = (t) => { for (let i = 0; i < boats.length; i++) { const B = boatAt(i, t); boats[i].position.set(B.x, B.h, B.y); boats[i].rotation.y = Math.atan2(-B.dy, B.dx); boats[i].visible = B.on; } };
+fxW.custom((t, push) => { for (let i = 0; i < boats.length; i++) { const B = boatAt(i, t); if (!B.on) continue; const l = Math.hypot(B.dx, B.dy) || 1, dx = B.dx / l, dy = B.dy / l;
+  push(B.x + dx * 0.5, B.h + 0.6, B.y + dy * 0.5, 1.5, 0.9, 1.3, 0.62, 0.22);   // deck lamp
+  push(B.x - dx * 0.2, B.h + 0.5, B.y - dy * 0.2, 4.2, 0.26, 1.0, 0.45, 0.15);    // its glow on the deck and water
+  for (let k = 1; k <= 8; k++) { const d = 1.0 + k * 0.7, s = 0.15 + k * 0.12, a = 0.45 * (1 - k / 9);   // the wake: two arms of moonlit foam behind the stern
+    for (const sg of [-1, 1]) push(B.x - dx * d - dy * sg * s, B.h - 0.1, B.y - dy * d + dx * sg * s, 0.9 + k * 0.12, a, 0.5, 0.58, 0.68); } } });
+// v5: the three new bridges are the world's pontoon bridges (world.js, D.regions.close.pontoons, unrolling from EV.bridgesNew)
+const RIV = D.regions.close.rivers[0].pts, PONT = D.regions.close.pontoons || [];
 
 // ---------------- our troops: Style W boxes pinned to the ground (many small blocks per brigade) ----------------
 const INK = "#15130f";
@@ -194,8 +323,12 @@ const SYM = {
 };
 const TR = document.getElementById("troops"), UNITS = [];
 // unit: side u|r, type inf|art, keys [[t, x, y]], face (radians, map plane, direction the line faces), n blocks, bw (block width, units)
+// v5 (critic B 5): the boxes and arrows live IN the close scene (troops3d.js createBoxes3D / createArrows3D: fogged, under the smoke and
+// clouds, soft contact shadow); ?troops=dom keeps the old DOM overlay boxes for comparison
+const TQ = new URLSearchParams(location.search).get("troops");
+const DOMBOX = TQ === "dom";
 const unit = (side, type, keys, o = {}) => { const n = o.n || 4, els = [];
-  for (let i = 0; i < n; i++) { const e = document.createElement("div"); e.className = `blk ${side}`; e.innerHTML = SYM[type]; TR.appendChild(e); els.push(e); }
+  if (DOMBOX) for (let i = 0; i < n; i++) { const e = document.createElement("div"); e.className = `blk ${side}`; e.innerHTML = SYM[type]; TR.appendChild(e); els.push(e); }
   const u = { side, type, keys, face: o.face ?? (side === "u" ? Math.PI : 0), n, bw: o.bw || (type === "art" ? 0.42 : 0.7), bd: o.bd || (type === "art" ? 0.32 : 0.3), gap: o.gap || 0.12,
     t0: o.t0 ?? 0, t1: o.t1 ?? 1e9, cap: o.cap, capN: o.capN ?? n, els, wob: o.wob ?? 1 };
   UNITS.push(u); return u; };
@@ -203,56 +336,103 @@ const posAt = (K, t) => { if (t <= K[0][0]) return [K[0][1], K[0][2]]; for (let 
 // Confederates: three brigades on the breastworks (facing east), guns in the line, a reserve by the bridge; Union: four brigades + guns arrive from the east
 const bwX = (y) => { let b = BRW[0]; for (const p of BRW) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b[0]; };
 const TK = T.taken;
-[[699.4, 0], [702.9, 1], [706.6, 2], [710.4, 3]].forEach(([y, i]) => unit("r", "inf", [[0, bwX(y) - 0.25, y], [TK - 0.4, bwX(y) - 0.25, y], [TK + 1.6, bwX(y) - 2.6, y + (705 - y) * 0.6], [EV.bridgeFire, BR.x - 2.8, 705 + (i - 1.5) * 0.9]],
-  { n: 4, cap: TK - 0.2 + i * 0.25, capN: i === 3 ? 4 : 2, t1: EV.bridgeFire + 3.5 }));
-EV.csGuns.forEach((g, i) => unit("r", "art", [[0, g[0] - 0.15, g[1]]], { n: 2, cap: TK + 0.1 * i, capN: 2 }));
-unit("r", "inf", [[0, BR.x - 1.6, 703.6], [TK + 1, BR.x - 3.0, 704.2]], { n: 3, face: 0, t1: EV.bridgeFire + 3.5 });
+// v8 (owner: "they crossed the bridge in haste and disappeared"): the Confederate withdrawal as real movement (Grant: 1,751 prisoners,
+// 18 guns; the rest got over the bridge, which was then burned). The two centre brigades and half of each flank brigade are overrun at the
+// breastworks: they stop and turn grey IN PLACE ("the line was taken", 34.2 s) while the Union boxes close round them. The rest pull back
+// in order from ~28.7 s ("By mid-morning, it was over"): each escaping box peels off its line slot into a column on the Vicksburg road,
+// crosses the bridge nose to tail at a march pace (2.1 units/s, ~4 boxes/s) - the last box is over by ~35.3 s, the bridge fire catches
+// at 35.68 s ("the bridge burned") - then marches west along the road at 1.2 units/s and fades over the frame edge (never mid-field).
+// ESC_RD = the baked Vicksburg road (bake_clip.close_roads main), east of the line -> west of Bovina, map units.
+const ESC_RD = [[1519.4, 705.25], [1518.35, 705.51], [1517.3, 705.73], [1516.31, 705.35], [1515.31, 705.16], [1514.29, 705.01], [1513.28, 704.86], [1512.26, 704.74], [1511.26, 704.55],
+  [1510.28, 704.37], [1509.24, 704.31], [1508.26, 704.16], [1507.45, 703.46], [1506.6, 702.93], [1505.59, 702.8], [1504.72, 702.46], [1503.77, 702.09], [1502.68, 701.96], [1501.83, 701.34],
+  [1501.14, 700.54], [1500.32, 699.97], [1499.57, 699.27], [1498.31, 698.52], [1497.22, 698.36], [1496.45, 697.73], [1495.66, 697.16], [1494.85, 696.59], [1494.28, 695.69], [1493.55, 694.97], [1492.04, 694.5], [1490.14, 693.77]];
+const ESC_WEST = 1512.26;   // west end of the bridge: past it the column slows to a march
+const escape = (start, t0, v = 2.1, v2 = 1.2) => { const j = Math.max(0, ESC_RD.findIndex((p) => p[0] < start[0] - 0.3)), path = [start, ...ESC_RD.slice(j)], seg = []; let L = 0, sB = 0;   // joins the road just west of its start
+  for (let i = 1; i < path.length; i++) { const d = Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]); seg.push(d); L += d; if (path[i][0] >= ESC_WEST - 1e-3) sB = L; }
+  const tB = t0 + sB / v; return { path, seg, L, t0, s: (t) => t <= t0 ? 0 : t < tB ? (t - t0) * v : Math.min(L, sB + (t - tB) * v2) }; };
+const escAt = (E, s) => { let i = 0; while (i < E.seg.length - 1 && s > E.seg[i]) { s -= E.seg[i]; i++; } const a = E.path[i], b = E.path[i + 1], f = clamp(s / (E.seg[i] || 1)), l = E.seg[i] || 1;
+  return [lerp(a[0], b[0], f), lerp(a[1], b[1], f), (b[0] - a[0]) / l, (b[1] - a[1]) / l]; };
+[[699.4, 0], [702.9, 1], [706.6, 2], [710.4, 3]].forEach(([y, i]) => { const flank = i === 0 || i === 3;
+  const u = unit("r", "inf", [[0, bwX(y) - 0.25, y]], { n: 4, cap: TK - 0.2 + i * 0.25, capN: flank ? 2 : 4, t1: T.p4 });
+  if (flank) { u.escFrom = 2; u.esc = escape([bwX(y) - 0.9, y], i === 0 ? 28.7 : 29.0); } });
+EV.csGuns.forEach((g, i) => unit("r", "art", [[0, g[0] - 0.15, g[1]]], { n: 2, cap: TK + 0.1 * i, capN: 2, t1: T.p4 }));
+{ const u = unit("r", "inf", [[0, BR.x - 1.6, 703.6]], { n: 3, face: 0, t1: T.p4 }); u.escFrom = 0; u.esc = escape([BR.x - 1.6, 703.9], 31.2, 1.2, 1.2); }   // the reserve west of the bridge marches off first-in-line
 const ARR = SW + 0.6;
 [[699.0, 0], [702.6, 1], [706.4, 2], [710.6, 3]].forEach(([y, i]) => unit("u", "inf",
-  [[ARR, 1534.5 + i * 0.6, y], [T.crossing + 1, 1526.6 + (i % 2) * 0.3, y], [30.4 + i * 0.3, 1526.0, y], [TK - 0.3 + i * 0.15, bwX(y) + 0.5, y], [TK + 1.4, bwX(y) - 1.0, y], [T.p4, BR.x + 1.6, y * 0.4 + 705 * 0.6]],
-  { n: 4, t0: ARR - 0.2 }));
+  [[ARR, 1534.5 + i * 0.6, y], [T.crossing + 1, 1526.6 + (i % 2) * 0.3, y], [30.4 + i * 0.3, 1526.0, y], [TK - 0.3 + i * 0.15, bwX(y) + 0.5, y], [TK + 1.4, bwX(y) - 1.0, y], [T.p4, BR.x + 2.4 + (i % 2) * 1.1, 699.2 + i * 3.5]],
+  { n: 4, t0: ARR - 0.2, t1: T.p5 - 1 }));   // v5: no longer converge on one spot by the bridge (critic B 16: stacked column)
 [[1529.2, 699.6], [1529.4, 704.8], [1529.0, 710.2], [1535.0, 702.0], [1535.4, 708.0]].forEach(([x, y], i) => unit("u", "inf", [[ARR, x + 6, y], [T.crossing + 2 + i * 0.3, x, y], [TK + 1, x - 3, y]], { n: 3, t0: ARR - 0.2 }));
 EV.usGuns.forEach((g, i) => unit("u", "art", [[ARR, g[0] + 5, g[1]], [T.crossing - 0.6 + i * 0.4, g[0] + 0.2, g[1]]], { n: 2, t0: ARR - 0.2 }));
 // next day: Union columns cross the three new bridges westward
-[[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { const r0 = posAtRiver(y); for (let j = 0; j < 2; j++)
-  unit("u", "inf", [[T.p5 - 1, r0[0] + 2.2 + j * 0.9, y], [EV.bridgesNew[k] + 0.6, r0[0] + 1.2 + j * 0.9, y], [T.D, r0[0] - 2.4 + j * 0.9, y + (705 - y) * 0.2]], { n: 3, face: Math.PI, t0: T.p5 - 0.6, bw: 0.5, gap: 0.08 }); });
+// v5 (critic B 16): ONE column per new bridge, boxes nose to tail along the bridge axis (perpendicular to the river), waiting on the east
+// bank until its bridge is down, then filing across it and on west; no column ever stands in the water off a bridge
 function posAtRiver(y) { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p; return b; }
+// the crossing axis = the pontoon bridge k (its deck runs along local z: (sin angle, cos angle)); fallback: perpendicular to the river at y
+const bridgeAxis = (y, k) => { const P = PONT[k];
+  if (P) { let ex = Math.sin(P.angle), ey = Math.cos(P.angle); if (ex < 0) { ex = -ex; ey = -ey; } return { b: [P.x, P.z], ex, ey }; }
+  const b = posAtRiver(y), i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], l = Math.hypot(c[0] - a[0], c[1] - a[1]);
+  let ex = (c[1] - a[1]) / l, ey = -(c[0] - a[0]) / l; if (ex < 0) { ex = -ex; ey = -ey; } return { b, ex, ey }; };   // (ex, ey) points to the east bank
+const NEWBR = [[702.0, 0], [707.8, 1], [709.6, 2]];
+NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y, k), P = (d) => [b[0] + ex * d, b[1] + ey * d], tb = EV.bridgesNew[k];
+  unit("u", "inf", [[T.p5 - 1, ...P(3.6)], [tb + 0.7, ...P(3.6)], [tb + 4.2, ...P(-2.4)], [T.D, ...P(-3.4)]], { n: 4, face: Math.atan2(ey, ex) + Math.PI / 2, t0: T.p5 - 0.6, bw: 0.56, bd: 0.3, gap: 0.07, wob: 0 }); });
 [[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
 // army banners (one flag per side, on a pole, Style W)
 const BN = document.createElement("div"); TR.appendChild(BN);
-const banner = (img, name, keys, t0, t1) => { const e = document.createElement("div"); e.className = "bnr"; e.innerHTML = `<div class="pole" style="height:58px"></div><img src="${img}" style="width:42px;bottom:30px"><div class="nm" style="bottom:4px">${name}</div>`; BN.appendChild(e); return { e, keys, t0, t1 }; };
-const BANNERS = [banner("assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T.crossing + 2, 1530.6, 705.6]], ARR + 0.5, T.p4 - 0.6), banner("assets/csa1_13_flag.png", "Pemberton", [[0, BR.x - 1.2, 706.2], [TK + 1, BR.x - 3.6, 706.0]], T.pem - 0.2, EV.bridgeFire + 3),
-  banner("assets/us34_flag.png", "Grant", [[T.p5 - 1, 1517.4, 705.5]], T.p5 - 0.5, T.D + 1)];
+// v8 (owner): the generals as banners on poles in the EXACT locked style (banner.js = research/style_tests/banners_units_camps/banners/banner.js,
+// STYLE_LOCK 2f item 1): rope pole, cream plaque, blue cloth + gilt eagle (Union) / red cloth + spear (Confederate), sepia portrait, streamers,
+// pennant with the national flag of the date (US 34 stars / CS Stars and Bars), ground shadow, timeline sway. Authored at 1080p -> x2/3 here,
+// pinned to the 3D ground at the pole foot every frame (drawTroops). One banner per side; they replace the flag markers.
+const banner = (img, flag, name, keys, t0, t1, esc) => { const e = document.createElement("div"); e.className = "bnr";
+  const w = BN.build(img, flag, name, "up", flag.indexOf("csa") < 0); e.appendChild(w); BN.sway(w, t0, t1, tl); BN_HOST.appendChild(e); return { e, keys, t0, t1, esc }; };
+const BN_HOST = document.createElement("div"); TR.appendChild(BN_HOST);
+const BANNERS = [banner("assets/grant_head.png", "assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T.crossing + 2, 1530.6, 705.6]], ARR + 0.5, T.p4 - 0.6),
+  banner("assets/pemberton_head.png", "assets/csa1_13_flag.png", "Pemberton", [[0, BR.x - 1.2, 706.2]], T.pem - 0.2, T.p4, escape([BR.x - 1.2, 705.4], 31.0, 1.1, 1.1)),   // rides off west with the column
+  banner("assets/grant_head.png", "assets/us34_flag.png", "Grant", [[T.p5 - 1, 1517.4, 705.5]], T.p5 - 0.5, T.D + 1)];
+// troops look: 'boxes' (Style W, default) | 'blocks' (GM 3D formation blocks, troops3d.js); same UNITS, same keys
+const TROOPS = window.TROOPS = window.TROOPS || new URLSearchParams(location.search).get("troops") || "boxes";
+for (const u of UNITS) if (u.t0 > T.p5 - 1 && u.keys.length > 2) u.march = 1;   // blocks: next-day brigades cross the new bridges in march column
+const TM = await import("./troops3d.js");
+const BX = TROOPS !== "blocks" && !DOMBOX ? TM.createBoxes3D({ THREE, scene: world.regions.close.scene, sun: SUN }) : null;
+const AR3 = !DOMBOX ? TM.createArrows3D({ THREE, scene: world.regions.close.scene, heightAt: hC }) : null;
+const T3 = TROOPS === "blocks" ? TM.createTroops3D({ THREE, scene: world.regions.close.scene, heightAt: hC, units: UNITS, posAt, sun: SUN,
+  shots: [...EV.usShots.map((t, i) => ({ t, x: EV.usGuns[i % 3][0] + 0.2, y: EV.usGuns[i % 3][1] })), ...EV.csShots.map((t, i) => ({ t, x: EV.csGuns[i % 3][0] - 0.15, y: EV.csGuns[i % 3][1] }))] }) : null;
 // solid arrows on the ground (assault, retreat, next-day crossing)
 const SVG = document.getElementById("arrows"), NSV = "http://www.w3.org/2000/svg", ARROWS = [];
+// v6 (critic B 9): Style W arrows desaturated to the new grade (x0.75 chroma) and 0.75x width (ARW below)
+const ARU = "#4f73c0", ARR_R = "#b8574c", ARW = 0.32;
 const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NSV, "g"); g.innerHTML = `<path fill="none" stroke="rgba(14,12,8,.6)" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="${col}"/><polygon fill="${col}" stroke="rgba(14,12,8,.6)" stroke-width="1.5"/>`;
-  SVG.appendChild(g); ARROWS.push({ g, pts, t0, dur, t1 }); };
-arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, "#3f6fd0");
-arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, "#3f6fd0");
-arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, "#3f6fd0");
-arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, "#c4483a");
-for (const [y, k] of [[702.0, 0], [707.8, 1], [709.6, 2]]) { const r0 = posAtRiver(y); arrow([[r0[0] + 2.2, y], [r0[0], y], [r0[0] - 2.4, y + (705 - y) * 0.2]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
+  SVG.appendChild(g); ARROWS.push({ g, pts, t0, dur, t1, a3: AR3 ? AR3.add(pts, col) : null }); };
+arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, ARU);
+arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, ARU);
+arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, ARU);
+arrow([[1518.4, 705.5], [1515.3, 705.15], [1512.3, 704.75], [1508.3, 704.2]], 30.2, 3.0, T.bburn + 1.0, ARR_R);   // v8: the withdrawal over the bridge (with the column, 30-35 s)
+for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y, k); arrow([[b[0] + ex * 3.6, b[1] + ey * 3.6], [b[0] + ex * 0.75, b[1] + ey * 0.75]], EV.bridgesNew[k] + 0.4, 1.4, T.D + 1, ARU); }   // v6 (critic B 8): ends short of the river, the pontoon stays visible
 
 // ---------------- place names pinned to the ground ----------------
 const PINS = [], PN = document.getElementById("pins");
 const place = (txt, x, y, size, t0, t1, region, cls = "") => { const e = document.createElement("div"); e.className = "pl " + cls; e.style.fontSize = size + "px"; e.textContent = txt; PN.appendChild(e); PINS.push({ e, x, y, t0, t1, region }); };
-place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, 9, "wide"); place("Edwards", ...D.towns.Edwards, 20, 1.2, 9, "wide"); place("Big Black River", 1506, 676, 19, 2.0, 9, "wide", "it");
+// v5 (critic A 12): the wide names stay on through the push until the deck covers them (his 635.7 s)
+place("Vicksburg", ...D.towns.Vicksburg, 26, 0.8, DV.full - 0.3, "wide"); place("Edwards", ...D.towns.Edwards, 20, 1.2, DV.full - 0.3, "wide"); place("Big Black River", 1506, 676, 19, 2.0, DV.full - 0.2, "wide", "it");
+const TW = D.towns_wide || {};   // a few small wide towns (his push-in keeps sparse town names readable to the deck)
+[["Bovina", 17, 2.6], ["Champion Hill", 17, 3.0], ["Warrenton", 16, 3.4], ["Bolton", 16, 3.8]].forEach(([n, sz, t0]) => { if (TW[n]) place(n, ...TW[n], sz, t0, DV.full - 0.3, "wide"); });
 place("Bovina", 1495.5, 700.4, 19, SW + 1, T.p4 - 1, "close"); place("Big Black River", 1512.2, 696.0, 18, SW + 1.2, 27, "close", "it");
 place("Vicksburg", 1392, 683, 24, T.p4 + 0.4, T.p4 + 5, "wide"); place("Mississippi River", 1362, 688, 18, T.p4 + 0.8, T.p4 + 5.5, "wide", "it");
 place("Big Black River", 1512.2, 699.0, 18, T.p5 - 0.2, T.p5 + 4, "close", "it");
 
 // ---------------- GM overlay (1920x1080 space) ----------------
-const O = GMOverlay.create(document.getElementById("ov"), { tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
-O.film.set({ grain: 0.08 });   // v3: GM's grain is finer than ours was
+const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: "assets/fonts/", seed: 1863 });
+O.film.set({ grain: 0.04 });   // v5 (critic A 10 / B 18): grain <= 0.04 on the final frame (was 0.08)
 O.plaque.date(0.4, { month: "May 1863", day: "17", weekday: "Sunday", note: "east of Vicksburg" });
 O.label(T.burned, T.burned + 4.2, { name: "Big Black bridge", sub: "burned behind the Confederate army", world: [BR.x + 9, BR.z + 14], side: "cs", marker: false });
 O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", world: [1600, 716], offset: [150, -150], tIn: T.grant, tOut: T.story - 0.2 });
 // v3: the title is the 3D gold title in world space (see titleAt); the date plaque steps out for the dive and the clock plaque returns after the fog
-O.plaque.hide(DV.deckIn + 0.3);
-O.plaque.clock(T.ch, { time: "8:30", note: "Big Black River bridge", header: "17 May 1863" });
-O.timeline.show(T.ch + 0.2, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 1.0 });
+// v5 (critic A 8): HUD continuity as in his dives: legend + timeline stay on through the whole dive, the date plaque swaps to the clock plaque
+// INSIDE the white (his 637.3 s), the general's card fades in during the cream (his 638.1 s)
+O.plaque.clock(DV.SW + 0.05, { time: "8:30", note: "Big Black River bridge", header: "17 May 1863" });
+O.timeline.show(1.4, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 1.0 });
 O.timeline.seal(T.ch + 0.7, { at: 2.0, name: "Champion Hill" });
-O.legend(T.pem - 0.6, T.p4 - 0.8, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] });
+O.legend(1.9, T.p4 - 0.8, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] });
+O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", screen: [1765, 215], tIn: DV.warm + 0.25, tOut: T.crossing + 2.6 });
 O.medallion({ kind: "card", img: "assets/pemberton_head.png", side: "cs", role: "Lieutenant General", name: "John C. Pemberton", sub: "holds the crossing", world: [BR.x - 1.2, 706.2], offset: [-330, -170], tIn: T.pem, tOut: T.crossing + 2.6 });
 O.label(T.back, T.p3 + 0.6, { name: "The river at their back", sub: "one bridge behind the line", world: [BR.x, BR.z], side: "cs" });
 O.timeline.go(T.p3, { at: 2.6, d: 1.2 });
@@ -267,6 +447,7 @@ O.number(T.pris, T.six - 0.3, { value: 1751, round: 1, world: [1519.0, 706.5], s
 O.ledger.add(T.six, { who: "276 Union hit", note: "six prisoners for each", stamp: false });
 O.ledger.hide(T.p4 - 0.6);
 // flashback: a month earlier, night run past the Vicksburg batteries
+O.film.grade(DV.deck, "none", 0.5); O.film.grade(DV.emerge, "day", 0.8);   // v4: no warm day grade inside the cloud (his interior is cool, his cream is flat)
 O.film.grade(T.p4 - 0.6, "night", 0.8);
 O.plaque.date(T.p4, { month: "April 1863", day: "16", weekday: "Thursday", note: "a month earlier · night" });
 O.timeline.hide(T.p4 - 0.6);
@@ -280,34 +461,57 @@ O.timeline.seal(T.p5 + 0.4, { at: 3.0, name: "Big Black" });
 O.ledger.show(T.three - 0.4, {});
 O.ledger.add(T.three, { who: "Three new bridges", note: "18 May", stamp: false });
 O.ledger.final(T.oneday2, { lines: ["Stopped", "one day"], color: "#A8261B" });
-O.plaque.hide(T.D - 1.2); O.timeline.hide(T.D - 1.2); O.ledger.hide(T.D - 1.0);
-tl.to("#fade", { opacity: 1, duration: 0.9, ease: "power1.in" }, T.D - 1.0);
+// v5 (critic B 17): ending = overlays out first (65.95 - 2.1), camera already settled, then the world fades to black over the last second
+O.plaque.hide(T.D - 2.1); O.timeline.hide(T.D - 2.1); O.ledger.hide(T.D - 2.0);
+tl.to("#fade", { opacity: 1, duration: 1.0, ease: "power1.inOut" }, T.D - 1.05);
 tl.fromTo("#fade", { opacity: 1 }, { opacity: 0, duration: 0.8, ease: "power1.out", immediateRender: false }, 0);
 
 // ---------------- per-frame draw (pure function of t) ----------------
 const v2 = (a, b) => [b.x - a.x, b.y - a.y];
+const endK = () => 1;   // troops, arrows and banners belong to the world: they leave with it (the #fade), after the HUD
 function drawTroops(t, close) {
-  for (const u of UNITS) {
-    const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
+  // v5: all boxes of all units for this frame, then a deterministic push-apart (critic B 16: boxes of different units never overlap),
+  // then either the in-scene boxes (default) or the old DOM boxes (?troops=dom)
+  const L = [];
+  for (const u of T3 ? [] : UNITS) {
+    const on = close && t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) * endK(t) : 0;
     if (op <= 0.001) { for (const e of u.els) e.style.opacity = 0; continue; }
     const [cx, cy] = posAt(u.keys, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;   // facing + front axis
     const span = u.n * u.bw + (u.n - 1) * u.gap;
     for (let i = 0; i < u.n; i++) {
       const off = -span / 2 + u.bw / 2 + i * (u.bw + u.gap), wob = u.wob * 0.05 * Math.sin(t * 1.3 + i * 1.7 + cx);
-      const bx = cx + px * off + fx * wob, by = cy + py * off + fy * wob;
-      const c = world.projectMap(bx, by, 0.02), a = world.projectMap(bx + px * u.bw / 2, by + py * u.bw / 2, 0.02), d = world.projectMap(bx + fx * u.bd / 2, by + fy * u.bd / 2, 0.02);
-      const ex = v2(c, a), ey = v2(c, d), e = u.els[i];
-      e.style.transform = `matrix(${(ex[0] / 50).toFixed(4)},${(ex[1] / 50).toFixed(4)},${(ey[0] / 20).toFixed(4)},${(ey[1] / 20).toFixed(4)},${(c.x - 50).toFixed(1)},${(c.y - 20).toFixed(1)})`;
       const capd = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
-      e.style.opacity = (op * (1 - 0.25 * capd)).toFixed(3);
-      e.style.backgroundColor = capd > 0 ? `rgb(${Math.round(lerp(190, 138, capd))},${Math.round(lerp(58, 133, capd))},${Math.round(lerp(42, 122, capd))})` : "";
+      let x = cx + px * off + fx * wob, y = cy + py * off + fy * wob, bfx = fx, bfy = fy, esc = false, eop = 1;
+      if (u.esc && i >= u.escFrom && t > u.esc.t0) {   // v8: peel off the line slot into the road column, nose to tail, then march west
+        const si = u.esc.s(t) - (i - u.escFrom) * (u.bw + u.gap) * 1.05;
+        if (si > 0) { const [ex, ey, hx, hy] = escAt(u.esc, si), k = sstep(0, 0.9, si); x = lerp(x, ex, k); y = lerp(y, ey, k);
+          const cfx = lerp(fx, hy, k), cfy = lerp(fy, -hx, k), l = Math.hypot(cfx, cfy) || 1; bfx = cfx / l; bfy = cfy / l; esc = k > 0.5;
+          eop = sstep(-30, 170, world.projectMap(x, y, 0.02).x); }   // fades over the west frame edge (1.5-2 s at march pace)
+      }
+      L.push({ u, i, x, y, fx: bfx, fy: bfy, px: -bfy, py: bfx, bw: u.bw, bd: u.bd, op: op * eop * (1 - 0.25 * capd), capd, esc });
     }
   }
-  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1, op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
-    b.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const [x, y] = posAt(b.keys, t), s = world.projectMap(x, y, 0.02); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`; }
-  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? 1 - sstep(A.t1 - 0.6, A.t1, t) : 0;
+  const sup = (b, nx, ny) => b.bw / 2 * Math.abs(nx * b.px + ny * b.py) + b.bd / 2 * Math.abs(nx * b.fx + ny * b.fy);
+  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || A.esc || B.esc) continue;   // v8: the column on the road is never shoved off it
+    let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05;
+    if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
+  if (BX) BX.set(L.map((b) => ({ x: b.x, y: b.y, fx: b.fx, fy: b.fy, bw: b.bw, bd: b.bd, art: b.u.type === "art", op: b.op, h: hC(b.x, b.y),
+    color: b.capd > 0 ? `rgb(${Math.round(lerp(b.u.side === "u" ? 44 : 190, 138, b.capd))},${Math.round(lerp(b.u.side === "u" ? 87 : 58, 133, b.capd))},${Math.round(lerp(b.u.side === "u" ? 183 : 42, 122, b.capd))})` : b.u.side === "u" ? "#2c57b7" : "#be3a2a" })));
+  else for (const b of L) { const e = b.u.els[b.i]; if (!e) continue;
+    const c = world.projectMap(b.x, b.y, 0.02), a = world.projectMap(b.x + b.px * b.bw / 2, b.y + b.py * b.bw / 2, 0.02), d = world.projectMap(b.x + b.fx * b.bd / 2, b.y + b.fy * b.bd / 2, 0.02);
+    const ex = v2(c, a), ey = v2(c, d);
+    e.style.transform = `matrix(${(ex[0] / 50).toFixed(4)},${(ex[1] / 50).toFixed(4)},${(ey[0] / 20).toFixed(4)},${(ey[1] / 20).toFixed(4)},${(c.x - 50).toFixed(1)},${(c.y - 20).toFixed(1)})`;
+    e.style.opacity = b.op.toFixed(3);
+    e.style.backgroundColor = b.capd > 0 ? `rgb(${Math.round(lerp(190, 138, b.capd))},${Math.round(lerp(58, 133, b.capd))},${Math.round(lerp(42, 122, b.capd))})` : ""; }
+  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1; let op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) * endK(t) : 0;
+    if (op <= 0) { b.e.style.opacity = 0; continue; }
+    const [x, y] = b.esc && t > b.esc.t0 ? escAt(b.esc, b.esc.s(t)) : posAt(b.keys, t), s = world.projectMap(x, y, 0.02);
+    if (b.esc) op *= sstep(-20, 180, s.x);   // leaves over the west frame edge, never pops out mid-field
+    b.e.style.opacity = op.toFixed(3); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) scale(0.6667)`; }
+  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? (1 - sstep(A.t1 - 0.6, A.t1, t)) * endK(t) : 0; const ke = 1 - (1 - k) ** 2;
+    if (A.a3) { A.g.style.opacity = 0; AR3.draw(A.a3, ke, op, ARW); continue; }
     A.g.style.opacity = op.toFixed(3); if (op <= 0) continue;
-    const P = A.pts.map((p) => world.projectMap(p[0], p[1], 0.03)); const ke = 1 - (1 - k) ** 2;
+    const P = A.pts.map((p) => world.projectMap(p[0], p[1], 0.03));
     // cut the screen polyline at fraction ke of its length
     const seg = []; let L = 0; for (let i = 1; i < P.length; i++) { const d = Math.hypot(P[i].x - P[i - 1].x, P[i].y - P[i - 1].y); seg.push(d); L += d; }
     let rem = ke * L; const out = [[P[0].x, P[0].y]]; let tip = out[0], dir = [1, 0];
@@ -323,29 +527,68 @@ function drawTroops(t, close) {
 }
 function drawPins(t, region) {
   for (const p of PINS) { const on = region === p.region && t >= p.t0 && t < p.t1, op = on ? Math.min(sstep(p.t0, p.t0 + 0.6, t), 1 - sstep(p.t1 - 0.6, p.t1, t)) : 0;
-    p.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`; }
+    if (op <= 0) { p.e.style.opacity = "0"; continue; } const s = world.projectMap(p.x, p.y, 0.05); p.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) translate(-50%,-50%)`;
+    // v6 (critic A v5 #1, #9): a name under the 3D title fades out; a name under a cloud is dimmed by the cloud's alpha there (his "Saint-Prix")
+    let k = 1; if (TBOX.a > 0 && region === "wide") { const ins = Math.min(s.x - TBOX.x0 + 40, TBOX.x1 + 40 - s.x, s.y - TBOX.y0 + 24, TBOX.y1 + 24 - s.y); k *= 1 - clamp(TBOX.a * 4) * clamp(ins / 20); }   // v7: hidden as soon as the title starts
+    if (t < 22 || region === "wide") k *= 1 - 0.9 * (region === "wide" ? fxW : fxC).cloudAlphaAt(s.x, s.y);
+    p.e.style.opacity = (op * k).toFixed(3); }
 }
-const WO = document.getElementById("whiteout"), WW = document.getElementById("wwarm"), WS = document.getElementById("wisps"), FOGW = new THREE.Color(0.80, 0.79, 0.74);
-const whiteAt = (t) => t < DV.wIn ? 0.6 * sstep(DV.wIn - 0.35, DV.wIn, t) : t < DV.wFull ? lerp(0.6, 1, sstep(DV.wIn, DV.wFull, t)) : t < DV.emerge ? 1   // textured cloud seen through a milky veil, then flat
-  : t < DV.clear ? lerp(1, 0.14, 1 - (1 - clamp((t - DV.emerge) / (DV.clear - DV.emerge))) ** 2) : lerp(0.14, 0, sstep(DV.clear, DV.haze, t));
+// v6 grade (critics A 2 / B 1, v5 overshot: chroma 35-41, b-g -24, crushed blacks): on the 3D image only, per region/time:
+// saturation (CSS) + per-channel tables (lifted toe, half S-curve, a little blue) + a screen-space cool veil toward (150,160,165)
+// that grows with depth (top of frame = far ground). Values are blended by the camera's night factor and region; the dive cloud
+// (deck -> haze) keeps the neutral look tuned for the white-out. ?grade=0 = raw.
+const GP = {   // sat, toe (0-255 lift at black), S strength, blue/green lift (table offsets at mid), veil rgb, veil alpha top/bottom
+  close: { sat: 0.98, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04, ct: 1.0 },   // v7: ct = contrast about mid-grey; kept 1.0 (with terrain v7 the close SD is already ~10 % under his)
+  wide: { sat: 0.95, toe: 14, S: 0.1, bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },   // v7: no veil on the wide map (it greyed the clouds, critic A); toe up instead
+  night: { sat: 0.95, toe: 2, S: 0.0, bl: 5, gl: 2, veil: [40, 60, 82], vt: 0.04, vb: 0.0, ct: 1.0 },
+  off: { sat: 1.05, toe: 0, S: 0, bl: 0, gl: 0, veil: [150, 160, 165], vt: 0, vb: 0, ct: 1.0 } };
+const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")], GL = document.getElementById("gl"), VEIL = document.getElementById("veil");
+const GRADE_ON = new URLSearchParams(location.search).get("grade") !== "0";   // ?grade=0: raw image (for measuring)
+let gradeKey = "";
+const gradeAt = (t) => {
+  const cs = world.cameraAt(t), n = cs.night || 0, wide = cs.region === "wide" ? 1 : 0;
+  const k = GRADE_ON ? 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)) : 0;
+  const mix = (f) => { const day = lerp(GP.close[f], GP.wide[f], wide); return lerp(GP.off[f], lerp(day, GP.night[f], n), k); };
+  const mixv = (i) => { const day = lerp(GP.close.veil[i], GP.wide.veil[i], wide); return lerp(day, GP.night.veil[i], n); };
+  const P = { sat: mix("sat"), toe: mix("toe"), S: mix("S"), bl: mix("bl"), gl: mix("gl"), vt: mix("vt"), vb: mix("vb"), ct: mix("ct") };
+  const key = Object.values(P).map((v) => v.toFixed(3)).join(",") + n.toFixed(2) + wide;
+  if (key === gradeKey) return; gradeKey = key;
+  GL.style.filter = `saturate(${P.sat.toFixed(3)}) url(#gmgrade)`;
+  const curve = (x, off) => { let y = x + (y0(x) - x) * P.S * 2; y = 0.5 + (y - 0.5) * P.ct; y += (P.toe / 255) * (1 - x) ** 3 + (off / 255) * 4 * x * (1 - x); return clamp(y).toFixed(4); };
+  const y0 = (x) => x * x * (3 - 2 * x);
+  [0, P.gl, P.bl].forEach((off, c) => GF[c].setAttribute("tableValues", Array.from({ length: 33 }, (_, i) => curve(i / 32, off)).join(" ")));
+  const vc = [0, 1, 2].map((i) => Math.round(mixv(i))).join(",");
+  VEIL.style.background = `linear-gradient(180deg, rgba(${vc},${P.vt.toFixed(3)}) 0%, rgba(${vc},${((P.vt + P.vb) / 2).toFixed(3)}) 45%, rgba(${vc},${P.vb.toFixed(3)}) 100%)`; };
+const WC = document.getElementById("wcool"), WO = document.getElementById("whiteout"), WW = document.getElementById("wwarm"), WS = document.getElementById("wisps"), FOGW = new THREE.Color(0.80, 0.79, 0.74);
+// v4: the cool phase is the real cloud interior (the camera is inside the volumetric deck 15.6-16.3) under a thin cool veil;
+// the flat warm cream covers the cut (16.3-17.2), then the battlefield comes out through the dissolving close deck.
+// v5 (critic A 8, 9; his 636.7-638.8 measured): no veil while the camera is still falling through the deck tops (textured, moving);
+// a cool veil only as it sinks inside (16.05-16.4), the close map ghosts through ~12 % right after the swap (his 637.5 dip), warm cream with a
+// smooth radial falloff (centre ~(218,216,203) -> edge midpoints ~(194,193,179), his 637.9-638.2) 16.6-17.25, then the battlefield snaps in (0.35 s)
+// v7 (critic A v6 #1-3): veil <= 0.55 while the lobe carpet still streams past (to 16.3), opaque 16.35 -> the snap, the region switch (16.4) hidden under it;
+// his cut 'dip' = a flat -8 on the veil for ~0.1 s (no map ghost: the close scene never shows inside the white)
+const whiteAt = (t) => t < 16.3 ? 0.55 * sstep(DV.wIn, 16.3, t) : t < 16.35 ? lerp(0.55, 1, sstep(16.3, 16.35, t)) : t < DV.emerge ? 1
+  : t < DV.clear ? lerp(1, 0.1, 1 - (1 - clamp((t - DV.emerge) / (DV.clear - DV.emerge))) ** 2) : lerp(0.1, 0, sstep(DV.clear, DV.haze, t));
 // dark wisps (cloud undersides) rushing outward past the lens during the warm phase, as in his dives
 const WSP = [[0.30, 0.42, 0.0, 1.0], [0.70, 0.55, 0.12, 0.8], [0.52, 0.30, 0.25, 0.9], [0.20, 0.70, 0.36, 0.7], [0.80, 0.25, 0.45, 0.8], [0.45, 0.66, 0.55, 1.0]].map((w) => {
   const e = document.createElement("div"); e.className = "wsp"; WS.appendChild(e); return { e, x: w[0], y: w[1], d: w[2], k: w[3] }; });
 const wispsAt = (t) => { for (const w of WSP) { const u = (t - (DV.warm + 0.1 + w.d)) / 0.75, on = u > 0 && u < 1;
-  w.e.style.opacity = on ? (Math.sin(Math.PI * u) * 0.36 * w.k).toFixed(3) : "0"; if (!on) continue;
+  w.e.style.opacity = "0";   // v4: no fake wisps (the real close deck tears past instead) if (!on) continue;
   const sc = 0.5 + 2.2 * u, cx = 640 + (w.x * 1280 - 640) * (1 + 1.6 * u), cy = 360 + (w.y * 720 - 360) * (1 + 1.6 * u);
   w.e.style.transform = `translate(${(cx - 300).toFixed(1)}px,${(cy - 150).toFixed(1)}px) scale(${sc.toFixed(3)},${(sc * 0.8).toFixed(3)})`; } };
 window.__draw = (t) => {
-  placeBoats(t); titleAt(t);
-  WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.25, t).toFixed(3); wispsAt(t);
-  for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }
+  placeBoats(t); titleAt(t); gradeAt(t); if (T3) T3.update(t);
+  O.film.set({ grain: lerp(0.04, 0.03, sstep(DV.full - 0.3, DV.wIn, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
+  O.film.set({ vignette: (1 - 0.95 * sstep(DV.full - 0.4, DV.wIn, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // no dark oval inside the cloud (the cream has its own warm falloff)
+  WO.style.opacity = whiteAt(t).toFixed(3); { const dp = 8 * sstep(DV.SW - 0.06, DV.SW, t) * (1 - sstep(DV.SW + 0.06, DV.SW + 0.14, t)); WC.style.background = `rgb(${208 - dp},${211 - dp},${204 - dp})`; } WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.15, t).toFixed(3); wispsAt(t);
   world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0);
     if (w.region === "close" && tt > SW - 0.1 && tt < DV.haze + 0.1) {   // emergence: the battlefield comes out of fog (far ground whiter than near)
-      const k = sstep(DV.emerge - 0.1, DV.haze, tt), f = R.scene.fog, d = w.cam.dist;
-      f.color.lerp(FOGW, 1 - k); f.near = d * lerp(0.15, 1.05, k); f.far = d * lerp(1.7, 3.0, k); w.renderer.setClearColor(f.color); }
+      const k = sstep(DV.emerge - 0.05, DV.clear + 0.1, tt), f = R.scene.fog, d = w.cam.dist;
+      f.color.lerp(FOGW, 1 - k); f.near = lerp(d * 0.15, f.near, k); f.far = lerp(d * 1.7, f.far, k); w.renderer.setClearColor(f.color); }
+    drawTroops(tt, w.region === "close");   // v5: boxes / arrows are in the scene now -> set them BEFORE this frame renders (they lagged one frame)
     fx.update(tt, w.camera); } });
   const close = world.region === "close";
-  drawTroops(t, close); drawPins(t, world.region);
+  drawPins(t, world.region);
 };
 window.__draw(tl.time());
 window.__gm3d = { world, fxW, fxC, O };
