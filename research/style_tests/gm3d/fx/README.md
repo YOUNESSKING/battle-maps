@@ -82,7 +82,7 @@ Per frame, one page, GPU work forced to finish (machine shared with other agents
 | Cloud dive (raymarch at 0.36 res, 36 steps) | ~1,300-1,600 | only while clouds are in view |
 | Night (4,300 sprites incl. 1,600 snowflakes, 40 campfires) | ~1,200-1,400 | |
 
-The 10 s demo (300 frames, `--workers 2`) rendered in 16 min 49 s, but with load average ~15 from
+The 10 s demo (300 frames, `--workers 2`) rendered in 16-17 min (16:49 and 17:09 for two runs), but with load average ~15 from
 other agents' renders on the same 4 cores (≈4x contention). Unloaded estimate for a 60 s 1080p clip
 of mostly battle shots: 1,800 frames x ~0.7 s / ~1.5 effective workers ≈ 15-25 min; keep cloud
 dives short (2-3 s) and snow/campfire counts moderate. Biggest levers: sprite count and size
