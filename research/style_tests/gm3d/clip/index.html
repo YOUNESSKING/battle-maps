@@ -84,14 +84,14 @@ const keys = [
   { t: DV.deck, region: "wide", at: [1518, 706], dist: 122, tilt: 26, yaw: 1, fov: 30, ease: "in" },
   { t: SW, region: "close", at: [1517.6, 705], dist: 75, tilt: 24, yaw: 1, fov: 31, ease: "lin" },
   { t: DV.land, region: "close", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32, ease: "out" },
-  { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 35, tilt: 40, yaw: -5, fov: 32 },
-  { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 29, tilt: 42, yaw: -10, fov: 32 },
-  { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 24, tilt: 44, yaw: -14, fov: 32 },
-  { t: T.p4 - 0.6, region: "close", at: [1514.6, 705.3], dist: 26.5, tilt: 43, yaw: -12, fov: 32 },
+  { t: T.p3 - 0.5, region: "close", at: [1520.2, 705.4], dist: 36, tilt: 50, yaw: -5, fov: 30 },
+  { t: T.taken + 0.4, region: "close", at: [1520.0, 706.2], dist: 30, tilt: 52, yaw: -10, fov: 30 },
+  { t: T.bburn + 2.2, region: "close", at: [1515.0, 705.4], dist: 25, tilt: 54, yaw: -14, fov: 30 },
+  { t: T.p4 - 0.6, region: "close", at: [1514.6, 705.3], dist: 27.5, tilt: 53, yaw: -12, fov: 30 },
   { t: T.p4 - 0.6, region: "wide", at: [1398, 688], dist: 300, tilt: 44, yaw: 0, fov: 30, night: 1, ease: "cut" },
   { t: T.p5 - 0.6, region: "wide", at: [1378, 694], dist: 230, tilt: 46, yaw: -4, fov: 30, night: 1 },
-  { t: T.p5 - 0.6, region: "close", at: [1514.0, 705.0], dist: 33, tilt: 40, yaw: -4, fov: 32, ease: "cut" },
-  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 29, tilt: 42, yaw: 4, fov: 32 },
+  { t: T.p5 - 0.6, region: "close", at: [1514.0, 705.0], dist: 34, tilt: 50, yaw: -4, fov: 30, ease: "cut" },
+  { t: T.D, region: "close", at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30 },
 ];
 const world = initWorld(document.getElementById("gl"), { base: "assets/", keys, width: W, height: H, antialias: false, shadowSize: 1536, bridgeBurnT: EV.bridgeFire + 3.2 });
 await world.ready;
