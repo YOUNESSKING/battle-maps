@@ -45,7 +45,7 @@ Owner goal: merge "his look and narration for everything, but OUR troops (Style 
 - **Pace: ~148-150 wpm** (hook: 94 words in ~38 s; the transcript runs ~38-42 words per 15.5 s caption block across the video, i.e. ~2,600-2,700 words in 17:49). Calm, even, no hype. Narration is AI (credited "AI narration." in the Six Days description).
 - **Sentence length:** short, average ~11-13 words; many 3-7-word sentences and fragments ("A fever, a dry cough, a burning thirst." / "None came." / "It never came."). Long sentences only for lists of places/units.
 - **Point of view:** third person, past tense, omniscient but always sourced; never "you", no rhetorical questions to the viewer, no superlatives except one sourced fact ("the bloodiest day of the Napoleonic Wars"). Understatement carries the drama ("He got in, and was killed inside.").
-- **How sources are flagged (the signature device):** the eyewitness is named INSIDE the sentence, ~20 times: "Ségur tells us", "Ségur says" (x8), "according to Ségur, who was on the emperor's staff", "as Rapp himself remembered it", "Clausewitz, who was there that day", "Clausewitz wrote/remembered", "a French officer remembered", "A French staff officer noticed", "Russian accounts say", "it is said", "Napoleon is said to have cried". Honest hedges: "around 40,000, perhaps more", "an hour, perhaps two". Myth correction inline: "There is the sun of Austerlitz, Napoleon is said to have cried. But it rose behind the Russians and shone in French eyes." The description adds the global caveat (memoirs written after the event).
+- **How sources are flagged (the signature device):** the eyewitness is named INSIDE the sentence, ~20 times: "Ségur tells us", "Ségur says" (x6), "Ségur records", "Ségur wrote", "according to Ségur, who was on the emperor's staff", "as Rapp himself remembered it", "Clausewitz, who was there that day", "Clausewitz wrote/remembered", "a French officer remembered", "A French staff officer noticed", "Russian accounts say", "it is said", "Napoleon is said to have cried". Honest hedges: "around 40,000, perhaps more", "an hour, perhaps two". Myth correction inline: "There is the sun of Austerlitz, Napoleon is said to have cried. But it rose behind the Russians and shone in French eyes." The description adds the global caveat (memoirs written after the event).
 
 ### Recurring devices
 1. Refrain spine (above) with "Again..., Again..." doubling.
@@ -57,7 +57,7 @@ Owner goal: merge "his look and narration for everything, but OUR troops (Style 
 7. Callbacks: the "sun of Austerlitz" at dawn returns at the end (the dressing case of "Austerlitz, Jena, and the Moskova").
 8. **Ending = consequence chain + series cliffhanger:** Moscow abandoned, burns, Kremlin blown up -> callback -> "He had saved his guard. He would need it on the road home in November, in the snow, on the banks of a river called the Berezina." The last words name the channel's previous (and second-best) video: a back-catalogue funnel.
 
-### 18 representative lines (verbatim from the captions; caption timestamps)
+### 20 representative lines (verbatim from the auto-captions; timestamp = start of the caption block, or interpolated inside it when the line starts mid-block; "..." = cut; caption misspellings like "Fleshers"/"Kalozha" left out of the quotes)
 1. [0:00] "Nearly 1,500 miles from Paris, at the gates of Moscow, Napoleon had one card left, almost 20,000 men of his Imperial guard."
 2. [0:09] "All day his marshals begged him to play it. All day he refused."
 3. [0:24] "When night fell, the Russians were still there. In St. Petersburg, they celebrated a victory."
@@ -170,46 +170,35 @@ Owner goal: merge "his look and narration for everything, but OUR troops (Style 
 
 ---
 
-## (e) MERGE SPEC (proposal; owner decides the flagged items)
+## (e) MERGE SPEC (EXPERIMENT, owner 2026-11-15)
+Owner: this merge is an EXPERIMENT, free of our locked rules (STYLE_LOCK is NOT applied and NOT checked here). **Take EVERYTHING from Grand Maneuver; keep only OUR TROOPS.** Items marked [AI] must be confirmed against the real video before building (see the trust note at the top).
 
-### KEEP OURS (non-negotiable or locked)
-1. **Troops:** Style W unit boxes, red/blue, echelon marks, type symbols (infantry X, cavalry slash, engineers gear, artillery kit gun box, supply wheel), no flags on units, ~12 per side, solid thin arrows with fading trails, battles as action, ink crosses, fast fade for captured units (2d.4-5, 2f.2-3). For Napoleonic videos the side colours stay ours (French blue / enemy red) unless the owner wants their green Russians.
-2. **Sound:** the locked kit, levels, music order and SOUND LOCK (3, 3a, 4, 5); booms only on visible impacts (1c.4). Do NOT take their continuous ambience, braams or paper rustles (2c.5 forbids synthesized ref sounds).
-3. **Voice:** Kokoro am_michael; but adopt their pace and sentence shape (below).
-4. **Clean-screen rules 1c** (nothing before it is said, one big card at a time, clean first frame), the date scroll that never disappears, the hook rule 1a, the format (Top 3 moves).
-5. **Real portraits only** (section 7: "Never a fake likeness of a real person"): no AI-painted faces on cards or thumbnails.
-6. **Territory hatching** (2d.3) instead of their tint fills.
+### KEEP OURS (only this)
+- **Troops = Style W unit boxes with type symbols:** red/blue boxes with echelon marks (II / X / XX / XXX), type symbol inside (infantry X, cavalry single slash, engineers gear, artillery = the kit gun box, supply wheel), several boxes per army in shallow arcs, name tag on the box. Their movement (smooth slides over the ground) and their arrows are taken from GM (below); only the box itself is ours.
 
-### TAKE THEIRS (fits our rules as-is)
-1. **Narration devices (words only, fit 1d):**
-   - a refrain spine per video (one request/refusal or one question repeated 3-6 times with "Again..., Again...", paid off in the last line) = a stronger form of 1d.4 set-up/pay-off;
-   - **sourced eyewitness inside the sentence** ("Ségur says", "as Rapp himself remembered it", "Clausewitz, who was there that day", "it is said") + inline myth check ("But it rose behind the Russians...") = extends 1d.8; log each in FACT_NOTES;
-   - a human micro-story every ~45-60 s (2-4 sentences ending on one concrete image);
-   - time-marker paragraph openers ("At first light", "By late morning", "Around midday", "Night fell") inside each move = 1d.5 day-by-day clock at hour scale;
-   - numbers made physical ("more than one man every second") and attrition ladders;
-   - paired verdicts (both sides' claims, then a neutral judge);
-   - **last line names the next video's place** (series funnel), in addition to our per-move cliffhangers;
-   - sentence shape: average ~12 words, many 3-7-word sentences, no "you", no hype words, ~150 wpm.
-2. **Time of day on our date scroll:** add an hour line (and an optional small pocket-watch glyph) to the parchment scroll during battle moves ("6:15 IN THE MORNING", "MIDDAY"), shown on the spoken time word (1c.1). The scroll itself stays.
-3. **Labels:** their cream tracked serif small caps for region/battle titles; our carved arced town names stay (2e.2).
-4. **Earthworks as story ground** (redoubts, flèches as drawn mounds/chevrons) = 2d.2 story ground; painted, not 3D.
-5. **Effects that we already allow:** powder smoke (2d.9), burning towns, cloud shadows, dust, morning mist / rain only when FACT_NOTES confirm (2f.5-6).
-6. **Packaging tests:** one Test & Compare thumbnail in their template (giant 1-3 word cream caps + spaced serif "PLACE YEAR" + our map with our boxes and arrows, no face) against our face-pop thumbnail; a paradox title as option B ("The Battle X Couldn't Afford to Win"-type). Chapter titles with a quote; a NOTE block in the description on memoir sources (no links, as ours).
-7. Camera: slow continuous drift between beats (flat 2D, our camera kit).
-
-### CONFLICTS THE OWNER MUST DECIDE
-1. **3D tilted terrain + cloud-dive scale changes** (their core look) vs section 7 REJECTED "Globe / cloud-dive openings and 3D tilted maps" (owner 2026-10-06) and 2d flat map. Taking "his look for everything" means reversing this rule.
-2. **Basemap palette:** their realistic ochre/olive land-cover with field patchwork and 3D forests vs Style W one green (2d.1) + "NO farms/fields" (2f.7). Option: keep one green, borrow only their warmer ochre accents and hillshade; or a test of their palette (needs approval, "test before applying").
-3. **Commander cards:** their gold round medallion + leader line vs our banners on poles (2f.1). And their AI-painted portraits are forbidden for us (section 7); medallion with a real sepia photo is possible.
-4. **Quote cards with source attribution on screen** vs 2d.8 "no source text on cards". Their device ("as Ségur tells it" under the quote) is the visual half of their credibility; owner to allow a small attribution line or keep it spoken only.
-5. **Bottom timeline bar + running casualty counter** [AI, doubtful] vs clean screen 2d.8 / 1c.3. Recommendation: no; put the hour on our date scroll instead.
-6. **Hook structure:** their flash-forward summary (whole ending in 38 s, hero named in line 1, title as a paradox) + ~5 min of background vs 1a (stakes -> zoom -> number, general enters at ~0:45-1:00 with name slam, background <= 20 s, move 1 by 2:00) and 1c.5 (no hero name before the name slam). Recommendation: keep 1a; borrow the paradox promise line and the "ending first" beat inside our stakes line.
-7. **Archive style:** their round painting insets on the map vs our mandatory Netflix projector-frame archive (2c). Could add insets as an extra, but 2c says Netflix style is "complete and mandatory".
-8. **Pacing:** their ~15-19 s shots and calm cadence vs our "something new every 2-4 s" hook rule (1a). Keep ours in the hook; their calmer cadence could be tested in the body only.
-9. **Their music/ambience** vs our locked music + SOUND LOCK: keep ours (owner approval needed for any change).
-10. **Dashed strategic routes** [AI] vs "NO dashed arrows anywhere" (2d.5): keep ours.
+### TAKE FROM GRAND MANEUVER (everything else)
+1. **Map look [AI]:** two modes. Wide = flat 2D political map, dark slate sea (~#1E2C33), pastel country fills (Russia sage ~#819B86, French sphere blue-grey ~#95A8AE, Austria ochre ~#C29B63, Warsaw salmon ~#9E605D), dot/star towns, dashed cream route lines. Battle = 3D terrain with hillshade, realistic land cover (ochre/tan fields ~#B39967 with furrowed patchwork, olive pasture ~#7A8E6A), dense dark-green 3D forest canopies (~#1F3A27), pale slate-blue rivers (~#6A8D9D) with soft banks, thin tan roads (~#A89679), small 3D villages with brown roofs; earthworks (redoubts, flèches) modelled on the ground. Data stack (REAL, from their credits): OpenStreetMap, ESA WorldCover, GeoNames, AWS Terrain Tiles (+ period maps where available).
+2. **Labels [AI; style REAL on thumbnails]:** serif only (Baskerville/Caslon-like), cream ~#F4EEDD or charcoal, tracked small caps ("B O R O D I N O"), soft drop shadow, some in small parchment tags.
+3. **Camera [AI]:** 30-45 deg perspective tilt on battle maps, slow continuous drift (push-ins, lateral pans, micro-rotations), pull-outs to theatre scale; scale changes between 2D wide and 3D battle via a cloud-layer dive; hard cuts on music beats/pauses; 0.5-1 s dissolves for day/night.
+4. **Arrows and effects [AI]:** tapered extruded 3D arrows hugging the terrain (blue French, green Russian; for our videos: the two side colours of our boxes); dashed strategic routes; semi-transparent tint corridors on wide maps; volumetric white/grey powder smoke on gun lines and musketry; ember fires with dark smoke columns on burning towns; campfire point lights at night; drifting dust, cloud shadows; mist at dawn, rain where it happened. Losses: boxes shudder/flash/shrink or slide back under smoke.
+5. **Cards [AI]:** generals as round/oval portrait medallions in a bevelled gold frame, cream name + role plate, thin leader line to their place on the map; quote banners bottom centre on cream parchment, quote + small-caps attribution ("Napoleon, as Ségur tells it") [original-language line: doubtful]; big serif number cards scaling in; side-by-side loss counters; title card alone at the end of the cold open; end card "NEXT: <battle>". Portraits: GM uses AI-painted portraits and discloses it in the description; for our test use real period portraits in the same medallion unless the owner says otherwise.
+6. **Date/time display [AI]:** top-left parchment box with an analogue pocket-watch face + serif time ("6:15 in the morning", "12:00 MIDDAY") + a one-line condition note ("Morning mist lifting"); bottom timeline 6 AM -> night with a red playhead and running casualty counter [doubtful, confirm first].
+7. **Archive and grade [AI]:** round/pill painting insets on the map, a period newspaper clipping, a period town plan; paper/canvas grain over maps and cards, heavy edge vignette, warm desaturated day grade, cool blue night grade with warm point lights.
+8. **Sound feel [AI]:** brooding orchestral bed (low strings, cello drones, brass, martial snare) that swells at the approach and the first shots; continuous low battle ambience (distant cannon rumble, musketry crackle, wind, fire crackle); sub-boom/braam on card reveals; paper rustle on cards and archive.
+9. **Narration (REAL, transcript):**
+   - Cold open = the whole outcome first in ~40 s (the stake + number in line 1, hero named in line 1, 6-8 one-sentence beats, the paradox ending), then the title spoken as a paradox ("This is the story of X, the battle Y couldn't afford to win"), then hard reset to chronology.
+   - Full chronology: background (~1:50) -> the ground and the forces (~1:30) -> the eve (plans, omens, one set-up line) -> the battle hour by hour -> night and the number -> both sides' verdicts -> consequence -> callback -> last line names the next battle.
+   - One refrain spine repeated 4-6 times ("Again..., Again...") and paid off in the last line.
+   - Sources named inside the sentence ("X says", "as Y himself remembered it", "Z, who was there that day", "it is said"), honest hedges ("perhaps more"), inline myth check ("But it rose behind the Russians...").
+   - A human micro-story every ~45-60 s (2-4 sentences, ending on one concrete image); dialogue with a punchline reply.
+   - Time markers open the paragraphs ("At first light", "By late morning", "Around midday", "Night fell"); space transitions ("Far to the south").
+   - Numbers made physical ("more than one man every second"), attrition ladders, paired verdicts then a neutral judge.
+   - Calm voice ~150 wpm, sentences ~12 words with many 3-7-word fragments, third person past tense, never "you", no hype words.
+10. **Pacing [AI]:** shots ~15-19 s on average (cold open 3-8 s shots), changes inside a shot from cards, arrows and camera drift; calm cadence, swells only at the big beats.
+11. **Packaging (REAL):** title = paradox/curiosity + "| Battle Year"; thumbnail template = one giant cream condensed-sans word (1-3 words, the outcome, never the title's words) + spaced serif "PLACE YEAR" line + dark navy simplified map + unit boxes (ours) + wax-seal markers + 1-4 bold arrows, face optional (the two best have none); description = hook paragraph with a quote, CHAPTERS with quotes in the titles (~1:20 each), "Next:" teaser, one-line channel mission, NOTE block on sources, licence credits.
 
 ### Suggested next step
-A 1-minute test clip (rule "test before applying") of one Borodino-like beat in OUR flat Style W map with: the hour on the date scroll, a sourced quote card (with and without the attribution line), cream tracked serif titles, a painted redoubt/flèches, a refrain line in the script; plus a thumbnail sheet with one GM-template thumb vs our face-pop thumb. Owner watches the real GM video (0:00-0:45, 6:00-8:30) first to confirm the [AI] parts.
+1. Owner (or the two critic agents) checks the [AI] items against the real video, especially: 3D tilt angle, cloud dive, medallion design, quote card layout (original-language line?), the clock box, the bottom timeline/casualty counter, the "REFUSED" list card, the music/ambience.
+2. Then a 1-minute test clip of one Borodino-like beat in the GM look with our boxes, plus one thumbnail in the GM template.
 
 vidIQ jobs: watch 0-6 min `job_ccd5341c-0180-4a97-a32f-b7317f3f3858`, 6-17:49 `job_eee04633-ae37-4279-956b-d0e9dc05d8e4`. Credits used: 75 (balance 320 -> 245).
