@@ -285,7 +285,9 @@ export function createArrows3D(o) {
     m.frustumCulled = false; m.renderOrder = ro; scene.add(m); return m; };
   const arrows = [];
   // GM's arrows ride OVER the battle smoke (684 s) but under the clouds (10.5) and in the fog: renderOrder 10.2 / 10.3
-  function add(pts, color) { const A = { pts, out: mk(10.2, 0x0e0c08, 0.6), body: mk(10.3, color, 1) }; arrows.push(A); return A; }
+  // v7 (critic B 11): Style W arrow + a soft pale outer glow and a 2 px lighter rim inside the ink edge (GM's arrows have a light rim)
+  function add(pts, color) { const rim = new THREE.Color(color).lerp(new THREE.Color(0xffffff), 0.5);
+    const A = { pts, glow: mk(10.15, 0xf2f4f0, 0.16), out: mk(10.2, 0x0e0c08, 0.45), rim: mk(10.25, rim, 1), body: mk(10.3, color, 1) }; arrows.push(A); return A; }
   // heights: the ground under the line smoothed over ~1.5 units (raw heights made the flat ribbon wiggle on screen over every bump and the river bed)
   const smoothH = (P) => { const raw = P.map((p) => heightAt(p[0], p[1])), K = 9; return raw.map((_, i) => { let s = 0, c = 0; for (let j = Math.max(0, i - K); j <= Math.min(raw.length - 1, i + K); j++) { s += Math.max(raw[j], raw[i] - 0.02); c++; } return s / c; }); };
   function fill(mesh, P, w, hl, hw, ox, HS) {   // P: resampled centre line [[x,y]], ribbon half width w/2 + ox, head at the end
@@ -299,13 +301,13 @@ export function createArrows3D(o) {
     pa.needsUpdate = true; }
   // A, grow fraction k (0..1, eased by the caller), opacity op, shaft width w (units)
   function draw(A, k, op, w) {
-    const vis = op > 0.002 && k > 0.001; A.out.visible = A.body.visible = vis; if (!vis) return;
-    A.out.material.opacity = 0.6 * op; A.body.material.opacity = op;
+    const vis = op > 0.002 && k > 0.001; A.glow.visible = A.out.visible = A.rim.visible = A.body.visible = vis; if (!vis) return;
+    A.glow.material.opacity = 0.16 * op; A.out.material.opacity = 0.45 * op; A.rim.material.opacity = op; A.body.material.opacity = op;
     const pts = A.pts, seg = []; let L = 0; for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
     const hl = w * 2.1, hw = w * 1.5, end = Math.max(0, k * L - hl), P = [];   // the shaft stops where the head starts
     const at = (s) => { let i = 0; while (i < seg.length - 1 && s > seg[i]) { s -= seg[i]; i++; } const f = seg[i] ? Math.min(1, s / seg[i]) : 0; return [lerp(pts[i][0], pts[i + 1][0], f), lerp(pts[i][1], pts[i + 1][1], f)]; };
     const n = Math.max(2, Math.min(N, Math.ceil(end / 0.08) + 1)); for (let i = 0; i < n; i++) P.push(at(end * i / (n - 1)));
     if (end < 1e-3) { const d = at(Math.min(L, 0.01)); P[1] = [P[0][0] + (d[0] - P[0][0]) * 0.01 + 1e-4, P[0][1] + (d[1] - P[0][1]) * 0.01]; }
-    const HS = smoothH(P); fill(A.out, P, w, hl, hw, 0.035, HS); fill(A.body, P, w, hl, hw, 0, HS); }
+    const HS = smoothH(P); fill(A.glow, P, w, hl, hw, 0.11, HS); fill(A.out, P, w, hl, hw, 0.07, HS); fill(A.rim, P, w, hl, hw, 0.045, HS); fill(A.body, P, w, hl, hw, 0, HS); }
   return { add, draw, arrows };
 }

@@ -452,6 +452,7 @@ const LOOKS = {
   // soft-edged, taller than wide, hanging where it was fired and drifting sideways slowly: mode 4.3 = curtain sprite stretched x1.6
   // v6 (critic B 6): neutral grey (his ratio 0.55:0.57:0.60, scaled for an UNLIT sprite: renders sRGB ~(150,153,157)), +40 % opacity, 1.5x wider, calmer
   gm:     { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 10.0, grow: 4.4, rise: 0.22, turb: 0.4, life: 18, mode: 4.3 },
+  gmTall: { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 9.0, grow: 3.6, rise: 0.22, turb: 0.4, life: 18, mode: 4.5 },   // v7: x2 vertical curtains (battalion clusters stay apart)
   gmOld:  { tint: [0.66, 0.66, 0.67], alpha: 0.15, s0: 4.2, grow: 7.0, rise: 1.0, turb: 3.0, life: 16, mode: 3 },   // v4 lit haze puffs
   billow: { tint: [0.93, 0.93, 0.92], alpha: 0.50, s0: 3.2, grow: 5.8, rise: 0.35, turb: 2.2, life: 16, mode: 0 },
 };
@@ -506,7 +507,7 @@ export function createFX(cfg = {}) {
   let night = 0;
 
   // ---------------- generic smoke particle evaluation
-  function evalSmoke(P, i, age) {
+  function evalSmoke(P, i, age, am = 1) {
     const life = P.life[i]; if (age >= life || age < 0) return;
     const k = P.k[i], e = k > 0 ? (1 - Math.exp(-k * age)) / k : age;
     let x = P.x[i] + P.vx[i] * e, y = P.y[i] + P.vy[i] * e, z = P.z[i] + P.vz[i] * e;
@@ -516,12 +517,12 @@ export function createFX(cfg = {}) {
     x += Math.sin(age * 0.71 + ph) * ta; z += Math.sin(age * 0.53 + ph * 1.7) * ta; y += Math.sin(age * 0.61 + ph * 2.3) * ta * 0.35;
     const size = P.s0[i] + P.grow[i] * Math.sqrt(age);
     const u = age / life;
-    const a = P.a0[i] * Math.min(1, age / Math.max(P.fin[i], 1e-3)) * (1 - smooth(P.fo[i] || 0.35, 1.0, u));   // v6: fo = fade start (fire columns fade from low down: no flat cap)
+    const a = am * P.a0[i] * Math.min(1, age / Math.max(P.fin[i], 1e-3)) * (1 - smooth(P.fo[i] || 0.35, 1.0, u));   // v6: fo = fade start (fire columns fade from low down: no flat cap)
     batch.push(x, y + size * 0.15, z, size, P.rot[i] + P.spin[i] * age, a, P.cell[i], P.mode[i], P.r[i], P.g[i], P.b[i], P.gy[i]);
   }
-  function smokeEmitter(list, maxLife, extra) {
+  function smokeEmitter(list, maxLife, extra, fade) {   // v7: fade(t) = global alpha multiplier (e.g. a bank thinning out after the volleys)
     const P = new Spawns(list, maxLife, SMOKE_FIELDS);
-    emitters.push({ update(t) { const [lo, hi] = P.range(t); for (let i = lo; i < hi; i++) evalSmoke(P, i, t - P.t[i]); if (extra) extra(t); } });
+    emitters.push({ update(t) { const am = fade ? fade(t) : 1; if (am <= 0.002) return; const [lo, hi] = P.range(t); for (let i = lo; i < hi; i++) evalSmoke(P, i, t - P.t[i], am); if (extra) extra(t); } });
     return P;
   }
   function puff(rnd, t, x, y, z, o) {
@@ -566,19 +567,22 @@ export function createFX(cfg = {}) {
     const sz = (o.size ?? 1) * S;
     const list = [], flashes = [];
     const N = Math.max(1, Math.round(rate * (t1 - t0)));
+    // v7 (critic B 4): o.cluster = [width, gap] (world units): puffs only inside separate battalion-wide curtains along the line, not one ribbon
+    const CW_ = o.cluster ? o.cluster[0] : 0, CG_ = o.cluster ? o.cluster[1] : 0, NC = o.cluster ? Math.max(1, Math.floor((L + CG_) / (CW_ + CG_))) : 0, C0 = NC ? (L - (NC * CW_ + (NC - 1) * CG_)) / 2 : 0;
+    const inCl = (s) => NC ? C0 + Math.min(NC - 1, Math.floor(s / L * NC)) * (CW_ + CG_) + rnd() * CW_ : s;
     for (let k = 0; k < N; k++) {
       let t, s;
       if (o.volley) { // volleys rolling along the line
         const nv = Math.max(1, Math.floor((t1 - t0) / o.volley)), v = k % nv;
-        s = rnd() * L; t = t0 + v * o.volley + (s / L) * (o.roll ?? 0.8) + rnd() * 0.25;
-      } else { t = t0 + rnd() * (t1 - t0); s = rnd() * L; }
+        s = inCl(rnd() * L); t = t0 + v * o.volley + (s / L) * (o.roll ?? 0.8) + rnd() * 0.25;
+      } else { t = t0 + rnd() * (t1 - t0); s = inCl(rnd() * L); }
       const [p, si] = at(s); const d = dirAt(si);
       const mv = (o.muzzle ?? 14) * U * (0.6 + 0.8 * rnd());
       const h = (o.height ?? 1.6) * U;
       list.push(puff(rnd, t, p.x, p.y + h, p.z, { vx: d.x * mv, vz: d.y * mv, vy: 0.5 * U, k: 1.3, rise: L0.rise, turb: L0.turb, s0: L0.s0 * sz, grow: L0.grow * sz, life, a0: o.alpha ?? L0.alpha, tint, wk: o.windK ?? 1, mode: L0.mode }));
       if (o.flash !== false && rnd() < 0.7) flashes.push({ t, x: p.x + d.x * 1.2 * U, y: p.y + h, z: p.z + d.y * 1.2 * U, size: 3.0 * sz, life: 0.07, r: 1.2, g: 0.58, b: 0.18, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
     }
-    smokeEmitter(list, life * 1.3);
+    smokeEmitter(list, life * 1.3, null, o.fadeAfter != null ? (t) => 1 - (1 - (o.fadeTo ?? 0.22)) * smooth(t1, t1 + o.fadeAfter, t) : null);   // v7: o.fadeAfter s: the bank thins to fadeTo after the last volley
     if (flashes.length) flashEmitter(flashes);
   }
 
@@ -595,8 +599,8 @@ export function createFX(cfg = {}) {
     for (let k = 0; k < n; k++) {
       const spread = (rnd() - 0.5) * 0.5, c = Math.cos(spread), s = Math.sin(spread);
       const dx = d.x * c - d.y * s, dz = d.x * s + d.y * c;
-      const v = (240 + 260 * rnd()) * jet, fr = k / n;   // v6: k 2.6 -> travels v / 2.6 = 90-190 m = 0.7-1.5 units (1-2 box lengths)
-      list.push(puff(rnd, tBurst + fr * 0.08, px, py + h, pz, { vx: dx * v, vz: dz * v, vy: (1 + 3 * rnd()) * U, k: 2.6, rise: 0.35, turb: 0.9, s0: L0.s0 * 0.9 * sz * (o.plume ?? 1),
+      const v = (360 + 390 * rnd()) * jet, fr = k / n;   // v7: x1.5 -> 140-290 m = 1.1-2.2 units (~2 box lengths)   // v6: k 2.6 -> travels v / 2.6 = 90-190 m = 0.7-1.5 units (1-2 box lengths)
+      list.push(puff(rnd, tBurst + fr * 0.08, px, py + h, pz, { vx: dx * v, vz: dz * v, vy: (1 + 3 * rnd()) * U, k: 2.6, rise: 0.35, turb: 0.9, s0: L0.s0 * 1.35 * sz * (o.plume ?? 1),
         grow: L0.grow * 1.6 * sz * (o.plume ?? 1), life: life * (0.8 + 0.4 * rnd()), a0: o.alpha ?? L0.alpha * 1.6, tint: o.tint || L0.tint, fin: 0.05, spin: 0.05, mode: L0.mode, wk: o.windK ?? 0.6 }));
     }
     for (let k = 0; k < (o.dust ?? 4); k++) { // ground dust kicked up around the gun
@@ -604,7 +608,7 @@ export function createFX(cfg = {}) {
       list.push(puff(rnd, tBurst + 0.02, px, py + 0.3 * U, pz, { vx: Math.cos(a) * v - d.x * 4 * U, vz: Math.sin(a) * v - d.y * 4 * U, vy: 0.5 * U, k: 2.0, rise: 0.15, turb: 0.6, s0: 2.5 * sz, grow: 2.5 * sz, life: 5, a0: 0.25, tint: [0.42, 0.38, 0.32], fin: 0.1, mode: 4.0 }));
     }
     smokeEmitter(list, life * 1.3);
-    const fl = [], fk = (o.flash ?? 1) * 3, fc = o.flashColor || [0.85, 0.3, 0.06], fl0 = o.flashLife ?? 0.095;   // v6 (critic B 5): flash 3x, no ground light
+    const fl = [], fk = (o.flash ?? 1) * 4.5, fc = o.flashColor || [0.85, 0.3, 0.06], fl0 = o.flashLife ?? 0.11;   // v7: x1.5 size, 3 frames   // v6 (critic B 5): flash 3x, no ground light
     // orange core + a forward tongue: visible for 0.09 s (2-3 frames at 30 fps), never white (r <= 1.25 additive, g/b low)
     fl.push({ t: tBurst, x: px + d.x * 2 * U, y: py + h, z: pz + d.y * 2 * U, size: 7 * sz * fk, life: fl0, r: fc[0], g: fc[1], b: fc[2], a0: 0.85, rot: 0, cell: 6, pool: (o.pool ?? 0) * sz, gy: 0 });
     for (let k = 0; k < 2; k++) fl.push({ t: tBurst, x: px + d.x * (4 + 5 * k) * U, y: py + h, z: pz + d.y * (4 + 5 * k) * U, size: (4.5 - 1.5 * k) * sz * fk, life: fl0 * 0.8, r: 0.9, g: 0.36, b: 0.08, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });

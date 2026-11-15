@@ -169,7 +169,7 @@
 /* ---- film look */
 .gmo .paper{position:absolute;inset:0;background:var(--paperurl) 0 0/512px 512px;mix-blend-mode:multiply;opacity:.1}
 .gmo .grain{position:absolute;left:-64px;top:-64px;width:${W + 128}px;height:${H + 128}px;mix-blend-mode:overlay;opacity:.16;background-size:512px 512px}
-.gmo .vig{position:absolute;inset:0;background:radial-gradient(ellipse 75% 72% at 50% 50%,rgba(0,0,0,0) 55%,rgba(8,10,12,.32) 80%,rgba(4,5,6,.62) 100%)}
+.gmo .vig{position:absolute;inset:0;background:radial-gradient(ellipse 80% 76% at 52% 50%,rgba(0,0,0,0) 60%,rgba(8,10,12,.2) 82%,rgba(4,5,6,.42) 100%)}
 `;
 
   // ------------------------------------------------------------------ helpers
@@ -244,7 +244,7 @@
     root.style.setProperty("--paperurl", `url(${paperTex(seed)})`); root.style.setProperty("--inkmask", `url(${inkMask(seed + 7)})`);
     host.appendChild(root);
     const layer = () => { const d = document.createElement("div"); d.className = "L"; root.appendChild(d); return d; };
-    // z-order (bottom -> top): grade, dim, map-anchored (lines, markers), paper, grain, vignette, medallions, cards, HUD
+    // z-order (bottom -> top): grade, dim, map-anchored (lines, markers), paper, grain, vignette, medallions, cards, HUD. v7: vignette softer (.2/.42 at the rim, was .32/.62; critic B: left third ~20 % darker than his)
     // v5 (critic A 10): paper / grain / vignette belong to the MAP only; the plaques, cards and HUD sit clean on top (his plaque paper ~(227,217,193))
     // v5 (terrain agent: "the overlay lifts the darks by +40-50"): a mix-blend-mode layer inside a transformed host (the clip scales the
     // 1920x1080 overlay by 2/3) blends only with the overlay's own isolated group, NOT with the map: soft-light / overlay / multiply then
