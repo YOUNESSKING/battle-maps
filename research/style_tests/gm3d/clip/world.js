@@ -195,7 +195,7 @@ export function initWorld(canvas, opts = {}) {
           dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (wood ? 0.42 : 0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
           col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
           const hv = hash(j, 12); if (hv < 0.12) col.lerp(olive, 0.2 + hv); else if (hv > 0.7) col.lerp(teal, 0.45);
-          col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.83 + 0.07 * e : 0.82)); im.setColorAt(i, col); });
+          col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.73 + 0.06 * e : 0.72)); im.setColorAt(i, col); });   // v7: x0.88
         R.scene.add(im); R.trees.push(im); });
     }
     if (pines.length && name === "close") {
@@ -214,7 +214,7 @@ export function initWorld(canvas, opts = {}) {
       walls.castShadow = roofs.castShadow = true; walls.receiveShadow = roofs.receiveShadow = true;
       // v4 roofs: GM's varied tile reds / oranges, some brown and slate; kind 1 = church nave (taller), 2 = church tower (tall, steep roof)
       const WALL = [0xe0d6c0, 0xd4c8ac, 0xcabd9f, 0xe8e0cc], ROOF = [0xc4593a, 0xb8533a, 0xcc6844, 0xa84a34, 0x8e5a40, 0x6c6a68, 0xd27a4c];
-      const wh = name === "wide" ? 0.34 : 0.085, rh = name === "wide" ? 0.3 : 0.075, hk = name === "wide" ? 1 : 1.0;   // v5: close houses smaller (plan x0.62 in the bake)
+      const wh = name === "wide" ? 0.34 : 0.055, rh = name === "wide" ? 0.3 : 0.05, hk = name === "wide" ? 1 : 1.0;   // v5: close houses smaller (plan x0.62 in the bake)
       hs.forEach((q, i) => { const [x, z, hm, w, dd, rot, rc] = q, kind = q[7] || 0; const y = heightAt(R, x, z) - 0.01;
         const hh = kind === 3 ? 0.028 : wh * (kind === 2 ? 4.2 : kind === 1 ? 1.7 : 0.85 + hash(i, 3) * 0.5);
         dummy.position.set(x, y, z); dummy.rotation.set(0, rot, 0); dummy.scale.set(w * hk, hh, dd * hk); dummy.updateMatrix(); walls.setMatrixAt(i, dummy.matrix);
@@ -295,7 +295,8 @@ export function initWorld(canvas, opts = {}) {
   }
 
   const DAY = { sun: new THREE.Color(0xfff2de), sunI: 1.0 * Math.PI, sky: new THREE.Color(0xe6ecf0), gnd: new THREE.Color(0x6a5a40), hemiI: 0.52 * Math.PI, fog: new THREE.Color(0xa9b3b4), water: new THREE.Color(0x2f4552) };   // v5: darker, bluer water (his rivers ~(83,86,88) with a dark edge)
-  const HAZE = new THREE.Color(0xb4bcbc);   // v6: depth haze back at ~half (critic B 3)   // round 2: bluer, his blue-grey atmospheric cast
+  const WIDEWATER = new THREE.Color(0x587080);   // v7: the wide river reads as a filled blue-grey band
+  const HAZE = new THREE.Color(0xb9bcb4);   // v7: lighter, warmer (the far band must be lighter than the near ground)   // v6: depth haze back at ~half (critic B 3)   // round 2: bluer, his blue-grey atmospheric cast
   const NIGHT = { sun: new THREE.Color(0xa8c0ea), sunI: 0.95 * Math.PI, sky: new THREE.Color(0x40507a), gnd: new THREE.Color(0x10141c), hemiI: 0.42 * Math.PI, fog: new THREE.Color(0x141c2c), water: new THREE.Color(0x1c2a40) };   // v6: stronger moon, less fill -> moonlit relief
 
   world.update = (t, o = {}) => {
@@ -313,9 +314,9 @@ export function initWorld(canvas, opts = {}) {
     // v4 haze: on the oblique close camera the far ground fades into a pale sky-blue haze (GM 640-700 / 800 / 910-950 s):
     // smoothstep over view depth 0.78 d .. 2.3 d -> ~0 at the frame centre, ~0.45 at the top edge (tilt 52, fov 30)
     const cl = cs.region === "close" ? 1 : 0;
-    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 1.0 : 1.25); R.scene.fog.far = sd * (cl ? 2.6 : 8.0);   // v5: half the wide haze; close top edge ~0.2 (his top band keeps full contrast)
+    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 0.9 : 1.25); R.scene.fog.far = sd * (cl ? 2.6 : 8.0);   // v5: half the wide haze; close top edge ~0.2 (his top band keeps full contrast)
     R.terrain.material.userData.uNight.value = n;
-    R.wmat.color.copy(DAY.water).lerp(NIGHT.water, n); R.wmat.envMapIntensity = lerp(0.22, 0.1, n);
+    R.wmat.color.copy(cs.region === "wide" ? WIDEWATER : DAY.water).lerp(NIGHT.water, n); R.wmat.envMapIntensity = lerp(0.22, 0.1, n);
     renderer.setClearColor(R.scene.fog.color);
     // water motion: normal map drifts downstream
     const rep = cs.region === "wide" ? 1 / 1.5 : 1 / 0.25; wnorm.repeat.set(1, 1); wnorm.offset.set(-t * 0.12, Math.sin(t * 0.7) * 0.03);
