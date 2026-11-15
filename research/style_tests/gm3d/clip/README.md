@@ -27,5 +27,12 @@ frame by ~15.4 -> cool off-white 15.6-16.35 (cut to the close map at 16.4 inside
 battlefield snaps in 17.2-17.6, haze gone by 18.7. Also: courtyard farmsteads (no more red crosses), wider browner roads, bigger bluer
 musketry smoke, finer grain. `make_dive.py <mp4>` writes `dive_ours.jpg` (+ `dive_compare.jpg`, local only).
 
+**v4 terrain (2026-11-15, world.js / bake_clip.py / assets): camera, haze, ground, woods, towns** (measured on GM 640-700, 780-820, 910-950 s close and 290-1140 s wide; sector-by-sector crops with `make_ground_sectors.py <snapshot dir>` -> `ground_sectors.jpg` (local, git-ignored) + `ground_ours.jpg`).
+- Close camera: tilt 38-44 -> **50-54 deg from vertical, fov 32 -> 30** (keys p3-0.5 .. D in `index.html`; his scale gradient top/bottom ~2:1 = 50-52 deg at fov 30). Dive keys untouched; tilt eases 38 -> 50 over 18.6-27.7 s.
+- Haze: close fog = smoothstep over view depth **0.85 d .. 2.6 d**, colour **#b2bec4** (pale sky blue-grey) -> ~0 at frame centre, ~0.3 at the top edge; the emergence fog in `index.html` now lands on these values.
+- Ground: close fields in his k-means palette (olive / ochre / grey-green, rendered median ~(120,117,99) vs his (121,119,95)), soft edges, big damp mottles, visible strips, faint furrows, pale verges, river floodplain; wide map green-grey-olive (rendered pre-cooled x(0.78,0.85,0.88) -> his ~(84,93,77)), many small woods everywhere, baked multi-scale slope/aspect relief with pale sunlit valley sides.
+- Woods: ~3 m canopy blanket raised under every wood + crown clusters (2-4 lumpy merged lobes, 4 variants, log-normal sizes, teal/olive jitter) half sunk in it, jagged outline + clearings; wide map has no instanced crowns any more. Hedgerows on ~15 % of parcel edges as continuous lines (dark under-canopy band + crowns every 0.075 units, gaps in runs).
+- Towns: Bovina = main street + link to the Vicksburg road + 4 cross streets + 2 back lanes, packed row houses both sides (gable-on mixed in), sheds, back gardens, church + tower, 7 roof colours; 14 farmsteads = house + barn + 2-4 sheds round a yard, garden, orchard. Close houses 105 -> 140, close trees 25.6k -> ~46k (wide 889 -> 0).
+
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).

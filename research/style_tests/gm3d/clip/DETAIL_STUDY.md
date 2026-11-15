@@ -130,7 +130,8 @@ plaque back with the clock at 19.46. White total ~1.75 s (15.45-17.2).
 ## 3. Still different after v3
 
 - GM troops are 3D soldier blocks; ours stay Style W boxes (by design).
-- GM camera is more oblique with horizon haze; ours stays steeper.
-- GM forests are dense jagged clumps; our hedgerow crowns still read as beads.
-- GM towns are much denser.
+- ~~GM camera is more oblique with horizon haze~~ v4: close tilt 50-54 deg, fov 30, haze 0.85 d-2.6 d #b2bec4.
+- ~~GM forests are dense jagged clumps~~ v4: canopy blanket + merged crown clusters, jagged edge, clearings; hedgerows continuous. Still: his canopy grain is finer and flatter; our edge crowns can still show round silhouettes up close.
+- ~~GM towns are much denser~~ v4: Bovina street plan with packed rows, church, gardens; farm courtyards. Still: Bovina sits at the left edge of most close shots, so his town-in-the-middle look is rarer here; his towns are bigger.
+- v4 ground: palette/mottle matched, but his close fields still show more crisp tracks and strip boundaries; his wide relief has brighter, broader sunlit valley sides.
 - Our dive deck is sprite cumulus: up close the lobes are a little more regular than his volumetric clouds.
