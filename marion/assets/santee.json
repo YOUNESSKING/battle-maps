@@ -1,0 +1,19 @@
+{
+ "name": "santee",
+ "center": [
+  33.47,
+  -80.35
+ ],
+ "zoom": 13,
+ "origin_world_px": [
+  579063,
+  840648
+ ],
+ "size": [
+  2880,
+  1620
+ ],
+ "meters_per_px": 15.94,
+ "sea_below": 0.5,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data)"
+}

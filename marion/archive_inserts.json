@@ -1,0 +1,61 @@
+{
+ "m1-9": {
+  "from": "Six Loyalists",
+  "to": "came over and joined him.",
+  "shots": [
+   {
+    "photo": "assets/media/arch_burt.jpg",
+    "move": "left",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "MARION'S BRIGADE \u00b7 ENGRAVED 1852, AFTER RANNEY"
+   }
+  ]
+ },
+ "m2-8": {
+  "from": "Tarleton told it differently.",
+  "to": "the Gamecock,",
+  "shots": [
+   {
+    "photo": "assets/media/arch_tarleton.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.3
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "LT. COL. BANASTRE TARLETON \u00b7 REYNOLDS, 1782"
+   }
+  ]
+ },
+ "m3-14": {
+  "from": "But the next evening,",
+  "to": "Congress thanked Marion by name.",
+  "shots": [
+   {
+    "photo": "assets/media/headline_eutaw.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.45
+    ]
+   },
+   {
+    "photo": "assets/media/arch_white.jpg",
+    "move": "in",
+    "focus": [
+     0.5,
+     0.5
+    ],
+    "depth": true,
+    "frame": true,
+    "label": "MARION'S CAMP \u00b7 PAINTED LONG AFTER THE EVENT (1810)"
+   }
+  ]
+ }
+}

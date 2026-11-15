@@ -1,0 +1,49 @@
+{
+ "5": [
+  {
+   "photo": "assets/media/arch_mouzon_santee.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 4.6,
+   "depth": true,
+   "frame": true,
+   "label": "THE SANTEE \u00b7 MOUZON MAP, 1775"
+  },
+  {
+   "photo": "assets/media/arch_ranney.jpg",
+   "move": "left",
+   "focus": [
+    0.5,
+    0.5
+   ],
+   "dur": 5.4,
+   "depth": true,
+   "frame": true,
+   "label": "MARION'S MEN \u00b7 PAINTED IN 1850"
+  },
+  {
+   "photo": "assets/media/arch_marion_ci.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 5.0,
+   "depth": true,
+   "frame": true,
+   "label": "FRANCIS MARION \u00b7 DRAWN LONG AFTER HIS DEATH (1876)"
+  },
+  {
+   "photo": "assets/media/headline_camden.jpg",
+   "move": "in",
+   "focus": [
+    0.5,
+    0.45
+   ],
+   "dur": 4.7
+  }
+ ]
+}
