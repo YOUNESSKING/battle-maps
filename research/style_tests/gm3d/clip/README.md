@@ -16,6 +16,8 @@ Composition 1280x720, 30 fps, software WebGL.
 | `bake_clip.py` | copy of `../world/bake_world.py` writing `assets/`: new GM close ground (`gm_fields`: strip fields of rust ploughland, ochre stubble, green and teal meadow, soil blotches, furrows, grass verges, hedgerows on ~30 % of field edges as 3D crowns + lone field trees), bigger Bovina, courtyard farmsteads |
 | `assemble.py` | mix (voice, ducked Long Note Two bed, battle ambience on the day battle, cannon/impact/musketry/fire on the cue list) + concat of the chunks |
 | `render_chunks.sh` | renders 6 x 11 s chunks (`--start/--end`, 3 workers), purging the HyperFrames history between chunks |
+| `make_cloud_noise.py` | offline 3D cloud noise (`cloudtex/noise128.bin`) for `fx.vclouds` |
+| `make_sectors.py` | `dive_sectors.jpg`: his vs ours dive, phase by phase, 4 sectors each at 2.5x (local only, git-ignored) |
 | `make_dive.py` | `dive_ours.jpg` (12 frames of our dive) + `dive_compare.jpg` (his 636 s dive vs ours, phase-matched; local only, git-ignored) |
 | `make_sheet.py` | `contact_sheet.jpg` (12 frames) + `compare_gm.jpg` (ours vs 6 GM frames; local only, git-ignored) |
 
@@ -44,6 +46,24 @@ on the march (column turns along its road on moves > ~6 units or `u.march`), sho
 low-sun shadow = the block footprint swept along the sun (multiply quads) on top of the real shadow map; blocks never overlap (deterministic push-apart);
 smoke draws over them. Infantry merges 2 boxes into 1 block (GM has ~half as many, ~2x bigger blocks). Cost: +~1.5 ms JS + ~0.2 M triangles per frame.
 `troops_ours.jpg` = boxes vs blocks at 22 / 31.5 / 35.2 / 60.5 s (2x); `troops_sectors.jpg` (his vs ours, 3x) is local only (git-ignored).
+
+**v4 (2026-11-15): true volumetric clouds** (owner on v3: "The clouds are off. They look fake."). `fx.vclouds` replaces the sprite cumulus:
+- **Raymarched volume** over an offline, tileable 128^3 RGBA8 noise volume (`make_cloud_noise.py` -> `cloudtex/noise128.bin`, numpy, deterministic):
+  R Perlin-Worley, G inverted Worley fbm 4/8/16, B inverted Worley fbm 8/16/32, A Perlin fbm (domain warp).
+- **Shape** = a 2D cloud map built at load from the cloud list (each cloud = main dome + 5 satellite domes, lumpy outline; R top, G base, B group,
+  A horizontal distance for empty-space skipping) -> slope-corrected signed distance below the dome, displaced by the noise (big Perlin-Worley lumps,
+  Worley billows at two scales, a fine octave near the lens), domain-warped, soft-clamped (translucent fringes), torn wispy rims, mottled interior.
+  Group 1 (the dive deck / the close deck) has its own erosion curve (`erode(t)`): the deck billows up 14.6-15.2, the close deck tears into remnants 16.4-21.5.
+- **Lighting**: 6-tap jittered light march toward the sun (self-shadowed creases, grey-blue undersides), Beer + two-octave multiple scattering
+  (`ms(t)` rises inside the cloud -> bright grey-white interior), powder term, dual-lobe Henyey-Greenstein phase, height-graded sky/ground ambient with
+  depth occlusion, scene-fog aerial haze. **Ground shadows** from the same density (3 samples along a steep shadow direction, `shadowDir`).
+- **Cost** (SwiftShader, 4 cores): cloud pass at 0.7 x resolution, bilinear premultiplied upsample, white-noise jitter, <= 260 steps with map-distance
+  skipping; only the current region's system marches; close system off after 21.6 s (its battle shadows come from the old shadow-only noise layer).
+- **White-out**: no oval (the overlay vignette fades out inside the cloud, flat cool veil (208,211,204), near-flat warm cream (218,215,202) -> (211,208,193)),
+  film grain 0.08 -> 0.03 inside; the cool phase is the real cloud interior; DOM wisps removed (the real close deck tears past instead).
+- Camera: dive key at 15.2 s now dist 160 (was 122) so the deck is seen from above before the camera sinks into its tops at ~16.0 s.
+- Method: `make_sectors.py <snapshot dir | mp4>` -> `dive_sectors.jpg` (local, git-ignored): 6 phases x 4 sectors, his | ours at 2.5x.
+  `TAG=_v4 OFFSET=0 python3 make_dive.py <mp4>` -> `dive_ours_v4.jpg` (+ `dive_compare_v4.jpg`, local).
 
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).
