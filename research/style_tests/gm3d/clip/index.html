@@ -16,8 +16,8 @@
   @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
   html, body { margin: 0; padding: 0; background: #000; }
   #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
-  /* v5 (critic A 3): one levels / S-curve pass on the 3D image only (#gmgrade, tables written by gradeAt(t) in the module) */
-  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: saturate(1.05) url(#gmgrade); }
+  /* v6: saturation + toe/S-curve tables on the 3D image only (#gmgrade + #veil, written per frame by gradeAt(t) in the module) */
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: saturate(0.74) url(#gmgrade); }
   #arrows { position: absolute; inset: 0; width: 1280px; height: 720px; overflow: visible; }
   #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
   #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
@@ -58,6 +58,7 @@
   <svg width="0" height="0" style="position:absolute"><filter id="gmgrade" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feComponentTransfer>
     <feFuncR type="table" tableValues="0 1"/><feFuncG type="table" tableValues="0 1"/><feFuncB type="table" tableValues="0 1"/></feComponentTransfer></filter></svg>
   <canvas id="gl" width="1280" height="720"></canvas>
+  <div id="veil" style="position:absolute;inset:0;pointer-events:none"></div>   <!-- v6: depth-growing cool veil over the 3D image (gradeAt) -->
   <div id="pins"></div>
   <svg id="arrows" viewBox="0 0 1280 720"></svg>
   <div id="troops"></div>
@@ -189,17 +190,17 @@ fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 
 // cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
 // v5 (critic B 6): orange flame tongues (no white clipping) under a dark leaning smoke column
 const FIRE_GM = { flameColor: [0.62, 0.1, 0.015, 0.1, 0.2, 0.04], glowColor: [1.0, 0.42, 0.12], glowA: 0.16, lightDay: 0.12 };
-fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { ...FIRE_GM, size: 6, tongues: 3, flameK: 0.75, flameA: 0.55, flameRate: 7, emberRate: 1, glowSize: 1.6, smokeRate: 2.2, smokeLife: 14, rise: 9, light: false, ramp: 2, smokeTint: [0.2, 0.185, 0.17], smokeAlpha: 0.5, smokeS0: 0.8, smokeGrow: 2.2, smokeWind: 1.0, smokeTurb: 1.2 });
+fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { ...FIRE_GM, size: 6, tongues: 3, flameK: 0.75, flameA: 0.55, flameRate: 7, emberRate: 1, glowSize: 1.6, smokeRate: 3.0, smokeLife: 14, rise: 18, light: false, ramp: 2, smokeTint: [0.12, 0.115, 0.11], smokeAlpha: 0.6, smokeS0: 0.3, smokeGrow: 0.8, smokeWind: 0.5, smokeTurb: 0.5, smokeFade: 0.2 });   // v6 (critic A 12): a thin dark column, not a grey disc, when the push-in nears the bridge
 // close: smoke lines, cannon, impacts, bridge fire
 const brDir = [Math.cos(-BR.angle), -Math.sin(-BR.angle)], deckY = (BR.deck * 6) / D.geo.mpu, L2 = BR.len / 2;
 const BA = [BR.x - brDir[0] * L2, deckY + 0.05, BR.z - brDir[1] * L2], BB = [BR.x + brDir[0] * L2, deckY + 0.05, BR.z + brDir[1] * L2];
-fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { ...FIRE_GM, to: BB, size: 1.0, tongues: 8, flameK: 1.5, flameA: 0.5, glowSize: 2.2, flameRate: 2.4, emberRate: 3, smokeRate: 7.0, smokeLife: 16, rise: 36, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.095, 0.094, 0.092], smokeAlpha: 0.55, smokeS0: 0.7, smokeGrow: 2.0, smokeWind: 1.1, smokeTurb: 0.6 });
+fxC.fire(BA, EV.bridgeFire, T.p4 - 1.2, { ...FIRE_GM, to: BB, size: 1.0, tongues: 8, flameK: 1.5, flameA: 0.5, glowSize: 2.2, flameRate: 2.4, emberRate: 3, smokeRate: 7.0, smokeLife: 16, rise: 58, ramp: 1.2, fadeOut: 0.5, smoulder: 0, lightIntensity: 2, smokeTint: [0.095, 0.094, 0.092], smokeAlpha: 0.6, smokeS0: 0.5, smokeGrow: 1.5, smokeWind: 0.6, smokeTurb: 0.6, smokeFade: 0.15 });   // v6 (critic B 14): 1.6x higher, leaning, fading out with height (no flat cap)
 fxC.fire(BA, T.p5 - 1, T.D + 2, { ...FIRE_GM, to: BB, size: 0.45, tongues: 3, flameRate: 3, emberRate: 1, glowSize: 1.2, smokeRate: 1.2, smokeLife: 8, rise: 10, ramp: 0.1, light: false, smokeTint: [0.3, 0.29, 0.28], smokeWind: 1.0, smokeTurb: 1.2 });   // still smouldering next day
 const bwPts = BRW.filter((_, i) => i % 3 === 0).map((p) => G(p[0] + 0.12, p[1], 0.06));
 // v5 (critic B 4): GM curtain smoke (fx LOOKS.gm: unlit cool grey, soft, tall, hanging, slow sideways drift)
-fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 1.6, volley: 1.6, roll: 0.9, size: 1.35, height: 3, muzzle: 6, windK: 0.45 });
-fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 0.7, size: 1.3, alpha: 0.16, life: 12, muzzle: 6, windK: 0.45 });
-fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 0.8, size: 1.3, alpha: 0.16, life: 12, muzzle: 6, windK: 0.45 });
+fxC.smokeLine(bwPts, EV.volleyCS[0], EV.volleyCS[1], { dir: [1, 0.05], rate: 2.9, volley: 1.6, roll: 0.9, size: 1.35, height: 3, muzzle: 6, windK: 0.45 });
+fxC.smokeLine([G(1525.8, 698.6, 0.06), G(1525.4, 703.5, 0.06), G(1525.6, 708.0, 0.06), G(1525.1, 712.0, 0.06)], EV.volleyUS[0], EV.volleyUS[1] - 1.8, { dir: [-1, 0], rate: 1.26, size: 1.3, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45 });
+fxC.smokeLine([G(1523.0, 706.5, 0.06), G(1522.6, 709.5, 0.06), G(1522.4, 712.0, 0.06)], 31.8, EV.volleyUS[1], { dir: [-1, 0], rate: 1.44, size: 1.3, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45 });
 EV.usShots.forEach((t, i) => { const g = EV.usGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [-1, 0.05 * (i % 3 - 1)], size: 1.0 });
   fxC.impact(G(1520.2 + ((i * 37) % 7) * 0.15, g[1] + ((i * 53) % 9 - 4) * 0.35, 0), t + 0.85, { size: 0.9 }); });
 EV.csShots.forEach((t, i) => { const g = EV.csGuns[i % 3]; fxC.cannon(G(g[0], g[1], 0.05), t, { dir: [1, -0.04 * (i % 3 - 1)], size: 1.0 });
@@ -213,7 +214,7 @@ fxW.fire(GWd(lerp(st0[0], st1[0], 0.35), lerp(st0[1], st1[1], 0.35), 0.4), EV.st
 const VB = D.towns.Vicksburg;
 // v5 (critic B 9): battery flashes 3x bigger + a 0.15 s orange glow on the water under each shot; the batteries stand on the bluff edge
 EV.batteryShots.forEach((t, i) => { const r0 = riverAt(VB[1] - 6 + i * 2.6), g = [r0[0] + 3.2 + (i % 3) * 0.8, r0[1]];
-  fxW.cannon(GWd(g[0], g[1], 0.3), t, { dir: [-1, 0.1], size: 1.8, puffs: 8, dust: 0, life: 7, pool: 5, flash: 2.0 });
+  fxW.cannon(GWd(g[0], g[1], 0.3), t, { dir: [-1, 0.1], size: 1.8, puffs: 8, dust: 0, life: 7, pool: 0, flash: 2.0, flashLife: 0.13 });   // v6 (critic B 13): 3x orange flash, 4 frames
   fxW.flash(GWd(r0[0] + 0.4, r0[1], 0.25), t, { size: 2.6, life: 0.15, color: [1.1, 0.45, 0.12], alpha: 1.0, pool: 3 });
   const r = riverAt(VB[1] - 3 + i * 3); fxW.impact(GWd(r[0], r[1], 0.1), t + 0.9, { size: 0.5 }); });
 // v5: 40 campfires in camps of 3-5 small orange dots (his 187 s night: dots ~3-5 px with a small soft halo; ours were 14 invisible ones):
@@ -361,13 +362,15 @@ const T3 = TROOPS === "blocks" ? TM.createTroops3D({ THREE, scene: world.regions
   shots: [...EV.usShots.map((t, i) => ({ t, x: EV.usGuns[i % 3][0] + 0.2, y: EV.usGuns[i % 3][1] })), ...EV.csShots.map((t, i) => ({ t, x: EV.csGuns[i % 3][0] - 0.15, y: EV.csGuns[i % 3][1] }))] }) : null;
 // solid arrows on the ground (assault, retreat, next-day crossing)
 const SVG = document.getElementById("arrows"), NSV = "http://www.w3.org/2000/svg", ARROWS = [];
+// v6 (critic B 9): Style W arrows desaturated to the new grade (x0.75 chroma) and 0.75x width (ARW below)
+const ARU = "#4f73c0", ARR_R = "#b8574c", ARW = 0.32;
 const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NSV, "g"); g.innerHTML = `<path fill="none" stroke="rgba(14,12,8,.6)" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke="${col}"/><polygon fill="${col}" stroke="rgba(14,12,8,.6)" stroke-width="1.5"/>`;
   SVG.appendChild(g); ARROWS.push({ g, pts, t0, dur, t1, a3: AR3 ? AR3.add(pts, col) : null }); };
-arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, "#3f6fd0");
-arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, "#3f6fd0");
-arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, "#3f6fd0");
-arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, "#c4483a");
-for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y, k); arrow([[b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0], b[1]], [b[0] - ex * 2.6, b[1] - ey * 2.6]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
+arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, ARU);
+arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, ARU);
+arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, ARU);
+arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, ARR_R);
+for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y, k); arrow([[b[0] + ex * 3.6, b[1] + ey * 3.6], [b[0] + ex * 0.75, b[1] + ey * 0.75]], EV.bridgesNew[k] + 0.4, 1.4, T.D + 1, ARU); }   // v6 (critic B 8): ends short of the river, the pontoon stays visible
 
 // ---------------- place names pinned to the ground ----------------
 const PINS = [], PN = document.getElementById("pins");
@@ -393,7 +396,7 @@ O.plaque.clock(DV.SW + 0.05, { time: "8:30", note: "Big Black River bridge", hea
 O.timeline.show(1.4, { month: "May", year: "1863", days: ["15", "16", "17", "18", "19", "20"], at: 1.0 });
 O.timeline.seal(T.ch + 0.7, { at: 2.0, name: "Champion Hill" });
 O.legend(1.9, T.p4 - 0.8, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] });
-O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", screen: [1585, 300], tIn: DV.warm + 0.25, tOut: T.crossing + 2.6 });
+O.medallion({ kind: "card", img: "assets/grant_head.png", side: "us", role: "Major General", name: "Ulysses S. Grant", sub: "Army of the Tennessee", screen: [1765, 215], tIn: DV.warm + 0.25, tOut: T.crossing + 2.6 });
 O.medallion({ kind: "card", img: "assets/pemberton_head.png", side: "cs", role: "Lieutenant General", name: "John C. Pemberton", sub: "holds the crossing", world: [BR.x - 1.2, 706.2], offset: [-330, -170], tIn: T.pem, tOut: T.crossing + 2.6 });
 O.label(T.back, T.p3 + 0.6, { name: "The river at their back", sub: "one bridge behind the line", world: [BR.x, BR.z], side: "cs" });
 O.timeline.go(T.p3, { at: 2.6, d: 1.2 });
@@ -460,7 +463,7 @@ function drawTroops(t, close) {
   for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1, op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) * endK(t) : 0;
     b.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const [x, y] = posAt(b.keys, t), s = world.projectMap(x, y, 0.02); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`; }
   for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? (1 - sstep(A.t1 - 0.6, A.t1, t)) * endK(t) : 0; const ke = 1 - (1 - k) ** 2;
-    if (A.a3) { A.g.style.opacity = 0; AR3.draw(A.a3, ke, op, 0.42); continue; }
+    if (A.a3) { A.g.style.opacity = 0; AR3.draw(A.a3, ke, op, ARW); continue; }
     A.g.style.opacity = op.toFixed(3); if (op <= 0) continue;
     const P = A.pts.map((p) => world.projectMap(p[0], p[1], 0.03));
     // cut the screen polyline at fraction ke of its length
@@ -484,16 +487,32 @@ function drawPins(t, region) {
     if (t < 22 || region === "wide") k *= 1 - 0.9 * (region === "wide" ? fxW : fxC).cloudAlphaAt(s.x, s.y);
     p.e.style.opacity = (op * k).toFixed(3); }
 }
-// v5 (critic A 3): the final grade = levels (black point 10 -> 0, white 248 -> 255) + a mild S-curve (15 % smoothstep), on the 3D image only
-// (the old contrast(1.12) brightness(0.95) is gone; the overlay's film layers now really blend, see filmHost). Never lifts the darks:
-// raw world -> final, darkest 3 %: 41 s (37,50,49) -> (35,46,42), 6 s (24,39,39) -> (18,34,31), night (5,16,25) -> (7,11,19).
-// Final luma p1/p5/p50/p95, std: close 41 s 38/53/91/165 33; 22 s 34/52/102/189 43 (his close 500-950 s: p5 43-77, p50 71-134, p95 107-198, std 21-32);
-// wide 6 s 25/30/79/153 37 (his 42 p5 / 199 p95 / 42.6); night 49.6 s p50 29 p95 71 (his 28-52 / 52-101). Off inside the dive cloud.
-const GRADE = (x) => { const y = clamp((x - 10 / 255) / ((248 - 10) / 255)); return y + (y * y * (3 - 2 * y) - y) * 0.15; };
-const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")]; let gradeK = -1;
+// v6 grade (critics A 2 / B 1, v5 overshot: chroma 35-41, b-g -24, crushed blacks): on the 3D image only, per region/time:
+// saturation (CSS) + per-channel tables (lifted toe, half S-curve, a little blue) + a screen-space cool veil toward (150,160,165)
+// that grows with depth (top of frame = far ground). Values are blended by the camera's night factor and region; the dive cloud
+// (deck -> haze) keeps the neutral look tuned for the white-out. ?grade=0 = raw.
+const GP = {   // sat, toe (0-255 lift at black), S strength, blue/green lift (table offsets at mid), veil rgb, veil alpha top/bottom
+  close: { sat: 0.92, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04 },
+  wide: { sat: 0.95, toe: 11, S: 0.1, bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.13, vb: 0.07 },
+  night: { sat: 0.95, toe: 2, S: 0.0, bl: 5, gl: 2, veil: [40, 60, 82], vt: 0.04, vb: 0.0 },
+  off: { sat: 1.05, toe: 0, S: 0, bl: 0, gl: 0, veil: [150, 160, 165], vt: 0, vb: 0 } };
+const GF = [...document.querySelectorAll("#gmgrade feFuncR, #gmgrade feFuncG, #gmgrade feFuncB")], GL = document.getElementById("gl"), VEIL = document.getElementById("veil");
 const GRADE_ON = new URLSearchParams(location.search).get("grade") !== "0";   // ?grade=0: raw image (for measuring)
-const gradeAt = (t) => { const k = GRADE_ON ? 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)) : 0; if (Math.abs(k - gradeK) < 1e-3) return; gradeK = k;
-  const tv = Array.from({ length: 33 }, (_, i) => { const x = i / 32; return lerp(x, GRADE(x), k).toFixed(4); }).join(" "); for (const f of GF) f.setAttribute("tableValues", tv); };
+let gradeKey = "";
+const gradeAt = (t) => {
+  const cs = world.cameraAt(t), n = cs.night || 0, wide = cs.region === "wide" ? 1 : 0;
+  const k = GRADE_ON ? 1 - sstep(DV.deckIn, DV.deck, t) * (1 - sstep(DV.emerge, DV.haze, t)) : 0;
+  const mix = (f) => { const day = lerp(GP.close[f], GP.wide[f], wide); return lerp(GP.off[f], lerp(day, GP.night[f], n), k); };
+  const mixv = (i) => { const day = lerp(GP.close.veil[i], GP.wide.veil[i], wide); return lerp(day, GP.night.veil[i], n); };
+  const P = { sat: mix("sat"), toe: mix("toe"), S: mix("S"), bl: mix("bl"), gl: mix("gl"), vt: mix("vt"), vb: mix("vb") };
+  const key = Object.values(P).map((v) => v.toFixed(3)).join(",") + n.toFixed(2) + wide;
+  if (key === gradeKey) return; gradeKey = key;
+  GL.style.filter = `saturate(${P.sat.toFixed(3)}) url(#gmgrade)`;
+  const curve = (x, off) => { let y = x + (y0(x) - x) * P.S * 2; y += (P.toe / 255) * (1 - x) ** 3 + (off / 255) * 4 * x * (1 - x); return clamp(y).toFixed(4); };
+  const y0 = (x) => x * x * (3 - 2 * x);
+  [0, P.gl, P.bl].forEach((off, c) => GF[c].setAttribute("tableValues", Array.from({ length: 33 }, (_, i) => curve(i / 32, off)).join(" ")));
+  const vc = [0, 1, 2].map((i) => Math.round(mixv(i))).join(",");
+  VEIL.style.background = `linear-gradient(180deg, rgba(${vc},${P.vt.toFixed(3)}) 0%, rgba(${vc},${((P.vt + P.vb) / 2).toFixed(3)}) 45%, rgba(${vc},${P.vb.toFixed(3)}) 100%)`; };
 const WO = document.getElementById("whiteout"), WW = document.getElementById("wwarm"), WS = document.getElementById("wisps"), FOGW = new THREE.Color(0.80, 0.79, 0.74);
 // v4: the cool phase is the real cloud interior (the camera is inside the volumetric deck 15.6-16.3) under a thin cool veil;
 // the flat warm cream covers the cut (16.3-17.2), then the battlefield comes out through the dissolving close deck.

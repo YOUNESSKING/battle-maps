@@ -443,14 +443,15 @@ class Spawns {
   }
   range(t) { return [lowerBound(this.t, this.n, t - this.maxLife), lowerBound(this.t, this.n, t + 1e-9)]; }
 }
-const SMOKE_FIELDS = ['mode', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'k', 'rise', 'wk', 'turb', 'ph', 's0', 'grow', 'life', 'a0', 'rot', 'spin', 'cell', 'r', 'g', 'b', 'gy', 'fin'];
+const SMOKE_FIELDS = ['mode', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'k', 'rise', 'wk', 'turb', 'ph', 's0', 'grow', 'life', 'a0', 'rot', 'spin', 'cell', 'r', 'g', 'b', 'gy', 'fin', 'fo'];
 
 // Smoke looks. 'gm' = Grand Maneuver (France 1814): soft, translucent, cool blue-grey haze plumes
 // that rise and drift; 'billow' = dense sunlit white cauliflower powder smoke (Borodino paintings).
 const LOOKS = {
   // v5 (critic B 4): GM's musketry smoke is an UNLIT cool see-through grey curtain (~(120,125,122) over his fields, the ground shows through),
   // soft-edged, taller than wide, hanging where it was fired and drifting sideways slowly: mode 4.3 = curtain sprite stretched x1.6
-  gm:     { tint: [0.205, 0.23, 0.262], alpha: 0.22, s0: 6.7, grow: 3.4, rise: 0.25, turb: 0.8, life: 18, mode: 4.3 },
+  // v6 (critic B 6): neutral grey (his ratio 0.55:0.57:0.60, scaled for an UNLIT sprite: renders sRGB ~(150,153,157)), +40 % opacity, 1.5x wider, calmer
+  gm:     { tint: [0.31, 0.32, 0.336], alpha: 0.27, s0: 10.0, grow: 4.4, rise: 0.22, turb: 0.4, life: 18, mode: 4.3 },
   gmOld:  { tint: [0.66, 0.66, 0.67], alpha: 0.15, s0: 4.2, grow: 7.0, rise: 1.0, turb: 3.0, life: 16, mode: 3 },   // v4 lit haze puffs
   billow: { tint: [0.93, 0.93, 0.92], alpha: 0.50, s0: 3.2, grow: 5.8, rise: 0.35, turb: 2.2, life: 16, mode: 0 },
 };
@@ -488,7 +489,7 @@ export function createFX(cfg = {}) {
     fxSunDir: { value: sunDir },
     fxPoolPos: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
     fxPoolCol: { value: Array.from({ length: MAXPOOL }, () => new THREE.Vector4()) },
-    fxPoolN: { value: 0 },
+    fxPoolN: { value: 0 }, fxNight: { value: 0 },   // v6: night factor for the ground patch (roads darken at night)
     // v3: sprite cumulus shadows (discs at cloud height, projected along fxCuL) + one floating plane's shadow (the 3D title)
     fxCu: { value: Array.from({ length: 64 }, () => new THREE.Vector4()) }, fxCuN: { value: 0 }, fxCuL: { value: new THREE.Vector4(0.35, 1, 0.2, 0.55) },
     fxPlTex: { value: null }, fxPlOn: { value: 0 }, fxPlO: { value: new THREE.Vector3() }, fxPlX: { value: new THREE.Vector3() }, fxPlY: { value: new THREE.Vector3() },
@@ -515,7 +516,7 @@ export function createFX(cfg = {}) {
     x += Math.sin(age * 0.71 + ph) * ta; z += Math.sin(age * 0.53 + ph * 1.7) * ta; y += Math.sin(age * 0.61 + ph * 2.3) * ta * 0.35;
     const size = P.s0[i] + P.grow[i] * Math.sqrt(age);
     const u = age / life;
-    const a = P.a0[i] * Math.min(1, age / Math.max(P.fin[i], 1e-3)) * (1 - smooth(0.35, 1.0, u));
+    const a = P.a0[i] * Math.min(1, age / Math.max(P.fin[i], 1e-3)) * (1 - smooth(P.fo[i] || 0.35, 1.0, u));   // v6: fo = fade start (fire columns fade from low down: no flat cap)
     batch.push(x, y + size * 0.15, z, size, P.rot[i] + P.spin[i] * age, a, P.cell[i], P.mode[i], P.r[i], P.g[i], P.b[i], P.gy[i]);
   }
   function smokeEmitter(list, maxLife, extra) {
@@ -530,7 +531,7 @@ export function createFX(cfg = {}) {
       ph: rnd() * 100, s0: o.s0 * (0.75 + 0.5 * rnd()), grow: o.grow * (0.75 + 0.5 * rnd()), life: o.life * (0.75 + 0.5 * rnd()),
       a0: o.a0 * (0.75 + 0.5 * rnd()), rot: rnd() * 6.283, spin: (rnd() - 0.5) * (o.spin ?? 0.25), cell: Math.floor(rnd() * 4),
       r: o.tint[0] * (0.94 + 0.08 * rnd()), g: o.tint[1] * (0.94 + 0.08 * rnd()), b: o.tint[2] * (0.94 + 0.08 * rnd()),
-      gy: heightAt(x, z), fin: o.fin ?? 0.25, mode: o.mode ?? 0,
+      gy: heightAt(x, z), fin: o.fin ?? 0.25, mode: o.mode ?? 0, fo: o.fo ?? 0.35,
     };
   }
 
@@ -594,19 +595,19 @@ export function createFX(cfg = {}) {
     for (let k = 0; k < n; k++) {
       const spread = (rnd() - 0.5) * 0.5, c = Math.cos(spread), s = Math.sin(spread);
       const dx = d.x * c - d.y * s, dz = d.x * s + d.y * c;
-      const v = (120 + 260 * rnd()) * jet, fr = k / n;   // k 2.6: travels v / 2.6 = 45-150 m (~1 box length)
-      list.push(puff(rnd, tBurst + fr * 0.08, px, py + h, pz, { vx: dx * v, vz: dz * v, vy: (1 + 3 * rnd()) * U, k: 2.6, rise: 0.35, turb: 0.9, s0: L0.s0 * 1.0 * sz * (o.plume ?? 1),
-        grow: L0.grow * 1.6 * sz * (o.plume ?? 1), life: life * (0.8 + 0.4 * rnd()), a0: o.alpha ?? L0.alpha * 1.9, tint: o.tint || L0.tint, fin: 0.05, spin: 0.05, mode: L0.mode, wk: o.windK ?? 0.6 }));
+      const v = (240 + 260 * rnd()) * jet, fr = k / n;   // v6: k 2.6 -> travels v / 2.6 = 90-190 m = 0.7-1.5 units (1-2 box lengths)
+      list.push(puff(rnd, tBurst + fr * 0.08, px, py + h, pz, { vx: dx * v, vz: dz * v, vy: (1 + 3 * rnd()) * U, k: 2.6, rise: 0.35, turb: 0.9, s0: L0.s0 * 0.9 * sz * (o.plume ?? 1),
+        grow: L0.grow * 1.6 * sz * (o.plume ?? 1), life: life * (0.8 + 0.4 * rnd()), a0: o.alpha ?? L0.alpha * 1.6, tint: o.tint || L0.tint, fin: 0.05, spin: 0.05, mode: L0.mode, wk: o.windK ?? 0.6 }));
     }
     for (let k = 0; k < (o.dust ?? 4); k++) { // ground dust kicked up around the gun
       const a = rnd() * 6.283, v = (6 + 10 * rnd()) * U;
       list.push(puff(rnd, tBurst + 0.02, px, py + 0.3 * U, pz, { vx: Math.cos(a) * v - d.x * 4 * U, vz: Math.sin(a) * v - d.y * 4 * U, vy: 0.5 * U, k: 2.0, rise: 0.15, turb: 0.6, s0: 2.5 * sz, grow: 2.5 * sz, life: 5, a0: 0.25, tint: [0.42, 0.38, 0.32], fin: 0.1, mode: 4.0 }));
     }
     smokeEmitter(list, life * 1.3);
-    const fl = [], fk = o.flash ?? 1, fc = o.flashColor || [1.25, 0.55, 0.16];
+    const fl = [], fk = (o.flash ?? 1) * 3, fc = o.flashColor || [0.85, 0.3, 0.06], fl0 = o.flashLife ?? 0.095;   // v6 (critic B 5): flash 3x, no ground light
     // orange core + a forward tongue: visible for 0.09 s (2-3 frames at 30 fps), never white (r <= 1.25 additive, g/b low)
-    fl.push({ t: tBurst, x: px + d.x * 2 * U, y: py + h, z: pz + d.y * 2 * U, size: 7 * sz * fk, life: 0.095, r: fc[0], g: fc[1], b: fc[2], a0: 0.85, rot: 0, cell: 6, pool: (o.pool ?? 9) * sz, gy: 0 });
-    for (let k = 0; k < 2; k++) fl.push({ t: tBurst, x: px + d.x * (4 + 5 * k) * U, y: py + h, z: pz + d.y * (4 + 5 * k) * U, size: (4.5 - 1.5 * k) * sz * fk, life: 0.075, r: 1.3, g: 0.7, b: 0.22, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
+    fl.push({ t: tBurst, x: px + d.x * 2 * U, y: py + h, z: pz + d.y * 2 * U, size: 7 * sz * fk, life: fl0, r: fc[0], g: fc[1], b: fc[2], a0: 0.85, rot: 0, cell: 6, pool: (o.pool ?? 0) * sz, gy: 0 });
+    for (let k = 0; k < 2; k++) fl.push({ t: tBurst, x: px + d.x * (4 + 5 * k) * U, y: py + h, z: pz + d.y * (4 + 5 * k) * U, size: (4.5 - 1.5 * k) * sz * fk, life: fl0 * 0.8, r: 0.9, g: 0.36, b: 0.08, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
     flashEmitter(fl);
   }
   // v5: a bare additive glow (e.g. a gun flash reflected on the water at night): {size, life, color, alpha, pool}
@@ -656,7 +657,7 @@ export function createFX(cfg = {}) {
     for (let k = 0; k < ns; k++) {
       const t = t0 + rnd() * (tSm - t0), p = at(), e = Math.max(env(t), 0.35 * (1 - smooth(tEnd, tSm, t)) * smooth(t0, t0 + ramp, t));
       const dark = o.smokeTint || [0.16, 0.15, 0.14];
-      const q = puff(rnd, t, p.x, p.y + 3 * U * (o.size ?? 1), p.z, { vy: 2 * U, k: 0.5, rise: (o.rise ?? 5.5) * (o.size ?? 1), wk: o.smokeWind ?? 1.1, turb: o.smokeTurb ?? 3, s0: (o.smokeS0 ?? 5) * sz, grow: (o.smokeGrow ?? 9.5) * sz, life, a0: (o.smokeAlpha ?? 0.78) * e, tint: dark, fin: 0.6, spin: 0.15, mode: o.smokeMode ?? 0 });
+      const q = puff(rnd, t, p.x, p.y + 3 * U * (o.size ?? 1), p.z, { vy: 2 * U, k: 0.5, rise: (o.rise ?? 5.5) * (o.size ?? 1), wk: o.smokeWind ?? 1.1, turb: o.smokeTurb ?? 3, s0: (o.smokeS0 ?? 5) * sz, grow: (o.smokeGrow ?? 9.5) * sz, life, a0: (o.smokeAlpha ?? 0.78) * e, tint: dark, fin: 0.6, spin: 0.15, mode: o.smokeMode ?? 0, fo: o.smokeFade ?? 0.35 });
       q.fireLit = 1; smoke.push(q);
     }
     const SP = new Spawns(smoke, life * 1.3, SMOKE_FIELDS);
@@ -1111,11 +1112,11 @@ export function createFX(cfg = {}) {
                 }
               }
             }
-            vec3 fxPl = vec3(0.0);
             if (fxNight > 0.0) {   // v6 (critic B 13): the rust roads would glow like veins in the moonlight: darken road-coloured ground at night
               float rd = smoothstep(0.08, 0.15, diffuseColor.r - diffuseColor.g) * smoothstep(0.12, 0.2, diffuseColor.r - diffuseColor.b);   // linear: road (142,88,58) r-g 0.17, tan field 0.06
               outgoingLight *= 1.0 - 0.65 * fxNight * rd;
             }
+            vec3 fxPl = vec3(0.0);
             for (int i = 0; i < ${MAXPOOL}; i++) {
               if (i >= fxPoolN) break;
               vec3 dd = vFxWorld - fxPoolPos[i].xyz;

@@ -276,7 +276,7 @@
     const gCandle = mk(Lgrade, "", "", "inset:0;mix-blend-mode:soft-light");
     const paper = mk(Lpaper, "paper", ""), grain = mk(Lgrain, "grain", ""), vig = mk(Lvig, "vig", "");
     const grainURLs = [0, 1, 2, 3, 4, 5].map((i) => grainTex(seed * 31 + i));
-    const GW = { day: [0.55, 0, 0, 0], dusk: [0.3, 1, 0, 0], night: [0, 0, 0.12, 0],   /* v5: the film layers now REALLY blend (filmHost), so much lighter weights than the old veils */   /* clip: the 3D world already lights the night */ candle: [0, 0, 0, 1], none: [0, 0, 0, 0] };
+    const GW = { day: [0, 0, 0, 0],   /* v6: no warm push (critics: too warm/yellow) */ dusk: [0.3, 1, 0, 0], night: [0, 0, 0.12, 0],   /* v5: the film layers now REALLY blend (filmHost), so much lighter weights than the old veils */   /* clip: the 3D world already lights the night */ candle: [0, 0, 0, 1], none: [0, 0, 0, 0] };
     O.film = {
       grade(t, mode, d = 1.0, o = {}) { gradeKeys.push({ t, mode, d, o }); gradeKeys.sort((a, b) => a.t - b.t); return O; },
       set(o = {}) { if (o.grain != null) grain.style.opacity = o.grain; if (o.paper != null) paper.style.opacity = o.paper; if (o.vignette != null) vig.style.opacity = o.vignette; return O; },
