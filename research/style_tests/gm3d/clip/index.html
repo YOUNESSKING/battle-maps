@@ -121,17 +121,23 @@ for (const c of [[1518, 706, 30], [1512, 717, 28], [1526, 699, 26], [1521, 726, 
 // the dive deck (group 1) that billows up 14.6-15.2 and swallows the camera; close: a low deck the camera falls through that
 // tears into patchy remnants (group 1) + high clouds that only cast shadows (group 0).
 const NOISE = await loadCloudNoise("cloudtex/noise128.bin");
-const wideCl = sparse.map(([x, z, r]) => [x, z, r * 1.35, r * 0.5, 50 + hsh(x, 11) * 4, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 1.0, 60 + hsh(z, 12) * 3, 1]));
-const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1200, 520, 1920, 1010], texel: 1, slab: [44, 104], tile: 40, groupScale: 2.2, amp: 6, soft: 2.6, sigma: 0.9,
-  stepIn: 0.5, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 220, resolution: 0.5, shadow: 0.5, drift: [0.10, -0.035], evolve: 0.0025,
-  sunK: 0.6, ambK: 0.45, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))] });
+// wide fair-weather cumulus: big flat clouds (his wide map: ~1/5 frame across), kept off the bridge and Vicksburg so the story stays readable
+const wsp = [];
+for (let i = 0, gx = 1230; gx < 1880; gx += 95) for (let gz = 540; gz < 960; gz += 95, i++) {
+  const x = gx + hsh(i, 41) * 80, z = gz + hsh(i, 42) * 80;
+  if (hsh(i, 43) < 0.42 && Math.hypot(x - 1518, z - 706) > 70 && Math.hypot(x - 1388, z - 681) > 45) wsp.push([x, z, 28 + hsh(i, 44) * 26]); }
+const wideCl = wsp.map(([x, z, r], i) => [x, z, r, r * 0.42, 50 + hsh(i, 11) * 5, 0]).concat(deck.map(([x, z, r]) => [x, z, r, r * 1.0, 60 + hsh(z, 12) * 3, 1]));
+const VCW = fxW.vclouds({ noise: NOISE, clouds: wideCl, bounds: [1200, 520, 1920, 1010], texel: 1, slab: [44, 104], tile: 70, groupScale: 3.5, amp: 9, soft: 3.5, sigma: 0.8,
+  stepIn: 0.35, stepK: 0.0035, lightStep: 1.0, lodDist: 260, nearFade: 3, maxSteps: 260, resolution: 0.7, warp: 0.08, fine: 0.35, shadow: 1.0, drift: [0.10, -0.035], evolve: 0.0025,
+  sunK: 0.75, ambK: 0.38, erode: (t) => [0, lerp(2.2, 0, sstep(DV.deckIn - 0.3, DV.deck, t))] });
 const closeCl = [];
 for (let i = 0, gx = 1478; gx < 1562; gx += 9) for (let gz = 670; gz < 742; gz += 9, i++) closeCl.push([gx + (hsh(i, 21) - 0.5) * 7, gz + (hsh(i, 22) - 0.5) * 7, 6 + hsh(i, 23) * 5, 6 + hsh(i, 24) * 6, 20 + hsh(i, 25) * 5, 1]);
-for (let i = 0, gx = 1440; gx < 1600; gx += 26) for (let gz = 640; gz < 780; gz += 26, i++) if (hsh(i, 31) < 0.45) closeCl.push([gx + hsh(i, 32) * 20, gz + hsh(i, 33) * 20, 9 + hsh(i, 34) * 6, 8, 82, 0]);
-const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [16, 96], tile: 14, amp: 2.4, soft: 1.0, sigma: 1.3,
-  stepIn: 0.2, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 240, resolution: 0.5, shadow: 0.42, drift: [0.06, -0.02], evolve: 0.004, sunK: 0.6, ambK: 0.45,
+const VCC = fxC.vclouds({ noise: NOISE, clouds: closeCl, bounds: [1420, 620, 1620, 800], texel: 0.25, skip: 8, slab: [16, 50], tile: 14, amp: 2.4, soft: 1.0, sigma: 1.3,
+  stepIn: 0.2, stepK: 0.004, lightStep: 0.4, lodDist: 90, nearFade: 1.2, maxSteps: 240, resolution: 0.7, warp: 0.1, shadow: 0.42, drift: [0.06, -0.02], evolve: 0.004, sunK: 0.75, ambK: 0.38,
   erode: (t) => [0, lerp(0, 3.2, sstep(DV.SW, DV.emerge + 0.9, t)) + lerp(0, 2.5, sstep(DV.emerge + 0.9, 21.5, t))],
   opacity: (t) => 1 - sstep(21.0, 21.6, t) });
+// the battle's drifting cloud shadows (as in v3): the old noise layer, shadows only (its own pass stays off)
+fxC.clouds({ base: 48 * M, top: 104 * M, tile: 260 * M, coverage: 0.36, shadow: 0.40, opacity: 0, detail: 0.5 });
 
 // cold open: the bridge already burning, seen from altitude (a fleck of fire + a dark column bending downwind)
 fxW.fire(GWd(BR.x, BR.z, 0.6), EV.bridgeFireWide - 3, T.dive + 1, { size: 6, flameK: 1.0, flameA: 0.7, flameRate: 6, emberRate: 1, glowSize: 2.2, smokeRate: 1.6, smokeLife: 14, rise: 2, light: false, ramp: 2, smokeTint: [0.16, 0.15, 0.14], smokeAlpha: 0.55, smokeS0: 0.9, smokeGrow: 1.6, smokeWind: 3 });

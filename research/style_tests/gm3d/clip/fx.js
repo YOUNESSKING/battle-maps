@@ -278,7 +278,7 @@ float vcDens(vec3 p, vec4 m, float lod) {
   vec4 n0 = texture(vcNoise, q * 0.29);
   vec3 w = (n0.agb - 0.5) * vcQ.z;
   vec4 n1 = texture(vcNoise, q + w);
-  float d = s + amp * (1.0 * (n0.r - 0.52) + 0.62 * (n1.g - 0.5) + 0.30 * (n1.b - 0.5)) - er;
+  float d = s + amp * (1.0 * (n0.r - 0.52) + mix(0.5, 0.62, m.b) * (n1.g - 0.5) + mix(0.14, 0.30, m.b) * (n1.b - 0.5)) - er;   // wide fair-weather clouds: softer, fewer small billows
   if (lod > 0.0 && d > -amp * 0.2 && d < amp * 0.7) d += amp * vcQ.y * lod * (texture(vcNoise, q * 3.3 + w * 1.7).b - 0.5);
   float dn = clamp(d / vcP.z, 0.0, 1.0);
   dn *= mix(1.0, 0.25 + 1.1 * n1.g, vcInner);   // mottled interior (never a flat card)
@@ -901,12 +901,11 @@ export function createFX(cfg = {}) {
         const ang = Math.atan2(dz, dx), lump = 1 + 0.3 * (fbm(Math.cos(ang) * 1.3 + c.ph, Math.sin(ang) * 1.3 + c.ph, 3) - 0.5) * 2;
         const r = rr / (c.R * lump), prof = r < 1 ? Math.pow(1 - r * r, 0.5) : -(r - 1) * 3;
         const tp = c.yb + c.H * prof;
-        if (tp > top[k]) { top[k] = tp; grp[k] = c.g; }
-        if (r < 1.25) bot[k] = Math.min(bot[k] === y0 ? 1e9 : bot[k], c.yb + c.H * 0.06 * Math.min(1, r * r));
+        if (tp > top[k]) { top[k] = tp; grp[k] = c.g; bot[k] = c.yb + c.H * 0.06 * Math.min(1, r * r); }   // base of the cloud that owns the column
       }
     }
     const data = new Uint16Array(MW * MD * 4), H16 = THREE.DataUtils.toHalfFloat;
-    for (let k = 0; k < MW * MD; k++) { data[k * 4] = H16(top[k]); data[k * 4 + 1] = H16(bot[k] > 1e8 ? y0 : bot[k]); data[k * 4 + 2] = H16(grp[k]); data[k * 4 + 3] = H16(Math.min(dist[k], 6e4)); }
+    for (let k = 0; k < MW * MD; k++) { data[k * 4] = H16(top[k]); data[k * 4 + 1] = H16(bot[k]); data[k * 4 + 2] = H16(grp[k]); data[k * 4 + 3] = H16(Math.min(dist[k], 6e4)); }
     const map = new THREE.DataTexture(data, MW, MD, THREE.RGBAFormat, THREE.HalfFloatType);
     map.minFilter = map.magFilter = THREE.LinearFilter; map.wrapS = map.wrapT = THREE.ClampToEdgeWrapping; map.needsUpdate = true;
     shared.vcNoise.value = o.noise; shared.vcMap.value = map; shared.vcB.value.set(x0, z0, 1 / (MW * tx), 1 / (MD * tx));
@@ -919,7 +918,7 @@ export function createFX(cfg = {}) {
       uOpacity: { value: 1 }, uStepIn: { value: o.stepIn ?? 0.6 }, uStepK: { value: o.stepK ?? 0.004 }, uLightStep: { value: o.lightStep ?? 1.2 },
       uNear: { value: o.nearFade ?? 2 }, uLodK: { value: 1 / (o.lodDist ?? 200) }, uMaxSteps: { value: o.maxSteps ?? 160 },
       uFogC: { value: new THREE.Color() }, uFogN: { value: 1e5 }, uFogF: { value: 2e5 }, uFogK: { value: o.fogK ?? 0.85 },
-      uSunK: { value: o.sunK ?? 1.6 }, uAmbK: { value: o.ambK ?? 1.0 },
+      uSunK: { value: o.sunK ?? 1.6 }, uAmbK: { value: o.ambK ?? 1.0 }, uLightK: { value: o.lightK ?? 0.8 },
     }, shared);
     const vs = /* glsl */`
       uniform mat4 uInvProj; uniform mat4 uCamWorld; varying vec3 vDir;
@@ -930,7 +929,7 @@ export function createFX(cfg = {}) {
       ${VC_GLSL}
       uniform vec3 uCam; uniform vec3 uSunCol; uniform vec3 uAmbTop; uniform vec3 uAmbBot; uniform float uOpacity;
       uniform float uStepIn; uniform float uStepK; uniform float uLightStep; uniform float uNear; uniform float uLodK; uniform float uMaxSteps;
-      uniform vec3 uFogC; uniform float uFogN; uniform float uFogF; uniform float uFogK; uniform float uSunK; uniform float uAmbK;
+      uniform float uLightK; uniform vec3 uFogC; uniform float uFogN; uniform float uFogF; uniform float uFogK; uniform float uSunK; uniform float uAmbK;
       varying vec3 vDir;
       float hg(float c, float g) { float g2 = g * g; return (1.0 - g2) / (12.566 * pow(1.0 + g2 - 2.0 * g * c, 1.5)); }
       void main() {
@@ -955,13 +954,13 @@ export function createFX(cfg = {}) {
           vec4 m = vcMapAt(p.xz);
           float st = max(uStepIn, t * uStepK);
           float gap = max(m.a - amp * 1.2, max((p.y - m.r - amp * 1.1) * 0.7, (m.g - amp * 0.4 - p.y) * 0.7));
-          if (gap > st) { t += gap; continue; }
+          if (gap > st) { t += gap; t = (ceil(t / st - jit) + jit) * st; continue; }   // land back on the jittered step grid (no contour banding)
           float d = vcDens(p, m, clamp(1.0 - t * uLodK, 0.0, 1.0)) * smoothstep(uNear * 0.3, uNear, t);
           if (d > 0.003) {
             float tau = 0.0, ls = uLightStep; vec3 lp = p;
             for (int k = 0; k < 5; k++) { lp += vcSun * ls; tau += vcDens(lp, vcMapAt(lp.xz), 0.0) * ls; ls *= 1.9; }
             float hn = clamp((p.y - m.g) / max(m.r - m.g, 1e-3), 0.0, 1.0);
-            float beer = exp(-tau * sig * 0.55) * 0.75 + exp(-tau * sig * 0.12) * 0.25;   // multiple-scattering approx (two octaves)
+            float beer = exp(-tau * sig * uLightK) * 0.78 + exp(-tau * sig * uLightK * 0.2) * 0.22;   // multiple-scattering approx (two octaves)
             float powder = 1.0 - 0.6 * exp(-d * 3.0 - tau * sig * 0.6);
             float occl = clamp(1.0 - (m.r - p.y) / max(m.r - m.g, 1e-3) * 0.55, 0.35, 1.0);
             vec3 S = uSunCol * (phase * beer * powder * uSunK) + mix(uAmbBot, uAmbTop, smoothstep(0.0, 1.0, hn)) * occl * uAmbK;

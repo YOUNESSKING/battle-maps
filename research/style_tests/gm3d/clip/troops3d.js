@@ -4,11 +4,11 @@
 // What GM's blocks are (measured from gm_1814.mp4 at 515, 682-700, 925 s, 2-6x crops; see README):
 //  - every battalion is a flat base plate in the side colour (French bright blue ~#2f5bc0) with a pale cream rim, brighter and wider on the
 //    FRONT edge, and on it a dense grid of tiny standing 3D soldiers (coloured coat, pale trousers / belts / face, a dark musket sliver);
-//  - in line ~12 files x 4-5 ranks, block ~2.3:1, ~4 % of frame width on his close shots, gaps ~1/6 of a block between battalions;
-//  - on the march the plate narrows into a column of files (4 abreast, ~12 deep) pointing along the road, blocks one behind the other;
+//  - in line ~12 files x 5 ranks, block ~2.3:1, ~4 % of frame width on his close shots, gaps ~1/6 of a block between battalions;
+//  - on the march the plate narrows into a column of files (4 abreast, 15 deep, gaps between the files) pointing along the road, blocks one behind the other;
 //  - long low-sun shadows: the figures throw a dark streak beside each block about as big as the block (we add a soft shadow quad on top
 //    of the real shadow map, whose 38 deg sun is fixed by world.js);
-//  - guns are separate small pieces (barrel + carriage + wheels) with the limber behind, crew around, no plate;
+//  - guns are separate pieces in the SIDE colour (long carriage + barrel + wheels, ~1/2 a block deep) with the limber behind, crew around, no plate;
 //  - squares (form:'square') are hollow plates with figures on the four faces; cavalry ('cav') are two ranks of riders on long horse bodies;
 //  - smoke: the blocks are real geometry in the close scene, so fx smoke sprites draw over them (sorted after the opaque pass).
 // Driven by the SAME unit objects as the boxes ({side, type, keys:[[t,x,y]], face, n, bw, bd, gap, t0, t1, cap, capN}), pure function of t.
@@ -22,21 +22,22 @@ const angDiff = (a, b) => { let d = b - a; while (d > Math.PI) d -= 2 * Math.PI;
 
 // colours (linear-ish hex; Lambert lit by world.js sun + hemisphere)
 const PAL = {
-  u: { coat: 0x24448e, pale: 0xcfd8e6, plate: 0x2f5bc0, rim: 0xe9edf2, flag: 0x1d2f7a, gun: 0x3a4a6a },
-  r: { coat: 0x8c8679, pale: 0xc9c0ac, plate: 0xb23a2c, rim: 0xeee6d8, flag: 0xb8261c, gun: 0x6a4a36 },
+  u: { coat: 0x24448e, pale: 0xcfd8e6, plate: 0x2f5bc0, rim: 0xe9edf2, flag: 0x1d2f7a, gun: 0x2f5bc0 },
+  r: { coat: 0x8c8679, pale: 0xc9c0ac, plate: 0xb23a2c, rim: 0xeee6d8, flag: 0xb8261c, gun: 0xb23a2c },
 };
 const GREY = { coat: 0x8a8580, pale: 0xb4b0aa };   // captured / prisoners
+const GREYC_HEX = 0x8a8580;
 
 // layouts in block-local coords (a = lateral, b = forward), unit square [-0.5,0.5]^2 scaled by the footprint later
 function gridLayout(cols, rows) { const P = []; for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) P.push([(c + 0.5) / cols - 0.5, 0.5 - (r + 0.5) / rows]); return P; }
 
 export function createTroops3D(o) {
   const { THREE, scene, heightAt, units, posAt } = o;
-  const S = { figH: 0.085, figW: 0.03, figD: 0.022, plateT: 0.014, lift: 0.004, shadowLen: 0.42, shadowA: 0.5, gunK: 1.8, ...o.style };
+  const S = { figH: 0.095, figW: 0.036, figD: 0.026, plateT: 0.014, lift: 0.004, shadowLen: 0.55, shadowA: 0.72, gunK: 2.8, ...o.style };
   const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();   // ground direction shadows fall
   const shots = (o.shots || []).slice().sort((a, b) => a.t - b.t);
-  const NF = 80, INF_LINE = gridLayout(16, 5), INF_COL = gridLayout(8, 10), CAV_LINE = gridLayout(14, 2), CAV_COL = gridLayout(4, 7);
-  const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 20 | 0, f = (k % 20 + 0.5) / 20 - 0.5, e = 0.5 - 0.06;
+  const NF = 60, INF_LINE = gridLayout(12, 5), INF_COL = gridLayout(4, 15), CAV_LINE = gridLayout(14, 2), CAV_COL = gridLayout(4, 7);
+  const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 15 | 0, f = (k % 15 + 0.5) / 15 - 0.5, e = 0.5 - 0.06;
     P.push(side === 0 ? [f, e] : side === 1 ? [e, -f] : side === 2 ? [-f, -e] : [-e, f]); } return P; })();
 
   // ---------- per block bookkeeping ----------
@@ -75,19 +76,20 @@ export function createTroops3D(o) {
   const horses = nCav ? mkIM(horseG, lam({ vertexColors: true }), nCav) : null;
   const plateFill = mkIM(box(1, 1, 1, 0, 0.5, 0), lam(), infBlocks.length, false);
   const plateRim = mkIM(box(1, 1, 1, 0, 0.5, 0), lam({ emissive: 0x2a2a2a }), infBlocks.length, false);
+  const holes = mkIM(box(1, 1, 1, 0, 0.5, 0), lam({ color: 0x55574a }), Math.max(1, infBlocks.filter((b) => b.u.form === "square").length), false);   // square's inner court
   // soft low-sun shadow streak (GM's long shadows): one quad per block, gradient texture, multiplied over the ground
   // the texture is a MULTIPLY mask (white = no change): dark at the block, fading out along the streak and at its two sides
   const SC = document.createElement("canvas"); SC.width = 64; SC.height = 64; { const g = SC.getContext("2d"), im = g.createImageData(64, 64);
     for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const v = y / 63, u = Math.abs(x / 63 - 0.5) * 2;
-      const a = S.shadowA * (v < 0.3 ? 1 : 1 - sstep(0.3, 1, v)) * (1 - sstep(0.7, 1, u)), c = Math.round(255 * (1 - a)), k = (y * 64 + x) * 4;
+      const a = S.shadowA * (1 - sstep(0.15, 1, v)) * (1 - 0.6 * sstep(0.8, 1, u)), c = Math.round(255 * (1 - a)), k = (y * 64 + x) * 4;
       im.data[k] = c; im.data[k + 1] = c; im.data[k + 2] = c * 0.98 + 5 * a; im.data[k + 3] = 255; }
     g.putImageData(im, 0, 0); }
-  const stex = new THREE.CanvasTexture(SC);
-  const shG = new THREE.PlaneGeometry(1, 1); shG.rotateX(-Math.PI / 2); shG.translate(0, 0, 0.5);   // starts at z=0, extends to +z
-  // drawn in the OPAQUE pass right after the ground (renderOrder 1, custom alpha blend, no depth test: the coarse terrain mesh would swallow a flat quad)
-  // so plates and figures (renderOrder 2) cover it and smoke draws over all
-  const shadows = mkIM(shG, new THREE.MeshBasicMaterial({ map: stex, fog: false, transparent: false, blending: THREE.CustomBlending, blendEquation: THREE.AddEquation,
-    blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor, depthWrite: false, depthTest: false }), blocks.length, false);
+  const stex = new THREE.CanvasTexture(SC); stex.colorSpace = THREE.SRGBColorSpace;   // so the multiply factor lands as drawn
+  const shG = new THREE.PlaneGeometry(1, 1); shG.rotateX(-Math.PI / 2); shG.translate(0.5, 0, 0.5);   // unit square x,z in [0,1]: x along the edge, z along the shadow
+  // drawn in the OPAQUE pass right after the ground (renderOrder 1, multiply blend) so plates and figures (renderOrder 2) cover it
+  // and smoke draws over all; the flat quad floats a little above the highest ground under it (the coarse terrain mesh would swallow it) but stays under tree crowns
+  const shadows = mkIM(shG, new THREE.MeshBasicMaterial({ map: stex, fog: false, side: THREE.DoubleSide, transparent: false, blending: THREE.CustomBlending, blendEquation: THREE.AddEquation,
+    blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor, depthWrite: false, depthTest: true }), blocks.length * 2, false);
   shadows.receiveShadow = false; shadows.renderOrder = 1;
   // colour standards: thin pole + small flag per infantry block
   const poles = mkIM(box(0.004, 0.13, 0.004, 0, 0.065, 0), lam({ color: 0x2a2018 }), infBlocks.length, true);
@@ -95,11 +97,11 @@ export function createTroops3D(o) {
   const flags = mkIM(flagG, lam({ side: THREE.DoubleSide }), infBlocks.length, true);
   // guns: carriage (side tint) + barrel (dark bronze) + 2 wheels; limber box behind
   const carriage = mkIM(box(0.05, 0.03, 0.16, 0, 0.03, 0.03), lam(), artBlocks.length);
-  const barrel = mkIM((() => { const g = new THREE.CylinderGeometry(0.014, 0.018, 0.17, 8); g.rotateX(Math.PI / 2); g.translate(0, 0.055, -0.03); return g; })(), lam({ color: 0x2d2a22 }), artBlocks.length);
+  const barrel = mkIM((() => { const g = new THREE.CylinderGeometry(0.014, 0.018, 0.17, 8); g.rotateX(Math.PI / 2); g.translate(0, 0.055, -0.03); return g; })(), lam({ color: 0x4a3c28 }), artBlocks.length);
   const wheels = mkIM((() => { const a = new THREE.CylinderGeometry(0.035, 0.035, 0.012, 10); a.rotateZ(Math.PI / 2); const b = a.clone(); a.translate(-0.042, 0.035, 0.0); b.translate(0.042, 0.035, 0.0); return merge([a, b], [0x2a2018, 0x2a2018]); })(), lam({ vertexColors: true }), artBlocks.length);
   const limber = mkIM(merge([box(0.075, 0.05, 0.09, 0, 0.05, 0), box(0.08, 0.012, 0.095, 0, 0.081, 0)], [0xffffff, 0xd8cfbc]), lam({ vertexColors: true }), artBlocks.length);
 
-  const M4 = new THREE.Matrix4(), col = new THREE.Color(), ZERO = new THREE.Matrix4().makeScale(0, 0, 0);
+  const GREYC = new THREE.Color(GREYC_HEX), M4 = new THREE.Matrix4(), col = new THREE.Color(), ZERO = new THREE.Matrix4().makeScale(0, 0, 0);
   // matrix from map-plane frame: lateral L=(-fy,fx), forward F=(fx,fy); local x->L, y->up, z->-F (keeps det > 0)
   const setM = (im, k, x, y, z, fx, fy, sx, sy, sz) => { M4.set(-fy * sx, 0, -fx * sz, x, 0, sy, 0, y, fx * sx, 0, -fy * sz, z, 0, 0, 0, 1); im.setMatrixAt(k, M4); };
   // pre-colour (static per instance); captured blocks get recoloured in update
@@ -117,12 +119,12 @@ export function createTroops3D(o) {
       if (m > best.m) best = { m, vx: dx / d, vy: dy / d, dist: d }; }
     const fx = Math.cos(u.face), fy = Math.sin(u.face), back = clamp(-(best.vx * fx + best.vy * fy) * 1.4);
     const longMarch = u.march != null ? +u.march : sstep(5.5, 7.0, best.dist);   // short moves = advance / fall back in line
-    return { ...best, col: best.m * longMarch * (1 - back), rout: best.m * back };
+    return { ...best, col: u.march ? 1 : best.m * longMarch * (1 - back), rout: u.march ? 0 : best.m * back };   // march: stays in column even when halted
   }
   const figAt = (b, j) => { const u = b.u; if (u.type === "cav") return [CAV_LINE[j], CAV_COL[j]]; if (u.form === "square") return [SQUARE[j], INF_COL[j]]; return [INF_LINE[j], INF_COL[j]]; };
 
   function update(t) {
-    let nf = 0, nh = 0, np = 0, ns = 0, nb = 0, ng = 0;
+    let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0; const ST = [];
     const H = (x, y) => heightAt(x, y);
     for (const u of units) {
       const on = t >= u.t0 && t < u.t1; const op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
@@ -132,7 +134,7 @@ export function createTroops3D(o) {
       const fx = Math.cos(th), fy = Math.sin(th), px = -fy, py = fx;
       const isArt = u.type === "art", isCav = u.type === "cav";
       const LY = LAY.get(u), bw = LY.bw, gap = LY.gap, bd = isArt ? u.bd : bw * 0.42;   // GM block ~2.4:1
-      const colW = bw * 0.5, colD = bd * 2.0;   // march column footprint (files ~8 abreast, ~10 deep)
+      const colW = bw * 0.42, colD = bd * 2.3;   // march column footprint: 4 files abreast with clear gaps, 15 deep (GM 515 s)
       const lineSpan = LY.nb * bw + (LY.nb - 1) * gap, colSpan = LY.nb * colD + (LY.nb - 1) * gap * 1.5;
       for (let i = 0; i < LY.nb; i++) {
         const b = { u, i }; const bi = blocks.findIndex((q) => q.u === u && q.i === i);
@@ -143,13 +145,26 @@ export function createTroops3D(o) {
         const W = lerp(bw, colW, mo.col), Dp = lerp(bd, colD, mo.col);
         const capd = u.cap != null && i * LY.k < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
         const rout = Math.max(mo.rout, capd * 0.6), seed = bi * 7.31;
+        ST.push({ u, i, b, bi, bx, by, W, Dp, colW, colD, capd, rout, seed, fx, fy, px, py, mo, op, isArt, isCav, cx, cy });
+      }
+    }
+    // crowd separation (deterministic, a pure function of this frame's positions): blocks of different units that the unit data puts
+    // on top of each other (e.g. brigades piling up at the bridge) are pushed apart, as GM's blocks never overlap
+    for (let it = 0; it < 4; it++) for (let a = 0; a < ST.length; a++) { const A = ST[a]; if (A.isArt) continue;
+      for (let c = a + 1; c < ST.length; c++) { const B = ST[c]; if (B.isArt || B.u === A.u) continue;
+        const dx = B.bx - A.bx, dy = B.by - A.by, d = Math.hypot(dx, dy) || 1e-3, rr = 0.55 * (Math.sqrt(A.W * A.Dp) + Math.sqrt(B.W * B.Dp));
+        if (d >= rr) continue; const k = (rr - d) * 0.5 / d; A.bx -= dx * k; A.by -= dy * k; B.bx += dx * k; B.by += dy * k; } }
+    for (const Q of ST) {
+        const { u, i, b, bi, bx, by, W, Dp, colW, colD, capd, rout, seed, fx, fy, px, py, mo, op, isArt, isCav, cx, cy } = Q;
         const hb = H(bx, by);
-        // soft shadow streak (all blocks)
-        { const sa = Math.atan2(SUNG[1], SUNG[0]), sfx = Math.cos(sa), sfy = Math.sin(sa); const len = S.shadowLen * op * (1 - 0.5 * rout);
-          // span across the shadow direction ~ the block's projected width
-          const across = Math.abs(W * (px * -sfy + py * sfx)) + Math.abs(Dp * (fx * -sfy + fy * sfx));
-          const L1 = len + Dp * 0.5, hs = Math.max(hb, H(bx + sfx * L1, by + sfy * L1), H(bx + sfx * L1 * 0.5, by + sfy * L1 * 0.5)) + 0.012;
-          setM(shadows, ns++, bx, hs, by, -sfx, -sfy, across * 0.98, 1, L1); }
+        // low-sun shadow: the block footprint swept along the sun direction = its two downwind edges swept (two sheared quads; the plate covers the rest)
+        { const len = (isArt ? 0.5 : 1) * S.shadowLen * op * (1 - 0.5 * rout), sx = SUNG[0] * len, sy = SUNG[1] * len;
+          const sF = Math.sign(fx * SUNG[0] + fy * SUNG[1]) || 1, sL = Math.sign(px * SUNG[0] + py * SUNG[1]) || 1, hw = W / 2, hd = Dp / 2;
+          let hs = hb; for (const [qx, qy] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) hs = Math.max(hs, H(bx + px * hw * qx + fx * hd * qy, by + py * hw * qx + fy * hd * qy), H(bx + px * hw * qx + fx * hd * qy + sx, by + py * hw * qx + fy * hd * qy + sy));
+          hs += 0.06;
+          // edge 1: the lateral edge on the downwind side, edge 2: the short side edge on the downwind side
+          for (const [ax, ay, ex, ey] of [[bx - px * hw + fx * hd * sF, by - py * hw + fy * hd * sF, px * W, py * W], [bx + px * hw * sL - fx * hd, by + py * hw * sL - fy * hd, fx * Dp, fy * Dp]]) {
+            M4.set(ex, 0, sx, ax, 0, 1, 0, hs, ey, 0, sy, ay, 0, 0, 0, 1); shadows.setMatrixAt(ns++, M4); } }
         if (isArt) {
           const k = ng++; const ab = artBlocks.findIndex((q) => q.u === u && q.i === i);
           // limbered on the march: limber ahead of the gun, barrel trailing
@@ -157,12 +172,14 @@ export function createTroops3D(o) {
           let rec = 0; for (const s of shots) { if (s.t > t) break; if (Math.hypot(s.x - cx, s.y - cy) < 0.9 && i === 0) rec = Math.max(rec, Math.exp(-(t - s.t) * 7) * (t - s.t < 1.2 ? 1 : 0)); }
           const gx = bx - fx * rec * 0.03 * G, gy = by - fy * rec * 0.03 * G, hg = H(gx, gy) + S.lift;
           const gf = mo.m > 0.5 ? -1 : 1;   // gun turned round when limbered
+          const capd2 = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;   // captured guns turn grey (the boxes do the same)
+          carriage.setColorAt(k, col.setHex(pal(b).gun).lerp(GREYC, capd2)); limber.setColorAt(k, col.setHex(pal(b).gun).lerp(GREYC, capd2));
           const og = op * G; setM(carriage, k, gx, hg, gy, fx * gf, fy * gf, og, og, og); setM(barrel, k, gx, hg, gy, fx * gf, fy * gf, og, og, og); setM(wheels, k, gx, hg, gy, fx, fy, og, og, og);
           const lx = bx + fx * lf, ly = by + fy * lf; setM(limber, k, lx, H(lx, ly) + S.lift, ly, fx, fy, og, og, og);
           // crew: four figures around the gun
           for (let j = 0; j < 4; j++) { const a = (j < 2 ? -1 : 1) * 0.07 * G, d = ((j % 2 ? 0.06 : -0.02) + 0.02 * Math.sin(t * 3 + j) * rec) * G;
             const x = gx + px * a + fx * -d, y = gy + py * a + fy * -d;
-            setM(coats, nf, x, H(x, y) + S.lift, y, fx, fy, S.figW * op, S.figH * op, S.figD * op); coats.setColorAt(nf, col.setHex(pal(b).coat));
+            setM(coats, nf, x, H(x, y) + S.lift, y, fx, fy, S.figW * op, S.figH * op, S.figD * op); coats.setColorAt(nf, col.setHex(pal(b).coat).lerp(GREYC, capd2));
             setM(pales, nf, x, H(x, y) + S.lift, y, fx, fy, S.figW * op, S.figH * op, S.figD * op); pales.setColorAt(nf, col.setHex(pal(b).pale)); nf++; }
           continue;
         }
@@ -171,7 +188,8 @@ export function createTroops3D(o) {
         const pk = op * (1 - rout * 0.85);   // plate shrinks away when the block breaks
         const ry = hb + S.lift;
         setM(plateRim, ip, bx + fx * 0.006, ry, by + fy * 0.006, fx, fy, (W + 0.03) * pk, S.plateT * pk, (Dp + 0.042) * pk);
-        if (u.form === "square") { setM(plateFill, ip, bx, ry + 0.001, by, fx, fy, W * 0.68 * pk, S.plateT * 1.1 * pk, W * 0.68 * pk); }
+        if (u.form === "square") { setM(plateRim, ip, bx, ry, by, fx, fy, (W * 0.8 + 0.03) * pk, S.plateT * pk, (W * 0.8 + 0.03) * pk); setM(plateFill, ip, bx, ry + 0.001, by, fx, fy, W * 0.8 * pk, S.plateT * 1.1 * pk, W * 0.8 * pk);
+          setM(holes, nq++, bx, ry + 0.002, by, fx, fy, W * 0.6 * pk, S.plateT * 1.2 * pk, W * 0.6 * pk); }
         else setM(plateFill, ip, bx - fx * 0.008, ry + 0.001, by - fy * 0.008, fx, fy, W * pk, S.plateT * 1.1 * pk, Dp * pk);
         // captured: plate fades to grey
         plateFill.setColorAt(ip, col.setHex(pal(b).plate).lerp(new THREE.Color(0x8a8580), capd));
@@ -196,11 +214,10 @@ export function createTroops3D(o) {
           const gk = capd; const P = pal(b);
           coats.setColorAt(nf, col.setHex(P.coat).lerp(new THREE.Color(GREY.coat), gk)); pales.setColorAt(nf, col.setHex(P.pale).lerp(new THREE.Color(GREY.pale), gk)); nf++;
         }
-      }
     }
-    coats.count = pales.count = nf; plateFill.count = plateRim.count = poles.count = flags.count = np; shadows.count = ns;
+    holes.count = nq; coats.count = pales.count = nf; plateFill.count = plateRim.count = poles.count = flags.count = np; shadows.count = ns;
     carriage.count = barrel.count = wheels.count = limber.count = ng; if (horses) horses.count = nh;
-    for (const m of [coats, pales, plateFill, plateRim, poles, flags, shadows, carriage, barrel, wheels, limber, horses]) if (m) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
+    for (const m of [holes, coats, pales, plateFill, plateRim, poles, flags, shadows, carriage, barrel, wheels, limber, horses]) if (m) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
     return { figures: nf, blocks: np, guns: ng };
   }
   // pre-index blocks so update() does not search (findIndex above stays O(n) but blocks are few hundred at most)
