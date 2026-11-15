@@ -33,7 +33,7 @@ import { createFX } from './fx.js';
 
 const W = 1920, H = 1080;
 const canvas = document.getElementById('fx-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
 renderer.setPixelRatio(1); renderer.setSize(W, H, false);
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
 
@@ -98,18 +98,19 @@ const gunMat = line(-330, -130, -330, 130, 6, 0x222222);
 const hemi = new THREE.HemisphereLight(0xc9d8ea, 0x4b4a3a, 1.2); scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xfff1dc, 2.6); scene.add(sun);
 
+const ease = (x) => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
 // ---------------- FX
 const fx = createFX({ scene, camera, renderer, unitsPerMeter: 1, fxScale: 1.25, wind: [4.5, 1.6], sunDir: [0.55, 0.62, 0.35], duration: 30, seed: 1812 });
 sun.position.copy(fx.sunDir).multiplyScalar(1000);
 for (const m of [groundMat, riverMat, woodMat, wallMat, roofMat, frMat, ruMat]) fx.patchGround(m);
 
 // musketry: French line fires east (+x), Russian line fires west; started well before t=0 so the bank exists
-fx.smokeLine([[-200, 0, -220], [-200, 0, -30], [-196, 0, 160]], -26, 10, { dir: [1, 0.05], rate: 16, volley: 2.4, roll: 1.2 });
-fx.smokeLine([[-30, 0, -220], [-34, 0, 160]], -24, 10, { dir: [-1, 0], rate: 12 });
+fx.smokeLine([[-200, 0, -220], [-200, 0, -30], [-196, 0, 160]], -26, 6.6, { dir: [1, 0.05], rate: 7, volley: 2.4, roll: 1.2 });
+fx.smokeLine([[-30, 0, -220], [-34, 0, 160]], -24, 6.4, { dir: [-1, 0], rate: 5 });
 // battery: six guns, staggered
 for (let g = 0; g < 6; g++) {
   const z = -130 + g * 52;
-  for (let k = 0; k < 12; k++) fx.cannon([-330, 0, z], -22 + k * 2.9 + g * 0.47 + (g % 2) * 0.9, { dir: [1, 0.03 * (g - 2.5)] });
+  for (let k = 0; k < 12; k++) if (-22 + k * 2.9 + g * 0.47 + (g % 2) * 0.9 < 6.6) fx.cannon([-330, 0, z], -22 + k * 2.9 + g * 0.47 + (g % 2) * 0.9, { dir: [1, 0.03 * (g - 2.5)] });
 }
 // shell impacts behind the Russian line
 for (let k = 0; k < 10; k++) fx.impact([20 + hash(k * 7) * 60, 0, -180 + hash(k * 13) * 320], 2.2 + k * 0.75);
@@ -125,19 +126,23 @@ for (let i = 0; i < 46; i++) {
   if (Math.abs(x - 250) < 30) continue;
   fx.campfire([x, 0, z], { t0: 6, t1: 10.5, visible: (t) => Math.min(1, Math.max(0, (t - 6.3 - hash(i) * 0.8) / 0.6)), seed: 900 + i });
 }
-fx.clouds({ base: 900, top: 1450, coverage: 0.5, tile: 5200, shadow: 0.38, resolution: 0.5, steps: 44 });
+// cloud deck: scattered cumulus at first, closing in as the camera dives, thinning again below
+fx.clouds({ base: 1100, top: 2700, tile: 7000, shadow: 0.4, resolution: 0.36, steps: 36,
+  coverage: (t) => t < 2.6 ? 0.42 + 0.43 * ease((t - 0.2) / 1.9) : 0.85 - 0.5 * ease((t - 2.45) / 0.6) });
+// light snow over the night bivouac
+fx.snow({ t0: 7.0, t1: 11, count: 1600, alpha: 0.85 });
 
 // ---------------- camera: dive through the clouds, then a slow oblique push, then dusk -> night
-const ease = (x) => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+// x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
 const lerp = (a, b, k) => a + (b - a) * k;
 const v3 = (a) => new THREE.Vector3(...a);
 const target = new THREE.Vector3();
 function cameraAt(t) {
   // keys: [time, position, lookAt]
   const K = [
-    [0.0, [-2600, 4400, 3400], [-150, 0, -100]],
-    [0.8, [-2300, 3800, 2950], [-150, 0, -100]],
-    [2.7, [-760, 430, 560], [-60, 0, -40]],
+    [0.0, [-150, 6200, 700], [-150, 0, -60]],
+    [1.0, [-150, 5000, 560], [-150, 0, -60]],
+    [3.0, [-760, 430, 560], [-60, 0, -40]],
     [6.4, [-560, 300, 330], [40, 0, -40]],
     [7.4, [-420, 260, 250], [90, 0, -40]],
     [10.0, [-250, 240, 330], [200, 0, -60]],
