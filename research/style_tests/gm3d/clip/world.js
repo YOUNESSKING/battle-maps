@@ -124,7 +124,11 @@ export function initWorld(canvas, opts = {}) {
     const pos = geo.attributes.position; for (let i = 0; i < pos.count; i++) pos.setY(i, heightAt(R, pos.getX(i), pos.getZ(i)));
     geo.computeVertexNormals();
     tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4; tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter;
-    const terrain = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ map: tex }));
+    const tmatG = new THREE.MeshLambertMaterial({ map: tex }); tmatG.userData.uNight = { value: 0 };
+    tmatG.onBeforeCompile = (sh) => { sh.uniforms.uNight = tmatG.userData.uNight;   // v6: at night the red roads go dark grey (no glowing veins); fx.patchGround chains after this
+      sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nuniform float uNight;").replace("#include <map_fragment>",
+        "#include <map_fragment>\n{ float rd = clamp((diffuseColor.r - diffuseColor.g) * 7.0 - 0.25, 0.0, 1.0) * uNight; diffuseColor.rgb = mix(diffuseColor.rgb, vec3(dot(diffuseColor.rgb, vec3(0.3, 0.45, 0.25)) * 0.6), rd); }"); };
+    const terrain = new THREE.Mesh(geo, tmatG);
     terrain.receiveShadow = true; terrain.castShadow = name === "close"; scene.add(terrain); R.terrain = terrain;
     // skirt: a dark ground plane far below so the box edge never shows a void
     const skirt = new THREE.Mesh(new THREE.PlaneGeometry(bw * 6, bh * 6).rotateX(-Math.PI / 2), new THREE.MeshLambertMaterial({ color: 0x6e6c56 }));
@@ -159,8 +163,8 @@ export function initWorld(canvas, opts = {}) {
     // tree record: [x, z, h_m, kind (0 wood, 1 conifer, 2 hedge, 3 lone), scale, colour 0..1, edge 0..1 (wood edge .. deep inside)]
     const trees = d.trees, ts = (name === "wide" ? 1.3 : 0.125) * O.treeScale;   // v4: smaller crowns (GM canopy grain is fine)
     const tmat = new THREE.MeshLambertMaterial();
-    const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x5e6648), teal = new THREE.Color(0x3a5e5c);
-    const GREENS = [0x374f4f, 0x3b5452, 0x3e5654, 0x344c4c, 0x405654, 0x384f4f, 0x425856, 0x345050];   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
+    const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x5e6648), teal = new THREE.Color(0x345e64);
+    const GREENS = [0x314f57, 0x35545a, 0x38565c, 0x2f4c55, 0x3a565d, 0x324f57, 0x3b585f, 0x2f5058];   // v6: teal (R -10 %, B +12 %)   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
     const NV = 4, variants = [];
     for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
       const lobes = 2 + (v % 3), P = [], N = [];
@@ -191,7 +195,7 @@ export function initWorld(canvas, opts = {}) {
           dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (wood ? 0.42 : 0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
           col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
           const hv = hash(j, 12); if (hv < 0.12) col.lerp(olive, 0.2 + hv); else if (hv > 0.7) col.lerp(teal, 0.45);
-          col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.94 + 0.08 * e : 0.92)); im.setColorAt(i, col); });
+          col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.83 + 0.07 * e : 0.82)); im.setColorAt(i, col); });
         R.scene.add(im); R.trees.push(im); });
     }
     if (pines.length && name === "close") {
@@ -247,17 +251,19 @@ export function initWorld(canvas, opts = {}) {
         if (i) { const k = (i - 1) * 4; for (let j = 0; j < 3; j++) idx.push(k + j, k + j + 4, k + j + 1, k + j + 1, k + j + 4, k + j + 5); }
       }
       let pg = new THREE.BufferGeometry(); pg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); pg.setIndex(idx); pg = pg.toNonIndexed(); pg.computeVertexNormals();
-      const par = new THREE.Mesh(pg, new THREE.MeshLambertMaterial({ color: 0x7c6448, side: THREE.DoubleSide })); par.castShadow = par.receiveShadow = true;
+      { const col = [], P = pg.attributes.position, Nn = pg.attributes.normal; for (let i = 0; i < P.count; i++) { const up = Nn.getY(i);   // v6: pale raw-earth top, darker faces
+          const c = new THREE.Color(up > 0.9 ? 0xa48a64 : 0x75603f); col.push(c.r, c.g, c.b); } pg.setAttribute("color", new THREE.Float32BufferAttribute(col, 3)); }
+      const par = new THREE.Mesh(pg, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide })); par.castShadow = par.receiveShadow = true;
       scene.add(par); R.parapet = par;
     }
     // v5: the three new bridges of 18 May (pontoon / raft bridges: dark boats under a plank deck), shown from opts.pontoonT[k] (default window.EV.bridgesNew)
     if (d.pontoons) {
       R.pontoons = d.pontoons.map((pb, k) => {
-        const g = new THREE.Group(), wl = pb.wl * ys + 0.002 * exag, len = pb.len, nb = Math.max(4, Math.round(len / 0.085));
-        const boat = new THREE.MeshLambertMaterial({ color: 0x2a2622 }), plank = new THREE.MeshLambertMaterial({ color: 0x8a6c4a });
-        for (let j = 0; j < nb; j++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.026, 0.05), boat); b.position.set(0, 0.004, -len / 2 + (j + 0.5) * len / nb); b.castShadow = true; g.add(b); }
-        const deck = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.012, len + 0.16), plank); deck.position.y = 0.024; deck.castShadow = deck.receiveShadow = true; g.add(deck);
-        for (const sx of [-0.052, 0.052]) { const rail = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.016, len + 0.1), boat); rail.position.set(sx, 0.036, 0); g.add(rail); }
+        const g = new THREE.Group(), wl = pb.wl * ys + 0.002 * exag, len = pb.len, nb = Math.max(4, Math.round(len / 0.11));
+        const boat = new THREE.MeshLambertMaterial({ color: 0x221e1a }), plank = new THREE.MeshLambertMaterial({ color: 0xc2a77e });   // v6: dark boats, pale plank deck, 2x wider
+        for (let j = 0; j < nb; j++) { const b = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.03, 0.07), boat); b.position.set(0, 0.004, -len / 2 + (j + 0.5) * len / nb); b.castShadow = true; g.add(b); }
+        const deck = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.014, len + 0.2), plank); deck.position.y = 0.026; deck.castShadow = deck.receiveShadow = true; g.add(deck);
+        for (const sx of [-0.104, 0.104]) { const rail = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.018, len + 0.14), boat); rail.position.set(sx, 0.036, 0); g.add(rail); }
         g.position.set(pb.x, wl, pb.z); g.rotation.y = pb.angle; scene.add(g); return { g, k };
       });
     }
@@ -289,8 +295,8 @@ export function initWorld(canvas, opts = {}) {
   }
 
   const DAY = { sun: new THREE.Color(0xfff2de), sunI: 1.0 * Math.PI, sky: new THREE.Color(0xe6ecf0), gnd: new THREE.Color(0x6a5a40), hemiI: 0.52 * Math.PI, fog: new THREE.Color(0xa9b3b4), water: new THREE.Color(0x2f4552) };   // v5: darker, bluer water (his rivers ~(83,86,88) with a dark edge)
-  const HAZE = new THREE.Color(0xa9b8c1);   // round 2: bluer, his blue-grey atmospheric cast
-  const NIGHT = { sun: new THREE.Color(0x9fb4e0), sunI: 0.75 * Math.PI, sky: new THREE.Color(0x40507a), gnd: new THREE.Color(0x10141c), hemiI: 0.6 * Math.PI, fog: new THREE.Color(0x141c2c), water: new THREE.Color(0x1c2a40) };
+  const HAZE = new THREE.Color(0xb4bcbc);   // v6: depth haze back at ~half (critic B 3)   // round 2: bluer, his blue-grey atmospheric cast
+  const NIGHT = { sun: new THREE.Color(0xa8c0ea), sunI: 0.95 * Math.PI, sky: new THREE.Color(0x40507a), gnd: new THREE.Color(0x10141c), hemiI: 0.42 * Math.PI, fog: new THREE.Color(0x141c2c), water: new THREE.Color(0x1c2a40) };   // v6: stronger moon, less fill -> moonlit relief
 
   world.update = (t, o = {}) => {
     world.t = t; const cs = camState(t); const R = regions[cs.region]; if (!R) return;
@@ -307,7 +313,8 @@ export function initWorld(canvas, opts = {}) {
     // v4 haze: on the oblique close camera the far ground fades into a pale sky-blue haze (GM 640-700 / 800 / 910-950 s):
     // smoothstep over view depth 0.78 d .. 2.3 d -> ~0 at the frame centre, ~0.45 at the top edge (tilt 52, fov 30)
     const cl = cs.region === "close" ? 1 : 0;
-    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 1.1 : 1.25); R.scene.fog.far = sd * (cl ? 2.9 : 8.0);   // v5: half the wide haze; close top edge ~0.2 (his top band keeps full contrast)
+    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 1.0 : 1.25); R.scene.fog.far = sd * (cl ? 2.6 : 8.0);   // v5: half the wide haze; close top edge ~0.2 (his top band keeps full contrast)
+    R.terrain.material.userData.uNight.value = n;
     R.wmat.color.copy(DAY.water).lerp(NIGHT.water, n); R.wmat.envMapIntensity = lerp(0.22, 0.1, n);
     renderer.setClearColor(R.scene.fog.color);
     // water motion: normal map drifts downstream

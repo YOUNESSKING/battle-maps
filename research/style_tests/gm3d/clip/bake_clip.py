@@ -33,9 +33,7 @@ GRID_TOWNS = {"Vicksburg": 3.0, "Jackson": 3.2}   # street-grid towns (block siz
 CLOSE_LANES = [[(1524.0, None), (1526.4, 699.0), (1528.2, 692.4), (1531.5, 686.0), (1534.0, 677.0)],
                [(1518.6, None), (1518.2, 709.6), (1517.2, 714.2), (1515.6, 722.0), (1514.0, 733.0)],
                [(1506.2, None), (1505.4, 707.8), (1504.0, 711.6), (1502.6, 718.0), (1500.0, 733.0)],
-               [(1539.6, None), (1542.6, 709.0), (1546.0, 712.5), (1547.0, 719.0), (1549.0, 733.0)],
-               [(1546.0, None), (1547.2, 701.5), (1548.5, 699.0), (1549.0, 690.0), (1551.0, 676.0)],
-               [(1531.0, None), (1532.4, 709.4), (1534.0, 711.2), (1535.4, 716.0), (1536.0, 719.5)]]
+]   # v6: fewer side roads
 
 def fbm(h, w, octaves=5, base=4, seed=0):
     r = np.random.default_rng(seed); acc = np.zeros((h, w), np.float32); amp, tot = 1.0, 0.0
@@ -144,6 +142,10 @@ def bake(name):
         rd_ = densify(ROADS[0], 0.05); rv_ = np.array([p[:2] for p in rivs[0]["pts"]], np.float32)
         dd_ = np.hypot(rd_[:, None, 0] - rv_[None, :, 0], rd_[:, None, 1] - rv_[None, :, 1]); k_ = np.unravel_index(dd_.argmin(), dd_.shape); bridge_xy = rv_[k_[1]]
         main_rd, lanes = close_roads(bridge_xy)
+        riv_ = np.array(rivs[0]["pts"], np.float32); pons = []   # v5: the three new bridges of 18 May (index.html crossing arrows at y 702.0 / 707.8 / 709.6, east branch)
+        for y_ in (702.0, 707.8, 709.6):
+            i = int(np.argmin(np.abs(riv_[:, 1] - y_) + (riv_[:, 0] < 1500) * 99)); a_, c_ = riv_[max(0, i - 3)], riv_[min(len(riv_) - 1, i + 3)]
+            ang = math.atan2(c_[1] - a_[1], c_[0] - a_[0]); pons.append(dict(x=round(float(riv_[i, 0]), 3), z=round(float(riv_[i, 1]), 3), angle=round(-ang, 4), len=round(rivs[0]["w"] * 1.08 + 0.34, 3), wl=round(float(riv_[i, 2]), 2)))
     # ---- breastworks (close): low earth parapet along the cotton-bale line ----
     bw_line = None
     if name == "close":
@@ -161,7 +163,7 @@ def bake(name):
     del gx, gy
     r = np.random.default_rng(seed); cell = R["cell"] * s
     # Voronoi fields on a jittered grid, edges warped by noise (worked at 1/2 res, then upsampled nearest)
-    LW, LH = TW // 2, TH // 2; cs = cell / 2
+    LW, LH = (TW, TH) if name == "close" else (TW // 2, TH // 2); cs = cell * LW / TW   # v6: close labels at full res (no 2-px stair-steps)
     seeds = np.zeros((LH, LW), np.uint8) + 255
     for yy_ in np.arange(cs / 2, LH + cs, cs * 0.7):
         for xx_ in np.arange(cs / 2, LW + cs, cs * 1.35):
@@ -188,7 +190,7 @@ def bake(name):
     wplan = wide_plan(dist, hw, box, h) if name == "wide" else None
     townmask = np.zeros((TH, TW), np.float32)
     for nm, (tx, ty, rad) in (wplan["towns"] if wplan else [(k, (v[0], v[1], v[2])) for k, v in TOWNS.items()]):
-        cx, cy = Pt((tx, ty)); cv2.circle(townmask, (int(cx), int(cy)), int(rad * s * (1.45 if nm in GRID_TOWNS and name == "wide" else 1.1)), 1.0, -1)
+        cx, cy = Pt((tx, ty)); cv2.circle(townmask, (int(cx), int(cy)), int(rad * s * ((1.45 if nm in GRID_TOWNS else 2.6) if name == "wide" else 1.1)), 1.0, -1)
     if town:
         for (tx, ty, rad) in town["clear"]: cx, cy = Pt((tx, ty)); cv2.circle(townmask, (int(cx), int(cy)), int(rad * s), 1.0, -1)
     if bw_line is not None:
@@ -204,19 +206,27 @@ def bake(name):
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * 0.5 - 0.72, fm2 * 0.85 + fm * 0.2 - 0.69) + (jag - 0.5) * 0.16   # v5: floodplain woods 0.3 -> 0.12 (fields reach the water)
         del jag
     else:
-        fm3 = fbm(TH, TW, 4, int(bw / 16), seed + 13)
-        fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.45 + slope * 0.5 - 0.82, fm3 * 0.75 + fm * 0.25 - 0.62)
+        fm3 = fbm(TH, TW, 4, int(bw / 10), seed + 13)   # v6: smaller, more numerous woods, ~25 % cover
+        fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.35 + slope * 0.4 - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1])   # clustered: big forests + scattered small woods
         del fm3
     forest = np.clip(fbase * 12, 0, 1); del fbase, fm2
     forest *= (1 - road0.astype(np.float32) / 255)
     forest *= (1 - cv2.GaussianBlur(townmask, (0, 0), 0.006 * TW)); forest *= (dist_t > hw_t + (0.6 if name == "wide" else 0.10))
+    if name == "close":   # v6: clear the woods 0.3 units either side of each new-bridge crossing (the pontoons + columns must read)
+        cm = np.zeros((TH, TW), np.uint8)
+        for pb in pons:
+            ax = np.array([-math.sin(-pb["angle"]), math.cos(-pb["angle"])])
+            p1, p2 = Pt(np.array([pb["x"], pb["z"]]) + ax * 3.0), Pt(np.array([pb["x"], pb["z"]]) - ax * 3.0)
+            cv2.line(cm, (int(p1[0]), int(p1[1])), (int(p2[0]), int(p2[1])), 1, int(0.6 * s))
+        forest *= (1 - cm.astype(np.float32)); del cm
+    else: print("  wide forest cover %.2f" % float((forest > 0.5).mean()))   # v6: ~0.25
     if name == "close":   # clearings / gaps inside the woods
         holes = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 1.4), seed + 61), (TW, TH)); forest *= (holes < 0.78); del holes
     forest = (cv2.GaussianBlur(forest, (0, 0), 0.5 if name == "close" else 0.3 * TW / 4096) > 0.5).astype(np.float32)   # v5: hard edges (his woods are crisp)
     forest = cv2.GaussianBlur(forest, (0, 0), 0.7 if name == "close" else 0.6 * TW / 4096)
     crown = fbm(TH, TW, 2, int(bw / (0.6 if name == "wide" else 0.09)), seed + 3)   # tree crowns speckle
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)   # darker inside, lighter rim
-    fcol = (hexc("#3a504c") if name == "close" else hexc("#22383a"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])   # v5: GM teal woods ~(51,70,70)
+    fcol = (hexc("#344f52") if name == "close" else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])   # v5: GM teal woods ~(51,70,70)
     img = img * (1 - forest[..., None]) + fcol * forest[..., None]; del fcol, crown, fdark
     ao = np.clip(cv2.GaussianBlur(forest, (0, 0), 0.0025 * TW) - forest, 0, 1)   # shade on the ground next to woods
     img *= (1 - 0.45 * ao)[..., None]; del ao
@@ -224,25 +234,26 @@ def bake(name):
     flood = np.clip(1 - (dist_t - hw_t) / (6.0 if name == "wide" else 1.0), 0, 1)[..., None] * (1 - forest[..., None])
     img = img * (1 - 0.22 * flood) + (hexc("#6f7a62") if name == "wide" else hexc("#7f8462")) * 0.22 * flood
     bank = np.clip(1 - (dist_t - hw_t) / (0.7 if name == "wide" else 0.12), 0, 1)[..., None]
-    img = img * (1 - bank * 0.6) + hexc("#6a6450") * bank * 0.6
-    bline = np.clip(1 - np.abs(dist_t - hw_t) / (0.35 if name == "wide" else 0.045), 0, 1)[..., None]
-    img = img * (1 - bline * 0.85) + hexc("#33392f") * bline * 0.85; del flood, bank, bline
+    bank *= (0.6 if name == "close" else 0.35); img = img * (1 - bank) + hexc("#5c5c4a") * bank
+    bline = np.clip(1 - np.abs(dist_t - hw_t) / (0.35 if name == "wide" else 0.045), 0, 1)[..., None] * (0.0 if name == "wide" else 0.85)   # v6: wide river not a striped double line
+    img = img * (1 - bline) + hexc("#33392f") * bline; del flood, bank, bline
     # town ground: yards, gardens, streets (close)
     if town: img = paint_town(img, town, Pt, s)
     # roads: v5 thick rust-brown dirt roads with a thin dark edge (GM: ~(150,90,70), the most readable lines on the map)
-    road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((1.4 if name == "wide" else 0.30) * s))
+    road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((0.9 if name == "wide" else 0.16) * s))   # v6: thinner (main 0.16 / lanes 0.08 units close, 0.9 wide)
     for i_, rd in enumerate(RDS):
         pts = np.array([Pt(p) for p in rd], np.float32)
-        cv2.polylines(road, [np.round(pts * 4).astype(np.int32)], False, 255, rwpx if (name == "wide" or i_ == 0) else max(3, int(0.22 * s)), cv2.LINE_AA, shift=2)
+        cv2.polylines(road, [np.round(pts * 4).astype(np.int32)], False, 255, rwpx if (name == "wide" or i_ == 0) else max(3, int(0.08 * s)), cv2.LINE_AA, shift=2)
     if town:
         for st, wdt in town["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(3, int(wdt * s)), cv2.LINE_AA, shift=2)
     if name == "wide":
         for st, wdt in wplan["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(2, int(wdt * s)), cv2.LINE_AA, shift=2)
     rdm = road.astype(np.float32) / 255
     edge = np.clip(cv2.GaussianBlur(cv2.dilate(road, np.ones((3, 3), np.uint8), iterations=1 if name == "close" else 2).astype(np.float32) / 255, (0, 0), 0.8) - rdm, 0, 1)[..., None]
-    img = img * (1 - 0.45 * edge) + hexc("#4a3426") * 0.45 * edge; del edge
+    img = img * (1 - 0.25 * edge) + hexc("#4a3a2e") * 0.25 * edge; del edge
     rdm = rdm[..., None]
-    rcol = hexc("#92583f") if name == "close" else hexc("#8c5a44")
+    rcol = hexc("#8a5e48") if name == "close" else hexc("#7a4a35")   # v6: browner, greyer
+    rdm = rdm * (0.85 if name == "close" else 0.7) * (0.85 + 0.3 * cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.5), seed + 71), (TW, TH))[..., None]).clip(0, 1.15)   # v6: mix 0.85 / 0.7, ragged edges
     img = img * (1 - rdm) + rcol * (1 + (cv2.resize(fbm(TH // 8, TW // 8, 3, 40, seed + 70), (TW, TH))[..., None] - 0.5) * 0.18) * rdm; del rdm, road
     tg = cv2.GaussianBlur(townmask, (0, 0), 0.004 * TW)[..., None] * (0.18 if name == "wide" else 0.0); img = img * (1 - tg) + hexc("#8c7b66") * tg
     if bw_line is not None:   # dark ditch right in front of the parapet + pale thrown-up spoil beyond it
@@ -260,10 +271,11 @@ def bake(name):
         shade += wgt * (np.clip(lam, 0, 1) / sun[1] - 1)
         del hb, dz, dx, lam
     if name == "wide":
-        k = 0.6; img *= (1 + k * (shade - 1))[..., None]
-        lit = np.clip((shade - 1.05) * 2.2, 0, 1)[..., None] * (1 - 0.8 * forest[..., None])   # GM: sunlit valley sides go pale lime-yellow ~(175,177,130)
-        img = img * (1 - 0.6 * lit) + hexc("#c6c48c") * 0.6 * lit; del lit
-        img *= np.array([0.96, 1.0, 1.0], np.float32)   # the boosted wide sun lifts the map: pre-darken a little (v4 x(0.78,0.85,0.88) was too dark and cool)
+        k = 0.9; img *= (1 + k * (shade - 1))[..., None]   # v6: more relief shading (tonal spread)
+        vt = np.clip(1 - (dist_t - hw_t - 2.0) / 14.0, 0, 1)   # v6: bright sunlit slopes along the river valleys
+        lit = np.clip((shade - 1.04) * 2.4, 0, 1)[..., None] * (1 - 0.8 * forest[..., None]) * (0.3 + 0.7 * vt[..., None])   # GM: sunlit valley sides go pale lime-yellow ~(175,177,130)
+        img = img * (1 - 0.75 * lit) + hexc("#d0cc96") * 0.75 * lit; del lit, vt
+        img *= np.array([0.9, 0.95, 0.98], np.float32)   # the boosted wide sun lifts the map: pre-darken a little (v4 x(0.78,0.85,0.88) was too dark and cool)
     else:
         img *= (1 + 0.5 * (shade - 1))[..., None]
     del shade, ht
@@ -325,11 +337,6 @@ def bake(name):
         _, p, i = best; t_ = riv[min(i + 2, len(riv) - 1), :2] - riv[max(i - 2, 0), :2]; t_ /= np.linalg.norm(t_)
         wl = float(riv[i, 2]); bank_h = float(np.percentile(sample(h, box, np.array([p + [math.cos(a) * 0.9, math.sin(a) * 0.9] for a in np.linspace(0, 6.28, 16)], np.float32)), 70))
         extra["bridge"] = dict(x=round(float(riv[i, 0]), 3), z=round(float(riv[i, 1]), 3), angle=round(math.atan2(t_[1], t_[0]) + math.pi / 2, 4), len=round(0.62 * 2.6, 3), wl=round(wl, 2), deck=round(max(bank_h, wl + 4) + 1.0, 2))
-        # v5: the three new bridges of 18 May (index.html crossing arrows at y 702.0 / 707.8 / 709.6, east branch of the river)
-        pons = []
-        for y_ in (702.0, 707.8, 709.6):
-            i = int(np.argmin(np.abs(riv[:, 1] - y_) + (riv[:, 0] < 1500) * 99)); a_, c_ = riv[max(0, i - 3)], riv[min(len(riv) - 1, i + 3)]
-            ang = math.atan2(c_[1] - a_[1], c_[0] - a_[0]); pons.append(dict(x=round(float(riv[i, 0]), 3), z=round(float(riv[i, 1]), 3), angle=round(-ang, 4), len=round(rivs[0]["w"] * 1.08 + 0.34, 3), wl=round(float(riv[i, 2]), 2)))
         extra["pontoons"] = pons
         bl = bw_line; bh_ = sample(h, box, bl.astype(np.float32))
         extra["breastworks"] = [[round(float(a), 3), round(float(b), 3), round(float(c), 2)] for (a, b), c in zip(bl, bh_)]
@@ -357,7 +364,7 @@ def wide_plan(dist, hw, box, h):
         if wet(tx, ty, 1.5): continue
         towns.append((nm, (tx, ty, rad)))
         rr = np.random.default_rng(sum(map(ord, nm)) + 11)
-        near_rd = RDP[np.hypot(RDP[:, 0] - tx, RDP[:, 1] - ty) < rad * 1.6]
+        near_rd = RDP[np.hypot(RDP[:, 0] - tx, RDP[:, 1] - ty) < rad * (1.6 if nm in GRID_TOWNS else 3.2)]
         if len(near_rd) > 4:
             j = int(np.hypot(near_rd[:, 0] - tx, near_rd[:, 1] - ty).argmin()); a_, b_ = near_rd[max(j - 5, 0)], near_rd[min(j + 5, len(near_rd) - 1)]
             ang = math.atan2(b_[1] - a_[1], b_[0] - a_[0])
@@ -388,7 +395,7 @@ def wide_plan(dist, hw, box, h):
                         c = np.array([tx, ty]) + u * (k * B + side * 0.6) + v * (q + B / 2)
                         if rr.random() < 0.3 and np.hypot(c[0] - tx, c[1] - ty) < R_: put(float(c[0]), float(c[1]), rr.uniform(0.6, 0.9), rr.uniform(0.42, 0.52), -ang - math.pi / 2, int(rr.integers(0, 4)), 0.55)
         else:   # star town: houses lining the roads through the centre, a short cross lane (v5b: bigger, so they read at wide scale)
-            k = 0; tries = 0; cnt_ = int(cnt * 1.6); rad = rad * 1.6
+            k = 0; tries = 0; cnt_ = int(cnt * 2.6); rad = rad * 2.4   # v6: 2-3x bigger star towns
             cross = np.array([tx, ty], np.float32) + v * np.linspace(-rad * 0.8, rad * 0.8, 12)[:, None]
             if not any(wet(*q, 0.6) for q in cross): streets.append((cross.astype(np.float32), 0.3))
             while k < cnt_ and tries < cnt_ * 40:
@@ -401,21 +408,26 @@ def wide_plan(dist, hw, box, h):
                     q = rr.uniform(-rad * 0.8, rad * 0.8); off = rr.uniform(0.7, 1.1) * rr.choice([-1, 1]); c = np.array([tx, ty]) + v * q + u * off
                     px, py = float(c[0]), float(c[1]); rot = -ang - math.pi / 2
                 if math.hypot(px - tx, py - ty) > rad * 1.3: continue
-                if put(px, py, rr.uniform(1.1, 1.9), rr.uniform(0.65, 0.85), rot, int(rr.integers(0, 4)), 0.62): k += 1
+                if put(px, py, rr.uniform(1.3, 2.3), rr.uniform(0.7, 0.95), rot, int(rr.integers(0, 4)), 0.62): k += 1
     return dict(towns=towns, streets=streets, houses=houses)
 
 
 def wide_fields(lab, n, cell, s, r, TW, TH, seed):
     """GM wide ground: muted green-grey-olive mosaic that reads as mottled texture (GM 620/1090 s: ~(80,90,74), (98,106,87), (68,79,67))."""
-    PAL = np.array([[84, 96, 74], [96, 104, 82], [104, 106, 84], [78, 90, 72], [114, 116, 94], [110, 102, 84], [90, 100, 84]], np.float32)
+    PAL = np.array([[72, 86, 66], [94, 104, 82], [108, 110, 88], [64, 78, 62], [124, 126, 102], [112, 104, 84], [86, 98, 82]], np.float32)   # v6: wider spread
     pr = np.array([0.24, 0.22, 0.14, 0.16, 0.10, 0.06, 0.08])
     ft = r.choice(len(PAL), n, p=pr / pr.sum())
     img = (PAL[ft] * r.uniform(0.94, 1.06, (n, 1)).astype(np.float32))[lab]
     img = cv2.GaussianBlur(img, (0, 0), cell * 0.12) * 0.6 + img * 0.4   # v5b: crisper field mosaic (push-in sharpness)
     m1 = fbm(TH // 4, TW // 4, 5, 6, seed + 8); m2 = fbm(TH // 4, TW // 4, 4, 30, seed + 14)
     mot = cv2.resize(m1 * 0.6 + m2 * 0.4, (TW, TH))
-    img *= (1 + (mot[..., None] - 0.5) * 0.38)   # v5: more tonal spread
+    img *= (1 + (mot[..., None] - 0.5) * 0.6)   # v6: more tonal spread (his wide SD ~30-37)
     img *= (1 + (cv2.resize(fbm(TH // 2, TW // 2, 3, 160, seed + 16), (TW, TH)) - 0.5)[..., None] * 0.16)   # v5b: fine mottle (his wide map is textured at every scale)
+    # v6 detail layer for the push-in (14.6-15.5 s): each wide field split into strips / sub-parcels of slightly different tone
+    ang = r.uniform(0, np.pi, n)[lab]; yy, xx = np.mgrid[0:TH, 0:TW].astype(np.float32)
+    si = np.floor((xx * np.cos(ang) + yy * np.sin(ang)) / (r.uniform(1.6, 3.6, n)[lab] * s)).astype(np.int64); del ang, yy, xx
+    hv = ((((lab.astype(np.int64) * 131 + si * 7) * 2654435761) % 4294967296) / 4294967296.0).astype(np.float32); del si
+    img *= cv2.GaussianBlur(1 + (hv - 0.5) * 0.08, (0, 0), 1.2)[..., None]; del hv
     g = cv2.resize(fbm(TH // 4, TW // 4, 4, 10, seed + 15), (TW, TH))[..., None]   # hue drift: olive <-> grey-green
     img = img * (1 - 0.25 * g) + np.array([86, 98, 88], np.float32) * 0.25 * g
     return img
@@ -434,8 +446,8 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     zone = cv2.resize(fbm(TH // 16, TW // 16, 3, 3, seed + 40), (TW, TH), interpolation=cv2.INTER_LINEAR)
     zf = zone[np.clip(cyf, 0, TH - 1).astype(int), np.clip(cxf, 0, TW - 1).astype(int)]   # zone at each field's centre
     # palette (texture values; the flat ground renders ~0.93 x): pale stubble, sand, sand 2, tan | rust, ploughed brown | olive, olive green | dark pasture x2
-    PAL = np.array([[186, 172, 144], [176, 160, 130], [166, 150, 120], [152, 140, 114], [150, 110, 84], [134, 108, 88],
-                    [120, 118, 98], [108, 110, 92], [88, 100, 84], [80, 94, 78]], np.float32)   # v5b: sand less yellow, rust rarer and less orange
+    PAL = np.array([[162, 152, 124], [158, 146, 118], [152, 140, 112], [144, 134, 108], [142, 110, 90], [130, 108, 94],
+                    [118, 118, 102], [106, 110, 98], [88, 100, 92], [80, 94, 86]], np.float32)   # v6: lightest ~(150,140,108) rendered, less chroma   # v5b: sand less yellow, rust rarer and less orange
     PR = np.array([0.09, 0.14, 0.13, 0.10, 0.06, 0.07, 0.13, 0.12, 0.09, 0.07]); CUM = np.cumsum(PR / PR.sum())
     uf = np.clip(r.random(n) * 0.75 + (zf - 0.5) * 0.9 + 0.125, 0, 0.999)   # zone bias: warm regions vs green regions
     cf = np.minimum(np.searchsorted(CUM, uf), len(PAL) - 1)
@@ -447,7 +459,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     hop = np.where(hs_(sub, 7) < 0.18, np.where(hs_(sub, 8) < 0.5, -1, 1), 0) * split[lab]
     crop = np.clip(cf[lab] + hop, 0, len(PAL) - 1); del hop
     img = PAL[crop] * (0.94 + 0.10 * hs_(lab64, 4) + 0.07 * (hs_(sub, 3) - 0.5) * split[lab])[..., None]
-    img = cv2.GaussianBlur(img, (0, 0), 0.02 * s)   # soft colour change at the edges, no outline
+    img = cv2.GaussianBlur(img, (0, 0), 1.8)   # v6: antialiased soft colour change at the edges (1.8 px at full res), no outline
     # brushed streaks along the strip direction (1-D noise across, slow drift along) + fine furrows
     nv = np.random.default_rng(seed + 50).random(int((TW + TH) * 2.2 / (0.025 * s)) + 8).astype(np.float32)
     nv = np.convolve(nv, np.ones(3) / 3, mode="same"); nv = (nv - nv.mean()) / (nv.std() + 1e-6)
@@ -457,13 +469,17 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     streak = nv[ki] * (1 - fr) + nv[ki + 1] * fr; del ki, fr, k_, off
     drift = cv2.resize(fbm(TH // 8, TW // 8, 3, 18, seed + 52), (TW, TH))
     samp = np.array([0.016, 0.02, 0.02, 0.02, 0.026, 0.026, 0.014, 0.014, 0.01, 0.01], np.float32)[crop]   # v5b: subtle (his streaks are soft)
-    img *= (1 + streak * samp * (0.5 + drift))[..., None]; del streak, drift
-    fur = np.sin(vv / (0.075 * s) * np.pi * 2 + fbm(TH, TW, 3, 24, seed + 44) * 5)
+    fade = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, 9, seed + 54), (TW, TH)) - 0.35) * 2.5, 0, 1)   # v6: streaks fade in and out
+    img *= (1 + streak * samp * 0.5 * (0.5 + drift) * fade)[..., None]; del streak, drift
+    fur = 0.6 * np.sin(vv / (0.075 * s) * np.pi * 2 + fbm(TH, TW, 3, 24, seed + 44) * 5) + 0.4 * np.sin(vv / (0.225 * s) * np.pi * 2 + cv2.resize(fbm(TH // 2, TW // 2, 3, 10, seed + 55), (TW, TH)) * 4)
     famp = np.array([0.008, 0.012, 0.012, 0.014, 0.028, 0.024, 0.008, 0.008, 0.005, 0.005], np.float32)[crop] * (0.5 + fbm(TH, TW, 3, 12, seed + 46))
-    img *= (1 + fur * famp)[..., None]; del fur, famp, vv, uu
+    img *= (1 + fur * famp * 0.5 * fade)[..., None]; del fur, famp, vv, uu, fade
     # big soft damp / dry mottles (value only, no teal wash), mid mottles, fine smooth grain
     m1 = cv2.resize(fbm(TH // 4, TW // 4, 5, 5, seed + 41), (TW, TH)); m2 = cv2.resize(fbm(TH // 4, TW // 4, 4, 22, seed + 47), (TW, TH))
-    img *= (1 + (m1 * 0.65 + m2 * 0.35 - 0.5)[..., None] * 0.22); del m1, m2
+    mo = (m1 * 0.65 + m2 * 0.35 - 0.5)[..., None]; img *= (1 + mo * 0.33); del m1, m2, mo   # v6: big damp / dry patches back (x1.5)
+    hz = cv2.resize(fbm(TH // 4, TW // 4, 4, 7, seed + 56), (TW, TH))[..., None]   # ... as hue shifts inside a field: damp olive <-> dry tan
+    gw = np.clip((0.45 - hz) * 2.6, 0, 1) * 0.42; gd = np.clip((hz - 0.55) * 2.6, 0, 1) * 0.30
+    img = img * (1 - gw - gd) + np.array([108, 112, 88], np.float32) * gw + np.array([158, 144, 110], np.float32) * gd; del hz, gw, gd
     img *= (1 + (fbm(TH, TW, 3, 90, seed + 42) - 0.5) * 0.05)[..., None]
     img += (cv2.GaussianBlur(np.random.default_rng(seed + 43).random((TH, TW), np.float32), (0, 0), 0.7)[..., None] - 0.5) * 4
     # parcel edges, one decision per edge (pair of fields), not per field outline
@@ -472,7 +488,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     edge = lmax != lmin; ph = hs_(lmin * 7919 + lmax, 12); del lmax, lmin
     # pale tracks on ~15 % of the edges
     tk = (edge & (ph < 0.15)).astype(np.float32)
-    tk = np.clip(cv2.GaussianBlur(tk, (0, 0), 0.012 * s) * 2.2, 0, 1)
+    tk = np.clip(cv2.GaussianBlur(tk, (0, 0), 0.02 * s) * 1.6, 0, 1) * 0.7   # v6: soft, no scalloped verge
     # + a few curved cart tracks across the fields
     ct = np.zeros((TH, TW), np.uint8); rt = np.random.default_rng(seed + 53)
     for _ in range(int(TW * TH / (s * s) / 90)):
@@ -480,7 +496,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
         P = [p0 + np.array([math.cos(a0 + rt.normal(0, 0.25) * k), math.sin(a0 + rt.normal(0, 0.25) * k)]) * L * k / 3 for k in range(4)]
         cv2.polylines(ct, [np.round(catmull(P, 4) * 4).astype(np.int32)], False, 255, max(2, int(0.035 * s)), cv2.LINE_AA, shift=2)
     tk = np.maximum(tk, cv2.GaussianBlur(ct.astype(np.float32) / 255, (0, 0), 0.6) * 0.8)[..., None]; del ct
-    img = img * (1 - 0.55 * tk) + np.array([182, 168, 136], np.float32) * 0.55 * tk; del tk
+    img = img * (1 - 0.45 * tk) + np.array([168, 158, 128], np.float32) * 0.45 * tk; del tk
     # hedges: ~8 % of the edges, irregular clumps (clump 0.1-0.4 units, gaps 0.2-0.6), crowns placed by world.js (kind 2)
     hedge = (edge & (ph >= 0.15) & (ph < 0.23)).astype(np.uint8); del edge, ph
     ys_, xs_ = np.nonzero(hedge[::2, ::2]); P = np.stack([xs_ * 2, ys_ * 2], 1).astype(np.float32); del hedge
@@ -499,6 +515,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
 
 
 ROOFS = 7   # roof colour index range (world.js: reds, orange, brown, slate)
+WT = (0.86, 0.60)   # v6 wide forest thresholds (cover ~25 %)
 HS, FS = 0.62, 0.66   # v5: town houses / farmsteads scaled down (critic: his houses are small, in dense rows)
 
 def close_town(dist, hw, box, h):
@@ -521,7 +538,7 @@ def close_town(dist, hw, box, h):
         cv2.fillPoly(occ, [rect(x, y, w, d, ang)], 1); build.append((x, y, w, d, ang, rc, kind)); return True
     def street(pts, wdt):
         pts = np.asarray(pts, np.float32); streets.append((pts, wdt))
-        cv2.polylines(occ, [np.round((pts - [x0, y0]) * G).astype(np.int32)], False, 1, max(1, int(wdt * G)))
+        cv2.polylines(occ, [np.round((pts - [x0, y0]) * G).astype(np.int32)], False, 1, max(1, int(wdt * G * 0.6)))   # v6: thinner on the occupancy grid (the rows failed against it)
     roof = lambda: int(rr.choice(ROOFS, p=[0.26, 0.22, 0.16, 0.12, 0.12, 0.06, 0.06]))
     # ---- Bovina ----
     bx, by = TOWNS["Bovina"][:2]; clear.append((bx, by, 4.5))
@@ -573,7 +590,7 @@ def close_town(dist, hw, box, h):
                 if rr.random() < 0.04: a += rr.uniform(0.15, 0.3); continue   # gap: a garden reaches the street
                 gable = rr.random() < 0.28
                 w = HS * (rr.uniform(0.17, 0.24) if gable else rr.uniform(0.22, 0.42)); d = HS * (rr.uniform(0.32, 0.44) if gable else rr.uniform(0.16, 0.22))   # v5: houses x0.62 (his are small)
-                setb = wdt / 2 + d / 2 + rr.uniform(0.02, 0.04)
+                setb = wdt / 2 + d / 2 + rr.uniform(0.03, 0.05)
                 i = min(int(np.searchsorted(arc, a + w / 2)), len(pts) - 1)   # centre the house on its own frontage
                 c = pts[i] + nrm * setb
                 inside = np.hypot(c[0] - cx, c[1] - cy) < rad
@@ -593,7 +610,7 @@ def close_town(dist, hw, box, h):
         for _ in range(tries):
             r_ = rad * math.sqrt(rr.random()); th = rr.random() * 6.283; x_, y_ = cx + r_ * math.cos(th), cy + r_ * math.sin(th)
             put(x_, y_, HS * rr.uniform(0.2, 0.38), HS * rr.uniform(0.15, 0.21), base_ang + (math.pi / 2 if rr.random() < 0.4 else 0) + rr.uniform(-0.06, 0.06), roof())
-    tdir = main[-1] - main[0]; infill(bx, by, 3.4, math.atan2(tdir[1], tdir[0]), 2600)
+    tdir = main[-1] - main[0]   # v6: no random back-lot infill (it made round 'wool balls'); rows along the streets only
     # ---- hamlets nearer the centre of the close shots (round 2): a lane + a short cross lane, packed rows ----
     for hx, hy, ha, hl in ((1517.2, 714.2, 0.1, 2.8), (1528.2, 692.4, -0.25, 2.6), (1504.0, 711.6, 1.2, 2.4)):
         clear.append((hx, hy, 1.9)); u_ = np.array([math.cos(ha), math.sin(ha)]); v_ = np.array([-u_[1], u_[0]])
@@ -603,7 +620,7 @@ def close_town(dist, hw, box, h):
         cl_ = (np.array([hx, hy]) + u_ * 0.25 + v_ * np.linspace(-0.7, 0.8, 10)[:, None]).astype(np.float32); cl_ = cl_[np.array([not wet(*q) for q in cl_])]
         hs_l = [(lane, 0.15)]; street(lane, 0.15)
         if len(cl_) > 4: street(cl_, 0.12); hs_l.append((cl_, 0.12))
-        rows(hs_l, hx, hy, 1.7); infill(hx, hy, 1.1, ha, 420)
+        rows(hs_l, hx, hy, 1.9)
     # ---- farmsteads ----
     FARMS = [(1530.5, 701.5), (1534.0, 711.2), (1505.2, 693.4), (1541.8, 704.4), (1526.6, 719.6), (1537.5, 696.0), (1546.0, 712.5),
              (1509.0, 700.2), (1500.0, 716.5), (1536.0, 719.5), (1512.5, 690.0), (1548.5, 699.0)]

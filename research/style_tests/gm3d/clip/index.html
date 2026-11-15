@@ -535,7 +535,7 @@ window.__draw = (t) => {
   WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.15, t).toFixed(3); wispsAt(t);
   world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0);
     if (w.region === "close" && tt > SW - 0.1 && tt < DV.haze + 0.1) {   // emergence: the battlefield comes out of fog (far ground whiter than near)
-      const k = sstep(DV.emerge - 0.1, DV.clear + 0.6, tt), f = R.scene.fog, d = w.cam.dist;
+      const k = sstep(DV.emerge - 0.05, DV.clear + 0.1, tt), f = R.scene.fog, d = w.cam.dist;
       f.color.lerp(FOGW, 1 - k); f.near = lerp(d * 0.15, f.near, k); f.far = lerp(d * 1.7, f.far, k); w.renderer.setClearColor(f.color); }
     drawTroops(tt, w.region === "close");   // v5: boxes / arrows are in the scene now -> set them BEFORE this frame renders (they lagged one frame)
     fx.update(tt, w.camera); } });
