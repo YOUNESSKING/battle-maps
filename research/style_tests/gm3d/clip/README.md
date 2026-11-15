@@ -124,5 +124,12 @@ map incl. two big masses upper middle (deck clouds dropped under wide ones: no g
 in its screen box from its first frame, dark-gold rim + premultiplied edges (no halo), 72 side layers; exit ease 3.35 s (keys 16.4 dist 107 ->
 17.25 dist 70 -> 20.6 dist 40), warmer, more translucent remnants. `dive_ours_v7.jpg`, `dive_sectors_v7.jpg` (local).
 
+**v8 opening (owner: "keep the v6 clouds / opening; 'One day' showed late"):** the cloud code and the 0-22 s section are back to v6 (57495a5) except
+two glitch fixes kept from v7: the veil is opaque 2 frames either side of the 16.4 s region switch (30 fps stills 16.367-16.467: std 0.9, v6 had
+the close map flashing at std 8.2) with a flat -8 dip, and map names are hidden inside the title's screen box. The title now lands on the words:
+measured in `gm_test/audio/voice.wav` (10 ms energy / zero-crossing / centroid) 'It stopped him for | one day.' = 10.30-11.81 s, 'one' 11.29-11.52,
+/d/ burst 11.53, 'day' to 11.81, pause to 12.40; the title fades in 10.74-11.24 (readable from the start of 'one'), grows while it is said and flies
+past the lens as in v6; Grant's card leaves at 10.54. `opening_v8_vs_v6.jpg` = v6 render | v8 stills, 16 matched times.
+
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).
