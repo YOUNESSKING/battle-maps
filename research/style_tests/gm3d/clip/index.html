@@ -34,7 +34,7 @@
   .blk { position: absolute; left: 0; top: 0; width: 100px; height: 40px; transform-origin: 50% 50%; box-sizing: border-box; border: 7px solid #15130f; will-change: transform; }
   .blk.u { background: #2c57b7; } .blk.r { background: #be3a2a; }
   .blk svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .bnr { position: absolute; left: 0; top: 0; will-change: transform; }
+  .bnr { position: absolute; left: 0; top: 0; will-change: transform; transform-origin: 0 0; }
   .bnr .pole { position: absolute; left: -1px; bottom: 0; width: 2px; background: linear-gradient(#efe2b8, #8a6a2a); box-shadow: 0 0 2px rgba(0,0,0,.7); }
   .bnr img { position: absolute; left: 1px; border: 1px solid #15130f; box-shadow: 0 2px 4px rgba(0,0,0,.5); }
   .bnr .nm { position: absolute; left: 4px; white-space: nowrap; font: 600 15px "CG", Georgia, serif; color: #f6f1e2; letter-spacing: .06em; text-transform: uppercase; text-shadow: 0 1px 3px #000, 0 0 6px rgba(0,0,0,.7); }
@@ -52,6 +52,8 @@
   tl.to(window.__clk, { t: T.D, duration: T.D, ease: "none", onUpdate: () => { if (window.__draw) window.__draw(window.__clk.t); } }, 0);
   window.__timelines["main"] = tl; window.__tl = tl;
 </script>
+<script>var BN_FONT_BASE = "assets/fonts/";</script>
+<script src="banner.js"></script>   <!-- v8: the generals' banners on poles (STYLE_LOCK 2f item 1), copied verbatim -->
 </head>
 <body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="66" data-width="1280" data-height="720">
@@ -334,10 +336,27 @@ const posAt = (K, t) => { if (t <= K[0][0]) return [K[0][1], K[0][2]]; for (let 
 // Confederates: three brigades on the breastworks (facing east), guns in the line, a reserve by the bridge; Union: four brigades + guns arrive from the east
 const bwX = (y) => { let b = BRW[0]; for (const p of BRW) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b[0]; };
 const TK = T.taken;
-[[699.4, 0], [702.9, 1], [706.6, 2], [710.4, 3]].forEach(([y, i]) => unit("r", "inf", [[0, bwX(y) - 0.25, y], [TK - 0.4, bwX(y) - 0.25, y], [TK + 1.6, bwX(y) - 2.6, y + (705 - y) * 0.6], [EV.bridgeFire, BR.x - 2.8, 705 + (i - 1.5) * 0.9]],
-  { n: 4, cap: TK - 0.2 + i * 0.25, capN: i === 3 ? 4 : 2, t1: EV.bridgeFire + 3.5 }));
-EV.csGuns.forEach((g, i) => unit("r", "art", [[0, g[0] - 0.15, g[1]]], { n: 2, cap: TK + 0.1 * i, capN: 2 }));
-unit("r", "inf", [[0, BR.x - 1.6, 703.6], [TK + 1, BR.x - 3.0, 704.2]], { n: 3, face: 0, t1: EV.bridgeFire + 3.5 });
+// v8 (owner: "they crossed the bridge in haste and disappeared"): the Confederate withdrawal as real movement (Grant: 1,751 prisoners,
+// 18 guns; the rest got over the bridge, which was then burned). The two centre brigades and half of each flank brigade are overrun at the
+// breastworks: they stop and turn grey IN PLACE ("the line was taken", 34.2 s) while the Union boxes close round them. The rest pull back
+// in order from ~28.7 s ("By mid-morning, it was over"): each escaping box peels off its line slot into a column on the Vicksburg road,
+// crosses the bridge nose to tail at a march pace (2.1 units/s, ~4 boxes/s) - the last box is over by ~35.3 s, the bridge fire catches
+// at 35.68 s ("the bridge burned") - then marches west along the road at 1.2 units/s and fades over the frame edge (never mid-field).
+// ESC_RD = the baked Vicksburg road (bake_clip.close_roads main), east of the line -> west of Bovina, map units.
+const ESC_RD = [[1519.4, 705.25], [1518.35, 705.51], [1517.3, 705.73], [1516.31, 705.35], [1515.31, 705.16], [1514.29, 705.01], [1513.28, 704.86], [1512.26, 704.74], [1511.26, 704.55],
+  [1510.28, 704.37], [1509.24, 704.31], [1508.26, 704.16], [1507.45, 703.46], [1506.6, 702.93], [1505.59, 702.8], [1504.72, 702.46], [1503.77, 702.09], [1502.68, 701.96], [1501.83, 701.34],
+  [1501.14, 700.54], [1500.32, 699.97], [1499.57, 699.27], [1498.31, 698.52], [1497.22, 698.36], [1496.45, 697.73], [1495.66, 697.16], [1494.85, 696.59], [1494.28, 695.69], [1493.55, 694.97], [1492.04, 694.5], [1490.14, 693.77]];
+const ESC_WEST = 1512.26;   // west end of the bridge: past it the column slows to a march
+const escape = (start, t0, v = 2.1, v2 = 1.2) => { const j = Math.max(0, ESC_RD.findIndex((p) => p[0] < start[0] - 0.3)), path = [start, ...ESC_RD.slice(j)], seg = []; let L = 0, sB = 0;   // joins the road just west of its start
+  for (let i = 1; i < path.length; i++) { const d = Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]); seg.push(d); L += d; if (path[i][0] >= ESC_WEST - 1e-3) sB = L; }
+  const tB = t0 + sB / v; return { path, seg, L, t0, s: (t) => t <= t0 ? 0 : t < tB ? (t - t0) * v : Math.min(L, sB + (t - tB) * v2) }; };
+const escAt = (E, s) => { let i = 0; while (i < E.seg.length - 1 && s > E.seg[i]) { s -= E.seg[i]; i++; } const a = E.path[i], b = E.path[i + 1], f = clamp(s / (E.seg[i] || 1)), l = E.seg[i] || 1;
+  return [lerp(a[0], b[0], f), lerp(a[1], b[1], f), (b[0] - a[0]) / l, (b[1] - a[1]) / l]; };
+[[699.4, 0], [702.9, 1], [706.6, 2], [710.4, 3]].forEach(([y, i]) => { const flank = i === 0 || i === 3;
+  const u = unit("r", "inf", [[0, bwX(y) - 0.25, y]], { n: 4, cap: TK - 0.2 + i * 0.25, capN: flank ? 2 : 4, t1: T.p4 });
+  if (flank) { u.escFrom = 2; u.esc = escape([bwX(y) - 0.9, y], i === 0 ? 28.7 : 29.0); } });
+EV.csGuns.forEach((g, i) => unit("r", "art", [[0, g[0] - 0.15, g[1]]], { n: 2, cap: TK + 0.1 * i, capN: 2, t1: T.p4 }));
+{ const u = unit("r", "inf", [[0, BR.x - 1.6, 703.6]], { n: 3, face: 0, t1: T.p4 }); u.escFrom = 0; u.esc = escape([BR.x - 1.6, 703.9], 31.2, 1.2, 1.2); }   // the reserve west of the bridge marches off first-in-line
 const ARR = SW + 0.6;
 [[699.0, 0], [702.6, 1], [706.4, 2], [710.6, 3]].forEach(([y, i]) => unit("u", "inf",
   [[ARR, 1534.5 + i * 0.6, y], [T.crossing + 1, 1526.6 + (i % 2) * 0.3, y], [30.4 + i * 0.3, 1526.0, y], [TK - 0.3 + i * 0.15, bwX(y) + 0.5, y], [TK + 1.4, bwX(y) - 1.0, y], [T.p4, BR.x + 2.4 + (i % 2) * 1.1, 699.2 + i * 3.5]],
@@ -359,9 +378,16 @@ NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y, k), P = (d) => [
 [[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
 // army banners (one flag per side, on a pole, Style W)
 const BN = document.createElement("div"); TR.appendChild(BN);
-const banner = (img, name, keys, t0, t1) => { const e = document.createElement("div"); e.className = "bnr"; e.innerHTML = `<div class="pole" style="height:58px"></div><img src="${img}" style="width:42px;bottom:30px"><div class="nm" style="bottom:4px">${name}</div>`; BN.appendChild(e); return { e, keys, t0, t1 }; };
-const BANNERS = [banner("assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T.crossing + 2, 1530.6, 705.6]], ARR + 0.5, T.p4 - 0.6), banner("assets/csa1_13_flag.png", "Pemberton", [[0, BR.x - 1.2, 706.2], [TK + 1, BR.x - 3.6, 706.0]], T.pem - 0.2, EV.bridgeFire + 3),
-  banner("assets/us34_flag.png", "Grant", [[T.p5 - 1, 1517.4, 705.5]], T.p5 - 0.5, T.D + 1)];
+// v8 (owner): the generals as banners on poles in the EXACT locked style (banner.js = research/style_tests/banners_units_camps/banners/banner.js,
+// STYLE_LOCK 2f item 1): rope pole, cream plaque, blue cloth + gilt eagle (Union) / red cloth + spear (Confederate), sepia portrait, streamers,
+// pennant with the national flag of the date (US 34 stars / CS Stars and Bars), ground shadow, timeline sway. Authored at 1080p -> x2/3 here,
+// pinned to the 3D ground at the pole foot every frame (drawTroops). One banner per side; they replace the flag markers.
+const banner = (img, flag, name, keys, t0, t1, esc) => { const e = document.createElement("div"); e.className = "bnr";
+  const w = BN.build(img, flag, name, "up", flag.indexOf("csa") < 0); e.appendChild(w); BN.sway(w, t0, t1, tl); BN_HOST.appendChild(e); return { e, keys, t0, t1, esc }; };
+const BN_HOST = document.createElement("div"); TR.appendChild(BN_HOST);
+const BANNERS = [banner("assets/grant_head.png", "assets/us34_flag.png", "Grant", [[ARR, 1537, 704.2], [T.crossing + 2, 1530.6, 705.6]], ARR + 0.5, T.p4 - 0.6),
+  banner("assets/pemberton_head.png", "assets/csa1_13_flag.png", "Pemberton", [[0, BR.x - 1.2, 706.2]], T.pem - 0.2, T.p4, escape([BR.x - 1.2, 705.4], 31.0, 1.1, 1.1)),   // rides off west with the column
+  banner("assets/grant_head.png", "assets/us34_flag.png", "Grant", [[T.p5 - 1, 1517.4, 705.5]], T.p5 - 0.5, T.D + 1)];
 // troops look: 'boxes' (Style W, default) | 'blocks' (GM 3D formation blocks, troops3d.js); same UNITS, same keys
 const TROOPS = window.TROOPS = window.TROOPS || new URLSearchParams(location.search).get("troops") || "boxes";
 for (const u of UNITS) if (u.t0 > T.p5 - 1 && u.keys.length > 2) u.march = 1;   // blocks: next-day brigades cross the new bridges in march column
@@ -379,7 +405,7 @@ const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NS
 arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, ARU);
 arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, ARU);
 arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, ARU);
-arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, ARR_R);
+arrow([[1518.4, 705.5], [1515.3, 705.15], [1512.3, 704.75], [1508.3, 704.2]], 30.2, 3.0, T.bburn + 1.0, ARR_R);   // v8: the withdrawal over the bridge (with the column, 30-35 s)
 for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y, k); arrow([[b[0] + ex * 3.6, b[1] + ey * 3.6], [b[0] + ex * 0.75, b[1] + ey * 0.75]], EV.bridgesNew[k] + 0.4, 1.4, T.D + 1, ARU); }   // v6 (critic B 8): ends short of the river, the pontoon stays visible
 
 // ---------------- place names pinned to the ground ----------------
@@ -455,11 +481,18 @@ function drawTroops(t, close) {
     for (let i = 0; i < u.n; i++) {
       const off = -span / 2 + u.bw / 2 + i * (u.bw + u.gap), wob = u.wob * 0.05 * Math.sin(t * 1.3 + i * 1.7 + cx);
       const capd = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
-      L.push({ u, i, x: cx + px * off + fx * wob, y: cy + py * off + fy * wob, fx, fy, px, py, bw: u.bw, bd: u.bd, op: op * (1 - 0.25 * capd), capd });
+      let x = cx + px * off + fx * wob, y = cy + py * off + fy * wob, bfx = fx, bfy = fy, esc = false, eop = 1;
+      if (u.esc && i >= u.escFrom && t > u.esc.t0) {   // v8: peel off the line slot into the road column, nose to tail, then march west
+        const si = u.esc.s(t) - (i - u.escFrom) * (u.bw + u.gap) * 1.05;
+        if (si > 0) { const [ex, ey, hx, hy] = escAt(u.esc, si), k = sstep(0, 0.9, si); x = lerp(x, ex, k); y = lerp(y, ey, k);
+          const cfx = lerp(fx, hy, k), cfy = lerp(fy, -hx, k), l = Math.hypot(cfx, cfy) || 1; bfx = cfx / l; bfy = cfy / l; esc = k > 0.5;
+          eop = sstep(-30, 170, world.projectMap(x, y, 0.02).x); }   // fades over the west frame edge (1.5-2 s at march pace)
+      }
+      L.push({ u, i, x, y, fx: bfx, fy: bfy, px: -bfy, py: bfx, bw: u.bw, bd: u.bd, op: op * eop * (1 - 0.25 * capd), capd, esc });
     }
   }
   const sup = (b, nx, ny) => b.bw / 2 * Math.abs(nx * b.px + ny * b.py) + b.bd / 2 * Math.abs(nx * b.fx + ny * b.fy);
-  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u) continue;
+  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || A.esc || B.esc) continue;   // v8: the column on the road is never shoved off it
     let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05;
     if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
   if (BX) BX.set(L.map((b) => ({ x: b.x, y: b.y, fx: b.fx, fy: b.fy, bw: b.bw, bd: b.bd, art: b.u.type === "art", op: b.op, h: hC(b.x, b.y),
@@ -470,8 +503,11 @@ function drawTroops(t, close) {
     e.style.transform = `matrix(${(ex[0] / 50).toFixed(4)},${(ex[1] / 50).toFixed(4)},${(ey[0] / 20).toFixed(4)},${(ey[1] / 20).toFixed(4)},${(c.x - 50).toFixed(1)},${(c.y - 20).toFixed(1)})`;
     e.style.opacity = b.op.toFixed(3);
     e.style.backgroundColor = b.capd > 0 ? `rgb(${Math.round(lerp(190, 138, b.capd))},${Math.round(lerp(58, 133, b.capd))},${Math.round(lerp(42, 122, b.capd))})` : ""; }
-  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1, op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) * endK(t) : 0;
-    b.e.style.opacity = op.toFixed(3); if (op <= 0) continue; const [x, y] = posAt(b.keys, t), s = world.projectMap(x, y, 0.02); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`; }
+  for (const b of BANNERS) { const on = close && t >= b.t0 && t < b.t1; let op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) * endK(t) : 0;
+    if (op <= 0) { b.e.style.opacity = 0; continue; }
+    const [x, y] = b.esc && t > b.esc.t0 ? escAt(b.esc, b.esc.s(t)) : posAt(b.keys, t), s = world.projectMap(x, y, 0.02);
+    if (b.esc) op *= sstep(-20, 180, s.x);   // leaves over the west frame edge, never pops out mid-field
+    b.e.style.opacity = op.toFixed(3); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) scale(0.6667)`; }
   for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = close && t >= A.t0 ? (1 - sstep(A.t1 - 0.6, A.t1, t)) * endK(t) : 0; const ke = 1 - (1 - k) ** 2;
     if (A.a3) { A.g.style.opacity = 0; AR3.draw(A.a3, ke, op, ARW); continue; }
     A.g.style.opacity = op.toFixed(3); if (op <= 0) continue;
