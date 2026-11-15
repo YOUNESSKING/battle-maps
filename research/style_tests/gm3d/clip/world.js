@@ -273,7 +273,7 @@ export function initWorld(canvas, opts = {}) {
   }
 
   const DAY = { sun: new THREE.Color(0xfff2de), sunI: 1.0 * Math.PI, sky: new THREE.Color(0xe6ecf0), gnd: new THREE.Color(0x6a5a40), hemiI: 0.52 * Math.PI, fog: new THREE.Color(0xa9b3b4), water: new THREE.Color(0x46606e) };
-  const HAZE = new THREE.Color(0xb2bec4);
+  const HAZE = new THREE.Color(0xa9b8c1);   // round 2: bluer, his blue-grey atmospheric cast
   const NIGHT = { sun: new THREE.Color(0x9fb4e0), sunI: 0.75 * Math.PI, sky: new THREE.Color(0x40507a), gnd: new THREE.Color(0x10141c), hemiI: 0.6 * Math.PI, fog: new THREE.Color(0x141c2c), water: new THREE.Color(0x1c2a40) };
 
   world.update = (t, o = {}) => {
@@ -289,9 +289,9 @@ export function initWorld(canvas, opts = {}) {
     R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + 0.35 * wk * (1 - n));
     R.hemi.color.copy(DAY.sky).lerp(NIGHT.sky, n); R.hemi.groundColor.copy(DAY.gnd).lerp(NIGHT.gnd, n); R.hemi.intensity = lerp(DAY.hemiI, NIGHT.hemiI, n) * (1 - 0.3 * wk * (1 - n));
     // v4 haze: on the oblique close camera the far ground fades into a pale sky-blue haze (GM 640-700 / 800 / 910-950 s):
-    // smoothstep over view depth 0.85 d .. 2.6 d -> ~0 at the frame centre, ~0.3 at the top edge (tilt 52, fov 30)
+    // smoothstep over view depth 0.78 d .. 2.3 d -> ~0 at the frame centre, ~0.45 at the top edge (tilt 52, fov 30)
     const cl = cs.region === "close" ? 1 : 0;
-    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 0.85 : 0.95); R.scene.fog.far = sd * (cl ? 2.6 : 4.4);
+    R.scene.fog.color.copy(cl ? HAZE : DAY.fog).lerp(NIGHT.fog, n); R.scene.fog.near = sd * (cl ? 0.78 : 0.95); R.scene.fog.far = sd * (cl ? 2.3 : 4.4);   // round 2: ~0.45 at the top edge
     R.wmat.color.copy(DAY.water).lerp(NIGHT.water, n); R.wmat.envMapIntensity = lerp(0.3, 0.1, n);
     renderer.setClearColor(R.scene.fog.color);
     // water motion: normal map drifts downstream
