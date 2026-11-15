@@ -34,5 +34,16 @@ musketry smoke, finer grain. `make_dive.py <mp4>` writes `dive_ours.jpg` (+ `div
 - Woods: ~3 m canopy blanket raised under every wood + crown clusters (2-4 lumpy merged lobes, 4 variants, log-normal sizes, teal/olive jitter) half sunk in it, jagged outline + clearings; wide map has no instanced crowns any more. Hedgerows on ~15 % of parcel edges as continuous lines (dark under-canopy band + crowns every 0.075 units, gaps in runs).
 - Towns: Bovina = main street + link to the Vicksburg road + 4 cross streets + 2 back lanes, packed row houses both sides (gable-on mixed in), sheds, back gardens, church + tower, 7 roof colours; 14 farmsteads = house + barn + 2-4 sheds round a yard, garden, orchard. Close houses 105 -> 140, close trees 25.6k -> ~46k (wide 889 -> 0).
 
+**Troops option (2026-11-15): GM 3D formation blocks** (`troops3d.js`, switch `window.TROOPS = 'boxes' | 'blocks'` or `index.html?troops=blocks`; default `boxes`,
+our Style W boxes untouched). Built from the same `UNITS` (keys, face, n, cap) and pure in t. Measured from his close battlefields (515, 682-700, 925 s, 2-6x crops):
+each battalion = flat plate in the side colour (Union #2f5bc0, Confederate #b23a2c) with a pale rim, wider on the front edge, carrying 60 tiny 3D soldiers
+(coat in the side colour, pale trousers/belts/face, dark musket; Confederates grey coats); 12 files x 5 ranks in line (block ~2.4:1, ~4 % of frame width), 4 files x 15
+on the march (column turns along its road on moves > ~6 units or `u.march`), short moves forward = advance in line with a step bob, short moves backward = routing
+(men turn, ranks scatter, plate shrinks, colours drop), captured = grey + scattered; guns = side-coloured carriage + barrel + wheels, limber behind (ahead when limbered),
+4 crew, recoil on each cue shot; options `form:'square'` (hollow plate, dark inner court, men on the four faces) and `type:'cav'` (2 ranks of riders);
+low-sun shadow = the block footprint swept along the sun (multiply quads) on top of the real shadow map; blocks never overlap (deterministic push-apart);
+smoke draws over them. Infantry merges 2 boxes into 1 block (GM has ~half as many, ~2x bigger blocks). Cost: +~1.5 ms JS + ~0.2 M triangles per frame.
+`troops_ours.jpg` = boxes vs blocks at 22 / 31.5 / 35.2 / 60.5 s (2x); `troops_sectors.jpg` (his vs ours, 3x) is local only (git-ignored).
+
 Run: `python3 bake_clip.py` (20 s) -> `bash render_chunks.sh <chunkdir>` -> `python3 assemble.py <chunkdir> <out.mp4>` -> `python3 make_sheet.py <out.mp4>`.
 The mp4 is not committed (git-ignored).
