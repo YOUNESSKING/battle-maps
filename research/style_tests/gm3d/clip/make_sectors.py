@@ -13,7 +13,7 @@ PHASES = [
     ("3 mostly covered", 636.3, 15.25, [("cloud top", 760, 300, 840, 110), ("edge over map", 440, 220, 620, 590), ("underside / crease", 250, 480, 520, 430), ("map in a gap", 1100, 200, 400, 600)]),
     ("4 full cloud interior", 637.0, 15.9, [("interior centre", 540, 300, 540, 300), ("interior top", 900, 140, 900, 140), ("interior low", 300, 480, 300, 480), ("interior edge", 1060, 520, 1060, 520)]),
     ("5 white-out (warm)", 637.9, 16.75, [("centre", 540, 300, 540, 300), ("top right", 1060, 40, 1060, 40), ("bottom left", 240, 470, 240, 470), ("right edge", 1080, 400, 1080, 400)]),
-    ("6 emergence", 639.3, 18.1, [("remnant over map", 380, 500, 400, 100), ("remnant edge", 860, 560, 320, 400), ("thin haze", 500, 120, 200, 250), ("clear map", 760, 160, 1000, 520)]),
+    ("6 emergence", 639.3, 18.1, [("remnant over map", 380, 500, 120, 560), ("remnant edge", 860, 560, 1000, 540), ("thin haze", 500, 120, 200, 250), ("clear map", 760, 160, 1000, 520)]),
 ]
 
 

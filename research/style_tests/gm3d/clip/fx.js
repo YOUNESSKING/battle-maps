@@ -896,6 +896,7 @@ export function createFX(cfg = {}) {
       for (let b = 0; b < NB; b++) { const a = br() * 6.283, d = R * (0.3 + 0.38 * br());
         CL.push({ x: x + Math.cos(a) * d, z: z + Math.sin(a) * d, R: R * (0.3 + 0.26 * br()), H: H * (0.4 + 0.45 * br()), yb: yb + (br() - 0.5) * H * 0.08, g, ph: i * 7.31 + b * 3.1 }); }
     });
+    CL.sort((a, b) => b.g - a.g);   // group 1 first, group 0 last (owns its footprint)
     for (const c of CL) {
       const reach = c.R * 1.6 + SK, ia = Math.max(0, Math.floor((c.x - reach - x0) / tx)), ib = Math.min(MW - 1, Math.ceil((c.x + reach - x0) / tx));
       const ja = Math.max(0, Math.floor((c.z - reach - z0) / tx)), jb = Math.min(MD - 1, Math.ceil((c.z + reach - z0) / tx));
@@ -906,7 +907,8 @@ export function createFX(cfg = {}) {
         const ang = Math.atan2(dz, dx), lump = 1 + 0.3 * (fbm(Math.cos(ang) * 1.3 + c.ph, Math.sin(ang) * 1.3 + c.ph, 3) - 0.5) * 2;
         const r = rr / (c.R * lump), prof = r < 1 ? Math.pow(1 - r * r, 0.8) : -(r - 1) * 2;   // rounded domes, no vertical rim walls
         const tp = c.yb + c.H * prof;
-        if (tp > top[k]) { top[k] = tp; grp[k] = c.g; bot[k] = c.yb + c.H * 0.06 * Math.min(1, r * r); }   // base of the cloud that owns the column
+        // the cloud that owns the column sets its top, base and group; a group-0 cloud always owns its own footprint (no straight cuts where an eroded deck cloud overlaps it)
+        if (tp > top[k] || (c.g === 0 && grp[k] > 0 && r < 1.1)) { top[k] = tp; grp[k] = c.g; bot[k] = c.yb + c.H * 0.06 * Math.min(1, r * r); }
       }
     }
     const data = new Uint16Array(MW * MD * 4), H16 = THREE.DataUtils.toHalfFloat;
