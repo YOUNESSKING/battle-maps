@@ -66,6 +66,17 @@ smoke draws over them. Infantry merges 2 boxes into 1 block (GM has ~half as man
 - Method: `make_sectors.py <snapshot dir | mp4>` -> `dive_sectors.jpg` (local, git-ignored): 6 phases x 4 sectors, his | ours at 2.5x.
   `TAG=_v4 OFFSET=0 python3 make_dive.py <mp4>` -> `dive_ours_v4.jpg` (+ `dive_compare_v4.jpg`, local).
 
+**v5 battle FX, troops, night, ending, grade (2026-11-15, critic B 4-7, 9, 16, 17; critic A 3, 10; `fx.js` smoke/fire/cannon/impact, `index.html` 22-66 s + grade, `overlay.js`, `troops3d.js`):**
+- Smoke (B4): `LOOKS.gm` = sprite mode 4.x "curtain": UNLIT cool grey (tint lin (0.205,0.23,0.262)), soft Gaussian body, stretched x1.6 vertically, slow sideways drift, fogged (all sprites now take the scene fog). Rendered over his fields ~(135,125,108) vs his (119,114,104) (was cream (166,160,149)).
+- Cannon (B7): 0.095 s orange flash (2 frames at 30 fps, measured), small orange ground pool (was a 45-unit yellow-green light), 14-puff grey curtain plume jetting ~1 box length, life ~9 s. GM itself shows no muzzle flashes (orange-pixel scan of 500-955 s).
+- Fire (B6): `tongues` = separate flame seats with their own flicker, `flameColor`/`glowColor` options; bridge flames peak (248,196,96), no white (was (250,243,233) slab); dark grey column, rise 36, wind 1.1.
+- Troops/arrows (B5): Style W boxes + arrows drawn IN the close scene (`createBoxes3D`, `createArrows3D`: fogged, smoke and clouds draw over the boxes, arrows over the smoke as in his 684 s, soft contact shadow, set before the frame renders). `?troops=dom` = old DOM boxes. Deterministic push-apart between units (B16); day-battle brigades no longer stack by the bridge; next day ONE 4-box column per pontoon bridge (world `pontoons`), along its axis, arrows too.
+- Night (B9): camera tilt 52/56 from vertical (was 44/46); 40 campfires in camps (small orange dots like his 187 s); battery flashes 2x size + 0.15 s orange glow on the water; boats with hull, house, stacks, deck lamp, moonlit wake.
+- Ending (B17): camera settles at 64.6 s, HUD out at 63.9-64.4, world fades 64.95-65.95.
+- Grade (A3/A10): the overlay's day grade / paper / grain / vignette live in an untransformed `#film` host (`filmHost`): inside the 2/3-scaled overlay their blend modes only saw the overlay's own group and rendered as flat veils (+40-60 on the darks). Plaques/HUD above them (paper (222,213,184), his (227,217,193); was (162,156,135)). `#gmgrade` levels 10-248 + 15 % S on the 3D image only, `?grade=0` for raw; darks never above the raw world; grain 0.04.
+- Blocks option: shadows 0.95 block long, 0.84 dark (were 0.55 / 0.72).
+- `make_battle_sectors.py <snapshot dir>` -> `battle_sectors_v5.jpg` (his | ours, local) + `battle_ours_v5.jpg`.
+
 **v5 clouds + dive (2026-11-15, critic A 1-2, 4-9, 11-13; `fx.js` vclouds, `index.html` 0-22 s):**
 - Texture: interleaved-gradient jitter + a 3x3 bilinear tent (~5x5 texels) on the premultiplied cloud target (alpha-weighted blur), no fine octave
   (`fine: 0`), rim tearing from the mid Worley octave (`weights`), big soft interior mottles; per-group multipliers (`group0`: smoother wide lobes).
