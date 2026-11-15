@@ -289,13 +289,8 @@ fxW.custom((t, push) => { for (let i = 0; i < boats.length; i++) { const B = boa
   push(B.x - dx * 0.2, B.h + 0.5, B.y - dy * 0.2, 4.2, 0.26, 1.0, 0.45, 0.15);    // its glow on the deck and water
   for (let k = 1; k <= 8; k++) { const d = 1.0 + k * 0.7, s = 0.15 + k * 0.12, a = 0.45 * (1 - k / 9);   // the wake: two arms of moonlit foam behind the stern
     for (const sg of [-1, 1]) push(B.x - dx * d - dy * sg * s, B.h - 0.1, B.y - dy * d + dx * sg * s, 0.9 + k * 0.12, a, 0.5, 0.58, 0.68); } } });
-const RIV = D.regions.close.rivers[0].pts, wood = new THREE.MeshLambertMaterial({ color: 0x6b5236 }), newBridges = [];
-[[702.0, 0], [707.8, 1], [709.6, 2]].forEach(([y, k]) => { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p;
-  const i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], ang = Math.atan2(c[1] - a[1], c[0] - a[0]);
-  const g = new THREE.Group(); const wl = (b[2] * 6) / D.geo.mpu;
-  const deck = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.02, 1.5), wood); deck.castShadow = deck.receiveShadow = true; g.add(deck);
-  for (let j = -3; j <= 3; j++) { const pt = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.03, 0.07), new THREE.MeshLambertMaterial({ color: 0x3d3428 })); pt.position.set(0, -0.015, j * 0.21); g.add(pt); }
-  g.position.set(b[0], wl + 0.012, b[1]); g.rotation.y = -ang; world.regions.close.scene.add(g); newBridges.push({ g, t: EV.bridgesNew[k] }); });
+// v5: the three new bridges are the world's pontoon bridges (world.js, D.regions.close.pontoons, unrolling from EV.bridgesNew)
+const RIV = D.regions.close.rivers[0].pts, PONT = D.regions.close.pontoons || [];
 
 // ---------------- our troops: Style W boxes pinned to the ground (many small blocks per brigade) ----------------
 const INK = "#15130f";
@@ -332,10 +327,13 @@ EV.usGuns.forEach((g, i) => unit("u", "art", [[ARR, g[0] + 5, g[1]], [T.crossing
 // v5 (critic B 16): ONE column per new bridge, boxes nose to tail along the bridge axis (perpendicular to the river), waiting on the east
 // bank until its bridge is down, then filing across it and on west; no column ever stands in the water off a bridge
 function posAtRiver(y) { let b = RIV[0]; for (const p of RIV) if (Math.abs(p[1] - y) + (p[0] < 1500 ? 99 : 0) < Math.abs(b[1] - y) + (b[0] < 1500 ? 99 : 0)) b = p; return b; }
-const bridgeAxis = (y) => { const b = posAtRiver(y), i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], l = Math.hypot(c[0] - a[0], c[1] - a[1]);
+// the crossing axis = the pontoon bridge k (its deck runs along local z: (sin angle, cos angle)); fallback: perpendicular to the river at y
+const bridgeAxis = (y, k) => { const P = PONT[k];
+  if (P) { let ex = Math.sin(P.angle), ey = Math.cos(P.angle); if (ex < 0) { ex = -ex; ey = -ey; } return { b: [P.x, P.z], ex, ey }; }
+  const b = posAtRiver(y), i = RIV.indexOf(b), a = RIV[Math.max(0, i - 3)], c = RIV[Math.min(RIV.length - 1, i + 3)], l = Math.hypot(c[0] - a[0], c[1] - a[1]);
   let ex = (c[1] - a[1]) / l, ey = -(c[0] - a[0]) / l; if (ex < 0) { ex = -ex; ey = -ey; } return { b, ex, ey }; };   // (ex, ey) points to the east bank
 const NEWBR = [[702.0, 0], [707.8, 1], [709.6, 2]];
-NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y), P = (d) => [b[0] + ex * d, b[1] + ey * d], tb = EV.bridgesNew[k];
+NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y, k), P = (d) => [b[0] + ex * d, b[1] + ey * d], tb = EV.bridgesNew[k];
   unit("u", "inf", [[T.p5 - 1, ...P(3.6)], [tb + 0.7, ...P(3.6)], [tb + 4.2, ...P(-2.4)], [T.D, ...P(-3.4)]], { n: 4, face: Math.atan2(ey, ex) + Math.PI / 2, t0: T.p5 - 0.6, bw: 0.56, bd: 0.3, gap: 0.07, wob: 0 }); });
 [[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
 // army banners (one flag per side, on a pole, Style W)
@@ -359,7 +357,7 @@ arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, "
 arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, "#3f6fd0");
 arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, "#3f6fd0");
 arrow([[1519.4, 708.8], [1516.6, 707.0], [BR.x + 0.3, 705.4], [BR.x - 2.2, 705.3]], TK + 0.2, 1.8, T.bburn + 1.5, "#c4483a");
-for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y); arrow([[b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0], b[1]], [b[0] - ex * 2.6, b[1] - ey * 2.6]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
+for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y, k); arrow([[b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0], b[1]], [b[0] - ex * 2.6, b[1] - ey * 2.6]], EV.bridgesNew[k] + 0.4, 1.8, T.D + 1, "#3f6fd0"); }
 
 // ---------------- place names pinned to the ground ----------------
 const PINS = [], PN = document.getElementById("pins");
@@ -501,7 +499,6 @@ window.__draw = (t) => {
   O.film.set({ grain: lerp(0.04, 0.03, sstep(DV.full - 0.3, DV.wIn, t) * (1 - sstep(DV.emerge, DV.clear, t))).toFixed(3) });   // his white-out is smooth
   O.film.set({ vignette: (1 - 0.95 * sstep(DV.full - 0.4, DV.wIn, t) * (1 - sstep(DV.emerge, DV.haze, t))).toFixed(3) });   // no dark oval inside the cloud (the cream has its own warm falloff)
   WO.style.opacity = whiteAt(t).toFixed(3); WW.style.opacity = sstep(DV.warm - 0.05, DV.warm + 0.15, t).toFixed(3); wispsAt(t);
-  for (const b of newBridges) { const k = sstep(b.t, b.t + 0.7, t); b.g.visible = k > 0.001; b.g.scale.set(1, 1, Math.max(0.001, k)); }
   world.update(t, { beforeRender: (w, tt, R) => { const fx = w.region === "wide" ? fxW : fxC; fx.setNight(w.cam.night || 0);
     if (w.region === "close" && tt > SW - 0.1 && tt < DV.haze + 0.1) {   // emergence: the battlefield comes out of fog (far ground whiter than near)
       const k = sstep(DV.emerge - 0.1, DV.clear + 0.6, tt), f = R.scene.fog, d = w.cam.dist;
