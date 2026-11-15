@@ -169,7 +169,7 @@ def bake(name):
     forest = (cv2.GaussianBlur(forest, (0, 0), 0.5 if name == "close" else 1.0) > 0.5).astype(np.float32); forest = cv2.GaussianBlur(forest, (0, 0), 0.7)
     crown = fbm(TH, TW, 2, int(bw / (0.6 if name == "wide" else 0.09)), seed + 3)   # tree crowns speckle
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)   # darker inside, lighter rim
-    fcol = (hexc("#2b4038") if name == "close" else hexc("#33463a"))[None, None] * (0.70 + 0.6 * crown[..., None]) * (1.12 - 0.22 * fdark[..., None])
+    fcol = (hexc("#22362f") if name == "close" else hexc("#33463a"))[None, None] * (0.70 + 0.6 * crown[..., None]) * (1.12 - 0.22 * fdark[..., None])
     img = img * (1 - forest[..., None]) + fcol * forest[..., None]; del fcol, crown, fdark
     ao = np.clip(cv2.GaussianBlur(forest, (0, 0), 0.0025 * TW) - forest, 0, 1)   # shade on the ground next to woods
     img *= (1 - 0.40 * ao)[..., None]; del ao
@@ -319,7 +319,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     del A, si
     hs_ = lambda v, k: (((v * 2654435761 + k * 40503) % 4294967296) / 4294967296.0).astype(np.float32)
     up = hs_(lab.astype(np.int64), 1); us = hs_(sub, 1)
-    PAL = np.array([[151, 143, 112], [141, 130, 100], [128, 122, 95], [116, 114, 91], [103, 110, 94], [86, 99, 88], [140, 120, 94]], np.float32)
+    PAL = np.array([[140, 130, 101], [130, 120, 93], [121, 116, 91], [110, 110, 89], [98, 105, 90], [84, 96, 86], [134, 113, 90]], np.float32)
     p0 = np.clip(0.18 + (zone - 0.45) * 0.8, 0.05, 0.4)   # ochre/tan share follows a big zone
     def cp(u_):
         c = np.full(u_.shape, 3, np.int64)

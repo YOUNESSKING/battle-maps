@@ -262,19 +262,26 @@ uniform vec4 vcS;      // slab y0, y1, ground shadow strength, enabled
 uniform vec2 vcErode;  // erosion (in units of amp) of group 0 / group 1
 uniform vec4 vcDrift;  // map drift x, z; noise evolution; -
 uniform vec3 vcSun;
+uniform float vcInner;
+uniform float vcGS;     // billow scale of group 1 (finer)
 vec4 vcMapAt(vec2 xz) { return texture(vcMap, (xz - vcDrift.xy - vcB.xy) * vcB.zw); }
 float vcDens(vec3 p, vec4 m, float lod) {
   float amp = vcP.y;
-  float s = min(m.r - p.y, (p.y - m.g) * vcQ.x);
+  // distance below the dome surface measured along its normal (vertical distance / sqrt(1 + slope^2)): no extruded side walls
+  float e = 0.75 / vcB.z * 0.002 + 0.6;
+  vec2 gr = vec2(vcMapAt(p.xz + vec2(e, 0.0)).r - vcMapAt(p.xz - vec2(e, 0.0)).r, vcMapAt(p.xz + vec2(0.0, e)).r - vcMapAt(p.xz - vec2(0.0, e)).r) / (2.0 * e);
+  float s = min((m.r - p.y) * inversesqrt(1.0 + dot(gr, gr)), (p.y - m.g) * vcQ.x);
   float er = mix(vcErode.x, vcErode.y, m.b) * amp;
   if (s < -amp * 1.05 + er) return 0.0;
-  vec3 q = vec3(p.x - vcDrift.x, p.y, p.z - vcDrift.y) * vcP.x + vec3(0.0, vcDrift.z, 0.0);
+  vec3 q = vec3(p.x - vcDrift.x, p.y, p.z - vcDrift.y) * (vcP.x * mix(1.0, vcGS, m.b)) + vec3(0.0, vcDrift.z, 0.0);
+  amp *= mix(1.0, 1.0 / vcGS, m.b * 0.5);
   vec4 n0 = texture(vcNoise, q * 0.29);
   vec3 w = (n0.agb - 0.5) * vcQ.z;
   vec4 n1 = texture(vcNoise, q + w);
   float d = s + amp * (1.0 * (n0.r - 0.52) + 0.62 * (n1.g - 0.5) + 0.30 * (n1.b - 0.5)) - er;
   if (lod > 0.0 && d > -amp * 0.2 && d < amp * 0.7) d += amp * vcQ.y * lod * (texture(vcNoise, q * 3.3 + w * 1.7).b - 0.5);
   float dn = clamp(d / vcP.z, 0.0, 1.0);
+  dn *= mix(1.0, 0.25 + 1.1 * n1.g, vcInner);   // mottled interior (never a flat card)
   // wispy fringe: the outer part of the soft edge is torn by the fine billows
   return dn * mix(1.0, smoothstep(0.15, 0.85, n1.b), vcQ.w * (1.0 - dn));
 }
@@ -461,7 +468,7 @@ export function createFX(cfg = {}) {
     // v4 volumetric cumulus (vclouds)
     vcNoise: { value: null }, vcMap: { value: null }, vcB: { value: new THREE.Vector4(0, 0, 1, 1) }, vcP: { value: new THREE.Vector4(1, 1, 1, 1) },
     vcQ: { value: new THREE.Vector4(3, 0, 0, 0) }, vcS: { value: new THREE.Vector4(0, 1, 0, 0) }, vcErode: { value: new THREE.Vector2() },
-    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir },
+    vcDrift: { value: new THREE.Vector4() }, vcSun: { value: sunDir }, vcInner: { value: 0 }, vcGS: { value: 1 },
   };
 
   const emitters = [];   // { update(t, batch, ctx) }
@@ -905,7 +912,7 @@ export function createFX(cfg = {}) {
     shared.vcNoise.value = o.noise; shared.vcMap.value = map; shared.vcB.value.set(x0, z0, 1 / (MW * tx), 1 / (MD * tx));
     shared.vcP.value.set(1 / (o.tile ?? 40), o.amp ?? 6, o.soft ?? 2.5, o.sigma ?? 0.8);
     shared.vcQ.value.set(o.baseSharp ?? 3, o.fine ?? 0.18, o.warp ?? 0.35, o.wisp ?? 0.6);
-    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1);
+    shared.vcS.value.set(y0, y1, o.shadow ?? 0.45, 1); shared.vcInner.value = o.inner ?? 0.5; shared.vcGS.value = o.groupScale ?? 1;
     const cu = Object.assign({
       uInvProj: { value: new THREE.Matrix4() }, uCamWorld: { value: new THREE.Matrix4() }, uCam: { value: new THREE.Vector3() },
       uSunCol: { value: new THREE.Color(1.0, 0.97, 0.92) }, uAmbTop: { value: new THREE.Color(0.66, 0.71, 0.80) }, uAmbBot: { value: new THREE.Color(0.34, 0.38, 0.46) },
@@ -1071,7 +1078,7 @@ export function createFX(cfg = {}) {
     spriteU.uScatter.value = 0.6 * day;
     if (vc) {
       const c = vc.o.colors || {};
-      const sc = c.sun || [1.0, 0.97, 0.92], at = c.ambTop || [0.66, 0.71, 0.80], ab = c.ambBot || [0.34, 0.38, 0.46];
+      const sc = c.sun || [0.96, 0.97, 0.95], at = c.ambTop || [0.68, 0.72, 0.78], ab = c.ambBot || [0.46, 0.50, 0.56];
       vc.cu.uSunCol.value.setRGB(sc[0] * day + 0.10 * night, sc[1] * day + 0.12 * night, sc[2] * day + 0.18 * night);
       vc.cu.uAmbTop.value.setRGB(at[0] * day + 0.04 * night, at[1] * day + 0.05 * night, at[2] * day + 0.09 * night);
       vc.cu.uAmbBot.value.setRGB(ab[0] * day + 0.015 * night, ab[1] * day + 0.02 * night, ab[2] * day + 0.04 * night);

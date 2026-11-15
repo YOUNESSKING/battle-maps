@@ -76,16 +76,18 @@ export function createTroops3D(o) {
   const plateFill = mkIM(box(1, 1, 1, 0, 0.5, 0), lam(), infBlocks.length, false);
   const plateRim = mkIM(box(1, 1, 1, 0, 0.5, 0), lam({ emissive: 0x2a2a2a }), infBlocks.length, false);
   // soft low-sun shadow streak (GM's long shadows): one quad per block, gradient texture, multiplied over the ground
-  const SC = document.createElement("canvas"); SC.width = 64; SC.height = 64; { const g = SC.getContext("2d"); const gr = g.createLinearGradient(0, 0, 0, 64);
-    gr.addColorStop(0, "rgba(0,0,0,1)"); gr.addColorStop(0.45, "rgba(0,0,0,0.75)"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
-    const gx = g.createLinearGradient(0, 0, 64, 0); gx.addColorStop(0, "rgba(255,255,255,1)"); gx.addColorStop(0.15, "rgba(255,255,255,0)"); gx.addColorStop(0.85, "rgba(255,255,255,0)"); gx.addColorStop(1, "rgba(255,255,255,1)");
-    g.globalCompositeOperation = "destination-out"; g.fillStyle = gx; g.fillRect(0, 0, 64, 64); }
+  // the texture is a MULTIPLY mask (white = no change): dark at the block, fading out along the streak and at its two sides
+  const SC = document.createElement("canvas"); SC.width = 64; SC.height = 64; { const g = SC.getContext("2d"), im = g.createImageData(64, 64);
+    for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const v = y / 63, u = Math.abs(x / 63 - 0.5) * 2;
+      const a = S.shadowA * (v < 0.3 ? 1 : 1 - sstep(0.3, 1, v)) * (1 - sstep(0.7, 1, u)), c = Math.round(255 * (1 - a)), k = (y * 64 + x) * 4;
+      im.data[k] = c; im.data[k + 1] = c; im.data[k + 2] = c * 0.98 + 5 * a; im.data[k + 3] = 255; }
+    g.putImageData(im, 0, 0); }
   const stex = new THREE.CanvasTexture(SC);
   const shG = new THREE.PlaneGeometry(1, 1); shG.rotateX(-Math.PI / 2); shG.translate(0, 0, 0.5);   // starts at z=0, extends to +z
   // drawn in the OPAQUE pass right after the ground (renderOrder 1, custom alpha blend, no depth test: the coarse terrain mesh would swallow a flat quad)
   // so plates and figures (renderOrder 2) cover it and smoke draws over all
-  const shadows = mkIM(shG, new THREE.MeshBasicMaterial({ map: stex, color: 0x000000, opacity: S.shadowA, transparent: false, blending: THREE.CustomBlending,
-    blendSrc: THREE.SrcAlphaFactor, blendDst: THREE.OneMinusSrcAlphaFactor, depthWrite: false, depthTest: false }), blocks.length, false);
+  const shadows = mkIM(shG, new THREE.MeshBasicMaterial({ map: stex, fog: false, transparent: false, blending: THREE.CustomBlending, blendEquation: THREE.AddEquation,
+    blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor, depthWrite: false, depthTest: false }), blocks.length, false);
   shadows.receiveShadow = false; shadows.renderOrder = 1;
   // colour standards: thin pole + small flag per infantry block
   const poles = mkIM(box(0.004, 0.13, 0.004, 0, 0.065, 0), lam({ color: 0x2a2018 }), infBlocks.length, true);

@@ -160,7 +160,7 @@ export function initWorld(canvas, opts = {}) {
     const trees = d.trees, ts = (name === "wide" ? 1.3 : 0.15) * O.treeScale;
     const tmat = new THREE.MeshLambertMaterial();
     const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x56603a), teal = new THREE.Color(0x24423e);
-    const GREENS = [0x22382e, 0x28402f, 0x2e4834, 0x1f3529, 0x34503a, 0x2a3e30, 0x3a5036, 0x26443a];
+    const GREENS = [0x1e342e, 0x223a32, 0x284236, 0x1b3029, 0x2c4638, 0x243a33, 0x30483a, 0x20403a];   // GM woods ~(50-58, 71-78, 64-72) rendered
     const NV = 4, variants = [];
     for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
       const lobes = 2 + (v % 3), P = [], N = [];
@@ -190,7 +190,7 @@ export function initWorld(canvas, opts = {}) {
           dummy.position.set(q[0], y + (wood ? s * (0.12 + 0.18 * e) : s * 0.62), q[1]); dummy.rotation.set(0, hash(j, 7) * 6.28, 0);
           dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
           col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
-          const hv = hash(j, 12); if (hv < 0.18) col.lerp(olive, 0.25 + hv); else if (hv > 0.8) col.lerp(teal, 0.4);
+          const hv = hash(j, 12); if (hv < 0.12) col.lerp(olive, 0.2 + hv); else if (hv > 0.7) col.lerp(teal, 0.45);
           col.multiplyScalar((0.78 + hash(j, 10) * 0.36) * (wood ? 0.9 + 0.12 * e : 1.0)); im.setColorAt(i, col); });
         R.scene.add(im); R.trees.push(im); });
     }
