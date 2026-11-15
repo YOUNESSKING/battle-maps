@@ -377,7 +377,6 @@ NEWBR.forEach(([y, k]) => { const { b, ex, ey } = bridgeAxis(y, k), P = (d) => [
   unit("u", "inf", [[T.p5 - 1, ...P(3.6)], [tb + 0.7, ...P(3.6)], [tb + 4.2, ...P(-2.4)], [T.D, ...P(-3.4)]], { n: 4, face: Math.atan2(ey, ex) + Math.PI / 2, t0: T.p5 - 0.6, bw: 0.56, bd: 0.3, gap: 0.07, wob: 0 }); });
 [[1523.0, 700.5], [1524.5, 706.0], [1522.5, 711.0]].forEach(([x, y]) => unit("u", "inf", [[T.p5 - 1, x, y]], { n: 4, t0: T.p5 - 0.6 }));
 // army banners (one flag per side, on a pole, Style W)
-const BN = document.createElement("div"); TR.appendChild(BN);
 // v8 (owner): the generals as banners on poles in the EXACT locked style (banner.js = research/style_tests/banners_units_camps/banners/banner.js,
 // STYLE_LOCK 2f item 1): rope pole, cream plaque, blue cloth + gilt eagle (Union) / red cloth + spear (Confederate), sepia portrait, streamers,
 // pennant with the national flag of the date (US 34 stars / CS Stars and Bars), ground shadow, timeline sway. Authored at 1080p -> x2/3 here,
@@ -405,7 +404,7 @@ const arrow = (pts, t0, dur, t1, col) => { const g = document.createElementNS(NS
 arrow([[1527.4, 710.8], [1525.0, 711.0], [1522.2, 710.4]], 30.4, 2.6, T.bburn, ARU);
 arrow([[1527.4, 706.6], [1524.8, 706.6], [1522.4, 706.2]], 31.2, 2.4, T.bburn, ARU);
 arrow([[1527.4, 702.4], [1524.8, 702.6], [1522.4, 702.6]], 31.8, 2.2, T.bburn, ARU);
-arrow([[1518.4, 705.5], [1515.3, 705.15], [1512.3, 704.75], [1508.3, 704.2]], 30.2, 3.0, T.bburn + 1.0, ARR_R);   // v8: the withdrawal over the bridge (with the column, 30-35 s)
+arrow([[1518.2, 704.4], [1515.3, 704.05], [1512.6, 703.75], [1509.6, 703.3]], 30.2, 3.0, T.bburn + 1.0, ARR_R);   // v8: the withdrawal over the bridge, drawn just north of the road so the column on it stays visible
 for (const [y, k] of NEWBR) { const { b, ex, ey } = bridgeAxis(y, k); arrow([[b[0] + ex * 3.6, b[1] + ey * 3.6], [b[0] + ex * 0.75, b[1] + ey * 0.75]], EV.bridgesNew[k] + 0.4, 1.4, T.D + 1, ARU); }   // v6 (critic B 8): ends short of the river, the pontoon stays visible
 
 // ---------------- place names pinned to the ground ----------------
