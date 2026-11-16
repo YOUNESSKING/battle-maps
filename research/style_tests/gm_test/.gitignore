@@ -1,0 +1,11 @@
+# rendered / baked outputs (rebuild: python3 bake.py; narrate.py; build_timing.py; hyperframes render; assemble.py)
+*.mp4
+build/
+audio/voice.wav
+scene/assets/plane_*.jpg
+scene/assets/clouds.png
+scene/assets/cshadow.png
+scene/assets/grain.png
+scene/assets/inset_run.jpg
+scene/renders/
+scene/.hyperframes/

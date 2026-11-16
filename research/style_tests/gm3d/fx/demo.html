@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>gm3d fx showcase</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+  #root { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+  #fx-canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script type="importmap">{ "imports": { "three": "./lib/three.module.min.js" } }</script>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+  <canvas id="fx-canvas" width="1920" height="1080"></canvas>
+</div>
+<script>
+  // Register the paused timeline synchronously; the module below hooks its renderer into it.
+  window.__timelines = window.__timelines || {};
+  window.__fxState = { t: 0 };
+  window.__fxRender = null;
+  const tl = gsap.timeline({ paused: true });
+  tl.to(window.__fxState, { t: 10, duration: 10, ease: 'none', onUpdate: () => { if (window.__fxRender) window.__fxRender(window.__fxState.t); } }, 0);
+  window.__timelines["main"] = tl;
+  window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+  window.__hf.buildReady["gm3d-fx"] = new Promise((res) => { window.__fxReadyResolve = res; });
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { createFX } from './fx.js';
+
+const W = 1920, H = 1080;
+const canvas = document.getElementById('fx-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, W / H, 2, 60000);
+const dayFog = new THREE.Color(0xb9c6cf), nightFog = new THREE.Color(0x0c1220);
+scene.fog = new THREE.FogExp2(dayFog.clone(), 0.00011);
+scene.background = dayFog.clone();
+
+// ---------------- test world: flat ground, river, bridge, a building, troop blocks
+function hash(i) { let h = Math.imul(i ^ 0x9e3779b9, 0x85ebca6b); h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function groundTexture() {
+  const N = 1024, d = new Uint8Array(N * N * 4);
+  const vn = (x, y) => { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const g = (a, b) => hash(((a & 1023) * 1031 + (b & 1023)) | 0); const A = g(xi, yi), B = g(xi + 1, yi), C = g(xi, yi + 1), D = g(xi + 1, yi + 1);
+    return A + (B - A) * u + (C - A) * v + (A - B - C + D) * u * v; };
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const f = vn(x / 90, y / 90) * 0.55 + vn(x / 30, y / 30) * 0.3 + vn(x / 7, y / 7) * 0.15;
+    const plot = hash(((Math.floor(x / 64 + vn(x / 200, y / 200) * 2) * 97) ^ (Math.floor(y / 40) * 131)) | 0);
+    let r = 0.36 + 0.10 * f, g = 0.42 + 0.10 * f, b = 0.24 + 0.05 * f;
+    if (plot > 0.72) { r += 0.16; g += 0.10; b += 0.02; }        // stubble / ochre field
+    else if (plot < 0.18) { r -= 0.08; g -= 0.04; b -= 0.04; }   // dark meadow
+    const o = (y * N + x) * 4; d[o] = r * 255; d[o + 1] = g * 255; d[o + 2] = b * 255; d[o + 3] = 255;
+  }
+  const t = new THREE.DataTexture(d, N, N); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(3, 3); t.anisotropy = 4; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.needsUpdate = true; return t;
+}
+const groundMat = new THREE.MeshStandardMaterial({ map: groundTexture(), roughness: 1, metalness: 0 });
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(16000, 16000), groundMat);
+ground.rotation.x = -Math.PI / 2; scene.add(ground);
+
+const riverMat = new THREE.MeshStandardMaterial({ color: 0x3f5f6e, roughness: 0.35, metalness: 0.1 });
+const river = new THREE.Mesh(new THREE.PlaneGeometry(36, 16000), riverMat);
+river.rotation.x = -Math.PI / 2; river.position.set(250, 0.25, 0); scene.add(river);
+
+const woodMat = new THREE.MeshStandardMaterial({ color: 0x4a3426, roughness: 0.9 });
+const bridge = new THREE.Mesh(new THREE.BoxGeometry(64, 2.2, 9), woodMat); bridge.position.set(250, 2.6, 0); scene.add(bridge);
+const wallMat = new THREE.MeshStandardMaterial({ color: 0xcbbfa8, roughness: 0.95 });
+const roofMat = new THREE.MeshStandardMaterial({ color: 0x5a3326, roughness: 0.9 });
+function house(x, z, w, d, h, rot) {
+  const g = new THREE.Group();
+  const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), wallMat); b.position.y = h / 2; g.add(b);
+  const roof = new THREE.Mesh(new THREE.CylinderGeometry(0.01, d * 0.72, w * 1.05, 4, 1), roofMat);
+  roof.rotation.z = Math.PI / 2; roof.rotation.x = Math.PI / 4; roof.scale.set(1, 1, 0.55); roof.position.y = h + d * 0.2; g.add(roof);
+  g.position.set(x, 0, z); g.rotation.y = rot; scene.add(g);
+}
+house(150, -150, 26, 16, 10, 0.2); house(185, -120, 16, 12, 8, 0.1); house(330, 60, 18, 12, 8, -0.3); house(120, -195, 14, 10, 7, 0.4);
+for (const m of [groundMat, riverMat, woodMat, wallMat, roofMat]) {}
+
+// troop blocks (context only)
+const blockGeo = new THREE.BoxGeometry(14, 3, 5);
+function line(x0, z0, x1, z1, n, color) {
+  const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.8 });
+  const im = new THREE.InstancedMesh(blockGeo, mat, n); const m = new THREE.Matrix4();
+  for (let i = 0; i < n; i++) { const f = n === 1 ? 0.5 : i / (n - 1); m.makeRotationY(Math.atan2(-(z1 - z0), x1 - x0)); m.setPosition(x0 + (x1 - x0) * f, 1.5, z0 + (z1 - z0) * f); im.setMatrixAt(i, m); }
+  scene.add(im); return mat;
+}
+const frMat = line(-200, -220, -200, 160, 18, 0x2a4f9a);
+const ruMat = line(-30, -220, -30, 160, 18, 0x2f5a35);
+const gunMat = line(-330, -130, -330, 130, 6, 0x222222);
+
+const hemi = new THREE.HemisphereLight(0xc9d8ea, 0x4b4a3a, 1.2); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff1dc, 2.6); scene.add(sun);
+
+const ease = (x) => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+// ---------------- FX
+const fx = createFX({ scene, camera, renderer, unitsPerMeter: 1, fxScale: 1.25, wind: [4.5, 1.6], sunDir: [0.55, 0.62, 0.35], duration: 30, seed: 1812 });
+sun.position.copy(fx.sunDir).multiplyScalar(1000);
+for (const m of [groundMat, riverMat, woodMat, wallMat, roofMat, frMat, ruMat]) fx.patchGround(m);
+
+// musketry: French line fires east (+x), Russian line fires west; started well before t=0 so the bank exists
+fx.smokeLine([[-200, 0, -220], [-200, 0, -30], [-196, 0, 160]], -26, 6.6, { dir: [1, 0.05], rate: 7, volley: 2.4, roll: 1.2 });
+fx.smokeLine([[-30, 0, -220], [-34, 0, 160]], -24, 6.4, { dir: [-1, 0], rate: 5 });
+// battery: six guns, staggered
+for (let g = 0; g < 6; g++) {
+  const z = -130 + g * 52;
+  for (let k = 0; k < 12; k++) if (-22 + k * 2.9 + g * 0.47 + (g % 2) * 0.9 < 6.6) fx.cannon([-330, 0, z], -22 + k * 2.9 + g * 0.47 + (g % 2) * 0.9, { dir: [1, 0.03 * (g - 2.5)] });
+}
+// shell impacts behind the Russian line
+for (let k = 0; k < 10; k++) fx.impact([20 + hash(k * 7) * 60, 0, -180 + hash(k * 13) * 320], 2.2 + k * 0.75);
+// the burning bridge + a burning house
+fx.fire([224, 3.6, 0], -12, 30, { to: [276, 3.6, 0] });
+fx.fire([150, 6, -150], -15, 30, { area: [22, 12], size: 1.1 });
+// night bivouac campfires (fade in with the night)
+const nightK = (t) => Math.min(1, Math.max(0, (t - 6.3) / 1.1));
+for (let i = 0; i < 46; i++) {
+  const side = i % 2;
+  const x = side ? -620 + hash(i * 3) * 300 : 60 + hash(i * 3) * 280;
+  const z = -420 + hash(i * 5 + 1) * 800;
+  if (Math.abs(x - 250) < 30) continue;
+  fx.campfire([x, 0, z], { t0: 6, t1: 10.5, visible: (t) => Math.min(1, Math.max(0, (t - 6.3 - hash(i) * 0.8) / 0.6)), seed: 900 + i });
+}
+// cloud deck: scattered cumulus at first, closing in as the camera dives, thinning again below
+fx.clouds({ base: 1100, top: 2700, tile: 7000, shadow: 0.4, resolution: 0.36, steps: 36,
+  coverage: (t) => t < 2.6 ? 0.42 + 0.43 * ease((t - 0.2) / 1.9) : 0.85 - 0.5 * ease((t - 2.45) / 0.6) });
+// light snow over the night bivouac
+fx.snow({ t0: 7.0, t1: 11, count: 1600, alpha: 0.85 });
+
+// ---------------- camera: dive through the clouds, then a slow oblique push, then dusk -> night
+// x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+const lerp = (a, b, k) => a + (b - a) * k;
+const v3 = (a) => new THREE.Vector3(...a);
+const target = new THREE.Vector3();
+function cameraAt(t) {
+  // keys: [time, position, lookAt]
+  const K = [
+    [0.0, [-150, 6200, 700], [-150, 0, -60]],
+    [1.0, [-150, 5000, 560], [-150, 0, -60]],
+    [3.0, [-760, 430, 560], [-60, 0, -40]],
+    [6.4, [-560, 300, 330], [40, 0, -40]],
+    [7.4, [-420, 260, 250], [90, 0, -40]],
+    [10.0, [-250, 240, 330], [200, 0, -60]],
+  ];
+  let i = 0; while (i < K.length - 2 && t > K[i + 1][0]) i++;
+  const [ta, pa, la] = K[i], [tb, pb, lb] = K[i + 1];
+  let k = (t - ta) / (tb - ta); k = Math.max(0, Math.min(1, k));
+  const kk = i === 1 ? k * k * (3 - 2 * k) : (i === 0 ? k : k * (2 - k) * 0.5 + k * 0.5);
+  camera.position.lerpVectors(v3(pa), v3(pb), kk);
+  target.lerpVectors(v3(la), v3(lb), kk);
+  camera.lookAt(target);
+}
+function envAt(t) {
+  const n = nightK(t);
+  fx.setNight(n);
+  scene.fog.color.copy(dayFog).lerp(nightFog, n); scene.background.copy(scene.fog.color);
+  scene.fog.density = lerp(0.00011, 0.00022, n);
+  sun.intensity = lerp(2.6, 0.06, n); sun.color.setRGB(1, lerp(0.94, 0.8, n), lerp(0.86, 0.9, n));
+  hemi.intensity = lerp(1.2, 0.10, n);
+  renderer.toneMappingExposure = lerp(1.05, 1.25, n);
+}
+function renderAt(t) {
+  cameraAt(t); envAt(t);
+  fx.update(t, camera);
+  renderer.render(scene, camera);
+}
+window.__fxRender = renderAt;
+window.addEventListener('hf-seek', (e) => renderAt(e.detail.time));
+window.__fxDebug = { fx, renderAt, renderer };
+renderAt(window.__fxState ? window.__fxState.t : 0);
+if (window.__fxReadyResolve) window.__fxReadyResolve();
+</script>
+</body>
+</html>

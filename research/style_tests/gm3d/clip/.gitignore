@@ -1,0 +1,17 @@
+*.mp4
+.hyperframes/
+renders/
+compare_gm.jpg
+build/
+dive_compare.jpg
+dive_sectors.jpg
+dive_compare_v4.jpg
+ground_sectors.jpg
+troops_sectors.jpg
+# anything holding Grand Maneuver frames stays local
+*_sectors.jpg
+*compare*.jpg
+ground_sectors_v5.jpg
+*_sectors_v*.jpg
+ground_sectors_v6.jpg
+ground_sectors_v7.jpg
