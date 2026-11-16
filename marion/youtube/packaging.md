@@ -49,3 +49,4 @@ Log in `research/CHANNEL_LOG.md`: winning title + thumbnail, CTR, impressions da
 - Main thumbnail: **marion-thumb-A_SWAMP_FOX.jpg**; B and C as Test & Compare alternatives.
 - Face crop from John Blake White's 1810 painting: OK (head + coat only; the Weems dinner scene is not shown).
 - End screen: the Morgan video carries the Marion element (same war, Tarleton at Cowpens); Marion's own end screen points to Morgan.
+- Uploaded 2026-11-16 (owner request): https://gofile.io/d/rTp8nCJm — 1080p master (md5 d57c5bf9cab09b4e4593096e7c371008), 720p preview, publishing guide PDF, thumbnails A/B/C + sheet.
