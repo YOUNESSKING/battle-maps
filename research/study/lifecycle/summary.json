@@ -1,0 +1,4406 @@
+{
+ "metrics": {
+  "tacticalgeniuss": {
+   "name": "Tactical Genius",
+   "videos_long": 14,
+   "first_upload": "2026-07-12",
+   "last_upload": "2026-11-01",
+   "channel_age_d": 128,
+   "days_since_last": 16,
+   "median_gap_d": 6,
+   "max_gap_d": 38,
+   "uploads_last30": 1,
+   "median_views": 89807.0,
+   "peak_views": 1479122,
+   "peak_upload_no": 9,
+   "first_hit_no": 2,
+   "first_hit_date": "20260722",
+   "first_hit_days_after_start": 10,
+   "hits": 8,
+   "median_first5_mature": 26558,
+   "median_last5_mature": 65349,
+   "format_share": 1.0,
+   "format_share_last5": 1.0,
+   "subs": 12200,
+   "spark": "\u2584\u2586\u2588\u2585\u2585\u2584\u2587\u2586\u2588\u2587\u2585\u2586\u2586\u2583"
+  },
+  "WarfareGeniuss": {
+   "name": "Warfare Genius",
+   "videos_long": 9,
+   "first_upload": "2026-09-24",
+   "last_upload": "2026-10-26",
+   "channel_age_d": 54,
+   "days_since_last": 22,
+   "median_gap_d": 4.0,
+   "max_gap_d": 6,
+   "uploads_last30": 2,
+   "median_views": 40000,
+   "peak_views": 784810,
+   "peak_upload_no": 2,
+   "first_hit_no": 2,
+   "first_hit_date": "20260926",
+   "first_hit_days_after_start": 2,
+   "hits": 3,
+   "median_first5_mature": 136832,
+   "median_last5_mature": 25611,
+   "format_share": 1.0,
+   "format_share_last5": 1.0,
+   "subs": 5840,
+   "spark": "\u2584\u2587\u2586\u2587\u2585\u2585\u2585\u2585\u2585"
+  },
+  "FootprintHistory": {
+   "name": "Footprints in History",
+   "videos_long": 24,
+   "first_upload": "2026-10-10",
+   "last_upload": "2026-11-17",
+   "channel_age_d": 38,
+   "days_since_last": 0,
+   "median_gap_d": 2,
+   "max_gap_d": 4,
+   "uploads_last30": 19,
+   "median_views": 5215.5,
+   "peak_views": 136628,
+   "peak_upload_no": 5,
+   "first_hit_no": 1,
+   "first_hit_date": "20261010",
+   "first_hit_days_after_start": 0,
+   "hits": 3,
+   "median_first5_mature": 46000,
+   "median_last5_mature": 3951,
+   "format_share": 0.83,
+   "format_share_last5": 0.4,
+   "subs": 2730,
+   "spark": "\u2586\u2585\u2585\u2585\u2586\u2586\u2584\u2584\u2585\u2584\u2585\u2584\u2582\u2583\u2583\u2583\u2582\u2582\u2581\u2581\u2583\u2583\u2582\u2581"
+  },
+  "WarTableAtlas": {
+   "name": "War Table Atlas",
+   "videos_long": 19,
+   "first_upload": "2026-10-11",
+   "last_upload": "2026-11-15",
+   "channel_age_d": 37,
+   "days_since_last": 2,
+   "median_gap_d": 1.0,
+   "max_gap_d": 8,
+   "uploads_last30": 17,
+   "median_views": 312,
+   "peak_views": 105499,
+   "peak_upload_no": 3,
+   "first_hit_no": 3,
+   "first_hit_date": "20261020",
+   "first_hit_days_after_start": 9,
+   "hits": 1,
+   "median_first5_mature": 1867,
+   "median_last5_mature": 363,
+   "format_share": 0.95,
+   "format_share_last5": 0.8,
+   "subs": 450,
+   "spark": "\u2583\u2583\u2586\u2582\u2582\u2581\u2581\u2583\u2581\u2582\u2581\u2581\u2583\u2581\u2581\u2581\u2581\u2581\u2581"
+  },
+  "CommandersAndTactics": {
+   "name": "Commanders and Tactics",
+   "videos_long": 9,
+   "first_upload": "2025-06-04",
+   "last_upload": "2026-10-19",
+   "channel_age_d": 531,
+   "days_since_last": 29,
+   "median_gap_d": 56.0,
+   "max_gap_d": 117,
+   "uploads_last30": 1,
+   "median_views": 254604,
+   "peak_views": 833326,
+   "peak_upload_no": 2,
+   "first_hit_no": 1,
+   "first_hit_date": "20250604",
+   "first_hit_days_after_start": 0,
+   "hits": 8,
+   "median_first5_mature": 254604,
+   "median_last5_mature": 234458,
+   "format_share": 1.0,
+   "format_share_last5": 1.0,
+   "subs": 38600,
+   "spark": "\u2587\u2587\u2586\u2587\u2586\u2585\u2587\u2586\u2587"
+  },
+  "CloakedHistory1": {
+   "name": "Cloaked History",
+   "videos_long": 40,
+   "first_upload": "2026-03-26",
+   "last_upload": "2026-11-07",
+   "channel_age_d": 236,
+   "days_since_last": 10,
+   "median_gap_d": 4,
+   "max_gap_d": 36,
+   "uploads_last30": 1,
+   "median_views": 382.0,
+   "peak_views": 77000,
+   "peak_upload_no": 9,
+   "first_hit_no": 11,
+   "first_hit_date": "20260524",
+   "first_hit_days_after_start": 59,
+   "hits": 1,
+   "median_first5_mature": 588,
+   "median_last5_mature": 393,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 3640,
+   "spark": "\u2581\u2582\u2582\u2581\u2583\u2581\u2584\u2582\u2586\u2584\u2582\u2581\u2585\u2581\u2581\u2581\u2582\u2581\u2582\u2581\u2582\u2581\u2581\u2581\u2582\u2581\u2581\u2581\u2582\u2583\u2583\u2583\u2582\u2581\u2582\u2582\u2581\u2582\u2581\u2581"
+  },
+  "GeneralsOnTheMap": {
+   "name": "Generals On The Map (us)",
+   "videos_long": 13,
+   "first_upload": "2026-10-02",
+   "last_upload": "2026-11-17",
+   "channel_age_d": 46,
+   "days_since_last": 0,
+   "median_gap_d": 3.5,
+   "max_gap_d": 8,
+   "uploads_last30": 10,
+   "median_views": 2297,
+   "peak_views": 136490,
+   "peak_upload_no": 1,
+   "first_hit_no": 1,
+   "first_hit_date": "20261002",
+   "first_hit_days_after_start": 0,
+   "hits": 2,
+   "median_first5_mature": 40534,
+   "median_last5_mature": 694,
+   "format_share": 0.92,
+   "format_share_last5": 0.8,
+   "subs": 922,
+   "spark": "\u2586\u2583\u2585\u2585\u2582\u2583\u2582\u2581\u2582\u2583\u2584\u2582\u2581"
+  },
+  "HandledLikeEggs": {
+   "name": "Handled Like Eggs",
+   "videos_long": 3,
+   "first_upload": "2026-01-16",
+   "last_upload": "2026-08-26",
+   "channel_age_d": 305,
+   "days_since_last": 83,
+   "median_gap_d": 111.0,
+   "max_gap_d": 130,
+   "uploads_last30": 0,
+   "median_views": 165000,
+   "peak_views": 174117,
+   "peak_upload_no": 3,
+   "first_hit_no": 1,
+   "first_hit_date": "20260116",
+   "first_hit_days_after_start": 0,
+   "hits": 3,
+   "median_first5_mature": 165000,
+   "median_last5_mature": 165000,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 8420,
+   "spark": "\u2586\u2586\u2586"
+  },
+  "IronBreachHistory": {
+   "name": "Iron Breach History",
+   "videos_long": 6,
+   "first_upload": "2026-04-12",
+   "last_upload": "2026-09-17",
+   "channel_age_d": 219,
+   "days_since_last": 61,
+   "median_gap_d": 27,
+   "max_gap_d": 46,
+   "uploads_last30": 0,
+   "median_views": 184525.5,
+   "peak_views": 478325,
+   "peak_upload_no": 6,
+   "first_hit_no": 1,
+   "first_hit_date": "20260412",
+   "first_hit_days_after_start": 0,
+   "hits": 6,
+   "median_first5_mature": 181747,
+   "median_last5_mature": 181747,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 10100,
+   "spark": "\u2587\u2586\u2586\u2586\u2586\u2587"
+  },
+  "TheGeneralOath": {
+   "name": "The Generals' Oath",
+   "videos_long": 47,
+   "first_upload": "2025-12-31",
+   "last_upload": "2026-11-10",
+   "channel_age_d": 321,
+   "days_since_last": 7,
+   "median_gap_d": 4.0,
+   "max_gap_d": 47,
+   "uploads_last30": 4,
+   "median_views": 5392,
+   "peak_views": 358785,
+   "peak_upload_no": 26,
+   "first_hit_no": 2,
+   "first_hit_date": "20260216",
+   "first_hit_days_after_start": 47,
+   "hits": 10,
+   "median_first5_mature": 80852,
+   "median_last5_mature": 3585,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 12500,
+   "spark": "\u2581\u2586\u2584\u2586\u2586\u2583\u2585\u2587\u2584\u2582\u2584\u2584\u2583\u2584\u2583\u2582\u2585\u2584\u2585\u2583\u2584\u2583\u2584\u2586\u2585\u2587\u2583\u2583\u2583\u2583\u2586\u2582\u2584\u2584\u2583\u2586\u2583\u2584\u2584\u2583\u2583\u2585\u2583\u2583\u2583\u2582\u2582"
+  },
+  "CivilWarDose": {
+   "name": "Civil War Dose / Civil War Archive",
+   "videos_long": 44,
+   "first_upload": "2026-03-07",
+   "last_upload": "2026-11-14",
+   "channel_age_d": 255,
+   "days_since_last": 3,
+   "median_gap_d": 4,
+   "max_gap_d": 34,
+   "uploads_last30": 3,
+   "median_views": 8647.5,
+   "peak_views": 192148,
+   "peak_upload_no": 41,
+   "first_hit_no": 3,
+   "first_hit_date": "20260314",
+   "first_hit_days_after_start": 7,
+   "hits": 9,
+   "median_first5_mature": 3275,
+   "median_last5_mature": 6500,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 9760,
+   "spark": "\u2583\u2584\u2586\u2582\u2583\u2583\u2586\u2584\u2583\u2584\u2585\u2585\u2586\u2586\u2586\u2585\u2585\u2582\u2585\u2584\u2584\u2585\u2585\u2583\u2584\u2585\u2584\u2583\u2583\u2585\u2584\u2583\u2584\u2583\u2584\u2582\u2583\u2582\u2584\u2586\u2586\u2582\u2583\u2582"
+  },
+  "ravelin.history": {
+   "name": "Ravelin",
+   "videos_long": 72,
+   "first_upload": "2026-05-11",
+   "last_upload": "2026-11-15",
+   "channel_age_d": 190,
+   "days_since_last": 2,
+   "median_gap_d": 2,
+   "max_gap_d": 9,
+   "uploads_last30": 10,
+   "median_views": 33109.0,
+   "peak_views": 1388203,
+   "peak_upload_no": 2,
+   "first_hit_no": 2,
+   "first_hit_date": "20260512",
+   "first_hit_days_after_start": 1,
+   "hits": 31,
+   "median_first5_mature": 218263,
+   "median_last5_mature": 18595,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 31800,
+   "spark": "\u2585\u2588\u2587\u2583\u2586\u2583\u2584\u2583\u2583\u2583\u2587\u2587\u2586\u2586\u2585\u2586\u2586\u2586\u2585\u2585\u2586\u2584\u2585\u2585\u2586\u2585\u2584\u2585\u2585\u2585\u2584\u2584\u2584\u2585\u2585\u2586\u2586\u2585\u2584\u2585\u2586\u2585\u2586\u2584\u2588\u2584\u2585\u2584\u2585\u2584\u2586\u2584\u2586\u2586\u2585\u2584\u2584\u2586\u2585\u2586\u2585\u2584\u2586\u2584\u2585\u2585\u2584\u2585\u2584\u2583\u2584\u2583"
+  },
+  "RedcoatsRebels": {
+   "name": "Redcoats & Rebels",
+   "videos_long": 7,
+   "first_upload": "2026-10-28",
+   "last_upload": "2026-11-17",
+   "channel_age_d": 20,
+   "days_since_last": 0,
+   "median_gap_d": 3.0,
+   "max_gap_d": 7,
+   "uploads_last30": 7,
+   "median_views": 1300,
+   "peak_views": 156000,
+   "peak_upload_no": 4,
+   "first_hit_no": 1,
+   "first_hit_date": "20261028",
+   "first_hit_days_after_start": 0,
+   "hits": 2,
+   "median_first5_mature": 7100,
+   "median_last5_mature": 7100,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": null,
+   "spark": "\u2586\u2584\u2582\u2586\u2581\u2582\u2582"
+  },
+  "WarhawkYT": {
+   "name": "Warhawk",
+   "videos_long": 100,
+   "first_upload": "2020-11-18",
+   "last_upload": "2026-10-18",
+   "channel_age_d": 2190,
+   "days_since_last": 30,
+   "median_gap_d": 0,
+   "max_gap_d": 366,
+   "uploads_last30": 2,
+   "median_views": 63000.0,
+   "peak_views": 498000,
+   "peak_upload_no": 16,
+   "first_hit_no": 1,
+   "first_hit_date": "20201118",
+   "first_hit_days_after_start": 0,
+   "hits": 63,
+   "median_first5_mature": 118000,
+   "median_last5_mature": 56000,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": null,
+   "spark": "\u2586\u2586\u2586\u2586\u2586\u2587\u2586\u2585\u2585\u2587\u2586\u2586\u2585\u2585\u2585\u2587\u2586\u2586\u2586\u2585\u2585\u2587\u2586\u2585\u2585\u2586\u2586\u2585\u2586\u2585\u2585\u2585\u2585\u2585\u2586\u2586\u2585\u2585\u2585\u2585\u2585\u2587\u2585\u2585\u2585\u2585\u2586\u2586\u2585\u2585\u2585\u2585\u2585\u2586\u2585\u2586\u2585\u2586\u2585\u2585\u2585\u2585\u2585\u2586\u2585\u2586\u2585\u2585\u2586\u2586\u2584\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2585\u2586\u2586\u2586\u2585\u2586\u2585\u2586\u2585\u2585\u2586\u2586\u2585\u2586\u2585\u2585\u2585\u2586\u2585\u2586"
+  },
+  "kingsandgenerals": {
+   "name": "Kings and Generals",
+   "videos_long": 80,
+   "first_upload": "2026-05-14",
+   "last_upload": "2026-11-17",
+   "channel_age_d": 187,
+   "days_since_last": 0,
+   "median_gap_d": 2,
+   "max_gap_d": 33,
+   "uploads_last30": 16,
+   "median_views": 234463.0,
+   "peak_views": 1000000,
+   "peak_upload_no": 52,
+   "first_hit_no": 1,
+   "first_hit_date": "20260514",
+   "first_hit_days_after_start": 0,
+   "hits": 79,
+   "median_first5_mature": 209000,
+   "median_last5_mature": 407000,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": 4220000,
+   "spark": "\u2586\u2587\u2586\u2587\u2586\u2585\u2587\u2586\u2587\u2586\u2587\u2586\u2586\u2587\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2586\u2587\u2586\u2586\u2586\u2587\u2586\u2586\u2586\u2585\u2586\u2586\u2586\u2587\u2587\u2587\u2587\u2586\u2586\u2587\u2587\u2587\u2588\u2587\u2587\u2587\u2587\u2588\u2586\u2587\u2586\u2586\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2586\u2587\u2587\u2586\u2587\u2586\u2587\u2586\u2587\u2586\u2586\u2586"
+  },
+  "thearmchairhistorian": {
+   "name": "The Armchair Historian",
+   "videos_long": 78,
+   "first_upload": "2024-11-18",
+   "last_upload": "2026-11-15",
+   "channel_age_d": 729,
+   "days_since_last": 2,
+   "median_gap_d": 0,
+   "max_gap_d": 365,
+   "uploads_last30": 3,
+   "median_views": 522000.0,
+   "peak_views": 1700000,
+   "peak_upload_no": 45,
+   "first_hit_no": 2,
+   "first_hit_date": "20241118",
+   "first_hit_days_after_start": 0,
+   "hits": 78,
+   "median_first5_mature": 646000,
+   "median_last5_mature": 515000,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": null,
+   "spark": "\u2587\u2588\u2587\u2587\u2587\u2587\u2587\u2588\u2587\u2587\u2587\u2588\u2587\u2587\u2587\u2586\u2587\u2587\u2587\u2588\u2587\u2588\u2587\u2586\u2587\u2587\u2587\u2587\u2588\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2588\u2586\u2587\u2587\u2588\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2587\u2586\u2587\u2586\u2586\u2586\u2587\u2586\u2587\u2587\u2587\u2587\u2587\u2587\u2586"
+  },
+  "epichistorytv": {
+   "name": "Epic History",
+   "videos_long": 78,
+   "first_upload": "2022-11-18",
+   "last_upload": "2026-10-28",
+   "channel_age_d": 1460,
+   "days_since_last": 20,
+   "median_gap_d": 0,
+   "max_gap_d": 366,
+   "uploads_last30": 2,
+   "median_views": 1000000.0,
+   "peak_views": 24000000,
+   "peak_upload_no": 12,
+   "first_hit_no": 1,
+   "first_hit_date": "20221118",
+   "first_hit_days_after_start": 0,
+   "hits": 78,
+   "median_first5_mature": 802000,
+   "median_last5_mature": 1100000,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": null,
+   "spark": "\u2587\u2587\u2588\u2587\u2588\u2588\u2587\u2587\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2587\u2588\u2588\u2588\u2588\u2588\u2587\u2588\u2587\u2588\u2588\u2588\u2587\u2587\u2588\u2588\u2588\u2588\u2588\u2587\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2587\u2587\u2587\u2587\u2588\u2587\u2588\u2588\u2587\u2586\u2587\u2588\u2587\u2588\u2587\u2587\u2587\u2587\u2587\u2588\u2587\u2588\u2587\u2588\u2587\u2586\u2587\u2588\u2588\u2588\u2588"
+  },
+  "markfeltonproductions": {
+   "name": "Mark Felton",
+   "videos_long": 70,
+   "first_upload": "2026-02-18",
+   "last_upload": "2026-11-13",
+   "channel_age_d": 272,
+   "days_since_last": 4,
+   "median_gap_d": 0,
+   "max_gap_d": 31,
+   "uploads_last30": 12,
+   "median_views": 385500.0,
+   "peak_views": 2200000,
+   "peak_upload_no": 15,
+   "first_hit_no": 1,
+   "first_hit_date": "20260218",
+   "first_hit_days_after_start": 0,
+   "hits": 70,
+   "median_first5_mature": 366000,
+   "median_last5_mature": 345000,
+   "format_share": 0.0,
+   "format_share_last5": 0.0,
+   "subs": null,
+   "spark": "\u2586\u2587\u2587\u2587\u2587\u2587\u2586\u2587\u2587\u2587\u2587\u2587\u2587\u2586\u2588\u2587\u2588\u2587\u2587\u2587\u2587\u2587\u2587\u2586\u2587\u2586\u2587\u2587\u2588\u2587\u2586\u2587\u2587\u2588\u2588\u2587\u2587\u2587\u2587\u2586\u2587\u2586\u2587\u2587\u2587\u2587\u2588\u2587\u2586\u2586\u2587\u2588\u2586\u2587\u2587\u2587\u2588\u2588\u2587\u2588\u2586\u2587\u2587\u2587\u2587\u2587\u2588\u2587\u2586\u2587"
+  }
+ },
+ "tail_18d": [
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Wellington's Top 3 Legendary Tactical Moves | The Man Who Be",
+   "age_then": 110,
+   "views_then": 7722,
+   "views_now": 8095,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Montgomery's Top 3 Legendary Tactical Moves | The Victor of ",
+   "age_then": 100,
+   "views_then": 113546,
+   "views_now": 114265,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Patton's Top 3 Legendary Tactical Moves",
+   "age_then": 94,
+   "views_then": 953823,
+   "views_now": 1093819,
+   "growth_18d": 1.15
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Richard O'Connor's Top 3 Legendary Tactical Moves | The Man ",
+   "age_then": 86,
+   "views_then": 18755,
+   "views_now": 18878,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Rommel's Top 3 Legendary Tactical Moves | The General Church",
+   "age_then": 81,
+   "views_then": 26072,
+   "views_now": 26558,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Yamashita's Top 3 Legendary Tactical Moves | The Tiger of Ma",
+   "age_then": 77,
+   "views_then": 6464,
+   "views_now": 6579,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Guderian's Top 3 Legendary Tactical Moves | The Father of Bl",
+   "age_then": 63,
+   "views_then": 112747,
+   "views_now": 114316,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Matthew Ridgway's Top 3 Legendary Tactical Moves | The Man W",
+   "age_then": 59,
+   "views_then": 1363832,
+   "views_now": 1479122,
+   "growth_18d": 1.08
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Manstein's Top 3 Legendary Tactical Moves | The Man Who Brok",
+   "age_then": 55,
+   "views_then": 250587,
+   "views_now": 252000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "MacArthur's Top 3 Legendary Tactical Moves | The General Tru",
+   "age_then": 49,
+   "views_then": 30759,
+   "views_now": 31045,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "William Slim's Top 3 Tactical Moves | The General Better Tha",
+   "age_then": 43,
+   "views_then": 222662,
+   "views_now": 224530,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "tacticalgeniuss",
+   "title": "Bradley's Top 3 Legendary Tactical Moves | The Man Who Outra",
+   "age_then": 36,
+   "views_then": 63142,
+   "views_now": 65349,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "George Washington's Top 3 Legendary Tactical Moves | He Lost",
+   "age_then": 36,
+   "views_then": 10726,
+   "views_now": 11190,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Heinz Guderian's Top 3 Legendary Tactical Moves | Fired for ",
+   "age_then": 34,
+   "views_then": 717105,
+   "views_now": 784810,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "George S. Patton's Top 3 Legendary Tactical Moves",
+   "age_then": 31,
+   "views_then": 131951,
+   "views_now": 136832,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Eisenhower's Top 3 Genius Moves | The General Who Never Saw ",
+   "age_then": 25,
+   "views_then": 294518,
+   "views_now": 300000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Rommel's Top 3 Genius Moves | Admired by His Enemies, Destro",
+   "age_then": 22,
+   "views_then": 45946,
+   "views_now": 49839,
+   "growth_18d": 1.08
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Montgomery\u2019s Top 3 Genius Moves | The General Who Ended Germ",
+   "age_then": 18,
+   "views_then": 16673,
+   "views_now": 18323,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Manstein's Top 3 Genius Moves | The Plan They Tried to Bury",
+   "age_then": 14,
+   "views_then": 35096,
+   "views_now": 40000,
+   "growth_18d": 1.14
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Zhukov\u2019s Top 3 Legendary Tactical Moves | Why Stalin Exiled ",
+   "age_then": 9,
+   "views_then": 20711,
+   "views_now": 24000,
+   "growth_18d": 1.16
+  },
+  {
+   "handle": "WarfareGeniuss",
+   "title": "Omar Bradley\u2019s Top 3 Legendary Tactical Moves | The Quiet Ge",
+   "age_then": 4,
+   "views_then": 20115,
+   "views_now": 25611,
+   "growth_18d": 1.27
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "3 Moves That Saved Hitler's Army  Then Hitler Fired Him",
+   "age_then": 20,
+   "views_then": 105465,
+   "views_now": 119026,
+   "growth_18d": 1.13
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Georgy Zhukov's 3 Deadliest Moves | The General Stalin Feare",
+   "age_then": 19,
+   "views_then": 18663,
+   "views_now": 20983,
+   "growth_18d": 1.12
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Ulysses S. Grant's Top 3 Legendary Tactical Moves | The \"Dru",
+   "age_then": 17,
+   "views_then": 38849,
+   "views_now": 46000,
+   "growth_18d": 1.18
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "The General Stalin Imprisoned, Then Trusted \u2014 Rokossovsky's ",
+   "age_then": 15,
+   "views_then": 22242,
+   "views_now": 23241,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Chesty Puller's Top 3 Legendary Tactical Moves | The Most De",
+   "age_then": 13,
+   "views_then": 128077,
+   "views_now": 136628,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "William T. Sherman's Top 3 Legendary Tactical Moves \u2014 He Cut",
+   "age_then": 12,
+   "views_then": 101154,
+   "views_now": 117832,
+   "growth_18d": 1.16
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "The Admiral Who Broke the Rules \u2014 Horatio Nelson's 3 Greates",
+   "age_then": 10,
+   "views_then": 8106,
+   "views_now": 8379,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Douglas MacArthur\u2019s 3 Biggest Gambles | His Own Men Called H",
+   "age_then": 9,
+   "views_then": 5612,
+   "views_now": 5816,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Matthew Ridgways Top 3 Legendary Tactical Moves \u2014 He Saved t",
+   "age_then": 7,
+   "views_then": 32228,
+   "views_now": 34209,
+   "growth_18d": 1.06
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Erwin Rommel's Top 3 Legendary Tactical Moves \u2014 The General ",
+   "age_then": 5,
+   "views_then": 15437,
+   "views_now": 16941,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Philip Sheridan's Top 3 Legendary Tactical Moves \u2014 He Rode I",
+   "age_then": 4,
+   "views_then": 21919,
+   "views_now": 24137,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "FootprintHistory",
+   "title": "Smedley Butler Top 3 Legendary Tactical Moves \u2014 He Tried to ",
+   "age_then": 3,
+   "views_then": 7053,
+   "views_now": 7566,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Walter Model's 3 Greatest Defensive Moves | Hitler's Fireman",
+   "age_then": 19,
+   "views_then": 2219,
+   "views_now": 3995,
+   "growth_18d": 1.8
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Hasso von Manteuffel's 3 Greatest Moves | The Little General",
+   "age_then": 18,
+   "views_then": 1027,
+   "views_now": 1867,
+   "growth_18d": 1.82
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Richard O'Connor's 3 Greatest Moves | The Forgotten General ",
+   "age_then": 10,
+   "views_then": 74689,
+   "views_now": 105499,
+   "growth_18d": 1.41
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Erwin Rommel's 3 Greatest Moves | The Desert Fox Behind the ",
+   "age_then": 7,
+   "views_then": 621,
+   "views_now": 1100,
+   "growth_18d": 1.77
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Bernard Montgomery's 3 Greatest Moves | The Cautious General",
+   "age_then": 4,
+   "views_then": 771,
+   "views_now": 1320,
+   "growth_18d": 1.71
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Tomoyuki Yamashita's 3 Greatest Moves | The Tiger of Malaya ",
+   "age_then": 1,
+   "views_then": 153,
+   "views_now": 245,
+   "growth_18d": 1.6
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Stanislaw Maczek's 3 Greatest Moves | The General Who Closed",
+   "age_then": 1,
+   "views_then": 172,
+   "views_now": 363,
+   "growth_18d": 2.11
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Mannerheim's 3 Greatest Moves | How a Small Nation Held Off ",
+   "age_then": 1,
+   "views_then": 747,
+   "views_now": 1554,
+   "growth_18d": 2.08
+  },
+  {
+   "handle": "WarTableAtlas",
+   "title": "Lucian Truscott's 3 Greatest Moves | The Hard Riding General",
+   "age_then": 1,
+   "views_then": 150,
+   "views_now": 312,
+   "growth_18d": 2.08
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Rommel's Top 3 Tactical Masterpieces",
+   "age_then": 513,
+   "views_then": 243536,
+   "views_now": 254604,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Napoleon's Top 3 Tactical Masterpieces",
+   "age_then": 396,
+   "views_then": 801459,
+   "views_now": 833326,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Alexander's Top 3 Tactical Masterpieces",
+   "age_then": 353,
+   "views_then": 140427,
+   "views_now": 146193,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Zhukov's Top 3 Tactical Masterpieces (No AI)",
+   "age_then": 324,
+   "views_then": 594910,
+   "views_now": 597702,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Caesar's Top 3 Tactical Masterpieces",
+   "age_then": 258,
+   "views_then": 227179,
+   "views_now": 232169,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Robert E. Lee's Top 3 Tactical Masterpieces",
+   "age_then": 198,
+   "views_then": 41750,
+   "views_now": 43000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Walter Model's Top 3 Defensive Masterpieces (No AI)",
+   "age_then": 146,
+   "views_then": 490186,
+   "views_now": 500799,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Suvorov's Top 3 Tactical Masterpieces",
+   "age_then": 63,
+   "views_then": 228450,
+   "views_now": 234458,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "CommandersAndTactics",
+   "title": "Manstein's Top 3 Tactical Masterpieces (No AI)",
+   "age_then": 11,
+   "views_then": 395628,
+   "views_now": 538210,
+   "growth_18d": 1.36
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Why Confederate Generals Feared Ulysses S. Grant So Much",
+   "age_then": 218,
+   "views_then": 287,
+   "views_now": 289,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Surrender That Broke the Winner",
+   "age_then": 214,
+   "views_then": 587,
+   "views_now": 588,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Day Slavery Ended Never Actually Happened",
+   "age_then": 207,
+   "views_then": 608,
+   "views_now": 608,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Moment Lee Chose Wrong",
+   "age_then": 189,
+   "views_then": 293,
+   "views_now": 294,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "\u201cThe MASSACRE Of Confederate Troops At Antietam (The media E",
+   "age_then": 182,
+   "views_then": 1827,
+   "views_now": 1800,
+   "growth_18d": 0.99
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "How Lee's Arrogance Destroyed His Greatest Chance: The Longs",
+   "age_then": 179,
+   "views_then": 221,
+   "views_now": 221,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "William T. Sherman Is What Robert E. Lee WARNED  Us About",
+   "age_then": 171,
+   "views_then": 9320,
+   "views_now": 9300,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Confederate General Who Betrayed the South \u2014 and Saved A",
+   "age_then": 162,
+   "views_then": 660,
+   "views_now": 664,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Grant Warned Us About Lee \u2014 Nobody Believed Him for 100 Year",
+   "age_then": 159,
+   "views_then": 77345,
+   "views_now": 77000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Joshua Chamberlain & Little Round Top \u2014 Explained Like You\u2019r",
+   "age_then": 156,
+   "views_then": 11778,
+   "views_now": 11000,
+   "growth_18d": 0.93
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Stonewall Jackson's Secret Crime the South Never Found Out",
+   "age_then": 148,
+   "views_then": 197,
+   "views_now": 198,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Only Civil War General Who Never Lost a Single Battle \u2014 ",
+   "age_then": 145,
+   "views_then": 48912,
+   "views_now": 48940,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Lincoln\u2019s First Gamble",
+   "age_then": 142,
+   "views_then": 260,
+   "views_now": 263,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Armistead Charged The Man He Called Brother",
+   "age_then": 139,
+   "views_then": 251,
+   "views_now": 265,
+   "growth_18d": 1.06
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Evidence Custer\u2019s Defenders Couldn\u2019t Hide",
+   "age_then": 135,
+   "views_then": 323,
+   "views_now": 325,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The General Who Never Lost an Army and Still Got Fired",
+   "age_then": 126,
+   "views_then": 305,
+   "views_now": 305,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "How Daniel Morgan Tricked Britain\u2019s Best Cavalry at Cowpens ",
+   "age_then": 122,
+   "views_then": 462,
+   "views_now": 464,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Fort Pillow Massacre 1864",
+   "age_then": 118,
+   "views_then": 115,
+   "views_now": 132,
+   "growth_18d": 1.15
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Jackson Warned Lee About Chancellorsville \u2014 The IMPOSSIBLE V",
+   "age_then": 105,
+   "views_then": 582,
+   "views_now": 586,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "THE DEVIL HIMSELF \u2014 Nathan Bedford Forrest Is What Sherman W",
+   "age_then": 101,
+   "views_then": 320,
+   "views_now": 328,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Ugly Truth About Robert E. Lee \u2014 What the Lost Cause Era",
+   "age_then": 96,
+   "views_then": 143,
+   "views_now": 148,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The 10 Most RUTHLESS Men of the Civil War",
+   "age_then": 93,
+   "views_then": 141,
+   "views_now": 150,
+   "growth_18d": 1.06
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "You Have No Idea How BAD Custer\u2019s Last Stand Really Got",
+   "age_then": 92,
+   "views_then": 461,
+   "views_now": 464,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "What Lee Didn't Know About Ulysses S. Grant",
+   "age_then": 80,
+   "views_then": 149,
+   "views_now": 156,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The 1863 Battle of Gettysburg \u2014 Why Did 165,000 Soldiers Cla",
+   "age_then": 77,
+   "views_then": 323,
+   "views_now": 327,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Lincoln Didn\u2019t Hate the South \u2014 Here\u2019s What He Actually Want",
+   "age_then": 74,
+   "views_then": 159,
+   "views_now": 163,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Lie We All Believed About General Patton",
+   "age_then": 65,
+   "views_then": 369,
+   "views_now": 375,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Most Deceptive General in American Civil War History",
+   "age_then": 61,
+   "views_then": 2572,
+   "views_now": 2580,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "What If Lee Had Listened To Longstreet At Gettysburg?",
+   "age_then": 58,
+   "views_then": 1331,
+   "views_now": 1346,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "What If Meade Had Pursued Lee After Gettysburg",
+   "age_then": 54,
+   "views_then": 2744,
+   "views_now": 2751,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "How They Actually Died \u2014 The Strange End of Civil War Genera",
+   "age_then": 50,
+   "views_then": 502,
+   "views_now": 508,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The General Lee Sent to Die",
+   "age_then": 46,
+   "views_then": 296,
+   "views_now": 304,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "What if GETTYSBURG Was Fought at Night?",
+   "age_then": 43,
+   "views_then": 885,
+   "views_now": 890,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Why Did America Arm Communist Yugoslavia?",
+   "age_then": 38,
+   "views_then": 385,
+   "views_now": 393,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "Benteen Warned Us About Custer",
+   "age_then": 35,
+   "views_then": 151,
+   "views_now": 159,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "CloakedHistory1",
+   "title": "The Man Who Taught America Pure Terror",
+   "age_then": 31,
+   "views_then": 868,
+   "views_now": 881,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "GeneralsOnTheMap",
+   "title": "George Thomas's Top 3 Legendary Tactical Moves | The Man Who",
+   "age_then": 28,
+   "views_then": 121557,
+   "views_now": 136490,
+   "growth_18d": 1.12
+  },
+  {
+   "handle": "GeneralsOnTheMap",
+   "title": "O.P. Smith\u2019s Top 3 Legendary Tactical Moves | The Man Who Br",
+   "age_then": 20,
+   "views_then": 2200,
+   "views_now": 2297,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "GeneralsOnTheMap",
+   "title": "2 Para's Top 3 Legendary Tactical Moves | The Bluff That Won",
+   "age_then": 13,
+   "views_then": 38401,
+   "views_now": 40534,
+   "growth_18d": 1.06
+  },
+  {
+   "handle": "GeneralsOnTheMap",
+   "title": "Daniel Morgan's Top 3 Legendary Tactical Moves | The Man Who",
+   "age_then": 9,
+   "views_then": 41779,
+   "views_now": 51254,
+   "growth_18d": 1.23
+  },
+  {
+   "handle": "GeneralsOnTheMap",
+   "title": "James Gavin's Top 3 Legendary Tactical Moves | The Man Who T",
+   "age_then": 4,
+   "views_then": 641,
+   "views_now": 722,
+   "growth_18d": 1.13
+  },
+  {
+   "handle": "GeneralsOnTheMap",
+   "title": "Nathanael Greene's Top 3 Legendary Tactical Moves | The Man ",
+   "age_then": 2,
+   "views_then": 2640,
+   "views_now": 3934,
+   "growth_18d": 1.49
+  },
+  {
+   "handle": "HandledLikeEggs",
+   "title": "Siegfried Muller - From German Artilleryman to Congo Mercena",
+   "age_then": 287,
+   "views_then": 164361,
+   "views_now": 165000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "HandledLikeEggs",
+   "title": "When Belgium, The Congo, and the CIA fought Cannibals in the",
+   "age_then": 195,
+   "views_then": 158001,
+   "views_now": 160202,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "HandledLikeEggs",
+   "title": "Siegfried M\u00fcller Fails to Save The Congo - The 2nd Battle of",
+   "age_then": 65,
+   "views_then": 172513,
+   "views_now": 174117,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "IronBreachHistory",
+   "title": "D-Day: The 82nd Airborne's Battle for Normandy | Animated Do",
+   "age_then": 201,
+   "views_then": 263052,
+   "views_now": 264000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "IronBreachHistory",
+   "title": "Rangers Lead the Way: The D-Day Assault on Pointe du Hoc and",
+   "age_then": 155,
+   "views_then": 178938,
+   "views_now": 181747,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "IronBreachHistory",
+   "title": "The 101st Airborne's Assault on Carentan | Cole's Charge & B",
+   "age_then": 131,
+   "views_then": 140014,
+   "views_now": 143000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "IronBreachHistory",
+   "title": "The Battle of Saint-L\u00f4 1944 | Hill 192, Normandy Bocage & th",
+   "age_then": 105,
+   "views_then": 102012,
+   "views_now": 106000,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "IronBreachHistory",
+   "title": "The Battle of Juno Beach D-Day 1944 | Canada's Longest Day (",
+   "age_then": 70,
+   "views_then": 181711,
+   "views_now": 187304,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "IronBreachHistory",
+   "title": "D-Day\u2019s First Battle | The British Airborne\u2019s Fight for Pega",
+   "age_then": 43,
+   "views_then": 460708,
+   "views_now": 478325,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Day One Union Colonel Refused to Let His Men Retreat at ",
+   "age_then": 245,
+   "views_then": 3147,
+   "views_now": 3100,
+   "growth_18d": 0.99
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"The Man Who Wouldn't Break\" - The Psychological War Between",
+   "age_then": 241,
+   "views_then": 54857,
+   "views_now": 54000,
+   "growth_18d": 0.98
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"The Empty Chair\" \u2014 What Grant Felt When Lee Walked Out of A",
+   "age_then": 232,
+   "views_then": 295459,
+   "views_now": 300000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"He Will Not Stop\" \u2014 Why Grant Kept Attacking Even When His ",
+   "age_then": 226,
+   "views_then": 15391,
+   "views_now": 17000,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Incident That Started THE AMERICAN CIVIL WAR ",
+   "age_then": 221,
+   "views_then": 897,
+   "views_now": 900,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"The Night Grant Almost Quit\" \u2014 How Sherman Talked Him Back ",
+   "age_then": 217,
+   "views_then": 8915,
+   "views_now": 8900,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"The General\u2019s Silence\" - Why Grant Never Gave a Speech but ",
+   "age_then": 214,
+   "views_then": 5310,
+   "views_now": 5300,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"The Butcher\u2019s Conscience\" \u2013 Why Grant Called Cold Harbor Hi",
+   "age_then": 212,
+   "views_then": 3746,
+   "views_now": 3751,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"The Order No One Dared Question\" \u2014 How Stonewall Jackson Ru",
+   "age_then": 210,
+   "views_then": 16078,
+   "views_now": 16196,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "General Sherman: The Man Who Burned the South to Save the Un",
+   "age_then": 205,
+   "views_then": 3224,
+   "views_now": 3675,
+   "growth_18d": 1.14
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\u201cThe General No One Could Forgive\u201d \u2014 The Tragic Fall of Jame",
+   "age_then": 190,
+   "views_then": 37267,
+   "views_now": 38184,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\"He Wrote It Down\" \u2014 Why Grant's Deathbed Memoirs Are the Mo",
+   "age_then": 186,
+   "views_then": 6142,
+   "views_now": 6100,
+   "growth_18d": 0.99
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "What Lincoln Wrote About Grant (That He Kept Secret)",
+   "age_then": 184,
+   "views_then": 44515,
+   "views_now": 44739,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "What Robert E. Lee Thought When He Lost The American Civil W",
+   "age_then": 179,
+   "views_then": 2695,
+   "views_now": 2731,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "Why Robert E. Lee Blamed THIS General for the South\u2019s Downfa",
+   "age_then": 171,
+   "views_then": 1515,
+   "views_now": 1528,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\u201cGrant\u2019s Blind Spot\u201d \u2014 The One General He Trusted Too Long",
+   "age_then": 166,
+   "views_then": 8853,
+   "views_now": 9100,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "\u201cI TREMBLE FOR THE RESULT\u201d \u2014 WHAT SHERMAN TOLD GRANT BEFORE ",
+   "age_then": 161,
+   "views_then": 92456,
+   "views_now": 96025,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "GRANT SAT DOWN IN THE DIRT AND CHEWED A CIGAR \u2014 WHILE PEMBER",
+   "age_then": 158,
+   "views_then": 53156,
+   "views_now": 54000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "What Longstreet Understood About Grant That Lee Refused to A",
+   "age_then": 155,
+   "views_then": 343833,
+   "views_now": 358785,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "Ely Parker: Why Robert E. Lee called him One Real American i",
+   "age_then": 126,
+   "views_then": 1401,
+   "views_now": 1455,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The General Who Won the Civil War. And Then Left America Wit",
+   "age_then": 100,
+   "views_then": 4542,
+   "views_now": 4568,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "THE MEXICAN CRUCIBLE: When Grant and Lee Wore Blue Together",
+   "age_then": 93,
+   "views_then": 1895,
+   "views_now": 1922,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "Lee Won Every Battle But Grant Won The War Anyway [DOCUMENTA",
+   "age_then": 89,
+   "views_then": 2122,
+   "views_now": 2100,
+   "growth_18d": 0.99
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "What Grant Didn't Understand About George H. Thomas",
+   "age_then": 87,
+   "views_then": 72131,
+   "views_now": 76584,
+   "growth_18d": 1.06
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "What Marching 40 MILES Towards DEATH Does To A Mind",
+   "age_then": 83,
+   "views_then": 742,
+   "views_now": 754,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Two Best Friends Who Were Forced to Fight Each Other",
+   "age_then": 80,
+   "views_then": 6091,
+   "views_now": 6130,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Man the Navy Rejected While Grant Besiged Petersburg",
+   "age_then": 70,
+   "views_then": 4746,
+   "views_now": 4820,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The MEMO That Could Have Changed The Civil War",
+   "age_then": 66,
+   "views_then": 138944,
+   "views_now": 139410,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "How the Louisiana Tigers Held a Battle Line With Rocks",
+   "age_then": 63,
+   "views_then": 1963,
+   "views_now": 2000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "What Longstreet Knew Before Pickett's Charge (And Lee Ignore",
+   "age_then": 56,
+   "views_then": 17168,
+   "views_now": 17518,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Explosion at Grant's Headquarters Wasn't an Accident",
+   "age_then": 42,
+   "views_then": 3191,
+   "views_now": 3217,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "They Survived Andersonville. Then the Army Put 2,000 of Them",
+   "age_then": 38,
+   "views_then": 1671,
+   "views_now": 1695,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "Pickett Executed 22 Men. He Was Never Tried.",
+   "age_then": 28,
+   "views_then": 35768,
+   "views_now": 36022,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Civil War Didn't End With Lee's Surrender",
+   "age_then": 18,
+   "views_then": 3525,
+   "views_now": 3585,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "The Order Ulysses S. Grant Never Explained",
+   "age_then": 12,
+   "views_then": 4112,
+   "views_now": 4480,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "TheGeneralOath",
+   "title": "THREE ENSLAVED MEN ROWED TO A UNION FORT. THE GENERAL REFUSE",
+   "age_then": 6,
+   "views_then": 2040,
+   "views_now": 2229,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "What James Longstreet Truly Thought of Robert E. Lee",
+   "age_then": 183,
+   "views_then": 88638,
+   "views_now": 88762,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "The Battle Lee Should Have Won \u2014 And Why He Threw It Away",
+   "age_then": 180,
+   "views_then": 68994,
+   "views_now": 69116,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Lincoln Was Right About Grant But Nobody Listened",
+   "age_then": 173,
+   "views_then": 62673,
+   "views_now": 64000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "What George Pickett Truly Thought of Robert E. Lee",
+   "age_then": 166,
+   "views_then": 63490,
+   "views_now": 63538,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "How McClellan Built the Perfect Army\u2026 And Refused to Fight",
+   "age_then": 159,
+   "views_then": 1198,
+   "views_now": 1200,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "I Don\u2019t Think You Understand Just HOW Outnumbered Grant Was ",
+   "age_then": 158,
+   "views_then": 46607,
+   "views_now": 46633,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Why Grant Fought Differently Than Every General Lee Had Ever",
+   "age_then": 153,
+   "views_then": 16814,
+   "views_now": 16877,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Something Was Very Wrong With Robert E. Lee",
+   "age_then": 151,
+   "views_then": 7049,
+   "views_now": 7181,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "What Grant Understood About Richmond That McClellan Refused ",
+   "age_then": 139,
+   "views_then": 21257,
+   "views_now": 21280,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "How Longstreet\u2019s 11,000 Men Smashed Through A Gap And Routed",
+   "age_then": 135,
+   "views_then": 1415,
+   "views_now": 1425,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "The Day the South Lost an Entire Army \u2014 Vicksburg, 1863",
+   "age_then": 133,
+   "views_then": 14727,
+   "views_now": 14000,
+   "growth_18d": 0.95
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "The ONLY General Who Never Lost a Single Battle in the Civil",
+   "age_then": 129,
+   "views_then": 25387,
+   "views_now": 25000,
+   "growth_18d": 0.98
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Hood\u2019s DEVASTATING Assault at Franklin Was More Brutal Than ",
+   "age_then": 127,
+   "views_then": 9296,
+   "views_now": 9300,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "The American Civil War Explained in 24 Minutes",
+   "age_then": 100,
+   "views_then": 1334,
+   "views_now": 1360,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Stupid Mistakes That Caused The Worst Civil War Disasters",
+   "age_then": 97,
+   "views_then": 4290,
+   "views_now": 4313,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Why Longstreet Couldn\u2019t Believe Grant Kept Attacking After H",
+   "age_then": 95,
+   "views_then": 31282,
+   "views_now": 31324,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "What Robert E. Lee Privately Admitted About Union Artillery ",
+   "age_then": 87,
+   "views_then": 6035,
+   "views_now": 6254,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "How Sherman\u2019s Engineers Destroyed Railroads So Fast Hood Cou",
+   "age_then": 79,
+   "views_then": 2424,
+   "views_now": 2430,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Why Confederate Generals Couldn\u2019t Believe Northern Factories",
+   "age_then": 75,
+   "views_then": 12605,
+   "views_now": 12633,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Why Union Commanders Couldn\u2019t Explain How Lee\u2019s Army Escaped",
+   "age_then": 73,
+   "views_then": 2178,
+   "views_now": 2198,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Why Confederate Artillerymen Said Union Shells Were Impossib",
+   "age_then": 68,
+   "views_then": 8581,
+   "views_now": 8606,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "How Union Engineers Rebuilt Railroads Faster Than Confederat",
+   "age_then": 65,
+   "views_then": 1251,
+   "views_now": 1274,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Why Confederate Officers Said The Spencer Repeating Rifle Wa",
+   "age_then": 63,
+   "views_then": 1562,
+   "views_now": 1607,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "How Grant Directed An Entire Campaign Against Lee With One T",
+   "age_then": 60,
+   "views_then": 1120,
+   "views_now": 1136,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "Armstrong George Custer Is What Benteen Warned Us About",
+   "age_then": 45,
+   "views_then": 6567,
+   "views_now": 6500,
+   "growth_18d": 0.99
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "What Happened to The Man Who Vanished After Gettysburg: Pick",
+   "age_then": 41,
+   "views_then": 104769,
+   "views_now": 105599,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "CivilWarDose",
+   "title": "How Ulysses S. Grant Broke Lee's Army, and Why No Other Unio",
+   "age_then": 31,
+   "views_then": 161147,
+   "views_now": 192148,
+   "growth_18d": 1.19
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Siege That Humiliated Britain Before the War Even Starte",
+   "age_then": 101,
+   "views_then": 42538,
+   "views_now": 47000,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Battle That Drove Britain Out of the North \u2014 Monmouth, 1",
+   "age_then": 100,
+   "views_then": 25635,
+   "views_now": 28000,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The General Britain Whipped 499 Times \u2014 Then He Destroyed Th",
+   "age_then": 98,
+   "views_then": 51646,
+   "views_now": 52000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How Britain Accidentally Forged Its Worst Enemy \u2014 Waxhaws, 1",
+   "age_then": 96,
+   "views_then": 6816,
+   "views_now": 6900,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How Washington Trapped an Entire British Army",
+   "age_then": 93,
+   "views_then": 13563,
+   "views_now": 14000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Escape That Saved the American Revolution",
+   "age_then": 89,
+   "views_then": 12995,
+   "views_now": 15000,
+   "growth_18d": 1.15
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Victory That Cost Britain the War \u2014 Charleston, 1780",
+   "age_then": 84,
+   "views_then": 50771,
+   "views_now": 52000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How Britain Lost Virginia in Half an Hour \u2014 Great Bridge, 17",
+   "age_then": 82,
+   "views_then": 40460,
+   "views_now": 44000,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 400 Americans Annihilated Britain's Elite Hessians \u2014 Red",
+   "age_then": 81,
+   "views_then": 165785,
+   "views_now": 190000,
+   "growth_18d": 1.15
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How a Rotting Fort Destroyed Britain's Invasion of America",
+   "age_then": 79,
+   "views_then": 80607,
+   "views_now": 88000,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The 18 Miles That Destroyed Britain's Army",
+   "age_then": 77,
+   "views_then": 26875,
+   "views_now": 34000,
+   "growth_18d": 1.27
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Culper Spy Ring: How a Farmer and a Tailor Beat the Brit",
+   "age_then": 75,
+   "views_then": 6422,
+   "views_now": 6500,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How America Built a Navy Out of a Forest to Fight Britain",
+   "age_then": 73,
+   "views_then": 56909,
+   "views_now": 58000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How One Regiment Held a Bridge Against a British Army",
+   "age_then": 71,
+   "views_then": 160097,
+   "views_now": 165000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Retreat That Destroyed a British Army",
+   "age_then": 69,
+   "views_then": 33560,
+   "views_now": 37000,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How America Built a Tower Overnight and Took a British Fort",
+   "age_then": 67,
+   "views_then": 212566,
+   "views_now": 217000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 400 Men on a Mud Island Starved Britain's Army",
+   "age_then": 64,
+   "views_then": 11744,
+   "views_now": 13000,
+   "growth_18d": 1.11
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Genius Trap That Destroyed A British Army",
+   "age_then": 63,
+   "views_then": 1119638,
+   "views_now": 1200000,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How America's Worst Defeat Won It the War",
+   "age_then": 61,
+   "views_then": 11411,
+   "views_now": 11000,
+   "growth_18d": 0.96
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 165 Farmers Humiliated Britain \u2014 Fort Griswold, 1781",
+   "age_then": 59,
+   "views_then": 57771,
+   "views_now": 58000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 150 Americans Set a British Fort on Fire \u2014 Fort Motte, 1",
+   "age_then": 56,
+   "views_then": 13710,
+   "views_now": 14000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How America Destroyed Britain's Last Army in the South",
+   "age_then": 54,
+   "views_then": 17016,
+   "views_now": 20000,
+   "growth_18d": 1.18
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 300 Men With Empty Muskets Took a British Fortress",
+   "age_then": 51,
+   "views_then": 8430,
+   "views_now": 10000,
+   "growth_18d": 1.19
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Genius Trap That Won Washington the War",
+   "age_then": 48,
+   "views_then": 52227,
+   "views_now": 66000,
+   "growth_18d": 1.26
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How a Starving Army Came Back to Humiliate Britain",
+   "age_then": 42,
+   "views_then": 9198,
+   "views_now": 10788,
+   "growth_18d": 1.17
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How Washington's Army Survived Britain's Perfect Trap",
+   "age_then": 39,
+   "views_then": 37911,
+   "views_now": 72000,
+   "growth_18d": 1.9
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Polish Colonel Who Trapped a British Army at Saratoga",
+   "age_then": 36,
+   "views_then": 106693,
+   "views_now": 154000,
+   "growth_18d": 1.44
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Sea Trap That Humiliated the British Empire",
+   "age_then": 33,
+   "views_then": 17699,
+   "views_now": 21000,
+   "growth_18d": 1.19
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How America Built The First Submarine to Attack Britain",
+   "age_then": 30,
+   "views_then": 9365,
+   "views_now": 10000,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How a Pair of Boots Cost Britain the War",
+   "age_then": 29,
+   "views_then": 7318,
+   "views_now": 7600,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Genius Trap That Blocked Britain's Navy",
+   "age_then": 26,
+   "views_then": 104211,
+   "views_now": 120000,
+   "growth_18d": 1.15
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Mud Wall That Humiliated the British Empire",
+   "age_then": 22,
+   "views_then": 36136,
+   "views_now": 51000,
+   "growth_18d": 1.41
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Greased Bridge That Destroyed Britain's Highland Army",
+   "age_then": 20,
+   "views_then": 68404,
+   "views_now": 77000,
+   "growth_18d": 1.13
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 1,000 Americans Survived 25 Hours of British Bombardment",
+   "age_then": 18,
+   "views_then": 16783,
+   "views_now": 20000,
+   "growth_18d": 1.19
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How Britain Bought an Army and Still Lost the War",
+   "age_then": 14,
+   "views_then": 8921,
+   "views_now": 9800,
+   "growth_18d": 1.1
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "How 200 Americans Lured Britain Into a Perfect Trap",
+   "age_then": 9,
+   "views_then": 51395,
+   "views_now": 75000,
+   "growth_18d": 1.46
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Ambush That Taught Washington How to Beat Britain",
+   "age_then": 8,
+   "views_then": 5957,
+   "views_now": 7627,
+   "growth_18d": 1.28
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The Naval Trick That Humiliated Britain \u2014 Plattsburgh, 1814",
+   "age_then": 6,
+   "views_then": 31188,
+   "views_now": 59000,
+   "growth_18d": 1.89
+  },
+  {
+   "handle": "ravelin.history",
+   "title": "The 28-Day Siege That Drove Britain Out of the South",
+   "age_then": 3,
+   "views_then": 15037,
+   "views_now": 18991,
+   "growth_18d": 1.26
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Gallipoli: Britain\u2019s Failed Gamble - World War I",
+   "age_then": 169,
+   "views_then": 126692,
+   "views_now": 129000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Japan\u2019s First Major Land Defeat - The Battle That Saved Aust",
+   "age_then": 166,
+   "views_then": 769764,
+   "views_now": 794000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Rise and Fall of Medieval Mercenaries - Middle Ages DOCUMENT",
+   "age_then": 164,
+   "views_then": 205214,
+   "views_now": 209000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Lost Pantheon of Yahweh - Polytheistic Roots of the Abra",
+   "age_then": 162,
+   "views_then": 299151,
+   "views_now": 305000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Alfred's Reforms Save England - Battle of Buttington",
+   "age_then": 159,
+   "views_then": 124568,
+   "views_now": 128000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Hitler\u2019s Plot to Kill the Big Three or Stalin's Big Lie?",
+   "age_then": 157,
+   "views_then": 46870,
+   "views_now": 47000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "India\u2019s Last Stand Against Britain - Tipu Sultan Enters the ",
+   "age_then": 155,
+   "views_then": 237213,
+   "views_now": 245000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Troubles: Ireland\u2019s and Britain's 30-Year War",
+   "age_then": 152,
+   "views_then": 190366,
+   "views_now": 193000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why Greece Fell to Rome - Legion vs Phalanx: Why Rome Won",
+   "age_then": 150,
+   "views_then": 779160,
+   "views_now": 796000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Second Punic War - Full Story, Every Battle - Animated Ancie",
+   "age_then": 145,
+   "views_then": 511177,
+   "views_now": 539000,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How the Ottomans Became a Naval Power and Venice Lost the He",
+   "age_then": 143,
+   "views_then": 117492,
+   "views_now": 120000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Ukraine Is Breaking Russia\u2019s Logistics - Putin\u2019s Army Has a ",
+   "age_then": 141,
+   "views_then": 231881,
+   "views_now": 232000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Island Hopping: The Strategy That Defeated Japan in the Paci",
+   "age_then": 138,
+   "views_then": 236490,
+   "views_now": 244000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Britain\u2019s Worst Defeat of WWI - Russia's Great Winter Victor",
+   "age_then": 134,
+   "views_then": 84624,
+   "views_now": 85000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Nader Shah Suffers His Worst Defeat - Guerilla War Works Aga",
+   "age_then": 131,
+   "views_then": 125569,
+   "views_now": 127000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How Russia Prepared for Napoleon's Invasion - Fatal Trap",
+   "age_then": 129,
+   "views_then": 129008,
+   "views_now": 130000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Brother and Sister vs the Vikings - Edward and \u00c6thelfl\u00e6d Rec",
+   "age_then": 127,
+   "views_then": 122136,
+   "views_now": 126000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why Sudan Split in Two - Sudan\u2019s 22-Year Civil War Explained",
+   "age_then": 124,
+   "views_then": 204525,
+   "views_now": 207000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Lombards - Germanics Conquered the Roman Heartland",
+   "age_then": 122,
+   "views_then": 178613,
+   "views_now": 183000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Genius Design Behind Star Fort Defenses - Origins of the",
+   "age_then": 120,
+   "views_then": 124624,
+   "views_now": 126000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How Young George Washington Started a World War - Seven Year",
+   "age_then": 117,
+   "views_then": 134021,
+   "views_now": 138000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Arab Revolt - How the Ottomans Lost the Middle East",
+   "age_then": 115,
+   "views_then": 108153,
+   "views_now": 110000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Truth About Real Pirates",
+   "age_then": 113,
+   "views_then": 79508,
+   "views_now": 80000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Rise and Fall of the Pirates - Golden Age of Piracy EXPL",
+   "age_then": 110,
+   "views_then": 407483,
+   "views_now": 436000,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Moscow and Petersburg Burn, Crimea Isolated - Russian Invasi",
+   "age_then": 108,
+   "views_then": 222089,
+   "views_now": 222000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why Hollywood Always Gets Armour and Weapons Wrong",
+   "age_then": 106,
+   "views_then": 78442,
+   "views_now": 78000,
+   "growth_18d": 0.99
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Chaldiran: The Battle That Changed Islam - Selim I Against I",
+   "age_then": 101,
+   "views_then": 267603,
+   "views_now": 280000,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why Roman Britain Kept Creating Emperors",
+   "age_then": 99,
+   "views_then": 154755,
+   "views_now": 157000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Gaza Disaster - Ottoman Empire History DOCUMENTARY",
+   "age_then": 96,
+   "views_then": 110156,
+   "views_now": 111000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Pontiac\u2019s War: The Native Rebellion That Shook Britain",
+   "age_then": 94,
+   "views_then": 185940,
+   "views_now": 188000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Did Cyrus the Great Create Human Rights?",
+   "age_then": 92,
+   "views_then": 54767,
+   "views_now": 55000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How the Allies Broke Japan\u2019s Front - Pacific War DOCUMENTARY",
+   "age_then": 89,
+   "views_then": 113675,
+   "views_now": 121000,
+   "growth_18d": 1.06
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Elite Guard of the Ottoman Sultans - the Janissaries",
+   "age_then": 87,
+   "views_then": 119761,
+   "views_now": 126000,
+   "growth_18d": 1.05
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Holy Roman Empire\u2019s Hidden War Machine - Late Middle Age",
+   "age_then": 85,
+   "views_then": 173462,
+   "views_now": 178000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Rome\u2019s Richest Conquest Turned Into its Biggest Trap",
+   "age_then": 82,
+   "views_then": 267752,
+   "views_now": 279000,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Judea - Rome's Most Rebellious Province - The Empire Couldn\u2019",
+   "age_then": 80,
+   "views_then": 263968,
+   "views_now": 272000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Putin\u2019s War Has Finally Reached Russia - Ukraine Is Cutting ",
+   "age_then": 78,
+   "views_then": 239148,
+   "views_now": 240000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Nader Shah: The Napoleon of Iran - How One General Rebuilt t",
+   "age_then": 75,
+   "views_then": 242150,
+   "views_now": 259000,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Forgotten Battle That Created England - Brunanburh 937",
+   "age_then": 73,
+   "views_then": 175739,
+   "views_now": 183000,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Fall of Jerusalem - How Britain Broke the Ottoman Front",
+   "age_then": 68,
+   "views_then": 93518,
+   "views_now": 95000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why the Pope Stayed Silent - Vatican Wouldn\u2019t Condemn Hitler",
+   "age_then": 64,
+   "views_then": 406472,
+   "views_now": 408000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Battle That Changed the Middle East - Ottomans Broke the",
+   "age_then": 61,
+   "views_then": 420383,
+   "views_now": 430000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Sudan\u2019s Three Civil Wars Explained",
+   "age_then": 59,
+   "views_then": 855264,
+   "views_now": 911000,
+   "growth_18d": 1.07
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Who Was Really Roman? When Did Romans Stop Being Roman?",
+   "age_then": 57,
+   "views_then": 335380,
+   "views_now": 337000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Alexander the Great - All Battles and Conquests EXPLAINED in",
+   "age_then": 54,
+   "views_then": 504437,
+   "views_now": 547000,
+   "growth_18d": 1.08
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Ukraine Hits Putin Where It Hurts - CIA in Moscow",
+   "age_then": 52,
+   "views_then": 485296,
+   "views_now": 486000,
+   "growth_18d": 1.0
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Greatest Peasant Uprising in English History",
+   "age_then": 50,
+   "views_then": 608637,
+   "views_now": 619000,
+   "growth_18d": 1.02
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "War of the Spanish Succession: All Battles and Events - FULL",
+   "age_then": 47,
+   "views_then": 990092,
+   "views_now": 1000000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Ancient Law That Created the Greek Mediterranean World - Zeu",
+   "age_then": 45,
+   "views_then": 223604,
+   "views_now": 225000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How a Company Hooked China on Opium - Tea Led to the Opium W",
+   "age_then": 43,
+   "views_then": 335525,
+   "views_now": 344000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "World War I: Fate of Armenians, Georgians, Azerbaijanis, Kur",
+   "age_then": 40,
+   "views_then": 209875,
+   "views_now": 213000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "What Did the Ancient Greeks and Romans Know About Britain?",
+   "age_then": 36,
+   "views_then": 418650,
+   "views_now": 424000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Skanderbeg\u2019s 25-Year War Against the Ottomans - All Battles ",
+   "age_then": 33,
+   "views_then": 440250,
+   "views_now": 459000,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why the British Empire Fell Apart - Won Two Wars, Then Lost ",
+   "age_then": 31,
+   "views_then": 585290,
+   "views_now": 594000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Carthage vs Greece: The War Before Rome - Sicilian Wars DOCU",
+   "age_then": 29,
+   "views_then": 268334,
+   "views_now": 272000,
+   "growth_18d": 1.01
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Operation Cartwheel: Breaking Japan's Pacific Defenses",
+   "age_then": 26,
+   "views_then": 252046,
+   "views_now": 275000,
+   "growth_18d": 1.09
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Operation Vivaldi: Ukraine\u2019s Secret Counteroffensive",
+   "age_then": 24,
+   "views_then": 658398,
+   "views_now": 676000,
+   "growth_18d": 1.03
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How William the Conqueror\u2019s Sons Tore England Apart",
+   "age_then": 19,
+   "views_then": 433624,
+   "views_now": 453000,
+   "growth_18d": 1.04
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "How Did Brahmanism Defeat Buddhism - Ancient India DOCUMENTA",
+   "age_then": 17,
+   "views_then": 311261,
+   "views_now": 344000,
+   "growth_18d": 1.11
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Saddam Expected a Quick Victory Against Iran",
+   "age_then": 15,
+   "views_then": 375620,
+   "views_now": 426000,
+   "growth_18d": 1.13
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Largest Land Battle Before WWI Caused the First Russian Revo",
+   "age_then": 12,
+   "views_then": 635230,
+   "views_now": 769000,
+   "growth_18d": 1.21
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Biggest Rebellion Against the British Empire in History",
+   "age_then": 10,
+   "views_then": 434298,
+   "views_now": 507000,
+   "growth_18d": 1.17
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "The Forgotten Viking War That United England",
+   "age_then": 8,
+   "views_then": 199743,
+   "views_now": 231000,
+   "growth_18d": 1.16
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Why Spain Collapsed Into Civil War - Kings and Generals Mode",
+   "age_then": 3,
+   "views_then": 358325,
+   "views_now": 481000,
+   "growth_18d": 1.34
+  },
+  {
+   "handle": "kingsandgenerals",
+   "title": "Medieval Horror Stories",
+   "age_then": 1,
+   "views_then": 59312,
+   "views_now": 108000,
+   "growth_18d": 1.82
+  }
+ ],
+ "cohorts": {
+  "202506": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 254604,
+   "mean": 254604,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 1.0,
+   "total": 254604,
+   "median_age": 531
+  },
+  "202509": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 833326,
+   "mean": 833326,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 1.0,
+   "total": 833326,
+   "median_age": 414
+  },
+  "202511": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 146193,
+   "mean": 146193,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 1.0,
+   "total": 146193,
+   "median_age": 371
+  },
+  "202512": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 597702,
+   "mean": 597702,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 1.0,
+   "total": 597702,
+   "median_age": 342
+  },
+  "202602": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 232169,
+   "mean": 232169,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 1.0,
+   "total": 232169,
+   "median_age": 276
+  },
+  "202604": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 43000,
+   "mean": 43000,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 0.0,
+   "total": 43000,
+   "median_age": 216
+  },
+  "202606": {
+   "uploads": 1,
+   "channels": 1,
+   "median": 500799,
+   "mean": 500799,
+   "share_ge_20k": 1.0,
+   "share_ge_100k": 1.0,
+   "total": 500799,
+   "median_age": 164
+  },
+  "202607": {
+   "uploads": 3,
+   "channels": 1,
+   "median": 114265,
+   "mean": 405393,
+   "share_ge_20k": 0.67,
+   "share_ge_100k": 0.67,
+   "total": 1216179,
+   "median_age": 118
+  },
+  "202608": {
+   "uploads": 6,
+   "channels": 2,
+   "median": 70437.0,
+   "mean": 194172,
+   "share_ge_20k": 0.67,
+   "share_ge_100k": 0.5,
+   "total": 1165029,
+   "median_age": 92.0
+  },
+  "202609": {
+   "uploads": 8,
+   "channels": 2,
+   "median": 180681.0,
+   "mean": 373110,
+   "share_ge_20k": 0.88,
+   "share_ge_100k": 0.62,
+   "total": 2984878,
+   "median_age": 57.5
+  },
+  "202610": {
+   "uploads": 37,
+   "channels": 5,
+   "median": 18323,
+   "mean": 51720,
+   "share_ge_20k": 0.49,
+   "share_ge_100k": 0.19,
+   "total": 1913646,
+   "median_age": 27
+  },
+  "202611": {
+   "uploads": 21,
+   "channels": 4,
+   "median": 274,
+   "mean": 1278,
+   "share_ge_20k": 0.0,
+   "share_ge_100k": 0.0,
+   "total": 26834,
+   "median_age": 11
+  }
+ },
+ "same_age": {
+  "oct": [
+   [
+    "WarfareGeniuss",
+    "Manstein's Top 3 Genius Moves | The Plan They Trie",
+    14,
+    35096
+   ],
+   [
+    "WarfareGeniuss",
+    "Zhukov\u2019s Top 3 Legendary Tactical Moves | Why Stal",
+    9,
+    20711
+   ],
+   [
+    "WarfareGeniuss",
+    "Omar Bradley\u2019s Top 3 Legendary Tactical Moves | Th",
+    4,
+    20115
+   ],
+   [
+    "FootprintHistory",
+    "Ulysses S. Grant's Top 3 Legendary Tactical Moves ",
+    17,
+    38849
+   ],
+   [
+    "FootprintHistory",
+    "The General Stalin Imprisoned, Then Trusted \u2014 Roko",
+    15,
+    22242
+   ],
+   [
+    "FootprintHistory",
+    "Chesty Puller's Top 3 Legendary Tactical Moves | T",
+    13,
+    128077
+   ],
+   [
+    "FootprintHistory",
+    "William T. Sherman's Top 3 Legendary Tactical Move",
+    12,
+    101154
+   ],
+   [
+    "FootprintHistory",
+    "The Admiral Who Broke the Rules \u2014 Horatio Nelson's",
+    10,
+    8106
+   ],
+   [
+    "FootprintHistory",
+    "Douglas MacArthur\u2019s 3 Biggest Gambles | His Own Me",
+    9,
+    5612
+   ],
+   [
+    "FootprintHistory",
+    "Matthew Ridgways Top 3 Legendary Tactical Moves \u2014 ",
+    7,
+    32228
+   ],
+   [
+    "FootprintHistory",
+    "Erwin Rommel's Top 3 Legendary Tactical Moves \u2014 Th",
+    5,
+    15437
+   ],
+   [
+    "FootprintHistory",
+    "Philip Sheridan's Top 3 Legendary Tactical Moves \u2014",
+    4,
+    21919
+   ],
+   [
+    "FootprintHistory",
+    "Smedley Butler Top 3 Legendary Tactical Moves \u2014 He",
+    3,
+    7053
+   ],
+   [
+    "WarTableAtlas",
+    "Richard O'Connor's 3 Greatest Moves | The Forgotte",
+    10,
+    74689
+   ],
+   [
+    "WarTableAtlas",
+    "Erwin Rommel's 3 Greatest Moves | The Desert Fox B",
+    7,
+    621
+   ],
+   [
+    "WarTableAtlas",
+    "Bernard Montgomery's 3 Greatest Moves | The Cautio",
+    4,
+    771
+   ],
+   [
+    "CommandersAndTactics",
+    "Manstein's Top 3 Tactical Masterpieces (No AI)",
+    11,
+    395628
+   ],
+   [
+    "GeneralsOnTheMap",
+    "2 Para's Top 3 Legendary Tactical Moves | The Bluf",
+    13,
+    38401
+   ],
+   [
+    "GeneralsOnTheMap",
+    "Daniel Morgan's Top 3 Legendary Tactical Moves | T",
+    9,
+    41779
+   ],
+   [
+    "GeneralsOnTheMap",
+    "James Gavin's Top 3 Legendary Tactical Moves | The",
+    4,
+    641
+   ]
+  ],
+  "nov": [
+   [
+    "tacticalgeniuss",
+    "Rokossovsky's Top 3 Tactical Moves | The Man Who T",
+    16,
+    2819
+   ],
+   [
+    "FootprintHistory",
+    "George H. Thomas's Top 3 Legendary Tactical Moves ",
+    16,
+    3951
+   ],
+   [
+    "FootprintHistory",
+    "George S. Patton's Top 3 Legendary Tactical Moves ",
+    13,
+    849
+   ],
+   [
+    "FootprintHistory",
+    "Robert E. Lee's Top 3 Legendary Tactical Moves | T",
+    11,
+    425
+   ],
+   [
+    "FootprintHistory",
+    "Audie Murphy's 3 Legendary Moves \u2014 Too Small, Yet ",
+    9,
+    100
+   ],
+   [
+    "FootprintHistory",
+    "Stonewall Jackson's Top 3 Legendary Tactical Moves",
+    6,
+    1556
+   ],
+   [
+    "WarTableAtlas",
+    "Bernard Freyberg's 3 Greatest Moves | The Swimmer ",
+    14,
+    1033
+   ],
+   [
+    "WarTableAtlas",
+    "MacArthur's 3 Greatest Moves | The General Who Lea",
+    13,
+    150
+   ],
+   [
+    "WarTableAtlas",
+    "Alexander Patch's 3 Greatest Moves | The Forgotten",
+    12,
+    196
+   ],
+   [
+    "WarTableAtlas",
+    "Vasilevsky's 3 Greatest Moves | The Soviet Planner",
+    11,
+    1585
+   ],
+   [
+    "WarTableAtlas",
+    "Chester Nimitz's 3 Greatest Moves | The Admiral Wh",
+    10,
+    109
+   ],
+   [
+    "WarTableAtlas",
+    "Tadamichi Kuribayashi's 3 Greatest Moves | The Gen",
+    9,
+    147
+   ],
+   [
+    "WarTableAtlas",
+    "Rodion Malinovsky's 3 Greatest Moves | The Soviet ",
+    6,
+    109
+   ],
+   [
+    "WarTableAtlas",
+    "Philippe Leclerc's 3 Greatest Moves | From a Deser",
+    4,
+    71
+   ],
+   [
+    "GeneralsOnTheMap",
+    "George S. Patton's Top 3 Legendary Tactical Moves ",
+    16,
+    247
+   ],
+   [
+    "GeneralsOnTheMap",
+    "Benedict Arnold\u2019s Top 3 Legendary Tactical Moves |",
+    14,
+    486
+   ],
+   [
+    "GeneralsOnTheMap",
+    "Patrick Cleburne's Top 3 Legendary Tactical Moves ",
+    11,
+    4049
+   ],
+   [
+    "GeneralsOnTheMap",
+    "Ulysses S. Grant's Top 3 Legendary Tactical Moves ",
+    8,
+    8516
+   ]
+  ]
+ },
+ "repeats": [
+  [
+   "20250604",
+   "Rommel",
+   1,
+   "CommandersAndTactics",
+   254604,
+   531
+  ],
+  [
+   "20250929",
+   "Napoleon",
+   1,
+   "CommandersAndTactics",
+   833326,
+   414
+  ],
+  [
+   "20251111",
+   "Alexander",
+   1,
+   "CommandersAndTactics",
+   146193,
+   371
+  ],
+  [
+   "20251210",
+   "Zhukov",
+   1,
+   "CommandersAndTactics",
+   597702,
+   342
+  ],
+  [
+   "20260214",
+   "Caesar",
+   1,
+   "CommandersAndTactics",
+   232169,
+   276
+  ],
+  [
+   "20260415",
+   "Lee",
+   1,
+   "CommandersAndTactics",
+   43000,
+   216
+  ],
+  [
+   "20260606",
+   "Model",
+   1,
+   "CommandersAndTactics",
+   500799,
+   164
+  ],
+  [
+   "20260712",
+   "Wellington",
+   1,
+   "tacticalgeniuss",
+   8095,
+   128
+  ],
+  [
+   "20260722",
+   "Montgomery",
+   1,
+   "tacticalgeniuss",
+   114265,
+   118
+  ],
+  [
+   "20260728",
+   "Patton",
+   1,
+   "tacticalgeniuss",
+   1093819,
+   112
+  ],
+  [
+   "20260805",
+   "Connor",
+   1,
+   "tacticalgeniuss",
+   18878,
+   104
+  ],
+  [
+   "20260810",
+   "Rommel",
+   2,
+   "tacticalgeniuss",
+   26558,
+   99
+  ],
+  [
+   "20260814",
+   "Yamashita",
+   1,
+   "tacticalgeniuss",
+   6579,
+   95
+  ],
+  [
+   "20260820",
+   "Zhukov",
+   2,
+   "tacticalgeniuss",
+   764240,
+   89
+  ],
+  [
+   "20260828",
+   "Guderian",
+   1,
+   "tacticalgeniuss",
+   114316,
+   81
+  ],
+  [
+   "20260828",
+   "Suvorov",
+   1,
+   "CommandersAndTactics",
+   234458,
+   81
+  ],
+  [
+   "20260901",
+   "Ridgway",
+   1,
+   "tacticalgeniuss",
+   1479122,
+   77
+  ],
+  [
+   "20260905",
+   "Manstein",
+   1,
+   "tacticalgeniuss",
+   252000,
+   73
+  ],
+  [
+   "20260911",
+   "MacArthur",
+   1,
+   "tacticalgeniuss",
+   31045,
+   67
+  ],
+  [
+   "20260917",
+   "Slim",
+   1,
+   "tacticalgeniuss",
+   224530,
+   61
+  ],
+  [
+   "20260924",
+   "Bradley",
+   1,
+   "tacticalgeniuss",
+   65349,
+   54
+  ],
+  [
+   "20260924",
+   "Washington",
+   1,
+   "WarfareGeniuss",
+   11190,
+   54
+  ],
+  [
+   "20260926",
+   "Guderian",
+   2,
+   "WarfareGeniuss",
+   784810,
+   52
+  ],
+  [
+   "20260929",
+   "Patton",
+   2,
+   "WarfareGeniuss",
+   136832,
+   49
+  ],
+  [
+   "20261002",
+   "Thomas",
+   1,
+   "GeneralsOnTheMap",
+   136490,
+   46
+  ],
+  [
+   "20261005",
+   "Eisenhower",
+   1,
+   "WarfareGeniuss",
+   300000,
+   43
+  ],
+  [
+   "20261008",
+   "Rommel",
+   3,
+   "WarfareGeniuss",
+   49839,
+   40
+  ],
+  [
+   "20261010",
+   "Manstein",
+   2,
+   "FootprintHistory",
+   119026,
+   38
+  ],
+  [
+   "20261010",
+   "Smith",
+   1,
+   "GeneralsOnTheMap",
+   2297,
+   38
+  ],
+  [
+   "20261011",
+   "Zhukov",
+   3,
+   "FootprintHistory",
+   20983,
+   37
+  ],
+  [
+   "20261011",
+   "Model",
+   2,
+   "WarTableAtlas",
+   3995,
+   37
+  ],
+  [
+   "20261012",
+   "Montgomery",
+   2,
+   "WarfareGeniuss",
+   18323,
+   36
+  ],
+  [
+   "20261012",
+   "Manteuffel",
+   1,
+   "WarTableAtlas",
+   1867,
+   36
+  ],
+  [
+   "20261013",
+   "Grant",
+   1,
+   "FootprintHistory",
+   46000,
+   35
+  ],
+  [
+   "20261015",
+   "Rokossovsky",
+   1,
+   "FootprintHistory",
+   23241,
+   33
+  ],
+  [
+   "20261016",
+   "Manstein",
+   3,
+   "WarfareGeniuss",
+   40000,
+   32
+  ],
+  [
+   "20261017",
+   "Puller",
+   1,
+   "FootprintHistory",
+   136628,
+   31
+  ],
+  [
+   "20261017",
+   "2 Para",
+   1,
+   "GeneralsOnTheMap",
+   40534,
+   31
+  ],
+  [
+   "20261018",
+   "Sherman",
+   1,
+   "FootprintHistory",
+   117832,
+   30
+  ],
+  [
+   "20261019",
+   "Manstein",
+   4,
+   "CommandersAndTactics",
+   538210,
+   29
+  ],
+  [
+   "20261020",
+   "Nelson",
+   1,
+   "FootprintHistory",
+   8379,
+   28
+  ],
+  [
+   "20261020",
+   "Connor",
+   2,
+   "WarTableAtlas",
+   105499,
+   28
+  ],
+  [
+   "20261021",
+   "Zhukov",
+   4,
+   "WarfareGeniuss",
+   24000,
+   27
+  ],
+  [
+   "20261021",
+   "MacArthur",
+   2,
+   "FootprintHistory",
+   5816,
+   27
+  ],
+  [
+   "20261021",
+   "Morgan",
+   1,
+   "GeneralsOnTheMap",
+   51254,
+   27
+  ],
+  [
+   "20261023",
+   "Ridgway",
+   2,
+   "FootprintHistory",
+   34209,
+   25
+  ],
+  [
+   "20261023",
+   "Rommel",
+   4,
+   "WarTableAtlas",
+   1100,
+   25
+  ],
+  [
+   "20261025",
+   "Rommel",
+   5,
+   "FootprintHistory",
+   16941,
+   23
+  ],
+  [
+   "20261026",
+   "Bradley",
+   2,
+   "WarfareGeniuss",
+   25611,
+   22
+  ],
+  [
+   "20261026",
+   "Sheridan",
+   1,
+   "FootprintHistory",
+   24137,
+   22
+  ],
+  [
+   "20261026",
+   "Montgomery",
+   3,
+   "WarTableAtlas",
+   1320,
+   22
+  ],
+  [
+   "20261026",
+   "Gavin",
+   1,
+   "GeneralsOnTheMap",
+   722,
+   22
+  ],
+  [
+   "20261027",
+   "Butler",
+   1,
+   "FootprintHistory",
+   7566,
+   21
+  ],
+  [
+   "20261028",
+   "Greene",
+   1,
+   "GeneralsOnTheMap",
+   3934,
+   20
+  ],
+  [
+   "20261029",
+   "Boyington",
+   1,
+   "FootprintHistory",
+   887,
+   19
+  ],
+  [
+   "20261029",
+   "Yamashita",
+   2,
+   "WarTableAtlas",
+   245,
+   19
+  ],
+  [
+   "20261029",
+   "Maczek",
+   1,
+   "WarTableAtlas",
+   363,
+   19
+  ],
+  [
+   "20261029",
+   "Mannerheim",
+   1,
+   "WarTableAtlas",
+   1554,
+   19
+  ],
+  [
+   "20261029",
+   "Truscott",
+   1,
+   "WarTableAtlas",
+   312,
+   19
+  ],
+  [
+   "20261030",
+   "Smith",
+   2,
+   "FootprintHistory",
+   3838,
+   18
+  ],
+  [
+   "20261030",
+   "Collins",
+   1,
+   "GeneralsOnTheMap",
+   694,
+   18
+  ],
+  [
+   "20261101",
+   "Rokossovsky",
+   2,
+   "tacticalgeniuss",
+   2819,
+   16
+  ],
+  [
+   "20261101",
+   "Thomas",
+   2,
+   "FootprintHistory",
+   3951,
+   16
+  ],
+  [
+   "20261101",
+   "Patton",
+   3,
+   "GeneralsOnTheMap",
+   247,
+   16
+  ],
+  [
+   "20261103",
+   "Freyberg",
+   1,
+   "WarTableAtlas",
+   1033,
+   14
+  ],
+  [
+   "20261103",
+   "Arnold",
+   1,
+   "GeneralsOnTheMap",
+   486,
+   14
+  ],
+  [
+   "20261104",
+   "Patton",
+   4,
+   "FootprintHistory",
+   849,
+   13
+  ],
+  [
+   "20261104",
+   "MacArthur",
+   3,
+   "WarTableAtlas",
+   150,
+   13
+  ],
+  [
+   "20261105",
+   "Patch",
+   1,
+   "WarTableAtlas",
+   196,
+   12
+  ],
+  [
+   "20261106",
+   "Lee",
+   2,
+   "FootprintHistory",
+   425,
+   11
+  ],
+  [
+   "20261106",
+   "Vasilevsky",
+   1,
+   "WarTableAtlas",
+   1585,
+   11
+  ],
+  [
+   "20261106",
+   "Cleburne",
+   1,
+   "GeneralsOnTheMap",
+   4049,
+   11
+  ],
+  [
+   "20261107",
+   "Nimitz",
+   1,
+   "WarTableAtlas",
+   109,
+   10
+  ],
+  [
+   "20261108",
+   "Murphy",
+   1,
+   "FootprintHistory",
+   100,
+   9
+  ],
+  [
+   "20261108",
+   "Kuribayashi",
+   1,
+   "WarTableAtlas",
+   147,
+   9
+  ],
+  [
+   "20261109",
+   "Grant",
+   2,
+   "GeneralsOnTheMap",
+   8516,
+   8
+  ],
+  [
+   "20261111",
+   "Jackson",
+   1,
+   "FootprintHistory",
+   1556,
+   6
+  ],
+  [
+   "20261111",
+   "Malinovsky",
+   1,
+   "WarTableAtlas",
+   109,
+   6
+  ],
+  [
+   "20261113",
+   "Leclerc",
+   1,
+   "WarTableAtlas",
+   71,
+   4
+  ],
+  [
+   "20261115",
+   "Bagramyan",
+   1,
+   "WarTableAtlas",
+   162,
+   2
+  ],
+  [
+   "20261117",
+   "Longstreet",
+   1,
+   "FootprintHistory",
+   274,
+   0
+  ],
+  [
+   "20261117",
+   "Marion",
+   1,
+   "GeneralsOnTheMap",
+   0,
+   0
+  ]
+ ],
+ "control_same_age": {
+  "oct": [
+   [
+    "TheGeneralOath",
+    "The Order Ulysses S. Grant Never Explained",
+    12,
+    4112
+   ],
+   [
+    "TheGeneralOath",
+    "THREE ENSLAVED MEN ROWED TO A UNION FORT. THE GENE",
+    6,
+    2040
+   ],
+   [
+    "ravelin.history",
+    "How Britain Bought an Army and Still Lost the War",
+    14,
+    8921
+   ],
+   [
+    "ravelin.history",
+    "How 200 Americans Lured Britain Into a Perfect Tra",
+    9,
+    51395
+   ],
+   [
+    "ravelin.history",
+    "The Ambush That Taught Washington How to Beat Brit",
+    8,
+    5957
+   ],
+   [
+    "ravelin.history",
+    "The Naval Trick That Humiliated Britain \u2014 Plattsbu",
+    6,
+    31188
+   ],
+   [
+    "ravelin.history",
+    "The 28-Day Siege That Drove Britain Out of the Sou",
+    3,
+    15037
+   ]
+  ],
+  "nov": [
+   [
+    "CloakedHistory1",
+    "What Really Happened to Confederate Leaders After ",
+    10,
+    174
+   ],
+   [
+    "TheGeneralOath",
+    "Lee\u2019s Lost Orders: The Paper That Almost Ended the",
+    15,
+    1310
+   ],
+   [
+    "TheGeneralOath",
+    "Lincoln Was Sent 303 Death Sentences. He Picked 39",
+    7,
+    780
+   ],
+   [
+    "CivilWarDose",
+    "The Confederacy Almost Won the Civil War \u2014 Here\u2019s ",
+    15,
+    1024
+   ],
+   [
+    "CivilWarDose",
+    "Gettysburg Day 1: The Slaughter Before the Famous ",
+    8,
+    3720
+   ],
+   [
+    "CivilWarDose",
+    "GETTYSBURG DAY 2: The Intelligence Failure That Ne",
+    3,
+    833
+   ],
+   [
+    "ravelin.history",
+    "The Fake Campfires That Fooled Britain's Army",
+    14,
+    18595
+   ],
+   [
+    "ravelin.history",
+    "The British Officer Who Refused to Shoot Washingto",
+    11,
+    5007
+   ],
+   [
+    "ravelin.history",
+    "The Disguise That Destroyed Britain's Loyalist Arm",
+    8,
+    3864
+   ],
+   [
+    "ravelin.history",
+    "How One American Ship Outran Britain's Entire Squa",
+    5,
+    6250
+   ]
+  ]
+ },
+ "same_age_summary": {
+  "format": {
+   "oct_n": 20,
+   "oct_median": 22080.5,
+   "nov_n": 18,
+   "nov_median": 455.5
+  },
+  "control": {
+   "oct_n": 7,
+   "oct_median": 8921,
+   "nov_n": 10,
+   "nov_median": 2515.0
+  }
+ },
+ "same_age_by_channel": {
+  "WarfareGeniuss": {
+   "oct": [
+    3,
+    20711
+   ]
+  },
+  "FootprintHistory": {
+   "oct": [
+    10,
+    22080.5
+   ],
+   "nov": [
+    5,
+    849
+   ]
+  },
+  "WarTableAtlas": {
+   "oct": [
+    3,
+    771
+   ],
+   "nov": [
+    8,
+    148.5
+   ]
+  },
+  "CommandersAndTactics": {
+   "oct": [
+    1,
+    395628
+   ]
+  },
+  "GeneralsOnTheMap": {
+   "oct": [
+    3,
+    38401
+   ],
+   "nov": [
+    4,
+    2267.5
+   ]
+  },
+  "tacticalgeniuss": {
+   "nov": [
+    1,
+    2819
+   ]
+  },
+  "TheGeneralOath": {
+   "oct": [
+    2,
+    3076.0
+   ],
+   "nov": [
+    2,
+    1045.0
+   ]
+  },
+  "ravelin.history": {
+   "oct": [
+    5,
+    15037
+   ],
+   "nov": [
+    4,
+    5628.5
+   ]
+  },
+  "CloakedHistory1": {
+   "nov": [
+    1,
+    174
+   ]
+  },
+  "CivilWarDose": {
+   "nov": [
+    3,
+    1024
+   ]
+  }
+ },
+ "supply_format_titles_by_month": {
+  "202607": 3,
+  "202608": 6,
+  "202609": 8,
+  "202611": 21,
+  "202610": 37,
+  "202506": 1,
+  "202509": 1,
+  "202511": 1,
+  "202512": 1,
+  "202602": 1,
+  "202604": 1,
+  "202606": 1
+ },
+ "repeat_stats": {
+  "202607": {
+   "first_n": 3,
+   "first_median": 114265,
+   "repeat_n": 0,
+   "repeat_median": null
+  },
+  "202608": {
+   "first_n": 4,
+   "first_median": 66597.0,
+   "repeat_n": 2,
+   "repeat_median": 395399.0
+  },
+  "202609": {
+   "first_n": 6,
+   "first_median": 144939.5,
+   "repeat_n": 2,
+   "repeat_median": 460821.0
+  },
+  "202610": {
+   "first_n": 20,
+   "first_median": 7972.5,
+   "repeat_n": 17,
+   "repeat_median": 20983
+  },
+  "Jul-Oct all": {
+   "first_n": 35,
+   "first_median": 23241,
+   "repeat_n": 24,
+   "repeat_median": 22491.5
+  }
+ },
+ "lifecycle": {
+  "tacticalgeniuss": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 66571.5,
+   "late_third_median": 48197.0,
+   "late_over_early": 0.724,
+   "peak_position": 0.62,
+   "mature_n": 14
+  },
+  "WarfareGeniuss": {
+   "class": "early boost -> decay",
+   "early_third_median": 136832,
+   "late_third_median": 25611,
+   "late_over_early": 0.187,
+   "peak_position": 0.12,
+   "mature_n": 9
+  },
+  "FootprintHistory": {
+   "class": "early boost -> decay",
+   "early_third_median": 46000,
+   "late_third_median": 3951,
+   "late_over_early": 0.086,
+   "peak_position": 0.27,
+   "mature_n": 16
+  },
+  "WarTableAtlas": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 3995,
+   "late_third_median": 1033,
+   "late_over_early": 0.259,
+   "peak_position": 0.22,
+   "mature_n": 10
+  },
+  "CommandersAndTactics": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 254604,
+   "late_third_median": 500799,
+   "late_over_early": 1.967,
+   "peak_position": 0.12,
+   "mature_n": 9
+  },
+  "CloakedHistory1": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 608,
+   "late_third_median": 393,
+   "late_over_early": 0.646,
+   "peak_position": 0.21,
+   "mature_n": 39
+  },
+  "GeneralsOnTheMap": {
+   "class": "early boost -> decay",
+   "early_third_median": 40534,
+   "late_third_median": 486,
+   "late_over_early": 0.012,
+   "peak_position": 0.0,
+   "mature_n": 9
+  },
+  "HandledLikeEggs": "too few uploads",
+  "IronBreachHistory": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 222873.5,
+   "late_third_median": 332814.5,
+   "late_over_early": 1.493,
+   "peak_position": 1.0,
+   "mature_n": 6
+  },
+  "TheGeneralOath": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 16196,
+   "late_third_median": 4480,
+   "late_over_early": 0.277,
+   "peak_position": 0.56,
+   "mature_n": 46
+  },
+  "CivilWarDose": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 12289.5,
+   "late_third_median": 5283.5,
+   "late_over_early": 0.43,
+   "peak_position": 0.98,
+   "mature_n": 42
+  },
+  "ravelin.history": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 63212.0,
+   "late_third_median": 20000.0,
+   "late_over_early": 0.316,
+   "peak_position": 0.01,
+   "mature_n": 68
+  },
+  "RedcoatsRebels": "too few uploads",
+  "WarhawkYT": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 78000,
+   "late_third_median": 70000,
+   "late_over_early": 0.897,
+   "peak_position": 0.15,
+   "mature_n": 100
+  },
+  "kingsandgenerals": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 150500.0,
+   "late_third_median": 439500.0,
+   "late_over_early": 2.92,
+   "peak_position": 0.72,
+   "mature_n": 72
+  },
+  "thearmchairhistorian": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 656000,
+   "late_third_median": 416000,
+   "late_over_early": 0.634,
+   "peak_position": 0.59,
+   "mature_n": 76
+  },
+  "epichistorytv": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 1250000.0,
+   "late_third_median": 729000.0,
+   "late_over_early": 0.583,
+   "peak_position": 0.14,
+   "mature_n": 78
+  },
+  "markfeltonproductions": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 394500.0,
+   "late_third_median": 378000.0,
+   "late_over_early": 0.958,
+   "peak_position": 0.21,
+   "mature_n": 67
+  }
+ },
+ "momentum": {
+  "pairs": 257,
+  "spearman_prev_vs_next_rel_to_channel_median": 0.09,
+  "after_hit_next_x_median": [
+   [
+    "Tactical Genius",
+    "Patton's Top 3 Legendary Tactical Moves",
+    0.21,
+    8
+   ],
+   [
+    "Tactical Genius",
+    "Zhukov's Top 3 Legendary Tactical Moves ",
+    1.27,
+    8
+   ],
+   [
+    "Tactical Genius",
+    "Matthew Ridgway's Top 3 Legendary Tactic",
+    2.81,
+    4
+   ],
+   [
+    "Warfare Genius",
+    "Heinz Guderian's Top 3 Legendary Tactica",
+    3.42,
+    3
+   ],
+   [
+    "Warfare Genius",
+    "George S. Patton's Top 3 Legendary Tacti",
+    7.5,
+    6
+   ],
+   [
+    "Warfare Genius",
+    "Eisenhower's Top 3 Genius Moves | The Ge",
+    1.25,
+    3
+   ],
+   [
+    "Footprints in History",
+    "3 Moves That Saved Hitler's Army  Then H",
+    1.11,
+    1
+   ],
+   [
+    "Footprints in History",
+    "Chesty Puller's Top 3 Legendary Tactical",
+    6.21,
+    1
+   ],
+   [
+    "Footprints in History",
+    "William T. Sherman's Top 3 Legendary Tac",
+    0.44,
+    2
+   ],
+   [
+    "War Table Atlas",
+    "Walter Model's 3 Greatest Defensive Move",
+    1.54,
+    1
+   ],
+   [
+    "War Table Atlas",
+    "Richard O'Connor's 3 Greatest Moves | Th",
+    0.91,
+    3
+   ],
+   [
+    "Commanders and Tactics",
+    "Napoleon's Top 3 Tactical Masterpieces",
+    0.57,
+    43
+   ],
+   [
+    "Cloaked History",
+    "\u201cThe MASSACRE Of Confederate Troops At A",
+    0.57,
+    3
+   ],
+   [
+    "Cloaked History",
+    "William T. Sherman Is What Robert E. Lee",
+    1.71,
+    9
+   ],
+   [
+    "Cloaked History",
+    "Grant Warned Us About Lee \u2014 Nobody Belie",
+    28.28,
+    3
+   ],
+   [
+    "Cloaked History",
+    "Joshua Chamberlain & Little Round Top \u2014 ",
+    1.1,
+    3
+   ],
+   [
+    "Cloaked History",
+    "The Only Civil War General Who Never Los",
+    0.68,
+    3
+   ],
+   [
+    "Cloaked History",
+    "The Most Deceptive General in American C",
+    3.46,
+    3
+   ],
+   [
+    "Cloaked History",
+    "What If Lee Had Listened To Longstreet A",
+    7.07,
+    4
+   ],
+   [
+    "Cloaked History",
+    "What If Meade Had Pursued Lee After Gett",
+    1.31,
+    4
+   ],
+   [
+    "Generals On The Map (us)",
+    "George Thomas's Top 3 Legendary Tactical",
+    1.0,
+    8
+   ],
+   [
+    "Generals On The Map (us)",
+    "2 Para's Top 3 Legendary Tactical Moves ",
+    22.31,
+    4
+   ],
+   [
+    "Generals On The Map (us)",
+    "Daniel Morgan's Top 3 Legendary Tactical",
+    0.31,
+    5
+   ],
+   [
+    "The Generals' Oath",
+    "Why Confederate Generals Feared Ulysses ",
+    3.09,
+    7
+   ],
+   [
+    "The Generals' Oath",
+    "The Impossible Crossroads \u2014 Why 5 Confed",
+    14.07,
+    1
+   ],
+   [
+    "The Generals' Oath",
+    "\"Do Not Let Him Escape\" \u2014 What Grant Tol",
+    36.41,
+    1
+   ],
+   [
+    "The Generals' Oath",
+    "\"He Will Not Go Back\" \u2014 Why Robert E. Le",
+    0.54,
+    2
+   ],
+   [
+    "The Generals' Oath",
+    "\"The Man Who Wouldn't Break\" - The Psych",
+    52.21,
+    9
+   ],
+   [
+    "The Generals' Oath",
+    "\"The Empty Chair\" \u2014 What Grant Felt When",
+    2.96,
+    6
+   ],
+   [
+    "The Generals' Oath",
+    "\u201cThe General No One Could Forgive\u201d \u2014 The",
+    1.06,
+    4
+   ],
+   [
+    "The Generals' Oath",
+    "What Lincoln Wrote About Grant (That He ",
+    0.48,
+    5
+   ],
+   [
+    "The Generals' Oath",
+    "\u201cI TREMBLE FOR THE RESULT\u201d \u2014 WHAT SHERMA",
+    9.4,
+    3
+   ],
+   [
+    "The Generals' Oath",
+    "GRANT SAT DOWN IN THE DIRT AND CHEWED A ",
+    62.44,
+    3
+   ],
+   [
+    "The Generals' Oath",
+    "What Longstreet Understood About Grant T",
+    0.25,
+    29
+   ],
+   [
+    "The Generals' Oath",
+    "What Grant Didn't Understand About Georg",
+    0.13,
+    4
+   ],
+   [
+    "The Generals' Oath",
+    "The MEMO That Could Have Changed The Civ",
+    0.35,
+    3
+   ],
+   [
+    "The Generals' Oath",
+    "What Longstreet Knew Before Pickett's Ch",
+    0.56,
+    14
+   ],
+   [
+    "The Generals' Oath",
+    "Pickett Executed 22 Men. He Was Never Tr",
+    0.62,
+    10
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What Longstreet Knew Before Pickett's Ch",
+    0.14,
+    6
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "Why Confederate Generals Feared Ulysses ",
+    0.72,
+    2
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "How Joshua Chamberlain\u2019s 386 Men Saved T",
+    9.87,
+    2
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What James Longstreet Truly Thought of R",
+    7.68,
+    3
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "The Battle Lee Should Have Won \u2014 And Why",
+    7.12,
+    7
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "Lincoln Was Right About Grant But Nobody",
+    7.06,
+    7
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What George Pickett Truly Thought of Rob",
+    0.13,
+    7
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "I Don\u2019t Think You Understand Just HOW Ou",
+    1.88,
+    5
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "How A Starving Union Army Crushed Bragg\u2019",
+    2.37,
+    8
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "Why Longstreet Couldn\u2019t Believe Grant Ke",
+    0.7,
+    8
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What Happened to The Man Who Vanished Af",
+    21.36,
+    10
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "How Ulysses S. Grant Broke Lee's Army, a",
+    0.11,
+    34
+   ],
+   [
+    "Ravelin",
+    "The Genius Trap Every Military Strategis",
+    8.93,
+    2
+   ],
+   [
+    "Ravelin",
+    "Washington's Genius War Strategy That Hu",
+    0.09,
+    1
+   ],
+   [
+    "Ravelin",
+    "How Caesar Survived the Impossible Siege",
+    0.07,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Day Britain Lost an Entire Army \u2014 Sa",
+    6.43,
+    2
+   ],
+   [
+    "Ravelin",
+    "The Army of Farmers Who Destroyed Britai",
+    3.66,
+    3
+   ],
+   [
+    "Ravelin",
+    "The General Who Lost Every Battle and Wo",
+    3.64,
+    4
+   ],
+   [
+    "Ravelin",
+    "The Traitor Who Almost Destroyed America",
+    1.39,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Victory That Destroyed the British A",
+    4.51,
+    4
+   ],
+   [
+    "Ravelin",
+    "How a Fake General Built America's Deadl",
+    3.42,
+    4
+   ],
+   [
+    "Ravelin",
+    "The Teenager Who Saved America's Revolut",
+    0.79,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Mistake That Cost Britain Half a Con",
+    1.59,
+    3
+   ],
+   [
+    "Ravelin",
+    "How 400 Americans Annihilated Britain's ",
+    2.17,
+    2
+   ],
+   [
+    "Ravelin",
+    "How One Regiment Held a Bridge Against a",
+    0.91,
+    2
+   ],
+   [
+    "Ravelin",
+    "How America Built a Tower Overnight and ",
+    0.32,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Genius Trap That Destroyed A British",
+    0.27,
+    2
+   ],
+   [
+    "Ravelin",
+    "The Polish Colonel Who Trapped a British",
+    0.52,
+    3
+   ]
+  ],
+  "after_hit_by_gap": {
+   "0-4d": {
+    "n": 43,
+    "median_x": 1.54,
+    "n_above_median": 28
+   },
+   "5-9d": {
+    "n": 17,
+    "median_x": 1.71,
+    "n_above_median": 11
+   },
+   "10-999d": {
+    "n": 6,
+    "median_x": 0.565,
+    "n_above_median": 1
+   }
+  },
+  "after_hit_median": 1.35
+ }
+}
