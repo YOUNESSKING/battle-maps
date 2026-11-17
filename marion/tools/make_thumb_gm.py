@@ -27,7 +27,7 @@ noise = Image.effect_noise((W, H), 18).convert("L"); base = Image.composite(Imag
 sw = Image.new("RGB", (W, H), (22, 44, 58)); base.paste(sw, (0, 0), swamp.point(lambda v: int(v * 0.85)))
 riv = Image.new("RGB", (W, H), (88, 150, 205)); base.paste(riv, (0, 0), water.filter(ImageFilter.MaxFilter(3)))
 d0 = ImageDraw.Draw(base)
-pts = [T(p) for p in ROAD]; d0.line(pts, fill=(150, 160, 175), width=3)
+pts = [T(p) for p in ROAD]   # (critic: no stray road line)
 base = base.filter(ImageFilter.GaussianBlur(0.6))
 # portrait (real lithograph, rembg cut-out), close-up, warm-toned
 head = Image.open("assets/media/marion_head.png").convert("RGBA"); a = head.split()[3]
