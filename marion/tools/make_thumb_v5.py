@@ -94,7 +94,7 @@ def grant(word, key):
     for ch in word:
         im = text_shadow(im, (x, by + bh / 2 + 6), ch, f, (255, 255, 255), "lm"); x += ImageDraw.Draw(im).textlength(ch, font=f) + 2
     out = f"youtube/thumb/marion-V5-grant-{key}.jpg"; im.convert("RGB").save(out, quality=94); outs.append(out)
-grant("OUTFOXED", "OUTFOXED")
+if __name__ == "__main__": grant("OUTFOXED", "OUTFOXED")
 # ================= (2) GRAND MANEUVER STYLE =================
 g = runpy.run_path("tools/make_thumb_gm.py", run_name="lib"); T = g["T"]; OX, RICH, BEN = g["OX"], g["RICH"], g["BEN"]; water = g["water"]
 def smooth_rivers():
@@ -155,10 +155,11 @@ def gm(word, sub, key):
     b, (fx, fy) = portrait(175, flip=True); x0, y0 = int(175 - fx), int(520 - fy)
     im.alpha_composite(soft_shadow(im, b, blur=25, op=0.6), (x0 + 16, y0 + 8)); im.alpha_composite(b, (x0, y0))
     out = f"youtube/thumb/marion-V5-gm-{key}.jpg"; im.convert("RGB").save(out, quality=94); outs.append(out)
-gm("HE VANISHED.", "THEN TARLETON TURNED BACK", "HE_VANISHED")
-s = Image.new("RGB", (2 * 640 + 60, 620), (24, 22, 20)); d = ImageDraw.Draw(s); F2 = ImageFont.truetype(OS, 22)
-for i, o in enumerate(outs):
-    im = Image.open(o); x = 20 + i * 660
-    s.paste(im.resize((640, 360), Image.LANCZOS), (x, 40)); d.text((x, 10), o.split("V5-")[1][:-4], font=F2, fill=(230, 220, 200))
-    s.paste(im.resize((360, 202), Image.LANCZOS), (x, 410)); s.paste(im.resize((168, 94), Image.LANCZOS), (x + 380, 410))
-s.save("youtube/thumb/sheet_v5.jpg", quality=92); print(outs)
+if __name__ == "__main__": gm("HE VANISHED.", "THEN TARLETON TURNED BACK", "HE_VANISHED")
+if __name__ == "__main__":
+  s = Image.new("RGB", (2 * 640 + 60, 620), (24, 22, 20)); d = ImageDraw.Draw(s); F2 = ImageFont.truetype(OS, 22)
+  for i, o in enumerate(outs):
+      im = Image.open(o); x = 20 + i * 660
+      s.paste(im.resize((640, 360), Image.LANCZOS), (x, 40)); d.text((x, 10), o.split("V5-")[1][:-4], font=F2, fill=(230, 220, 200))
+      s.paste(im.resize((360, 202), Image.LANCZOS), (x, 410)); s.paste(im.resize((168, 94), Image.LANCZOS), (x + 380, 410))
+  s.save("youtube/thumb/sheet_v5.jpg", quality=92); print(outs)
