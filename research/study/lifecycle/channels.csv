@@ -1,0 +1,714 @@
+handle,upload_no,id,date,date_src,age_d,views,views_src,dur_s,format_title,general,title
+tacticalgeniuss,1,Ovdpe3r_FFc,20260712,exact,128,8095,exact,1245,1,Wellington,Wellington's Top 3 Legendary Tactical Moves | The Man Who Beat Napoleon
+tacticalgeniuss,2,aABPyQHW3tI,20260722,exact,118,114265,exact,911,1,Montgomery,Montgomery's Top 3 Legendary Tactical Moves | The Victor of El Alamein
+tacticalgeniuss,3,5EoX2EYJ_WI,20260728,exact,112,1093819,exact,1014,1,Patton,Patton's Top 3 Legendary Tactical Moves
+tacticalgeniuss,4,WEm1xDhf7a0,20260805,exact,104,18878,exact,771,1,Connor,Richard O'Connor's Top 3 Legendary Tactical Moves | The Man Who Almost Won North Africa
+tacticalgeniuss,5,cJ0kCae_PaU,20260810,exact,99,26558,exact,889,1,Rommel,Rommel's Top 3 Legendary Tactical Moves | The General Churchill Admired
+tacticalgeniuss,6,3PxXv0HPj1s,20260814,exact,95,6579,exact,932,1,Yamashita,Yamashita's Top 3 Legendary Tactical Moves | The Tiger of Malaya
+tacticalgeniuss,7,BvJN3pyPL6E,20260820,exact,89,764240,exact,998,1,Zhukov,Zhukov's Top 3 Legendary Tactical Moves | The Man Who Broke Hitler
+tacticalgeniuss,8,sS3zjo1Dibo,20260828,exact,81,114316,exact,1003,1,Guderian,Guderian's Top 3 Legendary Tactical Moves | The Father of Blitzkrieg
+tacticalgeniuss,9,tVpl949Nk0M,20260901,exact,77,1479122,exact,1139,1,Ridgway,Matthew Ridgway's Top 3 Legendary Tactical Moves | The Man Who Turned Korea Around
+tacticalgeniuss,10,i1sWghFIvZE,20260905,exact,73,252000,flat(rounded),1570,1,Manstein,Manstein's Top 3 Legendary Tactical Moves | The Man Who Broke France
+tacticalgeniuss,11,TA8L0s6PWWA,20260911,exact,67,31045,exact,1647,1,MacArthur,MacArthur's Top 3 Legendary Tactical Moves | The General Truman Fired
+tacticalgeniuss,12,Z_BUDCRMT3U,20260917,exact,61,224530,exact,1048,1,Slim,William Slim's Top 3 Tactical Moves | The General Better Than Montgomery
+tacticalgeniuss,13,5RAXYvGohvo,20260924,exact,54,65349,exact,1214,1,Bradley,Bradley's Top 3 Legendary Tactical Moves | The Man Who Outranked Patton
+tacticalgeniuss,14,2p1NJe0LhN0,20261101,exact,16,2819,exact,1235,1,Rokossovsky,Rokossovsky's Top 3 Tactical Moves | The Man Who Trapped Hitler's 6th Army
+WarfareGeniuss,1,estK7vTXo24,20260924,exact,54,11190,exact,1279,1,Washington,"George Washington's Top 3 Legendary Tactical Moves | He Lost Almost Every Battle, Then Won the War"
+WarfareGeniuss,2,p_V3yGhn_bA,20260926,exact,52,784810,exact,1161,1,Guderian,Heinz Guderian's Top 3 Legendary Tactical Moves | Fired for Being Right
+WarfareGeniuss,3,IGUBHrfd5iA,20260929,exact,49,136832,exact,1236,1,Patton,George S. Patton's Top 3 Legendary Tactical Moves
+WarfareGeniuss,4,grexKARuDQw,20261005,exact,43,300000,flat(rounded),1121,1,Eisenhower,Eisenhower's Top 3 Genius Moves | The General Who Never Saw Combat
+WarfareGeniuss,5,Uqu_W3RQN1s,20261008,exact,40,49839,exact,1215,1,Rommel,"Rommel's Top 3 Genius Moves | Admired by His Enemies, Destroyed by His Own"
+WarfareGeniuss,6,5TZc9Ks-1vs,20261012,exact,36,18323,exact,1142,1,Montgomery,Montgomery’s Top 3 Genius Moves | The General Who Ended Germany’s Winning Streak
+WarfareGeniuss,7,lzfvcMXYHPo,20261016,exact,32,40000,flat(rounded),1167,1,Manstein,Manstein's Top 3 Genius Moves | The Plan They Tried to Bury
+WarfareGeniuss,8,jQjIauNrGKM,20261021,exact,27,24000,flat(rounded),1164,1,Zhukov,Zhukov’s Top 3 Legendary Tactical Moves | Why Stalin Exiled His Best General
+WarfareGeniuss,9,VZYh_EZ9otc,20261026,exact,22,25611,exact,1204,1,Bradley,Omar Bradley’s Top 3 Legendary Tactical Moves | The Quiet General Who Out-Planned Them All
+FootprintHistory,1,1_DCijl-pU8,20261010,exact,38,119026,exact,1466,1,,3 Moves That Saved Hitler's Army  Then Hitler Fired Him
+FootprintHistory,2,0u-dN-zqZTA,20261011,exact,37,20983,exact,1467,1,Zhukov,Georgy Zhukov's 3 Deadliest Moves | The General Stalin Feared More Than Hitler
+FootprintHistory,3,pp7QGRVE5SA,20261013,exact,35,46000,flat(rounded),1462,1,Grant,"Ulysses S. Grant's Top 3 Legendary Tactical Moves | The ""Drunk"" Who Won the Civil War"
+FootprintHistory,4,V5X5kpdh2F0,20261015,exact,33,23241,exact,1347,1,Rokossovsky,"The General Stalin Imprisoned, Then Trusted — Rokossovsky's 3 Greatest Moves"
+FootprintHistory,5,jLJ0FbigheU,20261017,exact,31,136628,exact,1375,1,Puller,Chesty Puller's Top 3 Legendary Tactical Moves | The Most Decorated Marine in History
+FootprintHistory,6,FOeRqbM7Duo,20261018,exact,30,117832,exact,1383,1,Sherman,William T. Sherman's Top 3 Legendary Tactical Moves — He Cut Himself Off From Supply and Won the War
+FootprintHistory,7,LiZIHzwMP0w,20261020,exact,28,8379,exact,1733,1,Nelson,The Admiral Who Broke the Rules — Horatio Nelson's 3 Greatest Gambles
+FootprintHistory,8,qokA6IxpHlk,20261021,exact,27,5816,exact,1508,1,MacArthur,Douglas MacArthur’s 3 Biggest Gambles | His Own Men Called Him Dugout Doug
+FootprintHistory,9,D9k1dkdJF6Y,20261023,exact,25,34209,exact,1478,1,Ridgway,Matthew Ridgways Top 3 Legendary Tactical Moves — He Saved the Army MacArthur Almost Lost
+FootprintHistory,10,FzKiBdD3LmM,20261025,exact,23,16941,exact,1474,1,Rommel,Erwin Rommel's Top 3 Legendary Tactical Moves — The General Hitler Feared
+FootprintHistory,11,2cGMUDUpDyk,20261026,exact,22,24137,exact,1263,1,Sheridan,Philip Sheridan's Top 3 Legendary Tactical Moves — He Rode Into a Rout and Turned It Into Victory
+FootprintHistory,12,cVMxKS8j68Q,20261027,exact,21,7566,exact,1338,1,Butler,Smedley Butler Top 3 Legendary Tactical Moves — He Tried to Give His Medal of Honor Back
+FootprintHistory,13,m0xItDv9_yI,20261029,exact,19,887,flat(rounded),1272,1,Boyington,Pappy Boyington’s Top 3 Legendary Tactical Moves | The Flying Tigers Threw Him Out
+FootprintHistory,14,9iowIPSrMbs,20261030,exact,18,3838,exact,1366,1,,The 3 Moves That Saved the 1st Marine Division at Chosin
+FootprintHistory,15,zUCSt5hvXWo,20261101,exact,16,3951,exact,1520,1,Thomas,George H. Thomas's Top 3 Legendary Tactical Moves — He Refused to Retreat and Saved an Entire Army
+FootprintHistory,16,WfluQduhxNQ,20261102,exact,15,4615,exact,1467,0,,Grant and Sherman: The Drunk and the Madman Who Won the Civil War
+FootprintHistory,17,x2iIxvWkBxc,20261104,exact,13,849,exact,1436,1,Patton,"George S. Patton's Top 3 Legendary Tactical Moves | Benched for a Slap, Then He Saved Bastogne"
+FootprintHistory,18,i2Sa0FWCixU,20261106,exact,11,425,exact,1297,1,Lee,"Robert E. Lee's Top 3 Legendary Tactical Moves | They Called Him ""Granny Lee"""
+FootprintHistory,19,OmkNM_7i1fY,20261108,exact,9,100,exact,1304,1,Murphy,"Audie Murphy's 3 Legendary Moves — Too Small, Yet America's Most Decorated Soldier"
+FootprintHistory,20,UqfQYlx-9ro,20261109,exact,8,82,exact,1214,0,,The Bridge Was Rigged to Explode — But Something Went Terribly Wrong
+FootprintHistory,21,SvymtmTluQs,20261111,exact,6,1556,exact,1196,1,Jackson,"Stonewall Jackson's Top 3 Legendary Tactical Moves | His Students Called Him ""Tom Fool"""
+FootprintHistory,22,euaXVDvwRfs,20261112,exact,5,2777,exact,1159,0,,Joshua Chamberlain's Impossible Stand — The Last Line at Gettysburg
+FootprintHistory,23,hvUQ8r0EmUs,20261116,exact,1,436,exact,1263,0,,"The British General Who Trapped an Entire Army With Just 2,000 Men"
+FootprintHistory,24,kp8sWz2Qe2Q,20261117,exact,0,274,exact,1165,1,Longstreet,He Warned Lee at Gettysburg. The South Blamed Him Anyway | Longstreet's Top 3 Tactical Moves
+WarTableAtlas,1,mRE8gXSv5hs,20261011,exact,37,3995,exact,1117,1,Model,Walter Model's 3 Greatest Defensive Moves | Hitler's Fireman
+WarTableAtlas,2,_ljIa1iwPv0,20261012,exact,36,1867,exact,1103,1,Manteuffel,Hasso von Manteuffel's 3 Greatest Moves | The Little General of the Bulge
+WarTableAtlas,3,-AJxm0cgmDE,20261020,exact,28,105499,exact,1067,1,Connor,Richard O'Connor's 3 Greatest Moves | The Forgotten General Who Won Britain's First Victory
+WarTableAtlas,4,vsmQ-jvJj1c,20261023,exact,25,1100,flat(rounded),944,1,Rommel,Erwin Rommel's 3 Greatest Moves | The Desert Fox Behind the Legend
+WarTableAtlas,5,urCqhnlKVBc,20261026,exact,22,1320,exact,1023,1,Montgomery,Bernard Montgomery's 3 Greatest Moves | The Cautious General Who Beat Rommel
+WarTableAtlas,6,D10v2RhSuuw,20261029,exact,19,245,exact,944,1,Yamashita,Tomoyuki Yamashita's 3 Greatest Moves | The Tiger of Malaya and the Trial That Hanged Him
+WarTableAtlas,7,c-DuHY-bnwE,20261029,exact,19,363,exact,736,1,Maczek,Stanislaw Maczek's 3 Greatest Moves | The General Who Closed the Falaise Pocket and Lost His
+WarTableAtlas,8,kwEk5yFRzsM,20261029,exact,19,1554,exact,940,1,Mannerheim,Mannerheim's 3 Greatest Moves | How a Small Nation Held Off the Red Army
+WarTableAtlas,9,dMXN5ZEspP0,20261029,exact,19,312,exact,741,1,Truscott,Lucian Truscott's 3 Greatest Moves | The Hard Riding General Who Marched Through Sicily and
+WarTableAtlas,10,LkUa6gwepP0,20261103,exact,14,1033,exact,595,1,Freyberg,Bernard Freyberg's 3 Greatest Moves | The Swimmer General Who Fought From Crete to Trieste
+WarTableAtlas,11,wykUjHruZxg,20261104,exact,13,150,exact,862,1,MacArthur,MacArthur's 3 Greatest Moves | The General Who Leapfrogged Across the Southwest Pacific
+WarTableAtlas,12,u1lCm1_rh3M,20261105,exact,12,196,exact,656,1,Patch,Alexander Patch's 3 Greatest Moves | The Forgotten American General Who Took the South of
+WarTableAtlas,13,Ck-HtOT3ZAk,20261106,exact,11,1585,exact,817,1,Vasilevsky,Vasilevsky's 3 Greatest Moves | The Soviet Planner Who Drew the Maps That Won the War
+WarTableAtlas,14,xr2RcX7JfUA,20261107,exact,10,109,exact,612,1,Nimitz,Chester Nimitz's 3 Greatest Moves | The Admiral Who Turned Midway Into a Trap
+WarTableAtlas,15,E__uo_zfmdg,20261108,exact,9,147,exact,615,1,Kuribayashi,Tadamichi Kuribayashi's 3 Greatest Moves | The General Who Dug Iwo Jima Into a Fortress
+WarTableAtlas,16,sNcWxR-2Qvs,20261111,exact,6,109,exact,850,1,Malinovsky,Rodion Malinovsky's 3 Greatest Moves | The Soviet General Who Won Two Wars on Opposite Sides
+WarTableAtlas,17,6grdsNpGzwU,20261113,exact,4,71,exact,909,1,Leclerc,Philippe Leclerc's 3 Greatest Moves | From a Desert Oath to the Cathedral of Strasbourg
+WarTableAtlas,18,lbz76Paf6Z8,20261115,exact,2,45,exact,978,0,,Germany's U-Boats Were Winning the Tonnage War. Then a California Yard Built a Ship in 4 Days.
+WarTableAtlas,19,LTIQ2ASacps,20261115,exact,2,162,exact,636,1,Bagramyan,Ivan Bagramyan's 3 Greatest Moves | The Armenian Marshal Behind Operation Bagration
+CommandersAndTactics,1,0oaJq6iui4c,20250604,exact,531,254604,exact,676,1,Rommel,Rommel's Top 3 Tactical Masterpieces
+CommandersAndTactics,2,FrZsp16pemk,20250929,exact,414,833326,exact,669,1,Napoleon,Napoleon's Top 3 Tactical Masterpieces
+CommandersAndTactics,3,3TlDRjQPlQI,20251111,exact,371,146193,exact,976,1,Alexander,Alexander's Top 3 Tactical Masterpieces
+CommandersAndTactics,4,SJXvSB_xKOk,20251210,exact,342,597702,exact,945,1,Zhukov,Zhukov's Top 3 Tactical Masterpieces (No AI)
+CommandersAndTactics,5,5a67-ybko_Q,20260214,exact,276,232169,exact,1169,1,Caesar,Caesar's Top 3 Tactical Masterpieces
+CommandersAndTactics,6,_SUqZHUhrOg,20260415,exact,216,43000,flat(rounded),1238,1,Lee,Robert E. Lee's Top 3 Tactical Masterpieces
+CommandersAndTactics,7,nwB1Njcw0jw,20260606,exact,164,500799,exact,1141,1,Model,Walter Model's Top 3 Defensive Masterpieces (No AI)
+CommandersAndTactics,8,PURiiijfB0Y,20260828,exact,81,234458,exact,1433,1,Suvorov,Suvorov's Top 3 Tactical Masterpieces
+CommandersAndTactics,9,cqArbvbxudw,20261019,exact,29,538210,exact,1322,1,Manstein,Manstein's Top 3 Tactical Masterpieces (No AI)
+CloakedHistory1,3,Jr-lEXhdt6I,20260326,exact,236,289,flat(rounded),1204,0,,Why Confederate Generals Feared Ulysses S. Grant So Much
+CloakedHistory1,4,X8QkUfJOa5w,20260330,exact,232,588,flat(rounded),889,0,,The Surrender That Broke the Winner
+CloakedHistory1,5,PR5C1zzT9W4,20260406,exact,225,608,flat(rounded),1243,0,,The Day Slavery Ended Never Actually Happened
+CloakedHistory1,6,i1DZ8pWli98,20260424,exact,207,294,flat(rounded),754,0,,The Moment Lee Chose Wrong
+CloakedHistory1,7,7qq3vdzrgRI,20260501,exact,200,1800,flat(rounded),587,0,,“The MASSACRE Of Confederate Troops At Antietam (The media ERASED this)”
+CloakedHistory1,8,fOAcYaUn9sg,20260504,exact,197,221,flat(rounded),1255,0,,How Lee's Arrogance Destroyed His Greatest Chance: The Longstreet Factor
+CloakedHistory1,9,DkoaTxiwI98,20260512,exact,189,9300,flat(rounded),1399,0,,William T. Sherman Is What Robert E. Lee WARNED  Us About
+CloakedHistory1,10,5V4fkVTC-2k,20260521,exact,180,664,flat(rounded),1340,0,,The Confederate General Who Betrayed the South — and Saved America | James Longstreet
+CloakedHistory1,11,RNQzn8q4SN8,20260524,exact,177,77000,flat(rounded),1353,0,,Grant Warned Us About Lee — Nobody Believed Him for 100 Years
+CloakedHistory1,12,dZYeNO36NBM,20260527,exact,174,11000,flat(rounded),1150,0,,Joshua Chamberlain & Little Round Top — Explained Like You’re 5
+CloakedHistory1,13,MYpP9VEX48g,20260530,exact,171,426,exact,1080,0,,What They Found in Congress's Filing Cabinet After 105 Years
+CloakedHistory1,14,wthxaJfA45k,20260604,exact,166,198,flat(rounded),1192,0,,Stonewall Jackson's Secret Crime the South Never Found Out
+CloakedHistory1,15,fZheuMf2fXw,20260607,exact,163,48940,exact,952,0,,The Only Civil War General Who Never Lost a Single Battle — History Never Gave Him the Glory
+CloakedHistory1,16,SN-G3exDV9Q,20260610,exact,160,263,exact,1336,0,,Lincoln’s First Gamble
+CloakedHistory1,17,b_1vp3avZuU,20260613,exact,157,265,exact,1537,0,,Armistead Charged The Man He Called Brother
+CloakedHistory1,18,jHoVLBITfas,20260617,exact,153,325,flat(rounded),1446,0,,The Evidence Custer’s Defenders Couldn’t Hide
+CloakedHistory1,19,M46yHolpKEc,20260620,exact,150,389,exact,1158,0,,Grant’s Genius War Strategy That Humiliated the South — Siege of Vicksburg 
+CloakedHistory1,20,nnLIuwDKKAA,20260626,exact,144,305,exact,843,0,,The General Who Never Lost an Army and Still Got Fired
+CloakedHistory1,21,YAchdkHaYzc,20260630,exact,140,464,flat(rounded),1021,0,,How Daniel Morgan Tricked Britain’s Best Cavalry at Cowpens — Tarleton’s Humiliation
+CloakedHistory1,22,eTnNK3U8BzA,20260704,exact,136,132,exact,1191,0,,The Fort Pillow Massacre 1864
+CloakedHistory1,23,CAHG46CsK_Y,20260717,exact,123,586,flat(rounded),1197,0,,Jackson Warned Lee About Chancellorsville — The IMPOSSIBLE Victory
+CloakedHistory1,24,fhnS_W3C5s4,20260721,exact,119,328,flat(rounded),1083,0,,THE DEVIL HIMSELF — Nathan Bedford Forrest Is What Sherman Was Afraid Of
+CloakedHistory1,25,6LNiBXmJRzE,20260726,exact,114,148,flat(rounded),798,0,,The Ugly Truth About Robert E. Lee — What the Lost Cause Erased
+CloakedHistory1,26,sW0Fm5B_pxw,20260729,exact,111,150,exact,857,0,,The 10 Most RUTHLESS Men of the Civil War
+CloakedHistory1,27,AL2bzGi7TKw,20260730,exact,110,464,exact,612,0,,You Have No Idea How BAD Custer’s Last Stand Really Got
+CloakedHistory1,28,xjI2hlgtfnA,20260811,exact,98,156,exact,1138,0,,What Lee Didn't Know About Ulysses S. Grant
+CloakedHistory1,29,pXco2G64Hjw,20260814,exact,95,327,flat(rounded),1102,0,,"The 1863 Battle of Gettysburg — Why Did 165,000 Soldiers Clash in Pennsylvania?"
+CloakedHistory1,30,NlVwt3sdfJg,20260817,exact,92,163,exact,1176,0,,Lincoln Didn’t Hate the South — Here’s What He Actually Wanted
+CloakedHistory1,31,4_S4I9oUbIQ,20260826,exact,83,375,exact,1129,0,,The Lie We All Believed About General Patton
+CloakedHistory1,32,0-Jb9Y8wa_k,20260830,exact,79,2580,exact,608,0,,The Most Deceptive General in American Civil War History
+CloakedHistory1,33,8UwCU0FZ_aA,20260902,exact,76,1346,exact,690,0,,What If Lee Had Listened To Longstreet At Gettysburg?
+CloakedHistory1,34,7Pb-5xf0l0s,20260906,exact,72,2751,exact,903,0,,What If Meade Had Pursued Lee After Gettysburg
+CloakedHistory1,35,AwlPhAIzyWs,20260910,exact,68,508,exact,1155,0,,How They Actually Died — The Strange End of Civil War Generals
+CloakedHistory1,36,yAzfONDXplw,20260914,exact,64,304,exact,1019,0,,The General Lee Sent to Die
+CloakedHistory1,37,i5H5hP_Ik3A,20260917,exact,61,890,exact,995,0,,What if GETTYSBURG Was Fought at Night?
+CloakedHistory1,38,n4BzGYywUeU,20260922,exact,56,393,exact,1119,0,,Why Did America Arm Communist Yugoslavia?
+CloakedHistory1,39,eWrQTJo_dqE,20260925,exact,53,159,exact,975,0,,Benteen Warned Us About Custer
+CloakedHistory1,40,n8OFM3wCKgQ,20260929,exact,49,881,flat(rounded),937,0,,The Man Who Taught America Pure Terror
+CloakedHistory1,41,cxbPRZ3Myas,20261002,exact,46,91,exact,987,0,,The Secret Bomb That Almost Killed Ulysses S. Grant
+CloakedHistory1,42,b255NBpOcnM,20261107,exact,10,174,exact,789,0,,What Really Happened to Confederate Leaders After 1865
+GeneralsOnTheMap,1,fYSkvBHAo1k,20261002,exact,46,136000,flat(rounded),1131,1,Thomas,George Thomas's Top 3 Legendary Tactical Moves | The Man Who Saved the Union Army
+GeneralsOnTheMap,2,yQTgsoSe24o,20261010,exact,38,2200,flat(rounded),970,1,Smith,O.P. Smith’s Top 3 Legendary Tactical Moves | The Man Who Broke Out of Chosin
+GeneralsOnTheMap,3,BGNzNXcCVS4,20261017,exact,31,40534,exact,1029,1,2 Para,2 Para's Top 3 Legendary Tactical Moves | The Bluff That Won the Falklands' First Land Battle
+GeneralsOnTheMap,4,m_Y5lfsF8Jk,20261021,exact,27,51254,exact,1060,1,Morgan,Daniel Morgan's Top 3 Legendary Tactical Moves | The Man Who Destroyed Britain's Elite in 1 Hour
+GeneralsOnTheMap,5,24__0Ux3I8g,20261026,exact,22,722,exact,842,1,Gavin,James Gavin's Top 3 Legendary Tactical Moves | The Man Who Took the Nijmegen Bridge
+GeneralsOnTheMap,6,I68LgHLjcKU,20261028,exact,20,3934,exact,886,1,Greene,Nathanael Greene's Top 3 Legendary Tactical Moves | The Man Who Drove the British Out of theSouth
+GeneralsOnTheMap,7,-N58wDEQPmo,20261030,exact,18,694,exact,810,1,Collins,J. Lawton Collins's Top 3 Legendary Tactical Moves | The Man Who Broke Open Normandy
+GeneralsOnTheMap,8,sYHopxxHP7g,20261101,exact,16,247,exact,1034,1,Patton,George S. Patton's Top 3 Legendary Tactical Moves | The Man Who Broke the Siege of Bastogne
+GeneralsOnTheMap,9,QnUiueJUSY4,20261103,exact,14,486,exact,941,1,Arnold,"Benedict Arnold’s Top 3 Legendary Tactical Moves | He Saved the Revolution, Then Betrayed It"
+GeneralsOnTheMap,10,GPv8h3nRoJ0,20261106,exact,11,4049,exact,867,1,Cleburne,Patrick Cleburne's Top 3 Legendary Tactical Moves | The Man Who Saved the Confederacy'sWestern Army
+GeneralsOnTheMap,11,3ZegMzwq-DM,20261109,exact,8,8516,exact,975,1,Grant,Ulysses S. Grant's Top 3 Legendary Tactical Moves |The Man Who Won the Civil War
+GeneralsOnTheMap,12,xi_DyC2ThCU,20261113,exact,4,373,exact,963,0,,The Battle of Yorktown: How WashingtonTrapped Cornwallis's Army
+GeneralsOnTheMap,13,hMRo3w9rKPg,20261117,exact,0,0,exact,957,1,Marion,Francis Marion's Top 3 Legendary Tactical Moves | TheSwamp Fox Tarleton Couldn't Catch
+HandledLikeEggs,1,ZTh3kN6ACAA,20260116,exact,305,165000,flat(rounded),3316,0,,Siegfried Muller - From German Artilleryman to Congo Mercenary
+HandledLikeEggs,2,uYPdwkTSIUM,20260418,exact,213,160202,exact,2912,0,,"When Belgium, The Congo, and the CIA fought Cannibals in the Jungle - The 1st Battle of Boende, 1964"
+HandledLikeEggs,3,zCFncvh-Ss8,20260826,exact,83,174117,exact,2559,0,,"Siegfried Müller Fails to Save The Congo - The 2nd Battle of Boende, 1964"
+IronBreachHistory,1,Ihmf7StX-FM,20260412,exact,219,264000,flat(rounded),2355,0,,D-Day: The 82nd Airborne's Battle for Normandy | Animated Documentary
+IronBreachHistory,2,YRauFGvQzVc,20260528,exact,173,181747,exact,931,0,,Rangers Lead the Way: The D-Day Assault on Pointe du Hoc and Omaha Beach | Animated Documentary 
+IronBreachHistory,3,ZZZQQV5q7KQ,20260621,exact,149,143000,flat(rounded),556,0,,The 101st Airborne's Assault on Carentan | Cole's Charge & Bloody Gulch (Animated)
+IronBreachHistory,4,8daQeXaIsA4,20260717,exact,123,106000,flat(rounded),546,0,,"The Battle of Saint-Lô 1944 | Hill 192, Normandy Bocage & the Major of St-Lô (Animated - No AI)"
+IronBreachHistory,5,G9nEOi1lc1k,20260821,exact,88,187304,exact,971,0,,The Battle of Juno Beach D-Day 1944 | Canada's Longest Day (Animated)
+IronBreachHistory,6,YepDNgNDxGM,20260917,exact,61,478325,exact,1774,0,,D-Day’s First Battle | The British Airborne’s Fight for Pegasus Bridge
+TheGeneralOath,1,_U9MRpyf4-I,20251231,exact,321,240,exact,2077,0,,Forbidden to Fight: How Doris Miller Changed the U.S. Navy at Pearl Harbor
+TheGeneralOath,2,UGeWaih3SnE,20260216,exact,274,163172,exact,1410,0,,Why Confederate Generals Feared Ulysses S. Grant More Than Any Union General
+TheGeneralOath,3,yf4GulPicGE,20260223,exact,267,17782,exact,1700,0,,The Impossible Crossroads — Why 5 Confederate Generals Couldn't Stop Grant at the Wilderness
+TheGeneralOath,4,N3vSsy59ess,20260224,exact,266,80852,exact,1654,0,,"""Do Not Let Him Escape"" — What Grant Told His Cavalry Before the Final Hunt for Lee"
+TheGeneralOath,5,x2NXSjDstTw,20260225,exact,265,209215,exact,1603,0,,"""He Will Not Go Back"" — Why Robert E. Lee Realized Grant Was Unlike Any General He'd Ever Faced"
+TheGeneralOath,6,_cz94ILjRUY,20260227,exact,263,3100,flat(rounded),1919,0,,The Day One Union Colonel Refused to Let His Men Retreat at Gettysburg
+TheGeneralOath,7,GSDZcIs2qKA,20260303,exact,259,54000,flat(rounded),1480,0,,"""The Man Who Wouldn't Break"" - The Psychological War Between Grant and Lee at the North Anna"
+TheGeneralOath,8,AmrmLx9hiAY,20260312,exact,250,300000,flat(rounded),1917,0,,"""The Empty Chair"" — What Grant Felt When Lee Walked Out of Appomattox"
+TheGeneralOath,9,XC3tbTNeQP0,20260318,exact,244,17000,flat(rounded),2045,0,,"""He Will Not Stop"" — Why Grant Kept Attacking Even When His Own Generals Begged Him to Halt"
+TheGeneralOath,10,dJ_Rbdr1tS0,20260323,exact,239,900,flat(rounded),2218,0,,The Incident That Started THE AMERICAN CIVIL WAR 
+TheGeneralOath,11,EE3J1WpTIrI,20260327,exact,235,8900,flat(rounded),1584,0,,"""The Night Grant Almost Quit"" — How Sherman Talked Him Back From the Edge After Shiloh"
+TheGeneralOath,12,NyhdWR7MDfo,20260330,exact,232,5300,flat(rounded),2185,0,,"""The General’s Silence"" - Why Grant Never Gave a Speech but Always Won the War"
+TheGeneralOath,13,2ii5oBTsdD0,20260401,exact,230,3751,exact,1915,0,,"""The Butcher’s Conscience"" – Why Grant Called Cold Harbor His Only True Regret"
+TheGeneralOath,14,lk4SFc7xQyw,20260403,exact,228,16196,exact,1863,0,,"""The Order No One Dared Question"" — How Stonewall Jackson Ruled His Army by Fear and Faith"
+TheGeneralOath,15,FaFfUqv5Hv8,20260408,exact,223,3675,exact,1818,0,,General Sherman: The Man Who Burned the South to Save the Union?
+TheGeneralOath,16,920VGTkkQgY,20260419,exact,212,887,exact,1948,0,,When Robert E. Lee Split His Army — The Gamble That Shocked Chancellorsville
+TheGeneralOath,17,-kDJqzr8RVw,20260423,exact,208,38184,exact,2278,0,,“The General No One Could Forgive” — The Tragic Fall of James Longstreet
+TheGeneralOath,18,K8z4kLtdZvI,20260427,exact,204,6100,flat(rounded),2020,0,,"""He Wrote It Down"" — Why Grant's Deathbed Memoirs Are the Most Honest Account of War Ever Written"
+TheGeneralOath,19,OGjHvsrOBh0,20260429,exact,202,44739,exact,1599,0,,What Lincoln Wrote About Grant (That He Kept Secret)
+TheGeneralOath,20,VposV8PSxDE,20260504,exact,197,2731,exact,1869,0,,What Robert E. Lee Thought When He Lost The American Civil War?
+TheGeneralOath,21,Tq1rVgV8bcI,20260510,exact,191,5392,exact,2252,0,,The Closest Lee Ever Came To Surrendering Before Appomattox
+TheGeneralOath,22,PrWc5eG1Pl4,20260512,exact,189,1528,exact,1719,0,,Why Robert E. Lee Blamed THIS General for the South’s Downfall
+TheGeneralOath,23,BR2abwaE0mI,20260517,exact,184,9100,flat(rounded),2113,0,,“Grant’s Blind Spot” — The One General He Trusted Too Long
+TheGeneralOath,24,jmk2AZiv9VY,20260522,exact,179,96025,exact,1991,0,,“I TREMBLE FOR THE RESULT” — WHAT SHERMAN TOLD GRANT BEFORE VICKSBURG
+TheGeneralOath,25,4wf3r5Eo2JQ,20260525,exact,176,54000,flat(rounded),1912,0,,GRANT SAT DOWN IN THE DIRT AND CHEWED A CIGAR — WHILE PEMBERTON CAME IN FULL DRESS UNIFORM
+TheGeneralOath,26,f0WJlsY46Ok,20260528,exact,173,358785,exact,2323,0,,What Longstreet Understood About Grant That Lee Refused to Accept Until It Was Too Late
+TheGeneralOath,27,bCBut8xoCAw,20260626,exact,144,1455,exact,1947,0,,Ely Parker: Why Robert E. Lee called him One Real American in the Room
+TheGeneralOath,28,Sx7ZOU5W45U,20260722,exact,118,4568,exact,1701,0,,The General Who Won the Civil War. And Then Left America With No Return Ticket.
+TheGeneralOath,29,QX6_fF76_vc,20260729,exact,111,1922,exact,1992,0,,THE MEXICAN CRUCIBLE: When Grant and Lee Wore Blue Together
+TheGeneralOath,30,wG2Nvbq-Xv4,20260802,exact,107,2100,flat(rounded),1579,0,,Lee Won Every Battle But Grant Won The War Anyway [DOCUMENTARY]
+TheGeneralOath,31,DSY-sOF7q7k,20260804,exact,105,76584,exact,2624,0,,What Grant Didn't Understand About George H. Thomas
+TheGeneralOath,32,wqd6f0IBHLI,20260808,exact,101,754,exact,2014,0,,What Marching 40 MILES Towards DEATH Does To A Mind
+TheGeneralOath,33,xgLM20HBbqs,20260811,exact,98,6130,exact,2583,0,,The Two Best Friends Who Were Forced to Fight Each Other
+TheGeneralOath,34,SnCSeXh2v8Y,20260817,exact,92,6430,exact,2208,0,,Why Robert E. Lee Kept Attacking [DOCUMENTARY]
+TheGeneralOath,35,8rOlDttwRT8,20260821,exact,88,4820,exact,2965,0,,The Man the Navy Rejected While Grant Besiged Petersburg
+TheGeneralOath,36,i5edi8yGB88,20260825,exact,84,139410,exact,2119,0,,The MEMO That Could Have Changed The Civil War
+TheGeneralOath,37,66ivgAeMelI,20260828,exact,81,2000,flat(rounded),1929,0,,How the Louisiana Tigers Held a Battle Line With Rocks
+TheGeneralOath,38,hTL7QptVx_A,20260901,exact,77,8595,exact,2213,0,,"""THE PRICE OF PEACE"" - What Grant's Mercy Actually Cost Him"
+TheGeneralOath,39,s9qfP0S5YoM,20260904,exact,74,17518,exact,2073,0,,What Longstreet Knew Before Pickett's Charge (And Lee Ignored)
+TheGeneralOath,40,TJF-pfPPciw,20260918,exact,60,3217,exact,1953,0,,The Explosion at Grant's Headquarters Wasn't an Accident
+TheGeneralOath,41,boPUM1WK2Z8,20260922,exact,56,1695,exact,2200,0,,"They Survived Andersonville. Then the Army Put 2,000 of Them on One Boat."
+TheGeneralOath,42,_VV-fo5Z8Fs,20261002,exact,46,36022,exact,2081,0,,Pickett Executed 22 Men. He Was Never Tried.
+TheGeneralOath,43,N4_Heyz2FNI,20261012,exact,36,3585,exact,1950,0,,The Civil War Didn't End With Lee's Surrender
+TheGeneralOath,44,YfMvyE-aDpo,20261018,exact,30,4480,exact,1859,0,,The Order Ulysses S. Grant Never Explained
+TheGeneralOath,45,7Vgf1dzQk0s,20261024,exact,24,2229,exact,2084,0,,THREE ENSLAVED MEN ROWED TO A UNION FORT. THE GENERAL REFUSED TO GIVE THEM BACK.
+TheGeneralOath,46,3fagG1ku3_8,20261102,exact,15,1310,exact,2033,0,,Lee’s Lost Orders: The Paper That Almost Ended the Civil War.
+TheGeneralOath,47,VOIKAiwDqwM,20261110,exact,7,780,exact,1792,0,,Lincoln Was Sent 303 Death Sentences. He Picked 39.
+CivilWarDose,1,0OgpoHy52yE,20260307,exact,255,2951,exact,627,0,,The Five Words Grant Secretly Whispered to Lee at Appomattox
+CivilWarDose,2,tBeHoSB4CHs,20260309,exact,253,15890,exact,906,0,,“Do Not Let Him Escape” - What Grant Told His Calvary Before the Final Hunt for Lee
+CivilWarDose,3,cjffWo9Z13M,20260314,exact,248,105052,exact,915,0,,What Longstreet Knew Before Pickett's Charge(And No One Listened)
+CivilWarDose,4,dvjoUhmZCfI,20260320,exact,242,1275,exact,1205,0,,The 5 GREATEST American Civil War Generals — Ranked By Results
+CivilWarDose,5,pCgvUVTCaQc,20260324,exact,238,3275,exact,883,0,,What Ulysses S. Grant CRAZY Daily Life Was Really Like on the Front Lines
+CivilWarDose,6,hZ082JXBjhk,20260401,exact,230,1774,exact,991,0,,What EVERYONE Knew Before Pickett's Charge (But NO ONE had the courage to say so)
+CivilWarDose,7,CFcmdnKDPyI,20260403,exact,228,94960,exact,844,0,,Why Confederate Generals Feared Ulysses S. Grant More Than Any Union General
+CivilWarDose,8,HHHsDZmUHqA,20260405,exact,226,6502,exact,888,0,,"""He Is My Only Friend"" — Why Sherman Saved Grant from Quitting When Everyone Else Wanted Him Fired"
+CivilWarDose,9,pyrjslcTkO8,20260409,exact,222,3882,exact,692,0,,Sherman's TERRIFYING March to the Sea Was ERASED From History
+CivilWarDose,10,PqXhfhJTXUo,20260413,exact,218,8689,exact,860,0,,What Lee Knew Before the Overland Campaign (And Why He Couldn’t Stop Grant)
+CivilWarDose,11,yVOuib8Ss-4,20260415,exact,216,22432,exact,724,0,,“One Last Stand” — Why Lee Chose to Fight at Appomattox Instead of Surrender Immediately
+CivilWarDose,12,Hl--w0RQ23c,20260423,exact,208,22929,exact,1153,0,,What Longstreet Warned Before the Wilderness (And Lee Refused to Hear) 
+CivilWarDose,13,Q7yGDto1BOw,20260428,exact,203,129750,exact,1258,0,,How Joshua Chamberlain’s 386 Men Saved The Entire Union Army In 20 Minutes — Little Round Top 
+CivilWarDose,14,cChLi_fG8FM,20260430,exact,201,88762,exact,1439,0,,What James Longstreet Truly Thought of Robert E. Lee
+CivilWarDose,15,8qEKScb3syI,20260503,exact,198,69116,exact,1973,0,,The Battle Lee Should Have Won — And Why He Threw It Away
+CivilWarDose,16,UDrEIJ6mav0,20260510,exact,191,64000,flat(rounded),1653,0,,Lincoln Was Right About Grant But Nobody Listened
+CivilWarDose,17,lOZa86Q-_dI,20260517,exact,184,63538,exact,1696,0,,What George Pickett Truly Thought of Robert E. Lee
+CivilWarDose,18,QogKLXb1i2o,20260524,exact,177,1200,flat(rounded),1916,0,,How McClellan Built the Perfect Army… And Refused to Fight
+CivilWarDose,19,nDqa10m10Yg,20260525,exact,176,46633,exact,1010,0,,I Don’t Think You Understand Just HOW Outnumbered Grant Was At Shiloh
+CivilWarDose,20,CM6kCVODqu0,20260530,exact,171,16877,exact,1213,0,,Why Grant Fought Differently Than Every General Lee Had Ever Faced
+CivilWarDose,21,rGaODYtfkK8,20260601,exact,169,7181,exact,1309,0,,Something Was Very Wrong With Robert E. Lee
+CivilWarDose,22,0yy5EWbt8Pc,20260605,exact,165,27572,exact,957,0,,"How A Starving Union Army Crushed Bragg’s 40,000 In One Day — Battle Of Chattanooga"
+CivilWarDose,23,Hq0tGoPVFm0,20260613,exact,157,21280,exact,1237,0,,What Grant Understood About Richmond That McClellan Refused to Accept Until It Was Too Late
+CivilWarDose,24,MFBNZ0RgDkA,20260617,exact,153,1425,exact,1270,0,,"How Longstreet’s 11,000 Men Smashed Through A Gap And Routed 60,000 Union Troops - Chickamauga"
+CivilWarDose,25,5dwac06vasU,20260619,exact,151,14000,flat(rounded),1258,0,,"The Day the South Lost an Entire Army — Vicksburg, 1863"
+CivilWarDose,26,h1iKQhinOik,20260623,exact,147,25000,flat(rounded),1084,0,,The ONLY General Who Never Lost a Single Battle in the Civil War
+CivilWarDose,27,r0e8qhwICpw,20260625,exact,145,9300,flat(rounded),1112,0,,Hood’s DEVASTATING Assault at Franklin Was More Brutal Than You Think
+CivilWarDose,28,6RrG53kqD5Y,20260722,exact,118,1360,exact,1455,0,,The American Civil War Explained in 24 Minutes
+CivilWarDose,29,4bPqVPTDv8c,20260725,exact,115,4313,exact,1614,0,,Stupid Mistakes That Caused The Worst Civil War Disasters
+CivilWarDose,30,pKojgxToZpk,20260727,exact,113,31324,exact,1273,0,,Why Longstreet Couldn’t Believe Grant Kept Attacking After Heavy Losses
+CivilWarDose,31,F6M1aT8nocg,20260804,exact,105,6254,exact,1229,0,,What Robert E. Lee Privately Admitted About Union Artillery After Gettysburg
+CivilWarDose,32,Ntm3CJ5Z60g,20260812,exact,97,2430,exact,1353,0,,How Sherman’s Engineers Destroyed Railroads So Fast Hood Couldn’t Rebuild Them
+CivilWarDose,33,MgrmaNoEWLM,20260816,exact,93,12633,exact,1311,0,,Why Confederate Generals Couldn’t Believe Northern Factories Replaced Cannons Overnight
+CivilWarDose,34,DQvCziB5w44,20260818,exact,91,2198,exact,1259,0,,Why Union Commanders Couldn’t Explain How Lee’s Army Escaped After Gettysburg
+CivilWarDose,35,Ch99jYbCWJY,20260823,exact,86,8606,exact,1323,0,,Why Confederate Artillerymen Said Union Shells Were Impossible To Survive
+CivilWarDose,36,STbXHMS4Zo8,20260826,exact,83,1274,exact,1323,0,,How Union Engineers Rebuilt Railroads Faster Than Confederates Could Destroy Them
+CivilWarDose,37,0P73lQYSxTE,20260828,exact,81,1607,exact,1171,0,,Why Confederate Officers Said The Spencer Repeating Rifle Was Physically Impossible
+CivilWarDose,38,pd7mMDwr5qU,20260831,exact,78,1136,exact,1271,0,,How Grant Directed An Entire Campaign Against Lee With One Telegraph
+CivilWarDose,39,vZdGPqoYs7w,20260915,exact,63,6500,flat(rounded),1229,0,,Armstrong George Custer Is What Benteen Warned Us About
+CivilWarDose,40,fs3mk1PxcWg,20260919,exact,59,105599,exact,594,0,,What Happened to The Man Who Vanished After Gettysburg: Pickett
+CivilWarDose,41,bXI2gG15sNA,20260929,exact,49,192148,exact,6212,0,,"How Ulysses S. Grant Broke Lee's Army, and Why No Other Union General Could"
+CivilWarDose,42,it6qLgPJ8fk,20261102,exact,15,1024,exact,1328,0,,The Confederacy Almost Won the Civil War — Here’s Why
+CivilWarDose,43,2jHUdtdCDuQ,20261109,exact,8,3720,exact,1009,0,,Gettysburg Day 1: The Slaughter Before the Famous Battle
+CivilWarDose,44,RalUVRe5Ig0,20261114,exact,3,833,exact,1063,0,,GETTYSBURG DAY 2: The Intelligence Failure That Nearly Destroyed Lee’s Army
+ravelin.history,1,ahkRNWtcY3c,20260511,exact,190,31284,exact,1531,0,,The General Who Refused to Fight and Won
+ravelin.history,2,7Oq_FVzNyeM,20260512,exact,189,1388203,exact,1190,0,,The Genius Trap Every Military Strategist Knows
+ravelin.history,3,vuKZUponRjo,20260514,exact,187,361708,exact,1345,0,,Washington's Genius War Strategy That Humiliated Britain
+ravelin.history,4,LWztU1SKwss,20260515,exact,186,3806,exact,1143,0,,The Hidden Supply Chain Behind Medieval Archers
+ravelin.history,5,HBYvaxUZ6lA,20260517,exact,184,218263,exact,1381,0,,How Caesar Survived the Impossible Siege — Alesia (52 BCE)
+ravelin.history,6,kghHpsekMJU,20260520,exact,181,2634,exact,1498,0,,The Defense That Turned Water Into a Weapon — Leiden (1574)
+ravelin.history,7,qS78emI7dgA,20260522,exact,179,16489,exact,1531,0,,The Fortress Design That Made Castles Obsolete — The Trace Italienne
+ravelin.history,8,RirqxZp8BKE,20260524,exact,177,1966,exact,1490,0,,How Armies Destroyed Castles from Underground — The Hidden War of Mining and Countermining
+ravelin.history,9,Sdndsfasmuc,20260602,exact,168,4534,exact,1341,0,,How Hannibal Built the Perfect Ambush — Lake Trasimene
+ravelin.history,10,rHR7nhNu7A4,20260604,exact,166,1336,exact,1828,0,,How the Mongols Cracked the Strongest Cities — The Siege Methods Behind History’s Fastest Empire
+ravelin.history,11,11k88k5ZN8E,20260605,exact,165,365359,exact,1563,0,,"The Day Britain Lost an Entire Army — Saratoga, 1777"
+ravelin.history,12,8S7hYGnwMu0,20260607,exact,163,260359,exact,1835,0,,The Army of Farmers Who Destroyed Britain
+ravelin.history,13,lsKX5Bfph8o,20260610,exact,160,148425,exact,1779,0,,The General Who Lost Every Battle and Won the War
+ravelin.history,14,fiyAjGcPqLQ,20260614,exact,156,147306,exact,1876,0,,The Traitor Who Almost Destroyed America
+ravelin.history,15,SkLVFioPMHs,20260617,exact,153,56494,exact,1837,0,,The Bookseller Who Armed the American Revolution
+ravelin.history,16,NxdiSnxufCo,20260621,exact,149,170571,exact,1568,0,,The Victory That Destroyed the British Army
+ravelin.history,17,5gF1YUylZv4,20260625,exact,145,182795,exact,1575,0,,How a Fake General Built America's Deadliest Army
+ravelin.history,18,br85VWW75bE,20260629,exact,141,138582,exact,1734,0,,The Teenager Who Saved America's Revolution — Lafayette
+ravelin.history,19,HDRekW2XGEs,20260702,exact,138,32161,exact,1647,0,,Washington's Failed Plan That Humiliated the British Empire
+ravelin.history,20,fgwOYLky3j8,20260705,exact,135,18738,exact,1626,0,,The Forgotten Regiment Britain Couldn't Break
+ravelin.history,21,3xF8333E9P4,20260707,exact,133,69930,exact,1631,0,,The General Who Stormed a British Fortress with Empty Guns
+ravelin.history,22,YNl7_JKBEqM,20260709,exact,131,6746,exact,1641,0,,How One American General Terrified The British Army For 2 Years
+ravelin.history,23,89WHVFz5yjU,20260711,exact,129,44237,exact,1485,0,,"The Retired General Who Destroyed An Entire British Force — Bennington, 1777"
+ravelin.history,24,Q5j5I78zmAU,20260712,exact,128,32218,exact,1456,0,,The General Who Drove Britain Out Of America With 170 Men
+ravelin.history,25,TdEVzY-q2C8,20260715,exact,125,186786,exact,1610,0,,The Mistake That Cost Britain Half a Continent
+ravelin.history,26,OCcWNHo_-Hg,20260718,exact,122,64347,exact,1658,0,,How One American Ship Terrorized the British Coast
+ravelin.history,27,CAW9ut8b03c,20260720,exact,120,12981,exact,1532,0,,"How 83 Drunk Frontiersmen Stole a British Fortress — Ticonderoga, 1775"
+ravelin.history,28,n0iO6OeLFZA,20260721,exact,119,47000,flat(rounded),1572,0,,The Siege That Humiliated Britain Before the War Even Started
+ravelin.history,29,3P3t1SbtRQA,20260722,exact,118,28000,flat(rounded),1610,0,,"The Battle That Drove Britain Out of the North — Monmouth, 1778"
+ravelin.history,30,MAyGkkBSQ78,20260724,exact,116,52000,flat(rounded),1551,0,,The General Britain Whipped 499 Times — Then He Destroyed Their Army
+ravelin.history,31,EBwRKQpeAlA,20260726,exact,114,6900,flat(rounded),1624,0,,"How Britain Accidentally Forged Its Worst Enemy — Waxhaws, 1780"
+ravelin.history,32,z0cFuYBAn3g,20260729,exact,111,14000,flat(rounded),1605,0,,How Washington Trapped an Entire British Army
+ravelin.history,33,TqOLxc5TA8g,20260802,exact,107,15000,flat(rounded),1583,0,,The Escape That Saved the American Revolution
+ravelin.history,34,5RgKm0V5A4g,20260807,exact,102,52000,flat(rounded),1548,0,,"The Victory That Cost Britain the War — Charleston, 1780"
+ravelin.history,35,bxRF7jfe_XE,20260809,exact,100,44000,flat(rounded),1507,0,,"How Britain Lost Virginia in Half an Hour — Great Bridge, 1775"
+ravelin.history,36,qICqPciYqt0,20260810,exact,99,190000,flat(rounded),1454,0,,"How 400 Americans Annihilated Britain's Elite Hessians — Red Bank, 1777"
+ravelin.history,37,DecAexa1TiM,20260812,exact,97,88000,flat(rounded),1576,0,,How a Rotting Fort Destroyed Britain's Invasion of America
+ravelin.history,38,DZd449fs2ps,20260814,exact,95,34000,flat(rounded),1483,0,,The 18 Miles That Destroyed Britain's Army
+ravelin.history,39,jsDYtnjzQZ0,20260816,exact,93,6500,flat(rounded),1569,0,,The Culper Spy Ring: How a Farmer and a Tailor Beat the British Empire
+ravelin.history,40,6J8cVUtCg1A,20260818,exact,91,58000,flat(rounded),1516,0,,How America Built a Navy Out of a Forest to Fight Britain
+ravelin.history,41,IdIbgjBg3YE,20260820,exact,89,165000,flat(rounded),1540,0,,How One Regiment Held a Bridge Against a British Army
+ravelin.history,42,9ZTQMneXW_I,20260822,exact,87,37000,flat(rounded),1510,0,,The Retreat That Destroyed a British Army
+ravelin.history,43,DRWpB2HDPNI,20260824,exact,85,217000,flat(rounded),1508,0,,How America Built a Tower Overnight and Took a British Fort
+ravelin.history,44,cfVbXFWcL0M,20260827,exact,82,13000,flat(rounded),1505,0,,How 400 Men on a Mud Island Starved Britain's Army
+ravelin.history,45,icjDVRieUks,20260828,exact,81,1200000,flat(rounded),1537,0,,The Genius Trap That Destroyed A British Army
+ravelin.history,46,1fAiHmwPZgw,20260830,exact,79,11000,flat(rounded),1550,0,,How America's Worst Defeat Won It the War
+ravelin.history,47,oh4ZMEJV6lM,20260901,exact,77,58000,flat(rounded),1483,0,,"How 165 Farmers Humiliated Britain — Fort Griswold, 1781"
+ravelin.history,48,Es5W5dB5qtc,20260904,exact,74,14000,flat(rounded),1472,0,,"How 150 Americans Set a British Fort on Fire — Fort Motte, 1781"
+ravelin.history,49,rZFeDUaS3so,20260906,exact,72,20000,flat(rounded),1532,0,,How America Destroyed Britain's Last Army in the South
+ravelin.history,50,70X1v-OX6A0,20260909,exact,69,10000,flat(rounded),1527,0,,How 300 Men With Empty Muskets Took a British Fortress
+ravelin.history,51,Jv1fu1l5Gio,20260912,exact,66,66000,flat(rounded),1499,0,,The Genius Trap That Won Washington the War
+ravelin.history,52,eLY2fk6BF0k,20260918,exact,60,10788,exact,1502,0,,How a Starving Army Came Back to Humiliate Britain
+ravelin.history,53,cHqfdJI8uYI,20260921,exact,57,72000,flat(rounded),1558,0,,How Washington's Army Survived Britain's Perfect Trap
+ravelin.history,54,iqSBRIz6tS4,20260924,exact,54,154000,flat(rounded),1528,0,,The Polish Colonel Who Trapped a British Army at Saratoga
+ravelin.history,55,61PHCyvHxFg,20260927,exact,51,21000,flat(rounded),1476,0,,The Sea Trap That Humiliated the British Empire
+ravelin.history,56,c57pdXS4iks,20260930,exact,48,10000,flat(rounded),1474,0,,How America Built The First Submarine to Attack Britain
+ravelin.history,57,TpyOTW6yZn0,20261001,exact,47,7600,flat(rounded),1506,0,,How a Pair of Boots Cost Britain the War
+ravelin.history,58,TAIDAFlsM4Y,20261004,exact,44,120000,flat(rounded),1451,0,,The Genius Trap That Blocked Britain's Navy
+ravelin.history,59,mG1oOskJ5dg,20261008,exact,40,51000,flat(rounded),1473,0,,The Mud Wall That Humiliated the British Empire
+ravelin.history,60,YV3gvYtqRYs,20261010,exact,38,77000,flat(rounded),1480,0,,The Greased Bridge That Destroyed Britain's Highland Army
+ravelin.history,61,mBbV0bsqNkQ,20261012,exact,36,20000,flat(rounded),1551,0,,"How 1,000 Americans Survived 25 Hours of British Bombardment"
+ravelin.history,62,SknPn7XTCT8,20261016,exact,32,9800,flat(rounded),1570,0,,How Britain Bought an Army and Still Lost the War
+ravelin.history,63,TVtslMM9Huo,20261021,exact,27,75000,flat(rounded),1511,0,,How 200 Americans Lured Britain Into a Perfect Trap
+ravelin.history,64,-zZL6HqMYy8,20261022,exact,26,7627,exact,1512,0,,The Ambush That Taught Washington How to Beat Britain
+ravelin.history,65,mHZ-NQ-IN1o,20261024,exact,24,59000,flat(rounded),1479,0,,"The Naval Trick That Humiliated Britain — Plattsburgh, 1814"
+ravelin.history,66,QHkGeF_p-Z0,20261027,exact,21,18991,exact,1483,0,,The 28-Day Siege That Drove Britain Out of the South
+ravelin.history,67,-ein6i9m-E4,20261030,exact,18,9500,flat(rounded),1542,0,,How Britain's Best General Destroyed His Own Army
+ravelin.history,68,aOPX7nNKNR8,20261103,exact,14,18595,exact,1503,0,,The Fake Campfires That Fooled Britain's Army
+ravelin.history,69,6HGcN6m7Cb0,20261106,exact,11,5007,exact,1472,0,,The British Officer Who Refused to Shoot Washington
+ravelin.history,70,4x6B2Zl8gXY,20261109,exact,8,3864,exact,1469,0,,The Disguise That Destroyed Britain's Loyalist Army
+ravelin.history,71,w7dCeOLoUH8,20261112,exact,5,6250,exact,1495,0,,How One American Ship Outran Britain's Entire Squadron
+ravelin.history,72,XmO8628ULfo,20261115,exact,2,1896,exact,1472,0,,The Charge That Destroyed Britain's Army in Ten Minutes
+RedcoatsRebels,1,5REtz7sDS2k,20261028,approx,20,123000,flat(rounded),1768,0,,Lee Saw a Chance to Win the War at Gettysburg. Meade Saw It Coming
+RedcoatsRebels,2,T3vQkybGuGQ,20261028,approx,20,7100,flat(rounded),1673,0,,They Found Lee's Secret Orders: The DEADLY Truth About Antietam
+RedcoatsRebels,3,LUDMdeteW2E,20261028,approx,20,1100,flat(rounded),1644,0,,They Didn't Just Burn the White House: The HUMILIATING Truth About 1814
+RedcoatsRebels,4,NnTLQCCGjHo,20261104,approx,13,156000,flat(rounded),1293,0,,They Didn’t Just Kill Custer: The SICKENING Truth About Little Bighorn
+RedcoatsRebels,5,NkpJVkpIZQQ,20261111,approx,6,127,flat(rounded),1586,0,,They Didn’t Just Defeat Cortés: The BRUTAL Truth About La Noche Triste
+RedcoatsRebels,6,toimlMyVJaA,20261114,approx,3,432,flat(rounded),927,0,,We Were Soldiers Didn’t Show You the HORRIFYING Truth About Ia Drang
+RedcoatsRebels,7,OyZEpTuh4lg,20261117,approx,0,1300,flat(rounded),1287,0,,They didn't just kill Sitting Bull: the uncomfortable truth about Wounded Knee
+WarhawkYT,1,YMEHdUjbimg,20201118,approx,2190,146000,flat(rounded),1409,0,,Bull Run of the West: Battle of Wilson's Creek 1861
+WarhawkYT,2,2dAsuz5g7As,20201118,approx,2190,93000,flat(rounded),1489,0,,A Little Short of Boats: Battle of Balls Bluff 1862
+WarhawkYT,3,7e2Eg-l8PJQ,20201118,approx,2190,173000,flat(rounded),1329,0,,Grant's First Battle: Battle of Belmont 1861
+WarhawkYT,4,1cnWJ6Hcyw0,20201118,approx,2190,104000,flat(rounded),1005,0,,Offensive in the Cumberland: Battle of Mill Springs 1862
+WarhawkYT,5,Jpw3NfKzCQY,20201118,approx,2190,118000,flat(rounded),966,0,,Grant Invades Tennessee: Battle of Fort Henry 1862
+WarhawkYT,6,G6yZOjxnRsI,20201118,approx,2190,245000,flat(rounded),1701,0,,Unconditional Surrender Grant: Battle of Fort Donelson 1862
+WarhawkYT,7,5dL2nYgft48,20201118,approx,2190,143000,flat(rounded),1702,0,,Stronghold on the Mississippi: Battle of Island No. 10 1862
+WarhawkYT,8,YXse_nAvg6Q,20201118,approx,2190,56000,flat(rounded),1640,0,,"American Civil War: Battle of Pea Ridge - ""Battle for Missouri"" - Part 1"
+WarhawkYT,9,Ts1dUYvq1Fg,20201118,approx,2190,45000,flat(rounded),1614,0,,"ACW: Battle of Pea Ridge - ""Collapse of Arkansas"" - Part 2"
+WarhawkYT,10,NasxxK_La34,20201118,approx,2190,321000,flat(rounded),3226,0,,Upset in Arkansas: Battle of Pea Ridge 1862
+WarhawkYT,11,sM_2AgQzEQE,20201118,approx,2190,87000,flat(rounded),835,0,,Burnside in North Carolina: Battle of New Bern 1862
+WarhawkYT,12,1gp-03Cnkag,20211118,approx,1825,174000,flat(rounded),1424,0,,Gettysburg of the West: Battle of Glorieta Pass 1862
+WarhawkYT,13,d-o_st339FI,20211118,approx,1825,29000,flat(rounded),1268,0,,"ACW: Battle of Shiloh - ""Road to Shiloh"" - Part 1"
+WarhawkYT,14,hDAwD2mnrNA,20211118,approx,1825,41000,flat(rounded),2223,0,,"ACW: Battle of Shiloh - ""The Devil's Own Day"" - Part 2"
+WarhawkYT,15,5lFbFswDX0g,20211118,approx,1825,28000,flat(rounded),1197,0,,"ACW: Battle of Shiloh - ""Lick 'em Tomorrow"" - Part 3"
+WarhawkYT,16,cAsr6HTELeQ,20211118,approx,1825,498000,flat(rounded),4654,0,,The Butcher's Bill on the Tennessee: Battle of Shiloh 1862
+WarhawkYT,17,8S_6ZqF38ko,20211118,approx,1825,119000,flat(rounded),1341,0,,Crossroads of the Confederacy: Siege of Corinth 1862
+WarhawkYT,18,b__fE-JFugs,20211118,approx,1825,94000,flat(rounded),1523,0,,Capturing New Orleans: Battle of Forts Jackson and St Philip 1862
+WarhawkYT,19,rwNaqSfGVhw,20211118,approx,1825,77000,flat(rounded),1240,0,,"American Civil War: Battle of First Manassas - ""A House Divided"" - Part 1"
+WarhawkYT,20,Fb6CTrUalm0,20211118,approx,1825,38000,flat(rounded),1513,0,,"ACW: Battle of First Manassas - ""Fight on Matthews Hill"" - Part 2"
+WarhawkYT,21,oLvOfKLj-OM,20211118,approx,1825,37000,flat(rounded),2262,0,,"American Civil War: Battle of First Manassas - ""Fight for Henry Hill"" - Part 3"
+WarhawkYT,22,BnuTCvUpU2k,20211118,approx,1825,357000,flat(rounded),4982,0,,The Early Dawn of War: Battle of First Manassas 1861
+WarhawkYT,23,QRkMiOcN2Gw,20211118,approx,1825,78000,flat(rounded),1543,0,,Clash of Ironclads: Battle of Hampton Roads 1862
+WarhawkYT,24,XQchfRhLa9Y,20211118,approx,1825,39000,flat(rounded),1611,0,,"ACW: Siege of Yorktown - ""The Other Siege"" - Part 1/2"
+WarhawkYT,25,ch-5AI56kJ4,20211118,approx,1825,25000,flat(rounded),1819,0,,"ACW: Siege of Yorktown - ""The Trenches of Yorktown"" - Part 2/2"
+WarhawkYT,26,4nT7Wd3ySlY,20211118,approx,1825,102000,flat(rounded),3414,0,,Magruder's Spectacle: Siege of Yorktown 1862
+WarhawkYT,27,0jyUMLY06IE,20211118,approx,1825,65000,flat(rounded),1754,0,,"ACW: Battle of Williamsburg - ""Longstreet's Rearguard"" - Part 1/2"
+WarhawkYT,28,zaYkKso8VMY,20211118,approx,1825,40000,flat(rounded),1322,0,,"ACW: Battle of Williamsburg - ""Hancock the Superb"" - Part 2/2"
+WarhawkYT,29,FO58EDGdx4s,20211118,approx,1825,100000,flat(rounded),3049,0,,The Battle of Fort Magruder: Battle of Williamsburg 1862
+WarhawkYT,30,VGFjNHNXNbk,20211118,approx,1825,46000,flat(rounded),778,0,,Flanking Joe Johnston: Battle of Eltham's Landing 1862
+WarhawkYT,31,OFbMNluaf5Y,20211118,approx,1825,54000,flat(rounded),1499,0,,Stand on the James: Battle of Drewry's Bluff 1862
+WarhawkYT,32,vWnoZjppVpQ,20211118,approx,1825,53000,flat(rounded),1116,0,,"ACW: Battle of Hanover Court House - ""McClellan's High Tide"""
+WarhawkYT,33,Zw65kI_hr-Q,20211118,approx,1825,32000,flat(rounded),858,0,,"ACW: Battle of Seven Pines - ""Enemy at the Gate"" - Part 1/2"
+WarhawkYT,34,P9cwegb37k4,20221118,approx,1460,41000,flat(rounded),1691,0,,"ACW: Battle of Seven Pines - ""Johnston Strikes McClellan"" - Part 2/2"
+WarhawkYT,35,FRdJZmvg7zs,20221118,approx,1460,135000,flat(rounded),2529,0,,Battle of Fair Oaks: Battle of Seven Pines 1862
+WarhawkYT,36,tM25U2aOgu0,20221118,approx,1460,94000,flat(rounded),1474,0,,Jackson in the Valley: First Battle of Kernstown 1862
+WarhawkYT,37,mgDm1xJHxck,20221118,approx,1460,43000,flat(rounded),666,0,,Stonewall Strikes Back: Battle of McDowell 1862
+WarhawkYT,38,hE4QzEgqmvM,20221118,approx,1460,47000,flat(rounded),902,0,,The Road to Winchester: Battle of Front Royal 1862
+WarhawkYT,39,iHm_A6mCYdg,20221118,approx,1460,44000,flat(rounded),703,0,,Defeating General Banks: First Battle of Winchester 1862
+WarhawkYT,40,fkLOGtAbYAA,20221118,approx,1460,55000,flat(rounded),1133,0,,Stopping Frémont: Battle of Cross Keys 1862
+WarhawkYT,41,lMk0pVMkimE,20221118,approx,1460,39000,flat(rounded),1450,0,,Victory in the Valley: Battle of Port Republic 1862
+WarhawkYT,42,CIHeMJXdSiQ,20221118,approx,1460,314000,flat(rounded),6225,0,,Stonewall on the Loose: Jackson's Valley Campaign 1862
+WarhawkYT,43,vaGHtDxklBk,20221118,approx,1460,44000,flat(rounded),917,0,,Battle on the Mississippi: First Battle of Memphis 1862
+WarhawkYT,44,oa_kLR-qj7o,20221118,approx,1460,52000,flat(rounded),1507,0,,Yanks Invade South Carolina: Battle of Secessionville 1862
+WarhawkYT,45,0QiYX7Eh_ls,20221118,approx,1460,53000,flat(rounded),1341,0,,Riding 'Round McClellan: Stuart's Ride Around McClellan 1862
+WarhawkYT,46,s3_ZDyp9KJ0,20221118,approx,1460,54000,flat(rounded),1330,0,,McClellan's Final Push: Battle of Oak Grove 1862
+WarhawkYT,47,Ulzz9Av6a-8,20221118,approx,1460,87000,flat(rounded),1881,0,,Repulse at Mechanicsville: Battle of Beaver Dam Creek 1862
+WarhawkYT,48,wdumXEpWDFY,20221118,approx,1460,193000,flat(rounded),2055,0,,Lee’s First Victory: Battle of Gaine's Mill 1862
+WarhawkYT,49,9VKPG5Qmvls,20221118,approx,1460,48000,flat(rounded),1397,0,,The 'Calm' Day: Battle of Garnett's and Golding's Farm 1862
+WarhawkYT,50,IghejwKYekA,20221118,approx,1460,61000,flat(rounded),1659,0,,Sumner’s Rearguard: Battle of Savage's Station 1862
+WarhawkYT,51,Oot5Um1t3as,20221118,approx,1460,45000,flat(rounded),1591,0,,Battle for the Crossroads: Battles of Glendale & White Oak Swamp 1862
+WarhawkYT,52,p5hZVQVxpbM,20221118,approx,1460,42000,flat(rounded),1148,0,,ACW: Battle of Malvern Hill - “McClellan’s Final Stand” - Part 1/2
+WarhawkYT,53,4pP6i0zgb8c,20221118,approx,1460,34000,flat(rounded),1330,0,,"ACW: Battle of Malvern Hill - ""Magruder Attacks"" - Part 2/2"
+WarhawkYT,54,yJkHk3onMj0,20221118,approx,1460,81000,flat(rounded),2437,0,,Seven Days Finale: Battle of Malvern Hill 1862
+WarhawkYT,55,pYmzv6t1acs,20221118,approx,1460,48000,flat(rounded),1698,0,,"ACW: Vicksburg Naval Actions - ""Mississippi Gunrunner"""
+WarhawkYT,56,w7xbHkcUf_Q,20221118,approx,1460,65000,flat(rounded),1406,0,,Battle on the Bayou: Battle of Baton Rouge 1862
+WarhawkYT,57,mS7qQHGOsgo,20221118,approx,1460,33000,flat(rounded),928,0,,ACW: Advance to Gordonsville - “Pope’s Offensive in Northern Virginia”
+WarhawkYT,58,AQXgCFJhGOU,20221118,approx,1460,68000,flat(rounded),1455,0,,Suppressing Pope: Battle of Cedar Mountain 1862
+WarhawkYT,59,jGiQZ8ByGgo,20221118,approx,1460,32000,flat(rounded),1323,0,,"ACW: Manassas Station Operations - ""Raiding Pope's Pantry"""
+WarhawkYT,60,8aqIC2Gvnv4,20231118,approx,1095,37000,flat(rounded),1800,0,,ACW: Battle of Second Manassas - “Brawl at Brawner Farm” - Part 1/4
+WarhawkYT,61,oPL31-KkwaM,20231118,approx,1095,24000,flat(rounded),1144,0,,ACW: Battle of Second Manassas - “A Most Vehement Contest” - Part 2/4
+WarhawkYT,62,x9L_WCIuokE,20231118,approx,1095,19000,flat(rounded),1232,0,,"ACW: Battle of Second Manassas - ""A Blind Fight"" - Part 3/4"
+WarhawkYT,63,qtK6ofwzF2k,20231118,approx,1095,22000,flat(rounded),1830,0,,"American Civil War: Battle of Second Manassas - ""Fatal Blow at Manassas"" - Part 4/4"
+WarhawkYT,64,HaFLNJbFb-4,20231118,approx,1095,206000,flat(rounded),5892,0,,Return to Bull Run: Battle of Second Manassas 1862
+WarhawkYT,65,pZuzDa3pDnw,20231118,approx,1095,48000,flat(rounded),1404,0,,Battle in the Tempest: Battle of Chantilly 1862
+WarhawkYT,66,qERUXSl_reM,20231118,approx,1095,65000,flat(rounded),1403,0,,Hell Let Loose: Dakota War of 1862 - Part 1/2
+WarhawkYT,67,ujruXGtxcU8,20231118,approx,1095,40000,flat(rounded),1342,0,,Washington's First Command: Battle of Fort Necessity 1754
+WarhawkYT,68,NiXnbOO7Vt0,20231118,approx,1095,29000,flat(rounded),1141,0,,Deathblow of the Dakota: Dakota War of 1862 - Part 2/2
+WarhawkYT,69,6Bp0O9qywBA,20231118,approx,1095,73000,flat(rounded),1325,0,,The Ninety-Day Turnaround: Why Lee Invaded Maryland
+WarhawkYT,70,oDMxNZWDmrQ,20231118,approx,1095,76000,flat(rounded),1222,0,,The Most Propitious Time: The Confederate Invasion of Maryland
+WarhawkYT,71,-2J30mdJAR4,20231118,approx,1095,14000,flat(rounded),1175,0,,Seven Years War: Battle of Fort Beauséjour 1755
+WarhawkYT,72,iMvKy_ge1TA,20231118,approx,1095,70000,flat(rounded),1902,0,,Fire on the Mountain Side: Battle of South Mountain 1862
+WarhawkYT,73,M2OVnlrFKEU,20231118,approx,1095,135000,flat(rounded),1271,0,,America's Largest Surrender: Battle of Harper's Ferry 1862
+WarhawkYT,74,wdriAV6jA3s,20241118,approx,729,159000,flat(rounded),1630,0,,The Texas Revolution: Battle of Gonzales 1835
+WarhawkYT,75,LQjkOIPTjWQ,20241118,approx,729,65000,flat(rounded),2097,0,,The Texas Revolution: Siege of Béxar 1835
+WarhawkYT,76,gyC7wbuht44,20241118,approx,729,127000,flat(rounded),2138,0,,The Texas Revolution: Battle of the Alamo 1836
+WarhawkYT,77,CBFMe10AVoY,20241118,approx,729,141000,flat(rounded),1644,0,,The Texas Revolution: Goliad Massacre 1836
+WarhawkYT,78,LoMq3MyztvY,20241118,approx,729,208000,flat(rounded),2269,0,,The Texas Revolution: Battle of San Jacinto 1836
+WarhawkYT,79,XXyVIlxoXUM,20241118,approx,729,225000,flat(rounded),9268,0,,The Texas Revolution: 1835 - 1836 (All Parts)
+WarhawkYT,80,MkG8-ew1uWk,20241118,approx,729,216000,flat(rounded),2773,0,,America's Bloodiest Day: Battle of Antietam 1862
+WarhawkYT,81,qXbZcAUPeOo,20241118,approx,729,59000,flat(rounded),1925,0,,Confederates Invades Kentucky: Bragg’s Heartland Campaign
+WarhawkYT,82,UOlepj8wBRs,20251118,approx,364,77000,flat(rounded),2476,0,,Darkest Days of the War: Second Battle of Corinth 1862
+WarhawkYT,83,4q-n_PmfTKc,20251118,approx,364,76000,flat(rounded),2528,0,,The Struggle for Kentucky - Battle of Perryville 1862
+WarhawkYT,84,GwQjfHHbDMU,20251118,approx,364,65000,flat(rounded),1329,0,,Chaos in Arkansas - Hindman's Ozarks Campaign
+WarhawkYT,85,ZT8gU81sw4I,20251118,approx,364,54000,flat(rounded),1988,0,,War for the Ozarks - Battle of Prairie Grove 1862
+WarhawkYT,86,SsipmNepXvA,20251118,approx,364,66000,flat(rounded),6525,0,,Confederate Heartland Offensive 1862 (All Parts)
+WarhawkYT,87,MhgsuHzowP0,20251118,approx,364,27000,flat(rounded),1672,0,,Race to the Rappahannock: Burnside Takes Command
+WarhawkYT,88,DPJ5vHueRsk,20251118,approx,364,81000,flat(rounded),3614,0,,Burnside's Waterloo: Battle of Fredericksburg 1862
+WarhawkYT,89,3xfzkI_vrBw,20251118,approx,364,60000,flat(rounded),2220,0,,Sherman's Bloody Bayou: Battle of Chickasaw Bayou 1862
+WarhawkYT,90,vHgROYADToQ,20251118,approx,364,29000,flat(rounded),1550,0,,Stones River Campaign: Rosecrans Takes Command
+WarhawkYT,91,q-9htqBeOWA,20260118,approx,303,70000,flat(rounded),3374,0,,Massacre at Murfreesboro: Battle of Stones River 1862-63
+WarhawkYT,92,fldwZUw69IE,20260318,approx,244,125000,flat(rounded),2083,0,,Yanks Invade Texas: Battle of Galveston 1863
+WarhawkYT,93,LtytXMnGbr4,20260318,approx,244,31000,flat(rounded),2437,0,,Chancellorsville Campaign: The Rise of Hooker
+WarhawkYT,94,XYPWK-nI1FE,20260518,approx,183,68000,flat(rounded),4418,0,,Lee's Greatest Victory: Battle of Chancellorsville 1863
+WarhawkYT,95,ZZuEQHV9BlE,20260618,approx,152,19000,flat(rounded),2042,0,,Hellfire on the Mississippi: Running the Vicksburg Batteries 1863
+WarhawkYT,96,sjyXDZZ0678,20260718,approx,122,52000,flat(rounded),2698,0,,Hill of Death: Battle of Champion Hill 1863
+WarhawkYT,97,IhvzJr0xE-c,20260918,approx,60,42000,flat(rounded),3489,0,,The Turning Point: Siege of Vicksburg 1863
+WarhawkYT,98,ltx7u5vApWc,20260918,approx,60,159000,flat(rounded),9956,0,,Grant's Masterpiece: The Vicksburg Campaign 1862-63 (All Parts)
+WarhawkYT,99,TRf5Gk-4YeQ,20261018,approx,30,56000,flat(rounded),2971,0,,America's Longest Siege: Siege of Port Hudson 1863
+WarhawkYT,100,F_VXa6MPLIw,20261018,approx,30,150000,flat(rounded),823,0,,A Short Guide to American Civil War Battle Formations
+kingsandgenerals,1,xfQxNhtGJIs,20260514,exact,187,129000,flat(rounded),1365,0,,Gallipoli: Britain’s Failed Gamble - World War I
+kingsandgenerals,2,FWmvINEJuQY,20260517,exact,184,794000,flat(rounded),13885,0,,Japan’s First Major Land Defeat - The Battle That Saved Australia
+kingsandgenerals,3,n7JYdhtR5Hg,20260519,exact,182,209000,flat(rounded),1028,0,,Rise and Fall of Medieval Mercenaries - Middle Ages DOCUMENTARY
+kingsandgenerals,4,uDgsKyWHq40,20260521,exact,180,305000,flat(rounded),1326,0,,The Lost Pantheon of Yahweh - Polytheistic Roots of the Abrahamic Religions
+kingsandgenerals,5,UFWL8w6XmcI,20260524,exact,177,128000,flat(rounded),980,0,,Alfred's Reforms Save England - Battle of Buttington
+kingsandgenerals,6,kzX-L5cCpR8,20260526,exact,175,47000,flat(rounded),1162,0,,Hitler’s Plot to Kill the Big Three or Stalin's Big Lie?
+kingsandgenerals,7,NoMJjyJpq-w,20260528,exact,173,245000,flat(rounded),1318,0,,India’s Last Stand Against Britain - Tipu Sultan Enters the Fray
+kingsandgenerals,8,AqLi5KUpbHY,20260531,exact,170,193000,flat(rounded),1263,0,,The Troubles: Ireland’s and Britain's 30-Year War
+kingsandgenerals,9,wAFQ6uB4nI0,20260602,exact,168,796000,flat(rounded),1164,0,,Why Greece Fell to Rome - Legion vs Phalanx: Why Rome Won
+kingsandgenerals,10,cUsVWY0QfUE,20260618,approx,152,163000,flat(rounded),1368,0,,Charlemagne’s Grandsons Lost Everything - Birth of France
+kingsandgenerals,11,MZKcSWFYzBs,20260607,exact,163,539000,flat(rounded),23499,0,,"Second Punic War - Full Story, Every Battle - Animated Ancient History"
+kingsandgenerals,12,P5Bzc7x83EA,20260609,exact,161,120000,flat(rounded),1015,0,,How the Ottomans Became a Naval Power and Venice Lost the Hegemony
+kingsandgenerals,13,ixIOd6I6LyQ,20260611,exact,159,232000,flat(rounded),981,0,,Ukraine Is Breaking Russia’s Logistics - Putin’s Army Has a New Problem
+kingsandgenerals,14,LAn1uD-gmSk,20260614,exact,156,244000,flat(rounded),6432,0,,Island Hopping: The Strategy That Defeated Japan in the Pacific War
+kingsandgenerals,15,loQ1MGcnyWg,20260618,approx,152,128000,flat(rounded),1184,0,,Why Sparta Beat Athens - The Fall of the Empire - Peloponnesian War
+kingsandgenerals,16,bryT_EISWXA,20260618,exact,152,85000,flat(rounded),1241,0,,Britain’s Worst Defeat of WWI - Russia's Great Winter Victory
+kingsandgenerals,17,ygzdzAIYNvg,20260621,exact,149,127000,flat(rounded),1073,0,,Nader Shah Suffers His Worst Defeat - Guerilla War Works Again
+kingsandgenerals,18,PN8SNBW330E,20260623,exact,147,130000,flat(rounded),1177,0,,How Russia Prepared for Napoleon's Invasion - Fatal Trap
+kingsandgenerals,19,ntFv0-Y-5lQ,20260625,exact,145,126000,flat(rounded),1245,0,,Brother and Sister vs the Vikings - Edward and Æthelflæd Reconquer
+kingsandgenerals,20,TS_sxECDryA,20260628,exact,142,207000,flat(rounded),1175,0,,Why Sudan Split in Two - Sudan’s 22-Year Civil War Explained
+kingsandgenerals,21,0UdwB7b_pjA,20260630,exact,140,183000,flat(rounded),1313,0,,The Lombards - Germanics Conquered the Roman Heartland
+kingsandgenerals,22,3dMS46e2JMQ,20260702,exact,138,126000,flat(rounded),1118,0,,The Genius Design Behind Star Fort Defenses - Origins of the US Anthem
+kingsandgenerals,23,zsks48kTYB4,20260705,exact,135,138000,flat(rounded),1125,0,,How Young George Washington Started a World War - Seven Years War
+kingsandgenerals,24,UfouxLeSNyw,20260707,exact,133,110000,flat(rounded),1297,0,,The Arab Revolt - How the Ottomans Lost the Middle East
+kingsandgenerals,25,SVfajDS-bj0,20260709,exact,131,80000,flat(rounded),922,0,,The Truth About Real Pirates
+kingsandgenerals,26,KYCY_hK6-j8,20260712,exact,128,436000,flat(rounded),3815,0,,The Rise and Fall of the Pirates - Golden Age of Piracy EXPLAINED
+kingsandgenerals,27,-1382H4Y1MI,20260714,exact,126,222000,flat(rounded),1144,0,,"Moscow and Petersburg Burn, Crimea Isolated - Russian Invasion of Ukraine"
+kingsandgenerals,28,Ho43avSpulU,20260716,exact,124,78000,flat(rounded),1337,0,,Why Hollywood Always Gets Armour and Weapons Wrong
+kingsandgenerals,29,UWqrKGxYtps,20260818,approx,91,107000,flat(rounded),1465,0,,Marlborough's Masterpiece - The Battle That Humiliated the Sun King
+kingsandgenerals,30,M3Uc03pvpss,20260721,exact,119,280000,flat(rounded),2436,0,,Chaldiran: The Battle That Changed Islam - Selim I Against Ismail I
+kingsandgenerals,31,uNGOAur7OR0,20260723,exact,117,157000,flat(rounded),1191,0,,Why Roman Britain Kept Creating Emperors
+kingsandgenerals,32,OTWmv2qHP-s,20260726,exact,114,111000,flat(rounded),1072,0,,Gaza Disaster - Ottoman Empire History DOCUMENTARY
+kingsandgenerals,33,KGHoiU7JG-0,20260728,exact,112,188000,flat(rounded),1098,0,,Pontiac’s War: The Native Rebellion That Shook Britain
+kingsandgenerals,34,89WmcZfMrFQ,20260730,exact,110,55000,flat(rounded),1200,0,,Did Cyrus the Great Create Human Rights?
+kingsandgenerals,35,eoOrlxiOFEU,20260802,exact,107,121000,flat(rounded),16196,0,,How the Allies Broke Japan’s Front - Pacific War DOCUMENTARY
+kingsandgenerals,36,JsNTrOwilOk,20260804,exact,105,126000,flat(rounded),1303,0,,Elite Guard of the Ottoman Sultans - the Janissaries
+kingsandgenerals,37,osorjUU4ITs,20260806,exact,103,178000,flat(rounded),1060,0,,The Holy Roman Empire’s Hidden War Machine - Late Middle Ages DOCUMENTARY
+kingsandgenerals,38,IONLRDKLsvA,20260809,exact,100,279000,flat(rounded),1131,0,,Rome’s Richest Conquest Turned Into its Biggest Trap
+kingsandgenerals,39,jHoms3UV1qU,20260811,exact,98,272000,flat(rounded),1154,0,,Judea - Rome's Most Rebellious Province - The Empire Couldn’t Control Judea
+kingsandgenerals,40,MN5cQCmA82s,20260813,exact,96,240000,flat(rounded),1436,0,,Putin’s War Has Finally Reached Russia - Ukraine Is Cutting Crimea Off
+kingsandgenerals,41,JKmJhDPtG2E,20260816,exact,93,259000,flat(rounded),6411,0,,Nader Shah: The Napoleon of Iran - How One General Rebuilt the Empire
+kingsandgenerals,42,EI-qoH7eH28,20260818,exact,91,183000,flat(rounded),1176,0,,The Forgotten Battle That Created England - Brunanburh 937
+kingsandgenerals,43,Rk7QV9Gto-c,20260823,exact,86,95000,flat(rounded),1309,0,,Fall of Jerusalem - How Britain Broke the Ottoman Front
+kingsandgenerals,44,0RDCTHMXjgg,20260918,approx,60,316000,flat(rounded),1283,0,,Were the Sea Peoples Actually Greek? Did Greeks Destroy the Bronze Age?
+kingsandgenerals,45,t5hhOOMUjZQ,20260827,exact,82,408000,flat(rounded),1255,0,,Why the Pope Stayed Silent - Vatican Wouldn’t Condemn Hitler
+kingsandgenerals,46,MSaVL1JAoIc,20260830,exact,79,430000,flat(rounded),1178,0,,The Battle That Changed the Middle East - Ottomans Broke the Mamluks
+kingsandgenerals,47,8bHCPc-hZWQ,20260901,exact,77,911000,flat(rounded),3357,0,,Sudan’s Three Civil Wars Explained
+kingsandgenerals,48,weBFFygUxxc,20260903,exact,75,337000,flat(rounded),1400,0,,Who Was Really Roman? When Did Romans Stop Being Roman?
+kingsandgenerals,49,AKAJOrbYVS8,20260906,exact,72,547000,flat(rounded),20460,0,,Alexander the Great - All Battles and Conquests EXPLAINED in 6 Hours
+kingsandgenerals,50,N4zI_oNsdgg,20260908,exact,70,486000,flat(rounded),1328,0,,Ukraine Hits Putin Where It Hurts - CIA in Moscow
+kingsandgenerals,51,f7KjbemUhkw,20260910,exact,68,619000,flat(rounded),1203,0,,The Greatest Peasant Uprising in English History
+kingsandgenerals,52,5ij0tDYhIhg,20260913,exact,65,1000000,flat(rounded),17413,0,,War of the Spanish Succession: All Battles and Events - FULL DOCUMENTARY
+kingsandgenerals,53,4baAU3bs-AI,20260915,exact,63,225000,flat(rounded),1295,0,,Ancient Law That Created the Greek Mediterranean World - Zeus' Law
+kingsandgenerals,54,lkPZPu7t38c,20260917,exact,61,344000,flat(rounded),1409,0,,How a Company Hooked China on Opium - Tea Led to the Opium War
+kingsandgenerals,55,kN2yEEMeIFA,20260920,exact,58,213000,flat(rounded),1349,0,,"World War I: Fate of Armenians, Georgians, Azerbaijanis, Kurds and Assyrians"
+kingsandgenerals,56,e_CItReyz_0,20261018,approx,30,178000,flat(rounded),1213,0,,Why the Pope Crowned Charlemagne Emperor - How Papacy Survived
+kingsandgenerals,57,ZaGZYXgMtgA,20260924,exact,54,424000,flat(rounded),1104,0,,What Did the Ancient Greeks and Romans Know About Britain?
+kingsandgenerals,58,3Z5P_TZ0d4o,20260927,exact,51,459000,flat(rounded),3678,0,,Skanderbeg’s 25-Year War Against the Ottomans - All Battles EXPLAINED
+kingsandgenerals,59,iBRNkJfW7Qw,20260929,exact,49,594000,flat(rounded),1204,0,,"Why the British Empire Fell Apart - Won Two Wars, Then Lost Its Empire"
+kingsandgenerals,60,meSctH_a7HM,20261001,exact,47,272000,flat(rounded),1172,0,,Carthage vs Greece: The War Before Rome - Sicilian Wars DOCUMENTARY
+kingsandgenerals,61,Oh5OS8mfSuo,20261004,exact,44,275000,flat(rounded),17121,0,,Operation Cartwheel: Breaking Japan's Pacific Defenses
+kingsandgenerals,62,-DZIkSvLGJY,20261006,exact,42,676000,flat(rounded),997,0,,Operation Vivaldi: Ukraine’s Secret Counteroffensive
+kingsandgenerals,63,TY_5d4Uy97g,20261018,approx,30,467000,flat(rounded),1444,0,,Why Yugoslavia Collapsed: The Road to War
+kingsandgenerals,64,pn68y5rEDxk,20261011,exact,37,453000,flat(rounded),1157,0,,How William the Conqueror’s Sons Tore England Apart
+kingsandgenerals,65,AJb-Gzc1Hvg,20261013,exact,35,344000,flat(rounded),1302,0,,How Did Brahmanism Defeat Buddhism - Ancient India DOCUMENTARY
+kingsandgenerals,66,YcE50-LemSM,20261015,exact,33,426000,flat(rounded),1070,0,,Saddam Expected a Quick Victory Against Iran
+kingsandgenerals,67,efyxLW1Yeqo,20261018,exact,30,769000,flat(rounded),965,0,,Largest Land Battle Before WWI Caused the First Russian Revolution
+kingsandgenerals,68,kd-ZNqGaajg,20261020,exact,28,507000,flat(rounded),1360,0,,The Biggest Rebellion Against the British Empire in History
+kingsandgenerals,69,VKZRmSTqI0U,20261022,exact,26,231000,flat(rounded),1158,0,,The Forgotten Viking War That United England
+kingsandgenerals,70,hSMwc_RRqiQ,20261028,approx,20,407000,flat(rounded),9267,0,,How the Ottomans Became a Superpower and Tripled in Size
+kingsandgenerals,71,H2xV6FnbSkQ,20261027,exact,21,481000,flat(rounded),1193,0,,Why Spain Collapsed Into Civil War - Kings and Generals Modern
+kingsandgenerals,72,QE8KlIHvmk0,20261029,exact,19,108000,flat(rounded),1122,0,,Medieval Horror Stories
+kingsandgenerals,73,ytmwsMU1DMA,20261104,approx,13,346000,flat(rounded),1459,0,,Yugoslavia 1991: How the Wars Began
+kingsandgenerals,74,HARdgJjiR7s,20261104,approx,13,217000,flat(rounded),1204,0,,From India to Europe: The Romani Odyssey
+kingsandgenerals,75,U8qHNk0xPss,20261105,exact,12,329527,exact,1141,0,,Not only Janissaries - The Ottoman Empire’s Elite Army
+kingsandgenerals,76,9rv9wy5KrTA,20261108,exact,9,165313,exact,9178,0,,Carthage vs the Greeks: The Sicilian Wars - Before the Punic Wars
+kingsandgenerals,77,BK42hlcV-Gs,20261110,exact,7,257863,exact,1192,0,,Russian Invasion of Ukraine Before the Midterm Blue Tsunami
+kingsandgenerals,78,vhmHhCEwoSk,20261112,exact,5,236926,exact,979,0,,Why Iran Couldn't Defeat Saddam Hussein - Iran-Iraq War DOCUMENTARY
+kingsandgenerals,79,scZAjqFA7kk,20261115,exact,2,175660,exact,4816,0,,Hunyadi vs the Ottomans: The Full Story Behind the Legend
+kingsandgenerals,80,BTs75T-Ree8,20261117,approx,0,66000,flat(rounded),1229,0,,Spanish Civil War: How Franco Seized Power
+thearmchairhistorian,2,RjKHWYRYPkk,20241118,approx,729,646000,flat(rounded),938,0,,The Toyota War | Animated History
+thearmchairhistorian,3,Fh-Zt4l8UpU,20241118,approx,729,1100000,flat(rounded),951,0,,DEADLIEST Battle of WW1: The Somme | Animated History
+thearmchairhistorian,4,9teZe1jB7kA,20241118,approx,729,681000,flat(rounded),1118,0,,China's Rivalry Against the West: Century of Humiliation | Animated History
+thearmchairhistorian,5,Kl2FZd4Tm1Y,20241118,approx,729,430000,flat(rounded),1050,0,,War in Ukraine Summarized 2023 | Animated History
+thearmchairhistorian,6,gMmnAd6KIuI,20241118,approx,729,645000,flat(rounded),1035,0,,WW2 From the Swedish Perspective | Animated History
+thearmchairhistorian,7,lwSde9ynP8A,20241118,approx,729,589000,flat(rounded),1116,0,,Black Hawk Down: Battle of Mogadishu | Animated History
+thearmchairhistorian,8,_WChh5EsbwQ,20241118,approx,729,240000,flat(rounded),1176,0,,America's Main Battle Tank: M1 Abrams | Animated History
+thearmchairhistorian,9,kwS3tbwUXyQ,20241118,approx,729,959000,flat(rounded),1126,0,,Fall of Gaddafi: The 2011 Libyan Revolution | Animated History
+thearmchairhistorian,10,1dQBIqf8vEc,20241118,approx,729,431000,flat(rounded),773,0,,Stalin's Great Purge | Armchair History TV Original
+thearmchairhistorian,11,bFng3zuBYYw,20241118,approx,729,677000,flat(rounded),1292,0,,How Portugal's Empire Ended: The Colonial War | Animated History
+thearmchairhistorian,12,9NE_RSgbzOs,20241118,approx,729,730000,flat(rounded),991,0,,Mud & Blood: Battle of Passchendaele | Animated History
+thearmchairhistorian,13,Mwy_vBs3j5A,20241118,approx,729,1300000,flat(rounded),1067,0,,The Indo-Pakistani War 1965 | Animated History
+thearmchairhistorian,14,ffPJb_m-qGk,20241118,approx,729,846000,flat(rounded),1078,0,,Soviet-Afghan War
+thearmchairhistorian,15,uSJ1IwX4css,20241118,approx,729,529000,flat(rounded),1108,0,,Soviets Who Helped the Nazis
+thearmchairhistorian,16,vgcWSj1dyQc,20241118,approx,729,656000,flat(rounded),1315,0,,Gulf War
+thearmchairhistorian,17,eUj8mwTHnRI,20241118,approx,729,215000,flat(rounded),1585,0,,Pirates of the Modern World
+thearmchairhistorian,18,7ojVRX53Hmw,20241118,approx,729,499000,flat(rounded),1215,0,,Life Inside The Tiger Tank
+thearmchairhistorian,19,eUkQz7XApWE,20241118,approx,729,699000,flat(rounded),1674,0,,Civil War from the Confederate Perspective
+thearmchairhistorian,20,GLNYU523log,20241118,approx,729,291000,flat(rounded),1348,0,,What Happened to Italian Soldiers After WW2?
+thearmchairhistorian,21,vvAbtZltHE0,20241118,approx,729,1100000,flat(rounded),1522,0,,What if? Operation Unthinkable
+thearmchairhistorian,22,4BVXDdeauco,20241118,approx,729,808000,flat(rounded),1117,0,,How Did the Roman Empire Expand so Efficiently?
+thearmchairhistorian,23,1mY0VmqhVQE,20241118,approx,729,1000000,flat(rounded),1324,0,,Battle of Moscow
+thearmchairhistorian,24,5_WzyKL_4lI,20241118,approx,729,337000,flat(rounded),1154,0,,Who Really Won the War of 1812?
+thearmchairhistorian,25,65IsFySIQr0,20241118,approx,729,178000,flat(rounded),1351,0,,History of Nuclear Power: Weapons & Energy
+thearmchairhistorian,26,f1Gtlh-hCpc,20251118,approx,364,739000,flat(rounded),1194,0,,Gallipoli from the Ottoman Perspective
+thearmchairhistorian,27,W3WdwYTF74Q,20251118,approx,364,534000,flat(rounded),1102,0,,Industrialization of War
+thearmchairhistorian,28,CmiPSrCWdjg,20251118,approx,364,463000,flat(rounded),1057,0,,What Did Japan Do During WW1?
+thearmchairhistorian,29,tz9HhLSxt8c,20251118,approx,364,611000,flat(rounded),1088,0,,Germany's Last Ditch 1945 Units
+thearmchairhistorian,30,C7qElgBX90Q,20251118,approx,364,1100000,flat(rounded),6073,0,,America's Wars in the Middle East (Full Documentary)
+thearmchairhistorian,31,RYWhVCXT748,20251118,approx,364,240000,flat(rounded),695,0,,Why Did the Allies Invade Iran in WW2?
+thearmchairhistorian,32,D3aPNNkptCo,20251118,approx,364,550000,flat(rounded),1106,0,,What If? Hitler Assassinated (Operation Valkyrie)
+thearmchairhistorian,33,CIFW5TsrUx4,20251118,approx,364,654000,flat(rounded),1075,0,,What Happened to France After Napoleon?
+thearmchairhistorian,34,wYK7XJTqzQ0,20251118,approx,364,452000,flat(rounded),997,0,,Frozen Hell: Battle of Chosin Reservoir
+thearmchairhistorian,35,jZhUGjMLL2g,20251118,approx,364,554000,flat(rounded),851,0,,India's Modern Military
+thearmchairhistorian,36,v_pfqrwDpHQ,20251118,approx,364,248000,flat(rounded),714,0,,Was Cavalry Effective in WW1?
+thearmchairhistorian,37,t7g5qoDQe_A,20251118,approx,364,597000,flat(rounded),1150,0,,What if? Operation Downfall
+thearmchairhistorian,38,HwfXU8tCD38,20251118,approx,364,550000,flat(rounded),837,0,,First Major Battle of WW1: The Marne
+thearmchairhistorian,39,9R_BCfEipZs,20251118,approx,364,275000,flat(rounded),932,0,,Who did the Führer Trust? Hitler's Inner Circle
+thearmchairhistorian,40,JjxOptblsEU,20251118,approx,364,260000,flat(rounded),1058,0,,WW1's Forgotten Middle Eastern Theater
+thearmchairhistorian,41,S7sBUHMd5dQ,20251118,approx,364,279000,flat(rounded),1025,0,,Teutoburg Forest: Rome's Greatest Disaster
+thearmchairhistorian,42,kb6KQcdAHMA,20251118,approx,364,1200000,flat(rounded),1145,0,,What If? Operation Sea Lion
+thearmchairhistorian,43,PfcMtBMz6zM,20251118,approx,364,225000,flat(rounded),810,0,,Against the Odds: Rorke's Drift
+thearmchairhistorian,44,_If2mRho4z0,20251118,approx,364,609000,flat(rounded),968,0,,Gates of Berlin: Battle of Seelow Heights
+thearmchairhistorian,45,yNdZCcXsINA,20251118,approx,364,375000,flat(rounded),1033,0,,Soviet Penal Units
+thearmchairhistorian,46,LAJhCoLVEsM,20251118,approx,364,1700000,flat(rounded),2928,0,,lSlS: The Rise & Fall
+thearmchairhistorian,47,l6MkofL_Ug0,20251118,approx,364,626000,flat(rounded),1712,0,,Battle of Iwo Jima
+thearmchairhistorian,48,aCX6bKhw24c,20251118,approx,364,596000,flat(rounded),1654,0,,Second Boer War
+thearmchairhistorian,49,E4ycbV0Dxso,20251118,approx,364,663000,flat(rounded),1572,0,,Battle of Kursk
+thearmchairhistorian,50,7cUtMgGer9Y,20251118,approx,364,402000,flat(rounded),1694,0,,What If? Chinese Civil War
+thearmchairhistorian,51,azLtryxtKvc,20251118,approx,364,508000,flat(rounded),1652,0,,Operation Barbarossa from the Soviet Perspective
+thearmchairhistorian,52,Lr-huhPljMI,20251118,approx,364,346000,flat(rounded),3686,0,,What Happened to Axis Soldiers After WW2?
+thearmchairhistorian,53,50lhaqjPnQA,20251118,approx,364,480000,flat(rounded),1021,0,,Fall of the Ottomans: First Balkan War
+thearmchairhistorian,54,8SoOtvn2ANE,20251118,approx,364,355000,flat(rounded),1514,0,,Battle of Midway
+thearmchairhistorian,55,1k7QjPkUkG8,20251118,approx,364,669000,flat(rounded),2523,0,,Russian Civil War
+thearmchairhistorian,57,1o36oKrXLsc,20251118,approx,364,762000,flat(rounded),4218,0,,The Seven Years' War
+thearmchairhistorian,58,XglWLZfpYh8,20251118,approx,364,320000,flat(rounded),1141,0,,How to Save the Spanish Empire
+thearmchairhistorian,59,xbsfefeYLF8,20251118,approx,364,359000,flat(rounded),1094,0,,The End of the British Empire
+thearmchairhistorian,60,WqdgGMnW2HE,20251218,approx,334,274000,flat(rounded),1154,0,,What If? Napoleon
+thearmchairhistorian,61,MHluyfOJRSo,20251218,approx,334,610000,flat(rounded),1570,0,,WW2 From the Hungarian Perspective
+thearmchairhistorian,62,zIrOhD5YPMQ,20251218,approx,334,585000,flat(rounded),1207,0,,Spanish Civil War
+thearmchairhistorian,63,oWWeQEGHisc,20260118,approx,303,382000,flat(rounded),1175,0,,Rome: After the Fall
+thearmchairhistorian,64,kbrjnNq3aoQ,20260318,approx,244,678000,flat(rounded),611,0,,Retiring End of 2026 - My Last Year on YouTube
+thearmchairhistorian,65,RSjMtbHBJDQ,20260318,approx,244,300000,flat(rounded),954,0,,Peasants vs Knights: Battle of Hemmingstedt
+thearmchairhistorian,66,cqMouZcoWMA,20260318,approx,244,431000,flat(rounded),766,0,,The Rwandan Genocide
+thearmchairhistorian,67,p-gleC7WxNY,20260418,approx,213,173000,flat(rounded),1113,0,,Life in German-Occupied Poland (Uncensored Version)
+thearmchairhistorian,68,-sJhk8qscSs,20260418,approx,213,367000,flat(rounded),703,0,,India's Annexation of Portuguese Goa
+thearmchairhistorian,69,nc4tcJL6-W0,20260518,approx,183,112000,flat(rounded),823,0,,British Tank Development in WWI
+thearmchairhistorian,70,vcg1WMzr9xw,20260518,approx,183,234000,flat(rounded),803,0,,U.S. Island Hopping Strategy
+thearmchairhistorian,71,hqt96HLH6PM,20260618,approx,152,151000,flat(rounded),1108,0,,WW1's Forgotten Middle Eastern Theater (Uncensored Version)
+thearmchairhistorian,72,pp7l-JQQ2IY,20260618,approx,152,450000,flat(rounded),3297,0,,The Great Northern War
+thearmchairhistorian,73,b_aL0-R2z3Y,20260718,approx,122,197000,flat(rounded),1030,0,,Wars of South American Independence
+thearmchairhistorian,74,0s0N8BrxCok,20260718,approx,122,422000,flat(rounded),1176,0,,Germany's Last Ditch 1945 Units (Uncensored Version)
+thearmchairhistorian,75,J9H_BOe5suY,20260818,approx,91,789000,flat(rounded),3132,0,,Boer Wars (Full Documentary)
+thearmchairhistorian,76,CtPGZxaSnv4,20260918,approx,60,540000,flat(rounded),573,0,,Malmedy Massacre
+thearmchairhistorian,77,-B1emleGujk,20260918,approx,60,515000,flat(rounded),1192,0,,Soviets Who Helped the Nazis (Uncensored Version)
+thearmchairhistorian,78,o9sr8sviSIs,20261018,approx,30,416000,flat(rounded),694,0,,Mỹ Lai Massacre
+thearmchairhistorian,79,EtGLIBsJuec,20261104,approx,13,761000,flat(rounded),886,0,,Korea Under Japanese Rule
+thearmchairhistorian,80,kOCFX3-EgYs,20261115,approx,2,208000,flat(rounded),698,0,,Gaddafi's All Female Amazonian Guard
+epichistorytv,1,-7wwfGJXEZg,20221118,approx,1460,802000,flat(rounded),1441,0,,Belisarius: The Battle of Rome (3/6)
+epichistorytv,2,fRz_05kWYao,20221118,approx,1460,540000,flat(rounded),1258,0,,Belisarius: Conquest of Italy (4/6)
+epichistorytv,3,j-tICpleWLI,20221118,approx,1460,1700000,flat(rounded),822,0,,Days That Shook The World: Russia's Two Revolutions of 1917
+epichistorytv,4,crxIVBxfg9Q,20221118,approx,1460,512000,flat(rounded),1495,0,,Belisarius: War with the Sassanids (5/6)
+epichistorytv,5,lLvqZ1ufLwk,20221118,approx,1460,4900000,flat(rounded),1634,0,,"Suez Crisis (All Parts): Causes, Conflict and Global Repercussions"
+epichistorytv,6,4EP1FI8goDo,20221118,approx,1460,871000,flat(rounded),1734,0,,Belisarius: The Last Battle (6/6)
+epichistorytv,7,zETNKkECocg,20221118,approx,1460,464000,flat(rounded),1444,0,,Russia's First Revolutionaries: The Decembrists
+epichistorytv,8,1nC6eA8yy8g,20221118,approx,1460,372000,flat(rounded),1773,0,,Revolt Against the Tsar: The Decembrists
+epichistorytv,9,dPUVlVmwHc0,20221118,approx,1460,1900000,flat(rounded),1914,0,,Europe Ablaze: The 1848 Revolutions
+epichistorytv,10,61SYvhojGvg,20221118,approx,1460,4300000,flat(rounded),1586,0,,HMS Victory in 3D: Total Guide (1/2)
+epichistorytv,11,TrC3yMMDsc8,20221118,approx,1460,2500000,flat(rounded),1745,0,,3D Guide to Britain's Most Famous Warship (2/2)
+epichistorytv,12,G1p6rlDCxq0,20221118,approx,1460,24000000,flat(rounded),3890,0,,"World War 1 (All Parts, 4k)"
+epichistorytv,13,IpkBuI1FkpM,20221118,approx,1460,9600000,flat(rounded),8087,0,,The Last Great Roman General? Belisarius and the Wars of Justinian (All Parts)
+epichistorytv,14,qw0X1f6-iqM,20231118,approx,1095,2200000,flat(rounded),1585,0,,Lodi: The Legend is Born
+epichistorytv,15,yXx_jLEG4KU,20231118,approx,1095,1200000,flat(rounded),3113,0,,Russia's First Revolutionaries: The Decembrists (All Parts)
+epichistorytv,16,o4dLsPbBTbM,20231118,approx,1095,1300000,flat(rounded),1691,0,,Napoleon in Italy: Battle of Castiglione (2/5)
+epichistorytv,17,oRmDd6Pzcf0,20231118,approx,1095,886000,flat(rounded),1106,0,,Napoleon in Italy: Battle of Bassano (3/5)
+epichistorytv,18,7B5J7nQEp0Y,20231118,approx,1095,1200000,flat(rounded),1332,0,,Rise of the Abbasids: Islam's Mightiest Dynasty
+epichistorytv,19,hmyq99G5bfg,20231118,approx,1095,995000,flat(rounded),1674,0,,Napoleon in Italy: Battle of Arcole (4/5)
+epichistorytv,20,sgeTrVfx2rc,20231118,approx,1095,515000,flat(rounded),1648,0,,Baghdad Burns: Fall of the Abbasids
+epichistorytv,21,KakvuIRZGrY,20231118,approx,1095,1200000,flat(rounded),1883,0,,Napoleon in Italy: Battle of Rivoli (5/5)
+epichistorytv,22,KUERUnx2lms,20231118,approx,1095,8600000,flat(rounded),3184,0,,3D Guide to an 18th century Ship-of-the-Line
+epichistorytv,23,-P4BvMZONE4,20231118,approx,1095,2300000,flat(rounded),1387,0,,Napoleonic Wars: Battle of Eylau 1807
+epichistorytv,24,Bm1RhjcdJek,20241118,approx,729,3500000,flat(rounded),7305,0,,Napoleon's Italian Campaign (All Parts)
+epichistorytv,25,O8hhwSn1iaU,20241118,approx,729,3400000,flat(rounded),2841,0,,The Abbasids: Islam's Golden Age (All Parts)
+epichistorytv,26,9PcAjjaN77A,20241118,approx,729,528000,flat(rounded),1877,0,,'Supreme Ruler of Russia': Rise of Admiral Kolchak
+epichistorytv,27,Aqs7EIqa3PU,20241118,approx,729,1800000,flat(rounded),1707,0,,Napoleon in Egypt: Battle of the Pyramids 1798
+epichistorytv,28,cGwSgqJnpL4,20241118,approx,729,416000,flat(rounded),1928,0,,'Enemy Number 1': Admiral Kolchak and the Russian Civil War
+epichistorytv,29,YpkaidgOHHg,20241118,approx,729,1000000,flat(rounded),1817,0,,Napoleon in Egypt: Battle of Aboukir 1799
+epichistorytv,30,GyTb2lqiJe0,20241118,approx,729,2500000,flat(rounded),10871,0,,"Napoleon's Marshals, Ranked (All Parts)"
+epichistorytv,31,mY8Ou7r913Y,20241118,approx,729,1000000,flat(rounded),1866,0,,Napoleon Seizes Power - The Brumaire Coup
+epichistorytv,32,NMn3TNdLWv0,20241118,approx,729,381000,flat(rounded),1572,0,,America's First Defeat: Northwest Frontier 1790
+epichistorytv,33,qss9EirQ170,20241118,approx,729,321000,flat(rounded),1429,0,,Stumbling to Disaster: Battle of the Wabash
+epichistorytv,34,a1iuxFHTJyU,20241118,approx,729,1400000,flat(rounded),2346,0,,A Complete History of Venice
+epichistorytv,35,jLU9UnKbK3Q,20241118,approx,729,872000,flat(rounded),1637,0,,Napoleon Crosses the Alps: The Road to Marengo
+epichistorytv,36,03mCCwemhBA,20241118,approx,729,3100000,flat(rounded),1571,0,,Nelson's Battles in 3D: Cape St. Vincent
+epichistorytv,37,q4LJyzMdvvM,20241118,approx,729,1300000,flat(rounded),3396,0,,Kolchak & Russia's Civil War (All Parts)
+epichistorytv,38,gJmaRZC2ROE,20241118,approx,729,3700000,flat(rounded),1783,0,,Nelson's Battles in 3D: The Nile
+epichistorytv,39,NoMVoQAWs-s,20241118,approx,729,471000,flat(rounded),1937,0,,Letters from the Front: Real Voices of the Napoleonic Wars
+epichistorytv,40,8TnOyaEBGqA,20241118,approx,729,2100000,flat(rounded),1641,0,,Napoleon's Greatest Comeback: The Battle of Marengo
+epichistorytv,41,q_gDfMaqO3s,20241118,approx,729,1100000,flat(rounded),2565,0,,Battle of the Wabash 1791
+epichistorytv,42,xxSVuNCzJEQ,20251118,approx,364,1400000,flat(rounded),3272,0,,Napoleon in Egypt (All Parts)
+epichistorytv,43,E9VfahNloQA,20251118,approx,364,3000000,flat(rounded),18967,0,,Napoleonic Wars 1805 - 1814 (All Parts)
+epichistorytv,44,BARSrLpQ9VU,20251118,approx,364,1900000,flat(rounded),15568,0,,Napoleon's Rise to Power - Toulon to Marengo
+epichistorytv,45,FV-0f4NfQ60,20251118,approx,364,3400000,flat(rounded),2090,0,,Nelson's Battles in 3D: Trafalgar
+epichistorytv,47,bJnlFoLcigs,20251118,approx,364,988000,flat(rounded),1642,0,,American Revolution: Road to Rebellion
+epichistorytv,48,TtX5NvP0tF0,20251118,approx,364,1300000,flat(rounded),1854,0,,"How did China's 2,000-year empire collapse?"
+epichistorytv,49,BmdWe2YUVrc,20251118,approx,364,825000,flat(rounded),1674,0,,American Revolution: Battles of Lexington & Concord
+epichistorytv,50,wNCk6lWz4bQ,20251118,approx,364,651000,flat(rounded),1804,0,,Rise of China - The Generalissimo
+epichistorytv,51,uhEaMQUQtEo,20251118,approx,364,596000,flat(rounded),1530,0,,The Battle of Valmy
+epichistorytv,52,MNu4jXqHwIM,20251118,approx,364,399000,flat(rounded),1530,0,,Breaking Hitler's Unbreakable Code
+epichistorytv,53,AmW5YuJRO6M,20251118,approx,364,903000,flat(rounded),2015,0,,Rise of China - Battle for Survival
+epichistorytv,54,-aPLahX0OaY,20251118,approx,364,771000,flat(rounded),1764,0,,American Revolution: Battle of Bunker Hill & Siege of Boston
+epichistorytv,55,6xbvCJcjzFY,20251118,approx,364,2000000,flat(rounded),1552,0,,How did Christianity become the most popular religion on Earth?
+epichistorytv,56,p-G6dZw3k_U,20251118,approx,364,937000,flat(rounded),1679,0,,How did Islam become a global religion?
+epichistorytv,57,5xB6mqPt6i8,20251118,approx,364,706000,flat(rounded),1927,0,,Rise of China - 'The Great Leap Forward'
+epichistorytv,58,YAOD0Q_lBXY,20251118,approx,364,236000,flat(rounded),1596,0,,How Codebreakers Helped Beat the U-boats
+epichistorytv,59,QQePj1Fu3qE,20251118,approx,364,713000,flat(rounded),2118,0,,Rise of China - Cultural Revolution
+epichistorytv,60,fs3bDGwTAtY,20251118,approx,364,1600000,flat(rounded),1963,0,,Europe's Cataclysm: Thirty Years' War
+epichistorytv,61,1_yymGwl768,20251118,approx,364,431000,flat(rounded),1878,0,,American Revolution: Invasion of Canada and Declaration of Independence
+epichistorytv,63,nA2aQwOaZug,20251118,approx,364,1000000,flat(rounded),1862,0,,Road to WW2: 1931 - 34
+epichistorytv,64,J7b6X-fp62c,20251218,approx,334,648000,flat(rounded),2202,0,,Rise of China - The Economic Revolution that made China a Superpower
+epichistorytv,65,uMrhIXPvHh4,20251218,approx,334,745000,flat(rounded),1831,0,,Nelson's Battles in 3D: Copenhagen
+epichistorytv,66,3qJamroP1uY,20260118,approx,303,589000,flat(rounded),1715,0,,Road to WW2: 1935 - 36
+epichistorytv,67,o5nMDMTFNgY,20260218,approx,272,500000,flat(rounded),1720,0,,"American Revolution 1776: Battles of Brooklyn Heights, Trenton & Princeton"
+epichistorytv,68,E-bamak4I1I,20260218,approx,272,413000,flat(rounded),1089,0,,Road to WW2: 1937
+epichistorytv,69,TysBhkK525c,20260218,approx,272,2000000,flat(rounded),10762,0,,Rise of China - All Parts
+epichistorytv,70,UknLUH8xlqE,20260418,approx,213,694000,flat(rounded),1609,0,,Napoleon's Greatest Gamble: Return from Elba
+epichistorytv,71,CQaa4SfFFck,20260518,approx,183,1400000,flat(rounded),1256,0,,Battle of Verdun 3D
+epichistorytv,72,2gfPSs0WpKs,20260518,approx,183,559000,flat(rounded),1343,0,,Road to WW2: 1938
+epichistorytv,73,Wyip07JxiT4,20260618,approx,152,2000000,flat(rounded),7776,0,,American Revolution: Road to Independence
+epichistorytv,74,roNC2MfV7fU,20260718,approx,122,417000,flat(rounded),1609,0,,Battle of Verdun 3D: France Fights Back
+epichistorytv,75,-jF5w6ndVeY,20260818,approx,91,139000,flat(rounded),1625,0,,5 Ancient Mysteries That These Lost Works Would Solve
+epichistorytv,76,_C3-OK0Y2eQ,20260918,approx,60,624000,flat(rounded),2067,0,,The Hundred Days: Ligny and Quatre Bras
+epichistorytv,77,2Ih1ffiuwj0,20260918,approx,60,4400000,flat(rounded),534,0,,Alexander’s Speech That Crushed a Mutiny
+epichistorytv,78,va8q9-YwnHY,20260918,approx,60,1100000,flat(rounded),2170,0,,World War 2: 1939
+epichistorytv,79,gqIXlEhXmrg,20261018,approx,30,1200000,flat(rounded),2312,0,,England's Greatest Naval Disaster - Medway Raid 1667
+epichistorytv,80,dCt7NYI4_00,20261028,approx,20,924000,flat(rounded),2113,0,,The Hundred Days: Battle of Waterloo
+markfeltonproductions,1,optyGmYi47c,20260218,approx,272,213000,flat(rounded),528,0,,Heinrich Himmler's Secret Son
+markfeltonproductions,2,LNeINXJlWig,20260218,approx,272,481000,flat(rounded),1202,0,,Did Nazis Escape to Greenland in 1945?
+markfeltonproductions,3,QBq8IgGiAQE,20260218,approx,272,317000,flat(rounded),582,0,,When Were the Last WW2 Tanks Retired?
+markfeltonproductions,4,H9nExr0h_NI,20260218,approx,272,366000,flat(rounded),773,0,,Operation Blackleg - Secret Falklands War Underwater Mission
+markfeltonproductions,5,Axn_NxxoAuM,20260218,approx,272,443000,flat(rounded),933,0,,The 'Hitler Barrel' Mystery - Buried Secrets at the Berghof?
+markfeltonproductions,6,f2_sQhoqeB4,20260218,approx,272,347000,flat(rounded),788,0,,"Dick Winters, A Dead Nazi & Buried Treasure - A Band of Brothers Mystery Solved"
+markfeltonproductions,7,ToD_ZWsnoiQ,20260218,approx,272,129000,flat(rounded),616,0,,Fighting Mad! One Allied Soldier Stopped A German Panzergrenadier Regiment
+markfeltonproductions,8,nhbJS-2dZeM,20260218,approx,272,284000,flat(rounded),543,0,,The Ultimate 'Screen Nazi' - Where Eagles Dare Star's Forgotten Essex Grave
+markfeltonproductions,9,8gzNlgCxWYM,20260318,approx,244,314000,flat(rounded),583,0,,CIA Used Nazi MP40s in Vietnam - MACV-SOG Secret Weapons
+markfeltonproductions,10,SQ5L_qnWKJI,20260318,approx,244,651000,flat(rounded),1606,0,,The Death of Albert Speer - Mysterious Mistress Cover Up?
+markfeltonproductions,11,vWwWaw19kJw,20260318,approx,244,703000,flat(rounded),726,0,,No Sweat! Was Prince Andrew A Falklands War Hero?
+markfeltonproductions,15,AUpnw8SyDFo,20260318,approx,244,362000,flat(rounded),961,0,,Irradiate Israel! Egypt's Secret Nazi Missiles Plan
+markfeltonproductions,16,0tlCeNONTAM,20260318,approx,244,545000,flat(rounded),702,0,,Waffen-SS Soldier Became Israeli Army Officer
+markfeltonproductions,17,QCfYy5dCxpA,20260418,approx,213,122000,flat(rounded),571,0,,Marlene Dietrich's Guns - Hollywood Star's Wartime Trophies
+markfeltonproductions,18,Gru2EDJvj9Q,20260418,approx,213,2200000,flat(rounded),773,0,,The Shocking State of Britain's Navy 2026
+markfeltonproductions,19,UwKoSoXnX7w,20260418,approx,213,377000,flat(rounded),568,0,,US Invasion Hormuz Strait - Could It Be Another Okinawa 1945?
+markfeltonproductions,20,V-8_8JyhO4g,20260418,approx,213,966000,flat(rounded),1287,0,,Hitler's Last Peace Offer? The Secret Ribbentrop Mission   April 1945
+markfeltonproductions,21,awRIBq0kQPI,20260418,approx,213,482000,flat(rounded),690,0,,Apollo 11 Wasn't Alone on the Moon! 1969 Soviet Moon Landing
+markfeltonproductions,22,MAs76nqZcds,20260418,approx,213,426000,flat(rounded),1108,0,,Himmler's SS Traitor Hid in English Village
+markfeltonproductions,23,d4JMdkJk-Z4,20260418,approx,213,518000,flat(rounded),638,0,,Reich Chancellery Eagle Mystery
+markfeltonproductions,24,ul44c_Gag3Q,20260418,approx,213,412000,flat(rounded),764,0,,I Slept At Hermann Göring's Carinhall - The Last Intact Building
+markfeltonproductions,25,IS6TY7TmtHA,20260418,approx,213,284000,flat(rounded),787,0,,Shocking Iran-Israel JOINT Bombing Operation
+markfeltonproductions,26,S77eCjQRaoA,20260518,approx,183,352000,flat(rounded),1251,0,,German Holdouts in Greenland 1946? Forgotten Weather Station Mystery
+markfeltonproductions,27,WvCHKNZW9l0,20260518,approx,183,199000,flat(rounded),740,0,,Visiting Martin Bormann's WW2 Headquarters!
+markfeltonproductions,28,rNUK-jlyRIA,20260518,approx,183,779000,flat(rounded),710,0,,Tiergarten Tiger Tank - Last Stand at the Brandenburg Gate
+markfeltonproductions,29,LO5HZG8tVKU,20260518,approx,183,226000,flat(rounded),572,0,,The Last Photo of Hitler - 'Band of Brothers' Connection
+markfeltonproductions,30,k1UHO7xTFlg,20260518,approx,183,376000,flat(rounded),592,0,,Hitler's 'Baby Tiger' - The Rare Panzer Lynx
+markfeltonproductions,32,6yqMmIlT4gA,20260518,approx,183,574000,flat(rounded),551,0,,"12,000 Hidden German Helmets! Secret WWII Treasure Tunnel"
+markfeltonproductions,34,x_aUrtn55fA,20260518,approx,183,910000,flat(rounded),702,0,,Battalion of the Damned - Waffen-SS Unit Vietnam War
+markfeltonproductions,35,uJ9Iol7e7gA,20260618,approx,152,647000,flat(rounded),1241,0,,The Dönitz Testament - Was Hitler's Successor President of Germany Until 1980?
+markfeltonproductions,36,T7j14S1Logs,20260618,approx,152,214000,flat(rounded),1091,0,,Nazi Killer Missile Base - V-1 Rocket Nerve Gas Attack?
+markfeltonproductions,37,zBe_36XfZb4,20260618,approx,152,426000,flat(rounded),790,0,,British Navy Doom Loop - Can Terminal Decline Be Halted?
+markfeltonproductions,38,IfwpUGdzk0Q,20260618,approx,152,327000,flat(rounded),674,0,,The Slow Death of the Royal Navy - The Evolution of its Recruiting Ads
+markfeltonproductions,39,qgbBjqHX-tQ,20260618,approx,152,905000,flat(rounded),1046,0,,Some Panzers Didn't Surrender on VE Day! Last Operational Units May-June 1945
+markfeltonproductions,40,_I0XAfZre1w,20260618,approx,152,1600000,flat(rounded),1063,0,,The Most Expensive SS Object Ever Sold!
+markfeltonproductions,41,quna599w9sw,20260618,approx,152,376000,flat(rounded),1048,0,,American Panzers to British MP40s - How the Allies Reused Enemy Weapons
+markfeltonproductions,42,bdv5tS2KWZs,20260618,approx,152,781000,flat(rounded),1816,0,,The Secret SS Plot to Kill Hitler!
+markfeltonproductions,43,XmA1iYZUM-0,20260618,approx,152,545000,flat(rounded),549,0,,The Russians Are Coming! Putin's Warships Surround UK
+markfeltonproductions,44,cDWVsZZ3ufQ,20260718,approx,122,313000,flat(rounded),1814,0,,Himmler the Shadow Leader - The Reichsführer & The Dönitz Government
+markfeltonproductions,45,SYY5cWFyJ9Y,20260718,approx,122,113000,flat(rounded),790,0,,The Reichstag Red Flag - How the Soviets Faked An Iconic WW2 Image
+markfeltonproductions,46,y_85BHcc8Wc,20260718,approx,122,287000,flat(rounded),594,0,,How Much Did Rifles Cost in WW2?
+markfeltonproductions,47,FEKjj8YZHlg,20260718,approx,122,229000,flat(rounded),497,0,,How Much Were WW2 Soldiers Paid?
+markfeltonproductions,48,V5WKz_TZaXM,20260718,approx,122,477000,flat(rounded),784,0,,Göring's Hornets  - US Bombers Massacred over England
+markfeltonproductions,49,EuAoFFiS3gk,20260718,approx,122,566000,flat(rounded),731,0,,Dr. Goebbels' Billionaire Stepson
+markfeltonproductions,50,GFMdnlozMoc,20260718,approx,122,490000,flat(rounded),1287,0,,Scrapping British History - UK Has Preserved No Battleships or Aircraft Carriers
+markfeltonproductions,51,l9xC-EaM-vQ,20260718,approx,122,307000,flat(rounded),987,0,,Himmler's Alpine Cash Stash - Forgotten Escape Plan Evidence
+markfeltonproductions,52,KZO5WzLcr-M,20260818,approx,91,1400000,flat(rounded),1117,0,,Will Argentina Invade the Falklands? And Can Britain Stop Them?
+markfeltonproductions,53,VRbwKl0C7OA,20260818,approx,91,619000,flat(rounded),840,0,,Project MKUltra - Secret Nazi Origins
+markfeltonproductions,55,-L-QYT_esLM,20260818,approx,91,233000,flat(rounded),484,0,,Hitler's Tibetan Troops
+markfeltonproductions,56,Hv7az7nY-OQ,20260818,approx,91,174000,flat(rounded),670,0,,'Guided Missile' Attack UK! Fritz X Strikes Britain 1944
+markfeltonproductions,57,m1w2aycC7dU,20260818,approx,91,686000,flat(rounded),566,0,,Hitler's Lost Tomb - The Führer Mausoleum
+markfeltonproductions,58,2j62ElUAtAE,20260818,approx,91,1400000,flat(rounded),758,0,,Operation Paper Tiger - Britain's Useless Aircraft Carriers
+markfeltonproductions,59,7uqPxTVyyJg,20260918,approx,60,234000,flat(rounded),945,0,,How Much Did Submachine Guns Cost in WW2?
+markfeltonproductions,60,fGOK16WNVgM,20260918,approx,60,310000,flat(rounded),760,0,,Is Conscription Coming Back? UK Plans to Expand Army
+markfeltonproductions,61,I4-JzQh0GgM,20260918,approx,60,362000,flat(rounded),614,0,,Nazi Bridge Busters - Desperate Missions Against Oder Bridges 1945
+markfeltonproductions,63,DmDANTxpANc,20260918,approx,60,394000,flat(rounded),975,0,,US Raid to Kill Hermann Göring? Mystery Machine Gun Evidence
+markfeltonproductions,64,Th_h0m4mrC4,20260918,approx,60,1400000,flat(rounded),977,0,,Eagle's Nest Bring Backs - Ultimate GI Souvenirs From Hitler's Alpine Lair
+markfeltonproductions,65,EH-DrPev1Ak,20260918,approx,60,881000,flat(rounded),568,0,,Walt Disney's German Helmets Hustle
+markfeltonproductions,66,jwLuXVqlbzM,20261018,approx,30,763000,flat(rounded),2345,0,,The Men Who Murdered Himmler? New Documents Reveal MI5 Present When Himmler Died!
+markfeltonproductions,67,L5-FHxdroKE,20261018,approx,30,868000,flat(rounded),1602,0,,Who Murdered Joachim Peiper? THE COMPLETE SERIES
+markfeltonproductions,68,8A4WQ-uR7Ac,20261018,approx,30,210000,flat(rounded),497,0,,The Rudolf Hess Uniform Mystery - Missing Luftwaffe Disguise from 1941 Scotland Flight
+markfeltonproductions,69,PnAjISVVZu4,20261018,approx,30,350000,flat(rounded),734,0,,"Where Eagles Dare Relics - Surviving Uniforms, Weapons & Vehicles"
+markfeltonproductions,70,3pFec2OelBE,20261018,approx,30,319000,flat(rounded),692,0,,WW2's Biggest F.U. - The Tiny Polish Ship That Attacked Germany's Mighty Bismarck
+markfeltonproductions,71,B7KQyXolTDI,20261018,approx,30,345000,flat(rounded),746,0,,Weimar Germany's War Against France - The 1923 Ruhr Uprising
+markfeltonproductions,72,tPv-vQ552Ag,20261021,approx,27,275000,flat(rounded),568,0,,Hitler's Forgotten FIRST Jail Term
+markfeltonproductions,73,jS3ETRZV1HI,20261028,approx,20,564000,flat(rounded),1574,0,,Skorzeny's Last Battle - The Oder Bridgehead 1945 (OMNIBUS EDITION)
+markfeltonproductions,74,JOAt-PHuiis,20261028,approx,20,1800000,flat(rounded),886,0,,The Eagle's Nest Fire - Erasing History at Obersalzberg
+markfeltonproductions,75,mScSp_dHKE4,20261104,approx,13,597000,flat(rounded),712,0,,Inside the Burned Eagle's Nest! - First Film Footage
+markfeltonproductions,78,hsQWtPdCma4,20261109,approx,8,220000,flat(rounded),1549,0,,"Japan Got Away With Murder - How America Sabotaged Justice in the Far East, 1945-58"
+markfeltonproductions,79,XbuSSy6PwUo,20261113,approx,4,247000,flat(rounded),1183,0,,Berghof Bring Backs - Ultimate Souvenirs from Hitler's Alpine Lair
