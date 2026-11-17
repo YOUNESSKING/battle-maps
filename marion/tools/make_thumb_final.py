@@ -70,7 +70,7 @@ def gm(word, sub, key):
     for q in [(bx[0] + 44, bx[1] - 48), (bx[0] + 116, bx[1] - 16)]: g["box_unit"](d, q, (31, 79, 196), 66, 42)
     fxc = Image.open("youtube/thumb/fox_cut.png"); fxc = fxc.crop(fxc.getbbox()); fxc.thumbnail((200, 140)); im.alpha_composite(fxc, (int(bx[0] - 70), int(bx[1] + 12)))
     fl = ImageFont.truetype(SER, 26)
-    for txt, (x, y) in [("OX SWAMP", (ox[0] - 64, ox[1] + 50)), ("BENBOW'S FERRY", (bx[0] - 300, bx[1] + 40))]: d.text((x, y), txt, font=fl, fill=(244, 238, 221))
+    for txt, (x, y) in [("OX SWAMP", (ox[0] - 150, ox[1] + 30)), ("BENBOW'S FERRY", (bx[0] - 30, bx[1] - 110))]: d.text((x, y), txt, font=fl, fill=(244, 238, 221))
     f = ImageFont.truetype(OS, 150); d.text((W / 2 + 150 + 3, 10 + 5), word, font=f, fill=(0, 0, 0), anchor="ma"); d.text((W / 2 + 150, 10), word, font=f, fill=(244, 238, 221), anchor="ma")
     fs = ImageFont.truetype(SER, 38); s = "   ".join(" ".join(w) for w in sub.split()); d.text((W / 2 + 150, 190), s, font=fs, fill=(244, 238, 221), anchor="ma")
     b = tone(bust.crop((0, 0, bust.width, 600)), warm=True); hh = int(H * 1.0); ww = int(b.width * hh / b.height); b = b.resize((ww, hh), Image.LANCZOS)
