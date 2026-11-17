@@ -120,7 +120,7 @@ def gm(word, sub, key):
     b, (fx, fy) = cutout(140, flip=False, grade="warm"); x0, y0 = int(240 - fx), int(560 - fy)
     im = place(im, b, x0, y0, (156, 196, 255), "right")
     out = f"youtube/thumb/marion-V10-gm-{key}.jpg"; im.convert("RGB").save(out, quality=94); outs.append(out)
-grant("OUTFOXED", "OUTFOXED"); gm("GONE", "THEN TARLETON TURNED BACK", "GONE")
+grant("HE RAN.", "HE_RAN"); gm("HE RAN.", "THEN TARLETON TURNED BACK", "HE_RAN")
 s = Image.new("RGB", (2 * 640 + 60, 620), (24, 22, 20)); d = ImageDraw.Draw(s); F2 = ImageFont.truetype(OS, 22)
 for i, o in enumerate(outs):
     im = Image.open(o); x = 20 + i * 660
