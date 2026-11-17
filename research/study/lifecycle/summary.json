@@ -154,8 +154,8 @@
    "median_gap_d": 3.5,
    "max_gap_d": 8,
    "uploads_last30": 10,
-   "median_views": 2200,
-   "peak_views": 136000,
+   "median_views": 2297,
+   "peak_views": 136490,
    "peak_upload_no": 1,
    "first_hit_no": 1,
    "first_hit_date": "20261002",
@@ -1135,7 +1135,7 @@
    "title": "George Thomas's Top 3 Legendary Tactical Moves | The Man Who",
    "age_then": 28,
    "views_then": 121557,
-   "views_now": 136000,
+   "views_now": 136490,
    "growth_18d": 1.12
   },
   {
@@ -1143,8 +1143,8 @@
    "title": "O.P. Smith\u2019s Top 3 Legendary Tactical Moves | The Man Who Br",
    "age_then": 20,
    "views_then": 2200,
-   "views_now": 2200,
-   "growth_18d": 1.0
+   "views_now": 2297,
+   "growth_18d": 1.04
   },
   {
    "handle": "GeneralsOnTheMap",
@@ -2692,10 +2692,10 @@
    "uploads": 37,
    "channels": 5,
    "median": 18323,
-   "mean": 51704,
+   "mean": 51720,
    "share_ge_20k": 0.49,
    "share_ge_100k": 0.19,
-   "total": 1913059,
+   "total": 1913646,
    "median_age": 27
   },
   "202611": {
@@ -3141,7 +3141,7 @@
    "Thomas",
    1,
    "GeneralsOnTheMap",
-   136000,
+   136490,
    46
   ],
   [
@@ -3162,10 +3162,18 @@
   ],
   [
    "20261010",
+   "Manstein",
+   2,
+   "FootprintHistory",
+   119026,
+   38
+  ],
+  [
+   "20261010",
    "Smith",
    1,
    "GeneralsOnTheMap",
-   2200,
+   2297,
    38
   ],
   [
@@ -3219,7 +3227,7 @@
   [
    "20261016",
    "Manstein",
-   2,
+   3,
    "WarfareGeniuss",
    40000,
    32
@@ -3251,7 +3259,7 @@
   [
    "20261019",
    "Manstein",
-   3,
+   4,
    "CommandersAndTactics",
    538210,
    29
@@ -3407,6 +3415,14 @@
    "WarTableAtlas",
    312,
    19
+  ],
+  [
+   "20261030",
+   "Smith",
+   2,
+   "FootprintHistory",
+   3838,
+   18
   ],
   [
    "20261030",
@@ -3584,5 +3600,807 @@
    0,
    0
   ]
- ]
+ ],
+ "control_same_age": {
+  "oct": [
+   [
+    "TheGeneralOath",
+    "The Order Ulysses S. Grant Never Explained",
+    12,
+    4112
+   ],
+   [
+    "TheGeneralOath",
+    "THREE ENSLAVED MEN ROWED TO A UNION FORT. THE GENE",
+    6,
+    2040
+   ],
+   [
+    "ravelin.history",
+    "How Britain Bought an Army and Still Lost the War",
+    14,
+    8921
+   ],
+   [
+    "ravelin.history",
+    "How 200 Americans Lured Britain Into a Perfect Tra",
+    9,
+    51395
+   ],
+   [
+    "ravelin.history",
+    "The Ambush That Taught Washington How to Beat Brit",
+    8,
+    5957
+   ],
+   [
+    "ravelin.history",
+    "The Naval Trick That Humiliated Britain \u2014 Plattsbu",
+    6,
+    31188
+   ],
+   [
+    "ravelin.history",
+    "The 28-Day Siege That Drove Britain Out of the Sou",
+    3,
+    15037
+   ]
+  ],
+  "nov": [
+   [
+    "CloakedHistory1",
+    "What Really Happened to Confederate Leaders After ",
+    10,
+    174
+   ],
+   [
+    "TheGeneralOath",
+    "Lee\u2019s Lost Orders: The Paper That Almost Ended the",
+    15,
+    1310
+   ],
+   [
+    "TheGeneralOath",
+    "Lincoln Was Sent 303 Death Sentences. He Picked 39",
+    7,
+    780
+   ],
+   [
+    "CivilWarDose",
+    "The Confederacy Almost Won the Civil War \u2014 Here\u2019s ",
+    15,
+    1024
+   ],
+   [
+    "CivilWarDose",
+    "Gettysburg Day 1: The Slaughter Before the Famous ",
+    8,
+    3720
+   ],
+   [
+    "CivilWarDose",
+    "GETTYSBURG DAY 2: The Intelligence Failure That Ne",
+    3,
+    833
+   ],
+   [
+    "ravelin.history",
+    "The Fake Campfires That Fooled Britain's Army",
+    14,
+    18595
+   ],
+   [
+    "ravelin.history",
+    "The British Officer Who Refused to Shoot Washingto",
+    11,
+    5007
+   ],
+   [
+    "ravelin.history",
+    "The Disguise That Destroyed Britain's Loyalist Arm",
+    8,
+    3864
+   ],
+   [
+    "ravelin.history",
+    "How One American Ship Outran Britain's Entire Squa",
+    5,
+    6250
+   ]
+  ]
+ },
+ "same_age_summary": {
+  "format": {
+   "oct_n": 20,
+   "oct_median": 22080.5,
+   "nov_n": 18,
+   "nov_median": 455.5
+  },
+  "control": {
+   "oct_n": 7,
+   "oct_median": 8921,
+   "nov_n": 10,
+   "nov_median": 2515.0
+  }
+ },
+ "same_age_by_channel": {
+  "WarfareGeniuss": {
+   "oct": [
+    3,
+    20711
+   ]
+  },
+  "FootprintHistory": {
+   "oct": [
+    10,
+    22080.5
+   ],
+   "nov": [
+    5,
+    849
+   ]
+  },
+  "WarTableAtlas": {
+   "oct": [
+    3,
+    771
+   ],
+   "nov": [
+    8,
+    148.5
+   ]
+  },
+  "CommandersAndTactics": {
+   "oct": [
+    1,
+    395628
+   ]
+  },
+  "GeneralsOnTheMap": {
+   "oct": [
+    3,
+    38401
+   ],
+   "nov": [
+    4,
+    2267.5
+   ]
+  },
+  "tacticalgeniuss": {
+   "nov": [
+    1,
+    2819
+   ]
+  },
+  "TheGeneralOath": {
+   "oct": [
+    2,
+    3076.0
+   ],
+   "nov": [
+    2,
+    1045.0
+   ]
+  },
+  "ravelin.history": {
+   "oct": [
+    5,
+    15037
+   ],
+   "nov": [
+    4,
+    5628.5
+   ]
+  },
+  "CloakedHistory1": {
+   "nov": [
+    1,
+    174
+   ]
+  },
+  "CivilWarDose": {
+   "nov": [
+    3,
+    1024
+   ]
+  }
+ },
+ "supply_format_titles_by_month": {
+  "202607": 3,
+  "202608": 6,
+  "202609": 8,
+  "202611": 21,
+  "202610": 37,
+  "202506": 1,
+  "202509": 1,
+  "202511": 1,
+  "202512": 1,
+  "202602": 1,
+  "202604": 1,
+  "202606": 1
+ },
+ "repeat_stats": {
+  "202607": {
+   "first_n": 3,
+   "first_median": 114265,
+   "repeat_n": 0,
+   "repeat_median": null
+  },
+  "202608": {
+   "first_n": 4,
+   "first_median": 66597.0,
+   "repeat_n": 2,
+   "repeat_median": 395399.0
+  },
+  "202609": {
+   "first_n": 6,
+   "first_median": 144939.5,
+   "repeat_n": 2,
+   "repeat_median": 460821.0
+  },
+  "202610": {
+   "first_n": 20,
+   "first_median": 7972.5,
+   "repeat_n": 17,
+   "repeat_median": 20983
+  },
+  "Jul-Oct all": {
+   "first_n": 35,
+   "first_median": 23241,
+   "repeat_n": 24,
+   "repeat_median": 22491.5
+  }
+ },
+ "lifecycle": {
+  "tacticalgeniuss": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 66571.5,
+   "late_third_median": 48197.0,
+   "late_over_early": 0.724,
+   "peak_position": 0.62,
+   "mature_n": 14
+  },
+  "WarfareGeniuss": {
+   "class": "early boost -> decay",
+   "early_third_median": 136832,
+   "late_third_median": 25611,
+   "late_over_early": 0.187,
+   "peak_position": 0.12,
+   "mature_n": 9
+  },
+  "FootprintHistory": {
+   "class": "early boost -> decay",
+   "early_third_median": 46000,
+   "late_third_median": 3951,
+   "late_over_early": 0.086,
+   "peak_position": 0.27,
+   "mature_n": 16
+  },
+  "WarTableAtlas": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 3995,
+   "late_third_median": 1033,
+   "late_over_early": 0.259,
+   "peak_position": 0.22,
+   "mature_n": 10
+  },
+  "CommandersAndTactics": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 254604,
+   "late_third_median": 500799,
+   "late_over_early": 1.967,
+   "peak_position": 0.12,
+   "mature_n": 9
+  },
+  "CloakedHistory1": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 608,
+   "late_third_median": 393,
+   "late_over_early": 0.646,
+   "peak_position": 0.21,
+   "mature_n": 39
+  },
+  "GeneralsOnTheMap": {
+   "class": "early boost -> decay",
+   "early_third_median": 40534,
+   "late_third_median": 486,
+   "late_over_early": 0.012,
+   "peak_position": 0.0,
+   "mature_n": 9
+  },
+  "HandledLikeEggs": "too few uploads",
+  "IronBreachHistory": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 222873.5,
+   "late_third_median": 332814.5,
+   "late_over_early": 1.493,
+   "peak_position": 1.0,
+   "mature_n": 6
+  },
+  "TheGeneralOath": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 16196,
+   "late_third_median": 4480,
+   "late_over_early": 0.277,
+   "peak_position": 0.56,
+   "mature_n": 46
+  },
+  "CivilWarDose": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 12289.5,
+   "late_third_median": 5283.5,
+   "late_over_early": 0.43,
+   "peak_position": 0.98,
+   "mature_n": 42
+  },
+  "ravelin.history": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 63212.0,
+   "late_third_median": 20000.0,
+   "late_over_early": 0.316,
+   "peak_position": 0.01,
+   "mature_n": 68
+  },
+  "RedcoatsRebels": "too few uploads",
+  "WarhawkYT": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 78000,
+   "late_third_median": 70000,
+   "late_over_early": 0.897,
+   "peak_position": 0.15,
+   "mature_n": 100
+  },
+  "kingsandgenerals": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 150500.0,
+   "late_third_median": 439500.0,
+   "late_over_early": 2.92,
+   "peak_position": 0.72,
+   "mature_n": 72
+  },
+  "thearmchairhistorian": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 656000,
+   "late_third_median": 416000,
+   "late_over_early": 0.634,
+   "peak_position": 0.59,
+   "mature_n": 76
+  },
+  "epichistorytv": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 1250000.0,
+   "late_third_median": 729000.0,
+   "late_over_early": 0.583,
+   "peak_position": 0.14,
+   "mature_n": 78
+  },
+  "markfeltonproductions": {
+   "class": "no clear trend (within 4x)",
+   "early_third_median": 394500.0,
+   "late_third_median": 378000.0,
+   "late_over_early": 0.958,
+   "peak_position": 0.21,
+   "mature_n": 67
+  }
+ },
+ "momentum": {
+  "pairs": 257,
+  "spearman_prev_vs_next_rel_to_channel_median": 0.09,
+  "after_hit_next_x_median": [
+   [
+    "Tactical Genius",
+    "Patton's Top 3 Legendary Tactical Moves",
+    0.21,
+    8
+   ],
+   [
+    "Tactical Genius",
+    "Zhukov's Top 3 Legendary Tactical Moves ",
+    1.27,
+    8
+   ],
+   [
+    "Tactical Genius",
+    "Matthew Ridgway's Top 3 Legendary Tactic",
+    2.81,
+    4
+   ],
+   [
+    "Warfare Genius",
+    "Heinz Guderian's Top 3 Legendary Tactica",
+    3.42,
+    3
+   ],
+   [
+    "Warfare Genius",
+    "George S. Patton's Top 3 Legendary Tacti",
+    7.5,
+    6
+   ],
+   [
+    "Warfare Genius",
+    "Eisenhower's Top 3 Genius Moves | The Ge",
+    1.25,
+    3
+   ],
+   [
+    "Footprints in History",
+    "3 Moves That Saved Hitler's Army  Then H",
+    1.11,
+    1
+   ],
+   [
+    "Footprints in History",
+    "Chesty Puller's Top 3 Legendary Tactical",
+    6.21,
+    1
+   ],
+   [
+    "Footprints in History",
+    "William T. Sherman's Top 3 Legendary Tac",
+    0.44,
+    2
+   ],
+   [
+    "War Table Atlas",
+    "Walter Model's 3 Greatest Defensive Move",
+    1.54,
+    1
+   ],
+   [
+    "War Table Atlas",
+    "Richard O'Connor's 3 Greatest Moves | Th",
+    0.91,
+    3
+   ],
+   [
+    "Commanders and Tactics",
+    "Napoleon's Top 3 Tactical Masterpieces",
+    0.57,
+    43
+   ],
+   [
+    "Cloaked History",
+    "\u201cThe MASSACRE Of Confederate Troops At A",
+    0.57,
+    3
+   ],
+   [
+    "Cloaked History",
+    "William T. Sherman Is What Robert E. Lee",
+    1.71,
+    9
+   ],
+   [
+    "Cloaked History",
+    "Grant Warned Us About Lee \u2014 Nobody Belie",
+    28.28,
+    3
+   ],
+   [
+    "Cloaked History",
+    "Joshua Chamberlain & Little Round Top \u2014 ",
+    1.1,
+    3
+   ],
+   [
+    "Cloaked History",
+    "The Only Civil War General Who Never Los",
+    0.68,
+    3
+   ],
+   [
+    "Cloaked History",
+    "The Most Deceptive General in American C",
+    3.46,
+    3
+   ],
+   [
+    "Cloaked History",
+    "What If Lee Had Listened To Longstreet A",
+    7.07,
+    4
+   ],
+   [
+    "Cloaked History",
+    "What If Meade Had Pursued Lee After Gett",
+    1.31,
+    4
+   ],
+   [
+    "Generals On The Map (us)",
+    "George Thomas's Top 3 Legendary Tactical",
+    1.0,
+    8
+   ],
+   [
+    "Generals On The Map (us)",
+    "2 Para's Top 3 Legendary Tactical Moves ",
+    22.31,
+    4
+   ],
+   [
+    "Generals On The Map (us)",
+    "Daniel Morgan's Top 3 Legendary Tactical",
+    0.31,
+    5
+   ],
+   [
+    "The Generals' Oath",
+    "Why Confederate Generals Feared Ulysses ",
+    3.09,
+    7
+   ],
+   [
+    "The Generals' Oath",
+    "The Impossible Crossroads \u2014 Why 5 Confed",
+    14.07,
+    1
+   ],
+   [
+    "The Generals' Oath",
+    "\"Do Not Let Him Escape\" \u2014 What Grant Tol",
+    36.41,
+    1
+   ],
+   [
+    "The Generals' Oath",
+    "\"He Will Not Go Back\" \u2014 Why Robert E. Le",
+    0.54,
+    2
+   ],
+   [
+    "The Generals' Oath",
+    "\"The Man Who Wouldn't Break\" - The Psych",
+    52.21,
+    9
+   ],
+   [
+    "The Generals' Oath",
+    "\"The Empty Chair\" \u2014 What Grant Felt When",
+    2.96,
+    6
+   ],
+   [
+    "The Generals' Oath",
+    "\u201cThe General No One Could Forgive\u201d \u2014 The",
+    1.06,
+    4
+   ],
+   [
+    "The Generals' Oath",
+    "What Lincoln Wrote About Grant (That He ",
+    0.48,
+    5
+   ],
+   [
+    "The Generals' Oath",
+    "\u201cI TREMBLE FOR THE RESULT\u201d \u2014 WHAT SHERMA",
+    9.4,
+    3
+   ],
+   [
+    "The Generals' Oath",
+    "GRANT SAT DOWN IN THE DIRT AND CHEWED A ",
+    62.44,
+    3
+   ],
+   [
+    "The Generals' Oath",
+    "What Longstreet Understood About Grant T",
+    0.25,
+    29
+   ],
+   [
+    "The Generals' Oath",
+    "What Grant Didn't Understand About Georg",
+    0.13,
+    4
+   ],
+   [
+    "The Generals' Oath",
+    "The MEMO That Could Have Changed The Civ",
+    0.35,
+    3
+   ],
+   [
+    "The Generals' Oath",
+    "What Longstreet Knew Before Pickett's Ch",
+    0.56,
+    14
+   ],
+   [
+    "The Generals' Oath",
+    "Pickett Executed 22 Men. He Was Never Tr",
+    0.62,
+    10
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What Longstreet Knew Before Pickett's Ch",
+    0.14,
+    6
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "Why Confederate Generals Feared Ulysses ",
+    0.72,
+    2
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "How Joshua Chamberlain\u2019s 386 Men Saved T",
+    9.87,
+    2
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What James Longstreet Truly Thought of R",
+    7.68,
+    3
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "The Battle Lee Should Have Won \u2014 And Why",
+    7.12,
+    7
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "Lincoln Was Right About Grant But Nobody",
+    7.06,
+    7
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What George Pickett Truly Thought of Rob",
+    0.13,
+    7
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "I Don\u2019t Think You Understand Just HOW Ou",
+    1.88,
+    5
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "How A Starving Union Army Crushed Bragg\u2019",
+    2.37,
+    8
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "Why Longstreet Couldn\u2019t Believe Grant Ke",
+    0.7,
+    8
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "What Happened to The Man Who Vanished Af",
+    21.36,
+    10
+   ],
+   [
+    "Civil War Dose / Civil War Archive",
+    "How Ulysses S. Grant Broke Lee's Army, a",
+    0.11,
+    34
+   ],
+   [
+    "Ravelin",
+    "The Genius Trap Every Military Strategis",
+    8.93,
+    2
+   ],
+   [
+    "Ravelin",
+    "Washington's Genius War Strategy That Hu",
+    0.09,
+    1
+   ],
+   [
+    "Ravelin",
+    "How Caesar Survived the Impossible Siege",
+    0.07,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Day Britain Lost an Entire Army \u2014 Sa",
+    6.43,
+    2
+   ],
+   [
+    "Ravelin",
+    "The Army of Farmers Who Destroyed Britai",
+    3.66,
+    3
+   ],
+   [
+    "Ravelin",
+    "The General Who Lost Every Battle and Wo",
+    3.64,
+    4
+   ],
+   [
+    "Ravelin",
+    "The Traitor Who Almost Destroyed America",
+    1.39,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Victory That Destroyed the British A",
+    4.51,
+    4
+   ],
+   [
+    "Ravelin",
+    "How a Fake General Built America's Deadl",
+    3.42,
+    4
+   ],
+   [
+    "Ravelin",
+    "The Teenager Who Saved America's Revolut",
+    0.79,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Mistake That Cost Britain Half a Con",
+    1.59,
+    3
+   ],
+   [
+    "Ravelin",
+    "How 400 Americans Annihilated Britain's ",
+    2.17,
+    2
+   ],
+   [
+    "Ravelin",
+    "How One Regiment Held a Bridge Against a",
+    0.91,
+    2
+   ],
+   [
+    "Ravelin",
+    "How America Built a Tower Overnight and ",
+    0.32,
+    3
+   ],
+   [
+    "Ravelin",
+    "The Genius Trap That Destroyed A British",
+    0.27,
+    2
+   ],
+   [
+    "Ravelin",
+    "The Polish Colonel Who Trapped a British",
+    0.52,
+    3
+   ]
+  ],
+  "after_hit_by_gap": {
+   "0-4d": {
+    "n": 43,
+    "median_x": 1.54,
+    "n_above_median": 28
+   },
+   "5-9d": {
+    "n": 17,
+    "median_x": 1.71,
+    "n_above_median": 11
+   },
+   "10-999d": {
+    "n": 6,
+    "median_x": 0.565,
+    "n_above_median": 1
+   }
+  },
+  "after_hit_median": 1.35
+ }
 }

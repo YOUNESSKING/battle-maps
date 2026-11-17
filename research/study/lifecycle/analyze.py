@@ -51,6 +51,8 @@ vq = json.load(open(R + "raw/vidiq_videos_2026-11-17.json"))
 for i, v in vq.items():
     e = exact.setdefault(i, {}); e["date"] = v["publishedAt"][:10].replace("-", ""); e["views"] = int(v["viewCount"]); snaps[i]["2026-11-17"] = int(v["viewCount"])
 
+# exact views for 2 of our videos from vidIQ (research/study/scan_2026-11-17/vidiq_2026-11-17.md, read 2026-11-17)
+for i, v in {"fYSkvBHAo1k": 136490, "yQTgsoSe24o": 2297}.items(): exact.setdefault(i, {})["views"] = v
 def d8(s): return datetime.datetime.strptime(s, "%Y%m%d").date()
 def spark(vals):
     bars = "▁▂▃▄▅▆▇█"; vs = [math.log10(max(1, x)) for x in vals]
@@ -62,6 +64,8 @@ FMT_RE = re.compile(r"(top 3|3 greatest|3 legendary|3 biggest|3 deadliest|3 move
 def is_format(t): return bool(FMT_RE.search(t or ""))
 def general(t):
     t = (t or "").replace("’", "'")
+    if "Saved Hitler's Army" in t: return "Manstein"
+    if "1st Marine Division at Chosin" in t: return "Smith"
     m = re.search(r"([A-Z][\w.\- ]+?)(?:'s|s'|’s)? (?:Top 3|3 Greatest|3 Legendary|3 Biggest|3 Deadliest)", t)
     if not m:
         m = re.search(r"— ([A-Z][\w.\- ]+?)'s 3 Greatest", t)
@@ -157,11 +161,87 @@ for r in fm:
     g = r["general"]; seen[g] += 1; r["nth_on_general"] = seen[g]
     rep.append((r["date"], g, seen[g], r["handle"], r["views"], r["age"]))
 
+# ---------- same-age control: non-format niche channels (Oct 13-27 at the 30 Oct snapshot vs Oct 31-Nov 14 now) ----------
+CTRL = ["ravelin.history", "CivilWarDose", "TheGeneralOath", "CloakedHistory1"]
+ctrl = {"oct": [], "nov": []}
+for r in rows:
+    if r["handle"] not in CTRL or not r["date"] or r["date_src"] != "exact": continue
+    d = d8(r["date"]); s_ = snaps.get(r["id"], {})
+    if datetime.date(2026, 10, 13) <= d <= datetime.date(2026, 10, 27) and "2026-10-30" in s_:
+        ctrl["oct"].append((r["handle"], r["title"][:50], (datetime.date(2026, 10, 30) - d).days, s_["2026-10-30"]))
+    if datetime.date(2026, 10, 31) <= d <= datetime.date(2026, 11, 14):
+        ctrl["nov"].append((r["handle"], r["title"][:50], (TODAY - d).days, r["views"]))
+def med(L): return statistics.median([x[3] for x in L]) if L else None
+same_age_summary = {"format": {"oct_n": len(same_age["oct"]), "oct_median": med(same_age["oct"]), "nov_n": len(same_age["nov"]), "nov_median": med(same_age["nov"])},
+                    "control": {"oct_n": len(ctrl["oct"]), "oct_median": med(ctrl["oct"]), "nov_n": len(ctrl["nov"]), "nov_median": med(ctrl["nov"])}}
+by_ch = {}
+for grp, D in (("format", same_age), ("control", ctrl)):
+    for k in ("oct", "nov"):
+        for x in D[k]: by_ch.setdefault(x[0], {}).setdefault(k, []).append(x[3])
+same_age_by_channel = {h: {k: (len(v), statistics.median(v)) for k, v in d.items()} for h, d in by_ch.items()}
+
+# ---------- supply: format-titled uploads per month across ALL scanned channels ----------
+supply = Counter(r["date"][:6] for r in rows if r["format_title"] and r["date"] and r["date_src"] == "exact")
+
+# ---------- repeats: first time a general appears vs later times (format channels), mature videos (age >= 14 d) by month ----------
+rep_stats = {}
+for m in ("202607", "202608", "202609", "202610"):
+    a = [x[4] for x in rep if x[0][:6] == m and x[2] == 1 and x[5] >= 14]
+    b = [x[4] for x in rep if x[0][:6] == m and x[2] >= 2 and x[5] >= 14]
+    rep_stats[m] = {"first_n": len(a), "first_median": statistics.median(a) if a else None, "repeat_n": len(b), "repeat_median": statistics.median(b) if b else None}
+a = [x[4] for x in rep if x[0] >= "20260701" and x[2] == 1 and x[5] >= 14]; b = [x[4] for x in rep if x[0] >= "20260701" and x[2] >= 2 and x[5] >= 14]
+rep_stats["Jul-Oct all"] = {"first_n": len(a), "first_median": statistics.median(a), "repeat_n": len(b), "repeat_median": statistics.median(b)}
+
+# ---------- lifecycle classification (channels with >= 5 mature long uploads) ----------
+life = {}
+for h in FORMAT + BIG:
+    L = [r for r in summ[h] if (r["age"] or 0) >= 14]
+    if len(L) < 5: life[h] = "too few uploads"; continue
+    v = [r["views"] for r in L]; third = max(1, len(v) // 3)
+    early, late = statistics.median(v[:third]), statistics.median(v[-third:])
+    pk = v.index(max(v)) / (len(v) - 1)
+    ratio = late / early if early else None
+    if ratio is not None and ratio < 0.25 and pk <= 0.4: cls = "early boost -> decay"
+    elif ratio is not None and ratio < 0.25: cls = "decay (peak not early)"
+    elif ratio is not None and ratio > 4: cls = "late growth"
+    else: cls = "no clear trend (within 4x)"
+    life[h] = {"class": cls, "early_third_median": early, "late_third_median": late, "late_over_early": round(ratio, 3) if ratio else None,
+               "peak_position": round(pk, 2), "mature_n": len(v)}
+
+# ---------- momentum: does an upload's views follow the previous upload's? (small channels, mature uploads, Spearman on ranks) ----------
+def spearman(x, y):
+    def rk(a):
+        o = sorted(range(len(a)), key=lambda i: a[i]); r = [0] * len(a)
+        for k, i in enumerate(o): r[i] = k
+        return r
+    rx, ry = rk(x), rk(y); n = len(x); mx = (n - 1) / 2
+    num = sum((a - mx) * (b - mx) for a, b in zip(rx, ry)); den = sum((a - mx) ** 2 for a in rx)
+    return round(num / den, 2) if den else None
+SMALL = [h for h in FORMAT if len(summ[h]) >= 6]
+pairs = []
+for h in SMALL:
+    L = [r for r in summ[h] if (r["age"] or 0) >= 14]
+    med_h = statistics.median([r["views"] for r in L]) if L else 1
+    for a, b in zip(L, L[1:]): pairs.append((math.log10(max(1, a["views"]) / med_h), math.log10(max(1, b["views"]) / med_h)))
+momentum = {"pairs": len(pairs), "spearman_prev_vs_next_rel_to_channel_median": spearman([p[0] for p in pairs], [p[1] for p in pairs])}
+# after a hit (>= 3x channel median): next upload's x-median
+after_hit = []
+for h in SMALL:
+    L = [r for r in summ[h] if (r["age"] or 0) >= 14]
+    if len(L) < 4: continue
+    m_ = statistics.median([r["views"] for r in L])
+    for a, b in zip(L, L[1:]):
+        if a["views"] >= 3 * m_: after_hit.append((NAMES[h], a["title"][:40], round(b["views"] / m_, 2), (d8(b["date"]) - d8(a["date"])).days))
+momentum["after_hit_next_x_median"] = after_hit
+momentum["after_hit_by_gap"] = {f"{lo}-{hi}d": {"n": len(g), "median_x": statistics.median(g), "n_above_median": sum(x >= 1 for x in g)}
+    for lo, hi in ((0, 4), (5, 9), (10, 999)) for g in [[x[2] for x in after_hit if lo <= x[3] <= hi]] if g}
+momentum["after_hit_median"] = statistics.median([x[2] for x in after_hit]) if after_hit else None
+
 # ---------- write ----------
 with open(R + "channels.csv", "w", newline="") as f:
     w = csv.writer(f); w.writerow(["handle", "upload_no", "id", "date", "date_src", "age_d", "views", "views_src", "dur_s", "format_title", "general", "title"])
     for r in rows: w.writerow([r["handle"], r["n"], r["id"], r["date"], r["date_src"], r.get("age"), r["views"], r["views_src"], r["dur_s"], int(r["format_title"]), r["general"] or "", r["title"]])
-json.dump({"metrics": M, "tail_18d": tail, "cohorts": cohorts, "same_age": same_age, "repeats": rep}, open(R + "summary.json", "w"), indent=1, default=str)
+json.dump({"metrics": M, "tail_18d": tail, "cohorts": cohorts, "same_age": same_age, "repeats": rep, "control_same_age": ctrl, "same_age_summary": same_age_summary, "same_age_by_channel": same_age_by_channel, "supply_format_titles_by_month": supply, "repeat_stats": rep_stats, "lifecycle": life, "momentum": momentum}, open(R + "summary.json", "w"), indent=1, default=str)
 
 md = ["# Per-channel upload tables (generated by analyze.py, 2026-11-17)", "",
       "Views = exact (yt-dlp scan or vidIQ) where available, else yt-dlp flat listing (rounded to 2 significant figures). Dates = exact publish date, else yt-dlp approximate date (from 'x days/weeks/months/years ago'; coarse for old videos). Long-form only (>= 8 min). Sparkline: one bar per upload, oldest left, log scale 100 to ~3M views, same scale for every channel. F = title in the Top-3/3-Greatest-Moves format.", ""]
@@ -184,3 +264,8 @@ print("\nSAME AGE oct"); [print(x) for x in same_age["oct"]]
 print("SAME AGE nov"); [print(x) for x in same_age["nov"]]
 print("\nTAIL"); [print(x) for x in sorted(tail, key=lambda x: x["age_then"])]
 print("\nREPEATS"); [print(x) for x in rep]
+print("\nSAME AGE SUMMARY", same_age_summary); print("BY CH", same_age_by_channel)
+print("CTRL oct"); [print(x) for x in ctrl["oct"]]; print("CTRL nov"); [print(x) for x in ctrl["nov"]]
+print("SUPPLY", sorted(supply.items())); print("REP", rep_stats)
+print("LIFE"); [print(NAMES[h], v) for h, v in life.items()]
+print("MOMENTUM", momentum)

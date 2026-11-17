@@ -168,12 +168,12 @@ Long videos 40, first 2026-03-26, last 2026-11-07 (10 d ago), median gap 4 d, ma
 ## Generals On The Map (us) (@GeneralsOnTheMap)
 `▆▃▅▅▂▃▂▁▂▃▄▂▁`
 
-Long videos 13, first 2026-10-02, last 2026-11-17 (0 d ago), median gap 3.5 d, max gap 8 d, uploads in last 30 d 10, median views 2,200, peak 136,000 (upload #1), first >= 50k: upload #1 (20261002, 0 d after start), hits >= 50k: 2, subs 922.
+Long videos 13, first 2026-10-02, last 2026-11-17 (0 d ago), median gap 3.5 d, max gap 8 d, uploads in last 30 d 10, median views 2,297, peak 136,490 (upload #1), first >= 50k: upload #1 (20261002, 0 d after start), hits >= 50k: 2, subs 922.
 
 | # | Date | Views | Len | F | Title |
 |---|---|---|---|---|---|
-| 1 | 20261002 | 136,000~ | 18 | F | George Thomas's Top 3 Legendary Tactical Moves / The Man Who Saved the Union Army |
-| 2 | 20261010 | 2,200~ | 16 | F | O.P. Smith’s Top 3 Legendary Tactical Moves / The Man Who Broke Out of Chosin |
+| 1 | 20261002 | 136,490 | 18 | F | George Thomas's Top 3 Legendary Tactical Moves / The Man Who Saved the Union Army |
+| 2 | 20261010 | 2,297 | 16 | F | O.P. Smith’s Top 3 Legendary Tactical Moves / The Man Who Broke Out of Chosin |
 | 3 | 20261017 | 40,534 | 17 | F | 2 Para's Top 3 Legendary Tactical Moves / The Bluff That Won the Falklands' First Land Bat |
 | 4 | 20261021 | 51,254 | 17 | F | Daniel Morgan's Top 3 Legendary Tactical Moves / The Man Who Destroyed Britain's Elite in  |
 | 5 | 20261026 | 722 | 14 | F | James Gavin's Top 3 Legendary Tactical Moves / The Man Who Took the Nijmegen Bridge |
