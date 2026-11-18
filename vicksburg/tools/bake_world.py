@@ -687,7 +687,7 @@ def bake(rname, G, P, creeks, preview=True):
         if len(A) < 4: continue
         if named:   # drop parts within 1.6 units of a named river
             dmin = np.min([np.min(np.hypot(A[:, None, 0] - q[None, ::3, 0], A[:, None, 1] - q[None, ::3, 1]), 1) for q in named], 0)
-            A = A[dmin > (3.5 if close else 6)]
+            A = A[dmin > (6.0 if close else 6)]
             if len(A) < 4: continue
         creek_lines.append(A)
     # ribbon creeks (close): the biggest painted creeks become water ribbons

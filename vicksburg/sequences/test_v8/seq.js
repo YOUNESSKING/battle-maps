@@ -84,7 +84,7 @@ const fx = {
 };
 
 window.SEQ = {
-  name: "test_v8", debug: true, D: T.D, T, seed: 1863, date: "1863-05-17",
+  name: "test_v8", D: T.D, T, seed: 1863, date: "1863-05-17",
   regions: [WIDE, BB],
   features: { [BB]: { bridges: [{ burn: EV.bridgeFire + 3.2 }], pontoons: EV.bridgesNew.map((at) => ({ at })) } },
   keys: [

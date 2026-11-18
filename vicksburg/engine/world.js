@@ -235,10 +235,12 @@ export function initWorld(canvas, opts = {}) {
       rifle: [[-0.08, -0.01], [-0.03, 0.035], [0.01, 0.038], [0.1, -0.01]] };
     R.works = F.works.map((wk) => {
       const L0 = wk.pts || wk, L = wk.closed ? L0.concat([L0[0]]) : L0, prof = wk.profile || PROF[wk.kind] || PROF[{ redan: "fort", lunette: "fort", redoubt: "fort", earthwork: "breastwork", pits: "rifle" }[wk.kind]] || PROF.breastwork, pos = [], idx = [], np = prof.length;
+      // height_m (bundle): scale the profile so its crest stands that many metres above the ground (in exaggerated world units)
+      const hk = wk.height_m ? (wk.height_m * ys) / Math.max(...prof.map((q) => q[1])) : 1, prof2 = prof.map(([o, hy]) => [o, hy > 0 ? hy * hk : hy]);
       for (let i = 0; i < L.length; i++) {
         const a = L[Math.max(0, i - 1)], b = L[Math.min(L.length - 1, i + 1)]; let tx = b[0] - a[0], tz = b[1] - a[1]; const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l;
         const nx = tz, nz = -tx;   // front normal (right-hand side of the walking direction; the clip's line runs north -> south and faces east)
-        for (const [o, hy] of prof) { const x = L[i][0] + nx * o, z = L[i][1] + nz * o; pos.push(x, heightAt(R, x, z) + hy, z); }
+        for (const [o, hy] of prof2) { const x = L[i][0] + nx * o, z = L[i][1] + nz * o; pos.push(x, heightAt(R, x, z) + hy, z); }
         if (i) { const k = (i - 1) * np; for (let j = 0; j < np - 1; j++) idx.push(k + j, k + j + np, k + j + 1, k + j + 1, k + j + np, k + j + np + 1); }
       }
       let pg = new THREE.BufferGeometry(); pg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); pg.setIndex(idx); pg = pg.toNonIndexed(); pg.computeVertexNormals();
