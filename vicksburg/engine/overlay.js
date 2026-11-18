@@ -459,11 +459,14 @@
     // ---------------------------------------------------------------- 7. full-width cream letter card (header, Cinzel title, italic sub, typed quote)
     O.letter = (tIn, tOut, o) => {
       const el = mk(Lcards, "letter", `<div class="bg"></div><div class="tx"><div class="hd"><i></i><span>${esc(o.header || "")}</span><i></i></div><div class="tt">${esc(o.title)}</div>
-        <div class="sb">${esc(o.sub || "")}</div>${ornSVG("#8A826C")}<div class="q"></div></div>`, o.top != null ? `top:${o.top}px` : "");
+        <div class="sb">${esc(o.sub || "")}</div>${ornSVG("#8A826C")}<div class="q"></div></div>`, (o.top != null ? `top:${o.top}px;` : "") + (o.height != null ? `height:${o.height}px;` : ""));
+      if (o.qSize) { const q0 = el.querySelector(".q"); q0.style.fontSize = o.qSize + "px"; q0.style.lineHeight = "1.25"; q0.style.minHeight = Math.round(o.qSize * 1.25) + "px"; }   // S11 round 2: readable body (\n in the quote = line break)
       gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, tIn);
       tl.fromTo(el.querySelector(".bg"), { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out", immediateRender: false }, tIn);
       const parts = el.querySelectorAll(".hd,.tt,.sb,.orn"); gsap.set(parts, { autoAlpha: 0 });
       parts.forEach((p, i) => tl.fromTo(p, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.5, immediateRender: false }, tIn + 0.3 + i * 0.15));
+      if (o.height) el.style.height = o.height + "px";   // qSize: bigger quote line that wraps (two lines), height: card height (px, 1920 space)
+      if (o.qSize) Object.assign(el.querySelector(".q").style, { fontSize: o.qSize + "px", whiteSpace: "normal", lineHeight: "1.3", padding: "0 150px" });
       const Q = el.querySelector(".q"), txt = o.marks === false ? String(o.quote || "") : `“${o.quote || ""}”`, cps = o.cps || 28, ty = { n: 0 };
       tl.fromTo(ty, { n: 0 }, { n: txt.length, duration: txt.length / cps, ease: "none", immediateRender: false, onUpdate: () => { const s = txt.slice(0, Math.round(ty.n)); if (Q.textContent !== s) Q.textContent = s; } }, tIn + 1.0);
       if (tOut != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, tOut); return O; };

@@ -30,10 +30,11 @@ const T = { D: 142.19, dug: 1.06, trenches: 2.28, zig: 2.70, forts: 4.60, closer
   five: 100.23, port: 101.28, surrendered: 101.76, whole: 103.47, union9: 104.45, confederacy: 105.73, cut: 106.64, two: 107.06,
   sameDays: 108.34, far: 109.38, east: 109.84, lee: 110.90, beaten: 111.92, gettysburg: 112.49, father: 113.92, lincoln: 115.42, sea: 118.88,
   for: 119.97, grantE: 120.14, road: 121.54, command: 123.82, army: 124.66, appomattox: 127.32, began: 128.92, dark: 129.73, seven: 130.99,
-  gunboatsE: 131.38, burning: 132.52, cotton: 133.64, idea: 134.86, madness: 137.45 };
+  gunboatsE: 131.38, burning: 132.52, cotton: 133.64, idea: 134.86, madness: 137.45, hands: 104.78 };
 const S = "siege", W = "wide";
 const CUT_B = 21.65, CUT_E = 78.5, CUT_F = 99.8;   // paragraph changes (21.38/21.93, 78.22/78.77, 99.53/100.08)
 const FADE = T.D - 2.5;
+const CB0 = 129.55, CB1 = 135.0;   // round 2: the callback (16 April: the gunboats run past the city at night) on "It began on a dark river"
 const sstep = VX.sstep, lerp = VX.lerp, hsh = VX.hsh, clamp = VX.clamp;
 const P = (n) => VX.place(n), TW = (n) => VX.town(n, W);
 const PI = Math.PI;
@@ -66,6 +67,7 @@ RED_LINE.forEach(([x, y, f], k) => { const ox = Math.cos(f) * 1.5, oy = Math.sin
   units.push({ region: S, side: "r", type: "art", n: 3, face: f, t0: T_STACK + d, cap: T_STACK - 1 + d, keys: [[0, x + ox * 1.25, y + oy * 1.25]], bw: 0.32, bd: 0.22, wob: 0 }); });
 RED_GUNS.forEach(([x, y, f], k) => units.push({ region: S, side: "r", type: "art", n: 2, face: f, cap: T_STACK + 0.4 + k * 0.2, keys: [[0, x, y]] }));
 BLUE_LINE.forEach(([x, y, f]) => units.push({ region: S, side: "u", type: "inf", n: 3, face: f, keys: [[0, x, y]] }));
+for (const u of units) if (u.region === S && (u.t1 == null || u.t1 > CUT_F)) u.t1 = CUT_F + 0.3;   // nothing of the siege in the April callback
 BLUE_GUNS.forEach(([x, y]) => units.push({ region: S, side: "u", type: "art", n: 2, face: PI, keys: [[0, x, y]] }));
 // the sap heads: a blue box at the head of each approach, digging forward with it
 APPROACH.forEach((Z, i) => { const L = VX.len(Z), keys = []; for (let t = 0; t <= 6.6; t += 0.3) { const p = VX.along(Z, growK(i, t) * L); keys.push([+t.toFixed(2), p[0], p[1], "lin"]); }
@@ -79,6 +81,7 @@ const RIV = VX.river(S, 0).pts.map((p) => [p[0], p[1]]);
 const sNear = (x, y) => { let best = 0, bd = 1e9, s = 0; for (let i = 1; i < RIV.length; i++) { s += Math.hypot(RIV[i][0] - RIV[i - 1][0], RIV[i][1] - RIV[i - 1][1]); const d = Math.hypot(RIV[i][0] - x, RIV[i][1] - y); if (d < bd) { bd = d; best = s; } } return best; };
 const MORTAR_S = [sNear(1376.6, 683.5), sNear(1375.6, 688.0), sNear(1374.4, 692.4)], GUNBOAT_S = [sNear(1373.2, 697.6), sNear(1371.6, 701.4)];
 const boatXY = (s) => VX.along(RIV, s);
+const S_CITY = sNear(1381.0, 670.6);
 const TOWN_HITS = [[1385.6, 676.4], [1388.2, 682.0], [1384.4, 686.4], [1389.6, 673.0], [1386.4, 690.2], [1390.6, 678.6], [1383.2, 681.2], [1387.6, 687.6], [1385.0, 671.8], [1389.0, 684.8], [1386.0, 679.4], [1388.4, 675.2]];
 const SHOT_T = [7.1, 7.8, 8.5, 9.1, 9.9, 10.6, 11.5, 12.3, 13.4, 14.5, 15.7, 16.9];
 const SHELLS = SHOT_T.map((t, i) => { const mortar = i % 4 !== 3, s = mortar ? MORTAR_S[i % 3] : GUNBOAT_S[i % 2], b = boatXY(s), tg = TOWN_HITS[i];
@@ -97,20 +100,21 @@ const custom = [
       push(x, h, y, k ? 0.55 - k * 0.05 : 0.9, (k ? 0.6 * (1 - k / 7) : 1.0), 1.3, 0.75, 0.3); } } } },
   // lamps in the caves (night) and the river reflections of the burning houses
   { region: S, fn: (t, push) => { if (!WD || t < 12.4 || t > CUT_B + 0.1) return; for (const c of CAVES) { const e = sstep(c.t0, c.t0 + 0.8, t); if (e > 0) lamp(t, push, c.at[0], c.at[1], 0.55 * e); } } },
-  // the mine: dirt thrown into the air (brown smoke puffs on drag curves), clods on ballistic arcs, dust drifting off
-  { region: S, fn: (t, push) => { const tb = 27.95; if (!WD || t < tb || t > 41) return; const age = t - tb, c = LA3, g0 = gh(c[0], c[1], 0.1);
-    for (let j = 0; j < 70; j++) { const a = hsh(j, 1) * 6.283, sp = 0.25 + hsh(j, 2) * 1.1, H = 1.2 + hsh(j, 3) * (j < 30 ? 6.5 : 3.0), dl = hsh(j, 4) * 0.25; const ag = age - dl; if (ag < 0) continue;
-      const r = sp * (1 - Math.exp(-ag * 1.4)), h = H * (1 - Math.exp(-ag * 2.2)) - Math.max(0, ag - 2.5) * 0.12, x = c[0] + Math.cos(a) * r + ag * 0.12, y = c[1] + Math.sin(a) * r * 0.8 - ag * 0.05;
-      const col = 0.32 + hsh(j, 5) * 0.12, al = 0.85 * sstep(0, 0.12, ag) * Math.exp(-ag / (3.5 + hsh(j, 6) * 4));
-      push(x, g0 + Math.max(0, h), y, 0.5 + ag * 0.32 + hsh(j, 7) * 0.4, al, col + 0.12, col, col - 0.08, 6, 4.0); }
-    for (let j = 0; j < 26; j++) { const a = hsh(j, 11) * 6.283, v = 0.6 + hsh(j, 12) * 1.6, vu = 4 + hsh(j, 13) * 6, ag = age; const h = vu * ag - 4.9 * ag * ag; if (h < -0.05) continue;
-      push(c[0] + Math.cos(a) * v * ag, g0 + h, c[1] + Math.sin(a) * v * ag * 0.8, 0.12, 0.95, 0.14, 0.11, 0.09, 6, 4.0); }
+  // the mine (round 2, critic A: was a static pale pillar for ~15 s): a burst of dark earth and clods thrown up and falling back within ~3 s,
+  // then grey smoke that drifts off east with the wind and thins out over ~6 s, leaving the crater (decal) by ~36 s
+  { region: S, fn: (t, push) => { const tb = 27.95; if (!WD || t < tb || t > tb + 9) return; const age = t - tb, c = LA3, g0 = gh(c[0], c[1], 0.1);
+    for (let j = 0; j < 60; j++) { const a = hsh(j, 1) * 6.283, sp = 0.3 + hsh(j, 2) * 1.0, vu = 3.0 + hsh(j, 3) * (j < 25 ? 6.0 : 3.0), dl = hsh(j, 4) * 0.15, ag = age - dl; if (ag < 0) continue;
+      const h = vu * ag - 2.9 * ag * ag; if (h < -0.1 || ag > 3.4) continue;   // ballistic: up and back down
+      const r = sp * (1 - Math.exp(-ag * 1.6)), x = c[0] + Math.cos(a) * r, y = c[1] + Math.sin(a) * r * 0.8;
+      const col = 0.1 + hsh(j, 5) * 0.06, al = 0.9 * sstep(0, 0.08, ag) * (1 - sstep(1.8, 3.2, ag));
+      push(x, g0 + Math.max(0, h), y, 0.45 + ag * 0.35 + hsh(j, 7) * 0.35, al, col + 0.05, col + 0.02, col - 0.02, 6, 4.0); }
+    for (let j = 0; j < 22; j++) { const a = hsh(j, 11) * 6.283, v = 0.8 + hsh(j, 12) * 1.8, vu = 5 + hsh(j, 13) * 5, ag = age; const h = vu * ag - 4.9 * ag * ag; if (h < -0.05) continue;
+      push(c[0] + Math.cos(a) * v * ag, g0 + h, c[1] + Math.sin(a) * v * ag * 0.8, 0.12, 0.95, 0.12, 0.1, 0.08, 6, 4.0); }
+    for (let j = 0; j < 36; j++) { const ag = age - 0.4 - hsh(j, 21) * 1.4; if (ag < 0) continue;   // the smoke: grey, rising slowly, drifting east, thinning
+      const a = hsh(j, 22) * 6.283, r = 0.3 + hsh(j, 23) * 0.9, x = c[0] + Math.cos(a) * r + ag * 0.42, y = c[1] + Math.sin(a) * r * 0.8 - ag * 0.08;
+      const h = 0.6 + hsh(j, 24) * 2.2 + ag * 0.45, g = 0.36 + hsh(j, 25) * 0.08, al = 0.5 * sstep(0, 0.6, ag) * (1 - sstep(2.5, 6.5, ag));
+      push(x, g0 + h, y, 1.0 + ag * 0.45, al, g, g, g + 0.02, 6, 4.0); }
     if (age < 0.5) push(c[0], g0 + 0.6, c[1], 3.5 * (1 - age), 1.0 * (1 - age * 2), 1.3, 0.75, 0.35); } },
-  // F/G: the river turns blue to the Gulf (from the city south, on "the whole river"), the north already Union
-  { region: W, fn: (t, push) => { if (!WD || t < T.whole - 0.5) return; const k = sstep(T.whole - 0.5, T.hands || 105.0, t), RW = VX.river(W, 0).pts;
-    for (let i = 0; i < RW.length; i += 6) { const p = RW[i]; let a; if (p[1] < 676) a = 0.16 * sstep(T.whole - 0.5, T.whole + 0.8, t);
-      else { const s = (p[1] - 676) / 434; if (s > k * 1.05) continue; a = 0.22 * sstep(s, s + 0.06, k * 1.05); }
-      a *= 0.8 + 0.2 * Math.sin(t * 2.1 + p[1] * 0.05); push(p[0], p[2] * WD.regions[W].ys + 0.3, p[1], 16, a * 2.0, 0.22, 0.5, 1.6); } } },
 ];
 
 // ---------------- 3D extras (build): the approach-trench ribbons, the crater ----------------
@@ -147,8 +151,27 @@ const build = async (ctx) => { WD = ctx.world; const { THREE, world } = ctx, sc 
     const kc = sstep(28.2, 29.6, t); crater.visible = kc > 0; crater.material.opacity = kc; crater.scale.setScalar(0.6 + 0.4 * kc); });
   // the newspaper cards (DOM, over the overlay)
   PAPER.build(ctx);
+  // round 2 (critic B: "the whole river in Union hands" read white/cyan): a Union-blue (#2c57b7) ribbon on the wide river, north of the city
+  // at once, then grown south from the city to the Gulf edge on "the whole river ... Union hands"
+  { const ww = world.regions[W], RWp = VX.river(W, 0).pts, q = []; for (let i = 0; i < RWp.length; i += 2) q.push(RWp[i]);
+    const iC = q.reduce((b, p, i) => (Math.hypot(p[0] - 1377, p[1] - 672) < Math.hypot(q[b][0] - 1377, q[b][1] - 672) ? i : b), 0);
+    const mk = (pts) => { const pos = [], Wd = 3.6; for (let i = 0; i < pts.length - 1; i++) { const a = pts[i], b = pts[i + 1], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, ux = -dy / l * Wd / 2, uy = dx / l * Wd / 2;
+        const H = (p) => p[2] * ww.ys + 0.35; pos.push(a[0] - ux, H(a), a[1] - uy, b[0] - ux, H(b), b[1] - uy, a[0] + ux, H(a), a[1] + uy, a[0] + ux, H(a), a[1] + uy, b[0] - ux, H(b), b[1] - uy, b[0] + ux, H(b), b[1] + uy); }
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); return { g, n: pts.length - 1 }; };
+    const north = mk(q.slice(0, iC + 1)), south = mk(q.slice(iC));
+    const mat = new THREE.MeshBasicMaterial({ color: 0x2c57b7, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 });
+    const mN = new THREE.Mesh(north.g, mat), mS = new THREE.Mesh(south.g, mat); mN.renderOrder = mS.renderOrder = 4; ww.scene.add(mN); ww.scene.add(mS);
+    ctx.FX[W].custom((t) => { const on = t > T.whole - 0.5; mN.visible = mS.visible = on; if (!on) return;   // stays to the end ("the Mississippi open")
+      const k = sstep(T.whole - 0.2, T.hands + 0.6, t); south.g.setDrawRange(0, Math.round(south.n * k) * 6);
+      mat.opacity = 0.75 * sstep(T.whole - 0.5, T.whole + 0.4, t) * (0.9 + 0.1 * Math.sin(t * 2.4)); }); }
+  // round 2 (critics A/B: finale muddy dark, no sunset): a warm low sun from the west (upper left) over the wide dusk shots
+  SUN = document.createElement("div"); SUN.style.cssText = "position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:screen;" +
+    "background:radial-gradient(ellipse 75% 85% at 4% 10%,rgba(255,176,96,.62) 0%,rgba(240,140,70,.26) 38%,rgba(200,110,60,.08) 62%,rgba(0,0,0,0) 80%)";
+  document.getElementById("veil").after(SUN);
 };
-const draw = (t, ctx) => { if (CAVE_M) CAVE_M.draw(t, ctx); OAK_M.draw(t, ctx); FLAGS.draw(t, ctx); PAPER.draw(t); };
+let SUN = null;
+const draw = (t, ctx) => { if (CAVE_M) CAVE_M.draw(t, ctx); OAK_M.draw(t, ctx); FLAGS.draw(t, ctx); PAPER.draw(t);
+  if (SUN) SUN.style.opacity = (sstep(T.for - 0.4, T.road + 1.0, t) * (1 - sstep(CB0 - 0.4, CB0, t)) + sstep(CB1, CB1 + 0.8, t)).toFixed(3); };
 let CAVE_M = null;
 const CAVE_SVG = '<svg viewBox="0 0 22 15"><path d="M1 15 Q1 2.5 11 2.5 Q21 2.5 21 15 Z" fill="#17100b" stroke="#bfa57a" stroke-width="1.4"/><ellipse cx="11" cy="12" rx="4.6" ry="2.6" fill="#ffb052" opacity=".6"/></svg>';
 const OAK_SVG = '<svg viewBox="0 0 40 40"><path d="M19 40 L19.5 26 Q17 22 13 21 M20 27 Q23 22 27 20" stroke="#3b2a1a" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
@@ -177,15 +200,26 @@ const PAPER = (() => { const cards = [
   { tIn: T.newspaper - 0.1, tOut: T.rabbit2 + 0.55, x: 470, y: 150, s: 1, date: "Vicksburg, Mississippi · July 1863",
     lines: [[T.mocked, "On the Yankee boast that they would dine in Vicksburg on the Fourth of July:", "cap"], [T.best, "the best recipe for cooking a rabbit was", "cap2"], [T.first - 0.05, "First ketch your rabbit.", "q"]],
     corner: T.wallpaper - 0.1, ribbon: [T.wallpaper - 0.1, "printed on the back of wallpaper"] },
-  { tIn: T.last - 0.1, tOut: CUT_F - 0.2, x: 600, y: 210, s: 0.8, date: "Vicksburg, Mississippi · 4 July 1863",
-    lines: [[T.newspaper4, "The last issue announced that the Yankees had", "cap"], [T.caught - 0.05, "Caught our rabbit.", "q"]], corner: T.last + 0.2, ribbon: [T.newspaper4, "the last issue"] }];
+  { tIn: T.last - 0.1, tOut: CUT_F - 0.2, x: 600, y: 210, s: 0.8, date: "Vicksburg, Mississippi · Thursday, July 2, 1863",
+    lines: [[T.newspaper4, "The last issue announced that the Yankees had", "cap"], [T.caught - 0.05, "Caught our rabbit.", "q"]], corner: T.last + 0.2,
+    ribbon: [T.newspaper4, "the 2 July issue, reprinted by Union soldiers on 4 July"] }];   // FACT_NOTES: last issue 2 July, reissued 4 July
   const P = { els: [] };
   const wallURL = () => { const c = document.createElement("canvas"); c.width = c.height = 120; const g = c.getContext("2d");
     g.fillStyle = "#d6bfa8"; g.fillRect(0, 0, 120, 120); g.fillStyle = "#c7a892"; for (let x = 0; x < 120; x += 30) g.fillRect(x, 0, 9, 120);
     const fl = (x, y) => { g.fillStyle = "#7c8a5a"; g.beginPath(); g.ellipse(x - 6, y + 4, 6, 2.6, -0.6, 0, 6.283); g.ellipse(x + 6, y + 4, 6, 2.6, 0.6, 0, 6.283); g.fill();
       g.fillStyle = "#9a4c46"; for (let k = 0; k < 5; k++) { g.beginPath(); g.arc(x + Math.cos(k * 1.257) * 3.4, y + Math.sin(k * 1.257) * 3.4, 3, 0, 6.283); g.fill(); } g.fillStyle = "#e8cf9c"; g.beginPath(); g.arc(x, y, 2, 0, 6.283); g.fill(); };
     fl(15, 18); fl(75, 18); fl(45, 70); fl(105, 70); fl(15, 112); fl(75, 112); return c.toDataURL(); };
-  const greek = (seed, n, w) => { let h = ""; for (let i = 0; i < n; i++) { const ww = i % 9 === 8 ? 30 + hsh(seed + i, 3) * 40 : 88 + hsh(seed + i, 2) * 12; h += `<i style="width:${ww.toFixed(1)}%"></i>`; } return `<div class="gk" style="width:${w}px">${h}</div>`; };
+  // round 2 (critic A: grey placeholder bars): real small period type in the columns. Generic siege-town items in the paper's manner,
+  // nothing quoted as the paper's actual words (the only quoted words are Grant's, in the box); too small to read at 720p, reads as print
+  const COLS = [
+    ["THE SITUATION.", "The enemy continue their works before our lines, and the shelling from the river has been kept up through the night. Our men in the trenches are cheerful and determined. Every man is at his post, and the garrison awaits the relief so long expected from without.",
+      "PROVISIONS.", "We are told that mule meat is found palatable by those who have tried it. Flour is scarce and dear. Corn meal has given out in many families, and peas are ground for bread."],
+    ["CITY ITEMS.", "Many families have removed to the caves dug in the hills, where they live in tolerable safety from the shells. Ladies and children pass the day underground and come out at evening when the firing slackens.",
+      "THE NEWSPAPER.", "Our readers will excuse the appearance of this sheet. We print upon such paper as can be had, and are thankful to have any at all."],
+    ["FROM THE LINES.", "The sharpshooters on both sides keep up a constant fire, and a head shown above the parapet is a mark for a dozen rifles. At night the pickets are so near that they converse across the works.",
+      "NOTICE.", "Persons having stores of any kind are requested to report the same. All are urged to economize their supplies, as no man can say how long the siege may last."]];
+  const greek = (seed, n, w) => { const C = COLS[Math.abs(Math.round(seed)) % 3]; let h = ""; for (let k = 0; k < 2; k++) h += `<b>${C[k * 2]}</b><p>${C[k * 2 + 1]} ${C[(k * 2 + 3) % 4]}</p>`;
+    return `<div class="gk" style="width:${w}px">${h}</div>`; };
   P.build = () => { const host = document.getElementById("ov"), wall = wallURL();
     const css = document.createElement("style"); css.textContent = `
       .np{position:absolute;width:980px;height:640px;transform-origin:0 0;opacity:0;pointer-events:none}
@@ -196,7 +230,9 @@ const PAPER = (() => { const cards = [
       .np .mh{font-family:"GM Cinzel",serif;font-weight:700;font-size:66px;letter-spacing:.06em;text-align:center;line-height:1}
       .np .rl{border-top:3px double #2a2418;border-bottom:1px solid #2a2418;margin:12px 0 0;padding:5px 0 4px;text-align:center;font-family:"GM Cormorant",serif;font-weight:600;font-size:19px;letter-spacing:.3em;text-transform:uppercase}
       .np .cols{display:flex;gap:26px;margin-top:18px}
-      .np .gk i{display:block;height:7px;margin:0 0 9px;background:rgba(40,32,22,.42);border-radius:1px}
+      .np .gk{font-family:"GM Cormorant",serif;color:#2a2418;text-align:justify;hyphens:auto;overflow:hidden;height:420px}
+      .np .gk b{display:block;font-weight:700;font-size:13px;letter-spacing:.12em;text-align:center;margin:2px 0 3px;border-bottom:1px solid rgba(42,36,24,.5)}
+      .np .gk p{margin:0 0 8px;font-size:13px;line-height:1.24;text-indent:1.2em}
       .np .ex{position:absolute;left:250px;right:250px;top:178px;padding:20px 26px 22px;background:#ece3cd;border:1.6px solid #2a2418;box-shadow:0 0 0 5px #ece3cd,0 0 0 6.5px #2a2418;text-align:center}
       .np .ex .cap,.np .ex .cap2{font-family:"GM Cormorant",serif;font-style:italic;font-weight:500;font-size:27px;line-height:1.25;color:#3a3020}
       .np .ex .q{font-family:"GM Cormorant",serif;font-weight:700;font-size:50px;line-height:1.1;margin-top:12px;color:#1a140c}
@@ -209,11 +245,12 @@ const PAPER = (() => { const cards = [
         <div class="cols">${greek(11 + c.s * 7, 40, 270)}${greek(57 + c.s * 7, 40, 270)}${greek(93 + c.s * 7, 40, 270)}</div>
         <div class="ex">${c.lines.map(([, txt, k]) => `<div class="${k}" style="opacity:0">${k === "q" ? "“" + txt + "”" : txt}</div>`).join("")}</div></div>
         <div class="cn"></div><div class="cnf"></div></div><div class="rib">${c.ribbon[1]}</div>`;
-      host.appendChild(e); P.els.push({ c, e, L: [...e.querySelectorAll(".ex > div")], cn: e.querySelector(".cn"), cnf: e.querySelector(".cnf"), rib: e.querySelector(".rib") }); } };
-  P.draw = (t) => { for (const { c, e, L, cn, cnf, rib } of P.els) { const a = sstep(c.tIn, c.tIn + 0.6, t) * (1 - sstep(c.tOut - 0.5, c.tOut, t));
+      host.appendChild(e); P.els.push({ c, e, L: [...e.querySelectorAll(".ex > div")], cn: e.querySelector(".cn"), cnf: e.querySelector(".cnf"), rib: e.querySelector(".rib"), exs: e.querySelector(".ex") }); } };
+  P.draw = (t) => { for (const { c, e, L, cn, cnf, rib, exs } of P.els) { const a = sstep(c.tIn, c.tIn + 0.6, t) * (1 - sstep(c.tOut - 0.5, c.tOut, t));
     e.style.opacity = a.toFixed(3); if (a <= 0) continue; const sc = c.s * (0.96 + 0.04 * sstep(c.tIn, c.tIn + 0.8, t));
     e.style.transform = `scale(${sc.toFixed(4)}) rotate(${(-1.2 + 0.3 * Math.sin(t * 0.3)).toFixed(3)}deg)`;
     L.forEach((l, i) => { l.style.opacity = sstep(c.lines[i][0], c.lines[i][0] + 0.6, t).toFixed(3); });
+    exs.style.opacity = sstep(c.lines[0][0] - 0.3, c.lines[0][0] + 0.3, t).toFixed(3);   // round 2: the excerpt box comes in with its first line (was an empty box)
     const k = sstep(c.corner, c.corner + 0.9, t), s = (150 * k).toFixed(1) + "px"; cn.style.width = cn.style.height = s; cnf.style.width = cnf.style.height = s;
     cnf.style.transform = `translate(${(-150 * k).toFixed(1)}px,${(-150 * k).toFixed(1)}px)`;
     rib.style.opacity = sstep(c.ribbon[0], c.ribbon[0] + 0.5, t).toFixed(3); } };
@@ -224,6 +261,10 @@ const fx = {
   fires: [
     { region: S, at: [1386.6, 682.6, 0.3], t0: 9.6, t1: CUT_B + 0.5, preset: "house", opts: { size: 0.45 } },
     { region: S, at: [1388.6, 676.0, 0.3], t0: 12.7, t1: CUT_B + 0.5, preset: "house", opts: { size: 0.4 } },
+    // callback: houses fired on De Soto Point to light the river, and the Henry Clay burning with her cotton
+    { region: S, at: [1371.2, 664.2, 0.3], t0: CB0 - 2.5, t1: CB1, preset: "house", opts: { size: 0.9 }, cue: false },
+    { region: S, at: [1370.8, 671.6, 0.3], t0: CB0 - 2.0, t1: CB1, preset: "house", opts: { size: 0.8 }, cue: false },
+    { region: S, at: [1380.4, 667.0, 0.15], t0: CB0 - 1.5, t1: CB1, preset: "steamer", opts: { size: 1.2 } },   // the Henry Clay, west of the boats' lane
   ],
   smokeLines: [
     // 25 June: the fight in the crater (both sides throw shells and grenades by hand; musketry from the inner line)
@@ -235,6 +276,10 @@ const fx = {
   guns: [
     { region: S, preset: "battery", h: 0.25, opts: { size: 1.4, alpha: 0.2, flash: 2.0 }, impactOpts: { size: 1.1 },
       shots: SHELLS.map((s) => ({ t: s.t, at: s.at, dir: [s.impact[0] - s.at[0], s.impact[1] - s.at[1]].map((v, _, a) => v / Math.hypot(a[0], a[1])), impact: s.impact, delay: s.delay })) },
+    // callback: the bluff batteries fire on the boats (flash on the bluff, the shot falls in the river; no boom, as S03)
+    { region: S, preset: "battery", h: 0.25, boom: false, opts: { size: 1.3, alpha: 0.2, flash: 2.6, flashLife: 0.18 }, impactOpts: { size: 0.45 },
+      shots: [[130.4, 1385.6, 664.6], [131.3, 1384.4, 671.0], [132.2, 1383.4, 677.2], [133.0, 1385.0, 667.8], [133.9, 1383.8, 674.0]].map(([t, x, y], i) => { const b = boatXY(S_CITY + (t + 0.8 - 131.6) * 1.7 - (i % 3) * 2.6);
+        return { t, at: [x, y], dir: [b[0] - x, b[1] - y].map((v, _, a) => v / Math.hypot(a[0], a[1])), impact: [b[0] + 0.6 - (i % 2) * 1.2, b[1] + 0.4], delay: 0.8 }; }) },
   ],
   impacts: [{ region: S, at: LA3, t: 27.95, cue: true, opts: { size: 6.5 } }],
   flashes: [{ region: S, at: LA3, t: 27.95, opts: { size: 12, life: 0.45, alpha: 1.0, pool: 8 } }],
@@ -256,6 +301,7 @@ window.SEQ = {
   name: "S12", D: T.D, T, seed: 1863, date: "1863-07-03",
   regions: [S, W],
   regionOpts: { [S]: { troopScale: 1.4 }, [W]: { troopScale: 9 } },
+  grade: { wide: { toe: 30 } },   // round 2 (critic A: wide finale too dark): lift the wide shadows
   keys: [
     // A: from above, the approaches grow; night: swing west over the town to the river; the hillsides
     { t: 0.0, region: S, at: [1405.6, 677.0], dist: 33, tilt: 30, yaw: 84, fov: 30 },
@@ -281,19 +327,27 @@ window.SEQ = {
     { t: 69.3, region: S, at: [1408.0, 674.5], dist: 13, tilt: 49, yaw: 70, fov: 30, night: 0 },
     { t: 70.2, region: S, at: [1407.6, 674.8], dist: 16, tilt: 48, yaw: 71, fov: 30, night: 1 },
     { t: CUT_E, region: S, at: [1405.0, 676.6], dist: 32, tilt: 46, yaw: 80, fov: 30, night: 1 },
-    // E: 4 July (cut + night -> day)
-    { t: CUT_E, region: S, at: [1404.6, 677.0], dist: 41, tilt: 44, yaw: 84, fov: 30, night: 1, ease: "cut" },
-    { t: CUT_E + 0.9, region: S, at: [1404.6, 677.0], dist: 40.6, tilt: 44, yaw: 84, fov: 30, night: 0, ease: "lin" },
-    { t: 88.0, region: S, at: [1404.0, 677.4], dist: 37, tilt: 45, yaw: 86, fov: 30 },
-    { t: CUT_F, region: S, at: [1403.2, 678.0], dist: 35, tilt: 46, yaw: 88, fov: 30, ease: "lin" },
-    // F: the wide map pulls up the whole river
+    // E: 4 July (cut + night -> day). Round 2 (critic B: the surrender read as specks): CLOSE on the 3rd Louisiana Redan / Jackson road
+    // for march out - stack arms - march back (79-90), then pull back for the 29,500 and the newspaper
+    { t: CUT_E, region: S, at: [1408.4, 673.6], dist: 15.5, tilt: 46, yaw: 80, fov: 30, night: 1, ease: "cut" },
+    { t: CUT_E + 0.9, region: S, at: [1408.4, 673.6], dist: 15.3, tilt: 46, yaw: 79.5, fov: 30, night: 0, ease: "lin" },
+    { t: 87.6, region: S, at: [1408.2, 673.8], dist: 14.0, tilt: 47, yaw: 76, fov: 30 },
+    { t: 93.2, region: S, at: [1404.6, 676.8], dist: 34, tilt: 44, yaw: 84, fov: 30 },
+    { t: CUT_F, region: S, at: [1403.6, 677.6], dist: 34, tilt: 44, yaw: 88, fov: 30, ease: "lin" },
+    // F: the wide map pulls up the whole river (kept inside the baked region: no world edge at the left)
     { t: CUT_F, region: W, at: [1392, 700], dist: 330, tilt: 44, yaw: -2, fov: 30, ease: "cut" },
-    { t: 101.2, region: W, at: [1388, 712], dist: 360, tilt: 43, yaw: -2, fov: 30 },
-    { t: 107.6, region: W, at: [1410, 870], dist: 720, tilt: 36, yaw: 0, fov: 30 },
-    { t: 119.4, region: W, at: [1420, 845], dist: 750, tilt: 35, yaw: 1, fov: 30, ease: "lin" },
-    // G: the end: dusk, a slow pull-up over the river at the city
-    { t: 128.0, region: W, at: [1430, 820], dist: 800, tilt: 34, yaw: 2, fov: 30, night: 0.25 },
-    { t: T.D, region: W, at: [1440, 800], dist: 880, tilt: 32, yaw: 3, fov: 30, night: 0.45, ease: "lin" },
+    { t: 101.2, region: W, at: [1390, 712], dist: 350, tilt: 43, yaw: -2, fov: 30 },
+    { t: 107.6, region: W, at: [1440, 868], dist: 560, tilt: 34, yaw: 0, fov: 30 },
+    { t: 119.4, region: W, at: [1446, 850], dist: 580, tilt: 33, yaw: 1, fov: 30, ease: "lin" },
+    // G: the warm low-sun dusk, in toward the city
+    { t: 128.6, region: W, at: [1404, 720], dist: 380, tilt: 40, yaw: 2, fov: 30, night: 0.08 },
+    { t: CB0, region: W, at: [1402, 714], dist: 360, tilt: 41, yaw: 2, fov: 30, night: 0.1, ease: "lin" },
+    // the callback: 16 April at night, the gunboats run down past the city, De Soto Point burning, the Henry Clay on fire
+    { t: CB0, region: S, at: [1379.2, 670.0], dist: 23, tilt: 56, yaw: 96, fov: 30, night: 1, ease: "cut" },
+    { t: CB1, region: S, at: [1378.0, 676.0], dist: 21, tilt: 57, yaw: 92, fov: 30, night: 1, ease: "lin" },
+    // back to the dusk over the city, slow pull-up to the end
+    { t: CB1, region: W, at: [1398, 700], dist: 250, tilt: 44, yaw: 0, fov: 30, night: 0, ease: "cut" },
+    { t: T.D, region: W, at: [1402, 708], dist: 300, tilt: 42, yaw: 2, fov: 30, night: 0.05, ease: "lin" },
   ],
   clouds: {
     [S]: { shadows: true },
@@ -308,8 +362,8 @@ window.SEQ = {
     { region: S, kind: "gunboat", n: 2, size: 0.75, path: RIV, sAt: (t, i) => GUNBOAT_S[i], t0: 6.0, t1: CUT_B, lamp: false, wake: false },
     // F: the river open: steamers down past the city to the Gulf
     { region: W, kind: "steamer", n: 3, size: 5, path: RUN, sAt: (t, i) => 200 + (t - T.whole) * 12 - i * 26, t0: T.whole, t1: T.D + 1, lamp: false },
-    // G: the dark river, seven gunboats (memory of 16 April)
-    { region: W, kind: "gunboat", n: 7, size: 5, path: RUN, sAt: (t, i) => 210 + (t - T.dark) * 8 - i * 12, t0: T.dark, t1: T.D + 1, lamp: true, wake: true },
+    // G (callback, round 2): seven gunboats run dark down past the city (16 April), nose to tail
+    { region: S, kind: "gunboat", n: 7, size: 0.75, path: RIV, sAt: (t, i) => S_CITY + (t - 131.6) * 1.7 - i * 2.6, t0: CB0 - 0.1, t1: CB1 + 0.2, lamp: false, wake: true },
   ],
   fx, build, draw,
   labels: [
@@ -342,7 +396,7 @@ window.SEQ = {
     ["plaque.clock", T.afternoon3, { time: "15:00", note: "between the lines", header: "3 July 1863 · Day 65" }],
     ["medallion", { kind: "card", general: "pemberton", sub: "under a flag of truce", world: [OAK[0] - 0.6, OAK[1] + 0.1], offset: [-330, -200], tIn: T.pemberton, tOut: 69.3 }],
     ["medallion", { kind: "card", general: "grant", sub: "near a stunted oak", world: [OAK[0] + 0.6, OAK[1] + 0.1], offset: [330, -200], tIn: T.grant, tOut: 69.3 }],
-    ["label", T.served, 69.3, { name: "Mexico, 1846-48", sub: "they had served in the same division", x: 960, y: 900, offset: [-190, -40], marker: false, side: "us", stripes: ["#3C6E9E", "#9C3A35"] }],
+    ["label", T.served, 69.3, { name: "Mexico, 1846-48", sub: "they had served in the same division", x: 1420, y: 680, offset: [-190, -40], marker: false, side: "us", stripes: ["#3C6E9E", "#9C3A35"] }],
     ["film.grade", 69.4, "night", 0.8],
     ["plaque.clock", T.night + 0.1, { time: "22:00", note: "Grant's terms", header: "3 July 1863 · Day 65" }],
     ["letter", T.night + 0.3, CUT_E - 0.2, { header: "3 July 1863 · that night", title: "Grant's terms", sub: "the substance, not the letter's words", marks: false, cps: 24,
@@ -354,21 +408,28 @@ window.SEQ = {
     ["legend", CUT_E + 1.0, T.last - 0.4, LEG],
     ["number", T.twentyNine, T.grant4 - 0.1, { value: 29500, round: 500, world: [1401.0, 674.0, 1.2], size: 100 }],
     ["label", T.grant4 + 0.1, T.last - 0.4, { name: "Without a cheer", sub: "Grant's whole army watched", world: [1408.6, 676.0], side: "us", marker: false, offset: [40, 40] }],
-    ["film.dim", T.last - 0.2, CUT_F - 0.3, 0.7],
+    ["film.dim", T.last - 0.2, CUT_F - 0.3, 0.45],
     // F
     ["plaque.date", T.five + 0.2, { month: "July 1863", day: "9", weekday: "Day 71", note: "Thursday · Port Hudson" }],
     ["label", T.port, T.whole - 0.2, { name: "Port Hudson", sub: "9 July · surrenders: nearly 6,000 prisoners", world: [BOTTOM[0], BOTTOM[1]], side: "cs", marker: false, offset: [30, -80] }],
     ["label", T.cut - 0.2, T.far - 0.3, { name: "Cut in two", sub: "Texas, Arkansas and Louisiana cut off from the East", world: [1150, 790], side: "cs", marker: false }],
-    ["label", T.east, T.father - 0.4, { name: "Gettysburg", sub: "1-3 July · Lee's army beaten, far to the north-east", x: 1500, y: 260, offset: [0, 0], marker: false, side: "us" }],
-    ["quote", T.father - 0.1, T.grantE - 0.5, { en: "The Father of Waters again goes unvexed to the sea.", attr: "Abraham Lincoln · letter to James C. Conkling, 26 August 1863", y: 440 }],
+    ["label", T.gettysburg - 0.05, T.father - 0.4, { name: "Gettysburg", sub: "1-3 July · Lee's army beaten, far to the north-east", x: 1500, y: 260, offset: [0, 0], marker: false, side: "us" }],
+    ["quote", T.father - 0.1, T.grantE - 0.5, { en: "The Father of Waters again goes unvexed to the sea.", attr: "Abraham Lincoln · letter to James C. Conkling, 26 August 1863", y: 440, dim: 0.4 }],
     // G
     ["film.grade", T.for - 0.4, "dusk", 2.5],
-    ["medallion", { kind: "card", general: "grant", sub: "the road east: every Union army, then Appomattox", screen: [1765, 215], tIn: T.grantE, tOut: T.began - 0.4 }],
+    ["medallion", { kind: "card", general: "grant", sub: "the road east: every Union army, then Appomattox", screen: [1690, 232], tIn: T.grantE, tOut: T.began - 0.4 }],   // round 2: inside the frame (was cut at the right edge)
     ["ledger.show", T.began, { title: "The Vicksburg campaign", sub: "16 April - 4 July 1863" }],
     ["ledger.add", T.seven, { who: "Seven gunboats", note: "past the guns, 16 April", stamp: false }],
     ["ledger.add", T.cotton - 0.3, { who: "Five battles, 18 days", note: "1 - 17 May", stamp: false }],
     ["ledger.add", T.idea + 0.2, { who: "29,500 surrendered", note: "4 July", stamp: false }],
     ["ledger.add", T.madness - 0.4, { who: "The Mississippi open", note: "Port Hudson, 9 July", stamp: false }],
+    // round 2: the callback to the night run (dip through dark, night grade), then back to the warm dusk
+    ["film.dim", CB0 - 0.75, CB0 + 0.05, 1.0],
+    ["film.grade", CB0, "night", 0.3],
+    ["plaque.date", CB0 + 0.15, { month: "April 1863", day: "16", weekday: "", note: "where it began · the night run" }],
+    ["film.dim", CB1 - 0.75, CB1 + 0.05, 1.0],
+    ["film.grade", CB1, "dusk", 0.3],
+    ["plaque.date", CB1 + 0.15, { month: "July 1863", day: "9", weekday: "", note: "the Mississippi open" }],
     ["plaque.hide", FADE - 0.6],
   ],
   end: { fadeAt: FADE, dur: 2.5 },

@@ -20,3 +20,13 @@ cut out with rembg + a soft oval matte (pale original) -> `gregg.png`.
 
 Open issues: wide-map boxes are small at dist 270-600 (troopScale 15); the 1st Tennessee bluff is not shown; Union units on the wide map
 other than McPherson's are approximate (Sherman near Dillon's, McClernand toward Edwards) and unlabelled.
+
+## Round 2 fixes (critics round 1 -> what was done)
+| Finding | Fix |
+| --- | --- |
+| B sev 2: "several times his strength" not shown | Union now 19 boxes vs Gregg's 5: Logan 3 x 3, Crocker 4 + 3, 2 guns, arriving one after another under the road dust (13.0-20.4); label "Several times his strength" over Crocker's rear body on its word |
+| A/B sev 2: arrows + boxes cross Fourteenmile Creek with no bridge | the creek stays between the lines: Gregg attacks down to the north bank, Logan holds the south bank; all arrows stop at the banks; after Gregg has gone, Logan's lead brigades march as road columns over the road bridge (36.0 / 37.6); `check_paths.js S07`: OK |
+| A/B sev 2: label at 13 s points at a unit below the frame; world edge bottom-right | every close camera key re-aimed so all four corners stay inside the raymond box (south edge y 798: tilt 36-42, yaw -10..-14, checked with a frustum-corner script); the leading brigade is on the road mid-frame at 11.7 and the label sits on it |
+| B sev 2: Gregg's boxes vanish 36-38 (covered by the retreat arrow) | the retreat arrows run 1.7 units beside the road, so the column stays visible all the way into Raymond; the cut frames Raymond (36.6) |
+| B sev 1: plaque "hot and dusty" | "DAY 13 · dusty" |
+| A: boxes tiny, cotton smoke | troopScale close 1.45 -> 1.9, wide 15 -> 20; battalion curtains as S05; gun plumes 0.6 |

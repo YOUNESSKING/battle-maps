@@ -278,7 +278,7 @@ for (const B of S.boats || []) { const r = B.region || NAMES[0], R = world.regio
   for (let i = 0; i < n; i++) { const g = mkBoat(kinds[i % kinds.length]); g.scale.setScalar(sz); R.scene.add(g); BOATS.push({ B, i, g, r, R, sz }); } }
 const boatAt = (o, t) => { const { B, i, R, sz } = o, on = t > B.t0 && t < B.t1;
   if (B.path) { const s = B.sAt ? B.sAt(t, i) : (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz),   // sAt(t, i): any arc-length schedule (stops, drifting)
-    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (B.h ?? 0.35 * sz), dx: p[2], dy: p[3], on }; }
+    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (typeof B.h === "function" ? B.h(t, i) : (B.h ?? 0.35 * sz)), dx: p[2], dy: p[3], on }; }   // h(t, i): e.g. a boat sinking
   const vy = B.vy ?? 1.6, y = B.y0 + (t - B.t0) * vy - i * (B.dy ?? 4.2 * sz), p = VX.riverAtY(o.r, B.river ?? 0, y), q = VX.riverAtY(o.r, B.river ?? 0, y + Math.sign(vy || 1)), x = p[0] + (i % 2 ? 1 : -1) * (B.lane ?? 0.6 * sz);
   return { x, y: p[1], h: p[2] * R.ys + 0.35 * sz, dx: q[0] - p[0], dy: q[1] - p[1], on }; };
 const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g.position.set(b.x, b.h, b.y); o.g.rotation.y = Math.atan2(-b.dy, b.dx); o.g.visible = b.on; } };

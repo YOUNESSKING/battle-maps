@@ -107,8 +107,8 @@ const arrows0 = [
   { side: U, pts: [[1646.6, 684.6], [1643.6, 687.8], [1640.6, 691.2]], t0: T.hovey + 0.7, dur: 2.2, t1: T.logan },
   { side: U, pts: [[1640.6, 681.0], [1636.6, 682.6], [1632.4, 685.6], [1630.0, 689.0]], t0: T.swung, dur: 2.2, t1: T.south + 0.6 },
   // Grant's orders to McClernand (thin), one after another
-  { side: U, width: 0.18, pts: [[1649.8, 689.4], [1652.6, 697.0], [1654.6, 703.6]], t0: T.order, dur: 1.0, t1: T.notCome + 0.4 },
-  { side: U, width: 0.18, pts: [[1649.0, 689.6], [1647.4, 700.0], [1645.6, 709.0]], t0: T.order + 0.7, dur: 1.0, t1: T.notCome + 0.4 },
+  { side: U, width: 0.18, pts: [[1651.4, 694.6], [1653.4, 699.4], [1654.6, 703.6]], t0: T.order, dur: 1.0, t1: T.notCome + 0.4 },
+  { side: U, width: 0.18, pts: [[1650.0, 694.8], [1648.0, 701.6], [1645.6, 708.2]], t0: T.order + 0.7, dur: 1.0, t1: T.notCome + 0.4 },
   // Bowen's counterattack (down the axis, each arrow in front of its own brigade, ending short of Hovey's falling-back line)
   { side: R, pts: [FR(7.0, 4.0), FR(3.0, -0.6), FR(-1.0, -2.0), FR(-4.0, -2.0)], t0: T.hit - 0.2, dur: 3.0, t1: T.swing + 0.6 },
   { side: R, pts: [FR(9.6, 8.6), FR(5.0, 5.6), FR(0.0, 4.4), FR(-4.0, 4.4)], t0: T.hit + 0.2, dur: 3.0, t1: T.swing + 0.6 },
@@ -199,8 +199,8 @@ window.SEQ = {
     { t: 61.0, region: C, at: [1639.6, 690.8], dist: 31, tilt: 50, yaw: -7, fov: 30 },
     { t: 65.8, region: C, at: [1635.4, 691.0], dist: 32, tilt: 44, yaw: -9, fov: 30 },
     { t: 70.8, region: C, at: [1645.0, 709.6], dist: 38, tilt: 42, yaw: -3, fov: 30 },
-    { t: 74.2, region: C, at: [1646.2, 702.0], dist: 45, tilt: 37, yaw: -4, fov: 30 },
-    { t: 77.6, region: C, at: [1645.6, 700.4], dist: 45, tilt: 37, yaw: -5, fov: 30 },
+    { t: 74.2, region: C, at: [1644.6, 702.6], dist: 45, tilt: 37, yaw: -4, fov: 30 },
+    { t: 77.6, region: C, at: [1644.2, 701.4], dist: 45, tilt: 37, yaw: -5, fov: 30 },
     { t: 83.6, region: C, at: [1640.8, 698.6], dist: 38, tilt: 44, yaw: -8, fov: 30 },
     // round 2: the crest fight seen ALONG the attack axis (yaw ~ -40: Union line at the top, Confederate line below, the front across the frame)
     { t: 89.0, region: C, at: [...FR(-1.6, 1.6)], dist: 31, tilt: 40, yaw: -30, fov: 30 },
@@ -234,8 +234,8 @@ window.SEQ = {
     { general: "pemberton", region: C, keys: [[0, 1630.8, 703.4]], t0: DV.land, t1: T.D + 1, escape: ESC(LOW, T.broke + 1.4, 2.6) },
     // round 2: Grant's banner a little lower on the slope below the Champion house (it was cut by the top edge at 75-78 s), out for the
     // ledger shot (162-168 s it touched the ledger and the top edge), back on the hill for "that night"
-    { general: "grant", region: C, keys: [[0, 1649.6, 688.2]], t0: T.order - 0.2, t1: 87.9 },   // in once the camera has pulled north (on "sent order after order")   // out before the camera turns along the crest axis (it sat on the top edge)
-    { general: "grant", region: C, keys: [[0, 1649.6, 688.2]], t0: 117.6, t1: T.broke + 0.6 },
+    { general: "grant", region: C, keys: [[0, 1650.6, 693.0]], t0: T.order - 0.2, t1: 87.9 },   // in once the camera has pulled north (on "sent order after order")   // out before the camera turns along the crest axis (it sat on the top edge)
+    { general: "grant", region: C, keys: [[0, 1651.6, 690.4]], t0: 117.6, t1: T.opened - 0.2 },
     { general: "grant", region: C, keys: [[0, 1637.6, 692.6]], t0: T.night + 0.4, t1: T.D + 1 },
   ],
   labels: [

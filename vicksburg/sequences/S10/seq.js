@@ -12,7 +12,10 @@ const BR = VX.bridge(BB, 0), BRW = VX.work(BB, 0), RD = VX.road(BB, "Jackson roa
 const DOT = VX.place("Steamboat 'Dot' bridge");
 const bwX = (y) => { let b = BRW[0]; for (const p of BRW) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b[0]; };
 const SLOWX = BR.x - 0.8;   // the west end of the bridge
-const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.2, slowX: SLOWX, join: "west", from });
+const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.6, slowX: SLOWX, join: "west", from });
+// round 2 (owner rule: never cross a bridge after its fire starts): the flanks and the reserve start for the bridge as the line falls
+// (24.8-25.6) and the last red box is past the west end by ~31.0 (tools: esc_sim); the fire starts at FIRE_T = 31.3 ("set them on fire")
+const ESC_T = [25.1, 25.6, 24.8], FIRE_T = 31.3;
 const TK = 21.2;   // Lawler reaches the works (north first)
 const SWF = 3 * Math.PI / 4;
 
@@ -21,11 +24,11 @@ const units = [];
 // the Confederate line behind the breastworks, north (Green) to south (Cockrell); captured grey in place from the north; the flanks run for the bridge
 [[679.9, 0], [683.3, 1], [686.7, 2], [690.0, 3]].forEach(([y, i]) => { const flank = i === 0 || i === 3;
   units.push({ side: "r", type: "inf", n: 3, keys: [[0, bwX(y) - 0.35, y]], cap: TK + i * 0.7, capN: flank ? 1 : 3, t1: T.D + 1,
-    ...(flank ? { escape: ESC(T.ran - 0.3 + (i === 3 ? 0.5 : 0), 2.1, 1) } : {}) }); });
+    ...(flank ? { escape: ESC(ESC_T[i === 3 ? 1 : 0], 3.4, 1) } : {}) }); });
 // 18 guns: three batteries just behind the parapet, all taken
 [[681.6], [685.0], [688.6]].forEach(([y], i) => units.push({ side: "r", type: "art", n: 2, keys: [[0, bwX(y) - 1.2, y]], cap: TK + 0.6 + i * 0.5, t1: T.D + 1 }));
 // the reserve by the bridge: first across
-units.push({ side: "r", type: "inf", n: 3, face: 0, keys: [[0, BR.x + 2.6, 685.4]], escape: ESC(T.ran - 0.8, 1.4, 0) });
+units.push({ side: "r", type: "inf", n: 3, face: 0, keys: [[0, BR.x + 2.6, 685.4]], escape: ESC(ESC_T[2], 2.0, 0) });
 // Union: Lawler's brigade out of the meander scar on the northern flank, straight through the works, on toward the bridge
 units.push({ side: "u", type: "inf", n: 3, face: SWF, keys: [[0, 1527.8, 679.4], [T.charged, 1527.8, 679.4], [TK - 0.3, bwX(680.6) + 0.5, 680.4], [TK + 1.8, 1518.6, 681.8],
   [T.ran + 0.6, 1516.4, 682.6], [T.prisoners, 1514.6, 683.2]] });
@@ -47,9 +50,9 @@ PONT.forEach((_, k) => { const { b, ex, ey } = axis(k), P = (d) => [b[0] + ex * 
 const arrows = [
   { side: "u", pts: [[1528.4, 678.9], [1525.4, 679.6], [1522.2, 680.8], [1519.0, 682.2]], t0: T.charged, dur: 2.6, t1: T.ran },
   { side: "u", pts: [[1527.2, 687.0], [1524.8, 687.0], [1522.4, 686.8]], t0: 19.8, dur: 2.2, t1: T.ran },
-  { side: "r", pts: [[1517.4, 684.4], [1514.4, 684.0], [1511.2, 684.3], [1507.4, 683.0]], t0: T.ran + 0.1, dur: 2.6, t1: 33.6 },
+  { side: "r", pts: [[1517.4, 684.4], [1514.4, 684.0], [1511.2, 684.3], [1507.4, 683.0]], t0: T.ran + 0.1, dur: 2.0, t1: FIRE_T - 0.3 },   // gone before the fire
 ];
-for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.push({ side: "u", pts: [[b[0] + ex * 3.4, b[1] + ey * 3.4], [b[0] + ex * 0.7, b[1] + ey * 0.7]], t0: TB[k] + 0.4, dur: 1.3, t1: T.D + 1 }); }
+for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.push({ side: "u", pts: [[b[0] + ex * 4.6, b[1] + ey * 4.6], [b[0] + ex * 1.4, b[1] + ey * 1.4], [b[0] - ex * 1.8, b[1] - ey * 1.8]], t0: TB[k] + 0.8, dur: 1.2, t1: T.D + 1, width: 0.24 }); }   // round 2: a real shaft over the finished bridge (was a bare head)
 
 // ---------------- fx ----------------
 const bw3 = BRW.filter((_, i) => i % 6 === 0).map((p) => [p[0] + 0.12, p[1]]);
@@ -57,8 +60,8 @@ const SMK = { dir: [-1, 0], size: 1.4, alpha: 0.22, life: 12, muzzle: 6, windK: 
 const csGuns = [[bwX(681.6) - 1.2, 681.6], [bwX(685.0) - 1.2, 685.0], [bwX(688.6) - 1.2, 688.6]];
 const fx = {
   fires: [
-    { region: BB, bridge: 0, t0: 30.3, t1: 40.4, preset: "bridge", waterGlow: { t1: 40.8 } },   // burns the trestle at t0 + 3.2
-    { region: BB, at: [DOT[0], DOT[1], 0.2], t0: 30.9, t1: 40.2, preset: "steamer" },           // the steamboat Dot, turned across the river as a bridge
+    { region: BB, bridge: 0, t0: FIRE_T, t1: 40.4, preset: "bridge", waterGlow: { t1: 40.8 } },   // burns the trestle at t0 + 3.2
+    { region: BB, at: [DOT[0], DOT[1], 0.2], t0: FIRE_T + 0.4, t1: 40.2, preset: "steamer" },           // the steamboat Dot, turned across the river as a bridge
     { region: BB, bridge: 0, burn: false, t0: 40.4, t1: T.D + 2, preset: "smoulder", cue: false },
   ],
   smokeLines: [
@@ -75,30 +78,33 @@ const fx = {
 window.SEQ = {
   name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17",
   regions: [BB],
-  regionOpts: { [BB]: { troopScale: 1.2 } },
-  features: { [BB]: { bridges: [{ burn: 30.3 + 3.2 }], pontoons: TB.map((at) => ({ at })) } },
+  regionOpts: { [BB]: { troopScale: 1.4 } },   // round 2: boxes ~3 % of the frame width like v8 (with the v8 distances below)
+  features: { [BB]: { bridges: [{ burn: FIRE_T + 3.2 }], pontoons: TB.map((at) => ({ at })) } },
   keys: [
-    { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 44, tilt: 46, yaw: -4, fov: 30 },
-    { t: 12.9, region: BB, at: [1517.4, 684.6], dist: 34, tilt: 48, yaw: -8, fov: 30 },
-    { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 29, tilt: 50, yaw: -12, fov: 30 },
+    { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 40, tilt: 46, yaw: -4, fov: 30 },
+    { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
+    { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
     { t: 22.6, region: BB, at: [1520.6, 683.2], dist: 27, tilt: 52, yaw: -14, fov: 30 },
-    { t: 26.8, region: BB, at: [1517.6, 684.0], dist: 28, tilt: 52, yaw: -10, fov: 30 },
+    { t: 26.8, region: BB, at: [1516.6, 684.0], dist: 27, tilt: 52, yaw: -10, fov: 30 },
     { t: 31.8, region: BB, at: [1513.6, 684.0], dist: 25, tilt: 54, yaw: -6, fov: 30 },
-    { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 30, tilt: 52, yaw: -2, fov: 30 },
-    { t: 41.2, region: BB, at: [1511.4, 691.4], dist: 33, tilt: 50, yaw: 4, fov: 30 },
-    { t: T.D, region: BB, at: [1511.0, 693.2], dist: 31, tilt: 51, yaw: 7, fov: 30, ease: "lin" },
+    { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
+    // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
+    // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11
+    { t: 41.22, region: BB, at: [1512.8, 688.4], dist: 30, tilt: 51, yaw: 0, fov: 30 },
+    { t: 41.22, region: BB, at: [1511.4, 693.0], dist: 33, tilt: 47, yaw: 2, fov: 30, ease: "cut" },
+    { t: T.D, region: BB, at: [1510.8, 694.4], dist: 31.5, tilt: 48, yaw: 5, fov: 30, ease: "lin" },
   ],
   clouds: { [BB]: { shadows: true } },
   units, arrows,
   banners: [
     { general: "pemberton", keys: [[0, BR.x - 3.4, 682.6]], t0: T.pem + 0.1, t1: T.D + 1, escape: { road: RD, t0: T.ran + 0.6, v: 1.1, v2: 1.1, join: "west" } },
-    { general: "grant", keys: [[0, 1527.2, 682.4], [T.ran + 1.0, 1527.2, 682.4], [32.6, 1521.4, 684.8], [38.8, 1521.4, 684.8], [T.nextMorning, BR.x + 2.6, 687.4]], t0: T.grant + 0.1, t1: T.D + 1 },
+    { general: "grant", keys: [[0, 1527.2, 682.4], [T.ran + 1.0, 1527.2, 682.4], [32.6, 1521.4, 684.8], [41.18, 1521.4, 684.8], [41.26, 1516.2, 689.4]], t0: T.grant + 0.1, t1: T.D + 1 },
   ],
   labels: [
     { text: "Bovina", town: "Bovina", size: 18, t0: 2.4, t1: 9.6 },
     { text: "Big Black River", at: [1533.0, 678.2], size: 20, river: true, t0: T.bigblack + 0.1, t1: 9.4 },
     { text: "breastworks", at: [bwX(688.0) + 1.8, 688.0], size: 16, river: true, t0: T.breastworks + 0.1, t1: 14.6 },
-    { text: "Big Black River", at: [1508.2, 694.6], size: 18, river: true, t0: T.nextMorning, t1: 44.6 },
+    { text: "Big Black River", at: [1508.2, 694.6], size: 18, river: true, t0: 41.6, t1: 44.6 },
   ],
   fx,
   generals: { lawler: { img: "seq/lawler.png", side: "us", name: "Lawler", full: "Michael K. Lawler", role: "Brigadier General" } },
@@ -122,7 +128,10 @@ window.SEQ = {
     ["ledger.add", T.prisoners + 0.6, { who: "1,751 prisoners", note: "by Grant's count", stamp: false }],
     ["number", T.prisoners + 0.6, T.stopped - 0.2, { value: 1751, round: 1, world: [1516.6, 687.6], size: 104 }],
     ["ledger.add", T.single, { who: "Grant stopped", note: "a single day", stamp: false }],
-    ["plaque.date", T.nextMorning, { month: "May 1863", day: "18", weekday: "Day 19", note: "Monday · three new bridges" }],
+    ["film.dim", 40.5, 41.35, 0.9],
+    ["film.grade", 41.22, "dusk", 0.4],
+    ["film.grade", 44.4, "day", 1.0],
+    ["plaque.clock", 41.22, { time: "8:00", note: "Monday · three new bridges", header: "18 May 1863 · Day 19" }],
     ["ledger.add", T.three + 0.5, { who: "Three new bridges", note: "by 8 a.m., 18 May", stamp: false }],
   ],
 };

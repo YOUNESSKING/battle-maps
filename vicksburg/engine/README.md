@@ -175,6 +175,8 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
 
 - `O.letter(..., { marks: false })` types the quote text as given (no automatic curly quotes around it): for a paraphrased
   message with only a few words in quote marks (S06 Sherman: this road will be jammed, "as sure as life."). Default unchanged.
+- `O.letter(..., { qSize: 30, height: 250, top: 680 })`: optional bigger typed body (default 18 px is ~12 px at 720p; a `\n` in the quote
+  breaks the line) and a taller card to hold it (S11 round 2). Defaults unchanged.
 
 - Units with the same `group` key are not pushed apart from each other: lets a scene swap one unit for a bigger copy of itself
   (own `bw` / `bd`) with a short crossfade when the camera pulls far back (S06: thicker boxes on the 450-unit wide shots).

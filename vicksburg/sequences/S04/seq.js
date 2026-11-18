@@ -20,7 +20,7 @@ const T = { D: 88.59, landing: 1.87, ninth: 3.50, porter: 4.65, gunboats: 4.93, 
   railroads: 51.77, drawing: 52.69, troops: 53.67,
   morning: 55.73, thirtieth: 56.76, began: 58.41, bruinsburg2: 59.23, nobody: 60.79, waiting: 61.43, end: 63.13, seventeen: 64.78, soldiers: 66.01,
   shore: 67.97, quote: 69.41, grantW: 73.25, now: 74.75, enemyC: 75.47, vast: 77.05, stronghold: 78.39, vb: 79.27, base: 81.15, but: 82.13,
-  dry: 83.55, same: 84.81, enemy: 86.39 };
+  dry: 83.55, same: 84.81, enemy: 86.39, quote2: 74.39 };
 const D = T.D, WD = "wide", BR = "bruinsburg";
 const NIGHT0 = 17.85, DAY0 = 35.25, CUT = 55.1;
 const DV = VX.diveTimes(59.6);              // push 55.8 · deckIn 57.9 · full 59.05 · SW 59.6 · emerge 60.45 · land 62.95
@@ -39,10 +39,10 @@ const LG = VX.len(GGPATH);
 const sOf = (x, y) => { let best = 0, bd = 1e9; for (let s = 0; s <= LG; s += 0.5) { const p = VX.along(GGPATH, s), d = Math.hypot(p[0] - x, p[1] - y); if (d < bd) { bd = d; best = s; } } return best; };
 const sFort = sOf(1242, 953);
 // eight gunboats: come down on "Porter's gunboats", hold in front of the forts (circling slightly), pull back upstream that night
-const gbS = (t, i) => { const st = sFort - 12 + i * 3.4 + 0.8 * Math.sin(t * 0.35 + i * 1.7);
+const gbS = (t, i) => { const st = sFort - 30 + i * 8.6 + 0.8 * Math.sin(t * 0.35 + i * 1.7);   // in line, ~1.4 boat lengths apart (no comb)
   const arrive = sstep(T.porter - 0.4, T.porter + 3.6, t), back = sstep(NIGHT0 - 0.4, 22.0, t);
   return Math.max(0, (st - 30) + 30 * arrive - 24 * back); };
-const tpS = (t, i) => 6 + i * 3.2;                 // the transports wait off Hard Times
+const tpS = (t, i) => 4 + i * 7.5;                 // the transports wait off Hard Times
 const DISPATH = sl(iDIS - 8, iBR + 10, 4);         // Disharoon's -> Bruinsburg (the crossing morning)
 const LDP = VX.len(DISPATH);
 
@@ -98,7 +98,7 @@ const arrows = [
   // C: Sherman up the Yazoo; Pemberton's men north; Grierson far east; the chase
   { region: WD, side: U, pts: VX.reverse(VX.river(WD, "Yazoo River").pts.map((p) => [p[0], p[1]])).filter((_, i, a) => i % 20 === 0 || i === a.length - 1), t0: T.steamed, dur: 2.2, t1: CUT, width: 0.34 },
   { region: WD, side: R, pts: [[VBG[0] + 20, VBG[1] - 8], [1430, 640], [1446, 606]], t0: T.pem, dur: 1.4, t1: CUT, width: 0.36 },
-  { region: WD, side: U, pts: GRIER, t0: T.rode, dur: 3.0, t1: CUT, width: 0.3 },
+  { region: WD, side: U, pts: GRIER, t0: T.east, dur: 4.5, t1: CUT, width: 0.3 },
   { region: WD, side: R, pts: [[JX[0] + 14, JX[1] + 8], [1940, 744], [1980, 764]], t0: T.drawing, dur: 1.4, t1: CUT, width: 0.32 },
   // D: the crossing (wide) down to Bruinsburg
   { region: WD, side: U, pts: DISPATH.filter((_, i, a) => i % 3 === 0 || i === a.length - 1), t0: CUT + 0.3, dur: 2.4, t1: DV.full, width: 0.4 },
@@ -131,11 +131,11 @@ const fx = {
 
 // ---------------- boats ----------------
 const boats = [
-  { region: WD, kind: "gunboat", n: 8, size: 5.0, path: GGPATH, sAt: (t, i) => gbS(t, i), t0: T.porter - 0.3, t1: DAY0 + 0.5, lamp: false },
-  { region: WD, kind: "steamer", n: 6, size: 5.0, path: GGPATH, sAt: (t, i) => tpS(t, i), t0: 0, t1: DAY0 + 0.5, lamp: false },
-  { region: WD, kind: ["gunboat", "gunboat", "steamer", "steamer", "steamer", "steamer"], n: 6, size: 5.0, path: YZ, sAt: (t, i) => yzS(t, i), t0: T.steamed - 0.3, t1: CUT, lamp: false },
-  { region: WD, kind: ["gunboat", "steamer", "steamer", "steamer", "steamer", "steamer"], n: 6, size: 5.0, path: DISPATH,
-    sAt: (t, i) => Math.max(0, Math.min(LDP - 4 - i * 5, (t - CUT) * 18 - i * 5)), t0: CUT, t1: DV.full, lamp: false },
+  { region: WD, kind: "gunboat", n: 8, size: 3.0, path: GGPATH, sAt: (t, i) => gbS(t, i), t0: T.porter - 0.3, t1: DAY0 + 0.5, lamp: false, wake: false },
+  { region: WD, kind: "steamer", n: 6, size: 3.0, path: GGPATH, sAt: (t, i) => tpS(t, i), t0: 0, t1: DAY0 + 0.5, lamp: false, wake: false },
+  { region: WD, kind: ["gunboat", "gunboat", "steamer", "steamer", "steamer", "steamer"], n: 6, size: 3.4, path: YZ, sAt: (t, i) => yzS(t, i), t0: T.steamed - 0.3, t1: CUT, lamp: false, wake: false },
+  { region: WD, kind: ["gunboat", "steamer", "steamer", "steamer", "steamer", "steamer"], n: 6, size: 3.4, path: DISPATH,
+    sAt: (t, i) => Math.max(0, Math.min(LDP - 4 - i * 7, (t - CUT) * 18 - i * 7)), t0: CUT, t1: DV.full, lamp: false, wake: false },
   // close: the transports at the landing + two gunboats standing by
   { region: BR, kind: ["steamer", "steamer", "gunboat", "steamer", "steamer", "gunboat"], n: 6, size: 0.75, path: BANK, sAt: (t, i) => trS(t, i), t0: DV.SW - 0.1, t1: D + 1, lamp: false },
 ];
@@ -185,6 +185,7 @@ window.SEQ = {
     { text: "Yazoo River", at: [1386, 598], size: 18, t0: T.yazoo, t1: T.yazoo + 3.6, region: WD, river: true },
     { text: "Haynes' Bluff", town: "Haynes' Bluff", size: 18, t0: T.show - 0.2, t1: T.show + 3.4, region: WD },
     { text: "Vicksburg", town: "Vicksburg", size: 20, t0: T.pem - 0.2, t1: T.pem + 3.4, region: WD },
+    { text: "Jackson", town: "Jackson", size: 20, t0: T.east, t1: T.east + 4.0, region: WD },
     { text: "Jackson", town: "Jackson", size: 20, t0: T.drawing, t1: CUT, region: WD },
     { text: "Bruinsburg", town: "Bruinsburg", size: 20, t0: CUT + 0.3, t1: DV.full - 0.3, region: WD },
     { text: "Bruinsburg", at: [1186.0, 1027.6], size: 22, t0: DV.SW + 1.0, t1: DV.SW + 4.6, region: BR },
@@ -201,9 +202,9 @@ window.SEQ = {
     // B
     ["film.grade", NIGHT0, "night", 0.8],
     ["plaque.date", T.night, { month: "April 1863", day: "29", weekday: "Wednesday", note: "that night" }],
-    ["label", T.black, T.news + 3.0, { name: "A local man", sub: "comes in with news", world: [DIS[0] - 3, DIS[1] - 1] }],
+    ["label", T.black, T.news + 3.0, { name: "A local man", sub: "comes in with news", world: [HT[0] - 9, HT[1] - 2] }],
     ["label", T.good + 0.1, T.bruinsburg + 0.4, { name: "A good landing", sub: "a few miles further down", world: [BRW[0] + 2, BRW[1]], side: "us", marker: false, offset: [-330, -60] }],
-    ["distance", T.road, T.correct + 0.6, { from: [BRW[0] + 2, BRW[1]], to: [PGW[0], PGW[1]], value: 12, unit: "MILES", sub: "a good road inland" }],
+    ["distance", T.road, T.correct + 0.6, { from: [BRW[0] + 2, BRW[1]], to: [PGW[0], PGW[1]], value: 12, unit: "MILES", sub: "a good road inland", dash: false }],
     ["plaque.note", T.correct - 0.3, "the news is found correct"],
     // C
     ["film.grade", DAY0, "day", 0.8],
@@ -219,8 +220,9 @@ window.SEQ = {
     ["number", T.seventeen, T.shore + 0.4, { value: 17000, round: 1000, world: [1192, 1032], size: 92 }],
     ["plaque.note", T.end, "DAY 1 · by the end of the day"],
     // E
-    ["quote", T.quote + 0.05, 87.7, { en: "I felt a degree of relief scarcely ever equalled since. … I was now in the enemy's country, with a vast river and the stronghold of Vicksburg between me and my base of supplies. But I was on dry ground on the same side of the river with the enemy.",
-      attr: "Ulysses S. Grant · Personal Memoirs", y: 800 }],
+    ["quote", T.quote + 0.05, 73.6, { en: "I felt a degree of relief scarcely ever equalled since.", attr: "Ulysses S. Grant · Personal Memoirs", y: 840, dim: 0.45 }],
+    ["quote", T.quote2, 81.7, { en: "I was now in the enemy's country, with a vast river and the stronghold of Vicksburg between me and my base of supplies.", attr: "Ulysses S. Grant · Personal Memoirs", y: 820, dim: 0.45 }],
+    ["quote", T.but, 87.9, { en: "But I was on dry ground on the same side of the river with the enemy.", attr: "Ulysses S. Grant · Personal Memoirs", y: 840, dim: 0.45 }],
   ],
 };
 void sstep; void HT; void tpS; void COL;

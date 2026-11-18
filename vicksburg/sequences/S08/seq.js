@@ -18,7 +18,7 @@ const T = { D: 96.78, fourteenth: 0.92, two: 1.95, marched: 2.89, jackson: 3.61,
   straight: 83.09, mcp: 83.77, sent: 85.39, grant3: 86.17, now: 87.21, enemy: 89.21, turned: 91.73, west: 93.59, pemberton2: 94.37 };
 const D = T.D;
 const DV = VX.diveTimes(12.6);   // push 8.8 · full 12.05 · SW 12.6 · emerge 13.45 · land 15.95
-const CUT = 54.2, DAY2 = 86.6;
+const CUT = 55.3, DAY2 = 86.6;   // round 2: the burning factory holds 3.4 s before the cut (fire from "factory" 51.85)
 const TW = (n) => VX.town(n, W);
 const JKw = TW("Jackson"), CL = TW("Clinton"), MS = TW("Mississippi Springs"), RYw = TW("Raymond"), BOL = TW("Bolton"), ED = TW("Edwards");
 const JK = VX.town("Jackson", J), WRIGHT = [1848.2, 711], LYNCH = [1879.5, 742.5];
@@ -40,21 +40,24 @@ const units = [
   // ===== Jackson close (troopScale 1.3) =====
   // Colquitt at the O. P. Wright farm, across the Clinton road, facing west; falls back into the town and away north
   { region: J, side: R, type: "inf", n: 2, face: "west", keys: [[0, WRIGHT[0] + 2.4, WRIGHT[1] + 0.6], [T.fought + 1.4, WRIGHT[0] + 2.4, WRIGHT[1] + 0.6], [T.north + 0.6, 1858.4, 715.6]],
-    escape: { road: [...VX.sub(jR0, 0, 40).reverse(), ...jR2.slice(1)], start: [1858.4, 715.6], t0: T.north + 0.7, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: 23.0 },
+    escape: { road: [...VX.sub(jR0, 0, 40).reverse(), ...jR2.slice(1)], start: [1858.4, 715.6], t0: T.north + 0.7, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: CUT },
   // Thompson at the Lynch Creek bridge, facing south-west; falls back and away north
   { region: J, side: R, type: "inf", n: 2, face: VX.FACE.sw, keys: [[0, LYNCH[0] + 1.4, LYNCH[1] - 1.8]],
-    escape: { road: [...VX.sub(jR1, 46, VX.len(jR1)), ...jR2.slice(1)], t0: T.north + 0.2, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: 23.0 },
+    escape: { road: [...VX.sub(jR1, 46, VX.len(jR1)), ...jR2.slice(1)], t0: T.north + 0.2, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: CUT },
   { region: J, side: R, type: "art", n: 1, face: VX.FACE.sw, keys: [[0, LYNCH[0] + 3.2, LYNCH[1] - 3.2]],
-    escape: { road: [...VX.sub(jR1, 48, VX.len(jR1)), ...jR2.slice(1)], t0: T.north, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: 23.0 },
+    escape: { road: [...VX.sub(jR1, 48, VX.len(jR1)), ...jR2.slice(1)], t0: T.north, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: CUT },
   // the main body already marching north out of the town on the Canton road
   { region: J, side: R, type: "inf", n: 4, face: "north", keys: [[0, JK[0] - 3.0, JK[1] - 3.4]], t1: D + 1,
     escape: { road: jR2, t0: DV.SW + 0.3, v: 1.7, v2: 1.7, join: "nearest", fade: "north" } },
   // Crocker (McPherson) on the Clinton road: charges the farm, then into the town
-  { region: J, side: U, type: "inf", n: 3, face: VX.FACE.east, t1: 28.8, keys: [[0, 1841.6, 707.4], [T.fought, 1841.6, 707.4], [T.north + 0.8, 1851.8, 712.6], [T.flew, 1874.0, 719.4], [28.8, 1878.0, 720.6]] },
-  { region: J, side: U, type: "inf", n: 3, face: VX.FACE.east, t1: 28.8, keys: [[0, 1838.4, 700.2], [T.north + 0.2, 1838.4, 700.2], [T.flew + 0.6, 1856.0, 713.6]] },
+  { region: J, side: U, type: "inf", n: 3, face: VX.FACE.east, group: "s1", t1: 29.6, keys: [[0, 1844.8, 707.8], [T.fought, 1844.8, 707.8], [T.north + 0.8, 1851.6, 712.4], [T.flew + 1.5, 1866.0, 717.0], [28.4, 1883.4, 722.6]] },   // follows the rearguard, never through it
+  { region: J, side: U, type: "inf", n: 3, face: VX.FACE.east, group: "s2", t1: 29.6, keys: [[0, 1844.2, 702.8], [T.north + 0.2, 1844.2, 702.8], [T.flew + 1.8, 1856.0, 713.0], [28.4, 1880.6, 726.8]] },
   // Sherman (Steele, Tuttle) on the Raymond road, the battery at the bridge; then into the town; Tuttle right toward the Pearl
-  { region: J, side: U, type: "inf", n: 3, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1867.0, 747.0], [T.north + 0.4, 1867.0, 747.0], [T.flew, 1883.2, 735.4], [28.8, 1884.6, 733.0]] },
-  { region: J, side: U, type: "inf", n: 2, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1872.4, 750.6], [T.north + 0.8, 1872.4, 750.6], [T.flew + 0.4, 1886.6, 735.4]] },
+  { region: J, side: U, type: "inf", n: 3, face: VX.FACE.ne, group: "s3", t1: 29.6, keys: [[0, 1867.0, 747.0], [T.north + 0.4, 1867.0, 747.0], [T.flew, 1883.2, 735.4], [28.4, 1884.4, 731.0]] },
+  { region: J, side: U, type: "inf", n: 2, face: VX.FACE.ne, group: "s4", t1: 29.6, keys: [[0, 1872.4, 750.6], [T.north + 0.8, 1872.4, 750.6], [T.flew + 0.4, 1886.6, 735.4], [28.4, 1891.6, 730.6]] },
+  // round 2 (critics: no troops in Jackson 30-53): the same units as small boxes in the streets for the close factory shot (crossfade, same group)
+  ...[["s1", 2, [1885.0, 724.4], [1885.6, 724.0]], ["s2", 1, [1883.6, 727.2], [1884.0, 727.0]], ["s3", 2, [1890.6, 729.4], [1890.2, 729.8]], ["s4", 2, [1890.4, 723.8], [1891.0, 723.6]]]
+    .map(([g, n, a, b]) => ({ region: J, side: U, type: "inf", n, face: VX.FACE.east, group: g, bw: 0.2, bd: 0.1, gap: 0.04, t0: 29.0, t1: CUT + 1, keys: [[29.0, ...a], [CUT, ...b]] })),
   { region: J, side: U, type: "art", n: 2, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1873.8, 745.2]] },
 
   // ===== wide at night (13 May): Johnston at Jackson, McPherson at Clinton, Sherman toward Mississippi Springs =====
@@ -94,8 +97,9 @@ const arrows = [
 const SMK = (dir, rate = 1.2) => ({ dir, size: 0.95, alpha: 0.24, life: 10, muzzle: 6, windK: 0.4, rate, volley: 1.6 });
 const VOL = (pts, t0, t1, dir, every = 1.5) => ({ region: J, pts, t0, t1, every, opts: SMK(dir) });
 const fx = {
-  fires: [{ region: J, at: [FACT[0], FACT[1], 0.1], t0: T.flames, t1: D + 1, preset: "house", opts: { size: 3.2 } },
-    { region: J, at: [FACT[0] + 0.25, FACT[1] - 0.1, 0.1], t0: T.flames + 0.5, t1: D + 1, preset: "house", opts: { size: 2.2 }, cue: false }],
+  fires: [{ region: J, at: [FACT[0] - 0.3, FACT[1], 0.25], to: [FACT[0] + 0.3, FACT[1], 0.25], t0: T.flames + 0.05, t1: D + 1, preset: "house",
+      opts: { size: 2.6, ramp: 0.6, smokeRate: 9, smokeLife: 14, rise: 38, smokeTint: [0.13, 0.12, 0.11], smokeAlpha: 0.6, smokeS0: 0.5, smokeGrow: 2.4, smokeWind: 1.2 } },
+    { region: J, at: [FACT[0] + 0.45, FACT[1] - 0.1, 0.25], t0: T.flames + 0.5, t1: D + 1, preset: "house", opts: { size: 1.8, smokeRate: 4, smokeTint: [0.15, 0.14, 0.13], smokeAlpha: 0.5 }, cue: false }],
   volleys: [
     VOL([[1849.8, 711.2], [1850.4, 713.0]], DV.emerge, T.north + 0.4, [-1, -0.3], 1.4),     // Colquitt at the Wright farm
     VOL([[1845.0, 709.0], [1845.6, 711.0]], DV.emerge + 0.4, T.north + 0.6, [1, 0.3], 1.5),   // Crocker's line
@@ -108,16 +112,20 @@ const ROUTE2 = VX.sub(r12, 0, 200, 1.0).reverse().filter((p) => p[0] < 1888);   
 const ROUTE3 = VX.sub(r25, 2, 120, 1.0);                                              // north
 const L1 = VX.len(ROUTE1);
 const markers = [
-  { icon: "rider", region: W, path: ROUTE1, v: L1 / (T.straight + 0.6 - T.three), t0: T.three, t1: T.mcp + 1.2, size: 5.6, min: 28, max: 42, halo: true, color: "#7a3a2c", colors: [[T.union2, "#3a63b8"]] },
-  { icon: "rider", region: W, path: ROUTE2, v: 5.2, t0: T.three + 0.6, t1: 73.0, size: 5.6, min: 28, max: 42, halo: true, color: "#7a3a2c" },
-  { icon: "rider", region: W, path: ROUTE3, v: 5.2, t0: T.three + 1.2, t1: 73.0, size: 5.6, min: 28, max: 42, halo: true, color: "#7a3a2c" },
+  { icon: "rider", region: W, path: ROUTE1, v: L1 / (T.straight + 0.6 - T.three), t0: T.three, t1: T.mcp + 1.2, size: 9, min: 50, max: 76, halo: "rgba(255,226,160,.8)", color: "#7a3a2c", colors: [[T.union2, "#3a63b8"]] },
+  { icon: "rider", region: W, path: ROUTE2, v: 5.2, t0: T.three + 0.6, t1: 73.0, size: 9, min: 50, max: 76, halo: "rgba(255,226,160,.8)", color: "#7a3a2c" },
+  { icon: "rider", region: W, path: ROUTE3, v: 5.2, t0: T.three + 1.2, t1: 73.0, size: 9, min: 50, max: 76, halo: "rgba(255,226,160,.8)", color: "#7a3a2c" },
 ];
 // workers leave the factory with what cloth they can carry
 [[[FACT[0], FACT[1] + 0.3], [1885.6, 729.6]], [[FACT[0] + 0.2, FACT[1] + 0.2], [1890.4, 729.4]], [[FACT[0] - 0.2, FACT[1]], [1884.6, 726.2]], [[FACT[0], FACT[1] - 0.2], [1886.8, 723.8]],
   [[FACT[0] + 0.3, FACT[1]], [1891.0, 727.2]], [[FACT[0] - 0.1, FACT[1] + 0.3], [1887.0, 730.0]]]
   .forEach(([a, b], i) => markers.push({ icon: "person", region: J, path: [a, b], v: 0.55, t0: T.workers + 0.1 + i * 0.3, t1: CUT + 0.3, size: 0.32, min: 9, max: 18, color: "#6e6656", flip: false }));
 const MK = VX.markers(markers);
-const PU = VX.pulses([{ region: W, at: CL, t0: T.straight + 0.3, t1: T.now, r: 9, color: [60, 100, 200], period: 1.1 }]);
+const PU = VX.pulses([{ region: W, at: CL, t0: T.straight + 0.3, t1: T.now, r: 9, color: [60, 100, 200], period: 1.1 },
+  // round 2 (critic B): Jackson changes hands on "flew": a steady Union-blue wash over the town (close), and on the wide day map
+  { region: J, at: [1889.0, 724.6], t0: T.flew, t1: 29.6, r: 10, color: [44, 87, 183], period: 1e9, alpha: 0.9 },
+  { region: J, at: [1889.0, 724.6], t0: 29.0, t1: CUT + 1, r: 10, color: [44, 87, 183], period: 1e9, alpha: 0.45 },   // lighter on the close factory shot
+  { region: W, at: JKw, t0: DAY2 + 0.2, t1: D + 1, r: 10, color: [44, 87, 183], period: 1e9, alpha: 0.6 }]);
 const RAIN = VX.rain([[0, 0.55], [T.downpour - 0.3, 0.6], [T.downpour + 0.3, 1.0], [T.north, 0.9], [T.afternoon, 0.4], [T.stars, 0]]);
 
 // the Stars and Stripes over the capitol (DOM: a pole pinned to the ground, the flag rises on "Stars and Stripes" and waves)
@@ -135,6 +143,21 @@ const FLAG = { build: () => { const PN = document.getElementById("pins"), e = do
     FLAG.f.style.bottom = (VX.lerp(0.05, 0.62, up) * H).toFixed(1) + "px";
     FLAG.f.style.transform = `skewY(${(3.5 * Math.sin(t * 3.1)).toFixed(2)}deg) scaleX(${(0.93 + 0.07 * Math.sin(t * 2.3 + 1)).toFixed(3)})`; } };
 
+// round 2 (critic A): a distinct cotton factory under the plate: a long brick mill with a dark roof and a tall chimney (bigger than the houses);
+// its roof chars from "factory" on (custom emitter = runs before each render)
+const FACTORY = (ctx) => { const { THREE } = ctx, sc = ctx.regions[J].scene, g = ctx.G(J, FACT, 0), grp = new THREE.Group();
+  const wallM = new THREE.MeshLambertMaterial({ color: 0x9a5a3c }), roofM = new THREE.MeshLambertMaterial({ color: 0x4a4744, side: THREE.DoubleSide }), chM = new THREE.MeshLambertMaterial({ color: 0x7a4430 });
+  const L = 0.78, Wd = 0.24, H = 0.1;
+  const body = new THREE.Mesh(new THREE.BoxGeometry(L, H, Wd), wallM); body.position.y = H / 2;
+  const roofG = new THREE.BufferGeometry(), rh = 0.07, v = new Float32Array([-L / 2, H, -Wd / 2 - 0.02, L / 2, H, -Wd / 2 - 0.02, L / 2, H + rh, 0, -L / 2, H + rh, 0, -L / 2, H, Wd / 2 + 0.02, L / 2, H, Wd / 2 + 0.02]);
+  roofG.setAttribute("position", new THREE.BufferAttribute(v, 3)); roofG.setIndex([0, 1, 2, 0, 2, 3, 4, 3, 2, 4, 2, 5]); roofG.computeVertexNormals();
+  const roof = new THREE.Mesh(roofG, roofM);
+  const ch = new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.03, 0.36, 8), chM); ch.position.set(L / 2 - 0.08, 0.18, Wd / 2 - 0.05);
+  for (const m of [body, roof, ch]) { m.castShadow = m.receiveShadow = true; grp.add(m); }
+  grp.position.set(g[0], g[1] - 0.005, g[2]); grp.rotation.y = 0.05; sc.add(grp);
+  const c0 = new THREE.Color(0x4a4744), c1 = new THREE.Color(0x1a1512), w0 = new THREE.Color(0x9a5a3c), w1 = new THREE.Color(0x3a2a22);
+  ctx.FX[J].custom((t) => { const k = ctx.sstep(T.flames, T.flames + 3.0, t); roofM.color.copy(c0).lerp(c1, k); wallM.color.copy(w0).lerp(w1, k * 0.8); }); };
+
 const LEG = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Johnston", color: "#9C3A35" }] };
 const LEG2 = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] };
 const DATE = (day, dn, note) => ({ month: "May 1863", day: String(day), weekday: "Day " + dn, note });
@@ -148,24 +171,24 @@ window.SEQ = {
     { t: 0, region: W, at: [1828, 724], dist: 255, tilt: 46, yaw: -4, fov: 30 },
     { t: 7.4, region: W, at: [1842, 722], dist: 240, tilt: 46, yaw: -3, fov: 30 },
     // (dive 8.8 -> 15.95) close: the rearguard fight, then the town and the flag
-    { t: 17.0, region: J, at: [1851.0, 712.6], dist: 36, tilt: 50, yaw: -10, fov: 30 },
+    { t: 17.0, region: J, at: [1858.0, 713.0], dist: 29, tilt: 44, yaw: 0, fov: 30 },
     { t: 21.6, region: J, at: [1889.4, 723.4], dist: 30, tilt: 52, yaw: -4, fov: 30 },
     { t: 23.2, region: J, at: [1890.4, 723.6], dist: 28, tilt: 52, yaw: -2, fov: 30, night: 0 },
     { t: 24.0, region: J, at: [1890.6, 723.7], dist: 27.6, tilt: 52, yaw: -1.6, fov: 30, night: 1, ease: "lin" },
     { t: 28.6, region: J, at: [1890.0, 724.6], dist: 24, tilt: 53, yaw: 1, fov: 30, night: 1, ease: "lin" },
     { t: 29.4, region: J, at: [1889.8, 724.9], dist: 23, tilt: 53, yaw: 1.4, fov: 30, night: 0, ease: "lin" },
     // the factory
-    { t: 33.0, region: J, at: [1888.0, 726.8], dist: 9, tilt: 55, yaw: 3, fov: 30 },
-    { t: 44.0, region: J, at: [1887.9, 727.0], dist: 8.4, tilt: 56, yaw: 12, fov: 30, ease: "lin" },
-    { t: 51.4, region: J, at: [1887.8, 727.2], dist: 9.2, tilt: 55, yaw: 16, fov: 30, ease: "lin" },
-    { t: CUT, region: J, at: [1887.8, 727.0], dist: 11, tilt: 54, yaw: 18, fov: 30, ease: "lin" },
+    { t: 33.0, region: J, at: [1887.6, 726.6], dist: 13, tilt: 54, yaw: 3, fov: 30 },
+    { t: 44.0, region: J, at: [1887.6, 726.8], dist: 12, tilt: 55, yaw: 10, fov: 30, ease: "lin" },
+    { t: 51.4, region: J, at: [1887.7, 726.6], dist: 13, tilt: 54, yaw: 13, fov: 30, ease: "lin" },
+    { t: CUT, region: J, at: [1887.8, 726.0], dist: 15.5, tilt: 52, yaw: 15, fov: 30, ease: "lin" },
     // cut: wide, the night before (13 May): the messengers
     { t: CUT, region: W, at: [1846, 712], dist: 190, tilt: 48, yaw: -3, fov: 30, ease: "cut" },
     { t: 58.8, region: W, at: [1844, 712], dist: 182, tilt: 48, yaw: -2, fov: 30, night: 0 },
-    { t: 59.7, region: W, at: [1843.6, 712], dist: 180, tilt: 48, yaw: -1.9, fov: 30, night: 1, ease: "lin" },
-    { t: 71.2, region: W, at: [1836, 710], dist: 176, tilt: 48, yaw: -1, fov: 30, night: 1 },
-    { t: 81.0, region: W, at: [1812, 703], dist: 138, tilt: 50, yaw: -1, fov: 30, night: 1 },
-    { t: DAY2, region: W, at: [1798, 704], dist: 150, tilt: 50, yaw: 0, fov: 30, night: 1 },
+    { t: 59.7, region: W, at: [1843.6, 712], dist: 180, tilt: 48, yaw: -1.9, fov: 30, night: 0.72, ease: "lin" },
+    { t: 71.2, region: W, at: [1834, 710], dist: 172, tilt: 48, yaw: -1, fov: 30, night: 0.72 },
+    { t: 81.0, region: W, at: [1804, 712], dist: 150, tilt: 49, yaw: -1, fov: 30, night: 0.72 },
+    { t: DAY2, region: W, at: [1794, 716], dist: 158, tilt: 49, yaw: 0, fov: 30, night: 0.72 },
     { t: DAY2 + 0.8, region: W, at: [1794, 704], dist: 165, tilt: 50, yaw: 0, fov: 30, night: 0, ease: "lin" },
     // day: the army turns west toward Bolton and Edwards
     { t: 89.8, region: W, at: [1728, 708], dist: 330, tilt: 46, yaw: -1, fov: 30 },
@@ -173,7 +196,7 @@ window.SEQ = {
   ],
   dives: [{ t: DV.SW, over: [1868, 722],
     from: { region: W, at: [1852, 722], dist: 230, tilt: 45, yaw: -3 },
-    to: { region: J, at: [1849.6, 712.0], dist: 38, tilt: 48, yaw: -12, fov: 32 } }],
+    to: { region: J, at: [1857.0, 713.0], dist: 28, tilt: 44, yaw: 0, fov: 30 } }],
   clouds: {
     [W]: { scatter: { box: [1640, 600, 360, 220], n: 7, med: 24, seed: 8 },
       keepClear: [[1840, 718, 60, 0.8, 1], [1800, 700, 40, 0.8, 1], [1680, 710, 60, 0.8, 1]], bounds: [1560, 560, 2080, 900], nightErode: 0.4 },
@@ -202,8 +225,7 @@ window.SEQ = {
   overlay: [
     ["plaque.date", T.fourteenth, DATE(14, 15, "Thursday · rain in torrents")],
     ["legend", 1.2, T.decided, LEG],
-    ["medallion", { kind: "card", general: "johnston", sub: "arrived the night before", world: [JKw[0] - 2, JKw[1] - 14], offset: [-380, -200], tIn: T.johnston + 0.05, tOut: T.held + 0.2 }],
-    ["label", T.held - 0.6, DV.full - 0.2, { name: "Cannot be held", sub: "Johnston orders the city evacuated", world: [JKw[0] + 10, JKw[1] - 22], side: "cs", marker: false }],
+    ["medallion", { kind: "card", general: "johnston", sub: "arrived the night before", world: [JKw[0] - 2, JKw[1] - 14], offset: [-380, -200], tIn: T.johnston + 0.05, tOut: 10.2 }],
     // Jackson close
     ["legend", DV.emerge + 0.6, T.grantSherman - 0.2, LEG],
     ["label", DV.land - 0.2, T.north + 0.4, { name: "The rearguard", sub: "a thin line on the two roads", world: [1853.0, 708.0], side: "cs", marker: false }],
@@ -215,7 +237,7 @@ window.SEQ = {
     ["plaque.date", T.before, DATE(14, 15, "Thursday · before they left")],
     ["medallion", { kind: "card", general: "sherman", sub: "with Grant in the factory", screen: [1640, 300], tIn: T.grantSherman + 0.2, tOut: T.watched - 0.4 }],
     ["label", T.factory, T.battle + 0.8, { name: "Cotton factory", sub: "still working", world: [FACT[0], FACT[1]], side: "cs" }],
-    ["quote", T.watched - 0.1, T.bolt + 0.8, { en: "We looked on for a while to see the tent cloth which they were making roll out of the looms, with ‘C. S. A.’ woven in each bolt.", attr: "Ulysses S. Grant · Personal Memoirs", y: 640 }],
+    ["quote", T.watched - 0.1, T.bolt + 0.8, { en: "We looked on for a while to see the tent cloth which they were making roll out of the looms, with ‘C. S. A.’ woven in each bolt.", attr: "Ulysses S. Grant · Personal Memoirs", y: 640, dim: 0.4 }],
     ["plaque.date", T.work, DATE(14, 15, "Thursday · “done work enough”")],
     ["label", T.workers + 0.1, T.carry + 0.6, { name: "Sent home", sub: "with what cloth they could carry", world: [1886.0, 730.4], side: "us", marker: false }],
     ["plaque.date", T.flames, DATE(14, 15, "Thursday · the factory burns")],
@@ -235,10 +257,10 @@ window.SEQ = {
     // day: the army turns west
     ["plaque.date", DAY2 + 0.4, DATE(14, 15, "Thursday · the army turns west")],
     ["legend", DAY2 + 0.6, D + 1, LEG2],
-    ["label", T.enemy + 0.1, T.turned - 0.1, { name: "Pemberton's army", sub: "near Edwards", world: [ED[0] + 6, ED[1] + 34], side: "cs", marker: false }],
+    ["label", T.pemberton2 - 0.05, D + 1, { name: "Pemberton's army", sub: "near Edwards", world: [ED[0] + 6, ED[1] + 34], side: "cs", marker: false }],
     ["label", T.west - 0.2, D + 1, { name: "West", sub: "to meet Pemberton", world: [1690, 700], side: "us", marker: false }],
   ],
-  build: async (ctx) => { MK.build(ctx); PU.build(ctx); RAIN.build(ctx); FLAG.build(ctx); },
+  build: async (ctx) => { MK.build(ctx); PU.build(ctx); RAIN.build(ctx); FLAG.build(ctx); FACTORY(ctx); },
   draw: (t, ctx) => { MK.draw(t, ctx); PU.draw(t, ctx); RAIN.draw(t, ctx); FLAG.draw(t, ctx); },
 };
 })();

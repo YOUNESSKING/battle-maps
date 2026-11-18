@@ -15,14 +15,15 @@ const T = { D: 87.70, night: 0.75, sixteenth: 1.43, ten: 3.10, cast: 4.15, admir
   lost: 68.51, grantsCount: 70.03, noone: 71.17, killed: 72.85, six: 74.09, later: 74.53, steamers: 75.43, ran: 76.01, supplies: 77.11,
   soldiers: 78.79, volunteered: 79.63, tells: 81.21, fiveTimes: 84.65, over: 85.45 };
 const VB = "vicksburg", WIDE = "wide";
-const DAWN = 64.55;                           // cut + dissolve night -> dawn (between the paragraphs, 64.34 / 64.89)
+const DAWN = 64.55;                           // dissolve night -> dawn on the close world (between the paragraphs, 64.34 / 64.89)
+const WIDE0 = 69.55;                          // dissolve dawn close -> the wide map (between "lost." and "And by Grant's count")
 const hsh = VX.hsh, lerp = VX.lerp, clamp = VX.clamp, sstep = VX.sstep;
 const RIV = VX.river(VB, 0).pts.map((p) => [p[0], p[1]]), WL = VX.river(VB, 0).pts[0][2];
 const BAT = VX.region(VB).features.batteries;
 const L = VX.len(RIV);
 
 // ---------------- the fleet: arc-length schedule along the river (s = 0 at the west edge of the region, 108 = top of the hairpin, 122-160 the city front)
-const KS = [[0, 56], [T.cast, 56], [20.1, 90], [27.0, 104], [34.0, 117], [44.0, 145], [49.0, 151], [DAWN + 1, 155]];   // below the city the gunboats hold and regroup   // the lead boat (Benton)
+const KS = [[0, 56], [T.cast, 56], [20.1, 90], [27.0, 104], [34.0, 117], [44.0, 145], [49.0, 151], [DAWN + 0.5, 155], [69.6, 168]];   // below the city the gunboats hold and regroup   // the lead boat (Benton)
 const sLead = (t) => { if (t <= KS[0][0]) return KS[0][1]; for (let i = 1; i < KS.length; i++) if (t < KS[i][0]) { const [t0, s0] = KS[i - 1], [t1, s1] = KS[i];
   const k = (t - t0) / (t1 - t0);
   return s0 + (s1 - s0) * k; } return KS[KS.length - 1][1]; };
@@ -73,10 +74,10 @@ const BONFIRES = [662, 669, 674, 681, 688, 695, 702].map((y, i) => { const p = f
 
 // ---------------- custom sprites: the shore fires' light on the water, the Henry Clay burning while she drifts (moving fire: flames + glow + smoke)
 const custom = [
-  { region: VB, fn: (t, push) => { if (!WW || t > DAWN + 0.1) return; const wy = waterY();
+  { region: VB, fn: (t, push) => { if (!WW || t > 70.0) return; const wy = waterY();
     for (let i = 0; i < 10; i++) { if (i === HC && t > T.burst) continue; const p = boatXY(i, t), dx = p[2], dy = p[3];
-      push(p[0], wy + 0.12, p[1], 1.25, 0.2, 0.55, 0.66, 0.85);
-      for (let k = 1; k <= 5; k++) push(p[0] - dx * k * 0.45, wy + 0.03, p[1] - dy * k * 0.45, 0.5 + k * 0.08, 0.14 * (1 - k / 6), 0.55, 0.65, 0.8); } } },
+      push(p[0], wy + 0.12, p[1], 1.5, 0.24, 0.55, 0.66, 0.85);
+      for (let k = 1; k <= 9; k++) push(p[0] - dx * k * 0.45, wy + 0.03, p[1] - dy * k * 0.45, 0.55 + k * 0.1, 0.28 * (1 - k / 10), 0.55, 0.65, 0.8); } } },
   { region: VB, fn: (t, push) => { if (!WW || t > DAWN + 0.2) return; const wy = waterY();
     for (const [x, y, t0] of HOUSE_FIRES) { const e = sstep(t0, t0 + 2, t); if (e <= 0) continue; const r = frontAt(y), dx = r[0] - x, wx = x + dx * 0.55;
       for (let j = 0; j < 3; j++) { const f = 0.75 + 0.25 * Math.sin(t * (6.1 + j) + x) * Math.sin(t * 2.3 + j * 1.7);
@@ -86,14 +87,14 @@ const custom = [
   { region: VB, fn: (t, push) => { if (!WW || t < T.burst - 0.05 || t > DAWN + 0.2) return; const wy = waterY(), e = sstep(T.burst - 0.05, T.burst + 1.6, t), big = 1 + 0.5 * sstep(T.burned, T.edge + 2, t);
     const p = hcPath(t), dx = p[2], dy = p[3];
     // glow on the water around her + the flame body (additive), embers
-    push(p[0], wy + 0.05, p[1], 11 * big, 0.3 * e, 1.0, 0.4, 0.1);
-    push(p[0], wy + 0.25, p[1], 4.2 * big, 0.5 * e, 1.15, 0.5, 0.14);
-    for (let j = 0; j < 7; j++) { const ph = j * 1.91, u = ((t * (1.6 + 0.2 * j) + ph) % 1), along = (hsh(j, 31) - 0.5) * 0.9;
-      push(p[0] + dx * along + Math.sin(t * 3 + ph) * 0.08, wy + 0.25 + u * 0.9 * big, p[1] + dy * along, (0.75 + 0.45 * (1 - u)) * big, 0.85 * e * Math.sin(Math.PI * Math.min(1, u * 1.1 + 0.05)), 1.15, 0.42 + 0.2 * (1 - u), 0.1, 4 + (j % 2), 1); }
+    push(p[0], wy + 0.02, p[1], 7 * big, 0.16 * e, 0.9, 0.36, 0.08);   // orange glow on the water
+    push(p[0], wy + 0.2, p[1], 2.2 * big, 0.22 * e, 0.97, 0.62, 0.22);
+    for (let j = 0; j < 9; j++) { const ph = j * 1.91, u = ((t * (1.4 + 0.25 * j) + ph) % 1), along = (hsh(j, 31) - 0.5) * 1.1, fl = 0.75 + 0.25 * Math.sin(t * (7 + j) + ph);
+      push(p[0] + dx * along + Math.sin(t * 3 + ph) * 0.08, wy + 0.18 + u * 0.75 * big, p[1] + dy * along, (0.45 + 0.35 * (1 - u)) * big, 0.42 * e * fl * Math.sin(Math.PI * Math.min(1, u * 1.1 + 0.05)), 0.97, 0.5 + 0.27 * (1 - u), 0.14 + 0.1 * (1 - u), 4 + (j % 2), 1); }
     for (let j = 0; j < 10; j++) { const u = ((t * 0.45 + j * 0.37) % 1); push(p[0] + Math.sin(j * 7.1 + t) * 0.5 - u * 0.6, wy + 0.8 + u * 2.6, p[1] - u * 0.5, 0.12, 0.8 * e * (1 - u), 2.2, 0.9, 0.25, 7, 1); }
     // smoke: puffs born at her position in the past, rising and drifting with the wind (deterministic in t)
-    for (let j = 0; j < 22; j++) { const age = ((t - T.burst) * 1.0 + j * 0.45) % 9.9, tb = t - age; if (tb < T.burst) continue; const q = hcPath(tb), u = age / 9.9;
-      push(q[0] + age * 0.32, wy + 0.8 + age * 0.45, q[1] - age * 0.18, 0.9 + age * 0.45, 0.5 * e * (1 - u) * sstep(0, 0.6, age), 0.55, 0.42, 0.32, 6, 4.0); } } },
+    for (let j = 0; j < 30; j++) { const age = ((t - T.burst) * 1.0 + j * 0.4) % 12, tb = t - age; if (tb < T.burst) continue; const q = hcPath(tb), u = age / 12, lit = Math.max(0, 1 - age / 2.5);
+      push(q[0] + age * 0.3, wy + 0.9 + age * 0.55, q[1] - age * 0.16, 1.2 + age * 0.45, 0.8 * e * (1 - u) * sstep(0, 0.5, age), 0.42 + 0.5 * lit, 0.4 + 0.16 * lit, 0.39 + 0.02 * lit, 6, 4.0); } } },   // dark grey column, lit orange at its foot
 ];
 
 // ---------------- dawn: the fleet at anchor below the city (wide map), the route, the second run six nights later
@@ -102,49 +103,62 @@ const idxNear = (x, y, from = 0) => { let b = from; for (let i = from; i < RW.le
 const iCity = idxNear(1377, 681), iAnch = idxNear(1205, 872, iCity);
 const ROUTE = RW.slice(iCity, iAnch + 1).filter((_, i) => i % 4 === 0);
 const LR = VX.len(ROUTE);
+const iAbove = idxNear(1318, 692), RUN2 = RW.slice(iAbove, iAnch + 1).filter((_, i) => i % 4 === 0), LR2 = VX.len(RUN2);
+const sCity = (() => { let b = 0, bd = 1e9; for (let s = 0; s < LR2; s += 1) { const p = VX.along(RUN2, s), d = Math.hypot(p[0] - 1377, p[1] - 681); if (d < bd) { bd = d; b = s; } } return b; })();
+const sRun = (t, i) => (t - T.steamers) * 14 - i * 6.5;   // ~14 units/s from the foot of the west loop; the lead passes the city ~4 s after "steamers"
+const TIG = 2, SINK_S = sCity + 20, T_SINK = T.steamers + (SINK_S + TIG * 6.5) / 14;
+const run2Shots = [];
+{ let k = 0; for (let t = T.steamers + 1.5; t < 86; t += 0.7 + hsh(k, 4) * 0.6, k++) { const i = Math.floor(hsh(k, 6) * 6), s = sRun(t + 0.8, i); if (s < sCity - 30 || s > sCity + 30) continue;
+  const p = VX.along(RUN2, s), b = BAT[2 + Math.floor(hsh(k, 7) * 8)], dx = p[0] - b.x, dy = p[1] - b.z, l = Math.hypot(dx, dy);
+  run2Shots.push({ t: +t.toFixed(2), at: [b.x + 1, b.z], dir: [dx / l, dy / l], impact: [p[0] + (hsh(k, 8) - 0.5) * 3, p[1] + (hsh(k, 9) - 0.5) * 3], delay: 0.8 }); } }
 const anchorS = (i) => LR - 2 - i * 6.5;            // at anchor along the last stretch, Benton furthest down
 const boatsWide = [
-  { region: WIDE, kind: KINDS, n: 10, size: 2.2, path: ROUTE, sAt: (t, i) => anchorS(i), t0: DAWN - 0.1, t1: T.D + 1, lamp: false, wake: false },
-  // six nights later: more steamers run down past the city with supplies
-  { region: WIDE, kind: "steamer", n: 6, size: 2.2, path: ROUTE, sAt: (t, i) => Math.min(anchorS(10 + i), (t - T.steamers) * 26 - i * 7), t0: T.steamers, t1: T.D + 1, lamp: false },
+  { region: WIDE, kind: KINDS.filter((_, i) => i !== HC), n: 9, size: 2.2, path: ROUTE, sAt: (t, i) => anchorS(i), t0: DAWN - 0.1, t1: T.D + 1, lamp: false, wake: false },   // the Henry Clay is lost
+  // six nights later: six steamers run down from above the city past the guns; the Tigress (i = 2) is hit and sinks below the city
+  { region: WIDE, kind: "steamer", n: 6, size: 3.4, path: RUN2, sAt: (t, i) => i === TIG ? Math.min(sRun(t, i), SINK_S) : Math.min(LR2 - 4 - i * 6.5, sRun(t, i)), h: (t, i) => i === TIG ? 1.2 - 2.0 * sstep(T_SINK, T_SINK + 2.2, t) : 1.2,
+    t0: T.steamers - 0.3, t1: T.D + 1, lamp: true },
 ];
 
-const fleetOn = (t) => t < DAWN;
 window.SEQ = {
   name: "S03", D: T.D, T, seed: 1863, date: "1863-04-16",
   regions: [VB, WIDE],
   keys: [
-    // night: behind the fleet on the north-east leg, looking up the bend at the city and the dark bluffs
-    { t: 0.0, region: VB, at: [1337, 690], dist: 30, tilt: 57, yaw: -36, fov: 32, night: 1 },
-    { t: 12.0, region: VB, at: [1345, 682], dist: 36, tilt: 56, yaw: -40, fov: 32, night: 1 },
-    { t: 20.0, region: VB, at: [1360, 667], dist: 52, tilt: 53, yaw: -46, fov: 32, night: 1 },
+    // night: low behind the fleet at its moorings (boats readable), a slow push down the line as it casts off
+    { t: 0.0, region: VB, at: [1334, 694], dist: 18, tilt: 54, yaw: -36, fov: 32, night: 1 },
+    { t: 12.0, region: VB, at: [1345, 683], dist: 24, tilt: 54, yaw: -40, fov: 32, night: 1 },
+    { t: 20.0, region: VB, at: [1363, 668], dist: 52, tilt: 53, yaw: -50, fov: 32, night: 1 },
     // the batteries open: the whole bend, the city on the bluff, the shore fires
-    { t: 29.0, region: VB, at: [1370, 669], dist: 62, tilt: 50, yaw: -56, fov: 32, night: 1 },
-    { t: 36.6, region: VB, at: [1374, 671], dist: 56, tilt: 51, yaw: -60, fov: 32, night: 1 },
+    { t: 29.0, region: VB, at: [1370, 669], dist: 60, tilt: 50, yaw: -56, fov: 32, night: 1 },
+    { t: 36.6, region: VB, at: [1374, 671], dist: 54, tilt: 51, yaw: -60, fov: 32, night: 1 },
     // close on the transports (the Henry Clay)
     { t: 41.5, region: VB, at: [1381.5, 666.5], dist: 33, tilt: 54, yaw: -66, fov: 32, night: 1 },
     { t: 49.0, region: VB, at: [1381.0, 671.0], dist: 30, tilt: 55, yaw: -70, fov: 32, night: 1 },
     // she drifts down past the fleet
     { t: 56.5, region: VB, at: [1377.0, 684.0], dist: 40, tilt: 53, yaw: -64, fov: 32, night: 1 },
-    { t: DAWN, region: VB, at: [1373.0, 694.0], dist: 46, tilt: 52, yaw: -58, fov: 32, night: 1 },
-    // dawn (dissolve from night 1 -> 0 over 1 s on the wide map): the fleet at anchor below the city
-    { t: DAWN, region: WIDE, at: [1262, 800], dist: 300, tilt: 46, yaw: -4, fov: 30, night: 1, ease: "cut" },
-    { t: DAWN + 1.0, region: WIDE, at: [1263, 799], dist: 298, tilt: 46, yaw: -4, fov: 30, night: 0, ease: "lin" },
-    { t: 73.6, region: WIDE, at: [1280, 784], dist: 330, tilt: 45, yaw: -3, fov: 30 },
-    { t: T.D, region: WIDE, at: [1268, 800], dist: 300, tilt: 46, yaw: -1, fov: 30 },
+    { t: DAWN, region: VB, at: [1374.0, 691.0], dist: 44, tilt: 52, yaw: -60, fov: 32, night: 1 },
+    // dawn: dissolve to the same world in the morning light, the fleet at anchor below the city
+    { t: DAWN, region: VB, at: [1371, 697], dist: 40, tilt: 50, yaw: -20, fov: 32, night: 0.35, ease: "cut", dissolve: 1.0 },
+    { t: WIDE0, region: VB, at: [1372, 694], dist: 46, tilt: 49, yaw: -24, fov: 32, night: 0 },
+    // the wide map: the route the fleet took; then six nights later the second run past the city (camera follows it south)
+    { t: WIDE0, region: WIDE, at: [1290, 770], dist: 330, tilt: 45, yaw: -2, fov: 30, ease: "cut", dissolve: 0.7 },
+    { t: 73.6, region: WIDE, at: [1310, 745], dist: 300, tilt: 46, yaw: -3, fov: 30 },
+    { t: 75.2, region: WIDE, at: [1380, 688], dist: 200, tilt: 47, yaw: -3, fov: 30, night: 0.55 },
+    { t: 81.0, region: WIDE, at: [1382, 702], dist: 190, tilt: 47, yaw: 1, fov: 30, night: 0.55 },
+    { t: T.D, region: WIDE, at: [1352, 752], dist: 250, tilt: 46, yaw: 2, fov: 30, night: 0.55 },
   ],
-  clouds: { [VB]: { shadows: false }, [WIDE]: { keepClear: [[1260, 820, 90, 1, 0.8], [1383, 680, 40, 1, 0.6]], nightErode: 0 } },
+  clouds: { [VB]: { shadows: false }, [WIDE]: { keepClear: [[1260, 820, 90, 1, 0.8], [1383, 680, 50, 1, 0.6], [1330, 740, 80, 1, 0.7]], nightErode: 0 } },
   units: [
     ...BAT.map((b) => ({ region: VB, side: "r", type: "art", n: 2, face: "west", keys: [[0, b.x + 0.6, b.z]] })),
-    { region: WIDE, side: "r", type: "inf", n: 3, face: "west", t0: DAWN, keys: [[0, 1398, 684]] },   // Vicksburg still holds
+    { region: WIDE, side: "r", type: "inf", n: 3, face: "west", t0: WIDE0, keys: [[0, 1398, 684]] },   // Vicksburg still holds
+    { region: WIDE, side: "r", type: "art", n: 2, face: "west", t0: WIDE0, keys: [[0, 1389, 670]] },
   ],
-  labels: [{ text: "Vicksburg", town: "Vicksburg", size: 24, t0: T.vb, t1: T.vb + 4, region: WIDE }],
+  labels: [{ text: "Vicksburg", at: [1385, 693], size: 24, t0: T.vb, t1: T.vb + 2.9, region: VB }],
   arrows: [
-    { region: WIDE, side: "u", pts: ROUTE.filter((_, i) => i % 3 === 0), t0: T.fleet, dur: 2.4, t1: T.six + 0.4, width: 0.4 },
+    { region: WIDE, side: "u", pts: ROUTE.filter((_, i) => i % 3 === 0), t0: WIDE0 + 0.4, dur: 2.0, t1: T.six + 0.4, width: 0.3 },
   ],
   boats: [
-    { region: VB, kind: KINDS.filter((_, i) => i !== HC), n: 9, size: 0.5, path: RIV, sAt: (t, i) => sBoat(i >= HC ? i + 1 : i, t), t0: -1, t1: DAWN + 0.05, lamp: false },
-    { region: VB, kind: "steamer", n: 1, size: 0.5, path: RIV_HC, sAt: (t) => sHC(t), t0: -1, t1: T.drifted + 2.4, lamp: false },   // (the hull is gone by then: the fire burns at the waterline)
+    { region: VB, kind: KINDS.filter((_, i) => i !== HC), n: 9, size: 0.68, path: RIV, sAt: (t, i) => sBoat(i >= HC ? i + 1 : i, t), t0: -1, t1: WIDE0 + 0.05, lamp: false },
+    { region: VB, kind: "steamer", n: 1, size: 0.68, path: RIV_HC, sAt: (t) => sHC(t), t0: -1, t1: T.drifted + 2.4, lamp: false },   // (the hull is gone by then: the fire burns at the waterline)
     ...boatsWide,
   ],
   fx: {
@@ -152,8 +166,9 @@ window.SEQ = {
       ...HOUSE_FIRES.map(([x, y, t0]) => ({ region: VB, at: [x, y, 0.1], t0, t1: DAWN + 1, preset: "house", opts: { size: 0.75 } })),
     ],
     guns: [
-      { region: VB, preset: "battery", h: 0.25, boom: false, opts: { size: 1.3, alpha: 0.18, flash: 2.4 }, shots, impactOpts: { size: 0.45 } },
+      { region: VB, preset: "battery", h: 0.25, boom: false, opts: { size: 1.5, alpha: 0.2, flash: 3.2, flashLife: 0.18 }, shots, impactOpts: { size: 0.5 } },
       { region: VB, preset: "field", h: 0.2, boom: false, opts: { size: 0.6, flash: 1.6 }, shots: backShots, impactOpts: { size: 0.5 } },
+      { region: WIDE, preset: "battery", h: 0.8, boom: false, opts: { size: 2.6, alpha: 0.3, flash: 1.8, flashLife: 0.2 }, shots: run2Shots, impactOpts: { size: 2.0 } },
     ],
     campfires: [{ region: VB, pts: BONFIRES, t0: T.bonfires, t1: DAWN + 1 }],
   },
@@ -165,25 +180,24 @@ window.SEQ = {
     ["medallion", { kind: "card", general: "porter", sub: "Mississippi Squadron", screen: [1765, 215], tIn: T.porter, tOut: 12.2 }],
     ["label", T.benton, T.benton + 3.6, { name: "Benton", sub: "the flagship", world: (t) => { const p = boatXY(0, t); return [p[0], p[1], 0.3]; }, side: "us" }],
     ["label", T.transports, T.transports + 3.8, { name: "Three transports", sub: "boilers padded with cotton and hay", world: (t) => { const p = boatXY(7, t); return [p[0], p[1], 0.3]; }, side: "us" }],
-    ["plaque.label", T.guns, "Night"],
-    ["plaque.note", T.guns, "The batteries open"],
-    ["plaque.note", T.twoHours, "Under fire for over two hours"],
+    ["plaque.note", T.guns, "the batteries open"],
+    ["plaque.note", T.twoHours, "under fire for over two hours"],
     ["inset", T.every, T.disabled - 0.4, { img: "seq/inset_run.jpg", x: 1330, y: 175, w: 480, h: 345, caption: "Running the batteries, 16 April 1863 · Library of Congress" }],
     ["label", T.henry, T.abandoned + 1.2, { name: "Henry Clay", sub: "disabled · abandoned", world: (t) => { const p = hcPath(t); return [p[0], p[1], 0.3]; }, side: "us" }],
     ["label", T.burst + 0.2, T.burned + 2.4, { name: "Henry Clay", sub: "a shell in her cotton", world: (t) => { const p = hcPath(t); return [p[0], p[1], 0.3]; }, side: "cs", marker: false }],
     ["medallion", { kind: "card", general: "grant", sub: "watching from a transport above the city", screen: [1765, 215], tIn: T.grant, tOut: T.quote - 0.3 }],
-    ["quote", T.quote, T.remembered + 0.7, { en: "The sight was magnificent, but terrible.", attr: "Ulysses S. Grant · Personal Memoirs", y: 380 }],
-    ["film.grade", DAWN - 0.1, "day", 1.0],
+    ["quote", T.quote, T.remembered + 0.6, { en: "The sight was magnificent, but terrible.", attr: "Ulysses S. Grant · Personal Memoirs", y: 380, dim: 0.5 }],
+    ["film.grade", DAWN, "day", 1.0],
     ["plaque.date", T.morning, { month: "April 1863", day: "17", weekday: "Friday", note: "by morning" }],
     ["ledger.show", T.fleet, { title: "Running the batteries", sub: "16 - 17 April 1863" }],
     ["ledger.add", T.below, { who: "Fleet below Vicksburg", stamp: false }],
     ["ledger.add", T.lost, { who: "1 transport lost", note: "the Henry Clay", stamp: false }],
     ["ledger.add", T.noone, { who: "None killed", note: "on the transports · by Grant's count", stamp: false }],
+    ["film.grade", T.six, "night", 1.2],
     ["plaque.date", T.later, { month: "April 1863", day: "22", weekday: "Wednesday", note: "six nights later" }],
     ["ledger.add", T.ran, { who: "More steamers run the guns", note: "with supplies · volunteer crews", stamp: false }],
     ["ledger.final", T.fiveTimes, { lines: ["Volunteers", "five times over"], color: "#2C4A8A" }],
   ],
 };
-// ensure the Henry Clay's boat entry ends where her fire takes over; fleetOn kept for clarity
-void fleetOn; void L;
+void L;
 })();

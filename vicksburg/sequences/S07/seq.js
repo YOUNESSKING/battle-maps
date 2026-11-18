@@ -123,7 +123,7 @@ window.SEQ = {
     { t: 21.0, region: RY, at: [1690.0, 786.0], dist: 32, tilt: 36, yaw: -10, fov: 30 },
     { t: 31.0, region: RY, at: [1690.6, 785.6], dist: 30, tilt: 37, yaw: -11, fov: 30 },
     { t: 35.6, region: RY, at: [1691.4, 783.4], dist: 31, tilt: 40, yaw: -12, fov: 30 },
-    { t: CUT, region: RY, at: [1703.0, 769.0], dist: 36, tilt: 44, yaw: -14, fov: 30 },
+    { t: CUT, region: RY, at: [1707.0, 765.0], dist: 36, tilt: 42, yaw: -12, fov: 30 },
     { t: CUT, region: WD, at: [1790, 738], dist: 290, tilt: 46, yaw: -4, fov: 30, ease: "cut" },
     { t: 46.4, region: WD, at: [1812, 733], dist: 268, tilt: 46, yaw: -3, fov: 30 },
     { t: 50.6, region: WD, at: [1636, 714], dist: 600, tilt: 44, yaw: 0, fov: 30 },

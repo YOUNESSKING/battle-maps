@@ -153,7 +153,7 @@ const FLAGS = mkFlags([
   { region: S, kind: "us", at: [TEX2[0] + 0.15, TEX2[1]], t0: T.flags + 0.65, fall: T.none + 0.6 },
   { region: S, kind: "us", at: [RRR[0] + 0.1, RRR[1]], t0: T.flags + 0.95, fall: T.none + 0.85 },
 ]);
-const PULSE = VX.pulses([TW("Port Gibson"), TW("Raymond"), TW("Jackson"), P("Champion Hill crest"), [1509.8, 683.5]].map((p, k) => ({ region: W, at: p, t0: T.five + 0.1 + k * 0.25, t1: T.D + 1, r: 17, color: [214, 172, 84], period: 1.8 })));
+const PULSE = VX.pulses([TW("Port Gibson"), TW("Raymond"), TW("Jackson"), P("Champion Hill crest"), [1509.8, 683.5]].map((p, k) => ({ region: W, at: p, t0: T.five + 0.1 + k * 0.25, t1: T.now + 0.8, r: 38, color: [232, 188, 92], period: 1.8 })));   // round 2: bigger, brighter (critic: tiny pulses)
 
 const build = async (ctx) => { WWD = ctx.world; const { THREE, world } = ctx, sc = world.regions[S].scene;
   // the seven-mile line traced in red: a glowing ribbon draped along the rifle pits, grown north -> south (draw range set before the render)
@@ -174,6 +174,7 @@ window.SEQ = {
   name: "S11", D: T.D, T, seed: 1863, date: "1863-05-18",
   regions: [W, S],
   regionOpts: { [W]: { troopScale: 9 }, [S]: { troopScale: 1.4 } },
+  grade: { wide: { toe: 30 } },   // round 2 (critic A: the twenty-days wide view too dark): lift the wide shadows
   keys: [
     // A: over the bluffs north of the city, the Chickasaw Bayou flats below to the north-west
     { t: 0.0, region: W, at: [1430, 646], dist: 250, tilt: 44, yaw: -14, fov: 30 },
@@ -181,15 +182,15 @@ window.SEQ = {
     { t: 13.6, region: W, at: [1414, 628], dist: 205, tilt: 47, yaw: -26, fov: 30 },
     { t: 21.0, region: W, at: [1410, 640], dist: 215, tilt: 46, yaw: -16, fov: 30 },
     // B: the dive lands over the siege lines, looking west at the city; pan south along the line
-    { t: 37.6, region: S, at: [1396.0, 683.0], dist: 62, tilt: 43, yaw: 84, fov: 30 },
-    { t: 39.6, region: S, at: [1397.0, 680.0], dist: 58, tilt: 44, yaw: 82, fov: 30 },
+    { t: 37.6, region: S, at: [1397.0, 683.6], dist: 52, tilt: 38, yaw: 92, fov: 30 },
+    { t: 39.6, region: S, at: [1398.4, 681.4], dist: 50, tilt: 39, yaw: 92, fov: 30 },
     // 19 May at the Stockade Redan
-    { t: 42.6, region: S, at: [1407.4, 666.8], dist: 25, tilt: 47, yaw: 66, fov: 30 },
-    { t: 46.6, region: S, at: [1407.8, 667.2], dist: 23.5, tilt: 48, yaw: 62, fov: 30 },
+    { t: 42.6, region: S, at: [1407.4, 667.6], dist: 25, tilt: 44, yaw: 82, fov: 30 },
+    { t: 46.6, region: S, at: [1407.8, 668.0], dist: 23.5, tilt: 45, yaw: 78, fov: 30 },
     // C: 22 May, the three-mile front
-    { t: 50.4, region: S, at: [1405.2, 676.6], dist: 41, tilt: 46, yaw: 82, fov: 30 },
-    { t: 56.8, region: S, at: [1404.6, 677.4], dist: 39, tilt: 47, yaw: 86, fov: 30 },
-    { t: CUT, region: S, at: [1403.8, 678.6], dist: 47, tilt: 45, yaw: 92, fov: 30, ease: "lin" },
+    { t: 50.4, region: S, at: [1405.2, 677.2], dist: 41, tilt: 42, yaw: 92, fov: 30 },
+    { t: 56.8, region: S, at: [1404.6, 678.0], dist: 39, tilt: 43, yaw: 94, fov: 30 },
+    { t: CUT, region: S, at: [1403.8, 679.2], dist: 45, tilt: 42, yaw: 98, fov: 30, ease: "lin" },
     // D: the wide map, the whole campaign; then in on the city
     { t: CUT, region: W, at: [1525, 862], dist: 770, tilt: 35, yaw: 0, fov: 30, ease: "cut" },
     { t: 80.6, region: W, at: [1505, 850], dist: 790, tilt: 35, yaw: 1, fov: 30, ease: "lin" },
@@ -198,10 +199,10 @@ window.SEQ = {
   ],
   dives: [{ t: DV.SW, over: [1402, 676],
     from: { region: W, at: [1408, 652], dist: 222, tilt: 46, yaw: -12 },
-    to: { region: S, at: [1397.5, 681.0], dist: 60, tilt: 43, yaw: 82, fov: 30 },
-    keys: { emerge: { yaw: 70 } } }],
+    to: { region: S, at: [1397.5, 682.0], dist: 60, tilt: 40, yaw: 88, fov: 30 },
+    keys: { emerge: { yaw: 80 } } }],
   clouds: {
-    [W]: { keepClear: [[1420, 630, 60, 1, 0.8], [1405, 670, 50, 1, 0.6], [1500, 860, 160, 0.8, 0.5]] },
+    [W]: { keepClear: [[1420, 630, 60, 1, 0.8], [1405, 670, 50, 1, 0.6], [1500, 860, 160, 0.8, 0.5], [1290, 880, 230, 0.9, 0.6], [1335, 765, 110, 1, 0.6], [1730, 760, 130, 1, 0.6]] },   // round 2: no big cloud over the twenty-days view / the final push
     [S]: { shadows: true },
   },
   units, arrows, fx, build, draw,
@@ -227,7 +228,8 @@ window.SEQ = {
     ["label", T.same + 0.2, T.sherman2 - 0.2, { name: "Chickasaw Bayou", sub: "December 1862 · Sherman beaten here", world: [CHICK[0] - 2, CHICK[1] - 6], side: "us", marker: false }],
     ["medallion", { kind: "card", general: "sherman", sub: "XV Corps · on the Walnut Hills", world: [WALNUT[0], WALNUT[1]], offset: [230, -110], tIn: T.sherman2, tOut: T.as - 0.4 }],
     ["letter", T.as + 0.7, T.history + 0.5, { header: "18 May 1863 · the Walnut Hills", title: "Sherman to Grant", sub: "not his words, the substance, as Grant remembered it", marks: false, cps: 14.5,
-      quote: "Up to this minute he had felt no positive assurance of success. This was the end of one of the greatest campaigns in history." }],
+      qSize: 31, height: 262, top: 662,   // round 2 (critic A: body ~6 px at 720p): 31 px body on two lines
+      quote: "Up to this minute he had felt no positive assurance of success.\nThis was the end of one of the greatest campaigns in history." }],
     ["legend", T.land + 1.8, T.grantWrote - 0.3, LEG],
     ["plaque.note", T.land + 0.4, "the Confederate land defences"],
     ["label", T.seven - 0.1, T.ridges + 2.0, { name: "About seven miles", sub: "forts on the ridges, joined by trenches", world: [1384.0, 699.0], side: "cs", marker: false }],
@@ -238,7 +240,7 @@ window.SEQ = {
     ["plaque.clock", T.again + 0.4, { time: "10:00", note: "after four hours of bombardment", header: "22 May 1863 · Day 23" }],
     ["plaque.run", T.three, T.held + 1.0, "10:45"],
     ["label", T.held + 0.1, T.grantWrote - 0.3, { name: "None held", sub: "three corps thrown back along three miles", world: [1406.4, 677.0], side: "cs", offset: [-380, 30] }],
-    ["quote", T.grantWrote + 0.1, T.vb22 + 0.8, { en: "I have always regretted that the last assault at Cold Harbor was ever made. I might say the same thing of the assault of the 22d of May, 1863, at Vicksburg.", attr: "Ulysses S. Grant · Personal Memoirs", y: 400 }],
+    ["quote", T.grantWrote + 0.1, T.vb22 + 0.0, { en: "I have always regretted that the last assault at Cold Harbor was ever made. I might say the same thing of the assault of the 22d of May, 1863, at Vicksburg.", attr: "Ulysses S. Grant · Personal Memoirs", y: 400, dim: 0.4 }],   // round 2: out (fade 0.7) before the cut at 67.4; light dim
     ["plaque.date", T.nineteenth2, { month: "May 1863", day: "19", weekday: "Day 20", note: "twenty days after the crossing" }],
     ["ledger.show", T.nineteenth2 + 0.3, { title: "Twenty days", sub: "30 April - 19 May 1863 · Grant's count" }],
     ["timeline.show", T.days, { month: "Apr-May", year: "1863", cells: ["30 Apr", "1 May", "12 May", "14 May", "16 May", "17 May", "19 May"], at: 0.5 }],
