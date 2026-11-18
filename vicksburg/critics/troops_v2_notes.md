@@ -185,3 +185,25 @@ Own 5 fps inspection ("rectangle moving long-side-first"):
 - S10 north flank, south flank, reserve: yes (broadside across the fields, fade at the bridge mouth, back in on the far side)
 - S10 Union lines advancing on the works: yes
 Noticed: S10 escapes now start ~3 s earlier than v8 (the boxes are in the field from the first frame of the excerpt) so the whole queue clears the bridge before the fire.
+
+# v10 (2026-11-18): critics on v9 (motion 8, look 7) - clean screen-plane boxes, stop-turn-walk escapes, still camera
+Share (with sound): `vicksburg/troops_test_v10_share.mp4`. Sheet (old film boxes | new boxes): `vicksburg/troops_test_ours_v10.jpg`.
+
+| Point | v10 |
+| --- | --- |
+| 1 rotate while translating | routing boxes walk STRAIGHT legs only: slot -> near deck end -> far deck end -> the road's end; each turns in place first ((angle + 0.1) / 0.44 rad/s, smoothstep), walks with a constant heading; the only other heading change happens on the deck while the box is faded out |
+| 2 bridge fades | by path distance: out over the 1.25 u before the near deck end, back in over the 1.25 u past the far end (~0.5 s each at 2.5 u/s), same on both sides |
+| 3 camera | S10: one still framing 20.0-32.6 s (at 1514.2, 684, dist 20.4): works, fields, bridge and exit all in frame; the 24-25.8 s push-in is gone |
+| 4 exit fade | the routing boxes fade over ~300 px at the frame edge (~1.5-2 s) |
+| 5 no shear | every box is a clean rectangle in the SCREEN plane (camera-facing quad), turned to its heading's on-screen direction; fixed slight tilt = short side x 0.8; the heading is the travel direction itself (the on-screen normal = the projected heading, so no camera correction) |
+| 6 border | the ink border is drawn in the shader from screen-space derivatives: ~2 px at 1080 (~1.3 px at 720), anti-aliased, identical on every box |
+| 7 contact shadow | soft dark quad behind every box, offset 3 px down-right (screen), 25 % |
+| 8 smoke | S09 puffs back to ~50 % of the film's (size 0.85, alpha 0.09, slow drift windK 0.4) |
+| 9 arrow edge | the pale outer edge fades out in three steps (no hard white rim) |
+| 10 symbols | guns = the kit's approved gun box (fx.js `art_gun`), infantry X, cavalry = one slash, engineers = the gear (renderer ready for later scenes); the mask is drawn for each type's own box aspect (no stretched gun) |
+| Timing | S10 escapes back to ESC_T [18.9, 18.8, 18.6] (the straight legs are quicker); last box past the far end ~29.4 s, fire 31.3 s |
+
+Checker v10 (screen-space rule, billboard normal = projected heading): S09 55-110 screen max 5 deg, turn <= 30 deg/s, accel <= 2.1, pops 0, overlaps only within a unit while turning in place (<= 0.05 u);
+S10 15-35 screen max 10 deg, turn <= 26 deg/s, accel <= 3.5, pops 0, overlaps <= 0.05 u (south flank's own boxes turning at 22.5 s), no vanishing boxes.
+
+Own 5 fps inspection ("rectangle moving long-side-first"): every moving box yes - S09 Hovey crest + west wing, Lee, Barton, Logan x3, Bowen x2 up and back, Union pursuit / Crocker; S10 north flank, south flank, reserve (turn in place, straight walk, fade at the bridge, back in past it, soft exit), Union lines on the works.
