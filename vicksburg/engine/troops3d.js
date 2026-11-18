@@ -34,7 +34,7 @@ function gridLayout(cols, rows) { const P = []; for (let r = 0; r < rows; r++) f
 export function createTroops3D(o) {
   const { THREE, scene, heightAt, units } = o;
   const ts = o.troopScale || 1, H = (x, y) => heightAt(x, y);
-  const S = { lift: 0.004 * ts, shadowK: 1.0, shadowA: 0.5, ...o.style };
+  const S = { lift: 0.004 * ts, shadowK: 1.0, shadowA: 0.42, ...o.style };
   const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();
   const shots = (o.shots || []).slice().sort((a, b) => a.t - b.t);
   const NF = 60, INF_LINE = gridLayout(12, 5), INF_COL = gridLayout(4, 15), CAV_LINE = gridLayout(12, 2), CAV_COL = gridLayout(4, 6);
@@ -212,8 +212,8 @@ export function createTroops3D(o) {
       const mv = sstep(0.04 * ts, 0.3 * ts, spd), back = mv * sstep(0.2, 0.6, -(vx * fx + vy * fy) / Math.max(spd, 1e-4)) * (1 - c);   // falling back in line: men turned about
       const loose = Math.max(capd, e * 0.7);
       // low-sun shadow (r1 critic A: the swept edge quads drew thin dark lines off the blocks): one soft dark footprint, pushed downwind
-      { const len = S.shadowK * (isArt ? 0.6 : 1) * Math.max(Dp * 1.4, 0.3 * ts), ox = bx + SUNG[0] * len * 0.55, oy = by + SUNG[1] * len * 0.55;
-        const hs = Math.max(hb, H(ox, oy)) + 0.012 * ts, sw = W * (isArt ? 0.7 : 1.06) + len * Math.abs(px * SUNG[0] + py * SUNG[1]), sd = Dp * (isArt ? 0.75 : 1.1) + len * Math.abs(fx * SUNG[0] + fy * SUNG[1]);
+      { const len = S.shadowK * (isArt ? 0.6 : 1) * 0.3 * D.bw /* r3 critic A: figure-high, not a slab the size of a column */, ox = bx + SUNG[0] * len * 0.55, oy = by + SUNG[1] * len * 0.55;
+        const hs = Math.max(hb, H(ox, oy)) + 0.012 * ts, sw = W * (isArt ? 0.7 : 1.0) + len * Math.abs(px * SUNG[0] + py * SUNG[1]), sd = Dp * (isArt ? 0.75 : 1.0) + len * Math.abs(fx * SUNG[0] + fy * SUNG[1]);
         M4.set(-fy * sw, 0, -fx * sd, ox, 0, 1, 0, hs, fx * sw, 0, -fy * sd, oy, 0, 0, 0, 1); shadows.setMatrixAt(ns++, M4); }
       // plate: side colour, tilted with the ground, pale border + bright front edge (grey when captured)
       const pT = 0.018 * ts, ry = hb + S.lift, ip = np++, pk = op * (1 - 0.15 * loose);
