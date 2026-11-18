@@ -34,7 +34,7 @@ function gridLayout(cols, rows) { const P = []; for (let r = 0; r < rows; r++) f
 export function createTroops3D(o) {
   const { THREE, scene, heightAt, units } = o;
   const ts = o.troopScale || 1, H = (x, y) => heightAt(x, y);
-  const S = { lift: 0.004 * ts, shadowK: 0.55, shadowA: 0.8, ...o.style };
+  const S = { lift: 0.004 * ts, shadowK: 1.0, shadowA: 0.5, ...o.style };
   const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();
   const shots = (o.shots || []).slice().sort((a, b) => a.t - b.t);
   const NF = 60, INF_LINE = gridLayout(12, 5), INF_COL = gridLayout(4, 15), CAV_LINE = gridLayout(12, 2), CAV_COL = gridLayout(4, 6);
@@ -95,6 +95,8 @@ export function createTroops3D(o) {
   // block base state (no push-apart): position, heading, column share, escape share. Pure in t.
   function base(u, i, t) {
     const D = UD.get(u), [cx, cy] = posAt(u.keysGM, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;
+    // r1 critic B: a unit that appears mid-scene walks in from behind its line while it fades in (no pop on the spot)
+    const ar = u.t0 > 1 && u.arrive !== false ? (o.arrive ?? 2.2) * ts * (1 - sstep(u.t0, u.t0 + 2.0, t)) : 0;
     let x = cx + px * D.slots[i], y = cy + py * D.slots[i], hx = fx, hy = fy, c = 0;
     // column runs: the leading block steps off first, the others wait in their line slots and file in one after another behind it
     // (nobody walks backwards), the column follows the path nose to tail, then every block deploys into its new line slot
@@ -116,7 +118,7 @@ export function createTroops3D(o) {
       const si = u.esc.s(t) - (i - u.escFrom) * D.spacing * 1.05;
       if (si > -0.6 * D.spacing) { const [ex, ey, dx, dy] = o.escAt(u.esc, Math.max(0, si)), k = sstep(-0.6 * D.spacing, 0.9 * D.spacing, si);
         x = lerp(x, ex, k); y = lerp(y, ey, k); const a0 = Math.atan2(hy, hx), a1 = Math.atan2(dy, dx), a = a0 + angDiff(a0, a1) * sstep(0, 0.6, k); hx = Math.cos(a); hy = Math.sin(a); c = Math.max(c, k); e = k; } }
-    return { x, y, hx, hy, c, e };
+    return { x: x - fx * ar, y: y - fy * ar, hx, hy, c, e };
   }
 
   // heading at t: the base heading turned toward where the block walks (no crab-walking); a line falling back keeps facing the enemy
@@ -153,12 +155,12 @@ export function createTroops3D(o) {
   const plateFront = mkIM(box(1, 1, 1, 0, 0.5, 0), lam({ color: 0xffffff, emissive: 0x5a5a56 }), nPl, false);   // GM's bright front edge
   const holes = mkIM(box(1, 1, 1, 0, 0.5, 0), lam({ color: 0x55574a }), Math.max(1, infBlocks.filter((b) => b.u.form === "square").length), false);
   const SC = document.createElement("canvas"); SC.width = 64; SC.height = 64; { const g = SC.getContext("2d"), im = g.createImageData(64, 64);
-    for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const v = y / 63, uu = Math.abs(x / 63 - 0.5) * 2;
-      const a = S.shadowA * (1 - sstep(0.1, 1, v)) * (1 - 0.6 * sstep(0.8, 1, uu)), c = Math.round(255 * (1 - a)), k = (y * 64 + x) * 4;
+    for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const uu = Math.abs(x / 63 - 0.5) * 2, v = Math.abs(y / 63 - 0.5) * 2;
+      const a = S.shadowA * (1 - sstep(0.55, 1, uu)) * (1 - sstep(0.35, 1, v)), c = Math.round(255 * (1 - a)), k = (y * 64 + x) * 4;
       im.data[k] = c; im.data[k + 1] = c; im.data[k + 2] = c * 0.98 + 5 * a; im.data[k + 3] = 255; }
     g.putImageData(im, 0, 0); }
   const stex = new THREE.CanvasTexture(SC); stex.colorSpace = THREE.SRGBColorSpace;
-  const shG = new THREE.PlaneGeometry(1, 1); shG.rotateX(-Math.PI / 2); shG.translate(0.5, 0, 0.5);
+  const shG = new THREE.PlaneGeometry(1, 1); shG.rotateX(-Math.PI / 2);
   const shadows = mkIM(shG, new THREE.MeshBasicMaterial({ map: stex, fog: false, side: THREE.DoubleSide, transparent: false, blending: THREE.CustomBlending, blendEquation: THREE.AddEquation,
     blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor, depthWrite: false, depthTest: true }), blocks.length * 2, false);
   shadows.receiveShadow = false; shadows.renderOrder = 1;
@@ -187,7 +189,8 @@ export function createTroops3D(o) {
       const vx = (qb.x - qa.x) / 0.9, vy = (qb.y - qa.y) / 0.9, spd = Math.hypot(vx, vy);
       let op = op0; if (q.e > 0 && u.esc.fade && o.proj && o.edgeFade) op *= o.edgeFade(u.esc.fade, o.proj(q.x, q.y), -30, 170);
       if (op <= 0.001) continue;
-      const capd = u.cap != null && b.i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
+      // r1 critic B: a captured battery that leaves the data (t1) is RE-taken: it turns back to its side colour before it hands over
+      const capd = u.cap != null && b.i < u.capN ? sstep(u.cap, u.cap + 0.8, t) * (u.t1 < 1e8 ? 1 - sstep(u.t1 - 1.8, u.t1 - 0.9, t) : 1) : 0;
       ST.push({ b, u, D, ...q, vx, vy, spd, op, capd, fixed: q.c > 0.5 || q.e > 0.3 || u.type === "art" || capd > 0 }); }
     // push-apart between blocks of different units: ONE pass from the unpushed positions (continuous in t, so it never pops), each block
     // gives ground along its own heading (a pressed line steps back, it never slides sideways); road columns, escaping blocks, guns and
@@ -208,21 +211,19 @@ export function createTroops3D(o) {
       const sF = (H(bx + fx * Dp * 0.5, by + fy * Dp * 0.5) - H(bx - fx * Dp * 0.5, by - fy * Dp * 0.5)) / Math.max(Dp, 1e-3);
       const mv = sstep(0.04 * ts, 0.3 * ts, spd), back = mv * sstep(0.2, 0.6, -(vx * fx + vy * fy) / Math.max(spd, 1e-4)) * (1 - c);   // falling back in line: men turned about
       const loose = Math.max(capd, e * 0.7);
-      // low-sun shadow: the footprint's two downwind edges swept along the sun
-      { const len = S.shadowK * (isArt ? 0.6 : 1) * Math.max(D.bw * 0.42, 0.35 * ts) * op, sx = SUNG[0] * len, sy = SUNG[1] * len;
-        const sFd = Math.sign(fx * SUNG[0] + fy * SUNG[1]) || 1, sLd = Math.sign(px * SUNG[0] + py * SUNG[1]) || 1, hw = W / 2, hd = Dp / 2;
-        let hs = hb; for (const [qx, qy] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) hs = Math.max(hs, H(bx + px * hw * qx + fx * hd * qy, by + py * hw * qx + fy * hd * qy), H(bx + px * hw * qx + fx * hd * qy + sx, by + py * hw * qx + fy * hd * qy + sy));
-        hs += 0.04 * ts;
-        for (const [ax, ay, ex, ey] of [[bx - px * hw + fx * hd * sFd, by - py * hw + fy * hd * sFd, px * W, py * W], [bx + px * hw * sLd - fx * hd, by + py * hw * sLd - fy * hd, fx * Dp, fy * Dp]]) {
-          M4.set(ex, 0, sx, ax, 0, 1, 0, hs, ey, 0, sy, ay, 0, 0, 0, 1); shadows.setMatrixAt(ns++, M4); } }
+      // low-sun shadow (r1 critic A: the swept edge quads drew thin dark lines off the blocks): one soft dark footprint, pushed downwind
+      { const len = S.shadowK * (isArt ? 0.6 : 1) * Math.max(Dp * 1.4, 0.3 * ts), ox = bx + SUNG[0] * len * 0.55, oy = by + SUNG[1] * len * 0.55;
+        const hs = Math.max(hb, H(ox, oy)) + 0.012 * ts, sw = W * (isArt ? 0.7 : 1.06) + len * Math.abs(px * SUNG[0] + py * SUNG[1]), sd = Dp * (isArt ? 0.75 : 1.1) + len * Math.abs(fx * SUNG[0] + fy * SUNG[1]);
+        M4.set(-fy * sw, 0, -fx * sd, ox, 0, 1, 0, hs, fx * sw, 0, -fy * sd, oy, 0, 0, 0, 1); shadows.setMatrixAt(ns++, M4); }
       // plate: side colour, tilted with the ground, pale border + bright front edge (grey when captured)
       const pT = 0.018 * ts, ry = hb + S.lift, ip = np++, pk = op * (1 - 0.15 * loose);
-      setM(plateRim, ip, bx, ry, by, fx, fy, (W + 0.05 * ts) * pk, pT * pk, (Dp + 0.05 * ts) * pk, sL, sF);
-      setM(plateFill, ip, bx, ry + 0.002 * ts, by, fx, fy, W * pk, pT * 1.15 * pk, Dp * pk, sL, sF);
-      const fr = Dp * (isArt ? 0.16 : 0.1); setM(plateFront, ip, bx + fx * (Dp / 2 - fr / 2), ry + 0.003 * ts + sF * (Dp / 2 - fr / 2), by + fy * (Dp / 2 - fr / 2), fx, fy, (W + 0.05 * ts) * pk, pT * 1.3 * pk, fr * pk, sL, 0);
-      plateFill.setColorAt(ip, col.setHex(P.plate).lerp(GREYL, capd)); plateRim.setColorAt(ip, col.setHex(P.rim).lerp(GREYP, capd)); plateFront.setColorAt(ip, col.setHex(P.rim).lerp(GREYP, capd * 0.7));
+      const AW = isArt ? 0.62 : 1, AD = isArt ? 0.7 : 1;   // guns: a small plate just under the piece
+      setM(plateRim, ip, bx, ry, by, fx, fy, (W * AW + 0.03 * ts) * pk, pT * pk, (Dp * AD + 0.03 * ts) * pk, sL, sF);
+      setM(plateFill, ip, bx, ry + 0.002 * ts, by, fx, fy, W * AW * pk, pT * 1.15 * pk, Dp * AD * pk, sL, sF);
+      const fr = Dp * AD * (isArt ? 0.12 : 0.075), fo = Dp * AD / 2 - fr / 2; setM(plateFront, ip, bx + fx * fo, ry + 0.003 * ts + sF * fo, by + fy * fo, fx, fy, (W * AW + 0.03 * ts) * pk, pT * 1.3 * pk, fr * pk, sL, 0);
+      plateFill.setColorAt(ip, col.setHex(P.plate).lerp(GREYL, capd)); plateRim.setColorAt(ip, col.setHex(P.plate).multiplyScalar(0.55).lerp(GREYC, capd));   // r1 critic A: GM's border is dark, only the FRONT edge is bright plateFront.setColorAt(ip, col.setHex(P.rim).lerp(GREYP, capd * 0.7));
       if (isArt) {
-        const k = ng++, gk = D.bw * 1.05, lmb = Math.max(c, mv);   // limbered while moving
+        const k = ng++, gk = D.bw * 0.75, lmb = Math.max(c, mv);   // limbered while moving
         let rec = 0; for (const s of shots) { if (s.t > t) break; if (Math.hypot(s.x - bx, s.y - by) < D.span * 0.6 + 0.5 * ts && i === 0) rec = Math.max(rec, Math.exp(-(t - s.t) * 7) * (t - s.t < 1.2 ? 1 : 0)); }
         // the gun turns on its trail: muzzle to the front at a halt, trail first (towed) on the move
         const ga = Math.atan2(fy, fx) + Math.PI * sstep(0.2, 0.8, lmb), gfx = Math.cos(ga), gfy = Math.sin(ga);
@@ -242,7 +243,7 @@ export function createTroops3D(o) {
       { const fk = op * (1 - capd), sp = D.bw * 0.92 / 12, sx = bx - fx * Dp * 0.1, sy = by - fy * Dp * 0.1, hs = H(sx, sy) + S.lift + pT, kf = nfl++, s = sp * 1.6 * fk;
         if (S.flags) { setM(poles, kf, sx, hs, sy, fx, fy, s, s, s); setM(flags, kf, sx, hs, sy, px, py, s, s * (1 + 0.08 * Math.sin(t * 5 + seed)), s); } else nfl--; }
       const LINE = isCav ? CAV_LINE : u.form === "square" ? SQUARE : INF_LINE, COL = isCav ? CAV_COL : INF_COL, nFigs = LINE.length;
-      const sp = D.bw * 0.92 / 12, fw = sp * 0.55, fd = sp * 0.5, fh = sp * 1.9, walk = mv;
+      const sp = D.bw * 0.92 / 12, fw = sp * 0.42, fd = sp * 0.4, fh = sp * 1.9, walk = mv;   // r1 critic A: slimmer men, the plate colour shows between the files
       const sq = u.form === "square" ? W * 0.75 : 0;
       for (let j = 0; j < nFigs; j++) {
         const L = LINE[j], C = COL[j];
