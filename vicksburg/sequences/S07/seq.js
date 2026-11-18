@@ -178,3 +178,9 @@ window.SEQ = {
     e.style.opacity = (k * (0.55 + 0.45 * ph)).toFixed(3); },
 };
 })();
+
+// owner 2026-11-18 ("don't overdo the dive, maybe 2-3"): no cloud dive here; the wide shot dissolves into the close map at the old swap time
+(() => { const S = window.SEQ, d = (S.dives || []).splice(0)[0]; if (!d) return; const f = d.from, o = d.to;
+  S.keys.push({ t: d.t, region: f.region, at: f.at, dist: f.dist * 0.8, tilt: f.tilt, yaw: f.yaw ?? 0, fov: f.fov ?? 30 },
+    { t: d.t, region: o.region, at: o.at, dist: o.dist * 0.92, tilt: o.tilt, yaw: o.yaw ?? 0, fov: o.fov ?? 30, ease: "cut", dissolve: 0.9 });
+  S.keys.sort((a, b) => a.t - b.t); })();
