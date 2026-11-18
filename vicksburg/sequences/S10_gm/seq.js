@@ -17,7 +17,7 @@ const SLOWX = BR.x - 0.8;   // the west end of the bridge
 const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.6, slowX: SLOWX, join: "west", from });
 // round 2 (owner rule: never cross a bridge after its fire starts): the flanks and the reserve start for the bridge as the line falls
 // (24.8-25.6) and the last red box is past the west end by ~31.0 (tools: esc_sim); the fire starts at FIRE_T = 31.3 ("set them on fire")
-const ESC_T = [16.2, 16.0, 16.3], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
+const ESC_T = [13.4, 13.3, 13.1], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
 const TK = 21.2;   // Lawler reaches the works (north first)
 const SWF = 3 * Math.PI / 4;
 
@@ -28,7 +28,7 @@ const units = [];
   units.push({ side: "r", type: "inf", n: 3, keys: [[0, bwX(y) - 0.35, y]], cap: TK + i * 0.7, capN: flank ? 1 : 3, t1: T.D + 1,
     ...(flank ? { escape: ESC(ESC_T[i === 3 ? 1 : 0], 3.4, 1) } : {}) }); });
 // 18 guns: three batteries just behind the parapet, all taken
-[[686.0], [688.6]].forEach(([y], i) =>   // (GM test) two batteries clear of the escape roads (the north one sat on the flank's way out)
+[[686.0], [684.5]].forEach(([y], i) =>   // (GM test) two batteries clear of the escape roads (the north one sat on the flank's way out)
   units.push({ side: "r", type: "art", n: 2, keys: [[0, bwX(y) - 1.2, y]], cap: TK + 0.6 + i * 0.5, t1: T.D + 1 }));
 // the reserve by the bridge: first across
 units.push({ side: "r", type: "inf", n: 3, face: 0, keys: [[0, BR.x + 2.6, 685.4]], escape: ESC(ESC_T[2], 2.0, 0) });
@@ -80,7 +80,7 @@ const fx = {
 };
 
 window.SEQ = {
-  name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17", troopsOpts: { vesc: 2.1, turnMax: 0.76 },   // (GM test) the rout is a brisk walk
+  name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17", troopsOpts: { look: "box", vesc: 2.5, turnMax: 0.62 },   // (GM test) the rout is a brisk walk
   regions: [BB],
   regionOpts: { [BB]: { troopScale: 1.4 } },   // round 2: boxes ~3 % of the frame width like v8 (with the v8 distances below)
   features: { [BB]: { bridges: [{ burn: FIRE_T + 3.2 }], pontoons: TB.map((at) => ({ at })) } },

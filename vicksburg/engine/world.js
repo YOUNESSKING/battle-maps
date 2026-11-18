@@ -305,6 +305,8 @@ export function initWorld(canvas, opts = {}) {
   const HAZE = new THREE.Color(0xb9bcb4);   // v7: lighter, warmer (the far band must be lighter than the near ground)   // v6: depth haze back at ~half (critic B 3)   // round 2: bluer, his blue-grey atmospheric cast
   const NIGHT = { sun: new THREE.Color(0xa8c0ea), sunI: 0.95 * Math.PI, sky: new THREE.Color(0x40507a), gnd: new THREE.Color(0x10141c), hemiI: 0.42 * Math.PI, fog: new THREE.Color(0x141c2c), water: new THREE.Color(0x1c2a40) };   // v6: stronger moon, less fill -> moonlit relief
 
+  // camera only (no render): for checkers that project the map at time t
+  world.placeCamAt = (t) => { const cs = camState(t), R = regions[cs.region]; if (!R) return; world.region = cs.region; world.cam = cs; placeCamera(cs, R); camera.updateMatrixWorld(); };
   world.update = (t, o = {}) => {
     world.t = t; const cs = camState(t); const R = regions[cs.region]; if (!R) return;
     world.region = cs.region; world.cam = cs;

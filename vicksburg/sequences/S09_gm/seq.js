@@ -63,10 +63,10 @@ const units = [   // (close arrows default width below)
   { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.0, 0.6), K(T.took + 1.2, 9.6, 3.0)], escape: ESC(LOW, T.broke + 0.5, 2.6) },
   // the Confederate guns on the crest: taken by Hovey ("guns and all"), turn grey; retaken by Bowen (a fresh red battery behind his line); lost again
   // ONE battery behind the crest: taken by Hovey (grey), retaken by Bowen (red again), lost for good after "contested" (caps = [from, to])
-  { region: C, side: R, type: "art", n: 2, face: CSF, keys: [K(0, 3.0, 1.4)], caps: [[T.guns + 0.1, T.retook], [T.contested + 2.9, 1e9]], t1: T.D + 1 },
+  { region: C, side: R, type: "art", n: 2, face: CSF, keys: [[0, 1631.9, 698.9]],   /* (box test) clear of Bowen's way */ caps: [[T.guns + 0.1, T.retook], [T.contested + 2.9, 1e9]], t1: T.D + 1 },
   // Bowen: Cockrell + Green; the counterattack from the Middle road onto the crest and nearly to the bottom; thrown back past the crest; flees by the lower crossing
   // (GM test) Cockrell swings onto the axis first (by the flank), then both come down the slope in line, starting on Bowen's card
-  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.6, 5.9), K(T.bowen + 0.6, 7.6, 5.9), K(T.hit - 0.4, 7.0, -1.3), K(T.bottom, -4.6, -1.3),
+  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.6, 5.9), K(T.bowen + 0.6, 7.6, 5.9), [T.hit - 0.4, 1635.0, 698.8], K(T.bottom, -4.6, -1.3),
     K(T.contested - 0.8, -4.6, -1.3), K(T.contested + 2.6, 5.6, -1.3)], escape: ESC(LOW, T.broke + 0.8, 2.6) },
   { region: C, side: R, type: "inf", n: 3, face: CSF, keepTimes: true, keys: [K(0, 9.5, 9.1), K(T.bowen + 3.2, 9.5, 9.1), K(T.bottom, -4.6, 4.4),
     K(T.contested - 3.4, -4.6, 4.4), K(T.contested + 2.9, 5.6, 4.4)], escape: ESC(LOW, T.broke + 1.3, 2.6) },
@@ -185,7 +185,7 @@ const LEG = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { nam
 const DATE = (day, dn, note) => ({ month: "May 1863", day: String(day), weekday: "Day " + dn, note });
 
 window.SEQ = {
-  name: "S09", D: T.D, T, seed: 1863, date: "1863-05-16",
+  name: "S09", troopsOpts: { look: "box" }, D: T.D, T, seed: 1863, date: "1863-05-16",
   regions: [W, C],
   regionOpts: { [W]: { troopScale: 8 }, [C]: { troopScale: 1.7 } },
   keys: [
