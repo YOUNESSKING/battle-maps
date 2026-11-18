@@ -1,0 +1,93 @@
+{
+ "mode": "close",
+ "note": "Jackson (14 May 1863): the city, its west / southwest approaches (Clinton and Raymond roads), the Pearl River",
+ "box": [
+  1836,
+  690,
+  95,
+  68
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 71,
+ "rivers": [
+  {
+   "name": "Pearl River",
+   "geo": [
+    "pearl"
+   ],
+   "w": 0.9,
+   "step": 0.15,
+   "meander": 0.1
+  }
+ ],
+ "creeks": {
+  "paint_km2": 3,
+  "ribbon_km2": 60
+ },
+ "roads": [
+  {
+   "geo": "Jackson road (upper): Jackson - Clinton - Bolton - Champion house",
+   "cls": "pike"
+  },
+  {
+   "geo": "Raymond - Mississippi Springs - Jackson (Sherman, 14 May)",
+   "cls": "pike"
+  },
+  {
+   "geo": "gm12",
+   "cls": "pike"
+  },
+  {
+   "name": "Jackson - Brandon road",
+   "cls": "pike",
+   "pts": [
+    [
+     1892.2,
+     724.1
+    ],
+    [
+     1930,
+     731
+    ],
+    [
+     1960,
+     737
+    ]
+   ]
+  }
+ ],
+ "railroads": [
+  {
+   "name": "Southern Railroad of Mississippi",
+   "geo": "Southern Railroad of Mississippi (Vicksburg & Jackson RR)"
+  }
+ ],
+ "towns": [
+  {
+   "name": "Jackson",
+   "geo": "Jackson",
+   "kind": "grid",
+   "rad": 5.5,
+   "block": 0.9
+  }
+ ],
+ "farm_density": 2.0,
+ "plantation_density": 0.2,
+ "features": {
+  "works": [],
+  "bridges": [
+   {
+    "name": "Lynch Creek bridge",
+    "geo": "Lynch Creek bridge",
+    "kind": "road"
+   }
+  ]
+ },
+ "labels": [
+  "O. P. Wright farm",
+  "Lynch Creek bridge"
+ ]
+}

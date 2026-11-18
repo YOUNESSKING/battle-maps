@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280, height=720">
+<title>{{TITLE}}</title>
+<!-- Vicksburg GM3D scene, built by vicksburg/tools/make_scene.py from vicksburg/engine/template.html + sequences/<name>/seq.js.
+     3D world (engine/world.js) + fx (engine/fx.js) + GM overlay (engine/overlay.js) + Style W troops, all driven by ONE paused GSAP timeline
+     (engine/scene.js). Composition 1280x720; the GM overlay is authored at 1920x1080 and scaled by 2/3. Do not edit the generated copy. -->
+<script src="engine/vendor/gsap.min.js"></script>
+<script src="engine/overlay.js"></script>
+{{DATA_SCRIPTS}}
+<script src="engine/seqlib.js"></script>
+<script src="seq/seq.js"></script>
+<script type="importmap">{ "imports": { "three": "./engine/vendor/three.module.min.js" } }</script>
+<style>
+  @font-face { font-family: "CG"; font-weight: 600; src: url("engine/assets/fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "CG"; font-weight: 600; font-style: italic; src: url("engine/assets/fonts/cormorant-garamond-latin-600-italic.woff2") format("woff2"); }
+  html, body { margin: 0; padding: 0; background: #000; }
+  #root { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #a9b3b4; }
+  /* v6: saturation + toe/S-curve tables on the 3D image only (#gmgrade + #veil, written per frame by gradeAt(t) in scene.js) */
+  #gl { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; filter: saturate(0.74) url(#gmgrade); }
+  #troops, #pins { position: absolute; inset: 0; pointer-events: none; }
+  #ovwrap { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform: scale(0.666667); transform-origin: 0 0; }
+  #ov { position: absolute; inset: 0; }
+  #fade { position: absolute; inset: 0; background: #000; opacity: 0; }
+  /* cloud white-out: flat cool interior ~(208,211,204), then warm cream with a smooth radial falloff (centre ~(218,216,203), corners ~(186,184,170)) */
+  #whiteout { position: absolute; inset: 0; opacity: 0; pointer-events: none; overflow: hidden; }
+  #wcool, #wwarm { position: absolute; inset: 0; }
+  #wcool { background: rgb(208,211,204); }
+  #wwarm { opacity: 0; background: radial-gradient(ellipse farthest-corner at 50% 47%, rgb(220,218,205) 0%, rgb(215,213,200) 34%, rgb(195,194,180) 71%, rgb(184,182,167) 100%); }
+  .bnr { position: absolute; left: 0; top: 0; will-change: transform; transform-origin: 0 0; }
+  .pl { position: absolute; left: 0; top: 0; white-space: nowrap; font-family: "CG", Georgia, serif; font-weight: 600; color: #f8f4e8; letter-spacing: .03em;
+        text-shadow: 0 2px 3px rgba(0,0,0,.85), 0 0 7px rgba(0,0,0,.6); will-change: transform; }
+  .pl.it { font-style: italic; letter-spacing: .12em; color: #e9eef0; }
+</style>
+<script>
+  // ONE paused timeline, registered synchronously; scene.js draws world + fx + troops from it, the overlay chains O.update on it.
+  window.__timelines = window.__timelines || {};
+  window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+  window.__hf.buildReady.vxScene = new Promise((res) => { window.__sceneBuilt = res; });
+  window.__clk = { t: 0 }; window.__draw = null;
+  window.T = window.SEQ.T || {}; window.CUES = VX.cues(window.SEQ);   // sound cues [kind, t] for the assembler (visible shots only)
+  const tl = gsap.timeline({ paused: true });
+  tl.to(window.__clk, { t: SEQ.D, duration: SEQ.D, ease: "none", onUpdate: () => { if (window.__draw) window.__draw(window.__clk.t); } }, 0);
+  window.__timelines["main"] = tl; window.__tl = tl;
+</script>
+<script>var BN_FONT_BASE = "engine/assets/fonts/";</script>
+<script src="engine/banner.js"></script>   <!-- the generals' banners on poles (STYLE_LOCK 2f item 1), verbatim -->
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="{{DURATION}}" data-width="1280" data-height="720">
+  <svg width="0" height="0" style="position:absolute"><filter id="gmgrade" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feComponentTransfer>
+    <feFuncR type="table" tableValues="0 1"/><feFuncG type="table" tableValues="0 1"/><feFuncB type="table" tableValues="0 1"/></feComponentTransfer></filter></svg>
+  <canvas id="gl" width="1280" height="720"></canvas>
+  <div id="veil" style="position:absolute;inset:0;pointer-events:none"></div>
+  <div id="pins"></div>
+  <div id="troops"></div>
+  <div id="whiteout"><div id="wcool"></div><div id="wwarm"></div></div>
+  <div id="film" style="position:absolute;inset:0;pointer-events:none"></div>
+  <div id="ovwrap"><div id="ov"></div></div>
+  <div id="fade"></div>
+</div>
+<script type="module" src="engine/scene.js"></script>
+</body>
+</html>

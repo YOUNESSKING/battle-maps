@@ -1,0 +1,208 @@
+{
+ "mode": "close",
+ "note": "the city, its bluffs and river batteries, the hairpin bend round De Soto Point (1863 course), Grant's Canal: night run of the batteries + the opening dive",
+ "box": [
+  1312,
+  640,
+  110,
+  75
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 31,
+ "rivers": [
+  {
+   "name": "Mississippi River",
+   "geo": "mississippi",
+   "w": 6.0,
+   "step": 0.25,
+   "smooth": 6
+  },
+  {
+   "name": "Yazoo River",
+   "geo": [
+    "Yazoo River"
+   ],
+   "w": 1.6,
+   "step": 0.2,
+   "join": true
+  },
+  {
+   "name": "Grant's Canal",
+   "pts": [
+    [
+     1331.5,
+     699.2
+    ],
+    [
+     1338.5,
+     702.6
+    ],
+    [
+     1346,
+     706.2
+    ],
+    [
+     1353.5,
+     710.2
+    ],
+    [
+     1361.2,
+     714.6
+    ]
+   ],
+   "w": 0.3,
+   "step": 0.12,
+   "smooth": 2,
+   "wl_max": 21.5
+  }
+ ],
+ "roads": [
+  {
+   "geo": "Jackson road west: Edwards - Big Black bridge - Bovina - Mount Alban - Vicksburg (Jackson Road)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Graveyard Road (into the city)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Baldwin's Ferry Road (into the city)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Hall's Ferry Road (into the city)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Vicksburg - Warrenton road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Valley road at the foot of the bluffs: Vicksburg - Chickasaw Bayou - Haynes' Bluff",
+   "cls": "pike"
+  },
+  {
+   "name": "De Soto Point road",
+   "cls": "lane",
+   "pts": [
+    [
+     1362.5,
+     700
+    ],
+    [
+     1352,
+     699
+    ],
+    [
+     1340,
+     701
+    ],
+    [
+     1326,
+     703
+    ],
+    [
+     1312,
+     705
+    ]
+   ]
+  }
+ ],
+ "railroads": [
+  {
+   "name": "Southern Railroad of Mississippi",
+   "geo": "Southern Railroad of Mississippi (Vicksburg & Jackson RR)"
+  },
+  {
+   "name": "Vicksburg, Shreveport and Texas Railroad",
+   "pts": [
+    [
+     1364.0,
+     700.5
+    ],
+    [
+     1352,
+     702.5
+    ],
+    [
+     1338,
+     704.5
+    ],
+    [
+     1312,
+     708
+    ]
+   ]
+  }
+ ],
+ "towns": [
+  {
+   "name": "Vicksburg",
+   "geo": "Vicksburg",
+   "kind": "grid",
+   "rad": 8.0,
+   "block": 0.85,
+   "angle": 84
+  },
+  {
+   "name": "Delta",
+   "at": [
+    1356.5,
+    699.0
+   ],
+   "kind": "hamlet",
+   "len": 2.2,
+   "angle": 10
+  }
+ ],
+ "plantation_density": 0.25,
+ "farm_density": 1.6,
+ "swamp": 0.2,
+ "cane": 0.5,
+ "woods": 0.0,
+ "auto_works": {
+  "river_batteries": {
+   "y0": 662,
+   "y1": 713,
+   "n": 12,
+   "crest_m": 48,
+   "x_min": 1372,
+   "back": 0.5,
+   "size": 0.55
+  }
+ },
+ "features": {
+  "works": [
+   {
+    "name": "Fort Hill",
+    "kind": "fort",
+    "shape": "fort",
+    "geo": "Fort Hill",
+    "size": 0.9,
+    "closed": true,
+    "side": "cs",
+    "height": 2.0
+   },
+   {
+    "name": "South Fort",
+    "kind": "fort",
+    "shape": "fort",
+    "geo": "South Fort",
+    "size": 0.7,
+    "closed": true,
+    "side": "cs",
+    "height": 2.0
+   }
+  ]
+ },
+ "labels": [
+  "Fort Hill",
+  "Grant's canal",
+  "Young's Point",
+  "Pemberton's HQ",
+  "South Fort"
+ ]
+}

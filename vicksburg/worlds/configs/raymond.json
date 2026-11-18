@@ -1,0 +1,81 @@
+{
+ "mode": "close",
+ "note": "Raymond (12 May 1863): Fourteenmile Creek, the Utica road, the town",
+ "box": [
+  1672,
+  740,
+  84,
+  58
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 61,
+ "rivers": [
+  {
+   "name": "Fourteenmile Creek",
+   "geo": [
+    "Fourteenmile Creek"
+   ],
+   "w": 0.3,
+   "step": 0.12,
+   "meander": 0.14
+  }
+ ],
+ "creeks": {
+  "paint_km2": 3,
+  "ribbon_km2": 60
+ },
+ "roads": [
+  {
+   "geo": "Port Gibson - Grindstone Ford - Willow Springs - Rocky Springs - Utica - Raymond",
+   "cls": "pike"
+  },
+  {
+   "geo": "Rocky Springs - Cayuga - Auburn - Dillon's - Raymond",
+   "cls": "pike"
+  },
+  {
+   "geo": "Raymond - Clinton road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Raymond - Mississippi Springs - Jackson (Sherman, 14 May)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Middle Road: Raymond-Bolton road - Roberts house - crossroads",
+   "cls": "pike"
+  },
+  {
+   "geo": "Raymond Road: Raymond - Jackson Creek - Coker house - Baker's Creek - Edwards",
+   "cls": "pike"
+  }
+ ],
+ "towns": [
+  {
+   "name": "Raymond",
+   "geo": "Raymond",
+   "kind": "grid",
+   "rad": 2.6,
+   "block": 0.8
+  }
+ ],
+ "farm_density": 2.6,
+ "plantation_density": 0.2,
+ "features": {
+  "works": [],
+  "bridges": [
+   {
+    "name": "Fourteenmile Creek bridge",
+    "geo": "Fourteenmile Creek bridge",
+    "kind": "road"
+   }
+  ]
+ },
+ "labels": [
+  "Raymond battlefield",
+  "Fourteenmile Creek bridge"
+ ]
+}

@@ -1,0 +1,4206 @@
+{
+ "_doc": "Vicksburg 1863 film geodata. See vicksburg/research/GEO.md. x,y = map units of the vicksburg_hd_lift frame (web mercator z10, origin [63513,105473], 129.36 m/unit, x east, y south). acc_m = estimated error. ground_m = DEM height at the point. EST = estimate from text, check on the DEM.",
+ "frame": {
+  "name": "vicksburg_hd_lift",
+  "zoom": 10,
+  "origin_world_px": [
+   63513,
+   105473
+  ],
+  "meters_per_unit": 129.36,
+  "size": [
+   2880,
+   1620
+  ]
+ },
+ "places": [
+  {
+   "name": "Vicksburg (Warren County courthouse, 1858)",
+   "lat": 32.35219,
+   "lon": -90.87872,
+   "x": 1383.1,
+   "y": 678.9,
+   "kind": "town",
+   "acc_m": 30,
+   "src": "OSM;WD",
+   "note": "courthouse = Old Court House Museum; Logan's flag raised here 4 Jul",
+   "ground_m": 74.3
+  },
+  {
+   "name": "Pemberton's HQ (Willis-Cowan house, Crawford St)",
+   "lat": 32.34824,
+   "lon": -90.87765,
+   "x": 1383.9,
+   "y": 682.3,
+   "kind": "hq",
+   "acc_m": 30,
+   "src": "WD;NPS",
+   "note": "surrender decided here night 3 Jul",
+   "ground_m": 72.9
+  },
+  {
+   "name": "Milliken's Bend (1863 landing, town since eroded)",
+   "lat": 32.45583,
+   "lon": -91.10472,
+   "x": 1218.6,
+   "y": 589.6,
+   "kind": "town",
+   "acc_m": 2000,
+   "src": "GNIS",
+   "note": "1863 town lost to the river; approximate",
+   "ground_m": 29.7
+  },
+  {
+   "name": "Young's Point (Grant's HQ from 29 Jan 1863)",
+   "lat": 32.32544,
+   "lon": -90.95444,
+   "x": 1328,
+   "y": 702,
+   "kind": "landing",
+   "acc_m": 2500,
+   "src": "EST(GM: where the river turns NE toward the city; W end of the canal)",
+   "note": "estimate, Louisiana bank at the neck of De Soto Point",
+   "ground_m": 26.3
+  },
+  {
+   "name": "Richmond, La. (burned June 1863)",
+   "lat": 32.3858,
+   "lon": -91.1747,
+   "x": 1167.6,
+   "y": 650.0,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "GNIS;WD",
+   "note": "",
+   "ground_m": 25.4
+  },
+  {
+   "name": "Duckport (Duckport canal head)",
+   "lat": 32.3925,
+   "lon": -91.01389,
+   "x": 1284.7,
+   "y": 644.2,
+   "kind": "landing",
+   "acc_m": 800,
+   "src": "GNIS",
+   "note": "failed Duckport canal, Apr 1863",
+   "ground_m": 26.5
+  },
+  {
+   "name": "New Carthage (flooded, Apr 1863)",
+   "lat": 32.2,
+   "lon": -91.06,
+   "x": 1251.1,
+   "y": 810.0,
+   "kind": "landing",
+   "acc_m": 4000,
+   "src": "EST(GM ch.XXXII-XXXIII; Roundaway/Vidal bayou mouth)",
+   "note": "estimate",
+   "ground_m": 27.8
+  },
+  {
+   "name": "Perkins' plantation (Grant HQ 24 Apr)",
+   "lat": 32.12,
+   "lon": -91.11,
+   "x": 1214.7,
+   "y": 878.8,
+   "kind": "plantation",
+   "acc_m": 4000,
+   "src": "EST(GM ch.XXXIII)",
+   "note": "estimate; on the river below New Carthage",
+   "ground_m": 17.9
+  },
+  {
+   "name": "Hard Times plantation (corps assembly 27 Apr)",
+   "lat": 32.0379,
+   "lon": -91.1242,
+   "x": 1204.4,
+   "y": 949.4,
+   "kind": "plantation",
+   "acc_m": 800,
+   "src": "GNIS;WD",
+   "note": "1863 landing was on the 1863 river bank: river has moved",
+   "ground_m": 20.2
+  },
+  {
+   "name": "Disharoon's (De Shroon's) plantation, embarkation 30 Apr",
+   "lat": 31.9938,
+   "lon": -91.0398,
+   "x": 1265.8,
+   "y": 987.3,
+   "kind": "landing",
+   "acc_m": 1500,
+   "src": "WD",
+   "note": "6 mi above Bruinsburg (GM); 1863 river bank",
+   "ground_m": 36.7
+  },
+  {
+   "name": "Coffee Point (tongue of land opposite Grand Gulf, levee march night 29 Apr)",
+   "lat": 32.01,
+   "lon": -91.075,
+   "x": 1240.2,
+   "y": 973.3,
+   "kind": "point",
+   "acc_m": 3000,
+   "src": "EST(GM ch.XXXIII)",
+   "note": "estimate",
+   "ground_m": 16.9
+  },
+  {
+   "name": "Grand Gulf (town site)",
+   "lat": 32.0333,
+   "lon": -91.0525,
+   "x": 1256.6,
+   "y": 953.3,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "GNIS",
+   "note": "town largely gone by 1863",
+   "ground_m": 33.5
+  },
+  {
+   "name": "Fort Cobun (upper battery, Point of Rock)",
+   "lat": 32.04,
+   "lon": -91.0545,
+   "x": 1255.1,
+   "y": 947.6,
+   "kind": "fort",
+   "acc_m": 500,
+   "src": "EST(Grand Gulf Military Park 32.0277,-91.0501 OSM)",
+   "note": "north end of the Grand Gulf works; check on DEM bluff",
+   "ground_m": 20.6
+  },
+  {
+   "name": "Fort Wade (lower battery)",
+   "lat": 32.0215,
+   "lon": -91.048,
+   "x": 1259.9,
+   "y": 963.5,
+   "kind": "fort",
+   "acc_m": 600,
+   "src": "EST",
+   "note": "~1.3-2 km south of Fort Cobun; check on DEM bluff",
+   "ground_m": 55.8
+  },
+  {
+   "name": "Grand Gulf Military Park (today)",
+   "lat": 32.02766,
+   "lon": -91.05011,
+   "x": 1258.3,
+   "y": 958.2,
+   "kind": "park",
+   "acc_m": 50,
+   "src": "OSM",
+   "note": "",
+   "ground_m": 53.6
+  },
+  {
+   "name": "Bruinsburg landing (30 Apr)",
+   "lat": 31.9425,
+   "lon": -91.1572,
+   "x": 1180.4,
+   "y": 1031.3,
+   "kind": "landing",
+   "acc_m": 800,
+   "src": "GNIS;WD",
+   "note": "1863 landing on the river; Bayou Pierre mouth just above",
+   "ground_m": 23.6
+  },
+  {
+   "name": "Windsor (plantation house, ruins)",
+   "lat": 31.94081,
+   "lon": -91.13722,
+   "x": 1194.9,
+   "y": 1032.7,
+   "kind": "house",
+   "acc_m": 50,
+   "src": "WD;OSM",
+   "note": "Union troops passed it on 30 Apr (tradition); house burned 1890",
+   "ground_m": 47.4
+  },
+  {
+   "name": "Bayou Pierre mouth (1863 approx)",
+   "lat": 31.92,
+   "lon": -91.19,
+   "x": 1156.5,
+   "y": 1050.6,
+   "kind": "river",
+   "acc_m": 1500,
+   "src": "GNIS(stream point)",
+   "note": "Grant: enters the Mississippi just above Bruinsburg",
+   "ground_m": 16.9
+  },
+  {
+   "name": "Port Gibson",
+   "lat": 31.95611,
+   "lon": -90.98306,
+   "x": 1307.2,
+   "y": 1019.6,
+   "kind": "town",
+   "acc_m": 200,
+   "src": "GNIS;WD",
+   "note": "'too beautiful to burn' is a later legend: do not quote",
+   "ground_m": 38.0
+  },
+  {
+   "name": "Shaifer house (opening shots ~midnight 30 Apr/1 May)",
+   "lat": 31.9636,
+   "lon": -91.0444,
+   "x": 1262.5,
+   "y": 1013.2,
+   "kind": "house",
+   "acc_m": 900,
+   "src": "EST(WP/ABT text: fork of Rodney & Bruinsburg roads)",
+   "note": "where the roads to Port Gibson split; check road fork",
+   "ground_m": 73.8
+  },
+  {
+   "name": "Magnolia Church (Green's line, Rodney road)",
+   "lat": 31.95682,
+   "lon": -91.00344,
+   "x": 1292.3,
+   "y": 1019.0,
+   "kind": "church",
+   "acc_m": 900,
+   "src": "OSM (modern church on Rodney Rd; 1863 church site may differ)",
+   "note": "",
+   "ground_m": 72.1
+  },
+  {
+   "name": "Port Gibson battlefield marker",
+   "lat": 31.95778,
+   "lon": -91.01889,
+   "x": 1281.1,
+   "y": 1018.2,
+   "kind": "marker",
+   "acc_m": 100,
+   "src": "WD",
+   "note": "GNIS 'Port Gibson Battle Site'",
+   "ground_m": 41.2
+  },
+  {
+   "name": "Foster farm (Confederate guns, Rodney road)",
+   "lat": 31.96,
+   "lon": -91.03,
+   "x": 1273.0,
+   "y": 1016.3,
+   "kind": "farm",
+   "acc_m": 1200,
+   "src": "EST(WP text)",
+   "note": "",
+   "ground_m": 57.5
+  },
+  {
+   "name": "Bayou Pierre South Fork bridge at Port Gibson (burned 1 May; raft bridge 2 May)",
+   "lat": 31.961,
+   "lon": -90.979,
+   "x": 1310.1,
+   "y": 1015.4,
+   "kind": "bridge",
+   "acc_m": 600,
+   "src": "EST(GM ch.XXXIV)",
+   "note": "on the Grand Gulf/Vicksburg road just N of town",
+   "ground_m": 25.1
+  },
+  {
+   "name": "Bayou Pierre North Fork bridge, Grindstone Ford (repaired night 2 May)",
+   "lat": 32.0035,
+   "lon": -90.895,
+   "x": 1371.3,
+   "y": 978.9,
+   "kind": "bridge",
+   "acc_m": 1000,
+   "src": "GNIS(Grindstone Ford cemetery 32.0027,-90.8951);GM",
+   "note": "",
+   "ground_m": 34.8
+  },
+  {
+   "name": "Willow Springs (road junction)",
+   "lat": 32.03599,
+   "lon": -90.89622,
+   "x": 1370.4,
+   "y": 951.0,
+   "kind": "crossroads",
+   "acc_m": 1000,
+   "src": "OSM(Willow Springs church)",
+   "note": "GM: McPherson held the road back to Willow Springs",
+   "ground_m": 86.6
+  },
+  {
+   "name": "Hankinson's Ferry (Big Black, ferry boat seized 3 May)",
+   "lat": 32.11515,
+   "lon": -90.87959,
+   "x": 1382.5,
+   "y": 883,
+   "kind": "ferry",
+   "acc_m": 1500,
+   "src": "OSM(Hankinson hamlet 32.10654,-90.87955) snapped to the Big Black on the DEM",
+   "note": "",
+   "ground_m": 21.4
+  },
+  {
+   "name": "Rocky Springs",
+   "lat": 32.08889,
+   "lon": -90.815,
+   "x": 1429.5,
+   "y": 905.6,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "GNIS;WD",
+   "note": "10 mi from Hankinson's Ferry (GM)",
+   "ground_m": 91.9
+  },
+  {
+   "name": "Big Sandy Creek crossing (McClernand camp 8-10 May)",
+   "lat": 32.12,
+   "lon": -90.73,
+   "x": 1491.4,
+   "y": 878.8,
+   "kind": "camp",
+   "acc_m": 4000,
+   "src": "EST(GM)",
+   "note": "estimate",
+   "ground_m": 52.9
+  },
+  {
+   "name": "Utica",
+   "lat": 32.1033,
+   "lon": -90.6222,
+   "x": 1569.9,
+   "y": 893.2,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "GNIS;WD",
+   "note": "",
+   "ground_m": 85.8
+  },
+  {
+   "name": "Cayuga",
+   "lat": 32.15944,
+   "lon": -90.69389,
+   "x": 1517.7,
+   "y": 844.9,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "GNIS;WD",
+   "note": "",
+   "ground_m": 82.0
+  },
+  {
+   "name": "Auburn (New Auburn, Hinds Co.; Blair arrived 14 May)",
+   "lat": 32.2158,
+   "lon": -90.5872,
+   "x": 1595.4,
+   "y": 796.4,
+   "kind": "town",
+   "acc_m": 1500,
+   "src": "WD(Auburn cemetery)",
+   "note": "1863 village gone; cemetery point",
+   "ground_m": 51.7
+  },
+  {
+   "name": "Dillon's plantation",
+   "lat": 32.235,
+   "lon": -90.56,
+   "x": 1615.2,
+   "y": 779.9,
+   "kind": "plantation",
+   "acc_m": 3000,
+   "src": "EST(GM ch.XXXV: McClernand by Dillon's to Raymond)",
+   "note": "estimate; on the Auburn-Raymond road",
+   "ground_m": 51.7
+  },
+  {
+   "name": "Raymond (Hinds County courthouse, 1859)",
+   "lat": 32.26028,
+   "lon": -90.42333,
+   "x": 1714.7,
+   "y": 758.1,
+   "kind": "town",
+   "acc_m": 50,
+   "src": "WD",
+   "note": "Confederate hospital in the courthouse",
+   "ground_m": 97.7
+  },
+  {
+   "name": "Raymond battlefield (Raymond Military Park)",
+   "lat": 32.23917,
+   "lon": -90.44861,
+   "x": 1696.3,
+   "y": 776.3,
+   "kind": "battlefield",
+   "acc_m": 100,
+   "src": "WD;WP",
+   "note": "~2 mi SW of town on MS-18",
+   "ground_m": 72.9
+  },
+  {
+   "name": "Fourteenmile Creek bridge on the Utica road (Raymond)",
+   "lat": 32.22965,
+   "lon": -90.45319,
+   "x": 1693,
+   "y": 784.5,
+   "kind": "bridge",
+   "acc_m": 700,
+   "src": "EST(WP text; creek snapped on DEM)",
+   "note": "just S of the Military Park",
+   "ground_m": 72.5
+  },
+  {
+   "name": "Mississippi Springs (Sherman's camp 13 May)",
+   "lat": 32.26972,
+   "lon": -90.35706,
+   "x": 1763,
+   "y": 750,
+   "kind": "town",
+   "acc_m": 2500,
+   "src": "EST(WP: Gregg fell back 5 mi toward Jackson to it; GM)",
+   "note": "village gone; estimate",
+   "ground_m": 97.1
+  },
+  {
+   "name": "Clinton",
+   "lat": 32.3417,
+   "lon": -90.3217,
+   "x": 1788.7,
+   "y": 688.0,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "WD",
+   "note": "McPherson tore up the railroad here 13 May",
+   "ground_m": 108.8
+  },
+  {
+   "name": "O. P. Wright farm (Colquitt's stand, 14 May)",
+   "lat": 32.315,
+   "lon": -90.24,
+   "x": 1848.2,
+   "y": 711.0,
+   "kind": "farm",
+   "acc_m": 1500,
+   "src": "EST(WP: 3 mi out on the Clinton road)",
+   "note": "",
+   "ground_m": 97.5
+  },
+  {
+   "name": "Lynch Creek bridge (Sherman's road, 14 May)",
+   "lat": 32.27843,
+   "lon": -90.19707,
+   "x": 1879.5,
+   "y": 742.5,
+   "kind": "bridge",
+   "acc_m": 900,
+   "src": "OSM(Lynch Creek);WP; snapped on DEM",
+   "note": "",
+   "ground_m": 78.2
+  },
+  {
+   "name": "Jackson (Old Capitol)",
+   "lat": 32.29976,
+   "lon": -90.17964,
+   "x": 1892.2,
+   "y": 724.1,
+   "kind": "town",
+   "acc_m": 30,
+   "src": "WD;OSM",
+   "note": "Crocker's men raised the flag over the capitol (GM)",
+   "ground_m": 95.9
+  },
+  {
+   "name": "Pearl River at Jackson (Confederate line anchors N and S)",
+   "lat": 32.3,
+   "lon": -90.17,
+   "x": 1899.2,
+   "y": 723.9,
+   "kind": "river",
+   "acc_m": 800,
+   "src": "DEM",
+   "note": "works ran from the Pearl north of the city to the Pearl south (GM)",
+   "ground_m": 78.7
+  },
+  {
+   "name": "Canton road (Johnston's retreat, camp 6 mi N of Jackson night 14 May)",
+   "lat": 32.385,
+   "lon": -90.14,
+   "x": 1921.1,
+   "y": 650.7,
+   "kind": "road",
+   "acc_m": 3000,
+   "src": "EST(GM)",
+   "note": "",
+   "ground_m": 89.9
+  },
+  {
+   "name": "Bolton (Bolton's Depot)",
+   "lat": 32.34931,
+   "lon": -90.4601,
+   "x": 1688.0,
+   "y": 681.4,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "WD",
+   "note": "Hovey here night 15 May",
+   "ground_m": 67.1
+  },
+  {
+   "name": "Brownsville",
+   "lat": 32.448,
+   "lon": -90.435,
+   "x": 1706.2,
+   "y": 596.3,
+   "kind": "town",
+   "acc_m": 1500,
+   "src": "WD(Brownsville cemetery)",
+   "note": "Johnston between Brownsville and the Big Black 1 Jul",
+   "ground_m": 85.9
+  },
+  {
+   "name": "Edwards (Edwards Station / Edwards Depot)",
+   "lat": 32.33083,
+   "lon": -90.60417,
+   "x": 1583.1,
+   "y": 697.4,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "GNIS;WD",
+   "note": "existing bake_clip value (1599.4,716.4) is ~2.5 km SE of this",
+   "ground_m": 71.5
+  },
+  {
+   "name": "Mrs. Ellison's (Pemberton's camp night 15 May)",
+   "lat": 32.3,
+   "lon": -90.585,
+   "x": 1597.0,
+   "y": 723.9,
+   "kind": "farm",
+   "acc_m": 2500,
+   "src": "EST(Pemberton letter in Johnston's Narrative)",
+   "note": "fork of the Raymond road",
+   "ground_m": 48.7
+  },
+  {
+   "name": "Champion Hill crest (the hill)",
+   "lat": 32.33449,
+   "lon": -90.52803,
+   "x": 1638.5,
+   "y": 694.2,
+   "kind": "hill",
+   "acc_m": 300,
+   "src": "DEM summit 109 m, 600 m N of the crossroads marker (WP: crossroads 1/3 mi S of crest)",
+   "note": "higher ground (118 m) continues SE along the ridge",
+   "ground_m": 106.3
+  },
+  {
+   "name": "Crossroads (Jackson Road / Middle Road)",
+   "lat": 32.3297,
+   "lon": -90.5303,
+   "x": 1636.8,
+   "y": 698.3,
+   "kind": "crossroads",
+   "acc_m": 400,
+   "src": "WD/WP battle point (marker at Billy Fields Rd x DJ Johnson Rd)",
+   "note": "",
+   "ground_m": 91.2
+  },
+  {
+   "name": "Champion house (Hovey's start; site)",
+   "lat": 32.344,
+   "lon": -90.518,
+   "x": 1645.8,
+   "y": 686.0,
+   "kind": "house",
+   "acc_m": 800,
+   "src": "EST(GM: road turns S at the hill's north end; ABT)",
+   "note": "house burned after the battle",
+   "ground_m": 65.1
+  },
+  {
+   "name": "Jackson Road bridge over Baker's Creek",
+   "lat": 32.332,
+   "lon": -90.556,
+   "x": 1618.1,
+   "y": 696.3,
+   "kind": "bridge",
+   "acc_m": 800,
+   "src": "EST(GM: ~1 mi W of crossroads)",
+   "note": "snap to Baker's Creek on DEM",
+   "ground_m": 54.4
+  },
+  {
+   "name": "Raymond Road ford/bridge over Baker's Creek (Pemberton's escape)",
+   "lat": 32.31499,
+   "lon": -90.57266,
+   "x": 1606,
+   "y": 711,
+   "kind": "bridge",
+   "acc_m": 1000,
+   "src": "EST (snapped to Baker's Creek on the DEM)",
+   "note": "",
+   "ground_m": 47.8
+  },
+  {
+   "name": "Coker house (Loring's position, Raymond Road)",
+   "lat": 32.315,
+   "lon": -90.548,
+   "x": 1624.0,
+   "y": 711.0,
+   "kind": "house",
+   "acc_m": 800,
+   "src": "EST(MDAH/WP: S part of field, Raymond Rd)",
+   "note": "",
+   "ground_m": 79.0
+  },
+  {
+   "name": "Roberts house (Middle Road)",
+   "lat": 32.322,
+   "lon": -90.513,
+   "x": 1649.4,
+   "y": 705.0,
+   "kind": "house",
+   "acc_m": 1500,
+   "src": "EST",
+   "note": "Bowen/Osterhaus sector; estimate",
+   "ground_m": 94.4
+  },
+  {
+   "name": "Jackson Creek (Pemberton's initial line overlooked it)",
+   "lat": 32.322,
+   "lon": -90.518,
+   "x": 1645.8,
+   "y": 705.0,
+   "kind": "creek",
+   "acc_m": 1500,
+   "src": "WP/ABT text",
+   "note": "",
+   "ground_m": 102.4
+  },
+  {
+   "name": "Big Black railroad bridge (burned 17 May)",
+   "lat": 32.34694,
+   "lon": -90.70472,
+   "x": 1509.8,
+   "y": 683.5,
+   "kind": "bridge",
+   "acc_m": 100,
+   "src": "WD;GNIS;WP",
+   "note": "existing brief value (1518,705) is ~2.9 km S of this: the real bridge sits at the river's westward turn, y~683",
+   "ground_m": 37.9
+  },
+  {
+   "name": "Steamboat 'Dot' bridge (just above rail bridge)",
+   "lat": 32.348,
+   "lon": -90.7058,
+   "x": 1509.1,
+   "y": 682.6,
+   "kind": "bridge",
+   "acc_m": 400,
+   "src": "WP",
+   "note": "ferry site; Dot turned crosswise as a bridge",
+   "ground_m": 42.7
+  },
+  {
+   "name": "Big Black battlefield (Confederate bridgehead)",
+   "lat": 32.34516,
+   "lon": -90.69214,
+   "x": 1519,
+   "y": 685,
+   "kind": "battlefield",
+   "acc_m": 600,
+   "src": "EST(WP/GM text; DEM bend) vs WD 32.36,-90.726",
+   "note": "bridgehead = the bottom SE of the bend, E of the bridge",
+   "ground_m": 36.4
+  },
+  {
+   "name": "Bovina (Bovina station)",
+   "lat": 32.3522,
+   "lon": -90.7347,
+   "x": 1488.0,
+   "y": 678.9,
+   "kind": "town",
+   "acc_m": 1000,
+   "src": "WD (WP town 32.3489,-90.7458)",
+   "note": "existing brief value (1495.5,701.2) is ~3 km SE of this",
+   "ground_m": 73.3
+  },
+  {
+   "name": "Bridgeport (Sherman's crossing, 17 May)",
+   "lat": 32.40953,
+   "lon": -90.61592,
+   "x": 1574.5,
+   "y": 629.5,
+   "kind": "ferry",
+   "acc_m": 3500,
+   "src": "EST(GM: ~11 mi above the rail bridge; snapped to the Big Black on the DEM)",
+   "note": "estimate",
+   "ground_m": 34.1
+  },
+  {
+   "name": "Mount Alban (Mt. Alban)",
+   "lat": 32.3572,
+   "lon": -90.80677,
+   "x": 1435.5,
+   "y": 674.6,
+   "kind": "town",
+   "acc_m": 1500,
+   "src": "OSM(Mount Alban Road)",
+   "note": "McClernand turned off here 18 May",
+   "ground_m": 111.0
+  },
+  {
+   "name": "Haynes' Bluff (Drumgould's Bluff)",
+   "lat": 32.51625,
+   "lon": -90.78538,
+   "x": 1451.1,
+   "y": 537.4,
+   "kind": "fort",
+   "acc_m": 800,
+   "src": "GNIS;WD",
+   "note": "abandoned 18 May, cavalry took it (SM)",
+   "ground_m": 49.3
+  },
+  {
+   "name": "Snyder's Bluff (Snyder's Mill)",
+   "lat": 32.4975,
+   "lon": -90.79806,
+   "x": 1441.9,
+   "y": 553.6,
+   "kind": "fort",
+   "acc_m": 800,
+   "src": "GNIS;WD",
+   "note": "Sherman's feint 29 Apr-1 May",
+   "ground_m": 61.9
+  },
+  {
+   "name": "Chickasaw Bayou battlefield (29 Dec 1862)",
+   "lat": 32.40556,
+   "lon": -90.84778,
+   "x": 1405.7,
+   "y": 632.9,
+   "kind": "battlefield",
+   "acc_m": 500,
+   "src": "WP;WD",
+   "note": "",
+   "ground_m": 37.3
+  },
+  {
+   "name": "Walnut Hills (bluff N of Vicksburg; Sherman looked down 18 May)",
+   "lat": 32.42514,
+   "lon": -90.81677,
+   "x": 1428.2,
+   "y": 616.0,
+   "kind": "hill",
+   "acc_m": 1000,
+   "src": "GNIS",
+   "note": "",
+   "ground_m": 49.3
+  },
+  {
+   "name": "Warrenton",
+   "lat": 32.2475,
+   "lon": -90.92833,
+   "x": 1347.0,
+   "y": 769.1,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "GNIS;WD",
+   "note": "6 mi below Vicksburg (GM)",
+   "ground_m": 32.1
+  },
+  {
+   "name": "Fort Hill (N anchor on the river)",
+   "lat": 32.37015,
+   "lon": -90.86927,
+   "x": 1390.0,
+   "y": 663.5,
+   "kind": "fort",
+   "acc_m": 100,
+   "src": "GNIS;OSM",
+   "note": "",
+   "ground_m": 94.4
+  },
+  {
+   "name": "Stockade Redan (Graveyard Road)",
+   "lat": 32.3652,
+   "lon": -90.847,
+   "x": 1406.2,
+   "y": 667.7,
+   "kind": "fort",
+   "acc_m": 300,
+   "src": "EST(between Conf. Ave node 32.36472,-90.84626 and Graveyard Rd)",
+   "note": "Sherman 19 + 22 May",
+   "ground_m": 90.6
+  },
+  {
+   "name": "3rd Louisiana Redan (Jackson Road; mined 25 Jun + 1 Jul)",
+   "lat": 32.3592,
+   "lon": -90.8432,
+   "x": 1409.0,
+   "y": 672.9,
+   "kind": "fort",
+   "acc_m": 200,
+   "src": "EST(Jackson Rd node 32.35938,-90.84200; W of Shirley house)",
+   "note": "Union reports call it 'Fort Hill': do not confuse with the river Fort Hill",
+   "ground_m": 109.1
+  },
+  {
+   "name": "Great Redoubt",
+   "lat": 32.3568,
+   "lon": -90.8468,
+   "x": 1406.4,
+   "y": 675.0,
+   "kind": "fort",
+   "acc_m": 300,
+   "src": "EST(Louisiana Memorial 32.35711,-90.84697)",
+   "note": "",
+   "ground_m": 96.9
+  },
+  {
+   "name": "2nd Texas Lunette (Baldwin's Ferry Road)",
+   "lat": 32.3505,
+   "lon": -90.8515,
+   "x": 1403.0,
+   "y": 680.4,
+   "kind": "fort",
+   "acc_m": 400,
+   "src": "EST",
+   "note": "A. J. Smith (Burbridge) 22 May",
+   "ground_m": 83.8
+  },
+  {
+   "name": "Railroad Redoubt (Southern RR of Mississippi)",
+   "lat": 32.3435,
+   "lon": -90.8555,
+   "x": 1400.0,
+   "y": 686.4,
+   "kind": "fort",
+   "acc_m": 400,
+   "src": "EST(Texas Memorial 32.34291,-90.85631)",
+   "note": "only work entered on 22 May (Lawler, 22nd Iowa)",
+   "ground_m": 78.4
+  },
+  {
+   "name": "Square Fort (Fort Garrott)",
+   "lat": 32.33624,
+   "lon": -90.86287,
+   "x": 1394.7,
+   "y": 692.7,
+   "kind": "fort",
+   "acc_m": 100,
+   "src": "OSM",
+   "note": "",
+   "ground_m": 84.7
+  },
+  {
+   "name": "South Fort (S anchor on the river)",
+   "lat": 32.31609,
+   "lon": -90.89852,
+   "x": 1368.7,
+   "y": 710.1,
+   "kind": "fort",
+   "acc_m": 100,
+   "src": "OSM",
+   "note": "",
+   "ground_m": 69.5
+  },
+  {
+   "name": "Shirley house (Union side, Jackson Road)",
+   "lat": 32.35968,
+   "lon": -90.84055,
+   "x": 1410.9,
+   "y": 672.5,
+   "kind": "house",
+   "acc_m": 30,
+   "src": "OSM",
+   "note": "the 'White House'; only wartime house left in the park",
+   "ground_m": 114.1
+  },
+  {
+   "name": "Surrender interview site (stunted oak, 3 Jul 3 p.m.)",
+   "lat": 32.35749,
+   "lon": -90.84467,
+   "x": 1407.9,
+   "y": 674.4,
+   "kind": "site",
+   "acc_m": 50,
+   "src": "OSM;NPS",
+   "note": "a few hundred feet from the Confederate line",
+   "ground_m": 98.1
+  },
+  {
+   "name": "Grant's HQ during the siege (approx)",
+   "lat": 32.37,
+   "lon": -90.832,
+   "x": 1417.2,
+   "y": 663.6,
+   "kind": "hq",
+   "acc_m": 1200,
+   "src": "EST(Grant equestrian statue at 32.37717,-90.83437 OSM)",
+   "note": "Grant's camp on the Union right-centre; do not label exactly",
+   "ground_m": 92.8
+  },
+  {
+   "name": "Grant's canal (NPS unit)",
+   "lat": 32.32056,
+   "lon": -90.93278,
+   "x": 1343.8,
+   "y": 706.2,
+   "kind": "canal",
+   "acc_m": 300,
+   "src": "GNIS;WD",
+   "note": "remnant on the old De Soto peninsula",
+   "ground_m": 27.8
+  },
+  {
+   "name": "Vicksburg City Cemetery (Graveyard Road name)",
+   "lat": 32.36659,
+   "lon": -90.85798,
+   "x": 1398.2,
+   "y": 666.5,
+   "kind": "cemetery",
+   "acc_m": 100,
+   "src": "OSM",
+   "note": "",
+   "ground_m": 64.4
+  }
+ ],
+ "roads": [
+  {
+   "name": "West-bank route: Milliken's Bend - Richmond - Roundaway Bayou - New Carthage",
+   "kind": "road",
+   "acc_m": 2500,
+   "src": "GM ch.XXXII; WP; DEM",
+   "note": "corduroy + bridges; follows Roundaway Bayou levee",
+   "pts": [
+    [
+     1218.6,
+     589.6
+    ],
+    [
+     1167.6,
+     650.0
+    ],
+    [
+     1205,
+     690
+    ],
+    [
+     1215,
+     730
+    ],
+    [
+     1225,
+     770
+    ],
+    [
+     1251.1,
+     810.0
+    ]
+   ],
+   "latlon": [
+    [
+     32.45578,
+     -91.10468
+    ],
+    [
+     32.38576,
+     -91.17471
+    ],
+    [
+     32.33936,
+     -91.12335
+    ],
+    [
+     32.29294,
+     -91.10962
+    ],
+    [
+     32.24649,
+     -91.09589
+    ],
+    [
+     32.20002,
+     -91.06004
+    ]
+   ]
+  },
+  {
+   "name": "West-bank route: New Carthage - Perkins' - west of Lake St. Joseph - Hard Times",
+   "kind": "road",
+   "acc_m": 3000,
+   "src": "GM ch.XXXIII (road west of Lake St. Joseph; 3 bayous bridged)",
+   "note": "Lake St. Joseph at 32.048,-91.218 (OSM)",
+   "pts": [
+    [
+     1251.1,
+     810.0
+    ],
+    [
+     1214.7,
+     878.8
+    ],
+    [
+     1190,
+     895
+    ],
+    [
+     1162,
+     920
+    ],
+    [
+     1150,
+     945
+    ],
+    [
+     1172,
+     962
+    ],
+    [
+     1204.4,
+     949.4
+    ]
+   ],
+   "latlon": [
+    [
+     32.20002,
+     -91.06004
+    ],
+    [
+     32.12003,
+     -91.11003
+    ],
+    [
+     32.10119,
+     -91.14395
+    ],
+    [
+     32.0721,
+     -91.1824
+    ],
+    [
+     32.043,
+     -91.19888
+    ],
+    [
+     32.02321,
+     -91.16867
+    ],
+    [
+     32.03788,
+     -91.12418
+    ]
+   ]
+  },
+  {
+   "name": "Levee across Coffee Point: Hard Times - Disharoon's (night 29 Apr)",
+   "kind": "road",
+   "acc_m": 3000,
+   "src": "GM ch.XXXIII",
+   "note": "",
+   "pts": [
+    [
+     1204.4,
+     949.4
+    ],
+    [
+     1240.2,
+     973.3
+    ],
+    [
+     1265.8,
+     987.3
+    ]
+   ],
+   "latlon": [
+    [
+     32.03788,
+     -91.12418
+    ],
+    [
+     32.01006,
+     -91.07501
+    ],
+    [
+     31.99375,
+     -91.03986
+    ]
+   ]
+  },
+  {
+   "name": "Bruinsburg - bluffs - Shaifer house (Bruinsburg road)",
+   "kind": "road",
+   "acc_m": 1200,
+   "src": "GM ch.XXXIII; WP Port Gibson",
+   "note": "~2 mi of bottom then up onto the ridge (GM)",
+   "pts": [
+    [
+     1180.4,
+     1031.3
+    ],
+    [
+     1188,
+     1030
+    ],
+    [
+     1194.9,
+     1032.7
+    ],
+    [
+     1215,
+     1025
+    ],
+    [
+     1240,
+     1020
+    ],
+    [
+     1255,
+     1016
+    ],
+    [
+     1262.5,
+     1013.2
+    ]
+   ],
+   "latlon": [
+    [
+     31.94249,
+     -91.15714
+    ],
+    [
+     31.94401,
+     -91.1467
+    ],
+    [
+     31.94086,
+     -91.13722
+    ],
+    [
+     31.94983,
+     -91.10962
+    ],
+    [
+     31.95566,
+     -91.07529
+    ],
+    [
+     31.96032,
+     -91.05469
+    ],
+    [
+     31.96358,
+     -91.04439
+    ]
+   ]
+  },
+  {
+   "name": "Rodney Road: Shaifer house - Magnolia Church - Port Gibson",
+   "kind": "road",
+   "acc_m": 900,
+   "src": "WP; OSM Rodney Road",
+   "note": "",
+   "pts": [
+    [
+     1262.5,
+     1013.2
+    ],
+    [
+     1281,
+     1019
+    ],
+    [
+     1292.3,
+     1019.0
+    ],
+    [
+     1307.2,
+     1019.6
+    ]
+   ],
+   "latlon": [
+    [
+     31.96358,
+     -91.04439
+    ],
+    [
+     31.95682,
+     -91.01898
+    ],
+    [
+     31.95682,
+     -91.00346
+    ],
+    [
+     31.95612,
+     -90.983
+    ]
+   ]
+  },
+  {
+   "name": "Bruinsburg (north) road: Shaifer house - ridge - Port Gibson",
+   "kind": "road",
+   "acc_m": 1200,
+   "src": "WP; GM ('two ridges, a mile or two apart, unite just outside the town')",
+   "note": "",
+   "pts": [
+    [
+     1262.5,
+     1013.2
+    ],
+    [
+     1276,
+     1012
+    ],
+    [
+     1288,
+     1009
+    ],
+    [
+     1298,
+     1013
+    ],
+    [
+     1307.2,
+     1019.6
+    ]
+   ],
+   "latlon": [
+    [
+     31.96358,
+     -91.04439
+    ],
+    [
+     31.96498,
+     -91.02585
+    ],
+    [
+     31.96847,
+     -91.00937
+    ],
+    [
+     31.96381,
+     -90.99564
+    ],
+    [
+     31.95612,
+     -90.983
+    ]
+   ]
+  },
+  {
+   "name": "Port Gibson - Grindstone Ford - Willow Springs - Rocky Springs - Utica - Raymond",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "GM ch.XXXIV; GNIS towns",
+   "note": "",
+   "pts": [
+    [
+     1307.2,
+     1019.6
+    ],
+    [
+     1310.1,
+     1015.4
+    ],
+    [
+     1330,
+     995
+    ],
+    [
+     1371.3,
+     978.9
+    ],
+    [
+     1370.4,
+     951.0
+    ],
+    [
+     1429.5,
+     905.6
+    ],
+    [
+     1490,
+     895
+    ],
+    [
+     1569.9,
+     893.2
+    ],
+    [
+     1620,
+     840
+    ],
+    [
+     1675,
+     800
+    ],
+    [
+     1696.3,
+     776.3
+    ],
+    [
+     1714.7,
+     758.1
+    ]
+   ],
+   "latlon": [
+    [
+     31.95612,
+     -90.983
+    ],
+    [
+     31.96102,
+     -90.97902
+    ],
+    [
+     31.98478,
+     -90.95169
+    ],
+    [
+     32.00353,
+     -90.89497
+    ],
+    [
+     32.03602,
+     -90.89621
+    ],
+    [
+     32.08886,
+     -90.81505
+    ],
+    [
+     32.10119,
+     -90.73196
+    ],
+    [
+     32.10328,
+     -90.62224
+    ],
+    [
+     32.16515,
+     -90.55344
+    ],
+    [
+     32.21164,
+     -90.47791
+    ],
+    [
+     32.23917,
+     -90.44865
+    ],
+    [
+     32.26031,
+     -90.42339
+    ]
+   ]
+  },
+  {
+   "name": "Willow Springs - Hankinson's Ferry (road to Vicksburg)",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "GM",
+   "note": "",
+   "pts": [
+    [
+     1370.4,
+     951.0
+    ],
+    [
+     1370,
+     920
+    ],
+    [
+     1382.5,
+     883
+    ]
+   ],
+   "latlon": [
+    [
+     32.03602,
+     -90.89621
+    ],
+    [
+     32.0721,
+     -90.89676
+    ],
+    [
+     32.11515,
+     -90.87959
+    ]
+   ]
+  },
+  {
+   "name": "Grand Gulf - Willow Springs road (Logan to Grand Gulf 3 May)",
+   "kind": "road",
+   "acc_m": 2000,
+   "src": "GM",
+   "note": "",
+   "pts": [
+    [
+     1256.6,
+     953.3
+    ],
+    [
+     1290,
+     945
+    ],
+    [
+     1325,
+     950
+    ],
+    [
+     1370.4,
+     951.0
+    ]
+   ],
+   "latlon": [
+    [
+     32.03334,
+     -91.05249
+    ],
+    [
+     32.043,
+     -91.00662
+    ],
+    [
+     32.03718,
+     -90.95856
+    ],
+    [
+     32.03602,
+     -90.89621
+    ]
+   ]
+  },
+  {
+   "name": "Rocky Springs - Cayuga - Auburn - Dillon's - Raymond",
+   "kind": "road",
+   "acc_m": 2500,
+   "src": "GM ch.XXXIV-XXXV",
+   "note": "",
+   "pts": [
+    [
+     1429.5,
+     905.6
+    ],
+    [
+     1475,
+     885
+    ],
+    [
+     1517.7,
+     844.9
+    ],
+    [
+     1595.4,
+     796.4
+    ],
+    [
+     1615.2,
+     779.9
+    ],
+    [
+     1655,
+     780
+    ],
+    [
+     1714.7,
+     758.1
+    ]
+   ],
+   "latlon": [
+    [
+     32.08886,
+     -90.81505
+    ],
+    [
+     32.11282,
+     -90.75256
+    ],
+    [
+     32.15945,
+     -90.69392
+    ],
+    [
+     32.21582,
+     -90.58722
+    ],
+    [
+     32.23499,
+     -90.56003
+    ],
+    [
+     32.23487,
+     -90.50537
+    ],
+    [
+     32.26031,
+     -90.42339
+    ]
+   ]
+  },
+  {
+   "name": "Auburn - Edwards (Raymond-Edwards road, Pemberton's 15 May target)",
+   "kind": "road",
+   "acc_m": 2500,
+   "src": "GM; Johnston's Narrative",
+   "note": "",
+   "pts": [
+    [
+     1595.4,
+     796.4
+    ],
+    [
+     1597,
+     760
+    ],
+    [
+     1597.0,
+     723.9
+    ],
+    [
+     1590,
+     710
+    ],
+    [
+     1583.1,
+     697.4
+    ]
+   ],
+   "latlon": [
+    [
+     32.21582,
+     -90.58722
+    ],
+    [
+     32.2581,
+     -90.58502
+    ],
+    [
+     32.30002,
+     -90.58502
+    ],
+    [
+     32.31615,
+     -90.59464
+    ],
+    [
+     32.33077,
+     -90.60411
+    ]
+   ]
+  },
+  {
+   "name": "Raymond - Clinton road",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "GM ch.XXXV",
+   "note": "",
+   "pts": [
+    [
+     1714.7,
+     758.1
+    ],
+    [
+     1735,
+     740
+    ],
+    [
+     1760,
+     712
+    ],
+    [
+     1788.7,
+     688.0
+    ]
+   ],
+   "latlon": [
+    [
+     32.26031,
+     -90.42339
+    ],
+    [
+     32.28133,
+     -90.39551
+    ],
+    [
+     32.31383,
+     -90.36118
+    ],
+    [
+     32.34168,
+     -90.32176
+    ]
+   ]
+  },
+  {
+   "name": "Raymond - Mississippi Springs - Jackson (Sherman, 14 May)",
+   "kind": "road",
+   "acc_m": 2000,
+   "src": "GM ch.XXXV; WP Jackson",
+   "note": "",
+   "pts": [
+    [
+     1714.7,
+     758.1
+    ],
+    [
+     1740,
+     754
+    ],
+    [
+     1763,
+     750
+    ],
+    [
+     1820,
+     744
+    ],
+    [
+     1879.5,
+     742.5
+    ],
+    [
+     1888,
+     732
+    ],
+    [
+     1892.2,
+     724.1
+    ]
+   ],
+   "latlon": [
+    [
+     32.26031,
+     -90.42339
+    ],
+    [
+     32.26507,
+     -90.38864
+    ],
+    [
+     32.26972,
+     -90.35706
+    ],
+    [
+     32.27668,
+     -90.27878
+    ],
+    [
+     32.27843,
+     -90.19707
+    ],
+    [
+     32.29062,
+     -90.18539
+    ],
+    [
+     32.29979,
+     -90.17963
+    ]
+   ]
+  },
+  {
+   "name": "Jackson road (upper): Jackson - Clinton - Bolton - Champion house",
+   "kind": "road",
+   "acc_m": 1200,
+   "src": "GM; railroad corridor",
+   "note": "",
+   "pts": [
+    [
+     1892.2,
+     724.1
+    ],
+    [
+     1848.2,
+     711.0
+    ],
+    [
+     1835,
+     690
+    ],
+    [
+     1788.7,
+     688.0
+    ],
+    [
+     1745,
+     683
+    ],
+    [
+     1688.0,
+     681.4
+    ],
+    [
+     1665,
+     685
+    ],
+    [
+     1645.8,
+     686.0
+    ]
+   ],
+   "latlon": [
+    [
+     32.29979,
+     -90.17963
+    ],
+    [
+     32.31499,
+     -90.24005
+    ],
+    [
+     32.33936,
+     -90.25818
+    ],
+    [
+     32.34168,
+     -90.32176
+    ],
+    [
+     32.34748,
+     -90.38177
+    ],
+    [
+     32.34934,
+     -90.46005
+    ],
+    [
+     32.34516,
+     -90.49164
+    ],
+    [
+     32.344,
+     -90.51801
+    ]
+   ]
+  },
+  {
+   "name": "Jackson road at Champion Hill: Champion house - crest - crossroads - Baker's Creek - Edwards",
+   "kind": "road",
+   "acc_m": 500,
+   "src": "GM ch.XXXV (turns S, follows the ridge ~1 mi, turns W, ~1 mi to the creek)",
+   "note": "",
+   "pts": [
+    [
+     1645.8,
+     686.0
+    ],
+    [
+     1638.5,
+     694.2
+    ],
+    [
+     1636.8,
+     698.3
+    ],
+    [
+     1618.1,
+     696.3
+    ],
+    [
+     1600,
+     699
+    ],
+    [
+     1583.1,
+     697.4
+    ]
+   ],
+   "latlon": [
+    [
+     32.344,
+     -90.51801
+    ],
+    [
+     32.33449,
+     -90.52803
+    ],
+    [
+     32.32973,
+     -90.53036
+    ],
+    [
+     32.33205,
+     -90.55605
+    ],
+    [
+     32.32892,
+     -90.5809
+    ],
+    [
+     32.33077,
+     -90.60411
+    ]
+   ]
+  },
+  {
+   "name": "Middle Road: Raymond-Bolton road - Roberts house - crossroads",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "GM ch.XXXV ('middle road comes into the northern road where the latter turns west')",
+   "note": "",
+   "pts": [
+    [
+     1680,
+     730
+    ],
+    [
+     1665,
+     714
+    ],
+    [
+     1649.4,
+     705.0
+    ],
+    [
+     1636.8,
+     698.3
+    ]
+   ],
+   "latlon": [
+    [
+     32.29294,
+     -90.47104
+    ],
+    [
+     32.31151,
+     -90.49164
+    ],
+    [
+     32.32195,
+     -90.51306
+    ],
+    [
+     32.32973,
+     -90.53036
+    ]
+   ]
+  },
+  {
+   "name": "Raymond Road: Raymond - Jackson Creek - Coker house - Baker's Creek - Edwards",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "GM; ABT",
+   "note": "",
+   "pts": [
+    [
+     1714.7,
+     758.1
+    ],
+    [
+     1690,
+     745
+    ],
+    [
+     1660,
+     728
+    ],
+    [
+     1624.0,
+     711.0
+    ],
+    [
+     1606,
+     711
+    ],
+    [
+     1593,
+     712
+    ],
+    [
+     1583.1,
+     697.4
+    ]
+   ],
+   "latlon": [
+    [
+     32.26031,
+     -90.42339
+    ],
+    [
+     32.27552,
+     -90.45731
+    ],
+    [
+     32.29526,
+     -90.4985
+    ],
+    [
+     32.31499,
+     -90.54794
+    ],
+    [
+     32.31499,
+     -90.57266
+    ],
+    [
+     32.31383,
+     -90.59052
+    ],
+    [
+     32.33077,
+     -90.60411
+    ]
+   ]
+  },
+  {
+   "name": "Jackson road west: Edwards - Big Black bridge - Bovina - Mount Alban - Vicksburg (Jackson Road)",
+   "kind": "road",
+   "acc_m": 1200,
+   "src": "GM ch.XXXVI; SM",
+   "note": "",
+   "pts": [
+    [
+     1583.1,
+     697.4
+    ],
+    [
+     1560,
+     690
+    ],
+    [
+     1530,
+     684
+    ],
+    [
+     1509.8,
+     683.5
+    ],
+    [
+     1488.0,
+     678.9
+    ],
+    [
+     1460,
+     678
+    ],
+    [
+     1435.5,
+     674.6
+    ],
+    [
+     1420,
+     674
+    ],
+    [
+     1409.0,
+     672.9
+    ],
+    [
+     1383.1,
+     678.9
+    ]
+   ],
+   "latlon": [
+    [
+     32.33077,
+     -90.60411
+    ],
+    [
+     32.33936,
+     -90.63583
+    ],
+    [
+     32.34632,
+     -90.67703
+    ],
+    [
+     32.3469,
+     -90.70477
+    ],
+    [
+     32.35224,
+     -90.73471
+    ],
+    [
+     32.35328,
+     -90.77316
+    ],
+    [
+     32.35723,
+     -90.80681
+    ],
+    [
+     32.35792,
+     -90.82809
+    ],
+    [
+     32.3592,
+     -90.8432
+    ],
+    [
+     32.35224,
+     -90.87877
+    ]
+   ]
+  },
+  {
+   "name": "Southern Railroad of Mississippi (Vicksburg & Jackson RR)",
+   "kind": "railroad",
+   "acc_m": 800,
+   "src": "GM; GNIS towns on the line",
+   "note": "",
+   "pts": [
+    [
+     1383.1,
+     678.9
+    ],
+    [
+     1395,
+     686
+    ],
+    [
+     1400.0,
+     686.4
+    ],
+    [
+     1430,
+     684
+    ],
+    [
+     1435.5,
+     674.6
+    ],
+    [
+     1470,
+     682
+    ],
+    [
+     1488.0,
+     678.9
+    ],
+    [
+     1509.8,
+     683.5
+    ],
+    [
+     1540,
+     688
+    ],
+    [
+     1583.1,
+     697.4
+    ],
+    [
+     1620,
+     690
+    ],
+    [
+     1660,
+     683
+    ],
+    [
+     1688.0,
+     681.4
+    ],
+    [
+     1740,
+     684
+    ],
+    [
+     1788.7,
+     688.0
+    ],
+    [
+     1850,
+     700
+    ],
+    [
+     1892.2,
+     724.1
+    ]
+   ],
+   "latlon": [
+    [
+     32.35224,
+     -90.87877
+    ],
+    [
+     32.344,
+     -90.86243
+    ],
+    [
+     32.34354,
+     -90.85556
+    ],
+    [
+     32.34632,
+     -90.81436
+    ],
+    [
+     32.35723,
+     -90.80681
+    ],
+    [
+     32.34864,
+     -90.75943
+    ],
+    [
+     32.35224,
+     -90.73471
+    ],
+    [
+     32.3469,
+     -90.70477
+    ],
+    [
+     32.34168,
+     -90.6633
+    ],
+    [
+     32.33077,
+     -90.60411
+    ],
+    [
+     32.33936,
+     -90.55344
+    ],
+    [
+     32.34748,
+     -90.4985
+    ],
+    [
+     32.34934,
+     -90.46005
+    ],
+    [
+     32.34632,
+     -90.38864
+    ],
+    [
+     32.34168,
+     -90.32176
+    ],
+    [
+     32.32776,
+     -90.23758
+    ],
+    [
+     32.29979,
+     -90.17963
+    ]
+   ]
+  },
+  {
+   "name": "Upper Jackson road / Bridgeport road: Bolton - Bridgeport - Graveyard Road (Sherman 17-18 May)",
+   "kind": "road",
+   "acc_m": 3000,
+   "src": "SM; GM",
+   "note": "",
+   "pts": [
+    [
+     1688.0,
+     681.4
+    ],
+    [
+     1640,
+     650
+    ],
+    [
+     1580,
+     640
+    ],
+    [
+     1574.5,
+     629.5
+    ],
+    [
+     1480,
+     650
+    ],
+    [
+     1440,
+     660
+    ],
+    [
+     1415,
+     664
+    ],
+    [
+     1406.2,
+     667.7
+    ]
+   ],
+   "latlon": [
+    [
+     32.34934,
+     -90.46005
+    ],
+    [
+     32.38576,
+     -90.52597
+    ],
+    [
+     32.39736,
+     -90.60837
+    ],
+    [
+     32.40953,
+     -90.61592
+    ],
+    [
+     32.38576,
+     -90.7457
+    ],
+    [
+     32.37416,
+     -90.80063
+    ],
+    [
+     32.36952,
+     -90.83496
+    ],
+    [
+     32.36523,
+     -90.84705
+    ]
+   ]
+  },
+  {
+   "name": "Graveyard Road (into the city)",
+   "kind": "road",
+   "acc_m": 300,
+   "src": "SM; OSM",
+   "note": "",
+   "pts": [
+    [
+     1412,
+     664
+    ],
+    [
+     1406.2,
+     667.7
+    ],
+    [
+     1398.2,
+     666.5
+    ],
+    [
+     1383.1,
+     678.9
+    ]
+   ],
+   "latlon": [
+    [
+     32.36952,
+     -90.83908
+    ],
+    [
+     32.36523,
+     -90.84705
+    ],
+    [
+     32.36662,
+     -90.85803
+    ],
+    [
+     32.35224,
+     -90.87877
+    ]
+   ]
+  },
+  {
+   "name": "Baldwin's Ferry Road (into the city)",
+   "kind": "road",
+   "acc_m": 400,
+   "src": "NPS; OSM",
+   "note": "",
+   "pts": [
+    [
+     1430,
+     690
+    ],
+    [
+     1410,
+     686
+    ],
+    [
+     1403.0,
+     680.4
+    ],
+    [
+     1396,
+     685
+    ],
+    [
+     1383.1,
+     678.9
+    ]
+   ],
+   "latlon": [
+    [
+     32.33936,
+     -90.81436
+    ],
+    [
+     32.344,
+     -90.84183
+    ],
+    [
+     32.3505,
+     -90.85144
+    ],
+    [
+     32.34516,
+     -90.86105
+    ],
+    [
+     32.35224,
+     -90.87877
+    ]
+   ]
+  },
+  {
+   "name": "Hall's Ferry Road (into the city)",
+   "kind": "road",
+   "acc_m": 400,
+   "src": "OSM",
+   "note": "",
+   "pts": [
+    [
+     1400,
+     720
+    ],
+    [
+     1388,
+     700
+    ],
+    [
+     1384,
+     690
+    ],
+    [
+     1383.1,
+     678.9
+    ]
+   ],
+   "latlon": [
+    [
+     32.30455,
+     -90.85556
+    ],
+    [
+     32.32776,
+     -90.87204
+    ],
+    [
+     32.33936,
+     -90.87753
+    ],
+    [
+     32.35224,
+     -90.87877
+    ]
+   ]
+  },
+  {
+   "name": "Vicksburg - Warrenton road",
+   "kind": "road",
+   "acc_m": 800,
+   "src": "GM",
+   "note": "",
+   "pts": [
+    [
+     1383.1,
+     678.9
+    ],
+    [
+     1378,
+     700
+    ],
+    [
+     1368.7,
+     710.1
+    ],
+    [
+     1366,
+     735
+    ],
+    [
+     1347.0,
+     769.1
+    ]
+   ],
+   "latlon": [
+    [
+     32.35224,
+     -90.87877
+    ],
+    [
+     32.32776,
+     -90.88577
+    ],
+    [
+     32.31604,
+     -90.89854
+    ],
+    [
+     32.28713,
+     -90.90225
+    ],
+    [
+     32.24754,
+     -90.92834
+    ]
+   ]
+  },
+  {
+   "name": "Valley road at the foot of the bluffs: Vicksburg - Chickasaw Bayou - Haynes' Bluff",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "SM (Steele reached it 18 May)",
+   "note": "",
+   "pts": [
+    [
+     1390.0,
+     663.5
+    ],
+    [
+     1400,
+     640
+    ],
+    [
+     1405.7,
+     632.9
+    ],
+    [
+     1420,
+     600
+    ],
+    [
+     1441.9,
+     553.6
+    ],
+    [
+     1451.1,
+     537.4
+    ]
+   ],
+   "latlon": [
+    [
+     32.3701,
+     -90.86929
+    ],
+    [
+     32.39736,
+     -90.85556
+    ],
+    [
+     32.40559,
+     -90.84773
+    ],
+    [
+     32.44373,
+     -90.82809
+    ],
+    [
+     32.49749,
+     -90.79802
+    ],
+    [
+     32.51625,
+     -90.78539
+    ]
+   ]
+  }
+ ],
+ "rivers": [
+  {
+   "name": "Mississippi, 1863 channel at Vicksburg (De Soto Point hairpin)",
+   "kind": "river",
+   "acc_m": 800,
+   "src": "GM ch.XXXII description + DEM old channels; river cut off the neck in 1876",
+   "note": "upstream first; from Young's Point NE to just above the city, then SW along the bluff past the city to Warrenton (GM). Modern Yazoo Diversion Canal follows the city-front arm.",
+   "pts": [
+    [
+     1222,
+     580
+    ],
+    [
+     1250,
+     598
+    ],
+    [
+     1278,
+     612
+    ],
+    [
+     1295,
+     640
+    ],
+    [
+     1306,
+     670
+    ],
+    [
+     1318,
+     692
+    ],
+    [
+     1330,
+     698
+    ],
+    [
+     1342,
+     688
+    ],
+    [
+     1352,
+     672
+    ],
+    [
+     1362,
+     658
+    ],
+    [
+     1372,
+     652
+    ],
+    [
+     1381,
+     655
+    ],
+    [
+     1384,
+     664
+    ],
+    [
+     1380,
+     672
+    ],
+    [
+     1377,
+     681
+    ],
+    [
+     1373,
+     695
+    ],
+    [
+     1366,
+     709
+    ],
+    [
+     1358,
+     735
+    ],
+    [
+     1352,
+     760
+    ],
+    [
+     1353,
+     788
+    ]
+   ],
+   "latlon": [
+    [
+     32.4669,
+     -91.10001
+    ],
+    [
+     32.44604,
+     -91.06155
+    ],
+    [
+     32.42982,
+     -91.0231
+    ],
+    [
+     32.39736,
+     -90.99976
+    ],
+    [
+     32.36256,
+     -90.98465
+    ],
+    [
+     32.33704,
+     -90.96817
+    ],
+    [
+     32.33008,
+     -90.95169
+    ],
+    [
+     32.34168,
+     -90.93521
+    ],
+    [
+     32.36024,
+     -90.92148
+    ],
+    [
+     32.37648,
+     -90.90775
+    ],
+    [
+     32.38344,
+     -90.89401
+    ],
+    [
+     32.37996,
+     -90.88165
+    ],
+    [
+     32.36952,
+     -90.87753
+    ],
+    [
+     32.36024,
+     -90.88303
+    ],
+    [
+     32.3498,
+     -90.88715
+    ],
+    [
+     32.33356,
+     -90.89264
+    ],
+    [
+     32.31731,
+     -90.90225
+    ],
+    [
+     32.28713,
+     -90.91324
+    ],
+    [
+     32.2581,
+     -90.92148
+    ],
+    [
+     32.22558,
+     -90.9201
+    ]
+   ]
+  },
+  {
+   "name": "Grant's canal (1862-63) across the neck of De Soto Point",
+   "kind": "canal",
+   "acc_m": 1000,
+   "src": "GM ('a little over a mile', Young's Point to the river below'); NPS unit point",
+   "note": "orientation estimated; NPS remnant at (1344,706)",
+   "pts": [
+    [
+     1334,
+     702
+    ],
+    [
+     1346,
+     706
+    ],
+    [
+     1355,
+     711
+    ]
+   ],
+   "latlon": [
+    [
+     32.32544,
+     -90.9462
+    ],
+    [
+     32.32079,
+     -90.92972
+    ],
+    [
+     32.31499,
+     -90.91736
+    ]
+   ]
+  },
+  {
+   "name": "Yazoo River lower course + mouth (1863 approx)",
+   "kind": "river",
+   "acc_m": 2000,
+   "src": "GM (mouth 9 mi above Vicksburg; Haynes' Bluff 11 mi)",
+   "note": "trace on DEM; mouth into the 1863 upper arm",
+   "pts": [
+    [
+     1430,
+     545
+    ],
+    [
+     1408,
+     565
+    ],
+    [
+     1395,
+     590
+    ],
+    [
+     1380,
+     610
+    ],
+    [
+     1360,
+     625
+    ],
+    [
+     1345,
+     640
+    ]
+   ],
+   "latlon": [
+    [
+     32.50745,
+     -90.81436
+    ],
+    [
+     32.48428,
+     -90.84457
+    ],
+    [
+     32.45531,
+     -90.86243
+    ],
+    [
+     32.43214,
+     -90.88303
+    ],
+    [
+     32.41475,
+     -90.91049
+    ],
+    [
+     32.39736,
+     -90.93109
+    ]
+   ]
+  },
+  {
+   "name": "Chickasaw Bayou",
+   "kind": "bayou",
+   "acc_m": 1500,
+   "src": "GNIS points 32.4428,-90.8572 / 32.4253,-90.8533; SM",
+   "note": "",
+   "pts": [
+    [
+     1398.8,
+     600.8
+    ],
+    [
+     1401.6,
+     615.9
+    ],
+    [
+     1405.7,
+     632.9
+    ]
+   ],
+   "latlon": [
+    [
+     32.4428,
+     -90.8572
+    ],
+    [
+     32.4253,
+     -90.8533
+    ],
+    [
+     32.4056,
+     -90.8478
+    ]
+   ]
+  },
+  {
+   "name": "Big Black River at the railroad bridge (bend)",
+   "kind": "river",
+   "acc_m": 200,
+   "src": "DEM streams (order 3)",
+   "note": "river comes from the E, turns W then S at the bridge (GM: 'the river makes a turn to the west')",
+   "pts": [
+    [
+     1574.5,
+     629.5
+    ],
+    [
+     1565,
+     660
+    ],
+    [
+     1557,
+     687
+    ],
+    [
+     1535,
+     681
+    ],
+    [
+     1518.5,
+     676.5
+    ],
+    [
+     1510,
+     678
+    ],
+    [
+     1509.5,
+     683
+    ],
+    [
+     1508,
+     690
+    ],
+    [
+     1510.5,
+     705
+    ],
+    [
+     1512.5,
+     717
+    ],
+    [
+     1507.5,
+     736
+    ]
+   ],
+   "latlon": [
+    [
+     32.40953,
+     -90.61592
+    ],
+    [
+     32.37416,
+     -90.62897
+    ],
+    [
+     32.34284,
+     -90.63995
+    ],
+    [
+     32.3498,
+     -90.67017
+    ],
+    [
+     32.35502,
+     -90.69283
+    ],
+    [
+     32.35328,
+     -90.7045
+    ],
+    [
+     32.34748,
+     -90.70518
+    ],
+    [
+     32.33936,
+     -90.70724
+    ],
+    [
+     32.32195,
+     -90.70381
+    ],
+    [
+     32.30803,
+     -90.70107
+    ],
+    [
+     32.28597,
+     -90.70793
+    ]
+   ]
+  },
+  {
+   "name": "Big Black River lower course to the Mississippi at Grand Gulf",
+   "kind": "river",
+   "acc_m": 800,
+   "src": "DEM streams; GNIS",
+   "note": "",
+   "pts": [
+    [
+     1507.5,
+     736
+    ],
+    [
+     1472,
+     800
+    ],
+    [
+     1434,
+     837
+    ],
+    [
+     1401,
+     873
+    ],
+    [
+     1382.5,
+     883
+    ],
+    [
+     1352.5,
+     906
+    ],
+    [
+     1297,
+     904
+    ],
+    [
+     1270.5,
+     933
+    ],
+    [
+     1251.5,
+     945
+    ]
+   ],
+   "latlon": [
+    [
+     32.28597,
+     -90.70793
+    ],
+    [
+     32.21164,
+     -90.75668
+    ],
+    [
+     32.16864,
+     -90.80887
+    ],
+    [
+     32.12678,
+     -90.85419
+    ],
+    [
+     32.11515,
+     -90.87959
+    ],
+    [
+     32.08839,
+     -90.92079
+    ],
+    [
+     32.09072,
+     -90.99701
+    ],
+    [
+     32.05697,
+     -91.0334
+    ],
+    [
+     32.043,
+     -91.05949
+    ]
+   ]
+  },
+  {
+   "name": "Bayou Pierre (main stem: Grindstone Ford - Port Gibson - Bruinsburg)",
+   "kind": "river",
+   "acc_m": 800,
+   "src": "DEM streams; GNIS mouth",
+   "note": "",
+   "pts": [
+    [
+     1400,
+     965
+    ],
+    [
+     1371.3,
+     978.9
+    ],
+    [
+     1340,
+     990
+    ],
+    [
+     1310,
+     1000
+    ],
+    [
+     1290,
+     1000
+    ],
+    [
+     1255,
+     1005
+    ],
+    [
+     1240,
+     1015
+    ],
+    [
+     1215,
+     1008
+    ],
+    [
+     1190,
+     1018
+    ],
+    [
+     1156.5,
+     1050.6
+    ]
+   ],
+   "latlon": [
+    [
+     32.01972,
+     -90.85556
+    ],
+    [
+     32.00353,
+     -90.89497
+    ],
+    [
+     31.99061,
+     -90.93796
+    ],
+    [
+     31.97896,
+     -90.97916
+    ],
+    [
+     31.97896,
+     -91.00662
+    ],
+    [
+     31.97313,
+     -91.05469
+    ],
+    [
+     31.96148,
+     -91.07529
+    ],
+    [
+     31.96964,
+     -91.10962
+    ],
+    [
+     31.95799,
+     -91.14395
+    ],
+    [
+     31.92,
+     -91.18996
+    ]
+   ]
+  },
+  {
+   "name": "Little Bayou Pierre (South Fork) at Port Gibson",
+   "kind": "river",
+   "acc_m": 1200,
+   "src": "GNIS 31.98498,-91.00182; DEM",
+   "note": "check on DEM",
+   "pts": [
+    [
+     1330,
+     1035
+    ],
+    [
+     1307.2,
+     1019.6
+    ],
+    [
+     1295,
+     1010
+    ],
+    [
+     1290,
+     1003
+    ]
+   ],
+   "latlon": [
+    [
+     31.93818,
+     -90.95169
+    ],
+    [
+     31.95612,
+     -90.983
+    ],
+    [
+     31.96731,
+     -90.99976
+    ],
+    [
+     31.97546,
+     -91.00662
+    ]
+   ]
+  },
+  {
+   "name": "Fourteenmile Creek (Raymond - Big Black)",
+   "kind": "creek",
+   "acc_m": 1500,
+   "src": "GNIS/OSM; DEM",
+   "note": "upstream first",
+   "pts": [
+    [
+     1720,
+     790
+    ],
+    [
+     1705,
+     786
+    ],
+    [
+     1693,
+     784.5
+    ],
+    [
+     1684,
+     784.5
+    ],
+    [
+     1651.5,
+     785
+    ],
+    [
+     1605,
+     773.5
+    ],
+    [
+     1581.5,
+     759
+    ],
+    [
+     1541.5,
+     759
+    ],
+    [
+     1516,
+     789.5
+    ]
+   ],
+   "latlon": [
+    [
+     32.22326,
+     -90.41611
+    ],
+    [
+     32.2279,
+     -90.43671
+    ],
+    [
+     32.22965,
+     -90.45319
+    ],
+    [
+     32.22965,
+     -90.46555
+    ],
+    [
+     32.22907,
+     -90.51018
+    ],
+    [
+     32.24242,
+     -90.57404
+    ],
+    [
+     32.25927,
+     -90.60631
+    ],
+    [
+     32.25927,
+     -90.66124
+    ],
+    [
+     32.22384,
+     -90.69626
+    ]
+   ]
+  },
+  {
+   "name": "Baker's Creek (Champion Creek)",
+   "kind": "creek",
+   "acc_m": 600,
+   "src": "DEM streams order 3; GNIS mouth 32.2614,-90.6089",
+   "note": "upstream first; W foot of Champion Hill",
+   "pts": [
+    [
+     1665,
+     675
+    ],
+    [
+     1640,
+     679
+    ],
+    [
+     1622,
+     682
+    ],
+    [
+     1617,
+     695
+    ],
+    [
+     1612,
+     705
+    ],
+    [
+     1600,
+     716
+    ],
+    [
+     1590,
+     725
+    ],
+    [
+     1585,
+     745
+    ],
+    [
+     1580,
+     760
+    ]
+   ],
+   "latlon": [
+    [
+     32.35676,
+     -90.49164
+    ],
+    [
+     32.35212,
+     -90.52597
+    ],
+    [
+     32.34864,
+     -90.55069
+    ],
+    [
+     32.33356,
+     -90.55756
+    ],
+    [
+     32.32195,
+     -90.56442
+    ],
+    [
+     32.30919,
+     -90.5809
+    ],
+    [
+     32.29874,
+     -90.59464
+    ],
+    [
+     32.27552,
+     -90.6015
+    ],
+    [
+     32.2581,
+     -90.60837
+    ]
+   ]
+  },
+  {
+   "name": "Pearl River at Jackson",
+   "kind": "river",
+   "acc_m": 500,
+   "src": "gm_test rivers.json (DEM)",
+   "note": "use gm_test/data/rivers.json 'pearl' for the full trace",
+   "pts": [
+    [
+     1913,
+     640
+    ],
+    [
+     1909,
+     667
+    ],
+    [
+     1904.5,
+     718
+    ],
+    [
+     1892.5,
+     741
+    ],
+    [
+     1883.5,
+     787.5
+    ]
+   ],
+   "latlon": [
+    [
+     32.39736,
+     -90.15106
+    ],
+    [
+     32.36604,
+     -90.15656
+    ],
+    [
+     32.30687,
+     -90.16273
+    ],
+    [
+     32.28017,
+     -90.17921
+    ],
+    [
+     32.22616,
+     -90.19157
+    ]
+   ]
+  },
+  {
+   "name": "Roundaway Bayou / Bayou Vidal (west-bank route)",
+   "kind": "bayou",
+   "acc_m": 2500,
+   "src": "OSM points (Roundaway 32.26301,-91.09529; Vidal 32.24054,-91.19985)",
+   "note": "",
+   "pts": [
+    [
+     1167.6,
+     650.0
+    ],
+    [
+     1215,
+     730
+    ],
+    [
+     1225.4,
+     755.8
+    ],
+    [
+     1251.1,
+     810.0
+    ]
+   ],
+   "latlon": [
+    [
+     32.38576,
+     -91.17471
+    ],
+    [
+     32.29294,
+     -91.10962
+    ],
+    [
+     32.26301,
+     -91.09529
+    ],
+    [
+     32.20002,
+     -91.06004
+    ]
+   ]
+  },
+  {
+   "name": "Walnut Bayou (Duckport canal target)",
+   "kind": "bayou",
+   "acc_m": 1500,
+   "src": "OSM",
+   "note": "",
+   "pts": [
+    [
+     1165.0,
+     631.5
+    ],
+    [
+     1172.6,
+     648.6
+    ],
+    [
+     1168.9,
+     657.4
+    ]
+   ],
+   "latlon": [
+    [
+     32.40717,
+     -91.17835
+    ],
+    [
+     32.38734,
+     -91.16778
+    ],
+    [
+     32.37719,
+     -91.17297
+    ]
+   ]
+  }
+ ],
+ "units": [
+  {
+   "battle": "portgibson",
+   "phase": "dawn",
+   "side": "CS",
+   "unit": "Green's brigade",
+   "commander": "Martin E. Green",
+   "x": 1289.3,
+   "y": 1018.5,
+   "lat": 31.95741,
+   "lon": -91.00758,
+   "facing": "W",
+   "acc_m": 600,
+   "src": "WP",
+   "note": "astride the Rodney road at Magnolia Church"
+  },
+  {
+   "battle": "portgibson",
+   "phase": "dawn",
+   "side": "CS",
+   "unit": "Tracy's brigade",
+   "commander": "Edward D. Tracy (killed)",
+   "x": 1282.5,
+   "y": 1009.7,
+   "lat": 31.96766,
+   "lon": -91.01692,
+   "facing": "SW",
+   "acc_m": 800,
+   "src": "WP",
+   "note": "athwart the Bruinsburg road; Garrott after Tracy fell"
+  },
+  {
+   "battle": "portgibson",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Carr's division (Benton, Stone)",
+   "commander": "Eugene A. Carr",
+   "x": 1266.5,
+   "y": 1014.2,
+   "lat": 31.96242,
+   "lon": -91.03889,
+   "facing": "E",
+   "acc_m": 600,
+   "src": "WP",
+   "note": "attacks E on the Rodney road 6:30 a.m.",
+   "move_to": [
+    [
+     1286.3,
+     1019.0
+    ]
+   ]
+  },
+  {
+   "battle": "portgibson",
+   "phase": "morning",
+   "side": "US",
+   "unit": "Hovey's division (McGinnis, Slack)",
+   "commander": "Alvin P. Hovey",
+   "x": 1271.5,
+   "y": 1014.2,
+   "lat": 31.96242,
+   "lon": -91.03203,
+   "facing": "E",
+   "acc_m": 700,
+   "src": "WP",
+   "note": "into the centre; 10 a.m. general advance breaks Green",
+   "move_to": [
+    [
+     1290.3,
+     1019.0
+    ]
+   ]
+  },
+  {
+   "battle": "portgibson",
+   "phase": "morning",
+   "side": "US",
+   "unit": "A. J. Smith's division (Burbridge, Landram)",
+   "commander": "Andrew J. Smith",
+   "x": 1264.5,
+   "y": 1015.2,
+   "lat": 31.96125,
+   "lon": -91.04164,
+   "facing": "E",
+   "acc_m": 800,
+   "src": "WP",
+   "note": "reserve, then second line vs Baldwin 3 p.m."
+  },
+  {
+   "battle": "portgibson",
+   "phase": "morning",
+   "side": "US",
+   "unit": "Osterhaus's division (Garrard, Sheldon)",
+   "commander": "Peter J. Osterhaus",
+   "x": 1271.5,
+   "y": 1011.2,
+   "lat": 31.96591,
+   "lon": -91.03203,
+   "facing": "NE",
+   "acc_m": 800,
+   "src": "WP;GM",
+   "note": "Bruinsburg road; repulsed until Logan came up",
+   "move_to": [
+    [
+     1278.0,
+     1010.5
+    ]
+   ]
+  },
+  {
+   "battle": "portgibson",
+   "phase": "noon",
+   "side": "US",
+   "unit": "John E. Smith's brigade (Logan's division)",
+   "commander": "John E. Smith",
+   "x": 1272.0,
+   "y": 1007.2,
+   "lat": 31.97057,
+   "lon": -91.03134,
+   "facing": "E",
+   "acc_m": 1000,
+   "src": "GM;WP",
+   "note": "sent N over a ravine to a third ridge, turns the CS right",
+   "move_to": [
+    [
+     1284.0,
+     1006.7
+    ]
+   ]
+  },
+  {
+   "battle": "portgibson",
+   "phase": "afternoon",
+   "side": "CS",
+   "unit": "Baldwin's brigade",
+   "commander": "William E. Baldwin",
+   "x": 1300.3,
+   "y": 1019.0,
+   "lat": 31.95682,
+   "lon": -90.99248,
+   "facing": "W",
+   "acc_m": 800,
+   "src": "WP",
+   "note": "behind a creek ~1.5 mi E of Green's second line"
+  },
+  {
+   "battle": "portgibson",
+   "phase": "afternoon",
+   "side": "CS",
+   "unit": "Cockrell's Missouri brigade",
+   "commander": "Francis M. Cockrell",
+   "x": 1298.3,
+   "y": 1021.0,
+   "lat": 31.95449,
+   "lon": -90.99522,
+   "facing": "SW",
+   "acc_m": 1000,
+   "src": "WP",
+   "note": "counterattack on the Union right, 40-min firefight, retreat 5:30 p.m."
+  },
+  {
+   "battle": "raymond",
+   "phase": "noon",
+   "side": "CS",
+   "unit": "Gregg's brigade (7th Texas, 3rd Tenn., 1st Tenn. Bn, 50th Tenn., 10/30th Tenn.)",
+   "commander": "John Gregg",
+   "x": 1700.5,
+   "y": 772.5,
+   "lat": 32.24359,
+   "lon": -90.44289,
+   "facing": "SW",
+   "acc_m": 700,
+   "src": "WP",
+   "note": "on rising ground N of Fourteenmile Creek, Granbury at the Utica/Port Gibson road junction"
+  },
+  {
+   "battle": "raymond",
+   "phase": "noon",
+   "side": "US",
+   "unit": "Logan's division (Dennis, J. E. Smith, J. D. Stevenson)",
+   "commander": "John A. Logan",
+   "x": 1692,
+   "y": 780,
+   "lat": 32.23487,
+   "lon": -90.45456,
+   "facing": "NE",
+   "acc_m": 700,
+   "src": "GM;WP",
+   "note": "deployed S of the creek, ~2 p.m. per Grant (WP: fight from ~10 a.m.)",
+   "move_to": [
+    [
+     1698,
+     775
+    ]
+   ]
+  },
+  {
+   "battle": "raymond",
+   "phase": "afternoon",
+   "side": "US",
+   "unit": "Crocker's division",
+   "commander": "Marcellus Crocker",
+   "x": 1684,
+   "y": 786,
+   "lat": 32.2279,
+   "lon": -90.46555,
+   "facing": "NE",
+   "acc_m": 1000,
+   "src": "GM",
+   "note": "came up late; Gregg's bluff covered his withdrawal"
+  },
+  {
+   "battle": "raymond",
+   "phase": "evening",
+   "side": "CS",
+   "unit": "Gregg retreating",
+   "commander": "John Gregg",
+   "x": 1719,
+   "y": 761,
+   "lat": 32.25694,
+   "lon": -90.41748,
+   "facing": "NE",
+   "acc_m": 1000,
+   "src": "WP",
+   "note": "through Raymond toward Jackson",
+   "move_to": [
+    [
+     1745,
+     755
+    ],
+    [
+     1763,
+     750
+    ]
+   ]
+  },
+  {
+   "battle": "jackson",
+   "phase": "morning",
+   "side": "US",
+   "unit": "McPherson: Crocker's division (lead), Logan behind",
+   "commander": "James B. McPherson",
+   "x": 1855,
+   "y": 698,
+   "lat": 32.33008,
+   "lon": -90.23071,
+   "facing": "E",
+   "acc_m": 1000,
+   "src": "GM",
+   "note": "on the Clinton road; charge at ~11 a.m. drives Colquitt in",
+   "move_to": [
+    [
+     1848.2,
+     711.0
+    ],
+    [
+     1880,
+     708
+    ]
+   ]
+  },
+  {
+   "battle": "jackson",
+   "phase": "morning",
+   "side": "US",
+   "unit": "Sherman: Steele + Tuttle",
+   "commander": "William T. Sherman",
+   "x": 1858,
+   "y": 738,
+   "lat": 32.28365,
+   "lon": -90.22659,
+   "facing": "NE",
+   "acc_m": 1000,
+   "src": "GM",
+   "note": "Mississippi Springs road, battery at the Lynch Creek bridge",
+   "move_to": [
+    [
+     1879.5,
+     742.5
+    ],
+    [
+     1878,
+     728
+    ]
+   ]
+  },
+  {
+   "battle": "jackson",
+   "phase": "noon",
+   "side": "US",
+   "unit": "Tuttle's division flanking right to the Pearl",
+   "commander": "James M. Tuttle",
+   "x": 1885,
+   "y": 740,
+   "lat": 32.28133,
+   "lon": -90.18951,
+   "facing": "N",
+   "acc_m": 1200,
+   "src": "GM",
+   "note": "finds the works empty, captures the gunners + 10 guns",
+   "move_to": [
+    [
+     1895,
+     730
+    ]
+   ]
+  },
+  {
+   "battle": "jackson",
+   "phase": "morning",
+   "side": "CS",
+   "unit": "Gregg's rearguard (Colquitt; Walker; Thompson)",
+   "commander": "John Gregg",
+   "x": 1851.2,
+   "y": 711.0,
+   "lat": 32.31499,
+   "lon": -90.23593,
+   "facing": "W",
+   "acc_m": 1200,
+   "src": "WP",
+   "note": "delay while wagons left for Canton; gone ~2-3 p.m."
+  },
+  {
+   "battle": "championhill",
+   "phase": "07:00-10:00",
+   "side": "CS",
+   "unit": "Stevenson's division (S. D. Lee on the hill; Cumming at the crossroads; Barton to the NW; Reynolds with the wagons)",
+   "commander": "Carter L. Stevenson",
+   "x": 1637.5,
+   "y": 694.2,
+   "lat": 32.33449,
+   "lon": -90.5294,
+   "facing": "N/E",
+   "acc_m": 600,
+   "src": "WP;ABT",
+   "note": "line bent back along the hill to cover the Jackson road"
+  },
+  {
+   "battle": "championhill",
+   "phase": "07:00-10:00",
+   "side": "CS",
+   "unit": "Bowen's division (Cockrell, Green)",
+   "commander": "John S. Bowen",
+   "x": 1638.8,
+   "y": 704.3,
+   "lat": 32.32277,
+   "lon": -90.52762,
+   "facing": "E",
+   "acc_m": 800,
+   "src": "ABT;WP",
+   "note": "centre, covering the Middle Road"
+  },
+  {
+   "battle": "championhill",
+   "phase": "07:00-10:00",
+   "side": "CS",
+   "unit": "Loring's division (Tilghman, Buford, Featherston)",
+   "commander": "William W. Loring",
+   "x": 1628.0,
+   "y": 711.0,
+   "lat": 32.31499,
+   "lon": -90.54245,
+   "facing": "E",
+   "acc_m": 800,
+   "src": "ABT;WP",
+   "note": "right, on the Raymond Road near the Coker house"
+  },
+  {
+   "battle": "championhill",
+   "phase": "07:00-10:00",
+   "side": "US",
+   "unit": "Hovey's division (McGinnis, Slack)",
+   "commander": "Alvin P. Hovey",
+   "x": 1645.8,
+   "y": 686.0,
+   "lat": 32.344,
+   "lon": -90.51801,
+   "facing": "S/SW",
+   "acc_m": 500,
+   "src": "GM;OR Hovey",
+   "note": "from the Champion house up the Jackson road; crest ~11:30-13:00",
+   "move_to": [
+    [
+     1639.5,
+     692.2
+    ]
+   ]
+  },
+  {
+   "battle": "championhill",
+   "phase": "10:00-13:00",
+   "side": "US",
+   "unit": "Logan's division (J. E. Smith, Leggett, J. D. Stevenson)",
+   "commander": "John A. Logan",
+   "x": 1639.8,
+   "y": 683.0,
+   "lat": 32.34748,
+   "lon": -90.52625,
+   "facing": "S/W",
+   "acc_m": 800,
+   "src": "GM",
+   "note": "right of Hovey, swings W around the hill toward the Jackson road escape route",
+   "move_to": [
+    [
+     1630.5,
+     692.2
+    ],
+    [
+     1628.8,
+     697.3
+    ]
+   ]
+  },
+  {
+   "battle": "championhill",
+   "phase": "13:00-14:30",
+   "side": "CS",
+   "unit": "Bowen's counterattack",
+   "commander": "John S. Bowen",
+   "x": 1638.8,
+   "y": 704.3,
+   "lat": 32.32277,
+   "lon": -90.52762,
+   "facing": "N",
+   "acc_m": 600,
+   "src": "ABT;OR Hovey",
+   "note": "retakes crossroads + crest, pushes Hovey nearly back to the Champion house",
+   "move_to": [
+    [
+     1636.8,
+     698.3
+    ],
+    [
+     1638.5,
+     694.2
+    ],
+    [
+     1644.8,
+     684.0
+    ]
+   ]
+  },
+  {
+   "battle": "championhill",
+   "phase": "13:00-14:30",
+   "side": "US",
+   "unit": "Crocker's division (Boomer, Holmes; Sanborn)",
+   "commander": "Marcellus Crocker",
+   "x": 1643.8,
+   "y": 687.0,
+   "lat": 32.34284,
+   "lon": -90.52075,
+   "facing": "S",
+   "acc_m": 800,
+   "src": "OR Hovey;GM",
+   "note": "~2,000 men sent up the hill to Hovey",
+   "move_to": [
+    [
+     1639.5,
+     693.2
+    ]
+   ]
+  },
+  {
+   "battle": "championhill",
+   "phase": "14:30",
+   "side": "US",
+   "unit": "Hovey's massed batteries (1st Missouri, 16th Ohio, Dillon's Wisconsin)",
+   "commander": "Alvin P. Hovey",
+   "x": 1642.8,
+   "y": 684.0,
+   "lat": 32.34632,
+   "lon": -90.52213,
+   "facing": "SW",
+   "acc_m": 600,
+   "src": "OR Hovey",
+   "note": "enfilade fire at ~2:30 p.m. turns the fight; ground 'contested for the third time'"
+  },
+  {
+   "battle": "championhill",
+   "phase": "07:30-16:00",
+   "side": "US",
+   "unit": "Osterhaus + Carr (McClernand) on the Middle Road",
+   "commander": "John A. McClernand",
+   "x": 1657.4,
+   "y": 709.0,
+   "lat": 32.31731,
+   "lon": -90.50208,
+   "facing": "W",
+   "acc_m": 1200,
+   "src": "GM",
+   "note": "in hearing of the battle, did not press (GM)"
+  },
+  {
+   "battle": "championhill",
+   "phase": "07:30-16:00",
+   "side": "US",
+   "unit": "A. J. Smith + Blair on the Raymond Road",
+   "commander": "Andrew J. Smith / Frank P. Blair",
+   "x": 1638.0,
+   "y": 715.0,
+   "lat": 32.31035,
+   "lon": -90.52872,
+   "facing": "W",
+   "acc_m": 1200,
+   "src": "GM",
+   "note": "confront Loring"
+  },
+  {
+   "battle": "championhill",
+   "phase": "16:00-17:20",
+   "side": "CS",
+   "unit": "Retreat by the Raymond Road ford; Tilghman's rearguard",
+   "commander": "Lloyd Tilghman (killed 5:20 p.m.)",
+   "x": 1622.0,
+   "y": 711.0,
+   "lat": 32.31499,
+   "lon": -90.55069,
+   "facing": "E",
+   "acc_m": 800,
+   "src": "ABT;OR",
+   "note": "Loring cut off, turns S/E toward Johnston",
+   "move_to": [
+    [
+     1606,
+     711
+    ],
+    [
+     1585,
+     720
+    ]
+   ]
+  },
+  {
+   "battle": "bigblack",
+   "phase": "dawn",
+   "side": "CS",
+   "unit": "Vaughn's brigade + 4th Mississippi (centre, N of the railroad)",
+   "commander": "John C. Vaughn",
+   "x": 1520,
+   "y": 684,
+   "lat": 32.34632,
+   "lon": -90.69077,
+   "facing": "E",
+   "acc_m": 400,
+   "src": "WP",
+   "note": "cotton-bale parapet behind the bayou"
+  },
+  {
+   "battle": "bigblack",
+   "phase": "dawn",
+   "side": "CS",
+   "unit": "Cockrell's brigade (S, at the Jackson road)",
+   "commander": "Francis M. Cockrell",
+   "x": 1519.5,
+   "y": 690,
+   "lat": 32.33936,
+   "lon": -90.69145,
+   "facing": "E",
+   "acc_m": 400,
+   "src": "WP",
+   "note": "to Gin Lake on the right (S)"
+  },
+  {
+   "battle": "bigblack",
+   "phase": "dawn",
+   "side": "CS",
+   "unit": "Green's brigade (far left, N, near the river)",
+   "commander": "Martin E. Green",
+   "x": 1522,
+   "y": 680.5,
+   "lat": 32.35038,
+   "lon": -90.68802,
+   "facing": "E/NE",
+   "acc_m": 400,
+   "src": "WP",
+   "note": "N end near the river; 1st Mo. Cav. (dism.) in the work E of the bayou"
+  },
+  {
+   "battle": "bigblack",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Carr's division (Benton; Lawler on the far right)",
+   "commander": "Eugene A. Carr",
+   "x": 1528,
+   "y": 683,
+   "lat": 32.34748,
+   "lon": -90.67978,
+   "facing": "W",
+   "acc_m": 500,
+   "src": "GM;WP",
+   "note": "Lawler moved into a meander scar by the river on the N flank"
+  },
+  {
+   "battle": "bigblack",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Osterhaus's division (Garrard, Lindsey) left of Carr",
+   "commander": "Peter J. Osterhaus (wounded)",
+   "x": 1528.5,
+   "y": 690,
+   "lat": 32.33936,
+   "lon": -90.67909,
+   "facing": "W",
+   "acc_m": 600,
+   "src": "GM;WP",
+   "note": ""
+  },
+  {
+   "battle": "bigblack",
+   "phase": "~09:00",
+   "side": "US",
+   "unit": "Lawler's charge (21st + 23rd Iowa, 11th Wis., 22nd Iowa)",
+   "commander": "Michael K. Lawler",
+   "x": 1526,
+   "y": 679.5,
+   "lat": 32.35154,
+   "lon": -90.68253,
+   "facing": "SW",
+   "acc_m": 400,
+   "src": "GM;WP",
+   "note": "about three minutes (Bearss via WP); CS flee to the bridge, bridge + Dot burned",
+   "move_to": [
+    [
+     1521,
+     682
+    ],
+    [
+     1510,
+     683.5
+    ]
+   ]
+  },
+  {
+   "battle": "siege",
+   "phase": "19 May 2 p.m.",
+   "side": "US",
+   "unit": "Sherman's XV Corps (Blair's division; 13th US Infantry plants colors)",
+   "commander": "William T. Sherman",
+   "x": 1410,
+   "y": 666,
+   "lat": 32.3672,
+   "lon": -90.84183,
+   "facing": "SW",
+   "acc_m": 400,
+   "src": "NPS;SM",
+   "note": "Graveyard Road; ~1,000 Union losses (NPS)",
+   "move_to": [
+    [
+     1406.2,
+     667.7
+    ]
+   ]
+  },
+  {
+   "battle": "siege",
+   "phase": "22 May 10 a.m.",
+   "side": "US",
+   "unit": "Sherman's XV Corps (Blair, Tuttle; Steele on the far right)",
+   "commander": "William T. Sherman",
+   "x": 1410,
+   "y": 666,
+   "lat": 32.3672,
+   "lon": -90.84183,
+   "facing": "SW",
+   "acc_m": 500,
+   "src": "NPS;SM",
+   "note": "'forlorn hope' bridging party down Graveyard Road",
+   "move_to": [
+    [
+     1406.2,
+     667.7
+    ]
+   ]
+  },
+  {
+   "battle": "siege",
+   "phase": "22 May 10 a.m.",
+   "side": "US",
+   "unit": "McPherson's XVII Corps (Logan; Quinby; McArthur's Ransom)",
+   "commander": "James B. McPherson",
+   "x": 1412,
+   "y": 674,
+   "lat": 32.35792,
+   "lon": -90.83908,
+   "facing": "W",
+   "acc_m": 500,
+   "src": "NPS;GM",
+   "note": "Jackson Road",
+   "move_to": [
+    [
+     1409.0,
+     672.9
+    ],
+    [
+     1406.4,
+     675.0
+    ]
+   ]
+  },
+  {
+   "battle": "siege",
+   "phase": "22 May 10 a.m.",
+   "side": "US",
+   "unit": "McClernand's XIII Corps (Carr: Lawler + Benton; A. J. Smith: Burbridge; Osterhaus)",
+   "commander": "John A. McClernand",
+   "x": 1408,
+   "y": 688,
+   "lat": 32.34168,
+   "lon": -90.84457,
+   "facing": "W",
+   "acc_m": 500,
+   "src": "NPS;ABT",
+   "note": "Baldwin's Ferry Rd + railroad; brief lodgment in Railroad Redoubt",
+   "move_to": [
+    [
+     1400.0,
+     686.4
+    ],
+    [
+     1403.0,
+     680.4
+    ]
+   ]
+  },
+  {
+   "battle": "siege",
+   "phase": "19-22 May",
+   "side": "CS",
+   "unit": "M. L. Smith's division (N: Shoup's 27th La. at Stockade Redan, Baldwin, Vaughn) + Bowen's Cockrell in support",
+   "commander": "Martin L. Smith",
+   "x": 1404.2,
+   "y": 667.7,
+   "lat": 32.36523,
+   "lon": -90.84979,
+   "facing": "NE",
+   "acc_m": 600,
+   "src": "ABT",
+   "note": ""
+  },
+  {
+   "battle": "siege",
+   "phase": "19-22 May",
+   "side": "CS",
+   "unit": "Forney's division (Hébert's brigade at 3rd La. Redan; Moore's brigade incl. 2nd Texas)",
+   "commander": "John H. Forney",
+   "x": 1404.4,
+   "y": 675.0,
+   "lat": 32.35676,
+   "lon": -90.84952,
+   "facing": "E",
+   "acc_m": 600,
+   "src": "OR;ABT",
+   "note": ""
+  },
+  {
+   "battle": "siege",
+   "phase": "19-22 May",
+   "side": "CS",
+   "unit": "Stevenson's division (S. D. Lee's Alabamians at Railroad Redoubt; Waul's Texas Legion counterattack)",
+   "commander": "Carter L. Stevenson",
+   "x": 1398.0,
+   "y": 687.4,
+   "lat": 32.34238,
+   "lon": -90.85831,
+   "facing": "E",
+   "acc_m": 700,
+   "src": "ABT;WP",
+   "note": ""
+  },
+  {
+   "battle": "siege",
+   "phase": "25 Jun 3-3:30 p.m.",
+   "side": "US",
+   "unit": "Mine under the 3rd La. Redan (Logan's division, Leggett's brigade; two regiments rush the crater)",
+   "commander": "John A. Logan",
+   "x": 1409.0,
+   "y": 672.9,
+   "lat": 32.3592,
+   "lon": -90.8432,
+   "facing": "W",
+   "acc_m": 200,
+   "src": "GM;OR (Hickenlooper journal 2,200 lb)",
+   "note": "crater fight ~26 h (NPS)"
+  }
+ ]
+}

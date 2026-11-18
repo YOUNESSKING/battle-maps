@@ -1,0 +1,134 @@
+{
+ "mode": "close",
+ "note": "Champion Hill (16 May 1863): the crest, the Jackson / Middle / Raymond roads, Baker's Creek, the Champion house, Edwards",
+ "box": [
+  1572,
+  668,
+  100,
+  68
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 81,
+ "ravine_woods": 0.65,
+ "rivers": [
+  {
+   "name": "Baker's Creek",
+   "geo": [
+    "Baker's Creek"
+   ],
+   "w": 0.3,
+   "step": 0.12,
+   "meander": 0.14
+  }
+ ],
+ "creeks": {
+  "paint_km2": 3,
+  "ribbon_km2": 60
+ },
+ "roads": [
+  {
+   "geo": "Jackson road at Champion Hill: Champion house - crest - crossroads - Baker's Creek - Edwards",
+   "cls": "pike"
+  },
+  {
+   "geo": "Jackson road (upper): Jackson - Clinton - Bolton - Champion house",
+   "cls": "pike"
+  },
+  {
+   "geo": "Middle Road: Raymond-Bolton road - Roberts house - crossroads",
+   "cls": "pike"
+  },
+  {
+   "geo": "Raymond Road: Raymond - Jackson Creek - Coker house - Baker's Creek - Edwards",
+   "cls": "pike"
+  },
+  {
+   "geo": "Auburn - Edwards (Raymond-Edwards road, Pemberton's 15 May target)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Jackson road west: Edwards - Big Black bridge - Bovina - Mount Alban - Vicksburg (Jackson Road)",
+   "cls": "pike"
+  }
+ ],
+ "railroads": [
+  {
+   "name": "Southern Railroad of Mississippi",
+   "geo": "Southern Railroad of Mississippi (Vicksburg & Jackson RR)"
+  }
+ ],
+ "towns": [
+  {
+   "name": "Edwards",
+   "geo": "Edwards",
+   "kind": "street",
+   "halfL": 2.2,
+   "cross": 4,
+   "rad": 3.2
+  },
+  {
+   "name": "Champion house",
+   "geo": "Champion house",
+   "kind": "plantation"
+  },
+  {
+   "name": "Coker house",
+   "geo": "Coker house",
+   "kind": "farm"
+  },
+  {
+   "name": "Roberts house",
+   "geo": "Roberts house",
+   "kind": "farm"
+  },
+  {
+   "name": "Mrs. Ellison's",
+   "geo": "Mrs. Ellison's",
+   "kind": "farm"
+  }
+ ],
+ "farm_density": 2.4,
+ "plantation_density": 0.15,
+ "features": {
+  "works": [],
+  "bridges": [
+   {
+    "name": "Jackson Road bridge over Baker's Creek",
+    "geo": "Jackson Road bridge over Baker's Creek",
+    "kind": "road"
+   },
+   {
+    "name": "Raymond Road bridge over Baker's Creek",
+    "geo": "Raymond Road ford/bridge over Baker's Creek",
+    "kind": "road"
+   }
+  ]
+ },
+ "labels": [
+  "Champion Hill crest",
+  "Crossroads",
+  "Champion house",
+  "Coker house",
+  "Roberts house"
+ ],
+ "clear": [
+  [
+   1639.6,
+   693.6,
+   2.6
+  ],
+  [
+   1636.8,
+   698.3,
+   1.2
+  ],
+  [
+   1645.8,
+   686.0,
+   1.5
+  ]
+ ]
+}

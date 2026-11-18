@@ -1,0 +1,106 @@
+{
+ "mode": "close",
+ "note": "Port Gibson (1 May 1863): Shaifer house - Magnolia Church ridges, the Rodney and Bruinsburg roads, Port Gibson town",
+ "box": [
+  1236,
+  990,
+  86,
+  58
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 51,
+ "ravine_woods": 0.7,
+ "rivers": [
+  {
+   "name": "Bayou Pierre",
+   "geo": [
+    "Bayou Pierre (main stem"
+   ],
+   "w": 0.45,
+   "step": 0.12,
+   "meander": 0.15
+  },
+  {
+   "name": "Little Bayou Pierre",
+   "geo": [
+    "Little Bayou Pierre"
+   ],
+   "w": 0.3,
+   "step": 0.12,
+   "meander": 0.12
+  }
+ ],
+ "roads": [
+  {
+   "geo": "Bruinsburg - bluffs - Shaifer house (Bruinsburg road)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Rodney Road: Shaifer house - Magnolia Church - Port Gibson",
+   "cls": "pike"
+  },
+  {
+   "geo": "Bruinsburg (north) road: Shaifer house - ridge - Port Gibson",
+   "cls": "pike"
+  },
+  {
+   "geo": "Port Gibson - Grindstone Ford - Willow Springs - Rocky Springs - Utica - Raymond",
+   "cls": "pike"
+  },
+  {
+   "geo": "gm6",
+   "cls": "pike"
+  },
+  {
+   "geo": "gm7",
+   "cls": "pike"
+  }
+ ],
+ "towns": [
+  {
+   "name": "Port Gibson",
+   "geo": "Port Gibson",
+   "kind": "grid",
+   "rad": 2.8,
+   "block": 0.8
+  },
+  {
+   "name": "Shaifer house",
+   "geo": "Shaifer house",
+   "kind": "farm"
+  },
+  {
+   "name": "Foster farm",
+   "geo": "Foster farm",
+   "kind": "farm"
+  }
+ ],
+ "plantation_density": 0.3,
+ "farm_density": 2.2,
+ "features": {
+  "works": [],
+  "bridges": [
+   {
+    "name": "Bayou Pierre South Fork bridge",
+    "geo": "Bayou Pierre South Fork bridge",
+    "kind": "road"
+   }
+  ]
+ },
+ "labels": [
+  "Shaifer house",
+  "Magnolia Church",
+  "Foster farm",
+  "Port Gibson battlefield marker"
+ ],
+ "clear": [
+  [
+   1292.3,
+   1019.0,
+   0.9
+  ]
+ ]
+}
