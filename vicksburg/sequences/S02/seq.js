@@ -97,9 +97,9 @@ const units = [
   { region: WD, side: R, type: "inf", n: 3, face: VX.FACE.nw, t0: T.december + 0.6, keys: [[0, 1421, 632]] },
   // the plan: the army marches down the west bank (Milliken's Bend -> Hard Times)
 ];
-// the west-bank road (Louisiana): Milliken's Bend - Richmond - Roundaway Bayou - round the river's western loop - New Carthage - Hard Times,
+// the west-bank road (Louisiana): Milliken's Bend - Richmond - down the west side of Roundaway Bayou - round the river's western loop - New Carthage - Hard Times,
 // 12-30 units (1.5-4 km) west of the channel everywhere (the baked road 0/1 runs ON the channel between New Carthage and Perkins')
-const WB = [MB, [1199, 609], [1180, 629], TW("Richmond"), [1172, 662], [1186, 676], [1199, 690], [1205, 706], [1204, 726], [1197, 746], [1186, 765], [1172, 782],
+const WB = [MB, [1199, 609], [1180, 629], TW("Richmond"), [1162, 664], [1168, 680], [1178, 698], [1192, 716], [1200, 735], [1198, 755], [1188, 770], [1172, 784],
   [1161, 800], [1155, 822], [1156, 846], [1163, 866], [1176, 882], NC, [1209, 903], HT];
 const WBthin = WB;
 const WBL = VX.len(WB);

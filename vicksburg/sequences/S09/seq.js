@@ -199,8 +199,8 @@ window.SEQ = {
     { t: 61.0, region: C, at: [1639.6, 690.8], dist: 31, tilt: 50, yaw: -7, fov: 30 },
     { t: 65.8, region: C, at: [1635.4, 691.0], dist: 32, tilt: 44, yaw: -9, fov: 30 },
     { t: 70.8, region: C, at: [1645.0, 709.6], dist: 38, tilt: 42, yaw: -3, fov: 30 },
-    { t: 74.2, region: C, at: [1644.6, 702.6], dist: 45, tilt: 37, yaw: -4, fov: 30 },
-    { t: 77.6, region: C, at: [1644.2, 701.4], dist: 45, tilt: 37, yaw: -5, fov: 30 },
+    { t: 74.2, region: C, at: [1643.2, 703.4], dist: 43, tilt: 37, yaw: -4, fov: 30 },
+    { t: 77.6, region: C, at: [1642.8, 702.4], dist: 43, tilt: 37, yaw: -5, fov: 30 },
     { t: 83.6, region: C, at: [1640.8, 698.6], dist: 38, tilt: 44, yaw: -8, fov: 30 },
     // round 2: the crest fight seen ALONG the attack axis (yaw ~ -40: Union line at the top, Confederate line below, the front across the frame)
     { t: 89.0, region: C, at: [...FR(-1.6, 1.6)], dist: 31, tilt: 40, yaw: -30, fov: 30 },
