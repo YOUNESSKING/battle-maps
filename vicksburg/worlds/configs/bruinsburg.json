@@ -1,0 +1,68 @@
+{
+ "mode": "close",
+ "note": "the Bruinsburg landing (30 Apr 1863) and the road inland toward Port Gibson",
+ "box": [
+  1148,
+  995,
+  90,
+  60
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 41,
+ "rivers": [
+  {
+   "name": "Mississippi River",
+   "geo": "mississippi",
+   "w": 6.0,
+   "step": 0.25,
+   "smooth": 6
+  },
+  {
+   "name": "Bayou Pierre",
+   "geo": [
+    "Bayou Pierre (main stem"
+   ],
+   "w": 0.5,
+   "step": 0.12,
+   "meander": 0.15,
+   "join": true
+  }
+ ],
+ "roads": [
+  {
+   "geo": "Bruinsburg - bluffs - Shaifer house (Bruinsburg road)",
+   "cls": "pike"
+  }
+ ],
+ "towns": [
+  {
+   "name": "Bruinsburg",
+   "at": [
+    1183.5,
+    1029.0
+   ],
+   "kind": "hamlet",
+   "len": 2.0
+  },
+  {
+   "name": "Windsor",
+   "geo": "Windsor",
+   "kind": "plantation"
+  }
+ ],
+ "plantation_density": 0.5,
+ "farm_density": 1.8,
+ "swamp": 0.0,
+ "cane": 0.6,
+ "features": {
+  "works": []
+ },
+ "labels": [
+  "Bruinsburg landing",
+  "Windsor"
+ ],
+ "woods": -0.05
+}

@@ -56,6 +56,8 @@ for (const e of FXL) if (e.kind === "fire" && e.bridge != null && e.burn !== fal
   b[e.bridge] = b[e.bridge] || {}; if (b[e.bridge].burn == null) b[e.bridge].burn = e.burn ?? e.t0 + 3.2; }
 const world = initWorld(document.getElementById("gl"), { base: WB, regions: NAMES, keys: KEYS, width: W, height: H, antialias: false, shadowSize: S.shadowSize || 1536, features: FEAT });
 await world.ready;
+const _t0 = performance.now(), _log = (m) => { if (S.debug) console.log("vx " + ((performance.now() - _t0) / 1000).toFixed(1) + "s " + m); };
+_log("world ready");
 const HT = (r) => (x, y) => world.heightAt(x, y, r);
 const G = (r, p, h0 = 0) => [p[0], world.heightAt(p[0], p[1], r) + (p[2] ?? h0), p[1]];   // map [x, y, h above ground] -> world
 
@@ -67,7 +69,7 @@ for (const n of NAMES) { const ro = RO(n); FX[n] = createFX({ scene: world.regio
 for (const n of NAMES) FX[n].patchGround(world.regions[n].terrain.material);
 
 // ---------------- clouds (v6/v8 look): wide = volumetric fair-weather cumulus + the dive deck; close = the dive's torn stratus sheets ----------------
-const NOISE = await loadCloudNoise(EB + "cloudtex/noise128.bin");
+const NOISE = await loadCloudNoise(EB + "cloudtex/noise128.bin"); _log("noise");
 const lnr = (i, k, med, sg, lo, hi) => { const g1 = hsh(i, k), g2 = hsh(i, k + 1), gn = Math.sqrt(-2 * Math.log(Math.max(1e-4, g1))) * Math.cos(6.2832 * g2); return Math.min(hi, Math.max(lo, med * Math.exp(sg * gn))); };
 const CW_DAY = { sun: [1.0, 0.95, 0.85], ambTop: [0.50, 0.55, 0.65], ambBot: [0.24, 0.28, 0.36], nSun: [0.12, 0.15, 0.20], nAmbTop: [0.27, 0.32, 0.40], nAmbBot: [0.13, 0.16, 0.21] };
 // night erosion ramps from the camera keys: half the wide clouds erode in the 0.4 s before the camera cuts to night in this region
@@ -146,6 +148,7 @@ for (const n of NAMES) {
   }
 }
 
+_log("clouds");
 // ---------------- fx events from SEQ.fx ----------------
 const FIRE_GM = { flameColor: [0.62, 0.1, 0.015, 0.1, 0.2, 0.04], glowColor: [1.0, 0.42, 0.12], glowA: 0.16, lightDay: 0.12 };
 const FIRE_PRESET = {
@@ -359,6 +362,7 @@ if (S.end && S.end.fadeAt != null) tl.to("#fade", { opacity: 1, duration: S.end.
 if (S.start && S.start.fadeIn) tl.fromTo("#fade", { opacity: 1 }, { opacity: 0, duration: S.start.fadeIn, ease: "power1.out", immediateRender: false }, 0);
 if (S.build) await S.build(ctx);
 
+_log("overlay");
 // ---------------- per-frame draw (pure function of t) ----------------
 const drawTroops = (t, region) => {
   const L = [];
@@ -454,6 +458,13 @@ window.__draw = (t) => {
   drawPins(t, world.region);
   if (S.draw) S.draw(t, ctx);
 };
-window.__draw(tl.time());
+// fonts + images must be ready before the first captured frame: the overlay sizes its plaques from the text metrics (a late font gave
+// 4 px narrower plaques between runs) and the banners' portraits must be decoded
+{ const within = (p, ms, what) => Promise.race([p.then(() => 0, () => 0), new Promise((r) => setTimeout(() => { console.warn("vx: still waiting for " + what); r(0); }, ms))]);
+  const FONTS = ['600 16px "GM Cormorant"', 'italic 500 16px "GM Cormorant"', '500 16px "GM Cormorant"', '700 16px "GM Cormorant"', '600 16px "GM Cinzel"', '700 16px "GM Cinzel"',
+    '600 16px "CG"', 'italic 600 16px "CG"', '700 16px "Cinzel"', '600 16px "Cinzel"'];
+  await Promise.all(FONTS.map((f) => within(document.fonts.load(f), 4000, f)));
+  await Promise.all([...document.images].map((im) => within(im.complete ? Promise.resolve() : new Promise((r) => { im.addEventListener("load", r); im.addEventListener("error", r); }), 4000, im.src.slice(0, 80)))); }
+_log("fonts"); window.__draw(tl.time()); O.update(tl.time()); _log("first frame");
 window.__vx = ctx;
 window.__sceneBuilt();

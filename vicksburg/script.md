@@ -55,7 +55,7 @@ Sherman thought the army should go back north and try again by land. But whateve
 On the night of the sixteenth of April, at about ten o'clock, the boats cast off. Seven gunboats led the way, with Admiral David Porter in the flagship Benton. Behind them came three river transports, their boilers padded with bales of cotton and hay, towing barges of coal.
 
 [S03 | the line slides into the bend; the first battery flash on the bluffs; bonfires catching along the shore]
-The Confederates saw them. Guns opened from the bluffs. On the shore, houses were set on fire and bonfires lit, to light the river for the gunners. The boats were in plain view, slowing for the bend, under fire for more than two hours.
+The Confederates saw them. Guns opened from the bluffs. On the shore, houses were set on fire and bonfires lit. They lit up the whole river for the gunners. The boats were in plain view, slowing for the bend, under fire for more than two hours.
 
 [S03 | close on the transports; one (Henry Clay) hit; its cotton bales catch; flames]
 Every gunboat was hit, many times, and kept going. One transport, the Henry Clay, was disabled, and her crew abandoned her. Then a shell burst in the cotton around her boilers.
@@ -169,7 +169,7 @@ By eleven o'clock, the skirmishing had become a battle. Alvin Hovey's division c
 Then Pemberton sent in John Bowen, the same general who had fought at Port Gibson. His division hit Hovey's men and drove them back down the hill, past the captured guns, almost to the bottom. For a moment the battle was swinging the other way.
 
 [S09 | Union guns massed at the foot of the hill (battery flashes); Crocker's blue brigades arrive; the line holds; the crest changes hands again]
-The Union rallied at the foot of the slope, behind a line of massed guns. Reinforcements came up, and the hill changed hands again. Hovey's division lost about twelve hundred men that day, more than a third of its strength.
+The Union rallied at the foot of the slope, behind a line of massed guns. Reinforcements came up, and the ground, as Hovey put it, was contested for the third time that day. Hovey's division lost about twelve hundred men that day, nearly a third of its strength. He called it, in his report, the hill of death.
 
 [S09 | the twist of fate: Logan's boxes astride the only escape road behind the hill; then Grant's order pulls them away and the road reopens; red columns pour out across Baker's Creek]
 And on the north end of the field, without knowing it, Logan's men had put themselves across the only road the Confederates could use to escape. "Neither Logan nor I knew that we had cut off the retreat of the enemy," Grant admitted. A call for help came from Hovey, Logan's men were moved, and the road opened again. Between three and four o'clock, Pemberton's army broke and fled west.
