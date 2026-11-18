@@ -276,7 +276,8 @@ const BOATS = [];
 for (const B of S.boats || []) { const r = B.region || NAMES[0], R = world.regions[r], sz = B.size ?? (isWide(r) ? 1 : 0.1), n = B.n ?? 1, kinds = [].concat(B.kind || "steamer");
   for (let i = 0; i < n; i++) { const g = mkBoat(kinds[i % kinds.length]); g.scale.setScalar(sz); R.scene.add(g); BOATS.push({ B, i, g, r, R, sz }); } }
 const boatAt = (o, t) => { const { B, i, R, sz } = o, on = t > B.t0 && t < B.t1;
-  if (B.path) { const s = (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz), p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (B.h ?? 0.35 * sz), dx: p[2], dy: p[3], on }; }
+  if (B.path) { const s = B.sAt ? B.sAt(t, i) : (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz),   // sAt(t, i): any arc-length schedule (stops, drifting)
+    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (B.h ?? 0.35 * sz), dx: p[2], dy: p[3], on }; }
   const vy = B.vy ?? 1.6, y = B.y0 + (t - B.t0) * vy - i * (B.dy ?? 4.2 * sz), p = VX.riverAtY(o.r, B.river ?? 0, y), q = VX.riverAtY(o.r, B.river ?? 0, y + Math.sign(vy || 1)), x = p[0] + (i % 2 ? 1 : -1) * (B.lane ?? 0.6 * sz);
   return { x, y: p[1], h: p[2] * R.ys + 0.35 * sz, dx: q[0] - p[0], dy: q[1] - p[1], on }; };
 const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g.position.set(b.x, b.h, b.y); o.g.rotation.y = Math.atan2(-b.dy, b.dx); o.g.visible = b.on; } };
@@ -347,7 +348,8 @@ for (const l of S.labels || []) { const r = l.region || NAMES[0], p = l.at || VX
   PINS.push({ e, x: p[0], y: p[1], h: l.h ?? 0.05, t0: l.t0, t1: l.t1, region: r }); }
 
 // ---------------- GM overlay (1920x1080 space) ----------------
-const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: EB + "assets/fonts/", seed: S.seed ?? 1863 });
+const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p, t) => { if (typeof p === "function") p = p(t); const s = world.projectMap(p[0], p[1], p[2] || 0);   // world: [x, y, h] or (t) => [x, y, h] (follows a moving boat)
+    return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: EB + "assets/fonts/", seed: S.seed ?? 1863 });
 O.film.set({ grain: (S.film || {}).grain ?? 0.04 });   // v5: grain <= 0.04 on the final frame
 const ctx = { THREE, world, FX, VC, O, tl, S, VX, UNITS, ARROWS, BANNERS, PINS, GENERALS, G, regions: world.regions, sstep, lerp, clamp, hsh };
 const resolveArgs = (a) => { if (!a || typeof a !== "object" || Array.isArray(a)) return a; if (a.general && !a.img) { const g = gen(a.general);

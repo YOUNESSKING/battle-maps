@@ -75,13 +75,11 @@ const arrows = [
 // ---------------- fx ----------------
 const SMK = { size: 0.95, alpha: 0.26, life: 12, muzzle: 6, windK: 0.4, rate: 2.4 };
 const vl = (pts, t0, t1, dir, every = 1.8, o = {}) => ({ region: RY, pts, t0, t1, cue: true, every, opts: { ...SMK, dir, volley: every, roll: 0.7, ...o } });
-const DUST = { look: "gm", tint: [0.36, 0.31, 0.24], flash: false, size: 0.8, alpha: 0.15, life: 12, muzzle: 0.6, height: 0.3, windK: 0.7, rate: 4, cluster: [3.0, 0.3] };
+const DUST = { look: "gmOld", tint: [0.62, 0.55, 0.44], flash: false, size: 0.55, alpha: 0.13, life: 10, muzzle: 0.5, height: 0.3, windK: 0.8, rate: 7, cluster: [0.6, 0.2] };
 const fx = {
   smokeLines: [
     // the dust of a whole corps on the road
     { region: RY, pts: roadIn.filter((_, i) => i % 6 === 0), t0: T.fact - 0.6, t1: 24.0, opts: { ...DUST, dir: [0.3, -1] } },
-    // smoke and dust so dense that neither side could see: a low brown haze settles over the creek bottom
-    { region: RY, pts: [[1681.0, 787.0], [1687.0, 787.6], [1693.0, 789.6], [1699.0, 789.4]], t0: T.smoke - 0.8, t1: 33.4, opts: { ...DUST, dir: [0, -1], rate: 5, size: 1.0, alpha: 0.12, cluster: [5.0, 0.2] } },
   ],
   volleys: [
     vl([[1683.6, 785.4], [1686.2, 785.8]], T.hours - 0.2, 26.4, [-0.1, 1], 1.7),        // Gregg's men across the creek
@@ -104,7 +102,7 @@ const fx = {
 window.SEQ = {
   name: "S07", D, T, seed: 1507, date: "1863-05-12",
   regions: [WD, RY],
-  regionOpts: { [RY]: { troopScale: 1.45 } },
+  regionOpts: { [RY]: { troopScale: 1.45 }, [WD]: { troopScale: 15 } },
   generals: { gregg: { img: "seq/gregg.png", side: "cs", name: "Gregg", full: "John Gregg", role: "Brigadier General" } },
   keys: [
     { t: 0, region: WD, at: [1700, 770], dist: 250, tilt: 46, yaw: -4, fov: 30 },
@@ -152,9 +150,15 @@ window.SEQ = {
     ["ledger.add", T.small + 1.2, { who: "39 missing", note: "Grant's Memoirs", stamp: false }],
     ["ledger.hide", 44.2],
   ],
-  // the red pulse needs the terrain height at Jackson: read once the world exists
-  build: async (ctx) => { const h = ctx.world.heightAt(WJ[0], WJ[1], WD);
-    ctx.FX[WD].custom((t, push) => { if (t < T.jackson - 0.2) return; const k = VX.sstep(T.jackson - 0.2, T.jackson + 0.6, t), p = Math.max(0, Math.sin((t - T.jackson) * 2 * Math.PI / 1.4));
-      const a = k * (0.22 + 0.16 * p), r = 1 + 0.25 * p; push(WJ[0], h + 2, WJ[1], 46 * r, a, 1.0, 0.16, 0.10); push(WJ[0], h + 2, WJ[1], 22 * r, a * 0.9, 1.0, 0.22, 0.12); }); },
+  // Jackson pulses red on the wide map: a soft red disc + ring pinned to the ground under the name (DOM layer, a pure function of t)
+  build: async (ctx) => { const PN = document.getElementById("pins"), e = document.createElement("div");
+    e.style.cssText = "position:absolute;left:0;top:0;border-radius:50%;opacity:0;pointer-events:none;background:radial-gradient(circle, rgba(200,40,28,0.75) 0%, rgba(200,40,28,0.45) 40%, rgba(196,44,32,0) 70%);box-shadow:0 0 0 2px rgba(170,30,22,0.55) inset";
+    PN.insertBefore(e, PN.firstChild); ctx.pulse = e; },
+  draw: (t, ctx) => { const e = ctx.pulse; if (!e) return; const cs = ctx.world.cameraAt(t);
+    if (cs.region !== WD || t < T.jackson - 0.3) { e.style.opacity = "0"; return; }
+    const ph = Math.max(0, Math.sin((t - T.jackson) * 2 * Math.PI / 1.5)), k = VX.sstep(T.jackson - 0.3, T.jackson + 0.5, t);
+    const s = ctx.world.projectMap(WJ[0], WJ[1], 0), d = Math.max(30, 26 * s.ppu * (1 + 0.22 * ph));
+    e.style.width = e.style.height = d.toFixed(1) + "px"; e.style.transform = `translate(${(s.x - d / 2).toFixed(1)}px,${(s.y - d / 2).toFixed(1)}px) scaleY(0.72)`;
+    e.style.opacity = (k * (0.55 + 0.45 * ph)).toFixed(3); },
 };
 })();

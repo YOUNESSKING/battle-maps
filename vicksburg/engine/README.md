@@ -97,6 +97,7 @@ labels:  { text, at: [x, y] | town: "Bovina", size, t0, t1, region, river: true 
 boats:   { region, kind: "steamer" | "gunboat" | [kinds], n, t0, t1, lamp, wake, size,
            river: 0 | "mississippi", y0, vy, dy, lane }     // v8 mode: follows the river by map-y (north-south rivers), boats dy apart
            // or path: [[x, y], ...], s0, speed, spacing   // any route at constant speed
+           // or path + sAt: (t, i) => arc length of boat i at t (any schedule: slowing for a bend, a disabled boat drifting); h: height above the ground
 ```
 Generals built in (`engine/assets/generals/`): grant, pemberton, sherman, mcpherson, porter (acting rear admiral), grierson, johnston,
 lincoln, davis, halleck. Any other: `generals: { key: { img, flag?, side, name, full, role } }` (img path relative to the scene root,
@@ -117,7 +118,7 @@ Only put fx where the camera sees them: every gun / volley / fire makes a sound 
 
 ### Overlay (`O` = `GMOverlay`, 1920x1080 space; API in `research/style_tests/gm3d/overlay/README.md`)
 `["path.to.method", ...args]` calls `O.path.to.method(...args)` in order; an object arg with `general: "grant"` gets its `img`, `side`,
-`name` (full) and `role` filled in. `world: [x, y]` anchors follow the ground. Devices: `plaque.date / clock / run / note / hide`,
+`name` (full) and `role` filled in. `world: [x, y]` anchors follow the ground; `world: (t) => [x, y, h]` follows anything moving (a boat). Devices: `plaque.date / clock / run / note / hide`,
 `timeline.show / go / seal / hide` (wax seals), `legend` (THE ARMIES), `medallion` (card / plate), `inset` (oval painting), `place`,
 `label`, `letter`, `quote`, `title`, `number` (3D-style gold number), `distance`, `ledger.show / add / final / hide`,
 `film.grade / dim / set`.

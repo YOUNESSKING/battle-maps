@@ -63,14 +63,14 @@ units.push(rLine(2, greenAt, { keys: [[0, ...greenAt], [44.2, ...greenAt], [T_OU
   escape: { road: ESC_S, t0: T_OUT, v: 3.6, v2: 3.6, join: "east", fade: false } }));                                  // Green
 units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onR(1291.2, -1.6)]], escape: { road: ESC_S, t0: T_OUT - 0.4, v: 3.6, v2: 3.6, join: "east", fade: false } });
 units.push(rLine(2, tracyAt, { keys: [[0, ...tracyAt], [40.6, ...tracyAt], [41.8, tracyAt[0] - 1.6, tracyAt[1]], [45.4, tracyAt[0] - 1.6, tracyAt[1]], [T_OUT - 0.2, tracyAt[0] + 2.4, tracyAt[1] + 0.6]],
-  escape: { road: ESC_N, t0: T_OUT + 0.3, v: 3.6, v2: 3.6, join: "east", fade: false } }));                            // Tracy
-units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onN(1285.6, 1.4)]], escape: { road: ESC_N, t0: T_OUT - 0.2, v: 3.6, v2: 3.6, join: "east", fade: false } });
+  escape: { road: ESC_N, t0: T_OUT + 0.3, v: 4.4, v2: 4.4, join: "east", fade: false } }));                            // Tracy
+units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onN(1285.6, 1.4)]], escape: { road: ESC_N, t0: T_OUT - 0.2, v: 4.4, v2: 4.4, join: "east", fade: false } });
 // Cockrell: comes up from town and counterattacks south of the Rodney road, then falls back
 units.push({ side: "r", type: "inf", n: 2, face: Wf, t0: 36.4, keys: [[36.4, 1298.0, 1021.2], [39.4, 1292.4, 1021.6], [40.8, 1291.0, 1021.6], [42.0, 1285.6, 1021.2], [43.6, 1286.4, 1021.2], [T_OUT - 0.4, 1292.8, 1020.8]],
   escape: { road: ESC_S, t0: T_OUT + 0.5, v: 3.6, v2: 3.6, join: "east", fade: false } });
 // Baldwin: second line behind Tracy, steps into the gap
 units.push({ side: "r", type: "inf", n: 1, face: Wf, t0: 36.0, keys: [[36.0, 1294.0, 1011.6], [39.0, 1288.6, 1011.4], [44.0, 1288.6, 1011.4], [T_OUT - 0.3, 1292.0, 1011.6]],
-  escape: { road: ESC_N, t0: T_OUT + 0.8, v: 3.6, v2: 3.6, join: "east", fade: false } });
+  escape: { road: ESC_N, t0: T_OUT + 0.8, v: 4.4, v2: 4.4, join: "east", fade: false } });
 units.forEach((u) => { if (u.side === "r" && u.escape) u.t1 = 60.5; });
 
 // ---------------- arrows ----------------
@@ -96,7 +96,7 @@ const vline = (pts, t0, t1, dir, o = {}) => ({ region: PG, pts, t0, t1, cue: tru
 const fx = {
   fires: [
     { region: PG, bridge: 0, t0: T.burned + 0.1, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the South Fork bridge
-    { region: PG, bridge: 2, t0: T.burned + 0.7, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 }, cue: false },
+    { region: PG, bridge: 2, t0: 55.4, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },
   ],
   volleys: [
     // first shots at night near the Shaifer house
@@ -148,7 +148,7 @@ window.SEQ = {
   clouds: { [PG]: { shadows: true } },
   units, arrows,
   banners: [
-    { general: "grant", keys: [[T.grantLost, 1287.6, 1016.0], [D, 1293.0, 1016.4]], t0: T.grantLost + 0.1, t1: D + 1 },
+    { general: "grant", keys: [[T.grantLost, 1292.6, 1015.6], [D, 1295.6, 1015.8]], t0: T.grantLost + 0.1, t1: D + 1 },
   ],
   labels: [
     { text: "Shaifer house", at: [SH[0] - 0.4, SH[1] - 1.4], size: 17, t0: 4.1, t1: 8.2, region: PG },

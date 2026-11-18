@@ -55,8 +55,7 @@ units.push({ region: WIDE, side: "r", type: "inf", n: 4, face: "east", t0: CUT, 
 // ---------------- arrows ----------------
 const ACLOSE = [
   // "Every Union attempt ... had failed": three blue thrusts that stop short of the city and fade
-  { region: VB, side: "u", pts: [[1404, 657], [1399, 662], [1394.5, 667]], t0: T.every, dur: 1.1, t1: T.failed + 0.6, width: 1.1 },
-  { region: VB, side: "u", pts: VX.sub(VX.river(VB, 2).pts.map((p) => [p[0], p[1] - 1.5]), 0, 22, 2), t0: T.every + 0.7, dur: 1.2, t1: T.failed + 0.7, width: 1.1 },
+  { region: VB, side: "u", pts: VX.sub(VX.river(VB, 2).pts.map((p) => [p[0], p[1] - 1.5]), 0, 22, 2), t0: T.every, dur: 1.2, t1: T.failed + 0.7, width: 1.1 },
   { region: VB, side: "u", pts: [[1352, 694], [1360, 684], [1366, 677]], t0: 31.2, dur: 1.0, t1: T.failed + 0.8, width: 1.1 },
 ];
 const arrows = [
@@ -73,7 +72,7 @@ const shotTimes = [20.42, 20.86, 21.3, 21.66, 22.12, 22.5, 23.0, 23.6, 24.3, 25.
 const shotBat = [5, 6, 4, 7, 3, 8, 5, 6, 4, 7, 2, 8];
 const fx = {
   fires: [
-    { region: WIDE, at: [1512.4, 683.6, 0.6], t0: 41.3, t1: T.D + 1, preset: "column", opts: { size: 9, smokeRate: 5, smokeS0: 0.5, smokeGrow: 1.2 } },   // the Big Black bridge burning as the march goes past
+    { region: WIDE, at: [1512.4, 683.6, 0.6], t0: 41.3, t1: T.D + 1, preset: "column", opts: { size: 16, smokeRate: 6, smokeS0: 0.5, smokeGrow: 1.4, smokeAlpha: 0.6 } },   // the Big Black bridge burning as the march goes past
   ],
   guns: [
     { region: VB, preset: "battery", h: 0.25, boom: false, opts: { dir: [-1, 0.08], size: 2.2, alpha: 0.24, flash: 2.2 },
@@ -96,11 +95,11 @@ push(p[0], waterY(VB, p[2]), p[1], 9, 0.12 * e * pulse * sstep(-0.05, 0.25, (t -
 const FLAGS = [[1386, 676], [1393, 690], [1381, 688]];
 const build = async (ctx) => { WW = ctx.world; const { THREE, world } = ctx, sc = world.regions[WIDE].scene;
   for (const c of fx._custom) ctx.FX[c.region].custom(c.fn);   // (fx.custom is not in the engine's grouped fx kinds: added here)
-  const poleM = new THREE.MeshLambertMaterial({ color: 0x3a3026 }), clothM = new THREE.MeshLambertMaterial({ color: 0xf4f1e6, side: THREE.DoubleSide, emissive: 0x403c34 });
-  ctx._flags = FLAGS.map(([x, y], i) => { const g = new THREE.Group(), h0 = world.heightAt(x, y, WIDE), H = 13;
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, H, 6), poleM); pole.position.y = H / 2; g.add(pole);
-    const cloth = new THREE.Mesh(new THREE.PlaneGeometry(7.5, 5, 6, 1), clothM); cloth.position.set(3.75, H - 2.6, 0); g.add(cloth);
-    g.position.set(x, h0, y); g.rotation.y = 0.5 + i * 0.4; g.visible = false; sc.add(g); return { g, cloth, i }; });
+  const poleM = new THREE.MeshLambertMaterial({ color: 0x3a3026 }), clothM = new THREE.MeshBasicMaterial({ color: 0xece8dc, side: THREE.DoubleSide });
+  ctx._flags = FLAGS.map(([x, y], i) => { const g = new THREE.Group(), h0 = world.heightAt(x, y, WIDE), H = 11;
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, H, 6), poleM); pole.position.y = H / 2; g.add(pole);
+    const cloth = new THREE.Mesh(new THREE.PlaneGeometry(6, 4, 6, 1), clothM); cloth.position.set(3.0, H - 2.1, 0); g.add(cloth);
+    g.position.set(x, h0, y); g.rotation.y = -0.25 + i * 0.2; g.visible = false; sc.add(g); return { g, cloth, i }; });
   // set BEFORE the frame renders (S.draw runs after the render): an fx custom emitter of the wide region is updated in beforeRender
   ctx.FX[WIDE].custom((t) => { for (const f of ctx._flags) { const t0 = T.stacked + 0.1 + f.i * 0.25, k = sstep(t0, t0 + 0.5, t);
     f.g.visible = k > 0.01; f.g.scale.set(1, Math.max(0.01, k), 1); f.cloth.rotation.y = 0.18 * Math.sin(t * 2.6 + f.i); } }); };
@@ -116,8 +115,8 @@ window.SEQ = {
     { t: 12.5, region: WIDE, at: [1398, 690], dist: 276, tilt: 48, yaw: -8, fov: 30, ease: "lin" },
     // the emergence (dive) lands at 21.85; the city front, guns on the bluff
     { t: 27.0, region: VB, at: [1379.0, 687.0], dist: 40, tilt: 53, yaw: -60, fov: 32 },
-    { t: 30.6, region: VB, at: [1367.0, 690.0], dist: 78, tilt: 34, yaw: -24, fov: 32 },
-    { t: CUT, region: VB, at: [1366.0, 690.0], dist: 81, tilt: 34, yaw: -21, fov: 32 },
+    { t: 30.6, region: VB, at: [1362.0, 686.0], dist: 78, tilt: 34, yaw: -24, fov: 32 },
+    { t: CUT, region: VB, at: [1361.0, 686.0], dist: 81, tilt: 34, yaw: -21, fov: 32 },
     // montage on the wide map
     { t: CUT, region: WIDE, at: [1236, 990], dist: 330, tilt: 44, yaw: 0, fov: 30, ease: "cut" },
     { t: 36.6, region: WIDE, at: [1268, 975], dist: 360, tilt: 44, yaw: 0, fov: 30 },

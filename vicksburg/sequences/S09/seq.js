@@ -30,7 +30,7 @@ const ESC = (road, t0, v = 2.0, join = "west", fade = "west") => ({ road, t0, v,
 
 // ---------------- units ----------------
 const R = "r", U = "u", NE = -Math.PI / 4, SWF = 3 * Math.PI / 4;
-const units = [
+const units = [   // (close arrows default width below)
   // ======== wide prelude (troopScale 8): Pemberton's three divisions, Grant's columns ========
   ...[[0, 1585.4, 700.8], [1, 1589.6, 704.4], [2, 1593.8, 707.0]].map(([k, x, y]) => ({ region: W, side: R, type: "inf", n: 3, face: "east",
     keys: [[0, x, y], [T.march + 0.4 + k * 0.3, x, y], [10.6 + k * 0.4, 1594.6 + k * 2.6, 711.6 + k * 0.6], [T.flooded + 0.6, 1594.6 + k * 2.6, 711.6 + k * 0.6],
@@ -42,19 +42,19 @@ const units = [
   // ======== Champion Hill (troopScale 1). Confederates: Stevenson (Barton, S. D. Lee, Cumming) on the hill, Bowen (Cockrell, Green) at the Middle road,
   // Loring (Buford, Featherston, Tilghman) on the Raymond road. The line faces east / north-east; Logan's swing comes round the north end. ========
   // Barton: NW of the crest facing north; Logan drives it back to the crossroads; flees by the Jackson road
-  { region: C, side: R, type: "inf", n: 3, face: -2.0, keys: [[0, 1632.2, 690.8], [T.swung + 1.6, 1632.2, 690.8], [T.swung + 4.0, 1633.0, 699.6]], escape: ESC(UP, T.broke + 0.2, 1.9) },
+  { region: C, side: R, type: "inf", n: 3, face: -2.0, keys: [[0, 1632.2, 690.8], [T.swung + 1.6, 1632.2, 690.8], [T.swung + 4.0, 1633.0, 699.6]], escape: ESC(UP, T.broke + 0.2, 2.6) },
   // S. D. Lee: on the crest; Hovey takes it; back up with Bowen; down again; flees west
   { region: C, side: R, type: "inf", n: 3, face: NE, keys: [[0, 1638.2, 692.4], [T.took - 0.4, 1638.2, 692.4], [T.took + 1.6, 1635.6, 696.0], [T.hit, 1635.6, 696.0], [T.retook, 1637.6, 693.2],
-    [T.contested - 0.6, 1637.6, 693.2], [T.contested + 3.4, 1634.6, 697.2]], escape: ESC(UP, T.broke, 1.9) },
+    [T.contested - 0.6, 1637.6, 693.2], [T.contested + 3.4, 1634.6, 697.2]], escape: ESC(UP, T.broke, 2.6) },
   // Cumming: at the crossroads
-  { region: C, side: R, type: "inf", n: 3, face: "east", keys: [[0, XR[0] + 0.6, XR[1] - 0.6], [T.took + 1.2, XR[0] + 0.2, XR[1] + 0.2]], escape: ESC(LOW, T.broke + 0.5, 2.0) },
+  { region: C, side: R, type: "inf", n: 3, face: "east", keys: [[0, XR[0] + 0.6, XR[1] - 0.6], [T.took + 1.2, XR[0] + 0.2, XR[1] + 0.2]], escape: ESC(LOW, T.broke + 0.5, 2.6) },
   // the Confederate guns on the crest: taken by Hovey ("guns and all"), turn grey; retaken by Bowen (a fresh red battery on the spot); lost again
   { region: C, side: R, type: "art", n: 2, face: NE, keys: [[0, 1639.9, 694.2]], cap: T.guns + 0.1, t1: T.retook + 0.5 },
   { region: C, side: R, type: "art", n: 2, face: NE, keys: [[0, 1639.9, 694.2]], t0: T.retook, cap: T.contested + 1.4, t1: T.D + 1 },
   // Bowen: Cockrell + Green, facing north-east; the counterattack up the crossroads onto the crest and nearly to the bottom; thrown back; flees by the lower crossing
   ...[[0, 1638.8, 702.6, 1639.2, 694.8, 1642.4, 688.6, 1637.8, 699.8], [1, 1640.0, 706.2, 1641.2, 697.6, 1645.4, 690.6, 1640.2, 702.8]].map(([k, x, y, x2, y2, x3, y3, x4, y4]) =>
     ({ region: C, side: R, type: "inf", n: 3, face: -0.5, keys: [[0, x, y], [T.hit - 0.4 + k * 0.3, x, y], [T.retook - 0.4 + k * 0.3, x2, y2], [T.bottom, x3, y3],
-      [T.reinf + 2.0, x3, y3], [T.contested + 3.6 + k * 0.4, x4, y4]], escape: ESC(LOW, T.broke + 0.8 + k * 0.5, 2.0) })),
+      [T.reinf + 2.0, x3, y3], [T.contested + 3.6 + k * 0.4, x4, y4]], escape: ESC(LOW, T.broke + 0.8 + k * 0.5, 2.6) })),
   // Loring: Buford + Featherston (cut off: away south and east), Tilghman's rearguard with its battery near the Coker house
   { region: C, side: R, type: "inf", n: 3, face: "east", keys: [[0, 1628.8, 708.4]], escape: ESC(LOR, T.escaped - 0.2, 1.5, "south", "south") },
   { region: C, side: R, type: "inf", n: 3, face: "east", keys: [[0, 1628.4, 713.8]], escape: ESC(LOR, T.escaped + 0.6, 1.5, "south", "south") },
@@ -67,12 +67,12 @@ const units = [
       keys: [[0, x, y], [T.hovey - 0.2 + k * 0.3, x, y], [T.took + 0.2 + k * 0.2, x2, y2], [T.hit + 0.3, x2, y2], [T.bottom, x3, y3], [T.reinf + 1.2, x3, y3],
         [T.contested + 2.8, x4, y4], [T.broke + 0.4, x4, y4], [T.broke + 5.4, x5, y5]] })),
   // Logan (J. E. Smith, Leggett, J. D. Stevenson): behind Hovey's right, swings round the north end; one brigade across the escape road; pulled away
-  ...[[0, 1638.2, 682.2, 1629.6, 690.0, 1626.8, 696.4, 1633.2, 690.4], [1, 1640.8, 681.4, 1632.6, 688.2, 1629.6, 694.4, 1635.6, 689.0], [2, 1643.4, 681.0, 1635.6, 687.0, 1635.6, 687.0, 1637.6, 687.6]]
+  ...[[0, 1638.2, 682.2, 1629.6, 690.0, 1625.6, 697.2, 1633.2, 690.4], [1, 1640.8, 681.4, 1632.6, 688.2, 1629.4, 695.6, 1635.6, 689.0], [2, 1643.4, 681.0, 1635.6, 687.0, 1635.6, 687.0, 1637.6, 687.6]]
     .map(([k, x, y, x2, y2, x3, y3, x4, y4]) => ({ region: C, side: U, type: "inf", n: 3, face: Math.PI / 2 + 0.35, t0: SW + 0.4,
       keys: [[0, x, y], [T.swung - 0.2 + k * 0.25, x, y], [T.swung + 2.4 + k * 0.25, x2, y2], [118.4 + k * 0.4, x2, y2], [121.0 + k * 0.4, x3, y3],
         [T.moved - 0.6 + k * 0.3, x3, y3], [T.moved + 1.8 + k * 0.3, x4, y4], [T.broke + 0.6, x4, y4], [T.broke + 6.0, x4 - 4.2, y4 + 6.0]] })),
   // Crocker's brigades: the reinforcements
-  ...[[0, 1649.0, 681.6, 1642.2, 692.0], [1, 1651.2, 683.8, 1643.8, 694.8]].map(([k, x, y, x2, y2]) => ({ region: C, side: U, type: "inf", n: 3, face: SWF, t0: T.reinf - 0.5,
+  ...[[0, 1649.0, 681.6, 1644.0, 695.4], [1, 1651.2, 683.8, 1646.6, 698.8]].map(([k, x, y, x2, y2]) => ({ region: C, side: U, type: "inf", n: 3, face: SWF, t0: T.reinf - 0.5,
     keys: [[T.reinf - 0.5, x, y], [T.reinf + 0.2, x, y], [T.contested + 2.6 + k * 0.3, x2, y2]] })),
   // Hovey's massed batteries at the foot of the hill (16 guns: 1st Missouri, 16th Ohio, Dillon's Wisconsin)
   ...[[1641.4, 683.2], [1643.8, 682.4], [1646.4, 682.2]].map(([x, y], i) => ({ region: C, side: U, type: "art", n: 2, face: SWF, t0: T.massed - 0.4 + i * 0.25, keys: [[0, x, y]] })),
@@ -83,7 +83,7 @@ const units = [
 ];
 
 // ---------------- arrows ----------------
-const arrows = [
+const arrows0 = [
   // wide: the plan (south-east toward Dillon's), the supply line that was not there, the circles at the creek, the about-turn, Grant from the east
   { region: W, side: R, pts: [[1586, 702], [1593, 710], [1601, 718], [1607, 731], [1611, 748], [1614, 766]], t0: T.march + 0.1, dur: 2.6, t1: T.notThere + 0.6 },
   { region: W, color: "#8FA6CF", width: 0.2, pts: [[1600, 862], [1626, 842], [1648, 822], [1668, 803], [1690, 782], [1711, 762]], t0: T.supply, dur: 1.6, t1: T.notThere + 0.5 },
@@ -114,6 +114,8 @@ const arrows = [
   { side: R, pts: [[1628.2, 715.0], [1628.0, 721.0], [1630.4, 727.0], [1635.4, 733.4]], t0: T.escaped + 0.4, dur: 2.4, t1: 152.4 },
 ];
 
+const arrows = arrows0.map((a) => a.region === W || a.width ? a : { ...a, width: 0.22 });
+
 // ---------------- fx (only what the camera sees: every gun / volley is a sound cue) ----------------
 const SMK = (dir, rate = 1.3) => ({ dir, size: 1.35, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45, rate, volley: 1.6 });
 const VOL = (pts, t0, t1, dir, rate) => ({ region: C, pts, t0, t1, opts: SMK(dir, rate) });
@@ -125,7 +127,7 @@ const fx = {
     VOL([[1636.8, 692.0], [1638.2, 691.4], [1639.6, 692.6]], T.hovey + 0.8, T.took + 0.2, [0.7, -0.7], 1.2),
     VOL([[1640.2, 689.2], [1642.0, 690.4], [1643.4, 692.0]], T.hovey + 1.6, T.guns + 0.6, [-0.7, 0.7], 1.2),
     // Logan meets Barton at the north end
-    VOL([[1630.6, 689.0], [1632.6, 687.6]], T.swung + 1.2, T.swung + 4.4, [0.2, 1], 1.1),
+    VOL([[1630.6, 689.0], [1632.6, 687.6]], T.swung + 1.2, T.swung + 3.6, [0.2, 1], 1.1),
     // Bowen's counterattack: his front on the crest, then lower down the slope; Hovey's line falling back
     VOL([[1638.6, 697.0], [1640.6, 695.4], [1642.4, 696.6]], T.hit, T.retook + 0.4, [0.3, -1], 1.3),
     VOL([[1641.4, 690.6], [1643.6, 689.6], [1645.6, 691.4]], T.retook + 0.6, T.bottom + 0.6, [0.3, -1], 1.2),
@@ -134,7 +136,7 @@ const fx = {
     VOL([[1641.0, 690.6], [1643.0, 692.2], [1644.6, 694.6]], T.contested - 0.6, T.contested + 3.6, [-0.6, 0.8], 1.3),
     VOL([[1640.6, 694.8], [1642.6, 696.6]], T.reinf + 0.6, T.contested + 2.4, [0.5, -0.9], 1.1),
     // the rout: Hovey's line fires from the crossroads at the columns
-    VOL([[1636.0, 696.0], [1638.6, 698.6]], T.broke + 1.6, T.broke + 4.8, [-1, 0.2], 1.0),
+    VOL([[1636.0, 696.0], [1638.6, 698.6]], T.broke + 1.6, T.broke + 3.6, [-1, 0.2], 1.0),
   ],
   guns: [
     // the Confederate guns on the crest fire on Hovey's column
@@ -167,7 +169,7 @@ const DATE = (day, dn, note) => ({ month: "May 1863", day: String(day), weekday:
 window.SEQ = {
   name: "S09", D: T.D, T, seed: 1863, date: "1863-05-16",
   regions: [W, C],
-  regionOpts: { [W]: { troopScale: 8 }, [C]: { troopScale: 1.4 } },
+  regionOpts: { [W]: { troopScale: 8 }, [C]: { troopScale: 1.7 } },
   keys: [
     // wide prelude
     { t: 0.0, region: W, at: [1616, 724], dist: 300, tilt: 46, yaw: -4, fov: 30 },
@@ -185,8 +187,8 @@ window.SEQ = {
     { t: 56.4, region: C, at: [1640.6, 691.0], dist: 34, tilt: 48, yaw: -3, fov: 30 },
     { t: 61.0, region: C, at: [1639.6, 690.8], dist: 31, tilt: 50, yaw: -7, fov: 30 },
     { t: 65.8, region: C, at: [1635.4, 689.6], dist: 32, tilt: 48, yaw: -11, fov: 30 },
-    { t: 70.8, region: C, at: [1650.0, 711.0], dist: 40, tilt: 46, yaw: -6, fov: 30 },
-    { t: 77.6, region: C, at: [1648.6, 701.4], dist: 56, tilt: 46, yaw: -2, fov: 30 },
+    { t: 70.8, region: C, at: [1645.0, 711.4], dist: 38, tilt: 46, yaw: -3, fov: 30 },
+    { t: 77.6, region: C, at: [1643.6, 704.4], dist: 46, tilt: 42, yaw: -4, fov: 30 },
     { t: 83.6, region: C, at: [1640.8, 696.6], dist: 38, tilt: 46, yaw: 0, fov: 30 },
     { t: 92.6, region: C, at: [1642.6, 692.0], dist: 34, tilt: 48, yaw: 4, fov: 30 },
     { t: 100.4, region: C, at: [1643.6, 689.6], dist: 35, tilt: 50, yaw: 8, fov: 30 },
@@ -195,13 +197,14 @@ window.SEQ = {
     { t: 121.6, region: C, at: [1628.8, 694.8], dist: 32, tilt: 48, yaw: -6, fov: 30 },
     { t: 130.8, region: C, at: [1628.0, 695.4], dist: 30, tilt: 50, yaw: -10, fov: 30 },
     { t: 136.6, region: C, at: [1631.4, 694.6], dist: 36, tilt: 48, yaw: -6, fov: 30 },
-    { t: 142.0, region: C, at: [1621.6, 703.4], dist: 50, tilt: 46, yaw: 0, fov: 30 },
-    { t: 146.6, region: C, at: [1626.8, 713.0], dist: 40, tilt: 46, yaw: 4, fov: 30 },
+    { t: 141.6, region: C, at: [1624.0, 702.6], dist: 46, tilt: 46, yaw: 0, fov: 30 },
+    { t: 144.2, region: C, at: [1619.6, 704.6], dist: 47, tilt: 46, yaw: 1, fov: 30 },
+    { t: 147.6, region: C, at: [1626.8, 713.0], dist: 40, tilt: 46, yaw: 4, fov: 30 },
     { t: 151.4, region: C, at: [1629.0, 716.4], dist: 44, tilt: 46, yaw: 6, fov: 30 },
     { t: 157.4, region: C, at: [1629.4, 711.8], dist: 33, tilt: 48, yaw: 2, fov: 30 },
-    { t: 171.4, region: C, at: [1630.4, 702.4], dist: 70, tilt: 44, yaw: -4, fov: 30, night: 0 },
-    { t: 173.0, region: C, at: [1630.8, 702.0], dist: 68, tilt: 44.4, yaw: -4.8, fov: 30, night: 1 },
-    { t: T.D, region: C, at: [1633.4, 700.0], dist: 60, tilt: 46, yaw: -8, fov: 30, night: 1, ease: "lin" },
+    { t: 171.4, region: C, at: [1630.4, 704.0], dist: 60, tilt: 44, yaw: -4, fov: 30, night: 0 },
+    { t: 173.0, region: C, at: [1630.8, 703.6], dist: 58.6, tilt: 44.4, yaw: -4.8, fov: 30, night: 1 },
+    { t: T.D, region: C, at: [1633.0, 702.0], dist: 52, tilt: 46, yaw: -8, fov: 30, night: 1, ease: "lin" },
   ],
   dives: [{ t: SW, over: [1634, 701],
     from: { region: W, at: [1634, 708], dist: 236, tilt: 45, yaw: 0 },
@@ -214,7 +217,7 @@ window.SEQ = {
   banners: [
     { general: "pemberton", region: W, keys: [[0, EDW[0] + 0.6, EDW[1] + 0.8], [T.march + 0.4, EDW[0] + 0.6, EDW[1] + 0.8], [11.0, 1599.0, 709.6], [19.0, 1604.6, 709.4]], t0: T.pem + 0.15, t1: DV.full - 0.2 },
     { general: "grant", region: W, keys: [[T.grantsArmy, BOL[0] + 2, BOL[1] - 2.0], [31.6, 1666.0, 682.0]], t0: T.grantsArmy + 0.1, t1: DV.full - 0.2 },
-    { general: "pemberton", region: C, keys: [[0, 1630.8, 703.4]], t0: DV.land, t1: T.D + 1, escape: ESC(LOW, T.broke + 1.4, 2.0) },
+    { general: "pemberton", region: C, keys: [[0, 1630.8, 703.4]], t0: DV.land, t1: T.D + 1, escape: ESC(LOW, T.broke + 1.4, 2.6) },
     { general: "grant", region: C, keys: [[0, 1650.2, 685.6], [T.broke + 2, 1650.2, 685.6], [T.night, 1637.6, 692.0]], t0: T.grant + 0.1, t1: T.D + 1 },
   ],
   labels: [
@@ -225,7 +228,7 @@ window.SEQ = {
     { text: "Champion Hill", at: [CREST[0] - 1.0, CREST[1] - 1.6], region: C, size: 26, t0: T.champion + 0.1, t1: T.quote1 - 0.2 },
     { text: "Jackson Road", at: [1643.8, 688.4], region: C, size: 18, t0: T.three + 0.2, t1: 49.6 },
     { text: "Middle Road", at: [1645.6, 702.6], region: C, size: 18, t0: T.three + 0.8, t1: 50.2 },
-    { text: "Raymond Road", at: [1629.0, 712.4], region: C, size: 18, t0: T.three + 1.5, t1: 50.8 },
+    { text: "Raymond Road", at: [1622.0, 710.0], region: C, size: 18, t0: T.three + 1.5, t1: 50.8 },
     { text: "Baker's Creek", at: [1611.0, 702.2], region: C, size: 20, river: true, t0: T.bakers + 0.1, t1: 53.4 },
     { text: "crossing", at: [BR_UP.x, BR_UP.z - 1.3], region: C, size: 15, river: true, t0: T.crossings + 0.1, t1: 55.0 },
     { text: "crossing", at: [BR_LO.x, BR_LO.z - 1.3], region: C, size: 15, river: true, t0: T.crossings + 0.4, t1: 55.2 },
@@ -279,7 +282,7 @@ window.SEQ = {
     ["plaque.note", T.broke, "The Confederate army breaks"],
     ["timeline.show", T.broke + 0.6, { month: "May", year: "1863", days: ["14", "15", "16", "17", "18", "19"], at: 2.5 }],
     ["timeline.seal", T.broke + 1.4, { at: 3.0, name: "Champion Hill" }],
-    ["medallion", { kind: "card", general: "loring", sub: "Loring's division", world: [1628.6, 711.0], offset: [-330, -120], tIn: T.loring + 0.1, tOut: T.never + 0.4 }],
+    ["medallion", { kind: "card", general: "loring", sub: "Loring's division", world: [1628.6, 711.0], offset: [230, -200], tIn: T.loring + 0.1, tOut: T.never + 0.4 }],
     ["plaque.note", T.escaped, "Loring marches away south"],
     ["plaque.run", 151.4, T.tilghman, "17:20"],
     ["medallion", { kind: "card", general: "tilghman", sub: "covering the retreat", world: [1625.4, 710.6], offset: [-320, -150], tIn: T.tilghman + 0.1, tOut: T.decisive - 0.3 }],
