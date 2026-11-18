@@ -370,7 +370,7 @@
         for (const k of keys) { if (k.t > t) break; pos = lerp(prev, k.pos, E.inout(k.d ? clamp((t - k.t) / k.d) : 1)); prev = k.pos; }
         ct.querySelector(".pg").style.width = `${(pos * cw).toFixed(1)}px`;
         cells.forEach((c, i) => c.classList.toggle("on", pos > i + 0.001 || i === 0));
-        for (const s of seals) { s.el.style.left = `${(99 + s.at * cw).toFixed(1)}px`; s.el.style.top = "26px";
+        for (const s of seals) { s.el.style.left = `${(99 + s.at * cw).toFixed(1)}px`; s.el.style.top = "10px";   // critic A r2: seals above the day labels
           if (s.name) { const bn = cells[s.name.i] && cells[s.name.i].querySelector(".bn"), v = t >= s.name.t ? s.name.text : ""; if (bn && bn.textContent !== v) bn.textContent = v; } }
         if (counter) { let v = 0, pv = 0; for (const k of cKeys) { if (k.t > t) break; v = lerp(pv, k.v, E.out(clamp((t - k.t) / k.d))); pv = k.v; } const s = fmtN(v >= 1000 ? Math.round(v / 100) * 100 : v); if (counter.textContent !== s) counter.textContent = s; }
       });

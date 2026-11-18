@@ -324,7 +324,7 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
     AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r) }),
     T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, sun: SUN, shots: BATTERY_SHOTS[r] || [] }) : null }; }
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = a.color || ARROW_COL[a.side || "u"];
-  return { ...a, region: r, w: Math.min(a.width ?? 0.30, 0.30) * RO(r).troopScale,   // critic A8: v6/v8 width cap
+  return { ...a, region: r, w: Math.min(a.width ?? 0.24, 0.24) * RO(r).troopScale,   // critic A8: v6/v8 width cap
     a3: TRO[r].AR3.add(a.pts, col) }; });
 // generals: banners on poles (banner.js, STYLE_LOCK 2f item 1) + medallion portraits; any portrait: SEQ.generals = { key: { img, flag, name, full, side, role } }
 const GENERALS = {
@@ -429,7 +429,7 @@ const drawPins = (t, region) => {
 // a screen-space cool veil that grows with depth; the dive (deck -> haze) keeps the neutral look tuned for the white-out. ?grade=0 = raw.
 const GP = {
   close: { sat: 0.98, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04, ct: 1.0 },
-  wide: { sat: 0.95, toe: 22, S: 0.1,   // critic A7: toe 14 -> 22 lifts the near-black wide woods
+  wide: { sat: 0.95, toe: 30, S: 0.1,   // critic A7: toe 14 -> 22 lifts the near-black wide woods
             bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },
   night: { sat: 0.95, toe: 2, S: 0.0, bl: 5, gl: 2, veil: [40, 60, 82], vt: 0.04, vb: 0.0, ct: 1.0 },
   off: { sat: 1.05, toe: 0, S: 0, bl: 0, gl: 0, veil: [150, 160, 165], vt: 0, vb: 0, ct: 1.0 } };
