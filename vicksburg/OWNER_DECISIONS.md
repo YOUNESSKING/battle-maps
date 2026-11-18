@@ -8,3 +8,4 @@
 | 4 | 2026-11-18 | Model per agent job: Haiku trivial, Sonnet simple (search, checks, packaging), Opus complex (scenes, engine, critics); 3 agents in parallel | owner instruction relayed by the parent session (usage limits) |
 | 5 | 2026-11-18 | If the RunPod balance runs out, render the remaining scenes locally (SwiftShader, ~1 min per film-second, chunked + resumable) | owner instruction in chat |
 | 6 | 2026-11-18 | Round-1 critics: script and voice stay locked (no re-voicing); refrain / micro-story suggestions noted for the next film. Engine-wide fixes by the lead (boxes face the camera, arrow width cap, broad-river ripple 0.1, muted wide roofs, wide toe 22); per-scene fixes by 3 agents | re-voicing would shift every scene timing; the critics found the words fine |
+| 7 | 2026-11-18 | Budget stop: RunPod balance floor $1.40 (parent session relay); local render fallback below that | parent session |
