@@ -17,7 +17,7 @@ const SLOWX = BR.x - 0.8;   // the west end of the bridge
 const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.6, slowX: SLOWX, join: "west", from });
 // round 2 (owner rule: never cross a bridge after its fire starts): the flanks and the reserve start for the bridge as the line falls
 // (24.8-25.6) and the last red box is past the west end by ~31.0 (tools: esc_sim); the fire starts at FIRE_T = 31.3 ("set them on fire")
-const ESC_T = [22.0, 22.4, 21.4], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
+const ESC_T = [20.6, 20.8, 20.0], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
 const TK = 21.2;   // Lawler reaches the works (north first)
 const SWF = 3 * Math.PI / 4;
 
@@ -60,7 +60,7 @@ for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.pu
 
 // ---------------- fx ----------------
 const bw3 = BRW.filter((_, i) => i % 6 === 0).map((p) => [p[0] + 0.12, p[1]]);
-const SMK = { dir: [-1, 0], size: 1.4, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45 };
+const SMK = { dir: [-1, 0], size: 0.9, alpha: 0.14, life: 11, muzzle: 6, windK: 0.6, cluster: [2.4, 1.2] };   // (GM test v4) wispier
 const csGuns = [[bwX(681.6) - 1.2, 681.6], [bwX(685.0) - 1.2, 685.0], [bwX(688.6) - 1.2, 688.6]];
 const fx = {
   fires: [
@@ -69,9 +69,9 @@ const fx = {
     { region: BB, bridge: 0, burn: false, t0: 40.4, t1: T.D + 2, preset: "smoulder", cue: false },
   ],
   smokeLines: [
-    { region: BB, pts: bw3, t0: 15.2, t1: TK + 0.4, cue: true, opts: { dir: [1, 0.05], rate: 2.9, volley: 1.6, roll: 0.9, size: 1.45, height: 3, muzzle: 6, windK: 0.45 } },
-    { region: BB, pts: [[1524.0, 679.8], [1524.8, 680.6]], t0: 19.0, t1: TK, opts: { ...SMK, dir: [-1, 0.3], rate: 1.3 } },
-    { region: BB, pts: [[1525.6, 682.8], [1525.4, 686.6], [1525.6, 690.4]], t0: 19.8, t1: 23.4, opts: { ...SMK, rate: 1.26 } },
+    { region: BB, pts: bw3, t0: 15.2, t1: TK + 0.4, cue: true, opts: { dir: [1, 0.05], rate: 2.9, volley: 1.6, roll: 0.9, size: 0.95, height: 3, muzzle: 6, windK: 0.45 } },
+    { region: BB, pts: [[1524.0, 679.8], [1524.8, 680.6]], t0: 19.0, t1: TK, opts: { ...SMK, dir: [-1, 0.3], rate: 2.6 } },
+    { region: BB, pts: [[1525.6, 682.8], [1525.4, 686.6], [1525.6, 690.4]], t0: 19.8, t1: 23.4, opts: { ...SMK, rate: 2.5 } },
   ],
   guns: [
     { region: BB, shots: [13.7, 14.9, 16.0, 17.2, 18.3, 19.5].map((t, i) => { const g = usGuns[i % 2]; return { t, at: g, dir: [-1, 0.03 * (i % 3 - 1)], impact: [bwX(g[1]) - 0.6 - (i % 3) * 0.4, g[1] + ((i * 53) % 7 - 3) * 0.6], delay: 0.85 }; }) },
@@ -89,8 +89,8 @@ window.SEQ = {
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
     { t: 22.6, region: BB, at: [1520.6, 683.2], dist: 27, tilt: 52, yaw: -14, fov: 30 },
-    { t: 26.8, region: BB, at: [1516.6, 684.0], dist: 27, tilt: 52, yaw: -10, fov: 30 },
-    { t: 31.8, region: BB, at: [1513.6, 684.0], dist: 25, tilt: 54, yaw: -6, fov: 30 },
+    { t: 26.4, region: BB, at: [1515.4, 684.0], dist: 26.5, tilt: 53, yaw: -8, fov: 30 },   // (GM test v4) the camera holds while the column crosses
+    { t: 32.6, region: BB, at: [1515.2, 684.0], dist: 26.3, tilt: 53, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11
