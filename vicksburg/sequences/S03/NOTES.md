@@ -50,3 +50,15 @@ approved v8 clip (copied from `sequences/test_v8/`). Quote: Grant, Personal Memo
 | A/B 70-86 static wide (sev 2) | The 22 April run animated: grade to night on "Six nights later", camera pushes to the city (dist 200) and follows south; six steamers (lamps) run down from the foot of the west loop past the city from "steamers" 75.4, the bluff batteries fire at them (wide flashes + splashes, gun cues), one (the Tigress) is hit and sinks below the city (~81-83, no unspoken name on screen). |
 | B no Vicksburg label at 2 s | Not done: "Vicksburg" is not spoken before 66.55 (rule: nothing on screen before its word); the label sits on its word. |
 Open: night far edge of the vicksburg bundle at the top of the 29-37 s frames is in deep haze (not flagged by A).
+
+## Round 3 fixes (critics round 2)
+- B N2 (sev 3, empty river 0-16.5): the re-baked region starts the river 28 units earlier in arc length; every fleet schedule value is old + 28 (SO).
+  The moored line (Benton s 84 ... tail s 55) is mid-frame from frame 1 (camera dist 52); the Benton + Three transports labels sit on boats.
+- A (comb of boats): 3.6 units apart at the moorings (~2.2 lengths), ~4.7 underway; no wakes while moored or at anchor (engine wake off, custom wake
+  only while under way). Dawn: at anchor below the city 3.4 apart.
+- B N3: battery flashes come from the town's river edge (between the bank and the first houses, `bluffEdge`), not the street grid; flash 2.0.
+  The 47.2 shell bursts ON the Henry Clay (custom flash at her deck at water level + a boom cue).
+- A (Henry Clay fire): flames x2.4, higher column, alpha up; camera keeps her mid-left 47-60.
+- A N3 (22 April steamers): size 3.4 -> 1.4 (~x0.4), 10 units apart (~3.5 lengths), on the channel line; wide dawn fleet 2.2 -> 1.3, 9 apart.
+- B N10: dawn graded "dusk" (warm low light) 64.55 -> day at the wide dissolve.
+- Checks: check_paths OK, check_edges OK, arrows inside 5 %.

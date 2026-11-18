@@ -29,3 +29,13 @@ for the guide marker (Grant does not say where the man came in).
 | A 36-48 cloud cauliflowers (sev 2) | keepClear over the Haynes' Bluff / Vicksburg view and the eastward pan. |
 `check_paths S04`: the landing units cross the Mississippi / Bayou Pierre mouth from the transports at Bruinsburg (legit landing, unchanged).
 Open: the S04 dive still uses the default white-out (~0.9 s; `off` could shorten it like S01 if the lead wants it everywhere); the wax-seal timeline is not shown in S04 (lead's call for all scenes).
+
+## Round 3 fixes (critics round 2)
+- B N6 / A (Grierson): camera pans east (47.2-55.1 at [1832, 775] dist 440, inside the world box); the raid line [1980,650]->[1970,886] runs in the
+  right part of the frame with its head inside; a blue rider marker rides the arrow's head (follows the engine's 1-(1-k)^2 draw); three rail-break
+  sparks (custom sprites + dust, silent) on "tearing up" (51.4 / 51.75 / 52.1), the first where the raid crosses the railroad; Grierson card moved
+  left of the line (screen x 1240) and out at 51.15; "Railroads torn up" label left of the line, off Jackson; the Jackson label leaves before the card.
+- A N5 (arrows): all widths 0.24; Yazoo + Pemberton arrows leave before the pan east (44.6); inland road arrow shortened so its head is in frame.
+- B N4 (white-out 1.5 s): fixed by the engine default (short profile); checked 58.4 / 59.2 / 59.75 / 60.0 / 60.5: white ~0.7 s, boxes hidden in the cloud.
+- Open (sev 1): the landed boxes 60-66 still stand on the field, not in a road column.
+- Checks: check_paths / check_edges OK, check_arrows OK at 6 % except the raid head at 5 %.

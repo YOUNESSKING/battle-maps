@@ -54,8 +54,8 @@ const NX = [[0, 1266.5], [19.6, 1273.0], [36.2, 1273.0], [38.0, 1276.5], [39.6, 
 // Logan's brigade (J. E. Smith): along a third ridge north of the road, turns Tracy's flank (red has already gone when it arrives)
 units.push({ side: "u", type: "inf", n: 2, face: E, t0: T.pressed - 0.4, keys: [[T.pressed - 0.4, 1278.6, 1005.4], [47.0, 1282.6, 1005.8], [49.5, 1286.8, 1007.0], [D, 1292.5, 1008.0]] });
 // Union guns (behind the heads of the columns, on the ridge)
-units.push({ side: "u", type: "art", n: 1, face: E, t0: 18.6, keys: [[0, ...onR(1273.2)], [47.5, ...onR(1273.2)], [52.0, ...onR(1280.0)]] });
-units.push({ side: "u", type: "art", n: 1, face: E, t0: 18.6, keys: [[0, ...onN(1272.8)], [48.0, ...onN(1272.8)], [52.5, ...onN(1279.0)]] });
+units.push({ side: "u", type: "art", n: 1, face: E, t0: 18.6, keys: [[0, ...onR(1273.2)], [45.8, ...onR(1273.2)], [49.6, ...onR(1280.0)]] });
+units.push({ side: "u", type: "art", n: 1, face: E, t0: 18.6, keys: [[0, ...onN(1272.8)], [45.8, ...onN(1272.8)], [50.0, ...onN(1279.0)]] });
 
 // Bowen's division (red): Green astride the Rodney road at Magnolia Church, Tracy astride the Bruinsburg road, Baldwin + Cockrell come up behind
 const T_OUT = 46.2, rLine = (n, at, o = {}) => ({ side: "r", type: "inf", n, face: Wf, t0: 9.6, keys: [[0, ...at]], ...o });
@@ -77,7 +77,10 @@ units.forEach((u) => { if (u.side === "r" && u.escape) u.t1 = 60.5; });
 // ---------------- arrows ----------------
 const arrows = [
   // Bowen rushed down from Grand Gulf (north): his division comes down the road into the town and out onto the ridges
-  { side: "r", pts: [[1294.6, 998.7], [1299.8, 1005.6], [1303.0, 1010.6], [1300.0, 1014.6], [1294.0, 1016.6]], t0: T.grandGulf, dur: 2.0, t1: 17.4 },
+  // round 3: the old arrow crossed the Little Bayou Pierre beside the bridge and ran off the top of the frame: now Bowen's men come out of
+  // Port Gibson along both ridge roads toward their positions (on the roads, inside the safe frame)
+  { side: "r", pts: [onN(1298.0), onN(1295.4), onN(1292.8), onN(1290.6)], t0: T.grandGulf, dur: 2.0, t1: 17.4 },
+  { side: "r", pts: [onR(1299.6), onR(1297.4), onR(1295.2), onR(1293.2)], t0: T.grandGulf + 0.3, dur: 2.0, t1: 17.4 },
   // only along the ridge tops
   { side: "u", pts: VX.sub(NR, 6.0, 18.5), t0: 31.7, dur: 2.0, t1: 36.6 },
   { side: "u", pts: VX.sub(RR, 6.5, 19.0), t0: 32.3, dur: 2.0, t1: 36.6 },
@@ -123,7 +126,7 @@ const fx = {
     { region: PG, pts: [[1285.4, 1005.0], [1285.6, 1006.0], [1285.8, 1007.0]], t0: 48.0, t1: 49.4, cue: true, every: 1.2, opts: { ...SMK, cluster: null, dir: [1, 0.1], volley: 1.2, roll: 0.7 } },   // Logan on the third ridge
   ],
   guns: [
-    { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [36.4, 38.4, 40.2, 43.0, 44.6, 46.0].map((t, i) => ({ t, at: onR(1273.2), dir: [1, 0.02], impact: onR(1290.0 + (i % 3) * 0.6, -1.4 + (i % 3) * 1.2), delay: 0.9 })) },
+    { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [36.4, 38.4, 40.2, 43.0, 44.6, 45.4].map((t, i) => ({ t, at: onR(1273.2), dir: [1, 0.02], impact: onR(1290.0 + (i % 3) * 0.6, -1.4 + (i % 3) * 1.2), delay: 0.9 })) },
     { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [37.4, 39.5, 42.4, 45.0].map((t, i) => ({ t, at: onN(1272.8), dir: [1, -0.03], impact: onN(1285.6 + (i % 2) * 0.8, -0.8 + (i % 3) * 0.8), delay: 0.9 })) },
     { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [37.0, 39.0, 41.2, 43.8].map((t, i) => ({ t, at: onR(1292.0), dir: [-1, 0.02], impact: onR(1277.0 + (i % 2) * 1.6, -2.4 + (i % 3) * 1.8), delay: 0.9 })) },
   ],
@@ -143,8 +146,8 @@ window.SEQ = {
     { t: 19.4, region: PG, at: [1276.0, 1014.6], dist: 39, tilt: 58, yaw: -82, fov: 30, night: 1 },
     // dawn: low across the ridges
     { t: 20.3, region: PG, at: [1275.6, 1014.6], dist: 39, tilt: 59, yaw: -82, fov: 30, night: 0, ease: "lin" },
-    { t: 27.6, region: PG, at: [1281.0, 1014.6], dist: 42, tilt: 62, yaw: -86, fov: 30 },
-    { t: 35.2, region: PG, at: [1277.6, 1014.4], dist: 35, tilt: 58, yaw: -84, fov: 30 },
+    { t: 27.6, region: PG, at: [1279.6, 1014.6], dist: 43, tilt: 61, yaw: -86, fov: 30 },
+    { t: 35.2, region: PG, at: [1277.0, 1014.4], dist: 37, tilt: 58, yaw: -84, fov: 30 },
     // the battle
     { t: 44.0, region: PG, at: [1281.4, 1013.4], dist: 36.5, tilt: 55, yaw: -84, fov: 30 },   // round 3: frame up (the rear boxes stay in frame)
     { t: 48.0, region: PG, at: [1286.8, 1013.6], dist: 38.5, tilt: 54, yaw: -84, fov: 30 },
@@ -163,7 +166,7 @@ window.SEQ = {
     { text: "Bruinsburg Road", at: onN(1277.0, -1.4), size: 18, t0: T.roads + 0.1, t1: T.roads + 4.0, region: PG },
     { text: "Rodney Road", at: onR(1277.0, 2.0), size: 18, t0: T.roads + 0.5, t1: T.roads + 4.4, region: PG },
     { text: "Port Gibson", at: [TOWN[0], TOWN[1] - 2.2], size: 21, t0: T.town, t1: T.town + 4.0, region: PG },
-    { text: "Port Gibson", at: [TOWN[0], TOWN[1] - 2.2], size: 21, t0: T.pg, t1: T.pg + 1.9, region: PG },
+    { text: "Port Gibson", at: [TOWN[0] + 1.0, TOWN[1] + 3.6], size: 21, t0: T.pg, t1: T.pg + 1.9, region: PG },   // round 3: beside the town, off the retreating columns
     { text: "Little Bayou Pierre", at: [1313.4, 1021.4], size: 17, t0: 50.3, t1: 53.6, region: PG, river: true },
   ],
   fx,
@@ -183,7 +186,7 @@ window.SEQ = {
     ["plaque.date", T.allDay, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · morning" }],
     ["label", T.counter, T.counter + 2.6, { name: "Counterattack", sub: "Bowen strikes back", world: [1289.0, 1023.6], side: "cs", marker: false }],
     ["plaque.date", T.late, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · late afternoon" }],
-    ["label", T.pressed + 0.2, T.pressed + 3.4, { name: "Pressed on both ridges", sub: "Logan's brigade on a third ridge, north of the road", world: [1291.0, 1000.8], side: "us", marker: false }],
+    ["label", T.pressed + 0.2, T.pressed + 3.4, { name: "Pressed on both ridges", sub: "Logan's brigade on a third ridge, north of the road", world: [1290.4, 998.6], side: "us", marker: false }],
     ["label", 50.1, 53.4, { name: "Over the bayou", sub: "the bridges burned behind the retreat", world: [BRG2.x - 2.0, BRG2.z - 3.0], side: "cs", marker: false }],
     ["ledger.show", T.grantLost + 0.2, { title: "Port Gibson", sub: "1 May 1863 · Union loss" }],
     ["ledger.add", T.eight, { who: "131 killed", stamp: false }],

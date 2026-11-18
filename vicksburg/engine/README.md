@@ -201,3 +201,8 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
 - Round 3 (S09-S12 agent): `O.letter(..., { lag, stagger, partDur })` = when the header / title / sub / ornament fade in after the band
   (defaults 0.3 / 0.15 / 0.5 s, unchanged); S12 uses 0.05 / 0.06 / 0.35 so the title arrives with the band (no empty cream band).
   Scene-level fix for sheared off-centre boxes in low close shots: a narrower lens from further away (fov 21-22, dist x tan(15)/tan(fov/2)).
+- Round 3 (S01-S04 agent): the dive DEFAULT is now S01's short white-out (`VX.DIVE_OFF` warm +0.05, emerge +0.15, clear +0.4, haze +1.05; ~0.7 s
+  fully covered); `VX.DIVE_OFF_V8` keeps the original v8 profile (test_v8 passes it as `dives[].off` and in its DV). Unit boxes, arrows and banners
+  fade out while a dive's deck closes (deckIn+0.2 -> full-0.1) and back in as the target clears (emerge -> clear+0.35); `S.diveHide = false` keeps them.
+  New `tools/check_arrows.js SNN [margin]`: reports arrow points (while drawing and drawn) outside a frame safe margin (default 6 %, ground plane).
+

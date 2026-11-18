@@ -92,18 +92,25 @@ units.push({ region: BR, side: U, type: "art", n: 2, face: "east", t0: 66.2, key
 units.push({ region: BR, side: U, type: "inf", n: 4, face: VX.FACE.ne, t0: 70.5, keys: [[70.5, bankPt(sBankLand - 1)[0], bankPt(sBankLand - 1)[1]], [72.4, LAND[0] + 0.4, LAND[1] - 0.2], [74.4, 1186.0, 1036.2]] });
 
 // ---------------- arrows ----------------
-const GRIER = [[2006, 470], [1998, 560], [2006, 650], [1994, 740], [2000, 840], [1984, 940], [1968, 1060]];
+// round 3 (critic B N6, critic A): Grierson's raid inside the frame (camera pans east), a rider at the arrow's head, rail-break sparks on "tearing up"
+const GRIER = [[1980, 650], [1974, 700], [1984, 750], [1974, 800], [1978, 850], [1970, 886]];
+const G0 = T.cavalry, GDUR = 4.6;   // drawn 46.25 -> 50.85 (the rider reaches the south on "Mississippi")
+// the rider at the head of the raid arrow (the engine draws an arrow to the fraction 1 - (1 - k)^2 of its length)
+const GL = VX.len(GRIER), headS = (t) => { const k = VX.clamp((t - G0) / GDUR); return GL * (1 - (1 - k) ** 2); };
+const MK = VX.markers([{ icon: "rider", region: "wide", path: GRIER, v: 0, t0: G0 + 0.15, t1: CUT - 0.1, size: 9, min: 44, max: 64, halo: "rgba(255,226,160,.8)", color: "#3a63b8", grierson: true }]);
+{ const pos0 = MK.pos; MK.pos = (m, L, t) => m.grierson ? { p: VX.along(m.path, Math.max(0.5, headS(t))), s: headS(t) } : pos0(m, L, t); }
+const SPARKS = [[51.4, 1981, 744], [51.75, 1976, 800], [52.1, 1977, 850]];
 const arrows = [
   // B: the transports pull back (night)
   // C: Sherman up the Yazoo; Pemberton's men north; Grierson far east; the chase
-  { region: WD, side: U, pts: VX.reverse(VX.river(WD, "Yazoo River").pts.map((p) => [p[0], p[1]])).filter((_, i, a) => i % 20 === 0 || i === a.length - 1), t0: T.steamed, dur: 2.2, t1: CUT, width: 0.34 },
-  { region: WD, side: R, pts: [[VBG[0] + 20, VBG[1] - 8], [1430, 640], [1446, 606]], t0: T.pem, dur: 1.4, t1: CUT, width: 0.36 },
-  { region: WD, side: U, pts: GRIER, t0: T.east, dur: 4.5, t1: CUT, width: 0.3 },
-  { region: WD, side: R, pts: [[JX[0] + 14, JX[1] + 8], [1940, 744], [1980, 764]], t0: T.drawing, dur: 1.4, t1: CUT, width: 0.32 },
+  { region: WD, side: U, pts: VX.reverse(VX.river(WD, "Yazoo River").pts.map((p) => [p[0], p[1]])).filter((_, i, a) => i % 20 === 0 || i === a.length - 1), t0: T.steamed, dur: 2.2, t1: 44.6, width: 0.24 },
+  { region: WD, side: R, pts: [[VBG[0] + 20, VBG[1] - 8], [1430, 640], [1446, 606]], t0: T.pem, dur: 1.4, t1: 44.6, width: 0.24 },
+  { region: WD, side: U, pts: GRIER, t0: G0, dur: GDUR, t1: CUT, width: 0.24 },
+  { region: WD, side: R, pts: [[JX[0] + 16, JX[1] + 8], [1934, 744], [1966, 762]], t0: T.drawing, dur: 1.4, t1: CUT, width: 0.24 },
   // D: the crossing (wide) down to Bruinsburg
-  { region: WD, side: U, pts: DISPATH.filter((_, i, a) => i % 3 === 0 || i === a.length - 1), t0: CUT + 0.3, dur: 2.4, t1: DV.full, width: 0.4 },
+  { region: WD, side: U, pts: DISPATH.filter((_, i, a) => i % 3 === 0 || i === a.length - 1), t0: CUT + 0.3, dur: 2.4, t1: DV.full, width: 0.24 },
   // D: the column inland from the landing (close)
-  { region: BR, side: U, pts: ROAD_IN.filter((_, i, a) => i % 6 === 0 || i === a.length - 1).slice(0, 14), t0: T.end, dur: 2.4, t1: D + 1, width: 0.5 },
+  { region: BR, side: U, pts: ROAD_IN.filter((_, i, a) => i % 6 === 0 || i === a.length - 1).slice(0, 11), t0: T.end, dur: 2.4, t1: D + 1, width: 0.24 },
 ];
 
 // ---------------- fx: the duel at Grand Gulf (every shot on screen) ----------------
@@ -127,6 +134,8 @@ const fx = {
     { region: WD, preset: "battery", h: 0.6, boom: false, size: 4, opts: { size: 1.8, alpha: 0.2, flash: 2.8 }, shots: fortShots, impactOpts: { size: 1.2 } },
     { region: WD, preset: "field", h: 0.6, boom: false, size: 4, opts: { size: 1.6, alpha: 0.2, flash: 2.6 }, shots: yzShots, impactOpts: { size: 1.4 } },
   ],
+  // rail breaks: a puff of dust where the raid tears up the line (silent: no gun cue); the sparks themselves are custom sprites (build)
+  impacts: SPARKS.map(([t, x, y]) => ({ region: WD, at: [x, y], t: t + 0.05, opts: { size: 2.0 } })),
 };
 
 // ---------------- boats ----------------
@@ -151,8 +160,8 @@ const keys = [
   { t: DAY0 + 0.8, region: WD, at: [1250, 980], dist: 340, tilt: 47, yaw: -3, fov: 30, night: 0, ease: "lin" },
   { t: 38.6, region: WD, at: [1400, 640], dist: 420, tilt: 45, yaw: -1, fov: 30 },
   { t: 43.0, region: WD, at: [1420, 620], dist: 400, tilt: 45, yaw: 0, fov: 30 },
-  { t: 47.2, region: WD, at: [1836, 812], dist: 400, tilt: 41, yaw: 0, fov: 30 },
-  { t: CUT, region: WD, at: [1840, 816], dist: 395, tilt: 41, yaw: 0, fov: 30 },
+  { t: 47.2, region: WD, at: [1832, 775], dist: 440, tilt: 36, yaw: 0, fov: 30 },
+  { t: CUT, region: WD, at: [1836, 777], dist: 435, tilt: 36, yaw: 0, fov: 30 },
   { t: CUT, region: WD, at: [1212, 1002], dist: 250, tilt: 46, yaw: -6, fov: 30, ease: "cut" },
   // (the dive inserts push 55.8 -> land 62.95)
   { t: 67.0, region: BR, at: [1183.0, 1031.0], dist: 36, tilt: 50, yaw: -58, fov: 31 },
@@ -174,6 +183,13 @@ window.SEQ = {
     [BR]: { shadows: true },
   },
   units, arrows, boats, fx,
+  build: async (ctx) => { MK.build(ctx);
+    // rail-break sparks on "tearing up": a hot orange flash + a fan of embers at each break, 0.8 s each (flat additive sprites, wide units)
+    ctx.FX[WD].custom((t, push) => { for (const [t0, x, y] of SPARKS) { const u = t - t0; if (u < 0 || u > 0.9) continue; const h = ctx.world.heightAt(x, y, WD) + 1.2,
+      f = sstep(0, 0.05, u) * (1 - sstep(0.15, 0.6, u));
+      push(x, h, y, 24, 0.6 * f, 1.1, 0.42, 0.1); push(x, h + 0.5, y, 9, 1.0 * f, 1.3, 0.85, 0.45);
+      for (let j = 0; j < 9; j++) { const a = hsh(j, t0) * 6.283, r = 4 + 10 * u * (0.6 + 0.6 * hsh(j, 3)); push(x + Math.cos(a) * r, h + 2 + 14 * u - 18 * u * u, y + Math.sin(a) * r * 0.6, 2.4, (1 - sstep(0.3, 0.9, u)), 1.4, 0.7, 0.2); } } }); },
+  draw: (t, ctx) => { MK.draw(t, ctx); },
   banners: [
     { general: "pemberton", region: WD, keys: [[0, VBG[0] + 4, VBG[1] - 4]], t0: T.pem + 0.05, t1: CUT },
     { general: "grant", region: BR, keys: [[0, LAND[0] + 2.4, LAND[1] - 2.0]], t0: T.grantW + 0.05, t1: D + 1 },
@@ -185,7 +201,7 @@ window.SEQ = {
     { text: "Yazoo River", at: [1386, 598], size: 18, t0: T.yazoo, t1: T.yazoo + 3.6, region: WD, river: true },
     { text: "Haynes' Bluff", town: "Haynes' Bluff", size: 18, t0: T.show - 0.2, t1: T.show + 3.4, region: WD },
     { text: "Vicksburg", town: "Vicksburg", size: 20, t0: T.pem - 0.2, t1: T.pem + 3.4, region: WD },
-    { text: "Jackson", town: "Jackson", size: 20, t0: T.east, t1: T.east + 4.0, region: WD },
+    { text: "Jackson", town: "Jackson", size: 20, t0: T.east, t1: T.benjamin - 0.2, region: WD },
     { text: "Jackson", town: "Jackson", size: 20, t0: T.drawing, t1: CUT, region: WD },
     { text: "Bruinsburg", town: "Bruinsburg", size: 20, t0: CUT + 0.3, t1: DV.full - 0.3, region: WD },
     { text: "Bruinsburg", at: [1186.0, 1027.6], size: 22, t0: DV.SW + 1.0, t1: DV.SW + 4.6, region: BR },
@@ -212,8 +228,8 @@ window.SEQ = {
     ["medallion", { kind: "card", general: "sherman", sub: "a show of attack on the Yazoo", screen: [1765, 215], tIn: T.shermans, tOut: 41.2 }],
     ["label", T.attacking, T.attacking + 2.8, { name: "A show of attack", sub: "to keep Pemberton looking north", world: [1422, 556], side: "us", marker: false, offset: [36, 40] }],
     ["legend", T.pem, CUT - 0.2, { entries: [{ name: "Union", color: W1 }, { name: "Confederates", sub: "Pemberton", color: R1 }] }],
-    ["medallion", { kind: "card", general: "grierson", sub: "a cavalry raid · 17 April - 2 May", screen: [1765, 215], tIn: T.benjamin, tOut: 51.4 }],
-    ["label", T.tearing, T.tearing + 3.0, { name: "Railroads torn up", sub: "far to the east", world: [1996, 760], side: "us", marker: false, offset: [-330, -20] }],
+    ["medallion", { kind: "card", general: "grierson", sub: "a cavalry raid · 17 April - 2 May", screen: [1240, 215], tIn: T.benjamin, tOut: 51.15 }],
+    ["label", T.tearing + 0.35, T.tearing + 3.4, { name: "Railroads torn up", sub: "far to the east", world: [1978, 724], side: "us", marker: false, offset: [-300, 90] }],
     // D
     ["plaque.date", T.thirtieth, { month: "April 1863", day: "30", weekday: "Thursday", note: "DAY 1 · morning" }],
     ["label", T.nobody, T.nobody + 3.0, { name: "Nobody waiting", sub: "the landing is unopposed", world: [1198, 1024], side: "us", marker: false }],

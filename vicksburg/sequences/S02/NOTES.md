@@ -34,3 +34,14 @@ uses a lighter blue route colour (`color: "#86AEDC"`) to separate it from the ar
 | A 42-60 red boxes diagonal strings | Engine now draws upright boxes; the three city-line groups stand in clean rows east of the city. |
 | Also | "Far below the city" label moved off the legend. |
 Open: close B framing keeps the city at the right third (the vicksburg bundle ends at x 1422; a wider look would show the world edge).
+
+## Round 3 fixes (critics round 2)
+- A N6 / B N12 (cauliflower clouds 0-18, 56-64, 105-136): keepClear over the east of the map ([1495, 800, 150, 0.5]) and the lower-left corner of the plan shot.
+- A N5 (arrows): every arrow at width 0.24 and inside the frame (new `tools/check_arrows.js`, 3.5 % margin: only the start of the long west-bank route
+  and the ghost arrow touch 2-3 %): supply arrows from the West start/end inside, the Port Hudson pointer is the river stretch above the bottom edge,
+  the stakes arrows trimmed to the frame, Grant's Canal arrow leaves before the camera pans north, Yazoo route starts in frame.
+- Plan shot (104-136): camera re-framed (still inside the world box), the legend steps out at the march (103.5) so nothing exits "through the legend";
+  the plan arrows step out on "Sherman" (126.0); Sherman's "go back north" ghost arrow is a short arrow from the camps, no longer under the
+  "Every supply he had" label (that label ends 126.9).
+- Port Hudson label ends before "Men, cattle, supplies" comes in (no stacked labels at 13.4-14.1).
+- B N13: the letter row already exists in FACT_NOTES (section 2).

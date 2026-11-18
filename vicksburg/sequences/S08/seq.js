@@ -81,17 +81,18 @@ const arrows = [
   // the Confederates leave north
   { region: W, side: R, width: 0.38, pts: VX.sub(r25, 4, 70, 6), t0: T.decided + 0.3, dur: 1.8, t1: DV.full },
   // close: Crocker's charge, Sherman's push, the red columns north
-  { region: J, side: U, width: 0.24, pts: [[1843.6, 708.4], [1847.2, 710.4], [1850.6, 712.0]], t0: T.fought - 0.1, dur: 1.4, t1: T.afternoon + 0.6 },
+  { region: J, side: U, width: 0.24, pts: [[1843.6, 708.4], [1847.2, 710.4], [1850.6, 712.0]], t0: T.fought - 0.1, dur: 1.4, t1: 17.0 },   // round 3: gone before the pan pushes its tail off the left edge
   { region: J, side: U, width: 0.24, pts: [[1870.0, 745.6], [1874.6, 742.2], [1878.6, 739.4]], t0: T.fought + 0.5, dur: 1.4, t1: T.afternoon + 0.6 },
   { region: J, side: R, width: 0.24, pts: VX.sub(jR2, 3, 26), t0: T.north - 0.2, dur: 1.6, t1: T.stars },
   // the order goes west (to Pemberton, far beyond Clinton)
-  { region: W, color: "#C9766A", width: 0.22, pts: VX.sub(r13, 8, 160, 6), t0: T.pemberton + 0.1, dur: 1.8, t1: T.three + 1.0 },
+  { region: W, color: "#C9766A", width: 0.22, pts: VX.sub(r13, 8, 142, 6),   // round 3: ends inside the safe frame
+    t0: T.pemberton + 0.1, dur: 1.8, t1: T.three + 1.0 },
   // McPherson sends it to Grant
   { region: W, side: U, width: 0.22, pts: [[CL[0] + 2, CL[1] + 18], [1778, 724], [MS[0] + 8, MS[1] - 4]], t0: T.sent + 0.4, dur: 1.0, t1: DAY2 },
   // day: the army turns west toward Bolton and Edwards
   { region: W, side: U, width: 0.46, pts: [[CL[0] - 6, CL[1] + 4], [1756, 684], [1724, 682], [BOL[0] + 10, BOL[1] + 2]], t0: T.turned, dur: 1.8, t1: D + 1 },
   { region: W, side: U, width: 0.46, pts: [[RYw[0] - 8, RYw[1] - 2], [1688, 744], [1660, 728], [1630, 716]], t0: T.turned + 0.35, dur: 1.8, t1: D + 1 },
-  { region: W, side: U, width: 0.46, pts: [[JKw[0] - 30, JKw[1] + 4], [1846, 712], [1820, 704], [CL[0] + 16, CL[1] + 8]], t0: T.turned + 0.7, dur: 1.6, t1: D + 1 },
+  { region: W, side: U, width: 0.46, pts: [[JKw[0] - 40, JKw[1] + 2], [1846, 712], [1820, 704], [CL[0] + 16, CL[1] + 8]], t0: T.turned + 0.7, dur: 1.6, t1: D + 1 },
 ];
 
 // ---------------- fx (only what the camera sees) ----------------
@@ -220,8 +221,8 @@ window.SEQ = {
     { t: DAY2, region: W, at: [1794, 716], dist: 158, tilt: 49, yaw: 0, fov: 30, night: 0.72 },
     { t: DAY2 + 0.8, region: W, at: [1794, 704], dist: 165, tilt: 50, yaw: 0, fov: 30, night: 0, ease: "lin" },
     // day: the army turns west toward Bolton and Edwards
-    { t: 89.8, region: W, at: [1728, 708], dist: 330, tilt: 46, yaw: -1, fov: 30 },
-    { t: D, region: W, at: [1712, 708], dist: 352, tilt: 46, yaw: -1, fov: 30, ease: "lin" },
+    { t: 89.8, region: W, at: [1740, 712], dist: 372, tilt: 46, yaw: -1, fov: 30 },   // round 3: Jackson's corps and Edwards both inside the frame
+    { t: D, region: W, at: [1734, 712], dist: 388, tilt: 46, yaw: -1, fov: 30, ease: "lin" },
   ],
   dives: [{ t: DV.SW, over: [1868, 722],
     from: { region: W, at: [1852, 722], dist: 230, tilt: 45, yaw: -3 },
@@ -238,13 +239,14 @@ window.SEQ = {
     { general: "grant", region: J, keys: [[0, 1886.2, 728.8]], t0: T.grantSherman + 0.1, t1: CUT + 1 },
     { general: "grant", region: W, keys: [[0, MS[0] + 6, MS[1] - 8]], t0: T.grant3, t1: DAY2 + 0.3 },
     { general: "grant", region: W, keys: [[0, CL[0] - 6, CL[1] - 10]], t0: T.now + 0.4, t1: D + 1 },
-    { general: "pemberton", region: W, keys: [[0, ED[0] - 6, ED[1] + 6]], t0: T.pemberton2 + 0.05, t1: D + 1 },
+    { general: "pemberton", region: W, keys: [[0, ED[0] - 4, ED[1] - 14]],   // round 3: above the Edwards name, not on it
+      t0: T.pemberton2 + 0.05, t1: D + 1 },
   ],
   labels: [
     { text: "Jackson", town: "Jackson", region: W, size: 24, t0: T.jackson, t1: DV.full - 0.3 },
     { text: "Clinton", town: "Clinton", region: W, size: 18, t0: 2.2, t1: 8.4 },
     { text: "Mississippi Springs", town: "Mississippi Springs", region: W, size: 17, t0: 2.6, t1: 8.4 },
-    { text: "O. P. Wright farm", at: [WRIGHT[0], WRIGHT[1] - 1.6], region: J, size: 17, t0: DV.emerge + 0.4, t1: T.north },
+    { text: "O. P. Wright farm", at: [WRIGHT[0], WRIGHT[1] - 1.6], region: J, size: 17, t0: DV.SW + 1.0, t1: T.north },
     { text: "Pearl River", at: [1909.0, 712.0], region: J, size: 17, river: true, t0: T.afternoon, t1: 21.0 },
     { text: "Jackson", town: "Jackson", region: W, size: 24, t0: CUT + 0.4, t1: 66.0 },
     { text: "Clinton", town: "Clinton", region: W, size: 20, t0: 72.0, t1: DAY2 },

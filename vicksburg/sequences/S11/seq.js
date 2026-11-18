@@ -202,7 +202,7 @@ window.SEQ = {
   dives: [{ t: DV.SW, over: [1402, 676],
     from: { region: W, at: [1408, 652], dist: 222, tilt: 46, yaw: -12 },
     to: { region: S, at: [1397.5, 682.0], dist: 60, tilt: 40, yaw: 88, fov: 30 },
-    keys: { emerge: { yaw: 80 } } }],
+    keys: { emerge: { yaw: 80, dist: 52 }, swTo: { dist: 62 } } }],   // lead r3: the faster clear revealed the NE corner at 29.0 s
   clouds: {
     [W]: { keepClear: [[1420, 630, 60, 1, 0.8], [1405, 670, 50, 1, 0.6], [1500, 860, 160, 0.8, 0.5], [1290, 880, 230, 0.9, 0.6], [1335, 765, 110, 1, 0.6], [1730, 760, 130, 1, 0.6]] },   // round 2: no big cloud over the twenty-days view / the final push
     [S]: { shadows: true },

@@ -57,7 +57,10 @@ const boatXY = (i, t) => i === HC ? hcPath(t) : posOn(RIV, sBoat(i, t));
 
 // round 3 (critic B N3): the shots come from the bluff face over the water (1 unit riverside of the battery seat), not from the town grid
 const frontAtR = (y) => { let b = null; for (const p of RIV) if (p[0] > 1360 && (!b || Math.abs(p[1] - y) < Math.abs(b[1] - y))) b = p; return b; };
-const bluffEdge = (b) => { const r = frontAtR(b.z), dx = b.x - r[0], dz = b.z - r[1], l = Math.hypot(dx, dz) || 1, k = Math.min(l, 4.8) / l; return [r[0] + dx * k, r[1] + dz * k]; };
+const HOUSES = VX.region(VB).houses || [];
+const townEdge = (z) => HOUSES.reduce((m, q) => Math.abs(q[1] - z) < 1.5 ? Math.min(m, q[0]) : m, 1e9);   // the town's river-side edge at this z
+const bluffEdge = (b) => { const r = frontAtR(b.z), dx = b.x - r[0], dz = b.z - r[1], l = Math.hypot(dx, dz) || 1, k = Math.min(l, 4.8) / l;
+  return [Math.max(r[0] + 3.4, Math.min(r[0] + dx * k, townEdge(b.z) - 0.8)), r[1] + dz * k]; };   // between the bank and the first houses
 // ---------------- batteries (the bluffs): each fires at the nearest boats inside ~16 units, flash + plume, the shot falls in the river near a boat
 const shots = [];
 { let t = T.guns + 0.02, k = 0;
@@ -95,6 +98,8 @@ const custom = [
     // glow on the water around her + the flame body (additive), embers
     // round 3 (critic A): the fire x2.4 (was a ~10 px spark at 720p), the column alpha up
     const HK = 2.4;
+    if (t < T.burst + 0.5) { const f = sstep(T.burst - 0.05, T.burst + 0.04, t) * (1 - sstep(T.burst + 0.12, T.burst + 0.5, t));   // the shell bursts on her deck
+      push(p[0], wy + 0.6, p[1], 5.5, 0.9 * f, 1.2, 0.62, 0.2); push(p[0], wy + 0.9, p[1], 2.4, f, 1.3, 0.95, 0.6); }
     push(p[0], wy + 0.02, p[1], 9 * big, 0.2 * e, 0.9, 0.36, 0.08);   // orange glow on the water
     push(p[0], wy + 0.2, p[1], 2.2 * big * HK, 0.24 * e, 0.97, 0.62, 0.22);
     for (let j = 0; j < 9; j++) { const ph = j * 1.91, u = ((t * (1.4 + 0.25 * j) + ph) % 1), along = (hsh(j, 31) - 0.5) * 1.1, fl = 0.75 + 0.25 * Math.sin(t * (7 + j) + ph);
@@ -124,7 +129,7 @@ const anchorS = (i) => LR - 2 - i * 9;              // at anchor along the last 
 const boatsWide = [
   { region: WIDE, kind: KINDS.filter((_, i) => i !== HC), n: 9, size: 1.3, path: ROUTE, sAt: (t, i) => anchorS(i), t0: DAWN - 0.1, t1: T.D + 1, lamp: false, wake: false },   // the Henry Clay is lost
   // six nights later: six steamers run down from above the city past the guns; the Tigress (i = 2) is hit and sinks below the city
-  { region: WIDE, kind: "steamer", n: 6, size: 1.2, path: RUN2, sAt: (t, i) => i === TIG ? Math.min(sRun(t, i), SINK_S) : Math.min(LR2 - 4 - i * RSP, sRun(t, i)), h: (t, i) => i === TIG ? 0.45 - 0.9 * sstep(T_SINK, T_SINK + 2.2, t) : 0.45,
+  { region: WIDE, kind: "steamer", n: 6, size: 1.4, path: RUN2, sAt: (t, i) => i === TIG ? Math.min(sRun(t, i), SINK_S) : Math.min(LR2 - 4 - i * RSP, sRun(t, i)), h: (t, i) => i === TIG ? 0.45 - 0.9 * sstep(T_SINK, T_SINK + 2.2, t) : 0.45,
     t0: T.steamers - 0.3, t1: T.D + 1, lamp: true },
 ];
 
@@ -134,8 +139,8 @@ window.SEQ = {
   keys: [
     // night: low behind the fleet at its moorings (boats readable), a slow push down the line as it casts off
     // round 3 (critic B N2): the whole moored line (Benton at s 84 ... the tail at s 55) mid-frame from frame 1
-    { t: 0.0, region: VB, at: [1333, 690], dist: 40, tilt: 54, yaw: -36, fov: 32, night: 1 },
-    { t: 12.0, region: VB, at: [1337, 689], dist: 44, tilt: 54, yaw: -40, fov: 32, night: 1 },
+    { t: 0.0, region: VB, at: [1334, 689], dist: 52, tilt: 54, yaw: -36, fov: 32, night: 1 },
+    { t: 12.0, region: VB, at: [1340, 685], dist: 52, tilt: 54, yaw: -40, fov: 32, night: 1 },
     { t: 20.0, region: VB, at: [1363, 668], dist: 52, tilt: 53, yaw: -50, fov: 32, night: 1 },
     // the batteries open: the whole bend, the city on the bluff, the shore fires
     { t: 29.0, region: VB, at: [1370, 669], dist: 60, tilt: 50, yaw: -56, fov: 32, night: 1 },
@@ -182,8 +187,7 @@ window.SEQ = {
     ],
     campfires: [{ region: VB, pts: BONFIRES, t0: T.bonfires, t1: DAWN + 1 }],
     // round 3 (critic B N3): the shell bursts ON the Henry Clay (her cotton), not in the town
-    impacts: [{ region: VB, at: hcPath(T.burst).slice(0, 2), t: T.burst, cue: true, opts: { size: 0.8 } }],
-    flashes: [{ region: VB, at: hcPath(T.burst).slice(0, 2), t: T.burst, opts: { size: 1.4, life: 0.3, pool: 1.5 } }],
+    impacts: [{ region: VB, at: hcPath(T.burst).slice(0, 2), t: T.burst, cue: true, opts: { size: 1.4 } }],
   },
   build: async (ctx) => { WW = ctx.world; for (const c of custom) ctx.FX[c.region].custom(c.fn); },
   overlay: [

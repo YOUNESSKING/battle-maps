@@ -58,3 +58,13 @@ No Grant name, portrait or banner anywhere in S01. Cues: 12 gun, 1 fire, 1 whoos
 Engine changes (backward-compatible, README): `dives[].off`, cut-key `dissolve`, boats `h(t, i)`, `O.distance(..., { dash: false })`, `O.letter(..., { qSize, height })`.
 Cues now: 22 gun, 1 fire (41.3), 1 whoosh (14.85).
 Open: the dive's emergence frame (16.6-17.2) still has stratus sheets over the city for ~1 s (engine look); title says "5 BATTLES" from 9.8 (as briefed).
+
+## Round 3 fixes (critics round 2)
+- B N1 / A N4 (Big Black bridge in the montage): Pemberton's field army now crosses the bridge as a road column (VX.march 40.0-42.4, tail clears ~41.9);
+  the fire starts only at 42.1 (BBF). The Union march and its arrow stop at the EAST bank ([1532, 686.5]); the red "driven back" arrow sits 7 units
+  north of the blue route (never on top of it).
+- B N9: the fire burns 42.1-43.3 (fadeOut 0.6, smoulder 0.3, smoke life 4.5 s): no pillar over the surrender payoff (checked 44.6, 46.0).
+- B N5: three big on-word shots (guns 20.36, bluffs 21.66, river 22.48) from the bluff crest south of the town (batteries 8-10, 1.2 u east of the
+  seat), orange muzzle flash + glow ring, shot falls in the river; then five smaller shots (23.3-27.8), also from the crest, not the streets.
+- Dive: S01's short `off` profile is now the engine default (S01 keeps its explicit OFF, unchanged).
+- Checks: check_paths lists only the Bruinsburg landing (Mississippi + Bayou Pierre mouth, legit); check_edges OK.
