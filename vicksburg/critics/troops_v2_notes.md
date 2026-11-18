@@ -70,3 +70,21 @@ Test time = S09 55-110 s (0-55 s of the test), then S10 20-35 s (55-70 s). Share
 Checker (v4): S09 55-110 overlaps 2 frames (0.13 u, Bowen's own blocks wheeling at the halt), vmax 2.06 u/s, amax 4.3, column spacing sd 2.3-2.4 %;
 S10 20-35 overlaps 3 frames (0.09 u, the north flank's block passing its captured neighbour), vmax 2.24 u/s (the rout), amax 8.7-15 (escape curves), spacing sd 4.9 %.
 Not done: arrows are not shortened to end before the column (they now pass under it instead); woods still cover parts of S09 (units are in them, not moved out).
+
+# v5 (2026-11-18): round-3 fixes (critics on v4: look 6.5, motion 7.5). Share: `vicksburg/troops_test_v5_share.mp4`
+| Point | v5 |
+| --- | --- |
+| L1 saturated bar / rail | the plate is smaller than the men's footprint (99 % x 86 %): only a ~2 px tint shows round the men, 1-px darker edge, 1-px pale front line (2.2 % of the depth, set just inside); fill desaturated 35 % toward the coat colour |
+| L2 woods: lost colour, ghosted | the plate stays ON the surface (full opacity, its side tint visible); only the rear ~30 % of the ranks sink into the canopy; halo in woods weaker |
+| L3 guns too small | guns +40 % (now ~1.0x the v3 size), barrel pale grey, wheels larger (r 0.16) and lighter brown |
+| L4 smoke smears / grey slab | test data: musketry alpha 0.075-0.085, smaller (0.6-0.7), shorter life (8 s), wider broken clusters [3.2, 1.6], half the rate; the S10 parapet volley that made the slab at 55 s: rate 2.9 -> 1.4, size 0.95 -> 0.7 |
+| L5 dark halo / shadow holes | contact shadow 0.45 -> 0.27, halo 0.16-0.46 -> 0.10-0.22, both off on bridge decks |
+| L6 game-like | per-man height (+-7 %), facing (+-10 deg) and coat brightness (+-10 %) jitter; infantry block size varies by unit (0.92-1.06, deterministic) |
+| M7 clipping the bridge | escape paths are densified, pulled onto the deck CENTRELINE within 2 u of the bridge, then resampled + smoothed (moving average +-0.9 u); on the deck the men close into a narrow file (across-deck spread 0.17 u) and the plate/halo/shadow fade out |
+| M8 retreat too small | S10_gm camera 25.6-32.6 s: dist 19.5 (was 26.5) on the road + bridge, held still |
+| M9 lockstep | blocks of a line start their moves 0.25-0.6 s apart (deterministic) |
+| M10 tail block shrinks at exit | no sinking of the plate any more; edge fade only changes opacity |
+
+Checker v5: S09 55-110: overlaps 3 frames (<= 0.09 u, Bowen's own blocks wheeling), vmax 1.99 u/s, amax 4.1, spacing sd 2.3 %;
+S10 20-35: NO overlaps, vmax 2.24 u/s, amax 5-6 for the flanks, 20 for the reserve (it starts right at the bridge), spacing sd 3.5 %;
+every escaping block is off the bridge before the fire (31.3 s: last one at x 1508.4, the deck ends at ~1510.2).

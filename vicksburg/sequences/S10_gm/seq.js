@@ -60,7 +60,7 @@ for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.pu
 
 // ---------------- fx ----------------
 const bw3 = BRW.filter((_, i) => i % 6 === 0).map((p) => [p[0] + 0.12, p[1]]);
-const SMK = { dir: [-1, 0], size: 0.9, alpha: 0.14, life: 11, muzzle: 6, windK: 0.6, cluster: [2.4, 1.2] };   // (GM test v4) wispier
+const SMK = { dir: [-1, 0], size: 0.7, alpha: 0.085, life: 8, muzzle: 6, windK: 0.7, cluster: [3.2, 1.6] };   // v5: thinner, broken   // (GM test v4) wispier
 const csGuns = [[bwX(681.6) - 1.2, 681.6], [bwX(685.0) - 1.2, 685.0], [bwX(688.6) - 1.2, 688.6]];
 const fx = {
   fires: [
@@ -69,7 +69,7 @@ const fx = {
     { region: BB, bridge: 0, burn: false, t0: 40.4, t1: T.D + 2, preset: "smoulder", cue: false },
   ],
   smokeLines: [
-    { region: BB, pts: bw3, t0: 15.2, t1: TK + 0.4, cue: true, opts: { dir: [1, 0.05], rate: 2.9, volley: 1.6, roll: 0.9, size: 0.95, height: 3, muzzle: 6, windK: 0.45 } },
+    { region: BB, pts: bw3, t0: 15.2, t1: TK + 0.4, cue: true, opts: { dir: [1, 0.05], rate: 1.4, volley: 1.6, roll: 0.9, size: 0.7, alpha: 0.085, life: 8, height: 3, muzzle: 6, windK: 0.7, cluster: [3.2, 1.6] } },   // v5: no grey slab
     { region: BB, pts: [[1524.0, 679.8], [1524.8, 680.6]], t0: 19.0, t1: TK, opts: { ...SMK, dir: [-1, 0.3], rate: 2.6 } },
     { region: BB, pts: [[1525.6, 682.8], [1525.4, 686.6], [1525.6, 690.4]], t0: 19.8, t1: 23.4, opts: { ...SMK, rate: 2.5 } },
   ],
@@ -89,8 +89,8 @@ window.SEQ = {
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
     { t: 22.6, region: BB, at: [1520.6, 683.2], dist: 27, tilt: 52, yaw: -14, fov: 30 },
-    { t: 26.4, region: BB, at: [1515.4, 684.0], dist: 26.5, tilt: 53, yaw: -8, fov: 30 },   // (GM test v4) the camera holds while the column crosses
-    { t: 32.6, region: BB, at: [1515.2, 684.0], dist: 26.3, tilt: 53, yaw: -8, fov: 30 },
+    { t: 25.6, region: BB, at: [1514.2, 684.0], dist: 19.5, tilt: 52, yaw: -8, fov: 30 },   // (GM test v5) closer on the road + bridge, held still while the column crosses
+    { t: 32.6, region: BB, at: [1514.1, 684.0], dist: 19.3, tilt: 52, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11
