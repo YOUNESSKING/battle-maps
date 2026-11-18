@@ -321,9 +321,12 @@ const TRO = {};   // per region: boxes / arrows / blocks
 for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = (S.arrows || []).some((a) => (a.region || firstClose) === r); if (!hasU && !hasA) continue;
   const sc = world.regions[r].scene;
   TRO[r] = { BX: TROOPS !== "blocks" && hasU ? TM.createBoxes3D({ THREE, scene: sc, sun: SUN, ...(isWide(r) ? { lift: 0.03 * RO(r).troopScale, shadowOff: 0.075 * RO(r).troopScale } : {}) }) : null,
-    AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r) }),
-    T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, sun: SUN, shots: BATTERY_SHOTS[r] || [] }) : null }; }
-const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = a.color || ARROW_COL[a.side || "u"];
+    AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r), sun: SUN, style: TROOPS === "blocks" ? "gm" : "w" }),
+    T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, escAt, edgeFade,
+      proj: (x, y) => world.projectMap(x, y, 0.02), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [] }) : null }; }
+// GM troops (v2, owner 2026-11-18): GM's movement arrows are a pale tint of the side colour (his French arrows (105,172,192) after his grade)
+const ARROW_GM = { u: "#62a3db", r: "#d4705f" };
+const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = a.color || (TROOPS === "blocks" ? ARROW_GM : ARROW_COL)[a.side || "u"];
   return { ...a, region: r, w: Math.min(a.width ?? 0.24, 0.24) * RO(r).troopScale,   // critic A8: v6/v8 width cap
     a3: TRO[r].AR3.add(a.pts, col) }; });
 // generals: banners on poles (banner.js, STYLE_LOCK 2f item 1) + medallion portraits; any portrait: SEQ.generals = { key: { img, flag, name, full, side, role } }
@@ -358,7 +361,7 @@ for (const l of S.labels || []) { const r = l.region || NAMES[0], p = l.at || VX
 const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p, t) => { if (typeof p === "function") p = p(t); const s = world.projectMap(p[0], p[1], p[2] || 0);   // world: [x, y, h] or (t) => [x, y, h] (follows a moving boat)
     return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: EB + "assets/fonts/", seed: S.seed ?? 1863 });
 O.film.set({ grain: (S.film || {}).grain ?? 0.04 });   // v5: grain <= 0.04 on the final frame
-const ctx = { THREE, world, FX, VC, O, tl, S, VX, UNITS, ARROWS, BANNERS, PINS, GENERALS, G, regions: world.regions, sstep, lerp, clamp, hsh };
+const ctx = { THREE, world, FX, VC, O, tl, S, VX, UNITS, TRO, ARROWS, BANNERS, PINS, GENERALS, G, regions: world.regions, sstep, lerp, clamp, hsh };
 const resolveArgs = (a) => { if (!a || typeof a !== "object" || Array.isArray(a)) return a; if (a.general && !a.img) { const g = gen(a.general);
   return { img: g.img, side: g.side, name: g.full, role: g.role, ...a, general: undefined }; } return a; };
 for (const e of S.overlay || []) { if (typeof e === "function") { e(O, ctx); continue; }
@@ -378,6 +381,7 @@ _log("overlay");
 const diveHide = (t) => S.diveHide === false ? 0 : DIVES.reduce((m, d) => Math.max(m, sstep(d.deckIn + 0.2, d.full - 0.1, t) * (1 - sstep(d.emerge, d.clear + 0.35, t))), 0);
 const drawTroops = (t, region) => {
   const L = [], HID = 1 - diveHide(t);
+  for (const r in TRO) if (TRO[r].T3) TRO[r].T3.update(t, 1 - HID);   // GM blocks (v2): set before this frame renders, hidden under the dive deck
   for (const u of UNITS) { if (TRO[u.region] && TRO[u.region].T3) continue;
     const on = u.region === region && t >= u.t0 && t < u.t1, op = on ? HID * Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
     if (op <= 0.001) continue;
@@ -474,7 +478,7 @@ const xfadeAt = (t) => { if (!XC) return; const x = XFADES.find((q) => t >= q.t 
   XC.style.opacity = (1 - sstep(x.t, x.t + x.dur, t)).toFixed(3); gradeKey = ""; };
 window.__draw = (t) => {
   xfadeAt(t);
-  placeBoats(t); titleAt(t); gradeAt(t); for (const r in TRO) if (TRO[r].T3) TRO[r].T3.update(t);
+  placeBoats(t); titleAt(t); gradeAt(t);
   O.film.set({ grain: lerp(GRAIN, GRAIN * 0.75, filmK(t, ["full", -0.3, "wIn", 0], ["emerge", "clear"])).toFixed(3) });   // his white-out is smooth
   O.film.set({ vignette: (1 - 0.95 * filmK(t, ["full", -0.4, "wIn", 0], ["emerge", "haze"])).toFixed(3) });   // no dark oval inside the cloud
   let wa = 0, dp = 0; for (const d of DIVES) { wa = Math.max(wa, whiteOne(d, t)); dp += 8 * sstep(d.SW - 0.06, d.SW, t) * (1 - sstep(d.SW + 0.06, d.SW + 0.14, t)); }

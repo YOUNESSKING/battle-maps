@@ -206,3 +206,13 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   fade out while a dive's deck closes (deckIn+0.2 -> full-0.1) and back in as the target clears (emerge -> clear+0.35); `S.diveHide = false` keeps them.
   New `tools/check_arrows.js SNN [margin]`: reports arrow points (while drawing and drawn) outside a frame safe margin (default 6 %, ground plane).
 
+
+- GM troops v2 (2026-11-18, owner: "copy Grand Maneuver's troops, drop our 2D boxes"): `troops: "blocks"` now = GM-style 3D battalion
+  blocks + GM arrows from the SAME unit data (study `vicksburg/TROOPS_GM_STUDY.md`). Blocks turn with their unit (lines face `face`,
+  columns face their road; this replaces the boxes' "never rotate" rule for blocks only), long / oblique / `lin` moves file off into a
+  column behind the leading block and deploy at the halt, a line falling back keeps facing the enemy, headings are low-passed (+-0.9 s,
+  no snap turns), an over-fast move leaves up to 3 s earlier from its hold (`vmax` 1.5 x troopScale units/s), units appearing mid-scene
+  walk in from behind, escapes peel off into a road column, captured blocks stay grey (a retaken battery recolours before it hands
+  over), skirmishers ahead of halted lines, guns limber / unlimber. Unit options: `arrive: false`, `skirmish: false`, `column: false`, `march`.
+  Test: `bash vicksburg/tools/make_troops_test.sh` (S09_gm / S09_box; `SEQ=S10`), motion QA `node vicksburg/tools/check_troops_motion.mjs`,
+  pod windows `render_pod.sh OUT S09_gm:55-110`. Boxes mode unchanged.
