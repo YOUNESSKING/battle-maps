@@ -53,7 +53,7 @@ export function createTroops3D(o) {
   const NF = 72, INF = gridLayout(12, 6), CAV = gridLayout(12, 2);
   const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 15 | 0, f = (k % 15 + 0.5) / 15 - 0.5, e = 0.5 - 0.06;
     P.push(side === 0 ? [f, e] : side === 1 ? [e, -f] : side === 2 ? [-f, -e] : [-e, f]); } return P; })();
-  const RF = o.reform ?? 1.4, VPK = (o.vmax ?? 1.0) * ts, VESC = (o.vesc ?? 1.25) * ts, RAMP = 1.0;   // peak march speed, retreat speed, ease seconds
+  const RF = o.reform ?? 2.0, VPK = (o.vmax ?? 1.0) * ts, VESC = (o.vesc ?? 1.25) * ts, RAMP = 1.0;   // peak march speed, retreat speed, ease seconds
   // trapezoid progress (0..1) at normalised time x, ramp fraction r at each end (constant cruise between: no darting)
   const trap = (x, r) => { x = clamp(x); if (r <= 1e-4) return x; const vm = 1 / (1 - r); if (x < r) return 0.5 * vm * x * x / r; if (x > 1 - r) { const y = 1 - x; return 1 - 0.5 * vm * y * y / r; } return 0.5 * vm * r + vm * (x - r); };
   const ang = (x, y) => Math.atan2(y, x), uv = (a) => [Math.cos(a), Math.sin(a)];
@@ -95,7 +95,7 @@ export function createTroops3D(o) {
       let Q = P.slice(R.i0 - 1, R.i1 + 1); for (let it = 0; it < 4 && Q.length > 2; it++) { const N = [Q[0]]; for (let k = 0; k < Q.length - 1; k++) { const a = Q[k], b = Q[k + 1];
         N.push([0.75 * a[0] + 0.25 * b[0], 0.75 * a[1] + 0.25 * b[1]], [0.25 * a[0] + 0.75 * b[0], 0.25 * a[1] + 0.75 * b[1]]); } N.push(Q[Q.length - 1]); Q = N; }
       R.sm = Q; R.smL = 0; for (let k = 1; k < Q.length; k++) R.smL += Math.hypot(Q[k][0] - Q[k - 1][0], Q[k][1] - Q[k - 1][1]); }
-    const csp = bw * 0.96 / 12, cw = 4 * csp * 1.05, cl = 18 * csp * 1.25;   // v7: GM march column, 4 files x 18 ranks (same 72 men)
+    const csp = bw * 0.96 / 12, cw = 3 * csp * 1.1, cl = 24 * csp * 0.55;   // v8: compact march column, 3 files x 24 ranks, ranks ~half the file spacing (reads as a column)
     // v7: blocks whose march lanes coincide (a flank march) cannot re-form in place side by side: the ones behind wait until the one
     // ahead has walked a column length + gap away (they re-form and step off in order, nose to tail)
     for (const R of runs) { const d0 = R.mFirst.dir, L0 = [-Math.sin(fa), Math.cos(fa)], vR = Math.max(0.3, (R.s1 - R.s0) / Math.max(0.5, R.t1 - R.t0));
@@ -107,7 +107,7 @@ export function createTroops3D(o) {
     for (let i = 0; i < nb; i++) blocks.push({ u, i });
   }
   const infBlocks = blocks.filter((b) => b.u.type !== "art"), artBlocks = blocks.filter((b) => b.u.type === "art");
-  const NS = o.skirmishers ?? 5, nFig = infBlocks.length * (NF + NS) + artBlocks.length * 4;
+  const NS = o.skirmishers ?? 5, nFig = infBlocks.length * (NF + NS + 1) + artBlocks.length * 4;
 
   const sAt = (u, t) => { const D = UD.get(u); let s = 0; for (const M of D.moves) { if (t <= M.t0) return s; if (t >= M.t1) { s = M.s1; continue; } return M.s0 + (M.s1 - M.s0) * trap((t - M.t0) / (M.t1 - M.t0), M.r); } return s; };
   const ptAt = (u, s) => { const D = UD.get(u), P = D.P, c = D.cum; if (P.length === 1) return P[0].slice();
@@ -165,7 +165,7 @@ export function createTroops3D(o) {
   const invRamp = (d, V) => d <= 0 ? 0 : d < V * RAMP / 2 ? Math.sqrt(2 * d * RAMP / V) : d / V + RAMP / 2;
   for (const Q of QUEUES.values()) { const V = Math.min(...Q.map((q) => Math.min(VESC, q.u.esc.v ?? VESC))); let prev = null;
     for (const q of Q) { q.V = V; q.T = q.t0 + 0.5 + RF;   // v7: the men turn about and re-form into a march column first
-      if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len) - (prev.rj - prev.a); q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.7); }   // v4: a clear gap + front-to-back stagger
+      if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len + 0.13 * q.len * hash(q.i + 3 * units.indexOf(q.u), 21)) - (prev.rj - prev.a);   // v8: 0-13 % spacing jitter q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.7); }   // v4: a clear gap + front-to-back stagger
       prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
 
@@ -247,10 +247,10 @@ export function createTroops3D(o) {
   shMat.onBeforeCompile = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
     sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp;").replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
   shMat.customProgramCacheKey = () => "t3sh";
-  const shadows = mkIM(shG, shMat, blocks.length, false); shadows.receiveShadow = false; shadows.renderOrder = 1;
+  const shadows = mkIM(shG, shMat, blocks.length * 2, false); shadows.receiveShadow = false; shadows.renderOrder = 1;
   // v4 (critic): a faint pale halo under every block keeps it readable over dark woods
   const haloMat = shMat.clone(); haloMat.color = new THREE.Color(0xffffff); haloMat.onBeforeCompile = shMat.onBeforeCompile; haloMat.customProgramCacheKey = () => "t3halo";
-  const halos = mkIM(shG, haloMat, blocks.length, false); halos.receiveShadow = false; halos.renderOrder = 1.05;
+  const halos = mkIM(shG, haloMat, blocks.length * 2, false); halos.receiveShadow = false; halos.renderOrder = 1.05;
   // woods mask from the region's wood trees (kind 0): blocks in a wood stand IN it (sunk into the canopy blanket, heads and shoulders
   // showing between the crowns) instead of on top of the canopy
   const WM = (() => { const tr = (o.trees || []).filter((q) => (q[3] || 0) === 0); if (!tr.length) return null; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
@@ -263,6 +263,8 @@ export function createTroops3D(o) {
   const carriage = mkIM(box(0.18, 0.11, 0.55, 0, 0.11, 0.1), lam(), artBlocks.length);
   const barrel = mkIM((() => { const g = new THREE.CylinderGeometry(0.05, 0.065, 0.6, 8); g.rotateX(Math.PI / 2); g.translate(0, 0.2, -0.1); return g; })(), lam({ color: 0xb9b5ab }), artBlocks.length);   // v5: pale grey barrel line
   const wheels = mkIM((() => { const a = new THREE.CylinderGeometry(0.16, 0.16, 0.05, 12); a.rotateZ(Math.PI / 2); const b = a.clone(); a.translate(-0.17, 0.16, 0); b.translate(0.17, 0.16, 0); return merge([a, b], [0x7a5c3a, 0x7a5c3a]); })(), lam({ vertexColors: true }), artBlocks.length);
+  const poleM = mkIM(box(0.04, 1.6, 0.04, 0, 0.8, 0), lam({ color: 0x2a2018 }), infBlocks.length, false);   // v8: colour-bearer's staff + colour at a column's head
+  const flagG = new THREE.PlaneGeometry(0.62, 0.42); flagG.translate(0.31, 1.35, 0); const flagM = mkIM(flagG, lam({ side: THREE.DoubleSide }), infBlocks.length, false);
   const limber = mkIM(merge([box(0.27, 0.18, 0.32, 0, 0.18, 0), box(0.29, 0.04, 0.34, 0, 0.29, 0)], [0xffffff, 0xd8cfbc]), lam({ vertexColors: true }), artBlocks.length);
 
   const M4 = new THREE.Matrix4(), col = new THREE.Color(), GREYC = new THREE.Color(GREY.coat), GREYP = new THREE.Color(GREY.pale), GREYL = new THREE.Color(GREY.plate);
@@ -273,7 +275,7 @@ export function createTroops3D(o) {
   const smooth = (u, i, t, key) => vecAvg([[base(u, i, t)[key], 1], [base(u, i, t - 0.15)[key], 0.5], [base(u, i, t + 0.15)[key], 0.5], [base(u, i, t - 0.3)[key], 0.0], [base(u, i, t + 0.3)[key], 0.4]]);
 
   function update(t, hide = 0) {
-    let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0; const ST = [];
+    let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0, nfl = 0; const ST = [];
     for (const b of blocks) { const u = b.u, op0 = fade(u, t) * (1 - hide); if (op0 <= 0.001) continue;
       const D = UD.get(u), q = base(u, b.i, t), qa = base(u, b.i, t - 0.2), qb = base(u, b.i, t + 0.2);
       const vx = (qb.x - qa.x) / 0.4, vy = (qb.y - qa.y) / 0.4, spd = Math.hypot(vx, vy);
@@ -294,12 +296,14 @@ export function createTroops3D(o) {
       const wk = WM ? WM(bx, by) : 0, sink = wk * (S.woodSink ?? 0.55) * (W * 0.92 / 12) * 1.9, bk = onBridge(bx, by), st = Q.eq && !isArt ? bk : 0;   // v5: only the rear ranks sink (below)
       { const hs = hb + 0.012 * ts, sw = W * (isArt ? 0.5 : 1.0) + 0.12 * ts, sd = Dp * (isArt ? 0.6 : 1.0) + 0.12 * ts;
         setM(shadows, ns, bx, hs, by, fx, fy, sw, 1, sd); setOp(shadows, ns, 0.27 * op * pf * (1 - 0.5 * wk) * (1 - bk));
-        setM(halos, ns, bx, hs + 0.002 * ts, by, fx, fy, sw + 0.32 * ts, 1, sd + 0.32 * ts); halos.setColorAt(ns, col.setHex(0xf1ecd8).lerp(new THREE.Color(P.plate), 0.55 * wk).lerp(GREYP, capd)); setOp(halos, ns++, (0.1 + 0.12 * wk) * op * pf * (1 - bk)); }   // in a wood the halo carries the side colour (the plate is under the canopy)
+        setM(halos, ns, bx, hs + 0.002 * ts, by, fx, fy, sw + 0.32 * ts, 1, sd + 0.32 * ts); halos.setColorAt(ns, col.setHex(0xf1ecd8).lerp(new THREE.Color(P.plate), 0.55 * wk).lerp(GREYP, capd)); setOp(halos, ns++, (0.1 + 0.12 * wk) * op * pf * (1 - bk));
+        if (colK && !isArt) { const dx = bx - Math.cos(pa) * Dp * 0.75, dy = by - Math.sin(pa) * Dp * 0.75;   // v8: a faint dust wake behind a marching column
+          setM(halos, ns, dx, Math.max(H(dx, dy), hb) + 0.014 * ts, dy, fx, fy, W * 2.6, 1, Dp * 1.1); halos.setColorAt(ns, col.setHex(0xb9a57e)); setOp(shadows, ns, 0); setOp(halos, ns++, 0.3 * op * mv * pf * (1 - bk)); } }   // in a wood the halo carries the side colour (the plate is under the canopy)
       const pT = 0.006 * ts, ry = hb + S.lift, ip = np++, pk = isArt ? 0 : 1;   // v4: thin plate (no saturated base bar); guns have none
       setM(plateRim, ip, bx, ry, by, fx, fy, (W * 0.99 + 0.012 * ts) * pk, pT, (Dp * 0.86 + 0.012 * ts) * pk, sL, sF);   // v5: the men cover the plate but a ~2 px tint
       setM(plateFill, ip, bx, ry + 0.001 * ts, by, fx, fy, W * 0.99 * pk, pT * 1.15, Dp * 0.86 * pk, sL, sF);
       const fr = Dp * 0.022, fo = Dp * 0.43 - fr / 2; setM(plateFront, ip, bx + fx * fo, ry + 0.0015 * ts + sF * fo, by + fy * fo, fx, fy, (W + 0.014 * ts) * pk, pT * 1.3, fr * pk, sL, 0);
-      plateFill.setColorAt(ip, col.setHex(P.plate).lerp(new THREE.Color(P.coat), 0.35).lerp(GREYL, capd)); plateRim.setColorAt(ip, col.setHex(P.plate).multiplyScalar(0.5).lerp(GREYC, capd)); plateFront.setColorAt(ip, col.setHex(P.rim).lerp(GREYP, capd * 0.7));
+      plateFill.setColorAt(ip, col.setHex(P.plate).lerp(new THREE.Color(P.coat), colK ? 0.1 : 0.35).lerp(GREYL, capd)); plateRim.setColorAt(ip, col.setHex(P.plate).multiplyScalar(0.5).lerp(GREYC, capd)); plateFront.setColorAt(ip, col.setHex(P.rim).lerp(GREYP, capd * 0.7));
       for (const m of [plateRim, plateFill, plateFront]) setOp(m, ip, op * pf * (1 - bk));   // on a bridge deck the men file narrow, no plate
       if (isArt) {
         const k = ng++, gk = W * 0.75 / 0.78 * 1.27, lmb = Math.max(c, mv);   // v6: +30 %   // v4: guns ~30 % smaller
@@ -325,21 +329,26 @@ export function createTroops3D(o) {
         const L = LINE[j]; let la = L[0] * (u.form === "square" ? Wl * 0.75 : Wl * 0.96), lb = L[1] * (u.form === "square" ? Wl * 0.75 : Dl * 0.9);
         la += (hash(seed + j, 1) - 0.5) * 0.12 * sp; lb += (hash(seed + j, 2) - 0.5) * 0.12 * sp;   // tidy ranks, a hair of irregularity
         // v7: line spot (frame lpa) and march-column spot (4 files x 18 ranks, frame cpa); each man walks between them on his own clock
-        const cfi = j % 4, cra = Math.floor(j / 4), ca = (cfi - 1.5) * csp * 1.05 + (hash(seed + j, 14) - 0.5) * 0.1 * sp, cb = D.cl / 2 - (cra + 0.5) * csp * 1.25;
-        const kj = fq <= 0 ? 0 : fq >= 1 ? 1 : sstep(0, 1, clamp(fq * 1.35 - 0.35 * hash(seed + j, 15)));
+        const cfi = j % 3, cra = Math.floor(j / 3), sway = 0.06 * sp * Math.sin(t * 2.2 + cra * 0.5 + seed) * walk, ca = (cfi - 1) * csp * 1.1 + (hash(seed + j, 14) - 0.5) * 0.1 * sp + sway, cb = D.cl / 2 - (cra + 0.5) * csp * 0.55;
+        const dj = 0.22 * ((L[0] + 0.5) * 0.6 + hash(seed + j, 15) * 0.4), kj = fq <= 0 ? 0 : fq >= 1 ? 1 : sstep(0, 1, clamp((fq - dj) / 0.76));   // v8: file by file (0.1-0.45 s apart), each man walks
         const lx = Q.lx - lfy * la + lfx * lb, ly = Q.ly + lfx * la + lfy * lb, cx2 = Q.cx - cfy * ca + cfx * cb, cy2 = Q.cy + cfx * ca + cfy * cb;
         let x = lerp(lx, cx2, kj), y = lerp(ly, cy2, kj), ma = lsa + angDiff(lsa, cpa) * sstep(0, 0.35, kj);
         // v6 (owner): at a bridge the block BREAKS RANKS: each man walks the escape path in a stream 3 abreast (natural jitter, no plate),
         // the men leave / re-take their rank spots over ~1-1.5 s as the block enters / leaves the bridge zone
-        if (st > 0.001) { const row = Math.floor(j / 3), cc = j % 3, sw = Q.ew - (row - 12) * 0.06 - (hash(seed + j, 11) - 0.5) * 0.03, g = along(Q.eq.path, Math.max(0, sw));
-          const off = (cc - 1) * 0.05 + (hash(seed + j, 12) - 0.5) * 0.02, sx2 = g[0] - g[3] * off, sy2 = g[1] + g[2] * off, kj = sstep(0, 1, clamp(st * 1.25 - 0.25 * hash(seed + j, 13)));
+        if (st > 0.001) { const row = Math.floor(j / 3), cc = j % 3, sw = Q.ew - (row - 11.5) * csp * 0.55 - (hash(seed + j, 11) - 0.5) * 0.02, g = along(Q.eq.path, Math.max(0, sw));
+          const off = (cc - 1) * Math.min(csp * 1.1, 0.055) + (hash(seed + j, 12) - 0.5) * 0.015, sx2 = g[0] - g[3] * off, sy2 = g[1] + g[2] * off, kj = sstep(0, 1, clamp(st * 1.25 - 0.25 * hash(seed + j, 13)));
           x = lerp(x, sx2, kj); y = lerp(y, sy2, kj); ma = sa + angDiff(sa, Math.atan2(g[3], g[2])) * kj; }
-        const bob = walk * 0.12 * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), rear = sstep(-0.1, -0.42, L[1]) * (1 - kj), hy = Math.max(H(x, y), deckTop(x, y)) + S.lift + pT * 1.15 * (1 - st) + bob - sink * rear * (1 - st), lift = isCav ? fh * 0.55 : 0;
+        const bob = walk * (0.12 + 0.1 * kj) * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), rear = sstep(-0.1, -0.42, L[1]) * (1 - kj), hy = Math.max(H(x, y), deckTop(x, y)) + S.lift + pT * 1.15 * (1 - st) + bob - sink * rear * (1 - st), lift = isCav ? fh * 0.55 : 0;
         const jh = 0.93 + 0.14 * hash(seed + j, 6), ja = (hash(seed + j, 8) - 0.5) * 0.35, jfx = Math.cos(ma + ja), jfy = Math.sin(ma + ja), jc = 0.9 + 0.2 * hash(seed + j, 9);   // v5: men not identical
         if (isCav) { setM(horses, nh, x, hy, y, sfx, sfy, fw * 1.5, fh * 0.7, fd * 2.2); setOp(horses, nh++, op); }
         setM(coats, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd); setM(pales, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd);
-        coats.setColorAt(nf, col.setHex(P.coat).multiplyScalar(jc).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++;
+        coats.setColorAt(nf, col.setHex(P.coat).lerp(new THREE.Color(P.plate), 0.3).multiplyScalar(jc).lerp(GREYC, capd));   // v8: coats 30 % toward the unit colour pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++;
       }
+      { // v8: colour-bearer at the head of a column (shows which way it is going)
+        const vb = sstep(0.6, 1, fq) * (1 - st), hx = Q.cx + cfx * (D.cl / 2 + 0.9 * sp), hy2 = Q.cy + cfy * (D.cl / 2 + 0.9 * sp), hh = Math.max(H(hx, hy2), deckTop(hx, hy2)) + S.lift + walk * 0.1 * fh * Math.abs(Math.sin(t * 6 + seed));
+        setM(coats, nf, hx, hh, hy2, cfx, cfy, fw, fh, fd); setM(pales, nf, hx, hh, hy2, cfx, cfy, fw, fh, fd); coats.setColorAt(nf, col.setHex(P.coat).lerp(new THREE.Color(P.plate), 0.3)); pales.setColorAt(nf, col.setHex(P.pale)); setOp(coats, nf, op * vb); setOp(pales, nf, op * vb); nf++;
+        const fs2 = sp * 1.15, kf = nfl++; setM(poleM, kf, hx + cfy * 0.3 * sp, hh, hy2 - cfx * 0.3 * sp, cfx, cfy, fs2, fs2, fs2); setOp(poleM, kf, op * vb);
+        setM(flagM, kf, hx + cfy * 0.3 * sp, hh, hy2 - cfx * 0.3 * sp, -cfy, cfx, fs2, fs2 * (1 + 0.06 * Math.sin(t * 5 + seed)), fs2); flagM.setColorAt(kf, col.setHex(P.flag)); setOp(flagM, kf, op * vb); }
       // skirmishers: a few men a little ahead of a halted line; they walk back into the front rank (same size) when it moves, routs or is taken
       const ks = (1 - fq) * (1 - capd) * (1 - e) * (1 - sstep(0.15 * ts, 0.6 * ts, spd)) * (u.skirmish === false || isCav ? 0 : 1);
       for (let j = 0; j < NS; j++) { const h1 = hash(seed + 91 + j, 1), h2 = hash(seed + 91 + j, 2), fj = Math.min(11, Math.round(((j + 0.5) / NS) * 12 - 0.5));
@@ -349,7 +358,7 @@ export function createTroops3D(o) {
         setM(coats, nf, x, H(x, y) + S.lift + pT * ks - sink, y, sfx, sfy, fw, fh, fd); setM(pales, nf, x, H(x, y) + S.lift + pT * ks - sink, y, sfx, sfy, fw, fh, fd);
         coats.setColorAt(nf, col.setHex(P.coat).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op * (1 - st) * (1 - sstep(0, 0.3, fq))); setOp(pales, nf, op * (1 - st) * (1 - sstep(0, 0.3, fq))); nf++; }
     }
-    holes.count = nq; coats.count = pales.count = nf; plateFill.count = plateRim.count = plateFront.count = np; shadows.count = halos.count = ns;
+    holes.count = nq; poleM.count = flagM.count = nfl; coats.count = pales.count = nf; plateFill.count = plateRim.count = plateFront.count = np; shadows.count = halos.count = ns;
     carriage.count = barrel.count = wheels.count = limber.count = ng; if (horses) horses.count = nh;
     for (const m of ALL) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true; }
     API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa),
