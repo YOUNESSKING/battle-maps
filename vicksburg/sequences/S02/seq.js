@@ -118,13 +118,12 @@ const arrows = [
   { region: WD, side: R, pts: [[1060, 742], [1180, 730], [1290, 712], [1372, 694]], t0: T.southC, dur: 1.2, t1: 65.6, width: 0.42 },
   // E: Chickasaw Bayou: the attack on the bluffs
   { region: WD, side: U, pts: [[1382, 600], [1392, 612], [1402, 624], [1410, 632]], t0: T.attacked, dur: 1.2, t1: T.thrown + 0.6, width: 0.42 },
-  // E: Grant's Canal across De Soto Point; the Duckport canal; the Yazoo routes from the north through the flooded forests (stopped short)
-  { region: WD, side: U, pts: [[1323, 694], [1334, 700], [1346, 707], [1358, 714]], t0: T.canals, dur: 1.2, t1: T.failed + 0.6, width: 0.36 },
-  { region: WD, side: U, pts: [[1284, 644], [1270, 664], [1252, 690], [1236, 716]], t0: T.bends - 0.2, dur: 1.2, t1: T.failed + 0.6, width: 0.32 },
-  { region: WD, side: U, pts: [[1410, 352], [1424, 400], [1438, 450], [1448, 494], [1452, 516]], t0: T.cutThrough, dur: 1.6, t1: T.failed + 0.6, width: 0.4 },
+  // E: Grant's Canal across De Soto Point; the Yazoo routes from the north through the flooded forests (stopped short)
+  { region: WD, side: U, pts: [[1323, 694], [1334, 700], [1346, 707], [1358, 714]], t0: T.canals, dur: 1.2, t1: T.failed + 0.6, width: 0.24 },
+  { region: WD, side: U, pts: [[1492, 424], [1482, 458], [1468, 490], [1454, 516]], t0: T.cutThrough, dur: 1.6, t1: T.failed + 0.6, width: 0.4 },
   // G: the plan: down the west bank; the fleet past the guns; the crossing
   { region: WD, side: U, pts: WBthin.filter((_, i) => i % 3 === 0 || i === WBthin.length - 1), t0: T.march, dur: T.city + 0.4 - T.march, t1: D + 1, width: 0.42 },
-  { region: WD, side: U, pts: RIV_RUN, t0: T.run, dur: 3.2, t1: D + 1, width: 0.36 },
+  { region: WD, side: U, pts: RIV_RUN, t0: T.run, dur: 3.2, t1: D + 1, width: 0.28 },
   { region: WD, side: U, pts: [[HT[0] - 4, HT[1] + 16], [HT[0] + 12, HT[1] + 30], [GG[0] + 4, GG[1] + 6]], t0: T.carry - 0.2, dur: 1.0, t1: D + 1, width: 0.48 },
   // H: Sherman's alternative: back north and try again by land (a thin ghost arrow off the top of the map)
   { region: WD, side: U, pts: [[MB[0] + 6, MB[1] - 4], [MB[0] + 10, MB[1] - 50], [MB[0] + 2, MB[1] - 110], [MB[0] - 6, MB[1] - 170]], t0: T.backNorth, dur: 1.4, t1: T.but + 0.6, width: 0.3 },
@@ -143,7 +142,7 @@ const fx = {
 
 // ---------------- the boats ----------------
 const boats = [
-  { region: VB, kind: "steamer", n: 1, size: 0.55, path: RIVC, sAt: () => 0, t0: 22.6, t1: CUT2, lamp: false },   // (sAt replaced below)
+  { region: VB, kind: "steamer", n: 1, size: 0.95, path: RIVC, sAt: () => 0, t0: 22.6, t1: CUT2, lamp: false },   // (sAt replaced below)
   // G: the fleet runs down past the city to Hard Times (plan, wide)
   { region: WD, kind: ["gunboat", "gunboat", "gunboat", "steamer", "steamer"], n: 5, size: 3.6, path: RIV_RUN,
     sAt: (t, i) => Math.max(0, (t - T.run) * 34 - i * 9), t0: T.navy, t1: D + 1, lamp: false },
@@ -153,45 +152,47 @@ boats[0].sAt = (t) => sSm(t);
 // ---------------- camera ----------------
 const keys = [
   // A: the river from altitude
-  { t: 0, region: WD, at: [1262, 842], dist: 840, tilt: 36, yaw: 1, fov: 30 },
-  { t: 10.8, region: WD, at: [1258, 860], dist: 800, tilt: 38, yaw: 0, fov: 30 },
-  { t: CUT1, region: WD, at: [1262, 820], dist: 720, tilt: 40, yaw: -1, fov: 30 },
+  { t: 0, region: WD, at: [1336, 846], dist: 620, tilt: 38, yaw: 0, fov: 30 },
+  { t: 10.8, region: WD, at: [1332, 856], dist: 600, tilt: 38, yaw: 0, fov: 30 },
+  { t: CUT1, region: WD, at: [1334, 826], dist: 570, tilt: 40, yaw: -1, fov: 30 },
   // B: the bend + the bluffs
-  { t: CUT1, region: VB, at: [1356, 676], dist: 92, tilt: 46, yaw: -28, fov: 32, ease: "cut" },
+  { t: CUT1, region: VB, at: [1358, 678], dist: 88, tilt: 40, yaw: -28, fov: 32, ease: "cut" },
   { t: 28.0, region: VB, at: [1366, 674], dist: 78, tilt: 48, yaw: -40, fov: 32 },
   { t: 33.0, region: VB, at: [1376, 678], dist: 70, tilt: 50, yaw: -52, fov: 32 },
-  { t: 39.2, region: VB, at: [1368, 676], dist: 96, tilt: 44, yaw: -20, fov: 32 },
+  { t: 39.2, region: VB, at: [1368, 676], dist: 92, tilt: 40, yaw: -20, fov: 32 },
   // C: the city + Pemberton
   { t: 44.0, region: VB, at: [1388, 681], dist: 52, tilt: 50, yaw: -48, fov: 32 },
   { t: 51.6, region: VB, at: [1390, 680], dist: 48, tilt: 51, yaw: -56, fov: 32 },
   { t: CUT2, region: VB, at: [1382, 676], dist: 72, tilt: 47, yaw: -40, fov: 32 },
   // D: the stakes line (wide, the map tilts)
-  { t: CUT2, region: WD, at: [1300, 800], dist: 700, tilt: 42, yaw: 0, fov: 30, ease: "cut" },
-  { t: 64.4, region: WD, at: [1300, 820], dist: 640, tilt: 28, yaw: 4, fov: 30 },
+  { t: CUT2, region: WD, at: [1320, 820], dist: 620, tilt: 42, yaw: 0, fov: 30, ease: "cut" },
+  { t: 64.4, region: WD, at: [1324, 830], dist: 600, tilt: 30, yaw: 3, fov: 30 },
   // E: the north of the city: Chickasaw Bayou, Grant's Canal, the Yazoo
   { t: 68.4, region: WD, at: [1366, 628], dist: 330, tilt: 44, yaw: 0, fov: 30 },
   { t: 76.6, region: WD, at: [1376, 626], dist: 300, tilt: 46, yaw: -2, fov: 30 },
-  { t: 81.6, region: WD, at: [1366, 640], dist: 340, tilt: 45, yaw: -1, fov: 30 },
-  { t: 86.6, region: WD, at: [1374, 610], dist: 380, tilt: 44, yaw: 0, fov: 30 },
+  { t: 79.0, region: WD, at: [1356, 662], dist: 330, tilt: 45, yaw: -1, fov: 30 },
+  { t: 81.4, region: WD, at: [1360, 664], dist: 326, tilt: 45, yaw: -1, fov: 30 },
+  { t: 84.6, region: WD, at: [1412, 596], dist: 360, tilt: 44, yaw: 0, fov: 30 },
+  { t: 87.0, region: WD, at: [1400, 606], dist: 380, tilt: 44, yaw: 0, fov: 30 },
   // F: the Union camps at Young's Point / Milliken's Bend (name moment)
   { t: 91.0, region: WD, at: [1282, 646], dist: 250, tilt: 47, yaw: -2, fov: 30 },
   { t: 102.6, region: WD, at: [1272, 660], dist: 236, tilt: 48, yaw: -4, fov: 30 },
   // G: the plan
-  { t: 107.0, region: WD, at: [1258, 790], dist: 520, tilt: 44, yaw: 0, fov: 30 },
-  { t: 116.8, region: WD, at: [1270, 800], dist: 500, tilt: 45, yaw: -1, fov: 30 },
-  { t: 124.2, region: WD, at: [1282, 770], dist: 640, tilt: 42, yaw: 0, fov: 30 },
+  { t: 107.0, region: WD, at: [1290, 790], dist: 500, tilt: 44, yaw: 0, fov: 30 },
+  { t: 116.8, region: WD, at: [1300, 836], dist: 480, tilt: 45, yaw: -1, fov: 30 },
+  { t: 124.2, region: WD, at: [1306, 770], dist: 620, tilt: 42, yaw: 0, fov: 30 },
   // H: Sherman's letter
-  { t: D, region: WD, at: [1270, 700], dist: 600, tilt: 42, yaw: 2, fov: 30 },
+  { t: D, region: WD, at: [1300, 716], dist: 590, tilt: 42, yaw: 2, fov: 30 },
 ];
 
 const W1 = "#3C6E9E", R1 = "#9C3A35";
 window.SEQ = {
   name: "S02", D, T, seed: 1862, date: "1863-03-01",
   regions: [WD, VB],
-  regionOpts: { [WD]: { troopScale: 22 }, [VB]: { troopScale: 2.2 } },
+  regionOpts: { [WD]: { troopScale: 17 }, [VB]: { troopScale: 3.2 } },
   keys,
   clouds: {
-    [WD]: { keepClear: [[1260, 840, 120, 1, 0.7], [1383, 680, 60, 1, 0.6], [1380, 620, 70, 1, 0.6], [1280, 650, 60, 1, 0.6], [1230, 900, 70, 1, 0.6]] },
+    [WD]: { scatter: { seed: 5 }, keepClear: [[1260, 840, 160, 1, 0.9], [1200, 760, 120, 1, 0.9], [1383, 680, 60, 1, 0.6], [1380, 620, 70, 1, 0.6], [1280, 650, 60, 1, 0.6], [1230, 900, 70, 1, 0.6]] },
     [VB]: { shadows: true },
   },
   units, arrows, boats, fx,
@@ -254,7 +255,7 @@ window.SEQ = {
     ["label", T.run, T.run + 3.4, { name: "The navy runs the guns", sub: "at night", world: [1350, 760], side: "us", marker: false }],
     ["label", T.carry, T.carry + 3.2, { name: "Across the river", world: [GG[0] + 6, GG[1] + 8], side: "us", marker: false }],
     ["label", T.enemy, T.enemy + 3.0, { name: "On the enemy's side", world: [1300, 900], side: "cs", marker: false }],
-    ["label", T.supply, D - 3.4, { name: "Every supply he had", sub: "behind the fortress", world: [MB[0], MB[1]], side: "us", marker: false, offset: [-330, -10] }],
+    ["label", T.supply, D - 3.4, { name: "Every supply he had", sub: "behind the fortress", world: [MB[0], MB[1]], side: "us", marker: false, offset: [36, 18] }],
     // H
     ["medallion", { kind: "card", general: "sherman", sub: "go back north · try again by land", screen: [1765, 215], tIn: T.shermanH, tOut: T.but - 0.3 }],
     ["letter", T.but, D + 1, { header: "8 April 1863 · near Vicksburg", title: "Sherman to Grant's staff", sub: "Sherman's Memoirs", cps: 34,

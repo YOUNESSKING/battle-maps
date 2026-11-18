@@ -164,6 +164,18 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
 - Labels on wide shots: names under the 3D title hide, names under clouds dim; keep river names italic (`river: true`).
 - Boxes / arrows sizes are map units scaled by `troopScale`: a close camera at dist 25-40 suits 1, the wide map at 400-650 suits ~10.
 
+- `S.draw(t, ctx)` runs AFTER the frame has rendered: anything that must change in the 3D scene for this frame (a mesh's visibility, a
+  custom moving fire) belongs in an fx custom emitter (`ctx.FX[region].custom((t, push) => ...)` from `build`), which runs in beforeRender.
+  `fx.custom` entries are not part of the grouped `fx` object (fires/smokeLines/...): register them in `build` (S01, S03 do).
+- The ordered-list form of `fx` (`[{kind, ...}]`) gets NO sound cues from `VX.cues` (it looks for kind "guns"/"fires", the scene for
+  "gun"/"fire"): use the grouped object form until that is reconciled.
+- Fires on the wide map (fxScale 40) are tiny with the default presets: a burning bridge seen at dist 250-700 needs `preset: "column",
+  opts: { size: 16 }` (S01) to read as a flame at the river.
+- `title.font` picks another woff2 for the 3D title: Cormorant's figures are old-style ("5", "18" look like lowercase), use Cinzel for digits.
+
+- `O.letter(..., { marks: false })` types the quote text as given (no automatic curly quotes around it): for a paraphrased
+  message with only a few words in quote marks (S06 Sherman: this road will be jammed, "as sure as life."). Default unchanged.
+
 ## Regression numbers (t: mean |diff| / p99 / % px > 24)
 3 s 0.32 / 2 / 0.26 (plaque size, see LESSONS) · 9 s 0.01 · 12 s 0.00 · 15.5 s 0.00 · 17.5 s 0.57 / 1 / 0.11 · 22 s 0.24 / 1 / 0.30 ·
 31.5 s 0.09 · 35.2 s 0.07 · 50 s 0.01 · 60.5 s 0.05. The remaining diffs are the banner portraits' resampling (sub-pixel) and
