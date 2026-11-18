@@ -176,6 +176,12 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
 - `O.letter(..., { marks: false })` types the quote text as given (no automatic curly quotes around it): for a paraphrased
   message with only a few words in quote marks (S06 Sherman: this road will be jammed, "as sure as life."). Default unchanged.
 
+- Units with the same `group` key are not pushed apart from each other: lets a scene swap one unit for a bigger copy of itself
+  (own `bw` / `bd`) with a short crossfade when the camera pulls far back (S06: thicker boxes on the 450-unit wide shots).
+- `VX.markers(list)` (wagons, cattle, corn mills, a courier rider, people; ground-pinned DOM icons moving along paths, pure function of t),
+  `VX.pulses(list)` (S07's pulsing disc, generalised) and `VX.rain(keys)` (streaks + grey veil on a canvas under the overlay):
+  each returns `{ build(ctx), draw(t, ctx) }`, called from `SEQ.build` / `SEQ.draw` (see S06 / S08).
+
 ## Regression numbers (t: mean |diff| / p99 / % px > 24)
 3 s 0.32 / 2 / 0.26 (plaque size, see LESSONS) · 9 s 0.01 · 12 s 0.00 · 15.5 s 0.00 · 17.5 s 0.57 / 1 / 0.11 · 22 s 0.24 / 1 / 0.30 ·
 31.5 s 0.09 · 35.2 s 0.07 · 50 s 0.01 · 60.5 s 0.05. The remaining diffs are the banner portraits' resampling (sub-pixel) and

@@ -388,7 +388,7 @@ const drawTroops = (t, region) => {
   }
   // deterministic push-apart: boxes of different units never overlap (the escaping road column is never shoved off its road)
   const sup = (b, nx, ny) => b.bw / 2 * Math.abs(nx * b.px + ny * b.py) + b.bd / 2 * Math.abs(nx * b.fx + ny * b.fy);
-  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || A.esc || B.esc || A.u.region !== B.u.region) continue;
+  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || (A.u.group != null && A.u.group === B.u.group) || A.esc || B.esc || A.u.region !== B.u.region) continue;
     let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05 * RO(A.u.region).troopScale;
     if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
   for (const r in TRO) { const BX = TRO[r].BX; if (!BX) continue; const h = HT(r);

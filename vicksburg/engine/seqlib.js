@@ -75,6 +75,71 @@
     for (const x of S.cues || []) c.push(x);
     return c.map(([k, t]) => [k, R6(t)]); };
 
+  // ---------------- small map markers + rain (DOM / 2D canvas over the 3D image, pure functions of t; S06 / S08) ----------------
+  // VX.markers(list) -> { build(ctx), draw(t, ctx) }: call both from SEQ.build / SEQ.draw. Item: { icon: wagon | cow | mill | rider | person | flag
+  // | svg string, halo: true | css colour (soft light disc behind the icon, for night), region, at: [x, y] | path: [[x, y]...] + s0 (arc length at t0), v (units/s), sMax (stop: a jam), t0, t1, size (units),
+  // min / max (px), color (rider / person fill), colors: [[t, color]], spin (deg/s, mill), h (height above ground, units), flip: true }
+  const ICON = {
+    wagon: '<svg viewBox="0 0 40 30"><path d="M7 18 Q8 4 20 4 Q32 4 33 18 Z" fill="#EFE7D2" stroke="#2a2418" stroke-width="2"/><path d="M12 6 L11 18 M20 4 L20 18 M28 6 L29 18" stroke="#b9ac8c" stroke-width="1.2"/><rect x="4" y="17" width="32" height="4.5" fill="#6a5236" stroke="#2a2418" stroke-width="1.5"/><circle cx="11" cy="24.5" r="4.5" fill="#d8ccad" fill-opacity=".35" stroke="#2a2418" stroke-width="2.4"/><circle cx="29" cy="24.5" r="4.5" fill="#d8ccad" fill-opacity=".35" stroke="#2a2418" stroke-width="2.4"/></svg>',
+    cow: '<svg viewBox="0 0 40 26"><g fill="#5a3e28" stroke="#1e150d" stroke-width="1.3"><ellipse cx="18" cy="12" rx="12" ry="6.5"/><path d="M28 9 L35 7.5 L38.5 11.5 L34 15 L29 14 Z"/><rect x="9" y="16" width="3" height="8.5"/><rect x="14" y="17" width="3" height="7.5"/><rect x="21" y="17" width="3" height="7.5"/><rect x="25.5" y="16" width="3" height="8.5"/><path d="M6.5 10 Q3 13 4 19" fill="none"/></g><ellipse cx="16" cy="10" rx="4" ry="2.6" fill="#efe6d2"/><path d="M33.5 7.8 l0.6 -3.2 M36 8.4 l1.8 -2.8" stroke="#efe6d2" stroke-width="1.5"/></svg>',
+    mill: '<svg viewBox="-24 -26 52 46"><path d="M2 -6 L14 -16 L26 -6 L26 14 L2 14 Z" fill="#d9cba6" stroke="#2a2418" stroke-width="2"/><path d="M0 -6 L14 -18 L28 -6" fill="none" stroke="#5c3a24" stroke-width="3"/><g class="rot"><circle r="12" fill="none" stroke="#2a2418" stroke-width="3.2"/><circle r="12" fill="none" stroke="#e2d3a8" stroke-width="1.2"/><path d="M-12 0 H12 M0 -12 V12 M-8.5 -8.5 L8.5 8.5 M-8.5 8.5 L8.5 -8.5" stroke="#2a2418" stroke-width="2"/><circle r="2.6" fill="#2a2418"/></g></svg>',
+    rider: '<svg viewBox="0 0 40 36"><g fill="currentColor" stroke="#0e0c08" stroke-width="1.3" stroke-linejoin="round"><path d="M5 21 Q7 15 15 15 L27 15 Q30 11 33 9 L37 11 L35.5 15 Q34 19 31 20 L31.5 33 L28.5 33 L27.5 22 L16 22 L13.5 33 L10.5 33 L11 23 Q7.5 24 4.5 27.5 L3 25.5 Z"/><path d="M18 15.5 L19 7 Q20 4.5 23 5.5 L23.5 10 L21.5 15.5 Z"/><circle cx="21.2" cy="3.4" r="2.8"/></g><rect x="23" y="9" width="6" height="4.2" fill="#f4ecd6" stroke="#0e0c08" stroke-width="0.9"/></svg>',
+    person: '<svg viewBox="0 0 14 30"><g fill="currentColor" stroke="#0e0c08" stroke-width="1"><circle cx="7" cy="4.5" r="3.4"/><path d="M3 10 Q7 7.5 11 10 L12 20 L9.5 20 L9 29 L5 29 L4.5 20 L2 20 Z"/></g><rect x="7.5" y="12" width="6" height="4" fill="#efe6d2" stroke="#0e0c08" stroke-width="0.7"/></svg>',
+  };
+  VX.ICONS = ICON;
+  VX.markers = (list) => {
+    const M = { items: [] };
+    M.build = (ctx) => { const PN = document.getElementById("pins");
+      for (const m of list) { const e = document.createElement("div"); e.style.cssText = "position:absolute;left:0;top:0;opacity:0;pointer-events:none;will-change:transform;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.55))";
+        e.innerHTML = ICON[m.icon] || m.icon || ""; const sv = e.firstChild; if (sv && sv.style) { sv.style.display = "block"; sv.style.width = "100%"; sv.style.height = "100%"; sv.style.overflow = "visible"; }
+        if (m.halo) e.style.background = `radial-gradient(closest-side, ${m.halo === true ? "rgba(255,236,190,.55)" : m.halo}, rgba(255,236,190,0))`;
+        PN.appendChild(e); const vb = (sv && sv.viewBox && sv.viewBox.baseVal) || { width: 40, height: 30 };
+        M.items.push({ m, e, ar: vb.height / vb.width, rot: e.querySelector(".rot"), L: m.path ? VX.len(m.path) : 0 }); } };
+    M.pos = (m, L, t) => { if (!m.path) return { p: m.at, s: 0 }; let s = (m.s0 || 0) + (m.v || 0) * Math.max(0, t - (m.t0 ?? 0)); if (m.sMax != null) s = Math.min(s, m.sMax); s = clamp(s, 0, L); return { p: VX.along(m.path, s), s }; };
+    M.draw = (t, ctx) => { const W = ctx.world, reg = W.cameraAt(t).region;
+      for (const it of M.items) { const m = it.m, e = it.e, t0 = m.t0 ?? -1e9, t1 = m.t1 ?? 1e9;
+        if (t < t0 - 0.01 || t > t1 + 0.01 || (m.region && m.region !== reg)) { if (e.style.opacity !== "0") e.style.opacity = "0"; continue; }
+        const { p, s } = M.pos(m, it.L, t), q = W.projectMap(p[0], p[1], m.h || 0);
+        if (!q.visible) { e.style.opacity = "0"; continue; }
+        const fi = m.fadeIn ?? 0.5, fo = m.fadeOut ?? 0.5, a = (fi > 0 ? VX.sstep(t0, t0 + fi, t) : 1) * (fo > 0 ? 1 - VX.sstep(t1 - fo, t1, t) : 1) * (m.alpha ?? 1);
+        const w = clamp((m.size || 4) * q.ppu, m.min || 9, m.max || 34), h = w * it.ar;
+        let fl = 1; if (m.path && m.flip !== false) { const p2 = VX.along(m.path, Math.min(it.L, s + 0.6)), p1 = VX.along(m.path, Math.max(0, s - 0.6)), a1 = W.projectMap(p1[0], p1[1], 0), a2 = W.projectMap(p2[0], p2[1], 0); fl = a2.x < a1.x ? -1 : 1; }
+        if (m.mirror) fl = -fl;
+        e.style.width = w.toFixed(1) + "px"; e.style.height = h.toFixed(1) + "px";
+        e.style.transform = `translate(${(q.x - w / 2).toFixed(1)}px,${(q.y - (m.anchor === "center" ? h / 2 : h)).toFixed(1)}px) scaleX(${fl})`;
+        e.style.opacity = a.toFixed(3);
+        let col = m.color; for (const [tc, c] of m.colors || []) if (t >= tc) col = c; if (col) e.style.color = col;
+        if (it.rot) it.rot.setAttribute("transform", `rotate(${(((m.spin ?? 90) * t) % 360).toFixed(1)})`); } };
+    return M; };
+  // VX.pulses(list): soft discs pinned to the ground that pulse (S07's Jackson glow). Item: { at, t0, t1, r (units), color: [r, g, b], period, region }
+  VX.pulses = (list) => { const P = { items: [] };
+    P.build = () => { const PN = document.getElementById("pins"); for (const p of list) { const e = document.createElement("div"), c = (p.color || [200, 40, 28]).join(",");
+      e.style.cssText = `position:absolute;left:0;top:0;border-radius:50%;opacity:0;pointer-events:none;background:radial-gradient(circle, rgba(${c},0.75) 0%, rgba(${c},0.42) 40%, rgba(${c},0) 70%);box-shadow:0 0 0 2px rgba(${c},0.5) inset`;
+      PN.insertBefore(e, PN.firstChild); P.items.push({ p, e }); } };
+    P.draw = (t, ctx) => { const reg = ctx.world.cameraAt(t).region; for (const { p, e } of P.items) {
+      if ((p.region && p.region !== reg) || t < p.t0 - 0.3 || t > (p.t1 ?? 1e9) + 0.3) { e.style.opacity = "0"; continue; }
+      const per = p.period || 1.5, ph = Math.max(0, Math.sin((t - p.t0) * 2 * Math.PI / per)), k = VX.sstep(p.t0 - 0.3, p.t0 + 0.5, t) * (1 - VX.sstep((p.t1 ?? 1e9) - 0.6, p.t1 ?? 1e9, t));
+      const s = ctx.world.projectMap(p.at[0], p.at[1], 0); if (!s.visible) { e.style.opacity = "0"; continue; }
+      const d = Math.max(24, (p.r || 13) * 2 * s.ppu * (1 + 0.22 * ph));
+      e.style.width = e.style.height = d.toFixed(1) + "px"; e.style.transform = `translate(${(s.x - d / 2).toFixed(1)}px,${(s.y - d / 2).toFixed(1)}px) scaleY(0.72)`;
+      e.style.opacity = (k * (0.55 + 0.45 * ph) * (p.alpha ?? 1)).toFixed(3); } };
+    return P; };
+  // VX.rain(keys): slanted streaks + a cool grey veil on a canvas over the map (under banners, labels and the GM overlay). keys: [[t, intensity 0..1], ...]
+  // (linear between keys; 0 = off). Deterministic: streak positions are a function of t only.
+  VX.rain = (keys, o = {}) => { const R = {};
+    R.build = () => { const c = document.createElement("canvas"); c.width = 1280; c.height = 720; c.style.cssText = "position:absolute;inset:0;pointer-events:none";
+      const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); R.c = c; R.g = c.getContext("2d"); };
+    R.k = (t) => { if (!keys.length) return 0; if (t <= keys[0][0]) return keys[0][1]; for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) { const [a, va] = keys[i - 1], [b, vb] = keys[i]; return lerp(va, vb, (t - a) / (b - a)); } return keys[keys.length - 1][1]; };
+    R.draw = (t) => { const g = R.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = R.k(t); if (k <= 0.001) return;
+      g.fillStyle = `rgba(${o.veil || "70,80,92"},${(0.2 * k).toFixed(3)})`; g.fillRect(0, 0, 1280, 720);
+      const n = Math.round((o.n || 900) * k), sl = o.slant ?? 0.22, sp = o.speed || 1500;
+      for (let layer = 0; layer < 2; layer++) { const len = layer ? 26 : 15, a = (layer ? 0.3 : 0.2) * Math.min(1, k * 1.4);
+        g.strokeStyle = `rgba(214,222,228,${a.toFixed(3)})`; g.lineWidth = layer ? 1.2 : 0.8; g.beginPath();
+        for (let i = layer; i < n; i += 2) { const sx = VX.hsh(i, 1) * 1400 - 60, sy0 = VX.hsh(i, 2) * 800, v = sp * (0.75 + 0.5 * VX.hsh(i, 3)) * (layer ? 1.2 : 0.85);
+          const y = ((sy0 + v * t) % 800) - 40, x = sx - sl * (y + 40); g.moveTo(x, y); g.lineTo(x - sl * len, y + len); }
+        g.stroke(); } };
+    return R; };
+
   G.VX = VX;
   if (typeof module !== "undefined") module.exports = VX;
 })(typeof window !== "undefined" ? window : globalThis);

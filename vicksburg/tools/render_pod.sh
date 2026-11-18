@@ -26,7 +26,7 @@ cleanup() { if [ $OWN = 1 ]; then rp "mutation { podTerminate(input: {podId: \"$
 trap cleanup EXIT
 echo "$POD" > $W/pod_id
 for i in $(seq 1 90); do [ "$(ctl $POD ping 2>/dev/null)" = "pong" ] && break; sleep 10; done
-for i in $(seq 1 60); do ctl $POD tail /work/logs/setup.log 5 2>/dev/null | grep -q "SETUP DONE" && break; sleep 10; done
+for i in $(seq 1 60); do ctl $POD tail /work/logs/setup.log 400 2>/dev/null | grep -q "SETUP DONE" && break; sleep 10; done
 ctl $POD put $R/chrome_gpu_wrap.sh /work/chrome_gpu_wrap.sh; ctl $POD put $R/patch_hf_chunks_gpu.sh /work/patch_hf_chunks_gpu.sh
 ctl $POD put $V/tools/pod_scene.sh /work/pod_scene.sh
 ctl $POD run prep 'chmod +x /work/*.sh; bash /work/patch_hf_chunks_gpu.sh > /work/logs/patch.log 2>&1; mkdir -p /work/in /work/out; echo prepped'

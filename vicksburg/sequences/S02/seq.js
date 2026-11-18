@@ -123,7 +123,7 @@ const arrows = [
   { region: WD, side: U, pts: [[1492, 424], [1482, 458], [1468, 490], [1454, 516]], t0: T.cutThrough, dur: 1.6, t1: T.failed + 0.6, width: 0.4 },
   // G: the plan: down the west bank; the fleet past the guns; the crossing
   { region: WD, side: U, pts: WBthin.filter((_, i) => i % 3 === 0 || i === WBthin.length - 1), t0: T.march, dur: T.city + 0.4 - T.march, t1: D + 1, width: 0.42 },
-  { region: WD, side: U, pts: RIV_RUN, t0: T.run, dur: 3.2, t1: D + 1, width: 0.28 },
+  { region: WD, color: "#86AEDC", pts: RIV_RUN, t0: T.run, dur: 3.2, t1: D + 1, width: 0.2 },
   { region: WD, side: U, pts: [[HT[0] - 4, HT[1] + 16], [HT[0] + 12, HT[1] + 30], [GG[0] + 4, GG[1] + 6]], t0: T.carry - 0.2, dur: 1.0, t1: D + 1, width: 0.48 },
   // H: Sherman's alternative: back north and try again by land (a thin ghost arrow off the top of the map)
   { region: WD, side: U, pts: [[MB[0] + 6, MB[1] - 4], [MB[0] + 10, MB[1] - 50], [MB[0] + 2, MB[1] - 110], [MB[0] - 6, MB[1] - 170]], t0: T.backNorth, dur: 1.4, t1: T.but + 0.6, width: 0.3 },
@@ -152,9 +152,9 @@ boats[0].sAt = (t) => sSm(t);
 // ---------------- camera ----------------
 const keys = [
   // A: the river from altitude
-  { t: 0, region: WD, at: [1336, 846], dist: 620, tilt: 38, yaw: 0, fov: 30 },
-  { t: 10.8, region: WD, at: [1332, 856], dist: 600, tilt: 38, yaw: 0, fov: 30 },
-  { t: CUT1, region: WD, at: [1334, 826], dist: 570, tilt: 40, yaw: -1, fov: 30 },
+  { t: 0, region: WD, at: [1326, 810], dist: 600, tilt: 33, yaw: 0, fov: 30 },
+  { t: 10.8, region: WD, at: [1324, 816], dist: 590, tilt: 34, yaw: 0, fov: 30 },
+  { t: CUT1, region: WD, at: [1326, 806], dist: 560, tilt: 36, yaw: -1, fov: 30 },
   // B: the bend + the bluffs
   { t: CUT1, region: VB, at: [1358, 678], dist: 88, tilt: 40, yaw: -28, fov: 32, ease: "cut" },
   { t: 28.0, region: VB, at: [1366, 674], dist: 78, tilt: 48, yaw: -40, fov: 32 },
@@ -165,8 +165,8 @@ const keys = [
   { t: 51.6, region: VB, at: [1390, 680], dist: 48, tilt: 51, yaw: -56, fov: 32 },
   { t: CUT2, region: VB, at: [1382, 676], dist: 72, tilt: 47, yaw: -40, fov: 32 },
   // D: the stakes line (wide, the map tilts)
-  { t: CUT2, region: WD, at: [1320, 820], dist: 620, tilt: 42, yaw: 0, fov: 30, ease: "cut" },
-  { t: 64.4, region: WD, at: [1324, 830], dist: 600, tilt: 30, yaw: 3, fov: 30 },
+  { t: CUT2, region: WD, at: [1320, 820], dist: 580, tilt: 36, yaw: 0, fov: 30, ease: "cut" },
+  { t: 64.4, region: WD, at: [1324, 826], dist: 560, tilt: 28, yaw: 3, fov: 30 },
   // E: the north of the city: Chickasaw Bayou, Grant's Canal, the Yazoo
   { t: 68.4, region: WD, at: [1366, 628], dist: 330, tilt: 44, yaw: 0, fov: 30 },
   { t: 76.6, region: WD, at: [1376, 626], dist: 300, tilt: 46, yaw: -2, fov: 30 },
@@ -179,7 +179,7 @@ const keys = [
   { t: 102.6, region: WD, at: [1272, 660], dist: 236, tilt: 48, yaw: -4, fov: 30 },
   // G: the plan
   { t: 107.0, region: WD, at: [1290, 790], dist: 500, tilt: 44, yaw: 0, fov: 30 },
-  { t: 116.8, region: WD, at: [1300, 836], dist: 480, tilt: 45, yaw: -1, fov: 30 },
+  { t: 116.8, region: WD, at: [1300, 862], dist: 480, tilt: 45, yaw: -1, fov: 30 },
   { t: 124.2, region: WD, at: [1306, 770], dist: 620, tilt: 42, yaw: 0, fov: 30 },
   // H: Sherman's letter
   { t: D, region: WD, at: [1300, 716], dist: 590, tilt: 42, yaw: 2, fov: 30 },
