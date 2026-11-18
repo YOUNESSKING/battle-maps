@@ -205,7 +205,7 @@ if (S.title) {
   const T_ON = TT.tOn, T_GROW = TT.tGrow ?? T_ON + 0.5, T_OFF = TT.tOff ?? (nextDive ? nextDive.deckIn - 0.3 : T_ON + 3), tA = TT.anchorT ?? T_ON + 0.91;
   const BLUR0 = TT.blurFrom ?? (nextDive ? nextDive.push + 0.6 : T_ON + 1.9);
   TREG = TT.region || world.cameraAt(tA).region;
-  const TF = new FontFace("CGT", `url(${EB}assets/fonts/cormorant-garamond-latin-700-normal.woff2)`, { weight: "700" }); await TF.load(); document.fonts.add(TF);
+  const TF = new FontFace("CGT", `url(${EB}assets/fonts/${TT.font || "cormorant-garamond-latin-700-normal.woff2"})`, { weight: "700" });   // title.font: another woff2 in assets/fonts (e.g. Cinzel for lining figures) await TF.load(); document.fonts.add(TF);
   const TTXT = TT.text, TCW = 2048, TCH = 640;
   const mkTitleCanvas = (face) => { const c = document.createElement("canvas"); c.width = TCW; c.height = TCH; const g = c.getContext("2d");
     g.textAlign = "center"; g.textBaseline = "middle"; let fs = TT.fontSize || 400; g.font = `700 ${fs}px "CGT", Georgia, serif`; if ("letterSpacing" in g) g.letterSpacing = "18px";
@@ -276,7 +276,8 @@ const BOATS = [];
 for (const B of S.boats || []) { const r = B.region || NAMES[0], R = world.regions[r], sz = B.size ?? (isWide(r) ? 1 : 0.1), n = B.n ?? 1, kinds = [].concat(B.kind || "steamer");
   for (let i = 0; i < n; i++) { const g = mkBoat(kinds[i % kinds.length]); g.scale.setScalar(sz); R.scene.add(g); BOATS.push({ B, i, g, r, R, sz }); } }
 const boatAt = (o, t) => { const { B, i, R, sz } = o, on = t > B.t0 && t < B.t1;
-  if (B.path) { const s = (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz), p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (B.h ?? 0.35 * sz), dx: p[2], dy: p[3], on }; }
+  if (B.path) { const s = B.sAt ? B.sAt(t, i) : (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz),   // sAt(t, i): any arc-length schedule (stops, drifting)
+    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (B.h ?? 0.35 * sz), dx: p[2], dy: p[3], on }; }
   const vy = B.vy ?? 1.6, y = B.y0 + (t - B.t0) * vy - i * (B.dy ?? 4.2 * sz), p = VX.riverAtY(o.r, B.river ?? 0, y), q = VX.riverAtY(o.r, B.river ?? 0, y + Math.sign(vy || 1)), x = p[0] + (i % 2 ? 1 : -1) * (B.lane ?? 0.6 * sz);
   return { x, y: p[1], h: p[2] * R.ys + 0.35 * sz, dx: q[0] - p[0], dy: q[1] - p[1], on }; };
 const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g.position.set(b.x, b.h, b.y); o.g.rotation.y = Math.atan2(-b.dy, b.dx); o.g.visible = b.on; } };
@@ -290,6 +291,11 @@ for (const r of NAMES) { const L = BOATS.filter((o) => o.r === r); if (!L.length
 // ---------------- troops: Style W boxes in the scene (or GM 3D blocks), arrows, generals' banners ----------------
 const TR = document.getElementById("troops"), UNITS = [];
 const posAt = (K, t) => { if (t <= K[0][0]) return [K[0][1], K[0][2]]; for (let i = 1; i < K.length; i++) if (t < K[i][0]) { const k = K[i][3] === "lin" ? clamp((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])) : sstep(K[i - 1][0], K[i][0], t); return [lerp(K[i - 1][1], K[i][1], k), lerp(K[i - 1][2], K[i][2], k)]; } const L = K[K.length - 1]; return [L[1], L[2]]; };
+// owner 2026-11-18: boxes NEVER rotate; on a road march ("lin" key segments from VX.march) a unit becomes a column: box i follows the
+// same path i * spacing behind the head (posAt at an earlier time), so the column bends with the road, crosses on the bridge, keeps its facing.
+const marchSeg = (K, t) => { if (t <= K[0][0] || t >= K[K.length - 1][0]) return false; for (let i = 1; i < K.length; i++) if (t < K[i][0]) return K[i][3] === "lin"; return false; };
+const marchK = (K, t) => (marchSeg(K, t - 0.6) + marchSeg(K, t - 0.3) + marchSeg(K, t) + marchSeg(K, t + 0.3) + marchSeg(K, t + 0.6)) / 5;
+const speedAt = (K, t) => { const a = posAt(K, t - 0.25), b = posAt(K, t + 0.25); return Math.hypot(b[0] - a[0], b[1] - a[1]) / 0.5; };
 // withdrawal along a road (v8): joins the road just beyond its start in the join direction, column nose to tail at v (units/s), slows to v2 past slowX/slowY
 const mkEscape = (e, start) => { const road = typeof e.road === "string" ? VX.road(e.region, e.road) : e.road, dir = e.join || "west", st = e.start || start;
   const ahead = { west: (p) => p[0] < st[0] - 0.3, east: (p) => p[0] > st[0] + 0.3, north: (p) => p[1] < st[1] - 0.3, south: (p) => p[1] > st[1] + 0.3 }[dir];
@@ -347,7 +353,8 @@ for (const l of S.labels || []) { const r = l.region || NAMES[0], p = l.at || VX
   PINS.push({ e, x: p[0], y: p[1], h: l.h ?? 0.05, t0: l.t0, t1: l.t1, region: r }); }
 
 // ---------------- GM overlay (1920x1080 space) ----------------
-const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p) => { const s = world.projectMap(p[0], p[1], p[2] || 0); return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: EB + "assets/fonts/", seed: S.seed ?? 1863 });
+const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p, t) => { if (typeof p === "function") p = p(t); const s = world.projectMap(p[0], p[1], p[2] || 0);   // world: [x, y, h] or (t) => [x, y, h] (follows a moving boat)
+    return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: EB + "assets/fonts/", seed: S.seed ?? 1863 });
 O.film.set({ grain: (S.film || {}).grain ?? 0.04 });   // v5: grain <= 0.04 on the final frame
 const ctx = { THREE, world, FX, VC, O, tl, S, VX, UNITS, ARROWS, BANNERS, PINS, GENERALS, G, regions: world.regions, sstep, lerp, clamp, hsh };
 const resolveArgs = (a) => { if (!a || typeof a !== "object" || Array.isArray(a)) return a; if (a.general && !a.img) { const g = gen(a.general);
@@ -375,10 +382,13 @@ const drawTroops = (t, region) => {
       const off = -span / 2 + u.bw / 2 + i * (u.bw + u.gap), wob = u.wob * 0.05 * Math.sin(t * 1.3 + i * 1.7 + cx);
       const capd = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
       let x = cx + px * off + fx * wob, y = cy + py * off + fy * wob, bfx = fx, bfy = fy, esc = false, eop = 1;
+      const mk = u.column === false ? 0 : sstep(0, 1, marchK(u.keys, t));
+      if (mk > 0 && i > 0) { const v = Math.max(speedAt(u.keys, t), speedAt(u.keys, t - 1), 0.05), dt = i * (Math.max(u.bw, u.bd) + u.gap) * 1.15 / v, q = posAt(u.keys, t - dt);
+        x = lerp(x, q[0], mk); y = lerp(y, q[1], mk); } else if (mk > 0) { x = lerp(x, cx, mk); y = lerp(y, cy, mk); }
       if (u.esc && i >= u.escFrom && t > u.esc.t0) {   // v8: peel off the line slot into the road column, nose to tail, then march off
         const si = u.esc.s(t) - (i - u.escFrom) * (u.bw + u.gap) * 1.05;
         if (si > 0) { const [ex, ey, hx, hy] = escAt(u.esc, si), k = sstep(0, 0.9, si); x = lerp(x, ex, k); y = lerp(y, ey, k);
-          const cfx = lerp(fx, hy, k), cfy = lerp(fy, -hx, k), l = Math.hypot(cfx, cfy) || 1; bfx = cfx / l; bfy = cfy / l; esc = k > 0.5;
+          esc = k > 0.5;   // owner 2026-11-18: no rotation on the road (bfx/bfy keep the unit's facing)
           if (u.esc.fade) eop = edgeFade(u.esc.fade, world.projectMap(x, y, 0.02), -30, 170); }   // fades over the frame edge (1.5-2 s at march pace)
       }
       L.push({ u, i, x, y, fx: bfx, fy: bfy, px: -bfy, py: bfx, bw: u.bw, bd: u.bd, op: op * eop * (1 - 0.25 * capd), capd, esc });
@@ -386,7 +396,7 @@ const drawTroops = (t, region) => {
   }
   // deterministic push-apart: boxes of different units never overlap (the escaping road column is never shoved off its road)
   const sup = (b, nx, ny) => b.bw / 2 * Math.abs(nx * b.px + ny * b.py) + b.bd / 2 * Math.abs(nx * b.fx + ny * b.fy);
-  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || A.esc || B.esc || A.u.region !== B.u.region) continue;
+  for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || (A.u.group != null && A.u.group === B.u.group) || A.esc || B.esc || A.u.region !== B.u.region) continue;
     let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05 * RO(A.u.region).troopScale;
     if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
   for (const r in TRO) { const BX = TRO[r].BX; if (!BX) continue; const h = HT(r);

@@ -278,3 +278,5 @@ Also good: the stunted oak carried off "as many cords of wood ... as The True Cr
 | Shaifer | SHAY-fur | U |
 | Disharoon | DISH-uh-roon | U |
 | Tuscumbia | tus-KUM-bee-uh | U |
+
+| Vicksburg newspaper | The Vicksburg Daily Citizen (J. M. Swords), printed on wallpaper in June-July 1863; last issue 2 July, reissued by Union soldiers 4 July with the note that Grant had "caught the rabbit" | CONFIRMED | Grant Memoirs ch. 38 (wallpaper, rabbit); NPS Vicksburg "The Daily Citizen"; LoC copy of the 2 July 1863 wallpaper edition |

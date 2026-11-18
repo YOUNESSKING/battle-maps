@@ -52,7 +52,8 @@ window.SEQ = {
              to: { region: "bigblack", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32 }, keys: { emerge: { at: [...] } } } ],
   clouds: { wide: { scatter: {box, n, med, seed}, keepClear: [[x, y, R, ky, rk]], corners: [[x, y, r]], wisps: [[x, y, r]], extra, bounds,
                     nightErode: 0.4, keepDiveLook: false, opts: {} },  bigblack: { shadows: true } },   // false = no clouds in that region
-  title: { text: "ONE DAY", tOn: 11.29, tGrow: 11.81, tOff, anchorT: 12.2, region, depth: 0.28, width: 0.62, up: 0.06 },
+  title: { text: "ONE DAY", tOn: 11.29, tGrow: 11.81, tOff, anchorT: 12.2, region, depth: 0.28, width: 0.62, up: 0.06,
+           font: "cinzel-latin-700-normal.woff2" },   // font: optional woff2 in engine/assets/fonts (default Cormorant Garamond 700, whose figures are old-style)
   units: [ ... ], arrows: [ ... ], banners: [ ... ], labels: [ ... ], boats: [ ... ],
   fx: { fires: [], smokeLines: [], volleys: [], guns: [], impacts: [], flashes: [], campfires: [] },   // or one ordered list [{kind, ...}]
   overlay: [ ["plaque.date", 0.4, {...}], ["medallion", {...}], (O, ctx) => {...} ],
@@ -96,6 +97,7 @@ labels:  { text, at: [x, y] | town: "Bovina", size, t0, t1, region, river: true 
 boats:   { region, kind: "steamer" | "gunboat" | [kinds], n, t0, t1, lamp, wake, size,
            river: 0 | "mississippi", y0, vy, dy, lane }     // v8 mode: follows the river by map-y (north-south rivers), boats dy apart
            // or path: [[x, y], ...], s0, speed, spacing   // any route at constant speed
+           // or path + sAt: (t, i) => arc length of boat i at t (any schedule: slowing for a bend, a disabled boat drifting); h: height above the ground
 ```
 Generals built in (`engine/assets/generals/`): grant, pemberton, sherman, mcpherson, porter (acting rear admiral), grierson, johnston,
 lincoln, davis, halleck. Any other: `generals: { key: { img, flag?, side, name, full, role } }` (img path relative to the scene root,
@@ -116,7 +118,7 @@ Only put fx where the camera sees them: every gun / volley / fire makes a sound 
 
 ### Overlay (`O` = `GMOverlay`, 1920x1080 space; API in `research/style_tests/gm3d/overlay/README.md`)
 `["path.to.method", ...args]` calls `O.path.to.method(...args)` in order; an object arg with `general: "grant"` gets its `img`, `side`,
-`name` (full) and `role` filled in. `world: [x, y]` anchors follow the ground. Devices: `plaque.date / clock / run / note / hide`,
+`name` (full) and `role` filled in. `world: [x, y]` anchors follow the ground; `world: (t) => [x, y, h]` follows anything moving (a boat). Devices: `plaque.date / clock / run / note / hide`,
 `timeline.show / go / seal / hide` (wax seals), `legend` (THE ARMIES), `medallion` (card / plate), `inset` (oval painting), `place`,
 `label`, `letter`, `quote`, `title`, `number` (3D-style gold number), `distance`, `ledger.show / add / final / hide`,
 `film.grade / dim / set`.
@@ -161,6 +163,24 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
   are not drawn by the engine: put `type: "art"` units on them.
 - Labels on wide shots: names under the 3D title hide, names under clouds dim; keep river names italic (`river: true`).
 - Boxes / arrows sizes are map units scaled by `troopScale`: a close camera at dist 25-40 suits 1, the wide map at 400-650 suits ~10.
+
+- `S.draw(t, ctx)` runs AFTER the frame has rendered: anything that must change in the 3D scene for this frame (a mesh's visibility, a
+  custom moving fire) belongs in an fx custom emitter (`ctx.FX[region].custom((t, push) => ...)` from `build`), which runs in beforeRender.
+  `fx.custom` entries are not part of the grouped `fx` object (fires/smokeLines/...): register them in `build` (S01, S03 do).
+- The ordered-list form of `fx` (`[{kind, ...}]`) gets NO sound cues from `VX.cues` (it looks for kind "guns"/"fires", the scene for
+  "gun"/"fire"): use the grouped object form until that is reconciled.
+- Fires on the wide map (fxScale 40) are tiny with the default presets: a burning bridge seen at dist 250-700 needs `preset: "column",
+  opts: { size: 16 }` (S01) to read as a flame at the river.
+- `title.font` picks another woff2 for the 3D title: Cormorant's figures are old-style ("5", "18" look like lowercase), use Cinzel for digits.
+
+- `O.letter(..., { marks: false })` types the quote text as given (no automatic curly quotes around it): for a paraphrased
+  message with only a few words in quote marks (S06 Sherman: this road will be jammed, "as sure as life."). Default unchanged.
+
+- Units with the same `group` key are not pushed apart from each other: lets a scene swap one unit for a bigger copy of itself
+  (own `bw` / `bd`) with a short crossfade when the camera pulls far back (S06: thicker boxes on the 450-unit wide shots).
+- `VX.markers(list)` (wagons, cattle, corn mills, a courier rider, people; ground-pinned DOM icons moving along paths, pure function of t),
+  `VX.pulses(list)` (S07's pulsing disc, generalised) and `VX.rain(keys)` (streaks + grey veil on a canvas under the overlay):
+  each returns `{ build(ctx), draw(t, ctx) }`, called from `SEQ.build` / `SEQ.draw` (see S06 / S08).
 
 ## Regression numbers (t: mean |diff| / p99 / % px > 24)
 3 s 0.32 / 2 / 0.26 (plaque size, see LESSONS) · 9 s 0.01 · 12 s 0.00 · 15.5 s 0.00 · 17.5 s 0.57 / 1 / 0.11 · 22 s 0.24 / 1 / 0.30 ·

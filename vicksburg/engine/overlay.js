@@ -464,7 +464,7 @@
       tl.fromTo(el.querySelector(".bg"), { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out", immediateRender: false }, tIn);
       const parts = el.querySelectorAll(".hd,.tt,.sb,.orn"); gsap.set(parts, { autoAlpha: 0 });
       parts.forEach((p, i) => tl.fromTo(p, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.5, immediateRender: false }, tIn + 0.3 + i * 0.15));
-      const Q = el.querySelector(".q"), txt = `“${o.quote || ""}”`, cps = o.cps || 28, ty = { n: 0 };
+      const Q = el.querySelector(".q"), txt = o.marks === false ? String(o.quote || "") : `“${o.quote || ""}”`, cps = o.cps || 28, ty = { n: 0 };
       tl.fromTo(ty, { n: 0 }, { n: txt.length, duration: txt.length / cps, ease: "none", immediateRender: false, onUpdate: () => { const s = txt.slice(0, Math.round(ty.n)); if (Q.textContent !== s) Q.textContent = s; } }, tIn + 1.0);
       if (tOut != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, tOut); return O; };
 
