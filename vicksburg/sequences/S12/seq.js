@@ -127,8 +127,8 @@ const build = async (ctx) => { WD = ctx.world; const { THREE, world } = ctx, sc 
     CAVE_M.build(ctx); }
   OAK_M.build(ctx); FLAGS.build(ctx);
   // trench ribbons: a dark cut + a pale parapet on the enemy side, draped on the ground; grown by draw range in a custom emitter (before render)
-  const dark = new THREE.MeshLambertMaterial({ color: 0x3e3123, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
-  const pale = new THREE.MeshLambertMaterial({ color: 0xcfbb92, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -3 });
+  const dark = new THREE.MeshLambertMaterial({ color: 0x3e3123, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+  const pale = new THREE.MeshLambertMaterial({ color: 0xcfbb92, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -3 });
   const ribbon = (pts, w, off) => { const q = []; const L = VX.len(pts); for (let s = 0; s <= L + 1e-6; s += 0.05) q.push(VX.along(pts, Math.min(s, L)));
     const pos = []; for (let i = 0; i < q.length - 1; i++) { const a = q[i], b = q[i + 1], nx = -a[3], ny = a[2], l = Math.hypot(nx, ny) || 1;
       const ux = nx / l, uy = ny / l, P0 = (p, s) => [p[0] + ux * (off + s * w / 2), p[1] + uy * (off + s * w / 2)];

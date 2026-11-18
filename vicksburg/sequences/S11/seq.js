@@ -162,7 +162,7 @@ const build = async (ctx) => { WWD = ctx.world; const { THREE, world } = ctx, sc
     const A1 = [a[0] - ux * W2 / 2, a[1] - uy * W2 / 2], A2 = [a[0] + ux * W2 / 2, a[1] + uy * W2 / 2], B1 = [b[0] - ux * W2 / 2, b[1] - uy * W2 / 2], B2 = [b[0] + ux * W2 / 2, b[1] + uy * W2 / 2];
     pos.push(A1[0], H(...A1), A1[1], B1[0], H(...B1), B1[1], A2[0], H(...A2), A2[1], A2[0], H(...A2), A2[1], B1[0], H(...B1), B1[1], B2[0], H(...B2), B2[1]); }
   const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-  const mat = new THREE.MeshBasicMaterial({ color: 0xd8382a, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 });
+  const mat = new THREE.MeshBasicMaterial({ color: 0xd8382a, side: THREE.DoubleSide, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 });
   const m = new THREE.Mesh(g, mat); m.renderOrder = 4; sc.add(m); const NQ = q.length - 1;
   ctx.FX[S].custom((t) => { const k = sstep(T.land - 0.2, T.ridges + 0.6, t), out = 1 - sstep(39.4, 40.8, t); m.visible = t > T.land - 0.2 && t < 41;
     g.setDrawRange(0, Math.round(NQ * k) * 6); mat.opacity = 0.75 * out * (0.85 + 0.15 * Math.sin(t * 3)); });
