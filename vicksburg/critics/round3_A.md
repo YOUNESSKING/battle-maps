@@ -13,7 +13,7 @@ Method: every scene sampled every 3 s as 4x4 contact sheets, plus ~70 full-res s
 | S04 Grand Gulf + Bruinsburg | 6.5 | 7 | Grierson card off his line, head in frame, rail sparks; landed boxes still in a field (sev 1, known) |
 | S05 Port Gibson | 6.5 | 7 | bottom boxes in frame, ridge-road arrows; "curtains" 39-48 still read as white blurred bars on/among the boxes |
 | S06 cut loose | 6 | 7 | Grant's banner off the arrow, arrows inside; 70 Pemberton's banner top + "Vicksburg" tucked under the date plate |
-| S07 Raymond | 6.5 | S07_SCORE | S07_LINE |
+| S07 Raymond | 6.5 | 7 | dive clean, short 'weight of the corps' pushes stop at the creek; curtains still grey bars partly on the Union boxes (26-35); Gregg's retreat arrow 36-37.9 is wide and its head leaves the top edge as the camera moves |
 | S08 Jackson | 5.5 | 7 | magenta gone, quote below banner, red road X gone; the new ground glaze is a visible grey ellipse with a rim over the town 20-52 (dark disc at night 24-27) |
 | S09 Champion Hill | 6.5 | 7.5 | furniture one-at-a-time, crest boxes upright, banners in frame; volley curtains 87-100 still white blurred rectangles |
 | S10 Big Black | 7.5 | 7.5 | next-morning arrows stop at visible bridges; timeline seal still sits on "17" (15-24) |
@@ -56,6 +56,8 @@ Method: every scene sampled every 3 s as 4x4 contact sheets, plus ~70 full-res s
 | S08 | 20-52 (24-27 night) | Jackson town | the new GROUND glaze disc is visible as a grey ellipse with a soft rim around the town (a dark disc at night): reads as a spotlight / overlay, not ground | rim softness x3 (feather to 0 over 40 % of the radius) or follow the town footprint; glaze alpha 0.30 -> 0.18 | 2 |
 | S02 | 72-80 | Chickasaw Bayou | one flat grey square-ish smoke blob (~120 px) sits over Sherman's and the Confederate boxes | replace with a short curtain in front of the Union line (S11 settings), alpha <= 0.2 | 2 |
 | S05 / S09 | S05 39-48, S09 87-100 | battle lines | curtains render as soft white rectangles (beads of bars), some over boxes | use S11's settings (denser points, alpha 0.17, grey tint), seat 1 unit in front, never over the boxes | 2 |
+| S07 | 36-37.9 | retreat arrow | Gregg's retreat arrow ~2x the others' width; head exits the top edge before its 38.0 fade | width 0.24, fade at 36.5 or trim to the frame | 2 |
+| S07 | 33.3-33.8 | right | a lone blue arrowhead appears before its shaft draws (engine draw start) | start that arrow 0.3 s earlier or draw shaft-first | 1 |
 | S06 | 69-71 | top-left | Pemberton's banner top and the "Vicksburg" name tuck under the date plate | camera 4 % lower or banner steps out at 69 | 1 |
 | S11 | 75-79 | timeline | seals overlap the day labels | seal y -14 px (above the label) | 1 |
 | S08 | 24-27 | bottom | blue boxes cut by the bottom edge / legend at night | frame 5 % up | 1 |
@@ -64,8 +66,8 @@ Method: every scene sampled every 3 s as 4x4 contact sheets, plus ~70 full-res s
 ## Must-fix before publish
 None. Nothing found would embarrass the film: no broken or black frames, dive white-outs ~0.6 s, no map edges, no units on a
 burning bridge or in water without a bridge, boxes never rotate, no cut cards. The sev-2 items above (S08 glaze disc, S02 smoke blob,
-S05/S09 white smoke bars, the wide river staircase, rust town ground, two off-frame arrows) are polish; fix them only if a re-render
+S05/S07/S09 white smoke bars, the wide river staircase, rust town ground, two off-frame arrows) are polish; fix them only if a re-render
 of S02/S05/S08/S09 is cheap. If only one: the S08 ground disc (20-52), the most visible "overlay" look in the film.
 
 ## Verdict
-**FIT TO PUBLISH (look), overall 7.2/10** (R1 4.8, R2 6.2). S07 checked last (see its row).
+**FIT TO PUBLISH (look), overall 7.2/10** (R1 4.8, R2 6.2). All twelve final renders checked, S07 last.
