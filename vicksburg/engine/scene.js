@@ -323,11 +323,11 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
   TRO[r] = { BX: TROOPS !== "blocks" && hasU ? TM.createBoxes3D({ THREE, scene: sc, sun: SUN, ...(isWide(r) ? { lift: 0.03 * RO(r).troopScale, shadowOff: 0.075 * RO(r).troopScale } : {}) }) : null,
     AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r), sun: SUN, style: TROOPS === "blocks" ? "gm" : "w" }),
     T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, escAt, edgeFade,
-      proj: (x, y) => world.projectMap(x, y, 0.02), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [], ...(S.troopsOpts || {}) }) : null }; }
+      proj: (x, y) => world.projectMap(x, y, 0.02), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [], trees: (world.regions[r].data || {}).trees, ...(S.troopsOpts || {}) }) : null }; }
 // GM troops (v2, owner 2026-11-18): GM's movement arrows are a pale tint of the side colour (his French arrows (105,172,192) after his grade)
 const ARROW_GM = { u: "#62a3db", r: "#d4705f" };
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = a.color || (TROOPS === "blocks" ? ARROW_GM : ARROW_COL)[a.side || "u"];
-  return { ...a, region: r, w: Math.min(a.width ?? 0.24, 0.24) * RO(r).troopScale,   // critic A8: v6/v8 width cap
+  return { ...a, region: r, w: Math.min(a.width ?? 0.24, 0.24) * RO(r).troopScale * (TROOPS === "blocks" ? 0.55 : 1),   // critic A8: v6/v8 width cap; GM troops v4: -45 %
     a3: TRO[r].AR3.add(a.pts, col) }; });
 // generals: banners on poles (banner.js, STYLE_LOCK 2f item 1) + medallion portraits; any portrait: SEQ.generals = { key: { img, flag, name, full, side, role } }
 const GENERALS = {
