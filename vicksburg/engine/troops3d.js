@@ -76,7 +76,7 @@ export function createTroops3D(o) {
     for (let i = 0; i < nb; i++) blocks.push({ u, i });
   }
   const infBlocks = blocks.filter((b) => b.u.type !== "art"), artBlocks = blocks.filter((b) => b.u.type === "art");
-  const nFig = infBlocks.length * NF + artBlocks.length * 4;
+  const NS = o.skirmishers ?? 5, nFig = infBlocks.length * (NF + NS) + artBlocks.length * 4;   // r2 critic A: GM's loose men between the lines
 
   // arc length of the unit centre at t (same easing as posAt: in-out per segment, "lin" constant)
   const sAt = (u, t) => { const K = u.keysGM, D = UD.get(u); if (t <= K[0][0]) return 0;
@@ -110,7 +110,7 @@ export function createTroops3D(o) {
       else { const f = Lc > 1e-4 ? sstep(0, 1, clamp((g + Lc) / Lc)) : 1; q = [lerp(S0[0], P0[0], f), lerp(S0[1], P0[1], f)];
         const cd = Lc > 1e-4 ? [(P0[0] - S0[0]) / Lc, (P0[1] - S0[1]) / Lc] : R.dir0, wp = sstep(-0.5 * Lc, 0, g);   // connector dir, easing into the column's
         tg = [lerp(cd[0], R.dir0[0], wp), lerp(cd[1], R.dir0[1], wp)]; }
-      const k1 = g >= 0 ? (Lc > 1e-4 ? 1 : sstep(0, 0.6 * D.spacing, g)) : Lc > 1e-4 ? sstep(-Lc, -Lc + Math.min(Lc, 0.5 * D.spacing), g) : 1;   // turning share: from the moment it steps off
+      const k1 = g >= 0 ? (Lc > 1e-4 ? 1 : sstep(0, 0.6 * D.spacing, g)) : Lc > 1e-4 ? sstep(-Lc - 0.6 * D.spacing, -Lc, g) : 1;   // turning share: r2 critic B: turns BEFORE it steps off (no crab start)
       x = lerp(x, q[0], endK); y = lerp(y, q[1], endK);
       const kk = k1 * endK, a0 = Math.atan2(hy, hx), a1 = Math.atan2(tg[1], tg[0]), an = a0 + angDiff(a0, a1) * kk; hx = Math.cos(an); hy = Math.sin(an); c = Math.max(c, endK * (g >= 0 ? 1 : sstep(-Lc - 0.01, 0, g))); }
     let e = 0;
@@ -257,6 +257,14 @@ export function createTroops3D(o) {
         setM(coats, nf, x, hy + lift, y, ffx, ffy, fw * s, fh * s, fd * s); setM(pales, nf, x, hy + lift, y, ffx, ffy, fw * s, fh * s, fd * s);
         coats.setColorAt(nf, col.setHex(P.coat).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); nf++;
       }
+      // skirmishers: a few loose men a little ahead of a halted line (GM's scattered figures between the lines); they fall in
+      // (shrink into the line) when it forms column, marches fast, routs or is taken
+      const ks = op * (1 - c) * (1 - capd) * (1 - e) * (1 - sstep(0.3 * ts, 1.2 * ts, spd)) * (u.skirmish === false || isCav ? 0 : 1);
+      if (ks > 0.02) for (let j = 0; j < NS; j++) { const h1 = hash(seed + 91 + j, 1), h2 = hash(seed + 91 + j, 2);
+        const la = ((j + 0.5) / NS - 0.5) * W * 0.95 + (h1 - 0.5) * W * 0.12, lb = Dp / 2 + Dp * (0.6 + 1.4 * h2) * ks;
+        const x = bx + px * la + fx * lb, y = by + py * la + fy * lb, s = ks;
+        setM(coats, nf, x, H(x, y) + S.lift, y, fx, fy, fw * s, fh * s, fd * s); setM(pales, nf, x, H(x, y) + S.lift, y, fx, fy, fw * s, fh * s, fd * s);
+        coats.setColorAt(nf, col.setHex(P.coat)); pales.setColorAt(nf, col.setHex(P.pale)); nf++; }
     }
     holes.count = nq; coats.count = pales.count = nf; plateFill.count = plateRim.count = plateFront.count = np; poles.count = flags.count = nfl; shadows.count = ns;
     carriage.count = barrel.count = wheels.count = limber.count = ng; if (horses) horses.count = nh;
@@ -333,7 +341,7 @@ export function createArrows3D(o) {
   function add(pts, color) { const rim = new THREE.Color(color).lerp(new THREE.Color(0xffffff), 0.5);
     if (GM) {   // v2 (GM study): pale side tint, thin darker edge with a pale highlight just inside it, soft drop shadow toward the sun's side
       const base = new THREE.Color(color), dark = base.clone().multiplyScalar(0.5);
-      const A = { pts, gm: true, glow: mk(10.12, 0x10140f, 0.22), out: mk(10.2, dark, 0.85), rim: mk(10.25, 0xf4f6f2, 0.9), body: mk(10.3, base, 0.93) }; arrows.push(A); return A; }
+      const A = { pts, gm: true, glow: mk(10.12, 0x10140f, 0.22), out: mk(10.2, dark, 0.85), rim: mk(10.25, 0xf4f6f2, 0.55), body: mk(10.3, base, 0.93) }; arrows.push(A); return A; }
     const A = { pts, glow: mk(10.15, 0xf2f4f0, 0.16), out: mk(10.2, 0x0e0c08, 0.45), rim: mk(10.25, rim, 1), body: mk(10.3, color, 1) }; arrows.push(A); return A; }
   // heights: the ground under the line smoothed over ~1.5 units (raw heights made the flat ribbon wiggle on screen over every bump and the river bed)
   const smoothH = (P) => { const raw = P.map((p) => heightAt(p[0], p[1])), K = 9; return raw.map((_, i) => { let s = 0, c = 0; for (let j = Math.max(0, i - K); j <= Math.min(raw.length - 1, i + K); j++) { s += Math.max(raw[j], raw[i] - 0.02); c++; } return s / c; }); };
@@ -349,7 +357,7 @@ export function createArrows3D(o) {
   // A, grow fraction k (0..1, eased by the caller), opacity op, shaft width w (units)
   function draw(A, k, op, w) {
     const vis = op > 0.002 && k > 0.001; A.glow.visible = A.out.visible = A.rim.visible = A.body.visible = vis; if (!vis) return;
-    if (A.gm) { A.glow.material.opacity = 0.22 * op; A.out.material.opacity = 0.85 * op; A.rim.material.opacity = 0.9 * op; A.body.material.opacity = 0.93 * op; }
+    if (A.gm) { A.glow.material.opacity = 0.22 * op; A.out.material.opacity = 0.85 * op; A.rim.material.opacity = 0.55 * op; A.body.material.opacity = 0.93 * op; }
     else { A.glow.material.opacity = 0.16 * op; A.out.material.opacity = 0.45 * op; A.rim.material.opacity = op; A.body.material.opacity = op; }
     const pts = A.pts, seg = []; let L = 0; for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
     // round 2 (critic A S06 63 s): while the drawn length is shorter than ~2 heads, the head grows with it (no lone arrowhead before its shaft)
