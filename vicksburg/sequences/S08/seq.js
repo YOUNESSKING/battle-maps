@@ -266,7 +266,7 @@ window.SEQ = {
     ["plaque.date", T.thatNight + 0.2, DATE(14, 15, "Thursday · night")],
     ["label", T.room - 0.2, 28.8, { name: "Grant's bed", sub: "in the room Johnston was said to have used", world: [1890.4, 724.6], side: "us", marker: false }],
     ["plaque.date", T.before, DATE(14, 15, "Thursday · before they left")],
-    ["medallion", { kind: "card", general: "sherman", sub: "with Grant in the factory", screen: [330, 400],   // round 3: left, clear of the flag tIn: T.grantSherman + 0.2, tOut: T.watched - 0.4 }],
+    ["medallion", { kind: "card", general: "sherman", sub: "with Grant in the factory", screen: [330, 400], tIn: T.grantSherman + 0.2, tOut: T.watched - 0.4 }],   // round 3: left, clear of the flag
     ["label", T.factory, T.battle + 0.8, { name: "Cotton factory", sub: "still working", world: [FACT[0], FACT[1]], side: "cs" }],
     ["quote", T.watched - 0.1, T.bolt + 0.8, { en: "We looked on for a while to see the tent cloth which they were making roll out of the looms, with ‘C. S. A.’ woven in each bolt.", attr: "Ulysses S. Grant · Personal Memoirs", y: 850, dim: 0.4 }],   // round 3: below Grant's banner
     ["plaque.date", T.work, DATE(14, 15, "Thursday · “done work enough”")],
