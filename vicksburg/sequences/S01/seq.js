@@ -55,7 +55,7 @@ units.push({ region: WIDE, side: "r", type: "inf", n: 4, face: "east", t0: CUT, 
 // ---------------- arrows ----------------
 const ACLOSE = [
   // "Every Union attempt ... had failed": three blue thrusts that stop short of the city and fade
-  { region: VB, side: "u", pts: VX.sub(VX.river(VB, 2).pts.map((p) => [p[0], p[1] - 1.5]), 0, 22, 2), t0: T.every, dur: 1.2, t1: T.failed + 0.7, width: 1.1 },
+  { region: VB, side: "u", pts: VX.sub(VX.river(VB, 2).pts.map((p) => [p[0], p[1] - 2.5]), 0, 17, 2), t0: T.every, dur: 1.2, t1: T.failed + 0.7, width: 1.1 },
   { region: VB, side: "u", pts: [[1352, 694], [1360, 684], [1366, 677]], t0: 31.2, dur: 1.0, t1: T.failed + 0.8, width: 1.1 },
 ];
 const arrows = [
@@ -87,7 +87,7 @@ push(p[0], waterY(VB, p[2]), p[1], 9, 0.12 * e * pulse * sstep(-0.05, 0.25, (t -
     // the end: the river glows blue from Vicksburg south (the river opened)
     { region: WIDE, fn: (t, push) => { if (!WW || t < T.campaign - 0.5) return; const k = sstep(T.campaign - 0.5, T.two, t);
       for (let i = 0; i < RIVW.length; i += 6) { const p = RIVW[i]; if (p[1] < 676 || p[1] > 1110) continue; const s = (p[1] - 676) / 434; if (s > k * 1.05) continue;
-        const a = 0.22 * sstep(s, s + 0.06, k * 1.05) * (0.8 + 0.2 * Math.sin(t * 2.1 + p[1] * 0.05)); push(p[0], waterY(WIDE, p[2]) + 0.3, p[1], 16, a * 2.2, 0.35, 0.7, 1.5); } } },
+        const a = 0.22 * sstep(s, s + 0.06, k * 1.05) * (0.8 + 0.2 * Math.sin(t * 2.1 + p[1] * 0.05)); push(p[0], waterY(WIDE, p[2]) + 0.3, p[1], 16, a * 2.0, 0.22, 0.5, 1.6); } } },
   ],
 };
 
@@ -115,8 +115,8 @@ window.SEQ = {
     { t: 12.5, region: WIDE, at: [1398, 690], dist: 276, tilt: 48, yaw: -8, fov: 30, ease: "lin" },
     // the emergence (dive) lands at 21.85; the city front, guns on the bluff
     { t: 27.0, region: VB, at: [1379.0, 687.0], dist: 40, tilt: 53, yaw: -60, fov: 32 },
-    { t: 30.6, region: VB, at: [1362.0, 686.0], dist: 78, tilt: 34, yaw: -24, fov: 32 },
-    { t: CUT, region: VB, at: [1361.0, 686.0], dist: 81, tilt: 34, yaw: -21, fov: 32 },
+    { t: 30.6, region: VB, at: [1356.0, 688.0], dist: 74, tilt: 27, yaw: -20, fov: 32 },
+    { t: CUT, region: VB, at: [1355.5, 688.0], dist: 76, tilt: 26, yaw: -18, fov: 32 },
     // montage on the wide map
     { t: CUT, region: WIDE, at: [1236, 990], dist: 330, tilt: 44, yaw: 0, fov: 30, ease: "cut" },
     { t: 36.6, region: WIDE, at: [1268, 975], dist: 360, tilt: 44, yaw: 0, fov: 30 },
@@ -131,7 +131,7 @@ window.SEQ = {
     to: { region: VB, at: [1381.0, 685.0], dist: 42, tilt: 52, yaw: -62, fov: 32 },
     keys: { deck: { yaw: -30 }, swFrom: { yaw: -40 }, swTo: { yaw: -48 }, emerge: { yaw: -56, at: [1376, 684] } } }],
   clouds: {
-    [WIDE]: { keepClear: [[1392, 688, 70, 0.9, 0.8], [1240, 1000, 60, 1, 0.6], [1520, 690, 50, 1, 0.6], [1890, 724, 50, 1, 0.6], [1450, 905, 70, 1, 0.7], [1640, 810, 70, 1, 0.7], [1610, 700, 50, 1, 0.6]] },
+    [WIDE]: { keepClear: [[1392, 688, 70, 0.9, 0.8], [1205, 990, 95, 1, 0.8], [1520, 690, 50, 1, 0.6], [1890, 724, 50, 1, 0.6], [1450, 905, 70, 1, 0.7], [1640, 810, 70, 1, 0.7], [1610, 700, 50, 1, 0.6]] },
     [VB]: { shadows: true },
   },
   title: { text: "5 BATTLES · 18 DAYS", font: "cinzel-latin-700-normal.woff2", width: 0.56, tOn: T.eighteen, tGrow: T.days + 0.4, anchorT: 11.0, region: WIDE },
