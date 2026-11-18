@@ -152,7 +152,12 @@ export function createTroops3D(o) {
       const a = pathLen(path.slice(0, kj + 1));
       // the path's tangent angle, UNWRAPPED along its length (the plate turns exactly as the path bends: no flips, no snaps)
       const angs = []; let prevA = null; for (let w = 0; w <= pathLen(path) + 40; w += 0.1) { const g0 = along(path, Math.max(0, w - 0.25)), g1 = along(path, w + 0.25), raw = Math.atan2(g1[1] - g0[1], g1[0] - g0[0]); prevA = prevA === null ? raw : prevA + angDiff(prevA, raw); angs.push(prevA); }   // v7: tangent over +-0.35 u (no quantisation jitter)
-      const e2w = (ev) => ev;
+      // curvature warp (v8): in a bend the column slows so its turn rate stays <= ~40 deg/s (walked "effective" distance e(w) = integral (1 + kappa * KC) dw)
+      const KC = VESC / (o.turnMax ?? 0.7), eff = [0]; let cst = [1]; for (let k = 1; k < angs.length; k++) cst.push(1 + Math.abs(angs[k] - angs[k - 1]) / 0.1 * KC);
+          for (let pass = 0; pass < 2; pass++) cst = cst.map((_, k) => { let s2 = 0, n2 = 0; for (let m = Math.max(1, k - 8); m <= Math.min(cst.length - 1, k + 8); m++) { if (pass) s2 += cst[m]; else s2 = Math.max(s2, cst[m]); n2++; } return pass ? s2 / n2 : Math.max(1, s2); });   /* v8: smoothed slow-down on bends (no speed lurch) */
+          for (let k = 1; k < angs.length; k++) eff.push(eff[k - 1] + 0.1 * cst[k]);
+      const e2w = (ev) => { if (ev <= 0) return ev; let lo = 0, hi = eff.length - 1; if (ev >= eff[hi]) return hi * 0.1 + (ev - eff[hi]); while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (eff[mid] < ev) lo = mid; else hi = mid; }
+        return (lo + (ev - eff[lo]) / Math.max(1e-6, eff[hi] - eff[lo])) * 0.1; };
       const jn = road[Math.min(j + 1, road.length - 1)], dd = ang(jn[0] - road[j][0], jn[1] - road[j][1]) || 0;
       const thr = angs[Math.min(angs.length - 1, Math.round((a + 1) / 0.1))] - angs[0], poff = Math.abs(thr + Math.PI / 2) < Math.abs(thr - Math.PI / 2) ? Math.PI / 2 : -Math.PI / 2;
       const q = { u, i, path, a, angs, poff, e2w, rj: rc[j], t0: E.t0, len: D.cl, gap: D.spacing - D.bw, off: Math.abs(angDiff(fa, dd + Math.PI / 2)) <= Math.abs(angDiff(fa, dd - Math.PI / 2)) ? Math.PI / 2 : -Math.PI / 2 };
@@ -165,7 +170,7 @@ export function createTroops3D(o) {
   const invRamp = (d, V) => d <= 0 ? 0 : d < V * RAMP / 2 ? Math.sqrt(2 * d * RAMP / V) : d / V + RAMP / 2;
   for (const Q of QUEUES.values()) { const V = Math.min(...Q.map((q) => Math.min(VESC, q.u.esc.v ?? VESC))); let prev = null;
     for (const q of Q) { q.V = V; q.T = q.t0 + 0.5 + RF;   // v7: the men turn about and re-form into a march column first
-      if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len + 0.13 * q.len * hash(q.i + 3 * units.indexOf(q.u), 21)) - (prev.rj - prev.a);   // v8: 0-13 % spacing jitter q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.7); }   // v4: a clear gap + front-to-back stagger
+      if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len + 0.13 * q.len * hash(q.i + 3 * units.indexOf(q.u), 21)) - (prev.rj - prev.a); /* v8: 0-13 % spacing jitter */ q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.5); }   // v4: a clear gap + front-to-back stagger
       prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
 
@@ -251,6 +256,13 @@ export function createTroops3D(o) {
   // v4 (critic): a faint pale halo under every block keeps it readable over dark woods
   const haloMat = shMat.clone(); haloMat.color = new THREE.Color(0xffffff); haloMat.onBeforeCompile = shMat.onBeforeCompile; haloMat.customProgramCacheKey = () => "t3halo";
   const halos = mkIM(shG, haloMat, blocks.length * 2, false); halos.receiveShadow = false; halos.renderOrder = 1.05;
+  /* v8: the dust wake needs a WHITE-rgb soft texture (stex is black rgb + alpha, so anything drawn with it comes out dark) */
+  const WC = document.createElement("canvas"); WC.width = 64; WC.height = 64; { const g = WC.getContext("2d"), im = g.createImageData(64, 64);
+    for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) { const uu = Math.abs(x / 63 - 0.5) * 2, v = Math.abs(y / 63 - 0.5) * 2, k = (y * 64 + x) * 4;
+      im.data[k] = im.data[k + 1] = im.data[k + 2] = 255; im.data[k + 3] = Math.round(255 * (1 - sstep(0.3, 1, uu)) * (1 - sstep(0.2, 1, v))); }
+    g.putImageData(im, 0, 0); }
+  const wakeMat = shMat.clone(); wakeMat.map = new THREE.CanvasTexture(WC); wakeMat.color = new THREE.Color(0xffffff); wakeMat.onBeforeCompile = shMat.onBeforeCompile; wakeMat.customProgramCacheKey = () => "t3wake";
+  const wakes = mkIM(shG, wakeMat, blocks.length, false); wakes.receiveShadow = false; wakes.renderOrder = 1.06; let nwk = 0;
   // woods mask from the region's wood trees (kind 0): blocks in a wood stand IN it (sunk into the canopy blanket, heads and shoulders
   // showing between the crowns) instead of on top of the canopy
   const WM = (() => { const tr = (o.trees || []).filter((q) => (q[3] || 0) === 0); if (!tr.length) return null; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
@@ -275,7 +287,7 @@ export function createTroops3D(o) {
   const smooth = (u, i, t, key) => vecAvg([[base(u, i, t)[key], 1], [base(u, i, t - 0.15)[key], 0.5], [base(u, i, t + 0.15)[key], 0.5], [base(u, i, t - 0.3)[key], 0.0], [base(u, i, t + 0.3)[key], 0.4]]);
 
   function update(t, hide = 0) {
-    let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0, nfl = 0; const ST = [];
+    let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0, nfl = 0; nwk = 0; const ST = [];
     for (const b of blocks) { const u = b.u, op0 = fade(u, t) * (1 - hide); if (op0 <= 0.001) continue;
       const D = UD.get(u), q = base(u, b.i, t), qa = base(u, b.i, t - 0.2), qb = base(u, b.i, t + 0.2);
       const vx = (qb.x - qa.x) / 0.4, vy = (qb.y - qa.y) / 0.4, spd = Math.hypot(vx, vy);
@@ -298,7 +310,7 @@ export function createTroops3D(o) {
         setM(shadows, ns, bx, hs, by, fx, fy, sw, 1, sd); setOp(shadows, ns, 0.27 * op * pf * (1 - 0.5 * wk) * (1 - bk));
         setM(halos, ns, bx, hs + 0.002 * ts, by, fx, fy, sw + 0.32 * ts, 1, sd + 0.32 * ts); halos.setColorAt(ns, col.setHex(0xf1ecd8).lerp(new THREE.Color(P.plate), 0.55 * wk).lerp(GREYP, capd)); setOp(halos, ns++, (0.1 + 0.12 * wk) * op * pf * (1 - bk));
         if (colK && !isArt) { const dx = bx - Math.cos(pa) * Dp * 0.75, dy = by - Math.sin(pa) * Dp * 0.75;   // v8: a faint dust wake behind a marching column
-          setM(halos, ns, dx, Math.max(H(dx, dy), hb) + 0.014 * ts, dy, fx, fy, W * 2.6, 1, Dp * 1.1); halos.setColorAt(ns, col.setHex(0xb9a57e)); setOp(shadows, ns, 0); setOp(halos, ns++, 0.3 * op * mv * pf * (1 - bk)); } }   // in a wood the halo carries the side colour (the plate is under the canopy)
+          setM(wakes, nwk, dx, Math.max(H(dx, dy), hb) + 0.014 * ts, dy, fx, fy, W * 2.2, 1, Dp * 1.1); wakes.setColorAt(nwk, col.setHex(0xcdbb92)); setOp(wakes, nwk++, 0.32 * op * mv * pf * (1 - bk)); } }   // in a wood the halo carries the side colour (the plate is under the canopy)
       const pT = 0.006 * ts, ry = hb + S.lift, ip = np++, pk = isArt ? 0 : 1;   // v4: thin plate (no saturated base bar); guns have none
       setM(plateRim, ip, bx, ry, by, fx, fy, (W * 0.99 + 0.012 * ts) * pk, pT, (Dp * 0.86 + 0.012 * ts) * pk, sL, sF);   // v5: the men cover the plate but a ~2 px tint
       setM(plateFill, ip, bx, ry + 0.001 * ts, by, fx, fy, W * 0.99 * pk, pT * 1.15, Dp * 0.86 * pk, sL, sF);
@@ -342,7 +354,7 @@ export function createTroops3D(o) {
         const jh = 0.93 + 0.14 * hash(seed + j, 6), ja = (hash(seed + j, 8) - 0.5) * 0.35, jfx = Math.cos(ma + ja), jfy = Math.sin(ma + ja), jc = 0.9 + 0.2 * hash(seed + j, 9);   // v5: men not identical
         if (isCav) { setM(horses, nh, x, hy, y, sfx, sfy, fw * 1.5, fh * 0.7, fd * 2.2); setOp(horses, nh++, op); }
         setM(coats, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd); setM(pales, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd);
-        coats.setColorAt(nf, col.setHex(P.coat).lerp(new THREE.Color(P.plate), 0.3).multiplyScalar(jc).lerp(GREYC, capd));   // v8: coats 30 % toward the unit colour pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++;
+        coats.setColorAt(nf, col.setHex(P.coat).lerp(new THREE.Color(P.plate), 0.3).multiplyScalar(jc).lerp(GREYC, capd)); /* v8: coats 30 % toward the unit colour */ pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++;
       }
       { // v8: colour-bearer at the head of a column (shows which way it is going)
         const vb = sstep(0.6, 1, fq) * (1 - st), hx = Q.cx + cfx * (D.cl / 2 + 0.9 * sp), hy2 = Q.cy + cfy * (D.cl / 2 + 0.9 * sp), hh = Math.max(H(hx, hy2), deckTop(hx, hy2)) + S.lift + walk * 0.1 * fh * Math.abs(Math.sin(t * 6 + seed));
@@ -358,7 +370,7 @@ export function createTroops3D(o) {
         setM(coats, nf, x, H(x, y) + S.lift + pT * ks - sink, y, sfx, sfy, fw, fh, fd); setM(pales, nf, x, H(x, y) + S.lift + pT * ks - sink, y, sfx, sfy, fw, fh, fd);
         coats.setColorAt(nf, col.setHex(P.coat).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op * (1 - st) * (1 - sstep(0, 0.3, fq))); setOp(pales, nf, op * (1 - st) * (1 - sstep(0, 0.3, fq))); nf++; }
     }
-    holes.count = nq; poleM.count = flagM.count = nfl; coats.count = pales.count = nf; plateFill.count = plateRim.count = plateFront.count = np; shadows.count = halos.count = ns;
+    holes.count = nq; poleM.count = flagM.count = nfl; coats.count = pales.count = nf; plateFill.count = plateRim.count = plateFront.count = np; shadows.count = halos.count = ns; wakes.count = nwk;
     carriage.count = barrel.count = wheels.count = limber.count = ng; if (horses) horses.count = nh;
     for (const m of ALL) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true; }
     API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa),

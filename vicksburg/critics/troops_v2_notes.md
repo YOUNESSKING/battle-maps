@@ -120,3 +120,37 @@ Share (with sound): `vicksburg/troops_test_v7_share.mp4`.
 
 Checker v7: S09 55-110 front-vs-velocity max 4 deg (0 fails), turn <= 37 deg/s, pops 0, accel <= 2.0, overlaps 2 pairs (<= 0.16 u for 0.2-0.4 s);
 S10 18-35 front-vs-velocity max 3 deg (0 fails), turn <= 45 deg/s, pops 0, accel <= 2.7, NO overlaps; last escaping block at x 1508.7 at 31.3 s (off the deck).
+
+# v8 (2026-11-18): critic round 6 (motion 6.5 / look 7.5) - columns that read as columns, calm re-forming
+Share (with sound): `vicksburg/troops_test_v8_share.mp4`. Sheet: `vicksburg/troops_test_ours_v8.jpg`.
+
+| Point | v8 |
+| --- | --- |
+| Columns read as columns | 3 files x 24 ranks, rank spacing 0.55 x file spacing (dense along the march); plate under the column in the side colour (10 % coat tint vs 35 % for lines); a colour-bearer with pole + flag at the HEAD; walking bob 0.12-0.22; slight per-rank sway; coats tinted 30 % toward the unit colour; a faint LIGHT dust wake behind a marching column (own white-rgb soft texture: the shared shadow texture is black rgb, so the first try drew a dark slab) |
+| Bridge re-forming | the deck stream uses the column's own row spacing (3 abreast, 0.55 x file spacing), so the column neither elongates on the deck nor morphs back on the far side; re-forming takes 2.0 s, each man on his own clock (per-file stagger 0.1-0.3 s + jitter) |
+| Line <-> column elsewhere | same 2.0 s per-file staggered re-form; the run starts its march only after the column is formed (fOn ends at the run's t0) and re-forms into line only after it halts |
+| Arrow on the deck | S10 retreat arrow ends at 23.8 s, before any column reaches the deck (first crossing ~25 s) |
+| Framing | S10 camera holds the whole crossing; the columns leave the frame on the left only after crossing |
+| Spacing | queue spacing jitter +13 % of a column length, minimum stagger 0.5 s |
+| Turn-rate warp (new) | escape paths walk slower on bends (cost per 0.1 u = 1 + turn / turnMax-scale, max-filtered +-0.8 u then averaged +-0.8 u), so the turn rate stays <= ~40 deg/s without speed lurches |
+| S10 data | vesc 2.1, turnMax 0.76, ESC_T [16.2, 16.0, 16.3]; both flank columns west of the deck at the fire (x 1507.9 / 1506.1 at 31.3 s, deck west end ~1510.2) |
+
+Checker v8: S09 55-110 front-vs-velocity max 4 deg (0 fails), turn <= 39 deg/s, accel <= 2.1, pops 0, NO overlaps;
+S10 15-35 front-vs-velocity max 6 deg (0 fails), turn <= 34 deg/s, accel <= 3.1, pops 0, NO overlaps.
+Column spacing sd: S10 reserve 56 % = the gap between its two brigades opening from ~3.3 to ~5.4 u as the rear one follows (no compression); other units 2-9 %.
+
+Own 5 fps inspection of every moving unit ("reads as column/line moving front-first"):
+- S09 Hovey's two crest lines advancing SW (0-6 s): yes (line, front first; they shuffle into place for ~0.6 s at the halt)
+- S09 Hovey's west-wing brigades at the wood edge (4-7 s): yes (column west, deploy into line at the halt)
+- S09 Lee falling back south (5-12 s): yes (turn about, column, head first)
+- S09 Barton going west (5-12 s): yes (column)
+- S09 Logan's three brigades (8-15 s): yes (lines advancing front first, staggered)
+- S09 Bowen's two brigades up from the road (25-34 s): yes (N-S columns, head first)
+- S09 Bowen's left brigade past the battery (33-37 s): yes (column passes close to the guns, no contact)
+- S09 Bowen's crest lines re-forming and falling back south (44-49 s): yes (men walk to their spots, then columns south head first, light wake behind)
+- S09 Crocker / Union columns south to the crest (45-53 s): yes
+- S10 north flank (0-12 s): yes (re-forms 1.4-2.4 s, column SW then W on the road, crosses 9-10.4 s)
+- S10 south flank (0-12 s): yes (column on the road, crosses behind the north flank, clear before the fire)
+- S10 reserve (3-7 s): yes (two columns over the bridge, stream 3 abreast on the deck, compact on the far side)
+- S10 Union lines advancing on the works (0-4 s): yes (lines, front first)
+Noticed, not fixed: the blue Union attack arrow crosses the retreating north-flank column at S10 2.6-4.2 s; a small yellow flash in the woods west of the bridge at S10 12.2-12.8 s.

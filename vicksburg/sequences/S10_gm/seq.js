@@ -17,7 +17,7 @@ const SLOWX = BR.x - 0.8;   // the west end of the bridge
 const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.6, slowX: SLOWX, join: "west", from });
 // round 2 (owner rule: never cross a bridge after its fire starts): the flanks and the reserve start for the bridge as the line falls
 // (24.8-25.6) and the last red box is past the west end by ~31.0 (tools: esc_sim); the fire starts at FIRE_T = 31.3 ("set them on fire")
-const ESC_T = [18.8, 19.0, 18.2], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
+const ESC_T = [16.2, 16.0, 16.3], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
 const TK = 21.2;   // Lawler reaches the works (north first)
 const SWF = 3 * Math.PI / 4;
 
@@ -80,7 +80,7 @@ const fx = {
 };
 
 window.SEQ = {
-  name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17", troopsOpts: { vesc: 1.6 },   // (GM test) the rout is a brisk walk
+  name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17", troopsOpts: { vesc: 2.1, turnMax: 0.76 },   // (GM test) the rout is a brisk walk
   regions: [BB],
   regionOpts: { [BB]: { troopScale: 1.4 } },   // round 2: boxes ~3 % of the frame width like v8 (with the v8 distances below)
   features: { [BB]: { bridges: [{ burn: FIRE_T + 3.2 }], pontoons: TB.map((at) => ({ at })) } },
