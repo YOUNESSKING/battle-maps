@@ -132,7 +132,7 @@ Only put fx where the camera sees them: every gun / volley / fire makes a sound 
 ## Region bundles (from the baker)
 `worlds/<name>/region.js`: `kind`, `box`, `hm`, `exag`, `rivers [{name, w, pts [[x, y, h_m]]}]`, `roads [{name, pts}]`, `houses`, `trees`,
 `towns`, `features: { bridges: [{x, z, angle, len, wl, deck, spans}], works: [{kind: "breastwork" | "fort" | "redan" | "lunette" | "rifle",
-pts, closed}], pontoons: [{x, z, angle, len, wl}] }` (+ `meshDiv`). Works: the glacis faces the RIGHT-hand side of the walking direction
+pts, closed, height_m}], pontoons: [{x, z, angle, len, wl}] }` (+ `meshDiv`; `height_m` scales the parapet profile). Works: the glacis faces the RIGHT-hand side of the walking direction
 (a line drawn north -> south faces east). Nothing in the engine knows any coordinate: positions come from region data or seq.js.
 `_clip_wide` / `bigblack` are the clip's own bakes (the clip's Big Black corridor is ~3 km south of the real one: use the baker's
 corrected bundle for the film, keep these two for the regression only).
@@ -153,6 +153,12 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
   `keepDiveLook: true` reproduces that, the regression uses it).
 - The v8 clip's date plaque sometimes measured its text before the fonts were in (text overflowing the frame at 3 s); the engine draws
   the first frame after the overlay exists, so its plaque is the correct size (this is the 3 s difference in the regression).
+- Camera keys default to fov 30, yaw 0, tilt 45, night 0 (a key without fov used to give NaN projections: a blank fog-grey frame).
+- Wide clouds scatter automatically over the region (Poisson clusters, ~14 per 860x640 units); at camera dist < ~400 a cluster can sit
+  right over the subject: add `keepClear: [[x, y, R, ky, rk]]` (or `clouds: { wide: { scatter: { seed: 3 } } }`, or `false`).
+- Baker bundles checked on the engine: `sequences/_wide_smoke`, `_siege_smoke` (wide + siege), `_engine_demo` (clip bundles: march,
+  deploy, wide-scale units, title without a dive, gunboats, house fire, volleys, Sherman banner). Batteries in `features.batteries`
+  are not drawn by the engine: put `type: "art"` units on them.
 - Labels on wide shots: names under the 3D title hide, names under clouds dim; keep river names italic (`river: true`).
 - Boxes / arrows sizes are map units scaled by `troopScale`: a close camera at dist 25-40 suits 1, the wide map at 400-650 suits ~10.
 

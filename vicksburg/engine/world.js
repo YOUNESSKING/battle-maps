@@ -56,6 +56,8 @@ export function initWorld(canvas, opts = {}) {
   // opts: regions (names, loaded from window.GM3D_REGIONS), base (folder holding <region>/height.png + ground.jpg), keys (camera keys),
   // features: { <region>: { bridges: [{ burn: t }], pontoons: [{ at: t } | null] } } (bridge burn times, pontoon unroll times; scene data)
   const O = { base: "worlds/", width: 1920, height: 1080, shadowSize: 2048, shadows: true, antialias: true, regions: null, keys: [], features: {}, treeScale: 1, ...opts };
+  O.keys = O.keys.map((k) => ({ fov: 30, yaw: 0, tilt: 45, night: 0, ...k }));   // key defaults (a key without fov gave NaN projections)
+  for (let i = 1; i < O.keys.length; i++) if (O.keys[i].t < O.keys[i - 1].t) throw new Error("GM3D: camera keys not sorted at t=" + O.keys[i].t);
   const GEO = window.GM3D_GEO, REG = window.GM3D_REGIONS || {}; if (!GEO) throw new Error("GM3D: load worlds/geo.js first");
   const names = O.regions || Object.keys(REG);
   for (const n of names) if (!REG[n]) throw new Error("GM3D: region '" + n + "' not loaded (worlds/" + n + "/region.js)");
