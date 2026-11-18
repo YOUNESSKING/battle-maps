@@ -117,8 +117,8 @@ const custom = [
 const build = async (ctx) => { WD = ctx.world; const { THREE, world } = ctx, sc = world.regions[S].scene;
   for (const c of custom) ctx.FX[c.region].custom(c.fn);
   // caves: the steepest spots of the town's hillsides (deterministic search on the height field)
-  { const cand = []; for (let x = 1381.0; x <= 1392.5; x += 0.35) for (let y = 667.5; y <= 693.0; y += 0.35) {
-      const gx = world.heightAt(x + 0.2, y, S) - world.heightAt(x - 0.2, y, S), gy = world.heightAt(x, y + 0.2, S) - world.heightAt(x, y - 0.2, S); cand.push([Math.hypot(gx, gy), x, y]); }
+  { const cand = []; for (let x = 1383.0; x <= 1394.5; x += 0.35) for (let y = 669.0; y <= 692.0; y += 0.35) {
+      const gx = world.heightAt(x + 0.2, y, S) - world.heightAt(x - 0.2, y, S), gy = world.heightAt(x, y + 0.2, S) - world.heightAt(x, y - 0.2, S); if (gx < -0.4 * Math.hypot(gx, gy)) cand.push([Math.hypot(gx, gy), x, y]); }
     cand.sort((a, b) => b[0] - a[0]); const pick = [];
     for (const [, x, y] of cand) { if (pick.length >= 14) break; if (pick.every((p) => Math.hypot(p[0] - x, p[1] - y) > 1.3)) pick.push([x, y]); }
     CAVES = pick.map((p, i) => ({ at: p, t0: T.dug2 + 0.2 + (i % 7) * 0.32 + Math.floor(i / 7) * 0.9 }));
@@ -260,13 +260,13 @@ window.SEQ = {
     // A: from above, the approaches grow; night: swing west over the town to the river; the hillsides
     { t: 0.0, region: S, at: [1405.6, 677.0], dist: 33, tilt: 30, yaw: 84, fov: 30 },
     { t: 6.3, region: S, at: [1404.4, 677.8], dist: 35, tilt: 33, yaw: 86, fov: 30, night: 0 },
-    { t: 7.4, region: S, at: [1400.0, 680.0], dist: 40, tilt: 40, yaw: 84, fov: 30, night: 1 },
-    { t: 10.8, region: S, at: [1389.0, 681.0], dist: 36, tilt: 46, yaw: 80, fov: 30, night: 1 },
-    { t: 14.2, region: S, at: [1386.6, 680.0], dist: 19, tilt: 50, yaw: 74, fov: 30, night: 1 },
-    { t: 18.4, region: S, at: [1387.2, 679.0], dist: 17.5, tilt: 51, yaw: 70, fov: 30, night: 1 },
-    { t: CUT_B, region: S, at: [1390.0, 678.0], dist: 22, tilt: 49, yaw: 72, fov: 30, night: 1, ease: "lin" },
+    { t: 7.4, region: S, at: [1393.0, 683.0], dist: 40, tilt: 44, yaw: 80, fov: 30, night: 0.9 },
+    { t: 10.6, region: S, at: [1382.5, 686.0], dist: 31, tilt: 50, yaw: 72, fov: 30, night: 0.9 },
+    { t: 14.2, region: S, at: [1387.0, 681.0], dist: 17, tilt: 56, yaw: 72, fov: 30, night: 0.9 },
+    { t: 18.4, region: S, at: [1387.6, 680.0], dist: 16, tilt: 57, yaw: 70, fov: 30, night: 0.9 },
+    { t: CUT_B, region: S, at: [1389.0, 679.0], dist: 20, tilt: 55, yaw: 72, fov: 30, night: 0.9, ease: "lin" },
     // B: 25 June at the 3rd Louisiana Redan (cut + night -> day dissolve)
-    { t: CUT_B, region: S, at: [1409.8, 673.6], dist: 18, tilt: 46, yaw: 74, fov: 30, night: 1, ease: "cut" },
+    { t: CUT_B, region: S, at: [1409.8, 673.6], dist: 18, tilt: 46, yaw: 74, fov: 30, night: 0.9, ease: "cut" },
     { t: CUT_B + 0.9, region: S, at: [1409.8, 673.5], dist: 17.8, tilt: 46, yaw: 73.5, fov: 30, night: 0, ease: "lin" },
     { t: 27.6, region: S, at: [1409.6, 673.1], dist: 15.5, tilt: 47, yaw: 70, fov: 30 },
     { t: 32.4, region: S, at: [1409.4, 673.0], dist: 19.5, tilt: 43, yaw: 68, fov: 30 },
@@ -334,6 +334,7 @@ window.SEQ = {
     ["plaque.run", T.three + 0.9, T.mine, "15:20"],
     ["label", T.held + 0.3, T.on + 0.9, { name: "Held in the crater", sub: "about 26 hours of close fighting", world: [1409.3, 672.9], side: "us", offset: [-360, -120] }],
     // C: the newspaper (custom card PAPER) over a dimmed map
+    ["plaque.date", T.newspaper - 0.3, { month: "Summer 1863", day: "", weekday: "", note: "the town's newspaper" }],
     ["film.dim", T.newspaper - 0.2, T.rabbit2 + 0.3, 0.8],
     // D
     ["plaque.date", T.third, { month: "July 1863", day: "3", weekday: "Day 65", note: "Friday · white flags" }],
