@@ -28,7 +28,7 @@ def ramp(n, fin, fout):
 N = int(D * SR)
 
 # voice (voice A if converted, else Kokoro)
-vw = f"{V}/audio/voice_owner.wav" if os.path.exists(f"{V}/audio/voice_owner.wav") else f"{V}/audio/voice.wav"
+vw = os.environ.get("VOICE") or next((f for f in (f"{V}/audio/voice_clone.wav", f"{V}/audio/voice_owner.wav") if os.path.exists(f)), f"{V}/audio/voice.wav")   # owner 2026-11-18: his own voice clone
 vo = np.zeros((N, 2), np.float32); place(vo, load(vw), 0, 1.0)
 
 # music: one bed per act, 3 s cross-fades at act boundaries

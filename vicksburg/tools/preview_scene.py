@@ -12,7 +12,7 @@ db = lambda x: 10 ** (x / 20); N = int(D * SR)
 def place(o, c, t, g):
     i = int(t * SR); n = min(len(c), len(o) - i)
     if n > 0 and i >= 0: o[i:i + n] += c[:n] * g
-vw = f"{V}/audio/voice_owner.wav" if os.path.exists(f"{V}/audio/voice_owner.wav") else f"{V}/audio/voice.wav"
+vw = os.environ.get("VOICE") or next((f for f in (f"{V}/audio/voice_clone.wav", f"{V}/audio/voice_owner.wav") if os.path.exists(f)), f"{V}/audio/voice.wav")
 vo = np.zeros((N, 2), np.float32); place(vo, load(vw, A, D), 0, 1)
 mus = np.zeros((N, 2), np.float32); place(mus, load(f"{M}/music_src_long-note-two.mp3", A % 400, D), 0, 1)
 KIT = {"gun": (load(f"{GG}/candidates/cand1_hit.wav"), -15), "boom": (load(f"{GG}/candidates/cand2_hit.wav"), -19),

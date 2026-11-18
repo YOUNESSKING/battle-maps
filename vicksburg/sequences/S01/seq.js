@@ -14,7 +14,7 @@ const T = { D: 55.32, spring: 0.72, union: 4.56, miss: 5.42, vicksburg: 7.74, ei
   vb2: 38.14, marched: 39.12, inland: 39.50, nine: 40.88, weeks: 41.26, crossing: 42.18, nearly: 43.46, thirty: 43.93, confed2: 44.70,
   out: 45.90, vb3: 46.88, stacked: 47.52, arms: 48.12, story: 49.50, campaign: 50.70, split: 51.68, two: 53.14 };
 const WIDE = "wide", VB = "vicksburg";
-const SWT = 16.4, OFF = { push: 9.5 - SWT, warm: 0.05, emerge: 0.15, clear: 0.4, haze: 1.05 };
+const SWT = 16.4, OFF = { push: 9.5 - SWT };   // owner 2026-11-18: v6/v8 white-out restored (push still starts on "eighteen")
 const DV = VX.diveTimes(SWT); for (const k in OFF) DV[k] = SWT + OFF[k];   // push 9.5, deckIn 14.7, full 15.85, SW 16.4, emerge 16.6, land 19.75
 const CUT = 33.62;                       // paragraph change: dissolve to the montage on the wide map
 const X1 = 39.3, X2 = 41.25, X3 = 43.3;  // montage cuts (0.4 s dissolves): the split, the Big Black bridge, the ring round the city
