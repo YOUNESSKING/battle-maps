@@ -672,7 +672,7 @@ def bake(rname, G, P, creeks, preview=True):
                 dd = np.hypot(main_riv[:, 0] - L[end, 0], main_riv[:, 1] - L[end, 1]); j = int(dd.argmin())
                 if 0.3 < dd[j] < 25: L = np.vstack([L, main_riv[j][None]]) if end == -1 else np.vstack([main_riv[j][None], L])
         step = e.get("step", 1.5 if not close else 0.12)
-        for run in clip_poly(densify(L, min(step, 1.0)), box, 6 + e["w"]):
+        for run in clip_poly(densify(L, min(step, 1.0)), box, (1.5 if close else 6) + e["w"]):
             pts = smooth(densify(run, step), e.get("smooth", 6 if not close else 8))
             if close and e.get("meander", 0): pts = meander(pts, [], amp=e["meander"], wl=e.get("meander_wl", 2.2), seed=len(riv_in) + seed)
             riv_in.append((e.get("name", e.get("geo")), pts, float(e["w"]), e))
@@ -844,7 +844,7 @@ def bake(rname, G, P, creeks, preview=True):
     wd = cfg.get("woods", 0.0); LOG("  alluvial %.3f creeks %d" % (float(alluv.mean()), len(creek_lines)))
     fm = fbm(TH, TW, 6, 5, seed + 2)
     fm2 = fbm(TH, TW, 3, int(bw / (14 if not close else 1.6)), seed + 12)
-    swamp = alluv * np.clip((dist_t - hw_t - (3.0 if close else 7.0)) / (4.0 if close else 10.0), 0, 1) * cfg.get("swamp", 0.1)   # back-swamp woods away from the rivers
+    swamp = alluv * np.clip((dist_t - hw_t - (3.0 if close else 7.0)) / (4.0 if close else 10.0), 0, 1) * cfg.get("swamp", 0.1) * np.clip(cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (6 if close else 40)), seed + 95), (TW, TH)) * 2.2 - 0.5, 0, 1.4)   # back-swamp woods away from the rivers, in patches
     if close:
         jag = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.7), seed + 60), (TW, TH))
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * cfg.get("ravine_woods", 0.5) - 0.72, fm2 * 0.85 + fm * 0.2 - 0.69) + (jag - 0.5) * 0.16 + wd + swamp

@@ -4,7 +4,7 @@ usage: python3 vicksburg/tools/make_scene.py vicksburg/sequences/<name> [--out D
        index.html       (engine/template.html with the data scripts + duration filled in)
        hyperframes.json
        engine/          (a COPY of the runtime: scene.js world.js fx.js overlay.js banner.js troops3d.js seqlib.js vendor/ cloudtex/ assets/)
-       worlds/          (geo.js + only the region folders SEQ.regions uses, copied)
+       worlds/          (geo.js + places.js (data/geo.json places, for VX.place) + only the region folders SEQ.regions uses, copied)
        seq/             (a copy of the sequence folder: seq.js + its own images, referenced as "seq/<file>")
        cues.json        ({D, T, CUES, regions}: the sound cues for assembly, evaluated from SEQ with node)
 Everything is copied (never hard-linked), so the folder can be tarred for the GPU pod as-is:
@@ -28,6 +28,7 @@ const [worlds, engine, seqjs] = process.argv.slice(1);
 const ctx = { console, Math, JSON }; ctx.window = ctx; ctx.globalThis = ctx; vm.createContext(ctx);
 const run = (f) => vm.runInContext(fs.readFileSync(f, 'utf8'), ctx, { filename: f });
 run(path.join(worlds, 'geo.js'));
+const pf = path.join(worlds, '..', 'data', 'geo.json'); if (fs.existsSync(pf)) ctx.GM3D_PLACES = JSON.parse(fs.readFileSync(pf, 'utf8')).places || [];
 for (const d of fs.readdirSync(worlds)) { const f = path.join(worlds, d, 'region.js'); if (fs.existsSync(f)) run(f); }
 run(path.join(engine, 'seqlib.js')); run(seqjs);
 const S = ctx.SEQ; if (!S) throw new Error('seq.js did not set window.SEQ');
@@ -62,10 +63,12 @@ def main():
     for d in ENGINE_DIRS:
         copy_tree(f"{ENGINE}/{d}", f"{out}/engine/{d}")
     copy_tree(f"{WORLDS}/geo.js", f"{out}/worlds/geo.js")
+    places = json.load(open(f"{VX}/data/geo.json")).get("places", []) if os.path.exists(f"{VX}/data/geo.json") else []
+    open(f"{out}/worlds/places.js", "w").write("window.GM3D_PLACES = " + json.dumps(places, separators=(",", ":")) + ";\n")
     for reg in info["regions"]:
         copy_tree(f"{WORLDS}/{reg}", f"{out}/worlds/{reg}")
     copy_tree(seqdir, f"{out}/seq")
-    scripts = ['<script src="worlds/geo.js"></script>'] + [f'<script src="worlds/{reg}/region.js"></script>' for reg in info["regions"]]
+    scripts = ['<script src="worlds/geo.js"></script>', '<script src="worlds/places.js"></script>'] + [f'<script src="worlds/{reg}/region.js"></script>' for reg in info["regions"]]
     html = open(f"{ENGINE}/template.html").read()
     html = html.replace("{{TITLE}}", f"Vicksburg scene: {name}").replace("{{DURATION}}", f"{info['D']:g}").replace("{{DATA_SCRIPTS}}", "\n".join(scripts))
     open(f"{out}/index.html", "w").write(html)

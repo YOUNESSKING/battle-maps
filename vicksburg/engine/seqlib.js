@@ -21,6 +21,12 @@
   // ---------------- world data ----------------
   VX.region = (name) => { const r = (G.GM3D_REGIONS || {})[name]; if (!r) throw new Error("VX: region '" + name + "' not loaded"); return r; };
   VX.town = (name, region) => { const r = region && VX.region(region); const p = (r && r.towns && r.towns[name]) || ((G.GM3D_GEO || {}).towns || {})[name]; if (!p) throw new Error("VX: no town '" + name + "'"); return p.slice(0, 2); };
+  // research places (vicksburg/data/geo.json, shipped as worlds/places.js by make_scene.py): place("Raymond") -> [x, y]. Matches the full name,
+  // the name before " (", or a case-insensitive prefix; the first match wins. VX.placeInfo(name) returns the whole record (lat, lon, acc_m, note).
+  VX.placeInfo = (name) => { const P = G.GM3D_PLACES || [], n = name.toLowerCase(), short = (q) => q.name.split(" (")[0].toLowerCase();
+    const r = P.find((q) => q.name === name) || P.find((q) => short(q) === n) || P.find((q) => q.name.toLowerCase().startsWith(n));
+    if (!r) throw new Error("VX: no place '" + name + "' in data/geo.json"); return r; };
+  VX.place = (name) => { const r = VX.placeInfo(name); return [r.x, r.y]; };
   VX.river = (region, which = 0) => { const rs = VX.region(region).rivers || []; const r = typeof which === "number" ? rs[which] : rs.find((q) => q.name === which); if (!r) throw new Error("VX: no river " + which + " in " + region); return r; };
   // the clip's riverAt: the river vertex nearest in map-y to y (rivers that run north-south); returns [x, y, h_m]
   VX.riverAtY = (region, which, y) => { const P = VX.river(region, which).pts; let b = P[0]; for (const p of P) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b; };

@@ -10,7 +10,7 @@ REPO = "/home/user/battle-maps"; VX = f"{REPO}/vicksburg"; TMP = "/tmp/vx_bake/s
 
 
 def region_data(r):
-    s = open(f"{VX}/worlds/{r}/region.js").read(); return json.loads(s[s.index("=") + 1:].strip().rstrip(";"))
+    s = open(f"{VX}/worlds/{r}/region.js").read(); return json.loads(s[s.index("] = ") + 3:].strip().rstrip(";"))
 
 
 def cams(D):
@@ -21,8 +21,8 @@ def cams(D):
     return [dict(at=c, dist=max(bw, bh) * 0.95, tilt=35, yaw=0), dict(at=f, dist=45, tilt=50, yaw=-5), dict(at=f, dist=26, tilt=58, yaw=12)]
 
 
-FOCUS = {"vicksburg": [1380, 676], "siege": [1400, 678], "champion": [1636, 698], "portgibson": [1280, 1016], "raymond": [1700, 772],
-         "jackson": [1880, 722], "bruinsburg": [1185, 1028], "bigblack_new": [1516, 705], "bigblack": [1516, 705]}
+FOCUS = {"vicksburg": [1372, 676], "siege": [1400, 678], "champion": [1636, 698], "portgibson": [1280, 1016], "raymond": [1700, 774],
+         "jackson": [1880, 722], "bruinsburg": [1185, 1028], "bigblack_new": [1515, 684], "bigblack": [1516, 705]}
 
 
 def main(regs):

@@ -458,13 +458,8 @@ window.__draw = (t) => {
   drawPins(t, world.region);
   if (S.draw) S.draw(t, ctx);
 };
-// fonts + images must be ready before the first captured frame: the overlay sizes its plaques from the text metrics (a late font gave
-// 4 px narrower plaques between runs) and the banners' portraits must be decoded
-{ const within = (p, ms, what) => Promise.race([p.then(() => 0, () => 0), new Promise((r) => setTimeout(() => { console.warn("vx: still waiting for " + what); r(0); }, ms))]);
-  const FONTS = ['600 16px "GM Cormorant"', 'italic 500 16px "GM Cormorant"', '500 16px "GM Cormorant"', '700 16px "GM Cormorant"', '600 16px "GM Cinzel"', '700 16px "GM Cinzel"',
-    '600 16px "CG"', 'italic 600 16px "CG"', '700 16px "Cinzel"', '600 16px "Cinzel"'];
-  await Promise.all(FONTS.map((f) => within(document.fonts.load(f), 4000, f)));
-  await Promise.all([...document.images].map((im) => within(im.complete ? Promise.resolve() : new Promise((r) => { im.addEventListener("load", r); im.addEventListener("error", r); }), 4000, im.src.slice(0, 80)))); }
+// (no font / image preload here: awaiting document.fonts.load or image loads inside the build stalls on this SwiftShader set-up; HyperFrames
+// waits for fonts and images itself before it captures. The overlay re-measures its plaques on every update.)
 _log("fonts"); window.__draw(tl.time()); O.update(tl.time()); _log("first frame");
 window.__vx = ctx;
 window.__sceneBuilt();
