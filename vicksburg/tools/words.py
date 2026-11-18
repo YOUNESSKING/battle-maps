@@ -10,7 +10,11 @@ TJ = sys.argv[2] if len(sys.argv) > 2 else f"{V}/audio/timing.json"
 T = json.load(open(TJ))
 norm = lambda w: re.sub(r"[^a-z0-9]", "", w.lower())
 m = WhisperModel("small.en", device="cpu", compute_type="int8")
-segs, _ = m.transcribe(WAV, word_timestamps=True, beam_size=5, vad_filter=False,
+import numpy as np, soundfile as sf
+from scipy.signal import resample_poly
+_a, _sr = sf.read(WAV, dtype="float32"); _a = _a.mean(1) if _a.ndim > 1 else _a
+_a = resample_poly(_a, 16000, _sr).astype(np.float32)
+segs, _ = m.transcribe(_a, word_timestamps=True, beam_size=5, vad_filter=False,
                        initial_prompt="Vicksburg, Pemberton, Bruinsburg, Grand Gulf, McClernand, McPherson, Grierson, Tilghman, Loring, Hovey, Champion Hill, Big Black.")
 W = [(w.word.strip(), w.start, w.end) for s in segs for w in s.words]
 print("whisper words", len(W), flush=True)
