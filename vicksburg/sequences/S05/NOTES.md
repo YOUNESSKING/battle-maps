@@ -36,3 +36,16 @@ South Fork (Little Bayou Pierre) generically.
 | A: world edge top-right 57-65 | end keys lower (tilt 50 -> 46, dist 37) |
 | A sev 1: blue boxes cut at 40 s | ridge columns sit higher in frame; blue arrows start 6 units up the roads |
 `node tools/check_paths.js S05`: OK. Open: the deployed columns bunch near the fork for ~2 s at the night -> dawn dissolve (19-21 s).
+
+## Round 3 fixes (critics round2_A + round2_B)
+- Smoke puffs 39-48 (A, sev 2) -> battalion curtains: every volley line is now a short line of curtains (`cur()`), seated ~1 unit IN FRONT of
+  its line (moves with each halt / the counterattack), many small grey puffs (size 0.55, rate 22, cluster [1.6, 0.35], tint grey, fadeAfter 6 s).
+  Added the missing Bruinsburg-road Union curtain 42-45 and Cockrell's curtain at his furthest point.
+- Bottom boxes cut 40-63 (A, sev 1): battle keys 35-65 moved west 1.5-2.5 units and out 2-4 units; Union columns tightened (lags 1.5 not 1.75),
+  guns one row further up and moved forward from 45.8; checked on stills 33-64 (nothing cut). Legend steps out at 46.6 (units under its corner,
+  then the ledger: one big card at a time).
+- Bowen arrow 12.6-17.4 crossed the Little Bayou Pierre beside the bridge and ran off the top: now two red arrows out of Port Gibson along the two
+  ridge roads (on the roads, inside the 6 % frame).
+- "Pressed on both ridges" label moved off Tracy's retreating boxes; second "Port Gibson" label beside the town, off the red columns.
+- Checks: check_paths OK; arrows inside 6 % (scratch tool); check_edges reports the TL corner beyond the region box (y 986 < 990) for the whole
+  scene, same count as the round-2 version (no edge visible on any still; the bake has margin) - unchanged, flagged for the lead.

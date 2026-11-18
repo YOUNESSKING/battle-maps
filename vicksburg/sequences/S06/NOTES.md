@@ -33,3 +33,18 @@ Open issues
 | A sev 1: lone arrowhead before its shaft (ghost arrow) | engine `troops3d.js` arrows: the head now grows with the drawn length (no head before the shaft); finished arrows unchanged |
 | A: quotes dim the map, picture frozen | both quote cards `dim: 0.4` (~18 %); camera keeps drifting under the cut-loose quote (22.6 -> 32.6 now moves 28 units and 24 dist) |
 | B sev 3: rotated boxes | engine (boxes face the camera) |
+
+## Round 3 fixes (critics round2_A + round2_B)
+- Blue arrow through Grant's banner ~90 (A, sev 2): Grant's banner now rides ~26 units NORTH of the arrow (68-77), never on it.
+- Arrows inside a 6 % margin (A N5, sev 2), checked every 0.5 s with a projection of each arrow point:
+  supply line fades at 20.4 as the camera turns to Pemberton (it would leave through the bottom edge during the quote); Sherman's crossing arrow
+  shortened; the real north-east arrow hands over twice to its own front part (72.0, 79.0) so its tail falls away behind the army instead of
+  running off the bottom-left; railroad arrow trimmed to x > 1500; reinforcement arrow from the east shortened and drawn at 79.9 once the camera
+  settles. Result: all arrows inside the safe frame.
+- Red box over the "n" of Jackson (A, sev 1): Jackson name placed left of the town; Johnston label below his boxes; "Pemberton" stakes label
+  moved off Grant's banner.
+- Frame edges: 66.2 key wider (the three corps stay inside the bottom edge), corps march faster (reach their 79 s positions by 76.6-77.4) so
+  they keep up with the pan; legend steps out 66.6-80.6 while the corps cross its corner; Vicksburg mass, name and Pemberton banner step out
+  at ~71 before the pan cuts them; final shot (81.6-D) widened to dist 525-540 so Big Black mass, Jackson and both red arrows sit inside.
+- Checks: check_paths OK, check_edges OK, arrows inside 6 %. (check_escapes does not apply: wide only.)
+- Open (not in the critics' lists): wagons enter at the left edge 41-45; Pemberton's banner near the top edge ~65 as the camera moves.

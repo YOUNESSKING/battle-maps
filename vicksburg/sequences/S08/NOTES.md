@@ -37,3 +37,23 @@ Open issues
 | A: world edge at the landing (top-left) | dive target / landing re-aimed (1857, 713, dist 28, tilt 44, yaw 0) inside the jackson box; Crocker's start moved off the west edge |
 | A: quote dims the map | tent-cloth quote `dim: 0.4` |
 `check_paths.js S08`: OK. Open: the blue wash is a DOM disc over the canvas, so on the close factory shot it tints the fire slightly.
+
+## Round 3 fixes (critics round2_A + round2_B)
+- Close factory shot keeps Jackson brick-red under the Union flag (B N8 + A N1, sev 2) and the magenta cast: the DOM blue discs on the close world
+  are gone. New `GROUND(ctx)` (build hook): a terrain-following disc over the town (radius 6.4, soft rim) with a grey-ochre glaze (alpha 0.30)
+  that takes the rust out of the streets plus a light Union-blue wash (alpha 0.15) from "flew"; both are ON THE GROUND (under houses, boxes,
+  flag and fire, so the fire stays orange), darkened at night. Measured: no magenta cast; the town reads grey-blue, not red.
+- Pale-red road "X" 30-55 (A, sev 2): the four pike roads of the close world are glazed with a soft-edged grey-ochre ribbon (0.42 wide,
+  alpha 0.62, terrain-following): the X now reads as dusty grey roads.
+- Quote text over Grant's banner 36-45 (A N8, sev 2): quote card y 640 -> 850 (renders below the banner; nothing under it).
+- Wide clouds 84-96 (A N6, sev 2): three keepClear zones on the lower third of the day shot; the final day shot also widened (dist 372-388) so
+  Jackson's corps and its arrow are inside the right edge; Pemberton's banner lifted off the "Edwards" name.
+- Slanted boxes 30-55 (A N7, sev 2): the street boxes framed nearer the image centre (around the factory) and the shot less oblique
+  (tilt 54-55 -> 49-51).
+- Sherman card moved to the left (screen [330, 400]): it covered the capitol flag at 31.
+- Arrows in the 6 % frame: Crocker's charge arrow gone at 17.0 before the pan; the order-to-Pemberton arrow ends inside the frame; the Jackson
+  day arrow starts 10 units further west. (Sherman's close push arrow and the red column arrow 14-18 are off-frame for the whole dive landing,
+  invisible as in round 2.)
+- "O. P. Wright farm" label from SW + 1 (engine dive default changed: DV.emerge is earlier now). Dive checked 12.2 / 12.7 / 13.0 / 13.6: fine.
+- Checks: check_paths OK, check_edges OK, check_escapes as round 2.
+- Open: night shot 81-86 has boxes touching the right/bottom edge (pre-existing, not in the critics' lists).

@@ -30,3 +30,18 @@ other than McPherson's are approximate (Sherman near Dillon's, McClernand toward
 | B sev 2: Gregg's boxes vanish 36-38 (covered by the retreat arrow) | the retreat arrows run 1.7 units beside the road, so the column stays visible all the way into Raymond; the cut frames Raymond (36.6) |
 | B sev 1: plaque "hot and dusty" | "DAY 13 · dusty" |
 | A: boxes tiny, cotton smoke | troopScale close 1.45 -> 1.9, wide 15 -> 20; battalion curtains as S05; gun plumes 0.6 |
+
+## Round 3 fixes (critics round2_A + round2_B)
+- Smoke puffs 24-33 (A, sev 2) -> battalion curtains (same settings as S05), each seated just in front of its line on its own bank (red curtains
+  between Gregg's boxes and the creek, Union curtains between Logan / Crocker and the creek), never on the boxes: the Union step-ups at 33-35
+  now stop short of their curtains (U1b 786.7, U2b 789.95, U3 788.7).
+- Arrow width / creek 33-36 (A, sev 2): the three "weight of the corps" arrows are short (width 0.2) pushes from just in front of each line to
+  the south bank of Fourteenmile Creek (creek points checked), gone (34.5-34.8) before the boxes step up: no arrowhead on its own box, none from
+  off-frame.
+- Arrows in the 6 % frame: Gregg's retreat arrow fades at 38.0 before the camera leaves its tail; the two reinforcement arrows into Jackson
+  shortened and fade at 47.4 / 47.6 before the pull-back; wide keys 39-46 a little wider (dist 318) so McPherson at Raymond and Jackson's
+  arrows sit inside; "rest of the army" unit nudged inside the left edge.
+- Legend steps out 34.9-44.6 (Union boxes crossing under its corner, then the ledger).
+- 35.6 key 1 unit south: the south line stays in frame while Gregg leaves.
+- Dive (engine short white-out, boxes hidden in the deck): checked 7.6 / 8.1 / 8.4 / 9.0: fine.
+- Checks: check_paths OK, check_edges OK, check_escapes as round 2, arrows inside 6 %.

@@ -54,7 +54,7 @@ units.push({ side: "r", type: "inf", n: 1, region: WD, face: S_, t0: T.brigade, 
 units.push({ side: "u", type: "inf", n: 1, region: WD, face: N, t0: 1.2, t1: DV.SW, keys: [[0, 1660, 812], [DV.SW, 1683, 790]] });                    // McPherson's column
 units.push({ side: "u", type: "inf", n: 3, region: WD, face: VX.FACE.ne, t0: CUT, keys: [[CUT, WR[0] + 4, WR[1] + 4], [D, WR[0] + 8, WR[1] + 1]] });   // McPherson at Raymond
 units.push({ side: "u", type: "inf", n: 3, region: WD, face: VX.FACE.ne, t0: CUT, keys: [[CUT, 1648, 790]] });                                      // the rest of Grant's army, south-west
-units.push({ side: "u", type: "inf", n: 3, region: WD, face: VX.FACE.ne, t0: CUT, keys: [[CUT, 1602, 772]] });
+units.push({ side: "u", type: "inf", n: 3, region: WD, face: VX.FACE.ne, t0: CUT, keys: [[CUT, 1616, 768]] });   // round 3: inside the left edge
 units.push({ side: "r", type: "inf", n: 1, region: WD, face: Math.PI, t0: CUT, keys: [[CUT, 1748, 752], [46.0, 1846, 733]] });                      // Gregg falls back to Jackson
 units.push({ side: "r", type: "inf", n: 3, region: WD, face: VX.FACE.sw, t0: T.gathering + 0.2, keys: [[0, WJ[0] + 4, WJ[1] + 2]] });                // the force at Jackson
 units.push({ side: "r", type: "inf", n: 3, region: WD, face: VX.FACE.se, t0: CUT, keys: [[CUT, WE[0] - 6, WE[1] + 4]] });                           // Pemberton near Edwards
@@ -127,8 +127,8 @@ window.SEQ = {
     { t: 31.0, region: RY, at: [1690.6, 785.6], dist: 30, tilt: 37, yaw: -11, fov: 30 },
     { t: 35.6, region: RY, at: [1691.2, 784.4], dist: 31.5, tilt: 40, yaw: -12, fov: 30 },   // round 3: the south line stays in frame
     { t: CUT, region: RY, at: [1707.0, 765.0], dist: 36, tilt: 42, yaw: -12, fov: 30 },
-    { t: CUT, region: WD, at: [1790, 738], dist: 290, tilt: 46, yaw: -4, fov: 30, ease: "cut" },
-    { t: 46.4, region: WD, at: [1821, 731], dist: 274, tilt: 46, yaw: -3, fov: 30 },   // round 3: Jackson and its arrows well inside the frame
+    { t: CUT, region: WD, at: [1786, 738], dist: 318, tilt: 46, yaw: -4, fov: 30, ease: "cut" },
+    { t: 46.4, region: WD, at: [1812, 733], dist: 318, tilt: 46, yaw: -3, fov: 30 },   // round 3: Jackson and its arrows well inside the frame
     { t: 50.6, region: WD, at: [1636, 714], dist: 600, tilt: 44, yaw: 0, fov: 30 },
     { t: D, region: WD, at: [1630, 713], dist: 615, tilt: 44, yaw: 0, fov: 30 },
   ],
