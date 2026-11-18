@@ -50,14 +50,14 @@ const units = [   // (close arrows default width below)
   // ======== Champion Hill (troopScale 1). Confederates: Stevenson (Barton, S. D. Lee, Cumming) on the hill, Bowen (Cockrell, Green) at the Middle road,
   // Loring (Buford, Featherston, Tilghman) on the Raymond road. The line faces east / north-east; Logan's swing comes round the north end. ========
   // Barton: NW of the crest facing north; Logan drives it back to the crossroads; flees by the Jackson road
-  { region: C, side: R, type: "inf", n: 3, face: -2.0, keys: [[0, 1632.2, 690.8], [T.swung + 1.6, 1632.2, 690.8], [T.swung + 4.0, 1633.0, 699.6]], escape: ESC(UP, T.broke + 0.2, 2.6) },
+  { region: C, side: R, type: "inf", n: 3, face: -2.0, keys: [[0, 1632.2, 690.8], [T.swung + 0.4, 1632.2, 690.8], [T.swung + 2.8, 1629.0, 700.4]], escape: ESC(UP, T.broke + 0.2, 2.6) },
   // Round 2 (critics A/B: the crest fight was a tangle): every crest unit is placed in FRONT coordinates (s along the attack axis from the
   // Champion house to the crest, p across it, see FR above), the two sides always on their own side of a moving front with a >= 3-unit gap.
   // S. D. Lee: on the crest; Hovey takes it; back up with Bowen (on Bowen's left); down again; flees west
-  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 0.8, -3.6), K(T.took - 0.4, 0.8, -3.6), K(T.took + 1.6, 4.8, -6.4), K(T.hit, 4.8, -6.4), K(T.retook, 1.4, -6.4),
-    K(T.contested - 0.8, 1.4, -6.4), K(T.contested + 2.6, 5.8, -6.8)], escape: ESC(UP, T.broke, 2.6) },
+  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 0.8, -3.6), K(T.took - 1.6, 0.8, -3.6), K(T.took + 0.2, 4.8, -5.0), K(T.hit, 4.8, -5.0), K(T.retook, 2.6, -5.0),
+    K(T.contested - 0.8, 2.6, -5.0), K(T.contested + 2.6, 8.0, -1.2)], escape: ESC(UP, T.broke, 2.6) },
   // Cumming: at the crossroads, behind the crest (second line)
-  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.0, 0.6), K(T.took + 1.2, 7.4, 1.0)], escape: ESC(LOW, T.broke + 0.5, 2.6) },
+  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.0, 0.6), K(T.took + 1.2, 9.6, 3.0)], escape: ESC(LOW, T.broke + 0.5, 2.6) },
   // the Confederate guns on the crest: taken by Hovey ("guns and all"), turn grey; retaken by Bowen (a fresh red battery behind his line); lost again
   { region: C, side: R, type: "art", n: 2, face: CSF, keys: [K(0, 0.4, 0)], cap: T.guns + 0.1, t1: T.retook + 0.5 },
   { region: C, side: R, type: "art", n: 2, face: CSF, keys: [K(0, 2.6, 1.2)], t0: T.retook, cap: T.contested + 2.9, t1: T.D + 1 },
@@ -79,7 +79,7 @@ const units = [   // (close arrows default width below)
   // Logan (J. E. Smith, Leggett, J. D. Stevenson): behind Hovey's right, swings round the north end; one brigade across the escape road; pulled away
   ...[[0, 1638.2, 682.2, 1629.6, 690.0, 1625.6, 697.2, 1633.2, 690.4], [1, 1640.8, 681.4, 1632.6, 688.2, 1629.4, 695.6, 1635.6, 689.0], [2, 1643.4, 681.0, 1635.6, 687.0, 1635.6, 687.0, 1637.6, 687.6]]
     .map(([k, x, y, x2, y2, x3, y3, x4, y4]) => ({ region: C, side: U, type: "inf", n: 3, face: Math.PI / 2 + 0.35, t0: SW + 0.4,
-      keys: [[0, x, y], [T.swung - 0.2 + k * 0.25, x, y], [T.swung + 2.4 + k * 0.25, x2, y2], [118.4 + k * 0.4, x2, y2], [121.0 + k * 0.4, x3, y3],
+      keys: [[0, x, y], [T.swung + 0.4 + k * 0.25, x, y], [T.swung + 3.4 + k * 0.25, x2, y2], [118.4 + k * 0.4, x2, y2], [121.0 + k * 0.4, x3, y3],
         [T.moved - 0.6 + k * 0.3, x3, y3], [T.moved + 1.8 + k * 0.3, x4, y4], [T.broke + 0.6, x4, y4], [T.broke + 6.0, x4 - 4.2, y4 + 6.0]] })),
   // Crocker's brigades: the reinforcements
   // (up the Champion house road on Hovey's left, into line on his left flank, then up the slope with him)
@@ -107,23 +107,22 @@ const arrows0 = [
   { side: U, pts: [[1646.6, 684.6], [1643.6, 687.8], [1640.6, 691.2]], t0: T.hovey + 0.7, dur: 2.2, t1: T.logan },
   { side: U, pts: [[1640.6, 681.0], [1636.6, 682.6], [1632.4, 685.6], [1630.0, 689.0]], t0: T.swung, dur: 2.2, t1: T.south + 0.6 },
   // Grant's orders to McClernand (thin), one after another
-  { side: U, width: 0.18, pts: [[1650.4, 686.6], [1653.4, 697.0], [1655.6, 705.8]], t0: T.order, dur: 1.0, t1: T.notCome + 0.4 },
-  { side: U, width: 0.18, pts: [[1650.4, 686.6], [1647.6, 701.0], [1643.4, 714.6]], t0: T.order + 0.7, dur: 1.0, t1: T.notCome + 0.4 },
+  { side: U, width: 0.18, pts: [[1649.8, 689.4], [1652.6, 697.0], [1654.6, 703.6]], t0: T.order, dur: 1.0, t1: T.notCome + 0.4 },
+  { side: U, width: 0.18, pts: [[1649.0, 689.6], [1647.4, 700.0], [1645.6, 709.0]], t0: T.order + 0.7, dur: 1.0, t1: T.notCome + 0.4 },
   // Bowen's counterattack (down the axis, each arrow in front of its own brigade, ending short of Hovey's falling-back line)
   { side: R, pts: [FR(7.0, 4.0), FR(3.0, -0.6), FR(-1.0, -2.0), FR(-4.0, -2.0)], t0: T.hit - 0.2, dur: 3.0, t1: T.swing + 0.6 },
   { side: R, pts: [FR(9.6, 8.6), FR(5.0, 5.6), FR(0.0, 4.4), FR(-4.0, 4.4)], t0: T.hit + 0.2, dur: 3.0, t1: T.swing + 0.6 },
   // the reinforcements into line, then the whole line back up the slope (third time)
-  { side: U, pts: [FR(-15.6, 5.5), FR(-13.0, 8.4), FR(-10.6, 11.6)], t0: T.reinf + 0.2, dur: 2.0, t1: T.contested - 0.4 },
   { side: U, pts: [FR(-8.8, -2.9), FR(-4.8, -2.9), FR(-1.0, -2.9)], t0: T.contested - 0.4, dur: 2.0, t1: T.lost },
   { side: U, pts: [FR(-8.8, 11.6), FR(-4.8, 11.6), FR(-1.0, 11.6)], t0: T.contested - 0.1, dur: 2.0, t1: T.lost },
   // Logan across the road; pulled away to help Hovey
   { side: U, width: 0.26, pts: [[1630.2, 690.6], [1628.6, 693.4], [1627.2, 695.8]], t0: 120.1, dur: 1.6, t1: T.only + 2.6 },   // round 2: on "Logan's men" (120.19)
   { side: U, width: 0.26, pts: [[1627.4, 696.4], [1630.4, 693.4], [1633.6, 690.6]], t0: T.moved - 0.6, dur: 1.8, t1: T.between },
   // the rout: west over Baker's Creek by both crossings
-  { side: R, pts: [[1634.4, 697.6], [1627.0, 697.2], [1620.6, 696.6], [1612.4, 697.6]], t0: T.broke + 0.1, dur: 2.6, t1: T.loring - 0.4 },
-  { side: R, pts: [[1636.0, 700.8], [1628.6, 704.6], [1621.0, 708.6], [1610.0, 710.8], [1601.0, 712.2]], t0: T.broke + 0.4, dur: 2.8, t1: T.loring - 0.2 },
+  { side: R, pts: [[1634.4, 697.6], [1628.0, 697.2], [1621.6, 696.6], [1615.8, 697.0]], t0: T.broke + 0.1, dur: 2.6, t1: T.loring - 0.4 },
+  { side: R, pts: [[1636.0, 700.8], [1628.6, 704.6], [1621.0, 708.6], [1612.6, 710.6], [1606.4, 711.6]], t0: T.broke + 0.4, dur: 2.8, t1: T.loring - 0.2 },
   // Loring: away south and east
-  { side: R, pts: [[1628.2, 715.0], [1628.0, 721.0], [1630.4, 727.0], [1635.4, 733.4]], t0: T.escaped + 0.4, dur: 2.4, t1: 152.4 },
+  { side: R, pts: [[1628.2, 715.0], [1628.0, 720.0], [1629.4, 724.6], [1632.0, 728.0]], t0: T.escaped + 0.4, dur: 2.4, t1: 152.4 },
 ];
 
 const arrows = arrows0.map((a) => a.region === W || a.width ? a : { ...a, width: 0.22 });
@@ -200,12 +199,15 @@ window.SEQ = {
     { t: 61.0, region: C, at: [1639.6, 690.8], dist: 31, tilt: 50, yaw: -7, fov: 30 },
     { t: 65.8, region: C, at: [1635.4, 691.0], dist: 32, tilt: 44, yaw: -9, fov: 30 },
     { t: 70.8, region: C, at: [1645.0, 709.6], dist: 38, tilt: 42, yaw: -3, fov: 30 },
-    { t: 77.6, region: C, at: [1642.6, 702.6], dist: 44, tilt: 40, yaw: -6, fov: 30 },
-    { t: 83.6, region: C, at: [1640.8, 696.6], dist: 38, tilt: 46, yaw: 0, fov: 30 },
-    { t: 92.6, region: C, at: [1642.0, 693.6], dist: 36, tilt: 44, yaw: 2, fov: 30 },
-    { t: 100.4, region: C, at: [1645.0, 693.4], dist: 37, tilt: 42, yaw: 3, fov: 30 },
-    { t: 108.6, region: C, at: [1643.4, 695.6], dist: 38, tilt: 43, yaw: 2, fov: 30 },
-    { t: 116.6, region: C, at: [1640.6, 694.0], dist: 41, tilt: 44, yaw: 0, fov: 30 },
+    { t: 74.2, region: C, at: [1646.2, 702.0], dist: 45, tilt: 37, yaw: -4, fov: 30 },
+    { t: 77.6, region: C, at: [1645.6, 700.4], dist: 45, tilt: 37, yaw: -5, fov: 30 },
+    { t: 83.6, region: C, at: [1640.8, 698.6], dist: 38, tilt: 44, yaw: -8, fov: 30 },
+    // round 2: the crest fight seen ALONG the attack axis (yaw ~ -40: Union line at the top, Confederate line below, the front across the frame)
+    { t: 89.0, region: C, at: [...FR(-1.6, 1.6)], dist: 31, tilt: 40, yaw: -30, fov: 30 },
+    { t: 95.0, region: C, at: [...FR(-4.4, 2.6)], dist: 29, tilt: 38, yaw: -40, fov: 30 },
+    { t: 101.4, region: C, at: [...FR(-5.2, 3.6)], dist: 30, tilt: 37, yaw: -42, fov: 30 },
+    { t: 108.6, region: C, at: [...FR(-1.6, 4.0)], dist: 30, tilt: 38, yaw: -38, fov: 30 },
+    { t: 116.6, region: C, at: [1638.6, 695.4], dist: 37, tilt: 42, yaw: -14, fov: 30 },
     { t: 121.6, region: C, at: [1628.8, 694.8], dist: 32, tilt: 48, yaw: -6, fov: 30 },
     { t: 130.8, region: C, at: [1628.0, 695.4], dist: 30, tilt: 50, yaw: -10, fov: 30 },
     { t: 136.6, region: C, at: [1631.4, 694.6], dist: 36, tilt: 48, yaw: -6, fov: 30 },
@@ -232,7 +234,8 @@ window.SEQ = {
     { general: "pemberton", region: C, keys: [[0, 1630.8, 703.4]], t0: DV.land, t1: T.D + 1, escape: ESC(LOW, T.broke + 1.4, 2.6) },
     // round 2: Grant's banner a little lower on the slope below the Champion house (it was cut by the top edge at 75-78 s), out for the
     // ledger shot (162-168 s it touched the ledger and the top edge), back on the hill for "that night"
-    { general: "grant", region: C, keys: [[0, 1649.6, 688.2]], t0: T.grant + 0.1, t1: T.decisive - 0.2 },
+    { general: "grant", region: C, keys: [[0, 1649.6, 688.2]], t0: T.order - 0.2, t1: 87.9 },   // in once the camera has pulled north (on "sent order after order")   // out before the camera turns along the crest axis (it sat on the top edge)
+    { general: "grant", region: C, keys: [[0, 1649.6, 688.2]], t0: 117.6, t1: T.broke + 0.6 },
     { general: "grant", region: C, keys: [[0, 1637.6, 692.6]], t0: T.night + 0.4, t1: T.D + 1 },
   ],
   labels: [
@@ -251,7 +254,7 @@ window.SEQ = {
   ],
   fx, generals,
   // round 2 (critic A: teal-black woods blanket): lift the close toe and take the blue out of the shadows so the canopy reads olive
-  grade: { close: { toe: 14, bl: 2, gl: 2 } },
+  grade: { close: { toe: 34, bl: -6, gl: -1 } },
   overlay: [
     // ---- wide prelude ----
     ["plaque.date", 0.35, DATE(14, 15, "Thursday · Edwards Station")],
@@ -271,28 +274,28 @@ window.SEQ = {
     ["timeline.hide", DV.full - 0.4],
     // ---- Champion Hill ----
     ["plaque.date", SW + 0.4, DATE(16, 17, "Saturday · Champion Hill · morning")],
-    ["quote", T.quote1 - 0.1, T.three - 0.4, { en: "One of the highest points in that section, and commanded all the ground in range.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700 }],
+    ["quote", T.quote1 - 0.1, T.three - 0.4, { en: "One of the highest points in that section, and commanded all the ground in range.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700, dim: 0.4 }],
     ["legend", T.three, T.called - 0.1, LEG],
     ["plaque.clock", T.eleven, { time: "11:00", note: "Champion Hill", header: "16 May 1863 · Day 17" }],
     ["plaque.run", T.took - 0.5, T.took + 0.6, "13:00"],   // round 2: 11:00 holds on "eleven o'clock"; the hands spin to 1 p.m. (FACT: crest ~1 p.m.) on "took it"
     ["medallion", { kind: "card", general: "hovey", sub: "Hovey's division", world: [1645.4, 686.4], offset: [190, -150], tIn: T.hovey, tOut: T.logan - 0.7 }],
     ["plaque.note", T.took, "Hovey takes the crest"],
-    ["medallion", { kind: "card", general: "logan", sub: "Logan's division", world: [1634.4, 686.4], offset: [-300, -150], tIn: T.logan + 0.1, tOut: T.south + 0.6 }],
+    ["medallion", { kind: "card", general: "logan", sub: "Logan's division", world: [1634.4, 686.4], offset: [-300, -50], tIn: T.logan + 0.1, tOut: T.south + 0.6 }],
     ["medallion", { kind: "card", general: "mcclernand", sub: "XIII Corps · four divisions", world: [1652.0, 712.0], offset: [200, -170], tIn: T.mccl, tOut: 75.0 }],
     ["plaque.note", T.hearing, "McClernand waits on the southern roads"],
     ["plaque.run", 70.4, 78.0, "13:40"],
-    ["label", T.notCome - 0.4, 79.2, { name: "McClernand did not come", sub: "order after order · Grant's Memoirs", world: [1652.0, 712.0], side: "us" }],
-    ["medallion", { kind: "card", general: "bowen", sub: "Bowen's division", world: [1639.4, 704.4], offset: [-330, -240], tIn: T.bowen + 0.4, tOut: T.drove - 0.2 }],
+    ["label", T.notCome - 0.4, 79.2, { name: "McClernand did not come", sub: "order after order · Grant's Memoirs", world: [1651.0, 706.6], side: "us" }],
+    ["medallion", { kind: "card", general: "bowen", sub: "Bowen's division", world: [1639.4, 704.4], offset: [150, -250], tIn: T.bowen + 0.4, tOut: T.drove - 0.2 }],
     ["plaque.note", T.hit, "Bowen's counterattack"],
     ["plaque.run", T.hit, T.massed, "14:30"],
     ["plaque.note", T.massed, "Massed Union guns at the foot of the hill"],
     ["label", T.contested + 0.1, T.lost - 0.3, { name: "Contested for the third time", sub: "General Hovey's report", world: [1639.4, 694.0], side: "us" }],
     ["number", T.twelve, T.called - 0.2, { value: 1200, round: 100, world: [1645.0, 686.6], size: 100 }],
-    ["quote", T.called + 0.1, T.north + 1.2, { en: "It was, after the conflict, literally the hill of death.", attr: "Alvin P. Hovey · official report", y: 700 }],
+    ["quote", T.called + 0.1, T.north + 1.2, { en: "It was, after the conflict, literally the hill of death.", attr: "Alvin P. Hovey · official report", y: 700, dim: 0.4 }],
     ["legend", T.north + 1.4, T.neither - 0.2, LEG],
     ["plaque.note", T.north + 1.4, "The north end of the field"],
     ["label", T.only, T.neither - 0.3, { name: "The only road out", sub: "Logan's men stand across it", world: [1623.2, 697.4], side: "cs" }],
-    ["quote", T.neither - 0.1, T.help - 0.3, { en: "Neither Logan nor I knew that we had cut off the retreat of the enemy.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700 }],
+    ["quote", T.neither - 0.1, T.help - 0.3, { en: "Neither Logan nor I knew that we had cut off the retreat of the enemy.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700, dim: 0.4 }],
     ["legend", T.help, T.D + 1, LEG],
     ["label", T.opened, T.broke - 0.2, { name: "The road is open again", sub: "Logan's men moved to help Hovey", world: [1623.2, 697.4], side: "cs" }],
     ["plaque.run", T.between, T.broke - 0.4, "15:30"],
