@@ -22,7 +22,7 @@ const BAT = VX.region(VB).features.batteries;
 const L = VX.len(RIV);
 
 // ---------------- the fleet: arc-length schedule along the river (s = 0 at the west edge of the region, 108 = top of the hairpin, 122-160 the city front)
-const KS = [[0, 56], [T.cast, 56], [20.1, 90], [27.0, 104], [34.0, 117], [44.0, 146], [52.0, 163], [DAWN + 1, 172]];   // the lead boat (Benton)
+const KS = [[0, 56], [T.cast, 56], [20.1, 90], [27.0, 104], [34.0, 117], [44.0, 145], [49.0, 151], [DAWN + 1, 155]];   // below the city the gunboats hold and regroup   // the lead boat (Benton)
 const sLead = (t) => { if (t <= KS[0][0]) return KS[0][1]; for (let i = 1; i < KS.length; i++) if (t < KS[i][0]) { const [t0, s0] = KS[i - 1], [t1, s1] = KS[i];
   const k = (t - t0) / (t1 - t0);
   return s0 + (s1 - s0) * k; } return KS[KS.length - 1][1]; };
@@ -37,9 +37,9 @@ const sBoat = (i, t) => sSmooth(t - i * LAG) - i * GAP;
 const tDis = T.disabled, sDis = sBoat(HC, tDis);
 const sHC = (t) => { if (t <= tDis) return sBoat(HC, t); const v0 = (sBoat(HC, tDis) - sBoat(HC, tDis - 0.5)) / 0.5, dt = t - tDis;
   // decelerate to the current (0.55 u/s) over 3 s, then after the fire she swings out and drifts faster down the channel (1.25 u/s)
-  const vc = 0.55, a = Math.min(dt, 3), s1 = sDis + v0 * a - (v0 - vc) * a * a / 6;
-  if (dt <= 3) return s1; const t2 = dt - 3, ramp = sstep(T.burned - tDis - 3, T.drifted - tDis - 3 + 1.5, t2);
-  return s1 + vc * t2 + 0.95 * Math.max(0, t2 - (T.burned - tDis - 3)) * ramp * 0.62; };
+  const vc = 0.6, a = Math.min(dt, 3), s1 = sDis + v0 * a - (v0 - vc) * a * a / 6;
+  if (dt <= 3) return s1; const t2 = dt - 3, tb = T.burst - tDis - 3;   // after the shell: she swings into the current and drifts down fast (2.6 u/s from ~50.5)
+  let s = s1 + vc * t2; if (t2 > tb) { const u = t2 - tb, r = 3.0; s += 2.0 * (u < r ? u * u / (2 * r) : r / 2 + (u - r)); } return s; };
 const posOn = (path, s) => VX.along(path, s);
 // the Henry Clay keeps to the west (right-hand) side of the channel once she is out of control
 const offPath = (path, d) => path.map((p, i) => { const a = path[Math.max(0, i - 1)], b = path[Math.min(path.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
@@ -86,14 +86,14 @@ const custom = [
   { region: VB, fn: (t, push) => { if (!WW || t < T.burst - 0.05 || t > DAWN + 0.2) return; const wy = waterY(), e = sstep(T.burst - 0.05, T.burst + 1.6, t), big = 1 + 0.5 * sstep(T.burned, T.edge + 2, t);
     const p = hcPath(t), dx = p[2], dy = p[3];
     // glow on the water around her + the flame body (additive), embers
-    push(p[0], wy + 0.05, p[1], 7.5 * big, 0.32 * e, 1.0, 0.42, 0.12);
-    push(p[0], wy + 0.25, p[1], 3.2 * big, 0.55 * e, 1.15, 0.5, 0.14);
+    push(p[0], wy + 0.05, p[1], 11 * big, 0.3 * e, 1.0, 0.4, 0.1);
+    push(p[0], wy + 0.25, p[1], 4.2 * big, 0.5 * e, 1.15, 0.5, 0.14);
     for (let j = 0; j < 7; j++) { const ph = j * 1.91, u = ((t * (1.6 + 0.2 * j) + ph) % 1), along = (hsh(j, 31) - 0.5) * 0.9;
-      push(p[0] + dx * along + Math.sin(t * 3 + ph) * 0.08, wy + 0.25 + u * 0.9 * big, p[1] + dy * along, (0.55 + 0.35 * (1 - u)) * big, 0.85 * e * Math.sin(Math.PI * Math.min(1, u * 1.1 + 0.05)), 1.15, 0.42 + 0.2 * (1 - u), 0.1, 4 + (j % 2), 1); }
+      push(p[0] + dx * along + Math.sin(t * 3 + ph) * 0.08, wy + 0.25 + u * 0.9 * big, p[1] + dy * along, (0.75 + 0.45 * (1 - u)) * big, 0.85 * e * Math.sin(Math.PI * Math.min(1, u * 1.1 + 0.05)), 1.15, 0.42 + 0.2 * (1 - u), 0.1, 4 + (j % 2), 1); }
     for (let j = 0; j < 10; j++) { const u = ((t * 0.45 + j * 0.37) % 1); push(p[0] + Math.sin(j * 7.1 + t) * 0.5 - u * 0.6, wy + 0.8 + u * 2.6, p[1] - u * 0.5, 0.12, 0.8 * e * (1 - u), 2.2, 0.9, 0.25, 7, 1); }
     // smoke: puffs born at her position in the past, rising and drifting with the wind (deterministic in t)
     for (let j = 0; j < 22; j++) { const age = ((t - T.burst) * 1.0 + j * 0.45) % 9.9, tb = t - age; if (tb < T.burst) continue; const q = hcPath(tb), u = age / 9.9;
-      push(q[0] + age * 0.32, wy + 0.8 + age * 0.45, q[1] - age * 0.18, 0.9 + age * 0.45, 0.42 * e * (1 - u) * sstep(0, 0.6, age), 0.2, 0.18, 0.16, 6, 4.0); } } },
+      push(q[0] + age * 0.32, wy + 0.8 + age * 0.45, q[1] - age * 0.18, 0.9 + age * 0.45, 0.5 * e * (1 - u) * sstep(0, 0.6, age), 0.55, 0.42, 0.32, 6, 4.0); } } },
 ];
 
 // ---------------- dawn: the fleet at anchor below the city (wide map), the route, the second run six nights later
@@ -165,13 +165,14 @@ window.SEQ = {
     ["medallion", { kind: "card", general: "porter", sub: "Mississippi Squadron", screen: [1765, 215], tIn: T.porter, tOut: 12.2 }],
     ["label", T.benton, T.benton + 3.6, { name: "Benton", sub: "the flagship", world: (t) => { const p = boatXY(0, t); return [p[0], p[1], 0.3]; }, side: "us" }],
     ["label", T.transports, T.transports + 3.8, { name: "Three transports", sub: "boilers padded with cotton and hay", world: (t) => { const p = boatXY(7, t); return [p[0], p[1], 0.3]; }, side: "us" }],
+    ["plaque.label", T.guns, "Night"],
     ["plaque.note", T.guns, "The batteries open"],
     ["plaque.note", T.twoHours, "Under fire for over two hours"],
     ["inset", T.every, T.disabled - 0.4, { img: "seq/inset_run.jpg", x: 1330, y: 175, w: 480, h: 345, caption: "Running the batteries, 16 April 1863 · Library of Congress" }],
     ["label", T.henry, T.abandoned + 1.2, { name: "Henry Clay", sub: "disabled · abandoned", world: (t) => { const p = hcPath(t); return [p[0], p[1], 0.3]; }, side: "us" }],
     ["label", T.burst + 0.2, T.burned + 2.4, { name: "Henry Clay", sub: "a shell in her cotton", world: (t) => { const p = hcPath(t); return [p[0], p[1], 0.3]; }, side: "cs", marker: false }],
     ["medallion", { kind: "card", general: "grant", sub: "watching from a transport above the city", screen: [1765, 215], tIn: T.grant, tOut: T.quote - 0.3 }],
-    ["quote", T.quote, T.remembered + 0.7, { en: "The sight was magnificent, but terrible.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700 }],
+    ["quote", T.quote, T.remembered + 0.7, { en: "The sight was magnificent, but terrible.", attr: "Ulysses S. Grant · Personal Memoirs", y: 380 }],
     ["film.grade", DAWN - 0.1, "day", 1.0],
     ["plaque.date", T.morning, { month: "April 1863", day: "17", weekday: "Friday", note: "by morning" }],
     ["ledger.show", T.fleet, { title: "Running the batteries", sub: "16 - 17 April 1863" }],

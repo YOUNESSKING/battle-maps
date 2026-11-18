@@ -92,7 +92,7 @@ window.SEQ = {
   units, arrows,
   banners: [
     { general: "pemberton", keys: [[0, BR.x - 3.4, 682.6]], t0: T.pem + 0.1, t1: T.D + 1, escape: { road: RD, t0: T.ran + 0.6, v: 1.1, v2: 1.1, join: "west" } },
-    { general: "grant", keys: [[0, 1531.6, 684.6], [T.ran + 2, 1531.6, 684.6], [T.nextMorning, BR.x + 2.6, 687.4]], t0: T.grant + 0.1, t1: T.D + 1 },
+    { general: "grant", keys: [[0, 1527.2, 682.4], [38.8, 1527.2, 682.4], [T.nextMorning, BR.x + 2.6, 687.4]], t0: T.grant + 0.1, t1: T.D + 1 },
   ],
   labels: [
     { text: "Bovina", town: "Bovina", size: 18, t0: 2.4, t1: 9.6 },
@@ -120,7 +120,7 @@ window.SEQ = {
     ["ledger.show", T.eighteen - 0.3, { title: "Big Black River", sub: "17 - 18 May 1863" }],
     ["ledger.add", T.guns, { who: "18 guns taken", stamp: false }],
     ["ledger.add", T.prisoners + 0.6, { who: "1,751 prisoners", note: "by Grant's count", stamp: false }],
-    ["number", T.prisoners + 0.6, T.stopped - 0.2, { value: 1751, round: 1, world: [1519.4, 685.6], size: 104 }],
+    ["number", T.prisoners + 0.6, T.stopped - 0.2, { value: 1751, round: 1, world: [1516.6, 687.6], size: 104 }],
     ["ledger.add", T.single, { who: "Grant stopped", note: "a single day", stamp: false }],
     ["plaque.date", T.nextMorning, { month: "May 1863", day: "18", weekday: "Day 19", note: "Monday · three new bridges" }],
     ["ledger.add", T.three + 0.5, { who: "Three new bridges", note: "by 8 a.m., 18 May", stamp: false }],
