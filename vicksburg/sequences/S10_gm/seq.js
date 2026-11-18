@@ -69,7 +69,7 @@ const fx = {
     { region: BB, bridge: 0, burn: false, t0: 40.4, t1: T.D + 2, preset: "smoulder", cue: false },
   ],
   smokeLines: [
-    { region: BB, pts: bw3, t0: 15.2, t1: TK + 0.4, cue: true, opts: { dir: [1, 0.05], rate: 1.4, volley: 1.6, roll: 0.9, size: 0.7, alpha: 0.085, life: 8, height: 3, muzzle: 6, windK: 0.7, cluster: [3.2, 1.6] } },   // v5: no grey slab
+    { region: BB, pts: bw3, t0: 15.2, t1: TK + 0.4, cue: true, opts: { dir: [1, 0.05], rate: 0.8, volley: 2.2, roll: 0.9, size: 0.6, alpha: 0.07, life: 6, height: 3, muzzle: 6, windK: 0.8, cluster: [4.0, 2.0] } },   // v6: separate puffs, no column
     { region: BB, pts: [[1524.0, 679.8], [1524.8, 680.6]], t0: 19.0, t1: TK, opts: { ...SMK, dir: [-1, 0.3], rate: 2.6 } },
     { region: BB, pts: [[1525.6, 682.8], [1525.4, 686.6], [1525.6, 690.4]], t0: 19.8, t1: 23.4, opts: { ...SMK, rate: 2.5 } },
   ],
@@ -88,8 +88,8 @@ window.SEQ = {
     { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 40, tilt: 46, yaw: -4, fov: 30 },
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
-    { t: 22.6, region: BB, at: [1520.6, 683.2], dist: 27, tilt: 52, yaw: -14, fov: 30 },
-    { t: 25.6, region: BB, at: [1514.2, 684.0], dist: 19.5, tilt: 52, yaw: -8, fov: 30 },   // (GM test v5) closer on the road + bridge, held still while the column crosses
+    { t: 20.0, region: BB, at: [1514.8, 684.0], dist: 21.0, tilt: 52, yaw: -8, fov: 30 },   // (GM test v6) closer on the road + bridge from the first retreat step, held still until the column is across
+    { t: 25.6, region: BB, at: [1514.6, 684.0], dist: 20.6, tilt: 52, yaw: -8, fov: 30 },
     { t: 32.6, region: BB, at: [1514.1, 684.0], dist: 19.3, tilt: 52, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,

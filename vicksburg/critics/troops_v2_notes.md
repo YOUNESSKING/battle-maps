@@ -88,3 +88,19 @@ Not done: arrows are not shortened to end before the column (they now pass under
 Checker v5: S09 55-110: overlaps 3 frames (<= 0.09 u, Bowen's own blocks wheeling), vmax 1.99 u/s, amax 4.1, spacing sd 2.3 %;
 S10 20-35: NO overlaps, vmax 2.24 u/s, amax 5-6 for the flanks, 20 for the reserve (it starts right at the bridge), spacing sd 3.5 %;
 every escaping block is off the bridge before the fire (31.3 s: last one at x 1508.4, the deck ends at ~1510.2).
+
+# v6 (2026-11-18): owner round 4 ("sometimes they move sideways; through a bridge they move sideways; maybe they should just break rank")
+Share (with the film's soundtrack for the same windows): `vicksburg/troops_test_v6_share.mp4`.
+
+| Point | v6 |
+| --- | --- |
+| No sideways movement | every phase now turns first, then walks along the men's facing: line moves turn (1.0 s) BEFORE the block moves and turn back AFTER it stops, on each block's own (staggered) clock; column forming turns 0.9 s before stepping off; deploys = wheel (22 %), walk with the men facing the way they go (28-80 %), face front (86-100 %), no overlap between phases; retreats turn about first, then walk forward along the path (unwrapped tangent); heading low-pass cut to +-0.15 s so the facing never lags the path |
+| New check | `check_troops_motion.mjs` reports per unit the max angle between the block's velocity and its men's facing and FAILS any frame > 20 deg while moving > 0.2 u/s. v6: S09 55-110 max 6 deg, S10 20-35 max 19 deg, 0 failing frames (the S10 reserve failed at 46 deg until its escape path was smoothed: moving average +-1.3 u, 3 passes) |
+| Bridges: break ranks | within ~2.6 u of a bridge the escaping block dissolves: each man walks the escape path in a stream 3 abreast (rows 0.06 u apart, jittered), on the DECK height, facing along the deck; no plate, no halo, no shadow on the bridge; past it the men walk back into their rank spots over ~1-1.5 s (per-man staggered). No block shape slides across |
+| Camera | S10_gm: close framing (dist 21) from the first retreat step (20.0 s) and held still to 32.6 s |
+| Other | guns +30 %, arrows +20 % width, unit size variation reduced (0.96-1.04), the 55 s parapet volley = separate short-lived puffs |
+| Sound | the film's own mix muxed for the same windows (film 728.252-783.252 + 871.788-886.788, 0.3 s fades) |
+
+Checker v6: overlaps S09 2 frames (<= 0.15 u, Bowen's own blocks wheeling at the halt), S10 none; accel S09 <= 4.1, S10 <= 6.1 u/s^2;
+column spacing sd S09 2.3 %, S10 0.4 %; every escaping block clear of the bridge before the fire (31.3 s).
+Not done: units +25 % on WIDE shots (no wide shot in these excerpts).

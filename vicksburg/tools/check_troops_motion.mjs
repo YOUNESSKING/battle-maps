@@ -26,6 +26,9 @@ const res = await pg.evaluate((t0, t1, reg) => { const T3 = window.__vx.TRO[reg]
       if (v > o.vmax) { o.vmax = v; o.vmaxT = t; } if (Math.hypot(dx, dy) > 0.5) o.pop++;
       if (pp) { const a = Math.hypot(dx - (p.x - pp.x), dy - (p.y - pp.y)) / 0.01; if (a > o.amax) { o.amax = a; o.amaxT = t; } }
       // sliding = motion across BOTH the plate's long axis and the men's facing (a flank march moves along the plate's long side)
+      // v6 (owner: no sideways movement): angle between the block's velocity and its men's facing; FAIL above 20 deg while moving
+      if (v > 0.2) { const m0 = [dx / Math.hypot(dx, dy), dy / Math.hypot(dx, dy)], fa = Math.acos(Math.max(-1, Math.min(1, m0[0] * q.sx + m0[1] * q.sy))) * 180 / Math.PI;
+        o.fmax = Math.max(o.fmax || 0, fa); if (fa > 20) { o.ffail = (o.ffail || 0) + 1; o.ffT = o.ffT ?? +t.toFixed(1); } }
       if (v > 0.15) { const m = [dx / Math.hypot(dx, dy), dy / Math.hypot(dx, dy)], acrossMen = Math.abs(m[0] * q.sy - m[1] * q.sx), alongMen = m[0] * q.sx + m[1] * q.sy;
         const sl = alongMen > -0.95 && acrossMen > 0.5 ? v * acrossMen : 0; if (sl > 0) o.slideFrames++; if (sl > o.slide) { o.slide = sl; o.slideT = t; } }
       const da = Math.abs(Math.atan2(q.hx * p.hy - q.hy * p.hx, q.hx * p.hx + q.hy * p.hy)) * 180 / Math.PI; if (da > o.turn) { o.turn = da; o.turnT = t; } }
@@ -39,7 +42,7 @@ const res = await pg.evaluate((t0, t1, reg) => { const T3 = window.__vx.TRO[reg]
   const ovU = {}; for (const [t, a, b, d] of OV) { const key = a === b ? `unit ${a} (self)` : `units ${a} x ${b}`; const o = ovU[key] = ovU[key] || { n: 0, max: 0, t0: t, t1: t }; o.n++; o.max = Math.max(o.max, d); o.t1 = t; }
   const spc = {}; for (const uu in SP) { const a = SP[uu], m = a.reduce((x, y) => x + y, 0) / a.length, sd = Math.sqrt(a.reduce((x, y) => x + (y - m) ** 2, 0) / a.length); spc[uu] = `mean ${m.toFixed(2)} sd ${sd.toFixed(3)} (${(sd / m * 100).toFixed(1)} %) n ${a.length}`; }
   return { out, ovU, spc }; }, +T0, +T1, REG);
-for (const [k, o] of Object.entries(res.out)) if (Array.isArray(o)) console.log(k, JSON.stringify(o)); else if (o.vmax > 0.05) console.log(k.padEnd(24), `vmax ${o.vmax.toFixed(2)} u/s (${(o.vmax / 38 * 100).toFixed(1)} %fw/s) @${o.vmaxT.toFixed(1)} | amax ${o.amax.toFixed(1)} @${o.amaxT.toFixed(1)} | slide ${o.slide.toFixed(2)} @${o.slideT.toFixed(1)} (${o.slideFrames} fr) | turn ${o.turn.toFixed(1)} deg/0.1s @${o.turnT.toFixed(1)} | shape ${(o.shape * 100).toFixed(1)} % | pops ${o.pop}`);
+for (const [k, o] of Object.entries(res.out)) if (Array.isArray(o)) console.log(k, JSON.stringify(o)); else if (o.vmax > 0.05) console.log(k.padEnd(24), `vmax ${o.vmax.toFixed(2)} u/s (${(o.vmax / 38 * 100).toFixed(1)} %fw/s) @${o.vmaxT.toFixed(1)} | amax ${o.amax.toFixed(1)} @${o.amaxT.toFixed(1)} | slide ${o.slide.toFixed(2)} @${o.slideT.toFixed(1)} (${o.slideFrames} fr) | turn ${o.turn.toFixed(1)} deg/0.1s @${o.turnT.toFixed(1)} | shape ${(o.shape * 100).toFixed(1)} % | pops ${o.pop} | facing max ${(o.fmax || 0).toFixed(0)} deg, ${o.ffail || 0} fr > 20${o.ffail ? ' FAIL from ' + o.ffT : ''}`);
 console.log("OVERLAPS (penetration > 0.02 units):"); for (const [k, o] of Object.entries(res.ovU)) console.log("  ", k.padEnd(18), `${o.n} frame-pairs, max ${o.max} units, ${o.t0}-${o.t1} s`);
 console.log("COLUMN SPACING:"); for (const [k, v] of Object.entries(res.spc)) console.log("   unit", k, v);
 await br.close(); srv.close();
