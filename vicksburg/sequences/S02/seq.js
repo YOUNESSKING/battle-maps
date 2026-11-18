@@ -99,7 +99,7 @@ const units = [
 ];
 // the west-bank road (Louisiana): Milliken's Bend - Richmond - down the west side of Roundaway Bayou - round the river's western loop - New Carthage - Hard Times,
 // 12-30 units (1.5-4 km) west of the channel everywhere (the baked road 0/1 runs ON the channel between New Carthage and Perkins')
-const WB = [MB, [1199, 609], [1180, 629], TW("Richmond"), [1162, 664], [1168, 680], [1178, 698], [1192, 716], [1200, 735], [1198, 755], [1188, 770], [1172, 784],
+const WB = [MB, [1199, 609], [1180, 629], [1164, 647], [1162, 664], [1168, 680], [1178, 698], [1192, 716], [1200, 735], [1198, 755], [1188, 770], [1172, 784],
   [1161, 800], [1155, 822], [1156, 846], [1163, 866], [1176, 882], NC, [1209, 903], HT];
 const WBthin = WB;
 const WBL = VX.len(WB);
@@ -255,7 +255,7 @@ window.SEQ = {
     ["label", T.riskiest - 0.3, T.riskiest + 2.4, { name: "The riskiest idea yet", sub: "some of his own generals", world: [1250, 740], side: "us", marker: false }],
     // G
     ["label", T.louisiana2, T.louisiana2 + 3.0, { name: "Through the Louisiana swamps", sub: "down the west bank", world: [1180, 760], side: "us", marker: false, offset: [-360, -20] }],
-    ["label", T.below, T.below + 3.6, { name: "Far below the city", sub: "Hard Times, Louisiana", world: [HT[0] - 2, HT[1] + 2], side: "us", marker: false, offset: [-330, 10] }],
+    ["label", T.below, T.below + 3.6, { name: "Far below the city", sub: "Hard Times, Louisiana", world: [HT[0] - 2, HT[1] + 2], side: "us", marker: false, offset: [40, -50] }],
     ["label", T.run, T.run + 3.4, { name: "The navy runs the guns", sub: "at night", world: [1350, 760], side: "us", marker: false }],
     ["label", T.carry, T.carry + 3.2, { name: "Across the river", world: [GG[0] + 6, GG[1] + 8], side: "us", marker: false }],
     ["label", T.enemy, T.enemy + 3.0, { name: "On the enemy's side", world: [1300, 900], side: "cs", marker: false }],
