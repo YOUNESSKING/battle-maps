@@ -323,7 +323,8 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
     AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r) }),
     T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, sun: SUN, shots: BATTERY_SHOTS[r] || [] }) : null }; }
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = a.color || ARROW_COL[a.side || "u"];
-  return { ...a, region: r, w: (a.width ?? 0.32) * RO(r).troopScale, a3: TRO[r].AR3.add(a.pts, col) }; });
+  return { ...a, region: r, w: Math.min(a.width ?? 0.30, 0.30) * RO(r).troopScale,   // critic A8: v6/v8 width cap
+    a3: TRO[r].AR3.add(a.pts, col) }; });
 // generals: banners on poles (banner.js, STYLE_LOCK 2f item 1) + medallion portraits; any portrait: SEQ.generals = { key: { img, flag, name, full, side, role } }
 const GENERALS = {
   grant: { img: "grant.png", side: "us", name: "Grant", full: "Ulysses S. Grant", role: "Major General" },
@@ -399,6 +400,10 @@ const drawTroops = (t, region) => {
   for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || (A.u.group != null && A.u.group === B.u.group) || A.esc || B.esc || A.u.region !== B.u.region) continue;
     let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05 * RO(A.u.region).troopScale;
     if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
+  // owner 2026-11-18 + critics A1/B1: every box faces the camera (screen-up projected on the ground), so on screen each box is an
+  // upright rectangle like the Style W 2D boxes and never turns with its unit, its road or its line; only positions follow the facing.
+  const cu = new THREE.Vector3(0, 1, 0).applyQuaternion(world.camera.quaternion); let cfx = -cu.x, cfy = -cu.z; const cl = Math.hypot(cfx, cfy) || 1; cfx /= cl; cfy /= cl;
+  if (S.boxFacing !== "unit") for (const b of L) { b.fx = cfx; b.fy = cfy; b.px = -cfy; b.py = cfx; }
   for (const r in TRO) { const BX = TRO[r].BX; if (!BX) continue; const h = HT(r);
     BX.set(L.filter((b) => b.u.region === r).map((b) => ({ x: b.x, y: b.y, fx: b.fx, fy: b.fy, bw: b.bw, bd: b.bd, art: b.u.type === "art", op: b.op, h: h(b.x, b.y),
       color: b.capd > 0 ? `rgb(${Math.round(lerp(b.u.side === "u" ? 44 : 190, 138, b.capd))},${Math.round(lerp(b.u.side === "u" ? 87 : 58, 133, b.capd))},${Math.round(lerp(b.u.side === "u" ? 183 : 42, 122, b.capd))})` : SIDE_COL[b.u.side] }))); }
@@ -423,7 +428,8 @@ const drawPins = (t, region) => {
 // a screen-space cool veil that grows with depth; the dive (deck -> haze) keeps the neutral look tuned for the white-out. ?grade=0 = raw.
 const GP = {
   close: { sat: 0.98, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04, ct: 1.0 },
-  wide: { sat: 0.95, toe: 14, S: 0.1, bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },
+  wide: { sat: 0.95, toe: 22, S: 0.1,   // critic A7: toe 14 -> 22 lifts the near-black wide woods
+            bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },
   night: { sat: 0.95, toe: 2, S: 0.0, bl: 5, gl: 2, veil: [40, 60, 82], vt: 0.04, vb: 0.0, ct: 1.0 },
   off: { sat: 1.05, toe: 0, S: 0, bl: 0, gl: 0, veil: [150, 160, 165], vt: 0, vb: 0, ct: 1.0 } };
 for (const k in S.grade || {}) GP[k] = { ...GP[k], ...S.grade[k] };
