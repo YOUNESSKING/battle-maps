@@ -94,7 +94,7 @@ const custom = [
   { region: S, fn: (t, push) => { if (!WD || t < 7 || t > CUT_B) return; for (const sh of SHELLS) { const u = (t - sh.t) / sh.delay; if (u < 0 || u > 1) continue;
     for (let k = 0; k < 7; k++) { const uu = u - k * 0.022; if (uu < 0) break; const x = lerp(sh.at[0], sh.impact[0], uu), y = lerp(sh.at[1], sh.impact[1], uu);
       const h = lerp(gh(sh.at[0], sh.at[1], 0.3), gh(sh.impact[0], sh.impact[1], 0.1), uu) + sh.arc * 4 * uu * (1 - uu);
-      push(x, h, y, k ? 0.32 - k * 0.03 : 0.5, (k ? 0.5 * (1 - k / 7) : 1.0), 1.2, 0.7, 0.3); } } } },
+      push(x, h, y, k ? 0.55 - k * 0.05 : 0.9, (k ? 0.6 * (1 - k / 7) : 1.0), 1.3, 0.75, 0.3); } } } },
   // lamps in the caves (night) and the river reflections of the burning houses
   { region: S, fn: (t, push) => { if (!WD || t < 12.4 || t > CUT_B + 0.1) return; for (const c of CAVES) { const e = sstep(c.t0, c.t0 + 0.8, t); if (e > 0) lamp(t, push, c.at[0], c.at[1], 0.55 * e); } } },
   // the mine: dirt thrown into the air (brown smoke puffs on drag curves), clods on ballistic arcs, dust drifting off
@@ -135,7 +135,7 @@ const build = async (ctx) => { WD = ctx.world; const { THREE, world } = ctx, sc 
       const A1 = P0(a, -1), A2 = P0(a, 1), B1 = P0(b, -1), B2 = P0(b, 1), H = (p) => world.heightAt(p[0], p[1], S) + 0.045;
       pos.push(A1[0], H(A1), A1[1], B1[0], H(B1), B1[1], A2[0], H(A2), A2[1], A2[0], H(A2), A2[1], B1[0], H(B1), B1[1], B2[0], H(B2), B2[1]); }
     const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.computeVertexNormals(); return { g, n: q.length - 1 }; };
-  const TR = APPROACH.map((Z, i) => { const r1 = ribbon(Z, 0.17, 0), r2 = ribbon(Z, 0.11, 0.17); const m1 = new THREE.Mesh(r1.g, dark), m2 = new THREE.Mesh(r2.g, pale);
+  const TR = APPROACH.map((Z, i) => { const r1 = ribbon(Z, 0.22, 0), r2 = ribbon(Z, 0.14, 0.2); const m1 = new THREE.Mesh(r1.g, dark), m2 = new THREE.Mesh(r2.g, pale);
     m1.renderOrder = 2; m2.renderOrder = 2; sc.add(m1); sc.add(m2); return { i, r1, r2 }; });
   // the crater: a dark bowl with a pale thrown-up rim (canvas texture on a flat disc just above the ground)
   const cv = document.createElement("canvas"); cv.width = cv.height = 128; const g2 = cv.getContext("2d"), gr = g2.createRadialGradient(64, 64, 4, 64, 64, 62);
@@ -289,11 +289,11 @@ window.SEQ = {
     // F: the wide map pulls up the whole river
     { t: CUT_F, region: W, at: [1392, 700], dist: 330, tilt: 44, yaw: -2, fov: 30, ease: "cut" },
     { t: 101.2, region: W, at: [1388, 712], dist: 360, tilt: 43, yaw: -2, fov: 30 },
-    { t: 107.6, region: W, at: [1300, 880], dist: 860, tilt: 38, yaw: 0, fov: 30 },
-    { t: 119.4, region: W, at: [1345, 840], dist: 900, tilt: 37, yaw: 1, fov: 30, ease: "lin" },
+    { t: 107.6, region: W, at: [1410, 870], dist: 720, tilt: 36, yaw: 0, fov: 30 },
+    { t: 119.4, region: W, at: [1420, 845], dist: 750, tilt: 35, yaw: 1, fov: 30, ease: "lin" },
     // G: the end: dusk, a slow pull-up over the river at the city
-    { t: 128.0, region: W, at: [1370, 790], dist: 980, tilt: 34, yaw: 2, fov: 30, night: 0.25 },
-    { t: T.D, region: W, at: [1385, 760], dist: 1120, tilt: 30, yaw: 3, fov: 30, night: 0.45, ease: "lin" },
+    { t: 128.0, region: W, at: [1430, 820], dist: 800, tilt: 34, yaw: 2, fov: 30, night: 0.25 },
+    { t: T.D, region: W, at: [1440, 800], dist: 880, tilt: 32, yaw: 3, fov: 30, night: 0.45, ease: "lin" },
   ],
   clouds: {
     [S]: { shadows: true },
@@ -304,12 +304,12 @@ window.SEQ = {
     { region: W, side: "u", type: "inf", n: 3, face: "east", t0: CUT_F, keys: [[0, 1398, 680]] },
     { region: W, side: "u", type: "inf", n: 3, face: "south", t0: CUT_F, keys: [[0, 1416, 700]] }],
   boats: [
-    { region: S, kind: "gunboat", n: 3, size: 0.3, path: RIV, sAt: (t, i) => MORTAR_S[i], t0: 6.0, t1: CUT_B, lamp: false, wake: false },   // the mortar boats
-    { region: S, kind: "gunboat", n: 2, size: 0.45, path: RIV, sAt: (t, i) => GUNBOAT_S[i], t0: 6.0, t1: CUT_B, lamp: false, wake: false },
+    { region: S, kind: "gunboat", n: 3, size: 0.55, path: RIV, sAt: (t, i) => MORTAR_S[i], t0: 6.0, t1: CUT_B, lamp: false, wake: false },   // the mortar boats
+    { region: S, kind: "gunboat", n: 2, size: 0.75, path: RIV, sAt: (t, i) => GUNBOAT_S[i], t0: 6.0, t1: CUT_B, lamp: false, wake: false },
     // F: the river open: steamers down past the city to the Gulf
-    { region: W, kind: "steamer", n: 3, size: 2.4, path: RUN, sAt: (t, i) => 200 + (t - T.whole) * 9 - i * 22, t0: T.whole, t1: T.D + 1, lamp: false },
+    { region: W, kind: "steamer", n: 3, size: 5, path: RUN, sAt: (t, i) => 200 + (t - T.whole) * 12 - i * 26, t0: T.whole, t1: T.D + 1, lamp: false },
     // G: the dark river, seven gunboats (memory of 16 April)
-    { region: W, kind: "gunboat", n: 7, size: 2.4, path: RUN, sAt: (t, i) => 150 + (t - T.dark) * 7 - i * 9, t0: T.dark, t1: T.D + 1, lamp: true, wake: true },
+    { region: W, kind: "gunboat", n: 7, size: 5, path: RUN, sAt: (t, i) => 210 + (t - T.dark) * 8 - i * 12, t0: T.dark, t1: T.D + 1, lamp: true, wake: true },
   ],
   fx, build, draw,
   labels: [
@@ -344,6 +344,7 @@ window.SEQ = {
     ["medallion", { kind: "card", general: "grant", sub: "near a stunted oak", world: [OAK[0] + 0.6, OAK[1] + 0.1], offset: [330, -200], tIn: T.grant, tOut: 69.3 }],
     ["label", T.served, 69.3, { name: "Mexico, 1846-48", sub: "they had served in the same division", x: 960, y: 900, offset: [-190, -40], marker: false, side: "us", stripes: ["#3C6E9E", "#9C3A35"] }],
     ["film.grade", 69.4, "night", 0.8],
+    ["plaque.clock", T.night + 0.1, { time: "22:00", note: "Grant's terms", header: "3 July 1863 · Day 65" }],
     ["letter", T.night + 0.3, CUT_E - 0.2, { header: "3 July 1863 · that night", title: "Grant's terms", sub: "the substance, not the letter's words", marks: false, cps: 24,
       quote: "Parole: each man signs a promise not to fight again until exchanged, and goes home." }],
     // E
