@@ -1,4 +1,4 @@
-# Fix brief, round 1 -> 2 (read fully)
+# Fix brief (read fully). ROUND 3: use critics/round2_A.md + round2_B.md (renders in /tmp/vx_render2); round-1 notes below still apply
 
 You fix existing scenes after the two round-1 critics. Read `vicksburg/SCENE_AGENT_BRIEF.md` (build/check loop, rules), the critics
 `vicksburg/critics/round1_A.md` (look) and `vicksburg/critics/round1_B.md` (story/sync), `vicksburg/CRITIC_QUEUE.md`, and each of your
@@ -26,3 +26,11 @@ Recurring scene-level fixes the critics asked for (apply where they hit your sce
 
 The script and the voice are LOCKED (decision 6): do not change words; fit the pictures to the existing word times.
 Finish each scene with a new `sheet.jpg` + an updated NOTES.md section "Round 2 fixes" (finding -> what you did). Do not commit. Report.
+
+## Round 3 additions (lead, 2026-11-18)
+- Engine since round 2 (lead): arrow width cap 0.24; wide grade toe 30; wide rivers calmer; close-town roofs weathered brown/slate; timeline seals
+  above the day labels. Check your stills with these.
+- The vicksburg region was re-baked larger (box [1306,598,124,117]): anything that follows river points by index (boats via VX.river /
+  riverAtY) may have moved: re-check every boat path in scenes using `vicksburg`.
+- Write "Round 3 fixes" in NOTES.md. Run check_paths.js, check_edges.js and check_escapes.js (vicksburg/tools/) on every scene you touch.
+- Budget: this is the last fix round before the final render; fix every severity 3 and 2, and severity 1 where cheap.
