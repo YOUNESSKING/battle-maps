@@ -91,9 +91,11 @@ const arrows = [
 
 // ---------------- fx (siege only) ----------------
 const along = (pts, k) => VX.along(pts, k * VX.len(pts));
-const RED_V = { dir: [1, 0], rate: 2.4, volley: 1.7, roll: 0.8, size: 1.1, height: 2.6, muzzle: 6, windK: 0.45 };
-const BLUE_V = { dir: [-1, 0], size: 1.0, alpha: 0.2, life: 10, muzzle: 6, windK: 0.45, rate: 1.2 };
-const redanPts = (i, n = 4) => { const w = WK(i); return Array.from({ length: n }, (_, j) => w[Math.round(j * (w.length - 1) / (n - 1))]).map((p) => [p[0] - 0.15, p[1]]); };
+// round 3 (critic A: a string of white beads along the trench): dense battalion curtains (v7) = many small sprites per cluster, wide clusters,
+// lower alpha; the polyline follows each work (denser sample points) so the curtain hugs the parapet
+const RED_V = { dir: [1, 0], rate: 7.0, volley: 1.7, roll: 0.8, size: 0.85, alpha: 0.17, height: 2.2, muzzle: 5, windK: 0.45, cluster: [1.3, 0.6] };
+const BLUE_V = { dir: [-1, 0], size: 0.85, alpha: 0.16, life: 10, muzzle: 5, windK: 0.45, rate: 3.6, cluster: [1.2, 0.6] };
+const redanPts = (i, n = 8) => { const w = WK(i); return Array.from({ length: n }, (_, j) => w[Math.round(j * (w.length - 1) / (n - 1))]).map((p) => [p[0] - 0.15, p[1]]); };
 const fx = {
   volleys: [
     // 19 May: the Stockade Redan and the line beside it fire into the road
@@ -102,9 +104,9 @@ const fx = {
     // 22 May: the whole front
     { region: S, pts: redanPts(1), t0: 51.6, t1: 57.0, opts: { ...RED_V, dir: [0.8, -0.4] } },
     { region: S, pts: redanPts(2), t0: 51.9, t1: 57.2, opts: { ...RED_V } },
-    { region: S, pts: redanPts(9, 3).concat(redanPts(10, 3)), t0: 52.1, t1: 57.0, opts: { ...RED_V } },
+    { region: S, pts: redanPts(9, 5).concat(redanPts(10, 5)), t0: 52.1, t1: 57.0, opts: { ...RED_V } },
     { region: S, pts: redanPts(4), t0: 52.3, t1: 57.4, opts: { ...RED_V } },
-    { region: S, pts: redanPts(11, 6), t0: 52.5, t1: 57.2, opts: { ...RED_V, dir: [0.9, 0.4] } },
+    { region: S, pts: redanPts(11, 12), t0: 52.5, t1: 57.2, opts: { ...RED_V, dir: [0.9, 0.4] } },
   ],
   smokeLines: [
     { region: S, pts: [[1408.6, 666.3], [1408.0, 667.4]], t0: 43.6, t1: 45.8, opts: { ...BLUE_V, dir: [-1, 0.2] } },
@@ -114,9 +116,9 @@ const fx = {
   ],
   guns: [
     // 19 May: Sherman's batteries on the redan
-    { region: S, shots: [41.8, 42.5, 43.3, 44.1].map((t, i) => ({ t, at: UGUN[0], dir: [-1, -0.1], impact: [STOCKADE[0] - 0.5 - (i % 2) * 0.6, STOCKADE[1] + (i - 1.5) * 0.5], delay: 0.7 })) },
+    { region: S, opts: { plume: 0.5, puffs: 8, alpha: 0.2, jet: 1.6 }, shots: [41.8, 42.5, 43.3, 44.1].map((t, i) => ({ t, at: UGUN[0], dir: [-1, -0.1], impact: [STOCKADE[0] - 0.5 - (i % 2) * 0.6, STOCKADE[1] + (i - 1.5) * 0.5], delay: 0.7 })) },
     // 22 May: the last of the four-hour bombardment along the whole front
-    { region: S, shots: [47.6, 48.1, 48.7, 49.2, 49.8, 50.3, 50.9, 51.4].map((t, i) => { const g = UGUN[i % 4], tg = [STOCKADE, LA3, TEX2, RRR][i % 4];
+    { region: S, opts: { plume: 0.5, puffs: 8, alpha: 0.2, jet: 1.6 }, shots: [47.6, 48.1, 48.7, 49.2, 49.8, 50.3, 50.9, 51.4].map((t, i) => { const g = UGUN[i % 4], tg = [STOCKADE, LA3, TEX2, RRR][i % 4];
       return { t, at: g, dir: [tg[0] - g[0], tg[1] - g[1]].map((v, _, a) => v / Math.hypot(a[0], a[1])), impact: [tg[0] - 0.6 - (i % 3) * 0.3, tg[1] + ((i * 37) % 5 - 2) * 0.35], delay: 0.75 }; }) },
   ],
 };
@@ -218,7 +220,7 @@ window.SEQ = {
     { text: "2nd Texas Lunette", at: [1404.8, 681.6], size: 15, t0: T.redans + 0.3, t1: 39.6, region: S },
     { text: "Railroad Redoubt", at: [1399.0, 688.2], size: 15, t0: T.redans + 0.6, t1: 39.6, region: S },
     { text: "Graveyard Road", at: [1410.6, 664.0], size: 14, river: true, t0: T.attacked + 0.2, t1: T.attacked + 3.6, region: S },
-    { text: "Sherman", at: [1413.6, 662.4], size: 15, t0: T.three + 0.1, t1: T.three + 3.6, region: S },
+    { text: "Sherman", at: [1413.0, 665.0], size: 15, t0: T.three + 0.1, t1: T.three + 3.6, region: S },
     { text: "McPherson", at: [1413.4, 672.8], size: 15, t0: T.three + 0.35, t1: T.three + 3.6, region: S },
     { text: "McClernand", at: [1406.6, 686.2], size: 15, t0: T.three + 0.6, t1: T.three + 3.6, region: S },
   ],

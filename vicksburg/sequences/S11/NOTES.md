@@ -30,3 +30,12 @@ Open issues
 | A: quote card stays across the cut at ~66 s | Quote out at 66.34 (fade 0.7 s, gone by 67.04, cut at 67.4); `dim: 0.4` (the map stays live under it). |
 | A + B: twenty-days wide view too dark, tiny pulses, a cloud over a third of the frame | Scene grade `wide: { toe: 30 }`; battle pulses r 17 -> 38, brighter gold, gone when the push-in starts (81.9); keep-clear zones for the left / lower-left / Jackson-area clouds (68-87). |
 | A sev 1: Sherman letter body ~6 px at 720p | New optional engine letter-card fields (`qSize`, `height`; README LESSONS): body 31 px on two lines, card 262 px high at top 662. |
+
+## Round 3 fixes (critics A + B round 2)
+| Finding | Fix |
+| --- | --- |
+| A: smoke = a string of white beads along the trench 48-57 | Confederate volleys: denser sample points along each work (8-12 per redan), rate 2.4 -> 7.0, size 0.85, alpha 0.17, cluster [1.3, 0.6] = continuous battalion curtains hugging the parapets; Union firing lines likewise (rate 3.6); the bombardment guns fire small forward plumes (`plume 0.5, puffs 8, jet 1.6`), no round white balls |
+| (own) "Sherman" corps label cut by the right edge at 52-54 | label moved to [1413.0, 665.0] |
+| B N4 dive white-out 1.4 s | engine default now the short white-out (other agent); checked at 28.0 / 29.0 |
+Not done (sev 1): Chickasaw Bayou plate / Walnut Hills label nudges at 3-9.
+Checks: check_paths OK, check_edges OK, check_escapes n/a (no bridge in the siege world).

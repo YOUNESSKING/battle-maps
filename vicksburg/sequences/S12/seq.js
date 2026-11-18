@@ -34,7 +34,10 @@ const T = { D: 142.19, dug: 1.06, trenches: 2.28, zig: 2.70, forts: 4.60, closer
 const S = "siege", W = "wide";
 const CUT_B = 21.65, CUT_E = 78.5, CUT_F = 99.8;   // paragraph changes (21.38/21.93, 78.22/78.77, 99.53/100.08)
 const FADE = T.D - 2.5;
-const CB0 = 129.55, CB1 = 135.0;   // round 2: the callback (16 April: the gunboats run past the city at night) on "It began on a dark river"
+const CB0 = 129.55, CB1 = 135.0;
+// round 3 (critic A N3: giant toy gunboats, the last cut by the edge): size 0.3 (x0.4), 2.0 units nose to nose, the column (12 units)
+// centred on the camera's track (camera y 670 -> 676 over the shot)
+const CB_S = (t, i) => S_CITY + (t - 132.3) * 1.2 + 5.0 - i * 2.0;   // round 2: the callback (16 April: the gunboats run past the city at night) on "It began on a dark river"
 const sstep = VX.sstep, lerp = VX.lerp, hsh = VX.hsh, clamp = VX.clamp;
 const P = (n) => VX.place(n), TW = (n) => VX.town(n, W);
 const PI = Math.PI;
@@ -278,7 +281,7 @@ const fx = {
       shots: SHELLS.map((s) => ({ t: s.t, at: s.at, dir: [s.impact[0] - s.at[0], s.impact[1] - s.at[1]].map((v, _, a) => v / Math.hypot(a[0], a[1])), impact: s.impact, delay: s.delay })) },
     // callback: the bluff batteries fire on the boats (flash on the bluff, the shot falls in the river; no boom, as S03)
     { region: S, preset: "battery", h: 0.25, boom: false, opts: { size: 1.3, alpha: 0.2, flash: 2.6, flashLife: 0.18 }, impactOpts: { size: 0.45 },
-      shots: [[130.4, 1385.6, 664.6], [131.3, 1384.4, 671.0], [132.2, 1383.4, 677.2], [133.0, 1385.0, 667.8], [133.9, 1383.8, 674.0]].map(([t, x, y], i) => { const b = boatXY(S_CITY + (t + 0.8 - 131.6) * 1.7 - (i % 3) * 2.6);
+      shots: [[130.4, 1385.6, 664.6], [131.3, 1384.4, 671.0], [132.2, 1383.4, 677.2], [133.0, 1385.0, 667.8], [133.9, 1383.8, 674.0]].map(([t, x, y], i) => { const b = boatXY(CB_S(t + 0.8, i % 3));
         return { t, at: [x, y], dir: [b[0] - x, b[1] - y].map((v, _, a) => v / Math.hypot(a[0], a[1])), impact: [b[0] + 0.6 - (i % 2) * 1.2, b[1] + 0.4], delay: 0.8 }; }) },
   ],
   impacts: [{ region: S, at: LA3, t: 27.95, cue: true, opts: { size: 6.5 } }],
@@ -322,18 +325,19 @@ window.SEQ = {
     { t: 46.0, region: S, at: [1398.0, 677.0], dist: 30, tilt: 45, yaw: 78, fov: 30 },
     { t: 54.6, region: S, at: [1401.0, 676.6], dist: 36, tilt: 45, yaw: 82, fov: 30 },
     // D: 3 July: white flags along the line, the oak between the lines, then night
-    { t: 59.4, region: S, at: [1404.4, 676.2], dist: 37, tilt: 45, yaw: 82, fov: 30 },
-    { t: 62.8, region: S, at: [1408.0, 674.5], dist: 14.5, tilt: 48, yaw: 76, fov: 30 },
-    { t: 69.3, region: S, at: [1408.0, 674.5], dist: 13, tilt: 49, yaw: 70, fov: 30, night: 0 },
-    { t: 70.2, region: S, at: [1407.6, 674.8], dist: 16, tilt: 48, yaw: 71, fov: 30, night: 1 },
-    { t: CUT_E, region: S, at: [1405.0, 676.6], dist: 32, tilt: 46, yaw: 80, fov: 30, night: 1 },
+    { t: 59.4, region: S, at: [1404.4, 676.2], dist: 52.9, tilt: 45, yaw: 82, fov: 21 },
+    { t: 62.8, region: S, at: [1408.0, 674.5], dist: 20.7, tilt: 48, yaw: 76, fov: 21 },
+    { t: 69.3, region: S, at: [1408.0, 674.5], dist: 18.6, tilt: 49, yaw: 70, fov: 21, night: 0 },
+    { t: 70.2, region: S, at: [1407.6, 674.8], dist: 22.9, tilt: 48, yaw: 71, fov: 21, night: 1 },
+    { t: CUT_E, region: S, at: [1405.0, 676.6], dist: 45.7, tilt: 46, yaw: 80, fov: 21, night: 1 },
+    // round 3: 59.4-99.8 at fov 21 (dist x1.43, same framing) = less perspective shear on off-centre boxes (critic A N7)
     // E: 4 July (cut + night -> day). Round 2 (critic B: the surrender read as specks): CLOSE on the 3rd Louisiana Redan / Jackson road
     // for march out - stack arms - march back (79-90), then pull back for the 29,500 and the newspaper
-    { t: CUT_E, region: S, at: [1408.4, 673.6], dist: 15.5, tilt: 46, yaw: 80, fov: 30, night: 1, ease: "cut" },
-    { t: CUT_E + 0.9, region: S, at: [1408.4, 673.6], dist: 15.3, tilt: 46, yaw: 79.5, fov: 30, night: 0, ease: "lin" },
-    { t: 87.6, region: S, at: [1408.2, 673.8], dist: 14.0, tilt: 47, yaw: 76, fov: 30 },
-    { t: 93.2, region: S, at: [1404.6, 676.8], dist: 34, tilt: 44, yaw: 84, fov: 30 },
-    { t: CUT_F, region: S, at: [1403.6, 677.6], dist: 34, tilt: 44, yaw: 88, fov: 30, ease: "lin" },
+    { t: CUT_E, region: S, at: [1408.4, 673.6], dist: 22.1, tilt: 46, yaw: 80, fov: 21, night: 1, ease: "cut" },
+    { t: CUT_E + 0.9, region: S, at: [1408.4, 673.6], dist: 21.9, tilt: 46, yaw: 79.5, fov: 21, night: 0, ease: "lin" },
+    { t: 87.6, region: S, at: [1408.2, 673.8], dist: 20.0, tilt: 47, yaw: 76, fov: 21 },
+    { t: 93.2, region: S, at: [1404.6, 676.8], dist: 48.6, tilt: 44, yaw: 84, fov: 21 },
+    { t: CUT_F, region: S, at: [1403.6, 677.6], dist: 48.6, tilt: 44, yaw: 88, fov: 21, ease: "lin" },
     // F: the wide map pulls up the whole river (kept inside the baked region: no world edge at the left)
     { t: CUT_F, region: W, at: [1392, 700], dist: 330, tilt: 44, yaw: -2, fov: 30, ease: "cut" },
     { t: 101.2, region: W, at: [1390, 712], dist: 350, tilt: 43, yaw: -2, fov: 30 },
@@ -363,7 +367,7 @@ window.SEQ = {
     // F: the river open: steamers down past the city to the Gulf
     { region: W, kind: "steamer", n: 3, size: 5, path: RUN, sAt: (t, i) => 200 + (t - T.whole) * 12 - i * 26, t0: T.whole, t1: T.D + 1, lamp: false },
     // G (callback, round 2): seven gunboats run dark down past the city (16 April), nose to tail
-    { region: S, kind: "gunboat", n: 7, size: 0.75, path: RIV, sAt: (t, i) => S_CITY + (t - 131.6) * 1.7 - i * 2.6, t0: CB0 - 0.1, t1: CB1 + 0.2, lamp: false, wake: true },
+    { region: S, kind: "gunboat", n: 7, size: 0.3, path: RIV, sAt: CB_S, t0: CB0 - 0.1, t1: CB1 + 0.2, lamp: false, wake: true },
   ],
   fx, build, draw,
   labels: [
@@ -394,12 +398,12 @@ window.SEQ = {
     ["plaque.date", T.third, { month: "July 1863", day: "3", weekday: "Day 65", note: "Friday · white flags" }],
     ["legend", T.third + 0.4, T.grant - 0.3, LEG],
     ["plaque.clock", T.afternoon3, { time: "15:00", note: "between the lines", header: "3 July 1863 · Day 65" }],
-    ["medallion", { kind: "card", general: "pemberton", sub: "under a flag of truce", world: [OAK[0] - 0.6, OAK[1] + 0.1], offset: [-330, -200], tIn: T.pemberton, tOut: 69.3 }],
-    ["medallion", { kind: "card", general: "grant", sub: "near a stunted oak", world: [OAK[0] + 0.6, OAK[1] + 0.1], offset: [330, -200], tIn: T.grant, tOut: 69.3 }],
+    ["medallion", { kind: "card", general: "pemberton", sub: "under a flag of truce", world: [OAK[0] - 0.5, OAK[1] + 0.1], offset: [-360, -230], tIn: T.pemberton, tOut: T.near - 0.1 }],   // round 3: one card at a time
+    ["medallion", { kind: "card", general: "grant", sub: "near a stunted oak", world: [OAK[0], OAK[1]], offset: [380, 110], tIn: T.stunted - 0.1, tOut: T.served - 0.3 }],   // round 3: after Pemberton's, dot on the oak
     ["label", T.served, 69.3, { name: "Mexico, 1846-48", sub: "they had served in the same division", x: 1420, y: 680, offset: [-190, -40], marker: false, side: "us", stripes: ["#3C6E9E", "#9C3A35"] }],
     ["film.grade", 69.4, "night", 0.8],
-    ["plaque.clock", T.night + 0.1, { time: "22:00", note: "Grant's terms", header: "3 July 1863 · Day 65" }],
-    ["letter", T.night + 0.3, CUT_E - 0.2, { header: "3 July 1863 · that night", title: "Grant's terms", sub: "the substance, not the letter's words", marks: false, cps: 24,
+    ["plaque.clock", T.night + 0.1, { time: "22:00", note: "that night", header: "3 July 1863 · Day 65" }],   // FACT: terms by 10 p.m. (GM)
+    ["letter", T.terms - 0.35, CUT_E - 0.2, { header: "3 July 1863 · that night", title: "Grant's terms", sub: "the substance, not the letter's words", marks: false, cps: 24, lag: 0.05, stagger: 0.06, partDur: 0.35,   // round 3: no empty band
       quote: "Parole: each man signs a promise not to fight again until exchanged, and goes home." }],
     // E
     ["film.grade", CUT_E, "day", 0.9],

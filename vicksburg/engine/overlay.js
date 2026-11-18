@@ -464,7 +464,7 @@
       gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, tIn);
       tl.fromTo(el.querySelector(".bg"), { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out", immediateRender: false }, tIn);
       const parts = el.querySelectorAll(".hd,.tt,.sb,.orn"); gsap.set(parts, { autoAlpha: 0 });
-      parts.forEach((p, i) => tl.fromTo(p, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.5, immediateRender: false }, tIn + 0.3 + i * 0.15));
+      parts.forEach((p, i) => tl.fromTo(p, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: o.partDur ?? 0.5, immediateRender: false }, tIn + (o.lag ?? 0.3) + i * (o.stagger ?? 0.15)));   // lag / stagger / partDur: S12 round 3 (title in with the band)
       if (o.height) el.style.height = o.height + "px";   // qSize: bigger quote line that wraps (two lines), height: card height (px, 1920 space)
       if (o.qSize) Object.assign(el.querySelector(".q").style, { fontSize: o.qSize + "px", whiteSpace: "normal", lineHeight: "1.3", padding: "0 150px" });
       const Q = el.querySelector(".q"), txt = o.marks === false ? String(o.quote || "") : `“${o.quote || ""}”`, cps = o.cps || 28, ty = { n: 0 };

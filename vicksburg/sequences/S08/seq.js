@@ -56,7 +56,8 @@ const units = [
   { region: J, side: U, type: "inf", n: 3, face: VX.FACE.ne, group: "s3", t1: 29.6, keys: [[0, 1867.0, 747.0], [T.north + 0.4, 1867.0, 747.0], [T.flew, 1883.2, 735.4], [28.4, 1884.4, 731.0]] },
   { region: J, side: U, type: "inf", n: 2, face: VX.FACE.ne, group: "s4", t1: 29.6, keys: [[0, 1872.4, 750.6], [T.north + 0.8, 1872.4, 750.6], [T.flew + 0.4, 1886.6, 735.4], [28.4, 1891.6, 730.6]] },
   // round 2 (critics: no troops in Jackson 30-53): the same units as small boxes in the streets for the close factory shot (crossfade, same group)
-  ...[["s1", 2, [1885.0, 724.4], [1885.6, 724.0]], ["s2", 1, [1883.6, 727.2], [1884.0, 727.0]], ["s3", 2, [1890.6, 729.4], [1890.2, 729.8]], ["s4", 2, [1890.4, 723.8], [1891.0, 723.6]]]
+  // round 3 (critic A N7): framed nearer the image centre (off-centre boxes in this low shot read as sheared) and off the quote band
+  ...[["s1", 2, [1886.0, 724.9], [1886.4, 724.6]], ["s2", 1, [1885.0, 726.2], [1885.2, 726.0]], ["s3", 2, [1889.7, 728.0], [1889.5, 728.3]], ["s4", 2, [1889.9, 725.1], [1890.3, 724.9]]]
     .map(([g, n, a, b]) => ({ region: J, side: U, type: "inf", n, face: VX.FACE.east, group: g, bw: 0.2, bd: 0.1, gap: 0.04, t0: 29.0, t1: CUT + 1, keys: [[29.0, ...a], [CUT, ...b]] })),
   { region: J, side: U, type: "art", n: 2, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1873.8, 745.2]] },
 
@@ -123,8 +124,7 @@ const markers = [
 const MK = VX.markers(markers);
 const PU = VX.pulses([{ region: W, at: CL, t0: T.straight + 0.3, t1: T.now, r: 9, color: [60, 100, 200], period: 1.1 },
   // round 2 (critic B): Jackson changes hands on "flew": a steady Union-blue wash over the town (close), and on the wide day map
-  { region: J, at: [1889.0, 724.6], t0: T.flew, t1: 29.6, r: 10, color: [44, 87, 183], period: 1e9, alpha: 0.9 },
-  { region: J, at: [1889.0, 724.6], t0: 29.0, t1: CUT + 1, r: 10, color: [44, 87, 183], period: 1e9, alpha: 0.45 },   // lighter on the close factory shot
+  // round 3: the close town wash is a 3D ground disc now (GROUND below: under the boxes and the fire, alpha 0.15, no magenta cast)
   { region: W, at: JKw, t0: DAY2 + 0.2, t1: D + 1, r: 10, color: [44, 87, 183], period: 1e9, alpha: 0.6 }]);
 const RAIN = VX.rain([[0, 0.55], [T.downpour - 0.3, 0.6], [T.downpour + 0.3, 1.0], [T.north, 0.9], [T.afternoon, 0.4], [T.stars, 0]]);
 
@@ -158,6 +158,35 @@ const FACTORY = (ctx) => { const { THREE } = ctx, sc = ctx.regions[J].scene, g =
   const c0 = new THREE.Color(0x4a4744), c1 = new THREE.Color(0x1a1512), w0 = new THREE.Color(0x9a5a3c), w1 = new THREE.Color(0x3a2a22);
   ctx.FX[J].custom((t) => { const k = ctx.sstep(T.flames, T.flames + 3.0, t); roofM.color.copy(c0).lerp(c1, k); wallM.color.copy(w0).lerp(w1, k * 0.8); }); };
 
+// round 3 (critics A N1 + B N8): on the close Jackson world (1) a light Union-blue wash (alpha 0.15) lies ON THE GROUND over the whole town
+// from "flew" on (under the boxes, the flag and the fire, so the fire stays orange and the town loses its red), and (2) the pale-red pike
+// roads (the "X" north-west of the factory) are glazed grey-ochre, so red means Confederates only. Meshes follow the terrain.
+const GROUND = (ctx) => { const { THREE } = ctx, sc = ctx.regions[J].scene;
+  const grad = (stops) => { const c = document.createElement("canvas"); c.width = 256; c.height = 4; const g = c.getContext("2d"), lg = g.createLinearGradient(0, 0, 256, 0);
+    stops.forEach(([o, a]) => lg.addColorStop(o, `rgba(255,255,255,${a})`)); g.fillStyle = lg; g.fillRect(0, 0, 256, 4); const tx = new THREE.CanvasTexture(c); tx.needsUpdate = true; return tx; };
+  const mat = (color, opacity, alphaMap) => new THREE.MeshLambertMaterial({ color, transparent: true, opacity, alphaMap, side: THREE.DoubleSide, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 });
+  const mesh = (pos, uv, idx, m, ro) => { const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+    g.setIndex(idx); g.computeVertexNormals(); const o = new THREE.Mesh(g, m); o.renderOrder = ro; o.frustumCulled = false; sc.add(o); return o; };
+  // (2) road glaze: a ribbon 0.42 units wide (road 0.32 + soft edges) along each pike, densified to 0.1 units
+  const roadM = mat(0x6e6450, 0.62, grad([[0, 0], [0.22, 1], [0.78, 1], [1, 0]])), ROADC = new THREE.Color(0x6e6450);
+  for (const ri of [0, 1, 2, 3]) { const R0 = VX.road(J, ri), P = [];
+    for (let i = 1; i < R0.length; i++) { const a = R0[i - 1], b = R0[i], n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 0.1)); for (let k = 0; k < n; k++) P.push([a[0] + (b[0] - a[0]) * k / n, a[1] + (b[1] - a[1]) * k / n]); }
+    P.push(R0[R0.length - 1]); const pos = [], uv = [], idx = [], hw = 0.21;
+    P.forEach((p, i) => { const a = P[Math.max(0, i - 1)], b = P[Math.min(P.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1, nx = -dy / l, ny = dx / l;
+      for (const sd of [-1, 1]) { const q = ctx.G(J, [p[0] + nx * hw * sd, p[1] + ny * hw * sd], 0.03); pos.push(q[0], q[1], q[2]); uv.push(sd < 0 ? 0 : 1, 0.5); }
+      if (i) { const j = 2 * i; idx.push(j - 2, j - 1, j, j - 1, j + 1, j); } });
+    mesh(pos, uv, idx, roadM, 0.5); }
+  // (1) the Union wash: a terrain-following disc (radius 6.6) over the town, soft rim
+  const C = [1891.6, 724.4], RR = 6.4, NR = 24, NS = 64, pos = [], uv = [], idx = [];
+  for (let r = 0; r <= NR; r++) for (let s = 0; s < NS; s++) { const rr = RR * r / NR, a = s / NS * Math.PI * 2, q = ctx.G(J, [C[0] + Math.cos(a) * rr, C[1] + Math.sin(a) * rr], 0.02); pos.push(q[0], q[1], q[2]); uv.push(r / NR, 0.5); }
+  for (let r = 0; r < NR; r++) for (let s = 0; s < NS; s++) { const a = r * NS + s, b = r * NS + (s + 1) % NS, c = a + NS, d = b + NS; idx.push(a, c, b, b, c, d); }
+  // under the wash a grey-ochre glaze takes the rust out of the streets (critic A: town ground ~(150,140,118), red means Confederates only)
+  const RIM = grad([[0, 1], [0.45, 1], [0.8, 0.45], [1, 0]]), glazeM = mat(0x6a6252, 0, RIM), washM = mat(0x3d6cc8, 0, RIM), GLC = new THREE.Color(0x6a6252), WAC = new THREE.Color(0x3d6cc8);
+  mesh(pos, uv, idx, glazeM, 0.55); mesh(pos, uv, idx, washM, 0.6);
+  ctx.FX[J].custom((t) => { const k = ctx.sstep(T.flew - 0.2, T.flew + 1.4, t), nt = 1 - 0.78 * (ctx.world.cameraAt(t).night || 0);
+    glazeM.opacity = 0.3 * k; washM.opacity = 0.15 * k;
+    roadM.color.copy(ROADC).multiplyScalar(nt); glazeM.color.copy(GLC).multiplyScalar(nt); washM.color.copy(WAC).multiplyScalar(nt); }); };
+
 const LEG = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Johnston", color: "#9C3A35" }] };
 const LEG2 = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] };
 const DATE = (day, dn, note) => ({ month: "May 1863", day: String(day), weekday: "Day " + dn, note });
@@ -178,10 +207,10 @@ window.SEQ = {
     { t: 28.6, region: J, at: [1890.0, 724.6], dist: 24, tilt: 53, yaw: 1, fov: 30, night: 1, ease: "lin" },
     { t: 29.4, region: J, at: [1889.8, 724.9], dist: 23, tilt: 53, yaw: 1.4, fov: 30, night: 0, ease: "lin" },
     // the factory
-    { t: 33.0, region: J, at: [1887.6, 726.6], dist: 13, tilt: 54, yaw: 3, fov: 30 },
-    { t: 44.0, region: J, at: [1887.6, 726.8], dist: 12, tilt: 55, yaw: 10, fov: 30, ease: "lin" },
-    { t: 51.4, region: J, at: [1887.7, 726.6], dist: 13, tilt: 54, yaw: 13, fov: 30, ease: "lin" },
-    { t: CUT, region: J, at: [1887.8, 726.0], dist: 15.5, tilt: 52, yaw: 15, fov: 30, ease: "lin" },
+    { t: 33.0, region: J, at: [1887.6, 726.6], dist: 13, tilt: 50, yaw: 3, fov: 30 },   // round 3: tilt 54 -> 50 (less oblique boxes)
+    { t: 44.0, region: J, at: [1887.6, 726.8], dist: 12, tilt: 51, yaw: 10, fov: 30, ease: "lin" },
+    { t: 51.4, region: J, at: [1887.7, 726.6], dist: 13, tilt: 50, yaw: 13, fov: 30, ease: "lin" },
+    { t: CUT, region: J, at: [1887.8, 726.0], dist: 15.5, tilt: 49, yaw: 15, fov: 30, ease: "lin" },
     // cut: wide, the night before (13 May): the messengers
     { t: CUT, region: W, at: [1846, 712], dist: 190, tilt: 48, yaw: -3, fov: 30, ease: "cut" },
     { t: 58.8, region: W, at: [1844, 712], dist: 182, tilt: 48, yaw: -2, fov: 30, night: 0 },
@@ -199,7 +228,9 @@ window.SEQ = {
     to: { region: J, at: [1857.0, 713.0], dist: 28, tilt: 44, yaw: 0, fov: 30 } }],
   clouds: {
     [W]: { scatter: { box: [1640, 600, 360, 220], n: 7, med: 24, seed: 8 },
-      keepClear: [[1840, 718, 60, 0.8, 1], [1800, 700, 40, 0.8, 1], [1680, 710, 60, 0.8, 1]], bounds: [1560, 560, 2080, 900], nightErode: 0.4 },
+      keepClear: [[1840, 718, 60, 0.8, 1], [1800, 700, 40, 0.8, 1], [1680, 710, 60, 0.8, 1],
+        [1730, 772, 85, 0.8, 1], [1650, 760, 60, 0.8, 1], [1800, 765, 60, 0.8, 1]],   // round 3: lower third of the day shot (84-96) kept clear
+      bounds: [1560, 560, 2080, 900], nightErode: 0.4 },
     [J]: { shadows: true },
   },
   units, arrows, fx,
@@ -235,9 +266,9 @@ window.SEQ = {
     ["plaque.date", T.thatNight + 0.2, DATE(14, 15, "Thursday · night")],
     ["label", T.room - 0.2, 28.8, { name: "Grant's bed", sub: "in the room Johnston was said to have used", world: [1890.4, 724.6], side: "us", marker: false }],
     ["plaque.date", T.before, DATE(14, 15, "Thursday · before they left")],
-    ["medallion", { kind: "card", general: "sherman", sub: "with Grant in the factory", screen: [1640, 300], tIn: T.grantSherman + 0.2, tOut: T.watched - 0.4 }],
+    ["medallion", { kind: "card", general: "sherman", sub: "with Grant in the factory", screen: [330, 400],   // round 3: left, clear of the flag tIn: T.grantSherman + 0.2, tOut: T.watched - 0.4 }],
     ["label", T.factory, T.battle + 0.8, { name: "Cotton factory", sub: "still working", world: [FACT[0], FACT[1]], side: "cs" }],
-    ["quote", T.watched - 0.1, T.bolt + 0.8, { en: "We looked on for a while to see the tent cloth which they were making roll out of the looms, with ‘C. S. A.’ woven in each bolt.", attr: "Ulysses S. Grant · Personal Memoirs", y: 640, dim: 0.4 }],
+    ["quote", T.watched - 0.1, T.bolt + 0.8, { en: "We looked on for a while to see the tent cloth which they were making roll out of the looms, with ‘C. S. A.’ woven in each bolt.", attr: "Ulysses S. Grant · Personal Memoirs", y: 850, dim: 0.4 }],   // round 3: below Grant's banner
     ["plaque.date", T.work, DATE(14, 15, "Thursday · “done work enough”")],
     ["label", T.workers + 0.1, T.carry + 0.6, { name: "Sent home", sub: "with what cloth they could carry", world: [1886.0, 730.4], side: "us", marker: false }],
     ["plaque.date", T.flames, DATE(14, 15, "Thursday · the factory burns")],
@@ -260,7 +291,7 @@ window.SEQ = {
     ["label", T.pemberton2 - 0.05, D + 1, { name: "Pemberton's army", sub: "near Edwards", world: [ED[0] + 6, ED[1] + 34], side: "cs", marker: false }],
     ["label", T.west - 0.2, D + 1, { name: "West", sub: "to meet Pemberton", world: [1690, 700], side: "us", marker: false }],
   ],
-  build: async (ctx) => { MK.build(ctx); PU.build(ctx); RAIN.build(ctx); FLAG.build(ctx); FACTORY(ctx); },
+  build: async (ctx) => { MK.build(ctx); PU.build(ctx); RAIN.build(ctx); FLAG.build(ctx); FACTORY(ctx); GROUND(ctx); },
   draw: (t, ctx) => { MK.draw(t, ctx); PU.draw(t, ctx); RAIN.draw(t, ctx); FLAG.draw(t, ctx); },
 };
 })();

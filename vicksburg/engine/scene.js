@@ -373,10 +373,13 @@ if (S.build) await S.build(ctx);
 
 _log("overlay");
 // ---------------- per-frame draw (pure function of t) ----------------
+// round 3 (critic B N4): unit boxes, arrows and banners step out while the dive's cloud deck / white-out covers the frame (they draw with
+// depthTest off and would otherwise sit ON the cloud) and come back as the target clears. S.diveHide = false keeps them.
+const diveHide = (t) => S.diveHide === false ? 0 : DIVES.reduce((m, d) => Math.max(m, sstep(d.deckIn + 0.2, d.full - 0.1, t) * (1 - sstep(d.emerge, d.clear + 0.35, t))), 0);
 const drawTroops = (t, region) => {
-  const L = [];
+  const L = [], HID = 1 - diveHide(t);
   for (const u of UNITS) { if (TRO[u.region] && TRO[u.region].T3) continue;
-    const on = u.region === region && t >= u.t0 && t < u.t1, op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
+    const on = u.region === region && t >= u.t0 && t < u.t1, op = on ? HID * Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
     if (op <= 0.001) continue;
     const [cx, cy] = posAt(u.keys, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;   // facing + front axis
     const span = u.n * u.bw + (u.n - 1) * u.gap;
@@ -408,12 +411,12 @@ const drawTroops = (t, region) => {
   for (const r in TRO) { const BX = TRO[r].BX; if (!BX) continue; const h = HT(r);
     BX.set(L.filter((b) => b.u.region === r).map((b) => ({ x: b.x, y: b.y, fx: b.fx, fy: b.fy, bw: b.bw, bd: b.bd, art: b.u.type === "art", op: b.op, h: h(b.x, b.y),
       color: b.capd > 0 ? `rgb(${Math.round(lerp(b.u.side === "u" ? 44 : 190, 138, b.capd))},${Math.round(lerp(b.u.side === "u" ? 87 : 58, 133, b.capd))},${Math.round(lerp(b.u.side === "u" ? 183 : 42, 122, b.capd))})` : SIDE_COL[b.u.side] }))); }
-  for (const b of BANNERS) { const on = b.region === region && t >= b.t0 && t < b.t1; let op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
+  for (const b of BANNERS) { const on = b.region === region && t >= b.t0 && t < b.t1; let op = on ? HID * Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
     if (op <= 0) { b.e.style.opacity = 0; continue; }
     const [x, y] = b.esc && t > b.esc.t0 ? escAt(b.esc, b.esc.s(t)) : posAt(b.keys, t), s = world.projectMap(x, y, 0.02);
     if (b.esc && b.esc.fade) op *= edgeFade(b.esc.fade, s, -20, 180);   // leaves over the frame edge, never pops out mid-field
     b.e.style.opacity = op.toFixed(3); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) scale(0.6667)`; }
-  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = A.region === region && t >= A.t0 ? 1 - sstep(A.t1 - 0.6, A.t1, t) : 0, ke = 1 - (1 - k) ** 2;
+  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = A.region === region && t >= A.t0 ? HID * (1 - sstep(A.t1 - 0.6, A.t1, t)) : 0, ke = 1 - (1 - k) ** 2;
     TRO[A.region].AR3.draw(A.a3, ke, op, A.w); }
 };
 const inDive = (t) => DIVES.some((d) => t >= d.push - 1 && t < d.SW + 5.6);

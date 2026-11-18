@@ -198,3 +198,6 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   alpha: use them for TRUE colours on water (#be3a2a red river, #2c57b7 Union-blue river); mode 1 is additive and washes out to pink/cyan.
 - Wide-map fires: a `column` fire needs ~3 s to build; start it before the shot that shows it (S01 Big Black: t0 38.2, `cue: 41.3`).
 
+- Round 3 (S09-S12 agent): `O.letter(..., { lag, stagger, partDur })` = when the header / title / sub / ornament fade in after the band
+  (defaults 0.3 / 0.15 / 0.5 s, unchanged); S12 uses 0.05 / 0.06 / 0.35 so the title arrives with the band (no empty cream band).
+  Scene-level fix for sheared off-centre boxes in low close shots: a narrower lens from further away (fov 21-22, dist x tan(15)/tan(fov/2)).

@@ -52,7 +52,9 @@ const arrows = [
   { side: "u", pts: [[1527.2, 687.0], [1524.8, 687.0], [1522.4, 686.8]], t0: 19.8, dur: 2.2, t1: T.ran },
   { side: "r", pts: [[1517.4, 684.4], [1514.4, 684.0], [1511.2, 684.3], [1507.4, 683.0]], t0: T.ran + 0.1, dur: 2.0, t1: FIRE_T - 0.3 },   // gone before the fire
 ];
-for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.push({ side: "u", pts: [[b[0] + ex * 4.6, b[1] + ey * 4.6], [b[0] + ex * 1.4, b[1] + ey * 1.4], [b[0] - ex * 1.8, b[1] - ey * 1.8]], t0: TB[k] + 0.8, dur: 1.2, t1: T.D + 1, width: 0.24 }); }   // round 2: a real shaft over the finished bridge (was a bare head)
+for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.push({ side: "u", pts: [[b[0] + ex * 4.4, b[1] + ey * 4.4], [b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0] + ex * 0.75, b[1] + ey * 0.75]], t0: TB[k] + 0.8, dur: 1.0, t1: T.D + 1, width: 0.2 }); }
+// round 3 (critic A: the upper arrow crossed the river where its bridge was hidden under the head): each arrow runs up the east-bank
+// approach and stops at its bridge's east end, so the new bridge stays visible and only the column crosses the water, on the bridge
 
 // ---------------- fx ----------------
 const bw3 = BRW.filter((_, i) => i % 6 === 0).map((p) => [p[0] + 0.12, p[1]]);
@@ -110,7 +112,7 @@ window.SEQ = {
   generals: { lawler: { img: "seq/lawler.png", side: "us", name: "Lawler", full: "Michael K. Lawler", role: "Brigadier General" } },
   overlay: [
     ["plaque.date", 0.35, { month: "May 1863", day: "17", weekday: "Day 18", note: "Sunday · Big Black River" }],
-    ["legend", 0.9, T.D + 1, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] }],
+    ["legend", 0.9, T.eighteen - 0.5, { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] }],
     ["timeline.show", 1.2, { month: "May", year: "1863", days: ["14", "15", "16", "17", "18", "19"], at: 3.0 }],
     ["timeline.seal", 1.5, { at: 3.0, name: "Champion Hill" }],
     ["label", T.loop + 0.1, T.backs - 0.3, { name: "A loop of the river", sub: "the rearguard on the east bank", world: [1516.8, 686.4], side: "cs", marker: false }],
@@ -121,6 +123,7 @@ window.SEQ = {
     ["plaque.note", T.charged, "Lawler's charge on the northern flank"],
     ["label", T.taken - 0.6, T.ran - 0.2, { name: "The line is taken", sub: "a little after nine · Grant's Memoirs", world: [1520.6, 686.0], side: "us" }],
     ["timeline.seal", T.taken, { at: 4.0, name: "Big Black" }],
+    ["timeline.hide", 27.8],   // round 3: the bar out before the boxes reach the bottom of the frame and the ledger comes in (one big card at a time)
     ["plaque.note", T.ran, "The defenders run for the bridges"],
     ["label", T.fire + 0.1, T.guns - 0.3, { name: "The bridges burn", sub: "fired by the retreating Confederates", world: [BR.x - 0.6, BR.z + 0.8], side: "cs", marker: false }],
     ["ledger.show", T.eighteen - 0.3, { title: "Big Black River", sub: "17 - 18 May 1863" }],

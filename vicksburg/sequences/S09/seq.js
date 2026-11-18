@@ -110,11 +110,11 @@ const arrows0 = [
   { side: U, width: 0.18, pts: [[1651.4, 694.6], [1653.4, 699.4], [1654.6, 703.6]], t0: T.order, dur: 1.0, t1: T.notCome + 0.4 },
   { side: U, width: 0.18, pts: [[1650.0, 694.8], [1648.0, 701.6], [1645.6, 708.2]], t0: T.order + 0.7, dur: 1.0, t1: T.notCome + 0.4 },
   // Bowen's counterattack (down the axis, each arrow in front of its own brigade, ending short of Hovey's falling-back line)
-  { side: R, pts: [FR(7.0, 4.0), FR(3.0, -0.6), FR(-1.0, -2.0), FR(-4.0, -2.0)], t0: T.hit - 0.2, dur: 3.0, t1: T.swing + 0.6 },
-  { side: R, pts: [FR(9.6, 8.6), FR(5.0, 5.6), FR(0.0, 4.4), FR(-4.0, 4.4)], t0: T.hit + 0.2, dur: 3.0, t1: T.swing + 0.6 },
+  { side: R, width: 0.19, pts: [FR(3.4, -1.0), FR(1.2, -2.0), FR(-1.0, -2.0)], t0: T.hit + 0.2, dur: 1.8, t1: T.retook - 0.3 },   // round 3: short, in front of the brigade, gone before it reaches the arrow
+  { side: R, width: 0.19, pts: [FR(3.6, 5.0), FR(1.4, 4.4), FR(-0.8, 4.4)], t0: T.hit + 0.5, dur: 1.8, t1: T.retook - 0.3 },
   // the reinforcements into line, then the whole line back up the slope (third time)
-  { side: U, pts: [FR(-8.8, -2.9), FR(-4.8, -2.9), FR(-1.0, -2.9)], t0: T.contested - 0.4, dur: 2.0, t1: T.lost },
-  { side: U, pts: [FR(-8.8, 11.6), FR(-4.8, 11.6), FR(-1.0, 11.6)], t0: T.contested - 0.1, dur: 2.0, t1: T.lost },
+  { side: U, pts: [FR(-6.4, -2.9), FR(-2.4, -2.9), FR(1.6, -2.9)], t0: T.contested - 0.4, dur: 2.0, t1: T.lost },   // round 3: starts inside the frame
+  { side: U, pts: [FR(-6.4, 11.6), FR(-2.4, 11.6), FR(1.6, 11.6)], t0: T.contested - 0.1, dur: 2.0, t1: T.lost },
   // Logan across the road; pulled away to help Hovey
   { side: U, width: 0.26, pts: [[1630.2, 690.6], [1628.6, 693.4], [1627.2, 695.8]], t0: 120.1, dur: 1.6, t1: T.only + 2.6 },   // round 2: on "Logan's men" (120.19)
   { side: U, width: 0.26, pts: [[1627.4, 696.4], [1630.4, 693.4], [1633.6, 690.6]], t0: T.moved - 0.6, dur: 1.8, t1: T.between },
@@ -128,7 +128,8 @@ const arrows0 = [
 const arrows = arrows0.map((a) => a.region === W || a.width ? a : { ...a, width: 0.22 });
 
 // ---------------- fx (only what the camera sees: every gun / volley is a sound cue) ----------------
-const SMK = (dir, rate = 1.3) => ({ dir, size: 1.35, alpha: 0.22, life: 12, muzzle: 6, windK: 0.45, rate, volley: 1.6 });
+// round 3 (critic A: round puffs on the boxes): dense v7 curtains = high rate, smaller sprites, wide clusters, seated low, in front of the line
+const SMK = (dir, rate = 1.3) => ({ dir, size: 1.0, alpha: 0.17, life: 12, muzzle: 5, windK: 0.45, rate: rate * 2.6, volley: 1.6, roll: 0.9, height: 2.2, cluster: [1.5, 0.8] });
 const VOL = (pts, t0, t1, dir, rate) => ({ region: C, pts, t0, t1, opts: SMK(dir, rate) });
 const shotsAt = (gunPts, times, dir, impacts, delay = 0.85) => times.map((t, i) => ({ t, at: gunPts[i % gunPts.length], dir, impact: impacts[i % impacts.length], delay }));
 const fx = {
@@ -150,14 +151,14 @@ const fx = {
   ],
   guns: [
     // the Confederate guns on the crest fire on Hovey's column
-    { region: C, shots: shotsAt([FR(0.4, 0)], [T.hovey + 0.6, T.hovey + 1.7, T.hovey + 2.6], [-DA[0], -DA[1]], [FR(-6.4, -1.0), FR(-8.4, 2.0), FR(-4.6, 0.6)]) },
+    { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: shotsAt([FR(0.4, 0)], [T.hovey + 0.6, T.hovey + 1.7, T.hovey + 2.6], [-DA[0], -DA[1]], [FR(-6.4, -1.0), FR(-8.4, 2.0), FR(-4.6, 0.6)]) },
     // the massed Union batteries at the foot of the slope fire up at Bowen's line (muzzle flash + plume per shot, an impact on his line);
     // before "contested" the impacts fall on his line low on the slope, after it on the crest as he gives ground
-    { region: C, flash: { h: 0.3, opts: { size: 3.0, life: 0.14 } }, shots: [99.8, 100.5, 101.3, 102.2, 102.9, 103.7, 104.6, 105.4, 106.3, 107.2, 108.2].map((t, i) =>
+    { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, flash: { h: 0.3, opts: { size: 3.0, life: 0.14 } }, shots: [99.8, 100.5, 101.3, 102.2, 102.9, 103.7, 104.6, 105.4, 106.3, 107.2, 108.2].map((t, i) =>
       ({ t, at: UGUN[i % 3], dir: DA, impact: t < T.contested ? FR(-4.6 + ((i * 7) % 5) * 0.3, [-3.0, 0.4, 4.8][(i * 2) % 3] + ((i * 3) % 4) * 0.4) : FR(3.6 + (i % 3) * 0.8, [-2.4, 1.4, 4.6][i % 3]), delay: 0.8 })) },
     // Tilghman's battery covers the retreat; A. J. Smith's battery answers: the shell
-    { region: C, shots: shotsAt([[1625.6, 709.6]], [152.4, 153.9], [1, 0.1], [[1636.0, 716.4], [1637.4, 713.6]], 0.8) },
-    { region: C, shots: [{ t: 155.15, at: [1635.0, 714.2], dir: [-1, -0.25], impact: [1625.4, 709.9], delay: 0.85 }] },
+    { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: shotsAt([[1625.6, 709.6]], [152.4, 153.9], [1, 0.1], [[1636.0, 716.4], [1637.4, 713.6]], 0.8) },
+    { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: [{ t: 155.15, at: [1635.0, 714.2], dir: [-1, -0.25], impact: [1625.4, 709.9], delay: 0.85 }] },
   ],
   campfires: [{ region: C, pts: [[1641.6, 686.2], [1643.4, 684.6], [1645.6, 683.6], [1636.6, 694.4], [1638.6, 696.8], [1633.6, 689.6], [1648.6, 704.2], [1652.0, 707.4], [1638.2, 716.2]], t0: T.night - 0.4, t1: T.D + 1 }],
 };
@@ -198,15 +199,15 @@ window.SEQ = {
     { t: 56.4, region: C, at: [1640.6, 691.0], dist: 34, tilt: 48, yaw: -3, fov: 30 },
     { t: 61.0, region: C, at: [1639.6, 690.8], dist: 31, tilt: 50, yaw: -7, fov: 30 },
     { t: 65.8, region: C, at: [1635.4, 691.0], dist: 32, tilt: 44, yaw: -9, fov: 30 },
-    { t: 70.8, region: C, at: [1645.0, 709.6], dist: 38, tilt: 42, yaw: -3, fov: 30 },
+    { t: 69.6, region: C, at: [1645.0, 709.6], dist: 38, tilt: 42, yaw: -3, fov: 30 },   // round 3: on McClernand's roads by his card
     { t: 74.2, region: C, at: [1643.2, 703.4], dist: 43, tilt: 37, yaw: -4, fov: 30 },
     { t: 77.6, region: C, at: [1642.8, 702.4], dist: 43, tilt: 37, yaw: -5, fov: 30 },
     { t: 83.6, region: C, at: [1640.8, 698.6], dist: 38, tilt: 44, yaw: -8, fov: 30 },
     // round 2: the crest fight seen ALONG the attack axis (yaw ~ -40: Union line at the top, Confederate line below, the front across the frame)
-    { t: 89.0, region: C, at: [...FR(-1.6, 1.6)], dist: 31, tilt: 40, yaw: -30, fov: 30 },
-    { t: 95.0, region: C, at: [...FR(-4.4, 2.6)], dist: 29, tilt: 38, yaw: -40, fov: 30 },
-    { t: 101.4, region: C, at: [...FR(-5.2, 3.6)], dist: 30, tilt: 37, yaw: -42, fov: 30 },
-    { t: 108.6, region: C, at: [...FR(-1.6, 4.0)], dist: 30, tilt: 38, yaw: -38, fov: 30 },
+    { t: 89.0, region: C, at: [...FR(-1.6, 1.6)], dist: 42, tilt: 40, yaw: -30, fov: 22 },
+    { t: 95.0, region: C, at: [...FR(-4.4, 2.6)], dist: 39.5, tilt: 38, yaw: -40, fov: 22 },
+    { t: 101.4, region: C, at: [...FR(-5.2, 3.6)], dist: 41, tilt: 37, yaw: -42, fov: 22 },
+    { t: 108.6, region: C, at: [...FR(-1.6, 4.0)], dist: 41, tilt: 38, yaw: -38, fov: 22 },
     { t: 116.6, region: C, at: [1638.6, 695.4], dist: 37, tilt: 42, yaw: -14, fov: 30 },
     { t: 121.6, region: C, at: [1628.8, 694.8], dist: 32, tilt: 48, yaw: -6, fov: 30 },
     { t: 130.8, region: C, at: [1628.0, 695.4], dist: 30, tilt: 50, yaw: -10, fov: 30 },
@@ -216,15 +217,15 @@ window.SEQ = {
     { t: 147.6, region: C, at: [1626.8, 713.0], dist: 40, tilt: 46, yaw: 4, fov: 30 },
     { t: 151.4, region: C, at: [1629.0, 716.4], dist: 44, tilt: 46, yaw: 6, fov: 30 },
     { t: 157.4, region: C, at: [1629.4, 711.8], dist: 33, tilt: 48, yaw: 2, fov: 30 },
-    { t: 171.4, region: C, at: [1630.4, 704.0], dist: 60, tilt: 44, yaw: -4, fov: 30, night: 0 },
-    { t: 173.0, region: C, at: [1630.8, 703.6], dist: 58.6, tilt: 44.4, yaw: -4.8, fov: 30, night: 1 },
+    { t: 171.4, region: C, at: [1630.4, 705.8], dist: 59, tilt: 44, yaw: -4, fov: 30, night: 0 },
+    { t: 173.0, region: C, at: [1630.7, 705.4], dist: 57.8, tilt: 44.4, yaw: -4.8, fov: 30, night: 1 },
     { t: T.D, region: C, at: [1633.0, 702.0], dist: 52, tilt: 46, yaw: -8, fov: 30, night: 1, ease: "lin" },
   ],
   dives: [{ t: SW, over: [1634, 701],
     from: { region: W, at: [1634, 708], dist: 236, tilt: 45, yaw: 0 },
     to: { region: C, at: [1636.6, 697.6], dist: 46, tilt: 42, yaw: -6, fov: 32 } }],
   clouds: {
-    [W]: { keepClear: [[1612, 722, 70, 0.8, 1], [1660, 712, 60, 0.8, 1]], nightErode: 0.4 },
+    [W]: { keepClear: [[1612, 722, 70, 0.8, 1], [1660, 712, 60, 0.8, 1], [1580, 790, 95, 1, 1], [1625, 800, 70, 1, 1]], nightErode: 0.4 },   // round 3: lower-left cloud 0-12 s
     [C]: { shadows: true },
   },
   units, arrows,
@@ -275,13 +276,13 @@ window.SEQ = {
     // ---- Champion Hill ----
     ["plaque.date", SW + 0.4, DATE(16, 17, "Saturday · Champion Hill · morning")],
     ["quote", T.quote1 - 0.1, T.three - 0.4, { en: "One of the highest points in that section, and commanded all the ground in range.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700, dim: 0.4 }],
-    ["legend", T.three, T.called - 0.1, LEG],
+    ["legend", T.three, T.hit - 0.4, LEG],   // round 3: out for the crest fight (boxes sat under it at the bottom-left)
     ["plaque.clock", T.eleven, { time: "11:00", note: "Champion Hill", header: "16 May 1863 · Day 17" }],
-    ["plaque.run", T.took - 0.5, T.took + 0.6, "13:00"],   // round 2: 11:00 holds on "eleven o'clock"; the hands spin to 1 p.m. (FACT: crest ~1 p.m.) on "took it"
+    ["plaque.run", T.took + 0.05, T.took + 1.0, "13:00"],   // round 3 (critic B N11): 11:00 holds until "took it" (59.13), then the hands spin to 1 p.m. (FACT: crest ~1 p.m.)
     ["medallion", { kind: "card", general: "hovey", sub: "Hovey's division", world: [1645.4, 686.4], offset: [190, -150], tIn: T.hovey, tOut: T.logan - 0.7 }],
     ["plaque.note", T.took, "Hovey takes the crest"],
     ["medallion", { kind: "card", general: "logan", sub: "Logan's division", world: [1634.4, 686.4], offset: [-300, -50], tIn: T.logan + 0.1, tOut: T.south + 0.6 }],
-    ["medallion", { kind: "card", general: "mcclernand", sub: "XIII Corps · four divisions", world: [1652.0, 712.0], offset: [200, -170], tIn: T.mccl, tOut: 75.0 }],
+    ["medallion", { kind: "card", general: "mcclernand", sub: "XIII Corps · four divisions", world: [1652.0, 712.0], offset: [-440, -150], tIn: T.mccl, tOut: 75.0 }],
     ["plaque.note", T.hearing, "McClernand waits on the southern roads"],
     ["plaque.run", 70.4, 78.0, "13:40"],
     ["label", T.notCome - 0.4, 79.2, { name: "McClernand did not come", sub: "order after order · Grant's Memoirs", world: [1651.0, 706.6], side: "us" }],
@@ -296,12 +297,13 @@ window.SEQ = {
     ["plaque.note", T.north + 1.4, "The north end of the field"],
     ["label", T.only, T.neither - 0.3, { name: "The only road out", sub: "Logan's men stand across it", world: [1623.2, 697.4], side: "cs" }],
     ["quote", T.neither - 0.1, T.help - 0.3, { en: "Neither Logan nor I knew that we had cut off the retreat of the enemy.", attr: "Ulysses S. Grant · Personal Memoirs", y: 700, dim: 0.4 }],
-    ["legend", T.help, T.D + 1, LEG],
+    ["legend", T.help, T.grantLost - 0.6, LEG],   // round 3: out before the ledger (one big card at a time)
     ["label", T.opened, T.broke - 0.2, { name: "The road is open again", sub: "Logan's men moved to help Hovey", world: [1623.2, 697.4], side: "cs" }],
     ["plaque.run", T.between, T.broke - 0.4, "15:30"],
     ["plaque.note", T.broke, "The Confederate army breaks"],
     ["timeline.show", T.broke + 0.6, { month: "May", year: "1863", days: ["14", "15", "16", "17", "18", "19"], at: 2.5 }],
     ["timeline.seal", T.broke + 1.4, { at: 3.0, name: "Champion Hill" }],
+    ["timeline.hide", T.loring - 0.2],   // round 3: the seal shows ~3 s, then the bar leaves (boxes were drawn over it)
     ["medallion", { kind: "card", general: "loring", sub: "Loring's division", world: [1628.6, 711.0], offset: [230, -200], tIn: T.loring + 0.1, tOut: T.never + 0.4 }],
     ["plaque.note", T.escaped, "Loring marches away south"],
     ["plaque.run", 151.4, T.tilghman, "17:20"],
@@ -313,8 +315,7 @@ window.SEQ = {
     ["ledger.add", T.threeK, { who: "Confederates about 3,800", note: "most of them captured", stamp: false }],
     ["ledger.add", T.division, { who: "Loring's division", note: "cut off · never back in Vicksburg", stamp: false }],
     ["ledger.hide", T.night - 0.2],
-    ["timeline.hide", T.night - 0.2],
-    ["film.grade", T.night, "night", 0.8],
+        ["film.grade", T.night, "night", 0.8],
     ["plaque.date", T.night + 0.2, DATE(16, 17, "Saturday · night")],
     ["label", T.porch - 0.4, T.D - 0.9, { name: "That night", sub: "Grant slept on a porch among Confederate wounded", world: [1637.6, 692.0], side: "us", marker: false }],
   ],

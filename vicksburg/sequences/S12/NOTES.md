@@ -40,3 +40,13 @@ Open issues
 | night foil river 6-18 s | engine water fix (see S11). |
 | quote card dims | Lincoln quote `dim: 0.4`; the dim under the last-issue card 0.7 -> 0.45. |
 Not done: "ate mule meat" visual (sev 1): kept the plaque note "food runs out · mule meat" on "ran out" (no new marker).
+
+## Round 3 fixes (critics A + B round 2)
+| Finding | Fix |
+| --- | --- |
+| A N3: callback gunboats ~5x too big, the last cut by the edge (129-135) | size 0.75 -> 0.3 (x0.4), 2.0 units nose to nose, speed 1.2, the 12-unit column centred on the camera's track (`CB_S`): all seven inside the frame through the shot; the bluff batteries' shots follow the new boat positions |
+| A: "Grant's terms" band blank ~1 s before its title (70.5) | letter now in on "terms" (70.79) with title / header / sub fading in with the band (new backward-compatible `O.letter` options `lag`, `stagger`, `partDur`; S12 uses 0.05 / 0.06 / 0.35); the 10 p.m. plaque note is "that night" (was "Grant's terms" a second before the word) |
+| A: Pemberton + Grant cards + Mexico plate up together 63-70; Grant's dot on empty ground; his card on a red box | one at a time: Pemberton 61.19-63.98, Grant on "a stunted oak" 64.4-66.2 with his leader dot ON the oak and the card below-right over the open Union side, then the Mexico plate 66.5-69.3 |
+| A N7: slanted boxes 60-96 | keys 59.4-99.8 at fov 21, dist x1.43 (same framing): off-centre boxes stay upright rectangles |
+Engine change: `engine/overlay.js` O.letter `lag` / `stagger` / `partDur` (defaults 0.3 / 0.15 / 0.5 = unchanged).
+Checks: check_paths OK, check_edges OK, check_escapes n/a (no bridge in the siege world).

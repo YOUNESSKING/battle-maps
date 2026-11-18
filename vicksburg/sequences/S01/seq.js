@@ -57,13 +57,16 @@ BAT.forEach((b, i) => { if (i < 1 || i > 10) return; units.push({ region: VB, si
 // ---------------- the montage route (wide) ----------------
 const XING = [[1149, 1004], [1163, 1016], [1179, 1027]];   // Louisiana shore -> Bruinsburg, below the city
 const INLAND = [TW("Bruinsburg"), [1250, 1028], TW("Port Gibson"), TW("Willow Springs"), TW("Rocky Springs"), [1500, 897], TW("Utica"), [1650, 820], TW("Raymond"), [1800, 735], TW("Jackson")];
-const BACK = [TW("Jackson"), TW("Clinton"), TW("Bolton"), [1630, 694], TW("Edwards"), [1540, 688], [1512.4, 683.6], [1470, 682], [1436, 686]];
+// round 3 (critic B N1): the Union march + arrow stop at the EAST bank of the Big Black (the bridge burns; the new bridges come in S10)
+const BACK = [TW("Jackson"), TW("Clinton"), TW("Bolton"), [1630, 694], TW("Edwards"), [1540, 688], [1532, 686.5]];
+// Pemberton's field army: a road column over the Big Black bridge 40.0-42.4 (tail clears the bridge ~41.9), THEN the fire (BBF)
+const PEMB = [[1600, 702], [1545, 690], [1512.4, 683.6], [1470, 682], [1436, 686]], BBF = 42.1;
 const kIn = VX.march(INLAND, 35.6, VX.len(INLAND) / (39.9 - 35.6), { step: 6 });
 const kBack = VX.march(BACK, 40.0, VX.len(BACK) / (44.2 - 40.0), { step: 6 }).filter((k) => k[0] > 40.0);
 units.push({ region: WIDE, side: "u", type: "inf", n: 3, t0: T.crossed, face: "east", keys: [[T.crossed, ...XING[0]], [35.5, ...XING[2]], ...kIn, ...kBack] });
 // the split: Johnston's force at Jackson pushed off north-east; Pemberton's field army at Edwards driven back west over the Big Black into the city
 units.push({ region: WIDE, side: "r", type: "inf", n: 3, face: "south", t0: CUT, t1: X2, keys: [[CUT, 1880, 716], [39.5, 1880, 716], [41.2, 1925, 668]] });
-units.push({ region: WIDE, side: "r", type: "inf", n: 4, face: "east", t0: CUT, t1: 45.2, keys: [[CUT, 1600, 702], [39.8, 1600, 702], [41.4, 1545, 690], [42.2, 1505, 684], [44.6, 1412, 690]] });
+units.push({ region: WIDE, side: "r", type: "inf", n: 4, face: "east", t0: CUT, t1: 45.2, keys: [[CUT, 1600, 702], ...VX.march(PEMB, 40.0, VX.len(PEMB) / 2.4, { step: 4 }), [44.6, 1412, 690]] });
 // the siege ring closes
 [[1420, 656], [1428, 714]].forEach(([x, y], i) => units.push({ region: WIDE, side: "u", type: "inf", n: 3, face: "west", t0: X3 + 0.2 + i * 0.3, keys: [[0, x + 12, y], [44.6 + i * 0.3, x, y]] }));
 
@@ -77,23 +80,30 @@ const arrows = [
   { region: WIDE, side: "u", pts: INLAND, t0: T.turned, dur: 2.7, t1: 50.6, width: 0.22 },
   { region: WIDE, side: "u", pts: BACK, t0: 40.0, dur: 3.6, t1: 50.6, width: 0.22 },
   { region: WIDE, side: "r", pts: [[1888, 708], [1906, 686], [1925, 662]], t0: X1 + 0.3, dur: 1.2, t1: X2, width: 0.24 },   // Johnston driven off
-  { region: WIDE, side: "r", pts: [[1592, 698], [1565, 693], [1540, 688]], t0: X1 + 0.6, dur: 1.2, t1: 43.0, width: 0.24 },   // Pemberton driven back
+  { region: WIDE, side: "r", pts: [[1592, 691], [1566, 685], [1541, 680]], t0: X1 + 0.6, dur: 1.2, t1: 43.0, width: 0.24 },   // Pemberton driven back (7 u north of the blue route: never on top of it)
 ];
 
 // ---------------- fx ----------------
-const shotTimes = [20.42, 20.86, 21.3, 21.66, 22.12, 22.5, 23.0, 23.6, 24.3, 25.2, 26.4, 27.8];
-const shotBat = [5, 6, 4, 7, 3, 8, 5, 6, 4, 7, 2, 8];
+// round 3 (critic B N5): three big on-word shots from the bluff CREST (the 55-60 m crest line, not in the town streets) on "guns",
+// "bluffs", "river", each a bright orange muzzle flash + glow ring; then a few smaller shots
+const BIG = [[T.guns, 7], [T.bluffs, 8], [T.river, 9]];   // the batteries south of the town (crest ~1.2 u east of the seat)
+const shotTimes = [23.3, 24.3, 25.2, 26.4, 27.8];
+const shotBat = [9, 10, 7, 8, 9];
 const fx = {
   fires: [
     // the Big Black bridge burning (the retreating Confederates fire it) as the march comes up
-    { region: WIDE, at: [1512.4, 683.6, 0.6], t0: 38.2, t1: T.D + 1, cue: 41.3, preset: "column", opts: { size: 24, flameK: 1.3, tongues: 4, smokeRate: 7, smokeS0: 0.4, smokeGrow: 1.2, smokeAlpha: 0.7 } },
+    // round 3: catches only after the last red box is over (BBF), and the pillar is gone before the surrender payoff (critic B N1 + N9)
+    { region: WIDE, at: [1512.4, 683.6, 0.6], t0: BBF, t1: 43.3, cue: BBF, preset: "column", opts: { size: 24, flameK: 1.3, tongues: 4, ramp: 0.4, fadeOut: 0.6, smoulder: 0.3, smokeLife: 4.5, smokeRate: 9, smokeS0: 0.4, smokeGrow: 1.2, smokeAlpha: 0.7 } },
   ],
   guns: [
     // frame 1: the bluff batteries fire at the gunboat in the bend (wide)
     { region: WIDE, preset: "battery", h: 0.8, boom: false, opts: { size: 4.2, alpha: 0.4, flash: 2.3, flashLife: 0.2 }, shots: wideShots, impactOpts: { size: 3.4 } },
     // close: "Its guns stood on high bluffs over the river" (flash + plume x3, shot falls in the river)
-    { region: VB, preset: "battery", h: 0.25, boom: false, opts: { dir: [-1, 0.08], size: 2.2, alpha: 0.3, flash: 1.3, flashLife: 0.16 },
-      shots: shotTimes.map((t, i) => { const b = BAT[shotBat[i]], r = frontAt(b.z + 1.5 + (i % 3)); return { t, at: [b.x, b.z], dir: [-1, 0.06 * ((i % 3) - 1)],
+    { region: VB, preset: "battery", h: 0.5, boom: false, opts: { dir: [-1, 0.04], size: 2.4, alpha: 0.32, flash: 1.9, flashLife: 0.2, flashColor: [0.95, 0.32, 0.05] },
+      shots: BIG.map(([t, bi], i) => { const b = BAT[bi], r = frontAt(b.z + 1); return { t, at: [b.x + 1.2, b.z], dir: [-1, 0.05 * (i - 1)],
+        flash: { h: 0.6, opts: { size: 1.5, life: 0.22, color: [0.95, 0.34, 0.06], alpha: 0.85, pool: 2.5 } }, impact: [r[0] - 1.6 - i * 0.7, r[1], 0.05], delay: 0.8 }; }), impactOpts: { size: 1.1 } },
+    { region: VB, preset: "battery", h: 0.5, boom: false, opts: { dir: [-1, 0.08], size: 2.2, alpha: 0.3, flash: 1.6, flashLife: 0.16 },
+      shots: shotTimes.map((t, i) => { const b = BAT[shotBat[i]], r = frontAt(b.z + 1.5 + (i % 3)); return { t, at: [b.x + 1.0, b.z], dir: [-1, 0.06 * ((i % 3) - 1)],
         impact: [r[0] - 1.2 - (i % 4) * 0.6, r[1], 0.05], delay: 0.8 }; }), impactOpts: { size: 0.9 } },
   ],
   _custom: [

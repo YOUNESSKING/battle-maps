@@ -24,3 +24,10 @@ Open issues: Lawler photo is small/soft; the time jump to the next morning is a 
 | A sev 1: boxes ~2 % of frame width (v8 ~3 %) | troopScale 1.2 -> 1.4 and the opening keys pulled in (44 -> 40, 34 -> 32): boxes ~1.3x bigger on screen. |
 | check_paths | 3 crossings listed = Lawler's brigade and Benton's men wading the bayou in front of the breastworks (the bayou is the obstacle in front of the line, waded in the charge); no river crossings. |
 Open: timeline seals still sit on the day labels (engine overlay, all scenes).
+
+## Round 3 fixes (critics A + B round 2)
+| Finding | Fix |
+| --- | --- |
+| A: the upper next-morning arrow crossed the Big Black with no bridge visible (its head hid new bridge 1) | each of the three arrows now runs up the east-bank approach and stops at its bridge's east end (b + 0.75 axis), width 0.2: all three new bridges are visible, and only the march columns cross the water, on the bridges |
+| A: boxes over the timeline 30-45; seals on the day labels | timeline hidden at 27.8 (after the Big Black seal at 25.55); legend out before the ledger (31.6): from the ledger on only clock + ledger remain (one big card) |
+Checks: check_paths lists only the 3 bayou wadings in the charge (legit, as round 2); check_edges OK; check_escapes: last red box past the west end at 31.0, fire 31.3 (unchanged).

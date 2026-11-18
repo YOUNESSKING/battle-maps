@@ -112,25 +112,27 @@ BAT.forEach((b, i) => { if (i > 10) return; units.push({ region: VB, side: R, ty
 // ---------------- arrows ----------------
 const arrows = [
   // A: supplies from the West across the Confederate stretch (cut on "cut in two")
-  { region: WD, side: R, pts: [[1046, 792], [1130, 790], [1230, 778], [1318, 742], [1366, 700]], t0: T.across, dur: 1.6, t1: T.cut + 0.2, width: 0.38 },
-  { region: WD, side: R, pts: [[1046, 905], [1120, 912], [1196, 930], [1252, 950]], t0: T.across + 0.5, dur: 1.6, t1: T.cut + 0.2, width: 0.38 },
-  { region: WD, side: R, pts: [[1046, 1012], [1110, 1024], [1170, 1032], [1232, 1022], [1300, 1018]], t0: T.across + 1.0, dur: 1.6, t1: T.cut + 0.2, width: 0.38 },
+  // round 3 (critic A N5): v8 width, every arrow starts and ends inside a 6 % frame margin (tools/check_arrows.js)
+  { region: WD, side: R, pts: [[1134, 790], [1180, 786], [1240, 776], [1318, 742], [1362, 703]], t0: T.across, dur: 1.6, t1: T.cut + 0.2, width: 0.24 },
+  { region: WD, side: R, pts: [[1156, 864], [1196, 868], [1250, 878], [1292, 886]], t0: T.across + 0.5, dur: 1.6, t1: T.cut + 0.2, width: 0.24 },
+  { region: WD, side: R, pts: [[1176, 912], [1212, 920], [1252, 928], [1290, 932]], t0: T.across + 1.0, dur: 1.6, t1: T.cut + 0.2, width: 0.24 },
   // A: the Confederate river runs on south to Port Hudson (off the map)
-  { region: WD, side: R, pts: thin(iBot - 420, iBot - 8, 30), t0: T.port, dur: 1.4, t1: CUT1, width: 0.36 },
+  { region: WD, side: R, pts: thin(iHT, iBot, 20).filter((p) => p[1] > 866 && p[1] < 934), t0: T.port, dur: 1.4, t1: CUT1, width: 0.24 },   // stops at the frame's safe edge
   // D: stakes: the North cannot use the river (blue down the river, stopped above the city); the South still joined (red across)
-  { region: WD, side: U, pts: RIV_N, t0: T.northU - 0.1, dur: 1.4, t1: 64.6, width: 0.42 },
-  { region: WD, side: R, pts: [[1060, 742], [1180, 730], [1290, 712], [1372, 694]], t0: T.southC, dur: 1.2, t1: 65.6, width: 0.42 },
+  { region: WD, side: U, pts: RIV_N.filter((p) => p[1] > 662), t0: T.northU - 0.1, dur: 1.4, t1: 64.6, width: 0.24 },
+  { region: WD, side: R, pts: [[1128, 738], [1190, 728], [1290, 712], [1366, 696]], t0: T.southC, dur: 1.2, t1: 65.6, width: 0.24 },
   // E: Chickasaw Bayou: the attack on the bluffs
-  { region: WD, side: U, pts: [[1382, 600], [1392, 612], [1402, 624], [1410, 632]], t0: T.attacked, dur: 1.2, t1: T.thrown + 0.6, width: 0.42 },
+  { region: WD, side: U, pts: [[1382, 600], [1392, 612], [1402, 624], [1410, 632]], t0: T.attacked, dur: 1.2, t1: T.thrown + 0.6, width: 0.24 },
   // E: Grant's Canal across De Soto Point; the Yazoo routes from the north through the flooded forests (stopped short)
-  { region: WD, side: U, pts: [[1323, 694], [1334, 700], [1346, 707], [1358, 714]], t0: T.canals, dur: 1.2, t1: T.failed + 0.6, width: 0.24 },
-  { region: WD, side: U, pts: [[1492, 424], [1482, 458], [1468, 490], [1454, 516]], t0: T.cutThrough, dur: 1.6, t1: T.failed + 0.6, width: 0.4 },
+  { region: WD, side: U, pts: [[1323, 694], [1334, 700], [1346, 707], [1358, 714]], t0: T.canals, dur: 1.2, t1: 83.4, width: 0.24 },   // leaves before the camera pans north (else it slides off the bottom edge)
+  { region: WD, side: U, pts: [[1466, 498], [1458, 510], [1448, 526]], t0: T.flooded, dur: 1.2, t1: T.failed + 0.6, width: 0.24 },
   // G: the plan: down the west bank; the fleet past the guns; the crossing
-  { region: WD, side: U, pts: WB, t0: T.march, dur: T.city + 0.4 - T.march, t1: D + 1, width: 0.28 },
-  { region: WD, color: "#86AEDC", pts: RIV_RUN, t0: T.run, dur: 3.2, t1: D + 1, width: 0.2 },
-  { region: WD, side: U, pts: [[HT[0] - 4, HT[1] + 16], [HT[0] + 12, HT[1] + 30], [GG[0] + 4, GG[1] + 6]], t0: T.carry - 0.2, dur: 1.0, t1: D + 1, width: 0.48 },
-  // H: Sherman's alternative: back north and try again by land (a thin ghost arrow off the top of the map)
-  { region: WD, side: U, pts: [[MB[0] + 6, MB[1] - 4], [MB[0] + 10, MB[1] - 50], [MB[0] + 2, MB[1] - 110], [MB[0] - 6, MB[1] - 170]], t0: T.backNorth, dur: 1.4, t1: T.but + 0.6, width: 0.3 },
+  // (round 3: the plan arrows step out on "Sherman" so Sherman's ghost arrow + the letter stand alone, and the camera can frame the north)
+  { region: WD, side: U, pts: WB, t0: T.march, dur: T.city + 0.4 - T.march, t1: T.shermanH + 0.4, width: 0.24 },
+  { region: WD, color: "#86AEDC", pts: RIV_RUN, t0: T.run, dur: 3.2, t1: T.shermanH + 0.4, width: 0.2 },
+  { region: WD, side: U, pts: [[HT[0] - 4, HT[1] + 16], [HT[0] + 12, HT[1] + 30], [GG[0] + 4, GG[1] + 6]], t0: T.carry - 0.2, dur: 1.0, t1: T.shermanH + 0.4, width: 0.24 },
+  // H: Sherman's alternative: back north and try again by land (a short ghost arrow from the camps, pointing north)
+  { region: WD, side: U, pts: [[1252, 716], [1246, 690], [1242, 664]], t0: T.backNorth, dur: 1.2, t1: T.but + 0.6, width: 0.24 },
 ];
 
 // ---------------- fx ----------------
@@ -182,11 +184,12 @@ const keys = [
   { t: 91.0, region: WD, at: [1282, 646], dist: 250, tilt: 47, yaw: -2, fov: 30 },
   { t: 102.6, region: WD, at: [1272, 660], dist: 236, tilt: 48, yaw: -4, fov: 30 },
   // G: the plan
-  { t: 107.0, region: WD, at: [1330, 790], dist: 440, tilt: 44, yaw: 0, fov: 30 },
-  { t: 116.8, region: WD, at: [1320, 860], dist: 420, tilt: 45, yaw: -1, fov: 30 },
-  { t: 124.2, region: WD, at: [1345, 800], dist: 480, tilt: 43, yaw: 0, fov: 30 },
-  // H: Sherman's letter
-  { t: D, region: WD, at: [1360, 790], dist: 480, tilt: 42, yaw: 2, fov: 30 },
+  // round 3 (critic A N5): framed 30-40 units further west so the west-bank route is not on the left frame edge
+  { t: 107.0, region: WD, at: [1322, 784], dist: 450, tilt: 42, yaw: 0, fov: 30 },
+  { t: 116.8, region: WD, at: [1312, 860], dist: 440, tilt: 42, yaw: -1, fov: 30 },
+  { t: 125.6, region: WD, at: [1330, 840], dist: 470, tilt: 41, yaw: 0, fov: 30 },
+  // H: Sherman's letter (the ghost arrow north of Milliken's Bend in frame)
+  { t: D, region: WD, at: [1334, 830], dist: 475, tilt: 40, yaw: 2, fov: 30 },
 ];
 
 const W1 = "#3C6E9E", R1 = "#9C3A35";
@@ -196,7 +199,7 @@ window.SEQ = {
   regionOpts: { [WD]: { troopScale: 17 }, [VB]: { troopScale: 3.2 } },
   keys,
   clouds: {
-    [WD]: { scatter: { seed: 5 }, keepClear: [[1260, 840, 160, 1, 0.9], [1200, 760, 120, 1, 0.9], [1383, 680, 60, 1, 0.6], [1380, 620, 70, 1, 0.6], [1280, 650, 60, 1, 0.6], [1230, 900, 70, 1, 0.6]] },
+    [WD]: { scatter: { seed: 5 }, keepClear: [[1495, 800, 150, 0.5, 1.0], [1170, 990, 80, 1, 1.0], [1470, 600, 90, 1, 1.0], [1260, 840, 160, 1, 0.9], [1200, 760, 120, 1, 0.9], [1383, 680, 60, 1, 0.6], [1380, 620, 70, 1, 0.6], [1280, 650, 60, 1, 0.6], [1230, 900, 70, 1, 0.6]] },
     [VB]: { shadows: true },
   },
   units, arrows, boats, fx,
@@ -222,7 +225,7 @@ window.SEQ = {
     // A
     ["plaque.date", T.winter + 0.1, { month: "Winter 1862-63", day: "", weekday: "", note: "the Mississippi" }],
     ["label", T.only + 0.2, T.only + 3.6, { name: "The last Confederate stretch", sub: "Vicksburg to Port Hudson", world: [1300, 900], side: "cs", marker: false }],
-    ["label", T.port, T.port + 3.8, { name: "Port Hudson", sub: "Louisiana · further downriver", world: [BOTTOM[0], BOTTOM[1]], side: "cs", marker: false, offset: [24, -70] }],
+    ["label", T.port, T.men - 0.1, { name: "Port Hudson", sub: "Louisiana · further downriver", world: [BOTTOM[0], BOTTOM[1]], side: "cs", marker: false, offset: [24, -70] }],
     ["label", T.men - 0.2, T.west + 2.4, { name: "Men, cattle, supplies", sub: "from the West", world: [1110, 905], side: "cs", marker: false }],
     // B
     ["inset", T.vb2 + 0.4, T.round - 0.2, { img: "seq/inset_vicksburg.jpg", x: 1310, y: 150, w: 500, h: 323, caption: "Vicksburg from the river · Harper's Weekly 1861 · Library of Congress" }],
@@ -232,7 +235,7 @@ window.SEQ = {
     ["label", T.grandGulf, T.grandGulf + 2.8, { name: "Grand Gulf", sub: "more guns · downriver", world: [1369, 706], side: "cs", marker: false, offset: [28, -60] }],
     // C
     ["medallion", { kind: "card", general: "pemberton", sub: "a Pennsylvanian who chose the South", screen: [1765, 215], tIn: T.john, tOut: 46.6 }],
-    ["legend", T.penn, 129.4, { entries: [{ name: "Union", color: W1 }, { name: "Confederates", sub: "Pemberton", color: R1 }] }],
+    ["legend", T.penn, T.march - 0.6, { entries: [{ name: "Union", color: W1 }, { name: "Confederates", sub: "Pemberton", color: R1 }] }],
     ["medallion", { kind: "card", general: "davis", role: "Confederate President", sub: "orders: hold Vicksburg", screen: [1765, 215], tIn: T.davis, tOut: 51.4 }],
     ["label", T.riverFront, CUT2 - 0.1, { name: "The river in front", world: [1377, 690], marker: false, offset: [-300, -20] }],
     ["label", T.swamps, CUT2 - 0.1, { name: "The swamps to the north", world: [1392, 648], marker: false }],

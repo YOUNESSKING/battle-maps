@@ -44,3 +44,16 @@ Open issues
 | quote cards dim the map | `dim: 0.4` on the three quote cards (camera keeps moving under them). |
 | rout / Loring arrows ran off the frame | shortened to end inside the frame. |
 Open: wide-map cloud at the lower-left corner 1-12 s (unchanged); scene folder 25.5 MB (two regions, unchanged).
+
+## Round 3 fixes (critics A + B round 2)
+| Finding | Fix |
+| --- | --- |
+| B N7: McClernand card cut by the right edge 66-70 | card offset [-440, -150] (left of its anchor); the camera reaches McClernand's roads at 69.6 (was 70.8) |
+| B N11: clock read 11:36 at 58.0 | the 13:00 run starts on "took it" (59.18) and lasts 0.95 s: 11:00 holds until the crest is taken |
+| A: smoke puffs on the boxes 96-110 (and the crest guns 58) | volleys = dense v7 battalion curtains (rate x2.6, size 1.0, alpha 0.17, cluster [1.5, 0.8], seated 2.2); every gun (massed Union guns, crest guns, Tilghman / A. J. Smith) fires small forward-jetting plumes (`plume 0.45, puffs 7, jet 1.6`) instead of round puffs |
+| A N6: wide clouds lower-left 0-12 | keepClear [1580, 790, 95] + [1625, 800, 70] |
+| A: four furniture pieces 166-172; boxes over the timeline (172 on "18") | legend out at 161.25 before the ledger; the timeline now only shows 140.6-144.5 for the Champion Hill seal (hidden on "Loring"); legend also out for the crest fight 84.8-118.9 (red boxes sat under it); end camera nudged south (171.4 / 173 keys) so McClernand's columns are above the bottom edge (check_edges OK) |
+| A N5: arrow at 87 (2x long, off the bottom edge, head on the Union boxes) | Bowen's two arrows short (s 3.4 -> -1.0), width 0.19, in front of each brigade, gone at 88.4 before the brigades reach them; the reinforcement arrows (104-109) start inside the frame (s -6.4 -> 1.6) |
+| A N7: sheared boxes 100-110 | crest-fight keys 89-108.6 at fov 22, dist x1.36 (same framing, much less perspective shear: boxes are upright rectangles) |
+| B N4 (engine, lead/other agent): boxes on the dive cloud 31-33 | engine diveHide + short white-out; checked on the stills at 31.9 / 33.2 |
+Checks: check_paths OK, check_edges OK, check_escapes as round 2 (Loring's escapes have no bridge: they leave south-east by road).
