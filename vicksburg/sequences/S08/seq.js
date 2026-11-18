@@ -54,7 +54,7 @@ const units = [
   { region: J, side: U, type: "inf", n: 3, face: VX.FACE.east, t1: 28.8, keys: [[0, 1838.4, 700.2], [T.north + 0.2, 1838.4, 700.2], [T.flew + 0.6, 1856.0, 713.6]] },
   // Sherman (Steele, Tuttle) on the Raymond road, the battery at the bridge; then into the town; Tuttle right toward the Pearl
   { region: J, side: U, type: "inf", n: 3, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1867.0, 747.0], [T.north + 0.4, 1867.0, 747.0], [T.flew, 1883.2, 735.4], [28.8, 1884.6, 733.0]] },
-  { region: J, side: U, type: "inf", n: 2, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1872.4, 750.6], [T.north + 0.8, 1872.4, 750.6], [T.flew + 0.4, 1893.0, 737.6]] },
+  { region: J, side: U, type: "inf", n: 2, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1872.4, 750.6], [T.north + 0.8, 1872.4, 750.6], [T.flew + 0.4, 1886.6, 735.4]] },
   { region: J, side: U, type: "art", n: 2, face: VX.FACE.ne, t1: 28.8, keys: [[0, 1873.8, 745.2]] },
 
   // ===== wide at night (13 May): Johnston at Jackson, McPherson at Clinton, Sherman toward Mississippi Springs =====
