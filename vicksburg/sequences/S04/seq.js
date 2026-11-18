@@ -151,13 +151,13 @@ const keys = [
   { t: DAY0 + 0.8, region: WD, at: [1250, 980], dist: 340, tilt: 47, yaw: -3, fov: 30, night: 0, ease: "lin" },
   { t: 38.6, region: WD, at: [1400, 640], dist: 420, tilt: 45, yaw: -1, fov: 30 },
   { t: 43.0, region: WD, at: [1420, 620], dist: 400, tilt: 45, yaw: 0, fov: 30 },
-  { t: 47.2, region: WD, at: [1872, 800], dist: 440, tilt: 41, yaw: 0, fov: 30 },
-  { t: CUT, region: WD, at: [1880, 806], dist: 430, tilt: 41, yaw: 0, fov: 30 },
+  { t: 47.2, region: WD, at: [1836, 812], dist: 400, tilt: 41, yaw: 0, fov: 30 },
+  { t: CUT, region: WD, at: [1840, 816], dist: 395, tilt: 41, yaw: 0, fov: 30 },
   { t: CUT, region: WD, at: [1212, 1002], dist: 250, tilt: 46, yaw: -6, fov: 30, ease: "cut" },
   // (the dive inserts push 55.8 -> land 62.95)
   { t: 67.0, region: BR, at: [1183.0, 1031.0], dist: 36, tilt: 50, yaw: -58, fov: 31 },
-  { t: 76.0, region: BR, at: [1188.0, 1030.0], dist: 44, tilt: 49, yaw: -66, fov: 31 },
-  { t: D, region: BR, at: [1194.0, 1028.0], dist: 54, tilt: 47, yaw: -74, fov: 31 },
+  { t: 76.0, region: BR, at: [1188.0, 1033.0], dist: 40, tilt: 46, yaw: -66, fov: 31 },
+  { t: D, region: BR, at: [1192.0, 1031.0], dist: 44, tilt: 44, yaw: -74, fov: 31 },
 ];
 
 const W1 = "#3C6E9E", R1 = "#9C3A35";
