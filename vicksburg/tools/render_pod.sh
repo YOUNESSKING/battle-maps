@@ -1,6 +1,6 @@
 #!/bin/bash
 # Render Vicksburg scenes on ONE RunPod GPU pod (recipe: research/runpod/README.md). The key stays in $RUNPOD_API_KEY (never printed).
-# usage: bash vicksburg/tools/render_pod.sh OUTDIR S05 [S07 ...]     -> OUTDIR/S05.mp4 ...; the pod is ALWAYS terminated at exit.
+# usage: bash vicksburg/tools/render_pod.sh OUTDIR S05 [S07 ...]   (or NAME:START-END for a window, e.g. S09_gm:55-110)     -> OUTDIR/S05.mp4 ...; the pod is ALWAYS terminated at exit.
 # Env: GPU (default "NVIDIA RTX A5000"), WORKERS (3), POD (reuse an existing pod id; then it is not terminated).
 set -u
 R=/home/user/battle-maps/research/runpod; V=/home/user/battle-maps/vicksburg; OUT=$1; shift; mkdir -p "$OUT"
@@ -32,10 +32,11 @@ ctl $POD put $R/chrome_gpu_wrap.sh /work/chrome_gpu_wrap.sh; ctl $POD put $R/pat
 ctl $POD put $V/tools/pod_scene.sh /work/pod_scene.sh
 ctl $POD run prep 'chmod +x /work/*.sh; bash /work/patch_hf_chunks_gpu.sh > /work/logs/patch.log 2>&1; mkdir -p /work/in /work/out; echo prepped'
 sleep 5
-for S in "$@"; do
+for SA in "$@"; do
+  S=${SA%%:*}; RANGE=""; [ "$SA" != "$S" ] && RANGE="${SA#*:}" && RANGE="${RANGE/-/ }"   # NAME:START-END renders only that window (troops test)
   tar czf $W/$S.tgz -C $V/scenes $S || continue
   ctl $POD put $W/$S.tgz /work/in/$S.tgz
-  ctl $POD run r$S "bash /work/pod_scene.sh $S ${WORKERS:-3} > /work/logs/r$S.log 2>&1"
+  ctl $POD run r$S "bash /work/pod_scene.sh $S ${WORKERS:-3} $RANGE > /work/logs/r$S.log 2>&1"
   t0=$(date +%s)
   until ctl $POD tail /work/logs/r$S.log 3 2>/dev/null | grep -q "^END"; do sleep 20; [ $(( $(date +%s) - t0 )) -gt 3600 ] && { echo "timeout $S"; break; }; done
   ctl $POD tail /work/logs/r$S.log 3
