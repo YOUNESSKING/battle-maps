@@ -216,3 +216,9 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   over), skirmishers ahead of halted lines, guns limber / unlimber. Unit options: `arrive: false`, `skirmish: false`, `column: false`, `march`.
   Test: `bash vicksburg/tools/make_troops_test.sh` (S09_gm / S09_box; `SEQ=S10`), motion QA `node vicksburg/tools/check_troops_motion.mjs`,
   pod windows `render_pod.sh OUT S09_gm:55-110`. Boxes mode unchanged.
+
+- GM troops v3 (2026-11-18, owner on v2: stretching / colliding / fleeing): fixed block shapes (a column = the same block by the flank),
+  trapezoid pace (<= `vmax` 1.0 x troopScale u/s, leaves up to 5 s early), in-place wheel -> walk -> face deploys, NO push-apart (fix
+  overlaps in the data; `check_troops_motion.mjs` measures them), one queue per road for escapes, real opacity fades, blocks +20 %
+  and 2 per 3 boxes. `SEQ.troopsOpts` = createTroops3D options (`vmax`, `vesc`, `size`, `arrive`, `keepTimes`). Unit `caps: [[taken, retaken], ...]`.
+  Test copies of the data: `sequences/S09_gm`, `S10_gm` (built by `make_troops_test.sh`). Notes: `vicksburg/critics/troops_v2_notes.md`.
