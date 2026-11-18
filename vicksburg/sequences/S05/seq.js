@@ -93,28 +93,34 @@ const arrows = [
 
 // ---------------- fx ----------------
 const BRG0 = VX.bridge(PG, 0), BRG2 = VX.bridge(PG, 2);
-const SMK = { dir: [-1, 0], size: 0.75, alpha: 0.2, life: 12, muzzle: 4, windK: 0.45, rate: 4.0, height: 0.5, cluster: [0.9, 0.5] };   // v8 battalion curtains
-const vline = (pts, t0, t1, dir, o = {}) => ({ region: PG, pts, t0, t1, cue: true, every: o.every || 2.0, opts: { ...SMK, dir, volley: o.every || 2.0, roll: 0.7, ...o } });
+// round 3 (critic A N-smoke): battalion CURTAINS (v7/v8 gmTall look from the engine: grey, alpha ~0.26, thinning 6 s after the last volley),
+// each one seated ~1 unit IN FRONT of its line (never on the boxes), two battalion clusters per brigade front, moving with the halts.
+const SMK = { size: 1.25, alpha: 0.26, life: 12, muzzle: 3, windK: 0.45, rate: 5.0, cluster: [1.3, 0.7], fadeAfter: 6, fadeTo: 0.12 };
+const cur = (road, x, t0, t1, dir, o = {}) => { const on = road === "R" ? onR : onN, a = o.dy0 ?? -1.8, b = o.dy1 ?? 1.8;
+  return { region: PG, pts: [on(x, a), on(x, (a + b) / 2), on(x, b)], t0, t1, cue: true, every: o.every || 1.8, opts: { ...SMK, dir, volley: o.every || 1.8, roll: 0.7 } }; };
 const fx = {
   fires: [
     { region: PG, bridge: 2, t0: T.burned + 0.1, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the Grand Gulf road bridge (nobody uses it): fired on "burned"
     { region: PG, bridge: 0, t0: 53.4, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the South Fork bridge: fired after the last column is over (owner 2026-11-18: nobody crosses a burning bridge)
   ],
   volleys: [
-    // first shots at night near the Shaifer house
-    { region: PG, pts: [[SH[0] + 3.0, SH[1] + 0.3], [SH[0] + 3.4, SH[1] + 1.8]], t0: 7.7, t1: 9.4, every: 0.9, opts: { ...SMK, dir: [-1, 0], rate: 4, volley: 0.9, size: 0.7 } },
-    { region: PG, pts: [[SH[0] - 0.4, SH[1] - 0.6], [SH[0] - 0.2, SH[1] + 0.8]], t0: 8.2, t1: 9.4, every: 1.2, opts: { ...SMK, dir: [1, 0], rate: 3, volley: 1.2, size: 0.7 } },
-    // the day battle: Union lines (moving forward in steps: one curtain per halt)
-    vline([onR(1278.6, -1.6), onR(1278.6, 1.6)], 37.8, 40.6, [1, 0]),
-    vline([onN(1277.4, -1.6), onN(1277.4, 1.6)], 38.2, 40.8, [1, 0]),
-    vline([onR(1279.6, -1.6), onR(1279.6, 1.6)], 42.2, 46.2, [1, 0], { every: 1.8 }),
-    vline([onR(1286.8, -1.6), onR(1286.8, 1.6)], 48.4, 49.6, [1, 0], { every: 1.2 }),
-    // Bowen's lines
-    vline([onR(1288.6, -2.0), onR(1288.6, 2.0)], 37.4, 45.8, [-1, 0], { every: 1.7 }),
-    vline([onN(1283.6, -2.0), onN(1283.6, 2.0)], 37.9, 40.6, [-1, 0]),
-    vline([onR(1290.2, 1.4), onR(1290.2, 3.6)], 39.6, 43.8, [-1, 0], { every: 1.6 }),   // Cockrell
-    vline([onN(1282.2, -2.0), onN(1282.2, 2.0)], 41.8, 45.4, [-1, 0], { every: 1.8 }),
-    vline([[1285.8, 1005.2], [1286.6, 1007.2]], 47.6, 49.4, [1, 0.1], { every: 1.2 }),   // Logan on the third ridge
+    // first shots at night near the Shaifer house (pickets: small)
+    { region: PG, pts: [[SH[0] + 2.6, SH[1] + 0.3], [SH[0] + 2.8, SH[1] + 1.8]], t0: 7.7, t1: 9.4, every: 0.9, opts: { ...SMK, cluster: null, size: 0.9, dir: [-1, 0], rate: 4, volley: 0.9 } },
+    { region: PG, pts: [[SH[0] + 0.4, SH[1] - 0.6], [SH[0] + 0.5, SH[1] + 0.8]], t0: 8.2, t1: 9.4, every: 1.2, opts: { ...SMK, cluster: null, size: 0.9, dir: [1, 0], rate: 3, volley: 1.2 } },
+    // the day battle: Union fronts (one curtain per halt, ahead of the leading boxes)
+    cur("R", 1279.0, 37.8, 39.8, [1, 0]),
+    cur("R", 1281.8, 40.0, 40.9, [1, 0], { every: 0.9 }),
+    cur("R", 1280.0, 42.2, 46.2, [1, 0]),
+    cur("R", 1287.4, 48.4, 49.6, [1, 0], { every: 1.2 }),
+    cur("N", 1278.7, 38.2, 40.8, [1, 0]),
+    cur("N", 1277.0, 42.2, 45.4, [1, 0], { every: 2.0 }),
+    // Bowen's lines (west of each red line)
+    cur("R", 1288.3, 37.4, 44.2, [-1, 0], { every: 1.7, dy0: -2.0, dy1: 1.2 }),   // Green
+    cur("N", 1283.4, 37.9, 40.6, [-1, 0]),                                          // Tracy
+    cur("N", 1281.8, 41.8, 45.4, [-1, 0]),                                          // Tracy, after the counterattack
+    cur("R", 1290.0, 39.6, 40.9, [-1, 0], { every: 0.9, dy0: 1.4, dy1: 3.8 }),      // Cockrell coming in
+    cur("R", 1284.4, 42.0, 43.6, [-1, 0], { every: 0.8, dy0: 1.4, dy1: 3.8 }),      // Cockrell's counterattack at its furthest
+    { region: PG, pts: [[1285.4, 1005.0], [1285.6, 1006.0], [1285.8, 1007.0]], t0: 48.0, t1: 49.4, cue: true, every: 1.2, opts: { ...SMK, cluster: null, dir: [1, 0.1], volley: 1.2, roll: 0.7 } },   // Logan on the third ridge
   ],
   guns: [
     { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [36.4, 38.4, 40.2, 43.0, 44.6, 46.0].map((t, i) => ({ t, at: onR(1271.0), dir: [1, 0.02], impact: onR(1290.0 + (i % 3) * 0.6, -1.4 + (i % 3) * 1.2), delay: 0.9 })) },
@@ -138,14 +144,14 @@ window.SEQ = {
     // dawn: low across the ridges
     { t: 20.3, region: PG, at: [1275.6, 1014.6], dist: 39, tilt: 59, yaw: -82, fov: 30, night: 0, ease: "lin" },
     { t: 27.6, region: PG, at: [1281.0, 1014.6], dist: 42, tilt: 62, yaw: -86, fov: 30 },
-    { t: 35.2, region: PG, at: [1279.5, 1014.4], dist: 34, tilt: 58, yaw: -84, fov: 30 },
+    { t: 35.2, region: PG, at: [1278.8, 1014.4], dist: 35, tilt: 58, yaw: -84, fov: 30 },
     // the battle
-    { t: 44.0, region: PG, at: [1285.5, 1013.2], dist: 31, tilt: 55, yaw: -84, fov: 30 },
-    { t: 48.0, region: PG, at: [1292.5, 1013.4], dist: 32, tilt: 54, yaw: -84, fov: 30 },
-    { t: 52.2, region: PG, at: [1300.0, 1015.4], dist: 31, tilt: 54, yaw: -82, fov: 30 },
+    { t: 44.0, region: PG, at: [1284.0, 1013.4], dist: 33.5, tilt: 55, yaw: -84, fov: 30 },   // round 3: frame up (the rear boxes stay in frame)
+    { t: 48.0, region: PG, at: [1290.8, 1013.6], dist: 34, tilt: 54, yaw: -84, fov: 30 },
+    { t: 52.2, region: PG, at: [1298.0, 1015.4], dist: 34, tilt: 54, yaw: -82, fov: 30 },
     // ledger, the road open
-    { t: 58.0, region: PG, at: [1298.5, 1015.4], dist: 37, tilt: 50, yaw: -78, fov: 30 },
-    { t: D, region: PG, at: [1298.0, 1015.4], dist: 37, tilt: 46, yaw: -76, fov: 30 },
+    { t: 58.0, region: PG, at: [1296.8, 1015.6], dist: 39, tilt: 50, yaw: -78, fov: 30 },
+    { t: D, region: PG, at: [1296.5, 1015.6], dist: 39, tilt: 46, yaw: -76, fov: 30 },
   ],
   clouds: { [PG]: { shadows: true } },
   units, arrows,
@@ -171,7 +177,8 @@ window.SEQ = {
     ["label", T.twice, T.twice + 3.0, { name: "More than twice their size", sub: "the Union army on the road", world: [1264.0, 1015.0], side: "us", marker: false }],
     ["film.grade", 19.6, "day", 0.8],
     ["plaque.date", 19.8, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · dawn" }],
-    ["legend", T.ground, D - 1.0, { entries: [{ name: "Union", color: "#3C6E9E" }, { name: "Confederates", sub: "Bowen", color: "#9C3A35" }] }],
+    ["legend", T.ground, T.grantLost - 0.2, {   // round 3: steps out for the ledger (one big card) and for the units under its corner
+      entries: [{ name: "Union", color: "#3C6E9E" }, { name: "Confederates", sub: "Bowen", color: "#9C3A35" }] }],
     ["label", T.ravines, T.ravines + 3.6, { name: "Ravines", sub: "choked with cane and vines", world: [1277.0, 1014.6], marker: false, stripes: [] }],
     ["plaque.date", T.allDay, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · morning" }],
     ["label", T.counter, T.counter + 2.6, { name: "Counterattack", sub: "Bowen strikes back", world: [1289.0, 1023.6], side: "cs", marker: false }],

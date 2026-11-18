@@ -262,7 +262,7 @@ window.SEQ = {
     ["label", T.run, T.run + 3.4, { name: "The navy runs the guns", sub: "at night", world: [1350, 760], side: "us", marker: false }],
     ["label", T.carry, T.carry + 3.2, { name: "Across the river", world: [GG[0] + 6, GG[1] + 8], side: "us", marker: false }],
     ["label", T.enemy, T.enemy + 3.0, { name: "On the enemy's side", world: [1300, 900], side: "cs", marker: false }],
-    ["label", T.supply, D - 3.4, { name: "Every supply he had", sub: "behind the fortress", world: [MB[0], MB[1]], side: "us", marker: false, offset: [36, 18] }],
+    ["label", T.supply, T.backNorth - 0.1, { name: "Every supply he had", sub: "behind the fortress", world: [MB[0], MB[1]], side: "us", marker: false, offset: [36, 18] }],
     // H
     ["medallion", { kind: "card", general: "sherman", sub: "go back north · try again by land", screen: [1765, 215], tIn: T.shermanH, tOut: T.but - 0.3 }],
     ["letter", T.but, D + 1, { header: "8 April 1863 · near Vicksburg", title: "Sherman to Grant's staff", sub: "Sherman's Memoirs", cps: 56, qSize: 30, height: 236,
