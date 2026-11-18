@@ -21,3 +21,12 @@ Open issues
 - The wide map's red town glyphs (Bovina etc.) still sit near red units in part A/D.
 - Part D (wide at dist ~780) is dark/low contrast; the gold battle pulses are small.
 - Custom fx SPRITES (fx.custom push) did not render in this scene's siege region after the dive (they do in S12 and in a no-dive test): the red line is a mesh ribbon instead. Not investigated further (engine).
+
+## Round 2 fixes (critics A + B round 1)
+| finding | what I did |
+| --- | --- |
+| A sev 3: world edge 30-60 s (TR) | Siege keys lowered (tilt 38-45) and turned (yaw 78-98), dive target tilt 40 / yaw 88: frustum-corner check OK at margin 1 for every key. |
+| A sev 3 / B: river renders as silver foil | Engine (`world.js`): a broad river in a close world now tiles its ripple normal map every ~0.9 units (was once per river width = metre-sized scales), roughness 0.78, env reflections x0.45, and the per-river material clones now follow the day/night water colour. The siege / vicksburg Mississippi is a flat dark slate band; narrow rivers unchanged. |
+| A: quote card stays across the cut at ~66 s | Quote out at 66.34 (fade 0.7 s, gone by 67.04, cut at 67.4); `dim: 0.4` (the map stays live under it). |
+| A + B: twenty-days wide view too dark, tiny pulses, a cloud over a third of the frame | Scene grade `wide: { toe: 30 }`; battle pulses r 17 -> 38, brighter gold, gone when the push-in starts (81.9); keep-clear zones for the left / lower-left / Jackson-area clouds (68-87). |
+| A sev 1: Sherman letter body ~6 px at 720p | New optional engine letter-card fields (`qSize`, `height`; README LESSONS): body 31 px on two lines, card 262 px high at top 662. |

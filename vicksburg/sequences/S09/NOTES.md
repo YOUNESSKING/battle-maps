@@ -27,3 +27,20 @@ Open issues
 - The wide map's town glyphs (Edwards, Bolton, Raymond) are red crosses from the bake and sit near the red units.
 - Loring portrait licence not re-checked on Commons (rate-limited): verify it is the public-domain period photograph before publishing.
 - Clock runs on to 5:20 for Tilghman (sourced, OR2) rather than stopping at ~3:30.
+
+## Round 2 fixes (critics A + B round 1)
+| finding | what I did |
+| --- | --- |
+| B sev 3 / A sev 2: crest fight 88-112 s a tangle of red inside blue | Every crest unit is now keyed in FRONT coordinates (`FR(s, p)`: s along the attack axis Champion house -> crest, p across it). Hovey + Crocker always on the Union side, Lee + Bowen + Cumming on the other, a 3.5-5 unit gap that moves: crest taken (59) -> Bowen pushes Hovey nearly to the Champion house (91.5) -> Union line + massed guns at the foot -> the third push carries the crest again (105-108), the fresh red battery turns grey in front of the blue line. Camera turned ALONG the axis for 89-117 s (yaw -30..-42, tilt 37-40): Union line at the top, Confederate line below, gap across the frame. Lee / Cumming / Barton moved so they no longer sit inside Logan's lines (59-66, 121 s). |
+| A: massed Union guns 97-104 show no flashes | The three batteries now stand IN FRONT of the rallied line (as the narration says) and fire 11 shots 99.8-108.2 with an explicit muzzle flash each (`flash`), impacts on Bowen's line low on the slope, then on the crest after "contested"; gun + boom cues come from fx.guns. |
+| B sev 2: clock 12:14 "Hovey takes the crest" vs "eleven o'clock" | 11:00 holds from "eleven o'clock" (53.6) to "took it"; the hands spin 11:00 -> 13:00 between 58.6 and 59.7 (FACT: crest ~1 p.m.), note "Hovey takes the crest" on 59.1. |
+| B sev 2: ledger "~3,800" | "Confederates about 3,800". |
+| A sev 2: Grant banner cut by the top edge (75-78, 162-168), Bowen card at the bottom edge (81-84) | Grant banner moved down the slope (1650.6, 693.0), in on "sent order after order" (73.6) with a camera pulled north (keys 74.2 / 77.6); out before the camera turns along the crest axis (87.9); back 117.6-135.4 (out before it leaves the frame); not up during the ledger; back on the hill for "That night". Bowen card above-right of its unit (offset 150, -250). Order arrows shortened to stay inside the frame. |
+| A sev 2: dark teal woods blanket (S09 close mean 70,79,72) | Scene grade `close: { toe: 34, bl: -6, gl: -1 }`: lifted, warmer canopy; close stills now mean ~(84-95, 90-99, 79-84). |
+| A sev 3: world edge ~97-105 TR (and 62-66 TL, 72-80 TR found by the check) | All camera keys re-tilted / moved; frustum-corner check (`edges.js`, see report) OK at margin 1 except 0.5 s inside the night dissolve at 172.8 (haze). |
+| A sev 2: smoke = round puffs | Volleys are engine smokeLines (`SMOKE_GM` curtains); all crest curtains redrawn along the new lines (front coordinates). |
+| B sev 1: Logan arrow 2 s early | t0 120.1 (on "Logan's men" 120.19). |
+| check_paths: wide groups crossed Baker's Creek | The wide-map Confederate groups now cross only near the lower bridge and stay east of the creek after the about-turn (26.6 / 28.6 keys); `check_paths S09` OK. |
+| quote cards dim the map | `dim: 0.4` on the three quote cards (camera keeps moving under them). |
+| rout / Loring arrows ran off the frame | shortened to end inside the frame. |
+Open: wide-map cloud at the lower-left corner 1-12 s (unchanged); scene folder 25.5 MB (two regions, unchanged).
