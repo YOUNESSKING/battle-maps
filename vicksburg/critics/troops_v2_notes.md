@@ -154,3 +154,34 @@ Own 5 fps inspection of every moving unit ("reads as column/line moving front-fi
 - S10 reserve (3-7 s): yes (two columns over the bridge, stream 3 abreast on the deck, compact on the far side)
 - S10 Union lines advancing on the works (0-4 s): yes (lines, front first)
 Noticed, not fixed: the blue Union attack arrow crosses the retreating north-flank column at S10 2.6-4.2 s; a small yellow flash in the woods west of the bridge at S10 12.2-12.8 s.
+
+# v9 (2026-11-18): owner rejected v8 ("it moved sideways ... move like a rectangle") + "boxes again, a professional box like we do in 2D"
+Share (with sound): `vicksburg/troops_test_v9_share.mp4`. Sheet (old film boxes | new boxes): `vicksburg/troops_test_ours_v9.jpg`.
+Switch: `troopsOpts: { look: "box" }` with `troops: "blocks"` (the GM soldier look and the film's own `boxes` mode are unchanged).
+
+| Point | v9 |
+| --- | --- |
+| Look | the film's Style W box (createBoxes3D: flat side-colour rectangle, ink border, cream X for infantry, dot for guns, soft contact shadow, fogged, under smoke/clouds), same size as the film (one box per film box, film bw/bd/gap), captured boxes fade to grey; no soldiers, no columns. Style W arrows and colours (not the GM tint) |
+| One formation | every box is a rectangle whose long side is its front. Every move (advance, march, retreat, reposition) = the box walks perpendicular to its long side |
+| Change of direction | the box turns IN PLACE first (turn time (angle + 0.3 rad) / 0.44 rad/s, smoothstep: peak <= ~40 deg/s), walks, then turns back to its facing; two moves meeting at a corner > 30 deg never merge: the box stops, turns, then walks (the later moves shift, never squeezed) |
+| Retreat | the box walks BACK, front still toward the enemy (no spin, no about-face of the symbol) |
+| Screen space | each moving box's world heading is corrected through the camera's ground Jacobian so its ON-SCREEN long side is perpendicular to its ON-SCREEN travel (residual <= ~3 deg); boxes sit at a terrain height smoothed over ~1 u (a flat symbol jumping over the works' parapet read as a sideways drift) |
+| Escape / bridge | each routing box crosses the fields on one gentle curve to the bridge mouth (roads don't constrain it), a straight first step, queue spacing by the effective (bend-slowed) path length; at the bridge it fades out over ~2.5 u and fades back in on the far side; all past the deck before the fire (last box x 1509.2 at 31.3 s, deck west end ~1510.2) |
+| Checker | `check_troops_motion.mjs` now places the camera at every step (`world.placeCamAt`) and FAILS a frame where the angle between the box's on-screen velocity and the normal of its on-screen long side (box flat at its own height) exceeds 15 deg while it moves > 0.2 u/s |
+| Data (test copies) | S09: crest battery moved to (1631.9, 698.9) clear of Bowen's two routes, Bowen's first waypoint at (1635.0, 698.8) (62 deg corner); S10: second battery y 684.5, escapes ESC_T [13.4, 13.3, 13.1] (reserve first), vesc 2.5, turnMax 0.62 |
+
+Checker v9: S09 55-110: screen long-side angle max 15 deg (1 frame at 15.x, Crocker at 99.8 s), turn <= 42 deg/s, accel <= 2.1, vmax 2.1, pops 0, NO overlaps;
+S10 10-35: screen max 14 deg (0 fails), turn <= 47 deg/s (the reserve, one 0.1 s step while fading on the bridge approach; all others <= 40), accel <= 3.7, pops 0, NO overlaps, no vanishing boxes.
+
+Own 5 fps inspection ("rectangle moving long-side-first"):
+- S09 Hovey's crest brigades (0-6 s): yes
+- S09 Hovey's west wing at the wood edge: yes (turns in place, walks broadside)
+- S09 Lee falling back south: yes (turns ~45 deg in place, walks broadside)
+- S09 Barton going west: yes (box turned 90 deg, walks west broadside)
+- S09 Logan's three brigades: yes (turn to the march, broadside down from the railroad)
+- S09 Bowen's two brigades up from the road: yes
+- S09 Bowen's crest lines falling back south: yes (walk back, front toward the enemy)
+- S09 Union pursuit / Crocker to the crest: yes
+- S10 north flank, south flank, reserve: yes (broadside across the fields, fade at the bridge mouth, back in on the far side)
+- S10 Union lines advancing on the works: yes
+Noticed: S10 escapes now start ~3 s earlier than v8 (the boxes are in the field from the first frame of the excerpt) so the whole queue clears the bridge before the fire.
