@@ -56,7 +56,7 @@
   // gun = cannon (muzzle flash on screen), boom = impact, volley = musketry burst, fire = something catches fire, whoosh = cloud dive
   VX.cues = (S) => { const c = [], F = S.fx || {}, list = Array.isArray(F) ? F : null;
     const each = (kind, fn) => { if (list) { for (const e of list) if (e.kind === kind || (kind === "smokeLines" && e.kind === "volleys")) fn(e); }
-      else { for (const e of F[kind] || []) fn(e); if (kind === "smokeLines") for (const e of F.volleys || []) fn(e); } };
+      else { for (const e of F[kind] || []) if (e) fn(e); if (kind === "smokeLines") for (const e of F.volleys || []) if (e) fn(e); } };
     each("guns", (g) => { for (const s0 of g.shots || []) { const s = typeof s0 === "number" ? { t: s0 } : s0; if (g.cue === false || s.cue === false) continue; c.push(["gun", s.t]);
       const imp = s.impact !== undefined ? s.impact : g.impact; if (imp && g.boom !== false && s.boom !== false) c.push(["boom", R6(s.t + (s.delay ?? g.delay ?? 0.85))]); } });
     each("fires", (f) => { if (f.cue === false) return; c.push(["fire", f.cue ?? f.t0]); });
