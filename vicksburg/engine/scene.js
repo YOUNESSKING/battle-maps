@@ -291,6 +291,11 @@ for (const r of NAMES) { const L = BOATS.filter((o) => o.r === r); if (!L.length
 // ---------------- troops: Style W boxes in the scene (or GM 3D blocks), arrows, generals' banners ----------------
 const TR = document.getElementById("troops"), UNITS = [];
 const posAt = (K, t) => { if (t <= K[0][0]) return [K[0][1], K[0][2]]; for (let i = 1; i < K.length; i++) if (t < K[i][0]) { const k = K[i][3] === "lin" ? clamp((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])) : sstep(K[i - 1][0], K[i][0], t); return [lerp(K[i - 1][1], K[i][1], k), lerp(K[i - 1][2], K[i][2], k)]; } const L = K[K.length - 1]; return [L[1], L[2]]; };
+// owner 2026-11-18: boxes NEVER rotate; on a road march ("lin" key segments from VX.march) a unit becomes a column: box i follows the
+// same path i * spacing behind the head (posAt at an earlier time), so the column bends with the road, crosses on the bridge, keeps its facing.
+const marchSeg = (K, t) => { if (t <= K[0][0] || t >= K[K.length - 1][0]) return false; for (let i = 1; i < K.length; i++) if (t < K[i][0]) return K[i][3] === "lin"; return false; };
+const marchK = (K, t) => (marchSeg(K, t - 0.6) + marchSeg(K, t - 0.3) + marchSeg(K, t) + marchSeg(K, t + 0.3) + marchSeg(K, t + 0.6)) / 5;
+const speedAt = (K, t) => { const a = posAt(K, t - 0.25), b = posAt(K, t + 0.25); return Math.hypot(b[0] - a[0], b[1] - a[1]) / 0.5; };
 // withdrawal along a road (v8): joins the road just beyond its start in the join direction, column nose to tail at v (units/s), slows to v2 past slowX/slowY
 const mkEscape = (e, start) => { const road = typeof e.road === "string" ? VX.road(e.region, e.road) : e.road, dir = e.join || "west", st = e.start || start;
   const ahead = { west: (p) => p[0] < st[0] - 0.3, east: (p) => p[0] > st[0] + 0.3, north: (p) => p[1] < st[1] - 0.3, south: (p) => p[1] > st[1] + 0.3 }[dir];
@@ -377,10 +382,13 @@ const drawTroops = (t, region) => {
       const off = -span / 2 + u.bw / 2 + i * (u.bw + u.gap), wob = u.wob * 0.05 * Math.sin(t * 1.3 + i * 1.7 + cx);
       const capd = u.cap != null && i < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0;
       let x = cx + px * off + fx * wob, y = cy + py * off + fy * wob, bfx = fx, bfy = fy, esc = false, eop = 1;
+      const mk = u.column === false ? 0 : sstep(0, 1, marchK(u.keys, t));
+      if (mk > 0 && i > 0) { const v = Math.max(speedAt(u.keys, t), speedAt(u.keys, t - 1), 0.05), dt = i * (Math.max(u.bw, u.bd) + u.gap) * 1.15 / v, q = posAt(u.keys, t - dt);
+        x = lerp(x, q[0], mk); y = lerp(y, q[1], mk); } else if (mk > 0) { x = lerp(x, cx, mk); y = lerp(y, cy, mk); }
       if (u.esc && i >= u.escFrom && t > u.esc.t0) {   // v8: peel off the line slot into the road column, nose to tail, then march off
         const si = u.esc.s(t) - (i - u.escFrom) * (u.bw + u.gap) * 1.05;
         if (si > 0) { const [ex, ey, hx, hy] = escAt(u.esc, si), k = sstep(0, 0.9, si); x = lerp(x, ex, k); y = lerp(y, ey, k);
-          const cfx = lerp(fx, hy, k), cfy = lerp(fy, -hx, k), l = Math.hypot(cfx, cfy) || 1; bfx = cfx / l; bfy = cfy / l; esc = k > 0.5;
+          esc = k > 0.5;   // owner 2026-11-18: no rotation on the road (bfx/bfy keep the unit's facing)
           if (u.esc.fade) eop = edgeFade(u.esc.fade, world.projectMap(x, y, 0.02), -30, 170); }   // fades over the frame edge (1.5-2 s at march pace)
       }
       L.push({ u, i, x, y, fx: bfx, fy: bfy, px: -bfy, py: bfx, bw: u.bw, bd: u.bd, op: op * eop * (1 - 0.25 * capd), capd, esc });

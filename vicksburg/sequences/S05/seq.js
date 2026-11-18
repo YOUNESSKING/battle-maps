@@ -26,7 +26,8 @@ const E = VX.FACE.east, Wf = VX.FACE.west;
 const ESC_S = [...RR.filter((p) => p[0] > 1293), TOWN, ...NE_RD.slice(1)];
 // north group: the Bruinsburg road into town, then gm6 north over the Little Bayou Pierre bridge (bridge 2) toward Grand Gulf
 const gm6Rev = VX.reverse(GM6);
-const ESC_N = [...NR.filter((p) => p[0] > 1290), [1305.6, 1014.6], ...gm6Rev.slice(1)];
+// owner 2026-11-18: gm6 hugs (and crosses) Little Bayou Pierre with no bridge: the north group now follows the south group over the South Fork bridge
+const ESC_N = [...NR.filter((p) => p[0] > 1290), TOWN, ...NE_RD.slice(1)];
 
 // ---------------- units ----------------
 const units = [];
@@ -51,7 +52,7 @@ units.push(uLine(4, 0, [[0, 1262], [19.6, 1266.5], [36.4, 1266.5], [38.6, 1271.0
 const NX = [[0, 1266.5], [19.6, 1273.0], [36.2, 1273.0], [38.0, 1277.0], [39.6, 1278.5], [40.8, 1278.5], [41.9, 1276.6], [45.2, 1276.6], [47.0, 1283.5], [49.0, 1286.5], [54.0, 1292.0], [D, 1295.0]];
 units.push(uLine(4, 0, NX, "N"));
 // Logan's brigade (J. E. Smith): along a third ridge north of the road, turns Tracy's flank
-units.push({ side: "u", type: "inf", n: 2, face: E, t0: T.pressed - 0.4, keys: [[T.pressed - 0.4, 1279.0, 1005.8], [47.0, 1285.0, 1006.0], [49.5, 1289.0, 1007.2], [D, 1294.0, 1008.6]] });
+units.push({ side: "u", type: "inf", n: 2, face: E, t0: T.pressed - 0.4, keys: [[T.pressed - 0.4, 1279.0, 1006.6], [47.0, 1285.0, 1007.2], [49.5, 1289.0, 1008.6], [D, 1294.0, 1009.4]] });
 // Union guns
 units.push({ side: "u", type: "art", n: 2, face: E, t0: 18.6, keys: [[0, ...onR(1275.0, -0.2)], [47.5, ...onR(1275.0, -0.2)], [52.0, ...onR(1284.0, -0.2)]] });
 units.push({ side: "u", type: "art", n: 2, face: E, t0: 18.6, keys: [[0, ...onN(1275.4, 1.0)], [48.0, ...onN(1275.4, 1.0)], [52.5, ...onN(1283.0, 1.0)]] });
@@ -63,14 +64,14 @@ units.push(rLine(2, greenAt, { keys: [[0, ...greenAt], [44.2, ...greenAt], [T_OU
   escape: { road: ESC_S, t0: T_OUT, v: 3.6, v2: 3.6, join: "east", fade: false } }));                                  // Green
 units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onR(1291.2, -1.6)]], escape: { road: ESC_S, t0: T_OUT - 0.4, v: 3.6, v2: 3.6, join: "east", fade: false } });
 units.push(rLine(2, tracyAt, { keys: [[0, ...tracyAt], [40.6, ...tracyAt], [41.8, tracyAt[0] - 1.6, tracyAt[1]], [45.4, tracyAt[0] - 1.6, tracyAt[1]], [T_OUT - 0.2, tracyAt[0] + 2.4, tracyAt[1] + 0.6]],
-  escape: { road: ESC_N, t0: T_OUT + 0.3, v: 4.4, v2: 4.4, join: "east", fade: false } }));                            // Tracy
-units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onN(1285.6, 1.4)]], escape: { road: ESC_N, t0: T_OUT - 0.2, v: 4.4, v2: 4.4, join: "east", fade: false } });
+  escape: { road: ESC_N, t0: T_OUT + 2.6, v: 3.6, v2: 3.6, join: "east", fade: false } }));                            // Tracy
+units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onN(1285.6, 1.4)]], escape: { road: ESC_N, t0: T_OUT + 2.1, v: 3.6, v2: 3.6, join: "east", fade: false } });
 // Cockrell: comes up from town and counterattacks south of the Rodney road, then falls back
 units.push({ side: "r", type: "inf", n: 2, face: Wf, t0: 36.4, keys: [[36.4, 1298.0, 1021.2], [39.4, 1292.4, 1021.6], [40.8, 1291.0, 1021.6], [42.0, 1285.6, 1021.2], [43.6, 1286.4, 1021.2], [T_OUT - 0.4, 1292.8, 1020.8]],
   escape: { road: ESC_S, t0: T_OUT + 0.5, v: 3.6, v2: 3.6, join: "east", fade: false } });
 // Baldwin: second line behind Tracy, steps into the gap
 units.push({ side: "r", type: "inf", n: 1, face: Wf, t0: 36.0, keys: [[36.0, 1294.0, 1011.6], [39.0, 1288.6, 1011.4], [44.0, 1288.6, 1011.4], [T_OUT - 0.3, 1292.0, 1011.6]],
-  escape: { road: ESC_N, t0: T_OUT + 0.8, v: 4.4, v2: 4.4, join: "east", fade: false } });
+  escape: { road: ESC_N, t0: T_OUT + 3.1, v: 3.6, v2: 3.6, join: "east", fade: false } });
 units.forEach((u) => { if (u.side === "r" && u.escape) u.t1 = 60.5; });
 
 // ---------------- arrows ----------------
@@ -95,8 +96,7 @@ const SMK = { dir: [-1, 0], size: 0.9, alpha: 0.24, life: 11, muzzle: 6, windK: 
 const vline = (pts, t0, t1, dir, o = {}) => ({ region: PG, pts, t0, t1, cue: true, every: o.every || 2.0, opts: { ...SMK, dir, volley: o.every || 2.0, roll: 0.7, ...o } });
 const fx = {
   fires: [
-    { region: PG, bridge: 0, t0: T.burned + 0.1, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the South Fork bridge
-    { region: PG, bridge: 2, t0: 55.4, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },
+    { region: PG, bridge: 0, t0: 55.8, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the South Fork bridge: fired after the last column is over (owner 2026-11-18: nobody crosses a burning bridge)
   ],
   volleys: [
     // first shots at night near the Shaifer house
@@ -112,7 +112,7 @@ const fx = {
     vline([onN(1283.0, -1.2), onN(1283.0, 1.4)], 37.9, 40.6, [-1, 0]),
     vline([[1290.4, 1020.6], [1290.4, 1022.6]], 39.6, 43.8, [-1, 0], { every: 1.6 }),   // Cockrell
     vline([onN(1281.4, -1.2), onN(1281.4, 1.4)], 41.8, 45.4, [-1, 0], { every: 1.8 }),
-    vline([[1288.6, 1005.0], [1289.4, 1007.2]], 47.0, 49.0, [1, 0.1], { every: 1.0 }),   // the flank turned
+    vline([[1288.6, 1006.8], [1289.4, 1009.0]], 47.0, 49.0, [1, 0.1], { every: 1.0 }),   // the flank turned
   ],
   guns: [
     { region: PG, shots: [36.4, 38.4, 40.2, 43.0, 44.6, 46.0].map((t, i) => ({ t, at: onR(1275.0, -0.2 + (i % 2 ? 0.45 : -0.45)), dir: [1, 0.02], impact: onR(1289.0 + (i % 3) * 0.6, -1.4 + (i % 3) * 1.2), delay: 0.9 })) },
@@ -175,7 +175,7 @@ window.SEQ = {
     ["label", T.counter, T.counter + 2.6, { name: "Counterattack", sub: "Bowen strikes back", world: [1289.0, 1023.6], side: "cs", marker: false }],
     ["plaque.date", T.late, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · late afternoon" }],
     ["label", T.pressed + 0.3, T.pressed + 3.4, { name: "The flank turned", sub: "a third ridge, north of the road", world: [1291.0, 1004.0], side: "us", marker: false }],
-    ["label", T.burned + 0.2, T.burned + 3.4, { name: "Bridges burned", sub: "behind the Confederate retreat", world: [BRG0.x + 1.0, BRG0.z + 2.4], side: "cs", marker: false }],
+    ["label", T.burned + 0.2, T.burned + 3.4, { name: "Over the bayou", sub: "the bridges burned behind the retreat", world: [BRG2.x + 1.0, BRG2.z + 2.4], side: "cs", marker: false }],
     ["ledger.show", T.grantLost + 0.2, { title: "Port Gibson", sub: "1 May 1863 · Union loss" }],
     ["ledger.add", T.eight, { who: "131 killed", stamp: false }],
     ["ledger.add", T.eight + 0.45, { who: "719 wounded", stamp: false }],

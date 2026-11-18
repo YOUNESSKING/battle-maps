@@ -123,10 +123,6 @@ const fx = {
 
 // ---------------- custom: the seven-mile line traced in red, blue / white flags on the parapets ----------------
 const LINE_L = VX.len(LINE);
-const traceFn = (t, push) => { if (!WWD || t < T.land || t > 41.0) return; const k = sstep(T.land - 0.2, T.ridges + 0.6, t), out = 1 - sstep(39.4, 40.8, t);
-  for (let s = 0; s < LINE_L; s += 0.45) { const u = s / LINE_L; if (u > k) break; const p = VX.along(LINE, s), y = WWD.heightAt(p[0], p[1], S) + 0.08;
-    const head = Math.exp(-((k - u) * LINE_L) / 3);   // a bright head running south
-    push(p[0], y, p[1], 1.05 + 0.9 * head, (0.2 + 0.45 * head) * out, 1.0, 0.2, 0.1); } };
 let WWD = null;
 // flags: DOM markers pinned to the ground (pole base), rise, and fall over when the attack fails
 const FLAG_SVG = (kind) => kind === "us"
@@ -142,7 +138,7 @@ const mkFlags = (list) => { const F = { items: [] };
     if (f.region !== reg || t < f.t0 || t > (f.t1 ?? 1e9) + 0.6) { if (e.style.opacity !== "0") e.style.opacity = "0"; continue; }
     const q = ctx.world.projectMap(f.at[0], f.at[1], 0.02); if (!q.visible) { e.style.opacity = "0"; continue; }
     const rise = sstep(f.t0, f.t0 + 0.7, t), fall = f.fall != null ? sstep(f.fall, f.fall + 0.9, t) : 0;
-    const hpx = VX.clamp((f.size || 0.75) * q.ppu, 16, 46), wpx = hpx * 30 / 44;
+    const hpx = VX.clamp((f.size || 1.3) * q.ppu, 28, 62), wpx = hpx * 30 / 44;
     const sw = 2.5 * Math.sin(t * 2.4 + f.at[0]);
     e.style.width = wpx.toFixed(1) + "px"; e.style.height = hpx.toFixed(1) + "px";
     e.style.transform = `translate(${(q.x - wpx * 0.07).toFixed(1)}px,${(q.y - hpx).toFixed(1)}px) scaleY(${Math.max(0.02, rise).toFixed(3)}) rotate(${(sw - fall * 84).toFixed(1)}deg)`;
@@ -157,16 +153,27 @@ const FLAGS = mkFlags([
   { region: S, kind: "us", at: [TEX2[0] + 0.15, TEX2[1]], t0: T.flags + 0.65, fall: T.none + 0.6 },
   { region: S, kind: "us", at: [RRR[0] + 0.1, RRR[1]], t0: T.flags + 0.95, fall: T.none + 0.85 },
 ]);
-const PULSE = VX.pulses([TW("Port Gibson"), TW("Raymond"), TW("Jackson"), P("Champion Hill crest"), [1509.8, 683.5]].map((p, k) => ({ region: W, at: p, t0: T.five + 0.1 + k * 0.25, t1: T.D + 1, r: 12, color: [214, 172, 84], period: 1.8 })));
+const PULSE = VX.pulses([TW("Port Gibson"), TW("Raymond"), TW("Jackson"), P("Champion Hill crest"), [1509.8, 683.5]].map((p, k) => ({ region: W, at: p, t0: T.five + 0.1 + k * 0.25, t1: T.D + 1, r: 17, color: [214, 172, 84], period: 1.8 })));
 
-const build = async (ctx) => { WWD = ctx.world; ctx.FX[S].custom(traceFn); FLAGS.build(ctx); PULSE.build(ctx); };
+const build = async (ctx) => { WWD = ctx.world; const { THREE, world } = ctx, sc = world.regions[S].scene;
+  // the seven-mile line traced in red: a glowing ribbon draped along the rifle pits, grown north -> south (draw range set before the render)
+  const q = []; for (let s = 0; s <= LINE_L; s += 0.12) q.push(VX.along(LINE, s));
+  const pos = [], W2 = 0.42; for (let i = 0; i < q.length - 1; i++) { const a = q[i], b = q[i + 1], ux = -a[3], uy = a[2], H = (x, y) => world.heightAt(x, y, S) + 0.12;
+    const A1 = [a[0] - ux * W2 / 2, a[1] - uy * W2 / 2], A2 = [a[0] + ux * W2 / 2, a[1] + uy * W2 / 2], B1 = [b[0] - ux * W2 / 2, b[1] - uy * W2 / 2], B2 = [b[0] + ux * W2 / 2, b[1] + uy * W2 / 2];
+    pos.push(A1[0], H(...A1), A1[1], B1[0], H(...B1), B1[1], A2[0], H(...A2), A2[1], A2[0], H(...A2), A2[1], B1[0], H(...B1), B1[1], B2[0], H(...B2), B2[1]); }
+  const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  const mat = new THREE.MeshBasicMaterial({ color: 0xd8382a, transparent: true, opacity: 0, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -6, polygonOffsetUnits: -6 });
+  const m = new THREE.Mesh(g, mat); m.renderOrder = 4; sc.add(m); const NQ = q.length - 1;
+  ctx.FX[S].custom((t) => { const k = sstep(T.land - 0.2, T.ridges + 0.6, t), out = 1 - sstep(39.4, 40.8, t); m.visible = t > T.land - 0.2 && t < 41;
+    g.setDrawRange(0, Math.round(NQ * k) * 6); mat.opacity = 0.75 * out * (0.85 + 0.15 * Math.sin(t * 3)); });
+  FLAGS.build(ctx); PULSE.build(ctx); };
 const draw = (t, ctx) => { FLAGS.draw(t, ctx); PULSE.draw(t, ctx); };
 
 const LEG = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { name: "Confederates", sub: "Pemberton", color: "#9C3A35" }] };
 window.SEQ = {
   name: "S11", D: T.D, T, seed: 1863, date: "1863-05-18",
   regions: [W, S],
-  regionOpts: { [W]: { troopScale: 6 }, [S]: { troopScale: 1.4 } },
+  regionOpts: { [W]: { troopScale: 9 }, [S]: { troopScale: 1.4 } },
   keys: [
     // A: over the bluffs north of the city, the Chickasaw Bayou flats below to the north-west
     { t: 0.0, region: W, at: [1430, 646], dist: 250, tilt: 44, yaw: -14, fov: 30 },
@@ -184,8 +191,8 @@ window.SEQ = {
     { t: 56.8, region: S, at: [1404.6, 677.4], dist: 39, tilt: 47, yaw: 86, fov: 30 },
     { t: CUT, region: S, at: [1403.8, 678.6], dist: 47, tilt: 45, yaw: 92, fov: 30, ease: "lin" },
     // D: the wide map, the whole campaign; then in on the city
-    { t: CUT, region: W, at: [1520, 845], dist: 640, tilt: 42, yaw: 0, fov: 30, ease: "cut" },
-    { t: 80.6, region: W, at: [1500, 835], dist: 655, tilt: 42, yaw: 1, fov: 30, ease: "lin" },
+    { t: CUT, region: W, at: [1525, 862], dist: 770, tilt: 35, yaw: 0, fov: 30, ease: "cut" },
+    { t: 80.6, region: W, at: [1505, 850], dist: 790, tilt: 35, yaw: 1, fov: 30, ease: "lin" },
     { t: 85.4, region: W, at: [1410, 688], dist: 300, tilt: 46, yaw: -3, fov: 30 },
     { t: T.D, region: W, at: [1408, 686], dist: 288, tilt: 46, yaw: -4, fov: 30, ease: "lin" },
   ],
@@ -225,7 +232,7 @@ window.SEQ = {
     ["plaque.note", T.land + 0.4, "the Confederate land defences"],
     ["label", T.seven - 0.1, T.ridges + 2.0, { name: "About seven miles", sub: "forts on the ridges, joined by trenches", world: [1384.0, 699.0], side: "cs", marker: false }],
     ["plaque.date", T.nineteenth, { month: "May 1863", day: "19", weekday: "Day 20", note: "Tuesday · the first assault" }],
-    ["plaque.clock", T.attacked + 0.4, { time: "2:00", note: "Graveyard Road", header: "19 May 1863 · Day 20" }],
+    ["plaque.clock", T.attacked + 0.4, { time: "14:00", note: "Graveyard Road", header: "19 May 1863 · Day 20" }],
     ["label", T.not + 0.05, T.twentySecond - 0.4, { name: "Thrown back", sub: "19 May · the Stockade Redan holds", world: [1405.6, 668.0], side: "cs", offset: [-330, -40] }],
     ["plaque.date", T.twentySecond, { month: "May 1863", day: "22", weekday: "Day 23", note: "Friday · the general assault" }],
     ["plaque.clock", T.again + 0.4, { time: "10:00", note: "after four hours of bombardment", header: "22 May 1863 · Day 23" }],
@@ -236,7 +243,7 @@ window.SEQ = {
     ["ledger.show", T.nineteenth2 + 0.3, { title: "Twenty days", sub: "30 April - 19 May 1863 · Grant's count" }],
     ["timeline.show", T.days, { month: "Apr-May", year: "1863", cells: ["30 Apr", "1 May", "12 May", "14 May", "16 May", "17 May", "19 May"], at: 0.5 }],
     ["timeline.go", T.crossing, { at: 7, d: 3.0 }],
-    ...[["Port Gibson", 2], ["Raymond", 3], ["Jackson", 4], ["Champion Hill", 5], ["Big Black", 6]].map(([name, at], k) => ["timeline.seal", T.five + 0.1 + k * 0.25, { at, name }]),
+    ...[["Port Gibson", 1.8], ["Raymond", 2.8], ["Jackson", 3.8], ["Champion Hill", 4.8], ["Big Black", 5.8]].map(([name, at], k) => ["timeline.seal", T.five + 0.1 + k * 0.25, { at, name }]),
     ["ledger.add", T.battles, { who: "Five battles won", stamp: false }],
     ["ledger.add", T.miles + 0.1, { who: "About 180 miles", note: "marched, on average", stamp: false }],
     ["ledger.add", T.rations, { who: "Five days' rations", note: "issued in twenty days", stamp: false }],

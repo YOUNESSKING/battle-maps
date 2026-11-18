@@ -40,12 +40,12 @@ const units = [
   // ===== Jackson close (troopScale 1.3) =====
   // Colquitt at the O. P. Wright farm, across the Clinton road, facing west; falls back into the town and away north
   { region: J, side: R, type: "inf", n: 2, face: "west", keys: [[0, WRIGHT[0] + 2.4, WRIGHT[1] + 0.6], [T.fought + 1.4, WRIGHT[0] + 2.4, WRIGHT[1] + 0.6], [T.north + 0.6, 1858.4, 715.6]],
-    escape: { road: [...VX.sub(jR0, 33, VX.len(jR0)).reverse(), ...jR2.slice(1)], start: [1858.4, 715.6], t0: T.north + 0.7, v: 3.2, v2: 3.2, join: "nearest", fade: "north" } },
+    escape: { road: [...VX.sub(jR0, 0, 40).reverse(), ...jR2.slice(1)], start: [1858.4, 715.6], t0: T.north + 0.7, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: 23.0 },
   // Thompson at the Lynch Creek bridge, facing south-west; falls back and away north
   { region: J, side: R, type: "inf", n: 2, face: VX.FACE.sw, keys: [[0, LYNCH[0] + 1.4, LYNCH[1] - 1.8]],
-    escape: { road: [...VX.sub(jR1, 46, VX.len(jR1)), ...jR2.slice(1)], t0: T.north + 0.2, v: 3.2, v2: 3.2, join: "nearest", fade: "north" } },
+    escape: { road: [...VX.sub(jR1, 46, VX.len(jR1)), ...jR2.slice(1)], t0: T.north + 0.2, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: 23.0 },
   { region: J, side: R, type: "art", n: 1, face: VX.FACE.sw, keys: [[0, LYNCH[0] + 3.2, LYNCH[1] - 3.2]],
-    escape: { road: [...VX.sub(jR1, 48, VX.len(jR1)), ...jR2.slice(1)], t0: T.north, v: 3.2, v2: 3.2, join: "nearest", fade: "north" } },
+    escape: { road: [...VX.sub(jR1, 48, VX.len(jR1)), ...jR2.slice(1)], t0: T.north, v: 6.0, v2: 6.0, join: "nearest", fade: "north" }, t1: 23.0 },
   // the main body already marching north out of the town on the Canton road
   { region: J, side: R, type: "inf", n: 4, face: "north", keys: [[0, JK[0] - 3.0, JK[1] - 3.4]], t1: D + 1,
     escape: { road: jR2, t0: DV.SW + 0.3, v: 1.7, v2: 1.7, join: "nearest", fade: "north" } },
@@ -168,7 +168,7 @@ window.SEQ = {
     { t: DAY2, region: W, at: [1798, 704], dist: 150, tilt: 50, yaw: 0, fov: 30, night: 1 },
     { t: DAY2 + 0.8, region: W, at: [1794, 704], dist: 165, tilt: 50, yaw: 0, fov: 30, night: 0, ease: "lin" },
     // day: the army turns west toward Bolton and Edwards
-    { t: 92.0, region: W, at: [1730, 708], dist: 330, tilt: 46, yaw: -1, fov: 30 },
+    { t: 89.8, region: W, at: [1728, 708], dist: 330, tilt: 46, yaw: -1, fov: 30 },
     { t: D, region: W, at: [1712, 708], dist: 352, tilt: 46, yaw: -1, fov: 30, ease: "lin" },
   ],
   dives: [{ t: DV.SW, over: [1868, 722],

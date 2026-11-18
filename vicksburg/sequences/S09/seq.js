@@ -24,7 +24,8 @@ const BR_UP = VX.bridge(C, 0), BR_LO = VX.bridge(C, 1);   // Jackson road bridge
 const JR = VX.road(C, 0);   // Jackson road at Champion Hill: Champion house - crest - crossroads - Baker's Creek - Edwards (east -> west)
 const UP = JR.filter((p) => p[0] < 1635.2);   // crossroads -> upper bridge -> Edwards
 const RR = VX.road(C, 3).filter((p) => p[0] < 1617.5);   // Raymond road west of the Coker house -> lower crossing -> Edwards
-const LOW = [[1636.4, 700.2], [1632.6, 702.2], [1628.4, 704.6], [1624.0, 707.0], [1620.0, 709.0], ...RR];
+// owner 2026-11-18: cross Baker's Creek only on the bridge (the baked Raymond road runs ON the creek for ~7 units west of x 1605)
+const LOW = [[1636.4, 700.2], [1632.6, 702.2], [1628.4, 704.6], [1624.0, 707.0], [1620.0, 709.6], [1614.0, 711.4], [1608.0, 712.4], [1603.0, 713.2], [1599.5, 713.6], [1597.8, 712.6], ...RR.filter((p) => p[0] < 1596.6)];
 const LOR = [[1627.6, 716.2], [1627.9, 720.6], [1629.6, 725.8], [1632.6, 730.6], [1636.0, 735.6], [1639.0, 740.0]];   // Loring: away south, then east
 const ESC = (road, t0, v = 2.0, join = "west", fade = "west") => ({ road, t0, v, v2: v, join, fade });
 

@@ -10,8 +10,9 @@ rp() { (cd $R && ./rp.sh "$1"); }
 ctl() { (cd $R && ./ctl.sh "$@"); }
 OWN=0
 if [ -z "${POD:-}" ]; then
-  for G in "${GPU:-NVIDIA RTX A5000}" "NVIDIA RTX A4500" "NVIDIA RTX A4000" "NVIDIA GeForce RTX 3090" "NVIDIA RTX 4000 Ada Generation" "NVIDIA GeForce RTX 4090" "NVIDIA RTX A6000"; do
-    for C in COMMUNITY SECURE; do
+  # budget (owner <= $2): only cards <= ~$0.30/h (A6000 / 4090 / SECURE 3090 were $0.5-0.7/h)
+  for GC in "${GPU:-NVIDIA RTX A5000}:COMMUNITY" "NVIDIA RTX A4500:COMMUNITY" "NVIDIA RTX A4000:COMMUNITY" "NVIDIA GeForce RTX 3090:COMMUNITY" "NVIDIA RTX 4000 Ada Generation:COMMUNITY" "NVIDIA RTX A5000:SECURE" "NVIDIA RTX A4000:SECURE"; do
+    G=${GC%:*}; C=${GC##*:}; for _once in 1; do
       python3 $R/deploy.py "$G" $C $CTL_TOKEN_FILE 0.8.226 | sed 's/ gpus { id }//' > $W/m.gql
       rp "$(cat $W/m.gql)" > $W/deploy.json; POD=$(python3 -c "import json;d=json.load(open('$W/deploy.json'));print(((d.get('data') or {}).get('podFindAndDeployOnDemand') or {}).get('id',''))")
       echo "deploy $G $C -> pod '$POD'"; rp 'query { myself { pods { id costPerHr } } }'; echo

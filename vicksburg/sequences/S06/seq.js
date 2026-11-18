@@ -40,7 +40,7 @@ const units0 = [
   // McPherson (XVII) at Hankinson's Ferry -> Utica road -> toward Raymond
   { region: W, side: U, type: "inf", n: 3, face: "north", keys: [[0, HF[0] + 8, HF[1] + 12], [T.army + 0.4, HF[0] + 8, HF[1] + 12], [60.4, 1496, 905], [T.turned + 0.6, 1496, 905], [79.6, 1684, 792]] },
   // Sherman (XV) comes over from Hard Times at Grand Gulf, up the one road, then inland behind
-  { region: W, side: U, type: "inf", n: 2, face: "east", t0: T.sherman, keys: [[T.sherman, 1226, 930], [36.0, GG[0] + 2, GG[1] + 6], ...VX.march(VX.sub(R8, 6, 46), 36.4, 5.2).map((k) => [k[0], k[1], k[2] + 6, "lin"]),
+  { region: W, side: U, type: "inf", n: 2, face: "east", t0: 37.4, keys: [[0, GG[0] + 2, GG[1] + 6], [37.6, GG[0] + 2, GG[1] + 6], ...VX.march(VX.sub(R8, 6, 46), 37.8, 6.0).map((k) => [k[0], k[1], k[2] + 6, "lin"]),
     [60.8, 1410, 925], [T.turned + 0.9, 1410, 925], [80.2, 1626, 808]] },
   // Pemberton: Vicksburg + the Big Black (appear on "enemy"); the Big Black mass edges toward Edwards for the stakes
   { region: W, side: R, type: "inf", n: 3, face: "south", t0: T.enemy, keys: [[0, VB[0] + 24, VB[1] + 24], [83.0, VB[0] + 24, VB[1] + 24], [86.0, VB[0] + 40, VB[1] + 32]] },
@@ -57,7 +57,7 @@ const arrows = [
   // Banks's target: Port Hudson, far down the river
   { region: W, color: "#8FA6CF", width: 0.24, pts: MISS, t0: T.portHudson + 0.05, dur: 1.6, t1: T.tenth },
   // Sherman crosses at Grand Gulf
-  { region: W, side: U, width: 0.3, pts: [[1222, 922], [1236, 936], [GG[0] - 4, GG[1] - 2]], t0: T.sherman + 0.2, dur: 1.2, t1: 39.0 },
+  { region: W, side: U, width: 0.22, pts: [[1210, 906], [1220, 914], [1229, 922]], t0: T.sherman + 0.2, dur: 1.0, t1: 38.6 },
   // the ghost arrow: what Pemberton expected (north, straight at Vicksburg)
   { region: W, color: "#B7C4DC", width: 0.4, pts: [[1398, 872], [1400, 830], [1402, 786], [1404, 744], [VB[0] + 22, VB[1] + 42]], t0: T.north - 0.2, dur: 1.8, t1: T.but + 0.5 },
   // the real arrow: north-east, toward the railroad and Jackson
@@ -105,7 +105,7 @@ window.SEQ = {
     { t: 18.6, region: W, at: [1336, 928], dist: 282, tilt: 46, yaw: -2, fov: 30 },
     { t: 22.6, region: W, at: [1428, 830], dist: 350, tilt: 45, yaw: 0, fov: 30 },
     { t: 32.6, region: W, at: [1434, 826], dist: 342, tilt: 45, yaw: 1, fov: 30 },
-    { t: 36.2, region: W, at: [1296, 942], dist: 232, tilt: 48, yaw: -2, fov: 30 },
+    { t: 36.2, region: W, at: [1282, 944], dist: 232, tilt: 48, yaw: -2, fov: 30 },
     { t: 43.2, region: W, at: [1312, 944], dist: 214, tilt: 49, yaw: 0, fov: 30 },
     { t: 47.4, region: W, at: [1442, 904], dist: 252, tilt: 48, yaw: 1, fov: 30 },
     { t: 56.2, region: W, at: [1474, 888], dist: 222, tilt: 49, yaw: 3, fov: 30 },
@@ -124,6 +124,8 @@ window.SEQ = {
       bounds: [1150, 560, 2090, 1090] },
   },
   units, arrows,
+  // Sherman's men come over the Mississippi from Hard Times by steamer (no box ever crosses water)
+  boats: [{ region: W, kind: "steamer", n: 2, path: [[1236.5, 930], [1240.5, 938], [1245, 945], [GG[0] - 6, GG[1] - 2]], speed: 3.6, spacing: 5, size: 2.2, t0: 34.4, t1: 38.4, lamp: false }],
   banners: [
     { general: "grant", region: W, keys: [[0, GG[0] + 22, GG[1] - 18], [T.army, GG[0] + 22, GG[1] - 18], [60.0, 1470, 890], [T.turned + 0.6, 1470, 890], [79.6, 1640, 792]], t0: T.grant0 + 0.1, t1: D + 1 },
     { general: "pemberton", region: W, keys: [[0, VB[0] + 10, VB[1] + 6]], t0: T.pem + 0.1, t1: D + 1 },
