@@ -21,17 +21,19 @@ const res = await pg.evaluate((t0, t1, reg) => { const T3 = window.__vx.TRO[reg]
   for (let t = t0; t <= t1 + 1e-6; t += 0.1) { T3.update(t, 0); const L = T3.last.filter((q) => q.op > 0.05), now = new Map(L.map((q) => [q.k, q]));
     for (const [k, q] of now) { const p = P1.get(k), pp = P2.get(k), key = U[q.u].side + q.u + (q.art ? "art" : "") + ":" + (U[q.u].keys[0].slice(1).map((v) => v.toFixed(0)).join(","));
       const o = out[key] = out[key] || { slide: 0, slideT: 0, slideFrames: 0, pop: 0, turn: 0, turnT: 0, vmax: 0, vmaxT: 0, amax: 0, amaxT: 0, shape: 0, w0: q.w, d0: q.d, frames: 0 };
-      o.shape = Math.max(o.shape, Math.abs(q.w - o.w0) / o.w0, Math.abs(q.d - o.d0) / o.d0);
-      if (!p) continue; const dx = q.x - p.x, dy = q.y - p.y, v = Math.hypot(dx, dy) / 0.1; o.frames++;
+      if (q.f <= 0.02) o.shape = Math.max(o.shape, Math.abs(q.w - o.w0) / o.w0, Math.abs(q.d - o.d0) / o.d0);   // line shape outside re-forming
+      if (!p) continue; if ((q.f > 0.02 && q.f < 0.98) || (p.f > 0.02 && p.f < 0.98)) { P2.delete(k); continue; }   // re-forming: the men walk to new places, no block motion to judge
+      const dx = q.x - p.x, dy = q.y - p.y, v = Math.hypot(dx, dy) / 0.1; o.frames++;
       if (v > o.vmax) { o.vmax = v; o.vmaxT = t; } if (Math.hypot(dx, dy) > 0.5) o.pop++;
       if (pp) { const a = Math.hypot(dx - (p.x - pp.x), dy - (p.y - pp.y)) / 0.01; if (a > o.amax) { o.amax = a; o.amaxT = t; } }
       // sliding = motion across BOTH the plate's long axis and the men's facing (a flank march moves along the plate's long side)
       // v6 (owner: no sideways movement): angle between the block's velocity and its men's facing; FAIL above 20 deg while moving
-      if (v > 0.2) { const m0 = [dx / Math.hypot(dx, dy), dy / Math.hypot(dx, dy)], fa = Math.acos(Math.max(-1, Math.min(1, m0[0] * q.sx + m0[1] * q.sy))) * 180 / Math.PI;
+      if (v > 0.2) { const m0 = [dx / Math.hypot(dx, dy), dy / Math.hypot(dx, dy)], fa = Math.acos(Math.max(-1, Math.min(1, m0[0] * q.hx + m0[1] * q.hy))) * 180 / Math.PI;   // v7: vs the FORMATION's front normal
+        // (screen-space: an aligned motion stays aligned under the projection; foreshortening only matters for non-zero angles, so the world angle is the test)
         o.fmax = Math.max(o.fmax || 0, fa); if (fa > 20) { o.ffail = (o.ffail || 0) + 1; o.ffT = o.ffT ?? +t.toFixed(1); } }
       if (v > 0.15) { const m = [dx / Math.hypot(dx, dy), dy / Math.hypot(dx, dy)], acrossMen = Math.abs(m[0] * q.sy - m[1] * q.sx), alongMen = m[0] * q.sx + m[1] * q.sy;
         const sl = alongMen > -0.95 && acrossMen > 0.5 ? v * acrossMen : 0; if (sl > 0) o.slideFrames++; if (sl > o.slide) { o.slide = sl; o.slideT = t; } }
-      const da = Math.abs(Math.atan2(q.hx * p.hy - q.hy * p.hx, q.hx * p.hx + q.hy * p.hy)) * 180 / Math.PI; if (da > o.turn) { o.turn = da; o.turnT = t; } }
+      const da = Math.abs(Math.atan2(q.hx * p.hy - q.hy * p.hx, q.hx * p.hx + q.hy * p.hy)) * 180 / Math.PI; if ((q.f <= 0.02 || q.f >= 0.98) && (p.f <= 0.02 || p.f >= 0.98) && da > o.turn) { o.turn = da; o.turnT = t; } }   // re-forming (the men walk) is not a block turn
     // overlaps between any two blocks (other units, or the same unit), ignoring captured-in-place pairs
     for (let a = 0; a < L.length; a++) for (let b = a + 1; b < L.length; b++) { const d = pen(L[a], L[b]); if (d > 0.02) OV.push([+t.toFixed(1), L[a].u, L[b].u, +d.toFixed(2)]); }
     // column spacing: consecutive blocks of a unit in column (c > 0.9): centre distance
@@ -42,7 +44,7 @@ const res = await pg.evaluate((t0, t1, reg) => { const T3 = window.__vx.TRO[reg]
   const ovU = {}; for (const [t, a, b, d] of OV) { const key = a === b ? `unit ${a} (self)` : `units ${a} x ${b}`; const o = ovU[key] = ovU[key] || { n: 0, max: 0, t0: t, t1: t }; o.n++; o.max = Math.max(o.max, d); o.t1 = t; }
   const spc = {}; for (const uu in SP) { const a = SP[uu], m = a.reduce((x, y) => x + y, 0) / a.length, sd = Math.sqrt(a.reduce((x, y) => x + (y - m) ** 2, 0) / a.length); spc[uu] = `mean ${m.toFixed(2)} sd ${sd.toFixed(3)} (${(sd / m * 100).toFixed(1)} %) n ${a.length}`; }
   return { out, ovU, spc }; }, +T0, +T1, REG);
-for (const [k, o] of Object.entries(res.out)) if (Array.isArray(o)) console.log(k, JSON.stringify(o)); else if (o.vmax > 0.05) console.log(k.padEnd(24), `vmax ${o.vmax.toFixed(2)} u/s (${(o.vmax / 38 * 100).toFixed(1)} %fw/s) @${o.vmaxT.toFixed(1)} | amax ${o.amax.toFixed(1)} @${o.amaxT.toFixed(1)} | slide ${o.slide.toFixed(2)} @${o.slideT.toFixed(1)} (${o.slideFrames} fr) | turn ${o.turn.toFixed(1)} deg/0.1s @${o.turnT.toFixed(1)} | shape ${(o.shape * 100).toFixed(1)} % | pops ${o.pop} | facing max ${(o.fmax || 0).toFixed(0)} deg, ${o.ffail || 0} fr > 20${o.ffail ? ' FAIL from ' + o.ffT : ''}`);
+for (const [k, o] of Object.entries(res.out)) if (Array.isArray(o)) console.log(k, JSON.stringify(o)); else if (o.vmax > 0.05) console.log(k.padEnd(24), `vmax ${o.vmax.toFixed(2)} u/s (${(o.vmax / 38 * 100).toFixed(1)} %fw/s) @${o.vmaxT.toFixed(1)} | amax ${o.amax.toFixed(1)} @${o.amaxT.toFixed(1)} | slide ${o.slide.toFixed(2)} @${o.slideT.toFixed(1)} (${o.slideFrames} fr) | turn ${o.turn.toFixed(1)} deg/0.1s @${o.turnT.toFixed(1)} | shape ${(o.shape * 100).toFixed(1)} % | pops ${o.pop} | front-vs-velocity max ${(o.fmax || 0).toFixed(0)} deg, ${o.ffail || 0} fr > 20${o.ffail ? ' FAIL from ' + o.ffT : ''} | turn ${(o.turn * 10).toFixed(0)} deg/s${o.turn * 10 > 45 ? ' FAIL' : ''}`);
 console.log("OVERLAPS (penetration > 0.02 units):"); for (const [k, o] of Object.entries(res.ovU)) console.log("  ", k.padEnd(18), `${o.n} frame-pairs, max ${o.max} units, ${o.t0}-${o.t1} s`);
 console.log("COLUMN SPACING:"); for (const [k, v] of Object.entries(res.spc)) console.log("   unit", k, v);
 await br.close(); srv.close();

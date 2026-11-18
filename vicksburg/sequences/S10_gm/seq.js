@@ -17,7 +17,7 @@ const SLOWX = BR.x - 0.8;   // the west end of the bridge
 const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.6, slowX: SLOWX, join: "west", from });
 // round 2 (owner rule: never cross a bridge after its fire starts): the flanks and the reserve start for the bridge as the line falls
 // (24.8-25.6) and the last red box is past the west end by ~31.0 (tools: esc_sim); the fire starts at FIRE_T = 31.3 ("set them on fire")
-const ESC_T = [20.6, 20.8, 20.0], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
+const ESC_T = [19.4, 19.6, 18.8], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
 const TK = 21.2;   // Lawler reaches the works (north first)
 const SWF = 3 * Math.PI / 4;
 
@@ -52,7 +52,7 @@ PONT.forEach((_, k) => { const { b, ex, ey } = axis(k), P = (d) => [b[0] + ex * 
 const arrows = [
   { side: "u", pts: [[1528.4, 678.9], [1525.4, 679.6], [1522.2, 680.8], [1519.0, 682.2]], t0: T.charged, dur: 2.6, t1: T.ran },
   { side: "u", pts: [[1527.2, 687.0], [1524.8, 687.0], [1522.4, 686.8]], t0: 19.8, dur: 2.2, t1: T.ran },
-  { side: "r", pts: [[1517.4, 684.4], [1514.4, 684.0], [1511.2, 684.3], [1507.4, 683.0]], t0: T.ran + 0.1, dur: 2.0, t1: FIRE_T - 0.3 },   // gone before the fire
+  { side: "r", color: "#a8392b", width: 0.13, pts: [[1517.4, 684.4], [1514.4, 684.0], [1511.2, 684.3], [1507.4, 683.0]], t0: T.ran + 0.1, dur: 2.0, t1: FIRE_T - 0.3 },   // (GM test v7) narrow, unit red   // gone before the fire
 ];
 for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.push({ side: "u", pts: [[b[0] + ex * 4.4, b[1] + ey * 4.4], [b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0] + ex * 0.75, b[1] + ey * 0.75]], t0: TB[k] + 0.8, dur: 1.0, t1: T.D + 1, width: 0.2 }); }
 // round 3 (critic A: the upper arrow crossed the river where its bridge was hidden under the head): each arrow runs up the east-bank
@@ -89,8 +89,9 @@ window.SEQ = {
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
     { t: 20.0, region: BB, at: [1514.8, 684.0], dist: 21.0, tilt: 52, yaw: -8, fov: 30 },   // (GM test v6) closer on the road + bridge from the first retreat step, held still until the column is across
-    { t: 25.6, region: BB, at: [1514.6, 684.0], dist: 20.6, tilt: 52, yaw: -8, fov: 30 },
-    { t: 32.6, region: BB, at: [1514.1, 684.0], dist: 19.3, tilt: 52, yaw: -8, fov: 30 },
+    { t: 24.0, region: BB, at: [1514.6, 684.0], dist: 20.8, tilt: 52, yaw: -8, fov: 30 },
+    { t: 25.8, region: BB, at: [1512.4, 684.0], dist: 13.0, tilt: 50, yaw: -8, fov: 30 },   // (GM test v7) close on the bridge so the men streaming across read, held still
+    { t: 32.6, region: BB, at: [1512.3, 684.0], dist: 12.8, tilt: 50, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11

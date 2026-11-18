@@ -53,7 +53,7 @@ export function createTroops3D(o) {
   const NF = 72, INF = gridLayout(12, 6), CAV = gridLayout(12, 2);
   const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 15 | 0, f = (k % 15 + 0.5) / 15 - 0.5, e = 0.5 - 0.06;
     P.push(side === 0 ? [f, e] : side === 1 ? [e, -f] : side === 2 ? [-f, -e] : [-e, f]); } return P; })();
-  const VPK = (o.vmax ?? 1.0) * ts, VESC = (o.vesc ?? 1.25) * ts, RAMP = 1.0;   // peak march speed, retreat speed, ease seconds
+  const RF = o.reform ?? 1.4, VPK = (o.vmax ?? 1.0) * ts, VESC = (o.vesc ?? 1.25) * ts, RAMP = 1.0;   // peak march speed, retreat speed, ease seconds
   // trapezoid progress (0..1) at normalised time x, ramp fraction r at each end (constant cruise between: no darting)
   const trap = (x, r) => { x = clamp(x); if (r <= 1e-4) return x; const vm = 1 / (1 - r); if (x < r) return 0.5 * vm * x * x / r; if (x > 1 - r) { const y = 1 - x; return 1 - 0.5 * vm * y * y / r; } return 0.5 * vm * r + vm * (x - r); };
   const ang = (x, y) => Math.atan2(y, x), uv = (a) => [Math.cos(a), Math.sin(a)];
@@ -76,15 +76,15 @@ export function createTroops3D(o) {
     for (let m = 0; m < moves.length; m++) { const M = moves[m], L = M.s1 - M.s0, prevEnd = m ? moves[m - 1].t1 : -1e9;
       const dir = (() => { const a = P[M.i0 - 1], b = P[M.i1]; const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; })();
       const cf = dir[0] * Math.cos(fa) + dir[1] * Math.sin(fa);
-      M.col = !art && (u.march || M.lin || Math.abs(cf) < 0.64) && u.column !== false && L > 0.5 * bw;   // sideways / oblique / road = by the flank
+      M.col = !art && u.column !== false && (u.march || M.lin || cf < 0.94 || L > 3.0);   // v7: only a short straight advance stays in line; everything else = march column
       // calm pace: leave earlier from the preceding hold so the cruise speed stays <= VPK (arrival time unchanged)
       if (L / Math.max(1e-3, M.t1 - M.t0 - RAMP) > VPK && !(o.keepTimes || u.keepTimes)) M.t0 = Math.min(M.t0, Math.max(prevEnd + 0.3, M.t0 - 5, M.t1 - (L / VPK + RAMP)));
       M.r = Math.min(0.45, RAMP / Math.max(1e-3, M.t1 - M.t0)); M.dir = dir; }
     // a move that follows a column move within 1.6 s stays in column (no deploy-on-the-move), deploying once at the real halt
     const tailEst = clamp((nb - 1) * (bw + gapB) / VPK + 0.6, 1.4, 4);
-    for (let m = 1; m < moves.length; m++) if (moves[m - 1].col && !moves[m].col && moves[m].t0 - moves[m - 1].t1 < tailEst + 0.2 && u.column !== false && !art) moves[m].col = true;
+    for (let m = 1; m < moves.length; m++) if (moves[m - 1].col && !moves[m].col && moves[m].t0 - moves[m - 1].t1 < 2 * RF + 0.4 && u.column !== false && !art) moves[m].col = true;
     // column runs: consecutive column moves (short holds between them stay in column)
-    const runs = []; for (const M of moves) { if (!M.col) continue; const R = runs[runs.length - 1]; if (R && R.mLast.t1 > M.t0 - 1.2 && R.mLast === moves[moves.indexOf(M) - 1]) { R.mLast = M; R.t1 = M.t1; R.s1 = M.s1; R.i1 = M.i1; continue; }
+    const runs = []; for (const M of moves) { if (!M.col) continue; const R = runs[runs.length - 1]; if (R && R.mLast.t1 > M.t0 - (2 * RF + 0.4) && R.mLast === moves[moves.indexOf(M) - 1]) { R.mLast = M; R.t1 = M.t1; R.s1 = M.s1; R.i1 = M.i1; continue; }
       runs.push({ mFirst: M, mLast: M, t0: M.t0, t1: M.t1, s0: M.s0, s1: M.s1, i0: M.i0, i1: M.i1 }); }
     for (const R of runs) { const d0 = R.mFirst.dir, L0 = [-Math.sin(fa), Math.cos(fa)];
       const ord = slots.map((s, i) => ({ i, k: -s * (L0[0] * d0[0] + L0[1] * d0[1]) + i * 1e-3 })).sort((a, b) => a.k - b.k); R.rank = []; ord.forEach((q, r) => { R.rank[q.i] = r; }); R.head = ord[0].i;
@@ -95,7 +95,15 @@ export function createTroops3D(o) {
       let Q = P.slice(R.i0 - 1, R.i1 + 1); for (let it = 0; it < 4 && Q.length > 2; it++) { const N = [Q[0]]; for (let k = 0; k < Q.length - 1; k++) { const a = Q[k], b = Q[k + 1];
         N.push([0.75 * a[0] + 0.25 * b[0], 0.75 * a[1] + 0.25 * b[1]], [0.25 * a[0] + 0.75 * b[0], 0.25 * a[1] + 0.75 * b[1]]); } N.push(Q[Q.length - 1]); Q = N; }
       R.sm = Q; R.smL = 0; for (let k = 1; k < Q.length; k++) R.smL += Math.hypot(Q[k][0] - Q[k - 1][0], Q[k][1] - Q[k - 1][1]); }
-    UD.set(u, { art, nb, span, bw, bd, slots, P, cum, moves, runs, L: cum[cum.length - 1], spacing: bw + gapB });
+    const csp = bw * 0.96 / 12, cw = 4 * csp * 1.05, cl = 18 * csp * 1.25;   // v7: GM march column, 4 files x 18 ranks (same 72 men)
+    // v7: blocks whose march lanes coincide (a flank march) cannot re-form in place side by side: the ones behind wait until the one
+    // ahead has walked a column length + gap away (they re-form and step off in order, nose to tail)
+    for (const R of runs) { const d0 = R.mFirst.dir, L0 = [-Math.sin(fa), Math.cos(fa)], vR = Math.max(0.3, (R.s1 - R.s0) / Math.max(0.5, R.t1 - R.t0));
+      const B = slots.map((s0, i) => ({ i, a: s0 * (L0[0] * d0[0] + L0[1] * d0[1]), p: s0 * (-L0[0] * d0[1] + L0[1] * d0[0]), ex: 0 })).sort((x, y) => y.a - x.a);
+      for (let k = 1; k < B.length; k++) for (let m = 0; m < k; m++) { if (Math.abs(B[k].p - B[m].p) > cw + gapB) continue; const need = cl + gapB - (B[m].a - B[k].a);
+        if (need > 0) B[k].ex = Math.max(B[k].ex, B[m].ex + RF + 0.3 + need / vR + 1.4); }
+      R.ex = []; for (const q of B) R.ex[q.i] = q.ex; }
+    UD.set(u, { art, nb, span, bw, bd, slots, P, cum, moves, runs, L: cum[cum.length - 1], spacing: bw + gapB, cw, cl, cspacing: cl + gapB });
     for (let i = 0; i < nb; i++) blocks.push({ u, i });
   }
   const infBlocks = blocks.filter((b) => b.u.type !== "art"), artBlocks = blocks.filter((b) => b.u.type === "art");
@@ -132,21 +140,22 @@ export function createTroops3D(o) {
       let path = [...app]; for (const p of road.slice(j + 1)) { const q = path[path.length - 1], d = Math.hypot(p[0] - q[0], p[1] - q[1]), n = Math.max(1, Math.ceil(d / 0.25)); for (let k = 1; k <= n; k++) path.push([q[0] + (p[0] - q[0]) * k / n, q[1] + (p[1] - q[1]) * k / n]); }
       for (const B of BRIDGES) { const ax = [Math.cos(B.angle), Math.sin(B.angle)], hl = B.len / 2;   // v5: on a bridge the column walks the deck's centreline
         let arc = 0; path = path.map((p, k0) => { if (k0) arc += Math.hypot(p[0] - path[k0 - 1][0], p[1] - path[k0 - 1][1]);   // (never moves the start: the block's own slot)
-          const dx = p[0] - B.x, dy = p[1] - B.z, al = dx * ax[0] + dy * ax[1], lt = -dx * ax[1] + dy * ax[0]; if (Math.abs(lt) > 1.4 || Math.abs(al) > hl + 2.2) return p;
-          const k = (1 - sstep(hl + 0.2, hl + 2.2, Math.abs(al))) * sstep(0.8, 2.2, arc); return [p[0] + ax[1] * lt * k, p[1] - ax[0] * lt * k]; }); }
+          const dx = p[0] - B.x, dy = p[1] - B.z, al = dx * ax[0] + dy * ax[1], lt = -dx * ax[1] + dy * ax[0]; if (Math.abs(lt) > 1.6 || Math.abs(al) > hl + 4.2) return p;
+          const k = (1 - sstep(hl + 0.1, hl + 4.2, Math.abs(al))) * sstep(0.8, 2.2, arc); /* v7: a long blend (calm turn onto the deck) */ return [p[0] + ax[1] * lt * k, p[1] - ax[0] * lt * k]; }); }
       for (let it = 0; it < 3; it++) { const N = [path[0]]; for (let k = 0; k < path.length - 1; k++) { const p0 = path[k], p1 = path[k + 1];
         N.push([0.75 * p0[0] + 0.25 * p1[0], 0.75 * p0[1] + 0.25 * p1[1]], [0.25 * p0[0] + 0.75 * p1[0], 0.25 * p0[1] + 0.75 * p1[1]]); } N.push(path[path.length - 1]); path = N; }
       { // v5: resample every 0.05 u and smooth (moving average +-0.9 u, start pinned) so bends near the bridge are gentle curves, not kinks
         const L = pathLen(path), R = []; for (let w = 0; w <= L; w += 0.05) { const g = along(path, w); R.push([g[0], g[1]]); } R.push(path[path.length - 1]);
-        for (let pass = 0; pass < 3; pass++) { const Hn = 26, S2 = R.map((p, k) => { if (k < 2) return p; const h = Math.min(Hn, k); let x = 0, y = 0, n = 0; for (let q = k - h; q <= Math.min(R.length - 1, k + h); q++) { x += R[q][0]; y += R[q][1]; n++; } return [x / n, y / n]; });
+        for (let pass = 0; pass < 3; pass++) { const Hn = 60, S2 = R.map((p, k) => { if (k < 2) return p; const h = Math.min(Hn, k); let x = 0, y = 0, n = 0; for (let q = k - h; q <= Math.min(R.length - 1, k + h); q++) { x += R[q][0]; y += R[q][1]; n++; } return [x / n, y / n]; });
           for (let k = 0; k < R.length; k++) R[k] = S2[k]; } path = R; }
       let kj = 0, dj = 1e9; path.forEach((p, k) => { const d = Math.hypot(p[0] - J[0], p[1] - J[1]); if (d < dj) { dj = d; kj = k; } });
       const a = pathLen(path.slice(0, kj + 1));
       // the path's tangent angle, UNWRAPPED along its length (the plate turns exactly as the path bends: no flips, no snaps)
-      const angs = []; let prevA = null; for (let w = 0; w <= pathLen(path) + 40; w += 0.1) { const g = along(path, w), raw = Math.atan2(g[3], g[2]); prevA = prevA === null ? raw : prevA + angDiff(prevA, raw); angs.push(prevA); }
+      const angs = []; let prevA = null; for (let w = 0; w <= pathLen(path) + 40; w += 0.1) { const g0 = along(path, Math.max(0, w - 0.25)), g1 = along(path, w + 0.25), raw = Math.atan2(g1[1] - g0[1], g1[0] - g0[0]); prevA = prevA === null ? raw : prevA + angDiff(prevA, raw); angs.push(prevA); }   // v7: tangent over +-0.35 u (no quantisation jitter)
+      const e2w = (ev) => ev;
       const jn = road[Math.min(j + 1, road.length - 1)], dd = ang(jn[0] - road[j][0], jn[1] - road[j][1]) || 0;
       const thr = angs[Math.min(angs.length - 1, Math.round((a + 1) / 0.1))] - angs[0], poff = Math.abs(thr + Math.PI / 2) < Math.abs(thr - Math.PI / 2) ? Math.PI / 2 : -Math.PI / 2;
-      const q = { u, i, path, a, angs, poff, rj: rc[j], t0: E.t0, len: D.bw, gap: D.spacing - D.bw, off: Math.abs(angDiff(fa, dd + Math.PI / 2)) <= Math.abs(angDiff(fa, dd - Math.PI / 2)) ? Math.PI / 2 : -Math.PI / 2 };
+      const q = { u, i, path, a, angs, poff, e2w, rj: rc[j], t0: E.t0, len: D.cl, gap: D.spacing - D.bw, off: Math.abs(angDiff(fa, dd + Math.PI / 2)) <= Math.abs(angDiff(fa, dd - Math.PI / 2)) ? Math.PI / 2 : -Math.PI / 2 };
       (QUEUES.get(key) || QUEUES.set(key, []).get(key)).push(q); ESCB.set(`${units.indexOf(u)}:${i}`, q); } }
   for (const Q of QUEUES.values()) { Q.sort((p, q) => p.t0 - q.t0 || q.rj - p.rj || p.i - q.i); }   // first to leave, then the one further down the road
   const ramp = (tau, V) => tau <= 0 ? 0 : tau < RAMP ? V * tau * tau / (2 * RAMP) : V * (tau - RAMP / 2);
@@ -155,7 +164,7 @@ export function createTroops3D(o) {
   // is one spacing further down the road; all walk the same ramp + cruise, so the gap only ever opens (no catching up, no braking)
   const invRamp = (d, V) => d <= 0 ? 0 : d < V * RAMP / 2 ? Math.sqrt(2 * d * RAMP / V) : d / V + RAMP / 2;
   for (const Q of QUEUES.values()) { const V = Math.min(...Q.map((q) => Math.min(VESC, q.u.esc.v ?? VESC))); let prev = null;
-    for (const q of Q) { q.V = V; q.T = q.t0 + 0.6;   // the men turn about first
+    for (const q of Q) { q.V = V; q.T = q.t0 + 0.5 + RF;   // v7: the men turn about and re-form into a march column first
       if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len) - (prev.rj - prev.a); q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.7); }   // v4: a clear gap + front-to-back stagger
       prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
@@ -163,36 +172,36 @@ export function createTroops3D(o) {
   // block base state at t: position, plate axis angle (forward of the plate), soldiers' facing angle, column share, escape share
   let QC = { t: NaN, m: null };
   function base(u, i, t) {
-    const D = UD.get(u), s = sAt(u, t), lag = i ? 0.25 + 0.35 * hash(units.indexOf(u) * 7 + i, 5) : 0, c0 = ptAt(u, sAt(u, t - lag)), fa = u.face, F = uv(fa), L0 = [-F[1], F[0]];   // v5: blocks of a line do not move in lockstep
-    let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], pa = fa, sa = fa, c = 0, e = 0, EQ = null, EW = 0;
-    // falling back in line: the men turn about while the line walks backwards (the plate keeps facing the enemy)
-    // line moves: every block turns to walk straight along the move (forward, or backward with the men turned about) - an oblique advance
-    // in echelon, never a crab-walk - and turns back to its front after the halt
-    for (const M of D.moves) { const tl = t - lag; if (M.col || tl < M.t0 - 1.1 || tl > M.t1 + 1.1) continue; const back = M.dir[0] * F[0] + M.dir[1] * F[1] < -0.3, k = sstep(M.t0 - 1.0, M.t0 - 0.05, tl) * (1 - sstep(M.t1 + 0.05, M.t1 + 1.0, tl));
-      const md = ang(M.dir[0], M.dir[1]), ta = back ? md + Math.PI : md; pa = fa + angDiff(fa, ta) * k; sa = back ? pa + Math.PI * k : pa; }
-    for (const R of D.runs) { const turn = 0.9, tail = R.tail; if (t < R.t0 - turn || t > R.t1 + tail + 1.4) continue;
-      const ho = D.slots[R.head], hx = L0[0] * ho, hy = L0[1] * ho, a = ptAt(u, R.s0), S0 = [a[0] + L0[0] * D.slots[i], a[1] + L0[1] * D.slots[i]], P0 = [a[0] + hx, a[1] + hy];
-      const Lc = Math.hypot(S0[0] - P0[0], S0[1] - P0[1]), g = Math.min(s, R.s1) - R.s0 - R.rank[i] * D.spacing;   // parked at the run's end, never extrapolated
-      let q, tg;
-      if (g >= 0) { const p = runPt(u, R, R.s0 + g); q = [p[0] + hx, p[1] + hy]; tg = runTan(u, R, R.s0 + g, 0.4 * D.bw); }
-      else { const f = Lc > 1e-4 ? clamp((g + Lc) / Lc) : 1; q = [lerp(S0[0], P0[0], f), lerp(S0[1], P0[1], f)]; tg = Lc > 1e-4 ? [(P0[0] - S0[0]) / Lc, (P0[1] - S0[1]) / Lc] : R.mFirst.dir; }
-      // the men face the march and the plate wheels to lie along it BEFORE anyone moves (turn), back to the line after the halt (deploy)
-      // deploy at the halt in three clear steps: every block wheels in place to the line's front (blocks nose to tail have room to
-      // turn), the men face where their block must go and it walks there (along its long side), then the men face the front
-      const kOn = sstep(R.t0 - turn, R.t0, t), ud = clamp((t - R.t1 - 0.1) / (tail + 1.2)), w1 = sstep(0, 0.22, ud), mv = sstep(0.28, 0.8, ud), f1 = sstep(0.86, 1, ud);
-      const ta = ang(tg[0], tg[1]), dv = [x - q[0], y - q[1]], dl = Math.hypot(dv[0], dv[1]), da = dl > 0.15 * D.bw ? ang(dv[0], dv[1]) : fa;
-      const paCol = fa + angDiff(fa, ta + R.off) * kOn, saCol = fa + angDiff(fa, ta) * kOn;
-      pa = paCol + angDiff(paCol, fa) * w1;
-      const saMid = saCol + angDiff(saCol, da) * w1; sa = saMid + angDiff(saMid, fa) * f1;
-      x = lerp(q[0], x, mv); y = lerp(q[1], y, mv); c = Math.max(c, kOn * (1 - w1)); }
-    if (u.esc && i >= Math.round(u.esc.from / u._bpb) && t > u.esc.t0 - 1) { const q = ESCB.get(`${units.indexOf(u)}:${i}`);
-      if (q) { if (QC.t !== t) QC = { t, m: queueAt(t) }; const rho = QC.m.get(q), w = rho - (q.rj - q.a);   // distance walked along its own path
-        if (w > 0) { EQ = q; EW = w; const [ex, ey, dx, dy] = along(q.path, w), back = w < D.bw * 0.7;
-          x = ex; y = ey; const ta = ang(dx, dy), turnK = sstep(D.bw * 0.5, D.bw * 1.4, w), fb = fa + Math.PI;
-          const th = q.angs[Math.min(q.angs.length - 1, Math.round(w / 0.1))] - q.angs[0]; sa = fb + th; pa = fa + th + q.poff * turnK; e = 1; c = Math.max(c, turnK); }
-        else { sa = fa + Math.PI * sstep(0, 0.6, t - q.t0); } } }   // about to go: the men turn about
-    const ar = u.t0 > 1 && u.arrive !== false ? (o.arrive ?? 1.6) * ts * (1 - trap((t - u.t0) / 3.0, 0.4)) : 0;   // walks in while fading in
-    return { x: x - F[0] * ar, y: y - F[1] * ar, pa, sa, c, e, eq: EQ, ew: EW };
+    // v7 (owner: no sideways glide): a block moves only along its formation's FRONT normal. Short straight advances: the line turns
+    // (<= 20 deg) and walks forward. Everything else: the men RE-FORM in place into a narrow march column (4 x 18) facing the march
+    // (~1.4 s, plate fades through), the column walks head first along the unit's path (each block on its own parallel lane, offset by its
+    // line slot), then re-forms into line at its slot. Escapes: the men turn about, re-form into a column whose head moves off first.
+    const D = UD.get(u), lag = i ? 0.25 + 0.35 * hash(units.indexOf(u) * 7 + i, 5) : 0, tl = t - lag, fa = u.face, F = uv(fa), L0 = [-F[1], F[0]];
+    const c0 = ptAt(u, sAt(u, tl));
+    let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], lpa = fa, cpa = fa, f = 0, e = 0, EQ = null, EW = 0, ab = 0, inRun = false;
+    let lx = x, ly = y;
+    for (const M of D.moves) { if (M.col || tl < M.t0 - 1.1 || tl > M.t1 + 1.1) continue;   // short straight advance: turn (<= 20 deg) first, back after
+      const k = sstep(M.t0 - 1.0, M.t0 - 0.05, tl) * (1 - sstep(M.t1 + 0.05, M.t1 + 1.0, tl)); lpa = fa + angDiff(fa, ang(M.dir[0], M.dir[1])) * k; }
+    for (const R of D.runs) { const tl = t - lag - (R.ex ? R.ex[i] : 0); if (t - lag < R.t0 - RF - 0.1 || tl > R.t1 + RF + 0.1) continue;
+      // the column forms AHEAD of the line spot (its head steps off as the men file in) and ends with its head on the new spot, the
+      // tail closing up as it re-forms into line: the centre only ever moves forward (front first)
+      const fOn = sstep(R.t0 - RF, R.t0, tl), fOff = 1 - sstep(R.t1, R.t1 + RF, tl), Lr = R.s1 - R.s0, dl = Math.min((D.cl - D.bd) / 2, Lr / 2);
+      // the men file into a column whose head is ahead of the line spot (they walk there), it marches, and its head ends on the new spot
+      const sl = clamp(sAt(u, tl), R.s0, R.s1), sC = R.s0 + dl + (sl - R.s0) * (Lr - 2 * dl) / Math.max(1e-6, Lr), lp = runPt(u, R, sl <= R.s0 + 1e-6 ? R.s0 : R.s1);
+      const p = runPt(u, R, sC), tg = runTan(u, R, Math.min(Math.max(sC, R.s0 + 0.3), R.s1 - 0.3), 0.3);
+      lx = lp[0] + L0[0] * D.slots[i]; ly = lp[1] + L0[1] * D.slots[i]; x = p[0] + L0[0] * D.slots[i]; y = p[1] + L0[1] * D.slots[i]; cpa = ang(tg[0], tg[1]); inRun = true;
+      f = Math.max(f, fOn * fOff); }
+    if (u.esc && i >= Math.round(u.esc.from / u._bpb) && t > u.esc.t0 - 0.1) { const q = ESCB.get(`${units.indexOf(u)}:${i}`);
+      if (q) { if (QC.t !== t) QC = { t, m: queueAt(t) }; const rho = QC.m.get(q), w = q.e2w(rho - (q.rj - q.a));
+        ab = sstep(0, 0.5, t - q.t0);   // the men turn about
+        const fr = sstep(q.t0 + 0.3, q.t0 + 0.3 + RF, t), shift = D.cl / 2 - D.bd / 2;   // the men file into a column whose head is ahead (away from the enemy)
+        const w2 = Math.max(0, w) + shift, g = along(q.path, w2); lx = q.path[0][0]; ly = q.path[0][1]; x = g[0]; y = g[1]; inRun = true; { const fi = Math.min(q.angs.length - 1.001, w2 / 0.1), i0 = Math.floor(fi); cpa = lerp(q.angs[i0], q.angs[i0 + 1], fi - i0); }
+        f = Math.max(f, fr); e = fr; if (w > 0) { EQ = q; EW = w2; } } }
+    const ar = u.t0 > 1 && u.arrive !== false ? (o.arrive ?? 1.6) * ts * (1 - trap((t - u.t0) / 3.0, 0.4)) : 0;   // walks in (forward) while fading in
+    const pa = f < 0.5 ? lpa : cpa, sa = f < 0.5 ? lpa + Math.PI * ab : cpa, colC = inRun || e > 0 || f > 0;
+    if (!colC) { lx = x; ly = y; }
+    const ox = -F[0] * ar, oy = -F[1] * ar;
+    return { x: (f < 0.5 ? lx : x) + ox, y: (f < 0.5 ? ly : y) + oy, lx: lx + ox, ly: ly + oy, cx: x + ox, cy: y + oy, pa, sa, lpa, cpa, f, c: f, e, eq: EQ, ew: EW, ab };
   }
   const vecAvg = (list) => { let x = 0, y = 0; for (const [a, w] of list) { x += Math.cos(a) * w; y += Math.sin(a) * w; } return Math.atan2(y, x); };
 
@@ -267,7 +276,6 @@ export function createTroops3D(o) {
     let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0; const ST = [];
     for (const b of blocks) { const u = b.u, op0 = fade(u, t) * (1 - hide); if (op0 <= 0.001) continue;
       const D = UD.get(u), q = base(u, b.i, t), qa = base(u, b.i, t - 0.2), qb = base(u, b.i, t + 0.2);
-      q.pa = smooth(u, b.i, t, "pa"); q.sa = smooth(u, b.i, t, "sa");
       const vx = (qb.x - qa.x) / 0.4, vy = (qb.y - qa.y) / 0.4, spd = Math.hypot(vx, vy);
       let op = op0; if (q.e > 0 && u.esc.fade && o.proj && o.edgeFade) op *= o.edgeFade(u.esc.fade, o.proj(q.x, q.y), -10, 140);   // v4: fades out over ~1.5-2 s at walking pace, gone at the edge   // a long gradual fade at the frame edge
       if (op <= 0.001) continue;
@@ -275,23 +283,24 @@ export function createTroops3D(o) {
         : u.cap != null && b.i * u._bpb < u.capN ? sstep(u.cap, u.cap + 0.8, t) * (u.t1 < 1e8 ? 1 - sstep(u.t1 - 1.8, u.t1 - 0.9, t) : 1) : 0;
       ST.push({ b, u, D, ...q, vx, vy, spd, op, capd }); }
     for (const Q of ST) {
-      const { b, u, D, x: bx, y: by, pa, sa, c, e, spd, op, capd } = Q, i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31;
+      const { b, u, D, x: bx, y: by, pa, sa, c, e, spd, op, capd, f: fq, lpa, cpa, ab } = Q, i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31;
+      const colK = fq >= 0.5, pf = sstep(0, 1, Math.abs(1 - 2 * fq));   // v7: plate in the current formation's shape; it fades through the re-forming
       const fx = Math.cos(pa), fy = Math.sin(pa), px = -fy, py = fx, sfx = Math.cos(sa), sfy = Math.sin(sa);
-      const isArt = u.type === "art", isCav = u.type === "cav", P = pal(u), W = D.bw, Dp = D.bd;
+      const isArt = u.type === "art", isCav = u.type === "cav", P = pal(u), W = colK && !isArt ? D.cw : D.bw, Dp = colK && !isArt ? D.cl : D.bd, Wl = D.bw, Dl = D.bd;
       const hb = H(bx, by), sL = (H(bx + px * W * 0.5, by + py * W * 0.5) - H(bx - px * W * 0.5, by - py * W * 0.5)) / Math.max(W, 1e-3);
       const sF = (H(bx + fx * Dp * 0.5, by + fy * Dp * 0.5) - H(bx - fx * Dp * 0.5, by - fy * Dp * 0.5)) / Math.max(Dp, 1e-3);
       const mv = sstep(0.04 * ts, 0.3 * ts, spd);
       // v4 (critic: one consistent shadow direction): a soft CENTRED contact shadow (the real shadow map gives the sun's direction) + pale halo
       const wk = WM ? WM(bx, by) : 0, sink = wk * (S.woodSink ?? 0.55) * (W * 0.92 / 12) * 1.9, bk = onBridge(bx, by), st = Q.eq && !isArt ? bk : 0;   // v5: only the rear ranks sink (below)
       { const hs = hb + 0.012 * ts, sw = W * (isArt ? 0.5 : 1.0) + 0.12 * ts, sd = Dp * (isArt ? 0.6 : 1.0) + 0.12 * ts;
-        setM(shadows, ns, bx, hs, by, fx, fy, sw, 1, sd); setOp(shadows, ns, 0.27 * op * (1 - 0.5 * wk) * (1 - bk));
-        setM(halos, ns, bx, hs + 0.002 * ts, by, fx, fy, sw + 0.32 * ts, 1, sd + 0.32 * ts); halos.setColorAt(ns, col.setHex(0xf1ecd8).lerp(new THREE.Color(P.plate), 0.55 * wk).lerp(GREYP, capd)); setOp(halos, ns++, (0.1 + 0.12 * wk) * op * (1 - bk)); }   // in a wood the halo carries the side colour (the plate is under the canopy)
+        setM(shadows, ns, bx, hs, by, fx, fy, sw, 1, sd); setOp(shadows, ns, 0.27 * op * pf * (1 - 0.5 * wk) * (1 - bk));
+        setM(halos, ns, bx, hs + 0.002 * ts, by, fx, fy, sw + 0.32 * ts, 1, sd + 0.32 * ts); halos.setColorAt(ns, col.setHex(0xf1ecd8).lerp(new THREE.Color(P.plate), 0.55 * wk).lerp(GREYP, capd)); setOp(halos, ns++, (0.1 + 0.12 * wk) * op * pf * (1 - bk)); }   // in a wood the halo carries the side colour (the plate is under the canopy)
       const pT = 0.006 * ts, ry = hb + S.lift, ip = np++, pk = isArt ? 0 : 1;   // v4: thin plate (no saturated base bar); guns have none
       setM(plateRim, ip, bx, ry, by, fx, fy, (W * 0.99 + 0.012 * ts) * pk, pT, (Dp * 0.86 + 0.012 * ts) * pk, sL, sF);   // v5: the men cover the plate but a ~2 px tint
       setM(plateFill, ip, bx, ry + 0.001 * ts, by, fx, fy, W * 0.99 * pk, pT * 1.15, Dp * 0.86 * pk, sL, sF);
       const fr = Dp * 0.022, fo = Dp * 0.43 - fr / 2; setM(plateFront, ip, bx + fx * fo, ry + 0.0015 * ts + sF * fo, by + fy * fo, fx, fy, (W + 0.014 * ts) * pk, pT * 1.3, fr * pk, sL, 0);
       plateFill.setColorAt(ip, col.setHex(P.plate).lerp(new THREE.Color(P.coat), 0.35).lerp(GREYL, capd)); plateRim.setColorAt(ip, col.setHex(P.plate).multiplyScalar(0.5).lerp(GREYC, capd)); plateFront.setColorAt(ip, col.setHex(P.rim).lerp(GREYP, capd * 0.7));
-      for (const m of [plateRim, plateFill, plateFront]) setOp(m, ip, op * (1 - bk));   // on a bridge deck the men file narrow, no plate
+      for (const m of [plateRim, plateFill, plateFront]) setOp(m, ip, op * pf * (1 - bk));   // on a bridge deck the men file narrow, no plate
       if (isArt) {
         const k = ng++, gk = W * 0.75 / 0.78 * 1.27, lmb = Math.max(c, mv);   // v6: +30 %   // v4: guns ~30 % smaller
         let rec = 0; for (const s of shots) { if (s.t > t) break; if (Math.hypot(s.x - bx, s.y - by) < D.span * 0.6 + 0.5 * ts && i === 0) rec = Math.max(rec, Math.exp(-(t - s.t) * 7) * (t - s.t < 1.2 ? 1 : 0)); }
@@ -310,36 +319,41 @@ export function createTroops3D(o) {
       }
       if (u.form === "square") { setM(holes, nq, bx, ry + 0.004 * ts, by, fx, fy, W * 0.6, pT * 1.3, W * 0.6, sL, sF); setOp(holes, nq++, op); }
       const LINE = isCav ? CAV : u.form === "square" ? SQUARE : INF, nFigs = LINE.length;
-      const sp = W * 0.92 / 12, fw = sp * 0.42, fd = sp * 0.4, fh = sp * 1.9, walk = mv;
+      const sp = Wl * 0.92 / 12, fw = sp * 0.42, fd = sp * 0.4, fh = sp * 1.9, walk = mv, csp = Wl * 0.96 / 12;
+      const lfx = Math.cos(lpa), lfy = Math.sin(lpa), cfx = Math.cos(cpa), cfy = Math.sin(cpa), lsa = lpa + Math.PI * ab;
       for (let j = 0; j < nFigs; j++) {
-        const L = LINE[j]; let la = L[0] * (u.form === "square" ? W * 0.75 : W * 0.96), lb = L[1] * (u.form === "square" ? W * 0.75 : Dp * 0.9);
+        const L = LINE[j]; let la = L[0] * (u.form === "square" ? Wl * 0.75 : Wl * 0.96), lb = L[1] * (u.form === "square" ? Wl * 0.75 : Dl * 0.9);
         la += (hash(seed + j, 1) - 0.5) * 0.12 * sp; lb += (hash(seed + j, 2) - 0.5) * 0.12 * sp;   // tidy ranks, a hair of irregularity
-        let x = bx + px * la + fx * lb, y = by + py * la + fy * lb, ma = sa;
+        // v7: line spot (frame lpa) and march-column spot (4 files x 18 ranks, frame cpa); each man walks between them on his own clock
+        const cfi = j % 4, cra = Math.floor(j / 4), ca = (cfi - 1.5) * csp * 1.05 + (hash(seed + j, 14) - 0.5) * 0.1 * sp, cb = D.cl / 2 - (cra + 0.5) * csp * 1.25;
+        const kj = fq <= 0 ? 0 : fq >= 1 ? 1 : sstep(0, 1, clamp(fq * 1.35 - 0.35 * hash(seed + j, 15)));
+        const lx = Q.lx - lfy * la + lfx * lb, ly = Q.ly + lfx * la + lfy * lb, cx2 = Q.cx - cfy * ca + cfx * cb, cy2 = Q.cy + cfx * ca + cfy * cb;
+        let x = lerp(lx, cx2, kj), y = lerp(ly, cy2, kj), ma = lsa + angDiff(lsa, cpa) * sstep(0, 0.35, kj);
         // v6 (owner): at a bridge the block BREAKS RANKS: each man walks the escape path in a stream 3 abreast (natural jitter, no plate),
         // the men leave / re-take their rank spots over ~1-1.5 s as the block enters / leaves the bridge zone
         if (st > 0.001) { const row = Math.floor(j / 3), cc = j % 3, sw = Q.ew - (row - 12) * 0.06 - (hash(seed + j, 11) - 0.5) * 0.03, g = along(Q.eq.path, Math.max(0, sw));
           const off = (cc - 1) * 0.05 + (hash(seed + j, 12) - 0.5) * 0.02, sx2 = g[0] - g[3] * off, sy2 = g[1] + g[2] * off, kj = sstep(0, 1, clamp(st * 1.25 - 0.25 * hash(seed + j, 13)));
           x = lerp(x, sx2, kj); y = lerp(y, sy2, kj); ma = sa + angDiff(sa, Math.atan2(g[3], g[2])) * kj; }
-        const bob = walk * 0.12 * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), rear = sstep(-0.1, -0.42, L[1]), hy = Math.max(H(x, y), deckTop(x, y)) + S.lift + pT * 1.15 * (1 - st) + bob - sink * rear * (1 - st), lift = isCav ? fh * 0.55 : 0;
+        const bob = walk * 0.12 * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), rear = sstep(-0.1, -0.42, L[1]) * (1 - kj), hy = Math.max(H(x, y), deckTop(x, y)) + S.lift + pT * 1.15 * (1 - st) + bob - sink * rear * (1 - st), lift = isCav ? fh * 0.55 : 0;
         const jh = 0.93 + 0.14 * hash(seed + j, 6), ja = (hash(seed + j, 8) - 0.5) * 0.35, jfx = Math.cos(ma + ja), jfy = Math.sin(ma + ja), jc = 0.9 + 0.2 * hash(seed + j, 9);   // v5: men not identical
         if (isCav) { setM(horses, nh, x, hy, y, sfx, sfy, fw * 1.5, fh * 0.7, fd * 2.2); setOp(horses, nh++, op); }
         setM(coats, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd); setM(pales, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd);
         coats.setColorAt(nf, col.setHex(P.coat).multiplyScalar(jc).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++;
       }
       // skirmishers: a few men a little ahead of a halted line; they walk back into the front rank (same size) when it moves, routs or is taken
-      const ks = (1 - c) * (1 - capd) * (1 - e) * (1 - sstep(0.15 * ts, 0.6 * ts, spd)) * (u.skirmish === false || isCav ? 0 : 1);
+      const ks = (1 - fq) * (1 - capd) * (1 - e) * (1 - sstep(0.15 * ts, 0.6 * ts, spd)) * (u.skirmish === false || isCav ? 0 : 1);
       for (let j = 0; j < NS; j++) { const h1 = hash(seed + 91 + j, 1), h2 = hash(seed + 91 + j, 2), fj = Math.min(11, Math.round(((j + 0.5) / NS) * 12 - 0.5));
-        const la0 = INF[fj][0] * W * 0.92, lb0 = INF[fj][1] * Dp * 0.84;   // its place in the front rank
-        const la = lerp(la0, ((j + 0.5) / NS - 0.5) * W * 0.95 + (h1 - 0.5) * W * 0.12, ks), lb = lerp(lb0, Dp / 2 + Dp * (0.6 + 1.4 * h2), ks);
-        const x = bx + px * la + fx * lb, y = by + py * la + fy * lb;
+        const la0 = INF[fj][0] * Wl * 0.92, lb0 = INF[fj][1] * Dl * 0.84;   // its place in the front rank
+        const la = lerp(la0, ((j + 0.5) / NS - 0.5) * Wl * 0.95 + (h1 - 0.5) * Wl * 0.12, ks), lb = lerp(lb0, Dl / 2 + Dl * (0.6 + 1.4 * h2), ks);
+        const x = Q.lx - lfy * la + lfx * lb, y = Q.ly + lfx * la + lfy * lb;
         setM(coats, nf, x, H(x, y) + S.lift + pT * ks - sink, y, sfx, sfy, fw, fh, fd); setM(pales, nf, x, H(x, y) + S.lift + pT * ks - sink, y, sfx, sfy, fw, fh, fd);
-        coats.setColorAt(nf, col.setHex(P.coat).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op * (1 - st)); setOp(pales, nf, op * (1 - st)); nf++; }
+        coats.setColorAt(nf, col.setHex(P.coat).lerp(GREYC, capd)); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op * (1 - st) * (1 - sstep(0, 0.3, fq))); setOp(pales, nf, op * (1 - st) * (1 - sstep(0, 0.3, fq))); nf++; }
     }
     holes.count = nq; coats.count = pales.count = nf; plateFill.count = plateRim.count = plateFront.count = np; shadows.count = halos.count = ns;
     carriage.count = barrel.count = wheels.count = limber.count = ng; if (horses) horses.count = nh;
     for (const m of ALL) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true; }
     API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa),
-      w: q.D.bw * (q.u.type === "art" ? 0.62 : 1), d: q.D.bd * (q.u.type === "art" ? 0.7 : 1), c: q.c, e: q.e, op: q.op, art: q.u.type === "art", cap: q.capd }));
+      w: q.u.type === "art" ? q.D.bw * 0.62 : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op, art: q.u.type === "art", cap: q.capd }));
     return { figures: nf, blocks: np, guns: ng };
   }
   const API = { update, blocks, base, meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };

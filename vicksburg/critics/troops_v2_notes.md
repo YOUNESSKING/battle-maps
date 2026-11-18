@@ -104,3 +104,19 @@ Share (with the film's soundtrack for the same windows): `vicksburg/troops_test_
 Checker v6: overlaps S09 2 frames (<= 0.15 u, Bowen's own blocks wheeling at the halt), S10 none; accel S09 <= 4.1, S10 <= 6.1 u/s^2;
 column spacing sd S09 2.3 %, S10 0.4 %; every escaping block clear of the bridge before the fire (31.3 s).
 Not done: units +25 % on WIDE shots (no wide shot in these excerpts).
+
+# v7 (2026-11-18): owner round 5 ("still some sideways") - formation-front rule, march columns, calm turns
+Share (with sound): `vicksburg/troops_test_v7_share.mp4`.
+
+| Point | v7 |
+| --- | --- |
+| Move only front-first | a block may only move along its FORMATION's front normal. Only a short straight advance (<= 20 deg off its front, <= 3 u) stays in line (the line turns <= 20 deg first). Every other move: the men RE-FORM in place into a narrow march column, 4 files x 18 ranks (same 72 men, ~1.4 s, each man on his own clock, the plate fades through and comes back in the new shape), the column marches head first, then re-forms into line at the new spot. Columns form AHEAD of the line spot (the men walk to it) and end with the head on the new spot, so the block never moves backward or sideways |
+| Retreats | the men turn about in place (0.5 s), re-form into a column whose head points away from the enemy, then walk off; escape paths smoothed (+-3 u) and the bridge blend 4 u long |
+| Flank marches | blocks of one unit whose march lanes coincide wait their turn (re-form and step off nose to tail once the block ahead is a column length + gap away); blocks on different lanes march side by side |
+| Turn rate | <= ~45 deg/s: path tangents over +-0.25 u (no quantisation jitter), smoothed paths; a re-forming (men walking) is not counted as a block turn |
+| Checker | `check_troops_motion.mjs`: angle between velocity and the FORMATION front normal (FAIL > 20 deg while > 0.2 u/s), turn rate in deg/s (FAIL > 45), both skipped only while the men are re-forming (0.02 < f < 0.98). Screen space: an aligned motion stays aligned under the projection, so the world angle is the test |
+| Bridge framing / arrow | S10_gm: hold at dist 21 from 20.0 s, push in 24.0-25.8 s to dist 13 on the bridge and hold to 32.6 s; the retreat arrow narrow (0.13) and unit red (#a8392b) |
+| Data | S09_gm: Hovey's crest line at s 1.2 (columns clear the battery), Lee falls straight back, Logan's brigades 1.6 s apart and spread, Bowen's second brigade starts later and leaves the bottom earlier; S10_gm: escapes 1.2 s earlier (the re-forming takes time; still clear of the bridge before the fire) |
+
+Checker v7: S09 55-110 front-vs-velocity max 4 deg (0 fails), turn <= 37 deg/s, pops 0, accel <= 2.0, overlaps 2 pairs (<= 0.16 u for 0.2-0.4 s);
+S10 18-35 front-vs-velocity max 3 deg (0 fails), turn <= 45 deg/s, pops 0, accel <= 2.7, NO overlaps; last escaping block at x 1508.7 at 31.3 s (off the deck).

@@ -58,7 +58,7 @@ const units = [   // (close arrows default width below)
   // Champion house to the crest, p across it, see FR above), the two sides always on their own side of a moving front with a >= 3-unit gap.
   // S. D. Lee: on the crest; Hovey takes it; back up with Bowen (on Bowen's left); down again; flees west
   { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 0.8, -3.6), K(T.took - 1.6, 0.8, -3.6), K(T.took + 0.2, 4.8, -5.0), K(T.hit + 0.6, 4.8, -5.0), K(T.retook + 1.5, 2.6, -5.0),
-    K(T.contested - 0.8, 2.6, -5.0), K(T.contested + 2.6, 8.0, -1.2)], escape: ESC(UP, T.broke, 2.6) },
+    K(T.contested - 0.8, 2.6, -5.0), K(T.contested + 2.6, 8.0, -5.0)], escape: ESC(UP, T.broke, 2.6) },
   // Cumming: at the crossroads, behind the crest (second line)
   { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.0, 0.6), K(T.took + 1.2, 9.6, 3.0)], escape: ESC(LOW, T.broke + 0.5, 2.6) },
   // the Confederate guns on the crest: taken by Hovey ("guns and all"), turn grey; retaken by Bowen (a fresh red battery behind his line); lost again
@@ -68,8 +68,8 @@ const units = [   // (close arrows default width below)
   // (GM test) Cockrell swings onto the axis first (by the flank), then both come down the slope in line, starting on Bowen's card
   { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 7.6, 5.9), K(T.bowen + 0.6, 7.6, 5.9), K(T.hit - 0.4, 7.0, -1.3), K(T.bottom, -4.6, -1.3),
     K(T.contested - 0.8, -4.6, -1.3), K(T.contested + 2.6, 5.6, -1.3)], escape: ESC(LOW, T.broke + 0.8, 2.6) },
-  { region: C, side: R, type: "inf", n: 3, face: CSF, keys: [K(0, 9.5, 9.1), K(T.bowen + 0.9, 9.5, 9.1), K(T.bottom, -4.6, 4.4),
-    K(T.contested - 0.8, -4.6, 4.4), K(T.contested + 2.9, 5.6, 4.4)], escape: ESC(LOW, T.broke + 1.3, 2.6) },
+  { region: C, side: R, type: "inf", n: 3, face: CSF, keepTimes: true, keys: [K(0, 9.5, 9.1), K(T.bowen + 3.2, 9.5, 9.1), K(T.bottom, -4.6, 4.4),
+    K(T.contested - 3.4, -4.6, 4.4), K(T.contested + 2.9, 5.6, 4.4)], escape: ESC(LOW, T.broke + 1.3, 2.6) },
   // Loring: Buford + Featherston (cut off: away south and east), Tilghman's rearguard with its battery near the Coker house
   { region: C, side: R, type: "inf", n: 3, face: "east", keys: [[0, 1628.8, 708.4]], escape: ESC(LOR, T.escaped - 0.2, 1.5, "south", "south") },
   { region: C, side: R, type: "inf", n: 3, face: "east", keys: [[0, 1628.4, 713.8]], escape: ESC(LOR, T.escaped + 0.6, 1.5, "south", "south") },
@@ -79,12 +79,12 @@ const units = [   // (close arrows default width below)
   // Union. Hovey (McGinnis, Slack) from the Champion house up the Jackson road; pushed back nearly to the bottom; up again with Crocker; to the crossroads
   ...[[0, -2.9, 1635.8, 696.6], [1, 2.9, 1638.6, 699.6]]
     .map(([k, p, x5, y5]) => ({ region: C, side: U, type: "inf", n: 3, face: USF, t0: SW + 0.4,
-      keys: [K(0, -12.4 + k * 1.6, p * 0.8), K(T.hovey - 0.2 + k * 0.3, -12.4 + k * 1.6, p * 0.8), K(T.took + 0.2 + k * 0.2, 1.8, p), K(T.hit + 0.3, 1.8, p),
+      keys: [K(0, -12.4 + k * 1.6, p * 0.8), K(T.hovey - 0.2 + k * 0.3, -12.4 + k * 1.6, p * 0.8), K(T.took + 0.2 + k * 0.2, 1.2, p), K(T.hit + 0.3, 1.2, p),
         K(T.bottom + 0.4, -10.0, p), K(T.contested - 0.6, -10.0, p), K(T.contested + 2.8, 0.6, p), K(T.broke + 0.4, 0.6, p), [T.broke + 5.4, x5, y5]] })),
   // Logan (J. E. Smith, Leggett, J. D. Stevenson): behind Hovey's right, swings round the north end; one brigade across the escape road; pulled away
-  ...[[0, 1638.2, 682.2, 1629.6, 690.0, 1625.6, 697.2, 1633.2, 690.4], [1, 1640.8, 681.4, 1632.6, 688.2, 1629.4, 695.6, 1635.6, 689.0], [2, 1643.4, 681.0, 1635.6, 687.0, 1635.6, 687.0, 1637.6, 687.6]]
+  ...[[0, 1637.2, 682.4, 1629.6, 690.0, 1625.6, 697.2, 1633.2, 690.4], [1, 1640.8, 681.4, 1632.6, 688.2, 1629.4, 695.6, 1635.6, 689.0], [2, 1644.4, 680.8, 1635.6, 687.0, 1635.6, 687.0, 1637.6, 687.6]]
     .map(([k, x, y, x2, y2, x3, y3, x4, y4]) => ({ region: C, side: U, type: "inf", n: 3, face: Math.PI / 2 + 0.35, t0: SW + 0.4,
-      keys: [[0, x, y], [T.swung + 0.4 + k * 0.25, x, y], [T.swung + 3.4 + k * 0.25, x2, y2], [118.4 + k * 0.4, x2, y2], [121.0 + k * 0.4, x3, y3],
+      keys: [[0, x, y], [T.swung + 0.4 + k * 1.6, x, y], [T.swung + 3.4 + k * 1.6, x2, y2], [118.4 + k * 0.4, x2, y2], [121.0 + k * 0.4, x3, y3],
         [T.moved - 0.6 + k * 0.3, x3, y3], [T.moved + 1.8 + k * 0.3, x4, y4], [T.broke + 0.6, x4, y4], [T.broke + 6.0, x4 - 4.2, y4 + 6.0]] })),
   // Crocker's brigades: the reinforcements
   // (up the Champion house road on Hovey's left, into line on his left flank, then up the slope with him)
