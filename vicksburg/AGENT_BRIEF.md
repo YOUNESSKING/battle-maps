@@ -28,3 +28,8 @@ Binding brief: `research/START_BATTLE_19_VICKSBURG.md`. Plan: `vicksburg/PLAN.md
   towns:{name:[x,y]}, features:{bridges:[], works:[], pontoons:[], ...}, ... }` with the same per-region fields the clip's `world_data.js` has
   for `wide`/`close` (so the clip's rendering code keeps working), plus `geo` once in `vicksburg/worlds/geo.js`.
 - A scene copies (or the render tar includes) only the region folders it uses.
+
+## Model per agent job (owner via parent session, 2026-11-18, to save usage)
+Haiku: trivial mechanical jobs (rename/move files, listings, formatting). Sonnet: simple jobs (search, downloads, fact lookups, checking
+files/timings, sheets, packaging drafts, routine fixes). Opus: only complicated work (scene authoring, 3D engine/world code, critics).
+Up to 3 agents in parallel.

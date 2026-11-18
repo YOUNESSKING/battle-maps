@@ -52,7 +52,8 @@ window.SEQ = {
              to: { region: "bigblack", at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32 }, keys: { emerge: { at: [...] } } } ],
   clouds: { wide: { scatter: {box, n, med, seed}, keepClear: [[x, y, R, ky, rk]], corners: [[x, y, r]], wisps: [[x, y, r]], extra, bounds,
                     nightErode: 0.4, keepDiveLook: false, opts: {} },  bigblack: { shadows: true } },   // false = no clouds in that region
-  title: { text: "ONE DAY", tOn: 11.29, tGrow: 11.81, tOff, anchorT: 12.2, region, depth: 0.28, width: 0.62, up: 0.06 },
+  title: { text: "ONE DAY", tOn: 11.29, tGrow: 11.81, tOff, anchorT: 12.2, region, depth: 0.28, width: 0.62, up: 0.06,
+           font: "cinzel-latin-700-normal.woff2" },   // font: optional woff2 in engine/assets/fonts (default Cormorant Garamond 700, whose figures are old-style)
   units: [ ... ], arrows: [ ... ], banners: [ ... ], labels: [ ... ], boats: [ ... ],
   fx: { fires: [], smokeLines: [], volleys: [], guns: [], impacts: [], flashes: [], campfires: [] },   // or one ordered list [{kind, ...}]
   overlay: [ ["plaque.date", 0.4, {...}], ["medallion", {...}], (O, ctx) => {...} ],

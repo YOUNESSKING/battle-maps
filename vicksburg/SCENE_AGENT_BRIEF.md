@@ -38,5 +38,6 @@ you add makes a sound, so only add effects the camera sees.
   other authors work in parallel, so keep engine changes backward-compatible and tell the lead in your report.
 
 ## Rules
+Model choice (owner 2026-11-18): scene authoring = Opus; if you spawn helpers, Sonnet for search/downloads/checks, Haiku for mechanical file jobs.
 Do not commit. Do not touch other authors' sequences. Never print secrets. Temp files in /tmp/vx_SNN. Report: what is done, sheet path,
 engine changes, open issues.

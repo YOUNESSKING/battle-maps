@@ -205,7 +205,7 @@ if (S.title) {
   const T_ON = TT.tOn, T_GROW = TT.tGrow ?? T_ON + 0.5, T_OFF = TT.tOff ?? (nextDive ? nextDive.deckIn - 0.3 : T_ON + 3), tA = TT.anchorT ?? T_ON + 0.91;
   const BLUR0 = TT.blurFrom ?? (nextDive ? nextDive.push + 0.6 : T_ON + 1.9);
   TREG = TT.region || world.cameraAt(tA).region;
-  const TF = new FontFace("CGT", `url(${EB}assets/fonts/cormorant-garamond-latin-700-normal.woff2)`, { weight: "700" }); await TF.load(); document.fonts.add(TF);
+  const TF = new FontFace("CGT", `url(${EB}assets/fonts/${TT.font || "cormorant-garamond-latin-700-normal.woff2"})`, { weight: "700" });   // title.font: another woff2 in assets/fonts (e.g. Cinzel for lining figures) await TF.load(); document.fonts.add(TF);
   const TTXT = TT.text, TCW = 2048, TCH = 640;
   const mkTitleCanvas = (face) => { const c = document.createElement("canvas"); c.width = TCW; c.height = TCH; const g = c.getContext("2d");
     g.textAlign = "center"; g.textBaseline = "middle"; let fs = TT.fontSize || 400; g.font = `700 ${fs}px "CGT", Georgia, serif`; if ("letterSpacing" in g) g.letterSpacing = "18px";
