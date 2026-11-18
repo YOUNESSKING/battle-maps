@@ -28,7 +28,8 @@ const SIDE_COL = { u: "#2c57b7", r: "#be3a2a" }, ARROW_COL = { u: "#4f73c0", r: 
 const D = S.D;
 
 // ---------------- dives (v8 cloud dive, timings relative to the swap t) ----------------
-const DIVES = (S.dives || []).map((d) => ({ ...d, ...VX.diveTimes(d.t), over: d.over || d.to.at })).sort((a, b) => a.SW - b.SW);
+// d.off: per-dive phase offsets relative to the swap that override VX.DIVE_OFF (e.g. { emerge: 0.2, clear: 0.45 } = a shorter white-out)
+const DIVES = (S.dives || []).map((d) => { const o = {}; for (const k in d.off || {}) o[k] = d.t + d.off[k]; return { ...d, ...VX.diveTimes(d.t), ...o, over: d.over || d.to.at }; }).sort((a, b) => a.SW - b.SW);
 const NODIVE = { ...VX.diveTimes(1e7), over: [0, 0], from: {}, to: {} };
 const diveKeys = (d) => { const f = d.from, to = d.to, ov = d.over, k = (to.dist || 40) / 40, K = d.keys || {};
   return [
@@ -458,7 +459,18 @@ const whiteOne = (d, t) => { if (t < d.emerge) { const v6 = t < d.SW + 0.05 ? 0.
   return t < d.clear ? lerp(1, 0.1, 1 - (1 - clamp((t - d.emerge) / (d.clear - d.emerge))) ** 2) : lerp(0.1, 0, sstep(d.clear, d.haze, t)); };
 const filmK = (t, a, b) => DIVES.reduce((m, d) => Math.max(m, sstep(d[a[0]] + a[1], d[a[2]] + a[3], t) * (1 - sstep(d[b[0]], d[b[1]], t))), 0);
 const GRAIN = (S.film || {}).grain ?? 0.04;
+// dissolves: a cut key with dissolve: dur crossfades from the last frame before the cut (frozen) into the new shot over dur seconds
+const XFADES = (S.keys || []).filter((k) => k.dissolve > 0).map((k) => ({ t: k.t, dur: k.dissolve }));
+let XC = null;
+if (XFADES.length) { XC = document.createElement("canvas"); XC.width = GL.width; XC.height = GL.height; XC.style.cssText = "position:absolute;inset:0;width:1280px;height:720px;pointer-events:none;opacity:0";
+  GL.parentNode.insertBefore(XC, GL.nextSibling); }
+const xfadeAt = (t) => { if (!XC) return; const x = XFADES.find((q) => t >= q.t && t < q.t + q.dur); if (!x) { XC.style.opacity = "0"; return; }
+  const ta = x.t - 1 / 60; gradeAt(ta); placeBoats(ta);
+  world.update(ta, { beforeRender: (w, tt) => { const fx = FX[w.region]; fx.setNight(w.cam.night || 0); drawTroops(tt, w.region); fx.update(tt, w.camera); } });
+  const g = XC.getContext("2d"); g.clearRect(0, 0, XC.width, XC.height); g.drawImage(GL, 0, 0); XC.style.filter = GL.style.filter;
+  XC.style.opacity = (1 - sstep(x.t, x.t + x.dur, t)).toFixed(3); gradeKey = ""; };
 window.__draw = (t) => {
+  xfadeAt(t);
   placeBoats(t); titleAt(t); gradeAt(t); for (const r in TRO) if (TRO[r].T3) TRO[r].T3.update(t);
   O.film.set({ grain: lerp(GRAIN, GRAIN * 0.75, filmK(t, ["full", -0.3, "wIn", 0], ["emerge", "clear"])).toFixed(3) });   // his white-out is smooth
   O.film.set({ vignette: (1 - 0.95 * filmK(t, ["full", -0.4, "wIn", 0], ["emerge", "haze"])).toFixed(3) });   // no dark oval inside the cloud

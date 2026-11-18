@@ -498,7 +498,8 @@
     const rulers = [];
     O.distance = (tIn, tOut, o) => {
       const g = svgLayer(Lmap, "ruler");
-      g.innerHTML = `<path fill="none" stroke="rgba(0,0,0,.55)" stroke-width="6" stroke-dasharray="16 12" stroke-linecap="round"/><path fill="none" stroke="#EEE7D6" stroke-width="3.2" stroke-dasharray="16 12" stroke-linecap="round"/>
+      const da = o.dash === false ? "" : ` stroke-dasharray="16 12"`;   // dash: false = a solid line (Style W: no dashed lines)
+      g.innerHTML = `<path fill="none" stroke="rgba(0,0,0,.55)" stroke-width="${o.dash === false ? 4.5 : 6}"${da} stroke-linecap="round"/><path fill="none" stroke="#EEE7D6" stroke-width="${o.dash === false ? 2.2 : 3.2}"${da} stroke-linecap="round"/>
         <circle class="e0" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/><circle class="e1" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/>`;
       gsap.set(g, { autoAlpha: 0 }); tl.set(g, { autoAlpha: 1 }, tIn); fadeOut(g, tOut, 0.5);
       const unit = o.unit || "MILES", c = { v: 0 }, L = O.label(tIn + 0.4, tOut, { name: `${fmtN(o.value)} ${unit}`, sub: o.sub, x: 0, y: 0, marker: false, stripes: o.stripes || [] }), nm = L.el.querySelector(".nm");

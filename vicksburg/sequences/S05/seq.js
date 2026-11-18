@@ -40,38 +40,38 @@ for (let i = 0; i < 6; i++) {
 // Confederate pickets near the farmhouse: they fire, then fall back to the line
 units.push({ side: "r", type: "inf", n: 1, face: Wf, keys: [[0, SH[0] + 3.4, SH[1] + 1.0], [9.2, SH[0] + 3.4, SH[1] + 1.0], [14.5, 1286.5, 1015.4]], t0: 0, t1: 15.2 });
 
-// Union divisions (deployed by dawn): Hovey + Carr astride the Rodney road, A. J. Smith behind, Osterhaus on the Bruinsburg road
-const uLine = (n, dy, xs, road, o = {}) => ({ side: "u", type: "inf", n, face: E, t0: 17.6, ...o,
-  keys: xs.map(([t, x]) => { const p = road === "R" ? onR(x, dy) : onN(x, dy); return [t, p[0], p[1]]; }) });
-// Rodney road (south ridge): steps forward, recoil on the counterattack, forward again, then pursuit into town
-const RX = [[0, 1266], [19.6, 1272.5], [36.0, 1272.5], [37.6, 1277.5], [38.6, 1277.5], [40.0, 1281.5], [40.8, 1281.5], [42.0, 1279.6], [44.6, 1279.6], [46.4, 1286.0], [48.6, 1288.5], [53.5, 1294.5], [D, 1297.5]];
-units.push(uLine(4, -2.7, RX, "R"));                                   // Hovey (north half of the ridge)
-units.push(uLine(4, 2.7, RX.map(([t, x]) => [t + 0.25, x - 0.4]), "R"));   // Carr (south half)
-units.push(uLine(4, 0, [[0, 1262], [19.6, 1266.5], [36.4, 1266.5], [38.6, 1271.0], [44.6, 1273.0], [47.0, 1279.5], [53.5, 1287.5], [D, 1291.0]], "R", { t0: 18.4 }));   // A. J. Smith (support)
-// Bruinsburg road (north ridge): Osterhaus held up until the flank is turned
-const NX = [[0, 1266.5], [19.6, 1273.0], [36.2, 1273.0], [38.0, 1277.0], [39.6, 1278.5], [40.8, 1278.5], [41.9, 1276.6], [45.2, 1276.6], [47.0, 1283.5], [49.0, 1286.5], [54.0, 1292.0], [D, 1295.0]];
-units.push(uLine(4, 0, NX, "N"));
-// Logan's brigade (J. E. Smith): along a third ridge north of the road, turns Tracy's flank
-units.push({ side: "u", type: "inf", n: 2, face: E, t0: T.pressed - 0.4, keys: [[T.pressed - 0.4, 1279.0, 1006.6], [47.0, 1285.0, 1007.2], [49.5, 1289.0, 1008.6], [D, 1294.0, 1009.4]] });
-// Union guns
-units.push({ side: "u", type: "art", n: 2, face: E, t0: 18.6, keys: [[0, ...onR(1275.0, -0.2)], [47.5, ...onR(1275.0, -0.2)], [52.0, ...onR(1284.0, -0.2)]] });
-units.push({ side: "u", type: "art", n: 2, face: E, t0: 18.6, keys: [[0, ...onN(1275.4, 1.0)], [48.0, ...onN(1275.4, 1.0)], [52.5, ...onN(1283.0, 1.0)]] });
+// Union divisions (deployed by dawn) as COLUMNS ON THE RIDGE TOPS (critic B: "only along the ridge tops"): each road carries its
+// divisions two boxes wide, one behind the other; the ravines between the roads stay empty.
+// Rodney road (south ridge): Hovey leads, Carr behind him, A. J. Smith in support; Bruinsburg road (north ridge): Osterhaus.
+const uCol = (xs, lag, road, o = {}) => ({ side: "u", type: "inf", n: 2, face: E, t0: 17.6, ...o,
+  keys: xs.map(([t, x]) => { const p = road === "R" ? onR(x - lag) : onN(x - lag); return [t, p[0], p[1]]; }) });
+// front of the Rodney road column: steps forward, recoils on the counterattack, forward again, then the pursuit into town
+const RX = [[0, 1266], [19.6, 1273.5], [36.0, 1273.5], [37.6, 1277.5], [38.6, 1277.5], [40.0, 1280.5], [40.8, 1280.5], [42.0, 1278.6], [44.6, 1278.6], [46.6, 1282.5], [48.6, 1286.0], [53.5, 1293.0], [D, 1296.5]];
+[0, 1.75, 3.5, 5.25, 7.0, 8.75].forEach((lag, k) => units.push(uCol(RX.map(([t, x]) => [t + k * 0.08, x]), lag, "R", { t0: 17.6 + k * 0.15 })));   // Hovey (2 rows), Carr (2), A. J. Smith (2)
+// front of the Bruinsburg road column (Osterhaus): held up until the flank is turned
+const NX = [[0, 1266.5], [19.6, 1273.0], [36.2, 1273.0], [38.0, 1276.5], [39.6, 1277.6], [40.8, 1277.6], [41.9, 1275.8], [45.4, 1275.8], [47.4, 1279.5], [49.4, 1283.5], [54.0, 1291.0], [D, 1294.5]];
+[0, 1.75, 3.5].forEach((lag, k) => units.push(uCol(NX.map(([t, x]) => [t + k * 0.08, x]), lag, "N", { t0: 17.8 + k * 0.15 })));
+// Logan's brigade (J. E. Smith): along a third ridge north of the road, turns Tracy's flank (red has already gone when it arrives)
+units.push({ side: "u", type: "inf", n: 2, face: E, t0: T.pressed - 0.4, keys: [[T.pressed - 0.4, 1278.6, 1005.4], [47.0, 1282.6, 1005.8], [49.5, 1286.8, 1007.0], [D, 1292.5, 1008.0]] });
+// Union guns (behind the heads of the columns, on the ridge)
+units.push({ side: "u", type: "art", n: 1, face: E, t0: 18.6, keys: [[0, ...onR(1271.0)], [47.5, ...onR(1271.0)], [52.0, ...onR(1280.0)]] });
+units.push({ side: "u", type: "art", n: 1, face: E, t0: 18.6, keys: [[0, ...onN(1270.6)], [48.0, ...onN(1270.6)], [52.5, ...onN(1279.0)]] });
 
-// Bowen's division (red): Green astride the Rodney road at Magnolia Church, Tracy on the Bruinsburg road, Baldwin + Cockrell come up behind
-const T_OUT = 46.66, rLine = (n, at, o = {}) => ({ side: "r", type: "inf", n, face: Wf, t0: 9.6, keys: [[0, ...at]], ...o });
-const greenAt = onR(1289.6, -0.2), tracyAt = onN(1283.8, 0.2);
-units.push(rLine(2, greenAt, { keys: [[0, ...greenAt], [44.2, ...greenAt], [T_OUT - 0.2, greenAt[0] + 2.2, greenAt[1]]],
-  escape: { road: ESC_S, t0: T_OUT, v: 3.6, v2: 3.6, join: "east", fade: false } }));                                  // Green
-units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onR(1291.2, -1.6)]], escape: { road: ESC_S, t0: T_OUT - 0.4, v: 3.6, v2: 3.6, join: "east", fade: false } });
-units.push(rLine(2, tracyAt, { keys: [[0, ...tracyAt], [40.6, ...tracyAt], [41.8, tracyAt[0] - 1.6, tracyAt[1]], [45.4, tracyAt[0] - 1.6, tracyAt[1]], [T_OUT - 0.2, tracyAt[0] + 2.4, tracyAt[1] + 0.6]],
-  escape: { road: ESC_N, t0: T_OUT + 2.6, v: 3.6, v2: 3.6, join: "east", fade: false } }));                            // Tracy
-units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onN(1285.6, 1.4)]], escape: { road: ESC_N, t0: T_OUT + 2.1, v: 3.6, v2: 3.6, join: "east", fade: false } });
-// Cockrell: comes up from town and counterattacks south of the Rodney road, then falls back
-units.push({ side: "r", type: "inf", n: 2, face: Wf, t0: 36.4, keys: [[36.4, 1298.0, 1021.2], [39.4, 1292.4, 1021.6], [40.8, 1291.0, 1021.6], [42.0, 1285.6, 1021.2], [43.6, 1286.4, 1021.2], [T_OUT - 0.4, 1292.8, 1020.8]],
-  escape: { road: ESC_S, t0: T_OUT + 0.5, v: 3.6, v2: 3.6, join: "east", fade: false } });
+// Bowen's division (red): Green astride the Rodney road at Magnolia Church, Tracy astride the Bruinsburg road, Baldwin + Cockrell come up behind
+const T_OUT = 46.2, rLine = (n, at, o = {}) => ({ side: "r", type: "inf", n, face: Wf, t0: 9.6, keys: [[0, ...at]], ...o });
+const greenAt = onR(1289.6), tracyAt = onN(1284.6);
+units.push(rLine(3, greenAt, { keys: [[0, ...greenAt], [44.2, ...greenAt], [T_OUT - 0.2, greenAt[0] + 2.2, greenAt[1]]],
+  escape: { road: ESC_S, t0: T_OUT, v: 4.2, v2: 4.2, join: "east", fade: false } }));                                  // Green
+units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onR(1292.0)]], escape: { road: ESC_S, t0: T_OUT - 0.4, v: 4.2, v2: 4.2, join: "east", fade: false } });
+units.push(rLine(3, tracyAt, { keys: [[0, ...tracyAt], [40.6, ...tracyAt], [41.8, tracyAt[0] - 1.6, tracyAt[1]], [44.6, tracyAt[0] - 1.6, tracyAt[1]], [T_OUT - 0.2, tracyAt[0] + 2.2, tracyAt[1]]],
+  escape: { road: ESC_N, t0: T_OUT, v: 4.2, v2: 4.2, join: "east", fade: false } }));                                   // Tracy
+units.push({ side: "r", type: "art", n: 1, face: Wf, t0: 9.6, keys: [[0, ...onN(1287.4)]], escape: { road: ESC_N, t0: T_OUT - 0.4, v: 4.2, v2: 4.2, join: "east", fade: false } });
+// Cockrell: comes up from town and counterattacks on the south shoulder of the Rodney ridge, then falls back
+units.push({ side: "r", type: "inf", n: 2, face: Wf, t0: 36.4, keys: [[36.4, ...onR(1298.0, 2.4)], [39.4, ...onR(1292.6, 2.6)], [40.8, ...onR(1291.2, 2.6)], [42.0, ...onR(1285.6, 2.6)], [43.6, ...onR(1286.4, 2.6)], [T_OUT - 0.4, ...onR(1292.0, 2.2)]],
+  escape: { road: ESC_S, t0: T_OUT + 0.5, v: 4.2, v2: 4.2, join: "east", fade: false } });
 // Baldwin: second line behind Tracy, steps into the gap
-units.push({ side: "r", type: "inf", n: 1, face: Wf, t0: 36.0, keys: [[36.0, 1294.0, 1011.6], [39.0, 1288.6, 1011.4], [44.0, 1288.6, 1011.4], [T_OUT - 0.3, 1292.0, 1011.6]],
-  escape: { road: ESC_N, t0: T_OUT + 3.1, v: 3.6, v2: 3.6, join: "east", fade: false } });
+units.push({ side: "r", type: "inf", n: 2, face: Wf, t0: 36.0, keys: [[36.0, ...onN(1295.0)], [39.0, ...onN(1289.6)], [44.0, ...onN(1289.6)], [T_OUT - 0.3, ...onN(1291.6)]],
+  escape: { road: ESC_N, t0: T_OUT + 0.4, v: 4.2, v2: 4.2, join: "east", fade: false } });
 units.forEach((u) => { if (u.side === "r" && u.escape) u.t1 = 60.5; });
 
 // ---------------- arrows ----------------
@@ -79,59 +79,61 @@ const arrows = [
   // Bowen rushed down from Grand Gulf (north): his division comes down the road into the town and out onto the ridges
   { side: "r", pts: [[1294.6, 998.7], [1299.8, 1005.6], [1303.0, 1010.6], [1300.0, 1014.6], [1294.0, 1016.6]], t0: T.grandGulf, dur: 2.0, t1: 17.4 },
   // only along the ridge tops
-  { side: "u", pts: VX.sub(NR, 1.0, 16.5), t0: 31.7, dur: 2.0, t1: 36.6 },
-  { side: "u", pts: VX.sub(RR, 1.5, 17.0), t0: 32.3, dur: 2.0, t1: 36.6 },
+  { side: "u", pts: VX.sub(NR, 6.0, 18.5), t0: 31.7, dur: 2.0, t1: 36.6 },
+  { side: "u", pts: VX.sub(RR, 6.5, 19.0), t0: 32.3, dur: 2.0, t1: 36.6 },
   // the counterattack
   { side: "r", pts: [[1293.2, 1022.6], [1289.6, 1022.4], [1286.0, 1021.8]], t0: T.counter, dur: 1.2, t1: 43.4 },
   { side: "r", pts: [[1287.0, 1009.0], [1283.6, 1009.2], [1280.4, 1009.6]], t0: T.counter + 0.3, dur: 1.2, t1: 43.4 },
-  // the flank turned: Logan's brigade on the third ridge
-  { side: "u", pts: [[1279.6, 1004.6], [1284.0, 1004.4], [1288.0, 1005.4], [1290.6, 1007.4]], t0: T.pressed, dur: 2.0, t1: 49.6 },
+  // pressed on both ridges: Logan's brigade on the third ridge
+  { side: "u", pts: [[1280.0, 1004.4], [1284.0, 1004.4], [1287.6, 1005.4], [1290.0, 1007.0]], t0: T.pressed, dur: 2.0, t1: 49.6 },
   // the road inland is open
-  { side: "u", pts: [[1294.0, 1018.6], [1300.5, 1019.0], [TOWN[0], TOWN[1] - 0.3], ...NE_RD.slice(1, 40)].filter((p, i, a) => i < 4 || i % 6 === 0 || i === a.length - 1), t0: T.open + 0.1, dur: 2.4, t1: D + 1 },
+  // owner rule: no arrow over a burning bridge -> it ends on the town's bank of the bayou, short of the burnt South Fork bridge
+  { side: "u", pts: [[1293.0, 1018.4], [1297.5, 1018.9], [1301.5, 1019.4], [1305.0, 1019.6], [1307.0, 1018.9], [1307.8, 1018.1]], t0: T.open + 0.1, dur: 2.0, t1: D + 1 },
 ];
 
 // ---------------- fx ----------------
 const BRG0 = VX.bridge(PG, 0), BRG2 = VX.bridge(PG, 2);
-const SMK = { dir: [-1, 0], size: 0.9, alpha: 0.24, life: 11, muzzle: 6, windK: 0.4, rate: 2.2 };
+const SMK = { dir: [-1, 0], size: 0.75, alpha: 0.2, life: 12, muzzle: 4, windK: 0.45, rate: 4.0, height: 0.5, cluster: [0.9, 0.5] };   // v8 battalion curtains
 const vline = (pts, t0, t1, dir, o = {}) => ({ region: PG, pts, t0, t1, cue: true, every: o.every || 2.0, opts: { ...SMK, dir, volley: o.every || 2.0, roll: 0.7, ...o } });
 const fx = {
   fires: [
-    { region: PG, bridge: 0, t0: 55.8, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the South Fork bridge: fired after the last column is over (owner 2026-11-18: nobody crosses a burning bridge)
+    { region: PG, bridge: 2, t0: T.burned + 0.1, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the Grand Gulf road bridge (nobody uses it): fired on "burned"
+    { region: PG, bridge: 0, t0: 53.4, t1: D + 1, preset: "bridge", waterGlow: { t1: D + 1 } },   // the South Fork bridge: fired after the last column is over (owner 2026-11-18: nobody crosses a burning bridge)
   ],
   volleys: [
     // first shots at night near the Shaifer house
     { region: PG, pts: [[SH[0] + 3.0, SH[1] + 0.3], [SH[0] + 3.4, SH[1] + 1.8]], t0: 7.7, t1: 9.4, every: 0.9, opts: { ...SMK, dir: [-1, 0], rate: 4, volley: 0.9, size: 0.7 } },
     { region: PG, pts: [[SH[0] - 0.4, SH[1] - 0.6], [SH[0] - 0.2, SH[1] + 0.8]], t0: 8.2, t1: 9.4, every: 1.2, opts: { ...SMK, dir: [1, 0], rate: 3, volley: 1.2, size: 0.7 } },
     // the day battle: Union lines (moving forward in steps: one curtain per halt)
-    vline([onR(1278.3, -3.6), onR(1278.3, 3.6)], 37.8, 40.6, [1, 0]),
-    vline([onN(1278.0, -1.6), onN(1278.0, 1.6)], 38.2, 40.8, [1, 0]),
-    vline([onR(1280.6, -3.6), onR(1280.6, 3.6)], 42.2, 46.2, [1, 0], { every: 1.8 }),
-    vline([onR(1287.0, -3.4), onR(1287.0, 3.4)], 46.6, 49.0, [1, 0], { every: 2.2 }),
+    vline([onR(1278.6, -1.6), onR(1278.6, 1.6)], 37.8, 40.6, [1, 0]),
+    vline([onN(1277.4, -1.6), onN(1277.4, 1.6)], 38.2, 40.8, [1, 0]),
+    vline([onR(1279.6, -1.6), onR(1279.6, 1.6)], 42.2, 46.2, [1, 0], { every: 1.8 }),
+    vline([onR(1286.8, -1.6), onR(1286.8, 1.6)], 48.4, 49.6, [1, 0], { every: 1.2 }),
     // Bowen's lines
-    vline([onR(1288.8, -1.4), onR(1288.8, 1.4)], 37.4, 46.0, [-1, 0], { every: 1.7 }),
-    vline([onN(1283.0, -1.2), onN(1283.0, 1.4)], 37.9, 40.6, [-1, 0]),
-    vline([[1290.4, 1020.6], [1290.4, 1022.6]], 39.6, 43.8, [-1, 0], { every: 1.6 }),   // Cockrell
-    vline([onN(1281.4, -1.2), onN(1281.4, 1.4)], 41.8, 45.4, [-1, 0], { every: 1.8 }),
-    vline([[1288.6, 1006.8], [1289.4, 1009.0]], 47.0, 49.0, [1, 0.1], { every: 1.0 }),   // the flank turned
+    vline([onR(1288.6, -2.0), onR(1288.6, 2.0)], 37.4, 45.8, [-1, 0], { every: 1.7 }),
+    vline([onN(1283.6, -2.0), onN(1283.6, 2.0)], 37.9, 40.6, [-1, 0]),
+    vline([onR(1290.2, 1.4), onR(1290.2, 3.6)], 39.6, 43.8, [-1, 0], { every: 1.6 }),   // Cockrell
+    vline([onN(1282.2, -2.0), onN(1282.2, 2.0)], 41.8, 45.4, [-1, 0], { every: 1.8 }),
+    vline([[1285.8, 1005.2], [1286.6, 1007.2]], 47.6, 49.4, [1, 0.1], { every: 1.2 }),   // Logan on the third ridge
   ],
   guns: [
-    { region: PG, shots: [36.4, 38.4, 40.2, 43.0, 44.6, 46.0].map((t, i) => ({ t, at: onR(1275.0, -0.2 + (i % 2 ? 0.45 : -0.45)), dir: [1, 0.02], impact: onR(1289.0 + (i % 3) * 0.6, -1.4 + (i % 3) * 1.2), delay: 0.9 })) },
-    { region: PG, shots: [37.4, 39.5, 42.4, 45.0].map((t, i) => ({ t, at: onN(1275.4, 1.0 + (i % 2 ? 0.45 : -0.45)), dir: [1, -0.03], impact: onN(1283.6 + (i % 2) * 0.8, -0.8 + (i % 3) * 0.8), delay: 0.9 })) },
-    { region: PG, shots: [37.0, 39.0, 41.2, 43.8].map((t, i) => ({ t, at: onR(1291.2, -1.6), dir: [-1, 0.02], impact: onR(1278.5 + (i % 2) * 1.6, -2.4 + (i % 3) * 1.8), delay: 0.9 })) },
+    { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [36.4, 38.4, 40.2, 43.0, 44.6, 46.0].map((t, i) => ({ t, at: onR(1271.0), dir: [1, 0.02], impact: onR(1290.0 + (i % 3) * 0.6, -1.4 + (i % 3) * 1.2), delay: 0.9 })) },
+    { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [37.4, 39.5, 42.4, 45.0].map((t, i) => ({ t, at: onN(1270.6), dir: [1, -0.03], impact: onN(1285.6 + (i % 2) * 0.8, -0.8 + (i % 3) * 0.8), delay: 0.9 })) },
+    { region: PG, size: 0.6, impactOpts: { size: 0.45 }, shots: [37.0, 39.0, 41.2, 43.8].map((t, i) => ({ t, at: onR(1292.0), dir: [-1, 0.02], impact: onR(1277.0 + (i % 2) * 1.6, -2.4 + (i % 3) * 1.8), delay: 0.9 })) },
   ],
 };
 
 window.SEQ = {
   name: "S05", D, T, seed: 1505, date: "1863-05-01",
   regions: [PG],
-  regionOpts: { [PG]: { troopScale: 1.45 } },
+  regionOpts: { [PG]: { troopScale: 1.9 } },
   generals: { bowen: { img: "seq/bowen.png", side: "cs", name: "Bowen", full: "John S. Bowen", role: "Brigadier General" } },
   keys: [
     // night: low over the Bruinsburg road, looking east toward the farmhouse
-    { t: 0, region: PG, at: [1252.0, 1016.6], dist: 30, tilt: 60, yaw: -66, fov: 30, night: 1 },
-    { t: 8.6, region: PG, at: [1262.0, 1014.0], dist: 27, tilt: 58, yaw: -72, fov: 30, night: 1 },
+    { t: 0, region: PG, at: [1253.0, 1016.4], dist: 25, tilt: 60, yaw: -66, fov: 30, night: 1 },
+    { t: 8.6, region: PG, at: [1263.0, 1014.0], dist: 24, tilt: 58, yaw: -72, fov: 30, night: 1 },
     // Bowen's division astride both roads
-    { t: 15.0, region: PG, at: [1278.0, 1014.4], dist: 36, tilt: 56, yaw: -80, fov: 30, night: 1 },
+    { t: 15.0, region: PG, at: [1279.0, 1014.4], dist: 32, tilt: 56, yaw: -80, fov: 30, night: 1 },
     { t: 19.4, region: PG, at: [1276.0, 1014.6], dist: 39, tilt: 58, yaw: -82, fov: 30, night: 1 },
     // dawn: low across the ridges
     { t: 20.3, region: PG, at: [1275.6, 1014.6], dist: 39, tilt: 59, yaw: -82, fov: 30, night: 0, ease: "lin" },
@@ -142,8 +144,8 @@ window.SEQ = {
     { t: 48.0, region: PG, at: [1292.5, 1013.4], dist: 32, tilt: 54, yaw: -84, fov: 30 },
     { t: 52.2, region: PG, at: [1300.0, 1015.4], dist: 31, tilt: 54, yaw: -82, fov: 30 },
     // ledger, the road open
-    { t: 58.0, region: PG, at: [1299.5, 1015.0], dist: 38, tilt: 54, yaw: -78, fov: 30 },
-    { t: D, region: PG, at: [1301.5, 1014.6], dist: 42, tilt: 53, yaw: -75, fov: 30 },
+    { t: 58.0, region: PG, at: [1298.5, 1015.4], dist: 37, tilt: 50, yaw: -78, fov: 30 },
+    { t: D, region: PG, at: [1298.0, 1015.4], dist: 37, tilt: 46, yaw: -76, fov: 30 },
   ],
   clouds: { [PG]: { shadows: true } },
   units, arrows,
@@ -155,8 +157,8 @@ window.SEQ = {
     { text: "Bruinsburg Road", at: onN(1277.0, -1.4), size: 18, t0: T.roads + 0.1, t1: T.roads + 4.0, region: PG },
     { text: "Rodney Road", at: onR(1277.0, 2.0), size: 18, t0: T.roads + 0.5, t1: T.roads + 4.4, region: PG },
     { text: "Port Gibson", at: [TOWN[0], TOWN[1] - 2.2], size: 21, t0: T.town, t1: T.town + 4.0, region: PG },
-    { text: "Port Gibson", at: [TOWN[0], TOWN[1] - 2.2], size: 21, t0: T.pg, t1: T.pg + 3.4, region: PG },
-    { text: "Bayou Pierre", at: [1312.4, 1020.8], size: 17, t0: T.burned + 0.6, t1: T.burned + 4.2, region: PG, river: true },
+    { text: "Port Gibson", at: [TOWN[0], TOWN[1] - 2.2], size: 21, t0: T.pg, t1: T.pg + 1.9, region: PG },
+    { text: "Little Bayou Pierre", at: [1313.4, 1021.4], size: 17, t0: 50.3, t1: 53.6, region: PG, river: true },
   ],
   fx,
   overlay: [
@@ -174,15 +176,15 @@ window.SEQ = {
     ["plaque.date", T.allDay, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · morning" }],
     ["label", T.counter, T.counter + 2.6, { name: "Counterattack", sub: "Bowen strikes back", world: [1289.0, 1023.6], side: "cs", marker: false }],
     ["plaque.date", T.late, { month: "May 1863", day: "1", weekday: "Friday", note: "DAY 2 · late afternoon" }],
-    ["label", T.pressed + 0.3, T.pressed + 3.4, { name: "The flank turned", sub: "a third ridge, north of the road", world: [1291.0, 1004.0], side: "us", marker: false }],
-    ["label", T.burned + 0.2, T.burned + 3.4, { name: "Over the bayou", sub: "the bridges burned behind the retreat", world: [BRG2.x + 1.0, BRG2.z + 2.4], side: "cs", marker: false }],
+    ["label", T.pressed + 0.2, T.pressed + 3.4, { name: "Pressed on both ridges", sub: "Logan's brigade on a third ridge, north of the road", world: [1288.0, 1003.6], side: "us", marker: false }],
+    ["label", 50.1, 53.4, { name: "Over the bayou", sub: "the bridges burned behind the retreat", world: [BRG2.x - 2.0, BRG2.z - 3.0], side: "cs", marker: false }],
     ["ledger.show", T.grantLost + 0.2, { title: "Port Gibson", sub: "1 May 1863 · Union loss" }],
     ["ledger.add", T.eight, { who: "131 killed", stamp: false }],
     ["ledger.add", T.eight + 0.45, { who: "719 wounded", stamp: false }],
     ["ledger.add", T.eight + 0.9, { who: "25 missing", note: "Grant's Memoirs", stamp: false }],
     ["ledger.final", T.seventy + 0.4, { lines: ["About 870", "men lost"], color: "#A8261B" }],
     ["ledger.hide", T.question - 0.4],
-    ["label", T.open + 0.2, T.open + 3.6, { name: "The road inland is open", sub: "", world: [1313.0, 1011.0], side: "us", marker: false }],
+    ["label", T.open + 0.2, T.open + 3.6, { name: "The road inland is open", sub: "", world: [1301.0, 1023.0], side: "us", marker: false }],
   ],
 };
 })();
