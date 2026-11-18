@@ -19,3 +19,18 @@ Inset: "The city of Vicksburg, Mississippi, where the battery was raised to stop
 Open issues: the far top-left corner of the first wide frames shows a sliver of the off-map border; the letter quote is a word-for-word line from memory of
 Sherman's Memoirs (FACTCHECK says "the same zealous cooperation and energetic support" - please verify the rest of the sentence); "The navy runs the guns"
 uses a lighter blue route colour (`color: "#86AEDC"`) to separate it from the army's march arrow; the 29 Dec date on the plaque is the main assault day.
+
+## Round 2 fixes (critics round1_A / round1_B)
+| Finding | Fix |
+| --- | --- |
+| B 104-124 march painted ON the river (sev 3) | New west-bank route polyline (Louisiana side, 12-30 units off the channel everywhere): Milliken's Bend - Richmond - down the west side of Roundaway Bayou - round the river's western loop - New Carthage - Hard Times (the baked road 0/1 runs on the channel between New Carthage and Perkins'). Units, arrow (w 0.28) and the Grant banner follow it. `check_paths S02`: only Chickasaw Bayou (Sherman's attack crossed the bayou under fire: legit ford). |
+| B 80-85 FAILED stamps early (sev 2) | Stamps at 85.7 / 85.95 / 86.2 on "Every attempt failed", final card 86.5. |
+| B 34-38 labels early (sev 1) | "Yazoo River" + "The Yazoo swamps" on "Yazoo" 35.0; "Grand Gulf" on 38.14. |
+| B 32-42 lone steamer looks like the April run (sev 1) | She rounds into the hairpin, comes under the guns and holds there (no passage of the city). |
+| B 88-90 newspaper label over empty swamp (sev 1) | Pinned to the Union camps at Young's Point. |
+| B 128-136 letter line 11 px, finishes late (sev 2) | `qSize` 30 (20 px at 720p), cps 56: typed by ~133.6 ("cooperation" 133.78); Grant banner leaves under the card (no half-cut banner at the edge). |
+| A 96-104 banner + boxes on the river (sev 2) | Camps moved 15-25 units west onto the Louisiana bank; Grant banner at (1262, 664) then with the column head. |
+| A world edges 0-5 TL, 21-60 TR, 102-136 L (sev 3) | Every key re-framed with a frustum check (corners inside the wide / vicksburg boxes): wide overview at x 1352, dist 505-545; close B keys yaw +6..+12 (camera SE of the bend), C keys yaw -12..-16, dist 36-56; plan + letter keys at x 1320-1360. |
+| A 42-60 red boxes diagonal strings | Engine now draws upright boxes; the three city-line groups stand in clean rows east of the city. |
+| Also | "Far below the city" label moved off the legend. |
+Open: close B framing keeps the city at the right third (the vicksburg bundle ends at x 1422; a wider look would show the world edge).

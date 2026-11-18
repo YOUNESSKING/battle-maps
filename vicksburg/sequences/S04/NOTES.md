@@ -16,3 +16,16 @@ a good road leading to Port Gibson some twelve miles in the interior", Sherman's
 Open issues: the guns are compressed (5.5 h into 12 s); the gunboats sit as a line in front of the forts rather than circling; the wide-map Grierson arrow is
 schematic (the real route ran east of the map's edge from La Grange to Baton Rouge); the night segment is dark by design; Disharoon's (geo.json) is used
 for the guide marker (Grant does not say where the man came in).
+
+## Round 2 fixes (critics round1_A / round1_B)
+| Finding | Fix |
+| --- | --- |
+| B 20-27 guide on the Confederate bank (sev 3) | Marker + "A local man · comes in with news" at Hard Times on the Louisiana side, next to the blue transports' men. |
+| A 0-15 gunboat comb + foam weir (sev 2) | Gunboats size 3 (was 5), 8.6 units apart in line (~1.4 lengths), no wake foam on the wide map; transports size 3, 7.5 apart; Yazoo + crossing boats size 3.4, no wake. |
+| A 30-35 dashed road (sev 2) | `O.distance(..., { dash: false })`: a solid thin cream line (engine option). |
+| A/B 69-87 quote over the banner, 16 s static (sev 2) | Three cards, one sentence each, on 69.46 / 74.39 / 82.13 (out 73.6 / 81.7 / 87.9), dim 0.45, low on screen (y 820-840) under the Grant banner; camera keeps rising, the column marches inland and boxes keep landing under them. |
+| B 0-3 plaque before the date (sev 1) | Checked: the plaque appears on "twenty-ninth" (3.50); nothing at 1.0 s. |
+| B 44-48 empty pan before Grierson (sev 1) | Grierson's line starts on "east" 44.81 (dur 4.5); "Jackson" pinned during the pan (44.8-48.8) and again on "drawing". |
+| A 36-48 cloud cauliflowers (sev 2) | keepClear over the Haynes' Bluff / Vicksburg view and the eastward pan. |
+`check_paths S04`: the landing units cross the Mississippi / Bayou Pierre mouth from the transports at Bruinsburg (legit landing, unchanged).
+Open: the S04 dive still uses the default white-out (~0.9 s; `off` could shorten it like S01 if the lead wants it everywhere); the wax-seal timeline is not shown in S04 (lead's call for all scenes).

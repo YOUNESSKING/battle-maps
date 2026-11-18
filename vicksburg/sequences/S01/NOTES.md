@@ -38,3 +38,23 @@ No Grant name, portrait or banner anywhere in S01. Cues: 12 gun, 1 fire, 1 whoos
 - White flags are simple planes (no cloth animation beyond a small sway); readable at dist 250 only.
 - At 30.6-33.6 a sliver of the region's south-east edge can show in the bottom-right corner (the vicksburg bundle ends at y 715).
 - Five battle sites are not marked individually (the title carries the count); the montage arrows stay on the wide map to the end.
+
+## Round 2 fixes (critics round1_A / round1_B; script + voice unchanged)
+| Finding | Fix |
+| --- | --- |
+| B 0-9 empty slow push, no action in frame 1 (sev 3) | From t = 0.25: the bluff batteries on the wide map fire at a Union gunboat rounding the bend above the city (10 shots 0.25-9.0, flash 0.2 s + plume + splash at the boat, gun cues); 2 red gun groups on the bluffs; wide troopScale 16 (was 10); push starts closer (dist 540). Plaque on "spring" (0.72). |
+| B 9.5-16.5 static under the title, dive at 17 (sev 2) | Dive push key at 9.5 ("eighteen" 9.80); slow straight push 9.5-12.8 under the title, then the dive accelerates (deck 14.7-15.85, swap 16.4); title on 9.80, grows to 10.4, leaves as the deck closes (~14.4-14.75). |
+| B 18.2-19.3 ~1 s flat white (sev 2) | New per-dive `off` (engine): warm +0.05, emerge +0.15, clear +0.4, haze +1.05 -> opaque white ~0.27 s (16.28-16.55), cloud texture in every other frame. Lands 19.75, before "guns". |
+| A plaque gone 18-34 + 50-55 (sev 2) | No plaque.hide at all: "Spring 1863" stays from 0.72 to the end. |
+| A 26-33 near top-down + 90 deg yaw (sev 2) | Close keys tilt 49-52, yaw -14 -> 0 over the whole close shot (emergence from the south looking north at the city front). |
+| A/B 20-24 flashes not readable (sev 2) | Close battery flash x1.3 + plume x1.0 bigger, flashLife 0.16 (3-5 frames); first shot on "guns". (x3 made a white blob that hid the city.) |
+| A/B pulse pink, end glow cyan (sev 2) | Both now FLAT UNLIT sprites (mode 2, normal alpha) in #be3a2a / #2c57b7 (linear values), not additive: the river reads red at 26-31 and Union blue from Vicksburg south at 51-55; the blue route arrows leave at 50.6 so the blue river is the only blue. |
+| B 30-32 nothing says FAILED (sev 1) | Red FAILED stamp slams on "failed" 32.54 over the two stopped thrusts (DOM, pinned to De Soto Point), out by 33.45; thrusts out 33.0 (before the dissolve). |
+| A 30.6-33.6 world edge (known) | Close keys re-framed; all four frame corners inside the vicksburg box at every key (frustum check). End key moved (was outside the wide box on the left). |
+| A 33.3 hard cut mid-montage (sev 2) | 0.6 s dissolve to the montage (new engine key option `dissolve`). |
+| B 39-43 montage invisible (sev 2) | Montage = short shots joined by 0.4 s dissolves: crossing below the city (dist 200), march inland, the split (Jackson driven NE / Edwards driven W, dist 390, 39.3-41.25), the Big Black bridge burning with Pemberton's boxes crossing west (dist 190, 41.25-43.3; fire t0 38.2 so it is ablaze, cue 41.3), the ring round the city + 29,500 + flags. |
+| B 44-48 payoff late (sev 1) | Script order (locked): left for the lead. |
+
+Engine changes (backward-compatible, README): `dives[].off`, cut-key `dissolve`, boats `h(t, i)`, `O.distance(..., { dash: false })`, `O.letter(..., { qSize, height })`.
+Cues now: 22 gun, 1 fire (41.3), 1 whoosh (14.85).
+Open: the dive's emergence frame (16.6-17.2) still has stratus sheets over the city for ~1 s (engine look); title says "5 BATTLES" from 9.8 (as briefed).

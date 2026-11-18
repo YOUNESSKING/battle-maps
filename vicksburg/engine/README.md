@@ -188,3 +188,13 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
 3 s 0.32 / 2 / 0.26 (plaque size, see LESSONS) · 9 s 0.01 · 12 s 0.00 · 15.5 s 0.00 · 17.5 s 0.57 / 1 / 0.11 · 22 s 0.24 / 1 / 0.30 ·
 31.5 s 0.09 · 35.2 s 0.07 · 50 s 0.01 · 60.5 s 0.05. The remaining diffs are the banner portraits' resampling (sub-pixel) and
 whole-frame noise of 1 level; the original clip itself varies run to run by up to 0.2 mean at 17.5 / 60.5 s.
+
+- Round 2 (S01-S04 agent), all backward-compatible: `dives[].off` = per-dive phase offsets from the swap that override `VX.DIVE_OFF`
+  (S01: `{ push: -6.9, warm: 0.05, emerge: 0.15, clear: 0.4, haze: 1.05 }` = the push starts on its word, white-out ~0.27 s; the whoosh cue
+  still uses the default deckIn). A cut key with `dissolve: dur` crossfades from the frozen last frame before the cut into the new shot
+  (an extra render per frame while it runs; S01 montage, S03 night -> dawn -> wide). Boats: `h` may be a function `(t, i)` (a sinking boat).
+  `O.distance(..., { dash: false })` draws a solid ruler line (Style W: no dashed lines). `O.letter(..., { qSize, height })` = a larger,
+  wrapping quote line and the card height (1920 space). Custom fx sprites with `mode` 2 (`push(..., cell, 2)`) are flat unlit with normal
+  alpha: use them for TRUE colours on water (#be3a2a red river, #2c57b7 Union-blue river); mode 1 is additive and washes out to pink/cyan.
+- Wide-map fires: a `column` fire needs ~3 s to build; start it before the shot that shows it (S01 Big Black: t0 38.2, `cue: 41.3`).
+
