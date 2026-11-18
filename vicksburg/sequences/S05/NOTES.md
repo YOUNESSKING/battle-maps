@@ -21,3 +21,31 @@ cwpb-07423 (public domain), cut out with rembg (isnet), 400x400 RGBA -> `bowen.p
 Open issues: the night shot is dark (by design; red boxes at Magnolia Church are small at night); "Bridges burned" label appears while only
 the first bridge burns (the second burns at 55.4, behind the last column, so no boxes cross a burnt bridge); the "Bayou Pierre" pin names the
 South Fork (Little Bayou Pierre) generically.
+
+## Round 2 fixes (critics round 1 -> what was done)
+| Finding | Fix |
+| --- | --- |
+| B sev 3: Union lines stretch across the ravines ("only along the ridge tops") | Union now stands as COLUMNS ON THE TWO RIDGE ROADS: Rodney road 6 rows x 2 boxes (Hovey, Carr, A. J. Smith), Bruinsburg road 3 rows x 2 (Osterhaus), each row keyed on the road with a lag; the ravines stay empty; guns on the ridge behind the column heads |
+| B/A: red line tiny and few; night boxes small | troopScale 1.45 -> 1.9; Green and Tracy 3 boxes astride each road, Baldwin 2, Cockrell 2, 1 gun per road; night camera 15-20 % closer (dist 25/24/32) |
+| A/B sev 2: red/blue interleaved at 47-49 | Bowen's whole line leaves at 46.2 (was 46.66 / 49.3 for Tracy) at v 4.2; Osterhaus follows 2 s later and slower; Logan's brigade moved 1 unit north and behind; >= 1 box depth between the sides at all times |
+| A/B sev 2: "road inland is open" arrow crosses the burning bridge | Arrow ends on the town's bank (1307.8, 1018.1), short of the South Fork bridge; label moved beside the town |
+| Bridges: only one burned / burn not on its word | Bridge 2 (Grand Gulf road, unused by any unit) fires on "burned" (49.24); bridge 0 at 53.4, after the last red column is over (checked on stills) |
+| A sev 1: "Over the bayou" plate over the Port Gibson name | second "Port Gibson" pin ends at 50.06; plate on its words "over the bayou" (50.1-53.4), anchored north of bridge 2; river pin renamed "Little Bayou Pierre" (the South Fork), 50.3-53.6 |
+| B sev 2: unspoken "The flank turned" label | now "Pressed on both ridges · Logan's brigade on a third ridge, north of the road" on "pressed" (45.0) |
+| A sev 2: cotton-ball smoke | v8-style battalion curtains on the 2-box fronts (`size 0.75, rate 4, height 0.5, cluster [0.9, 0.5]`), gun plumes `size 0.6`, impacts 0.45 |
+| A: world edge top-right 57-65 | end keys lower (tilt 50 -> 46, dist 37) |
+| A sev 1: blue boxes cut at 40 s | ridge columns sit higher in frame; blue arrows start 6 units up the roads |
+`node tools/check_paths.js S05`: OK. Open: the deployed columns bunch near the fork for ~2 s at the night -> dawn dissolve (19-21 s).
+
+## Round 3 fixes (critics round2_A + round2_B)
+- Smoke puffs 39-48 (A, sev 2) -> battalion curtains: every volley line is now a short line of curtains (`cur()`), seated ~1 unit IN FRONT of
+  its line (moves with each halt / the counterattack), many small grey puffs (size 0.55, rate 22, cluster [1.6, 0.35], tint grey, fadeAfter 6 s).
+  Added the missing Bruinsburg-road Union curtain 42-45 and Cockrell's curtain at his furthest point.
+- Bottom boxes cut 40-63 (A, sev 1): battle keys 35-65 moved west 1.5-2.5 units and out 2-4 units; Union columns tightened (lags 1.5 not 1.75),
+  guns one row further up and moved forward from 45.8; checked on stills 33-64 (nothing cut). Legend steps out at 46.6 (units under its corner,
+  then the ledger: one big card at a time).
+- Bowen arrow 12.6-17.4 crossed the Little Bayou Pierre beside the bridge and ran off the top: now two red arrows out of Port Gibson along the two
+  ridge roads (on the roads, inside the 6 % frame).
+- "Pressed on both ridges" label moved off Tracy's retreating boxes; second "Port Gibson" label beside the town, off the red columns.
+- Checks: check_paths OK; arrows inside 6 % (scratch tool); check_edges reports the TL corner beyond the region box (y 986 < 990) for the whole
+  scene, same count as the round-2 version (no edge visible on any still; the bake has margin) - unchanged, flagged for the lead.

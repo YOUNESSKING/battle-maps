@@ -13,3 +13,21 @@ Sheet: `sheet.jpg` (18 stills).
 
 Portrait: Lawler = Wikimedia Commons "MKLawler_UA_ACW.jpg" (the Wikipedia lead image, from "The Union Army" 1908; low resolution 226x328, flat crop).
 Open issues: Lawler photo is small/soft; the time jump to the next morning is a plaque change + fade-in of the columns (no dissolve).
+
+## Round 2 fixes (critics A + B round 1)
+| finding | what I did |
+| --- | --- |
+| B sev 3: the red column crosses the bridge after the fire starts (30-36 s) | Fire on the trestle now starts at 31.3 ("set them on fire"), the Dot at 31.7, the span burns at 34.5. The two flank columns and the reserve leave earlier and faster (t0 25.1 / 25.6 / 24.8, 3.4 u/s, 1.6 past the west end): simulated with the engine's escape maths, the last red box is past the west end of the bridge at 31.0 s (`esc_sim.js`, see report). The red retreat arrow is gone at 31.0, before the fire. |
+| A sev 2: Gin Lake a straight-edged polygon | Repainted in `worlds/bigblack_new/ground.jpg` (only that lake: old shape in-painted, new outline = the config polygon offset 0.45 + Chaikin x5 + a low-frequency wobble, dark shore band, broken reed fringe). Original kept at the scratchpad path in the report. The baker itself is unchanged (a re-bake would bring the polygon back: smoothing lakes in `bake_world.py` is the lasting fix). |
+| A sev 1: arrowhead without shaft at 43 s | Bridge arrows now run from 4.6 units east of each new bridge over it to 1.8 west (a real shaft), width 0.24, after the bridge has unrolled. |
+| A + B: next morning = plaque change only; Grant banner on the burning bridge | Dip through dark (film.dim 40.5-42.1) with a CUT at 41.22 to the three bridge sites, plaque clock 18 May 1863 · Day 19 · 8:00 in the morning on "morning" (41.21), warm morning grade (dusk) 41.2-44.4, back to day before the dissolve into S11. Grant's banner jumps (inside the dark) to the east bank (1516.2, 689.4), never on the bridge. |
+| A sev 1: boxes ~2 % of frame width (v8 ~3 %) | troopScale 1.2 -> 1.4 and the opening keys pulled in (44 -> 40, 34 -> 32): boxes ~1.3x bigger on screen. |
+| check_paths | 3 crossings listed = Lawler's brigade and Benton's men wading the bayou in front of the breastworks (the bayou is the obstacle in front of the line, waded in the charge); no river crossings. |
+Open: timeline seals still sit on the day labels (engine overlay, all scenes).
+
+## Round 3 fixes (critics A + B round 2)
+| Finding | Fix |
+| --- | --- |
+| A: the upper next-morning arrow crossed the Big Black with no bridge visible (its head hid new bridge 1) | each of the three arrows now runs up the east-bank approach and stops at its bridge's east end (b + 0.75 axis), width 0.2: all three new bridges are visible, and only the march columns cross the water, on the bridges |
+| A: boxes over the timeline 30-45; seals on the day labels | timeline hidden at 27.8 (after the Big Black seal at 25.55); legend out before the ledger (31.6): from the ledger on only clock + ledger remain (one big card) |
+Checks: check_paths lists only the 3 bayou wadings in the charge (legit, as round 2); check_edges OK; check_escapes: last red box past the west end at 31.0, fire 31.3 (unchanged).

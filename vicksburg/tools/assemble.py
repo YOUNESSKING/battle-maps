@@ -83,6 +83,6 @@ for i, s in enumerate(S[:-1]):
 scale = "" if "--720" in sys.argv else ",scale=1920:1080:flags=lanczos"
 fl.append(f"[{prev}]fps=30,format=yuv420p{scale}[vout]")
 subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-i", f"{B}/mix_norm.wav", "-filter_complex", ";".join(fl), "-map", "[vout]", "-map", f"{len(S)}:a",
-                "-t", f"{D:.3f}", "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", OUT], check=True)
+                "-t", f"{D:.3f}", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", OUT], check=True)
 r = subprocess.run(["ffmpeg", "-nostats", "-i", OUT, "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
 print("wrote", OUT, "| loudness", re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1], "LUFS")

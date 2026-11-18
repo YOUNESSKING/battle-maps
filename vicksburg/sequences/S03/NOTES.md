@@ -37,3 +37,28 @@ approved v8 clip (copied from `sequences/test_v8/`). Quote: Grant, Personal Memo
   its smoke is faint at night. Her hull disappears at 55 s (burned to the waterline), the fire stays on the water to dawn.
 - The disabled Henry Clay drifts faster than a real current (needed to pass the fleet within the narration).
 - Coal barges and the General Price are not modelled.
+
+## Round 2 fixes (critics round1_A / round1_B + lead queue)
+| Finding | Fix |
+| --- | --- |
+| Fleet specks 0-15 (A/B sev 2) | First key dist 18 (was 30) behind the moored fleet, slow push down the line to 12 s; boats size 0.68 (was 0.5); hull sheen + wakes x2 (9 trail sprites). Still no deck lamps (they ran dark). |
+| Gunboat count (lead) | Checked: Benton, Lafayette, Louisville, Mound City, Pittsburg, Carondelet + Tuscumbia = 7 gunboats, 3 transports (FACT_NOTES); unchanged. The wide anchored fleet now shows 9 (the Henry Clay is lost). |
+| B 22-36 no battery flash (sev 2) | Battery flash 3.2 x size 1.5, flashLife 0.18; first shot 22.31 on "Guns opened"; the 20 s key turned so the bluff batteries are in frame. |
+| B 22 plaque/clock mismatch (sev 1) | The "Night" label is gone: the watch stays at 10:30 at night (hands agree), notes "the batteries open" / "under fire for over two hours". |
+| A 48-60 Henry Clay white blob (sev 2) | Bridge-fire look: orange tongues (peak ~(248,196,96), low additive alpha), orange water glow, a soft dark-grey smoke column lit orange at its foot (curtain sprites). |
+| B 64.5 hard cut, no dawn shot; A plaque lingers (sev 2) | 1.0 s dissolve on the close world to DAWN: the fleet at anchor below the city in morning light ("Vicksburg" on its word 66.55), the date rolls to 17 April inside the dissolve; 0.7 s dissolve to the wide map at 69.55 (route arrow, ledger). Quote dim 0.5, out at 64.2 (before the dissolve). |
+| A/B 70-86 static wide (sev 2) | The 22 April run animated: grade to night on "Six nights later", camera pushes to the city (dist 200) and follows south; six steamers (lamps) run down from the foot of the west loop past the city from "steamers" 75.4, the bluff batteries fire at them (wide flashes + splashes, gun cues), one (the Tigress) is hit and sinks below the city (~81-83, no unspoken name on screen). |
+| B no Vicksburg label at 2 s | Not done: "Vicksburg" is not spoken before 66.55 (rule: nothing on screen before its word); the label sits on its word. |
+Open: night far edge of the vicksburg bundle at the top of the 29-37 s frames is in deep haze (not flagged by A).
+
+## Round 3 fixes (critics round 2)
+- B N2 (sev 3, empty river 0-16.5): the re-baked region starts the river 28 units earlier in arc length; every fleet schedule value is old + 28 (SO).
+  The moored line (Benton s 84 ... tail s 55) is mid-frame from frame 1 (camera dist 52); the Benton + Three transports labels sit on boats.
+- A (comb of boats): 3.6 units apart at the moorings (~2.2 lengths), ~4.7 underway; no wakes while moored or at anchor (engine wake off, custom wake
+  only while under way). Dawn: at anchor below the city 3.4 apart.
+- B N3: battery flashes come from the town's river edge (between the bank and the first houses, `bluffEdge`), not the street grid; flash 2.0.
+  The 47.2 shell bursts ON the Henry Clay (custom flash at her deck at water level + a boom cue).
+- A (Henry Clay fire): flames x2.4, higher column, alpha up; camera keeps her mid-left 47-60.
+- A N3 (22 April steamers): size 3.4 -> 1.4 (~x0.4), 10 units apart (~3.5 lengths), on the channel line; wide dawn fleet 2.2 -> 1.3, 9 apart.
+- B N10: dawn graded "dusk" (warm low light) 64.55 -> day at the wide dissolve.
+- Checks: check_paths OK, check_edges OK, arrows inside 5 %.

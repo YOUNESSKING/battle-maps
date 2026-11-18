@@ -28,7 +28,8 @@ const SIDE_COL = { u: "#2c57b7", r: "#be3a2a" }, ARROW_COL = { u: "#4f73c0", r: 
 const D = S.D;
 
 // ---------------- dives (v8 cloud dive, timings relative to the swap t) ----------------
-const DIVES = (S.dives || []).map((d) => ({ ...d, ...VX.diveTimes(d.t), over: d.over || d.to.at })).sort((a, b) => a.SW - b.SW);
+// d.off: per-dive phase offsets relative to the swap that override VX.DIVE_OFF (e.g. { emerge: 0.2, clear: 0.45 } = a shorter white-out)
+const DIVES = (S.dives || []).map((d) => { const o = {}; for (const k in d.off || {}) o[k] = d.t + d.off[k]; return { ...d, ...VX.diveTimes(d.t), ...o, over: d.over || d.to.at }; }).sort((a, b) => a.SW - b.SW);
 const NODIVE = { ...VX.diveTimes(1e7), over: [0, 0], from: {}, to: {} };
 const diveKeys = (d) => { const f = d.from, to = d.to, ov = d.over, k = (to.dist || 40) / 40, K = d.keys || {};
   return [
@@ -277,7 +278,7 @@ for (const B of S.boats || []) { const r = B.region || NAMES[0], R = world.regio
   for (let i = 0; i < n; i++) { const g = mkBoat(kinds[i % kinds.length]); g.scale.setScalar(sz); R.scene.add(g); BOATS.push({ B, i, g, r, R, sz }); } }
 const boatAt = (o, t) => { const { B, i, R, sz } = o, on = t > B.t0 && t < B.t1;
   if (B.path) { const s = B.sAt ? B.sAt(t, i) : (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz),   // sAt(t, i): any arc-length schedule (stops, drifting)
-    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (B.h ?? 0.35 * sz), dx: p[2], dy: p[3], on }; }
+    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (typeof B.h === "function" ? B.h(t, i) : (B.h ?? 0.35 * sz)), dx: p[2], dy: p[3], on }; }   // h(t, i): e.g. a boat sinking
   const vy = B.vy ?? 1.6, y = B.y0 + (t - B.t0) * vy - i * (B.dy ?? 4.2 * sz), p = VX.riverAtY(o.r, B.river ?? 0, y), q = VX.riverAtY(o.r, B.river ?? 0, y + Math.sign(vy || 1)), x = p[0] + (i % 2 ? 1 : -1) * (B.lane ?? 0.6 * sz);
   return { x, y: p[1], h: p[2] * R.ys + 0.35 * sz, dx: q[0] - p[0], dy: q[1] - p[1], on }; };
 const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g.position.set(b.x, b.h, b.y); o.g.rotation.y = Math.atan2(-b.dy, b.dx); o.g.visible = b.on; } };
@@ -323,7 +324,8 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
     AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r) }),
     T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, sun: SUN, shots: BATTERY_SHOTS[r] || [] }) : null }; }
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = a.color || ARROW_COL[a.side || "u"];
-  return { ...a, region: r, w: (a.width ?? 0.32) * RO(r).troopScale, a3: TRO[r].AR3.add(a.pts, col) }; });
+  return { ...a, region: r, w: Math.min(a.width ?? 0.24, 0.24) * RO(r).troopScale,   // critic A8: v6/v8 width cap
+    a3: TRO[r].AR3.add(a.pts, col) }; });
 // generals: banners on poles (banner.js, STYLE_LOCK 2f item 1) + medallion portraits; any portrait: SEQ.generals = { key: { img, flag, name, full, side, role } }
 const GENERALS = {
   grant: { img: "grant.png", side: "us", name: "Grant", full: "Ulysses S. Grant", role: "Major General" },
@@ -371,10 +373,13 @@ if (S.build) await S.build(ctx);
 
 _log("overlay");
 // ---------------- per-frame draw (pure function of t) ----------------
+// round 3 (critic B N4): unit boxes, arrows and banners step out while the dive's cloud deck / white-out covers the frame (they draw with
+// depthTest off and would otherwise sit ON the cloud) and come back as the target clears. S.diveHide = false keeps them.
+const diveHide = (t) => S.diveHide === false ? 0 : DIVES.reduce((m, d) => Math.max(m, sstep(d.deckIn + 0.2, d.full - 0.1, t) * (1 - sstep(d.emerge, d.clear + 0.35, t))), 0);
 const drawTroops = (t, region) => {
-  const L = [];
+  const L = [], HID = 1 - diveHide(t);
   for (const u of UNITS) { if (TRO[u.region] && TRO[u.region].T3) continue;
-    const on = u.region === region && t >= u.t0 && t < u.t1, op = on ? Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
+    const on = u.region === region && t >= u.t0 && t < u.t1, op = on ? HID * Math.min(sstep(u.t0, u.t0 + 0.6, t), 1 - sstep(u.t1 - 0.6, u.t1, t)) : 0;
     if (op <= 0.001) continue;
     const [cx, cy] = posAt(u.keys, t), fx = Math.cos(u.face), fy = Math.sin(u.face), px = -fy, py = fx;   // facing + front axis
     const span = u.n * u.bw + (u.n - 1) * u.gap;
@@ -399,15 +404,19 @@ const drawTroops = (t, region) => {
   for (let it = 0; it < 6; it++) for (let a = 0; a < L.length; a++) for (let c = a + 1; c < L.length; c++) { const A = L[a], B = L[c]; if (A.u === B.u || (A.u.group != null && A.u.group === B.u.group) || A.esc || B.esc || A.u.region !== B.u.region) continue;
     let dx = B.x - A.x, dy = B.y - A.y; const d = Math.hypot(dx, dy) || 1e-3; dx /= d; dy /= d; const rr = sup(A, dx, dy) + sup(B, dx, dy) + 0.05 * RO(A.u.region).troopScale;
     if (d >= rr) continue; const k = (rr - d) * 0.5; A.x -= dx * k; A.y -= dy * k; B.x += dx * k; B.y += dy * k; }
+  // owner 2026-11-18 + critics A1/B1: every box faces the camera (screen-up projected on the ground), so on screen each box is an
+  // upright rectangle like the Style W 2D boxes and never turns with its unit, its road or its line; only positions follow the facing.
+  const cu = new THREE.Vector3(0, 1, 0).applyQuaternion(world.camera.quaternion); let cfx = -cu.x, cfy = -cu.z; const cl = Math.hypot(cfx, cfy) || 1; cfx /= cl; cfy /= cl;
+  if (S.boxFacing !== "unit") for (const b of L) { b.fx = cfx; b.fy = cfy; b.px = -cfy; b.py = cfx; }
   for (const r in TRO) { const BX = TRO[r].BX; if (!BX) continue; const h = HT(r);
     BX.set(L.filter((b) => b.u.region === r).map((b) => ({ x: b.x, y: b.y, fx: b.fx, fy: b.fy, bw: b.bw, bd: b.bd, art: b.u.type === "art", op: b.op, h: h(b.x, b.y),
       color: b.capd > 0 ? `rgb(${Math.round(lerp(b.u.side === "u" ? 44 : 190, 138, b.capd))},${Math.round(lerp(b.u.side === "u" ? 87 : 58, 133, b.capd))},${Math.round(lerp(b.u.side === "u" ? 183 : 42, 122, b.capd))})` : SIDE_COL[b.u.side] }))); }
-  for (const b of BANNERS) { const on = b.region === region && t >= b.t0 && t < b.t1; let op = on ? Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
+  for (const b of BANNERS) { const on = b.region === region && t >= b.t0 && t < b.t1; let op = on ? HID * Math.min(sstep(b.t0, b.t0 + 0.5, t), 1 - sstep(b.t1 - 0.5, b.t1, t)) : 0;
     if (op <= 0) { b.e.style.opacity = 0; continue; }
     const [x, y] = b.esc && t > b.esc.t0 ? escAt(b.esc, b.esc.s(t)) : posAt(b.keys, t), s = world.projectMap(x, y, 0.02);
     if (b.esc && b.esc.fade) op *= edgeFade(b.esc.fade, s, -20, 180);   // leaves over the frame edge, never pops out mid-field
     b.e.style.opacity = op.toFixed(3); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) scale(0.6667)`; }
-  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = A.region === region && t >= A.t0 ? 1 - sstep(A.t1 - 0.6, A.t1, t) : 0, ke = 1 - (1 - k) ** 2;
+  for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = A.region === region && t >= A.t0 ? HID * (1 - sstep(A.t1 - 0.6, A.t1, t)) : 0, ke = 1 - (1 - k) ** 2;
     TRO[A.region].AR3.draw(A.a3, ke, op, A.w); }
 };
 const inDive = (t) => DIVES.some((d) => t >= d.push - 1 && t < d.SW + 5.6);
@@ -423,7 +432,8 @@ const drawPins = (t, region) => {
 // a screen-space cool veil that grows with depth; the dive (deck -> haze) keeps the neutral look tuned for the white-out. ?grade=0 = raw.
 const GP = {
   close: { sat: 0.98, toe: 4, S: 0.14, bl: 7, gl: 1, veil: [150, 160, 165], vt: 0.15, vb: 0.04, ct: 1.0 },
-  wide: { sat: 0.95, toe: 14, S: 0.1, bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },
+  wide: { sat: 0.95, toe: 30, S: 0.1,   // critic A7: toe 14 -> 22 lifts the near-black wide woods
+            bl: 4, gl: 1, veil: [150, 160, 165], vt: 0.0, vb: 0.0, ct: 0.96 },
   night: { sat: 0.95, toe: 2, S: 0.0, bl: 5, gl: 2, veil: [40, 60, 82], vt: 0.04, vb: 0.0, ct: 1.0 },
   off: { sat: 1.05, toe: 0, S: 0, bl: 0, gl: 0, veil: [150, 160, 165], vt: 0, vb: 0, ct: 1.0 } };
 for (const k in S.grade || {}) GP[k] = { ...GP[k], ...S.grade[k] };
@@ -452,7 +462,18 @@ const whiteOne = (d, t) => { if (t < d.emerge) { const v6 = t < d.SW + 0.05 ? 0.
   return t < d.clear ? lerp(1, 0.1, 1 - (1 - clamp((t - d.emerge) / (d.clear - d.emerge))) ** 2) : lerp(0.1, 0, sstep(d.clear, d.haze, t)); };
 const filmK = (t, a, b) => DIVES.reduce((m, d) => Math.max(m, sstep(d[a[0]] + a[1], d[a[2]] + a[3], t) * (1 - sstep(d[b[0]], d[b[1]], t))), 0);
 const GRAIN = (S.film || {}).grain ?? 0.04;
+// dissolves: a cut key with dissolve: dur crossfades from the last frame before the cut (frozen) into the new shot over dur seconds
+const XFADES = (S.keys || []).filter((k) => k.dissolve > 0).map((k) => ({ t: k.t, dur: k.dissolve }));
+let XC = null;
+if (XFADES.length) { XC = document.createElement("canvas"); XC.width = GL.width; XC.height = GL.height; XC.style.cssText = "position:absolute;inset:0;width:1280px;height:720px;pointer-events:none;opacity:0";
+  GL.parentNode.insertBefore(XC, GL.nextSibling); }
+const xfadeAt = (t) => { if (!XC) return; const x = XFADES.find((q) => t >= q.t && t < q.t + q.dur); if (!x) { XC.style.opacity = "0"; return; }
+  const ta = x.t - 1 / 60; gradeAt(ta); placeBoats(ta);
+  world.update(ta, { beforeRender: (w, tt) => { const fx = FX[w.region]; fx.setNight(w.cam.night || 0); drawTroops(tt, w.region); fx.update(tt, w.camera); } });
+  const g = XC.getContext("2d"); g.clearRect(0, 0, XC.width, XC.height); g.drawImage(GL, 0, 0); XC.style.filter = GL.style.filter;
+  XC.style.opacity = (1 - sstep(x.t, x.t + x.dur, t)).toFixed(3); gradeKey = ""; };
 window.__draw = (t) => {
+  xfadeAt(t);
   placeBoats(t); titleAt(t); gradeAt(t); for (const r in TRO) if (TRO[r].T3) TRO[r].T3.update(t);
   O.film.set({ grain: lerp(GRAIN, GRAIN * 0.75, filmK(t, ["full", -0.3, "wIn", 0], ["emerge", "clear"])).toFixed(3) });   // his white-out is smooth
   O.film.set({ vignette: (1 - 0.95 * filmK(t, ["full", -0.4, "wIn", 0], ["emerge", "haze"])).toFixed(3) });   // no dark oval inside the cloud

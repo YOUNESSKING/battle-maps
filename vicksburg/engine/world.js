@@ -131,16 +131,21 @@ export function initWorld(canvas, opts = {}) {
     R.water = [];
     for (const rv of d.rivers || []) {
       const P = rv.pts, n = P.length, w = rv.w * 1.08, vs = [], uv = [], ix = []; let arc = 0;
+      // round 2 (critic A "silver foil" on the siege / vicksburg Mississippi): a broad river in a close world tiles the ripple normal map
+      // every ~0.9 units instead of once per river width (fine faint ripples, not metre-sized scales); narrow rivers unchanged
+      const broad = d.kind !== "wide" && (rv.w || rv.width || 0) >= 2.5, uvK = broad ? w / 0.9 : 1;
       for (let i = 0; i < n; i++) {
         const a = P[Math.max(0, i - 1)], b = P[Math.min(n - 1, i + 1)]; let tx = b[0] - a[0], tz = b[1] - a[1]; const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l;
         if (i) arc += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]);
         const y = P[i][2] * ys + 0.002 * exag;
         vs.push(P[i][0] - tz * w / 2, y, P[i][1] + tx * w / 2, P[i][0] + tz * w / 2, y, P[i][1] - tx * w / 2);
-        uv.push(arc / w, 0, arc / w, 1);
+        uv.push(arc / w * uvK, 0, arc / w * uvK, uvK);
         if (i) { const k = (i - 1) * 2; ix.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
       }
       const wg = new THREE.BufferGeometry(); wg.setAttribute("position", new THREE.Float32BufferAttribute(vs, 3)); wg.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); wg.setIndex(ix); wg.computeVertexNormals();
       const m = new THREE.Mesh(wg, wmat); m.receiveShadow = true; scene.add(m); R.water.push(m);
+      m.userData.ns = broad ? 0.1 : d.kind === "wide" ? 0.2 : 0.35;   // critic A r2: calmer wide rivers
+      if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
     }
     R.wmat = wmat;
     // forests (v4): close = massed canopy. The bake raises a ~3 m canopy blanket under every wood (dark crown-speckle texture), and
@@ -201,7 +206,10 @@ export function initWorld(canvas, opts = {}) {
       walls.castShadow = roofs.castShadow = true; walls.receiveShadow = roofs.receiveShadow = true;
       // v4 roofs: GM's varied tile reds / oranges, some brown and slate; kind 1 = church nave (taller), 2 = church tower (tall, steep roof)
       const WALL = [0xe0d6c0, 0xd4c8ac, 0xcabd9f, 0xe8e0cc], ROOF = [0xc4593a, 0xb8533a, 0xcc6844, 0xa84a34, 0x8e5a40, 0x6c6a68, 0xd27a4c];
-      const wh = wideK ? 0.34 : 0.055, rh = wideK ? 0.3 : 0.05, hk = 1.0;   // v5: close houses smaller (plan x0.62 in the bake)
+      // critics A2/B (round 1): on the wide map red roofs read as Confederate units: muted brown-slate roofs, 0.65x footprint
+      if (wideK) ROOF.splice(0, ROOF.length, 0x7a5c4c, 0x6e5446, 0x806a58, 0x5c5652, 0x6a6460, 0x74604e, 0x5e584e);
+      else ROOF.splice(0, ROOF.length, 0x96705a, 0x8a6a58, 0x9c7a60, 0x76706a, 0x6c6a68, 0x8a7666, 0xa08068);   // critic A r2: close towns weathered brown/slate, red = Confederates only
+      const wh = wideK ? 0.34 : 0.055, rh = wideK ? 0.3 : 0.05, hk = wideK ? 0.65 : 1.0;   // v5: close houses smaller (plan x0.62 in the bake)
       hs.forEach((q, i) => { const [x, z, hm, w, dd, rot, rc] = q, kind = q[7] || 0; const y = heightAt(R, x, z) - 0.01;
         const hh = kind === 3 ? 0.028 : wh * (kind === 2 ? 4.2 : kind === 1 ? 1.7 : 0.85 + hash(i, 3) * 0.5);
         dummy.position.set(x, y, z); dummy.rotation.set(0, rot, 0); dummy.scale.set(w * hk, hh, dd * hk); dummy.updateMatrix(); walls.setMatrixAt(i, dummy.matrix);
@@ -318,7 +326,8 @@ export function initWorld(canvas, opts = {}) {
     renderer.setClearColor(R.scene.fog.color);
     // water motion: normal map drifts downstream
     wnorm.repeat.set(1, 1); wnorm.offset.set(-t * 0.12, Math.sin(t * 0.7) * 0.03);
-    R.water.forEach((m) => { m.material.normalScale.set(0.35, 0.35); });
+    R.water.forEach((m) => { const s = m.userData.ns ?? 0.35; m.material.normalScale.set(s, s);
+      if (m.material !== R.wmat) { m.material.color.copy(R.wmat.color); m.material.envMapIntensity = R.wmat.envMapIntensity * (m.userData.envK ?? 1); } });   // clones follow day / night
     // bridge burn: centre spans gone, the rest charred
     for (const B of R.bridges) { const burnt = B.burnT != null && t >= B.burnT, m0 = Math.floor((B.nSeg - 1) / 2), m1 = Math.ceil((B.nSeg - 1) / 2);   // the centre span(s) fall
       B.span.forEach((s, k) => { const mid = k >= m0 && k <= m1; s.visible = !(burnt && mid); (s.userData.rails || []).forEach((r) => (r.visible = s.visible)); });

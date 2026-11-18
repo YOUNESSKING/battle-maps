@@ -12,7 +12,7 @@ const EV = {
   volleyCS: [28.3, 34.0], volleyUS: [29.0, 33.6], bridgeFireWide: 4.6, bridgeFire: 35.68, steamer: 51.16,
   batteryShots: [47.9, 48.6, 49.5, 50.3, 51.0, 52.1, 53.0], bridgesNew: [58.79, 59.3, 59.8] };
 const WIDE = "_clip_wide", BB = "bigblack";
-const DV = VX.diveTimes(16.4);                       // the cloud dive: swap at 16.4 s (push 12.6, deck 14.7 .. land 19.75)
+const DV = VX.diveTimes(16.4); Object.assign(DV, Object.fromEntries(Object.entries(VX.DIVE_OFF_V8).map(([k, v]) => [k, 16.4 + v])));                       // the cloud dive: swap at 16.4 s (push 12.6, deck 14.7 .. land 19.75)
 const SW = DV.SW, ARR = SW + 0.6, TK = T.taken;
 const BR = VX.bridge(BB, 0), BRW = VX.work(BB, 0), ESC_RD = VX.road(BB, "main"), RIV = VX.river(BB, 0).pts, PONT = VX.region(BB).features.pontoons;
 const VB = VX.town("Vicksburg"), riverAt = (y) => VX.riverAtY(WIDE, 0, y), lerp = VX.lerp, hsh = VX.hsh;
@@ -99,7 +99,7 @@ window.SEQ = {
     { t: T.D - 1.4, region: BB, at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30 },
     { t: T.D, region: BB, at: [1512.6, 705.2], dist: 30, tilt: 52, yaw: 4, fov: 30, ease: "lin" },
   ],
-  dives: [{ t: SW, over: [1518, 706],
+  dives: [{ t: SW, off: VX.DIVE_OFF_V8, over: [1518, 706],
     from: { region: WIDE, at: [1532, 709], dist: 545, tilt: 44, yaw: 0 },
     to: { region: BB, at: [1519.6, 704.6], dist: 40, tilt: 38, yaw: -2, fov: 32 },
     keys: { emerge: { at: [1518.5, 705.2] } } }],

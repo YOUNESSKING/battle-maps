@@ -23,7 +23,9 @@ const HF = [1382.5, 883];   // Hankinson's Ferry (end of the Willow Springs - Ha
 const R8 = VX.road(W, 8);   // Grand Gulf - Willow Springs road (the one road)
 const R7 = VX.road(W, 7);   // Willow Springs - Hankinson's Ferry
 const R6 = VX.road(W, 6);   // Port Gibson - Willow Springs - Rocky Springs - Utica - Raymond
-const MISS = VX.river(W, 0).pts.filter((p) => p[1] > 957 && p[1] < 1062).map((p) => [p[0], p[1]]).filter((_, i, a) => i % 6 === 0 || i === a.length - 1);
+// one contiguous stretch of the river below Grand Gulf (a plain y filter also picked up a far meander: the arrow ran off the frame)
+const MISS = (() => { const P = VX.river(W, 0).pts, i0 = P.findIndex((p) => p[1] > 957 && p[1] < 994); let i1 = i0; while (i1 + 1 < P.length && P[i1 + 1][1] > 957 && P[i1 + 1][1] < 994) i1++;
+  return P.slice(i0, i1 + 1).map((p) => [p[0], p[1]]).filter((_, i, a) => i % 6 === 0 || i === a.length - 1); })();
 const SUP = [...R8, ...R7.slice(1)].filter((_, i, a) => i % 8 === 0 || i === a.length - 1);
 const U = "u", R = "r", NE = VX.FACE.ne;
 
@@ -36,14 +38,14 @@ const units0 = [
   // Grand Gulf garrison (in Union hands)
   { region: W, side: U, type: "inf", n: 1, face: "west", t0: 0.5, keys: [[0, GG[0] + 8, GG[1] - 10]] },
   // McClernand (XIII) at Willow Springs -> inland -> the line toward Dillon's
-  { region: W, side: U, type: "inf", n: 3, face: "north", keys: [[0, WS[0] + 12, WS[1] + 9], [T.army, WS[0] + 12, WS[1] + 9], [60.0, 1452, 902], [T.turned + 0.3, 1452, 902], [79.0, 1566, 816]] },
+  { region: W, side: U, type: "inf", n: 3, face: "north", keys: [[0, WS[0] + 12, WS[1] + 9], [T.army, WS[0] + 12, WS[1] + 9], [60.0, 1452, 902], [T.turned + 0.1, 1452, 902], [76.6, 1566, 816]] },
   // McPherson (XVII) at Hankinson's Ferry -> Utica road -> toward Raymond
-  { region: W, side: U, type: "inf", n: 3, face: "north", keys: [[0, HF[0] + 8, HF[1] + 12], [T.army + 0.4, HF[0] + 8, HF[1] + 12], [60.4, 1496, 905], [T.turned + 0.6, 1496, 905], [79.6, 1684, 792]] },
+  { region: W, side: U, type: "inf", n: 3, face: "north", keys: [[0, HF[0] + 8, HF[1] + 12], [T.army + 0.4, HF[0] + 8, HF[1] + 12], [60.4, 1496, 905], [T.turned + 0.3, 1496, 905], [77.2, 1684, 792]] },
   // Sherman (XV) comes over from Hard Times at Grand Gulf, up the one road, then inland behind
   { region: W, side: U, type: "inf", n: 2, face: "east", t0: 37.4, keys: [[0, GG[0] + 2, GG[1] + 6], [37.6, GG[0] + 2, GG[1] + 6], ...VX.march(VX.sub(R8, 6, 46), 37.8, 6.0).map((k) => [k[0], k[1], k[2] + 6, "lin"]),
-    [60.8, 1410, 925], [T.turned + 0.9, 1410, 925], [80.2, 1626, 808]] },
+    [60.8, 1410, 925], [T.turned, 1410, 925], [77.4, 1626, 808]] },   // round 3: the corps keep up with the camera (none cut by the bottom edge)
   // Pemberton: Vicksburg + the Big Black (appear on "enemy"); the Big Black mass edges toward Edwards for the stakes
-  { region: W, side: R, type: "inf", n: 3, face: "south", t0: T.enemy, keys: [[0, VB[0] + 24, VB[1] + 24], [83.0, VB[0] + 24, VB[1] + 24], [86.0, VB[0] + 40, VB[1] + 32]] },
+  { region: W, side: R, type: "inf", n: 3, face: "south", t0: T.enemy, t1: 71.4, keys: [[0, VB[0] + 24, VB[1] + 24]] },   // round 3: steps out as the camera pans east (it was cut by the left edge 84-95)
   { region: W, side: R, type: "inf", n: 3, face: "south", t0: T.enemy + 0.3, keys: [[0, 1530, 724], [83.0, 1530, 724], [86.0, 1566, 728]] },
   // Johnston's force gathering at Jackson
   { region: W, side: R, type: "inf", n: 3, face: "west", t0: T.conf + 0.6, keys: [[0, JK[0] + 12, JK[1] + 15]] },
@@ -53,24 +55,28 @@ const units = units0.flatMap((u, i) => u.side === R ? [{ ...u, ...RBIG }] : i ==
 // ---------------- arrows ----------------
 const arrows = [
   // the thin supply line back to the river (Grand Gulf -> the army); cut loose
-  { region: W, color: "#7E9BD0", width: 0.15, pts: SUP, t0: 0.9, dur: 1.8, t1: T.cut + 0.3 },
+  { region: W, color: "#7E9BD0", width: 0.15, pts: SUP, t0: 0.9, dur: 1.8, t1: 20.4 },   // round 3: fades as the camera turns to Pemberton (it would leave through the bottom edge)
   // Banks's target: Port Hudson, far down the river
   { region: W, color: "#8FA6CF", width: 0.24, pts: MISS, t0: T.portHudson + 0.05, dur: 1.6, t1: T.tenth },
   // Sherman crosses at Grand Gulf
-  { region: W, side: U, width: 0.22, pts: [[1210, 906], [1220, 914], [1229, 922]], t0: T.sherman + 0.2, dur: 1.0, t1: 38.6 },
+  { region: W, side: U, width: 0.22, pts: [[1221.5, 915.5], [1225.2, 918.8], [1229, 922]], t0: T.sherman + 0.2, dur: 1.0, t1: 38.6 },
   // the ghost arrow: what Pemberton expected (north, straight at Vicksburg)
   { region: W, color: "#B7C4DC", width: 0.4, pts: [[1398, 872], [1400, 830], [1402, 786], [1404, 744], [VB[0] + 22, VB[1] + 42]], t0: T.north - 0.2, dur: 1.8, t1: T.but + 0.5 },
   // the real arrow: north-east, toward the railroad and Jackson
-  { region: W, side: U, width: 0.5, pts: [[1430, 902], [1478, 884], [1524, 850], [1580, 812], [1640, 784], [1694, 758], [1736, 728], [1764, 702]], t0: T.turned, dur: 4.8, t1: D + 1 },
+  // round 3: a fixed tail would leave through the bottom-left edge as the camera pulls east with the army: the arrow hands over twice to
+  // its own front part (same line, same width), so the tail falls away behind the army and every visible tail stays inside the frame
+  { region: W, side: U, width: 0.5, pts: [[1494, 874], [1524, 850], [1580, 812], [1640, 784], [1694, 758], [1736, 728], [1764, 702]], t0: T.turned, dur: 3.6, t1: 72.4 },
+  { region: W, side: U, width: 0.5, pts: [[1580, 812], [1640, 784], [1694, 758], [1736, 728], [1764, 702]], t0: 72.0, dur: 0.05, t1: 79.4 },
+  { region: W, side: U, width: 0.5, pts: [[1646, 781], [1694, 758], [1736, 728], [1764, 702]], t0: 79.0, dur: 0.05, t1: D + 1 },
   // the railroad that fed the city (Jackson -> Vicksburg)
-  { region: W, color: "#A8452F", width: 0.2, pts: VX.reverse(VX.region(W).railroads[0].pts.map((p) => [p[0], p[1]])).filter((p) => p[0] < JK[0] - 12 && p[0] > VB[0] + 16).filter((_, i, a) => i % 6 === 0 || i === a.length - 1),
+  { region: W, color: "#A8452F", width: 0.2, pts: VX.reverse(VX.region(W).railroads[0].pts.map((p) => [p[0], p[1]])).filter((p) => p[0] < JK[0] - 12 && p[0] > 1500)   /* round 3: the west end left the frame as the camera pulled east */.filter((_, i, a) => i % 6 === 0 || i === a.length - 1),
     t0: T.railroad, dur: 2.0, t1: 77.0 },
   // reinforcements into Jackson (by rail from the east, from the north)
-  { region: W, side: R, pts: [[2016, 748], [1966, 738], [1916, 726]], t0: T.conf + 0.2, dur: 1.4, t1: D + 1 },
+  { region: W, side: R, pts: [[1946, 733], [1930, 729.5], [1916, 726]], t0: 79.9, dur: 1.2, t1: D + 1 },   // round 3: once the camera has settled (inside the frame)
   { region: W, side: R, pts: [[1930, 620], [1918, 662], [1906, 698]], t0: T.conf + 0.5, dur: 1.4, t1: D + 1 },
   // if they joined: two red arrows close on the army
-  { region: W, side: R, width: 0.46, pts: [[1548, 740], [1570, 768], [1592, 790]], t0: T.joined - 0.1, dur: 1.6, t1: D + 1 },
-  { region: W, side: R, width: 0.46, pts: [[1886, 742], [1820, 756], [1754, 772], [1708, 786]], t0: T.joined + 0.3, dur: 1.8, t1: D + 1 },
+  { region: W, side: R, width: 0.46, pts: [[1550, 742], [1567, 762], [1582, 778]], t0: T.joined - 0.1, dur: 1.6, t1: D + 1 },
+  { region: W, side: R, width: 0.46, pts: [[1886, 742], [1820, 756], [1766, 770], [1732, 780]], t0: T.joined + 0.3, dur: 1.8, t1: D + 1 },
 ];
 
 // ---------------- markers: wagons on the jammed road, a short train inland, cattle, corn mills ----------------
@@ -101,10 +107,13 @@ window.SEQ = {
   generals: { banks: { img: "seq/banks.png", side: "us", name: "Banks", full: "Nathaniel P. Banks", role: "Major General" } },
   keys: [
     { t: 0, region: W, at: [1318, 938], dist: 300, tilt: 46, yaw: -4, fov: 30 },
-    { t: 13.5, region: W, at: [1326, 935], dist: 288, tilt: 46, yaw: -3, fov: 30 },
+    { t: 5.0, region: W, at: [1316, 940], dist: 298, tilt: 46, yaw: -4, fov: 30 },
+    // drift south-west with the Port Hudson arrow so it stays above the letter card
+    { t: 8.0, region: W, at: [1294, 962], dist: 300, tilt: 46, yaw: -4, fov: 30 },
+    { t: 13.5, region: W, at: [1306, 950], dist: 290, tilt: 46, yaw: -3, fov: 30 },
     { t: 18.6, region: W, at: [1336, 928], dist: 282, tilt: 46, yaw: -2, fov: 30 },
-    { t: 22.6, region: W, at: [1428, 830], dist: 350, tilt: 45, yaw: 0, fov: 30 },
-    { t: 32.6, region: W, at: [1434, 826], dist: 342, tilt: 45, yaw: 1, fov: 30 },
+    { t: 22.6, region: W, at: [1420, 838], dist: 358, tilt: 45, yaw: -1, fov: 30 },
+    { t: 32.6, region: W, at: [1442, 820], dist: 334, tilt: 45, yaw: 1.5, fov: 30 },   // keeps drifting under the quote card
     { t: 36.2, region: W, at: [1282, 944], dist: 232, tilt: 48, yaw: -2, fov: 30 },
     { t: 43.2, region: W, at: [1312, 944], dist: 214, tilt: 49, yaw: 0, fov: 30 },
     { t: 47.4, region: W, at: [1442, 904], dist: 252, tilt: 48, yaw: 1, fov: 30 },
@@ -112,11 +121,11 @@ window.SEQ = {
     { t: 60.8, region: W, at: [1480, 886], dist: 218, tilt: 49, yaw: 4, fov: 30, night: 0 },
     { t: 61.5, region: W, at: [1481, 885.6], dist: 217, tilt: 49, yaw: 4.2, fov: 30, night: 0.75, ease: "lin" },
     { t: 62.5, region: W, at: [1482, 885], dist: 218, tilt: 49, yaw: 4.4, fov: 30, night: 0, ease: "lin" },
-    { t: 66.2, region: W, at: [1430, 784], dist: 368, tilt: 45, yaw: 0, fov: 30 },
+    { t: 66.2, region: W, at: [1432, 806], dist: 470, tilt: 45, yaw: 0, fov: 30 },   // round 3: the three corps stay inside the bottom edge
     { t: 74.8, region: W, at: [1690, 768], dist: 470, tilt: 44, yaw: -1, fov: 30 },
-    { t: 81.6, region: W, at: [1752, 752], dist: 425, tilt: 44, yaw: -1, fov: 30 },
-    { t: 86.2, region: W, at: [1722, 770], dist: 440, tilt: 44, yaw: 0, fov: 30 },
-    { t: D, region: W, at: [1720, 772], dist: 456, tilt: 44, yaw: 0.5, fov: 30, ease: "lin" },
+    { t: 81.6, region: W, at: [1728, 752], dist: 525, tilt: 44, yaw: -1, fov: 30 },   // round 3: both red masses and Jackson's arrows inside the frame
+    { t: 86.2, region: W, at: [1724, 766], dist: 530, tilt: 44, yaw: 0, fov: 30 },
+    { t: D, region: W, at: [1722, 768], dist: 540, tilt: 44, yaw: 0.5, fov: 30, ease: "lin" },
   ],
   clouds: {
     [W]: { scatter: { box: [1180, 600, 900, 460], n: 8, med: 22, seed: 6 },
@@ -127,8 +136,8 @@ window.SEQ = {
   // Sherman's men come over the Mississippi from Hard Times by steamer (no box ever crosses water)
   boats: [{ region: W, kind: "steamer", n: 2, path: [[1236.5, 930], [1240.5, 938], [1245, 945], [GG[0] - 6, GG[1] - 2]], speed: 3.6, spacing: 5, size: 2.2, t0: 34.4, t1: 38.4, lamp: false }],
   banners: [
-    { general: "grant", region: W, keys: [[0, GG[0] + 22, GG[1] - 18], [T.army, GG[0] + 22, GG[1] - 18], [60.0, 1470, 890], [T.turned + 0.6, 1470, 890], [79.6, 1640, 792]], t0: T.grant0 + 0.1, t1: D + 1 },
-    { general: "pemberton", region: W, keys: [[0, VB[0] + 10, VB[1] + 6]], t0: T.pem + 0.1, t1: D + 1 },
+    { general: "grant", region: W, keys: [[0, GG[0] + 22, GG[1] - 18], [T.army, GG[0] + 22, GG[1] - 18], [60.0, 1468, 864], [T.turned + 0.3, 1468, 864], [77.2, 1634, 760]], t0: T.grant0 + 0.1, t1: D + 1 },   // round 3: rides north of the arrow, never on it
+    { general: "pemberton", region: W, keys: [[0, VB[0] + 10, VB[1] + 6]], t0: T.pem + 0.1, t1: 71.4 },
   ],
   labels: [
     { text: "Grand Gulf", town: "Grand Gulf", region: W, size: 22, t0: 0.6, t1: 13.4 },
@@ -137,33 +146,33 @@ window.SEQ = {
     { text: "Edwards", town: "Edwards", region: W, size: 17, t0: T.enemy + 0.6, t1: 31.0 },
     { text: "Grand Gulf", town: "Grand Gulf", region: W, size: 20, t0: 36.4, t1: 40.0 },
     { text: "Rocky Springs", town: "Rocky Springs", region: W, size: 17, t0: 48.0, t1: 56.0 },
-    { text: "Vicksburg", town: "Vicksburg", region: W, size: 24, t0: T.vicksburg - 0.1, t1: D + 1 },
-    { text: "Jackson", town: "Jackson", region: W, size: 26, t0: T.jackson, t1: D + 1 },
+    { text: "Vicksburg", town: "Vicksburg", region: W, size: 24, t0: T.vicksburg - 0.1, t1: 71.0 },   // round 3: leaves before the pan cuts it
+    { text: "Jackson", at: [JK[0] - 24, JK[1] - 6], region: W, size: 26, t0: T.jackson, t1: D + 1 },   // round 3: up, clear of Johnston's boxes
     { text: "Raymond", town: "Raymond", region: W, size: 17, t0: 70.6, t1: 80.0 },
-    { text: "Edwards", town: "Edwards", region: W, size: 18, t0: 83.4, t1: D + 1 },
+    { text: "Edwards", town: "Edwards", region: W, size: 18, t0: T.deep + 1.0, t1: D + 1 },
   ],
   overlay: [
     ["plaque.date", 0.35, DATE(3, 4, "Sunday · Grand Gulf in Union hands")],
-    ["legend", 0.9, T.word - 0.2, LEG],
-    ["label", 1.0, 4.4, { name: "Supply line", sub: "the one road back to the river", world: [1318, 952], side: "us", marker: false }],
+    ["legend", 0.9, T.portHudson - 0.4, LEG],   // steps out before the Port Hudson arrow runs down into its corner
     ["medallion", { kind: "card", general: "banks", sub: "Department of the Gulf", screen: [1640, 300], tIn: T.banks + 0.05, tOut: T.word - 0.3 }],
-    ["label", T.portHudson + 0.1, T.tenth - 0.3, { name: "Port Hudson", sub: "far down the river · Banks's target", world: [1162, 1040], side: "us", marker: false }],
+    ["label", T.portHudson + 0.1, T.word + 0.1, { name: "Port Hudson", sub: "far down the river · Banks's target", world: [1236, 1000], side: "us", marker: false }],
     ["letter", T.word + 0.05, T.waiting - 0.2, { header: "3 May 1863 · Grand Gulf", title: "News from Banks", sub: "Major General Nathaniel P. Banks", marks: false, cps: 22, top: 800,
       quote: "Not at Port Hudson before the 10th of May, and then with only some 15,000 men." }],
     ["legend", T.waiting, T.q1 - 0.4, LEG],
-    ["label", T.waiting + 1.9, T.waiting2 - 0.1, { name: "A month lost", sub: "if he waited, Grant reckoned", world: [1300, 962], side: "us", marker: false }],
+    ["label", T.month - 0.05, T.waiting2 + 1.4, { name: "A month lost", sub: "if he waited, Grant reckoned", world: [1300, 962], side: "us", marker: false }],
     ["medallion", { kind: "card", general: "grant", sub: "Army of the Tennessee", screen: [1640, 300], tIn: T.grant + 0.05, tOut: T.q1 - 0.3 }],
-    ["quote", T.q1 - 0.1, T.city + 0.75, { en: "To move independently of Banks, cut loose from my base, destroy the rebel force in rear of Vicksburg and invest or capture the city.", attr: "Ulysses S. Grant · Personal Memoirs", y: 640 }],
+    ["quote", T.q1 - 0.1, T.city + 0.75, { en: "To move independently of Banks, cut loose from my base, destroy the rebel force in rear of Vicksburg and invest or capture the city.", attr: "Ulysses S. Grant · Personal Memoirs", y: 640, dim: 0.4 }],
     ["plaque.date", T.cut + 0.1, DATE(3, 4, "Sunday · cut loose from the base")],
     ["legend", T.sherman, T.warned - 0.3, LEG],
     ["medallion", { kind: "card", general: "sherman", sub: "XV Corps · coming up from the river", screen: [1640, 300], tIn: T.sherman + 0.05, tOut: T.oneRoad + 2.0 }],
     ["label", T.oneRoad + 0.3, T.warned - 0.2, { name: "One road", sub: "Grand Gulf to the army", world: [1330, 956], side: "us", marker: false }],
-    ["letter", T.warned - 0.05, T.reply + 0.4, { header: "May 1863 · Hankinson's Ferry", title: "Sherman to Grant", sub: "a warning", marks: false, cps: 40, top: 800,
-      quote: "Stop all troops till your army is supplied with wagons: this road will be jammed, “as sure as life.”" }],
+    ["letter", T.warned - 0.05, T.reply + 0.4, { header: "May 1863 · Hankinson's Ferry", title: "Sherman to Grant", sub: "a warning", cps: 44, top: 800,
+      quote: "Stop all troops till your army is partially supplied with wagons … for this road will be jammed, as sure as life." }],
     ["legend", T.reply + 0.8, T.make - 0.4, LEG],
     ["plaque.date", T.bread, DATE(3, 4, "Sunday · hard bread, coffee, salt")],
-    ["quote", T.make - 0.15, T.army - 0.1, { en: "…and make the country furnish the balance.", attr: "Ulysses S. Grant to Sherman · 9 May 1863", y: 660 }],
-    ["legend", T.army + 0.3, D + 1, LEG],
+    ["quote", T.make - 0.15, T.army - 0.1, { en: "…and make the country furnish the balance.", attr: "Ulysses S. Grant to Sherman · 9 May 1863", y: 660, dim: 0.4 }],
+    ["legend", T.army + 0.3, 66.6, LEG],   // round 3: steps out while the corps march across its corner
+    ["legend", 80.6, D + 1, LEG],
     ["plaque.date", T.army + 0.1, DATE(7, 8, "Thursday · living off the country")],
     ["label", T.two, T.plantation - 0.2, { name: "Two days' rations", sub: "when the army left the river", world: [1452, 904], side: "us", marker: false }],
     ["label", T.mill, T.night + 0.6, { name: "Corn mills", sub: "turned by mules · grinding day and night", world: [1505, 872], side: "us", marker: false }],
@@ -173,8 +182,8 @@ window.SEQ = {
     ["label", T.capital + 0.1, T.joseph - 0.3, { name: "The state capital", sub: "Confederate reinforcements gathering", world: [JK[0] + 4, JK[1] - 30], side: "cs", marker: false }],
     ["medallion", { kind: "card", general: "johnston", sub: "coming to take command at Jackson", world: [JK[0] + 12, JK[1] + 15], offset: [-380, -260], tIn: T.joseph + 0.05, tOut: T.other + 1.2 }],
     ["plaque.date", T.other + 0.1, DATE(11, 12, "Monday · between two armies")],
-    ["label", T.two2, T.deep + 0.6, { name: "Pemberton", sub: "Vicksburg and the Big Black", world: [1560, 752], side: "cs", marker: false }],
-    ["label", T.two2 + 0.4, T.deep + 0.9, { name: "Johnston", sub: "Jackson", world: [JK[0] + 14, JK[1] - 30], side: "cs", marker: false }],
+    ["label", T.two2, T.deep + 0.6, { name: "Pemberton", sub: "Vicksburg and the Big Black", world: [1516, 704], side: "cs", marker: false }],
+    ["label", T.two2 + 0.4, T.deep + 0.9, { name: "Johnston", sub: "Jackson", world: [JK[0] + 16, JK[1] + 44], side: "cs", marker: false }],
     ["label", T.noSupply, T.ifThey - 0.1, { name: "No supply line", sub: "deep in their own country", world: [1600, 836], side: "us", marker: false }],
     ["plaque.date", T.joined, DATE(11, 12, "Monday · if they joined")],
   ],

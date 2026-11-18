@@ -40,6 +40,7 @@ Not reachable: Bearss's troop-movement maps, Ballard, Smith (*Champion Hill*), M
 | Steele's Bayou, 14-22 Mar | CONFIRMED | Porter's gunboats trapped by felled trees and sharpshooters; Porter was ready to blow them up; Sherman's men marched through the night carrying candles in their hands and rescued the fleet. | GM ch. XXXII |
 | Duckport canal, Apr | SINGLE | Last canal attempt (Duckport to Walnut Bayou), failed as the river fell. | WP |
 | Why not go back to Memphis | CONFIRMED | Grant: a retreat to Memphis would read as defeat in the North ("draft would be resisted"); "There was nothing left to be done but to go FORWARD TO A DECISIVE VICTORY." | GM ch. XXXII |
+| Sherman's letter of 8 Apr 1863 | CONFIRMED (primary) | Sherman to Col. J. A. Rawlins (Grant's assistant adjutant-general), "Camp near Vicksburg, April 8, 1863": he urged taking the army back north and coming again by land (the line of the Yalabusha, Grenada), and closed: "Whatever plan of action he may adopt will receive from me the same zealous co-operation and energetic support as though conceived by myself." (PG text prints "cooperation"; S02 letter card uses "co-operation".) The script's "his zealous cooperation" paraphrases this. | SM ch. XIII (letter printed in full; checked in PG #4361, xmission mirror, 2026-11-18) |
 
 ## 3. The move south (16-30 Apr)
 | Fact | Status | Detail | Source |

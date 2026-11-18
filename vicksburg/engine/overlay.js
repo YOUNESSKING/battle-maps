@@ -370,7 +370,7 @@
         for (const k of keys) { if (k.t > t) break; pos = lerp(prev, k.pos, E.inout(k.d ? clamp((t - k.t) / k.d) : 1)); prev = k.pos; }
         ct.querySelector(".pg").style.width = `${(pos * cw).toFixed(1)}px`;
         cells.forEach((c, i) => c.classList.toggle("on", pos > i + 0.001 || i === 0));
-        for (const s of seals) { s.el.style.left = `${(99 + s.at * cw).toFixed(1)}px`; s.el.style.top = "26px";
+        for (const s of seals) { s.el.style.left = `${(99 + s.at * cw).toFixed(1)}px`; s.el.style.top = "10px";   // critic A r2: seals above the day labels
           if (s.name) { const bn = cells[s.name.i] && cells[s.name.i].querySelector(".bn"), v = t >= s.name.t ? s.name.text : ""; if (bn && bn.textContent !== v) bn.textContent = v; } }
         if (counter) { let v = 0, pv = 0; for (const k of cKeys) { if (k.t > t) break; v = lerp(pv, k.v, E.out(clamp((t - k.t) / k.d))); pv = k.v; } const s = fmtN(v >= 1000 ? Math.round(v / 100) * 100 : v); if (counter.textContent !== s) counter.textContent = s; }
       });
@@ -459,11 +459,14 @@
     // ---------------------------------------------------------------- 7. full-width cream letter card (header, Cinzel title, italic sub, typed quote)
     O.letter = (tIn, tOut, o) => {
       const el = mk(Lcards, "letter", `<div class="bg"></div><div class="tx"><div class="hd"><i></i><span>${esc(o.header || "")}</span><i></i></div><div class="tt">${esc(o.title)}</div>
-        <div class="sb">${esc(o.sub || "")}</div>${ornSVG("#8A826C")}<div class="q"></div></div>`, o.top != null ? `top:${o.top}px` : "");
+        <div class="sb">${esc(o.sub || "")}</div>${ornSVG("#8A826C")}<div class="q"></div></div>`, (o.top != null ? `top:${o.top}px;` : "") + (o.height != null ? `height:${o.height}px;` : ""));
+      if (o.qSize) { const q0 = el.querySelector(".q"); q0.style.fontSize = o.qSize + "px"; q0.style.lineHeight = "1.25"; q0.style.minHeight = Math.round(o.qSize * 1.25) + "px"; }   // S11 round 2: readable body (\n in the quote = line break)
       gsap.set(el, { autoAlpha: 0 }); tl.set(el, { autoAlpha: 1 }, tIn);
       tl.fromTo(el.querySelector(".bg"), { scaleY: 0 }, { scaleY: 1, duration: 0.45, ease: "power3.out", immediateRender: false }, tIn);
       const parts = el.querySelectorAll(".hd,.tt,.sb,.orn"); gsap.set(parts, { autoAlpha: 0 });
-      parts.forEach((p, i) => tl.fromTo(p, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.5, immediateRender: false }, tIn + 0.3 + i * 0.15));
+      parts.forEach((p, i) => tl.fromTo(p, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: o.partDur ?? 0.5, immediateRender: false }, tIn + (o.lag ?? 0.3) + i * (o.stagger ?? 0.15)));   // lag / stagger / partDur: S12 round 3 (title in with the band)
+      if (o.height) el.style.height = o.height + "px";   // qSize: bigger quote line that wraps (two lines), height: card height (px, 1920 space)
+      if (o.qSize) Object.assign(el.querySelector(".q").style, { fontSize: o.qSize + "px", whiteSpace: "normal", lineHeight: "1.3", padding: "0 150px" });
       const Q = el.querySelector(".q"), txt = o.marks === false ? String(o.quote || "") : `“${o.quote || ""}”`, cps = o.cps || 28, ty = { n: 0 };
       tl.fromTo(ty, { n: 0 }, { n: txt.length, duration: txt.length / cps, ease: "none", immediateRender: false, onUpdate: () => { const s = txt.slice(0, Math.round(ty.n)); if (Q.textContent !== s) Q.textContent = s; } }, tIn + 1.0);
       if (tOut != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, tOut); return O; };
@@ -498,7 +501,8 @@
     const rulers = [];
     O.distance = (tIn, tOut, o) => {
       const g = svgLayer(Lmap, "ruler");
-      g.innerHTML = `<path fill="none" stroke="rgba(0,0,0,.55)" stroke-width="6" stroke-dasharray="16 12" stroke-linecap="round"/><path fill="none" stroke="#EEE7D6" stroke-width="3.2" stroke-dasharray="16 12" stroke-linecap="round"/>
+      const da = o.dash === false ? "" : ` stroke-dasharray="16 12"`;   // dash: false = a solid line (Style W: no dashed lines)
+      g.innerHTML = `<path fill="none" stroke="rgba(0,0,0,.55)" stroke-width="${o.dash === false ? 4.5 : 6}"${da} stroke-linecap="round"/><path fill="none" stroke="#EEE7D6" stroke-width="${o.dash === false ? 2.2 : 3.2}"${da} stroke-linecap="round"/>
         <circle class="e0" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/><circle class="e1" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/>`;
       gsap.set(g, { autoAlpha: 0 }); tl.set(g, { autoAlpha: 1 }, tIn); fadeOut(g, tOut, 0.5);
       const unit = o.unit || "MILES", c = { v: 0 }, L = O.label(tIn + 0.4, tOut, { name: `${fmtN(o.value)} ${unit}`, sub: o.sub, x: 0, y: 0, marker: false, stripes: o.stripes || [] }), nm = L.el.querySelector(".nm");

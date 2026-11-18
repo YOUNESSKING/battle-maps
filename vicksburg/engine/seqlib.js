@@ -15,7 +15,10 @@
   // push = camera push-in starts (the 3D title flies past the lens ~1.7 s later), deckIn = the deck starts closing in, full = frame covered,
   // wIn = cool veil starts, SW = region swap (inside the opaque white), warm = cream phase, emerge = battlefield starts to come out,
   // clear = mostly clear, haze = last haze gone, land = camera lands (ease-out ends). Whoosh cue at deckIn + 0.15.
-  VX.DIVE_OFF = { push: -3.8, deckIn: -1.7, full: -0.55, deck: -0.45, wIn: -0.35, inside: -0.15, SW: 0, warm: 0.15, emerge: 0.85, clear: 1.15, haze: 1.8, land: 3.35 };
+  // Round 3 (critic B N4): the DEFAULT is now S01's short white-out (warm +0.05, emerge +0.15, clear +0.4, haze +1.05: ~0.7 s fully covered
+  // instead of 1.3-1.5 s). VX.DIVE_OFF_V8 keeps the original v8 profile (the regression scene passes it as dives[].off).
+  VX.DIVE_OFF_V8 = { push: -3.8, deckIn: -1.7, full: -0.55, deck: -0.45, wIn: -0.35, inside: -0.15, SW: 0, warm: 0.15, emerge: 0.85, clear: 1.15, haze: 1.8, land: 3.35 };
+  VX.DIVE_OFF = { ...VX.DIVE_OFF_V8, warm: 0.05, emerge: 0.15, clear: 0.4, haze: 1.05 };
   VX.diveTimes = (t) => { const o = {}; for (const k in VX.DIVE_OFF) o[k] = R6(t + VX.DIVE_OFF[k]); return o; };
 
   // ---------------- world data ----------------

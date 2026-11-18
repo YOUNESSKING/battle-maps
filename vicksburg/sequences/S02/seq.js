@@ -53,7 +53,7 @@ const yBot = RW[iBot][1];
 const RIVC = VX.river(VB, 0).pts.map((p) => [p[0], p[1]]);
 const BAT = VX.region(VB).features.batteries;
 // a steamer coming down the river, slowing to round the hairpin (arc length along RIVC: 108 = top of the hairpin, 122-160 the city front)
-const KS = [[23.2, 52], [26.6, 88], [29.0, 104], [31.2, 113], [33.4, 124], [37.0, 146], [CUT2, 175]];
+const KS = [[23.2, 52], [26.6, 86], [29.0, 99], [31.6, 105], [33.6, 107], [CUT2, 107]];   // she rounds into the bend, comes under the guns and holds there
 const sBoat = (t) => { if (t <= KS[0][0]) return KS[0][1] - (KS[0][0] - t) * 10; for (let i = 1; i < KS.length; i++) if (t < KS[i][0]) { const [t0, s0] = KS[i - 1], [t1, s1] = KS[i];
   const k = (t - t0) / (t1 - t0); return s0 + (s1 - s0) * k; } return KS[KS.length - 1][1]; };
 const sSm = (t) => { let a = 0; for (let k = -6; k <= 6; k++) a += sBoat(t + k * 0.25); return a / 13; };
@@ -89,18 +89,22 @@ const units = [
   // wide: Grand Gulf guns (spoken in B; on the wide map from the stakes line on)
   { region: WD, side: R, type: "art", n: 1, face: "west", t0: CUT2, keys: [[0, GG[0] + 5, GG[1] + 2]] },
   // wide: the Union above the city (Milliken's Bend, Young's Point) on "Union held"
-  { region: WD, side: U, type: "inf", n: 3, face: "south", t0: T.union, keys: [[0, MB[0] + 8, MB[1] + 6]] },
-  { region: WD, side: U, type: "inf", n: 3, face: "south", t0: T.union + 0.3, keys: [[0, YP[0] - 22, YP[1] - 6]] },
+  { region: WD, side: U, type: "inf", n: 3, face: "south", t0: T.union, keys: [[0, MB[0] - 14, MB[1] + 10]] },
+  { region: WD, side: U, type: "inf", n: 3, face: "south", t0: T.union + 0.3, keys: [[0, YP[0] - 40, YP[1] + 8]] },
   // Chickasaw Bayou (December): Sherman's men land on the Yazoo, attack the bluffs, are thrown back
   { region: WD, side: U, type: "inf", n: 3, face: VX.FACE.se, t0: T.december + 0.4, t1: T.allWinter + 1.0,
     keys: [[0, 1386, 608], [T.attacked, 1386, 608], [T.chickasaw + 0.4, 1404, 624], [T.thrown, 1404, 624], [T.thrown + 1.4, 1388, 610]] },
   { region: WD, side: R, type: "inf", n: 3, face: VX.FACE.nw, t0: T.december + 0.6, keys: [[0, 1421, 632]] },
   // the plan: the army marches down the west bank (Milliken's Bend -> Hard Times)
 ];
-const WB = [...VX.road(WD, 0), ...VX.road(WD, 1).slice(1)].map((p) => [p[0], p[1]]);
-const WBthin = WB.filter((_, i, a) => i % 8 === 0 || i === a.length - 1);
+// the west-bank road (Louisiana): Milliken's Bend - Richmond - down the west side of Roundaway Bayou - round the river's western loop - New Carthage - Hard Times,
+// 12-30 units (1.5-4 km) west of the channel everywhere (the baked road 0/1 runs ON the channel between New Carthage and Perkins')
+const WB = [MB, [1199, 609], [1180, 629], [1164, 647], [1162, 664], [1168, 680], [1178, 698], [1192, 716], [1200, 735], [1198, 755], [1188, 770], [1172, 784],
+  [1161, 800], [1155, 822], [1156, 846], [1163, 866], [1176, 882], NC, [1209, 903], HT];
+const WBthin = WB;
 const WBL = VX.len(WB);
-units.push({ region: WD, side: U, type: "inf", n: 3, face: "south", t0: T.march - 0.1, t1: D + 1, keys: VX.march(WBthin, T.march, WBL / (T.city + 0.4 - T.march), { step: 6 }) });
+const kWB = VX.march(WBthin, T.march, WBL / (T.city + 0.4 - T.march), { step: 6 });
+units.push({ region: WD, side: U, type: "inf", n: 3, face: "south", t0: T.march - 0.1, t1: D + 1, keys: kWB });
 // close: the bluff guns appear one by one along the bluffs on "batteries lined the bluffs for miles"; garrison in the city lines
 BAT.forEach((b, i) => { if (i > 10) return; units.push({ region: VB, side: R, type: "art", n: 2, face: "west", t0: 29.4 + i * 0.22, keys: [[0, b.x + 0.6, b.z]] }); });
 [[1398.5, 667.5], [1401.0, 681.5], [1396.0, 694.0]].forEach(([x, y], i) => units.push({ region: VB, side: R, type: "inf", n: 3, face: "east", t0: T.holding + i * 0.35, keys: [[0, x, y]] }));
@@ -108,25 +112,27 @@ BAT.forEach((b, i) => { if (i > 10) return; units.push({ region: VB, side: R, ty
 // ---------------- arrows ----------------
 const arrows = [
   // A: supplies from the West across the Confederate stretch (cut on "cut in two")
-  { region: WD, side: R, pts: [[1046, 792], [1130, 790], [1230, 778], [1318, 742], [1366, 700]], t0: T.across, dur: 1.6, t1: T.cut + 0.2, width: 0.38 },
-  { region: WD, side: R, pts: [[1046, 905], [1120, 912], [1196, 930], [1252, 950]], t0: T.across + 0.5, dur: 1.6, t1: T.cut + 0.2, width: 0.38 },
-  { region: WD, side: R, pts: [[1046, 1012], [1110, 1024], [1170, 1032], [1232, 1022], [1300, 1018]], t0: T.across + 1.0, dur: 1.6, t1: T.cut + 0.2, width: 0.38 },
+  // round 3 (critic A N5): v8 width, every arrow starts and ends inside a 6 % frame margin (tools/check_arrows.js)
+  { region: WD, side: R, pts: [[1134, 790], [1180, 786], [1240, 776], [1318, 742], [1362, 703]], t0: T.across, dur: 1.6, t1: T.cut + 0.2, width: 0.24 },
+  { region: WD, side: R, pts: [[1156, 864], [1196, 868], [1250, 878], [1292, 886]], t0: T.across + 0.5, dur: 1.6, t1: T.cut + 0.2, width: 0.24 },
+  { region: WD, side: R, pts: [[1176, 912], [1212, 920], [1252, 928], [1290, 932]], t0: T.across + 1.0, dur: 1.6, t1: T.cut + 0.2, width: 0.24 },
   // A: the Confederate river runs on south to Port Hudson (off the map)
-  { region: WD, side: R, pts: thin(iBot - 420, iBot - 8, 30), t0: T.port, dur: 1.4, t1: CUT1, width: 0.36 },
+  { region: WD, side: R, pts: thin(iHT, iBot, 20).filter((p) => p[1] > 866 && p[1] < 934), t0: T.port, dur: 1.4, t1: CUT1, width: 0.24 },   // stops at the frame's safe edge
   // D: stakes: the North cannot use the river (blue down the river, stopped above the city); the South still joined (red across)
-  { region: WD, side: U, pts: RIV_N, t0: T.northU - 0.1, dur: 1.4, t1: 64.6, width: 0.42 },
-  { region: WD, side: R, pts: [[1060, 742], [1180, 730], [1290, 712], [1372, 694]], t0: T.southC, dur: 1.2, t1: 65.6, width: 0.42 },
+  { region: WD, side: U, pts: RIV_N.filter((p) => p[1] > 662), t0: T.northU - 0.1, dur: 1.4, t1: 64.6, width: 0.24 },
+  { region: WD, side: R, pts: [[1128, 738], [1190, 728], [1290, 712], [1366, 696]], t0: T.southC, dur: 1.2, t1: 65.6, width: 0.24 },
   // E: Chickasaw Bayou: the attack on the bluffs
-  { region: WD, side: U, pts: [[1382, 600], [1392, 612], [1402, 624], [1410, 632]], t0: T.attacked, dur: 1.2, t1: T.thrown + 0.6, width: 0.42 },
+  { region: WD, side: U, pts: [[1382, 600], [1392, 612], [1402, 624], [1410, 632]], t0: T.attacked, dur: 1.2, t1: T.thrown + 0.6, width: 0.24 },
   // E: Grant's Canal across De Soto Point; the Yazoo routes from the north through the flooded forests (stopped short)
-  { region: WD, side: U, pts: [[1323, 694], [1334, 700], [1346, 707], [1358, 714]], t0: T.canals, dur: 1.2, t1: T.failed + 0.6, width: 0.24 },
-  { region: WD, side: U, pts: [[1492, 424], [1482, 458], [1468, 490], [1454, 516]], t0: T.cutThrough, dur: 1.6, t1: T.failed + 0.6, width: 0.4 },
+  { region: WD, side: U, pts: [[1323, 694], [1334, 700], [1346, 707], [1358, 714]], t0: T.canals, dur: 1.2, t1: 83.4, width: 0.24 },   // leaves before the camera pans north (else it slides off the bottom edge)
+  { region: WD, side: U, pts: [[1466, 498], [1458, 510], [1448, 526]], t0: T.flooded, dur: 1.2, t1: T.failed + 0.6, width: 0.24 },
   // G: the plan: down the west bank; the fleet past the guns; the crossing
-  { region: WD, side: U, pts: WBthin.filter((_, i) => i % 3 === 0 || i === WBthin.length - 1), t0: T.march, dur: T.city + 0.4 - T.march, t1: D + 1, width: 0.42 },
-  { region: WD, color: "#86AEDC", pts: RIV_RUN, t0: T.run, dur: 3.2, t1: D + 1, width: 0.2 },
-  { region: WD, side: U, pts: [[HT[0] - 4, HT[1] + 16], [HT[0] + 12, HT[1] + 30], [GG[0] + 4, GG[1] + 6]], t0: T.carry - 0.2, dur: 1.0, t1: D + 1, width: 0.48 },
-  // H: Sherman's alternative: back north and try again by land (a thin ghost arrow off the top of the map)
-  { region: WD, side: U, pts: [[MB[0] + 6, MB[1] - 4], [MB[0] + 10, MB[1] - 50], [MB[0] + 2, MB[1] - 110], [MB[0] - 6, MB[1] - 170]], t0: T.backNorth, dur: 1.4, t1: T.but + 0.6, width: 0.3 },
+  // (round 3: the plan arrows step out on "Sherman" so Sherman's ghost arrow + the letter stand alone, and the camera can frame the north)
+  { region: WD, side: U, pts: WB, t0: T.march, dur: T.city + 0.4 - T.march, t1: T.shermanH + 0.4, width: 0.24 },
+  { region: WD, color: "#86AEDC", pts: RIV_RUN, t0: T.run, dur: 3.2, t1: T.shermanH + 0.4, width: 0.2 },
+  { region: WD, side: U, pts: [[HT[0] - 4, HT[1] + 16], [HT[0] + 12, HT[1] + 30], [GG[0] + 4, GG[1] + 6]], t0: T.carry - 0.2, dur: 1.0, t1: T.shermanH + 0.4, width: 0.24 },
+  // H: Sherman's alternative: back north and try again by land (a short ghost arrow from the camps, pointing north)
+  { region: WD, side: U, pts: [[1252, 716], [1246, 690], [1242, 664]], t0: T.backNorth, dur: 1.2, t1: T.but + 0.6, width: 0.24 },
 ];
 
 // ---------------- fx ----------------
@@ -152,21 +158,21 @@ boats[0].sAt = (t) => sSm(t);
 // ---------------- camera ----------------
 const keys = [
   // A: the river from altitude
-  { t: 0, region: WD, at: [1326, 810], dist: 600, tilt: 33, yaw: 0, fov: 30 },
-  { t: 10.8, region: WD, at: [1324, 816], dist: 590, tilt: 34, yaw: 0, fov: 30 },
-  { t: CUT1, region: WD, at: [1326, 806], dist: 560, tilt: 36, yaw: -1, fov: 30 },
+  { t: 0, region: WD, at: [1352, 812], dist: 545, tilt: 34, yaw: 0, fov: 30 },
+  { t: 10.8, region: WD, at: [1352, 816], dist: 530, tilt: 35, yaw: 0, fov: 30 },
+  { t: CUT1, region: WD, at: [1354, 808], dist: 505, tilt: 37, yaw: -1, fov: 30 },
   // B: the bend + the bluffs
-  { t: CUT1, region: VB, at: [1358, 678], dist: 88, tilt: 40, yaw: -28, fov: 32, ease: "cut" },
-  { t: 28.0, region: VB, at: [1366, 674], dist: 78, tilt: 48, yaw: -40, fov: 32 },
-  { t: 33.0, region: VB, at: [1376, 678], dist: 70, tilt: 50, yaw: -52, fov: 32 },
-  { t: 39.2, region: VB, at: [1368, 676], dist: 92, tilt: 40, yaw: -20, fov: 32 },
+  { t: CUT1, region: VB, at: [1360, 686], dist: 56, tilt: 46, yaw: 6, fov: 32, ease: "cut" },
+  { t: 28.0, region: VB, at: [1366, 684], dist: 54, tilt: 47, yaw: 10, fov: 32 },
+  { t: 33.0, region: VB, at: [1372, 684], dist: 50, tilt: 48, yaw: 12, fov: 32 },
+  { t: 39.2, region: VB, at: [1372, 686], dist: 54, tilt: 47, yaw: 8, fov: 32 },
   // C: the city + Pemberton
-  { t: 44.0, region: VB, at: [1388, 681], dist: 52, tilt: 50, yaw: -48, fov: 32 },
-  { t: 51.6, region: VB, at: [1390, 680], dist: 48, tilt: 51, yaw: -56, fov: 32 },
-  { t: CUT2, region: VB, at: [1382, 676], dist: 72, tilt: 47, yaw: -40, fov: 32 },
+  { t: 44.0, region: VB, at: [1385, 684], dist: 38, tilt: 50, yaw: -12, fov: 32 },
+  { t: 51.6, region: VB, at: [1386, 683], dist: 36, tilt: 51, yaw: -16, fov: 32 },
+  { t: CUT2, region: VB, at: [1380, 682], dist: 44, tilt: 48, yaw: -12, fov: 32 },
   // D: the stakes line (wide, the map tilts)
-  { t: CUT2, region: WD, at: [1320, 820], dist: 580, tilt: 36, yaw: 0, fov: 30, ease: "cut" },
-  { t: 64.4, region: WD, at: [1324, 826], dist: 560, tilt: 28, yaw: 3, fov: 30 },
+  { t: CUT2, region: WD, at: [1352, 816], dist: 530, tilt: 35, yaw: 0, fov: 30, ease: "cut" },
+  { t: 64.4, region: WD, at: [1352, 814], dist: 520, tilt: 30, yaw: 3, fov: 30 },
   // E: the north of the city: Chickasaw Bayou, Grant's Canal, the Yazoo
   { t: 68.4, region: WD, at: [1366, 628], dist: 330, tilt: 44, yaw: 0, fov: 30 },
   { t: 76.6, region: WD, at: [1376, 626], dist: 300, tilt: 46, yaw: -2, fov: 30 },
@@ -178,11 +184,12 @@ const keys = [
   { t: 91.0, region: WD, at: [1282, 646], dist: 250, tilt: 47, yaw: -2, fov: 30 },
   { t: 102.6, region: WD, at: [1272, 660], dist: 236, tilt: 48, yaw: -4, fov: 30 },
   // G: the plan
-  { t: 107.0, region: WD, at: [1290, 790], dist: 500, tilt: 44, yaw: 0, fov: 30 },
-  { t: 116.8, region: WD, at: [1300, 862], dist: 480, tilt: 45, yaw: -1, fov: 30 },
-  { t: 124.2, region: WD, at: [1306, 770], dist: 620, tilt: 42, yaw: 0, fov: 30 },
-  // H: Sherman's letter
-  { t: D, region: WD, at: [1300, 716], dist: 590, tilt: 42, yaw: 2, fov: 30 },
+  // round 3 (critic A N5): framed 30-40 units further west so the west-bank route is not on the left frame edge
+  { t: 107.0, region: WD, at: [1322, 784], dist: 450, tilt: 42, yaw: 0, fov: 30 },
+  { t: 116.8, region: WD, at: [1312, 860], dist: 440, tilt: 42, yaw: -1, fov: 30 },
+  { t: 125.6, region: WD, at: [1330, 840], dist: 470, tilt: 41, yaw: 0, fov: 30 },
+  // H: Sherman's letter (the ghost arrow north of Milliken's Bend in frame)
+  { t: D, region: WD, at: [1334, 830], dist: 475, tilt: 40, yaw: 2, fov: 30 },
 ];
 
 const W1 = "#3C6E9E", R1 = "#9C3A35";
@@ -192,20 +199,20 @@ window.SEQ = {
   regionOpts: { [WD]: { troopScale: 17 }, [VB]: { troopScale: 3.2 } },
   keys,
   clouds: {
-    [WD]: { scatter: { seed: 5 }, keepClear: [[1260, 840, 160, 1, 0.9], [1200, 760, 120, 1, 0.9], [1383, 680, 60, 1, 0.6], [1380, 620, 70, 1, 0.6], [1280, 650, 60, 1, 0.6], [1230, 900, 70, 1, 0.6]] },
+    [WD]: { scatter: { seed: 5 }, keepClear: [[1495, 800, 150, 0.5, 1.0], [1170, 990, 80, 1, 1.0], [1470, 600, 90, 1, 1.0], [1260, 840, 160, 1, 0.9], [1200, 760, 120, 1, 0.9], [1383, 680, 60, 1, 0.6], [1380, 620, 70, 1, 0.6], [1280, 650, 60, 1, 0.6], [1230, 900, 70, 1, 0.6]] },
     [VB]: { shadows: true },
   },
   units, arrows, boats, fx,
   banners: [
     { general: "pemberton", region: VB, keys: [[0, 1384.4, 683.4]], t0: T.pem, t1: CUT2 + 0.2 },
-    { general: "grant", region: WD, keys: [[0, YP[0] - 12, YP[1] - 2], [T.march + 0.2, YP[0] - 12, YP[1] - 2], [T.city + 0.6, HT[0] + 4, HT[1] - 4]], t0: T.grant + 0.05, t1: D + 1 },
+    { general: "grant", region: WD, keys: [[0, 1262, 664], [T.march + 0.4, 1262, 664], ...kWB.filter((k) => k[0] > T.march + 2.6).map((k) => [k[0] + 0.3, k[1] + 8, k[2] - 6])], t0: T.grant + 0.05, t1: T.but + 0.2 },
   ],
   labels: [
     { text: "Mississippi River", at: [1238, 700], size: 20, t0: T.miss, t1: T.miss + 3.6, region: WD, river: true },
     { text: "Vicksburg", town: "Vicksburg", size: 24, t0: T.vb, t1: CUT1 + 0.2, region: WD },
     { text: "Vicksburg", town: "Vicksburg", size: 24, t0: T.vb2, t1: T.vb2 + 3.6, region: VB },
     { text: "Mississippi River", at: [1352, 702], size: 19, t0: T.river, t1: T.river + 3.6, region: VB, river: true },
-    { text: "Yazoo River", at: [1349, 640], size: 18, t0: T.north + 0.4, t1: T.north + 3.9, region: VB, river: true },
+    { text: "Yazoo River", at: [1352, 646], size: 18, t0: T.yazoo, t1: T.yazoo + 3.4, region: VB, river: true },
     { text: "Vicksburg", town: "Vicksburg", size: 22, t0: T.vb3, t1: T.vb3 + 3.6, region: WD },
     { text: "Chickasaw Bayou", at: [CHB[0] - 2, CHB[1] - 8], size: 18, t0: T.chickasaw, t1: T.chickasaw + 3.6, region: WD, river: true },
     { text: "Grant's Canal", at: [CANAL[0] - 4, CANAL[1] + 8], size: 17, t0: T.canals + 0.3, t1: T.canals + 3.8, region: WD },
@@ -218,17 +225,17 @@ window.SEQ = {
     // A
     ["plaque.date", T.winter + 0.1, { month: "Winter 1862-63", day: "", weekday: "", note: "the Mississippi" }],
     ["label", T.only + 0.2, T.only + 3.6, { name: "The last Confederate stretch", sub: "Vicksburg to Port Hudson", world: [1300, 900], side: "cs", marker: false }],
-    ["label", T.port, T.port + 3.8, { name: "Port Hudson", sub: "Louisiana · further downriver", world: [BOTTOM[0], BOTTOM[1]], side: "cs", marker: false, offset: [24, -70] }],
+    ["label", T.port, T.men - 0.1, { name: "Port Hudson", sub: "Louisiana · further downriver", world: [BOTTOM[0], BOTTOM[1]], side: "cs", marker: false, offset: [24, -70] }],
     ["label", T.men - 0.2, T.west + 2.4, { name: "Men, cattle, supplies", sub: "from the West", world: [1110, 905], side: "cs", marker: false }],
     // B
     ["inset", T.vb2 + 0.4, T.round - 0.2, { img: "seq/inset_vicksburg.jpg", x: 1310, y: 150, w: 500, h: 323, caption: "Vicksburg from the river · Harper's Weekly 1861 · Library of Congress" }],
     ["label", T.hairpin, T.hairpin + 3.4, { name: "The hairpin bend", sub: "every boat slows to round it", world: [1372, 651], marker: false, offset: [-150, -90] }],
     ["label", T.batteries, T.batteries + 3.4, { name: "River batteries", sub: "along the bluffs for miles", world: [1392, 690], side: "cs", marker: false }],
-    ["label", T.north, T.north + 3.4, { name: "The Yazoo swamps", sub: "to the north", world: [1366, 641], marker: false, offset: [28, -40] }],
-    ["label", T.south, T.south + 2.9, { name: "Grand Gulf", sub: "more guns · downriver", world: [1369, 712], side: "cs", marker: false, offset: [28, -60] }],
+    ["label", T.yazoo, T.yazoo + 3.2, { name: "The Yazoo swamps", sub: "to the north", world: [1368, 648], marker: false, offset: [28, -40] }],
+    ["label", T.grandGulf, T.grandGulf + 2.8, { name: "Grand Gulf", sub: "more guns · downriver", world: [1369, 706], side: "cs", marker: false, offset: [28, -60] }],
     // C
     ["medallion", { kind: "card", general: "pemberton", sub: "a Pennsylvanian who chose the South", screen: [1765, 215], tIn: T.john, tOut: 46.6 }],
-    ["legend", T.penn, 129.4, { entries: [{ name: "Union", color: W1 }, { name: "Confederates", sub: "Pemberton", color: R1 }] }],
+    ["legend", T.penn, T.march - 0.6, { entries: [{ name: "Union", color: W1 }, { name: "Confederates", sub: "Pemberton", color: R1 }] }],
     ["medallion", { kind: "card", general: "davis", role: "Confederate President", sub: "orders: hold Vicksburg", screen: [1765, 215], tIn: T.davis, tOut: 51.4 }],
     ["label", T.riverFront, CUT2 - 0.1, { name: "The river in front", world: [1377, 690], marker: false, offset: [-300, -20] }],
     ["label", T.swamps, CUT2 - 0.1, { name: "The swamps to the north", world: [1392, 648], marker: false }],
@@ -238,27 +245,27 @@ window.SEQ = {
     ["plaque.date", T.december + 0.05, { month: "December 1862", day: "29", weekday: "Monday", note: "Chickasaw Bayou" }],
     ["medallion", { kind: "card", general: "sherman", sub: "Grant's friend", screen: [1765, 215], tIn: T.friend, tOut: 74.2 }],
     ["ledger.show", 74.5, { title: "A winter of failures", sub: "December 1862 - March 1863" }],
-    ["ledger.add", 74.8, { who: "Chickasaw Bayou", note: "Sherman thrown back", stamp: "FAILED", stampAt: T.losses - 0.1 }],
+    ["ledger.add", 74.8, { who: "Chickasaw Bayou", note: "Sherman thrown back", stamp: "FAILED", stampAt: 85.7 }],
     ["plaque.date", T.allWinter, { month: "Winter 1862-63", day: "", weekday: "", note: "canals and bayous" }],
-    ["ledger.add", T.canals, { who: "Grant's Canal", note: "across De Soto Point", stamp: "FAILED", stampAt: T.bends + 0.3 }],
-    ["ledger.add", T.flooded, { who: "The Yazoo routes", note: "through the flooded forests", stamp: "FAILED", stampAt: T.round2 + 0.3 }],
-    ["ledger.final", T.every + 0.1, { lines: ["Every attempt", "failed"], color: "#A8261B" }],
+    ["ledger.add", T.canals, { who: "Grant's Canal", note: "across De Soto Point", stamp: "FAILED", stampAt: 85.95 }],
+    ["ledger.add", T.flooded, { who: "The Yazoo routes", note: "through the flooded forests", stamp: "FAILED", stampAt: 86.2 }],
+    ["ledger.final", 86.5, { lines: ["Every attempt", "failed"], color: "#A8261B" }],
     ["ledger.hide", 89.6],
     // F
-    ["label", T.newspapers, T.removal + 1.0, { name: "In the Northern papers", sub: "calls for his removal", x: 760, y: 300, marker: false, stripes: [] }],
+    ["label", T.newspapers, T.removal + 1.0, { name: "In the Northern papers", sub: "calls for his removal", world: [YP[0] - 40, YP[1] + 8], marker: false, stripes: [], offset: [-150, 40] }],
     ["medallion", { kind: "card", general: "grant", sub: "about to turn forty-one", screen: [1765, 215], tIn: T.ulysses, tOut: 97.4 }],
     ["plaque.date", T.spring, { month: "Spring 1863", day: "", weekday: "", note: "a new idea" }],
     ["label", T.riskiest - 0.3, T.riskiest + 2.4, { name: "The riskiest idea yet", sub: "some of his own generals", world: [1250, 740], side: "us", marker: false }],
     // G
     ["label", T.louisiana2, T.louisiana2 + 3.0, { name: "Through the Louisiana swamps", sub: "down the west bank", world: [1180, 760], side: "us", marker: false, offset: [-360, -20] }],
-    ["label", T.below, T.below + 3.6, { name: "Far below the city", sub: "Hard Times, Louisiana", world: [HT[0] - 2, HT[1] + 2], side: "us", marker: false, offset: [-330, 10] }],
+    ["label", T.below, T.below + 3.6, { name: "Far below the city", sub: "Hard Times, Louisiana", world: [HT[0] - 2, HT[1] + 2], side: "us", marker: false, offset: [40, -50] }],
     ["label", T.run, T.run + 3.4, { name: "The navy runs the guns", sub: "at night", world: [1350, 760], side: "us", marker: false }],
     ["label", T.carry, T.carry + 3.2, { name: "Across the river", world: [GG[0] + 6, GG[1] + 8], side: "us", marker: false }],
     ["label", T.enemy, T.enemy + 3.0, { name: "On the enemy's side", world: [1300, 900], side: "cs", marker: false }],
-    ["label", T.supply, D - 3.4, { name: "Every supply he had", sub: "behind the fortress", world: [MB[0], MB[1]], side: "us", marker: false, offset: [36, 18] }],
+    ["label", T.supply, T.backNorth - 0.1, { name: "Every supply he had", sub: "behind the fortress", world: [MB[0], MB[1]], side: "us", marker: false, offset: [36, 18] }],
     // H
     ["medallion", { kind: "card", general: "sherman", sub: "go back north · try again by land", screen: [1765, 215], tIn: T.shermanH, tOut: T.but - 0.3 }],
-    ["letter", T.but, D + 1, { header: "8 April 1863 · near Vicksburg", title: "Sherman to Grant's staff", sub: "Sherman's Memoirs", cps: 34,
+    ["letter", T.but, D + 1, { header: "8 April 1863 · near Vicksburg", title: "Sherman to Grant's staff", sub: "Sherman's Memoirs", cps: 56, qSize: 30, height: 236,
       quote: "Whatever plan of action he may adopt will receive from me the same zealous co-operation and energetic support as though conceived by myself." }],
   ],
   // Vicksburg pulses red on the wide map on "fortress" (DOM disc pinned to the ground, a pure function of t, as in S07)

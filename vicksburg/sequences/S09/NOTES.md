@@ -27,3 +27,33 @@ Open issues
 - The wide map's town glyphs (Edwards, Bolton, Raymond) are red crosses from the bake and sit near the red units.
 - Loring portrait licence not re-checked on Commons (rate-limited): verify it is the public-domain period photograph before publishing.
 - Clock runs on to 5:20 for Tilghman (sourced, OR2) rather than stopping at ~3:30.
+
+## Round 2 fixes (critics A + B round 1)
+| finding | what I did |
+| --- | --- |
+| B sev 3 / A sev 2: crest fight 88-112 s a tangle of red inside blue | Every crest unit is now keyed in FRONT coordinates (`FR(s, p)`: s along the attack axis Champion house -> crest, p across it). Hovey + Crocker always on the Union side, Lee + Bowen + Cumming on the other, a 3.5-5 unit gap that moves: crest taken (59) -> Bowen pushes Hovey nearly to the Champion house (91.5) -> Union line + massed guns at the foot -> the third push carries the crest again (105-108), the fresh red battery turns grey in front of the blue line. Camera turned ALONG the axis for 89-117 s (yaw -30..-42, tilt 37-40): Union line at the top, Confederate line below, gap across the frame. Lee / Cumming / Barton moved so they no longer sit inside Logan's lines (59-66, 121 s). |
+| A: massed Union guns 97-104 show no flashes | The three batteries now stand IN FRONT of the rallied line (as the narration says) and fire 11 shots 99.8-108.2 with an explicit muzzle flash each (`flash`), impacts on Bowen's line low on the slope, then on the crest after "contested"; gun + boom cues come from fx.guns. |
+| B sev 2: clock 12:14 "Hovey takes the crest" vs "eleven o'clock" | 11:00 holds from "eleven o'clock" (53.6) to "took it"; the hands spin 11:00 -> 13:00 between 58.6 and 59.7 (FACT: crest ~1 p.m.), note "Hovey takes the crest" on 59.1. |
+| B sev 2: ledger "~3,800" | "Confederates about 3,800". |
+| A sev 2: Grant banner cut by the top edge (75-78, 162-168), Bowen card at the bottom edge (81-84) | Grant banner moved down the slope (1650.6, 693.0), in on "sent order after order" (73.6) with a camera pulled north (keys 74.2 / 77.6); out before the camera turns along the crest axis (87.9); back 117.6-135.4 (out before it leaves the frame); not up during the ledger; back on the hill for "That night". Bowen card above-right of its unit (offset 150, -250). Order arrows shortened to stay inside the frame. |
+| A sev 2: dark teal woods blanket (S09 close mean 70,79,72) | Scene grade `close: { toe: 34, bl: -6, gl: -1 }`: lifted, warmer canopy; close stills now mean ~(84-95, 90-99, 79-84). |
+| A sev 3: world edge ~97-105 TR (and 62-66 TL, 72-80 TR found by the check) | All camera keys re-tilted / moved; frustum-corner check (`edges.js`, see report) OK at margin 1 except 0.5 s inside the night dissolve at 172.8 (haze). |
+| A sev 2: smoke = round puffs | Volleys are engine smokeLines (`SMOKE_GM` curtains); all crest curtains redrawn along the new lines (front coordinates). |
+| B sev 1: Logan arrow 2 s early | t0 120.1 (on "Logan's men" 120.19). |
+| check_paths: wide groups crossed Baker's Creek | The wide-map Confederate groups now cross only near the lower bridge and stay east of the creek after the about-turn (26.6 / 28.6 keys); `check_paths S09` OK. |
+| quote cards dim the map | `dim: 0.4` on the three quote cards (camera keeps moving under them). |
+| rout / Loring arrows ran off the frame | shortened to end inside the frame. |
+Open: wide-map cloud at the lower-left corner 1-12 s (unchanged); scene folder 25.5 MB (two regions, unchanged).
+
+## Round 3 fixes (critics A + B round 2)
+| Finding | Fix |
+| --- | --- |
+| B N7: McClernand card cut by the right edge 66-70 | card offset [-440, -150] (left of its anchor); the camera reaches McClernand's roads at 69.6 (was 70.8) |
+| B N11: clock read 11:36 at 58.0 | the 13:00 run starts on "took it" (59.18) and lasts 0.95 s: 11:00 holds until the crest is taken |
+| A: smoke puffs on the boxes 96-110 (and the crest guns 58) | volleys = dense v7 battalion curtains (rate x2.6, size 1.0, alpha 0.17, cluster [1.5, 0.8], seated 2.2); every gun (massed Union guns, crest guns, Tilghman / A. J. Smith) fires small forward-jetting plumes (`plume 0.45, puffs 7, jet 1.6`) instead of round puffs |
+| A N6: wide clouds lower-left 0-12 | keepClear [1580, 790, 95] + [1625, 800, 70] |
+| A: four furniture pieces 166-172; boxes over the timeline (172 on "18") | legend out at 161.25 before the ledger; the timeline now only shows 140.6-144.5 for the Champion Hill seal (hidden on "Loring"); legend also out for the crest fight 84.8-118.9 (red boxes sat under it); end camera nudged south (171.4 / 173 keys) so McClernand's columns are above the bottom edge (check_edges OK) |
+| A N5: arrow at 87 (2x long, off the bottom edge, head on the Union boxes) | Bowen's two arrows short (s 3.4 -> -1.0), width 0.19, in front of each brigade, gone at 88.4 before the brigades reach them; the reinforcement arrows (104-109) start inside the frame (s -6.4 -> 1.6) |
+| A N7: sheared boxes 100-110 | crest-fight keys 89-108.6 at fov 22, dist x1.36 (same framing, much less perspective shear: boxes are upright rectangles) |
+| B N4 (engine, lead/other agent): boxes on the dive cloud 31-33 | engine diveHide + short white-out; checked on the stills at 31.9 / 33.2 |
+Checks: check_paths OK, check_edges OK, check_escapes as round 2 (Loring's escapes have no bridge: they leave south-east by road).

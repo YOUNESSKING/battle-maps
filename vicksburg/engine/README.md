@@ -175,6 +175,8 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
 
 - `O.letter(..., { marks: false })` types the quote text as given (no automatic curly quotes around it): for a paraphrased
   message with only a few words in quote marks (S06 Sherman: this road will be jammed, "as sure as life."). Default unchanged.
+- `O.letter(..., { qSize: 30, height: 250, top: 680 })`: optional bigger typed body (default 18 px is ~12 px at 720p; a `\n` in the quote
+  breaks the line) and a taller card to hold it (S11 round 2). Defaults unchanged.
 
 - Units with the same `group` key are not pushed apart from each other: lets a scene swap one unit for a bigger copy of itself
   (own `bw` / `bd`) with a short crossfade when the camera pulls far back (S06: thicker boxes on the 450-unit wide shots).
@@ -186,3 +188,21 @@ keep units <= ~250 boxes per region (instanced, `max` 256 in `createBoxes3D`), s
 3 s 0.32 / 2 / 0.26 (plaque size, see LESSONS) · 9 s 0.01 · 12 s 0.00 · 15.5 s 0.00 · 17.5 s 0.57 / 1 / 0.11 · 22 s 0.24 / 1 / 0.30 ·
 31.5 s 0.09 · 35.2 s 0.07 · 50 s 0.01 · 60.5 s 0.05. The remaining diffs are the banner portraits' resampling (sub-pixel) and
 whole-frame noise of 1 level; the original clip itself varies run to run by up to 0.2 mean at 17.5 / 60.5 s.
+
+- Round 2 (S01-S04 agent), all backward-compatible: `dives[].off` = per-dive phase offsets from the swap that override `VX.DIVE_OFF`
+  (S01: `{ push: -6.9, warm: 0.05, emerge: 0.15, clear: 0.4, haze: 1.05 }` = the push starts on its word, white-out ~0.27 s; the whoosh cue
+  still uses the default deckIn). A cut key with `dissolve: dur` crossfades from the frozen last frame before the cut into the new shot
+  (an extra render per frame while it runs; S01 montage, S03 night -> dawn -> wide). Boats: `h` may be a function `(t, i)` (a sinking boat).
+  `O.distance(..., { dash: false })` draws a solid ruler line (Style W: no dashed lines). `O.letter(..., { qSize, height })` = a larger,
+  wrapping quote line and the card height (1920 space). Custom fx sprites with `mode` 2 (`push(..., cell, 2)`) are flat unlit with normal
+  alpha: use them for TRUE colours on water (#be3a2a red river, #2c57b7 Union-blue river); mode 1 is additive and washes out to pink/cyan.
+- Wide-map fires: a `column` fire needs ~3 s to build; start it before the shot that shows it (S01 Big Black: t0 38.2, `cue: 41.3`).
+
+- Round 3 (S09-S12 agent): `O.letter(..., { lag, stagger, partDur })` = when the header / title / sub / ornament fade in after the band
+  (defaults 0.3 / 0.15 / 0.5 s, unchanged); S12 uses 0.05 / 0.06 / 0.35 so the title arrives with the band (no empty cream band).
+  Scene-level fix for sheared off-centre boxes in low close shots: a narrower lens from further away (fov 21-22, dist x tan(15)/tan(fov/2)).
+- Round 3 (S01-S04 agent): the dive DEFAULT is now S01's short white-out (`VX.DIVE_OFF` warm +0.05, emerge +0.15, clear +0.4, haze +1.05; ~0.7 s
+  fully covered); `VX.DIVE_OFF_V8` keeps the original v8 profile (test_v8 passes it as `dives[].off` and in its DV). Unit boxes, arrows and banners
+  fade out while a dive's deck closes (deckIn+0.2 -> full-0.1) and back in as the target clears (emerge -> clear+0.35); `S.diveHide = false` keeps them.
+  New `tools/check_arrows.js SNN [margin]`: reports arrow points (while drawing and drawn) outside a frame safe margin (default 6 %, ground plane).
+
