@@ -135,7 +135,7 @@ const arrows = arrows0.map((a) => a.region === W || a.width ? a : { ...a, width:
 
 // ---------------- fx (only what the camera sees: every gun / volley is a sound cue) ----------------
 // round 3 (critic A: round puffs on the boxes): dense v7 curtains = high rate, smaller sprites, wide clusters, seated low, in front of the line
-const SMK = (dir, rate = 1.3) => ({ dir, size: 0.6, alpha: 0.075, life: 8, muzzle: 5, windK: 0.7, rate: rate * 2.4, volley: 1.6, roll: 0.9, height: 2.8, cluster: [3.2, 1.6] });   // v5: thinner, broken, dissipating   // (GM test v4) wispier grey curtains, not white discs
+const SMK = (dir, rate = 1.3) => ({ dir, size: 0.85, alpha: 0.09, life: 11, muzzle: 5, windK: 0.4, rate: rate * 2.4, volley: 1.6, roll: 0.9, height: 2.4, cluster: [2.6, 1.4] });   /* (box test v10) ~50 % of the film's puffs (alpha 0.17 size 1.0): irregular grey wisps drifting slowly */   // v5: thinner, broken, dissipating   // (GM test v4) wispier grey curtains, not white discs
 const VOL = (pts, t0, t1, dir, rate) => ({ region: C, pts, t0, t1, opts: SMK(dir, rate) });
 const shotsAt = (gunPts, times, dir, impacts, delay = 0.85) => times.map((t, i) => ({ t, at: gunPts[i % gunPts.length], dir, impact: impacts[i % impacts.length], delay }));
 const fx = {

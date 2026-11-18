@@ -17,7 +17,7 @@ const SLOWX = BR.x - 0.8;   // the west end of the bridge
 const ESC = (t0, v = 2.1, from = 0) => ({ road: RD, t0, v, v2: 1.6, slowX: SLOWX, join: "west", from });
 // round 2 (owner rule: never cross a bridge after its fire starts): the flanks and the reserve start for the bridge as the line falls
 // (24.8-25.6) and the last red box is past the west end by ~31.0 (tools: esc_sim); the fire starts at FIRE_T = 31.3 ("set them on fire")
-const ESC_T = [13.4, 13.3, 13.1], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
+const ESC_T = [18.9, 18.8, 18.6], FIRE_T = 31.3;   // (GM test) earlier, so a steady walk clears the bridge before the fire
 const TK = 21.2;   // Lawler reaches the works (north first)
 const SWF = 3 * Math.PI / 4;
 
@@ -88,10 +88,8 @@ window.SEQ = {
     { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 40, tilt: 46, yaw: -4, fov: 30 },
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
-    { t: 20.0, region: BB, at: [1514.8, 684.0], dist: 21.0, tilt: 52, yaw: -8, fov: 30 },   // (GM test v6) closer on the road + bridge from the first retreat step, held still until the column is across
-    { t: 24.0, region: BB, at: [1514.6, 684.0], dist: 20.8, tilt: 52, yaw: -8, fov: 30 },
-    { t: 25.8, region: BB, at: [1511.9, 684.0], dist: 15.5, tilt: 50, yaw: -8, fov: 30 },   // (GM test v7) close on the bridge so the men streaming across read, held still
-    { t: 32.6, region: BB, at: [1511.8, 684.0], dist: 15.3, tilt: 50, yaw: -8, fov: 30 },
+    { t: 20.0, region: BB, at: [1514.2, 684.0], dist: 20.4, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
+    { t: 32.6, region: BB, at: [1514.2, 684.0], dist: 20.4, tilt: 52, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11

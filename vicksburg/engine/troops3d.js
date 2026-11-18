@@ -164,6 +164,13 @@ export function createTroops3D(o) {
         for (let pass = 0; pass < 3; pass++) { const Hn = 60, S2 = R.map((p, k) => { if (k < 2) return p; const h = Math.min(Hn, k); let x = 0, y = 0, n = 0; for (let q = k - h; q <= Math.min(R.length - 1, k + h); q++) { x += R[q][0]; y += R[q][1]; n++; } return [x / n, y / n]; });
           for (let k = 0; k < R.length; k++) R[k] = S2[k]; } path = R;
         if (BOXL) { const L1 = Math.max(0.1, Math.min(0.8, 0.3 * Math.hypot(J[0] - sl[0], J[1] - sl[1]))), n0 = Math.min(path.length - 2, Math.max(1, Math.round(L1 / 0.05))), P1 = path[n0], st2 = []; for (let k = 0; k <= n0; k++) st2.push([lerp(path[0][0], P1[0], k / n0), lerp(path[0][1], P1[1], k / n0)]); path = st2.concat(path.slice(n0 + 1)); } }   /* v9: a straight first step (the box turns in place to it, then walks) */
+      let SEG = null;   /* v10 (critics on v9): straight legs only: slot -> near deck end -> far deck end -> the road's end (turn in place, then walk; the deck turn is hidden by the fade) */
+      if (BOXL && BRIDGES.length) { const B = BRIDGES.reduce((m, Bq) => { let d = 1e9; for (const p of road) d = Math.min(d, Math.hypot(p[0] - Bq.x, p[1] - Bq.z)); return d < m.d ? { d, B: Bq } : m; }, { d: 1e9, B: null }).B;
+        const ax = [Math.cos(B.angle), Math.sin(B.angle)], hl = B.len / 2 + 0.05, e1 = [B.x + ax[0] * hl, B.z + ax[1] * hl], e2 = [B.x - ax[0] * hl, B.z - ax[1] * hl];
+        const near = Math.hypot(e1[0] - sl[0], e1[1] - sl[1]) < Math.hypot(e2[0] - sl[0], e2[1] - sl[1]) ? e1 : e2, far = near === e1 ? e2 : e1, ex = road[road.length - 1];
+        const P4 = [sl, near, far, ex], NP = [P4[0]]; for (let k = 1; k < 4; k++) { const a0 = P4[k - 1], a1 = P4[k], n = Math.max(1, Math.ceil(Math.hypot(a1[0] - a0[0], a1[1] - a0[1]) / 0.05)); for (let m = 1; m <= n; m++) NP.push([a0[0] + (a1[0] - a0[0]) * m / n, a0[1] + (a1[1] - a0[1]) * m / n]); }
+        path = NP; const aA = Math.hypot(near[0] - sl[0], near[1] - sl[1]), fB = aA + Math.hypot(far[0] - near[0], far[1] - near[1]);
+        SEG = { aA, fB, hA: ang(near[0] - sl[0], near[1] - sl[1]) + Math.PI, hC: ang(ex[0] - far[0], ex[1] - far[1]) + Math.PI }; SEG.hC = SEG.hA + angDiff(SEG.hA, SEG.hC); }
       let kj = 0, dj = 1e9; path.forEach((p, k) => { const d = Math.hypot(p[0] - J[0], p[1] - J[1]); if (d < dj) { dj = d; kj = k; } });
       const a = pathLen(path.slice(0, kj + 1));
       // the path's tangent angle, UNWRAPPED along its length (the plate turns exactly as the path bends: no flips, no snaps)
@@ -176,8 +183,9 @@ export function createTroops3D(o) {
         return (lo + (ev - eff[lo]) / Math.max(1e-6, eff[hi] - eff[lo])) * 0.1; };
       const jn = road[Math.min(j + 1, road.length - 1)], dd = ang(jn[0] - road[j][0], jn[1] - road[j][1]) || 0;
       const thr = angs[Math.min(angs.length - 1, Math.round((a + 1) / 0.1))] - angs[0], poff = Math.abs(thr + Math.PI / 2) < Math.abs(thr - Math.PI / 2) ? Math.PI / 2 : -Math.PI / 2;
-      const aE = BOXL ? eff[Math.min(eff.length - 1, Math.round(a / 0.1))] : a;   /* v9: queue by the EFFECTIVE (bend-slowed) approach, so arrivals at the join keep their spacing */
-      const q = { u, i, path, a: aE, angs, poff, e2w, rj: rc[j], t0: E.t0, len: BOXL ? D.bw * 1.2 : D.cl, gap: D.spacing - D.bw, off: Math.abs(angDiff(fa, dd + Math.PI / 2)) <= Math.abs(angDiff(fa, dd - Math.PI / 2)) ? Math.PI / 2 : -Math.PI / 2 };
+      const aE = SEG ? SEG.aA : BOXL ? eff[Math.min(eff.length - 1, Math.round(a / 0.1))] : a;   /* v9: queue by the EFFECTIVE (bend-slowed) approach, so arrivals at the join keep their spacing */
+      if (SEG) { const dT = Math.abs(angDiff(fa, SEG.hA)); SEG.tt = Math.max(0.9, (dT + 0.1) / 0.44 + 0.3); }
+      const q = { u, i, path, a: aE, angs, seg: SEG, poff, e2w: SEG ? ((ev) => ev) : e2w, rj: SEG ? 0 : rc[j], t0: E.t0, len: BOXL ? D.bw * 1.2 : D.cl, gap: D.spacing - D.bw, off: Math.abs(angDiff(fa, dd + Math.PI / 2)) <= Math.abs(angDiff(fa, dd - Math.PI / 2)) ? Math.PI / 2 : -Math.PI / 2 };
       (QUEUES.get(key) || QUEUES.set(key, []).get(key)).push(q); ESCB.set(`${units.indexOf(u)}:${i}`, q); } }
   for (const Q of QUEUES.values()) { Q.sort((p, q) => p.t0 - q.t0 || q.rj - p.rj || p.i - q.i); }   // first to leave, then the one further down the road
   const ramp = (tau, V) => tau <= 0 ? 0 : tau < RAMP ? V * tau * tau / (2 * RAMP) : V * (tau - RAMP / 2);
@@ -186,7 +194,7 @@ export function createTroops3D(o) {
   // is one spacing further down the road; all walk the same ramp + cruise, so the gap only ever opens (no catching up, no braking)
   const invRamp = (d, V) => d <= 0 ? 0 : d < V * RAMP / 2 ? Math.sqrt(2 * d * RAMP / V) : d / V + RAMP / 2;
   for (const Q of QUEUES.values()) { const V = Math.min(...Q.map((q) => Math.min(VESC, q.u.esc.v ?? VESC))); let prev = null;
-    for (const q of Q) { q.V = V; q.T = q.t0 + 0.5 + RF;   // v7: the men turn about and re-form into a march column first
+    for (const q of Q) { q.V = V; q.T = q.t0 + (q.seg ? q.seg.tt : 0.5 + RF);   // v7: the men turn about and re-form into a march column first
       if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len + 0.13 * q.len * hash(q.i + 3 * units.indexOf(q.u), 21)) - (prev.rj - prev.a); /* v8: 0-13 % spacing jitter */ q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.5); }   // v4: a clear gap + front-to-back stagger
       prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
@@ -233,7 +241,8 @@ export function createTroops3D(o) {
   // the box's height: terrain smoothed over ~1 u (a flat map symbol must not jump over parapets and ditches: on screen that reads as a sideways drift)
   const RING = [[0, 0, 1]]; for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4; RING.push([0.5 * Math.cos(a), 0.5 * Math.sin(a), 0.7], [1.0 * Math.cos(a + 0.39), 1.0 * Math.sin(a + 0.39), 0.4]); }
   const RW = RING.reduce((s0, r) => s0 + r[2], 0), Hs = (x, y) => { let s0 = 0; for (const [dx, dy, w] of RING) s0 += H(x + dx * ts, y + dy * ts) * w; return s0 / RW; };
-  const corr = (a, x, y) => { if (!o.proj) return a; const e = 0.3, h0 = Hs(x, y) + 0.02, P = (X, Y) => o.proj(X, Y, h0 - H(X, Y)), p0 = P(x - e, y - e), px = P(x + e, y - e), py = P(x - e, y + e), p1 = P(x + e, y + e);   /* the box is a FLAT quad at its centre's height: project at that height */
+  const corr = (a, x, y) => { if (!o.proj || (BOXL && o.camera)) return a;   /* billboard boxes: the on-screen normal IS the projected heading */
+    const e = 0.3, h0 = Hs(x, y) + 0.02, P = (X, Y) => o.proj(X, Y, h0 - H(X, Y)), p0 = P(x - e, y - e), px = P(x + e, y - e), py = P(x - e, y + e), p1 = P(x + e, y + e);   /* the box is a FLAT quad at its centre's height: project at that height */
     const ax = (px.x - p0.x + p1.x - py.x) / (4 * e), ay = (px.y - p0.y + p1.y - py.y) / (4 * e), bx = (py.x - p0.x + p1.x - px.x) / (4 * e), by = (py.y - p0.y + p1.y - px.y) / (4 * e), det = ax * by - bx * ay; if (Math.abs(det) < 1e-9) return a;
     const vx = Math.cos(a), vy = Math.sin(a), sx = ax * vx + bx * vy, sy = ay * vx + by * vy, lsx = -sy, lsy = sx;
     const lx = (by * lsx - bx * lsy) / det, ly = (-ay * lsx + ax * lsy) / det; let nx = -ly, ny = lx; if (nx * vx + ny * vy < 0) { nx = -nx; ny = -ny; }
@@ -243,7 +252,7 @@ export function createTroops3D(o) {
   const runHead = (u, R, s, x, y) => { const tg = runTan(u, R, s, 0.25); return corr(ang(tg[0], tg[1]), x, y) + (R.back ? Math.PI : 0); };
   function baseBox(u, i, t) {
     const D = UD.get(u), lag = i ? 0.08 + 0.14 * hash(units.indexOf(u) * 7 + i, 5) : 0, tl = t - lag, fa = u.face, F = uv(fa), L0 = [-F[1], F[0]];
-    const sl = sAt(u, tl), c0 = ptAt(u, sl); let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], h = fa, e = 0, EQ = null, EW = 0;
+    const sl = sAt(u, tl), c0 = ptAt(u, sl); let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], h = fa, e = 0, EQ = null, EW = 0, bf;
     for (const R of D.runs) {   // in time order: turn in place, walk long side first along the smoothed path, turn back to the unit's facing
       if (tl < R.t0 - R.tin) break;
       if (tl <= R.t0) { const p = runPt(u, R, R.s0), hs = runHead(u, R, R.s0, p[0], p[1]); h = h + angDiff(h, hs) * sstep(R.t0 - R.tin, R.t0, tl); break; }
@@ -251,11 +260,14 @@ export function createTroops3D(o) {
       const p = runPt(u, R, R.s1), he = runHead(u, R, R.s1, p[0], p[1]); h = he + angDiff(he, fa) * sstep(R.t1, R.t1 + R.tout, tl); }
     if (u.esc && i >= Math.round(u.esc.from / u._bpb) && t > u.esc.t0 - 0.1) { const q = ESCB.get(`${units.indexOf(u)}:${i}`);
       if (q) { if (QC.t !== t) QC = { t, m: queueAt(t) }; const rho = QC.m.get(q), w = Math.max(0, q.e2w(rho - (q.rj - q.a))), g = along(q.path, w);
-        x = g[0]; y = g[1]; const fi = Math.min(q.angs.length - 1.001, w / 0.1), i0 = Math.floor(fi), tA = lerp(q.angs[i0], q.angs[i0 + 1], fi - i0), g0 = along(q.path, Math.max(0, w - 0.15)), g1 = along(q.path, w + 0.15), ta = tA + angDiff(tA, Math.atan2(g1[1] - g0[1], g1[0] - g0[0]));   /* local direction = the actual motion */
-        const hE = corr(ta, x, y) + Math.PI;   // the box walks BACK (front still toward the enemy), long side leading
+        x = g[0]; y = g[1]; let hE;
+        if (q.seg) { const S2 = q.seg; hE = w <= S2.aA ? S2.hA : w >= S2.fB ? S2.hC : lerp(S2.hA, S2.hC, (w - S2.aA) / Math.max(1e-6, S2.fB - S2.aA));
+          bf = Math.min(1, 1 - sstep(S2.aA - 1.25, S2.aA - 0.05, w) + sstep(S2.fB + 0.05, S2.fB + 1.25, w)); }   /* ~0.5 s fade out at the near end, ~0.5 s back in past the far end */
+        else { const fi = Math.min(q.angs.length - 1.001, w / 0.1), i0 = Math.floor(fi), tA = lerp(q.angs[i0], q.angs[i0 + 1], fi - i0), g0 = along(q.path, Math.max(0, w - 0.15)), g1 = along(q.path, w + 0.15), ta = tA + angDiff(tA, Math.atan2(g1[1] - g0[1], g1[0] - g0[0]));
+          hE = corr(ta, x, y) + Math.PI; }   // the box walks BACK (front still toward the enemy), long side leading
         h = h + angDiff(h, hE) * sstep(q.t0, q.T - 0.15, t); e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); if (w > 0) { EQ = q; EW = w; } } }
     const ar = u.t0 > 1 && u.arrive !== false ? (o.arrive ?? 1.6) * ts * (1 - trap((t - u.t0) / 3.0, 0.4)) : 0, ox = -Math.cos(h) * ar, oy = -Math.sin(h) * ar;   // walks in along its front normal
-    return { x: x + ox, y: y + oy, lx: x + ox, ly: y + oy, cx: x + ox, cy: y + oy, pa: h, sa: h, lpa: h, cpa: h, f: 0, c: 0, e, eq: EQ, ew: EW, ab: 0 };
+    return { x: x + ox, y: y + oy, lx: x + ox, ly: y + oy, cx: x + ox, cy: y + oy, pa: h, sa: h, lpa: h, cpa: h, f: 0, c: 0, e, eq: EQ, ew: EW, ab: 0, bf };
   }
   const vecAvg = (list) => { let x = 0, y = 0; for (const [a, w] of list) { x += Math.cos(a) * w; y += Math.sin(a) * w; } return Math.atan2(y, x); };
 
@@ -335,13 +347,14 @@ export function createTroops3D(o) {
   // heading low-pass over +-0.6 s (wheels and turns take ~1 s, never snap)
   const smooth = (u, i, t, key) => vecAvg([[base(u, i, t)[key], 1], [base(u, i, t - 0.15)[key], 0.5], [base(u, i, t + 0.15)[key], 0.5], [base(u, i, t - 0.3)[key], 0.0], [base(u, i, t + 0.3)[key], 0.4]]);
 
-  const BXI = BOXL ? createBoxes3D({ THREE, scene, sun: o.sun, ...(o.boxOpts || {}) }) : null;
+  const BBX = BOXL && !!o.camera, asp = (ty) => { const u = units.find((q) => (q.type || "inf") === ty); return u ? u.bw / u.bd : undefined; };
+  const BXI = BOXL ? createBoxes3D({ THREE, scene, sun: o.sun, camera: o.camera, billboard: BBX, aspect: { inf: asp("inf"), art: asp("art"), cav: asp("cav"), eng: asp("eng") }, ...(o.boxOpts || {}) }) : null;
   function update(t, hide = 0) {
     let nf = 0, nh = 0, np = 0, ns = 0, ng = 0, nq = 0, nfl = 0; nwk = 0; const ST = [];
     for (const b of blocks) { const u = b.u, op0 = fade(u, t) * (1 - hide); if (op0 <= 0.001) continue;
       const D = UD.get(u), q = base(u, b.i, t), qa = base(u, b.i, t - 0.2), qb = base(u, b.i, t + 0.2);
       const vx = (qb.x - qa.x) / 0.4, vy = (qb.y - qa.y) / 0.4, spd = Math.hypot(vx, vy);
-      let op = op0; if (q.e > 0 && u.esc.fade && o.proj && o.edgeFade) op *= o.edgeFade(u.esc.fade, o.proj(q.x, q.y), -10, 140);   // v4: fades out over ~1.5-2 s at walking pace, gone at the edge   // a long gradual fade at the frame edge
+      let op = op0; if (q.e > 0 && u.esc.fade && o.proj && o.edgeFade) op *= BOXL ? o.edgeFade(u.esc.fade, o.proj(q.x, q.y), -20, 300) : o.edgeFade(u.esc.fade, o.proj(q.x, q.y), -10, 140);   // v4: fades out over ~1.5-2 s at walking pace, gone at the edge   // a long gradual fade at the frame edge
       if (op <= 0.001) continue;
       const capd = u.caps ? Math.max(0, ...u.caps.map(([a, z]) => sstep(a, a + 0.8, t) * (1 - sstep(z - 0.9, z, t))))   // caps: [[taken, retaken], ...]
         : u.cap != null && b.i * u._bpb < u.capN ? sstep(u.cap, u.cap + 0.8, t) * (u.t1 < 1e8 ? 1 - sstep(u.t1 - 1.8, u.t1 - 0.9, t) : 1) : 0;
@@ -349,11 +362,11 @@ export function createTroops3D(o) {
     if (BOXL) {   // v9: Style W map boxes (flat side-colour rectangle, ink border, cream X / gun dot), rotated with the block's heading
       const SC = o.sideCol || { u: "#2c57b7", r: "#be3a2a" }, list = [];
       for (const Q of ST) { const bk = Q.e > 0 ? onBridge(Q.x, Q.y) * Q.e : 0, cp = Q.capd, sd = Q.u.side === "u";   /* only the routing boxes fade over their bridge */
-        list.push({ x: Q.x, y: Q.y, fx: Math.cos(Q.pa), fy: Math.sin(Q.pa), bw: Q.D.bw, bd: Q.D.bd, art: Q.u.type === "art", op: Q.op * (1 - 0.25 * cp) * (1 - bk), h: Hs(Q.x, Q.y),
+        list.push({ x: Q.x, y: Q.y, fx: Math.cos(Q.pa), fy: Math.sin(Q.pa), bw: Q.D.bw, bd: Q.D.bd, art: Q.u.type === "art", sym: Q.u.type || "inf", op: Q.op * (1 - 0.25 * cp) * (Q.bf ?? (1 - bk)), h: Hs(Q.x, Q.y),
           color: cp > 0 ? `rgb(${Math.round(lerp(sd ? 44 : 190, 138, cp))},${Math.round(lerp(sd ? 87 : 58, 133, cp))},${Math.round(lerp(sd ? 183 : 42, 122, cp))})` : SC[Q.u.side] }); }
       BXI.set(list); for (const m of ALL) m.count = 0;
       API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa),
-        w: q.D.bw, d: q.D.bd, f: 0, c: 0, e: q.e, op: q.op * (q.e > 0 ? 1 - onBridge(q.x, q.y) * q.e : 1), art: q.u.type === "art", cap: q.capd }));
+        w: q.D.bw, d: q.D.bd, f: 0, c: 0, e: q.e, op: q.op * (q.bf ?? (q.e > 0 ? 1 - onBridge(q.x, q.y) * q.e : 1)), art: q.u.type === "art", cap: q.capd }));
       return { blocks: list.length }; }
     for (const Q of ST) {
       const { b, u, D, x: bx, y: by, pa, sa, c, e, spd, op, capd, f: fq, lpa, cpa, ab } = Q, i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31;
@@ -436,7 +449,7 @@ export function createTroops3D(o) {
       w: q.u.type === "art" ? q.D.bw * 0.62 : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op, art: q.u.type === "art", cap: q.capd }));
     return { figures: nf, blocks: np, guns: ng };
   }
-  const API = { update, blocks, base, boxH: (x, y) => Hs(x, y), meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
+  const API = { update, blocks, base, billboard: BOXL && !!o.camera, boxH: (x, y) => Hs(x, y), meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
   return API;
 }
 
@@ -457,6 +470,19 @@ export function createBoxes3D(o) {
     else { g.beginPath(); g.ellipse(W / 2, H / 2, cw * 0.11, ch * 0.275, 0, 0, Math.PI * 2); g.fill(); }
     g.fillStyle = "#0000ff"; g.fillRect(0, 0, W, by); g.fillRect(0, H - by, W, by); g.fillRect(0, 0, bx, H); g.fillRect(W - bx, 0, bx, H);
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace; t.anisotropy = 8; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; return t; };
+  // v10 (critics on v9): billboard boxes get a clean mask (fill + symbol only; the ink border is drawn in the shader at a fixed ~2 px)
+  // symbols: infantry X (kit), artillery = the kit's approved gun box (fx.js art_gun, viewBox 2 18 96 78), cavalry = one slash, engineers = the gear
+  const mask2 = (sym, aspect) => { const W = 256, H = Math.max(48, Math.round(256 / Math.max(0.5, aspect))), c = document.createElement("canvas"); c.width = W; c.height = H; const g = c.getContext("2d");
+    g.fillStyle = "#ff0000"; g.fillRect(0, 0, W, H); g.fillStyle = "#00ff00"; g.strokeStyle = "#00ff00";
+    const ix = W * 0.06, iy = H * 0.1;
+    if (sym === "inf") { g.lineWidth = Math.min(W, H) * 0.075; g.lineCap = "butt"; g.beginPath(); g.moveTo(ix, iy); g.lineTo(W - ix, H - iy); g.moveTo(W - ix, iy); g.lineTo(ix, H - iy); g.stroke(); }
+    else if (sym === "cav") { g.lineWidth = Math.min(W, H) * 0.075; g.beginPath(); g.moveTo(ix, H - iy); g.lineTo(W - ix, iy); g.stroke(); }
+    else if (sym === "art") { const hh = H * 0.8, ww = hh * 96 / 78, sc = hh / 78; g.save(); g.translate((W - ww) / 2 - 2 * sc, (H - hh) / 2 - 18 * sc); g.scale(sc, sc);
+      g.save(); g.translate(44, 50); g.rotate(-22 * Math.PI / 180); g.translate(-44, -50); g.beginPath(); g.roundRect ? g.roundRect(40, 31, 56, 8, 3) : g.rect(40, 31, 56, 8); g.fill(); g.restore();
+      g.fill(new Path2D("M30 42 L52 36 L56 52 L34 58 Z")); g.lineWidth = 6; g.beginPath(); g.arc(36, 66, 13, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.arc(36, 66, 3.5, 0, Math.PI * 2); g.fill(); g.fill(new Path2D("M33 60 L6 84 L12 89 L40 66 Z")); g.restore(); }
+    else if (sym === "eng") { const r = H * 0.26; g.save(); g.translate(W / 2, H / 2); g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
+      for (let k = 0; k < 8; k++) { g.save(); g.rotate(k * Math.PI / 4); g.fillRect(-r * 0.25, -r * 1.42, r * 0.5, r * 0.55); g.restore(); } g.fillStyle = "#ff0000"; g.beginPath(); g.arc(0, 0, r * 0.4, 0, Math.PI * 2); g.fill(); g.restore(); }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace; t.anisotropy = 8; t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; return t; };
   const shadowTex = (() => { const c = document.createElement("canvas"); c.width = 64; c.height = 32; const g = c.getContext("2d"), im = g.createImageData(64, 32);
     for (let y = 0; y < 32; y++) for (let x = 0; x < 64; x++) { const u = Math.abs(x / 63 - 0.5) * 2, v = Math.abs(y / 31 - 0.5) * 2, a = (1 - sstep(0.62, 1, u)) * (1 - sstep(0.35, 1, v)), k = (y * 64 + x) * 4;
       im.data[k] = im.data[k + 1] = im.data[k + 2] = 255; im.data[k + 3] = 255 * a; }
@@ -471,12 +497,43 @@ export function createBoxes3D(o) {
   const boxMat = (sym) => withOp(new THREE.MeshBasicMaterial({ map: mask(sym), transparent: true, depthTest: false, depthWrite: false, fog: true }),
     (fs) => fs.replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); mk.rgb /= max(mk.r + mk.g + mk.b, 1e-3);\n#ifdef USE_COLOR\nvec3 fillC = vColor;\n#else\nvec3 fillC = diffuse;\n#endif\ndiffuseColor.rgb = mk.r * fillC + mk.g * uCream + mk.b * uInk;").replace("#include <color_fragment>", ""));
   const mkIM = (mat, ro) => { const m = new THREE.InstancedMesh(quad(), mat, MAX); m.count = 0; m.frustumCulled = false; m.renderOrder = ro; m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(m); return m; };
-  const inf = mkIM(boxMat("inf"), 3.1), art = mkIM(boxMat("art"), 3.1);
-  const shd = mkIM(withOp(new THREE.MeshBasicMaterial({ color: 0x0b0a08, map: shadowTex, transparent: true, opacity: o.shadowA ?? 0.42, depthTest: false, depthWrite: false, fog: true })), 3.0);
-  for (const m of [inf, art]) m.setColorAt(0, new THREE.Color());
+  const BB = !!(o.billboard && o.camera), BW = o.borderPx ?? 2.0;
+  const boxMat2 = (sym, aspect) => withOp(new THREE.MeshBasicMaterial({ map: mask2(sym, aspect), transparent: true, depthTest: false, depthWrite: false, fog: true, side: THREE.DoubleSide }),
+    (fs) => fs.replace("#include <map_fragment>", `vec4 mk = texture2D( map, vMapUv ); mk.rgb /= max(mk.r + mk.g, 1e-3);
+#ifdef USE_COLOR
+vec3 fillC = vColor;
+#else
+vec3 fillC = diffuse;
+#endif
+vec2 fw = max(fwidth(vMapUv), vec2(1e-5)); vec2 ed = min(vMapUv, 1.0 - vMapUv) / fw; float eb = 1.0 - smoothstep(${(BW - 0.6).toFixed(2)}, ${(BW + 0.6).toFixed(2)}, min(ed.x, ed.y));
+float aa = smoothstep(0.0, 1.0, min(ed.x, ed.y));
+diffuseColor.rgb = mix(mk.r * fillC + mk.g * uCream, uInk, eb); diffuseColor.a *= aa;`).replace("#include <color_fragment>", ""));
+  const boxMat2k = (sym, aspect) => { const m = boxMat2(sym, aspect); m.customProgramCacheKey = () => "box3dbb"; return m; };
+  const AS = o.aspect || {};
+  const inf = mkIM(BB ? boxMat2k("inf", AS.inf ?? 2.33) : boxMat("inf"), 3.1), art = mkIM(BB ? boxMat2k("art", AS.art ?? 1.31) : boxMat("art"), 3.1);
+  const cav = BB ? mkIM(boxMat2k("cav", AS.cav ?? 2.33), 3.1) : null, eng = BB ? mkIM(boxMat2k("eng", AS.eng ?? 2.33), 3.1) : null;
+  const shd = mkIM(withOp(new THREE.MeshBasicMaterial({ color: 0x0b0a08, map: shadowTex, transparent: true, opacity: o.shadowA ?? (o.billboard ? 0.25 : 0.42), depthTest: false, depthWrite: false, fog: true, side: THREE.DoubleSide })), 3.0);
+  for (const m of [inf, art, cav, eng]) if (m) m.setColorAt(0, new THREE.Color());
   const M4 = new THREE.Matrix4(), C = new THREE.Color(), lift = o.lift ?? 0.03, shOff = o.shadowOff ?? 0.075;
   // list: [{x, y, fx, fy, bw, bd, art, op, color: '#rrggbb' | THREE.Color, h}] (map plane, fx/fy = facing, bw along the line, bd along the facing)
+  const VR = new THREE.Vector3(), VU = new THREE.Vector3(), VF = new THREE.Vector3(), Q0 = new THREE.Vector3();
+  function setBB(list) {   // v10: each box a clean screen-plane rectangle (no shear), turned to its heading's on-screen direction
+    const cam = o.camera; cam.updateMatrixWorld(); VR.set(1, 0, 0).applyQuaternion(cam.quaternion); VU.set(0, 1, 0).applyQuaternion(cam.quaternion); VF.set(0, 0, 1).applyQuaternion(cam.quaternion);
+    const tanH = Math.tan((cam.fov * Math.PI) / 360), HPX = o.screenH ?? 1080, KT = o.tiltK ?? 0.8, C = { inf: 0, art: 0, cav: 0, eng: 0 }; let ns = 0;
+    for (const b of list) { if (b.op <= 0.002) continue;
+      const m = b.sym === "art" ? art : b.sym === "cav" && cav ? cav : b.sym === "eng" && eng ? eng : inf, key = m === art ? "art" : m === cav ? "cav" : m === eng ? "eng" : "inf", k = C[key]++;
+      const y = b.h + lift, dxw = b.fx, dzw = b.fy, sx = dxw * VR.x + dzw * VR.z, sy = dxw * VU.x + dzw * VU.z, th = Math.atan2(sy, sx), c = Math.cos(th), s = Math.sin(th);
+      const Nx = VR.x * c + VU.x * s, Ny = VR.y * c + VU.y * s, Nz = VR.z * c + VU.z * s, Lx = -VR.x * s + VU.x * c, Ly = -VR.y * s + VU.y * c, Lz = -VR.z * s + VU.z * c, bd = b.bd * KT;
+      M4.set(Lx * b.bw, VF.x, -Nx * bd, b.x, Ly * b.bw, VF.y, -Ny * bd, y, Lz * b.bw, VF.z, -Nz * bd, b.y, 0, 0, 0, 1); m.setMatrixAt(k, M4);
+      m.setColorAt(k, b.color.isColor ? b.color : C0.setStyle(b.color)); m.geometry.attributes.iOp.array[k] = b.op;
+      Q0.set(b.x, y, b.y); const dist = Q0.distanceTo(cam.position), wpp = 2 * tanH * dist / HPX, ox = (VR.x - VU.x) * 3 * wpp, oy = (VR.y - VU.y) * 3 * wpp, oz = (VR.z - VU.z) * 3 * wpp, gw = 4 * wpp;
+      M4.set(Lx * (b.bw + gw), VF.x, -Nx * (bd + gw), b.x + ox, Ly * (b.bw + gw), VF.y, -Ny * (bd + gw), y + oy, Lz * (b.bw + gw), VF.z, -Nz * (bd + gw), b.y + oz, 0, 0, 0, 1); shd.setMatrixAt(ns, M4);
+      shd.geometry.attributes.iOp.array[ns++] = b.op; }
+    inf.count = C.inf; art.count = C.art; if (cav) cav.count = C.cav; if (eng) eng.count = C.eng; shd.count = ns;
+    for (const m of [inf, art, cav, eng, shd]) if (m) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true; } }
+  const C0 = new THREE.Color();
   function set(list) {
+    if (BB) return setBB(list);
     let ni = 0, na = 0, ns = 0;
     for (const b of list) { if (b.op <= 0.002) continue;
       const px = -b.fy, py = b.fx, y = b.h + lift, m = b.art ? art : inf, k = b.art ? na++ : ni++;
@@ -508,7 +565,7 @@ export function createArrows3D(o) {
       const base = new THREE.Color(color), dark = base.clone().multiplyScalar(0.5);
       // v4 (critic): matte, ~80 % opacity, drawn UNDER the troops (renderOrder < the blocks' 2) so an arrow never hides its column
       const A = { pts, gm: true, glow: mk(1.6, 0x10140f, 0.12), out: mk(1.7, dark, 0.6), rim: mk(1.75, 0xf4f6f2, 0.3), body: mk(1.8, base, 0.8) }; arrows.push(A); return A; }
-    const A = { pts, glow: mk(10.15, 0xf2f4f0, 0.16), out: mk(10.2, 0x0e0c08, 0.45), rim: mk(10.25, rim, 1), body: mk(10.3, color, 1) }; arrows.push(A); return A; }
+    const A = { pts, glow: mk(10.15, 0xf2f4f0, 0.16), glow2: mk(10.14, 0xf2f4f0, 0.07), glow3: mk(10.13, 0xf2f4f0, 0.04), out: mk(10.2, 0x0e0c08, 0.45), rim: mk(10.25, rim, 1), body: mk(10.3, color, 1) }; arrows.push(A); return A; }   // v10: the pale edge fades out in three steps (no hard white rim)
   // heights: the ground under the line smoothed over ~1.5 units (raw heights made the flat ribbon wiggle on screen over every bump and the river bed)
   const smoothH = (P) => { const raw = P.map((p) => heightAt(p[0], p[1])), K = 9; return raw.map((_, i) => { let s = 0, c = 0; for (let j = Math.max(0, i - K); j <= Math.min(raw.length - 1, i + K); j++) { s += Math.max(raw[j], raw[i] - 0.02); c++; } return s / c; }); };
   function fill(mesh, P, w, hl, hw, ox, HS, sh = [0, 0]) {   // P: resampled centre line [[x,y]], ribbon half width w/2 + ox, head at the end
@@ -523,9 +580,9 @@ export function createArrows3D(o) {
     pa.needsUpdate = true; if (mesh.geometry.attributes.color) mesh.geometry.attributes.color.needsUpdate = true; }
   // A, grow fraction k (0..1, eased by the caller), opacity op, shaft width w (units)
   function draw(A, k, op, w) {
-    const vis = op > 0.002 && k > 0.001; A.glow.visible = A.out.visible = A.rim.visible = A.body.visible = vis; if (!vis) return;
+    const vis = op > 0.002 && k > 0.001; A.glow.visible = A.out.visible = A.rim.visible = A.body.visible = vis; if (A.glow2) A.glow2.visible = A.glow3.visible = vis; if (!vis) return;
     if (A.gm) { A.glow.material.opacity = 0.12 * op; A.out.material.opacity = 0.6 * op; A.rim.material.opacity = 0.3 * op; A.body.material.opacity = 0.8 * op; }
-    else { A.glow.material.opacity = 0.16 * op; A.out.material.opacity = 0.45 * op; A.rim.material.opacity = op; A.body.material.opacity = op; }
+    else { A.glow.material.opacity = 0.09 * op; A.glow2.material.opacity = 0.06 * op; A.glow3.material.opacity = 0.04 * op; A.out.material.opacity = 0.45 * op; A.rim.material.opacity = op; A.body.material.opacity = op; }
     const pts = A.pts, seg = []; let L = 0; for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
     // round 2 (critic A S06 63 s): while the drawn length is shorter than ~2 heads, the head grows with it (no lone arrowhead before its shaft)
     const gk = Math.min(1, k * L / (w * 4.2)), hl = w * 2.1 * gk, hw = w * 1.5 * gk, end = Math.max(0, k * L - hl), P = [];   // the shaft stops where the head starts
@@ -534,6 +591,6 @@ export function createArrows3D(o) {
     if (end < 1e-3) { const d = at(Math.min(L, 0.01)); P[1] = [P[0][0] + (d[0] - P[0][0]) * 0.01 + 1e-4, P[0][1] + (d[1] - P[0][1]) * 0.01]; }
     const HS = smoothH(P);
     if (A.gm) { const sh = [0, 0]; fill(A.glow, P, w, hl, hw, w * 0.18, HS, sh); fill(A.out, P, w, hl, hw, w * 0.07, HS); fill(A.rim, P, w, hl, hw, w * 0.0, HS); fill(A.body, P, w, hl, hw, -w * 0.09, HS); return; }
-    fill(A.glow, P, w, hl, hw, 0.11, HS); fill(A.out, P, w, hl, hw, 0.07, HS); fill(A.rim, P, w, hl, hw, 0.045, HS); fill(A.body, P, w, hl, hw, 0, HS); }
+    fill(A.glow, P, w, hl, hw, 0.09, HS); fill(A.glow2, P, w, hl, hw, 0.12, HS); fill(A.glow3, P, w, hl, hw, 0.15, HS); fill(A.out, P, w, hl, hw, 0.07, HS); fill(A.rim, P, w, hl, hw, 0.045, HS); fill(A.body, P, w, hl, hw, 0, HS); }
   return { add, draw, arrows };
 }
