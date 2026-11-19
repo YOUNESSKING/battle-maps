@@ -89,8 +89,8 @@ window.SEQ = {
     { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 40, tilt: 46, yaw: -4, fov: 30 },
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
-    { t: 20.0, region: BB, at: [1514.6, 684.6], dist: 15.0, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
-    { t: 32.6, region: BB, at: [1514.6, 684.6], dist: 15.0, tilt: 52, yaw: -8, fov: 30 },
+    { t: 20.0, region: BB, at: [1513.9, 684.6], dist: 16.2, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
+    { t: 32.6, region: BB, at: [1513.9, 684.6], dist: 16.2, tilt: 52, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11
