@@ -31,7 +31,7 @@ const units = [];
 [[686.0], [684.5]].forEach(([y], i) =>   // (GM test) two batteries clear of the escape roads (the north one sat on the flank's way out)
   units.push({ side: "r", type: "art", n: 2, keys: [[0, bwX(y) - 1.2, y]], cap: TK + 0.6 + i * 0.5, t1: T.D + 1 }));
 // the reserve by the bridge: first across
-units.push({ side: "r", type: "inf", n: 3, face: 0, keys: [[0, BR.x + 2.6, 685.4]], escape: ESC(ESC_T[2], 2.0, 0) });
+units.push({ side: "r", type: "inf", n: 3, face: 0, keys: [[0, BR.x + 2.6, 685.4]], escape: ESC(ESC_T[2], 2.0, 0), escDelay: 2.65 });   // (v14) its break-ranks inside the excerpt (from ~20.3 s)
 // Union: Lawler's brigade out of the meander scar on the northern flank, straight through the works, on toward the bridge
 units.push({ side: "u", type: "inf", n: 3, face: SWF, keys: [[0, 1527.8, 679.4], [T.charged - 2.0, 1527.8, 679.4], [TK - 0.3, bwX(679.6) + 2.4, 679.0]] });   // (GM test) to the works, not through them
 // Benton (Carr) and Osterhaus (Garrard, Lindsey): the rest of the line follows the breach
@@ -53,7 +53,8 @@ const arrows = [
   { side: "u", pts: [[1528.4, 678.9], [1525.4, 679.6], [1522.2, 680.8], [1519.0, 682.2]], t0: T.charged, dur: 2.6, t1: T.ran },
   { side: "u", pts: [[1527.2, 687.0], [1524.8, 687.0], [1522.4, 686.8]], t0: 19.8, dur: 2.2, t1: T.ran },
   { side: "r", color: "#a8392b", width: 0.13, pts: (() => { const east = [1511.6, 684.75], west = [1510.34, 683.77];   /* the deck ends (world bridge data: x 1510.97, z 684.26, angle 3.8, len 1.61) */
-    const near = (x) => RD.reduce((m, p) => Math.abs(p[0] - x) < Math.abs(m[0] - x) ? p : m, RD[0]), a0 = near(1517.4), mid = [(a0[0] + east[0]) / 2, (a0[1] + east[1]) / 2]; return [a0, mid, east, west, [west[0] - (east[0] - west[0]) * 0.8, west[1] - (east[1] - west[1]) * 0.8]]; })(),   /* v12: two road points, the bridge axis, a short run past it (no V) */ t0: 19.6, dur: 1.8, t1: 23.8 },   // (v12) along the road and over the bridge   // (GM test v8) beside the road (north), gone before the columns reach the bridge   // (GM test v7) narrow, unit red   // gone before the fire
+    const near = (x) => RD.reduce((m, p) => Math.abs(p[0] - x) < Math.abs(m[0] - x) ? p : m, RD[0]), a0 = near(1517.4), ad = [east[0] - west[0], east[1] - west[1]], al = Math.hypot(ad[0], ad[1]) || 1, c = [east[0] + ad[0] / al * 1.8, east[1] + ad[1] / al * 1.8], P = [];
+    for (let k = 0; k <= 12; k++) { const u = k / 12, m = 1 - u; P.push([m * m * a0[0] + 2 * m * u * c[0] + u * u * east[0], m * m * a0[1] + 2 * m * u * c[1] + u * u * east[1]]); } return P; })(),   /* v12: two road points, the bridge axis, a short run past it (no V) */ t0: 19.6, dur: 1.8, t1: 23.8 },   // (v12) along the road and over the bridge   // (GM test v8) beside the road (north), gone before the columns reach the bridge   // (GM test v7) narrow, unit red   // gone before the fire
 ];
 for (let k = 0; k < PONT.length; k++) { const { b, ex, ey } = axis(k); arrows.push({ side: "u", pts: [[b[0] + ex * 4.4, b[1] + ey * 4.4], [b[0] + ex * 2.4, b[1] + ey * 2.4], [b[0] + ex * 0.75, b[1] + ey * 0.75]], t0: TB[k] + 0.8, dur: 1.0, t1: T.D + 1, width: 0.2 }); }
 // round 3 (critic A: the upper arrow crossed the river where its bridge was hidden under the head): each arrow runs up the east-bank
@@ -89,8 +90,8 @@ window.SEQ = {
     { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 40, tilt: 46, yaw: -4, fov: 30 },
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
-    { t: 20.0, region: BB, at: [1513.9, 684.6], dist: 16.2, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
-    { t: 32.6, region: BB, at: [1513.9, 684.6], dist: 16.2, tilt: 52, yaw: -8, fov: 30 },
+    { t: 20.0, region: BB, at: [1513.3, 684.6], dist: 13.4, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
+    { t: 32.6, region: BB, at: [1513.3, 684.6], dist: 13.4, tilt: 52, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11
