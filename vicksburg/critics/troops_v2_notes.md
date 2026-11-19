@@ -274,3 +274,13 @@ Share (with sound; S09 part unchanged from v12): `vicksburg/troops_test_v13_shar
 
 Checker v13 S10 15-35: screen max 9 deg, turn <= 41 deg/s, pops 0, shape 0 %, overlaps only within the south flank while turning in place (0.05 u); a block that has broken up (plate gone, men streaming) no longer counts as a rectangle for the overlap test.
 Own 5 fps inspection of every crossing (reserve x2, south flank, north flank): approach broadside without stopping, gradual funnel, straight stream over the deck, up the trail, fade - yes x4.
+
+## v14 (final polish, S10 re-render)
+- Camera pushed in ~20 % (dist 13.4 at [1513.3, 684.6]); bridge + trail start stay in frame.
+- No hesitation at the deck mouth: blocks walk straight in (no decel), men peel off by a queue-feed model (XV 1.4, XDT 0.055).
+- Near-bank clump at ~59/63 s thinned: men leave the block one by one at even spacing into the stream.
+- Red retreat arrow = one smooth quadratic curve ending at the east bridge mouth (no V).
+- First block starts earlier (break ranks visible from ~20.3 s in S10 = share ~55.3 s).
+- Sound export: vicksburg/sound/troop_events_S09.json (86 events), troop_events_S10.json (48 events), tool vicksburg/tools/export_troop_events.mjs.
+- S09 crest gun fx moved to the battery at [1632.4, 697.9] (data only; S09 not re-rendered).
+- Share: vicksburg/troops_test_v14_share.mp4 (S09 part reused from v13). RunPod $0.007.

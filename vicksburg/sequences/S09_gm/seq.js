@@ -157,7 +157,7 @@ const fx = {
   ],
   guns: [
     // the Confederate guns on the crest fire on Hovey's column
-    { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: shotsAt([FR(3.0, 1.4)], [T.hovey + 0.6, T.hovey + 1.7, T.hovey + 2.6], [-DA[0], -DA[1]], [FR(-6.4, -1.0), FR(-8.4, 2.0), FR(-4.6, 0.6)]) },
+    { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: shotsAt([[1632.4, 697.9]], [T.hovey + 0.6, T.hovey + 1.7, T.hovey + 2.6], [-DA[0], -DA[1]], [FR(-6.4, -1.0), FR(-8.4, 2.0), FR(-4.6, 0.6)]) },
     // the massed Union batteries at the foot of the slope fire up at Bowen's line (muzzle flash + plume per shot, an impact on his line);
     // before "contested" the impacts fall on his line low on the slope, after it on the crest as he gives ground
     { region: C, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, flash: { h: 0.3, opts: { size: 3.0, life: 0.14 } }, shots: [99.8, 100.5, 101.3, 102.2, 102.9, 103.7, 104.6, 105.4, 106.3, 107.2, 108.2].map((t, i) =>

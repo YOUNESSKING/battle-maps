@@ -51,7 +51,7 @@ export function createTroops3D(o) {
   const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();
   const shots = (o.shots || []).slice().sort((a, b) => a.t - b.t);
   const NF = 72, INF = gridLayout(12, 6), CAV = gridLayout(12, 2);
-  const XV = 1.4 * (o.troopScale || 1), XDT = 0.06, XP = 0.3, rotP = (c, h, la, lb) => { const fx = Math.cos(h), fy = Math.sin(h); return [c[0] - fy * la + fx * lb, c[1] + fx * la + fy * lb]; };   /* v12: bridge crossing (men file across) */
+  const XV = 1.4 * (o.troopScale || 1), XDT = 0.055, XP = 0.3, rotP = (c, h, la, lb) => { const fx = Math.cos(h), fy = Math.sin(h); return [c[0] - fy * la + fx * lb, c[1] + fx * la + fy * lb]; };   /* v12: bridge crossing (men file across) */
   const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 15 | 0, f = (k % 15 + 0.5) / 15 - 0.5, e = 0.5 - 0.06;
     P.push(side === 0 ? [f, e] : side === 1 ? [e, -f] : side === 2 ? [-f, -e] : [-e, f]); } return P; })();
   const BOXV = o.look === "box", BOXL = BOXV || o.look === "lineblocks";   /* v11: lineblocks = the GM soldier blocks driven by the v10 rectangle motion */   /* v9 (owner 2026-11-18): Style W map boxes, one formation (the rectangle), long side leading */
@@ -210,9 +210,9 @@ export function createTroops3D(o) {
       const PA = [S2.near[0] - ax[0] * (D.bd / 2 + 0.1 * ts), S2.near[1] - ax[1] * (D.bd / 2 + 0.1 * ts)], dA = [PA[0] - sl[0], PA[1] - sl[1]], LA = Math.max(0.05, Math.hypot(dA[0], dA[1])), hA = ang(dA[0], dA[1]) + Math.PI;
       const men = INF.map((L, j) => { const sA = rotP(PA, hA, L[0] * D.bw * 0.96, L[1] * D.bd * 0.9); return { j, dE: Math.hypot(sA[0] - S2.near[0], sA[1] - S2.near[1]) }; }).sort((a, b) => a.dE - b.dE);
       const ord = []; men.forEach((m, k) => { ord[m.j] = k; });
-      const tWalk = LA / q.V + RAMP; let tA = q.T + tWalk; if (prev) tA = Math.max(tA, prev.cr.tLast + 0.4 + 1.3);
-      q.T = tA - tWalk; const tLast = tA - 0.3 + 23 * XDT;
-      q.cr = { PA, hA, LA, tWalk, tA, f0: tA - 1.3, ord, ax, nrm, near: S2.near, far: S2.far, al, trail: S2.trail, tLast, tEnd: tLast + al / XV + 4.3 * ts / (XV * 0.88) + 0.2 };
+      const tWalk = LA / q.V + RAMP / 2; let tA = q.T + tWalk + (q.u.escDelay || 0);   /* escDelay: hold the walk (the block keeps its queue place) */ if (prev) tA = Math.max(tA, prev.cr.tLast + 0.4 + 0.8);   /* v14: no deceleration at the mouth (flows straight in) */
+      q.T = tA - tWalk; const tLast = tA - 0.35 + 23 * XDT;
+      q.cr = { PA, hA, LA, tWalk, tA, f0: tA - 0.8, ord, ax, nrm, near: S2.near, far: S2.far, al, trail: S2.trail, tLast, tEnd: tLast + al / XV + 4.3 * ts / (XV * 0.88) + 0.2 };
       prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
 
@@ -280,9 +280,10 @@ export function createTroops3D(o) {
     if (u.esc && i >= Math.round(u.esc.from / u._bpb) && t > u.esc.t0 - 0.1) { const q = ESCB.get(`${units.indexOf(u)}:${i}`);
       if (q && q.cr) { const C = q.cr, s0 = q.path[0]; e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));
         if (t > C.tEnd) gone = true;
-        const sw = C.LA * trap((t - q.T) / C.tWalk, Math.min(0.45, RAMP / C.tWalk)); x = s0[0] + (C.PA[0] - s0[0]) * sw / C.LA; y = s0[1] + (C.PA[1] - s0[1]) * sw / C.LA;
+        let sw = ramp(t - q.T, q.V); if (sw > C.LA) sw = C.LA + 0.35 * ts * (1 - Math.exp(-(sw - C.LA) / (0.35 * ts)));   /* full pace to the mouth, then a soft ease (no stop) */
+        x = s0[0] + (C.PA[0] - s0[0]) * sw / C.LA; y = s0[1] + (C.PA[1] - s0[1]) * sw / C.LA;
         const hT = corr(C.hA - Math.PI, x, y) + Math.PI; h = h + angDiff(h, hT) * sstep(Math.max(q.t0, q.T - q.seg.tt), q.T - 0.15, t);
-        if (t > C.f0) { crq = { ...C, cx: x, cy: y, hc: h }; stB = sstep(C.f0, C.f0 + 1.0, t); }
+        if (t > C.f0) { crq = { ...C, cx: x, cy: y, hc: h }; stB = sstep(C.f0, C.f0 + 0.8, t); }
       } else
       if (q) { if (QC.t !== t) QC = { t, m: queueAt(t) }; const rho = QC.m.get(q), w = Math.max(0, q.e2w(rho - (q.rj - q.a))), g = along(q.path, w);
         x = g[0]; y = g[1]; let hE;
@@ -297,10 +298,11 @@ export function createTroops3D(o) {
   }
   // one man of a block funnelling over a bridge: his rank spot (moving with the block) -> drifts to his lane at the deck mouth -> straight
   // across the deck -> a short straight run past it, fading out. Returns [x, y, facing, moving 0/1, opacity]
-  const crossMan = (C, j, la, lb, t) => { const k = C.ord[j], row = Math.floor(k / 3), off = (k % 3 - 1) * 0.075 * ts, tau = C.tA - 0.3 + row * XDT;
+  const crossMan = (C, j, la, lb, t) => { const k = C.ord[j], row = Math.floor(k / 3), off = (k % 3 - 1) * 0.075 * ts, tau = C.tA - 0.35 + row * XDT;
     const R = rotP([C.cx, C.cy], C.hc, la, lb), E = [C.near[0] + C.nrm[0] * off, C.near[1] + C.nrm[1] * off];
-    if (t < tau) { const g = sstep(0, 1, clamp((t - C.f0) / Math.max(0.3, tau - C.f0))), fa2 = Math.atan2(E[1] - R[1], E[0] - R[0]), base = C.hc + Math.PI;
-      return [lerp(R[0], E[0], g), lerp(R[1], E[1], g), base + angDiff(base, fa2) * sstep(0, 0.3, g), 1, 1]; }
+    if (t < tau) { const dE = Math.hypot(R[0] - E[0], R[1] - E[1]), d = (tau - t) * XV, base = C.hc + Math.PI;   /* v14: queue feed: he peels off just in time to reach the mouth at his slot, at stream pace (even spacing, no clump) */
+      if (d >= dE || dE < 1e-6) return [R[0], R[1], base, 1, 1];
+      const k2 = d / dE, fa2 = Math.atan2(E[1] - R[1], E[0] - R[0]); return [E[0] + (R[0] - E[0]) * k2, E[1] + (R[1] - E[1]) * k2, base + angDiff(base, fa2) * sstep(1, 0.6, k2), 1, 1]; }
     const sd = (t - tau) * XV; if (sd <= C.al || C.trail.length < 2) return [E[0] + C.ax[0] * sd, E[1] + C.ax[1] * sd, Math.atan2(C.ax[1], C.ax[0]), 1, 1];
     // up the trail: each man at his own pace (a loosening stream), drifting a little in his lane, fading out over ~2 s
     const vj = 0.9 + 0.2 * hash(k + 17, 31), s2 = (sd - C.al) * vj, g = along(C.trail, s2), lo = off * (1 + 0.8 * Math.min(1, s2 / (2 * ts))) + (hash(k + 5, 33) - 0.5) * 0.06 * ts * Math.min(1, s2 / ts);
@@ -487,7 +489,7 @@ export function createTroops3D(o) {
       w: q.u.type === "art" ? q.D.bw * 0.62 : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op * (q.cr ? 1 - (q.st || 0) : 1), art: q.u.type === "art", cap: q.capd }));
     return { figures: nf, blocks: np, guns: ng };
   }
-  const API = { update, blocks, base, queues: QUEUES, billboard: BOXV && !!o.camera, boxH: BOXL ? (x, y) => Hs(x, y) : null, meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
+  const API = { update, blocks, base, queues: QUEUES, xv: XV, billboard: BOXV && !!o.camera, boxH: BOXL ? (x, y) => Hs(x, y) : null, meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
   return API;
 }
 

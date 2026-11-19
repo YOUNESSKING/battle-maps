@@ -1,0 +1,1486 @@
+{
+ "scene": "S10",
+ "region": "bigblack_new",
+ "window": [
+  20,
+  35
+ ],
+ "shareOffset": 55,
+ "filmStart": 871.788,
+ "render": [
+  1920,
+  1080
+ ],
+ "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
+ "events": [
+  {
+   "type": "independent_fire",
+   "note": "continuous scattered musketry (skirmish / independent fire)",
+   "t": 20,
+   "tExcerpt": 0,
+   "tShare": 55,
+   "tFilm": 871.79,
+   "tEnd": 21.2,
+   "duration": 1.2,
+   "ratePerSec": 0,
+   "lineLength": 1.13,
+   "at": {
+    "map": [
+     1524.8,
+     680.6
+    ],
+    "px": [
+     1468,
+     77
+    ],
+    "nx": 0.765,
+    "ny": 0.071,
+    "onScreen": true,
+    "camDist": 20.97
+   },
+   "unit": {
+    "unit": 7,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "dist": 1.65
+   }
+  },
+  {
+   "type": "independent_fire",
+   "note": "continuous scattered musketry (skirmish / independent fire)",
+   "t": 20,
+   "tExcerpt": 0,
+   "tShare": 55,
+   "tFilm": 871.79,
+   "tEnd": 23.4,
+   "duration": 3.4,
+   "ratePerSec": 0.2,
+   "lineLength": 7.61,
+   "at": {
+    "map": [
+     1525.4,
+     686.6
+    ],
+    "px": [
+     1904,
+     361
+    ],
+    "nx": 0.992,
+    "ny": 0.335,
+    "onScreen": true,
+    "camDist": 17.89
+   },
+   "unit": {
+    "unit": 9,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "dist": 1.38
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.91,
+   "t": 20,
+   "tExcerpt": 0,
+   "tShare": 55,
+   "tFilm": 871.79,
+   "at": {
+    "map": [
+     1524.25,
+     679.05
+    ],
+    "px": [
+     1357,
+     46
+    ],
+    "nx": 0.707,
+    "ny": 0.043,
+    "onScreen": true,
+    "camDist": 21.84
+   },
+   "unit": {
+    "unit": 7,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 1.4,
+   "t": 20,
+   "tExcerpt": 0,
+   "tShare": 55,
+   "tFilm": 871.79,
+   "at": {
+    "map": [
+     1526.37,
+     683.6
+    ],
+    "px": [
+     1752,
+     193
+    ],
+    "nx": 0.913,
+    "ny": 0.179,
+    "onScreen": true,
+    "camDist": 20.16
+   },
+   "unit": {
+    "unit": 8,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 1.4,
+   "t": 20,
+   "tExcerpt": 0,
+   "tShare": 55,
+   "tFilm": 871.79,
+   "at": {
+    "map": [
+     1526.64,
+     687.2
+    ],
+    "px": [
+     2074,
+     391
+    ],
+    "nx": 1.08,
+    "ny": 0.362,
+    "onScreen": false,
+    "camDist": 18.6
+   },
+   "unit": {
+    "unit": 9,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 1.4,
+   "t": 20,
+   "tExcerpt": 0,
+   "tShare": 55,
+   "tFilm": 871.79,
+   "at": {
+    "map": [
+     1526.5,
+     690.6
+    ],
+    "px": [
+     2491,
+     685
+    ],
+    "nx": 1.297,
+    "ny": 0.634,
+    "onScreen": false,
+    "camDist": 17.36
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "retreat",
+   "speed": 0.25,
+   "t": 20.1,
+   "tExcerpt": 0.1,
+   "tShare": 55.1,
+   "tFilm": 871.89,
+   "at": {
+    "map": [
+     1513.57,
+     685.4
+    ],
+    "px": [
+     680,
+     403
+    ],
+    "nx": 0.354,
+    "ny": 0.373,
+    "onScreen": true,
+    "camDist": 12.77
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 20.3,
+   "tExcerpt": 0.3,
+   "tShare": 55.3,
+   "tFilm": 872.09,
+   "at": {
+    "map": [
+     1511.96,
+     685.02
+    ],
+    "px": [
+     507,
+     384
+    ],
+    "nx": 0.264,
+    "ny": 0.355,
+    "onScreen": true,
+    "camDist": 12.88
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 0
+   },
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+  },
+  {
+   "type": "bridge_stream_first_on_deck",
+   "t": 20.75,
+   "tExcerpt": 0.75,
+   "tShare": 55.75,
+   "tFilm": 872.54,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_stop",
+   "duration": 1,
+   "t": 21,
+   "tExcerpt": 1,
+   "tShare": 56,
+   "tFilm": 872.79,
+   "at": {
+    "map": [
+     1523.8,
+     679
+    ],
+    "px": [
+     1326,
+     46
+    ],
+    "nx": 0.69,
+    "ny": 0.042,
+    "onScreen": true,
+    "camDist": 21.61
+   },
+   "unit": {
+    "unit": 7,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "capture",
+   "t": 21.2,
+   "tExcerpt": 1.2,
+   "tShare": 56.2,
+   "tFilm": 872.99,
+   "at": {
+    "map": [
+     1521.08,
+     679.9
+    ],
+    "px": [
+     1170,
+     88
+    ],
+    "nx": 0.61,
+    "ny": 0.082,
+    "onScreen": true,
+    "camDist": 19.53
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   },
+   "boxes": 1
+  },
+  {
+   "type": "march_start",
+   "direction": "retreat",
+   "speed": 0.18,
+   "t": 21.4,
+   "tExcerpt": 1.4,
+   "tShare": 56.4,
+   "tFilm": 873.19,
+   "at": {
+    "map": [
+     1519.91,
+     690
+    ],
+    "px": [
+     1635,
+     721
+    ],
+    "nx": 0.852,
+    "ny": 0.667,
+    "onScreen": true,
+    "camDist": 12.54
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 1.6,
+   "t": 21.7,
+   "tExcerpt": 1.7,
+   "tShare": 56.7,
+   "tFilm": 873.49,
+   "at": {
+    "map": [
+     1512.54,
+     685.61
+    ],
+    "px": [
+     574,
+     429
+    ],
+    "nx": 0.299,
+    "ny": 0.397,
+    "onScreen": true,
+    "camDist": 12.53
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "capture",
+   "t": 21.8,
+   "tExcerpt": 1.8,
+   "tShare": 56.8,
+   "tFilm": 873.59,
+   "at": {
+    "map": [
+     1520.11,
+     686
+    ],
+    "px": [
+     1358,
+     377
+    ],
+    "nx": 0.707,
+    "ny": 0.349,
+    "onScreen": true,
+    "camDist": 14.71
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Confederate",
+    "type": "art",
+    "label": null,
+    "blocks": 2,
+    "men": 8
+   },
+   "boxes": 2
+  },
+  {
+   "type": "capture",
+   "t": 21.9,
+   "tExcerpt": 1.9,
+   "tShare": 56.9,
+   "tFilm": 873.69,
+   "at": {
+    "map": [
+     1521.22,
+     683.3
+    ],
+    "px": [
+     1319,
+     215
+    ],
+    "nx": 0.687,
+    "ny": 0.199,
+    "onScreen": true,
+    "camDist": 17.06
+   },
+   "unit": {
+    "unit": 1,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   },
+   "boxes": 3
+  },
+  {
+   "type": "bridge_stream_last_on_deck",
+   "t": 22.02,
+   "tExcerpt": 2.02,
+   "tShare": 57.02,
+   "tFilm": 873.8,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_start",
+   "direction": "retreat",
+   "speed": 0.22,
+   "t": 22.1,
+   "tExcerpt": 2.1,
+   "tShare": 57.1,
+   "tFilm": 873.89,
+   "at": {
+    "map": [
+     1512.52,
+     685.61
+    ],
+    "px": [
+     573,
+     429
+    ],
+    "nx": 0.298,
+    "ny": 0.397,
+    "onScreen": true,
+    "camDist": 12.53
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "capture",
+   "t": 22.3,
+   "tExcerpt": 2.3,
+   "tShare": 57.3,
+   "tFilm": 874.09,
+   "at": {
+    "map": [
+     1520.3,
+     684.5
+    ],
+    "px": [
+     1297,
+     285
+    ],
+    "nx": 0.676,
+    "ny": 0.264,
+    "onScreen": true,
+    "camDist": 15.77
+   },
+   "unit": {
+    "unit": 5,
+    "side": "Confederate",
+    "type": "art",
+    "label": null,
+    "blocks": 2,
+    "men": 8
+   },
+   "boxes": 2
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 22.42,
+   "tExcerpt": 2.42,
+   "tShare": 57.42,
+   "tFilm": 874.2,
+   "at": {
+    "map": [
+     1511.96,
+     685.02
+    ],
+    "px": [
+     507,
+     384
+    ],
+    "nx": 0.264,
+    "ny": 0.355,
+    "onScreen": true,
+    "camDist": 12.88
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+  },
+  {
+   "type": "capture",
+   "t": 22.6,
+   "tExcerpt": 2.6,
+   "tShare": 57.6,
+   "tFilm": 874.39,
+   "at": {
+    "map": [
+     1520.82,
+     686.7
+    ],
+    "px": [
+     1472,
+     416
+    ],
+    "nx": 0.767,
+    "ny": 0.385,
+    "onScreen": true,
+    "camDist": 14.71
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   },
+   "boxes": 3
+  },
+  {
+   "type": "march_stop",
+   "duration": 2.6,
+   "t": 22.6,
+   "tExcerpt": 2.6,
+   "tShare": 57.6,
+   "tFilm": 874.39,
+   "at": {
+    "map": [
+     1523.56,
+     683.6
+    ],
+    "px": [
+     1519,
+     231
+    ],
+    "nx": 0.791,
+    "ny": 0.214,
+    "onScreen": true,
+    "camDist": 18.37
+   },
+   "unit": {
+    "unit": 8,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "bridge_stream_first_on_deck",
+   "t": 22.87,
+   "tExcerpt": 2.87,
+   "tShare": 57.87,
+   "tFilm": 874.65,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_last_off_deck",
+   "t": 22.89,
+   "tExcerpt": 2.89,
+   "tShare": 57.89,
+   "tFilm": 874.68,
+   "at": {
+    "map": [
+     1510.3,
+     683.73
+    ],
+    "px": [
+     336,
+     328
+    ],
+    "nx": 0.175,
+    "ny": 0.303,
+    "onScreen": true,
+    "camDist": 14.05
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_stop",
+   "duration": 3.1,
+   "t": 23.1,
+   "tExcerpt": 3.1,
+   "tShare": 58.1,
+   "tFilm": 874.89,
+   "at": {
+    "map": [
+     1523.07,
+     687.2
+    ],
+    "px": [
+     1726,
+     437
+    ],
+    "nx": 0.899,
+    "ny": 0.405,
+    "onScreen": true,
+    "camDist": 15.98
+   },
+   "unit": {
+    "unit": 9,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "capture",
+   "t": 23.3,
+   "tExcerpt": 3.3,
+   "tShare": 58.3,
+   "tFilm": 875.09,
+   "at": {
+    "map": [
+     1518.25,
+     688.81
+    ],
+    "px": [
+     1335,
+     623
+    ],
+    "nx": 0.696,
+    "ny": 0.577,
+    "onScreen": true,
+    "camDist": 12.12
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   },
+   "boxes": 1
+  },
+  {
+   "type": "march_start",
+   "direction": "retreat",
+   "speed": 0.21,
+   "t": 23.4,
+   "tExcerpt": 3.4,
+   "tShare": 58.4,
+   "tFilm": 875.19,
+   "at": {
+    "map": [
+     1521.07,
+     679.9
+    ],
+    "px": [
+     1170,
+     88
+    ],
+    "nx": 0.609,
+    "ny": 0.082,
+    "onScreen": true,
+    "camDist": 19.53
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 3.7,
+   "t": 23.7,
+   "tExcerpt": 3.7,
+   "tShare": 58.7,
+   "tFilm": 875.49,
+   "at": {
+    "map": [
+     1522.07,
+     690.6
+    ],
+    "px": [
+     1970,
+     755
+    ],
+    "nx": 1.026,
+    "ny": 0.699,
+    "onScreen": false,
+    "camDist": 13.82
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 1.7,
+   "t": 23.8,
+   "tExcerpt": 3.8,
+   "tShare": 58.8,
+   "tFilm": 875.59,
+   "at": {
+    "map": [
+     1511.52,
+     684.94
+    ],
+    "px": [
+     461,
+     381
+    ],
+    "nx": 0.24,
+    "ny": 0.353,
+    "onScreen": true,
+    "camDist": 12.94
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "bridge_stream_last_on_deck",
+   "t": 24.13,
+   "tExcerpt": 4.13,
+   "tShare": 59.13,
+   "tFilm": 875.92,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 24.53,
+   "tExcerpt": 4.53,
+   "tShare": 59.53,
+   "tFilm": 876.32,
+   "at": {
+    "map": [
+     1511.96,
+     685.02
+    ],
+    "px": [
+     507,
+     384
+    ],
+    "nx": 0.264,
+    "ny": 0.355,
+    "onScreen": true,
+    "camDist": 12.88
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+  },
+  {
+   "type": "bridge_stream_first_on_deck",
+   "t": 24.98,
+   "tExcerpt": 4.98,
+   "tShare": 59.98,
+   "tFilm": 876.77,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_last_off_deck",
+   "t": 25,
+   "tExcerpt": 5,
+   "tShare": 60,
+   "tFilm": 876.79,
+   "at": {
+    "map": [
+     1510.3,
+     683.73
+    ],
+    "px": [
+     336,
+     328
+    ],
+    "nx": 0.175,
+    "ny": 0.303,
+    "onScreen": true,
+    "camDist": 14.05
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_stop",
+   "duration": 4.5,
+   "t": 25.9,
+   "tExcerpt": 5.9,
+   "tShare": 60.9,
+   "tFilm": 877.69,
+   "at": {
+    "map": [
+     1515.75,
+     687.02
+    ],
+    "px": [
+     957,
+     493
+    ],
+    "nx": 0.498,
+    "ny": 0.457,
+    "onScreen": true,
+    "camDist": 12.07
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "bridge_stream_last_on_deck",
+   "t": 26.25,
+   "tExcerpt": 6.25,
+   "tShare": 61.25,
+   "tFilm": 878.03,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_gone",
+   "t": 26.58,
+   "tExcerpt": 6.58,
+   "tShare": 61.58,
+   "tFilm": 878.37,
+   "at": {
+    "map": [
+     1509.78,
+     683.51
+    ],
+    "px": [
+     285,
+     314
+    ],
+    "nx": 0.148,
+    "ny": 0.291,
+    "onScreen": true,
+    "camDist": 14.26
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 26.65,
+   "tExcerpt": 6.65,
+   "tShare": 61.65,
+   "tFilm": 878.43,
+   "at": {
+    "map": [
+     1511.96,
+     685.02
+    ],
+    "px": [
+     507,
+     384
+    ],
+    "nx": 0.264,
+    "ny": 0.355,
+    "onScreen": true,
+    "camDist": 12.88
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+  },
+  {
+   "type": "bridge_stream_first_on_deck",
+   "t": 27.1,
+   "tExcerpt": 7.1,
+   "tShare": 62.1,
+   "tFilm": 878.88,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_last_off_deck",
+   "t": 27.12,
+   "tExcerpt": 7.12,
+   "tShare": 62.12,
+   "tFilm": 878.91,
+   "at": {
+    "map": [
+     1510.3,
+     683.73
+    ],
+    "px": [
+     336,
+     328
+    ],
+    "nx": 0.175,
+    "ny": 0.303,
+    "onScreen": true,
+    "camDist": 14.05
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_stop",
+   "duration": 4.6,
+   "t": 28,
+   "tExcerpt": 8,
+   "tShare": 63,
+   "tFilm": 879.79,
+   "at": {
+    "map": [
+     1516.31,
+     682.22
+    ],
+    "px": [
+     868,
+     214
+    ],
+    "nx": 0.452,
+    "ny": 0.198,
+    "onScreen": true,
+    "camDist": 15.92
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "bridge_stream_last_on_deck",
+   "t": 28.36,
+   "tExcerpt": 8.36,
+   "tShare": 63.36,
+   "tFilm": 880.15,
+   "at": {
+    "map": [
+     1511.65,
+     684.78
+    ],
+    "px": [
+     473,
+     370
+    ],
+    "nx": 0.247,
+    "ny": 0.343,
+    "onScreen": true,
+    "camDist": 13.06
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_gone",
+   "t": 28.69,
+   "tExcerpt": 8.69,
+   "tShare": 63.69,
+   "tFilm": 880.48,
+   "at": {
+    "map": [
+     1509.78,
+     683.51
+    ],
+    "px": [
+     285,
+     314
+    ],
+    "nx": 0.148,
+    "ny": 0.291,
+    "onScreen": true,
+    "camDist": 14.26
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_last_off_deck",
+   "t": 29.23,
+   "tExcerpt": 9.23,
+   "tShare": 64.23,
+   "tFilm": 881.02,
+   "at": {
+    "map": [
+     1510.3,
+     683.73
+    ],
+    "px": [
+     336,
+     328
+    ],
+    "nx": 0.175,
+    "ny": 0.303,
+    "onScreen": true,
+    "camDist": 14.05
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_gone",
+   "t": 30.81,
+   "tExcerpt": 10.81,
+   "tShare": 65.81,
+   "tFilm": 882.6,
+   "at": {
+    "map": [
+     1509.78,
+     683.51
+    ],
+    "px": [
+     285,
+     314
+    ],
+    "nx": 0.148,
+    "ny": 0.291,
+    "onScreen": true,
+    "camDist": 14.26
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_fire",
+   "t": 31.3,
+   "tExcerpt": 11.3,
+   "tShare": 66.3,
+   "tFilm": 883.09,
+   "tStart": 31.3,
+   "tEnd": 40.4,
+   "at": {
+    "map": [
+     1510.97,
+     684.26
+    ],
+    "px": [
+     404,
+     356
+    ],
+    "nx": 0.21,
+    "ny": 0.329,
+    "onScreen": true,
+    "camDist": 13.59
+   }
+  },
+  {
+   "type": "fire",
+   "t": 31.7,
+   "tExcerpt": 11.7,
+   "tShare": 66.7,
+   "tFilm": 883.49,
+   "tStart": 31.7,
+   "tEnd": 40.2,
+   "at": {
+    "map": [
+     1509.1,
+     682.6
+    ],
+    "px": [
+     217,
+     231
+    ],
+    "nx": 0.113,
+    "ny": 0.214,
+    "onScreen": true,
+    "camDist": 14.85
+   }
+  },
+  {
+   "type": "bridge_stream_gone",
+   "t": 32.92,
+   "tExcerpt": 12.92,
+   "tShare": 67.92,
+   "tFilm": 884.71,
+   "at": {
+    "map": [
+     1509.78,
+     683.51
+    ],
+    "px": [
+     288,
+     314
+    ],
+    "nx": 0.15,
+    "ny": 0.29,
+    "onScreen": true,
+    "camDist": 14.38
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144,
+    "block": 1
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.21,
+   "t": 34.9,
+   "tExcerpt": 14.9,
+   "tShare": 69.9,
+   "tFilm": 886.69,
+   "at": {
+    "map": [
+     1515.06,
+     699.12
+    ],
+    "px": [
+     1124,
+     1774
+    ],
+    "nx": 0.586,
+    "ny": 1.643,
+    "onScreen": false,
+    "camDist": 11.77
+   },
+   "unit": {
+    "unit": 18,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 3,
+    "men": 216
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 0.1,
+   "t": 35,
+   "tExcerpt": 15,
+   "tShare": 70,
+   "tFilm": 886.79,
+   "at": {
+    "map": [
+     1515.05,
+     699.11
+    ],
+    "px": [
+     1084,
+     1688
+    ],
+    "nx": 0.565,
+    "ny": 1.563,
+    "onScreen": false,
+    "camDist": 12.07
+   },
+   "unit": {
+    "unit": 18,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 3,
+    "men": 216
+   }
+  }
+ ]
+}

@@ -362,7 +362,7 @@ for (const l of S.labels || []) { const r = l.region || NAMES[0], p = l.at || VX
 const O = GMOverlay.create(document.getElementById("ov"), { filmHost: document.getElementById("film"), tl, project: (p, t) => { if (typeof p === "function") p = p(t); const s = world.projectMap(p[0], p[1], p[2] || 0);   // world: [x, y, h] or (t) => [x, y, h] (follows a moving boat)
     return { x: s.x * SC, y: s.y * SC, visible: s.visible }; }, fontBase: EB + "assets/fonts/", seed: S.seed ?? 1863 });
 O.film.set({ grain: (S.film || {}).grain ?? 0.04 });   // v5: grain <= 0.04 on the final frame
-const ctx = { THREE, world, FX, VC, O, tl, S, VX, UNITS, TRO, ARROWS, BANNERS, PINS, GENERALS, G, regions: world.regions, sstep, lerp, clamp, hsh };
+const ctx = { THREE, world, FX, VC, O, tl, S, VX, UNITS, TRO, ARROWS, BANNERS, PINS, GENERALS, G, FXL, regions: world.regions, sstep, lerp, clamp, hsh };
 const resolveArgs = (a) => { if (!a || typeof a !== "object" || Array.isArray(a)) return a; if (a.general && !a.img) { const g = gen(a.general);
   return { img: g.img, side: g.side, name: g.full, role: g.role, ...a, general: undefined }; } return a; };
 for (const e of S.overlay || []) { if (typeof e === "function") { e(O, ctx); continue; }
