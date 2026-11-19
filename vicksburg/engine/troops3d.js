@@ -247,7 +247,7 @@ export function createTroops3D(o) {
     const vx = Math.cos(a), vy = Math.sin(a), sx = ax * vx + bx * vy, sy = ay * vx + by * vy, lsx = -sy, lsy = sx;
     const lx = (by * lsx - bx * lsy) / det, ly = (-ay * lsx + ax * lsy) / det; let nx = -ly, ny = lx; if (nx * vx + ny * vy < 0) { nx = -nx; ny = -ny; }
     /* minimal correction: the world-perpendicular box's on-screen error err0; rotate only enough to bring it to <= 9 deg */
-    const qx = ax * -vy + bx * vx, qy = ay * -vy + by * vx, err0 = Math.acos(Math.min(1, Math.abs(sx * -qy + sy * qx) / (Math.hypot(sx, sy) * Math.hypot(qx, qy) + 1e-9))), kk = Math.max(0, 1 - (BOXV ? 0.05 : 0.12) / Math.max(1e-6, err0));
+    const qx = ax * -vy + bx * vx, qy = ay * -vy + by * vx, err0 = Math.acos(Math.min(1, Math.abs(sx * -qy + sy * qx) / (Math.hypot(sx, sy) * Math.hypot(qx, qy) + 1e-9))), kk = Math.max(0, 1 - 0.05 / Math.max(1e-6, err0));
     return a + angDiff(a, Math.atan2(ny, nx)) * kk; };
   const runHead = (u, R, s, x, y) => { const tg = runTan(u, R, s, 0.25); return corr(ang(tg[0], tg[1]), x, y) + (R.back ? Math.PI : 0); };
   function baseBox(u, i, t) {
@@ -265,7 +265,7 @@ export function createTroops3D(o) {
         x = g[0]; y = g[1]; let hE;
         if (q.seg) { const S2 = q.seg; hE = w <= S2.aA ? S2.hA : w >= S2.fB ? S2.hC : lerp(S2.hA, S2.hC, (w - S2.aA) / Math.max(1e-6, S2.fB - S2.aA)); if (!BOXV) { const p0 = q.path[0]; const cp2 = [x, y]; hE = corr(hE - Math.PI, cp2[0], cp2[1]) + Math.PI; }   /* blocks: on-screen corrected (fixed per leg from its start) */
           if (BOXV) bf = Math.min(1, 1 - sstep(S2.aA - 1.25, S2.aA - 0.05, w) + sstep(S2.fB + 0.05, S2.fB + 1.25, w));
-          else stB = sstep(S2.aA - 1.8, S2.aA - 0.1, w) * (1 - sstep(S2.fB + 0.3, S2.fB + 4.0, w)); }   /* blocks: break ranks before the deck, re-form over ~2 s past it */   /* ~0.5 s fade out at the near end, ~0.5 s back in past the far end */
+          else stB = sstep(S2.aA - 1.8, S2.aA - 0.1, w) * (1 - sstep(S2.fB + 0.2, S2.fB + 3.2, w)); }   /* blocks: break ranks before the deck, re-form over ~2 s past it */   /* ~0.5 s fade out at the near end, ~0.5 s back in past the far end */
         else { const fi = Math.min(q.angs.length - 1.001, w / 0.1), i0 = Math.floor(fi), tA = lerp(q.angs[i0], q.angs[i0 + 1], fi - i0), g0 = along(q.path, Math.max(0, w - 0.15)), g1 = along(q.path, w + 0.15), ta = tA + angDiff(tA, Math.atan2(g1[1] - g0[1], g1[0] - g0[0]));
           hE = corr(ta, x, y) + Math.PI; }   // the box walks BACK (front still toward the enemy), long side leading
         h = h + angDiff(h, hE) * sstep(q.t0, q.T - 0.15, t); e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));   /* the men about-face before the block walks back */ if (w > 0) { EQ = q; EW = w; } } }
