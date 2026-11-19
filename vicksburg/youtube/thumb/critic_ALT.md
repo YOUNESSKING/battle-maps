@@ -114,3 +114,77 @@ All of these are in `vicksburg/tools/make_thumb_v2_gm.py` unless noted.
    - no halo pixels: no blue rim of 2 px or more around the hair at 400 % zoom
 
 Do not commit Grand Maneuver frames. This file and `critic_ALT_sheet.jpg` contain only our own images. The thumbnails themselves were not edited.
+
+---
+
+## Round 2: v3 `vicksburg-v3-ALT-GM-CUT_LOOSE.jpg` (re-measured with my own detectors, 2026-11-19)
+
+**Verdict.** It now reads as the Grand Maneuver recipe:
+- word top-right
+- "THEN ..." line
+- a seal at the left
+- one short arrow from left to right
+- a big burning payoff at the right end
+- a warm colour portrait on the left
+
+At 168 px it breaks into the same three shapes as Marion: a red dot, an arrow and a glowing object. One clear tell remains: the word is smaller and heavier-looking than "HE RAN." and "HE WON.", and its O counters are slits.
+
+| Score | v2 | **v3** |
+|---|---|---|
+| Looks like the approved reference | 5 | **8/10** |
+| Would win the click | 5 | **7/10** |
+
+| Metric | v2 | v3 (mine) | Marion M | GM G | Status |
+|---|---|---|---|---|---|
+| Mean L / sat | 75.5 / 143 | 74.9 / 129 | 74.6 / 140 | 74.8 / 132 | matches (between M and G) |
+| Word height | 203 px (28 %) | **172 px (23.9 %)** | 214 (29.7 %) | 200 (27.8 %) | **20 % smaller than M** |
+| Stem / height | 38 px, 19 % | **46 px, 26.7 %** | 27 % | 33 % | fixed (on target) |
+| O counters (mid-row) | open | **8-16 px slits** | R/A counters open | open | new tell (fake-bold look) |
+| Word ink | 12.6 % | 11.8 % | 13.1 % | 15.4 % | slightly light |
+| Arrow-blue area | 2.42 % | **0.90 %** | 0.89 % | 0.88 % | fixed |
+| Warm accent | 0.34 %, x 748 | **1.40 %, x 1048** | 0.40 %, x 1049 | 1.78 %, x 1047 | fixed |
+| 168 px luminance std | 75.5 | 69.7 | 73.2 | 80.5 | slightly flatter, OK |
+
+### v2 findings
+1. **Thin word: PARTLY.**
+   - The stem ratio is fixed (26.7 %).
+   - It cost height: 172 px against 214, which is 24 % of the frame against 30 %.
+   - The dilation turns both O's into slit counters 8-16 px wide, so the word looks like a heavy condensed display face rather than Anton. At 360 px it still reads; at 168 px "LOOSE" starts to look like solid blocks.
+2. **Loop arrow: FIXED.** One arc from the seal to the payoff, reading left to right. Area 0.90 %.
+3. **Payoff small and central: FIXED.** About 380 px at x≈1080, at dusk, burning, with bloom. I checked at 4x shadow boost: no plate edge or rectangle.
+4. **Clutter: FIXED.** 2 labels (Cinzel 40), 0 blocks, no star.
+5. **Portrait halo, fringe, specks and strap blob: FIXED.**
+   - At 4x boost there is no blue ring.
+   - The strap is toned to button level. Only one star shows; the second is cut by the frame edge. The photo's strap is the two-star major-general one (FACT_NOTES), so there is no wrong insignia.
+6. **Subtitle: FIXED.** "THEN VICKSBURG FELL" (true: 4 July 1863).
+7. **Seal size: FIXED.** R66.
+8. **Mississippi: FIXED, with a new nit.** It is now thin and far from the seal, about 124 px away. That leaves Bruinsburg, the river crossing, visibly off the river. In G, Borodino sits on its river.
+
+### Oil repaint: likeness check (against `work_v2/grant_loc06941_crop.png`, LoC 2018666428)
+Good.
+- **Matches the photo:** the same left parting and swept hair, the receding temples, the heavy brow, the straight nose, the full square-cut beard, the 3/4 head turn, and the double-breasted coat with gold buttons. It is recognisably the Brady Grant.
+- **Differs (mild AI flattery):**
+  - The beard is fuller and redder (ginger), where Grant's was sandy-brown.
+  - The skin is smoother and the face slightly broader and younger.
+  - The eyes are brighter blue-grey.
+
+None of this is a likeness problem at thumbnail size. Fix 3 below brings the beard closer.
+
+### Remaining fixes (`vicksburg/tools/make_thumb_v3_gm.py`)
+1. **Word size, the GM way: lend the word the space above the portrait.** In G the word starts at about x 130, over the head, and the portrait sits low.
+   - Lower Grant by about 70 px: head top from about y 110 to about y 180, portrait about 75-78 % of frame height. Keep the face fully in frame and the shoulders bleeding off the bottom.
+   - Start the word slot at about x 200 (`CX` about 730, slot about 1060 px).
+   - Then drop the dilation to `MaxFilter(7)` and tracking to +6, and scale up.
+   - Targets:
+     - word height ≥ 195 px (≥ 27 % of the frame)
+     - stem ≥ 27 % of the word height
+     - O counter ≥ 18 px at mid-row
+     - letter gaps ≥ 8 px
+     - no glyph over the face: the word bottom stays above the hair line, with a ≥ 12 px gap or a clean overlap behind the head.
+2. **Bruinsburg on the river.** Re-route the Mississippi so it passes 75-90 px from the seal centre, just touching the seal's outer rim on its west/north side.
+   - The arrow then visibly starts at the crossing.
+   - Keep it at least 75 px from the centre so it doesn't crowd the seal (the earlier ≥ 70 px rule).
+3. **Optional, likeness polish.** Beard hue toward sandy-brown: in the beard mask only, saturation x0.8 and red -6 %. Bring eye brightness down about 10 %.
+4. **Optional.** Raise subtitle contrast a touch (fill 232,220,192 → 240,228,200) to win back the 168 px flatness (luminance std 69.7, target ≥ 72).
+
+Everything else is on target. With fix 1, I expect "looks like the reference" at 9/10.
