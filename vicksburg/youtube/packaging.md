@@ -11,7 +11,32 @@ Claims: "5 battles in 18 days" = Port Gibson, Raymond, Jackson, Champion Hill, B
 "five distinct battles"); "split the Confederacy" = the Mississippi opened (Vicksburg 4 Jul + Port Hudson 9 Jul); "no supply line" = Grant's own
 "cut loose from my base" (wagon trains still followed for a time: the film hedges this in S06). Do not use "Grant's Masterpiece" (Warhawk).
 
-## Thumbnails v4 = CURRENT (2026-11-19, critic round 2: v3 scored 8/10 on both; v4 applies the remaining fixes, `thumb/fixes_v4.md`)
+## Thumbnails v5 = CURRENT (2026-11-19, owner feedback on v4: "washed off", "background doesn't match", "the character of that one [published Grant] was great", "why cut loose?")
+Built to the locked PACKAGING_GUIDE 0c and the references in `reference/thumbnails/`. Details + colour numbers vs the published Grant: `thumb/fixes_v5.md`.
+Upload: **MAIN** `thumb/vicksburg-v5-MAIN-BD-WRONG_WAY.jpg`, **ALT** (Test & Compare) `thumb/vicksburg-v5-ALT-GM-WRONG_WAY.jpg`.
+Sheet `thumb/sheet_v5.jpg` (vs the 3 references at full/360/168 px, v4 -> v5 row), `thumb/sidebar_v5.jpg`.
+Scripts (from `vicksburg/`): `tools/make_thumb_v5_backdoor.py "WRONG WAY." MAIN-BD`, `tools/make_thumb_v5_gm.py "WRONG WAY." "THEN VICKSBURG FELL" ALT-GM`, `tools/make_thumb_v5_sheet.py`.
+
+**Word: WRONG WAY.** (0c item 1, both variants). Viewers expect a general to march on the fortress. Grant marched EAST, away from Vicksburg,
+took Jackson (14 May), then turned back west and shut Vicksburg in (FACT_NOTES §7 Turn east, §5 Strategy, §19). Candidates tested in fixes_v5.md
+(HE TURNED AWAY., HE WENT EAST., NO SUPPLIES. = not literally true, NO BASE., CUT LOOSE. = rejected by the owner).
+**Title pairing (0c item 2):** the title states the famous result, the word gives the surprising how:
+- A "The Campaign That Split the Confederacy: 5 Battles in 18 Days | Vicksburg 1863" + WRONG WAY. (he split it by marching away first?)
+- B "How Grant Took Vicksburg With No Supply Line | 1863" + WRONG WAY. (took it ... going the wrong way?)
+- C "Grant's Vicksburg Campaign: 5 Battles in 18 Days That Split the Confederacy" + WRONG WAY.
+The ALT's Cinzel line completes the twist: THEN VICKSBURG FELL (decision and march east in May, surrender 4 July 1863).
+
+| | File | Recipe | What it shows |
+|---|---|---|---|
+| **MAIN** | `thumb/vicksburg-v5-MAIN-BD-WRONG_WAY.jpg` | 0c A, Back Door | vivid painted aerial in the published-Grant colours (saturation 35.6 vs 34.9, warmth +27.7 vs +27.0, L 38 vs 36): Vicksburg on its bluffs over the Mississippi, the railroad east to Jackson burning; Pemberton's red between the towns, Grant's blue columns turning east; ONE grungy arrow east toward Jackson that hooks back into Vicksburg; tags VICKSBURG + JACKSON; the published thumbnail's own sepia Grant (same photo, tone, size, place); red band WRONG WAY. |
+| **ALT** | `thumb/vicksburg-v5-ALT-GM-WRONG_WAY.jpg` | 0c B, Grand Maneuver | navy map, oil-repaint colour Grant left (lowered), WRONG WAY. + THEN VICKSBURG FELL, seal at BRUINSBURG on the river, one glowing arrow swinging east to the burning VICKSBURG |
+
+AI disclosure: MAIN painted aerial (`thumb/work_v5/bg_vidiq_vicksburg_jackson_v5.jpg`), MAIN portrait = from our published Grant thumbnail
+(its source file is not in the repo), ALT oil repaint + Vicksburg vignette (vidIQ). vidIQ credits: v5 44; total 181.
+Fact notes for the pictures: Jackson burning = Sherman burned its war industry 14-15 May (§7); the Vicksburg fires illustrate the later siege
+shelling (§12); no flags, no painted soldiers. Superseded: v4, v3, v2 files (kept for the record).
+
+## Thumbnails v4 (superseded by v5) (2026-11-19, critic round 2: v3 scored 8/10 on both; v4 applies the remaining fixes, `thumb/fixes_v4.md`)
 Upload these: **MAIN** `thumb/vicksburg-v4-MAIN-BD-CUT_LOOSE.jpg`, **ALT** `thumb/vicksburg-v4-ALT-GM-CUT_LOOSE.jpg`, optional
 `thumb/vicksburg-v4-OPT3-BD-5_BATTLES.jpg`. Sheet `thumb/sheet_v4.jpg` (vs Marion MAIN/ALT + Grant published, full/360/168 px, v3 -> v4 row), `thumb/sidebar_v4.jpg`.
 Scripts (from `vicksburg/`): `tools/make_thumb_v4_portrait.py`, `tools/make_thumb_v4_backdoor.py "CUT LOOSE." MAIN-BD` (+ `"5 BATTLES." OPT3-BD`),
