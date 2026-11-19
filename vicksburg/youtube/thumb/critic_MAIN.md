@@ -103,3 +103,49 @@ I re-measured everything with my own script (`/tmp/vx_tcritA/measure.py`, same r
 - **R2-4 (optional) Contrast at feed size.** The BF sd is 22 against Grant pub 24. A Contrast 1.06 on the BF only (not the portrait) would help it hold up next to TG on the strip.
 - **R2-5 (minor) Ear blotch.** Clone the clean cheek and hair tone over the patch at x 1190-1250, y 160-250, or blur it 2 px.
 - **OPT3 word:** unchanged verdict. "5 BATTLES." is a number, not a contradiction, so it stays the Test & Compare option and needs a FACT_NOTES row.
+
+---
+
+## Round 3 (v5, 2026-11-19): `vicksburg-v5-MAIN-BD-WRONG_WAY.jpg`, harsh pass against the PUBLISHED Grant (primary) + Marion
+Re-measured by me (same regions: BF = x<780, y<520). I also made 4x zooms, a 168x94 / 360x202 strip next to the published Grant, Marion, Patton and Zhukov thumbnails, and checked the fixer's sidebar mock.
+
+**Verdict: FAIL, by a small margin. Colours, background and portrait now pass. The arrow does not show the "wrong way" move, and the 5 glow blobs are a cheap tell. After the two must-fixes below it should pass.**
+
+| Score | v5 MAIN |
+|---|---|
+| Looks like the reference (published Grant) | **8/10** (9 after M1 + M2) |
+| Would win the click | **7/10** (8 if the arrow visibly goes to JACKSON and back) |
+
+### Sector checks
+| Sector | v5 | Published Grant | Marion | Verdict |
+|---|---|---|---|---|
+| Whole frame | L41 sd28 S38 R-B +40 b* +13.1 | L38 sd27 S38 R-B +40 b* +12.4 | L44 S48 R-B +57 | **matches** (3 L brighter) |
+| Battlefield colour | L38 sd24 S36 R-B +28 b* +10.8, green woods 3.6% | L36 sd24 S35 R-B +27 b* +9.6, green 4.1% | golden | **matches**: no longer washed out; natural olive woods + grey-blue river like the published one |
+| Painted background | Vicksburg town on eroded bluffs upper-left, Mississippi + paddle steamer at the left edge, burning city, railroad trestle east to a burning Jackson, roads, woods | the same vocabulary | | **matches**, good quality. It is so close that it is nearly the same picture (see R3-risk) |
+| Geography | river west of Vicksburg (correct). Jackson sits upper-centre, only ~350 px away and BEHIND Vicksburg, so it reads as north-east and next door rather than 40 mi due east. Red between the towns, blue south-east | | | **plausible but compressed**. Acceptable for a thumbnail once the arrow sells the direction |
+| Arrow | ONE grungy arrow, 60-ish px. It starts at the band edge (590,530) between blue columns (not from them), bulges right to x~745 at y~330, then hooks left into Vicksburg (head ~400,130). Its apex passes ~200 px BELOW the JACKSON tag and never touches Jackson | long S sweep out of the army into the city | from the troops into the swamp | **fails the brief**: it reads as "a curve into Vicksburg" (or at best a U-turn), not "east to Jackson, then back west". The word's payoff is not on the picture |
+| Muzzle bursts | 5 identical round orange glow discs (radial gradient + halo) over the red line | painted fires inside the scene | painted fire | **cheap tell** (stickers / lens flare); clearly visible at 360 px |
+| Troops | blue 0.83%, red 1.62% of BF, 2-row blocks with shadows, blue on the road | dense painted navy carpet | blue 0.6 / red 1.9 | **matches the 0c recipe** |
+| Tags | VICKSBURG + JACKSON, 30 px torn parchment | 2 tags ~30 px | 2 tags | **matches**. JACKSON barely reads at 168x94 (fine, same as the references) |
+| Portrait | pixel difference to the published panel = 1.0/255 (x>=900, y<520): the same photo, tone, size and place; right column L12 = published | | | **matches exactly** |
+| Band / word | band y 533-717 to x837 (published 538-702 to x829). Anton 150, cap ~130 px (18%H) | cap 90 (12%H) | cap 163 (23%H) | **matches** (between the two references) |
+| Word "WRONG WAY." vs the 0c test | Belief: a great general marches AT the fortress / does not go the wrong way. The word flips it (a winner going the wrong way = why?). Literally true as direction: east to Jackson, away from Vicksburg (FACT_NOTES §7, §19) | | HE RAN. | **passes**, and is far more curious than CUT LOOSE. Its risk is reading as "Grant blundered". That is the curiosity, as long as title A states the win |
+| Feed 168x94 / 360x202 | word, face, white loop and burning city all read; on par with the published Grant; still lower contrast than Patton/Zhukov | | | **passes** |
+| Sidebar mock | clearly the only map + arrow + red band among HISTORY/ABT/Biography/Warhawk; stands out | | | **passes** |
+
+### Must-fix
+- **M1 Arrow = the move.** Keep ONE arrow, but make it go EAST to Jackson first, then back WEST to Vicksburg.
+  - Start it AT the blue columns on the road (about 470,500).
+  - Sweep it right and up so its apex runs under or through the burning Jackson (about 690-760, 120-150, just under the tag, 10-20 px clear).
+  - Hook it back west along the railroad into the Vicksburg town; the head tip lands on the buildings at about (330-400, 110-130) with >= 15 px clear of the VICKSBURG tag.
+  - Bezier guide: `[(470,505), (900,300), (760,95), (400,125)]`, widths 60 -> 44. Check that the path stays left of x 850 (portrait) and above the band.
+  - Target at 168x94: the bend visibly touches JACKSON.
+- **M2 Kill the glow discs.** Remove the 5 round orange radial glows. If the line needs action, use 2-3 small irregular muzzle flashes (8-14 px, not round, no halo) with white-grey gunsmoke puffs drifting off them (alpha 0.35-0.5, blur 6-10). Or brighten the painted fire in Jackson, the published one's method. Target: no element with a perfect radial falloff.
+
+### Should-fix
+- **S1 Jackson placement.** If the background is regenerated anyway, put Jackson further RIGHT (east, x about 650-800 at y 140-200) and smaller and further away than Vicksburg, with the railroad leading to it, so east reads without the tag. Otherwise move the JACKSON tag about 40 px right, over the burning town's centre.
+- **S2 Title pairing (0c item 2).** Title A must state the famous result for the word to supply the "how", e.g. `Grant's Top 3 Legendary Tactical Moves | The Man Who Took Vicksburg`. The sidebar mock's "The Campaign That Split the Confederacy: 5 Battles in 18 Days" works as title B/C, not as A.
+- **R3-risk (sidebar).** This is now almost a twin of the channel's own published Grant "THE BACK DOOR": same face pixel for pixel, same bluff city, river and steamer. Next to it in Suggested or on the channel page it can read as a re-upload.
+  - The owner asked for that character, so keep it.
+  - The M1 arrow and the burning Jackson focal are what make it a different picture. Make the Jackson fire the second-brightest warm spot after the band.
+  - Optionally, mirror nothing, but crop the portrait about 5% tighter so the two do not tile identically.

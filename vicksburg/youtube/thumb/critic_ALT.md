@@ -188,3 +188,94 @@ None of this is a likeness problem at thumbnail size. Fix 3 below brings the bea
 4. **Optional.** Raise subtitle contrast a touch (fill 232,220,192 → 240,228,200) to win back the 168 px flatness (luminance std 69.7, target ≥ 72).
 
 Everything else is on target. With fix 1, I expect "looks like the reference" at 9/10.
+
+---
+
+## Round 3: v5 `vicksburg-v5-ALT-GM-WRONG_WAY.jpg` against `reference/thumbnails/example-B-grandmaneuver-marion-HE_RAN.jpg` (harsh)
+
+The reference is byte-identical to `marion-V10-gm-HE_RAN.jpg`, so the earlier M numbers still apply. My detectors: `/tmp/vx_tcritB/r3.py`.
+
+**VERDICT: FAIL.** Two must-fixes:
+1. The arrow does not show the "wrong way". It reads as a straight hop from Bruinsburg to Vicksburg, so the image contradicts its own word.
+2. The word sits on top of Grant's head.
+
+Everything else is close to the reference.
+
+| Score | v3 | **v5** |
+|---|---|---|
+| Looks like the approved reference | 8 | **7/10** (head collision, slit counters) |
+| Would win the click | 7 | **7/10** (stronger word, but the picture doesn't pay it off) |
+
+### Sector by sector
+
+**1. Word "WRONG WAY.": PARTLY.**
+
+| Metric | v5 | Marion M | Target |
+|---|---|---|---|
+| Height | 191 px (26.5 % of H) | 30 % | 27-30 % |
+| Ink | 16.3 % of the frame | 13.1 % | |
+| Stem (my run measure) | 45 px = 23.6 % of height | 27 % | 27 % |
+
+- Height is close to target, and the word dominates more than in M. Good for the feed.
+- **Stem is below target.** The fixer's skeleton measure gives 24 %; both measures are under 27 %.
+- **Counters:** O and G are slits about 10-12 px wide and R's bowl is a pinhole. That is the same fake-bold tell as v3.
+- **Letter spacing:** mid-row gaps of 2 px and 4 px (W/A/Y diagonals), against the fixer's claim of 13 px or more.
+- **Collision:** the W/R baseline (y≈213) overlaps the top of Grant's hair from x 150 to 330, so the word cuts off the crown. In G the word clears Napoleon's head. 0c says "hat/helmet fully in frame"; the same applies to a bare head.
+
+**2. Twist line "THEN VICKSBURG FELL": MATCHES.** Cinzel, tracked, ivory, centred under the word. It completes the twist: wrong way, then the prize fell.
+
+**3. Seal, arrow and payoff: the look matches, the story fails.**
+- The seal (R66), glowing arrow (0.96 % area, M 0.89 %) and burning Vicksburg payoff (380 px; warm accent 1.40 % at x 1048) all match the recipe.
+- **The arrow only sags about 70 px below the line from seal to town, then rises into Vicksburg.** At 360 and 168 px it reads as "Bruinsburg → straight to Vicksburg". Nothing goes east, nothing turns back, there is no Jackson. The thumbnail promises "WRONG WAY." and then shows the right way.
+- **Geography:**
+  - Physically plausible: the map is turned north up-right, the river runs past the seal and behind the town, and Vicksburg is NNE of Bruinsburg on the east bank.
+  - But a viewer assumes north is up, so it reads as "Vicksburg lies east of Bruinsburg". That makes the inland detour even less visible.
+
+**4. Portrait: OK, except the crown.**
+- The oil repaint keeps the likeness and the face is fully lit.
+- The two-star strap is toned (one star in frame, period-correct).
+- Hard matte, no halo.
+- The crown is hidden under the W and R (see sector 1).
+
+**5. Clutter: MATCHES.** 2 labels, 0 blocks, 1 seal, 1 arrow, 1 payoff.
+
+**6. Feed size: GOOD.**
+- 168 px luminance std is 76.7 (M 73.2).
+- At 168x94 it reads as word, red dot, short arrow, fire, like M.
+- At that size the arrow is a short straight dash, so "WRONG WAY" has no visual payoff in the feed.
+
+**7. 0c contradiction test: PASSES THE FLIP, BORDERLINE ON "LITERALLY TRUE".**
+- *Belief it flips:* "you take a fortress by marching at it". Grant marched east, away from Vicksburg, to Jackson first. That gives strong curiosity.
+- *Weak point:* "WRONG" is a judgement, and it was the right way. HE WON. and HE RAN. are literal facts. "WRONG WAY." is literal only as "away from the target". It survives only if the image and the video's first minutes show "away from Vicksburg" at once.
+- So the arrow fix is what makes the word honest. Keep it only with that fix. If the owner wants strictly literal, "HE WENT EAST." is the backup (true, flips, needs the map to land), sourced in FACT_NOTES §7.
+
+### Must-fix list (`vicksburg/tools/make_thumb_v5_gm.py`)
+
+**1. Show the wrong way: ONE hooked arrow.** It is still one arrow, as 0c allows. Keep the north-up-right map.
+- **Route:** from the seal's right side, run down-right (east) along the lower band, to an apex at about (1170-1200, 600-640). That apex is Jackson.
+- **Turn back:** curl up and come back left (west), so the head enters the payoff's right flank pointing west or north-west. Head heading angle between 150° and 240°, where 0° is due right.
+- **Payoff:** shrink to about 320-340 px and centre it at about (930-960, 440), so the hook has room on its right.
+- **Jackson:** optionally a small burning dot at the apex (about 40 px painted flame, no plate), with at most a 26 px "JACKSON" label. Keep the two 40 px labels as the main labels.
+- **Targets:**
+  - the arrow's east extent passes the payoff centre by at least 200 px (at least 15 % of frame width)
+  - the U-turn is readable at 168x94: at least 25 px of the 168 px width between the outbound and return legs' extremes
+  - arrow area 1.1-1.5 %
+  - arrow stays 70 px or more from both labels and the seal centre
+  - VICKSBURG label at about (900, 560-575), under the town and above the outbound leg (leg y ≥ 620)
+- **Check:** show the 168x94 strip to someone cold. They should say "went past it and came back".
+
+**2. Clear the head.** Choose one:
+- Shift the word slot right and up: top y ≤ 18, left x ≥ 360. Rebalance as needed: tracking +4, 1.05x stretch.
+- Lower Grant about 30 px more.
+
+Target: a gap of 12 px or more between the word baseline and the top of the hair, across the whole head width. No glyph over the hair or face.
+
+**3. Word weight and counters.**
+- Target stem ≥ 26 % of height by the run measure (≥ 50 px at 191 px).
+- O/G counters ≥ 16 px wide at mid-row, R bowl visibly open at 360 px.
+- Mid-row letter gaps ≥ 8 px, including the W-R and A-Y diagonals.
+- If MaxFilter cannot do both, drop MaxFilter. Draw Anton with `stroke_width=4` in the cream (rounded joins) and stretch 1.15x, as M does, and accept a height of 185-195 px.
+
+**4. Nice to have.** A faint geographic cue for the rotated map, so the viewer reads the river as the Mississippi: a 2 px brighter core, plus the river visibly continuing south past Bruinsburg off the bottom-left. Without it the "east" leg has no frame of reference.
+
+Pass condition for Round 4: fixes 1-3 met, both scores ≥ 8.
