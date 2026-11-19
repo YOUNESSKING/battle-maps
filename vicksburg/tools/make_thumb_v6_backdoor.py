@@ -103,7 +103,7 @@ def parchment(im, xy, lines, size=30):
     for i, l in enumerate(lines): d.text((x + pw / 2, y + 11 + i * (size + 6)), l, font=f, fill=(40, 28, 16), anchor="ma")
     return out, (x, y, pw, ph)
 im, TAG_V = parchment(im, (36, 168), ["VICKSBURG"], 30)
-im, TAG_J = parchment(im, (676, 22), ["JACKSON"], 30)
+im, TAG_J = parchment(im, (664, 14), ["JACKSON"], 30)            # critic R4 note: >= 25 px clear of the hair
 # ---------- bottom red brush band with speckled white text ----------
 f = ImageFont.truetype(AN, WORD_SIZE); tw = ImageDraw.Draw(im).textlength(word, font=f)
 bx0, by0, bx1, by1 = -10, 538, int(40 + tw + 70), 712

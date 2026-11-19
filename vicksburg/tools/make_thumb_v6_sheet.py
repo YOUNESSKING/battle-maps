@@ -11,7 +11,7 @@ T = "youtube/thumb/"; RT = "/home/user/battle-maps/"
 OS = RT + "marion/tools/oswald-latin-700-normal.ttf"
 F = ImageFont.truetype(OS, 34); Fs = ImageFont.truetype(OS, 24); Ft = ImageFont.truetype(OS, 18)
 RF = RT + "reference/thumbnails/"
-ROWS = [("MAIN  (Back Door recipe, 0c A)", [("OURS v5 MAIN  WRONG WAY.", T + "vicksburg-v6-MAIN-BD-WRONG_WAY.jpg"),
+ROWS = [("MAIN  (Back Door recipe, 0c A)", [("OURS v6 MAIN  WRONG WAY.", T + "vicksburg-v6-MAIN-BD-WRONG_WAY.jpg"),
                                       ("REFERENCE: PUBLISHED Grant  THE BACK DOOR", RF + "ref-A-backdoor-PUBLISHED-grant.jpg"),
                                       ("REFERENCE: Marion A  HE RAN.", RF + "example-A-backdoor-marion-HE_RAN.jpg")]),
         ("ALT  (Grand Maneuver recipe, 0c B, Test & Compare)", [("OURS v6 ALT  WRONG WAY. / THEN VICKSBURG FELL", T + "vicksburg-v6-ALT-GM-WRONG_WAY.jpg"),

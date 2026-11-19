@@ -1,0 +1,174 @@
+"""Vicksburg v7 thumbnail, ALT (v6 + critic round 4: Jackson due EAST of Vicksburg at the town's height, out of the duration-badge corner;
+the arrow runs east, turns north up the right side to Jackson, then hooks due west into the town; the Mississippi leaves the town to the
+north/north-west; word 171 px from x ~105). Built on v6; notes follow.
+Vicksburg v6 thumbnail, ALT (v5 + critic round 3: ONE hooked arrow that runs EAST past Vicksburg to Jackson and curls back WEST into
+the town; word clear of Grant's head; open counters and letter gaps). Built on v5; notes follow.
+Vicksburg v5 thumbnail, ALT (v4 with the owner-approved word WRONG WAY. + "THEN VICKSBURG FELL"; the glowing arrow now swings EAST
+(inland, down-right on this north-up-right map) before it reaches Vicksburg: the wrong way, then the payoff). Built on v4; notes follow.
+Vicksburg v4 thumbnail, ALT (v3 + critic round 2: bigger word in the space above a lowered Grant, Bruinsburg on the river,
+sandy-brown beard + eyes -10 %, brighter subtitle). Built on the v3 script; v3 notes follow.
+Vicksburg v3 thumbnail, ALT (Test & Compare), Grand Maneuver recipe (PACKAGING_GUIDE 0c item 3B; marion/tools/make_thumb_v10.py gm()).
+v3 = every fix of youtube/thumb/critic_ALT.md (2026-11-19):
+ - heavy word: tracking +12, 1.1x stretch, MaxFilter 11 -> stem >= 27 % of word height, letter gaps >= 8 px (9 glyphs: 173 px tall, 977 wide)
+ - ONE calm left-to-right story: seal at BRUINSBURG (560,590) -> one glowing arc bowing down (the inland march east of the river)
+   -> big glowing VICKSBURG payoff at the right end (x ~1080). Map turned so north points up-right: the Mississippi runs lower-left
+   to upper-right, Bruinsburg and Vicksburg both on its EAST (lower-right) bank, Vicksburg NNE of Bruinsburg (true).
+ - payoff = vidIQ dusk vignette (Vicksburg on its bluff, lamplit, fires + smoke of the bombardment), 380 px, bottom feathered,
+   orange bloom + hot core: the hottest warm accent, at the far right.
+ - declutter: 2 labels (BRUINSBURG, VICKSBURG, Cinzel 40), no unit blocks, no star, thin Mississippi kept >= 70 px from the seal.
+ - subtitle = twist line "THEN VICKSBURG FELL" (decision 3 May, surrender 4 July 1863).
+ - portrait: vidIQ oil repaint of the LoC Brady photo (likeness, pose, two-star strap kept), hard 2 px matte, NO rim composite.
+usage (from vicksburg/): python3 tools/make_thumb_v7_gm.py "WRONG WAY." "THEN VICKSBURG FELL" ALT-GM"""
+import sys, math, numpy as np, cv2
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops, ImageEnhance
+from scipy.interpolate import splprep, splev
+W, H = 1280, 720; MT = "/home/user/battle-maps/marion/tools/"
+AN = MT + "Anton-Regular.ttf"; SER = MT + "cinzel-600.ttf"
+word = sys.argv[1] if len(sys.argv) > 1 else "WRONG WAY."
+sub = sys.argv[2] if len(sys.argv) > 2 else "THEN VICKSBURG FELL"
+tag_out = sys.argv[3] if len(sys.argv) > 3 else "ALT-GM"
+THICK = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+def text_shadow(im, xy, txt, font, fill, anchor, off=(6, 8), blur=10, op=170, **kw):
+    sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).text((xy[0] + off[0], xy[1] + off[1]), txt, font=font, fill=(0, 0, 0, op), anchor=anchor, **kw)
+    im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(blur))); ImageDraw.Draw(im).text(xy, txt, font=font, fill=fill, anchor=anchor, **kw); return im
+def soft(im, col, mask, blur):
+    lay = Image.new("RGBA", im.size, col + (0,)); lay.putalpha(mask.filter(ImageFilter.GaussianBlur(blur))); return Image.alpha_composite(im, lay)
+def bez(pts, t):
+    (a, b, c, d) = pts; return ((1 - t) ** 3 * a[0] + 3 * (1 - t) ** 2 * t * b[0] + 3 * (1 - t) * t ** 2 * c[0] + t ** 3 * d[0],
+                                (1 - t) ** 3 * a[1] + 3 * (1 - t) ** 2 * t * b[1] + 3 * (1 - t) * t ** 2 * c[1] + t ** 3 * d[1])
+def glow_arrow(im, pts, w0, w1, col, glow, tmax=0.9):
+    P = [bez(pts, t) for t in np.linspace(0, tmax, 160)]; L, R = [], []
+    for i in range(len(P)):
+        a, b = P[max(i - 1, 0)], P[min(i + 1, len(P) - 1)]; ang = math.atan2(b[1] - a[1], b[0] - a[0]); w = (w0 + (w1 - w0) * i / len(P)) / 2
+        L.append((P[i][0] + math.cos(ang + math.pi / 2) * w, P[i][1] + math.sin(ang + math.pi / 2) * w)); R.append((P[i][0] - math.cos(ang + math.pi / 2) * w, P[i][1] - math.sin(ang + math.pi / 2) * w))
+    a = math.atan2(P[-1][1] - P[-4][1], P[-1][0] - P[-4][0]); hw, hl = w1 * 1.9, w1 * 2.6; ex, ey = P[-1]
+    head = [(ex + math.cos(a + math.pi / 2) * hw, ey + math.sin(a + math.pi / 2) * hw), (ex + math.cos(a) * hl, ey + math.sin(a) * hl), (ex - math.cos(a + math.pi / 2) * hw, ey - math.sin(a + math.pi / 2) * hw)]
+    poly = L + head + R[::-1]
+    gm_ = Image.new("L", im.size, 0); ImageDraw.Draw(gm_).polygon(poly, fill=glow[3]); im = soft(im, glow[:3], gm_, 12)
+    sm = Image.new("L", im.size, 0); ImageDraw.Draw(sm).polygon([(x + 4, y + 6) for x, y in poly], fill=130); im = soft(im, (0, 0, 0), sm, 6)
+    lay = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(lay).polygon(poly, fill=col); return Image.alpha_composite(im, lay)
+def glossy_seal(im, c, R):
+    sx, sy = c; lay = Image.new("RGBA", im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(lay)
+    for i in range(22):
+        a = i / 22 * 2 * math.pi; rr = R * 0.27; d.ellipse([sx + math.cos(a) * R * 0.92 - rr, sy + math.sin(a) * R * 0.92 - rr, sx + math.cos(a) * R * 0.92 + rr, sy + math.sin(a) * R * 0.92 + rr], fill=(120, 10, 16, 255))
+    for r in range(int(R), 0, -1):
+        t = r / R; d.ellipse([sx - r - (1 - t) * R * 0.2, sy - r - (1 - t) * R * 0.2, sx + r - (1 - t) * R * 0.2, sy + r - (1 - t) * R * 0.2], fill=(int(96 + 134 * (1 - t) ** 1.2), int(10 + 60 * (1 - t) ** 2), int(16 + 56 * (1 - t) ** 2), 255))
+    d.ellipse([sx - R * 0.7, sy - R * 0.7, sx + R * 0.7, sy + R * 0.7], outline=(80, 6, 10, 255), width=5)
+    for s in (1, -1):
+        pts = [(sx - R * 0.48 * s + (R * 0.86 * s) * t, sy + R * 0.46 - R * 0.9 * t - math.sin(t * math.pi) * R * 0.12) for t in np.linspace(0, 1, 18)]
+        d.line(pts, fill=(40, 40, 46, 255), width=11); d.line(pts, fill=(217, 221, 226, 255), width=7); d.line(pts[3:], fill=(255, 255, 255, 255), width=2)
+        gx, gy = pts[3]; d.line([gx - 9 * s, gy - 9, gx + 9 * s, gy + 9], fill=(212, 170, 80, 255), width=6); d.line([pts[0], pts[3]], fill=(70, 40, 20, 255), width=8)
+    hl = Image.new("L", im.size, 0); ImageDraw.Draw(hl).ellipse([sx - R * 0.75, sy - R * 0.85, sx - R * 0.05, sy - R * 0.35], fill=110)
+    sh = Image.new("L", im.size, 0); ImageDraw.Draw(sh).ellipse([sx - R + 6, sy - R + 11, sx + R + 6, sy + R + 11], fill=180)
+    im = soft(im, (0, 0, 0), sh, 9); im = Image.alpha_composite(im, lay); return soft(im, (255, 210, 210), hl, 10)
+rng = np.random.default_rng(9)
+# ---------- navy base ----------
+base = Image.new("RGB", (W, H), (14, 26, 46)); grad = Image.linear_gradient("L").resize((W, H))
+base = Image.composite(Image.new("RGB", (W, H), (20, 39, 68)), base, grad.point(lambda v: int(v * 0.6)))
+n = Image.effect_noise((W, H), 22).convert("RGB"); base = Image.blend(base, ImageChops.overlay(base, n), 0.12); im = base.convert("RGBA")
+# ---------- heavy word (thickened glyph mask) + subtitle ----------
+# 9 glyphs cannot take Marion's 1.35x stretch inside the 960 px slot, so: per-letter tracking (+12), 1.1x stretch, then a 5 px/side
+# dilation (MaxFilter 11) -> stem 27 % of the word height with >= 9 px between letters and open counters (searched, see fixes_v3.md)
+WH, SX, TRK, SW = 170, 1.25, 2, 1    # v6: searched (fixes_v6.md): Anton + stroke 1, 1.25x (Marion stretches 1.35x): stems 26 %, O 16 px, gaps >= 9 px, 1108 wide
+f0 = ImageFont.truetype(AN, int(WH * 250 / 219)); tmp = Image.new("L", (3000, 500), 0); d0 = ImageDraw.Draw(tmp); x_ = 20
+for ch in word: d0.text((x_, 20), ch, font=f0, fill=255, stroke_width=SW, stroke_fill=255); x_ += d0.textlength(ch, font=f0) + TRK / SX
+glyph = tmp.crop(tmp.getbbox()); glyph = glyph.resize((int(glyph.width * SX), glyph.height), Image.LANCZOS)
+if THICK: glyph = glyph.filter(ImageFilter.MaxFilter(THICK))
+glyph = glyph.crop(glyph.getbbox()); GH = glyph.height
+CX = 683; gx, gy = int(CX - glyph.width / 2), 14                      # v7: word from x ~105 (Grant is lower), 171 px tall
+fs = ImageFont.truetype(SER, 36); s_ = "   ".join(" ".join(w) for w in sub.split()); sy_ = gy + glyph.height + 24
+tm = Image.new("L", (W, H), 0); tm.paste(glyph, (gx, gy)); ImageDraw.Draw(tm).text((CX, sy_), s_, font=fs, fill=255, anchor="ma")
+# ---------- faint hairline rivers (cut away under the text, the portrait side and the seal) ----------
+S = 2; lay = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0)); gl = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0)); d, g = ImageDraw.Draw(lay), ImageDraw.Draw(gl)
+def walk(x, y, ang, nn, wdt, depth, bright=1.0):
+    pts = [(x, y)]
+    for _ in range(nn):
+        ang += rng.normal(0, 0.18); step = rng.uniform(14, 26) * S; x += math.cos(ang) * step; y += math.sin(ang) * step; pts.append((x, y))
+        if depth < 2 and rng.random() < 0.06: walk(x, y, ang + rng.choice([-1, 1]) * rng.uniform(0.6, 1.0), int(nn * 0.5), wdt * 0.7, depth + 1, bright)
+    g.line(pts, fill=(80, 150, 235, int(90 * bright)), width=int(9 * wdt)); d.line(pts, fill=(207, 228, 255, int(210 * bright)), width=max(2, int(3 * wdt)))
+for (x, y, a) in [(1320, 640, 3.2), (900, 760, -1.9), (1320, 300, 2.9), (700, 760, -1.4), (480, 760, -1.1)]: walk(x * S, y * S, a, 60, 0.8, 0, 0.8)
+rv = Image.alpha_composite(gl.filter(ImageFilter.GaussianBlur(8)), lay).resize((W, H), Image.LANCZOS)
+cut = tm.filter(ImageFilter.MaxFilter(31)); ImageDraw.Draw(cut).ellipse([615 - 110, 590 - 110, 615 + 110, 590 + 110], fill=255)
+rv.putalpha(ImageChops.subtract(rv.split()[3].point(lambda v: int(v * 0.30)), cut)); im = Image.alpha_composite(im, rv)
+# ---------- the Mississippi: lower-left to upper-right (north = up-right), west of Bruinsburg and Vicksburg ----------
+MS = [(320, 740), (390, 660), (462, 590), (535, 528), (620, 500), (720, 468), (800, 420), (840, 360), (836, 300), (812, 240), (790, 160), (770, 60), (760, -20)]   # v7: leaves the town to the north/north-west (Jackson lies east)   # round 2: touches the seal rim (Bruinsburg on the river)
+tck, _ = splprep(np.array(MS).T, s=0); xs, ys = splev(np.linspace(0, 1, 400), tck); mp = list(zip(xs, ys))
+dmin = min(math.hypot(x - 615, y - 590) for x, y in mp)
+mg = Image.new("L", (W, H), 0); ImageDraw.Draw(mg).line(mp, fill=120, width=20); mg = ImageChops.multiply(mg, Image.linear_gradient("L").resize((W, H)).point(lambda v: int(255 * min(1, max(0, (v * H / 255 - 250) / 70))))); im = soft(im, (80, 150, 235), mg, 9)
+ml = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(ml).line(mp, fill=(190, 220, 255, 220), width=5); ImageDraw.Draw(ml).line(mp, fill=(236, 246, 255, 235), width=2)
+fade = Image.linear_gradient("L").resize((W, H)).point(lambda v: int(255 * min(1, max(0, (v * H / 255 - 250) / 70))))   # v7: the river fades out under the subtitle, never through the word
+ml.putalpha(ImageChops.multiply(ml.split()[3], fade)); im = Image.alpha_composite(im, ml)   # v6: brighter core = reads as the river
+# ---------- payoff: Vicksburg on its bluff at dusk, burning (right end) ----------
+IX, IY = 940, 480                                                    # v6: payoff 330 px centred ~(940,440): room for the hook on its right
+ic = Image.open("youtube/thumb/work_v3/icon_vidiq_vicksburg_dusk_v3.png").convert("RGBA"); ic = ic.crop(ic.getbbox())
+ia = np.array(ic.split()[3]).astype(float); h0 = int(ic.height * 0.66); ia[h0:] *= np.linspace(1, 0, ic.height - h0)[:, None] ** 2.2; ic.putalpha(Image.fromarray(ia.astype(np.uint8)))
+ic.thumbnail((330, 330), Image.LANCZOS); px, py = int(IX - ic.width / 2), int(IY - ic.height * 0.62)
+bm = Image.new("L", (W, H), 0); ImageDraw.Draw(bm).ellipse([IX - 150, IY - 190, IX + 150, IY + 110], fill=150); im = soft(im, (255, 138, 42), bm, 60)
+im.alpha_composite(ic, (px, py))
+hm = Image.new("L", (W, H), 0); ImageDraw.Draw(hm).ellipse([IX - 100, IY - 150, IX + 60, IY + 10], fill=120); im = soft(im, (255, 160, 60), hm, 30)
+# ---------- the move: Bruinsburg -> one arc inland (east of the river) -> Vicksburg ----------
+SX, SY = 615, 590
+# v6: ONE hooked arrow: Bruinsburg -> east along the bottom, past Vicksburg -> Jackson (apex) -> curls back west into the town's right flank
+HOOK = [(SX + 74, SY + 0), (780, 620), (900, 646), (1030, 640), (1120, 612), (1176, 562), (1196, 512), (1180, 484), (1146, 468), (1112, 462)]   # v7: east, north up the right side to Jackson, due west into the town
+tck2, _ = splprep(np.array(HOOK).T, s=0); hx, hy = splev(np.linspace(0, 1, 400), tck2); HP = list(zip(hx, hy))
+def glow_path(im, P, w0, w1, col, glow):
+    L, R = [], []
+    for i in range(len(P)):
+        a, b = P[max(i - 1, 0)], P[min(i + 1, len(P) - 1)]; ang = math.atan2(b[1] - a[1], b[0] - a[0]); w = (w0 + (w1 - w0) * i / len(P)) / 2
+        L.append((P[i][0] + math.cos(ang + math.pi / 2) * w, P[i][1] + math.sin(ang + math.pi / 2) * w)); R.append((P[i][0] - math.cos(ang + math.pi / 2) * w, P[i][1] - math.sin(ang + math.pi / 2) * w))
+    a = math.atan2(P[-1][1] - P[-6][1], P[-1][0] - P[-6][0]); hw, hl = w1 * 1.9, w1 * 2.6; ex, ey = P[-1]
+    head = [(ex + math.cos(a + math.pi / 2) * hw, ey + math.sin(a + math.pi / 2) * hw), (ex + math.cos(a) * hl, ey + math.sin(a) * hl), (ex - math.cos(a + math.pi / 2) * hw, ey - math.sin(a + math.pi / 2) * hw)]
+    poly = L + head + R[::-1]
+    gm_ = Image.new("L", im.size, 0); ImageDraw.Draw(gm_).polygon(poly, fill=glow[3]); im = soft(im, glow[:3], gm_, 12)
+    sm = Image.new("L", im.size, 0); ImageDraw.Draw(sm).polygon([(x + 4, y + 6) for x, y in poly], fill=130); im = soft(im, (0, 0, 0), sm, 6)
+    lay = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(lay).polygon(poly, fill=col); return Image.alpha_composite(im, lay), poly, math.degrees(a)
+# Jackson at the apex: a small painted flame (cropped from the vidIQ vignette's fire, no plate) + a 24 px label
+fl_src = Image.open("youtube/thumb/work_v3/icon_vidiq_vicksburg_dusk_v3.png").convert("RGBA").crop((1110, 330, 1330, 620))
+fl_src.thumbnail((60, 78), Image.LANCZOS); fa = np.array(fl_src.split()[3]).astype(float); yy_, xx_ = np.mgrid[0:fa.shape[0], 0:fa.shape[1]]
+fa *= np.clip(1 - (((xx_ - fa.shape[1] / 2) / (fa.shape[1] / 2)) ** 2 + ((yy_ - fa.shape[0] / 2) / (fa.shape[0] / 2)) ** 2), 0, 1) ** 0.6; fl_src.putalpha(Image.fromarray(fa.astype(np.uint8)))
+JX, JY = 1196, 436                                                    # v7: Jackson level with Vicksburg (y ~440), 256 px east of it
+jm = Image.new("L", (W, H), 0); ImageDraw.Draw(jm).ellipse([JX - 40, JY - 40, JX + 40, JY + 34], fill=160); im = soft(im, (255, 138, 42), jm, 20)
+_a = fl_src.split()[3]; fl_src = ImageEnhance.Brightness(fl_src.convert('RGB')).enhance(1.35).convert('RGBA'); fl_src.putalpha(_a)   # brighter flame (2nd warm spot)
+im.alpha_composite(fl_src, (JX - fl_src.width // 2, JY - fl_src.height // 2 - 6))
+im, ARROW_POLY, HEAD_DEG = glow_path(im, HP, 22, 11, (126, 195, 255, 255), (70, 150, 240, 170))
+im = glossy_seal(im, (SX, SY), 66)
+fl = ImageFont.truetype(SER, 40)
+for t, (x, y) in [("BRUINSBURG", (SX - 20, 667)), ("VICKSBURG", (960, 528))]:
+    gg = Image.new("L", (W, H), 0); ImageDraw.Draw(gg).text((x, y), t, font=fl, fill=160, anchor="ma"); im = soft(im, (255, 210, 140), gg, 6)
+    im = text_shadow(im, (x, y), t, fl, (246, 232, 196), "ma", off=(2, 3), blur=3, op=220, stroke_width=1, stroke_fill=(246, 232, 196))
+fj = ImageFont.truetype(SER, 27)
+gg = Image.new("L", (W, H), 0); ImageDraw.Draw(gg).text((1262, 372), "JACKSON", font=fj, fill=150, anchor="ra"); im = soft(im, (255, 210, 140), gg, 5)
+im = text_shadow(im, (1262, 372), "JACKSON", fj, (246, 232, 196), "ra", off=(2, 3), blur=3, op=220)
+# ---------- colour oil portrait, left, facing the map; hard matte, NO rim ----------
+b = Image.open("youtube/thumb/work_v3/grant_oil_cut_v4.png").convert("RGBA")
+s = 0.54; b = b.resize((int(b.width * s), int(b.height * s)), Image.LANCZOS); a = b.split()[3]
+fx, fy = 585 * s, 660 * s; x0, y0 = int(178 - fx), int(408 - fy)                       # round 2: Grant 70 px lower, the word takes the space above him
+shd = Image.new("L", (W, H), 0); shd.paste(a.point(lambda v: int(v * 0.75)), (x0 + 12, y0 + 8)); im = soft(im, (0, 0, 0), shd, 12)
+im.alpha_composite(b, (x0, y0))
+# ---------- word + subtitle ----------
+shm = Image.new("L", (W, H), 0); shm.paste(glyph.point(lambda v: int(v * 0.5)), (gx, gy + 8)); im = soft(im, (0, 0, 0), shm, 12)
+col = Image.new("RGBA", glyph.size, (244, 236, 216, 255)); col.putalpha(glyph); im.alpha_composite(col, (gx, gy))
+im = text_shadow(im, (CX, sy_), s_, fs, (240, 228, 200), "ma", off=(0, 3), blur=4, op=180)
+key = word.replace(" ", "_").replace(".", "")
+out = f"youtube/thumb/vicksburg-v7-{tag_out}-{key}.jpg"; im.convert("RGB").save(out, quality=94)
+# ---------- self-measure: stem width / word height, letter gaps, payoff ----------
+gm = np.array(glyph) > 128; runs = []
+for fr in (0.35, 0.5, 0.65):
+    row = gm[int(GH * fr)]; e = np.diff(np.r_[0, row.astype(int), 0]); st_, en_ = np.nonzero(e == 1)[0], np.nonzero(e == -1)[0]; runs += list(en_ - st_)
+cols = gm.any(0); e = np.diff(np.r_[1, cols.astype(int), 1]); gs, ge = np.nonzero(e == -1)[0], np.nonzero(e == 1)[0]; gaps = [q - p for p, q in zip(gs, ge) if q - p < 60]
+pa = np.array(b.split()[3]); rows = np.nonzero(pa.max(1) > 128)[0]; head_top = y0 + rows.min()
+print(f"head top y={head_top} portrait height={(720 - head_top) / 7.2:.0f}%  word bottom y={gy + GH}  face (brow) y~{int(y0 + 560 * s)}")
+from PIL import ImageDraw as _D
+am = Image.new("L", (W, H), 0); _D.Draw(am).polygon(ARROW_POLY, fill=255); A_ = np.array(am) > 0; ys_, xs_ = np.nonzero(A_)
+fb = ImageFont.truetype(SER, 40); dd = _D.Draw(Image.new("L", (W, H)))
+def _box(t, x, y, f): b_ = dd.textbbox((x, y), t, font=f, anchor="ma"); return b_
+dt = cv2.distanceTransform((~A_).astype(np.uint8), cv2.DIST_L2, 5)
+def _clr(b_): return float(dt[b_[1]:b_[3], b_[0]:b_[2]].min())
+print(f"arrow area={A_.mean() * 100:.2f}%  east extent x={xs_.max()} (payoff centre {IX}, +{xs_.max() - IX}px)  head heading={(HEAD_DEG % 360):.0f} deg (0 = right, 180 = west)")
+print(f"clearance: BRUINSBURG {_clr(_box('BRUINSBURG', SX - 20, 667, fb)):.0f}px  VICKSBURG {_clr(_box('VICKSBURG', 960, 528, fb)):.0f}px  seal centre {dt[SY, SX]:.0f}px  JACKSON label {_clr(dd.textbbox((1262, 372), 'JACKSON', font=ImageFont.truetype(SER, 27), anchor='ra')):.0f}px")
+s168 = np.array(Image.open(out).resize((168, 94), Image.LANCZOS)); print("168px: outbound/return legs span", round((xs_.max() - min(x for x, y in HP[-40:])) * 168 / 1280, 1), "px")
+bz_ = A_[651:, 1141:].sum(); jb = dd.textbbox((1262, 372), 'JACKSON', font=ImageFont.truetype(SER, 27), anchor='ra')
+rv_e = [(x, y) for x, y in mp if y < 440 and x > IX + 60]
+print(f"badge zone (x>1140, y>650) arrow px={bz_}  JACKSON label box={jb}  flame at ({JX},{JY}) = {JX - IX}px east of the town centre, dy={JY - 440}  river px east of town+60 above y440: {len(rv_e)}  word x {gx}-{gx + glyph.width}, bottom {gy + GH}")
+print(out, f"word {glyph.width}x{GH}  stem(median run)={int(np.median(runs))} = {np.median(runs) / GH * 100:.0f}% H  min letter gap={min(gaps) if gaps else -1}px  "
+      f"payoff {ic.width}x{ic.height} at x={IX}  river-seal min dist={dmin:.0f}")
