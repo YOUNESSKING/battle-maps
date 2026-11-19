@@ -259,3 +259,18 @@ Own 5 fps inspection (block: "rectangle long-side-first / no stretch / no turn w
 - S10 reserve block 1, reserve block 2, south flank, north flank: yes / yes / yes; crossing yes (4 of 4)
 - S10 Union lines on the works: yes / yes / yes
 - S09 Hovey x2, Lee, Barton, Logan x3, Bowen x2, Union pursuit / Crocker: yes / yes / yes (Crocker 16 deg on screen for 0.5 s)
+
+# v13 (2026-11-19): owner on v12 ("they go, stop, break rank, cross, reunite - too much: break rank GRADUALLY as they move in, pass, continue up the trail, vanish")
+Share (with sound; S09 part unchanged from v12): `vicksburg/troops_test_v13_share.mp4`. Stills: `vicksburg/troops_test_ours_v13.jpg`.
+
+| Point | v13 (S10 only) |
+| --- | --- |
+| No stop | each routing block walks broadside on one straight leg toward the bridge mouth; it never halts there |
+| Gradual break | over the last ~1.3 s each man drifts out of his rank spot (moving with the block) toward his lane at the deck mouth - the flanks funnel inward, the plate fades out over ~1 s - and the men enter the deck one row of 3 every 0.06 s, so the block flows into the stream without a pause |
+| Pass | the stream crosses the deck straight, 3 abreast, evenly spaced (0.075 u lanes, ~0.08 u between rows) |
+| Up the trail, vanish | past the far end the men keep walking up the road (the trail west of the bridge) as a loosening stream (each at 90-110 % pace, lanes widening) and fade out one by one between 1.5 and 4 u past the bridge (~2 s); no regrouping, no far-side blocks |
+| One at a time | a block starts funnelling only when the previous one's last row is on the deck (+0.4 s); last row of the last block on the deck 28.4 s, off it ~29.5 s, before the fire (31.3 s) |
+| Camera | one still framing at (1513.9, 684.6), dist 16.2: the bridge and the start of the trail well inside the frame on the left, the works on the right |
+
+Checker v13 S10 15-35: screen max 9 deg, turn <= 41 deg/s, pops 0, shape 0 %, overlaps only within the south flank while turning in place (0.05 u); a block that has broken up (plate gone, men streaming) no longer counts as a rectangle for the overlap test.
+Own 5 fps inspection of every crossing (reserve x2, south flank, north flank): approach broadside without stopping, gradual funnel, straight stream over the deck, up the trail, fade - yes x4.
