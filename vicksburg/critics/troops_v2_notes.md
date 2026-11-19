@@ -237,3 +237,25 @@ Own 5 fps inspection ("rectangle moving long-side-first, no stretch, no turn-whi
 - S09 Union pursuit / Crocker: yes / yes / yes (Crocker 16 deg on screen for 0.5 s)
 - S10 north flank, south flank, reserve: yes / yes / yes (break ranks at the bridge, stream 3 abreast, re-form on the far side in frame)
 - S10 Union lines on the works: yes / yes / yes
+
+# v12 (2026-11-19): critics on v11 (look 7.5, motion 7: rule 6.5, bridge 6.5) - visible bridge crossing, still close camera, no turn while moving
+Share (with sound): `vicksburg/troops_test_v12_share.mp4`. Sheet: `vicksburg/troops_test_ours_v12.jpg`.
+
+| Point | v12 |
+| --- | --- |
+| 1 camera | S10: one still framing 20-32.6 s at (1514.6, 684.6), dist 15 (blocks ~70 px long, men readable); works, fields, bridge and far side in frame. S09: the crest battery at (1632.4, 697.9), fully in frame at 35 s |
+| 2 approach | each routing block walks broadside on ONE straight leg from its slot to a stop point just before the bridge mouth (never along the road, never rotated lengthwise), and STOPS there |
+| 3 break ranks | the men file onto the deck 3 abreast, one row every 0.045 s (the block empties in ~1.4 s), ordered by distance to the deck entry; each man walks his own path (rank spot -> his lane on the deck -> deck exit -> his own rank spot in the re-formed block) at ~1.3 u/s; the plate fades out as its men leave and fades in as they arrive; the block walks on only when the last man is in place. No strip, no morph |
+| 4 queue | one block at the mouth at a time (the next arrives >= 0.9 s after the last man of the previous one stepped onto the deck); re-form spots alternate left / right of the road so the far side never stacks; blocks start in frame; soft exit fade at the left edge (~300 px) |
+| 5 turn while moving | every key is its own move (no merged polylines) and any corner > 5 deg = stop, turn in place, walk; the heading never follows a curve while walking |
+| 6 arrow | the red retreat arrow runs from the road across the field to the deck, over the bridge and a short way past it (no V, not over forest / river) |
+| 7 smoke | S09 puffs drift (wind x 2.75), ~50 % of the film's strength |
+| Timing | S10 escapes ESC_T [16.9, 16.8, 15.6]: reserve x2 at the mouth 18.9 / 21.8 s, south flank 24.5 s, north flank 27.3 s; the last men leave the deck ~30.3 s, before the fire (31.3 s) |
+
+Checker v12: S10 15-35: screen max 11 deg, turn <= 41 deg/s, accel <= 2.8, pops 0, shape 0 %, overlaps only within the south flank while turning in place (0.05 u); frames with ranks broken (men walking, no plate) are not judged as block motion.
+S09 55-110: screen max 16 deg (Crocker, 5 frames at 99.1 s; all others <= 15), turn <= 38 deg/s, pops 0, shape 0 %, one brush 0.07 u at 106.2 s (units 1 x 3).
+
+Own 5 fps inspection (block: "rectangle long-side-first / no stretch / no turn while moving"; crossing: "stops, men file across, re-form individually"):
+- S10 reserve block 1, reserve block 2, south flank, north flank: yes / yes / yes; crossing yes (4 of 4)
+- S10 Union lines on the works: yes / yes / yes
+- S09 Hovey x2, Lee, Barton, Logan x3, Bowen x2, Union pursuit / Crocker: yes / yes / yes (Crocker 16 deg on screen for 0.5 s)

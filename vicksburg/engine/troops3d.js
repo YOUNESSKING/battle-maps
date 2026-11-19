@@ -51,6 +51,7 @@ export function createTroops3D(o) {
   const SUNG = (() => { const s = o.sun || [-0.7, 0.48, -0.4], l = Math.hypot(s[0], s[2]); return [-s[0] / l, -s[2] / l]; })();
   const shots = (o.shots || []).slice().sort((a, b) => a.t - b.t);
   const NF = 72, INF = gridLayout(12, 6), CAV = gridLayout(12, 2);
+  const XV = 1.3 * (o.troopScale || 1), XDT = 0.045, XP = 0.3, rotP = (c, h, la, lb) => { const fx = Math.cos(h), fy = Math.sin(h); return [c[0] - fy * la + fx * lb, c[1] + fx * la + fy * lb]; };   /* v12: bridge crossing (men file across) */
   const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 15 | 0, f = (k % 15 + 0.5) / 15 - 0.5, e = 0.5 - 0.06;
     P.push(side === 0 ? [f, e] : side === 1 ? [e, -f] : side === 2 ? [-f, -e] : [-e, f]); } return P; })();
   const BOXV = o.look === "box", BOXL = BOXV || o.look === "lineblocks";   /* v11: lineblocks = the GM soldier blocks driven by the v10 rectangle motion */   /* v9 (owner 2026-11-18): Style W map boxes, one formation (the rectangle), long side leading */
@@ -72,7 +73,7 @@ export function createTroops3D(o) {
     const K = u.keys, P = K.map((k) => [k[1], k[2]]), cum = [0]; for (let i = 1; i < P.length; i++) cum.push(cum[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
     // moves: a chain of "lin" keys (VX.march) is ONE move; any other moving segment is one move; holds between them
     const moves = []; for (let i = 1; i < K.length; i++) { const d = cum[i] - cum[i - 1]; if (d < 0.02 * ts) continue; const last = moves[moves.length - 1];
-      if (K[i][3] === "lin" && last && last.lin && last.i1 === i - 1) { last.i1 = i; last.t1 = K[i][0]; last.s1 = cum[i]; continue; }
+      if (!BOXL && K[i][3] === "lin" && last && last.lin && last.i1 === i - 1) { last.i1 = i; last.t1 = K[i][0]; last.s1 = cum[i]; continue; }
       moves.push({ i0: i, i1: i, t0: K[i - 1][0], t1: K[i][0], s0: cum[i - 1], s1: cum[i], lin: K[i][3] === "lin" }); }
     for (let m = 0; m < moves.length; m++) { const M = moves[m], L = M.s1 - M.s0, prevEnd = m ? moves[m - 1].t1 : -1e9;
       const dir = (() => { const a = P[M.i0 - 1], b = P[M.i1]; const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; })();
@@ -83,7 +84,7 @@ export function createTroops3D(o) {
       M.r = Math.min(0.45, RAMP / Math.max(1e-3, M.t1 - M.t0)); M.dir = dir; }
     if (BOXL) for (let m = 1; m < moves.length; m++) { const A = moves[m - 1], M = moves[m], Fv = [Math.cos(fa), Math.sin(fa)];   /* v9: a corner = stop, turn in place, then walk */
       const hd = (Mv) => ang(Mv.dir[0], Mv.dir[1]) + (Mv.dir[0] * Fv[0] + Mv.dir[1] * Fv[1] < -0.05 ? Math.PI : 0), dA = Math.abs(angDiff(hd(A), hd(M)));
-      if (dA > 0.52) { M.noMerge = true; const Tn = (dA + 0.3) / 0.44 + 0.5, dl = A.t1 + Tn - M.t0; if (dl > 0) for (let k = m; k < moves.length; k++) { if (k > m && moves[k].t0 >= moves[k - 1].t1 + 0.05) break; moves[k].t0 += dl; moves[k].t1 += dl; } } }   /* the later moves shift (never squeezed) */
+      if (dA > 0.09) { M.noMerge = true; const Tn = (dA + 0.3) / 0.44 + 0.5, dl = A.t1 + Tn - M.t0; if (dl > 0) for (let k = m; k < moves.length; k++) { if (k > m && moves[k].t0 >= moves[k - 1].t1 + 0.05) break; moves[k].t0 += dl; moves[k].t1 += dl; } } }   /* the later moves shift (never squeezed) */
     // a move that follows a column move within 1.6 s stays in column (no deploy-on-the-move), deploying once at the real halt
     const tailEst = clamp((nb - 1) * (bw + gapB) / VPK + 0.6, 1.4, 4);
     for (let m = 1; m < moves.length; m++) if (moves[m - 1].col && !moves[m].col && moves[m].t0 - moves[m - 1].t1 < 2 * RF + 0.4 && u.column !== false && !art) moves[m].col = true;
@@ -170,7 +171,7 @@ export function createTroops3D(o) {
         const near = Math.hypot(e1[0] - sl[0], e1[1] - sl[1]) < Math.hypot(e2[0] - sl[0], e2[1] - sl[1]) ? e1 : e2, far = near === e1 ? e2 : e1, ex = road[road.length - 1];
         const P4 = [sl, near, far, ex], NP = [P4[0]]; for (let k = 1; k < 4; k++) { const a0 = P4[k - 1], a1 = P4[k], n = Math.max(1, Math.ceil(Math.hypot(a1[0] - a0[0], a1[1] - a0[1]) / 0.05)); for (let m = 1; m <= n; m++) NP.push([a0[0] + (a1[0] - a0[0]) * m / n, a0[1] + (a1[1] - a0[1]) * m / n]); }
         path = NP; const aA = Math.hypot(near[0] - sl[0], near[1] - sl[1]), fB = aA + Math.hypot(far[0] - near[0], far[1] - near[1]);
-        SEG = { aA, fB, far, hA: ang(near[0] - sl[0], near[1] - sl[1]) + Math.PI, hC: ang(ex[0] - far[0], ex[1] - far[1]) + Math.PI }; SEG.hC = SEG.hA + angDiff(SEG.hA, SEG.hC); }
+        SEG = { aA, fB, far, near, ex, hA: ang(near[0] - sl[0], near[1] - sl[1]) + Math.PI, hC: ang(ex[0] - far[0], ex[1] - far[1]) + Math.PI }; SEG.hC = SEG.hA + angDiff(SEG.hA, SEG.hC); }
       let kj = 0, dj = 1e9; path.forEach((p, k) => { const d = Math.hypot(p[0] - J[0], p[1] - J[1]); if (d < dj) { dj = d; kj = k; } });
       const a = pathLen(path.slice(0, kj + 1));
       // the path's tangent angle, UNWRAPPED along its length (the plate turns exactly as the path bends: no flips, no snaps)
@@ -197,6 +198,22 @@ export function createTroops3D(o) {
     for (const q of Q) { q.V = V; q.T = q.t0 + (q.seg ? q.seg.tt : 0.5 + RF);   // v7: the men turn about and re-form into a march column first
       if (prev) { const need = (q.rj - q.a) + (prev.len / 2 + q.len / 2 + Math.max(prev.gap, q.gap) + 0.3 * q.len + 0.13 * q.len * hash(q.i + 3 * units.indexOf(q.u), 21)) - (prev.rj - prev.a); /* v8: 0-13 % spacing jitter */ q.T = Math.max(q.T, prev.T + invRamp(need, V), prev.T + 0.5); }   // v4: a clear gap + front-to-back stagger
       prev = q; } }
+  // v12 (critics on v11): a routing block walks broadside to the bridge mouth and STOPS; its men file onto the deck 3 abreast, one row at a
+  // time (~1.6 s to empty), walk across and on to their own rank spots on the far side; when the last is in place the block walks on.
+  // One block at the mouth at a time; the next arrives only when the previous one's men are on the deck and its re-formed block has moved off.
+  for (const Q of QUEUES.values()) { let prev = null, prev2 = null, kx = 0;
+    for (const q of Q) { if (!q.seg || BOXV || q.u.type === "art") continue; const S2 = q.seg, D = UD.get(q.u), sl = q.path[0];
+      const ax0 = [S2.far[0] - S2.near[0], S2.far[1] - S2.near[1]], al = Math.hypot(ax0[0], ax0[1]) || 1, ax = [ax0[0] / al, ax0[1] / al], nrm = [-ax[1], ax[0]];
+      const PA = [S2.near[0] - ax[0] * (D.bd / 2 + 0.25 * ts), S2.near[1] - ax[1] * (D.bd / 2 + 0.25 * ts)], sideX = kx++ % 2 ? 1 : -1, PC = [S2.far[0] + ax[0] * (D.bd / 2 + 0.35 * ts) + nrm[0] * sideX * (D.bw / 2 + 0.15 * ts), S2.far[1] + ax[1] * (D.bd / 2 + 0.35 * ts) + nrm[1] * sideX * (D.bw / 2 + 0.15 * ts)];   /* re-form left / right of the road in turn */
+      const dA = [PA[0] - sl[0], PA[1] - sl[1]], LA = Math.max(0.05, Math.hypot(dA[0], dA[1])), hA = ang(dA[0], dA[1]) + Math.PI, dC = [S2.ex[0] - PC[0], S2.ex[1] - PC[1]], lC = Math.hypot(dC[0], dC[1]) || 1, hC = ang(dC[0], dC[1]) + Math.PI;
+      const men = INF.map((L, j) => { const la = L[0] * D.bw * 0.96, lb = L[1] * D.bd * 0.9, sA = rotP(PA, hA, la, lb); return { j, la, lb, dE: Math.hypot(sA[0] - S2.near[0], sA[1] - S2.near[1]) }; }).sort((a, b) => a.dE - b.dE);
+      const ord = []; men.forEach((m, k) => { ord[m.j] = k; });
+      let maxArr = 0, minArr = 1e9; men.forEach((m, k) => { const off = (k % 3 - 1) * 0.06 * ts, E = [S2.near[0] + nrm[0] * off, S2.near[1] + nrm[1] * off], Fp = [S2.far[0] + nrm[0] * off, S2.far[1] + nrm[1] * off], sC = rotP(PC, hC, m.la, m.lb);
+        const rel = XP + Math.floor(k / 3) * XDT + (m.dE + Math.hypot(Fp[0] - E[0], Fp[1] - E[1]) + Math.hypot(sC[0] - Fp[0], sC[1] - Fp[1])) / XV; maxArr = Math.max(maxArr, rel); minArr = Math.min(minArr, rel); });
+      const leave = XP + 23 * XDT + men[men.length - 1].dE / XV, tWalk = LA / q.V + RAMP;
+      let tA = q.T + tWalk; if (prev) tA = Math.max(tA, prev.cr.tA + prev.cr.leave + 0.9); if (prev2) tA = Math.max(tA, prev2.cr.tReady + invRamp(D.bd + 0.8 * ts, q.V) + 0.2 - minArr);
+      q.T = tA - tWalk; q.cr = { PA, PC, hA, hC, LA, tWalk, tA, ord, ax, nrm, near: S2.near, far: S2.far, minArr, maxArr, leave, tReady: tA + maxArr + 0.3, dirC: [dC[0] / lC, dC[1] / lC] };
+      prev2 = prev; prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
 
   // block base state at t: position, plate axis angle (forward of the plate), soldiers' facing angle, column share, escape share
@@ -252,7 +269,7 @@ export function createTroops3D(o) {
   const runHead = (u, R, s, x, y) => { const tg = runTan(u, R, s, 0.25); return corr(ang(tg[0], tg[1]), x, y) + (R.back ? Math.PI : 0); };
   function baseBox(u, i, t) {
     const D = UD.get(u), lag = i ? 0.08 + 0.14 * hash(units.indexOf(u) * 7 + i, 5) : 0, tl = t - lag, fa = u.face, F = uv(fa), L0 = [-F[1], F[0]];
-    const sl = sAt(u, tl), c0 = ptAt(u, sl); let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], h = fa, e = 0, EQ = null, EW = 0, bf, stB, abk = 0;
+    const sl = sAt(u, tl), c0 = ptAt(u, sl); let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], h = fa, e = 0, EQ = null, EW = 0, bf, stB, abk = 0, crq = null;
     for (const R of D.runs) {   // in time order: turn in place, walk long side first along the smoothed path, turn back to the unit's facing
       const pS = runPt(u, R, R.s0), hS = runHead(u, R, R.s0, pS[0], pS[1]), tinD = BOXV ? R.tin : clamp(Math.abs(angDiff(h, hS)) / 0.44 + 0.25, 0.8, 6);   /* v11: turn time from the real (on-screen corrected) angle */
       if (tl < R.t0 - tinD) break;
@@ -261,6 +278,14 @@ export function createTroops3D(o) {
       if (tl <= R.t1) { const ss = clamp(sl, R.s0, R.s1), p = runPt(u, R, ss); x = p[0] + L0[0] * D.slots[i]; y = p[1] + L0[1] * D.slots[i]; h = runHead(u, R, ss, x, y); break; }
       const p = runPt(u, R, R.s1), he = runHead(u, R, R.s1, p[0], p[1]), toutD = BOXV ? R.tout : clamp(Math.abs(angDiff(he, fa)) / 0.44 + 0.25, 0.8, 6); h = he + angDiff(he, fa) * sstep(R.t1, R.t1 + toutD, tl); }
     if (u.esc && i >= Math.round(u.esc.from / u._bpb) && t > u.esc.t0 - 0.1) { const q = ESCB.get(`${units.indexOf(u)}:${i}`);
+      if (q && q.cr) { const C = q.cr, s0 = q.path[0]; e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));
+        const hAc = corr(C.hA - Math.PI, C.PA[0], C.PA[1]) + Math.PI, hCc = corr(C.hC - Math.PI, C.PC[0], C.PC[1]) + Math.PI, tMid = C.tA + (XP + 23 * XDT + 0.2 + C.minArr) / 2;
+        if (t < C.tA) { const sw = C.LA * trap((t - q.T) / C.tWalk, Math.min(0.45, RAMP / C.tWalk)); x = s0[0] + (C.PA[0] - s0[0]) * sw / C.LA; y = s0[1] + (C.PA[1] - s0[1]) * sw / C.LA;
+          const hT = corr(C.hA - Math.PI, x, y) + Math.PI; h = h + angDiff(h, hT) * sstep(Math.max(q.t0, q.T - q.seg.tt), q.T - 0.15, t); }   /* turn in place just before stepping off */
+        else if (t < C.tReady) { crq = { ...C, hAc, hCc };
+          if (t < tMid) { x = C.PA[0]; y = C.PA[1]; h = hAc; stB = sstep(C.tA + XP, C.tA + XP + 23 * XDT + 0.2, t); } else { x = C.PC[0]; y = C.PC[1]; h = hCc; stB = 1 - sstep(C.tA + C.minArr, C.tReady, t); } }
+        else { const sw = ramp(t - C.tReady, q.V); x = C.PC[0] + C.dirC[0] * sw; y = C.PC[1] + C.dirC[1] * sw; h = corr(C.hC - Math.PI, x, y) + Math.PI; }
+      } else
       if (q) { if (QC.t !== t) QC = { t, m: queueAt(t) }; const rho = QC.m.get(q), w = Math.max(0, q.e2w(rho - (q.rj - q.a))), g = along(q.path, w);
         x = g[0]; y = g[1]; let hE;
         if (q.seg) { const S2 = q.seg; hE = w <= S2.aA ? S2.hA : w >= S2.fB ? S2.hC : lerp(S2.hA, S2.hC, (w - S2.aA) / Math.max(1e-6, S2.fB - S2.aA)); if (!BOXV) { const p0 = q.path[0]; const cp2 = [x, y]; hE = corr(hE - Math.PI, cp2[0], cp2[1]) + Math.PI; }   /* blocks: on-screen corrected (fixed per leg from its start) */
@@ -270,8 +295,15 @@ export function createTroops3D(o) {
           hE = corr(ta, x, y) + Math.PI; }   // the box walks BACK (front still toward the enemy), long side leading
         h = h + angDiff(h, hE) * sstep(q.t0, q.T - 0.15, t); e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));   /* the men about-face before the block walks back */ if (w > 0) { EQ = q; EW = w; } } }
     const ar = u.t0 > 1 && u.arrive !== false ? (o.arrive ?? 1.6) * ts * (1 - trap((t - u.t0) / 3.0, 0.4)) : 0, ox = -Math.cos(h) * ar, oy = -Math.sin(h) * ar;   // walks in along its front normal
-    return { x: x + ox, y: y + oy, lx: x + ox, ly: y + oy, cx: x + ox, cy: y + oy, pa: h, sa: h + Math.PI * abk, lpa: h, cpa: h, f: 0, c: 0, e, eq: EQ, ew: EW, ab: abk, bf, st: stB };
+    return { x: x + ox, y: y + oy, lx: x + ox, ly: y + oy, cx: x + ox, cy: y + oy, pa: h, sa: h + Math.PI * abk, lpa: h, cpa: h, f: 0, c: 0, e, eq: EQ, ew: EW, ab: abk, bf, st: stB, cr: crq };
   }
+  // one man of a block crossing a bridge: rank spot (A) -> deck entry (his lane of 3) -> deck exit -> his rank spot in the re-formed block (C)
+  const crossMan = (C, j, la, lb, t) => { const k = C.ord[j], off = (k % 3 - 1) * 0.06 * ts, tau = C.tA + XP + Math.floor(k / 3) * XDT;
+    const P = [rotP(C.PA, C.hAc, la, lb), [C.near[0] + C.nrm[0] * off, C.near[1] + C.nrm[1] * off], [C.far[0] + C.nrm[0] * off, C.far[1] + C.nrm[1] * off], rotP(C.PC, C.hCc, la, lb)], sd = Math.max(0, (t - tau) * XV);
+    let acc = 0; for (let i = 1; i < 4; i++) { const L = Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]);
+      if (sd <= acc + L || i === 3) { const f = L > 1e-6 ? Math.min(1, Math.max(0, (sd - acc) / L)) : 1, done = i === 3 && f >= 1, mov = sd > 0 && !done;
+        return [lerp(P[i - 1][0], P[i][0], f), lerp(P[i - 1][1], P[i][1], f), mov ? Math.atan2(P[i][1] - P[i - 1][1], P[i][0] - P[i - 1][0]) : sd <= 0 ? C.hAc + Math.PI : C.hCc + Math.PI, mov ? 1 : 0]; }
+      acc += L; } };
   const vecAvg = (list) => { let x = 0, y = 0; for (const [a, w] of list) { x += Math.cos(a) * w; y += Math.sin(a) * w; } return Math.atan2(y, x); };
 
   // ---------- geometry ----------
@@ -423,10 +455,11 @@ export function createTroops3D(o) {
         let x = lerp(lx, cx2, kj), y = lerp(ly, cy2, kj), ma = lsa + angDiff(lsa, cpa) * sstep(0, 0.35, kj);
         // v6 (owner): at a bridge the block BREAKS RANKS: each man walks the escape path in a stream 3 abreast (natural jitter, no plate),
         // the men leave / re-take their rank spots over ~1-1.5 s as the block enters / leaves the bridge zone
-        if (st > 0.001) { const row = Math.floor(j / 3), cc = j % 3, sw = Q.ew - (row - 11.5) * csp * 0.55 - (hash(seed + j, 11) - 0.5) * 0.02, g = along(Q.eq.path, Math.max(0, sw));
+        let crW = 0; if (Q.cr) { const m = crossMan(Q.cr, j, la, lb, t); x = m[0]; y = m[1]; ma = m[2]; crW = m[3]; }
+        else if (st > 0.001 && Q.eq) { const row = Math.floor(j / 3), cc = j % 3, sw = Q.ew - (row - 11.5) * csp * 0.55 - (hash(seed + j, 11) - 0.5) * 0.02, g = along(Q.eq.path, Math.max(0, sw));
           const off = (cc - 1) * Math.min(csp * 1.1, 0.055) + (hash(seed + j, 12) - 0.5) * 0.015, sx2 = g[0] - g[3] * off, sy2 = g[1] + g[2] * off, kj = sstep(0, 1, clamp(st * 1.25 - 0.25 * hash(seed + j, 13)));
           x = lerp(x, sx2, kj); y = lerp(y, sy2, kj); ma = sa + angDiff(sa, Math.atan2(g[3], g[2])) * kj; }
-        const bob = walk * (0.12 + 0.1 * kj) * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), rear = sstep(-0.1, -0.42, L[1]) * (1 - kj), hy = Math.max(HH(x, y), deckTop(x, y)) + S.lift + pT * 1.15 * (1 - st) + bob - sink * rear * (1 - st), lift = isCav ? fh * 0.55 : 0;
+        const bob = (Q.cr ? crW : walk) * (0.12 + 0.1 * kj) * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), rear = sstep(-0.1, -0.42, L[1]) * (1 - kj), hy = Math.max(HH(x, y), deckTop(x, y)) + S.lift + pT * 1.15 * (1 - st) + bob - sink * rear * (1 - st), lift = isCav ? fh * 0.55 : 0;
         const jh = 0.93 + 0.14 * hash(seed + j, 6), ja = (hash(seed + j, 8) - 0.5) * 0.35, jfx = Math.cos(ma + ja), jfy = Math.sin(ma + ja), jc = 0.9 + 0.2 * hash(seed + j, 9);   // v5: men not identical
         if (isCav) { setM(horses, nh, x, hy, y, sfx, sfy, fw * 1.5, fh * 0.7, fd * 2.2); setOp(horses, nh++, op); }
         setM(coats, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd); setM(pales, nf, x, hy + lift, y, jfx, jfy, fw, fh * jh, fd);
@@ -453,7 +486,7 @@ export function createTroops3D(o) {
       w: q.u.type === "art" ? q.D.bw * 0.62 : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op, art: q.u.type === "art", cap: q.capd }));
     return { figures: nf, blocks: np, guns: ng };
   }
-  const API = { update, blocks, base, billboard: BOXV && !!o.camera, boxH: BOXL ? (x, y) => Hs(x, y) : null, meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
+  const API = { update, blocks, base, queues: QUEUES, billboard: BOXV && !!o.camera, boxH: BOXL ? (x, y) => Hs(x, y) : null, meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
   return API;
 }
 
