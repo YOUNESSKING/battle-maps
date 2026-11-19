@@ -345,3 +345,46 @@ Pass condition for Round 5:
 - The U-turn still reads at 168 px.
 
 With that I score it 8.5 / 8 and PASS.
+
+---
+
+## Round 5: v7 `vicksburg-v7-ALT-GM-WRONG_WAY.jpg` (against the round-4 pass conditions and the Marion GM example)
+
+My measurements (`/tmp/vx_tcritB/r5.py`):
+
+| Metric | v7 |
+|---|---|
+| Mean L / sat | 79.5 / 128 |
+| Word | 168 px tall (23.3 % of H), x 101-1263, stem 43 px = 25.6 %, ink 13.8 % (M 13.1 %) |
+| O counter | 18 px |
+| Letter gaps | ≥ 9 px (the 3-4 px runs are inside the W) |
+| Arrow-blue area | 1.35 % |
+| Warm accent | 1.35 %, centroid x 923 |
+| 168 px luminance std | 73.6 (M 73.2) |
+
+**VERDICT: PASS.**
+
+| Score | v6 | **v7** |
+|---|---|---|
+| Looks like the approved reference | 8 | **8.5/10** |
+| Would win the click | 7.5 | **8/10** |
+
+### Round-4 pass conditions
+| Condition | Result | Status |
+|---|---|---|
+| Jackson within ±40 px of Vicksburg's y, ≥ 220 px to its right | flame y ≈ 436 against town y 440, about 256 px east | met |
+| Badge zone (x > 1140, y > 650) empty | empty; checked at 360 and 168 px with a simulated badge | met |
+| River only west/north of the town | leaves the town to the north and fades under the subtitle; still touches Bruinsburg | met |
+| U-turn readable at 168 px | yes | met |
+
+**Geography now reads true north-up.** Bruinsburg is south on the river, Vicksburg north on the river, Jackson due east of Vicksburg. The arrow goes east and north-east, then due west into the town (head at 190°). A Civil War viewer sees the familiar campaign shape.
+
+The word grew to 168-171 px and stays 14 px clear of the hair. Weight, counters and spacing were kept.
+
+### Remaining issues (none blocking)
+1. **Jackson flame reads as a brown smoke smudge more than fire.** At 168 px it is a dot that barely registers, so the U-turn carries the story alone, which is enough.
+   - Optional: about 70 px, with a brighter orange core, so it is the clear second warm spot.
+   - Optional: end the hook's apex 10-15 px nearer the flame, so the arrow visibly "touches" Jackson.
+2. **The word is 23 % of frame height against 30 % in M.** This is the Anton/10-letter limit and stays waived. At 168 px it is still read first.
+
+No must-fixes remain. Cleared from this critic's side for the sheet, the 0b item 3 checks and the owner.
