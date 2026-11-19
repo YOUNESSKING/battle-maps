@@ -1,4 +1,6 @@
-"""Vicksburg v3 thumbnail, MAIN, 'Back Door' recipe (PACKAGING_GUIDE 0c item 3A; Marion marion/tools/make_thumb_backdoor.py).
+"""Vicksburg v4 thumbnail, MAIN (v3 + critic round 2: curved arrow with its tip in the town, tag moved clear, chunkier blue formations,
+battlefield contrast 1.06, ear blotch softened). Built on the v3 script; v3 notes follow.
+Vicksburg v3 thumbnail, MAIN, 'Back Door' recipe (PACKAGING_GUIDE 0c item 3A; Marion marion/tools/make_thumb_backdoor.py).
 v3 = every fix of youtube/thumb/critic_MAIN.md (2026-11-19):
  - new painted aerial (vidIQ purpose image, prompt in thumb/fixes_v3.md): warm golden-sepia oil look, NO sky, Champion Hill crest burning
    (farmhouse fire + black smoke + gunsmoke along the crest), dust on the roads, Vicksburg on its bluff with the Mississippi BEHIND it
@@ -9,7 +11,7 @@ v3 = every fix of youtube/thumb/critic_MAIN.md (2026-11-19):
  - tags: VICKSBURG 33 px, CHAMPION HILL 28 px.
  - portrait: real LoC Brady photo, hard 2 px matte (no rim), strap painted out, s 0.66, hair at the top edge, panel from x 840
    ramp 180, max alpha 0.85; drawn AFTER the band so the sleeve overlaps the band end cleanly.
-usage (from vicksburg/): python3 tools/make_thumb_v3_backdoor.py "CUT LOOSE." MAIN-BD   -> youtube/thumb/vicksburg-v3-MAIN-BD-CUT_LOOSE.jpg"""
+usage (from vicksburg/): python3 tools/make_thumb_v4_backdoor.py "CUT LOOSE." MAIN-BD   -> youtube/thumb/vicksburg-v4-MAIN-BD-CUT_LOOSE.jpg"""
 import sys, math, numpy as np, cv2
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance, ImageChops, ImageOps
 W, H = 1280, 720; MT = "/home/user/battle-maps/marion/tools/"
@@ -30,7 +32,8 @@ im = Image.merge("RGB", [ch.point(lambda v, k=k: min(255, int(v * k))) for ch, k
 im = Image.composite(ImageEnhance.Brightness(src).enhance(1.16), im, fm)          # flames kept hot
 top = Image.linear_gradient("L").resize((W, 130))      # 0 at the top -> 255 at y 130: darken the river strip a little
 dark = Image.new("RGB", (W, H), (0, 0, 0)); vm = Image.new("L", (W, H), 0); vm.paste(top.point(lambda v: int((255 - v) * 0.30)), (0, 0))
-im = Image.composite(dark, im, vm).convert("RGBA")
+im = Image.composite(dark, im, vm)
+im = ImageEnhance.Contrast(im).enhance(1.06).convert("RGBA")          # round 2 (R2-4): feed-size contrast on the battlefield (portrait comes later)
 # ---------- action: fire glow on the crest, musket smoke between the lines, dust under the blue ----------
 def soft(im, col, shapes, blur):
     """solid colour layer whose ALPHA alone is drawn + blurred (no dark fringes from transparent black)"""
@@ -54,13 +57,13 @@ def formation(im, c, col, cols, rows, cw=11, ch=7, gap=3, ang=-0.42):
     im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(2))); return Image.alpha_composite(im, lay)
 RED, BLUE = (176, 34, 40), (40, 66, 135)
 # Pemberton's line on the Champion Hill crest (left of the burning house and beyond it) + a second line down the slope
-for (x, y, c, r, a_) in [(282, 262, 7, 2, -0.10), (392, 250, 7, 2, -0.06), (500, 240, 6, 2, -0.08), (676, 236, 6, 2, -0.12), (770, 222, 5, 2, -0.14),
-                         (330, 300, 6, 2, -0.08), (440, 292, 6, 2, -0.05), (560, 282, 6, 2, -0.06), (700, 272, 5, 2, -0.12)]:
+for (x, y, c, r, a_) in [(282, 262, 7, 2, -0.10), (392, 250, 6, 2, -0.06), (474, 244, 4, 2, -0.08), (676, 236, 6, 2, -0.12), (770, 222, 5, 2, -0.14),
+                         (330, 300, 6, 2, -0.08), (410, 294, 6, 2, -0.05), (500, 284, 5, 2, -0.06), (700, 272, 5, 2, -0.12)]:
     im = formation(im, (x, y), RED, c, r, cw=11, ch=7, gap=2, ang=a_)
-# Grant's columns coming up the two roads from the east (west = up the picture): 2 rows each, on the road
-for (x, y, c, r, a_) in [(436, 516, 7, 2, -2.25), (352, 436, 7, 2, -2.45), (262, 384, 5, 2, -2.7), (585, 556, 8, 2, -0.40), (735, 498, 8, 2, -0.36),
-                         (872, 450, 6, 2, -0.45), (520, 470, 6, 2, -0.30), (660, 430, 6, 2, -0.30)]:
-    im = formation(im, (x, y), BLUE, c, r, ang=a_)
+# Grant's columns coming up the two roads from the east (west = up the picture): round 2 = chunky 2 x 5-6 blocks of 13x8, gap 2 (Marion clusters)
+for (x, y, c, r, a_) in [(400, 500, 6, 2, -0.95), (318, 430, 5, 2, -0.85), (505, 478, 6, 2, -0.35), (640, 446, 6, 2, -0.30),
+                         (690, 506, 6, 2, -0.36), (790, 474, 5, 2, -0.40)]:
+    im = formation(im, (x, y), BLUE, c, r, cw=13, ch=8, gap=2, ang=a_)
 # ---------- wide grungy white sweep arrow: from the blue columns, over the red line, into Vicksburg ----------
 def grunge_arrow(im, pts, w0, w1):
     N = 140; P = []
@@ -78,7 +81,7 @@ def grunge_arrow(im, pts, w0, w1):
     col = Image.composite(Image.new("RGBA", im.size, (214, 206, 190, 255)), Image.new("RGBA", im.size, (246, 242, 232, 255)), tex.point(lambda v: 255 if v < 70 else 0))
     sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); sh.paste(Image.new("RGBA", im.size, (0, 0, 0, 140)), (5, 8), m); im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(6)))
     out = im.copy(); out.paste(col, (0, 0), m.filter(ImageFilter.GaussianBlur(0.8))); return out
-ARROW = [(735, 500), (560, 470), (470, 300), (372, 178)]
+ARROW = [(735, 505), (770, 320), (540, 222), (352, 92)]
 im = grunge_arrow(im, ARROW, 62, 44)
 # ---------- torn parchment place tags ----------
 def parchment(im, xy, lines, size=30):
@@ -92,8 +95,8 @@ def parchment(im, xy, lines, size=30):
     out = im.copy(); out.paste(paper, (0, 0), m); d = ImageDraw.Draw(out)
     for i, l in enumerate(lines): d.text((x + pw / 2, y + 11 + i * (size + 6)), l, font=f, fill=(40, 28, 16), anchor="ma")
     return out, (x, y, pw, ph)
-im, TAG_V = parchment(im, (110, 108), ["VICKSBURG"], 33)
-im, TAG_C = parchment(im, (560, 300), ["CHAMPION HILL"], 28)
+im, TAG_V = parchment(im, (34, 112), ["VICKSBURG"], 33)
+im, TAG_C = parchment(im, (36, 330), ["CHAMPION HILL"], 28)
 # ---------- bottom red brush band with speckled white text ----------
 f = ImageFont.truetype(AN, 168); tw = ImageDraw.Draw(im).textlength(word, font=f)
 bx0, by0, bx1, by1 = -10, 538, int(40 + tw + 70), 712
@@ -129,4 +132,10 @@ pa = np.zeros((H, W), np.uint8); pa_full = np.array(sep.split()[3])
 ys, xs = slice(max(0, y0), min(H, y0 + sep.height)), slice(max(0, x0), min(W, x0 + sep.width))
 pa[ys, xs] = pa_full[max(0, -y0):max(0, -y0) + (ys.stop - ys.start), max(0, -x0):max(0, -x0) + (xs.stop - xs.start)]
 rows = np.nonzero(pa.max(1) > 128)[0]; sleeve = [np.nonzero(pa[y] > 128)[0].min() for y in range(560, 700) if (pa[y] > 128).any()]
+_P = [(lambda t: ((1-t)**3*ARROW[0][0]+3*(1-t)**2*t*ARROW[1][0]+3*(1-t)*t**2*ARROW[2][0]+t**3*ARROW[3][0], (1-t)**3*ARROW[0][1]+3*(1-t)**2*t*ARROW[1][1]+3*(1-t)*t**2*ARROW[2][1]+t**3*ARROW[3][1]))(t) for t in np.linspace(0, 0.9 * 139 / 139, 126)]
+_ang = math.atan2(_P[-1][1] - _P[-5][1], _P[-1][0] - _P[-5][0]); _tip = (_P[-1][0] + math.cos(_ang) * 44 * 1.5, _P[-1][1] + math.sin(_ang) * 44 * 1.5)
+(_ax, _ay), (_bx, _by) = _P[0], _tip; _sag = max(abs((_by - _ay) * px_ - (_bx - _ax) * py_ + _bx * _ay - _by * _ax) / math.hypot(_by - _ay, _bx - _ax) for px_, py_ in _P)
+_hw = 44 * 1.15; _tx, _ty, _tw, _th = TAG_V; _clear = min(math.hypot(max(_tx - qx, 0, qx - (_tx + _tw)), max(_ty - qy, 0, qy - (_ty + _th))) for qx, qy in
+         [(_tip[0], _tip[1]), (_P[-1][0] + math.cos(_ang + math.pi / 2) * _hw, _P[-1][1] + math.sin(_ang + math.pi / 2) * _hw), (_P[-1][0] - math.cos(_ang + math.pi / 2) * _hw, _P[-1][1] - math.sin(_ang + math.pi / 2) * _hw)])
+print(f"arrow tip=({_tip[0]:.0f},{_tip[1]:.0f}) sagitta={_sag:.0f}px head-to-tag clearance={_clear:.0f}px")
 print(out, f"band_end_x={BAND_END} sleeve_left_x={min(sleeve) if sleeve else -1} hair_top_y={rows.min()} tagV={TAG_V} tagC={TAG_C}")

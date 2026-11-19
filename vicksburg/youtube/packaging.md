@@ -11,7 +11,20 @@ Claims: "5 battles in 18 days" = Port Gibson, Raymond, Jackson, Champion Hill, B
 "five distinct battles"); "split the Confederacy" = the Mississippi opened (Vicksburg 4 Jul + Port Hudson 9 Jul); "no supply line" = Grant's own
 "cut loose from my base" (wagon trains still followed for a time: the film hedges this in S06). Do not use "Grant's Masterpiece" (Warhawk).
 
-## Thumbnails v3 (2026-11-19; fix every point of the two critic reports on v2, `thumb/critic_MAIN.md` + `thumb/critic_ALT.md`, 5/10 each)
+## Thumbnails v4 = CURRENT (2026-11-19, critic round 2: v3 scored 8/10 on both; v4 applies the remaining fixes, `thumb/fixes_v4.md`)
+Upload these: **MAIN** `thumb/vicksburg-v4-MAIN-BD-CUT_LOOSE.jpg`, **ALT** `thumb/vicksburg-v4-ALT-GM-CUT_LOOSE.jpg`, optional
+`thumb/vicksburg-v4-OPT3-BD-5_BATTLES.jpg`. Sheet `thumb/sheet_v4.jpg` (vs Marion MAIN/ALT + Grant published, full/360/168 px, v3 -> v4 row), `thumb/sidebar_v4.jpg`.
+Scripts (from `vicksburg/`): `tools/make_thumb_v4_portrait.py`, `tools/make_thumb_v4_backdoor.py "CUT LOOSE." MAIN-BD` (+ `"5 BATTLES." OPT3-BD`),
+`tools/make_thumb_v4_gm.py "CUT LOOSE." "THEN VICKSBURG FELL" ALT-GM`, `tools/make_thumb_v4_sheet.py`.
+- MAIN/OPT3: the arrow curves (80 px bulge) from the blue column over the red line, its tip in the town 55 px clear of the VICKSBURG tag (tag moved
+  left, CHAMPION HILL tag moved under the crest on the left), no red block under the arrow; chunky blue formations (7 x 2 rows of 13x8 blocks,
+  1.16 % of the field); battlefield contrast 1.06 (L sd 23.7, Grant pub 24); the faint blotch by Grant's ear softened.
+- ALT: Grant 70 px lower (75 % of the height), the word takes the space above him: 196 px tall (27 %H), stems 27 %, letters 8 px apart, Os 16 px
+  open, in front of the hair top and well clear of the face (GM style); the Mississippi touches the seal rim (86 px from its centre), so Bruinsburg
+  sits on the river; beard toned sandy-brown, eyes 10 % darker; subtitle (240,228,200). 168 px luminance std 75 (target >= 72).
+- Facts, portraits, AI disclosure and checks below are unchanged from v3 (same scene, words and sources; no new AI images, 0 credits).
+
+## Thumbnails v3 (superseded by v4 above; 2026-11-19; fix every point of the two critic reports on v2, `thumb/critic_MAIN.md` + `thumb/critic_ALT.md`, 5/10 each)
 Recipe: PACKAGING_GUIDE 0c (MAIN = Back Door, ALT = Grand Maneuver, same word), matched to the approved Marion #18 references.
 Scripts (run from `vicksburg/`): `tools/make_thumb_v3_portrait.py`, `tools/make_thumb_v3_backdoor.py "CUT LOOSE." MAIN-BD`
 (+ `"5 BATTLES." OPT3-BD`), `tools/make_thumb_v3_gm.py "CUT LOOSE." "THEN VICKSBURG FELL" ALT-GM`, `tools/make_thumb_v3_sheet.py`

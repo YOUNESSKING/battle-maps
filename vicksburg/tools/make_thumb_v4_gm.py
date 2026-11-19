@@ -1,4 +1,6 @@
-"""Vicksburg v3 thumbnail, ALT (Test & Compare), Grand Maneuver recipe (PACKAGING_GUIDE 0c item 3B; marion/tools/make_thumb_v10.py gm()).
+"""Vicksburg v4 thumbnail, ALT (v3 + critic round 2: bigger word in the space above a lowered Grant, Bruinsburg on the river,
+sandy-brown beard + eyes -10 %, brighter subtitle). Built on the v3 script; v3 notes follow.
+Vicksburg v3 thumbnail, ALT (Test & Compare), Grand Maneuver recipe (PACKAGING_GUIDE 0c item 3B; marion/tools/make_thumb_v10.py gm()).
 v3 = every fix of youtube/thumb/critic_ALT.md (2026-11-19):
  - heavy word: tracking +12, 1.1x stretch, MaxFilter 11 -> stem >= 27 % of word height, letter gaps >= 8 px (9 glyphs: 173 px tall, 977 wide)
  - ONE calm left-to-right story: seal at BRUINSBURG (560,590) -> one glowing arc bowing down (the inland march east of the river)
@@ -9,7 +11,7 @@ v3 = every fix of youtube/thumb/critic_ALT.md (2026-11-19):
  - declutter: 2 labels (BRUINSBURG, VICKSBURG, Cinzel 40), no unit blocks, no star, thin Mississippi kept >= 70 px from the seal.
  - subtitle = twist line "THEN VICKSBURG FELL" (decision 3 May, surrender 4 July 1863).
  - portrait: vidIQ oil repaint of the LoC Brady photo (likeness, pose, two-star strap kept), hard 2 px matte, NO rim composite.
-usage (from vicksburg/): python3 tools/make_thumb_v3_gm.py "CUT LOOSE." "THEN VICKSBURG FELL" ALT-GM"""
+usage (from vicksburg/): python3 tools/make_thumb_v4_gm.py "CUT LOOSE." "THEN VICKSBURG FELL" ALT-GM"""
 import sys, math, numpy as np, cv2
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
 from scipy.interpolate import splprep, splev
@@ -18,7 +20,7 @@ AN = MT + "Anton-Regular.ttf"; SER = MT + "cinzel-600.ttf"
 word = sys.argv[1] if len(sys.argv) > 1 else "CUT LOOSE."
 sub = sys.argv[2] if len(sys.argv) > 2 else "THEN VICKSBURG FELL"
 tag_out = sys.argv[3] if len(sys.argv) > 3 else "ALT-GM"
-THICK = int(sys.argv[4]) if len(sys.argv) > 4 else 11
+THICK = int(sys.argv[4]) if len(sys.argv) > 4 else 7
 def text_shadow(im, xy, txt, font, fill, anchor, off=(6, 8), blur=10, op=170, **kw):
     sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).text((xy[0] + off[0], xy[1] + off[1]), txt, font=font, fill=(0, 0, 0, op), anchor=anchor, **kw)
     im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(blur))); ImageDraw.Draw(im).text(xy, txt, font=font, fill=fill, anchor=anchor, **kw); return im
@@ -60,13 +62,13 @@ n = Image.effect_noise((W, H), 22).convert("RGB"); base = Image.blend(base, Imag
 # ---------- heavy word (thickened glyph mask) + subtitle ----------
 # 9 glyphs cannot take Marion's 1.35x stretch inside the 960 px slot, so: per-letter tracking (+12), 1.1x stretch, then a 5 px/side
 # dilation (MaxFilter 11) -> stem 27 % of the word height with >= 9 px between letters and open counters (searched, see fixes_v3.md)
-WH, SX, TRK = 174, 1.1, 12
+WH, SX, TRK = 196, 1.22, 4          # round 2: searched (fixes_v4.md); tracking +6 gives 26.5 % stems, +4 gives 27.0 %
 f0 = ImageFont.truetype(AN, int(WH * 250 / 219)); tmp = Image.new("L", (3000, 500), 0); d0 = ImageDraw.Draw(tmp); x_ = 20
 for ch in word: d0.text((x_, 20), ch, font=f0, fill=255); x_ += d0.textlength(ch, font=f0) + TRK / SX
 glyph = tmp.crop(tmp.getbbox()); glyph = glyph.resize((int(glyph.width * SX), glyph.height), Image.LANCZOS)
 if THICK: glyph = glyph.filter(ImageFilter.MaxFilter(THICK))
 glyph = glyph.crop(glyph.getbbox()); GH = glyph.height
-CX = 778; gx, gy = int(CX - glyph.width / 2), 34
+CX = 706; gx, gy = int(CX - glyph.width / 2), 22
 fs = ImageFont.truetype(SER, 36); s_ = "   ".join(" ".join(w) for w in sub.split()); sy_ = gy + glyph.height + 24
 tm = Image.new("L", (W, H), 0); tm.paste(glyph, (gx, gy)); ImageDraw.Draw(tm).text((CX, sy_), s_, font=fs, fill=255, anchor="ma")
 # ---------- faint hairline rivers (cut away under the text, the portrait side and the seal) ----------
@@ -82,7 +84,7 @@ rv = Image.alpha_composite(gl.filter(ImageFilter.GaussianBlur(8)), lay).resize((
 cut = tm.filter(ImageFilter.MaxFilter(31)); ImageDraw.Draw(cut).ellipse([615 - 110, 590 - 110, 615 + 110, 590 + 110], fill=255)
 rv.putalpha(ImageChops.subtract(rv.split()[3].point(lambda v: int(v * 0.30)), cut)); im = Image.alpha_composite(im, rv)
 # ---------- the Mississippi: lower-left to upper-right (north = up-right), west of Bruinsburg and Vicksburg ----------
-MS = [(330, 730), (380, 640), (430, 560), (470, 500), (560, 456), (660, 470), (760, 440), (860, 400), (960, 404), (1060, 360), (1160, 330), (1290, 300)]
+MS = [(320, 740), (390, 660), (462, 590), (535, 528), (620, 500), (720, 468), (850, 420), (960, 404), (1060, 360), (1160, 330), (1290, 300)]   # round 2: touches the seal rim (Bruinsburg on the river)
 tck, _ = splprep(np.array(MS).T, s=0); xs, ys = splev(np.linspace(0, 1, 400), tck); mp = list(zip(xs, ys))
 dmin = min(math.hypot(x - 615, y - 590) for x, y in mp)
 mg = Image.new("L", (W, H), 0); ImageDraw.Draw(mg).line(mp, fill=120, width=20); im = soft(im, (80, 150, 235), mg, 9)
@@ -103,16 +105,16 @@ fl = ImageFont.truetype(SER, 40)
 for t, (x, y) in [("BRUINSBURG", (SX, 667)), ("VICKSBURG", (IX, 668))]:
     gg = Image.new("L", (W, H), 0); ImageDraw.Draw(gg).text((x, y), t, font=fl, fill=160, anchor="ma"); im = soft(im, (255, 210, 140), gg, 6)
     im = text_shadow(im, (x, y), t, fl, (246, 232, 196), "ma", off=(2, 3), blur=3, op=220, stroke_width=1, stroke_fill=(246, 232, 196))
-# ---------- word + subtitle ----------
-shm = Image.new("L", (W, H), 0); shm.paste(glyph.point(lambda v: int(v * 0.5)), (gx, gy + 8)); im = soft(im, (0, 0, 0), shm, 12)
-col = Image.new("RGBA", glyph.size, (244, 236, 216, 255)); col.putalpha(glyph); im.alpha_composite(col, (gx, gy))
-im = text_shadow(im, (CX, sy_), s_, fs, (232, 220, 192), "ma", off=(0, 3), blur=4, op=180)
 # ---------- colour oil portrait, left, facing the map; hard matte, NO rim ----------
 b = Image.open("youtube/thumb/work_v3/grant_oil_cut_v4.png").convert("RGBA")
 s = 0.54; b = b.resize((int(b.width * s), int(b.height * s)), Image.LANCZOS); a = b.split()[3]
-fx, fy = 585 * s, 660 * s; x0, y0 = int(178 - fx), int(318 - fy)
+fx, fy = 585 * s, 660 * s; x0, y0 = int(178 - fx), int(388 - fy)                       # round 2: Grant 70 px lower, the word takes the space above him
 shd = Image.new("L", (W, H), 0); shd.paste(a.point(lambda v: int(v * 0.75)), (x0 + 12, y0 + 8)); im = soft(im, (0, 0, 0), shd, 12)
 im.alpha_composite(b, (x0, y0))
+# ---------- word + subtitle ----------
+shm = Image.new("L", (W, H), 0); shm.paste(glyph.point(lambda v: int(v * 0.5)), (gx, gy + 8)); im = soft(im, (0, 0, 0), shm, 12)
+col = Image.new("RGBA", glyph.size, (244, 236, 216, 255)); col.putalpha(glyph); im.alpha_composite(col, (gx, gy))
+im = text_shadow(im, (CX, sy_), s_, fs, (240, 228, 200), "ma", off=(0, 3), blur=4, op=180)
 key = word.replace(" ", "_").replace(".", "")
 out = f"youtube/thumb/vicksburg-v4-{tag_out}-{key}.jpg"; im.convert("RGB").save(out, quality=94)
 # ---------- self-measure: stem width / word height, letter gaps, payoff ----------
@@ -120,5 +122,7 @@ gm = np.array(glyph) > 128; runs = []
 for fr in (0.35, 0.5, 0.65):
     row = gm[int(GH * fr)]; e = np.diff(np.r_[0, row.astype(int), 0]); st_, en_ = np.nonzero(e == 1)[0], np.nonzero(e == -1)[0]; runs += list(en_ - st_)
 cols = gm.any(0); e = np.diff(np.r_[1, cols.astype(int), 1]); gs, ge = np.nonzero(e == -1)[0], np.nonzero(e == 1)[0]; gaps = [q - p for p, q in zip(gs, ge) if q - p < 60]
+pa = np.array(b.split()[3]); rows = np.nonzero(pa.max(1) > 128)[0]; head_top = y0 + rows.min()
+print(f"head top y={head_top} portrait height={(720 - head_top) / 7.2:.0f}%  word bottom y={gy + GH}  face (brow) y~{int(y0 + 560 * s)}")
 print(out, f"word {glyph.width}x{GH}  stem(median run)={int(np.median(runs))} = {np.median(runs) / GH * 100:.0f}% H  min letter gap={min(gaps) if gaps else -1}px  "
       f"payoff {ic.width}x{ic.height} at x={IX}  river-seal min dist={dmin:.0f}")

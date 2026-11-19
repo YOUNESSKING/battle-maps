@@ -1,4 +1,5 @@
-"""Grant portraits for the v3 thumbnails (2026-11-19, critic fixes).
+"""Grant portraits for the v4 thumbnails (2026-11-19, critic round 2: + ear-blotch blur on the MAIN; ALT beard sandy-brown, eyes -10 %).
+Built on the v3 portrait script.
 MAIN (Back Door, sepia): the REAL LoC Brady photo (LoC 2018666428, cwpb 06941, Maj. Gen. strap with two stars), as in v2, plus
   - Marion's hard matte: erode 7x7, threshold 128, Gaussian 3x3 (no halo / fringe),
   - the shoulder strap painted out (it falls at the frame edge once the portrait is flipped: critic MAIN fix 9, "stray insignia"),
@@ -8,7 +9,7 @@ ALT (Grand Maneuver, colour): vidIQ oil repaint of the same LoC photo (purpose i
 Inputs : youtube/thumb/work_v2/grant_loc06941_crop.png, work_v2/grant_cut_isnet-general-use.png,
          youtube/thumb/work_v3/grant_oil_vidiq_v3.jpg + work_v3/grant_oil_cut_isnet.png
 Outputs: youtube/thumb/work_v3/grant_sepia_cut_v4.png, work_v3/grant_oil_cut_v4.png
-usage (from vicksburg/): python3 tools/make_thumb_v3_portrait.py"""
+usage (from vicksburg/): python3 tools/make_thumb_v4_portrait.py"""
 import numpy as np, cv2
 from PIL import Image, ImageEnhance
 D2, D3 = "youtube/thumb/work_v2/", "youtube/thumb/work_v3/"
@@ -45,6 +46,9 @@ strap = cv2.dilate(strap, np.ones((9, 9), np.uint8))
 patch = np.roll(g8, -150, axis=0)                     # coat texture from the sleeve 150 px below the strap
 soft = cv2.GaussianBlur(strap, (0, 0), 6).astype(np.float32) / 255
 g8 = (g8 * (1 - soft) + patch * soft).astype(np.uint8)
+# round 2 (R2-5): soften the faint blotch by the ear/temple (frame x 1190-1250, y 160-250 = source x 424-515, y 309-445): 2 px blur, feathered
+bm = np.zeros(g8.shape, np.float32); bm[300:455, 415:525] = 1; bm = cv2.GaussianBlur(bm, (0, 0), 8)
+g8 = (g8 * (1 - bm) + cv2.GaussianBlur(g8, (0, 0), 2) * bm).astype(np.uint8)
 L = g8.astype(np.float32) / 255.0
 a = hard_matte(cut[..., 3])
 lip = np.zeros_like(strap)
@@ -64,7 +68,17 @@ hsv[..., 1] = np.where(coat, hsv[..., 1] * 0.8, hsv[..., 1])
 yy = np.mgrid[0:hsv.shape[0], 0:hsv.shape[1]][0]
 warmskin = (hsv[..., 0] < 25) & (yy < 1000)                       # face, hair, beard: calm the orange cast (target skin ~ (200,150,115))
 hsv[..., 1] = np.where(warmskin, hsv[..., 1] * 0.74, hsv[..., 1]); hsv[..., 2] = np.where(warmskin, np.minimum(255, hsv[..., 2] * 1.0), hsv[..., 2])
+beard = np.zeros(hsv.shape[:2], np.uint8)                          # round 2: ginger beard -> sandy-brown (sat x0.8, red -6 %), beard outline only
+cv2.fillPoly(beard, [np.array([(410, 660), (430, 840), (520, 960), (620, 1000), (740, 960), (810, 840), (820, 680), (790, 720), (760, 740),
+                               (680, 770), (600, 760), (520, 740), (460, 700)])], 255)
+beard = cv2.GaussianBlur(beard, (0, 0), 10).astype(np.float32)[..., None] / 255
 rgb = cv2.cvtColor(hsv.clip(0, 255).astype(np.uint8), cv2.COLOR_HSV2RGB).astype(np.float32)
+grey = rgb.mean(2, keepdims=True); rgb = rgb * (1 - beard) + (grey + (rgb - grey) * 0.8) * beard
+rgb[..., 0:1] *= 1 - 0.03 * beard                                   # (-6 % read grey-olive next to the skin; -3 % keeps it sandy-brown)
+eyes = np.zeros(beard.shape, np.uint8)
+for (ex, ey) in [(560, 610), (730, 606)]: cv2.ellipse(eyes, (ex, ey), (40, 20), 0, 0, 360, 255, -1)
+eyes = cv2.GaussianBlur(eyes, (0, 0), 5).astype(np.float32)[..., None] / 255
+rgb = rgb * (1 - 0.10 * eyes)                                      # round 2: eyes ~10 % darker
 # shoulder strap (gold border + stars, upper-left of the oil, x 60-380, y 1060-1210): bring it down to the brass-button level
 sm = np.zeros(rgb.shape[:2], np.uint8); cv2.fillPoly(sm, [np.array([(60, 1150), (290, 1065), (385, 1120), (310, 1215), (70, 1175)])], 255)
 sm = cv2.GaussianBlur(sm, (0, 0), 4).astype(np.float32)[..., None] / 255
