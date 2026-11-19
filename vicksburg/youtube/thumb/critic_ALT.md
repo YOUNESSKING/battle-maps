@@ -279,3 +279,69 @@ Target: a gap of 12 px or more between the word baseline and the top of the hair
 **4. Nice to have.** A faint geographic cue for the rotated map, so the viewer reads the river as the Mississippi: a 2 px brighter core, plus the river visibly continuing south past Bruinsburg off the bottom-left. Without it the "east" leg has no frame of reference.
 
 Pass condition for Round 4: fixes 1-3 met, both scores ≥ 8.
+
+---
+
+## Round 4: v6 `vicksburg-v6-ALT-GM-WRONG_WAY.jpg` (harsh; against the Marion GM example and the round-3 must-fixes)
+
+My measurements (`/tmp/vx_tcritB/r4.py`):
+
+| Metric | v6 |
+|---|---|
+| Mean L / sat | 77.0 / 130 |
+| Word | 159 px tall (22.1 % of H), stem 41 px = 25.8 %, ink 12.4 % (M 13.1 %) |
+| O/G counters | open |
+| Letter gaps | ≥ 8 px (the 3 px runs are inside the W) |
+| Arrow-blue area | 1.42 % |
+| Warm accent | 1.32 % |
+| 168 px luminance std | 71.4 (M 73.2) |
+
+**VERDICT: FAIL (narrow).** The thumbnail now works as a picture. Two must-fixes remain, both about Jackson.
+
+| Score | v5 | **v6** |
+|---|---|---|
+| Looks like the approved reference | 7 | **8/10** |
+| Would win the click | 7 | **7.5/10** |
+
+### Round-3 must-fixes
+1. **Hooked arrow: FIXED.**
+   - Seal → east along the bottom → U-turn → head enters the town heading 207°.
+   - At 360 and 168 px it reads as "went past, came back". "WRONG WAY." now has its visual payoff, and the word passes the 0c honesty test.
+2. **Head clear of the word: FIXED.** The word bottom is at y 176-178 and the hair top at y 199, so 21 px clear.
+3. **Word weight: PARTLY, waived.** Stems are 25.8 %, counters open, gaps ≥ 8 px.
+   - Height is 159-162 px, 22 % of the frame, against 30 % in M. That costs about a quarter of the word's size.
+   - I accept the fixer's finding: 10 Anton glyphs can't be both open and 27 % stem at 190 px. At 168 px the word is still the first thing read.
+   - Cheap gain, not a must: let the word run 40 px further left (start x ≈ 115; Grant's head is now lower) and scale it to the extra width. Target height ≥ 170 px.
+4. **Label clearances 58/57 px instead of 70: WAIVED.** At full size and at 360 px the leg passes cleanly between BRUINSBURG and VICKSBURG with no touch. The rule existed to stop crowding, and nothing is crowded.
+
+### New must-fixes
+**A. Jackson's position is wrong for a north-up reader.**
+- Jackson is drawn at the bottom-right: y ≈ 630, at Bruinsburg's height (y ≈ 600) and about 190 px below Vicksburg (y ≈ 440).
+- On the turned map (north up-right) that is technically "east". But nothing on the frame says north is turned, and every viewer reads north-up.
+- To a north-up viewer it says "Jackson lies south-east of Vicksburg, level with Bruinsburg". In reality Jackson is about 40-45 miles due east of Vicksburg, on the same latitude (32.30° N against 32.35° N), linked by the east-west railroad.
+- The Vicksburg campaign map (Bruinsburg in the south, the hook north-east to Jackson, then due west along the railroad to Vicksburg) is one of the most reproduced maps of the war. A Civil War viewer will see the error, and it invites "wrong map" comments on a video whose word already says "WRONG".
+
+**B. Jackson is under YouTube's duration badge.**
+- The JACKSON label (about x 1155-1270, y 680-700) and most of its flame sit in the bottom-right corner, which the timestamp covers. I simulated the badge at 360 and 168 px.
+- In the feed, the turning point of the move is invisible.
+- Marion's BENBOW'S FERRY is partly clipped there too, but it is the second label of a straight arrow. Here it is the thing that makes "WRONG WAY" make sense.
+
+**Fix for both, in `vicksburg/tools/make_thumb_v6_gm.py`.** This is a reroute, not a redesign.
+- **Jackson:** move it level with Vicksburg and to its right. Flame at about (1190, 440), within ±40 px of the town's y. Label above it at about (1190, 385), Cinzel 26-28, right-aligned to x ≤ 1262.
+- **Arrow:** seal → east along the bottom (keep the current outbound leg) → turn north up the right side (x ≈ 1200, y 620 → 470), passing just under or beside the Jackson flame → hook back WEST into the town's right flank. Head heading 170-200°, tip at about (1110, 450).
+  - In north-up terms that is: Bruinsburg → east and north-east → Jackson → due west to Vicksburg, which is the real campaign shape.
+  - Arrow area target ≤ 1.6 %.
+  - Nothing of the arrow, the flame or the label inside x > 1140 and y > 650 (badge zone).
+- **Mississippi:** stop it running north-east past Vicksburg. Today it exits at the top-right (x 1280, y 300), which puts the river north of Jackson.
+  - After the town, route it north or north-west up under the subtitle (the text mask hides it).
+  - Target: no river pixel east of the Vicksburg centre + 60 px for any y < 440.
+  - Keep it touching the seal's west rim as now.
+- **Optional:** brighten the Jackson flame to about 60 px with a small bloom, so the turning point registers at 168 px.
+
+Pass condition for Round 5:
+- Jackson's y within ±40 px of Vicksburg's y, and ≥ 220 px to its right.
+- Nothing in the badge zone.
+- River west/north of the town only.
+- The U-turn still reads at 168 px.
+
+With that I score it 8.5 / 8 and PASS.
