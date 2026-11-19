@@ -66,8 +66,11 @@ class Lib:
     def shot(self, t, d, gain_db, pan, lp, pitch=None):
         """one dry musket shot -> (stereo array, attack offset in samples). d = 0 (close) .. 1 (far)"""
         s, reused = self.pick(t, d * 4 + self.rng.normal(0, .55))
+        prev = [h[2] for h in self.hist if h[1] == s["name"] and abs(t - h[0]) < 2.0]
         j = pitch if pitch is not None else self.rng.uniform(-.045, .045)
-        if reused: j = self.rng.choice([-1, 1]) * self.rng.uniform(.07, .1)   # pool exhausted for this window: shift the pitch so it is not the identical sample
+        for _ in range(40):   # a recording heard again inside 2 s must differ in pitch by >= 3.5 % (pool of 35 shots is smaller than two back-to-back volleys)
+            if all(abs(j - q) >= .035 for q in prev): break
+            j = self.rng.uniform(-.1, .1)
         up, dn = 1000, int(round(1000 * (1 + j))); x = resample_poly(s["x"], up, dn, axis=0).astype(np.float32); att = int(s["att"] * up / dn)
         mono = x.mean(1); side = (x[:, 0] - x[:, 1]) * .5
         y = pan_stereo(mono, pan) + np.stack([side, -side], 1) * .35
@@ -98,12 +101,13 @@ def on_screen(at):
 
 
 def render_volley(L, out, e, rng, log):
-    men = e["unit"].get("men", 144); K = int(np.clip(round(men / 8), 3, 20)); d = dnorm(e["at"].get("camDist", 30))
+    men = e["unit"].get("men", 144); K = int(np.clip(round(men / 9), 3, 16)); d = dnorm(e["at"].get("camDist", 30))
     R = e.get("rippleSeconds", .9) if e.get("style", "ripple") == "ripple" else .12
     R = float(np.clip(R * rng.uniform(.8, 1.25) * (.6 + .4 * min(men, 144) / 144), .3, 1.2)) if R > .2 else R
     t0 = e["tShare"]
     # a ripple: one flank goes first, the rest follow raggedly with a few late stragglers (never an even comb)
     u = np.sort(np.clip((np.arange(K) + rng.uniform(-.95, .95, K)) / max(K - 1, 1), 0, 1) ** rng.uniform(.8, 1.35))
+    u[0] = 0.0   # the flank that gets the order fires on the event time itself
     p0, p1 = pan_of(e.get("from", e["at"])), pan_of(e.get("to", e["at"]))
     dry = np.zeros((int((R + 3.0) * SR), 2), np.float32); times = []
     lp = 11000 - 8300 * d
@@ -113,7 +117,7 @@ def render_volley(L, out, e, rng, log):
         y, att, nm, j = L.shot(t0 + tk, d, rng.uniform(-3.5, 1.5), pk, lp * rng.uniform(.9, 1.1))
         put(dry, y, tk + .05, att); times.append(round(t0 + tk, 3))
     pk0 = np.abs(dry).max()
-    target = -11 - 6 * d + 3 * np.log2(K / 18)
+    target = -9 - 6 * d + 3 * np.log2(K / 16)
     dry *= db(target) / pk0
     wet = fftconvolve(dry, L.irs["near" if d < .33 else "mid" if d < .66 else "far"][:, :1] * np.ones((1, 2)), axes=0)[:len(dry)] * (.05 + .16 * d)
     put(out, dry + wet, t0 - .05, 0)
@@ -126,7 +130,7 @@ def render_skirmish(L, out, e, rng, log):
     ts = np.sort(e["tShare"] + rng.uniform(.05, max(dur - .1, .2), n)); times = []
     for t in ts:
         y, att, nm, j = L.shot(t, d, 0, pan_of(e["at"]) + rng.normal(0, .05), (11000 - 8300 * d) * rng.uniform(.85, 1.1))
-        y *= db(-24 - 6 * d + rng.uniform(-2.5, 1.5)) / max(np.abs(y).max(), 1e-6)
+        y *= db(-22 - 6 * d + rng.uniform(-2.5, 1.5)) / max(np.abs(y).max(), 1e-6)
         wet = fftconvolve(y, L.irs["mid"][:, :1] * np.ones((1, 2)), axes=0)[:len(y)] * .12
         put(out, y + wet, t, att); times.append(round(float(t), 3))
     log.append(dict(type="independent_fire", t=e["tShare"], n=n, d=round(d, 2), shot_times=times, onset=times[0]))
