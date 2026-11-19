@@ -149,3 +149,29 @@ Re-measured by me (same regions: BF = x<780, y<520). I also made 4x zooms, a 168
   - The owner asked for that character, so keep it.
   - The M1 arrow and the burning Jackson focal are what make it a different picture. Make the Jackson fire the second-brightest warm spot after the band.
   - Optionally, mirror nothing, but crop the portrait about 5% tighter so the two do not tile identically.
+
+---
+
+## Round 4 (v6, 2026-11-19): `vicksburg-v6-MAIN-BD-WRONG_WAY.jpg`
+Re-measured by me. BF: L38 sd25 S35 R-B +26 b* +10.2; whole frame L42. Published Grant: L36 sd24 S35 R-B +27 b* +9.6, L38. The colours still match.
+Checked at full size, with a 2x zoom on Jackson, and at 168x94 next to the published Grant, v5 and Marion.
+
+**Verdict: PASS.**
+
+| Score | v5 | **v6** |
+|---|---|---|
+| Looks like the reference (published Grant) | 8 | **9/10** |
+| Would win the click | 7 | **8/10** |
+
+| Round-3 item | v6 | Status |
+|---|---|---|
+| M1 arrow = east to Jackson, then back west | ONE arrow from the blue columns (470,505), sweeping right and up; its crest runs directly under the burning Jackson, then it turns back west along the railroad, head (383,111) on the Vicksburg buildings, 115 px clear of the VICKSBURG tag | **fixed** |
+| JACKSON tag 50 px instead of 10-20 | The fire sits BETWEEN the tag and the arrow crest and touches the crest's glow, so the eye reads arrow -> fire -> JACKSON as one unit. At 168x94 the bend clearly peaks at the burning town under the tag, so the extra gap does not weaken it. Keeping the fire visible is the better trade | **accepted** |
+| M2 glow discs | gone; 3 small irregular flashes + grey smoke, invisible as stickers at 360 px | **fixed** |
+| S1 Jackson reads east | tag moved up and right (676,22); Jackson's fire is the second warm spot after the band. It still sits upper centre-right rather than far east, but with the arrow it now reads "away from Vicksburg, then back" | **fixed enough** |
+| R3-risk (twin of the Back Door) | panel 5% tighter, a different arrow shape (a hook instead of an S) and the burning Jackson focal. At feed size it is clearly a different picture with the same family look | **fixed** |
+| Portrait / band / word | unchanged, pass | pass |
+
+### Remaining (nice-to-have only, no must-fix)
+- **N1 Tag vs hair.** The JACKSON tag's right edge (~x 872) is only ~15-20 px from Grant's hair at y 40-80. Shift the tag 10-15 px left or 8 px up for >= 25 px of air.
+- **N2 Blue at feed size.** The thin 2-row strings on the east side still read as short blue dashes at 168 px. 5-6-column x 2-row chunks (cw 12-13) would make them read as formations. This is cosmetic; the arrow carries the story.
