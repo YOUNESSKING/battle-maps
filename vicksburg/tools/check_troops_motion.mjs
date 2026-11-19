@@ -23,7 +23,7 @@ const res = await pg.evaluate((t0, t1, reg) => { const T3 = window.__vx.TRO[reg]
     for (const [k, q] of now) { const p = P1.get(k), pp = P2.get(k), key = U[q.u].side + q.u + (q.art ? "art" : "") + ":" + (U[q.u].keys[0].slice(1).map((v) => v.toFixed(0)).join(","));
       const o = out[key] = out[key] || { slide: 0, slideT: 0, slideFrames: 0, pop: 0, turn: 0, turnT: 0, vmax: 0, vmaxT: 0, amax: 0, amaxT: 0, shape: 0, w0: q.w, d0: q.d, frames: 0 };
       if (q.f <= 0.02) o.shape = Math.max(o.shape, Math.abs(q.w - o.w0) / o.w0, Math.abs(q.d - o.d0) / o.d0);   // line shape outside re-forming
-      if (!p) continue; if ((q.f > 0.02 && q.f < 0.98) || (p.f > 0.02 && p.f < 0.98)) { P2.delete(k); continue; }   // re-forming: the men walk to new places, no block motion to judge
+      if (!p) continue; if ((q.f > 0.02 && q.f < 0.98) || (p.f > 0.02 && p.f < 0.98) || (q.str || 0) > 0.02 || (p.str || 0) > 0.02) { P2.delete(k); continue; }   // re-forming or ranks broken at a bridge (no plate): the men walk, no block motion to judge   // re-forming: the men walk to new places, no block motion to judge
       const dx = q.x - p.x, dy = q.y - p.y, v = Math.hypot(dx, dy) / 0.1; o.frames++;
       if (v > o.vmax) { o.vmax = v; o.vmaxT = t; } if (Math.hypot(dx, dy) > 0.5) o.pop++;
       if (pp) { const a = Math.hypot(dx - (p.x - pp.x), dy - (p.y - pp.y)) / 0.01; if (a > o.amax) { o.amax = a; o.amaxT = t; } }

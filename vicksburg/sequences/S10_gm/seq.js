@@ -33,10 +33,10 @@ const units = [];
 // the reserve by the bridge: first across
 units.push({ side: "r", type: "inf", n: 3, face: 0, keys: [[0, BR.x + 2.6, 685.4]], escape: ESC(ESC_T[2], 2.0, 0) });
 // Union: Lawler's brigade out of the meander scar on the northern flank, straight through the works, on toward the bridge
-units.push({ side: "u", type: "inf", n: 3, face: SWF, keys: [[0, 1527.8, 679.4], [T.charged - 2.0, 1527.8, 679.4], [TK - 0.3, bwX(679.6) + 1.6, 679.0]] });   // (GM test) to the works, not through them
+units.push({ side: "u", type: "inf", n: 3, face: SWF, keys: [[0, 1527.8, 679.4], [T.charged - 2.0, 1527.8, 679.4], [TK - 0.3, bwX(679.6) + 2.4, 679.0]] });   // (GM test) to the works, not through them
 // Benton (Carr) and Osterhaus (Garrard, Lindsey): the rest of the line follows the breach
 [[683.6, 0], [687.2, 1], [690.6, 2]].forEach(([y, i]) => units.push({ side: "u", type: "inf", n: 3, keys: [[0, 1527.6 + i * 0.4, y], [19.4 + i * 0.4, 1527.6 + i * 0.4, y],
-  [TK + 1.2 + i * 0.6, bwX(y) + 1.1, y]] }));   // (GM test) they close round the works, not through the captured line
+  [TK + 1.2 + i * 0.6, bwX(y) + 2.0, y]] }));   // (GM test) they close round the works, not through the captured line
 // supports + guns on the open ground east of the bayou
 [[1532.6, 681.2], [1533.4, 686.2], [1533.0, 691.0]].forEach(([x, y], i) => units.push({ side: "u", type: "inf", n: 3, keys: [[0, x, y], [TK + 1 + i * 0.4, x - 2.6, y]] }));
 const usGuns = [[1535.6, 684.0], [1535.8, 688.6]];   // (GM test) behind the supports (they sat inside Benton's line)
@@ -80,7 +80,7 @@ const fx = {
 };
 
 window.SEQ = {
-  name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17", troopsOpts: { look: "box", vesc: 2.5, turnMax: 0.62 },   // (GM test) the rout is a brisk walk
+  name: "S10", D: T.D, T, seed: 1863, date: "1863-05-17", troopsOpts: { look: "lineblocks", vesc: 2.0, turnMax: 0.62 },   // (GM test) the rout is a brisk walk
   regions: [BB],
   regionOpts: { [BB]: { troopScale: 1.4 } },   // round 2: boxes ~3 % of the frame width like v8 (with the v8 distances below)
   features: { [BB]: { bridges: [{ burn: FIRE_T + 3.2 }], pontoons: TB.map((at) => ({ at })) } },
@@ -88,8 +88,8 @@ window.SEQ = {
     { t: 0.0, region: BB, at: [1518.4, 686.4], dist: 40, tilt: 46, yaw: -4, fov: 30 },
     { t: 12.9, region: BB, at: [1517.6, 684.6], dist: 32, tilt: 48, yaw: -8, fov: 30 },
     { t: 16.6, region: BB, at: [1521.6, 682.2], dist: 28, tilt: 50, yaw: -12, fov: 30 },
-    { t: 20.0, region: BB, at: [1514.2, 684.0], dist: 20.4, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
-    { t: 32.6, region: BB, at: [1514.2, 684.0], dist: 20.4, tilt: 52, yaw: -8, fov: 30 },
+    { t: 20.0, region: BB, at: [1514.9, 684.5], dist: 15.8, tilt: 52, yaw: -8, fov: 30 },   // (box test v10) ONE still framing (works, fields, bridge, exit) while the boxes walk
+    { t: 32.6, region: BB, at: [1514.9, 684.5], dist: 15.8, tilt: 52, yaw: -8, fov: 30 },
     { t: 37.6, region: BB, at: [1513.8, 686.0], dist: 29, tilt: 52, yaw: -2, fov: 30 },
     // round 2: "By the next morning" = a dip through dark (film.dim 40.5-42.1) with a CUT at its darkest point to the new-bridge sites,
     // the plaque rolls to 18 May 8:00 and the grade goes warm (morning sun), back to day before the dissolve into S11
