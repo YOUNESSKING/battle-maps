@@ -185,7 +185,7 @@ const LEG = { entries: [{ name: "Union", sub: "Grant", color: "#3C6E9E" }, { nam
 const DATE = (day, dn, note) => ({ month: "May 1863", day: String(day), weekday: "Day " + dn, note });
 
 window.SEQ = {
-  name: "S09", troopsOpts: { look: "box" }, D: T.D, T, seed: 1863, date: "1863-05-16",
+  name: "S09", troopsOpts: { look: "lineblocks", size: 1.44 }, D: T.D, T, seed: 1863, date: "1863-05-16",
   regions: [W, C],
   regionOpts: { [W]: { troopScale: 8 }, [C]: { troopScale: 1.7 } },
   keys: [

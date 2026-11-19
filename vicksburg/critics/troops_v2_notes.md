@@ -207,3 +207,33 @@ Checker v10 (screen-space rule, billboard normal = projected heading): S09 55-11
 S10 15-35 screen max 10 deg, turn <= 26 deg/s, accel <= 3.5, pops 0, overlaps <= 0.05 u (south flank's own boxes turning at 22.5 s), no vanishing boxes.
 
 Own 5 fps inspection ("rectangle moving long-side-first"): every moving box yes - S09 Hovey crest + west wing, Lee, Barton, Logan x3, Bowen x2 up and back, Union pursuit / Crocker; S10 north flank, south flank, reserve (turn in place, straight walk, fade at the bridge, back in past it, soft exit), Union lines on the works.
+
+# v11 (2026-11-19): owner rejected the boxes ("return to the soldier blocks and fix the problems I told you about")
+Share (with sound): `vicksburg/troops_test_v11_share.mp4`. Sheet (old film boxes | new blocks): `vicksburg/troops_test_ours_v11.jpg`.
+Switch: `troopsOpts.look = "lineblocks"` = the GM soldier blocks (plate, rows of 3D men, pale front line, guns with carriage / crew, banners) driven by the v10 rectangle motion. No march columns anywhere.
+
+| Rule | v11 |
+| --- | --- |
+| One formation | every block stays the wide LINE rectangle (fixed plate size and shape: checker shape change 0.0 %) |
+| Long side first | every move is perpendicular to the plate's long side, judged on screen (heading corrected through the camera Jacobian, residual <= 3 deg; checker FAIL > 15 deg) |
+| Stop, turn, walk | the block turns in place (the plate and its men wheel together; the turn time comes from the real on-screen angle, <= ~40 deg/s), then walks a straight leg; corners > 30 deg = stop + turn (later moves shift, never squeezed) |
+| Retreat | the men about-face in place (~1 s) and the block walks back long side first, front still toward the enemy (no spin) |
+| Bridge | straight leg to the near deck end; ~1.7 u before it the block BREAKS RANKS and the men stream across the deck 3 abreast in order; past the far end they walk back to their rank spots over ~1.5 s (staggered per man) and the block walks on long side first |
+| Ground | blocks stand on the terrain smoothed over ~1 u (no jump over the works' parapet / ditch, which read as a sideways drift) |
+| Camera | S10: one still framing 20-32.6 s (at 1513.5, 684.5, dist 19): approach, crossing and far-side re-forming all in frame, men readable |
+| Spacing | S10 Union lines stop 0.8-0.9 u further east of the captured works (the v10 stack at the railway); no overlaps between units in either excerpt |
+| Look | S09 blocks +20 % (size 1.44 on the wide shot); coats 45 % toward the side colour; captured blocks a clear mid grey (coat 0x75726e, plate 0x8c8984); smoke ~50 % of the film's puffs |
+
+Checker v11: S09 55-110: screen long-side angle max 16 deg (Crocker, 5 frames at 99.1 s; all others <= 15), turn <= 38 deg/s, accel <= 2.1, pops 0, shape 0 %, NO overlaps;
+S10 15-35: screen max 9 deg, turn <= 39 deg/s, accel <= 2.8, pops 0, shape 0 %, overlaps only within the south flank while turning in place (0.05 u, 22.7 s). Frames where the ranks are broken at the bridge (no plate, the men walk) are not judged as block motion.
+
+Own 5 fps inspection ("rectangle moving long-side-first, no stretch, no turn-while-moving"):
+- S09 Hovey's crest brigades: yes / yes / yes
+- S09 Hovey's west wing: yes / yes / yes
+- S09 Lee falling back (men about-face): yes / yes / yes
+- S09 Barton going west: yes / yes / yes
+- S09 Logan's three brigades: yes / yes / yes
+- S09 Bowen's two brigades up and back: yes / yes / yes
+- S09 Union pursuit / Crocker: yes / yes / yes (Crocker 16 deg on screen for 0.5 s)
+- S10 north flank, south flank, reserve: yes / yes / yes (break ranks at the bridge, stream 3 abreast, re-form on the far side in frame)
+- S10 Union lines on the works: yes / yes / yes
