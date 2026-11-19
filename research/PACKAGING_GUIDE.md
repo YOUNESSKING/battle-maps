@@ -26,6 +26,48 @@ Worked example: `patton/research/PACKAGING_TEST_PATTON.md`, `patton/youtube/test
 
 ---
 
+## 0c. THUMBNAIL + TITLE RECIPE (LOCKED, owner 2026-11-19: "make the way you made the thumbnail, the two variants and the title rules"; from Marion #18. Where it differs from 0b item 3 or §3, 0c WINS. Old guide: `research/rules_backup/PACKAGING_GUIDE_before_thumb_rules_2026-11-19.md`)
+References: `reference/thumbnails/` (the published Grant thumbnail + both Marion thumbnails). Code: `marion/tools/make_thumb_backdoor.py` (variant A) and `marion/tools/make_thumb_v10.py` (variant B). Copy them into `<name>/tools/` and change only the inputs, positions and labels.
+
+**1. The word: one contradiction (the "HE WON." rule).**
+- The thumbnail's 1-2 words must contradict what the viewer believes or expects about the hero, and still be literally true.
+  - Grand Maneuver's "HE WON." on Napoleon works because everyone knows he lost that campaign.
+  - Marion's "HE RAN." works because a legend is not expected to run. His escape was the tactic.
+- A word that only repeats the title or the nickname is rejected. Rejected words included SWAMP FOX, UNCATCHABLE, OUTFOXED, GONE. and HE VANISHED.
+- Write 4-6 candidate words. Run each through the test: "what does the viewer think is true, and does the word flip it?" Then source the fact in FACT_NOTES.
+- Short and final: 2 words plus a full stop.
+
+**2. Title A pairs with the word.**
+- Keep the locked format: `<Name>'s Top 3 Legendary Tactical Moves | <subtitle>`.
+- The subtitle states the famous result. The thumbnail word supplies the surprising "how", so title and thumbnail read as one promise with a question in between.
+  - Marion: "| The Swamp Fox Tarleton Couldn't Catch" + "HE RAN." (couldn't catch + ran = how?).
+- A famous nickname is allowed in the subtitle when it is the name people search for, as "Swamp Fox" is. This changes the "avoid nicknames" line in §2.
+- Titles B and C stay as in 0b item 1. Score all three with vidIQ, owner picks.
+
+**3. Always two thumbnail variants, same word, both shown on one sheet with the feed strip:**
+- **A = MAIN, the "Back Door" recipe** (the channel's own published Grant thumbnail, `reference/thumbnails/ref-A-backdoor-PUBLISHED-grant.jpg`):
+  - **Background:** a painted aerial view of the real place (vidIQ `vidiq_generate_thumbnail`, purpose "image", with NO people or soldiers in it), slightly desaturated.
+  - **Troops are OUR style only.** Small red and blue unit blocks grouped into formations along the roads, with shadows, where the armies really were. No painted soldiers.
+  - **Arrow:** ONE wide grungy off-white sweep arrow for the hero's move.
+  - **Place tags:** 2 torn-parchment tags in dark serif capitals: the enemy (or his position) and the objective.
+  - **Portrait:** big SEPIA cut-out on the right, facing the action, on dark. The face fills ~1/3 of the height and the shoulders bleed off the bottom.
+  - **Word:** bottom-left red torn brush band with the word in speckled white Anton.
+- **B = Test & Compare, the Grand Maneuver recipe** (their "HE WON." Napoleon thumbnail):
+  - **Background:** a dark navy map with faint hairline rivers.
+  - **Portrait:** a colour cut-out on the left, helmet or hat fully in frame.
+  - **Word:** huge cream Anton at the top right, with one Cinzel line under it that completes the twist (Marion: "THEN TARLETON TURNED BACK").
+  - **The move:** a red wax seal with crossed sabres at the start place, then ONE glowing blue arrow to an iconic painted payoff object (Marion: the lit swamp island). Both places carry bold ivory Cinzel labels.
+- **Portrait source.** Use the best known period portrait. If it is a print or poor quality, make an oil repaint with vidIQ that keeps the face. Cut it out with rembg (isnet), use a hard 2 px matte, and add a warm rim and a drop shadow. Never a pasted rectangle, never halo edges.
+- Fonts are in `marion/tools/` (Anton, Cinzel, Oswald). Every image is 1280x720 JPG.
+
+**4. How we get there (the process is part of the rule):**
+- Before making anything, look at the current published reference thumbnails: the channel's best performers (download them from i.ytimg.com) and the competitor's. Never a repo draft.
+- Build both variants, then send them to **2 harsh critic agents**. One compares against the published reference and one against the competitor. Fix their findings, and repeat until neither finds a "cheap" tell such as sticker boxes, halo edges, a flat portrait, painted soldiers or a wrong reference.
+- Then the 0b item 3 checks: spelling, labels, insignia, flags of the period, face in frame, true to the video. Also the 168x94 feed strip.
+- In the publishing PDF, disclose AI-made thumbnail images under altered content.
+
+---
+
 ## 0. Order of work
 
 1. **Validate the topic** before writing anything (§1).
