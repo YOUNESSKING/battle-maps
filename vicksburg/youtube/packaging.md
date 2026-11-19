@@ -11,42 +11,50 @@ Claims: "5 battles in 18 days" = Port Gibson, Raymond, Jackson, Champion Hill, B
 "five distinct battles"); "split the Confederacy" = the Mississippi opened (Vicksburg 4 Jul + Port Hudson 9 Jul); "no supply line" = Grant's own
 "cut loose from my base" (wagon trains still followed for a time: the film hedges this in S06). Do not use "Grant's Masterpiece" (Warhawk).
 
-## Thumbnails v2 (2026-11-19; replace `thumb/A_5battles.jpg`, `B_nosupply.jpg`, `C_split.jpg`, which broke the channel rules)
-Recipe: PACKAGING_GUIDE 0c (MAIN = Back Door, ALT = Grand Maneuver, same word). Scripts (run from `vicksburg/`):
-`tools/make_thumb_v2_portrait.py` (cut-out + tones), `tools/make_thumb_v2_backdoor.py "CUT LOOSE."`, `tools/make_thumb_v2_gm.py`,
-`tools/make_thumb_v2_sheet.py` (-> `thumb/sheet_v2.jpg` + `thumb/sidebar_v2.jpg`). Inputs in `thumb/work_v2/`.
+## Thumbnails v3 (2026-11-19; fix every point of the two critic reports on v2, `thumb/critic_MAIN.md` + `thumb/critic_ALT.md`, 5/10 each)
+Recipe: PACKAGING_GUIDE 0c (MAIN = Back Door, ALT = Grand Maneuver, same word), matched to the approved Marion #18 references.
+Scripts (run from `vicksburg/`): `tools/make_thumb_v3_portrait.py`, `tools/make_thumb_v3_backdoor.py "CUT LOOSE." MAIN-BD`
+(+ `"5 BATTLES." OPT3-BD`), `tools/make_thumb_v3_gm.py "CUT LOOSE." "THEN VICKSBURG FELL" ALT-GM`, `tools/make_thumb_v3_sheet.py`
+(-> `thumb/sheet_v3.jpg` next to Marion MAIN/ALT + Grant published at full/360/168 px, `thumb/sidebar_v3.jpg`), `tools/measure_thumb_v3.py`.
+Inputs in `thumb/work_v3/`. Before/after/target table of every critic number: `thumb/fixes_v3.md`.
 
 | | File | Style | Words | Text type | Fits titles | Claim -> FACT_NOTES row |
 |---|---|---|---|---|---|---|
-| **MAIN** | `thumb/vicksburg-v2-MAIN-BD-CUT_LOOSE.jpg` | Back Door: painted aerial of Champion Hill (16 May) with Vicksburg on its bluffs beyond, red line on the crest, blue columns from the east, one sweep arrow over the hill to Vicksburg, tags VICKSBURG + CHAMPION HILL, sepia Grant right, red band | CUT LOOSE. | 1, the hero's decision in plain words; the 0c contradiction (an army deep in enemy country is expected to guard its supply line; he cut it) | A, B, C (title = the result, the word = the surprising how) | §5 "Decision": Grant, 3 May, "cut loose from my base"; §6 "Turn east": "to cut loose altogether from my base"; §5 "Living off the land". Plain words, no quote marks (not presented as a quote). |
-| **ALT** (Test & Compare) | `thumb/vicksburg-v2-ALT-GM-CUT_LOOSE.jpg` | Grand Maneuver: navy map, glowing Mississippi, colour Grant left, wax seal at BRUINSBURG, one blue arrow east to JACKSON and back west via CHAMPION HILL to a painted VICKSBURG | CUT LOOSE. + "5 BATTLES IN 18 DAYS" | 1 (+ number subtitle) | A, C (B ok) | as MAIN + §"Count of battles/days": "five distinct battles", 30 Apr-17 May = 18 days inclusive. No "THEN": Port Gibson (1 May) came before the 3 May decision. |
-| optional 3rd | `thumb/vicksburg-v2-OPT3-BD-5_BATTLES.jpg` | Back Door, same scene | 5 BATTLES. | 3, stakes / number | B (repeats A and C, so 0c would reject it next to them) | §"Count of battles/days" |
+| **MAIN** | `thumb/vicksburg-v3-MAIN-BD-CUT_LOOSE.jpg` | Back Door: warm painted aerial of Champion Hill (16 May), no sky, the crest burning (farmhouse fire, black smoke, gunsmoke), dust on the roads; Pemberton's red line on the crest, Grant's blue columns on the roads from the east; ONE sweep arrow from the blue columns over the red line into Vicksburg on its bluff (river behind it); tags VICKSBURG 33 px + CHAMPION HILL; sepia Grant right (real photo, hard matte, strap painted out), red band | CUT LOOSE. | 1, the hero's decision in plain words (0c contradiction: an army deep in enemy country is expected to guard its supply line; he cut it) | A, B, C | §19 (= §5 Decision + §7 Turn east: Grant's "cut loose from my base"). No quote marks. |
+| **ALT** (Test & Compare) | `thumb/vicksburg-v3-ALT-GM-CUT_LOOSE.jpg` | Grand Maneuver: navy map (north up-right), thin Mississippi, colour Grant left (oil repaint of the same LoC photo), heavy cream word (stems 27 % of height), wax seal at BRUINSBURG, ONE glowing arc left to right to a big burning VICKSBURG on its bluff at dusk (the hottest warm spot, far right); 2 labels, no blocks | CUT LOOSE. + "THEN VICKSBURG FELL" | 1 + twist line (0c item 3B) | A, B, C | §19: decision 3 May, surrender 4 July 1863 ("then" = afterwards). |
+| optional 3rd | `thumb/vicksburg-v3-OPT3-BD-5_BATTLES.jpg` | Back Door, same scene as MAIN | 5 BATTLES. | 3, stakes / number | B (repeats A and C) | §19 / §13 Count of battles/days |
 
-Portrait: LoC 2018666428 "[Portrait of Maj. Gen. Ulysses S. Grant, officer of the Federal Army]", Brady's National Photographic Portrait Galleries,
-1860-65, master TIFF cwpb 06941 (public domain, no known restrictions); rembg isnet cut-out, dust specks removed. MAIN: sepia (0c), flipped to face
-the action. ALT: hand-tinted by us (skin, brown hair/beard, navy coat, brass buttons): a colourised photograph, disclose it.
-AI images (disclose under altered content): MAIN painted aerial (vidIQ purpose image, no people/flags/text; `work_v2/bg_vidiq_champion_v2.jpg`,
-second pass moved the river behind the town so Vicksburg stands on the east bank); ALT Vicksburg vignette (`work_v2/icon_vidiq_vicksburg_v1.png`).
-Troops, arrows, tags, seal and words are ours. vidIQ credits used: 66 (3 images x 22) + 5 (youtube_search) = 71.
+Measured (details in `thumb/fixes_v3.md`): MAIN battlefield S 30, R-B +30, b* +10, L 42 (Grant-published band), no sky, flame core 0.49 %
+of the field, blue 1.1 %, red 1.4 % (1.4x Marion on the same detector), arrow from the troops into the town, VICKSBURG tag 33 px, hair 15 px
+from the top, brow-chin 264 px, right column L 34, face p95 L 86, no halo, no strap. ALT: stems 47 px = 27 % of the word height (v2 19 %),
+letters >= 9 px apart, arrow 1.02 % of the frame (v2 2.4 %), payoff 380 px at x 1080, warm accent 1.40 % centred at x 1041, seal R66,
+2 labels, 0 blocks, Mississippi 124 px from the seal, no blue halo, skin RGB (199,149,110). Trade-off: the 9-glyph word is 173 px tall
+(Marion's 7-glyph word 214 px); the tallest size that keeps 27 % stems and open letters in the 960 px slot. No shorter true word
+(<= 6 characters) in FACT_NOTES passes the 0c test ("NO BASE." = 8), so none is offered.
+
+Portrait: MAIN = LoC 2018666428 "[Portrait of Maj. Gen. Ulysses S. Grant, officer of the Federal Army]", Brady, 1860-65, master TIFF cwpb 06941
+(public domain), sepia, flipped to face the action, the two-star strap painted out (it would fall cut at the frame edge), dust removed.
+ALT = vidIQ oil repaint of the same photo (reference = the LoC-hosted jpeg; face, pose, uniform and the two-star major-general strap kept,
+checked side by side): an AI-altered image of a real photograph, disclose it. Never the 1864 three-star strap.
+AI images (disclose under altered content): MAIN painted aerial (`work_v3/bg_vidiq_champion_v3.jpg`), ALT Vicksburg dusk vignette
+(`work_v3/icon_vidiq_vicksburg_dusk_v3.png`), ALT oil repaint (`work_v3/grant_oil_vidiq_v3.jpg`). Troops, arrows, tags, seal, words are ours.
+vidIQ credits: v2 71; v3 66 (3 images x 22); total 137.
 
 Checks (0b item 3 + 0c):
-- Spelling: CUT LOOSE., 5 BATTLES., 5 BATTLES IN 18 DAYS, VICKSBURG, CHAMPION HILL, BRUINSBURG, JACKSON: all correct.
-- Labels: VICKSBURG on its bluffs on the EAST bank, river behind it (the first vidIQ pass had the town across the river: rejected);
-  CHAMPION HILL on the hill with Pemberton's red line; Union blue comes from the east (Bolton/Raymond side) = true for 16 May.
-  ALT: Vicksburg east of the river hairpin, Bruinsburg south on the east bank, Jackson east, Champion Hill between Jackson and Vicksburg.
-  No tag hidden by the portrait or the band.
-- Insignia/flags: Maj. Gen. strap with two stars (checked on the master TIFF), never the 1864 three-star strap; no flags anywhere; the AI painted
-  no people, boats, guns or modern objects. Red = Confederate, blue = Union (video convention).
-- Anachronisms: none (1863 farmhouse, dirt roads, brick town with a domed courthouse, period-plausible; the AI vignette is not an exact copy of the real courthouse).
-- Face: whole face in frame on all three; shoulders bleed off the bottom; no white glow (thin warm/blue rim only).
-- Feed size: 360 px and 168x94 strips on `thumb/sheet_v2.jpg`; CUT LOOSE. and 5 BATTLES. read at 168 px; the ALT subtitle and map labels do not
-  (by design, the word carries it).
+- Spelling: CUT LOOSE., 5 BATTLES., THEN VICKSBURG FELL, VICKSBURG, CHAMPION HILL, BRUINSBURG: correct.
+- Geography: MAIN: Vicksburg on its bluffs on the EAST bank, river behind it; the viewer looks west, Union blue comes from the east (true
+  for 16 May); Pemberton's red line on the hill. ALT: map turned (north up-right), Bruinsburg and Vicksburg both on the east (lower-right)
+  bank, Vicksburg NNE of Bruinsburg, the arc runs inland east of the river. No tag hidden by the portrait or the band.
+- Insignia/flags: no stray strap on the MAIN; ALT keeps the true two-star strap (toned to button level); no flags; the AI painted no
+  people, boats, guns or modern objects. The burning farmhouse and city fires are illustration (shells "dropped into the city night
+  and day" during the siege), not a claim about a named building.
+- Face: whole face in frame on all three; hard 2 px matte, no halo; shoulders bleed off the bottom.
+- Feed size: `thumb/sheet_v3.jpg` (168x94 + 2x) and `thumb/sidebar_v3.jpg`: the left 2/3 of the MAIN reads as warm battlefield + burning
+  red line + one arrow; the ALT reads as word + seal + arrow + glowing town, like Marion's.
 - Different from the published Grant "THE BACK DOOR" (city + river close-up, frontal photo): new scene (Champion Hill, Vicksburg far off),
-  new word, arrow over the hill, different Grant photograph. Same recipe.
-- Comparison row (3 TG + Marion MAIN/ALT + published Grant) and sidebar mock (`thumb/sidebar_v2.jpg`, vs HISTORY 2.3M, ABT 1.5M, Biography 387k,
-  ABT 217k, Warhawk 160k, Threads 87k): four of six neighbours are a big Grant face or bright painting; ours is the only one with a word hook +
-  arrow map. Weak point: ours is darker than HISTORY/Threads and has no big NAME (Arnold lesson); VICKSBURG tag enlarged for that.
-- Not done: the 0c "2 harsh critic agents" round (no agent tool in this session); the owner's eye is the next check.
+  new word, the arrow from the troops over the hill, different Grant photograph. Same recipe.
+- Superseded: v2 files (`thumb/vicksburg-v2-*.jpg`, `sheet_v2.jpg`, `sidebar_v2.jpg`) and the first set (`A_5battles.jpg`, `B_nosupply.jpg`,
+  `C_split.jpg`) are kept for the record only; upload the v3 files.
 
 ## Upload settings
 Category Education; Altered or synthetic content = Yes (AI narration); description `description.txt` (no links); tags `tags.txt`;
