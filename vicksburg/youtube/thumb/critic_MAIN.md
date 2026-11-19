@@ -60,3 +60,46 @@ The layout matches: band, word, parchment tags, sepia portrait on the right and 
 ## Notes on the words (not a style fix)
 - **CUT LOOSE.** fits rule 0c-1 only weakly. It flips "armies need supply lines", but casual viewers do not hold that belief about Grant, and the picture does not show anything being cut. Fix 3 plus a burning wagon or supply depot at the band's left end would make the word land. Check FACT_NOTES for the "cut loose" wording (Grant's own phrase about his supply line; record the source).
 - **5 BATTLES.** is a stakes number, not a contradiction, so it fails 0c-1 as a main word. It is fine as the Test & Compare option, and it is true: Port Gibson, Raymond, Jackson, Champion Hill, Big Black River. It needs a FACT_NOTES row.
+
+---
+
+## Round 2 (v3, 2026-11-19): `vicksburg-v3-MAIN-BD-CUT_LOOSE.jpg` / `vicksburg-v3-OPT3-BD-5_BATTLES.jpg`
+I re-measured everything with my own script (`/tmp/vx_tcritA/measure.py`, same regions as round 1) plus 4x zooms and 168x94 / 360x202 strips. My numbers agree with `fixes_v3.md` to within about 1.
+
+| Score | v2 | **v3 MAIN** | **v3 OPT3** |
+|---|---|---|---|
+| Looks like the approved reference | 5 | **8/10** | 8/10 |
+| Would win the click | 5 | **7/10** (Marion ~7, Grant pub ~7) | 5/10 (the word, not the picture) |
+
+### v2 findings: status
+| # | Finding (v2) | v3 measured | Status |
+|---|---|---|---|
+| 1 | BF cold: S15, R-B +9, b* +3.8 | S30, R-B +30, b* +10.4, L42 (Grant pub 35 / +27 / +9.6 / 36) | **fixed** |
+| 2 | Grey sky band y 0-95, L61 | no sky; top strip y 0-60 is a dark river band, L36 | **fixed** (reads as a far river, not sky) |
+| 3 | No fire (0%) | fire 0.57% of BF (Marion 0.43), burning farmhouse + black column + gunsmoke on the crest | **fixed**: now the strongest focal on the strip |
+| 4 | Blue 2.4%, saturated slabs on trees | blue 1.12%, colour (39,58,113), on the roads with dust | **mostly fixed**, but see R2-3: at 168x94 the 1-2-row strings read as dashed blue lines, not formations |
+| 5 | Red 0.6%, small and far | red 2.01% (Marion 1.91), 9 formations on the crest + slope | **fixed** |
+| 6 | Arrow: vertical hook from no unit | starts at the blue column (735,500), crosses the red line, head under the town | **partly**: right gesture, but almost straight (R2-1) and the head jams into the tag (R2-2) |
+| 7 | White house mid-field | gone | **fixed** |
+| 8 | VICKSBURG tag 44 px | 33 px | **fixed** |
+| 9 | Band hits the sleeve at x815 | the portrait is drawn after the band; the sleeve overlaps the band end cleanly with a shadow | **fixed** |
+| 10 | Halo around hair/coat | hard matte, no light ring at 4x zoom | **fixed** |
+| 11 | Mirrored strap insignia box | painted out | **fixed**. A faint darker blotch stays beside the ear/cheek (x ~1190-1250, y 160-250) at 4x, invisible at 360 px (R2-5) |
+| 12 | 65 px black headroom, flat black box | 15 px headroom, panel alpha 0.85, right column L27 (my x>=1240; theirs x>=1200 = 34) | **fixed** |
+| 13 | Face hot (p95 92) | about p95 86 | **fixed** |
+| 14 | Feed strip: weakest of the six | at 168x94: fire + red line + diagonal arrow + face + word all read; now on par with Grant pub, still behind Patton/Zhukov on contrast | **fixed / acceptable** |
+| - | Overall L / sd | L46 sd25 (Marion 44/25) | matches (2 brighter, fine) |
+| - | Word / band | cap 145 px (20%H), band h182 | matches |
+
+### Remaining fixes (`vicksburg/tools/make_thumb_v3_backdoor.py`)
+- **R2-1 Arrow curve.** It is close to a straight diagonal from (735,500) to (372,178); the references are clear sweeps.
+  - Bulge the middle control points about 80-100 px to the right or down, so the sagitta is >= 60 px over the chord. Example: `[(735,505), (700,330), (520,250), (395,200)]`.
+  - It must not cover the red block at about (490-520, 285-300). Move that block 30 px left or let the arrow pass beside it.
+- **R2-2 Arrow head vs VICKSBURG tag.** The head tip sits on the tag's lower-right corner (0-5 px gap), so it reads as pointing at the label. Shift the tag left (x about 40-60) or up, so the head has >= 15 px clearance and its tip points into the town buildings (y <= 115).
+- **R2-3 Blue formations at feed size.**
+  - The thin 1-2-row strings at roughly 40° read as dashed lines at 168 px.
+  - Use chunkier 2-row x 5-6-column blocks (cw 12-13, ch 8, gap 2), 6-7 formations, total blue 1.1-1.3% of BF.
+  - Marion's block clusters are the model.
+- **R2-4 (optional) Contrast at feed size.** The BF sd is 22 against Grant pub 24. A Contrast 1.06 on the BF only (not the portrait) would help it hold up next to TG on the strip.
+- **R2-5 (minor) Ear blotch.** Clone the clean cheek and hair tone over the patch at x 1190-1250, y 160-250, or blur it 2 px.
+- **OPT3 word:** unchanged verdict. "5 BATTLES." is a number, not a contradiction, so it stays the Test & Compare option and needs a FACT_NOTES row.
