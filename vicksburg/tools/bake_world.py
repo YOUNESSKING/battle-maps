@@ -349,7 +349,7 @@ def prep_dem_project(G, cfg, close):
     if E.get("sea"):
         S = E["sea"] if isinstance(E["sea"], dict) else {}
         s0 = (h <= S.get("level", 0.0)).astype(np.uint8)
-        s0 = cv2.morphologyEx(s0, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        s0 = cv2.morphologyEx(s0, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (S.get("open_px", 3),) * 2))   # open_px: erase channels narrower (modern canals)
         n, lab, st, _ = cv2.connectedComponentsWithStats(s0, 8)
         edge = set(np.unique(np.r_[lab[0], lab[-1], lab[:, 0], lab[:, -1]]).tolist()) - {0}
         ok = np.zeros(n, bool); ok[1:] = st[1:, cv2.CC_STAT_AREA] >= S.get("min_px", 400)
@@ -404,7 +404,7 @@ def scale_geo(G, k):
     if k == 1: return G
     S = {}
     for sec, v in G.items():
-        if not isinstance(v, dict): S[sec] = v; continue
+        if not isinstance(v, dict) or sec.startswith("_"): S[sec] = v; continue
         S[sec] = {}
         for nm, a in v.items():
             if isinstance(a, dict) and "pts" in a: S[sec][nm] = dict(a, pts=np.asarray(a["pts"], np.float32) * k)
@@ -801,6 +801,9 @@ def bake(rname, G, P, creeks, preview=True):
         L = resolve_line(G, e, "rivers")
         if L is None: LOG("  river not found:", e.get("geo")); continue
         L = curvy(L)
+        if PROJ and e.get("orient", True) and len(L) > 3:   # project mode: lines from OSM / research run either way; water_levels needs upstream first
+            hb_ = cv2.GaussianBlur(P, (0, 0), 2.0 * DPU); ev = sample(hb_, (PREP_BOX[0], PREP_BOX[1], P.shape[1] / DPU, P.shape[0] / DPU), L[[0, -1]])
+            if ev[0] < ev[1] - 0.5: L = L[::-1].copy(); LOG("  river reversed (upstream first):", e.get("name", e.get("geo")))
         if e.get("snap", e["w"] < 2.0) and e.get("geo") and not e.get("pts"): L = snap_valley(P, L, e.get("snap_r", 4.0))
         if main_riv is None: main_riv = densify(L, 0.5)
         elif e.get("join"):   # extend the ends that stop short of the main river onto it
@@ -1212,7 +1215,7 @@ def bake(rname, G, P, creeks, preview=True):
     towns_out = {}
     for t in cfg.get("towns", []):
         p = resolve_pt(G, t)
-        if p is not None and x0 <= p[0] <= x0 + bw and y0 <= p[1] <= y0 + bh: towns_out[t["name"]] = [round(float(p[0]), 2), round(float(p[1]), 2)]
+        if p is not None and x0 <= p[0] <= x0 + bw and y0 <= p[1] <= y0 + bh and not t["name"].startswith("_"): towns_out[t["name"]] = [round(float(p[0]), 2), round(float(p[1]), 2)]
     if wplan:
         for nm, t_ in wplan["towns"]:
             if not nm.startswith("_v"): towns_out[nm] = [round(t_[0], 2), round(t_[1], 2)]
@@ -1240,6 +1243,94 @@ def bake(rname, G, P, creeks, preview=True):
         f" | bundle {tot / 1e6:.2f} MB | {time.time() - t0:.0f} s")
     if preview: make_preview(rname, D, out, cfg)
     return D
+
+
+# ============================================================ project-mode look helpers (period ground; gm_look untouched) ============================================================
+def _river_coords(L, box, TW, TH, s, f=4):
+    """for every texel (at 1/f resolution): arc length along polyline L (map units), signed distance (units, + = left of the flow), nearest index"""
+    x0, y0 = box[:2]; w4, h4 = TW // f, TH // f; s4 = s / f
+    L = densify(np.asarray(L, np.float32), 0.5 / s4); arc = np.r_[0, np.cumsum(np.hypot(*np.diff(L, axis=0).T))]
+    pix = np.round((L - [x0, y0]) * s4).astype(np.int64); ok = (pix[:, 0] >= 0) & (pix[:, 0] < w4) & (pix[:, 1] >= 0) & (pix[:, 1] < h4)
+    img = np.ones((h4, w4), np.uint8); img[pix[ok, 1], pix[ok, 0]] = 0
+    d, lab = cv2.distanceTransformWithLabels(img, cv2.DIST_L2, 5, labelType=cv2.DIST_LABEL_PIXEL)
+    lut = np.zeros(int(lab.max()) + 1, np.int64); idx = np.nonzero(ok)[0]; lut[lab[pix[idx, 1], pix[idx, 0]]] = idx
+    ii = lut[lab]; T = np.gradient(L, axis=0); T /= np.linalg.norm(T, axis=1, keepdims=True) + 1e-6
+    yy, xx = np.mgrid[0:h4, 0:w4].astype(np.float32); px = (xx + 0.5) / s4 + x0 - L[ii, 0]; py = (yy + 0.5) / s4 + y0 - L[ii, 1]
+    side = np.sign(T[ii, 0] * py - T[ii, 1] * px)   # the two banks get opposite signs
+    return arc[ii].astype(np.float32), (d / s4 * side).astype(np.float32), ii, L
+
+
+def longlot_labels(cfg_l, G, box, TW, TH, s, seed):
+    """French long lots (arpent strips) along a river: strips perpendicular to the bank (frontage `w` units +- 40 %), cut into fields every
+    `depth` units, out to `max_d` units; beyond = ordinary label noise (covered by the swamp band). Returns (lab, n) for gm_fields."""
+    L = gfind(G, "rivers", cfg_l["river"]); arc, sd, _, _ = _river_coords(curvy(np.asarray(L, np.float32)), box, TW, TH, s)
+    rr = np.random.default_rng(seed + 7); lab = np.zeros(arc.shape, np.int64); amax = float(arc.max()) + 1
+    for k_, sg in enumerate((1, -1)):
+        b = np.cumsum(rr.uniform(0.6, 1.4, int(amax / cfg_l.get("w", 1.4) * 2) + 10) * cfg_l.get("w", 1.4)); b = b[b < amax + 5]
+        si = np.searchsorted(b, arc)
+        dep = cfg_l.get("depth", 2.6) * rr.uniform(0.75, 1.3, len(b) + 1)[si]
+        di = np.floor(np.maximum(np.abs(sd) - cfg_l.get("bank", 3.2), 0) / dep).astype(np.int64)
+        m = np.sign(sd) == sg; lab[m] = (k_ * 100000 + si[m] * 64 + np.minimum(di[m], 63)) + 1
+    _, lab = np.unique(lab, return_inverse=True); lab = lab.reshape(arc.shape).astype(np.int32)
+    lab = cv2.resize(lab, (TW, TH), interpolation=cv2.INTER_NEAREST); return lab, int(lab.max()) + 1
+
+
+def swamp_band(cb, G, forest, box, TW, TH, s, seed):
+    """Lower-Mississippi plantation strip: no woods within `from` units of the river (fields to the levee), a cypress swamp band from `from`
+    to `to` units (ragged edges), open marsh beyond with a few wooded hummocks. Returns (forest, marsh mask)."""
+    L = gfind(G, "rivers", cb["river"]); _, sd, ii, Ld = _river_coords(curvy(np.asarray(L, np.float32)), box, TW, TH, s)
+    d = np.abs(sd); h4, w4 = d.shape; rx = Ld[ii, 0]   # map x of the nearest river point: from_x / to_x vary the band along the river
+    prof = lambda key, dflt: (np.interp(rx, [q[0] for q in cb[key + "_x"]], [q[1] for q in cb[key + "_x"]]) if key + "_x" in cb else cb.get(key, dflt))
+    j1 = (fbm(h4, w4, 4, int(box[2] / 3), seed + 301) - 0.5) * cb.get("jag", 3.0); j2 = (fbm(h4, w4, 4, int(box[2] / 4), seed + 302) - 0.5) * cb.get("jag", 3.0) * 1.4
+    a, b = prof("from", 9.5) + j1, prof("to", 15.0) + j2
+    band = ((d > a) & (d < b)).astype(np.float32)
+    hum = (fbm(h4, w4, 4, int(box[2] / 1.2), seed + 303) > cb.get("hummock", 0.68)).astype(np.float32) * (d >= b)
+    near = (d <= a).astype(np.float32) * cb.get("keep_near", 0.0)
+    f4 = cv2.resize(forest, (w4, h4), interpolation=cv2.INTER_AREA)
+    f4 = np.maximum(f4 * near, np.maximum(band, hum)) if True else f4
+    marsh = cv2.GaussianBlur((d >= b).astype(np.float32) * (1 - hum), (0, 0), 1.0)
+    return cv2.resize(f4, (TW, TH), interpolation=cv2.INTER_LINEAR), cv2.resize(marsh, (TW, TH), interpolation=cv2.INTER_LINEAR)
+
+
+def paint_marsh(img, marsh, forest, TW, TH, bw, seed):
+    """open marsh: pale olive-tan sedge with darker streaks and small dark pools (Lake Borgne side of the swamp)"""
+    m = (marsh * (1 - forest))[..., None]
+    n1 = cv2.resize(fbm(TH // 4, TW // 4, 4, int(bw / 1.5), seed + 310), (TW, TH)); n2 = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.35), seed + 311), (TW, TH))
+    col = hexc("#8f8c66")[None, None] * (0.86 + 0.26 * n1[..., None]) * (0.95 + 0.1 * n2[..., None])
+    col = col * (1 - 0.35 * np.clip((n2 - 0.62) * 6, 0, 1))[..., None] + hexc("#6c7556") * 0.35 * np.clip((n2 - 0.62) * 6, 0, 1)[..., None]
+    pool = np.clip((n1 * 0.6 + n2 * 0.4 - 0.71) * 14, 0, 1)[..., None]
+    col = col * (1 - pool) + hexc("#4d6268") * pool
+    return img * (1 - m) + col * m
+
+
+def paint_sea(img, sea, close, s, look):
+    """open water (the Gulf, the lakes, the sounds): flat painted water, a little lighter in the shallows, a dark wet coast line + pale beach"""
+    sm = np.clip((sea - 0.35) * 3.3, 0, 1)
+    land = (sm < 0.5).astype(np.uint8); dsea = cv2.distanceTransform(1 - land, cv2.DIST_L2, 5) / s   # units into the sea
+    dl = cv2.distanceTransform(land, cv2.DIST_L2, 5) / s                                             # units onto the land
+    deep, shal = hexc(look.get("deep", "#4b6371")), hexc(look.get("shallow", "#5f7a84"))
+    k = np.clip(1 - dsea / look.get("shelf_u", 6.0 if not close else 1.5), 0, 1)[..., None]
+    col = deep * (1 - k) + shal * k
+    tex = cv2.resize(fbm(max(8, img.shape[0] // 8), max(8, img.shape[1] // 8), 3, 30, 977), (img.shape[1], img.shape[0]))[..., None]
+    col = col * (0.97 + 0.06 * tex)
+    out = img * (1 - sm[..., None]) + col * sm[..., None]
+    beach = np.clip(1 - dl / look.get("beach_u", 0.5 if not close else 0.08), 0, 1)[..., None] * 0.35 * (1 - sm[..., None])
+    out = out * (1 - beach) + hexc("#b4a886") * beach
+    cl = np.clip(1 - np.abs(dsea - dl) / look.get("line_u", 0.18 if not close else 0.04), 0, 1)[..., None] * 0.55
+    return out * (1 - cl) + hexc("#34413f") * cl
+
+
+def bake_project(rname, G, preview=True):
+    """project mode: one region = its own DEM, frame (zoom) and caches"""
+    global CUR_ZOOM, TMP, MPU, CPU, CREEK_KM2
+    cfg = json.load(open(f"{CFGDIR}/{rname}.json")); close = cfg.get("mode", "close") == "close"
+    CUR_ZOOM = cfg.get("zoom", PROJ.zoom); k = PROJ.k(CUR_ZOOM); box = cfg["box"]
+    TMP = f"{PROJ.tmp}/{rname}"; os.makedirs(TMP, exist_ok=True)
+    MPU = PROJ.mpu(CUR_ZOOM, y=box[1] + box[3] / 2)
+    CPU = cfg.get("creek_ppu", 4 if close else 1); CREEK_KM2 = cfg.get("creek_km2", 2.0 if close else 60.0)
+    LOG(f"== project {PROJ.name} region {rname}: zoom {CUR_ZOOM} (k {k:g}), {MPU:.1f} m/unit")
+    Gr = scale_geo(G, k); P = prep_dem_project(Gr, cfg, close); CR = creek_net(P, Gr)
+    D = bake(rname, Gr, P, CR, preview); CUR_ZOOM = None; return D
 
 
 # ============================================================ works ============================================================
@@ -1424,7 +1515,7 @@ def make_preview(rname, D, out, cfg):
 
 def write_geo_js(G):
     r2 = lambda a: [[round(float(x), 2), round(float(y), 2)] for x, y in np.asarray(a)[:, :2]]
-    D = dict(zoom=FRAME["zoom"], origin=FRAME["origin_world_px"], mpu=MPU, frame="vicksburg_hd_lift", size=FRAME["size"], source=G["_src"],
+    D = dict(zoom=FRAME["zoom"], origin=FRAME["origin_world_px"], mpu=MPU, frame=FRAME.get("name", "vicksburg_hd_lift"), size=FRAME["size"], source=G["_src"],
              towns={k: [round(v[0], 2), round(v[1], 2)] for k, v in G["towns"].items()}, places={k: [round(v[0], 2), round(v[1], 2)] for k, v in G["places"].items()},
              rivers={k: r2(v) for k, v in G["rivers"].items()}, roads={k: r2(v) for k, v in G["roads"].items()}, railroads={k: r2(v) for k, v in G["railroads"].items()},
              works={k: dict(kind=v.get("kind"), side=v.get("side"), pts=r2(v["pts"])) for k, v in G["works"].items()})
@@ -1432,10 +1523,15 @@ def write_geo_js(G):
 
 
 if __name__ == "__main__":
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]; prev = "--no-preview" not in sys.argv
+    argv = [a for i, a in enumerate(sys.argv) if not (a == "--project" or (i and sys.argv[i - 1] == "--project"))]
+    args = [a for a in argv[1:] if not a.startswith("--")]; prev = "--no-preview" not in sys.argv
     if not args: print(__doc__); sys.exit(1)
     regs = sorted(f[:-5] for f in os.listdir(CFGDIR) if f.endswith(".json") and not f.startswith("_")) if args[0] == "all" else args
     G = load_geo(); LOG("geography:", G["_src"], {k: len(v) for k, v in G.items() if isinstance(v, dict)})
+    if PROJ:
+        write_geo_js(G)
+        for rn in regs: bake_project(rn, G, prev)
+        sys.exit(0)
     P = prep_dem(G); CR = creek_net(P, G)
     write_geo_js(G)
     for rn in regs: bake(rn, G, P, CR, prev)
