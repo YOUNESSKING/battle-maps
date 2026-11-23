@@ -74,7 +74,7 @@ add({ side: "r", n: 2, face: FM + Math.PI, t0: 113.0,
 const CUT = [[VIL[0] - 0.5, 3232.6], [VIL[0] - 0.1, 3239.6]];   // the new cut from the Villeré canal to the river
 const XR = [[VIL[0] - 1.0, 3240.8], [VIL[0] - 2.4, 3243.4], [VIL[0] - 3.8, 3246.4]];
 const boats = [
-  ...[0.12, 0.32, 0.5, 0.7].map((k) => ({ region: CH, kind: "barge", n: 1, path: CUT, sAt: () => VX.len(CUT) * k, t0: -1, t1: 26.0, size: 0.16, lamp: false, wake: false, h: 0.05 })),
+  ...[0.12, 0.32, 0.5, 0.7].map((k) => ({ region: CH, kind: "barge", n: 1, path: CUT, sAt: () => VX.len(CUT) * k, t0: -1, t1: 26.0, size: 0.24, lamp: false, wake: false, h: 0.05 })),
   { region: CH, kind: "barge", n: 2, path: XR, s0: 0.4, speed: 0.55, spacing: 0.9, t0: T.across - 0.6, t1: 26.0, size: 0.26, lamp: false, wake: true },
 ];
 
