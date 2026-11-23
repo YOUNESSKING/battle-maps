@@ -34,7 +34,7 @@ ctl $POD run prep 'chmod +x /work/*.sh; bash /work/patch_hf_chunks_gpu.sh > /wor
 sleep 5
 for SA in "$@"; do
   S=${SA%%:*}; RANGE=""; [ "$SA" != "$S" ] && RANGE="${SA#*:}" && RANGE="${RANGE/-/ }"   # NAME:START-END renders only that window (troops test)
-  tar czf $W/$S.tgz -C $V/scenes $S || continue
+  tar czf $W/$S.tgz -C ${SCENES_DIR:-$V/scenes} $S || continue
   ctl $POD put $W/$S.tgz /work/in/$S.tgz
   ctl $POD run r$S "bash /work/pod_scene.sh $S ${WORKERS:-3} $RANGE > /work/logs/r$S.log 2>&1"
   t0=$(date +%s)
