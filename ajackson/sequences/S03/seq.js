@@ -96,8 +96,8 @@ const fx = {
   smokeLines: [],
   volleys: [
     // the Red Sticks fire through the port-holes at the charge; Jackson's lines answer at the wall
-    { region: HS, pts: [wall(0.08, 0.1), wall(0.5, 0.1), wall(0.92, 0.1)], t0: 88.1, t1: 92.4, every: 1.4, opts: { ...WSM, rate: 1.6, volley: 1.4 } },
-    { region: HS, pts: [wall(0.2, 1.2), wall(0.5, 1.2), wall(0.84, 1.2)], t0: 89.6, t1: 92.0, every: 1.2, opts: { ...WSM, dir: [-N[0], -N[1]], rate: 1.6, volley: 1.2 } },
+    { region: HS, pts: [wall(0.08, 0.1), wall(0.5, 0.1), wall(0.92, 0.1)], t0: 90.5, t1: 93.6, every: 1.4, opts: { ...WSM, rate: 1.6, volley: 1.4 } },
+    { region: HS, pts: [wall(0.2, 1.2), wall(0.5, 1.2), wall(0.84, 1.2)], t0: 90.9, t1: 93.0, every: 1.2, opts: { ...WSM, dir: [-N[0], -N[1]], rate: 1.6, volley: 1.2 } },
     // inside the bend: the fight through the afternoon (behind logs and brush)
     { region: HS, pts: [[8699.6, 1282.3], [8702.0, 1282.9], [8704.4, 1281.8]], t0: 101.4, t1: 106.8, every: 1.7, opts: { ...WSM, dir: [0, 1], rate: 1.2, volley: 1.7 } },
   ],
@@ -146,14 +146,16 @@ window.SEQ = {
   keys: [
     { t: 0, region: GF, at: [OV[0] - 10, OV[1] + 26], dist: 300, tilt: 36, yaw: 0, fov: 30 },
     // dive 2: gulf -> the bend (push 0.2, swap 4.0, land 7.35)
-    { t: 7.35 + 4.6, region: HS, at: [8704.4, 1278.2], dist: 36, tilt: 48, yaw: -8, fov: 30, ease: "io" },   // toward the neck: the wall
-    { t: 17.6, region: HS, at: [8701.8, 1282.6], dist: 38, tilt: 47, yaw: -5, fov: 30, ease: "io" },          // the town + the canoes behind it
-    { t: 27.5, region: HS, at: [8703.6, 1279.6], dist: 60, tilt: 42, yaw: -3, fov: 30, ease: "io" },          // rise: the whole bend, one neck
-    { t: 33.0, region: HS, at: [8703.8, 1278.8], dist: 58, tilt: 43, yaw: -2, fov: 30, ease: "io" },
-    { t: 38.5, region: HS, at: [8704.6, 1273.6], dist: 34, tilt: 49, yaw: 0, fov: 30, ease: "io" },           // Jackson arrives from the north
-    { t: 45.0, region: HS, at: [8704.4, 1274.4], dist: 33, tilt: 50, yaw: 3, fov: 30, ease: "io" },
-    { t: 50.0, region: HS, at: [8701.6, 1280.8], dist: 66, tilt: 43, yaw: 0, fov: 30, ease: "io" },           // the twist: the whole bend + far banks
-    { t: 59.4, region: HS, at: [8701.4, 1281.2], dist: 63, tilt: 44, yaw: 1, fov: 30, ease: "io" },
+    { t: 10.4, region: HS, at: [8705.0, 1277.4], dist: 24, tilt: 44, yaw: -8, fov: 30, ease: "io" },          // push in on "wall of logs"
+    { t: 15.6, region: HS, at: [8704.4, 1278.4], dist: 26, tilt: 44, yaw: -6, fov: 30, ease: "lin" },
+    { t: 18.6, region: HS, at: [8699.8, 1287.4], dist: 22, tilt: 42, yaw: -3, fov: 30, ease: "io" },          // push in on the canoes
+    { t: 20.9, region: HS, at: [8700.2, 1286.8], dist: 23, tilt: 42, yaw: -3, fov: 30, ease: "lin" },
+    { t: 25.6, region: HS, at: [8703.4, 1280.0], dist: 42, tilt: 33, yaw: -3, fov: 30, ease: "io" },          // pull back: the whole bend, one neck
+    { t: 33.0, region: HS, at: [8703.6, 1279.4], dist: 40, tilt: 34, yaw: -2, fov: 30, ease: "lin" },
+    { t: 38.5, region: HS, at: [8704.6, 1273.8], dist: 30, tilt: 40, yaw: 0, fov: 30, ease: "io" },           // Jackson arrives from the north
+    { t: 45.0, region: HS, at: [8704.4, 1274.6], dist: 29, tilt: 41, yaw: 3, fov: 30, ease: "lin" },
+    { t: 50.0, region: HS, at: [8701.6, 1283.6], dist: 46, tilt: 30, yaw: 0, fov: 30, ease: "io" },           // the twist: the whole bend + far banks
+    { t: 59.4, region: HS, at: [8701.6, 1283.8], dist: 44, tilt: 31, yaw: 1, fov: 30, ease: "lin" },
     { t: 62.0, region: HS, at: [8705.2, 1276.0], dist: 19, tilt: 52, yaw: -8, fov: 30, ease: "io" },          // close on the neck: the guns
     { t: 69.6, region: HS, at: [8705.0, 1276.4], dist: 17.5, tilt: 53, yaw: -3, fov: 30, ease: "io" },
     { t: 69.6, region: HS, at: [8699.6, 1290.0], dist: 21, tilt: 49, yaw: 2, fov: 30, ease: "cut", dissolve: 0.9 },   // the toe: the Cherokee
@@ -161,16 +163,18 @@ window.SEQ = {
     { t: 83.6, region: HS, at: [8704.2, 1280.0], dist: 31, tilt: 47, yaw: -4, fov: 30, ease: "cut", dissolve: 0.9 },   // the smoke + the charge
     { t: 92.0, region: HS, at: [8704.0, 1279.0], dist: 27, tilt: 49, yaw: -2, fov: 30, ease: "io" },
     { t: 100.4, region: HS, at: [8703.0, 1281.0], dist: 33, tilt: 48, yaw: 0, fov: 30, ease: "io" },
-    { t: 108.0, region: HS, at: [8701.6, 1283.4], dist: 46, tilt: 45, yaw: 0, fov: 30, ease: "io" },          // inside the bend, the far bank lined
-    { t: 113.2, region: HS, at: [8701.5, 1283.4], dist: 50, tilt: 44, yaw: 0, fov: 30, ease: "io" },
-    { t: 126.9, region: HS, at: [8701.5, 1283.3], dist: 52, tilt: 44, yaw: 0, fov: 30, ease: "lin" },         // still, dimmed: the result
+    { t: 108.0, region: HS, at: [8701.6, 1283.0], dist: 40, tilt: 35, yaw: 0, fov: 30, ease: "io" },          // inside the bend, the far bank lined
+    { t: 113.2, region: HS, at: [8701.5, 1283.0], dist: 42, tilt: 34, yaw: 0, fov: 30, ease: "io" },
+    { t: 126.9, region: HS, at: [8701.5, 1282.8], dist: 40, tilt: 33, yaw: 0, fov: 30, ease: "lin" },         // still, dimmed: the result
     { t: 126.9, region: GF, at: [756, 540], dist: 1000, tilt: 12, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // the gulf map: the treaty
     { t: 148.6, region: GF, at: [752, 545], dist: 980, tilt: 13, yaw: 0, fov: 30, ease: "lin" },
     { t: 156.5, region: GF, at: [720, 700], dist: 900, tilt: 36, yaw: 0, fov: 30, ease: "io" },              // Jackson to Mobile, the Gulf coast
-    { t: T.D, region: GF, at: [640, 760], dist: 860, tilt: 38, yaw: 0, fov: 30, ease: "io" },                  // drifting toward New Orleans (S04 starts here)
+    { t: 162.0, region: GF, at: [700, 720], dist: 880, tilt: 37, yaw: 0, fov: 30, ease: "io" },
+    { t: 169.0, region: GF, at: [640, 760], dist: 760, tilt: 38, yaw: 0, fov: 30, ease: "io" },
+    { t: T.D, region: GF, at: [590, 775], dist: 640, tilt: 39, yaw: 0, fov: 30, ease: "io" },                  // push in toward New Orleans (S04 starts here)
   ],
   dives: [{ t: DS, over: OV, from: { region: GF, at: [OV[0] - 4, OV[1] + 10], dist: 230, tilt: 38, yaw: 0 },
-            to: { region: HS, at: [8703.0, 1280.8], dist: 50, tilt: 46, yaw: -6, fov: 30 },
+            to: { region: HS, at: [8703.0, 1280.4], dist: 38, tilt: 38, yaw: -6, fov: 30 },
             keys: { swTo: { at: [8703.2, 1280.0] }, emerge: { at: [8703.1, 1280.4] } } }],   // the gulf "over" point is in z8 units: aim the close side at the bend
   clouds: { [GF]: { scatter: { seed: 5 }, keepClear: [[930, 520, 260, 1, 1], [700, 700, 220, 1, 1]] }, [HS]: { shadows: true } },
   units, arrows, boats,
@@ -207,8 +211,8 @@ window.SEQ = {
     ["plaque.note", T.afternoon, "the afternoon"],
     ["film.dim", T.eight - 0.3, 126.8, 0.75],
     ["ledger.show", T.eight - 0.2, { title: "Horseshoe Bend", sub: "27 March 1814" }],
-    ["ledger.add", T.killed, { who: "About 800 Red Stick warriors killed", note: "out of about 1,000", stamp: false }],
-    ["ledger.add", T.prisoner, { who: "About 350 women and children taken prisoner", stamp: false }],
+    ["ledger.add", T.killed, { who: "About 800 killed", note: "Red Stick warriors, of about 1,000", stamp: false }],
+    ["ledger.add", T.prisoner, { who: "About 350 prisoners", note: "women and children", stamp: false }],
     ["ledger.add", T.fortynine + 0.35, { who: "Jackson's army: 49 killed", note: "18 of them Cherokee", stamp: false }],
     ["ledger.hide", 126.4],
     ["plaque.date", T.summer, { month: "Summer 1814", day: "", weekday: "", note: "Fort Jackson" }],
@@ -218,13 +222,13 @@ window.SEQ = {
     ["plaque.date", T.autumn, { month: "Autumn 1814", day: "", weekday: "", note: "the Gulf coast" }],
     ["label", T.gulf, 158.4, { name: "The whole Gulf coast", sub: "Jackson's command", world: VX.ll(30.55, -88.4, GF), side: "us", marker: false }],
     ["engage.subscribe", 171.0, 175.6],
-    ["label", T.heres + 0.05, T.D + 1, { name: "Next: the night attack", screen: true, x: 1480, y: 940, marker: false, side: "us" }],
+    ["label", T.heres + 0.05, T.D + 1, { name: "Next: the British come", screen: true, x: 1480, y: 940, marker: false, side: "us" }],
   ],
   build: (ctx) => { hatch.build(ctx); pulses.build(ctx); markers.build(ctx); },
   draw: (t, ctx) => { hatch.draw(t, ctx); pulses.draw(t, ctx); markers.draw(t, ctx); },
 };
 // the British coming: ships + a red arrow from the south-east (gulf), continued in S04
 const SHIP_PATH = [[1215, 1015], [1060, 950], [905, 885], [760, 830], [620, 800], [520, 772], [470, 758]];   // = S04's
-window.SEQ.boats.push({ region: GF, kind: "ship", n: 5, t0: T.british - 0.2, t1: T.D + 1, size: 3.4, lamp: false, wake: true, path: SHIP_PATH, s0: 300, speed: 4.0, spacing: 12 });
+window.SEQ.boats.push({ region: GF, kind: "ship", n: 5, t0: T.british - 0.2, t1: T.D + 1, size: 5.5, lamp: false, wake: true, path: SHIP_PATH, s0: 300, speed: 4.0, spacing: 16 });
 window.SEQ.arrows.push({ side: "r", width: 0.6, maxWidth: 0.6, pts: [[1222, 1040], [1060, 950], [930, 895], [850, 862]], t0: T.british - 0.1, dur: 1.8, t1: 170.0, region: GF });
 })();

@@ -12,3 +12,10 @@ Regions gulf -> neworleans (dissolve 19.95) -> chalmette (dissolve 56.35). No di
 Sources: FACT_NOTES_neworleans.md. Approximations: the gunboat line is ~8 km west of the true Malheureux Island - Point Claire site (that site is off the neworleans map); the advance guard is shown as 3 line blocks (Thornton's ~1,600-1,800).
 Checks: check_troops_motion chalmette 56-71, neworleans 20-57: no flags; gulf 0-20: the Pensacola unit's front-vs-velocity = its retreat (about-face, intended).
 Open issues: gulf arrows read thin; ships are small at dist 560-860; the route arrow was thinned after the sheet (0.15). Last 0.6 s = chalmette day by the river, for S05's "chalmette by day".
+
+## Round 1 fixes
+- The first key matches S03's new last frame (gulf [590, 775], dist 640, tilt 39); ships 5.5 size.
+- Lake Borgne: wider, lower camera (dist 125-135, tilt 36-37, yaw 8-10) with the north shore in frame and no world edge; gunboat icons 1.4x and British boats 1.4x; the British boats now arrive together and fire 5 visible shots (34.7-36.1, flashes + sound) while the gunboats fire; the gunboats turn grey in 0.4 s from "captured" (35.2).
+- 46-52 empty map: the Bienvenue route arrow and the barges start on "wherever" (48.9).
+- NOT fixed here: the flat, blurry neworleans ground is the neworleans bake (needs a re-bake); the date-plate month text size is an engine CSS value that also affects Vicksburg (left as is).
+- check_troops_motion chalmette 56-71: no overlaps; gulf: no pops.

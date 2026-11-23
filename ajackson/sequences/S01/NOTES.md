@@ -77,3 +77,22 @@ spoken: shown as small source text); no "Jackson" on screen before the name slam
 - 8 Jan ground fog: a light canvas veil (drifting soft patches + low band, <= ~0.3 alpha) from the emergence, thinning from "five
   thousand" (15.6 s) to gone at ~20.4 s as the British reach the ditch.
 - Month-only plates (November 1814, 1814 - 1815) now show the month text alone (engine `plaque.date` month-only mode, see README).
+
+## Round 1 fixes (critics A 5.5 / B 6.8)
+- 5,000+ number card (gold, ticks) on "five thousand" (15.87) + BRITISH REGULARS under it on "regulars"; the later cards (2,000+, 71)
+  moved up (y 250 / 360) so they no longer cover the blocks.
+- First cannon shot moved from 13.4 to 14.4 s (after the cloud has cleared; cue list now starts at gun 14.4).
+- Dive 1 keeps the owner's v8 white-out (same deck, cool and warm veils); only the flat phase is trimmed by ~0.35 s:
+  `dives[0].off = { emerge: 0.5, clear: 0.8, haze: 1.45 }` (v8: 0.85 / 1.15 / 1.8). The emergence fog of the close region still reads
+  pale until ~13.2 s; the ground-fog veil now starts at `clear` (12.55) instead of `emerge`.
+- Blocks: wide rectangles via the engine's new `depthK` (0.3, 18 files x 4 ranks; set project-wide in scene.js by the lead).
+- Retreat: with the engine's `retreatTurn` (v15) the whole block turns about in place (~7 s at <= ~36 deg/s), walks back front first,
+  turns back at the halt. Timing adapted: halt 20.2, turn 20.2-27.8 (under "killed, wounded or captured"), walk back 27.8-31.8 (the
+  last 0.3 s after the cut). check_troops_motion: front-vs-velocity now <= 15 deg (was 180).
+- Muskets start after "mud" (19.6) so "attacked a ditch and a wall of mud" stays clear; snap 3 volleys stop at 76.98, guns at 76.78
+  (last boom 77.33), the British halt by ~77.8: "These are ... three greatest tactical moves" plays over a calm, smoking line.
+- Ghent: the dark backdrop now fades in 0.3 s before the card (32.76), no 2 s empty dim.
+- Plate: "January / 8" on "eighth" (12.42), "January 1815 / 8" on "eighteen fifteen".
+- ANDREW JACKSON readable from "Andrew" (tOn + 0.5: fade 64.65-65.15).
+- Open: r9 (British, wood end) shows one 40 deg heading jump at 26.7 s during its about-turn (engine v15 retreatTurn + the on-screen
+  heading correction); hard-cut "turn" spikes at 69.9 / 74.2 as before.

@@ -339,7 +339,7 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
   TRO[r] = { BX: TROOPS !== "blocks" && hasU ? TM.createBoxes3D({ THREE, scene: sc, sun: SUN, ...(isWide(r) ? { lift: 0.03 * RO(r).troopScale, shadowOff: 0.075 * RO(r).troopScale } : {}) }) : null,
     AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r), sun: SUN, style: GMLOOK ? "gm" : "w" }),
     T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, escAt, edgeFade,
-      proj: (x, y, h = 0.02) => world.projectMap(x, y, h), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [], trees: (world.regions[r].data || {}).trees, bridges: ((world.regions[r].features || {}).bridges || []), ys: world.regions[r].ys, sideCol: SIDE_COL, camera: world.camera, ...(S.troopsOpts || {}) }) : null }; }
+      proj: (x, y, h = 0.02) => world.projectMap(x, y, h), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [], trees: (world.regions[r].data || {}).trees, bridges: ((world.regions[r].features || {}).bridges || []), ys: world.regions[r].ys, sideCol: SIDE_COL, camera: world.camera, retreatTurn: GEO.frame !== "vicksburg_hd_lift", ...(GEO.frame !== "vicksburg_hd_lift" ? { depthK: 0.3 } : {}), ...(S.troopsOpts || {}) }) : null }; }   // v15 retreatTurn: see troops3d.js
 // GM troops (v2, owner 2026-11-18): GM's movement arrows are a pale tint of the side colour (his French arrows (105,172,192) after his grade)
 const ARROW_GM = { u: "#62a3db", r: "#d4705f" };
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = (TROOPS === "blocks" && !GMLOOK ? null : a.color) || (GMLOOK ? ARROW_GM : ARROW_COL)[a.side || "u"];

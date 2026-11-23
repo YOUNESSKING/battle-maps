@@ -27,7 +27,7 @@ const T = { D: 83.69, november: 0.54, eighteen: 1.49, fleet: 2.96, orleans: 3.92
   landed: 72.82, stop: 74.18, veteran: 75.06, mud2: 77.02, these: 77.28, andrew2: 78.64, three: 79.94, moves: 81.24 };
 const GULF = "gulf", CH = "chalmette", NO = "neworleans", HB = "horseshoe";
 const sstep = VX.sstep, hsh = VX.hsh;
-const SWT = 11.75, DV = VX.diveTimes(SWT);          // (v8 white-out) push 7.95, deckIn 10.05, full 11.2, SW 11.75, emerge 12.6, clear 12.9, land 15.1
+const SWT = 11.75, DOFF = { emerge: 0.5, clear: 0.8, haze: 1.45 }, DV = VX.diveTimes(SWT); for (const k in DOFF) DV[k] = SWT + DOFF[k];   // round 1: v8 white-out, flat phase trimmed ~0.35 s          // (v8 white-out) push 7.95, deckIn 10.05, full 11.2, SW 11.75, emerge 12.6, clear 12.9, land 15.1
 const CUT_G = 31.47, CUT_N = 41.30;                  // hard cut to the Ghent card (over the city); the card leaves, the city comes up
 const SN1 = T.trap, SN2 = T.attack, SN3 = T.stop;    // the three snap cuts
 
@@ -65,10 +65,10 @@ const units = [];
 // the British lines: in place at the emergence, advance on "five thousand", stop short of the ditch, fall back on "killed"; off screen they
 // close up again (d 4-5) for the third snap cut, where they stand in the smoke and fall back once more
 const RED = [[-0.06, 5.5, 2.0, 2], [0.42, 6.4, 2.4, 2], [0.84, 5.7, 2.0, 2], [1.04, 6.6, 2.7, 2]];   // [s, start d, closest d, boxes]
-const GB_ADV = 16.6, GB_HALT = 21.0, GB_BACK = 24.5, GB_OUT = 29.9;   // the halt >= 3.3 s (runs closer than 3.2 s merge: no about-face)
+const GB_ADV = 16.4, GB_HALT = 20.2, GB_BACK = 27.8, GB_OUT = 31.8;   // round 1: retreatTurn (engine) turns the whole block about in ~7 s before the walk back   // the halt >= 3.3 s (runs closer than 3.2 s merge: no about-face)
 RED.forEach(([s, d0, d1, n], i) => units.push({ region: CH, side: "r", type: "inf", n, face: FACE + Math.PI, arrive: false,
   keys: [[0, ...off(s, d0)], [GB_ADV + i * 0.25, ...off(s, d0)], [GB_HALT + i * 0.2, ...off(s, d1)], [GB_BACK + i * 0.15, ...off(s, d1)],
-         [GB_OUT + i * 0.2, ...off(s, d0 + 0.6)], [SN3 + 0.4 + i * 0.3, ...off(s, d0 + 0.6)], [SN3 + 6.4 + i * 0.3, ...off(s, d1 + 1.4)]] }));
+         [GB_OUT + i * 0.2, ...off(s, d0 + 0.6)], [SN3 + 0.4 + i * 0.3, ...off(s, d0 + 0.6)], [SN3 + 3.0 + i * 0.3, ...off(s, d1 + 1.4)]] }));   // round 1: halted before the title line (calm shot)
 const arrows = [
   { region: CH, side: "r", pts: [off(0.45, 8.6), off(0.45, 6.0), off(0.45, 3.6)], t0: T.five + 0.1, dur: 1.4, t1: T.killed, width: 0.3 },
   { region: CH, side: "r", pts: [off(0.82, 9.6), off(0.82, 6.6), off(0.82, 3.8)], t0: T.five + 0.4, dur: 1.4, t1: T.killed, width: 0.3 },
@@ -108,18 +108,18 @@ const idxC = (x, y) => { let b = 0; for (let i = 0; i < RIVC.length; i++) if (Ma
 const iCar = idxC(CAROL[0], CAROL[1]), CARP = [RIVC[Math.max(0, iCar - 6)].slice(0, 2), RIVC[iCar].slice(0, 2), RIVC[Math.min(RIVC.length - 1, iCar + 6)].slice(0, 2)];
 
 // ---------------- fx ----------------
-const usShots = [13.4, 14.6, 15.9, 16.9, 17.8, 18.9, 19.9, 20.9, 22.0, 23.0];
+const usShots = [14.4, 15.5, 16.6, 17.6, 18.7, 19.9, 20.9, 22.0, 23.0];   // round 1: first shot after the cloud has cleared
 const SMK = { dir: FR, rate: 0.9, volley: 1.5, roll: 0.8, size: 0.55, alpha: 0.075, life: 6, height: 2.6, muzzle: 6, windK: 0.7, cluster: [3.6, 1.8] };
 const fx = {
   smokeLines: [
     // 8 Jan: the American line fires (river -> wood, then the swamp leg)
-    { region: CH, pts: lineFront(0.04, 0.96, 9), t0: T.attacked + 0.2, t1: 26.2, cue: true, opts: { ...SMK } },
-    { region: CH, pts: legFront(), t0: T.ditch, t1: 25.4, cue: true, opts: { ...SMK, rate: 0.7 } },
+    { region: CH, pts: lineFront(0.04, 0.96, 9), t0: T.mud + 0.1, t1: 26.2, cue: true, opts: { ...SMK } },   // round 1: muskets after "mud" (the hook's key lines stay clear)
+    { region: CH, pts: legFront(), t0: T.mud + 0.4, t1: 25.4, cue: true, opts: { ...SMK, rate: 0.7 } },
     // snap 2, night: Jackson's lines fire into the camp
     { region: CH, pts: [[DLR[0] + 2.4, DLR[1] - 0.9], [DLR[0] + 2.2, DLR[1] + 0.4]], t0: SN2 + 3.3, t1: SN3, cue: true, opts: { dir: [1, 0.05], rate: 1.2, volley: 1.1, size: 0.5, alpha: 0.06, life: 5, height: 2.2, muzzle: 6, cluster: [2.4, 1.2] } },
     { region: CH, pts: [[DLR[0] + 3.4, DLR[1] - 5.0], [DLR[0] + 3.8, DLR[1] - 3.8]], t0: SN2 + 3.0, t1: SN3, cue: true, opts: { dir: [0.95, 0.3], rate: 1.2, volley: 1.3, size: 0.5, alpha: 0.06, life: 5, height: 2.2, muzzle: 6, cluster: [2.4, 1.2] } },
     // snap 3: the mud line firing again in the smoke
-    { region: CH, pts: lineFront(0.04, 0.96, 9), t0: SN3 + 0.05, t1: T.D, cue: true, opts: { ...SMK, rate: 1.0, volley: 1.4 } },
+    { region: CH, pts: lineFront(0.04, 0.96, 9), t0: SN3 + 0.05, t1: T.these - 0.3, cue: true, opts: { ...SMK, rate: 1.0, volley: 1.4 } },   // round 1: quiet under the title line
   ],
   guns: [
     // 8 Jan: the American guns fire into the advancing lines
@@ -131,7 +131,7 @@ const fx = {
     { region: CH, preset: "battery", h: 0.4, shots: [SN2 + 0.4, SN2 + 0.9, SN2 + 1.6, SN2 + 2.7, SN2 + 3.6].map((t, i) => ({ t, at: [CAROL[0] - 0.6 + i * 0.3, CAROL[1] - 0.5], dir: [-0.15, -1],
         impact: [LAC[0] - 2.8 + i * 0.9, LAC[1] - 2.2 - (i % 2) * 1.6], delay: 0.5 })) },
     // snap 3: the guns on the line
-    { region: CH, preset: "battery", shots: [SN3 + 0.3, SN3 + 1.5, SN3 + 2.8, SN3 + 4.2, SN3 + 5.6, SN3 + 7.0, SN3 + 8.3].map((t, i) => ({ t, at: GUNS_US[i % 2], dir: FR,
+    { region: CH, preset: "battery", shots: [SN3 + 0.3, SN3 + 1.5, SN3 + 2.6].map((t, i) => ({ t, at: GUNS_US[i % 2], dir: FR,
         impact: off(i % 2 ? 0.78 : 0.38, 5.0 + (i % 3) * 0.6), delay: 0.55 })) },
   ],
   campfires: [{ region: CH, pts: [[LAC[0] - 3.4, LAC[1] - 0.4], [LAC[0] - 1.0, LAC[1] - 0.2], [LAC[0] + 1.2, LAC[1] - 2.6], [LAC[0] - 2.6, LAC[1] - 3.4], [LAC[0] + 3.0, LAC[1] - 0.8], [LAC[0] + 0.4, LAC[1] - 4.6]],
@@ -179,7 +179,7 @@ const buildCards = (ctx) => { const { tl } = ctx;
     <div class="cap">A BRITISH OFFICER'S SWORD</div><div class="age">AGE 14</div><div class="src">by his own account</div>`);
   const q = (e, s) => e.querySelector(s), on = (e, t, d = 0.35, from = { y: 10 }) => { gsap.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, ...from }, { autoAlpha: 1, y: 0, x: 0, scale: 1, duration: d, ease: "power2.out", immediateRender: false }, t); };
   // Ghent (hard cut at CUT_G): the backdrop and the plate are there on the cut frame
-  tl.set(bk, { autoAlpha: 1 }, CUT_G); tl.to(bk, { autoAlpha: 0, duration: 0.6 }, CUT_N - 0.35);
+  tl.fromTo(bk, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T.weeks - 0.5);   // round 1: dim 0.3 s before the card tl.to(bk, { autoAlpha: 0, duration: 0.6 }, CUT_N - 0.35);
   tl.fromTo(gh, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, T.weeks - 0.2); tl.to(gh, { autoAlpha: 0, duration: 0.4 }, CUT_N - 0.4);
   ["hd", "tt", "rule", "pt", "nr"].forEach((c) => gsap.set(q(gh, "." + c), { autoAlpha: 0 }));
   on(q(gh, ".hd"), T.weeks); on(q(gh, ".tt"), T.ghent, 0.45, { y: 0, scale: 1.08 }); on(q(gh, ".rule"), T.peace, 0.4, { y: 0 }); on(q(gh, ".pt"), T.peace, 0.45); on(q(gh, ".nr"), T.not, 0.45);
@@ -200,7 +200,7 @@ const buildCards = (ctx) => { const { tl } = ctx;
 const fog = { build() { const c = document.createElement("canvas"); c.width = 640; c.height = 360; c.style.cssText = "position:absolute;inset:0;width:1280px;height:720px;pointer-events:none";
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.c = c; this.g = c.getContext("2d"); },
   draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 640, 360);
-    const k = VX.sstep(DV.emerge, DV.clear + 0.6, t) * (1 - VX.sstep(T.five - 0.3, GB_HALT - 0.6, t)) * (t < CUT_G ? 1 : 0); if (k <= 0.002 || ctx.world.cameraAt(t).region !== CH) return;
+    const k = VX.sstep(DV.clear, DV.clear + 0.9, t) * (1 - VX.sstep(T.five - 0.3, GB_HALT - 0.6, t)) * (t < CUT_G ? 1 : 0); if (k <= 0.002 || ctx.world.cameraAt(t).region !== CH) return;
     for (let i = 0; i < 26; i++) { const x = ((hsh(i, 1) * 820 + t * (6 + hsh(i, 2) * 6)) % 820) - 90, y = 120 + hsh(i, 3) * 230, r = 70 + hsh(i, 4) * 90;
       const gr = g.createRadialGradient(x, y, 0, x, y, r), a = 0.26 * k * (0.6 + 0.4 * hsh(i, 5));
       gr.addColorStop(0, `rgba(226,228,222,${a.toFixed(3)})`); gr.addColorStop(1, "rgba(226,228,222,0)"); g.fillStyle = gr; g.fillRect(x - r, y - r, 2 * r, 2 * r); }
@@ -258,7 +258,7 @@ window.SEQ = {
     { t: T.these, region: CH, at: [1255.2, 3226.4], dist: 25, tilt: 50, yaw: 4, fov: 30, ease: "lin" },
     { t: T.D, region: CH, at: [1256.2, 3226.6], dist: 34, tilt: 48, yaw: 0, fov: 30 },
   ],
-  dives: [{ t: SWT, over: OVER,
+  dives: [{ t: SWT, over: OVER, off: DOFF,
     from: { region: GULF, at: [356, 838], dist: 400, tilt: 42, yaw: -4 },
     to: { region: CH, at: CLASHC, dist: 21, tilt: 50, yaw: -24, fov: 30 } }],
   clouds: {
@@ -267,7 +267,7 @@ window.SEQ = {
     [NO]: { keepClear: [[1244, 3224, 80, 1, 0.85], [1205, 3210, 50, 1, 0.9]] },
     [HB]: { shadows: true },
   },
-  title: { text: "ANDREW JACKSON", font: "cinzel-latin-700-normal.woff2", width: 0.6, tOn: T.andrew, tGrow: T.jackson + 0.5, tOff: SN1 - 0.3, anchorT: T.jackson, region: NO, depth: 0.3, up: 0.17 },
+  title: { text: "ANDREW JACKSON", font: "cinzel-latin-700-normal.woff2", width: 0.6, tOn: T.andrew + 0.5, tGrow: T.jackson + 0.5, tOff: SN1 - 0.3, anchorT: T.jackson, region: NO, depth: 0.3, up: 0.17 },
   units, arrows,
   generals: {
     jackson: { img: "seq/jackson.png", flag: "seq/us15_flag.png", side: "us", name: "Jackson", full: "Andrew Jackson", role: "Major General" },
@@ -290,14 +290,16 @@ window.SEQ = {
     ["plaque.date", T.eighteen, { month: "November 1814", day: "", weekday: "", note: "" }],
     ["label", T.fleet, T.fleet + 3.5, { name: "British fleet", world: (t) => { const p = fleetLead(t); return [p[0] + 6, p[1] - 4, 0]; }, side: "uk", marker: false }],
     // B
+    ["plaque.date", T.eighth, { month: "January", day: "8", weekday: "", note: "" }],   // round 1: day + month on "eighth", the year on "eighteen fifteen"
     ["plaque.date", T.e1815, { month: "January 1815", day: "8", weekday: "", note: "" }],
-    ["label", T.regulars - 0.2, T.ditch - 0.1, { name: "British regulars", sub: "more than 5,000", world: off(0.6, 8.4), side: "uk", marker: false }],
+    ["number", T.five, T.ditch - 0.1, { value: 5000, round: 1, suffix: "+", x: 960, y: 250, size: 116 }],   // round 1: the first hard number, on its word
+    ["label", T.regulars, T.ditch - 0.1, { name: "British regulars", x: 960, y: 360, marker: false, side: "uk", offset: [-150, 0] }],
     ["label", T.ditch + 0.05, T.half - 0.2, { name: "A ditch and a wall of mud", world: off(0.18, -1.2), side: "us", marker: false, offset: [-470, -30] }],
     ["plaque.note", T.half - 0.25, "about half an hour"],
-    ["number", T.two, T.americans - 0.3, { value: 2000, round: 1, suffix: "+", x: 960, y: 330, size: 120 }],
-    ["label", T.killed, T.americans - 0.3, { name: "British", sub: "killed, wounded or captured", x: 960, y: 460, marker: false, side: "uk", offset: [-190, 0] }],
-    ["number", T.seventy, CUT_G - 0.15, { value: 71, round: 1, side: "fr", x: 960, y: 330, size: 120 }],
-    ["label", T.killed2 - 0.1, CUT_G - 0.15, { name: "Americans", sub: "killed, wounded or missing", x: 960, y: 460, marker: false, side: "us", offset: [-190, 0] }],
+    ["number", T.two, T.americans - 0.3, { value: 2000, round: 1, suffix: "+", x: 960, y: 250, size: 120 }],
+    ["label", T.killed, T.americans - 0.3, { name: "British", sub: "killed, wounded or captured", x: 960, y: 360, marker: false, side: "uk", offset: [-190, 0] }],
+    ["number", T.seventy, CUT_G - 0.15, { value: 71, round: 1, side: "fr", x: 960, y: 250, size: 120 }],
+    ["label", T.killed2 - 0.1, CUT_G - 0.15, { name: "Americans", sub: "killed, wounded or missing", x: 960, y: 360, marker: false, side: "us", offset: [-190, 0] }],
     // D
     ["plaque.date", T.twoWeeks, { month: "December 1814", day: "23", weekday: "", note: "" }],
     ["distance", T.nine - 0.1, T.general + 0.6, { from: [VIL[0] - 0.5, VIL[1] - 2.0, 0], to: [CITY[0] + 1.5, CITY[1] + 0.6, 0], value: 9, unit: "MILES", sub: "from the city", dash: false }],

@@ -32,14 +32,14 @@ const onS = (s, d = 0) => [RE[0] + uS[0] * s + nS[0] * d, RE[1] + uS[1] * s + nS
 const onL = (s, d = 0) => [EL[0] + uL[0] * s + nL[0] * d, EL[1] + uL[1] * s + nL[1] * d];
 const BAT = [0.18, 0.74, 1.12, 1.52, 2.42, 2.86, 3.98, 4.42];
 const GUN = (i) => onS(BAT[i], -0.42);
-const POS = { reg1: onS(0.46, -1.0), reg2: onS(1.95, -1.0), lam: onS(3.3, -1.0), fmc1: onS(4.25, -1.25), fmc2: onS(2.6, -2.0),
-  tn1: onL(0.9, -0.95), tn2: onL(1.95, -0.95), ky1: onL(3.0, -0.95), ky2: onL(4.05, -0.95), cho: onL(5.6, -0.3) };
+const POS = { reg1: onS(0.46, -0.95), reg2: onS(1.97, -0.75), lam: onS(3.42, -0.75), fmc1: onS(4.2, -1.0), fmc2: onS(2.6, -1.0),   // round 1: = S06, right behind the wall
+  tn1: onL(0.9, -0.5), tn2: onL(1.95, -0.5), ky1: onL(3.0, -0.5), ky2: onL(4.05, -0.5), cho: onL(5.6, -0.3) };
 const REDOUBT = (() => { const w = VX.work(CH, 1); const m = w[Math.floor(w.length / 2)]; return [m[0], m[1]]; })();
 
 // ---------------- units ----------------
 const units = [];
 const add = (o) => { units.push({ type: "inf", n: 1, region: CH, arrive: false, ...o }); return units.length - 1; };
-BAT.forEach((s, i) => add({ side: "u", type: "art", face: FS, keys: [[0, ...GUN(i)]] }));
+BAT.forEach((s, i) => add({ side: "u", type: "art", bw: 0.24, bd: 0.2, face: FS, keys: [[0, ...GUN(i)]] }));   // round 1: guns at ~half size
 for (const k of ["reg1", "reg2", "lam", "fmc1", "fmc2"]) add({ side: "u", face: FS, keys: [[0, ...POS[k]]] });
 for (const k of ["tn1", "tn2", "ky1", "ky2", "cho"]) add({ side: "u", face: FL, keys: [[0, ...POS[k]]] });
 // the company of the 7th in the advanced redoubt: taken for a moment (grey), retaken
@@ -49,12 +49,12 @@ add({ side: "u", face: FS, keys: [[0, REDOUBT[0] - nS[0] * 0.25, REDOUBT[1] - nS
 const MS = 3.9, FOR = 0.6;
 const MAIN = [0, 1, 2].map((i) => add({ side: "r", n: 2, face: FB, t0: FOR + i * 0.4,
   keys: [[0, ...onS(MS, 10.2 + i * 1.3)], [T.british, ...onS(MS, 10.2 + i * 1.3)], [T.five, ...onS(MS, 4.3 + i * 1.3)], [T.ditch, ...onS(MS, 1.05 + i * 1.25)],
-         [T.hands + 0.4, ...onS(MS, 1.05 + i * 1.25)], [78.0, ...onS(MS, 4.8 + i * 1.3)], [T.broken, ...onS(MS, 4.8 + i * 1.3)], [118.0, ...onS(MS, 10.6 + i * 1.3)]] }));
+         [73.5, ...onS(MS, 1.05 + i * 1.25)], [80.5, ...onS(MS, 4.8 + i * 1.3)], [T.broken, ...onS(MS, 4.8 + i * 1.3)], [118.0, ...onS(MS, 10.6 + i * 1.3)]] }));
 add({ side: "r", n: 2, face: FB, t0: FOR + 1.2, keys: [[0, ...onS(2.0, 13.4)], [T.rank, ...onS(2.0, 13.4)], [T.ditch + 1.0, ...onS(2.0, 8.4)], [T.broken, ...onS(2.0, 8.4)], [118.0, ...onS(2.0, 12.6)]] });
 // the river column: Rennie's light companies by the road (they storm the redoubt), the 93rd (cross obliquely to Gibbs' right, then stand)
 const RS = 0.32, RD0 = 10.6, RD1 = 4.6, RIN = 1.45;
-add({ side: "r", n: 2, face: FB, t0: FOR + 0.6, t1: 107.4,
-  keys: [[0, ...onS(RS, RD0)], [T.british, ...onS(RS, RD0)], [T.five, ...onS(RS, RD1)], [97.2, ...onS(RS, RD1)], [T.storm + 0.2, ...onS(RS, RIN)], [T.shot + 1.4, ...onS(RS, RIN)], [107.4, ...onS(RS, 4.2)]] });
+add({ side: "r", n: 2, face: FB, t0: FOR + 0.6,
+  keys: [[0, ...onS(RS, RD0)], [T.british, ...onS(RS, RD0)], [T.five, ...onS(RS, RD1)], [97.2, ...onS(RS, RD1)], [T.storm + 0.2, ...onS(RS, RIN)], [110.6, ...onS(RS, RIN)], [116.0, ...onS(RS, 4.6)]] });   // round 1: turns about, then walks back
 const H93a = onS(1.5, 11.0), H93b = onS(1.5, 5.6), H93c = onS(2.7, 2.7);
 add({ side: "r", n: 2, face: FB, t0: FOR + 0.8,
   keys: [[0, ...H93a], [T.british, ...H93a], [T.five, ...H93b], [T.marched - 0.4, ...H93b], [T.halted, ...H93c], [T.broken - 0.4, ...H93c], [114.0, ...onS(2.7, 5.8)]] });
@@ -66,9 +66,9 @@ const mwD = (() => { const a = MW[0], b = MW[MW.length - 1], l = Math.hypot(b[0]
 const mwN = [-mwD[1], mwD[0]];   // the breastwork's front (downstream / east)
 const FM = Math.atan2(mwN[1], mwN[0]);
 const wbo = (k, d) => { const p = mw(k); return [p[0] + mwN[0] * d, p[1] + mwN[1] * d]; };
-[0.32, 0.72].forEach((k, i) => add({ side: "u", face: FM, t1: 125.0, keys: [[0, ...wbo(k, -0.5)], [T.broke + 0.2 + i * 0.3, ...wbo(k, -0.5)], [124.8, ...wbo(k, -3.6)]] }));
+[0.32, 0.72].forEach((k, i) => add({ side: "u", face: FM, t1: 125.0, keys: [[0, ...wbo(k, -0.5)], [126.0 + i * 0.3, ...wbo(k, -0.5)], [131.0, ...wbo(k, -3.6)]] }));   // round 1: they turn about as the line breaks (the shot ends at 127)
 add({ side: "r", n: 2, face: FM + Math.PI, t0: 113.0,
-  keys: [[113.0, ...wbo(0.5, 5.4)], [T.broke - 0.6, ...wbo(0.5, 1.0)], [T.late5 - 0.3, ...wbo(0.5, -1.6)], [T.ordered + 0.2, ...wbo(0.5, -1.6)], [T.D, ...wbo(0.5, 3.4)]] });
+  keys: [[113.0, ...wbo(0.5, 4.0)], [114.4, ...wbo(0.5, 4.0)], [T.broke - 0.2, ...wbo(0.5, 1.0)], [T.late5 - 0.3, ...wbo(0.5, -1.6)], [T.D, ...wbo(0.5, -1.6)]] });   // round 1: halts (no backward walk inside the shot)
 
 // ---------------- boats: stuck in the collapsed canal at Villeré's; the few that crossed ----------------
 const CUT = [[VIL[0] - 0.5, 3232.6], [VIL[0] - 0.1, 3239.6]];   // the new cut from the Villeré canal to the river
@@ -83,8 +83,7 @@ const imp = (i, d) => onS(MS + ((i * 37) % 7 - 3) * 0.18, d);
 const gShots = [];
 // the batteries open as the fog lifts: Nos. 6, 7, 8 rake the main column, 1-4 the river side; impacts where the lines are
 [[41.1, 6, 4.2], [41.7, 7, 4.4], [42.4, 5, 4.6], [43.1, 6, 4.0], [43.8, 4, 4.8], [44.5, 7, 3.9], [45.3, 6, 3.6], [46.2, 3, 4.6], [47.0, 7, 3.2],
- [47.8, 5, 3.0], [48.7, 6, 2.8], [55.8, 7, 1.8], [57.0, 6, 1.6], [58.4, 4, 2.2], [59.9, 7, 1.5], [61.3, 6, 1.4], [63.0, 5, 1.8], [64.8, 7, 2.4],
- [66.6, 6, 2.6], [71.2, 6, 4.4], [72.9, 7, 4.2], [73.9, 5, 4.5]].forEach(([t, g, d], i) => gShots.push({ t, at: GUN(g), dir: nS, impact: imp(i, d), delay: 0.55 }));
+ [47.8, 5, 3.0], [48.7, 6, 2.8], [55.8, 7, 1.8], [59.9, 7, 1.5], [64.8, 7, 2.4], [71.2, 6, 4.4], [72.9, 7, 4.2], [73.9, 5, 4.5]].forEach(([t, g, d], i) => gShots.push({ t, at: GUN(g), dir: nS, impact: imp(i, d), delay: 0.55 }));
 // grape on the 93rd
 [89.5, 90.4, 91.5, 92.6, 93.8, 94.9].forEach((t, i) => gShots.push({ t, at: GUN([4, 5, 3, 4, 5, 3][i]), dir: nS, impact: [H93c[0] + ((i % 3) - 1) * 0.35, H93c[1] + 0.3], delay: 0.45 }));
 // Nos. 1 and 2 on the redoubt's attackers
@@ -94,8 +93,9 @@ const fx = {
   fires: [],
   volleys: [
     // rank after rank: the riflemen along the parapet (straight stretch + the receding leg), each volley a ripple of visible flashes
-    { region: CH, pts: [onS(2.3, -0.45), onS(3.3, -0.45), onS(4.4, -0.45), onS(4.8, -0.45)], t0: T.fire2 - 0.1, t1: 69.4, every: 1.5, opts: { ...VO, volley: 1.5 } },
-    { region: CH, pts: [onL(0.2, -0.45), onL(1.2, -0.45), onL(2.2, -0.45)], t0: T.rank, t1: 69.4, every: 1.7, opts: { ...VO, dir: nL, volley: 1.7 } },
+    { region: CH, pts: [onS(2.3, -0.45), onS(3.3, -0.45), onS(4.4, -0.45), onS(4.8, -0.45)], t0: T.fire2 - 0.1, t1: 56.0, every: 1.5, opts: { ...VO, volley: 1.5 } },   // round 1: stops before the ladders payoff (56.2-68.9)
+    { region: CH, pts: [onL(0.2, -0.45), onL(1.2, -0.45), onL(2.2, -0.45)], t0: T.rank, t1: 56.2, every: 1.7, opts: { ...VO, dir: nL, volley: 1.7 } },
+    { region: CH, pts: [onS(3.3, -0.45), onS(4.4, -0.45)], t0: 63.4, t1: 66.6, every: 3.0, opts: { ...VO, volley: 3.0 } },   // one sparse volley on the column at the ditch
     // on the 93rd and on the redoubt's attackers
     { region: CH, pts: [onS(2.0, -0.45), onS(3.0, -0.45), onS(3.6, -0.45)], t0: 89.8, t1: 95.4, every: 1.8, opts: { ...VO, volley: 1.8 } },
     { region: CH, pts: [onS(0.3, -0.5), onS(1.0, -0.5), onS(1.8, -0.5)], t0: T.officers - 0.4, t1: T.driven + 0.4, every: 1.4, opts: { ...VO, volley: 1.4 } },
@@ -130,6 +130,7 @@ const lab = (text, at, t0, d = 3.5, o = {}) => ({ text, at, t0, t1: t0 + d, regi
 const labels = [
   lab("collapsed canal", [VIL[0] + 1.4, 3236.0], T.collapsed - 0.05, 3.4),
   lab("west bank", [VIL[0] - 4.6, 3247.4], T.west - 0.05, 3.6, { river: true }),
+  lab("hours late", [VIL[0] - 2.2, 3244.4], T.late - 0.05, 3.6, { size: 17 }),   // round 1 (critic B): the late boats
   lab("the ditch", onS(3.4, 0.5), T.ditch - 0.05, 3.0, { river: true, size: 14 }),
   lab("93rd Highlanders", [H93c[0] + 0.8, H93c[1] + 0.9], T.ninety3 - 0.05, 4.2, { size: 16 }),
   lab("advanced redoubt", onS(RS - 0.2, 2.2), 100.0, 3.4),   // on "advanced battery" (99.95)
@@ -146,9 +147,9 @@ const fogK = (t) => 1 - VX.sstep(T.crossed, T.lifted + 1.2, t);
 const fog = { build() { const c = document.createElement("canvas"); c.width = 1280; c.height = 720; c.style.cssText = "position:absolute;inset:0;pointer-events:none";
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
   draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = fogK(t); if (k <= 0.003) return; const W = ctx.world;
-    g.fillStyle = `rgba(214,218,216,${(0.22 * k).toFixed(3)})`; g.fillRect(0, 0, 1280, 720);
+    g.fillStyle = `rgba(214,218,216,${(0.16 * k).toFixed(3)})`;   // round 1: -25 % g.fillRect(0, 0, 1280, 720);
     g.save(); g.filter = "blur(22px)"; g.lineCap = "round"; g.lineJoin = "round";
-    for (let b = 0; b < 12; b++) { const d = -3 + b * 2.2 + Math.sin(t * 0.05 + b) * 0.5, a = (0.2 - b * 0.014) * k, lift = (1 - k) * 0.8;
+    for (let b = 0; b < 12; b++) { const d = -3 + b * 2.2 + Math.sin(t * 0.05 + b) * 0.5, a = (0.15 - b * 0.0105) * k, lift = (1 - k) * 0.8;
       if (a <= 0.005) continue; g.beginPath(); let started = false, ppu = 10;
       for (const { p, n } of RIVP) { const q = W.projectMap(p[0] + n[0] * d, p[1] + n[1] * d, 0.4 + lift); if (!q.visible) { started = false; continue; } ppu = q.ppu || ppu;
         if (!started) { g.moveTo(q.x, q.y); started = true; } else g.lineTo(q.x, q.y); }
@@ -249,11 +250,13 @@ window.SEQ = {
     ["label", T.badly - 0.05, 83.0, { name: "A third general", sub: "badly wounded", world: onS(2.4, 6.6), side: "uk", marker: false }],
     (O, c) => stamp(c, "HALF AN HOUR", T.hour - 0.05, 114.2, onS(3.0, 4.4)),
     ["film.dim", T.lost - 0.6, 143.4, 0.8],
-    ["letter", 143.6, T.D + 1, { header: "Move 3 · New Orleans", title: "The Old Hickory Method", sub: "", marks: false, quote: "1. Close every door\n2. Strike first\n3. Make them come to you", qSize: 34, height: 300,
-      cps: 30, qAt: T.make - 0.05 - 35 / 30, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
-    () => { const q = [...document.querySelectorAll("#ov .letter .q")].pop(); if (q) q.style.whiteSpace = "pre-line"; },
+    ["letter", 143.6, T.D + 1, { header: "Move 3 · New Orleans", title: "The Old Hickory Method", sub: "1. Close every door · 2. Strike first", marks: false, quote: "3. Make them come to you", qSize: 34, height: 300,
+      cps: 30, qAt: T.make - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
   ],
-  build: (c) => { fog.build(c); rocketBuild(c); buildResult(c); },
+  build: (c) => { fog.build(c); rocketBuild(c); buildResult(c);
+    // round 1 (critic A): Jackson's rampart as the same thin parapet as S06's end (55 % of the baked crest height)
+    const R = c.world.regions[CH], Wk = R.works || [], ys = R.ys || 1, info = (VX.region(CH).features || {}).works || [];
+    if (Wk[0]) Wk[0].position.y = -0.45 * ((info[0] || {}).height_m || 1.5) * ys; },
   draw: (t, c) => { fog.draw(t, c); const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
     for (const p of PINS) { const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
 };

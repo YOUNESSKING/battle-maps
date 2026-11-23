@@ -25,7 +25,7 @@ const lin = (c) => c.map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055
 const CREEK = [[33.62, -87.6], [33.0, -87.65], [32.4, -87.85], [31.9, -87.9], [31.6, -87.6], [31.35, -87.1], [31.05, -86.3], [31.05, -85.02], [33.62, -85.02]].map(([la, lo]) => VX.ll(la, lo, G));
 const creek = { build() { const c = document.createElement("canvas"); c.width = 1280; c.height = 720; c.style.cssText = "position:absolute;inset:0;pointer-events:none";
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
-  draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = VX.sstep(T.creek - 0.1, T.creek + 1.3, t) * (1 - VX.sstep(T.D - 3.2, T.D - 2.3, t)); if (k <= 0.002) return;
+  draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = VX.sstep(T.civil - 0.1, T.civil + 1.4, t) * (1 - VX.sstep(T.D - 3.2, T.D - 2.3, t)); if (k <= 0.002) return;
     const W = ctx.world, P = []; for (let i = 0; i < CREEK.length; i++) { const a = CREEK[i], b = CREEK[(i + 1) % CREEK.length];
       for (let s = 0; s < 8; s++) { const p = W.projectMap(a[0] + (b[0] - a[0]) * s / 8, a[1] + (b[1] - a[1]) * s / 8, 0); P.push([p.x, p.y]); } }
     g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath();
@@ -51,8 +51,8 @@ window.SEQ = {
   regionOpts: { [G]: { troopScale: 12 } },
   keys: [
     // high and wide first (the Gulf coast, Mobile Bay, Pensacola, the river system), then a drift north-east to the bend
-    { t: 0.0, region: G, at: [500, 560], dist: 900, tilt: 30, yaw: 0, fov: 30 },
-    { t: T.hickory, region: G, at: [480, 525], dist: 880, tilt: 30, yaw: 0, fov: 30, ease: "lin" },
+    { t: 0.0, region: G, at: [430, 490], dist: 820, tilt: 36, yaw: 0, fov: 30 },
+    { t: T.hickory, region: G, at: [400, 385], dist: 760, tilt: 36, yaw: 0, fov: 30, ease: "lin" },
     { t: T.creek + 1.0, region: G, at: [770, 450], dist: 800, tilt: 31, yaw: 0, fov: 30 },
     { t: T.mims + 1.0, region: G, at: [745, 525], dist: 690, tilt: 32, yaw: 0, fov: 30 },
     { t: T.jackson2, region: G, at: [800, 430], dist: 690, tilt: 32, yaw: 0, fov: 30, ease: "lin" },
@@ -68,7 +68,7 @@ window.SEQ = {
     redsticks: { img: "seq/rs_cloth.png", flag: "seq/rs_pennant.png", side: "cs", name: "Red Sticks", full: "The Red Sticks", role: "Creek" },
   },
   banners: [
-    { general: "jackson", region: G, keys: [[0, ...VX.along(TRACE, 95).slice(0, 2)], [T.home, ...VX.along(TRACE, 95).slice(0, 2)], [T.hickory + 1.2, ...VX.along(TRACE, 150).slice(0, 2)]], t0: T.jackson, t1: T.sameYear + 1.4 },
+    { general: "jackson", region: G, keys: [[0, ...VX.along(TRACE, 150).slice(0, 2)], [T.home, ...VX.along(TRACE, 150).slice(0, 2)], [T.hickory + 1.2, ...VX.along(TRACE, 225).slice(0, 2)]], t0: T.jackson, t1: T.sameYear + 1.4 },
     { general: "redsticks", region: G, keys: [[0, ...RSB], [T.thousand - 0.6, ...RSB], [T.warriors + 1.8, HSB[0] + 16, HSB[1] + 28]], t0: T.red + 0.2, t1: T.D + 1 },
     { general: "jackson", region: G, keys: [[0, FW[0] + 4, FW[1] - 6], [T.south + 0.2, FW[0] + 4, FW[1] - 6], [T.tohopeka, 1040, 176]], t0: T.jackson2, t1: T.D + 1 },
   ],
@@ -87,8 +87,9 @@ window.SEQ = {
     glow("Tallapoosa River", T.tallapoosa, T.D + 1, GOLD); glow("Alabama River", T.mims, T.mims + 3.6, GOLD); },
   draw: (t, ctx) => { pulses.draw(t, ctx); creek.draw(t, ctx); },
   overlay: [
+    ["label", T.tennessee, T.tennessee + 3.2, { name: "Tennessee militia", world: (t) => [...VX.along(TRACE, 150).slice(0, 2), 0], side: "us", marker: false, offset: [70, -120] }],
     ["plaque.date", T.e1813, { month: "1813", day: "", weekday: "", note: "" }],
-    ["label", T.hickory, T.sameYear - 0.2, { name: "Old Hickory", world: (t) => [...VX.along(TRACE, 150).slice(0, 2), 0], side: "us", marker: false, offset: [60, -150] }],
+    ["label", T.hickory, T.sameYear - 0.2, { name: "Old Hickory", world: (t) => [...VX.along(TRACE, 225).slice(0, 2), 0], side: "us", marker: false, offset: [60, -150] }],
     ["plaque.date", T.august, { month: "August 1813", day: "", weekday: "", note: "" }],
     ["plaque.date", T.e1814, { month: "Spring 1814", day: "", weekday: "", note: "" }],
   ],

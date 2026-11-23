@@ -28,3 +28,13 @@ swamp; 44th with fascines and ladders).
   before their 3D parapets rise); a re-bake without them would be cleaner.
 - The plan is shown with the real units' positions (red blocks at the start lines); the West India regiments / reserve are not shown.
 - Carolina fire on 27 Dec reads weakly at 51.5 s (steamer preset, size 0.8): raise opts.size / glowSize if a critic flags it.
+
+## Round 1 fixes
+- Rodriguez line: the rampart rises to 55 % of its baked crest height (thin parapet, same as S07); the "plinth" was the full-height glacis
+  seen from above. Exact crest arithmetic now (no over-sinking).
+- Guns at about half size (`bw 0.24, bd 0.2`); defenders right behind the wall between the batteries (d -0.75) or in a second rank (-0.95/-1.0).
+- 28 Dec probe: the road column starts on the bank (not the river); both columns hold, advance, stop, turn about in place (~6.5 s, engine
+  `retreatTurn`) and walk off east, visible until 66.5 s.
+- The Carolina burns (bigger steamer fire) and sinks over 2.2 s (boat `h(t)`), fire out with her; camera stays on her to 53.4.
+- 1 Jan duel guns end at 73.75 (critic B: "shot most of them to pieces" clear of gunfire).
+- Plan arrows 2.5-3x wider (`maxWidth`), labels at the arrow heads, LADDERS stamp 1.5x, gold "8" over the battery row.

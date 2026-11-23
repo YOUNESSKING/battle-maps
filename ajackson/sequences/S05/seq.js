@@ -60,16 +60,16 @@ const bLine = BL.map((y, i) => {
   const xm = [1277.0, 1276.6, 1277.2][i], xm2 = [1279.0, 1278.4, 1279.3][i];
   return u("u", 1, [[0, 1258.6, y], [T.road, 1258.6, y], [T.camp + 0.6, 1266.2, y], [T.then, 1266.2, y], [T.side - 0.2, 1274.6, y],
     [T.dark + 0.4, 1274.6, y], [T.hundred + 0.4, xm, y], [T.muskets, xm, y], [T.cane + 0.6, xm2, y], [T.D, xm2, y]], E,
-    { t0: T.marched - 0.2, t1: 107.6, escape: ESC(T.pulled - 0.6 + i * 0.5) }); });
+    { t0: T.marched - 0.2, t1: 107.6, escape: ESC(98.2 + i * 0.5) }); });   // round 1: the block turns about (~6.5 s) before it walks off
 // Coffee's Tennesseans: out of the swamp edge from the north-west, along the wood toward the British right, then into their flank
 const cLine = CL.map((y, i) => u("u", 1, [[0, 1265.0 - i * 0.4, y], [T.coffee - 0.4, 1265.0 - i * 0.4, y], [T.struck + 0.3, 1278.6 + i * 1.4, y],
   [T.dark + 0.4, 1278.6 + i * 1.4, y], [T.friend + 0.6, 1281.4 + i * 1.2, y], [T.D, 1281.4 + i * 1.2, y]],
-  E, { t0: T.coffee - 0.7, t1: 107.6, escape: ESC(T.pulled + 1.0 + i * 0.5) }));
+  E, { t0: T.coffee - 0.7, t1: 107.6, escape: ESC(99.4 + i * 0.5) }));
 // Christmas: Pakenham's reinforcements file out of the swamp onto Villere's (walk south, broadside, long side first)
 const reinf = [[1283.2, 3233.6], [1286.0, 3234.8], [1288.8, 3233.4], [1291.4, 3234.6], [1284.4, 3236.8], [1290.2, 3237.0]].map(([x, y], i) =>
   u("r", i < 4 ? 2 : 1, [[T.christmas - 0.4 + i * 1.6, x, 3229.6], [T.christmas + 5.4 + i * 1.6, x, y], [T.D, x, y]], S_, { t0: T.christmas - 0.5 + i * 1.6 }));
 // Christmas morning: the advance guard still in its camp (the same ground, by day)
-const rDay = [[1280.4, 3237.35], [1280.4, 3235.45], [1280.6, 3233.55]].map(([x, y]) => u("r", 1, [[0, x, y]], W, { t0: 129.6 }));
+const rDay = [[1280.4, 3237.35], [1280.4, 3235.45], [1280.6, 3233.55]].map(([x, y]) => u("r", 1, [[0, x, y]], W, { t0: 107.4 }));   // round 1: the British side after the battle (108-148)
 
 // the wide map (neworleans): the British advance guard at Villere as one army marker (troopScale 3), Jackson's men at the city
 const NOU = [];
@@ -100,8 +100,8 @@ RL.forEach((y, i) => volleys.push(VOL(lane(RX - 0.4, y), T.regulars2 + 1.3 + i *
 CL.forEach((y, i) => volleys.push(VOL([[1277.0 + i * 1.4, y - 0.35], [1278.2 + i * 1.4, y + 0.35]], T.struck + 0.1 + i * 0.3, T.side + 1.0, [0.5, 1])));
 // the melee: short ragged volleys all over the field, both colours (each one a visible burst of flashes = one sound event)
 const MF = [[1277.6, 3238.0, 1], [1278.4, 3236.9, -1], [1277.1, 3235.9, 1], [1278.9, 3234.9, -1], [1277.8, 3234.1, 1], [1279.6, 3233.2, -1], [1281.4, 3232.4, 1],
-  [1278.2, 3237.4, -1], [1276.9, 3236.6, 1], [1279.3, 3235.4, -1], [1282.6, 3231.8, 1], [1278.6, 3233.8, -1]];
-MF.forEach(([x, y, s], i) => { const t0 = T.dark + 0.8 + (i * 1.03) % 11.4; volleys.push(VOL([[x - 0.15 * s, y - 0.3], [x + 0.15 * s, y + 0.3]], t0, t0 + 3.2, [s, 0], { volley: 1.05 + (i % 3) * 0.2, roll: 0.25, rate: 2.2 })); });
+  [1279.3, 3235.4, -1]];   // round 1 (critic B): 8 groups, fewer shots under the melee narration
+MF.forEach(([x, y, s], i) => { const t0 = T.dark + 0.8 + (i * 1.03) % 11.4; volleys.push(VOL([[x - 0.15 * s, y - 0.3], [x + 0.15 * s, y + 0.3]], t0, t0 + 3.4, [s, 0], { volley: 1.7 + (i % 3) * 0.2, roll: 0.25, rate: 2.2 })); });
 const smokeLines = [];
 // the Carolina's broadside: her guns from the river into the camp, each shot a flash + plume + an impact among the fires
 const carShots = [T.opened, T.fire + 0.35, T.campfires - 0.1, 66.95, 67.6, 68.35, 69.1, 69.9].map((t, i) => {
@@ -134,13 +134,14 @@ const generals = {
   jackson: { img: "seq/jackson.png", flag: US15, side: "us", name: "Jackson", full: "Andrew Jackson", role: "Major General" },
   coffee: { img: "seq/coffee.png", flag: US15, side: "us", name: "Coffee", full: "John Coffee", role: "Brigadier General" },
   pakenham: { img: "seq/pakenham.png", flag: GB, side: "cs", name: "Pakenham", full: "Sir Edward Pakenham", role: "Major General" },
+  keane: { img: "seq/keane.png", flag: GB, side: "cs", name: "Keane", full: "John Keane", role: "Major General" },   // no portrait: initials
 };
 const banners = [
   { general: "jackson", region: NO, keys: [[0, CITY[0] + 1.2, CITY[1] - 2.4]], t0: T.jackson - 0.05, t1: T.stop - 0.2 },
   { general: "jackson", region: CH, keys: [[0, 1262.6, 3235.8], [T.side, 1268.4, 3235.9], [T.pulled, 1268.4, 3235.9], [T.canal + 3, 1262.0, 3234.4]], t0: T.then + 0.1, t1: T.coffee - 0.3 },
   { general: "coffee", region: CH, keys: [[0, 1264.0, 3230.6], [T.struck, 1274.6, 3230.6]], t0: T.coffee, t1: T.dark + 2.0 },
-  { general: "jackson", region: NO, keys: [[0, MAC[0] - 4.4, MAC[1] - 4.2]], t0: 107.8, t1: 129.5 },
-  { general: "pakenham", region: CH, keys: [[0, 1290.0, 3231.8]], t0: T.pakenham - 0.05, t1: T.D + 1 },
+  { general: "keane", region: CH, keys: [[0, 1284.4, 3232.2]], t0: T.commander - 0.05, t1: T.christmas - 0.4 },   // round 1: the British commander who decided to wait
+  { general: "pakenham", region: CH, keys: [[0, 1290.0, 3231.8]], t0: T.january - 0.2, t1: T.D + 1 },   // round 1: after the medallion (one portrait at a time)
 ];
 
 // ---------------- labels (each on its word) ----------------
@@ -151,7 +152,6 @@ const labels = [
   { text: "New Orleans", at: [CITY[0], CITY[1] - 3.0], region: NO, size: 18, t0: T.incity - 0.1, t1: 18.4 },
   { text: "river road", at: [1262.6, 3236.9], region: CH, size: 14, river: true, t0: T.road - 0.2, t1: T.road + 3.2 },
   { text: "Rodriguez Canal", at: [REL[0] + 2.6, REL[1] + 2.6], region: CH, size: 16, t0: T.rodriguez - 0.05, t1: T.D },
-  { text: "New Orleans", at: [CITY[0], CITY[1] - 3.0], region: NO, size: 18, t0: 108.4, t1: 112.6 },
 ];
 
 window.SEQ = {
@@ -177,21 +177,22 @@ window.SEQ = {
     { t: 62.4, region: CH, at: [1281.4, 3238.6], dist: 17, tilt: 56, yaw: -62, fov: 30, night: NI, ease: "io" },
     { t: 71.9, region: CH, at: [1282.0, 3238.0], dist: 15.5, tilt: 57, yaw: -54, fov: 30, night: NI, ease: "lin" },
     // 5. the attack: wider, from the north-west, both prongs in frame
-    { t: 75.6, region: CH, at: [1273.8, 3235.4], dist: 22, tilt: 54, yaw: -12, fov: 30, night: NI, ease: "io" },
-    { t: 83.2, region: CH, at: [1275.8, 3235.2], dist: 21, tilt: 55, yaw: -16, fov: 30, night: NI, ease: "lin" },
+    { t: 75.6, region: CH, at: [1273.8, 3235.4], dist: 22, tilt: 54, yaw: -4, fov: 30, night: NI, ease: "io" },
+    { t: 83.2, region: CH, at: [1275.8, 3235.2], dist: 21, tilt: 55, yaw: -4, fov: 30, night: NI, ease: "lin" },
     // 6. the melee, the camera low
-    { t: 85.2, region: CH, at: [1278.4, 3235.4], dist: 14, tilt: 60, yaw: -32, fov: 30, night: NI, ease: "io" },
-    { t: 96.6, region: CH, at: [1278.8, 3235.3], dist: 13, tilt: 62, yaw: -50, fov: 30, night: NI, ease: "lin" },
+    { t: 85.2, region: CH, at: [1278.6, 3235.4], dist: 14, tilt: 60, yaw: -2, fov: 30, night: NI, ease: "io" },
+    { t: 96.6, region: CH, at: [1278.8, 3235.3], dist: 13, tilt: 62, yaw: -8, fov: 30, night: NI, ease: "lin" },
     // 7. grey dawn: pull up and back west along the strip to the Rodriguez Canal
     { t: 101.6, region: CH, at: [1274.0, 3234.8], dist: 22, tilt: 56, yaw: -24, fov: 30, night: 0.5, ease: "io" },
     { t: 107.75, region: CH, at: [1266.0, 3233.0], dist: 30, tilt: 54, yaw: -10, fov: 30, night: 0.32, ease: "io" },
     // 8. wide: the British halted, nine miles out; the method card
-    { t: 107.8, region: NO, at: [1252, 3229.0], dist: 104, tilt: 47, yaw: 6, fov: 30, ease: "cut", dissolve: 0.9 },
-    { t: 129.5, region: NO, at: [1262, 3231.0], dist: 92, tilt: 49, yaw: 10, fov: 30, ease: "lin" },
+    // 8. (round 1) morning, the British side: Keane's camp halted at Villere's, the method card over it
+    { t: 107.8, region: CH, at: [1284.0, 3234.8], dist: 20, tilt: 54, yaw: 4, fov: 30, ease: "cut", dissolve: 0.9 },
+    { t: 129.5, region: CH, at: [1285.6, 3234.6], dist: 21, tilt: 54, yaw: 0, fov: 30, ease: "lin" },
     // 9. Christmas: reinforcements out of the swamp onto Villere's; Pakenham
-    { t: 129.55, region: CH, at: [1286.8, 3234.8], dist: 22, tilt: 54, yaw: -12, fov: 30, ease: "cut", dissolve: 0.9 },
-    { t: 140.0, region: CH, at: [1286.4, 3235.0], dist: 21, tilt: 55, yaw: -6, fov: 30, ease: "lin" },
-    { t: T.D, region: CH, at: [1285.4, 3235.4], dist: 27, tilt: 53, yaw: 2, fov: 30, ease: "io" },
+    { t: 131.0, region: CH, at: [1287.6, 3234.6], dist: 22, tilt: 54, yaw: 0, fov: 30, ease: "io" },
+    { t: 140.0, region: CH, at: [1287.8, 3234.8], dist: 21, tilt: 55, yaw: 0, fov: 30, ease: "lin" },
+    { t: T.D, region: CH, at: [1287.4, 3235.2], dist: 27, tilt: 53, yaw: 2, fov: 30, ease: "io" },
   ],
   dives: [{ t: SW, over: [1276, 3237], from: { region: NO, at: [1258, 3229.5], dist: 112, tilt: 46, yaw: 8, night: 0.35 },
             to: { region: CH, at: [1267.0, 3238.8], dist: 23, tilt: 58, yaw: -78, fov: 30, night: NI } }],
@@ -200,8 +201,8 @@ window.SEQ = {
   // Jackson's line did not exist before 24 Dec: the rampart starts to rise at dawn (digging from 4 a.m.); the redoubt, the 1 Jan British
   // batteries and the west-bank works stay hidden in this scene
   build: (c) => { const R = c.world.regions[CH], W = R.works || [], ys = R.ys || 1, info = (VX.region(CH).features || {}).works || [];
-    const sink = W.map((m, i) => ((info[i] || {}).height_m || 1.5) * ys * 1.6 + 0.08);
-    c.FX[CH].custom((t) => { W.forEach((m, i) => { const k = i === 0 ? 0.45 * c.sstep(T.pulled, 112, t) + 0.2 * c.sstep(129, 131, t) : 0; m.visible = k > 0.01; m.position.y = -(1 - k) * sink[i]; }); }); },
+    const crest = W.map((m, i) => ((info[i] || {}).height_m || 1.5) * ys);
+    c.FX[CH].custom((t) => { W.forEach((m, i) => { const k = i === 0 ? 0.3 * c.sstep(T.pulled, 112, t) + 0.15 * c.sstep(129, 131, t) : 0; m.visible = k > 0.01; m.position.y = -(1 - k) * crest[i] - (k < 0.2 ? (0.2 - k) * 0.6 : 0); }); }); },
   labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1814", day: "23", weekday: "Friday", note: "Villere plantation" }],
@@ -212,6 +213,9 @@ window.SEQ = {
     ["quote", T.gentlemen - 0.15, T.tonight + 0.7, { en: "Gentlemen, the British are below. We must fight them tonight.", attr: "Andrew Jackson · as later told", y: 680, dim: 0.45 }],
     ["engage.decide", { t: T.stop - 0.1, sub: "23 DECEMBER 1814 · YOU ARE JACKSON", a: "DIG IN AND\nWAIT FOR THEM", b: "ATTACK\nTONIGHT", real: "b", tA: T.dig - 0.05, tB: T.attack - 0.05,
       tNote: T.tell - 0.05, tCount: T.comments, tReveal: T.notwait + 0.05, until: SW + 0.2, dim: 0.55 }],
+    // round 1 (critic B): a second beat under the 23 s card, each on its words
+    ["label", T.militia - 0.05, T.landing - 0.3, { name: "Militia, volunteers", sub: "and a few regulars", world: [CITY[0] + 6.0, CITY[1] + 5.0], side: "us", marker: false }],
+    ["label", T.landing - 0.05, T.dig - 0.3, { name: "British regulars", sub: "more landing every hour", world: [VIL[0] - 2.0, VIL[1] - 5.0], side: "uk", marker: false }],
     ["plaque.note", SW + 1.0, "evening · no moon"],
     ["label", T.carolina - 0.05, T.anchored + 0.6, { name: "Carolina", sub: "US Navy schooner", world: (t) => { const p = carAt(t); return [p[0], p[1], 0.8]; }, side: "us", marker: false }],
     ["plaque.clock", T.halfpast - 0.05, { time: "19:30", note: "the Carolina opens fire", header: "23 December 1814" }],
@@ -221,15 +225,13 @@ window.SEQ = {
     ["ledger.add", T.lost + 0.2, { who: "British: 277", note: "killed, wounded or missing", stamp: false }],
     ["ledger.add", T.lost + 0.9, { who: "Americans: 213", note: "killed, wounded or missing", stamp: false }],
     ["ledger.hide", T.dawn + 0.6],
-    ["label", T.stung, T.night + 0.8, { name: "Stung", sub: "attacked in their own camp, at night", world: [VIL[0] - 2.6, VIL[1] - 5.0], side: "uk", marker: false }],
-    (O, c) => stamp(O, c, "HALTED", T.wait2 - 0.1, T.time + 0.6, [VIL[0] - 9.0, VIL[1] - 3.4]),
-    ["label", T.time - 0.1, 123.0, { name: "Time", sub: "to dig in at the Rodriguez Canal", world: [MAC[0] - 2.0, MAC[1] - 6.0], side: "us", marker: false }],
-    // method card: the same letter card as S03 (move 1), line 1 typed fast, line 2 typed on "hit him first"
-    ["letter", 123.1, 129.35, { header: "Move 2 · The night attack", title: "The Old Hickory Method", sub: "", marks: false, quote: "1. Close every door\n2. Strike first", qSize: 34, height: 270,
-      cps: 20, qAt: T.hit - 0.05 - 20 / 20, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
-    () => { const q = [...document.querySelectorAll("#ov .letter .q")].pop(); if (q) q.style.whiteSpace = "pre-line"; },   // keep the \n (two method lines)
+    ["label", T.stung, T.night + 0.8, { name: "Stung", sub: "attacked in their own camp, at night", world: [1281.6, 3232.0], side: "uk", marker: false }],
+    (O, c) => stamp(O, c, "HALTED", T.wait2 - 0.1, T.time + 0.6, [1277.4, 3235.4]),   // round 1: 2x, over the open field in front of the camp
+    // method card (round 1, critic B): the earlier line static in the sub, only the new line types on "hit him first"
+    ["letter", 123.1, 129.35, { header: "Move 2 · The night attack", title: "The Old Hickory Method", sub: "1. Close every door", marks: false, quote: "2. Strike first", qSize: 34, height: 270,
+      cps: 20, qAt: T.hit - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     ["plaque.date", T.christmas - 0.05, { month: "December 1814", day: "25", weekday: "Sunday", note: "Christmas Day" }],
-    ["medallion", { kind: "card", general: "pakenham", sub: "Wellington's brother-in-law", world: [1290.0, 3231.8], offset: [-380, -20], tIn: T.wellington, tOut: T.january - 0.3 }],
+    ["medallion", { kind: "card", general: "pakenham", sub: "Wellington's brother-in-law", world: [1290.0, 3231.8], offset: [-380, -20], tIn: T.pakenham - 0.05, tOut: T.january - 0.3 }],
     ["plaque.date", T.january - 0.1, { month: "1815", day: "Jan", weekday: "early January", note: "fresh regiments land" }],
     ["number", T.eight, T.D - 0.4, { value: 8000, round: 1000, world: [1281.4, 3233.0], size: 100 }],
   ],
@@ -242,7 +244,7 @@ window.SEQ.draw = (t, c) => { if (!PINS.length) return; const sc = 1920 / c.worl
 function stamp(O, c, text, t0, t1, world) {   // pinned to the ground (positioned in SEQ.draw); slams in like the ledger stamps
   const host = document.querySelector("#ov .gmo") || document.getElementById("ov"), el = document.createElement("div");
   el.style.cssText = "position:absolute;left:0;top:0;z-index:40;pointer-events:none;width:0;height:0";
-  el.innerHTML = `<span class="stamp" style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);color:#A8261B;font-size:46px;padding:6px 20px 4px;border-width:4px;white-space:nowrap">${text}</span>`;
+  el.innerHTML = `<span class="stamp" style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);color:#A8261B;font-size:92px;padding:10px 34px 6px;border-width:7px;white-space:nowrap;background:rgba(240,230,205,.55)">${text}</span>`;
   host.appendChild(el); const st = el.firstChild, G = window.gsap; G.set(el, { autoAlpha: 0 });
   c.tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, t0);
   c.tl.fromTo(st, { scale: 2.3, rotation: -14, opacity: 0 }, { scale: 1, rotation: -6, opacity: 0.94, duration: 0.24, ease: "power4.in", immediateRender: false }, t0);

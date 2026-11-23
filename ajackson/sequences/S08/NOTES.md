@@ -14,3 +14,8 @@ Gulf only. Fix round 1: D 79.11; final cards leave 60.4, subscribe out by ~61.4;
 | 59-65.6 | clean living map (clouds, water), fade from 64.4 |
 
 Open issues: the narration runs to 61.7 s, so the map is only clean for the last ~6.5 s, not 20. YouTube end-screen elements over the last 20 s will cover the final cards; set them to start at ~58.5 s, or shorten the final paragraph. The removal shading and arrows are deliberately muted and may read too faint at 720p. The land polygons are approximate (Royce cessions). There are no sound cues (no fx).
+
+## Round 1 fixes
+- Removal: arrows 0.75 wide, warm tan, shading brighter (still muted, no red); camera pulled north (at [600, 520], dist 1100) so the hatch and the arrows sit in frame. The Creek and Choctaw hatches still reach the map's top edge (33.6 N is the gulf world's limit).
+- Final cards out 60.4, subscribe out by ~61.4, clean living map 61.5-79.1 with a slow drift, fade over the last 1.5 s.
+- Optional items not done: the scar callback stays over the gulf (not cut to chalmette); the end window was not extended further.

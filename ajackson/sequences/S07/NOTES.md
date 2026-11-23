@@ -28,3 +28,17 @@ One region: chalmette. troopScale 1.15. The opening state is S06's ending: the s
 Facts: FACT_NOTES_neworleans.md 43-54 (rocket, fog, the 44th's ladders, Gibbs' column, Pakenham, the 93rd, Rennie at the redoubt, Lambert, the west bank, 2,037 / 71 = both banks, 6 killed on the east bank).
 Checks: check_troops_motion 0-152.86: no overlaps, no pops, shape 0 %. The flags are retreats (men about-faced) and screen-space turns at the camera cuts (114.6). Two exceptions I could not explain: the 44th from 57.4 and the 93rd's oblique crossing from 83.9 are flagged front-vs-velocity ~178 deg. The screen long-side check passes for both.
 Open issues: blocks are small at dist 20-30 (kept near S06's size for the dissolve); the fog puffs read as soft white blotches; the 500-yard ruler at 37.5 was not visible in the still (check it); the British 1 Jan parapet (works[2]) stays on the field.
+
+## Round 1 fixes (S05/S06 author)
+- Retreats: engine `retreatTurn`: every backward run / escape turns the block about in place, walks front first, turns back at the halt.
+  Keys re-timed so the turn has room: the main column holds at the ditch to 73.5, walks back to 80.5; the river column holds in the redoubt
+  to 110.6 then walks back by 116 (visible in the HALF AN HOUR wide shot); Morgan's men turn about from 126 as the line breaks; Thornton's
+  force halts on the west bank (no backward walk inside the shot).
+- Blocks wide (`depthK` 0.3). Guns at about half size; defenders right behind the parapet between batteries (= S06 positions).
+- The rampart = the thin parapet (55 % of the baked crest), matching S06's end.
+- 56-69 (ladders payoff): the two rank-fire volley lines stop at 56.0 / 56.2, one sparse volley 63.4-66.6 (every 3 s); battery shots in
+  the window cut from 8 to 3.
+- 0-14: fog veil and bands -25 %; label "hours late" on "late" (10.95) at the crossing boats.
+- Method card: lines 1-2 static in the sub, "3. Make them come to you" types on "make".
+- Remaining checker flags are heading jumps exactly at camera cuts (screen-space correction changes with the camera; hidden by the cut /
+  dissolve) and world "front-vs-velocity" 20-50 deg from the on-screen correction (screen long-side check passes everywhere).

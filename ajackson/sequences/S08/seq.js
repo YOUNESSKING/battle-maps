@@ -94,8 +94,8 @@ window.SEQ = {
     { t: 0, region: GF, at: [470, 800], dist: 720, tilt: 40, yaw: 0, fov: 30 },
     { t: 11.8, region: GF, at: [520, 830], dist: 760, tilt: 40, yaw: 0, fov: 30, ease: "lin" },
     { t: 18.6, region: GF, at: [360, 790], dist: 520, tilt: 42, yaw: 0, fov: 30, ease: "io" },        // Jackson over New Orleans: a soft push
-    { t: 24.6, region: GF, at: [560, 560], dist: 1180, tilt: 20, yaw: 0, fov: 30, ease: "io" },       // the South: the lands, west across the Mississippi
-    { t: 32.0, region: GF, at: [560, 570], dist: 1160, tilt: 21, yaw: 0, fov: 30, ease: "lin" },
+    { t: 24.6, region: GF, at: [600, 520], dist: 1100, tilt: 18, yaw: 0, fov: 30, ease: "io" },       // the South: the lands, west across the Mississippi
+    { t: 32.0, region: GF, at: [600, 528], dist: 1080, tilt: 19, yaw: 0, fov: 30, ease: "lin" },
     { t: 43.4, region: GF, at: [430, 760], dist: 700, tilt: 38, yaw: 0, fov: 30, ease: "io" },
     { t: 61.5, region: GF, at: [462, 744], dist: 740, tilt: 37, yaw: 1, fov: 30, ease: "lin" },
     { t: T.D, region: GF, at: [500, 730], dist: 790, tilt: 36, yaw: 4, fov: 30, ease: "lin" },          // the living map alone for the end screen (slow drift)

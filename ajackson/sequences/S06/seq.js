@@ -41,10 +41,10 @@ const add = (o) => { units.push({ type: "inf", n: 1, region: CH, arrive: false, 
 // the eight batteries (Latour pp. 147-148, yards from the previous one: 90, 50, 20, 190, 36, 190, 60; No. 3 and No. 4 and No. 5 / No. 6 are
 // spread a little so the gun blocks do not touch), each appearing on the line in turn on "eight batteries of guns"
 const BAT = [0.18, 0.74, 1.12, 1.52, 2.42, 2.86, 3.98, 4.42];
-const batU = BAT.map((s, i) => add({ side: "u", type: "art", keys: [[0, ...onS(s, -0.42)]], face: FS, t0: T.eight - 0.3 + i * 0.32 }));
+const batU = BAT.map((s, i) => add({ side: "u", type: "art", bw: 0.24, bd: 0.2, keys: [[0, ...onS(s, -0.42)]], face: FS, t0: T.eight - 0.3 + i * 0.32 }));   // round 1: guns at ~half size
 // the defenders: diggers on the line from the start (they stay and fight), the other groups file in from the rear on their words
 const POS = {
-  reg1: onS(0.46, -1.0), reg2: onS(1.95, -1.0), lam: onS(3.3, -1.0), fmc1: onS(4.25, -1.25), fmc2: onS(2.6, -2.0),
+  reg1: onS(0.46, -0.95), reg2: onS(1.97, -0.75), lam: onS(3.42, -0.75), fmc1: onS(4.2, -1.0), fmc2: onS(2.6, -1.0),   // round 1: right behind the wall, between the batteries
   tn1: onL(0.9, -0.95), tn2: onL(1.95, -0.95), ky1: onL(3.0, -0.95), ky2: onL(4.05, -0.95), cho: onL(5.6, -0.3),
 };
 const back = (p, f, d) => [p[0] - Math.cos(f) * d, p[1] - Math.sin(f) * d];
@@ -58,11 +58,11 @@ fileIn("fmc1", FS, T.colour - 0.6); fileIn("fmc2", FS, T.colour - 0.3, 2.4);
 fileIn("ky1", FL, T.kentucky); fileIn("ky2", FL, T.kentucky + 0.4);
 fileIn("cho", FL, T.choctaw, 2.6);
 // 28 December: the reconnaissance in force: a column on the river road and one by the swamp; driven back (escape = about-face, walk off east)
-const FRC = Math.atan2(3231.2 - 3235.6, 1256.2 - 1261.4), FSC = Math.atan2(3225.8 - 3229.4, 1257.6 - 1263.6);
-add({ side: "r", n: 3, face: FRC, t0: T.next - 0.3, keys: [[T.next - 0.4, 1263.6, 3237.4], [T.line + 3.4, 1257.6, 3232.4], [T.D, 1257.6, 3232.4]],
-  escape: { road: ROAD, t0: T.drove - 0.2, v: 1.1, v2: 1.1, join: "east" }, t1: 62.0 });
-add({ side: "r", n: 3, face: FSC, t0: T.next - 0.3, keys: [[T.next - 0.4, 1264.8, 3230.4], [T.line + 3.6, 1258.8, 3226.8], [T.D, 1258.8, 3226.8]],
-  escape: { road: [[1258.8, 3226.8], [1262.4, 3228.6], [1266.4, 3230.2], [1271.0, 3231.4]], t0: T.drove, v: 1.1, v2: 1.1, join: "east" }, t1: 62.0 });
+const FRC = Math.atan2(3231.6 - 3233.2, 1258.6 - 1260.8), FSC = Math.atan2(3226.8 - 3228.2, 1258.8 - 1261.2);   // = their walking directions
+add({ side: "r", n: 3, face: FRC, t0: T.next - 0.3, keys: [[T.next - 0.4, 1260.8, 3233.2], [T.next + 1.8, 1260.8, 3233.2], [T.line + 3.6, 1258.6, 3231.6], [T.D, 1258.6, 3231.6]],   // round 1: on the bank, not the river
+  escape: { road: ROAD, t0: T.line + 3.8, v: 1.1, v2: 1.1, join: "east" }, t1: 68.0 });   // round 1: stop, turn about (~6.5 s), walk off
+add({ side: "r", n: 3, face: FSC, t0: T.next - 0.3, keys: [[T.next - 0.4, 1261.2, 3228.2], [T.next + 1.8, 1261.2, 3228.2], [T.line + 3.6, 1258.8, 3226.8], [T.D, 1258.8, 3226.8]],
+  escape: { road: [[1258.8, 3226.8], [1262.4, 3228.6], [1266.4, 3230.2], [1271.0, 3231.4]], t0: T.line + 4.0, v: 1.1, v2: 1.1, join: "east" }, t1: 68.0 });
 // 1 January: the British batteries behind their sugar-barrel parapet (works[2]), built in the night; silenced (grey) by the American guns
 const BB = VX.work(CH, 2), bbAt = (k) => { const p = VX.along(BB, VX.len(BB) * k); return [p[0] + 0.42, p[1] + 0.12]; };
 const FB = Math.PI + FS;
@@ -76,7 +76,7 @@ add({ side: "r", n: 2, face: Math.PI + 0.9, keys: [[0, ...WB]], t0: T.across - 0
 // ---------------- boats: the Carolina (27 Dec), the Louisiana (28 Dec), the west-bank boats (plan) ----------------
 const CAROL = [1262.8, 3241.0], LOUIS = [1251.6, 3232.9];
 const boats = [
-  { region: CH, kind: "ship", n: 1, path: [[CAROL[0] - 0.5, CAROL[1] + 0.05], [CAROL[0] + 0.5, CAROL[1] - 0.05]], sAt: () => 0.5, t0: 45.5, t1: T.next, size: 0.32, lamp: false, wake: false },
+  { region: CH, kind: "ship", n: 1, path: [[CAROL[0] - 0.5, CAROL[1] + 0.05], [CAROL[0] + 0.5, CAROL[1] - 0.05]], sAt: () => 0.5, t0: 45.5, t1: 54.4, size: 0.32, lamp: false, wake: false, h: (t) => 0.11 - 0.55 * VX.sstep(T.fire + 0.4, T.fire + 2.6, t) },   // round 1: burns, then sinks (no pop)
   { region: CH, kind: "ship", n: 1, path: [[LOUIS[0] - 0.5, LOUIS[1] - 0.4], [LOUIS[0] + 0.5, LOUIS[1] + 0.4]], sAt: () => 0.5, t0: T.next + 0.2, t1: 61.0, size: 0.34, lamp: false, wake: false },
   { region: CH, kind: "barge", n: 4, path: [[WB[0] + 0.6, 3239.8], [WB[0] - 0.4, 3242.2], [WB[0] - 2.0, 3244.6], [WB[0] - 3.4, 3246.0]], s0: 0, speed: 0.7, spacing: 1.1, t0: T.land - 0.4, t1: T.D + 1, size: 0.16, lamp: false, wake: true },
 ];
@@ -92,10 +92,10 @@ const guns = [
   { region: CH, h: 0.5, opts: { plume: 0.5, puffs: 8, alpha: 0.2, jet: 1.4 }, shots: [T.louisianaShip, T.firing + 0.2, 58.6, 59.4].map((t, i) => shot(t, LOUIS, [1258.0 + i * 0.4, 3232.6 + (i % 2) * 0.4], 0.55)) },
   // 1 Jan: the British batteries open when the fog lifts; the American guns answer and silence them
   { region: CH, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: [T.opened + 0.05, 70.9, 71.5, 72.2, 72.9, 73.5].map((t, i) => shot(t, bbAt([0.18, 0.5, 0.82][i % 3]), onS(BAT[(i * 3) % 8] + 0.2, -0.1), 0.6)) },
-  { region: CH, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: [71.2, 71.9, 72.6, 73.2, 73.8, 74.35, 74.9, 75.4].map((t, i) => shot(t, onS(BAT[(i * 5 + 1) % 8], -0.42), bbAt([0.18, 0.5, 0.82][i % 3]).map((v, k) => v + (k ? 0.2 : -0.3) * ((i % 2) - 0.5)), 0.6)) },
+  { region: CH, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: [71.0, 71.6, 72.15, 72.7, 73.2, 73.75].map((t, i) => shot(t, onS(BAT[(i * 5 + 1) % 8], -0.42), bbAt([0.18, 0.5, 0.82][i % 3]).map((v, k) => v + (k ? 0.2 : -0.3) * ((i % 2) - 0.5)), 0.6)) },
 ];
 const fires = [
-  { region: CH, at: [CAROL[0], CAROL[1], 0.3], t0: T.carolina + 0.3, t1: T.next + 0.4, preset: "steamer", opts: { size: 0.8, glowSize: 10 }, cue: T.fire },
+  { region: CH, at: [CAROL[0], CAROL[1], 0.3], t0: T.carolina + 0.3, t1: T.fire + 2.4, preset: "steamer", opts: { size: 1.3, glowSize: 14 }, cue: T.fire },
   ...[0.18, 0.5, 0.82].map((k, i) => ({ region: CH, at: [...bbAt(k), 0.15], t0: T.shot + 0.3 + i * 0.35, t1: 77.0, preset: "smoulder", cue: false })),
 ];
 const volleys = [
@@ -109,11 +109,11 @@ const arrows = [
   { side: "r", pts: [[1263.0, 3236.8], [1260.2, 3234.6], [1257.8, 3232.6]], t0: T.advanced, dur: 1.6, t1: T.drove, width: 0.2 },
   { side: "r", pts: [[1264.2, 3230.0], [1261.4, 3228.3], [1259.0, 3227.0]], t0: T.advanced + 0.3, dur: 1.6, t1: T.drove, width: 0.2 },
   // the plan: 1. across the river to the west bank, up to the American guns there; then those guns turned on the line
-  { side: "r", pts: [[WB[0] - 0.6, 3239.6], [1279.0, 3244.4], [1272.0, 3245.8], [1262.0, 3243.6], [1254.0, 3239.4], [MAR[0] + 1.2, MAR[1] + 1.6]], t0: T.across, dur: 3.0, t1: T.D + 1, width: 0.24 },
-  { side: "r", pts: [[MAR[0] + 0.4, MAR[1] - 0.6], [MAR[0] + 1.4, MAR[1] - 2.6], [RE[0] + 0.2, RE[1] + 0.6]], t0: T.turn, dur: 1.4, t1: T.D + 1, width: 0.16 },
+  { side: "r", pts: [[WB[0] - 0.6, 3239.6], [1279.0, 3244.4], [1272.0, 3245.8], [1262.0, 3243.6], [1254.0, 3239.4], [MAR[0] + 1.2, MAR[1] + 1.6]], t0: T.across, dur: 3.0, t1: T.D + 1, width: 0.62, maxWidth: 0.7 },
+  { side: "r", pts: [[MAR[0] + 0.4, MAR[1] - 0.6], [MAR[0] + 1.4, MAR[1] - 2.6], [RE[0] + 0.2, RE[1] + 0.6]], t0: T.turn, dur: 1.4, t1: T.D + 1, width: 0.45, maxWidth: 0.7 },
   // 2. the river column; 3. the main column by the swamp
-  { side: "r", pts: [[RIVC[0] - 1.2, RIVC[1] - 0.6], [1258.6, 3231.6], [RE[0] + 1.4, RE[1] + 0.9]], t0: T.column, dur: 1.8, t1: T.D + 1, width: 0.24 },
-  { side: "r", pts: [[MAINC[0] - 1.4, MAINC[1] - 0.4], [1259.0, 3226.2], [EL[0] + 1.6, EL[1] + 0.9]], t0: T.mcol, dur: 1.8, t1: T.D + 1, width: 0.3 },
+  { side: "r", pts: [[RIVC[0] - 1.2, RIVC[1] - 0.6], [1258.6, 3231.6], [RE[0] + 1.4, RE[1] + 0.9]], t0: T.column, dur: 1.8, t1: T.D + 1, width: 0.62, maxWidth: 0.7 },
+  { side: "r", pts: [[MAINC[0] - 1.4, MAINC[1] - 0.4], [1259.0, 3226.2], [EL[0] + 1.6, EL[1] + 0.9]], t0: T.mcol, dur: 1.8, t1: T.D + 1, width: 0.75, maxWidth: 0.8 },
 ];
 
 // ---------------- generals ----------------
@@ -161,7 +161,7 @@ window.SEQ = {
     { t: 45.0, region: CH, at: onL(1.6, 0.2), dist: 17, tilt: 50, yaw: 106, fov: 30, ease: "lin" },
     // 3. 27 Dec: across the river, the Carolina burns
     { t: 48.4, region: CH, at: [1264.2, 3239.2], dist: 12, tilt: 55, yaw: 60, fov: 30, ease: "io" },
-    { t: 52.2, region: CH, at: [1263.6, 3239.6], dist: 11, tilt: 56, yaw: 56, fov: 30, ease: "lin" },
+    { t: 53.4, region: CH, at: [1263.6, 3239.6], dist: 11, tilt: 56, yaw: 56, fov: 30, ease: "lin" },
     // 4. 28 Dec: the columns probe the line
     { t: 55.0, region: CH, at: [1256.4, 3230.0], dist: 16, tilt: 50, yaw: 72, fov: 30, ease: "io" },
     { t: 60.8, region: CH, at: [1256.8, 3230.0], dist: 15, tilt: 51, yaw: 66, fov: 30, ease: "lin" },
@@ -180,25 +180,25 @@ window.SEQ = {
     ["distance", T.mile - 0.15, T.mud + 0.3, { from: RE, to: SE, value: 1, countFrom: 1, unit: "MILE", sub: "river to swamp", dash: false }],
     ["label", T.five - 0.05, T.ditch - 0.4, { name: "Five feet high", sub: "", world: onS(1.2, 0.2), side: "us", marker: false }],
     ["label", T.twenty - 0.05, T.ditch - 0.4, { name: "Twenty feet thick", sub: "", world: onS(3.6, 0.2), side: "us", marker: false }],
-    ["number", T.eight - 0.05, T.one - 0.1, { value: 8, round: 1, world: onS(2.4, 1.6), size: 96, countDur: 0.6 }],
+    ["number", T.eight - 0.05, T.one - 0.1, { value: 8, round: 1, world: onS(2.4, -0.2), size: 96, countDur: 0.6 }],
     ["label", T.strangest - 0.05, T.history + 0.8, { name: "One of the strangest armies", sub: "", world: onS(2.0, -3.4), side: "us", marker: false }],
     ["plaque.date", T.twentyseventh - 0.05, { month: "December 1814", day: "27", weekday: "Tuesday", note: "the Carolina burns" }],
     ["plaque.date", T.next - 0.05, { month: "December 1814", day: "28", weekday: "Wednesday", note: "a probe in force" }],
     ["plaque.date", T.newyear - 0.05, { month: "January 1815", day: "1", weekday: "Sunday", note: "New Year's Day · fog" }],
     ["plaque.note", T.lifted, "the fog lifts"],
     ["plaque.note", T.plan, "Pakenham's plan"],
-    ["label", T.across - 0.05, T.turn + 2.4, { name: "1 · West bank", sub: "", world: [1270.4, 3247.4], side: "uk", marker: false }],
-    ["label", T.east - 0.05, T.column + 3.0, { name: "2 · River column", sub: "", world: [RIVC[0] + 0.6, RIVC[1] + 1.4], side: "uk", marker: false }],
-    ["label", T.main - 0.05, T.swampC + 2.4, { name: "3 · Main column", sub: "", world: [MAINC[0] + 0.4, MAINC[1] - 1.6], side: "uk", marker: false }],
+    ["label", T.across - 0.05, T.turn + 2.4, { name: "1 · West bank", sub: "", world: [MAR[0] + 1.6, MAR[1] + 2.2], side: "uk", marker: false }],
+    ["label", T.east - 0.05, T.column + 3.0, { name: "2 · River column", sub: "", world: [RE[0] + 2.0, RE[1] + 1.8], side: "uk", marker: false }],
+    ["label", T.main - 0.05, T.swampC + 2.4, { name: "3 · Main column", sub: "", world: [EL[0] + 2.4, EL[1] - 0.2], side: "uk", marker: false }],
     (O, c) => icon(c, "bundle", T.bundles - 0.05, T.D, [1260.6, 3226.9], 0),
     (O, c) => icon(c, "ladder", T.ladders - 0.05, T.D, [1259.2, 3225.9], 1),
     (O, c) => stamp(c, "LADDERS", T.remember - 0.05, T.D, [1258.8, 3223.6]),
   ],
   // the rampart rises as they dig (24 Dec); the 1 Jan British parapet is built in the night; the redoubt / west-bank works appear when needed
   build: (c) => { const R = c.world.regions[CH], W = R.works || [], ys = R.ys || 1, info = (VX.region(CH).features || {}).works || [];
-    const sink = W.map((m, i) => ((info[i] || {}).height_m || 1.5) * ys * 1.6 + 0.08);
-    const rise = [[0.3, 12.5, 0.3], [70.0, 76.0, 0], [T.night - 0.6, T.night + 1.6, 0], [T.across - 1.0, T.across + 1.0, 0], [T.across - 1.0, T.across + 1.0, 0]];
-    c.FX[CH].custom((t) => { W.forEach((m, i) => { const [a, b, k0] = rise[i] || [0, 0, 1]; const k = k0 + (1 - k0) * c.sstep(a, b, t); m.visible = k > 0.01; m.position.y = -(1 - k) * sink[i]; }); });
+    const crest = W.map((m, i) => ((info[i] || {}).height_m || 1.5) * ys);   // crest height above the ground (world units)
+    const rise = [[0.3, 12.5, 0.15, 0.55], [70.0, 76.0, 0], [T.night - 0.6, T.night + 1.6, 0], [T.across - 1.0, T.across + 1.0, 0], [T.across - 1.0, T.across + 1.0, 0]];
+    c.FX[CH].custom((t) => { W.forEach((m, i) => { const [a, b, k0, k1 = 1] = rise[i] || [0, 0, 1]; const k = k0 + (k1 - k0) * c.sstep(a, b, t); m.visible = k > 0.01; m.position.y = -(1 - k) * crest[i] - (k < 0.2 ? (0.2 - k) * 0.6 : 0); }); });
     fogBuild(c); },
   draw: (t, c) => { fogDraw(t, c); const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
     for (const p of PINS) { const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
@@ -236,7 +236,7 @@ function icon(c, kind, t0, t1, world) {
   c.tl.fromTo(el.firstChild, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2)", immediateRender: false }, t0);
 }
 function stamp(c, text, t0, t1, world) {
-  const el = pin(c, `<span class="stamp" style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);color:#A8261B;font-size:46px;padding:6px 20px 4px;border-width:4px;white-space:nowrap;background:rgba(240,230,205,.55)">${text}</span>`, t0, t1, world);
+  const el = pin(c, `<span class="stamp" style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);color:#A8261B;font-size:68px;padding:8px 26px 5px;border-width:5px;white-space:nowrap;background:rgba(240,230,205,.55)">${text}</span>`, t0, t1, world);
   c.tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, t0);
   c.tl.fromTo(el.firstChild, { scale: 2.3, rotation: -14, opacity: 0 }, { scale: 1, rotation: -6, opacity: 0.94, duration: 0.24, ease: "power4.in", immediateRender: false }, t0);
 }
