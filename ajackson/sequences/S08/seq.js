@@ -81,8 +81,8 @@ const shade = { build() { const c = document.createElement("canvas"); c.width = 
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
   draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const W = ctx.world, k = VX.sstep(T.removal - 0.2, T.act + 0.8, t) * (1 - VX.sstep(32.0, 33.0, t)); if (k <= 0.001) return;
     for (const poly of LANDS) { const P = poly.map((q) => { const p = W.projectMap(q[0], q[1], 0); return [p.x, p.y]; });
-      g.save(); g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fillStyle = `rgba(120,104,86,${(0.22 * k).toFixed(3)})`; g.fill(); g.clip();
-      g.strokeStyle = `rgba(150,132,110,${(0.35 * k).toFixed(3)})`; g.lineWidth = 1.2; g.beginPath(); for (let x = -800; x < 1400; x += 12) { g.moveTo(x, 0); g.lineTo(x + 720, 720); } g.stroke(); g.restore();
+      g.save(); g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fillStyle = `rgba(120,104,86,${(0.34 * k).toFixed(3)})`; g.fill(); g.clip();
+      g.strokeStyle = `rgba(150,132,110,${(0.5 * k).toFixed(3)})`; g.lineWidth = 1.2; g.beginPath(); for (let x = -800; x < 1400; x += 12) { g.moveTo(x, 0); g.lineTo(x + 720, 720); } g.stroke(); g.restore();
       g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.strokeStyle = `rgba(90,76,62,${(0.7 * k).toFixed(3)})`; g.lineWidth = 1.6; g.stroke(); } } };
 const MUTE = "#8a7a66";
 window.SEQ = {
@@ -106,7 +106,7 @@ window.SEQ = {
     { side: "r", region: GF, width: 0.5, maxWidth: 0.5, pts: AWAY.slice(1, 4), t0: T.slipped, dur: 1.6, t1: 6.4 },
     // removal: thin muted arrows west across the Mississippi (Creek, Choctaw, and from the Cherokee country north-east, off the map)
     ...[[[1010, 300], [700, 250], [380, 215], [60, 190]], [[640, 430], [420, 400], [200, 380], [40, 360]], [[1180, 60], [820, 80], [420, 100], [50, 110]]]
-      .map((pts, i) => ({ color: MUTE, region: GF, width: 0.32, maxWidth: 0.32, pts, t0: T.forced + i * 0.5, dur: 2.6, t1: 32.2 })),
+      .map((pts, i) => ({ color: MUTE, region: GF, width: 0.45, maxWidth: 0.45, pts, t0: T.forced + i * 0.5, dur: 2.6, t1: 32.2 })),
   ],
   generals: { jackson: { img: "seq/jackson.png", flag: "seq/us15_flag.png", side: "us", name: "Jackson", full: "Andrew Jackson", role: "Major General" } },
   banners: [{ general: "jackson", region: GF, keys: [[0, NOG[0] + 8, NOG[1] - 6]], t0: T.jackson - 0.05, t1: 23.6 }],
@@ -121,7 +121,7 @@ window.SEQ = {
     ["label", T.act + 0.1, 25.4, { name: "Indian Removal Act", sub: "signed by President Jackson", screen: true, x: 1180, y: 200, marker: false, side: "us" }],
     ["film.dim", T.boy - 0.3, 43.3, 0.55],
     ["letter", T.method - 0.2, 43.3, { header: "Andrew Jackson", title: "The Old Hickory Method", sub: "", marks: false, quote: "1. Close every door\n2. Strike first\n3. Make them come to you", qSize: 34, height: 300,
-      cps: 15, qAt: T.close - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
+      cps: 22, qAt: T.close - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     () => { const q = [...document.querySelectorAll("#ov .letter .q")].pop(); if (q) q.style.whiteSpace = "pre-line"; },
     ["plaque.hide", 43.2],
     ["engage.final", { moves: [["HORSESHOE BEND", "1814"], ["THE NIGHT ATTACK", "1814"], ["NEW ORLEANS", "1815"]], q: "WHICH WAS HIS GREATEST MOVE?", sub: "",

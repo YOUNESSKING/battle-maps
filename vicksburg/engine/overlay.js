@@ -197,7 +197,7 @@
 .gmo .eng-dec .tk i.on{background:#C9B27A;box-shadow:0 0 10px rgba(240,210,140,.7)}
 .gmo .eng-fin{left:50%;top:150px;width:1320px;margin-left:-660px;text-align:center}
 .gmo .eng-fin .cards{display:flex;gap:34px;justify-content:center}
-.gmo .eng-fin .tt{font-size:70px;white-space:nowrap}
+.gmo .eng-fin .tt{font-size:62px;white-space:nowrap}
 .gmo .eng-fin .c{width:350px;position:relative;background:var(--navy);padding:20px 12px 18px;box-shadow:0 8px 22px rgba(0,0,0,.55),inset 0 0 0 3px var(--navy),inset 0 0 0 4.5px rgba(201,178,122,.85)}
 .gmo .eng-fin .c .n{width:88px;height:88px;margin:0 auto 10px;border-radius:50%;border:3px solid #C9B27A;box-shadow:inset 0 0 0 4px var(--navy),inset 0 0 0 5.2px rgba(201,178,122,.6);font-family:"GM Cinzel",serif;font-weight:700;font-size:54px;line-height:80px;color:#E3C995}
 .gmo .eng-fin .c .nm{font-family:"GM Cinzel",serif;font-weight:700;font-size:31px;letter-spacing:.05em;line-height:1.1;color:#EEE7D6}
@@ -624,7 +624,7 @@
         const t = o.tShow, tn = o.tNums || [];
         O.film.dim(t - 0.2, o.until, o.dim ?? 0.85);
         const card = (m, i) => `<div class="c m${i}"><div class="n">${i + 1}</div><div class="nm">${esc(m[0])}</div><div class="caps dt">${esc(m[1] || "")}</div></div>`;
-        const el = mk(Lcards, "eng-fin", `<div class="caps sb">${esc(o.sub || "TELL US IN THE COMMENTS")}</div><div class="tt gold">${esc(o.q || "WHICH WAS HIS GREATEST MOVE?")}</div>
+        const el = mk(Lcards, "eng-fin", `<div class="caps sb">${esc(o.sub ?? "TELL US IN THE COMMENTS")}</div><div class="tt gold">${esc(o.q || "WHICH WAS HIS GREATEST MOVE?")}</div>
           <div class="cards">${o.moves.map(card).join("")}</div><div class="ans gold">${esc(o.ask || "1, 2 OR 3?")}</div>${o.extra ? `<div class="ex">${esc(o.extra)}</div>` : ""}`, o.top != null ? `top:${o.top}px` : "");
         gsap.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, t);
         const ans = el.querySelector(".ans"), ex = el.querySelector(".ex");
