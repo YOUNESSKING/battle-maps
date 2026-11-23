@@ -263,8 +263,8 @@ window.SEQ = {
     // back up to the city for the general, a slow push in under the name
     { t: T.twoWeeks - 0.3, region: NO, at: [CITY[0] + 6, CITY[1] + 2], dist: 84, tilt: 47, yaw: -3, fov: 30, ease: "lin" },
     { t: T.come + 0.4, region: NO, at: [VIL[0] - 6, VIL[1] - 3.5], dist: 74, tilt: 50, yaw: -2, fov: 30 },
-    { t: T.nine - 0.1, region: NO, at: [1247, 3226], dist: 110, tilt: 49, yaw: -1, fov: 30 },
-    { t: T.general, region: NO, at: [1245, 3225.5], dist: 112, tilt: 49, yaw: -1, fov: 30, ease: "lin" },
+    { t: T.nine - 0.1, region: NO, at: [1246, 3219.5], dist: 116, tilt: 49, yaw: -1, fov: 30 },
+    { t: T.general, region: NO, at: [1244.5, 3219.5], dist: 117, tilt: 49, yaw: -1, fov: 30, ease: "lin" },
     { t: T.thin + 0.8, region: NO, at: [CITY[0] + 6, CITY[1] - 1], dist: 82, tilt: 48, yaw: -4, fov: 30 },
     { t: SN1, region: NO, at: [CITY[0] + 4.6, CITY[1] - 1.2], dist: 75, tilt: 49, yaw: -5, fov: 30, ease: "lin" },
     // E1: Horseshoe Bend from above
@@ -325,7 +325,7 @@ window.SEQ = {
     ["label", T.killed2 - 0.1, CUT_G - 0.15, { name: "Americans", sub: "killed, wounded or missing", x: 960, y: 360, marker: false, side: "us", offset: [-190, 0] }],
     // D
     ["plaque.date", T.twoWeeks, { month: "December 1814", day: "23", weekday: "", note: "" }],
-    ["distance", T.nine - 0.1, T.general + 0.6, { from: [VIL[0] - 0.5, VIL[1] - 2.0, 0], to: [CITY[0] + 1.5, CITY[1] + 0.6, 0], value: 9, unit: "MILES", sub: "from the city", dash: false, countFrom: 9 }]   // Latour's 9 miles (city to Villere's), shown as is, no count-up,
+    ["distance", T.nine - 0.1, T.general + 0.6, { from: [VIL[0] - 0.5, VIL[1] - 2.0, 0], to: [CITY[0] + 1.5, CITY[1] + 0.6, 0], value: 9, unit: "MILES", sub: "from the city", dash: false, countFrom: 9 }],   // Latour's 9 miles (city to Villere's), shown as is, no count-up
     ["label", T.illness, T.scar - 0.3, { name: "The general", sub: "worn down by illness", world: [BAN1[0], BAN1[1], 0], side: "us", marker: false, offset: [70, -150] }],
     ["film.dim", T.scar - 0.25, T.name - 0.3, 0.5],
     // E

@@ -276,3 +276,6 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   walking backward (critic A round 1). `troopsOpts.depthK` (default 0.3 outside Vicksburg, 0.44 there): block depth / width; < 0.38 lays
   the men out 18 files x 4 ranks (wide rectangles >= 3:1). Arrows: `maxWidth` lifts the 0.24 width cap per arrow. Overlay: `distance`
   `countFrom`, `engage.decide` `tA` / `tB` / `tNote`.
+- Battle 20 S01: `O.distance` placed its value label one updater too late, so a single seeked frame (snapshots, per-frame renders)
+  showed the label at the top-left corner (behind the date plate); the ruler updater now also positions the label in the same frame.
+  `countFrom` (= value) shows the stated value without the count-up.

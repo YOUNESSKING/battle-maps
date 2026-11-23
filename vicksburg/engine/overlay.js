@@ -550,7 +550,9 @@
       const d = `M${a.x.toFixed(1)} ${a.y.toFixed(1)} Q${lerp(a.x, cx, k).toFixed(1)} ${lerp(a.y, cy, k).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)}`;
       r.g.querySelectorAll("path").forEach((p) => p.setAttribute("d", d));
       const e0 = r.g.querySelector(".e0"), e1 = r.g.querySelector(".e1"); e0.setAttribute("cx", a.x); e0.setAttribute("cy", a.y); e1.setAttribute("cx", b.x); e1.setAttribute("cy", b.y); e1.setAttribute("opacity", k > 0.98 ? 1 : 0);
-      r.L.o.x = mx; r.L.o.y = my + lift * 0.5; r.L.o.offset = [-r.L.el.offsetWidth / 2, -r.L.el.offsetHeight - 26]; } });
+      r.L.o.x = mx; r.L.o.y = my + lift * 0.5; r.L.o.offset = [-r.L.el.offsetWidth / 2, -r.L.el.offsetHeight - 26];
+      // Battle 20: place the label in THIS frame too (the anchored-label updater runs before this one: a single seeked frame showed it at 0,0)
+      { const w = r.L.el.offsetWidth, h = r.L.el.offsetHeight; r.L.el.style.left = `${clamp(r.L.o.x + r.L.o.offset[0], 60, W - 60 - w).toFixed(1)}px`; r.L.el.style.top = `${clamp(r.L.o.y + r.L.o.offset[1], 50, H - 110 - h).toFixed(1)}px`; } } });
     {
       const el = plaque(Lhud, "ledger", `<div class="caps t"></div><div class="t0"></div><div class="rows"></div>`, { notch: 8, curls: true }); gsap.set(el, { autoAlpha: 0 });
       const ct = el.querySelector(".ct"), rows = el.querySelector(".rows"); let n = 0; const R = [];
