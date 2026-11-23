@@ -5,8 +5,8 @@
   0,
   148.066
  ],
- "shareOffset": 376.593,
- "filmStart": 376.593,
+ "shareOffset": 372.796,
+ "filmStart": 372.796,
  "render": [
   1920,
   1080
@@ -17,21 +17,21 @@
    "type": "unit_appears",
    "t": 30.13,
    "tExcerpt": 30.13,
-   "tShare": 406.72,
-   "tFilm": 406.72,
+   "tShare": 402.93,
+   "tFilm": 402.93,
    "at": {
     "map": [
      1206.2,
      3216.24
     ],
     "px": [
-     339,
-     289
+     338,
+     283
     ],
-    "nx": 0.177,
-    "ny": 0.267,
+    "nx": 0.176,
+    "ny": 0.262,
     "onScreen": true,
-    "camDist": 93.77
+    "camDist": 93.49
    },
    "unit": {
     "unit": 1,
@@ -48,21 +48,21 @@
    "speed": 0.34,
    "t": 46.1,
    "tExcerpt": 46.1,
-   "tShare": 422.69,
-   "tFilm": 422.69,
+   "tShare": 418.9,
+   "tFilm": 418.9,
    "at": {
     "map": [
      1206.22,
      3216.25
     ],
     "px": [
-     117,
-     217
+     115,
+     211
     ],
-    "nx": 0.061,
-    "ny": 0.201,
+    "nx": 0.06,
+    "ny": 0.196,
     "onScreen": true,
-    "camDist": 137.21
+    "camDist": 136.82
    },
    "unit": {
     "unit": 1,
@@ -78,21 +78,21 @@
    "duration": 2.6,
    "t": 48.7,
    "tExcerpt": 48.7,
-   "tShare": 425.29,
-   "tFilm": 425.29,
+   "tShare": 421.5,
+   "tFilm": 421.5,
    "at": {
     "map": [
      1211.2,
      3218.44
     ],
     "px": [
-     -51,
-     139
+     -52,
+     138
     ],
     "nx": -0.027,
-    "ny": 0.129,
+    "ny": 0.128,
     "onScreen": false,
-    "camDist": 136.62
+    "camDist": 136.49
    },
    "unit": {
     "unit": 1,
@@ -107,8 +107,8 @@
    "type": "unit_appears",
    "t": 107.6,
    "tExcerpt": 107.6,
-   "tShare": 484.19,
-   "tFilm": 484.19,
+   "tShare": 480.4,
+   "tFilm": 480.4,
    "at": {
     "map": [
      1246.55,
@@ -121,7 +121,7 @@
     "nx": -0.1,
     "ny": 0.252,
     "onScreen": false,
-    "camDist": 38.96
+    "camDist": 38.82
    },
    "unit": {
     "unit": 2,

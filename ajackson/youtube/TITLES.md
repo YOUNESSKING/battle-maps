@@ -21,9 +21,9 @@ Spacing/typo check: all three titles re-read for missing spaces, apostrophes and
 | "2,000 men ... 30 Minutes" | true as "lost" (killed, wounded or missing) | 2,037 incl. 484 missing/captured (item 52); main assault ~25-30 min (items 45, 49); "lost", never "died" |
 | "HE DUG." | true | Jackson's army dug and raised the Rodriguez Canal rampart, about a mile, 16 Dec-8 Jan (items 33-35) |
 | "THEN THE BRITISH ATTACKED" | true | 8 Jan 1815 frontal assault on the line |
-| "THE MUD WALL" / cotton bales in the icon | true, bales only at gun openings | item 36 (bales were around embrasures; the wall itself is earth and fence pales) |
+| "THE MUD WALL" (B: our 3D film frame of the rampart) | true | items 33-36 (earth rampart, fence pales; bales only at gun openings) |
 | Flags/insignia | none drawn | no flags in either thumbnail |
 | Portrait | John Wesley Jarvis, c. 1819, Met Museum (CC0) | made after the war (1819); disclosed in the description |
 
 ## AI-image disclosure (for the publishing guide, "altered or synthetic content": YES)
-The thumbnail backgrounds/icon are AI-generated (vidIQ, gpt-image): A = painted aerial view of the Chalmette plain with the rampart, B = painted icon of the mud rampart. The portrait is the public-domain Jarvis painting (cut out and tinted, not AI-generated). The unit blocks, arrow, tags and text are drawn by us. No real person or real event is depicted by AI.
+The thumbnail backgrounds/icon are AI-generated (vidIQ, gpt-image): A = painted aerial view of the Chalmette plain with the rampart, B = our own rendered 3D film frame of the mud rampart (not AI). The portrait is the public-domain Jarvis painting (cut out and tinted, not AI-generated). The unit blocks, arrow, tags and text are drawn by us. No real person or real event is depicted by AI.
