@@ -51,3 +51,8 @@ Gulf only, one slow continuous camera (lower Mississippi -> Creek country -> For
 
 ## Round 2 fixes (by the S03 author)
 - "Jackson marched south" (30-44 s): the arrow now runs from Fort Strother (map top, the Tennessee side) straight south toward the bend, and the camera pans north-up onto it (key 32.6 s at [1045, 112], dist 300, tilt 14) while it draws; Jackson's banner walks down it and steps out at 39.6 s (it was cut by the frame top). The last 2.2 s still hold S03's first camera exactly.
+
+## Round 3 fixes
+- The second Jackson banner ("marched south") starts lower ([1022, 140] -> [1052, 174]): finial + name inside the frame at 32-39 s
+  (projected foot y 180-470 px at 720p). The banner enters from the top edge while the camera pans in (30.4-31.5).
+- Inland woods: not changed (no framing change helps without losing the Creek country; left to the bake).

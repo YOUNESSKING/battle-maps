@@ -111,3 +111,17 @@ spoken: shown as small source text); no "Jackson" on screen before the name slam
   "turn" flags: 8-16 deg per 0.1 s at 15.3-15.4 while the camera is still landing from the dive (on-screen heading correction), and the
   hard-cut frames 66.1 / 70.4. The r9 40-deg jump of round 1 is gone.
 - Still pale white at ~13.5-14.5 s (the v8 emergence fog, kept as the owner's look).
+
+## Round 3 fixes (critics A 7.6 / B 8.1)
+- Dive: the long cream/fog was NOT the white-out itself: on this z8 -> z10 dive the swap / emerge camera keys looked at `over` in GULF
+  units inside chalmette (fog over the void) until the land key. Fixed with `dives[0].overTo` (the over point in chalmette units).
+  With `off = { push -4.0, deckIn -1.0, full -0.45, ..., emerge 0.35, clear 0.5, haze 1.0, land 2.0 }` and SW 13.5 the frame is fully
+  covered ~13.05-14.0 (~1.0 s, same v8 deck + cool/warm white-out), the plain is in view at 14.1 s. The chalmette stratus sheets use the
+  same look on a faster timeline (`clouds.chalmette.opts` erode / deck / opacity).
+- Whoosh cue (default deckIn + 0.15) now 11.95, after "peace table" (11.64).
+- PEACE TABLE seal: 168 px seal + 44 px caption, on "peace" (11.35) until the deck covers (12.95): ~1.0 s in clear air, ~1.6 s on screen.
+- First cannon 16.95 s (camera lands 15.5; gun list 16.95, 17.8, ...); the British advance starts 18.8 (halt 22.4, about-turn, walk
+  back from 29.7) so no turn starts while the camera is landing.
+- 71 card + its label leave before the hard cut (out at 31.79, faded by 32.3).
+- check_troops_motion S01 chalmette: no overlaps / pops / shape change, front-vs-velocity <= 16 deg; only the hard-cut frames (66.1,
+  70.4) flag "turn".

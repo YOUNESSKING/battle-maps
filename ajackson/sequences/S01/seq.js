@@ -28,7 +28,7 @@ const T = { D: 79.89, winter: 0.62, eighteen: 1.71, british0: 2.86, burned: 3.74
   landed: 69.02, stop: 70.38, veteran: 71.26, mud2: 73.22, these: 74.28, andrew2: 74.84, three: 76.16, moves: 77.44 };   // owner fixes: new narration (re-voiced opening, two trimmed paragraphs)
 const GULF = "gulf", CH = "chalmette", NO = "neworleans", HB = "horseshoe";
 const sstep = VX.sstep, hsh = VX.hsh;
-const SWT = 13.5, DOFF = { push: -4.0, deckIn: -1.0, full: -0.45, deck: -0.4, wIn: -0.3, inside: -0.12, warm: 0.08, emerge: 0.35, clear: 0.5, haze: 1.0 },   // round 3: the v8 deck + white-out, covered ~1.0 s (full 13.05 -> clear 14.0); the PEACE TABLE seal reads in clear air 11.4-12.5; whoosh cue (default deckIn + 0.15) = 11.95, after "table"
+const SWT = 13.5, DOFF = { push: -4.0, deckIn: -1.0, full: -0.45, deck: -0.4, wIn: -0.3, inside: -0.12, warm: 0.08, emerge: 0.35, clear: 0.5, haze: 1.0, land: 2.0 },   // round 3: the v8 deck + white-out, covered ~1.0 s (full 13.05 -> clear 14.0); the PEACE TABLE seal reads in clear air 11.4-12.5; whoosh cue (default deckIn + 0.15) = 11.95, after "table"
   DV = VX.diveTimes(SWT); for (const k in DOFF) DV[k] = SWT + DOFF[k];   // round 1: v8 white-out, flat phase trimmed ~0.35 s          // (v8 white-out) push 7.95, deckIn 10.05, full 11.2, SW 11.75, emerge 12.6, clear 12.9, land 15.1
 const CUT_G = 32.34, CUT_N = 42.16;                  // hard cut to the Ghent card (over the city); the card leaves, the city comes up
 const SN1 = T.trap, SN2 = T.attack, SN3 = T.stop;    // the three snap cuts
@@ -279,12 +279,17 @@ window.SEQ = {
     { t: T.these, region: CH, at: [1255.2, 3226.4], dist: 25, tilt: 50, yaw: 4, fov: 30, ease: "lin" },
     { t: T.D, region: CH, at: [1256.2, 3226.6], dist: 34, tilt: 48, yaw: 0, fov: 30 },
   ],
-  dives: [{ t: SWT, over: OVER, off: DOFF,
+  dives: [{ t: SWT, over: OVER, overTo: [CLASHC[0] - 1.5, CLASHC[1] - 1.0], off: DOFF,   // round 3: overTo = the over point in chalmette units (the swap / emerge keys looked at the gulf coordinates = fog over the void)
+   
     from: { region: GULF, at: [356, 838], dist: 400, tilt: 42, yaw: -4 },
     to: { region: CH, at: CLASHC, dist: 21, tilt: 50, yaw: -24, fov: 30 } }],
   clouds: {
     [GULF]: { scatter: { seed: 3 }, keepClear: [[312, 807, 75, 1, 0.8], [560, 915, 70, 1, 0.8], [200, 760, 60, 1, 0.6]] },
-    [CH]: { shadows: true },
+    // round 3: the dive's torn stratus sheets clear ~1.7 s sooner (same sheets, faster timeline), so the plain shows ~14.3 s
+    [CH]: { shadows: true, opts: {
+      erode: (t) => { const e = DV.emerge; return [0, VX.lerp(0.35, 0.7, sstep(e, e + 0.6, t)) + VX.lerp(0, 2.2, sstep(e + 0.3, e + 1.5, t))]; },
+      deck: (t) => { const e = DV.emerge; return { x: Math.round(CLASHC[0]) + 4, z: Math.round(CLASHC[1]), r: 9, front: 3 * sstep(e + 0.2, e + 0.7, t), k: 1 }; },
+      opacity: (t) => t < SWT - 1 ? 0 : 1 - sstep(DV.emerge + 1.5, DV.emerge + 2.0, t) } },
     [NO]: { keepClear: [[1244, 3224, 80, 1, 0.85], [1205, 3210, 50, 1, 0.9]] },
     [HB]: { shadows: true },
   },
