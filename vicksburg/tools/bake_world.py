@@ -20,14 +20,26 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from gm_look import fbm, smooth, densify, hexc, catmull, water_levels, wide_fields, gm_fields, paint_town, ROOFS, WT, HS, FS
 
 REPO = "/home/user/battle-maps"; VX = f"{REPO}/vicksburg"; WORLDS = f"{VX}/worlds"; CFGDIR = f"{WORLDS}/configs"; TMP = "/tmp/vx_bake"
-os.makedirs(TMP, exist_ok=True)
 FRAME = json.load(open(f"{REPO}/grant/assets/vicksburg_hd_lift.json")); MPU = FRAME["meters_per_px"]
 GMT = f"{REPO}/research/style_tests/gm_test"
 PREP_BOX = (1000, 300, 1140, 840)   # the edited DEM covers the wide box + margin (all regions crop from it)
+DPU = 2                              # DEM px per map unit (Vicksburg: the frame-wide z11 array)
+CPU = 1                              # creek-network (D8) px per map unit
+CREEK_KM2 = 2.0                      # project mode: catchment of a traced creek head
+# ---- project mode (VX_PROJECT=<folder> or --project <folder>; see vx_project.py): own worlds / geo.json / frame, DEM fetched per region box.
+# Without it nothing below changes (Vicksburg bakes exactly as before).
+from vx_project import Project, project_name, fetch_dem
+PROJ = Project(project_name()) if project_name() else None
+CUR_ZOOM = None                      # zoom of the region being baked (project mode); None = the base frame
+if PROJ:
+    VX = PROJ.dir; WORLDS = PROJ.worlds; CFGDIR = PROJ.configs; TMP = PROJ.tmp; MPU = PROJ.engine_mpu
+    FRAME = {"zoom": PROJ.zoom, "origin_world_px": PROJ.origin, "meters_per_px": PROJ.engine_mpu, "size": None, "name": PROJ.frame.get("name", PROJ.name)}
+os.makedirs(TMP, exist_ok=True)
 LOG = lambda *a: print(time.strftime("%H:%M:%S"), *a, flush=True)
 
 
 def to_map(lat, lon):
+    if PROJ: return PROJ.to_map(lat, lon, CUR_ZOOM)
     z = 256 * 2 ** FRAME["zoom"]; x = (lon + 180) / 360 * z; y = (1 - math.log(math.tan(math.radians(lat)) + 1 / math.cos(math.radians(lat))) / math.pi) / 2 * z
     return x - FRAME["origin_world_px"][0], y - FRAME["origin_world_px"][1]
 
@@ -54,13 +66,13 @@ def curvy(L, seg=2.0):
 def snap_valley(P, L, r=4.0):
     """move a coarse river polyline (geo.json, +-1 km) onto the valley floor of the edited DEM: each vertex (every 0.5 units) goes to the
     lowest point within +-r units across the line, then the path is smoothed"""
-    px0, py0 = PREP_BOX[:2]; hb = cv2.GaussianBlur(P, (0, 0), 1.5)
+    px0, py0 = PREP_BOX[:2]; hb = cv2.GaussianBlur(P, (0, 0), 1.5 * DPU / 2)
     L = densify(np.asarray(L, np.float32), 0.5)
     if len(L) < 3: return L
     t = np.gradient(L, axis=0); t /= np.linalg.norm(t, axis=1, keepdims=True) + 1e-6; n = np.stack([-t[:, 1], t[:, 0]], 1)
     off = np.linspace(-r, r, int(r * 4) + 1)
     C = L[:, None, :] + n[:, None, :] * off[None, :, None]
-    hv = sample(hb, (px0, py0, hb.shape[1] / 2, hb.shape[0] / 2), C.reshape(-1, 2)).reshape(len(L), -1)
+    hv = sample(hb, (px0, py0, hb.shape[1] / DPU, hb.shape[0] / DPU), C.reshape(-1, 2)).reshape(len(L), -1)
     hv += np.abs(off)[None] * 0.15   # prefer the original line when the floor is flat
     k = hv.argmin(1).astype(np.float32)
     k = np.convolve(np.pad(k, 6, mode="edge"), np.ones(13) / 13, mode="valid")   # no zig-zags across the floor
@@ -112,6 +124,7 @@ def base_geo():
     """Built-in geography (map units): used when geo.json lacks an item. Sources: gm_test data (Big Black, Pearl, 11 road paths),
     the clip's towns, lat/lon of 1863 places (approx.), the 1863 Mississippi (configs/_mississippi1863.json)."""
     G = {"towns": {}, "places": {}, "rivers": {}, "roads": {}, "railroads": {}, "works": {}, "lakes": {}}
+    if PROJ: return G   # project mode: everything comes from <proj>/data/geo.json
     for k, v in json.load(open(f"{GMT}/data/rivers.json")).items():
         if k != "mississippi": G["rivers"][k] = np.array(v["pts"], np.float32)
     G["rivers"]["mississippi"] = np.array(json.load(open(f"{CFGDIR}/_mississippi1863.json"))["pts"], np.float32)
@@ -281,10 +294,123 @@ def prep_dem(G):
 
 def crop_prep(P, box, W, H, blur=0.0):
     x0, y0, bw, bh = box; px0, py0 = PREP_BOX[:2]
-    xs = (x0 - px0 + (np.arange(W) + 0.5) / W * bw) * 2 - 0.5; ys = (y0 - py0 + (np.arange(H) + 0.5) / H * bh) * 2 - 0.5
+    xs = (x0 - px0 + (np.arange(W) + 0.5) / W * bw) * DPU - 0.5; ys = (y0 - py0 + (np.arange(H) + 0.5) / H * bh) * DPU - 0.5
     mx, my = np.meshgrid(xs.astype(np.float32), ys.astype(np.float32))
     src = cv2.GaussianBlur(P, (0, 0), blur) if blur else P
     return np.maximum(cv2.remap(src, mx, my, cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE), 0.0)
+
+
+# ============================================================ project mode: per-region DEM ============================================================
+def pullpush(h, fillm):
+    """fill the masked cells smoothly from the surrounding unmasked ones (the legacy prep_dem fill, as a function)"""
+    wgt = (~fillm).astype(np.float32); val = h * wgt; pyr = []; v, w = val, wgt
+    while min(v.shape) > 4:
+        pyr.append((v, w)); v = cv2.resize(v, (v.shape[1] // 2, v.shape[0] // 2), interpolation=cv2.INTER_AREA); w = cv2.resize(w, (w.shape[1] // 2, w.shape[0] // 2), interpolation=cv2.INTER_AREA)
+    est = v / np.maximum(w, 1e-6)
+    for v_, w_ in reversed(pyr):
+        up = cv2.resize(est, (v_.shape[1], v_.shape[0]), interpolation=cv2.INTER_LINEAR)
+        vb = cv2.GaussianBlur(v_, (0, 0), 1.5); wb = cv2.GaussianBlur(w_, (0, 0), 1.5)
+        a = np.clip(wb * 3, 0, 1); est = a * vb / np.maximum(wb, 1e-6) + (1 - a) * up
+    return est
+
+
+def poly_mask(shape, lines, half_u, box0, val=1):
+    """mask (DEM grid of PREP_BOX) of polylines (map units) drawn half_u units either side"""
+    m = np.zeros(shape, np.uint8)
+    for L, hu in zip(lines, half_u):
+        Pq = np.round((np.asarray(L, np.float32) - box0) * DPU * 4).astype(np.int32)
+        cv2.polylines(m, [Pq], False, val, max(1, int(round(2 * hu * DPU))), cv2.LINE_8, shift=2)
+    return m
+
+
+def prep_dem_project(G, cfg, close):
+    """Project mode: the region's own DEM (AWS terrain tiles over its box + margin at dem_ppu px/unit), edited per `dem_edits`:
+    sea {level, min_px}: open water at/below level connected to the box edge (the Gulf, the lakes) -> flat 0 m + a sea mask (painted water);
+    fill_water (default true): modern flat water (reservoirs, canals, ponds) filled from the banks, except +-keep units of the config rivers;
+    synth_levee {river, crest_m, base_m, width_u, pow, noise_m}: replace the terrain by a natural-levee profile (heights fall from the bank to the
+    back swamp) for alluvial ground covered by modern works (no levee walls, canals, streets); flatten_levees {below_m}: thin ridges flattened;
+    alluvial_below: low ground mask (swamp woods / cane). Cached in TMP (one folder per region)."""
+    global PREP_BOX, DPU
+    box = cfg["box"]; E = cfg.get("dem_edits", {})
+    DPU = int(cfg.get("dem_ppu", 8 if close else 2)); m = cfg.get("dem_margin", 6 if close else 30)
+    PREP_BOX = (int(math.floor(box[0] - m)), int(math.floor(box[1] - m)), int(math.ceil(box[2] + 2 * m)), int(math.ceil(box[3] + 2 * m)))
+    f = f"{TMP}/prep_dem.npy"
+    keep = []
+    for e in cfg.get("rivers", []):
+        L = resolve_line(G, e, "rivers")
+        if L is not None: keep.append((densify(curvy(L), 0.25), e.get("keep", e["w"] / 2 + 0.8)))
+    stamp = json.dumps([PREP_BOX, DPU, E, [round(float(np.asarray(L).sum()), 2) for L, _ in keep], "p3"])
+    if os.path.exists(f) and os.path.exists(f + ".stamp") and open(f + ".stamp").read() == stamp: return np.load(f)
+    LOG("prep DEM (project) ...", PREP_BOX, "dpu", DPU)
+    h = fetch_dem(PROJ, PREP_BOX, CUR_ZOOM if CUR_ZOOM is not None else PROJ.zoom, DPU).astype(np.float32)
+    H, W = h.shape; b0 = np.array(PREP_BOX[:2], np.float32); q = max(1.0, DPU / 2)
+    med = cv2.medianBlur(h, 5); h = np.where(np.abs(h - med) > E.get("spike_m", 40.0), med, h)   # single-pixel spikes (tile seams)
+    sea = np.zeros((H, W), bool)
+    if E.get("sea"):
+        S = E["sea"] if isinstance(E["sea"], dict) else {}
+        s0 = (h <= S.get("level", 0.0)).astype(np.uint8)
+        s0 = cv2.morphologyEx(s0, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        n, lab, st, _ = cv2.connectedComponentsWithStats(s0, 8)
+        edge = set(np.unique(np.r_[lab[0], lab[-1], lab[:, 0], lab[:, -1]]).tolist()) - {0}
+        ok = np.zeros(n, bool); ok[1:] = st[1:, cv2.CC_STAT_AREA] >= S.get("min_px", 400)
+        for i in edge: ok[i] = True
+        for la, lo in S.get("seeds", []):   # lakes not touching the edge (map them by a point inside)
+            x, y = to_map(la, lo); i, j = int((y - b0[1]) * DPU), int((x - b0[0]) * DPU)
+            if 0 <= i < H and 0 <= j < W and lab[i, j]: ok[lab[i, j]] = True
+        sea = ok[lab]
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)); sea = cv2.morphologyEx(sea.astype(np.uint8), cv2.MORPH_CLOSE, k) > 0
+        land = (~sea).astype(np.uint8); n, lab, st, _ = cv2.connectedComponentsWithStats(land, 8)   # no tiny islands / marsh specks
+        small = np.zeros(n, bool); small[1:] = st[1:, cv2.CC_STAT_AREA] < S.get("island_px", 30); sea |= small[lab]
+        LOG("  sea %.1f %%" % (sea.mean() * 100))
+    sl = E.get("synth_levee")
+    if sl:
+        L = gfind(G, "rivers", sl["river"]); L = densify(curvy(np.asarray(L, np.float32)), 0.25)
+        cl = np.full((H, W), 255, np.uint8); cv2.polylines(cl, [np.round((L - b0) * DPU * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
+        d = cv2.distanceTransform(cl, cv2.DIST_L2, 5) / DPU - sl.get("half_w", 3.0)
+        prof = np.clip(1 - np.maximum(d, 0) / sl.get("width_u", 11.0), 0, 1) ** sl.get("pow", 1.3)
+        nz = (cv2.resize(fbm(max(8, H // 8), max(8, W // 8), 4, 6, 17) - 0.5, (W, H)) * sl.get("noise_m", 0.35))
+        h = (sl.get("base_m", 0.3) + (sl.get("crest_m", 4.0) - sl.get("base_m", 0.3)) * prof + nz).astype(np.float32)
+        LOG("  synthetic natural-levee terrain (%s)" % sl["river"])
+    elif E.get("fill_water", True):
+        mm = cv2.blur(h, (5, 5)); sd = np.sqrt(np.maximum(cv2.blur(h * h, (5, 5)) - mm * mm, 0)); low = cv2.GaussianBlur(h, (0, 0), 12 * q) - h
+        water = ((sd < E.get("flat_sd", 0.12)) & (low > E.get("flat_low", 0.4)) & ~sea).astype(np.uint8)
+        water = cv2.morphologyEx(water, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        n, lab, st, _ = cv2.connectedComponentsWithStats(water, 8)
+        kp = np.zeros(n, bool); kp[1:] = st[1:, cv2.CC_STAT_AREA] >= 12 * q * q; water = kp[lab].astype(np.uint8)
+        water = cv2.dilate(water, np.ones((int(2 * q) * 2 + 1,) * 2, np.uint8))
+        corr = poly_mask((H, W), [L for L, _ in keep], [k_ for _, k_ in keep], b0) if keep else np.zeros((H, W), np.uint8)
+        void = cv2.dilate((h < E.get("void_below", -15.0)).astype(np.uint8), np.ones((5, 5), np.uint8)) > 0
+        fillm = (((water > 0) & (corr == 0)) | void) & ~sea
+        if fillm.any():
+            est = pullpush(np.where(sea, 0, h).astype(np.float32), fillm | sea)
+            nz = cv2.resize(fbm(max(8, H // 4), max(8, W // 4), 4, 40, 7) - 0.5, (W, H)) * 1.2
+            h = np.where(fillm, est + nz, h)
+        LOG("  filled %.2f %% of the DEM area (modern water)" % (fillm.mean() * 100))
+    if E.get("flatten_levees"):
+        alluv0 = cv2.GaussianBlur(h, (0, 0), 16 * q) < E["flatten_levees"].get("below_m", 42)
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(9 * q) | 1,) * 2); th = h - cv2.morphologyEx(h, cv2.MORPH_OPEN, k)
+        cut = np.where(alluv0 & (th > 0.8), th, 0); h -= cv2.GaussianBlur(cut, (0, 0), 0.8 * q)
+    h = np.where(sea, E.get("sea_floor_m", 0.0), h).astype(np.float32)
+    al = np.zeros((H, W), bool)
+    if E.get("alluvial_below") is not None: al = (cv2.GaussianBlur(h, (0, 0), 10 * q) < E["alluvial_below"]) & ~sea
+    np.save(f"{TMP}/prep_alluv.npy", al); np.save(f"{TMP}/prep_sea.npy", sea)
+    np.save(f, h); open(f + ".stamp", "w").write(stamp)
+    if os.path.exists(f"{TMP}/creeks.json"): os.remove(f"{TMP}/creeks.json")
+    return h
+
+
+def scale_geo(G, k):
+    """geography in the base frame -> a region frame of zoom base+log2(k) (same origin corner)"""
+    if k == 1: return G
+    S = {}
+    for sec, v in G.items():
+        if not isinstance(v, dict): S[sec] = v; continue
+        S[sec] = {}
+        for nm, a in v.items():
+            if isinstance(a, dict) and "pts" in a: S[sec][nm] = dict(a, pts=np.asarray(a["pts"], np.float32) * k)
+            elif isinstance(a, (list, tuple)) and len(a) == 2 and not hasattr(a[0], "__len__"): S[sec][nm] = [float(a[0]) * k, float(a[1]) * k]
+            else: S[sec][nm] = np.asarray(a, np.float32) * k
+    return S
 
 
 # ============================================================ creeks (D8 flow on the edited DEM, 1 px per unit) ============================================================
@@ -293,7 +419,8 @@ def creek_net(P, G):
     if os.path.exists(f) and os.path.getmtime(f) > os.path.getmtime(f"{TMP}/prep_dem.npy"): return json.load(open(f))
     LOG("creek network (D8) ...")
     x0, y0, bw, bh = PREP_BOX
-    h = cv2.resize(cv2.GaussianBlur(P, (0, 0), 1.0), (bw, bh), interpolation=cv2.INTER_AREA).astype(np.float64)
+    CW, CH = (bw, bh) if CPU == 1 else (int(round(bw * CPU)), int(round(bh * CPU)))
+    h = cv2.resize(cv2.GaussianBlur(P, (0, 0), 1.0 * DPU / 2 / CPU), (CW, CH), interpolation=cv2.INTER_AREA).astype(np.float64)
     H, W = h.shape; N = H * W; hf = h.ravel().copy()
     # priority-flood depression filling (epsilon)
     done = np.zeros(N, bool); pq = []
@@ -322,8 +449,8 @@ def creek_net(P, G):
         j = rec[i]
         if j >= 0: acc[j] += acc[i]
     acc = acc.reshape(H, W)
-    alluv = cv2.resize(np.load(f"{TMP}/prep_alluv.npy").astype(np.float32), (bw, bh), interpolation=cv2.INTER_AREA) > 0.3   # no creeks traced on the Mississippi alluvial plain (bayous come from geo)
-    thr = 120   # ~2 km^2 (1 unit^2 = 0.0167 km^2)
+    alluv = cv2.resize(np.load(f"{TMP}/prep_alluv.npy").astype(np.float32), (CW, CH), interpolation=cv2.INTER_AREA) > 0.3   # no creeks traced on the Mississippi alluvial plain (bayous come from geo)
+    thr = 120 if not PROJ else max(8, int(CREEK_KM2 * 1e6 / (MPU / CPU) ** 2))   # ~2 km^2 (1 unit^2 = 0.0167 km^2)
     ch = (acc >= thr) & ~alluv
     chf = ch.ravel(); recv = rec
     donors = np.zeros(N, np.int32)
@@ -337,7 +464,9 @@ def creek_net(P, G):
     for hd in heads:
         i = hd; pts = []
         while i >= 0 and chf[i]:
-            r, c = divmod(i, W); pts.append([round(x0 + c + 0.5, 2), round(y0 + r + 0.5, 2), round(float(acc[r, c]) * MPU * MPU / 1e6, 2)])
+            r, c = divmod(i, W)
+            if CPU == 1: pts.append([round(x0 + c + 0.5, 2), round(y0 + r + 0.5, 2), round(float(acc[r, c]) * MPU * MPU / 1e6, 2)])
+            else: pts.append([round(x0 + (c + 0.5) / CPU, 3), round(y0 + (r + 0.5) / CPU, 3), round(float(acc[r, c]) * (MPU / CPU) ** 2 / 1e6, 3)])
             if seen[i]: break
             seen[i] = True; i = recv[i]
         if len(pts) >= 4: lines.append(pts)
@@ -556,10 +685,12 @@ class Settle:
 
 
 # ============================================================ wide settlements (the clip's wide_plan, config-driven) ============================================================
-def wide_plan(cfg, G, dist, hw, box, roads):
+def wide_plan(cfg, G, dist, hw, box, roads, sea=None):
     x0, y0, bw, bh = box
-    RDP = np.concatenate([densify(rd, 0.1) for rd in roads])
+    RDP = np.concatenate([densify(rd, 0.1) for rd in roads]) if roads else np.zeros((1, 2), np.float32) - 1e4
     wet = lambda x, y, m=1.0: sample(dist, box, np.array([[x, y]], np.float32))[0] < sample(hw, box, np.array([[x, y]], np.float32))[0] + m
+    if sea is not None:
+        wet0 = wet; wet = lambda x, y, m=1.0: wet0(x, y, m) or sample(sea, box, np.array([[x, y]], np.float32))[0] > 0.2
     towns, streets, houses, occ = [], [], [], []
     def put(px, py, w, d, rot, rc, gap=0.75):
         if wet(px, py, 1.2): return False
@@ -658,6 +789,11 @@ def bake(rname, G, P, creeks, preview=True):
     if close:
         rn = cfg.get("relief_noise", [7.0, 1.6])
         h += (fbm(HH, HW, 5, 4, seed + 5) - 0.5) * rn[0] + (fbm(HH, HW, 4, 16, seed + 6) - 0.5) * rn[1]
+    SEA = None
+    if PROJ and os.path.exists(f"{TMP}/prep_sea.npy"):
+        SEA = cv2.GaussianBlur(crop_prep(np.load(f"{TMP}/prep_sea.npy").astype(np.float32), box, HW, HH), (0, 0), 0.6)
+        if SEA.max() < 0.5: SEA = None
+        else: h = np.where(SEA > 0.5, cfg.get("dem_edits", {}).get("sea_floor_m", 0.0), h)
     hs = cv2.GaussianBlur(h, (0, 0), 2.5 * upx_h)
     # ---------------- rivers: named ribbons + DEM creeks ----------------
     riv_in = []; main_riv = None
@@ -803,6 +939,7 @@ def bake(rname, G, P, creeks, preview=True):
     lab = cv2.remap(lab.astype(np.float32), mx_ + wx, my_ + wy, cv2.INTER_NEAREST, borderMode=cv2.BORDER_REPLICATE)
     Mr = cv2.getRotationMatrix2D((LW / 2, LH / 2), 14, 1.12); lab = cv2.warpAffine(lab, Mr, (LW, LH), flags=cv2.INTER_NEAREST, borderMode=cv2.BORDER_REFLECT)
     lab = cv2.resize(lab, (TW, TH), interpolation=cv2.INTER_NEAREST).astype(np.int32); n = int(lab.max()) + 1
+    if PROJ and cfg.get("longlots"): lab, n = longlot_labels(cfg["longlots"], G, box, TW, TH, s, seed)
     del seeds, wx, wy, my_, mx_
     LOG("  fields ...")
     hedge_pts = None
@@ -821,7 +958,7 @@ def bake(rname, G, P, creeks, preview=True):
         town = settle_close(cfg, G, box, dist, hw, h, sl_u, RDS, seed)
         RDS += [(ln, "lane", "lane") for ln in town.pop("lanes")]
     else:
-        wplan = wide_plan(cfg, G, dist, hw, box, [rd for rd, c, _ in RDS if c == "pike"] or [rd for rd, _, _ in RDS])
+        wplan = wide_plan(cfg, G, dist, hw, box, [rd for rd, c, _ in RDS if c == "pike"] or [rd for rd, _, _ in RDS], *([SEA] if SEA is not None else []))
     townmask = np.zeros((TH, TW), np.float32)
     if wplan:
         for nm, (tx, ty, rad) in wplan["towns"]:
@@ -854,6 +991,9 @@ def bake(rname, G, P, creeks, preview=True):
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * 0.3 - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1]) + wd + swamp
         del fm3
     forest = np.clip(fbase * 12, 0, 1); del fbase, fm2, swamp
+    MARSH = None
+    if PROJ and cfg.get("swamp_band"): forest, MARSH = swamp_band(cfg["swamp_band"], G, forest, box, TW, TH, s, seed)
+    if SEA is not None: sea_t = cv2.resize(SEA, (TW, TH), interpolation=cv2.INTER_LINEAR); forest *= (sea_t < 0.3)
     forest *= (1 - road0.astype(np.float32) / 255)
     forest *= (1 - cv2.GaussianBlur(townmask, (0, 0), 0.006 * TW)); forest *= (dist_t > hw_t + (0.6 if not close else 0.10))
     for pb in cfg.get("features", {}).get("pontoons", []):   # clear the woods either side of each pontoon crossing
@@ -905,6 +1045,8 @@ def bake(rname, G, P, creeks, preview=True):
         if L is None: continue
         lm = np.zeros((TH, TW), np.uint8); cv2.fillPoly(lm, [np.round(np.array([Pt(p) for p in L]) * 4).astype(np.int32)], 255, cv2.LINE_AA, shift=2)
         lm = cv2.GaussianBlur(lm.astype(np.float32) / 255, (0, 0), 1.0)[..., None]; img = img * (1 - lm) + hexc("#3e5560") * lm
+    if MARSH is not None: img = paint_marsh(img, MARSH, forest, TW, TH, bw, seed)
+    if SEA is not None: img = paint_sea(img, sea_t, close, s, cfg.get("sea_look", {})); del sea_t
     if town: img = paint_town(img, town, Pt, s)
     # ---------------- roads ----------------
     road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((1.1 if not close else 0.32) * s))
@@ -1079,10 +1221,12 @@ def bake(rname, G, P, creeks, preview=True):
         p = resolve_pt(G, {"geo": k, "prefer": "places"}) if isinstance(k, str) else resolve_pt(G, dict(k, prefer="places"))
         nm = k if isinstance(k, str) else k["name"]
         if p is not None: places[nm] = [round(float(p[0]), 2), round(float(p[1]), 2)]
+    if PROJ: exag = round(exag * PROJ.engine_mpu / MPU, 4)   # the engine lifts heights by exag / GM3D_GEO.mpu: keep the relief true to this region's metres per unit
     D = dict(name=rname, kind="close" if close else "wide", box=list(box), hm=[HW, HH], tex=[TW, TH], exag=exag, meshDiv=cfg.get("meshDiv", 1.6 if close else 3),
              rivers=rivs, roads=[dict(name=nm, cls=c_, pts=[[round(float(a), 2 if not close else 3), round(float(b), 2 if not close else 3)] for a, b in rd[::(3 if close else 2)]]) for rd, c_, nm in RDS if c_ != "lane" or close],
              railroads=[dict(name=nm, pts=[[round(float(a), 3), round(float(b), 3)] for a, b in rd[::3]]) for rd, nm in RAILS],
              trees=trees, houses=houses, towns=towns_out, places=places, features=feat)
+    if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
     if rb: D["bridge"] = {k: rb[0][k] for k in ("x", "z", "angle", "len", "wl", "deck")}
