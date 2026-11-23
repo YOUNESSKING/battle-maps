@@ -61,3 +61,10 @@ see its SOURCES.md); flags `us15_flag.png`, `gb1801_union_flag.png` from `ajacks
 ## Round 3 fixes
 - The British second row (r3/r4) holds in the melee (no 22-26 deg drift at 87-92 s); check 80-100: 0 flags, 0 overlaps.
 - Jackson quote 62 px (+20 %).
+
+## Owner fixes (blocks never cross)
+- Night melee rebuilt: the Americans close to ~1.2 units of the British (x <= 1276.5 vs >= 1277.5, more than a block depth apart), stand
+  and fire; Coffee's two blocks halt on the British right flank (x 1276.4-1276.9) and fire; nobody walks through or past the enemy. The
+  confusion is the 8 small groups firing ragged volleys (each from its own block) + smoke. Before dawn the Americans turn about and leave.
+- New check `node vicksburg/tools/check_side_gap.mjs <scene> <t0> <t1> <region> [gap 0.25]`: minimum outline gap between every red / blue
+  block pair + pairs whose separation reverses (passed through each other). S05 40-148: 0 pairs closer than 0.25, 0 crossings.

@@ -52,7 +52,7 @@ const MAIN = [0, 1, 2].map((i) => add({ side: "r", n: 2, face: FB, t0: FOR + i *
          [T.broken, ...onS(MS, 1.05 + i * 1.25)], [119.0, ...onS(MS, 10.6 + i * 1.3)]] }));   // round 2: they stay at the ditch through the Pakenham shot, turn about off screen, walk back in the wide shot
 add({ side: "r", n: 2, face: FB, t0: FOR + 1.2, keys: [[0, ...onS(2.0, 14.0)], [T.D, ...onS(2.0, 14.0)]] });   // round 2: the 44th waits far back with the ladders left behind (no drift at 52-62, no backing)
 // the river column: Rennie's light companies by the road (they storm the redoubt), the 93rd (cross obliquely to Gibbs' right, then stand)
-const RS = 0.32, RD0 = 10.6, RD1 = 4.6, RIN = 1.45;
+const RS = 0.32, RD0 = 10.6, RD1 = 4.6, RIN = 2.15;   // owner: they storm up to musket range of the redoubt, never into its defenders
 add({ side: "r", n: 2, face: FB, t0: FOR + 0.6,
   keys: [[0, ...onS(RS, RD0)], [T.british, ...onS(RS, RD0)], [T.five, ...onS(RS, RD1)], [97.2, ...onS(RS, RD1)], [T.storm + 0.2, ...onS(RS, RIN)], [110.6, ...onS(RS, RIN)], [116.0, ...onS(RS, 4.6)]] });   // round 1: turns about, then walks back
 const H93a = onS(1.5, 11.0), H93b = onS(1.5, 5.6), H93c = onS(2.7, 2.7);
@@ -68,7 +68,7 @@ const FM = Math.atan2(mwN[1], mwN[0]);
 const wbo = (k, d) => { const p = mw(k); return [p[0] + mwN[0] * d, p[1] + mwN[1] * d]; };
 [0.32, 0.72].forEach((k, i) => add({ side: "u", face: FM, t1: 125.0, keys: [[0, ...wbo(k, -0.5)], [126.0 + i * 0.3, ...wbo(k, -0.5)], [131.0, ...wbo(k, -3.6)]] }));   // round 1: they turn about as the line breaks (the shot ends at 127)
 add({ side: "r", n: 2, face: FM + Math.PI, t0: 113.0,
-  keys: [[113.0, ...wbo(0.5, 4.0)], [114.4, ...wbo(0.5, 4.0)], [T.broke - 0.2, ...wbo(0.5, 1.0)], [T.late5 - 0.3, ...wbo(0.5, -1.6)], [T.D, ...wbo(0.5, -1.6)]] });   // round 1: halts (no backward walk inside the shot)
+  keys: [[113.0, ...wbo(0.5, 4.0)], [114.4, ...wbo(0.5, 4.0)], [T.broke - 0.2, ...wbo(0.5, 1.0)], [T.late5 - 0.3, ...wbo(0.5, 0.7)], [T.D, ...wbo(0.5, 0.7)]] });   // owner: halts at the breastwork as Morgan's men turn about (no walking through them)   // round 1: halts (no backward walk inside the shot)
 
 // ---------------- boats: stuck in the collapsed canal at Villeré's; the few that crossed ----------------
 const CUT = [[VIL[0] - 0.5, 3232.6], [VIL[0] - 0.1, 3239.6]];   // the new cut from the Villeré canal to the river
@@ -95,7 +95,9 @@ const fx = {
     // rank after rank: the riflemen along the parapet (straight stretch + the receding leg), each volley a ripple of visible flashes
     { region: CH, pts: [onS(2.3, -0.45), onS(3.3, -0.45), onS(4.4, -0.45), onS(4.8, -0.45)], t0: 52.45, t1: 56.0, every: 1.5,   /* round 2: after "rank." */ opts: { ...VO, volley: 1.5 } },   // round 1: stops before the ladders payoff (56.2-68.9)
     { region: CH, pts: [onL(0.2, -0.45), onL(1.2, -0.45), onL(2.2, -0.45)], t0: 52.95, t1: 56.2, every: 1.7, opts: { ...VO, dir: nL, volley: 1.7 } },
-    { region: CH, pts: [onS(3.3, -0.45), onS(4.4, -0.45)], t0: 63.4, t1: 66.6, every: 3.0, opts: { ...VO, volley: 3.0 } },   // one sparse volley on the column at the ditch
+    { region: CH, pts: [onS(3.3, -0.45), onS(4.4, -0.45)], t0: 63.4, t1: 66.6, every: 3.0, opts: { ...VO, volley: 3.0 } },
+    // owner fix: the Tennesseans / Kentuckians on the receding leg (in the NO LADDERS shot) fire too, sparse (every 3.2 s)
+    { region: CH, pts: [onL(0.3, -0.45), onL(1.3, -0.45), onL(2.3, -0.45), onL(3.3, -0.45)], t0: 57.6, t1: 67.3, every: 3.2, opts: { ...VO, dir: nL, volley: 3.2 } },   // one sparse volley on the column at the ditch
     // on the 93rd and on the redoubt's attackers
     { region: CH, pts: [onS(2.0, -0.45), onS(3.0, -0.45), onS(3.6, -0.45)], t0: 89.8, t1: 95.4, every: 1.8, opts: { ...VO, volley: 1.8 } },
     { region: CH, pts: [onS(0.3, -0.5), onS(1.0, -0.5), onS(1.8, -0.5)], t0: 102.9, t1: T.driven + 0.4, every: 2.4, opts: { ...VO, volley: 2.4 } },   // round 3: 102.9 / 105.3 (clear of "Its" and "it,")
@@ -112,7 +114,7 @@ const arrows = [
   { side: "r", pts: [onS(RS, 10.0), onS(RS, 7.4), onS(RS, 5.0)], t0: T.advanced + 0.3, dur: 2.4, t1: 37.0, width: 0.2 },
   { side: "r", pts: [H93b, [(H93b[0] + H93c[0]) / 2 + 0.3, (H93b[1] + H93c[1]) / 2 - 0.1], H93c], t0: T.marched, dur: 2.0, t1: T.guns3 + 1.0, width: 0.2 },
   { side: "r", pts: [onS(RS, 4.4), onS(RS, 2.6), onS(RS, 1.2)], t0: T.storm - 0.3, dur: 1.2, t1: T.officers, width: 0.2 },
-  { side: "r", pts: [wbo(0.5, 4.6), wbo(0.5, 1.6), wbo(0.5, -2.2)], t0: T.broke - 0.2, dur: 1.4, t1: T.late5 + 0.6, width: 0.22 },
+  { side: "r", pts: [wbo(0.5, 4.6), wbo(0.5, 2.4), wbo(0.5, 0.9)], t0: T.broke - 0.2, dur: 1.4, t1: T.late5 + 0.6, width: 0.22 },
 ];
 
 // ---------------- banners ----------------
@@ -221,8 +223,8 @@ window.SEQ = {
     K(39.9, onS(3.0, 4.0), 27, 50, -118, "lin", 0),
     { ...K(39.9, onS(2.7, 0.6), 12, 64, -60, "cut", 0), dissolve: 0.9 },           // low along the wall: the batteries, then rank fire
     K(55.9, onS(3.3, 0.9), 11.5, 63, -56, "lin", 0),
-    { ...K(55.9, onS(3.9, 1.6), 10.5, 60, -24, "cut", 0), dissolve: 0.9 },           // close oblique down the front: the main column at the ditch
-    K(69.9, onS(3.9, 1.8), 10, 61, -20, "lin", 0),
+    { ...K(55.9, onS(4.2, 1.4), 9.6, 60, -24, "cut", 0), dissolve: 0.9 },   // owner: tighter (no idle reserve in the corner)           // close oblique down the front: the main column at the ditch
+    K(69.9, onS(4.2, 1.6), 9.2, 61, -20, "lin", 0),
     { ...K(69.9, onS(3.5, 7.0), 13, 60, 78, "cut", 0), dissolve: 0.9 },            // from behind the British: Pakenham rides forward
     K(75.2, onS(3.6, 5.4), 12.5, 61, 74, "io", 0),
     K(83.3, onS(3.7, 4.4), 14, 60, 70, "lin", 0),

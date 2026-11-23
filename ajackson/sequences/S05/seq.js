@@ -50,20 +50,20 @@ const RX = 1280.4, RX2 = 1285.6;
 // forward moves only (owner: blocks walk long side first; no backing): in the melee each side pushes THROUGH the other's lanes, so the
 // colours end up mixed in small groups; before dawn the Americans leave by the river road (escape = about-face, column, walk off west)
 const rFront = RL.map((y, i) => {
-  const xm = [1278.4, 1278.8, 1278.2][i], xm2 = [1276.6, 1277.2, 1276.9][i];
+  const xm = [1278.4, 1278.8, 1278.2][i], xm2 = [1277.6, 1277.9, 1277.5][i];   // owner: never through the enemy; close to musket range and stand
   return u("r", 1, [[0, RX, y], [T.dark + 0.4, RX, y], [T.hundred + 0.4, xm, y], [T.muskets, xm, y], [T.cane + 0.6, xm2, y], [T.D, xm2, y]], W, { t1: 107.6 }); });
 const rBack = [3236.9, 3234.3].map((y, i) => u("r", 1, [[0, RX2, y]], W, { t1: 107.6 }));   // round 3: the second row holds (no drift at 87-92)
 // the Americans (regulars, Marines, Plauche's + Daquin's battalions) come down the river road from the city at dusk, deploy at Bienvenu's,
 // attack east at "Then Jackson attacked"; melee; pull back west before dawn (escape up the river road)
 const ESC = (t0, from = 0) => ({ road: ROAD, t0, v: 1.0, v2: 1.0, join: "west", from });
 const bLine = BL.map((y, i) => {
-  const xm = [1277.0, 1276.6, 1277.2][i], xm2 = [1279.0, 1278.4, 1279.3][i];
+  const xm = [1275.9, 1275.5, 1276.0][i], xm2 = [1276.3, 1275.9, 1276.5][i];   // owner: a clear gap (>= 1 block depth) to the British
   return u("u", 1, [[0, 1258.6, y], [T.road, 1258.6, y], [T.camp + 0.6, 1266.2, y], [T.then, 1266.2, y], [T.side - 0.2, 1274.6, y],
     [T.dark + 0.4, 1274.6, y], [T.hundred + 0.4, xm, y], [T.muskets, xm, y], [T.cane + 0.6, xm2, y], [T.D, xm2, y]], E,
     { t0: T.marched - 0.2, t1: 107.6, escape: ESC(98.2 + i * 0.5) }); });   // round 1: the block turns about (~6.5 s) before it walks off
 // Coffee's Tennesseans: out of the swamp edge from the north-west, along the wood toward the British right, then into their flank
-const cLine = CL.map((y, i) => u("u", 1, [[0, 1265.0 - i * 0.4, y], [T.coffee - 0.4, 1265.0 - i * 0.4, y], [T.struck + 0.3, 1278.6 + i * 1.4, y],
-  [T.dark + 0.4, 1278.6 + i * 1.4, y], [T.friend + 0.6, 1281.4 + i * 1.2, y], [T.D, 1281.4 + i * 1.2, y]],
+const cLine = CL.map((y, i) => u("u", 1, [[0, 1265.0 - i * 0.4, y], [T.coffee - 0.4, 1265.0 - i * 0.4, y], [T.struck + 0.3, 1276.4 + i * 0.5, y],
+  [T.D, 1276.4 + i * 0.5, y]],   // owner: they halt on the British right flank and fire (no walk past it)
   E, { t0: T.coffee - 0.7, t1: 107.6, escape: ESC(99.4 + i * 0.5) }));
 // Christmas: Pakenham's reinforcements file out of the swamp onto Villere's (walk south, broadside, long side first)
 const reinf = [[1283.2, 3233.6], [1286.0, 3234.8], [1288.8, 3233.4], [1291.4, 3234.6], [1284.4, 3236.8], [1290.2, 3237.0]].map(([x, y], i) =>
@@ -98,11 +98,11 @@ const volleys = [];
 // round 2 (critic B): the attack volleys end before "while" (77.87); Coffee's men fire after "side." (82.9): the words in between stay clear
 BL.forEach((y, i) => volleys.push(VOL(lane(1273.9, y), T.attacked + 2.6 + i * 0.37, 78.8, [1, 0])));
 RL.forEach((y, i) => volleys.push(VOL(lane(RX - 0.4, y), T.regulars2 + 1.3 + i * 0.41, 78.8, [-1, 0])));
-CL.forEach((y, i) => volleys.push(VOL([[1277.0 + i * 1.4, y - 0.35], [1278.2 + i * 1.4, y + 0.35]], T.side + 0.35 + i * 0.3, T.side + 2.0, [0.5, 1])));
+CL.forEach((y, i) => volleys.push(VOL([[1276.65 + i * 0.5, y - 0.35], [1276.65 + i * 0.5, y + 0.35]], T.side + 0.35 + i * 0.3, T.side + 2.0, [0.5, 1])));
 // the melee: short ragged volleys all over the field, both colours (each one a visible burst of flashes = one sound event)
-const MF = [[1277.6, 3238.0, 1], [1278.4, 3236.9, -1], [1277.1, 3235.9, 1], [1278.9, 3234.9, -1], [1277.8, 3234.1, 1], [1279.6, 3233.2, -1], [1281.4, 3232.4, 1],
-  [1279.3, 3235.4, -1]];   // round 1 (critic B): 8 groups, fewer shots under the melee narration
-MF.forEach(([x, y, s], i) => { const t0 = T.dark + 0.8 + (i * 1.03) % 11.4; volleys.push(VOL([[x - 0.15 * s, y - 0.3], [x + 0.15 * s, y + 0.3]], t0, t0 + 3.4, [s, 0], { volley: 1.7 + (i % 3) * 0.2, roll: 0.25, rate: 2.2 })); });
+const MF = [[1276.4, 3238.3, 1], [1277.5, 3237.35, -1], [1276.0, 3236.4, 1], [1277.8, 3235.45, -1], [1276.6, 3234.5, 1], [1277.4, 3233.55, -1], [1276.6, 3232.4, 1],
+  [1277.1, 3231.45, 1]];   // owner fix: each group fires from its own block (the blocks never cross)   // round 1 (critic B): 8 groups, fewer shots under the melee narration
+MF.forEach(([x, y, s], i) => { const t0 = T.dark + 0.8 + (i * 1.03) % 11.4; volleys.push(VOL([[x + 0.25 * s, y - 0.32], [x + 0.25 * s, y + 0.32]], t0, t0 + 3.4, [s, 0], { volley: 1.7 + (i % 3) * 0.2, roll: 0.25, rate: 2.2 })); });
 const smokeLines = [];
 // the Carolina's broadside: her guns from the river into the camp, each shot a flash + plume + an impact among the fires
 const carShots = [T.opened, T.fire + 0.35, T.campfires - 0.1, 66.95, 67.6, 68.35, 69.1, 69.9].map((t, i) => {
@@ -124,7 +124,7 @@ const arrows = [
   { side: "r", region: NO, pts: [[CANAL[0] + 4, CANAL[1] - 14], [CANAL[0] + 0.6, CANAL[1] - 4], [1287.2, 3226.0], [VIL[0] - 1.0, VIL[1] - 3.6]], t0: T.rest - 0.3, dur: 1.8, t1: T.guard - 0.4, width: 0.16 },
   // the attack: down the river road, and Coffee's swing by the swamp edge
   { side: "u", region: CH, pts: [[1266.8, 3237.4], [1270.6, 3237.3], [1273.8, 3237.1]], t0: T.attacked + 0.1, dur: 1.6, t1: T.dark - 0.3, width: 0.2 },
-  { side: "u", region: CH, pts: [[1266.0, 3231.6], [1271.0, 3230.9], [1275.6, 3231.2], [1278.4, 3232.6]], t0: T.swung, dur: 2.0, t1: T.dark - 0.3, width: 0.2 },
+  { side: "u", region: CH, pts: [[1266.0, 3231.6], [1271.0, 3230.9], [1275.0, 3231.4], [1276.4, 3232.0]], t0: T.swung, dur: 2.0, t1: T.dark - 0.3, width: 0.2 },
   // before dawn: back two miles to the Rodriguez Canal
   { side: "u", region: CH, pts: [[1272.4, 3236.0], [1266.0, 3234.6], [1259.0, 3232.0], [1255.4, 3229.8]], t0: T.pulled, dur: 2.2, t1: T.stung - 0.2, width: 0.2 },
 ];

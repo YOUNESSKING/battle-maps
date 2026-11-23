@@ -15,10 +15,23 @@
  "cell": 9.0,
  "seed": 1814,
  "wood_soft": {
-  "blur_u": 0.8,
-  "alpha": 0.65
+  "blur_u": 0.5,
+  "alpha": 0.85
  },
  "field_look": "gm",
+ "tex_grade": {
+  "contrast": 1.2,
+  "sat": 1.3,
+  "gamma": 0.97
+ },
+ "river_halo_u": 0.25,
+ "sea_look": {
+  "deep": "#38545f",
+  "shallow": "#6a8a8e",
+  "shelf_u": 6.0,
+  "beach_u": 0.12,
+  "line_u": 0.06
+ },
  "longlots": {
   "river": "Mississippi River (New Orleans)",
   "w": 1.5,
@@ -76,7 +89,9 @@
    ]
   ],
   "jag": 2.0,
-  "hummock": 0.7
+  "hummock": 0.66,
+  "marsh_col": "#7f8059",
+  "marsh_dark": "#55643f"
  },
  "stills": [
   {
