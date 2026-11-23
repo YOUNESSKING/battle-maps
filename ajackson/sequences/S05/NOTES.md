@@ -57,3 +57,7 @@ see its SOURCES.md); flags `us15_flag.png`, `gb1801_union_flag.png` from `ajacks
 - 72.5-83: the attack volleys (Jackson's lanes, the British front) end by 77.75 (before "while" 77.87); Coffee's men fire after "side." (82.9):
   "while Coffee's ... struck the British from the side" is clear of shots.
 - Jackson quote (21-25): 52 px on a dark backing with a thin gold rule (`.cq` styled after the call), y 640, dim 0.6.
+
+## Round 3 fixes
+- The British second row (r3/r4) holds in the melee (no 22-26 deg drift at 87-92 s); check 80-100: 0 flags, 0 overlaps.
+- Jackson quote 62 px (+20 %).

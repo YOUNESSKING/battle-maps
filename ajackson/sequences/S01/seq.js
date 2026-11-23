@@ -77,7 +77,7 @@ const units = [];
 // the British lines: in place at the emergence, advance on "five thousand", stop short of the ditch, fall back on "killed"; off screen they
 // close up again (d 4-5) for the third snap cut, where they stand in the smoke and fall back once more
 const RED = [[-0.06, 5.5, 2.0, 2], [0.42, 6.4, 2.4, 2], [0.84, 5.7, 2.0, 2], [1.04, 6.6, 2.7, 2]];   // [s, start d, closest d, boxes]
-const GB_ADV = 17.9, GB_HALT = 21.3, GB_BACK = 28.7, GB_OUT = 32.7;   // round 1: retreatTurn (engine) turns the whole block about in ~7 s before the walk back   // the halt >= 3.3 s (runs closer than 3.2 s merge: no about-face)
+const GB_ADV = 18.8, GB_HALT = 22.4, GB_BACK = 29.7, GB_OUT = 33.4;   // round 1: retreatTurn (engine) turns the whole block about in ~7 s before the walk back   // the halt >= 3.3 s (runs closer than 3.2 s merge: no about-face)
 RED.forEach(([s, d0, d1, n], i) => units.push({ region: CH, side: "r", type: "inf", n, face: FACE + Math.PI, arrive: false,
   keys: [[0, ...off(s, d0)], [GB_ADV + i * 0.25, ...off(s, d0)], [GB_HALT + i * 0.2, ...off(s, d1)], [GB_BACK + i * 0.15, ...off(s, d1)],
          [GB_OUT + i * 0.2, ...off(s, d0 + 0.6)], [SN3 + 0.4 + i * 0.3, ...off(s, d0 + 0.6)], [SN3 + 3.0 + i * 0.3, ...off(s, d1 + 1.4)]] }));   // round 1: halted before the title line (calm shot)

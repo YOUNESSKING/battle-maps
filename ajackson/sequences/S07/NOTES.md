@@ -50,3 +50,7 @@ Open issues: blocks are small at dist 20-30 (kept near S06's size for the dissol
   93.1, redoubt gun 104.0 -> 104.95; redoubt volleys every 1.6 s from 102.0.
 - 8-15: camera closer and lower on the boats (dist 12-13), fog 45 % thinner there, crossing barges 0.26 / stuck barges 0.24, "hours late" 24 px.
 - check_troops_motion 0-152.86: 0 overlaps, 0 pops; remaining turn flags only at the camera cuts (39.9, 83.4, 107.6, 114.7).
+
+## Round 3 fixes
+- Shots off sentence-final words: 65.55 -> 66.0 ("it."), 72.25 -> 72.6 and 72.9 -> 73.3 ("them."), redoubt gun 102.4 -> 102.0 and 104.95 ->
+  105.35, redoubt volleys at 102.9 / 105.3 (every 2.4 s; clear of "Its" 102.53 and "it," 104.73). Motion check unchanged (flags only at cuts).

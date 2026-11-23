@@ -38,3 +38,8 @@ swamp; 44th with fascines and ladders).
 - The Carolina burns (bigger steamer fire) and sinks over 2.2 s (boat `h(t)`), fire out with her; camera stays on her to 53.4.
 - 1 Jan duel guns end at 73.75 (critic B: "shot most of them to pieces" clear of gunfire).
 - Plan arrows 2.5-3x wider (`maxWidth`), labels at the arrow heads, LADDERS stamp 1.5x, gold "8" over the battery row.
+
+## Round 3 fixes
+- 28 Dec probe: the swamp column (r19) is already up by the swamp when it fades in on "The next day" (its approach = the arrow), then turns
+  about and walks off as before: no 46 deg drift at 54-56 s (now <= 18 deg). The road column (r18) keeps its short advance (14 deg; one
+  93 deg/s flag at 54.1 while the camera swings off the Carolina).

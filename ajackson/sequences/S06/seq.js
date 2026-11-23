@@ -61,7 +61,7 @@ fileIn("cho", FL, T.choctaw, 2.6);
 const FRC = Math.atan2(3231.6 - 3233.2, 1258.6 - 1260.8), FSC = Math.atan2(3226.8 - 3228.2, 1258.8 - 1261.2);   // = their walking directions
 add({ side: "r", n: 3, face: FRC, t0: T.next - 0.3, keys: [[T.next - 0.4, 1260.8, 3233.2], [T.next + 1.8, 1260.8, 3233.2], [T.line + 3.6, 1258.6, 3231.6], [T.D, 1258.6, 3231.6]],   // round 1: on the bank, not the river
   escape: { road: ROAD, t0: T.line + 3.8, v: 1.1, v2: 1.1, join: "east" }, t1: 68.0 });   // round 1: stop, turn about (~6.5 s), walk off
-add({ side: "r", n: 3, face: FSC, t0: 50.9, keys: [[51.0, 1261.2, 3228.2], [54.0, 1258.8, 3226.8], [T.D, 1258.8, 3226.8]],
+add({ side: "r", n: 3, face: FSC, t0: T.next - 0.3, keys: [[0, 1258.8, 3226.8]   /* round 3: already up by the swamp (fades in, no oblique drift); the arrow shows its approach */, [T.D, 1258.8, 3226.8]],
   escape: { road: [[1258.8, 3226.8], [1262.4, 3228.6], [1266.4, 3230.2], [1271.0, 3231.4]], t0: T.line + 4.0, v: 1.1, v2: 1.1, join: "east" }, t1: 68.0 });
 // 1 January: the British batteries behind their sugar-barrel parapet (works[2]), built in the night; silenced (grey) by the American guns
 const BB = VX.work(CH, 2), bbAt = (k) => { const p = VX.along(BB, VX.len(BB) * k); return [p[0] + 0.42, p[1] + 0.12]; };
