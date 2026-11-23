@@ -76,7 +76,7 @@ const units = [];
 // the British lines: in place at the emergence, advance on "five thousand", stop short of the ditch, fall back on "killed"; off screen they
 // close up again (d 4-5) for the third snap cut, where they stand in the smoke and fall back once more
 const RED = [[-0.06, 5.5, 2.0, 2], [0.42, 6.4, 2.4, 2], [0.84, 5.7, 2.0, 2], [1.04, 6.6, 2.7, 2]];   // [s, start d, closest d, boxes]
-const GB_ADV = 17.3, GB_HALT = 21.1, GB_BACK = 28.7, GB_OUT = 32.7;   // round 1: retreatTurn (engine) turns the whole block about in ~7 s before the walk back   // the halt >= 3.3 s (runs closer than 3.2 s merge: no about-face)
+const GB_ADV = 17.9, GB_HALT = 21.3, GB_BACK = 28.7, GB_OUT = 32.7;   // round 1: retreatTurn (engine) turns the whole block about in ~7 s before the walk back   // the halt >= 3.3 s (runs closer than 3.2 s merge: no about-face)
 RED.forEach(([s, d0, d1, n], i) => units.push({ region: CH, side: "r", type: "inf", n, face: FACE + Math.PI, arrive: false,
   keys: [[0, ...off(s, d0)], [GB_ADV + i * 0.25, ...off(s, d0)], [GB_HALT + i * 0.2, ...off(s, d1)], [GB_BACK + i * 0.15, ...off(s, d1)],
          [GB_OUT + i * 0.2, ...off(s, d0 + 0.6)], [SN3 + 0.4 + i * 0.3, ...off(s, d0 + 0.6)], [SN3 + 3.0 + i * 0.3, ...off(s, d1 + 1.4)]] }));   // round 1: halted before the title line (calm shot)
@@ -169,7 +169,7 @@ const CSS = `
 .aj-stamp{position:absolute;left:50%;top:352px;margin-left:-160px;width:320px;font-family:"GM Cinzel",serif;font-weight:700;font-size:58px;letter-spacing:.16em;padding:6px 0 2px .16em;color:#C8382A;
   border:5px solid #C8382A;border-radius:6px;text-shadow:0 0 1px #C8382A;box-shadow:0 0 0 2px rgba(200,56,42,.25)}
 .aj-ghent .nr{position:absolute;left:0;right:0;top:482px;font-family:"GM Cinzel",serif;font-weight:700;font-size:30px;letter-spacing:.2em;padding-left:.2em;color:#E9A090}
-.aj-pseal{left:1330px;top:250px;width:300px;text-align:center}
+.aj-pseal{position:absolute;left:1330px;top:250px;width:300px;text-align:center}
 .aj-pseal .aj-seal{position:relative;display:inline-block;left:auto;right:auto;top:auto;width:104px;height:104px;line-height:104px;font-size:30px}
 .aj-pseal .rb{position:absolute;left:50%;top:84px;width:70px;height:56px;margin-left:-35px;background:linear-gradient(90deg,#7a1610 0 46%,transparent 46% 54%,#7a1610 54%);clip-path:polygon(0 0,46% 0,30% 100%,18% 80%,6% 100%,0 0,54% 0,100% 0,94% 100%,82% 80%,70% 100%,54% 0);z-index:-2}
 .aj-pseal .cap{margin-top:30px;font-family:"GM Cinzel",serif;font-weight:700;font-size:28px;letter-spacing:.2em;color:#EEE7D6;text-shadow:0 2px 6px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.6)}
@@ -188,7 +188,7 @@ const buildCards = (ctx) => { const { tl } = ctx;
   const mk = (cls, html) => { const e = document.createElement("div"); e.className = cls; e.innerHTML = html; host.appendChild(e); gsap.set(e, { autoAlpha: 0 }); return e; };
   const bk = mk("aj-bk", "");
   // owner fix: "a prize to bargain with at the peace table": a small wax seal + PEACE TABLE (over the closing cloud deck)
-  const ps = mk("aj-pseal", `<div class="rb"></div><div class="aj-seal">GB</div><div class="cap">PEACE TABLE</div>`);
+  const ps = mk("aj-pseal", `<div class="rb"></div><div class="aj-seal"></div><div class="cap">PEACE TABLE</div>`);
   tl.fromTo(ps, { autoAlpha: 0, scale: 1.5, rotation: -10 }, { autoAlpha: 1, scale: 1, rotation: -4, duration: 0.24, ease: "power4.in", immediateRender: false }, T.peace0 - 0.05);
   tl.fromTo(ps, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, SWT - 0.35);
   const gh = mk("aj-card aj-ghent", `<div class="tex"></div><div class="hd">Two weeks earlier</div><div class="aj-seal l">GB</div><div class="aj-seal r">US</div>
@@ -303,7 +303,7 @@ window.SEQ = {
     { text: "New Orleans", at: [CITY[0], CITY[1] - 2.4], size: 24, t0: T.orleans2, t1: T.orleans2 + 3.6, region: NO },
     { text: "Mississippi River", at: [1226, 3226.5], size: 18, t0: T.river2, t1: T.river2 + 3.4, region: NO, river: true },
   ],
-  boats: FLEET(FLEETP, 9, 7, { region: GULF, t0: -1, t1: SWT, size: 5.0, spread: 13, depth: 34, speed: FLV, s0: FLS0 })
+  boats: FLEET(FLEETP, 9, 7, { region: GULF, t0: -1, t1: SWT, size: 5.0, spread: 24, depth: 52, speed: FLV, s0: FLS0 })
     .concat([{ region: CH, kind: "ship", n: 1, size: 0.75, path: CARP, sAt: () => VX.len(CARP) * 0.5, t0: N0, t1: N1, lamp: true, wake: false }]),
   fx, build, draw: (t, ctx) => fog.draw(t, ctx),
   overlay: [

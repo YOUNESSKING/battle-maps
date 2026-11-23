@@ -96,3 +96,18 @@ spoken: shown as small source text); no "Jackson" on screen before the name slam
 - ANDREW JACKSON readable from "Andrew" (tOn + 0.5: fade 64.65-65.15).
 - Open: r9 (British, wood end) shows one 40 deg heading jump at 26.7 s during its about-turn (engine v15 retreatTurn + the on-screen
   heading correction); hard-cut "turn" spikes at 69.9 / 74.2 as before.
+
+## Owner fixes (re-voiced opening, D 79.89 s)
+- Every beat re-timed to the new word times (`scene_times.py S01 --words`): T table replaced; swap 12.8 (push 9.0, emerge 13.3 on
+  "eighth"), Ghent cut 32.34, card out 42.16, name slam 60.92 / 61.40, snap cuts 62.68 / 66.10 / 70.38, title "three" 76.16.
+- New first-shot beats: plate WINTER 1814 on "eighteen fourteen" (1.71); WASHINGTON BURNED tag riding with the fleet on "burned"
+  (3.74); NEW ORLEANS (5.66); the Mississippi glows gold from its mouth up to the city on "mouth" (7.80) and on up the valley from
+  8.76; a small wax seal + PEACE TABLE on "peace" (11.40), over the closing cloud deck.
+- Fleet: 9 separate ships from the S03/S04/S08 helper (copied verbatim): own path per ship (sideways offset 24 u, drifting heading),
+  own speed (+-10 %), leaders and stragglers (lag up to ~80 u); no column.
+- British advance now starts at 17.9 (camera lands 16.15); the halt 21.3 -> about-turn -> walk back 28.7-32.7.
+- Rebuilt on the re-baked gulf / neworleans / horseshoe worlds; scene folder 34.2 MB.
+- check_troops_motion 0-79.89: no overlaps, pops or shape change; front-vs-velocity <= 16 deg; screen error <= 5 deg. Remaining
+  "turn" flags: 8-16 deg per 0.1 s at 15.3-15.4 while the camera is still landing from the dive (on-screen heading correction), and the
+  hard-cut frames 66.1 / 70.4. The r9 40-deg jump of round 1 is gone.
+- Still pale white at ~13.5-14.5 s (the v8 emergence fog, kept as the owner's look).
