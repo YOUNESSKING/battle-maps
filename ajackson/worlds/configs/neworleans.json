@@ -18,6 +18,66 @@
   "blur_u": 0.8,
   "alpha": 0.65
  },
+ "field_look": "gm",
+ "longlots": {
+  "river": "Mississippi River (New Orleans)",
+  "w": 1.5,
+  "depth": 2.6,
+  "bank": 3.1
+ },
+ "swamp_band": {
+  "river": "Mississippi River (New Orleans)",
+  "from_x": [
+   [
+    1010,
+    9.0
+   ],
+   [
+    1246,
+    8.2
+   ],
+   [
+    1252,
+    7.9
+   ],
+   [
+    1262,
+    9.0
+   ],
+   [
+    1276,
+    11.0
+   ],
+   [
+    1306,
+    12.5
+   ],
+   [
+    1600,
+    12.5
+   ]
+  ],
+  "to_x": [
+   [
+    1010,
+    16.0
+   ],
+   [
+    1262,
+    17.0
+   ],
+   [
+    1306,
+    21.0
+   ],
+   [
+    1600,
+    21.0
+   ]
+  ],
+  "jag": 2.0,
+  "hummock": 0.8
+ },
  "stills": [
   {
    "at": [

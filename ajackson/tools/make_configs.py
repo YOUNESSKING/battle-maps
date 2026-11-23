@@ -153,16 +153,16 @@ write("horseshoe", {
  "note": "Horseshoe Bend (27 Mar 1814): the Tallapoosa's loop round the Tohopeka peninsula (toe south), the Red Stick log breastwork across the neck, "
          "Gun Hill north of it, Tohopeka village at the toe, Coffee's bank south / west, Bean's island. Zoom-11 frame: 1 unit = ~64 m (base units x 2). "
          "The 1814 river (no reservoir: Lake Martin lies downstream; wide flat water in the DEM filled from the banks).",
- "box": [8656, 1243, 92, 70], "focus": [8704.5, 1281.0], "hm_ppu": 8, "tex": 7168, "exag": 3.0, "cell": 2.8, "seed": 1814, "relief_noise": [1.0, 0.35],
+ "box": [8656, 1243, 92, 70], "focus": [8704.5, 1281.0], "hm_ppu": 8, "tex": 7168, "exag": 2.2, "cell": 2.8, "seed": 1814, "relief_noise": [1.0, 0.35],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.14, "ravine_woods": 0.6, "tree_spacing": 0.25, "rust_k": 0.85,
- "clear": [[float(vil[0]), float(vil[1]), 2.6], [gun[0], gun[1], 1.6], [bw[3][0], bw[3][1], 1.5], [pl("Cotton Patch Hill", K)[0], pl("Cotton Patch Hill", K)[1], 1.8]],
+ "clear": [[float(vil[0]), float(vil[1]), 2.6], [pl("Cotton Patch Hill", K)[0], pl("Cotton Patch Hill", K)[1], 1.4]],
  "rivers": [{"name": "Tallapoosa River", "geo": "Tallapoosa River (Horseshoe Bend)", "w": 1.7, "step": 0.12, "snap": False, "smooth": 6, "keep": 1.6}],
  "roads": [{"name": "Jackson's approach", "geo": "Jackson's approach (1814 trail)", "cls": "lane", "meander": 0.15}],
  "towns": [{"name": "Tohopeka", "at": [round(float(vil[0]), 2), round(float(vil[1]), 2)], "kind": "hamlet", "len": 2.4, "angle": 20}],
  "farm_density": 0.0, "plantation_density": 0.0, "lane_p": 0.0,
- "features": {"works": [{"name": "Red Stick breastwork", "pts": bw, "kind": "breastwork", "side": "rs", "face_to": gun, "height": 1.6, "clear": 0.8}]},
+ "features": {"works": [{"name": "Red Stick breastwork", "pts": bw, "kind": "breastwork", "side": "rs", "face_to": gun, "height": 1.6, "clear": 1.2}]},
  "labels": ["Breastwork (barricade) centre", "Tohopeka village site", "Gun Hill", "Cotton Patch Hill", "Bean's island", "Cherokee canoe crossing",
             "Coffee's mounted brigade", "Hammond's rangers", "Emuckfaw Creek mouth"],
 })
@@ -174,7 +174,10 @@ write("neworleans", {
          "Lake Pontchartrain, the Rigolets, Chef Menteur. Base frame (zoom 10), so units / places match chalmette directly. Modern canals "
          "(Industrial Canal, MRGO, Intracoastal) erased from the water mask (opening) and filled; city basins below sea level are land.",
  "box": [1010, 2924, 590, 462], "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 10.0, "cell": 9.0, "seed": 1814,
- "wood_soft": {"blur_u": 0.8, "alpha": 0.65},
+ "wood_soft": {"blur_u": 0.8, "alpha": 0.65}, "field_look": "gm",
+ "longlots": {"river": "Mississippi River (New Orleans)", "w": 1.5, "depth": 2.6, "bank": 3.1},
+ "swamp_band": {"river": "Mississippi River (New Orleans)", "from_x": [[1010, 9.0], [1246, 8.2], [1252, 7.9], [1262, 9.0], [1276, 11.0], [1306, 12.5], [1600, 12.5]],
+                "to_x": [[1010, 16.0], [1262, 17.0], [1306, 21.0], [1600, 21.0]], "jag": 2.0, "hummock": 0.8},
  "stills": [{"at": [1305, 3155], "dist": 640, "tilt": 30, "yaw": 0}, {"at": [1290, 3200], "dist": 300, "tilt": 44, "yaw": 0}, {"at": [1258, 3222], "dist": 150, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.1, "min_px": 1e12, "open_px": 7, "close_px": 11, "island_px": 60,

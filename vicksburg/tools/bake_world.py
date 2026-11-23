@@ -947,6 +947,7 @@ def bake(rname, G, P, creeks, preview=True):
     LOG("  fields ...")
     hedge_pts = None
     if close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
+    elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s, r, TW, TH, seed)   # project mode: the close (chalmette) field look on a wide map
     else: img = wide_fields(lab, n, cell, s, r, TW, TH, seed)
     if PROJ and cfg.get("rust_k"):   # project mode: pull the rust / ploughed-brown field tones toward the sand tones (reads as a pink smear on hills)
         red = np.clip((img[..., 0] - img[..., 1] - 12.0) / 14.0, 0, 1)[..., None] * cfg["rust_k"]
