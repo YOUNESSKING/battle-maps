@@ -46,7 +46,7 @@
  "dem_margin": 24,
  "dem_edits": {
   "sea": {
-   "level": 0.0,
+   "level": 0.1,
    "min_px": 1000000000000.0,
    "open_px": 7,
    "close_px": 11,

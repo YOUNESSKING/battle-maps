@@ -358,7 +358,7 @@ def prep_dem_project(G, cfg, close):
             x, y = to_map(la, lo); i, j = int((y - b0[1]) * DPU), int((x - b0[0]) * DPU)
             if 0 <= i < H and 0 <= j < W and lab[i, j]: ok[lab[i, j]] = True
         sea = ok[lab]
-        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5)); sea = cv2.morphologyEx(sea.astype(np.uint8), cv2.MORPH_CLOSE, k) > 0
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (S.get("close_px", 5),) * 2); sea = cv2.morphologyEx(sea.astype(np.uint8), cv2.MORPH_CLOSE, k) > 0   # close_px: thin land strips in the water (causeways, tile seams)
         land = (~sea).astype(np.uint8); n, lab, st, _ = cv2.connectedComponentsWithStats(land, 8)   # no tiny islands / marsh specks
         small = np.zeros(n, bool); small[1:] = st[1:, cv2.CC_STAT_AREA] < S.get("island_px", 30); sea |= small[lab]
         LOG("  sea %.1f %%" % (sea.mean() * 100))
