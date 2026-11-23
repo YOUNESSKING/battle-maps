@@ -1,4 +1,12 @@
-# S07 MOVE 3: 8 JANUARY 1815 (D 152.86 s) — sheet.jpg (23 stills)
+# S07 MOVE 3: 8 JANUARY 1815 (D 152.86 s) — sheet.jpg (24 stills)
+
+**Fix round 1:**
+- 40-107.5 is now cut into 5 closer, lower oblique shots (dissolves at 39.9, 55.9, 69.9, 83.3, 96.7), at dist 10-13 and tilt 60-64: (1) low along the wall for the batteries and rank fire; (2) down the front for the main column at the ditch and NO LADDERS; (3) from behind the British, following Pakenham; (4) from the side for the 93rd under grape; (5) the redoubt by the river. The wide high view remains for the rocket/advance and for HALF AN HOUR.
+- The main column moved to s 3.9 and the 44th to s 2.0, out of the wood edge.
+- Fog: blobs replaced by an even veil plus long blurred bands lying along the river, densest by the river, lifting 32.0-34.7.
+- The ~12 s arrow is now the boats' route across the river, with the west bank in frame.
+- Result: a big centred dark card (BRITISH 2,037 / AMERICAN 71 / behind the wall: 6 killed / sources), each figure on its words.
+
 One region: chalmette. troopScale 1.15. The opening state is S06's ending: the same `onS` / `onL` helpers, the 8 batteries at the same positions, the defenders (n 1) at S06's POS, the camera on S06's last key, now before dawn (night 0.5 -> 0 by the fog lift).
 
 | t | shot | on screen (on its word) |
@@ -14,7 +22,7 @@ One region: chalmette. troopScale 1.15. The opening state is S06's ending: the s
 | 96.8-107 | the river end | the river column storms the advanced redoubt 97.2-99.5 (the US company turns grey), shot down 102.7-104 (guns + volleys), driven out 105-107.4 (redoubt back to blue, column gone) |
 | 107.8-114.6 | the field | all British lines back; HALF AN HOUR stamp 110.3 |
 | 114.6-127 | dissolve: the west bank, seen from over the river | Morgan's two lines fire, break on "broke through" 118.4 (red arrow), red halts 122, ordered back 126; "Morgan's line" label |
-| 127-143.4 | dissolve: still field, dimmed | ledger "8 January 1815 / Lambert's and Butler's returns": British 2,037 (killed, wounded or captured) 131.4 + "three generals among them" 132.8; American 71 casualties (killed, wounded or missing · both banks) 137.8; Behind the wall: 6 killed 142.6 |
+| 127-143.4 | dissolve: still field, dimmed | (now a centred card, see above; was the ledger) "8 January 1815 / Lambert's and Butler's returns": British 2,037 (killed, wounded or captured) 131.4 + "three generals among them" 132.8; American 71 casualties (killed, wounded or missing · both banks) 137.8; Behind the wall: 6 killed 142.6 |
 | 143.6-end | method letter (S03/S05 design) | lines 1-2 typed fast, "3. Make them come to you" types on "make" 150.0 |
 
 Facts: FACT_NOTES_neworleans.md 43-54 (rocket, fog, the 44th's ladders, Gibbs' column, Pakenham, the 93rd, Rennie at the redoubt, Lambert, the west bank, 2,037 / 71 = both banks, 6 killed on the east bank).

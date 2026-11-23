@@ -1,11 +1,11 @@
-// S08 ENDING (D 65.61 s, ajackson/tools/scene_times.py S08). One region: gulf (z8). Fades out at the very end.
+// S08 ENDING (D 79.11 s: ~17 s of clean living map after the last word for YouTube's end screen, ajackson/tools/scene_times.py S08). One region: gulf (z8). Fades out at the very end.
 // The British sail away (Jan 1815) -> 16 Feb 1815: the Senate approves the Treaty of Ghent (S01's Ghent card returns: APPROVED) -> Jackson's
 // banner over New Orleans, fame, the White House -> the Indian Removal Act: the remaining Native lands in the South shaded (muted) and
 // thin muted arrows west across the Mississippi, the Cherokee named (respectful, no drama) -> the scar card callback (S01's design) + the
 // method card with all three lines -> engage.final (1 / 2 / 3, "1, 2 OR 3?", subscribe) -> the living map alone, fade.
 // Facts: FACT_NOTES_neworleans.md 56 (withdrawal 18-27 Jan), treaty ratified 16 Feb 1815 (Senate); FACT_NOTES_horseshoe.md (Cherokee allies).
 (() => {
-const T = { D: 65.61, ten: 0.43, later: 0.81, slipped: 2.11, ships: 3.23, d16: 4.94, february: 5.29, senate: 7.09, approved: 7.41, treaty: 8.15,
+const T = { D: 79.11, ten: 0.43, later: 0.81, slipped: 2.11, ships: 3.23, d16: 4.94, february: 5.29, senate: 7.09, approved: 7.41, treaty: 8.15,
   ghent: 8.75, battle: 9.73, change: 10.57, word: 11.21, made: 12.63, andrew: 12.85, jackson: 13.31, famous: 14.21, america: 15.21,
   white: 18.11, house: 18.33, signed: 20.21, indian: 20.73, removal: 21.17, act: 21.53, tens: 23.45, thousands: 23.83, native: 24.49,
   forced: 25.65, lands: 26.47, south: 27.25, cherokee: 28.87, fought: 30.09, horseshoe: 30.99, bend: 31.57,
@@ -81,10 +81,10 @@ const shade = { build() { const c = document.createElement("canvas"); c.width = 
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
   draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const W = ctx.world, k = VX.sstep(T.removal - 0.2, T.act + 0.8, t) * (1 - VX.sstep(32.0, 33.0, t)); if (k <= 0.001) return;
     for (const poly of LANDS) { const P = poly.map((q) => { const p = W.projectMap(q[0], q[1], 0); return [p.x, p.y]; });
-      g.save(); g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fillStyle = `rgba(120,104,86,${(0.34 * k).toFixed(3)})`; g.fill(); g.clip();
-      g.strokeStyle = `rgba(150,132,110,${(0.5 * k).toFixed(3)})`; g.lineWidth = 1.2; g.beginPath(); for (let x = -800; x < 1400; x += 12) { g.moveTo(x, 0); g.lineTo(x + 720, 720); } g.stroke(); g.restore();
-      g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.strokeStyle = `rgba(90,76,62,${(0.7 * k).toFixed(3)})`; g.lineWidth = 1.6; g.stroke(); } } };
-const MUTE = "#8a7a66";
+      g.save(); g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fillStyle = `rgba(150,128,96,${(0.4 * k).toFixed(3)})`; g.fill(); g.clip();
+      g.strokeStyle = `rgba(214,196,160,${(0.6 * k).toFixed(3)})`; g.lineWidth = 1.2; g.beginPath(); for (let x = -800; x < 1400; x += 12) { g.moveTo(x, 0); g.lineTo(x + 720, 720); } g.stroke(); g.restore();
+      g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.strokeStyle = `rgba(226,210,176,${(0.85 * k).toFixed(3)})`; g.lineWidth = 2.4; g.stroke(); } } };
+const MUTE = "#cbb68f";
 window.SEQ = {
   name: "S08", D: T.D, T, seed: 1815, date: "1815-02-16",
   regions: [GF],
@@ -97,7 +97,8 @@ window.SEQ = {
     { t: 24.6, region: GF, at: [560, 560], dist: 1180, tilt: 20, yaw: 0, fov: 30, ease: "io" },       // the South: the lands, west across the Mississippi
     { t: 32.0, region: GF, at: [560, 570], dist: 1160, tilt: 21, yaw: 0, fov: 30, ease: "lin" },
     { t: 43.4, region: GF, at: [430, 760], dist: 700, tilt: 38, yaw: 0, fov: 30, ease: "io" },
-    { t: T.D, region: GF, at: [470, 740], dist: 760, tilt: 37, yaw: 2, fov: 30, ease: "lin" },          // the living map for the end screen
+    { t: 61.5, region: GF, at: [462, 744], dist: 740, tilt: 37, yaw: 1, fov: 30, ease: "lin" },
+    { t: T.D, region: GF, at: [500, 730], dist: 790, tilt: 36, yaw: 4, fov: 30, ease: "lin" },          // the living map alone for the end screen (slow drift)
   ],
   clouds: { [GF]: { scatter: { seed: 7 }, keepClear: [[400, 790, 160, 1, 1]] } },
   units: [],
@@ -106,12 +107,12 @@ window.SEQ = {
     { side: "r", region: GF, width: 0.5, maxWidth: 0.5, pts: AWAY.slice(1, 4), t0: T.slipped, dur: 1.6, t1: 6.4 },
     // removal: thin muted arrows west across the Mississippi (Creek, Choctaw, and from the Cherokee country north-east, off the map)
     ...[[[1010, 300], [700, 250], [380, 215], [60, 190]], [[640, 430], [420, 400], [200, 380], [40, 360]], [[1180, 60], [820, 80], [420, 100], [50, 110]]]
-      .map((pts, i) => ({ color: MUTE, region: GF, width: 0.45, maxWidth: 0.45, pts, t0: T.forced + i * 0.5, dur: 2.6, t1: 32.2 })),
+      .map((pts, i) => ({ color: MUTE, region: GF, width: 0.75, maxWidth: 0.75, pts, t0: T.forced + i * 0.5, dur: 2.6, t1: 32.2 })),
   ],
   generals: { jackson: { img: "seq/jackson.png", flag: "seq/us15_flag.png", side: "us", name: "Jackson", full: "Andrew Jackson", role: "Major General" } },
   banners: [{ general: "jackson", region: GF, keys: [[0, NOG[0] + 8, NOG[1] - 6]], t0: T.jackson - 0.05, t1: 23.6 }],
   labels: [
-    { text: "Cherokee", region: GF, at: [900, 92], size: 18, t0: T.cherokee, t1: 32.0 },
+    { text: "Cherokee", region: GF, at: [900, 120], size: 22, t0: T.cherokee, t1: 32.0 },
     { text: "Mississippi River", region: GF, at: [140, 330], size: 17, river: true, t0: T.forced + 0.6, t1: 31.2 },
   ],
   fx: {},
@@ -126,9 +127,9 @@ window.SEQ = {
     ["plaque.hide", 43.2],
     ["engage.final", { moves: [["HORSESHOE BEND", "1814"], ["THE NIGHT ATTACK", "1814"], ["NEW ORLEANS", "1815"]], q: "WHICH WAS HIS GREATEST MOVE?", sub: "",
       tShow: T.which - 0.1, tNums: [T.one, T.two, T.three2], tAsk: T.no + 0.2, extra: "Tell us in the comments, and which commander we should cover next", tExtra: T.tell,
-      until: 59.0, tSub: T.subscribe - 1.25, subUntil: 63.4 }],
+      until: 60.4, tSub: T.subscribe - 1.25, subUntil: 60.9 }],
   ],
-  start: {}, end: { fadeAt: 64.4, dur: 1.2 },
+  start: {}, end: { fadeAt: T.D - 1.5, dur: 1.5 },
   build: (ctx) => { buildCards(ctx); shade.build(ctx); },
   draw: (t, ctx) => { shade.draw(t, ctx); },
 };

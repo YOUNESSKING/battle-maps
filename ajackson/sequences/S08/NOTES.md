@@ -1,5 +1,5 @@
-# S08 ENDING (D 65.61 s) — sheet.jpg (15 stills)
-Gulf only. end: fadeAt 64.4, dur 1.2 (fades to black at the very end).
+# S08 ENDING (D 79.11 s) — sheet.jpg (16 stills)
+Gulf only. Fix round 1: D 79.11; final cards leave 60.4, subscribe out by ~61.4; 61.5-79.1 = the living map alone (clouds, water, slow drift); fade over the last 1.5 s. Removal shading + arrows brighter warm tan (muted, no red), arrows 0.75 wide, Cherokee label 22 px.
 
 | t | on screen |
 | --- | --- |

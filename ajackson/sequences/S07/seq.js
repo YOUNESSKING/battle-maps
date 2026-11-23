@@ -4,7 +4,7 @@
 // the rocket, the British lines advancing in the fog, the fog lifts at ~500 yards -> the batteries, then rank fire along the parapet ->
 // the main column at the ditch with no ladders (NO LADDERS) -> Pakenham's banner rides forward and falls -> the 93rd crosses the field
 // obliquely and stands under grape -> the river column storms the advanced redoubt, is driven out -> HALF AN HOUR, the lines stream back
-// -> the west bank: Thornton's small force breaks Morgan's line, halts, is ordered back -> ledger 2,037 / 71 (both banks) / 6 killed
+// -> the west bank: Thornton's small force breaks Morgan's line, halts, is ordered back -> centred result card 2,037 / 71 (both banks) / 6 killed
 // behind the wall -> method card line 3. Facts: ajackson/research/FACT_NOTES_neworleans.md 37-54 (Latour, Butler's return, WP-BNO).
 (() => {
 const T = { D: 152.86, dawn: 0.57, eighth: 1.53, january: 1.77, wrong: 3.97, canal: 5.13, boats: 6.51, river: 7.11, collapsed: 8.05,
@@ -46,18 +46,18 @@ for (const k of ["tn1", "tn2", "ky1", "ky2", "cho"]) add({ side: "u", face: FL, 
 add({ side: "u", face: FS, keys: [[0, REDOUBT[0] - nS[0] * 0.25, REDOUBT[1] - nS[1] * 0.25]], caps: [[T.storm + 0.3, T.driven + 0.2]] });
 // British lines form in the dark (fade in), advance on the rocket; the main column (Gibbs: 4th, 21st, 44th) by the swamp end of the
 // straight stretch, three lines in depth; the 44th (the ladders) late behind them
-const MS = 4.25, FOR = 0.6;
+const MS = 3.9, FOR = 0.6;
 const MAIN = [0, 1, 2].map((i) => add({ side: "r", n: 2, face: FB, t0: FOR + i * 0.4,
   keys: [[0, ...onS(MS, 10.2 + i * 1.3)], [T.british, ...onS(MS, 10.2 + i * 1.3)], [T.five, ...onS(MS, 4.3 + i * 1.3)], [T.ditch, ...onS(MS, 1.05 + i * 1.25)],
          [T.hands + 0.4, ...onS(MS, 1.05 + i * 1.25)], [78.0, ...onS(MS, 4.8 + i * 1.3)], [T.broken, ...onS(MS, 4.8 + i * 1.3)], [118.0, ...onS(MS, 10.6 + i * 1.3)]] }));
-add({ side: "r", n: 2, face: FB, t0: FOR + 1.2, keys: [[0, ...onS(5.6, 13.4)], [T.rank, ...onS(5.6, 13.4)], [T.ditch + 1.0, ...onS(5.6, 8.4)], [T.broken, ...onS(5.6, 8.4)], [118.0, ...onS(5.6, 12.6)]] });
+add({ side: "r", n: 2, face: FB, t0: FOR + 1.2, keys: [[0, ...onS(2.0, 13.4)], [T.rank, ...onS(2.0, 13.4)], [T.ditch + 1.0, ...onS(2.0, 8.4)], [T.broken, ...onS(2.0, 8.4)], [118.0, ...onS(2.0, 12.6)]] });
 // the river column: Rennie's light companies by the road (they storm the redoubt), the 93rd (cross obliquely to Gibbs' right, then stand)
-const RS = 0.32, RD0 = 10.6, RD1 = 4.6, RIN = 1.25;
+const RS = 0.32, RD0 = 10.6, RD1 = 4.6, RIN = 1.45;
 add({ side: "r", n: 2, face: FB, t0: FOR + 0.6, t1: 107.4,
   keys: [[0, ...onS(RS, RD0)], [T.british, ...onS(RS, RD0)], [T.five, ...onS(RS, RD1)], [97.2, ...onS(RS, RD1)], [T.storm + 0.2, ...onS(RS, RIN)], [T.shot + 1.4, ...onS(RS, RIN)], [107.4, ...onS(RS, 4.2)]] });
 const H93a = onS(1.5, 11.0), H93b = onS(1.5, 5.6), H93c = onS(2.7, 2.7);
 add({ side: "r", n: 2, face: FB, t0: FOR + 0.8,
-  keys: [[0, ...H93a], [T.british, ...H93a], [T.five, ...H93b], [T.marched - 0.4, ...H93b], [T.halted, ...H93c], [T.broken - 0.4, ...H93c], [117.0, ...onS(2.7, 9.6)]] });
+  keys: [[0, ...H93a], [T.british, ...H93a], [T.five, ...H93b], [T.marched - 0.4, ...H93b], [T.halted, ...H93c], [T.broken - 0.4, ...H93c], [114.0, ...onS(2.7, 5.8)]] });
 // Lambert's reserve, ~650 yards back
 add({ side: "r", n: 2, face: FB, t0: FOR + 1.6, keys: [[0, ...onS(2.2, 14.6)]] });
 // the west bank: Morgan's two small lines behind his breastwork; Thornton's few hundred break through, halt, are ordered back
@@ -74,8 +74,8 @@ add({ side: "r", n: 2, face: FM + Math.PI, t0: 113.0,
 const CUT = [[VIL[0] - 0.5, 3232.6], [VIL[0] - 0.1, 3239.6]];   // the new cut from the Villeré canal to the river
 const XR = [[VIL[0] - 1.0, 3240.8], [VIL[0] - 2.4, 3243.4], [VIL[0] - 3.8, 3246.4]];
 const boats = [
-  ...[0.12, 0.32, 0.5, 0.7].map((k) => ({ region: CH, kind: "barge", n: 1, path: CUT, sAt: () => VX.len(CUT) * k, t0: -1, t1: 26.0, size: 0.13, lamp: false, wake: false, h: 0.05 })),
-  { region: CH, kind: "barge", n: 2, path: XR, s0: 0.4, speed: 0.55, spacing: 0.9, t0: T.across - 0.6, t1: 26.0, size: 0.13, lamp: false, wake: true },
+  ...[0.12, 0.32, 0.5, 0.7].map((k) => ({ region: CH, kind: "barge", n: 1, path: CUT, sAt: () => VX.len(CUT) * k, t0: -1, t1: 26.0, size: 0.16, lamp: false, wake: false, h: 0.05 })),
+  { region: CH, kind: "barge", n: 2, path: XR, s0: 0.4, speed: 0.55, spacing: 0.9, t0: T.across - 0.6, t1: 26.0, size: 0.18, lamp: false, wake: true },
 ];
 
 // ---------------- fx ----------------
@@ -107,7 +107,7 @@ const fx = {
 
 // ---------------- arrows ----------------
 const arrows = [
-  { side: "r", pts: [CUT[1], [VIL[0] - 2.2, 3243.0], [VIL[0] - 3.6, 3246.6]], t0: T.west, dur: 1.6, t1: 15.0, width: 0.16 },
+  { side: "r", pts: [[VIL[0] - 0.9, 3240.9], [VIL[0] - 2.3, 3243.3], [VIL[0] - 3.5, 3245.9]], t0: T.west - 0.2, dur: 2.2, t1: 15.0, width: 0.24 },   // the boats' route over the river
   { side: "r", pts: [onS(MS, 9.6), onS(MS, 6.8), onS(MS, 4.4)], t0: T.advanced, dur: 2.4, t1: 37.0, width: 0.24 },
   { side: "r", pts: [onS(RS, 10.0), onS(RS, 7.4), onS(RS, 5.0)], t0: T.advanced + 0.3, dur: 2.4, t1: 37.0, width: 0.2 },
   { side: "r", pts: [H93b, [(H93b[0] + H93c[0]) / 2 + 0.3, (H93b[1] + H93c[1]) / 2 - 0.1], H93c], t0: T.marched, dur: 2.0, t1: T.guns3 + 1.0, width: 0.2 },
@@ -130,19 +130,30 @@ const lab = (text, at, t0, d = 3.5, o = {}) => ({ text, at, t0, t1: t0 + d, regi
 const labels = [
   lab("collapsed canal", [VIL[0] + 1.4, 3236.0], T.collapsed - 0.05, 3.4),
   lab("west bank", [VIL[0] - 4.6, 3247.4], T.west - 0.05, 3.6, { river: true }),
-  lab("the ditch", onS(4.0, 0.5), T.ditch - 0.05, 3.0, { river: true, size: 14 }),
+  lab("the ditch", onS(3.4, 0.5), T.ditch - 0.05, 3.0, { river: true, size: 14 }),
   lab("93rd Highlanders", [H93c[0] + 0.8, H93c[1] + 0.9], T.ninety3 - 0.05, 4.2, { size: 16 }),
   lab("advanced redoubt", onS(RS - 0.2, 2.2), 100.0, 3.4),   // on "advanced battery" (99.95)
   lab("Morgan's line", wbo(0.9, -1.4), T.weak - 0.05, 3.2),
 ];
 
 // ---------------- the morning: fog + the rocket ----------------
-function fogBuild(c) {
-  const B = []; for (let i = 0; i < 90; i++) { const x = 1249 + VX.hsh(i, 21) * 22, y = 3219 + VX.hsh(i, 22) * 21; B.push([x, y, 2.6 + VX.hsh(i, 23) * 2.8, VX.hsh(i, 24)]); }
-  const H = (x, y) => c.world.heightAt(x, y, CH);
-  c.FX[CH].custom((t, push) => { const k = 1 - c.sstep(T.crossed, T.lifted + 1.2, t); if (k <= 0.01) return;
-    for (const [x, y, r, ph] of B) { const dx = Math.sin(t * 0.07 + ph * 6) * 0.6, rise = (1 - k) * 1.4; push(x + dx, H(x, y) + 0.25 + ph * 0.3 + rise, y, r * (1 + 0.3 * (1 - k)), 0.17 * k, 0.86, 0.87, 0.85, 6, 2); } });
-}
+// 8 Jan fog (owner fix): an even low veil + long horizontal bands lying along the river (world-anchored, blurred), densest by the river
+// (NPS: the fog lasted longer near the river), lifting smoothly as the British close (crossed -> lifted + 1.2)
+const RIVP = (() => { const R = VX.river(CH, "Mississippi River").pts.map((p) => [p[0], p[1]]); const out = [];
+  for (let i = 0; i < R.length; i += 3) { const a = R[Math.max(0, i - 1)], b = R[Math.min(R.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; let n = [-(b[1] - a[1]) / l, (b[0] - a[0]) / l];
+    if (n[0] * (RE[0] - R[i][0]) + n[1] * (RE[1] - R[i][1]) < 0) n = [-n[0], -n[1]]; out.push({ p: R[i], n }); } return out; })();
+const fogK = (t) => 1 - VX.sstep(T.crossed, T.lifted + 1.2, t);
+const fog = { build() { const c = document.createElement("canvas"); c.width = 1280; c.height = 720; c.style.cssText = "position:absolute;inset:0;pointer-events:none";
+    const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
+  draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = fogK(t); if (k <= 0.003) return; const W = ctx.world;
+    g.fillStyle = `rgba(214,218,216,${(0.22 * k).toFixed(3)})`; g.fillRect(0, 0, 1280, 720);
+    g.save(); g.filter = "blur(22px)"; g.lineCap = "round"; g.lineJoin = "round";
+    for (let b = 0; b < 12; b++) { const d = -3 + b * 2.2 + Math.sin(t * 0.05 + b) * 0.5, a = (0.2 - b * 0.014) * k, lift = (1 - k) * 0.8;
+      if (a <= 0.005) continue; g.beginPath(); let started = false, ppu = 10;
+      for (const { p, n } of RIVP) { const q = W.projectMap(p[0] + n[0] * d, p[1] + n[1] * d, 0.4 + lift); if (!q.visible) { started = false; continue; } ppu = q.ppu || ppu;
+        if (!started) { g.moveTo(q.x, q.y); started = true; } else g.lineTo(q.x, q.y); }
+      g.strokeStyle = `rgba(222,225,222,${a.toFixed(3)})`; g.lineWidth = Math.max(40, Math.min(260, ppu * 4.4)); g.stroke(); }
+    g.restore(); } };
 const ROCK0 = onL(4.2, 2.6);   // fired from the wood's edge (Latour)
 function rocketBuild(c) {
   const H = (x, y) => c.world.heightAt(x, y, CH), t0 = T.rocket - 0.25, t1 = t0 + 1.9;
@@ -154,6 +165,29 @@ function rocketBuild(c) {
     else { const p = pos(1), a = 1 - (t - t1) / 1.4; for (let k = 0; k < 18; k++) { const ang = k / 18 * Math.PI * 2, r = (t - t1) * 2.2;
       push(p[0] + Math.cos(ang) * r, p[1] - (t - t1) * 1.2 + Math.sin(ang) * r * 0.6, p[2], 0.5, 0.8 * a, 1.4, 0.9, 0.5, 7, 1); } } });
 }
+// the result: one big centred card (dark plate, gold hairline, Cinzel), each figure on its words
+const RCSS = `.aj-res{position:absolute;left:330px;top:170px;width:1260px;height:640px;color:#EEE7D6;text-align:center;font-family:"GM Cormorant",Georgia,serif;
+  background:linear-gradient(180deg,#232b33 0%,#182027 60%,#141a20 100%);box-shadow:0 14px 40px rgba(0,0,0,.7),inset 0 0 0 4px #151E25,inset 0 0 0 5.5px rgba(201,178,122,.85)}
+.aj-res .hd{position:absolute;left:0;right:0;top:44px;font-family:"GM Cinzel",serif;font-weight:700;font-size:28px;letter-spacing:.42em;color:#C9B27A;padding-left:.42em}
+.aj-res .col{position:absolute;top:120px;width:560px}.aj-res .c1{left:40px}.aj-res .c2{right:40px}
+.aj-res .sd{font-family:"GM Cinzel",serif;font-weight:700;font-size:30px;letter-spacing:.3em;padding-left:.3em}
+.aj-res .c1 .sd{color:#D9867A}.aj-res .c2 .sd{color:#9FB8DC}
+.aj-res .nb{font-family:"GM Cinzel",serif;font-weight:700;font-size:150px;line-height:1.05;letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff1c4,#e8c46c 45%,#b98a35 70%,#f0d28a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 4px rgba(0,0,0,.7))}
+.aj-res .nt{font-style:italic;font-weight:600;font-size:31px;color:#E8E0CC;margin-top:4px}
+.aj-res .gn{font-family:"GM Cinzel",serif;font-weight:700;font-size:24px;letter-spacing:.22em;color:#D9867A;margin-top:10px}
+.aj-res .vr{position:absolute;left:629px;top:130px;width:1.5px;height:300px;background:linear-gradient(180deg,transparent,#C9B27A,transparent)}
+.aj-res .ft{position:absolute;left:0;right:0;top:486px;font-family:"GM Cinzel",serif;font-weight:700;font-size:38px;letter-spacing:.2em;padding-left:.2em;color:#EEE7D6}
+.aj-res .src{position:absolute;left:0;right:0;top:560px;font-style:italic;font-weight:500;font-size:22px;color:#B7A57C}`;
+function buildResult(c) { const st = document.createElement("style"); st.textContent = RCSS; document.head.appendChild(st);
+  const host = document.querySelector("#ov .gmo") || document.getElementById("ov"), el = document.createElement("div"); el.className = "aj-res";
+  el.innerHTML = `<div class="hd">8 January 1815</div><div class="col c1"><div class="sd">British</div><div class="nb">2,037</div><div class="nt">killed, wounded or captured</div><div class="gn">three generals among them</div></div>
+    <div class="vr"></div><div class="col c2"><div class="sd">American</div><div class="nb">71</div><div class="nt">killed, wounded or missing · both banks</div></div>
+    <div class="ft">Behind the wall: 6 killed</div><div class="src">Lambert's return; Butler's return, 16 January 1815</div>`;
+  host.appendChild(el); const tl = c.tl, gs = window.gsap, on = (sel, t) => { const e = el.querySelector(sel); gs.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t); };
+  gs.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, T.lost - 0.3); tl.to(el, { autoAlpha: 0, duration: 0.45 }, 143.3);
+  on(".c1 .sd", T.lost - 0.1); on(".c1 .nb", T.thousand); on(".c1 .nt", T.captured - 0.9); on(".c1 .gn", T.generals2); on(".vr", T.army - 0.4); on(".c2 .sd", T.army - 0.4);
+  on(".c2 .nb", T.seventy); on(".c2 .nt", T.missing); on(".ft", T.six - 0.05); on(".src", T.killed6 + 0.2); }
 // pinned stamps (S06's stamp look)
 const PINS = [];
 function pin(c, html, t0, t1, world) {
@@ -178,23 +212,25 @@ window.SEQ = {
     K(CUT1, [1260.6, 3230.0], 25, 49, 8, "lin", 0.5),
     { ...K(CUT1, [VIL[0] - 0.4, 3235.6], 15, 50, 12, "cut", 0.5), dissolve: 0.9 },   // the collapsed canal, the boats stuck
     K(9.6, [VIL[0] - 1.0, 3238.6], 16, 50, 6, "io", 0.5),
-    K(CUT2, [VIL[0] - 2.4, 3242.0], 18, 50, 2, "lin", 0.48),                          // the west-bank force crossing late
+    K(CUT2, [VIL[0] - 2.2, 3243.0], 21, 52, 2, "lin", 0.48),                          // the west-bank force crossing late
     { ...K(CUT2, onS(1.6, -1.2), 7.5, 72, -33, "cut", 0.42), dissolve: 0.9 },           // eye level along the silent wall
     K(CUT3, onS(3.0, -1.2), 7.5, 71, -30, "lin", 0.3),
     { ...K(CUT3, onS(2.8, 5.0), 30, 49, -122, "cut", 0.25), dissolve: 0.9 },          // from behind the line across the field
     K(33.6, onS(3.0, 4.6), 29, 50, -120, "io", 0.08),
-    K(39.6, onS(3.0, 4.0), 27, 50, -118, "io", 0),
-    K(47.0, onS(3.4, 3.0), 23, 52, -116, "io", 0),
-    K(55.4, onS(3.7, 2.4), 20, 53, -112, "io", 0),
-    K(61.0, onS(4.1, 1.5), 15, 54, -108, "io", 0),                                    // the ditch, no ladders
-    K(69.4, onS(4.1, 1.6), 14, 55, -106, "lin", 0),
-    K(73.0, onS(3.8, 4.0), 22, 51, -114, "io", 0),                                    // Pakenham
-    K(82.6, onS(3.6, 4.2), 23, 51, -116, "lin", 0),
-    K(86.6, onS(2.4, 3.2), 20, 52, -120, "io", 0),                                    // the 93rd
-    K(96.2, onS(2.3, 3.0), 19, 53, -122, "lin", 0),
-    K(99.4, onS(0.4, 1.6), 13, 54, -126, "io", 0),                                    // the redoubt by the river
-    K(107.0, onS(0.4, 1.8), 13.5, 54, -124, "lin", 0),
-    K(110.6, onS(2.8, 5.2), 30, 49, -118, "io", 0),                                   // the field: half an hour
+    K(39.9, onS(3.0, 4.0), 27, 50, -118, "lin", 0),
+    { ...K(39.9, onS(2.7, 0.6), 12, 64, -60, "cut", 0), dissolve: 0.9 },           // low along the wall: the batteries, then rank fire
+    K(55.9, onS(3.3, 0.9), 11.5, 63, -56, "lin", 0),
+    { ...K(55.9, onS(3.9, 1.6), 10.5, 60, -24, "cut", 0), dissolve: 0.9 },           // close oblique down the front: the main column at the ditch
+    K(69.9, onS(3.9, 1.8), 10, 61, -20, "lin", 0),
+    { ...K(69.9, onS(3.5, 7.0), 13, 60, 78, "cut", 0), dissolve: 0.9 },            // from behind the British: Pakenham rides forward
+    K(75.2, onS(3.6, 5.4), 12.5, 61, 74, "io", 0),
+    K(83.3, onS(3.7, 4.4), 14, 60, 70, "lin", 0),
+    { ...K(83.3, onS(2.2, 3.8), 12, 62, -20, "cut", 0), dissolve: 0.9 },           // from the side: the 93rd crosses and stands under grape
+    K(88.0, [H93c[0] - 0.2, H93c[1] - 0.2], 11, 63, -18, "io", 0),
+    K(96.7, [H93c[0] - 0.3, H93c[1] - 0.1], 10.5, 63, -16, "lin", 0),
+    { ...K(96.7, onS(0.5, 1.8), 11, 60, 30, "cut", 0), dissolve: 0.9 },            // by the river: the redoubt
+    K(107.5, onS(0.5, 2.0), 10.5, 61, 26, "lin", 0),
+    { ...K(107.5, onS(2.8, 5.2), 30, 49, -118, "cut", 0), dissolve: 0.9 },         // the field from above: half an hour
     K(CUT4, onS(2.8, 5.4), 31, 49, -117, "lin", 0),
     { ...K(CUT4, wbo(0.5, 1.0), 17, 51, 180, "cut", 0), dissolve: 0.9 },              // the west bank, from over the river
     K(CUT5, wbo(0.45, 0.6), 18, 51, 176, "lin", 0),
@@ -208,23 +244,17 @@ window.SEQ = {
     ["plaque.date", T.light, { month: "January 1815", day: "8", weekday: "Sunday", note: "first light" }],
     ["plaque.date", T.lifted, { month: "January 1815", day: "8", weekday: "Sunday", note: "the fog lifts" }],
     ["distance", T.five - 0.25, 40.0, { from: onS(MS, -0.2), to: onS(MS, 3.6), value: 500, unit: "YARDS", sub: "from the guns", dash: false }],
-    (O, c) => stamp(c, "NO LADDERS", T.behind - 0.05, T.hands + 0.6, onS(4.3, 2.8)),
+    (O, c) => stamp(c, "NO LADDERS", T.behind - 0.05, T.hands + 0.6, onS(3.7, 3.6)),
     ["label", T.mortally - 0.05, T.third - 0.2, { name: "The main column's general", sub: "mortally wounded", world: onS(4.4, 5.8), side: "uk", marker: false }],
     ["label", T.badly - 0.05, 83.0, { name: "A third general", sub: "badly wounded", world: onS(2.4, 6.6), side: "uk", marker: false }],
     (O, c) => stamp(c, "HALF AN HOUR", T.hour - 0.05, 114.2, onS(3.0, 4.4)),
-    ["film.dim", T.lost - 0.6, 143.4, 0.7],
-    ["ledger.show", T.lost - 0.4, { title: "8 January 1815", sub: "Lambert's and Butler's returns" }],
-    ["ledger.add", T.captured, { who: "British: 2,037", note: "killed, wounded or captured", stamp: false }],
-    ["ledger.note", T.generals2 + 0.3, 1, "three generals among them"],
-    ["ledger.add", T.missing + 0.1, { who: "American: 71 casualties", note: "killed, wounded or missing · both banks", stamp: false }],
-    ["ledger.add", T.killed6, { who: "Behind the wall: 6 killed", stamp: false }],
-    ["ledger.hide", 143.4],
+    ["film.dim", T.lost - 0.6, 143.4, 0.8],
     ["letter", 143.6, T.D + 1, { header: "Move 3 · New Orleans", title: "The Old Hickory Method", sub: "", marks: false, quote: "1. Close every door\n2. Strike first\n3. Make them come to you", qSize: 34, height: 300,
       cps: 30, qAt: T.make - 0.05 - 35 / 30, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     () => { const q = [...document.querySelectorAll("#ov .letter .q")].pop(); if (q) q.style.whiteSpace = "pre-line"; },
   ],
-  build: (c) => { fogBuild(c); rocketBuild(c); },
-  draw: (t, c) => { const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
+  build: (c) => { fog.build(c); rocketBuild(c); buildResult(c); },
+  draw: (t, c) => { fog.draw(t, c); const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
     for (const p of PINS) { const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
 };
 })();

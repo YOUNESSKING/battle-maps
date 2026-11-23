@@ -102,10 +102,7 @@ const volleys = [
   // 28 Dec: the riflemen on the line fire at the swamp column
   { region: CH, pts: [onL(0.4, -0.55), onL(1.6, -0.55), onL(2.6, -0.55)], t0: T.american + 0.4, t1: T.drove + 0.6, opts: { dir: nL, size: 0.8, alpha: 0.09, life: 10, muzzle: 5, rate: 3.0, volley: 1.6, roll: 0.6, height: 2.0 } },
 ];
-// 1 January fog: low, slow, long-lived grey banks over the plain (no flashes, no sound), lifting (thinning) when the fog lifts
-const FOG = [0, 1, 2, 3, 4].map((i) => ({ region: CH, pts: [onS(-1.0, 1.2 + i * 1.6), onS(6.2, 1.2 + i * 1.6)], t0: T.newyear - 0.5, t1: T.fog - 0.2, cue: false,
-  opts: { flash: false, dir: [0.2, 0.1], rate: 5.0, size: 3.2, alpha: 0.16, life: 9, muzzle: 0.5, windK: 0.25, height: 0.6, fadeAfter: 2.2, fadeTo: 0, look: "gm" } }));
-const fx = { fires, smokeLines: FOG, volleys, guns };
+const fx = { fires, volleys, guns };
 
 // ---------------- arrows ----------------
 const arrows = [
@@ -203,12 +200,20 @@ window.SEQ = {
     const rise = [[0.3, 12.5, 0.3], [70.0, 76.0, 0], [T.night - 0.6, T.night + 1.6, 0], [T.across - 1.0, T.across + 1.0, 0], [T.across - 1.0, T.across + 1.0, 0]];
     c.FX[CH].custom((t) => { W.forEach((m, i) => { const [a, b, k0] = rise[i] || [0, 0, 1]; const k = k0 + (1 - k0) * c.sstep(a, b, t); m.visible = k > 0.01; m.position.y = -(1 - k) * sink[i]; }); });
     fogBuild(c); },
-  draw: (t, c) => { const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
+  draw: (t, c) => { fogDraw(t, c); const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
     for (const p of PINS) { const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
 };
 
-// ---------------- 1 January fog: no sprite fog (see fx.smokeLines FOG banks) ----------------
-function fogBuild(c) {}
+// ---------------- 1 January fog: a pale veil over the map (thicker toward the horizon, drifting soft banks), lifting on "the fog lifted" ----------------
+let FOGC = null;
+function fogBuild(c) { const cv = document.createElement("canvas"); cv.width = 640; cv.height = 360; cv.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none";
+  const tr = document.getElementById("troops"); tr.parentNode.insertBefore(cv, tr); FOGC = cv.getContext("2d"); }
+function fogDraw(t, c) { if (!FOGC) return; const g = FOGC; g.clearRect(0, 0, 640, 360);
+  const k = c.sstep(T.newyear - 0.4, T.newyear + 1.0, t) * (1 - c.sstep(T.fog, T.fire2 + 0.6, t)); if (k <= 0.002) return;
+  const gr = g.createLinearGradient(0, 0, 0, 360); gr.addColorStop(0, `rgba(214,216,210,${(0.78 * k).toFixed(3)})`); gr.addColorStop(0.55, `rgba(206,208,203,${(0.5 * k).toFixed(3)})`);
+  gr.addColorStop(1, `rgba(200,203,198,${(0.3 * k).toFixed(3)})`); g.fillStyle = gr; g.fillRect(0, 0, 640, 360);
+  for (let i = 0; i < 9; i++) { const x = ((VX.hsh(i, 21) * 900 + t * (6 + 5 * VX.hsh(i, 22))) % 900) - 130, y = 60 + VX.hsh(i, 23) * 260, r = 90 + VX.hsh(i, 24) * 90;
+    const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, `rgba(222,224,219,${(0.22 * k).toFixed(3)})`); rg.addColorStop(1, "rgba(222,224,219,0)"); g.fillStyle = rg; g.fillRect(x - r, y - r, 2 * r, 2 * r); } }
 
 // ---------------- pinned overlay bits: icons (bundles of cane, a ladder) and a red stamp ----------------
 const PINS = [];
