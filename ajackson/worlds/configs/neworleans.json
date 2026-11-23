@@ -76,7 +76,7 @@
    ]
   ],
   "jag": 2.0,
-  "hummock": 0.8
+  "hummock": 0.7
  },
  "stills": [
   {
@@ -180,7 +180,9 @@
    "geo": "Bayou Bienvenue",
    "w": 0.9,
    "step": 0.6,
-   "snap": false
+   "snap": false,
+   "orient": false,
+   "reverse": true
   },
   {
    "name": "Villere canal",

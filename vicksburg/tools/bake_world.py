@@ -801,6 +801,7 @@ def bake(rname, G, P, creeks, preview=True):
         L = resolve_line(G, e, "rivers")
         if L is None: LOG("  river not found:", e.get("geo")); continue
         L = curvy(L)
+        if PROJ and e.get("reverse"): L = L[::-1].copy()   # pin a direction (keeps pts order stable when the terrain changes)
         if PROJ and e.get("orient", True) and len(L) > 3:   # project mode: lines from OSM / research run either way; water_levels needs upstream first
             hb_ = cv2.GaussianBlur(P, (0, 0), 2.0 * DPU); ev = sample(hb_, (PREP_BOX[0], PREP_BOX[1], P.shape[1] / DPU, P.shape[0] / DPU), L[[0, -1]])
             if ev[0] < ev[1] - 0.5: L = L[::-1].copy(); LOG("  river reversed (upstream first):", e.get("name", e.get("geo")))

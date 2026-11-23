@@ -13,8 +13,8 @@ Method card ("THE OLD HICKORY METHOD"): 1. CLOSE EVERY DOOR Â· 2. STRIKE FIRST Â
 
 ## S01 HOOK (0:00 - ~1:00)
 
-[S01 | gulf wide from altitude, late light: the British fleet (ships) moving north across the Gulf toward the Mississippi mouth, the river glowing as one line up to NEW ORLEANS; the camera pushes in on the river; NEW ORLEANS label on its word]
-In November eighteen fourteen, a British fleet sailed for New Orleans. The city guarded the mouth of the Mississippi, the main way to the sea for the whole American West.
+[S01 | gulf wide from altitude, late light: the British fleet as SEPARATE ships spread across the sea (never one column) sailing toward the coast; WASHINGTON BURNED small caption on "burned Washington"; NEW ORLEANS label on its word; the Mississippi glows from its mouth up into the West on "mouth of the Mississippi"; a small seal/ledger icon on "peace table"]
+In the winter of eighteen fourteen, British troops who had burned Washington sailed to take New Orleans, and with it the mouth of the Mississippi, a prize to bargain with at the peace table.
 
 [S01 | cloud dive 1 down onto the plain below the city: emerge over the river, the plantations, the cypress swamp; red line-blocks in long lines on the open fields facing a thin brown ditch line; date plate 8 JANUARY 1815 on its words]
 On the eighth of January, eighteen fifteen, more than five thousand British regulars attacked a ditch and a wall of mud below the city.
@@ -26,10 +26,10 @@ In about half an hour, more than two thousand of them were killed, wounded or ca
 And the strangest part? Two weeks earlier, in Ghent, both sides had signed a peace treaty. America had not yet ratified it, so the war went on, and no one in New Orleans knew.
 
 [S01 | back to the plain: date plate 23 DECEMBER 1814; red blocks walk out of the cypress swamp onto the river fields; the city label far up the river; distance ruler 9 MILES on its words]
-Two weeks before the battle, it had looked hopeless. A British army had come out of the swamps unseen, about nine miles from the city.
+Two weeks before, a British army had come out of the swamps unseen, nine miles from the city.
 
 [S01 | the general enters: banner with no portrait yet riding down into the city; a dark card on "sword": a thin red scar line drawn across it, AGE 14 and BY HIS OWN ACCOUNT small]
-The general sent to save it was worn down by illness and painfully thin. And he carried a scar from a British officer's sword, from when he was a boy of fourteen.
+The general sent to save it was worn down by illness, and he carried a scar from a British officer's sword, from when he was fourteen.
 
 [S01 | NAME SLAM: ANDREW JACKSON (gold 3D title on its words), the banner portrait revealed; then 3 snap cuts, each on its words: Horseshoe Bend from above (river bend + wall), the night attack (muzzle flashes in the dark, the schooner firing), the mud line with smoke]
 His name was Andrew Jackson. He would trap an enemy fortress inside a river bend. He would attack a British army in the dark, on the night it landed. And he would stop a veteran British army behind a wall of mud. These are Andrew Jackson's three greatest tactical moves.
