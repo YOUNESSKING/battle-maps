@@ -4,7 +4,7 @@
 # Env: GPU (default "NVIDIA RTX A5000"), WORKERS (3), POD (reuse an existing pod id; then it is not terminated).
 set -u
 R=/home/user/battle-maps/research/runpod; V=/home/user/battle-maps/vicksburg; OUT=$1; shift; mkdir -p "$OUT"
-W=/tmp/vx_pod/run_$$; mkdir -p $W; export CTL_TOKEN_FILE=$W/token.txt
+W=/tmp/vx_pod/run_$$; mkdir -p $W; export CTL_TOKEN_FILE=${CTL_TOKEN_FILE:-$W/token.txt}   # to reuse a running pod pass POD + its CTL_TOKEN_FILE
 [ -s $CTL_TOKEN_FILE ] || python3 -c "import secrets;print(secrets.token_hex(24))" > $CTL_TOKEN_FILE
 rp() { (cd $R && ./rp.sh "$1"); }
 ctl() { (cd $R && ./ctl.sh "$@"); }
@@ -34,7 +34,7 @@ ctl $POD run prep 'chmod +x /work/*.sh; bash /work/patch_hf_chunks_gpu.sh > /wor
 sleep 5
 for SA in "$@"; do
   S=${SA%%:*}; RANGE=""; [ "$SA" != "$S" ] && RANGE="${SA#*:}" && RANGE="${RANGE/-/ }"   # NAME:START-END renders only that window (troops test)
-  tar czf $W/$S.tgz -C $V/scenes $S || continue
+  tar czf $W/$S.tgz -C ${SCENES_DIR:-$V/scenes} $S || continue
   ctl $POD put $W/$S.tgz /work/in/$S.tgz
   ctl $POD run r$S "bash /work/pod_scene.sh $S ${WORKERS:-3} $RANGE > /work/logs/r$S.log 2>&1"
   t0=$(date +%s)

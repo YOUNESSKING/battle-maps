@@ -538,15 +538,19 @@ export function createFX(cfg = {}) {
 
   // ---------------- flashes: short emissive sprites (precomputed list)
   function flashEmitter(list) {
-    const F = new Spawns(list, 0.5, ['x', 'y', 'z', 'size', 'life', 'r', 'g', 'b', 'a0', 'rot', 'cell', 'pool', 'gy']);
+    // v8 (2026-11-23, muzzle flashes): optional per-flash `hold` (0..1 of the life at full alpha, then a fast fade; 0 = the old (1-u)^2 curve),
+    // `grow` (size growth over the life, default 0.5) and `npool` (radius of a warm ground light that only shows at night, scaled by night)
+    const F = new Spawns(list, 0.5, ['x', 'y', 'z', 'size', 'life', 'r', 'g', 'b', 'a0', 'rot', 'cell', 'pool', 'gy', 'hold', 'grow', 'npool', 'ni']);
+    for (const f of list) if (f.grow == null) f.grow = 0.5;
     emitters.push({
       update(t) {
         const [lo, hi] = F.range(t);
         for (let i = lo; i < hi; i++) {
           const age = t - F.t[i], u = age / F.life[i]; if (u >= 1) continue;
-          const a = F.a0[i] * (1 - u) * (1 - u);
-          batch.push(F.x[i], F.y[i] + F.size[i] * 0.22, F.z[i], F.size[i] * (0.7 + 0.5 * u), F.rot[i], a, F.cell[i], 1, F.r[i], F.g[i], F.b[i], F.gy[i] - 1e3);   // v5: lifted so the ground does not swallow its lower half
+          const hd = F.hold[i], a = hd > 0 ? F.a0[i] * (u <= hd ? 1 : Math.pow((1 - u) / (1 - hd), 1.6)) : F.a0[i] * (1 - u) * (1 - u);
+          batch.push(F.x[i], F.y[i] + F.size[i] * 0.22, F.z[i], F.size[i] * (0.7 + F.grow[i] * u), F.rot[i], a, F.cell[i], 1, F.r[i], F.g[i], F.b[i], F.gy[i] - 1e3);   // v5: lifted so the ground does not swallow its lower half
           if (F.pool[i] > 0) pools.push({ x: F.x[i], y: F.y[i], z: F.z[i], r: F.pool[i], cr: 1, cg: 0.5, cb: 0.2, i: 1.4 * a });   // v5: small orange pool (no green-yellow ground light)
+          if (F.npool[i] > 0 && night > 0.05) pools.push({ x: F.x[i], y: F.y[i], z: F.z[i], r: F.npool[i], cr: 1, cg: 0.55, cb: 0.22, i: (F.ni[i] || 1.6) * a * night });
         }
       },
     });
@@ -565,8 +569,9 @@ export function createFX(cfg = {}) {
     const L0 = LOOKS[o.look || 'gm'];
     const life = o.life ?? L0.life, tint = o.tint || L0.tint;
     const sz = (o.size ?? 1) * S;
-    const list = [], flashes = [];
+    const list = [], flashes = [], shotsOut = [];
     const N = Math.max(1, Math.round(rate * (t1 - t0)));
+    const MZ = o.muzzleFlash ? (o.muzzleFlash === true ? {} : o.muzzleFlash) : null;   // v8: visible per-shot muzzle flashes (see muzzleShots)
     // v7 (critic B 4): o.cluster = [width, gap] (world units): puffs only inside separate battalion-wide curtains along the line, not one ribbon
     const CW_ = o.cluster ? o.cluster[0] : 0, CG_ = o.cluster ? o.cluster[1] : 0, NC = o.cluster ? Math.max(1, Math.floor((L + CG_) / (CW_ + CG_))) : 0, C0 = NC ? (L - (NC * CW_ + (NC - 1) * CG_)) / 2 : 0;
     const inCl = (s) => NC ? C0 + Math.min(NC - 1, Math.floor(s / L * NC)) * (CW_ + CG_) + rnd() * CW_ : s;
@@ -580,10 +585,39 @@ export function createFX(cfg = {}) {
       const mv = (o.muzzle ?? 14) * U * (0.6 + 0.8 * rnd());
       const h = (o.height ?? 1.6) * U;
       list.push(puff(rnd, t, p.x, p.y + h, p.z, { vx: d.x * mv, vz: d.y * mv, vy: 0.5 * U, k: 1.3, rise: L0.rise, turb: L0.turb, s0: L0.s0 * sz, grow: L0.grow * sz, life, a0: o.alpha ?? L0.alpha, tint, wk: o.windK ?? 1, mode: L0.mode }));
-      if (o.flash !== false && rnd() < 0.7) flashes.push({ t, x: p.x + d.x * 1.2 * U, y: p.y + h, z: p.z + d.y * 1.2 * U, size: 3.0 * sz, life: 0.07, r: 1.2, g: 0.58, b: 0.18, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
+      const fl = o.flash !== false && rnd() < 0.7, frot = fl ? rnd() * 6 : 0;   // (same rnd() sequence with or without MZ: the smoke stays identical)
+      if (fl && !MZ) flashes.push({ t, x: p.x + d.x * 1.2 * U, y: p.y + h, z: p.z + d.y * 1.2 * U, size: 3.0 * sz, life: 0.07, r: 1.2, g: 0.58, b: 0.18, a0: 0.8, rot: frot, cell: 6, pool: 0, gy: 0 });
+      else if (fl && !o.volley) shotsOut.push({ t, s, x: p.x, y: p.y, z: p.z, d });   // independent fire: one visible flash per flashing puff
     }
+    if (MZ) muzzleShots(o, MZ, t0, t1, L, at, dirAt, CW_, CG_, NC, C0, shotsOut, flashes);
     smokeEmitter(list, life * 1.3, null, o.fadeAfter != null ? (t) => 1 - (1 - (o.fadeTo ?? 0.22)) * smooth(t1, t1 + o.fadeAfter, t) : null);   // v7: o.fadeAfter s: the bank thins to fadeTo after the last volley
     if (flashes.length) flashEmitter(flashes);
+    return { shots: shotsOut.sort((a, b) => a.t - b.t).map((q) => ({ t: q.t, x: q.x, y: q.z, s: q.s })) };   // v8: exact muzzle-flash times + world x / z (= map x, y)
+  }
+
+  // v8 (2026-11-23, owner: "small flashes along each firing line at the exact shot times"): a volley = K shots spread along the line (inside
+  // the battalion clusters when o.cluster is set); the shot nearest pts[0] fires EXACTLY on the volley time t0 + v * volley (the time
+  // export_troop_events.mjs writes for the ripple), the rest ripple toward the far end over `roll` s. Each shot = a sharp warm-white core +
+  // a soft orange halo held at full brightness for ~2 frames (life 0.2 s = 6 frames at 30 fps) + a warm ground light at night. Seeded on
+  // its own (the smoke puffs keep their random sequence). MZ: { every: shot spacing (units at fxScale 9, scales with fxScale), size, life,
+  // hold, alpha, core: [r, g, b], halo: [r, g, b], pool (night ground-light radius, units at fxScale 9), max (shots per volley), jitter }
+  function muzzleShots(o, MZ, t0, t1, L, at, dirAt, CW_, CG_, NC, C0, out, flashes) {
+    const rnd = mulberry32((o.seed ?? 0) * 31 + 7717 + Math.round(t0 * 1000) + Math.round(L * 977)), sc = S / (9 * U);
+    const every = (MZ.every ?? 0.17) * sc, h = (o.height ?? 1.6) * U * 0.45;
+    const ss = [];
+    if (o.volley) {
+      if (NC) { for (let c = 0; c < NC; c++) { const kc = Math.max(2, Math.round(CW_ / every)); for (let j = 0; j < kc; j++) ss.push(C0 + c * (CW_ + CG_) + Math.min(0.98, Math.max(0.02, (j + 0.5 + (rnd() - 0.5) * 0.7) / kc)) * CW_); } }
+      else { const K = Math.max(3, Math.round(L / every)); for (let j = 0; j < K; j++) ss.push(Math.min(L, Math.max(0, (j + 0.5 + (rnd() - 0.5) * 0.7) / K * L))); }
+      ss.sort((a, b) => a - b);
+      const mx = MZ.max ?? 32; while (ss.length > mx) ss.splice(Math.floor(rnd() * ss.length), 1);
+      const nv = Math.max(1, Math.floor((t1 - t0) / o.volley)), roll = o.roll ?? 0.8, s0 = ss[0];
+      for (let v = 0; v < nv; v++) { const tv = t0 + v * o.volley;
+        ss.forEach((s, j) => { const [p, si] = at(s); out.push({ t: j === 0 ? tv : Math.max(tv, tv + ((s - s0) / L) * roll + (rnd() - 0.5) * (MZ.jitter ?? 0.5) * roll), s, x: p.x, y: p.y, z: p.z, d: dirAt(si) }); }); }
+    }
+    const k = MZ.size ?? 1, life = MZ.life ?? 0.2, hold = MZ.hold ?? 0.3, A = MZ.alpha ?? 1, cc = MZ.core || [1.6, 1.25, 0.7], hc = MZ.halo || [1.25, 0.5, 0.12], np = (MZ.pool ?? 1.1) * sc;
+    for (const q of out) { const x = q.x + q.d.x * 0.12 * sc, z = q.z + q.d.y * 0.12 * sc, y = q.y + h;
+      flashes.push({ t: q.t, x, y, z, size: 0.5 * sc * k, life, hold, grow: 0.25, r: cc[0], g: cc[1], b: cc[2], a0: A, rot: 0, cell: 7, pool: 0, gy: 0 });
+      flashes.push({ t: q.t, x, y, z, size: 0.6 * sc * k, life: life * 1.1, hold, grow: 0.4, r: hc[0], g: hc[1], b: hc[2], a0: 0.5 * A, rot: rnd() * 6, cell: 6, pool: 0, gy: 0, npool: np, ni: 1.4 }); }
   }
 
   // ================================================================ API: cannon burst
@@ -610,8 +644,12 @@ export function createFX(cfg = {}) {
     smokeEmitter(list, life * 1.3);
     const fl = [], fk = (o.flash ?? 1) * 4.5, fc = o.flashColor || [0.85, 0.3, 0.06], fl0 = o.flashLife ?? 0.11;   // v7: x1.5 size, 3 frames   // v6 (critic B 5): flash 3x, no ground light
     // orange core + a forward tongue: visible for 0.09 s (2-3 frames at 30 fps), never white (r <= 1.25 additive, g/b low)
-    fl.push({ t: tBurst, x: px + d.x * 2 * U, y: py + h, z: pz + d.y * 2 * U, size: 7 * sz * fk, life: fl0, r: fc[0], g: fc[1], b: fc[2], a0: 0.85, rot: 0, cell: 6, pool: (o.pool ?? 0) * sz, gy: 0 });
-    for (let k = 0; k < 2; k++) fl.push({ t: tBurst, x: px + d.x * (4 + 5 * k) * U, y: py + h, z: pz + d.y * (4 + 5 * k) * U, size: (4.5 - 1.5 * k) * sz * fk, life: fl0 * 0.8, r: 0.9, g: 0.36, b: 0.08, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0 });
+    // v8: o.flashHold (0..1) keeps the flash at full alpha for that part of its life (>= 2 frames), o.flashCore adds a sharp warm-white core,
+    // o.nightPool = radius (x sz) of a warm ground light shown only at night
+    const hd = o.flashHold ?? 0, npl = (o.nightPool ?? 0) * sz;
+    fl.push({ t: tBurst, x: px + d.x * 2 * U, y: py + h, z: pz + d.y * 2 * U, size: 7 * sz * fk, life: fl0, r: fc[0], g: fc[1], b: fc[2], a0: 0.85, rot: 0, cell: 6, pool: (o.pool ?? 0) * sz, gy: 0, hold: hd, npool: npl, ni: 2.0 });
+    for (let k = 0; k < 2; k++) fl.push({ t: tBurst, x: px + d.x * (4 + 5 * k) * U, y: py + h, z: pz + d.y * (4 + 5 * k) * U, size: (4.5 - 1.5 * k) * sz * fk, life: fl0 * 0.8, r: 0.9, g: 0.36, b: 0.08, a0: 0.8, rot: rnd() * 6, cell: 6, pool: 0, gy: 0, hold: hd });
+    if (o.flashCore) fl.push({ t: tBurst, x: px + d.x * 2.5 * U, y: py + h, z: pz + d.y * 2.5 * U, size: 2.6 * sz * fk * o.flashCore, life: fl0 * 1.1, r: 1.6, g: 1.2, b: 0.62, a0: 1, rot: 0, cell: 7, pool: 0, gy: 0, hold: hd, grow: 0.2 });
     flashEmitter(fl);
   }
   // v5: a bare additive glow (e.g. a gun flash reflected on the water at night): {size, life, color, alpha, pool}

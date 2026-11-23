@@ -66,3 +66,5 @@ thomas/build/
 library/epidemic/sfx/
 library/epidemic/music/
 yorktown/logs/
+ajackson/build/*
+!ajackson/build/troop_stem_log.json

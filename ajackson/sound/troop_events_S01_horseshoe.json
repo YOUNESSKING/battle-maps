@@ -1,0 +1,170 @@
+{
+ "scene": "S01",
+ "region": "horseshoe",
+ "window": [
+  0,
+  83.686
+ ],
+ "shareOffset": 0,
+ "filmStart": 0,
+ "render": [
+  1920,
+  1080
+ ],
+ "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
+ "events": [
+  {
+   "type": "cannon_shot",
+   "preset": "field",
+   "t": 66.81,
+   "tExcerpt": 66.81,
+   "tShare": 66.81,
+   "tFilm": 66.81,
+   "at": {
+    "map": [
+     8705.7,
+     1275.76
+    ],
+    "px": [
+     715,
+     195
+    ],
+    "nx": 0.372,
+    "ny": 0.181,
+    "onScreen": true,
+    "camDist": 36.88
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "art",
+    "label": null,
+    "blocks": 1,
+    "men": 4,
+    "dist": 0.3
+   },
+   "impact": {
+    "t": 67.26,
+    "tExcerpt": 67.26,
+    "tShare": 67.26,
+    "tFilm": 67.26,
+    "at": {
+     "map": [
+      8705.58,
+      1278.54
+     ],
+     "px": [
+      714,
+      267
+     ],
+     "nx": 0.372,
+     "ny": 0.247,
+     "onScreen": true,
+     "camDist": 34.24
+    }
+   }
+  },
+  {
+   "type": "cannon_shot",
+   "preset": "field",
+   "t": 67.81,
+   "tExcerpt": 67.81,
+   "tShare": 67.81,
+   "tFilm": 67.81,
+   "at": {
+    "map": [
+     8705.7,
+     1275.76
+    ],
+    "px": [
+     711,
+     196
+    ],
+    "nx": 0.37,
+    "ny": 0.181,
+    "onScreen": true,
+    "camDist": 35.63
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "art",
+    "label": null,
+    "blocks": 1,
+    "men": 4,
+    "dist": 0.3
+   },
+   "impact": {
+    "t": 68.26,
+    "tExcerpt": 68.26,
+    "tShare": 68.26,
+    "tFilm": 68.26,
+    "at": {
+     "map": [
+      8706.68,
+      1278.54
+     ],
+     "px": [
+      757,
+      274
+     ],
+     "nx": 0.394,
+     "ny": 0.253,
+     "onScreen": true,
+     "camDist": 33.23
+    }
+   }
+  },
+  {
+   "type": "cannon_shot",
+   "preset": "field",
+   "t": 68.76,
+   "tExcerpt": 68.76,
+   "tShare": 68.76,
+   "tFilm": 68.76,
+   "at": {
+    "map": [
+     8705.7,
+     1275.76
+    ],
+    "px": [
+     707,
+     197
+    ],
+    "nx": 0.368,
+    "ny": 0.182,
+    "onScreen": true,
+    "camDist": 34.48
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "art",
+    "label": null,
+    "blocks": 1,
+    "men": 4,
+    "dist": 0.3
+   },
+   "impact": {
+    "t": 69.21,
+    "tExcerpt": 69.21,
+    "tShare": 69.21,
+    "tFilm": 69.21,
+    "at": {
+     "map": [
+      8707.78,
+      1278.54
+     ],
+     "px": [
+      801,
+      285
+     ],
+     "nx": 0.417,
+     "ny": 0.264,
+     "onScreen": true,
+     "camDist": 32.51
+    }
+   }
+  }
+ ]
+}

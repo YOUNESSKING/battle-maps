@@ -43,6 +43,9 @@
 .gmo .pdate .vr{width:1.3px;align-self:stretch;background:var(--rule);margin:0 14px 0 4px}
 .gmo .pdate .wd{font-size:13px;letter-spacing:.24em;color:#5A4F3A;white-space:nowrap}
 .gmo .pdate .nt{font-size:18.5px;color:var(--ink-2);white-space:nowrap;margin-top:1px}
+.gmo .pdate.monly .hd,.gmo .pdate.monly .vr,.gmo .pdate.monly .wd,.gmo .pdate.monly .nt{display:none}
+.gmo .pdate.monly .dn{width:auto;font-size:30px;letter-spacing:.08em;white-space:nowrap;padding:6px 8px 2px 6px}
+.gmo .pdate.monly .rw{min-height:46px}
 .gmo .pclock{left:132px;top:63px}
 .gmo .pclock .ct{padding:8px 64px 13px 44px;min-width:318px;height:97px;display:flex;flex-direction:column;justify-content:flex-end}
 .gmo .pclock .hd{font-size:13px;letter-spacing:.3em;color:var(--caps);white-space:nowrap;margin-bottom:-1px}
@@ -170,6 +173,37 @@
 .gmo .paper{position:absolute;inset:0;background:var(--paperurl) 0 0/512px 512px;mix-blend-mode:multiply;opacity:.1}
 .gmo .grain{position:absolute;left:-64px;top:-64px;width:${W + 128}px;height:${H + 128}px;mix-blend-mode:overlay;opacity:.16;background-size:512px 512px}
 .gmo .vig{position:absolute;inset:0;background:radial-gradient(ellipse 80% 76% at 52% 50%,rgba(0,0,0,0) 60%,rgba(8,10,12,.2) 82%,rgba(4,5,6,.42) 100%)}
+/* ---- 11. engagement devices (STYLE_LOCK 1b, restyled to GM: navy plates, gold hairlines, Cinzel caps) */
+.gmo .eng-sub{right:84px;bottom:132px;width:460px;display:flex;justify-content:flex-end}
+.gmo .eng-sub .pl{display:flex;align-items:center;gap:16px;background:var(--navy);padding:12px 18px 12px 14px;box-shadow:0 6px 18px rgba(0,0,0,.55),inset 0 0 0 3px var(--navy),inset 0 0 0 4.2px rgba(201,178,122,.7)}
+.gmo .eng-sub .btn{position:relative;font-family:"GM Cinzel",serif;font-weight:700;font-size:27px;letter-spacing:.12em;color:#F4EEDD;background:#B3221C;padding:9px 24px 7px 26px;border-radius:4px;box-shadow:inset 0 0 0 1.5px rgba(255,220,200,.25),0 2px 4px rgba(0,0,0,.4);white-space:nowrap;min-width:252px;text-align:center}
+.gmo .eng-sub .btn.on{background:#55524B;color:#E4DED0}
+.gmo .eng-sub svg.bell{width:38px;height:38px;flex:0 0 auto;overflow:visible}
+.gmo .eng-sub svg.cur{position:absolute;left:0;top:0;width:34px;height:44px;overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.gmo .eng-dec{left:50%;top:214px;width:1240px;margin-left:-620px;text-align:center}
+.gmo .eng-dec .sb,.gmo .eng-fin .sb{font-size:25px;letter-spacing:.36em;color:#E3C995;font-weight:600;text-shadow:0 2px 6px rgba(0,0,0,.9)}
+.gmo .eng-dec .tt,.gmo .eng-fin .tt{font-family:"GM Cinzel",serif;font-weight:700;font-size:82px;letter-spacing:.06em;line-height:1.05;margin:6px 0 30px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.6)) drop-shadow(0 0 18px rgba(0,0,0,.4))}
+.gmo .eng-dec .row{display:flex;gap:40px;align-items:stretch;justify-content:center}
+.gmo .eng-dec .or{align-self:center;font-family:"GM Cinzel",serif;font-weight:700;font-size:34px;color:#C9B27A;letter-spacing:.1em;text-shadow:0 2px 6px rgba(0,0,0,.9)}
+.gmo .eng-box{position:relative;flex:1;background:var(--navy);padding:18px 26px 22px;box-shadow:0 8px 22px rgba(0,0,0,.55),inset 0 0 0 3px var(--navy),inset 0 0 0 4.5px rgba(201,178,122,.85)}
+.gmo .eng-box .k{font-family:"GM Cinzel",serif;font-weight:700;font-size:24px;letter-spacing:.3em;color:#C9B27A;padding-left:.3em}
+.gmo .eng-box .v{font-family:"GM Cinzel",serif;font-weight:700;font-size:50px;letter-spacing:.05em;line-height:1.12;color:#EEE7D6;margin-top:4px}
+.gmo .eng-box .ln{width:120px;height:1.3px;margin:8px auto 0;background:linear-gradient(90deg,transparent,#C9B27A,transparent)}
+.gmo .eng-box .glow{position:absolute;inset:0;background:#2C57B7;opacity:0;box-shadow:inset 0 0 0 4.5px #9FC0F2,0 0 34px rgba(80,140,240,.6)}
+.gmo .eng-box .glow~*{position:relative}
+.gmo .eng-dec .cm,.gmo .eng-fin .cm{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:28px;font-size:24px;letter-spacing:.34em;font-weight:600;color:#EEE7D6;text-shadow:0 2px 6px rgba(0,0,0,.9)}
+.gmo .eng-dec .tk{display:flex;gap:10px}
+.gmo .eng-dec .tk i{display:block;width:20px;height:20px;border-radius:50%;border:2px solid #C9B27A;background:transparent}
+.gmo .eng-dec .tk i.on{background:#C9B27A;box-shadow:0 0 10px rgba(240,210,140,.7)}
+.gmo .eng-fin{left:50%;top:150px;width:1320px;margin-left:-660px;text-align:center}
+.gmo .eng-fin .cards{display:flex;gap:34px;justify-content:center}
+.gmo .eng-fin .tt{font-size:62px;white-space:nowrap}
+.gmo .eng-fin .c{width:350px;position:relative;background:var(--navy);padding:20px 12px 18px;box-shadow:0 8px 22px rgba(0,0,0,.55),inset 0 0 0 3px var(--navy),inset 0 0 0 4.5px rgba(201,178,122,.85)}
+.gmo .eng-fin .c .n{width:88px;height:88px;margin:0 auto 10px;border-radius:50%;border:3px solid #C9B27A;box-shadow:inset 0 0 0 4px var(--navy),inset 0 0 0 5.2px rgba(201,178,122,.6);font-family:"GM Cinzel",serif;font-weight:700;font-size:54px;line-height:80px;color:#E3C995}
+.gmo .eng-fin .c .nm{font-family:"GM Cinzel",serif;font-weight:700;font-size:31px;letter-spacing:.05em;line-height:1.1;color:#EEE7D6}
+.gmo .eng-fin .c .dt{font-size:19px;letter-spacing:.26em;color:#C9B27A;font-weight:600;margin-top:6px}
+.gmo .eng-fin .ans{font-family:"GM Cinzel",serif;font-weight:700;font-size:64px;letter-spacing:.1em;margin-top:26px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.6))}
+.gmo .eng-fin .ex{font-style:italic;font-weight:500;font-size:30px;color:#EEE7D6;margin-top:10px;text-shadow:0 2px 6px rgba(0,0,0,.9)}
 `;
 
   // ------------------------------------------------------------------ helpers
@@ -330,7 +364,9 @@
         if (!steps) build();
         const dk = last(dateKeys, t) || dateKeys[0];
         if (dk) { const o = dk.o, set = (s, v) => { const n = dateEl.querySelector(s); if (n.textContent !== String(v)) n.textContent = v; };
-          set(".hd", o.month || ""); set(".dn", o.day || ""); set(".wd", o.weekday || ""); set(".nt", o.note || ""); }
+          const mo = !o.day && !o.weekday && !o.note;   // month-only plate (Battle 20): the month line alone, big, no empty day box
+          if (dateEl.classList.contains("monly") !== mo) dateEl.classList.toggle("monly", mo);
+          set(".hd", o.month || ""); set(".dn", mo ? (o.month || "") : (o.day || "")); set(".wd", o.weekday || ""); set(".nt", o.note || ""); }
         const s = last(steps, t) || steps[0];
         if (s) { let disp, ang;
           if (s.run) { const raw = lerp(s.prev, s.v, clamp((t - s.t) / s.d)); disp = Math.floor(raw / s.run + 1e-6) * s.run; ang = raw; }
@@ -468,7 +504,7 @@
       if (o.height) el.style.height = o.height + "px";   // qSize: bigger quote line that wraps (two lines), height: card height (px, 1920 space)
       if (o.qSize) Object.assign(el.querySelector(".q").style, { fontSize: o.qSize + "px", whiteSpace: "normal", lineHeight: "1.3", padding: "0 150px" });
       const Q = el.querySelector(".q"), txt = o.marks === false ? String(o.quote || "") : `“${o.quote || ""}”`, cps = o.cps || 28, ty = { n: 0 };
-      tl.fromTo(ty, { n: 0 }, { n: txt.length, duration: txt.length / cps, ease: "none", immediateRender: false, onUpdate: () => { const s = txt.slice(0, Math.round(ty.n)); if (Q.textContent !== s) Q.textContent = s; } }, tIn + 1.0);
+      tl.fromTo(ty, { n: 0 }, { n: txt.length, duration: txt.length / cps, ease: "none", immediateRender: false, onUpdate: () => { const s = txt.slice(0, Math.round(ty.n)); if (Q.textContent !== s) Q.textContent = s; } }, o.qAt ?? tIn + 1.0);   // qAt: when the typing starts (Battle 20 S03; default tIn + 1)
       if (tOut != null) tl.to(el, { autoAlpha: 0, duration: 0.5 }, tOut); return O; };
 
     // ---------------------------------------------------------------- 8. centred italic quote over a darkened map (optional original-language line)
@@ -506,7 +542,7 @@
         <circle class="e0" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/><circle class="e1" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/>`;
       gsap.set(g, { autoAlpha: 0 }); tl.set(g, { autoAlpha: 1 }, tIn); fadeOut(g, tOut, 0.5);
       const unit = o.unit || "MILES", c = { v: 0 }, L = O.label(tIn + 0.4, tOut, { name: `${fmtN(o.value)} ${unit}`, sub: o.sub, x: 0, y: 0, marker: false, stripes: o.stripes || [] }), nm = L.el.querySelector(".nm");
-      tl.fromTo(c, { v: 0 }, { v: o.value, duration: 1.3, ease: "power2.out", immediateRender: false, onUpdate: () => { nm.textContent = `${fmtN(c.v)} ${unit}`; } }, tIn + 0.4);
+      tl.fromTo(c, { v: o.countFrom ?? 0 }, { v: o.value, duration: 1.3, ease: "power2.out", immediateRender: false, onUpdate: () => { nm.textContent = `${fmtN(c.v)} ${unit}`; } }, tIn + 0.4);   // o.countFrom (S06): start value (= value: no count, e.g. "1 MILE")
       rulers.push({ g, o: { ...o, tIn, tOut }, L }); return O; };
     updaters.push((t) => { for (const r of rulers) { const a = project(r.o.from, t), b = project(r.o.to, t); if (!a || !b) continue;
       const k = E.inout(clamp((t - r.o.tIn) / (r.o.drawDur || 1.4))), mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, lift = -Math.hypot(b.x - a.x, b.y - a.y) * 0.12, cx = mx, cy = my + lift;
@@ -533,6 +569,74 @@
         final(t, o = {}) { const f = document.createElement("div"); f.className = "fin"; f.innerHTML = `<span class="stamp" style="color:${o.color || "#2A6A2A"}">${(o.lines || ["THE GUARD", "SAVED"]).map(esc).join("<br>")}</span>`;
           ct.appendChild(f); gsap.set(f, { height: 0, autoAlpha: 0 }); tl.fromTo(f, { height: 0, autoAlpha: 0 }, { height: 90, autoAlpha: 1, duration: 0.3, immediateRender: false }, t); slam(f.querySelector(".stamp"), t + 0.35, -5); return O; },
       };
+    }
+
+    // ---------------------------------------------------------------- 11. engagement devices (STYLE_LOCK 1b; lib/engage.js restyled to the GM overlay; silent: cue sounds via SEQ.cues)
+    {
+      const BELL = `<svg class="bell" viewBox="0 0 24 24"><g class="bg"><path fill="#E3C995" stroke="#6E5228" stroke-width=".6" d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2z"/></g></svg>`;
+      const CURSOR = `<svg class="cur" viewBox="0 0 17 22"><path d="M1 1 L1 17 L5 13 L8 20 L11 19 L8 12 L14 12 Z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>`;
+      const subs = [];
+      // subscribe(t, until): small SUBSCRIBE plate bottom-right slides in at t, a cursor clicks it at t+1.25 (SUBSCRIBED), the bell rings, slides out at until
+      const subscribe = (t, until, o = {}) => {
+        const el = mk(Lhud, "eng-sub", `<div class="pl"><div class="btn"><span class="lab">SUBSCRIBE</span></div>${BELL}</div>${CURSOR}`, o.css || "");
+        const btn = el.querySelector(".btn"), lab = el.querySelector(".lab"), cur = el.querySelector(".cur"), bell = el.querySelector(".bg"), tc = t + (o.click ?? 1.25);
+        gsap.set(el, { autoAlpha: 0 }); gsap.set(cur, { autoAlpha: 0 });
+        tl.fromTo(el, { autoAlpha: 0, x: 140 }, { autoAlpha: 1, x: 0, duration: 0.5, ease: "power3.out", immediateRender: false }, t);
+        tl.fromTo(cur, { x: 330, y: 120, autoAlpha: 0 }, { x: 150, y: 34, autoAlpha: 1, duration: 0.7, ease: "power2.out", immediateRender: false }, tc - 0.75);
+        tl.fromTo(btn, { scale: 1 }, { scale: 0.9, duration: 0.08, yoyo: true, repeat: 1, immediateRender: false }, tc - 0.05);
+        tl.to(cur, { autoAlpha: 0, duration: 0.3 }, tc + 1.1);
+        if (until != null) tl.to(el, { autoAlpha: 0, x: 140, duration: 0.5, ease: "power2.in" }, until);
+        subs.push({ tc, lab, btn, bell }); return O; };
+      updaters.push((t) => { for (const s of subs) { const on = t >= s.tc, txt = on ? "SUBSCRIBED" : "SUBSCRIBE";
+        if (s.lab.textContent !== txt) { s.lab.textContent = txt; s.btn.classList.toggle("on", on); }
+        const r = t - s.tc - 0.3, a = r > 0 && r < 1.0 ? 20 * Math.sin(r * Math.PI * 8) * (1 - r) : 0;   // bell swings ~4 times, damped
+        s.bell.setAttribute("transform", `rotate(${a.toFixed(2)} 12 3)`); } });
+
+      // decide({sub, a, b, real: "a"|"b", t, tCount, tReveal, until}): dimmed map, WHAT WOULD YOU DO?, options A / B, TELL US IN THE COMMENTS + 3 ticks
+      const decide = (o) => {
+        const t = o.t, real = o.real === "b" || o.real === 1 ? 1 : 0;
+        O.film.dim(t - 0.2, o.until, o.dim ?? 1);
+        const box = (txt, i) => `<div class="eng-box o${i}"><div class="glow"></div><div class="k">${i ? "B" : "A"}</div><div class="v">${esc(txt).replace(/\n/g, "<br>")}</div><div class="ln"></div></div>`;
+        const el = mk(Lcards, "eng-dec", `<div class="caps sb">${esc(o.sub || "")}</div><div class="tt gold">${esc(o.title || "WHAT WOULD YOU DO?")}</div>
+          <div class="row">${box(o.a, 0)}<div class="or">OR</div>${box(o.b, 1)}</div>
+          <div class="cm caps"><span>${esc(o.note || "TELL US IN THE COMMENTS")}</span><span class="tk"><i></i><i></i><i></i></span></div>`, o.top != null ? `top:${o.top}px` : "");
+        gsap.set(el, { autoAlpha: 0 });
+        tl.fromTo(el, { autoAlpha: 0, scale: 1.06 }, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "power3.out", immediateRender: false }, t);
+        const os = [el.querySelector(".o0"), el.querySelector(".o1")], or = el.querySelector(".or"), cm = el.querySelector(".cm"), ticks = [...el.querySelectorAll(".tk i")];
+        gsap.set([...os, or, cm], { autoAlpha: 0 });
+        // o.tA / o.tB (optional, S05): each option appears on its own spoken words (default t + 0.5 / t + 0.85)
+        const tAB = [o.tA ?? t + 0.5, o.tB ?? t + 0.85];
+        os.forEach((b, i) => tl.fromTo(b, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, tAB[i]));
+        tl.fromTo(or, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, o.tB != null ? tAB[1] - 0.15 : t + 0.7);
+        const tC = o.tCount ?? t + 1.4;
+        tl.fromTo(cm, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, o.tNote ?? Math.min(tC, t + 1.2));   // o.tNote: the comments line on its words
+        updaters.push((tt) => { ticks.forEach((k, i) => { const on = tt >= tC + i * 0.8; if (k.classList.contains("on") !== on) k.classList.toggle("on", on); }); });
+        [0, 1, 2].forEach((k) => tl.fromTo(cm, { scale: 1 }, { scale: 1.08, duration: 0.1, yoyo: true, repeat: 1, immediateRender: false }, tC + k * 0.8));
+        if (o.tReveal != null) { const win = os[real], lose = os[1 - real];
+          tl.fromTo(win.querySelector(".glow"), { opacity: 0 }, { opacity: 0.55, duration: 0.35, immediateRender: false }, o.tReveal);
+          tl.fromTo(win, { scale: 1 }, { scale: 1.06, duration: 0.35, ease: "back.out(2)", immediateRender: false }, o.tReveal);
+          tl.fromTo(lose, { autoAlpha: 1, filter: "grayscale(0)" }, { autoAlpha: 0.35, filter: "grayscale(1)", duration: 0.35, immediateRender: false }, o.tReveal); }
+        if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
+        return O; };
+
+      // final({moves: [[NAME, DATE] x3], tShow, tNums, tAsk, tSub, until, q, sub, extra, tExtra}): numbered cards as each move is named, "1, 2 OR 3?", corner subscribe
+      const final = (o) => {
+        const t = o.tShow, tn = o.tNums || [];
+        O.film.dim(t - 0.2, o.until, o.dim ?? 0.85);
+        const card = (m, i) => `<div class="c m${i}"><div class="n">${i + 1}</div><div class="nm">${esc(m[0])}</div><div class="caps dt">${esc(m[1] || "")}</div></div>`;
+        const el = mk(Lcards, "eng-fin", `<div class="caps sb">${esc(o.sub ?? "TELL US IN THE COMMENTS")}</div><div class="tt gold">${esc(o.q || "WHICH WAS HIS GREATEST MOVE?")}</div>
+          <div class="cards">${o.moves.map(card).join("")}</div><div class="ans gold">${esc(o.ask || "1, 2 OR 3?")}</div>${o.extra ? `<div class="ex">${esc(o.extra)}</div>` : ""}`, o.top != null ? `top:${o.top}px` : "");
+        gsap.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, t);
+        const ans = el.querySelector(".ans"), ex = el.querySelector(".ex");
+        o.moves.forEach((m, i) => { const c = el.querySelector(".m" + i), tc = tn[i] ?? t + 0.3 + i * 0.3; gsap.set(c, { autoAlpha: 0 });
+          tl.fromTo(c, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, tc);
+          tl.fromTo(c, { scale: 1 }, { scale: 1.05, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, tc + 0.4); });
+        gsap.set(ans, { autoAlpha: 0 }); tl.fromTo(ans, { autoAlpha: 0, scale: 1.3 }, { autoAlpha: 1, scale: 1, duration: 0.35, ease: "power2.out", immediateRender: false }, o.tAsk ?? t + 1.5);
+        if (ex) { gsap.set(ex, { autoAlpha: 0 }); tl.fromTo(ex, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5, immediateRender: false }, o.tExtra ?? o.tAsk ?? t + 2); }
+        if (o.until != null) tl.to(el, { autoAlpha: 0, duration: 0.6 }, o.until);
+        if (o.tSub != null) subscribe(o.tSub, o.subUntil ?? (o.until != null ? o.until + 2 : null));
+        return O; };
+      O.engage = { subscribe, decide, final };
     }
 
     // ---------------------------------------------------------------- update loop (pure function of t)
