@@ -948,6 +948,9 @@ def bake(rname, G, P, creeks, preview=True):
     hedge_pts = None
     if close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
     else: img = wide_fields(lab, n, cell, s, r, TW, TH, seed)
+    if PROJ and cfg.get("rust_k"):   # project mode: pull the rust / ploughed-brown field tones toward the sand tones (reads as a pink smear on hills)
+        red = np.clip((img[..., 0] - img[..., 1] - 12.0) / 14.0, 0, 1)[..., None] * cfg["rust_k"]
+        img = img * (1 - red) + np.array([138, 128, 90], np.float32) * (img.mean(-1, keepdims=True) / 119.0) * red; del red
     del lab
     dist_t = cv2.resize(dist, (TW, TH), interpolation=cv2.INTER_LINEAR); hw_t = cv2.resize(hw, (TW, TH), interpolation=cv2.INTER_NEAREST)
     near = np.clip(1 - (dist_t - hw_t) / (10.0 if not close else 2.5), 0, 1)
@@ -1005,12 +1008,15 @@ def bake(rname, G, P, creeks, preview=True):
         holes = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 1.4), seed + 61), (TW, TH)); forest *= (holes < 0.78); del holes
     forest = (cv2.GaussianBlur(forest, (0, 0), 0.5 if close else 0.3 * TW / 4096) > 0.5).astype(np.float32)
     forest = cv2.GaussianBlur(forest, (0, 0), 0.7 if close else 0.6 * TW / 4096)
+    if PROJ and cfg.get("wood_soft"):   # project mode: softer, lighter wood patches (blur x k, paint opacity a; the canopy height keeps the full mask)
+        ws = cfg["wood_soft"]; forest_paint = cv2.GaussianBlur(forest, (0, 0), ws.get("blur_u", 1.5) * s) * ws.get("alpha", 0.5)
+    else: forest_paint = forest
     LOG("  forest cover %.3f" % float((forest > 0.5).mean()))
     crown = fbm(TH, TW, 2, int(bw / (0.6 if not close else 0.09)), seed + 3)
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)
     fcol = (hexc("#2e4645") if close else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])
-    img = img * (1 - forest[..., None]) + fcol * forest[..., None]; del fcol, crown, fdark
-    ao = np.clip(cv2.GaussianBlur(forest, (0, 0), 0.0025 * TW) - forest, 0, 1); img *= (1 - 0.45 * ao)[..., None]; del ao
+    img = img * (1 - forest_paint[..., None]) + fcol * forest_paint[..., None]; del fcol, crown, fdark
+    ao = np.clip(cv2.GaussianBlur(forest_paint, (0, 0), 0.0025 * TW) - forest_paint, 0, 1); img *= (1 - 0.45 * ao)[..., None]; del ao, forest_paint
     # cane brakes: pale yellow-green speckled thickets in bands along the alluvial rivers / bayous (not on fields near towns)
     cane = None
     if cfg.get("cane", 0) > 0:

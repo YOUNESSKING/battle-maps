@@ -15,7 +15,7 @@ const T = { D: 46.51, e1813: 1.06, jackson: 2.19, tennessee: 3.55, spring: 5.49,
 const G = "gulf", P = (n) => VX.place(n, G);
 const NAT = P("Natchez"), MIMS = P("Fort Mims"), MOB = P("Mobile"), HSB = P("Horseshoe Bend (Tohopeka"), FW = P("Fort Williams");
 const TRACE = [[NAT[0] + 6, NAT[1] - 6], [150, 352], [236, 252], [318, 150]];            // the Natchez Trace toward Tennessee (north-east)
-const SOUTH = [[1004, 34], [982, 80], [FW[0] + 4, FW[1] - 6], [1018, 146], [HSB[0] - 14, HSB[1] - 3]];   // Fort Strother -> Fort Williams -> the bend
+const SOUTH = [[1032, 30], [1036, 70], [1046, 108], [1062, 136], [HSB[0] - 8, HSB[1] - 12]];   // round 2: from Fort Strother (Tennessee side, map top) south toward the bend: reads south on screen (north up)
 const RSB = VX.ll(32.2, -86.72, G);   // the Red Stick banner over the Red Stick towns on the Alabama (Holy Ground area)
 
 let WW = null;
@@ -56,6 +56,7 @@ window.SEQ = {
     { t: T.creek + 1.0, region: G, at: [770, 440], dist: 840, tilt: 31, yaw: 0, fov: 30 },
     { t: T.mims + 1.0, region: G, at: [752, 505], dist: 790, tilt: 32, yaw: 0, fov: 30 },
     { t: T.jackson2, region: G, at: [800, 430], dist: 690, tilt: 32, yaw: 0, fov: 30, ease: "lin" },
+    { t: 32.6, region: G, at: [1045, 112], dist: 300, tilt: 14, yaw: 0, fov: 30 },   // round 2: north up, the whole south arrow in view while it draws
     { t: T.tohopeka, region: G, at: [1010, 250], dist: 430, tilt: 34, yaw: 0, fov: 30 },
     // the last ~2.2 s hold S03's first camera exactly (S03 keys[0]: [OV-10, OV+26], dist 300, tilt 36, yaw 0, fov 30)
     { t: T.D - 2.2, region: G, at: [HSB[0] - 10, HSB[1] + 26], dist: 300, tilt: 36, yaw: 0, fov: 30 },
@@ -70,7 +71,7 @@ window.SEQ = {
   banners: [
     { general: "jackson", region: G, keys: [[0, ...VX.along(TRACE, 150).slice(0, 2)], [T.home, ...VX.along(TRACE, 150).slice(0, 2)], [T.hickory + 1.2, ...VX.along(TRACE, 225).slice(0, 2)]], t0: T.jackson, t1: T.sameYear + 1.4 },
     { general: "redsticks", region: G, keys: [[0, ...RSB], [T.thousand - 0.6, ...RSB], [T.warriors + 1.8, HSB[0] + 16, HSB[1] + 28]], t0: T.red + 0.2, t1: T.D + 1 },
-    { general: "jackson", region: G, keys: [[0, FW[0] + 4, FW[1] - 6], [T.south + 0.2, FW[0] + 4, FW[1] - 6], [T.tohopeka, 1040, 176]], t0: T.jackson2, t1: T.D + 1 },
+    { general: "jackson", region: G, keys: [[0, 1030, 44], [T.south + 0.2, 1030, 44], [T.tohopeka, 1062, 136]], t0: T.jackson2, t1: 39.6 },
   ],
   labels: [
     { text: "Creek Nation", at: [985, 335], size: 22, t0: T.creek, t1: T.creek + 3.4, region: G },

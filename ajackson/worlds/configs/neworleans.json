@@ -9,10 +9,15 @@
   462
  ],
  "hm_ppu": 2.5,
+ "meshDiv": 2,
  "tex": 8192,
- "exag": 14.0,
+ "exag": 10.0,
  "cell": 9.0,
  "seed": 1814,
+ "wood_soft": {
+  "blur_u": 0.8,
+  "alpha": 0.65
+ },
  "stills": [
   {
    "at": [
@@ -76,7 +81,16 @@
   },
   "fill_water": true,
   "spike_m": 40.0,
-  "sea_floor_m": 0.0
+  "sea_floor_m": 0.0,
+  "synth_levee": {
+   "river": "Mississippi River (New Orleans)",
+   "crest_m": 4.0,
+   "base_m": 0.4,
+   "half_w": 2.5,
+   "width_u": 10.0,
+   "pow": 1.25,
+   "noise_m": 0.3
+  }
  },
  "creek_km2": 1000000.0,
  "creeks": {

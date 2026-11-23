@@ -36,6 +36,7 @@
  "woods": 0.14,
  "ravine_woods": 0.6,
  "tree_spacing": 0.25,
+ "rust_k": 0.85,
  "clear": [
   [
    8699.343912098926,

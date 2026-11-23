@@ -49,8 +49,8 @@ add({ side: "u", face: FS, keys: [[0, REDOUBT[0] - nS[0] * 0.25, REDOUBT[1] - nS
 const MS = 3.9, FOR = 0.6;
 const MAIN = [0, 1, 2].map((i) => add({ side: "r", n: 2, face: FB, t0: FOR + i * 0.4,
   keys: [[0, ...onS(MS, 10.2 + i * 1.3)], [T.british, ...onS(MS, 10.2 + i * 1.3)], [T.five, ...onS(MS, 4.3 + i * 1.3)], [T.ditch, ...onS(MS, 1.05 + i * 1.25)],
-         [73.5, ...onS(MS, 1.05 + i * 1.25)], [80.5, ...onS(MS, 4.8 + i * 1.3)], [T.broken, ...onS(MS, 4.8 + i * 1.3)], [118.0, ...onS(MS, 10.6 + i * 1.3)]] }));
-add({ side: "r", n: 2, face: FB, t0: FOR + 1.2, keys: [[0, ...onS(2.0, 13.4)], [T.rank, ...onS(2.0, 13.4)], [T.ditch + 1.0, ...onS(2.0, 8.4)], [T.broken, ...onS(2.0, 8.4)], [118.0, ...onS(2.0, 12.6)]] });
+         [T.broken, ...onS(MS, 1.05 + i * 1.25)], [119.0, ...onS(MS, 10.6 + i * 1.3)]] }));   // round 2: they stay at the ditch through the Pakenham shot, turn about off screen, walk back in the wide shot
+add({ side: "r", n: 2, face: FB, t0: FOR + 1.2, keys: [[0, ...onS(2.0, 14.0)], [T.D, ...onS(2.0, 14.0)]] });   // round 2: the 44th waits far back with the ladders left behind (no drift at 52-62, no backing)
 // the river column: Rennie's light companies by the road (they storm the redoubt), the 93rd (cross obliquely to Gibbs' right, then stand)
 const RS = 0.32, RD0 = 10.6, RD1 = 4.6, RIN = 1.45;
 add({ side: "r", n: 2, face: FB, t0: FOR + 0.6,
@@ -75,7 +75,7 @@ const CUT = [[VIL[0] - 0.5, 3232.6], [VIL[0] - 0.1, 3239.6]];   // the new cut f
 const XR = [[VIL[0] - 1.0, 3240.8], [VIL[0] - 2.4, 3243.4], [VIL[0] - 3.8, 3246.4]];
 const boats = [
   ...[0.12, 0.32, 0.5, 0.7].map((k) => ({ region: CH, kind: "barge", n: 1, path: CUT, sAt: () => VX.len(CUT) * k, t0: -1, t1: 26.0, size: 0.16, lamp: false, wake: false, h: 0.05 })),
-  { region: CH, kind: "barge", n: 2, path: XR, s0: 0.4, speed: 0.55, spacing: 0.9, t0: T.across - 0.6, t1: 26.0, size: 0.18, lamp: false, wake: true },
+  { region: CH, kind: "barge", n: 2, path: XR, s0: 0.4, speed: 0.55, spacing: 0.9, t0: T.across - 0.6, t1: 26.0, size: 0.26, lamp: false, wake: true },
 ];
 
 // ---------------- fx ----------------
@@ -83,22 +83,22 @@ const imp = (i, d) => onS(MS + ((i * 37) % 7 - 3) * 0.18, d);
 const gShots = [];
 // the batteries open as the fog lifts: Nos. 6, 7, 8 rake the main column, 1-4 the river side; impacts where the lines are
 [[41.1, 6, 4.2], [41.7, 7, 4.4], [42.4, 5, 4.6], [43.1, 6, 4.0], [43.8, 4, 4.8], [44.5, 7, 3.9], [45.3, 6, 3.6], [46.2, 3, 4.6], [47.0, 7, 3.2],
- [47.8, 5, 3.0], [48.7, 6, 2.8], [55.8, 7, 1.8], [59.9, 7, 1.5], [64.8, 7, 2.4], [71.2, 6, 4.4], [72.9, 7, 4.2], [73.9, 5, 4.5]].forEach(([t, g, d], i) => gShots.push({ t, at: GUN(g), dir: nS, impact: imp(i, d), delay: 0.55 }));
+ [47.8, 5, 3.0], [48.7, 6, 2.8], [55.8, 7, 1.8], [59.9, 7, 1.5], [65.55, 7, 2.4], [72.25, 6, 4.4], [72.9, 7, 4.2], [73.9, 5, 4.5]].forEach(([t, g, d], i) => gShots.push({ t, at: GUN(g), dir: nS, impact: imp(i, d), delay: 0.55 }));
 // grape on the 93rd
-[89.5, 90.4, 91.5, 92.6, 93.8, 94.9].forEach((t, i) => gShots.push({ t, at: GUN([4, 5, 3, 4, 5, 3][i]), dir: nS, impact: [H93c[0] + ((i % 3) - 1) * 0.35, H93c[1] + 0.3], delay: 0.45 }));
+[89.5, 90.4, 91.5, 93.1, 94.9].forEach((t, i) => gShots.push({ t, at: GUN([4, 5, 3, 4, 3][i]), dir: nS, impact: [H93c[0] + ((i % 3) - 1) * 0.35, H93c[1] + 0.3], delay: i === 3 ? 0.25 : 0.45 }));   // round 2: none on "Their" (93.5)
 // Nos. 1 and 2 on the redoubt's attackers
-[101.0, 102.4, 104.0].forEach((t, i) => gShots.push({ t, at: GUN(i % 2 ? 1 : 2), dir: nS, impact: onS(RS + 0.6, RIN + 1.4 + i * 0.3), delay: 0.4 }));
+[101.0, 102.4, 104.95].forEach((t, i) => gShots.push({ t, at: GUN(i % 2 ? 1 : 2), dir: nS, impact: onS(RS + 0.6, RIN + 1.4 + i * 0.3), delay: i === 2 ? 0.3 : 0.4 }));   // round 2: the last one after "it,"
 const VO = { dir: nS, size: 0.75, alpha: 0.085, life: 9, muzzle: 5, rate: 3.0, roll: 0.8, height: 2.0, cluster: [3.0, 1.5] };
 const fx = {
   fires: [],
   volleys: [
     // rank after rank: the riflemen along the parapet (straight stretch + the receding leg), each volley a ripple of visible flashes
-    { region: CH, pts: [onS(2.3, -0.45), onS(3.3, -0.45), onS(4.4, -0.45), onS(4.8, -0.45)], t0: T.fire2 - 0.1, t1: 56.0, every: 1.5, opts: { ...VO, volley: 1.5 } },   // round 1: stops before the ladders payoff (56.2-68.9)
-    { region: CH, pts: [onL(0.2, -0.45), onL(1.2, -0.45), onL(2.2, -0.45)], t0: T.rank, t1: 56.2, every: 1.7, opts: { ...VO, dir: nL, volley: 1.7 } },
+    { region: CH, pts: [onS(2.3, -0.45), onS(3.3, -0.45), onS(4.4, -0.45), onS(4.8, -0.45)], t0: 52.45, t1: 56.0, every: 1.5,   /* round 2: after "rank." */ opts: { ...VO, volley: 1.5 } },   // round 1: stops before the ladders payoff (56.2-68.9)
+    { region: CH, pts: [onL(0.2, -0.45), onL(1.2, -0.45), onL(2.2, -0.45)], t0: 52.95, t1: 56.2, every: 1.7, opts: { ...VO, dir: nL, volley: 1.7 } },
     { region: CH, pts: [onS(3.3, -0.45), onS(4.4, -0.45)], t0: 63.4, t1: 66.6, every: 3.0, opts: { ...VO, volley: 3.0 } },   // one sparse volley on the column at the ditch
     // on the 93rd and on the redoubt's attackers
     { region: CH, pts: [onS(2.0, -0.45), onS(3.0, -0.45), onS(3.6, -0.45)], t0: 89.8, t1: 95.4, every: 1.8, opts: { ...VO, volley: 1.8 } },
-    { region: CH, pts: [onS(0.3, -0.5), onS(1.0, -0.5), onS(1.8, -0.5)], t0: T.officers - 0.4, t1: T.driven + 0.4, every: 1.4, opts: { ...VO, volley: 1.4 } },
+    { region: CH, pts: [onS(0.3, -0.5), onS(1.0, -0.5), onS(1.8, -0.5)], t0: 102.0, t1: T.driven + 0.4, every: 1.6, opts: { ...VO, volley: 1.6 } },
     // the west bank: Morgan's men fire once, then break
     { region: CH, pts: [wbo(0.2, -0.2), wbo(0.5, -0.2), wbo(0.85, -0.2)], t0: 116.8, t1: T.broke + 0.2, every: 1.6, opts: { ...VO, dir: mwN, volley: 1.6 } },
   ],
@@ -130,7 +130,7 @@ const lab = (text, at, t0, d = 3.5, o = {}) => ({ text, at, t0, t1: t0 + d, regi
 const labels = [
   lab("collapsed canal", [VIL[0] + 1.4, 3236.0], T.collapsed - 0.05, 3.4),
   lab("west bank", [VIL[0] - 4.6, 3247.4], T.west - 0.05, 3.6, { river: true }),
-  lab("hours late", [VIL[0] - 2.2, 3244.4], T.late - 0.05, 3.6, { size: 17 }),   // round 1 (critic B): the late boats
+  lab("hours late", [VIL[0] - 2.2, 3244.4], T.late - 0.05, 3.6, { size: 24 }),   // round 1 (critic B): the late boats
   lab("the ditch", onS(3.4, 0.5), T.ditch - 0.05, 3.0, { river: true, size: 14 }),
   lab("93rd Highlanders", [H93c[0] + 0.8, H93c[1] + 0.9], T.ninety3 - 0.05, 4.2, { size: 16 }),
   lab("advanced redoubt", onS(RS - 0.2, 2.2), 100.0, 3.4),   // on "advanced battery" (99.95)
@@ -143,7 +143,7 @@ const labels = [
 const RIVP = (() => { const R = VX.river(CH, "Mississippi River").pts.map((p) => [p[0], p[1]]); const out = [];
   for (let i = 0; i < R.length; i += 3) { const a = R[Math.max(0, i - 1)], b = R[Math.min(R.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; let n = [-(b[1] - a[1]) / l, (b[0] - a[0]) / l];
     if (n[0] * (RE[0] - R[i][0]) + n[1] * (RE[1] - R[i][1]) < 0) n = [-n[0], -n[1]]; out.push({ p: R[i], n }); } return out; })();
-const fogK = (t) => 1 - VX.sstep(T.crossed, T.lifted + 1.2, t);
+const fogK = (t) => (1 - VX.sstep(T.crossed, T.lifted + 1.2, t)) * (1 - 0.45 * VX.sstep(8.0, 9.3, t) * (1 - VX.sstep(14.4, 15.0, t)));   // round 2: thinner over the late boats (9.3-15)
 const fog = { build() { const c = document.createElement("canvas"); c.width = 1280; c.height = 720; c.style.cssText = "position:absolute;inset:0;pointer-events:none";
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
   draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = fogK(t); if (k <= 0.003) return; const W = ctx.world;
@@ -212,8 +212,8 @@ window.SEQ = {
     K(0, [1259.0, 3229.4], 27, 48, 6, "io", 0.5),                                   // = S06's last frame, now before dawn
     K(CUT1, [1260.6, 3230.0], 25, 49, 8, "lin", 0.5),
     { ...K(CUT1, [VIL[0] - 0.4, 3235.6], 15, 50, 12, "cut", 0.5), dissolve: 0.9 },   // the collapsed canal, the boats stuck
-    K(9.6, [VIL[0] - 1.0, 3238.6], 16, 50, 6, "io", 0.5),
-    K(CUT2, [VIL[0] - 2.2, 3243.0], 21, 52, 2, "lin", 0.48),                          // the west-bank force crossing late
+    K(9.3, [VIL[0] - 1.2, 3239.4], 13, 52, 6, "io", 0.5),
+    K(CUT2, [VIL[0] - 2.4, 3243.0], 12, 55, 2, "lin", 0.48),   // round 2: closer, lower on the late boats                          // the west-bank force crossing late
     { ...K(CUT2, onS(1.6, -1.2), 7.5, 72, -33, "cut", 0.42), dissolve: 0.9 },           // eye level along the silent wall
     K(CUT3, onS(3.0, -1.2), 7.5, 71, -30, "lin", 0.3),
     { ...K(CUT3, onS(2.8, 5.0), 30, 49, -122, "cut", 0.25), dissolve: 0.9 },          // from behind the line across the field

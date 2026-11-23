@@ -95,9 +95,10 @@ const VOL = (pts, t0, t1, dir, o = {}) => ({ region: CH, pts, t0, t1, opts: { di
 const lane = (x, y, w = 0.4) => [[x, y - w], [x, y + w]];
 const volleys = [];
 // the attack: Jackson's line fires as it closes, the British front answers (night), Coffee's men fire into the flank
-BL.forEach((y, i) => volleys.push(VOL(lane(1273.9, y), T.attacked + 2.6 + i * 0.37, T.side + 0.8, [1, 0])));
-RL.forEach((y, i) => volleys.push(VOL(lane(RX - 0.4, y), T.regulars2 + 1.3 + i * 0.41, T.side + 0.9, [-1, 0])));
-CL.forEach((y, i) => volleys.push(VOL([[1277.0 + i * 1.4, y - 0.35], [1278.2 + i * 1.4, y + 0.35]], T.struck + 0.1 + i * 0.3, T.side + 1.0, [0.5, 1])));
+// round 2 (critic B): the attack volleys end before "while" (77.87); Coffee's men fire after "side." (82.9): the words in between stay clear
+BL.forEach((y, i) => volleys.push(VOL(lane(1273.9, y), T.attacked + 2.6 + i * 0.37, 78.8, [1, 0])));
+RL.forEach((y, i) => volleys.push(VOL(lane(RX - 0.4, y), T.regulars2 + 1.3 + i * 0.41, 78.8, [-1, 0])));
+CL.forEach((y, i) => volleys.push(VOL([[1277.0 + i * 1.4, y - 0.35], [1278.2 + i * 1.4, y + 0.35]], T.side + 0.35 + i * 0.3, T.side + 2.0, [0.5, 1])));
 // the melee: short ragged volleys all over the field, both colours (each one a visible burst of flashes = one sound event)
 const MF = [[1277.6, 3238.0, 1], [1278.4, 3236.9, -1], [1277.1, 3235.9, 1], [1278.9, 3234.9, -1], [1277.8, 3234.1, 1], [1279.6, 3233.2, -1], [1281.4, 3232.4, 1],
   [1279.3, 3235.4, -1]];   // round 1 (critic B): 8 groups, fewer shots under the melee narration
@@ -210,7 +211,10 @@ window.SEQ = {
     ["label", T.seventeen, T.boats + 0.4, { name: "About 1,700 men", sub: "the British advance guard", world: [1283.0, 3232.4], side: "uk", marker: false }],
     ["plaque.note", T.incity + 0.2, "news reaches the city"],
     ["plaque.note", T.afternoon - 0.1, "early afternoon"],
-    ["quote", T.gentlemen - 0.15, T.tonight + 0.7, { en: "Gentlemen, the British are below. We must fight them tonight.", attr: "Andrew Jackson · as later told", y: 680, dim: 0.45 }],
+    ["quote", T.gentlemen - 0.15, T.tonight + 0.7, { en: "Gentlemen, the British are below. We must fight them tonight.", attr: "Andrew Jackson · as later told", y: 640, dim: 0.6 }],
+    // round 2 (critic A): the quote ~30 % larger on a dark backing (readable at 720p)
+    () => { const e = [...document.querySelectorAll("#ov .cq")].pop(); if (!e) return; const q = e.querySelector(".q");
+      if (q) { q.style.fontSize = "52px"; q.style.lineHeight = "1.25"; } Object.assign(e.style, { background: "rgba(12,16,22,.62)", padding: "26px 60px 22px", borderRadius: "4px", boxShadow: "0 0 0 1.5px rgba(201,178,122,.55)" }); },
     ["engage.decide", { t: T.stop - 0.1, sub: "23 DECEMBER 1814 · YOU ARE JACKSON", a: "DIG IN AND\nWAIT FOR THEM", b: "ATTACK\nTONIGHT", real: "b", tA: T.dig - 0.05, tB: T.attack - 0.05,
       tNote: T.tell - 0.05, tCount: T.comments, tReveal: T.notwait + 0.05, until: SW + 0.2, dim: 0.55 }],
     // round 1 (critic B): a second beat under the 23 s card, each on its words

@@ -88,8 +88,12 @@
   "paint_km2": 600,
   "ribbon_km2": 1000000000.0
  },
- "woods": -0.03,
+ "woods": 0.0,
  "villages": 0,
+ "wood_soft": {
+  "blur_u": 2.2,
+  "alpha": 0.5
+ },
  "rivers": [
   {
    "name": "Mississippi River",

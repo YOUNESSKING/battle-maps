@@ -19,3 +19,6 @@ Open issues: the narration runs to 61.7 s, so the map is only clean for the last
 - Removal: arrows 0.75 wide, warm tan, shading brighter (still muted, no red); camera pulled north (at [600, 520], dist 1100) so the hatch and the arrows sit in frame. The Creek and Choctaw hatches still reach the map's top edge (33.6 N is the gulf world's limit).
 - Final cards out 60.4, subscribe out by ~61.4, clean living map 61.5-79.1 with a slow drift, fade over the last 1.5 s.
 - Optional items not done: the scar callback stays over the gulf (not cut to chalmette); the end window was not extended further.
+
+## Round 2 fixes
+- None needed beyond round 1 (the remaining items are the gulf bake, and the hatch reaching the world's top edge is the map limit).

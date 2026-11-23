@@ -48,3 +48,6 @@ Gulf only, one slow continuous camera (lower Mississippi -> Creek country -> For
 - Opening camera: coast + Mobile Bay in frame, then pans north with the banner; the banner is now well inside the frame (foot at
   x 230-320 px, y 200-300 px at 720p; probed with world.projectMap) and clear of the date plate. Red Stick banner inside the frame.
 - Not changed: the gulf bake's camouflage texture (a re-bake is the lead's call); "marched south" arrow geometry (sev 1).
+
+## Round 2 fixes (by the S03 author)
+- "Jackson marched south" (30-44 s): the arrow now runs from Fort Strother (map top, the Tennessee side) straight south toward the bend, and the camera pans north-up onto it (key 32.6 s at [1045, 112], dist 300, tilt 14) while it draws; Jackson's banner walks down it and steps out at 39.6 s (it was cut by the frame top). The last 2.2 s still hold S03's first camera exactly.

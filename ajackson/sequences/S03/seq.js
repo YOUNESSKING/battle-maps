@@ -217,6 +217,7 @@ window.SEQ = {
     ["ledger.add", T.prisoner, { who: "About 350 prisoners", note: "women and children", stamp: false }],
     ["ledger.add", T.fortynine + 0.35, { who: "Jackson's army: 49 killed", note: "18 of them Cherokee", stamp: false }],
     ["ledger.hide", 126.4],
+    ["plaque.date", 126.95, { month: "1814", day: "", weekday: "", note: "the Creek lands" }],   // round 2: the clock rolls at the dissolve
     ["plaque.date", T.summer, { month: "Summer 1814", day: "", weekday: "", note: "Fort Jackson" }],
     ["letter", T.treaty - 0.1, 142.8, { header: "Summer 1814", title: "Treaty of Fort Jackson", sub: "", marks: false, quote: "some 22 million acres: about half the Creek Nation's land", qSize: 30, cps: 24, qAt: 136.0, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     ["label", T.beside - 1.0, 143.0, { name: "Even the allies' land", sub: "taken from the Creeks who fought beside him", world: VX.ll(31.55, -85.35, GF), side: "us", marker: false }],
@@ -224,13 +225,13 @@ window.SEQ = {
     ["plaque.date", T.autumn, { month: "Autumn 1814", day: "", weekday: "", note: "the Gulf coast" }],
     ["label", T.gulf, 158.4, { name: "The whole Gulf coast", sub: "Jackson's command", world: VX.ll(30.55, -88.4, GF), side: "us", marker: false }],
     ["engage.subscribe", 171.0, 175.6],
-    ["label", T.heres + 0.05, T.D + 1, { name: "Next: the British come", screen: true, x: 1480, y: 940, marker: false, side: "us" }],
+    ["label", T.heres + 0.05, T.D + 1, { name: "Next: the British come", screen: true, x: 300, y: 940, marker: false, side: "us" }],
   ],
   build: (ctx) => { hatch.build(ctx); pulses.build(ctx); markers.build(ctx); },
   draw: (t, ctx) => { hatch.draw(t, ctx); pulses.draw(t, ctx); markers.draw(t, ctx); },
 };
 // the British coming: ships + a red arrow from the south-east (gulf), continued in S04
 const SHIP_PATH = [[1215, 1015], [1060, 950], [905, 885], [760, 830], [620, 800], [520, 772], [470, 758]];   // = S04's
-window.SEQ.boats.push({ region: GF, kind: "ship", n: 5, t0: T.british - 0.2, t1: T.D + 1, size: 5.5, lamp: false, wake: true, path: SHIP_PATH, s0: 300, speed: 4.0, spacing: 16 });
+window.SEQ.boats.push({ region: GF, kind: "ship", n: 5, t0: T.british - 0.2, t1: T.D + 1, size: 5.5, lamp: false, wake: true, path: SHIP_PATH, s0: 380, speed: 4.0, spacing: 16 });
 window.SEQ.arrows.push({ side: "r", width: 0.6, maxWidth: 0.6, pts: [[1222, 1040], [1060, 950], [930, 895], [850, 862]], t0: T.british - 0.1, dur: 1.8, t1: 170.0, region: GF });
 })();

@@ -19,3 +19,7 @@ Open issues: gulf arrows read thin; ships are small at dist 560-860; the route a
 - 46-52 empty map: the Bienvenue route arrow and the barges start on "wherever" (48.9).
 - NOT fixed here: the flat, blurry neworleans ground is the neworleans bake (needs a re-bake); the date-plate month text size is an engine CSS value that also affects Vicksburg (left as is).
 - check_troops_motion chalmette 56-71: no overlaps; gulf: no pops.
+
+## Round 2 fixes
+- 20-24 s pale void bottom-left: the New Orleans keys are now closer and flatter (CUT1 [1242, 3172] dist 190 tilt 38; 30.0 dist 215 tilt 36; 42.2 / 46.6 dist 175-180 tilt 38), so the near (south) world edge stays out of frame. Checked 20.6-44 s.
+- Ships start where S03's (s0 380) end.

@@ -20,7 +20,7 @@ const CUT1 = 19.95, CUT2 = 56.35;   // dissolves gulf -> neworleans, neworleans 
 
 // ---------------- the fleet (S03's ships go on) ----------------
 const SHIP_PATH = [[1215, 1015], [1060, 950], [905, 885], [760, 830], [620, 800], [520, 772], [470, 758]];
-const S0 = 300 + (177.09 - 158.5) * 4.0;   // lead ship's arc length at S03's last shared frame (S03: s0 300, t0 158.5, speed 4)
+const S0 = 380 + (177.09 - 158.5) * 4.0;   // lead ship's arc length at S03's last shared frame (S03: s0 380, t0 158.5, speed 4)
 
 // ---------------- neworleans: Lake Borgne ----------------
 const GB = VX.line([1532.0, 3112.0], [1558.0, 3124.0], 5);   // Jones's five gunboats in line (true site ~8 km further east, off this map: see NOTES)
@@ -77,12 +77,12 @@ window.SEQ = {
     { t: 8.6, region: GF, at: [560, 790], dist: 820, tilt: 39, yaw: 0, fov: 30, ease: "io" },          // the fleet toward New Orleans, the river mouth
     { t: 12.4, region: GF, at: [700, 720], dist: 560, tilt: 42, yaw: 0, fov: 30, ease: "io" },         // Mobile, Pensacola
     { t: CUT1, region: GF, at: [720, 724], dist: 540, tilt: 42, yaw: 1, fov: 30, ease: "io" },
-    { t: CUT1, region: NO, at: [1236, 3184], dist: 250, tilt: 40, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // New Orleans, the lakes, the bayous
-    { t: 30.0, region: NO, at: [1262, 3172], dist: 270, tilt: 41, yaw: 0, fov: 30, ease: "io" },
+    { t: CUT1, region: NO, at: [1242, 3172], dist: 190, tilt: 38, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // round 2: no world edge bottom-left   // New Orleans, the lakes, the bayous
+    { t: 30.0, region: NO, at: [1262, 3170], dist: 215, tilt: 36, yaw: 0, fov: 30, ease: "io" },
     { t: 33.4, region: NO, at: [1518, 3124], dist: 135, tilt: 36, yaw: 8, fov: 30, ease: "io" },      // Lake Borgne: the gunboats
     { t: 38.2, region: NO, at: [1522, 3124], dist: 125, tilt: 37, yaw: 10, fov: 30, ease: "io" },
-    { t: 42.2, region: NO, at: [1250, 3188], dist: 200, tilt: 42, yaw: 0, fov: 30, ease: "io" },       // the city: martial law, the call to arms
-    { t: 46.6, region: NO, at: [1240, 3195], dist: 190, tilt: 43, yaw: 0, fov: 30, ease: "io" },
+    { t: 42.2, region: NO, at: [1250, 3180], dist: 180, tilt: 38, yaw: 0, fov: 30, ease: "io" },       // the city: martial law, the call to arms
+    { t: 46.6, region: NO, at: [1244, 3184], dist: 175, tilt: 38, yaw: 0, fov: 30, ease: "io" },
     { t: 50.4, region: NO, at: [1380, 3176], dist: 120, tilt: 45, yaw: 0, fov: 30, ease: "io" },       // the bayou no one had blocked
     { t: CUT2, region: NO, at: [1314, 3184], dist: 92, tilt: 47, yaw: -3, fov: 30, ease: "io" },
     { t: CUT2, region: CH, at: [1286.6, 3229.0], dist: 30, tilt: 47, yaw: -6, fov: 30, ease: "cut", dissolve: 0.9 },   // Villeré's, 23 December

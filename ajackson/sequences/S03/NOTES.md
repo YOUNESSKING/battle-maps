@@ -33,3 +33,8 @@ Open issues: frame 0 is a close gulf view (S02 must end on the same camera: gulf
 
 ## Round 1 (S05-S07 author, engine retreatTurn)
 - Red Stick lines: hold at the wall to 90.4-91.2 while each block turns about in place (~7 s), then ONE straight walk back toward the toe by 110.6-111.5 (no backward walk; front-vs-velocity <= 21 deg). Jackson's lines go over the wall ~1.2-2.6 s later (93.6-97.3) so nothing overlaps. check_troops_motion 0-177.69 horseshoe: 0 overlaps, 0 pops; one 49 deg/s turn (u17 @83.7).
+
+## Round 2 fixes
+- The plate rolls at the treaty dissolve (126.95 s: "1814 · the Creek lands", then "Summer 1814" on "summer"): no 12:30 clock over the gulf.
+- End: the fleet starts further along (s0 380, S04 matches) so it sits inside the frame; "Next: the British come" moved to the bottom-left, away from the subscribe plate.
+- Not mine: the neck-hill smear is the horseshoe bake (world engineer).
