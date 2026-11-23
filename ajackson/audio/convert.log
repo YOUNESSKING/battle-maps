@@ -3,3 +3,5 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
   deprecate("LoRACompatibleLinear", "1.0.0", deprecation_message)
 loaded PerthNet (Implicit) at step 250,000
 chunk 0 20.9 s
+chunk 1 43.2 s
+chunk 2 63.4 s
