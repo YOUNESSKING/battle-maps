@@ -91,7 +91,7 @@
     "nx": 0.358,
     "ny": 0.279,
     "onScreen": true,
-    "camDist": 78.5
+    "camDist": 78.51
    },
    "unit": {
     "unit": 0,
@@ -122,7 +122,7 @@
     "nx": 0.439,
     "ny": 0.288,
     "onScreen": true,
-    "camDist": 80.95
+    "camDist": 80.94
    },
    "unit": {
     "unit": 1,
@@ -146,13 +146,13 @@
      3234.86
     ],
     "px": [
-     1138,
-     426
+     1139,
+     425
     ],
     "nx": 0.593,
     "ny": 0.394,
     "onScreen": true,
-    "camDist": 111.37
+    "camDist": 111.35
    },
    "unit": {
     "unit": 0,
@@ -182,7 +182,7 @@
     "nx": 0.639,
     "ny": 0.397,
     "onScreen": true,
-    "camDist": 113.79
+    "camDist": 113.78
    },
    "unit": {
     "unit": 1,
