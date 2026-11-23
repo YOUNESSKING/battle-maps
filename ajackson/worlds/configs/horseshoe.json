@@ -1,0 +1,158 @@
+{
+ "mode": "close",
+ "zoom": 11,
+ "note": "Horseshoe Bend (27 Mar 1814): the Tallapoosa's loop round the Tohopeka peninsula (toe south), the Red Stick log breastwork across the neck, Gun Hill north of it, Tohopeka village at the toe, Coffee's bank south / west, Bean's island. Zoom-11 frame: 1 unit = ~64 m (base units x 2). The 1814 river (no reservoir: Lake Martin lies downstream; wide flat water in the DEM filled from the banks).",
+ "box": [
+  8670,
+  1255,
+  66,
+  48
+ ],
+ "focus": [
+  8704.5,
+  1281.0
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 3.0,
+ "cell": 5.2,
+ "seed": 1814,
+ "relief_noise": [
+  1.5,
+  0.5
+ ],
+ "dem_ppu": 8,
+ "dem_margin": 6,
+ "dem_edits": {
+  "fill_water": true,
+  "flat_sd": 0.15,
+  "flat_low": 0.6
+ },
+ "creek_km2": 0.4,
+ "creeks": {
+  "paint_km2": 0.8,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.2,
+ "ravine_woods": 0.6,
+ "clear": [
+  [
+   8699.343912098926,
+   1288.1705971373992,
+   3.2
+  ],
+  [
+   8705.9,
+   1276.36,
+   2.4
+  ],
+  [
+   8705.9,
+   1278.82,
+   2.0
+  ],
+  [
+   8706.62,
+   1267.5,
+   2.5
+  ]
+ ],
+ "rivers": [
+  {
+   "name": "Tallapoosa River",
+   "geo": "Tallapoosa River (Horseshoe Bend)",
+   "w": 1.7,
+   "step": 0.12,
+   "snap": false,
+   "smooth": 6,
+   "keep": 1.6
+  }
+ ],
+ "roads": [
+  {
+   "name": "Jackson's approach",
+   "geo": "Jackson's approach (1814 trail)",
+   "cls": "lane",
+   "meander": 0.15
+  }
+ ],
+ "towns": [
+  {
+   "name": "Tohopeka",
+   "at": [
+    8699.34,
+    1288.17
+   ],
+   "kind": "hamlet",
+   "len": 2.4,
+   "angle": 20
+  }
+ ],
+ "farm_density": 0.0,
+ "plantation_density": 0.0,
+ "lane_p": 0.0,
+ "features": {
+  "works": [
+   {
+    "name": "Red Stick breastwork",
+    "pts": [
+     [
+      8700.04,
+      1276.63
+     ],
+     [
+      8704.0,
+      1278.18
+     ],
+     [
+      8705.02,
+      1278.58
+     ],
+     [
+      8705.9,
+      1278.82
+     ],
+     [
+      8706.78,
+      1278.58
+     ],
+     [
+      8707.64,
+      1278.88
+     ],
+     [
+      8708.6,
+      1278.58
+     ],
+     [
+      8709.54,
+      1278.18
+     ],
+     [
+      8709.54,
+      1278.18
+     ]
+    ],
+    "kind": "breastwork",
+    "side": "rs",
+    "face_to": [
+     8705.9,
+     1276.36
+    ],
+    "height": 1.6,
+    "clear": 0.8
+   }
+  ]
+ },
+ "labels": [
+  "Breastwork (barricade) centre",
+  "Tohopeka village site",
+  "Gun Hill",
+  "Cotton Patch Hill",
+  "Bean's island",
+  "Cherokee canoe crossing",
+  "Coffee's mounted brigade",
+  "Hammond's rangers",
+  "Emuckfaw Creek mouth"
+ ]
+}

@@ -1,0 +1,359 @@
+{
+ "mode": "close",
+ "zoom": 10,
+ "note": "Chalmette (Dec 1814 - Jan 1815): the sugar plantations between the Mississippi and the cypress swamp, from the Macarty house (Jackson HQ) past Jackson's line on the Rodriguez Canal down to Villere (British HQ), the Villere canal north to Bayou Bienvenue, the west bank (Patterson's battery, Morgan's line). Terrain = a synthetic natural levee (the modern DEM is levees, canals and streets): 4 m at the bank to 0.3 m at the swamp. Long-lot cane fields, cypress swamp band, open marsh beyond.",
+ "box": [
+  1236,
+  3184,
+  70,
+  70
+ ],
+ "focus": [
+  1254.5,
+  3226.5
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 6.0,
+ "cell": 5.2,
+ "seed": 1815,
+ "relief_noise": [
+  0.35,
+  0.12
+ ],
+ "dem_ppu": 8,
+ "dem_margin": 6,
+ "dem_edits": {
+  "synth_levee": {
+   "river": "Mississippi River (New Orleans)",
+   "crest_m": 4.0,
+   "base_m": 0.3,
+   "half_w": 2.9,
+   "width_u": 9.0,
+   "pow": 1.25,
+   "noise_m": 0.2
+  }
+ },
+ "creeks": {
+  "paint_km2": 1000000000.0,
+  "ribbon_km2": 1000000000.0
+ },
+ "longlots": {
+  "river": "Mississippi River (New Orleans)",
+  "w": 1.5,
+  "depth": 2.6,
+  "bank": 3.5
+ },
+ "swamp_band": {
+  "river": "Mississippi River (New Orleans)",
+  "from_x": [
+   [
+    1236,
+    9.0
+   ],
+   [
+    1246,
+    8.2
+   ],
+   [
+    1252,
+    7.9
+   ],
+   [
+    1262,
+    9.0
+   ],
+   [
+    1276,
+    11.0
+   ],
+   [
+    1306,
+    12.5
+   ]
+  ],
+  "to_x": [
+   [
+    1236,
+    15.0
+   ],
+   [
+    1262,
+    17.0
+   ],
+   [
+    1306,
+    21.0
+   ]
+  ],
+  "jag": 2.0,
+  "hummock": 0.8
+ },
+ "woods": -0.25,
+ "rivers": [
+  {
+   "name": "Mississippi River",
+   "geo": "Mississippi River (New Orleans)",
+   "w": 5.8,
+   "step": 0.12,
+   "snap": false,
+   "smooth": 8
+  },
+  {
+   "name": "Bayou Bienvenue",
+   "geo": "Bayou Bienvenue",
+   "w": 0.45,
+   "step": 0.12,
+   "snap": false,
+   "smooth": 6,
+   "meander": 0.12,
+   "meander_wl": 2.5
+  },
+  {
+   "name": "Villere canal",
+   "geo": "Villere canal",
+   "w": 0.12,
+   "step": 0.1,
+   "snap": false,
+   "smooth": 4
+  }
+ ],
+ "roads": [
+  {
+   "name": "River road, east bank",
+   "geo": "River road, east bank (levee road)",
+   "cls": "pike",
+   "meander": 0
+  },
+  {
+   "name": "River road, west bank",
+   "geo": "River road, west bank (levee road)",
+   "cls": "pike",
+   "meander": 0
+  }
+ ],
+ "towns": [
+  {
+   "name": "Macarty",
+   "at": [
+    1249.94,
+    3225.95
+   ],
+   "kind": "plantation",
+   "angle": -144.6
+  },
+  {
+   "name": "Chalmette",
+   "at": [
+    1255.21,
+    3229.56
+   ],
+   "kind": "plantation",
+   "angle": -144.6
+  },
+  {
+   "name": "Bienvenu",
+   "at": [
+    1261.93,
+    3234.22
+   ],
+   "kind": "plantation",
+   "angle": -144.6
+  },
+  {
+   "name": "De la Ronde",
+   "at": [
+    1270.19,
+    3236.03
+   ],
+   "kind": "plantation",
+   "angle": -167.0
+  },
+  {
+   "name": "Lacoste",
+   "at": [
+    1281.1,
+    3238.71
+   ],
+   "kind": "plantation",
+   "angle": -168.8
+  },
+  {
+   "name": "Villere",
+   "at": [
+    1288.15,
+    3238.96
+   ],
+   "kind": "plantation",
+   "angle": -178.2
+  },
+  {
+   "name": "_p1240",
+   "at": [
+    1240.11,
+    3218.75
+   ],
+   "kind": "plantation",
+   "angle": -150.1
+  },
+  {
+   "name": "_p1294",
+   "at": [
+    1293.92,
+    3239.14
+   ],
+   "kind": "plantation",
+   "angle": -178.2
+  },
+  {
+   "name": "_p1300",
+   "at": [
+    1300.78,
+    3239.46
+   ],
+   "kind": "plantation",
+   "angle": -166.4
+  },
+  {
+   "name": "_w1242",
+   "at": [
+    1242.23,
+    3230.96
+   ],
+   "kind": "plantation",
+   "angle": 35.4
+  },
+  {
+   "name": "_w1256",
+   "at": [
+    1256.22,
+    3240.89
+   ],
+   "kind": "plantation",
+   "angle": 35.4
+  },
+  {
+   "name": "_w1268",
+   "at": [
+    1268.38,
+    3244.74
+   ],
+   "kind": "plantation",
+   "angle": 13.0
+  },
+  {
+   "name": "_w1281",
+   "at": [
+    1281.11,
+    3247.49
+   ],
+   "kind": "plantation",
+   "angle": 1.8
+  },
+  {
+   "name": "_w1293",
+   "at": [
+    1293.04,
+    3247.87
+   ],
+   "kind": "plantation",
+   "angle": 1.8
+  }
+ ],
+ "farm_density": 0.0,
+ "plantation_density": 0.0,
+ "lane_p": 0.0,
+ "features": {
+  "works": [
+   {
+    "name": "Jackson's line (Rodriguez Canal rampart)",
+    "geo": "Jackson's line (Rodriguez Canal rampart)",
+    "kind": "breastwork",
+    "side": "us",
+    "face_to": [
+     1259.3,
+     3227.3
+    ],
+    "height": 1.8,
+    "clear": 0.6
+   },
+   {
+    "name": "advanced redoubt",
+    "at": [
+     1252.09,
+     3228.68
+    ],
+    "shape": "redan",
+    "kind": "redan",
+    "side": "us",
+    "size": 0.32,
+    "face": 15,
+    "height": 1.4,
+    "clear": 0.3
+   },
+   {
+    "name": "British batteries (1 Jan)",
+    "geo": "British advance redoubt/battery line",
+    "kind": "breastwork",
+    "side": "gb",
+    "face_to": [
+     1253.98,
+     3224.22
+    ],
+    "height": 1.0,
+    "clear": 0.3
+   },
+   {
+    "name": "Patterson's battery",
+    "at": [
+     1247.55,
+     3233.45
+    ],
+    "shape": "battery",
+    "kind": "battery",
+    "side": "us",
+    "size": 0.45,
+    "face": -54.6,
+    "height": 1.2,
+    "clear": 0.3,
+    "guns": 3
+   },
+   {
+    "name": "Morgan's line (west bank)",
+    "pts": [
+     [
+      1256.19,
+      3239.89
+     ],
+     [
+      1252.26,
+      3245.44
+     ]
+    ],
+    "kind": "breastwork",
+    "side": "us",
+    "face": 35.4,
+    "height": 1.0,
+    "clear": 0.4
+   }
+  ]
+ },
+ "labels": [
+  "Chalmette Monument",
+  "Chalmette National Cemetery",
+  "Rodriguez Canal (NPS preserved section)",
+  "Jackson's line, river end",
+  "Jackson's line, elbow",
+  "Jackson's line, swamp end",
+  "Macarty house",
+  "Villere plantation house",
+  "De la Ronde plantation",
+  "Lacoste plantation",
+  "Bienvenu plantation",
+  "USS Carolina anchorage",
+  "Villere canal head",
+  "Marine Battery",
+  "Morgan's forward",
+  "Pakenham Oaks"
+ ]
+}

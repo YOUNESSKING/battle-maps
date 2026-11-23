@@ -28,8 +28,8 @@ And the strangest part? Two weeks earlier, in the city of Ghent, both sides had 
 [S01 | back to the plain: date plate 23 DECEMBER 1814; red blocks walk out of the cypress swamp onto the river fields; the city label far up the river; distance ruler 9 MILES on its words]
 Three weeks before the battle, it had looked hopeless. A British army had come out of the swamps unseen, about nine miles from the city.
 
-[S01 | the general enters: banner with no portrait yet riding down into the city; a dark card on "sword": a thin red scar line drawn across it, AGE 13 small]
-The general sent to save it was sick and painfully thin. And he carried a scar from a British officer's sword, from when he was a boy of thirteen.
+[S01 | the general enters: banner with no portrait yet riding down into the city; a dark card on "sword": a thin red scar line drawn across it, AGE 14 small]
+The general sent to save it was sick and painfully thin. And he carried a scar from a British officer's sword, from when he was a boy of fourteen.
 
 [S01 | NAME SLAM: ANDREW JACKSON (gold 3D title on its words), the banner portrait revealed; then 3 snap cuts, each on its words: Horseshoe Bend from above (river bend + wall), the night attack (muzzle flashes in the dark, the schooner firing), the mud line with smoke]
 His name was Andrew Jackson. He would trap an enemy fortress inside a river bend. He would attack a British army in the dark, on the night it landed. And he would stop some of the best soldiers in the world behind a wall of mud. These are Andrew Jackson's three greatest tactical moves.
@@ -40,7 +40,7 @@ His name was Andrew Jackson. He would trap an enemy fortress inside a river bend
 Nine months before New Orleans, Jackson was a general of the Tennessee militia. His men called him Old Hickory, because he was as tough as the wood.
 
 [S02 | Fort Mims marked on the Alabama River (on its word), a red pulse; Red Stick markers across the Creek towns]
-In eighteen thirteen, a civil war had split the Creek Nation. One faction, the Red Sticks, rose against the Americans and against the Creeks who sided with them. That August, they stormed Fort Mims, north of Mobile, and killed some two hundred and fifty people inside.
+In eighteen thirteen, a civil war had split the Creek Nation. One faction, the Red Sticks, rose against the Americans and against the Creeks who sided with them. That August, they stormed Fort Mims, north of Mobile, and killed hundreds of people inside.
 
 [S02 | blue arrow from Tennessee south into the Creek country; the camera eases toward the Tallapoosa; the bend appears small; label TOHOPEKA on its word]
 Jackson marched south. By the spring of eighteen fourteen, about a thousand Red Stick warriors had fortified a town called Tohopeka, inside a great loop of the Tallapoosa River that the Americans called the Horseshoe.
@@ -48,13 +48,13 @@ Jackson marched south. By the spring of eighteen fourteen, about a thousand Red 
 ## S03 MOVE 1: HORSESHOE BEND (~2:15 - ~4:45)
 
 [S03 | cloud dive 2 down onto the bend: emerge over the Tallapoosa loop, the wooded hills, the town on the low ground at the inner end, the log wall across the neck; date plate 27 MARCH 1814]
-The Red Stick plan was simple. The river guarded the town on three sides. On the fourth, across the neck of the bend, they had built a wall of logs, several hundred yards long, high, and pierced with firing holes. Canoes were drawn up on the riverbank behind the town, ready.
+The Red Stick plan was simple. The river guarded the town on three sides. On the fourth, across the neck of the bend, they had built a wall of logs nearly four hundred yards long, taller than a man, and pierced with two rows of firing holes. Canoes were drawn up on the riverbank behind the town, ready.
 
 [S03 | the camera rises to show the whole bend and the single neck; the wall pulses; canoes along the inner bank glow]
 In other words, an army that charged the wall would be shot down in a zigzag of crossfire. And if the wall did fall, the defenders could still slip away across the river in their canoes.
 
 [S03 | Jackson's blue blocks arrive from the north and halt before the neck; two guns unlimber on the small hill; banners JACKSON and the Red Stick banner]
-On the twenty-seventh of March, eighteen fourteen, Jackson arrived with about three thousand men. Among them were some six hundred Cherokee and several hundred Lower Creek warriors, his allies against the Red Sticks.
+On the twenty-seventh of March, eighteen fourteen, Jackson arrived with about three thousand men. Among them were about five hundred Cherokee and a hundred Lower Creek warriors, his allies against the Red Sticks.
 
 [S03 | the twist: blue mounted blocks + allied blocks curve out east and south across the river and line the far bank all around the bend (wide arrow); the canoes highlighted]
 But he did not simply throw his army at the wall. Instead, first he closed the back door. He sent General John Coffee, with the mounted men and the Cherokee and Creek allies, across the river, to line the far bank all the way around the bend.
@@ -71,11 +71,11 @@ Jackson saw the smoke rising behind the wall, and ordered the charge. The Thirty
 [S03 | inside the bend: red blocks driven back toward the river; the far bank lined with blue; no way out; smoke over the town]
 The Red Sticks fought on through the afternoon, behind logs and brush in the bend. They did not surrender. When they ran for the river, Coffee's men were waiting on the other side.
 
-[S03 | dimmed map; result card on its words: about 800 RED STICK WARRIORS KILLED; JACKSON'S ARMY: about 50 killed (white troops + allies); source line small]
-It was the deadliest single day for Native Americans in any war fought by the United States. About eight hundred Red Stick warriors were killed, out of about a thousand. Jackson's army lost fewer than seventy dead, Cherokee and Creek allies among them.
+[S03 | dimmed map; result card on its words: ABOUT 800 RED STICK WARRIORS KILLED; JACKSON'S ARMY: 49 KILLED, 154 WOUNDED (incl. allies); source: Jackson's report, 31 March 1814]
+About eight hundred Red Stick warriors were killed, out of about a thousand, and some three hundred and fifty women and children were taken prisoner. Jackson's army lost forty-nine killed, eighteen of them Cherokee.
 
 [S03 | treaty card: TREATY OF FORT JACKSON, 9 AUGUST 1814; the Creek lands shaded and taken away on the gulf map, including the allied lands]
-The war was over. And that summer, in the Treaty of Fort Jackson, Jackson forced the whole Creek Nation to give up about twenty-three million acres, taking land even from the Creeks who had fought beside him.
+The war was over. And that summer, in the Treaty of Fort Jackson, Jackson forced the whole Creek Nation to give up more than twenty million acres, about half of its land, taking it even from the Creeks who had fought beside him.
 
 [S03 | method card: THE OLD HICKORY METHOD, 1. CLOSE EVERY DOOR on its words]
 That was the first part of his method. Before you hit the front door, close every other door.
@@ -202,7 +202,7 @@ Ten days later the British army slipped away to its ships. On the sixteenth of F
 But it made Andrew Jackson the most famous man in America, and it carried him, in time, to the White House. There, he signed the Indian Removal Act, which drove tens of thousands of Native Americans from their lands in the South, the Cherokee who had fought for him at Horseshoe Bend among them.
 
 [S08 | callback: the scar card from the hook returns briefly over the field of 8 January]
-The boy who had been cut by a British sword at thirteen had beaten a British army. The method had three parts: close every door, strike first, and make them come to you.
+The boy who had been cut by a British sword at fourteen had beaten a British army. The method had three parts: close every door, strike first, and make them come to you.
 
 [S08 | final cards: 1 HORSESHOE BEND 1814, 2 THE NIGHT ATTACK 1814, 3 NEW ORLEANS 1815; 1, 2 OR 3?; subscribe button; the map stays for the end screen]
 So which was Andrew Jackson's greatest move? One, the trap at Horseshoe Bend. Two, the night attack on the twenty-third of December. Or three, the wall of mud at New Orleans? Tell us in the comments, and tell us which commander we should cover next. Subscribe, so you don't miss the next one.
