@@ -38,3 +38,6 @@ Open issues: frame 0 is a close gulf view (S02 must end on the same camera: gulf
 - The plate rolls at the treaty dissolve (126.95 s: "1814 · the Creek lands", then "Summer 1814" on "summer"): no 12:30 clock over the gulf.
 - End: the fleet starts further along (s0 380, S04 matches) so it sits inside the frame; "Next: the British come" moved to the bottom-left, away from the subscribe plate.
 - Not mine: the neck-hill smear is the horseshoe bake (world engineer).
+
+## Owner fix: the fleet
+- Ships are no longer one nose-to-tail column. `FLEET()` (the same helper in S03, S04 and S08) gives each ship its own path: the route offset sideways, the offset drifting a little so headings differ, its own start, a speed of ±10 %, and occasional stragglers. S03/S04 use 7 ships (seed 18, spread 32, depth 70); S04 continues S03 exactly (it adds the elapsed time). S08 uses 8 ships (seed 27, spread 28, depth 60). Sizes are unchanged. All scenes were rebuilt on the re-baked worlds.

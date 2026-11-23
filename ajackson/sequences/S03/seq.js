@@ -232,6 +232,16 @@ window.SEQ = {
 };
 // the British coming: ships + a red arrow from the south-east (gulf), continued in S04
 const SHIP_PATH = [[1215, 1015], [1060, 950], [905, 885], [760, 830], [620, 800], [520, 772], [470, 758]];   // = S04's
-window.SEQ.boats.push({ region: GF, kind: "ship", n: 5, t0: T.british - 0.2, t1: T.D + 1, size: 5.5, lamp: false, wake: true, path: SHIP_PATH, s0: 380, speed: 4.0, spacing: 16 });
+// a fleet = separate ships in a loose irregular formation (owner): each ship its own path (the base route offset sideways, the offset
+// drifting a little along the way = slightly different headings), its own start and speed (leaders, stragglers). Deterministic; S03, S04
+// and S08 share this helper so the S03 -> S04 hand-off is continuous (same seed, same route, S04 adds the elapsed time).
+const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
+  const nrm = (i) => { const a = path[Math.max(0, i - 1)], b = path[Math.min(path.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [-(b[1] - a[1]) / l, (b[0] - a[0]) / l]; };
+  for (let k = 0; k < n; k++) { const h = (j) => VX.hsh(seed * 31 + k, j), off = (h(1) - 0.5) * 2 * o.spread, drift = (h(2) - 0.5) * o.spread * 0.8;
+    let acc = 0; const P = path.map((p, i) => { if (i) acc += Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]); const d = off + drift * acc / L, nv = nrm(i); return [p[0] + nv[0] * d, p[1] + nv[1] * d]; });
+    const speed = o.speed * (0.9 + 0.2 * h(3)), lag = (k === 0 ? 0 : (0.25 + 0.75 * h(4)) * o.depth) + (h(5) > 0.8 ? o.depth * 0.6 : 0);   // a straggler now and then
+    out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: true, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
+  return out; };
+window.SEQ.boats.push(...FLEET(SHIP_PATH, 7, 18, { region: GF, t0: T.british - 0.2, t1: T.D + 1, size: 5.5, spread: 32, depth: 70, speed: 4.0, s0: 400 }));
 window.SEQ.arrows.push({ side: "r", width: 0.6, maxWidth: 0.6, pts: [[1222, 1040], [1060, 950], [930, 895], [850, 862]], t0: T.british - 0.1, dur: 1.8, t1: 170.0, region: GF });
 })();

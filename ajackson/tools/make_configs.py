@@ -156,8 +156,8 @@ write("horseshoe", {
  "box": [8656, 1243, 92, 70], "focus": [8704.5, 1281.0], "hm_ppu": 8, "tex": 7168, "exag": 2.2, "cell": 2.8, "seed": 1814, "relief_noise": [1.0, 0.35],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
- "woods": 0.14, "ravine_woods": 0.6, "tree_spacing": 0.25, "rust_k": 0.85,
- "clear": [[float(vil[0]), float(vil[1]), 2.6], [pl("Cotton Patch Hill", K)[0], pl("Cotton Patch Hill", K)[1], 1.4], [gun[0], gun[1], 0.95]],   # Gun Hill: small noisy clearing for the 2 guns
+ "woods": 0.14, "ravine_woods": 0.6, "tree_spacing": 0.25, "rust_k": 0.85, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "clear": [[float(vil[0]), float(vil[1]), 2.6], [pl("Cotton Patch Hill", K)[0], pl("Cotton Patch Hill", K)[1], 1.4], [gun[0] - 0.7, gun[1] + 0.15, 0.62], [gun[0] + 0.55, gun[1] - 0.35, 0.55], [gun[0] + 0.15, gun[1] + 0.55, 0.45], [gun[0] + 1.1, gun[1] + 0.3, 0.35]],   # Gun Hill: small noisy clearing for the 2 guns
  "rivers": [{"name": "Tallapoosa River", "geo": "Tallapoosa River (Horseshoe Bend)", "w": 1.7, "step": 0.12, "snap": False, "smooth": 6, "keep": 1.6}],
  "roads": [{"name": "Jackson's approach", "geo": "Jackson's approach (1814 trail)", "cls": "lane", "meander": 0.15}],
  "towns": [{"name": "Tohopeka", "at": [round(float(vil[0]), 2), round(float(vil[1]), 2)], "kind": "hamlet", "len": 2.4, "angle": 20}],

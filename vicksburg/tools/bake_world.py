@@ -976,7 +976,7 @@ def bake(rname, G, P, creeks, preview=True):
         cm_ = np.zeros((TH // 4, TW // 4), np.float32)
         for (tx, ty, rad) in (town["clear"] if town else []) + [tuple(c_[:3]) for c_ in cfg.get("clear", [])]:
             cx, cy = Pt((tx, ty)); cv2.circle(cm_, (int(cx / 4), int(cy / 4)), int(rad * 1.6 * s / 4), 1.0, -1)
-        cm_ = cv2.GaussianBlur(cm_, (0, 0), 1.0 * s / 4); nz = fbm(TH // 4, TW // 4, 4, int(bw / 2.0), seed + 90)
+        cm_ = cv2.GaussianBlur(cm_, (0, 0), (cfg.get("clear_blur", 1.0) if PROJ else 1.0) * s / 4); nz = fbm(TH // 4, TW // 4, 4, int(bw / (cfg.get("clear_noise_u", 2.0) if PROJ else 2.0)), seed + 90)
         cm_ = np.clip((cm_ - 0.3 - (nz - 0.5) * 1.1) * 6, 0, 1)
         townmask = np.maximum(townmask, cv2.resize(cm_, (TW, TH), interpolation=cv2.INTER_LINEAR)); del cm_, nz
     for W_ in WORKS:   # fields of fire in front of the works

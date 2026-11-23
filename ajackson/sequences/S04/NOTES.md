@@ -23,3 +23,6 @@ Open issues: gulf arrows read thin; ships are small at dist 560-860; the route a
 ## Round 2 fixes
 - 20-24 s pale void bottom-left: the New Orleans keys are now closer and flatter (CUT1 [1242, 3172] dist 190 tilt 38; 30.0 dist 215 tilt 36; 42.2 / 46.6 dist 175-180 tilt 38), so the near (south) world edge stays out of frame. Checked 20.6-44 s.
 - Ships start where S03's (s0 380) end.
+
+## Owner fix: the fleet
+- Ships are no longer one nose-to-tail column. `FLEET()` (the same helper in S03, S04 and S08) gives each ship its own path: the route offset sideways, the offset drifting a little so headings differ, its own start, a speed of ±10 %, and occasional stragglers. S03/S04 use 7 ships (seed 18, spread 32, depth 70); S04 continues S03 exactly (it adds the elapsed time). S08 uses 8 ships (seed 27, spread 28, depth 60). Sizes are unchanged. All scenes were rebuilt on the re-baked worlds.

@@ -67,6 +67,16 @@ const pulses = VX.pulses([
 // the bayou route, lit on its word
 const bayouGlow = VX.pulses(BAYOU.filter((_, i) => i % 3 === 0).map((p, i) => ({ region: NO, at: p, r: 2.2, t0: T.bayou + i * 0.08, t1: 54.6, color: [255, 214, 120], period: 1.6, alpha: 0.7 })));
 
+// a fleet = separate ships in a loose irregular formation (owner): each ship its own path (the base route offset sideways, the offset
+// drifting a little along the way = slightly different headings), its own start and speed (leaders, stragglers). Deterministic; S03, S04
+// and S08 share this helper so the S03 -> S04 hand-off is continuous (same seed, same route, S04 adds the elapsed time).
+const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
+  const nrm = (i) => { const a = path[Math.max(0, i - 1)], b = path[Math.min(path.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [-(b[1] - a[1]) / l, (b[0] - a[0]) / l]; };
+  for (let k = 0; k < n; k++) { const h = (j) => VX.hsh(seed * 31 + k, j), off = (h(1) - 0.5) * 2 * o.spread, drift = (h(2) - 0.5) * o.spread * 0.8;
+    let acc = 0; const P = path.map((p, i) => { if (i) acc += Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]); const d = off + drift * acc / L, nv = nrm(i); return [p[0] + nv[0] * d, p[1] + nv[1] * d]; });
+    const speed = o.speed * (0.9 + 0.2 * h(3)), lag = (k === 0 ? 0 : (0.25 + 0.75 * h(4)) * o.depth) + (h(5) > 0.8 ? o.depth * 0.6 : 0);   // a straggler now and then
+    out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: true, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
+  return out; };
 window.SEQ = {
   name: "S04", D: T.D, T, seed: 1815, date: "1814-12-23",
   regions: [GF, NO, CH],
@@ -106,7 +116,7 @@ window.SEQ = {
     { side: "r", region: NO, width: 0.15, pts: ROUTE.filter((_, i) => i % 2 === 0 || i === ROUTE.length - 1), t0: T.wherever, dur: 4.6, t1: CUT2 + 0.6 },
   ],
   boats: [
-    { region: GF, kind: "ship", n: 5, t0: -1, t1: T.D + 1, size: 5.5, lamp: false, wake: true, path: SHIP_PATH, s0: S0, speed: 4.0, spacing: 16 },
+    ...FLEET(SHIP_PATH, 7, 18, { region: GF, t0: -1, t1: T.D + 1, size: 5.5, spread: 32, depth: 70, speed: 4.0, s0: 400, dt: 177.09 - (158.72 - 0.2) - 1 }),   // = S03's fleet, continued
     { region: NO, kind: "barge", n: 6, t0: T.wherever - 0.3, t1: CUT2 + 1, size: 0.55, lamp: false, wake: false, path: ROUTE, s0: 8, speed: 9.5, spacing: 2.4 },
     { region: CH, kind: "barge", n: 3, t0: CUT2 - 0.2, t1: 60.5, size: 0.07, lamp: false, wake: false, path: CANAL_C.filter((p) => p[1] < EDGE_Y - 1.5), s0: 14, speed: 1.6, spacing: 0.8 },
     { region: CH, kind: "canoe", n: 1, t0: T.crossed - 0.6, t1: T.D + 1, size: 0.16, lamp: false, wake: false, h: 0.08, path: [BANK_E, BANK_W],
