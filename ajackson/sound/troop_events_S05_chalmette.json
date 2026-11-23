@@ -3955,37 +3955,6 @@
    }
   },
   {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.16,
-   "t": 86.9,
-   "tExcerpt": 86.9,
-   "tShare": 459.7,
-   "tFilm": 459.7,
-   "at": {
-    "map": [
-     1285.58,
-     3234.3
-    ],
-    "px": [
-     1253,
-     295
-    ],
-    "nx": 0.653,
-    "ny": 0.273,
-    "onScreen": true,
-    "camDist": 16.59
-   },
-   "unit": {
-    "unit": 4,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
    "type": "march_stop",
    "duration": 3.1,
    "t": 86.9,
@@ -4069,37 +4038,6 @@
    "unit": {
     "unit": 7,
     "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.16,
-   "t": 87,
-   "tExcerpt": 87,
-   "tShare": 459.8,
-   "tFilm": 459.8,
-   "at": {
-    "map": [
-     1285.57,
-     3236.9
-    ],
-    "px": [
-     1376,
-     413
-    ],
-    "nx": 0.716,
-    "ny": 0.383,
-    "onScreen": true,
-    "camDist": 14.6
-   },
-   "unit": {
-    "unit": 3,
-    "side": "Confederate",
     "type": "inf",
     "label": null,
     "blocks": 1,
@@ -5451,66 +5389,6 @@
    }
   },
   {
-   "type": "march_stop",
-   "duration": 5.4,
-   "t": 92.4,
-   "tExcerpt": 92.4,
-   "tShare": 465.2,
-   "tFilm": 465.2,
-   "at": {
-    "map": [
-     1283.62,
-     3236.9
-    ],
-    "px": [
-     1185,
-     408
-    ],
-    "nx": 0.617,
-    "ny": 0.378,
-    "onScreen": true,
-    "camDist": 13.38
-   },
-   "unit": {
-    "unit": 3,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_stop",
-   "duration": 5.6,
-   "t": 92.5,
-   "tExcerpt": 92.5,
-   "tShare": 465.3,
-   "tFilm": 465.3,
-   "at": {
-    "map": [
-     1283.02,
-     3234.3
-    ],
-    "px": [
-     1022,
-     293
-    ],
-    "nx": 0.532,
-    "ny": 0.271,
-    "onScreen": true,
-    "camDist": 15.22
-   },
-   "unit": {
-    "unit": 4,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
    "type": "musket_volley",
    "style": "single",
    "rippleSeconds": 0.25,
@@ -6148,17 +6026,17 @@
    "tFilm": 480.4,
    "at": {
     "map": [
-     1283.6,
+     1285.6,
      3236.9
     ],
     "px": [
-     1465,
-     379
+     1546,
+     369
     ],
-    "nx": 0.763,
-    "ny": 0.351,
+    "nx": 0.805,
+    "ny": 0.342,
     "onScreen": true,
-    "camDist": 34.41
+    "camDist": 35.71
    },
    "unit": {
     "unit": 3,
@@ -6177,17 +6055,17 @@
    "tFilm": 480.4,
    "at": {
     "map": [
-     1283,
+     1285.6,
      3234.3
     ],
     "px": [
-     1367,
-     317
+     1467,
+     306
     ],
-    "nx": 0.712,
-    "ny": 0.294,
+    "nx": 0.764,
+    "ny": 0.284,
     "onScreen": true,
-    "camDist": 35.64
+    "camDist": 37.25
    },
    "unit": {
     "unit": 4,

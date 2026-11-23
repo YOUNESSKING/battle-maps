@@ -279,3 +279,5 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
 - Battle 20 S01: `O.distance` placed its value label one updater too late, so a single seeked frame (snapshots, per-frame renders)
   showed the label at the top-left corner (behind the date plate); the ruler updater now also positions the label in the same frame.
   `countFrom` (= value) shows the stated value without the count-up.
+
+- Dives between regions of DIFFERENT zoom (project frames, e.g. ajackson gulf z8 -> chalmette z10) need `dives[].overTo` = the dive point in the TARGET region's units; without it the camera after the swap looks at the target region in the source's coordinates (empty fog) for ~1.5 s (Jackson S01 round 3).
