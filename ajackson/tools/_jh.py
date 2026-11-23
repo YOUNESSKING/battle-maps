@@ -1,6 +1,7 @@
 import math, numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops, ImageOps
 W,H=1280,720
+SERB="/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf"
 rng=np.random.default_rng(8)
 def formation(im, c, col, cols, rows, cw=11, ch=7, gap=3, ang=-0.42):
     """a painted-looking block formation: grid of small blocks, rotated along the road, shadowed"""
