@@ -1,0 +1,960 @@
+{
+ "places": [
+  {
+   "name": "New Orleans 1815 (Place d'Armes / Jackson Square)",
+   "lat": 29.9575,
+   "lon": -90.0629,
+   "acc_m": 120,
+   "src": "OpenStreetMap Nominatim 'Jackson Square' 29.95747,-90.06295; Place d'Armes = Jackson Square (HNOC)",
+   "note": "1815 city = the French Quarter grid; Jackson HQ in town 1-23 Dec at Maspero/Rue Royale (not mapped)"
+  },
+  {
+   "name": "Chalmette Monument",
+   "lat": 29.94245,
+   "lon": -89.99414,
+   "acc_m": 40,
+   "src": "OpenStreetMap Nominatim 29.94245,-89.99414",
+   "note": "Stands BEHIND (west of) the American line; 100 ft obelisk completed 1908"
+  },
+  {
+   "name": "Chalmette Battlefield (park centre)",
+   "lat": 29.94327,
+   "lon": -89.99031,
+   "acc_m": 300,
+   "src": "OpenStreetMap Nominatim 29.94327,-89.99031; Wikipedia battle infobox 29.9425,-89.9908",
+   "note": "Wikipedia 'Battle of New Orleans' infobox 29°56'33\"N 89°59'27\"W"
+  },
+  {
+   "name": "Chalmette National Cemetery",
+   "lat": 29.9408,
+   "lon": -89.98836,
+   "acc_m": 80,
+   "src": "OpenStreetMap Nominatim",
+   "note": "Lies on the British side (downriver) of the line, on old Chalmette plantation ground"
+  },
+  {
+   "name": "Line Jackson river end (Rodriguez Canal, levee end)",
+   "lat": 29.9396,
+   "lon": -89.9917,
+   "acc_m": 250,
+   "src": "geometry estimated by Claude from Latour 1816 pp.146-152 (battery spacing in yards, line 815 toises) anchored to OSM/Wikipedia Chalmette points; NOT surveyed",
+   "note": "Battery 1 stood on the road 70 ft from the river bank (Latour p.147). The 1815 river bank lay closer than the modern levee; aggregation since 1815 (batture growth) moved the water edge. GEOREGISTER against Latour Atlas Plate 7 and the NPS Chalmette GIS before shot design."
+  },
+  {
+   "name": "Line Jackson elbow (end of straight river-to-wood stretch, after Battery 8)",
+   "lat": 29.94517,
+   "lon": -89.98998,
+   "acc_m": 300,
+   "src": "geometry estimated by Claude from Latour 1816 pp.146-152 (battery spacing in yards, line 815 toises) anchored to OSM/Wikipedia Chalmette points; NOT surveyed",
+   "note": "Latour p.149: after No.8 'the line formed a receding elbow'"
+  },
+  {
+   "name": "Line Jackson swamp end (cypress swamp, Coffee's left)",
+   "lat": 29.94779,
+   "lon": -89.99828,
+   "acc_m": 450,
+   "src": "geometry estimated by Claude from Latour 1816 pp.146-152 (battery spacing in yards, line 815 toises) anchored to OSM/Wikipedia Chalmette points; NOT surveyed",
+   "note": "Total line 815 toises = ~1.59 km (Latour p.147); NPS: swamp leg turned back at right angle (Lafitte's advice)"
+  },
+  {
+   "name": "Macarty house (Jackson HQ, 24 Dec-Jan)",
+   "lat": 29.9402,
+   "lon": -89.9938,
+   "acc_m": 250,
+   "src": "Estimate: upriver (west) of the canal, near the river road behind the line's river end; modern Malus-Beauregard House stands near the site (NPS Chalmette). Latour p.158",
+   "note": "Shelled 1 Jan and 8 Jan; Wikipedia says 'completely destroyed' 1 Jan, Latour says only four or five pillars knocked down on 8 Jan - sources differ"
+  },
+  {
+   "name": "Chalmette plantation house (British battery / ruins)",
+   "lat": 29.94038,
+   "lon": -89.98658,
+   "acc_m": 350,
+   "src": "Estimate: immediately downriver of Rodriguez Canal (canal = boundary Macarty/Chalmette, NPS hh29i)",
+   "note": "Buildings blown up by Americans evening 27 Dec (NPS hh29i); British battery behind its ruins 1 Jan and 8 Jan (Latour p.158)"
+  },
+  {
+   "name": "Bienvenu plantation",
+   "lat": 29.94179,
+   "lon": -89.97737,
+   "acc_m": 600,
+   "src": "Estimate: order Macarty-Chalmette-Bienvenu-De la Ronde-Lacoste-Villere (Latour pp.87-98)",
+   "note": "Boundary Bienvenu/De la Ronde is where Latour met fleeing planters 23 Dec"
+  },
+  {
+   "name": "De la Ronde plantation (house; British hospital later)",
+   "lat": 29.94367,
+   "lon": -89.96508,
+   "acc_m": 700,
+   "src": "Estimate; NPS hh29h says De la Ronde mansion used as British hospital; Jackson's forces reached 'De La Ronde Oaks' at nightfall 23 Dec",
+   "note": "Coffee circled behind it to reach the British flank"
+  },
+  {
+   "name": "Night-battle centre (De la Ronde / Lacoste boundary)",
+   "lat": 29.94461,
+   "lon": -89.95894,
+   "acc_m": 700,
+   "src": "Estimate: Latour p.113 'about two miles behind the field of battle' to the Rodriguez Canal; NPS hh29i '2 miles from the scene of the Night Battle and 6 miles from the centre of New Orleans'",
+   "note": "British outposts on Lacoste/De la Ronde boundary road"
+  },
+  {
+   "name": "Lacoste plantation (Keane's camp 23 Dec)",
+   "lat": 29.94586,
+   "lon": -89.95075,
+   "acc_m": 800,
+   "src": "Estimate; Wikipedia: Keane encamped at Lacoste's; Latour: camp straddled Villere and Lacoste",
+   "note": "85th was posted at Lacoste's negro huts"
+  },
+  {
+   "name": "Villere plantation house (British HQ 23 Dec-19 Jan)",
+   "lat": 29.94711,
+   "lon": -89.94256,
+   "acc_m": 800,
+   "src": "Estimate: ~9 mi below the city (Latour p.95; Remini 1999), ~3 mi downriver of Rodriguez Canal; NPS hh29h: Villere house British HQ 23 Dec-19 Jan",
+   "note": "Gabriel Villere escaped through a window ~11:30 a.m. 23 Dec (Latour p.87)"
+  },
+  {
+   "name": "Villere canal head (British landing, 4 a.m. 23 Dec)",
+   "lat": 29.9897,
+   "lon": -89.95123,
+   "acc_m": 1500,
+   "src": "Estimate: Latour p.86-87 canal mouth ~1 mile to the wood + ~2 miles to the river = ~3 mi inland (~4.8 km) from Villere house",
+   "note": "Boats ended here; troops marched ~6 hours to the river"
+  },
+  {
+   "name": "USS Carolina anchorage 23 Dec (Villere batture)",
+   "lat": 29.94367,
+   "lon": -89.94713,
+   "acc_m": 700,
+   "src": "Latour p.95: anchored 'on the brink of Villere's batture opposite the centre of the British encampment, within musket-shot'; opened 7:30 p.m.",
+   "note": "Sunk by British hot shot 27 Dec (NPS hh29i; Wikipedia)"
+  },
+  {
+   "name": "Marine Battery (Patterson, west bank, opposite line)",
+   "lat": 29.9355,
+   "lon": -89.9965,
+   "acc_m": 600,
+   "src": "Latour App. p.lx Patterson letter 'Marine battery, five miles below New Orleans'; west-bank river bank opposite Macarty/Chalmette",
+   "note": "Mounted 24-pdrs and 12-pdrs; overrun by Thornton's force 8 Jan ~10 a.m. window"
+  },
+  {
+   "name": "Morgan's forward west-bank position",
+   "lat": 29.933,
+   "lon": -89.978,
+   "acc_m": 1200,
+   "src": "Low confidence. Latour/Reilly: Morgan split ~700 men between two positions a mile apart; Thornton landed ~1,000 yd below the intended point (Wikipedia)",
+   "note": "Verify on Latour Atlas Plate 7; Boisgervais canal line (2nd west-bank line) was 3 mi from the city (Latour p.124)"
+  },
+  {
+   "name": "Line Dupre / Montreuil (second line, Gentilly-Plaine road)",
+   "lat": null,
+   "lon": null,
+   "acc_m": null,
+   "src": "Latour App. & Wikipedia: Americans built 3 defence lines; forward line at Rodriguez Canal. Exact Dupre/Montreuil coordinates NOT verified in this pass",
+   "note": "NOT MAPPED - use Latour Plate 5/7"
+  },
+  {
+   "name": "English Turn (Mississippi bend below the city)",
+   "lat": 29.8777,
+   "lon": -89.9642,
+   "acc_m": 1500,
+   "src": "OpenStreetMap Nominatim",
+   "note": "Naturally narrow river bend; Louisiana ship retreated upriver, Dec 27-28"
+  },
+  {
+   "name": "Fort St. Philip (east bank, below English Turn)",
+   "lat": 29.3626,
+   "lon": -89.4653,
+   "acc_m": 300,
+   "src": "OpenStreetMap Nominatim 29.36261,-89.46535 (Fort Jackson on west bank 29.3571,-89.4547)",
+   "note": "Bombarded 9-18 Jan 1815 by two bomb vessels, 4 mortars"
+  },
+  {
+   "name": "Fort Petites Coquilles (Rigolets) / Fort Pike site",
+   "lat": 30.1653,
+   "lon": -89.7394,
+   "acc_m": 1500,
+   "src": "OpenStreetMap Nominatim Fort Pike 30.16532,-89.73939; Rigolets Wikipedia 30.1544,-89.6253",
+   "note": "Fort Pike built 1819 to replace the old fort; 1815 Fort Petites Coquilles was a small work at the Rigolets"
+  },
+  {
+   "name": "Chef Menteur (road and pass, Fort Macomb site)",
+   "lat": 30.0648,
+   "lon": -89.8046,
+   "acc_m": 1500,
+   "src": "OpenStreetMap Nominatim Fort Macomb",
+   "note": "Jackson guarded Chef Menteur Road (Daughan); British option 2 not taken"
+  },
+  {
+   "name": "Bayou Bienvenue (modern bayou, mid-course)",
+   "lat": 29.9957,
+   "lon": -89.8846,
+   "acc_m": 1500,
+   "src": "OpenStreetMap Nominatim; Wikipedia 29.9996,-89.8611",
+   "note": "1815 course and Lake Borgne shoreline differ (coast has since eroded/inundated)"
+  },
+  {
+   "name": "Bayou Bienvenue mouth on Lake Borgne / Fisherman's village (approx)",
+   "lat": 29.998,
+   "lon": -89.78,
+   "acc_m": 5000,
+   "src": "LOW CONFIDENCE estimate. Wikipedia: British went 'to Bayou Bienvenue, then Bayou Mazant and the Villere Canal'; Latour: Fishermen's Village at the bayou head",
+   "note": "Fisherman's village (Spanish fishermen) captured/forced into British service 22 Dec; verify on Latour Plate 3"
+  },
+  {
+   "name": "Lake Borgne gunboat action site (Malheureux Island - Point Claire channel)",
+   "lat": 30.1644,
+   "lon": -89.4372,
+   "acc_m": 6000,
+   "src": "Wikipedia Battle of Lake Borgne infobox 30°09'52\"N 89°26'14\"W = 30.1644,-89.4372; text: gunboats in line abreast between Malheureux Island and Point Claire",
+   "note": "Final stand 14 Dec ~10:39-12:30"
+  },
+  {
+   "name": "Pea Island (Isle aux Pois), Pearl River mouth",
+   "lat": 30.13,
+   "lon": -89.55,
+   "acc_m": 6000,
+   "src": "LOW CONFIDENCE. Wikipedia Lake Borgne: 'at the mouth of the Pearl River, due north of St Malo'; ~30 mi east of New Orleans (Brown 1969)",
+   "note": "British staging; 1,600 men ferried 6 days/nights, ~10 h per transit (Brown 1969)"
+  },
+  {
+   "name": "Cat Island (fleet anchorage)",
+   "lat": 30.2271,
+   "lon": -89.1111,
+   "acc_m": 3000,
+   "src": "OpenStreetMap Nominatim Cat Island, Harrison Co., MS",
+   "note": "Troopship anchorage, ~60 miles from Pea Island/Bayou Bienvenue (Wikipedia)"
+  },
+  {
+   "name": "Ship Island (fleet anchorage)",
+   "lat": 30.2394,
+   "lon": -88.8854,
+   "acc_m": 3000,
+   "src": "OpenStreetMap Nominatim",
+   "note": "Cochrane's fleet anchored between Ship and Cat Islands"
+  },
+  {
+   "name": "Fort Bowyer (Mobile Point; modern Fort Morgan)",
+   "lat": 30.2281,
+   "lon": -88.0229,
+   "acc_m": 800,
+   "src": "OpenStreetMap Nominatim Fort Morgan",
+   "note": "British captured 12 Feb 1815 (Wikipedia)"
+  },
+  {
+   "name": "Pensacola (Jackson's attack 7-9 Nov 1814)",
+   "lat": 30.4107,
+   "lon": -87.2112,
+   "acc_m": 1000,
+   "src": "Wikipedia Battle of Pensacola (1814) 30.4107,-87.2112",
+   "note": ""
+  }
+ ],
+ "lines": [
+  {
+   "name": "Line Jackson (Rodriguez Canal rampart), river to elbow",
+   "kind": "us_line",
+   "pts": [
+    [
+     29.9396,
+     -89.9917
+    ],
+    [
+     29.94517,
+     -89.98998
+    ]
+   ],
+   "src": "geometry estimated by Claude from Latour 1816 pp.146-152 (battery spacing in yards, line 815 toises) anchored to OSM/Wikipedia Chalmette points; NOT surveyed"
+  },
+  {
+   "name": "Line Jackson swamp leg (receding elbow into cypress swamp)",
+   "kind": "us_line",
+   "pts": [
+    [
+     29.94517,
+     -89.98998
+    ],
+    [
+     29.94779,
+     -89.99828
+    ]
+   ],
+   "src": "geometry estimated by Claude from Latour 1816 pp.146-152 (battery spacing in yards, line 815 toises) anchored to OSM/Wikipedia Chalmette points; NOT surveyed"
+  },
+  {
+   "name": "British advance redoubt/battery line ~800 yd (730 m) in front of Line Jackson",
+   "kind": "gb_works",
+   "pts": [
+    [
+     29.93746,
+     -89.9845
+    ],
+    [
+     29.94181,
+     -89.98316
+    ]
+   ],
+   "src": "Wikipedia (Hughes & Brodine p.1004: ~800 yd; other sources 500-880 yd); estimate"
+  },
+  {
+   "name": "Mississippi river road / levee (east bank, 1815 approx, upriver->downriver)",
+   "kind": "road",
+   "pts": [
+    [
+     29.93725,
+     -90.00706
+    ],
+    [
+     29.9396,
+     -89.9917
+    ],
+    [
+     29.94116,
+     -89.98146
+    ],
+    [
+     29.94273,
+     -89.97122
+    ],
+    [
+     29.94461,
+     -89.95894
+    ],
+    [
+     29.94711,
+     -89.94256
+    ],
+    [
+     29.94836,
+     -89.93436
+    ]
+   ],
+   "src": "Estimate, bearing ~80 deg from OSM Chalmette points; river bends downstream"
+  },
+  {
+   "name": "British route 23 Dec: Villere canal head -> wood -> Villere house",
+   "kind": "gb_move",
+   "pts": [
+    [
+     29.9897,
+     -89.95123
+    ],
+    [
+     29.9613,
+     -89.94544
+    ],
+    [
+     29.94711,
+     -89.94256
+    ]
+   ],
+   "src": "Latour pp.86-87: 1 mile canal mouth to wood, ~2 miles wood to river"
+  },
+  {
+   "name": "Jackson's 23 Dec approach (city -> De la Ronde oaks)",
+   "kind": "us_move",
+   "pts": [
+    [
+     29.9575,
+     -90.0629
+    ],
+    [
+     29.93772,
+     -90.00399
+    ],
+    [
+     29.9396,
+     -89.9917
+    ],
+    [
+     29.94367,
+     -89.96508
+    ]
+   ],
+   "src": "NPS hh29h; Latour pp.88-97; 'Old French Quarter' to De la Ronde oaks by nightfall; geometry estimated"
+  },
+  {
+   "name": "Coffee's flank march 23 Dec (behind De la Ronde, into Lacoste/Villere)",
+   "kind": "us_move",
+   "pts": [
+    [
+     29.94899,
+     -89.96616
+    ],
+    [
+     29.9498,
+     -89.95788
+    ],
+    [
+     29.94748,
+     -89.95213
+    ]
+   ],
+   "src": "Latour pp.97-99; NPS hh29h: Coffee circled left behind De la Ronde plantation guided by Col. de la Ronde; estimate"
+  },
+  {
+   "name": "Gibbs main column 8 Jan (British right, along wood edge toward Batteries 7-8/Carroll)",
+   "kind": "gb_move",
+   "pts": [
+    [
+     29.94568,
+     -89.98175
+    ],
+    [
+     29.94522,
+     -89.98458
+    ],
+    [
+     29.94433,
+     -89.98959
+    ]
+   ],
+   "src": "Latour pp.154-155; Wikipedia; Reilly; start ~650 yd from line (Reilly p.286); estimate"
+  },
+  {
+   "name": "Keane column 8 Jan (centre/river road, then 93rd obliqued right)",
+   "kind": "gb_move",
+   "pts": [
+    [
+     29.94003,
+     -89.9835
+    ],
+    [
+     29.9407,
+     -89.98598
+    ],
+    [
+     29.94294,
+     -89.99002
+    ]
+   ],
+   "src": "Wikipedia: 93rd ordered to leave river column and cross field to join main force; Keane wounded crossing"
+  },
+  {
+   "name": "Rennie column 8 Jan (river bank to advanced American redoubt)",
+   "kind": "gb_move",
+   "pts": [
+    [
+     29.93768,
+     -89.98422
+    ],
+    [
+     29.93881,
+     -89.98871
+    ],
+    [
+     29.93934,
+     -89.9906
+    ]
+   ],
+   "src": "Latour p.157-158; NPS hh29m: redoubt taken, Rennie killed"
+  },
+  {
+   "name": "Thornton west-bank advance 8 Jan",
+   "kind": "gb_move",
+   "pts": [
+    [
+     29.917,
+     -89.956
+    ],
+    [
+     29.929,
+     -89.974
+    ],
+    [
+     29.9355,
+     -89.9965
+    ]
+   ],
+   "src": "LOW CONFIDENCE sketch from Wikipedia/Thornton despatch (landed ~1,000 yd below target, 4 miles from battery at dawn per Gleig); verify on Latour Plate 7"
+  }
+ ],
+ "units": [
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 1 (2x12-pdr + 6-in howitzer, on the road)",
+   "commander": "Capt Humphreys, US Artillery",
+   "lat": 29.93978,
+   "lon": -89.99164,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "3 guns",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 2 (24-pdr, Carolina crew; highest)",
+   "commander": "Lt Norris, USN",
+   "lat": 29.9405,
+   "lon": -89.99142,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "1 gun",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 3 (2x24-pdr, Baratarian/French gunners)",
+   "commander": "Capts Dominique You and Beluche",
+   "lat": 29.9409,
+   "lon": -89.9913,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "2 guns",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 4 (32-pdr from Carolina)",
+   "commander": "Lt Crawley, USN",
+   "lat": 29.94105,
+   "lon": -89.99125,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "1 gun",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 5 (2x6-pdr)",
+   "commander": "Col Perry and Lt Kerr, artillery",
+   "lat": 29.94257,
+   "lon": -89.99078,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "2 guns",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 6 (12-pdr; fired first shot)",
+   "commander": "Gen Garrigues de Flaujac; Lt Bertel (Francs)",
+   "lat": 29.94285,
+   "lon": -89.99069,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "1 gun",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 7 (18-pdr culverin + 6-pdr; devastated Gibbs' column)",
+   "commander": "Lts Spotts and Chauveau, US Artillery",
+   "lat": 29.94437,
+   "lon": -89.99023,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "2 guns",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Battery 8 (small brass carronade, poor carriage)",
+   "commander": "corporal of artillery; Carroll's militia",
+   "lat": 29.94485,
+   "lon": -89.99008,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "1 gun",
+   "src": "Latour 1816 pp.147-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Advanced redoubt on the river (in front of line's right)",
+   "commander": "Lt Ross, 7th US Inf; Lt Marant (44th) guns",
+   "lat": 29.93943,
+   "lon": -89.99057,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "1 company 7th Inf + detachment 44th",
+   "src": "Latour 1816 pp.147-152 p.150"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "New Orleans Rifles (Capt Beale)",
+   "commander": "Capt Beale",
+   "lat": 29.93969,
+   "lon": -89.99167,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~30",
+   "src": "Latour 1816 pp.147-152 p.150"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "7th US Infantry",
+   "commander": "Maj Peire (Col Ross over 7th-44th)",
+   "lat": 29.94034,
+   "lon": -89.99147,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "430",
+   "src": "Latour 1816 pp.147-152 p.150"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Plauche's battalion (uniform companies) + Lacoste's Louisiana free men of colour",
+   "commander": "Maj Plauche; Maj Lacoste",
+   "lat": 29.94097,
+   "lon": -89.99127,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "289 + 280",
+   "src": "Latour 1816 pp.147-152 p.150-151"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Daquin's St Domingo free men of colour",
+   "commander": "Maj Daquin",
+   "lat": 29.94182,
+   "lon": -89.99101,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "150",
+   "src": "Latour 1816 pp.147-152 p.151"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "44th US Infantry",
+   "commander": "Capt Baker (Col Ross cmd corps)",
+   "lat": 29.94308,
+   "lon": -89.99062,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "240",
+   "src": "Latour 1816 pp.147-152 p.151"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "US Marines (right of Battery 7)",
+   "commander": "Lt Bellevue",
+   "lat": 29.94413,
+   "lon": -89.9903,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "50",
+   "src": "Latour 1816 pp.147-152 p.151"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Carroll's Tennessee division + Adair's Kentuckians (left, Batteries 6-8 to swamp)",
+   "commander": "Maj-Gen Carroll; Gen Adair",
+   "lat": 29.94534,
+   "lon": -89.98992,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~1,600 (Latour; Tennessee ~1,100 + Kentucky 526 per Wikipedia OOB)",
+   "src": "Latour 1816 pp.147-152 p.151; Wikipedia order of battle"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Coffee's Tennessee brigade + Choctaw (swamp leg, left flank)",
+   "commander": "Brig-Gen Coffee; Pierre Jugeat (Choctaw)",
+   "lat": 29.94648,
+   "lon": -89.99413,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~500 (Latour); 813 incl. Choctaw (Wikipedia OOB)",
+   "src": "Latour 1816 pp.147-152 p.151; Wikipedia order of battle"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Reserve cavalry (Hinds' Mississippi Dragoons, Ogden's, Attakapas, Chauveau's)",
+   "commander": "Maj Hinds; Capts Ogden, Chauveau",
+   "lat": 29.94149,
+   "lon": -89.99381,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~230",
+   "src": "Latour 1816 pp.147-152 p.151-152"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "Jackson headquarters (men on the line from before daybreak)",
+   "commander": "Maj-Gen Andrew Jackson",
+   "lat": 29.9402,
+   "lon": -89.9938,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "-",
+   "src": "Latour 1816 pp.147-152 p.158"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "West bank: Patterson's Marine Battery",
+   "commander": "Cdre Daniel Patterson",
+   "lat": 29.9355,
+   "lon": -89.9965,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~30 sailors + militia gunners",
+   "src": "Latour 1816 pp.147-152 App."
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "US",
+   "unit": "West bank: Morgan's Louisiana militia + Kentuckians (Davis)",
+   "commander": "Brig-Gen David Morgan; Col Davis; Maj Arnaud",
+   "lat": 29.933,
+   "lon": -89.978,
+   "facing": "SE",
+   "moves_to": [],
+   "strength": "~700-1,000 (sources differ: Foelckel 400 enemy vs Patterson 1,000)",
+   "src": "Wikipedia; Reilly 1976 (verify)"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "Gibbs' column (2nd Bde: 4th, 21st, 44th) - main attack",
+   "commander": "Maj-Gen Samuel Gibbs (mortally wounded)",
+   "lat": 29.94568,
+   "lon": -89.98175,
+   "facing": "W",
+   "moves_to": [
+    [
+     29.94433,
+     -89.98959
+    ]
+   ],
+   "strength": "~2,000 (4th 747; 21st 800; 44th 427 ORs, Pringle)",
+   "src": "Wikipedia order of battle; Latour p.154"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "44th Foot (advance guard; fascines and ladders)",
+   "commander": "Lt-Col Mullins",
+   "lat": 29.94614,
+   "lon": -89.98128,
+   "facing": "W",
+   "moves_to": [
+    [
+     29.94435,
+     -89.98808
+    ]
+   ],
+   "strength": "427 ORs",
+   "src": "Wikipedia; Davis 2019"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "Keane's column (1st Bde: 93rd, 1st & 5th West India, light cos.)",
+   "commander": "Maj-Gen John Keane (wounded)",
+   "lat": 29.94003,
+   "lon": -89.9835,
+   "facing": "W",
+   "moves_to": [
+    [
+     29.94294,
+     -89.99002
+    ]
+   ],
+   "strength": "93rd 775 ORs; WI regts 755+570",
+   "src": "Wikipedia order of battle"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "Rennie's column (light cos. 4th, 21st) along the river",
+   "commander": "Lt-Col Robert Rennie (killed)",
+   "lat": 29.93768,
+   "lon": -89.98422,
+   "facing": "W",
+   "moves_to": [
+    [
+     29.93934,
+     -89.9906
+    ]
+   ],
+   "strength": "~400 (est.)",
+   "src": "Wikipedia; Latour p.157"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "Light infantry on the right by the swamp (7th, 43rd, 93rd light companies)",
+   "commander": "Lt-Col Timothy Jones, 4th (mortally wounded)",
+   "lat": 29.94714,
+   "lon": -89.98399,
+   "facing": "W",
+   "moves_to": [
+    [
+     29.94604,
+     -89.98809
+    ]
+   ],
+   "strength": "~300 (est.)",
+   "src": "Wikipedia"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "Lambert's reserve (7th, 43rd)",
+   "commander": "Maj-Gen John Lambert",
+   "lat": 29.94118,
+   "lon": -89.98045,
+   "facing": "W",
+   "moves_to": [],
+   "strength": "7th 750 + 43rd 820 ORs",
+   "src": "Wikipedia order of battle"
+  },
+  {
+   "battle": "8jan",
+   "phase": "dawn",
+   "side": "GB",
+   "unit": "Thornton's west-bank force (85th, seamen, marines)",
+   "commander": "Col William Thornton (badly wounded)",
+   "lat": 29.917,
+   "lon": -89.956,
+   "facing": "NW",
+   "moves_to": [
+    [
+     29.9355,
+     -89.9965
+    ]
+   ],
+   "strength": "~460-600 (298 of 85th + 200 seamen/marines per Thornton; Cochrane 'about 600')",
+   "src": "Wikipedia; Thornton despatch"
+  },
+  {
+   "battle": "23dec",
+   "phase": "evening",
+   "side": "GB",
+   "unit": "Keane's vanguard camp (85th, 95th, 93rd arriving) around Villere house / Lacoste",
+   "commander": "Maj-Gen John Keane",
+   "lat": 29.94633,
+   "lon": -89.94767,
+   "facing": "W",
+   "moves_to": [],
+   "strength": "~1,680 at start, more arriving (NPS hh29h); Keane 1,800 per Remini",
+   "src": "NPS hh29h; Wikipedia"
+  },
+  {
+   "battle": "23dec",
+   "phase": "7:30pm",
+   "side": "US",
+   "unit": "USS Carolina opens fire at musket range",
+   "commander": "Capt Henley; Cdre Patterson aboard",
+   "lat": 29.94367,
+   "lon": -89.94713,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "1 schooner",
+   "src": "Latour p.95; NPS hh29h"
+  },
+  {
+   "battle": "23dec",
+   "phase": "8pm",
+   "side": "US",
+   "unit": "Jackson's main force (7th, 44th Inf, Marines, Plauche, Daquin, Choctaw)",
+   "commander": "Maj-Gen Jackson",
+   "lat": 29.94398,
+   "lon": -89.96303,
+   "facing": "E",
+   "moves_to": [
+    [
+     29.94492,
+     -89.95689
+    ]
+   ],
+   "strength": "~2,131 total (Quimby); NPS ~2,000",
+   "src": "Wikipedia/Quimby 1997; Latour pp.96-97"
+  },
+  {
+   "battle": "23dec",
+   "phase": "8pm",
+   "side": "US",
+   "unit": "Coffee's brigade + Hinds' dragoons + Beale's rifles (left/flank)",
+   "commander": "Brig-Gen John Coffee",
+   "lat": 29.94899,
+   "lon": -89.96616,
+   "facing": "E",
+   "moves_to": [
+    [
+     29.94748,
+     -89.95213
+    ]
+   ],
+   "strength": "~800 (est.)",
+   "src": "Latour pp.97-99"
+  },
+  {
+   "battle": "23dec",
+   "phase": "night",
+   "side": "GB",
+   "unit": "British reinforcements (21st, 93rd, 4th) arriving from the landing",
+   "commander": "Col Thornton (85th/95th); 21st",
+   "lat": 29.94967,
+   "lon": -89.95574,
+   "facing": "W",
+   "moves_to": [
+    [
+     29.94476,
+     -89.95791
+    ]
+   ],
+   "strength": "1,000+ (est.)",
+   "src": "Wikipedia; Latour"
+  },
+  {
+   "battle": "23dec",
+   "phase": "night end",
+   "side": "US",
+   "unit": "Jackson falls back to Rodriguez Canal (~4 a.m. 24 Dec)",
+   "commander": "Maj-Gen Jackson",
+   "lat": 29.9396,
+   "lon": -89.9917,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "-",
+   "src": "Latour p.113"
+  }
+ ]
+}

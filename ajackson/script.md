@@ -17,16 +17,16 @@ Method card ("THE OLD HICKORY METHOD"): 1. CLOSE EVERY DOOR · 2. STRIKE FIRST �
 In the winter of eighteen fourteen, a British fleet sailed for the mouth of the Mississippi. Whoever held New Orleans held the river, and the trade of half of America.
 
 [S01 | cloud dive 1 down onto the plain below the city: emerge over the river, the plantations, the cypress swamp; red line-blocks in long lines on the open fields facing a thin brown ditch line; date plate 8 JANUARY 1815 on its words]
-On the eighth of January, eighteen fifteen, more than five thousand British soldiers, many of them veterans of the wars against Napoleon, attacked a ditch and a wall of mud below the city.
+On the eighth of January, eighteen fifteen, more than five thousand British regulars, some of them from the same regiments that had burned Washington that summer, attacked a ditch and a wall of mud below the city.
 
 [S01 | the red lines advance; the whole American line flashes with muzzle fire (each shot with its sound), cannon smoke; red blocks break and fall back; number card 2,000+ BRITISH on its words, ticks; then 71 AMERICANS under it]
 In about half an hour, more than two thousand of them were killed, wounded or captured. The Americans lost seventy-one.
 
 [S01 | hard cut, dark parchment overlay: two wax seals, GHENT on its word; stamp SIGNED on "signed"; caption NOT YET RATIFIED on its words]
-And the strangest part? Two weeks earlier, in the city of Ghent, both sides had signed a treaty of peace. It was not yet ratified, so the war went on. And no one in New Orleans knew.
+And the strangest part? Two weeks earlier, in the city of Ghent, both sides had signed a treaty of peace. America had not yet ratified it, so the war went on. And no one in New Orleans knew.
 
-[S01 | back to the plain: date plate 23 DECEMBER 1814; red blocks walk out of the cypress swamp onto the river fields; the city label far up the river; distance ruler 8 MILES on its words]
-Three weeks before the battle, it had looked hopeless. A British army had come out of the swamps unseen, about eight miles from the city.
+[S01 | back to the plain: date plate 23 DECEMBER 1814; red blocks walk out of the cypress swamp onto the river fields; the city label far up the river; distance ruler 9 MILES on its words]
+Three weeks before the battle, it had looked hopeless. A British army had come out of the swamps unseen, about nine miles from the city.
 
 [S01 | the general enters: banner with no portrait yet riding down into the city; a dark card on "sword": a thin red scar line drawn across it, AGE 13 small]
 The general sent to save it was sick and painfully thin. And he carried a scar from a British officer's sword, from when he was a boy of thirteen.
@@ -84,7 +84,7 @@ That was the first part of his method. Before you hit the front door, close ever
 Jackson was made a major general in the United States Army, and given the defence of the whole Gulf coast. And in the autumn of eighteen fourteen, the British were coming.
 
 [S03 | the bend fades; label NEXT: THE NIGHT ATTACK; subscribe button clicks on "subscribing"]
-Horseshoe Bend was only the beginning. So how do you stop an army of British regulars who have already landed eight miles from your city? That's the kind of question we answer here, and subscribing is how you catch the next one. Here's how Jackson did it.
+Horseshoe Bend was only the beginning. So how do you stop an army of British regulars who have already landed nine miles from your city? That's the kind of question we answer here, and subscribing is how you catch the next one. Here's how Jackson did it.
 
 ## S04 THE BRITISH COME (~4:45 - ~6:00)
 
@@ -103,7 +103,7 @@ In other words, the British could land wherever they liked. They found a bayou n
 ## S05 MOVE 2: THE NIGHT ATTACK, 23 DECEMBER (~6:00 - ~8:15)
 
 [S05 | the plain by day: red line-blocks camped in the fields of Villeré plantation, the river beside them, the city far upriver; distance ruler]
-The British plan was to rest, bring up the rest of the army, and march on the city. Their advance guard, some sixteen hundred men, were tired from days in open boats. They lit fires and settled in for the night.
+The British plan was to rest, bring up the rest of the army, and march on the city. Their advance guard, some seventeen hundred men, were tired from days in open boats. They lit fires and settled in for the night.
 
 [S05 | the city: Jackson banner; quote card on its words: "BY THE ETERNAL, THEY SHALL NOT SLEEP ON OUR SOIL." small caption BY TRADITION]
 In the city, Jackson heard the news in the early afternoon. By tradition, he struck the table and said: By the Eternal, they shall not sleep on our soil.
@@ -123,8 +123,8 @@ Then Jackson attacked. His regulars and the city's volunteers came down the rive
 [S05 | close and confused: night smoke rolling over the fields, blocks of both colours mixed in small groups, flashes everywhere, the camera low]
 In the dark and the smoke, the battle broke into a hundred small fights. Men could not tell friend from enemy. They fought with muskets, bayonets and knives, among the sugar cane stubble, until well past midnight.
 
-[S05 | dawn grey: blue blocks pull back north up the river road to a thin ditch line (the Rodriguez Canal, label on its word); red blocks hold their camp; result card 23 DECEMBER: BRITISH about 275 lost / AMERICANS about 215 lost]
-Neither side broke. Each lost a little over two hundred men. Before dawn, Jackson pulled back two miles to a dry canal called the Rodriguez.
+[S05 | dawn grey: blue blocks pull back north up the river road to a thin ditch line (the Rodriguez Canal, label on its word); red blocks hold their camp; result card 23 DECEMBER: BRITISH 277 KILLED, WOUNDED OR MISSING / AMERICANS 213]
+Neither side broke. Each lost between two and three hundred men. Before dawn, Jackson pulled back two miles to a dry canal called the Rodriguez.
 
 [S05 | the British side: Keane's banner; red blocks halted; the city label far up river; a stamp HALTED on its word]
 But the British had been stung. Their commander had expected militia to run. Instead they had been attacked in their own camp, at night. He decided to wait for the rest of the army before he moved. That night bought Jackson what he needed most: time.
@@ -133,15 +133,15 @@ But the British had been stung. Their commander had expected militia to run. Ins
 That was the second part of his method. When the enemy lands, hit him first, before he finds his feet.
 
 [S05 | the British reinforcements arrive: many red blocks file out of the swamp; Pakenham banner on his name; a big number on its words]
-On Christmas Day, the British commander-in-chief arrived. Sir Edward Pakenham was Wellington's brother-in-law, and a hero of the war in Spain. Within days he had about eight thousand men. Now he would attack.
+On Christmas Day, the British commander-in-chief arrived. Sir Edward Pakenham was Wellington's brother-in-law, and a hero of the war in Spain. By early January he had about eight thousand men. Now he would attack.
 
 ## S06 THE MUD LINE (~8:15 - ~9:45)
 
 [S06 | day, the Rodriguez Canal from above: blue blocks digging along the line from the river to the swamp; the rampart rising (works grow); label RODRIGUEZ CANAL]
-Jackson's men dug. Along the Rodriguez Canal, from the river to the cypress swamp, about a mile long, they piled up a wall of earth and mud, higher than a man, with the canal as a ditch in front of it.
+Jackson's men dug. Along the Rodriguez Canal, from the river to the cypress swamp, about a mile long, they piled up a wall of earth and mud, only about five feet high but in places twenty feet thick, with the canal as a ditch in front of it.
 
 [S06 | batteries placed along the line one by one, guns appear (art units); one battery highlighted, label BARATARIANS on its word]
-Along it, Jackson placed eight batteries of guns. Two of them were manned by the Baratarians, the pirates and smugglers of Jean Lafitte, who had chosen to fight for the city rather than against it.
+Along it, Jackson placed eight batteries of guns. One of them was manned by the Baratarians, the smugglers and privateers of Jean Lafitte, who had chosen to fight for the city rather than against it.
 
 [S06 | the defenders file in: blue blocks of different groups take places along the wall: regulars, Louisiana militia, free men of colour, Tennessee and Kentucky riflemen, Choctaw scouts at the swamp edge; labels small, each on its word]
 Behind the wall stood regulars, Louisiana militia, two battalions of free men of colour, Tennessee and Kentucky riflemen, and Choctaw warriors at the edge of the swamp. It was one of the strangest armies in American history.
@@ -164,19 +164,19 @@ Before dawn on the eighth of January, the plan began to go wrong. The canal dug 
 Jackson's answer to all of it was simple. He would not attack. Instead, he would let them come to him, across half a mile of open ground, into his guns.
 
 [S07 | the signal rocket rises (flash in the sky); red lines advance in the fog; the fog begins to lift (fog fades); the red lines are suddenly in full view of the wall]
-At first light, a rocket went up, and the British advanced through a thick fog. Then, as they crossed the field, the fog lifted. The whole British army was in plain view, in perfect lines, five hundred yards from the guns.
+At first light, a rocket went up, and the British advanced through a thick fog. Then, as they crossed the field, the fog lifted. The British columns were in plain view, about five hundred yards from the guns.
 
 [S07 | the American guns fire down the line (flashes + smoke, each with its sound), impacts in the red lines; then the riflemen: muzzle flashes ripple along the wall (volleys, each with its sound)]
-The American batteries opened fire. Then, as the British came closer, the riflemen behind the wall fired in ranks, one rank stepping up as the other stepped down to reload. A sheet of fire ran along the wall.
+The American batteries opened fire. Most of the killing was done by those guns. Then, as the British came closer, the riflemen behind the wall fired in ranks, one rank stepping up as the other stepped down to reload. A sheet of fire ran along the wall.
 
 [S07 | the main red column near the swamp reaches the ditch: no ladders (stamp NO LADDERS on its words); red blocks bunch at the ditch, then break back]
 And the ladders? The regiment that was supposed to carry them had left them behind. The main column reached the ditch with almost nothing to cross it. Men stood in the canal and tried to climb the wall with their hands.
 
 [S07 | Pakenham's banner rides forward into the fire; the banner falls (fades grey); Gibbs, Keane cards small on their words]
-Pakenham rode forward to rally them. He was hit, and hit again, and killed. The general leading the main column was mortally wounded. The general who led the second line was badly wounded.
+Pakenham rode forward to rally them. He was hit, and hit again, and killed. The general leading the main column was mortally wounded, and a third general was badly wounded crossing the field.
 
 [S07 | the Highlanders: a red block crosses the field obliquely toward the column, under fire, then halts and stands; label 93RD on its word; the block shrinks]
-The Ninety-third Highlanders marched across the field to help, and halted in front of the guns. They stood there, waiting for orders that never came. More than half of them were cut down.
+The Ninety-third Highlanders marched across the field to help, and halted in front of the guns. They stood there under grapeshot, waiting for orders that never came. Their colonel was killed where he stood.
 
 [S07 | by the river: a red column storms the small redoubt at the river end of the line, takes it for a moment, then is wiped out; the redoubt back to blue]
 By the river, one British column did storm an advanced battery in front of the line. Its officers were shot down inside it, and the survivors were driven out.
@@ -187,8 +187,8 @@ The main attack was broken in about twenty-five minutes. The last British genera
 [S07 | across the river: the small west bank force breaks the American line there (red arrow), then halts; it is ordered back]
 Across the river, the small force that had finally landed broke through the weak American line on the west bank. It was too late. With his generals down, the British commander ordered it back.
 
-[S07 | result card on the dimmed field: BRITISH 2,037 KILLED, WOUNDED OR CAPTURED (incl. 3 generals); AMERICANS 71; source line]
-The British had lost more than two thousand men, killed, wounded or captured, three generals among them. Jackson's army lost seventy-one on both banks, and only a handful behind the wall.
+[S07 | result card on the dimmed field: BRITISH 2,037 KILLED, WOUNDED OR MISSING (3 generals); AMERICANS 71 (BOTH BANKS); source line]
+The British had lost more than two thousand men, killed, wounded or captured, three generals among them. Jackson's army lost seventy-one, on both banks of the river. Behind the wall itself, six men were killed.
 
 [S07 | method card: 3. MAKE THEM COME TO YOU, completing the method]
 That was the third part of his method. Never fight the enemy where he is strongest. Choose the ground, and make him come to you.
