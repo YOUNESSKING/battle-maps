@@ -4,7 +4,7 @@
 # Env: GPU (default "NVIDIA RTX A5000"), WORKERS (3), POD (reuse an existing pod id; then it is not terminated).
 set -u
 R=/home/user/battle-maps/research/runpod; V=/home/user/battle-maps/vicksburg; OUT=$1; shift; mkdir -p "$OUT"
-W=/tmp/vx_pod/run_$$; mkdir -p $W; export CTL_TOKEN_FILE=$W/token.txt
+W=/tmp/vx_pod/run_$$; mkdir -p $W; export CTL_TOKEN_FILE=${CTL_TOKEN_FILE:-$W/token.txt}   # to reuse a running pod pass POD + its CTL_TOKEN_FILE
 [ -s $CTL_TOKEN_FILE ] || python3 -c "import secrets;print(secrets.token_hex(24))" > $CTL_TOKEN_FILE
 rp() { (cd $R && ./rp.sh "$1"); }
 ctl() { (cd $R && ./ctl.sh "$@"); }
