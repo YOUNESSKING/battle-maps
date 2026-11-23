@@ -320,10 +320,10 @@
   },
   {
    "name": "Line Jackson river end (Rodriguez Canal, levee end)",
-   "lat": 29.940309,
-   "lon": -89.995401,
-   "x": 1251.35,
-   "y": 3228.29,
+   "lat": 29.940576,
+   "lon": -89.995372,
+   "x": 1251.37,
+   "y": 3228.07,
    "kind": "place",
    "acc_m": 250,
    "src": "geometry estimated by Claude from Latour 1816 pp.146-152 (battery spacing in yards, line 815 toises) anchored to OSM/Wikipedia Chalmette points; NOT surveyed",
@@ -353,10 +353,10 @@
   },
   {
    "name": "Macarty house (Jackson HQ, 24 Dec-Jan)",
-   "lat": 29.941438,
-   "lon": -89.997188,
-   "x": 1250.05,
-   "y": 3227.34,
+   "lat": 29.941602,
+   "lon": -89.997042,
+   "x": 1250.15,
+   "y": 3227.2,
    "kind": "place",
    "acc_m": 250,
    "src": "Estimate: upriver (west) of the canal, near the river road behind the line's river end; modern Malus-Beauregard House stands near the site (NPS Chalmette). Latour p.158",
@@ -19460,8 +19460,8 @@
    "note": "",
    "pts": [
     [
-     1255.79,
-     3231.61
+     1256.03,
+     3231.37
     ],
     [
      1257.84,
@@ -19547,8 +19547,8 @@
      3221.94
     ],
     [
-     1251.35,
-     3228.29
+     1251.37,
+     3228.07
     ],
     [
      1270.19,
@@ -19627,16 +19627,16 @@
    "note": "",
    "pts": [
     [
-     1256.04,
-     3231.5
+     1256.03,
+     3231.37
     ],
     [
-     1253.22,
-     3229.59
+     1253.4,
+     3229.5
     ],
     [
-     1252.04,
-     3228.74
+     1252.18,
+     3228.64
     ]
    ]
   },
@@ -19765,14 +19765,14 @@
    "side": "US",
    "unit": "Battery 1 (2x12-pdr + 6-in howitzer, on the road)",
    "commander": "Capt Humphreys, US Artillery",
-   "lat": 29.940464,
-   "lon": -89.99528,
+   "lat": 29.940576,
+   "lon": -89.995372,
    "facing": "E",
    "moves_to": [],
    "strength": "3 guns",
    "src": "Latour 1816 pp.147-152",
-   "x": 1251.44,
-   "y": 3228.16,
+   "x": 1251.37,
+   "y": 3228.07,
    "moves_to_xy": [],
    "fitted": true
   },
@@ -19901,14 +19901,14 @@
    "side": "US",
    "unit": "Advanced redoubt on the river (in front of line's right)",
    "commander": "Lt Ross, 7th US Inf; Lt Marant (44th) guns",
-   "lat": 29.939847,
-   "lon": -89.994385,
+   "lat": 29.939891,
+   "lon": -89.994259,
    "facing": "E",
    "moves_to": [],
    "strength": "1 company 7th Inf + detachment 44th",
    "src": "Latour 1816 pp.147-152 p.150",
-   "x": 1252.09,
-   "y": 3228.68,
+   "x": 1252.18,
+   "y": 3228.64,
    "moves_to_xy": [],
    "fitted": true
   },
@@ -19918,14 +19918,14 @@
    "side": "US",
    "unit": "New Orleans Rifles (Capt Beale)",
    "commander": "Capt Beale",
-   "lat": 29.940387,
-   "lon": -89.99534,
+   "lat": 29.940576,
+   "lon": -89.995372,
    "facing": "E",
    "moves_to": [],
    "strength": "~30",
    "src": "Latour 1816 pp.147-152 p.150",
-   "x": 1251.39,
-   "y": 3228.23,
+   "x": 1251.37,
+   "y": 3228.07,
    "moves_to_xy": [],
    "fitted": true
   },
@@ -20071,14 +20071,14 @@
    "side": "US",
    "unit": "Jackson headquarters (men on the line from before daybreak)",
    "commander": "Maj-Gen Andrew Jackson",
-   "lat": 29.941438,
-   "lon": -89.997188,
+   "lat": 29.941602,
+   "lon": -89.997042,
    "facing": "E",
    "moves_to": [],
    "strength": "-",
    "src": "Latour 1816 pp.147-152 p.158",
-   "x": 1250.05,
-   "y": 3227.34,
+   "x": 1250.15,
+   "y": 3227.2,
    "moves_to_xy": [],
    "fitted": true
   },
@@ -20203,8 +20203,8 @@
    "side": "GB",
    "unit": "Rennie's column (light cos. 4th, 21st) along the river",
    "commander": "Lt-Col Robert Rennie (killed)",
-   "lat": 29.936496,
-   "lon": -89.988959,
+   "lat": 29.936641,
+   "lon": -89.988973,
    "facing": "W",
    "moves_to": [
     [
@@ -20214,12 +20214,12 @@
    ],
    "strength": "~400 (est.)",
    "src": "Wikipedia; Latour p.157",
-   "x": 1256.04,
-   "y": 3231.5,
+   "x": 1256.03,
+   "y": 3231.37,
    "moves_to_xy": [
     [
-     1252.04,
-     3228.74
+     1252.18,
+     3228.64
     ]
    ],
    "fitted": true
@@ -20416,14 +20416,14 @@
    "side": "US",
    "unit": "Jackson falls back to Rodriguez Canal (~4 a.m. 24 Dec)",
    "commander": "Maj-Gen Jackson",
-   "lat": 29.940309,
-   "lon": -89.995401,
+   "lat": 29.940576,
+   "lon": -89.995372,
    "facing": "E",
    "moves_to": [],
    "strength": "-",
    "src": "Latour p.113",
-   "x": 1251.35,
-   "y": 3228.29,
+   "x": 1251.37,
+   "y": 3228.07,
    "moves_to_xy": [],
    "fitted": true
   },

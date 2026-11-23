@@ -93,7 +93,15 @@ def rpt(name, default):
 R0 = rpt("Line Jackson river end", (29.9396, -89.9917)); R1 = rpt("Line Jackson elbow", (29.94517, -89.98998)); R2 = rpt("Line Jackson swamp end", (29.94779, -89.99828))
 ang = math.atan2(dirv[1], dirv[0]) - math.atan2(*(R1 - R0)[::-1])
 ROT = np.array([[math.cos(ang), -math.sin(ang)], [math.sin(ang), math.cos(ang)]])
-fit = lambda p: M0 + ROT @ (np.asarray(p, float) - R0)
+def fit(p, bank=True):
+    """rigid move research -> OSM-canal frame; points the rotation pushed into the river go back onto the east bank (0.35 units inland)"""
+    q = M0 + ROT @ (np.asarray(p, float) - R0)
+    if bank:
+        i, d = nearest_on(MISS_D, q)
+        if d < W_MISS / 2 + 0.35:
+            t = MISS_D[min(i + 2, len(MISS_D) - 1)] - MISS_D[max(i - 2, 0)]; n = np.array([t[1], -t[0]]) / np.linalg.norm(t)   # left of the flow = east bank
+            q = MISS_D[i] + n * (W_MISS / 2 + 0.35)
+    return q
 M1, M2 = fit(R1), fit(R2)
 LINE_PTS = np.vstack([M0, M1, M2])
 FIT_NOTE = (f"fitted: research line (Latour shape, NOT surveyed) moved onto the OSM canal: rotated {math.degrees(ang):+.1f} deg about the river end, "
