@@ -39,8 +39,8 @@
  ],
  "hm_ppu": 1.5,
  "tex": 8192,
- "exag": 20.0,
- "cell": 22.0,
+ "exag": 14.0,
+ "cell": 34.0,
  "seed": 1814,
  "dem_ppu": 2,
  "dem_margin": 24,
@@ -88,7 +88,7 @@
   "paint_km2": 600,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.12,
+ "woods": -0.03,
  "villages": 0,
  "rivers": [
   {

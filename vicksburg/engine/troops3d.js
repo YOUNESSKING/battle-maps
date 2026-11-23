@@ -63,7 +63,7 @@ export function createTroops3D(o) {
   // between +-180 and snap): about-face counter-clockwise, turn back clockwise
   // the side is fixed per run / escape from the UNcorrected geometry (sg = +1 ccw, -1 cw); only turns > ~29 deg the 'wrong' way are wrapped
   const adS = (a, b, sg) => { const d = angDiff(a, b); if (!RT || !sg) return d; return sg > 0 && d < -0.5 ? d + 2 * Math.PI : sg < 0 && d > 0.5 ? d - 2 * Math.PI : d; };
-  const sgOf = (from, to) => angDiff(from, to) >= 0 ? 1 : -1;
+  const sgOf = (from, to) => { const d = angDiff(from, to); return Math.abs(d) < 1.9 ? 0 : d >= 0 ? 1 : -1; };   // only big (about-face) turns get a fixed side
   const RF = BOXL ? 1.0 : o.reform ?? 2.0, VPK = (o.vmax ?? 1.0) * ts, VESC = (o.vesc ?? 1.25) * ts, RAMP = 1.0;   // peak march speed, retreat speed, ease seconds
   // trapezoid progress (0..1) at normalised time x, ramp fraction r at each end (constant cruise between: no darting)
   const trap = (x, r) => { x = clamp(x); if (r <= 1e-4) return x; const vm = 1 / (1 - r); if (x < r) return 0.5 * vm * x * x / r; if (x > 1 - r) { const y = 1 - x; return 1 - 0.5 * vm * y * y / r; } return 0.5 * vm * r + vm * (x - r); };

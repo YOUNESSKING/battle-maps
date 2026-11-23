@@ -16,7 +16,7 @@ const G = "gulf", P = (n) => VX.place(n, G);
 const NAT = P("Natchez"), MIMS = P("Fort Mims"), MOB = P("Mobile"), HSB = P("Horseshoe Bend (Tohopeka"), FW = P("Fort Williams");
 const TRACE = [[NAT[0] + 6, NAT[1] - 6], [150, 352], [236, 252], [318, 150]];            // the Natchez Trace toward Tennessee (north-east)
 const SOUTH = [[1004, 34], [982, 80], [FW[0] + 4, FW[1] - 6], [1018, 146], [HSB[0] - 14, HSB[1] - 3]];   // Fort Strother -> Fort Williams -> the bend
-const RSB = VX.ll(32.36, -86.72, G);   // the Red Stick banner over the Red Stick towns on the Alabama (Holy Ground area)
+const RSB = VX.ll(32.2, -86.72, G);   // the Red Stick banner over the Red Stick towns on the Alabama (Holy Ground area)
 
 let WW = null;
 const lin = (c) => c.map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)), GOLD = lin([0xe0 / 255, 0xb8 / 255, 0x5a / 255]);
@@ -53,8 +53,8 @@ window.SEQ = {
     // high and wide first (the Gulf coast, Mobile Bay, Pensacola, the river system), then a drift north-east to the bend
     { t: 0.0, region: G, at: [430, 490], dist: 820, tilt: 36, yaw: 0, fov: 30 },
     { t: T.hickory, region: G, at: [400, 385], dist: 760, tilt: 36, yaw: 0, fov: 30, ease: "lin" },
-    { t: T.creek + 1.0, region: G, at: [770, 450], dist: 800, tilt: 31, yaw: 0, fov: 30 },
-    { t: T.mims + 1.0, region: G, at: [745, 525], dist: 690, tilt: 32, yaw: 0, fov: 30 },
+    { t: T.creek + 1.0, region: G, at: [770, 440], dist: 840, tilt: 31, yaw: 0, fov: 30 },
+    { t: T.mims + 1.0, region: G, at: [752, 505], dist: 790, tilt: 32, yaw: 0, fov: 30 },
     { t: T.jackson2, region: G, at: [800, 430], dist: 690, tilt: 32, yaw: 0, fov: 30, ease: "lin" },
     { t: T.tohopeka, region: G, at: [1010, 250], dist: 430, tilt: 34, yaw: 0, fov: 30 },
     // the last ~2.2 s hold S03's first camera exactly (S03 keys[0]: [OV-10, OV+26], dist 300, tilt 36, yaw 0, fov 30)

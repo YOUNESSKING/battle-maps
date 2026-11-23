@@ -179,7 +179,8 @@ const buildCards = (ctx) => { const { tl } = ctx;
     <div class="cap">A BRITISH OFFICER'S SWORD</div><div class="age">AGE 14</div><div class="src">by his own account</div>`);
   const q = (e, s) => e.querySelector(s), on = (e, t, d = 0.35, from = { y: 10 }) => { gsap.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, ...from }, { autoAlpha: 1, y: 0, x: 0, scale: 1, duration: d, ease: "power2.out", immediateRender: false }, t); };
   // Ghent (hard cut at CUT_G): the backdrop and the plate are there on the cut frame
-  tl.fromTo(bk, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T.weeks - 0.5);   // round 1: dim 0.3 s before the card tl.to(bk, { autoAlpha: 0, duration: 0.6 }, CUT_N - 0.35);
+  tl.fromTo(bk, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, T.weeks - 0.5);   // round 1: dim 0.3 s before the card
+  tl.fromTo(bk, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.6, immediateRender: false }, CUT_N - 0.35);   // fromTo: exact when the renderer seeks out of order
   tl.fromTo(gh, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, T.weeks - 0.2); tl.to(gh, { autoAlpha: 0, duration: 0.4 }, CUT_N - 0.4);
   ["hd", "tt", "rule", "pt", "nr"].forEach((c) => gsap.set(q(gh, "." + c), { autoAlpha: 0 }));
   on(q(gh, ".hd"), T.weeks); on(q(gh, ".tt"), T.ghent, 0.45, { y: 0, scale: 1.08 }); on(q(gh, ".rule"), T.peace, 0.4, { y: 0 }); on(q(gh, ".pt"), T.peace, 0.45); on(q(gh, ".nr"), T.not, 0.45);
