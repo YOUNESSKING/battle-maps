@@ -176,7 +176,7 @@ write("neworleans", {
  "box": [1010, 2924, 590, 462], "hm_ppu": 1.5, "tex": 8192, "exag": 14.0, "cell": 22.0, "seed": 1814,
  "stills": [{"at": [1305, 3155], "dist": 640, "tilt": 30, "yaw": 0}, {"at": [1290, 3200], "dist": 300, "tilt": 44, "yaw": 0}, {"at": [1258, 3222], "dist": 150, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24,
- "dem_edits": {"sea": {"level": 0.0, "min_px": 1e12, "open_px": 7, "island_px": 60,
+ "dem_edits": {"sea": {"level": 0.0, "min_px": 1e12, "open_px": 7, "close_px": 11, "island_px": 60,
                        "seeds": [[30.18, -90.10], [30.25, -90.45], [30.03, -89.62], [30.10, -89.75], [29.72, -90.25]]},
                "fill_water": True, "spike_m": 40.0, "sea_floor_m": 0.0},
  "creek_km2": 1e6, "creeks": {"paint_km2": 1e9, "ribbon_km2": 1e9},

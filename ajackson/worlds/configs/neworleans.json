@@ -49,6 +49,7 @@
    "level": 0.0,
    "min_px": 1000000000000.0,
    "open_px": 7,
+   "close_px": 11,
    "island_px": 60,
    "seeds": [
     [
