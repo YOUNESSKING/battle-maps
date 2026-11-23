@@ -28,8 +28,15 @@ Gulf only, one slow continuous camera (lower Mississippi -> Creek country -> For
 `jackson.png` (Jarvis c. 1819, MET CC0, see S01 NOTES), `us15_flag.png` (ajackson/assets/flags), `rs_cloth.png` / `rs_pennant.png`
 (copies of S03's Red Stick banner cloth + pennant, made by the S03 author; no portrait, no invented flag).
 
+## Polish round (coordinator)
+- Opens high and wide (dist 900): the Gulf coast, Mobile Bay and the river system in frame, then drifts north-east.
+- Creek Nation lands (1813, approximate polygon) tinted soft ochre with a thin border from "Creek Nation" until 2.3 s before the end.
+- Subtle gold river glow on the Alabama (while Fort Mims is named) and the Tallapoosa (on its name).
+- MOBILE label now in frame; Red Stick banner moved to the Holy Ground area on the Alabama (was clipped at the top edge); Jackson's
+  second banner starts at Fort Williams (no clipping 39-44 s).
+- The last 2.2 s hold S03's first camera exactly ([OV-10, OV+26], dist 300, tilt 36, yaw 0, fov 30; OV = Horseshoe Bend gulf).
+- Month-only plates (1813, August 1813, Spring 1814) show their text (engine fix).
+
 ## Open issues
-- MOBILE label (26.85) sits below the frame (the camera frames Fort Mims and the Red Stick towns); either drop it or pan lower.
-- 39-44 s: the Jackson banner sits near the top edge (the route starts at the map's north edge, y 34); its finial is clipped at 39.5 s.
+- The gulf's east edge shows at the right in the last seconds (S03's own opening camera, matched exactly).
 - The red block at the bend is small at this scale; the Red Stick banner carries the beat.
-- Gulf texture is camouflage-like at this distance (region bake, not changed).

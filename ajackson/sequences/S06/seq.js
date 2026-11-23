@@ -95,14 +95,17 @@ const guns = [
   { region: CH, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 }, shots: [71.2, 71.9, 72.6, 73.2, 73.8, 74.35, 74.9, 75.4].map((t, i) => shot(t, onS(BAT[(i * 5 + 1) % 8], -0.42), bbAt([0.18, 0.5, 0.82][i % 3]).map((v, k) => v + (k ? 0.2 : -0.3) * ((i % 2) - 0.5)), 0.6)) },
 ];
 const fires = [
-  { region: CH, at: [CAROL[0], CAROL[1], 0.35], t0: T.carolina + 0.4, t1: T.next + 0.4, preset: "house", opts: { size: 0.7 }, cue: T.fire },
+  { region: CH, at: [CAROL[0], CAROL[1], 0.3], t0: T.carolina + 0.3, t1: T.next + 0.4, preset: "steamer", opts: { size: 0.8, glowSize: 10 }, cue: T.fire },
   ...[0.18, 0.5, 0.82].map((k, i) => ({ region: CH, at: [...bbAt(k), 0.15], t0: T.shot + 0.3 + i * 0.35, t1: 77.0, preset: "smoulder", cue: false })),
 ];
 const volleys = [
   // 28 Dec: the riflemen on the line fire at the swamp column
   { region: CH, pts: [onL(0.4, -0.55), onL(1.6, -0.55), onL(2.6, -0.55)], t0: T.american + 0.4, t1: T.drove + 0.6, opts: { dir: nL, size: 0.8, alpha: 0.09, life: 10, muzzle: 5, rate: 3.0, volley: 1.6, roll: 0.6, height: 2.0 } },
 ];
-const fx = { fires, volleys, guns };
+// 1 January fog: low, slow, long-lived grey banks over the plain (no flashes, no sound), lifting (thinning) when the fog lifts
+const FOG = [0, 1, 2, 3, 4].map((i) => ({ region: CH, pts: [onS(-1.0, 1.2 + i * 1.6), onS(6.2, 1.2 + i * 1.6)], t0: T.newyear - 0.5, t1: T.fog - 0.2, cue: false,
+  opts: { flash: false, dir: [0.2, 0.1], rate: 5.0, size: 3.2, alpha: 0.16, life: 9, muzzle: 0.5, windK: 0.25, height: 0.6, fadeAfter: 2.2, fadeTo: 0, look: "gm" } }));
+const fx = { fires, smokeLines: FOG, volleys, guns };
 
 // ---------------- arrows ----------------
 const arrows = [
@@ -152,19 +155,19 @@ window.SEQ = {
   troops: "blocks", troopsOpts: { look: "lineblocks" },
   keys: [
     // 1. from above the British side, looking back at the line being dug
-    { t: 0, region: CH, at: onS(2.6, 1.4), dist: 24, tilt: 46, yaw: 112, fov: 30 },
-    { t: 16.6, region: CH, at: onS(3.4, 0.6), dist: 20, tilt: 50, yaw: 104, fov: 30, ease: "lin" },
+    { t: 0, region: CH, at: onS(2.4, 1.0), dist: 17, tilt: 48, yaw: 112, fov: 30 },
+    { t: 16.6, region: CH, at: onS(3.0, 0.4), dist: 14.5, tilt: 50, yaw: 104, fov: 30, ease: "lin" },
     // 2. down the line: batteries, the Baratarians, the defenders filing in (the leg into the swamp)
-    { t: 21.2, region: CH, at: onS(1.8, -0.2), dist: 15, tilt: 52, yaw: 96, fov: 30, ease: "io" },
-    { t: 30.0, region: CH, at: onS(2.6, -0.6), dist: 16, tilt: 52, yaw: 100, fov: 30, ease: "lin" },
-    { t: 37.0, region: CH, at: onL(1.6, -0.4), dist: 18, tilt: 52, yaw: 112, fov: 30, ease: "io" },
-    { t: 45.0, region: CH, at: onL(2.4, 0.4), dist: 22, tilt: 50, yaw: 106, fov: 30, ease: "lin" },
+    { t: 21.2, region: CH, at: onS(1.6, -0.4), dist: 11.5, tilt: 52, yaw: 96, fov: 30, ease: "io" },
+    { t: 30.0, region: CH, at: onS(2.4, -0.8), dist: 12.5, tilt: 52, yaw: 100, fov: 30, ease: "lin" },
+    { t: 37.0, region: CH, at: onL(1.8, -0.6), dist: 13.5, tilt: 52, yaw: 112, fov: 30, ease: "io" },
+    { t: 45.0, region: CH, at: onL(1.6, 0.2), dist: 17, tilt: 50, yaw: 106, fov: 30, ease: "lin" },
     // 3. 27 Dec: across the river, the Carolina burns
-    { t: 48.4, region: CH, at: [1264.0, 3239.4], dist: 15, tilt: 55, yaw: 60, fov: 30, ease: "io" },
-    { t: 52.2, region: CH, at: [1263.4, 3239.6], dist: 14, tilt: 56, yaw: 56, fov: 30, ease: "lin" },
+    { t: 48.4, region: CH, at: [1264.2, 3239.2], dist: 12, tilt: 55, yaw: 60, fov: 30, ease: "io" },
+    { t: 52.2, region: CH, at: [1263.6, 3239.6], dist: 11, tilt: 56, yaw: 56, fov: 30, ease: "lin" },
     // 4. 28 Dec: the columns probe the line
-    { t: 55.0, region: CH, at: [1256.2, 3230.0], dist: 22, tilt: 50, yaw: 72, fov: 30, ease: "io" },
-    { t: 60.8, region: CH, at: [1256.8, 3230.0], dist: 21, tilt: 51, yaw: 66, fov: 30, ease: "lin" },
+    { t: 55.0, region: CH, at: [1256.4, 3230.0], dist: 16, tilt: 50, yaw: 72, fov: 30, ease: "io" },
+    { t: 60.8, region: CH, at: [1256.8, 3230.0], dist: 15, tilt: 51, yaw: 66, fov: 30, ease: "lin" },
     // 5. 1 January: the British batteries in the fog, the duel
     { t: 64.0, region: CH, at: [1254.6, 3229.0], dist: 17, tilt: 52, yaw: 64, fov: 30, ease: "io" },
     { t: 76.0, region: CH, at: [1254.8, 3229.2], dist: 16, tilt: 53, yaw: 58, fov: 30, ease: "lin" },
@@ -177,7 +180,7 @@ window.SEQ = {
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1814", day: "24", weekday: "Saturday", note: "the Rodriguez Canal" }],
-    ["distance", T.mile - 0.15, T.mud + 0.3, { from: RE, to: SE, value: 1, unit: "MILE", sub: "river to swamp", dash: false }],
+    ["distance", T.mile - 0.15, T.mud + 0.3, { from: RE, to: SE, value: 1, countFrom: 1, unit: "MILE", sub: "river to swamp", dash: false }],
     ["label", T.five - 0.05, T.ditch - 0.4, { name: "Five feet high", sub: "", world: onS(1.2, 0.2), side: "us", marker: false }],
     ["label", T.twenty - 0.05, T.ditch - 0.4, { name: "Twenty feet thick", sub: "", world: onS(3.6, 0.2), side: "us", marker: false }],
     ["number", T.eight - 0.05, T.one - 0.1, { value: 8, round: 1, world: onS(2.4, 1.6), size: 96, countDur: 0.6 }],
@@ -204,13 +207,8 @@ window.SEQ = {
     for (const p of PINS) { const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
 };
 
-// ---------------- 1 January fog: low soft banks over the plain, thinning as it lifts ----------------
-function fogBuild(c) {
-  const B = []; for (let i = 0; i < 70; i++) { const x = 1249 + VX.hsh(i, 11) * 18, y = 3220 + VX.hsh(i, 12) * 17; B.push([x, y, 2.6 + VX.hsh(i, 13) * 2.6, VX.hsh(i, 14)]); }
-  const H = (x, y) => c.world.heightAt(x, y, CH);
-  c.FX[CH].custom((t, push) => { const k = c.sstep(T.newyear - 0.6, T.newyear + 0.8, t) * (1 - c.sstep(T.fog + 0.1, T.fire2 + 1.0, t)); if (k <= 0.01) return;
-    for (const [x, y, r, ph] of B) { const dx = Math.sin(t * 0.07 + ph * 6) * 0.6; push(x + dx, H(x, y) + 0.25 + ph * 0.3, y, r, 0.22 * k, 0.86, 0.87, 0.85, 6, 2); } });
-}
+// ---------------- 1 January fog: no sprite fog (see fx.smokeLines FOG banks) ----------------
+function fogBuild(c) {}
 
 // ---------------- pinned overlay bits: icons (bundles of cane, a ladder) and a red stamp ----------------
 const PINS = [];

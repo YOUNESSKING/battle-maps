@@ -47,8 +47,8 @@ const CLASHC = (() => { const p = lerp2(RE, EL, 0.52); return [p[0] + FR[0] * 2.
 const RIVG = VX.river(GULF, 2).pts;                  // the Mississippi from the west edge (11, 595) down past New Orleans to the mouth (448, 971)
 const idxG = (x, y) => { let b = 0; for (let i = 0; i < RIVG.length; i++) if (Math.hypot(RIVG[i][0] - x, RIVG[i][1] - y) < Math.hypot(RIVG[b][0] - x, RIVG[b][1] - y)) b = i; return b; };
 const iNO = idxG(300.6, 803.5), iEND = RIVG.length - 1;
-const FLEET = [[500, 915], [482, 865], [470, 815], [462, 776]];   // from the south-east toward the Lake Borgne / Cat Island anchorage
-const FLV = 4.4, FLS0 = 10;
+const FLEET = [[484, 912], [468, 864], [458, 815], [452, 776]];   // from the south-east toward the Lake Borgne / Cat Island anchorage
+const FLV = 3.2, FLS0 = 4;
 const fleetLead = (t) => VX.along(FLEET, FLS0 + t * FLV);
 const shift = (path, d) => path.map((p, i) => { const a = path[Math.max(0, i - 1)], b = path[Math.min(path.length - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [p[0] - dy / l * d, p[1] + dx / l * d]; });
 const lin = (c) => c.map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
@@ -195,6 +195,17 @@ const buildCards = (ctx) => { const { tl } = ctx;
   on(q(sc, ".cap"), T.sword); on(q(sc, ".age"), T.fourteen - 0.05, 0.4, { y: 0, scale: 1.15 }); on(q(sc, ".src"), T.fourteen + 0.2);
   CARDS = { bk, gh, sc }; };
 
+// 8 Jan morning fog: a light ground veil over the field (canvas under the troops' DOM and the overlay; the 3D blocks stay readable
+// through it at <= 0.3 alpha), drifting slowly, thinning from "five thousand" until it is gone as the British reach the ditch
+const fog = { build() { const c = document.createElement("canvas"); c.width = 640; c.height = 360; c.style.cssText = "position:absolute;inset:0;width:1280px;height:720px;pointer-events:none";
+    const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.c = c; this.g = c.getContext("2d"); },
+  draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 640, 360);
+    const k = VX.sstep(DV.emerge, DV.clear + 0.6, t) * (1 - VX.sstep(T.five - 0.3, GB_HALT - 0.6, t)) * (t < CUT_G ? 1 : 0); if (k <= 0.002 || ctx.world.cameraAt(t).region !== CH) return;
+    for (let i = 0; i < 26; i++) { const x = ((hsh(i, 1) * 820 + t * (6 + hsh(i, 2) * 6)) % 820) - 90, y = 120 + hsh(i, 3) * 230, r = 70 + hsh(i, 4) * 90;
+      const gr = g.createRadialGradient(x, y, 0, x, y, r), a = 0.26 * k * (0.6 + 0.4 * hsh(i, 5));
+      gr.addColorStop(0, `rgba(226,228,222,${a.toFixed(3)})`); gr.addColorStop(1, "rgba(226,228,222,0)"); g.fillStyle = gr; g.fillRect(x - r, y - r, 2 * r, 2 * r); }
+    const lg = g.createLinearGradient(0, 80, 0, 360); lg.addColorStop(0, "rgba(220,222,216,0)"); lg.addColorStop(1, `rgba(220,222,216,${(0.22 * k).toFixed(3)})`); g.fillStyle = lg; g.fillRect(0, 80, 640, 280); } };
+
 // the general's banner: no portrait (a "?" silhouette) until "Jackson", then the Jarvis portrait
 const MYST = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="76" height="100" viewBox="0 0 76 100"><path d="M38 18 C27 18 22 26 22 35 C22 44 27 51 31 54 L31 58 C18 61 8 70 6 100 L70 100 C68 70 58 61 45 58 L45 54 C49 51 54 44 54 35 C54 26 49 18 38 18 Z" fill="#120e09" fill-opacity=".86"/><text x="38" y="49" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="30" fill="#e2c88e">?</text></svg>');
 const BAN0 = [CITY[0] + 7.5, CITY[1] - 10.5], BAN1 = [CITY[0] + 1.2, CITY[1] - 1.4];
@@ -208,7 +219,7 @@ const build = async (ctx) => { WW = ctx.world;
       else { const s = (iNO - i) / iNO; a = sstep(s - 0.06, s, k2 * 1.06); }                                         // city -> the west edge
       if (a <= 0.01) continue; const pulse = 0.85 + 0.15 * Math.sin(t * 2.4 - i * 0.02);
       push(p[0], waterY(GULF, p[2]) + 0.3, p[1], 9, 0.42 * a * fade * pulse, GOLD[0], GOLD[1], GOLD[2], 6, 2); } });
-  buildCards(ctx);
+  buildCards(ctx); fog.build(ctx);
   // the banner reveal on "Jackson": the portrait swaps in, the plaque reads JACKSON (banner.js BN.reveal)
   const b = ctx.BANNERS.find((x) => x.region === NO); if (b) BN.reveal(b.e.firstElementChild, "seq/jackson.png", "Jackson", T.jackson);
 };
@@ -221,7 +232,7 @@ window.SEQ = {
   keys: [
     // A: the gulf, ONE continuous push from altitude toward the plain below the city (the dive's push takes over at 8.35)
     { t: 0.0, region: GULF, at: [420, 852], dist: 540, tilt: 34, yaw: -6, fov: 30 },
-    { t: 4.6, region: GULF, at: [414, 846], dist: 490, tilt: 37, yaw: -5, fov: 30, ease: "lin" },
+    { t: 4.6, region: GULF, at: [418, 856], dist: 490, tilt: 37, yaw: -5, fov: 30, ease: "lin" },
     // B: after the emergence (land 15.5): a slow drift over the field while the lines meet
     { t: 21.5, region: CH, at: [CLASHC[0] - 0.4, CLASHC[1] - 0.2], dist: 19.5, tilt: 51, yaw: -26, fov: 30 },
     { t: CUT_G, region: CH, at: [CLASHC[0] - 0.9, CLASHC[1] - 0.4], dist: 18.5, tilt: 52, yaw: -29, fov: 30, ease: "lin" },
@@ -248,7 +259,7 @@ window.SEQ = {
     { t: T.D, region: CH, at: [1256.2, 3226.6], dist: 34, tilt: 48, yaw: 0, fov: 30 },
   ],
   dives: [{ t: SWT, over: OVER,
-    from: { region: GULF, at: [330, 824], dist: 390, tilt: 42, yaw: -4 },
+    from: { region: GULF, at: [356, 838], dist: 400, tilt: 42, yaw: -4 },
     to: { region: CH, at: CLASHC, dist: 21, tilt: 50, yaw: -24, fov: 30 } }],
   clouds: {
     [GULF]: { scatter: { seed: 3 }, keepClear: [[312, 807, 75, 1, 0.8], [560, 915, 70, 1, 0.8], [200, 760, 60, 1, 0.6]] },
@@ -274,7 +285,7 @@ window.SEQ = {
   ],
   boats: [-9, 0, 9].map((d, j) => ({ region: GULF, kind: "ship", n: 3, size: 5.2, path: shift(FLEET, d), s0: FLS0 - [6, 0, 9][j], speed: FLV, spacing: 13, t0: -1, t1: SWT, lamp: false, wake: true }))
     .concat([{ region: CH, kind: "ship", n: 1, size: 0.75, path: CARP, sAt: () => VX.len(CARP) * 0.5, t0: N0, t1: N1, lamp: true, wake: false }]),
-  fx, build,
+  fx, build, draw: (t, ctx) => fog.draw(t, ctx),
   overlay: [
     ["plaque.date", T.eighteen, { month: "November 1814", day: "", weekday: "", note: "" }],
     ["label", T.fleet, T.fleet + 3.5, { name: "British fleet", world: (t) => { const p = fleetLead(t); return [p[0] + 6, p[1] - 4, 0]; }, side: "uk", marker: false }],

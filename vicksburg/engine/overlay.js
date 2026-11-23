@@ -43,9 +43,9 @@
 .gmo .pdate .vr{width:1.3px;align-self:stretch;background:var(--rule);margin:0 14px 0 4px}
 .gmo .pdate .wd{font-size:13px;letter-spacing:.24em;color:#5A4F3A;white-space:nowrap}
 .gmo .pdate .nt{font-size:18.5px;color:var(--ink-2);white-space:nowrap;margin-top:1px}
-.gmo .pdate.mo .hd,.gmo .pdate.mo .vr,.gmo .pdate.mo .wd,.gmo .pdate.mo .nt{display:none}
-.gmo .pdate.mo .dn{width:auto;font-size:30px;letter-spacing:.08em;white-space:nowrap;padding:6px 8px 2px 6px}
-.gmo .pdate.mo .rw{min-height:46px}
+.gmo .pdate.monly .hd,.gmo .pdate.monly .vr,.gmo .pdate.monly .wd,.gmo .pdate.monly .nt{display:none}
+.gmo .pdate.monly .dn{width:auto;font-size:30px;letter-spacing:.08em;white-space:nowrap;padding:6px 8px 2px 6px}
+.gmo .pdate.monly .rw{min-height:46px}
 .gmo .pclock{left:132px;top:63px}
 .gmo .pclock .ct{padding:8px 64px 13px 44px;min-width:318px;height:97px;display:flex;flex-direction:column;justify-content:flex-end}
 .gmo .pclock .hd{font-size:13px;letter-spacing:.3em;color:var(--caps);white-space:nowrap;margin-bottom:-1px}
@@ -365,7 +365,7 @@
         const dk = last(dateKeys, t) || dateKeys[0];
         if (dk) { const o = dk.o, set = (s, v) => { const n = dateEl.querySelector(s); if (n.textContent !== String(v)) n.textContent = v; };
           const mo = !o.day && !o.weekday && !o.note;   // month-only plate (Battle 20): the month line alone, big, no empty day box
-          if (dateEl.classList.contains("mo") !== mo) dateEl.classList.toggle("mo", mo);
+          if (dateEl.classList.contains("monly") !== mo) dateEl.classList.toggle("monly", mo);
           set(".hd", o.month || ""); set(".dn", mo ? (o.month || "") : (o.day || "")); set(".wd", o.weekday || ""); set(".nt", o.note || ""); }
         const s = last(steps, t) || steps[0];
         if (s) { let disp, ang;
@@ -542,7 +542,7 @@
         <circle class="e0" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/><circle class="e1" r="6" fill="#EEE7D6" stroke="#1E1E1A" stroke-width="2"/>`;
       gsap.set(g, { autoAlpha: 0 }); tl.set(g, { autoAlpha: 1 }, tIn); fadeOut(g, tOut, 0.5);
       const unit = o.unit || "MILES", c = { v: 0 }, L = O.label(tIn + 0.4, tOut, { name: `${fmtN(o.value)} ${unit}`, sub: o.sub, x: 0, y: 0, marker: false, stripes: o.stripes || [] }), nm = L.el.querySelector(".nm");
-      tl.fromTo(c, { v: 0 }, { v: o.value, duration: 1.3, ease: "power2.out", immediateRender: false, onUpdate: () => { nm.textContent = `${fmtN(c.v)} ${unit}`; } }, tIn + 0.4);
+      tl.fromTo(c, { v: o.countFrom ?? 0 }, { v: o.value, duration: 1.3, ease: "power2.out", immediateRender: false, onUpdate: () => { nm.textContent = `${fmtN(c.v)} ${unit}`; } }, tIn + 0.4);   // o.countFrom (S06): start value (= value: no count, e.g. "1 MILE")
       rulers.push({ g, o: { ...o, tIn, tOut }, L }); return O; };
     updaters.push((t) => { for (const r of rulers) { const a = project(r.o.from, t), b = project(r.o.to, t); if (!a || !b) continue;
       const k = E.inout(clamp((t - r.o.tIn) / (r.o.drawDur || 1.4))), mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, lift = -Math.hypot(b.x - a.x, b.y - a.y) * 0.12, cx = mx, cy = my + lift;

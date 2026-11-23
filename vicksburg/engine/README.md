@@ -258,3 +258,11 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   the emergence showed fog over the void; or override `keys: { swTo: { at }, emerge: { at } }`). `O.letter(..., { qAt })` = when the typed
   quote starts (default tIn + 1).
 - (S03 author) Arrows: `maxWidth` lifts the 0.24 width cap for one arrow (wide z8 gulf map: `width: 0.6, maxWidth: 0.6` reads at dist 600-900).
+
+- Battle 20 S01 (lineblocks motion): two moves of one unit less than 3.2 s apart merge into ONE run; an advance followed by a retreat then
+  flips the block ~160 deg in one frame instead of the men's about-face. Hold >= 3.3 s between opposite moves. A unit whose run (or the
+  turn in place before it) starts while the camera is still landing from a dive can flip its heading for a frame (the on-screen heading
+  correction follows the fast camera): start moves after the dive's `land` (+ the turn time). Hard camera cuts show as "turn" spikes in
+  `check_troops_motion.mjs` at the cut frame (the on-screen correction jumps with the new camera); they are not seen as a turn.
+- Date plaque (Battle 20): a `plaque.date` with day, weekday and note all empty is a month-only plate: the month text alone, big, no
+  empty day box (class `monly`). Plates with a day / weekday / note are unchanged.

@@ -70,7 +70,10 @@ spoken: shown as small source text); no "Jackson" on screen before the name slam
 
 ## Open issues
 - The neworleans (z10 wide) texture is soft below dist ~80; the city/villeré shots stay at dist 66-112.
-- The plate shows an empty day box for month-only dates (November 1814, 1814 - 1815), as in Vicksburg.
-- The 8 Jan clash shows no fog (history: fog lifting as the British closed); no engine fog device yet.
 - S03/S04 use their own copies of jackson.png (an older cut); the final cut-outs are in `ajackson/assets/generals/`.
-- 6.8 s: the fleet drifts to the right frame edge as the camera pans to the city (the tag has left by then).
+
+## Polish round (coordinator)
+- Fleet path moved west + slower (3.2 u/s) and the pan narrowed: the ships stay in frame until the dive push takes over.
+- 8 Jan ground fog: a light canvas veil (drifting soft patches + low band, <= ~0.3 alpha) from the emergence, thinning from "five
+  thousand" (15.6 s) to gone at ~20.4 s as the British reach the ditch.
+- Month-only plates (November 1814, 1814 - 1815) now show the month text alone (engine `plaque.date` month-only mode, see README).

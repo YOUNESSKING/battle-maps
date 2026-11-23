@@ -25,13 +25,14 @@ const res = await pg.evaluate((reg, t0, t1, share0, film0) => {
   const uPos = (u, t) => { const bl = ublocks(u); if (!bl.length) return null; let x = 0, y = 0; for (const b of bl) { const q = T3.base(b.u, b.i, t); x += q.x; y += q.y; } return [x / bl.length, y / bl.length]; };
   const nearestUnit = (t, x, y, side) => { let best = null, bd = 1e9; for (const u of U) { if (t < (u.t0 ?? 0) || t > (u.t1 ?? 1e9)) continue; if (side && u.side !== side) continue; const p = uPos(u, t); if (!p) continue; const d = Math.hypot(p[0] - x, p[1] - y); if (d < bd) { bd = d; best = u; } } return best ? { ...uInfo(best), dist: r2(bd) } : null; };
   // ---- effects list: volleys / independent fire, guns, fire
+  // v8: a smokeLine with opts.flash === false (fog, drifting smoke) has no visible shots and gets no musket event
   for (const e of (V.FXL || [])) { if ((e.region || reg) !== reg) continue;
     if (e.kind === "smokeLine") { const o = e.opts || {}, pts = e.pts, mid = pts[Math.floor(pts.length / 2)], L = pts.reduce((s, p, i) => i ? s + Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0, 0);
       if (o.volley) { const nv = Math.max(1, Math.floor((e.t1 - e.t0) / o.volley)), roll = o.roll ?? 0.8;
         for (let v = 0; v < nv; v++) { const t = e.t0 + v * o.volley; if (!inWin(t)) continue; const nu = nearestUnit(t, mid[0], mid[1]);
           const sh = (e._shots || []).filter((q) => q.t >= t - 1e-6 && q.t < t + o.volley - 1e-6).map((q) => ({ ...T(q.t), t: r2(q.t, 3), tShare: r2(q.t - t0 + share0, 3), tFilm: r2(film0 + q.t - t0, 3), at: P(q.t, q.x, q.y) }));   // v8: the visible muzzle flashes of this volley (first = t)
           ev.push({ type: "musket_volley", style: roll >= 0.3 ? "ripple" : "single", rippleSeconds: r2(roll), lineLength: r2(L), ...T(t), at: P(t, mid[0], mid[1]), from: P(t, pts[0][0], pts[0][1]), to: P(t, pts[pts.length - 1][0], pts[pts.length - 1][1]), unit: nu, ...(sh.length ? { shots: sh } : {}) }); } }
-      else { const a = Math.max(e.t0, t0), b = Math.min(e.t1, t1); if (a < b) { const nu = nearestUnit(a, mid[0], mid[1]);
+      else if (o.flash !== false) { const a = Math.max(e.t0, t0), b = Math.min(e.t1, t1); if (a < b) { const nu = nearestUnit(a, mid[0], mid[1]);
         const sh = (e._shots || []).filter((q) => q.t >= a && q.t <= b).map((q) => ({ ...T(q.t), t: r2(q.t, 3), tShare: r2(q.t - t0 + share0, 3), tFilm: r2(film0 + q.t - t0, 3), at: P(q.t, q.x, q.y) }));
         ev.push({ type: "independent_fire", note: "continuous scattered musketry (skirmish / independent fire)", ...T(a), tEnd: r2(b), duration: r2(b - a), ratePerSec: r2((o.rate ?? 18) * L / 100, 1), lineLength: r2(L), at: P(a, mid[0], mid[1]), unit: nu, ...(sh.length ? { shots: sh } : {}) }); } } }
     else if (e.kind === "gun") { (e.shots || []).forEach((s0) => { const s = typeof s0 === "number" ? { t: s0 } : s0, at = s.at || e.at, t = s.t; if (!inWin(t)) return;

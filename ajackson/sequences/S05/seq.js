@@ -102,10 +102,7 @@ CL.forEach((y, i) => volleys.push(VOL([[1277.0 + i * 1.4, y - 0.35], [1278.2 + i
 const MF = [[1277.6, 3238.0, 1], [1278.4, 3236.9, -1], [1277.1, 3235.9, 1], [1278.9, 3234.9, -1], [1277.8, 3234.1, 1], [1279.6, 3233.2, -1], [1281.4, 3232.4, 1],
   [1278.2, 3237.4, -1], [1276.9, 3236.6, 1], [1279.3, 3235.4, -1], [1282.6, 3231.8, 1], [1278.6, 3233.8, -1]];
 MF.forEach(([x, y, s], i) => { const t0 = T.dark + 0.8 + (i * 1.03) % 11.4; volleys.push(VOL([[x - 0.15 * s, y - 0.3], [x + 0.15 * s, y + 0.3]], t0, t0 + 3.2, [s, 0], { volley: 1.05 + (i % 3) * 0.2, roll: 0.25, rate: 2.2 })); });
-// night smoke rolling over the fields (no volleys: a thin bank, no sound)
-const smokeLines = [
-  { region: CH, pts: [[1275.6, 3238.8], [1277.6, 3235.6], [1279.6, 3232.2]], t0: T.dark - 1.0, t1: T.neither + 1.0, cue: false, opts: { dir: [0.2, -1], rate: 1.6, size: 1.6, alpha: 0.06, life: 16, muzzle: 2, windK: 0.7, height: 1.4, flash: false } },
-];
+const smokeLines = [];
 // the Carolina's broadside: her guns from the river into the camp, each shot a flash + plume + an impact among the fires
 const carShots = [T.opened, T.fire + 0.35, T.campfires - 0.1, 66.95, 67.6, 68.35, 69.1, 69.9].map((t, i) => {
   const at = [CAR[0] - 0.3 + (i % 3) * 0.3, CAR[1] - 0.15];
@@ -200,6 +197,11 @@ window.SEQ = {
             to: { region: CH, at: [1267.0, 3238.8], dist: 23, tilt: 58, yaw: -78, fov: 30, night: NI } }],
   clouds: { [NO]: { scatter: { seed: 5 }, keepClear: [[1214, 3219, 22, 1, 0], [1270, 3233, 30, 1, 0]] }, [CH]: { shadows: false } },
   units, arrows, banners, boats, fx, generals,
+  // Jackson's line did not exist before 24 Dec: the rampart starts to rise at dawn (digging from 4 a.m.); the redoubt, the 1 Jan British
+  // batteries and the west-bank works stay hidden in this scene
+  build: (c) => { const R = c.world.regions[CH], W = R.works || [], ys = R.ys || 1, info = (VX.region(CH).features || {}).works || [];
+    const sink = W.map((m, i) => ((info[i] || {}).height_m || 1.5) * ys * 1.6 + 0.08);
+    c.FX[CH].custom((t) => { W.forEach((m, i) => { const k = i === 0 ? 0.45 * c.sstep(T.pulled, 112, t) + 0.2 * c.sstep(129, 131, t) : 0; m.visible = k > 0.01; m.position.y = -(1 - k) * sink[i]; }); }); },
   labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1814", day: "23", weekday: "Friday", note: "Villere plantation" }],
@@ -220,7 +222,7 @@ window.SEQ = {
     ["ledger.add", T.lost + 0.9, { who: "Americans: 213", note: "killed, wounded or missing", stamp: false }],
     ["ledger.hide", T.dawn + 0.6],
     ["label", T.stung, T.night + 0.8, { name: "Stung", sub: "attacked in their own camp, at night", world: [VIL[0] - 2.6, VIL[1] - 5.0], side: "uk", marker: false }],
-    (O, c) => stamp(O, c, "HALTED", T.wait2 - 0.1, T.time + 0.6, [VIL[0] - 2.6, VIL[1] - 1.6]),
+    (O, c) => stamp(O, c, "HALTED", T.wait2 - 0.1, T.time + 0.6, [VIL[0] - 9.0, VIL[1] - 3.4]),
     ["label", T.time - 0.1, 123.0, { name: "Time", sub: "to dig in at the Rodriguez Canal", world: [MAC[0] - 2.0, MAC[1] - 6.0], side: "us", marker: false }],
     // method card: the same letter card as S03 (move 1), line 1 typed fast, line 2 typed on "hit him first"
     ["letter", 123.1, 129.35, { header: "Move 2 · The night attack", title: "The Old Hickory Method", sub: "", marks: false, quote: "1. Close every door\n2. Strike first", qSize: 34, height: 270,
