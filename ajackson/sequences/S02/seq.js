@@ -71,7 +71,7 @@ window.SEQ = {
   banners: [
     { general: "jackson", region: G, keys: [[0, ...VX.along(TRACE, 150).slice(0, 2)], [T.home, ...VX.along(TRACE, 150).slice(0, 2)], [T.hickory + 1.2, ...VX.along(TRACE, 225).slice(0, 2)]], t0: T.jackson, t1: T.sameYear + 1.4 },
     { general: "redsticks", region: G, keys: [[0, ...RSB], [T.thousand - 0.6, ...RSB], [T.warriors + 1.8, HSB[0] + 16, HSB[1] + 28]], t0: T.red + 0.2, t1: T.D + 1 },
-    { general: "jackson", region: G, keys: [[0, 1030, 44], [T.south + 0.2, 1030, 44], [T.tohopeka, 1062, 136]], t0: T.jackson2, t1: 39.6 },
+    { general: "jackson", region: G, keys: [[0, 1022, 140], [T.south + 0.2, 1022, 140], [T.tohopeka, 1052, 174]], t0: T.jackson2, t1: 39.6 }   // round 3: lower start (finial + name inside the frame),
   ],
   labels: [
     { text: "Creek Nation", at: [985, 335], size: 22, t0: T.creek, t1: T.creek + 3.4, region: G },

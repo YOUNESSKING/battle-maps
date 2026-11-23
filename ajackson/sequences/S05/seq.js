@@ -52,7 +52,7 @@ const RX = 1280.4, RX2 = 1285.6;
 const rFront = RL.map((y, i) => {
   const xm = [1278.4, 1278.8, 1278.2][i], xm2 = [1276.6, 1277.2, 1276.9][i];
   return u("r", 1, [[0, RX, y], [T.dark + 0.4, RX, y], [T.hundred + 0.4, xm, y], [T.muskets, xm, y], [T.cane + 0.6, xm2, y], [T.D, xm2, y]], W, { t1: 107.6 }); });
-const rBack = [3236.9, 3234.3].map((y, i) => u("r", 1, [[0, RX2, y], [T.hundred, RX2, y], [T.muskets + 1.0, RX2 - 2.0 - i * 0.6, y], [T.D, RX2 - 2.0 - i * 0.6, y]], W, { t1: 107.6 }));
+const rBack = [3236.9, 3234.3].map((y, i) => u("r", 1, [[0, RX2, y]], W, { t1: 107.6 }));   // round 3: the second row holds (no drift at 87-92)
 // the Americans (regulars, Marines, Plauche's + Daquin's battalions) come down the river road from the city at dusk, deploy at Bienvenu's,
 // attack east at "Then Jackson attacked"; melee; pull back west before dawn (escape up the river road)
 const ESC = (t0, from = 0) => ({ road: ROAD, t0, v: 1.0, v2: 1.0, join: "west", from });
@@ -214,7 +214,7 @@ window.SEQ = {
     ["quote", T.gentlemen - 0.15, T.tonight + 0.7, { en: "Gentlemen, the British are below. We must fight them tonight.", attr: "Andrew Jackson · as later told", y: 640, dim: 0.6 }],
     // round 2 (critic A): the quote ~30 % larger on a dark backing (readable at 720p)
     () => { const e = [...document.querySelectorAll("#ov .cq")].pop(); if (!e) return; const q = e.querySelector(".q");
-      if (q) { q.style.fontSize = "52px"; q.style.lineHeight = "1.25"; } Object.assign(e.style, { background: "rgba(12,16,22,.62)", padding: "26px 60px 22px", borderRadius: "4px", boxShadow: "0 0 0 1.5px rgba(201,178,122,.55)" }); },
+      if (q) { q.style.fontSize = "62px"; q.style.lineHeight = "1.25"; } Object.assign(e.style, { background: "rgba(12,16,22,.62)", padding: "26px 60px 22px", borderRadius: "4px", boxShadow: "0 0 0 1.5px rgba(201,178,122,.55)" }); },
     ["engage.decide", { t: T.stop - 0.1, sub: "23 DECEMBER 1814 · YOU ARE JACKSON", a: "DIG IN AND\nWAIT FOR THEM", b: "ATTACK\nTONIGHT", real: "b", tA: T.dig - 0.05, tB: T.attack - 0.05,
       tNote: T.tell - 0.05, tCount: T.comments, tReveal: T.notwait + 0.05, until: SW + 0.2, dim: 0.55 }],
     // round 1 (critic B): a second beat under the 23 s card, each on its words

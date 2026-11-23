@@ -28,7 +28,8 @@ const T = { D: 79.89, winter: 0.62, eighteen: 1.71, british0: 2.86, burned: 3.74
   landed: 69.02, stop: 70.38, veteran: 71.26, mud2: 73.22, these: 74.28, andrew2: 74.84, three: 76.16, moves: 77.44 };   // owner fixes: new narration (re-voiced opening, two trimmed paragraphs)
 const GULF = "gulf", CH = "chalmette", NO = "neworleans", HB = "horseshoe";
 const sstep = VX.sstep, hsh = VX.hsh;
-const SWT = 12.8, DOFF = { emerge: 0.5, clear: 0.8, haze: 1.45 }, DV = VX.diveTimes(SWT); for (const k in DOFF) DV[k] = SWT + DOFF[k];   // round 1: v8 white-out, flat phase trimmed ~0.35 s          // (v8 white-out) push 7.95, deckIn 10.05, full 11.2, SW 11.75, emerge 12.6, clear 12.9, land 15.1
+const SWT = 13.5, DOFF = { push: -4.0, deckIn: -1.0, full: -0.45, deck: -0.4, wIn: -0.3, inside: -0.12, warm: 0.08, emerge: 0.35, clear: 0.5, haze: 1.0 },   // round 3: the v8 deck + white-out, covered ~1.0 s (full 13.05 -> clear 14.0); the PEACE TABLE seal reads in clear air 11.4-12.5; whoosh cue (default deckIn + 0.15) = 11.95, after "table"
+  DV = VX.diveTimes(SWT); for (const k in DOFF) DV[k] = SWT + DOFF[k];   // round 1: v8 white-out, flat phase trimmed ~0.35 s          // (v8 white-out) push 7.95, deckIn 10.05, full 11.2, SW 11.75, emerge 12.6, clear 12.9, land 15.1
 const CUT_G = 32.34, CUT_N = 42.16;                  // hard cut to the Ghent card (over the city); the card leaves, the city comes up
 const SN1 = T.trap, SN2 = T.attack, SN3 = T.stop;    // the three snap cuts
 
@@ -119,7 +120,7 @@ const idxC = (x, y) => { let b = 0; for (let i = 0; i < RIVC.length; i++) if (Ma
 const iCar = idxC(CAROL[0], CAROL[1]), CARP = [RIVC[Math.max(0, iCar - 6)].slice(0, 2), RIVC[iCar].slice(0, 2), RIVC[Math.min(RIVC.length - 1, iCar + 6)].slice(0, 2)];
 
 // ---------------- fx ----------------
-const usShots = [15.3, 16.4, 17.5, 18.5, 19.6, 20.8, 21.8, 22.9, 23.9];   // round 1: first shot after the cloud has cleared
+const usShots = [16.95, 17.8, 18.6, 19.6, 20.8, 21.8, 22.9, 23.9];   // round 3: first shot after the camera lands (16.85)   // round 1: first shot after the cloud has cleared
 const SMK = { dir: FR, rate: 0.9, volley: 1.5, roll: 0.8, size: 0.55, alpha: 0.075, life: 6, height: 2.6, muzzle: 6, windK: 0.7, cluster: [3.6, 1.8] };
 const fx = {
   smokeLines: [
@@ -169,10 +170,10 @@ const CSS = `
 .aj-stamp{position:absolute;left:50%;top:352px;margin-left:-160px;width:320px;font-family:"GM Cinzel",serif;font-weight:700;font-size:58px;letter-spacing:.16em;padding:6px 0 2px .16em;color:#C8382A;
   border:5px solid #C8382A;border-radius:6px;text-shadow:0 0 1px #C8382A;box-shadow:0 0 0 2px rgba(200,56,42,.25)}
 .aj-ghent .nr{position:absolute;left:0;right:0;top:482px;font-family:"GM Cinzel",serif;font-weight:700;font-size:30px;letter-spacing:.2em;padding-left:.2em;color:#E9A090}
-.aj-pseal{position:absolute;left:1330px;top:250px;width:300px;text-align:center}
-.aj-pseal .aj-seal{position:relative;display:inline-block;left:auto;right:auto;top:auto;width:104px;height:104px;line-height:104px;font-size:30px}
-.aj-pseal .rb{position:absolute;left:50%;top:84px;width:70px;height:56px;margin-left:-35px;background:linear-gradient(90deg,#7a1610 0 46%,transparent 46% 54%,#7a1610 54%);clip-path:polygon(0 0,46% 0,30% 100%,18% 80%,6% 100%,0 0,54% 0,100% 0,94% 100%,82% 80%,70% 100%,54% 0);z-index:-2}
-.aj-pseal .cap{margin-top:30px;font-family:"GM Cinzel",serif;font-weight:700;font-size:28px;letter-spacing:.2em;color:#EEE7D6;text-shadow:0 2px 6px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.6)}
+.aj-pseal{position:absolute;left:1240px;top:230px;width:440px;text-align:center}
+.aj-pseal .aj-seal{position:relative;display:inline-block;left:auto;right:auto;top:auto;width:168px;height:168px;line-height:168px;font-size:30px}
+.aj-pseal .rb{position:absolute;left:50%;top:136px;width:110px;height:84px;margin-left:-55px;background:linear-gradient(90deg,#7a1610 0 46%,transparent 46% 54%,#7a1610 54%);clip-path:polygon(0 0,46% 0,30% 100%,18% 80%,6% 100%,0 0,54% 0,100% 0,94% 100%,82% 80%,70% 100%,54% 0);z-index:-2}
+.aj-pseal .cap{margin-top:30px;font-family:"GM Cinzel",serif;font-weight:700;font-size:44px;letter-spacing:.2em;color:#EEE7D6;text-shadow:0 2px 6px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.6)}
 .aj-scar{left:1190px;top:236px;width:600px;height:470px}
 .aj-scar svg{position:absolute;left:0;top:0;width:600px;height:300px;overflow:visible}
 .aj-scar .cap{position:absolute;left:0;right:0;top:262px;font-family:"GM Cinzel",serif;font-weight:700;font-size:30px;letter-spacing:.14em;padding-left:.14em;color:#EEE7D6}
@@ -190,7 +191,7 @@ const buildCards = (ctx) => { const { tl } = ctx;
   // owner fix: "a prize to bargain with at the peace table": a small wax seal + PEACE TABLE (over the closing cloud deck)
   const ps = mk("aj-pseal", `<div class="rb"></div><div class="aj-seal"></div><div class="cap">PEACE TABLE</div>`);
   tl.fromTo(ps, { autoAlpha: 0, scale: 1.5, rotation: -10 }, { autoAlpha: 1, scale: 1, rotation: -4, duration: 0.24, ease: "power4.in", immediateRender: false }, T.peace0 - 0.05);
-  tl.fromTo(ps, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, SWT - 0.35);
+  tl.fromTo(ps, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.35, immediateRender: false }, DV.full - 0.1);   // round 3: ~1.6 s on screen, ~1.0 s in clear air
   const gh = mk("aj-card aj-ghent", `<div class="tex"></div><div class="hd">Two weeks earlier</div><div class="aj-seal l">GB</div><div class="aj-seal r">US</div>
     <div class="tt">GHENT</div><div class="rule"></div><div class="pt">PEACE TREATY</div><div class="aj-stamp">SIGNED</div><div class="nr">NOT YET RATIFIED BY AMERICA</div>`);
   const sc = mk("aj-card aj-scar", `<div class="tex"></div><svg viewBox="0 0 600 300"><path class="g" d="${SCARP}" fill="none" stroke="rgba(200,40,28,.35)" stroke-width="22" stroke-linecap="round" style="filter:blur(6px)"/>
@@ -321,8 +322,8 @@ window.SEQ = {
     ["plaque.note", T.half - 0.25, "about half an hour"],
     ["number", T.two, T.americans - 0.3, { value: 2000, round: 1, suffix: "+", x: 960, y: 250, size: 120 }],
     ["label", T.killed, T.americans - 0.3, { name: "British", sub: "killed, wounded or captured", x: 960, y: 360, marker: false, side: "uk", offset: [-190, 0] }],
-    ["number", T.seventy, CUT_G - 0.15, { value: 71, round: 1, side: "fr", x: 960, y: 250, size: 120 }],
-    ["label", T.killed2 - 0.1, CUT_G - 0.15, { name: "Americans", sub: "killed, wounded or missing", x: 960, y: 360, marker: false, side: "us", offset: [-190, 0] }],
+    ["number", T.seventy, CUT_G - 0.55, { value: 71, round: 1, side: "fr", x: 960, y: 250, size: 120 }],
+    ["label", T.killed2 - 0.1, CUT_G - 0.55, { name: "Americans", sub: "killed, wounded or missing", x: 960, y: 360, marker: false, side: "us", offset: [-190, 0] }],
     // D
     ["plaque.date", T.twoWeeks, { month: "December 1814", day: "23", weekday: "", note: "" }],
     ["distance", T.nine - 0.1, T.general + 0.6, { from: [VIL[0] - 0.5, VIL[1] - 2.0, 0], to: [CITY[0] + 1.5, CITY[1] + 0.6, 0], value: 9, unit: "MILES", sub: "from the city", dash: false, countFrom: 9 }],   // Latour's 9 miles (city to Villere's), shown as is, no count-up

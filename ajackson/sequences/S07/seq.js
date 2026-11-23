@@ -83,11 +83,11 @@ const imp = (i, d) => onS(MS + ((i * 37) % 7 - 3) * 0.18, d);
 const gShots = [];
 // the batteries open as the fog lifts: Nos. 6, 7, 8 rake the main column, 1-4 the river side; impacts where the lines are
 [[41.1, 6, 4.2], [41.7, 7, 4.4], [42.4, 5, 4.6], [43.1, 6, 4.0], [43.8, 4, 4.8], [44.5, 7, 3.9], [45.3, 6, 3.6], [46.2, 3, 4.6], [47.0, 7, 3.2],
- [47.8, 5, 3.0], [48.7, 6, 2.8], [55.8, 7, 1.8], [59.9, 7, 1.5], [65.55, 7, 2.4], [72.25, 6, 4.4], [72.9, 7, 4.2], [73.9, 5, 4.5]].forEach(([t, g, d], i) => gShots.push({ t, at: GUN(g), dir: nS, impact: imp(i, d), delay: 0.55 }));
+ [47.8, 5, 3.0], [48.7, 6, 2.8], [55.8, 7, 1.8], [59.9, 7, 1.5], [66.0, 7, 2.4], [72.6, 6, 4.4], [73.3, 7, 4.2], [73.9, 5, 4.5]].forEach(([t, g, d], i) => gShots.push({ t, at: GUN(g), dir: nS, impact: imp(i, d), delay: 0.55 }));
 // grape on the 93rd
 [89.5, 90.4, 91.5, 93.1, 94.9].forEach((t, i) => gShots.push({ t, at: GUN([4, 5, 3, 4, 3][i]), dir: nS, impact: [H93c[0] + ((i % 3) - 1) * 0.35, H93c[1] + 0.3], delay: i === 3 ? 0.25 : 0.45 }));   // round 2: none on "Their" (93.5)
 // Nos. 1 and 2 on the redoubt's attackers
-[101.0, 102.4, 104.95].forEach((t, i) => gShots.push({ t, at: GUN(i % 2 ? 1 : 2), dir: nS, impact: onS(RS + 0.6, RIN + 1.4 + i * 0.3), delay: i === 2 ? 0.3 : 0.4 }));   // round 2: the last one after "it,"
+[101.0, 102.0, 105.35].forEach((t, i) => gShots.push({ t, at: GUN(i % 2 ? 1 : 2), dir: nS, impact: onS(RS + 0.6, RIN + 1.4 + i * 0.3), delay: i === 2 ? 0.3 : 0.4 }));   // round 2: the last one after "it,"
 const VO = { dir: nS, size: 0.75, alpha: 0.085, life: 9, muzzle: 5, rate: 3.0, roll: 0.8, height: 2.0, cluster: [3.0, 1.5] };
 const fx = {
   fires: [],
@@ -98,7 +98,7 @@ const fx = {
     { region: CH, pts: [onS(3.3, -0.45), onS(4.4, -0.45)], t0: 63.4, t1: 66.6, every: 3.0, opts: { ...VO, volley: 3.0 } },   // one sparse volley on the column at the ditch
     // on the 93rd and on the redoubt's attackers
     { region: CH, pts: [onS(2.0, -0.45), onS(3.0, -0.45), onS(3.6, -0.45)], t0: 89.8, t1: 95.4, every: 1.8, opts: { ...VO, volley: 1.8 } },
-    { region: CH, pts: [onS(0.3, -0.5), onS(1.0, -0.5), onS(1.8, -0.5)], t0: 102.0, t1: T.driven + 0.4, every: 1.6, opts: { ...VO, volley: 1.6 } },
+    { region: CH, pts: [onS(0.3, -0.5), onS(1.0, -0.5), onS(1.8, -0.5)], t0: 102.9, t1: T.driven + 0.4, every: 2.4, opts: { ...VO, volley: 2.4 } },   // round 3: 102.9 / 105.3 (clear of "Its" and "it,")
     // the west bank: Morgan's men fire once, then break
     { region: CH, pts: [wbo(0.2, -0.2), wbo(0.5, -0.2), wbo(0.85, -0.2)], t0: 116.8, t1: T.broke + 0.2, every: 1.6, opts: { ...VO, dir: mwN, volley: 1.6 } },
   ],

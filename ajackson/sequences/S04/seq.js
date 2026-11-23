@@ -110,7 +110,7 @@ window.SEQ = {
     // the fleet on to Lake Borgne
     { side: "r", region: GF, width: 0.55, maxWidth: 0.55, pts: [[700, 812], [580, 790], [470, 772], [BORG[0] + 10, BORG[1] - 6]], t0: 18.9, dur: 1.2, t1: 21.4 },
     // "a dozen ways in through the bayous and the lakes": short red threat lines toward the city
-    ...[[[1185, 3060], [1192, 3130], [1198, 3196]], [[1390, 3124], [1320, 3160], [1236, 3196]], [[1420, 3180], [1350, 3186], [1262, 3205]], [[1300, 3300], [1270, 3262], [1232, 3226]]]
+    ...[[[1187, 3122], [1193, 3160], [1198, 3196]], [[1338, 3150], [1290, 3172], [1236, 3196]], [[1352, 3186], [1306, 3196], [1262, 3205]], [[1268, 3258], [1250, 3242], [1232, 3226]]]   /* round 3: all start inside the frame, clear of the plate */
       .map((pts, i) => ({ side: "r", region: NO, width: 0.8, pts, t0: T.dozen + i * 0.32, dur: 1.0, t1: 30.4 })),
     // the British boats: up the bayou through the marsh to the canal head
     { side: "r", region: NO, width: 0.15, pts: ROUTE.filter((_, i) => i % 2 === 0 || i === ROUTE.length - 1), t0: T.wherever, dur: 4.6, t1: CUT2 + 0.6 },
