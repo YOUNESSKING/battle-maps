@@ -109,11 +109,16 @@ def render_volley(L, out, e, rng, log):
     u = np.sort(np.clip((np.arange(K) + rng.uniform(-.95, .95, K)) / max(K - 1, 1), 0, 1) ** rng.uniform(.8, 1.35))
     u[0] = 0.0   # the flank that gets the order fires on the event time itself
     p0, p1 = pan_of(e.get("from", e["at"])), pan_of(e.get("to", e["at"]))
+    SH = e.get("shots")   # engine v8: the exact visible muzzle-flash times (first = the event time): one shot sound per flash (<= 20)
+    if SH:
+        SH = sorted(SH, key=lambda q: q["tShare"]); SH = [SH[i] for i in sorted(set(np.linspace(0, len(SH) - 1, min(len(SH), 20)).round().astype(int)))]
+        K = len(SH); R = max(SH[-1]["tShare"] - t0, .12); u = np.array([(q["tShare"] - t0) / R for q in SH])
+        p0 = p1 = None
     dry = np.zeros((int((R + 3.0) * SR), 2), np.float32); times = []
     lp = 11000 - 8300 * d
     for k in range(K):
         tk = u[k] * R
-        pk = np.clip(p0 + (p1 - p0) * u[k] + rng.normal(0, .04), -1, 1)
+        pk = np.clip((pan_of(SH[k]["at"]) if SH else p0 + (p1 - p0) * u[k]) + rng.normal(0, .04), -1, 1)
         y, att, nm, j = L.shot(t0 + tk, d, rng.uniform(-3.5, 1.5), pk, lp * rng.uniform(.9, 1.1))
         put(dry, y, tk + .05, att); times.append(round(t0 + tk, 3))
     pk0 = np.abs(dry).max()
@@ -128,6 +133,7 @@ def render_skirmish(L, out, e, rng, log):
     if not on_screen(e["at"]): log.append(dict(type="independent_fire", t=e["tShare"], skipped="off screen")); return
     d = dnorm(e["at"].get("camDist", 25)); dur = e.get("duration", 1.5); n = max(2, int(round(dur * max(e.get("ratePerSec", 0), .6) * 1.5 + 1)))
     ts = np.sort(e["tShare"] + rng.uniform(.05, max(dur - .1, .2), n)); times = []
+    if e.get("shots"): ts = np.array(sorted(q["tShare"] for q in e["shots"]))[:max(n, 2) * 2]; n = len(ts)   # engine v8: on the visible flashes
     for t in ts:
         y, att, nm, j = L.shot(t, d, 0, pan_of(e["at"]) + rng.normal(0, .05), (11000 - 8300 * d) * rng.uniform(.85, 1.1))
         y *= db(-22 - 6 * d + rng.uniform(-2.5, 1.5)) / max(np.abs(y).max(), 1e-6)

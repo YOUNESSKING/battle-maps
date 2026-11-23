@@ -31,13 +31,13 @@ const D = S.D;
 // d.off: per-dive phase offsets relative to the swap that override VX.DIVE_OFF (e.g. { emerge: 0.2, clear: 0.45 } = a shorter white-out)
 const DIVES = (S.dives || []).map((d) => { const o = {}; for (const k in d.off || {}) o[k] = d.t + d.off[k]; return { ...d, ...VX.diveTimes(d.t), ...o, over: d.over || d.to.at }; }).sort((a, b) => a.SW - b.SW);
 const NODIVE = { ...VX.diveTimes(1e7), over: [0, 0], from: {}, to: {} };
-const diveKeys = (d) => { const f = d.from, to = d.to, ov = d.over, k = (to.dist || 40) / 40, K = d.keys || {};
+const diveKeys = (d) => { const f = d.from, to = d.to, ov = d.over, ovT = d.overTo || ov, k = (to.dist || 40) / 40, K = d.keys || {};   // overTo: the over point in the TARGET region's units (regions of different zoom, Battle 20)
   return [
     { t: d.push, region: f.region, at: f.at, dist: f.dist ?? 545, tilt: f.tilt ?? 44, yaw: f.yaw ?? 0, fov: f.fov ?? 30, night: f.night || 0, ...K.push },
     { t: d.deck, region: f.region, at: [ov[0], ov[1] + 1], dist: 115, tilt: 11, yaw: 1, fov: 30, ease: "in", night: f.night || 0, ...K.deck },
     { t: d.SW, region: f.region, at: [ov[0], ov[1]], dist: 66, tilt: 8, yaw: 1, fov: 30, ease: "lin", night: f.night || 0, ...K.swFrom },   // same log-speed as the end of the cubic
-    { t: d.SW, region: to.region, at: [ov[0], ov[1] - 0.4], dist: 93 * k, tilt: 16, yaw: 2, fov: 31, ease: "lin", night: to.night || 0, ...K.swTo },
-    { t: d.emerge, region: to.region, at: [lerp(ov[0], to.at[0], 0.31), lerp(ov[1], to.at[1], 0.31)], dist: 61 * k, tilt: 27, yaw: 0.5, fov: 31.5, ease: "lin", night: to.night || 0, ...K.emerge },
+    { t: d.SW, region: to.region, at: [ovT[0], ovT[1] - 0.4], dist: 93 * k, tilt: 16, yaw: 2, fov: 31, ease: "lin", night: to.night || 0, ...K.swTo },
+    { t: d.emerge, region: to.region, at: [lerp(ovT[0], to.at[0], 0.31), lerp(ovT[1], to.at[1], 0.31)], dist: 61 * k, tilt: 27, yaw: 0.5, fov: 31.5, ease: "lin", night: to.night || 0, ...K.emerge },
     { t: d.land, region: to.region, at: to.at, dist: to.dist ?? 40, tilt: to.tilt ?? 38, yaw: to.yaw ?? -2, fov: to.fov ?? 32, ease: "out", night: to.night || 0, ...K.land },
   ]; };
 const KEYS = (S.keys || []).map((k, i) => ({ k, i })).concat(DIVES.flatMap((d) => diveKeys(d)).map((k, i) => ({ k, i: 1e6 + i })))
@@ -170,6 +170,10 @@ const SMOKE_GM = { cluster: [1.0, 1.0], fadeAfter: 6, fadeTo: 0.12, look: "gmTal
 const bridgeEnds = (r, i) => { const R = world.regions[r], BR = R.features.bridges[i], dir = [Math.cos(-BR.angle), -Math.sin(-BR.angle)], deckY = BR.deck * R.ys, L2 = BR.len / 2;
   return [[BR.x - dir[0] * L2, deckY + 0.05, BR.z - dir[1] * L2], [BR.x + dir[0] * L2, deckY + 0.05, BR.z + dir[1] * L2], BR.wl * R.ys + 0.01]; };
 const GLOWS = [], BATTERY_SHOTS = {};
+// v8 (2026-11-23) visible muzzle flashes: SEQ.flashes = true | false | { musket: {fx muzzleFlash opts}, cannon: {flashHold, flashCore, nightPool} }.
+// Default ON except in the Vicksburg frame (its approved renders keep the old 0.07 s musket sprites unless a scene sets flashes: true).
+const MZF = (() => { const f = S.flashes ?? (GEO.frame !== "vicksburg_hd_lift"); if (!f) return null; const o = f === true ? {} : f;
+  return { musket: o.musket || {}, cannon: { flashHold: 0.4, flashCore: 0.7, nightPool: 7, ...(o.cannon || {}) } }; })();
 for (const e of FXL) {
   const r = e.region || firstClose, fx = FX[r]; if (!fx) throw new Error("fx entry for unknown region " + r);
   const P = (p, h0) => p && p.abs ? p.abs : G(r, p, h0);
@@ -180,10 +184,12 @@ for (const e of FXL) {
     // v7: a burning bridge lights the water under it (flickering orange glow on the river), until waterGlow.t1
     if (e.waterGlow) GLOWS.push({ fx, A: pos, B: to || pos, y: e.waterGlow.y ?? wl ?? pos[1], t0: e.t0, t1: e.waterGlow.t1 ?? e.t1 });
   } else if (e.kind === "smokeLine") {
-    fx.smokeLine(e.pts.map((p) => G(r, p, 0.06)), e.t0, e.t1, { ...SMOKE_GM, ...(e.opts || {}) });
+    const so = { ...SMOKE_GM, ...(e.opts || {}) }; if (MZF && so.muzzleFlash == null && so.flash !== false) so.muzzleFlash = MZF.musket || {};
+    const res = fx.smokeLine(e.pts.map((p) => G(r, p, 0.06)), e.t0, e.t1, so);
+    e._shots = (res && res.shots) || [];   // v8: exact visible shot times (export_troop_events.mjs writes them per volley)
   } else if (e.kind === "gun") {
     (e.shots || []).forEach((s0, i) => { const s = typeof s0 === "number" ? { t: s0 } : s0, at = s.at || e.at;
-      fx.cannon(G(r, at, e.h ?? 0.05), s.t, { ...(GUN_PRESET[e.preset] || GUN_PRESET.field), dir: s.dir || e.dir || [1, 0], ...(e.size != null ? { size: e.size } : {}), ...(e.opts || {}) });
+      fx.cannon(G(r, at, e.h ?? 0.05), s.t, { ...(GUN_PRESET[e.preset] || GUN_PRESET.field), ...(MZF ? MZF.cannon : {}), dir: s.dir || e.dir || [1, 0], ...(e.size != null ? { size: e.size } : {}), ...(e.opts || {}) });
       const fl = s.flash !== undefined ? s.flash : e.flash; if (fl) fx.flash(G(r, fl.at || at, fl.h ?? 0.25), s.t, { size: 2.6, life: 0.15, color: [1.1, 0.45, 0.12], alpha: 1.0, pool: 3, ...(fl.opts || {}) });
       const imp = s.impact !== undefined ? s.impact : e.impact; if (imp) fx.impact(G(r, imp, 0), s.t + (s.delay ?? e.delay ?? 0.85), { size: 0.9, ...(e.impactOpts || {}) });
       (BATTERY_SHOTS[r] = BATTERY_SHOTS[r] || []).push({ t: s.t, x: (e.unitAt || at)[0], y: (e.unitAt || at)[1] }); });
@@ -264,7 +270,16 @@ if (S.title) {
 const boatMat = new THREE.MeshLambertMaterial({ color: 0x2b2622 }), houseMat = new THREE.MeshLambertMaterial({ color: 0x6a6258 }), ironMat = new THREE.MeshLambertMaterial({ color: 0x2a2d30 });
 const hullGeo = (() => { const sh = new THREE.Shape(); sh.moveTo(-1.1, -0.36); sh.lineTo(0.75, -0.36); sh.quadraticCurveTo(1.1, -0.3, 1.35, 0); sh.quadraticCurveTo(1.1, 0.3, 0.75, 0.36); sh.lineTo(-1.1, 0.36); sh.closePath();
   const g = new THREE.ExtrudeGeometry(sh, { depth: 0.32, bevelEnabled: false }); g.rotateX(-Math.PI / 2); g.translate(0, -0.12, 0); return g; })();
-const mkBoat = (kind) => { const b = new THREE.Group(); b.add(new THREE.Mesh(hullGeo, kind === "gunboat" ? ironMat : boatMat));
+const woodMat = new THREE.MeshLambertMaterial({ color: 0x6b4a2c }), sailMat = new THREE.MeshLambertMaterial({ color: 0xe8e2d0, side: THREE.DoubleSide });
+const mkBoat = (kind) => { const b = new THREE.Group();
+  // (Battle 20) small craft + sailing ships: canoe (dugout), barge (rowing boat), ship (three-masted square-rigger); give them lamp: false
+  if (kind === "canoe" || kind === "barge") { const h = new THREE.Mesh(hullGeo, woodMat); h.scale.set(kind === "canoe" ? 1 : 0.8, 0.55, kind === "canoe" ? 0.32 : 0.55); b.add(h);
+    if (kind === "barge") for (const sz of [-1, 1]) { const o = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.04, 0.9), woodMat); o.position.set(0, 0.1, sz * 0.45); b.add(o); }
+    return b; }
+  b.add(new THREE.Mesh(hullGeo, kind === "gunboat" ? ironMat : boatMat));
+  if (kind === "ship") { for (const [mx, mh] of [[0.75, 1.9], [0.05, 2.3], [-0.65, 1.8]]) { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, mh, 5), boatMat); m.position.set(mx, mh / 2, 0); b.add(m);
+      for (const [sy, sw] of [[0.45, 0.62], [0.72, 0.5]]) { const q = new THREE.Mesh(new THREE.BoxGeometry(0.05, mh * 0.24, sw * 1.2), sailMat); q.position.set(mx + 0.03, mh * sy + 0.12, 0); b.add(q); } }
+    return b; }
   if (kind === "gunboat") {   // ironclad: low sloped casemate, one tall stack
     const cg = new THREE.CylinderGeometry(0.42, 0.62, 0.3, 4, 1); cg.rotateY(Math.PI / 4); cg.scale(1.8, 1, 0.75); const cm = new THREE.Mesh(cg, ironMat); cm.position.set(-0.05, 0.3, 0); b.add(cm);
     const st = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 0.95, 6), boatMat); st.position.set(0.2, 0.85, 0); b.add(st);

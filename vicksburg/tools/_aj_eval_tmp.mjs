@@ -1,0 +1,14 @@
+import { createRequire } from "module"; import http from "http"; import fs from "fs"; import path from "path";
+const require = createRequire("/opt/node22/lib/node_modules/hyperframes/");
+const puppeteer = require("puppeteer-core");
+const [dir, t, expr] = process.argv.slice(2);
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".bin": "application/octet-stream" };
+const srv = http.createServer((q, r) => { const f = path.join(dir, decodeURIComponent(q.url.split("?")[0])); fs.readFile(f, (e, b) => { if (e) { r.writeHead(404); r.end(); return; } r.writeHead(200, { "content-type": MIME[path.extname(f)] || "application/octet-stream" }); r.end(b); }); }).listen(0);
+const br = await puppeteer.launch({ executablePath: "/usr/bin/google-chrome", headless: "new", protocolTimeout: 900000, args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--no-sandbox"] });
+const pg = await br.newPage(); pg.on("pageerror", (e) => console.log("PAGEERROR", String(e).slice(0, 800)));
+await pg.goto(`http://127.0.0.1:${srv.address().port}/index.html`, { waitUntil: "load", timeout: 120000 });
+await pg.waitForFunction(() => window.__hf && window.__hf.buildReady && Object.values(window.__hf.buildReady).length, { timeout: 60000 });
+await pg.evaluate(() => Promise.all(Object.values(window.__hf.buildReady)));
+await pg.evaluate((t) => window.__timelines.main.seek(+t, false), t);
+console.log(await pg.evaluate(expr));
+await br.close(); srv.close();

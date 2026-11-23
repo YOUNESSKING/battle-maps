@@ -222,3 +222,38 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   overlaps in the data; `check_troops_motion.mjs` measures them), one queue per road for escapes, real opacity fades, blocks +20 %
   and 2 per 3 boxes. `SEQ.troopsOpts` = createTroops3D options (`vmax`, `vesc`, `size`, `arrive`, `keepTimes`). Unit `caps: [[taken, retaken], ...]`.
   Test copies of the data: `sequences/S09_gm`, `S10_gm` (built by `make_troops_test.sh`). Notes: `vicksburg/critics/troops_v2_notes.md`.
+
+- **Muzzle flashes v8 (2026-11-23, S05 author; owner: "small flashes along each firing line at the exact shot times")**: `SEQ.flashes`
+  (default ON for every project except the Vicksburg frame `vicksburg_hd_lift`, whose approved renders keep the old 0.07 s sprites; `true`
+  / `false` / `{ musket: {...}, cannon: {...} }`). Musket: every `smokeLines` / `volleys` entry gets `opts.muzzleFlash` (fx.js `muzzleShots`):
+  a volley = ~1 shot per 0.17 units of line (inside the `cluster` curtains, <= 32), the shot nearest `pts[0]` fires EXACTLY on the volley
+  time `t0 + v * volley` (= the `musket_volley` time of `tools/export_troop_events.mjs`), the rest ripple ragged toward the far end over
+  `roll`; each shot = a sharp warm-white core (cell 7) + a small orange halo, held at full alpha for the first ~2 frames (life 0.2 s), and a
+  warm ground light at night only (scaled by the key's `night`). Independent fire (no `volley`): one such flash per flashing puff. Options
+  `muzzleFlash: { every, size, life, hold, alpha, core, halo, pool, max, jitter }`, or `opts.flash: false` for none. The smoke puffs are
+  unchanged (same random sequence). Cannon (`guns`): `flashHold 0.4` (>= 2 frames at full alpha), `flashCore 0.7` (warm-white core),
+  `nightPool 7` (ground light at night); override per scene via `flashes.cannon` or per gun via `opts`.
+  `fx.smokeLine` returns `{ shots: [{t, x, y}] }`, stored on the FXL entry as `e._shots`; `export_troop_events.mjs` writes them per volley
+  (`shots: [{t, tShare, tFilm, at}]`, 3 decimals) and per `independent_fire`; `tools/troop_sfx.py` places one shot sound on each flash when
+  `shots` is present (<= 20 per volley, panned by the flash's screen x), else the old random ripple. Verified on a test scene (chalmette,
+  dist 28-40, day + night): the first flash of each volley and each cannon flash are dark in frame ceil(t x 30) - 1 and bright (+60..+160
+  luma) in frame ceil(t x 30). Flashes are ~4-8 px cores at 720p at dist 30-40: several sparks run along the line in every frame of a ripple.
+
+- **Engagement devices (2026-11-23, S03 author; STYLE_LOCK 1b, `lib/engage.js` restyled to the GM overlay: navy plates, gold hairlines,
+  Cinzel caps, Cormorant italics; silent: give clicks/ticks via `SEQ.cues` only if the locked kit has them)**. All pure functions of t:
+  - `["engage.subscribe", t, until]` (or `O.engage.subscribe(t, until, { click, css })`): small SUBSCRIBE plate (red button + gold bell)
+    bottom-right slides in at t, a cursor clicks it at t + 1.25 (`click`), the button turns grey SUBSCRIBED and the bell swings ~1 s, the
+    cursor leaves, the plate slides out at `until`. Never a full-screen card. Time t so the click lands on "subscribing".
+  - `["engage.decide", { sub, a, b, real: "a" | "b", t, tCount, tReveal, until, title, note, dim, top }]`: the map dims (film.dim), gold
+    WHAT WOULD YOU DO? (`title`) with the small caps `sub` above, two navy option boxes A / B (`\n` breaks a line), TELL US IN THE COMMENTS
+    (`note`) with three gold ticks that light at tCount, +0.8, +1.6 (default t + 1.4); at tReveal the real choice glows blue and grows,
+    the other greys out; all out at `until`.
+  - `["engage.final", { moves: [[NAME, DATE] x3], tShow, tNums: [t1, t2, t3], tAsk, tSub, until, q, sub, ask, extra, tExtra, subUntil }]`:
+    dimmed map, TELL US IN THE COMMENTS / WHICH WAS HIS GREATEST MOVE? (`sub` / `q`), three numbered navy cards popping in at tNums (as each
+    move is named), "1, 2 OR 3?" in gold at tAsk (`ask`), an optional italic line (`extra`, e.g. "and tell us which commander we should
+    cover next", at tExtra), and the corner subscribe button at tSub (out at subUntil, default until + 2).
+- (S03 author) Boats: `kind: "canoe" | "barge" | "ship"` (dugout, rowing boat with oars, three-masted square-rigger; pass `lamp: false`,
+  `wake: false` for the small craft). Dives between regions of different zoom: `dives[].overTo` = the over point in the TARGET region's
+  units (the swap / emerge keys used `over`, which is in the wide region's units: on a z8 -> z11 dive they looked at the wrong place and
+  the emergence showed fog over the void; or override `keys: { swTo: { at }, emerge: { at } }`). `O.letter(..., { qAt })` = when the typed
+  quote starts (default tIn + 1).
