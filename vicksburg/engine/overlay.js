@@ -43,6 +43,9 @@
 .gmo .pdate .vr{width:1.3px;align-self:stretch;background:var(--rule);margin:0 14px 0 4px}
 .gmo .pdate .wd{font-size:13px;letter-spacing:.24em;color:#5A4F3A;white-space:nowrap}
 .gmo .pdate .nt{font-size:18.5px;color:var(--ink-2);white-space:nowrap;margin-top:1px}
+.gmo .pdate.mo .hd,.gmo .pdate.mo .vr,.gmo .pdate.mo .wd,.gmo .pdate.mo .nt{display:none}
+.gmo .pdate.mo .dn{width:auto;font-size:30px;letter-spacing:.08em;white-space:nowrap;padding:6px 8px 2px 6px}
+.gmo .pdate.mo .rw{min-height:46px}
 .gmo .pclock{left:132px;top:63px}
 .gmo .pclock .ct{padding:8px 64px 13px 44px;min-width:318px;height:97px;display:flex;flex-direction:column;justify-content:flex-end}
 .gmo .pclock .hd{font-size:13px;letter-spacing:.3em;color:var(--caps);white-space:nowrap;margin-bottom:-1px}
@@ -361,7 +364,9 @@
         if (!steps) build();
         const dk = last(dateKeys, t) || dateKeys[0];
         if (dk) { const o = dk.o, set = (s, v) => { const n = dateEl.querySelector(s); if (n.textContent !== String(v)) n.textContent = v; };
-          set(".hd", o.month || ""); set(".dn", o.day || ""); set(".wd", o.weekday || ""); set(".nt", o.note || ""); }
+          const mo = !o.day && !o.weekday && !o.note;   // month-only plate (Battle 20): the month line alone, big, no empty day box
+          if (dateEl.classList.contains("mo") !== mo) dateEl.classList.toggle("mo", mo);
+          set(".hd", o.month || ""); set(".dn", mo ? (o.month || "") : (o.day || "")); set(".wd", o.weekday || ""); set(".nt", o.note || ""); }
         const s = last(steps, t) || steps[0];
         if (s) { let disp, ang;
           if (s.run) { const raw = lerp(s.prev, s.v, clamp((t - s.t) / s.d)); disp = Math.floor(raw / s.run + 1e-6) * s.run; ang = raw; }
