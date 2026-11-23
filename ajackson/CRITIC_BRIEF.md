@@ -5,7 +5,7 @@ longer improving). Be concrete and severe; every finding names the scene, the ti
 exact fix (seq.js value / engine change). Rank by how much it hurts a viewer. Do NOT render, do NOT commit, do NOT edit seq.js (report only).
 
 Inputs
-- The assembled film with sound: `/tmp/aj_build/jackson_round<N>_720.mp4` (14:20 approx). Per-scene silent renders: `/tmp/aj_render2/S01.mp4` ... `S08.mp4` (round 2+)
+- The assembled film with sound: `/tmp/aj_build/jackson_round<N>_720.mp4` (14:20 approx). Per-scene silent renders: `/tmp/aj_render3/S01.mp4` ... `S08.mp4` (round 2+)
   (1280x720). Scene start times in the film: `ajackson/audio/scenes.json` (A = film start of each scene; the last 0.6 s of a scene dissolves into the next).
 - Extract frames with ffmpeg into `/tmp/aj_critic_<you>/` (every 2 s for the overview; 5 fps for troop-motion windows; 2.5x crops of sectors).
 - Narration word times: `python3 ajackson/tools/scene_times.py SNN --words`; script + shot tags `ajackson/script.md`; direction `ajackson/SCENES.md`;
