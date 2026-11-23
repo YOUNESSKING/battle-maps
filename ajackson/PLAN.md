@@ -29,3 +29,5 @@ Folder `ajackson/` (the old `jackson/` folder is the Stonewall Jackson video; ke
 9. Packaging (3 titles, thumbnails A + B per PACKAGING_GUIDE 0c, 2 harsh thumbnail critics, description, chapters, tags), PDF guide,
    Gofile upload, PR + merge to main: ~2 h.
 Total ~20 h of work, aimed to finish inside ~2 days. PR + merge to main at milestones: plan, research + script, worlds + engine, scenes, final.
+
+**Status 2026-11-23: DONE** (see README.md: Gofile link, critic scores, spend).

@@ -20,16 +20,17 @@ const CUT1 = 19.95, CUT2 = 56.35;   // dissolves gulf -> neworleans, neworleans 
 
 // ---------------- the fleet (S03's ships go on) ----------------
 const SHIP_PATH = [[1215, 1015], [1060, 950], [905, 885], [760, 830], [620, 800], [520, 772], [470, 758]];
-const S0 = 300 + (177.09 - 158.5) * 4.0;   // lead ship's arc length at S03's last shared frame (S03: s0 300, t0 158.5, speed 4)
+const S0 = 380 + (177.09 - 158.5) * 4.0;   // lead ship's arc length at S03's last shared frame (S03: s0 380, t0 158.5, speed 4)
 
 // ---------------- neworleans: Lake Borgne ----------------
 const GB = VX.line([1532.0, 3112.0], [1558.0, 3124.0], 5);   // Jones's five gunboats in line (true site ~8 km further east, off this map: see NOTES)
 const BOAT_ICON = '<svg viewBox="0 0 40 22"><path d="M2 12 L38 12 L33 19 L7 19 Z" fill="currentColor" stroke="#0e0c08" stroke-width="1.4"/><path d="M20 12 L20 1" stroke="#0e0c08" stroke-width="1.6"/><path d="M21 2 L31 10 L21 10 Z" fill="#efe6d2" stroke="#0e0c08" stroke-width="1"/></svg>';
 const BARGE_ICON = '<svg viewBox="0 0 40 16"><path d="M2 6 L38 6 L34 12 L6 12 Z" fill="currentColor" stroke="#0e0c08" stroke-width="1.3"/><path d="M9 6 L5 1 M16 6 L12 1 M23 6 L19 1 M30 6 L26 1 M9 12 L5 16 M16 12 L12 16 M23 12 L19 16 M30 12 L26 16" stroke="#0e0c08" stroke-width="1.2"/></svg>';
-const BRITISH_BOATS = [];   // ~45 boats: 10 icons in three waves rowing in from the east
+const BRITISH_BOATS = [], BENDS = [];   // ~45 boats: 10 icons in three waves rowing in from the east
 for (let i = 0; i < 10; i++) { const row = i % 3, lane = (i - 4.5) * 2.6, a = [1590.0, 3092.0 + lane * 0.9], g = GB[Math.min(4, Math.floor(i / 2))], b = [g[0] + 4.2 + row * 1.6, g[1] - 2.4 + (i % 2) * 1.8];
-  BRITISH_BOATS.push({ icon: BARGE_ICON, region: NO, path: [a, lerp2(a, b, 0.6), b], v: 5.2 + (i % 3) * 0.5, t0: T.rowed - 0.6 + row * 0.35, t1: 46.4, size: 3.2, min: 15, max: 26, color: "#b53a2c", anchor: "center", fadeIn: 0.4 }); }
-const GUNBOATS = GB.map((g, i) => ({ icon: BOAT_ICON, region: NO, at: g, t0: 30.6, t1: 46.4, size: 4.4, min: 22, max: 34, color: "#2f5bc0", colors: [[T.captured + 0.15 + i * 0.25, "#8c8984"]], anchor: "center", fadeIn: 0.4, flip: false }));
+  const pth = [a, lerp2(a, b, 0.6), b], t0 = T.rowed - 0.6 + row * 0.35; BENDS.push(b);
+  BRITISH_BOATS.push({ icon: BARGE_ICON, region: NO, path: pth, v: VX.len(pth) / (35.9 + row * 0.2 - t0), t0, t1: 46.4, size: 4.4, min: 22, max: 34, color: "#b53a2c", anchor: "center", fadeIn: 0.4 }); }
+const GUNBOATS = GB.map((g, i) => ({ icon: BOAT_ICON, region: NO, at: g, t0: 30.6, t1: 46.4, size: 6, min: 30, max: 46, color: "#2f5bc0", colors: [[T.captured + 0.05 + i * 0.08, "#8c8984"]], anchor: "center", fadeIn: 0.4, flip: false }));
 // the call to arms: militia companies gather in the city
 const MIL = [[1196.0, 3207.5], [1209.5, 3206.0], [1203.0, 3219.8]];
 // the boats up the bayou: Lake Borgne -> Bayou Bienvenue -> the Villeré canal head (neworleans units)
@@ -66,22 +67,32 @@ const pulses = VX.pulses([
 // the bayou route, lit on its word
 const bayouGlow = VX.pulses(BAYOU.filter((_, i) => i % 3 === 0).map((p, i) => ({ region: NO, at: p, r: 2.2, t0: T.bayou + i * 0.08, t1: 54.6, color: [255, 214, 120], period: 1.6, alpha: 0.7 })));
 
+// a fleet = separate ships in a loose irregular formation (owner): each ship its own path (the base route offset sideways, the offset
+// drifting a little along the way = slightly different headings), its own start and speed (leaders, stragglers). Deterministic; S03, S04
+// and S08 share this helper so the S03 -> S04 hand-off is continuous (same seed, same route, S04 adds the elapsed time).
+const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
+  const nrm = (i) => { const a = path[Math.max(0, i - 1)], b = path[Math.min(path.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [-(b[1] - a[1]) / l, (b[0] - a[0]) / l]; };
+  for (let k = 0; k < n; k++) { const h = (j) => VX.hsh(seed * 31 + k, j), off = (h(1) - 0.5) * 2 * o.spread, drift = (h(2) - 0.5) * o.spread * 0.8;
+    let acc = 0; const P = path.map((p, i) => { if (i) acc += Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]); const d = off + drift * acc / L, nv = nrm(i); return [p[0] + nv[0] * d, p[1] + nv[1] * d]; });
+    const speed = o.speed * (0.9 + 0.2 * h(3)), lag = (k === 0 ? 0 : (0.25 + 0.75 * h(4)) * o.depth) + (h(5) > 0.8 ? o.depth * 0.6 : 0);   // a straggler now and then
+    out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: true, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
+  return out; };
 window.SEQ = {
   name: "S04", D: T.D, T, seed: 1815, date: "1814-12-23",
   regions: [GF, NO, CH],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
   regionOpts: { [GF]: { troopScale: 12 }, [NO]: { troopScale: 9 }, [CH]: { troopScale: 1.8 } },
   keys: [
-    { t: 0, region: GF, at: [640, 760], dist: 860, tilt: 38, yaw: 0, fov: 30 },                       // = S03's last frame
+    { t: 0, region: GF, at: [590, 775], dist: 640, tilt: 39, yaw: 0, fov: 30 },                       // = S03's last frame
     { t: 8.6, region: GF, at: [560, 790], dist: 820, tilt: 39, yaw: 0, fov: 30, ease: "io" },          // the fleet toward New Orleans, the river mouth
     { t: 12.4, region: GF, at: [700, 720], dist: 560, tilt: 42, yaw: 0, fov: 30, ease: "io" },         // Mobile, Pensacola
     { t: CUT1, region: GF, at: [720, 724], dist: 540, tilt: 42, yaw: 1, fov: 30, ease: "io" },
-    { t: CUT1, region: NO, at: [1236, 3184], dist: 250, tilt: 40, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // New Orleans, the lakes, the bayous
-    { t: 30.0, region: NO, at: [1262, 3172], dist: 270, tilt: 41, yaw: 0, fov: 30, ease: "io" },
-    { t: 33.4, region: NO, at: [1536, 3122], dist: 100, tilt: 46, yaw: -4, fov: 30, ease: "io" },      // Lake Borgne: the gunboats
-    { t: 38.2, region: NO, at: [1542, 3122], dist: 90, tilt: 47, yaw: -2, fov: 30, ease: "io" },
-    { t: 42.2, region: NO, at: [1250, 3188], dist: 200, tilt: 42, yaw: 0, fov: 30, ease: "io" },       // the city: martial law, the call to arms
-    { t: 46.6, region: NO, at: [1240, 3195], dist: 190, tilt: 43, yaw: 0, fov: 30, ease: "io" },
+    { t: CUT1, region: NO, at: [1242, 3172], dist: 190, tilt: 38, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },   // round 2: no world edge bottom-left   // New Orleans, the lakes, the bayous
+    { t: 30.0, region: NO, at: [1262, 3170], dist: 215, tilt: 36, yaw: 0, fov: 30, ease: "io" },
+    { t: 33.4, region: NO, at: [1518, 3124], dist: 135, tilt: 36, yaw: 8, fov: 30, ease: "io" },      // Lake Borgne: the gunboats
+    { t: 38.2, region: NO, at: [1522, 3124], dist: 125, tilt: 37, yaw: 10, fov: 30, ease: "io" },
+    { t: 42.2, region: NO, at: [1250, 3180], dist: 180, tilt: 38, yaw: 0, fov: 30, ease: "io" },       // the city: martial law, the call to arms
+    { t: 46.6, region: NO, at: [1244, 3184], dist: 175, tilt: 38, yaw: 0, fov: 30, ease: "io" },
     { t: 50.4, region: NO, at: [1380, 3176], dist: 120, tilt: 45, yaw: 0, fov: 30, ease: "io" },       // the bayou no one had blocked
     { t: CUT2, region: NO, at: [1314, 3184], dist: 92, tilt: 47, yaw: -3, fov: 30, ease: "io" },
     { t: CUT2, region: CH, at: [1286.6, 3229.0], dist: 30, tilt: 47, yaw: -6, fov: 30, ease: "cut", dissolve: 0.9 },   // Villeré's, 23 December
@@ -99,14 +110,14 @@ window.SEQ = {
     // the fleet on to Lake Borgne
     { side: "r", region: GF, width: 0.55, maxWidth: 0.55, pts: [[700, 812], [580, 790], [470, 772], [BORG[0] + 10, BORG[1] - 6]], t0: 18.9, dur: 1.2, t1: 21.4 },
     // "a dozen ways in through the bayous and the lakes": short red threat lines toward the city
-    ...[[[1185, 3060], [1192, 3130], [1198, 3196]], [[1390, 3124], [1320, 3160], [1236, 3196]], [[1420, 3180], [1350, 3186], [1262, 3205]], [[1300, 3300], [1270, 3262], [1232, 3226]]]
+    ...[[[1187, 3122], [1193, 3160], [1198, 3196]], [[1338, 3150], [1290, 3172], [1236, 3196]], [[1352, 3186], [1306, 3196], [1262, 3205]], [[1268, 3258], [1250, 3242], [1232, 3226]]]   /* round 3: all start inside the frame, clear of the plate */
       .map((pts, i) => ({ side: "r", region: NO, width: 0.8, pts, t0: T.dozen + i * 0.32, dur: 1.0, t1: 30.4 })),
     // the British boats: up the bayou through the marsh to the canal head
-    { side: "r", region: NO, width: 0.15, pts: ROUTE.filter((_, i) => i % 2 === 0 || i === ROUTE.length - 1), t0: T.rowed2 - 0.1, dur: 3.2, t1: CUT2 + 0.6 },
+    { side: "r", region: NO, width: 0.15, pts: ROUTE.filter((_, i) => i % 2 === 0 || i === ROUTE.length - 1), t0: T.wherever, dur: 4.6, t1: CUT2 + 0.6 },
   ],
   boats: [
-    { region: GF, kind: "ship", n: 5, t0: -1, t1: T.D + 1, size: 3.4, lamp: false, wake: true, path: SHIP_PATH, s0: S0, speed: 4.0, spacing: 12 },
-    { region: NO, kind: "barge", n: 6, t0: T.rowed2 - 0.4, t1: CUT2 + 1, size: 0.55, lamp: false, wake: false, path: ROUTE, s0: 8, speed: 9.5, spacing: 2.4 },
+    ...FLEET(SHIP_PATH, 7, 18, { region: GF, t0: -1, t1: T.D + 1, size: 5.5, spread: 32, depth: 70, speed: 4.0, s0: 400, dt: 177.09 - (158.72 - 0.2) - 1 }),   // = S03's fleet, continued
+    { region: NO, kind: "barge", n: 6, t0: T.wherever - 0.3, t1: CUT2 + 1, size: 0.55, lamp: false, wake: false, path: ROUTE, s0: 8, speed: 9.5, spacing: 2.4 },
     { region: CH, kind: "barge", n: 3, t0: CUT2 - 0.2, t1: 60.5, size: 0.07, lamp: false, wake: false, path: CANAL_C.filter((p) => p[1] < EDGE_Y - 1.5), s0: 14, speed: 1.6, spacing: 0.8 },
     { region: CH, kind: "canoe", n: 1, t0: T.crossed - 0.6, t1: T.D + 1, size: 0.16, lamp: false, wake: false, h: 0.08, path: [BANK_E, BANK_W],
       sAt: (t) => { const L = Math.hypot(BANK_W[0] - BANK_E[0], BANK_W[1] - BANK_E[1]); return t < T.crossed ? 0.05 : t < 68.0 ? L * Math.min(1, (t - T.crossed) / (68.0 - T.crossed)) : L - 0.05; } },
@@ -127,6 +138,7 @@ window.SEQ = {
   fx: {
     smokeLines: [],
     guns: [
+      { region: NO, preset: "field", size: 0.45, shots: [34.7, 35.05, 35.4, 35.75, 36.1].map((t, i) => { const b = BENDS[[1, 4, 7, 2, 8][i]], g = GB[[0, 1, 2, 3, 4][i]]; return { t, at: b, dir: [g[0] - b[0], g[1] - b[1]], impact: [g[0] + 0.8, g[1] - 0.5], delay: 0.35 }; }), impactOpts: { size: 0.4 } },
       // the gunboats fire on the boats as they close (flash + smoke on each shot)
       { region: NO, preset: "field", size: 0.55, impactOpts: { size: 0.5 }, shots: [33.9, 34.5, 35.0, 35.6, 36.2].map((t, i) => ({ t, at: GB[[2, 0, 4, 1, 3][i]], dir: [1, -0.35], impact: [GB[[2, 0, 4, 1, 3][i]][0] + 5.5, GB[[2, 0, 4, 1, 3][i]][1] - 2.6], delay: 0.5 })) },
     ],

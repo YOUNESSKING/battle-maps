@@ -15,8 +15,8 @@ const T = { D: 46.51, e1813: 1.06, jackson: 2.19, tennessee: 3.55, spring: 5.49,
 const G = "gulf", P = (n) => VX.place(n, G);
 const NAT = P("Natchez"), MIMS = P("Fort Mims"), MOB = P("Mobile"), HSB = P("Horseshoe Bend (Tohopeka"), FW = P("Fort Williams");
 const TRACE = [[NAT[0] + 6, NAT[1] - 6], [150, 352], [236, 252], [318, 150]];            // the Natchez Trace toward Tennessee (north-east)
-const SOUTH = [[1004, 34], [982, 80], [FW[0] + 4, FW[1] - 6], [1018, 146], [HSB[0] - 14, HSB[1] - 3]];   // Fort Strother -> Fort Williams -> the bend
-const RSB = VX.ll(32.36, -86.72, G);   // the Red Stick banner over the Red Stick towns on the Alabama (Holy Ground area)
+const SOUTH = [[1032, 30], [1036, 70], [1046, 108], [1062, 136], [HSB[0] - 8, HSB[1] - 12]];   // round 2: from Fort Strother (Tennessee side, map top) south toward the bend: reads south on screen (north up)
+const RSB = VX.ll(32.2, -86.72, G);   // the Red Stick banner over the Red Stick towns on the Alabama (Holy Ground area)
 
 let WW = null;
 const lin = (c) => c.map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)), GOLD = lin([0xe0 / 255, 0xb8 / 255, 0x5a / 255]);
@@ -25,7 +25,7 @@ const lin = (c) => c.map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055
 const CREEK = [[33.62, -87.6], [33.0, -87.65], [32.4, -87.85], [31.9, -87.9], [31.6, -87.6], [31.35, -87.1], [31.05, -86.3], [31.05, -85.02], [33.62, -85.02]].map(([la, lo]) => VX.ll(la, lo, G));
 const creek = { build() { const c = document.createElement("canvas"); c.width = 1280; c.height = 720; c.style.cssText = "position:absolute;inset:0;pointer-events:none";
     const tr = document.getElementById("troops"); tr.parentNode.insertBefore(c, tr); this.g = c.getContext("2d"); },
-  draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = VX.sstep(T.creek - 0.1, T.creek + 1.3, t) * (1 - VX.sstep(T.D - 3.2, T.D - 2.3, t)); if (k <= 0.002) return;
+  draw(t, ctx) { const g = this.g; if (!g) return; g.clearRect(0, 0, 1280, 720); const k = VX.sstep(T.civil - 0.1, T.civil + 1.4, t) * (1 - VX.sstep(T.D - 3.2, T.D - 2.3, t)); if (k <= 0.002) return;
     const W = ctx.world, P = []; for (let i = 0; i < CREEK.length; i++) { const a = CREEK[i], b = CREEK[(i + 1) % CREEK.length];
       for (let s = 0; s < 8; s++) { const p = W.projectMap(a[0] + (b[0] - a[0]) * s / 8, a[1] + (b[1] - a[1]) * s / 8, 0); P.push([p.x, p.y]); } }
     g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath();
@@ -51,11 +51,12 @@ window.SEQ = {
   regionOpts: { [G]: { troopScale: 12 } },
   keys: [
     // high and wide first (the Gulf coast, Mobile Bay, Pensacola, the river system), then a drift north-east to the bend
-    { t: 0.0, region: G, at: [500, 560], dist: 900, tilt: 30, yaw: 0, fov: 30 },
-    { t: T.hickory, region: G, at: [480, 525], dist: 880, tilt: 30, yaw: 0, fov: 30, ease: "lin" },
-    { t: T.creek + 1.0, region: G, at: [770, 450], dist: 800, tilt: 31, yaw: 0, fov: 30 },
-    { t: T.mims + 1.0, region: G, at: [745, 525], dist: 690, tilt: 32, yaw: 0, fov: 30 },
+    { t: 0.0, region: G, at: [430, 490], dist: 820, tilt: 36, yaw: 0, fov: 30 },
+    { t: T.hickory, region: G, at: [400, 385], dist: 760, tilt: 36, yaw: 0, fov: 30, ease: "lin" },
+    { t: T.creek + 1.0, region: G, at: [770, 440], dist: 840, tilt: 31, yaw: 0, fov: 30 },
+    { t: T.mims + 1.0, region: G, at: [752, 505], dist: 790, tilt: 32, yaw: 0, fov: 30 },
     { t: T.jackson2, region: G, at: [800, 430], dist: 690, tilt: 32, yaw: 0, fov: 30, ease: "lin" },
+    { t: 32.6, region: G, at: [1045, 112], dist: 300, tilt: 14, yaw: 0, fov: 30 },   // round 2: north up, the whole south arrow in view while it draws
     { t: T.tohopeka, region: G, at: [1010, 250], dist: 430, tilt: 34, yaw: 0, fov: 30 },
     // the last ~2.2 s hold S03's first camera exactly (S03 keys[0]: [OV-10, OV+26], dist 300, tilt 36, yaw 0, fov 30)
     { t: T.D - 2.2, region: G, at: [HSB[0] - 10, HSB[1] + 26], dist: 300, tilt: 36, yaw: 0, fov: 30 },
@@ -68,9 +69,9 @@ window.SEQ = {
     redsticks: { img: "seq/rs_cloth.png", flag: "seq/rs_pennant.png", side: "cs", name: "Red Sticks", full: "The Red Sticks", role: "Creek" },
   },
   banners: [
-    { general: "jackson", region: G, keys: [[0, ...VX.along(TRACE, 95).slice(0, 2)], [T.home, ...VX.along(TRACE, 95).slice(0, 2)], [T.hickory + 1.2, ...VX.along(TRACE, 150).slice(0, 2)]], t0: T.jackson, t1: T.sameYear + 1.4 },
+    { general: "jackson", region: G, keys: [[0, ...VX.along(TRACE, 150).slice(0, 2)], [T.home, ...VX.along(TRACE, 150).slice(0, 2)], [T.hickory + 1.2, ...VX.along(TRACE, 225).slice(0, 2)]], t0: T.jackson, t1: T.sameYear + 1.4 },
     { general: "redsticks", region: G, keys: [[0, ...RSB], [T.thousand - 0.6, ...RSB], [T.warriors + 1.8, HSB[0] + 16, HSB[1] + 28]], t0: T.red + 0.2, t1: T.D + 1 },
-    { general: "jackson", region: G, keys: [[0, FW[0] + 4, FW[1] - 6], [T.south + 0.2, FW[0] + 4, FW[1] - 6], [T.tohopeka, 1040, 176]], t0: T.jackson2, t1: T.D + 1 },
+    { general: "jackson", region: G, keys: [[0, 1022, 140], [T.south + 0.2, 1022, 140], [T.tohopeka, 1052, 174]], t0: T.jackson2, t1: 39.6 }   // round 3: lower start (finial + name inside the frame),
   ],
   labels: [
     { text: "Creek Nation", at: [985, 335], size: 22, t0: T.creek, t1: T.creek + 3.4, region: G },
@@ -87,8 +88,9 @@ window.SEQ = {
     glow("Tallapoosa River", T.tallapoosa, T.D + 1, GOLD); glow("Alabama River", T.mims, T.mims + 3.6, GOLD); },
   draw: (t, ctx) => { pulses.draw(t, ctx); creek.draw(t, ctx); },
   overlay: [
+    ["label", T.tennessee, T.tennessee + 3.2, { name: "Tennessee militia", world: (t) => [...VX.along(TRACE, 150).slice(0, 2), 0], side: "us", marker: false, offset: [70, -120] }],
     ["plaque.date", T.e1813, { month: "1813", day: "", weekday: "", note: "" }],
-    ["label", T.hickory, T.sameYear - 0.2, { name: "Old Hickory", world: (t) => [...VX.along(TRACE, 150).slice(0, 2), 0], side: "us", marker: false, offset: [60, -150] }],
+    ["label", T.hickory, T.sameYear - 0.2, { name: "Old Hickory", world: (t) => [...VX.along(TRACE, 225).slice(0, 2), 0], side: "us", marker: false, offset: [60, -150] }],
     ["plaque.date", T.august, { month: "August 1813", day: "", weekday: "", note: "" }],
     ["plaque.date", T.e1814, { month: "Spring 1814", day: "", weekday: "", note: "" }],
   ],

@@ -85,6 +85,16 @@ const shade = { build() { const c = document.createElement("canvas"); c.width = 
       g.strokeStyle = `rgba(214,196,160,${(0.6 * k).toFixed(3)})`; g.lineWidth = 1.2; g.beginPath(); for (let x = -800; x < 1400; x += 12) { g.moveTo(x, 0); g.lineTo(x + 720, 720); } g.stroke(); g.restore();
       g.beginPath(); P.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.strokeStyle = `rgba(226,210,176,${(0.85 * k).toFixed(3)})`; g.lineWidth = 2.4; g.stroke(); } } };
 const MUTE = "#cbb68f";
+// a fleet = separate ships in a loose irregular formation (owner): each ship its own path (the base route offset sideways, the offset
+// drifting a little along the way = slightly different headings), its own start and speed (leaders, stragglers). Deterministic; S03, S04
+// and S08 share this helper so the S03 -> S04 hand-off is continuous (same seed, same route, S04 adds the elapsed time).
+const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
+  const nrm = (i) => { const a = path[Math.max(0, i - 1)], b = path[Math.min(path.length - 1, i + 1)], l = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1; return [-(b[1] - a[1]) / l, (b[0] - a[0]) / l]; };
+  for (let k = 0; k < n; k++) { const h = (j) => VX.hsh(seed * 31 + k, j), off = (h(1) - 0.5) * 2 * o.spread, drift = (h(2) - 0.5) * o.spread * 0.8;
+    let acc = 0; const P = path.map((p, i) => { if (i) acc += Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]); const d = off + drift * acc / L, nv = nrm(i); return [p[0] + nv[0] * d, p[1] + nv[1] * d]; });
+    const speed = o.speed * (0.9 + 0.2 * h(3)), lag = (k === 0 ? 0 : (0.25 + 0.75 * h(4)) * o.depth) + (h(5) > 0.8 ? o.depth * 0.6 : 0);   // a straggler now and then
+    out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: true, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
+  return out; };
 window.SEQ = {
   name: "S08", D: T.D, T, seed: 1815, date: "1815-02-16",
   regions: [GF],
@@ -94,15 +104,15 @@ window.SEQ = {
     { t: 0, region: GF, at: [470, 800], dist: 720, tilt: 40, yaw: 0, fov: 30 },
     { t: 11.8, region: GF, at: [520, 830], dist: 760, tilt: 40, yaw: 0, fov: 30, ease: "lin" },
     { t: 18.6, region: GF, at: [360, 790], dist: 520, tilt: 42, yaw: 0, fov: 30, ease: "io" },        // Jackson over New Orleans: a soft push
-    { t: 24.6, region: GF, at: [560, 560], dist: 1180, tilt: 20, yaw: 0, fov: 30, ease: "io" },       // the South: the lands, west across the Mississippi
-    { t: 32.0, region: GF, at: [560, 570], dist: 1160, tilt: 21, yaw: 0, fov: 30, ease: "lin" },
+    { t: 24.6, region: GF, at: [600, 520], dist: 1100, tilt: 18, yaw: 0, fov: 30, ease: "io" },       // the South: the lands, west across the Mississippi
+    { t: 32.0, region: GF, at: [600, 528], dist: 1080, tilt: 19, yaw: 0, fov: 30, ease: "lin" },
     { t: 43.4, region: GF, at: [430, 760], dist: 700, tilt: 38, yaw: 0, fov: 30, ease: "io" },
     { t: 61.5, region: GF, at: [462, 744], dist: 740, tilt: 37, yaw: 1, fov: 30, ease: "lin" },
     { t: T.D, region: GF, at: [500, 730], dist: 790, tilt: 36, yaw: 4, fov: 30, ease: "lin" },          // the living map alone for the end screen (slow drift)
   ],
   clouds: { [GF]: { scatter: { seed: 7 }, keepClear: [[400, 790, 160, 1, 1]] } },
   units: [],
-  boats: [{ region: GF, kind: "ship", n: 6, t0: -1, t1: 13.0, size: 3.4, lamp: false, wake: true, path: AWAY, s0: 30, speed: 7.0, spacing: 12 }],
+  boats: FLEET(AWAY, 8, 27, { region: GF, t0: -1, t1: 13.0, size: 3.4, spread: 28, depth: 60, speed: 7.0, s0: 60 }),
   arrows: [
     { side: "r", region: GF, width: 0.5, maxWidth: 0.5, pts: AWAY.slice(1, 4), t0: T.slipped, dur: 1.6, t1: 6.4 },
     // removal: thin muted arrows west across the Mississippi (Creek, Choctaw, and from the Cherokee country north-east, off the map)

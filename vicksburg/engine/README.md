@@ -266,3 +266,18 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   `check_troops_motion.mjs` at the cut frame (the on-screen correction jumps with the new camera); they are not seen as a turn.
 - Date plaque (Battle 20): a `plaque.date` with day, weekday and note all empty is a month-only plate: the month text alone, big, no
   empty day box (class `monly`). Plates with a day / weekday / note are unchanged.
+
+- **Round 1 Battle 20 (S05-S07 author, 2026-11-23), all opt-in or off in the Vicksburg frame:**
+  `troopsOpts.retreatTurn` (default ON outside `vicksburg_hd_lift`): a backward run or a road escape turns the WHOLE block about in place
+  (`retreatTurnTime` 6.5 s for escapes; runs use the angle, <= ~36 deg/s peak), walks front first, and a run turns back to the enemy at the
+  halt; the men face with the plate. Near-180 deg turns take a fixed side (the on-screen correction made plain angDiff flip: 400-1800 deg/s
+  snaps). Plan for it: a retreat key needs ~7 s of hold before it (the turn happens in place before the move starts), an escape walks ~6.5 s
+  after its `t0`. Reason: at 720p the men's about-face (abk) inside a block that keeps facing the enemy is not visible: the blocks read as
+  walking backward (critic A round 1). `troopsOpts.depthK` (default 0.3 outside Vicksburg, 0.44 there): block depth / width; < 0.38 lays
+  the men out 18 files x 4 ranks (wide rectangles >= 3:1). Arrows: `maxWidth` lifts the 0.24 width cap per arrow. Overlay: `distance`
+  `countFrom`, `engage.decide` `tA` / `tB` / `tNote`.
+- Battle 20 S01: `O.distance` placed its value label one updater too late, so a single seeked frame (snapshots, per-frame renders)
+  showed the label at the top-left corner (behind the date plate); the ruler updater now also positions the label in the same frame.
+  `countFrom` (= value) shows the stated value without the count-up.
+
+- Dives between regions of DIFFERENT zoom (project frames, e.g. ajackson gulf z8 -> chalmette z10) need `dives[].overTo` = the dive point in the TARGET region's units; without it the camera after the swap looks at the target region in the source's coordinates (empty fog) for ~1.5 s (Jackson S01 round 3).

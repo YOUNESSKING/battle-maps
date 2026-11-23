@@ -10,13 +10,13 @@ Which was Jackson's greatest move: the trap at Horseshoe Bend, the night attack,
 
 CHAPTERS
 0:00 The Battle After the Peace
-1:23 The Creek War
-2:09 Move 1: Horseshoe Bend
-5:06 The British Come
-6:16 Move 2: The Night Attack
-8:44 The Mud Line
-10:27 Move 3: 8 January 1815
-12:59 Legacy
+1:19 The Creek War
+2:05 Move 1: Horseshoe Bend
+5:02 The British Come
+6:12 Move 2: The Night Attack
+8:40 The Mud Line
+10:23 Move 3: 8 January 1815
+12:55 Legacy
 
 SOURCES
 Arsene Lacarriere Latour, Historical Memoir of the War in West Florida and Louisiana in 1814-15 (1816), including the American and British casualty returns
@@ -25,16 +25,20 @@ US Senate, "Senate approves Treaty of Ghent" and the National Park Service page 
 Robert V. Remini, The Battle of New Orleans (1999) and Andrew Jackson and the Course of American Empire (1977), as cited in standard references
 Notes: "Signed" is not "ratified": the treaty took effect only when ratifications were exchanged on 17 February 1815. The 71 American casualties are the whole day on both banks, including 19 missing; the main fight at the wall cost six killed and seven wounded. Some details of the night of 23 December rest on later accounts.
 
-ABOUT THE PICTURES OF JACKSON
-The portraits of Jackson in this video and on the thumbnail are public-domain paintings: General Andrew Jackson by John Wesley Jarvis (c. 1819, The Metropolitan Museum of Art, CC0) and a later portrait after Thomas Sully. Other portraits (Coffee, Carroll, Pakenham, Cochrane, Menawa) are public-domain paintings from the Tennessee State Library and Archives, the Tennessee State Capitol collection, the Scottish National Portrait Gallery and the National Gallery's Charles Bird King lithograph. No portrait of Jean Lafitte or William Weatherford made from life is known, so none is shown.
+ABOUT THE PORTRAITS
+All portraits are public-domain paintings: General Andrew Jackson by John Wesley Jarvis (c. 1819, The Metropolitan Museum of Art, CC0), Sir Edward Pakenham (Thomas Heaphy, 1813) and John Coffee (Tennessee State Library and Archives). No public-domain portrait of General John Keane was found, so he is shown by his initials. No portrait of Jean Lafitte made from life is known, so none is shown.
 
 MAPS
 Animated 3D maps made for this channel from open terrain and river data. The Mississippi and the Rodriguez Canal line are drawn from period maps and descriptions.
 
-IMAGES AND SOUND [fill from the final credits file before upload: music and sound-effect credits, CC BY]
+MUSIC
+"Long Note Two", "Long Note One", "Anguish", "Wounded" by Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0.
+
+SOUND EFFECTS
+"artillery distance" by 2887679652 (Creative Commons: By Attribution 4.0), "Cannon Artillery distant gunshots" by Aegersum (Creative Commons: By Attribution 3.0), "Distant explosion" by juskiddink (Creative Commons: By Attribution 4.0), via Freesound. Musket recordings licensed from Epidemic Sound.
 
 AI DISCLOSURE
-The narration voice is AI-generated. The thumbnail background pictures are AI-generated painted illustrations (the Chalmette plain and the mud rampart); no real person is shown by AI.
+The narration voice is AI-generated. One thumbnail background is an AI-generated painted illustration of the Chalmette plain; no real person is shown by AI.
 
 Business inquiries: [your business email]
 

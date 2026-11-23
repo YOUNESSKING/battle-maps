@@ -20,3 +20,27 @@ Regions gulf (z8) + horseshoe (z11). Troops lineblocks, troopScale 1.6 (horsesho
 Sources: FACT_NOTES_horseshoe.md C.17-26 (Gun Hill 80-250 yd, 10:30 cannonade ~2 h, Cherokee swim + canoes, charge ~12:30, Montgomery, Houston, 800/1,000, ~350 prisoners, 49 killed / 18 Cherokee). Portraits: jackson.png (Jarvis c.1819, Met, CC0; cut by S01), coffee.png (TSLA engraving, PD; cut here, also in ajackson/assets/generals/).
 Checks: check_troops_motion horseshoe 0-127: no overlaps, no pops, shape 0 %, screen long-side <= 12 deg except the static far-bank blocks; red "front-vs-velocity" flags = the retreat (men about-faced, walking back facing north: intended); u17 turn flag at 83.7 = the camera dissolve cut (screen measure).
 Open issues: frame 0 is a close gulf view (S02 must end on the same camera: gulf at [OV-10, OV+26], dist 300, tilt 36); gulf arrows render thin at dist 600-900 (width 1.2 still a hairline: wide-arrow width may be capped); the east map edge shows a sliver at the far right of the treaty shot; scene folder 25.1 MB (gulf bundle 8.7 MB).
+
+## Round 1 fixes (critics A 5.5 / B 6.8)
+- World edge / grey void (film 2:35-3:09, also the dive emergence): every horseshoe key is now at dist 22-46 with tilt 30-44, so the top of the frame stays inside the 66x48-unit world (dive `to`: dist 38, tilt 38). Sheet checked: no void in frame.
+- Static start: push in on the wall on "wall of logs" (10.4), on the canoes on "Canoes" (18.6), pull back on "In other words" (25.6). The twist shot is re-aimed so the south bank, Coffee and the arrow stay in frame.
+- Ledger collision: shorter rows ("About 800 killed" / note "Red Stick warriors, of about 1,000"; "About 350 prisoners" / "women and children"); nothing wraps now.
+- The wall volleys now start after "Infantry" (90.5 / 90.9), so the narration is not masked.
+- Gulf tail 162-177: a push-in toward New Orleans (the S04 first key matches the new end camera); ships 5.5 size (S04 the same).
+- The NEXT label now reads "Next: the British come".
+- NOT fixed here (world / engine): the smeared hill texture is the horseshoe bake's relief overlay (needs a re-bake, not a camera issue); the gulf blotchy texture is the gulf bake. Red Stick retreats 92-108: the engine about-faces the men, but at 720p the men are ~3 px and the plate (pale front edge) keeps facing north, so it still reads as backing away (checked the render at 5 fps). Left to the S05 author's engine check.
+- check_troops_motion horseshoe 0-127: no overlaps, no pops, shape 0 %.
+
+## Round 1 (S05-S07 author, engine retreatTurn)
+- Red Stick lines: hold at the wall to 90.4-91.2 while each block turns about in place (~7 s), then ONE straight walk back toward the toe by 110.6-111.5 (no backward walk; front-vs-velocity <= 21 deg). Jackson's lines go over the wall ~1.2-2.6 s later (93.6-97.3) so nothing overlaps. check_troops_motion 0-177.69 horseshoe: 0 overlaps, 0 pops; one 49 deg/s turn (u17 @83.7).
+
+## Round 2 fixes
+- The plate rolls at the treaty dissolve (126.95 s: "1814 · the Creek lands", then "Summer 1814" on "summer"): no 12:30 clock over the gulf.
+- End: the fleet starts further along (s0 380, S04 matches) so it sits inside the frame; "Next: the British come" moved to the bottom-left, away from the subscribe plate.
+- Not mine: the neck-hill smear is the horseshoe bake (world engineer).
+
+## Owner fix: the fleet
+- Ships are no longer one nose-to-tail column. `FLEET()` (the same helper in S03, S04 and S08) gives each ship its own path: the route offset sideways, the offset drifting a little so headings differ, its own start, a speed of ±10 %, and occasional stragglers. S03/S04 use 7 ships (seed 18, spread 32, depth 70); S04 continues S03 exactly (it adds the elapsed time). S08 uses 8 ships (seed 27, spread 28, depth 60). Sizes are unchanged. All scenes were rebuilt on the re-baked worlds.
+
+## Round 3 fixes
+- No severity-2 items in round 3. Nothing changed.

@@ -5,8 +5,8 @@
   0,
   71.106
  ],
- "shareOffset": 306.087,
- "filmStart": 306.087,
+ "shareOffset": 302.29,
+ "filmStart": 302.29,
  "render": [
   1920,
   1080
@@ -17,8 +17,8 @@
    "type": "unit_appears",
    "t": 58.35,
    "tExcerpt": 58.35,
-   "tShare": 364.44,
-   "tFilm": 364.44,
+   "tShare": 360.64,
+   "tFilm": 360.64,
    "at": {
     "map": [
      1282.6,
@@ -48,8 +48,8 @@
    "speed": 0.21,
    "t": 58.5,
    "tExcerpt": 58.5,
-   "tShare": 364.59,
-   "tFilm": 364.59,
+   "tShare": 360.79,
+   "tFilm": 360.79,
    "at": {
     "map": [
      1282.6,
@@ -77,8 +77,8 @@
    "type": "unit_appears",
    "t": 58.7,
    "tExcerpt": 58.7,
-   "tShare": 364.79,
-   "tFilm": 364.79,
+   "tShare": 360.99,
+   "tFilm": 360.99,
    "at": {
     "map": [
      1286.4,
@@ -108,8 +108,8 @@
    "speed": 0.25,
    "t": 58.9,
    "tExcerpt": 58.9,
-   "tShare": 364.99,
-   "tFilm": 364.99,
+   "tShare": 361.19,
+   "tFilm": 361.19,
    "at": {
     "map": [
      1286.4,
@@ -137,8 +137,8 @@
    "type": "unit_appears",
    "t": 59.05,
    "tExcerpt": 59.05,
-   "tShare": 365.14,
-   "tFilm": 365.14,
+   "tShare": 361.34,
+   "tFilm": 361.34,
    "at": {
     "map": [
      1290.2,
@@ -168,8 +168,8 @@
    "speed": 0.21,
    "t": 59.2,
    "tExcerpt": 59.2,
-   "tShare": 365.29,
-   "tFilm": 365.29,
+   "tShare": 361.49,
+   "tFilm": 361.49,
    "at": {
     "map": [
      1290.2,
@@ -198,8 +198,8 @@
    "duration": 3,
    "t": 61.5,
    "tExcerpt": 61.5,
-   "tShare": 367.59,
-   "tFilm": 367.59,
+   "tShare": 363.79,
+   "tFilm": 363.79,
    "at": {
     "map": [
      1282.6,
@@ -228,8 +228,8 @@
    "duration": 3,
    "t": 61.9,
    "tExcerpt": 61.9,
-   "tShare": 367.99,
-   "tFilm": 367.99,
+   "tShare": 364.19,
+   "tFilm": 364.19,
    "at": {
     "map": [
      1286.4,
@@ -258,8 +258,8 @@
    "duration": 3,
    "t": 62.2,
    "tExcerpt": 62.2,
-   "tShare": 368.29,
-   "tFilm": 368.29,
+   "tShare": 364.49,
+   "tFilm": 364.49,
    "at": {
     "map": [
      1290.2,

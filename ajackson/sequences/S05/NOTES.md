@@ -37,3 +37,27 @@ see its SOURCES.md); flags `us15_flag.png`, `gb1801_union_flag.png` from `ajacks
 - The night is `night: 0.85` (a little lighter than 1.0) so the blocks stay readable at 720p.
 - Escaping blue blocks turn on the road bend at ~107.4 s (turn 100 deg/s, during their 0.6 s fade out at the dissolve).
 - The British ruler on the wide map counts 0 -> 9 (engine default); the S06 one uses the new `countFrom`.
+
+## Round 1 fixes
+- Retreats: engine `retreatTurn` (default in this project): the Americans' withdrawal (escapes from 98.2 s) now turns each block about in
+  place (~6.5 s), then walks off front first up the river road. Melee and camp moves were already forward-only.
+- Blocks are wide rectangles (engine `depthK` 0.3: 18 files x 4 ranks, ~3.3:1).
+- Melee/attack/Christmas cameras turned to yaw ~0 (looking north, moves left-right / up-down on screen): less on-screen correction (crab).
+- 108-129: the British side on chalmette by day (no Jackson banner): Keane's banner (initials JK, `keane.png`, plaque "Keane") on
+  "commander" (115.0), red blocks halted in Lacoste's fields, label "Stung", HALTED stamp 2x over open ground in front of the camp on "wait".
+  The camera then moves on (no cut) to the Christmas reinforcements.
+- One Pakenham portrait at a time: medallion on "Pakenham" (133.9) to 140.3, banner from "January" (140.4).
+- Method card: "1. Close every door" static in the sub, only "2. Strike first" types on "hit him first" (126.5).
+- Decision card second beat: labels "Militia, volunteers · and a few regulars" (on "militia") and "British regulars · more landing every hour"
+  (on "landing") on the dimmed map.
+- Melee volleys: 8 groups at 1.7-2.1 s (was 12 at 1.05-1.45): fewer shots under the narration.
+- Jackson's line at dawn rises to only ~45 % of its baked height (thin parapet, as S06/S07).
+
+## Round 2 fixes
+- 72.5-83: the attack volleys (Jackson's lanes, the British front) end by 77.75 (before "while" 77.87); Coffee's men fire after "side." (82.9):
+  "while Coffee's ... struck the British from the side" is clear of shots.
+- Jackson quote (21-25): 52 px on a dark backing with a thin gold rule (`.cq` styled after the call), y 640, dim 0.6.
+
+## Round 3 fixes
+- The British second row (r3/r4) holds in the melee (no 22-26 deg drift at 87-92 s); check 80-100: 0 flags, 0 overlaps.
+- Jackson quote 62 px (+20 %).

@@ -3,23 +3,23 @@
  "zoom": 11,
  "note": "Horseshoe Bend (27 Mar 1814): the Tallapoosa's loop round the Tohopeka peninsula (toe south), the Red Stick log breastwork across the neck, Gun Hill north of it, Tohopeka village at the toe, Coffee's bank south / west, Bean's island. Zoom-11 frame: 1 unit = ~64 m (base units x 2). The 1814 river (no reservoir: Lake Martin lies downstream; wide flat water in the DEM filled from the banks).",
  "box": [
-  8670,
-  1255,
-  66,
-  48
+  8656,
+  1243,
+  92,
+  70
  ],
  "focus": [
   8704.5,
   1281.0
  ],
  "hm_ppu": 8,
- "tex": 4096,
- "exag": 3.0,
- "cell": 5.2,
+ "tex": 7168,
+ "exag": 2.2,
+ "cell": 2.8,
  "seed": 1814,
  "relief_noise": [
-  1.5,
-  0.5
+  1.0,
+  0.35
  ],
  "dem_ppu": 8,
  "dem_margin": 6,
@@ -33,28 +33,42 @@
   "paint_km2": 0.8,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.2,
+ "woods": 0.14,
  "ravine_woods": 0.6,
+ "tree_spacing": 0.25,
+ "rust_k": 0.85,
+ "clear_blur": 0.35,
+ "clear_noise_u": 0.8,
  "clear": [
   [
    8699.343912098926,
    1288.1705971373992,
-   3.2
-  ],
-  [
-   8705.9,
-   1276.36,
-   2.4
-  ],
-  [
-   8705.9,
-   1278.82,
-   2.0
+   2.6
   ],
   [
    8706.62,
    1267.5,
-   2.5
+   1.4
+  ],
+  [
+   8705.199999999999,
+   1276.51,
+   0.62
+  ],
+  [
+   8706.449999999999,
+   1276.01,
+   0.55
+  ],
+  [
+   8706.05,
+   1276.9099999999999,
+   0.45
+  ],
+  [
+   8707.0,
+   1276.6599999999999,
+   0.35
   ]
  ],
  "rivers": [
@@ -140,7 +154,7 @@
      1276.36
     ],
     "height": 1.6,
-    "clear": 0.8
+    "clear": 1.2
    }
   ]
  },
