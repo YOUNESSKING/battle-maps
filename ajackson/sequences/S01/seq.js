@@ -303,7 +303,10 @@ window.SEQ = {
     { text: "New Orleans", at: [CITY[0], CITY[1] - 2.4], size: 24, t0: T.orleans2, t1: T.orleans2 + 3.6, region: NO },
     { text: "Mississippi River", at: [1226, 3226.5], size: 18, t0: T.river2, t1: T.river2 + 3.4, region: NO, river: true },
   ],
-  boats: FLEET(FLEETP, 9, 7, { region: GULF, t0: -1, t1: SWT, size: 5.0, spread: 24, depth: 52, speed: FLV, s0: FLS0 })
+  // a loose scatter: two small groups on routes ~50 u apart + three stragglers well behind (owner: separate ships, never a bunch)
+  boats: [...FLEET(shift(FLEETP, -24), 4, 7, { region: GULF, t0: -1, t1: SWT, size: 5.0, spread: 9, depth: 38, speed: FLV, s0: FLS0 }),
+          ...FLEET(shift(FLEETP, 26), 2, 11, { region: GULF, t0: -1, t1: SWT, size: 5.0, spread: 8, depth: 26, speed: FLV * 0.96, s0: FLS0 - 22 }),
+          ...FLEET(FLEETP, 3, 13, { region: GULF, t0: -1, t1: SWT, size: 4.8, spread: 30, depth: 30, speed: FLV * 1.04, s0: FLS0 - 62 })]
     .concat([{ region: CH, kind: "ship", n: 1, size: 0.75, path: CARP, sAt: () => VX.len(CARP) * 0.5, t0: N0, t1: N1, lamp: true, wake: false }]),
   fx, build, draw: (t, ctx) => fog.draw(t, ctx),
   overlay: [
@@ -322,7 +325,7 @@ window.SEQ = {
     ["label", T.killed2 - 0.1, CUT_G - 0.15, { name: "Americans", sub: "killed, wounded or missing", x: 960, y: 360, marker: false, side: "us", offset: [-190, 0] }],
     // D
     ["plaque.date", T.twoWeeks, { month: "December 1814", day: "23", weekday: "", note: "" }],
-    ["distance", T.nine - 0.1, T.general + 0.6, { from: [VIL[0] - 0.5, VIL[1] - 2.0, 0], to: [CITY[0] + 1.5, CITY[1] + 0.6, 0], value: 9, unit: "MILES", sub: "from the city", dash: false }],
+    ["distance", T.nine - 0.1, T.general + 0.6, { from: [VIL[0] - 0.5, VIL[1] - 2.0, 0], to: [CITY[0] + 1.5, CITY[1] + 0.6, 0], value: 9, unit: "MILES", sub: "from the city", dash: false, countFrom: 9 }]   // Latour's 9 miles (city to Villere's), shown as is, no count-up,
     ["label", T.illness, T.scar - 0.3, { name: "The general", sub: "worn down by illness", world: [BAN1[0], BAN1[1], 0], side: "us", marker: false, offset: [70, -150] }],
     ["film.dim", T.scar - 0.25, T.name - 0.3, 0.5],
     // E
