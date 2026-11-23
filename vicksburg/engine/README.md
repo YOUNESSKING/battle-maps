@@ -257,3 +257,4 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   units (the swap / emerge keys used `over`, which is in the wide region's units: on a z8 -> z11 dive they looked at the wrong place and
   the emergence showed fog over the void; or override `keys: { swTo: { at }, emerge: { at } }`). `O.letter(..., { qAt })` = when the typed
   quote starts (default tIn + 1).
+- (S03 author) Arrows: `maxWidth` lifts the 0.24 width cap for one arrow (wide z8 gulf map: `width: 0.6, maxWidth: 0.6` reads at dist 600-900).

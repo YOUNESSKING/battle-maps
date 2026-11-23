@@ -93,11 +93,11 @@ window.SEQ = {
   units,
   arrows: [
     // the fleet from Jamaica (south-east, off the map) toward New Orleans
-    { side: "r", region: GF, width: 1.2, pts: [[1222, 1040], [1000, 930], [780, 850], [560, 800], [420, 790]], t0: T.jamaica - 0.1, dur: 2.6, t1: 9.9 },
+    { side: "r", region: GF, width: 0.6, maxWidth: 0.6, pts: [[1222, 1040], [1000, 930], [780, 850], [560, 800], [420, 790]], t0: T.jamaica - 0.1, dur: 2.6, t1: 9.9 },
     // Jackson: Mobile -> Pensacola (November)
-    { side: "u", region: GF, width: 1.0, pts: [[MOB[0] + 6, MOB[1] + 2], [740, 668], [PEN[0] - 8, PEN[1] - 6]], t0: T.marched, dur: 1.8, t1: 19.4 },
+    { side: "u", region: GF, width: 0.5, maxWidth: 0.5, pts: [[MOB[0] + 6, MOB[1] + 2], [740, 668], [PEN[0] - 8, PEN[1] - 6]], t0: T.marched, dur: 1.8, t1: 19.4 },
     // the fleet on to Lake Borgne
-    { side: "r", region: GF, width: 1.1, pts: [[700, 812], [580, 790], [470, 772], [BORG[0] + 10, BORG[1] - 6]], t0: 18.9, dur: 1.2, t1: 21.4 },
+    { side: "r", region: GF, width: 0.55, maxWidth: 0.55, pts: [[700, 812], [580, 790], [470, 772], [BORG[0] + 10, BORG[1] - 6]], t0: 18.9, dur: 1.2, t1: 21.4 },
     // "a dozen ways in through the bayous and the lakes": short red threat lines toward the city
     ...[[[1185, 3060], [1192, 3130], [1198, 3196]], [[1390, 3124], [1320, 3160], [1236, 3196]], [[1420, 3180], [1350, 3186], [1262, 3205]], [[1300, 3300], [1270, 3262], [1232, 3226]]]
       .map((pts, i) => ({ side: "r", region: NO, width: 0.8, pts, t0: T.dozen + i * 0.32, dur: 1.0, t1: 30.4 })),

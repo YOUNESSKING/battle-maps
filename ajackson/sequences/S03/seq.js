@@ -226,5 +226,5 @@ window.SEQ = {
 // the British coming: ships + a red arrow from the south-east (gulf), continued in S04
 const SHIP_PATH = [[1215, 1015], [1060, 950], [905, 885], [760, 830], [620, 800], [520, 772], [470, 758]];   // = S04's
 window.SEQ.boats.push({ region: GF, kind: "ship", n: 5, t0: T.british - 0.2, t1: T.D + 1, size: 3.4, lamp: false, wake: true, path: SHIP_PATH, s0: 300, speed: 4.0, spacing: 12 });
-window.SEQ.arrows.push({ side: "r", width: 1.2, pts: [[1222, 1040], [1060, 950], [930, 895], [850, 862]], t0: T.british - 0.1, dur: 1.8, t1: 170.0, region: GF });
+window.SEQ.arrows.push({ side: "r", width: 0.6, maxWidth: 0.6, pts: [[1222, 1040], [1060, 950], [930, 895], [850, 862]], t0: T.british - 0.1, dur: 1.8, t1: 170.0, region: GF });
 })();

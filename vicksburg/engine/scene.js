@@ -343,7 +343,7 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
 // GM troops (v2, owner 2026-11-18): GM's movement arrows are a pale tint of the side colour (his French arrows (105,172,192) after his grade)
 const ARROW_GM = { u: "#62a3db", r: "#d4705f" };
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = (TROOPS === "blocks" && !GMLOOK ? null : a.color) || (GMLOOK ? ARROW_GM : ARROW_COL)[a.side || "u"];
-  return { ...a, region: r, w: Math.min(a.width ?? 0.24, 0.24) * RO(r).troopScale * (GMLOOK ? 0.66 : 1),   // critic A8: v6/v8 width cap; GM troops v4: -45 %, v6 +20 %
+  return { ...a, region: r, w: Math.min(a.width ?? 0.24, a.maxWidth ?? 0.24) * RO(r).troopScale * (GMLOOK ? 0.66 : 1),   // critic A8: v6/v8 width cap (a.maxWidth lifts it per arrow, Battle 20 gulf map); GM troops v4: -45 %, v6 +20 %
     a3: TRO[r].AR3.add(a.pts, col) }; });
 // generals: banners on poles (banner.js, STYLE_LOCK 2f item 1) + medallion portraits; any portrait: SEQ.generals = { key: { img, flag, name, full, side, role } }
 const GENERALS = {
