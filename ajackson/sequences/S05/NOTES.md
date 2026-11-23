@@ -52,3 +52,8 @@ see its SOURCES.md); flags `us15_flag.png`, `gb1801_union_flag.png` from `ajacks
   (on "landing") on the dimmed map.
 - Melee volleys: 8 groups at 1.7-2.1 s (was 12 at 1.05-1.45): fewer shots under the narration.
 - Jackson's line at dawn rises to only ~45 % of its baked height (thin parapet, as S06/S07).
+
+## Round 2 fixes
+- 72.5-83: the attack volleys (Jackson's lanes, the British front) end by 77.75 (before "while" 77.87); Coffee's men fire after "side." (82.9):
+  "while Coffee's ... struck the British from the side" is clear of shots.
+- Jackson quote (21-25): 52 px on a dark backing with a thin gold rule (`.cq` styled after the call), y 640, dim 0.6.

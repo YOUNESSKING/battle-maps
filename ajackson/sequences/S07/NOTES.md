@@ -42,3 +42,11 @@ Open issues: blocks are small at dist 20-30 (kept near S06's size for the dissol
 - Method card: lines 1-2 static in the sub, "3. Make them come to you" types on "make".
 - Remaining checker flags are heading jumps exactly at camera cuts (screen-space correction changes with the camera; hidden by the cut /
   dissolve) and world "front-vs-velocity" 20-50 deg from the on-screen correction (screen long-side check passes everywhere).
+
+## Round 2 fixes
+- 69.9-83 (Pakenham shot): the main column stays at the ditch (no crab walk after the cut); it turns about off screen and walks back in the
+  wide HALF AN HOUR shot (108.8-119). The 44th waits far back at d 14 all scene (no drift at 52-62, no overlap with the 93rd).
+- Rank fire starts after "rank." (52.45 / 52.95). Single shots moved into pauses: 64.8 -> 65.55, 71.2 -> 72.25, grape 93.8 removed / 92.6 ->
+  93.1, redoubt gun 104.0 -> 104.95; redoubt volleys every 1.6 s from 102.0.
+- 8-15: camera closer and lower on the boats (dist 12-13), fog 45 % thinner there, crossing barges 0.26 / stuck barges 0.24, "hours late" 24 px.
+- check_troops_motion 0-152.86: 0 overlaps, 0 pops; remaining turn flags only at the camera cuts (39.9, 83.4, 107.6, 114.7).
