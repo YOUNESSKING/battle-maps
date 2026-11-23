@@ -226,7 +226,7 @@ window.SEQ = {
     ["ledger.add", T.lost + 0.9, { who: "Americans: 213", note: "killed, wounded or missing", stamp: false }],
     ["ledger.hide", T.dawn + 0.6],
     ["label", T.stung, T.night + 0.8, { name: "Stung", sub: "attacked in their own camp, at night", world: [1281.6, 3232.0], side: "uk", marker: false }],
-    (O, c) => stamp(O, c, "HALTED", T.wait2 - 0.1, T.time + 0.6, [1277.4, 3235.4]),   // round 1: 2x, over the open field in front of the camp
+    (O, c) => stamp(O, c, "HALTED", T.wait2 - 0.1, T.time + 0.6, [1281.8, 3235.6]),   // round 1: 2x, over the open field in front of the camp
     // method card (round 1, critic B): the earlier line static in the sub, only the new line types on "hit him first"
     ["letter", 123.1, 129.35, { header: "Move 2 · The night attack", title: "The Old Hickory Method", sub: "1. Close every door", marks: false, quote: "2. Strike first", qSize: 34, height: 270,
       cps: 20, qAt: T.hit - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],

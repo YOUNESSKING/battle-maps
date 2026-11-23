@@ -30,3 +30,6 @@ Open issues: frame 0 is a close gulf view (S02 must end on the same camera: gulf
 - The NEXT label now reads "Next: the British come".
 - NOT fixed here (world / engine): the smeared hill texture is the horseshoe bake's relief overlay (needs a re-bake, not a camera issue); the gulf blotchy texture is the gulf bake. Red Stick retreats 92-108: the engine about-faces the men, but at 720p the men are ~3 px and the plate (pale front edge) keeps facing north, so it still reads as backing away (checked the render at 5 fps). Left to the S05 author's engine check.
 - check_troops_motion horseshoe 0-127: no overlaps, no pops, shape 0 %.
+
+## Round 1 (S05-S07 author, engine retreatTurn)
+- Red Stick lines: hold at the wall to 90.4-91.2 while each block turns about in place (~7 s), then ONE straight walk back toward the toe by 110.6-111.5 (no backward walk; front-vs-velocity <= 21 deg). Jackson's lines go over the wall ~1.2-2.6 s later (93.6-97.3) so nothing overlaps. check_troops_motion 0-177.69 horseshoe: 0 overlaps, 0 pops; one 49 deg/s turn (u17 @83.7).

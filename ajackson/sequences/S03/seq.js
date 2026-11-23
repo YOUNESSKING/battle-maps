@@ -33,13 +33,15 @@ const SWIM = [8699.3, 1292.2];                                    // the south (
 const units = [];
 // the Red Stick warriors behind the wall (about 1,000): four lines facing north; at the charge they about-face and fall back toward the toe
 const RS = [0.14, 0.38, 0.62, 0.86].map((k, i) => ({ side: "r", type: "inf", n: 2, face: FN, arrive: false, t0: 7.0, t1: 113.6,
-  keys: [[0, ...wall(k, -0.75)], [[90.6, 89.4, 89.6, 90.4][i], ...wall(k, -0.75)], [100.5 + i * 0.4, ...[[8700.0, 1283.6], [8702.2, 1284.3], [8705.2, 1284.0], [8706.0, 1282.1]][i]],
+  // round 1 (S05-S07 author, engine retreatTurn): hold at the wall while the block turns about in place (~7 s, from the charge), then ONE
+  // straight walk back toward the toe (two legs with a corner would turn back to face north between them)
+  keys: [[0, ...wall(k, -0.75)], [[91.0, 90.4, 90.6, 91.2][i], ...wall(k, -0.75)],
          [110.6 + i * 0.3, ...[[8697.9, 1285.6], [8699.9, 1286.4], [8703.4, 1286.0], [8705.0, 1284.7]][i]]] }));
 units.push(...RS);
 // Jackson's lines (about 2,000 foot: the 39th US Infantry in the centre, Tennessee militia either side) walk in from Cotton Patch Hill,
 // halt ~300 yards north of the wall, charge at the drum (87.6), the 39th over first (91.5), then all across, on into the bend
 const JL = [0.2, 0.5, 0.8].map((k, i) => { const halt = wall(k, 5.0), atWall = wall(k, 0.95), over = wall(k, -1.6), deep = [[over[0], 1281.2], [over[0], 1281.4], [over[0] - 0.5, 1280.3]][i];
-  const tw = i === 1 ? 90.4 : 91.2, to = i === 1 ? 93.0 : 95.6 + (i === 0 ? 0 : 0.5);
+  const tw = i === 1 ? 91.0 : 91.2, to = i === 1 ? 95.6 : 96.8 + (i === 0 ? 0 : 0.5);   // round 1: over the wall ~1.2 s later (the Red Sticks turn about first)
   return { side: "u", type: "inf", n: 2, face: FS, arrive: false, t0: 35.4,
     keys: [[35.4, halt[0], halt[1] - 5.2], [40.8 + i * 0.3, ...halt], [T.charge, ...halt], [tw, ...atWall], [to, ...over], [104.5 + i * 0.5, ...deep], [111.2, deep[0], deep[1] + 0.8]] }; });
 units.push(...JL);

@@ -44,7 +44,7 @@ const BAT = [0.18, 0.74, 1.12, 1.52, 2.42, 2.86, 3.98, 4.42];
 const batU = BAT.map((s, i) => add({ side: "u", type: "art", bw: 0.24, bd: 0.2, keys: [[0, ...onS(s, -0.42)]], face: FS, t0: T.eight - 0.3 + i * 0.32 }));   // round 1: guns at ~half size
 // the defenders: diggers on the line from the start (they stay and fight), the other groups file in from the rear on their words
 const POS = {
-  reg1: onS(0.46, -0.95), reg2: onS(1.97, -0.75), lam: onS(3.42, -0.75), fmc1: onS(4.2, -1.0), fmc2: onS(2.6, -1.0),   // round 1: right behind the wall, between the batteries
+  reg1: onS(0.46, -0.95), reg2: onS(1.97, -0.75), lam: onS(3.42, -0.75), fmc1: onS(4.2, -1.25), fmc2: onS(2.7, -1.25),   // round 1: right behind the wall, between the batteries
   tn1: onL(0.9, -0.95), tn2: onL(1.95, -0.95), ky1: onL(3.0, -0.95), ky2: onL(4.05, -0.95), cho: onL(5.6, -0.3),
 };
 const back = (p, f, d) => [p[0] - Math.cos(f) * d, p[1] - Math.sin(f) * d];
@@ -163,7 +163,7 @@ window.SEQ = {
     { t: 48.4, region: CH, at: [1264.2, 3239.2], dist: 12, tilt: 55, yaw: 60, fov: 30, ease: "io" },
     { t: 53.4, region: CH, at: [1263.6, 3239.6], dist: 11, tilt: 56, yaw: 56, fov: 30, ease: "lin" },
     // 4. 28 Dec: the columns probe the line
-    { t: 55.0, region: CH, at: [1256.4, 3230.0], dist: 16, tilt: 50, yaw: 72, fov: 30, ease: "io" },
+    { t: 56.2, region: CH, at: [1256.4, 3230.0], dist: 16, tilt: 50, yaw: 72, fov: 30, ease: "io" },
     { t: 60.8, region: CH, at: [1256.8, 3230.0], dist: 15, tilt: 51, yaw: 66, fov: 30, ease: "lin" },
     // 5. 1 January: the British batteries in the fog, the duel
     { t: 64.0, region: CH, at: [1254.6, 3229.0], dist: 17, tilt: 52, yaw: 64, fov: 30, ease: "io" },

@@ -32,7 +32,7 @@ const onS = (s, d = 0) => [RE[0] + uS[0] * s + nS[0] * d, RE[1] + uS[1] * s + nS
 const onL = (s, d = 0) => [EL[0] + uL[0] * s + nL[0] * d, EL[1] + uL[1] * s + nL[1] * d];
 const BAT = [0.18, 0.74, 1.12, 1.52, 2.42, 2.86, 3.98, 4.42];
 const GUN = (i) => onS(BAT[i], -0.42);
-const POS = { reg1: onS(0.46, -0.95), reg2: onS(1.97, -0.75), lam: onS(3.42, -0.75), fmc1: onS(4.2, -1.0), fmc2: onS(2.6, -1.0),   // round 1: = S06, right behind the wall
+const POS = { reg1: onS(0.46, -0.95), reg2: onS(1.97, -0.75), lam: onS(3.42, -0.75), fmc1: onS(4.2, -1.25), fmc2: onS(2.7, -1.25),   // round 1: = S06, right behind the wall
   tn1: onL(0.9, -0.5), tn2: onL(1.95, -0.5), ky1: onL(3.0, -0.5), ky2: onL(4.05, -0.5), cho: onL(5.6, -0.3) };
 const REDOUBT = (() => { const w = VX.work(CH, 1); const m = w[Math.floor(w.length / 2)]; return [m[0], m[1]]; })();
 
