@@ -27,3 +27,4 @@ swamp; 44th with fascines and ladders).
 - The 1 Jan British parapet, the advanced redoubt and the west-bank works are also painted in the baked ground texture (flat marks visible
   before their 3D parapets rise); a re-bake without them would be cleaner.
 - The plan is shown with the real units' positions (red blocks at the start lines); the West India regiments / reserve are not shown.
+- Carolina fire on 27 Dec reads weakly at 51.5 s (steamer preset, size 0.8): raise opts.size / glowSize if a critic flags it.
