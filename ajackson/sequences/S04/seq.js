@@ -78,6 +78,7 @@ const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
     out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: true, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
   return out; };
 window.SEQ = {
+  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // owner 2026-11-23: richer wide overhead maps (world engineer)
   name: "S04", D: T.D, T, seed: 1815, date: "1814-12-23",
   regions: [GF, NO, CH],
   troops: "blocks", troopsOpts: { look: "lineblocks" },

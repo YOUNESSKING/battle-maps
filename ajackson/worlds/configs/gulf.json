@@ -39,7 +39,7 @@
  ],
  "hm_ppu": 1.5,
  "tex": 8192,
- "exag": 34.0,
+ "exag": 28.0,
  "cell": 34.0,
  "seed": 1814,
  "dem_ppu": 2,
@@ -82,8 +82,8 @@
  },
  "sea_look": {
   "deep": "#33505f",
-  "shallow": "#6f9096",
-  "shelf_u": 9.0,
+  "shallow": "#5f8288",
+  "shelf_u": 8.0,
   "beach_u": 0.6,
   "line_u": 0.2
  },

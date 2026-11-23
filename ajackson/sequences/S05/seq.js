@@ -156,6 +156,7 @@ const labels = [
 ];
 
 window.SEQ = {
+  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // owner 2026-11-23: richer wide overhead maps (world engineer)
   name: "S05", D: T.D, T, seed: 1815, date: "1814-12-23",
   regions: [NO, CH],
   regionOpts: { [NO]: { troopScale: 3.2 } },
@@ -207,7 +208,7 @@ window.SEQ = {
   labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1814", day: "23", weekday: "Friday", note: "Villere plantation" }],
-    ["distance", T.march + 0.1, T.guard - 0.3, { from: [VIL[0] - 2.0, VIL[1] - 2.0], to: [CITY[0] + 2.0, CITY[1]], value: 9, unit: "MILES", sub: "to the city", dash: false }],
+    ["distance", T.march + 0.1, T.guard - 0.3, { from: [VIL[0] - 2.0, VIL[1] - 2.0], to: [CITY[0] + 2.0, CITY[1]], value: 9, countFrom: 9, unit: "MILES", sub: "to the city", dash: false }],
     ["label", T.seventeen, T.boats + 0.4, { name: "About 1,700 men", sub: "the British advance guard", world: [1283.0, 3232.4], side: "uk", marker: false }],
     ["plaque.note", T.incity + 0.2, "news reaches the city"],
     ["plaque.note", T.afternoon - 0.1, "early afternoon"],

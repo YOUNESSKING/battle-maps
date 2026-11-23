@@ -27,8 +27,8 @@
  "river_halo_u": 0.25,
  "sea_look": {
   "deep": "#38545f",
-  "shallow": "#6a8a8e",
-  "shelf_u": 6.0,
+  "shallow": "#52727a",
+  "shelf_u": 4.0,
   "beach_u": 0.12,
   "line_u": 0.06
  },
