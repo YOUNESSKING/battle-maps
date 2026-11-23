@@ -3,3 +3,7 @@ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF
   deprecate("LoRACompatibleLinear", "1.0.0", deprecation_message)
 loaded PerthNet (Implicit) at step 250,000
 chunk 0 21.8 s
+chunk 1 44.0 s
+chunk 2 59.6 s
+chunk 3 79.6 s
+wrote ajackson/audio/voice_owner_S01.wav 79.64 s
