@@ -11,7 +11,7 @@ for p in T["paragraphs"]:
 for i, s in enumerate(secs):
     s["A"] = 0.0 if i == 0 else round(secs[i]["first"] - 0.35, 3)
 for i, s in enumerate(secs):
-    end = secs[i + 1]["A"] if i + 1 < len(secs) else T["duration"] + 2.5
+    end = secs[i + 1]["A"] if i + 1 < len(secs) else T["duration"] + 16.0   # Jackson: ~19 s of clean map after the last word for the end screen
     s["D"] = round(end - s["A"] + (TAIL if i + 1 < len(secs) else 0), 3)
 if "--all" in sys.argv:
     json.dump({"tail": TAIL, "scenes": secs}, open(f"{V}/audio/scenes.json", "w"), indent=1)
