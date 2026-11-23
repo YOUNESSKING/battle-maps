@@ -1,0 +1,39 @@
+{
+ "A": {
+  "cannon_events": 14,
+  "flash_found": 11,
+  "offset_frames": [
+   1,
+   1,
+   0,
+   0,
+   1,
+   0,
+   1,
+   0,
+   -3,
+   0,
+   0
+  ],
+  "within_1_frame": 10,
+  "not_detected": [
+   1.57,
+   46.3,
+   48.7
+  ]
+ },
+ "B": {
+  "placement_err_ms_max": 1.2708333333364408,
+  "first_shot_err_ms_max": 0.0
+ },
+ "C": {
+  "voice_rms": -15.77051067352295,
+  "volley_peak": -17.6373233795166,
+  "skirmish_peak": -18.895633697509766
+ },
+ "D": {
+  "shots": 185,
+  "same_recording_pairs": 14,
+  "identical": 0
+ }
+}

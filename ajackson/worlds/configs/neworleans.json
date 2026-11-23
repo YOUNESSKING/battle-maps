@@ -1,0 +1,223 @@
+{
+ "mode": "wide",
+ "zoom": 10,
+ "note": "New Orleans approaches, Dec 1814 (~78 x 61 km): the city, the river to English Turn, Lake Borgne + Bayou Bienvenue (the British route), Lake Pontchartrain, the Rigolets, Chef Menteur. Base frame (zoom 10), so units / places match chalmette directly. Modern canals (Industrial Canal, MRGO, Intracoastal) erased from the water mask (opening) and filled; city basins below sea level are land.",
+ "box": [
+  1010,
+  2924,
+  590,
+  462
+ ],
+ "hm_ppu": 1.5,
+ "tex": 8192,
+ "exag": 14.0,
+ "cell": 22.0,
+ "seed": 1814,
+ "stills": [
+  {
+   "at": [
+    1305,
+    3155
+   ],
+   "dist": 640,
+   "tilt": 30,
+   "yaw": 0
+  },
+  {
+   "at": [
+    1290,
+    3200
+   ],
+   "dist": 300,
+   "tilt": 44,
+   "yaw": 0
+  },
+  {
+   "at": [
+    1258,
+    3222
+   ],
+   "dist": 150,
+   "tilt": 52,
+   "yaw": -8
+  }
+ ],
+ "dem_ppu": 2,
+ "dem_margin": 24,
+ "dem_edits": {
+  "sea": {
+   "level": 0.1,
+   "min_px": 1000000000000.0,
+   "open_px": 7,
+   "close_px": 11,
+   "island_px": 60,
+   "seeds": [
+    [
+     30.18,
+     -90.1
+    ],
+    [
+     30.25,
+     -90.45
+    ],
+    [
+     30.03,
+     -89.62
+    ],
+    [
+     30.1,
+     -89.75
+    ],
+    [
+     29.72,
+     -90.25
+    ]
+   ]
+  },
+  "fill_water": true,
+  "spike_m": 40.0,
+  "sea_floor_m": 0.0
+ },
+ "creek_km2": 1000000.0,
+ "creeks": {
+  "paint_km2": 1000000000.0,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.1,
+ "villages": 0,
+ "swamp": 0.0,
+ "rivers": [
+  {
+   "name": "Mississippi River",
+   "geo": "Mississippi River (New Orleans)",
+   "w": 5.0,
+   "step": 1.0,
+   "snap": false
+  },
+  {
+   "name": "Pearl River",
+   "geo": "Pearl River",
+   "w": 1.4,
+   "step": 1.0,
+   "snap": false
+  },
+  {
+   "name": "Bayou Bienvenue",
+   "geo": "Bayou Bienvenue",
+   "w": 0.9,
+   "step": 0.6,
+   "snap": false
+  },
+  {
+   "name": "Villere canal",
+   "geo": "Villere canal",
+   "w": 0.5,
+   "step": 0.5,
+   "snap": false
+  }
+ ],
+ "roads": [
+  {
+   "geo": "River road, east bank (levee road)",
+   "cls": "pike"
+  },
+  {
+   "geo": "River road, west bank (levee road)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Gentilly road (Chef Menteur road)",
+   "cls": "pike"
+  }
+ ],
+ "towns": [
+  {
+   "name": "New Orleans",
+   "geo": "New Orleans",
+   "rad": 6.5,
+   "houses": 90,
+   "grid": {
+    "block": 2.6,
+    "angle": -38
+   }
+  },
+  {
+   "name": "Macarty",
+   "at": [
+    1249.94,
+    3225.95
+   ],
+   "rad": 0.7,
+   "houses": 3
+  },
+  {
+   "name": "Chalmette",
+   "at": [
+    1255.21,
+    3229.56
+   ],
+   "rad": 0.7,
+   "houses": 3
+  },
+  {
+   "name": "Bienvenu",
+   "at": [
+    1261.93,
+    3234.22
+   ],
+   "rad": 0.7,
+   "houses": 3
+  },
+  {
+   "name": "De la Ronde",
+   "at": [
+    1270.19,
+    3236.03
+   ],
+   "rad": 0.7,
+   "houses": 3
+  },
+  {
+   "name": "Lacoste",
+   "at": [
+    1281.1,
+    3238.71
+   ],
+   "rad": 0.7,
+   "houses": 3
+  },
+  {
+   "name": "Villere",
+   "at": [
+    1288.15,
+    3238.96
+   ],
+   "rad": 0.7,
+   "houses": 3
+  }
+ ],
+ "features": {
+  "works": [
+   {
+    "name": "Jackson's line",
+    "geo": "Jackson's line (Rodriguez Canal rampart)",
+    "kind": "breastwork",
+    "side": "us",
+    "face": 30,
+    "height": 2.0,
+    "clear": 0.5
+   }
+  ]
+ },
+ "labels": [
+  "Lake Borgne",
+  "Lake Pontchartrain",
+  "Chef Menteur",
+  "Fort Petites Coquilles",
+  "English Turn",
+  "Villere plantation house",
+  "Villere canal head",
+  "Bayou Bienvenue mouth",
+  "Jackson's line, river end"
+ ]
+}

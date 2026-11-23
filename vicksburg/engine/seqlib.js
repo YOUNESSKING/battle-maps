@@ -30,7 +30,16 @@
   VX.placeInfo = (name) => { const P = G.GM3D_PLACES || [], n = name.toLowerCase(), short = (q) => q.name.split(" (")[0].toLowerCase();
     const r = P.find((q) => q.name === name) || P.find((q) => short(q) === n) || P.find((q) => q.name.toLowerCase().startsWith(n));
     if (!r) throw new Error("VX: no place '" + name + "' in data/geo.json"); return r; };
-  VX.place = (name) => { const r = VX.placeInfo(name); return [r.x, r.y]; };
+  // Multi-frame projects (vicksburg/tools/vx_project.py): places / geo.js are in the project's BASE frame; a region baked at another zoom
+  // carries region.frame.k (= 2^(zoom - base zoom)): VX.place(name, region) / VX.ll(lat, lon, region) / VX.toRegion(region, [x, y]) give
+  // that region's map units (gulf z8: k 0.25, horseshoe z11: k 2). Without `region` they return base units (Vicksburg: unchanged).
+  VX.frameK = (region) => { const r = (G.GM3D_REGIONS || {})[region]; return r && r.frame && r.frame.k ? r.frame.k : 1; };
+  VX.toRegion = (region, p) => { const k = VX.frameK(region); return [p[0] * k, p[1] * k]; };
+  VX.fromRegion = (region, p) => { const k = VX.frameK(region); return [p[0] / k, p[1] / k]; };
+  VX.ll = (lat, lon, region) => { const g = G.GM3D_GEO || {}, N = 256 * Math.pow(2, g.zoom), la = lat * Math.PI / 180;
+    const p = [(lon + 180) / 360 * N - g.origin[0], (1 - Math.log(Math.tan(la) + 1 / Math.cos(la)) / Math.PI) / 2 * N - g.origin[1]];
+    return region ? VX.toRegion(region, p) : p; };
+  VX.place = (name, region) => { const r = VX.placeInfo(name); return region ? VX.toRegion(region, [r.x, r.y]) : [r.x, r.y]; };
   VX.river = (region, which = 0) => { const rs = VX.region(region).rivers || []; const r = typeof which === "number" ? rs[which] : rs.find((q) => q.name === which); if (!r) throw new Error("VX: no river " + which + " in " + region); return r; };
   // the clip's riverAt: the river vertex nearest in map-y to y (rivers that run north-south); returns [x, y, h_m]
   VX.riverAtY = (region, which, y) => { const P = VX.river(region, which).pts; let b = P[0]; for (const p of P) if (Math.abs(p[1] - y) < Math.abs(b[1] - y)) b = p; return b; };

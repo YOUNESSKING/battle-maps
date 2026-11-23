@@ -1,0 +1,943 @@
+{
+ "places": [
+  {
+   "name": "Horseshoe Bend (Tohopeka peninsula), centre",
+   "lat": 32.97,
+   "lon": -85.7385,
+   "acc_m": 300,
+   "src": "NR 1975 + NHD river geometry; peninsula points SOUTH, river on E/S/W sides, neck on the north",
+   "note": "Tallapoosa River, Tallapoosa Co., Alabama. Park centre per Wikipedia 32.9727,-85.7359."
+  },
+  {
+   "name": "Breastwork (barricade) centre",
+   "lat": 32.9727,
+   "lon": -85.7354,
+   "acc_m": 100,
+   "src": "NPS National Register nomination, Horseshoe Bend Battlefield (Stout & Kretschmann 1975), UTM 16N converted to WGS84 (item 6, UTM 16/618170/3648970)",
+   "note": "Log breastwork across the neck; 5-8 ft high, double rows of portholes (Jackson to Blount). Length: NR 250 yd, CLR 300-400 yd, EoA/Wikipedia ~400 yd (use ~350 m / 'nearly 400 yards'). Zig-zag/angled, concave to the south (Cheatham map; Waselkov). Park marks it with white posts since ~1969; archaeology 1964/1973 confirmed line."
+  },
+  {
+   "name": "Tohopeka village site",
+   "lat": 32.9658,
+   "lon": -85.7414,
+   "acc_m": 250,
+   "src": "NPS National Register nomination, Horseshoe Bend Battlefield (Stout & Kretschmann 1975), UTM 16N converted to WGS84 (item 4, UTM 16/617620/3648200); CLR 'at the toe of the peninsula'",
+   "note": "~300 log houses; refugee village of Red Sticks and families; burned by Cherokee/allied Creeks during the battle. Cherokee canoe action interpreted at Tour Stop 3 at the toe."
+  },
+  {
+   "name": "Gun Hill (Jackson's artillery position)",
+   "lat": 32.9739,
+   "lon": -85.736,
+   "acc_m": 100,
+   "src": "NPS National Register nomination, Horseshoe Bend Battlefield (Stout & Kretschmann 1975), UTM 16N converted to WGS84 (Congressional Monument, UTM 16/618120/3649100; moved ~50 ft west in 1965) + CLR",
+   "note": "Small eminence N of barricade. Jackson to Blount: nearest ~80 yd, farthest ~250 yd from the works (Jackson to Pinckney: 150-200 yd). One 6-pdr + one 3-pdr, opened ~10:30 a.m. for ~2 h. Maj. Lemuel Montgomery's grave (reinterred 1972) is on Gun Hill; he died at the wall."
+  },
+  {
+   "name": "Cotton Patch Hill (Jackson's approach overlook)",
+   "lat": 32.979,
+   "lon": -85.7355,
+   "acc_m": 400,
+   "src": "CLR 2013 (highest point in park, view south to barricade); position approximate from Visitor Center 32.9823,-85.7354",
+   "note": "Army arrived here the morning of 27 Mar 1814 (NPS 'The Overlook'). Carroll map: first US line ~400 yd N of barricade (2 h), second 300 yd (1.5 h), third at the wall (8 min)."
+  },
+  {
+   "name": "Park Visitor Center / Highway 49 entrance",
+   "lat": 32.9823,
+   "lon": -85.7354,
+   "acc_m": 60,
+   "src": "Wikimedia Commons geotag, Category:Horseshoe Bend NMP Visitor Center",
+   "note": "Modern; not for the map. Gives the north (approach) side."
+  },
+  {
+   "name": "Bean's island (Lt. Jesse Bean, 40 men)",
+   "lat": 32.9748,
+   "lon": -85.7405,
+   "acc_m": 250,
+   "src": "NPS National Register nomination, Horseshoe Bend Battlefield (Stout & Kretschmann 1975), UTM 16N converted to WGS84 (Miller Bridge UTM 16/617720/3649200 spans the west arm next to the island); CLR Tour Stop 1",
+   "note": "Island 'due west of the peninsula' in the Tallapoosa; Bean's men sank fleeing Red Sticks before they landed (Coffee to Jackson, 1 Apr 1814)."
+  },
+  {
+   "name": "Cherokee canoe crossing (south toe of peninsula)",
+   "lat": 32.9655,
+   "lon": -85.7405,
+   "acc_m": 200,
+   "src": "CLR p.21 (120-yard swim) + NPS Tour Stop 3 'Cherokee Crossing' at the toe; position inferred from NHD tip (32.9661,-85.7407)",
+   "note": "Three Cherokees led by Tuq-qua ('The Whale') swam, took Red Stick dugout canoes, ferried others (Capt. Russell's spies, Col. Gideon Morgan, Maj. John Walker, ~30 others); ~200 Cherokee crossed per NPS. NOT verified: 'Charles Reese' (found in no source here; use 'The Whale / Tuq-qua')."
+  },
+  {
+   "name": "Coffee's mounted brigade, south bank (approx. line)",
+   "lat": 32.9635,
+   "lon": -85.748,
+   "acc_m": 800,
+   "src": "CLR p.20: line 1/4 mile back from the river on the south bank; Holmes/Jackson maps. Position schematic",
+   "note": "700 mounted + ~600 allies (500 Cherokee, 100 friendly Creek) crossed 2 mi BELOW the bend at an island ford, turned upstream, ringed the loop from W through S to E."
+  },
+  {
+   "name": "Coffee's river crossing (2 mi below bend, island ford)",
+   "lat": 32.9771,
+   "lon": -85.7637,
+   "acc_m": 1500,
+   "src": "CLR p.20 ('two miles below the bend at an island ford'); river distance computed on NHD chain from the bend exit",
+   "note": "Exact ford not documented; schematic."
+  },
+  {
+   "name": "Hammond's rangers (east bank, opposite Tohopeka/east arm)",
+   "lat": 32.969,
+   "lon": -85.73,
+   "acc_m": 600,
+   "src": "CLR p.20-21 (Capt. Eli Hammond defended the riverbank opposite Tohopeka). Schematic",
+   "note": ""
+  },
+  {
+   "name": "Jackson's camp night of 26 Mar (6 miles from the bend)",
+   "lat": 33.03,
+   "lon": -85.76,
+   "acc_m": 3000,
+   "src": "CLR p.20 ('within six miles of the bend', square camp of brush and trees); direction N/NW from Fort Williams road. Schematic",
+   "note": "Army left 06:30 on 27 Mar."
+  },
+  {
+   "name": "Emuckfaw Creek mouth (on the Tallapoosa)",
+   "lat": 32.9849,
+   "lon": -85.7521,
+   "acc_m": 100,
+   "src": "USGS NHD (Emuckfaw Creek flowline end)",
+   "note": "Just downstream (NW) of the bend. Battle of Emuckfaw 22 Jan 1814 was fought up the creek (~33.00,-85.73), Jackson's Jan campaign; Enotachopo Creek 24 Jan (Hillabee town) is a different creek further SW."
+  },
+  {
+   "name": "Emuckfaw battleground (approx., up the creek)",
+   "lat": 33.005,
+   "lon": -85.733,
+   "acc_m": 2500,
+   "src": "NHD creek course + Cheatham map ('previous battleground along Emuckfau Creek'); Wikipedia geotags it at the park (imprecise)",
+   "note": "Approximate."
+  },
+  {
+   "name": "Newyaucau (New Youka) village site",
+   "lat": 32.9804,
+   "lon": -85.7161,
+   "acc_m": 300,
+   "src": "NPS National Register nomination, Horseshoe Bend Battlefield (Stout & Kretschmann 1975), UTM 16N converted to WGS84 (item 5, UTM 16/619970/3649840)",
+   "note": "Upper Creek town, 'burned before the battle'; its people joined the refugees at Tohopeka. Across the river from Coffee's position upstream."
+  },
+  {
+   "name": "Fort Williams",
+   "lat": 33.1403,
+   "lon": -86.465,
+   "acc_m": 800,
+   "src": "Wikipedia 'Fort Williams (Alabama)' 33 08 25 N 86 27 54 W",
+   "note": "Supply depot on the Coosa at Cedar Creek, built 22 Mar 1814; site now under Lay Lake (modern reservoir; do not draw). 52-mile trail to the bend."
+  },
+  {
+   "name": "Fort Strother (Ten Islands)",
+   "lat": 33.7636,
+   "lon": -86.0475,
+   "acc_m": 1500,
+   "src": "Wikipedia 'Fort Strother' (33.76361, -86.04750); exact site not identified",
+   "note": "Jackson's Nov 1813 stockade on the Coosa, main base for Tallushatchee/Talladega; Neely Henry Lake area (modern reservoir)."
+  },
+  {
+   "name": "Tallushatchee",
+   "lat": 33.8123,
+   "lon": -85.9069,
+   "acc_m": 2000,
+   "src": "Wikipedia 'Battle of Tallushatchee' coordinates",
+   "note": "3 Nov 1813, Coffee."
+  },
+  {
+   "name": "Talladega (Lashley's/Leslie's Fort)",
+   "lat": 33.4509,
+   "lon": -86.1689,
+   "acc_m": 3000,
+   "src": "Wikipedia 'Battle of Talladega' coordinates",
+   "note": "9 Nov 1813."
+  },
+  {
+   "name": "Fort Jackson / Fort Toulouse (Hickory Ground), Wetumpka",
+   "lat": 32.5,
+   "lon": -86.255,
+   "acc_m": 1500,
+   "src": "Approximate from Wetumpka (32.5069,-86.2384, Wikipedia); confluence of Coosa and Tallapoosa; VERIFY before use",
+   "note": "Jackson built Fort Jackson on the old French fort site after Horseshoe Bend; Treaty of Fort Jackson signed here 9 Aug 1814."
+  },
+  {
+   "name": "Fort Mims",
+   "lat": 31.1811,
+   "lon": -87.8381,
+   "acc_m": 300,
+   "src": "Wikipedia 'Fort Mims massacre' 31 10 52 N 87 50 17 W",
+   "note": "30 Aug 1813, near Tensaw/Bay Minette, 35-40 mi N of Mobile."
+  },
+  {
+   "name": "Burnt Corn Creek (battle 27 Jul 1813)",
+   "lat": 31.54,
+   "lon": -87.17,
+   "acc_m": 8000,
+   "src": "General area, Escambia Co., Alabama (approximate; NOT verified here)",
+   "note": "VERIFY before use."
+  },
+  {
+   "name": "Mobile",
+   "lat": 30.6675,
+   "lon": -88.101,
+   "acc_m": 2000,
+   "src": "Wikipedia 'Mobile, Alabama'",
+   "note": "Spanish until Apr 1813; US seized."
+  },
+  {
+   "name": "Pensacola",
+   "lat": 30.4074,
+   "lon": -87.2186,
+   "acc_m": 2000,
+   "src": "Wikipedia 'Pensacola, Florida'",
+   "note": "Spanish West Florida; British landed Aug 1814; Jackson took it 7 Nov 1814."
+  },
+  {
+   "name": "Nashville",
+   "lat": 36.1622,
+   "lon": -86.7744,
+   "acc_m": 2000,
+   "src": "Wikipedia 'Nashville, Tennessee'",
+   "note": "Jackson's home base (the Hermitage ~36.2178,-86.6145, verify)."
+  }
+ ],
+ "lines": [
+  {
+   "name": "Tallapoosa River at Horseshoe Bend (flow: NE -> SW, then N on west arm)",
+   "kind": "river",
+   "pts": [
+    [
+     32.98653,
+     -85.70648
+    ],
+    [
+     32.98719,
+     -85.70765
+    ],
+    [
+     32.98754,
+     -85.70935
+    ],
+    [
+     32.98749,
+     -85.71047
+    ],
+    [
+     32.98697,
+     -85.71169
+    ],
+    [
+     32.98618,
+     -85.7142
+    ],
+    [
+     32.98588,
+     -85.71649
+    ],
+    [
+     32.98546,
+     -85.71823
+    ],
+    [
+     32.98506,
+     -85.71915
+    ],
+    [
+     32.98474,
+     -85.71996
+    ],
+    [
+     32.98405,
+     -85.72095
+    ],
+    [
+     32.98292,
+     -85.72208
+    ],
+    [
+     32.98158,
+     -85.7235
+    ],
+    [
+     32.97932,
+     -85.726
+    ],
+    [
+     32.97839,
+     -85.72725
+    ],
+    [
+     32.97771,
+     -85.7282
+    ],
+    [
+     32.97581,
+     -85.731
+    ],
+    [
+     32.97457,
+     -85.73242
+    ],
+    [
+     32.97337,
+     -85.73327
+    ],
+    [
+     32.97119,
+     -85.73438
+    ],
+    [
+     32.96927,
+     -85.73562
+    ],
+    [
+     32.96749,
+     -85.73712
+    ],
+    [
+     32.96643,
+     -85.73887
+    ],
+    [
+     32.96624,
+     -85.73991
+    ],
+    [
+     32.96614,
+     -85.74076
+    ],
+    [
+     32.96622,
+     -85.74203
+    ],
+    [
+     32.96643,
+     -85.74266
+    ],
+    [
+     32.96684,
+     -85.74323
+    ],
+    [
+     32.96792,
+     -85.74379
+    ],
+    [
+     32.96907,
+     -85.74409
+    ],
+    [
+     32.96997,
+     -85.74359
+    ],
+    [
+     32.97114,
+     -85.74261
+    ],
+    [
+     32.9719,
+     -85.74194
+    ],
+    [
+     32.97219,
+     -85.7418
+    ],
+    [
+     32.97281,
+     -85.74124
+    ],
+    [
+     32.97328,
+     -85.74107
+    ],
+    [
+     32.97364,
+     -85.74094
+    ],
+    [
+     32.97401,
+     -85.7407
+    ],
+    [
+     32.97474,
+     -85.74062
+    ],
+    [
+     32.97605,
+     -85.74078
+    ],
+    [
+     32.97692,
+     -85.74081
+    ],
+    [
+     32.97728,
+     -85.74122
+    ],
+    [
+     32.97835,
+     -85.742
+    ],
+    [
+     32.98021,
+     -85.74321
+    ],
+    [
+     32.98124,
+     -85.74407
+    ],
+    [
+     32.98158,
+     -85.74438
+    ],
+    [
+     32.98316,
+     -85.74718
+    ],
+    [
+     32.98323,
+     -85.74803
+    ],
+    [
+     32.98325,
+     -85.74976
+    ],
+    [
+     32.98353,
+     -85.75065
+    ],
+    [
+     32.98399,
+     -85.75092
+    ],
+    [
+     32.98444,
+     -85.75126
+    ],
+    [
+     32.9847,
+     -85.75182
+    ],
+    [
+     32.98457,
+     -85.75315
+    ],
+    [
+     32.98623,
+     -85.75935
+    ],
+    [
+     32.98562,
+     -85.76275
+    ],
+    [
+     32.98411,
+     -85.76326
+    ],
+    [
+     32.98286,
+     -85.76336
+    ],
+    [
+     32.97991,
+     -85.76305
+    ],
+    [
+     32.97748,
+     -85.76358
+    ],
+    [
+     32.97463,
+     -85.7648
+    ],
+    [
+     32.974,
+     -85.76551
+    ],
+    [
+     32.97306,
+     -85.76743
+    ],
+    [
+     32.97288,
+     -85.76788
+    ],
+    [
+     32.9729,
+     -85.76899
+    ],
+    [
+     32.97272,
+     -85.76981
+    ],
+    [
+     32.97267,
+     -85.77155
+    ],
+    [
+     32.97254,
+     -85.77378
+    ],
+    [
+     32.97242,
+     -85.77493
+    ],
+    [
+     32.97246,
+     -85.77583
+    ]
+   ],
+   "src": "USGS National Hydrography Dataset (hydro.nationalmap.gov, flowline layer 6) -- modern channel; NR nomination 1975 states bend size/shape and the two islands unchanged since 1814. NO modern reservoir at the bend (see note)."
+  },
+  {
+   "name": "Tallapoosa River upstream (east) of bend",
+   "kind": "river",
+   "pts": [
+    [
+     32.95687,
+     -85.69248
+    ],
+    [
+     32.95585,
+     -85.69467
+    ],
+    [
+     32.95538,
+     -85.69939
+    ],
+    [
+     32.9567,
+     -85.70078
+    ],
+    [
+     32.95764,
+     -85.70072
+    ],
+    [
+     32.96012,
+     -85.69975
+    ],
+    [
+     32.96644,
+     -85.6973
+    ],
+    [
+     32.97036,
+     -85.69697
+    ],
+    [
+     32.97073,
+     -85.69783
+    ],
+    [
+     32.9714,
+     -85.69908
+    ],
+    [
+     32.97273,
+     -85.70058
+    ],
+    [
+     32.97427,
+     -85.70149
+    ],
+    [
+     32.97571,
+     -85.7017
+    ],
+    [
+     32.97803,
+     -85.70224
+    ],
+    [
+     32.98121,
+     -85.70234
+    ],
+    [
+     32.98295,
+     -85.70294
+    ],
+    [
+     32.98415,
+     -85.70412
+    ],
+    [
+     32.98653,
+     -85.70648
+    ],
+    [
+     32.98748,
+     -85.70871
+    ]
+   ],
+   "src": "USGS National Hydrography Dataset (hydro.nationalmap.gov, flowline layer 6) -- modern channel; NR nomination 1975 states bend size/shape and the two islands unchanged since 1814"
+  },
+  {
+   "name": "Red Stick breastwork (zig-zag, concave south), schematic",
+   "kind": "breastwork",
+   "pts": [
+    [
+     32.97285,
+     -85.7373
+    ],
+    [
+     32.97262,
+     -85.7366
+    ],
+    [
+     32.97248,
+     -85.736
+    ],
+    [
+     32.97262,
+     -85.7354
+    ],
+    [
+     32.97245,
+     -85.7348
+    ],
+    [
+     32.97262,
+     -85.73415
+    ],
+    [
+     32.97285,
+     -85.7335
+    ]
+   ],
+   "src": "NPS National Register nomination, Horseshoe Bend Battlefield (Stout & Kretschmann 1975), UTM 16N converted to WGS84; Cheatham & Jackson maps (angled, curving toward Tohopeka); length ~350 m"
+  },
+  {
+   "name": "Jackson's approach from the north (schematic)",
+   "kind": "route",
+   "pts": [
+    [
+     33.03,
+     -85.76
+    ],
+    [
+     33.01,
+     -85.745
+    ],
+    [
+     32.9823,
+     -85.7354
+    ],
+    [
+     32.979,
+     -85.7355
+    ]
+   ],
+   "src": "CLR p.20; Carroll map; schematic"
+  },
+  {
+   "name": "Jackson's artillery line of fire (Gun Hill -> barricade)",
+   "kind": "fire",
+   "pts": [
+    [
+     32.9739,
+     -85.736
+    ],
+    [
+     32.9727,
+     -85.7354
+    ]
+   ],
+   "src": "Jackson to Blount 31 Mar 1814"
+  },
+  {
+   "name": "Coffee's route: cross 2 mi below, turn upstream around the loop (schematic)",
+   "kind": "route",
+   "pts": [
+    [
+     32.984,
+     -85.77
+    ],
+    [
+     32.9771,
+     -85.7637
+    ],
+    [
+     32.97,
+     -85.76
+    ],
+    [
+     32.964,
+     -85.75
+    ],
+    [
+     32.962,
+     -85.741
+    ],
+    [
+     32.966,
+     -85.732
+    ],
+    [
+     32.972,
+     -85.727
+    ]
+   ],
+   "src": "CLR p.20; Holmes map dotted line; schematic"
+  },
+  {
+   "name": "Cherokee/Russell's spies canoe crossing (south toe -> Tohopeka)",
+   "kind": "crossing",
+   "pts": [
+    [
+     32.965,
+     -85.7405
+    ],
+    [
+     32.9662,
+     -85.741
+    ]
+   ],
+   "src": "CLR p.21; NPS Tour Stop 3"
+  }
+ ],
+ "units": [
+  {
+   "battle": "horseshoe",
+   "phase": "0630 march",
+   "side": "US",
+   "unit": "Jackson's main column (39th US Inf, E & W Tennessee militia, Gen. Jackson)",
+   "commander": "Maj. Gen. Andrew Jackson",
+   "lat": 33.03,
+   "lon": -85.76,
+   "facing": "S",
+   "moves_to": [
+    [
+     32.9823,
+     -85.7354
+    ]
+   ],
+   "strength": "~2,000-2,700 (CLR/EoA: 2,000 infantry led by Jackson)",
+   "src": "CLR p.20-21; EoA"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "0630 march",
+   "side": "US",
+   "unit": "Coffee's mounted brigade + Cherokee + Lower Creek",
+   "commander": "Brig. Gen. John Coffee",
+   "lat": 32.98,
+   "lon": -85.775,
+   "facing": "SE",
+   "moves_to": [
+    [
+     32.9771,
+     -85.7637
+    ]
+   ],
+   "strength": "700 mounted + ~600 allies (500 Cherokee, 100 Lower Creek); Wikipedia/Battlefields say ~1,300",
+   "src": "CLR p.20; EoA; NPS"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "US",
+   "unit": "Artillery: one 6-pdr, one 3-pdr",
+   "commander": "Jackson",
+   "lat": 32.9739,
+   "lon": -85.736,
+   "facing": "S",
+   "moves_to": [],
+   "strength": "2 guns, ~2 h little effect",
+   "src": "Jackson to Blount/Pinckney"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "US",
+   "unit": "Jackson's line (regulars + militia), first position",
+   "commander": "Jackson / Col. John Williams (39th)",
+   "lat": 32.978,
+   "lon": -85.7355,
+   "facing": "S",
+   "moves_to": [
+    [
+     32.9745,
+     -85.7355
+    ]
+   ],
+   "strength": "~2,000; 39th US Infantry in the centre",
+   "src": "Carroll map (400 yd then 300 yd then at the wall); Jackson map labels Col. Copeland (E Tenn), Col. Cheatham"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "RS",
+   "unit": "Red Stick defenders behind breastwork",
+   "commander": "Menawa (2nd chief of Okfuskee); prophet Monahee killed",
+   "lat": 32.9724,
+   "lon": -85.7354,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~1,000 warriors (Jackson: prisoners said ~1,000) plus ~350 women/children; only ~1/3 had firearms (EoA)",
+   "src": "Jackson to Blount; EoA"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "US",
+   "unit": "Coffee: mounted men on south bank, 1/4 mile back",
+   "commander": "Coffee",
+   "lat": 32.9635,
+   "lon": -85.748,
+   "facing": "N",
+   "moves_to": [
+    [
+     32.964,
+     -85.741
+    ]
+   ],
+   "strength": "700 mounted",
+   "src": "CLR p.20"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "US",
+   "unit": "Lt. Jesse Bean's detachment on the island",
+   "commander": "Lt. Jesse Bean",
+   "lat": 32.9748,
+   "lon": -85.7405,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "40 men",
+   "src": "Coffee to Jackson 1 Apr 1814 via CLR"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "ALLY",
+   "unit": "Cherokee Regiment + Russell's spies, south bank",
+   "commander": "Col. Gideon Morgan; Col. Richard Brown; Capt. William Russell; Maj. John Walker",
+   "lat": 32.9645,
+   "lon": -85.741,
+   "facing": "N",
+   "moves_to": [
+    [
+     32.9658,
+     -85.7414
+    ]
+   ],
+   "strength": "~500 Cherokee (EoA/CLR); ~200 crossed (NPS)",
+   "src": "NPS 'Behind the Sharp Knife'; CLR"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1030 guns open",
+   "side": "ALLY",
+   "unit": "Lower Creek warriors (Maj. William McIntosh) with Coffee",
+   "commander": "Maj. William McIntosh",
+   "lat": 32.965,
+   "lon": -85.744,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~100 (EoA/CLR) [Jackson-Blount counts only 16 'friendly Creek' casualties: 5 killed 11 wounded]; some sources ~500",
+   "src": "Jackson to Pinckney (McIntosh the Cowetau)"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1130-1230 rear attack",
+   "side": "ALLY",
+   "unit": "Cherokee/spies cross by canoe, attack and burn Tohopeka",
+   "commander": "Whale (Tuq-qua); Morgan",
+   "lat": 32.9658,
+   "lon": -85.7414,
+   "facing": "N",
+   "moves_to": [
+    [
+     32.97,
+     -85.739
+    ],
+    [
+     32.9724,
+     -85.738
+    ]
+   ],
+   "strength": "3 swimmers then ~200",
+   "src": "NPS; CLR p.21"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1130-1230 rear attack",
+   "side": "RS",
+   "unit": "Red Stick reserve shifts south to meet rear attack; women/children in village",
+   "commander": "Menawa",
+   "lat": 32.969,
+   "lon": -85.7385,
+   "facing": "S",
+   "moves_to": [
+    [
+     32.9658,
+     -85.7414
+    ]
+   ],
+   "strength": "~100 warriors visible in village per Coffee",
+   "src": "Coffee to Jackson (CLR p.21)"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "1230 assault",
+   "side": "US",
+   "unit": "39th US Infantry + militia storm the breastwork on the drum signal",
+   "commander": "Col. John Williams; Maj. Lemuel Montgomery (killed at wall); 3rd Lt. Sam Houston",
+   "lat": 32.9735,
+   "lon": -85.7358,
+   "facing": "S",
+   "moves_to": [
+    [
+     32.9715,
+     -85.7358
+    ]
+   ],
+   "strength": "39th: 17 killed 55 wounded (Jackson)",
+   "src": "Jackson to Blount; CLR p.21"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "afternoon",
+   "side": "US",
+   "unit": "Jackson's line sweeps south; heaviest fighting centre of peninsula; Coffee holds the river",
+   "commander": "Jackson; Coffee",
+   "lat": 32.969,
+   "lon": -85.738,
+   "facing": "S",
+   "moves_to": [
+    [
+     32.9665,
+     -85.74
+    ]
+   ],
+   "strength": "all",
+   "src": "CLR p.21"
+  },
+  {
+   "battle": "horseshoe",
+   "phase": "afternoon",
+   "side": "RS",
+   "unit": "Survivors pushed to river bank and into the river; Menawa slips away by canoe at night",
+   "commander": "Menawa",
+   "lat": 32.9665,
+   "lon": -85.7395,
+   "facing": "S",
+   "moves_to": [
+    [
+     32.965,
+     -85.74
+    ]
+   ],
+   "strength": "557 dead counted on peninsula + 200-300 in river",
+   "src": "Jackson to Pinckney; Coffee 1 Apr"
+  }
+ ],
+ "notes": {
+  "orientation": "Peninsula points SOUTH (toe = Tohopeka), neck on the NORTH with the breastwork and Gun Hill north of it; river flows around E/S/W; 'south bank' in sources = the outside of the loop (W, S and E).",
+  "river_width_caveat": "Modern NHD arms are ~600-700 m apart at the breastwork latitude, wider than the 250-400 yd breastwork; the NPS marks the breastwork at the narrowest part and the ends probably met ravines/marsh/banks not captured by the centreline. Use acc_m and let the map artist close the line to the banks.",
+  "lake_martin": "Lake Martin (Martin Dam, 1926-27, Alabama Power) lies DOWNSTREAM; its reservoir polygon (OSM bbox) tops out near 32.93 N, the bend is at ~32.97 N. NPS says Alabama Power proposed a 1914 dam that would have flooded the battlefield but the park preserved it. The bend and its two islands are unflooded; draw the plain river. Menawa's native Okfuskee and other Tallapoosa towns ARE under Lake Martin; Fort Williams is under Lay Lake and Fort Strother is in Neely Henry Lake country (do not show lakes).",
+  "flags": "Period US flag 1814: 15 stars, 15 stripes (Star-Spangled Banner flag, Flag Act 1795). British: Union Flag of 1801 (St George + St Andrew + St Patrick). Red Sticks: NO documented flag; name from red-painted war clubs; do not invent one. Allies wore white deer tails (NPS) to be told apart."
+ }
+}

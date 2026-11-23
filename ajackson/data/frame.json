@@ -1,0 +1,8 @@
+{
+ "name": "ajackson_z10",
+ "note": "BASE frame of the Battle 20 (Andrew Jackson) worlds: web mercator zoom 10, origin = world px of ~(33.7 N, 91.7 W) rounded to 16. Map units: x east, y south; 1 base unit = 1 z10 pixel (132.5 m at New Orleans, 128.3 m at Horseshoe Bend). A region with zoom z uses base units x 2^(z-10) (gulf z8 = /4, horseshoe z11 = x2). engine_mpu = the metres-per-unit the engine assumes (GM3D_GEO.mpu; the Vicksburg value, so smoke / clouds / troops keep their approved size in map units); the baker rescales each region's exag so its relief stays true to the real metres per unit.",
+ "zoom": 10,
+ "origin": [64288, 104976],
+ "engine_mpu": 129.36,
+ "credit": "Terrain: Mapzen / AWS Terrain Tiles (open data); rivers: OpenStreetMap contributors (ODbL)"
+}

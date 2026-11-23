@@ -1,0 +1,374 @@
+{
+ "mode": "wide",
+ "zoom": 8,
+ "note": "Gulf strategic map 1813-15 (overview + the cloud dives): New Orleans, Lakes Borgne / Pontchartrain, Mobile, Pensacola, Fort Mims, the Alabama / Tombigbee / Coosa / Tallapoosa (Horseshoe Bend), the Gulf of Mexico. Zoom-8 frame: 1 unit = ~523 m (base units / 4). Modern reservoirs filled from the banks (1814 rivers only); coast + lakes = DEM <= 0 m (delta roughly as today).",
+ "box": [
+  20,
+  22,
+  1206,
+  1024
+ ],
+ "stills": [
+  {
+   "at": [
+    623,
+    560
+   ],
+   "dist": 1150,
+   "tilt": 30,
+   "yaw": 0
+  },
+  {
+   "at": [
+    300,
+    790
+   ],
+   "dist": 330,
+   "tilt": 44,
+   "yaw": 0
+  },
+  {
+   "at": [
+    1088,
+    165
+   ],
+   "dist": 170,
+   "tilt": 52,
+   "yaw": -8
+  }
+ ],
+ "hm_ppu": 1.5,
+ "tex": 8192,
+ "exag": 20.0,
+ "cell": 22.0,
+ "seed": 1814,
+ "dem_ppu": 2,
+ "dem_margin": 24,
+ "dem_edits": {
+  "sea": {
+   "level": 0.0,
+   "min_px": 300,
+   "island_px": 40,
+   "seeds": [
+    [
+     30.18,
+     -90.1
+    ],
+    [
+     30.25,
+     -90.45
+    ],
+    [
+     30.03,
+     -89.62
+    ],
+    [
+     30.45,
+     -88.0
+    ],
+    [
+     30.4,
+     -87.1
+    ],
+    [
+     30.38,
+     -86.4
+    ]
+   ]
+  },
+  "fill_water": true,
+  "spike_m": 60.0,
+  "sea_floor_m": 0.0
+ },
+ "sea_look": {
+  "shelf_u": 6.0
+ },
+ "creek_km2": 150.0,
+ "creeks": {
+  "paint_km2": 600,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.12,
+ "villages": 0,
+ "rivers": [
+  {
+   "name": "Mississippi River",
+   "geo": [
+    "Mississippi River"
+   ],
+   "w": 3.2,
+   "step": 1.0,
+   "snap": false
+  },
+  {
+   "name": "Alabama River",
+   "geo": [
+    "Alabama River"
+   ],
+   "w": 1.3,
+   "step": 1.0
+  },
+  {
+   "name": "Tombigbee River",
+   "geo": [
+    "Tombigbee River"
+   ],
+   "w": 1.2,
+   "step": 1.0
+  },
+  {
+   "name": "Mobile River",
+   "geo": [
+    "Mobile River"
+   ],
+   "w": 1.6,
+   "step": 1.0,
+   "snap": false
+  },
+  {
+   "name": "Tensaw River",
+   "geo": [
+    "Tensaw River"
+   ],
+   "w": 0.9,
+   "step": 1.0,
+   "snap": false
+  },
+  {
+   "name": "Coosa River",
+   "geo": [
+    "Coosa River"
+   ],
+   "w": 1.2,
+   "step": 1.0
+  },
+  {
+   "name": "Tallapoosa River",
+   "geo": [
+    "Tallapoosa River"
+   ],
+   "w": 1.0,
+   "step": 1.0
+  },
+  {
+   "name": "Pearl River",
+   "geo": [
+    "Pearl River"
+   ],
+   "w": 0.9,
+   "step": 1.0
+  },
+  {
+   "name": "Pascagoula River",
+   "geo": [
+    "Pascagoula River"
+   ],
+   "w": 1.0,
+   "step": 1.0
+  },
+  {
+   "name": "Black Warrior River",
+   "geo": [
+    "Black Warrior River"
+   ],
+   "w": 1.0,
+   "step": 1.0
+  },
+  {
+   "name": "Chattahoochee River",
+   "geo": [
+    "Chattahoochee River"
+   ],
+   "w": 1.2,
+   "step": 1.0
+  },
+  {
+   "name": "Conecuh River",
+   "geo": [
+    "Conecuh River"
+   ],
+   "w": 0.8,
+   "step": 1.0
+  },
+  {
+   "name": "Escambia River",
+   "geo": [
+    "Escambia River"
+   ],
+   "w": 0.9,
+   "step": 1.0
+  },
+  {
+   "name": "Cahaba River",
+   "geo": [
+    "Cahaba River"
+   ],
+   "w": 0.7,
+   "step": 1.0
+  },
+  {
+   "name": "Leaf River",
+   "geo": [
+    "Leaf River"
+   ],
+   "w": 0.7,
+   "step": 1.0
+  },
+  {
+   "name": "Chickasawhay River",
+   "geo": [
+    "Chickasawhay River"
+   ],
+   "w": 0.7,
+   "step": 1.0
+  },
+  {
+   "name": "Choctawhatchee River",
+   "geo": [
+    "Choctawhatchee River"
+   ],
+   "w": 0.8,
+   "step": 1.0
+  },
+  {
+   "name": "Perdido River",
+   "geo": [
+    "Perdido River"
+   ],
+   "w": 0.6,
+   "step": 1.0
+  },
+  {
+   "name": "Yellow River",
+   "geo": [
+    "Yellow River"
+   ],
+   "w": 0.6,
+   "step": 1.0
+  },
+  {
+   "name": "Amite River",
+   "geo": [
+    "Amite River"
+   ],
+   "w": 0.6,
+   "step": 1.0
+  }
+ ],
+ "roads": [
+  {
+   "geo": "Federal Road (1811)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Mobile - Pensacola road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Mobile - Fort Stoddert road",
+   "cls": "pike"
+  },
+  {
+   "geo": "River road, Baton Rouge - New Orleans",
+   "cls": "pike"
+  },
+  {
+   "geo": "Natchez - Baton Rouge road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Gentilly road (Chef Menteur road)",
+   "cls": "pike"
+  }
+ ],
+ "towns": [
+  {
+   "name": "New Orleans",
+   "geo": "New Orleans",
+   "rad": 3.2,
+   "houses": 40,
+   "grid": {
+    "block": 1.4,
+    "angle": -38
+   }
+  },
+  {
+   "name": "Mobile",
+   "geo": "Mobile",
+   "rad": 2.0,
+   "houses": 18,
+   "grid": {
+    "block": 1.3
+   }
+  },
+  {
+   "name": "Pensacola",
+   "geo": "Pensacola",
+   "rad": 1.8,
+   "houses": 16,
+   "grid": {
+    "block": 1.3
+   }
+  },
+  {
+   "name": "Baton Rouge",
+   "geo": "Baton Rouge",
+   "rad": 1.4,
+   "houses": 10
+  },
+  {
+   "name": "Natchez",
+   "geo": "Natchez",
+   "rad": 1.6,
+   "houses": 12
+  },
+  {
+   "name": "St. Stephens",
+   "geo": "St. Stephens",
+   "rad": 1.0,
+   "houses": 6
+  },
+  {
+   "name": "Fort Stoddert",
+   "geo": "Fort Stoddert",
+   "rad": 0.7,
+   "houses": 4
+  },
+  {
+   "name": "Fort Mims",
+   "geo": "Fort Mims",
+   "rad": 0.6,
+   "houses": 4
+  },
+  {
+   "name": "Fort Jackson",
+   "geo": "Fort Jackson",
+   "rad": 0.7,
+   "houses": 4
+  },
+  {
+   "name": "Tuckabatchee",
+   "geo": "Tuckabatchee",
+   "rad": 0.9,
+   "houses": 6,
+   "snap": false
+  }
+ ],
+ "features": {
+  "works": []
+ },
+ "labels": [
+  "Horseshoe Bend",
+  "Fort Bowyer",
+  "Fort St. Philip",
+  "Lake Borgne",
+  "Lake Pontchartrain",
+  "Mobile Bay",
+  "Gulf of Mexico",
+  "Pea Island",
+  "Cat Island",
+  "Fort Williams",
+  "Fort Mims",
+  "Chalmette Battlefield (park centre)"
+ ]
+}
