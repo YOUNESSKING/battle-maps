@@ -220,12 +220,16 @@ for side, nm in ((1, "River road, east bank (levee road)"), (-1, "River road, we
     keep = (Lr[:, 0] > a[0]) & (Lr[:, 0] < b[0])
     ROADS.append(mline(nm, "road", Lr[keep], "derived: OSM river centre line offset to the levee (Latour: the road ran along the levee)", 150,
                        "east bank = Jackson's road from the city to the line and on to Villere; west bank = Morgan's / Thornton's road"))
+# Baton Rouge -> New Orleans along the east bank (gulf map scale: the gulf ribbon is 3.2 z8 units wide -> offset 2.2 z8 units = 8.8 base units)
+_M = longest("Mississippi River"); _M = _M if _M[0][1] < _M[-1][1] else _M[::-1]
+_R = smooth(offset(densify(_M, 2.0), 8.8), 3); _br, _no = np.array(to_map(30.4515, -91.1871)), np.array(to_map(29.9575, -90.0629))
+_i0 = int(np.argmin(np.hypot(*(_R - _br).T))); _i1 = int(np.argmin(np.hypot(*(_R - _no).T)))
+ROADS.append(mline("River road, Baton Rouge - New Orleans", "road", np.vstack([_br, _R[min(_i0, _i1):max(_i0, _i1) + 1], _no]), "derived: OSM river offset to the east-bank levee (gulf scale)", 3000))
 ROADS += [
  line("Federal Road (1811)", "road", [(32.347, -85.02), (32.36, -85.25), (32.33, -85.47), (32.42, -85.69), (32.37, -86.09), (32.17, -86.40),
       (31.86, -86.75), (31.55, -87.17), (31.38, -87.50), (31.20, -87.82), (31.085, -88.005)], "EST (Fort Mitchell - Fort Bainbridge - Fort Hull - Mount Meigs - Burnt Corn - Fort Mims area - Fort Stoddert)", 6000, "VERIFY waypoints"),
  line("Mobile - Pensacola road", "road", [(30.6912, -88.0425), (30.74, -87.92), (30.70, -87.75), (30.55, -87.50), (30.4107, -87.2112)], "EST (via Blakeley, round the bay heads)", 6000),
  line("Mobile - Fort Stoddert road", "road", [(30.6912, -88.0425), (30.85, -88.06), (31.085, -88.005)], "EST", 4000),
- line("River road, Baton Rouge - New Orleans", "road", [(30.4515, -91.1871), (30.20, -91.05), (30.10, -90.95), (30.05, -90.60), (30.0, -90.30), (29.9575, -90.0629)], "EST (east bank levee road)", 4000),
  line("Natchez - Baton Rouge road", "road", [(31.5604, -91.4032), (31.20, -91.30), (30.85, -91.25), (30.4515, -91.1871)], "EST", 6000),
  line("Gentilly road (Chef Menteur road)", "road", [(29.9575, -90.0629), (29.99, -89.98), (30.03, -89.88), (30.0648, -89.8046)], "EST", 2500, "Jackson guarded it against a landing at Chef Menteur"),
 ]

@@ -7,12 +7,14 @@ sys.path.insert(0, "/home/user/battle-maps/grant/tools")
 from kokoro_onnx import Kokoro
 import tts_names
 from tts_names import speak
+tts_names.PHON.update({"Villeré": "vˈɪləɹˌeɪ", "Pakenham": "pˈeɪkənəm", "Tohopeka": "tˌoʊhəpˈiːkə", "Tallapoosa": "tˌæləpˈuːsə",
+    "Baratarians": "bˌæɹətˈɛɹiənz", "Lafitte": "ləfˈiːt", "Borgne": "bˈɔːɹn"})
 # this video's names (exact Kokoro phonemes where the default is wrong; ear-checked via the whisper round trip in words.py)
 # default Kokoro phonemes checked 2026-11-18: Bruinsburg, Pemberton, McClernand, Vicksburg fine; Tilghman + Grierson fixed in tts_names
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "am_michael"
 SPEED = float(sys.argv[2]) if len(sys.argv) > 2 else 1.0
 ONLY = sys.argv[3] if len(sys.argv) > 3 else None
-SAY = {"1863": "eighteen sixty-three", "1862": "eighteen sixty-two", "C.S.A.": "C. S. A.", "Ulysses S. Grant": "Ulysses S Grant"}
+SAY = {}
 V = "/home/user/battle-maps/ajackson"; OUT = f"{V}/audio"
 GAP_PARA, GAP_SECTION, HEAD = 0.55, 1.4, 0.4
 
