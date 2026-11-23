@@ -82,22 +82,19 @@ def variant_b():
     sub = "THEN THE BRITISH ATTACKED"; fs = ImageFont.truetype(SER, 34); s = "   ".join(" ".join(w) for w in sub.split()); sy_ = gy + glyph.height + 24
     tm = Image.new("L", (W, H), 0); tm.paste(glyph, (gx, gy)); ImageDraw.Draw(tm).text((810, sy_), s, font=fs, fill=255, anchor="ma")
     rv = branch_rivers(seed=9); rv.putalpha(ImageChops.subtract(rv.split()[3].point(lambda v: int(v * 0.32)), tm.filter(ImageFilter.MaxFilter(31)))); im = Image.alpha_composite(im, rv)
-    sx, sy = 690, 565; ix, iy = 1020, 440
-    ic = Image.open(T + "icon_vidiq_rampart2.png").convert("RGBA"); a_ = np.array(ic); a_[..., 3] = np.where(a_[..., 3] < 70, 0, a_[..., 3]); ic = Image.fromarray(a_); ic = ic.crop(ic.getbbox())
-    ic = ImageEnhance.Brightness(ImageEnhance.Contrast(ic.convert("RGB")).enhance(1.05)).enhance(1.12).convert("RGBA") if False else ic
-    ic.thumbnail((520, 520), Image.LANCZOS); px, py = int(ix - ic.width / 2), int(iy - ic.height / 2)
-    bloom = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(bloom).ellipse([ix - 250, iy - 100, ix + 250, iy + 130], fill=(255, 150, 60, 90)); im = Image.alpha_composite(im, bloom.filter(ImageFilter.GaussianBlur(50)))
-    rgb_ = ImageEnhance.Brightness(ic.convert("RGB")).enhance(1.15); ic2 = rgb_.convert("RGBA"); ic2.putalpha(ic.split()[3])
-    shd = Image.new("RGBA", (W, H), (0, 0, 0, 0)); sb_ = Image.new("RGBA", ic2.size, (0, 0, 0, 255)); sb_.putalpha(ic2.split()[3].point(lambda v: int(v * 0.6))); shd.alpha_composite(sb_, (px + 6, py + 10)); im = Image.alpha_composite(im, shd.filter(ImageFilter.GaussianBlur(8)))
-    im.alpha_composite(ic2, (px, py))
-    # THEN THE BRITISH ATTACKED: small red blocks + a red arrow coming at the wall (ditch side, bottom right)
-    for (x, y, n) in [(905, 592, 4), (1010, 592, 4), (1115, 592, 4)]:
-        im = formation(im, (x, y), (184, 30, 40), n, 2, cw=20, ch=12, gap=3, ang=0.0)
-    im = taper_arrow(im, [(1252, 700), (1268, 650), (1236, 604)], 24, 12, (214, 40, 46, 255), glow=(255, 90, 80, 150))
+    sx, sy = 715, 580; ix, iy = 1035, 450
+    # payoff = a crop of OUR OWN 3D film frame of the wall (S07, 8 Jan): wall + guns + blue ranks + red columns coming, soft vignette + thin gold frame
+    fr = Image.open(T + "film_wall_S07_60s.png").convert("RGB").crop((10, 215, 1010, 665)); fw, fh = 480, 216; fr = fr.resize((fw, fh), Image.LANCZOS)
+    fr = ImageEnhance.Contrast(ImageEnhance.Color(fr).enhance(1.25)).enhance(1.1); fr = ImageEnhance.Brightness(fr).enhance(1.08)
+    msk = Image.new("L", (fw, fh), 0); ImageDraw.Draw(msk).rounded_rectangle([6, 6, fw - 7, fh - 7], radius=14, fill=255); msk = msk.filter(ImageFilter.GaussianBlur(4))
+    px, py = int(ix - fw / 2), int(iy - fh / 2); fr = fr.convert("RGBA"); fr.putalpha(msk)
+    bloom = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(bloom).ellipse([ix - 290, iy - 150, ix + 290, iy + 150], fill=(255, 170, 70, 80)); im = Image.alpha_composite(im, bloom.filter(ImageFilter.GaussianBlur(45)))
+    shd = Image.new("RGBA", (W, H), (0, 0, 0, 0)); sb_ = Image.new("RGBA", fr.size, (0, 0, 0, 255)); sb_.putalpha(msk.point(lambda v: int(v * 0.7))); shd.alpha_composite(sb_, (px + 6, py + 10)); im = Image.alpha_composite(im, shd.filter(ImageFilter.GaussianBlur(9)))
+    im.alpha_composite(fr, (px, py)); ImageDraw.Draw(im).rounded_rectangle([px + 6, py + 6, px + fw - 7, py + fh - 7], radius=14, outline=(214, 176, 96, 255), width=3)
     im = glossy_seal(im, (sx, sy), 58)
-    im = taper_arrow(im, [(sx + 64, sy + 2), (sx + 180, sy + 36), (sx + 170, sy - 40)], 22, 12, (126, 195, 255, 255), glow=(70, 150, 240, 190))
+    im = taper_arrow(im, [(sx + 64, sy - 6), (sx + 130, sy - 70), (px - 6, py + fh - 70)], 24, 13, (126, 195, 255, 255), glow=(70, 150, 240, 190))
     fl = ImageFont.truetype(SER, 36)
-    for t, (x, y) in [("NEW ORLEANS", (sx + 10, sy + 66)), ("THE MUD WALL", (1085, 648))]:
+    for t, (x, y) in [("NEW ORLEANS", (sx + 40, sy + 66)), ("THE MUD WALL", (ix, py + fh + 12))]:
         g = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(g).text((x, y), t, font=fl, fill=(255, 210, 140, 160), anchor="ma"); im = Image.alpha_composite(im, g.filter(ImageFilter.GaussianBlur(6)))
         im = text_shadow(im, (x, y), t, fl, (246, 232, 196), "ma", off=(2, 3), blur=3, op=220, stroke_width=1, stroke_fill=(246, 232, 196))
     sh = Image.new("RGBA", (W, H), (0, 0, 0, 0)); shg = Image.new("RGBA", glyph.size, (0, 0, 0, 255)); shg.putalpha(glyph.point(lambda v: int(v * 0.5))); sh.alpha_composite(shg, (gx, gy + 8))
