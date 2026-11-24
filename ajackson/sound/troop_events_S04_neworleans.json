@@ -31,7 +31,7 @@
     "nx": 0.132,
     "ny": 0.585,
     "onScreen": true,
-    "camDist": 184.03
+    "camDist": 184.07
    },
    "unit": {
     "unit": 3,
@@ -570,7 +570,7 @@
     "nx": 0.113,
     "ny": 0.485,
     "onScreen": true,
-    "camDist": 170.2
+    "camDist": 170.22
    },
    "unit": {
     "unit": 0,
@@ -599,7 +599,7 @@
     "nx": 0.176,
     "ny": 0.473,
     "onScreen": true,
-    "camDist": 167.06
+    "camDist": 167.07
    },
    "unit": {
     "unit": 1,
@@ -628,7 +628,7 @@
     "nx": 0.141,
     "ny": 0.567,
     "onScreen": true,
-    "camDist": 161.64
+    "camDist": 161.65
    },
    "unit": {
     "unit": 2,
