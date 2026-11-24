@@ -1,7 +1,7 @@
 # Battle 20: Andrew Jackson's Top 3 Legendary Tactical Moves (3D, finished 2026-11-23)
 
 Master 1080p (14:15, -14.1 LUFS, owner's own voice clone) + 720p preview + PDF publishing guide + thumbnails A/B: **https://gofile.io/d/YkjzrvSY**
-(md5 checked on upload). **Use the `_v2` files** (2026-11-24, owner fixes after delivery: no idle units in action shots, no blocks crossing in the night attack, richer wide overhead maps; master md5 54b32f1c3b103ed7996794a9554e94b1). The folder also holds the older cut without `_v2` and two PDFs with the same name: the newer one mentions v2.
+(md5 checked on upload). **Use the `_v3` files** (2026-11-24: v2 picture + the owner's sound fix: cannons ~8 dB above musket volleys; master md5 82cd05e88fcb1735a98dfa464f3d0b52). v2 = (2026-11-24, owner fixes after delivery: no idle units in action shots, no blocks crossing in the night attack, richer wide overhead maps; master md5 54b32f1c3b103ed7996794a9554e94b1). The folder also holds the older cut without `_v2` and two PDFs with the same name: the newer one mentions v2.
 Final critics: A (look + troop motion) 5.5 -> 6.8 -> 7.6 -> **8.1**, B (story + sync + sound) 6.8 -> 8.0 -> **8.1**; both "fit to publish" (`critics/`).
 RunPod spend for the film ~$1.01 incl. the owner-fix pass (balance $0.996 -> -$0.02, about 2 cents overdrawn; S02 + S08 of v2 rendered on the local CPU); every pod terminated, list verified empty. Decisions: `OWNER_DECISIONS.md`.
 
