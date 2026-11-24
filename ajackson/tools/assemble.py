@@ -76,12 +76,12 @@ print(f"audio: {D:.1f} s, cues {ncue}, voice {os.path.basename(vw)}")
 if "--audio-only" in sys.argv: sys.exit(0)
 
 # video: xfade chain (each scene's last TAIL s dissolves into the next scene's first TAIL s)
-ins, fl, prev, acc = [], [], "0:v", 0.0
+ins, fl, prev, acc = [], [f"[{i}:v]fps=30,settb=AVTB,format=yuv420p[n{i}]" for i in range(len(S))], "n0", 0.0   # same timebase for pod + local renders
 for i, s in enumerate(S):
     ins += ["-i", f"{RD}/{s['id']}.mp4"]
 for i, s in enumerate(S[:-1]):
     acc += s["D"] - TAIL
-    lab = f"v{i}"; fl.append(f"[{prev}][{i + 1}:v]xfade=transition=fade:duration={TAIL}:offset={acc:.3f}[{lab}]"); prev = lab
+    lab = f"v{i}"; fl.append(f"[{prev}][n{i + 1}]xfade=transition=fade:duration={TAIL}:offset={acc:.3f}[{lab}]"); prev = lab
 scale = "" if "--720" in sys.argv else ",scale=1920:1080:flags=lanczos"
 fl.append(f"[{prev}]fps=30,format=yuv420p{scale}[vout]")
 subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-i", f"{B}/mix_norm.wav", "-filter_complex", ";".join(fl), "-map", "[vout]", "-map", f"{len(S)}:a",
