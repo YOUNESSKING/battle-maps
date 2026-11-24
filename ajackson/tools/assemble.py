@@ -64,7 +64,7 @@ vabs = np.abs(vo).mean(1); k = int(0.25 * SR); venv = np.convolve(vabs, np.ones(
 # musket / march / cheer stem from the visible troop events (tools/troop_stem.py; replaces the old single volley sample), -6 dB under words
 tst = load(f"{V}/build/troop_stem.wav") if os.path.exists(f"{V}/build/troop_stem.wav") else np.zeros((N, 2), np.float32)
 troop = np.zeros((N, 2), np.float32); place(troop, tst, 0, 1.0)
-mix = vo + mus * db(-19) * (1 - 0.55 * venv)[:, None] + amb * db(-24) * (1 - 0.35 * venv)[:, None] + sfx * (1 - 0.5 * venv)[:, None] + troop * db(-4) * (1 - 0.85 * venv)[:, None]   # critic B r1: words were masked by the battle sound
+mix = vo + mus * db(-19) * (1 - 0.55 * venv)[:, None] + amb * db(-24) * (1 - 0.35 * venv)[:, None] + sfx * db(4) * (1 - 0.25 * venv)[:, None] + troop * db(-12) * (1 - 0.85 * venv)[:, None]   # owner 2026-11-24: muskets were louder than the artillery   # critic B r1: words were masked by the battle sound
 mix *= ramp(N, 0, 2.5)
 B = f"{V}/build"; os.makedirs(B, exist_ok=True); sf.write(f"{B}/mix.wav", mix, SR, subtype="FLOAT")
 LN = "loudnorm=I=-14:TP=-1.5:LRA=11"
