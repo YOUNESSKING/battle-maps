@@ -47,7 +47,7 @@ story = [Spacer(1, 18 * mm), P("ANDREW JACKSON", "cover"), P("TOP 3 LEGENDARY TA
          P("Publishing guide: everything you need to upload the finished video", "coversub"), Spacer(1, 8 * mm), img(TA, 150), Spacer(1, 3 * mm),
          P("Main thumbnail A: the Jarvis portrait (public domain) over a painted aerial of the Chalmette plain, our unit blocks and the mud wall.", "coversub"), PageBreak()]
 story += [P("1. The finished video", "h1"), table([["Item", "Details"], ["Gofile link", E("GOFILE", "(added by the lead)")],
-          ["Files", "Jackson-Top3-1080p.mp4 (master), Jackson-Top3-720p-preview.mp4, this guide, thumbnails A and B"],
+          ["Files", "USE Jackson-Top3-1080p_v2.mp4 (master) and Jackson-Top3-720p-preview_v2.mp4 (v2 = owner fixes: no idle units, no crossing blocks, richer wide maps); the files without _v2 are the older cut"],
           ["Final critic scores", f"Critic A (look + troop motion) {E('SCORE_A', '?')}/10, Critic B (story + sync + sound) {E('SCORE_B', '?')}/10 ({E('ROUNDS', '')})"],
           ["Format", "Top 3 commander film in the 3D look (Vicksburg engine), ~14 min, 3 cloud dives, line-block troops, visible muzzle flashes with real musket recordings"],
           ["Voice", "AI narration converted to the owner's own voice clone"],
