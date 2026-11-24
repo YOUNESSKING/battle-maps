@@ -15,7 +15,7 @@ import json, os, subprocess, sys
 import numpy as np, soundfile as sf
 from scipy.signal import butter, sosfilt, fftconvolve, resample_poly
 
-REPO = "/home/user/battle-maps"; V = f"{REPO}/vicksburg"; SD = f"{V}/sound"; SH = f"{SD}/shots"; GG = f"{REPO}/goosegreen/assets/media/sfx"
+REPO = "/home/user/battle-maps"; V = f"{REPO}/vicksburg"; SD = f"{V}/sound"; SH = os.environ.get("TROOP_SHOTS", f"{SD}/shots"); GG = f"{REPO}/goosegreen/assets/media/sfx"   # TROOP_SHOTS = another shot set (e.g. ajackson/sound/shots_flint)
 SR = 48000; SEED = 1863
 db = lambda x: 10 ** (x / 20)
 BUCKET_M = {"enf05": 0, "enf10": 1, "enf20": 2, "enf30a": 3, "enf30b": 3, "enf60a": 4, "enf60b": 4}   # recording distance class 5/10/20/30/60 m
