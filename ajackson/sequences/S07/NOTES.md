@@ -54,3 +54,10 @@ Open issues: blocks are small at dist 20-30 (kept near S06's size for the dissol
 ## Round 3 fixes
 - Shots off sentence-final words: 65.55 -> 66.0 ("it."), 72.25 -> 72.6 and 72.9 -> 73.3 ("them."), redoubt gun 102.4 -> 102.0 and 104.95 ->
   105.35, redoubt volleys at 102.9 / 105.3 (every 2.4 s; clear of "Its" 102.53 and "it," 104.73). Motion check unchanged (flags only at cuts).
+
+## Owner fixes (every unit in an action shot takes part; blocks never cross)
+- NO LADDERS shot (55.9-69.9): framed tighter (dist 9.2-9.6, centred on the column) so the idle British reserve by the 1 Jan parapet is out
+  of frame; the Tennesseans / Kentuckians on the receding leg (top left) now fire too (sparse volley every 3.2 s from 57.6).
+- The river column storms up to musket range of the advanced redoubt (RIN 2.15; it touched the defenders before); Thornton's force halts at
+  Morgan's breastwork as his men turn about (it walked through them before); its arrow ends at the breastwork.
+- `check_side_gap.mjs` S07 0-152.86: 0 pairs closer than 0.25, 0 crossings. S06 and S01 (chalmette): 0 / 0 as well (unchanged).

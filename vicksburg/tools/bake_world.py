@@ -1056,7 +1056,10 @@ def bake(rname, G, P, creeks, preview=True):
         if L is None: continue
         lm = np.zeros((TH, TW), np.uint8); cv2.fillPoly(lm, [np.round(np.array([Pt(p) for p in L]) * 4).astype(np.int32)], 255, cv2.LINE_AA, shift=2)
         lm = cv2.GaussianBlur(lm.astype(np.float32) / 255, (0, 0), 1.0)[..., None]; img = img * (1 - lm) + hexc("#3e5560") * lm
-    if MARSH is not None: img = paint_marsh(img, MARSH, forest, TW, TH, bw, seed)
+    if MARSH is not None: img = paint_marsh(img, MARSH, forest, TW, TH, bw, seed, cfg.get("swamp_band", {}))
+    if PROJ and cfg.get("river_halo_u") and not close:   # project mode (wide): paint water just past the ribbon edge so the rivers read bolder from altitude
+        hl = np.clip(1 - (dist_t - hw_t) / cfg["river_halo_u"], 0, 1)[..., None] * 0.9
+        img = img * (1 - hl) + hexc(cfg.get("river_halo_col", "#4d6876")) * hl; del hl
     if SEA is not None: img = paint_sea(img, sea_t, close, s, cfg.get("sea_look", {})); del sea_t
     if town: img = paint_town(img, town, Pt, s)
     # ---------------- roads ----------------
@@ -1118,7 +1121,12 @@ def bake(rname, G, P, creeks, preview=True):
     del shade, ht
     img = np.clip(img + (fbm(TH, TW, 3, 60, seed + 9)[..., None] - 0.5) * 6, 0, 255)
     if not close: lum = img.mean(-1, keepdims=True); img = np.clip(img * 0.92 + lum * 0.08, 0, 255); del lum
-    img8 = img[..., ::-1].astype(np.uint8); del img
+    if PROJ and cfg.get("tex_grade"):   # project mode: richer ground (contrast about the mean, saturation, gamma); Vicksburg never sets it
+        tg_ = cfg["tex_grade"]; mu = img.reshape(-1, 3).mean(0)
+        img = (img - mu) * tg_.get("contrast", 1.0) + mu * tg_.get("level", 1.0)
+        lum = img.mean(-1, keepdims=True); img = lum + (img - lum) * tg_.get("sat", 1.0); del lum
+        img = 255.0 * (np.clip(img, 0, 255) / 255.0) ** tg_.get("gamma", 1.0)
+    img8 = np.clip(img, 0, 255)[..., ::-1].astype(np.uint8); del img
     cv2.imwrite(f"{out}/ground.jpg", img8, [cv2.IMWRITE_JPEG_QUALITY, cfg.get("jpeg_q", 88 if close else 90)])
     LOG("  ground.jpg %.1f MB" % (os.path.getsize(f"{out}/ground.jpg") / 1e6))
     # ---------------- heightmap: canopy + earthwork berms ----------------
@@ -1300,12 +1308,13 @@ def swamp_band(cb, G, forest, box, TW, TH, s, seed):
     return cv2.resize(f4, (TW, TH), interpolation=cv2.INTER_LINEAR), cv2.resize(marsh, (TW, TH), interpolation=cv2.INTER_LINEAR)
 
 
-def paint_marsh(img, marsh, forest, TW, TH, bw, seed):
+def paint_marsh(img, marsh, forest, TW, TH, bw, seed, cb=None):
     """open marsh: pale olive-tan sedge with darker streaks and small dark pools (Lake Borgne side of the swamp)"""
     m = (marsh * (1 - forest))[..., None]
     n1 = cv2.resize(fbm(TH // 4, TW // 4, 4, int(bw / 1.5), seed + 310), (TW, TH)); n2 = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.35), seed + 311), (TW, TH))
-    col = hexc("#8f8c66")[None, None] * (0.86 + 0.26 * n1[..., None]) * (0.95 + 0.1 * n2[..., None])
-    col = col * (1 - 0.35 * np.clip((n2 - 0.62) * 6, 0, 1))[..., None] + hexc("#6c7556") * 0.35 * np.clip((n2 - 0.62) * 6, 0, 1)[..., None]
+    cb = cb or {}
+    col = hexc(cb.get("marsh_col", "#8f8c66"))[None, None] * (0.86 + 0.26 * n1[..., None]) * (0.95 + 0.1 * n2[..., None])
+    col = col * (1 - 0.35 * np.clip((n2 - 0.62) * 6, 0, 1))[..., None] + hexc(cb.get("marsh_dark", "#6c7556")) * 0.35 * np.clip((n2 - 0.62) * 6, 0, 1)[..., None]
     pool = np.clip((n1 * 0.6 + n2 * 0.4 - 0.71) * 14, 0, 1)[..., None]
     col = col * (1 - pool) + hexc("#4d6268") * pool
     return img * (1 - m) + col * m

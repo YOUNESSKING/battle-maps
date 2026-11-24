@@ -141,6 +141,7 @@ const markers = VX.markers([
 
 const SS = 2, DS = 4.0;   // dive swap time
 window.SEQ = {
+  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // owner 2026-11-23: richer wide overhead maps (world engineer)
   name: "S03", D: T.D, T, seed: 1814, date: "1814-03-27",
   regions: [GF, HS],
   troops: "blocks", troopsOpts: { look: "lineblocks" },

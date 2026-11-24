@@ -39,7 +39,7 @@
  ],
  "hm_ppu": 1.5,
  "tex": 8192,
- "exag": 14.0,
+ "exag": 28.0,
  "cell": 34.0,
  "seed": 1814,
  "dem_ppu": 2,
@@ -81,19 +81,29 @@
   "sea_floor_m": 0.0
  },
  "sea_look": {
-  "shelf_u": 6.0
+  "deep": "#33505f",
+  "shallow": "#5f8288",
+  "shelf_u": 8.0,
+  "beach_u": 0.6,
+  "line_u": 0.2
  },
  "creek_km2": 150.0,
  "creeks": {
   "paint_km2": 600,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.0,
+ "woods": 0.06,
  "villages": 0,
  "wood_soft": {
-  "blur_u": 2.2,
-  "alpha": 0.5
+  "blur_u": 0.5,
+  "alpha": 0.85
  },
+ "tex_grade": {
+  "contrast": 1.22,
+  "sat": 1.3,
+  "gamma": 0.97
+ },
+ "river_halo_u": 0.5,
  "rivers": [
   {
    "name": "Mississippi River",

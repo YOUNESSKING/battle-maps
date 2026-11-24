@@ -45,6 +45,7 @@ const pulses = VX.pulses([
 ]);
 
 window.SEQ = {
+  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // owner 2026-11-23: richer wide overhead maps (world engineer)
   name: "S02", D: T.D, T, seed: 1813, date: "1813-08-30",
   regions: [G],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
