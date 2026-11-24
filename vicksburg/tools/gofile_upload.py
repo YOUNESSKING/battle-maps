@@ -12,7 +12,7 @@ def file_md5(f):
 for f in files:
     cmd = ["curl", "-sS", "--retry", "4", "--retry-delay", "10", "-F", f"file=@{f}"]
     if S.get("folder"): cmd += ["-F", f"folderId={S['folder']}", "-H", f"Authorization: Bearer {S['token']}"]
-    out = subprocess.run(cmd + ["https://upload.gofile.io/uploadfile"], capture_output=True, text=True).stdout
+    out = subprocess.run(cmd + [os.environ.get("GOFILE_UPLOAD", "https://upload.gofile.io/uploadfile")], capture_output=True, text=True).stdout   # GOFILE_UPLOAD e.g. https://upload-eu-par.gofile.io/uploadfile when the main host is down
     try: d = json.loads(out)["data"]
     except Exception: print("FAILED", f, out[:300]); continue
     if not S.get("folder"): S = {"folder": d["parentFolder"], "token": d.get("guestToken", ""), "page": d.get("downloadPage", "")}
