@@ -281,7 +281,7 @@ window.SEQ = {
   name: "S05", D: T.D, T, seed: 1776, date: "1776-12-25",
   regions: [JE, CR, TR, CO],
   regionOpts: { [JE]: { troopScale: 8 }, [CO]: { troopScale: 6 }, [CR]: { decks }, [TR]: { troopScale: 1.6 } },
-  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })) } },   // the small wide-map bridge meshes read as crosses from far away
+  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // houseK as S06; the small wide-map bridge meshes read as crosses from far away
   troops: "blocks", troopsOpts: { look: "lineblocks" },
   keys: [
     // 1. jersey, winter day: the chain of posts; Trenton
