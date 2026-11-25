@@ -94,18 +94,18 @@ Then they chased what was left of his army across New Jersey, all the way to the
 On the seventh and eighth of December, he crossed into Pennsylvania, and took every boat along sixty miles of the river with him, so the British could not follow. Congress fled Philadelphia.
 
 [S04 | red posts settle along the New Jersey bank: Trenton, Bordentown, Princeton; Trenton glows; label HESSIANS: RALL, LOSSBERG, KNYPHAUSEN on its words; Rall banner with a red pennant]
-The British settled into winter posts across New Jersey. At the river town of Trenton they left three regiments of Hessians, about fifteen hundred men, under Colonel Johann Rall.
+The British settled into winter posts across New Jersey. At the river town of Trenton they left three regiments of Hessians, about fourteen hundred men, under Colonel Johann Rall.
 
 [S04 | the blue camp behind the river: blocks thin out, a few fade away; caption ENLISTMENTS END 31 DECEMBER on its words; the date plate stays]
 On the other bank, Washington's army was melting away. Thousands were sick, many had no shoes, and the enlistments of most of the rest ran out on the thirty-first of December. He had one week to do something.
 
 ## S05 MOVE 2: CHRISTMAS NIGHT AND TRENTON (~5:15 - ~7:45)
 
-[S05 | jersey wide, winter day: the Hessian posts at Trenton and Bordentown; a dotted ice line on the river; caption WHEN THE RIVER FREEZES on its words]
-The British plan was to wait. When the river froze hard, they could march across the ice, and take Philadelphia in the spring. Until then, the Hessians at Trenton would hold the line.
+[S05 | jersey wide, winter day: the chain of red posts across New Jersey (Trenton, Bordentown, Princeton, New Brunswick); Trenton glows; caption NO FORTIFICATIONS on its words]
+The British plan was to sit out the winter in a chain of posts across New Jersey, and finish the rebels in the spring. At Trenton, the post closest to the enemy, Colonel Rall did not even build fortifications.
 
 [S05 | the plan as three blue arrows across the river: McConkey's Ferry (main), Trenton Ferry, Bristol; labels small on their words]
-In other words, the Americans had nowhere left to go. But Washington did not wait for the ice. Instead, he planned to cross back over the river on Christmas night, at three places, and attack Trenton at dawn.
+In other words, nobody expected the beaten Americans to attack before spring. But Washington did not wait for spring. Instead, he planned to cross back over the river on Christmas night, at three places, and attack Trenton at dawn.
 
 [S05 | cloud dive 3 into the crossing at night: McConkey's Ferry, the Pennsylvania bank lined with blue blocks; the big boats; the storm begins (sleet streaks); date plate 25 DECEMBER 1776]
 After dark on Christmas Day, his main force of about two thousand four hundred men began to cross at McConkey's Ferry, nine miles above Trenton.
@@ -120,7 +120,7 @@ Around eleven, the storm broke over them: snow, sleet and hail, driven by a free
 They were hours behind schedule. And downriver, the other two crossings failed in the ice. Washington would attack alone.
 
 [S05 | jersey wide (dissolve), night storm: the blue army marches south in a column of blocks; at a fork it splits into two columns (Greene on the upper road, Sullivan on the river road); a distance ruler 9 MILES on its words]
-His men marched the nine miles to Trenton through the storm, many with rags tied round their feet. At a crossroads, the army split in two, so it could hit the town from two sides at once.
+His men marched the nine miles to Trenton through the storm, in the dark. At a crossroads, the army split in two, so it could hit the town from two sides at once.
 
 [S05 | trenton (dissolve), grey dawn: the Hessian picket on the upper road fires; blue blocks deploy; date plate 26 DECEMBER 1776]
 At about eight in the morning, on the twenty-sixth of December, they burst out of the storm onto the Hessian outposts.
@@ -129,12 +129,12 @@ At about eight in the morning, on the twenty-sixth of December, they burst out o
 The American guns raced to the top of the town's two main streets and fired straight down them. The Hessians tried to form up in the streets, but they were raked by cannon fire and shot at from the houses.
 
 [S05 | Rall's banner rides out, falls (fades grey) on its words; red blocks fall back to an orchard east of the town; blue blocks close around them]
-Colonel Rall led a counterattack and was shot from his horse. His men were driven into an orchard outside the town, surrounded, and they laid down their arms.
+Colonel Rall led a counterattack and was shot from his horse. His men were driven out into the fields east of the town, surrounded, and they laid down their arms.
 
 [S05 | the Assunpink bridge: some red blocks stream across before blue blocks close it; label ASSUNPINK on its word]
 Several hundred got away across a bridge over the creek south of the town before the Americans closed it. The rest were trapped.
 
-[S05 | result card over the dimmed town: HESSIANS ABOUT 900 CAPTURED, 22 KILLED, 83 WOUNDED; AMERICANS NONE KILLED IN THE FIGHT, A FEW WOUNDED; small line: among the wounded, Lt. James Monroe]
+[S05 | result card over the dimmed town: HESSIANS ABOUT 900 CAPTURED, 22 KILLED, 83 WOUNDED; AMERICANS NONE KILLED IN THE FIGHT, 5 WOUNDED; small line: among the wounded, Lt. James Monroe]
 About nine hundred Hessians were captured, and more than a hundred killed or wounded. Not one American was killed in the battle. Among the handful of wounded was a young lieutenant named James Monroe, a future president.
 
 [S05 | method card: 2. HIT THEM WHERE THEY REST]
@@ -149,7 +149,7 @@ But the British were not going to let it go. In New York, General Charles Cornwa
 Washington had crossed back into New Jersey. On the last day of the year, he begged his men to stay six more weeks, for a bounty of ten dollars each. Many of them stayed.
 
 [S06 | date plate 2 JANUARY 1777: the red army marches down the road from Princeton toward Trenton; small blue blocks fire and fall back along the road, again and again (muzzle flashes + sound)]
-On the second of January, Cornwallis marched on Trenton with about five thousand men. Cornwallis's plan was simple: trap Washington against the river and destroy him. But all day, small groups of American riflemen fought him from the woods and creeks along the road, and fell back, and fought again.
+On the second of January, Cornwallis marched on Trenton with about five thousand five hundred men. Cornwallis's plan was simple: trap Washington against the river and destroy him. But all day, small groups of American riflemen fought him from the woods and creeks along the road, and fell back, and fought again.
 
 [S06 | trenton (dissolve), dusk: the blue army in a line along the south bank of the Assunpink Creek, the stone bridge in the middle, guns behind it; red blocks come through the town to the bridge]
 It was nearly dark when the British reached Trenton. Washington's army stood behind the Assunpink Creek, south of the town, with its guns covering the stone bridge.
@@ -166,10 +166,10 @@ Now stop for a moment, and put yourself in Washington's place. The British army 
 ## S07 MOVE 3: THE NIGHT MARCH TO PRINCETON (~9:30 - ~11:45)
 
 [S07 | trenton, night: the decision reveal; a few blue blocks stay at the creek and keep the fires burning (campfires), men digging; the rest of the army turns and walks away east and south into the dark]
-He slipped away. But not back across the river. Instead, he marched around the British army, and behind it. A few hundred men stayed at the creek to keep the campfires burning and to dig noisily, a covering force, just as at Brooklyn.
+He slipped away. But not back across the river. Instead, he marched around the British army, and behind it. About five hundred men stayed at the creek to keep the campfires burning and to dig noisily, a covering force, just as at Brooklyn.
 
-[S07 | jersey wide, night: the blue army column moves east and then north on a back road (the Quaker Bridge road) around the British left; the guns' wheels wrapped (caption on its words); frost spreads over the ground]
-The rest of the army marched off into the dark, with the wheels of the guns wrapped in rags. That night the weather turned bitter cold, and the muddy roads froze hard, just in time for the guns to roll.
+[S07 | jersey wide, night: the blue army column moves east and then north on a back road (the Quaker Bridge road) around the British left; frost spreads over the ground; caption THE MUD FROZE on its words]
+The rest of the army marched off into the dark, by a back road the British were not watching. That night the wind changed, the weather turned bitter cold, and the muddy roads froze hard, just in time for the guns to roll.
 
 [S07 | jersey wide, dawn: the blue column approaches Princeton from the south; a red column leaves Princeton marching south-west toward Trenton on the post road; the two converge; date plate 3 JANUARY 1777]
 At sunrise on the third of January, the Americans came up on Princeton, twelve miles behind the British army. And a British brigade was just marching out of the town, on its way to join Cornwallis.
@@ -184,13 +184,13 @@ His men broke, and the militia coming up behind them began to waver.
 Then Washington rode forward himself, into the open between the two lines, about thirty yards from the British. Both sides fired. When the smoke cleared, he was still in the saddle.
 
 [S07 | blue blocks advance on both sides of the banner; red blocks break and run south-west; a red group falls back into the town to a large building (Nassau Hall), a gun fires at it, a white flag (the block turns grey)]
-The Americans rallied behind him and drove the British from the field. Some of them fled into the college building in the town, and surrendered after a few cannon shots.
+The Americans rallied behind him and drove the British from the field. Some of them fled into the college building in the town, and surrendered when the Americans broke down the door.
 
-[S07 | result card over the dimmed field: BRITISH ABOUT 450 KILLED, WOUNDED OR CAPTURED; AMERICANS ABOUT 40 KILLED (GENERAL MERCER MORTALLY WOUNDED); source line]
-The British lost some four hundred and fifty men, killed, wounded or captured. The Americans lost about forty killed, and General Mercer died of his wounds nine days later.
+[S07 | result card over the dimmed field: BRITISH 270-440 KILLED, WOUNDED OR CAPTURED (SOURCES DIFFER), 194 PRISONERS; AMERICANS ABOUT 75 (GENERAL MERCER MORTALLY WOUNDED); source line]
+The British lost hundreds of men, killed, wounded or captured, almost two hundred of them taken prisoner. The Americans lost fewer than a hundred, but General Mercer died of his wounds nine days later.
 
 [S07 | trenton, dawn: the British blocks wake facing empty works, the fires burning out; Cornwallis banner; a red arrow turns back north-east toward Princeton; no gun sound here (the guns are off screen)]
-At the creek, Cornwallis woke up to empty lines and dying campfires, and heard cannon behind him, at Princeton. Afraid for his supplies at New Brunswick, he rushed his army back north.
+At the creek, Cornwallis woke up to empty lines and dying campfires, and heard cannon behind him, at Princeton. Afraid for his base at New Brunswick, he rushed his army back north.
 
 [S07 | method card: 3. GO WHERE THEY ARE NOT, completing the method]
 That was the third part of his method. When the enemy has you trapped, don't go where he expects. Go where he is not.

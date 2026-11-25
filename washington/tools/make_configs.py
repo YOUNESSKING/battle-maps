@@ -40,7 +40,7 @@ def write(name, cfg):
     json.dump(cfg, open(f"{OUT}/{name}.json", "w"), indent=1); print("->", f"{OUT}/{name}.json", cfg["box"])
 
 
-WINTER = {"snow": 0.6, "snow_alpha": 0.6, "desat": 0.38, "ice": 1.0, "conifers": 0.16}   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
+WINTER = {"snow": 0.6, "snow_alpha": 0.66, "desat": 0.45, "ice": 1.0, "conifers": 0.16}   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
 Z = 9
@@ -180,7 +180,7 @@ write("brooklyn", {
 Z = 12
 cr = box_ll(40.2870, -74.8830, 40.3110, -74.8450, Z)
 write("crossing", {
- "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.06),
+ "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.45),
  "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware "
          "(~270 m = ~9 units), the river roads on both banks, the Bear Tavern road up the NJ bank towards Bear Tavern, the ferry houses. Zoom-12 frame: "
          "1 unit = ~29 m (base units x 4).",

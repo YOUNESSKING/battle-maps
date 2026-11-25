@@ -4,11 +4,11 @@
  "season": "winter",
  "winter": {
   "snow": 0.6,
-  "snow_alpha": 0.6,
-  "desat": 0.38,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
   "ice": 1.0,
   "conifers": 0.16,
-  "floes": 0.06
+  "floes": 0.45
  },
  "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware (~270 m = ~9 units), the river roads on both banks, the Bear Tavern road up the NJ bank towards Bear Tavern, the ferry houses. Zoom-12 frame: 1 unit = ~29 m (base units x 4).",
  "box": [

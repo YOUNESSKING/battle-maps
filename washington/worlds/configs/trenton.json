@@ -4,8 +4,8 @@
  "season": "winter",
  "winter": {
   "snow": 0.6,
-  "snow_alpha": 0.6,
-  "desat": 0.38,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
   "ice": 1.0,
   "conifers": 0.16
  },
