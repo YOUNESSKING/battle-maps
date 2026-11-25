@@ -1,0 +1,229 @@
+{
+ "mode": "close",
+ "zoom": 11,
+ "season": "winter",
+ "winter": {
+  "snow": 0.6,
+  "snow_alpha": 0.6,
+  "desat": 0.38,
+  "ice": 1.0,
+  "conifers": 0.16
+ },
+ "note": "Trenton, 26 Dec 1776 and 2 Jan 1777 (winter): the 1776 town (King St + Queen St converging at the north end where the Pennington and Princeton roads come in; ~100 houses; the Old Barracks), the Assunpink Creek with the stone bridge at the foot of Queen St, Mill Hill south of it, the Delaware, the River road from the NW, the Pennington road from the N, the post road NE; the American line of 2 Jan on the Assunpink's south bank. Zoom-11 frame.",
+ "box": [
+  1301,
+  2019,
+  96,
+  88
+ ],
+ "focus": [
+  1354.12,
+  2063.68
+ ],
+ "stills": [
+  {
+   "at": [
+    1349.0,
+    2063.0
+   ],
+   "dist": 95,
+   "tilt": 34,
+   "yaw": 0
+  },
+  {
+   "at": [
+    1354.12,
+    2063.68
+   ],
+   "dist": 40,
+   "tilt": 48,
+   "yaw": -8
+  },
+  {
+   "at": [
+    1363.88,
+    2069.78
+   ],
+   "dist": 22,
+   "tilt": 56,
+   "yaw": 15
+  }
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 2.4,
+ "cell": 4.2,
+ "seed": 1226,
+ "relief_noise": [
+  0.9,
+  0.3
+ ],
+ "dem_ppu": 8,
+ "dem_margin": 6,
+ "dem_edits": {
+  "fill_water": true,
+  "flat_sd": 0.15,
+  "flat_low": 0.6,
+  "spike_m": 25.0
+ },
+ "creek_km2": 0.4,
+ "creeks": {
+  "paint_km2": 0.8,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.0,
+ "ravine_woods": 0.6,
+ "tree_spacing": 0.28,
+ "rust_k": 0.85,
+ "clear_blur": 0.35,
+ "clear_noise_u": 0.8,
+ "rivers": [
+  {
+   "name": "Delaware River",
+   "geo": "Delaware River (fine)",
+   "w": 5.5,
+   "step": 0.15,
+   "snap": false,
+   "smooth": 10,
+   "keep": 4.0
+  },
+  {
+   "name": "Assunpink Creek",
+   "geo": "Assunpink Creek",
+   "w": 0.45,
+   "step": 0.12,
+   "snap": false,
+   "smooth": 6
+  }
+ ],
+ "roads": [
+  {
+   "name": "River road",
+   "geo": "River road (NJ)",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Pennington road",
+   "geo": "Pennington road",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Princeton road",
+   "geo": "New York post road",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Bordentown road",
+   "geo": "Trenton - Bordentown",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Quaker Bridge road",
+   "geo": "Quaker Bridge road",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Sandtown road",
+   "geo": "Sandtown road",
+   "cls": "lane",
+   "meander": 0.15
+  },
+  {
+   "name": "King Street",
+   "geo": "Trenton streets: King Street",
+   "cls": "pike",
+   "meander": 0
+  },
+  {
+   "name": "Queen Street",
+   "geo": "Trenton streets: Queen Street",
+   "cls": "pike",
+   "meander": 0
+  },
+  {
+   "name": "River road (PA)",
+   "geo": "River road (PA)",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Philadelphia road (PA)",
+   "geo": "Philadelphia - Trenton post road",
+   "cls": "pike",
+   "meander": 0.15
+  }
+ ],
+ "towns": [
+  {
+   "name": "Trenton",
+   "at": [
+    1359.0,
+    2063.23
+   ],
+   "kind": "grid",
+   "rad": 7.0,
+   "block": 1.45,
+   "angle": 55.7
+  },
+  {
+   "name": "_mill",
+   "at": [
+    1358.64,
+    2068.82
+   ],
+   "kind": "hamlet",
+   "len": 2.4,
+   "angle": 125.7
+  },
+  {
+   "name": "_ferry",
+   "at": [
+    1359.22,
+    2083.7
+   ],
+   "kind": "farm"
+  }
+ ],
+ "farm_density": 0.8,
+ "plantation_density": 0.0,
+ "lane_p": 0.45,
+ "features": {
+  "works": [
+   {
+    "name": "American line (Assunpink, 2 Jan)",
+    "geo": "American line, Assunpink",
+    "kind": "breastwork",
+    "side": "us",
+    "face_to": [
+     1354.12,
+     2055.48
+    ],
+    "height": 1.0,
+    "clear": 0.5
+   }
+  ],
+  "bridges": [
+   {
+    "name": "Assunpink bridge (stone)",
+    "geo": "Assunpink bridge",
+    "kind": "road"
+   }
+  ]
+ },
+ "labels": [
+  "King Street / Queen Street head",
+  "Old Barracks",
+  "Assunpink bridge",
+  "Mill Hill",
+  "Trenton Ferry",
+  "Hessian picket",
+  "Rall's headquarters",
+  "Hessian surrender field",
+  "Hermitage"
+ ]
+}

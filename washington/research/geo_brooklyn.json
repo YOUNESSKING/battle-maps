@@ -1,0 +1,772 @@
+{
+ "places": [
+  {
+   "name": "Brooklyn Ferry landing (Fulton Ferry), Brooklyn side",
+   "lat": 40.7035,
+   "lon": -73.9952,
+   "acc_m": 150,
+   "src": "Neighbourhood centre per Wikipedia 'Fulton Ferry, Brooklyn' (40.70333,-73.99306); foot of Fulton St; historical marker at the landing says the army embarked here night of 29 Aug 1776; Johnston p.221 'the present Fulton Ferry'",
+   "note": "Embarkation point of the evacuation (McDougall in charge). The 1776 shore was a little inland of today's Brooklyn Bridge Park piers; today's Fulton Ferry Landing is a good screen position."
+  },
+  {
+   "name": "Manhattan landing, Peck Slip (head of slip)",
+   "lat": 40.7081,
+   "lon": -74.0018,
+   "acc_m": 200,
+   "src": "Modern street grid (Peck Slip / Water St); position reasoned, not surveyed. Manhattan terminus of the Brooklyn ferry is generally given as Peck Slip (verify: no source page fetched states it for 1776)",
+   "note": "Landing area for the evacuation. Sources conflict or are silent on the exact Manhattan stairs; draw the landing as the stretch Peck Slip - Fly Market. The 1776 shoreline lay about at Water/Front St, roughly 100-220 m INLAND (west) of today's South St / FDR Drive (landfill since)."
+  },
+  {
+   "name": "Fly Market (foot of Maiden Lane), Manhattan",
+   "lat": 40.7066,
+   "lon": -74.0042,
+   "acc_m": 250,
+   "src": "Reasoned from Maiden Lane / Pearl-Water St grid; Johnston does not name it",
+   "note": "Market and slip just SW of Peck Slip; the boats were ordered to the 'east harbor of the city' (Johnston p.216). Use as a secondary landing marker only if the landing is shown as a stretch."
+  },
+  {
+   "name": "Fort Putnam (hill, later Fort Greene), Brooklyn Heights line",
+   "lat": 40.6897,
+   "lon": -73.9755,
+   "acc_m": 150,
+   "src": "Johnston pp.70-73 (hill of Washington/Fort Greene Park, 'salient point of the line'); Wikipedia 'Fort Greene Park' (park centre 40.6919,-73.9755; Prison Ship Martyrs' Monument stands on the hill)",
+   "note": "Star fort, 4-5 guns, named for Rufus Putnam (Johnston). Smallwood's Marylanders held it on the night of the evacuation (Johnston p.222). Main target of the British approaches."
+  },
+  {
+   "name": "Fort Greene (1776 star fort, NOT today's park)",
+   "lat": 40.6885,
+   "lon": -73.9835,
+   "acc_m": 300,
+   "src": "Johnston p.71: ~300 yd left of Fort Box, 'a short distance above Bond Street, between State and Schermerhorn'; modern grid, position derived",
+   "note": "Largest of the Brooklyn works, 6 guns, Little's regiment garrison. Derived position, acc 300: map artist should fit to the Hessian/Ratzer 1766-67 map."
+  },
+  {
+   "name": "Oblong Redoubt",
+   "lat": 40.6888,
+   "lon": -73.9782,
+   "acc_m": 250,
+   "src": "Johnston p.71: 'corner of De Kalb and Hudson avenues'; modern grid, derived",
+   "note": "Small circular redoubt commanding the Jamaica/Flatbush road, centre of the line."
+  },
+  {
+   "name": "Redoubt on the Left (Cumberland St)",
+   "lat": 40.6922,
+   "lon": -73.9722,
+   "acc_m": 250,
+   "src": "Johnston p.72: 'middle of the present Cumberland Street, midway between Willoughby and Myrtle'",
+   "note": "Small work east of Fort Putnam; held by part of Hand's riflemen (Capt. Miller) on the evacuation night (Johnston p.222)."
+  },
+  {
+   "name": "Fort Box (right end of the line)",
+   "lat": 40.6868,
+   "lon": -73.9868,
+   "acc_m": 250,
+   "src": "Johnston pp.70-71: 'on or near the line of Pacific Street, a short distance above Bond'; Stiles 1776 sketch",
+   "note": "Diamond-shaped, nearest Gowanus Creek; line continued from it to the marsh."
+  },
+  {
+   "name": "Fort Cobble Hill (Smith's barbette)",
+   "lat": 40.6893,
+   "lon": -73.9925,
+   "acc_m": 250,
+   "src": "Johnston p.74: 'near the intersection of the present Court and Atlantic streets' (Punkiesberg); hill since cut away",
+   "note": "4 guns, interior position covering the rear / Red Hook peninsula."
+  },
+  {
+   "name": "Redoubt at the Mill (Gowanus mill dam)",
+   "lat": 40.683,
+   "lon": -73.989,
+   "acc_m": 300,
+   "src": "Johnston p.75: 'near the corner of the present Degraw and Bond streets'",
+   "note": "One-gun right-angle battery covering the mill-dam crossing of Gowanus Creek."
+  },
+  {
+   "name": "Fort Defiance, Red Hook (water battery)",
+   "lat": 40.677,
+   "lon": -74.015,
+   "acc_m": 400,
+   "src": "Johnston p.75 (4 x 18-pdr barbette to stop ships passing east of Governors Island); position approximate, Red Hook shore much altered by landfill",
+   "note": "The British ship Roebuck was 'the only ship that could fetch high enough' to exchange a few shots with it on 27 Aug (Admiral Howe, in Johnston p.217)."
+  },
+  {
+   "name": "Fort Stirling (Columbia Heights, foot of Clark St)",
+   "lat": 40.6975,
+   "lon": -73.9967,
+   "acc_m": 200,
+   "src": "Johnston pp.2-3 (bluff opposite the Coenties Battery, at about the foot of the present Clark St)",
+   "note": "Heights battery facing Manhattan; Johnston: it could shell New York after the retreat. The unfinished citadel was near Henry and Pierrepont Sts (about 40.6954,-73.9928)."
+  },
+  {
+   "name": "Governors Island (fort / batteries, 1776)",
+   "lat": 40.6895,
+   "lon": -74.0165,
+   "acc_m": 300,
+   "src": "Johnston p.66 (Putnam occupied the island in April 1776); Fort Jay stands there today (Wikipedia coordinates for the island ~40.689,-74.017)",
+   "note": "British men-of-war were moored just off its edge; its works helped close the harbour mouth to the East River."
+  },
+  {
+   "name": "Wallabout Bay (left end of the Brooklyn line)",
+   "lat": 40.701,
+   "lon": -73.973,
+   "acc_m": 400,
+   "src": "Johnston p.73 / Montressor testimony 1779 ('lines constructed from Wallabout Bay')",
+   "note": "Bay and swamp were filled in for the Brooklyn Navy Yard; the swamp 'at the edge of Wallabout Bay' anchored the left."
+  },
+  {
+   "name": "Gowanus Creek mouth (Gowanus Bay)",
+   "lat": 40.674,
+   "lon": -74.003,
+   "acc_m": 400,
+   "src": "Modern Gowanus Canal geometry; creek was straightened into the canal 1860s",
+   "note": "Right-hand flank water of the Brooklyn line; marsh and tidal creek."
+  },
+  {
+   "name": "Brouwer's Millpond crossing (Gowanus Creek, Stirling's escape)",
+   "lat": 40.6738,
+   "lon": -73.9893,
+   "acc_m": 250,
+   "src": "Wikipedia 'Old Stone House (Brooklyn)': the SE branch of the canal ends ~400 m W of the house; pond ~80 yd wide",
+   "note": "Where part of Stirling's men crossed the millpond on 27 Aug 1776."
+  },
+  {
+   "name": "Old Stone House (Vechte-Cortelyou House)",
+   "lat": 40.67296,
+   "lon": -73.98463,
+   "acc_m": 30,
+   "src": "Wikipedia 'Old Stone House (Brooklyn)': 40.672958 N 73.984625 W, 336 3rd St, Washington Park (reconstructed 1934-35, original footprint)",
+   "note": "Gist's ~260-270 Marylanders held the house vs 2,000+ British on 27 Aug. NOTE: '256 killed' is disputed (see FACT_NOTES)."
+  },
+  {
+   "name": "Guan Heights - Battle Hill, Green-Wood",
+   "lat": 40.658,
+   "lon": -73.9945,
+   "acc_m": 300,
+   "src": "Johnston p.146: Martense Lane = southern boundary of Green-Wood; Battle Hill is the highest point of the ridge",
+   "note": "Southern anchor of the Guan Heights line (Stirling vs Grant on the coast road below)."
+  },
+  {
+   "name": "Red Lion Tavern (Gowanus Road)",
+   "lat": 40.6535,
+   "lon": -74.001,
+   "acc_m": 400,
+   "src": "Johnston p.146 ('about three miles from Brooklyn Church'); modern grid approximate",
+   "note": "Coast-road position; Stirling's line held the Gowanus Road here."
+  },
+  {
+   "name": "Flatbush Pass / Battle Pass (Prospect Park)",
+   "lat": 40.6605,
+   "lon": -73.9665,
+   "acc_m": 400,
+   "src": "Johnston p.156 note: breastwork 'now within the limits of Prospect Park ... across Battle Pass'",
+   "note": "Centre of the Guan Heights line; Sullivan with Hessians (von Heister) in front. Approximate."
+  },
+  {
+   "name": "Bedford Pass",
+   "lat": 40.67,
+   "lon": -73.954,
+   "acc_m": 600,
+   "src": "Johnston p.155: 3/4 mile left of the Flatbush road; held by Wyllys's and Chester's Connecticut regiments",
+   "note": "Approximate (Bedford Ave / Eastern Pkwy area)."
+  },
+  {
+   "name": "Jamaica Pass",
+   "lat": 40.6855,
+   "lon": -73.887,
+   "acc_m": 600,
+   "src": "Johnston p.155 ('about four miles from the fortified line'); Wikipedia 'Jamaica Pass' (no coordinates; area East New York 40.67,-73.89)",
+   "note": "Northernmost pass, guarded by five militia officers on patrol (captured ~2-3 a.m. 27 Aug); Howe's night flank march came through it."
+  },
+  {
+   "name": "Howard's Halfway House (Jamaica Road tavern)",
+   "lat": 40.683,
+   "lon": -73.8845,
+   "acc_m": 500,
+   "src": "Johnston p.171: British column halted 'directly in front of Howard's Halfway House' SE of the pass",
+   "note": "Approximate: Jamaica Ave near Cypress Hills."
+  },
+  {
+   "name": "Gravesend landing (British, 22 Aug 1776)",
+   "lat": 40.5985,
+   "lon": -74.009,
+   "acc_m": 800,
+   "src": "Johnston p.139-140 (Gravesend Bay, a mile east of the Narrows); Wikipedia 'Battle of Long Island' (04:00-08:00 landing, 15,000 ashore by noon)",
+   "note": "Unopposed landing; frigates Phoenix, Greyhound, Rose + bomb ketches covered it."
+  },
+  {
+   "name": "Flatlands (British camp before the flank march)",
+   "lat": 40.62,
+   "lon": -73.933,
+   "acc_m": 800,
+   "src": "Johnston p.170 (march from Flatlands via Shoemaker's Bridge to the Jamaica Road)",
+   "note": "Starting point of Howe's night column, left ~21:00 on 26 Aug (Wikipedia)."
+  },
+  {
+   "name": "The Narrows (Verrazzano passage)",
+   "lat": 40.607,
+   "lon": -74.042,
+   "acc_m": 600,
+   "src": "Modern; Wikipedia 'Verrazzano-Narrows Bridge' 40.6066,-74.0447",
+   "note": "British fleet entered 2 July and anchored in the Narrows / off Staten Island."
+  },
+  {
+   "name": "Staten Island, British landing area (Watering Place / Stapleton shore)",
+   "lat": 40.62,
+   "lon": -74.075,
+   "acc_m": 2500,
+   "src": "Wikipedia 'New York and New Jersey campaign' (landed unopposed 2-3 July 1776); Johnston p.94 (camps 'opposite' the Long Island heights)",
+   "note": "Approximate; Howe's headquarters at Will Hicks's mansion (Johnston note). Hessians camped on the island after 12 Aug."
+  },
+  {
+   "name": "Fort Washington (Manhattan)",
+   "lat": 40.8528,
+   "lon": -73.938,
+   "acc_m": 200,
+   "src": "Wikipedia 'Battle of Fort Washington' (40.85278 N 73.93806 W)",
+   "note": "Fell 16 Nov 1776; 2,837 prisoners (Wikipedia, Battlefields Trust)."
+  },
+  {
+   "name": "Fort Lee (New Jersey)",
+   "lat": 40.8515,
+   "lon": -73.9675,
+   "acc_m": 300,
+   "src": "Fort Lee Historic Park area (approximate)",
+   "note": "Evacuated 20 Nov 1776 as 5,000 British/Hessians landed (Morris County NJ; Battlefields Trust: garrison ~2,000)."
+  },
+  {
+   "name": "Kip's Bay landing (1776 shore, E 34th St)",
+   "lat": 40.7445,
+   "lon": -73.9745,
+   "acc_m": 300,
+   "src": "Wikipedia/Battlefields Trust: ~12,000 landed 15 Sep 1776; 1776 shore lay inland (~First Ave) of today's FDR Drive",
+   "note": "Approximate."
+  },
+  {
+   "name": "Harlem Heights (battle 16 Sep 1776)",
+   "lat": 40.811,
+   "lon": -73.961,
+   "acc_m": 600,
+   "src": "Mount Vernon / Battlefields Trust (Morningside Heights, 'Hollow Way' near today's 120th St)",
+   "note": "Approximate."
+  },
+  {
+   "name": "White Plains / Chatterton Hill (battle 28 Oct 1776)",
+   "lat": 41.01,
+   "lon": -73.748,
+   "acc_m": 1500,
+   "src": "Battlefields Trust: ~13,000 British/Hessians attacked 28 Oct; village centre is 41.034,-73.763",
+   "note": "Approximate; the hill lies south of the village centre."
+  },
+  {
+   "name": "Hackensack, NJ",
+   "lat": 40.8859,
+   "lon": -74.0435,
+   "acc_m": 500,
+   "src": "Modern town centre",
+   "note": "Washington's army passed here 21 Nov (to verify date)."
+  },
+  {
+   "name": "Acquackanonk (Passaic), NJ",
+   "lat": 40.8568,
+   "lon": -74.1285,
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "Bridge over the Passaic; army passed ~21-22 Nov (verify)."
+  },
+  {
+   "name": "Newark, NJ",
+   "lat": 40.7357,
+   "lon": -74.1724,
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "Washington left Newark 27 Nov (search result, to verify)."
+  },
+  {
+   "name": "Elizabeth Town, NJ",
+   "lat": 40.664,
+   "lon": -74.2107,
+   "acc_m": 500,
+   "src": "Modern Elizabeth centre",
+   "note": "On the retreat route."
+  },
+  {
+   "name": "Perth Amboy, NJ",
+   "lat": 40.5068,
+   "lon": -74.2654,
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "British-held port later; used on the wide map."
+  },
+  {
+   "name": "New Brunswick, NJ (Raritan crossing)",
+   "lat": 40.4862,
+   "lon": -74.4518,
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "Army reached the Raritan ~29 Nov; crossed and burned the bridge 1 Dec (search result, to verify)."
+  },
+  {
+   "name": "Princeton, NJ",
+   "lat": 40.3487,
+   "lon": -74.6593,
+   "acc_m": 500,
+   "src": "Nassau Hall area",
+   "note": "Retreat route; army ~2 Dec."
+  },
+  {
+   "name": "Trenton, NJ",
+   "lat": 40.2206,
+   "lon": -74.7597,
+   "acc_m": 500,
+   "src": "Modern centre",
+   "note": "Army crossed the Delaware here and above 2-8 Dec; Howe/Cornwallis entered 8 Dec."
+  },
+  {
+   "name": "McConkey's Ferry (Pennsylvania side, Washington Crossing)",
+   "lat": 40.2946,
+   "lon": -74.8719,
+   "acc_m": 400,
+   "src": "Washington Crossing Historic Park (McConkey's Ferry Inn)",
+   "note": "Army camped near it in Dec; the Christmas crossing started here (outside this film part)."
+  },
+  {
+   "name": "Morristown, NJ",
+   "lat": 40.7968,
+   "lon": -74.4815,
+   "acc_m": 500,
+   "src": "Modern centre",
+   "note": "Winter quarters Jan 1777 (outside this part; for the wide map)."
+  },
+  {
+   "name": "Philadelphia",
+   "lat": 39.9526,
+   "lon": -75.1652,
+   "acc_m": 500,
+   "src": "Modern centre (Independence Hall 39.9489,-75.1500)",
+   "note": "Congress fled 12 Dec 1776."
+  },
+  {
+   "name": "Baltimore (Henry Fite's house)",
+   "lat": 39.2904,
+   "lon": -76.6122,
+   "acc_m": 500,
+   "src": "Modern centre",
+   "note": "Congress reconvened here 20 Dec 1776 (Maryland State Archives; history.state.gov)."
+  }
+ ],
+ "lines": [
+  {
+   "name": "Brooklyn Heights fortified line, Wallabout swamp -> Gowanus marsh ",
+   "kind": "works",
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.70-75; Montressor testimony 1779 ('about a mile and a half in extent', chain of five redoubts/forts); NOTE: points derived from street names, acc 250-400 m",
+   "pts": [
+    [
+     40.6965,
+     -73.9695
+    ],
+    [
+     40.6922,
+     -73.9722
+    ],
+    [
+     40.6897,
+     -73.9755
+    ],
+    [
+     40.6888,
+     -73.9782
+    ],
+    [
+     40.6885,
+     -73.9835
+    ],
+    [
+     40.6868,
+     -73.9868
+    ],
+    [
+     40.685,
+     -73.9895
+    ]
+   ],
+   "note": "Points run from the Wallabout swamp (NE end, the American left) to the Gowanus marsh (SW end, the American right): swamp, redoubt on the left, Fort Putnam, Oblong Redoubt, Fort Greene, Fort Box, marsh. Ditches, abatis, sally-ports; about 1.5 miles (2.4 km) long."
+  },
+  {
+   "name": "British siege parallel (night 28-29 Aug), schematic",
+   "kind": "siege",
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) p.215: Little reports a parallel 60 rods (~300 m) long, 150 rods (~750 m) from Fort Putnam; Gordon: 400-500 yd from the redoubt on the left; position derived, acc 400",
+   "pts": [
+    [
+     40.6845,
+     -73.969
+    ],
+    [
+     40.6838,
+     -73.971
+    ],
+    [
+     40.683,
+     -73.9735
+    ]
+   ],
+   "note": "Direction: SE of Fort Putnam. Howe chose regular approaches instead of storming (Johnston, Wikipedia)."
+  },
+  {
+   "name": "British flank march 26-27 Aug: Flatlands -> Shoemaker's Bridge -> Howard's -> Jamaica Pass -> Bedford",
+   "kind": "route",
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.170-172; Wikipedia 'Battle of Long Island' (left 21:00, ~10,000 men, three Loyalist guides); positions approx acc 600",
+   "pts": [
+    [
+     40.62,
+     -73.933
+    ],
+    [
+     40.638,
+     -73.902
+    ],
+    [
+     40.683,
+     -73.8845
+    ],
+    [
+     40.6855,
+     -73.887
+    ],
+    [
+     40.678,
+     -73.93
+    ],
+    [
+     40.67,
+     -73.954
+    ]
+   ],
+   "note": "Dawn 27 Aug the column rested beyond the pass; signal guns 09:00 for the frontal attack."
+  },
+  {
+   "name": "Guan Heights line, schematic (Red Lion/Green-Wood -> Battle Pass -> Bedford Pass -> Jamaica Pass)",
+   "kind": "line",
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.146-156",
+   "pts": [
+    [
+     40.6535,
+     -74.001
+    ],
+    [
+     40.658,
+     -73.9945
+    ],
+    [
+     40.6605,
+     -73.9665
+    ],
+    [
+     40.67,
+     -73.954
+    ],
+    [
+     40.6855,
+     -73.887
+    ]
+   ],
+   "note": "Passes weakly held; Jamaica Pass by five patrol officers only."
+  },
+  {
+   "name": "Evacuation boat track, Brooklyn Ferry -> Manhattan (night 29-30 Aug)",
+   "kind": "route",
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.216-224",
+   "pts": [
+    [
+     40.7035,
+     -73.9952
+    ],
+    [
+     40.705,
+     -73.9985
+    ],
+    [
+     40.7068,
+     -74.001
+    ],
+    [
+     40.7081,
+     -74.0018
+    ]
+   ],
+   "note": "East River ~ 0.7 mi (1.1 km) wide here; ~9,000 men in about 9-11 hours; last boats left Brooklyn after the fog rose, ~06:00-07:00 (sources 6 a.m. HistoryNet; 'before seven' Johnston)."
+  },
+  {
+   "name": "Manhattan shoreline of the East River, 1776 approximation (Whitehall -> Catharine Slip)",
+   "kind": "shore",
+   "src": "Reasoned from the modern slips (Old Slip, Fly Market/Maiden Lane, Peck Slip, Catharine Slip); 1776 shore ~ Water/Front St, ~100-220 m inland of today's FDR Drive. acc 150-250 m. Verify against Ratzer map 1766-67.",
+   "pts": [
+    [
+     40.701,
+     -74.012
+    ],
+    [
+     40.7036,
+     -74.0085
+    ],
+    [
+     40.7066,
+     -74.0045
+    ],
+    [
+     40.7081,
+     -74.0018
+    ],
+    [
+     40.7103,
+     -73.9993
+    ]
+   ],
+   "note": "Water drawn east of this line; the modern South St is landfill."
+  },
+  {
+   "name": "Brooklyn shoreline of the East River, 1776 approximation (Red Hook -> Wallabout)",
+   "kind": "shore",
+   "src": "Reasoned from modern Furman St/Brooklyn Bridge Park; 1776 shore ~ Water/Columbia St side; acc 200-300 m; Red Hook/Wallabout heavily filled since",
+   "pts": [
+    [
+     40.677,
+     -74.015
+    ],
+    [
+     40.686,
+     -74.01
+    ],
+    [
+     40.693,
+     -74.004
+    ],
+    [
+     40.699,
+     -73.9995
+    ],
+    [
+     40.7035,
+     -73.9952
+    ],
+    [
+     40.702,
+     -73.985
+    ],
+    [
+     40.701,
+     -73.973
+    ]
+   ],
+   "note": "Wallabout Bay is the last point; bay filled for the Navy Yard."
+  },
+  {
+   "name": "American retreat route, Fort Lee -> Delaware (20 Nov - 8 Dec 1776), schematic",
+   "kind": "route",
+   "src": "Morris County NJ (route towns: Hackensack, Newark, Elizabeth, Woodbridge, New Brunswick, Princeton, Trenton); Wikipedia/NJ Military Museum (Delaware crossed 7-8 Dec); exact dates per town to verify (Fischer / McCullough)",
+   "pts": [
+    [
+     40.8515,
+     -73.9675
+    ],
+    [
+     40.8859,
+     -74.0435
+    ],
+    [
+     40.8568,
+     -74.1285
+    ],
+    [
+     40.7357,
+     -74.1724
+    ],
+    [
+     40.664,
+     -74.2107
+    ],
+    [
+     40.5576,
+     -74.2846
+    ],
+    [
+     40.4862,
+     -74.4518
+    ],
+    [
+     40.3487,
+     -74.6593
+    ],
+    [
+     40.2206,
+     -74.7597
+    ],
+    [
+     40.22,
+     -74.78
+    ]
+   ],
+   "note": "End point just across the Delaware at the Trenton ferries (Pennsylvania bank); boats from ~70 miles of river reported moved to the west bank (see FACT_NOTES, unverified figure)."
+  },
+  {
+   "name": "East River (axis, Brooklyn Ferry reach)",
+   "kind": "river",
+   "src": "Modern NHD / OSM geometry, approximate",
+   "pts": [
+    [
+     40.709,
+     -73.996
+    ],
+    [
+     40.704,
+     -73.999
+    ],
+    [
+     40.699,
+     -74.003
+    ],
+    [
+     40.693,
+     -74.008
+    ]
+   ],
+   "note": "Flows toward the Upper Bay (south-west)."
+  }
+ ],
+ "units": [
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Covering party at the works (Hand's, Smallwood's, Haslet's, Shee's, Magaw's, Chester's regts)",
+   "commander": "Brig. Gen. Thomas Mifflin",
+   "lat": 40.6897,
+   "lon": -73.9755,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "~6 regts (Johnston p.222); strength n/a",
+   "src": "Johnston p.222; Wikipedia"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Heights regiments marching to the ferry (Little's, Hitchcock's, Varnum's, Douglas, etc.)",
+   "commander": "Maj. Gen. Israel Putnam / Brig. Gen. Greene's former brigade etc.",
+   "lat": 40.6885,
+   "lon": -73.9835,
+   "facing": "NW",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "army total ~9,000 (Gordon 'Nine thousand'; HistoryNet ~9,000; some say almost 10,000)",
+   "src": "Johnston p.221; Gordon in Johnston p.216"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Embarkation / boat crews: Glover's 14th Continental (Marblehead) + Hutchinson's 27th Mass. (Salem)",
+   "commander": "Col. John Glover; Col. Israel Hutchinson (embarkation under Brig. Gen. McDougall)",
+   "lat": 40.7035,
+   "lon": -73.9952,
+   "facing": "W",
+   "moves_to": [
+    [
+     40.7081,
+     -74.0018
+    ]
+   ],
+   "strength": "~500+ men each regiment; boats: row-boats, flat-boats, whale-boats, pettiaugers, sloops (Johnston p.222)",
+   "src": "Johnston p.221-222; Encyclopedia.com; Wikipedia"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Fort Stirling / Heights garrison (guns removed last)",
+   "commander": "Col. Knox's artillery",
+   "lat": 40.6975,
+   "lon": -73.9967,
+   "facing": "W",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "n/a",
+   "src": "Johnston"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "GB",
+   "unit": "Howe's main army encamped before the lines, digging the parallel",
+   "commander": "Gen. Sir William Howe; Gen. Clinton; Lt Gen von Heister (Hessians at Flatbush)",
+   "lat": 40.6838,
+   "lon": -73.971,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~20,000 on Long Island (Wikipedia 24 Aug); Hessians 9,000 in the 22,000 moved",
+   "src": "Wikipedia; Johnston p.215"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "GB",
+   "unit": "Hessians (von Heister) in front of the Flatbush road",
+   "commander": "Lt Gen Leopold Philip von Heister",
+   "lat": 40.656,
+   "lon": -73.957,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~9,000 Hessians in the whole force",
+   "src": "Johnston pp.140-160; Wikipedia"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "GB",
+   "unit": "British Navy held at the Narrows / off Staten Island by the NE wind ('wind ahead'); Roebuck only ship in range of Red Hook",
+   "commander": "Adm. Lord Howe",
+   "lat": 40.607,
+   "lon": -74.042,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~300-400 vessels in the Narrows by mid-Aug (Johnston p.94-95); 73 warships often quoted (verify)",
+   "src": "Johnston p.94, p.217; Britannica"
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "0400 30 Aug dawn",
+   "side": "GB",
+   "unit": "Capt. Montressor's patrol finds the lines empty ~04:00-04:30; British occupy lines ~30 min later (Encyclopedia.com) but pursuit delayed",
+   "commander": "Capt. John Montressor",
+   "lat": 40.6897,
+   "lon": -73.9755,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "small patrol",
+   "src": "Johnston p.224 note; Encyclopedia.com"
+  }
+ ],
+ "notes": {
+  "orientation": "Brooklyn Heights faces SOUTH/SE toward the British; the East River (Manhattan side to the WEST/NW of the ferry) is the only exit. The ferry crossing runs roughly NW-W across ~1.1 km of water, Brooklyn ferry landing (40.7035,-73.9952) to Peck Slip (40.7081,-74.0018).",
+  "shoreline": "1776 shorelines were 100-250 m inland of today's piers on the Manhattan side (landfill: Water/Front/South Streets) and Wallabout Bay and Red Hook were wet marsh. Draw the water to the 1776 shore lines given here, not today's coast.",
+  "sources_caveat": "Fort positions are derived from Johnston's 1878 street descriptions on the modern grid (acc 250-400 m); fit to the Ratzer 1766-67 map / Hessian map for the final map.",
+  "flags": "Americans 1776: Grand Union flag (Continental Colours; assets/flags/grand_union_flag.png). British: Union Flag of 1707-1800 (St George + St Andrew, no St Patrick; assets/flags/gb1707_union_flag.png). Hessians: no flag asset yet.",
+  "fog_myth": "Fog came only just before dawn of 30 Aug, after >50% of the army had crossed (Johnston p.223 note; Bancroft). Wind: NE wind 'for three days' ... died ~11 p.m., SW breeze followed (Johnston p.222; Encyclopedia.com). Do not show fog for the first hours."
+ }
+}

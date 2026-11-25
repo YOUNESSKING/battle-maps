@@ -1,0 +1,9917 @@
+{
+ "_doc": "Battle 21 (George Washington) geodata for the 3D worlds. x, y = BASE frame units (washington/data/frame.json: web mercator z10, origin [75952, 98000], x east, y south; ~116 m/unit). A region of zoom z uses x * 2^(z-10). Built by washington/tools/make_geo.py from OSM lines + built-in 1776 points / roads + the research files (research/geo_brooklyn.json, geo_jersey.json) when present.",
+ "research": [
+  "brooklyn",
+  "jersey"
+ ],
+ "frame": {
+  "name": "washington_z10",
+  "zoom": 10,
+  "origin_world_px": [
+   75952,
+   98000
+  ],
+  "engine_mpu": 129.36
+ },
+ "places": [
+  {
+   "name": "New York",
+   "lat": 40.7075,
+   "lon": -74.011,
+   "x": 1226.83,
+   "y": 566.2,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "built-in (well-known coordinates)",
+   "note": "Wall St / Broad St (the 1776 city = lower Manhattan south of ~Chambers St)"
+  },
+  {
+   "name": "Brooklyn",
+   "lat": 40.6925,
+   "lon": -73.9875,
+   "x": 1243.95,
+   "y": 580.61,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": "Brooklyn village (church at Fulton St), behind the Heights"
+  },
+  {
+   "name": "Philadelphia",
+   "lat": 39.9496,
+   "lon": -75.1503,
+   "x": 397.22,
+   "y": 1290.15,
+   "kind": "town",
+   "acc_m": 300,
+   "src": "built-in (well-known coordinates)",
+   "note": "Independence Hall"
+  },
+  {
+   "name": "Trenton",
+   "lat": 40.221,
+   "lon": -74.766,
+   "x": 677.06,
+   "y": 1031.84,
+   "kind": "town",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "King (Warren) / Queen (Broad) St, the 1776 town"
+  },
+  {
+   "name": "Princeton",
+   "lat": 40.3487,
+   "lon": -74.6593,
+   "x": 754.76,
+   "y": 909.94,
+   "kind": "town",
+   "acc_m": 150,
+   "src": "built-in (well-known coordinates)",
+   "note": "Nassau Hall"
+  },
+  {
+   "name": "Burlington",
+   "lat": 40.0779,
+   "lon": -74.8649,
+   "x": 605.04,
+   "y": 1168.16,
+   "kind": "town",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "Bristol",
+   "lat": 40.1007,
+   "lon": -74.8518,
+   "x": 614.58,
+   "y": 1146.46,
+   "kind": "town",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "White Plains",
+   "lat": 41.034,
+   "lon": -73.763,
+   "x": 1407.42,
+   "y": 251.79,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "Germantown",
+   "lat": 40.0346,
+   "lon": -75.1754,
+   "x": 378.94,
+   "y": 1209.36,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "Pennington",
+   "lat": 40.3284,
+   "lon": -74.791,
+   "x": 658.86,
+   "y": 929.33,
+   "kind": "town",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": "Pennington (Penny Town)"
+  },
+  {
+   "name": "Woodbridge",
+   "lat": 40.5576,
+   "lon": -74.2846,
+   "x": 1027.61,
+   "y": 710.03,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "Flatbush",
+   "lat": 40.65,
+   "lon": -73.957,
+   "x": 1266.16,
+   "y": 621.41,
+   "kind": "town",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": "Flatbush church"
+  },
+  {
+   "name": "Jamaica",
+   "lat": 40.702,
+   "lon": -73.801,
+   "x": 1379.75,
+   "y": 571.48,
+   "kind": "town",
+   "acc_m": 700,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "Harlem",
+   "lat": 40.81,
+   "lon": -73.945,
+   "x": 1274.89,
+   "y": 467.66,
+   "kind": "town",
+   "acc_m": 700,
+   "src": "built-in (well-known coordinates)",
+   "note": "Harlem village"
+  },
+  {
+   "name": "Kip's Bay",
+   "lat": 40.744,
+   "lon": -73.973,
+   "x": 1254.51,
+   "y": 531.13,
+   "kind": "bay",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": "British landing 15 Sep 1776"
+  },
+  {
+   "name": "Gravesend Bay",
+   "lat": 40.596,
+   "lon": -74.005,
+   "x": 1231.2,
+   "y": 673.22,
+   "kind": "bay",
+   "acc_m": 600,
+   "src": "built-in (well-known coordinates)",
+   "note": "British landing 22 Aug 1776"
+  },
+  {
+   "name": "Long Island",
+   "lat": 40.73,
+   "lon": -73.76,
+   "x": 1409.61,
+   "y": 544.58,
+   "kind": "island",
+   "acc_m": 5000,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point"
+  },
+  {
+   "name": "Manhattan",
+   "lat": 40.78,
+   "lon": -73.965,
+   "x": 1260.33,
+   "y": 496.52,
+   "kind": "island",
+   "acc_m": 3000,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point"
+  },
+  {
+   "name": "Upper Bay",
+   "lat": 40.665,
+   "lon": -74.045,
+   "x": 1202.08,
+   "y": 607.01,
+   "kind": "bay",
+   "acc_m": 2000,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point (New York harbour)"
+  },
+  {
+   "name": "Lower Bay",
+   "lat": 40.525,
+   "lon": -74.03,
+   "x": 1213.0,
+   "y": 741.27,
+   "kind": "bay",
+   "acc_m": 3000,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point"
+  },
+  {
+   "name": "Newark Bay",
+   "lat": 40.67,
+   "lon": -74.135,
+   "x": 1136.54,
+   "y": 602.21,
+   "kind": "bay",
+   "acc_m": 1500,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point"
+  },
+  {
+   "name": "Raritan Bay",
+   "lat": 40.49,
+   "lon": -74.18,
+   "x": 1103.77,
+   "y": 774.79,
+   "kind": "bay",
+   "acc_m": 3000,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point"
+  },
+  {
+   "name": "Paulus Hook",
+   "lat": 40.716,
+   "lon": -74.035,
+   "x": 1209.36,
+   "y": 558.04,
+   "kind": "fort",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": "Jersey City (ferry to New York)"
+  },
+  {
+   "name": "Cooper's Ferry",
+   "lat": 39.947,
+   "lon": -75.125,
+   "x": 415.64,
+   "y": 1292.62,
+   "kind": "ferry",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": "Camden"
+  },
+  {
+   "name": "Coryell's Ferry",
+   "lat": 40.365,
+   "lon": -74.945,
+   "x": 546.72,
+   "y": 894.36,
+   "kind": "ferry",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": "New Hope / Lambertville"
+  },
+  {
+   "name": "McConkey's Ferry",
+   "lat": 40.2961,
+   "lon": -74.8728,
+   "x": 599.29,
+   "y": 960.18,
+   "kind": "ferry",
+   "acc_m": 120,
+   "src": "built-in (well-known coordinates)",
+   "note": "McConkey's Ferry Inn, Washington Crossing Historic Park (PA): the embarkation landing 25 Dec 1776"
+  },
+  {
+   "name": "Johnson's Ferry",
+   "lat": 40.2994,
+   "lon": -74.8681,
+   "x": 602.71,
+   "y": 957.03,
+   "kind": "ferry",
+   "acc_m": 120,
+   "src": "built-in (well-known coordinates)",
+   "note": "Johnson Ferry House, Washington Crossing State Park (NJ): the landing"
+  },
+  {
+   "name": "Jacobs Creek crossing",
+   "lat": 40.293,
+   "lon": -74.8355,
+   "x": 626.45,
+   "y": 963.14,
+   "kind": "ford",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": "Bear Tavern road crosses Jacobs Creek (steep ravine; guns hauled by ropes)"
+  },
+  {
+   "name": "King Street / Queen Street head (Five Points)",
+   "lat": 40.2253,
+   "lon": -74.766,
+   "x": 677.06,
+   "y": 1027.74,
+   "kind": "crossroads",
+   "acc_m": 80,
+   "src": "built-in (well-known coordinates)",
+   "note": "Battle Monument: Pennington + Princeton roads meet; Hamilton's / Forrest's guns"
+  },
+  {
+   "name": "Old Barracks",
+   "lat": 40.2196,
+   "lon": -74.7686,
+   "x": 675.17,
+   "y": 1033.17,
+   "kind": "building",
+   "acc_m": 40,
+   "src": "built-in (well-known coordinates)",
+   "note": "Old Barracks Museum"
+  },
+  {
+   "name": "Assunpink bridge (foot of Queen St)",
+   "lat": 40.2178,
+   "lon": -74.7593,
+   "x": 681.94,
+   "y": 1034.89,
+   "kind": "bridge",
+   "acc_m": 80,
+   "src": "built-in (well-known coordinates)",
+   "note": "the stone bridge, today S Broad St over the Assunpink"
+  },
+  {
+   "name": "Trenton Ferry",
+   "lat": 40.2105,
+   "lon": -74.7625,
+   "x": 679.61,
+   "y": 1041.85,
+   "kind": "ferry",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "foot of Ferry St"
+  },
+  {
+   "name": "Hessian picket (Pennington road)",
+   "lat": 40.235,
+   "lon": -74.785,
+   "x": 663.22,
+   "y": 1018.49,
+   "kind": "outpost",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": "Howell's cooper shop, ~1 km out of town (approx.)"
+  },
+  {
+   "name": "Hermitage (Dickinson house)",
+   "lat": 40.2385,
+   "lon": -74.802,
+   "x": 650.85,
+   "y": 1015.15,
+   "kind": "house",
+   "acc_m": 500,
+   "src": "built-in (well-known coordinates)",
+   "note": "Hessian river-road outpost (approx.)"
+  },
+  {
+   "name": "Rall's headquarters (Stacy Potts house)",
+   "lat": 40.2208,
+   "lon": -74.7655,
+   "x": 677.42,
+   "y": 1032.03,
+   "kind": "house",
+   "acc_m": 120,
+   "src": "built-in (well-known coordinates)",
+   "note": "King St (approx.)"
+  },
+  {
+   "name": "Hessian surrender field (orchard)",
+   "lat": 40.2265,
+   "lon": -74.759,
+   "x": 682.16,
+   "y": 1026.59,
+   "kind": "field",
+   "acc_m": 300,
+   "src": "built-in (well-known coordinates)",
+   "note": "the orchard east of town (approx.)"
+  },
+  {
+   "name": "Shabakunk Creek (Five Mile Run) bridge",
+   "lat": 40.282,
+   "lon": -74.7405,
+   "x": 695.63,
+   "y": 973.64,
+   "kind": "bridge",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": "post road; Hand's riflemen delay Cornwallis 2 Jan"
+  },
+  {
+   "name": "Nassau Hall",
+   "lat": 40.3487,
+   "lon": -74.6593,
+   "x": 754.76,
+   "y": 909.94,
+   "kind": "building",
+   "acc_m": 30,
+   "src": "built-in (well-known coordinates)",
+   "note": ""
+  },
+  {
+   "name": "Thomas Clarke house",
+   "lat": 40.3305,
+   "lon": -74.6787,
+   "x": 740.63,
+   "y": 927.33,
+   "kind": "house",
+   "acc_m": 40,
+   "src": "built-in (well-known coordinates)",
+   "note": "Princeton Battlefield State Park"
+  },
+  {
+   "name": "William Clarke orchard (clash point)",
+   "lat": 40.33,
+   "lon": -74.677,
+   "x": 741.87,
+   "y": 927.8,
+   "kind": "field",
+   "acc_m": 120,
+   "src": "built-in (well-known coordinates)",
+   "note": "Mercer vs Mawhood, 3 Jan 1777 ~8 am; Mercer Oak site"
+  },
+  {
+   "name": "Stony Brook bridge (Worth's Mill)",
+   "lat": 40.3222,
+   "lon": -74.6933,
+   "x": 730.0,
+   "y": 935.26,
+   "kind": "bridge",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "post road over Stony Brook; Mawhood's column turned back here"
+  },
+  {
+   "name": "Frog Hollow",
+   "lat": 40.341,
+   "lon": -74.6615,
+   "x": 753.15,
+   "y": 917.3,
+   "kind": "ravine",
+   "acc_m": 250,
+   "src": "built-in (well-known coordinates)",
+   "note": "ravine south of the college; British 55th / 40th line (approx.)"
+  },
+  {
+   "name": "Thomas Olden house",
+   "lat": 40.3395,
+   "lon": -74.6725,
+   "x": 745.14,
+   "y": 918.73,
+   "kind": "house",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "on the post road (approx.)"
+  },
+  {
+   "name": "Quaker Bridge",
+   "lat": 40.277,
+   "lon": -74.687,
+   "x": 734.59,
+   "y": 978.41,
+   "kind": "bridge",
+   "acc_m": 600,
+   "src": "built-in (well-known coordinates)",
+   "note": "Quaker Bridge road over the Assunpink (the night-march crossing, approx.)"
+  },
+  {
+   "name": "Fort Greene (Brooklyn)",
+   "lat": 40.687,
+   "lon": -73.9812,
+   "x": 1248.53,
+   "y": 585.89,
+   "kind": "fort",
+   "acc_m": 250,
+   "src": "built-in (well-known coordinates)",
+   "note": "State St / Nevins St (approx.)"
+  },
+  {
+   "name": "Cobble Hill fort",
+   "lat": 40.688,
+   "lon": -73.9927,
+   "x": 1240.16,
+   "y": 584.93,
+   "kind": "fort",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "Atlantic Ave / Court St ('Corkscrew fort')"
+  },
+  {
+   "name": "Governors Island works",
+   "lat": 40.692,
+   "lon": -74.0153,
+   "x": 1223.7,
+   "y": 581.09,
+   "kind": "fort",
+   "acc_m": 300,
+   "src": "built-in (well-known coordinates)",
+   "note": "the 1776 island (north half)"
+  },
+  {
+   "name": "Fulton Ferry landing (Brooklyn ferry)",
+   "lat": 40.703,
+   "lon": -73.9945,
+   "x": 1238.85,
+   "y": 570.52,
+   "kind": "ferry",
+   "acc_m": 100,
+   "src": "built-in (well-known coordinates)",
+   "note": "the evacuation embarkation point, night 29-30 Aug 1776"
+  },
+  {
+   "name": "New York ferry stairs (Peck Slip / Fly Market)",
+   "lat": 40.7075,
+   "lon": -74.0025,
+   "x": 1233.02,
+   "y": 566.2,
+   "kind": "ferry",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "Manhattan landing of the Brooklyn ferry (approx.)"
+  },
+  {
+   "name": "Red Hook",
+   "lat": 40.6765,
+   "lon": -74.012,
+   "x": 1226.11,
+   "y": 595.97,
+   "kind": "point",
+   "acc_m": 400,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point"
+  },
+  {
+   "name": "East River",
+   "lat": 40.7045,
+   "lon": -73.9985,
+   "x": 1235.94,
+   "y": 569.08,
+   "kind": "river",
+   "acc_m": 200,
+   "src": "built-in (well-known coordinates)",
+   "note": "label point (~0.8-1.2 km wide here)"
+  },
+  {
+   "name": "Brooklyn Ferry landing (Fulton Ferry), Brooklyn side",
+   "lat": 40.7035,
+   "lon": -73.9952,
+   "x": 1238.34,
+   "y": 570.04,
+   "kind": "place",
+   "acc_m": 150,
+   "src": "Neighbourhood centre per Wikipedia 'Fulton Ferry, Brooklyn' (40.70333,-73.99306); foot of Fulton St; historical marker at the landing says the army embarked here night of 29 Aug 1776; Johnston p.221 'the present Fulton Ferry'",
+   "note": "Embarkation point of the evacuation (McDougall in charge). The 1776 shore was a little inland of today's Brooklyn Bridge Park piers; today's Fulton Ferry Landing is a good screen position."
+  },
+  {
+   "name": "Manhattan landing, Peck Slip (head of slip)",
+   "lat": 40.7081,
+   "lon": -74.0018,
+   "x": 1233.53,
+   "y": 565.63,
+   "kind": "place",
+   "acc_m": 200,
+   "src": "Modern street grid (Peck Slip / Water St); position reasoned, not surveyed. Manhattan terminus of the Brooklyn ferry is generally given as Peck Slip (verify: no source page fetched states it for 1776)",
+   "note": "Landing area for the evacuation. Sources conflict or are silent on the exact Manhattan stairs; draw the landing as the stretch Peck Slip - Fly Market. The 1776 shoreline lay about at Water/Front St, roughly 100-220 m INLAND (west) of today's South St / FDR Drive (landfill since)."
+  },
+  {
+   "name": "Fly Market (foot of Maiden Lane), Manhattan",
+   "lat": 40.7066,
+   "lon": -74.0042,
+   "x": 1231.79,
+   "y": 567.07,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Reasoned from Maiden Lane / Pearl-Water St grid; Johnston does not name it",
+   "note": "Market and slip just SW of Peck Slip; the boats were ordered to the 'east harbor of the city' (Johnston p.216). Use as a secondary landing marker only if the landing is shown as a stretch."
+  },
+  {
+   "name": "Fort Putnam (hill, later Fort Greene), Brooklyn Heights line",
+   "lat": 40.6897,
+   "lon": -73.9755,
+   "x": 1252.68,
+   "y": 583.3,
+   "kind": "place",
+   "acc_m": 150,
+   "src": "Johnston pp.70-73 (hill of Washington/Fort Greene Park, 'salient point of the line'); Wikipedia 'Fort Greene Park' (park centre 40.6919,-73.9755; Prison Ship Martyrs' Monument stands on the hill)",
+   "note": "Star fort, 4-5 guns, named for Rufus Putnam (Johnston). Smallwood's Marylanders held it on the night of the evacuation (Johnston p.222). Main target of the British approaches."
+  },
+  {
+   "name": "Fort Greene (1776 star fort, NOT today's park)",
+   "lat": 40.6885,
+   "lon": -73.9835,
+   "x": 1246.86,
+   "y": 584.45,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Johnston p.71: ~300 yd left of Fort Box, 'a short distance above Bond Street, between State and Schermerhorn'; modern grid, position derived",
+   "note": "Largest of the Brooklyn works, 6 guns, Little's regiment garrison. Derived position, acc 300: map artist should fit to the Hessian/Ratzer 1766-67 map."
+  },
+  {
+   "name": "Oblong Redoubt",
+   "lat": 40.6888,
+   "lon": -73.9782,
+   "x": 1250.72,
+   "y": 584.16,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Johnston p.71: 'corner of De Kalb and Hudson avenues'; modern grid, derived",
+   "note": "Small circular redoubt commanding the Jamaica/Flatbush road, centre of the line."
+  },
+  {
+   "name": "Redoubt on the Left (Cumberland St)",
+   "lat": 40.6922,
+   "lon": -73.9722,
+   "x": 1255.09,
+   "y": 580.9,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Johnston p.72: 'middle of the present Cumberland Street, midway between Willoughby and Myrtle'",
+   "note": "Small work east of Fort Putnam; held by part of Hand's riflemen (Capt. Miller) on the evacuation night (Johnston p.222)."
+  },
+  {
+   "name": "Fort Box (right end of the line)",
+   "lat": 40.6868,
+   "lon": -73.9868,
+   "x": 1244.46,
+   "y": 586.08,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Johnston pp.70-71: 'on or near the line of Pacific Street, a short distance above Bond'; Stiles 1776 sketch",
+   "note": "Diamond-shaped, nearest Gowanus Creek; line continued from it to the marsh."
+  },
+  {
+   "name": "Fort Cobble Hill (Smith's barbette)",
+   "lat": 40.6893,
+   "lon": -73.9925,
+   "x": 1240.31,
+   "y": 583.68,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Johnston p.74: 'near the intersection of the present Court and Atlantic streets' (Punkiesberg); hill since cut away",
+   "note": "4 guns, interior position covering the rear / Red Hook peninsula."
+  },
+  {
+   "name": "Redoubt at the Mill (Gowanus mill dam)",
+   "lat": 40.683,
+   "lon": -73.989,
+   "x": 1242.85,
+   "y": 589.73,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Johnston p.75: 'near the corner of the present Degraw and Bond streets'",
+   "note": "One-gun right-angle battery covering the mill-dam crossing of Gowanus Creek."
+  },
+  {
+   "name": "Fort Defiance, Red Hook (water battery)",
+   "lat": 40.677,
+   "lon": -74.015,
+   "x": 1223.92,
+   "y": 595.49,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "Johnston p.75 (4 x 18-pdr barbette to stop ships passing east of Governors Island); position approximate, Red Hook shore much altered by landfill",
+   "note": "The British ship Roebuck was 'the only ship that could fetch high enough' to exchange a few shots with it on 27 Aug (Admiral Howe, in Johnston p.217)."
+  },
+  {
+   "name": "Fort Stirling (Columbia Heights, foot of Clark St)",
+   "lat": 40.6975,
+   "lon": -73.9967,
+   "x": 1237.25,
+   "y": 575.81,
+   "kind": "place",
+   "acc_m": 200,
+   "src": "Johnston pp.2-3 (bluff opposite the Coenties Battery, at about the foot of the present Clark St)",
+   "note": "Heights battery facing Manhattan; Johnston: it could shell New York after the retreat. The unfinished citadel was near Henry and Pierrepont Sts (about 40.6954,-73.9928)."
+  },
+  {
+   "name": "Governors Island (fort / batteries, 1776)",
+   "lat": 40.6895,
+   "lon": -74.0165,
+   "x": 1222.83,
+   "y": 583.49,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Johnston p.66 (Putnam occupied the island in April 1776); Fort Jay stands there today (Wikipedia coordinates for the island ~40.689,-74.017)",
+   "note": "British men-of-war were moored just off its edge; its works helped close the harbour mouth to the East River."
+  },
+  {
+   "name": "Wallabout Bay (left end of the Brooklyn line)",
+   "lat": 40.701,
+   "lon": -73.973,
+   "x": 1254.51,
+   "y": 572.45,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "Johnston p.73 / Montressor testimony 1779 ('lines constructed from Wallabout Bay')",
+   "note": "Bay and swamp were filled in for the Brooklyn Navy Yard; the swamp 'at the edge of Wallabout Bay' anchored the left."
+  },
+  {
+   "name": "Gowanus Creek mouth (Gowanus Bay)",
+   "lat": 40.674,
+   "lon": -74.003,
+   "x": 1232.66,
+   "y": 598.37,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "Modern Gowanus Canal geometry; creek was straightened into the canal 1860s",
+   "note": "Right-hand flank water of the Brooklyn line; marsh and tidal creek."
+  },
+  {
+   "name": "Brouwer's Millpond crossing (Gowanus Creek, Stirling's escape)",
+   "lat": 40.6738,
+   "lon": -73.9893,
+   "x": 1242.64,
+   "y": 598.57,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Wikipedia 'Old Stone House (Brooklyn)': the SE branch of the canal ends ~400 m W of the house; pond ~80 yd wide",
+   "note": "Where part of Stirling's men crossed the millpond on 27 Aug 1776."
+  },
+  {
+   "name": "Old Stone House (Vechte-Cortelyou House)",
+   "lat": 40.67296,
+   "lon": -73.98463,
+   "x": 1246.04,
+   "y": 599.37,
+   "kind": "place",
+   "acc_m": 30,
+   "src": "Wikipedia 'Old Stone House (Brooklyn)': 40.672958 N 73.984625 W, 336 3rd St, Washington Park (reconstructed 1934-35, original footprint)",
+   "note": "Gist's ~260-270 Marylanders held the house vs 2,000+ British on 27 Aug. NOTE: '256 killed' is disputed (see FACT_NOTES)."
+  },
+  {
+   "name": "Guan Heights - Battle Hill, Green-Wood",
+   "lat": 40.658,
+   "lon": -73.9945,
+   "x": 1238.85,
+   "y": 613.73,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Johnston p.146: Martense Lane = southern boundary of Green-Wood; Battle Hill is the highest point of the ridge",
+   "note": "Southern anchor of the Guan Heights line (Stirling vs Grant on the coast road below)."
+  },
+  {
+   "name": "Red Lion Tavern (Gowanus Road)",
+   "lat": 40.6535,
+   "lon": -74.001,
+   "x": 1234.12,
+   "y": 618.05,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "Johnston p.146 ('about three miles from Brooklyn Church'); modern grid approximate",
+   "note": "Coast-road position; Stirling's line held the Gowanus Road here."
+  },
+  {
+   "name": "Flatbush Pass / Battle Pass (Prospect Park)",
+   "lat": 40.6605,
+   "lon": -73.9665,
+   "x": 1259.24,
+   "y": 611.33,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "Johnston p.156 note: breastwork 'now within the limits of Prospect Park ... across Battle Pass'",
+   "note": "Centre of the Guan Heights line; Sullivan with Hessians (von Heister) in front. Approximate."
+  },
+  {
+   "name": "Bedford Pass",
+   "lat": 40.67,
+   "lon": -73.954,
+   "x": 1268.34,
+   "y": 602.21,
+   "kind": "place",
+   "acc_m": 600,
+   "src": "Johnston p.155: 3/4 mile left of the Flatbush road; held by Wyllys's and Chester's Connecticut regiments",
+   "note": "Approximate (Bedford Ave / Eastern Pkwy area)."
+  },
+  {
+   "name": "Jamaica Pass",
+   "lat": 40.6855,
+   "lon": -73.887,
+   "x": 1317.13,
+   "y": 587.33,
+   "kind": "place",
+   "acc_m": 600,
+   "src": "Johnston p.155 ('about four miles from the fortified line'); Wikipedia 'Jamaica Pass' (no coordinates; area East New York 40.67,-73.89)",
+   "note": "Northernmost pass, guarded by five militia officers on patrol (captured ~2-3 a.m. 27 Aug); Howe's night flank march came through it."
+  },
+  {
+   "name": "Howard's Halfway House (Jamaica Road tavern)",
+   "lat": 40.683,
+   "lon": -73.8845,
+   "x": 1318.95,
+   "y": 589.73,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Johnston p.171: British column halted 'directly in front of Howard's Halfway House' SE of the pass",
+   "note": "Approximate: Jamaica Ave near Cypress Hills."
+  },
+  {
+   "name": "Gravesend landing (British, 22 Aug 1776)",
+   "lat": 40.5985,
+   "lon": -74.009,
+   "x": 1228.29,
+   "y": 670.82,
+   "kind": "place",
+   "acc_m": 800,
+   "src": "Johnston p.139-140 (Gravesend Bay, a mile east of the Narrows); Wikipedia 'Battle of Long Island' (04:00-08:00 landing, 15,000 ashore by noon)",
+   "note": "Unopposed landing; frigates Phoenix, Greyhound, Rose + bomb ketches covered it."
+  },
+  {
+   "name": "Flatlands (British camp before the flank march)",
+   "lat": 40.62,
+   "lon": -73.933,
+   "x": 1283.63,
+   "y": 650.2,
+   "kind": "place",
+   "acc_m": 800,
+   "src": "Johnston p.170 (march from Flatlands via Shoemaker's Bridge to the Jamaica Road)",
+   "note": "Starting point of Howe's night column, left ~21:00 on 26 Aug (Wikipedia)."
+  },
+  {
+   "name": "The Narrows (Verrazzano passage)",
+   "lat": 40.607,
+   "lon": -74.042,
+   "x": 1204.26,
+   "y": 662.67,
+   "kind": "place",
+   "acc_m": 600,
+   "src": "Modern; Wikipedia 'Verrazzano-Narrows Bridge' 40.6066,-74.0447",
+   "note": "British fleet entered 2 July and anchored in the Narrows / off Staten Island."
+  },
+  {
+   "name": "Staten Island, British landing area (Watering Place / Stapleton shore)",
+   "lat": 40.62,
+   "lon": -74.075,
+   "x": 1180.23,
+   "y": 650.2,
+   "kind": "place",
+   "acc_m": 2500,
+   "src": "Wikipedia 'New York and New Jersey campaign' (landed unopposed 2-3 July 1776); Johnston p.94 (camps 'opposite' the Long Island heights)",
+   "note": "Approximate; Howe's headquarters at Will Hicks's mansion (Johnston note). Hessians camped on the island after 12 Aug."
+  },
+  {
+   "name": "Fort Washington (Manhattan)",
+   "lat": 40.8528,
+   "lon": -73.938,
+   "x": 1279.99,
+   "y": 426.47,
+   "kind": "place",
+   "acc_m": 200,
+   "src": "Wikipedia 'Battle of Fort Washington' (40.85278 N 73.93806 W)",
+   "note": "Fell 16 Nov 1776; 2,837 prisoners (Wikipedia, Battlefields Trust)."
+  },
+  {
+   "name": "Fort Lee (New Jersey)",
+   "lat": 40.8515,
+   "lon": -73.9675,
+   "x": 1258.51,
+   "y": 427.73,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Fort Lee Historic Park area (approximate)",
+   "note": "Evacuated 20 Nov 1776 as 5,000 British/Hessians landed (Morris County NJ; Battlefields Trust: garrison ~2,000)."
+  },
+  {
+   "name": "Kip's Bay landing (1776 shore, E 34th St)",
+   "lat": 40.7445,
+   "lon": -73.9745,
+   "x": 1253.41,
+   "y": 530.65,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Wikipedia/Battlefields Trust: ~12,000 landed 15 Sep 1776; 1776 shore lay inland (~First Ave) of today's FDR Drive",
+   "note": "Approximate."
+  },
+  {
+   "name": "Harlem Heights (battle 16 Sep 1776)",
+   "lat": 40.811,
+   "lon": -73.961,
+   "x": 1263.24,
+   "y": 466.7,
+   "kind": "place",
+   "acc_m": 600,
+   "src": "Mount Vernon / Battlefields Trust (Morningside Heights, 'Hollow Way' near today's 120th St)",
+   "note": "Approximate."
+  },
+  {
+   "name": "White Plains / Chatterton Hill (battle 28 Oct 1776)",
+   "lat": 41.01,
+   "lon": -73.748,
+   "x": 1418.35,
+   "y": 274.96,
+   "kind": "place",
+   "acc_m": 1500,
+   "src": "Battlefields Trust: ~13,000 British/Hessians attacked 28 Oct; village centre is 41.034,-73.763",
+   "note": "Approximate; the hill lies south of the village centre."
+  },
+  {
+   "name": "Hackensack, NJ",
+   "lat": 40.8859,
+   "lon": -74.0435,
+   "x": 1203.17,
+   "y": 394.6,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern town centre",
+   "note": "Washington's army passed here 21 Nov (to verify date)."
+  },
+  {
+   "name": "Acquackanonk (Passaic), NJ",
+   "lat": 40.8568,
+   "lon": -74.1285,
+   "x": 1141.27,
+   "y": 422.62,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "Bridge over the Passaic; army passed ~21-22 Nov (verify)."
+  },
+  {
+   "name": "Newark, NJ",
+   "lat": 40.7357,
+   "lon": -74.1724,
+   "x": 1109.31,
+   "y": 539.11,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "Washington left Newark 27 Nov (search result, to verify)."
+  },
+  {
+   "name": "Elizabeth Town, NJ",
+   "lat": 40.664,
+   "lon": -74.2107,
+   "x": 1081.42,
+   "y": 607.97,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern Elizabeth centre",
+   "note": "On the retreat route."
+  },
+  {
+   "name": "Perth Amboy, NJ",
+   "lat": 40.5068,
+   "lon": -74.2654,
+   "x": 1041.59,
+   "y": 758.7,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "British-held port later; used on the wide map."
+  },
+  {
+   "name": "New Brunswick, NJ (Raritan crossing)",
+   "lat": 40.4862,
+   "lon": -74.4518,
+   "x": 905.85,
+   "y": 778.43,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern city centre",
+   "note": "Army reached the Raritan ~29 Nov; crossed and burned the bridge 1 Dec (search result, to verify)."
+  },
+  {
+   "name": "Princeton, NJ",
+   "lat": 40.3487,
+   "lon": -74.6593,
+   "x": 754.76,
+   "y": 909.94,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Nassau Hall area",
+   "note": "Retreat route; army ~2 Dec."
+  },
+  {
+   "name": "Trenton, NJ",
+   "lat": 40.2206,
+   "lon": -74.7597,
+   "x": 681.65,
+   "y": 1032.22,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern centre",
+   "note": "Army crossed the Delaware here and above 2-8 Dec; Howe/Cornwallis entered 8 Dec."
+  },
+  {
+   "name": "McConkey's Ferry (Pennsylvania side, Washington Crossing)",
+   "lat": 40.2946,
+   "lon": -74.8719,
+   "x": 599.95,
+   "y": 961.61,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "Washington Crossing Historic Park (McConkey's Ferry Inn)",
+   "note": "Army camped near it in Dec; the Christmas crossing started here (outside this film part)."
+  },
+  {
+   "name": "Morristown, NJ",
+   "lat": 40.7968,
+   "lon": -74.4815,
+   "x": 884.23,
+   "y": 480.36,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern centre",
+   "note": "Winter quarters Jan 1777 (outside this part; for the wide map)."
+  },
+  {
+   "name": "Philadelphia",
+   "lat": 39.9526,
+   "lon": -75.1652,
+   "x": 386.37,
+   "y": 1287.3,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern centre (Independence Hall 39.9489,-75.1500)",
+   "note": "Congress fled 12 Dec 1776."
+  },
+  {
+   "name": "Baltimore (Henry Fite's house)",
+   "lat": 39.2904,
+   "lon": -76.6122,
+   "x": -667.3,
+   "y": 1913.31,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Modern centre",
+   "note": "Congress reconvened here 20 Dec 1776 (Maryland State Archives; history.state.gov)."
+  },
+  {
+   "name": "McConkey's Ferry landing (Pennsylvania side)",
+   "lat": 40.2985,
+   "lon": -74.8752,
+   "x": 597.54,
+   "y": 957.89,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Derived: Johnson Ferry House (NJ) at 40.2993,-74.8682 per OSM + river ~275 m wide (ABT: ~300 yd) + Washington Crossing Bridge ~40.2986,-74.872; NOT surveyed",
+   "note": "Army embarked here from about 5-6 p.m. on 25 Dec 1776 (ATL; WP). Washington Crossing Historic Park (PA). River flows SE. Use as the departure point; snap to the real bank in the basemap."
+  },
+  {
+   "name": "Johnson's Ferry landing (New Jersey side)",
+   "lat": 40.2992,
+   "lon": -74.8715,
+   "x": 600.24,
+   "y": 957.22,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "Derived from OSM Johnson Ferry House 40.2993,-74.8682 (river bank ~350 m west); NOT surveyed",
+   "note": "Landing on the NJ shore; guns over by ~3 a.m., march began ~4 a.m. 26 Dec (ATL; WP). Washington Crossing State Park."
+  },
+  {
+   "name": "Johnson Ferry House (NJ, modern museum)",
+   "lat": 40.2993,
+   "lon": -74.8682,
+   "x": 602.64,
+   "y": 957.12,
+   "kind": "place",
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Reference point only; do not draw the modern house."
+  },
+  {
+   "name": "Bear Tavern (hamlet, Bear Tavern Rd / Pennington-Titusville Rd)",
+   "lat": 40.3167,
+   "lon": -74.843,
+   "x": 620.99,
+   "y": 940.51,
+   "kind": "place",
+   "acc_m": 600,
+   "src": "OSM Nominatim point (this session) 'Pennington-Titusville Road, Bear Tavern, Hopewell Twp'",
+   "note": "Fischer's 'Bear Tavern road' is the first road inland from the landing. The hamlet name in OSM lies NE of the landing; the 1776 tavern location is uncertain (acc 600 m)."
+  },
+  {
+   "name": "Birmingham (road fork where the army split)",
+   "lat": 40.2745,
+   "lon": -74.819,
+   "x": 638.47,
+   "y": 980.8,
+   "kind": "place",
+   "acc_m": 800,
+   "src": "Approx. from OSM Bear Tavern Rd (40.2765,-74.8278) and Scotch Rd (40.2839,-74.8062); location of 1776 Birmingham crossroads NOT verified (acc 800 m); Fischer/Stryker maps needed",
+   "note": "Greene's column (with Washington) took the Scotch and Pennington Roads; Sullivan's took the River Road (WP)."
+  },
+  {
+   "name": "Pennington Road outpost (Wiederholdt's cooper-shop picket)",
+   "lat": 40.242,
+   "lon": -74.776,
+   "x": 669.78,
+   "y": 1011.81,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "WP: outpost at a cooper shop on Pennington Road ~1 mile NW of Trenton; position from OSM Pennington Ave 40.2387,-74.7749",
+   "note": "1 officer + 24 men under Lt. Andreas Wiederholdt (Bloomsburg plan, WP). First contact ~8 a.m. 26 Dec."
+  },
+  {
+   "name": "Trenton Battle Monument (head of King and Queen Streets; Knox's guns)",
+   "lat": 40.2258,
+   "lon": -74.7648,
+   "x": 677.93,
+   "y": 1027.26,
+   "kind": "place",
+   "acc_m": 60,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Monument marks the head of King (now N. Warren) and Queen (now N. Broad) Streets where the American guns were set up (WP). Draw the 1776 street grid, not the monument."
+  },
+  {
+   "name": "King Street (N. Warren St) - head",
+   "lat": 40.2258,
+   "lon": -74.7651,
+   "x": 677.72,
+   "y": 1027.26,
+   "kind": "place",
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session) N Warren/Battle Monument",
+   "note": "King St ran N-S through 1776 Trenton; Knox oversaw the guns here."
+  },
+  {
+   "name": "King Street (N. Warren St) - foot at the Assunpink",
+   "lat": 40.2174,
+   "lon": -74.7652,
+   "x": 677.64,
+   "y": 1035.27,
+   "kind": "place",
+   "acc_m": 120,
+   "src": "OSM Assunpink Drive 40.2175,-74.7649; S Warren 40.2165,-74.7649",
+   "note": "Foot of King St at the creek."
+  },
+  {
+   "name": "Queen Street (N. Broad St) - head",
+   "lat": 40.2257,
+   "lon": -74.7645,
+   "x": 678.15,
+   "y": 1027.36,
+   "kind": "place",
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session) N Broad St 40.2247,-74.7645",
+   "note": "Queen St = today's N. Broad St."
+  },
+  {
+   "name": "Queen Street (N. Broad St) - foot / Assunpink bridge",
+   "lat": 40.2172,
+   "lon": -74.7641,
+   "x": 678.44,
+   "y": 1035.46,
+   "kind": "place",
+   "acc_m": 100,
+   "src": "OSM S Broad St 40.2182,-74.7642; Assunpink Dr 40.2175,-74.7649",
+   "note": "The Assunpink bridge ('the bridge') on Queen St: Sullivan blocked it on 26 Dec so the Hessians could not flee; the American line held it on 2 Jan (WP)."
+  },
+  {
+   "name": "Old Barracks (Trenton)",
+   "lat": 40.2199,
+   "lon": -74.7687,
+   "x": 675.09,
+   "y": 1032.89,
+   "kind": "place",
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Surviving 1758 barracks; British/Hessian quarters in 1776, west edge of the town near the river."
+  },
+  {
+   "name": "Rall's headquarters (Stacy Potts house, King St)",
+   "lat": 40.2208,
+   "lon": -74.7653,
+   "x": 677.57,
+   "y": 1032.03,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Approx. only: house stood on King St in the town centre (Stryker/Fischer) - exact site NOT verified",
+   "note": "Some accounts put the HQ at merchant Abraham Hunt's house instead (see FACT_NOTES B2/B6). Rall was carried here after being wounded and died here that night."
+  },
+  {
+   "name": "Hessian main posts (Rall + Lossberg quarters, north half of town)",
+   "lat": 40.2235,
+   "lon": -74.7655,
+   "x": 677.42,
+   "y": 1029.45,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Approx. from americanwars.org ch. VIII/WP order of battle: Rall and Lossberg regiments quartered in northern Trenton",
+   "note": "Both regiments formed in King and Queen Streets and were swept by the guns at the head of the streets."
+  },
+  {
+   "name": "Knyphausen regiment quarters (south, by the Assunpink bridge)",
+   "lat": 40.2185,
+   "lon": -74.764,
+   "x": 678.52,
+   "y": 1034.22,
+   "kind": "place",
+   "acc_m": 250,
+   "src": "Approx. from americanwars.org ch. VIII: Knyphausen regiment in the south on both sides of the bridge",
+   "note": "Regiment marched the wrong way and surrendered separately (WP). Acting commander Major von Dechow mortally wounded."
+  },
+  {
+   "name": "Mill Hill (rise north of the Assunpink)",
+   "lat": 40.2183,
+   "lon": -74.7629,
+   "x": 679.32,
+   "y": 1034.41,
+   "kind": "place",
+   "acc_m": 120,
+   "src": "OSM Nominatim point (this session) Mill Hill Park",
+   "note": "2 Jan 1777: American guns and the line covered the bridge from the south bank; British formed on the north side around Mill Hill."
+  },
+  {
+   "name": "Trenton Ferry / lower ferry (Ewing's planned crossing)",
+   "lat": 40.218,
+   "lon": -74.777,
+   "x": 669.05,
+   "y": 1034.7,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Approx.: OSM Calhoun Street Bridge 40.2199,-74.7781 near the old lower ferry; location NOT verified",
+   "note": "Gen. James Ewing (~700 Pa. militia) was to cross here and hold the Assunpink bridge; ice stopped him (WP)."
+  },
+  {
+   "name": "Bordentown (Donop's Hessian post)",
+   "lat": 40.1463,
+   "lon": -74.7115,
+   "x": 716.75,
+   "y": 1103.04,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Donop commanded two Hessian brigades from here; Cadwalader's planned diversion (WP/ATL)."
+  },
+  {
+   "name": "Bristol / Dunk's Ferry (Cadwalader's crossing, PA side)",
+   "lat": 40.1005,
+   "lon": -74.8519,
+   "x": 614.51,
+   "y": 1146.65,
+   "kind": "place",
+   "acc_m": 1500,
+   "src": "Approx.: OSM Bristol borough 40.0954,-74.8577; Dunks Ferry Rd Bensalem 40.0993,-74.9504 - actual ferry landing NOT verified",
+   "note": "Cadwalader crossed some men, recalled them when guns could not land (WP). Dunk's Ferry is a few miles upstream of Bristol toward Bordentown's opposite shore."
+  },
+  {
+   "name": "Burlington, NJ (baggage sent here 2-3 Jan)",
+   "lat": 40.0706,
+   "lon": -74.8514,
+   "x": 614.87,
+   "y": 1175.11,
+   "kind": "place",
+   "acc_m": 800,
+   "src": "OSM Nominatim point (this session) Burlington City",
+   "note": "FACT_NOTES G3: baggage sent to Burlington `[K]`."
+  },
+  {
+   "name": "Five Mile Run (Hand's first stand 2 Jan)",
+   "lat": 40.254,
+   "lon": -74.713,
+   "x": 715.65,
+   "y": 1000.36,
+   "kind": "place",
+   "acc_m": 2500,
+   "src": "Approx. only: name used by WP; ~5 miles from Trenton on the Princeton Post Road near Lawrence Twp (Brunswick Pike 40.2478,-74.7391; Princeton Pike 40.2859,-74.7132). NOT verified",
+   "note": "Hand's riflemen gave up this stream first."
+  },
+  {
+   "name": "Shabakunk Creek (Hand's second stand)",
+   "lat": 40.2509,
+   "lon": -74.7198,
+   "x": 710.7,
+   "y": 1003.32,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "OSM Nominatim point (this session) Shabakunk Creek, Lawrence Twp",
+   "note": "Hand held the wooded south bank and fired at close range (WP). ~3 miles from Trenton."
+  },
+  {
+   "name": "Stockton Hollow (final delay, ~0.5 mi from town)",
+   "lat": 40.229,
+   "lon": -74.76,
+   "x": 681.43,
+   "y": 1024.21,
+   "kind": "place",
+   "acc_m": 700,
+   "src": "Approx.: WP says 'roughly half a mile from Trenton' on the Post Road north of town; NOT verified",
+   "note": "British reached it ~3 p.m.; Hand's men then fell back into the town fighting from houses (WP). 6-10 US killed/wounded (Peckham)."
+  },
+  {
+   "name": "Maidenhead (modern Lawrenceville)",
+   "lat": 40.2954,
+   "lon": -74.7317,
+   "x": 702.04,
+   "y": 960.85,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "OSM Nominatim point (this session) Main Street, Lawrenceville",
+   "note": "Leslie's rearguard (~1,200-1,500) and, 29 Dec, the Black Watch camped here (Princeton Forbes finding aid; WP)."
+  },
+  {
+   "name": "Sandtown (road east of Trenton used on the night march)",
+   "lat": 40.237,
+   "lon": -74.6865,
+   "x": 734.95,
+   "y": 1016.58,
+   "kind": "place",
+   "acc_m": 2000,
+   "src": "Approx. only: OSM 'Mercerville, Hamilton Twp'; the Sand Town Rd position is NOT verified",
+   "note": "Night march 2-3 Jan: Trenton - Sandtown - Quaker Bridge - Quaker Road (ABT; WP)."
+  },
+  {
+   "name": "Quaker Bridge (Assunpink crossing on Quaker Bridge Rd)",
+   "lat": 40.261,
+   "lon": -74.67,
+   "x": 746.97,
+   "y": 993.68,
+   "kind": "place",
+   "acc_m": 1500,
+   "src": "Approx.: OSM Quaker Bridge Rd 40.2766,-74.6695 north end; actual bridge over the Assunpink NOT verified",
+   "note": "WP: army moved on Quaker Bridge Road in what is now Hamilton Twp by 2 a.m."
+  },
+  {
+   "name": "Quaker Road / Sawmill Road turn (disused farm lane to Clarke's)",
+   "lat": 40.3315,
+   "lon": -74.6811,
+   "x": 738.88,
+   "y": 926.37,
+   "kind": "place",
+   "acc_m": 400,
+   "src": "OSM Quaker Road, Battlefield Area, Princeton 40.3315,-74.6811; ABT: 'Quaker Road, then a disused farm lane (Sawmill Road)'",
+   "note": "Army left the Post Road here to approach Princeton from the south and avoid the fortified King's Highway (ABT)."
+  },
+  {
+   "name": "Stony Brook bridge (Worth's Mill, Post Road)",
+   "lat": 40.3331,
+   "lon": -74.682,
+   "x": 738.23,
+   "y": 924.84,
+   "kind": "place",
+   "acc_m": 200,
+   "src": "OSM 'Stony Brook Bridge, Lawrenceville Road, Battlefield Area, Princeton'",
+   "note": "Mercer's column was ordered to break the bridge; British column from Princeton crossed toward Maidenhead here (WP; ABT)."
+  },
+  {
+   "name": "Thomas Clarke house (Princeton Battlefield)",
+   "lat": 40.331,
+   "lon": -74.6765,
+   "x": 742.23,
+   "y": 926.85,
+   "kind": "place",
+   "acc_m": 200,
+   "src": "Approx. from OSM Princeton Battlefield State Park 40.3308,-74.6748 / Mercer Oak 40.3316,-74.6755; house position NOT verified",
+   "note": "Washington's army crossed Thomas Clarke's farm land before the clash; Mercer was treated here and died 12 Jan (ABT/WP)."
+  },
+  {
+   "name": "William Clarke's orchard / Mercer Oak (Mercer vs Mawhood)",
+   "lat": 40.3316,
+   "lon": -74.6755,
+   "x": 742.96,
+   "y": 926.28,
+   "kind": "place",
+   "acc_m": 150,
+   "src": "OSM Nominatim point (this session) Mercer Oak",
+   "note": "Mercer's brigade (~300) met Mawhood's 17th Foot here; bayonet charge, Mercer mortally wounded (WP/ABT)."
+  },
+  {
+   "name": "Frog Hollow (ravine S of Princeton)",
+   "lat": 40.34,
+   "lon": -74.665,
+   "x": 750.61,
+   "y": 918.25,
+   "kind": "place",
+   "acc_m": 700,
+   "src": "Approx. only (name from Princeton Battlefield Society maps); position NOT verified",
+   "note": "The 40th and 55th fell back across this ravine toward Nassau Hall."
+  },
+  {
+   "name": "Nassau Hall (Princeton)",
+   "lat": 40.3487,
+   "lon": -74.6594,
+   "x": 754.68,
+   "y": 909.94,
+   "kind": "place",
+   "acc_m": 60,
+   "src": "OSM Nominatim point (this session)",
+   "note": "British 40th/55th survivors held out here; 194 surrendered after Hamilton's guns and the door was broken (WP)."
+  },
+  {
+   "name": "Kingston (NJ)",
+   "lat": 40.3753,
+   "lon": -74.6135,
+   "x": 788.11,
+   "y": 884.52,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Washington's column turned north to Kingston after Princeton, rather than fall on New Brunswick (ABT; WP)."
+  },
+  {
+   "name": "Somerset Court House (Millstone)",
+   "lat": 40.4985,
+   "lon": -74.5885,
+   "x": 806.31,
+   "y": 766.65,
+   "kind": "place",
+   "acc_m": 1500,
+   "src": "Approx.: ~40.50N,-74.59W near Millstone/Somerville - NOT verified",
+   "note": "Army reached it the night of 3 Jan; Pluckemin 5 Jan (WP)."
+  },
+  {
+   "name": "Pluckemin",
+   "lat": 40.643,
+   "lon": -74.646,
+   "x": 764.44,
+   "y": 628.13,
+   "kind": "place",
+   "acc_m": 1500,
+   "src": "Approx. only; NOT verified (WP: army at Pluckemin by 5 Jan)",
+   "note": ""
+  },
+  {
+   "name": "Morristown (Morristown Green)",
+   "lat": 40.7974,
+   "lon": -74.4809,
+   "x": 884.66,
+   "y": 479.79,
+   "kind": "place",
+   "acc_m": 300,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Winter quarters; army arrived the evening of 6 Jan 1777 (WP; ABT says 5 Jan)."
+  },
+  {
+   "name": "New Brunswick (British post; stayed British)",
+   "lat": 40.4862,
+   "lon": -74.4518,
+   "x": 905.85,
+   "y": 778.43,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Approx.: modern city centre 40.486N,-74.452W (NOT from this session's queries)",
+   "note": "British kept New Brunswick and Perth Amboy after Princeton (FACT_NOTES I2)."
+  },
+  {
+   "name": "Perth Amboy (British post; stayed British)",
+   "lat": 40.5067,
+   "lon": -74.2654,
+   "x": 1041.59,
+   "y": 758.8,
+   "kind": "place",
+   "acc_m": 500,
+   "src": "Approx.: modern city 40.507N,-74.265W (NOT from this session's queries)",
+   "note": "Ditto."
+  }
+ ],
+ "rivers": [
+  {
+   "name": "Delaware River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "upstream first; modern course (1776 ~ the same); below Trenton tidal",
+   "pts": [
+    [
+     611.31,
+     43.16
+    ],
+    [
+     607.63,
+     49.51
+    ],
+    [
+     602.95,
+     64.29
+    ],
+    [
+     608.77,
+     70.82
+    ],
+    [
+     608.92,
+     73.4
+    ],
+    [
+     598.09,
+     93.61
+    ],
+    [
+     590.68,
+     112.49
+    ],
+    [
+     587.19,
+     116.89
+    ],
+    [
+     579.46,
+     123.88
+    ],
+    [
+     577.26,
+     130.95
+    ],
+    [
+     576.73,
+     132.18
+    ],
+    [
+     576.61,
+     132.47
+    ],
+    [
+     575.62,
+     134.25
+    ],
+    [
+     562.31,
+     151.16
+    ],
+    [
+     547.33,
+     158.82
+    ],
+    [
+     544.9,
+     165.1
+    ],
+    [
+     533.49,
+     173.81
+    ],
+    [
+     524.71,
+     175.91
+    ],
+    [
+     519.62,
+     180.08
+    ],
+    [
+     512.85,
+     194.61
+    ],
+    [
+     512.71,
+     198.63
+    ],
+    [
+     518.67,
+     198.76
+    ],
+    [
+     529.41,
+     191.92
+    ],
+    [
+     530.99,
+     194.53
+    ],
+    [
+     529.96,
+     199.25
+    ],
+    [
+     528.56,
+     201.58
+    ],
+    [
+     527.8,
+     202.28
+    ],
+    [
+     525.46,
+     204.07
+    ],
+    [
+     519.47,
+     208.0
+    ],
+    [
+     510.97,
+     210.37
+    ],
+    [
+     501.97,
+     219.14
+    ],
+    [
+     497.15,
+     220.18
+    ],
+    [
+     494.83,
+     226.64
+    ],
+    [
+     493.89,
+     230.58
+    ],
+    [
+     487.05,
+     240.39
+    ],
+    [
+     486.72,
+     246.55
+    ],
+    [
+     455.67,
+     266.36
+    ],
+    [
+     452.07,
+     267.83
+    ],
+    [
+     445.94,
+     268.77
+    ],
+    [
+     438.57,
+     275.49
+    ],
+    [
+     434.77,
+     277.34
+    ],
+    [
+     434.17,
+     277.63
+    ],
+    [
+     430.24,
+     279.21
+    ],
+    [
+     429.67,
+     279.44
+    ],
+    [
+     428.92,
+     279.74
+    ],
+    [
+     428.04,
+     280.09
+    ],
+    [
+     411.02,
+     293.61
+    ],
+    [
+     410.78,
+     299.19
+    ],
+    [
+     410.5,
+     301.16
+    ],
+    [
+     409.92,
+     303.82
+    ],
+    [
+     407.78,
+     307.75
+    ],
+    [
+     408.39,
+     311.37
+    ],
+    [
+     410.8,
+     314.29
+    ],
+    [
+     419.03,
+     314.96
+    ],
+    [
+     419.34,
+     315.72
+    ],
+    [
+     420.52,
+     319.74
+    ],
+    [
+     420.94,
+     329.89
+    ],
+    [
+     425.65,
+     335.06
+    ],
+    [
+     429.96,
+     346.8
+    ],
+    [
+     436.28,
+     356.85
+    ],
+    [
+     449.46,
+     368.63
+    ],
+    [
+     451.5,
+     375.61
+    ],
+    [
+     451.73,
+     386.6
+    ],
+    [
+     468.5,
+     407.68
+    ],
+    [
+     469.69,
+     413.78
+    ],
+    [
+     460.44,
+     423.36
+    ],
+    [
+     459.16,
+     431.46
+    ],
+    [
+     449.47,
+     429.32
+    ],
+    [
+     439.77,
+     430.07
+    ],
+    [
+     436.39,
+     432.88
+    ],
+    [
+     436.33,
+     440.41
+    ],
+    [
+     445.89,
+     452.17
+    ],
+    [
+     441.36,
+     461.47
+    ],
+    [
+     434.28,
+     469.07
+    ],
+    [
+     433.54,
+     477.31
+    ],
+    [
+     427.8,
+     485.54
+    ],
+    [
+     417.11,
+     490.25
+    ],
+    [
+     408.86,
+     502.58
+    ],
+    [
+     382.03,
+     498.71
+    ],
+    [
+     379.13,
+     502.67
+    ],
+    [
+     376.86,
+     513.21
+    ],
+    [
+     363.95,
+     523.34
+    ],
+    [
+     364.42,
+     529.71
+    ],
+    [
+     372.4,
+     539.05
+    ],
+    [
+     373.99,
+     544.28
+    ],
+    [
+     371.13,
+     548.88
+    ],
+    [
+     370.76,
+     554.56
+    ],
+    [
+     365.11,
+     560.01
+    ],
+    [
+     358.06,
+     581.31
+    ],
+    [
+     363.67,
+     591.61
+    ],
+    [
+     375.01,
+     593.19
+    ],
+    [
+     377.81,
+     596.56
+    ],
+    [
+     373.5,
+     606.1
+    ],
+    [
+     362.72,
+     616.66
+    ],
+    [
+     360.93,
+     622.39
+    ],
+    [
+     361.43,
+     625.15
+    ],
+    [
+     366.77,
+     630.17
+    ],
+    [
+     369.37,
+     646.13
+    ],
+    [
+     368.01,
+     650.31
+    ],
+    [
+     359.67,
+     653.58
+    ],
+    [
+     366.79,
+     666.73
+    ],
+    [
+     368.66,
+     677.74
+    ],
+    [
+     364.48,
+     687.46
+    ],
+    [
+     365.14,
+     691.94
+    ],
+    [
+     372.67,
+     700.12
+    ],
+    [
+     381.45,
+     703.55
+    ],
+    [
+     390.24,
+     703.3
+    ],
+    [
+     404.59,
+     692.9
+    ],
+    [
+     421.82,
+     695.02
+    ],
+    [
+     434.36,
+     700.97
+    ],
+    [
+     457.22,
+     725.71
+    ],
+    [
+     459.2,
+     740.23
+    ],
+    [
+     458.7,
+     747.31
+    ],
+    [
+     459.35,
+     755.34
+    ],
+    [
+     459.4,
+     762.4
+    ],
+    [
+     460.67,
+     766.4
+    ],
+    [
+     461.97,
+     777.58
+    ],
+    [
+     462.05,
+     783.53
+    ],
+    [
+     461.83,
+     786.86
+    ],
+    [
+     460.77,
+     792.52
+    ],
+    [
+     459.19,
+     798.55
+    ],
+    [
+     454.93,
+     807.2
+    ],
+    [
+     464.08,
+     843.34
+    ],
+    [
+     486.18,
+     857.05
+    ],
+    [
+     490.11,
+     857.06
+    ],
+    [
+     510.51,
+     850.97
+    ],
+    [
+     530.84,
+     862.5
+    ],
+    [
+     543.83,
+     893.82
+    ],
+    [
+     545.86,
+     901.17
+    ],
+    [
+     546.29,
+     904.7
+    ],
+    [
+     546.69,
+     912.26
+    ],
+    [
+     550.05,
+     919.9
+    ],
+    [
+     568.43,
+     937.03
+    ],
+    [
+     585.0,
+     943.6
+    ],
+    [
+     600.64,
+     958.47
+    ],
+    [
+     604.75,
+     963.86
+    ],
+    [
+     608.22,
+     970.44
+    ],
+    [
+     623.14,
+     1005.67
+    ],
+    [
+     648.96,
+     1018.72
+    ],
+    [
+     653.44,
+     1021.54
+    ],
+    [
+     672.54,
+     1036.44
+    ],
+    [
+     680.94,
+     1052.53
+    ],
+    [
+     684.42,
+     1064.1
+    ],
+    [
+     696.07,
+     1071.18
+    ],
+    [
+     703.0,
+     1079.15
+    ],
+    [
+     708.72,
+     1088.14
+    ],
+    [
+     709.75,
+     1095.62
+    ],
+    [
+     707.78,
+     1102.33
+    ],
+    [
+     696.01,
+     1113.38
+    ],
+    [
+     681.74,
+     1114.51
+    ],
+    [
+     664.14,
+     1126.71
+    ],
+    [
+     652.7,
+     1125.3
+    ],
+    [
+     640.87,
+     1120.65
+    ],
+    [
+     635.87,
+     1121.35
+    ],
+    [
+     632.36,
+     1125.55
+    ],
+    [
+     625.11,
+     1146.09
+    ],
+    [
+     612.24,
+     1154.04
+    ],
+    [
+     608.13,
+     1162.41
+    ],
+    [
+     572.64,
+     1175.16
+    ],
+    [
+     559.12,
+     1175.09
+    ],
+    [
+     529.28,
+     1192.08
+    ],
+    [
+     496.64,
+     1223.08
+    ],
+    [
+     472.38,
+     1232.8
+    ],
+    [
+     467.78,
+     1237.91
+    ],
+    [
+     459.94,
+     1255.54
+    ],
+    [
+     454.77,
+     1260.79
+    ],
+    [
+     429.45,
+     1269.72
+    ],
+    [
+     419.66,
+     1275.16
+    ],
+    [
+     412.17,
+     1280.78
+    ],
+    [
+     408.21,
+     1288.59
+    ],
+    [
+     407.53,
+     1305.5
+    ],
+    [
+     413.19,
+     1328.04
+    ],
+    [
+     408.81,
+     1342.56
+    ],
+    [
+     402.42,
+     1351.59
+    ],
+    [
+     369.85,
+     1355.18
+    ],
+    [
+     345.16,
+     1374.26
+    ],
+    [
+     326.83,
+     1380.91
+    ],
+    [
+     311.02,
+     1384.72
+    ],
+    [
+     306.19,
+     1385.43
+    ],
+    [
+     277.76,
+     1384.63
+    ],
+    [
+     270.01,
+     1385.05
+    ],
+    [
+     258.01,
+     1388.35
+    ],
+    [
+     247.38,
+     1395.37
+    ],
+    [
+     226.64,
+     1413.75
+    ],
+    [
+     220.84,
+     1422.11
+    ],
+    [
+     189.83,
+     1437.3
+    ],
+    [
+     175.8,
+     1446.83
+    ],
+    [
+     164.39,
+     1462.58
+    ],
+    [
+     141.69,
+     1513.87
+    ]
+   ],
+   "w_base": 3.0
+  },
+  {
+   "name": "Delaware River (fine)",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "upstream first; detailed (~20 m) Coryell's Ferry - Bordentown",
+   "pts": [
+    [
+     523.35,
+     858.95
+    ],
+    [
+     529.29,
+     861.31
+    ],
+    [
+     530.84,
+     862.5
+    ],
+    [
+     532.23,
+     864.19
+    ],
+    [
+     533.15,
+     866.03
+    ],
+    [
+     534.91,
+     871.9
+    ],
+    [
+     538.48,
+     879.26
+    ],
+    [
+     543.83,
+     893.82
+    ],
+    [
+     545.86,
+     901.17
+    ],
+    [
+     546.03,
+     903.99
+    ],
+    [
+     546.29,
+     904.7
+    ],
+    [
+     546.4,
+     909.89
+    ],
+    [
+     546.69,
+     912.26
+    ],
+    [
+     548.37,
+     916.96
+    ],
+    [
+     550.05,
+     919.9
+    ],
+    [
+     551.59,
+     921.62
+    ],
+    [
+     554.85,
+     924.51
+    ],
+    [
+     562.14,
+     930.15
+    ],
+    [
+     568.43,
+     937.03
+    ],
+    [
+     574.5,
+     940.76
+    ],
+    [
+     577.86,
+     941.66
+    ],
+    [
+     581.91,
+     941.87
+    ],
+    [
+     585.0,
+     943.6
+    ],
+    [
+     589.21,
+     946.99
+    ],
+    [
+     596.94,
+     955.04
+    ],
+    [
+     598.95,
+     956.64
+    ],
+    [
+     600.64,
+     958.47
+    ],
+    [
+     604.75,
+     963.86
+    ],
+    [
+     608.22,
+     970.44
+    ],
+    [
+     610.34,
+     975.45
+    ],
+    [
+     610.99,
+     977.47
+    ],
+    [
+     611.32,
+     979.56
+    ],
+    [
+     613.64,
+     985.89
+    ],
+    [
+     619.32,
+     997.6
+    ],
+    [
+     621.56,
+     1003.75
+    ],
+    [
+     623.14,
+     1005.67
+    ],
+    [
+     626.02,
+     1007.82
+    ],
+    [
+     636.5,
+     1013.04
+    ],
+    [
+     640.71,
+     1014.37
+    ],
+    [
+     644.62,
+     1016.14
+    ],
+    [
+     648.96,
+     1018.72
+    ],
+    [
+     653.44,
+     1021.54
+    ],
+    [
+     656.36,
+     1024.1
+    ],
+    [
+     657.92,
+     1025.01
+    ],
+    [
+     672.54,
+     1036.44
+    ],
+    [
+     674.85,
+     1040.94
+    ],
+    [
+     675.96,
+     1044.52
+    ],
+    [
+     680.94,
+     1052.53
+    ],
+    [
+     683.34,
+     1061.62
+    ],
+    [
+     684.42,
+     1064.1
+    ],
+    [
+     686.38,
+     1066.39
+    ],
+    [
+     688.26,
+     1067.74
+    ],
+    [
+     691.34,
+     1069.26
+    ],
+    [
+     694.45,
+     1070.12
+    ],
+    [
+     696.07,
+     1071.18
+    ],
+    [
+     699.04,
+     1074.32
+    ],
+    [
+     703.0,
+     1079.15
+    ],
+    [
+     707.92,
+     1086.48
+    ],
+    [
+     708.72,
+     1088.14
+    ],
+    [
+     709.64,
+     1092.06
+    ],
+    [
+     709.75,
+     1095.62
+    ],
+    [
+     709.12,
+     1099.58
+    ],
+    [
+     707.78,
+     1102.33
+    ],
+    [
+     699.93,
+     1109.2
+    ],
+    [
+     696.01,
+     1113.38
+    ],
+    [
+     692.74,
+     1114.63
+    ],
+    [
+     690.82,
+     1114.59
+    ],
+    [
+     687.46,
+     1113.72
+    ],
+    [
+     681.74,
+     1114.51
+    ],
+    [
+     671.76,
+     1121.42
+    ],
+    [
+     665.98,
+     1125.8
+    ],
+    [
+     664.14,
+     1126.71
+    ],
+    [
+     661.29,
+     1127.1
+    ],
+    [
+     652.7,
+     1125.3
+    ],
+    [
+     648.86,
+     1123.88
+    ],
+    [
+     645.34,
+     1122.17
+    ],
+    [
+     640.87,
+     1120.65
+    ],
+    [
+     637.99,
+     1120.56
+    ],
+    [
+     635.87,
+     1121.35
+    ],
+    [
+     633.67,
+     1123.24
+    ],
+    [
+     632.36,
+     1125.55
+    ],
+    [
+     628.92,
+     1133.84
+    ],
+    [
+     626.8,
+     1142.29
+    ],
+    [
+     625.11,
+     1146.09
+    ],
+    [
+     624.61,
+     1146.75
+    ],
+    [
+     622.14,
+     1148.37
+    ],
+    [
+     616.1,
+     1151.11
+    ],
+    [
+     612.24,
+     1154.04
+    ],
+    [
+     610.78,
+     1155.77
+    ],
+    [
+     609.96,
+     1157.19
+    ],
+    [
+     608.13,
+     1162.41
+    ],
+    [
+     605.46,
+     1163.72
+    ],
+    [
+     595.87,
+     1165.68
+    ]
+   ],
+   "w_base": 3.0
+  },
+  {
+   "name": "Schuylkill River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     71.51,
+     1016.44
+    ],
+    [
+     78.52,
+     1037.58
+    ],
+    [
+     83.46,
+     1045.55
+    ],
+    [
+     86.36,
+     1054.14
+    ],
+    [
+     91.14,
+     1057.84
+    ],
+    [
+     93.83,
+     1057.29
+    ],
+    [
+     96.8,
+     1054.37
+    ],
+    [
+     97.23,
+     1052.27
+    ],
+    [
+     95.31,
+     1045.94
+    ],
+    [
+     95.73,
+     1043.33
+    ],
+    [
+     98.27,
+     1042.57
+    ],
+    [
+     100.99,
+     1045.12
+    ],
+    [
+     106.62,
+     1061.5
+    ],
+    [
+     112.98,
+     1074.99
+    ],
+    [
+     121.61,
+     1081.94
+    ],
+    [
+     123.17,
+     1090.64
+    ],
+    [
+     122.5,
+     1094.29
+    ],
+    [
+     122.34,
+     1098.33
+    ],
+    [
+     123.33,
+     1100.42
+    ],
+    [
+     126.0,
+     1102.31
+    ],
+    [
+     128.37,
+     1101.73
+    ],
+    [
+     131.67,
+     1093.72
+    ],
+    [
+     134.42,
+     1090.66
+    ],
+    [
+     139.14,
+     1090.11
+    ],
+    [
+     141.35,
+     1091.62
+    ],
+    [
+     141.99,
+     1095.2
+    ],
+    [
+     135.56,
+     1104.2
+    ],
+    [
+     134.9,
+     1110.38
+    ],
+    [
+     138.58,
+     1116.44
+    ],
+    [
+     142.14,
+     1117.98
+    ],
+    [
+     146.53,
+     1121.33
+    ],
+    [
+     150.3,
+     1122.66
+    ],
+    [
+     151.0,
+     1122.78
+    ],
+    [
+     152.88,
+     1122.21
+    ],
+    [
+     148.96,
+     1122.16
+    ],
+    [
+     148.74,
+     1122.73
+    ],
+    [
+     146.76,
+     1122.57
+    ],
+    [
+     140.46,
+     1117.31
+    ],
+    [
+     137.59,
+     1115.17
+    ],
+    [
+     135.06,
+     1112.68
+    ],
+    [
+     135.53,
+     1111.9
+    ],
+    [
+     136.02,
+     1113.31
+    ],
+    [
+     136.74,
+     1113.76
+    ]
+   ],
+   "w_base": 1.2
+  },
+  {
+   "name": "Millstone River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     949.21,
+     1042.3
+    ],
+    [
+     952.2,
+     1039.42
+    ],
+    [
+     952.29,
+     1037.09
+    ],
+    [
+     949.59,
+     1029.46
+    ],
+    [
+     949.15,
+     1023.55
+    ],
+    [
+     947.42,
+     1021.75
+    ],
+    [
+     947.24,
+     1020.07
+    ],
+    [
+     944.83,
+     1018.56
+    ],
+    [
+     944.59,
+     1016.03
+    ],
+    [
+     942.51,
+     1013.6
+    ],
+    [
+     942.8,
+     1010.1
+    ],
+    [
+     939.83,
+     1008.52
+    ],
+    [
+     934.08,
+     1002.64
+    ],
+    [
+     929.03,
+     991.82
+    ],
+    [
+     925.8,
+     989.36
+    ],
+    [
+     920.18,
+     986.58
+    ],
+    [
+     915.96,
+     982.78
+    ],
+    [
+     912.2,
+     983.83
+    ],
+    [
+     902.84,
+     981.98
+    ],
+    [
+     898.5,
+     984.74
+    ],
+    [
+     894.47,
+     983.91
+    ],
+    [
+     891.04,
+     980.75
+    ],
+    [
+     887.98,
+     981.53
+    ],
+    [
+     887.66,
+     983.09
+    ],
+    [
+     883.88,
+     982.66
+    ],
+    [
+     877.99,
+     977.71
+    ],
+    [
+     873.84,
+     976.79
+    ],
+    [
+     872.14,
+     975.09
+    ],
+    [
+     869.32,
+     976.11
+    ],
+    [
+     865.73,
+     975.07
+    ],
+    [
+     864.05,
+     972.84
+    ],
+    [
+     862.54,
+     972.56
+    ],
+    [
+     860.07,
+     968.81
+    ],
+    [
+     854.68,
+     969.38
+    ],
+    [
+     854.98,
+     965.92
+    ],
+    [
+     850.38,
+     961.89
+    ],
+    [
+     845.98,
+     963.21
+    ],
+    [
+     842.62,
+     967.07
+    ],
+    [
+     838.27,
+     963.68
+    ],
+    [
+     833.44,
+     965.55
+    ],
+    [
+     829.77,
+     963.55
+    ],
+    [
+     829.47,
+     964.39
+    ],
+    [
+     827.82,
+     960.39
+    ],
+    [
+     823.51,
+     959.35
+    ],
+    [
+     821.55,
+     956.54
+    ],
+    [
+     819.39,
+     956.86
+    ],
+    [
+     817.27,
+     955.62
+    ],
+    [
+     815.65,
+     952.61
+    ],
+    [
+     812.17,
+     952.41
+    ],
+    [
+     811.94,
+     950.92
+    ],
+    [
+     809.89,
+     949.88
+    ],
+    [
+     808.92,
+     946.56
+    ],
+    [
+     809.55,
+     945.1
+    ],
+    [
+     808.41,
+     943.82
+    ],
+    [
+     802.72,
+     941.25
+    ],
+    [
+     800.45,
+     942.48
+    ],
+    [
+     798.12,
+     941.92
+    ],
+    [
+     795.51,
+     938.51
+    ],
+    [
+     795.57,
+     936.04
+    ],
+    [
+     793.03,
+     936.21
+    ],
+    [
+     786.19,
+     932.57
+    ],
+    [
+     781.78,
+     933.08
+    ],
+    [
+     781.61,
+     929.48
+    ],
+    [
+     780.12,
+     928.73
+    ],
+    [
+     781.02,
+     923.79
+    ],
+    [
+     775.01,
+     918.05
+    ],
+    [
+     777.55,
+     910.91
+    ],
+    [
+     780.7,
+     892.28
+    ],
+    [
+     785.24,
+     881.79
+    ],
+    [
+     780.42,
+     873.94
+    ],
+    [
+     780.2,
+     871.62
+    ],
+    [
+     779.21,
+     871.44
+    ],
+    [
+     777.75,
+     862.62
+    ],
+    [
+     776.5,
+     860.28
+    ],
+    [
+     773.36,
+     859.16
+    ],
+    [
+     770.82,
+     851.0
+    ],
+    [
+     773.97,
+     846.48
+    ],
+    [
+     774.41,
+     841.01
+    ],
+    [
+     777.98,
+     841.91
+    ],
+    [
+     780.18,
+     837.83
+    ],
+    [
+     781.03,
+     833.83
+    ],
+    [
+     783.6,
+     831.05
+    ],
+    [
+     785.5,
+     830.72
+    ],
+    [
+     786.89,
+     825.9
+    ],
+    [
+     784.07,
+     825.43
+    ],
+    [
+     787.66,
+     819.1
+    ],
+    [
+     797.1,
+     813.87
+    ],
+    [
+     806.44,
+     802.71
+    ],
+    [
+     815.32,
+     796.17
+    ],
+    [
+     818.16,
+     792.44
+    ],
+    [
+     817.89,
+     790.96
+    ],
+    [
+     815.41,
+     789.28
+    ],
+    [
+     814.66,
+     781.31
+    ],
+    [
+     807.25,
+     762.0
+    ],
+    [
+     813.84,
+     757.34
+    ],
+    [
+     815.0,
+     754.36
+    ],
+    [
+     814.87,
+     751.53
+    ],
+    [
+     812.1,
+     748.29
+    ],
+    [
+     806.73,
+     746.19
+    ],
+    [
+     805.11,
+     741.03
+    ],
+    [
+     806.25,
+     736.86
+    ],
+    [
+     812.24,
+     729.81
+    ],
+    [
+     813.29,
+     726.37
+    ],
+    [
+     822.09,
+     724.29
+    ]
+   ],
+   "w_base": 0.4
+  },
+  {
+   "name": "Assunpink Creek",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "upstream first (east -> Trenton)",
+   "pts": [
+    [
+     832.99,
+     1034.25
+    ],
+    [
+     831.96,
+     1033.73
+    ],
+    [
+     831.13,
+     1034.02
+    ],
+    [
+     827.91,
+     1033.79
+    ],
+    [
+     826.76,
+     1034.4
+    ],
+    [
+     826.1,
+     1034.43
+    ],
+    [
+     825.63,
+     1034.16
+    ],
+    [
+     824.83,
+     1032.96
+    ],
+    [
+     818.88,
+     1030.23
+    ],
+    [
+     817.9,
+     1029.09
+    ],
+    [
+     817.83,
+     1028.09
+    ],
+    [
+     817.23,
+     1027.1
+    ],
+    [
+     815.86,
+     1026.48
+    ],
+    [
+     815.25,
+     1025.89
+    ],
+    [
+     814.21,
+     1026.06
+    ],
+    [
+     813.94,
+     1024.83
+    ],
+    [
+     812.44,
+     1021.27
+    ],
+    [
+     810.37,
+     1019.88
+    ],
+    [
+     808.96,
+     1018.32
+    ],
+    [
+     808.18,
+     1016.43
+    ],
+    [
+     803.52,
+     1013.89
+    ],
+    [
+     800.76,
+     1010.64
+    ],
+    [
+     797.64,
+     1006.07
+    ],
+    [
+     795.52,
+     1004.68
+    ],
+    [
+     792.74,
+     1002.28
+    ],
+    [
+     793.02,
+     1001.78
+    ],
+    [
+     792.7,
+     1001.33
+    ],
+    [
+     789.99,
+     1000.8
+    ],
+    [
+     788.9,
+     999.97
+    ],
+    [
+     788.05,
+     998.88
+    ],
+    [
+     787.47,
+     998.78
+    ],
+    [
+     786.32,
+     997.98
+    ],
+    [
+     785.12,
+     996.61
+    ],
+    [
+     785.01,
+     995.78
+    ],
+    [
+     783.65,
+     994.65
+    ],
+    [
+     779.69,
+     993.56
+    ],
+    [
+     778.09,
+     991.94
+    ],
+    [
+     774.59,
+     990.41
+    ],
+    [
+     774.08,
+     989.99
+    ],
+    [
+     773.95,
+     989.29
+    ],
+    [
+     773.61,
+     989.0
+    ],
+    [
+     772.29,
+     988.47
+    ],
+    [
+     768.69,
+     988.21
+    ],
+    [
+     762.13,
+     986.08
+    ],
+    [
+     759.57,
+     985.98
+    ],
+    [
+     752.43,
+     988.23
+    ],
+    [
+     749.93,
+     987.25
+    ],
+    [
+     749.84,
+     986.92
+    ],
+    [
+     749.39,
+     986.99
+    ],
+    [
+     749.34,
+     986.45
+    ],
+    [
+     748.13,
+     986.46
+    ],
+    [
+     747.69,
+     985.95
+    ],
+    [
+     745.36,
+     985.04
+    ],
+    [
+     738.64,
+     984.22
+    ],
+    [
+     736.09,
+     984.65
+    ],
+    [
+     735.15,
+     985.77
+    ],
+    [
+     734.33,
+     986.11
+    ],
+    [
+     733.18,
+     987.11
+    ],
+    [
+     731.78,
+     987.0
+    ],
+    [
+     730.48,
+     986.22
+    ],
+    [
+     728.75,
+     985.73
+    ],
+    [
+     727.17,
+     985.59
+    ],
+    [
+     722.74,
+     986.55
+    ],
+    [
+     720.47,
+     986.19
+    ],
+    [
+     719.81,
+     986.64
+    ],
+    [
+     719.08,
+     987.48
+    ],
+    [
+     718.81,
+     989.23
+    ],
+    [
+     718.56,
+     989.62
+    ],
+    [
+     717.59,
+     990.5
+    ],
+    [
+     715.27,
+     991.0
+    ],
+    [
+     714.53,
+     991.62
+    ],
+    [
+     714.49,
+     992.35
+    ],
+    [
+     714.83,
+     993.55
+    ],
+    [
+     714.41,
+     994.2
+    ],
+    [
+     714.23,
+     995.08
+    ],
+    [
+     712.79,
+     997.15
+    ],
+    [
+     712.68,
+     997.88
+    ],
+    [
+     712.93,
+     999.92
+    ],
+    [
+     712.62,
+     1000.8
+    ],
+    [
+     711.84,
+     1001.67
+    ],
+    [
+     711.56,
+     1003.75
+    ],
+    [
+     711.09,
+     1004.99
+    ],
+    [
+     710.46,
+     1005.45
+    ],
+    [
+     705.9,
+     1006.17
+    ],
+    [
+     703.5,
+     1007.6
+    ],
+    [
+     701.98,
+     1010.01
+    ],
+    [
+     701.88,
+     1012.0
+    ],
+    [
+     700.48,
+     1013.32
+    ],
+    [
+     698.78,
+     1016.12
+    ],
+    [
+     697.12,
+     1017.63
+    ],
+    [
+     696.97,
+     1018.73
+    ],
+    [
+     697.4,
+     1019.98
+    ],
+    [
+     697.4,
+     1020.93
+    ],
+    [
+     696.38,
+     1021.82
+    ],
+    [
+     694.74,
+     1021.8
+    ],
+    [
+     693.45,
+     1024.02
+    ],
+    [
+     689.29,
+     1026.98
+    ],
+    [
+     688.98,
+     1027.42
+    ],
+    [
+     689.4,
+     1028.07
+    ],
+    [
+     689.31,
+     1028.56
+    ],
+    [
+     687.4,
+     1030.85
+    ],
+    [
+     687.2,
+     1031.19
+    ],
+    [
+     687.37,
+     1032.01
+    ],
+    [
+     685.27,
+     1034.59
+    ],
+    [
+     682.08,
+     1035.3
+    ],
+    [
+     680.37,
+     1034.46
+    ],
+    [
+     679.16,
+     1034.44
+    ],
+    [
+     678.13,
+     1034.59
+    ],
+    [
+     677.35,
+     1035.13
+    ],
+    [
+     674.58,
+     1035.4
+    ],
+    [
+     674.13,
+     1035.81
+    ],
+    [
+     673.25,
+     1037.55
+    ]
+   ],
+   "w_base": 0.3
+  },
+  {
+   "name": "Stony Brook",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "upstream first (Pennington -> Princeton -> Millstone)",
+   "pts": [
+    [
+     622.27,
+     861.51
+    ],
+    [
+     622.28,
+     862.11
+    ],
+    [
+     624.32,
+     864.34
+    ],
+    [
+     624.59,
+     865.19
+    ],
+    [
+     625.07,
+     865.03
+    ],
+    [
+     625.67,
+     865.48
+    ],
+    [
+     626.11,
+     866.16
+    ],
+    [
+     627.11,
+     866.88
+    ],
+    [
+     627.64,
+     868.14
+    ],
+    [
+     628.29,
+     868.71
+    ],
+    [
+     629.42,
+     869.07
+    ],
+    [
+     630.26,
+     870.07
+    ],
+    [
+     630.93,
+     870.41
+    ],
+    [
+     631.25,
+     871.36
+    ],
+    [
+     633.17,
+     873.09
+    ],
+    [
+     634.1,
+     874.28
+    ],
+    [
+     634.78,
+     874.51
+    ],
+    [
+     636.03,
+     874.19
+    ],
+    [
+     637.88,
+     872.77
+    ],
+    [
+     638.63,
+     874.32
+    ],
+    [
+     638.94,
+     874.34
+    ],
+    [
+     641.51,
+     876.74
+    ],
+    [
+     642.28,
+     877.02
+    ],
+    [
+     643.59,
+     876.51
+    ],
+    [
+     644.76,
+     876.65
+    ],
+    [
+     645.27,
+     877.81
+    ],
+    [
+     646.27,
+     879.18
+    ],
+    [
+     648.55,
+     878.56
+    ],
+    [
+     648.83,
+     878.02
+    ],
+    [
+     650.44,
+     878.28
+    ],
+    [
+     651.17,
+     881.03
+    ],
+    [
+     652.26,
+     882.75
+    ],
+    [
+     653.5,
+     883.53
+    ],
+    [
+     654.41,
+     883.43
+    ],
+    [
+     656.13,
+     883.98
+    ],
+    [
+     656.81,
+     885.01
+    ],
+    [
+     656.94,
+     886.23
+    ],
+    [
+     657.65,
+     886.94
+    ],
+    [
+     658.59,
+     886.95
+    ],
+    [
+     659.55,
+     887.78
+    ],
+    [
+     660.6,
+     887.83
+    ],
+    [
+     660.82,
+     888.1
+    ],
+    [
+     659.97,
+     891.48
+    ],
+    [
+     660.19,
+     892.42
+    ],
+    [
+     660.55,
+     892.78
+    ],
+    [
+     660.83,
+     893.65
+    ],
+    [
+     662.04,
+     894.18
+    ],
+    [
+     664.52,
+     896.3
+    ],
+    [
+     663.55,
+     900.85
+    ],
+    [
+     662.22,
+     902.95
+    ],
+    [
+     662.28,
+     903.45
+    ],
+    [
+     663.28,
+     904.12
+    ],
+    [
+     663.62,
+     904.71
+    ],
+    [
+     665.02,
+     909.15
+    ],
+    [
+     666.42,
+     910.67
+    ],
+    [
+     667.29,
+     911.13
+    ],
+    [
+     667.8,
+     912.89
+    ],
+    [
+     667.59,
+     913.53
+    ],
+    [
+     668.54,
+     914.75
+    ],
+    [
+     668.65,
+     916.32
+    ],
+    [
+     669.07,
+     916.75
+    ],
+    [
+     669.06,
+     918.38
+    ],
+    [
+     668.43,
+     918.81
+    ],
+    [
+     667.77,
+     920.37
+    ],
+    [
+     666.83,
+     921.16
+    ],
+    [
+     665.52,
+     924.03
+    ],
+    [
+     665.44,
+     924.71
+    ],
+    [
+     669.93,
+     927.04
+    ],
+    [
+     670.96,
+     927.22
+    ],
+    [
+     671.63,
+     926.62
+    ],
+    [
+     673.57,
+     928.12
+    ],
+    [
+     674.95,
+     927.97
+    ],
+    [
+     675.97,
+     927.41
+    ],
+    [
+     676.35,
+     926.12
+    ],
+    [
+     676.89,
+     925.67
+    ],
+    [
+     678.91,
+     925.29
+    ],
+    [
+     681.08,
+     925.89
+    ],
+    [
+     687.18,
+     923.01
+    ],
+    [
+     690.01,
+     922.85
+    ],
+    [
+     692.5,
+     921.3
+    ],
+    [
+     693.56,
+     919.99
+    ],
+    [
+     695.49,
+     920.19
+    ],
+    [
+     697.92,
+     922.0
+    ],
+    [
+     698.71,
+     921.84
+    ],
+    [
+     699.68,
+     919.47
+    ],
+    [
+     701.73,
+     918.63
+    ],
+    [
+     702.95,
+     919.25
+    ],
+    [
+     703.53,
+     919.07
+    ],
+    [
+     705.53,
+     916.8
+    ],
+    [
+     705.4,
+     916.47
+    ],
+    [
+     708.88,
+     913.16
+    ],
+    [
+     710.68,
+     910.17
+    ],
+    [
+     711.53,
+     907.15
+    ],
+    [
+     711.88,
+     906.61
+    ],
+    [
+     712.55,
+     904.84
+    ],
+    [
+     712.16,
+     905.82
+    ],
+    [
+     712.12,
+     905.21
+    ],
+    [
+     712.4,
+     904.93
+    ],
+    [
+     712.7,
+     904.74
+    ],
+    [
+     713.7,
+     904.83
+    ],
+    [
+     715.43,
+     907.18
+    ],
+    [
+     716.81,
+     907.59
+    ],
+    [
+     717.81,
+     906.64
+    ],
+    [
+     717.43,
+     905.73
+    ],
+    [
+     717.66,
+     905.13
+    ],
+    [
+     721.85,
+     902.76
+    ],
+    [
+     722.36,
+     902.84
+    ],
+    [
+     722.36,
+     903.7
+    ],
+    [
+     722.89,
+     904.92
+    ],
+    [
+     723.69,
+     905.57
+    ],
+    [
+     725.22,
+     906.48
+    ],
+    [
+     726.19,
+     906.03
+    ],
+    [
+     727.57,
+     906.44
+    ],
+    [
+     729.03,
+     905.36
+    ],
+    [
+     729.41,
+     903.22
+    ],
+    [
+     730.23,
+     902.05
+    ],
+    [
+     729.82,
+     900.47
+    ],
+    [
+     731.39,
+     900.45
+    ],
+    [
+     732.16,
+     900.88
+    ],
+    [
+     731.72,
+     901.87
+    ],
+    [
+     732.16,
+     903.06
+    ],
+    [
+     732.36,
+     906.56
+    ],
+    [
+     733.02,
+     907.51
+    ],
+    [
+     734.14,
+     910.37
+    ],
+    [
+     733.8,
+     911.1
+    ],
+    [
+     732.39,
+     912.62
+    ],
+    [
+     732.25,
+     914.89
+    ],
+    [
+     731.17,
+     916.1
+    ],
+    [
+     730.0,
+     916.72
+    ],
+    [
+     729.82,
+     917.4
+    ],
+    [
+     729.32,
+     917.96
+    ],
+    [
+     729.25,
+     919.16
+    ],
+    [
+     728.87,
+     919.65
+    ],
+    [
+     729.57,
+     920.68
+    ],
+    [
+     731.76,
+     921.67
+    ],
+    [
+     733.31,
+     923.05
+    ],
+    [
+     737.9,
+     923.66
+    ],
+    [
+     738.86,
+     927.45
+    ],
+    [
+     739.48,
+     928.61
+    ],
+    [
+     739.55,
+     932.69
+    ],
+    [
+     738.8,
+     935.14
+    ],
+    [
+     735.91,
+     937.57
+    ],
+    [
+     735.23,
+     939.15
+    ],
+    [
+     735.5,
+     942.26
+    ],
+    [
+     736.93,
+     944.97
+    ],
+    [
+     736.61,
+     947.42
+    ],
+    [
+     736.77,
+     947.82
+    ],
+    [
+     737.79,
+     947.93
+    ],
+    [
+     737.68,
+     949.08
+    ],
+    [
+     738.77,
+     948.43
+    ],
+    [
+     739.22,
+     947.03
+    ],
+    [
+     739.12,
+     946.29
+    ],
+    [
+     739.92,
+     945.65
+    ],
+    [
+     740.0,
+     944.88
+    ],
+    [
+     740.78,
+     943.76
+    ],
+    [
+     741.77,
+     942.46
+    ],
+    [
+     743.77,
+     941.0
+    ],
+    [
+     744.19,
+     940.23
+    ],
+    [
+     744.19,
+     939.25
+    ],
+    [
+     745.43,
+     938.5
+    ],
+    [
+     746.35,
+     937.4
+    ],
+    [
+     747.63,
+     936.9
+    ],
+    [
+     747.69,
+     936.19
+    ],
+    [
+     750.01,
+     935.51
+    ],
+    [
+     750.72,
+     934.73
+    ],
+    [
+     752.59,
+     933.69
+    ],
+    [
+     752.9,
+     933.72
+    ],
+    [
+     752.97,
+     934.49
+    ],
+    [
+     753.47,
+     934.87
+    ],
+    [
+     757.52,
+     930.54
+    ],
+    [
+     758.01,
+     929.46
+    ],
+    [
+     757.38,
+     929.16
+    ],
+    [
+     757.34,
+     928.84
+    ],
+    [
+     758.23,
+     928.23
+    ],
+    [
+     758.44,
+     926.78
+    ],
+    [
+     760.21,
+     923.26
+    ],
+    [
+     759.79,
+     922.31
+    ],
+    [
+     759.85,
+     921.88
+    ],
+    [
+     762.2,
+     918.32
+    ],
+    [
+     765.76,
+     915.47
+    ],
+    [
+     769.35,
+     915.38
+    ],
+    [
+     774.62,
+     914.59
+    ],
+    [
+     775.8,
+     914.17
+    ]
+   ],
+   "w_base": 0.3
+  },
+  {
+   "name": "Shabakunk Creek",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     676.72,
+     970.73
+    ],
+    [
+     676.69,
+     971.3
+    ],
+    [
+     676.12,
+     972.34
+    ],
+    [
+     675.07,
+     972.99
+    ],
+    [
+     674.4,
+     973.92
+    ],
+    [
+     673.08,
+     974.0
+    ],
+    [
+     672.64,
+     974.5
+    ],
+    [
+     672.47,
+     976.97
+    ],
+    [
+     671.55,
+     978.6
+    ],
+    [
+     671.55,
+     979.2
+    ],
+    [
+     671.07,
+     979.71
+    ]
+   ],
+   "w_base": 0.15
+  },
+  {
+   "name": "Jacobs Creek",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     632.94,
+     903.21
+    ],
+    [
+     632.53,
+     905.33
+    ],
+    [
+     631.47,
+     907.58
+    ],
+    [
+     630.23,
+     909.27
+    ],
+    [
+     628.92,
+     910.45
+    ],
+    [
+     627.07,
+     911.44
+    ],
+    [
+     626.1,
+     914.68
+    ],
+    [
+     625.42,
+     915.48
+    ],
+    [
+     625.45,
+     915.84
+    ],
+    [
+     624.58,
+     916.09
+    ],
+    [
+     624.24,
+     916.98
+    ],
+    [
+     625.93,
+     919.98
+    ],
+    [
+     626.19,
+     920.87
+    ],
+    [
+     626.86,
+     921.73
+    ],
+    [
+     626.32,
+     923.11
+    ],
+    [
+     626.36,
+     924.66
+    ],
+    [
+     626.01,
+     926.11
+    ],
+    [
+     626.01,
+     927.34
+    ],
+    [
+     625.35,
+     928.67
+    ],
+    [
+     625.42,
+     931.13
+    ],
+    [
+     625.1,
+     932.67
+    ],
+    [
+     624.85,
+     936.35
+    ],
+    [
+     625.01,
+     936.99
+    ],
+    [
+     624.49,
+     941.73
+    ],
+    [
+     624.59,
+     942.19
+    ],
+    [
+     624.79,
+     942.21
+    ],
+    [
+     625.04,
+     943.73
+    ],
+    [
+     625.57,
+     944.43
+    ],
+    [
+     625.47,
+     945.05
+    ],
+    [
+     626.07,
+     945.55
+    ],
+    [
+     626.68,
+     945.63
+    ],
+    [
+     627.26,
+     946.69
+    ],
+    [
+     627.22,
+     947.23
+    ],
+    [
+     627.85,
+     948.83
+    ],
+    [
+     627.55,
+     949.26
+    ],
+    [
+     627.67,
+     950.03
+    ],
+    [
+     627.37,
+     950.57
+    ],
+    [
+     627.93,
+     951.13
+    ],
+    [
+     627.67,
+     952.0
+    ],
+    [
+     628.31,
+     953.22
+    ],
+    [
+     628.81,
+     955.29
+    ],
+    [
+     626.42,
+     958.38
+    ],
+    [
+     625.37,
+     960.12
+    ],
+    [
+     624.82,
+     961.89
+    ],
+    [
+     622.89,
+     963.38
+    ],
+    [
+     622.47,
+     965.5
+    ],
+    [
+     621.86,
+     965.62
+    ],
+    [
+     621.2,
+     966.41
+    ],
+    [
+     620.0,
+     966.86
+    ],
+    [
+     618.78,
+     968.42
+    ],
+    [
+     617.59,
+     971.31
+    ],
+    [
+     617.61,
+     972.16
+    ],
+    [
+     615.61,
+     975.47
+    ],
+    [
+     613.44,
+     976.94
+    ]
+   ],
+   "w_base": 0.2
+  },
+  {
+   "name": "Crosswicks Creek",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     837.95,
+     1193.03
+    ],
+    [
+     840.8,
+     1190.46
+    ],
+    [
+     842.1,
+     1185.28
+    ],
+    [
+     846.78,
+     1181.58
+    ],
+    [
+     848.09,
+     1175.26
+    ],
+    [
+     845.29,
+     1171.43
+    ],
+    [
+     844.84,
+     1165.73
+    ],
+    [
+     840.91,
+     1161.97
+    ],
+    [
+     841.97,
+     1156.56
+    ],
+    [
+     839.82,
+     1152.42
+    ],
+    [
+     839.95,
+     1150.42
+    ],
+    [
+     838.09,
+     1145.8
+    ],
+    [
+     841.11,
+     1142.64
+    ],
+    [
+     841.04,
+     1139.35
+    ],
+    [
+     839.64,
+     1138.61
+    ],
+    [
+     836.91,
+     1130.72
+    ],
+    [
+     836.42,
+     1123.98
+    ],
+    [
+     833.23,
+     1118.82
+    ],
+    [
+     833.08,
+     1116.8
+    ],
+    [
+     829.2,
+     1115.2
+    ],
+    [
+     829.22,
+     1114.15
+    ],
+    [
+     825.82,
+     1115.37
+    ],
+    [
+     825.4,
+     1112.7
+    ],
+    [
+     823.18,
+     1114.47
+    ],
+    [
+     821.34,
+     1111.48
+    ],
+    [
+     818.58,
+     1112.68
+    ],
+    [
+     817.48,
+     1111.61
+    ],
+    [
+     813.83,
+     1111.74
+    ],
+    [
+     811.25,
+     1108.58
+    ],
+    [
+     809.62,
+     1108.97
+    ],
+    [
+     809.36,
+     1107.34
+    ],
+    [
+     807.82,
+     1107.77
+    ],
+    [
+     806.48,
+     1110.82
+    ],
+    [
+     796.43,
+     1112.11
+    ],
+    [
+     795.74,
+     1110.43
+    ],
+    [
+     792.64,
+     1110.27
+    ],
+    [
+     792.78,
+     1108.34
+    ],
+    [
+     790.54,
+     1109.36
+    ],
+    [
+     786.93,
+     1108.57
+    ],
+    [
+     786.57,
+     1107.32
+    ],
+    [
+     784.31,
+     1108.58
+    ],
+    [
+     782.07,
+     1107.93
+    ],
+    [
+     780.96,
+     1106.94
+    ],
+    [
+     781.85,
+     1104.48
+    ],
+    [
+     780.85,
+     1103.09
+    ],
+    [
+     780.88,
+     1100.44
+    ],
+    [
+     776.18,
+     1100.76
+    ],
+    [
+     775.08,
+     1099.13
+    ],
+    [
+     773.41,
+     1100.41
+    ],
+    [
+     772.61,
+     1098.09
+    ],
+    [
+     770.26,
+     1097.65
+    ],
+    [
+     769.88,
+     1095.4
+    ],
+    [
+     762.53,
+     1094.14
+    ],
+    [
+     760.17,
+     1092.79
+    ],
+    [
+     760.06,
+     1090.94
+    ],
+    [
+     758.28,
+     1091.47
+    ],
+    [
+     754.78,
+     1087.88
+    ],
+    [
+     753.38,
+     1088.06
+    ],
+    [
+     752.51,
+     1084.99
+    ],
+    [
+     750.41,
+     1085.59
+    ],
+    [
+     750.39,
+     1084.24
+    ],
+    [
+     748.01,
+     1083.57
+    ],
+    [
+     747.13,
+     1084.98
+    ],
+    [
+     745.91,
+     1084.28
+    ],
+    [
+     746.19,
+     1083.23
+    ],
+    [
+     741.48,
+     1084.12
+    ],
+    [
+     741.93,
+     1082.09
+    ],
+    [
+     743.85,
+     1080.56
+    ],
+    [
+     742.79,
+     1078.17
+    ],
+    [
+     743.8,
+     1077.01
+    ],
+    [
+     740.39,
+     1077.1
+    ],
+    [
+     739.22,
+     1074.68
+    ],
+    [
+     736.29,
+     1072.78
+    ],
+    [
+     736.5,
+     1075.13
+    ],
+    [
+     735.63,
+     1075.43
+    ],
+    [
+     734.77,
+     1073.51
+    ],
+    [
+     731.83,
+     1073.75
+    ],
+    [
+     730.75,
+     1071.64
+    ],
+    [
+     727.89,
+     1071.96
+    ],
+    [
+     728.97,
+     1068.75
+    ],
+    [
+     725.88,
+     1068.74
+    ],
+    [
+     724.89,
+     1067.41
+    ],
+    [
+     717.17,
+     1070.33
+    ],
+    [
+     718.03,
+     1072.62
+    ],
+    [
+     715.8,
+     1076.07
+    ],
+    [
+     719.18,
+     1078.99
+    ],
+    [
+     717.25,
+     1081.73
+    ],
+    [
+     717.27,
+     1083.21
+    ],
+    [
+     719.2,
+     1083.76
+    ],
+    [
+     721.16,
+     1081.44
+    ],
+    [
+     722.14,
+     1081.83
+    ],
+    [
+     720.59,
+     1088.16
+    ],
+    [
+     715.49,
+     1094.08
+    ],
+    [
+     714.96,
+     1096.95
+    ],
+    [
+     708.09,
+     1101.71
+    ]
+   ],
+   "w_base": 0.5
+  },
+  {
+   "name": "Neshaminy Creek",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     357.74,
+     973.66
+    ],
+    [
+     364.06,
+     975.88
+    ],
+    [
+     368.58,
+     973.98
+    ],
+    [
+     369.86,
+     972.66
+    ],
+    [
+     369.4,
+     971.39
+    ],
+    [
+     371.0,
+     967.86
+    ],
+    [
+     370.54,
+     966.29
+    ],
+    [
+     374.36,
+     963.7
+    ],
+    [
+     376.64,
+     966.97
+    ],
+    [
+     376.88,
+     970.49
+    ],
+    [
+     381.78,
+     974.36
+    ],
+    [
+     383.42,
+     978.74
+    ],
+    [
+     386.33,
+     980.33
+    ],
+    [
+     388.88,
+     977.44
+    ],
+    [
+     389.63,
+     969.44
+    ],
+    [
+     392.06,
+     968.31
+    ],
+    [
+     394.71,
+     973.0
+    ],
+    [
+     397.96,
+     975.98
+    ],
+    [
+     400.98,
+     975.51
+    ],
+    [
+     403.62,
+     973.02
+    ],
+    [
+     407.18,
+     973.68
+    ],
+    [
+     407.71,
+     974.72
+    ],
+    [
+     405.76,
+     978.89
+    ],
+    [
+     406.36,
+     980.01
+    ],
+    [
+     410.79,
+     978.21
+    ],
+    [
+     410.31,
+     974.45
+    ],
+    [
+     411.2,
+     972.84
+    ],
+    [
+     412.75,
+     973.0
+    ],
+    [
+     416.13,
+     984.31
+    ],
+    [
+     418.36,
+     986.96
+    ],
+    [
+     424.98,
+     983.06
+    ],
+    [
+     428.36,
+     982.63
+    ],
+    [
+     432.99,
+     978.17
+    ],
+    [
+     437.12,
+     978.7
+    ],
+    [
+     438.61,
+     981.14
+    ],
+    [
+     447.65,
+     979.37
+    ],
+    [
+     450.16,
+     981.21
+    ],
+    [
+     451.33,
+     984.67
+    ],
+    [
+     454.38,
+     986.23
+    ],
+    [
+     459.38,
+     991.85
+    ],
+    [
+     461.63,
+     992.13
+    ],
+    [
+     464.6,
+     985.78
+    ],
+    [
+     467.72,
+     986.17
+    ],
+    [
+     468.15,
+     988.53
+    ],
+    [
+     465.2,
+     996.64
+    ],
+    [
+     467.16,
+     998.58
+    ],
+    [
+     471.98,
+     996.79
+    ],
+    [
+     476.31,
+     988.87
+    ],
+    [
+     479.99,
+     991.95
+    ],
+    [
+     483.66,
+     999.78
+    ],
+    [
+     488.92,
+     1002.13
+    ],
+    [
+     491.65,
+     1005.71
+    ],
+    [
+     502.28,
+     1002.34
+    ],
+    [
+     505.92,
+     1005.93
+    ],
+    [
+     509.38,
+     1003.26
+    ],
+    [
+     510.48,
+     1004.2
+    ],
+    [
+     509.97,
+     1009.11
+    ],
+    [
+     511.31,
+     1013.03
+    ],
+    [
+     515.27,
+     1011.8
+    ],
+    [
+     517.9,
+     1007.7
+    ],
+    [
+     521.5,
+     1010.27
+    ],
+    [
+     522.58,
+     1013.14
+    ],
+    [
+     528.56,
+     1013.36
+    ],
+    [
+     527.41,
+     1017.81
+    ],
+    [
+     525.25,
+     1020.71
+    ],
+    [
+     526.7,
+     1022.44
+    ],
+    [
+     531.14,
+     1023.39
+    ],
+    [
+     533.55,
+     1026.08
+    ],
+    [
+     532.05,
+     1031.79
+    ],
+    [
+     537.31,
+     1034.12
+    ],
+    [
+     540.26,
+     1040.65
+    ],
+    [
+     547.3,
+     1041.0
+    ],
+    [
+     550.15,
+     1043.41
+    ],
+    [
+     548.43,
+     1057.15
+    ],
+    [
+     554.34,
+     1062.42
+    ],
+    [
+     560.52,
+     1062.21
+    ],
+    [
+     563.02,
+     1064.97
+    ],
+    [
+     543.67,
+     1072.87
+    ],
+    [
+     539.84,
+     1071.6
+    ],
+    [
+     538.32,
+     1072.75
+    ],
+    [
+     537.4,
+     1077.35
+    ],
+    [
+     543.05,
+     1082.86
+    ],
+    [
+     543.92,
+     1085.74
+    ],
+    [
+     537.94,
+     1091.44
+    ],
+    [
+     538.58,
+     1098.51
+    ],
+    [
+     537.3,
+     1103.25
+    ],
+    [
+     541.9,
+     1103.7
+    ],
+    [
+     545.29,
+     1102.5
+    ],
+    [
+     554.68,
+     1096.32
+    ],
+    [
+     558.87,
+     1097.0
+    ],
+    [
+     569.06,
+     1107.05
+    ],
+    [
+     574.88,
+     1109.59
+    ],
+    [
+     580.69,
+     1116.73
+    ],
+    [
+     578.55,
+     1121.91
+    ],
+    [
+     577.7,
+     1127.74
+    ],
+    [
+     575.48,
+     1131.28
+    ],
+    [
+     577.68,
+     1141.66
+    ],
+    [
+     577.32,
+     1144.02
+    ],
+    [
+     575.55,
+     1146.97
+    ],
+    [
+     570.41,
+     1149.31
+    ],
+    [
+     568.55,
+     1156.95
+    ],
+    [
+     569.03,
+     1160.08
+    ],
+    [
+     572.11,
+     1162.77
+    ],
+    [
+     573.21,
+     1169.83
+    ],
+    [
+     571.51,
+     1175.42
+    ]
+   ],
+   "w_base": 0.5
+  },
+  {
+   "name": "Pennypack Creek",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     377.52,
+     1074.52
+    ],
+    [
+     379.19,
+     1072.84
+    ],
+    [
+     382.55,
+     1072.34
+    ],
+    [
+     384.81,
+     1070.13
+    ],
+    [
+     387.64,
+     1069.37
+    ],
+    [
+     393.94,
+     1071.37
+    ],
+    [
+     395.96,
+     1070.16
+    ],
+    [
+     403.56,
+     1072.02
+    ],
+    [
+     406.94,
+     1070.52
+    ],
+    [
+     412.87,
+     1071.38
+    ],
+    [
+     414.71,
+     1073.03
+    ],
+    [
+     421.77,
+     1073.33
+    ],
+    [
+     423.12,
+     1077.47
+    ],
+    [
+     425.44,
+     1077.29
+    ],
+    [
+     427.83,
+     1079.88
+    ],
+    [
+     427.91,
+     1082.97
+    ],
+    [
+     430.47,
+     1085.75
+    ],
+    [
+     429.19,
+     1090.25
+    ],
+    [
+     430.82,
+     1091.54
+    ],
+    [
+     432.51,
+     1092.71
+    ],
+    [
+     434.65,
+     1091.95
+    ],
+    [
+     437.24,
+     1094.02
+    ],
+    [
+     446.67,
+     1091.97
+    ],
+    [
+     451.87,
+     1096.05
+    ],
+    [
+     452.04,
+     1097.71
+    ],
+    [
+     449.93,
+     1101.47
+    ],
+    [
+     451.39,
+     1105.84
+    ],
+    [
+     450.51,
+     1107.2
+    ],
+    [
+     452.54,
+     1108.76
+    ],
+    [
+     452.63,
+     1114.01
+    ],
+    [
+     454.98,
+     1114.44
+    ],
+    [
+     455.63,
+     1116.01
+    ],
+    [
+     454.19,
+     1117.12
+    ],
+    [
+     454.65,
+     1118.51
+    ],
+    [
+     452.87,
+     1123.89
+    ],
+    [
+     456.02,
+     1130.56
+    ],
+    [
+     455.19,
+     1132.2
+    ],
+    [
+     451.75,
+     1133.15
+    ],
+    [
+     451.34,
+     1134.36
+    ],
+    [
+     454.88,
+     1135.73
+    ],
+    [
+     452.91,
+     1140.1
+    ],
+    [
+     453.1,
+     1142.81
+    ],
+    [
+     454.56,
+     1144.42
+    ],
+    [
+     453.38,
+     1151.18
+    ],
+    [
+     455.74,
+     1156.01
+    ],
+    [
+     457.81,
+     1157.48
+    ],
+    [
+     458.19,
+     1160.46
+    ],
+    [
+     460.05,
+     1160.55
+    ],
+    [
+     461.2,
+     1157.8
+    ],
+    [
+     462.96,
+     1157.52
+    ],
+    [
+     462.36,
+     1159.54
+    ],
+    [
+     463.38,
+     1163.15
+    ],
+    [
+     464.98,
+     1164.01
+    ],
+    [
+     461.71,
+     1166.7
+    ],
+    [
+     461.91,
+     1168.51
+    ],
+    [
+     460.31,
+     1171.21
+    ],
+    [
+     463.47,
+     1170.55
+    ],
+    [
+     464.87,
+     1168.34
+    ],
+    [
+     467.14,
+     1170.06
+    ],
+    [
+     469.89,
+     1167.55
+    ],
+    [
+     473.44,
+     1168.13
+    ],
+    [
+     475.03,
+     1170.66
+    ],
+    [
+     474.71,
+     1172.02
+    ],
+    [
+     476.61,
+     1173.34
+    ],
+    [
+     474.8,
+     1176.55
+    ],
+    [
+     474.97,
+     1178.67
+    ],
+    [
+     478.94,
+     1181.31
+    ],
+    [
+     480.49,
+     1184.13
+    ],
+    [
+     480.19,
+     1187.96
+    ],
+    [
+     477.83,
+     1193.19
+    ],
+    [
+     477.67,
+     1195.89
+    ],
+    [
+     481.71,
+     1198.61
+    ],
+    [
+     483.56,
+     1194.37
+    ],
+    [
+     487.78,
+     1195.27
+    ],
+    [
+     491.53,
+     1192.6
+    ],
+    [
+     493.34,
+     1192.95
+    ],
+    [
+     493.62,
+     1195.04
+    ],
+    [
+     492.04,
+     1195.9
+    ],
+    [
+     492.22,
+     1198.72
+    ],
+    [
+     490.61,
+     1205.5
+    ],
+    [
+     490.9,
+     1210.08
+    ],
+    [
+     493.28,
+     1210.34
+    ],
+    [
+     496.66,
+     1213.07
+    ],
+    [
+     498.62,
+     1209.36
+    ],
+    [
+     500.68,
+     1208.48
+    ],
+    [
+     501.54,
+     1211.28
+    ],
+    [
+     506.65,
+     1214.36
+    ]
+   ],
+   "w_base": 0.3
+  },
+  {
+   "name": "Hackensack River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     1239.38,
+     105.91
+    ],
+    [
+     1244.79,
+     105.54
+    ],
+    [
+     1250.55,
+     108.88
+    ],
+    [
+     1252.29,
+     113.28
+    ],
+    [
+     1254.54,
+     114.87
+    ],
+    [
+     1253.74,
+     118.23
+    ],
+    [
+     1256.47,
+     118.6
+    ],
+    [
+     1257.97,
+     120.43
+    ],
+    [
+     1258.47,
+     129.58
+    ],
+    [
+     1265.18,
+     132.8
+    ],
+    [
+     1264.99,
+     133.82
+    ],
+    [
+     1264.95,
+     134.16
+    ],
+    [
+     1263.54,
+     152.64
+    ],
+    [
+     1260.24,
+     166.44
+    ],
+    [
+     1258.44,
+     184.33
+    ],
+    [
+     1260.51,
+     188.69
+    ],
+    [
+     1258.68,
+     190.53
+    ],
+    [
+     1264.34,
+     194.68
+    ],
+    [
+     1263.62,
+     198.23
+    ],
+    [
+     1261.34,
+     201.75
+    ],
+    [
+     1261.23,
+     206.75
+    ],
+    [
+     1260.09,
+     206.13
+    ],
+    [
+     1250.69,
+     220.79
+    ],
+    [
+     1248.8,
+     220.6
+    ],
+    [
+     1245.05,
+     223.89
+    ],
+    [
+     1245.39,
+     227.57
+    ],
+    [
+     1247.88,
+     231.6
+    ],
+    [
+     1247.52,
+     236.9
+    ],
+    [
+     1245.35,
+     237.84
+    ],
+    [
+     1243.57,
+     242.29
+    ],
+    [
+     1239.56,
+     243.72
+    ],
+    [
+     1239.76,
+     247.8
+    ],
+    [
+     1238.57,
+     248.15
+    ],
+    [
+     1237.63,
+     251.68
+    ],
+    [
+     1235.29,
+     253.03
+    ],
+    [
+     1237.38,
+     260.99
+    ],
+    [
+     1235.54,
+     266.26
+    ],
+    [
+     1233.07,
+     267.29
+    ],
+    [
+     1231.05,
+     272.95
+    ],
+    [
+     1229.25,
+     272.16
+    ],
+    [
+     1227.24,
+     275.61
+    ],
+    [
+     1228.7,
+     274.68
+    ],
+    [
+     1230.28,
+     276.52
+    ],
+    [
+     1229.47,
+     280.72
+    ],
+    [
+     1232.66,
+     281.77
+    ],
+    [
+     1232.52,
+     284.16
+    ],
+    [
+     1234.3,
+     285.15
+    ],
+    [
+     1234.75,
+     287.67
+    ],
+    [
+     1237.82,
+     288.77
+    ],
+    [
+     1238.33,
+     285.12
+    ],
+    [
+     1239.18,
+     286.17
+    ],
+    [
+     1245.28,
+     285.51
+    ],
+    [
+     1243.83,
+     292.74
+    ],
+    [
+     1240.32,
+     298.74
+    ],
+    [
+     1241.69,
+     301.56
+    ],
+    [
+     1246.35,
+     305.39
+    ],
+    [
+     1246.44,
+     306.91
+    ],
+    [
+     1240.3,
+     307.73
+    ],
+    [
+     1233.27,
+     311.06
+    ],
+    [
+     1228.02,
+     314.2
+    ],
+    [
+     1219.02,
+     322.92
+    ],
+    [
+     1215.53,
+     323.42
+    ],
+    [
+     1213.37,
+     328.05
+    ],
+    [
+     1214.15,
+     330.33
+    ],
+    [
+     1213.65,
+     331.62
+    ],
+    [
+     1215.59,
+     336.94
+    ],
+    [
+     1218.36,
+     337.93
+    ],
+    [
+     1217.98,
+     335.47
+    ],
+    [
+     1214.03,
+     332.61
+    ],
+    [
+     1213.98,
+     332.5
+    ],
+    [
+     1214.35,
+     331.38
+    ],
+    [
+     1214.14,
+     330.29
+    ],
+    [
+     1213.68,
+     330.99
+    ],
+    [
+     1213.64,
+     329.59
+    ],
+    [
+     1214.53,
+     333.01
+    ],
+    [
+     1214.28,
+     333.21
+    ],
+    [
+     1215.14,
+     334.51
+    ],
+    [
+     1215.75,
+     333.93
+    ],
+    [
+     1215.81,
+     337.07
+    ],
+    [
+     1217.05,
+     339.15
+    ],
+    [
+     1216.78,
+     341.94
+    ],
+    [
+     1215.65,
+     342.34
+    ],
+    [
+     1213.6,
+     350.56
+    ],
+    [
+     1212.22,
+     351.89
+    ],
+    [
+     1213.11,
+     354.93
+    ],
+    [
+     1210.92,
+     356.22
+    ],
+    [
+     1212.0,
+     358.13
+    ],
+    [
+     1210.95,
+     358.9
+    ],
+    [
+     1210.57,
+     363.05
+    ],
+    [
+     1213.07,
+     367.96
+    ],
+    [
+     1215.13,
+     369.11
+    ],
+    [
+     1216.67,
+     374.1
+    ],
+    [
+     1214.72,
+     375.42
+    ],
+    [
+     1214.45,
+     378.09
+    ],
+    [
+     1212.11,
+     379.29
+    ],
+    [
+     1212.02,
+     385.26
+    ],
+    [
+     1207.45,
+     390.9
+    ],
+    [
+     1210.65,
+     394.64
+    ],
+    [
+     1205.97,
+     401.53
+    ],
+    [
+     1209.54,
+     403.87
+    ],
+    [
+     1209.05,
+     413.18
+    ],
+    [
+     1210.94,
+     416.41
+    ],
+    [
+     1211.3,
+     421.1
+    ],
+    [
+     1214.17,
+     425.34
+    ],
+    [
+     1212.48,
+     431.98
+    ],
+    [
+     1213.59,
+     435.5
+    ],
+    [
+     1212.65,
+     439.85
+    ],
+    [
+     1213.34,
+     445.95
+    ],
+    [
+     1208.94,
+     451.0
+    ],
+    [
+     1212.75,
+     459.95
+    ],
+    [
+     1211.69,
+     465.53
+    ],
+    [
+     1208.86,
+     469.69
+    ],
+    [
+     1189.41,
+     472.73
+    ],
+    [
+     1187.2,
+     474.11
+    ],
+    [
+     1184.12,
+     479.23
+    ],
+    [
+     1180.19,
+     480.6
+    ],
+    [
+     1169.61,
+     497.89
+    ],
+    [
+     1170.45,
+     511.95
+    ],
+    [
+     1166.9,
+     516.79
+    ],
+    [
+     1165.39,
+     521.41
+    ],
+    [
+     1167.98,
+     526.44
+    ],
+    [
+     1177.07,
+     525.16
+    ],
+    [
+     1179.38,
+     526.09
+    ],
+    [
+     1180.26,
+     527.25
+    ],
+    [
+     1179.67,
+     530.72
+    ],
+    [
+     1166.42,
+     538.6
+    ],
+    [
+     1163.11,
+     545.21
+    ],
+    [
+     1160.76,
+     554.21
+    ],
+    [
+     1150.74,
+     562.34
+    ]
+   ],
+   "w_base": 0.8
+  },
+  {
+   "name": "Saddle River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     1174.5,
+     204.92
+    ],
+    [
+     1172.73,
+     210.09
+    ],
+    [
+     1172.95,
+     214.39
+    ],
+    [
+     1169.0,
+     216.59
+    ],
+    [
+     1168.14,
+     221.01
+    ],
+    [
+     1166.64,
+     222.57
+    ],
+    [
+     1166.76,
+     225.05
+    ],
+    [
+     1164.0,
+     229.39
+    ],
+    [
+     1164.61,
+     232.17
+    ],
+    [
+     1161.6,
+     234.62
+    ],
+    [
+     1162.66,
+     237.93
+    ],
+    [
+     1160.61,
+     241.97
+    ],
+    [
+     1162.17,
+     244.95
+    ],
+    [
+     1161.19,
+     247.26
+    ],
+    [
+     1162.24,
+     249.81
+    ],
+    [
+     1160.85,
+     252.37
+    ],
+    [
+     1162.42,
+     254.73
+    ],
+    [
+     1161.26,
+     258.63
+    ],
+    [
+     1162.39,
+     260.53
+    ],
+    [
+     1161.52,
+     262.68
+    ],
+    [
+     1159.02,
+     264.73
+    ],
+    [
+     1160.01,
+     269.74
+    ],
+    [
+     1162.01,
+     269.94
+    ],
+    [
+     1164.55,
+     272.52
+    ],
+    [
+     1164.47,
+     276.02
+    ],
+    [
+     1166.5,
+     279.17
+    ],
+    [
+     1166.96,
+     285.22
+    ],
+    [
+     1166.21,
+     285.95
+    ],
+    [
+     1168.13,
+     287.66
+    ],
+    [
+     1168.34,
+     291.29
+    ],
+    [
+     1170.52,
+     292.74
+    ],
+    [
+     1170.35,
+     296.65
+    ],
+    [
+     1168.21,
+     299.82
+    ],
+    [
+     1168.64,
+     303.37
+    ],
+    [
+     1167.21,
+     304.49
+    ],
+    [
+     1167.75,
+     310.41
+    ],
+    [
+     1164.17,
+     314.93
+    ],
+    [
+     1164.27,
+     319.27
+    ],
+    [
+     1165.65,
+     319.59
+    ],
+    [
+     1166.36,
+     321.22
+    ],
+    [
+     1165.75,
+     323.77
+    ],
+    [
+     1162.01,
+     327.94
+    ],
+    [
+     1161.03,
+     334.8
+    ],
+    [
+     1166.29,
+     339.38
+    ],
+    [
+     1165.85,
+     343.43
+    ],
+    [
+     1167.49,
+     348.31
+    ],
+    [
+     1167.46,
+     352.77
+    ],
+    [
+     1168.62,
+     354.8
+    ],
+    [
+     1170.07,
+     363.5
+    ],
+    [
+     1168.33,
+     368.77
+    ],
+    [
+     1170.92,
+     372.85
+    ],
+    [
+     1175.1,
+     375.88
+    ],
+    [
+     1175.71,
+     381.18
+    ],
+    [
+     1177.47,
+     386.08
+    ],
+    [
+     1174.85,
+     395.02
+    ],
+    [
+     1171.32,
+     402.6
+    ],
+    [
+     1169.27,
+     404.03
+    ],
+    [
+     1170.33,
+     407.55
+    ],
+    [
+     1169.6,
+     409.68
+    ],
+    [
+     1166.29,
+     412.24
+    ],
+    [
+     1164.68,
+     410.98
+    ],
+    [
+     1163.58,
+     414.55
+    ],
+    [
+     1161.61,
+     414.32
+    ],
+    [
+     1160.02,
+     418.04
+    ],
+    [
+     1159.66,
+     416.8
+    ],
+    [
+     1158.85,
+     417.64
+    ],
+    [
+     1156.55,
+     416.63
+    ]
+   ],
+   "w_base": 0.3
+  },
+  {
+   "name": "Bronx River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "modern course (OSM)",
+   "pts": [
+    [
+     1417.37,
+     138.85
+    ],
+    [
+     1417.98,
+     145.15
+    ],
+    [
+     1420.77,
+     150.31
+    ],
+    [
+     1419.5,
+     153.22
+    ],
+    [
+     1420.06,
+     161.16
+    ],
+    [
+     1424.83,
+     170.07
+    ],
+    [
+     1423.86,
+     172.71
+    ],
+    [
+     1419.37,
+     174.19
+    ],
+    [
+     1417.51,
+     178.08
+    ],
+    [
+     1417.45,
+     186.05
+    ],
+    [
+     1405.07,
+     205.91
+    ],
+    [
+     1408.95,
+     210.35
+    ],
+    [
+     1407.83,
+     214.4
+    ],
+    [
+     1403.25,
+     217.2
+    ],
+    [
+     1404.73,
+     213.1
+    ],
+    [
+     1405.07,
+     205.91
+    ]
+   ],
+   "w_base": 0.3
+  },
+  {
+   "name": "Harlem River",
+   "kind": "river",
+   "acc_m": 150,
+   "src": "OSM (Nominatim geometry, parts chained)",
+   "note": "tidal strait (also in the sea mask)",
+   "pts": [
+    [
+     1289.8,
+     402.01
+    ],
+    [
+     1288.43,
+     401.68
+    ],
+    [
+     1282.96,
+     399.76
+    ],
+    [
+     1291.39,
+     402.44
+    ],
+    [
+     1293.75,
+     404.71
+    ],
+    [
+     1298.93,
+     405.93
+    ],
+    [
+     1300.68,
+     408.42
+    ],
+    [
+     1299.61,
+     412.67
+    ],
+    [
+     1296.78,
+     417.33
+    ],
+    [
+     1293.39,
+     421.47
+    ],
+    [
+     1286.33,
+     434.21
+    ],
+    [
+     1282.81,
+     443.59
+    ],
+    [
+     1282.55,
+     445.36
+    ],
+    [
+     1283.36,
+     450.82
+    ],
+    [
+     1283.84,
+     458.95
+    ],
+    [
+     1283.38,
+     468.52
+    ],
+    [
+     1286.51,
+     474.51
+    ],
+    [
+     1287.34,
+     475.72
+    ],
+    [
+     1286.88,
+     482.32
+    ],
+    [
+     1283.51,
+     485.92
+    ],
+    [
+     1279.83,
+     492.15
+    ],
+    [
+     1282.52,
+     496.63
+    ]
+   ],
+   "w_base": 0.8
+  },
+  {
+   "name": "Raritan River",
+   "kind": "river",
+   "acc_m": 300,
+   "src": "EST (modern course; OSM partial)",
+   "note": "",
+   "pts": [
+    [
+     739.68,
+     702.94
+    ],
+    [
+     783.37,
+     712.53
+    ],
+    [
+     827.06,
+     711.57
+    ],
+    [
+     848.91,
+     714.44
+    ],
+    [
+     874.4,
+     731.69
+    ],
+    [
+     892.6,
+     750.85
+    ],
+    [
+     910.81,
+     766.17
+    ],
+    [
+     929.01,
+     776.71
+    ],
+    [
+     947.21,
+     781.49
+    ],
+    [
+     966.88,
+     777.66
+    ],
+    [
+     987.26,
+     786.28
+    ],
+    [
+     1009.11,
+     783.41
+    ],
+    [
+     1027.31,
+     768.09
+    ],
+    [
+     1041.88,
+     762.34
+    ]
+   ],
+   "w_base": 0.8
+  },
+  {
+   "name": "Passaic River",
+   "kind": "river",
+   "acc_m": 300,
+   "src": "EST (modern course; OSM partial)",
+   "note": "",
+   "pts": [
+    [
+     1049.16,
+     323.19
+    ],
+    [
+     1078.29,
+     347.29
+    ],
+    [
+     1102.32,
+     364.64
+    ],
+    [
+     1118.34,
+     376.2
+    ],
+    [
+     1140.18,
+     400.28
+    ],
+    [
+     1141.64,
+     422.43
+    ],
+    [
+     1132.9,
+     448.42
+    ],
+    [
+     1124.16,
+     477.28
+    ],
+    [
+     1116.88,
+     506.14
+    ],
+    [
+     1114.7,
+     530.17
+    ],
+    [
+     1125.62,
+     539.78
+    ],
+    [
+     1140.18,
+     539.78
+    ],
+    [
+     1147.46,
+     552.27
+    ],
+    [
+     1151.1,
+     565.72
+    ]
+   ],
+   "w_base": 0.8
+  },
+  {
+   "name": "Hudson River",
+   "kind": "river",
+   "acc_m": 500,
+   "src": "EST (centre line; the river itself = the sea mask, tidal)",
+   "note": "",
+   "pts": [
+    [
+     1263.97,
+     42.94
+    ],
+    [
+     1307.66,
+     188.05
+    ],
+    [
+     1304.02,
+     284.61
+    ],
+    [
+     1289.46,
+     381.02
+    ],
+    [
+     1260.33,
+     448.42
+    ],
+    [
+     1231.2,
+     506.14
+    ],
+    [
+     1220.28,
+     554.19
+    ],
+    [
+     1213.0,
+     578.21
+    ]
+   ],
+   "w_base": 8.0
+  },
+  {
+   "name": "East River",
+   "kind": "river",
+   "acc_m": 300,
+   "src": "EST (centre line; tidal strait = the sea mask)",
+   "note": "",
+   "pts": [
+    [
+     1285.82,
+     482.09
+    ],
+    [
+     1278.54,
+     501.33
+    ],
+    [
+     1266.16,
+     515.75
+    ],
+    [
+     1258.15,
+     530.17
+    ],
+    [
+     1256.69,
+     546.51
+    ],
+    [
+     1253.05,
+     561.88
+    ],
+    [
+     1242.13,
+     565.72
+    ],
+    [
+     1235.57,
+     569.56
+    ],
+    [
+     1229.02,
+     575.33
+    ],
+    [
+     1227.56,
+     581.09
+    ]
+   ],
+   "w_base": 8.0
+  },
+  {
+   "name": "Gowanus Creek",
+   "kind": "river",
+   "acc_m": 300,
+   "src": "EST (the 1776 creek ~ the canal line; marsh both sides)",
+   "note": "Freeke's mill pond at the head; the retreat of 27 Aug crossed it near the mouth",
+   "pts": [
+    [
+     1245.4,
+     587.81
+    ],
+    [
+     1243.58,
+     590.69
+    ],
+    [
+     1241.76,
+     593.57
+    ],
+    [
+     1239.58,
+     596.45
+    ],
+    [
+     1237.76,
+     598.85
+    ],
+    [
+     1235.57,
+     600.77
+    ],
+    [
+     1232.66,
+     602.69
+    ]
+   ]
+  },
+  {
+   "name": "East River (axis, Brooklyn Ferry reach)",
+   "kind": "river",
+   "acc_m": 200,
+   "src": "Modern NHD / OSM geometry, approximate",
+   "note": "Flows toward the Upper Bay (south-west).",
+   "pts": [
+    [
+     1237.76,
+     564.76
+    ],
+    [
+     1235.57,
+     569.56
+    ],
+    [
+     1232.66,
+     574.37
+    ],
+    [
+     1229.02,
+     580.13
+    ]
+   ]
+  },
+  {
+   "name": "Delaware River, McConkey's Ferry to Trenton Falls (flow SE)",
+   "kind": "river",
+   "acc_m": 200,
+   "src": "APPROXIMATE, drawn from OSM anchors (Johnson Ferry House, Calhoun St Bridge, Bordentown, Wilburtha) - NOT NHD; snap to NHD in the basemap (acc ~500 m). River ~300 yd wide at the crossing (ABT).",
+   "note": "",
+   "pts": [
+    [
+     578.03,
+     937.36
+    ],
+    [
+     586.77,
+     946.91
+    ],
+    [
+     598.78,
+     957.12
+    ],
+    [
+     607.16,
+     966.0
+    ],
+    [
+     613.71,
+     978.41
+    ],
+    [
+     623.18,
+     991.77
+    ],
+    [
+     633.37,
+     1004.18
+    ],
+    [
+     645.02,
+     1015.62
+    ],
+    [
+     655.94,
+     1023.25
+    ],
+    [
+     667.59,
+     1032.89
+    ],
+    [
+     674.15,
+     1042.33
+    ],
+    [
+     682.89,
+     1061.39
+    ],
+    [
+     697.45,
+     1085.22
+    ],
+    [
+     710.56,
+     1103.04
+    ]
+   ]
+  },
+  {
+   "name": "Assunpink Creek, Trenton (east-west through town; flows W to the Delaware)",
+   "kind": "river",
+   "acc_m": 200,
+   "src": "APPROXIMATE: anchored on OSM Assunpink Dr 40.2175,-74.7649 and S Broad St 40.2182,-74.7642 only; east and west ends are guesses (acc ~300 m). Snap to NHD.",
+   "note": "",
+   "pts": [
+    [
+     689.44,
+     1037.56
+    ],
+    [
+     684.34,
+     1036.42
+    ],
+    [
+     679.97,
+     1035.65
+    ],
+    [
+     678.44,
+     1035.46
+    ],
+    [
+     677.64,
+     1035.27
+    ],
+    [
+     672.69,
+     1036.61
+    ],
+    [
+     669.05,
+     1040.42
+    ]
+   ]
+  },
+  {
+   "name": "Assunpink Creek upstream (east of Trenton to Quaker Bridge)",
+   "kind": "river",
+   "acc_m": 200,
+   "src": "VERY APPROXIMATE (acc ~1,000 m): OSM Mercerville 40.2337,-74.6973 and Quaker Bridge Rd 40.2766,-74.6695 only. Snap to NHD.",
+   "note": "",
+   "pts": [
+    [
+     689.44,
+     1037.56
+    ],
+    [
+     699.63,
+     1032.79
+    ],
+    [
+     710.56,
+     1024.21
+    ],
+    [
+     722.94,
+     1023.25
+    ],
+    [
+     737.5,
+     1013.72
+    ],
+    [
+     749.88,
+     1002.27
+    ]
+   ]
+  }
+ ],
+ "roads": [
+  {
+   "name": "Philadelphia - Trenton post road (PA)",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     397.22,
+     1290.15
+    ],
+    [
+     420.74,
+     1256.51
+    ],
+    [
+     446.23,
+     1226.09
+    ],
+    [
+     488.46,
+     1199.47
+    ],
+    [
+     535.79,
+     1175.68
+    ],
+    [
+     601.33,
+     1147.13
+    ],
+    [
+     614.58,
+     1146.46
+    ],
+    [
+     630.46,
+     1109.04
+    ],
+    [
+     648.66,
+     1070.93
+    ],
+    [
+     659.58,
+     1047.09
+    ],
+    [
+     674.15,
+     1041.85
+    ]
+   ]
+  },
+  {
+   "name": "New York post road (NJ): Trenton - New Brunswick - Elizabeth Town - Paulus Hook",
+   "kind": "road",
+   "acc_m": 1000,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     677.06,
+     1027.74
+    ],
+    [
+     688.35,
+     1013.24
+    ],
+    [
+     697.45,
+     993.68
+    ],
+    [
+     703.57,
+     959.03
+    ],
+    [
+     714.2,
+     945.0
+    ],
+    [
+     730.0,
+     935.26
+    ],
+    [
+     738.23,
+     927.8
+    ],
+    [
+     748.42,
+     916.34
+    ],
+    [
+     754.76,
+     909.94
+    ],
+    [
+     787.74,
+     885.28
+    ],
+    [
+     830.71,
+     851.34
+    ],
+    [
+     867.11,
+     813.08
+    ],
+    [
+     910.44,
+     767.71
+    ],
+    [
+     970.52,
+     724.02
+    ],
+    [
+     1027.61,
+     710.03
+    ],
+    [
+     1032.41,
+     661.71
+    ],
+    [
+     1081.42,
+     607.97
+    ],
+    [
+     1096.49,
+     573.41
+    ],
+    [
+     1109.31,
+     539.11
+    ],
+    [
+     1147.46,
+     534.97
+    ],
+    [
+     1183.87,
+     544.58
+    ],
+    [
+     1209.36,
+     558.04
+    ]
+   ]
+  },
+  {
+   "name": "Trenton - Bordentown - Burlington road",
+   "kind": "road",
+   "acc_m": 1000,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     683.69,
+     1037.75
+    ],
+    [
+     692.35,
+     1051.86
+    ],
+    [
+     706.92,
+     1070.93
+    ],
+    [
+     716.53,
+     1103.13
+    ],
+    [
+     674.15,
+     1123.32
+    ],
+    [
+     641.38,
+     1142.37
+    ],
+    [
+     605.04,
+     1168.16
+    ]
+   ]
+  },
+  {
+   "name": "Burlington - Cooper's Ferry road",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     605.04,
+     1168.16
+    ],
+    [
+     550.36,
+     1204.22
+    ],
+    [
+     484.82,
+     1247.01
+    ],
+    [
+     441.13,
+     1280.27
+    ],
+    [
+     415.64,
+     1292.62
+    ]
+   ]
+  },
+  {
+   "name": "Perth Amboy - New Brunswick road",
+   "kind": "road",
+   "acc_m": 1000,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     1041.59,
+     758.7
+    ],
+    [
+     994.55,
+     774.79
+    ],
+    [
+     950.86,
+     774.79
+    ],
+    [
+     910.44,
+     767.71
+    ]
+   ]
+  },
+  {
+   "name": "Morristown - Elizabeth Town road",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     884.23,
+     480.36
+    ],
+    [
+     936.29,
+     506.14
+    ],
+    [
+     979.98,
+     544.58
+    ],
+    [
+     1004.16,
+     568.8
+    ],
+    [
+     1045.52,
+     592.61
+    ],
+    [
+     1081.42,
+     607.97
+    ]
+   ]
+  },
+  {
+   "name": "Morristown - Newark road",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     884.23,
+     480.36
+    ],
+    [
+     943.57,
+     477.28
+    ],
+    [
+     1016.39,
+     496.52
+    ],
+    [
+     1067.36,
+     520.56
+    ],
+    [
+     1109.31,
+     539.11
+    ]
+   ]
+  },
+  {
+   "name": "Fort Lee - Hackensack - Newark road",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     1256.69,
+     428.21
+    ],
+    [
+     1227.56,
+     409.91
+    ],
+    [
+     1203.17,
+     394.6
+    ],
+    [
+     1169.31,
+     438.8
+    ],
+    [
+     1132.9,
+     486.9
+    ],
+    [
+     1109.31,
+     539.11
+    ]
+   ]
+  },
+  {
+   "name": "Princeton - Morristown road",
+   "kind": "road",
+   "acc_m": 2000,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     754.76,
+     909.94
+    ],
+    [
+     783.37,
+     832.21
+    ],
+    [
+     797.94,
+     736.48
+    ],
+    [
+     790.66,
+     650.2
+    ],
+    [
+     827.06,
+     573.41
+    ],
+    [
+     884.23,
+     480.36
+    ]
+   ]
+  },
+  {
+   "name": "Boston post road (Manhattan)",
+   "kind": "road",
+   "acc_m": 1500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     1226.83,
+     566.2
+    ],
+    [
+     1233.39,
+     559.0
+    ],
+    [
+     1239.94,
+     549.39
+    ],
+    [
+     1245.77,
+     530.17
+    ],
+    [
+     1260.33,
+     506.14
+    ],
+    [
+     1271.25,
+     486.9
+    ],
+    [
+     1274.89,
+     467.66
+    ],
+    [
+     1283.63,
+     433.98
+    ],
+    [
+     1298.92,
+     403.17
+    ],
+    [
+     1322.23,
+     371.38
+    ],
+    [
+     1358.63,
+     323.19
+    ],
+    [
+     1407.42,
+     251.79
+    ]
+   ]
+  },
+  {
+   "name": "Brooklyn - Flatbush - Jamaica roads",
+   "kind": "road",
+   "acc_m": 800,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     1238.85,
+     570.52
+    ],
+    [
+     1243.95,
+     580.61
+    ],
+    [
+     1256.69,
+     592.61
+    ],
+    [
+     1262.52,
+     607.01
+    ],
+    [
+     1266.16,
+     621.41
+    ]
+   ]
+  },
+  {
+   "name": "Jamaica road (Bedford - Jamaica Pass - Jamaica)",
+   "kind": "road",
+   "acc_m": 1000,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     1243.95,
+     580.61
+    ],
+    [
+     1263.97,
+     584.93
+    ],
+    [
+     1285.82,
+     588.77
+    ],
+    [
+     1310.57,
+     592.61
+    ],
+    [
+     1344.07,
+     583.01
+    ],
+    [
+     1379.75,
+     571.48
+    ]
+   ]
+  },
+  {
+   "name": "Gowanus road (Brooklyn - Gravesend)",
+   "kind": "road",
+   "acc_m": 1000,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     1243.95,
+     580.61
+    ],
+    [
+     1240.67,
+     594.53
+    ],
+    [
+     1234.84,
+     611.81
+    ],
+    [
+     1223.92,
+     631.01
+    ],
+    [
+     1220.28,
+     655.0
+    ],
+    [
+     1242.13,
+     673.22
+    ]
+   ]
+  },
+  {
+   "name": "River road (NJ): Johnson's Ferry - Trenton",
+   "kind": "road",
+   "acc_m": 500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "Sullivan's column, 26 Dec; enters the lower town at King St / Front St",
+   "pts": [
+    [
+     602.71,
+     957.03
+    ],
+    [
+     607.16,
+     966.0
+    ],
+    [
+     615.17,
+     977.46
+    ],
+    [
+     623.18,
+     988.91
+    ],
+    [
+     632.64,
+     998.45
+    ],
+    [
+     645.02,
+     1008.95
+    ],
+    [
+     655.94,
+     1017.53
+    ],
+    [
+     664.68,
+     1024.21
+    ],
+    [
+     671.23,
+     1029.93
+    ],
+    [
+     674.15,
+     1033.75
+    ]
+   ]
+  },
+  {
+   "name": "River road (PA): McConkey's Ferry - Yardley - Morrisville",
+   "kind": "road",
+   "acc_m": 700,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     557.64,
+     918.25
+    ],
+    [
+     580.94,
+     942.13
+    ],
+    [
+     596.96,
+     961.04
+    ],
+    [
+     607.16,
+     980.32
+    ],
+    [
+     618.81,
+     1008.95
+    ],
+    [
+     652.3,
+     1032.79
+    ],
+    [
+     661.04,
+     1041.37
+    ]
+   ]
+  },
+  {
+   "name": "Bear Tavern road",
+   "kind": "road",
+   "acc_m": 400,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "from the ferry up the bank, via Bear Tavern and the Jacobs Creek ravine to Birmingham (night 25-26 Dec)",
+   "pts": [
+    [
+     602.71,
+     957.03
+    ],
+    [
+     605.7,
+     954.54
+    ],
+    [
+     610.07,
+     950.73
+    ],
+    [
+     615.17,
+     948.34
+    ],
+    [
+     620.26,
+     953.59
+    ],
+    [
+     626.45,
+     963.14
+    ],
+    [
+     632.64,
+     970.77
+    ],
+    [
+     639.92,
+     978.89
+    ]
+   ]
+  },
+  {
+   "name": "Birmingham - River road (Sullivan)",
+   "kind": "road",
+   "acc_m": 600,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     639.92,
+     978.89
+    ],
+    [
+     634.83,
+     985.09
+    ],
+    [
+     629.0,
+     992.73
+    ],
+    [
+     631.19,
+     998.45
+    ]
+   ]
+  },
+  {
+   "name": "Pennington road",
+   "kind": "road",
+   "acc_m": 500,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "Greene's column (with Washington) entered the north end by it, 26 Dec",
+   "pts": [
+    [
+     658.86,
+     929.33
+    ],
+    [
+     659.58,
+     946.91
+    ],
+    [
+     661.04,
+     966.0
+    ],
+    [
+     662.5,
+     985.09
+    ],
+    [
+     666.87,
+     1004.18
+    ],
+    [
+     670.87,
+     1018.49
+    ],
+    [
+     677.06,
+     1027.74
+    ]
+   ]
+  },
+  {
+   "name": "Birmingham - Pennington road (Greene)",
+   "kind": "road",
+   "acc_m": 700,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     639.92,
+     978.89
+    ],
+    [
+     648.66,
+     981.27
+    ],
+    [
+     659.58,
+     985.09
+    ],
+    [
+     662.5,
+     987.0
+    ]
+   ]
+  },
+  {
+   "name": "Scotch road",
+   "kind": "road",
+   "acc_m": 900,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "",
+   "pts": [
+    [
+     630.46,
+     937.36
+    ],
+    [
+     637.74,
+     956.45
+    ],
+    [
+     639.2,
+     970.77
+    ],
+    [
+     639.92,
+     978.89
+    ]
+   ]
+  },
+  {
+   "name": "Quaker Bridge road",
+   "kind": "road",
+   "acc_m": 800,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "the night march 2-3 Jan 1777 (with the Sandtown road)",
+   "pts": [
+    [
+     683.69,
+     1037.75
+    ],
+    [
+     692.35,
+     1034.7
+    ],
+    [
+     706.92,
+     1023.25
+    ],
+    [
+     719.29,
+     1006.08
+    ],
+    [
+     730.22,
+     989.86
+    ],
+    [
+     734.59,
+     978.41
+    ],
+    [
+     735.31,
+     966.0
+    ],
+    [
+     733.86,
+     954.54
+    ]
+   ]
+  },
+  {
+   "name": "Saw Mill road",
+   "kind": "road",
+   "acc_m": 600,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "the back road from the Quaker Bridge road past the Thomas Clarke farm into Princeton (approx.)",
+   "pts": [
+    [
+     733.86,
+     954.54
+    ],
+    [
+     736.04,
+     945.0
+    ],
+    [
+     739.68,
+     935.45
+    ],
+    [
+     742.6,
+     927.8
+    ],
+    [
+     746.97,
+     920.16
+    ],
+    [
+     752.06,
+     913.48
+    ],
+    [
+     754.76,
+     909.94
+    ]
+   ]
+  },
+  {
+   "name": "Sandtown road",
+   "kind": "road",
+   "acc_m": 1200,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "approx.: SE from Mill Hill then N to the Quaker Bridge road",
+   "pts": [
+    [
+     683.69,
+     1037.75
+    ],
+    [
+     692.35,
+     1042.33
+    ],
+    [
+     706.92,
+     1046.14
+    ],
+    [
+     721.48,
+     1047.09
+    ],
+    [
+     728.76,
+     1032.79
+    ],
+    [
+     719.29,
+     1006.08
+    ]
+   ]
+  },
+  {
+   "name": "Trenton streets: King Street",
+   "kind": "road",
+   "acc_m": 60,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "today Warren St",
+   "pts": [
+    [
+     677.06,
+     1027.74
+    ],
+    [
+     676.19,
+     1029.93
+    ],
+    [
+     675.6,
+     1032.03
+    ],
+    [
+     675.02,
+     1034.22
+    ],
+    [
+     674.66,
+     1035.84
+    ]
+   ]
+  },
+  {
+   "name": "Trenton streets: Queen Street",
+   "kind": "road",
+   "acc_m": 60,
+   "src": "EST (1776 route on its modern successor)",
+   "note": "today Broad St; over the stone bridge to Mill Hill",
+   "pts": [
+    [
+     677.06,
+     1027.74
+    ],
+    [
+     678.37,
+     1029.74
+    ],
+    [
+     679.83,
+     1031.84
+    ],
+    [
+     680.99,
+     1033.55
+    ],
+    [
+     681.94,
+     1034.89
+    ],
+    [
+     683.69,
+     1037.75
+    ]
+   ]
+  },
+  {
+   "name": "Princeton-Trenton Post Road (King's Highway), north to south",
+   "kind": "road",
+   "acc_m": 300,
+   "src": "Same anchors; acc ~800 m. Use for the underlay road.",
+   "note": "",
+   "pts": [
+    [
+     754.68,
+     909.94
+    ],
+    [
+     738.23,
+     924.84
+    ],
+    [
+     702.04,
+     960.85
+    ],
+    [
+     696.65,
+     1006.27
+    ],
+    [
+     677.93,
+     1027.26
+    ]
+   ]
+  }
+ ],
+ "works": [
+  {
+   "name": "Brooklyn lines (Wallabout - Gowanus)",
+   "kind": "breastwork",
+   "acc_m": 300,
+   "src": "EST (1776 plans: Ratzer / Kitchin; modern streets)",
+   "note": "Fort Putnam (Fort Greene Park) - redoubt - Fort Greene - Fort Box - to Gowanus Creek; ~1.5 mi",
+   "pts": [
+    [
+     1249.04,
+     574.85
+    ],
+    [
+     1250.14,
+     579.65
+    ],
+    [
+     1251.96,
+     582.53
+    ],
+    [
+     1249.41,
+     584.93
+    ],
+    [
+     1246.13,
+     586.85
+    ],
+    [
+     1243.58,
+     588.29
+    ],
+    [
+     1241.4,
+     587.62
+    ]
+   ],
+   "side": "us"
+  },
+  {
+   "name": "American line, Assunpink (2 Jan 1777)",
+   "kind": "breastwork",
+   "acc_m": 300,
+   "src": "EST (1776 plans: Ratzer / Kitchin; modern streets)",
+   "note": "south bank of the Assunpink from the Delaware past the bridge and Mill Hill upstream (~3 mi of fords); guns at the bridge",
+   "pts": [
+    [
+     678.52,
+     1040.42
+    ],
+    [
+     681.43,
+     1037.56
+    ],
+    [
+     683.25,
+     1036.03
+    ],
+    [
+     685.43,
+     1034.7
+    ],
+    [
+     687.98,
+     1032.79
+    ],
+    [
+     690.9,
+     1030.41
+    ]
+   ],
+   "side": "us"
+  },
+  {
+   "name": "Brooklyn Heights fortified line, Wallabout swamp -> Gowanus marsh ",
+   "kind": "breastwork",
+   "acc_m": 300,
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.70-75; Montressor testimony 1779 ('about a mile and a half in extent', chain of five redoubts/forts); NOTE: points derived from street names, acc 250-400 m",
+   "note": "Points run from the Wallabout swamp (NE end, the American left) to the Gowanus marsh (SW end, the American right): swamp, redoubt on the left, Fort Putnam, Oblong Redoubt, Fort Greene, Fort Box, marsh. Ditches, abatis, sally-ports; about 1.5 miles (2.4 km) long.",
+   "pts": [
+    [
+     1257.05,
+     576.77
+    ],
+    [
+     1255.09,
+     580.9
+    ],
+    [
+     1252.68,
+     583.3
+    ],
+    [
+     1250.72,
+     584.16
+    ],
+    [
+     1246.86,
+     584.45
+    ],
+    [
+     1244.46,
+     586.08
+    ],
+    [
+     1242.49,
+     587.81
+    ]
+   ],
+   "side": "us"
+  }
+ ],
+ "moves": [
+  {
+   "name": "British siege parallel (night 28-29 Aug), schematic",
+   "kind": "siege",
+   "acc_m": 500,
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) p.215: Little reports a parallel 60 rods (~300 m) long, 150 rods (~750 m) from Fort Putnam; Gordon: 400-500 yd from the redoubt on the left; position derived, acc 400",
+   "note": "Direction: SE of Fort Putnam. Howe chose regular approaches instead of storming (Johnston, Wikipedia).",
+   "pts": [
+    [
+     1257.42,
+     588.29
+    ],
+    [
+     1255.96,
+     588.96
+    ],
+    [
+     1254.14,
+     589.73
+    ]
+   ]
+  },
+  {
+   "name": "British flank march 26-27 Aug: Flatlands -> Shoemaker's Bridge -> Howard's -> Jamaica Pass -> Bedford",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.170-172; Wikipedia 'Battle of Long Island' (left 21:00, ~10,000 men, three Loyalist guides); positions approx acc 600",
+   "note": "Dawn 27 Aug the column rested beyond the pass; signal guns 09:00 for the frontal attack.",
+   "pts": [
+    [
+     1283.63,
+     650.2
+    ],
+    [
+     1306.21,
+     632.93
+    ],
+    [
+     1318.95,
+     589.73
+    ],
+    [
+     1317.13,
+     587.33
+    ],
+    [
+     1285.82,
+     594.53
+    ],
+    [
+     1268.34,
+     602.21
+    ]
+   ]
+  },
+  {
+   "name": "Guan Heights line, schematic (Red Lion/Green-Wood -> Battle Pass -> Bedford Pass -> Jamaica Pass)",
+   "kind": "line",
+   "acc_m": 500,
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.146-156",
+   "note": "Passes weakly held; Jamaica Pass by five patrol officers only.",
+   "pts": [
+    [
+     1234.12,
+     618.05
+    ],
+    [
+     1238.85,
+     613.73
+    ],
+    [
+     1259.24,
+     611.33
+    ],
+    [
+     1268.34,
+     602.21
+    ],
+    [
+     1317.13,
+     587.33
+    ]
+   ]
+  },
+  {
+   "name": "Evacuation boat track, Brooklyn Ferry -> Manhattan (night 29-30 Aug)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Johnston 1878 'The Campaign of 1776 around New York and Brooklyn' (archive.org campaignof1776ar00john; Gutenberg 21990) pp.216-224",
+   "note": "East River ~ 0.7 mi (1.1 km) wide here; ~9,000 men in about 9-11 hours; last boats left Brooklyn after the fog rose, ~06:00-07:00 (sources 6 a.m. HistoryNet; 'before seven' Johnston).",
+   "pts": [
+    [
+     1238.34,
+     570.04
+    ],
+    [
+     1235.94,
+     568.6
+    ],
+    [
+     1234.12,
+     566.87
+    ],
+    [
+     1233.53,
+     565.63
+    ]
+   ]
+  },
+  {
+   "name": "Manhattan shoreline of the East River, 1776 approximation (Whitehall -> Catharine Slip)",
+   "kind": "shore",
+   "acc_m": 500,
+   "src": "Reasoned from the modern slips (Old Slip, Fly Market/Maiden Lane, Peck Slip, Catharine Slip); 1776 shore ~ Water/Front St, ~100-220 m inland of today's FDR Drive. acc 150-250 m. Verify against Ratzer map 1766-67.",
+   "note": "Water drawn east of this line; the modern South St is landfill.",
+   "pts": [
+    [
+     1226.11,
+     572.45
+    ],
+    [
+     1228.65,
+     569.95
+    ],
+    [
+     1231.57,
+     567.07
+    ],
+    [
+     1233.53,
+     565.63
+    ],
+    [
+     1235.35,
+     563.51
+    ]
+   ]
+  },
+  {
+   "name": "Brooklyn shoreline of the East River, 1776 approximation (Red Hook -> Wallabout)",
+   "kind": "shore",
+   "acc_m": 500,
+   "src": "Reasoned from modern Furman St/Brooklyn Bridge Park; 1776 shore ~ Water/Columbia St side; acc 200-300 m; Red Hook/Wallabout heavily filled since",
+   "note": "Wallabout Bay is the last point; bay filled for the Navy Yard.",
+   "pts": [
+    [
+     1223.92,
+     595.49
+    ],
+    [
+     1227.56,
+     586.85
+    ],
+    [
+     1231.93,
+     580.13
+    ],
+    [
+     1235.21,
+     574.37
+    ],
+    [
+     1238.34,
+     570.04
+    ],
+    [
+     1245.77,
+     571.48
+    ],
+    [
+     1254.51,
+     572.45
+    ]
+   ]
+  },
+  {
+   "name": "American retreat route, Fort Lee -> Delaware (20 Nov - 8 Dec 1776), schematic",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Morris County NJ (route towns: Hackensack, Newark, Elizabeth, Woodbridge, New Brunswick, Princeton, Trenton); Wikipedia/NJ Military Museum (Delaware crossed 7-8 Dec); exact dates per town to verify (Fischer / McCullough)",
+   "note": "End point just across the Delaware at the Trenton ferries (Pennsylvania bank); boats from ~70 miles of river reported moved to the west bank (see FACT_NOTES, unverified figure).",
+   "pts": [
+    [
+     1258.51,
+     427.73
+    ],
+    [
+     1203.17,
+     394.6
+    ],
+    [
+     1141.27,
+     422.62
+    ],
+    [
+     1109.31,
+     539.11
+    ],
+    [
+     1081.42,
+     607.97
+    ],
+    [
+     1027.61,
+     710.03
+    ],
+    [
+     905.85,
+     778.43
+    ],
+    [
+     754.76,
+     909.94
+    ],
+    [
+     681.65,
+     1032.22
+    ],
+    [
+     666.87,
+     1032.79
+    ]
+   ]
+  },
+  {
+   "name": "Greene's column (with Washington): landing - Bear Tavern Rd - Birmingham - Scotch Rd - Pennington Rd - Trenton (26 Dec)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "OSM anchors: Bear Tavern Rd (40.2765,-74.8278), Pennington Rd Ewing (40.2605,-74.7803), Pennington Ave (40.2387,-74.7749), Battle Monument; the Birmingham-to-Pennington Rd leg is interpolated (acc 700 m). WP: Greene took Scotch and Pennington Roads from the north.",
+   "note": "",
+   "pts": [
+    [
+     600.24,
+     957.22
+    ],
+    [
+     615.89,
+     966.0
+    ],
+    [
+     630.09,
+     977.27
+    ],
+    [
+     632.06,
+     978.89
+    ],
+    [
+     638.47,
+     980.8
+    ],
+    [
+     652.3,
+     979.37
+    ],
+    [
+     666.65,
+     994.16
+    ],
+    [
+     669.78,
+     1011.81
+    ],
+    [
+     677.79,
+     1027.26
+    ]
+   ]
+  },
+  {
+   "name": "Sullivan's column: landing - River Road - Trenton (26 Dec)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Anchors: OSM River Rd Wilburtha 40.2464,-74.8328, Calhoun Street Bridge 40.2199,-74.7781, Assunpink bridge. WP: Sullivan took River Road from the south and blocked the Assunpink crossing. Interpolated legs acc ~700 m.",
+   "note": "",
+   "pts": [
+    [
+     600.24,
+     957.22
+    ],
+    [
+     615.89,
+     966.0
+    ],
+    [
+     638.47,
+     980.8
+    ],
+    [
+     628.42,
+     1007.61
+    ],
+    [
+     652.3,
+     1018.49
+    ],
+    [
+     666.14,
+     1027.07
+    ],
+    [
+     668.25,
+     1032.98
+    ],
+    [
+     674.15,
+     1034.22
+    ],
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "name": "American line along the Assunpink south bank, 2 Jan 1777 (~3 miles)",
+   "kind": "line",
+   "acc_m": 500,
+   "src": "APPROXIMATE: WP says line ~3 miles along the south bank; the fords at the east end (Sandtown road) uncertain (acc ~400 m). Bridge guns at ~40.2160,-74.7641.",
+   "note": "",
+   "pts": [
+    [
+     674.15,
+     1037.56
+    ],
+    [
+     677.79,
+     1037.08
+    ],
+    [
+     681.43,
+     1036.8
+    ],
+    [
+     685.8,
+     1037.56
+    ],
+    [
+     690.17,
+     1038.51
+    ],
+    [
+     695.99,
+     1039.47
+    ],
+    [
+     703.27,
+     1037.56
+    ],
+    [
+     714.2,
+     1032.79
+    ]
+   ]
+  },
+  {
+   "name": "British advance: Princeton Post Road to Trenton (2 Jan)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Post Road (King's Highway) Princeton-Maidenhead-Trenton; anchors OSM Stony Brook Bridge, Lawrenceville Main St, Brunswick Pike 40.2478,-74.7391; intermediate legs interpolated (acc ~800 m).",
+   "note": "",
+   "pts": [
+    [
+     754.68,
+     909.94
+    ],
+    [
+     738.23,
+     924.84
+    ],
+    [
+     726.58,
+     937.36
+    ],
+    [
+     702.04,
+     960.85
+    ],
+    [
+     715.51,
+     969.92
+    ],
+    [
+     715.65,
+     1000.36
+    ],
+    [
+     696.65,
+     1006.27
+    ],
+    [
+     681.43,
+     1024.21
+    ],
+    [
+     677.93,
+     1027.26
+    ]
+   ]
+  },
+  {
+   "name": "Washington's night march 2-3 Jan: Trenton - Sandtown - Quaker Bridge - Quaker Rd - Sawmill Rd (~12 mi)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Anchors: OSM Mercerville, Quaker Bridge Rd (40.2766,-74.6695), Quaker Rd Battlefield Area (40.3315,-74.6811); the first legs from Trenton and the Sandtown road are interpolated (acc ~1,000 m). ABT/WP: on the road by 2 a.m., Quaker Road then Sawmill Road, ~12 miles.",
+   "note": "",
+   "pts": [
+    [
+     681.43,
+     1036.61
+    ],
+    [
+     703.27,
+     1028.02
+    ],
+    [
+     734.95,
+     1016.58
+    ],
+    [
+     746.97,
+     993.68
+    ],
+    [
+     747.33,
+     978.79
+    ],
+    [
+     744.05,
+     946.91
+    ],
+    [
+     738.88,
+     926.37
+    ],
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "name": "Mercer's brigade toward the Stony Brook bridge, then the orchard (3 Jan)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "WP: Mercer sent to destroy the Stony Brook bridge; later in William Clarke's orchard; geometry interpolated (acc 200 m).",
+   "note": "",
+   "pts": [
+    [
+     738.88,
+     926.37
+    ],
+    [
+     738.23,
+     924.84
+    ],
+    [
+     741.14,
+     925.89
+    ],
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "name": "Mawhood's advance from Princeton toward Maidenhead / Mercer (3 Jan)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "WP/MV: Mawhood had marched toward Trenton with 17th and 55th; turned them back on seeing Mercer. Interpolated (acc 400 m).",
+   "note": "",
+   "pts": [
+    [
+     754.68,
+     909.94
+    ],
+    [
+     750.61,
+     914.43
+    ],
+    [
+     746.97,
+     918.25
+    ],
+    [
+     744.05,
+     924.94
+    ],
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "name": "American retreat/march north after Princeton: Princeton - Kingston - Somerset Court House - Pluckemin - Morristown (3-6 Jan)",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Waypoints from places list; legs are straight lines only (acc 1,500 m).",
+   "note": "",
+   "pts": [
+    [
+     754.68,
+     909.94
+    ],
+    [
+     788.11,
+     884.52
+    ],
+    [
+     806.31,
+     766.65
+    ],
+    [
+     764.44,
+     628.13
+    ],
+    [
+     884.66,
+     479.79
+    ]
+   ]
+  },
+  {
+   "name": "Hand's delaying fight, 2 Jan: Maidenhead - Five Mile Run - Shabakunk - Stockton Hollow - bridge",
+   "kind": "route",
+   "acc_m": 500,
+   "src": "Positions per WP; Five Mile Run and Stockton Hollow positions approximate (acc 700-2,500 m).",
+   "note": "",
+   "pts": [
+    [
+     702.04,
+     960.85
+    ],
+    [
+     715.65,
+     1000.36
+    ],
+    [
+     710.7,
+     1003.32
+    ],
+    [
+     681.43,
+     1024.21
+    ],
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "name": "Cadwalader's planned crossing: Bristol/Dunk's Ferry to Bordentown (25-26 Dec)",
+   "kind": "crossing",
+   "acc_m": 500,
+   "src": "Approximate; the plan failed (ice). acc ~1,500 m.",
+   "note": "",
+   "pts": [
+    [
+     614.51,
+     1146.65
+    ],
+    [
+     659.58,
+     1123.32
+    ],
+    [
+     716.75,
+     1103.04
+    ]
+   ]
+  },
+  {
+   "name": "Ewing's planned crossing at the Trenton Ferry (25-26 Dec)",
+   "kind": "crossing",
+   "acc_m": 500,
+   "src": "Approximate; failed (ice and wind, WP). acc ~500 m.",
+   "note": "",
+   "pts": [
+    [
+     663.22,
+     1034.7
+    ],
+    [
+     669.05,
+     1034.7
+    ],
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "name": "McConkey's Ferry crossing line, 25-26 Dec",
+   "kind": "crossing",
+   "acc_m": 500,
+   "src": "Landing pair derived from OSM + river width; acc 300 m.",
+   "note": "",
+   "pts": [
+    [
+     597.54,
+     957.89
+    ],
+    [
+     600.24,
+     957.22
+    ]
+   ]
+  },
+  {
+   "name": "American guns: Knox's batteries at the head of King and Queen Streets (26 Dec) firing down the streets",
+   "kind": "fire",
+   "acc_m": 500,
+   "src": "WP: guns at the heads of King and Queen Streets; line of fire along the street axis.",
+   "note": "",
+   "pts": [
+    [
+     677.72,
+     1027.26
+    ],
+    [
+     677.57,
+     1029.36
+    ],
+    [
+     677.64,
+     1035.27
+    ]
+   ]
+  },
+  {
+   "name": "American guns across the Assunpink bridge (2 Jan), line of fire north",
+   "kind": "fire",
+   "acc_m": 500,
+   "src": "Guns on the south bank covered the bridge; canister on the third British charge (WP).",
+   "note": "",
+   "pts": [
+    [
+     678.44,
+     1036.61
+    ],
+    [
+     679.32,
+     1034.41
+    ],
+    [
+     677.93,
+     1027.26
+    ]
+   ]
+  }
+ ],
+ "units": [
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Covering party at the works (Hand's, Smallwood's, Haslet's, Shee's, Magaw's, Chester's regts)",
+   "commander": "Brig. Gen. Thomas Mifflin",
+   "lat": 40.6897,
+   "lon": -73.9755,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "~6 regts (Johnston p.222); strength n/a",
+   "src": "Johnston p.222; Wikipedia",
+   "x": 1252.68,
+   "y": 583.3,
+   "moves_to_xy": [
+    [
+     1238.34,
+     570.04
+    ]
+   ]
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Heights regiments marching to the ferry (Little's, Hitchcock's, Varnum's, Douglas, etc.)",
+   "commander": "Maj. Gen. Israel Putnam / Brig. Gen. Greene's former brigade etc.",
+   "lat": 40.6885,
+   "lon": -73.9835,
+   "facing": "NW",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "army total ~9,000 (Gordon 'Nine thousand'; HistoryNet ~9,000; some say almost 10,000)",
+   "src": "Johnston p.221; Gordon in Johnston p.216",
+   "x": 1246.86,
+   "y": 584.45,
+   "moves_to_xy": [
+    [
+     1238.34,
+     570.04
+    ]
+   ]
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Embarkation / boat crews: Glover's 14th Continental (Marblehead) + Hutchinson's 27th Mass. (Salem)",
+   "commander": "Col. John Glover; Col. Israel Hutchinson (embarkation under Brig. Gen. McDougall)",
+   "lat": 40.7035,
+   "lon": -73.9952,
+   "facing": "W",
+   "moves_to": [
+    [
+     40.7081,
+     -74.0018
+    ]
+   ],
+   "strength": "~500+ men each regiment; boats: row-boats, flat-boats, whale-boats, pettiaugers, sloops (Johnston p.222)",
+   "src": "Johnston p.221-222; Encyclopedia.com; Wikipedia",
+   "x": 1238.34,
+   "y": 570.04,
+   "moves_to_xy": [
+    [
+     1233.53,
+     565.63
+    ]
+   ]
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "US",
+   "unit": "Fort Stirling / Heights garrison (guns removed last)",
+   "commander": "Col. Knox's artillery",
+   "lat": 40.6975,
+   "lon": -73.9967,
+   "facing": "W",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "n/a",
+   "src": "Johnston",
+   "x": 1237.25,
+   "y": 575.81,
+   "moves_to_xy": [
+    [
+     1238.34,
+     570.04
+    ]
+   ]
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "GB",
+   "unit": "Howe's main army encamped before the lines, digging the parallel",
+   "commander": "Gen. Sir William Howe; Gen. Clinton; Lt Gen von Heister (Hessians at Flatbush)",
+   "lat": 40.6838,
+   "lon": -73.971,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~20,000 on Long Island (Wikipedia 24 Aug); Hessians 9,000 in the 22,000 moved",
+   "src": "Wikipedia; Johnston p.215",
+   "x": 1255.96,
+   "y": 588.96,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "GB",
+   "unit": "Hessians (von Heister) in front of the Flatbush road",
+   "commander": "Lt Gen Leopold Philip von Heister",
+   "lat": 40.656,
+   "lon": -73.957,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~9,000 Hessians in the whole force",
+   "src": "Johnston pp.140-160; Wikipedia",
+   "x": 1266.16,
+   "y": 615.65,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "2000 29 Aug evacuation",
+   "side": "GB",
+   "unit": "British Navy held at the Narrows / off Staten Island by the NE wind ('wind ahead'); Roebuck only ship in range of Red Hook",
+   "commander": "Adm. Lord Howe",
+   "lat": 40.607,
+   "lon": -74.042,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~300-400 vessels in the Narrows by mid-Aug (Johnston p.94-95); 73 warships often quoted (verify)",
+   "src": "Johnston p.94, p.217; Britannica",
+   "x": 1204.26,
+   "y": 662.67,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "brooklyn",
+   "phase": "0400 30 Aug dawn",
+   "side": "GB",
+   "unit": "Capt. Montressor's patrol finds the lines empty ~04:00-04:30; British occupy lines ~30 min later (Encyclopedia.com) but pursuit delayed",
+   "commander": "Capt. John Montressor",
+   "lat": 40.6897,
+   "lon": -73.9755,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.7035,
+     -73.9952
+    ]
+   ],
+   "strength": "small patrol",
+   "src": "Johnston p.224 note; Encyclopedia.com",
+   "x": 1252.68,
+   "y": 583.3,
+   "moves_to_xy": [
+    [
+     1238.34,
+     570.04
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "1800 embark 25 Dec",
+   "side": "US",
+   "unit": "Washington's assault force at McConkey's Ferry (Greene + Sullivan divisions, Knox's artillery, Glover's Marblehead boatmen)",
+   "commander": "Gen. George Washington",
+   "lat": 40.2985,
+   "lon": -74.8752,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.2992,
+     -74.8715
+    ]
+   ],
+   "strength": "~2,400 men, 18 guns (ABT; WP; Knox: 'about 2500 or three thousand')",
+   "src": "ABT; WP; ATL",
+   "x": 597.54,
+   "y": 957.89,
+   "moves_to_xy": [
+    [
+     600.24,
+     957.22
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0400 march 26 Dec",
+   "side": "US",
+   "unit": "Greene's division (Pennington Rd column) with Washington",
+   "commander": "Maj. Gen. Nathanael Greene",
+   "lat": 40.2745,
+   "lon": -74.819,
+   "facing": "SE",
+   "moves_to": [
+    [
+     40.2605,
+     -74.7803
+    ],
+    [
+     40.242,
+     -74.776
+    ],
+    [
+     40.2258,
+     -74.765
+    ]
+   ],
+   "strength": "~1,200+ (half the force; WP says Greene and Sullivan commanded the 2,400)",
+   "src": "WP; Fischer [K]",
+   "x": 638.47,
+   "y": 980.8,
+   "moves_to_xy": [
+    [
+     666.65,
+     994.16
+    ],
+    [
+     669.78,
+     1011.81
+    ],
+    [
+     677.79,
+     1027.26
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0400 march 26 Dec",
+   "side": "US",
+   "unit": "Sullivan's division (River Rd column)",
+   "commander": "Maj. Gen. John Sullivan",
+   "lat": 40.2745,
+   "lon": -74.819,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2464,
+     -74.8328
+    ],
+    [
+     40.2198,
+     -74.7781
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~1,200+ (WP; Fischer [K])",
+   "src": "WP",
+   "x": 638.47,
+   "y": 980.8,
+   "moves_to_xy": [
+    [
+     628.42,
+     1007.61
+    ],
+    [
+     668.25,
+     1032.98
+    ],
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0745 contact 26 Dec",
+   "side": "HE",
+   "unit": "Pennington Rd outpost (Wiederholdt)",
+   "commander": "Lt. Andreas Wiederholdt",
+   "lat": 40.242,
+   "lon": -74.776,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.23,
+     -74.765
+    ]
+   ],
+   "strength": "1 officer + 24 men",
+   "src": "WP; Bloomsburg plan",
+   "x": 669.78,
+   "y": 1011.81,
+   "moves_to_xy": [
+    [
+     677.79,
+     1023.25
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "US",
+   "unit": "Knox's guns at the head of King and Queen Streets",
+   "commander": "Col. Henry Knox",
+   "lat": 40.2258,
+   "lon": -74.765,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2258,
+     -74.765
+    ]
+   ],
+   "strength": "6 guns on King St (+ more) of 18",
+   "src": "WP; ATL",
+   "x": 677.79,
+   "y": 1027.26,
+   "moves_to_xy": [
+    [
+     677.79,
+     1027.26
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "HE",
+   "unit": "Rall regiment (grenadiers) - north quarters",
+   "commander": "Col. Johann Rall",
+   "lat": 40.2235,
+   "lon": -74.7655,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.224,
+     -74.7655
+    ]
+   ],
+   "strength": "~500 (reg. strengths not verified)",
+   "src": "FACT_NOTES B2",
+   "x": 677.42,
+   "y": 1029.45,
+   "moves_to_xy": [
+    [
+     677.42,
+     1028.98
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "HE",
+   "unit": "Lossberg regiment",
+   "commander": "Col. Francis Scheffer (acting) [K]",
+   "lat": 40.2235,
+   "lon": -74.764,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.224,
+     -74.764
+    ]
+   ],
+   "strength": "~500 (not verified)",
+   "src": "FACT_NOTES B2",
+   "x": 678.52,
+   "y": 1029.45,
+   "moves_to_xy": [
+    [
+     678.52,
+     1028.98
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "HE",
+   "unit": "Knyphausen regiment (south, at the Assunpink bridge)",
+   "commander": "Maj. Friedrich von Dechow",
+   "lat": 40.2185,
+   "lon": -74.764,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~500 (not verified)",
+   "src": "americanwars.org ch. VIII; WP",
+   "x": 678.52,
+   "y": 1034.22,
+   "moves_to_xy": [
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0830 26 Dec",
+   "side": "US",
+   "unit": "Sullivan blocks the Assunpink bridge, cutting off the escape",
+   "commander": "Sullivan",
+   "lat": 40.2172,
+   "lon": -74.7641,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~1,000+",
+   "src": "WP",
+   "x": 678.44,
+   "y": 1035.46,
+   "moves_to_xy": [
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "1000 surrender 26 Dec",
+   "side": "HE",
+   "unit": "Surrendering Hessian force (Rall, Lossberg, half of Knyphausen)",
+   "commander": "Rall (dying)",
+   "lat": 40.22,
+   "lon": -74.765,
+   "facing": "W",
+   "moves_to": [],
+   "strength": "~900 captured; ~400-500 escaped over the Assunpink bridge",
+   "src": "ABT; WP; History.com",
+   "x": 677.79,
+   "y": 1032.79,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "trenton",
+   "phase": "25 Dec",
+   "side": "US",
+   "unit": "Ewing's militia at the Trenton Ferry (could not cross)",
+   "commander": "Brig. Gen. James Ewing",
+   "lat": 40.218,
+   "lon": -74.777,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~700 Pa. militia (WP)",
+   "src": "WP",
+   "x": 669.05,
+   "y": 1034.7,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "trenton",
+   "phase": "25 Dec",
+   "side": "US",
+   "unit": "Cadwalader's Philadelphia Associators at Bristol (crossed partly, recalled)",
+   "commander": "Col. John Cadwalader",
+   "lat": 40.1005,
+   "lon": -74.8519,
+   "facing": "NE",
+   "moves_to": [
+    [
+     40.125,
+     -74.79
+    ]
+   ],
+   "strength": "~1,500-1,900 [K]",
+   "src": "WP; Fischer [K]",
+   "x": 614.51,
+   "y": 1146.65,
+   "moves_to_xy": [
+    [
+     659.58,
+     1123.32
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "25 Dec",
+   "side": "HE",
+   "unit": "Donop's Hessians at Bordentown",
+   "commander": "Col. Carl von Donop",
+   "lat": 40.1463,
+   "lon": -74.7115,
+   "facing": "S",
+   "moves_to": [],
+   "strength": "~2,000+ (two brigades; WP: Donop commanded Rall's and his own)",
+   "src": "ATL",
+   "x": 716.75,
+   "y": 1103.04,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "trenton",
+   "phase": "0900-1600 2 Jan",
+   "side": "BR",
+   "unit": "Cornwallis's army (from Princeton; three columns, 28 guns)",
+   "commander": "Lt. Gen. Charles, Earl Cornwallis",
+   "lat": 40.32,
+   "lon": -74.698,
+   "facing": "SW",
+   "moves_to": [
+    [
+     40.2954,
+     -74.7317
+    ],
+    [
+     40.2478,
+     -74.7391
+    ],
+    [
+     40.2258,
+     -74.7648
+    ]
+   ],
+   "strength": "~5,500 (WP text; infobox ~5,000)",
+   "src": "WP",
+   "x": 726.58,
+   "y": 937.36,
+   "moves_to_xy": [
+    [
+     702.04,
+     960.85
+    ],
+    [
+     696.65,
+     1006.27
+    ],
+    [
+     677.93,
+     1027.26
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "0900-1600 2 Jan",
+   "side": "US",
+   "unit": "Hand's riflemen delaying action",
+   "commander": "Col. Edward Hand",
+   "lat": 40.254,
+   "lon": -74.713,
+   "facing": "NE",
+   "moves_to": [
+    [
+     40.2509,
+     -74.7198
+    ],
+    [
+     40.229,
+     -74.76
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~1,000 [K] (Hand's brigade; WP names the action)",
+   "src": "WP; Fischer [K]",
+   "x": 715.65,
+   "y": 1000.36,
+   "moves_to_xy": [
+    [
+     710.7,
+     1003.32
+    ],
+    [
+     681.43,
+     1024.21
+    ],
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "1600-1730 2 Jan",
+   "side": "US",
+   "unit": "American line, south bank of the Assunpink (3 mi; guns on the bridge)",
+   "commander": "Washington",
+   "lat": 40.2155,
+   "lon": -74.76,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.2155,
+     -74.76
+    ]
+   ],
+   "strength": "~5,000-6,000",
+   "src": "WP; Fischer [K]",
+   "x": 681.43,
+   "y": 1037.08,
+   "moves_to_xy": [
+    [
+     681.43,
+     1037.08
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "1630-1730 2 Jan",
+   "side": "BR",
+   "unit": "British 3 assaults on the Assunpink bridge",
+   "commander": "Cornwallis",
+   "lat": 40.2258,
+   "lon": -74.7648,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "vanguard of the 5,500; 3 attacks, all repelled",
+   "src": "WP",
+   "x": 677.93,
+   "y": 1027.26,
+   "moves_to_xy": [
+    [
+     678.44,
+     1035.46
+    ]
+   ]
+  },
+  {
+   "battle": "trenton",
+   "phase": "night 2-3 Jan",
+   "side": "US",
+   "unit": "Rearguard (fires, noise, picks and shovels)",
+   "commander": "(not named in WP)",
+   "lat": 40.216,
+   "lon": -74.76,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~500 and 2 guns (WP)",
+   "src": "WP",
+   "x": 681.43,
+   "y": 1036.61,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "trenton",
+   "phase": "0200 3 Jan",
+   "side": "US",
+   "unit": "Washington's army on the night march",
+   "commander": "Washington",
+   "lat": 40.225,
+   "lon": -74.73,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.237,
+     -74.6865
+    ],
+    [
+     40.261,
+     -74.67
+    ],
+    [
+     40.3315,
+     -74.6811
+    ]
+   ],
+   "strength": "~4,500 and 35 guns at Princeton (WP infobox)",
+   "src": "WP; ABT",
+   "x": 703.27,
+   "y": 1028.02,
+   "moves_to_xy": [
+    [
+     734.95,
+     1016.58
+    ],
+    [
+     746.97,
+     993.68
+    ],
+    [
+     738.88,
+     926.37
+    ]
+   ]
+  },
+  {
+   "battle": "princeton",
+   "phase": "0730-0800 3 Jan",
+   "side": "US",
+   "unit": "Mercer's brigade (vanguard of the Stony Brook column)",
+   "commander": "Brig. Gen. Hugh Mercer",
+   "lat": 40.3331,
+   "lon": -74.682,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "~300 (ABT)",
+   "src": "ABT; WP",
+   "x": 738.23,
+   "y": 924.84,
+   "moves_to_xy": [
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "battle": "princeton",
+   "phase": "0800 3 Jan",
+   "side": "BR",
+   "unit": "Mawhood's force: 17th Foot (+ 55th, 50 dragoons, 2 guns)",
+   "commander": "Lt. Col. Charles Mawhood",
+   "lat": 40.34,
+   "lon": -74.67,
+   "facing": "SW",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "~1,200-1,400 total in Princeton garrison (ABT 1,200; WP infobox 1,200, lead 1,400)",
+   "src": "ABT; WP",
+   "x": 746.97,
+   "y": 918.25,
+   "moves_to_xy": [
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "battle": "princeton",
+   "phase": "0830 3 Jan",
+   "side": "US",
+   "unit": "Cadwalader's Philadelphia militia (wavers, rallied by Washington)",
+   "commander": "Col. John Cadwalader",
+   "lat": 40.33,
+   "lon": -74.679,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "~1,000-1,500 [K]",
+   "src": "WP; ABT; Fischer [K]",
+   "x": 740.41,
+   "y": 927.8,
+   "moves_to_xy": [
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "battle": "princeton",
+   "phase": "0830 3 Jan",
+   "side": "US",
+   "unit": "Washington rides forward, ~30 yards from British line",
+   "commander": "Washington",
+   "lat": 40.331,
+   "lon": -74.6765,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "1 + aides",
+   "src": "WP; ABT",
+   "x": 742.23,
+   "y": 926.85,
+   "moves_to_xy": [
+    [
+     742.96,
+     926.28
+    ]
+   ]
+  },
+  {
+   "battle": "princeton",
+   "phase": "0830-0900 3 Jan",
+   "side": "US",
+   "unit": "Moulder's battery / Hamilton's guns",
+   "commander": "Capt. Thomas Moulder; Capt. Alexander Hamilton",
+   "lat": 40.3305,
+   "lon": -74.679,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "2-3 guns each (ABT, WP)",
+   "src": "ABT; WP",
+   "x": 740.41,
+   "y": 927.33,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "princeton",
+   "phase": "0900 3 Jan",
+   "side": "BR",
+   "unit": "40th and 55th Foot in the town / Nassau Hall",
+   "commander": "Lt. Col. Mawhood (17th); 40th/55th officers",
+   "lat": 40.3487,
+   "lon": -74.6594,
+   "facing": "S",
+   "moves_to": [],
+   "strength": "~194 captured at Nassau Hall (WP)",
+   "src": "WP",
+   "x": 754.68,
+   "y": 909.94,
+   "moves_to_xy": []
+  },
+  {
+   "battle": "princeton",
+   "phase": "afternoon 3-6 Jan",
+   "side": "US",
+   "unit": "Washington's army marching to Morristown",
+   "commander": "Washington",
+   "lat": 40.3753,
+   "lon": -74.6135,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.4985,
+     -74.5885
+    ],
+    [
+     40.643,
+     -74.646
+    ],
+    [
+     40.7974,
+     -74.4809
+    ]
+   ],
+   "strength": "~4,500",
+   "src": "WP; ABT",
+   "x": 788.11,
+   "y": 884.52,
+   "moves_to_xy": [
+    [
+     806.31,
+     766.65
+    ],
+    [
+     764.44,
+     628.13
+    ],
+    [
+     884.66,
+     479.79
+    ]
+   ]
+  }
+ ]
+}

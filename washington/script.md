@@ -35,14 +35,14 @@ His name was George Washington. He would steal his army out of a trap in a singl
 
 ## S02 BACKGROUND: NEW YORK, 1776 (~1:05 - ~1:45)
 
-[S02 | colonies wide, summer: red ships as separate vessels fill the harbour below Staten Island; number 30,000+ on its words; date plate 1776]
-Four months earlier, in the summer of seventeen seventy-six, Britain had sent the largest force it had ever sent overseas to take New York: hundreds of ships and more than thirty thousand soldiers, among them thousands of Germans hired from their princes, the Hessians.
+[S02 | colonies wide, summer: red ships as separate vessels fill the harbour below Staten Island; number 400+ SHIPS then 32,000 SOLDIERS on their words; date plate 1776]
+Four months earlier, in the summer of seventeen seventy-six, Britain had sent the largest force it had ever sent overseas to take New York: more than four hundred ships and about thirty-two thousand soldiers, among them thousands of Germans hired from their princes, the Hessians.
 
 [S02 | brooklyn region by day (dissolve): blue blocks behind the forts on Brooklyn Heights and out on the wooded ridge to the south; red blocks land and form on the plain; date plate 27 AUGUST 1776]
 On the twenty-seventh of August, on Long Island, the British marched through the night around the American left, through a pass no one was guarding, and fell on the Americans from behind.
 
-[S02 | red arrow sweeps round behind the ridge; blue blocks on the ridge about-face and fall back toward the forts; number card 1,000+ KILLED OR CAPTURED on its words; the blue survivors file into the works on the Heights, the East River behind them]
-The American line broke. More than a thousand were killed or captured. The rest fell back into the forts on Brooklyn Heights, with the East River at their backs.
+[S02 | red arrow sweeps round behind the ridge; blue blocks on the ridge about-face and fall back toward the forts; number card ~1,000 CAPTURED on its words; the blue survivors file into the works on the Heights, the East River behind them]
+The American line broke. About a thousand men were captured, and hundreds more killed or wounded. The rest fell back into the forts on Brooklyn Heights, with the East River at their backs.
 
 ## S03 MOVE 1: THE NIGHT ON THE EAST RIVER (~1:45 - ~4:00)
 
@@ -61,20 +61,20 @@ But on the twenty-ninth of August, the general did not wait to be besieged. Inst
 [S03 | the ferry landing: separate boats arrive from up and down the river and gather at the landing, one by one; label GLOVER'S MARBLEHEAD REGIMENT on "Marblehead"]
 Every boat that could be found was gathered that afternoon. And to row them, he had a regiment of fishermen and sailors from Marblehead, Massachusetts, under Colonel John Glover, men who had handled boats all their lives.
 
-[S03 | night falls (night 1): campfires along the American line keep burning; one blue block at a time steps out of the works, turns, walks down to the landing, the men break rank and stream onto the boats; the boats cross separately and come back empty]
-After dark, the regiments slipped out of the lines one at a time and walked down to the ferry. The men were told almost nothing. The campfires were kept burning, so the British would see nothing change.
+[S03 | night falls (night 1), rain: one blue block at a time steps out of the works, turns, walks down to the landing, the men break rank and stream onto the boats; the boats cross separately and come back empty]
+After dark, the regiments slipped out of the lines one at a time and walked down to the ferry through the mud. Most of the men were told only that fresh troops were coming over to relieve them. A covering force stayed in the front line, so the British would see nothing change.
 
 [S03 | the river at night: many separate boats crossing and recrossing, loaded low; at first they row against the wind and the tide; then sails appear on a few larger boats]
 All night the boats crossed and came back, loaded almost to the water. At first the wind and the tide were against them. Then, late in the night, the wind died down and changed, and the sailboats could cross too.
 
 [S03 | near dawn, grey: one blue block (the covering party) leaves the line too early, walks toward the ferry, stops, turns, walks back into the line; the line stands empty for a moment in between]
-Near dawn, the covering troops in the front line were ordered out too early, by mistake. For nearly an hour, the lines stood almost empty. They marched back before the British noticed.
+Then, in the middle of the night, the covering force was ordered out too early, by mistake, and the front line stood empty. The general met them on the road himself and sent them back. The British noticed nothing.
 
 [S03 | dawn: fog rolls in thick over Brooklyn and the river (fog veil); the last boats push off into it; the banner moves to the last boat; caption FOG]
 At sunrise, thousands of men were still waiting on the Brooklyn shore. Then a thick fog came down over the river. Under it, the last boats pushed off. The general crossed in one of the last of them.
 
-[S03 | the fog lifts over empty forts; red blocks walk into the works; across the river the blue army is in New York; result card: ABOUT 9,000 MEN CROSSED IN ONE NIGHT; LOST: ONLY A FEW STRAGGLERS]
-When the fog lifted, the British walked into empty forts. About nine thousand men, with their guns and most of their supplies, had crossed the river in a single night, and only a handful of stragglers were left behind.
+[S03 | the fog lifts over empty forts; red blocks walk into the works; across the river the blue army is in New York; result card: ABOUT 9,000 MEN CROSSED IN ONE NIGHT; LEFT BEHIND: A HANDFUL OF STRAGGLERS]
+When the fog lifted, the British walked into empty forts. About nine thousand men, with nearly all of their guns, had crossed the river in a single night. Only a handful of stragglers were left behind.
 
 [S03 | method card: THE WASHINGTON METHOD, 1. SAVE THE ARMY FIRST on its words]
 That was the first part of his method. As long as the army lives, the cause lives. Save the army first.
@@ -166,7 +166,7 @@ Now stop for a moment, and put yourself in Washington's place. The British army 
 ## S07 MOVE 3: THE NIGHT MARCH TO PRINCETON (~9:30 - ~11:45)
 
 [S07 | trenton, night: the decision reveal; a few blue blocks stay at the creek and keep the fires burning (campfires), men digging; the rest of the army turns and walks away east and south into the dark]
-He slipped away. But not back across the river. Instead, he marched around the British army, and behind it. A few hundred men stayed at the creek to keep the campfires burning and to dig noisily, just as at Brooklyn.
+He slipped away. But not back across the river. Instead, he marched around the British army, and behind it. A few hundred men stayed at the creek to keep the campfires burning and to dig noisily, a covering force, just as at Brooklyn.
 
 [S07 | jersey wide, night: the blue army column moves east and then north on a back road (the Quaker Bridge road) around the British left; the guns' wheels wrapped (caption on its words); frost spreads over the ground]
 The rest of the army marched off into the dark, with the wheels of the guns wrapped in rags. That night the weather turned bitter cold, and the muddy roads froze hard, just in time for the guns to roll.

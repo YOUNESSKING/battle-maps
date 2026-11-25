@@ -1,0 +1,1364 @@
+{
+ "places": [
+  {
+   "name": "McConkey's Ferry landing (Pennsylvania side)",
+   "lat": 40.2985,
+   "lon": -74.8752,
+   "acc_m": 300,
+   "src": "Derived: Johnson Ferry House (NJ) at 40.2993,-74.8682 per OSM + river ~275 m wide (ABT: ~300 yd) + Washington Crossing Bridge ~40.2986,-74.872; NOT surveyed",
+   "note": "Army embarked here from about 5-6 p.m. on 25 Dec 1776 (ATL; WP). Washington Crossing Historic Park (PA). River flows SE. Use as the departure point; snap to the real bank in the basemap."
+  },
+  {
+   "name": "Johnson's Ferry landing (New Jersey side)",
+   "lat": 40.2992,
+   "lon": -74.8715,
+   "acc_m": 300,
+   "src": "Derived from OSM Johnson Ferry House 40.2993,-74.8682 (river bank ~350 m west); NOT surveyed",
+   "note": "Landing on the NJ shore; guns over by ~3 a.m., march began ~4 a.m. 26 Dec (ATL; WP). Washington Crossing State Park."
+  },
+  {
+   "name": "Johnson Ferry House (NJ, modern museum)",
+   "lat": 40.2993,
+   "lon": -74.8682,
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Reference point only; do not draw the modern house."
+  },
+  {
+   "name": "Bear Tavern (hamlet, Bear Tavern Rd / Pennington-Titusville Rd)",
+   "lat": 40.3167,
+   "lon": -74.843,
+   "acc_m": 600,
+   "src": "OSM Nominatim point (this session) 'Pennington-Titusville Road, Bear Tavern, Hopewell Twp'",
+   "note": "Fischer's 'Bear Tavern road' is the first road inland from the landing. The hamlet name in OSM lies NE of the landing; the 1776 tavern location is uncertain (acc 600 m)."
+  },
+  {
+   "name": "Birmingham (road fork where the army split)",
+   "lat": 40.2745,
+   "lon": -74.819,
+   "acc_m": 800,
+   "src": "Approx. from OSM Bear Tavern Rd (40.2765,-74.8278) and Scotch Rd (40.2839,-74.8062); location of 1776 Birmingham crossroads NOT verified (acc 800 m); Fischer/Stryker maps needed",
+   "note": "Greene's column (with Washington) took the Scotch and Pennington Roads; Sullivan's took the River Road (WP)."
+  },
+  {
+   "name": "Pennington Road outpost (Wiederholdt's cooper-shop picket)",
+   "lat": 40.242,
+   "lon": -74.776,
+   "acc_m": 500,
+   "src": "WP: outpost at a cooper shop on Pennington Road ~1 mile NW of Trenton; position from OSM Pennington Ave 40.2387,-74.7749",
+   "note": "1 officer + 24 men under Lt. Andreas Wiederholdt (Bloomsburg plan, WP). First contact ~8 a.m. 26 Dec."
+  },
+  {
+   "name": "Trenton Battle Monument (head of King and Queen Streets; Knox's guns)",
+   "lat": 40.2258,
+   "lon": -74.7648,
+   "acc_m": 60,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Monument marks the head of King (now N. Warren) and Queen (now N. Broad) Streets where the American guns were set up (WP). Draw the 1776 street grid, not the monument."
+  },
+  {
+   "name": "King Street (N. Warren St) - head",
+   "lat": 40.2258,
+   "lon": -74.7651,
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session) N Warren/Battle Monument",
+   "note": "King St ran N-S through 1776 Trenton; Knox oversaw the guns here."
+  },
+  {
+   "name": "King Street (N. Warren St) - foot at the Assunpink",
+   "lat": 40.2174,
+   "lon": -74.7652,
+   "acc_m": 120,
+   "src": "OSM Assunpink Drive 40.2175,-74.7649; S Warren 40.2165,-74.7649",
+   "note": "Foot of King St at the creek."
+  },
+  {
+   "name": "Queen Street (N. Broad St) - head",
+   "lat": 40.2257,
+   "lon": -74.7645,
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session) N Broad St 40.2247,-74.7645",
+   "note": "Queen St = today's N. Broad St."
+  },
+  {
+   "name": "Queen Street (N. Broad St) - foot / Assunpink bridge",
+   "lat": 40.2172,
+   "lon": -74.7641,
+   "acc_m": 100,
+   "src": "OSM S Broad St 40.2182,-74.7642; Assunpink Dr 40.2175,-74.7649",
+   "note": "The Assunpink bridge ('the bridge') on Queen St: Sullivan blocked it on 26 Dec so the Hessians could not flee; the American line held it on 2 Jan (WP)."
+  },
+  {
+   "name": "Old Barracks (Trenton)",
+   "lat": 40.2199,
+   "lon": -74.7687,
+   "acc_m": 80,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Surviving 1758 barracks; British/Hessian quarters in 1776, west edge of the town near the river."
+  },
+  {
+   "name": "Rall's headquarters (Stacy Potts house, King St)",
+   "lat": 40.2208,
+   "lon": -74.7653,
+   "acc_m": 250,
+   "src": "Approx. only: house stood on King St in the town centre (Stryker/Fischer) - exact site NOT verified",
+   "note": "Some accounts put the HQ at merchant Abraham Hunt's house instead (see FACT_NOTES B2/B6). Rall was carried here after being wounded and died here that night."
+  },
+  {
+   "name": "Hessian main posts (Rall + Lossberg quarters, north half of town)",
+   "lat": 40.2235,
+   "lon": -74.7655,
+   "acc_m": 250,
+   "src": "Approx. from americanwars.org ch. VIII/WP order of battle: Rall and Lossberg regiments quartered in northern Trenton",
+   "note": "Both regiments formed in King and Queen Streets and were swept by the guns at the head of the streets."
+  },
+  {
+   "name": "Knyphausen regiment quarters (south, by the Assunpink bridge)",
+   "lat": 40.2185,
+   "lon": -74.764,
+   "acc_m": 250,
+   "src": "Approx. from americanwars.org ch. VIII: Knyphausen regiment in the south on both sides of the bridge",
+   "note": "Regiment marched the wrong way and surrendered separately (WP). Acting commander Major von Dechow mortally wounded."
+  },
+  {
+   "name": "Mill Hill (rise north of the Assunpink)",
+   "lat": 40.2183,
+   "lon": -74.7629,
+   "acc_m": 120,
+   "src": "OSM Nominatim point (this session) Mill Hill Park",
+   "note": "2 Jan 1777: American guns and the line covered the bridge from the south bank; British formed on the north side around Mill Hill."
+  },
+  {
+   "name": "Trenton Ferry / lower ferry (Ewing's planned crossing)",
+   "lat": 40.218,
+   "lon": -74.777,
+   "acc_m": 500,
+   "src": "Approx.: OSM Calhoun Street Bridge 40.2199,-74.7781 near the old lower ferry; location NOT verified",
+   "note": "Gen. James Ewing (~700 Pa. militia) was to cross here and hold the Assunpink bridge; ice stopped him (WP)."
+  },
+  {
+   "name": "Bordentown (Donop's Hessian post)",
+   "lat": 40.1463,
+   "lon": -74.7115,
+   "acc_m": 400,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Donop commanded two Hessian brigades from here; Cadwalader's planned diversion (WP/ATL)."
+  },
+  {
+   "name": "Bristol / Dunk's Ferry (Cadwalader's crossing, PA side)",
+   "lat": 40.1005,
+   "lon": -74.8519,
+   "acc_m": 1500,
+   "src": "Approx.: OSM Bristol borough 40.0954,-74.8577; Dunks Ferry Rd Bensalem 40.0993,-74.9504 - actual ferry landing NOT verified",
+   "note": "Cadwalader crossed some men, recalled them when guns could not land (WP). Dunk's Ferry is a few miles upstream of Bristol toward Bordentown's opposite shore."
+  },
+  {
+   "name": "Burlington, NJ (baggage sent here 2-3 Jan)",
+   "lat": 40.0706,
+   "lon": -74.8514,
+   "acc_m": 800,
+   "src": "OSM Nominatim point (this session) Burlington City",
+   "note": "FACT_NOTES G3: baggage sent to Burlington `[K]`."
+  },
+  {
+   "name": "Five Mile Run (Hand's first stand 2 Jan)",
+   "lat": 40.254,
+   "lon": -74.713,
+   "acc_m": 2500,
+   "src": "Approx. only: name used by WP; ~5 miles from Trenton on the Princeton Post Road near Lawrence Twp (Brunswick Pike 40.2478,-74.7391; Princeton Pike 40.2859,-74.7132). NOT verified",
+   "note": "Hand's riflemen gave up this stream first."
+  },
+  {
+   "name": "Shabakunk Creek (Hand's second stand)",
+   "lat": 40.2509,
+   "lon": -74.7198,
+   "acc_m": 500,
+   "src": "OSM Nominatim point (this session) Shabakunk Creek, Lawrence Twp",
+   "note": "Hand held the wooded south bank and fired at close range (WP). ~3 miles from Trenton."
+  },
+  {
+   "name": "Stockton Hollow (final delay, ~0.5 mi from town)",
+   "lat": 40.229,
+   "lon": -74.76,
+   "acc_m": 700,
+   "src": "Approx.: WP says 'roughly half a mile from Trenton' on the Post Road north of town; NOT verified",
+   "note": "British reached it ~3 p.m.; Hand's men then fell back into the town fighting from houses (WP). 6-10 US killed/wounded (Peckham)."
+  },
+  {
+   "name": "Maidenhead (modern Lawrenceville)",
+   "lat": 40.2954,
+   "lon": -74.7317,
+   "acc_m": 400,
+   "src": "OSM Nominatim point (this session) Main Street, Lawrenceville",
+   "note": "Leslie's rearguard (~1,200-1,500) and, 29 Dec, the Black Watch camped here (Princeton Forbes finding aid; WP)."
+  },
+  {
+   "name": "Sandtown (road east of Trenton used on the night march)",
+   "lat": 40.237,
+   "lon": -74.6865,
+   "acc_m": 2000,
+   "src": "Approx. only: OSM 'Mercerville, Hamilton Twp'; the Sand Town Rd position is NOT verified",
+   "note": "Night march 2-3 Jan: Trenton - Sandtown - Quaker Bridge - Quaker Road (ABT; WP)."
+  },
+  {
+   "name": "Quaker Bridge (Assunpink crossing on Quaker Bridge Rd)",
+   "lat": 40.261,
+   "lon": -74.67,
+   "acc_m": 1500,
+   "src": "Approx.: OSM Quaker Bridge Rd 40.2766,-74.6695 north end; actual bridge over the Assunpink NOT verified",
+   "note": "WP: army moved on Quaker Bridge Road in what is now Hamilton Twp by 2 a.m."
+  },
+  {
+   "name": "Quaker Road / Sawmill Road turn (disused farm lane to Clarke's)",
+   "lat": 40.3315,
+   "lon": -74.6811,
+   "acc_m": 400,
+   "src": "OSM Quaker Road, Battlefield Area, Princeton 40.3315,-74.6811; ABT: 'Quaker Road, then a disused farm lane (Sawmill Road)'",
+   "note": "Army left the Post Road here to approach Princeton from the south and avoid the fortified King's Highway (ABT)."
+  },
+  {
+   "name": "Stony Brook bridge (Worth's Mill, Post Road)",
+   "lat": 40.3331,
+   "lon": -74.682,
+   "acc_m": 200,
+   "src": "OSM 'Stony Brook Bridge, Lawrenceville Road, Battlefield Area, Princeton'",
+   "note": "Mercer's column was ordered to break the bridge; British column from Princeton crossed toward Maidenhead here (WP; ABT)."
+  },
+  {
+   "name": "Thomas Clarke house (Princeton Battlefield)",
+   "lat": 40.331,
+   "lon": -74.6765,
+   "acc_m": 200,
+   "src": "Approx. from OSM Princeton Battlefield State Park 40.3308,-74.6748 / Mercer Oak 40.3316,-74.6755; house position NOT verified",
+   "note": "Washington's army crossed Thomas Clarke's farm land before the clash; Mercer was treated here and died 12 Jan (ABT/WP)."
+  },
+  {
+   "name": "William Clarke's orchard / Mercer Oak (Mercer vs Mawhood)",
+   "lat": 40.3316,
+   "lon": -74.6755,
+   "acc_m": 150,
+   "src": "OSM Nominatim point (this session) Mercer Oak",
+   "note": "Mercer's brigade (~300) met Mawhood's 17th Foot here; bayonet charge, Mercer mortally wounded (WP/ABT)."
+  },
+  {
+   "name": "Frog Hollow (ravine S of Princeton)",
+   "lat": 40.34,
+   "lon": -74.665,
+   "acc_m": 700,
+   "src": "Approx. only (name from Princeton Battlefield Society maps); position NOT verified",
+   "note": "The 40th and 55th fell back across this ravine toward Nassau Hall."
+  },
+  {
+   "name": "Nassau Hall (Princeton)",
+   "lat": 40.3487,
+   "lon": -74.6594,
+   "acc_m": 60,
+   "src": "OSM Nominatim point (this session)",
+   "note": "British 40th/55th survivors held out here; 194 surrendered after Hamilton's guns and the door was broken (WP)."
+  },
+  {
+   "name": "Kingston (NJ)",
+   "lat": 40.3753,
+   "lon": -74.6135,
+   "acc_m": 500,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Washington's column turned north to Kingston after Princeton, rather than fall on New Brunswick (ABT; WP)."
+  },
+  {
+   "name": "Somerset Court House (Millstone)",
+   "lat": 40.4985,
+   "lon": -74.5885,
+   "acc_m": 1500,
+   "src": "Approx.: ~40.50N,-74.59W near Millstone/Somerville - NOT verified",
+   "note": "Army reached it the night of 3 Jan; Pluckemin 5 Jan (WP)."
+  },
+  {
+   "name": "Pluckemin",
+   "lat": 40.643,
+   "lon": -74.646,
+   "acc_m": 1500,
+   "src": "Approx. only; NOT verified (WP: army at Pluckemin by 5 Jan)",
+   "note": ""
+  },
+  {
+   "name": "Morristown (Morristown Green)",
+   "lat": 40.7974,
+   "lon": -74.4809,
+   "acc_m": 300,
+   "src": "OSM Nominatim point (this session)",
+   "note": "Winter quarters; army arrived the evening of 6 Jan 1777 (WP; ABT says 5 Jan)."
+  },
+  {
+   "name": "New Brunswick (British post; stayed British)",
+   "lat": 40.4862,
+   "lon": -74.4518,
+   "acc_m": 500,
+   "src": "Approx.: modern city centre 40.486N,-74.452W (NOT from this session's queries)",
+   "note": "British kept New Brunswick and Perth Amboy after Princeton (FACT_NOTES I2)."
+  },
+  {
+   "name": "Perth Amboy (British post; stayed British)",
+   "lat": 40.5067,
+   "lon": -74.2654,
+   "acc_m": 500,
+   "src": "Approx.: modern city 40.507N,-74.265W (NOT from this session's queries)",
+   "note": "Ditto."
+  }
+ ],
+ "lines": [
+  {
+   "name": "Delaware River, McConkey's Ferry to Trenton Falls (flow SE)",
+   "kind": "river",
+   "pts": [
+    [
+     40.32,
+     -74.902
+    ],
+    [
+     40.31,
+     -74.89
+    ],
+    [
+     40.2993,
+     -74.8735
+    ],
+    [
+     40.29,
+     -74.862
+    ],
+    [
+     40.277,
+     -74.853
+    ],
+    [
+     40.263,
+     -74.84
+    ],
+    [
+     40.25,
+     -74.826
+    ],
+    [
+     40.238,
+     -74.81
+    ],
+    [
+     40.23,
+     -74.795
+    ],
+    [
+     40.2199,
+     -74.779
+    ],
+    [
+     40.21,
+     -74.77
+    ],
+    [
+     40.19,
+     -74.758
+    ],
+    [
+     40.165,
+     -74.738
+    ],
+    [
+     40.1463,
+     -74.72
+    ]
+   ],
+   "src": "APPROXIMATE, drawn from OSM anchors (Johnson Ferry House, Calhoun St Bridge, Bordentown, Wilburtha) - NOT NHD; snap to NHD in the basemap (acc ~500 m). River ~300 yd wide at the crossing (ABT)."
+  },
+  {
+   "name": "Assunpink Creek, Trenton (east-west through town; flows W to the Delaware)",
+   "kind": "river",
+   "pts": [
+    [
+     40.215,
+     -74.749
+    ],
+    [
+     40.2162,
+     -74.756
+    ],
+    [
+     40.217,
+     -74.762
+    ],
+    [
+     40.2172,
+     -74.7641
+    ],
+    [
+     40.2174,
+     -74.7652
+    ],
+    [
+     40.216,
+     -74.772
+    ],
+    [
+     40.212,
+     -74.777
+    ]
+   ],
+   "src": "APPROXIMATE: anchored on OSM Assunpink Dr 40.2175,-74.7649 and S Broad St 40.2182,-74.7642 only; east and west ends are guesses (acc ~300 m). Snap to NHD."
+  },
+  {
+   "name": "Assunpink Creek upstream (east of Trenton to Quaker Bridge)",
+   "kind": "river",
+   "pts": [
+    [
+     40.215,
+     -74.749
+    ],
+    [
+     40.22,
+     -74.735
+    ],
+    [
+     40.229,
+     -74.72
+    ],
+    [
+     40.23,
+     -74.703
+    ],
+    [
+     40.24,
+     -74.683
+    ],
+    [
+     40.252,
+     -74.666
+    ]
+   ],
+   "src": "VERY APPROXIMATE (acc ~1,000 m): OSM Mercerville 40.2337,-74.6973 and Quaker Bridge Rd 40.2766,-74.6695 only. Snap to NHD."
+  },
+  {
+   "name": "Greene's column (with Washington): landing - Bear Tavern Rd - Birmingham - Scotch Rd - Pennington Rd - Trenton (26 Dec)",
+   "kind": "route",
+   "pts": [
+    [
+     40.2992,
+     -74.8715
+    ],
+    [
+     40.29,
+     -74.85
+    ],
+    [
+     40.2782,
+     -74.8305
+    ],
+    [
+     40.2765,
+     -74.8278
+    ],
+    [
+     40.2745,
+     -74.819
+    ],
+    [
+     40.276,
+     -74.8
+    ],
+    [
+     40.2605,
+     -74.7803
+    ],
+    [
+     40.242,
+     -74.776
+    ],
+    [
+     40.2258,
+     -74.765
+    ]
+   ],
+   "src": "OSM anchors: Bear Tavern Rd (40.2765,-74.8278), Pennington Rd Ewing (40.2605,-74.7803), Pennington Ave (40.2387,-74.7749), Battle Monument; the Birmingham-to-Pennington Rd leg is interpolated (acc 700 m). WP: Greene took Scotch and Pennington Roads from the north."
+  },
+  {
+   "name": "Sullivan's column: landing - River Road - Trenton (26 Dec)",
+   "kind": "route",
+   "pts": [
+    [
+     40.2992,
+     -74.8715
+    ],
+    [
+     40.29,
+     -74.85
+    ],
+    [
+     40.2745,
+     -74.819
+    ],
+    [
+     40.2464,
+     -74.8328
+    ],
+    [
+     40.235,
+     -74.8
+    ],
+    [
+     40.226,
+     -74.781
+    ],
+    [
+     40.2198,
+     -74.7781
+    ],
+    [
+     40.2185,
+     -74.77
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "src": "Anchors: OSM River Rd Wilburtha 40.2464,-74.8328, Calhoun Street Bridge 40.2199,-74.7781, Assunpink bridge. WP: Sullivan took River Road from the south and blocked the Assunpink crossing. Interpolated legs acc ~700 m."
+  },
+  {
+   "name": "American line along the Assunpink south bank, 2 Jan 1777 (~3 miles)",
+   "kind": "line",
+   "pts": [
+    [
+     40.215,
+     -74.77
+    ],
+    [
+     40.2155,
+     -74.765
+    ],
+    [
+     40.2158,
+     -74.76
+    ],
+    [
+     40.215,
+     -74.754
+    ],
+    [
+     40.214,
+     -74.748
+    ],
+    [
+     40.213,
+     -74.74
+    ],
+    [
+     40.215,
+     -74.73
+    ],
+    [
+     40.22,
+     -74.715
+    ]
+   ],
+   "src": "APPROXIMATE: WP says line ~3 miles along the south bank; the fords at the east end (Sandtown road) uncertain (acc ~400 m). Bridge guns at ~40.2160,-74.7641."
+  },
+  {
+   "name": "British advance: Princeton Post Road to Trenton (2 Jan)",
+   "kind": "route",
+   "pts": [
+    [
+     40.3487,
+     -74.6594
+    ],
+    [
+     40.3331,
+     -74.682
+    ],
+    [
+     40.32,
+     -74.698
+    ],
+    [
+     40.2954,
+     -74.7317
+    ],
+    [
+     40.2859,
+     -74.7132
+    ],
+    [
+     40.254,
+     -74.713
+    ],
+    [
+     40.2478,
+     -74.7391
+    ],
+    [
+     40.229,
+     -74.76
+    ],
+    [
+     40.2258,
+     -74.7648
+    ]
+   ],
+   "src": "Post Road (King's Highway) Princeton-Maidenhead-Trenton; anchors OSM Stony Brook Bridge, Lawrenceville Main St, Brunswick Pike 40.2478,-74.7391; intermediate legs interpolated (acc ~800 m)."
+  },
+  {
+   "name": "Princeton-Trenton Post Road (King's Highway), north to south",
+   "kind": "road",
+   "pts": [
+    [
+     40.3487,
+     -74.6594
+    ],
+    [
+     40.3331,
+     -74.682
+    ],
+    [
+     40.2954,
+     -74.7317
+    ],
+    [
+     40.2478,
+     -74.7391
+    ],
+    [
+     40.2258,
+     -74.7648
+    ]
+   ],
+   "src": "Same anchors; acc ~800 m. Use for the underlay road."
+  },
+  {
+   "name": "Washington's night march 2-3 Jan: Trenton - Sandtown - Quaker Bridge - Quaker Rd - Sawmill Rd (~12 mi)",
+   "kind": "route",
+   "pts": [
+    [
+     40.216,
+     -74.76
+    ],
+    [
+     40.225,
+     -74.73
+    ],
+    [
+     40.237,
+     -74.6865
+    ],
+    [
+     40.261,
+     -74.67
+    ],
+    [
+     40.2766,
+     -74.6695
+    ],
+    [
+     40.31,
+     -74.674
+    ],
+    [
+     40.3315,
+     -74.6811
+    ],
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "src": "Anchors: OSM Mercerville, Quaker Bridge Rd (40.2766,-74.6695), Quaker Rd Battlefield Area (40.3315,-74.6811); the first legs from Trenton and the Sandtown road are interpolated (acc ~1,000 m). ABT/WP: on the road by 2 a.m., Quaker Road then Sawmill Road, ~12 miles."
+  },
+  {
+   "name": "Mercer's brigade toward the Stony Brook bridge, then the orchard (3 Jan)",
+   "kind": "route",
+   "pts": [
+    [
+     40.3315,
+     -74.6811
+    ],
+    [
+     40.3331,
+     -74.682
+    ],
+    [
+     40.332,
+     -74.678
+    ],
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "src": "WP: Mercer sent to destroy the Stony Brook bridge; later in William Clarke's orchard; geometry interpolated (acc 200 m)."
+  },
+  {
+   "name": "Mawhood's advance from Princeton toward Maidenhead / Mercer (3 Jan)",
+   "kind": "route",
+   "pts": [
+    [
+     40.3487,
+     -74.6594
+    ],
+    [
+     40.344,
+     -74.665
+    ],
+    [
+     40.34,
+     -74.67
+    ],
+    [
+     40.333,
+     -74.674
+    ],
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "src": "WP/MV: Mawhood had marched toward Trenton with 17th and 55th; turned them back on seeing Mercer. Interpolated (acc 400 m)."
+  },
+  {
+   "name": "American retreat/march north after Princeton: Princeton - Kingston - Somerset Court House - Pluckemin - Morristown (3-6 Jan)",
+   "kind": "route",
+   "pts": [
+    [
+     40.3487,
+     -74.6594
+    ],
+    [
+     40.3753,
+     -74.6135
+    ],
+    [
+     40.4985,
+     -74.5885
+    ],
+    [
+     40.643,
+     -74.646
+    ],
+    [
+     40.7974,
+     -74.4809
+    ]
+   ],
+   "src": "Waypoints from places list; legs are straight lines only (acc 1,500 m)."
+  },
+  {
+   "name": "Hand's delaying fight, 2 Jan: Maidenhead - Five Mile Run - Shabakunk - Stockton Hollow - bridge",
+   "kind": "route",
+   "pts": [
+    [
+     40.2954,
+     -74.7317
+    ],
+    [
+     40.254,
+     -74.713
+    ],
+    [
+     40.2509,
+     -74.7198
+    ],
+    [
+     40.229,
+     -74.76
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "src": "Positions per WP; Five Mile Run and Stockton Hollow positions approximate (acc 700-2,500 m)."
+  },
+  {
+   "name": "Cadwalader's planned crossing: Bristol/Dunk's Ferry to Bordentown (25-26 Dec)",
+   "kind": "crossing",
+   "pts": [
+    [
+     40.1005,
+     -74.8519
+    ],
+    [
+     40.125,
+     -74.79
+    ],
+    [
+     40.1463,
+     -74.7115
+    ]
+   ],
+   "src": "Approximate; the plan failed (ice). acc ~1,500 m."
+  },
+  {
+   "name": "Ewing's planned crossing at the Trenton Ferry (25-26 Dec)",
+   "kind": "crossing",
+   "pts": [
+    [
+     40.218,
+     -74.785
+    ],
+    [
+     40.218,
+     -74.777
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "src": "Approximate; failed (ice and wind, WP). acc ~500 m."
+  },
+  {
+   "name": "McConkey's Ferry crossing line, 25-26 Dec",
+   "kind": "crossing",
+   "pts": [
+    [
+     40.2985,
+     -74.8752
+    ],
+    [
+     40.2992,
+     -74.8715
+    ]
+   ],
+   "src": "Landing pair derived from OSM + river width; acc 300 m."
+  },
+  {
+   "name": "American guns: Knox's batteries at the head of King and Queen Streets (26 Dec) firing down the streets",
+   "kind": "fire",
+   "pts": [
+    [
+     40.2258,
+     -74.7651
+    ],
+    [
+     40.2236,
+     -74.7653
+    ],
+    [
+     40.2174,
+     -74.7652
+    ]
+   ],
+   "src": "WP: guns at the heads of King and Queen Streets; line of fire along the street axis."
+  },
+  {
+   "name": "American guns across the Assunpink bridge (2 Jan), line of fire north",
+   "kind": "fire",
+   "pts": [
+    [
+     40.216,
+     -74.7641
+    ],
+    [
+     40.2183,
+     -74.7629
+    ],
+    [
+     40.2258,
+     -74.7648
+    ]
+   ],
+   "src": "Guns on the south bank covered the bridge; canister on the third British charge (WP)."
+  }
+ ],
+ "units": [
+  {
+   "battle": "trenton",
+   "phase": "1800 embark 25 Dec",
+   "side": "US",
+   "unit": "Washington's assault force at McConkey's Ferry (Greene + Sullivan divisions, Knox's artillery, Glover's Marblehead boatmen)",
+   "commander": "Gen. George Washington",
+   "lat": 40.2985,
+   "lon": -74.8752,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.2992,
+     -74.8715
+    ]
+   ],
+   "strength": "~2,400 men, 18 guns (ABT; WP; Knox: 'about 2500 or three thousand')",
+   "src": "ABT; WP; ATL"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0400 march 26 Dec",
+   "side": "US",
+   "unit": "Greene's division (Pennington Rd column) with Washington",
+   "commander": "Maj. Gen. Nathanael Greene",
+   "lat": 40.2745,
+   "lon": -74.819,
+   "facing": "SE",
+   "moves_to": [
+    [
+     40.2605,
+     -74.7803
+    ],
+    [
+     40.242,
+     -74.776
+    ],
+    [
+     40.2258,
+     -74.765
+    ]
+   ],
+   "strength": "~1,200+ (half the force; WP says Greene and Sullivan commanded the 2,400)",
+   "src": "WP; Fischer [K]"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0400 march 26 Dec",
+   "side": "US",
+   "unit": "Sullivan's division (River Rd column)",
+   "commander": "Maj. Gen. John Sullivan",
+   "lat": 40.2745,
+   "lon": -74.819,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2464,
+     -74.8328
+    ],
+    [
+     40.2198,
+     -74.7781
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~1,200+ (WP; Fischer [K])",
+   "src": "WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0745 contact 26 Dec",
+   "side": "HE",
+   "unit": "Pennington Rd outpost (Wiederholdt)",
+   "commander": "Lt. Andreas Wiederholdt",
+   "lat": 40.242,
+   "lon": -74.776,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.23,
+     -74.765
+    ]
+   ],
+   "strength": "1 officer + 24 men",
+   "src": "WP; Bloomsburg plan"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "US",
+   "unit": "Knox's guns at the head of King and Queen Streets",
+   "commander": "Col. Henry Knox",
+   "lat": 40.2258,
+   "lon": -74.765,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2258,
+     -74.765
+    ]
+   ],
+   "strength": "6 guns on King St (+ more) of 18",
+   "src": "WP; ATL"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "HE",
+   "unit": "Rall regiment (grenadiers) - north quarters",
+   "commander": "Col. Johann Rall",
+   "lat": 40.2235,
+   "lon": -74.7655,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.224,
+     -74.7655
+    ]
+   ],
+   "strength": "~500 (reg. strengths not verified)",
+   "src": "FACT_NOTES B2"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "HE",
+   "unit": "Lossberg regiment",
+   "commander": "Col. Francis Scheffer (acting) [K]",
+   "lat": 40.2235,
+   "lon": -74.764,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.224,
+     -74.764
+    ]
+   ],
+   "strength": "~500 (not verified)",
+   "src": "FACT_NOTES B2"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0800 attack 26 Dec",
+   "side": "HE",
+   "unit": "Knyphausen regiment (south, at the Assunpink bridge)",
+   "commander": "Maj. Friedrich von Dechow",
+   "lat": 40.2185,
+   "lon": -74.764,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~500 (not verified)",
+   "src": "americanwars.org ch. VIII; WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0830 26 Dec",
+   "side": "US",
+   "unit": "Sullivan blocks the Assunpink bridge, cutting off the escape",
+   "commander": "Sullivan",
+   "lat": 40.2172,
+   "lon": -74.7641,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~1,000+",
+   "src": "WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "1000 surrender 26 Dec",
+   "side": "HE",
+   "unit": "Surrendering Hessian force (Rall, Lossberg, half of Knyphausen)",
+   "commander": "Rall (dying)",
+   "lat": 40.22,
+   "lon": -74.765,
+   "facing": "W",
+   "moves_to": [],
+   "strength": "~900 captured; ~400-500 escaped over the Assunpink bridge",
+   "src": "ABT; WP; History.com"
+  },
+  {
+   "battle": "trenton",
+   "phase": "25 Dec",
+   "side": "US",
+   "unit": "Ewing's militia at the Trenton Ferry (could not cross)",
+   "commander": "Brig. Gen. James Ewing",
+   "lat": 40.218,
+   "lon": -74.777,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "~700 Pa. militia (WP)",
+   "src": "WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "25 Dec",
+   "side": "US",
+   "unit": "Cadwalader's Philadelphia Associators at Bristol (crossed partly, recalled)",
+   "commander": "Col. John Cadwalader",
+   "lat": 40.1005,
+   "lon": -74.8519,
+   "facing": "NE",
+   "moves_to": [
+    [
+     40.125,
+     -74.79
+    ]
+   ],
+   "strength": "~1,500-1,900 [K]",
+   "src": "WP; Fischer [K]"
+  },
+  {
+   "battle": "trenton",
+   "phase": "25 Dec",
+   "side": "HE",
+   "unit": "Donop's Hessians at Bordentown",
+   "commander": "Col. Carl von Donop",
+   "lat": 40.1463,
+   "lon": -74.7115,
+   "facing": "S",
+   "moves_to": [],
+   "strength": "~2,000+ (two brigades; WP: Donop commanded Rall's and his own)",
+   "src": "ATL"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0900-1600 2 Jan",
+   "side": "BR",
+   "unit": "Cornwallis's army (from Princeton; three columns, 28 guns)",
+   "commander": "Lt. Gen. Charles, Earl Cornwallis",
+   "lat": 40.32,
+   "lon": -74.698,
+   "facing": "SW",
+   "moves_to": [
+    [
+     40.2954,
+     -74.7317
+    ],
+    [
+     40.2478,
+     -74.7391
+    ],
+    [
+     40.2258,
+     -74.7648
+    ]
+   ],
+   "strength": "~5,500 (WP text; infobox ~5,000)",
+   "src": "WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0900-1600 2 Jan",
+   "side": "US",
+   "unit": "Hand's riflemen delaying action",
+   "commander": "Col. Edward Hand",
+   "lat": 40.254,
+   "lon": -74.713,
+   "facing": "NE",
+   "moves_to": [
+    [
+     40.2509,
+     -74.7198
+    ],
+    [
+     40.229,
+     -74.76
+    ],
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "~1,000 [K] (Hand's brigade; WP names the action)",
+   "src": "WP; Fischer [K]"
+  },
+  {
+   "battle": "trenton",
+   "phase": "1600-1730 2 Jan",
+   "side": "US",
+   "unit": "American line, south bank of the Assunpink (3 mi; guns on the bridge)",
+   "commander": "Washington",
+   "lat": 40.2155,
+   "lon": -74.76,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.2155,
+     -74.76
+    ]
+   ],
+   "strength": "~5,000-6,000",
+   "src": "WP; Fischer [K]"
+  },
+  {
+   "battle": "trenton",
+   "phase": "1630-1730 2 Jan",
+   "side": "BR",
+   "unit": "British 3 assaults on the Assunpink bridge",
+   "commander": "Cornwallis",
+   "lat": 40.2258,
+   "lon": -74.7648,
+   "facing": "S",
+   "moves_to": [
+    [
+     40.2172,
+     -74.7641
+    ]
+   ],
+   "strength": "vanguard of the 5,500; 3 attacks, all repelled",
+   "src": "WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "night 2-3 Jan",
+   "side": "US",
+   "unit": "Rearguard (fires, noise, picks and shovels)",
+   "commander": "(not named in WP)",
+   "lat": 40.216,
+   "lon": -74.76,
+   "facing": "N",
+   "moves_to": [],
+   "strength": "~500 and 2 guns (WP)",
+   "src": "WP"
+  },
+  {
+   "battle": "trenton",
+   "phase": "0200 3 Jan",
+   "side": "US",
+   "unit": "Washington's army on the night march",
+   "commander": "Washington",
+   "lat": 40.225,
+   "lon": -74.73,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.237,
+     -74.6865
+    ],
+    [
+     40.261,
+     -74.67
+    ],
+    [
+     40.3315,
+     -74.6811
+    ]
+   ],
+   "strength": "~4,500 and 35 guns at Princeton (WP infobox)",
+   "src": "WP; ABT"
+  },
+  {
+   "battle": "princeton",
+   "phase": "0730-0800 3 Jan",
+   "side": "US",
+   "unit": "Mercer's brigade (vanguard of the Stony Brook column)",
+   "commander": "Brig. Gen. Hugh Mercer",
+   "lat": 40.3331,
+   "lon": -74.682,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "~300 (ABT)",
+   "src": "ABT; WP"
+  },
+  {
+   "battle": "princeton",
+   "phase": "0800 3 Jan",
+   "side": "BR",
+   "unit": "Mawhood's force: 17th Foot (+ 55th, 50 dragoons, 2 guns)",
+   "commander": "Lt. Col. Charles Mawhood",
+   "lat": 40.34,
+   "lon": -74.67,
+   "facing": "SW",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "~1,200-1,400 total in Princeton garrison (ABT 1,200; WP infobox 1,200, lead 1,400)",
+   "src": "ABT; WP"
+  },
+  {
+   "battle": "princeton",
+   "phase": "0830 3 Jan",
+   "side": "US",
+   "unit": "Cadwalader's Philadelphia militia (wavers, rallied by Washington)",
+   "commander": "Col. John Cadwalader",
+   "lat": 40.33,
+   "lon": -74.679,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "~1,000-1,500 [K]",
+   "src": "WP; ABT; Fischer [K]"
+  },
+  {
+   "battle": "princeton",
+   "phase": "0830 3 Jan",
+   "side": "US",
+   "unit": "Washington rides forward, ~30 yards from British line",
+   "commander": "Washington",
+   "lat": 40.331,
+   "lon": -74.6765,
+   "facing": "E",
+   "moves_to": [
+    [
+     40.3316,
+     -74.6755
+    ]
+   ],
+   "strength": "1 + aides",
+   "src": "WP; ABT"
+  },
+  {
+   "battle": "princeton",
+   "phase": "0830-0900 3 Jan",
+   "side": "US",
+   "unit": "Moulder's battery / Hamilton's guns",
+   "commander": "Capt. Thomas Moulder; Capt. Alexander Hamilton",
+   "lat": 40.3305,
+   "lon": -74.679,
+   "facing": "E",
+   "moves_to": [],
+   "strength": "2-3 guns each (ABT, WP)",
+   "src": "ABT; WP"
+  },
+  {
+   "battle": "princeton",
+   "phase": "0900 3 Jan",
+   "side": "BR",
+   "unit": "40th and 55th Foot in the town / Nassau Hall",
+   "commander": "Lt. Col. Mawhood (17th); 40th/55th officers",
+   "lat": 40.3487,
+   "lon": -74.6594,
+   "facing": "S",
+   "moves_to": [],
+   "strength": "~194 captured at Nassau Hall (WP)",
+   "src": "WP"
+  },
+  {
+   "battle": "princeton",
+   "phase": "afternoon 3-6 Jan",
+   "side": "US",
+   "unit": "Washington's army marching to Morristown",
+   "commander": "Washington",
+   "lat": 40.3753,
+   "lon": -74.6135,
+   "facing": "N",
+   "moves_to": [
+    [
+     40.4985,
+     -74.5885
+    ],
+    [
+     40.643,
+     -74.646
+    ],
+    [
+     40.7974,
+     -74.4809
+    ]
+   ],
+   "strength": "~4,500",
+   "src": "WP; ABT"
+  }
+ ],
+ "notes": {
+  "orientation": "Delaware flows SE from McConkey's Ferry (PA, west bank) to Trenton Falls; the NJ side is the EAST bank. Trenton: King Street (N. Warren St) and Queen Street (N. Broad St) run N-S from the Assunpink creek in the south up to the head of the streets at today's Battle Monument (north). The Assunpink flows W-E south of the town; the 'bridge' on Queen St is the key. Princeton lies NE of Trenton (~12 miles); the Post Road runs Trenton - Maidenhead (Lawrenceville) - Stony Brook - Princeton; the night march swung EAST (Sandtown - Quaker Bridge) then north.",
+  "accuracy_warning": "Anchors from OSM Nominatim in this session: Johnson Ferry House, Old Barracks, Battle Monument, N/S Broad and Warren Streets, Assunpink Dr, Mill Hill Park, Nassau Hall, Princeton Battlefield / Mercer Oak, Stony Brook Bridge, Quaker Road, Bear Tavern Rd, Scotch Rd, Pennington Rd, River Rd, Calhoun Street Bridge, Lawrenceville, Kingston, Bordentown, Burlington, Bristol, Morristown. Everything else (the river and creek lines, Birmingham, Five Mile Run, Stockton Hollow, Sandtown, Quaker Bridge, Frog Hollow, Thomas Clarke house, route legs) is INTERPOLATED or from memory, flagged by large acc_m. Overpass/NHD could not be reached; snap rivers/roads to NHD+OSM in the basemap and use Stryker (1898) and Fischer's endpaper maps for the 1776 street grid.",
+  "flags": "Continental Army: the Grand Union flag was the Continental flag in Dec 1776 (Stars and Stripes not adopted until 14 June 1777); regimental colours by unit. British: Union Flag of 1707-1800 (St George + St Andrew). Hessians: Hesse-Kassel regimental colours (Rall, Lossberg, Knyphausen regiments each had its own); no single national flag. Do NOT show Leutze's painting (it shows a flag not yet adopted).",
+  "reservoirs_dams": "Do not draw any modern lakes or bridges: Washington Crossing Bridge, the Delaware & Raritan Canal and Carnegie Lake (Princeton, 1906) are modern; the Delaware & Raritan Canal runs near the Princeton end and the Assunpink Creek is now partly culverted through Trenton.",
+  "weather_for_map": "Night of 25-26 Dec: nor'easter, sleet and snow (ATL; ABT). Night 2-3 Jan: temperature fell ~20 degF and the mud froze (PAW; WP). See FACT_NOTES_jersey.md J.",
+  "sources": "See FACT_NOTES_jersey.md; coordinates from OSM Nominatim (ODbL) queried this session, not from NHD. Overpass API unreachable."
+ }
+}
