@@ -36,6 +36,20 @@ def box_ll(S, W, N, E, zoom, r=1):
     x0, y0 = math.floor(x0 / r) * r, math.floor(y0 / r) * r; return [x0, y0, math.ceil((x1 - x0) / r) * r, math.ceil((y1 - y0) / r) * r]
 
 
+def buffer_ll(pts, half_m):
+    """lat/lon polyline -> lat/lon polygon of the strip half_m metres either side (force_water channels: East River, Harlem River)"""
+    P_ = np.array(pts, float); la0 = math.radians(P_[:, 0].mean()); ky, kx = 111320.0, 111320.0 * math.cos(la0)
+    Q = np.stack([P_[:, 1] * kx, P_[:, 0] * ky], 1); t = np.gradient(Q, axis=0); t /= np.linalg.norm(t, axis=1, keepdims=True); n = np.stack([-t[:, 1], t[:, 0]], 1)
+    poly = np.vstack([Q + n * half_m, (Q - n * half_m)[::-1]])
+    return [[round(y / ky, 6), round(x / kx, 6)] for x, y in poly]
+
+
+EAST_RIVER = [(40.7950, -73.9100), (40.7840, -73.9260), (40.7780, -73.9330), (40.7700, -73.9420), (40.7570, -73.9550), (40.7450, -73.9670), (40.7350, -73.9710),
+              (40.7220, -73.9700), (40.7120, -73.9740), (40.7080, -73.9850), (40.7050, -73.9920), (40.7020, -74.0000), (40.6970, -74.0080), (40.6900, -74.0130)]
+HARLEM_RIVER = [(40.7870, -73.9300), (40.8000, -73.9300), (40.8150, -73.9330), (40.8300, -73.9350), (40.8450, -73.9280), (40.8600, -73.9180), (40.8730, -73.9130),
+                (40.8780, -73.9200), (40.8800, -73.9290), (40.8790, -73.9340)]   # + Spuyten Duyvil to the Hudson
+
+
 def write(name, cfg):
     json.dump(cfg, open(f"{OUT}/{name}.json", "w"), indent=1); print("->", f"{OUT}/{name}.json", cfg["box"])
 
@@ -60,7 +74,8 @@ write("colonies", {
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
-                                 [41.00, -73.905], [40.80, -73.99], [39.95, -75.13], [40.10, -74.85], [40.15, -74.73], [40.60, -74.20]]},
+                                 [41.00, -73.905], [40.80, -73.99], [39.95, -75.13], [40.10, -74.85], [40.15, -74.73], [40.60, -74.20]],
+                       "force_water": [buffer_ll(EAST_RIVER, 480), buffer_ll(HARLEM_RIVER, 190)]},   # z9: the DEM loses these channels (East River ~1 km, Harlem ~0.4 km)
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
  "sea_look": {"deep": "#33505f", "shallow": "#5f8288", "shelf_u": 6.0, "beach_u": 0.5, "line_u": 0.2},
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
@@ -86,6 +101,11 @@ write("colonies", {
  "labels": ["McConkey's Ferry", "Fort Washington", "Fort Lee", "Kip's Bay", "Gravesend Bay", "Jamaica Pass", "Staten Island", "Long Island", "Manhattan",
             "Upper Bay", "Lower Bay", "Newark Bay", "Raritan Bay", "Paulus Hook", "Coryell's Ferry"],
 })
+
+_cw = json.load(open(f"{OUT}/colonies.json")); _cw.update({"season": "winter", "winter": WINTER,
+    "note": "colonies, WINTER variant for the Dec 1776 - Jan 1777 shots (S01 opening, S04 New Jersey part, S08). Same frame, box and geography as colonies; "
+            "winter ground (bake_world.winter_ground). " + _cw["note"].replace(" Summer-neutral ground (the approved look).", "")})
+write("colonieswinter", _cw)
 
 # ============================================================ jersey (wide, zoom 10 = base) ============================================================
 jb = box_ll(40.120, -74.905, 40.370, -74.625, 10)

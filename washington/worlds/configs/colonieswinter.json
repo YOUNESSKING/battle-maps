@@ -1,7 +1,7 @@
 {
  "mode": "wide",
  "zoom": 9,
- "note": "colonies, WINTER variant for the Dec 1776 - Jan 1777 shots (S01 opening, S04 New Jersey part, S08). Strategic map 1776-77 (overview + the cloud dives): New York harbour, Manhattan, the west end of Long Island, Staten Island, the Hudson, New Jersey (Newark, Elizabeth Town, Perth Amboy, New Brunswick, Princeton, Trenton, Morristown) down the Delaware to Philadelphia. Zoom-9 frame: 1 unit = ~232 m (base units / 2). Harbour, sounds, the Hudson / East River and the tidal Delaware = DEM <= 0.5 m (sea mask); modern reservoirs filled from the banks. Summer-neutral ground (the approved look).",
+ "note": "colonies, WINTER variant for the Dec 1776 - Jan 1777 shots (S01 opening, S04 New Jersey part, S08). Same frame, box and geography as colonies; winter ground (bake_world.winter_ground). Strategic map 1776-77 (overview + the cloud dives): New York harbour, Manhattan, the west end of Long Island, Staten Island, the Hudson, New Jersey (Newark, Elizabeth Town, Perth Amboy, New Brunswick, Princeton, Trenton, Morristown) down the Delaware to Philadelphia. Zoom-9 frame: 1 unit = ~232 m (base units / 2). Harbour, sounds, the Hudson / East River and the tidal Delaware = DEM <= 0.5 m (sea mask); modern reservoirs filled from the banks.",
  "box": [
   122,
   113,
@@ -102,6 +102,204 @@
     [
      40.6,
      -74.2
+    ]
+   ],
+   "force_water": [
+    [
+     [
+      40.791807,
+      -73.906176
+     ],
+     [
+      40.780913,
+      -73.922026
+     ],
+     [
+      40.775177,
+      -73.928698
+     ],
+     [
+      40.767319,
+      -73.937543
+     ],
+     [
+      40.754396,
+      -73.950464
+     ],
+     [
+      40.742919,
+      -73.962016
+     ],
+     [
+      40.734576,
+      -73.965337
+     ],
+     [
+      40.721576,
+      -73.964337
+     ],
+     [
+      40.709282,
+      -73.969582
+     ],
+     [
+      40.704164,
+      -73.982402
+     ],
+     [
+      40.701187,
+      -73.989343
+     ],
+     [
+      40.698401,
+      -73.996866
+     ],
+     [
+      40.694264,
+      -74.003602
+     ],
+     [
+      40.687948,
+      -74.007995
+     ],
+     [
+      40.692052,
+      -74.018005
+     ],
+     [
+      40.699736,
+      -74.012398
+     ],
+     [
+      40.705599,
+      -74.003134
+     ],
+     [
+      40.708813,
+      -73.994657
+     ],
+     [
+      40.711836,
+      -73.987598
+     ],
+     [
+      40.714718,
+      -73.978418
+     ],
+     [
+      40.722424,
+      -73.975663
+     ],
+     [
+      40.735424,
+      -73.976663
+     ],
+     [
+      40.747081,
+      -73.971984
+     ],
+     [
+      40.759604,
+      -73.959536
+     ],
+     [
+      40.772681,
+      -73.946457
+     ],
+     [
+      40.780823,
+      -73.937302
+     ],
+     [
+      40.787087,
+      -73.929974
+     ],
+     [
+      40.798193,
+      -73.913824
+     ]
+    ],
+    [
+     [
+      40.787,
+      -73.932256
+     ],
+     [
+      40.799862,
+      -73.932249
+     ],
+     [
+      40.814786,
+      -73.935238
+     ],
+     [
+      40.830214,
+      -73.937238
+     ],
+     [
+      40.845672,
+      -73.930074
+     ],
+     [
+      40.860641,
+      -73.920091
+     ],
+     [
+      40.872857,
+      -73.915248
+     ],
+     [
+      40.876523,
+      -73.92113
+     ],
+     [
+      40.878301,
+      -73.929212
+     ],
+     [
+      40.87735,
+      -73.933423
+     ],
+     [
+      40.88065,
+      -73.934577
+     ],
+     [
+      40.881699,
+      -73.928788
+     ],
+     [
+      40.879477,
+      -73.91887
+     ],
+     [
+      40.873143,
+      -73.910752
+     ],
+     [
+      40.859359,
+      -73.915909
+     ],
+     [
+      40.844328,
+      -73.925926
+     ],
+     [
+      40.829786,
+      -73.932762
+     ],
+     [
+      40.815214,
+      -73.930762
+     ],
+     [
+      40.800138,
+      -73.927751
+     ],
+     [
+      40.787,
+      -73.927744
+     ]
     ]
    ]
   },
@@ -467,5 +665,12 @@
   "Paulus Hook",
   "Coryell's Ferry"
  ],
- "season": "winter"
+ "season": "winter",
+ "winter": {
+  "snow": 0.6,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
+  "ice": 1.0,
+  "conifers": 0.16
+ }
 }

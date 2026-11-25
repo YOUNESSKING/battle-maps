@@ -1,4 +1,4 @@
-"""Andrew Jackson film assembly (copy of vicksburg/tools/assemble.py): 8 scene renders -> one master with 0.6 s dissolves between scenes, voice A, a quiet Kevin MacLeod bed
+"""George Washington film assembly (= the Jackson v4 assembly, unchanged levels/mix chain) (copy of vicksburg/tools/assemble.py): 8 scene renders -> one master with 0.6 s dissolves between scenes, voice A, a quiet Kevin MacLeod bed
 (one track per act, cross-faded), battle ambience on the battle scenes, and the locked sound kit on every VISIBLE cue (scenes/SNN/cues.json,
 the same list each scene draws its guns/volleys/fires from). Loudness -14 LUFS, TP -1.5.
 Sources (read only): Kevin MacLeod 'Long Note Two', 'Long Note One', 'Anguish', 'Wounded' (CC BY 4.0, incompetech); Freesound 'Distant Warfare'
@@ -10,7 +10,7 @@ REPO = "/home/user/battle-maps"; V = f"{REPO}/washington"; M = f"{REPO}/grant/as
 RD, OUT = sys.argv[1], sys.argv[2]
 SC = json.load(open(f"{V}/audio/scenes.json")); TAIL = SC["tail"]; S = SC["scenes"]
 D = S[-1]["A"] + S[-1]["D"]
-BATTLE = {"S03", "S05", "S06", "S07"}
+BATTLE = {"S02", "S05", "S06", "S07"}   # Washington: Long Island, Trenton, Assunpink, Princeton (S03 = the silent evacuation)
 NIGHT = {"S05"}
 
 def load(path, start=0.0, dur=None, af=None):
