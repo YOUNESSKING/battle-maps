@@ -1,35 +1,33 @@
 #!/usr/bin/env python3
-"""Fetch river / bayou centre lines from OpenStreetMap (Nominatim geometry, simplified) into ajackson/data/osm_lines.json
-(committed: make_geo.py reads it offline). One request per second (Nominatim policy); raw answers cached in /tmp/ajx/osm/.
-usage: python3 ajackson/tools/fetch_osm_lines.py            (re-fetches only missing entries; --force = all)
+"""Fetch river / creek centre lines from OpenStreetMap (Nominatim geometry, simplified) into washington/data/osm_lines.json
+(committed: make_geo.py reads it offline). One request per second (Nominatim policy); raw answers cached in /tmp/wx_osm/.
+usage: python3 washington/tools/fetch_osm_lines.py            (re-fetches only missing entries; --force = all)
 Each entry: name -> {"q": query, "thr": simplification (deg), "clip": [S, W, N, E] or null, "lines": [[[lat, lon], ...], ...]}"""
 import json, os, sys, time, urllib.parse, urllib.request
-OUT = "/home/user/battle-maps/washington/data/osm_lines.json"; CACHE = "/tmp/ajx/osm"
-GULF = [28.6, -91.8, 33.8, -84.8]; CHAL = [29.85, -90.10, 30.02, -89.85]; HSB = [32.94, -85.79, 33.00, -85.70]; NOLA = [29.70, -90.35, 30.30, -89.40]
+OUT = "/home/user/battle-maps/washington/data/osm_lines.json"; CACHE = "/tmp/wx_osm"
+COL = [39.70, -75.60, 41.25, -73.40]      # colonies (wide, z9) + margin   [S, W, N, E]
+JER = [40.08, -74.98, 40.42, -74.55]      # jersey (Trenton - Princeton - McConkey's Ferry) + margin
 Q = {   # name: (query, threshold deg, clip box, pick: substring the display name must contain)
-    "Mississippi River": ("Mississippi River", 0.004, GULF, "Mississippi River"),
-    "Mississippi River (New Orleans)": ("Mississippi River", 0.0004, NOLA, "Mississippi River"),
-    "Pearl River": ("Pearl River, Louisiana", 0.004, GULF, "Pearl River"),
-    "Pascagoula River": ("Pascagoula River", 0.004, GULF, "Pascagoula"),
-    "Leaf River": ("Leaf River Mississippi", 0.004, GULF, "Leaf River"),
-    "Chickasawhay River": ("Chickasawhay River", 0.004, GULF, "Chickasawhay"),
-    "Tombigbee River": ("Tombigbee River", 0.004, GULF, "Tombigbee"),
-    "Black Warrior River": ("Black Warrior River", 0.004, GULF, "Black Warrior"),
-    "Alabama River": ("Alabama River", 0.004, GULF, "Alabama River"),
-    "Mobile River": ("Mobile River Alabama", 0.002, GULF, "Mobile River"),
-    "Tensaw River": ("Tensaw River", 0.002, GULF, "Tensaw"),
-    "Coosa River": ("Coosa River", 0.004, GULF, "Coosa"),
-    "Tallapoosa River": ("Tallapoosa River", 0.003, GULF, "Tallapoosa"),
-    "Tallapoosa River (Horseshoe Bend)": ("Tallapoosa River", 0.00004, HSB, "Tallapoosa"),
-    "Cahaba River": ("Cahaba River", 0.004, GULF, "Cahaba"),
-    "Conecuh River": ("Conecuh River", 0.004, GULF, "Conecuh"),
-    "Escambia River": ("Escambia River, Santa Rosa County", 0.003, GULF, "Escambia"),
-    "Chattahoochee River": ("Chattahoochee River", 0.004, GULF, "Chattahoochee"),
-    "Choctawhatchee River": ("Choctawhatchee River", 0.004, GULF, "Choctawhatchee"),
-    "Perdido River": ("Perdido River", 0.003, GULF, "Perdido"),
-    "Yellow River": ("Yellow River Florida", 0.004, GULF, "Yellow River"),
-    "Amite River": ("Amite River", 0.004, GULF, "Amite"),
-    "Bayou Bienvenue": ("Bayou Bienvenue", 0.0001, NOLA, "Bienvenue"),
+    "Hudson River": ("Hudson River", 0.002, COL, "Hudson River"),
+    "Harlem River": ("Harlem River", 0.0005, COL, "Harlem River"),
+    "Raritan River": ("Raritan River", 0.001, COL, "Raritan River"),
+    "Passaic River": ("Passaic River", 0.001, COL, "Passaic River"),
+    "Hackensack River": ("Hackensack River", 0.001, COL, "Hackensack River"),
+    "Delaware River": ("Delaware River", 0.0015, COL, "Delaware River"),
+    "Delaware River (fine)": ("Delaware River", 0.0002, JER, "Delaware River"),
+    "Schuylkill River": ("Schuylkill River", 0.001, COL, "Schuylkill"),
+    "Millstone River": ("Millstone River", 0.0008, COL, "Millstone River"),
+    "Assunpink Creek": ("Assunpink Creek", 0.0002, JER, "Assunpink"),
+    "Stony Brook": ("Stony Brook, Mercer County, New Jersey", 0.0002, JER, "Stony Brook"),
+    "Shabakunk Creek": ("Shabakunk Creek", 0.0002, JER, "Shabakunk"),
+    "Jacobs Creek": ("Jacobs Creek, Hopewell Township", 0.0002, JER, "Jacobs Creek"),
+    "Crosswicks Creek": ("Crosswicks Creek", 0.0008, COL, "Crosswicks"),
+    "Rahway River": ("Rahway River", 0.0008, COL, "Rahway River"),
+    "Neshaminy Creek": ("Neshaminy Creek", 0.0008, COL, "Neshaminy"),
+    "Bronx River": ("Bronx River", 0.0008, COL, "Bronx River"),
+    "Saddle River": ("Saddle River", 0.0008, COL, "Saddle River"),
+    "South Branch Raritan River": ("South Branch Raritan River", 0.001, COL, "South Branch"),
+    "Pennypack Creek": ("Pennypack Creek", 0.0008, COL, "Pennypack"),
 }
 
 
