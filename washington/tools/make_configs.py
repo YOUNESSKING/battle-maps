@@ -180,7 +180,7 @@ write("brooklyn", {
 Z = 12
 cr = box_ll(40.2870, -74.8830, 40.3110, -74.8450, Z)
 write("crossing", {
- "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.45),
+ "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.3),
  "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware "
          "(~270 m = ~9 units), the river roads on both banks, the Bear Tavern road up the NJ bank towards Bear Tavern, the ferry houses. Zoom-12 frame: "
          "1 unit = ~29 m (base units x 4).",
