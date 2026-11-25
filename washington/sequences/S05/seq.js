@@ -1,0 +1,359 @@
+// S05 MOVE 2: CHRISTMAS NIGHT AND TRENTON (D 163.54 s, python3 washington/tools/scene_times.py S05 --words).
+// Regions: jersey (z10 wide, winter = base units), crossing (z12 close, winter, night), trenton (z11 close, winter), colonies (z9 wide).
+// Shots: jersey day: the chain of red posts, Trenton glows, Rall, NO FORTIFICATIONS -> the plan: three blue crossing arrows, dusk ->
+// cloud dive 3 into the crossing at night (McConkey's Ferry): blocks break rank onto separate Durham boats, ferry flats with guns + horses,
+// the boats shuttle, the men come off at Johnson's Ferry and walk up the road; the storm breaks at eleven (sleet + grey veil, floes),
+// clock plates, 18 GUNS -> dissolve jersey night storm: the two failed crossings (grey arrows stopping at the river), Washington, the
+// 9-mile march, the split at Birmingham -> dissolve trenton grey dawn: the picket, guns at the head of King + Queen streets firing down
+// both, Hessians forming in the streets, Rall's banner falls, the fields east of town, surrender (grey), some stream over the Assunpink
+// bridge before it closes -> result card -> method card 2 -> dissolve colonies: Cornwallis in New York, the red arrow to Trenton.
+// Facts: washington/research/FACT_NOTES_jersey.md B1-B4, C1-C7, D1-D4.
+(() => {
+const T = { D: 163.54,
+  plan: 0.75, winter: 2.25, chain: 2.93, posts: 3.43, jersey: 4.19, spring: 6.81, trenton: 8.11, closest: 9.55, enemy: 10.39, colonel: 11.53, rall: 11.79,
+  build: 12.73, fortifications: 13.07,
+  other: 15.05, british: 15.91, nothing: 18.05, spring2: 18.87, but: 19.91, washington: 20.15, wait: 21.29, instead: 22.81, cross: 24.37, river: 25.37,
+  christmas: 25.91, night: 26.29, three: 27.11, places: 27.37, attack: 28.47, trenton2: 28.83, dawn: 29.55,
+  after: 30.85, dark: 31.05, christmasDay: 31.73, main: 33.23, two: 34.71, thousand: 34.93, men: 35.59, began: 36.15, cross2: 36.77, mcconkeys: 37.67,
+  nine: 39.05, miles: 39.27, above: 39.75,
+  boats: 41.45, long: 42.01, black: 42.65, durham: 43.03, iron: 45.03, river2: 46.17, oars: 47.53, fishermen: 48.55, marblehead: 49.43, brooklyn: 51.71,
+  around: 52.97, eleven: 53.54, storm: 53.99, snow: 55.21, sleet: 56.31, hail: 56.95, wind: 58.79, ice: 60.17, floes: 60.43, boats2: 61.69,
+  three2: 63.23, morning: 63.85, horse: 65.31, eighteen: 66.52, cannon: 66.79, across: 67.17,
+  hours: 68.81, schedule: 69.59, downriver: 70.75, other2: 71.59, failed: 72.59, ice2: 73.43, washington2: 74.59, alone: 75.57,
+  marched: 77.31, nine2: 77.87, miles2: 78.19, storm2: 79.67, dark2: 80.71, crossroads: 82.01, split: 83.41, hit: 85.07, sides: 86.29,
+  eight: 88.49, morning2: 89.11, twentysixth: 90.6, burst: 92.07, storm3: 92.79, hessian: 93.71, outposts: 93.99,
+  american: 95.59, guns: 95.99, raced: 96.49, top: 97.19, streets: 98.67, fired: 99.33, down: 100.15, them: 100.49, hessians: 101.55, form: 102.43,
+  streets2: 103.17, raked: 104.41, cannon2: 104.97, shot: 106.31, houses: 107.23,
+  colonel2: 108.73, rall2: 109.09, counterattack: 109.77, shot2: 110.71, horse2: 111.47, men2: 112.65, driven: 113.15, fields: 114.15, east: 114.53,
+  surrounded: 115.87, laid: 117.17, arms: 117.97,
+  several: 119.27, away: 120.29, bridge: 121.31, creek: 122.05, south: 122.33, before: 123.43, closed: 124.55, rest: 126.01, trapped: 126.53,
+  about: 127.75, ninehundred: 128.21, captured: 129.39, more: 130.47, hundred: 131.05, killed: 131.43, wounded: 132.25, notone: 133.31, american2: 133.83,
+  killed2: 134.63, battle: 135.39, among: 136.33, handful: 136.75, lieutenant: 138.37, james: 139.21, monroe: 139.63, president: 141.05,
+  second: 142.93, method: 143.75, settles: 145.29, winter2: 146.35, hit2: 147.07, rest2: 147.93,
+  but2: 149.03, letgo: 150.85, newyork: 152.13, general: 153.21, cornwallis: 153.85, sail: 155.25, england: 156.19, instead2: 157.19, sent: 158.31,
+  racing: 158.55, trenton3: 159.23, finish: 160.17, good: 161.39 };
+const JE = "jersey", CR = "crossing", TR = "trenton", CO = "colonies";
+const sstep = VX.sstep, lerp = VX.lerp;
+const P = (n, r) => VX.place(n, r);
+
+// ---------------- jersey (base units) ----------------
+const TRj = [677.9, 1027.3], BORj = P("Bordentown", JE), PRj = P("Princeton, NJ", JE), MKj = P("McConkey's Ferry (Pennsylvania", JE), JFj = P("Johnson's Ferry landing", JE);
+const BIRj = P("Birmingham", JE), MAIj = P("Maidenhead", JE);
+
+// ---------------- crossing (z12) geometry: the Delaware between McConkey's (PA) and Johnson's (NJ) ----------------
+const RIV = VX.river(CR, "Delaware River").pts.map((p) => [p[0], p[1]]);
+const RL = VX.len(RIV);
+const rivS0 = (() => { let b = 0, bs = 0, s = 0; for (let i = 1; i < RIV.length; i++) { s += Math.hypot(RIV[i][0] - RIV[i - 1][0], RIV[i][1] - RIV[i - 1][1]);
+  if (Math.hypot(RIV[i][0] - 2403.8, RIV[i][1] - 3835.5) < Math.hypot(RIV[b][0] - 2403.8, RIV[b][1] - 3835.5)) { b = i; bs = s; } } return bs; })();
+const HW = 5.25;                                                      // half the river width (10.5 units)
+const RC = (ds) => { const g = VX.along(RIV, rivS0 + ds); let n = [g[3], -g[2]]; if (n[0] * 13.7 + n[1] * -12.6 < 0) n = [-n[0], -n[1]]; return { c: [g[0], g[1]], t: [g[2], g[3]], n }; };   // n points to NJ
+const at = (ds, d, s = 0) => { const R = RC(ds); return [R.c[0] + R.n[0] * d + R.t[0] * s, R.c[1] + R.n[1] * d + R.t[1] * s]; };   // d across (PA < 0 < NJ), s downstream
+const RX0 = RC(0), FN = Math.atan2(RX0.n[1], RX0.n[0]), FP = FN + Math.PI;   // facing NJ, facing PA
+const NI = 0.85;
+// three boarding lanes along the PA bank (each its own deck, boat and queue), one ferry flat lane further downstream
+const LANES = [-5.2, -0.6, 4.0];
+const FLAT = 8.6;
+const decks = LANES.map((ds) => { const a = at(ds, -HW - 1.7), b = at(ds, -HW - 0.15); return { x: (a[0] + b[0]) / 2, z: (a[1] + b[1]) / 2, angle: FN, len: 1.55 }; });
+
+// boat schedules: [load start, leave PA, arrive NJ, leave NJ, back at PA] per trip; s along the path 0 (PA) -> L (NJ)
+const TC = 6.6;   // crossing time
+const trip = (t0) => ({ a: t0, b: t0 + 4.6, c: t0 + 4.6 + TC, d: t0 + 4.6 + TC + 2.2, e: t0 + 4.6 + 2 * TC + 2.2 });
+const SCHED = [[trip(38.8), trip(58.4)], [trip(42.6), trip(62.0)], [trip(47.4), trip(66.6)]];
+const bpath = (ds, k) => { const p0 = at(ds, -HW + 0.65), p2 = at(ds + 0.6, HW - 0.65), p1 = at(ds + 1.4 + 0.3 * k, 0); return [p0, p1, p2]; };
+const ease = (x) => x * x * (3 - 2 * x);
+const sOf = (L, tr, t) => { for (const q of tr) { if (t < q.b) return 0; if (t < q.c) return L * ease((t - q.b) / (q.c - q.b)); if (t < q.d) return L; if (t < q.e) return L * (1 - ease((t - q.d) / (q.e - q.d))); } return 0; };
+const loaded = (tr, t) => tr.some((q) => t > q.b - 1.2 && t < q.c + 0.6);
+
+// ---------------- units ----------------
+const units = [];
+const add = (o) => { units.push({ type: "inf", n: 1, arrive: false, ...o }); return units.length - 1; };
+// PA bank: the blocks waiting in a queue behind each landing (facing inland: the men about-face and stream onto the boat)
+LANES.forEach((ds, k) => SCHED[k].forEach((q, j) => {
+  const pos = at(ds, -HW - 3.0 - 1.15 * j, 0.25 * j);
+  add({ side: "u", region: CR, face: FP, keys: [[0, ...pos]], t1: q.b + 1.0,
+    escape: { road: [pos, at(ds, -HW - 1.7), at(ds, -HW - 0.15), at(ds, -HW + 0.9), at(ds, -HW + 1.6)], join: "nearest", t0: q.a - 3.4, from: 0, vanish: [0.35, 0.95] } }); }));
+// more men waiting on the PA bank (in the back, framed at the edge): they stay
+[[-2.9, -HW - 6.2], [1.7, -HW - 6.6]].forEach(([ds, d]) => add({ side: "u", region: CR, face: FN, keys: [[0, ...at(ds, d)]] }));
+// NJ bank: the advance guard up the Bear Tavern road; each boatload comes off at Johnson's Ferry and walks up to the assembly ground
+const BT = VX.road(CR, "Bear Tavern road"), BTp = (s) => { const g = VX.along(BT, s); return [g[0], g[1]]; };
+add({ side: "u", region: CR, face: Math.atan2(-0.75, 0.66), keys: [[0, ...BTp(6.5)]] });
+const ASM = [[3.2, 1.2], [3.6, -0.6], [5.0, 0.4], [5.4, -1.4], [6.8, -0.4], [7.0, 1.6]];   // [across from the NJ edge, along the bank (downstream +)]
+let asmI = 0;
+LANES.forEach((ds, k) => SCHED[k].forEach((q) => { if (q.c > 68.4) return; const A = ASM[asmI++ % ASM.length], p0 = at(ds + 0.6, HW + 0.7), p1 = at(ds + 0.6, HW + A[0], A[1]);
+  add({ side: "u", region: CR, face: Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), t0: q.c + 0.3, keys: [[0, ...p0], [q.c + 1.0, ...p0], [q.c + 1.0 + Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) / 0.55, ...p1]], arrive: false }); }));
+// guns: on the flats, then off on the NJ bank one by one
+const FTR = [trip(46.0), trip(55.0)].map((q) => ({ ...q, b: q.b + 1.0, c: q.c + 2.6, d: q.d + 2.6, e: q.e + 2.6 }));
+FTR.forEach((q, j) => { const p0 = at(FLAT + 0.6, HW + 0.8), p1 = at(FLAT + 0.2 - 1.6 * j, HW + 2.6 + 0.9 * j);
+  add({ side: "u", type: "art", region: CR, face: Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), t0: q.c + 0.4, keys: [[0, ...p0], [q.c + 1.2, ...p0], [q.c + 5.0, ...p1]], arrive: false }); });
+add({ side: "u", type: "art", region: CR, face: FN, keys: [[0, ...at(FLAT - 3.2, HW + 3.4)]], t0: 58.0, arrive: true });   // already over (earlier flats)
+
+// jersey wide: the red posts (Trenton, Bordentown, Princeton); later the American march (troopScale 3)
+const JU = [];
+JU.push({ side: "r", n: 2, region: JE, face: Math.PI * 0.75, keys: [[0, TRj[0] + 1.5, TRj[1] + 1.0]], t1: 76.4 });
+JU.push({ side: "r", n: 2, region: JE, face: Math.PI * 0.9, keys: [[0, BORj[0] + 0.5, BORj[1] - 3.0]] });
+JU.push({ side: "r", n: 2, region: JE, face: Math.PI * 0.75, keys: [[0, PRj[0] - 2.0, PRj[1] + 2.0]] });
+units.push(...JU.map((u) => ({ type: "inf", arrive: false, ...u })));
+// the march (night, storm): Johnson's Ferry -> Bear Tavern road -> Birmingham -> split: Greene (Pennington road), Sullivan (River road)
+const BTj = VX.road(JE, "Bear Tavern road"), RRj = VX.road(JE, "River road (NJ)");
+const GREENE = [[638.6, 981.2], [648.0, 986.0], [657.0, 989.5], [663.6, 993.0], [665.8, 1002.0]];
+const SULL = [[638.0, 981.6], [631.0, 988.6], [626.0, 992.0], [632.6, 999.4], [640.0, 1005.0]];
+const marchU = (path, t0, v, i, face, t1) => units.push({ side: "u", type: "inf", n: 1, region: JE, arrive: false, face, t0: T.washington2 + 0.3,
+  keys: VX.march(path, t0, v), t1 });
+// four blocks on the Bear Tavern road from Johnson's Ferry, splitting at Birmingham
+const BTsub = (s0, s1) => VX.sub(BTj, s0, s1);
+const LBT = VX.len(BTj);
+[0, 1, 2, 3].forEach((i) => { const s0 = Math.max(0, LBT - 24 - i * 3.6);
+  const tail = i < 2 ? GREENE : SULL, path = [...BTsub(s0, LBT), ...tail.slice(1)];
+  units.push({ side: "u", type: "inf", n: 1, region: JE, arrive: false, face: 0, t0: T.washington2 - 0.2 + i * 0.25, t1: 88.6,
+    keys: VX.march(path, T.marched - 0.6 + i * 0.5, 2.2) }); });
+
+// trenton: grey dawn, 26 Dec
+const HEAD = [1355.9, 2054.5], KING = (y) => [1355.3, y], QUEEN = (y) => [lerp(1356.3, 1356.8, (y - 2054.7) / 15.5), y], FIELD = [1364.3, 2053.2], BR = [1356.3, 2069.3];
+const PEN = VX.road(TR, "Pennington road"), RVR = VX.road(TR, "River road");
+const N = -Math.PI / 2, S_ = Math.PI / 2, E = 0, W = Math.PI;
+// the picket on the Pennington road
+add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), bw: 0.45, keys: [[0, 1339.9, 2024.6]], t1: 96.0 });
+// Greene's blocks down the Pennington road, deploying at the head of the town; Sullivan's from the River road into the lower town
+const gPos = [[1352.6, 2050.0], [1350.4, 2052.6], [1358.8, 2050.4]];
+gPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(0.8, 0.6), t0: 88.0,
+  keys: [[0, 1339.4 + i * 1.7, 2034.8 - i * 1.3], [T.burst - 0.5, 1339.4 + i * 1.7, 2034.8 - i * 1.3], [T.american + 0.8 + i * 0.4, ...p], [T.D, ...p]] }));
+const sPos = [[1350.2, 2062.6], [1351.4, 2066.2]];
+sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056.0 - i * 1.4, p[0] - 1338.5 + i * 1.2), t0: 88.0, keys: [[0, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.burst, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.hessians + i * 0.5, ...p], [T.D, ...p]] }));
+// Knox's guns race to the head of King and Queen streets
+const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
+[G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: S_, t0: 94.2, keys: [[0, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.raced - 2.5, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.streets - 0.4 + i * 0.3, ...g], [T.D, ...g]] }));
+// the Hessians form in the two streets, are raked, leave the streets east into the fields, are driven to the orchard, surrender
+const H1 = KING(2061.6), H2 = QUEEN(2062.6), F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.4, 2054.8], O2 = [1365.4, 2055.8];
+const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", region: TR, face: N, bw: 0.55, t0: T.hessians - 0.3 + i * 0.4, arrive: false,
+  keys: [[0, ...h], [105.8 + i * 0.3, ...h], [108.6 + i * 0.3, ...f], [112.6, ...f], [116.2 + i * 0.2, ...o], [T.D, ...o]], cap: T.laid + 0.2 + i * 0.25 }));
+// the blue blocks close round the orchard (north, east, south-west)
+[[1363.4, 2051.4, S_], [1368.4, 2054.2, W], [1360.2, 2056.6, E]].forEach(([x, y, f], i) => add({ side: "u", region: TR, face: f, t0: 111.0 + i * 0.4, arrive: false,
+  keys: [[0, x + Math.cos(f + Math.PI) * 2.6, y + Math.sin(f + Math.PI) * 2.6], [T.driven + i * 0.3, x + Math.cos(f + Math.PI) * 2.6, y + Math.sin(f + Math.PI) * 2.6], [T.surrounded + 0.2 + i * 0.3, x, y], [T.D, x, y]] }));
+// by the Assunpink bridge: one block streams away over the bridge, one is trapped; a blue block closes the bridge from the west
+const KN1 = [1357.1, 2066.4], KN2 = [1355.0, 2065.6];
+const ESCR = [[1357.1, 2066.4], [1356.8, 2068.4], [1357.2, 2072.0], [1357.7, 2073.4], [1358.5, 2075.1], [1360.9, 2077.9], [1363.6, 2080.4], [1366.0, 2083.2]];
+add({ side: "r", region: TR, face: N, bw: 0.55, t0: 118.4, keys: [[0, ...KN1]], escape: { road: ESCR, join: "nearest", t0: T.several + 0.2, from: 0 } });
+add({ side: "r", region: TR, face: Math.atan2(-0.4, -0.9), bw: 0.55, t0: 118.4, keys: [[0, ...KN2]], cap: T.trapped - 0.1 });
+add({ side: "u", region: TR, face: E, t0: 118.4, keys: [[0, 1350.4, 2067.6], [T.before - 2.2, 1350.4, 2067.6], [T.closed + 0.2, 1354.6, 2068.1], [T.D, 1354.6, 2068.1]] });
+
+// colonies: Washington's army at Trenton (blue), Cornwallis's men in New York (red)
+const NYc = P("New York", CO), TRc = P("Trenton, NJ", CO), NBc = P("New Brunswick (British", CO), PRc = P("Princeton, NJ", CO);
+units.push({ side: "u", type: "inf", n: 1, region: CO, arrive: false, face: 0, keys: [[0, TRc[0] - 3, TRc[1] + 4]], t0: 148.2 });
+units.push({ side: "r", type: "inf", n: 1, region: CO, arrive: false, face: Math.PI, keys: [[0, NYc[0] - 10, NYc[1] + 4]], t0: 148.2 });
+
+// ---------------- boats ----------------
+const boats = [];
+LANES.forEach((ds, k) => SCHED[k].forEach((q, j) => { const path = bpath(ds, k), L = VX.len(path);
+  boats.push({ region: CR, kind: "durham", n: 1, path, sAt: (t) => sOf(L, [q], t), t0: q.a - 2.5, t1: (j === SCHED[k].length - 1 ? 200 : SCHED[k][j + 1].a - 2.5), size: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03,
+    load: (t) => loaded([q], t) }); }));
+// a few more Durham boats out on the river already (each its own lane, speed and spacing)
+[[-9.0, 36.0, 0.9], [11.6, 30.0, 0.55], [-2.8, 48.8, 0.0]].forEach(([ds, t0, k]) => { const path = bpath(ds, 1), L = VX.len(path), q = trip(t0);
+  boats.push({ region: CR, kind: "durham", n: 1, path, sAt: (t) => sOf(L, [q, trip(t0 + 2 * TC + 7.0)], t), t0: 30, t1: 200, size: 0.5, lamp: true, wake: true, wl: 6.85, h: 0.03,
+    load: (t) => loaded([q, trip(t0 + 2 * TC + 7.0)], t) }); });
+// the ferry flats (guns + horses)
+FTR.forEach((q) => { const path = bpath(FLAT, 0), L = VX.len(path);
+  boats.push({ region: CR, kind: "flat", n: 1, path, sAt: (t) => sOf(L, [q], t), t0: 30, t1: 200, size: 0.45, lamp: true, wake: true, wl: 6.85, h: 0.03, load: (t) => loaded([q], t) }); });
+
+// ---------------- fx ----------------
+const VO = { size: 0.75, alpha: 0.085, life: 9, muzzle: 5, rate: 3.0, roll: 0.6, height: 2.0 };
+const gShots = [];
+// the guns at the head of the streets fire straight down King and Queen streets: each shot a flash + an impact in the street
+[[99.45, 0, 2061.0], [100.75, 1, 2062.4], [102.05, 0, 2063.4], [104.45, 1, 2061.8], [105.6, 0, 2060.6], [107.0, 1, 2063.0]].forEach(([t, g, y]) => {
+  const at0 = g ? G2 : G1, imp = g ? QUEEN(y) : KING(y);
+  gShots.push({ t, at: at0, dir: [imp[0] - at0[0], imp[1] - at0[1]], impact: imp, delay: 0.35 }); });
+const fx = {
+  volleys: [
+    // the picket fires into the storm as Greene's men burst out of it
+    { region: TR, pts: [[1339.6, 2024.1], [1340.2, 2024.3]], t0: 92.5, t1: 95.2, every: 1.8, opts: { ...VO, dir: [-0.3, -0.95], volley: 1.8 } },
+    // Greene's leading block answers
+    { region: TR, pts: [[1340.6, 2030.8], [1341.6, 2031.0]], t0: 93.3, t1: 95.2, every: 1.8, opts: { ...VO, dir: [0.3, 0.95], volley: 1.8 } },
+    // the Hessians in the streets fire back up the streets
+    { region: TR, pts: [[H1[0] - 0.25, H1[1] - 0.2], [H1[0] + 0.25, H1[1] - 0.2]], t0: 103.5, t1: 104.2, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
+    { region: TR, pts: [[H2[0] - 0.25, H2[1] - 0.2], [H2[0] + 0.25, H2[1] - 0.2]], t0: 103.9, t1: 104.6, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
+    // Sullivan's men fire from the houses into the lower town
+    { region: TR, pts: [[1350.8, 2062.2], [1351.2, 2063.0]], t0: 106.4, t1: 107.4, every: 2, opts: { ...VO, dir: [1, 0], volley: 2 } },
+    // round the orchard: the ring fires once
+    { region: TR, pts: [[1362.8, 2051.8], [1364.0, 2051.8]], t0: 116.35, t1: 117.0, every: 2, opts: { ...VO, dir: [0, 1], volley: 2 } },
+    { region: TR, pts: [[1367.9, 2053.6], [1367.9, 2054.8]], t0: 116.65, t1: 117.2, every: 2, opts: { ...VO, dir: [-1, 0], volley: 2 } },
+  ],
+  guns: [{ region: TR, h: 0.3, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.4 }, shots: gShots, impactOpts: { size: 0.6 } }],
+  campfires: [
+    // the American landing fires (lanterns and fires at McConkey's) and the NJ bank
+    { region: CR, pts: [at(-7.0, -HW - 2.2), at(2.2, -HW - 2.0), at(6.6, -HW - 3.4), at(-1.2, HW + 2.4), at(6.4, HW + 2.0)], t0: 0, t1: 80, opts: { glowSize: 2.0 } },
+  ],
+};
+
+// ---------------- arrows ----------------
+const BLUEW = 0.5;
+const arrows = [
+  // the plan: three crossings (McConkey's the main one, Trenton Ferry, and downriver toward Bordentown)
+  { side: "u", region: JE, pts: [[MKj[0] - 3.0, MKj[1] + 3.0], [MKj[0] + 1.2, MKj[1] - 1.6], [JFj[0] + 3.4, JFj[1] - 2.4]], t0: T.three - 0.05, dur: 1.2, t1: T.after - 0.5, width: BLUEW, maxWidth: BLUEW },
+  { side: "u", region: JE, pts: [[664.0, 1043.0], [669.4, 1038.6], [674.8, 1035.6]], t0: T.three + 0.3, dur: 1.2, t1: T.after - 0.5, width: BLUEW, maxWidth: BLUEW },
+  { side: "u", region: JE, pts: [[680.0, 1084.0], [684.6, 1077.6], [689.6, 1072.4]], t0: T.three + 0.6, dur: 1.2, t1: T.after - 0.5, width: BLUEW, maxWidth: BLUEW },
+  // ... and attack Trenton at dawn
+  { side: "u", region: JE, pts: [[JFj[0] + 4.0, JFj[1] - 1.0], [628.0, 966.0], [646.0, 994.0], [664.0, 1014.0], [674.0, 1024.0]], t0: T.attack - 0.05, dur: 1.8, t1: T.after - 0.5, width: BLUEW, maxWidth: BLUEW },
+  // the two failed crossings: grey arrows that stop at the river ice
+  { color: "#9aa3ad", region: JE, pts: [[662.0, 1046.0], [667.0, 1041.6], [670.2, 1039.4]], t0: T.downriver - 0.05, dur: 1.4, t1: T.marched - 0.2, width: BLUEW, maxWidth: BLUEW },
+  { color: "#9aa3ad", region: JE, pts: [[679.0, 1086.0], [682.4, 1081.0], [685.6, 1076.6]], t0: T.other2 - 0.05, dur: 1.4, t1: T.marched - 0.2, width: BLUEW, maxWidth: BLUEW },
+  // the march: the two columns from Birmingham
+  { side: "u", region: JE, pts: [[640.0, 982.0], ...GREENE.slice(2), [668.4, 1012.0], [674.6, 1022.4]], t0: T.split - 0.05, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
+  { side: "u", region: JE, pts: [[637.4, 983.0], ...SULL.slice(2), [656.0, 1015.0], [670.0, 1027.0], [673.6, 1031.0]], t0: T.split + 0.3, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
+  // trenton: the guns race to the head of the streets; the counterattack; colonies: Cornwallis races to Trenton
+  { side: "u", region: TR, pts: [[1349.8, 2046.8], [1352.6, 2050.0], [1355.4, 2052.4]], t0: T.raced - 0.05, dur: 1.4, t1: T.hessians - 0.3, width: 0.18 },
+  { side: "r", region: TR, pts: [[1360.6, 2059.6], [1360.9, 2057.4], [1361.4, 2055.4]], t0: T.counterattack - 0.05, dur: 1.0, t1: T.men2 + 0.4, width: 0.18 },
+  { side: "r", region: CO, pts: [[NYc[0] - 8, NYc[1] + 6], [NBc[0] + 6, NBc[1] - 2], [PRc[0] + 2, PRc[1] + 3], [TRc[0] + 4, TRc[1] - 2]], t0: T.racing - 0.05, dur: 2.6, t1: T.D + 1, width: 0.5, maxWidth: 0.5 },
+];
+
+// ---------------- generals ----------------
+const US = "seq/grand_union_flag.png", GB = "seq/gb1707_union_flag.png";
+const generals = {
+  washington: { img: "seq/washington.png", flag: US, side: "us", name: "Washington", full: "George Washington", role: "General" },
+  rall: { img: "seq/rall.png", flag: GB, side: "cs", name: "Rall", full: "Johann Rall", role: "Colonel" },   // no reliable likeness: initials JR
+  cornwallis: { img: "seq/cornwallis.png", flag: GB, side: "cs", name: "Cornwallis", full: "Charles Cornwallis", role: "Lieutenant General" },
+};
+const banners = [
+  { general: "rall", region: JE, keys: [[0, TRj[0] + 3.4, TRj[1] - 3.0]], t0: T.colonel - 0.05, t1: T.other - 0.2 },
+  { general: "washington", region: JE, keys: [[0, MKj[0] - 6.0, MKj[1] + 3.0]], t0: T.washington - 0.05, t1: T.after - 0.4 },
+  { general: "washington", region: JE, keys: [[0, JFj[0] + 3.0, JFj[1] - 4.0], [T.marched + 1.0, JFj[0] + 3.0, JFj[1] - 4.0], [T.split, 637.0, 976.0], [87.0, 652.0, 985.0]], t0: T.washington2 - 0.05, t1: 88.3 },
+  { general: "washington", region: TR, keys: [[0, 1344.2, 2040.0], [T.american, 1344.2, 2040.0], [T.streets, 1350.6, 2048.6]], t0: T.burst - 0.05, t1: T.colonel2 - 0.3 },
+  { general: "rall", region: TR, keys: [[0, 1360.4, 2060.2], [T.counterattack + 0.1, 1360.4, 2060.2], [T.shot2, 1361.0, 2057.6]], t0: T.colonel2 - 0.05, t1: T.men2 + 2.0, fall: T.shot2 + 0.05 },
+  { general: "cornwallis", region: CO, keys: [[0, NYc[0] - 4, NYc[1] - 6]], t0: T.cornwallis - 0.05, t1: T.D + 1 },
+];
+
+// ---------------- labels ----------------
+const labels = [
+  { text: "New Jersey", at: [712, 990], region: JE, size: 26, t0: T.jersey - 0.05, t1: T.jersey + 3.4 },
+  { text: "Trenton", at: [TRj[0] + 0.5, TRj[1] + 6.0], region: JE, size: 20, t0: T.trenton - 0.05, t1: T.trenton + 4.0 },
+  { text: "Delaware River", at: [616, 990], region: JE, size: 17, river: true, t0: T.river - 0.05, t1: T.river + 3.4 },
+  { text: "McConkey's Ferry", at: at(-1.0, -HW - 4.6, -2.4), region: CR, size: 17, t0: T.mcconkeys - 0.1, t1: T.mcconkeys + 3.4 },
+  { text: "Delaware River", at: at(-8.0, 0), region: CR, size: 16, river: true, t0: T.river2 - 0.05, t1: T.river2 + 3.2 },
+  { text: "Trenton", at: [TRj[0] + 0.5, TRj[1] + 6.0], region: JE, size: 20, t0: T.trenton2 - 0.3, t1: T.trenton2 + 3.0 },   // the march's goal ("Trenton" 78.89)
+  { text: "Birmingham", at: [BIRj[0] - 9, BIRj[1] + 4], region: JE, size: 15, t0: T.crossroads - 0.05, t1: T.crossroads + 3.4 },
+  { text: "Assunpink Creek", at: [1364.0, 2071.4], region: TR, size: 15, river: true, t0: T.creek - 0.05, t1: T.creek + 3.4 },
+  { text: "New York", at: [NYc[0] + 2, NYc[1] - 10], region: CO, size: 20, t0: T.newyork - 0.05, t1: T.newyork + 3.6 },
+  { text: "Trenton", at: [TRc[0] + 2, TRc[1] + 8], region: CO, size: 18, t0: T.trenton3 - 0.05, t1: T.D + 1 },
+];
+labels[5].t0 = 78.85; labels[5].t1 = 82.0;
+
+// ---------------- storm (from "Around eleven"), Trenton glow, result card, stamp ----------------
+const RAIN = VX.rain([[0, 0], [T.around - 0.1, 0], [T.storm + 0.4, 0.75], [T.sleet, 0.95], [68.3, 0.95], [68.5, 0.85], [87.9, 0.85], [88.1, 0.5], [107.5, 0.45], [127.5, 0.3], [148.9, 0.3], [149.0, 0]],
+  { slant: 0.55, n: 1100, speed: 1150, veil: "64,72,84" });
+const PU = VX.pulses([{ at: TRj, t0: T.trenton, t1: T.fortifications + 1.6, r: 7, color: [200, 40, 28], period: 1.6, region: JE }]);
+const RCSS = `.aj-res{position:absolute;left:330px;top:170px;width:1260px;height:640px;color:#EEE7D6;text-align:center;font-family:"GM Cormorant",Georgia,serif;
+  background:linear-gradient(180deg,#232b33 0%,#182027 60%,#141a20 100%);box-shadow:0 14px 40px rgba(0,0,0,.7),inset 0 0 0 4px #151E25,inset 0 0 0 5.5px rgba(201,178,122,.85)}
+.aj-res .hd{position:absolute;left:0;right:0;top:44px;font-family:"GM Cinzel",serif;font-weight:700;font-size:28px;letter-spacing:.42em;color:#C9B27A;padding-left:.42em}
+.aj-res .col{position:absolute;top:120px;width:560px}.aj-res .c1{left:40px}.aj-res .c2{right:40px}
+.aj-res .sd{font-family:"GM Cinzel",serif;font-weight:700;font-size:30px;letter-spacing:.3em;padding-left:.3em}
+.aj-res .c1 .sd{color:#D9867A}.aj-res .c2 .sd{color:#9FB8DC}
+.aj-res .nb{font-family:"GM Cinzel",serif;font-weight:700;font-size:150px;line-height:1.05;letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff1c4,#e8c46c 45%,#b98a35 70%,#f0d28a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 4px rgba(0,0,0,.7))}
+.aj-res .nt{font-style:italic;font-weight:600;font-size:31px;color:#E8E0CC;margin-top:4px}
+.aj-res .gn{font-family:"GM Cinzel",serif;font-weight:700;font-size:24px;letter-spacing:.22em;color:#D9867A;margin-top:10px}
+.aj-res .vr{position:absolute;left:629px;top:130px;width:1.5px;height:300px;background:linear-gradient(180deg,transparent,#C9B27A,transparent)}
+.aj-res .ft{position:absolute;left:0;right:0;top:486px;font-family:"GM Cinzel",serif;font-weight:700;font-size:38px;letter-spacing:.2em;padding-left:.2em;color:#EEE7D6}
+.aj-res .src{position:absolute;left:0;right:0;top:560px;font-style:italic;font-weight:500;font-size:22px;color:#B7A57C}`;
+function buildResult(c) { const st = document.createElement("style"); st.textContent = RCSS; document.head.appendChild(st);
+  const host = document.querySelector("#ov .gmo") || document.getElementById("ov"), el = document.createElement("div"); el.className = "aj-res";
+  el.innerHTML = `<div class="hd">Trenton · 26 December 1776</div><div class="col c1"><div class="sd">Hessians</div><div class="nb">900</div><div class="nt">about 900 captured</div><div class="gn">more than 100 killed or wounded</div></div>
+    <div class="vr"></div><div class="col c2"><div class="sd">Americans</div><div class="nb">NONE</div><div class="nt">killed in the battle</div><div class="gn" style="color:#9FB8DC">a handful wounded</div></div>
+    <div class="ft">Among the wounded: James Monroe</div><div class="src">American Battlefield Trust; Fischer, Washington's Crossing</div>`;
+  host.appendChild(el); const tl = c.tl, gs = window.gsap, on = (sel, t) => { const e = el.querySelector(sel); gs.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t); };
+  gs.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, T.about - 0.3); tl.to(el, { autoAlpha: 0, duration: 0.45 }, 141.7);
+  on(".c1 .sd", T.hessians > 0 ? T.about - 0.1 : 0); on(".c1 .nb", T.ninehundred); on(".c1 .nt", T.captured - 0.2); on(".c1 .gn", T.more); on(".vr", T.notone - 0.4); on(".c2 .sd", T.notone - 0.2);
+  on(".c2 .nb", T.notone); on(".c2 .nt", T.killed2 - 0.1); on(".c2 .gn", T.handful - 0.05); on(".ft", T.james - 0.1); on(".src", T.monroe + 0.4); }
+const PINS = [];
+function stamp(c, text, t0, t1, world, region) {
+  const host = document.querySelector("#ov .gmo") || document.getElementById("ov"), el = document.createElement("div");
+  el.style.cssText = "position:absolute;left:0;top:0;z-index:40;pointer-events:none;width:0;height:0";
+  el.innerHTML = `<span class="stamp" style="position:absolute;left:0;top:0;transform:translate(-50%,-50%);color:#A8261B;font-size:46px;padding:6px 20px 4px;border-width:4px;white-space:nowrap;background:rgba(240,230,205,.55)">${text}</span>`;
+  host.appendChild(el); window.gsap.set(el, { autoAlpha: 0 });
+  c.tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, t0);
+  c.tl.fromTo(el.firstChild, { scale: 2.3, rotation: -14, opacity: 0 }, { scale: 1, rotation: -6, opacity: 0.94, duration: 0.24, ease: "power4.in", immediateRender: false }, t0);
+  c.tl.to(el, { autoAlpha: 0, duration: 0.5 }, t1); PINS.push({ el, world, region }); }
+
+// ---------------- camera ----------------
+const SW = 34.55, DV = VX.diveTimes(SW);   // push 30.75 (on "After dark"), land ~37.9
+const MID = at(0.4, 0.4, 0);
+const K = (t, region, at0, dist, tilt, yaw, ease = "io", night = 0, o = {}) => ({ t, region, at: at0, dist, tilt, yaw, fov: 30, ease, night, ...o });
+const CUT1 = 68.4, CUT2 = 88.0, CUT3 = 149.0;
+window.SEQ = {
+  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // as Jackson (owner 2026-11-23: richer wide overhead maps)
+  name: "S05", D: T.D, T, seed: 1776, date: "1776-12-25",
+  regions: [JE, CR, TR, CO],
+  regionOpts: { [JE]: { troopScale: 8 }, [CO]: { troopScale: 6 }, [CR]: { decks }, [TR]: { troopScale: 1.6 } },
+  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })) } },   // the small wide-map bridge meshes read as crosses from far away
+  troops: "blocks", troopsOpts: { look: "lineblocks" },
+  keys: [
+    // 1. jersey, winter day: the chain of posts; Trenton
+    K(0, JE, [690, 1004], 150, 44, 4),
+    K(9.0, JE, [690, 1012], 140, 46, 2, "io"),
+    K(14.6, JE, [684, 1018], 128, 47, 0, "lin"),
+    // 2. the plan: over the river, dusk falls
+    K(21.0, JE, [640, 1022], 175, 45, -54, "io", 0.08),
+    K(27.0, JE, [632, 1014], 180, 45, -60, "io", 0.25),
+    K(29.4, JE, [628, 1008], 175, 45, -60, "io", 0.32),
+    // (dive keys from push 30.75 to land ~37.9)
+    // 3. the crossing at night: the PA bank, the boats, the NJ bank
+    K(41.0, CR, at(-2.4, -3.0, 0), 16, 58, -40, "io", NI),
+    K(52.4, CR, at(-0.8, -0.6, 1.4), 16.5, 58, -46, "lin", NI),
+    K(60.0, CR, at(3.4, 1.4, 1.0), 17, 58, -52, "io", NI),
+    K(CUT1, CR, at(6.6, 3.2, 0.4), 17, 59, -56, "lin", NI),
+    // 4. jersey night storm: the failed crossings, the march, the split
+    K(CUT1, JE, [646, 1040], 185, 46, -60, "cut", 0.8, { dissolve: 0.9 }),
+    K(75.8, JE, [644, 1034], 180, 46, -58, "lin", 0.8),
+    K(80.5, JE, [652, 1004], 135, 48, -44, "io", 0.8),
+    K(CUT2, JE, [658, 1008], 128, 49, -40, "lin", 0.8),
+    // 5. trenton grey dawn: the picket, Greene down the Pennington road
+    K(CUT2, TR, [1341.0, 2028.4], 13, 54, 14, "cut", 0.32, { dissolve: 0.9 }),
+    K(95.0, TR, [1344.0, 2034.0], 14, 54, 10, "lin", 0.25),
+    // 6. the head of the town: guns down both streets, the Hessians in the streets
+    K(95.4, TR, [1354.6, 2056.0], 13, 56, 8, "cut", 0.2, { dissolve: 0.9 }),
+    K(108.0, TR, [1357.6, 2059.6], 13.5, 57, 4, "lin", 0.16),
+    // 7. Rall, the fields east of the town, the surrender
+    K(110.5, TR, [1361.2, 2058.0], 13, 56, 0, "io", 0.14),
+    K(118.6, TR, [1364.0, 2055.6], 14, 56, -4, "lin", 0.12),
+    // 8. the Assunpink bridge
+    K(118.65, TR, [1356.6, 2069.4], 9.5, 57, 6, "cut", 0.12, { dissolve: 0.9 }),
+    K(127.4, TR, [1357.0, 2069.6], 9.0, 58, 2, "lin", 0.1),
+    // 9. result + method card over the town
+    K(129.0, TR, [1359.0, 2061.0], 22, 53, 0, "io", 0.08),
+    K(CUT3, TR, [1359.6, 2060.4], 24, 52, -2, "lin", 0.06),
+    // 10. colonies: New York -> Trenton
+    K(CUT3, CO, [490, 392], 400, 44, 0, "cut", 0, { dissolve: 0.9 }),
+    K(156.0, CO, [496, 388], 390, 45, 2, "io", 0),
+    K(T.D, CO, [452, 414], 410, 44, 0, "io", 0),
+  ],
+  dives: [{ t: SW, over: MKj, overTo: MID,
+            from: { region: JE, at: [628, 1008], dist: 175, tilt: 45, yaw: -60, night: 0.32 },
+            to: { region: CR, at: at(-2.0, -3.4, -0.6), dist: 18, tilt: 57, yaw: -36, fov: 30, night: NI } }],
+  clouds: { [JE]: { scatter: { seed: 7 }, keepClear: [[680, 1020, 60, 1, 0.8], [620, 990, 50, 1, 0.8]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
+            [CO]: { scatter: { seed: 4 }, keepClear: [[500, 380, 120, 1, 0.8]] } },
+  units, arrows, banners, boats, fx, generals, labels,
+  overlay: [
+    ["plaque.date", 0.4, { month: "December 1776", day: "", weekday: "", note: "" }],
+    (O, c) => stamp(c, "NO FORTIFICATIONS", T.fortifications - 0.1, T.other - 0.3, [TRj[0] + 1.0, TRj[1] - 8.0], JE),
+    ["plaque.date", T.christmas - 0.05, { month: "December 1776", day: "25", weekday: "Wednesday", note: "Christmas night" }],
+    ["plaque.note", T.dark + 0.3, "after dark"],
+    ["label", T.durham - 0.05, T.iron + 1.2, { name: "Durham boats", sub: "built to carry iron ore", world: (t) => { const B = boats[0], p = VX.along(B.path, B.sAt(t)); return [p[0], p[1], 0.6]; }, side: "us", marker: false }],
+    ["label", T.marblehead - 0.05, T.brooklyn + 0.9, { name: "Glover's Marblehead men", sub: "at the oars", world: (t) => { const B = boats[2], p = VX.along(B.path, B.sAt(t)); return [p[0], p[1], 0.6]; }, side: "us", marker: false }],
+    ["plaque.clock", T.around - 0.05, { time: "23:00", note: "the storm breaks", header: "25 December 1776" }],
+    ["plaque.clock", T.three2 - 0.05, { time: "3:00", note: "the last guns across", header: "Christmas night" }],
+    ["number", T.eighteen - 0.05, CUT1 - 0.2, { value: 18, from: 18, round: 1, suffix: " GUNS", world: at(FLAT - 2.0, HW + 4.6), size: 90 }],
+    ["plaque.note", T.schedule - 0.2, "hours behind schedule"],
+    ["distance", T.nine2 - 0.05, T.crossroads - 0.3, { from: [JFj[0] + 1.0, JFj[1] + 1.0], to: [TRj[0] - 1.0, TRj[1] - 1.0], value: 9, countFrom: 9, unit: "MILES", sub: "to Trenton", dash: false }],
+    ["plaque.clock", T.eight - 0.05, { time: "8:00", note: "the storm still blowing", header: "26 December 1776" }],
+    ["plaque.date", T.twentysixth - 0.05, { month: "December 1776", day: "26", weekday: "Thursday", note: "Trenton" }],
+    ["film.dim", T.about - 0.5, 141.8, 0.8],
+    // method card (Jackson recipe): line 1 static in the sub, line 2 types on "hit them where they rest"
+    ["letter", 142.4, 148.95, { header: "Move 2 · Trenton", title: "The Washington Method", sub: "1. Save the army first", marks: false, quote: "2. Hit them where they rest", qSize: 34, height: 270,
+      cps: 20, qAt: T.hit2 - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
+    ["plaque.date", CUT3 + 0.3, { month: "December 1776", day: "", weekday: "", note: "New York" }],
+  ],
+  build: (c) => { RAIN.build(c); PU.build(c); buildResult(c);
+    // the American works south of the Assunpink were dug on 2 January: hidden here
+    const R = c.world.regions[TR], Wk = R.works || []; c.FX[TR].custom(() => { for (const m of Wk) m.visible = false; }); },
+  draw: (t, c) => { RAIN.draw(t, c); PU.draw(t, c); const reg = c.world.cameraAt(t).region, sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
+    for (const p of PINS) { if (p.region !== reg) { p.el.style.visibility = "hidden"; continue; } p.el.style.visibility = "";
+      const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
+};
+})();
