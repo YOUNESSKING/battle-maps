@@ -68,3 +68,4 @@ library/epidemic/music/
 yorktown/logs/
 ajackson/build/*
 !ajackson/build/troop_stem_log.json
+washington/audio/*.log
