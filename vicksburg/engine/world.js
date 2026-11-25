@@ -95,6 +95,42 @@ export function initWorld(canvas, opts = {}) {
     return lerp(lerp(h[j * W + i], h[j * W + i + 1], a), lerp(h[(j + 1) * W + i], h[(j + 1) * W + i + 1], a), b);
   }
 
+  function buildIce(R, d, ys, exag) {
+    // winter (Delaware, Dec 1776): a thin pale shore-ice rim on both banks + flat ice floes drifting downstream (pts are upstream first).
+    // d.winter.ice (0..1, default 1) scales the rim, d.winter.floes = floes per square unit of water (default 0.05 close / 0.004 wide); min river width 1.0 unit.
+    const W = d.winter || {}, wide = d.kind === "wide", dens = W.floes ?? (wide ? 0.02 : 0.2), ice = W.ice ?? 1;
+    const imat = new THREE.MeshLambertMaterial({ color: 0xffffff }); const fl = [];
+    for (const rv of d.rivers || []) {
+      const P = rv.pts, n = P.length, w = rv.w * 1.08; if (w < 1.0 || n < 3) continue;
+      const arc = [0]; for (let i = 1; i < n; i++) arc.push(arc[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+      const L = arc[n - 1], tan = (i) => { const a = P[Math.max(0, i - 1)], b = P[Math.min(n - 1, i + 1)]; const tx = b[0] - a[0], tz = b[1] - a[1], l = Math.hypot(tx, tz) || 1; return [tx / l, tz / l]; };
+      const rim = Math.min(0.06 * w, wide ? 0.3 : 0.4) * ice;
+      for (const side of [-1, 1]) if (rim > 0.01) {   // shore ice strip inside each bank, ragged inner edge
+        const vs = [], ix = [];
+        for (let i = 0; i < n; i++) { const [tx, tz] = tan(i), y = P[i][2] * ys + 0.004 * exag, o = w / 2 - 0.02, r2 = rim * (0.55 + 0.45 * Math.sin(arc[i] * 0.9 + side * 2.1) * Math.sin(arc[i] * 0.23 + side));
+          vs.push(P[i][0] - tz * side * o, y, P[i][1] + tx * side * o, P[i][0] - tz * side * (o - r2), y, P[i][1] + tx * side * (o - r2));
+          if (i) { const k = (i - 1) * 2; ix.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); } }
+        const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(vs, 3)); g.setIndex(ix); g.computeVertexNormals();
+        const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ color: 0x9da5a8, side: THREE.DoubleSide })); m.receiveShadow = true; R.scene.add(m);
+      }
+      const N = Math.min(4000, Math.round(L * w * dens)); if (!N) continue;
+      const fg = new THREE.CircleGeometry(1, 9); fg.rotateX(-Math.PI / 2); { const pa = fg.attributes.position; for (let q = 1; q < pa.count; q++) { const k = 0.65 + 0.55 * hash(q, 98); pa.setX(q, pa.getX(q) * k); pa.setZ(q, pa.getZ(q) * k); } }   // irregular plate
+      const im = new THREE.InstancedMesh(fg, imat, N); im.receiveShadow = true; R.scene.add(im);
+      const F = []; for (let k = 0; k < N; k++) F.push({ s: hash(k, 91) * L, off: (hash(k, 92) - 0.5) * (w - 2 * rim) * 0.85, r: (wide ? 0.25 : 0.12) * (0.4 + 1.6 * Math.pow(hash(k, 93), 2.2)) * Math.min(1.6, Math.max(0.6, w / 6)),
+        rot: hash(k, 94) * 6.28, sq: 0.55 + 0.45 * hash(k, 95), v: (wide ? 0.6 : 0.12) * (0.8 + 0.4 * hash(k, 96)), c: 0.9 + 0.12 * hash(k, 97) });
+      const c = new THREE.Color(); F.forEach((f, k) => { c.setHex(0xa7b0b3).multiplyScalar(f.c); im.setColorAt(k, c); });
+      fl.push({ im, F, P, arc, L, tan });
+    }
+    const dm = new THREE.Object3D();
+    const place = (t) => { for (const { im, F, P, arc, L, tan } of fl) { let j = 0;
+      F.forEach((f, k) => { const sa = (f.s + f.v * t) % L; while (j > 0 && arc[j] > sa) j--; while (j < arc.length - 2 && arc[j + 1] < sa) j++;
+        const a = (sa - arc[j]) / ((arc[j + 1] - arc[j]) || 1), x = P[j][0] + (P[j + 1][0] - P[j][0]) * a, z = P[j][1] + (P[j + 1][1] - P[j][1]) * a, [tx, tz] = tan(j);
+        const y = (P[j][2] + (P[j + 1][2] - P[j][2]) * a) * ys + 0.005 * exag;
+        dm.position.set(x - tz * f.off, y, z + tx * f.off); dm.rotation.set(0, f.rot + t * 0.02 * (f.c - 0.96), 0); dm.scale.set(f.r, 1, f.r * f.sq); dm.updateMatrix(); im.setMatrixAt(k, dm.matrix); });
+      im.instanceMatrix.needsUpdate = true; } };
+    if (fl.length) { place(0); hooks.push((w_, t) => place(t)); }
+  }
+
   async function buildRegion(name) {
     const d = REG[name], kind = kindOf(name), wideK = kind === "wide", F = featuresOf(d), FO = O.features[name] || {};
     const exag = d.exag ?? (wideK ? 14.0 : 6.0), ys = exag / MPU;
@@ -148,6 +184,7 @@ export function initWorld(canvas, opts = {}) {
       if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
     }
     R.wmat = wmat;
+    if (d.season === "winter") buildIce(R, d, ys, exag);   // winter regions only: shore ice + drifting floes on the broad rivers
     // forests (v4): close = massed canopy. The bake raises a ~3 m canopy blanket under every wood (dark crown-speckle texture), and
     // instanced crown CLUSTERS (2-4 merged, displaced lobes, 4 shape variants, log-normal sizes, colour/hue jitter) sit half sunk in it,
     // so a wood reads as one irregular dark mass with a shadowed edge and a broken outline. Hedgerows / lone / garden trees: smaller clusters
@@ -157,6 +194,8 @@ export function initWorld(canvas, opts = {}) {
     const tmat = new THREE.MeshLambertMaterial();
     const dummy = new THREE.Object3D(), col = new THREE.Color(), olive = new THREE.Color(0x5e6648), teal = new THREE.Color(0x345e64);
     const GREENS = [0x314f52, 0x355455, 0x385656, 0x2f4c50, 0x3a5657, 0x324f51, 0x3b5858, 0x2f5052];   // v6: teal (R -10 %, B +12 %)   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
+    const WINTER = d.season === "winter", WINTER_CON = 1 - ((d.winter && d.winter.conifers) ?? 0.16);
+    const BARE = [0x5a5753, 0x605b55, 0x55524e, 0x5d5953, 0x66625c, 0x514e4a];   // grey-brown twig masses (winter only)
     const NV = 4, variants = [];
     for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
       const lobes = 2 + (v % 3), P = [], N = [];
@@ -187,6 +226,7 @@ export function initWorld(canvas, opts = {}) {
           dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (wood ? 0.42 : 0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
           col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
           const hv = hash(j, 12); if (hv < 0.12) col.lerp(olive, 0.2 + hv); else if (hv > 0.7) col.lerp(teal, 0.45);
+          if (WINTER && hash(j, 13) > WINTER_CON) col.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]);   // winter (project regions with season "winter"): bare deciduous crowns, the conifers keep their green
           col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.73 + 0.06 * e : 0.72)); im.setColorAt(i, col); });   // v7: x0.88
         R.scene.add(im); R.trees.push(im); });
     }
