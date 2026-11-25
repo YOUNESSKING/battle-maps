@@ -1074,6 +1074,7 @@ def bake(rname, G, P, creeks, preview=True):
     if PROJ and cfg.get("river_halo_u") and not close:   # project mode (wide): paint water just past the ribbon edge so the rivers read bolder from altitude
         hl = np.clip(1 - (dist_t - hw_t) / cfg["river_halo_u"], 0, 1)[..., None] * 0.9
         img = img * (1 - hl) + hexc(cfg.get("river_halo_col", "#4d6876")) * hl; del hl
+    sea_w = sea_t.copy() if (WINTER and SEA is not None) else None   # winter: no snow / frost on the sea
     if SEA is not None: img = paint_sea(img, sea_t, close, s, cfg.get("sea_look", {})); del sea_t
     if town: img = paint_town(img, town, Pt, s)
     # ---------------- roads ----------------
@@ -1118,7 +1119,7 @@ def bake(rname, G, P, creeks, preview=True):
             cv2.polylines(sp, [np.round(np.array([Pt(p) for p in Q]) * 4).astype(np.int32)], False, 255, max(2, int(wd_ * sc * s)), cv2.LINE_AA, shift=2)
             spf = cv2.GaussianBlur(sp.astype(np.float32) / 255, (0, 0), 1.2)[..., None] * a_; img = img * (1 - spf) + hexc(col_) * spf
         W_["nrm"] = nrm
-    if WINTER: img = winter_ground(img, forest, road_w, dist_t, hw_t, close, TW, TH, bw, s, seed, WINTER); del road_w
+    if WINTER: img = winter_ground(img, forest, road_w, dist_t, hw_t, close, TW, TH, bw, s, seed, WINTER, sea_w); del road_w, sea_w
     # ---------------- baked relief shading ----------------
     shade = np.ones((TH, TW), np.float32)
     sun = np.array([-0.7, 0.48, -0.4], np.float32); sun /= np.linalg.norm(sun)
@@ -1292,11 +1293,11 @@ def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     return bare * (1 - con) + fcol * con
 
 
-def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W):
+def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W, sea=None):
     """late-December ground, the same film in winter: the field mosaic kept (same texture density and warm/cool field contrast), a little
     greyer and lighter (dormant grass, frozen stubble), a THIN snow / frost dusting that lies in the furrows and hollows (never a white sheet),
     fading in soft large patches, none under the woods or on the roads; a frost rim on the river banks"""
-    k = W.get("k", 1.0)
+    k = W.get("k", 1.0); img0 = img
     lum = img.mean(-1, keepdims=True)
     # 1) dormant ground: desaturate a little, cool slightly, lift
     g = lum + (img - lum) * (1 - W.get("desat", 0.35) * k)
@@ -1314,6 +1315,8 @@ def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W
     # 3) frost rim on the banks (shore ice / frozen mud)
     rim = np.clip(1 - np.abs(dist_t - hw_t - (0.05 if close else 0.4)) / (0.10 if close else 0.6), 0, 1)[..., None] * 0.35 * W.get("ice", 1.0)
     g = g * (1 - rim) + hexc("#b9c0c2") * rim
+    if sea is not None:   # the painted sea stays as it was (no grey-down, no snow)
+        sm = np.clip((sea - 0.35) * 3.3, 0, 1)[..., None]; g = g * (1 - sm) + img0 * sm
     return np.clip(g, 0, 255)
 
 
