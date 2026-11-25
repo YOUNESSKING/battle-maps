@@ -62,7 +62,7 @@ GUNS.forEach((g) => U({ side: "u", region: TR, type: "art", face: N_, t0: 32.0, 
 // three assaults: each regiment walks down to the creek by the bridge, is thrown back (holds while it about-faces ~7 s), walks back
 const AS = [[1354.4, 2067.5, 36.4], [1356.6, 2067.7, 40.6], [1358.8, 2067.5, 44.6]];
 AS.forEach(([x, y, ta], i) => { const st = [x - 1.2 + i * 1.2, 2060.6 - i * 0.9];
-  U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 3.2, x, y], [ta + 10.2, x, y], [ta + 14.0, st[0], st[1] - 0.6]] }); });
+  U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 4.4, x, y], [ta + 12.2, x, y], [ta + 16.0, st[0], st[1] - 0.6]] }); });
 // the rest of the red army in the town (comes in at dusk, camps for the night)
 [[1346.0, 2058.0], [1351.0, 2055.0], [1363.0, 2058.6], [1368.4, 2061.0]].forEach((p, i) => U({ side: "r", region: TR, face: S_, t0: 33.6 + i * 0.5, keys: [[0, p[0], p[1] - 4], [33.8 + i * 0.5, p[0], p[1] - 4], [38.6 + i * 0.5, ...p]] }));
 

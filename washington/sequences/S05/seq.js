@@ -123,9 +123,9 @@ sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
 [G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: S_, t0: 94.2, keys: [[0, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.raced - 2.5, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.streets - 0.4 + i * 0.3, ...g], [T.D, ...g]] }));
 // the Hessians form in the two streets, are raked, leave the streets east into the fields, are driven to the orchard, surrender
-const H1 = KING(2061.6), H2 = QUEEN(2062.6), F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.4, 2054.8], O2 = [1365.4, 2055.8];
+const H1 = KING(2061.6), H2 = QUEEN(2062.6), F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.2, 2055.0], O2 = [1364.8, 2057.2];
 const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", region: TR, face: N, bw: 0.55, t0: T.hessians - 0.3 + i * 0.4, arrive: false,
-  keys: [[0, ...h], [105.8 + i * 0.3, ...h], [108.6 + i * 0.3, ...f], [112.6, ...f], [116.2 + i * 0.2, ...o], [T.D, ...o]], cap: T.laid + 0.2 + i * 0.25 }));
+  keys: [[0, ...h], [105.4 + i * 0.3, ...h], [108.2 + i * 0.2, ...f], [111.8, ...f], [116.0 + i * 0.2, ...o], [T.D, ...o]], cap: T.laid + 0.2 + i * 0.25 }));
 // the blue blocks close round the orchard (north, east, south-west)
 [[1363.4, 2051.4, S_], [1368.4, 2054.2, W], [1360.2, 2056.6, E]].forEach(([x, y, f], i) => add({ side: "u", region: TR, face: f, t0: 111.0 + i * 0.4, arrive: false,
   keys: [[0, x + Math.cos(f + Math.PI) * 2.6, y + Math.sin(f + Math.PI) * 2.6], [T.driven + i * 0.3, x + Math.cos(f + Math.PI) * 2.6, y + Math.sin(f + Math.PI) * 2.6], [T.surrounded + 0.2 + i * 0.3, x, y], [T.D, x, y]] }));
@@ -290,8 +290,8 @@ window.SEQ = {
     K(14.6, JE, [684, 1018], 128, 47, 0, "lin"),
     // 2. the plan: over the river, dusk falls
     K(21.0, JE, [640, 1022], 175, 45, -54, "io", 0.08),
-    K(27.0, JE, [632, 1014], 180, 45, -60, "io", 0.25),
-    K(29.4, JE, [628, 1008], 175, 45, -60, "io", 0.32),
+    K(27.0, JE, [628, 1006], 168, 45, -60, "io", 0.25),
+    K(29.4, JE, [622, 998], 160, 45, -60, "io", 0.32),
     // (dive keys from push 30.75 to land ~37.9)
     // 3. the crossing at night: the PA bank, the boats, the NJ bank
     K(41.0, CR, at(-2.4, -3.0, 0), 16, 58, -40, "io", NI),
@@ -299,19 +299,19 @@ window.SEQ = {
     K(60.0, CR, at(3.4, 1.4, 1.0), 17, 58, -52, "io", NI),
     K(CUT1, CR, at(6.6, 3.2, 0.4), 17, 59, -56, "lin", NI),
     // 4. jersey night storm: the failed crossings, the march, the split
-    K(CUT1, JE, [646, 1040], 185, 46, -60, "cut", 0.8, { dissolve: 0.9 }),
-    K(75.8, JE, [644, 1034], 180, 46, -58, "lin", 0.8),
+    K(CUT1, JE, [640, 1030], 175, 46, -60, "cut", 0.8, { dissolve: 0.9 }),
+    K(75.8, JE, [632, 1012], 170, 46, -58, "lin", 0.8),
     K(80.5, JE, [652, 1004], 135, 48, -44, "io", 0.8),
     K(CUT2, JE, [658, 1008], 128, 49, -40, "lin", 0.8),
     // 5. trenton grey dawn: the picket, Greene down the Pennington road
     K(CUT2, TR, [1341.0, 2028.4], 13, 54, 14, "cut", 0.32, { dissolve: 0.9 }),
-    K(95.0, TR, [1344.0, 2034.0], 14, 54, 10, "lin", 0.25),
+    K(95.0, TR, [1346.4, 2040.0], 14, 54, 10, "lin", 0.25),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
     K(95.4, TR, [1354.6, 2056.0], 13, 56, 8, "cut", 0.2, { dissolve: 0.9 }),
-    K(108.0, TR, [1357.6, 2059.6], 13.5, 57, 4, "lin", 0.16),
+    K(108.0, TR, [1358.0, 2061.2], 13.5, 57, 4, "lin", 0.16),
     // 7. Rall, the fields east of the town, the surrender
-    K(110.5, TR, [1361.2, 2058.0], 13, 56, 0, "io", 0.14),
-    K(118.6, TR, [1364.0, 2055.6], 14, 56, -4, "lin", 0.12),
+    K(110.5, TR, [1361.4, 2059.8], 13.5, 56, 0, "io", 0.14),
+    K(118.6, TR, [1363.6, 2056.4], 14, 56, -4, "lin", 0.12),
     // 8. the Assunpink bridge
     K(118.65, TR, [1356.6, 2069.4], 9.5, 57, 6, "cut", 0.12, { dissolve: 0.9 }),
     K(127.4, TR, [1357.0, 2069.6], 9.0, 58, 2, "lin", 0.1),
@@ -324,10 +324,10 @@ window.SEQ = {
     K(T.D, CO, [452, 414], 410, 44, 0, "io", 0),
   ],
   dives: [{ t: SW, over: MKj, overTo: MID,
-            from: { region: JE, at: [628, 1008], dist: 175, tilt: 45, yaw: -60, night: 0.32 },
+            from: { region: JE, at: [622, 998], dist: 160, tilt: 45, yaw: -60, night: 0.32 },
             to: { region: CR, at: at(-2.0, -3.4, -0.6), dist: 18, tilt: 57, yaw: -36, fov: 30, night: NI } }],
   clouds: { [JE]: { scatter: { seed: 7 }, keepClear: [[680, 1020, 60, 1, 0.8], [620, 990, 50, 1, 0.8]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
-            [CO]: { scatter: { seed: 4 }, keepClear: [[500, 380, 120, 1, 0.8]] } },
+            [CO]: { scatter: { seed: 4 }, keepClear: [[500, 380, 120, 1, 0.8], [360, 480, 110, 1, 0.9]] } },
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1776", day: "", weekday: "", note: "" }],
