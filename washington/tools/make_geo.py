@@ -58,7 +58,14 @@ def chain(parts, start_ll=None, gap=6.0):
         end = cur[-1]; best = min(((np.hypot(*(p[e] - end)), i, e) for i, p in enumerate(parts) for e in (0, -1)))
         if best[0] > gap: break
         q = parts.pop(best[1]); q = q if best[2] == 0 else q[::-1]; cur = np.vstack([cur, q[1:] if best[0] < 1e-3 else q])
-    return unloop(cur)
+    return resample(unloop(cur), 0.5)
+
+
+def resample(L, step):
+    """even spacing (the baker's Catmull-Rom overshoots into small loops where a short OSM segment meets a long one)"""
+    L = np.asarray(L, float); arc = np.r_[0, np.cumsum(np.hypot(*np.diff(L, axis=0).T))]
+    t = np.linspace(0, arc[-1], max(2, int(arc[-1] / step) + 1))
+    return np.stack([np.interp(t, arc, L[:, 0]), np.interp(t, arc, L[:, 1])], 1)
 
 
 def unloop(L, max_turn=100.0):

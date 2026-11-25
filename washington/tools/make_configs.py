@@ -56,7 +56,7 @@ write("colonies", {
  "box": cb,
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
- "hm_ppu": 1.5, "tex": 8192, "exag": 10.0, "cell": 30.0, "seed": 1776,
+ "hm_ppu": 1.5, "tex": 8192, "exag": 6.0, "cell": 30.0, "seed": 1776,
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
