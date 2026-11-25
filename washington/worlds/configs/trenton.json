@@ -162,13 +162,14 @@
   {
    "name": "Trenton",
    "at": [
-    1356.37,
-    2063.32
+    1355.29,
+    2062.72
    ],
-   "kind": "grid",
-   "rad": 4.6,
-   "block": 1.35,
-   "angle": 86.4
+   "kind": "street",
+   "halfL": 7.0,
+   "cross": 3,
+   "rad": 6.5,
+   "parallel": true
   },
   {
    "name": "_mill",

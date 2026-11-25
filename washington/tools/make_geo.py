@@ -58,7 +58,18 @@ def chain(parts, start_ll=None, gap=6.0):
         end = cur[-1]; best = min(((np.hypot(*(p[e] - end)), i, e) for i, p in enumerate(parts) for e in (0, -1)))
         if best[0] > gap: break
         q = parts.pop(best[1]); q = q if best[2] == 0 else q[::-1]; cur = np.vstack([cur, q[1:] if best[0] < 1e-3 else q])
-    return cur
+    return unloop(cur)
+
+
+def unloop(L, max_turn=100.0):
+    """drop the zig-zags / back-tracks left where OSM parts overlap (a point whose path turns > max_turn deg), until none is left"""
+    L = np.asarray(L, float); c = math.cos(math.radians(max_turn))
+    while len(L) > 3:
+        d = np.diff(L, axis=0); n = np.linalg.norm(d, axis=1); keep = n > 1e-6; L = np.vstack([L[0], L[1:][keep]]); d = np.diff(L, axis=0); n = np.linalg.norm(d, axis=1)
+        cs = (d[:-1] * d[1:]).sum(1) / (n[:-1] * n[1:] + 1e-12); bad = np.nonzero(cs < c)[0]
+        if not len(bad): break
+        L = np.delete(L, bad[0] + 1, axis=0)
+    return L
 
 
 # ============================================================ places (1776-77) ============================================================

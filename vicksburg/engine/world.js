@@ -103,7 +103,7 @@ export function initWorld(canvas, opts = {}) {
     for (const rv of d.rivers || []) {
       const P = rv.pts, n = P.length, w = rv.w * 1.08; if (w < 1.0 || n < 3) continue;
       const arc = [0]; for (let i = 1; i < n; i++) arc.push(arc[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
-      const L = arc[n - 1], tan = (i) => { const a = P[Math.max(0, i - 1)], b = P[Math.min(n - 1, i + 1)]; const tx = b[0] - a[0], tz = b[1] - a[1], l = Math.hypot(tx, tz) || 1; return [tx / l, tz / l]; };
+      const L = arc[n - 1], tan = (i) => { const a = P[Math.max(0, i - 3)], b = P[Math.min(n - 1, i + 3)]; const tx = b[0] - a[0], tz = b[1] - a[1], l = Math.hypot(tx, tz) || 1; return [tx / l, tz / l]; };
       const rim = Math.min(0.06 * w, wide ? 0.3 : 0.4) * ice;
       for (const side of [-1, 1]) if (rim > 0.01) {   // shore ice strip inside each bank, ragged inner edge
         const vs = [], ix = [];

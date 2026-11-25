@@ -94,7 +94,7 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 7.0, "cell": 6.5, "seed": 1776,
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 3.5, "cell": 6.5, "seed": 1776,
  "wood_soft": {"blur_u": 0.5, "alpha": 0.85}, "field_look": "gm",
  "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
@@ -132,10 +132,12 @@ FW = [
  [[40.7020, -74.0128], [40.7028, -74.0112], [40.7040, -74.0095], [40.7055, -74.0072], [40.7068, -74.0048], [40.7080, -74.0025], [40.7092, -74.0005],
   [40.7105, -73.9975], [40.7113, -73.9935], [40.7118, -73.9880], [40.7115, -73.9820], [40.7105, -73.9780], [40.7080, -73.9740], [40.7000, -73.9900], [40.6990, -74.0100]],   # Manhattan east
  [[40.7038, -73.9932], [40.7020, -73.9950], [40.6995, -73.9975], [40.6965, -73.9992], [40.6935, -74.0005], [40.6905, -74.0018], [40.6878, -74.0030],
-  [40.6850, -74.0055], [40.6820, -74.0085], [40.6800, -74.0110], [40.6790, -74.0150], [40.6700, -74.0300], [40.7000, -74.0150], [40.7060, -73.9950]],   # Brooklyn piers / Atlantic basin
+  [40.6850, -74.0055], [40.6820, -74.0085], [40.6800, -74.0110], [40.6790, -74.0150], [40.6830, -74.0115], [40.6880, -74.0082], [40.6930, -74.0058],
+  [40.6990, -74.0035], [40.7045, -73.9975]],   # Brooklyn piers / Atlantic basin (water side in Buttermilk Channel, east of Governors Island)
  [[40.6780, -74.0150], [40.6745, -74.0110], [40.6720, -74.0100], [40.6700, -74.0090], [40.6650, -74.0110], [40.6640, -74.0300], [40.6800, -74.0300]],   # Red Hook / Erie basin
  [[40.7010, -73.9850], [40.6995, -73.9810], [40.6990, -73.9750], [40.6985, -73.9700], [40.6995, -73.9640], [40.7030, -73.9610], [40.7100, -73.9620], [40.7080, -73.9830]],   # Wallabout Bay (Navy Yard fill)
- [[40.6896, -74.0230], [40.6896, -74.0150], [40.6905, -74.0120], [40.6850, -74.0100], [40.6820, -74.0250]],             # Governors Island, south half
+ [[40.6880, -74.0300], [40.6884, -74.0230], [40.6877, -74.0190], [40.6872, -74.0150], [40.6880, -74.0110], [40.6890, -74.0080], [40.6800, -74.0080], [40.6800, -74.0300]],   # Governors Island, south part (1901-12 fill)
+ [[40.6997, -74.0260], [40.6997, -74.0175], [40.7003, -74.0150], [40.6990, -74.0120], [40.6990, -74.0000], [40.6935, -74.0040], [40.6935, -74.0260]],   # harbour south of the Battery (DEM artefacts)
 ]
 write("brooklyn", {
  "mode": "close", "zoom": Z,
@@ -159,7 +161,7 @@ write("brooklyn", {
            {"name": "Jamaica road", "geo": "Jamaica road (Bedford", "cls": "pike", "meander": 0.15},
            {"name": "Gowanus road", "geo": "Gowanus road", "cls": "lane", "meander": 0.15},
            {"name": "Broadway / Bowery", "geo": "Boston post road (Manhattan)", "cls": "pike", "meander": 0.0}],
- "towns": [{"name": "New York", "geo": "New York", "kind": "grid", "rad": 11.0, "block": 1.5, "angle": -61},
+ "towns": [{"name": "New York", "at": ll(40.7070, -74.0100, Z), "kind": "grid", "rad": 7.5, "block": 1.15, "angle": -61},
            {"name": "Brooklyn Ferry", "at": ll(40.7015, -73.9915, Z), "kind": "hamlet", "len": 2.6, "angle": -30},
            {"name": "Brooklyn", "geo": "Brooklyn", "kind": "hamlet", "len": 3.0, "angle": -60},
            {"name": "_f1", "at": ll(40.6895, -73.9790, Z), "kind": "farm"}, {"name": "_f2", "at": ll(40.6830, -73.9750, Z), "kind": "farm"},
@@ -233,7 +235,7 @@ write("trenton", {
            {"name": "Queen Street", "geo": "Trenton streets: Queen Street", "cls": "pike", "meander": 0},
            {"name": "River road (PA)", "geo": "River road (PA)", "cls": "pike", "meander": 0.15},
            {"name": "Philadelphia road (PA)", "geo": "Philadelphia - Trenton post road", "cls": "pike", "meander": 0.15}],
- "towns": [{"name": "Trenton", "at": [round((head[0] + qs[0]) / 2, 2), round((head[1] + qs[1]) / 2 + 0.6, 2)], "kind": "grid", "rad": 4.6, "block": 1.35, "angle": qang},
+ "towns": [{"name": "Trenton", "at": ll(40.2215, -74.7652, Z), "kind": "street", "halfL": 7.0, "cross": 3, "rad": 6.5, "parallel": True},   # main street = King St, parallel = Queen St + a back lane
            {"name": "_mill", "at": pl("Mill Hill", Z), "kind": "hamlet", "len": 2.4, "angle": qang + 70},
            {"name": "_ferry", "at": pl("Trenton Ferry", Z), "kind": "farm"}],
  "farm_density": 0.8, "plantation_density": 0.0, "lane_p": 0.45,
@@ -256,7 +258,7 @@ write("princeton", {
  "hm_ppu": 8, "tex": 4096, "exag": 2.6, "cell": 4.4, "seed": 1777, "relief_noise": [0.9, 0.3],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
- "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "rust_k": 0.85, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "rust_k": 0.85, "clear_blur": 0.8, "clear_noise_u": 1.6,
  "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},
            {"name": "Quaker Bridge road", "geo": "Quaker Bridge road", "cls": "pike", "meander": 0.15},

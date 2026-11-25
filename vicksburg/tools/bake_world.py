@@ -970,7 +970,8 @@ def bake(rname, G, P, creeks, preview=True):
     LOG("  settlements ...")
     town = None; wplan = None
     if close:
-        town = settle_close(cfg, G, box, dist, hw, h, sl_u, RDS, seed)
+        if PROJ and SEA is not None and cfg.get("settle_sea", True): town = settle_close(cfg, G, box, np.where(SEA > 0.35, 0.0, dist).astype(np.float32), hw, h, sl_u, RDS, seed)   # project mode: no houses / streets on the sea
+        else: town = settle_close(cfg, G, box, dist, hw, h, sl_u, RDS, seed)
         RDS += [(ln, "lane", "lane") for ln in town.pop("lanes")]
     else:
         wplan = wide_plan(cfg, G, dist, hw, box, [rd for rd, c, _ in RDS if c == "pike"] or [rd for rd, _, _ in RDS], *([SEA] if SEA is not None else []))
@@ -1125,7 +1126,7 @@ def bake(rname, G, P, creeks, preview=True):
         k = 0.9; img *= (1 + k * (shade - 1))[..., None]
         vt = np.clip(1 - (dist_t - hw_t - 6.0) / 18.0, 0, 1)
         lit = np.clip((shade - 1.02) * 3.0, 0, 1)[..., None] * (1 - 0.8 * forest[..., None]) * (0.25 + 0.75 * vt[..., None])
-        img = img * (1 - 0.85 * lit) + hexc("#bcbe8a") * 1.12 * 0.85 * lit; del lit, vt
+        img = img * (1 - 0.85 * lit) + hexc(WINTER.get("lit_col", "#c4c5bc") if WINTER else "#bcbe8a") * 1.12 * 0.85 * lit; del lit, vt   # winter: frost-pale (not yellow) sunlit slopes
         img *= np.array([0.9, 0.95, 0.98], np.float32)
     else: img *= (1 + 0.5 * (shade - 1))[..., None]
     del shade, ht
