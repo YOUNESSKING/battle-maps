@@ -112,7 +112,7 @@ window.SEQ = {
   regions: [CO, JE],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
   regionOpts: { [CO]: { troopScale: 11 }, [JE]: { troopScale: 3.2, decks } },
-  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.5 } },   // creek bridges hidden; smaller houses (long houses on crossed streets read as crosses from far away)
+  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // creek bridges hidden; smaller houses (long houses on crossed streets read as crosses from far away)
   keys: [
     { t: 0, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30 },                    // = S03's last camera
     { t: 7.6, region: CO, at: [650.0, 196.0], dist: 250, tilt: 24, yaw: 0, fov: 30, ease: "io" },         // White Plains

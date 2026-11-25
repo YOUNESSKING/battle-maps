@@ -61,8 +61,8 @@ const GUNS = [[1354.4, 2075.0], [1358.4, 2075.0]];
 GUNS.forEach((g) => U({ side: "u", region: TR, type: "art", face: N_, t0: 32.0, keys: [[0, ...g]] }));
 // three assaults: each regiment walks down to the creek by the bridge, is thrown back (holds while it about-faces ~7 s), walks back
 const AS = [[1354.4, 2067.5, 36.4], [1356.6, 2067.7, 40.6], [1358.8, 2067.5, 44.6]];
-AS.forEach(([x, y, ta], i) => { const st = [x - 1.2 + i * 1.2, 2060.6 - i * 0.9];
-  U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 4.4, x, y], [ta + 12.2, x, y], [ta + 16.0, st[0], st[1] - 0.6]] }); });
+AS.forEach(([x, y, ta], i) => { const st = [x, 2061.0 - i * 0.9];
+  U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 4.4, x, y], [ta + 13.6, x, y], [ta + 17.4, st[0], st[1] - 0.6]] }); });
 // the rest of the red army in the town (comes in at dusk, camps for the night)
 [[1346.0, 2058.0], [1351.0, 2055.0], [1363.0, 2058.6], [1368.4, 2061.0]].forEach((p, i) => U({ side: "r", region: TR, face: S_, t0: 33.6 + i * 0.5, keys: [[0, p[0], p[1] - 4], [33.8 + i * 0.5, p[0], p[1] - 4], [38.6 + i * 0.5, ...p]] }));
 
@@ -78,7 +78,7 @@ const arrows = [
   // Cornwallis's plan: down the road, pin Washington against the river
   { side: "r", region: JE, width: 0.4, maxWidth: 0.4, pts: [RD(58), RD(36), RD(14), [TRj[0] - 2.0, TRj[1] + 4.0], bank(kT, "NJ", HW + 1.8)], t0: T.trap - 0.1, dur: 2.2, t1: T.but },
   // the bridge assaults (short red pushes onto the bridge)
-  ...AS.map(([x, y, ta]) => ({ side: "r", region: TR, width: 0.16, pts: [[x, y - 3.2], [x + (BR[0] - x) * 0.6, y + 0.6], [BR[0], BR[1] + 0.3]], t0: ta + 0.4, dur: 1.4, t1: ta + 6.8 })),
+  ...AS.map(([x, y, ta]) => ({ side: "r", region: TR, width: 0.16, pts: [[x, y - 3.2], [x + (BR[0] - x) * 0.6, y + 0.6], [BR[0], BR[1] + 0.3]], t0: ta + 1.2, dur: 1.6, t1: ta + 8.0 })),
 ];
 
 // ---------------- fx: visible volleys + cannon only ----------------
@@ -93,20 +93,20 @@ const volleys = [
   VOL(JE, seg(RD(40.0), FRD(40) + Math.PI / 2, 1.2), 29.4, 30.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 1.2 }),
   VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 30.95, 32.0, fdir(FRD(29)), { ...JK, volley: 1.0 }),
   // the bridge: the line fires at each assault; the assault answers
-  ...AS.map(([x, y, ta], i) => VOL(TR, [[x - 0.6, y + 0.3], [x + 0.6, y + 0.3]], ta + 3.4, ta + 6.2, [0, 1], { volley: 1.4 })),
-  ...AS.map(([x, y, ta], i) => VOL(TR, [[BR[0] - 4.2 + i * 1.6, 2075.4], [BR[0] - 2.6 + i * 1.6, 2075.4]], ta + 3.6, ta + 7.2, [0, -1], { volley: 1.3 })),
-  ...AS.map(([x, y, ta], i) => VOL(TR, [[BR[0] + 2.6 + i * 0.8, 2075.4], [BR[0] + 4.2 + i * 0.8, 2075.4]], ta + 4.1, ta + 7.2, [0, -1], { volley: 1.5 })),
+  ...AS.map(([x, y, ta], i) => VOL(TR, [[x - 0.6, y + 0.3], [x + 0.6, y + 0.3]], ta + 4.4, ta + 7.2, [0, 1], { volley: 1.4 })),
+  ...AS.map(([x, y, ta], i) => VOL(TR, [[BR[0] - 4.2 + i * 1.6, 2075.4], [BR[0] - 2.6 + i * 1.6, 2075.4]], ta + 4.6, ta + 8.2, [0, -1], { volley: 1.3 })),
+  ...AS.map(([x, y, ta], i) => VOL(TR, [[BR[0] + 2.6 + i * 0.8, 2075.4], [BR[0] + 4.2 + i * 0.8, 2075.4]], ta + 5.1, ta + 8.2, [0, -1], { volley: 1.5 })),
 ];
 const shot = (t, at, imp, delay = 0.5) => ({ t, at, dir: [imp[0] - at[0], imp[1] - at[1]], impact: imp, delay });
 const guns = [{ region: TR, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 },
-  shots: AS.flatMap(([x, y, ta], i) => [shot(ta + 3.5, GUNS[i % 2], [x + 0.3, y - 0.5]), shot(ta + 4.6, GUNS[(i + 1) % 2], [x - 0.4, y - 0.9]), shot(ta + 5.8, GUNS[i % 2], [x, y - 1.4])])
+  shots: AS.flatMap(([x, y, ta], i) => [shot(ta + 4.5, GUNS[i % 2], [x + 0.3, y - 0.5]), shot(ta + 5.6, GUNS[(i + 1) % 2], [x - 0.4, y - 0.9]), shot(ta + 6.8, GUNS[i % 2], [x, y - 1.4])])
     .concat([shot(T.cannon, GUNS[0], [1357.4, 2066.2])]) }];
 // night: campfires of both armies (the town and the fields north of the creek / the south bank behind the works)
 const campfires = [
   { region: TR, pts: [[1344.2, 2060.4], [1348.6, 2057.2], [1352.0, 2061.6], [1360.6, 2061.2], [1364.4, 2057.0], [1369.4, 2063.0], [1373.6, 2058.6], [1356.4, 2058.8], [1366.0, 2064.6], [1342.0, 2054.6]],
-    t0: T.stopped - 0.2, t1: T.D + 1, opts: { glowSize: 3.2 } },
+    t0: T.stopped - 0.2, t1: T.D + 1, opts: { size: 2.0, glowSize: 7 } },
   { region: TR, pts: [[1346.0, 2078.2], [1350.6, 2078.8], [1355.6, 2078.6], [1361.4, 2078.4], [1366.2, 2078.6], [1371.0, 2078.0], [1375.6, 2077.6]],
-    t0: T.night - 0.1, t1: T.D + 1, opts: { glowSize: 3.2 } },
+    t0: T.night - 0.1, t1: T.D + 1, opts: { size: 2.0, glowSize: 7 } },
 ];
 const fx = { volleys, guns, campfires };
 
@@ -118,7 +118,7 @@ const generals = {
 const banners = [
   { general: "washington", region: JE, keys: [[0, ...bank(kT, "NJ", HW + 6.0)]], t0: T.washington + 0.1, t1: 11.4 },
   { general: "cornwallis", region: JE, keys: [[0, ...RD(70, -3.0)], [13.4, ...RD(70, -3.0)], [29.6, ...RD(48, -3.0)]], t0: T.cornwallis - 0.05, t1: T.D },
-  { general: "washington", region: TR, keys: [[0, 1356.2, 2079.4]], t0: T.army - 0.6, t1: T.D + 1 },
+  { general: "washington", region: TR, keys: [[0, 1351.6, 2077.4]], t0: T.army - 0.6, t1: T.D + 1 },
   { general: "cornwallis", region: TR, keys: [[0, 1357.4, 2056.4]], t0: T.stopped - 0.75, t1: T.D + 1 },
 ];
 const labels = [
@@ -139,19 +139,19 @@ window.SEQ = {
   regions: [JE, TR],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
   regionOpts: { [JE]: { troopScale: 3.2, decks }, [TR]: { troopScale: 1.6 } },
-  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.5 } },
+  features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },
   keys: [
     { t: 0, region: JE, at: [654.0, 1024.0], dist: 88, tilt: 44, yaw: 0, fov: 30 },                       // back over the river to Trenton
     { t: 10.6, region: JE, at: [660.0, 1022.0], dist: 84, tilt: 45, yaw: 0, fov: 30, ease: "lin" },
-    { t: 13.6, region: JE, at: [RD(50)[0], RD(50)[1]], dist: 78, tilt: 44, yaw: 0, fov: 30, ease: "io" },   // 2 January: the post road
-    { t: 19.0, region: JE, at: [RD(44)[0], RD(44)[1]], dist: 84, tilt: 43, yaw: 0, fov: 30, ease: "io" },
+    { t: 13.6, region: JE, at: [RD(52)[0], RD(52)[1]], dist: 60, tilt: 44, yaw: 0, fov: 30, ease: "io" },   // 2 January: the post road
+    { t: 19.0, region: JE, at: [RD(47)[0], RD(47)[1]], dist: 60, tilt: 43, yaw: 0, fov: 30, ease: "io" },
     { t: 22.4, region: JE, at: [RD(30)[0] - 4, RD(30)[1] + 4], dist: 100, tilt: 42, yaw: 0, fov: 30, ease: "io" },   // the plan: against the river
-    { t: 26.0, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 74, tilt: 45, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen
-    { t: 32.45, region: JE, at: [RD(34)[0], RD(34)[1]], dist: 70, tilt: 46, yaw: 0, fov: 30, ease: "lin" },
+    { t: 26.0, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 56, tilt: 45, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen
+    { t: 32.45, region: JE, at: [RD(34)[0], RD(34)[1]], dist: 54, tilt: 46, yaw: 0, fov: 30, ease: "lin" },
     { t: 32.45, region: TR, at: [1357.0, 2064.0], dist: 46, tilt: 45, yaw: 0, fov: 30, night: 0.3, ease: "cut", dissolve: 0.9 },   // dusk: the creek, the town
-    { t: 42.4, region: TR, at: [1357.0, 2067.0], dist: 36, tilt: 47, yaw: 0, fov: 30, night: 0.4, ease: "io" },
-    { t: 44.8, region: TR, at: [1356.6, 2069.0], dist: 27, tilt: 50, yaw: 0, fov: 30, night: 0.45, ease: "io" },   // the bridge: three assaults
-    { t: 50.4, region: TR, at: [1356.8, 2068.6], dist: 26, tilt: 51, yaw: 2, fov: 30, night: 0.5, ease: "lin" },
+    { t: 40.0, region: TR, at: [1356.8, 2071.4], dist: 23, tilt: 47, yaw: 0, fov: 30, night: 0.4, ease: "io" },
+    { t: 44.8, region: TR, at: [1356.6, 2071.6], dist: 21, tilt: 48, yaw: 0, fov: 30, night: 0.45, ease: "io" },   // the bridge: three assaults
+    { t: 50.4, region: TR, at: [1356.8, 2071.2], dist: 22, tilt: 48, yaw: 2, fov: 30, night: 0.5, ease: "lin" },
     { t: 55.4, region: TR, at: [1357.0, 2067.6], dist: 44, tilt: 45, yaw: 0, fov: 30, night: NI, ease: "io" },     // night: campfires both sides
     { t: 62.0, region: TR, at: [1354.0, 2070.0], dist: 54, tilt: 43, yaw: 0, fov: 30, night: NI, ease: "io" },
     { t: T.D, region: TR, at: [1353.0, 2071.0], dist: 58, tilt: 42, yaw: 0, fov: 30, night: NI, ease: "lin" },
