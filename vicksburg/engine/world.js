@@ -116,9 +116,9 @@ export function initWorld(canvas, opts = {}) {
       const N = Math.min(4000, Math.round(L * w * dens)); if (!N) continue;
       const fg = new THREE.CircleGeometry(1, 9); fg.rotateX(-Math.PI / 2); { const pa = fg.attributes.position; for (let q = 1; q < pa.count; q++) { const k = 0.65 + 0.55 * hash(q, 98); pa.setX(q, pa.getX(q) * k); pa.setZ(q, pa.getZ(q) * k); } }   // irregular plate
       const im = new THREE.InstancedMesh(fg, imat, N); im.receiveShadow = true; R.scene.add(im);
-      const F = []; for (let k = 0; k < N; k++) F.push({ s: hash(k, 91) * L, off: (hash(k, 92) - 0.5) * (w - 2 * rim) * 0.85, r: (wide ? 0.25 : 0.12) * (0.4 + 1.6 * Math.pow(hash(k, 93), 2.2)) * Math.min(1.6, Math.max(0.6, w / 6)),
+      const F = []; for (let k = 0; k < N; k++) F.push({ s: hash(k, 91) * L, off: (hash(k, 92) - 0.5) * (w - 2 * rim) * 0.85, r: (wide ? 0.3 : 0.17) * (0.4 + 1.6 * Math.pow(hash(k, 93), 2.2)) * Math.min(1.6, Math.max(0.6, w / 6)),
         rot: hash(k, 94) * 6.28, sq: 0.55 + 0.45 * hash(k, 95), v: (wide ? 0.6 : 0.12) * (0.8 + 0.4 * hash(k, 96)), c: 0.9 + 0.12 * hash(k, 97) });
-      const c = new THREE.Color(); F.forEach((f, k) => { c.setHex(0xa7b0b3).multiplyScalar(f.c); im.setColorAt(k, c); });
+      const c = new THREE.Color(); F.forEach((f, k) => { c.setHex(0x9ea7aa).multiplyScalar(f.c); im.setColorAt(k, c); });
       fl.push({ im, F, P, arc, L, tan });
     }
     const dm = new THREE.Object3D();

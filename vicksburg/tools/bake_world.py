@@ -1292,13 +1292,13 @@ def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W
     lum = img.mean(-1, keepdims=True)
     # 1) dormant ground: desaturate a little, cool slightly, lift
     g = lum + (img - lum) * (1 - W.get("desat", 0.35) * k)
-    g = g * np.array([0.985, 1.0, 1.025], np.float32) * (1 + 0.04 * k) + 4 * k
+    g = g * np.array([1.0 - 0.035 * k, 1.0, 1.0 + 0.045 * k], np.float32) * (1 + 0.04 * k) + 4 * k
     # 2) frost / thin snow: fine dusting in the furrows + soft large-scale variation (no blotches)
     m1 = cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (8 if close else 80)) + 2, seed + 511), (TW, TH))
     m2 = cv2.resize(fbm(TH // 2, TW // 2, 3, int(bw / (0.25 if close else 2.5)) + 2, seed + 512), (TW, TH))
     cov = np.clip(0.35 + (m1 - 0.5) * 0.9 + (W.get("snow", 0.55) - 0.55), 0, 1)
     fine = cv2.GaussianBlur(img.mean(-1), (0, 0), 0.6); hol = np.clip((cv2.GaussianBlur(fine, (0, 0), 3.0) - fine) / 8 + 0.5, 0, 1)   # furrows / hollows hold the snow
-    snow = cov * np.clip(0.35 + 0.65 * hol + (m2 - 0.5) * 0.5, 0, 1) * W.get("snow_alpha", 0.5)
+    snow = cov * np.clip(0.5 + 0.5 * hol + (m2 - 0.5) * 0.5, 0, 1) * W.get("snow_alpha", 0.5)
     snow *= (1 - 0.9 * forest) * (1 - 0.85 * road)
     snow *= np.clip((dist_t - hw_t) / (0.08 if close else 0.6), 0, 1)   # not on the water
     snow = snow[..., None]; scol = hexc(W.get("snow_col", "#c4c5bd"))[None, None]
