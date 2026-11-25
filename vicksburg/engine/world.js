@@ -249,7 +249,7 @@ export function initWorld(canvas, opts = {}) {
       // critics A2/B (round 1): on the wide map red roofs read as Confederate units: muted brown-slate roofs, 0.65x footprint
       if (wideK) ROOF.splice(0, ROOF.length, 0x7a5c4c, 0x6e5446, 0x806a58, 0x5c5652, 0x6a6460, 0x74604e, 0x5e584e);
       else ROOF.splice(0, ROOF.length, 0x96705a, 0x8a6a58, 0x9c7a60, 0x76706a, 0x6c6a68, 0x8a7666, 0xa08068);   // critic A r2: close towns weathered brown/slate, red = Confederates only
-      const wh = wideK ? 0.34 : 0.055, rh = wideK ? 0.3 : 0.05, hk = wideK ? 0.65 : 1.0;   // v5: close houses smaller (plan x0.62 in the bake)
+      const wh = wideK ? 0.34 : 0.055, rh = wideK ? 0.3 : 0.05, hk = (wideK ? 0.65 : 1.0) * (FO.houseK ?? 1);   /* Battle 21: features[region].houseK scales the house footprints (wide jersey: long houses on crossed streets read as crosses) */   // v5: close houses smaller (plan x0.62 in the bake)
       hs.forEach((q, i) => { const [x, z, hm, w, dd, rot, rc] = q, kind = q[7] || 0; const y = heightAt(R, x, z) - 0.01;
         const hh = kind === 3 ? 0.028 : wh * (kind === 2 ? 4.2 : kind === 1 ? 1.7 : 0.85 + hash(i, 3) * 0.5);
         dummy.position.set(x, y, z); dummy.rotation.set(0, rot, 0); dummy.scale.set(w * hk, hh, dd * hk); dummy.updateMatrix(); walls.setMatrixAt(i, dummy.matrix);

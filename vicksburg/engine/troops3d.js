@@ -196,7 +196,7 @@ export function createTroops3D(o) {
       const jn = road[Math.min(j + 1, road.length - 1)], dd = ang(jn[0] - road[j][0], jn[1] - road[j][1]) || 0;
       const thr = angs[Math.min(angs.length - 1, Math.round((a + 1) / 0.1))] - angs[0], poff = Math.abs(thr + Math.PI / 2) < Math.abs(thr - Math.PI / 2) ? Math.PI / 2 : -Math.PI / 2;
       const aE = SEG ? SEG.aA : BOXL ? eff[Math.min(eff.length - 1, Math.round(a / 0.1))] : a;   /* v9: queue by the EFFECTIVE (bend-slowed) approach, so arrivals at the join keep their spacing */
-      if (SEG) { const dT = Math.abs(angDiff(fa, SEG.hA)); SEG.tt = Math.max(0.9, (dT + (BOXV ? 0.1 : 0.6)) / 0.44 + 0.3); }
+      if (SEG) { const dT = Math.abs(angDiff(fa, SEG.hA + ((u.escape || {}).front ? Math.PI : 0))); SEG.tt = Math.max(0.9, (dT + (BOXV ? 0.1 : 0.6)) / 0.44 + 0.3); }
       const q = { u, i, path, a: aE, angs, seg: SEG, poff, e2w: SEG ? ((ev) => ev) : e2w, rj: SEG ? 0 : rc[j], t0: E.t0, len: BOXL ? D.bw * 1.2 : D.cl, gap: D.spacing - D.bw, off: Math.abs(angDiff(fa, dd + Math.PI / 2)) <= Math.abs(angDiff(fa, dd - Math.PI / 2)) ? Math.PI / 2 : -Math.PI / 2 };
       (QUEUES.get(key) || QUEUES.set(key, []).get(key)).push(q); ESCB.set(`${units.indexOf(u)}:${i}`, q); } }
   for (const Q of QUEUES.values()) { Q.sort((p, q) => p.t0 - q.t0 || q.rj - p.rj || p.i - q.i); }   // first to leave, then the one further down the road
@@ -221,7 +221,7 @@ export function createTroops3D(o) {
       const ord = []; men.forEach((m, k) => { ord[m.j] = k; });
       const tWalk = LA / q.V + RAMP / 2; let tA = q.T + tWalk + (q.u.escDelay || 0);   /* escDelay: hold the walk (the block keeps its queue place) */ if (prev) tA = Math.max(tA, prev.cr.tLast + 0.4 + 0.8);   /* v14: no deceleration at the mouth (flows straight in) */
       q.T = tA - tWalk; const tLast = tA - 0.35 + 23 * XDT;
-      q.cr = { PA, hA, LA, tWalk, tA, f0: tA - 0.8, ord, ax, nrm, near: S2.near, far: S2.far, al, trail: S2.trail, tLast, tEnd: tLast + al / XV + 4.3 * ts / (XV * 0.88) + 0.2 };
+      q.cr = { PA, hA, LA, tWalk, tA, f0: tA - 0.8, ord, ax, nrm, near: S2.near, far: S2.far, al, trail: S2.trail, tLast, van: (q.u.escape || {}).vanish, front: !!(q.u.escape || {}).front, tEnd: tLast + al / XV + 4.3 * ts / (XV * 0.88) + 0.2 };
       prev = q; } }
   const queueAt = (t) => { const out = new Map(); for (const Q of QUEUES.values()) for (const q of Q) out.set(q, q.rj - q.a + ramp(t - q.T, q.V)); return out; };
 
@@ -288,11 +288,11 @@ export function createTroops3D(o) {
       if (tl <= R.t1) { const ss = clamp(sl, R.s0, R.s1), p = runPt(u, R, ss); x = p[0] + L0[0] * D.slots[i]; y = p[1] + L0[1] * D.slots[i]; h = runHead(u, R, ss, x, y); break; }
       const p = runPt(u, R, R.s1), he = runHead(u, R, R.s1, p[0], p[1]), toutD = BOXV ? R.tout : clamp(Math.abs(angDiff(he, fa)) / 0.44 + 0.25, 0.8, RT ? 9 : 6); h = he + adS(he, fa, -R.sg) * sstep(R.t1, R.t1 + toutD, tl); }
     if (u.esc && i >= Math.round(u.esc.from / u._bpb) && t > u.esc.t0 - 0.1) { const q = ESCB.get(`${units.indexOf(u)}:${i}`);
-      if (q && q.cr) { const C = q.cr, s0 = q.path[0]; e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));
+      if (q && q.cr) { const C = q.cr, s0 = q.path[0]; e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); if (!C.front) abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));   /* Battle 21: escape.front = a march (to the boats), not a rout: the block turns to the deck and walks front first */
         if (t > C.tEnd) gone = true;
         let sw = ramp(t - q.T, q.V); if (sw > C.LA) sw = C.LA + 0.35 * ts * (1 - Math.exp(-(sw - C.LA) / (0.35 * ts)));   /* full pace to the mouth, then a soft ease (no stop) */
         x = s0[0] + (C.PA[0] - s0[0]) * sw / C.LA; y = s0[1] + (C.PA[1] - s0[1]) * sw / C.LA;
-        const hT = corr(C.hA - Math.PI, x, y) + Math.PI; h = h + angDiff(h, hT) * sstep(Math.max(q.t0, q.T - q.seg.tt), q.T - 0.15, t);
+        const hT = corr(C.hA - Math.PI, x, y) + (C.front ? 0 : Math.PI); h = h + angDiff(h, hT) * sstep(Math.max(q.t0, q.T - q.seg.tt), q.T - 0.15, t);
         if (t > C.f0) { crq = { ...C, cx: x, cy: y, hc: h }; stB = sstep(C.f0, C.f0 + 0.8, t); }
       } else
       if (q) { if (QC.t !== t) QC = { t, m: queueAt(t) }; const rho = QC.m.get(q), w = Math.max(0, q.e2w(rho - (q.rj - q.a))), g = along(q.path, w);
@@ -311,13 +311,13 @@ export function createTroops3D(o) {
   // across the deck -> a short straight run past it, fading out. Returns [x, y, facing, moving 0/1, opacity]
   const crossMan = (C, j, la, lb, t) => { const k = C.ord[j], row = Math.floor(k / 3), off = (k % 3 - 1) * 0.075 * ts, tau = C.tA - 0.35 + row * XDT;
     const R = rotP([C.cx, C.cy], C.hc, la, lb), E = [C.near[0] + C.nrm[0] * off, C.near[1] + C.nrm[1] * off];
-    if (t < tau) { const dE = Math.hypot(R[0] - E[0], R[1] - E[1]), d = (tau - t) * XV, base = C.hc + Math.PI;   /* v14: queue feed: he peels off just in time to reach the mouth at his slot, at stream pace (even spacing, no clump) */
+    if (t < tau) { const dE = Math.hypot(R[0] - E[0], R[1] - E[1]), d = (tau - t) * XV, base = C.hc + (C.front ? 0 : Math.PI);   /* v14: queue feed: he peels off just in time to reach the mouth at his slot, at stream pace (even spacing, no clump) */
       if (d >= dE || dE < 1e-6) return [R[0], R[1], base, 1, 1];
       const k2 = d / dE, fa2 = Math.atan2(E[1] - R[1], E[0] - R[0]); return [E[0] + (R[0] - E[0]) * k2, E[1] + (R[1] - E[1]) * k2, base + angDiff(base, fa2) * sstep(1, 0.6, k2), 1, 1]; }
     const sd = (t - tau) * XV; if (sd <= C.al || C.trail.length < 2) return [E[0] + C.ax[0] * sd, E[1] + C.ax[1] * sd, Math.atan2(C.ax[1], C.ax[0]), 1, 1];
     // up the trail: each man at his own pace (a loosening stream), drifting a little in his lane, fading out over ~2 s
     const vj = 0.9 + 0.2 * hash(k + 17, 31), s2 = (sd - C.al) * vj, g = along(C.trail, s2), lo = off * (1 + 0.8 * Math.min(1, s2 / (2 * ts))) + (hash(k + 5, 33) - 0.5) * 0.06 * ts * Math.min(1, s2 / ts);
-    return [g[0] - g[3] * lo, g[1] + g[2] * lo, Math.atan2(g[3], g[2]), 1, 1 - sstep(1.5 * ts, 4.0 * ts, s2)]; };
+    return [g[0] - g[3] * lo, g[1] + g[2] * lo, Math.atan2(g[3], g[2]), 1, 1 - (C.van ? sstep(C.van[0], C.van[1], s2) : sstep(1.5 * ts, 4.0 * ts, s2))]; };   /* Battle 21: escape.vanish [a, b] (units past the deck) */
   const vecAvg = (list) => { let x = 0, y = 0; for (const [a, w] of list) { x += Math.cos(a) * w; y += Math.sin(a) * w; } return Math.atan2(y, x); };
 
   // ---------- geometry ----------
