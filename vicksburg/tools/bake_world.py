@@ -892,6 +892,11 @@ def bake(rname, G, P, creeks, preview=True):
                     for (q, _, _) in seg_intersections(rd[::4], rp[::2]): kp.append((float(q[0]), float(q[1]), 1.2 + rw))
                 rd = meander(rd, kp, amp=e.get("meander", 0.32 if e.get("cls", "pike") == "pike" else 0.22), wl=e.get("meander_wl", 7.5), seed=len(RDS) + seed) if e.get("meander", 1) else smooth(rd, 6)
             else: rd = smooth(densify(run, 0.5), 3)
+            if PROJ and SEA is not None:   # project mode: no road on the sea (ferries = the two landings): keep the dry runs only
+                dry = sample(SEA, box, rd) < 0.35; cuts = np.split(np.arange(len(rd)), np.nonzero(np.diff(dry.astype(np.int8)))[0] + 1)
+                for ix in cuts:
+                    if dry[ix[0]] and len(ix) >= 4: RDS.append((rd[ix].astype(np.float32), e.get("cls", "pike"), e.get("name", e.get("geo"))))
+                continue
             RDS.append((rd.astype(np.float32), e.get("cls", "pike"), e.get("name", e.get("geo"))))
     RAILS = []
     for e in cfg.get("railroads", []):
@@ -1180,6 +1185,8 @@ def bake(rname, G, P, creeks, preview=True):
         if town and town["trees"]:
             TT = np.array(town["trees"], np.float32); lists.append((TT[:, :2], np.full(len(TT), 3), TT[:, 2], r.uniform(0, 1, len(TT)), np.zeros(len(TT))))
         for T_, k_, s_, c_, ev_ in lists:
+            if PROJ and SEA is not None and len(T_):   # project mode: no hedge / lone trees on the sea
+                ok_ = sample(SEA, box, np.asarray(T_, np.float32)) < 0.3; T_, k_, s_, c_, ev_ = T_[ok_], np.asarray(k_)[ok_], np.asarray(s_)[ok_], np.asarray(c_)[ok_], np.asarray(ev_)[ok_]
             th_ = sample(h, box, T_)
             trees += [[round(float(a), 3), round(float(b), 3), round(float(c), 1), int(k), round(float(sv), 2), round(float(f), 2), round(float(ev), 2)] for (a, b), c, k, sv, f, ev in zip(T_, th_, k_, s_, c_, ev_)]
     # ---------------- houses ----------------
