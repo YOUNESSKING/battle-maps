@@ -17,8 +17,8 @@
   88
  ],
  "focus": [
-  1354.12,
-  2063.68
+  1355.58,
+  2062.72
  ],
  "stills": [
   {
@@ -32,8 +32,8 @@
   },
   {
    "at": [
-    1354.12,
-    2063.68
+    1355.58,
+    2062.72
    ],
    "dist": 40,
    "tilt": 48,
@@ -41,8 +41,8 @@
   },
   {
    "at": [
-    1363.88,
-    2069.78
+    1356.88,
+    2070.92
    ],
    "dist": 22,
    "tilt": 56,
@@ -162,13 +162,13 @@
   {
    "name": "Trenton",
    "at": [
-    1359.0,
-    2063.23
+    1356.37,
+    2063.32
    ],
    "kind": "grid",
-   "rad": 7.0,
-   "block": 1.45,
-   "angle": 55.7
+   "rad": 4.6,
+   "block": 1.35,
+   "angle": 86.4
   },
   {
    "name": "_mill",
@@ -178,7 +178,7 @@
    ],
    "kind": "hamlet",
    "len": 2.4,
-   "angle": 125.7
+   "angle": 156.4
   },
   {
    "name": "_ferry",
@@ -196,12 +196,12 @@
   "works": [
    {
     "name": "American line (Assunpink, 2 Jan)",
-    "geo": "American line, Assunpink",
+    "geo": "American line along the Assunpink south bank, 2 Jan 1777 (~3 miles)",
     "kind": "breastwork",
     "side": "us",
     "face_to": [
-     1354.12,
-     2055.48
+     1355.86,
+     2054.52
     ],
     "height": 1.0,
     "clear": 0.5

@@ -178,7 +178,7 @@ write("brooklyn", {
 
 # ============================================================ crossing (close, zoom 12) ============================================================
 Z = 12
-cr = box_ll(40.2870, -74.8830, 40.3110, -74.8450, Z)
+cr = box_ll(40.2875, -74.8830, 40.3185, -74.8400, Z)
 write("crossing", {
  "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.3),
  "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware "
@@ -233,11 +233,11 @@ write("trenton", {
            {"name": "Queen Street", "geo": "Trenton streets: Queen Street", "cls": "pike", "meander": 0},
            {"name": "River road (PA)", "geo": "River road (PA)", "cls": "pike", "meander": 0.15},
            {"name": "Philadelphia road (PA)", "geo": "Philadelphia - Trenton post road", "cls": "pike", "meander": 0.15}],
- "towns": [{"name": "Trenton", "at": [round((head[0] + qs[0]) / 2, 2), round((head[1] + qs[1]) / 2 + 0.6, 2)], "kind": "grid", "rad": 7.0, "block": 1.45, "angle": qang},
+ "towns": [{"name": "Trenton", "at": [round((head[0] + qs[0]) / 2, 2), round((head[1] + qs[1]) / 2 + 0.6, 2)], "kind": "grid", "rad": 4.6, "block": 1.35, "angle": qang},
            {"name": "_mill", "at": pl("Mill Hill", Z), "kind": "hamlet", "len": 2.4, "angle": qang + 70},
            {"name": "_ferry", "at": pl("Trenton Ferry", Z), "kind": "farm"}],
  "farm_density": 0.8, "plantation_density": 0.0, "lane_p": 0.45,
- "features": {"works": [{"name": "American line (Assunpink, 2 Jan)", "geo": "American line, Assunpink", "kind": "breastwork", "side": "us", "face_to": head, "height": 1.0, "clear": 0.5}],
+ "features": {"works": [{"name": "American line (Assunpink, 2 Jan)", "geo": work_geo("American line along the Assunpink", "American line, Assunpink"), "kind": "breastwork", "side": "us", "face_to": head, "height": 1.0, "clear": 0.5}],
               "bridges": [{"name": "Assunpink bridge (stone)", "geo": "Assunpink bridge", "kind": "road"}]},
  "labels": ["King Street / Queen Street head", "Old Barracks", "Assunpink bridge", "Mill Hill", "Trenton Ferry", "Hessian picket", "Rall's headquarters",
             "Hessian surrender field", "Hermitage"],

@@ -15,7 +15,7 @@ from scipy.signal import resample_poly
 _a, _sr = sf.read(WAV, dtype="float32"); _a = _a.mean(1) if _a.ndim > 1 else _a
 _a = resample_poly(_a, 16000, _sr).astype(np.float32)
 segs, _ = m.transcribe(_a, word_timestamps=True, beam_size=5, vad_filter=False,
-                       initial_prompt="Andrew Jackson, New Orleans, Tohopeka, Tallapoosa, Horseshoe Bend, Red Sticks, Fort Mims, Cherokee, Creek, Ghent, Pakenham, Villeré, Rodriguez, Baratarians, Lafitte, Coffee, Keane, Carolina, Choctaw, Highlanders, Pensacola, Lake Borgne.")
+                       initial_prompt="George Washington, Brooklyn, East River, Marblehead, Glover, Howe, Delaware, McConkey's Ferry, Trenton, Hessians, Rall, Lossberg, Knyphausen, Assunpink, Cornwallis, Princeton, Mercer, Nassau, Morristown, New Brunswick, James Monroe, Durham.")
 W = [(w.word.strip(), w.start, w.end) for s in segs for w in s.words]
 print("whisper words", len(W), flush=True)
 out = []

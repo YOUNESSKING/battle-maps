@@ -1,4 +1,4 @@
-"""Vicksburg narration: Kokoro am_michael per paragraph -> audio/voice.wav + audio/timing.json (paragraph start/end, section = scene).
+"""Washington narration: Kokoro am_michael per paragraph -> audio/voice.wav + audio/timing.json (paragraph start/end, section = scene).
 Then tools/words.py adds word times (faster-whisper alignment) and tools/voice_a.sh converts to voice A (same timing).
 usage (from anywhere): python3 vicksburg/tools/narrate.py [voice] [speed] [only_section]"""
 import json, os, re, sys
@@ -7,8 +7,7 @@ sys.path.insert(0, "/home/user/battle-maps/grant/tools")
 from kokoro_onnx import Kokoro
 import tts_names
 from tts_names import speak
-tts_names.PHON.update({"Villeré": "vˈɪləɹˌeɪ", "Pakenham": "pˈeɪkənəm", "Tohopeka": "tˌoʊhəpˈiːkə", "Tallapoosa": "tˌæləpˈuːsə",
-    "Baratarians": "bˌæɹətˈɛɹiənz", "Lafitte": "ləfˈiːt", "Borgne": "bˈɔːɹn"})
+tts_names.PHON.update({"Knyphausen's": "nˈɪphaʊzənz", "Knyphausen": "nˈɪphaʊzən"})
 # this video's names (exact Kokoro phonemes where the default is wrong; ear-checked via the whisper round trip in words.py)
 # default Kokoro phonemes checked 2026-11-18: Bruinsburg, Pemberton, McClernand, Vicksburg fine; Tilghman + Grierson fixed in tts_names
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "am_michael"

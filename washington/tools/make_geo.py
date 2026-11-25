@@ -67,7 +67,7 @@ PL = [
  ("New York", 40.7075, -74.0110, "town", 300, "Wall St / Broad St (the 1776 city = lower Manhattan south of ~Chambers St)"),
  ("Brooklyn", 40.6925, -73.9875, "town", 500, "Brooklyn village (church at Fulton St), behind the Heights"),
  ("Philadelphia", 39.9496, -75.1503, "town", 300, "Independence Hall"),
- ("Trenton", 40.2210, -74.7660, "town", 200, "King (Warren) / Queen (Broad) St, the 1776 town"),
+ ("Trenton", 40.2215, -74.7650, "town", 200, "King (Warren) / Queen (Broad) St, the 1776 town"),
  ("Princeton", 40.3487, -74.6593, "town", 150, "Nassau Hall"),
  ("New Brunswick", 40.4974, -74.4455, "town", 400, "Raritan landing / the town"),
  ("Newark", 40.7357, -74.1724, "town", 400, "Military Park"),
@@ -105,14 +105,14 @@ PL = [
  # --- the crossing ---
  ("McConkey's Ferry", 40.2961, -74.8728, "ferry", 120, "McConkey's Ferry Inn, Washington Crossing Historic Park (PA): the embarkation landing 25 Dec 1776"),
  ("Johnson's Ferry", 40.2994, -74.8681, "ferry", 120, "Johnson Ferry House, Washington Crossing State Park (NJ): the landing"),
- ("Bear Tavern", 40.3085, -74.8510, "inn", 600, "on the Bear Tavern road (approx.)"),
- ("Jacobs Creek crossing", 40.2930, -74.8355, "ford", 500, "Bear Tavern road crosses Jacobs Creek (steep ravine; guns hauled by ropes)"),
- ("Birmingham", 40.2765, -74.8170, "hamlet", 600, "West Trenton: the army splits, Greene (Pennington road) / Sullivan (River road)"),
+ ("Bear Tavern", 40.3167, -74.8430, "inn", 600, "on the Bear Tavern road (approx.)"),
+ ("Jacobs Creek crossing", 40.2985, -74.8335, "ford", 500, "Bear Tavern road crosses Jacobs Creek (steep ravine; guns hauled by ropes)"),
+ ("Birmingham", 40.2745, -74.8190, "hamlet", 600, "West Trenton: the army splits, Greene (Pennington road) / Sullivan (River road)"),
  # --- Trenton (26 Dec 1776 / 2 Jan 1777) ---
- ("King Street / Queen Street head (Five Points)", 40.2253, -74.7660, "crossroads", 80, "Battle Monument: Pennington + Princeton roads meet; Hamilton's / Forrest's guns"),
+ ("King Street / Queen Street head (Five Points)", 40.2258, -74.7648, "crossroads", 80, "Battle Monument: Pennington + Princeton roads meet; Hamilton's / Forrest's guns"),
  ("Old Barracks", 40.2196, -74.7686, "building", 40, "Old Barracks Museum"),
- ("Assunpink bridge (foot of Queen St)", 40.2178, -74.7593, "bridge", 80, "the stone bridge, today S Broad St over the Assunpink"),
- ("Mill Hill", 40.2148, -74.7569, "hill", 150, "south of the bridge; American line 2 Jan 1777"),
+ ("Assunpink bridge (foot of Queen St)", 40.2172, -74.7641, "bridge", 80, "the stone bridge, today S Broad St over the Assunpink"),
+ ("Mill Hill", 40.2183, -74.7629, "hill", 150, "Mill Hill Park (OSM)"),
  ("Trenton Ferry", 40.2105, -74.7625, "ferry", 200, "foot of Ferry St"),
  ("Hessian picket (Pennington road)", 40.2350, -74.7850, "outpost", 400, "Howell's cooper shop, ~1 km out of town (approx.)"),
  ("Hermitage (Dickinson house)", 40.2385, -74.8020, "house", 500, "Hessian river-road outpost (approx.)"),
@@ -123,7 +123,7 @@ PL = [
  ("Nassau Hall", 40.3487, -74.6593, "building", 30, ""),
  ("Thomas Clarke house", 40.3305, -74.6787, "house", 40, "Princeton Battlefield State Park"),
  ("William Clarke orchard (clash point)", 40.3300, -74.6770, "field", 120, "Mercer vs Mawhood, 3 Jan 1777 ~8 am; Mercer Oak site"),
- ("Stony Brook bridge (Worth's Mill)", 40.3222, -74.6933, "bridge", 200, "post road over Stony Brook; Mawhood's column turned back here"),
+ ("Stony Brook bridge (Worth's Mill)", 40.3331, -74.6820, "bridge", 200, "post road over Stony Brook; Mawhood's column turned back here"),
  ("Frog Hollow", 40.3410, -74.6615, "ravine", 250, "ravine south of the college; British 55th / 40th line (approx.)"),
  ("Thomas Olden house", 40.3395, -74.6725, "house", 200, "on the post road (approx.)"),
  ("Quaker Bridge", 40.2770, -74.6870, "bridge", 600, "Quaker Bridge road over the Assunpink (the night-march crossing, approx.)"),
@@ -198,13 +198,13 @@ for k, J in RES.items():
 
 # ============================================================ roads (1776-77, lat/lon waypoints; acc ~300-1500 m) ============================================================
 R = lambda n, pts, acc=800, note="": line(n, "road", pts, "EST (1776 route on its modern successor)", acc, note)
-TR_HEAD = (40.2253, -74.7660); TR_BR = (40.2178, -74.7593); MILL = (40.2148, -74.7569); JF = (40.2994, -74.8681); BIRM = (40.2765, -74.8170)
+TR_HEAD = (40.2258, -74.7648); TR_BR = (40.2172, -74.7641); MILL = (40.2150, -74.7630); JF = (40.2994, -74.8681); BIRM = (40.2745, -74.8190)   # Trenton anchors: OSM (research geo_jersey)
 ROADS = [
  # colonies
  R("Philadelphia - Trenton post road (PA)", [(39.9496, -75.1503), (39.985, -75.118), (40.017, -75.083), (40.045, -75.025), (40.070, -74.960), (40.100, -74.870), (40.1007, -74.8518),
    (40.140, -74.830), (40.180, -74.805), (40.205, -74.790), (40.2105, -74.7700)], 1500),
  R("New York post road (NJ): Trenton - New Brunswick - Elizabeth Town - Paulus Hook", [TR_HEAD, (40.2405, -74.7505), (40.2610, -74.7380), (40.2973, -74.7296), (40.3120, -74.7150),
-   (40.3222, -74.6933), (40.3300, -74.6820), (40.3420, -74.6680), (40.3487, -74.6593), (40.3745, -74.6140), (40.4100, -74.5550), (40.4500, -74.5050), (40.4974, -74.4455),
+   (40.3220, -74.6975), (40.3331, -74.6820), (40.3400, -74.6720), (40.3450, -74.6650), (40.3487, -74.6593), (40.3745, -74.6140), (40.4100, -74.5550), (40.4500, -74.5050), (40.4974, -74.4455),
    (40.5430, -74.3630), (40.5576, -74.2846), (40.6080, -74.2780), (40.6640, -74.2107), (40.7000, -74.1900), (40.7357, -74.1724), (40.7400, -74.1200), (40.7300, -74.0700), (40.7160, -74.0350)], 1000),
  R("Trenton - Bordentown - Burlington road", [MILL, (40.2000, -74.7450), (40.1800, -74.7250), (40.1462, -74.7118), (40.1250, -74.7700), (40.1050, -74.8150), (40.0779, -74.8649)], 1000),
  R("Burlington - Cooper's Ferry road", [(40.0779, -74.8649), (40.0400, -74.9400), (39.9950, -75.0300), (39.9600, -75.0900), (39.9470, -75.1250)], 1500),
@@ -222,7 +222,8 @@ ROADS = [
  R("River road (NJ): Johnson's Ferry - Trenton", [JF, (40.2900, -74.8620), (40.2780, -74.8510), (40.2660, -74.8400), (40.2560, -74.8270), (40.2450, -74.8100), (40.2360, -74.7950),
    (40.2290, -74.7830), (40.2230, -74.7740), (40.2190, -74.7700)], 500, "Sullivan's column, 26 Dec; enters the lower town at King St / Front St"),
  R("River road (PA): McConkey's Ferry - Yardley - Morrisville", [(40.3400, -74.9300), (40.3150, -74.8980), (40.2952, -74.8760), (40.2750, -74.8620), (40.2450, -74.8460), (40.2200, -74.8000), (40.2110, -74.7880)], 700),
- R("Bear Tavern road", [JF, (40.3020, -74.8640), (40.3060, -74.8580), (40.3085, -74.8510), (40.3030, -74.8440), (40.2930, -74.8355), (40.2850, -74.8270), BIRM], 400,
+ R("Bear Tavern road", [JF, (40.3035, -74.8625), (40.3090, -74.8545), (40.3140, -74.8475), (40.3167, -74.8430), (40.3080, -74.8370), (40.2985, -74.8335),
+   (40.2870, -74.8260), (40.2790, -74.8215), BIRM], 400,
    "from the ferry up the bank, via Bear Tavern and the Jacobs Creek ravine to Birmingham (night 25-26 Dec)"),
  R("Birmingham - River road (Sullivan)", [BIRM, (40.2700, -74.8240), (40.2620, -74.8320), (40.2560, -74.8290)], 600),
  R("Pennington road", [(40.3284, -74.7910), (40.3100, -74.7900), (40.2900, -74.7880), (40.2700, -74.7860), (40.2500, -74.7800), (40.2350, -74.7745), TR_HEAD], 500,
@@ -234,8 +235,8 @@ ROADS = [
  R("Saw Mill road", [(40.3020, -74.6880), (40.3120, -74.6850), (40.3220, -74.6800), (40.3300, -74.6760), (40.3380, -74.6700), (40.3450, -74.6630), (40.3487, -74.6593)], 600,
    "the back road from the Quaker Bridge road past the Thomas Clarke farm into Princeton (approx.)"),
  R("Sandtown road", [MILL, (40.2100, -74.7450), (40.2060, -74.7250), (40.2050, -74.7050), (40.2200, -74.6950), (40.2480, -74.7080)], 1200, "approx.: SE from Mill Hill then N to the Quaker Bridge road"),
- R("Trenton streets: King Street", [TR_HEAD, (40.2230, -74.7672), (40.2208, -74.7680), (40.2185, -74.7688), (40.2168, -74.7693)], 60, "today Warren St"),
- R("Trenton streets: Queen Street", [TR_HEAD, (40.2232, -74.7642), (40.2210, -74.7622), (40.2192, -74.7606), TR_BR, MILL], 60, "today Broad St; over the stone bridge to Mill Hill"),
+ R("Trenton streets: King Street", [(40.2258, -74.7651), (40.2230, -74.7652), (40.2200, -74.7652), (40.2174, -74.7652)], 60, "today N Warren St (OSM, research geo_jersey)"),
+ R("Trenton streets: Queen Street", [(40.2257, -74.7645), (40.2230, -74.7643), (40.2200, -74.7642), TR_BR, MILL], 60, "today N Broad St (OSM, research geo_jersey); over the stone bridge"),
 ]
 for k, J in RES.items():
     for l in J.get("lines", []):
@@ -252,8 +253,8 @@ WORKS = [
 for k, J in RES.items():
     for l in J.get("lines", []):
         kd = l.get("kind", "")
-        if any(s in kd for s in ("works", "breastwork", "fort", "redoubt")) or (kd.endswith("_line") and l.get("side")):
-            side = l.get("side") or ("gb" if kd.startswith(("gb", "br")) else "us")
+        if any(s in kd for s in ("works", "breastwork", "fort", "redoubt")) or (kd.endswith("_line") and l.get("side")) or (kd == "line" and l["name"].startswith(("American line", "British line"))):
+            side = l.get("side") or ("gb" if kd.startswith(("gb", "br")) or l["name"].startswith("British") else "us")
             WORKS.append(line(l["name"], "breastwork", l["pts"], l.get("src", f"research {k}"), l.get("acc_m", 300), l.get("note", ""), side=side))
 
 # ============================================================ moves + units (research) ============================================================
