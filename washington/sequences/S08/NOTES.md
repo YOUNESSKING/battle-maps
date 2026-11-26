@@ -37,3 +37,6 @@ No overlaps, no pops, no shape change, screen long-side-normal <= 4 deg, turn <=
 - Clouds: `scatter { seed 7, n 10, med 18 }`, keepClear only on Morristown / New Brunswick and the lower-right quarter (end-screen tiles).
 - Bigger lines (bw 1.6); New Brunswick targets spread (two red lines overlapped there from 14.7 s). MORRISTOWN label right of the banner.
 - Checks: check_troops_motion clean (no overlaps, no pops); check_side_gap 0 pairs.
+
+## Round 2
+- No S08 findings; unchanged.

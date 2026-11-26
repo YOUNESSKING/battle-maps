@@ -104,10 +104,10 @@ const BTsub = (s0, s1) => VX.sub(BTj, s0, s1);
 const LBT = VX.len(BTj);
 // critic round 1: two WIDE line blocks (2 boxes each), well spaced, long side first: Johnson's Ferry -> Birmingham side by side, then each
 // stops, turns in place and walks its own road (Greene east toward the Pennington road, Sullivan south toward the River road)
-const JB0 = [JFj[0] + 3.0, JFj[1] + 1.0], JB1 = [BIRj[0] - 1.0, BIRj[1] - 0.6], dJ = [JB1[0] - JB0[0], JB1[1] - JB0[1]], lJ = Math.hypot(...dJ), pJ = [-dJ[1] / lJ * 6.6, dJ[0] / lJ * 6.6];
-const uJ = [dJ[0] / lJ, dJ[1] / lJ], JBm = [JB0[0] + uJ[0] * 10.6, JB0[1] + uJ[1] * 10.6];   // round 2: <= 2 u/s, only the first part of the march (the arrows carry the rest)
-const G2d = [0.87, 0.49], S2d = [0.08, 1.0];
-[[-1, G2d], [1, S2d]].forEach(([sg, dd]) => { const a = [JB0[0] + pJ[0] * sg, JB0[1] + pJ[1] * sg], b = [JBm[0] + pJ[0] * sg, JBm[1] + pJ[1] * sg], end = [b[0] + dd[0] * 6.4, b[1] + dd[1] * 6.4];
+const JB0 = [JFj[0] + 3.0, JFj[1] + 1.0], JB1 = [BIRj[0] - 1.0, BIRj[1] - 0.6], dJ = [JB1[0] - JB0[0], JB1[1] - JB0[1]], lJ = Math.hypot(...dJ), pJ = [-dJ[1] / lJ * 7.4, dJ[0] / lJ * 7.4];
+const uJ = [dJ[0] / lJ, dJ[1] / lJ], JBm = [JB0[0] + uJ[0] * 10.6 + uJ[1] * 5.2, JB0[1] + uJ[1] * 10.6 - uJ[0] * 5.2];   // round 2: <= 2 u/s, only the first part of the march (the arrows carry the rest)
+const G2d = [0.87, 0.49], S2d = [0.62, 0.78];
+[[-1, G2d], [1, S2d]].forEach(([sg, dd]) => { const a = [JB0[0] + pJ[0] * sg + uJ[1] * 5.2, JB0[1] + pJ[1] * sg - uJ[0] * 5.2], b = [JBm[0] + pJ[0] * sg, JBm[1] + pJ[1] * sg], end = [b[0] + dd[0] * 6.4, b[1] + dd[1] * 6.4];
   units.push({ side: "u", type: "inf", n: 1, region: JE, arrive: false, face: Math.atan2(dJ[1], dJ[0]), t0: T.washington2 - 0.2, t1: 88.6,
     keys: [[0, ...a], [T.marched - 0.3, ...a], [82.6, ...b], [T.split + 0.9, ...b], [87.5, ...end]] }); });
 
@@ -201,7 +201,7 @@ const arrows = [
   { color: "#9aa3ad", region: JE, pts: [[679.0, 1086.0], [682.4, 1081.0], [685.6, 1076.6]], t0: T.other2 - 0.05, dur: 1.4, t1: T.marched - 0.2, width: BLUEW, maxWidth: BLUEW },
   // the march: the two columns from Birmingham
   { side: "u", region: JE, pts: [[620.0, 959.0], [640.0, 973.0], [660.0, 993.0], [668.4, 1012.0], [674.6, 1022.4]], t0: T.split - 0.05, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
-  { side: "u", region: JE, pts: [[611.0, 971.0], [624.0, 992.0], [640.0, 1004.0], [656.0, 1016.0], [670.0, 1027.0], [673.6, 1031.0]], t0: T.split + 0.3, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
+  { side: "u", region: JE, pts: [[616.0, 969.0], [624.0, 984.0], [628.0, 993.0], [640.0, 1004.0], [656.0, 1016.0], [670.0, 1027.0], [673.6, 1031.0]], t0: T.split + 0.3, dur: 2.2, t1: 88.6, width: BLUEW, maxWidth: BLUEW },
   // trenton: the guns race to the head of the streets; the counterattack; colonies: Cornwallis races to Trenton
   { side: "u", region: TR, pts: [[1349.8, 2046.8], [1352.6, 2050.0], [1355.4, 2052.4]], t0: T.raced - 0.05, dur: 1.4, t1: T.hessians - 0.3, width: 0.18 },
   { side: "r", region: TR, pts: [[1360.6, 2059.6], [1360.9, 2057.4], [1361.4, 2055.4]], t0: T.counterattack - 0.05, dur: 1.0, t1: T.men2 + 0.4, width: 0.18 },

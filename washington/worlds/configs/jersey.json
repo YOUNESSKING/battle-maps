@@ -21,8 +21,8 @@
  ],
  "hm_ppu": 2.5,
  "meshDiv": 2,
- "tex": 11264,
- "jpeg_q": 86,
+ "tex": 8192,
+ "jpeg_q": 92,
  "wood_soft": {
   "blur_u": 0.3,
   "alpha": 0.9

@@ -79,3 +79,14 @@ flags copied from `washington/assets/flags/` (Grand Union, 1707 Union Flag - unu
 - Checks: check_troops_motion all regions: no overlaps / pops; one 20-deg world FvV for 4 frames at the end of the New Brunswick post's walk
   (screen 14 deg); hard-cut / dissolve frames only. check_side_gap: 0 pairs in every region.
 - Not done here (lead / engine): dive whoosh level (assemble.py), floe density + lamp glow size (world / engine).
+
+## Round 2 fixes (critics A 7 / B 8 on S01)
+- Trenton fire only in word gaps: field shots 22.45 + 26.15 (impact delay 0.3), one volley per line 22.45-22.95; nothing on "dawn",
+  "In about", "some" (no gun before Trenton is on screen).
+- Orchard: field shot dropped; volleys 63.6-64.2 and 67.7-67.98 (end `T.these - 0.4`): "These" is clear.
+- Dive whoosh cue at 12.65 via the new `dives[].whooshAt` (engine seqlib, default unchanged); the dive look is unchanged.
+- Plate: "25 / Christmas night" on "Christmas night"; "December 1776 / dawn" (no day) on "At dawn" over Trenton; hidden over the flashbacks.
+- Crossing boats = S05's `durham` boats (men aboard when loaded, size 0.75, `lampK 0.5` = lamp glow -50 %, wl 6.85); brooklyn boats lampK 0.5.
+- Wide clouds: the dive's default `diveClear` (118 units) emptied the whole opening frame -> `diveClear: 36`, `scatter { n 34, med 12 }`,
+  small keepClear; 3-6 clouds in the opening frames; Brooklyn flashback kept clear (r 70) with 3 far-side `extra` clouds.
+- Checks: units unchanged since round 1 (motion + side gap clean).
