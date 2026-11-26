@@ -21,3 +21,9 @@ Open issues: the town houses (two dense rows on King / Queen St) partly hide the
 - Plates: 2 January "dusk" (33.0) and "night" (52.0) as full plate rolls (plaque.note did not update the plate).
 - "5,500" moved up/right off the smoke; jersey troopScale 3.2 -> 5.2.
 - Checks: trenton 0 FAIL; jersey: turn flags only at the 32.5 cut and 46-61 deg/s on the landing blocks while the camera pans; side gap 0.
+
+## Round 2 fixes (A 7 / B 8.0)
+- Waves after the word ends: [43.0-43.4], [46.1-46.6], [49.85-50.4]; cues 43.0-50.12, nothing after 50.4.
+- Red column blocks face along their own stretch of road; jersey troopScale 5.2 -> 7, landing spacing 0.032 (0 overlaps).
+- Jersey clouds (lead): scatter box/n 9/med 40, diveClear 40, keepClear r 35/30 over the crossing + road targets (a cloud sat on the 0-11 s camera without it).
+- Checks: trenton 0 FAIL, side gap 0; jersey r9 FvV 23 deg (13.6, camera pan), u10 at the 32.5 cut.

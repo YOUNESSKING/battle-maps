@@ -157,7 +157,7 @@ window.SEQ = {
     { t: 62.0, region: TR, at: [1354.0, 2070.0], dist: 54, tilt: 43, yaw: 0, fov: 30, night: NI, ease: "io" },
     { t: T.D, region: TR, at: [1353.0, 2071.0], dist: 58, tilt: 42, yaw: 0, fov: 30, night: NI, ease: "lin" },
   ],
-  clouds: { [JE]: { scatter: { seed: 7, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 40 }, [TR]: { shadows: true } },   // round 2 (lead): visible wide clouds
+  clouds: { [JE]: { scatter: { seed: 7, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 40, keepClear: [[656, 1024, 35, 1, 1], [700, 985, 30, 1, 1]] }, [TR]: { shadows: true } },   // round 2 (lead): visible wide clouds
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1776", day: "", weekday: "", note: "" }],

@@ -21,3 +21,10 @@ Open issues: blue camp blocks are small at dist 104-134 (troopScale 3.2 = Jackso
 - Jersey troopScale 3.2 -> 5.2 (landing spacing widened, 0 overlaps); Bordentown / Princeton posts settle in place (no oblique walk); 38.4 key 8 units W, dist 196 -> 166 (world-edge wedge).
 - Checks: jersey + colonies 0 FAIL, 0 overlaps.
 - Left: the colonies/jersey glare and hillshade are the world re-bake (worlds agent).
+
+## Round 2 fixes (A 6.5 / B 7.5)
+- Plate rolls to month-only "December 1776" on "settled" (no "8 December" over the posts / Rall / 31 December).
+- Jersey troopScale 5.2 -> 7, Hessian blocks spaced wider, landings / PA camp spacing 0.032 (0 overlaps).
+- Colonies: red arrow re-routed west of the blue block; the NJ retreat arrow stops short of the Trenton block.
+- Clouds block left as author A set it. Scene folder 25.9 MB after the jersey re-bake (world bundle size).
+- Checker: jersey u3/u5 screen long-side 22-27 deg on the 2-u walk inland at 28-30 s (minor).

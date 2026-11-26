@@ -43,3 +43,9 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 - Night evacuation: night 0.85 -> 0.7, rain -30 %, boats 0.42 -> 0.6, the river shot 20 % closer (dist 28/26).
 - Subscribe plate at "subscribing" - 0.1. Colonies troopScale 11 -> 16.
 - Left: the dive whoosh over "Their commander" (assembler gain, lead); the colonies East River (world).
+
+## Round 2 fixes (A 7 / B 8.0)
+- Dive: `whooshAt 1.4` (body in the gap before "General William Howe"); `off` = S05's values (no flat cream hold).
+- Evacuation: each camp regiment already faces its landing and walks straight there front first (escape t0 +6.4 s, same walk times); first regiment moved 1.4 u east (no u0 x Glover overlap); 70.9 = a dissolve to the covering force instead of a fast pan. Checker: the remaining FvV 21-41 deg rows are at/after the 70.9 cut while those blocks are off-frame.
+- Result card: divider + right column now arrive with "A FEW" (no empty column); first-light plate = month-only "August 1776" (no empty day box).
+- Boats have no lamps (`lamp: false`), so `lampK` n/a.
