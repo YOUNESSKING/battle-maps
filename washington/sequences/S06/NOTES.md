@@ -32,3 +32,6 @@ Open issues: the town houses (two dense rows on King / Queen St) partly hide the
 - Washington's banner on the Trenton map only from 51.0 (the dusk + bridge shots framed it off the bottom edge) until the choice card.
 - `T.ten` 8.13 -> 8.24 ("Ten dollars each" label on its word).
 - No negative overlay times. Checks: trenton 0 FAIL, side gap 0; jersey 5 turn-rate rows (landing blocks during the pan, the 32.5 cut).
+
+## Round 4
+- Cornwallis banner on the Trenton map enters 0.6 s later (T.stopped - 0.15), once the rising camera has it inside the frame.

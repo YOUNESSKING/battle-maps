@@ -55,3 +55,6 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 - Result card: "ACROSS" on "crossed" (125.5), not on "About".
 - Negative-time check (lead): no overlay call / tween before 0.
 - Checker: 8 FAIL rows, all at/after the 70.9 dissolve with the blocks off-frame (was 9).
+
+## Round 4
+- Dive whoosh back to 1.4 (1.2 covered "simple.").

@@ -219,8 +219,8 @@ window.SEQ = {
   overlay: [
     ["plaque.date", 0, { month: "January 1777", day: "2", weekday: "Thursday", note: "night" }],
     // the decision card continues from S06 (shown through S06's end): the real choice (B) lights on "He slipped away"
-    ["engage.decide", { t: 0.2, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
-      tA: 0.4, tB: 0.4, tNote: 0.4, tCount: 0.4, tReveal: 0.45, until: 2.0, dim: 0.55 }],
+    ["engage.decide", { t: 0, instant: true, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
+      tReveal: 0.3, until: 2.0, dim: 0.55 }],
     ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
     ["plaque.date", T.changed - 0.05, { month: "January 1777", day: "2", weekday: "Thursday", note: "hard frost" }],
     (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [706.0, 1028.0], JE),

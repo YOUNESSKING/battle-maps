@@ -89,9 +89,10 @@
  "wide_near_k": 0.32,
  "wide_slope_k": 0.7,
  "crown_u": 0.4,
- "field_patch_k": 0.6,
+ "field_patch_k": 0.4,
+ "field_feather": 0.5,
  "detail": {
-  "k": 0.1,
+  "k": 0.13,
   "u": 0.35,
   "far": 320
  },

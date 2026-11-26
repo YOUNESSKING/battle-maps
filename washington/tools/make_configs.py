@@ -122,8 +122,8 @@ write("jersey", {
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4, "field_patch_k": 0.6,
- "detail": {"k": 0.1, "u": 0.35, "far": 320}, "villages": 5,   # r3: speckle readable at dist 150-270, soft facets, engine detail layer   # r2b: fewer, larger masses along valleys
+ "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4, "field_patch_k": 0.4, "field_feather": 0.5,
+ "detail": {"k": 0.13, "u": 0.35, "far": 320}, "villages": 5,   # r3: speckle readable at dist 150-270, soft facets, engine detail layer   # r2b: fewer, larger masses along valleys
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
             {"name": "Shabakunk Creek", "geo": "Shabakunk Creek", "w": 0.2, "step": 0.5}, {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.25, "step": 0.5},

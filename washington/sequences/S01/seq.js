@@ -262,7 +262,7 @@ window.SEQ = {
     { t: T.these, region: PR, at: [ORCH[0] - 1.2, ORCH[1] + 0.8], dist: 18, tilt: 51, yaw: -5, fov: 30, ease: "lin" },
     { t: T.D, region: PR, at: [ORCH[0] - 1.0, ORCH[1] + 1.0], dist: 25, tilt: 49, yaw: -1, fov: 30 },
   ],
-  dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF, whooshAt: 12.45,   // round 2: whoosh body in the gap before "On Christmas night"   // overTo = the over point in crossing units (z9 -> z12)
+  dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF, whooshAt: 12.75,   // round 2: whoosh body in the gap before "On Christmas night"   // overTo = the over point in crossing units (z9 -> z12)
     from: { region: CO, at: [MKC[0] + 4, MKC[1] - 2], dist: 230, tilt: 42, yaw: -2, night: 0.35 },
     to: { region: CR, at: XC, dist: 26, tilt: 52, yaw: -30, fov: 30, night: NI } }],
   clouds: {

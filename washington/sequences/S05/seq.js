@@ -122,7 +122,7 @@ add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), bw: 0.45, keys: [[0,
 // the wood (facing south), hold, turn in place toward their deploy spots at the head of the town, walk
 const gPos = [[1342.4, 2047.6], [1344.6, 2046.0], [1346.8, 2044.6]];
 gPos.forEach((p, i) => { const s0 = [1333.4 + i * 2.2, 2031.0], s1 = [1333.4 + i * 2.2, 2038.6];
-  add({ side: "u", region: TR, face: S_, t0: 88.0, keys: [[0, ...s0], [T.burst + 0.4, ...s0], [97.4, ...s1], [100.6 + i * 0.3, ...s1], [107.6 + i * 0.4, ...p], [T.D, ...p]] }); });
+  add({ side: "u", region: TR, face: S_, t0: 88.0, keys: [[0, ...s0], [T.burst + 0.2, ...s0], [96.8, ...s1], [102.4 + i * 0.3, ...s1], [108.8 + i * 0.4, ...p], [T.D, ...p]]   /* round 4: a 5.6 s hold so the turn in place (>= 0.6 s) starts after the halt */ }); });
 const sPos = [[1350.2, 2062.6], [1351.4, 2066.2]];
 sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056.0 - i * 1.4, p[0] - 1338.5 + i * 1.2), t0: 88.0, keys: [[0, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.burst, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.hessians + i * 0.5, ...p], [T.D, ...p]] }));
 // Knox's guns race to the head of King and Queen streets
