@@ -95,3 +95,24 @@ units), because the v14 spacing has only a ~0.22-unit gap between blocks. What f
   20-32 s (break-up at the bridge, captured line, edge fade top right). Rendered LOCALLY (SwiftShader, ~27 min).
 - Regression after round 2: lineblocks stills at S09 59.5 and S10 22 / 25 / 28.5 s are byte-identical to the pre-edit render. At S09
   103.5 s only the DOM date plate differs (a 260x90 px box, the known plate font-timing flake in LESSONS); the 3D layer is identical.
+
+# Round 3 (2026-11-26): A3 + the final share clip
+Critics on A2: readability 7.5 ("ready after the guns fix"), professional look 6 / A2-L 6.5 ("owner would reject"). Both: at wide and phone
+size the counters read as FLAGS (blue + white X = saltire, red = battle flag; lines = bunting). Owner rule: no unit flags.
+Switch: `troopsOpts: { look: "counter", counter: "A3" }`. Files: `sheet_r3.jpg` (v14 | A2 | A3), `phone_r3.jpg` (640x360 at 1:1),
+`troops_box_share.mp4` (FINAL: S09 55-110 s + S10 20-35 s, 1280x720 30 fps, 70 s, the v14 share's audio track, 22.9 MB).
+
+| Point | A3 |
+| --- | --- |
+| 1 no flag read | no cream anywhere: the front band is gone; facing = 2.5 px ink front edge (1.4 x the 1.8 px edge elsewhere) + a slim front strip in a darker side colour (#2a4472 / #7f2f22, 0.17 of the depth) + the front wall 15 % lighter |
+| 2 NATO symbol | plate 31 % of the frontage x 50 % of the depth in the lightened side colour (#8ea2c6 / #d39a8c), 1.3 px ink outline, thin crossed lines corner to corner (~1.5 px, ink at 85 %), all drawn in the shader in screen px (fwidth); cavalry one thin diagonal; engineers: plate only (no engineers in the test) |
+| 3 guns | crew coats in the side colour; a flat side-colour ground disc under each gun (1.2 x gun scale, 0.35 opacity, thin ink rim); guns x1.3. The checker keeps the v14 nominal gun box (0.62 x block width), which equals the x1.3 model's width across the wheels. Scaling that box by 1.3 brushes the passing Union lines (units 10/11 x 18, 0.09 u at 99.6-102.7 s) and moving the guns in the test data only moved the brush (tried: middle gun p +-0.8, crest battery moved) |
+| 4 captured | fully grey top #6e6a62 and walls, the old side colour as a 2.5 px edge, held grey (the round-2 capd faded back toward the side colour before the unit's fade: the "pink") |
+| 5 edge width | 1.8 px + 0.015 px per px of on-screen frontage above 70 px, capped at 3 px (wide S09 ~1.8, close S10 ~3) |
+| 6 size | A2 size kept. A x1.10 counter (wk 1.166, depth 0.44) gives new pairs (units 3 x 4, 15 x 19, 0 x 12, 10/11 x 18, own-unit brushes) and growing 1 x 3 (0.25 u): no clean fit, so A2-L is not shipped |
+| key | THE ARMIES mini counter without cream (dark front strip, light plate, thin X) |
+
+Checker A3: S09 55-110 = A2 (only units 1 x 3 at 106.1-106.6 s, 0.12 u; v14 0.07 u), S10 15-35 = A2 (south flank's own blocks at 22 s, 0.11 u);
+screen long-side rule, pops, shape identical to v14.
+Final clip: RunPod RTX 3090 community ($0.22/h, S09 146 s + S10 55 s render, ~$0.04 incl. setup); pod terminated, `myself { pods }` empty;
+no broken frames (per-frame luma steps <= 0.4).

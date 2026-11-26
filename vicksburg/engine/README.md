@@ -313,4 +313,8 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   vertex shader (hills still hide it, tree crowns never clip it); edge fade from the projected top corners (`frame: [W, H]` now passed
   to createTroops3D); artillery keeps the v14 gun models; `counterOpts.scale` scales the whole formation (SIZE) and DOES change
   spacing/collisions; the motion checker gets the drawn counter's footprint from `T3.last`. THE ARMIES key: `O.legendSwatch = "counter"`.
+- Troops-box test round 3 (`counter: "A3"`, the shipped test look): the NATO symbol (plate, outline, crossed lines) and the thicker front
+  edge are drawn in the top shader in screen px (per-instance plate / strip colours `iPlt` / `iStr`), so they stay crisp at any zoom; a cream
+  band or a bold cream X made the counters read as flags (saltire, bunting). Guns: side-colour crew + a ground disc (`disc` mesh) and `gunK`.
+  Captured counters use their own held `capd` (the shared one fades back toward the side colour before t1).
 
