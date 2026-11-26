@@ -212,7 +212,7 @@ function buildResult(c) { const st = document.createElement("style"); st.textCon
     <div class="src">Johnston, The Campaign of 1776 around New York and Brooklyn</div>`;
   host.appendChild(el); const tl = c.tl, gs = window.gsap, on = (sel, t) => { const e = el.querySelector(sel); gs.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t); };
   gs.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, T.about - 0.3); tl.to(el, { autoAlpha: 0, duration: 0.45 }, 131.0);
-  on(".c1 .sd", T.about - 0.1); on(".c1 .nb", T.ninek); on(".c1 .gn", T.guns - 0.9); on(".c1 .nt", T.crossed2 - 0.1); on(".vr", T.handful - 0.1); on(".c2 .nb", T.handful);
+  on(".c1 .sd", T.crossed2 - 0.1);   /* round 3: "ACROSS" on "crossed" */ on(".c1 .nb", T.ninek); on(".c1 .gn", T.guns - 0.9); on(".c1 .nt", T.crossed2 - 0.1); on(".vr", T.handful - 0.1); on(".c2 .nb", T.handful);
   on(".c2 .nt", T.stragglers - 0.1); on(".c2 .sd", T.behind - 0.25); on(".src", T.behind + 0.2); }
 
 const DS = 4.0, NI = 0.7, NG = 0.45;   // round 1 (critic A): night +15 % lighter than 0.85
@@ -253,7 +253,7 @@ window.SEQ = {
   ],
   dives: [{ t: DS, over: OV, overTo: OVB, from: { region: CO, at: [OV[0] - 3, OV[1] + 8], dist: 230, tilt: 38, yaw: 0 },
             to: { region: BK, at: [2493.0, 1161.0], dist: 74, tilt: 40, yaw: 0, fov: 30 },
-            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 } }],   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
+            whooshAt: 1.2, off: { warm: 0.05, emerge: 0.1, clear: 0.4, haze: 0.85 } }],   // round 3: whoosh 0.2 s earlier, clear 0.4 (no luma snap)   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
   clouds: { [CO]: { scatter: { seed: 5 } }, [BK]: { shadows: true } },
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [

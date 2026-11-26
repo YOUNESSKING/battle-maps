@@ -11,7 +11,7 @@
 (() => {
 const T = { D: 82.49,
   washington: 0.41, crossed: 1.29, back: 1.63, nj: 2.25, end: 3.73, december: 4.47, asked: 4.67, stay: 5.57, six: 5.81, weeks: 6.43, bounty: 7.47,
-  ten: 8.13, dollars: 8.39, many: 9.91, stayed: 10.45,
+  ten: 8.24, dollars: 8.39, many: 9.91, stayed: 10.45,
   second: 12.06, january: 12.31, cornwallis: 13.35, marched: 13.79, trenton: 14.49, five: 15.70, thousand: 15.97, men: 16.77, plan: 18.89,
   trap: 20.73, river: 21.99, destroy: 22.45, but: 23.79, allday: 24.19, small: 24.99, riflemen: 26.35, fought: 27.01, woods: 27.93, creeks: 28.43,
   road: 29.35, fell: 30.21, again: 31.37,
@@ -119,7 +119,8 @@ const generals = {
 const banners = [
   { general: "washington", region: JE, keys: [[0, ...bank(kT, "NJ", HW + 6.0)]], t0: T.washington + 0.1, t1: 11.4 },
   { general: "cornwallis", region: JE, keys: [[0, ...RD(70, -3.0)], [13.4, ...RD(70, -3.0)], [29.6, ...RD(48, -3.0)]], t0: T.cornwallis - 0.05, t1: 32.6 },
-  { general: "washington", region: TR, keys: [[0, 1351.6, 2077.4]], t0: T.army - 0.6, t1: T.now - 0.2 },   // round 1: no banners under the choice card
+  { general: "washington", region: TR, keys: [[0, 1351.6, 2077.4]], t0: T.army - 0.6, t1: 40.0 },   // round 3: out while the bridge shot frames him off the bottom edge
+  { general: "washington", region: TR, keys: [[0, 1351.6, 2077.4]], t0: 51.0, t1: T.now - 0.2 },   // round 1: no banners under the choice card
   { general: "cornwallis", region: TR, keys: [[0, 1357.4, 2056.4]], t0: T.stopped - 0.75, t1: T.now - 0.2 },
 ];
 const labels = [
