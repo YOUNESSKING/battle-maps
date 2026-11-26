@@ -163,3 +163,4 @@ Switch: `counter: "A7"` = A6 + : no step up / down to the deck; across the river
 at the mouth and past the far end blended linearly along the crossing (no jump); a tight soft 40 % contact shadow right under the box at
 its own base height, pulled toward the camera like the box (shows on the planks / water / bank); gun discs at 0.55 (thin ink rim kept).
 Checker: identical to A6 (S10 0 screen fails, pops 0, known brushes only). `sheet_r7.jpg`: v14 | A6 | A7 (S10 21-30.5 s + crops, S09 103.5 s guns).
+Share: RunPod RTX 3090 ($0.22/h, ~$0.01; one retry), pod terminated, list empty; concat + v14 audio, crf 24.
