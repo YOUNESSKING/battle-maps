@@ -3334,17 +3334,17 @@
    "tFilm": 664.82,
    "at": {
     "map": [
-     1509.51,
+     1509.55,
      1825
     ],
     "px": [
-     1481,
+     1483,
      -251
     ],
-    "nx": 0.771,
+    "nx": 0.772,
     "ny": -0.232,
     "onScreen": false,
-    "camDist": 47.6
+    "camDist": 47.62
    },
    "unit": {
     "unit": 9,
@@ -3413,57 +3413,6 @@
     "label": null,
     "blocks": 1,
     "men": 72
-   }
-  },
-  {
-   "type": "cannon_shot",
-   "preset": "field",
-   "t": 84.15,
-   "tExcerpt": 84.15,
-   "tShare": 665.47,
-   "tFilm": 665.47,
-   "at": {
-    "map": [
-     1509.6,
-     1825
-    ],
-    "px": [
-     632,
-     602
-    ],
-    "nx": 0.329,
-    "ny": 0.557,
-    "onScreen": true,
-    "camDist": 7.9
-   },
-   "unit": {
-    "unit": 9,
-    "side": "Union",
-    "type": "art",
-    "label": null,
-    "blocks": 1,
-    "men": 4,
-    "dist": 0.09
-   },
-   "impact": {
-    "t": 84.4,
-    "tExcerpt": 84.4,
-    "tShare": 665.72,
-    "tFilm": 665.72,
-    "at": {
-     "map": [
-      1509.2,
-      1820.1
-     ],
-     "px": [
-      626,
-      154
-     ],
-     "nx": 0.326,
-     "ny": 0.143,
-     "onScreen": true,
-     "camDist": 11.69
-    }
    }
   },
   {
@@ -3703,6 +3652,57 @@
   {
    "type": "cannon_shot",
    "preset": "field",
+   "t": 87,
+   "tExcerpt": 87,
+   "tShare": 668.32,
+   "tFilm": 668.32,
+   "at": {
+    "map": [
+     1509.6,
+     1825
+    ],
+    "px": [
+     643,
+     595
+    ],
+    "nx": 0.335,
+    "ny": 0.551,
+    "onScreen": true,
+    "camDist": 7.74
+   },
+   "unit": {
+    "unit": 9,
+    "side": "Union",
+    "type": "art",
+    "label": null,
+    "blocks": 1,
+    "men": 4,
+    "dist": 0.05
+   },
+   "impact": {
+    "t": 87.25,
+    "tExcerpt": 87.25,
+    "tShare": 668.57,
+    "tFilm": 668.57,
+    "at": {
+     "map": [
+      1509.2,
+      1820.1
+     ],
+     "px": [
+      617,
+      147
+     ],
+     "nx": 0.321,
+     "ny": 0.137,
+     "onScreen": true,
+     "camDist": 11.57
+    }
+   }
+  },
+  {
+   "type": "cannon_shot",
+   "preset": "field",
    "t": 90.4,
    "tExcerpt": 90.4,
    "tShare": 671.72,
@@ -3728,7 +3728,7 @@
     "label": null,
     "blocks": 1,
     "men": 4,
-    "dist": 0.09
+    "dist": 0.05
    },
    "impact": {
     "t": 90.65,

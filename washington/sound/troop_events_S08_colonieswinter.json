@@ -33,7 +33,7 @@
     "nx": 0.272,
     "ny": 0.217,
     "onScreen": true,
-    "camDist": 573.6
+    "camDist": 573.61
    },
    "unit": {
     "unit": 0,
@@ -64,7 +64,7 @@
     "nx": 0.261,
     "ny": 0.526,
     "onScreen": true,
-    "camDist": 495.35
+    "camDist": 495.28
    },
    "unit": {
     "unit": 1,
@@ -90,12 +90,12 @@
     ],
     "px": [
      520,
-     465
+     466
     ],
     "nx": 0.271,
     "ny": 0.431,
     "onScreen": true,
-    "camDist": 510.85
+    "camDist": 510.95
    },
    "unit": {
     "unit": 2,
@@ -187,7 +187,7 @@
     "nx": 0.297,
     "ny": 0.167,
     "onScreen": true,
-    "camDist": 573.24
+    "camDist": 573.3
    },
    "unit": {
     "unit": 0,
@@ -217,7 +217,7 @@
     "nx": 0.517,
     "ny": 0.228,
     "onScreen": true,
-    "camDist": 535.24
+    "camDist": 535.3
    },
    "unit": {
     "unit": 4,
@@ -247,7 +247,7 @@
     "nx": 0.326,
     "ny": 0.434,
     "onScreen": true,
-    "camDist": 465.77
+    "camDist": 465.79
    },
    "unit": {
     "unit": 2,
@@ -277,7 +277,7 @@
     "nx": 0.412,
     "ny": 0.425,
     "onScreen": true,
-    "camDist": 465.76
+    "camDist": 465.72
    },
    "unit": {
     "unit": 3,
@@ -307,7 +307,7 @@
     "nx": 0.298,
     "ny": 0.491,
     "onScreen": true,
-    "camDist": 449.59
+    "camDist": 449.62
    },
    "unit": {
     "unit": 1,

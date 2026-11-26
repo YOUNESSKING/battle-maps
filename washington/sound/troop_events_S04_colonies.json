@@ -33,7 +33,7 @@
     "nx": -0.215,
     "ny": 0.984,
     "onScreen": false,
-    "camDist": 285.9
+    "camDist": 285.92
    },
    "unit": {
     "unit": 4,
@@ -64,7 +64,7 @@
     "nx": 0.387,
     "ny": 0.258,
     "onScreen": true,
-    "camDist": 297.76
+    "camDist": 297.77
    },
    "unit": {
     "unit": 0,
@@ -95,7 +95,7 @@
     "nx": 0.383,
     "ny": 0.338,
     "onScreen": true,
-    "camDist": 283.63
+    "camDist": 283.64
    },
    "unit": {
     "unit": 2,
@@ -148,12 +148,12 @@
     ],
     "px": [
      600,
-     444
+     445
     ],
     "nx": 0.313,
     "ny": 0.412,
     "onScreen": true,
-    "camDist": 237.74
+    "camDist": 237.78
    },
    "unit": {
     "unit": 1,
@@ -213,7 +213,7 @@
     "nx": 0.421,
     "ny": 0.306,
     "onScreen": true,
-    "camDist": 205.67
+    "camDist": 205.71
    },
    "unit": {
     "unit": 0,
@@ -243,7 +243,7 @@
     "nx": 0.389,
     "ny": 0.405,
     "onScreen": true,
-    "camDist": 196.19
+    "camDist": 196.13
    },
    "unit": {
     "unit": 2,
@@ -272,7 +272,7 @@
     "nx": 0.423,
     "ny": 0.302,
     "onScreen": true,
-    "camDist": 204.76
+    "camDist": 204.8
    },
    "unit": {
     "unit": 0,
@@ -301,7 +301,7 @@
     "nx": 0.391,
     "ny": 0.401,
     "onScreen": true,
-    "camDist": 195.15
+    "camDist": 195.09
    },
    "unit": {
     "unit": 2,
@@ -324,13 +324,13 @@
      427.14
     ],
     "px": [
-     -1352,
-     1947
+     -1353,
+     1948
     ],
-    "nx": -0.704,
+    "nx": -0.705,
     "ny": 1.803,
     "onScreen": false,
-    "camDist": 277.59
+    "camDist": 277.51
    },
    "unit": {
     "unit": 4,
@@ -359,7 +359,7 @@
     "nx": 0.076,
     "ny": 0.724,
     "onScreen": true,
-    "camDist": 407.2
+    "camDist": 407.35
    },
    "unit": {
     "unit": 3,
@@ -386,10 +386,10 @@
      431,
      515
     ],
-    "nx": 0.225,
-    "ny": 0.477,
+    "nx": 0.224,
+    "ny": 0.476,
     "onScreen": true,
-    "camDist": 413.08
+    "camDist": 412.95
    },
    "unit": {
     "unit": 4,
@@ -418,7 +418,7 @@
     "nx": 0.335,
     "ny": -0.81,
     "onScreen": false,
-    "camDist": 873.65
+    "camDist": 873.66
    },
    "unit": {
     "unit": 1,

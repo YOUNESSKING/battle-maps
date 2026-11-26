@@ -44,25 +44,211 @@
   },
   {
    "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.19,
-   "t": 61.8,
-   "tExcerpt": 61.8,
-   "tShare": 179.32,
-   "tFilm": 179.32,
+   "direction": "advance",
+   "speed": 0.32,
+   "t": 56.9,
+   "tExcerpt": 56.9,
+   "tShare": 174.42,
+   "tFilm": 174.42,
    "at": {
     "map": [
-     2483.59,
-     1151.59
+     2481.58,
+     1149.28
     ],
     "px": [
-     821,
-     476
+     774,
+     441
     ],
-    "nx": 0.428,
-    "ny": 0.441,
+    "nx": 0.403,
+    "ny": 0.408,
     "onScreen": true,
-    "camDist": 20.9
+    "camDist": 22.28
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 57.23,
+   "tExcerpt": 57.23,
+   "tShare": 174.75,
+   "tFilm": 174.75,
+   "at": {
+    "map": [
+     2480.51,
+     1148.15
+    ],
+    "px": [
+     703,
+     398
+    ],
+    "nx": 0.366,
+    "ny": 0.368,
+    "onScreen": true,
+    "camDist": 22.96
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+  },
+  {
+   "type": "bridge_stream_first_on_deck",
+   "t": 57.68,
+   "tExcerpt": 57.68,
+   "tShare": 175.2,
+   "tFilm": 175.2,
+   "at": {
+    "map": [
+     2480.46,
+     1147.8
+    ],
+    "px": [
+     696,
+     386
+    ],
+    "nx": 0.363,
+    "ny": 0.358,
+    "onScreen": true,
+    "camDist": 23.19
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_stop",
+   "duration": 1.9,
+   "t": 58.8,
+   "tExcerpt": 58.8,
+   "tShare": 176.32,
+   "tFilm": 176.32,
+   "at": {
+    "map": [
+     2480.15,
+     1147.77
+    ],
+    "px": [
+     674,
+     379
+    ],
+    "nx": 0.351,
+    "ny": 0.351,
+    "onScreen": true,
+    "camDist": 23.04
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "bridge_stream_last_on_deck",
+   "t": 58.95,
+   "tExcerpt": 58.95,
+   "tShare": 176.47,
+   "tFilm": 176.47,
+   "at": {
+    "map": [
+     2480.46,
+     1147.8
+    ],
+    "px": [
+     690,
+     381
+    ],
+    "nx": 0.359,
+    "ny": 0.353,
+    "onScreen": true,
+    "camDist": 23.08
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_last_off_deck",
+   "t": 59.58,
+   "tExcerpt": 59.58,
+   "tShare": 177.1,
+   "tFilm": 177.1,
+   "at": {
+    "map": [
+     2480.24,
+     1146.4
+    ],
+    "px": [
+     660,
+     353
+    ],
+    "nx": 0.344,
+    "ny": 0.327,
+    "onScreen": true,
+    "camDist": 24.66
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.25,
+   "t": 61.2,
+   "tExcerpt": 61.2,
+   "tShare": 178.72,
+   "tFilm": 178.72,
+   "at": {
+    "map": [
+     2484.99,
+     1151.39
+    ],
+    "px": [
+     923,
+     481
+    ],
+    "nx": 0.481,
+    "ny": 0.445,
+    "onScreen": true,
+    "camDist": 21.37
    },
    "unit": {
     "unit": 0,
@@ -75,16 +261,16 @@
   },
   {
    "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.21,
+   "direction": "advance",
+   "speed": 0.26,
    "t": 62.4,
    "tExcerpt": 62.4,
    "tShare": 179.92,
    "tFilm": 179.92,
    "at": {
     "map": [
-     2479,
-     1152.39
+     2478.99,
+     1152.38
     ],
     "px": [
      513,
@@ -105,24 +291,55 @@
    }
   },
   {
+   "type": "bridge_stream_gone",
+   "t": 63.27,
+   "tExcerpt": 63.27,
+   "tShare": 180.79,
+   "tFilm": 180.79,
+   "at": {
+    "map": [
+     2480.11,
+     1145.56
+    ],
+    "px": [
+     586,
+     288
+    ],
+    "nx": 0.305,
+    "ny": 0.267,
+    "onScreen": true,
+    "camDist": 25.76
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
    "type": "bridge_break_ranks",
-   "t": 63.72,
-   "tExcerpt": 63.72,
-   "tShare": 181.24,
-   "tFilm": 181.24,
+   "t": 63.55,
+   "tExcerpt": 63.55,
+   "tShare": 181.07,
+   "tFilm": 181.07,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     605,
+     606,
      336
     ],
     "nx": 0.315,
     "ny": 0.311,
     "onScreen": true,
-    "camDist": 23.11
+    "camDist": 23.13
    },
    "unit": {
     "unit": 0,
@@ -137,11 +354,42 @@
    "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
   },
   {
+   "type": "bridge_stream_first_on_deck",
+   "t": 64,
+   "tExcerpt": 64,
+   "tShare": 181.52,
+   "tFilm": 181.52,
+   "at": {
+    "map": [
+     2480.46,
+     1147.8
+    ],
+    "px": [
+     601,
+     325
+    ],
+    "nx": 0.313,
+    "ny": 0.301,
+    "onScreen": true,
+    "camDist": 23.38
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
    "type": "bridge_break_ranks",
-   "t": 64.15,
-   "tExcerpt": 64.15,
-   "tShare": 181.67,
-   "tFilm": 181.67,
+   "t": 64.12,
+   "tExcerpt": 64.12,
+   "tShare": 181.65,
+   "tFilm": 181.65,
    "at": {
     "map": [
      2477.5,
@@ -170,41 +418,10 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 64.17,
-   "tExcerpt": 64.17,
-   "tShare": 181.69,
-   "tFilm": 181.69,
-   "at": {
-    "map": [
-     2480.46,
-     1147.8
-    ],
-    "px": [
-     600,
-     324
-    ],
-    "nx": 0.313,
-    "ny": 0.3,
-    "onScreen": true,
-    "camDist": 23.36
-   },
-   "unit": {
-    "unit": 0,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
-   "type": "bridge_stream_first_on_deck",
-   "t": 64.6,
-   "tExcerpt": 64.6,
-   "tShare": 182.12,
-   "tFilm": 182.12,
+   "t": 64.57,
+   "tExcerpt": 64.57,
+   "tShare": 182.1,
+   "tFilm": 182.1,
    "at": {
     "map": [
      2477.46,
@@ -212,10 +429,10 @@
     ],
     "px": [
      423,
-     323
+     324
     ],
     "nx": 0.22,
-    "ny": 0.299,
+    "ny": 0.3,
     "onScreen": true,
     "camDist": 23.33
    },
@@ -232,24 +449,24 @@
   },
   {
    "type": "march_stop",
-   "duration": 3.5,
-   "t": 65.3,
-   "tExcerpt": 65.3,
-   "tShare": 182.82,
-   "tFilm": 182.82,
+   "duration": 3.9,
+   "t": 65.1,
+   "tExcerpt": 65.1,
+   "tShare": 182.62,
+   "tFilm": 182.62,
    "at": {
     "map": [
-     2480.16,
-     1147.76
+     2480.09,
+     1147.84
     ],
     "px": [
-     578,
-     316
+     575,
+     319
     ],
-    "nx": 0.301,
-    "ny": 0.292,
+    "nx": 0.299,
+    "ny": 0.295,
     "onScreen": true,
-    "camDist": 23.22
+    "camDist": 23.17
    },
    "unit": {
     "unit": 0,
@@ -262,23 +479,23 @@
   },
   {
    "type": "bridge_stream_last_on_deck",
-   "t": 65.44,
-   "tExcerpt": 65.44,
-   "tShare": 182.96,
-   "tFilm": 182.96,
+   "t": 65.26,
+   "tExcerpt": 65.26,
+   "tShare": 182.78,
+   "tFilm": 182.78,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     595,
-     320
+     596,
+     321
     ],
     "nx": 0.31,
-    "ny": 0.296,
+    "ny": 0.297,
     "onScreen": true,
-    "camDist": 23.2
+    "camDist": 23.22
    },
    "unit": {
     "unit": 0,
@@ -294,38 +511,7 @@
   {
    "type": "march_start",
    "direction": "advance",
-   "speed": 0.3,
-   "t": 65.5,
-   "tExcerpt": 65.5,
-   "tShare": 183.02,
-   "tFilm": 183.02,
-   "at": {
-    "map": [
-     2481.58,
-     1149.28
-    ],
-    "px": [
-     660,
-     373
-    ],
-    "nx": 0.344,
-    "ny": 0.345,
-    "onScreen": true,
-    "camDist": 21.99
-   },
-   "unit": {
-    "unit": 10,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.24,
+   "speed": 0.25,
    "t": 65.6,
    "tExcerpt": 65.6,
    "tShare": 183.12,
@@ -336,7 +522,7 @@
      1152.59
     ],
     "px": [
-     1075,
+     1074,
      530
     ],
     "nx": 0.56,
@@ -362,7 +548,7 @@
    "tFilm": 183.22,
    "at": {
     "map": [
-     2477.32,
+     2477.31,
      1147.87
     ],
     "px": [
@@ -372,7 +558,7 @@
     "nx": 0.214,
     "ny": 0.291,
     "onScreen": true,
-    "camDist": 23.38
+    "camDist": 23.39
    },
    "unit": {
     "unit": 1,
@@ -384,43 +570,11 @@
    }
   },
   {
-   "type": "bridge_break_ranks",
+   "type": "bridge_stream_last_on_deck",
    "t": 65.84,
    "tExcerpt": 65.84,
    "tShare": 183.36,
    "tFilm": 183.36,
-   "at": {
-    "map": [
-     2480.51,
-     1148.15
-    ],
-    "px": [
-     596,
-     329
-    ],
-    "nx": 0.31,
-    "ny": 0.305,
-    "onScreen": true,
-    "camDist": 22.84
-   },
-   "unit": {
-    "unit": 10,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72,
-   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
-  },
-  {
-   "type": "bridge_stream_last_on_deck",
-   "t": 65.87,
-   "tExcerpt": 65.87,
-   "tShare": 183.39,
-   "tFilm": 183.39,
    "at": {
     "map": [
      2477.46,
@@ -428,7 +582,7 @@
     ],
     "px": [
      417,
-     317
+     318
     ],
     "nx": 0.217,
     "ny": 0.294,
@@ -448,23 +602,23 @@
   },
   {
    "type": "bridge_stream_last_off_deck",
-   "t": 66.07,
-   "tExcerpt": 66.07,
-   "tShare": 183.59,
-   "tFilm": 183.59,
+   "t": 65.89,
+   "tExcerpt": 65.89,
+   "tShare": 183.42,
+   "tFilm": 183.42,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     585,
+     586,
      308
     ],
     "nx": 0.305,
     "ny": 0.285,
     "onScreen": true,
-    "camDist": 24.76
+    "camDist": 24.78
    },
    "unit": {
     "unit": 0,
@@ -478,42 +632,11 @@
    "menInStream": 72
   },
   {
-   "type": "bridge_stream_first_on_deck",
-   "t": 66.29,
-   "tExcerpt": 66.29,
-   "tShare": 183.81,
-   "tFilm": 183.81,
-   "at": {
-    "map": [
-     2480.46,
-     1147.8
-    ],
-    "px": [
-     592,
-     318
-    ],
-    "nx": 0.308,
-    "ny": 0.294,
-    "onScreen": true,
-    "camDist": 23.11
-   },
-   "unit": {
-    "unit": 10,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
    "type": "bridge_stream_last_off_deck",
-   "t": 66.5,
-   "tExcerpt": 66.5,
-   "tShare": 184.02,
-   "tFilm": 184.02,
+   "t": 66.47,
+   "tExcerpt": 66.47,
+   "tShare": 183.99,
+   "tFilm": 183.99,
    "at": {
     "map": [
      2477.29,
@@ -541,25 +664,25 @@
   },
   {
    "type": "march_start",
-   "direction": "retreat",
+   "direction": "advance",
    "speed": 0.26,
-   "t": 67.1,
-   "tExcerpt": 67.1,
-   "tShare": 184.62,
-   "tFilm": 184.62,
+   "t": 66.8,
+   "tExcerpt": 66.8,
+   "tShare": 184.32,
+   "tFilm": 184.32,
    "at": {
     "map": [
      2481.39,
-     1155.99
+     1155.98
     ],
     "px": [
-     624,
-     704
+     628,
+     705
     ],
-    "nx": 0.325,
-    "ny": 0.652,
+    "nx": 0.327,
+    "ny": 0.653,
     "onScreen": true,
-    "camDist": 16.99
+    "camDist": 17.04
    },
    "unit": {
     "unit": 3,
@@ -571,96 +694,35 @@
    }
   },
   {
-   "type": "march_stop",
-   "duration": 1.9,
-   "t": 67.4,
-   "tExcerpt": 67.4,
-   "tShare": 184.92,
-   "tFilm": 184.92,
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.26,
+   "t": 69.2,
+   "tExcerpt": 69.2,
+   "tShare": 186.72,
+   "tFilm": 186.72,
    "at": {
     "map": [
-     2480.15,
-     1147.77
+     2485.39,
+     1156.38
     ],
     "px": [
-     569,
-     309
+     877,
+     675
     ],
-    "nx": 0.297,
-    "ny": 0.286,
+    "nx": 0.457,
+    "ny": 0.625,
     "onScreen": true,
-    "camDist": 22.98
+    "camDist": 19.16
    },
    "unit": {
-    "unit": 10,
+    "unit": 4,
     "side": "Union",
     "type": "inf",
     "label": null,
     "blocks": 1,
     "men": 72
    }
-  },
-  {
-   "type": "bridge_stream_last_on_deck",
-   "t": 67.55,
-   "tExcerpt": 67.55,
-   "tShare": 185.07,
-   "tFilm": 185.07,
-   "at": {
-    "map": [
-     2480.46,
-     1147.8
-    ],
-    "px": [
-     587,
-     313
-    ],
-    "nx": 0.306,
-    "ny": 0.29,
-    "onScreen": true,
-    "camDist": 23.04
-   },
-   "unit": {
-    "unit": 10,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
-   "type": "bridge_stream_last_off_deck",
-   "t": 68.18,
-   "tExcerpt": 68.18,
-   "tShare": 185.71,
-   "tFilm": 185.71,
-   "at": {
-    "map": [
-     2480.24,
-     1146.4
-    ],
-    "px": [
-     569,
-     292
-    ],
-    "nx": 0.296,
-    "ny": 0.27,
-    "onScreen": true,
-    "camDist": 26.01
-   },
-   "unit": {
-    "unit": 10,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
   },
   {
    "type": "bridge_break_ranks",
@@ -674,13 +736,13 @@
      1148.16
     ],
     "px": [
-     537,
-     272
+     566,
+     299
     ],
-    "nx": 0.28,
-    "ny": 0.252,
+    "nx": 0.295,
+    "ny": 0.277,
     "onScreen": true,
-    "camDist": 29.09
+    "camDist": 25.07
    },
    "unit": {
     "unit": 2,
@@ -695,55 +757,24 @@
    "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
   },
   {
-   "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.17,
-   "t": 69.6,
-   "tExcerpt": 69.6,
-   "tShare": 187.12,
-   "tFilm": 187.12,
-   "at": {
-    "map": [
-     2485.4,
-     1156.39
-    ],
-    "px": [
-     767,
-     559
-    ],
-    "nx": 0.399,
-    "ny": 0.517,
-    "onScreen": true,
-    "camDist": 23.81
-   },
-   "unit": {
-    "unit": 4,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
    "type": "bridge_stream_gone",
-   "t": 69.76,
-   "tExcerpt": 69.76,
-   "tShare": 187.28,
-   "tFilm": 187.28,
+   "t": 69.58,
+   "tExcerpt": 69.58,
+   "tShare": 187.11,
+   "tFilm": 187.11,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     526,
-     229
+     555,
+     255
     ],
-    "nx": 0.274,
-    "ny": 0.212,
+    "nx": 0.289,
+    "ny": 0.236,
     "onScreen": true,
-    "camDist": 33.02
+    "camDist": 28.01
    },
    "unit": {
     "unit": 0,
@@ -768,13 +799,13 @@
      1147.8
     ],
     "px": [
-     529,
-     255
+     560,
+     285
     ],
-    "nx": 0.276,
-    "ny": 0.236,
+    "nx": 0.291,
+    "ny": 0.264,
     "onScreen": true,
-    "camDist": 30.8
+    "camDist": 25.97
    },
    "unit": {
     "unit": 2,
@@ -788,55 +819,24 @@
    "menInStream": 72
   },
   {
-   "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.28,
-   "t": 70.1,
-   "tExcerpt": 70.1,
-   "tShare": 187.62,
-   "tFilm": 187.62,
-   "at": {
-    "map": [
-     2477.6,
-     1158.58
-    ],
-    "px": [
-     297,
-     622
-    ],
-    "nx": 0.155,
-    "ny": 0.576,
-    "onScreen": true,
-    "camDist": 24.01
-   },
-   "unit": {
-    "unit": 5,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
    "type": "bridge_stream_gone",
-   "t": 70.19,
-   "tExcerpt": 70.19,
-   "tShare": 187.71,
-   "tFilm": 187.71,
+   "t": 70.16,
+   "tExcerpt": 70.16,
+   "tShare": 187.68,
+   "tFilm": 187.68,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     405,
-     228
+     413,
+     254
     ],
-    "nx": 0.211,
-    "ny": 0.211,
+    "nx": 0.215,
+    "ny": 0.235,
     "onScreen": true,
-    "camDist": 33.84
+    "camDist": 29.03
    },
    "unit": {
     "unit": 1,
@@ -848,6 +848,69 @@
     "block": 0
    },
    "menInStream": 72
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 70.66,
+   "tExcerpt": 70.66,
+   "tShare": 188.18,
+   "tFilm": 188.18,
+   "at": {
+    "map": [
+     2477.5,
+     1148.36
+    ],
+    "px": [
+     399,
+     284
+    ],
+    "nx": 0.208,
+    "ny": 0.263,
+    "onScreen": true,
+    "camDist": 26.99
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.27,
+   "t": 70.8,
+   "tExcerpt": 70.8,
+   "tShare": 188.32,
+   "tFilm": 188.32,
+   "at": {
+    "map": [
+     2477.6,
+     1158.58
+    ],
+    "px": [
+     281,
+     719
+    ],
+    "nx": 0.146,
+    "ny": 0.665,
+    "onScreen": true,
+    "camDist": 20.19
+   },
+   "unit": {
+    "unit": 5,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
   },
   {
    "type": "march_stop",
@@ -862,13 +925,13 @@
      1147.88
     ],
     "px": [
-     426,
-     201
+     71,
+     1
     ],
-    "nx": 0.222,
-    "ny": 0.186,
+    "nx": 0.037,
+    "ny": 0.001,
     "onScreen": true,
-    "camDist": 33.78
+    "camDist": 51.01
    },
    "unit": {
     "unit": 2,
@@ -880,56 +943,24 @@
    }
   },
   {
-   "type": "bridge_break_ranks",
-   "t": 70.96,
-   "tExcerpt": 70.96,
-   "tShare": 188.48,
-   "tFilm": 188.48,
-   "at": {
-    "map": [
-     2477.5,
-     1148.36
-    ],
-    "px": [
-     306,
-     200
-    ],
-    "nx": 0.159,
-    "ny": 0.185,
-    "onScreen": true,
-    "camDist": 34.42
-   },
-   "unit": {
-    "unit": 3,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72,
-   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
-  },
-  {
    "type": "bridge_stream_last_on_deck",
-   "t": 71.08,
-   "tExcerpt": 71.08,
-   "tShare": 188.6,
-   "tFilm": 188.6,
+   "t": 71.07,
+   "tExcerpt": 71.07,
+   "tShare": 188.59,
+   "tFilm": 188.59,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     403,
-     177
+     84,
+     3
     ],
-    "nx": 0.21,
-    "ny": 0.164,
+    "nx": 0.044,
+    "ny": 0.002,
     "onScreen": true,
-    "camDist": 35.22
+    "camDist": 50.94
    },
    "unit": {
     "unit": 2,
@@ -944,23 +975,23 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 71.41,
-   "tExcerpt": 71.41,
-   "tShare": 188.93,
-   "tFilm": 188.93,
+   "t": 71.11,
+   "tExcerpt": 71.11,
+   "tShare": 188.63,
+   "tFilm": 188.63,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     209,
-     125
+     -8,
+     1
     ],
-    "nx": 0.109,
-    "ny": 0.116,
-    "onScreen": true,
-    "camDist": 39.13
+    "nx": -0.004,
+    "ny": 0.001,
+    "onScreen": false,
+    "camDist": 51.9
    },
    "unit": {
     "unit": 3,
@@ -975,57 +1006,26 @@
   },
   {
    "type": "bridge_stream_last_off_deck",
-   "t": 71.71,
-   "tExcerpt": 71.71,
-   "tShare": 189.23,
-   "tFilm": 189.23,
+   "t": 71.7,
+   "tExcerpt": 71.7,
+   "tShare": 189.22,
+   "tFilm": 189.22,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     261,
-     91
+     98,
+     7
     ],
-    "nx": 0.136,
-    "ny": 0.085,
+    "nx": 0.051,
+    "ny": 0.006,
     "onScreen": true,
-    "camDist": 43.54
+    "camDist": 52.42
    },
    "unit": {
     "unit": 2,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
-   "type": "bridge_stream_gone",
-   "t": 71.87,
-   "tExcerpt": 71.87,
-   "tShare": 189.4,
-   "tFilm": 189.4,
-   "at": {
-    "map": [
-     2480.11,
-     1145.56
-    ],
-    "px": [
-     230,
-     62
-    ],
-    "nx": 0.12,
-    "ny": 0.058,
-    "onScreen": true,
-    "camDist": 46.21
-   },
-   "unit": {
-    "unit": 10,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1038,23 +1038,23 @@
   {
    "type": "march_stop",
    "duration": 5.4,
-   "t": 72.5,
-   "tExcerpt": 72.5,
-   "tShare": 190.02,
-   "tFilm": 190.02,
+   "t": 72.2,
+   "tExcerpt": 72.2,
+   "tShare": 189.72,
+   "tFilm": 189.72,
    "at": {
     "map": [
      2477.26,
      1147.89
     ],
     "px": [
-     30,
-     26
+     -9,
+     3
     ],
-    "nx": 0.016,
-    "ny": 0.024,
-    "onScreen": true,
-    "camDist": 50.8
+    "nx": -0.005,
+    "ny": 0.002,
+    "onScreen": false,
+    "camDist": 51.88
    },
    "unit": {
     "unit": 3,
@@ -1067,23 +1067,23 @@
   },
   {
    "type": "bridge_stream_last_on_deck",
-   "t": 72.68,
-   "tExcerpt": 72.68,
-   "tShare": 190.2,
-   "tFilm": 190.2,
+   "t": 72.37,
+   "tExcerpt": 72.37,
+   "tShare": 189.9,
+   "tFilm": 189.9,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     22,
-     20
+     -4,
+     4
     ],
-    "nx": 0.012,
-    "ny": 0.018,
-    "onScreen": true,
-    "camDist": 51.61
+    "nx": -0.002,
+    "ny": 0.004,
+    "onScreen": false,
+    "camDist": 51.68
    },
    "unit": {
     "unit": 3,
@@ -1098,25 +1098,25 @@
   },
   {
    "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.3,
-   "t": 73.2,
-   "tExcerpt": 73.2,
-   "tShare": 190.72,
-   "tFilm": 190.72,
+   "direction": "advance",
+   "speed": 0.26,
+   "t": 72.8,
+   "tExcerpt": 72.8,
+   "tShare": 190.32,
+   "tFilm": 190.32,
    "at": {
     "map": [
-     2489.58,
-     1156.58
+     2489.59,
+     1156.59
     ],
     "px": [
-     325,
-     167
+     313,
+     159
     ],
-    "nx": 0.169,
-    "ny": 0.155,
+    "nx": 0.163,
+    "ny": 0.147,
     "onScreen": true,
-    "camDist": 41.54
+    "camDist": 40.79
    },
    "unit": {
     "unit": 6,
@@ -1129,23 +1129,23 @@
   },
   {
    "type": "bridge_stream_last_off_deck",
-   "t": 73.31,
-   "tExcerpt": 73.31,
-   "tShare": 190.83,
-   "tFilm": 190.83,
+   "t": 73,
+   "tExcerpt": 73,
+   "tShare": 190.52,
+   "tFilm": 190.52,
    "at": {
     "map": [
      2477.29,
      1146.6
     ],
     "px": [
-     31,
-     21
+     16,
+     12
     ],
-    "nx": 0.016,
-    "ny": 0.019,
+    "nx": 0.008,
+    "ny": 0.011,
     "onScreen": true,
-    "camDist": 53.83
+    "camDist": 53.18
    },
    "unit": {
     "unit": 3,
@@ -1160,23 +1160,23 @@
   },
   {
    "type": "bridge_break_ranks",
-   "t": 74.01,
-   "tExcerpt": 74.01,
-   "tShare": 191.53,
-   "tFilm": 191.53,
+   "t": 73.56,
+   "tExcerpt": 73.56,
+   "tShare": 191.09,
+   "tFilm": 191.09,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     101,
-     19
+     89,
+     11
     ],
-    "nx": 0.052,
-    "ny": 0.018,
+    "nx": 0.046,
+    "ny": 0.011,
     "onScreen": true,
-    "camDist": 50.68
+    "camDist": 50.2
    },
    "unit": {
     "unit": 4,
@@ -1192,23 +1192,23 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 74.46,
-   "tExcerpt": 74.46,
-   "tShare": 191.98,
-   "tFilm": 191.98,
+   "t": 74.01,
+   "tExcerpt": 74.01,
+   "tShare": 191.54,
+   "tFilm": 191.54,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     102,
-     15
+     92,
+     9
     ],
-    "nx": 0.053,
-    "ny": 0.014,
+    "nx": 0.048,
+    "ny": 0.008,
     "onScreen": true,
-    "camDist": 50.84
+    "camDist": 50.45
    },
    "unit": {
     "unit": 4,
@@ -1222,59 +1222,57 @@
    "menInStream": 72
   },
   {
-   "type": "bridge_break_ranks",
-   "t": 74.78,
-   "tExcerpt": 74.78,
-   "tShare": 192.3,
-   "tFilm": 192.3,
+   "type": "march_stop",
+   "duration": 5.9,
+   "t": 75.1,
+   "tExcerpt": 75.1,
+   "tShare": 192.62,
+   "tFilm": 192.62,
    "at": {
     "map": [
-     2477.5,
-     1148.36
+     2480.25,
+     1147.7
     ],
     "px": [
-     8,
-     19
+     90,
+     9
     ],
-    "nx": 0.004,
-    "ny": 0.018,
+    "nx": 0.047,
+    "ny": 0.008,
     "onScreen": true,
-    "camDist": 51.35
+    "camDist": 50.42
    },
    "unit": {
-    "unit": 5,
+    "unit": 4,
     "side": "Union",
     "type": "inf",
     "label": null,
     "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72,
-   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
+    "men": 72
+   }
   },
   {
-   "type": "bridge_stream_first_on_deck",
-   "t": 75.23,
-   "tExcerpt": 75.23,
-   "tShare": 192.75,
-   "tFilm": 192.75,
+   "type": "bridge_stream_last_on_deck",
+   "t": 75.28,
+   "tExcerpt": 75.28,
+   "tShare": 192.8,
+   "tFilm": 192.8,
    "at": {
     "map": [
-     2477.46,
-     1148
+     2480.46,
+     1147.8
     ],
     "px": [
-     10,
-     14
+     96,
+     12
     ],
-    "nx": 0.005,
-    "ny": 0.013,
+    "nx": 0.05,
+    "ny": 0.011,
     "onScreen": true,
-    "camDist": 51.48
+    "camDist": 50.24
    },
    "unit": {
-    "unit": 5,
+    "unit": 4,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1286,23 +1284,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 75.4,
-   "tExcerpt": 75.4,
-   "tShare": 192.92,
-   "tFilm": 192.92,
+   "t": 75.39,
+   "tExcerpt": 75.39,
+   "tShare": 192.91,
+   "tFilm": 192.91,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     117,
-     6
+     112,
+     3
     ],
-    "nx": 0.061,
-    "ny": 0.006,
+    "nx": 0.058,
+    "ny": 0.003,
     "onScreen": true,
-    "camDist": 52.82
+    "camDist": 52.56
    },
    "unit": {
     "unit": 2,
@@ -1316,57 +1314,27 @@
    "menInStream": 72
   },
   {
-   "type": "march_stop",
-   "duration": 6,
-   "t": 75.6,
-   "tExcerpt": 75.6,
-   "tShare": 193.12,
-   "tFilm": 193.12,
+   "type": "bridge_break_ranks",
+   "t": 75.48,
+   "tExcerpt": 75.48,
+   "tShare": 193.01,
+   "tFilm": 193.01,
    "at": {
     "map": [
-     2480.24,
-     1147.69
+     2477.5,
+     1148.36
     ],
     "px": [
-     95,
-     12
+     2,
+     16
     ],
-    "nx": 0.05,
-    "ny": 0.011,
+    "nx": 0.001,
+    "ny": 0.015,
     "onScreen": true,
-    "camDist": 50.55
+    "camDist": 50.85
    },
    "unit": {
-    "unit": 4,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "bridge_stream_last_on_deck",
-   "t": 75.73,
-   "tExcerpt": 75.73,
-   "tShare": 193.25,
-   "tFilm": 193.25,
-   "at": {
-    "map": [
-     2480.46,
-     1147.8
-    ],
-    "px": [
-     101,
-     15
-    ],
-    "nx": 0.053,
-    "ny": 0.014,
-    "onScreen": true,
-    "camDist": 50.36
-   },
-   "unit": {
-    "unit": 4,
+    "unit": 5,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1374,29 +1342,30 @@
     "men": 72,
     "block": 0
    },
-   "menInStream": 72
+   "menInStream": 72,
+   "note": "men drift out of the ranks, 3-abreast stream onto the deck (footsteps on planks while on the deck)"
   },
   {
    "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.25,
-   "t": 75.9,
-   "tExcerpt": 75.9,
-   "tShare": 193.42,
-   "tFilm": 193.42,
+   "direction": "advance",
+   "speed": 0.27,
+   "t": 75.6,
+   "tExcerpt": 75.6,
+   "tShare": 193.12,
+   "tFilm": 193.12,
    "at": {
     "map": [
      2483.59,
-     1160.39
+     1160.38
     ],
     "px": [
-     78,
-     240
+     73,
+     237
     ],
-    "nx": 0.041,
-    "ny": 0.222,
+    "nx": 0.038,
+    "ny": 0.22,
     "onScreen": true,
-    "camDist": 39.22
+    "camDist": 39.11
    },
    "unit": {
     "unit": 7,
@@ -1409,23 +1378,23 @@
   },
   {
    "type": "bridge_stream_last_off_deck",
-   "t": 76.36,
-   "tExcerpt": 76.36,
-   "tShare": 193.88,
-   "tFilm": 193.88,
+   "t": 75.91,
+   "tExcerpt": 75.91,
+   "tShare": 193.43,
+   "tFilm": 193.43,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     113,
-     17
+     110,
+     16
     ],
-    "nx": 0.059,
-    "ny": 0.016,
+    "nx": 0.058,
+    "ny": 0.015,
     "onScreen": true,
-    "camDist": 51.71
+    "camDist": 51.74
    },
    "unit": {
     "unit": 4,
@@ -1439,54 +1408,24 @@
    "menInStream": 72
   },
   {
-   "type": "march_stop",
-   "duration": 6.3,
-   "t": 76.4,
-   "tExcerpt": 76.4,
-   "tShare": 193.92,
-   "tFilm": 193.92,
-   "at": {
-    "map": [
-     2477.49,
-     1147.83
-    ],
-    "px": [
-     11,
-     12
-    ],
-    "nx": 0.006,
-    "ny": 0.011,
-    "onScreen": true,
-    "camDist": 51.18
-   },
-   "unit": {
-    "unit": 5,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "bridge_stream_last_on_deck",
-   "t": 76.5,
-   "tExcerpt": 76.5,
-   "tShare": 194.02,
-   "tFilm": 194.02,
+   "type": "bridge_stream_first_on_deck",
+   "t": 75.93,
+   "tExcerpt": 75.93,
+   "tShare": 193.46,
+   "tFilm": 193.46,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     8,
-     13
+     6,
+     12
     ],
-    "nx": 0.004,
-    "ny": 0.012,
+    "nx": 0.003,
+    "ny": 0.011,
     "onScreen": true,
-    "camDist": 51.01
+    "camDist": 51.08
    },
    "unit": {
     "unit": 5,
@@ -1501,23 +1440,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 77,
-   "tExcerpt": 77,
-   "tShare": 194.52,
-   "tFilm": 194.52,
+   "t": 76.69,
+   "tExcerpt": 76.69,
+   "tShare": 194.22,
+   "tFilm": 194.22,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     823,
-     562
+     822,
+     561
     ],
-    "nx": 0.429,
-    "ny": 0.521,
+    "nx": 0.428,
+    "ny": 0.519,
     "onScreen": true,
-    "camDist": 24.11
+    "camDist": 24.16
    },
    "unit": {
     "unit": 3,
@@ -1531,24 +1470,85 @@
    "menInStream": 72
   },
   {
+   "type": "march_stop",
+   "duration": 6.3,
+   "t": 77.1,
+   "tExcerpt": 77.1,
+   "tShare": 194.62,
+   "tFilm": 194.62,
+   "at": {
+    "map": [
+     2477.49,
+     1147.83
+    ],
+    "px": [
+     878,
+     619
+    ],
+    "nx": 0.457,
+    "ny": 0.573,
+    "onScreen": true,
+    "camDist": 22.17
+   },
+   "unit": {
+    "unit": 5,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "bridge_stream_last_on_deck",
+   "t": 77.2,
+   "tExcerpt": 77.2,
+   "tShare": 194.72,
+   "tFilm": 194.72,
+   "at": {
+    "map": [
+     2477.46,
+     1148
+    ],
+    "px": [
+     879,
+     627
+    ],
+    "nx": 0.458,
+    "ny": 0.58,
+    "onScreen": true,
+    "camDist": 22.02
+   },
+   "unit": {
+    "unit": 5,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
    "type": "bridge_stream_last_off_deck",
-   "t": 77.12,
-   "tExcerpt": 77.12,
-   "tShare": 194.65,
-   "tFilm": 194.65,
+   "t": 77.83,
+   "tExcerpt": 77.83,
+   "tShare": 195.35,
+   "tFilm": 195.35,
    "at": {
     "map": [
      2477.29,
      1146.6
     ],
     "px": [
-     841,
-     599
+     844,
+     603
     ],
-    "nx": 0.438,
-    "ny": 0.555,
+    "nx": 0.439,
+    "ny": 0.558,
     "onScreen": true,
-    "camDist": 23.58
+    "camDist": 23.45
    },
    "unit": {
     "unit": 5,
@@ -1563,23 +1563,23 @@
   },
   {
    "type": "bridge_break_ranks",
-   "t": 78.95,
-   "tExcerpt": 78.95,
-   "tShare": 196.47,
-   "tFilm": 196.47,
+   "t": 78.57,
+   "tExcerpt": 78.57,
+   "tShare": 196.09,
+   "tFilm": 196.09,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     1077,
-     629
+     1075,
+     626
     ],
-    "nx": 0.561,
-    "ny": 0.582,
+    "nx": 0.56,
+    "ny": 0.58,
     "onScreen": true,
-    "camDist": 22.65
+    "camDist": 22.72
    },
    "unit": {
     "unit": 6,
@@ -1595,25 +1595,25 @@
   },
   {
    "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.32,
-   "t": 79.1,
-   "tExcerpt": 79.1,
-   "tShare": 196.62,
-   "tFilm": 196.62,
+   "direction": "advance",
+   "speed": 0.27,
+   "t": 78.6,
+   "tExcerpt": 78.6,
+   "tShare": 196.12,
+   "tFilm": 196.12,
    "at": {
     "map": [
      2487.99,
      1160.58
     ],
     "px": [
-     2335,
-     1615
+     2321,
+     1599
     ],
-    "nx": 1.216,
-    "ny": 1.495,
+    "nx": 1.209,
+    "ny": 1.48,
     "onScreen": false,
-    "camDist": 23.43
+    "camDist": 23.48
    },
    "unit": {
     "unit": 8,
@@ -1626,23 +1626,23 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 79.4,
-   "tExcerpt": 79.4,
-   "tShare": 196.92,
-   "tFilm": 196.92,
+   "t": 79.02,
+   "tExcerpt": 79.02,
+   "tShare": 196.54,
+   "tFilm": 196.54,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1068,
-     617
+     1065,
+     614
     ],
-    "nx": 0.556,
-    "ny": 0.571,
+    "nx": 0.555,
+    "ny": 0.569,
     "onScreen": true,
-    "camDist": 22.78
+    "camDist": 22.85
    },
    "unit": {
     "unit": 6,
@@ -1657,23 +1657,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 80.05,
-   "tExcerpt": 80.05,
-   "tShare": 197.57,
-   "tFilm": 197.57,
+   "t": 79.6,
+   "tExcerpt": 79.6,
+   "tShare": 197.12,
+   "tFilm": 197.12,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     996,
-     553
+     993,
+     550
     ],
-    "nx": 0.519,
-    "ny": 0.512,
+    "nx": 0.517,
+    "ny": 0.509,
     "onScreen": true,
-    "camDist": 24.46
+    "camDist": 24.55
    },
    "unit": {
     "unit": 4,
@@ -1688,24 +1688,24 @@
   },
   {
    "type": "march_stop",
-   "duration": 7.3,
-   "t": 80.5,
-   "tExcerpt": 80.5,
-   "tShare": 198.02,
-   "tFilm": 198.02,
+   "duration": 7.4,
+   "t": 80.2,
+   "tExcerpt": 80.2,
+   "tShare": 197.72,
+   "tFilm": 197.72,
    "at": {
     "map": [
-     2480.13,
-     1147.8
+     2480.12,
+     1147.79
     ],
     "px": [
-     1055,
-     623
+     1053,
+     620
     ],
-    "nx": 0.55,
-    "ny": 0.576,
+    "nx": 0.548,
+    "ny": 0.574,
     "onScreen": true,
-    "camDist": 22.4
+    "camDist": 22.46
    },
    "unit": {
     "unit": 6,
@@ -1718,23 +1718,54 @@
   },
   {
    "type": "bridge_stream_last_on_deck",
-   "t": 80.67,
-   "tExcerpt": 80.67,
-   "tShare": 198.19,
-   "tFilm": 198.19,
+   "t": 80.29,
+   "tExcerpt": 80.29,
+   "tShare": 197.81,
+   "tFilm": 197.81,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1075,
-     625
+     1073,
+     622
     ],
-    "nx": 0.56,
-    "ny": 0.579,
+    "nx": 0.559,
+    "ny": 0.576,
     "onScreen": true,
-    "camDist": 22.55
+    "camDist": 22.62
+   },
+   "unit": {
+    "unit": 6,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
+   "type": "bridge_stream_last_off_deck",
+   "t": 80.92,
+   "tExcerpt": 80.92,
+   "tShare": 198.44,
+   "tFilm": 198.44,
+   "at": {
+    "map": [
+     2480.24,
+     1146.4
+    ],
+    "px": [
+     1024,
+     594
+    ],
+    "nx": 0.533,
+    "ny": 0.55,
+    "onScreen": true,
+    "camDist": 23.84
    },
    "unit": {
     "unit": 6,
@@ -1749,23 +1780,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 80.81,
-   "tExcerpt": 80.81,
-   "tShare": 198.34,
-   "tFilm": 198.34,
+   "t": 81.52,
+   "tExcerpt": 81.52,
+   "tShare": 199.04,
+   "tFilm": 199.04,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     837,
-     581
+     840,
+     584
     ],
-    "nx": 0.436,
-    "ny": 0.538,
+    "nx": 0.438,
+    "ny": 0.541,
     "onScreen": true,
-    "camDist": 23.4
+    "camDist": 23.27
    },
    "unit": {
     "unit": 5,
@@ -1779,57 +1810,26 @@
    "menInStream": 72
   },
   {
-   "type": "bridge_stream_last_off_deck",
-   "t": 81.3,
-   "tExcerpt": 81.3,
-   "tShare": 198.82,
-   "tFilm": 198.82,
-   "at": {
-    "map": [
-     2480.24,
-     1146.4
-    ],
-    "px": [
-     1026,
-     596
-    ],
-    "nx": 0.534,
-    "ny": 0.552,
-    "onScreen": true,
-    "camDist": 23.77
-   },
-   "unit": {
-    "unit": 6,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
    "type": "march_start",
-   "direction": "retreat",
-   "speed": 0.24,
-   "t": 82.2,
-   "tExcerpt": 82.2,
-   "tShare": 199.72,
-   "tFilm": 199.72,
+   "direction": "advance",
+   "speed": 0.26,
+   "t": 81.8,
+   "tExcerpt": 81.8,
+   "tShare": 199.32,
+   "tFilm": 199.32,
    "at": {
     "map": [
      2492.59,
      1159.79
     ],
     "px": [
-     2753,
-     1538
+     2737,
+     1524
     ],
-    "nx": 1.434,
-    "ny": 1.424,
+    "nx": 1.425,
+    "ny": 1.411,
     "onScreen": false,
-    "camDist": 26.55
+    "camDist": 26.59
    },
    "unit": {
     "unit": 9,
@@ -1842,23 +1842,23 @@
   },
   {
    "type": "bridge_break_ranks",
-   "t": 82.22,
-   "tExcerpt": 82.22,
-   "tShare": 199.75,
-   "tFilm": 199.75,
+   "t": 81.92,
+   "tExcerpt": 81.92,
+   "tShare": 199.44,
+   "tFilm": 199.44,
    "at": {
     "map": [
      2477.5,
      1148.36
     ],
     "px": [
-     909,
-     677
+     907,
+     675
     ],
     "nx": 0.473,
-    "ny": 0.627,
+    "ny": 0.625,
     "onScreen": true,
-    "camDist": 20.91
+    "camDist": 20.97
    },
    "unit": {
     "unit": 7,
@@ -1874,23 +1874,23 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 82.67,
-   "tExcerpt": 82.67,
-   "tShare": 200.2,
-   "tFilm": 200.2,
+   "t": 82.37,
+   "tExcerpt": 82.37,
+   "tShare": 199.89,
+   "tFilm": 199.89,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     902,
-     660
+     900,
+     658
     ],
-    "nx": 0.47,
-    "ny": 0.612,
+    "nx": 0.469,
+    "ny": 0.61,
     "onScreen": true,
-    "camDist": 21.02
+    "camDist": 21.08
    },
    "unit": {
     "unit": 7,
@@ -1906,23 +1906,23 @@
   {
    "type": "march_stop",
    "duration": 7.9,
-   "t": 83.8,
-   "tExcerpt": 83.8,
-   "tShare": 201.32,
-   "tFilm": 201.32,
+   "t": 83.5,
+   "tExcerpt": 83.5,
+   "tShare": 201.02,
+   "tFilm": 201.02,
    "at": {
     "map": [
      2477.26,
      1147.89
     ],
     "px": [
-     891,
-     664
+     890,
+     662
     ],
     "nx": 0.464,
-    "ny": 0.615,
+    "ny": 0.613,
     "onScreen": true,
-    "camDist": 20.84
+    "camDist": 20.9
    },
    "unit": {
     "unit": 7,
@@ -1935,23 +1935,23 @@
   },
   {
    "type": "bridge_stream_last_on_deck",
-   "t": 83.94,
-   "tExcerpt": 83.94,
-   "tShare": 201.46,
-   "tFilm": 201.46,
+   "t": 83.63,
+   "tExcerpt": 83.63,
+   "tShare": 201.15,
+   "tFilm": 201.15,
    "at": {
     "map": [
      2477.46,
      1148
     ],
     "px": [
-     907,
-     669
+     906,
+     667
     ],
     "nx": 0.472,
-    "ny": 0.619,
+    "ny": 0.617,
     "onScreen": true,
-    "camDist": 20.79
+    "camDist": 20.85
    },
    "unit": {
     "unit": 7,
@@ -1966,23 +1966,23 @@
   },
   {
    "type": "bridge_stream_last_off_deck",
-   "t": 84.57,
-   "tExcerpt": 84.57,
-   "tShare": 202.09,
-   "tFilm": 202.09,
+   "t": 84.26,
+   "tExcerpt": 84.26,
+   "tShare": 201.78,
+   "tFilm": 201.78,
    "at": {
     "map": [
      2477.29,
      1146.6
     ],
     "px": [
-     870,
-     640
+     868,
+     639
     ],
-    "nx": 0.453,
-    "ny": 0.593,
+    "nx": 0.452,
+    "ny": 0.591,
     "onScreen": true,
-    "camDist": 22.22
+    "camDist": 22.28
    },
    "unit": {
     "unit": 7,
@@ -1997,23 +1997,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 84.99,
-   "tExcerpt": 84.99,
-   "tShare": 202.51,
-   "tFilm": 202.51,
+   "t": 84.61,
+   "tExcerpt": 84.61,
+   "tShare": 202.13,
+   "tFilm": 202.13,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     1023,
-     580
+     1021,
+     577
     ],
-    "nx": 0.533,
-    "ny": 0.537,
+    "nx": 0.532,
+    "ny": 0.535,
     "onScreen": true,
-    "camDist": 23.55
+    "camDist": 23.62
    },
    "unit": {
     "unit": 6,
@@ -2028,23 +2028,23 @@
   },
   {
    "type": "bridge_break_ranks",
-   "t": 85.91,
-   "tExcerpt": 85.91,
-   "tShare": 203.43,
-   "tFilm": 203.43,
+   "t": 85.43,
+   "tExcerpt": 85.43,
+   "tShare": 202.95,
+   "tFilm": 202.95,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     1122,
-     679
+     1118,
+     675
     ],
-    "nx": 0.584,
-    "ny": 0.628,
+    "nx": 0.583,
+    "ny": 0.625,
     "onScreen": true,
-    "camDist": 21.41
+    "camDist": 21.49
    },
    "unit": {
     "unit": 8,
@@ -2060,23 +2060,23 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 86.36,
-   "tExcerpt": 86.36,
-   "tShare": 203.88,
-   "tFilm": 203.88,
+   "t": 85.88,
+   "tExcerpt": 85.88,
+   "tShare": 203.4,
+   "tFilm": 203.4,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1112,
-     665
+     1109,
+     662
     ],
-    "nx": 0.579,
-    "ny": 0.616,
+    "nx": 0.577,
+    "ny": 0.613,
     "onScreen": true,
-    "camDist": 21.53
+    "camDist": 21.62
    },
    "unit": {
     "unit": 8,
@@ -2092,23 +2092,23 @@
   {
    "type": "march_stop",
    "duration": 8.4,
-   "t": 87.5,
-   "tExcerpt": 87.5,
-   "tShare": 205.02,
-   "tFilm": 205.02,
+   "t": 87,
+   "tExcerpt": 87,
+   "tShare": 204.52,
+   "tFilm": 204.52,
    "at": {
     "map": [
      2480.24,
      1147.7
     ],
     "px": [
-     1103,
-     667
+     1100,
+     664
     ],
-    "nx": 0.574,
-    "ny": 0.618,
+    "nx": 0.573,
+    "ny": 0.615,
     "onScreen": true,
-    "camDist": 21.27
+    "camDist": 21.36
    },
    "unit": {
     "unit": 8,
@@ -2121,23 +2121,23 @@
   },
   {
    "type": "bridge_stream_last_on_deck",
-   "t": 87.62,
-   "tExcerpt": 87.62,
-   "tShare": 205.14,
-   "tFilm": 205.14,
+   "t": 87.15,
+   "tExcerpt": 87.15,
+   "tShare": 204.67,
+   "tFilm": 204.67,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1120,
-     675
+     1117,
+     671
     ],
-    "nx": 0.583,
-    "ny": 0.625,
+    "nx": 0.582,
+    "ny": 0.622,
     "onScreen": true,
-    "camDist": 21.31
+    "camDist": 21.39
    },
    "unit": {
     "unit": 8,
@@ -2152,23 +2152,23 @@
   },
   {
    "type": "bridge_stream_last_off_deck",
-   "t": 88.25,
-   "tExcerpt": 88.25,
-   "tShare": 205.77,
-   "tFilm": 205.77,
+   "t": 87.78,
+   "tExcerpt": 87.78,
+   "tShare": 205.3,
+   "tFilm": 205.3,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     1067,
-     640
+     1064,
+     637
     ],
-    "nx": 0.556,
-    "ny": 0.593,
+    "nx": 0.554,
+    "ny": 0.59,
     "onScreen": true,
-    "camDist": 22.52
+    "camDist": 22.6
    },
    "unit": {
     "unit": 8,
@@ -2183,23 +2183,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 88.26,
-   "tExcerpt": 88.26,
-   "tShare": 205.78,
-   "tFilm": 205.78,
+   "t": 87.95,
+   "tExcerpt": 87.95,
+   "tShare": 205.47,
+   "tFilm": 205.47,
    "at": {
     "map": [
      2477.2,
      1145.76
     ],
     "px": [
-     866,
-     620
+     865,
+     619
     ],
     "nx": 0.451,
-    "ny": 0.574,
+    "ny": 0.573,
     "onScreen": true,
-    "camDist": 22.04
+    "camDist": 22.1
    },
    "unit": {
     "unit": 7,
@@ -2214,23 +2214,23 @@
   },
   {
    "type": "bridge_break_ranks",
-   "t": 90.17,
-   "tExcerpt": 90.17,
-   "tShare": 207.7,
-   "tFilm": 207.7,
+   "t": 89.76,
+   "tExcerpt": 89.76,
+   "tShare": 207.28,
+   "tFilm": 207.28,
    "at": {
     "map": [
      2480.51,
      1148.15
     ],
     "px": [
-     1151,
-     714
+     1148,
+     710
     ],
-    "nx": 0.6,
-    "ny": 0.661,
+    "nx": 0.598,
+    "ny": 0.658,
     "onScreen": true,
-    "camDist": 20.67
+    "camDist": 20.74
    },
    "unit": {
     "unit": 9,
@@ -2246,23 +2246,23 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 90.62,
-   "tExcerpt": 90.62,
-   "tShare": 208.15,
-   "tFilm": 208.15,
+   "t": 90.21,
+   "tExcerpt": 90.21,
+   "tShare": 207.73,
+   "tFilm": 207.73,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     1141,
-     699
+     1138,
+     696
     ],
-    "nx": 0.594,
-    "ny": 0.647,
+    "nx": 0.593,
+    "ny": 0.644,
     "onScreen": true,
-    "camDist": 20.79
+    "camDist": 20.86
    },
    "unit": {
     "unit": 9,
@@ -2277,23 +2277,23 @@
   },
   {
    "type": "march_stop",
-   "duration": 9.6,
-   "t": 91.8,
-   "tExcerpt": 91.8,
-   "tShare": 209.32,
-   "tFilm": 209.32,
+   "duration": 9.5,
+   "t": 91.3,
+   "tExcerpt": 91.3,
+   "tShare": 208.82,
+   "tFilm": 208.82,
    "at": {
     "map": [
-     2480.13,
-     1147.78
+     2480.14,
+     1147.79
     ],
     "px": [
-     46,
+     43,
      0
     ],
-    "nx": 0.024,
+    "nx": 0.022,
     "ny": 0,
-    "onScreen": true,
+    "onScreen": false,
     "camDist": 46.63
    },
    "unit": {
@@ -2306,22 +2306,53 @@
    }
   },
   {
+   "type": "bridge_stream_gone",
+   "t": 91.47,
+   "tExcerpt": 91.47,
+   "tShare": 208.99,
+   "tFilm": 208.99,
+   "at": {
+    "map": [
+     2480.11,
+     1145.56
+    ],
+    "px": [
+     74,
+     -4
+    ],
+    "nx": 0.039,
+    "ny": -0.004,
+    "onScreen": false,
+    "camDist": 48.86
+   },
+   "unit": {
+    "unit": 8,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
    "type": "bridge_stream_last_on_deck",
-   "t": 91.89,
-   "tExcerpt": 91.89,
-   "tShare": 209.41,
-   "tFilm": 209.41,
+   "t": 91.48,
+   "tExcerpt": 91.48,
+   "tShare": 209,
+   "tFilm": 209,
    "at": {
     "map": [
      2480.46,
      1147.8
     ],
     "px": [
-     57,
-     3
+     55,
+     2
     ],
-    "nx": 0.03,
-    "ny": 0.003,
+    "nx": 0.029,
+    "ny": 0.002,
     "onScreen": true,
     "camDist": 46.52
    },
@@ -2337,52 +2368,21 @@
    "menInStream": 72
   },
   {
-   "type": "bridge_stream_gone",
-   "t": 91.94,
-   "tExcerpt": 91.94,
-   "tShare": 209.46,
-   "tFilm": 209.46,
-   "at": {
-    "map": [
-     2480.11,
-     1145.56
-    ],
-    "px": [
-     77,
-     -3
-    ],
-    "nx": 0.04,
-    "ny": -0.003,
-    "onScreen": false,
-    "camDist": 48.85
-   },
-   "unit": {
-    "unit": 8,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
    "type": "bridge_stream_last_off_deck",
-   "t": 92.52,
-   "tExcerpt": 92.52,
-   "tShare": 210.04,
-   "tFilm": 210.04,
+   "t": 92.11,
+   "tExcerpt": 92.11,
+   "tShare": 209.63,
+   "tFilm": 209.63,
    "at": {
     "map": [
      2480.24,
      1146.4
     ],
     "px": [
-     76,
-     9
+     74,
+     8
     ],
-    "nx": 0.04,
+    "nx": 0.038,
     "ny": 0.008,
     "onScreen": true,
     "camDist": 48.09
@@ -2493,23 +2493,23 @@
   },
   {
    "type": "bridge_stream_gone",
-   "t": 96.21,
-   "tExcerpt": 96.21,
-   "tShare": 213.73,
-   "tFilm": 213.73,
+   "t": 95.8,
+   "tExcerpt": 95.8,
+   "tShare": 213.32,
+   "tFilm": 213.32,
    "at": {
     "map": [
      2480.11,
      1145.56
     ],
     "px": [
-     102,
-     2
+     99,
+     1
     ],
-    "nx": 0.053,
-    "ny": 0.002,
+    "nx": 0.052,
+    "ny": 0.001,
     "onScreen": true,
-    "camDist": 48.78
+    "camDist": 48.79
    },
    "unit": {
     "unit": 9,
