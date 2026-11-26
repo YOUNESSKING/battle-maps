@@ -91,3 +91,7 @@ units), because the v14 spacing has only a ~0.22-unit gap between blocks. What f
 - RunPod: no A5000/A4000/3090/A6000/3080 supply, a 4090 pod came up without Chrome (render failed in 3 s); pods terminated, list
   verified empty, cost ~$0.03. `render_pod.sh` no longer falls back to the A4500 (broken frames). The motion clip is a LOCAL render.
 - The ink edge is in screen pixels: at the close S10 camera it is relatively thin next to the big counter (by design).
+- `motion_r2.mp4` (22 s, 1280x720 30 fps, silent, 6.4 MB): 0-10 s = S09 82-92 s (Bowen's counters up the crest), 10-22 s = S10
+  20-32 s (break-up at the bridge, captured line, edge fade top right). Rendered LOCALLY (SwiftShader, ~27 min).
+- Regression after round 2: lineblocks stills at S09 59.5 and S10 22 / 25 / 28.5 s are byte-identical to the pre-edit render. At S09
+  103.5 s only the DOM date plate differs (a 260x90 px box, the known plate font-timing flake in LESSONS); the 3D layer is identical.
