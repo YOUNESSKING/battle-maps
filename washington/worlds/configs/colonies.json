@@ -39,12 +39,9 @@
  ],
  "hm_ppu": 1.5,
  "tex": 8192,
- "exag": 3.0,
+ "exag": 5.0,
  "cell": 30.0,
  "seed": 1776,
- "relief_k": 0.5,
- "lit_k": 0.3,
- "wideSunK": 0.15,
  "dem_ppu": 2,
  "dem_margin": 24,
  "dem_edits": {
@@ -322,12 +319,11 @@
   "paint_km2": 400,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.02,
- "wood_scale": 1.6,
+ "woods": 0.0,
+ "wood_scale": 2.2,
  "wide_near_k": 0.3,
  "wide_slope_k": 0.6,
  "crown_u": 0.55,
- "field_patch_k": 0.65,
  "detail": {
   "k": 0.08,
   "u": 0.6,
@@ -337,11 +333,6 @@
  "wood_soft": {
   "blur_u": 0.15,
   "alpha": 0.93
- },
- "tex_grade": {
-  "contrast": 1.12,
-  "sat": 1.1,
-  "gamma": 0.97
  },
  "river_halo_u": 0.5,
  "rivers": [

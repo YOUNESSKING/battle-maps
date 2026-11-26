@@ -54,8 +54,11 @@ def write(name, cfg):
     json.dump(cfg, open(f"{OUT}/{name}.json", "w"), indent=1); print("->", f"{OUT}/{name}.json", cfg["box"])
 
 
-WINTER = {"snow": 0.6, "snow_alpha": 0.66, "desat": 0.45, "ice": 1.0, "conifers": 0.16}
-WINTER_WIDE = dict(WINTER, snow_alpha=0.28, desat=0.25, conifers_wide=0.4, wood_col="#3b4747", lit_col="#a9ab98", crown_k=1.45)   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
+# v2 (owner row 22: the v8 test look): winter = the SAME warm v8 patchwork with a LIGHT frost tint (fields still ochre / green / rust, a little
+# paler / cooler), woods still dark teal (bare deciduous = teal + a touch of twig brown: bare_mix), rust roads, subtle shore ice.
+# v1 (grey ground: desat 0.45, snow_alpha 0.66, conifers 0.16 never reached the engine -> 84 % grey crowns) is in git history.
+WINTER = {"snow": 0.45, "snow_alpha": 0.16, "desat": 0.10, "ice": 0.6, "conifers": 0.55, "bare_mix": 0.35, "road_col": "#84583f", "snow_col": "#d2d0c2"}
+WINTER_WIDE = dict(WINTER, snow_alpha=0.10, desat=0.08, conifers_wide=0.5, wood_col="#3a3630", lit_col="#c6c4a0")   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
 Z = 9
@@ -71,7 +74,7 @@ write("colonies", {
  "box": cb,
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
- "hm_ppu": 1.5, "tex": 8192, "exag": 3.0, "cell": 30.0, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,   # critic A r1: soft wide relief (Jackson gulf / v8)
+ "hm_ppu": 1.5, "tex": 8192, "exag": 5.0, "cell": 30.0, "seed": 1776,   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
@@ -80,8 +83,8 @@ write("colonies", {
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
  "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2},
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
- "woods": 0.02, "wood_scale": 1.6, "wide_near_k": 0.3, "wide_slope_k": 0.6, "crown_u": 0.55, "field_patch_k": 0.65, "detail": {"k": 0.08, "u": 0.6, "far": 420}, "villages": 6, "wood_soft": {"blur_u": 0.15, "alpha": 0.93},   # critic A r2/r3: crisp speckled canopy
- "tex_grade": {"contrast": 1.12, "sat": 1.1, "gamma": 0.97}, "river_halo_u": 0.5,
+ "woods": 0.0, "wood_scale": 2.2, "wide_near_k": 0.3, "wide_slope_k": 0.6, "crown_u": 0.55, "detail": {"k": 0.08, "u": 0.6, "far": 420}, "villages": 6, "wood_soft": {"blur_u": 0.15, "alpha": 0.93},   # critic A r2/r3: crisp speckled canopy
+ "river_halo_u": 0.5,
  "rivers": [{"name": n, "geo": [n], "w": w, "step": 1.0, **({"snap": False} if w >= 1.0 else {})} for n, w in CW.items()],
  "roads": [{"geo": r["name"], "cls": "pike"} for r in G["roads"] if not r["name"].startswith(("Trenton streets", "Bear Tavern", "Birmingham", "Scotch", "Saw Mill", "Sandtown", "Quaker", "River road (PA)", "Gowanus road", "Jamaica road", "Brooklyn - Flatbush"))]
           + [{"geo": n, "cls": "lane"} for n in ("Gowanus road (Brooklyn - Gravesend)", "Jamaica road (Bedford - Jamaica Pass - Jamaica)", "Brooklyn - Flatbush - Jamaica roads")],
@@ -111,18 +114,18 @@ write("colonieswinter", _cw)
 # ============================================================ jersey (wide, zoom 10 = base) ============================================================
 jb = box_ll(40.120, -74.905, 40.370, -74.625, 10); jb = [jb[0] - 15, jb[1] - 15, jb[2] + 15, jb[3] + 15]   # +15 units W / N (world-edge wedge in S04 / S07); same frame, coordinates unchanged
 write("jersey", {
- "mode": "wide", "zoom": 10, "season": "winter", "winter": WINTER_WIDE,
+ "mode": "wide", "zoom": 10, "season": "winter", "winter": dict(WINTER_WIDE, crown_k=1.8, wood_col="#4b4a40", bare_mix=0.45),   # v2: speckled canopy (no crowns on a wide map)
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "jpeg_q": 92, "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 4.0, "cell": 6.0, "gm_unit": 1.5, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
- "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
+ "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4, "field_patch_k": 0.18, "field_feather": 1.5,   # r5: flat patches, wide feather
+ "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4,   # v2: patchwork contrast back (no field_patch_k / field_feather)
  "detail": {"k": 0.13, "u": 0.35, "far": 320}, "villages": 5,   # r3: speckle readable at dist 150-270, soft facets, engine detail layer   # r2b: fewer, larger masses along valleys
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
@@ -170,14 +173,14 @@ write("brooklyn", {
  "box": bb, "focus": [round((pl("Brooklyn", Z)[0] + NYC[0]) / 2, 1), round((pl("Brooklyn", Z)[1] + NYC[1]) / 2, 1)],
  "stills": [{"at": [bb[0] + bb[2] / 2, bb[1] + bb[3] / 2], "dist": 120, "tilt": 34, "yaw": 0}, {"at": ll(40.7030, -73.9990, Z), "dist": 45, "tilt": 48, "yaw": -10},
             {"at": ll(40.6990, -73.9945, Z), "dist": 26, "tilt": 56, "yaw": 15}],
- "hm_ppu": 8, "tex": 4096, "exag": 2.4, "cell": 4.2, "seed": 1776, "relief_noise": [0.8, 0.3],
+ "hm_ppu": 8, "tex": 4096, "exag": 3.6, "cell": 1.8, "gm_unit": 0.45, "track_k": 0.5, "seed": 1776, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6,
  "dem_edits": {"sea": {"level": 0.6, "min_px": 4000, "open_px": 3, "close_px": 5, "island_px": 200, "seeds": [[40.705, -74.000], [40.690, -74.030], [40.700, -74.025]],
                        "force_water": FW},
                "fill_water": True, "spike_m": 25.0, "sea_floor_m": 0.0},
  "sea_look": {"deep": "#38545f", "shallow": "#52727a", "shelf_u": 3.0, "beach_u": 0.15, "line_u": 0.06},
  "creek_km2": 0.5, "creeks": {"paint_km2": 1.0, "ribbon_km2": 1e9},
- "woods": 0.02, "ravine_woods": 0.4, "tree_spacing": 0.25, "rust_k": 0.85, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "woods": 0.02, "ravine_woods": 0.4, "tree_spacing": 0.25, "clear_blur": 0.35, "clear_noise_u": 0.8,
  "rivers": [{"name": "Gowanus Creek", "geo": "Gowanus Creek", "w": 0.7, "step": 0.12, "snap": False, "smooth": 6, "meander": 0.15, "meander_wl": 2.0}],
  "roads": [{"name": "Brooklyn - Flatbush road", "geo": "Brooklyn - Flatbush - Jamaica roads", "cls": "pike", "meander": 0.15},
            {"name": "Jamaica road", "geo": "Jamaica road (Bedford", "cls": "pike", "meander": 0.15},
@@ -204,7 +207,7 @@ write("brooklyn", {
 Z = 12
 cr = box_ll(40.2875, -74.8830, 40.3185, -74.8400, Z)
 write("crossing", {
- "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.3),
+ "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, floes=0.18),
  "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware "
          "(~270 m = ~9 units), the river roads on both banks, the Bear Tavern road up the NJ bank towards Bear Tavern, the ferry houses. Zoom-12 frame: "
          "1 unit = ~29 m (base units x 4).",
@@ -212,10 +215,10 @@ write("crossing", {
  "stills": [{"at": [cr[0] + cr[2] / 2, cr[1] + cr[3] / 2], "dist": 110, "tilt": 34, "yaw": 0},
             {"at": [round((pl("McConkey", Z)[0] + pl("Johnson", Z)[0]) / 2, 1), round((pl("McConkey", Z)[1] + pl("Johnson", Z)[1]) / 2, 1)], "dist": 40, "tilt": 48, "yaw": -8},
             {"at": pl("Johnson", Z), "dist": 20, "tilt": 56, "yaw": 20}],
- "hm_ppu": 8, "tex": 4608, "exag": 2.0, "cell": 7.0, "seed": 1225, "relief_noise": [1.0, 0.35],
+ "hm_ppu": 8, "tex": 4608, "exag": 3.0, "cell": 2.0, "gm_unit": 0.45, "track_k": 0.5, "seed": 1225, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.3, "creeks": {"paint_km2": 0.6, "ribbon_km2": 1e9},
- "woods": 0.06, "ravine_woods": 0.7, "tree_spacing": 0.3, "rust_k": 0.85, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "woods": 0.06, "ravine_woods": 0.7, "tree_spacing": 0.3, "clear_blur": 0.35, "clear_noise_u": 0.8,
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 10.5, "step": 0.2, "snap": False, "smooth": 10, "keep": 7.0},
             {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.6, "step": 0.15, "smooth": 6}],
  "roads": [{"name": "River road (NJ)", "geo": "River road (NJ)", "cls": "pike", "meander": 0.2},
@@ -241,11 +244,11 @@ write("trenton", {
  "box": tb, "focus": pl("Trenton", Z),
  "stills": [{"at": [tb[0] + tb[2] / 2, tb[1] + tb[3] / 2], "dist": 95, "tilt": 34, "yaw": 0}, {"at": pl("Trenton", Z), "dist": 40, "tilt": 48, "yaw": -8},
             {"at": qs, "dist": 22, "tilt": 56, "yaw": 15}],
- "hm_ppu": 8, "tex": 4096, "exag": 2.4, "cell": 4.2, "seed": 1226, "relief_noise": [0.9, 0.3],
+ "hm_ppu": 8, "tex": 4096, "exag": 3.6, "cell": 1.8, "gm_unit": 0.45, "track_k": 0.5, "seed": 1226, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
- "woods": 0.0, "ravine_woods": 0.6, "tree_spacing": 0.28, "rust_k": 0.85, "clear_blur": 0.35, "clear_noise_u": 0.8,
- "clear": [[1345.3, 2033.3, 2.3]], "field_patch_k": 0.45, "field_feather": 0.6,   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
+ "woods": 0.0, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "clear": [[1345.3, 2033.3, 2.3]],   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 5.5, "step": 0.15, "snap": False, "smooth": 10, "keep": 4.0},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
  "roads": [{"name": "River road", "geo": "River road (NJ)", "cls": "pike", "meander": 0.15},
@@ -278,10 +281,10 @@ write("princeton", {
  "box": pb, "focus": pl("William Clarke orchard", Z),
  "stills": [{"at": [pb[0] + pb[2] / 2, pb[1] + pb[3] / 2], "dist": 100, "tilt": 34, "yaw": 0}, {"at": pl("William Clarke orchard", Z), "dist": 42, "tilt": 48, "yaw": -8},
             {"at": pl("Nassau Hall", Z), "dist": 24, "tilt": 56, "yaw": 12}],
- "hm_ppu": 8, "tex": 4096, "exag": 2.6, "cell": 4.4, "seed": 1777, "relief_noise": [0.9, 0.3],
+ "hm_ppu": 8, "tex": 4096, "exag": 3.8, "cell": 1.85, "gm_unit": 0.45, "track_k": 0.5, "seed": 1777, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
- "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "rust_k": 0.85, "clear_blur": 0.8, "clear_noise_u": 1.6,
+ "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.8, "clear_noise_u": 1.6,
  "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},
            {"name": "Quaker Bridge road", "geo": "Quaker Bridge road", "cls": "pike", "meander": 0.15},

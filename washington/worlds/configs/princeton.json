@@ -3,11 +3,14 @@
  "zoom": 11,
  "season": "winter",
  "winter": {
-  "snow": 0.6,
-  "snow_alpha": 0.66,
-  "desat": 0.45,
-  "ice": 1.0,
-  "conifers": 0.16
+  "snow": 0.45,
+  "snow_alpha": 0.16,
+  "desat": 0.1,
+  "ice": 0.6,
+  "conifers": 0.55,
+  "bare_mix": 0.35,
+  "road_col": "#84583f",
+  "snow_col": "#d2d0c2"
  },
  "note": "Princeton, 3 Jan 1777 (winter, frozen ground): the village on the post road + Nassau Hall, the post road to Trenton (SW) over the Stony Brook bridge (Worth's Mill), the Quaker Bridge / Saw Mill road from the south (the night march), the Thomas Clarke house and William Clarke's orchard (the clash point), the Olden house, Frog Hollow. Zoom-11 frame. Carnegie Lake (1906) and the D&R canal (1834) are modern: filled.",
  "box": [
@@ -51,12 +54,14 @@
  ],
  "hm_ppu": 8,
  "tex": 4096,
- "exag": 2.6,
- "cell": 4.4,
+ "exag": 3.8,
+ "cell": 1.85,
+ "gm_unit": 0.45,
+ "track_k": 0.5,
  "seed": 1777,
  "relief_noise": [
-  0.9,
-  0.3
+  2.0,
+  0.6
  ],
  "dem_ppu": 8,
  "dem_margin": 6,
@@ -74,7 +79,6 @@
  "woods": 0.03,
  "ravine_woods": 0.6,
  "tree_spacing": 0.28,
- "rust_k": 0.85,
  "clear_blur": 0.8,
  "clear_noise_u": 1.6,
  "rivers": [

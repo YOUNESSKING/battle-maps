@@ -213,6 +213,7 @@ export function initWorld(canvas, opts = {}) {
     const GREENS = [0x314f52, 0x355455, 0x385656, 0x2f4c50, 0x3a5657, 0x324f51, 0x3b5858, 0x2f5052];   // v6: teal (R -10 %, B +12 %)   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
     const WINTER = d.season === "winter", WINTER_CON = 1 - ((d.winter && d.winter.conifers) ?? 0.16);
     const BARE = [0x5a5753, 0x605b55, 0x55524e, 0x5d5953, 0x66625c, 0x514e4a];   // grey-brown twig masses (winter only)
+    const BMIX = d.winter && d.winter.bare_mix != null ? +d.winter.bare_mix : null, tmpC = new THREE.Color();   // Battle 21 v2: bare crowns = teal lerped toward the twig colour by bare_mix (absent = the full grey-brown)
     const NV = 4, variants = [];
     for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
       const lobes = 2 + (v % 3), P = [], N = [];
@@ -243,7 +244,7 @@ export function initWorld(canvas, opts = {}) {
           dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (wood ? 0.42 : 0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
           col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
           const hv = hash(j, 12); if (hv < 0.12) col.lerp(olive, 0.2 + hv); else if (hv > 0.7) col.lerp(teal, 0.45);
-          if (WINTER && hash(j, 13) > WINTER_CON) col.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]);   // winter (project regions with season "winter"): bare deciduous crowns, the conifers keep their green
+          if (WINTER && hash(j, 13) > WINTER_CON) { if (BMIX != null) col.lerp(tmpC.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]), BMIX); else col.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]); }   // winter (project regions with season "winter"): bare deciduous crowns, the conifers keep their green
           col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.73 + 0.06 * e : 0.72)); im.setColorAt(i, col); });   // v7: x0.88
         R.scene.add(im); R.trees.push(im); });
     }

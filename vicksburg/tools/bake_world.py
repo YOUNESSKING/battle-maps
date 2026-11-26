@@ -968,8 +968,12 @@ def bake(rname, G, P, creeks, preview=True):
     del seeds, wx, wy, my_, mx_
     LOG("  fields ...")
     hedge_pts = None
-    if close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
-    elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s, r, TW, TH, seed)   # project mode: the close (chalmette) field look on a wide map
+    if close and PROJ and cfg.get("gm_unit"):   # project (Battle 21 v2): the gm field detail (strips, furrows, tracks, scrub) at gm_unit x its unit size, so a close
+        gu_ = float(cfg["gm_unit"]); img, hedge_pts = gm_fields(lab, n, cell, s * gu_, r, TW, TH, seed, track_k=cfg.get("track_k", 1.0))   # camera 2-4x nearer (in metres) than v8's reads like v8 at 35-60 s
+        rh_ = np.random.default_rng(seed + 777).random(len(hedge_pts)); kp_ = np.where(hedge_pts[:, 2] == 2, gu_, gu_ * gu_)   # same tree density per unit area / hedge length as before
+        hedge_pts = hedge_pts[rh_ < kp_]; del rh_, kp_
+    elif close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
+    elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s * float(cfg.get("gm_unit", 1.0)), r, TW, TH, seed, track_k=cfg.get("track_k", 1.0))   # gm_unit: detail size x k (v2 jersey: bigger strips for the far camera)   # project mode: the close (chalmette) field look on a wide map
     else: img = wide_fields(lab, n, cell, s, r, TW, TH, seed)
     if PROJ and cfg.get("field_feather"):   # project: feather the field patch borders (no hard Voronoi facets): blur blended in along the label edges only
         fp_ = cfg["field_feather"] * s; lf_ = lab.astype(np.float32); k3_ = np.ones((3, 3), np.uint8)
@@ -1286,7 +1290,7 @@ def bake(rname, G, P, creeks, preview=True):
     if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
     if PROJ and cfg.get("wideSunK") is not None: D["wideSunK"] = cfg["wideSunK"]
     if PROJ and cfg.get("detail"): D["detail"] = cfg["detail"]   # engine: procedural ground detail near the camera (opt-in)
-    if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees")}   # engine: bare woods, ice on the rivers
+    if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees", "conifers", "bare_mix")}   # v2: conifers / bare_mix reach the engine crowns   # engine: bare woods, ice on the rivers
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
     if rb: D["bridge"] = {k: rb[0][k] for k in ("x", "z", "angle", "len", "wl", "deck")}
@@ -1311,6 +1315,8 @@ def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     (cedar / pine) clumps that keep the teal"""
     bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * ((0.86 + 0.28 * crown[..., None]) if close else (1 - 0.26 * WINTER.get('crown_k', 1.0) + 0.52 * WINTER.get('crown_k', 1.0) * crown[..., None]))   # wide: the Jackson canopy speckle contrast   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
     con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - (0.62 if close else 0.62 - 0.6 * (WINTER.get("conifers_wide", 0.4) - 0.16))) * 6, 0, 1)[..., None]
+    if WINTER.get("bare_mix") is not None:   # Battle 21 v2 (owner row 22): bare woods = the summer teal canopy with only a touch of grey-brown twig colour
+        bm = float(WINTER["bare_mix"]); bare = fcol * (1 - bm) + bare * (fcol.mean() / max(float(bare.mean()), 1e-3)) * bm
     return bare * (1 - con) + fcol * con
 
 
@@ -1335,6 +1341,7 @@ def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W
     g = g * (1 - snow) + scol * snow
     # 3) frost rim on the banks (shore ice / frozen mud)
     rim = np.clip(1 - np.abs(dist_t - hw_t - (0.05 if close else 0.4)) / (0.10 if close else 0.6), 0, 1)[..., None] * 0.35 * W.get("ice", 1.0)
+    if W.get("bare_mix") is not None: rim = rim * (1 - forest[..., None])   # v2 (bare_mix configs): no frost rim on creeks under the woods (read as pale streaks in the canopy)
     g = g * (1 - rim) + hexc("#b9c0c2") * rim
     if sea is not None:   # the painted sea stays as it was (no grey-down, no snow)
         sm = np.clip((sea - 0.35) * 3.3, 0, 1)[..., None]; g = g * (1 - sm) + img0 * sm

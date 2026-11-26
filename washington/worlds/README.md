@@ -126,3 +126,24 @@ node vicksburg/tools/check_troops_motion.mjs washington/scenes/S05 0 40 trenton 
 - Colonies: the Hudson / East River / tidal Delaware are the sea mask (no ribbon); Meadowlands marsh partly reads as water; modern fill at Newark
   Bay accepted. The Atlantic fills the SE quarter (true geography; frame the camera on NY - Philadelphia).
 - Trenton has ~530 houses incl. farmsteads (the 1776 town ~100 houses + outbuildings): reads as a town on two streets, not a city.
+
+## v2 ground (2026-11-26, OWNER_DECISIONS row 22): the approved v8 test look
+Reference = `research/style_tests/gm3d/clip/gm3d_clip_v8_share.mp4` (+ `vicksburg/troops_test_v14_share.mp4`), not Jackson. Sheet: `previews/v2_ground.jpg`
+(each region at a real scene camera next to the matching v8 / v14 frame). All 7 regions re-baked; boxes, frames, coordinates, rivers, roads, towns,
+the East River fix and the village clusters unchanged.
+- **Removed (the dark / flat / grey settings):** `rust_k` (rust ploughland back), `field_patch_k` / `field_feather` (patchwork contrast back),
+  `tex_grade`, wide `relief_k 0.5` / `lit_k 0.3` / `wideSunK 0.15` (back to the v8 defaults 0.9 / 0.85 / 0.35), the heavy winter
+  (`desat 0.45`, `snow_alpha 0.66`; and `conifers` never reached the engine, so 84 % of the close crowns were grey).
+- **Winter = light frost over the same patchwork:** `WINTER = {snow 0.45, snow_alpha 0.16, desat 0.10, ice 0.6, conifers 0.55, bare_mix 0.35,
+  road_col #84583f, snow_col #d2d0c2}`; wide `snow_alpha 0.10, desat 0.08, lit_col #c6c4a0`; crossing floes 0.18.
+  `bare_mix` (new, project only): bare woods = the summer teal canopy lerped 35 % toward the twig colour (baker `winter_woods`, engine crowns
+  `world.js`; absent = the old full grey-brown). With `bare_mix` set, no frost rim under the woods. `conifers` / `bare_mix` now pass to region.js.
+- **Close regions** (brooklyn / trenton / princeton / crossing): our scene cameras sit 2-4x nearer (in metres) than v8's close camera, so the gm
+  field look is scaled to read like v8 at 35-60 s: `cell` 4.2-7 -> 1.8-2.0 (fields ~100-120 m), `gm_unit` 0.45 (new: strips / furrows / tracks /
+  scrub at 0.45x their unit size; hedge / lone trees thinned to keep the old tree density), `track_k` 0.5 (new `gm_fields` kwarg, default 1 =
+  Vicksburg unchanged: half the pale cart tracks, half opacity). Relief: `exag` 2.0-2.6 -> 3.0-3.8, `relief_noise` [2.0, 0.6].
+- **jersey (wide z10):** `field_look: "gm"` (the v8 close patchwork, ~700 m fields) with `cell` 6, `gm_unit` 1.5, `exag` 4, tex 7168 (gm_fields
+  peak RSS ~7.5 GB at 7168; 8192 would exceed the 8 GB budget), speckled winter canopy (`crown_k` 1.8, `wood_col` #4b4a40, `bare_mix` 0.45).
+- **colonies / colonieswinter (wide z9):** v8 wide look (wide_fields, `exag` 5, default relief / lit / sun), `wood_scale` 2.2, `woods` 0 (smaller,
+  more numerous woods like v8 3 s).
+- Vicksburg / Jackson configs never set the new keys: their bakes are unchanged.
