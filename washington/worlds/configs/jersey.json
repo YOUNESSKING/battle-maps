@@ -55,6 +55,10 @@
   "k": 1.4
  },
  "river_halo_u": 0.25,
+ "bank_fill": {
+  "u": 0.7,
+  "a": 0.6
+ },
  "stills": [
   {
    "at": [

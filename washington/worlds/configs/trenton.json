@@ -105,6 +105,11 @@
   "contrast": 1.06,
   "sat": 1.6
  },
+ "bank_slope": 5.0,
+ "bank_fill": {
+  "u": 0.15,
+  "a": 0.5
+ },
  "rivers": [
   {
    "name": "Delaware River",
@@ -121,7 +126,21 @@
    "w": 0.45,
    "step": 0.12,
    "snap": false,
-   "smooth": 6
+   "smooth": 10,
+   "valley": {
+    "depth_m": 2.5,
+    "half_u": 2.5
+   },
+   "bank_blur": {
+    "sigma_u": 1.2,
+    "half_u": 4.0
+   },
+   "look": {
+    "color": "#3d5a6c",
+    "rough": 0.85,
+    "env": 0.1,
+    "ns": 0.06
+   }
   }
  ],
  "roads": [

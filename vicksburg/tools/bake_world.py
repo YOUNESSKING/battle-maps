@@ -569,7 +569,7 @@ class Settle:
             tw = c - nv * 0.3; self.put(float(tw[0]), float(tw[1]), 0.12, 0.12, ang, 5, 2, force=True)
 
     # ---- town kinds ----
-    def street_town(self, c, road, halfL=2.8, cross=6, rad=4.3, parallel=True):
+    def street_town(self, c, road, halfL=2.8, cross=6, rad=4.3, parallel=True, on_road=False):
         """Bovina: main street parallel to the road, a link lane, cross streets, back lanes, parallel streets, church, rows of houses"""
         rr = self.rr; bx, by = c; self.clear.append((bx, by, rad + 0.2))
         RD = densify(road, 0.05); j = int(np.hypot(RD[:, 0] - bx, RD[:, 1] - by).argmin())
@@ -577,12 +577,16 @@ class Settle:
         u = np.linspace(-halfL, halfL, int(halfL * 17))[:, None]
         main = np.array([bx, by], np.float32) + td * u + np.array([-td[1], td[0]]) * (0.12 * np.sin(u[:, :1] * 0.9))
         main = main[[not self.wet(*q) and self.inside(*q) for q in main]].astype(np.float32)
+        if on_road:   # project (v2 r4): the houses line the road itself (no separate main street / link lane beside it)
+            k_ = int(halfL / 0.05); main = RD[max(j - k_, 0):j + k_ + 1].astype(np.float32); main = main[[not self.wet(*q) and self.inside(*q) for q in main]]
+            if len(main) < 6: return
+            loc = [(main, 0.5)]
         if len(main) < 6: return
-        self.street(main, 0.2); loc = [(main, 0.2)]
-        if np.hypot(*(RD[j] - [bx, by])) > 0.6:
+        if not on_road: self.street(main, 0.2); loc = [(main, 0.2)]
+        if not on_road and np.hypot(*(RD[j] - [bx, by])) > 0.6:
             link = densify([main[int(len(main) * 0.62)], RD[min(j + 8, len(RD) - 1)]], 0.1); self.street(link, 0.16); loc.append((link, 0.16))
         cr = []
-        fr = np.linspace(0.12, 0.9, cross) if cross > 1 else [0.5]
+        fr = np.linspace(0.12, 0.9, cross) if cross > 1 else ([0.5] if cross == 1 else [])   # cross 0 (project): no cross streets
         for f in fr:
             L1, L2 = rr.uniform(1.2, 2.2), rr.uniform(1.1, 2.2)
             i = int(f * (len(main) - 1)); p = main[i]; t = self.tang(main, i); nrm = np.array([-t[1], t[0]])
@@ -852,13 +856,17 @@ def bake(rname, G, P, creeks, preview=True):
         if close and len(big) >= 8:
             pts = smooth(densify(chaikin(big[:, :2], 2), 0.12), 8); pts = meander(pts, [], amp=0.16, wl=1.6, seed=len(riv_in))
             riv_in.append(("creek", pts, float(np.clip(0.14 + 0.0016 * big[:, 2].mean(), 0.16, 0.32)), {"auto": True}))
-    if PROJ and any(e.get("valley") for _, _, _, e in riv_in):   # project (Battle 21 v2 r2): carve a broad valley along a river ("valley": {depth_m, half_u}) before its water level
+    if PROJ and any(e.get("valley") or e.get("bank_blur") for _, _, _, e in riv_in):   # project (Battle 21 v2 r2): carve a broad valley along a river ("valley": {depth_m, half_u}) before its water level
         for _, pts, _, e in riv_in:
-            if not e.get("valley"): continue
+            if not (e.get("valley") or e.get("bank_blur")): continue
             vm = np.full((HH, HW), 255, np.uint8); Pp = np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1)
             cv2.polylines(vm, [np.round(Pp * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
-            dv = cv2.distanceTransform(vm, cv2.DIST_L2, 5) / upx_h; vv_ = e["valley"]
-            h = h - vv_.get("depth_m", 6.0) * np.clip(1 - dv / vv_.get("half_u", 3.0), 0, 1) ** 1.6; del vm, dv
+            dv = cv2.distanceTransform(vm, cv2.DIST_L2, 5) / upx_h
+            if e.get("bank_blur"):   # v2 r4 (N8): soften cut banks / terraces along the river (heavy blur blended in a band of half_u units)
+                bb_ = e["bank_blur"]; wb_ = np.clip(1 - dv / bb_.get("half_u", 3.0), 0, 1) ** 0.7
+                h = h * (1 - wb_) + cv2.GaussianBlur(h, (0, 0), bb_.get("sigma_u", 1.0) * upx_h) * wb_; del wb_
+            if e.get("valley"): vv_ = e["valley"]; h = h - vv_.get("depth_m", 6.0) * np.clip(1 - dv / vv_.get("half_u", 3.0), 0, 1) ** 1.6
+            del vm, dv
         hs = cv2.GaussianBlur(h, (0, 0), 2.5 * upx_h)
     rivs = []; wlimg = np.full((HH, HW), 1e4, np.float32); cl = np.full((HH, HW), 255, np.uint8); widthimg = np.zeros((HH, HW), np.float32)
     for key, pts, w, e in riv_in:
@@ -873,11 +881,21 @@ def bake(rname, G, P, creeks, preview=True):
         cv2.polylines(cl, [np.round(Pp * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
         stride = 2 if close or w < 3 else 1
         rivs.append(dict(name=key, w=round(w, 3), pts=[[round(float(p[0]), 3), round(float(p[1]), 3), round(float(l), 2)] for p, l in zip(pts[::stride], wl[::stride])]))
+        if PROJ and e.get("look"): rivs[-1]["look"] = e["look"]   # project (Battle 21 v2 r4): per-river water look for the engine (colour / roughness / ripple / env)
     dist = cv2.distanceTransform(cl, cv2.DIST_L2, 5) / upx_h
     hw = np.maximum(widthimg, 0.3) / 2; depth = 2.5 if not close else 3.0
     bankslope = 9.0 if not close else 14.0
+    if PROJ and cfg.get("bank_slope"): bankslope = float(cfg["bank_slope"])   # project (v2 r4): gentler cut banks (no terraced trench)
     target = np.where(dist < hw, wlimg - depth * (1 - (dist / hw) ** 2) - 0.4, wlimg - 0.4 + (dist - hw) * bankslope)
     h = np.where(wlimg < 1e3, np.minimum(h, target), h)
+    for _, pts, _, e in (riv_in if PROJ else []):   # project (v2 r4, N8): soften the carved cut bank (no terraced scarp): blur the land beside the water, never below water level
+        if not e.get("bank_blur"): continue
+        vm = np.full((HH, HW), 255, np.uint8); cv2.polylines(vm, [np.round(np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1) * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
+        dv = cv2.distanceTransform(vm, cv2.DIST_L2, 5) / upx_h; bb_ = e["bank_blur"]; hw_e = e["w"] / 2
+        wb_ = np.clip((dv - hw_e - 0.15) / 0.5, 0, 1) * np.clip(1 - (dv - hw_e) / bb_.get("half_u", 3.0), 0, 1) ** 0.7
+        hb_ = cv2.GaussianBlur(h, (0, 0), bb_.get("sigma_u", 1.0) * upx_h)
+        hb_ = np.where(wlimg < 1e3, np.maximum(hb_, wlimg + 0.3), hb_)
+        h = h * (1 - wb_) + hb_ * wb_; del vm, dv, wb_, hb_
     # creek troughs (painted creeks): 0.6-2 m
     cm = np.zeros((HH, HW), np.float32)
     for A in creek_lines:
@@ -1114,9 +1132,10 @@ def bake(rname, G, P, creeks, preview=True):
     road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((1.1 if not close else 0.32) * s))
     for rd, c_, _ in RDS:
         wpx = rwpx if (not close and c_ == "pike") or (close and c_ == "pike") else (max(2, int(0.7 * s)) if not close else max(3, int(0.2 * s)))
+        if PROJ and cfg.get("road_w_k"): wpx = max(2, int(round(wpx * cfg["road_w_k"])))   # project (v2 r4): thinner ruts (v8 width)
         cv2.polylines(road, [np.round(np.array([Pt(p) for p in rd], np.float32) * 4).astype(np.int32)], False, 255, wpx, cv2.LINE_AA, shift=2)
     if town:
-        for st, wdt in town["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(3, int(wdt * s)), cv2.LINE_AA, shift=2)
+        for st, wdt in town["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(2 if (PROJ and cfg.get("road_w_k")) else 3, int(wdt * s * ((cfg.get("road_w_k") or 1.0) if PROJ else 1.0))), cv2.LINE_AA, shift=2)
     if wplan:
         for st, wdt in wplan["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(2, int(wdt * s)), cv2.LINE_AA, shift=2)
     rdm = road.astype(np.float32) / 255
@@ -1189,6 +1208,10 @@ def bake(rname, G, P, creeks, preview=True):
         img = 255.0 * (np.clip(img, 0, 255) / 255.0) ** tg_.get("gamma", 1.0)
         if tg_.get("tint"): img = img * np.array(tg_["tint"], np.float32)   # project: per-channel warmth (R, G, B multipliers)
     if FROST is not None: img = img * (1 - FROST[..., None]) + hexc(WINTER["frost"].get("col", "#dde5ea")) * FROST[..., None]; del FROST
+    if PROJ and cfg.get("bank_fill"):   # project (v2 r4, critic #23): the strip between the water and the woods / frost = the river bank colour (no pale rims round ponds)
+        bf_ = cfg["bank_fill"]; u_ = bf_.get("u", 0.8 if not close else 0.15)
+        m_ = np.clip(1 - (dist_t - hw_t) / u_, 0, 1) * np.clip((dist_t - hw_t + 0.05) / 0.05, 0, 1) * bf_.get("a", 0.6)
+        img = img * (1 - m_[..., None]) + hexc(bf_.get("col", "#5c5c4a")) * m_[..., None]; del m_
     img8 = np.clip(img, 0, 255)[..., ::-1].astype(np.uint8); del img
     cv2.imwrite(f"{out}/ground.jpg", img8, [cv2.IMWRITE_JPEG_QUALITY, cfg.get("jpeg_q", 88 if close else 90)])
     LOG("  ground.jpg %.1f MB" % (os.path.getsize(f"{out}/ground.jpg") / 1e6))
@@ -1455,7 +1478,7 @@ def paint_sea(img, sea, close, s, look):
     col = col * (0.97 + 0.06 * tex)
     out = img * (1 - sm[..., None]) + col * sm[..., None]
     beach = np.clip(1 - dl / look.get("beach_u", 0.5 if not close else 0.08), 0, 1)[..., None] * 0.35 * (1 - sm[..., None])
-    out = out * (1 - beach) + hexc("#b4a886") * beach
+    out = out * (1 - beach) + hexc(look.get("beach_col", "#b4a886")) * beach
     cl = np.clip(1 - np.abs(dsea - dl) / look.get("line_u", 0.18 if not close else 0.04), 0, 1)[..., None] * 0.55
     return out * (1 - cl) + hexc("#34413f") * cl
 
@@ -1600,10 +1623,15 @@ def settle_close(cfg, G, box, dist, hw, h, slope, RDS, seed):
         if p is None: continue
         if not (x0 < p[0] < x0 + bw and y0 < p[1] < y0 + bh): continue
         kind = t.get("kind", "street"); nr = nearest_road(p)
+        for pb_ in (t.get("public", []) if PROJ else []):   # project (v2 r4): a clean public building (Nassau Hall) on its own yard, placed before the houses
+            a_ = math.radians(pb_[4]); S.yards.append((pb_[0], pb_[1], pb_[2] * 0.75, pb_[3] * 1.6, a_, 1)); S.put(pb_[0], pb_[1], pb_[2], pb_[3], a_, pb_[5], 1, force=True)
         if t.get("angle") is not None: ang = math.radians(t["angle"])
         elif nr: rd, i = nr[1], nr[2]; d_ = rd[min(i + 8, len(rd) - 1)] - rd[max(i - 8, 0)]; ang = math.atan2(d_[1], d_[0])
         else: ang = 0.0
-        if kind == "street" and nr: S.street_town(p, nr[1], t.get("halfL", 2.8), t.get("cross", 6), t.get("rad", 4.3), t.get("parallel", True))
+        if kind == "street" and nr and PROJ and t.get("on_road"):   # project (v2 r4): houses along every pike through the village (no extra streets)
+            for rd_ in pikes:
+                if np.hypot(rd_[:, 0] - p[0], rd_[:, 1] - p[1]).min() < 1.5: S.street_town(p, rd_, t.get("halfL", 2.8), 0, t.get("rad", 4.3), False, True)
+        elif kind == "street" and nr: S.street_town(p, nr[1], t.get("halfL", 2.8), t.get("cross", 6), t.get("rad", 4.3), t.get("parallel", True))
         elif kind == "grid": S.grid_town(p, ang, t.get("rad", 3.0), t.get("block", 0.9))
         elif kind == "hamlet": S.hamlet(p, ang if t.get("angle") is None else math.radians(t["angle"]), t.get("len", 2.6))
         elif kind == "plantation": S.plantation(float(p[0]), float(p[1]), None if t.get("angle") is None else math.radians(t["angle"]))

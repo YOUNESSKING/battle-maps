@@ -148,7 +148,7 @@ window.SEQ = {
     ["label", T.prisoner - 0.05, T.then + 0.2, { name: "Nearly 3,000 prisoners", sub: "", world: [FW[0] + 10, FW[1] + 30], side: "us", marker: false }],
     ["plaque.date", T.eighth - 0.05, { month: "December 1776", day: "8", weekday: "Sunday", note: "into Pennsylvania" }],
     ["plaque.note", T.congress - 0.05, "Congress flees Philadelphia"],
-    ["plaque.date", T.settled - 0.1, { month: "December 1776", day: "", weekday: "", note: "" }],   // round 2: no "8 December" over the winter posts
+    ["plaque.date", T.settled - 0.1, { month: "December 1776", day: "8", weekday: "Sunday", note: "" }],   // v2 r3 (critic A N7): keep the last spoken day (8 Dec) until the next one; only the Congress note leaves
     ["label", T.hessian - 0.05, T.ralls - 0.3, { name: "Hessians", sub: "three regiments", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.fourteen - 0.05, T.colonel - 0.3, { name: "About 1,400 men", sub: "", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.thirtyfirst - 0.05, T.D, { name: "Enlistments end", sub: "31 December", world: bank(kT - 0.15, "PA", HW + 12.0), side: "us", marker: false }],

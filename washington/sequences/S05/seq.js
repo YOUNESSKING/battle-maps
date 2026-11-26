@@ -120,31 +120,40 @@ add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), keys: [[0, 1338.0, 2
 // Greene's blocks down the Pennington road, deploying at the head of the town; Sullivan's from the River road into the lower town
 // round 3 (critic A): Greene's blocks stay on open ground WEST of the ring wood: abreast west of the Pennington road, straight south past
 // the wood (facing south), hold, turn in place toward their deploy spots at the head of the town, walk
-const gPos = [[1340.6, 2048.4], [1342.8, 2047.0], [1345.0, 2045.6]];
-gPos.forEach((p, i) => { const s0 = [1333.0 + i * 2.2 - (i === 0 ? 1.5 : 0), 2033.0];   /* v2 r2 critic B: west block clear of the farm */   // round 4: ONE straight run (no mid-route turn snap), clear of the wood's west edge
-  add({ side: "u", region: TR, face: Math.atan2(p[1] - s0[1], p[0] - s0[0]), t0: 88.0, keys: [[0, ...s0], [T.burst + 0.2, ...s0], [104.6 + i * 0.4, ...p], [T.D, ...p]] }); });
+// v2 r3 (critic A #2): each block walks straight along its front normal (south), steps off on "burst", stops (and settles) before the 95.4 dissolve
+const DG = [68.5, 76.8, 81.9].map((d) => d * Math.PI / 180);   // the on-screen 'down' direction at each block (camera at 93.5 s)
+[0, 1, 2].forEach((i) => { const s0 = [1333.0 + i * 2.2 - (i === 0 ? 1.5 : 0), 2033.0], p = [s0[0] + Math.cos(DG[i]) * 1.3, s0[1] + Math.sin(DG[i]) * 1.3];   /* v2 r2 critic B: west block clear of the farm */
+  add({ side: "u", region: TR, face: DG[i], t0: 88.0, keepTimes: true, keys: [[0, ...s0], [91.4 + i * 0.1, ...s0], [94.0 + i * 0.1, ...p], [T.D, ...p]] }); });
 const sPos = [[1353.4, 2062.4], [1351.4, 2066.2]];   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
-sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056.0 - i * 1.4, p[0] - 1338.5 + i * 1.2), t0: 88.0, keys: [[0, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.burst, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.hessians + i * 0.5, ...p], [T.D, ...p]] }));
+// v2 r3 (critic A #2): up from the River road into the lower town, straight north (front first, long side across the screen), after the dissolve
+const DS = (77.0 + 180) * Math.PI / 180;   // on-screen 'up' at the lower town (camera at 103 s)
+add({ side: "u", region: TR, face: DS, t0: 95.4, arrive: false, keys: [[0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [101.0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [105.4, ...sPos[0]], [T.D, ...sPos[0]]] });
+add({ side: "u", region: TR, face: N, t0: 95.4, arrive: false, keys: [[0, ...sPos[1]]] });   // the second brigade waits below the frame (no walk)
 // Knox's guns race to the head of King and Queen streets
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
-[G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: Math.atan2(g[1] - (2044.2 - i * 0.4), g[0] - (1350.6 + i * 1.2)), t0: 94.2,   /* v2 r1: faced along the run */ keys: [[0, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.raced - 2.5, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.streets - 0.4 + i * 0.3, ...g], [T.D, ...g]] }));
+// v2 r3 (critic A #2): straight down to the street heads along their front (south), after the 95.4 dissolve, in place before "fired"
+[G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: S_, t0: 95.4, arrive: false, keepTimes: true, keys: [[0, g[0], g[1] - 2.0], [96.4 + i * 0.2, g[0], g[1] - 2.0], [98.9 + i * 0.2, ...g], [T.D, ...g]] }));
 // V2 r3 (critic 2 R2-4): Greene's leading brigade at the head of the town on the Pennington road, behind Knox's guns
 [-1, 0, 1].forEach((k) => add({ side: "u", region: TR, face: S_, t0: 95.4 + (k + 1) * 0.12, arrive: false, keys: [[0, 1350.6 + k * 0.86, 2051.2]] }));   // v2 r1: one block per unit, west of the guns' run
 // the Hessians form in the two streets, are raked, leave the streets east into the fields, are driven to the orchard, surrender
 const H1 = KING(2058.8), H2 = QUEEN(2059.8),   /* V2 r2: up the streets, in the 8 a.m. frame */ F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.2, 2055.0], O2 = [1364.8, 2057.2];
 // v2 round 1: ONE block per unit: three single blocks abreast per street group (0.8 u apart), the King St group a little west, Queen St east
-const HG = [[1354.0, 2058.8], [1357.8, 2059.8]];
-const rH = [[HG[0], O1], [HG[1], O2]].flatMap(([h, o], i) => [-1, 0, 1].map((k) => add({ side: "r", region: TR, face: N, t0: 95.4 + i * 0.3 + (k + 1) * 0.12, arrive: false,
-  keys: [[0, h[0] + k * 0.8, h[1]], [105.4 + i * 0.4, h[0] + k * 0.8, h[1]], [114.0 + i * 0.6, o[0] + k * 0.8, o[1]], [T.D, o[0] + k * 0.8, o[1]]], cap: T.laid + 0.2 + i * 0.25 + (k + 1) * 0.08 })));
+const HG = [[1354.0, 2057.8], [1357.8, 2058.8]];   // v2 r3 (critic A #12): 1 u north, clear of the timeline
+// v2 r3 (critic A #2): the groups hold where they formed (the Queen St group already stands in the fields east of the town); the ring closes round them
+const rH = HG.flatMap((h, i) => [-1, 0, 1].map((k) => add({ side: "r", region: TR, face: N, t0: 95.4 + i * 0.3 + (k + 1) * 0.12, arrive: false,
+  keys: [[0, h[0] + k * 0.8, h[1]]], cap: T.laid + 0.2 + i * 0.25 + (k + 1) * 0.08 })));
 // the blue blocks close round the orchard (north, east, south-west)
-[[1363.4, 2051.4, S_], [1368.4, 2054.2, W], [1360.2, 2056.6, E]].forEach(([x, y, f], i) => add({ side: "u", region: TR, face: f, t0: 111.0 + i * 0.4, arrive: false,
-  keys: [[0, x + Math.cos(f + Math.PI) * 2.6, y + Math.sin(f + Math.PI) * 2.6], [T.driven + i * 0.3, x + Math.cos(f + Math.PI) * 2.6, y + Math.sin(f + Math.PI) * 2.6], [T.surrounded + 0.2 + i * 0.3, x, y], [T.D, x, y]] }));
+// v2 r3: round the Queen St group (x 1356.65-1358.95, y 2058.8); each walks in along its front = the on-screen vertical / horizontal (camera at 114 s)
+const RING = [[1357.8, 2056.4, 82.8], [1361.0, 2058.8, 182.0], [1358.4, 2060.8, 79.0 + 180]].map(([x, y, d]) => [x, y, d * Math.PI / 180]);
+RING.forEach(([x, y, f], i) => { const L = i === 1 ? 1.4 : 2.6, ts0 = i === 1 ? 114.0 : T.driven + i * 0.3, b0 = [x + Math.cos(f + Math.PI) * L, y + Math.sin(f + Math.PI) * L];   // the east block: a short late walk near the frame centre
+  add({ side: "u", region: TR, face: f, t0: 110.0 + i * 0.4, arrive: false, keepTimes: i === 1, keys: [[0, ...b0], [ts0, ...b0], [T.surrounded + 0.2 + i * 0.3, x, y], [T.D, x, y]] }); });
 // by the Assunpink bridge: one block streams away over the bridge, one is trapped; a blue block closes the bridge from the west
-const KN1 = [1357.1, 2066.4], KN2 = [1355.0, 2065.6];
-const ESCR = [[1357.1, 2066.4], [1356.8, 2068.4], [1357.2, 2072.0], [1357.7, 2073.4], [1358.5, 2075.1], [1360.9, 2077.9], [1363.6, 2080.4], [1366.0, 2083.2]];
+const KN1 = [1355.65, 2066.13], KN2 = [1354.6, 2064.4];   // v2 r3: KN1 straight up-screen of the bridge mouth (its walk onto the deck runs down the screen)
+const ESCR = [[1355.65, 2066.13], [1356.8, 2068.4], [1357.2, 2072.0], [1357.7, 2073.4], [1358.4, 2076.0], [1359.0, 2079.0], [1359.6, 2082.5]];   // v2 r3: off the bridge straight down the screen
 add({ side: "r", region: TR, face: S_, t0: 118.4, keys: [[0, ...KN1]], escape: { road: ESCR, join: "nearest", t0: T.several + 0.2, from: 0, front: true } });   // round 2: walks front first (no backing)
 add({ side: "r", region: TR, face: Math.atan2(-0.4, -0.9), t0: 118.4, keys: [[0, ...KN2]], cap: T.trapped - 0.1 });
-add({ side: "u", region: TR, face: E, t0: 118.4, keys: [[0, 1350.4, 2067.6], [T.before - 2.2, 1350.4, 2067.6], [T.closed + 0.2, 1354.6, 2068.1], [T.D, 1354.6, 2068.1]] });
+const DB = 76.5 * Math.PI / 180, BB = [1354.2, 2068.3];   // v2 r3: down the screen to the bridge's west end (camera at 122 s), after the 118.65 dissolve
+add({ side: "u", region: TR, face: DB, t0: 118.4, keepTimes: true, keys: [[0, BB[0] - Math.cos(DB) * 2.5, BB[1] - Math.sin(DB) * 2.5], [120.4, BB[0] - Math.cos(DB) * 2.5, BB[1] - Math.sin(DB) * 2.5], [T.closed + 0.2, ...BB], [T.D, ...BB]] });
 
 // colonies: Washington's army at Trenton (blue), Cornwallis's men in New York (red)
 const NYc = P("New York", CO), TRc = P("Trenton, NJ", CO), NBc = P("New Brunswick (British", CO), PRc = P("Princeton, NJ", CO);
@@ -180,13 +189,13 @@ const fx = {
     { region: TR, pts: [[1337.6, 2028.2], [1338.4, 2028.4]], t0: 92.5, t1: 94.7, opts: { ...VO, dir: [-0.3, -0.95] } },
     // Greene's leading block answers
     // the Hessians in the streets fire back up the streets
-    { region: TR, pts: [[1354.7, 2058.1], [1356.7, 2058.1]], t0: 103.5, t1: 105.70, opts: { ...VO, dir: [0, -1] } },
+    { region: TR, pts: [[HG[0][0] - 1.1, HG[0][1] - 0.2], [HG[0][0] + 1.1, HG[0][1] - 0.2]], t0: 103.5, t1: 105.70, opts: { ...VO, dir: [0, -1] } },
     { region: TR, pts: [[HG[1][0] - 1.1, HG[1][1] - 0.2], [HG[1][0] + 1.1, HG[1][1] - 0.2]], t0: 103.6, t1: 105.80, opts: { ...VO, dir: [0, -1] } },
     // Sullivan's men fire from the houses into the lower town
     { region: TR, pts: [[1353.3, 2062.0], [1353.7, 2062.8]], t0: 107.75, t1: 109.95, opts: { ...VO, dir: [1, 0] } },
     // round the orchard: the ring fires once
-    { region: TR, pts: [[1362.8, 2051.8], [1364.0, 2051.8]], t0: 116.35, t1: 118.55, opts: { ...VO, dir: [0, 1], muzzle: 5 * KF * 1.6 } },
-    { region: TR, pts: [[1367.9, 2053.6], [1367.9, 2054.8]], t0: 116.65, t1: 118.85, opts: { ...VO, dir: [-1, 0], muzzle: 5 * KF * 1.6 } },
+    { region: TR, pts: [[RING[0][0] - 0.5, RING[0][1] + 0.2], [RING[0][0] + 0.5, RING[0][1] + 0.2]], t0: 116.35, t1: 118.55, opts: { ...VO, dir: [0, 1], muzzle: 5 * KF * 1.6 } },
+    { region: TR, pts: [[RING[1][0] - 0.2, RING[1][1] - 0.5], [RING[1][0] - 0.2, RING[1][1] + 0.5]], t0: 116.65, t1: 118.85, opts: { ...VO, dir: [-1, 0], muzzle: 5 * KF * 1.6 } },
   ],
   guns: [{ region: TR, h: 0.3, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.4 }, shots: gShots, impactOpts: { size: 0.6 } }],
   campfires: [
@@ -295,7 +304,7 @@ window.SEQ = {
   regions: [JE, CR, TR, CO],
   regionOpts: { [JE]: { troopScale: 3.5 }, [CO]: { troopScale: 8 }, [CR]: { troopScale: 0.67, fxScale: 4.4, decks }, [TR]: { troopScale: 0.68, fxScale: 4.4 } },   // V2: 0.048 x dist (close), 0.022 x dist (wide)
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // houseK as S06; the small wide-map bridge meshes read as crosses from far away
-  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
+  troops: "blocks", troopsOpts: {   /* v2 r3 (critic A #2): every Trenton walk runs along the on-screen vertical (DG / DS / DB / RING angles, measured with the scene camera), so the engine's on-screen heading correction stays small */ look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
   keys: [
     // 1. jersey, winter day: the chain of posts; Trenton
     K(0, JE, [690, 1004], 150, 44, 4),
@@ -320,11 +329,11 @@ window.SEQ = {
     K(CUT2, TR, [1335.0, 2033.6], 16.5, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // round 5: the ring wood framed out to the right
     K(95.0, TR, [1337.4, 2038.4], 16.5, 52, 10, "lin", 0.08),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
-    K(95.4, TR, [1352.8, 2055.6], 13, 58, 8, "cut", 0.06, { dissolve: 0.9 }),
-    K(108.0, TR, [1355.6, 2059.6], 13.5, 57, 4, "lin", 0.05),
+    K(95.4, TR, [1352.8, 2055.6], 15.5, 58, 8, "cut", 0.06, { dissolve: 0.9 }),   // v2 r3 (critic A #12): pulled out, blocks ~70 px
+    K(108.0, TR, [1355.6, 2059.6], 15, 57, 4, "lin", 0.05),
     // 7. Rall, the fields east of the town, the surrender
-    K(110.5, TR, [1361.4, 2059.8], 13.5, 56, 0, "io", 0.04),
-    K(118.6, TR, [1363.6, 2056.4], 14, 56, -4, "lin", 0.03),
+    K(110.5, TR, [1360.2, 2059.6], 13.5, 56, 0, "io", 0.04),   // v2 r3: 1.2 u west (the ring round the Hessians nearer the frame centre)
+    K(118.6, TR, [1362.0, 2057.0], 14, 56, -4, "lin", 0.03),
     // 8. the Assunpink bridge
     K(118.65, TR, [1356.6, 2069.4], 9.5, 57, 6, "cut", 0.03, { dissolve: 0.9 }),
     K(127.4, TR, [1357.0, 2069.6], 9.0, 58, 2, "lin", 0.03),
@@ -344,8 +353,13 @@ window.SEQ = {
             [CO]: { scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[500, 380, 120, 1, 0.8], [360, 480, 110, 1, 0.9]] } },
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [
-    ["plaque.date", 0.4, { month: "December 1776", day: "", weekday: "", note: "" }],
-    (O, c) => stamp(c, "NO FORTIFICATIONS", T.fortifications - 0.1, T.other - 0.3, [TRj[0] + 1.0, TRj[1] - 8.0], JE),
+    ["plaque.date", 0.4, { month: "December 1776", day: "8", weekday: "Sunday", note: "" }],   // v2 r3 (critic A N7): = S04's last plate (the last spoken day) until "Christmas"
+    ["label", T.fortifications - 0.05, T.other - 0.3, { name: "No fortifications", sub: "", world: [TRj[0] + 1.0, TRj[1] - 8.0], marker: false }],   // v2 r3 (critic A #21): dark v8 plate, not a rubber stamp
+    // v2 r3 (critic A N6): THE ARMIES key + the wax-seal timeline from the first frame (S04 ends with both up), through the night shots
+    ["legend", 0.0, CUT2 + 0.1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["timeline.show", 0.0, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.25 }],
+    ["timeline.seal", 0.0, { at: 0.95, name: "Brooklyn" }],
+    ["timeline.go", T.christmas - 0.05, { at: 4.8, d: 1.2 }],
     ["plaque.date", T.christmas - 0.05, { month: "December 1776", day: "25", weekday: "Wednesday", note: "Christmas night" }],
     ["plaque.clock", T.dark + 0.3, { time: "18:00", note: "after dark", header: "25 December 1776" }],   // V2: the crossing 6 p.m. - 3 a.m. (FACT C2)
     ["label", T.durham - 0.05, T.iron + 1.2, { name: "Durham boats", sub: "built to carry iron ore", world: (t) => { const B = boats[0], p = VX.along(B.path, B.sAt(t)); return [p[0], p[1], 0.6]; }, side: "us", marker: false }],
@@ -359,8 +373,6 @@ window.SEQ = {
     // V2 r3: no "Trenton" note (the carved name says it); the watch keeps "the storm still blowing"   // V2: the watch stays through the fight (v8); only the note changes
     // V2: THE ARMIES key + the wax-seal campaign timeline on the map shots
     ["legend", CUT2 + 0.6, T.about - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "Hessians", sub: "Rall", color: "#9C3A35" }] }],
-    ["timeline.show", CUT2 + 0.4, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.8 }],
-    ["timeline.seal", CUT2 + 0.5, { at: 0.95, name: "Brooklyn" }],
     ["timeline.seal", T.about - 0.6, { at: 4.72, name: "Trenton" }],
     // V2: the small parchment result list top-right (v8) INSTEAD of the big dark result card; spoken numbers only
     ["plaque.clock", T.about - 0.5, { time: "9:30", note: "the battle over", header: "26 December 1776" }],   // v2 r2 critic B
@@ -377,6 +389,9 @@ window.SEQ = {
     ["letter", 142.5, 150.7, { header: "Move 2 · Trenton", title: "The Washington Method", sub: "1. Save the army first", marks: false, quote: "2. Hit them where they rest", qSize: 34, height: 270,
       cps: 20, qAt: T.hit2 - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     ["plaque.date", CUT3 + 0.3, { month: "December 1776", day: "", weekday: "", note: "New York" }],
+    // v2 r3 (critic A N6): key + timeline back on the colonies map shot (the key's sub waits for "Cornwallis")
+    ["timeline.show", CUT3 + 0.4, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.8 }],
+    ["legend", T.cornwallis - 0.05, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],
   ],
   build: (c) => { RAIN.build(c);   // v2 r1: no red pulse   // V2: no big result card
     // the American works south of the Assunpink were dug on 2 January: hidden here

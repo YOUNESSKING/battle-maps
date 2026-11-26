@@ -198,7 +198,13 @@ export function initWorld(canvas, opts = {}) {
       const wg = new THREE.BufferGeometry(); wg.setAttribute("position", new THREE.Float32BufferAttribute(vs, 3)); wg.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); wg.setIndex(ix); wg.computeVertexNormals();
       const m = new THREE.Mesh(wg, wmat); m.receiveShadow = true; scene.add(m); R.water.push(m);
       m.userData.ns = broad ? 0.1 : d.kind === "wide" ? 0.2 : 0.35;   // critic A r2: calmer wide rivers
-      if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
+      if (rv.look) {   // project (Battle 21 v2 r4): per-river water look from the bake (frozen / calm creeks: own colour, matte, almost no ripple tiling)
+        const L = rv.look; m.material = wmat.clone();
+        if (L.color) m.userData.lookCol = new THREE.Color(L.color);   // the day colour; follows night like the other water (see the per-frame update)
+        if (L.rough != null) m.material.roughness = L.rough;
+        if (L.env != null) { m.material.envMapIntensity = L.env; m.userData.envK = L.env / 0.22; }
+        if (L.ns != null) m.userData.ns = L.ns;
+      } else if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
     }
     R.wmat = wmat;
     if (d.season === "winter") buildIce(R, d, ys, exag);   // winter regions only: shore ice + drifting floes on the broad rivers
@@ -387,7 +393,7 @@ export function initWorld(canvas, opts = {}) {
     // water motion: normal map drifts downstream
     wnorm.repeat.set(1, 1); wnorm.offset.set(-t * 0.12, Math.sin(t * 0.7) * 0.03);
     R.water.forEach((m) => { const s = m.userData.ns ?? 0.35; m.material.normalScale.set(s, s);
-      if (m.material !== R.wmat) { m.material.color.copy(R.wmat.color); m.material.envMapIntensity = R.wmat.envMapIntensity * (m.userData.envK ?? 1); } });   // clones follow day / night
+      if (m.material !== R.wmat) { if (m.userData.lookCol) m.material.color.copy(m.userData.lookCol).lerp(NIGHT.water, n); else m.material.color.copy(R.wmat.color); m.material.envMapIntensity = R.wmat.envMapIntensity * (m.userData.envK ?? 1); } });   // clones follow day / night
     // bridge burn: centre spans gone, the rest charred
     for (const B of R.bridges) { const burnt = B.burnT != null && t >= B.burnT, m0 = Math.floor((B.nSeg - 1) / 2), m1 = Math.ceil((B.nSeg - 1) / 2);   // the centre span(s) fall
       B.span.forEach((s, k) => { const mid = k >= m0 && k <= m1; s.visible = !(burnt && mid); (s.userData.rails || []).forEach((r) => (r.visible = s.visible)); });

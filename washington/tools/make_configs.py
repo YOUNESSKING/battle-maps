@@ -77,14 +77,14 @@ write("colonies", {
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
  "hm_ppu": 1.5, "tex": 8192, "exag": 3.5, "dem_blur": 2.5, "lit_k": 0.55, "cell": 12.0, "seed": 1776,   # critic A v2 r1: soft broad relief (no bright ridge combs), smaller fields (no flat sheet over Long Island)
- "tex_grade": {"tint": [1.07, 1.0, 0.93]},   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
+ "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.86, "sat": 1.12}, "field_feather": 1.2,   # v2 r4 (critic A #4 / N3): lighter, greener patchwork (S02 Long Island L 23-29 -> v8 33-37), soft field borders (no flat-shaded facets)   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
                                  [41.00, -73.905], [40.80, -73.99], [39.95, -75.13], [40.10, -74.85], [40.15, -74.73], [40.60, -74.20]],
                        "force_water": [buffer_ll(EAST_RIVER, 480), buffer_ll(HARLEM_RIVER, 190)]},   # z9: the DEM loses these channels (East River ~1 km, Harlem ~0.4 km)
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
- "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2},
+ "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2, "beach_col": "#5c5c4a"},   # v2 r4 (#23): pond / coast bank = the river bank colour (no pale rims)
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
  "woods": 0.0, "wood_scale": 2.2, "wide_near_k": 0.3, "wide_slope_k": 0.6, "crown_u": 0.55, "detail": {"k": 0.08, "u": 0.6, "far": 420}, "villages": 6, "wood_soft": {"blur_u": 0.15, "alpha": 0.93},   # critic A r2/r3: crisp speckled canopy
  "river_halo_u": 0.5,
@@ -123,7 +123,7 @@ write("jersey", {
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
  "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 2.5, "lit_k": 0.55, "cell": 6.0, "gm_unit": 1.5, "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
- "river_halo_u": 0.25,
+ "river_halo_u": 0.25, "bank_fill": {"u": 0.7, "a": 0.6},   # v2 r4 (#23): the strip between water and woods / frost = river bank colour (no white pond rims)
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
@@ -251,9 +251,10 @@ write("trenton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.06, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
- "clear": [[1345.3, 2033.3, 2.3]], "river_woods": {"u": 2.6, "k": 0.16}, "tex_grade": TG_WINTER,   # v2 r2: teal wood masses along the Assunpink + the Delaware banks   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
+ "clear": [[1345.3, 2033.3, 2.3]], "river_woods": {"u": 2.6, "k": 0.16}, "tex_grade": TG_WINTER, "bank_slope": 5.0, "bank_fill": {"u": 0.15, "a": 0.5},   # v2 r4 (N8, #23): soft cut banks, bank-coloured rims   # v2 r2: teal wood masses along the Assunpink + the Delaware banks   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 5.5, "step": 0.15, "snap": False, "smooth": 10, "keep": 4.0},
-            {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
+            {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.45, "step": 0.12, "snap": False, "smooth": 10, "valley": {"depth_m": 2.5, "half_u": 2.5}, "bank_blur": {"sigma_u": 1.2, "half_u": 4.0},
+             "look": {"color": "#3d5a6c", "rough": 0.85, "env": 0.1, "ns": 0.06}}],   # v2 r4 (N8): v8 river blue, matte, no ripple tiles; a soft valley instead of a terraced cut
  "roads": [{"name": "River road", "geo": "River road (NJ)", "cls": "pike", "meander": 0.15},
            {"name": "Pennington road", "geo": "Pennington road", "cls": "pike", "meander": 0.15},
            {"name": "Princeton road", "geo": "New York post road", "cls": "pike", "meander": 0.15},
@@ -276,6 +277,9 @@ write("trenton", {
 
 # ============================================================ princeton (close, zoom 11) ============================================================
 pb = box_ll(40.3080, -74.7160, 40.3600, -74.6460, Z)
+_pr = np.array(next(r_["pts"] for r_ in G["roads"] if r_["name"].startswith("New York post road")), float)[:, :2] * 2.0; _nh = np.array(pl("Nassau Hall", Z))
+_j = int(np.hypot(*(_pr - _nh).T).argmin()); _d = _pr[min(_j + 1, len(_pr) - 1)] - _pr[max(_j - 1, 0)]
+NASSAU_ANG = round(math.degrees(math.atan2(_d[1], _d[0])), 1)   # v2 r4: Nassau Hall's long side along the post road (Nassau St)
 write("princeton", {
  "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, ice=0.25),
  "note": "Princeton, 3 Jan 1777 (winter, frozen ground): the village on the post road + Nassau Hall, the post road to Trenton (SW) over the Stony Brook bridge "
@@ -288,13 +292,16 @@ write("princeton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.8, "clear_noise_u": 1.6,
- "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25), "farm_scale": 1.8, "bridge_deck": "ends",   # S07 is a clear day (no storm veil): less boost
- "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.6, "step": 0.12, "snap": False, "smooth": 6, "valley": {"depth_m": 7.0, "half_u": 3.5}}],   # v2 r2: a visible valley + water
+ "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25), "farm_scale": 1.8, "bridge_deck": "ends",
+ "road_w_k": 0.4, "bank_fill": {"u": 0.15, "a": 0.5},   # v2 r4 (N2, #23): v8 rut width (0.35-0.4 x), bank-coloured rims   # S07 is a clear day (no storm veil): less boost
+ "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.6, "step": 0.12, "snap": False, "smooth": 200, "valley": {"depth_m": 7.0, "half_u": 3.5},
+             "look": {"color": "#536f80", "rough": 0.9, "env": 0.08, "ns": 0.04}}],   # v2 r2: a visible valley + water   # v2 r4 (N1): frost-tinted v8 blue (no white tiled ice), smooth bends
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},
            {"name": "Quaker Bridge road", "geo": "Quaker Bridge road", "cls": "pike", "meander": 0.15},
            {"name": "Saw Mill road", "geo": "Saw Mill road", "cls": "lane", "meander": 0.15},
            {"name": "Princeton - Morristown road", "geo": "Princeton - Morristown road", "cls": "pike", "meander": 0.12}],
- "towns": [{"name": "Princeton", "geo": "Princeton", "kind": "street", "halfL": 4.5, "cross": 4, "rad": 5.0},
+ "towns": [{"name": "Princeton", "geo": "Princeton", "kind": "street", "halfL": 3.5, "cross": 0, "parallel": False, "on_road": True, "rad": 3.6,   # v2 r4 (N2): the village on Nassau St only (no street grid)
+            "public": [[*pl("Nassau Hall", Z), 0.95, 0.3, NASSAU_ANG, 5]]},   # Nassau Hall (~54 x 16 m) along the post road
            {"name": "Thomas Clarke house", "geo": "Thomas Clarke house", "kind": "farm"}, {"name": "_wclarke", "at": ll(40.3318, -74.6745, Z), "kind": "farm"},
            {"name": "Olden house", "geo": "Thomas Olden house", "kind": "farm"}, {"name": "_worth", "at": ll(40.3215, -74.6950, Z), "kind": "farm"}],
  "farm_density": 0.8, "plantation_density": 0.0, "lane_p": 0.45,

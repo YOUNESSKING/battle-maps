@@ -99,6 +99,11 @@
  },
  "farm_scale": 1.8,
  "bridge_deck": "ends",
+ "road_w_k": 0.4,
+ "bank_fill": {
+  "u": 0.15,
+  "a": 0.5
+ },
  "rivers": [
   {
    "name": "Stony Brook",
@@ -106,10 +111,16 @@
    "w": 0.6,
    "step": 0.12,
    "snap": false,
-   "smooth": 6,
+   "smooth": 200,
    "valley": {
     "depth_m": 7.0,
     "half_u": 3.5
+   },
+   "look": {
+    "color": "#536f80",
+    "rough": 0.9,
+    "env": 0.08,
+    "ns": 0.04
    }
   }
  ],
@@ -144,9 +155,21 @@
    "name": "Princeton",
    "geo": "Princeton",
    "kind": "street",
-   "halfL": 4.5,
-   "cross": 4,
-   "rad": 5.0
+   "halfL": 3.5,
+   "cross": 0,
+   "parallel": false,
+   "on_road": true,
+   "rad": 3.6,
+   "public": [
+    [
+     1509.52,
+     1819.88,
+     0.95,
+     0.3,
+     -37.2,
+     5
+    ]
+   ]
   },
   {
    "name": "Thomas Clarke house",
