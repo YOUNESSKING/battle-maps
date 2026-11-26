@@ -28,3 +28,6 @@ Open issues: blue camp blocks are small at dist 104-134 (troopScale 3.2 = Jackso
 - Colonies: red arrow re-routed west of the blue block; the NJ retreat arrow stops short of the Trenton block.
 - Clouds block left as author A set it. Scene folder 25.9 MB after the jersey re-bake (world bundle size).
 - Checker: jersey u3/u5 screen long-side 22-27 deg on the 2-u walk inland at 28-30 s (minor).
+
+## Round 3
+- No S04 rows; rebuilt on the latest jersey bake (folder 24.4 MB). Checker jersey + colonies 0 FAIL. No negative overlay times.

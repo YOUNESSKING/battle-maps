@@ -202,7 +202,7 @@ const fx = {
   ],
   guns: [
     // C: Knox's guns at the head of King and Queen streets fire down the streets
-    { region: TR, preset: "field", shots: [22.45, 26.15].map((t, i) => ({ t, at: [HEAD[0] - 0.1 + (i % 2) * 0.9, HEAD[1] - 0.9], dir: [0, 1], impact: [HEAD[0] + (i % 2) * 1.0, HEAD[1] + 5.5 + (i % 3) * 2.4], delay: 0.3 })) },   // round 2: only in the word gaps after "Trenton." and "prisoners,"
+    { region: TR, preset: "field", shots: [22.45].map((t, i) => ({ t, at: [HEAD[0] - 0.1 + (i % 2) * 0.9, HEAD[1] - 0.9], dir: [0, 1], impact: [HEAD[0] + (i % 2) * 1.0, HEAD[1] + 5.5 + (i % 3) * 2.4], delay: 0.3 })) },   // round 2: only in the word gaps after "Trenton." and "prisoners,"
   ],
 };
 
@@ -262,7 +262,7 @@ window.SEQ = {
     { t: T.these, region: PR, at: [ORCH[0] - 1.2, ORCH[1] + 0.8], dist: 18, tilt: 51, yaw: -5, fov: 30, ease: "lin" },
     { t: T.D, region: PR, at: [ORCH[0] - 1.0, ORCH[1] + 1.0], dist: 25, tilt: 49, yaw: -1, fov: 30 },
   ],
-  dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF, whooshAt: 12.65,   // round 2: whoosh body in the gap before "On Christmas night"   // overTo = the over point in crossing units (z9 -> z12)
+  dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF, whooshAt: 12.45,   // round 2: whoosh body in the gap before "On Christmas night"   // overTo = the over point in crossing units (z9 -> z12)
     from: { region: CO, at: [MKC[0] + 4, MKC[1] - 2], dist: 230, tilt: 42, yaw: -2, night: 0.35 },
     to: { region: CR, at: XC, dist: 26, tilt: 52, yaw: -30, fov: 30, night: NI } }],
   clouds: {
@@ -299,7 +299,7 @@ window.SEQ = {
     ["number", T.two, CUT_C - 0.3, { value: 2400, round: 100, x: 960, y: 250, size: 116 }],
     ["film.grade", CUT_C, "day", 0.1],
     // C
-    ["plaque.date", T.dawn - 0.05, { month: "December 1776", day: "", weekday: "", note: "dawn" }],   // round 2: no "25" over the Trenton dawn (S05 gives the 26th)
+    ["plaque.date", T.dawn + 0.16, { month: "December 1776", day: "", weekday: "", note: "" }],   // round 3: month-only plate on "dawn" (no empty day cell, no unspoken day; S05 gives the 26th)
     ["label", T.hessians, T.hour - 0.2, { name: "Hessians", world: [1362.4, 2061.0, 0], side: "uk", marker: false, offset: [60, -120] }],
     ["number", T.nine - 0.05, CUT_D - 0.5, { value: 900, round: 10, x: 960, y: 250, size: 120 }],
     ["label", T.prisoners - 0.05, CUT_D - 0.5, { name: "Hessian prisoners", x: 960, y: 360, marker: false, side: "uk", offset: [-190, 0] }],

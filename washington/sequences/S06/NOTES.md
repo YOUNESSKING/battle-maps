@@ -27,3 +27,8 @@ Open issues: the town houses (two dense rows on King / Queen St) partly hide the
 - Red column blocks face along their own stretch of road; jersey troopScale 5.2 -> 7, landing spacing 0.032 (0 overlaps).
 - Jersey clouds (lead): scatter box/n 9/med 40, diveClear 40, keepClear r 35/30 over the crossing + road targets (a cloud sat on the 0-11 s camera without it).
 - Checks: trenton 0 FAIL, side gap 0; jersey r9 FvV 23 deg (13.6, camera pan), u10 at the 32.5 cut.
+
+## Round 3 fixes (A 7 / B 8.5)
+- Washington's banner on the Trenton map only from 51.0 (the dusk + bridge shots framed it off the bottom edge) until the choice card.
+- `T.ten` 8.13 -> 8.24 ("Ten dollars each" label on its word).
+- No negative overlay times. Checks: trenton 0 FAIL, side gap 0; jersey 5 turn-rate rows (landing blocks during the pan, the 32.5 cut).
