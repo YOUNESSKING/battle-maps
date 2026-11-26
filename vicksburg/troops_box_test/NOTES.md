@@ -171,3 +171,4 @@ band of the deck + rails across the box read as the planks crossing it. Fix (`co
 shadows, and at the bridge (turn at the mouth, crossing, turn past the far end) the box's camera-ward depth pull grows to 4 x 1.2 u
 (per-instance `iPl`), so it always draws over the deck and rails; elsewhere the pull is unchanged (hills still hide boxes; DOM banners on top).
 Box height unchanged (walking height, level). Checker identical to A7. `sheet_r7b.jpg`: v14 | A7 | A7b at S10 23 / 25 / 27 / 29 s (+ crops).
+A7b share: RunPod RTX 3090 ($0.22/h, ~$0.02), my pod terminated; another pod (nzl3mqk84et4dg, not started by this worker) was running on the account and was left alone.
