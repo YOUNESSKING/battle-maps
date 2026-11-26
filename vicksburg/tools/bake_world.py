@@ -1259,6 +1259,11 @@ def bake(rname, G, P, creeks, preview=True):
         _, rv, A, i = b; t_ = A[min(i + 2, len(A) - 1), :2] - A[max(i - 2, 0), :2]; t_ /= np.linalg.norm(t_) + 1e-6
         wl = float(A[i, 2]); ring = np.array([A[i, :2] + [math.cos(a) * (rv["w"] / 2 + 0.6), math.sin(a) * (rv["w"] / 2 + 0.6)] for a in np.linspace(0, 6.28, 16)], np.float32)
         bank_h = float(np.percentile(sample(h, box, ring), 70))
+        if PROJ and cfg.get("bridge_deck") == "ends":   # project (v2 r3 carry-over): deck at road level = the terrain at the bridge's two ends (not the valley floor + 4 m)
+            L_ = length or max(1.0, rv["w"] * 1.08 * 1.6 + 1.0); ac_ = math.atan2(t_[1], t_[0]) + math.pi / 2; u_ = np.array([math.cos(ac_), math.sin(ac_)]) * L_ / 2
+            ends_h = float(np.mean(sample(h, box, np.array([A[i, :2] + u_, A[i, :2] - u_], np.float32))))
+            return dict(name=name, kind=kind, x=round(float(A[i, 0]), 3), z=round(float(A[i, 1]), 3), angle=round(ac_, 4), len=round(L_, 3), wl=round(float(A[i, 2]), 2),
+                        deck=round(max(ends_h, float(A[i, 2]) + 1.0) + 0.3, 2), river=rv["name"], burn=burn)
         return dict(name=name, kind=kind, x=round(float(A[i, 0]), 3), z=round(float(A[i, 1]), 3), angle=round(math.atan2(t_[1], t_[0]) + math.pi / 2, 4),
                     len=round(length or max(1.0, rv["w"] * 1.08 * 1.6 + 1.0), 3), wl=round(wl, 2), deck=round(max(bank_h, wl + 4) + 1.0, 2), river=rv["name"], burn=burn)
     done_b = []

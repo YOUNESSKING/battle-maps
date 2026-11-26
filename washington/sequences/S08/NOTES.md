@@ -43,3 +43,9 @@ No overlaps, no pops, no shape change, screen long-side-normal <= 4 deg, turn <=
 
 ## Round 3
 - `T.two` 35.04 -> 35.25 (card 2 on "Two,"). Negative-time audit: earliest overlay = plate at 0.35 s. OK.
+
+## V2 (owner decision 22, `washington/V2_LOOK_RECIPE.md`)
+- v14 troopsOpts; troopScale 9; `bw` removed; arrow 0.34; grade v8; clouds `scatter { seed 7, n 24, med 20 }` (lower right kept clear).
+- Overlays: legend + the timeline with all three seals (Brooklyn 0.95, Trenton 4.72, Princeton 5.25) on the map shots 0.6 -> the letter,
+  again after "alive again" -> the method letter; both stay out for the final cards and the end-screen tail.
+- Checks: motion + side gap clean. Open: at dist 430-580 the lines are small (recipe size) and the red ones sit on the red-held tint.

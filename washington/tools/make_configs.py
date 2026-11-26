@@ -76,7 +76,7 @@ write("colonies", {
  "box": cb,
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
- "hm_ppu": 1.5, "tex": 8192, "exag": 5.0, "cell": 30.0, "seed": 1776, "tex_grade": {"tint": [1.03, 1.0, 0.965]},   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
+ "hm_ppu": 1.5, "tex": 8192, "exag": 5.0, "cell": 30.0, "seed": 1776, "tex_grade": {"tint": [1.07, 1.0, 0.93]},   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
@@ -287,7 +287,7 @@ write("princeton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.8, "clear_noise_u": 1.6,
- "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25), "farm_scale": 1.8,   # S07 is a clear day (no storm veil): less boost
+ "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25), "farm_scale": 1.8, "bridge_deck": "ends",   # S07 is a clear day (no storm veil): less boost
  "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.6, "step": 0.12, "snap": False, "smooth": 6, "valley": {"depth_m": 7.0, "half_u": 3.5}}],   # v2 r2: a visible valley + water
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},
            {"name": "Quaker Bridge road", "geo": "Quaker Bridge road", "cls": "pike", "meander": 0.15},

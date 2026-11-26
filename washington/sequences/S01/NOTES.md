@@ -96,3 +96,20 @@ flags copied from `washington/assets/flags/` (Grand Union, 1707 Union Flag - unu
 - Trenton gun 26.15 dropped (it fired under the 900 / Hessian prisoners card); only the 22.45 gun + volleys remain.
 - Whoosh cue 12.45 (`whooshAt`, 0.2 s earlier) so its tail clears "On".
 - Negative-time audit (engine lesson, S07): every overlay call / card tween in S01 is at t >= 0.35 s; only unit / boat data use t0 -1. OK.
+
+## V2 (owner decision 22, `washington/V2_LOOK_RECIPE.md`)
+- Troops = v14: `troopsOpts { lineblocks, size 1.44, depthK 0.44, steel-blue pal }`; troopScale colonieswinter 6.5 (0.022 x the opening
+  dist 270-330; recipe table 2.4 was for the 98-130 framings and left the hook's posts invisible), crossing 1.0, trenton 1.7, brooklyn 1.3,
+  princeton 0.9; fxScale 6.6 / 11 / 8.4 / 5.6. All `bw` overrides removed; every v1 multi-block unit = single-block units 1.25 block
+  widths apart (the `U` helper); the orchard lines are 3 blocks a side.
+- Musketry = v14 SMK scaled (KF = dist / 28.7); each volley line 2.3 s with ONE volley at its word-gap time (22.45-22.55, 63.6, 67.7).
+- Night: NI 1.0, `grade.night` (dark blue veil), boats `wake: false` + lamps; rain x0.5 with n x2; cloud shadows off on the storm / night close regions.
+- Grade v8 (`wide ct 0.96 sat 0.95`); colonieswinter clouds `scatter { seed 11, n 24, med 14 }` (+ diveClear 36, Brooklyn keepClear + far-side extras).
+- Overlays: THE ARMIES legend 1.9 s -> the letter card (no subs: the general is not named before the name slam); the wax-seal timeline from
+  1.4 s at December, `go` to August on "Four months earlier", 2 Jan on "a week after Trenton", 18 Dec on "A week before Christmas"; both step
+  out for the letter card. The 2,400 / 900 / NOT ONE AMERICAN KILLED hook tags stay. Arrows: colonies 0.34, Trenton 0.43.
+- Trenton 2 Jan camera re-framed (at y 2067, tilt 54): the blue line sits above the timeline, the British army in the upper third.
+- Kept from v1: whooshAt, cues in word gaps, all overlay times >= 0.35 s.
+- Checks: check_troops_motion all 5 regions clean except one 20-deg world FvV for 3 frames at the end of the New Brunswick post's walk
+  (screen 14 deg); check_side_gap 0 pairs everywhere.
+- Open: at the opening dist (270-330) the posts are ~25 px wide (v8 wide size); red over brown roads reads weakly.

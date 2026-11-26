@@ -98,6 +98,7 @@
   "sat": 1.25
  },
  "farm_scale": 1.8,
+ "bridge_deck": "ends",
  "rivers": [
   {
    "name": "Stony Brook",
