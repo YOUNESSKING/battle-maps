@@ -129,3 +129,22 @@ Switch: `troopsOpts: { look: "counter", counter: "A4" }`. Files: `sheet_r4.jpg` 
   the "18 GUNS TAKEN" card.
 Checker A4 = A2/A3 (S09 only units 1 x 3, 0.12 u at 106.1-106.6 s; S10 only the south flank's own blocks at 22 s, 0.11 u); 0 screen-rule fails.
 Render: RunPod RTX 3090 community $0.22/h, ~$0.024; pod terminated, `myself { pods }` empty; luma steps <= 0.4 (no broken frames).
+
+# Round 5 (2026-11-26): A5, owner "at the bridge the boxes must NOT break rank into men; each unit STAYS A BOX"
+Switch: `troopsOpts: { look: "counter", counter: "A5" }` (= A4 + below). Sheet: `sheet_r5.jpg` (S10 21 / 23 / 25 / 27 / 29 / 30.5 s,
+v14 lineblocks | A4 | A5, each with a ~1.8x bridge crop). Share clip re-rendered with A5.
+- Bridge (per routing counter, `q.a5` built after the queue): walks to the mouth on one straight leg (trapezoid pace, stops exactly there),
+  turns in place onto the deck axis while its frontage narrows to 0.18 u (the deck is 0.2 u) and its depth grows x1.35, steps up to deck level
+  while turning, crosses as that narrow box straight along the bridge (front first, on-screen corrected), stops past the far end, steps down and
+  turns in place onto the trail, walks up it, widens back over ~1 s after 0.8 u, fades 1.0-3.5 u up the trail. Ink edge, front strip and
+  NATO plate stay (the plate hides when its on-screen width < ~10 px). NO men in this look (lineblocks keep their stream).
+- Queue: a counter reaches the mouth >= 1.3 s after the one ahead stepped off it, and reaches the far end >= 1.4 s after the one ahead
+  turned onto the trail: even gaps, no overlap (checker).
+- The about-face is shown on the counter: its top markings (front strip, thick front edge) crossfade to the other long side over the
+  men's ~1 s about-face (the box never spins), so the front strip leads a retreat; the body's lighter front wall follows at the midpoint.
+- Crews in the counter wall colour (#2a4577 / #6e2a1f) at 1.3x (critic 1).
+- Test data (S10_gm only): the escapes leave 4.0 s earlier (ESC_T [12.9, 12.8, 11.6], was [16.9, 16.8, 15.6]) because one-box-at-a-time
+  crossings take longer; last counter off the deck ~30.1 s, before the fire (31.3 s). (The v14 / A4 columns of sheet_r5 use the old times.)
+- Checker (`check_troops_motion.mjs` now accepts a per-block drawn height `zh` from the look, so a box on the deck is judged at deck level):
+  S10 15-35 screen long-side rule max 13-14 deg, 0 fails, pops 0, turn <= 25 deg/s, overlaps only the known south-flank self brush at 20 s
+  (0.11 u); S09 55-110 = A4 (only units 1 x 3, 0.12 u).

@@ -317,4 +317,8 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   edge are drawn in the top shader in screen px (per-instance plate / strip colours `iPlt` / `iStr`), so they stay crisp at any zoom; a cream
   band or a bold cream X made the counters read as flags (saltire, bunting). Guns: side-colour crew + a ground disc (`disc` mesh) and `gunK`.
   Captured counters use their own held `capd` (the shared one fades back toward the side colour before t1).
+- Troops-box test round 5 (`counter: "A5"`): at a bridge the counter STAYS a box (narrows to the deck, crosses, widens; no men). Lessons: give a
+  box that changes height (deck) its drawn height to the motion checker (`T3.last[].zh`, used by `check_troops_motion.mjs`), else the rise
+  reads as a sideways drift; step up / down while turning in place, never on the move; one-box-at-a-time crossings need the queue spaced at
+  BOTH ends (mouth and far-side turn) and start earlier than the men stream did.
 
