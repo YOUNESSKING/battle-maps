@@ -26,3 +26,9 @@ has a visible flash and vice versa, levels (voice clear, music quiet), no sound 
 
 Write `washington/critics/round<N>_<A|B>.md`: a score 1-10 per scene and overall (10 = GM polish), "fit to publish?" yes/no, then the findings
 table (scene | local t | film t | problem | fix | severity 1-3), then the top 10 fixes. Keep it under ~250 lines. Report the scores + top 5 in <= 200 words.
+
+## Extra references (owner 2026-11-26, relayed): compare against ALL THREE
+1. **Jackson v4** (the reference film): `washington/critics/jackson_ref/` + `ajackson/critics/`.
+2. **The owner-approved 3D tests**, frame by frame and sector by sector: `research/style_tests/gm3d/clip/gm3d_clip_v6_share.mp4` (the chosen clouds + opening) and `gm3d_clip_v8_share.mp4` (the approved look) + their `README.md`; the troop tests `vicksburg/troops_test_v13_share.mp4` / `troops_test_v14_share.mp4` (the approved line blocks, owner "Great") + `vicksburg/critics/troops_v2_notes.md`.
+3. **Grand Maneuver** (the channel we copy): `research/competitors_top20/grand_maneuver/GM_STUDY.md`, `gm_criticA.md`, `gm_criticB.md`. The owner's Gofile with GM frames (0clSF4KK) had expired on 2026-11-26 ("content not found"), so GM is judged from the study files. Never bypass YouTube's bot check; never commit GM frames (sheets with GM frames stay in /tmp).
+The drift sheet `washington/critics/drift_round<N>.jpg` has 3 columns: this film | Jackson v4 | the approved tests. Critic A scores the film against all three; any visible gap is a defect to fix (the winter ground is the one allowed difference).
