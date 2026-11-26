@@ -1,0 +1,57 @@
+{
+ "voice": "am_michael",
+ "speed": 1.0,
+ "duration": 73.729,
+ "wpm": 164.4,
+ "paragraphs": [
+  {
+   "section": "S01",
+   "tag": "S01 | colonies wide from altitude, winter light: red blocks spread in posts across New Jersey, a small blue army behind the Delaware on the Pennsylvania bank, separate blue boats drawn up along the bank; caption NEW YEAR'S EVE on its words; DELAWARE river name on its word",
+   "start": 0.4,
+   "end": 13.264,
+   "text": "In December seventeen seventy-six, the American Revolution was running out of time. On New Year's Eve, most of its beaten army could go home. What was left of it waited behind the Delaware."
+  },
+  {
+   "section": "S01",
+   "tag": "S01 | cloud dive 1 down onto McConkey's Ferry at night in a storm: sleet streaks, separate dark boats pushing across the icy river, lanterns; date plate 25 DECEMBER 1776 on its words; number 2,400 on its words",
+   "start": 13.814,
+   "end": 19.339,
+   "text": "On Christmas night, about two thousand four hundred of them crossed the icy river in a storm."
+  },
+  {
+   "section": "S01",
+   "tag": "S01 | dissolve to Trenton at a grey dawn: two blue columns enter the town from the north and the river road; guns at the head of the two streets fire (flash + sound each shot); red blocks spill out of the houses; number card 900 HESSIANS CAPTURED on its words, then a small line NO AMERICAN KILLED IN THE FIGHT on its words",
+   "start": 19.889,
+   "end": 29.511,
+   "text": "At dawn they fell on the Hessians at Trenton. In about an hour, some nine hundred of them were prisoners, and not one American had been killed in the fight."
+  },
+  {
+   "section": "S01",
+   "tag": "S01 | hard cut to the colonies wide map, late summer light: Brooklyn Heights pulse, a red ring closing round it, the East River glowing behind; the date plate does not change (no date spoken)",
+   "start": 30.061,
+   "end": 38.999,
+   "text": "And the strangest part? Four months earlier, this same army had nearly been trapped for good, on a hill in Brooklyn, with a river at its back."
+  },
+  {
+   "section": "S01",
+   "tag": "S01 | back to Trenton by day (no date plate change): a long red army arrives from the north-east; the blue army behind a small creek, the Delaware behind them; one stone bridge glows",
+   "start": 39.549,
+   "end": 45.821,
+   "text": "And a week after Trenton, it was trapped again, with a British army in front and the river behind."
+  },
+  {
+   "section": "S01",
+   "tag": "S01 | the general enters: banner with no portrait yet on the Pennsylvania bank; a dark letter card on \"brother\": handwriting typed out \"I THINK THE GAME IS PRETTY NEAR UP\", no date line",
+   "start": 46.371,
+   "end": 52.494,
+   "text": "A week before Christmas, its general had written to his brother: I think the game is pretty near up."
+  },
+  {
+   "section": "S01",
+   "tag": "S01 | NAME SLAM: GEORGE WASHINGTON (gold 3D title on its words), the banner portrait revealed; then 3 snap cuts, each on its words: the East River at night with boats shuttling, the Delaware in the storm, the orchard at Princeton with smoke",
+   "start": 53.044,
+   "end": 72.329,
+   "text": "His name was George Washington. He would steal his army out of a trap in a single night. He would cross an icy river in a storm and fall on Trenton at dawn. And he would slip away from a British army in the dark, and strike behind it. These are George Washington's three greatest tactical moves."
+  }
+ ]
+}

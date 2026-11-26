@@ -19,7 +19,7 @@
 // G 55.5-74.0  three snap cuts on their words: the East River at night with separate boats shuttling (brooklyn); the Delaware in the
 //              storm (crossing); the orchard at Princeton with smoke; THREE GREATEST TACTICAL MOVES on "three".
 (() => {
-const T = { D: 74.04, december: 0.56, e1776: 1.65, revolution: 3.14, time: 5.38, nye: 6.48, eve: 7.20, army: 8.72, home: 9.70, what: 10.66,
+const T = { D: 73.98, december: 0.56, e1776: 1.65, revolution: 3.14, time: 5.38, nye: 6.48, eve: 7.20, army: 8.72, home: 9.70, what: 10.66,
   delaware: 12.60, christmas: 13.90, about: 15.46, two: 15.86, hundred: 16.46, crossed: 17.16, icy: 17.72, storm: 18.72,
   dawn: 19.96, fell: 20.70, hessians: 21.30, trenton: 21.90, hour: 23.60, nine: 24.69, prisoners: 25.64, not: 26.76, american: 27.28,
   killed: 28.26, fight: 29.04, strangest: 30.15, four: 31.90, trapped: 34.78, good: 35.34, hill: 36.28, brooklyn: 36.74, river2: 37.82,
