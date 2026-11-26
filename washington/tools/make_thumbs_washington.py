@@ -14,7 +14,7 @@ FACE = (940, 490); FH = 400.0                                    # face centre, 
 BODY = [(280, 1190), (300, 1140), (380, 960), (580, 790), (810, 700), (1120, 690), (1320, 750), (1400, 1040), (1410, 1280), (1380, 1400), (440, 1400)]
 CROP = (150, 200, 1600, 1400)
 
-def cutout(face_h, grade):
+def cutout(face_h, grade, feather=0):
     a = np.array(RAW.split()[3]); m = Image.new("L", RAW.size, 0); ImageDraw.Draw(m).polygon(BODY, fill=255)   # dark left sleeve is lost by rembg: add a body matte
     a = np.maximum(a, np.array(m)); a[1400:] = 0
     b = ORIG.crop(CROP).convert("RGBA"); a = a[CROP[1]:CROP[3], CROP[0]:CROP[2]].astype(np.float32)
@@ -25,6 +25,9 @@ def cutout(face_h, grade):
         rgb = ImageOps.colorize(g, black=(22, 15, 10), mid=(150, 114, 80), white=(250, 236, 210))
     else:
         rgb = ImageEnhance.Contrast(ImageEnhance.Color(rgb).enhance(1.0)).enhance(1.15); rgb = ImageEnhance.Brightness(rgb).enhance(1.1).point(lambda v: int(255 * (v / 255.0) ** 0.75))
+    if feather:   # soft-fade the lower-left coat edge so it has no hard seam
+        h_, w_ = a.shape; ramp = np.clip(np.arange(w_) / float(feather), 0, 1)[None, :]; vy = np.clip((np.arange(h_) - 0.30 * h_) / (0.15 * h_), 0, 1)[:, None]
+        a = a * (1 - vy * (1 - ramp ** 1.5))
     bb = rgb.convert("RGBA"); bb.putalpha(Image.fromarray(a.astype(np.uint8)))
     s = face_h / FH; bb = bb.resize((int(bb.width * s), int(bb.height * s)), Image.LANCZOS)
     return bb, ((FACE[0] - CROP[0]) * s, (FACE[1] - CROP[1]) * s)
@@ -38,27 +41,33 @@ def place(im, b, x0, y0, rim_col, rim_side, shadow=0.75, rim=0.3):
     im.alpha_composite(b, (x0, y0)); im.alpha_composite(r, (x0, y0)); return im
 
 # ====================================== A: BACK DOOR ======================================
-def boat(im, c, ang, L=70):
-    x, y = c; ca, sa = math.cos(ang), math.sin(ang); lay = Image.new("RGBA", im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(lay); sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ds = ImageDraw.Draw(sh)
-    pts = [(-L / 2, 0), (-L / 3, 8), (L / 3, 8), (L / 2, 0), (L / 3, -8), (-L / 3, -8)]; P = [(x + a * ca - b * sa, y + a * sa + b * ca) for a, b in pts]
-    ds.polygon([(p[0] + 4, p[1] + 6) for p in P], fill=(0, 0, 0, 170)); d.polygon(P, fill=(40, 28, 20, 255), outline=(120, 96, 70, 255))
-    im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(3))); return Image.alpha_composite(im, lay)
+def boat(im, c, ang, L=62):
+    """small low dark Durham boat: pointed ends, pale gunwale line, short wake"""
+    x, y = c; ca, sa = math.cos(ang), math.sin(ang); R = lambda pts: [(x + a * ca - b * sa, y + a * sa + b * ca) for a, b in pts]
+    lay = Image.new("RGBA", im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(lay)
+    d.polygon(R([(-L * .62, -9), (-L * .5, 0), (-L * .62, 9), (-L * .9, 14), (-L * 1.1, 0), (-L * .9, -14)]), fill=(235, 242, 250, 120))   # wake astern
+    hull = [(-L / 2, -2), (-L / 3, 9), (L / 3, 9), (L / 2, -2), (L * .6, 0), (L / 2, 2)]
+    hull = [(-L * .6, 0), (-L / 2, 7), (-L / 4, 10), (L / 4, 10), (L / 2, 7), (L * .6, 0), (L / 2, -7), (L / 4, -10), (-L / 4, -10), (-L / 2, -7)]
+    sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).polygon([(p[0] + 3, p[1] + 5) for p in R(hull)], fill=(0, 0, 0, 160))
+    im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(3)))
+    d.polygon(R(hull), fill=(34, 24, 18, 255)); d.line(R(hull) + [R(hull)[0]], fill=(205, 190, 160, 255), width=2)
+    d.line(R([(-L * .45, 0), (L * .45, 0)]), fill=(70, 52, 38, 255), width=3)
+    return Image.alpha_composite(im, lay.filter(ImageFilter.GaussianBlur(0.6)))
 
 def variant_a():
     # background MIRRORED so the crossing reads west (PA, left) -> east (NJ, right); Trenton lies downstream (far, right bank)
     im = ImageOps.mirror(Image.open(T + "bg_vidiq_delaware.jpg").convert("RGB")).resize((W, H), Image.LANCZOS)
-    im = ImageEnhance.Contrast(ImageEnhance.Color(im).enhance(1.0)).enhance(1.2); im = ImageEnhance.Brightness(im).enhance(0.9).convert("RGBA")
+    im = ImageEnhance.Contrast(ImageEnhance.Color(im).enhance(1.3)).enhance(1.2); im = ImageEnhance.Brightness(im).enhance(1.12).convert("RGBA")   # +~20 % saturation/brightness, no vignette
     RED, BLUE = (200, 30, 36), (40, 92, 205)
-    for (x, y, c, r, a_) in [(800, 226, 4, 2, 0.18), (880, 238, 4, 2, 0.18), (950, 256, 3, 2, 0.3)]:   # Hessians at Trenton, NJ bank ridge
+    for (x, y, c, r, a_) in [(792, 262, 3, 2, 0.30), (850, 292, 3, 2, 0.34), (900, 326, 3, 2, 0.36)]:   # Hessians at Trenton: NJ bank, DOWNSTREAM (south-east) of the ferry
         im = formation(im, (x, y), RED, c, r, cw=18, ch=11, gap=3, ang=a_)
     for (x, y, c, r, a_) in [(70, 330, 6, 2, 0.5), (130, 392, 6, 2, 0.5), (170, 436, 5, 2, 0.5)]:      # Washington at McConkey's Ferry, PA bank slope
         im = formation(im, (x, y), BLUE, c, r, cw=23, ch=14, gap=3, ang=a_)
-    im = grunge_arrow(im, [(310, 470), (640, 580), (520, 290), (772, 246)], 84, 58, shadow=(235, 7, 10, 5))
-    im = parchment(im, (28, 205), ["MCCONKEY'S", "FERRY"], 44); im = parchment(im, (560, 120), ["TRENTON"], 46)
-    pan = Image.new("RGBA", (W, H), (0, 0, 0, 0)); pd = ImageDraw.Draw(pan)
-    for x in range(700, W): pd.line([(x, 0), (x, H)], fill=(16, 12, 9, int(215 * min(1, ((x - 700) / 420) ** 1.2))))
-    im = Image.alpha_composite(im, pan)
-    b, (fx, fy) = cutout(240, "sepia"); im = place(im, b, int(1115 - fx), int(250 - fy), (255, 200, 140), "left", shadow=0.85)
+    AP = [(310, 470), (640, 590), (560, 330), (800, 318)]
+    im = grunge_arrow(im, AP, 84, 58, shadow=(235, 7, 10, 5))
+    # Durham boats tried (critic 2 fix c): read as coffins at this size, so they are left out (boat() kept for reference)
+    im = parchment(im, (28, 205), ["MCCONKEY'S", "FERRY"], 50); im = parchment(im, (640, 168), ["TRENTON"], 52)
+    b, (fx, fy) = cutout(240, "sepia", feather=260); im = place(im, b, int(1115 - fx), int(250 - fy), (255, 200, 140), "left", shadow=0.7)
     f = ImageFont.truetype(AN, 138); tw = ImageDraw.Draw(im).textlength(WORD, font=f)
     bx0, by0, bx1, by1 = -10, 540, int(40 + tw + 50), 714; r = np.random.default_rng(8)
     m = Image.new("L", (W, H), 0); top = [(x, by0 + int(r.integers(-12, 13))) for x in range(bx0, bx1 + 1, 10)]; bot = [(x, by1 + int(r.integers(-10, 11))) for x in range(bx1, bx0 - 1, -10)]
@@ -79,15 +88,15 @@ def variant_b():
     n = Image.effect_noise((W, H), 22).convert("RGB"); base = Image.blend(base, ImageChops.overlay(base, n), 0.12); im = base.convert("RGBA")
     f0 = ImageFont.truetype(AN, 215); tmp = Image.new("L", (2000, 330), 0); ImageDraw.Draw(tmp).text((0, 0), WORD, font=f0, fill=255); glyph = tmp.crop(tmp.getbbox())
     glyph = glyph.resize((min(640, int(glyph.width * 1.3)), glyph.height), Image.LANCZOS); gx, gy = int(925 - glyph.width / 2), 28
-    sub = TWIST; fs = ImageFont.truetype(SER, 42); s = " ".join(" ".join(w) if False else w for w in sub.split()); s = " ".join(sub.split()); sy_ = gy + glyph.height + 22
-    tm = Image.new("L", (W, H), 0); tm.paste(glyph, (gx, gy)); ImageDraw.Draw(tm).text((905, sy_), s, font=fs, fill=255, anchor="ma")
+    sub = TWIST; fs = ImageFont.truetype(SER, 48); s = " ".join(" ".join(w) if False else w for w in sub.split()); s = " ".join(sub.split()); sy_ = gy + glyph.height + 22
+    tm = Image.new("L", (W, H), 0); tm.paste(glyph, (gx, gy)); ImageDraw.Draw(tm).text((872, sy_), s, font=fs, fill=255, anchor="ma")
     # faint hairline rivers: Delaware (down the right-centre), Assunpink (short branch), roads to Princeton (dashed hairlines)
     lay = Image.new("RGBA", (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(lay)
     def chaikin(p, n=4):
         for _ in range(n): p = [p[0]] + [q for a, b in zip(p, p[1:]) for q in ((0.75 * a[0] + 0.25 * b[0], 0.75 * a[1] + 0.25 * b[1]), (0.25 * a[0] + 0.75 * b[0], 0.25 * a[1] + 0.75 * b[1]))] + [p[-1]]
         return p
-    delaware = chaikin([(520, -20), (545, 150), (640, 300), (610, 430), (690, 540), (790, 620), (880, 740)])
-    d.line(delaware, fill=(207, 228, 255, 215), width=4, joint="curve"); d.line(chaikin([(705, 548), (790, 520), (880, 500), (960, 505)]), fill=(207, 228, 255, 200), width=3)  # Assunpink
+    delaware = chaikin([(560, -20), (575, 150), (640, 300), (610, 420), (580, 520), (610, 640), (680, 740)])
+    d.line(delaware, fill=(207, 228, 255, 235), width=7, joint="curve")   # Delaware, west of Trenton (Trenton is on the east bank)
     for _ in range(0): pass
     g = lay.filter(ImageFilter.GaussianBlur(5)); lay = Image.alpha_composite(g, lay)
     rd = Image.new("RGBA", (W, H), (0, 0, 0, 0)); rdd = ImageDraw.Draw(rd)
@@ -97,7 +106,7 @@ def variant_b():
         for k in range(int(L // 14)): rdd.line([(x0 + (x1 - x0) * k * 14 / L, y0 + (y1 - y0) * k * 14 / L), (x0 + (x1 - x0) * (k * 14 + 7) / L, y0 + (y1 - y0) * (k * 14 + 7) / L)], fill=(190, 205, 225, 90), width=2)
     lay = Image.alpha_composite(lay, rd)
     lay.putalpha(ImageChops.subtract(lay.split()[3], tm.filter(ImageFilter.MaxFilter(31)))); im = Image.alpha_composite(im, lay)
-    sx, sy = 690, 575
+    sx, sy = 700, 552
     # payoff = painted Nassau Hall (vidIQ), crop of the building, soft vignette + thin gold frame
     fr = Image.open(T + "icon_vidiq_nassau.jpg").convert("RGB").crop((170, 150, 1830, 1000)); fw, fh = 500, 270; fr = fr.resize((fw, fh), Image.LANCZOS)
     fr = ImageEnhance.Contrast(ImageEnhance.Color(fr).enhance(1.1)).enhance(1.05)
@@ -108,14 +117,14 @@ def variant_b():
     im.alpha_composite(fr, (px, py))
     im = glossy_seal(im, (sx, sy), 76)
     # ONE glowing blue arrow: from Trenton round (behind the British) to Princeton
-    im = taper_arrow(im, [(sx + 70, sy - 50), (sx + 100, sy - 170), (px + 70, py + fh - 90)], 44, 24, (126, 195, 255, 255), glow=(70, 150, 240, 190))
-    fl = ImageFont.truetype(SER, 44)
-    for t, (x, y) in [("TRENTON", (sx + 5, sy + 84)), ("PRINCETON", (ix, py + fh + 12))]:
+    im = taper_arrow(im, [(sx + 78, sy - 6), (sx + 150, sy - 62), (px + 150, py + fh - 90)], 58, 38, (126, 195, 255, 255), glow=(70, 150, 240, 190))
+    fl = ImageFont.truetype(SER, 52)
+    for t, (x, y) in [("TRENTON", (sx + 40, sy + 82)), ("PRINCETON", (ix, py + fh + 12))]:
         g = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(g).text((x, y), t, font=fl, fill=(255, 210, 140, 160), anchor="ma"); im = Image.alpha_composite(im, g.filter(ImageFilter.GaussianBlur(6)))
         im = text_shadow(im, (x, y), t, fl, (246, 232, 196), "ma", off=(2, 3), blur=3, op=220, stroke_width=1, stroke_fill=(246, 232, 196))
     sh = Image.new("RGBA", (W, H), (0, 0, 0, 0)); shg = Image.new("RGBA", glyph.size, (0, 0, 0, 255)); shg.putalpha(glyph.point(lambda v: int(v * 0.5))); sh.alpha_composite(shg, (gx, gy + 8))
     im = Image.alpha_composite(im, sh.filter(ImageFilter.GaussianBlur(12))); col = Image.new("RGBA", glyph.size, (244, 236, 216, 255)); col.putalpha(glyph); im.alpha_composite(col, (gx, gy))
-    im = text_shadow(im, (905, sy_), s, fs, (232, 220, 192), "ma", off=(0, 3), blur=4, op=180)
+    im = text_shadow(im, (872, sy_), s, fs, (232, 220, 192), "ma", off=(0, 3), blur=4, op=180)
     b, (fx, fy) = cutout(285, "warm"); x0, y0 = int(235 - fx), int(262 - fy)
     im = place(im, b, x0, y0, (255, 200, 140), "right", shadow=0.85)
     out = "youtube/thumb_B_HE_SNUCK_OUT.jpg"; im.convert("RGB").save(out, quality=94); return out
