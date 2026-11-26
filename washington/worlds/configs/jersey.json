@@ -1,0 +1,284 @@
+{
+ "mode": "wide",
+ "zoom": 10,
+ "season": "winter",
+ "winter": {
+  "snow": 0.6,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
+  "ice": 1.0,
+  "conifers": 0.16
+ },
+ "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
+ "box": [
+  575,
+  889,
+  205,
+  240
+ ],
+ "hm_ppu": 2.5,
+ "meshDiv": 2,
+ "tex": 8192,
+ "exag": 3.5,
+ "cell": 6.5,
+ "seed": 1776,
+ "wood_soft": {
+  "blur_u": 1.1,
+  "alpha": 0.72
+ },
+ "field_look": "gm",
+ "village_cluster": {
+  "spread": 1.4,
+  "k": 1.4
+ },
+ "tex_grade": {
+  "contrast": 1.2,
+  "sat": 1.3,
+  "gamma": 0.97
+ },
+ "river_halo_u": 0.25,
+ "stills": [
+  {
+   "at": [
+    677.5,
+    1009.0
+   ],
+   "dist": 330,
+   "tilt": 32,
+   "yaw": 0
+  },
+  {
+   "at": [
+    677.79,
+    1031.36
+   ],
+   "dist": 150,
+   "tilt": 44,
+   "yaw": 0
+  },
+  {
+   "at": [
+    602.71,
+    957.03
+   ],
+   "dist": 70,
+   "tilt": 52,
+   "yaw": -8
+  }
+ ],
+ "dem_ppu": 2,
+ "dem_margin": 24,
+ "dem_edits": {
+  "fill_water": true,
+  "spike_m": 40.0
+ },
+ "creek_km2": 4.0,
+ "creeks": {
+  "paint_km2": 8,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.02,
+ "villages": 5,
+ "rivers": [
+  {
+   "name": "Delaware River",
+   "geo": "Delaware River (fine)",
+   "w": 2.6,
+   "step": 0.6,
+   "snap": false,
+   "keep": 2.4
+  },
+  {
+   "name": "Assunpink Creek",
+   "geo": "Assunpink Creek",
+   "w": 0.35,
+   "step": 0.5
+  },
+  {
+   "name": "Stony Brook",
+   "geo": "Stony Brook",
+   "w": 0.35,
+   "step": 0.5
+  },
+  {
+   "name": "Shabakunk Creek",
+   "geo": "Shabakunk Creek",
+   "w": 0.2,
+   "step": 0.5
+  },
+  {
+   "name": "Jacobs Creek",
+   "geo": "Jacobs Creek",
+   "w": 0.25,
+   "step": 0.5
+  },
+  {
+   "name": "Crosswicks Creek",
+   "geo": "Crosswicks Creek",
+   "w": 0.45,
+   "step": 0.5
+  },
+  {
+   "name": "Millstone River",
+   "geo": "Millstone River",
+   "w": 0.4,
+   "step": 0.5
+  }
+ ],
+ "roads": [
+  {
+   "geo": "River road (NJ)",
+   "cls": "pike"
+  },
+  {
+   "geo": "River road (PA)",
+   "cls": "pike"
+  },
+  {
+   "geo": "Bear Tavern road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Pennington road",
+   "cls": "pike"
+  },
+  {
+   "geo": "New York post road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Trenton - Bordentown",
+   "cls": "pike"
+  },
+  {
+   "geo": "Philadelphia - Trenton post road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Quaker Bridge road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Saw Mill road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Sandtown road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Birmingham - River road",
+   "cls": "lane"
+  },
+  {
+   "geo": "Birmingham - Pennington road",
+   "cls": "lane"
+  },
+  {
+   "geo": "Scotch road",
+   "cls": "lane"
+  }
+ ],
+ "towns": [
+  {
+   "name": "Trenton",
+   "geo": "Trenton",
+   "rad": 1.3,
+   "houses": 26,
+   "snap": false,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "Princeton",
+   "geo": "Princeton",
+   "rad": 1.1,
+   "houses": 18,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "Pennington",
+   "geo": "Pennington",
+   "rad": 0.6,
+   "houses": 7,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "Maidenhead",
+   "geo": "Maidenhead",
+   "rad": 0.6,
+   "houses": 7,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "Bordentown",
+   "geo": "Bordentown",
+   "rad": 0.8,
+   "houses": 10,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "Birmingham",
+   "geo": "Birmingham",
+   "rad": 0.4,
+   "houses": 4,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "McConkey's Ferry",
+   "geo": "McConkey's Ferry",
+   "rad": 0.3,
+   "houses": 3,
+   "snap": false,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  },
+  {
+   "name": "Johnson's Ferry",
+   "geo": "Johnson's Ferry",
+   "rad": 0.3,
+   "houses": 2,
+   "snap": false,
+   "cluster": {
+    "spread": 1.4,
+    "k": 1.4
+   }
+  }
+ ],
+ "features": {
+  "works": []
+ },
+ "labels": [
+  "McConkey's Ferry",
+  "Johnson's Ferry",
+  "Bear Tavern",
+  "Jacobs Creek crossing",
+  "Birmingham",
+  "Assunpink bridge",
+  "Mill Hill",
+  "Quaker Bridge",
+  "Stony Brook bridge",
+  "Thomas Clarke house",
+  "Shabakunk Creek (Five Mile Run) bridge",
+  "Hermitage"
+ ]
+}

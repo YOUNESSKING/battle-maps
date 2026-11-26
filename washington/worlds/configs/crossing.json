@@ -1,0 +1,158 @@
+{
+ "mode": "close",
+ "zoom": 12,
+ "season": "winter",
+ "winter": {
+  "snow": 0.6,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
+  "ice": 1.0,
+  "conifers": 0.16,
+  "floes": 0.3
+ },
+ "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware (~270 m = ~9 units), the river roads on both banks, the Bear Tavern road up the NJ bank towards Bear Tavern, the ferry houses. Zoom-12 frame: 1 unit = ~29 m (base units x 4).",
+ "box": [
+  2367,
+  3755,
+  126,
+  119
+ ],
+ "focus": [
+  2404.0,
+  3834.4
+ ],
+ "stills": [
+  {
+   "at": [
+    2430.0,
+    3814.5
+   ],
+   "dist": 110,
+   "tilt": 34,
+   "yaw": 0
+  },
+  {
+   "at": [
+    2404.0,
+    3834.4
+   ],
+   "dist": 40,
+   "tilt": 48,
+   "yaw": -8
+  },
+  {
+   "at": [
+    2410.84,
+    3828.12
+   ],
+   "dist": 20,
+   "tilt": 56,
+   "yaw": 20
+  }
+ ],
+ "hm_ppu": 8,
+ "tex": 4608,
+ "exag": 2.0,
+ "cell": 7.0,
+ "seed": 1225,
+ "relief_noise": [
+  1.0,
+  0.35
+ ],
+ "dem_ppu": 8,
+ "dem_margin": 6,
+ "dem_edits": {
+  "fill_water": true,
+  "flat_sd": 0.15,
+  "flat_low": 0.6,
+  "spike_m": 25.0
+ },
+ "creek_km2": 0.3,
+ "creeks": {
+  "paint_km2": 0.6,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.06,
+ "ravine_woods": 0.7,
+ "tree_spacing": 0.3,
+ "rust_k": 0.85,
+ "clear_blur": 0.35,
+ "clear_noise_u": 0.8,
+ "rivers": [
+  {
+   "name": "Delaware River",
+   "geo": "Delaware River (fine)",
+   "w": 10.5,
+   "step": 0.2,
+   "snap": false,
+   "smooth": 10,
+   "keep": 7.0
+  },
+  {
+   "name": "Jacobs Creek",
+   "geo": "Jacobs Creek",
+   "w": 0.6,
+   "step": 0.15,
+   "smooth": 6
+  }
+ ],
+ "roads": [
+  {
+   "name": "River road (NJ)",
+   "geo": "River road (NJ)",
+   "cls": "pike",
+   "meander": 0.2
+  },
+  {
+   "name": "River road (PA)",
+   "geo": "River road (PA)",
+   "cls": "pike",
+   "meander": 0.2
+  },
+  {
+   "name": "Bear Tavern road",
+   "geo": "Bear Tavern road",
+   "cls": "pike",
+   "meander": 0.25
+  }
+ ],
+ "towns": [
+  {
+   "name": "McConkey's Ferry",
+   "geo": "McConkey's Ferry",
+   "kind": "farm"
+  },
+  {
+   "name": "Johnson's Ferry",
+   "geo": "Johnson's Ferry",
+   "kind": "farm"
+  },
+  {
+   "name": "_f1",
+   "at": [
+    2376.19,
+    3804.81
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "_f2",
+   "at": [
+    2446.1,
+    3864.01
+   ],
+   "kind": "farm"
+  }
+ ],
+ "farm_density": 0.5,
+ "plantation_density": 0.0,
+ "lane_p": 0.4,
+ "features": {
+  "works": []
+ },
+ "labels": [
+  "McConkey's Ferry",
+  "Johnson's Ferry",
+  "Bear Tavern"
+ ]
+}

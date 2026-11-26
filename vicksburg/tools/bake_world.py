@@ -361,6 +361,10 @@ def prep_dem_project(G, cfg, close):
         k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (S.get("close_px", 5),) * 2); sea = cv2.morphologyEx(sea.astype(np.uint8), cv2.MORPH_CLOSE, k) > 0   # close_px: thin land strips in the water (causeways, tile seams)
         land = (~sea).astype(np.uint8); n, lab, st, _ = cv2.connectedComponentsWithStats(land, 8)   # no tiny islands / marsh specks
         small = np.zeros(n, bool); small[1:] = st[1:, cv2.CC_STAT_AREA] < S.get("island_px", 30); sea |= small[lab]
+        for key_, val_ in (("force_water", True), ("force_land", False)):   # project mode: period shorelines (modern landfill -> water, ...), polygons [[lat, lon], ...]
+            for poly in S.get(key_, []):
+                pm = np.zeros((H, W), np.uint8); Q = np.array([to_map(a, b) for a, b in poly], np.float32)
+                cv2.fillPoly(pm, [np.round((Q - b0) * DPU * 4).astype(np.int32)], 1, cv2.LINE_8, shift=2); sea = np.where(pm > 0, val_, sea)
         LOG("  sea %.1f %%" % (sea.mean() * 100))
     sl = E.get("synth_levee")
     if sl:
@@ -696,11 +700,13 @@ def wide_plan(cfg, G, dist, hw, box, roads, sea=None):
         if wet(px, py, 1.2): return False
         if any((px - q[0]) ** 2 + (py - q[1]) ** 2 < (gap * min(w, 1.6)) ** 2 for q in occ[-160:]): return False
         occ.append((px, py)); houses.append((px, py, w, d, rot, rc)); return True
-    TT = {}
+    TT = {}; CLU = {}
+    if PROJ and cfg.get("village_cluster"): CLU["_v*"] = cfg["village_cluster"]
     for t in cfg.get("towns", []):
         p = resolve_pt(G, t)
         if p is None: LOG("  town not found:", t.get("name")); continue
         TT[t["name"]] = (float(p[0]), float(p[1]), t.get("rad", 1.6), t.get("houses", 12), t.get("grid"), t.get("snap", True))
+        if PROJ and t.get("cluster"): CLU[t["name"]] = t["cluster"]   # project mode: compact cluster of small houses (no long houses strung along crossing roads)
     VIL = {}; rv_ = np.random.default_rng(cfg.get("seed", 5)); allT = [v[:2] for v in TT.values()]
     for p_ in RDP[rv_.permutation(len(RDP))]:
         if len(VIL) >= cfg.get("villages", 14): break
@@ -745,6 +751,13 @@ def wide_plan(cfg, G, dist, hw, box, roads, sea=None):
                     for q in np.arange(-R_, R_, B):
                         c = np.array([tx, ty]) + u * (k * B + side * 0.6) + v * (q + B / 2)
                         if rr.random() < 0.3 and np.hypot(c[0] - tx, c[1] - ty) < R_: put(float(c[0]), float(c[1]), rr.uniform(0.6, 0.9), rr.uniform(0.42, 0.52), -ang - math.pi / 2, int(rr.integers(0, 4)), 0.55)
+        elif CLU.get(nm) or (nm.startswith("_v") and CLU.get("_v*")):
+            cl = CLU.get(nm) or CLU["_v*"]; R_ = rad * cl.get("spread", 1.6) if isinstance(cl, dict) else rad * 1.6
+            n_ = int(cnt * (cl.get("k", 1.5) if isinstance(cl, dict) else 1.5)); k = 0; tries = 0
+            while k < n_ and tries < n_ * 40:
+                tries += 1; q = rr.uniform(0, 2 * math.pi); r_ = R_ * math.sqrt(rr.uniform(0, 1))
+                px, py = tx + math.cos(q) * r_, ty + math.sin(q) * r_; rot = -ang + (math.pi / 2 if rr.random() < 0.4 else 0) + rr.normal(0, 0.08)
+                if put(px, py, rr.uniform(0.45, 0.8), rr.uniform(0.35, 0.5), rot, int(rr.integers(0, 4)), 0.55): k += 1
         else:
             k = 0; tries = 0; cnt_ = int(cnt * 5); rad = rad * 4.5
             cross = np.array([tx, ty], np.float32) + v * np.linspace(-rad * 0.8, rad * 0.8, 12)[:, None]
@@ -784,6 +797,9 @@ def bake(rname, G, P, creeks, preview=True):
     ppu = cfg.get("hm_ppu", 8.0 if close else 1.5); HW, HH = int(round(bw * ppu)), int(round(bh * ppu))
     TW = int(cfg.get("tex", 4096 if close else 8192)); TH = int(round(TW * bh / bw)); seed = cfg.get("seed", 21); exag = cfg.get("exag", 6.0 if close else 14.0)
     LOG(f"== {rname}: box {box} hm {HW}x{HH} tex {TW}x{TH} ({'close' if close else 'wide'})")
+    global WINTER
+    WINTER = (cfg.get("winter") or {}) if (PROJ and cfg.get("season") == "winter") else None   # project mode: winter ground (configs without 'season' unchanged)
+    if WINTER is not None and not WINTER: WINTER = {"on": True}
     upx_h = HW / bw
     h = crop_prep(P, box, HW, HH, blur=1.0 if not close else 1.6)
     if close:
@@ -885,6 +901,11 @@ def bake(rname, G, P, creeks, preview=True):
                     for (q, _, _) in seg_intersections(rd[::4], rp[::2]): kp.append((float(q[0]), float(q[1]), 1.2 + rw))
                 rd = meander(rd, kp, amp=e.get("meander", 0.32 if e.get("cls", "pike") == "pike" else 0.22), wl=e.get("meander_wl", 7.5), seed=len(RDS) + seed) if e.get("meander", 1) else smooth(rd, 6)
             else: rd = smooth(densify(run, 0.5), 3)
+            if PROJ and SEA is not None:   # project mode: no road on the sea (ferries = the two landings): keep the dry runs only
+                dry = sample(SEA, box, rd) < 0.35; cuts = np.split(np.arange(len(rd)), np.nonzero(np.diff(dry.astype(np.int8)))[0] + 1)
+                for ix in cuts:
+                    if dry[ix[0]] and len(ix) >= 4: RDS.append((rd[ix].astype(np.float32), e.get("cls", "pike"), e.get("name", e.get("geo"))))
+                continue
             RDS.append((rd.astype(np.float32), e.get("cls", "pike"), e.get("name", e.get("geo"))))
     RAILS = []
     for e in cfg.get("railroads", []):
@@ -963,7 +984,8 @@ def bake(rname, G, P, creeks, preview=True):
     LOG("  settlements ...")
     town = None; wplan = None
     if close:
-        town = settle_close(cfg, G, box, dist, hw, h, sl_u, RDS, seed)
+        if PROJ and SEA is not None and cfg.get("settle_sea", True): town = settle_close(cfg, G, box, np.where(SEA > 0.35, 0.0, dist).astype(np.float32), hw, h, sl_u, RDS, seed)   # project mode: no houses / streets on the sea
+        else: town = settle_close(cfg, G, box, dist, hw, h, sl_u, RDS, seed)
         RDS += [(ln, "lane", "lane") for ln in town.pop("lanes")]
     else:
         wplan = wide_plan(cfg, G, dist, hw, box, [rd for rd, c, _ in RDS if c == "pike"] or [rd for rd, _, _ in RDS], *([SEA] if SEA is not None else []))
@@ -1017,6 +1039,7 @@ def bake(rname, G, P, creeks, preview=True):
     crown = fbm(TH, TW, 2, int(bw / (0.6 if not close else 0.09)), seed + 3)
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)
     fcol = (hexc("#2e4645") if close else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])
+    if WINTER: fcol = winter_woods(fcol, crown, close, TW, TH, bw, seed)
     img = img * (1 - forest_paint[..., None]) + fcol * forest_paint[..., None]; del fcol, crown, fdark
     ao = np.clip(cv2.GaussianBlur(forest_paint, (0, 0), 0.0025 * TW) - forest_paint, 0, 1); img *= (1 - 0.45 * ao)[..., None]; del ao, forest_paint
     # cane brakes: pale yellow-green speckled thickets in bands along the alluvial rivers / bayous (not on fields near towns)
@@ -1060,6 +1083,7 @@ def bake(rname, G, P, creeks, preview=True):
     if PROJ and cfg.get("river_halo_u") and not close:   # project mode (wide): paint water just past the ribbon edge so the rivers read bolder from altitude
         hl = np.clip(1 - (dist_t - hw_t) / cfg["river_halo_u"], 0, 1)[..., None] * 0.9
         img = img * (1 - hl) + hexc(cfg.get("river_halo_col", "#4d6876")) * hl; del hl
+    sea_w = sea_t.copy() if (WINTER and SEA is not None) else None   # winter: no snow / frost on the sea
     if SEA is not None: img = paint_sea(img, sea_t, close, s, cfg.get("sea_look", {})); del sea_t
     if town: img = paint_town(img, town, Pt, s)
     # ---------------- roads ----------------
@@ -1075,6 +1099,7 @@ def bake(rname, G, P, creeks, preview=True):
     edge = np.clip(cv2.GaussianBlur(cv2.dilate(road, np.ones((3, 3), np.uint8), iterations=1 if close else 2).astype(np.float32) / 255, (0, 0), 0.8) - rdm, 0, 1)[..., None]
     img = img * (1 - 0.5 * edge) + hexc("#4a3a2e") * 0.5 * edge; del edge
     rdm = rdm[..., None]; rcol = hexc("#8a5a44") if close else hexc("#7e5644")
+    if WINTER: rcol = hexc(WINTER.get("road_col", "#7a5c48" if close else "#735646")); road_w = rdm[..., 0].copy()   # muddy / frozen ruts: less red
     rdm = rdm * (1.0 if close else 0.9) * (0.85 + 0.3 * cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.5), seed + 71), (TW, TH))[..., None]).clip(0, 1.15)
     img = img * (1 - rdm) + rcol * (1 + (cv2.resize(fbm(TH // 8, TW // 8, 3, 40, seed + 70), (TW, TH))[..., None] - 0.5) * 0.18) * rdm; del rdm, road
     tg = cv2.GaussianBlur(townmask, (0, 0), 0.004 * TW)[..., None] * (0.18 if not close else 0.0); img = img * (1 - tg) + hexc("#8c7b66") * tg; del tg
@@ -1103,6 +1128,7 @@ def bake(rname, G, P, creeks, preview=True):
             cv2.polylines(sp, [np.round(np.array([Pt(p) for p in Q]) * 4).astype(np.int32)], False, 255, max(2, int(wd_ * sc * s)), cv2.LINE_AA, shift=2)
             spf = cv2.GaussianBlur(sp.astype(np.float32) / 255, (0, 0), 1.2)[..., None] * a_; img = img * (1 - spf) + hexc(col_) * spf
         W_["nrm"] = nrm
+    if WINTER: img = winter_ground(img, forest, road_w, dist_t, hw_t, close, TW, TH, bw, s, seed, WINTER, sea_w); del road_w, sea_w
     # ---------------- baked relief shading ----------------
     shade = np.ones((TH, TW), np.float32)
     sun = np.array([-0.7, 0.48, -0.4], np.float32); sun /= np.linalg.norm(sun)
@@ -1115,7 +1141,7 @@ def bake(rname, G, P, creeks, preview=True):
         k = 0.9; img *= (1 + k * (shade - 1))[..., None]
         vt = np.clip(1 - (dist_t - hw_t - 6.0) / 18.0, 0, 1)
         lit = np.clip((shade - 1.02) * 3.0, 0, 1)[..., None] * (1 - 0.8 * forest[..., None]) * (0.25 + 0.75 * vt[..., None])
-        img = img * (1 - 0.85 * lit) + hexc("#bcbe8a") * 1.12 * 0.85 * lit; del lit, vt
+        img = img * (1 - 0.85 * lit) + hexc(WINTER.get("lit_col", "#c4c5bc") if WINTER else "#bcbe8a") * 1.12 * 0.85 * lit; del lit, vt   # winter: frost-pale (not yellow) sunlit slopes
         img *= np.array([0.9, 0.95, 0.98], np.float32)
     else: img *= (1 + 0.5 * (shade - 1))[..., None]
     del shade, ht
@@ -1169,6 +1195,8 @@ def bake(rname, G, P, creeks, preview=True):
         if town and town["trees"]:
             TT = np.array(town["trees"], np.float32); lists.append((TT[:, :2], np.full(len(TT), 3), TT[:, 2], r.uniform(0, 1, len(TT)), np.zeros(len(TT))))
         for T_, k_, s_, c_, ev_ in lists:
+            if PROJ and SEA is not None and len(T_):   # project mode: no hedge / lone trees on the sea
+                ok_ = sample(SEA, box, np.asarray(T_, np.float32)) < 0.3; T_, k_, s_, c_, ev_ = T_[ok_], np.asarray(k_)[ok_], np.asarray(s_)[ok_], np.asarray(c_)[ok_], np.asarray(ev_)[ok_]
             th_ = sample(h, box, T_)
             trees += [[round(float(a), 3), round(float(b), 3), round(float(c), 1), int(k), round(float(sv), 2), round(float(f), 2), round(float(ev), 2)] for (a, b), c, k, sv, f, ev in zip(T_, th_, k_, s_, c_, ev_)]
     # ---------------- houses ----------------
@@ -1246,6 +1274,7 @@ def bake(rname, G, P, creeks, preview=True):
              railroads=[dict(name=nm, pts=[[round(float(a), 3), round(float(b), 3)] for a, b in rd[::3]]) for rd, nm in RAILS],
              trees=trees, houses=houses, towns=towns_out, places=places, features=feat)
     if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
+    if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees")}   # engine: bare woods, ice on the rivers
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
     if rb: D["bridge"] = {k: rb[0][k] for k in ("x", "z", "angle", "len", "wl", "deck")}
@@ -1262,6 +1291,44 @@ def bake(rname, G, P, creeks, preview=True):
 
 
 # ============================================================ project-mode look helpers (period ground; gm_look untouched) ============================================================
+WINTER = None   # set per region by bake() from cfg "season": "winter" (+ optional cfg "winter": {...} tuning); None = the approved summer look
+
+
+def winter_woods(fcol, crown, close, TW, TH, bw, seed):
+    """bare deciduous woods: the same dark speckled canopy mass, but a dark grey-brown twig colour (low chroma) with scattered conifer
+    (cedar / pine) clumps that keep the teal"""
+    bare = hexc("#433d37" if close else "#4b4641")[None, None] * (0.86 + 0.28 * crown[..., None])   # wide: the crossing / trenton winter-wood tone as rendered (not near-black)
+    con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - 0.62) * 6, 0, 1)[..., None]
+    return bare * (1 - con) + fcol * con
+
+
+def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W, sea=None):
+    """late-December ground, the same film in winter: the field mosaic kept (same texture density and warm/cool field contrast), a little
+    greyer and lighter (dormant grass, frozen stubble), a THIN snow / frost dusting that lies in the furrows and hollows (never a white sheet),
+    fading in soft large patches, none under the woods or on the roads; a frost rim on the river banks"""
+    k = W.get("k", 1.0); img0 = img
+    lum = img.mean(-1, keepdims=True)
+    # 1) dormant ground: desaturate a little, cool slightly, lift
+    g = lum + (img - lum) * (1 - W.get("desat", 0.35) * k)
+    g = g * np.array([1.0 - 0.035 * k, 1.0, 1.0 + 0.045 * k], np.float32) * (1 + 0.04 * k) + 4 * k
+    # 2) frost / thin snow: fine dusting in the furrows + soft large-scale variation (no blotches)
+    m1 = cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (8 if close else 80)) + 2, seed + 511), (TW, TH))
+    m2 = cv2.resize(fbm(TH // 2, TW // 2, 3, int(bw / (0.25 if close else 2.5)) + 2, seed + 512), (TW, TH))
+    cov = np.clip(0.35 + (m1 - 0.5) * 0.9 + (W.get("snow", 0.55) - 0.55), 0, 1)
+    fine = cv2.GaussianBlur(img.mean(-1), (0, 0), 0.6); hol = np.clip((cv2.GaussianBlur(fine, (0, 0), 3.0) - fine) / 8 + 0.5, 0, 1)   # furrows / hollows hold the snow
+    snow = cov * np.clip(0.5 + 0.5 * hol + (m2 - 0.5) * 0.5, 0, 1) * W.get("snow_alpha", 0.5)
+    snow *= (1 - 0.9 * forest) * (1 - 0.85 * road)
+    snow *= np.clip((dist_t - hw_t) / (0.08 if close else 0.6), 0, 1)   # not on the water
+    snow = snow[..., None]; scol = hexc(W.get("snow_col", "#c4c5bd"))[None, None]
+    g = g * (1 - snow) + scol * snow
+    # 3) frost rim on the banks (shore ice / frozen mud)
+    rim = np.clip(1 - np.abs(dist_t - hw_t - (0.05 if close else 0.4)) / (0.10 if close else 0.6), 0, 1)[..., None] * 0.35 * W.get("ice", 1.0)
+    g = g * (1 - rim) + hexc("#b9c0c2") * rim
+    if sea is not None:   # the painted sea stays as it was (no grey-down, no snow)
+        sm = np.clip((sea - 0.35) * 3.3, 0, 1)[..., None]; g = g * (1 - sm) + img0 * sm
+    return np.clip(g, 0, 255)
+
+
 def _river_coords(L, box, TW, TH, s, f=4):
     """for every texel (at 1/f resolution): arc length along polyline L (map units), signed distance (units, + = left of the flow), nearest index"""
     x0, y0 = box[:2]; w4, h4 = TW // f, TH // f; s4 = s / f

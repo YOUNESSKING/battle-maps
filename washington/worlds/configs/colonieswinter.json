@@ -1,0 +1,676 @@
+{
+ "mode": "wide",
+ "zoom": 9,
+ "note": "colonies, WINTER variant for the Dec 1776 - Jan 1777 shots (S01 opening, S04 New Jersey part, S08). Same frame, box and geography as colonies; winter ground (bake_world.winter_ground). Strategic map 1776-77 (overview + the cloud dives): New York harbour, Manhattan, the west end of Long Island, Staten Island, the Hudson, New Jersey (Newark, Elizabeth Town, Perth Amboy, New Brunswick, Princeton, Trenton, Morristown) down the Delaware to Philadelphia. Zoom-9 frame: 1 unit = ~232 m (base units / 2). Harbour, sounds, the Hudson / East River and the tidal Delaware = DEM <= 0.5 m (sea mask); modern reservoirs filled from the banks.",
+ "box": [
+  122,
+  113,
+  663,
+  585
+ ],
+ "stills": [
+  {
+   "at": [
+    453.5,
+    405.5
+   ],
+   "dist": 760,
+   "tilt": 30,
+   "yaw": 0
+  },
+  {
+   "at": [
+    613.41,
+    283.1
+   ],
+   "dist": 260,
+   "tilt": 44,
+   "yaw": 0
+  },
+  {
+   "at": [
+    338.89,
+    515.68
+   ],
+   "dist": 170,
+   "tilt": 52,
+   "yaw": -8
+  }
+ ],
+ "hm_ppu": 1.5,
+ "tex": 8192,
+ "exag": 6.0,
+ "cell": 30.0,
+ "seed": 1776,
+ "dem_ppu": 2,
+ "dem_margin": 24,
+ "dem_edits": {
+  "sea": {
+   "level": 0.5,
+   "min_px": 300,
+   "island_px": 40,
+   "open_px": 3,
+   "seeds": [
+    [
+     40.665,
+     -74.045
+    ],
+    [
+     40.53,
+     -74.03
+    ],
+    [
+     40.49,
+     -74.18
+    ],
+    [
+     40.67,
+     -74.135
+    ],
+    [
+     40.74,
+     -73.968
+    ],
+    [
+     40.83,
+     -73.93
+    ],
+    [
+     40.86,
+     -73.78
+    ],
+    [
+     41.0,
+     -73.905
+    ],
+    [
+     40.8,
+     -73.99
+    ],
+    [
+     39.95,
+     -75.13
+    ],
+    [
+     40.1,
+     -74.85
+    ],
+    [
+     40.15,
+     -74.73
+    ],
+    [
+     40.6,
+     -74.2
+    ]
+   ],
+   "force_water": [
+    [
+     [
+      40.791807,
+      -73.906176
+     ],
+     [
+      40.780913,
+      -73.922026
+     ],
+     [
+      40.775177,
+      -73.928698
+     ],
+     [
+      40.767319,
+      -73.937543
+     ],
+     [
+      40.754396,
+      -73.950464
+     ],
+     [
+      40.742919,
+      -73.962016
+     ],
+     [
+      40.734576,
+      -73.965337
+     ],
+     [
+      40.721576,
+      -73.964337
+     ],
+     [
+      40.709282,
+      -73.969582
+     ],
+     [
+      40.704164,
+      -73.982402
+     ],
+     [
+      40.701187,
+      -73.989343
+     ],
+     [
+      40.698401,
+      -73.996866
+     ],
+     [
+      40.694264,
+      -74.003602
+     ],
+     [
+      40.687948,
+      -74.007995
+     ],
+     [
+      40.692052,
+      -74.018005
+     ],
+     [
+      40.699736,
+      -74.012398
+     ],
+     [
+      40.705599,
+      -74.003134
+     ],
+     [
+      40.708813,
+      -73.994657
+     ],
+     [
+      40.711836,
+      -73.987598
+     ],
+     [
+      40.714718,
+      -73.978418
+     ],
+     [
+      40.722424,
+      -73.975663
+     ],
+     [
+      40.735424,
+      -73.976663
+     ],
+     [
+      40.747081,
+      -73.971984
+     ],
+     [
+      40.759604,
+      -73.959536
+     ],
+     [
+      40.772681,
+      -73.946457
+     ],
+     [
+      40.780823,
+      -73.937302
+     ],
+     [
+      40.787087,
+      -73.929974
+     ],
+     [
+      40.798193,
+      -73.913824
+     ]
+    ],
+    [
+     [
+      40.787,
+      -73.932256
+     ],
+     [
+      40.799862,
+      -73.932249
+     ],
+     [
+      40.814786,
+      -73.935238
+     ],
+     [
+      40.830214,
+      -73.937238
+     ],
+     [
+      40.845672,
+      -73.930074
+     ],
+     [
+      40.860641,
+      -73.920091
+     ],
+     [
+      40.872857,
+      -73.915248
+     ],
+     [
+      40.876523,
+      -73.92113
+     ],
+     [
+      40.878301,
+      -73.929212
+     ],
+     [
+      40.87735,
+      -73.933423
+     ],
+     [
+      40.88065,
+      -73.934577
+     ],
+     [
+      40.881699,
+      -73.928788
+     ],
+     [
+      40.879477,
+      -73.91887
+     ],
+     [
+      40.873143,
+      -73.910752
+     ],
+     [
+      40.859359,
+      -73.915909
+     ],
+     [
+      40.844328,
+      -73.925926
+     ],
+     [
+      40.829786,
+      -73.932762
+     ],
+     [
+      40.815214,
+      -73.930762
+     ],
+     [
+      40.800138,
+      -73.927751
+     ],
+     [
+      40.787,
+      -73.927744
+     ]
+    ]
+   ]
+  },
+  "fill_water": true,
+  "spike_m": 60.0,
+  "sea_floor_m": 0.0
+ },
+ "sea_look": {
+  "deep": "#33505f",
+  "shallow": "#5f8288",
+  "shelf_u": 6.0,
+  "beach_u": 0.5,
+  "line_u": 0.2
+ },
+ "creek_km2": 120.0,
+ "creeks": {
+  "paint_km2": 400,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.04,
+ "villages": 6,
+ "wood_soft": {
+  "blur_u": 0.5,
+  "alpha": 0.85
+ },
+ "tex_grade": {
+  "contrast": 1.22,
+  "sat": 1.3,
+  "gamma": 0.97
+ },
+ "river_halo_u": 0.5,
+ "rivers": [
+  {
+   "name": "Delaware River",
+   "geo": [
+    "Delaware River"
+   ],
+   "w": 1.4,
+   "step": 1.0,
+   "snap": false
+  },
+  {
+   "name": "Schuylkill River",
+   "geo": [
+    "Schuylkill River"
+   ],
+   "w": 0.7,
+   "step": 1.0
+  },
+  {
+   "name": "Raritan River",
+   "geo": [
+    "Raritan River"
+   ],
+   "w": 0.7,
+   "step": 1.0
+  },
+  {
+   "name": "Passaic River",
+   "geo": [
+    "Passaic River"
+   ],
+   "w": 0.6,
+   "step": 1.0
+  },
+  {
+   "name": "Hackensack River",
+   "geo": [
+    "Hackensack River"
+   ],
+   "w": 0.6,
+   "step": 1.0
+  },
+  {
+   "name": "Millstone River",
+   "geo": [
+    "Millstone River"
+   ],
+   "w": 0.35,
+   "step": 1.0
+  },
+  {
+   "name": "Neshaminy Creek",
+   "geo": [
+    "Neshaminy Creek"
+   ],
+   "w": 0.35,
+   "step": 1.0
+  },
+  {
+   "name": "Crosswicks Creek",
+   "geo": [
+    "Crosswicks Creek"
+   ],
+   "w": 0.35,
+   "step": 1.0
+  },
+  {
+   "name": "Assunpink Creek",
+   "geo": [
+    "Assunpink Creek"
+   ],
+   "w": 0.25,
+   "step": 1.0
+  },
+  {
+   "name": "Saddle River",
+   "geo": [
+    "Saddle River"
+   ],
+   "w": 0.25,
+   "step": 1.0
+  },
+  {
+   "name": "Bronx River",
+   "geo": [
+    "Bronx River"
+   ],
+   "w": 0.25,
+   "step": 1.0
+  },
+  {
+   "name": "Pennypack Creek",
+   "geo": [
+    "Pennypack Creek"
+   ],
+   "w": 0.25,
+   "step": 1.0
+  }
+ ],
+ "roads": [
+  {
+   "geo": "Philadelphia - Trenton post road (PA)",
+   "cls": "pike"
+  },
+  {
+   "geo": "New York post road (NJ): Trenton - New Brunswick - Elizabeth Town - Paulus Hook",
+   "cls": "pike"
+  },
+  {
+   "geo": "Trenton - Bordentown - Burlington road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Burlington - Cooper's Ferry road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Perth Amboy - New Brunswick road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Morristown - Elizabeth Town road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Morristown - Newark road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Fort Lee - Hackensack - Newark road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Princeton - Morristown road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Boston post road (Manhattan)",
+   "cls": "pike"
+  },
+  {
+   "geo": "River road (NJ): Johnson's Ferry - Trenton",
+   "cls": "pike"
+  },
+  {
+   "geo": "Pennington road",
+   "cls": "pike"
+  },
+  {
+   "geo": "Princeton-Trenton Post Road (King's Highway), north to south",
+   "cls": "pike"
+  },
+  {
+   "geo": "Gowanus road (Brooklyn - Gravesend)",
+   "cls": "lane"
+  },
+  {
+   "geo": "Jamaica road (Bedford - Jamaica Pass - Jamaica)",
+   "cls": "lane"
+  },
+  {
+   "geo": "Brooklyn - Flatbush - Jamaica roads",
+   "cls": "lane"
+  }
+ ],
+ "towns": [
+  {
+   "name": "New York",
+   "geo": "New York",
+   "rad": 1.7,
+   "houses": 34,
+   "grid": {
+    "block": 0.75,
+    "angle": -61
+   },
+   "snap": false
+  },
+  {
+   "name": "Philadelphia",
+   "geo": "Philadelphia",
+   "rad": 2.4,
+   "houses": 44,
+   "grid": {
+    "block": 0.8,
+    "angle": 0
+   }
+  },
+  {
+   "name": "Brooklyn",
+   "geo": "Brooklyn",
+   "rad": 0.6,
+   "houses": 6
+  },
+  {
+   "name": "Newark",
+   "geo": "Newark",
+   "rad": 0.9,
+   "houses": 10
+  },
+  {
+   "name": "Elizabeth Town",
+   "geo": "Elizabeth Town",
+   "rad": 0.9,
+   "houses": 10
+  },
+  {
+   "name": "Perth Amboy",
+   "geo": "Perth Amboy",
+   "rad": 0.8,
+   "houses": 9
+  },
+  {
+   "name": "New Brunswick",
+   "geo": "New Brunswick",
+   "rad": 0.9,
+   "houses": 10
+  },
+  {
+   "name": "Princeton",
+   "geo": "Princeton",
+   "rad": 0.7,
+   "houses": 8
+  },
+  {
+   "name": "Trenton",
+   "geo": "Trenton",
+   "rad": 0.8,
+   "houses": 10
+  },
+  {
+   "name": "Bordentown",
+   "geo": "Bordentown",
+   "rad": 0.6,
+   "houses": 6
+  },
+  {
+   "name": "Burlington",
+   "geo": "Burlington",
+   "rad": 0.7,
+   "houses": 8
+  },
+  {
+   "name": "Bristol",
+   "geo": "Bristol",
+   "rad": 0.6,
+   "houses": 6
+  },
+  {
+   "name": "Hackensack",
+   "geo": "Hackensack",
+   "rad": 0.6,
+   "houses": 6
+  },
+  {
+   "name": "Morristown",
+   "geo": "Morristown",
+   "rad": 0.7,
+   "houses": 7
+  },
+  {
+   "name": "White Plains",
+   "geo": "White Plains",
+   "rad": 0.6,
+   "houses": 6
+  },
+  {
+   "name": "Germantown",
+   "geo": "Germantown",
+   "rad": 0.6,
+   "houses": 7
+  },
+  {
+   "name": "Flatbush",
+   "geo": "Flatbush",
+   "rad": 0.5,
+   "houses": 5
+  },
+  {
+   "name": "Jamaica",
+   "geo": "Jamaica",
+   "rad": 0.5,
+   "houses": 5
+  },
+  {
+   "name": "Kingston",
+   "geo": "Kingston",
+   "rad": 0.4,
+   "houses": 4
+  },
+  {
+   "name": "Woodbridge",
+   "geo": "Woodbridge",
+   "rad": 0.5,
+   "houses": 5
+  },
+  {
+   "name": "Pennington",
+   "geo": "Pennington",
+   "rad": 0.4,
+   "houses": 4
+  },
+  {
+   "name": "Maidenhead",
+   "geo": "Maidenhead",
+   "rad": 0.4,
+   "houses": 4
+  },
+  {
+   "name": "Harlem",
+   "geo": "Harlem",
+   "rad": 0.4,
+   "houses": 4
+  }
+ ],
+ "features": {
+  "works": []
+ },
+ "labels": [
+  "McConkey's Ferry",
+  "Fort Washington",
+  "Fort Lee",
+  "Kip's Bay",
+  "Gravesend Bay",
+  "Jamaica Pass",
+  "Staten Island",
+  "Long Island",
+  "Manhattan",
+  "Upper Bay",
+  "Lower Bay",
+  "Newark Bay",
+  "Raritan Bay",
+  "Paulus Hook",
+  "Coryell's Ferry"
+ ],
+ "season": "winter",
+ "winter": {
+  "snow": 0.6,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
+  "ice": 1.0,
+  "conifers": 0.16
+ }
+}

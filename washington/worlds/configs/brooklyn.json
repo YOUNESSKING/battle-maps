@@ -1,0 +1,694 @@
+{
+ "mode": "close",
+ "zoom": 11,
+ "note": "Brooklyn evacuation, 29-30 Aug 1776 (summer): Brooklyn Heights + the ferry landing (Fulton Ferry), the East River (~0.8-1.2 km), the 1776 town of New York (lower Manhattan south of ~Chambers St), Governors Island, Red Hook, Wallabout Bay, Gowanus Creek, the American works line Wallabout - Gowanus (Fort Putnam, Fort Greene, Fort Box, Cobble Hill, Fort Stirling, Fort Defiance). Zoom-11 frame: 1 unit = ~58 m. 1776 shoreline: modern landfill (Battery Park City, the Manhattan / Brooklyn piers, Navy Yard, Governors Island south, Red Hook basins) turned back into water (approx. polygons).",
+ "box": [
+  2425,
+  1102,
+  103,
+  114
+ ],
+ "focus": [
+  2470.8,
+  1146.8
+ ],
+ "stills": [
+  {
+   "at": [
+    2476.5,
+    1159.0
+   ],
+   "dist": 120,
+   "tilt": 34,
+   "yaw": 0
+  },
+  {
+   "at": [
+    2471.15,
+    1141.05
+   ],
+   "dist": 45,
+   "tilt": 48,
+   "yaw": -10
+  },
+  {
+   "at": [
+    2477.7,
+    1148.73
+   ],
+   "dist": 26,
+   "tilt": 56,
+   "yaw": 15
+  }
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 2.4,
+ "cell": 4.2,
+ "seed": 1776,
+ "relief_noise": [
+  0.8,
+  0.3
+ ],
+ "dem_ppu": 8,
+ "dem_margin": 6,
+ "dem_edits": {
+  "sea": {
+   "level": 0.6,
+   "min_px": 4000,
+   "open_px": 3,
+   "close_px": 5,
+   "island_px": 200,
+   "seeds": [
+    [
+     40.705,
+     -74.0
+    ],
+    [
+     40.69,
+     -74.03
+    ],
+    [
+     40.7,
+     -74.025
+    ]
+   ],
+   "force_water": [
+    [
+     [
+      40.7165,
+      -74.0108
+     ],
+     [
+      40.713,
+      -74.0122
+     ],
+     [
+      40.709,
+      -74.014
+     ],
+     [
+      40.706,
+      -74.0155
+     ],
+     [
+      40.704,
+      -74.0158
+     ],
+     [
+      40.7025,
+      -74.015
+     ],
+     [
+      40.7015,
+      -74.0132
+     ],
+     [
+      40.699,
+      -74.015
+     ],
+     [
+      40.7,
+      -74.025
+     ],
+     [
+      40.724,
+      -74.025
+     ],
+     [
+      40.724,
+      -74.0105
+     ]
+    ],
+    [
+     [
+      40.702,
+      -74.0128
+     ],
+     [
+      40.7028,
+      -74.0112
+     ],
+     [
+      40.704,
+      -74.0095
+     ],
+     [
+      40.7055,
+      -74.0072
+     ],
+     [
+      40.7068,
+      -74.0048
+     ],
+     [
+      40.708,
+      -74.0025
+     ],
+     [
+      40.7092,
+      -74.0005
+     ],
+     [
+      40.7105,
+      -73.9975
+     ],
+     [
+      40.7113,
+      -73.9935
+     ],
+     [
+      40.7118,
+      -73.988
+     ],
+     [
+      40.7115,
+      -73.982
+     ],
+     [
+      40.7105,
+      -73.978
+     ],
+     [
+      40.708,
+      -73.974
+     ],
+     [
+      40.7,
+      -73.99
+     ],
+     [
+      40.699,
+      -74.01
+     ]
+    ],
+    [
+     [
+      40.7038,
+      -73.9932
+     ],
+     [
+      40.702,
+      -73.995
+     ],
+     [
+      40.6995,
+      -73.9975
+     ],
+     [
+      40.6965,
+      -73.9992
+     ],
+     [
+      40.6935,
+      -74.0005
+     ],
+     [
+      40.6905,
+      -74.0018
+     ],
+     [
+      40.6878,
+      -74.003
+     ],
+     [
+      40.685,
+      -74.0055
+     ],
+     [
+      40.682,
+      -74.0085
+     ],
+     [
+      40.68,
+      -74.011
+     ],
+     [
+      40.679,
+      -74.015
+     ],
+     [
+      40.683,
+      -74.0115
+     ],
+     [
+      40.688,
+      -74.0082
+     ],
+     [
+      40.693,
+      -74.0058
+     ],
+     [
+      40.699,
+      -74.0035
+     ],
+     [
+      40.7045,
+      -73.9975
+     ]
+    ],
+    [
+     [
+      40.678,
+      -74.015
+     ],
+     [
+      40.6745,
+      -74.011
+     ],
+     [
+      40.672,
+      -74.01
+     ],
+     [
+      40.67,
+      -74.009
+     ],
+     [
+      40.665,
+      -74.011
+     ],
+     [
+      40.664,
+      -74.03
+     ],
+     [
+      40.68,
+      -74.03
+     ]
+    ],
+    [
+     [
+      40.701,
+      -73.985
+     ],
+     [
+      40.6995,
+      -73.981
+     ],
+     [
+      40.699,
+      -73.975
+     ],
+     [
+      40.6985,
+      -73.97
+     ],
+     [
+      40.6995,
+      -73.964
+     ],
+     [
+      40.703,
+      -73.961
+     ],
+     [
+      40.71,
+      -73.962
+     ],
+     [
+      40.708,
+      -73.983
+     ]
+    ],
+    [
+     [
+      40.688,
+      -74.03
+     ],
+     [
+      40.6884,
+      -74.023
+     ],
+     [
+      40.6877,
+      -74.019
+     ],
+     [
+      40.6872,
+      -74.015
+     ],
+     [
+      40.688,
+      -74.011
+     ],
+     [
+      40.689,
+      -74.008
+     ],
+     [
+      40.68,
+      -74.008
+     ],
+     [
+      40.68,
+      -74.03
+     ]
+    ],
+    [
+     [
+      40.6997,
+      -74.026
+     ],
+     [
+      40.6997,
+      -74.0175
+     ],
+     [
+      40.7003,
+      -74.015
+     ],
+     [
+      40.699,
+      -74.012
+     ],
+     [
+      40.699,
+      -74.0
+     ],
+     [
+      40.6935,
+      -74.004
+     ],
+     [
+      40.6935,
+      -74.026
+     ]
+    ]
+   ]
+  },
+  "fill_water": true,
+  "spike_m": 25.0,
+  "sea_floor_m": 0.0
+ },
+ "sea_look": {
+  "deep": "#38545f",
+  "shallow": "#52727a",
+  "shelf_u": 3.0,
+  "beach_u": 0.15,
+  "line_u": 0.06
+ },
+ "creek_km2": 0.5,
+ "creeks": {
+  "paint_km2": 1.0,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.02,
+ "ravine_woods": 0.4,
+ "tree_spacing": 0.25,
+ "rust_k": 0.85,
+ "clear_blur": 0.35,
+ "clear_noise_u": 0.8,
+ "rivers": [
+  {
+   "name": "Gowanus Creek",
+   "geo": "Gowanus Creek",
+   "w": 0.7,
+   "step": 0.12,
+   "snap": false,
+   "smooth": 6,
+   "meander": 0.15,
+   "meander_wl": 2.0
+  }
+ ],
+ "roads": [
+  {
+   "name": "Brooklyn - Flatbush road",
+   "geo": "Brooklyn - Flatbush - Jamaica roads",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Jamaica road",
+   "geo": "Jamaica road (Bedford",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Gowanus road",
+   "geo": "Gowanus road",
+   "cls": "lane",
+   "meander": 0.15
+  },
+  {
+   "name": "Broadway / Bowery",
+   "geo": "Boston post road (Manhattan)",
+   "cls": "pike",
+   "meander": 0.0
+  }
+ ],
+ "towns": [
+  {
+   "name": "New York",
+   "at": [
+    2455.13,
+    1133.36
+   ],
+   "kind": "grid",
+   "rad": 7.5,
+   "block": 1.15,
+   "angle": -61
+  },
+  {
+   "name": "Brooklyn Ferry",
+   "at": [
+    2482.07,
+    1143.93
+   ],
+   "kind": "hamlet",
+   "len": 2.6,
+   "angle": -30
+  },
+  {
+   "name": "Brooklyn",
+   "geo": "Brooklyn",
+   "kind": "hamlet",
+   "len": 3.0,
+   "angle": -60
+  },
+  {
+   "name": "_f1",
+   "at": [
+    2500.27,
+    1166.98
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "_f2",
+   "at": [
+    2506.1,
+    1179.46
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "_f3",
+   "at": [
+    2485.71,
+    1156.42
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "_f4",
+   "at": [
+    2491.53,
+    1189.07
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "_f5",
+   "at": [
+    2479.88,
+    1165.06
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "_f6",
+   "at": [
+    2462.41,
+    1185.23
+   ],
+   "kind": "farm"
+  }
+ ],
+ "farm_density": 0.6,
+ "plantation_density": 0.0,
+ "lane_p": 0.4,
+ "features": {
+  "works": [
+   {
+    "name": "Brooklyn lines",
+    "geo": "Brooklyn Heights fortified line, Wallabout swamp -> Gowanus marsh ",
+    "kind": "breastwork",
+    "side": "us",
+    "face_to": [
+     2527.94,
+     1185.23
+    ],
+    "height": 1.6,
+    "clear": 0.8
+   },
+   {
+    "name": "Fort Putnam",
+    "at": [
+     2505.36,
+     1166.6
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 1.0,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Fort Greene",
+    "at": [
+     2497.06,
+     1171.78
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.9,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Fort Box",
+    "at": [
+     2488.92,
+     1172.16
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.7,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Cobble Hill fort",
+    "at": [
+     2480.32,
+     1169.86
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.7,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Fort Stirling",
+    "at": [
+     2474.5,
+     1151.62
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.8,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Fort Defiance",
+    "at": [
+     2447.84,
+     1190.98
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.8,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Governors Island works",
+    "at": [
+     2447.4,
+     1162.18
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.8,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Oblong Redoubt",
+    "at": [
+     2501.44,
+     1168.32
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.6,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   },
+   {
+    "name": "Redoubt on the Left",
+    "at": [
+     2510.18,
+     1161.8
+    ],
+    "shape": "fort",
+    "kind": "fort",
+    "side": "us",
+    "size": 0.6,
+    "closed": true,
+    "height": 1.8,
+    "clear": 0.6,
+    "face": 0
+   }
+  ]
+ },
+ "labels": [
+  "Fort Putnam",
+  "Fort Greene",
+  "Fort Box",
+  "Cobble Hill fort",
+  "Fort Stirling",
+  "Fort Defiance",
+  "Governors Island",
+  "Upper Bay",
+  "Oblong Redoubt",
+  "Redoubt on the Left",
+  "Brooklyn Ferry landing",
+  "Manhattan landing, Peck Slip",
+  "Fly Market",
+  "Wallabout Bay",
+  "Red Hook",
+  "East River",
+  "Gowanus Creek mouth",
+  "Brouwer's Millpond",
+  "Redoubt at the Mill"
+ ]
+}

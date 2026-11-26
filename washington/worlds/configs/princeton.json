@@ -1,0 +1,173 @@
+{
+ "mode": "close",
+ "zoom": 11,
+ "season": "winter",
+ "winter": {
+  "snow": 0.6,
+  "snow_alpha": 0.66,
+  "desat": 0.45,
+  "ice": 1.0,
+  "conifers": 0.16
+ },
+ "note": "Princeton, 3 Jan 1777 (winter, frozen ground): the village on the post road + Nassau Hall, the post road to Trenton (SW) over the Stony Brook bridge (Worth's Mill), the Quaker Bridge / Saw Mill road from the south (the night march), the Thomas Clarke house and William Clarke's orchard (the clash point), the Olden house, Frog Hollow. Zoom-11 frame. Carnegie Lake (1906) and the D&R canal (1834) are modern: filled.",
+ "box": [
+  1426,
+  1798,
+  103,
+  100
+ ],
+ "focus": [
+  1483.74,
+  1855.6
+ ],
+ "stills": [
+  {
+   "at": [
+    1477.5,
+    1848.0
+   ],
+   "dist": 100,
+   "tilt": 34,
+   "yaw": 0
+  },
+  {
+   "at": [
+    1483.74,
+    1855.6
+   ],
+   "dist": 42,
+   "tilt": 48,
+   "yaw": -8
+  },
+  {
+   "at": [
+    1509.52,
+    1819.88
+   ],
+   "dist": 24,
+   "tilt": 56,
+   "yaw": 12
+  }
+ ],
+ "hm_ppu": 8,
+ "tex": 4096,
+ "exag": 2.6,
+ "cell": 4.4,
+ "seed": 1777,
+ "relief_noise": [
+  0.9,
+  0.3
+ ],
+ "dem_ppu": 8,
+ "dem_margin": 6,
+ "dem_edits": {
+  "fill_water": true,
+  "flat_sd": 0.15,
+  "flat_low": 0.5,
+  "spike_m": 25.0
+ },
+ "creek_km2": 0.4,
+ "creeks": {
+  "paint_km2": 0.8,
+  "ribbon_km2": 1000000000.0
+ },
+ "woods": 0.03,
+ "ravine_woods": 0.6,
+ "tree_spacing": 0.28,
+ "rust_k": 0.85,
+ "clear_blur": 0.8,
+ "clear_noise_u": 1.6,
+ "rivers": [
+  {
+   "name": "Stony Brook",
+   "geo": "Stony Brook",
+   "w": 0.45,
+   "step": 0.12,
+   "snap": false,
+   "smooth": 6
+  }
+ ],
+ "roads": [
+  {
+   "name": "Post road (King's Highway)",
+   "geo": "New York post road",
+   "cls": "pike",
+   "meander": 0.12
+  },
+  {
+   "name": "Quaker Bridge road",
+   "geo": "Quaker Bridge road",
+   "cls": "pike",
+   "meander": 0.15
+  },
+  {
+   "name": "Saw Mill road",
+   "geo": "Saw Mill road",
+   "cls": "lane",
+   "meander": 0.15
+  },
+  {
+   "name": "Princeton - Morristown road",
+   "geo": "Princeton - Morristown road",
+   "cls": "pike",
+   "meander": 0.12
+  }
+ ],
+ "towns": [
+  {
+   "name": "Princeton",
+   "geo": "Princeton",
+   "kind": "street",
+   "halfL": 4.5,
+   "cross": 4,
+   "rad": 5.0
+  },
+  {
+   "name": "Thomas Clarke house",
+   "geo": "Thomas Clarke house",
+   "kind": "farm"
+  },
+  {
+   "name": "_wclarke",
+   "at": [
+    1487.38,
+    1852.17
+   ],
+   "kind": "farm"
+  },
+  {
+   "name": "Olden house",
+   "geo": "Thomas Olden house",
+   "kind": "farm"
+  },
+  {
+   "name": "_worth",
+   "at": [
+    1457.52,
+    1871.85
+   ],
+   "kind": "farm"
+  }
+ ],
+ "farm_density": 0.8,
+ "plantation_density": 0.0,
+ "lane_p": 0.45,
+ "features": {
+  "works": [],
+  "bridges": [
+   {
+    "name": "Stony Brook bridge (Worth's Mill)",
+    "geo": "Stony Brook bridge",
+    "kind": "road"
+   }
+  ]
+ },
+ "labels": [
+  "Nassau Hall",
+  "Thomas Clarke house",
+  "William Clarke orchard",
+  "Stony Brook bridge",
+  "Frog Hollow",
+  "Thomas Olden house"
+ ]
+}

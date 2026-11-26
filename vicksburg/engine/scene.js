@@ -270,11 +270,24 @@ if (S.title) {
 const boatMat = new THREE.MeshLambertMaterial({ color: 0x2b2622 }), houseMat = new THREE.MeshLambertMaterial({ color: 0x6a6258 }), ironMat = new THREE.MeshLambertMaterial({ color: 0x2a2d30 });
 const hullGeo = (() => { const sh = new THREE.Shape(); sh.moveTo(-1.1, -0.36); sh.lineTo(0.75, -0.36); sh.quadraticCurveTo(1.1, -0.3, 1.35, 0); sh.quadraticCurveTo(1.1, 0.3, 0.75, 0.36); sh.lineTo(-1.1, 0.36); sh.closePath();
   const g = new THREE.ExtrudeGeometry(sh, { depth: 0.32, bevelEnabled: false }); g.rotateX(-Math.PI / 2); g.translate(0, -0.12, 0); return g; })();
+const durMat = new THREE.MeshLambertMaterial({ color: 0x3a342e }), rimMat = new THREE.MeshLambertMaterial({ color: 0xa89878 });   // (Battle 21) Durham boats
 const woodMat = new THREE.MeshLambertMaterial({ color: 0x6b4a2c }), sailMat = new THREE.MeshLambertMaterial({ color: 0xe8e2d0, side: THREE.DoubleSide });
 const mkBoat = (kind) => { const b = new THREE.Group();
   // (Battle 20) small craft + sailing ships: canoe (dugout), barge (rowing boat), ship (three-masted square-rigger); give them lamp: false
   if (kind === "canoe" || kind === "barge") { const h = new THREE.Mesh(hullGeo, woodMat); h.scale.set(kind === "canoe" ? 1 : 0.8, 0.55, kind === "canoe" ? 0.32 : 0.55); b.add(h);
     if (kind === "barge") for (const sz of [-1, 1]) { const o = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.04, 0.9), woodMat); o.position.set(0, 0.1, sz * 0.45); b.add(o); }
+    return b; }
+  // (Battle 21) durham: long narrow black Durham boat (oars + a pole), optional cargo = standing men (blue); flat: a ferry flat (scow) with a gun + horses.
+  // B.load(t, i) -> true shows the cargo group (men / gun + horses) of boat i at t (loaded one way, empty on the way back)
+  if (kind === "durham" || kind === "flat") { const D = kind === "durham", h = new THREE.Mesh(D ? hullGeo : new THREE.BoxGeometry(2.2, 0.16, 0.9), D ? boatMat : woodMat);
+    if (D) { h.material = durMat; h.scale.set(1.15, 0.45, 0.32); for (const sz of [-1, 1]) { const g = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.035, 0.035), rimMat); g.position.set(0.05, 0.1, sz * 0.105); b.add(g); } }   // dark hull + a pale gunwale (reads on night water)
+    else h.position.y = -0.04; b.add(h); const cg = new THREE.Group(); cg.name = "cargo"; b.add(cg);
+    if (D) { for (const sz of [-1, 1]) for (const ox of [-0.6, -0.1, 0.4]) { const o = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.03, 0.55), woodMat); o.position.set(ox, 0.06, sz * 0.32); o.rotation.y = sz * 0.35; b.add(o); }
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1.1, 4), woodMat); pole.position.set(-1.05, 0.35, 0.05); pole.rotation.z = 0.7; b.add(pole);
+      const coat = new THREE.MeshLambertMaterial({ color: 0x3b66c4 }); for (let k = 0; k < 9; k++) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.32, 0.15), coat); m.position.set(-0.85 + k * 0.2, 0.2, ((k % 2) - 0.5) * 0.1); cg.add(m); } }
+    else { const gun = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 0.75, 6), ironMat); gun.rotation.z = Math.PI / 2; gun.position.set(0.25, 0.2, 0); cg.add(gun);
+      for (const wz of [-0.16, 0.16]) { const w = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.04, 8), woodMat); w.rotation.x = Math.PI / 2; w.position.set(0.05, 0.16, wz); cg.add(w); }
+      const horse = new THREE.MeshLambertMaterial({ color: 0x4a3322 }); for (const hz of [-0.22, 0.22]) { const m = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.22, 0.13), horse); m.position.set(-0.6, 0.24, hz); cg.add(m); } }
     return b; }
   b.add(new THREE.Mesh(hullGeo, kind === "gunboat" ? ironMat : boatMat));
   if (kind === "ship") { for (const [mx, mh] of [[0.75, 1.9], [0.05, 2.3], [-0.65, 1.8]]) { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, mh, 5), boatMat); m.position.set(mx, mh / 2, 0); b.add(m);
@@ -293,15 +306,16 @@ for (const B of S.boats || []) { const r = B.region || NAMES[0], R = world.regio
   for (let i = 0; i < n; i++) { const g = mkBoat(kinds[i % kinds.length]); g.scale.setScalar(sz); R.scene.add(g); BOATS.push({ B, i, g, r, R, sz }); } }
 const boatAt = (o, t) => { const { B, i, R, sz } = o, on = t > B.t0 && t < B.t1;
   if (B.path) { const s = B.sAt ? B.sAt(t, i) : (B.s0 || 0) + (t - B.t0) * B.speed - i * (B.spacing ?? 4.2 * sz),   // sAt(t, i): any arc-length schedule (stops, drifting)
-    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: world.heightAt(x, y, o.r) + (typeof B.h === "function" ? B.h(t, i) : (B.h ?? 0.35 * sz)), dx: p[2], dy: p[3], on }; }   // h(t, i): e.g. a boat sinking
+    p = VX.along(B.path, s), x = p[0], y = p[1]; return { x, y, h: (B.wl != null ? B.wl * R.ys : world.heightAt(x, y, o.r)) + (typeof B.h === "function" ? B.h(t, i) : (B.h ?? 0.35 * sz)), dx: p[2], dy: p[3], on }; }   // (Battle 21) wl: water level in metres (the hull floats on the water plane, not on the river bed)   // h(t, i): e.g. a boat sinking
   const vy = B.vy ?? 1.6, y = B.y0 + (t - B.t0) * vy - i * (B.dy ?? 4.2 * sz), p = VX.riverAtY(o.r, B.river ?? 0, y), q = VX.riverAtY(o.r, B.river ?? 0, y + Math.sign(vy || 1)), x = p[0] + (i % 2 ? 1 : -1) * (B.lane ?? 0.6 * sz);
   return { x, y: p[1], h: p[2] * R.ys + 0.35 * sz, dx: q[0] - p[0], dy: q[1] - p[1], on }; };
-const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g.position.set(b.x, b.h, b.y); o.g.rotation.y = Math.atan2(-b.dy, b.dx); o.g.visible = b.on; } };
+const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g.position.set(b.x, b.h, b.y); o.g.rotation.y = Math.atan2(-b.dy, b.dx); o.g.visible = b.on;
+  if (o.B.load) { const cg = o.g.getObjectByName("cargo"); if (cg) cg.visible = !!o.B.load(t, o.i); } } };
 for (const r of NAMES) { const L = BOATS.filter((o) => o.r === r); if (!L.length) continue;
   FX[r].custom((t, push) => { for (const o of L) { const b = boatAt(o, t), s = o.sz; if (!b.on) continue; const l = Math.hypot(b.dx, b.dy) || 1, dx = b.dx / l, dy = b.dy / l;
     if (o.B.lamp !== false) { push(b.x + dx * 0.5 * s, b.h + 0.6 * s, b.y + dy * 0.5 * s, 1.5 * s, 0.9, 1.3, 0.62, 0.22);   // deck lamp
       push(b.x - dx * 0.2 * s, b.h + 0.5 * s, b.y - dy * 0.2 * s, 4.2 * s, 0.26, 1.0, 0.45, 0.15); }   // its glow on the deck and water
-    if (o.B.wake !== false) for (let k = 1; k <= 8; k++) { const d = (1.0 + k * 0.7) * s, sw = (0.15 + k * 0.12) * s, a = 0.45 * (1 - k / 9);   // the wake: two arms of foam behind the stern
+    if (o.B.wake !== false && (typeof o.B.wake !== "function" || o.B.wake(t, o.i))) for (let k = 1; k <= 8; k++) {   /* Battle 21: wake(t, i) = only while under way */ const d = (1.0 + k * 0.7) * s, sw = (0.15 + k * 0.12) * s, a = 0.45 * (1 - k / 9);   // the wake: two arms of foam behind the stern
       for (const sg of [-1, 1]) push(b.x - dx * d - dy * sg * sw, b.h - 0.1 * s, b.y - dy * d + dx * sg * sw, (0.9 + k * 0.12) * s, a, 0.5, 0.58, 0.68); } } }); }
 
 // ---------------- troops: Style W boxes in the scene (or GM 3D blocks), arrows, generals' banners ----------------
@@ -339,7 +353,7 @@ for (const r of NAMES) { const hasU = UNITS.some((u) => u.region === r), hasA = 
   TRO[r] = { BX: TROOPS !== "blocks" && hasU ? TM.createBoxes3D({ THREE, scene: sc, sun: SUN, ...(isWide(r) ? { lift: 0.03 * RO(r).troopScale, shadowOff: 0.075 * RO(r).troopScale } : {}) }) : null,
     AR3: TM.createArrows3D({ THREE, scene: sc, heightAt: HT(r), sun: SUN, style: GMLOOK ? "gm" : "w" }),
     T3: TROOPS === "blocks" && hasU ? TM.createTroops3D({ THREE, scene: sc, heightAt: HT(r), units: UNITS.filter((u) => u.region === r), posAt, escAt, edgeFade,
-      proj: (x, y, h = 0.02) => world.projectMap(x, y, h), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [], trees: (world.regions[r].data || {}).trees, bridges: ((world.regions[r].features || {}).bridges || []), ys: world.regions[r].ys, sideCol: SIDE_COL, camera: world.camera, retreatTurn: GEO.frame !== "vicksburg_hd_lift", ...(GEO.frame !== "vicksburg_hd_lift" ? { depthK: 0.3 } : {}), ...(S.troopsOpts || {}) }) : null }; }   // v15 retreatTurn: see troops3d.js
+      proj: (x, y, h = 0.02) => world.projectMap(x, y, h), troopScale: RO(r).troopScale, sun: SUN, shots: BATTERY_SHOTS[r] || [], trees: (world.regions[r].data || {}).trees, bridges: [...((world.regions[r].features || {}).bridges || []), ...(RO(r).decks || [])], ys: world.regions[r].ys, sideCol: SIDE_COL, camera: world.camera, retreatTurn: GEO.frame !== "vicksburg_hd_lift", ...(GEO.frame !== "vicksburg_hd_lift" ? { depthK: 0.3 } : {}), ...(S.troopsOpts || {}) }) : null }; }   // v15 retreatTurn: see troops3d.js
 // GM troops (v2, owner 2026-11-18): GM's movement arrows are a pale tint of the side colour (his French arrows (105,172,192) after his grade)
 const ARROW_GM = { u: "#62a3db", r: "#d4705f" };
 const ARROWS = (S.arrows || []).map((a) => { const r = a.region || firstClose, col = (TROOPS === "blocks" && !GMLOOK ? null : a.color) || (GMLOOK ? ARROW_GM : ARROW_COL)[a.side || "u"];
@@ -365,7 +379,7 @@ const gen = (k) => { const g = typeof k === "string" ? GENERALS[k] : k; if (!g) 
 const BN_HOST = document.createElement("div"); TR.appendChild(BN_HOST);
 const BANNERS = (S.banners || []).map((b) => { const g = gen(b.general), r = b.region || firstClose, e = document.createElement("div"); e.className = "bnr";
   const w = BN.build(b.img || g.img, b.flag || FLAG(g), b.name || g.name, "up", (b.side || g.side) !== "cs"); e.appendChild(w); BN.sway(w, b.t0, b.t1, tl); BN_HOST.appendChild(e);
-  return { e, keys: b.keys, t0: b.t0, t1: b.t1, region: r, esc: b.escape ? mkEscape({ region: r, ...b.escape }, posAt(b.keys, b.escape.t0)) : null }; });
+  return { e, keys: b.keys, t0: b.t0, t1: b.t1, fall: b.fall, region: r, esc: b.escape ? mkEscape({ region: r, ...b.escape }, posAt(b.keys, b.escape.t0)) : null }; });
 
 // ---------------- place names pinned to the ground (towns upright, rivers italic) ----------------
 const PINS = [], PN = document.getElementById("pins");
@@ -435,7 +449,9 @@ const drawTroops = (t, region) => {
     if (op <= 0) { b.e.style.opacity = 0; continue; }
     const [x, y] = b.esc && t > b.esc.t0 ? escAt(b.esc, b.esc.s(t)) : posAt(b.keys, t), s = world.projectMap(x, y, 0.02);
     if (b.esc && b.esc.fade) op *= edgeFade(b.esc.fade, s, -20, 180);   // leaves over the frame edge, never pops out mid-field
-    b.e.style.opacity = op.toFixed(3); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) scale(0.6667)`; }
+    const fk = b.fall != null ? sstep(b.fall, b.fall + 0.9, t) : 0;   // (Battle 21) banner fall: t -> the banner greys and tips over (a general falls)
+    if (b.fall != null) b.e.style.filter = fk > 0 ? `grayscale(${fk.toFixed(3)}) brightness(${(1 - 0.25 * fk).toFixed(3)})` : "";
+    b.e.style.opacity = op.toFixed(3); b.e.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) scale(0.6667)` + (fk > 0 ? ` rotate(${(-62 * fk * fk).toFixed(2)}deg)` : ""); }
   for (const A of ARROWS) { const k = clamp((t - A.t0) / A.dur), op = A.region === region && t >= A.t0 ? HID * (1 - sstep(A.t1 - 0.6, A.t1, t)) : 0, ke = 1 - (1 - k) ** 2;
     TRO[A.region].AR3.draw(A.a3, ke, op, A.w); }
 };

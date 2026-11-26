@@ -281,3 +281,19 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   `countFrom` (= value) shows the stated value without the count-up.
 
 - Dives between regions of DIFFERENT zoom (project frames, e.g. ajackson gulf z8 -> chalmette z10) need `dives[].overTo` = the dive point in the TARGET region's units; without it the camera after the swap looks at the target region in the source's coordinates (empty fog) for ~1.5 s (Jackson S01 round 3).
+
+- Battle 21 (S05/S07 author, 2026-11-25), all opt-in: boats `kind: "durham"` (long dark Durham boat with a pale gunwale, oars, a pole and a
+  cargo of standing blue men) and `kind: "flat"` (ferry flat with a gun + two horses); `B.load(t, i)` -> bool shows the cargo of boat i
+  (loaded one way, empty on the way back); `B.wl` = water level in metres: the hull floats on the river's water plane (path boats otherwise
+  sit on `heightAt`, i.e. the river BED of a carved close-region river: only the lamp showed). Banners: `fall: t` greys the banner and tips
+  it over (~0.9 s) from t (a general falls: Rall, Mercer).
+
+- **Battle 21 (Washington S03/S04/S06 author, 2026-11-25), all opt-in, defaults unchanged:**
+  `regionOpts[r].decks: [{x, z, angle, len, deck, wl}]` = troop-only decks appended to the region's bridges for `createTroops3D` (no mesh):
+  the v13/v14 break-rank stream at a ferry landing (the men funnel onto the deck and vanish into the boats). NB: in lineblocks mode every
+  escape in a region with bridges/decks routes over the nearest one. Unit `escape.vanish: [a, b]` = the stream fades between a and b units past
+  the deck's far end (default 1.5-4 x troopScale). Unit `escape.front: true` = a march over the deck, not a rout: the block turns to the deck and
+  walks front first (no backward walk, men face the plate). Boat `wake: (t, i) => bool` (wake only while under way). `features[r].houseK`
+  scales house footprints (wide jersey: long houses on crossed streets read as crosses). Retreat after a forward run: a ~180 deg block turn
+  takes ~7.4 s and starts that long before the retreat key: hold >= ~9 s between the arrival and the retreat key, else the block flips at
+  the arrival (S06 bridge assaults).
