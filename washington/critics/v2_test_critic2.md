@@ -72,3 +72,69 @@ Measured each frame with the top and bottom furniture cropped out (mean luma L, 
 owner's eye with small fixes). The blocker is defect 2: the winter ground (c) is still the grey, murky look the owner rejected, and the winter
 worlds cover the whole second half of the film (Trenton, Princeton, winter colonies). Fix 2 (+ 1, 3, 4, and a ledger still for 9), re-shoot still c
 and one ledger still, then re-render. Defects 5-8 and 10 can be fixed during the re-render.
+
+---
+
+# Round 2 (sheet with 5 rows, recipe section 6, worlds r2)
+
+Re-measured the same way (frame without furniture), and judged at 640x360 and 960 px (~1280x720):
+
+| still | L | S | R-B | round 1 S |
+| --- | --- | --- | --- | --- |
+| (a) S04 colonies wide | 81 | 47 | -3 | 47 (v8 3 s: 41) |
+| (b) S03 Brooklyn night | 49 | 85 | -17 | 72 (now a real night) |
+| (c) S05 Trenton 100.3 s | 90 | **69** | **24** | 35 (v8 35 s: 63 / 17) |
+| (d) S07 Princeton orchard | 87 | 62 | 2 | 51 (v14 40 s: 56 / 3) |
+| (e) S05 Trenton ledger 130.7 s | 94 | 68 | 23 | new (v8 60.5 s: 66 / 15) |
+
+## Owner points, round 2
+1. **Murky grey ground -> FIXED** (all 5). Trenton went from S 35 to 69: warm green / ochre / rust patchwork, rust roads, dark teal woods,
+   the storm only as faint streaks. At 360p it reads as the v8 map. **But the "winter = light frost over the same patchwork" half is NOT DONE:**
+   Trenton (c, e) now reads as a late-summer day (R-B 24 is warmer than v8's 15), with no frost at all on 26 December in a snow / sleet storm.
+   Princeton (d) is fine: the open ground is pale and cold and reads as frost.
+2. **Giant men in thick blocks -> FIXED** (d = v14 scale; the Trenton Hessian blocks in c are small and thin, no `bw` overrides).
+3. **Overlays -> FIXED.** The ledger is proven in (e): small parchment list top-right, "TRENTON / 26 December 1776", 2 rows, the same size and place
+   as v8 60.5 s, no dim, legend stepped out, timeline with both seals. Clock (b, c, d, e), legend, timeline and carved names ("Brooklyn ferry",
+   "Trenton") are all there.
+4. **Grey fog -> white clouds: FIXED.** The colonies puffs are now separate (seed 11), as in v8.
+
+## Round 1 defects
+| # | defect | round 2 |
+| --- | --- | --- |
+| 1 | (a) date plate clipped | **FIXED**: "16 / Saturday / Fort Washington" fits the plate |
+| 2 | winter ground grey | **FIXED for the grey, NOT FIXED for the frost** (see R2-1) |
+| 3 | (c) empty frame, no Hessians, no Trenton | **FIXED**: the town, Hessian blocks in King / Queen St, Knox's guns at the fork, carved "Trenton" |
+| 4 | (d) banner in the British line | **FIXED (just)**: the pole now stands in the open field between the lines; the flag base is still ~45 % of the way down from the red line, so it reads as "between", not "with the Americans" |
+| 5 | (d) orchard house = empty red outline | **NOT FIXED**: still a roofless red footprint left of the road (left to the worlds agent) |
+| 6 | (b) "Brooklyn ferry" in the fields | **FIXED**: on the landing, by the boats |
+| 7 | (b) bead-chain wakes | **FIXED**: warm deck lamps, no wakes; reads as night boats at 360p |
+| 8 | (b) block under the timeline | **NOT FIXED**: one blue block still sits under the right end of the timeline bar (x ~720/960, y ~490) and another is cut by the bottom-right corner |
+| 9 | ledger unproven | **FIXED** (e) |
+| 10 | no carved names in the wide shot | **FIXED in the seq** (Fort Washington, Hudson River, Manhattan on their words); none is on screen at 22.8 s, as expected |
+
+## New in round 2
+- **R2-1 (must): no frost on Trenton.** Fix (worlds / grade, Trenton + winter colonies, also S06 jersey 2 January): over the r2 patchwork lay a
+  light frost: a cool white tint of ~12-18 % on the open fields only (woods, roads and rivers untouched), plus a pale rim on the furrows. Keep
+  S >= 50 and bring R-B down to ~8-12, so it reads as "the same fields, cold" at 360p and not as August. Show one still (c) before the re-render.
+- **R2-2 (should): (e) cloth fold on the right.** At 960 px the hill right of the town looks like a draped sheet: the field textures bend over a
+  sharp ridge crease with a dark shadow band (x 640-760, y 180-330). Fix: soften that relief (smaller height or a wider smoothing kernel there) or
+  frame the ledger shot so the crease is out of view.
+- **R2-3 (minor): (a) arrows now very thin.** 5-6 px reads at 720p but at 360p the arrowheads almost disappear; width 0.35 would still be far below
+  round 1 and keep the heads readable.
+- **R2-4 (minor): (c) no American infantry in frame.** Only Knox's two guns and a thin arrow show the attackers; one blue block on the
+  Pennington road at the fork would make the frame read as an attack at 360p.
+
+## Round 2 scores (1-10)
+| still | score |
+| --- | --- |
+| (a) S04 colonies wide | **8** |
+| (b) S03 Brooklyn night | **8** |
+| (c) S05 Trenton | **7** (8 with frost) |
+| (d) S07 Princeton orchard | **8** |
+| (e) S05 Trenton ledger | **8** |
+
+## Round 2 verdict
+**OK to re-render the film: YES for the summer and autumn scenes (Brooklyn, colonies: S02-S04 and the S01 hook shots that use them).
+NO for the winter scenes (S05-S08 Trenton / Princeton / winter colonies / S06 jersey) until R2-1 is done:** add the light frost and show one
+still of (c). The owner asked for frost by name, and adding it after a full re-render would mean rendering those scenes again. R2-2 and
+defects 5 and 8 can go in with that re-render; R2-3 and R2-4 are optional.
