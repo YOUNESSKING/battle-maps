@@ -138,3 +138,37 @@ Re-measured the same way (frame without furniture), and judged at 640x360 and 96
 NO for the winter scenes (S05-S08 Trenton / Princeton / winter colonies / S06 jersey) until R2-1 is done:** add the light frost and show one
 still of (c). The owner asked for frost by name, and adding it after a full re-render would mean rendering those scenes again. R2-2 and
 defects 5 and 8 can go in with that re-render; R2-3 and R2-4 are optional.
+
+---
+
+# Round 3 (r3 worlds with frost, recipe section 7)
+
+Measured the same way: (a) L 81 / S 48 / R-B 0; (b) L 40 / S 101 / R-B -18; (c) L 98 / S 58 / R-B 20 (r2: 69 / 24);
+(d) L 91 / S 56 / R-B 0; (e) L 103 / S 58 / R-B 19 (r2: 68 / 23).
+
+## Round 2 items
+| item | round 3 |
+| --- | --- |
+| R2-1 no frost on Trenton (must) | **FIXED (light).** c and e now have a cool, pale wash over the same green / ochre / rust fields; woods, roads and the river are untouched, and there is no extra haze at the top. At 360p it reads as "cold" and not as August, while the patchwork still reads. It is subtle: do not go lighter (S 58 is the floor; much more and it drifts back towards the rejected grey). Keep the faint storm streaks. |
+| R2-2 cloth fold in (e) | **FIXED**: the crease right of the town is gone (exag 3.0) |
+| R2-3 arrows too thin at 360p | **FIXED**: the arrows and arrowheads read at 360p |
+| R2-4 no American infantry in (c) | **FIXED**: Greene's two blue blocks behind Knox's guns at the fork, upper third; the frame now reads as an attack |
+| #5 orchard house outline | **FIXED**: the Clarke farm now has roofed buildings |
+| #8 block under the timeline (b) | **FIXED**: no block in the bottom 12 %; the night is now a real night with warm lamps on the boats |
+
+Still checking: (b) is very dark on a phone (land L ~15 in the middle). The boats, the lamps, the label and the blocks still read at 360p, so it is
+OK, but the night must not get darker. Banner (d) between the lines: OK.
+
+## Round 3 scores (1-10)
+| still | score |
+| --- | --- |
+| (a) S04 colonies wide | **8** |
+| (b) S03 Brooklyn night | **8** |
+| (c) S05 Trenton | **8** |
+| (d) S07 Princeton orchard | **8** |
+| (e) S05 Trenton ledger | **8** |
+
+## Round 3 verdict
+**OK to re-render the film: YES.** All four owner points (bright warm patchwork with a light winter frost, v14 thin blocks, the v8 overlay set
+incl. the ledger, white v6/v8 clouds) and every defect from rounds 1-2 are fixed on the stills. In the re-render, apply the r3 frost and the
+section 6-7 rules to every winter and night scene, not only the test scenes, and re-run check_troops_motion on every moving stretch.
