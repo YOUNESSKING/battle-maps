@@ -115,3 +115,59 @@ almost woodless field (c), the wide arrows are 4x the width of the test arrows (
 **OK to re-render the film: NO.** Fix 1, 2, 6, 11, 16 (these are visible on every scene of their kind). Fix 7, 8, 12, 17 in the worlds / seqs they belong to.
 Then re-snap the four stills plus a fifth one with the ledger (15) and run a second look. Defects 3, 4, 9, 13, 14, 18 and 19 are small but visible
 and should be fixed in the same pass. No change is asked for the overlay set itself (key, timeline, seals, clock, banner); it already matches v8.
+
+---
+
+# Round 2 (2026-11-26, sheet 11:44, 5 rows; worlds r2 baked 11:32-11:39, scenes rebuilt 11:41)
+
+Measured the same way as round 1 (3x3 sector means, woods / mid / bright medians, chroma, block pixel colours), on the full-size r2
+stills (`looklead/r2/a-e`), against v8 3 / 35 / 50 / 60.5 s and v14 40 / 55 s.
+
+## Round-1 defects
+| # | defect | status | evidence (r2) |
+| --- | --- | --- | --- |
+| 1 | date plate overflow (a) | **FIXED** | "16 / SATURDAY / Fort Washington" all inside the plate; the reframe fix covers every roll |
+| 2 | wide arrows 4x too wide, through the legend (a) | **FIXED** | pale lines ~4-5 px (v14 4-6 px), the blue one ends at ~475, 480 px, clear of the legend |
+| 3 | colonies centre cooler / flatter (a) | **NOT FIXED** (minor) | centre (76,86,78) vs v8 (90,96,81), ML (81,87,77) vs (90,97,88); overall (79,87,80) vs (86,92,82); the sunlit yellow-green ridge highlights of v8 are still missing |
+| 4 | cloud stacks (a) | **FIXED** | seed 11: separate puffs, cream tops; one puff (370-500 x 460-580 px) sits next to the blue arrowhead but does not hide it |
+| 5 | carved names in wide (check) | **FIXED** (labels added on their words; none due at 22.8 s) | |
+| 6 | night not a night (b) | **PARTLY FIXED** | mean (45,54,60) vs v8 night (36,46,52) (was 64,72,73); top + middle sectors L 15-23 = v8; the bottom row is still L 27-28 (v8 13-24) and the rose / olive field patches still read as colour |
+| 7 | bead-chain wakes (b) | **FIXED** | warm deck lamps with a soft glow = v8 night lamp points |
+| 8 | "Brooklyn ferry" in the fields (b) | **FIXED** | on the landing, by the boats |
+| 9 | blocks under the timeline / end-on (b) | **PARTLY FIXED** | the centre block now clears the bar (605-670 x 595-650), but a block at 945-995 x 640-672 touches the bar's right end and another sits at 1240-1280 x 660-720 under the bottom 12 % (the rule in recipe 6) |
+| 10 | slate woods (b) | **OK at night** | (20,34,43) B-R 26 = the night grade; in day shots woods measure (47,62,65) (d) = v8 (45,64,66) |
+| 11 | Trenton grey (c) | **FIXED** | chroma 30.7 (v8 27.2), mid (101,94,74) vs v8 35 s (114,102,84), warm ochre / rust / green patchwork, frost only a light tint |
+| 12 | Trenton no woods (c) | **FIXED** (acceptable) | woods 0.06 + ravine woods; wood masses along the top and the creek valley (e), less than v8 but the frame no longer reads empty |
+| 13 | no anchor (c) | **FIXED** | the town on its two streets, Knox's guns at the head, Hessians in the streets, carved "Trenton", the creek |
+| 14 | Trenton block size (c) | **FIXED** | ts 0.68; the Hessians stand as columns in the streets (35-40 x 55 px, end-on): right for "forming in the streets", not a scale fault |
+| 15 | ledger untested | **FIXED** | (e) top-right parchment list 958-1238 x 43-143 px = v8 position / width, title + italic date, numbered caps rows, hairlines; legend steps out, timeline + clock stay = v8 60.5 s. (v8 rows carry italic second lines; ours have none: optional, the recipe allows `note`) |
+| 16 | American blocks too saturated (d) | **FIXED** | blue block median (94,109,154) vs v14 (85,98,146) (was 51,81,152); red (144,94,82) vs (138,94,83) |
+| 17 | Stony Brook flat band (d) | **NOT FIXED** | at the orchard camera the brook is still a flat, evenly textured slate band (62,78,90) with hard edges and no bank rim (0-110 x 130-720 px). The r2 world still 2 shows a natural teal creek further upstream, so this stretch is the winter `ice` sheet. Fix: princeton `winter.ice` 0.6 -> 0.25 (or no ice on creeks < 15 u wide), re-bake princeton |
+| 18 | milky haze top-left / top-right (d) | **NOT FIXED** | TL (97,103,99) L 39 S 3, TC (88,95,89) S 3 (round 1: 95,102,97 / 83,90,88): the far woods are still grey-white, v14 keeps its teal to the top edge. Tilt 55.5 did not remove it, so it is the engine's close distance haze / frost over the far third. Fix: S07 orchard keys `at` y -1.5 u (put less far ground in frame) and check whether `FROST` or the world `snow_alpha 0.22` (r2 raised it from 0.16) whitens the far woods; target TL saturation >= 8 |
+| 19 | coarse crowns (d) | open (minor, accepted as v14 55 s-like) | |
+
+## New in round 2
+20. **(d) the Stony Brook bridge floats on tall stilts beside the road.** The trestle deck stands ~60 px above the water on long legs and
+    meets the post road only at its right end; the road on the left bank runs ~90 px below the deck. v14 / v8 bridges lie flat on the river at
+    road level. Fix: the princeton bridge feature: height / `lift` to road level and its span centred on the post road crossing (1476.5, 1849.7).
+21. **(e) a "cloth fold" ridge at the right** (880-1280 x 180-580 px): the Assunpink bank rises as one sharp crease with the field texture
+    stretched over it and the woods draped on the crest. v8 relief is rounded. Fix: trenton `exag` 3.6 -> **3.0** (or `relief_noise` [2.0, 0.6]
+    -> [1.4, 0.4]); re-bake trenton.
+22. (c) minor: the 8:00 a.m. clock note says "Trenton" while the carved "Trenton" is on screen: the same word twice. Use a different note
+    (e.g. "the storm still blowing", as round 1) or keep it; no test rule, cosmetic.
+
+## Round 2 scores
+| still | score | verdict |
+| --- | --- | --- |
+| (a) S04 colonies wide | **8 / 10** | MATCH (defect 3 is small; fix it in the worlds pass, no re-test) |
+| (b) S03 Brooklyn ferry night | **7 / 10** | NOT YET (defect 6 bottom row, defect 9) |
+| (c) S05 Trenton 8:00 a.m. | **8.5 / 10** | MATCH |
+| (d) S07 Princeton orchard | **7 / 10** | NOT YET (defects 17, 18, 20) |
+| (e) S05 Trenton ledger | **8 / 10** | MATCH (defect 21 small) |
+
+**OK to re-render the film: NO, not yet. Only (b) and (d) need another check.** Overlays, troop scale and troop colours now match the tests
+everywhere; the day palette matches in (c) / (e). Remaining before the re-render:
+- (b) night: lower the land under the night grade (bottom row L 27-28 -> <= 22: `film.grade` night 0.8 -> 0.9, or the S03 night keys' `at` so
+  less of the lit near field is in frame) and keep every block out of the bottom 12 % / off the timeline (defect 9).
+- (d) princeton `winter.ice` 0.25 (17), the bridge at road level (20), the far-field haze (18), then re-snap (b) 65.2 s and (d) 75.9 s.
+If those two re-snaps clear, the film may be re-rendered with defects 3 and 21 fixed in the same worlds pass (no further test round needed).
