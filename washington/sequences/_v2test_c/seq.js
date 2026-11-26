@@ -116,7 +116,7 @@ const HEAD = [1355.9, 2054.5], KING = (y) => [1355.3, y], QUEEN = (y) => [lerp(1
 const PEN = VX.road(TR, "Pennington road"), RVR = VX.road(TR, "River road");
 const N = -Math.PI / 2, S_ = Math.PI / 2, E = 0, W = Math.PI;
 // the picket on the Pennington road
-add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), bw: 0.45, keys: [[0, 1339.9, 2024.6]], t1: 96.0 });
+add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), keys: [[0, 1339.9, 2024.6]], t1: 96.0 });
 // Greene's blocks down the Pennington road, deploying at the head of the town; Sullivan's from the River road into the lower town
 // round 3 (critic A): Greene's blocks stay on open ground WEST of the ring wood: abreast west of the Pennington road, straight south past
 // the wood (facing south), hold, turn in place toward their deploy spots at the head of the town, walk
@@ -129,8 +129,8 @@ sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
 [G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: S_, t0: 94.2, keys: [[0, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.raced - 2.5, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.streets - 0.4 + i * 0.3, ...g], [T.D, ...g]] }));
 // the Hessians form in the two streets, are raked, leave the streets east into the fields, are driven to the orchard, surrender
-const H1 = KING(2061.6), H2 = QUEEN(2062.6), F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.2, 2055.0], O2 = [1364.8, 2057.2];
-const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", region: TR, face: N, bw: 0.55, t0: T.hessians - 0.3 + i * 0.4, arrive: false,
+const H1 = KING(2058.8), H2 = QUEEN(2059.8),   /* V2 r2: up the streets, in the 8 a.m. frame */ F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.2, 2055.0], O2 = [1364.8, 2057.2];
+const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", region: TR, face: N, n: 3, t0: 95.4 + i * 0.3, arrive: false,   /* V2 r2: in the town from the cut (Hessians in frame with the TRENTON name); small v14 blocks, n 3 */
   keys: [[0, ...h], [105.4 + i * 0.4, ...h], [114.0 + i * 0.6, ...o], [T.D, ...o]], cap: T.laid + 0.2 + i * 0.25 }));
 // the blue blocks close round the orchard (north, east, south-west)
 [[1363.4, 2051.4, S_], [1368.4, 2054.2, W], [1360.2, 2056.6, E]].forEach(([x, y, f], i) => add({ side: "u", region: TR, face: f, t0: 111.0 + i * 0.4, arrive: false,
@@ -138,8 +138,8 @@ const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", r
 // by the Assunpink bridge: one block streams away over the bridge, one is trapped; a blue block closes the bridge from the west
 const KN1 = [1357.1, 2066.4], KN2 = [1355.0, 2065.6];
 const ESCR = [[1357.1, 2066.4], [1356.8, 2068.4], [1357.2, 2072.0], [1357.7, 2073.4], [1358.5, 2075.1], [1360.9, 2077.9], [1363.6, 2080.4], [1366.0, 2083.2]];
-add({ side: "r", region: TR, face: S_, bw: 0.55, t0: 118.4, keys: [[0, ...KN1]], escape: { road: ESCR, join: "nearest", t0: T.several + 0.2, from: 0, front: true } });   // round 2: walks front first (no backing)
-add({ side: "r", region: TR, face: Math.atan2(-0.4, -0.9), bw: 0.55, t0: 118.4, keys: [[0, ...KN2]], cap: T.trapped - 0.1 });
+add({ side: "r", region: TR, face: S_, t0: 118.4, keys: [[0, ...KN1]], escape: { road: ESCR, join: "nearest", t0: T.several + 0.2, from: 0, front: true } });   // round 2: walks front first (no backing)
+add({ side: "r", region: TR, face: Math.atan2(-0.4, -0.9), t0: 118.4, keys: [[0, ...KN2]], cap: T.trapped - 0.1 });
 add({ side: "u", region: TR, face: E, t0: 118.4, keys: [[0, 1350.4, 2067.6], [T.before - 2.2, 1350.4, 2067.6], [T.closed + 0.2, 1354.6, 2068.1], [T.D, 1354.6, 2068.1]] });
 
 // colonies: Washington's army at Trenton (blue), Cornwallis's men in New York (red)
@@ -234,6 +234,7 @@ const labels = [
   { text: "Delaware River", at: at(-3.4, 0.6), region: CR, size: 16, river: true, t0: T.river2 - 0.05, t1: T.river2 + 3.2 },
   { text: "Trenton", at: [TRj[0] + 0.5, TRj[1] + 6.0], region: JE, size: 20, t0: T.trenton2 - 0.3, t1: T.trenton2 + 3.0 },   // the march's goal ("Trenton" 78.89)
   { text: "Birmingham", at: [BIRj[0] - 9, BIRj[1] + 4], region: JE, size: 15, t0: T.crossroads - 0.05, t1: T.crossroads + 3.4 },
+  { text: "Trenton", at: [1353.0, 2055.6], region: TR, size: 20, t0: 97.6, t1: 101.1 },   // V2 r2: carved on "the town's two main streets"
   { text: "Assunpink Creek", at: [1364.0, 2071.4], region: TR, size: 15, river: true, t0: T.creek - 0.05, t1: T.creek + 3.4 },
   { text: "New York", at: [NYc[0] + 2, NYc[1] - 10], region: CO, size: 20, t0: T.newyork - 0.05, t1: T.newyork + 3.6 },
   { text: "Trenton", at: [TRc[0] + 2, TRc[1] + 8], region: CO, size: 18, t0: T.trenton3 - 0.05, t1: T.D + 1 },
@@ -285,9 +286,9 @@ window.SEQ = {
   grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 } },   // V2: = the v8 clip wide grade
   name: "_v2test_c", D: T.D, T, seed: 1776, date: "1776-12-25",
   regions: [JE, CR, TR, CO],
-  regionOpts: { [JE]: { troopScale: 3.5 }, [CO]: { troopScale: 6 }, [CR]: { troopScale: 0.67, fxScale: 4.4, decks }, [TR]: { troopScale: 0.75, fxScale: 4.9 } },   // V2: 0.048 x dist (close), 0.022 x dist (wide)
+  regionOpts: { [JE]: { troopScale: 3.5 }, [CO]: { troopScale: 6 }, [CR]: { troopScale: 0.67, fxScale: 4.4, decks }, [TR]: { troopScale: 0.68, fxScale: 4.4 } },   // V2: 0.048 x dist (close), 0.022 x dist (wide)
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // houseK as S06; the small wide-map bridge meshes read as crosses from far away
-  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44 },   // V2: = v14
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
   keys: [
     // 1. jersey, winter day: the chain of posts; Trenton
     K(0, JE, [690, 1004], 150, 44, 4),
@@ -309,20 +310,20 @@ window.SEQ = {
     K(80.5, JE, [626, 970], 96, 48, -44, "io", 0.45),
     K(CUT2, JE, [630, 974], 90, 49, -40, "lin", 0.45),
     // 5. trenton grey dawn: the picket, Greene down the Pennington road
-    K(CUT2, TR, [1333.6, 2030.0], 16.5, 52, 14, "cut", 0.32, { dissolve: 0.9 }),   // round 5: the ring wood framed out to the right
-    K(95.0, TR, [1335.6, 2034.6], 16.5, 52, 10, "lin", 0.25),
+    K(CUT2, TR, [1333.6, 2030.0], 16.5, 52, 14, "cut", 0.10, { dissolve: 0.9 }),   // round 5: the ring wood framed out to the right
+    K(95.0, TR, [1335.6, 2034.6], 16.5, 52, 10, "lin", 0.08),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
-    K(95.4, TR, [1352.8, 2055.0], 13, 56, 8, "cut", 0.2, { dissolve: 0.9 }),
-    K(108.0, TR, [1355.6, 2059.6], 13.5, 57, 4, "lin", 0.16),
+    K(95.4, TR, [1352.8, 2055.0], 13, 56, 8, "cut", 0.06, { dissolve: 0.9 }),
+    K(108.0, TR, [1355.6, 2059.6], 13.5, 57, 4, "lin", 0.05),
     // 7. Rall, the fields east of the town, the surrender
-    K(110.5, TR, [1361.4, 2059.8], 13.5, 56, 0, "io", 0.14),
-    K(118.6, TR, [1363.6, 2056.4], 14, 56, -4, "lin", 0.12),
+    K(110.5, TR, [1361.4, 2059.8], 13.5, 56, 0, "io", 0.04),
+    K(118.6, TR, [1363.6, 2056.4], 14, 56, -4, "lin", 0.03),
     // 8. the Assunpink bridge
-    K(118.65, TR, [1356.6, 2069.4], 9.5, 57, 6, "cut", 0.12, { dissolve: 0.9 }),
-    K(127.4, TR, [1357.0, 2069.6], 9.0, 58, 2, "lin", 0.1),
+    K(118.65, TR, [1356.6, 2069.4], 9.5, 57, 6, "cut", 0.03, { dissolve: 0.9 }),
+    K(127.4, TR, [1357.0, 2069.6], 9.0, 58, 2, "lin", 0.03),
     // 9. result + method card over the town
-    K(129.0, TR, [1359.0, 2061.0], 22, 53, 0, "io", 0.08),
-    K(CUT3, TR, [1359.6, 2060.4], 24, 52, -2, "lin", 0.06),
+    K(129.0, TR, [1359.0, 2061.0], 22, 53, 0, "io", 0.03),
+    K(CUT3, TR, [1359.6, 2060.4], 24, 52, -2, "lin", 0.03),
     // 10. colonies: New York -> Trenton
     K(CUT3, CO, [490, 392], 400, 44, 0, "cut", 0, { dissolve: 0.9 }),
     K(156.0, CO, [496, 388], 390, 45, 2, "io", 0),

@@ -3,9 +3,9 @@
  "zoom": 12,
  "season": "winter",
  "winter": {
-  "snow": 0.45,
-  "snow_alpha": 0.16,
-  "desat": 0.1,
+  "snow": 0.5,
+  "snow_alpha": 0.22,
+  "desat": 0.0,
   "ice": 0.6,
   "conifers": 0.55,
   "bare_mix": 0.35,
@@ -82,6 +82,10 @@
  "tree_spacing": 0.3,
  "clear_blur": 0.35,
  "clear_noise_u": 0.8,
+ "tex_grade": {
+  "contrast": 1.06,
+  "sat": 1.3
+ },
  "rivers": [
   {
    "name": "Delaware River",

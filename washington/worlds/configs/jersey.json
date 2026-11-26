@@ -3,7 +3,7 @@
  "zoom": 10,
  "season": "winter",
  "winter": {
-  "snow": 0.45,
+  "snow": 0.5,
   "snow_alpha": 0.1,
   "desat": 0.08,
   "ice": 0.6,
@@ -30,6 +30,10 @@
  "exag": 4.0,
  "cell": 6.0,
  "gm_unit": 1.5,
+ "tex_grade": {
+  "contrast": 1.05,
+  "sat": 1.3
+ },
  "seed": 1776,
  "field_look": "gm",
  "wood_soft": {

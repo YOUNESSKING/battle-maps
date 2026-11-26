@@ -3,9 +3,9 @@
  "zoom": 11,
  "season": "winter",
  "winter": {
-  "snow": 0.45,
-  "snow_alpha": 0.16,
-  "desat": 0.1,
+  "snow": 0.5,
+  "snow_alpha": 0.22,
+  "desat": 0.0,
   "ice": 0.6,
   "conifers": 0.55,
   "bare_mix": 0.35,
@@ -76,7 +76,7 @@
   "paint_km2": 0.8,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.0,
+ "woods": 0.06,
  "ravine_woods": 0.6,
  "tree_spacing": 0.28,
  "clear_blur": 0.35,
@@ -88,6 +88,14 @@
    2.3
   ]
  ],
+ "river_woods": {
+  "u": 2.6,
+  "k": 0.16
+ },
+ "tex_grade": {
+  "contrast": 1.06,
+  "sat": 1.6
+ },
  "rivers": [
   {
    "name": "Delaware River",

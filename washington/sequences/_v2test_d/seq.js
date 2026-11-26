@@ -136,7 +136,7 @@ const banners = [
   { general: "washington", region: JE, keys: [[0, NA[0] - 2, NA[1] - 4], [CUT1 + 0.8, NA[0] - 2, NA[1] - 4], [27.0, NB[0] - 2, NB[1] - 4]], t0: CUT1 + 0.6, t1: 31.6 },
   { general: "washington", region: JE, keys: [[0, DA[0] - 4, DA[1] + 1], [32.4, DA[0] - 4, DA[1] + 1], [CUT3 - 1.0, DB[0] - 4, DB[1] + 1]], t0: 31.8, t1: CUT3 },
   { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 2.4]], t0: T.mercer - 0.05, t1: T.broke + 0.8, fall: T.shot + 0.05 },
-  { general: "washington", region: PR, keys: [[0, OX, MY + 1.6], [T.rode, OX, MY + 1.6], [T.lines, OX, RY2 + 1.5], [T.rallied + 0.2, OX, RY2 + 1.5], [83.6, OX, AY - 0.6]], t0: T.washington - 0.05, t1: CUT4 + 0.4 },
+  { general: "washington", region: PR, keys: [[0, OX, MY + 1.6], [T.rode, OX, MY + 1.6], [T.lines, OX, RY2 + 3.4], [T.rallied + 0.2, OX, RY2 + 3.4], [83.6, OX, AY - 0.6]], t0: T.washington - 0.05, t1: CUT4 + 0.4 },
   { general: "cornwallis", region: TR, keys: [[0, 1361.6, 2063.4], [117.6, 1361.6, 2063.4], [T.D, 1364.0, 2059.6]], t0: T.cornwallis2 - 0.05, t1: T.D + 1 },
 ];
 
@@ -190,7 +190,7 @@ window.SEQ = {
   regions: [TR, JE, PR],
   regionOpts: { [JE]: { troopScale: 6 }, [TR]: { troopScale: 0.57, fxScale: 3.6 }, [PR]: { troopScale: 0.86, fxScale: 5.6 } },   // V2: v14 on-screen block size
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },
-  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44 },   // V2: = v14 (S09_gm): 12 files x 6 ranks, +44 %
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14 (S09_gm): 12 files x 6 ranks, +44 %
   keys: [
     // 1. trenton night (= S06's last frame), down onto the creek
     K(0, TR, [1353.0, 2071.0], 58, 42, 0, "io", NI),
@@ -206,9 +206,9 @@ window.SEQ = {
     K(CUT3, JE, [734, 938], 74, 47, 0, "lin", 0.05),
     // 4. princeton: the orchard
     K(CUT3, PR, [OX, 1855.0], 19, 52, 0, "cut", 0.05, { dissolve: 0.9 }),   // V2: wider (v14 framing: ~2.4 block widths between the lines)
-    K(55.0, PR, [OX, 1854.6], 18, 53, 2, "io", 0.03),
-    K(66.0, PR, [OX, 1855.4], 18.5, 53, 0, "io", 0),
-    K(74.0, PR, [OX, 1855.0], 18, 53, -2, "io", 0),
+    K(55.0, PR, [OX, 1854.6], 18, 55.5, 0, "io", 0.03),   // V2 r2: tilt 55.5 (less horizon haze), yaw held
+    K(66.0, PR, [OX, 1855.4], 18.5, 55.5, 0, "io", 0),
+    K(74.0, PR, [OX, 1855.0], 18, 55.5, 0, "io", 0),
     K(CUT4, PR, [OX, 1853.4], 20, 52, 0, "lin", 0),
     // 5. Nassau Hall, then the result card over the town
     K(CUT4, PR, [NH[0], 1822.8], 9.5, 56, 4, "cut", 0, { dissolve: 0.9 }),
@@ -238,7 +238,7 @@ window.SEQ = {
     ["timeline.seal", CUT3 + 0.9, { at: 0.95, name: "Brooklyn" }],
     ["timeline.seal", CUT3 + 0.9, { at: 4.72, name: "Trenton" }],
     ["timeline.go", T.mercer, { at: 5.25, d: 1.2 }],
-    ["distance", T.thirty - 0.05, T.both - 0.2, { from: [OX + 0.2, RY2 + 1.5], to: [OX + 0.2, RY2 + 0.4], value: 30, countFrom: 30, unit: "YARDS", sub: "from the British line", dash: false }],
+    ["distance", T.thirty - 0.05, T.both - 0.2, { from: [OX + 0.2, RY2 + 3.4], to: [OX + 0.2, RY2 + 0.4], value: 30, countFrom: 30, unit: "YARDS", sub: "from the British line", dash: false }],
     ["timeline.seal", T.surrendered, { at: 5.25, name: "Princeton" }],
     // V2: the small parchment result list top-right (v8) INSTEAD of the big dark centred result card; spoken numbers only
     ["ledger.show", T.lost - 0.4, { title: "Princeton", sub: "3 January 1777" }],

@@ -852,6 +852,14 @@ def bake(rname, G, P, creeks, preview=True):
         if close and len(big) >= 8:
             pts = smooth(densify(chaikin(big[:, :2], 2), 0.12), 8); pts = meander(pts, [], amp=0.16, wl=1.6, seed=len(riv_in))
             riv_in.append(("creek", pts, float(np.clip(0.14 + 0.0016 * big[:, 2].mean(), 0.16, 0.32)), {"auto": True}))
+    if PROJ and any(e.get("valley") for _, _, _, e in riv_in):   # project (Battle 21 v2 r2): carve a broad valley along a river ("valley": {depth_m, half_u}) before its water level
+        for _, pts, _, e in riv_in:
+            if not e.get("valley"): continue
+            vm = np.full((HH, HW), 255, np.uint8); Pp = np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1)
+            cv2.polylines(vm, [np.round(Pp * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
+            dv = cv2.distanceTransform(vm, cv2.DIST_L2, 5) / upx_h; vv_ = e["valley"]
+            h = h - vv_.get("depth_m", 6.0) * np.clip(1 - dv / vv_.get("half_u", 3.0), 0, 1) ** 1.6; del vm, dv
+        hs = cv2.GaussianBlur(h, (0, 0), 2.5 * upx_h)
     rivs = []; wlimg = np.full((HH, HW), 1e4, np.float32); cl = np.full((HH, HW), 255, np.uint8); widthimg = np.zeros((HH, HW), np.float32)
     for key, pts, w, e in riv_in:
         wl = water_levels(pts, lambda p: sample(hs, box, p))
@@ -1027,6 +1035,9 @@ def bake(rname, G, P, creeks, preview=True):
     if close:
         jag = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.7), seed + 60), (TW, TH))
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * cfg.get("ravine_woods", 0.5) - 0.72, fm2 * 0.85 + fm * 0.2 - 0.69) + (jag - 0.5) * 0.16 + wd + swamp
+        if PROJ and cfg.get("river_woods"):   # project (v2 r2): teal wood masses along the river banks (band river_woods.u units, strength k, broken by noise)
+            rw_ = cfg["river_woods"]; nb_ = np.clip(1 - (dist_t - hw_t - rw_.get("gap_u", 0.15)) / rw_.get("u", 2.5), 0, 1) * (dist_t > hw_t + rw_.get("gap_u", 0.15))
+            fbase = fbase + nb_ * rw_.get("k", 0.12) * (0.6 + 0.8 * fm2); del nb_
         del jag
     else:
         fm3 = fbm(TH, TW, 4, int(bw / 18 * ws_), seed + 13)

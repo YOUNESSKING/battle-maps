@@ -671,7 +671,7 @@
  ],
  "season": "winter",
  "winter": {
-  "snow": 0.45,
+  "snow": 0.5,
   "snow_alpha": 0.1,
   "desat": 0.08,
   "ice": 0.6,

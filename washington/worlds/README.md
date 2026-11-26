@@ -147,3 +147,9 @@ the East River fix and the village clusters unchanged.
 - **colonies / colonieswinter (wide z9):** v8 wide look (wide_fields, `exag` 5, default relief / lit / sun), `wood_scale` 2.2, `woods` 0 (smaller,
   more numerous woods like v8 3 s).
 - Vicksburg / Jackson configs never set the new keys: their bakes are unchanged.
+- **r2 (critics v2 test 1+2: Trenton S 35 vs v8 66, no woods, Stony Brook flat):** winter `desat 0`, `snow_alpha 0.22` (frost speckle in the
+  furrows), close winter textures boosted with `tex_grade` (`TG_WINTER` contrast 1.06, sat 1.6 trenton / 1.25 princeton / 1.3 crossing; jersey 1.3)
+  because the storm/dawn grade takes ~40 % of the saturation; new project keys `river_woods: {u, k, gap_u}` (teal wood masses in a band along
+  every river: trenton u 2.6 k 0.16 + `woods` 0.06, princeton u 1.8 k 0.10) and per-river `valley: {depth_m, half_u}` (a broad valley carved
+  before the water level: Stony Brook 7 m / 3.5 units, `w` 0.6). Sheet `previews/v2_ground_r2.jpg` (before | after | ref, mean HSV S printed):
+  trenton 89.6 s 34 -> 65, 100 s 35 -> 63 (v8 60.5 s = 68); princeton 70 s 54 -> 67 (v14 40 s = 57); jersey 24 s 55 -> 67 (v8 35 s = 65).

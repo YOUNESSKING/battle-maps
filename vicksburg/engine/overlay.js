@@ -645,7 +645,7 @@
     }
 
     // ---------------------------------------------------------------- update loop (pure function of t)
-    O.update = (t) => { reframe(); for (const u of updaters) u(t); };
+    O.update = (t) => { reframe(); for (const u of updaters) u(t); reframe(); };   // Battle 21 v2: re-measure AFTER the updaters too (a plate whose text changed at this t was framed at its old size: "16" on the border in a single-seek still)
     // update after every child tween has rendered: chain onto the timeline's own onUpdate (keeps any callback the host set before)
     if (opts.hook !== false) { const prev = tl.eventCallback("onUpdate"); tl.eventCallback("onUpdate", function () { if (prev) prev.apply(this, arguments); O.update(tl.time()); }); }
     return O;

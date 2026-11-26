@@ -391,7 +391,9 @@ export function createTroops3D(o) {
 
   const M4 = new THREE.Matrix4(), col = new THREE.Color(), GREYC = new THREE.Color(GREY.coat), GREYP = new THREE.Color(GREY.pale), GREYL = new THREE.Color(GREY.plate);
   const setM = (im, k, x, y, z, fx, fy, sx, sy, sz, sL = 0, sF = 0) => { M4.set(-fy * sx, 0, -fx * sz, x, sL * sx, sy, -sF * sz, y, fx * sx, 0, -fy * sz, z, 0, 0, 0, 1); im.setMatrixAt(k, M4); };
-  const pal = (u) => PAL[u.side] || PAL.u;
+  // Battle 21 v2: opt-in o.pal = { u: {coat, plate, ...}, r: {...} } merged over PAL (a greyer steel-blue to match v14's graded Union; default unchanged)
+  const PALX = o.pal ? Object.fromEntries(Object.keys(PAL).map((k) => [k, { ...PAL[k], ...((o.pal || {})[k] || {}) }])) : PAL;
+  const pal = (u) => PALX[u.side] || PALX.u;
   const fade = (u, t) => t >= u.t0 && t < u.t1 ? Math.min(sstep(u.t0, u.t0 + 1.2, t), 1 - sstep(u.t1 - 0.8, u.t1, t)) : 0;
   // heading low-pass over +-0.6 s (wheels and turns take ~1 s, never snap)
   const smooth = (u, i, t, key) => vecAvg([[base(u, i, t)[key], 1], [base(u, i, t - 0.15)[key], 0.5], [base(u, i, t + 0.15)[key], 0.5], [base(u, i, t - 0.3)[key], 0.0], [base(u, i, t + 0.3)[key], 0.4]]);

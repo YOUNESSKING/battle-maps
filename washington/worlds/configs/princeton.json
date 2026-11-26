@@ -3,9 +3,9 @@
  "zoom": 11,
  "season": "winter",
  "winter": {
-  "snow": 0.45,
-  "snow_alpha": 0.16,
-  "desat": 0.1,
+  "snow": 0.5,
+  "snow_alpha": 0.22,
+  "desat": 0.0,
   "ice": 0.6,
   "conifers": 0.55,
   "bare_mix": 0.35,
@@ -81,14 +81,26 @@
  "tree_spacing": 0.28,
  "clear_blur": 0.8,
  "clear_noise_u": 1.6,
+ "river_woods": {
+  "u": 1.8,
+  "k": 0.1
+ },
+ "tex_grade": {
+  "contrast": 1.06,
+  "sat": 1.25
+ },
  "rivers": [
   {
    "name": "Stony Brook",
    "geo": "Stony Brook",
-   "w": 0.45,
+   "w": 0.6,
    "step": 0.12,
    "snap": false,
-   "smooth": 6
+   "smooth": 6,
+   "valley": {
+    "depth_m": 7.0,
+    "half_u": 3.5
+   }
   }
  ],
  "roads": [

@@ -107,7 +107,7 @@ function shuttle(k, o) {
   const legs = [[o.tA0, o.tA1, 0, S[0]], ...trips.map((q, i) => [q.t0, q.t1, S[i], S[i + 1]])];
   const sAt = (tt) => { let s = 0; for (const [a0, a1, s0, s1] of legs) { if (tt < a0) return s; if (tt < a1) return s0 + (s1 - s0) * sst(a0, a1, tt); s = s1; } return s; };
   const moving = (tt) => legs.some(([a0, a1]) => tt > a0 + 0.15 && tt < a1 - 0.2);
-  return { region: BK, kind: o.kind || "barge", n: 1, path: P, sAt, wake: moving, t0: o.t0, t1: o.t1 ?? 141.2, size: o.size || 0.6, lamp: false, _legs: legs, _P: P };
+  return { region: BK, kind: o.kind || "barge", n: 1, path: P, sAt, wake: false, t0: o.t0, t1: o.t1 ?? 141.2, size: o.size || 0.6, lamp: true,   /* V2 r2: no bead-chain wakes; a warm deck lamp (v8 night) */ _legs: legs, _P: P };
 }
 // docks: Brooklyn along the shore by the ferry (two at the stairs), Manhattan between the Fly Market and Peck Slip
 const BX = [2480.25, 2477.3, 2481.6, 2478.6, 2483.0, 2476.0, 2479.6, 2482.3, 2475.0, 2484.2, 2480.9, 2477.9];
@@ -172,7 +172,7 @@ const labels = [
   { text: "East River", region: BK, at: [2471.6, 1139.6], size: 18, river: true, t0: T.east - 0.05, t1: T.east + 3.5 },
   { text: "New York", region: BK, at: [2456.0, 1131.4], size: 19, t0: T.newyork - 0.05, t1: T.newyork + 3.5 },
   { text: "Brooklyn", region: BK, at: [2492.0, 1152.0], size: 20, t0: T.brooklyn - 0.05, t1: T.brooklyn + 3.5 },   // V2: carved name on its word
-  { text: "Brooklyn ferry", region: BK, at: [2486.0, 1149.2], size: 18, t0: T.ferry - 0.05, t1: T.ferry + 3.5 },   // V2: carved name on its word
+  { text: "Brooklyn ferry", region: BK, at: [2479.0, 1145.0], size: 18, t0: T.ferry - 0.05, t1: T.ferry + 3.5 },   // V2: carved name on its word
   { text: "covering force", region: BK, at: line(0.56, -3.0), size: 20, t0: T.covering - 0.05, t1: T.covering + 3.6 },
 ];
 
@@ -217,12 +217,12 @@ function buildResult(c) { const st = document.createElement("style"); st.textCon
   on(".c1 .sd", T.crossed2 - 0.1);   /* round 3: "ACROSS" on "crossed" */ on(".c1 .nb", T.ninek); on(".c1 .gn", T.guns - 0.9); on(".c1 .nt", T.crossed2 - 0.1); on(".vr", T.handful - 0.1); on(".c2 .nb", T.handful);
   on(".c2 .nt", T.stragglers - 0.1); on(".c2 .sd", T.behind - 0.25); on(".src", T.behind + 0.2); }
 
-const DS = 4.0, NI = 0.7, NG = 0.45;   // round 1 (critic A): night +15 % lighter than 0.85
+const DS = 4.0, NI = 1.0, NG = 0.45;   // V2 r2: a real night (v8 / S09_gm night 1 + film.grade night 0.8)   // round 1 (critic A): night +15 % lighter than 0.85
 window.SEQ = {
   grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 } },   // V2: = the v8 clip wide grade
   name: "_v2test_b", D: T.D, T, seed: 1776, date: "1776-08-29",
   regions: [CO, BK],
-  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44 },   // V2: = v14
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
   regionOpts: { [BK]: { troopScale: 1.15, fxScale: 7.5, decks: [deck(PA), deck(PB)] }, [CO]: { troopScale: 6 } },   // V2: 0.048 x the ~24-u ferry framing
   keys: [
     { t: 0, region: CO, at: [OV[0] - 6, OV[1] + 14], dist: 300, tilt: 36, yaw: 0, fov: 30 },
@@ -236,8 +236,8 @@ window.SEQ = {
     { t: 43.8, region: BK, at: [2482.0, 1150.4], dist: 47, tilt: 44, yaw: 0, fov: 30, ease: "lin" },
     { t: 47.2, region: BK, at: [2479.0, 1145.4], dist: 27, tilt: 50, yaw: -6, fov: 30, ease: "io" },         // the ferry: boats gather
     { t: 58.4, region: BK, at: [2479.6, 1146.0], dist: 25, tilt: 51, yaw: -2, fov: 30, ease: "lin" },
-    { t: 62.4, region: BK, at: [2481.0, 1148.6], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
-    { t: 67.4, region: BK, at: [2481.4, 1149.0], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
+    { t: 62.4, region: BK, at: [2481.0, 1150.0], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
+    { t: 67.4, region: BK, at: [2481.4, 1150.4], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 70.9, region: BK, at: [2482.4, 1150.6], dist: 25, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 70.9, region: BK, at: [2499.4, 1166.4], dist: 25, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force (round 2: a dissolve, no fast pan over the marching blocks)
     { t: 76.6, region: BK, at: [2498.6, 1165.6], dist: 25, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "lin" },
@@ -266,6 +266,8 @@ window.SEQ = {
     ["label", T.marblehead - 0.05, T.glover - 0.25, { name: "Marblehead Regiment", sub: "fishermen and sailors", world: [2483.4, 1149.6], side: "us", marker: false }],
     ["label", T.glover - 0.15, T.lives + 0.6, { name: "Colonel John Glover", sub: "Marblehead, Massachusetts", world: [2483.4, 1149.6], side: "us", marker: false }],
     // V2: pocket-watch time plate (FACT_NOTES_brooklyn 21-23: embarkation ~8 p.m., the wind dies ~11 p.m., the Mifflin blunder ~2 a.m.)
+    ["film.grade", T.dark - 0.1, "night", 0.8],   // V2 r2 (v8 night)
+    ["film.grade", T.firstlight - 0.1, "day", 0.8],
     ["plaque.clock", T.dark - 0.1, { time: "20:00", note: "after dark · rain", header: "29 August 1776" }],
     ["plaque.clock", T.changed - 0.05, { time: "23:00", note: "the wind changes", header: "29 August 1776" }],
     ["plaque.clock", T.middle - 0.1, { time: "26:00", note: "the middle of the night", header: "30 August 1776" }],

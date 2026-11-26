@@ -26,7 +26,8 @@ does not enter: the engine keeps mpu 129.36 and the target is the on-screen size
 
 ### SEQ settings (every scene)
 ```js
-troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44 },   // = v14 (S09_gm): 12 x 6 men, +44 %
+troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44,   // = v14 (S09_gm): 12 x 6 men, +44 %
+  sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // r2: steel blue = v14 (block median (78-85, 91-100, 136-145) vs v14 (87, 99, 132))
 ```
 Per region (`regionOpts`), from the scene's main framing:
 | scene / region | v1 ts | main framing dist | **v2 troopScale** | **fxScale** (= 0.31 x dist close, 9 x k) | arrows `width` = `maxWidth` |
@@ -43,7 +44,7 @@ Per region (`regionOpts`), from the scene's main framing:
 | S04 / S06 jersey | 7 | 54-112 | 2.0 | - | 1.0 |
 | S05 jersey | 12 | 90-175 | **3.5 (tested, c)** | - | 1.0 |
 | S05 crossing | (1) | 13.6-14.5 | **0.67 (tested, c)** | 4.4 | 0.43 |
-| S05 trenton | 1.6 | 13-16.5 (streets) | **0.75 (tested, c)** | 4.9 | 0.43 |
+| S05 trenton | 1.6 | 13-16.5 (streets) | **0.68 (tested, c; 0.75 measured 6.2 %)** | 4.4 | 0.43 |
 | S05 colonieswinter | 6 | 390-410 | 8 | - | 1.0 |
 | S06 trenton | 1.6 | 17-44 (the bridge fight ~20) | 1.0 | 6.2 | 0.43 |
 | S07 trenton | 1.6 | 26-32 | 1.4 | 9 | 0.43 |
@@ -134,8 +135,40 @@ volleys (section 1), re-check troop motion, legend + timeline on map shots, carv
 | S07 night march + Princeton | **2:00** (as "26:00" if after a p.m. clock) on the march ("on the road by 2 a.m.", G3); **8:00** "William Clarke's orchard" at the orchard cut (H2 "before 8 a.m."), kept through the fight | legend CUT3 + 1.0 -> T.lost - 0.5 (sub Mawhood); timeline go 5.25 on "Mercer"; **seal "Princeton" on "surrendered"** | big card -> ledger "Princeton / 3 January 1777": British: hundreds lost (killed, wounded or captured) / Almost 200 prisoners / Americans: under 100 lost / General Mercer (died nine days later); drop the `film.dim` | orchard camera dist 18-20; units n 4; ts 0.86; volleys as section 1 |
 | S08 ending | none | timeline (all three seals already set: show with the seals at t, `at: 5.25`) through the living map, out before the end-screen tiles; legend out for the letter cards | none | colonieswinter clouds; ts 9 |
 
-## 5. The four test stills (`washington/critics/v2_test_sheet.jpg`)
-(a) `_v2test_a` 22.8 s (S04 colonies, wide, legend + timeline + date plate + clouds + arrows) vs v8 3 s; (b) `_v2test_b` 65.2 s (S03 Brooklyn,
-night ferry, clock 8:00, carved "Brooklyn ferry") vs v8 35 s; (c) `_v2test_c` 89.6 s (S05 Trenton, winter dawn, clock 8:00, troops walking) vs
-v8 60.5 s; (d) `_v2test_d` 75.9 s (S07 Princeton orchard: 15 v14-scale blocks, volleys, Washington's banner, legend, clock, timeline) vs v14 40 s.
-Sheet: `python3 /tmp/claude-0/-home-user-battle-maps/60769b45-58c2-54c2-9881-6e0959cf686a/scratchpad/looklead/v2sheet_looklead.py` (stills built on the v2 worlds, 11:20). Rebuild + snap: `python3 vicksburg/tools/make_scene.py washington/sequences/_v2test_d && bash vicksburg/tools/snap.sh washington/scenes/_v2test_d 75.9 <out>`.
+## 5. The test stills (5 after round 2) (`washington/critics/v2_test_sheet.jpg`)
+(a) `_v2test_a` 22.8 s (S04 colonies wide: legend, timeline, date plate, clouds, GM-width arrows) vs v8 3 s; (b) `_v2test_b` 65.2 s
+(S03 Brooklyn ferry at night 1: clock 8:00, "Brooklyn ferry", lamps) vs v8 35 s; (c) `_v2test_c` 100.3 s (S05 Trenton 8 a.m.: town, Hessians,
+Knox's guns, "Trenton", clock) vs v8 35 s; (d) `_v2test_d` 75.9 s (S07 orchard, v14 blocks, steel blue) vs v14 40 s; (e) `_v2test_c` 130.7 s
+(the Trenton ledger top-right) vs v8 60.5 s.
+Sheet: `python3 /tmp/claude-0/-home-user-battle-maps/60769b45-58c2-54c2-9881-6e0959cf686a/scratchpad/looklead/v2sheet_looklead.py` (round 2: on the r2 worlds). Rebuild + snap: `python3 vicksburg/tools/make_scene.py washington/sequences/_v2test_d && bash vicksburg/tools/snap.sh washington/scenes/_v2test_d 75.9 <out>`.
+
+## 6. Round 2 (critics `critics/v2_test_critic1.md` 6/4/4/7, `v2_test_critic2.md` 8/7/5/7): every finding -> fix
+Engine (opt-in / bug fix only, default output unchanged for other films):
+- `vicksburg/engine/overlay.js` `O.update`: `reframe()` also AFTER the updaters. The plate frame was measured before the text of the new
+  key was set, so a still (single seek) right after a roll kept the previous plate's size ("16" on the border, note under the plate). Fixes
+  every `plaque.date` / `plaque.clock` roll in every scene; no plate calls need changing. (C1 #1, C2 #1)
+- `vicksburg/engine/troops3d.js`: `troopsOpts.pal = { u: {...}, r: {...} }` merged over the soldier palette (lineblocks do NOT read
+  `sideCol`, which only colours the `box` look). v2: `pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } }` + `sideCol u "#3f5aa0"` in every scene. (C1 #16)
+
+| finding | fix (tested in `_v2test_*`) | in the film |
+| --- | --- | --- |
+| C1 #2 wide arrows 4x too wide, through the legend | colonies arrows `width` = `maxWidth` **0.25-0.3** (w = width x ts x 0.66 ~ 5-6 px); the blue retreat arrow ends halfway NB -> Trenton, clear of the legend | every wide arrow: width 0.25-0.3; no arrow point in the bottom-left 200 x 130 px (legend) or under the timeline |
+| C1 #3 colonies centre cooler / flatter | ground agent (relief / woods share) | worlds |
+| C1 #4 cloud stacks overlap | colonies `scatter.seed` 5 -> **11** (n 24, med 15): separate puffs | per scene: pick a seed with no on-screen overlap |
+| C1 #5, C2 #10 no carved name in wide | `labels` "Fort Washington" (T.fortw) + "Hudson River" (T.hudson, river) added; "Manhattan" (T.manhattan) | S04 |
+| C1 #6 night not a night | S03 `NI` 0.7 -> **1.0** + `["film.grade", T.dark - 0.1, "night", 0.8]`, `["film.grade", T.firstlight - 0.1, "day", 0.8]`; land luma 50 (v8 50 s: 41; ~20 % L) | every night shot: night 1 + film.grade night 0.8 (S01 crossing, S03, S05 crossing, S06 / S07 night) |
+| C1 #7, C2 #7 bead-chain wakes | Brooklyn boats `wake: false`, `lamp: true` (warm deck lamp as v8 night) | S03, S05 crossing, S01, S04, S06 boats at night |
+| C1 #8, C2 #6 "Brooklyn ferry" in the fields | label at [2479.0, 1145.0] (off the landing, by the boats) | S03 |
+| C1 #9, C2 #8 block under the timeline | 62.4 / 67.4 s keys target +1.4 u south (the bottom block rises above the bar) | rule: no block in the bottom 12 % while the timeline is up |
+| C1 #10 slate woods | re-measure on the r2 worlds | worlds |
+| C1 #11, C2 #2 Trenton grey | Trenton keys night 0.32 / 0.25 / 0.2 / 0.16 / 0.14 / 0.12 / 0.1 / 0.08 / 0.06 -> **0.10 / 0.08 / 0.06 / 0.05 / 0.04 / 0.03** (8 a.m., sunrise 7:20); rain x0.5 kept; ground = worlds agent (r2) | S05 / S01 Trenton keys; S06-S07 dawn keys <= 0.1 after sunrise |
+| C1 #12 Trenton no woods | worlds agent (r2) | worlds |
+| C1 #13, C2 #3 no anchor / no Hessians / no TRENTON | still (c) moved to 100.3 s: the town, Knox's guns at the head, the Hessians forming in King / Queen St (shown from the 95.4 s cut, n 3, positions 2 u up the streets), carved **"Trenton" on "the town's two main streets"** (97.6-101.1 s; "Trenton" itself is not spoken in the Trenton close shots) | S05 |
+| C1 #14 Trenton blocks 6.2 % | TR ts 0.75 -> **0.68**, fxScale 4.4; all `bw` overrides removed (Hessian blocks were bw 0.55) | S05 |
+| C1 #15, C2 #9 ledger unproven | 5th still (e): `_v2test_c` 130.7 s Trenton ledger (2 rows by then) vs v8 60.5 s | S03 / S05 / S07 |
+| C1 #17 Stony Brook flat band | worlds agent (r2) | worlds |
+| C1 #18 haze top-right | S07 orchard keys tilt 53 -> **55.5** (55-74 s) | S07 |
+| C1 #19 coarse crowns | open (needs `world.treeScale` through SEQ, not done) | open |
+| C2 #4 banner in the British line | Washington's banner at RY2 + 3.4 (between the lines, nearer the American line); the 30 YARDS ruler from there | S07 |
+| C2 #5 orchard house = empty red outline | world feature (farmstead footprint without roof) -> worlds agent | worlds |
+| check_troops_motion turn-rate fails (d) | orchard keys yaw held at 0 (was +-2) while blocks wheel | S07 |

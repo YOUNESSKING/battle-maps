@@ -57,7 +57,8 @@ def write(name, cfg):
 # v2 (owner row 22: the v8 test look): winter = the SAME warm v8 patchwork with a LIGHT frost tint (fields still ochre / green / rust, a little
 # paler / cooler), woods still dark teal (bare deciduous = teal + a touch of twig brown: bare_mix), rust roads, subtle shore ice.
 # v1 (grey ground: desat 0.45, snow_alpha 0.66, conifers 0.16 never reached the engine -> 84 % grey crowns) is in git history.
-WINTER = {"snow": 0.45, "snow_alpha": 0.16, "desat": 0.10, "ice": 0.6, "conifers": 0.55, "bare_mix": 0.35, "road_col": "#84583f", "snow_col": "#d2d0c2"}
+WINTER = {"snow": 0.5, "snow_alpha": 0.22, "desat": 0.0, "ice": 0.6, "conifers": 0.55, "bare_mix": 0.35, "road_col": "#84583f", "snow_col": "#d2d0c2"}
+TG_WINTER = {"contrast": 1.06, "sat": 1.6}   # v2 r2 (critics: Trenton S 35 vs v8 66): close winter textures at v8 saturation (Vicksburg close ground.jpg S ~78-80)
 WINTER_WIDE = dict(WINTER, snow_alpha=0.10, desat=0.08, conifers_wide=0.5, wood_col="#3a3630", lit_col="#c6c4a0")   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
@@ -118,7 +119,7 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 4.0, "cell": 6.0, "gm_unit": 1.5, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 4.0, "cell": 6.0, "gm_unit": 1.5, "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
@@ -218,7 +219,7 @@ write("crossing", {
  "hm_ppu": 8, "tex": 4608, "exag": 3.0, "cell": 2.0, "gm_unit": 0.45, "track_k": 0.5, "seed": 1225, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.3, "creeks": {"paint_km2": 0.6, "ribbon_km2": 1e9},
- "woods": 0.06, "ravine_woods": 0.7, "tree_spacing": 0.3, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "woods": 0.06, "ravine_woods": 0.7, "tree_spacing": 0.3, "clear_blur": 0.35, "clear_noise_u": 0.8, "tex_grade": dict(TG_WINTER, sat=1.3),
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 10.5, "step": 0.2, "snap": False, "smooth": 10, "keep": 7.0},
             {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.6, "step": 0.15, "smooth": 6}],
  "roads": [{"name": "River road (NJ)", "geo": "River road (NJ)", "cls": "pike", "meander": 0.2},
@@ -247,8 +248,8 @@ write("trenton", {
  "hm_ppu": 8, "tex": 4096, "exag": 3.6, "cell": 1.8, "gm_unit": 0.45, "track_k": 0.5, "seed": 1226, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
- "woods": 0.0, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
- "clear": [[1345.3, 2033.3, 2.3]],   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
+ "woods": 0.06, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "clear": [[1345.3, 2033.3, 2.3]], "river_woods": {"u": 2.6, "k": 0.16}, "tex_grade": TG_WINTER,   # v2 r2: teal wood masses along the Assunpink + the Delaware banks   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 5.5, "step": 0.15, "snap": False, "smooth": 10, "keep": 4.0},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
  "roads": [{"name": "River road", "geo": "River road (NJ)", "cls": "pike", "meander": 0.15},
@@ -285,7 +286,8 @@ write("princeton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.8, "clear_noise_u": 1.6,
- "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
+ "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25),   # S07 is a clear day (no storm veil): less boost
+ "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.6, "step": 0.12, "snap": False, "smooth": 6, "valley": {"depth_m": 7.0, "half_u": 3.5}}],   # v2 r2: a visible valley + water
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},
            {"name": "Quaker Bridge road", "geo": "Quaker Bridge road", "cls": "pike", "meander": 0.15},
            {"name": "Saw Mill road", "geo": "Saw Mill road", "cls": "lane", "meander": 0.15},
