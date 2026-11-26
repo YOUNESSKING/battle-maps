@@ -170,7 +170,7 @@ const gShots = [];
 const fx = {
   volleys: [
     // the picket fires into the storm as Greene's men burst out of it
-    { region: TR, pts: [[1339.6, 2024.1], [1340.2, 2024.3]], t0: 92.5, t1: 95.2, every: 1.8, opts: { ...VO, dir: [-0.3, -0.95], volley: 1.8 } },
+    { region: TR, pts: [[1339.6, 2024.1], [1340.2, 2024.3]], t0: 92.5, t1: 93.2, every: 1.8, opts: { ...VO, dir: [-0.3, -0.95], volley: 1.8 } },
     // Greene's leading block answers
     // the Hessians in the streets fire back up the streets
     { region: TR, pts: [[H1[0] - 0.25, H1[1] - 0.2], [H1[0] + 0.25, H1[1] - 0.2]], t0: 103.5, t1: 103.9, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } },
@@ -301,19 +301,19 @@ window.SEQ = {
     // 3. the crossing at night: the PA bank, the boats, the NJ bank
     K(41.0, CR, at(-2.4, -3.0, 0), 13.6, 58, -40, "io", NI),
     K(52.4, CR, at(-0.8, -0.6, 1.4), 14, 58, -46, "lin", NI),
-    K(60.0, CR, at(3.4, 3.4, 1.0), 14.5, 58, -52, "io", NI),
-    K(CUT1, CR, at(6.6, 4.6, 0.4), 14.5, 59, -56, "lin", NI),
+    K(60.0, CR, at(3.4, 6.2, 1.0), 14.5, 57, -52, "io", NI),
+    K(CUT1, CR, at(6.6, 7.2, 0.4), 14.5, 58, -56, "lin", NI),
     // 4. jersey night storm: the failed crossings, the march, the split
     K(CUT1, JE, [640, 1030], 175, 46, -60, "cut", 0.6, { dissolve: 0.9 }),
     K(75.8, JE, [640, 1006], 160, 46, -58, "lin", 0.6),
     K(80.5, JE, [626, 970], 96, 48, -44, "io", 0.45),
     K(CUT2, JE, [630, 974], 90, 49, -40, "lin", 0.45),
     // 5. trenton grey dawn: the picket, Greene down the Pennington road
-    K(CUT2, TR, [1338.4, 2029.0], 16.5, 52, 14, "cut", 0.32, { dissolve: 0.9 }),
-    K(95.0, TR, [1342.4, 2031.6], 16.5, 52, 10, "lin", 0.25),
+    K(CUT2, TR, [1333.6, 2030.0], 16.5, 52, 14, "cut", 0.32, { dissolve: 0.9 }),   // round 5: the ring wood framed out to the right
+    K(95.0, TR, [1335.6, 2034.6], 16.5, 52, 10, "lin", 0.25),
     // 6. the head of the town: guns down both streets, the Hessians in the streets
-    K(95.4, TR, [1354.6, 2056.0], 13, 56, 8, "cut", 0.2, { dissolve: 0.9 }),
-    K(108.0, TR, [1358.0, 2061.2], 13.5, 57, 4, "lin", 0.16),
+    K(95.4, TR, [1352.8, 2055.0], 13, 56, 8, "cut", 0.2, { dissolve: 0.9 }),
+    K(108.0, TR, [1355.6, 2059.6], 13.5, 57, 4, "lin", 0.16),
     // 7. Rall, the fields east of the town, the surrender
     K(110.5, TR, [1361.4, 2059.8], 13.5, 56, 0, "io", 0.14),
     K(118.6, TR, [1363.6, 2056.4], 14, 56, -4, "lin", 0.12),

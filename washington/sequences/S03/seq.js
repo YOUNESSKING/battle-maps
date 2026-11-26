@@ -225,7 +225,7 @@ window.SEQ = {
   keys: [
     { t: 0, region: CO, at: [OV[0] - 6, OV[1] + 14], dist: 300, tilt: 36, yaw: 0, fov: 30 },
     // dive 2: colonies -> Brooklyn Heights (push 0.2, swap 4.0, land 7.35)
-    { t: 11.0, region: BK, at: [2492.0, 1161.6], dist: 62, tilt: 40, yaw: 1, fov: 30, ease: "lin" },
+    { t: 11.0, region: BK, at: [2488.0, 1162.4], dist: 62, tilt: 40, yaw: 1, fov: 30, ease: "lin" },
     { t: 16.4, region: BK, at: [2483.0, 1163.0], dist: 80, tilt: 39, yaw: 0, fov: 30, ease: "io" },          // the warships' route up the river
     { t: 24.6, region: BK, at: [2484.0, 1160.0], dist: 84, tilt: 37, yaw: 0, fov: 30, ease: "io" },          // "In other words": up, the sack
     { t: 28.8, region: BK, at: [2459.0, 1171.0], dist: 34, tilt: 50, yaw: 14, fov: 30, ease: "io" },         // the ships in the rain
@@ -252,8 +252,8 @@ window.SEQ = {
     { t: T.D, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30, ease: "lin" },
   ],
   dives: [{ t: DS, over: OV, overTo: OVB, from: { region: CO, at: [OV[0] - 3, OV[1] + 8], dist: 230, tilt: 38, yaw: 0 },
-            to: { region: BK, at: [2493.0, 1161.0], dist: 60, tilt: 40, yaw: 0, fov: 30 },
-            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.4, haze: 0.85 } }],   // round 4: whoosh back to 1.4 (1.2 covered "simple."); clear 0.4 (no luma snap)   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
+            to: { region: BK, at: [2487.5, 1162.0], dist: 60, tilt: 40, yaw: 0, fov: 30 },
+            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.75, haze: 1.0 } }],   // round 4: whoosh back to 1.4 (1.2 covered "simple."); clear 0.4 (no luma snap)   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
   clouds: { [CO]: { scatter: { seed: 5 } }, [BK]: { shadows: true } },
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [

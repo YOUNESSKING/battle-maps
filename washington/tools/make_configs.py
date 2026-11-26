@@ -122,7 +122,7 @@ write("jersey", {
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4, "field_patch_k": 0.4, "field_feather": 0.5,
+ "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.4, "field_patch_k": 0.18, "field_feather": 1.5,   # r5: flat patches, wide feather
  "detail": {"k": 0.13, "u": 0.35, "far": 320}, "villages": 5,   # r3: speckle readable at dist 150-270, soft facets, engine detail layer   # r2b: fewer, larger masses along valleys
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
@@ -245,6 +245,7 @@ write("trenton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.0, "ravine_woods": 0.6, "tree_spacing": 0.28, "rust_k": 0.85, "clear_blur": 0.35, "clear_noise_u": 0.8,
+ "clear": [[1345.3, 2033.3, 2.3]], "field_patch_k": 0.45, "field_feather": 0.6,   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 5.5, "step": 0.15, "snap": False, "smooth": 10, "keep": 4.0},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.45, "step": 0.12, "snap": False, "smooth": 6}],
  "roads": [{"name": "River road", "geo": "River road (NJ)", "cls": "pike", "meander": 0.15},

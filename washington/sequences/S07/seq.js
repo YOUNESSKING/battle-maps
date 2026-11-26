@@ -223,7 +223,7 @@ window.SEQ = {
       tReveal: 0.3, until: 2.0, dim: 0.55 }],
     ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
     ["plaque.date", T.changed - 0.05, { month: "January 1777", day: "2", weekday: "Thursday", note: "hard frost" }],
-    (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [706.0, 1028.0], JE),
+    (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [702.0, 1021.0], JE)   /* round 5: clear of Washington's banner */,
     ["plaque.date", T.third - 0.05, { month: "January 1777", day: "3", weekday: "Friday", note: "sunrise" }],
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],
     ["plaque.date", CUT3 + 0.6, { month: "January 1777", day: "3", weekday: "Friday", note: "Princeton" }],

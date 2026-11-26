@@ -65,3 +65,8 @@ flags from `washington/assets/flags/`.
 
 ## Round 4 fixes
 - Trenton approach: Greene's blocks make ONE straight run each (start abreast west of the road at y 2033, deploy spots moved 1.5-2 u west), faced along the run from the start: no mid-route halt, so no 90 deg snap at 95.5 / 97.5 (turns <= 34 deg/s 95.6-112, screen long-side <= 10 deg), still clear of the ring wood's west edge. Side gap 88-128: 0 / 0.
+
+## Round 5 fixes
+- Crossing 58-68.4: camera tilted onto the NJ bank (landing in the middle third, not a strip at the top edge).
+- Trenton approach 88-95.4: camera 5 u west, the ring wood framed out; head-of-town shot 95.4-108 shifted west/north (less of the dark field patch south-east of the town).
+- Dead cue removed: the picket fires once (92.5); no 94.3 volley without a visible flash.

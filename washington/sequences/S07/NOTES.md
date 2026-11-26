@@ -47,3 +47,6 @@ leaving, the orchard, Mercer, Washington at ~30 yards, Nassau Hall ~194 surrende
 
 ## Round 4 fixes
 - S06 -> S07 join: the card no longer fades in from 0.2 (it dipped to ~30 % across the dissolve). New engine option `engage.decide({ instant: true })` (overlay.js): card, options, note, ticks and dim set fully on AT t = 0 with `tl.set` (no tween before 0, so the clock tween is not shifted). Verified: card fully visible at 0.0 / 0.1 / 0.3; flashes still on cue (brightening between 51.20 -> 51.27 for volley 51.23 and 86.95 -> 87.04 for gun 87.0).
+
+## Round 5 fixes
+- THE MUD FROZE stamp moved to [702, 1021] (clear of Washington's banner). `instant: true` decide kept; no negative times.
