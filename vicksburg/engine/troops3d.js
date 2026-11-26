@@ -54,7 +54,7 @@ export function createTroops3D(o) {
   const XV = 1.4 * (o.troopScale || 1), XDT = 0.055, XP = 0.3, rotP = (c, h, la, lb) => { const fx = Math.cos(h), fy = Math.sin(h); return [c[0] - fy * la + fx * lb, c[1] + fx * la + fy * lb]; };   /* v12: bridge crossing (men file across) */
   const SQUARE = (() => { const P = []; for (let k = 0; k < NF; k++) { const side = k / 15 | 0, f = (k % 15 + 0.5) / 15 - 0.5, e = 0.5 - 0.06;
     P.push(side === 0 ? [f, e] : side === 1 ? [e, -f] : side === 2 ? [-f, -e] : [-e, f]); } return P; })();
-  const BOXV = o.look === "box", BOXL = BOXV || o.look === "lineblocks";   /* v11: lineblocks = the GM soldier blocks driven by the v10 rectangle motion */   /* v9 (owner 2026-11-18): Style W map boxes, one formation (the rectangle), long side leading */
+  const BOXV = o.look === "box", CTR = o.look === "counter", BOXL = BOXV || o.look === "lineblocks" || CTR;   /* troops-box test 2026-11-26: counter = 3D bevelled unit counters on the lineblocks motion */   /* v11: lineblocks = the GM soldier blocks driven by the v10 rectangle motion */   /* v9 (owner 2026-11-18): Style W map boxes, one formation (the rectangle), long side leading */
   // v15 (2026-11-23, Battle 20 round 1): o.retreatTurn = retreats (backward runs, road escapes) turn the WHOLE block about in place
   // (<= ~36 deg/s peak), walk front first, and (runs) turn back to face the enemy at the halt; the men face with the plate (no abk flip).
   // Off by default (Vicksburg keeps the plate-faces-the-enemy + men-about-face look); scene.js turns it on outside the Vicksburg frame.
@@ -418,6 +418,7 @@ export function createTroops3D(o) {
         w: q.D.bw, d: q.D.bd, f: 0, c: 0, e: q.e, op: q.op * (q.bf ?? (q.e > 0 ? 1 - onBridge(q.x, q.y) * q.e : 1)), art: q.u.type === "art", cap: q.capd }));
       return { blocks: list.length }; }
     const HH = BOXL ? Hs : H;   /* v11: lineblocks stand on the smoothed ground (no jump over parapets / ditches) */
+    if (CTR) return updCounter(ST, t);
     for (const Q of ST) {
       const { b, u, D, x: bx, y: by, pa, sa, c, e, spd, op, capd, f: fq, lpa, cpa, ab } = Q, i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31;
       const colK = fq >= 0.5, pf = sstep(0, 1, Math.abs(1 - 2 * fq));   // v7: plate in the current formation's shape; it fades through the re-forming
@@ -499,6 +500,122 @@ export function createTroops3D(o) {
     API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa), str: q.st || 0,
       w: q.u.type === "art" ? q.D.bw * 0.62 : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op * (q.cr ? 1 - (q.st || 0) : 1), art: q.u.type === "art", cap: q.capd }));
     return { figures: nf, blocks: np, guns: ng };
+  }
+  // ---------- troops-box test (2026-11-26, owner: "the soldiers as boxes again, PROFESSIONAL this time"): look "counter" ----------
+  // Each block = a solid 3D unit counter (bevelled slab with real thickness, darker side faces, lit by the sun, fogged, under smoke)
+  // whose top face carries the side colour, a hairline frame and a crisp unit-type symbol (texture). Motion = the lineblocks motion
+  // untouched (base / baseBox / crossMan); the counter only replaces the plate + men. At a bridge the counter dissolves into its men
+  // (the same v13/v14 stream), so the approved crossing stays exactly as it was. Variants (o.counter): "A" raised enamel counter,
+  // "B" chunky bevelled slab with a gold frame + a pennant, "C" thin tile with a strong drop shadow. Footprint: frontage = the block's
+  // width, depth = width / ~3.2 (inside the lineblocks footprint, so no new overlaps). Other looks never reach this code.
+  function mkCounter() {
+    const V = ({ A: { dk: 0.31, h: 0.075, bev: 0.018, ao: 0.5, drop: 0, cast: true, phong: true, pen: false, tex: "A" },
+      B: { dk: 0.30, h: 0.10, bev: 0.034, ao: 0.46, drop: 0, cast: true, phong: false, pen: true, tex: "B" },
+      C: { dk: 0.32, h: 0.028, bev: 0.008, ao: 0.3, drop: 0.5, cast: false, phong: false, pen: false, tex: "C" } })[o.counter || "A"] || null;
+    const CV = { ...V, ...(o.counterOpts || {}) }, ART = { dk: 0.46 };
+    const slabG = (dk, h, bev, skirt) => { const P = [], N = [], C = [], hw = 0.5, hd = dk / 2, iw = hw - bev, id = hd - bev, yc = h - bev * 0.8, yb = -skirt;
+      const tri = (a, b, c, sh) => { const u1 = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], u2 = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+        let n = [u1[1] * u2[2] - u1[2] * u2[1], u1[2] * u2[0] - u1[0] * u2[2], u1[0] * u2[1] - u1[1] * u2[0]]; const m = [(a[0] + b[0] + c[0]) / 3, (a[1] + b[1] + c[1]) / 3 - h * 0.4, (a[2] + b[2] + c[2]) / 3];
+        if (n[0] * m[0] + n[1] * m[1] + n[2] * m[2] < 0) { n = n.map((v) => -v); [b, c] = [c, b]; } const l = Math.hypot(...n) || 1; n = n.map((v) => v / l);
+        for (const p of [a, b, c]) { P.push(...p); N.push(...n); C.push(sh, sh, sh); } };
+      const quad = (a, b, c, d, sh) => { tri(a, b, c, sh); tri(a, c, d, sh); };
+      for (const s of [-1, 1]) { quad([-iw, h, s * id], [iw, h, s * id], [hw, yc, s * hd], [-hw, yc, s * hd], 0.9);   // front / back chamfer
+        quad([s * iw, h, -id], [s * iw, h, id], [s * hw, yc, hd], [s * hw, yc, -hd], 0.9);                            // side chamfers
+        quad([-hw, yc, s * hd], [hw, yc, s * hd], [hw, yb, s * hd], [-hw, yb, s * hd], 0.66);                         // walls
+        quad([s * hw, yc, -hd], [s * hw, yc, hd], [s * hw, yb, hd], [s * hw, yb, -hd], 0.66); }
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3)); g.setAttribute("normal", new THREE.Float32BufferAttribute(N, 3));
+      g.setAttribute("color", new THREE.Float32BufferAttribute(C, 3)); return g; };
+    const topG = (dk, h, bev) => { const g = new THREE.PlaneGeometry(1 - 2 * bev, dk - 2 * bev); g.rotateX(-Math.PI / 2); g.translate(0, h, 0); return g; };
+    // top-face mask: R = fill (with a faint enamel falloff), G = cream, B = gold, the rest = ink. Canvas top row = the FRONT edge.
+    const tex = (sym, aspect) => { const Wc = 512, Hc = Math.round(512 / aspect), c = document.createElement("canvas"); c.width = Wc; c.height = Hc; const g = c.getContext("2d"), m = Math.min(Wc, Hc);
+      const R = (k = 1) => `rgb(${Math.round(255 * k)},0,0)`, CR = "#00ff00", GD = "#0000ff", INK = "#000000";
+      g.fillStyle = INK; g.fillRect(0, 0, Wc, Hc);
+      const T = CV.tex, eI = T === "C" ? 0.045 * m : 0.022 * m; const gr = g.createLinearGradient(0, 0, Wc * 0.3, Hc); gr.addColorStop(0, R(1)); gr.addColorStop(1, R(T === "A" ? 0.9 : 0.95));
+      g.fillStyle = gr; g.fillRect(eI, eI, Wc - 2 * eI, Hc - 2 * eI);
+      if (T !== "C") { const e2 = T === "B" ? 0.075 * m : 0.085 * m, lw = T === "B" ? 0.05 * m : 0.032 * m; g.strokeStyle = GD; g.lineWidth = lw; g.strokeRect(e2, e2, Wc - 2 * e2, Hc - 2 * e2);
+        if (T === "A") { g.fillStyle = GD; g.fillRect(e2 - lw / 2, e2 - lw / 2, Wc - 2 * e2 + lw, lw * 1.9); } }   // the front side of the frame twice as strong (shows the facing)
+      else { g.fillStyle = CR; g.fillRect(eI, eI, Wc - 2 * eI, 0.06 * m); }                                            // C: a cream front band
+      // the unit symbol, centred; NATO box (A, C: cream outline + cream sign; B: cream plate + ink sign)
+      const bh = Hc * (sym === "art" ? 0.66 : 0.56), bw = sym === "art" ? bh * 1.5 : bh * 1.55, bx = (Wc - bw) / 2, by = (Hc - bh) / 2, plate = T === "B", sc = plate ? INK : CR, lw2 = Math.max(3, Hc * 0.065);
+      if (sym !== "art") { if (plate) { g.fillStyle = CR; g.fillRect(bx - lw2 * 0.3, by - lw2 * 0.3, bw + lw2 * 0.6, bh + lw2 * 0.6); g.strokeStyle = GD; g.lineWidth = lw2 * 0.45; g.strokeRect(bx - lw2 * 0.3, by - lw2 * 0.3, bw + lw2 * 0.6, bh + lw2 * 0.6); }
+        else { g.strokeStyle = CR; g.lineWidth = lw2; g.strokeRect(bx, by, bw, bh); } }
+      g.strokeStyle = sc; g.fillStyle = sc; g.lineWidth = lw2 * 0.95; g.lineCap = "butt";
+      const ix = bx + lw2 * 0.15, iy = by + lw2 * 0.15, iw2 = bw - lw2 * 0.3, ih = bh - lw2 * 0.3;
+      if (sym === "inf") { g.beginPath(); g.moveTo(ix, iy); g.lineTo(ix + iw2, iy + ih); g.moveTo(ix + iw2, iy); g.lineTo(ix, iy + ih); g.stroke(); }
+      else if (sym === "cav") { g.beginPath(); g.moveTo(ix, iy + ih); g.lineTo(ix + iw2, iy); g.stroke(); }
+      else if (sym === "eng") { const r = bh * 0.26; g.save(); g.translate(Wc / 2, Hc / 2); g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
+        for (let k = 0; k < 8; k++) { g.save(); g.rotate(k * Math.PI / 4); g.fillRect(-r * 0.25, -r * 1.42, r * 0.5, r * 0.55); g.restore(); } g.fillStyle = plate ? CR : R(1); g.beginPath(); g.arc(0, 0, r * 0.4, 0, Math.PI * 2); g.fill(); g.restore(); }
+      else if (sym === "art") { if (plate) { g.fillStyle = CR; g.fillRect(bx, by, bw, bh); g.fillStyle = INK; }   // the kit's approved gun box (fx.js art_gun, viewBox 2 18 96 78)
+        const hh = bh * 0.86, ww = hh * 96 / 78, s2 = hh / 78; g.save(); g.translate((Wc - ww) / 2 - 2 * s2, (Hc - hh) / 2 - 18 * s2); g.scale(s2, s2);
+        g.save(); g.translate(44, 50); g.rotate(-22 * Math.PI / 180); g.translate(-44, -50); g.beginPath(); g.roundRect ? g.roundRect(40, 31, 56, 8, 3) : g.rect(40, 31, 56, 8); g.fill(); g.restore();
+        g.fill(new Path2D("M30 42 L52 36 L56 52 L34 58 Z")); g.strokeStyle = g.fillStyle; g.lineWidth = 6; g.beginPath(); g.arc(36, 66, 13, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.arc(36, 66, 3.5, 0, Math.PI * 2); g.fill(); g.fill(new Path2D("M33 60 L6 84 L12 89 L40 66 Z")); g.restore(); }
+      const t3 = new THREE.CanvasTexture(c); t3.colorSpace = THREE.NoColorSpace; t3.anisotropy = 8; t3.generateMipmaps = true; t3.minFilter = THREE.LinearMipmapLinearFilter; return t3; };
+    const opHook = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
+      sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp;").replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
+    const topMat = (map) => { const m = CV.phong ? new THREE.MeshPhongMaterial({ map, transparent: true, shininess: 38, specular: 0x2a2826 }) : new THREE.MeshLambertMaterial({ map, transparent: true });
+      m.onBeforeCompile = (sh) => { opHook(sh); sh.uniforms.uCream = { value: new THREE.Color("#f3ecd8") }; sh.uniforms.uGold = { value: new THREE.Color("#d4ab55") }; sh.uniforms.uInk = { value: new THREE.Color("#16130f") };
+        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nuniform vec3 uCream; uniform vec3 uGold; uniform vec3 uInk;")
+          .replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); float mi = clamp(1.0 - mk.r - mk.g - mk.b, 0.0, 1.0);\n#ifdef USE_COLOR\nvec3 fillC = vColor.rgb;\n#else\nvec3 fillC = diffuse;\n#endif\ndiffuseColor.rgb = mk.r * fillC + mk.g * uCream + mk.b * uGold + mi * uInk;")
+          .replace("#include <color_fragment>", ""); };
+      m.customProgramCacheKey = () => "ctrTop" + (CV.phong ? 1 : 0); return m; };
+    const bodyMat = () => { const m = new THREE.MeshLambertMaterial({ vertexColors: true, transparent: true }); m.onBeforeCompile = opHook; m.customProgramCacheKey = () => "ctrBody"; return m; };
+    // a counter is CONVEX: with back faces culled it draws correctly without a depth test, so (like our Style W boxes) it is never cut by
+    // tree crowns or the terrain mesh; it still casts into the shadow map, is fogged, and the smoke (renderOrder 10) draws over it
+    const mk = (geo, mat, n, cast, recv = true, ro = 2) => { mat.depthTest = false; mat.depthWrite = false; const N = Math.max(1, n), g = geo.clone(); g.setAttribute("iOp", new THREE.InstancedBufferAttribute(new Float32Array(N).fill(1), 1));
+      const m = new THREE.InstancedMesh(g, mat, N); m.castShadow = cast; m.receiveShadow = recv; m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); m.frustumCulled = false; m.count = 0; m.renderOrder = ro;   /* walls: no shadow acne stripes */
+      m.setColorAt(0, new THREE.Color()); scene.add(m); ALL.push(m); return m; };
+    const K = {}, nI = infBlocks.length, nA = artBlocks.length, symOf = (u) => u.type === "art" ? "art" : u.type === "cav" ? "cav" : u.type === "eng" ? "eng" : "inf";
+    const need = new Set(blocks.map((b) => symOf(b.u)));
+    for (const sym of need) { const dk = sym === "art" ? ART.dk : CV.dk, n = blocks.filter((b) => symOf(b.u) === sym).length;
+      K[sym] = { dk, body: mk(slabG(dk, CV.h, CV.bev, 0), bodyMat(), n, CV.cast, false), top: mk(topG(dk, CV.h, CV.bev), topMat(tex(sym, (1 - 2 * CV.bev) / (dk - 2 * CV.bev))), n, false, true, 2.02), n: 0 }; }
+    // a small regimental pennant on a staff at the rear-left corner (variant B)
+    const pen = CV.pen ? (() => { const pole = mk(box(0.014, 0.34, 0.014, 0, 0.17, 0), (() => { const m = new THREE.MeshLambertMaterial({ color: 0x2a2018, transparent: true }); m.onBeforeCompile = opHook; m.customProgramCacheKey = () => "ctrPole"; return m; })(), nI + nA, false, true, 2.03);
+      const fg = new THREE.BufferGeometry(); fg.setAttribute("position", new THREE.Float32BufferAttribute([0, 0.34, 0, 0.24, 0.34, 0, 0.17, 0.285, 0, 0, 0.34, 0, 0.17, 0.285, 0, 0, 0.23, 0, 0, 0.23, 0, 0.17, 0.285, 0, 0.24, 0.23, 0], 3)); fg.computeVertexNormals();
+      const fm = new THREE.MeshLambertMaterial({ side: THREE.DoubleSide, transparent: true, emissive: 0x303030 }); fm.onBeforeCompile = opHook; fm.customProgramCacheKey = () => "ctrFlag";
+      return { pole, flag: mk(fg, fm, nI + nA, false, true, 2.04) }; })() : null;
+    return { CV, K, pen, symOf };
+  }
+  const CK = CTR ? mkCounter() : null;
+  function updCounter(ST, t) {
+    const { CV, K, pen, symOf } = CK, SC = o.sideCol || { u: "#2c57b7", r: "#be3a2a" }, FILL = { u: new THREE.Color(SC.u), r: new THREE.Color(SC.r) }, GRY = new THREE.Color(0x8b877e);
+    let nf = 0, ns = 0, np = 0; for (const k in K) K[k].n = 0;
+    for (const Q of ST) {
+      const { b, u, D, x: bx, y: by, pa, op, capd } = Q, i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31, isArt = u.type === "art", P = pal(u), sym = symOf(u), KK = K[sym];
+      const bk = Q.st != null ? Q.st : onBridge(bx, by), st = Q.st != null ? (isArt ? 0 : Q.st) : Q.eq && !isArt ? bk : 0;
+      const fx = Math.cos(pa), fy = Math.sin(pa), px = -fy, py = fx, W = D.bw, Dd = W * KK.dk, hb = Hs(bx, by);
+      const sL = clamp((Hs(bx + px * W * 0.5, by + py * W * 0.5) - Hs(bx - px * W * 0.5, by - py * W * 0.5)) / W, -0.2, 0.2), sF = clamp((Hs(bx + fx * Dd * 0.5, by + fy * Dd * 0.5) - Hs(bx - fx * Dd * 0.5, by - fy * Dd * 0.5)) / Dd, -0.2, 0.2);
+      const wk = WM ? Math.max(WM(bx, by), ...[[1, 1], [1, -1], [-1, 1], [-1, -1]].map(([a, c]) => WM(bx + px * W * 0.5 * a + fx * Dd * 0.5 * c, by + py * W * 0.5 * a + fy * Dd * 0.5 * c))) : 0, oc = op * (1 - st), y0 = hb + S.lift + wk * Math.max(0, (CV.wood ?? 0) - CV.h) * W;   // counterOpts.wood: lift onto the canopy in woods (default 0: counters draw without depth test, see mk)   // the counter dissolves as its men break ranks at a bridge
+      if (oc > 0.002) { const k = KK.n++; col.copy(FILL[u.side] || FILL.u).lerp(GRY, capd);
+        setM(KK.body, k, bx, y0, by, fx, fy, W, W, W, sL, sF); KK.body.setColorAt(k, col); setOp(KK.body, k, oc);
+        setM(KK.top, k, bx, y0, by, fx, fy, W, W, W, sL, sF); KK.top.setColorAt(k, col); setOp(KK.top, k, oc);
+        // contact shadow / ambient occlusion: a soft dark rim just round the footprint; C adds a long soft drop shadow away from the sun
+        setM(shadows, ns, bx, hb + 0.01 * ts, by, fx, fy, W * 1.1 + 0.06 * ts, 1, Dd * 1.45 + 0.06 * ts); setOp(shadows, ns++, CV.ao * oc);
+        if (CV.drop) { const dd = W * 0.09; setM(shadows, ns, bx + SUNG[0] * dd, hb + 0.009 * ts, by + SUNG[1] * dd, fx, fy, W * 1.16 + 0.1 * ts, 1, Dd * 1.9 + 0.1 * ts); setOp(shadows, ns++, CV.drop * oc); }
+        if (pen) { const la = -0.42 * W, lb = -(Dd / 2 - 0.03 * W), x = bx + px * la + fx * lb, y = by + py * la + fy * lb, sw = 1 + 0.08 * Math.sin(t * 4.3 + seed);
+          setM(pen.pole, np, x, y0 + CV.h * W * 0.9, y, fx, fy, W, W, W); setOp(pen.pole, np, oc);
+          setM(pen.flag, np, x, y0 + CV.h * W * 0.9, y, fx, fy, W * sw, W, W); pen.flag.setColorAt(np, col.copy(FILL[u.side] || FILL.u).lerp(new THREE.Color(0xffffff), 0.25).lerp(GRY, capd)); setOp(pen.flag, np++, oc); } }
+      // the men only exist while the counter breaks ranks (the v13/v14 crossing, unchanged): they appear in its footprint as it dissolves
+      if (isArt || st <= 0.001) continue;
+      const Wl = D.bw, Dl = D.bd, sp = Wl * 0.92 / 12, fw = sp * 0.42, fd = sp * 0.4, fh = sp * 1.9, csp = Wl * 0.96 / 12, mk = sstep(0, 0.5, st);
+      for (let j = 0; j < INF.length; j++) { const L = INF[j]; let la = L[0] * Wl * 0.96, lb = L[1] * Dl * 0.9;
+        la += (hash(seed + j, 1) - 0.5) * 0.12 * sp; lb += (hash(seed + j, 2) - 0.5) * 0.12 * sp;
+        let x, y, ma, crW = 0, mOp = 1;
+        if (Q.cr) { const m = crossMan(Q.cr, j, la, lb, t); x = m[0]; y = m[1]; ma = m[2]; crW = m[3]; mOp = m[4]; }
+        else { const row = Math.floor(j / 3), cc = j % 3, sw = Q.ew - (row - 11.5) * csp * 0.55 - (hash(seed + j, 11) - 0.5) * 0.02, g = along(Q.eq.path, Math.max(0, sw));
+          const off = (cc - 1) * Math.min(csp * 1.1, 0.055) + (hash(seed + j, 12) - 0.5) * 0.015; x = g[0] - g[3] * off; y = g[1] + g[2] * off; ma = Math.atan2(g[3], g[2]); crW = 1; }
+        const bob = crW * 0.12 * fh * Math.abs(Math.sin(t * 6 + j * 0.9 + seed)), hy = Math.max(Hs(x, y), deckTop(x, y)) + S.lift + bob;
+        const jh = 0.93 + 0.14 * hash(seed + j, 6), ja = (hash(seed + j, 8) - 0.5) * 0.35, jfx = Math.cos(ma + ja), jfy = Math.sin(ma + ja);
+        setM(coats, nf, x, hy, y, jfx, jfy, fw, fh * jh, fd); setM(pales, nf, x, hy, y, jfx, jfy, fw, fh * jh, fd);
+        coats.setColorAt(nf, col.copy(FILL[u.side] || FILL.u).lerp(GRY, capd)); pales.setColorAt(nf, col.setHex(P.pale)); setOp(coats, nf, op * mOp * mk); setOp(pales, nf, op * mOp * mk); nf++; }
+    }
+    for (const m of ALL) m.count = 0;
+    for (const k in K) { K[k].body.count = K[k].top.count = K[k].n; }
+    if (pen) pen.pole.count = pen.flag.count = np;
+    coats.count = pales.count = nf; shadows.count = ns;
+    for (const m of ALL) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true; }
+    API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa), str: q.st || 0,
+      w: q.u.type === "art" ? q.D.bw * 0.62 : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op * (q.cr ? 1 - (q.st || 0) : 1), art: q.u.type === "art", cap: q.capd }));
+    return { figures: nf, blocks: ST.length, guns: 0 };
   }
   const API = { update, blocks, base, queues: QUEUES, xv: XV, billboard: BOXV && !!o.camera, boxH: BOXL ? (x, y) => Hs(x, y) : null, meshes: { coats, pales, plateFill, plateRim, plateFront, shadows, carriage, barrel, wheels, limber, horses } };
   return API;

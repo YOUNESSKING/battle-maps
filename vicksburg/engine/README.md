@@ -301,3 +301,10 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
 
 - Battle 21 S07 round 3: an overlay call that schedules a tween at a NEGATIVE time (e.g. `engage.decide` at t 0 = `film.dim` at -0.2 and the OR at tB - 0.15) makes GSAP shift every earlier timeline child, including the scene clock tween that drives the 3D draw: all 3D fx then run ~0.35 s late while later overlays stay on time. Keep every overlay time >= ~0.4 s (decide `t` >= 0.2).
 - Battle 21 S07 round 4: `engage.decide({ instant: true, t })` shows the card, both options, the note, the three lit ticks and the dim fully on AT `t` with `tl.set` (no fade, no tween before `t`): continues a card that the previous scene shows to its end (S06 -> S07). `tReveal` / `until` work as before; tA / tB / tNote / tCount are ignored. Default (no `instant`) unchanged.
+
+- **Troops-box test (2026-11-26, owner: "soldiers as boxes again, PROFESSIONAL")**: opt-in `troopsOpts.look = "counter"` (+ `counter: "A" | "B" | "C"`,
+  `counterOpts`) = 3D bevelled unit counters (solid slab, darker walls, sun-lit, fogged, sun shadow + soft AO, top face = side colour + frame +
+  NATO type symbol; gun = kit art_gun, engineers = gear) driven by the UNCHANGED lineblocks motion (CTR joins BOXL; only `update()` branches to
+  `updCounter`). At a bridge the counter dissolves into its men and the v13/v14 stream runs as before. Lesson: a counter is convex, so draw it
+  with depthTest off + back-face culling (correct on its own, never cut by tree crowns: a depth-tested thin tile was clipped by the canopy);
+  no below-ground skirt then (it would show). Other looks byte-identical (md5 of 7 lineblocks stills). Notes: `vicksburg/troops_box_test/NOTES.md`.
