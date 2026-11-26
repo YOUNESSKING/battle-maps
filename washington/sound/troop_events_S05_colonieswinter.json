@@ -1,0 +1,75 @@
+{
+ "scene": "S05",
+ "region": "colonieswinter",
+ "window": [
+  0,
+  163.539
+ ],
+ "shareOffset": 336.551,
+ "filmStart": 336.551,
+ "render": [
+  1920,
+  1080
+ ],
+ "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
+ "events": [
+  {
+   "type": "unit_appears",
+   "t": 148.2,
+   "tExcerpt": 148.2,
+   "tShare": 484.75,
+   "tFilm": 484.75,
+   "at": {
+    "map": [
+     337.82,
+     520.11
+    ],
+    "px": [
+     -551,
+     -669
+    ],
+    "nx": -0.287,
+    "ny": -0.619,
+    "onScreen": false,
+    "camDist": 1863.84
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 148.2,
+   "tExcerpt": 148.2,
+   "tShare": 484.75,
+   "tFilm": 484.75,
+   "at": {
+    "map": [
+     603.41,
+     287.1
+    ],
+    "px": [
+     -142,
+     -671
+    ],
+    "nx": -0.074,
+    "ny": -0.622,
+    "onScreen": false,
+    "camDist": 1944.97
+   },
+   "unit": {
+    "unit": 1,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  }
+ ]
+}

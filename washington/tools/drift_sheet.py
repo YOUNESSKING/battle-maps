@@ -7,11 +7,11 @@ V = "/home/user/battle-maps/washington"; J = f"{V}/critics/jackson_ref"
 F = ImageFont.truetype(f"{V}/tools/oswald-latin-700-normal.ttf", 22)
 PAIRS = [  # (our scene, t, Jackson still, what to compare)
     ("S01", 17.8, "J_S01_18.jpg", "hook: first battle view after the dive"),
-    ("S01", 56.0, "J_S01_66.jpg", "name slam: 3D gold title + banner"),
+    ("S01", 54.8, "J_S01_66.jpg", "name slam: 3D gold title + banner"),
     ("S03", 128.5, "J_S03_124.jpg", "move 1 result card (ledger)"),
     ("S05", 44.0, "J_S05_70.jpg", "night battle look"),
-    ("S05", 150.0, "J_S07_150.jpg", "method card (letter)"),
-    ("S08", 30.0, "J_S08_55.jpg", "ending: final cards"),
+    ("S05", 148.0, "J_S07_150.jpg", "method card (letter)"),
+    ("S08", 41.0, "J_S08_55.jpg", "ending: final cards"),
 ]
 W, H = 960, 540
 sheet = Image.new("RGB", (2 * W + 30, len(PAIRS) * (H + 40) + 10), (20, 20, 20)); d = ImageDraw.Draw(sheet)
