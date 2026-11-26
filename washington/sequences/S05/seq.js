@@ -68,22 +68,28 @@ const loaded = (tr, t) => tr.some((q) => t > q.b - 1.2 && t < q.c + 0.6);
 const units = [];
 const add = (o) => { units.push({ type: "inf", n: 1, arrive: false, ...o }); return units.length - 1; };
 // PA bank: the blocks waiting in a queue behind each landing (facing inland: the men about-face and stream onto the boat)
+// v2 r3 (critic A #2 checks): the first block of lanes 0 / 2 waits straight up-screen of its deck (its walk onto the deck runs down / up the
+// screen, measured with the scene camera), lane 0's steps off after the dive has landed; the second block of each lane leaves the picture with
+// the camera (faded out off-screen at 53 s: its later boats still carry their men)
+const QD = { 0: -64.3 * Math.PI / 180, 2: -Math.PI / 2 };
 LANES.forEach((ds, k) => SCHED[k].forEach((q, j) => {
-  const pos = at(ds, -HW - 3.0 - 1.15 * j, 0.25 * j);
-  add({ side: "u", region: CR, face: FN, keys: [[0, ...pos]], t1: q.b + 1.0,
-    escape: { road: [pos, at(ds, -HW - 1.7), at(ds, -HW - 0.15), at(ds, -HW + 0.9), at(ds, -HW + 1.6)], join: "nearest", t0: q.a - 3.4, from: 0, vanish: [0.35, 0.95], front: true } }); }));
+  const land = at(ds, -HW - 1.7), pos = j === 0 && QD[k] != null ? [land[0] - Math.cos(QD[k]) * 1.3, land[1] - Math.sin(QD[k]) * 1.3] : at(ds, -HW - 3.0 - 1.15 * j, 0.25 * j);
+  add({ side: "u", region: CR, face: FN, keys: [[0, ...pos]], t1: j ? 53.0 : q.b + 1.0,
+    escape: { road: [pos, land, at(ds, -HW - 0.15), at(ds, -HW + 0.9), at(ds, -HW + 1.6)], join: "nearest", t0: q.a - (k === 0 && j === 0 ? 2.4 : 3.4), from: 0, vanish: [0.35, 0.95], front: true } }); }));
 // more men waiting on the PA bank (in the back, framed at the edge): they stay
 [[-2.9, -HW - 6.2], [1.7, -HW - 6.6]].forEach(([ds, d]) => add({ side: "u", region: CR, face: FN, keys: [[0, ...at(ds, d)]] }));
 // NJ bank: the advance guard up the Bear Tavern road; each boatload comes off at Johnson's Ferry and walks up to the assembly ground
 const BT = VX.road(CR, "Bear Tavern road"), BTp = (s) => { const g = VX.along(BT, s); return [g[0], g[1]]; };
 add({ side: "u", region: CR, face: Math.atan2(-0.75, 0.66), keys: [[0, ...BTp(6.5)]] });
-const ASM = [[3.2, 1.2], [3.6, -0.6], [5.0, 0.4], [5.4, -1.4], [6.8, -0.4], [7.0, 1.6]];   // [across from the NJ edge, along the bank (downstream +)]
+const ASM = [[3.2, 1.2], [3.6, -0.6], [5.0, 0.4], [5.4, -1.4], [6.8, -0.4], [7.0, 1.6]];
+const AUP = [-55.4, -49.0].map((d) => d * Math.PI / 180);   // v2 r3: the first two landings walk straight up the screen (camera at 53 / 57 s)   // [across from the NJ edge, along the bank (downstream +)]
 let asmI = 0;
-LANES.forEach((ds, k) => SCHED[k].forEach((q) => { if (q.c > 68.4) return; const A = ASM[asmI++ % ASM.length], p0 = at(ds + 0.6, HW + 0.7), p1 = at(ds + 0.6, HW + A[0], 0);   // round 2: straight up the bank, along the facing (no crab)
+LANES.forEach((ds, k) => SCHED[k].forEach((q) => { if (q.c > 68.4) return; const ia = asmI++, A = ASM[ia % ASM.length], p0 = at(ds + 0.6, HW + 0.7), p1x = at(ds + 0.6, HW + A[0], 0), Lw = Math.hypot(p1x[0] - p0[0], p1x[1] - p0[1]), p1 = AUP[ia] != null ? [p0[0] + Math.cos(AUP[ia]) * Lw, p0[1] + Math.sin(AUP[ia]) * Lw] : p1x;   // round 2: straight up the bank, along the facing (no crab)
   add({ side: "u", region: CR, face: Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), t0: q.c + 0.3, keys: [[0, ...p0], [q.c + 1.0, ...p0], [q.c + 1.0 + Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) / 0.55, ...p1]], arrive: false }); }));
 // guns: on the flats, then off on the NJ bank one by one
 const FTR = [trip(46.0), trip(55.0)].map((q) => ({ ...q, b: q.b + 1.0, c: q.c + 2.6, d: q.d + 2.6, e: q.e + 2.6 }));
-FTR.forEach((q, j) => { const p0 = at(FLAT + 0.6 - 1.4 * j, HW + 0.8), p1 = at(FLAT + 0.6 - 1.4 * j, HW + 3.0);
+FTR.forEach((q, j) => { const p0 = at(FLAT + 0.6 - 1.4 * j, HW + 0.8), p1x = at(FLAT + 0.6 - 1.4 * j, HW + 3.0), GD = -19.7 * Math.PI / 180,   // v2 r3: the first gun walks off straight down the screen (camera at 63 s)
+    p1 = j === 0 ? [p0[0] + Math.cos(GD) * 2.2, p0[1] + Math.sin(GD) * 2.2] : p1x;
   add({ side: "u", type: "art", region: CR, face: Math.atan2(p1[1] - p0[1], p1[0] - p0[0]), t0: q.c + 0.4, keys: [[0, ...p0], [q.c + 1.2, ...p0], [q.c + 5.0, ...p1]], arrive: false }); });
 add({ side: "u", type: "art", region: CR, face: FN, keys: [[0, ...at(FLAT - 3.2, HW + 3.4)]], t0: 58.0, arrive: true });   // already over (earlier flats)
 
@@ -121,10 +127,10 @@ add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), keys: [[0, 1338.0, 2
 // round 3 (critic A): Greene's blocks stay on open ground WEST of the ring wood: abreast west of the Pennington road, straight south past
 // the wood (facing south), hold, turn in place toward their deploy spots at the head of the town, walk
 // v2 r3 (critic A #2): each block walks straight along its front normal (south), steps off on "burst", stops (and settles) before the 95.4 dissolve
-const DG = [68.5, 76.8, 81.9].map((d) => d * Math.PI / 180);   // the on-screen 'down' direction at each block (camera at 93.5 s)
-[0, 1, 2].forEach((i) => { const s0 = [1333.0 + i * 2.2 - (i === 0 ? 1.5 : 0), 2033.0], p = [s0[0] + Math.cos(DG[i]) * 1.3, s0[1] + Math.sin(DG[i]) * 1.3];   /* v2 r2 critic B: west block clear of the farm */
+const DG = [68.5, 76.8, 85.8].map((d) => d * Math.PI / 180);   // the on-screen 'down' direction at each block (camera at 93.5 s)
+[0, 1, 2].forEach((i) => { const s0 = [1333.0 + i * 2.2 - (i === 0 ? 1.5 : 0) + (i === 2 ? 1.6 : 0), 2033.0], p = [s0[0] + Math.cos(DG[i]) * 1.3, s0[1] + Math.sin(DG[i]) * 1.3];   /* v2 r2 critic B: west block clear of the farm; v2 r3 (critic A N5): east block clear of the wood clump */
   add({ side: "u", region: TR, face: DG[i], t0: 88.0, keepTimes: true, keys: [[0, ...s0], [91.4 + i * 0.1, ...s0], [94.0 + i * 0.1, ...p], [T.D, ...p]] }); });
-const sPos = [[1353.4, 2062.4], [1351.4, 2066.2]];   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
+const sPos = [[1353.4, 2062.4], [1352.0, 2067.8]];   // v2 r3: the second block clear of the clock plate in the bridge shot   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
 // v2 r3 (critic A #2): up from the River road into the lower town, straight north (front first, long side across the screen), after the dissolve
 const DS = (77.0 + 180) * Math.PI / 180;   // on-screen 'up' at the lower town (camera at 103 s)
 add({ side: "u", region: TR, face: DS, t0: 95.4, arrive: false, keys: [[0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [101.0, sPos[0][0] - Math.cos(DS) * 2.4, sPos[0][1] - Math.sin(DS) * 2.4], [105.4, ...sPos[0]], [T.D, ...sPos[0]]] });
@@ -144,9 +150,9 @@ const rH = HG.flatMap((h, i) => [-1, 0, 1].map((k) => add({ side: "r", region: T
   keys: [[0, h[0] + k * 0.8, h[1]]], cap: T.laid + 0.2 + i * 0.25 + (k + 1) * 0.08 })));
 // the blue blocks close round the orchard (north, east, south-west)
 // v2 r3: round the Queen St group (x 1356.65-1358.95, y 2058.8); each walks in along its front = the on-screen vertical / horizontal (camera at 114 s)
-const RING = [[1357.8, 2056.4, 82.8], [1361.0, 2058.8, 182.0], [1358.4, 2060.8, 79.0 + 180]].map(([x, y, d]) => [x, y, d * Math.PI / 180]);
-RING.forEach(([x, y, f], i) => { const L = i === 1 ? 1.4 : 2.6, ts0 = i === 1 ? 114.0 : T.driven + i * 0.3, b0 = [x + Math.cos(f + Math.PI) * L, y + Math.sin(f + Math.PI) * L];   // the east block: a short late walk near the frame centre
-  add({ side: "u", region: TR, face: f, t0: 110.0 + i * 0.4, arrive: false, keepTimes: i === 1, keys: [[0, ...b0], [ts0, ...b0], [T.surrounded + 0.2 + i * 0.3, x, y], [T.D, x, y]] }); });
+const RING = [[1357.8, 2056.4, 82.8], [1359.9, 2056.6, 88.3], [1358.4, 2060.8, 79.0 + 180]].map(([x, y, d]) => [x, y, d * Math.PI / 180]);
+RING.forEach(([x, y, f], i) => { const L = 2.6, ts0 = T.driven + i * 0.3, b0 = [x + Math.cos(f + Math.PI) * L, y + Math.sin(f + Math.PI) * L];   // NW + NE blocks from the north, one from the south (no east block: walking across the screen it read as a column)
+  add({ side: "u", region: TR, face: f, t0: 110.0 + i * 0.4, arrive: false, keys: [[0, ...b0], [ts0, ...b0], [T.surrounded + 0.2 + i * 0.3, x, y], [T.D, x, y]] }); });
 // by the Assunpink bridge: one block streams away over the bridge, one is trapped; a blue block closes the bridge from the west
 const KN1 = [1355.65, 2066.13], KN2 = [1354.6, 2064.4];   // v2 r3: KN1 straight up-screen of the bridge mouth (its walk onto the deck runs down the screen)
 const ESCR = [[1355.65, 2066.13], [1356.8, 2068.4], [1357.2, 2072.0], [1357.7, 2073.4], [1358.4, 2076.0], [1359.0, 2079.0], [1359.6, 2082.5]];   // v2 r3: off the bridge straight down the screen
@@ -195,7 +201,7 @@ const fx = {
     { region: TR, pts: [[1353.3, 2062.0], [1353.7, 2062.8]], t0: 107.75, t1: 109.95, opts: { ...VO, dir: [1, 0] } },
     // round the orchard: the ring fires once
     { region: TR, pts: [[RING[0][0] - 0.5, RING[0][1] + 0.2], [RING[0][0] + 0.5, RING[0][1] + 0.2]], t0: 116.35, t1: 118.55, opts: { ...VO, dir: [0, 1], muzzle: 5 * KF * 1.6 } },
-    { region: TR, pts: [[RING[1][0] - 0.2, RING[1][1] - 0.5], [RING[1][0] - 0.2, RING[1][1] + 0.5]], t0: 116.65, t1: 118.85, opts: { ...VO, dir: [-1, 0], muzzle: 5 * KF * 1.6 } },
+    { region: TR, pts: [[RING[1][0] - 0.5, RING[1][1] + 0.2], [RING[1][0] + 0.5, RING[1][1] + 0.2]], t0: 116.65, t1: 118.85, opts: { ...VO, dir: [0, 1], muzzle: 5 * KF * 1.6 } },
   ],
   guns: [{ region: TR, h: 0.3, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.4 }, shots: gShots, impactOpts: { size: 0.6 } }],
   campfires: [
@@ -296,6 +302,12 @@ function stamp(c, text, t0, t1, world, region) {
 // ---------------- camera ----------------
 const SW = 34.55, DV = VX.diveTimes(SW);   // push 30.75 (on "After dark"), land ~37.9
 const MID = at(0.4, 0.4, 0);
+// v2 r3 (critic A #2): in the close regions (crossing, Trenton: x > 1200) the engine's on-screen heading correction is OFF (a flat stand-in
+// projection: it turned the walking blocks up to 59 deg off their path and, being camera-dependent, snapped them at the cuts); instead every
+// close walk runs along the on-screen vertical (QD / AUP / GD / DG / DS / DB / RING angles, measured with the scene camera), so front =
+// velocity in the world AND on screen. Wide regions (jersey, colonies): as before.
+let WORLD = null;
+const TPROJ = (x, y, h = 0.02) => (!WORLD || x > 1200) ? { x: x * 60, y: y * 60 } : WORLD.projectMap(x, y, h);
 const K = (t, region, at0, dist, tilt, yaw, ease = "io", night = 0, o = {}) => ({ t, region, at: at0, dist, tilt, yaw, fov: 30, ease, night, ...o });
 const CUT1 = 68.4, CUT2 = 88.0, CUT3 = 150.8;   // round 1: the colonies cut after method card 2 (held to 150.7)
 window.SEQ = {
@@ -304,7 +316,7 @@ window.SEQ = {
   regions: [JE, CR, TR, CO],
   regionOpts: { [JE]: { troopScale: 3.5 }, [CO]: { troopScale: 8 }, [CR]: { troopScale: 0.67, fxScale: 4.4, decks }, [TR]: { troopScale: 0.68, fxScale: 4.4 } },   // V2: 0.048 x dist (close), 0.022 x dist (wide)
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // houseK as S06; the small wide-map bridge meshes read as crosses from far away
-  troops: "blocks", troopsOpts: {   /* v2 r3 (critic A #2): every Trenton walk runs along the on-screen vertical (DG / DS / DB / RING angles, measured with the scene camera), so the engine's on-screen heading correction stays small */ look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
+  troops: "blocks", troopsOpts: { proj: TPROJ,   /* v2 r3 (critic A #2): see TPROJ */ look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
   keys: [
     // 1. jersey, winter day: the chain of posts; Trenton
     K(0, JE, [690, 1004], 150, 44, 4),
@@ -345,7 +357,7 @@ window.SEQ = {
     K(156.0, CO, [496, 388], 390, 45, 2, "io", 0),
     K(T.D, CO, [452, 414], 410, 44, 0, "io", 0),
   ],
-  dives: [{ t: SW, over: MKj, overTo: MID, whooshAt: 32.25,   // round 2 (critic B N6): whoosh body in the gap before "main force"
+  dives: [{ t: SW, over: [MKj[0] + 8, MKj[1] + 1], overTo: MID,   /* v2 r3 (critic A #7): dive point 8 u east of the ferry: the jersey world edge stays out of the frame before the whiteout */ whooshAt: 32.25,   // round 2 (critic B N6): whoosh body in the gap before "main force"
             off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 },   // round 1 (critic A): shorter flat grey
             from: { region: JE, at: [640, 990], dist: 150, tilt: 44, yaw: -40, night: 0.32 },
             to: { region: CR, at: at(-2.0, -3.4, -0.6), dist: 18, tilt: 57, yaw: -36, fov: 30, night: NI } }],
@@ -354,7 +366,7 @@ window.SEQ = {
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1776", day: "8", weekday: "Sunday", note: "" }],   // v2 r3 (critic A N7): = S04's last plate (the last spoken day) until "Christmas"
-    ["label", T.fortifications - 0.05, T.other - 0.3, { name: "No fortifications", sub: "", world: [TRj[0] + 1.0, TRj[1] - 8.0], marker: false }],   // v2 r3 (critic A #21): dark v8 plate, not a rubber stamp
+    ["label", T.fortifications - 0.05, T.other - 0.3, { name: "No fortifications", sub: "", world: [TRj[0] + 7.0, TRj[1] - 3.0], marker: false }],   // v2 r3 (critic A #21): dark v8 plate, not a rubber stamp
     // v2 r3 (critic A N6): THE ARMIES key + the wax-seal timeline from the first frame (S04 ends with both up), through the night shots
     ["legend", 0.0, CUT2 + 0.1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
     ["timeline.show", 0.0, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.25 }],
@@ -393,7 +405,7 @@ window.SEQ = {
     ["timeline.show", CUT3 + 0.4, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.8 }],
     ["legend", T.cornwallis - 0.05, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],
   ],
-  build: (c) => { RAIN.build(c);   // v2 r1: no red pulse   // V2: no big result card
+  build: (c) => { WORLD = c.world; RAIN.build(c);   // v2 r1: no red pulse   // V2: no big result card
     // the American works south of the Assunpink were dug on 2 January: hidden here
     const R = c.world.regions[TR], Wk = R.works || []; c.FX[TR].custom(() => { for (const m of Wk) m.visible = false; }); },
   draw: (t, c) => { RAIN.draw(t, c); const reg = c.world.cameraAt(t).region, sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
