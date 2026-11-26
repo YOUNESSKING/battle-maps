@@ -123,7 +123,7 @@ write("jersey", {
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
  "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 2.5, "lit_k": 0.55, "cell": 6.0, "gm_unit": 1.5, "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
- "river_halo_u": 0.25, "bank_fill": {"u": 0.7, "a": 0.6},   # v2 r4 (#23): the strip between water and woods / frost = river bank colour (no white pond rims)
+ "river_halo_u": 0.25, "bank_fill": {"u": 0.8, "a": 0.85},   # v2 r4 (#23): the strip between water and woods / frost = river bank colour (no white pond rims)
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
@@ -251,7 +251,7 @@ write("trenton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.06, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
- "clear": [[1345.3, 2033.3, 2.3]], "river_woods": {"u": 2.6, "k": 0.16}, "tex_grade": TG_WINTER, "bank_slope": 5.0, "bank_fill": {"u": 0.15, "a": 0.5},   # v2 r4 (N8, #23): soft cut banks, bank-coloured rims   # v2 r2: teal wood masses along the Assunpink + the Delaware banks   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
+ "clear": [[1345.3, 2033.3, 2.3]], "river_woods": {"u": 2.6, "k": 0.16}, "tex_grade": TG_WINTER, "bank_slope": 5.0, "bank_fill": {"u": 0.15, "a": 0.7},   # v2 r4 (N8, #23): soft cut banks, bank-coloured rims   # v2 r2: teal wood masses along the Assunpink + the Delaware banks   # r5: no ring ("doughnut") wood on the modern circular bank N of the town; softer field patches
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 5.5, "step": 0.15, "snap": False, "smooth": 10, "keep": 4.0},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.45, "step": 0.12, "snap": False, "smooth": 10, "valley": {"depth_m": 2.5, "half_u": 2.5}, "bank_blur": {"sigma_u": 1.2, "half_u": 4.0},
              "look": {"color": "#3d5a6c", "rough": 0.85, "env": 0.1, "ns": 0.06}}],   # v2 r4 (N8): v8 river blue, matte, no ripple tiles; a soft valley instead of a terraced cut
@@ -293,7 +293,7 @@ write("princeton", {
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.8, "clear_noise_u": 1.6,
  "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25), "farm_scale": 1.8, "bridge_deck": "ends",
- "road_w_k": 0.4, "bank_fill": {"u": 0.15, "a": 0.5},   # v2 r4 (N2, #23): v8 rut width (0.35-0.4 x), bank-coloured rims   # S07 is a clear day (no storm veil): less boost
+ "road_w_k": 0.4, "bank_fill": {"u": 0.15, "a": 0.7},   # v2 r4 (N2, #23): v8 rut width (0.35-0.4 x), bank-coloured rims   # S07 is a clear day (no storm veil): less boost
  "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.6, "step": 0.12, "snap": False, "smooth": 200, "valley": {"depth_m": 7.0, "half_u": 3.5},
              "look": {"color": "#536f80", "rough": 0.9, "env": 0.08, "ns": 0.04}}],   # v2 r2: a visible valley + water   # v2 r4 (N1): frost-tinted v8 blue (no white tiled ice), smooth bends
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},

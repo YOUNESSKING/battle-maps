@@ -108,7 +108,7 @@
  "bank_slope": 5.0,
  "bank_fill": {
   "u": 0.15,
-  "a": 0.5
+  "a": 0.7
  },
  "rivers": [
   {

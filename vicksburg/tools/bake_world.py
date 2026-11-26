@@ -1209,8 +1209,8 @@ def bake(rname, G, P, creeks, preview=True):
         if tg_.get("tint"): img = img * np.array(tg_["tint"], np.float32)   # project: per-channel warmth (R, G, B multipliers)
     if FROST is not None: img = img * (1 - FROST[..., None]) + hexc(WINTER["frost"].get("col", "#dde5ea")) * FROST[..., None]; del FROST
     if PROJ and cfg.get("bank_fill"):   # project (v2 r4, critic #23): the strip between the water and the woods / frost = the river bank colour (no pale rims round ponds)
-        bf_ = cfg["bank_fill"]; u_ = bf_.get("u", 0.8 if not close else 0.15)
-        m_ = np.clip(1 - (dist_t - hw_t) / u_, 0, 1) * np.clip((dist_t - hw_t + 0.05) / 0.05, 0, 1) * bf_.get("a", 0.6)
+        bf_ = cfg["bank_fill"]; u_ = bf_.get("u", 0.8 if not close else 0.15); o_ = (cfg.get("river_halo_u") or 0.0) if not close else 0.0   # starts outside the painted water halo
+        m_ = np.clip((u_ - (dist_t - hw_t)) / (0.35 * u_), 0, 1) * np.clip((dist_t - hw_t - o_ + 0.05) / 0.1, 0, 1) * bf_.get("a", 0.6)   # flat band, soft edges
         img = img * (1 - m_[..., None]) + hexc(bf_.get("col", "#5c5c4a")) * m_[..., None]; del m_
     img8 = np.clip(img, 0, 255)[..., ::-1].astype(np.uint8); del img
     cv2.imwrite(f"{out}/ground.jpg", img8, [cv2.IMWRITE_JPEG_QUALITY, cfg.get("jpeg_q", 88 if close else 90)])
