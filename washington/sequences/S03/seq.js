@@ -55,11 +55,12 @@ const units = [];
 const U = (o) => { units.push({ type: "inf", n: 2, region: BK, arrive: false, ...o }); return units.length - 1; };
 // the army packed inside the lines (blocks between the works and the ferry), each regiment leaves on its own, nearest the ferry first
 const CAMP = [   // [position, pier, escape t0]
-  [[2483.6, 1151.6], PA, 53.0], [[2479.0, 1152.4], PB, 54.2], [[2487.6, 1152.6], PA, 57.4], [[2481.4, 1156.0], PB, 58.6],
-  [[2485.4, 1156.4], PA, 61.0], [[2477.6, 1158.6], PB, 62.6], [[2489.6, 1156.6], PA, 64.6], [[2483.6, 1160.4], PB, 67.4],
-  [[2488.0, 1160.6], PA, 70.4], [[2492.6, 1159.8], PA, 73.6],
+  [[2485.0, 1151.4], PA, 59.4], [[2479.0, 1152.4], PB, 60.6], [[2487.6, 1152.6], PA, 63.8], [[2481.4, 1156.0], PB, 65.0],
+  [[2485.4, 1156.4], PA, 67.4], [[2477.6, 1158.6], PB, 69.0], [[2489.6, 1156.6], PA, 71.0], [[2483.6, 1160.4], PB, 73.8],
+  [[2488.0, 1160.6], PA, 76.8], [[2492.6, 1159.8], PA, 80.0],
 ];
-CAMP.forEach(([p, P, t0]) => U({ side: "u", face: FSE, keys: [[0, ...p]], escape: ESC(P, t0) }));
+// round 2 (critic A): each regiment already faces its landing (formed to march), so it walks straight there front first (no crab)
+CAMP.forEach(([p, P, t0]) => U({ side: "u", face: Math.atan2(P.near[1] - p[1], P.near[0] - p[0]), keys: [[0, ...p]], escape: ESC(P, t0) }));
 // Glover's Marblehead regiment: at the landing on "regiment", first into the boats (they row them)
 U({ side: "u", n: 1, face: -Math.PI / 2, t0: T.regiment - 0.2, keys: [[0, 2481.6, 1149.3]], escape: ESC(PA, 53.6) });
 // the covering force (Mifflin): stays in the front line; ordered out by mistake (~2 a.m.), stops when met on the road, faces about, back in
@@ -211,7 +212,7 @@ function buildResult(c) { const st = document.createElement("style"); st.textCon
     <div class="src">Johnston, The Campaign of 1776 around New York and Brooklyn</div>`;
   host.appendChild(el); const tl = c.tl, gs = window.gsap, on = (sel, t) => { const e = el.querySelector(sel); gs.set(e, { autoAlpha: 0 }); tl.fromTo(e, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t); };
   gs.set(el, { autoAlpha: 0 }); tl.fromTo(el, { autoAlpha: 0, scale: 0.97 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, T.about - 0.3); tl.to(el, { autoAlpha: 0, duration: 0.45 }, 131.0);
-  on(".c1 .sd", T.about - 0.1); on(".c1 .nb", T.ninek); on(".c1 .gn", T.guns - 0.9); on(".c1 .nt", T.crossed2 - 0.1); on(".vr", T.only - 0.3); on(".c2 .nb", T.handful);
+  on(".c1 .sd", T.about - 0.1); on(".c1 .nb", T.ninek); on(".c1 .gn", T.guns - 0.9); on(".c1 .nt", T.crossed2 - 0.1); on(".vr", T.handful - 0.1); on(".c2 .nb", T.handful);
   on(".c2 .nt", T.stragglers - 0.1); on(".c2 .sd", T.behind - 0.25); on(".src", T.behind + 0.2); }
 
 const DS = 4.0, NI = 0.7, NG = 0.45;   // round 1 (critic A): night +15 % lighter than 0.85
@@ -251,7 +252,8 @@ window.SEQ = {
     { t: T.D, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30, ease: "lin" },
   ],
   dives: [{ t: DS, over: OV, overTo: OVB, from: { region: CO, at: [OV[0] - 3, OV[1] + 8], dist: 230, tilt: 38, yaw: 0 },
-            to: { region: BK, at: [2493.0, 1161.0], dist: 74, tilt: 40, yaw: 0, fov: 30 } }],
+            to: { region: BK, at: [2493.0, 1161.0], dist: 74, tilt: 40, yaw: 0, fov: 30 },
+            whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 } }],   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
   clouds: { [CO]: { scatter: { seed: 5 } }, [BK]: { shadows: true } },
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [
@@ -264,7 +266,7 @@ window.SEQ = {
     ["plaque.note", T.dark - 0.1, "after dark · rain"],
     ["plaque.note", T.changed - 0.05, "the wind changes"],
     ["plaque.note", T.middle - 0.1, "the middle of the night"],
-    ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "", weekday: "", note: "first light" }],   // round 1: no unspoken day
+    ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "", weekday: "", note: "" }],   // round 1: no unspoken day
     ["plaque.note", T.fog - 0.05, "fog"],
     ["film.dim", T.about - 0.3, 131.3, 0.75],
     ["letter", T.method - 0.15, T.beginning - 0.1, { header: "Move 1 · Brooklyn", title: "The Washington Method", sub: "", marks: false, quote: "1. Save the army first", qSize: 34, cps: 30, qAt: T.save - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],

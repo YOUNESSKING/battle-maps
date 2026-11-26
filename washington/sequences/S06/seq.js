@@ -48,7 +48,7 @@ LAND.forEach((k, i) => { const r = RV(k), near = bank(k, "PA", HW + 0.55), far =
   U({ side: "u", region: JE, face: toNJ, keys: [[0, ...bank(k, "PA", HW + 3.8 + (i % 2) * 1.0)]], escape: { road: [back, near, far, out], join: "nearest", fade: null, vanish: [0.1, 0.7], front: true, t0: 0.2 + i * 0.7 } });
   U({ side: "u", region: JE, face: Math.atan2(-RV(k).dx, RV(k).dy) + Math.PI, t0: 4.6 + i * 0.7, keys: [[0, ...bank(k, "NJ", HW + 1.4)], [4.8 + i * 0.7, ...bank(k, "NJ", HW + 1.4)], [8.6 + i * 0.7, ...bank(k, "NJ", HW + 4.6)]] }); });
 // 2 January: Cornwallis's column down the post road (head at s 62 -> halts in front of each rifle group -> s 40)
-const RED = [0, 1, 2, 3].map((i) => U({ side: "r", region: JE, n: 2, face: FRD(40) + Math.PI, t0: 11.8,
+const RED = [0, 1, 2, 3].map((i) => U({ side: "r", region: JE, n: 2, face: FRD(46 + i * 5.4) + Math.PI, t0: 11.8,
   keys: [[0, ...RD(64 + i * 5.4)], [13.4, ...RD(64 + i * 5.4)], [17.6, ...RD(52 + i * 5.4), "lin"], [25.4, ...RD(52 + i * 5.4)], [29.6, ...RD(41 + i * 5.4), "lin"]] }));
 // Hand's riflemen: G1 at Five Mile Run fires, about-faces (~7 s in place) and falls back; G2 at the Shabakunk fires twice
 const G1a = RD(44, 1.0), G1b = RD(33, 3.0), G2 = RD(29, -2.4);
@@ -62,7 +62,7 @@ GUNS.forEach((g) => U({ side: "u", region: TR, type: "art", face: N_, t0: 32.0, 
 // three assaults: each regiment walks down to the creek by the bridge, is thrown back (holds while it about-faces ~7 s), walks back
 // round 1 (critic B): one short fire wave per attack in the word gaps (43.0-43.4, 45.6-46.5, 49.4-50.3), nothing after 50.3
 const AS = [[1356.15, 2068.75, 37.6], [1354.4, 2067.6, 40.2], [1358.0, 2067.6, 44.0]];   // [x, y, start]; arrive start + 5
-const WAVE = [[43.0, 43.4], [45.6, 46.5], [49.4, 50.3]];
+const WAVE = [[43.0, 43.4], [46.1, 46.6], [49.85, 50.4]];   // round 2: after the word ends
 AS.forEach(([x, y, ta], i) => { const st = [x, 2061.6 - i * 0.6];
   U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 5.0, x, y], [ta + 14.4, x, y], [ta + 18.2, st[0], st[1] - 0.6]] }); });
 // the rest of the red army in the town (comes in at dusk, camps for the night)
@@ -139,7 +139,7 @@ window.SEQ = {
   name: "S06", D: T.D, T, seed: 1777, date: "1777-01-02",
   regions: [JE, TR],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [JE]: { troopScale: 5.2, decks }, [TR]: { troopScale: 1.6 } },
+  regionOpts: { [JE]: { troopScale: 7, decks }, [TR]: { troopScale: 1.6 } },
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },
   keys: [
     { t: 0, region: JE, at: [654.0, 1024.0], dist: 88, tilt: 44, yaw: 0, fov: 30 },                       // back over the river to Trenton

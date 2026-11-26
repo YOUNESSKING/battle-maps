@@ -57,7 +57,7 @@ const FADE = [null, 62.6, null, 56.2, null, 58.4, 60.9, null];
 CAMPK.forEach(([k, d, t0], i) => { const p = bank(k, "PA", HW + d), inl = bank(k, "PA", HW + d + 1.6), f = Math.atan2(RV(k).dx, -RV(k).dy);
   U({ side: "u", region: JE, face: f, t0: t0 || 23.0, t1: FADE[i] || 1e9, keys: t0 ? [[0, ...p], [t0, ...p], [t0 + 3.4, ...inl]] : [[0, ...inl]] }); });
 // the British winter posts: three Hessian regiments into Trenton (Rall, Lossberg, Knyphausen), Bordentown, Princeton
-const HESS = [[TRj[0] - 3.2, TRj[1] - 5.2], [TRj[0] + 3.6, TRj[1] - 5.0], [TRj[0] + 0.6, TRj[1] - 9.6]];
+const HESS = [[TRj[0] - 4.4, TRj[1] - 5.2], [TRj[0] + 4.8, TRj[1] - 5.0], [TRj[0] + 0.6, TRj[1] - 11.4]];
 const PN = (p, dx, dy) => [p[0] + dx, p[1] + dy];
 HESS.forEach((p, i) => U({ side: "r", region: JE, face: Math.PI * 0.75, t0: T.settled - 0.6 + i * 0.4, keys: [[0, p[0] + 7, p[1] - 9], [T.settled - 0.4 + i * 0.4, p[0] + 7, p[1] - 9], [T.posts + 3.6 + i * 0.4, ...p]] }));
 U({ side: "r", region: JE, face: 2.24, t0: T.settled - 0.2, keys: [[0, ...PN(BOR, 2, -3)]] });   // round 1: settles in place (no oblique walk)
@@ -74,11 +74,11 @@ LAND.forEach((k, i) => { const a = bank(k, "NJ", HW - 0.9), b = bank(k, "PA", HW
 
 // ---------------- arrows ----------------
 const arrows = [
-  { side: "r", region: CO, width: 0.85, maxWidth: 0.85, pts: [[HARLEM[0] - 2, HARLEM[1] + 24], [HARLEM[0] + 8, HARLEM[1] - 20], [WP[0] - 16, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
+  { side: "r", region: CO, width: 0.85, maxWidth: 0.85, pts: [[HARLEM[0] - 8, HARLEM[1] + 24], [HARLEM[0] - 4, HARLEM[1] - 26], [WP[0] - 22, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
   ...[[[FW[0] + 6, FW[1] - 22], FW], [[FW[0] + 22, FW[1] + 4], FW], [[FW[0] - 3, FW[1] + 26], FW]].map(([a, b], i) =>
     ({ side: "r", region: CO, width: 0.7, maxWidth: 0.7, pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (a[0] - b[0]) * 0.12, b[1] + (a[1] - b[1]) * 0.12]], t0: T.stormed - 0.1 + i * 0.25, dur: 1.2, t1: 16.4 })),
   // the retreat across New Jersey, the British close behind
-  { side: "u", region: CO, width: 0.95, maxWidth: 0.95, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [TRc[0] + 40, TRc[1] - 40], [TRc[0] + 8, TRc[1] - 6]], t0: T.across - 0.2, dur: 2.8, t1: T.D },
+  { side: "u", region: CO, width: 0.95, maxWidth: 0.95, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [TRc[0] + 40, TRc[1] - 40], [TRc[0] + 17, TRc[1] - 16]], t0: T.across - 0.2, dur: 2.8, t1: T.D },
   { side: "r", region: CO, width: 0.8, maxWidth: 0.8, pts: [[FL[0] - 10, FL[1] + 26], [575, 318], [NB[0] + 14, NB[1] - 2]], t0: T.chased + 0.1, dur: 2.4, t1: T.D },
 ];
 
@@ -111,7 +111,7 @@ window.SEQ = {
   name: "S04", D: T.D, T, seed: 1776, date: "1776-11-16",
   regions: [CO, JE],
   troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [CO]: { troopScale: 16 }, [JE]: { troopScale: 5.2, decks } },
+  regionOpts: { [CO]: { troopScale: 16 }, [JE]: { troopScale: 7, decks } },
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // creek bridges hidden; smaller houses (long houses on crossed streets read as crosses from far away)
   keys: [
     { t: 0, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30 },                    // = S03's last camera
@@ -140,6 +140,7 @@ window.SEQ = {
     ["label", T.prisoner - 0.05, T.then + 0.2, { name: "Nearly 3,000 prisoners", sub: "", world: [FW[0] + 10, FW[1] + 30], side: "us", marker: false }],
     ["plaque.date", T.eighth - 0.05, { month: "December 1776", day: "8", weekday: "Sunday", note: "into Pennsylvania" }],
     ["plaque.note", T.congress - 0.05, "Congress flees Philadelphia"],
+    ["plaque.date", T.settled - 0.1, { month: "December 1776", day: "", weekday: "", note: "" }],   // round 2: no "8 December" over the winter posts
     ["label", T.hessian - 0.05, T.ralls - 0.3, { name: "Hessians", sub: "three regiments", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.fourteen - 0.05, T.colonel - 0.3, { name: "About 1,400 men", sub: "", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.thirtyfirst - 0.05, T.D, { name: "Enlistments end", sub: "31 December", world: bank(kT - 0.15, "PA", HW + 12.0), side: "us", marker: false }],
