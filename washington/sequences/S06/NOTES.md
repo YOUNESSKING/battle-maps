@@ -13,3 +13,11 @@ Mill Hill: the Americans are put SOUTH of the creek (the 2 Jan works polyline in
 Facts: FACT_NOTES_jersey.md E2, F1-F3, F5. Images: washington.png, cornwallis.png, flags.
 Checks: check_troops_motion trenton + jersey: 0 overlaps, 0 pops; check_side_gap trenton + jersey: 0 pairs. Turn flags only at the cut (32.5) and mild (46-81 deg/s) on the landing blocks / third assault; front-vs-velocity 23-36 deg on the red regiments walking into the town while the camera moves.
 Open issues: the town houses (two dense rows on King / Queen St) partly hide the red blocks in the town; campfires are small dots at dist 44-58 (size 2, glow 7); the red bridge assaults read best at 41-50 s.
+
+## Round 1 fixes (critics A 6 / B 7.0)
+- Bridge fight: three short waves in the word gaps only (43.0-43.4, 45.6-46.5, 49.4-50.3): 5 gun shots + 9 volleys in all, nothing after 50.3 (cues checked). The first attack steps onto the bridge, the other two to its mouth; each holds ~9.4 s turning about, then walks back. The guns now sit at the south end of the bridge. The bridge camera is 20 % closer.
+- Red regiments in the town fade in in place (no oblique walk; trenton 0 FAIL).
+- Banners out before the choice card (Washington + Cornwallis t1 59.9); the "Better trained" label (sat on the kicker) dropped.
+- Plates: 2 January "dusk" (33.0) and "night" (52.0) as full plate rolls (plaque.note did not update the plate).
+- "5,500" moved up/right off the smoke; jersey troopScale 3.2 -> 5.2.
+- Checks: trenton 0 FAIL; jersey: turn flags only at the 32.5 cut and 46-61 deg/s on the landing blocks while the camera pans; side gap 0.

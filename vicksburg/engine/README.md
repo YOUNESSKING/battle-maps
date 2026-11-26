@@ -286,7 +286,7 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   cargo of standing blue men) and `kind: "flat"` (ferry flat with a gun + two horses); `B.load(t, i)` -> bool shows the cargo of boat i
   (loaded one way, empty on the way back); `B.wl` = water level in metres: the hull floats on the river's water plane (path boats otherwise
   sit on `heightAt`, i.e. the river BED of a carved close-region river: only the lamp showed). Banners: `fall: t` greys the banner and tips
-  it over (~0.9 s) from t (a general falls: Rall, Mercer).
+  it over (~0.9 s) from t (a general falls: Rall, Mercer). Boats: `lampK` scales the deck lamp + its glow (S05 round 1: 0.5).
 
 - **Battle 21 (Washington S03/S04/S06 author, 2026-11-25), all opt-in, defaults unchanged:**
   `regionOpts[r].decks: [{x, z, angle, len, deck, wl}]` = troop-only decks appended to the region's bridges for `createTroops3D` (no mesh):

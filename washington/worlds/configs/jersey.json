@@ -4,27 +4,33 @@
  "season": "winter",
  "winter": {
   "snow": 0.6,
-  "snow_alpha": 0.66,
-  "desat": 0.45,
+  "snow_alpha": 0.4,
+  "desat": 0.3,
   "ice": 1.0,
-  "conifers": 0.16
+  "conifers": 0.16,
+  "conifers_wide": 0.4,
+  "wood_col": "#34403f",
+  "lit_col": "#a9ab98"
  },
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
  "box": [
-  575,
-  889,
-  205,
-  240
+  560,
+  874,
+  220,
+  255
  ],
  "hm_ppu": 2.5,
  "meshDiv": 2,
  "tex": 8192,
- "exag": 3.5,
+ "exag": 2.0,
  "cell": 6.5,
  "seed": 1776,
+ "relief_k": 0.5,
+ "lit_k": 0.3,
+ "wideSunK": 0.15,
  "wood_soft": {
-  "blur_u": 1.1,
-  "alpha": 0.72
+  "blur_u": 0.8,
+  "alpha": 0.85
  },
  "field_look": "gm",
  "village_cluster": {
@@ -40,8 +46,8 @@
  "stills": [
   {
    "at": [
-    677.5,
-    1009.0
+    670.0,
+    1001.5
    ],
    "dist": 330,
    "tilt": 32,
@@ -77,7 +83,8 @@
   "paint_km2": 8,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.02,
+ "woods": 0.07,
+ "wood_scale": 3.0,
  "villages": 5,
  "rivers": [
   {

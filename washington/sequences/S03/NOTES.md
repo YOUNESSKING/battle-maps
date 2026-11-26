@@ -35,3 +35,11 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 - **World: the colonies map has no East River** (Manhattan and Brooklyn are one land mass; Hudson only). The dive start and the tail show it. Needs a colonies `force_water` polygon + re-bake (world engineer).
 - The colonies relief (Palisades) reads very bright / heavy at dist 285-300.
 - Rowing boats are ~0.4 size: small at dist 30-35 (wakes carry them); the men streaming into the boats read only on the close landing shot (62-70).
+
+## Round 1 fixes (critics A 6.5 / B 7.0)
+- Result: the ledger is replaced by the big centred result card (S05/S07 recipe): BROOKLYN · 29-30 AUGUST 1776 / ACROSS 9,000 (crossed in a single night, with nearly all their guns) / LEFT BEHIND A FEW (a handful of stragglers), each on its words, card 121.5-131.0; Howe banner leaves before it.
+- Method card 1: cps 30, held to 140.1 (fully readable ~3 s); the colonies dissolve moved to 140.2.
+- Plates: no unspoken "30": first light = "August 1776 · first light"; month-only "1776" at the colonies dissolve (no stale August over the tail / S04).
+- Night evacuation: night 0.85 -> 0.7, rain -30 %, boats 0.42 -> 0.6, the river shot 20 % closer (dist 28/26).
+- Subscribe plate at "subscribing" - 0.1. Colonies troopScale 11 -> 16.
+- Left: the dive whoosh over "Their commander" (assembler gain, lead); the colonies East River (world).

@@ -54,7 +54,8 @@ def write(name, cfg):
     json.dump(cfg, open(f"{OUT}/{name}.json", "w"), indent=1); print("->", f"{OUT}/{name}.json", cfg["box"])
 
 
-WINTER = {"snow": 0.6, "snow_alpha": 0.66, "desat": 0.45, "ice": 1.0, "conifers": 0.16}   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
+WINTER = {"snow": 0.6, "snow_alpha": 0.66, "desat": 0.45, "ice": 1.0, "conifers": 0.16}
+WINTER_WIDE = dict(WINTER, snow_alpha=0.4, desat=0.3, conifers_wide=0.4, wood_col="#34403f", lit_col="#a9ab98")   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
 Z = 9
@@ -70,17 +71,17 @@ write("colonies", {
  "box": cb,
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
- "hm_ppu": 1.5, "tex": 8192, "exag": 6.0, "cell": 30.0, "seed": 1776,
+ "hm_ppu": 1.5, "tex": 8192, "exag": 3.0, "cell": 30.0, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,   # critic A r1: soft wide relief (Jackson gulf / v8)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
                                  [41.00, -73.905], [40.80, -73.99], [39.95, -75.13], [40.10, -74.85], [40.15, -74.73], [40.60, -74.20]],
                        "force_water": [buffer_ll(EAST_RIVER, 480), buffer_ll(HARLEM_RIVER, 190)]},   # z9: the DEM loses these channels (East River ~1 km, Harlem ~0.4 km)
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
- "sea_look": {"deep": "#33505f", "shallow": "#5f8288", "shelf_u": 6.0, "beach_u": 0.5, "line_u": 0.2},
+ "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2},
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
- "woods": 0.04, "villages": 6, "wood_soft": {"blur_u": 0.5, "alpha": 0.85},
- "tex_grade": {"contrast": 1.22, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.5,
+ "woods": 0.08, "wood_scale": 2.5, "villages": 6, "wood_soft": {"blur_u": 0.5, "alpha": 0.85},
+ "tex_grade": {"contrast": 1.12, "sat": 1.1, "gamma": 0.97}, "river_halo_u": 0.5,
  "rivers": [{"name": n, "geo": [n], "w": w, "step": 1.0, **({"snap": False} if w >= 1.0 else {})} for n, w in CW.items()],
  "roads": [{"geo": r["name"], "cls": "pike"} for r in G["roads"] if not r["name"].startswith(("Trenton streets", "Bear Tavern", "Birmingham", "Scotch", "Saw Mill", "Sandtown", "Quaker", "River road (PA)", "Gowanus road", "Jamaica road", "Brooklyn - Flatbush"))]
           + [{"geo": n, "cls": "lane"} for n in ("Gowanus road (Brooklyn - Gravesend)", "Jamaica road (Bedford - Jamaica Pass - Jamaica)", "Brooklyn - Flatbush - Jamaica roads")],
@@ -102,26 +103,26 @@ write("colonies", {
             "Upper Bay", "Lower Bay", "Newark Bay", "Raritan Bay", "Paulus Hook", "Coryell's Ferry"],
 })
 
-_cw = json.load(open(f"{OUT}/colonies.json")); _cw.update({"season": "winter", "winter": WINTER,
+_cw = json.load(open(f"{OUT}/colonies.json")); _cw.update({"season": "winter", "winter": WINTER_WIDE,
     "note": "colonies, WINTER variant for the Dec 1776 - Jan 1777 shots (S01 opening, S04 New Jersey part, S08). Same frame, box and geography as colonies; "
             "winter ground (bake_world.winter_ground). " + _cw["note"].replace(" Summer-neutral ground (the approved look).", "")})
 write("colonieswinter", _cw)
 
 # ============================================================ jersey (wide, zoom 10 = base) ============================================================
-jb = box_ll(40.120, -74.905, 40.370, -74.625, 10)
+jb = box_ll(40.120, -74.905, 40.370, -74.625, 10); jb = [jb[0] - 15, jb[1] - 15, jb[2] + 15, jb[3] + 15]   # +15 units W / N (world-edge wedge in S04 / S07); same frame, coordinates unchanged
 write("jersey", {
- "mode": "wide", "zoom": 10, "season": "winter", "winter": WINTER,
+ "mode": "wide", "zoom": 10, "season": "winter", "winter": WINTER_WIDE,
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 3.5, "cell": 6.5, "seed": 1776,
- "wood_soft": {"blur_u": 1.1, "alpha": 0.72}, "field_look": "gm", "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,
+ "wood_soft": {"blur_u": 0.8, "alpha": 0.85}, "field_look": "gm", "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.02, "villages": 5,
+ "woods": 0.07, "wood_scale": 3.0, "villages": 5,
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
             {"name": "Shabakunk Creek", "geo": "Shabakunk Creek", "w": 0.2, "step": 0.5}, {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.25, "step": 0.5},

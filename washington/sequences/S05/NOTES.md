@@ -40,3 +40,11 @@ flags from `washington/assets/flags/`.
 - Jersey wide: town house clusters (Maidenhead, Pennington, Birmingham...) still read a little like crosses from far away; the 7 bridge meshes are hidden.
 - Cadwalader's grey arrow is drawn on the river below Trenton (Bristol is outside the jersey box).
 - `check_troops_motion` trenton/crossing: remaining flags = turn spikes at the cuts (95.4, 118.65) and world front-vs-velocity 30-45 deg on oblique moves (on-screen correction); the boarding blocks report ~160 deg (men about-face, plate stays, as the bridge streams); 0 opposing-block overlaps (`check_side_gap` 88-128: 0 / 0).
+
+## Round 1 fixes (critics A 5.8 / B 7.3)
+- Night march (68.4-88): two WIDE line blocks side by side (4.6 u apart, n 1, troopScale 8) Johnson's Ferry -> Birmingham long side first, stop, turn, then each walks under its own arrow (Greene east, Sullivan south); night 0.8 -> 0.6 (brighter units). Jersey check 68-88: 0 overlaps, max 20 deg.
+- Crossing: boarding blocks face the river and walk FRONT FIRST into the stream (`escape.front`, no backward walk: 23-33 deg, was 148-176); Durham boats x1.5 (size 0.75) with half-size lamp glow (new boat `lampK`); camera 15 % closer. Floes are world data (not touched).
+- Dive: `off { warm 0.05, emerge 0.1, clear 0.28, haze 0.85 }` (shorter flat grey).
+- Trenton: Greene's blocks walk straight down past the WEST side of the ring wood, facing the way they walk (no wheel into the wood); guns moved off words (100.95, 106.0).
+- Method card 2: held to 150.7 (T.letgo), colonies cut moved 149.0 -> 150.8. Label "The Marblehead men / who saved the army at Brooklyn". `plaque.note` calls (which do not update the plate) replaced with `plaque.date` notes.
+- Remaining: front-vs-velocity 40-60 deg (world) on the Trenton approach after the 95.4 cut = engine on-screen correction under the oblique camera (screen long-side <= 13 deg); NJ landing blocks still fade in formed. "black Durham boats" voice kept (lead).

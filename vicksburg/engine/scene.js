@@ -313,8 +313,9 @@ const placeBoats = (t) => { for (const o of BOATS) { const b = boatAt(o, t); o.g
   if (o.B.load) { const cg = o.g.getObjectByName("cargo"); if (cg) cg.visible = !!o.B.load(t, o.i); } } };
 for (const r of NAMES) { const L = BOATS.filter((o) => o.r === r); if (!L.length) continue;
   FX[r].custom((t, push) => { for (const o of L) { const b = boatAt(o, t), s = o.sz; if (!b.on) continue; const l = Math.hypot(b.dx, b.dy) || 1, dx = b.dx / l, dy = b.dy / l;
-    if (o.B.lamp !== false) { push(b.x + dx * 0.5 * s, b.h + 0.6 * s, b.y + dy * 0.5 * s, 1.5 * s, 0.9, 1.3, 0.62, 0.22);   // deck lamp
-      push(b.x - dx * 0.2 * s, b.h + 0.5 * s, b.y - dy * 0.2 * s, 4.2 * s, 0.26, 1.0, 0.45, 0.15); }   // its glow on the deck and water
+    if (o.B.lamp !== false) { const lk = o.B.lampK ?? 1;   // (Battle 21) lampK scales the lamp + glow size
+      push(b.x + dx * 0.5 * s, b.h + 0.6 * s, b.y + dy * 0.5 * s, 1.5 * s * lk, 0.9, 1.3, 0.62, 0.22);   // deck lamp
+      push(b.x - dx * 0.2 * s, b.h + 0.5 * s, b.y - dy * 0.2 * s, 4.2 * s * lk, 0.26, 1.0, 0.45, 0.15); }   // its glow on the deck and water
     if (o.B.wake !== false && (typeof o.B.wake !== "function" || o.B.wake(t, o.i))) for (let k = 1; k <= 8; k++) {   /* Battle 21: wake(t, i) = only while under way */ const d = (1.0 + k * 0.7) * s, sw = (0.15 + k * 0.12) * s, a = 0.45 * (1 - k / 9);   // the wake: two arms of foam behind the stern
       for (const sg of [-1, 1]) push(b.x - dx * d - dy * sg * sw, b.h - 0.1 * s, b.y - dy * d + dx * sg * sw, (0.9 + k * 0.12) * s, a, 0.5, 0.58, 0.68); } } }); }
 

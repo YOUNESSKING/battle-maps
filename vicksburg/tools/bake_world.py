@@ -1009,15 +1009,16 @@ def bake(rname, G, P, creeks, preview=True):
     # ---------------- woods ----------------
     LOG("  woods ...")
     wd = cfg.get("woods", 0.0); LOG("  alluvial %.3f creeks %d" % (float(alluv.mean()), len(creek_lines)))
-    fm = fbm(TH, TW, 6, 5, seed + 2)
-    fm2 = fbm(TH, TW, 3, int(bw / (14 if not close else 1.6)), seed + 12)
+    ws_ = cfg.get("wood_scale", 1.0) if PROJ else 1.0   # project mode: >1 = smaller, more numerous woods (wide maps of small boxes)
+    fm = fbm(TH, TW, 6, int(round(5 * ws_)), seed + 2)
+    fm2 = fbm(TH, TW, 3, int(bw / (14 if not close else 1.6) * ws_), seed + 12)
     swamp = alluv * np.clip((dist_t - hw_t - (3.0 if close else 7.0)) / (4.0 if close else 10.0), 0, 1) * cfg.get("swamp", 0.1) * np.clip(cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (6 if close else 40)), seed + 95), (TW, TH)) * 2.2 - 0.5, 0, 1.4)   # back-swamp woods away from the rivers, in patches
     if close:
         jag = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.7), seed + 60), (TW, TH))
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * cfg.get("ravine_woods", 0.5) - 0.72, fm2 * 0.85 + fm * 0.2 - 0.69) + (jag - 0.5) * 0.16 + wd + swamp
         del jag
     else:
-        fm3 = fbm(TH, TW, 4, int(bw / 18), seed + 13)
+        fm3 = fbm(TH, TW, 4, int(bw / 18 * ws_), seed + 13)
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * 0.3 - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1]) + wd + swamp
         del fm3
     forest = np.clip(fbase * 12, 0, 1); del fbase, fm2, swamp
