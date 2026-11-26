@@ -25,9 +25,9 @@ const T = { D: 73.98, december: 0.56, e1776: 1.65, revolution: 3.14, time: 5.38,
   killed: 28.26, fight: 29.04, strangest: 30.15, four: 31.90, trapped: 34.78, good: 35.34, hill: 36.28, brooklyn: 36.74, river2: 37.82,
   back: 38.48, week: 39.62, trenton2: 40.40, trapped2: 41.62, again: 41.94, british: 43.14, front: 44.08, river3: 44.74, behind: 44.98,
   weekBefore: 46.36, christmas2: 47.18, general: 48.30, written: 49.06, brother: 49.70, think: 50.54, game: 51.04, up: 52.02,
-  his: 53.02, name: 53.24, george: 53.82, washington: 54.22, he1: 55.46, steal: 55.76, trap: 57.16, night: 58.10, he2: 58.46,
-  cross: 59.22, frozen: 59.72, storm2: 60.82, fall: 61.52, trenton3: 62.06, dawn2: 62.70, and3: 63.64, slip: 64.08, british3: 65.06,
-  dark: 66.06, strike: 66.74, behind2: 67.08, these: 68.50, george2: 68.90, three: 70.24, moves: 71.64 };
+  his: 53.02, name: 53.24, george: 53.82, washington: 54.24, he1: 55.46, steal: 55.76, trap: 57.14, night: 58.10, he2: 58.46,
+  cross: 59.22, icy2: 59.72, storm2: 60.78, fall: 61.48, trenton3: 62.02, dawn2: 62.64, and3: 63.58, slip: 64.00, british3: 64.96,
+  dark: 65.96, strike: 66.62, behind2: 66.96, it2: 67.40, these: 68.38, george2: 68.80, three: 70.24, moves: 71.56 };   // round 1: re-voiced "an icy river" (scene_times 2026-11-26)
 const CO = "colonieswinter", CR = "crossing", TR = "trenton", BR = "brooklyn", PR = "princeton";
 const sstep = VX.sstep, hsh = VX.hsh;
 const SWT = 14.5, DOFF = { push: -4.0, deckIn: -1.0, full: -0.45, deck: -0.4, wIn: -0.3, inside: -0.12, warm: 0.08, emerge: 0.35, clear: 0.5, haze: 1.0, land: 2.0 },   // Jackson S01 round 3 profile
@@ -82,52 +82,52 @@ const U = (o) => { units.push({ arrive: false, ...o }); };
 const NYC = P("New York", CO);
 // each post: the line walks in from the north (front first, straight down the screen) and halts at its post
 [[TRC, 1, 3.0], [BOC, 1, 2.5], [PRC, 1, 2.5], [NBC, 1, 2.5], [PAC, 1, 2.5]].forEach(([p, n, d], i) => {
-  const v0 = [0.22, -1], l = Math.hypot(...v0), v = [v0[0] / l, v0[1] / l], st = [p[0] + v[0] * (d + 9), p[1] + v[1] * (d + 9)], end = [p[0] + v[0] * d, p[1] + v[1] * d];
-  U({ region: CO, side: "r", type: "inf", n, bw: 1.2, face: Math.atan2(-v[1], -v[0]), t0: -1, t1: DV.full + 0.2, keys: [[0, ...lerp2(st, end, 0.25)], [1.0 + i * 0.4, ...lerp2(st, end, 0.45)], [5.6 + i * 0.4, ...end]] }); });
+  const v0 = [0, -1], l = Math.hypot(...v0), v = [v0[0] / l, v0[1] / l], st = [p[0] + v[0] * (d + 9), p[1] + v[1] * (d + 9)], end = [p[0] + v[0] * d, p[1] + v[1] * d];
+  U({ region: CO, side: "r", type: "inf", n, bw: 1.4, face: Math.atan2(-v[1], -v[0]), t0: -1, t1: DV.full + 0.2, keys: [[0, ...lerp2(st, end, 0.25)], [1.0 + i * 0.4, ...lerp2(st, end, 0.45)], [5.6 + i * 0.4, ...end]] }); });
 // the blue army: behind the river on the PA side, walking up to the bank (facing New Jersey)
 const DLN = (() => { let n = [-DLC.t[1], DLC.t[0]]; if (n[0] < 0) n = [-n[0], -n[1]]; return n; })(), PFACE = Math.atan2(DLN[1], DLN[0]);
 const PAW = [MKC[0] - DLN[0] * 6 - DLC.t[0] * 12, MKC[1] - DLN[1] * 6 - DLC.t[1] * 12], PAW2 = [MKC[0] - DLN[0] * 7 + DLC.t[0] * 10, MKC[1] - DLN[1] * 7 + DLC.t[1] * 10];
-[PAW, PAW2].forEach((p, i) => U({ region: CO, side: "u", type: "inf", n: 1, bw: 1.25, skirmish: false, face: PFACE, t0: -1, t1: DV.full + 0.2, keys: [[0, p[0] - DLN[0] * 5, p[1] - DLN[1] * 5], [6.0 + i * 0.6, ...p]] }));
+[PAW, PAW2].forEach((p, i) => U({ region: CO, side: "u", type: "inf", n: 1, bw: 1.45, skirmish: false, face: PFACE, t0: -1, t1: DV.full + 0.2, keys: [[0, p[0] - DLN[0] * 5, p[1] - DLN[1] * 5], [6.0 + i * 0.6, ...p]] }));
 
 // B + SN2: crossing. Blue lines waiting on the PA bank (one walks down to the water), one landed on the NJ bank walking up the road.
 const xWin = [[SWT - 0.2, CUT_C + 0.1], [SN2 - 0.1, SN3 + 0.1]];
 xWin.forEach(([a, b], w) => {
-  U({ region: CR, side: "u", type: "inf", n: 2, face: XFACE, t0: a, t1: b, keys: [[0, ...xo(-3.2, -8.2)], [a + 2.0, ...xo(-3.2, -8.2)], [a + 4.4, ...xo(-3.2, -7.0)]] });
+  U({ region: CR, side: "u", type: "inf", n: 2, face: XFACE, t0: a, t1: b, keys: [[0, ...xo(-3.2, -7.4)]] });
   U({ region: CR, side: "u", type: "inf", n: 2, face: XFACE, t0: a, t1: b, keys: [[0, ...xo(2.4, -8.6)]] });
   U({ region: CR, side: "u", type: "art", n: 1, face: XFACE, t0: a, t1: b, keys: [[0, ...xo(-0.4, -7.4)]] });
-  U({ region: CR, side: "u", type: "inf", n: 2, face: XFACE, t0: a, t1: b, keys: [[0, ...xo(-1.0, 7.2)], [a + 2.6, ...xo(-1.0, 7.2)], [a + 5.6, ...xo(-1.0, 9.2)]] });
+  U({ region: CR, side: "u", type: "inf", n: 2, face: XFACE, t0: a, t1: b, keys: [[0, ...xo(-1.0, 8.4)]] });   // round 1: landed and formed (no walk: critic A saw a crab)
 });
 
 // C: Trenton, 26 December, grey dawn
 const CW = [CUT_C - 0.2, CUT_D + 0.1];
-const GRE0 = [1346.6, 2044.0], GRE1 = [1351.0, 2048.4];             // Greene: down the Pennington road toward the head of the streets
-const SUL0 = [1339.2, 2059.6], SUL1 = [1344.4, 2062.4];             // Sullivan: down the River road toward the foot of the town
-const STE0 = [1368.6, 2043.6], STE1 = [1367.0, 2047.8];             // a third line closes the Princeton road (north-east)
+const GRE0 = [1351.2, 2043.6], GRE1 = [1351.2, 2048.6];   // round 1: moves straight down / across the screen (no crab on the oblique camera)             // Greene: down the Pennington road toward the head of the streets
+const SUL0 = [1339.0, 2061.4], SUL1 = [1344.6, 2061.4];             // Sullivan: down the River road toward the foot of the town
+const STE0 = [1367.4, 2043.2], STE1 = [1367.4, 2047.6];             // a third line closes the Princeton road (north-east)
 const fSE = Math.atan2(GRE1[1] - GRE0[1], GRE1[0] - GRE0[0]), fSU = Math.atan2(SUL1[1] - SUL0[1], SUL1[0] - SUL0[0]), fST = Math.atan2(STE1[1] - STE0[1], STE1[0] - STE0[0]);
 U({ region: TR, side: "u", type: "inf", n: 2, face: fSE, t0: CW[0], t1: CW[1], keys: [[0, ...GRE0], [20.4, ...GRE0], [23.4, ...GRE1]] });
 U({ region: TR, side: "u", type: "inf", n: 2, face: fSU, t0: CW[0], t1: CW[1], keys: [[0, ...SUL0], [20.6, ...SUL0], [23.8, ...SUL1]] });
 U({ region: TR, side: "u", type: "inf", n: 2, face: fST, t0: CW[0], t1: CW[1], keys: [[0, ...STE0], [20.9, ...STE0], [23.6, ...STE1]] });
 U({ region: TR, side: "u", type: "art", n: 1, face: Math.PI / 2, t0: CW[0], t1: CW[1], keys: [[0, HEAD[0] - 0.1, HEAD[1] - 1.3]] });
 // the Hessians spill out of the houses east of King St and try for the Princeton road (north-east), then are boxed in
-const fNE = -0.75;
-const RH = [[[1358.6, 2058.6], [1362.0, 2056.2]], [[1358.8, 2062.6], [1363.4, 2060.2]], [[1359.0, 2066.4], [1364.4, 2064.0]]];
+const fNE = 0;
+const RH = [[[1358.6, 2057.8], [1362.4, 2057.8]], [[1358.8, 2061.8], [1363.4, 2061.8]], [[1359.0, 2065.8], [1364.2, 2065.8]]];
 RH.forEach(([a, b], i) => U({ region: TR, side: "r", type: "inf", n: 1, face: fNE, t0: CW[0], t1: CW[1], cap: T.prisoners - 0.1 + i * 0.15, capN: 1,
   keys: [[0, ...a], [T.hessians - 0.2 + i * 0.3, ...a], [T.hour + 0.2 + i * 0.3, ...b]] }));
 
 // E: Trenton, 2 January: the British army down the Princeton road; the American line behind the Assunpink
 const EW = [CUT_E - 0.2, CUT_F + 0.1];
-const fSW = Math.atan2(16, -12);
-[[1368.0, 2040.0], [1372.4, 2036.6], [1363.6, 2043.4]].forEach((p, i) => { const q = [p[0] - 3.4, p[1] + 4.5];
-  U({ region: TR, side: "r", type: "inf", n: 2, bw: 0.95, face: fSW, t0: EW[0], t1: EW[1], keys: [[0, ...p], [CUT_E + 0.4 + i * 0.4, ...p], [CUT_E + 5.2 + i * 0.4, ...q]] }); });
+const fSW = Math.PI / 2;   // round 1: straight down the screen
+[[1368.0, 2040.0], [1372.4, 2036.6], [1363.6, 2043.4]].forEach((p, i) => { const q2 = [p[0] - 1.0, p[1] + 5.4];
+  U({ region: TR, side: "r", type: "inf", n: 2, bw: 0.95, face: fSW, t0: EW[0], t1: EW[1], keys: [[0, ...p], [CUT_E + 0.4 + i * 0.4, ...p], [CUT_E + 5.2 + i * 0.4, ...q2]] }); });
 [0.05, 0.12, 0.2].forEach((k, i) => { const p = ALP(k);
   U({ region: TR, side: "u", type: i === 1 ? "art" : "inf", n: i === 1 ? 1 : 2, bw: i === 1 ? 0.6 : 0.95, face: -Math.PI / 2, t0: EW[0], t1: EW[1], keys: [[0, p[0], p[1] + 2.6], [CUT_E + 0.6, p[0], p[1] + 2.6], [CUT_E + 3.8, p[0], p[1] + 1.2]] }); });
 
 // D: colonies, August: the red ring closes on Brooklyn Heights
 const DW = [CUT_D - 0.2, CUT_E + 0.1];
 const BHC = [BFC[0] + 2.0, BFC[1] + 5.0];
-U({ region: CO, side: "u", type: "inf", n: 2, bw: 0.42, face: Math.PI / 2 + 0.4, t0: DW[0], t1: DW[1], keys: [[0, BHC[0] + 1.2, BHC[1] + 1.4]] });
+U({ region: CO, side: "u", type: "inf", n: 2, bw: 0.6, face: Math.PI / 2 + 0.4, t0: DW[0], t1: DW[1], keys: [[0, BHC[0] + 1.2, BHC[1] + 1.4]] });
 [[26, 0.25], [20, 0.85], [15, 1.45], [19, 2.05]].forEach(([d, a], i) => { const p0 = [BHC[0] + Math.cos(a) * (d + 9), BHC[1] + Math.sin(a) * (d + 9)], p1 = [BHC[0] + Math.cos(a) * d, BHC[1] + Math.sin(a) * d];
-  U({ region: CO, side: "r", type: "inf", n: 2, bw: 0.42, face: a + Math.PI, t0: DW[0], t1: DW[1], keys: [[0, ...p0], [T.four + i * 0.4, ...p0], [T.hill + i * 0.3, ...p1]] }); });
+  U({ region: CO, side: "r", type: "inf", n: 2, bw: 0.6, face: a + Math.PI, t0: DW[0], t1: DW[1], keys: [[0, ...p0], [T.four + i * 0.4, ...p0], [T.hill + i * 0.3, ...p1]] }); });
 
 // SN1: brooklyn night, the ferry: a blue line waiting at the landing
 const SW1 = [SN1 - 0.1, SN2 + 0.1];
@@ -146,7 +146,7 @@ U({ region: PR, side: "u", type: "art", n: 1, face: PRF + Math.PI, t0: SW3[0], t
 const XBOATS = (seed, t0, t1, n) => { const out = [];
   for (let k = 0; k < n; k++) { const h = (j) => hsh(seed * 31 + k, j), a = -6.0 + 12.0 * (k + 0.3 * h(1)) / n, back = h(2) < 0.3;
     const p0 = xo(a, -4.3), p1 = xo(a + 1.6 + 1.2 * h(3), 4.3), path = back ? [p1, p0] : [p0, p1], L = VX.len(path), v = 0.85 + 0.45 * h(4), s0 = L * (0.05 + 0.75 * h(5));
-    out.push({ region: CR, kind: "barge", n: 1, t0, t1, size: 0.62 + 0.1 * h(6), lamp: true, wake: true, path, sAt: (t) => Math.min(L, s0 + (t - t0) * v * 0.5) }); out[out.length - 1].h = onWater(CR, XWL, path, out[out.length - 1].sAt); }
+    out.push({ region: CR, kind: "barge", n: 1, t0, t1, size: 0.9 + 0.12 * h(6), lamp: true, wake: true, path, sAt: (t) => Math.min(L, s0 + (t - t0) * v * 0.5) }); out[out.length - 1].h = onWater(CR, XWL, path, out[out.length - 1].sAt); }
   return out; };
 // boats pulled down the Delaware to the PA bank (colonies): separate boats, each its own start, lane and speed
 const DOWN = (() => { const out = []; const seg = DLR.slice(Math.max(0, DLI - 60), DLI + 1).map((p) => [p[0], p[1]]);
@@ -197,14 +197,14 @@ const fx = {
     { region: TR, pts: [[SUL1[0] + 1.0, SUL1[1] - 0.9], [SUL1[0] + 1.9, SUL1[1] + 0.3]], t0: 22.6, t1: 24.6, cue: true, opts: { dir: [0.85, 0.5], rate: 0.9, volley: 1.3, roll: 0.5, size: 0.45, alpha: 0.07, life: 5, height: 2.0, muzzle: 6, cluster: [2.0, 1.0] } },
     { region: TR, pts: [[1360.6, 2058.2], [1361.8, 2061.6]], t0: 22.9, t1: 24.4, cue: true, opts: { dir: [-1, 0.1], rate: 0.8, volley: 1.4, roll: 0.5, size: 0.42, alpha: 0.06, life: 5, height: 2.0, muzzle: 6, cluster: [1.8, 1.0] } },
     // SN3: the orchard at Princeton (quiet before "These are")
-    { region: PR, pts: [[ORCH[0] - 2.8, ORCH[1] - 1.4], [ORCH[0] - 2.6, ORCH[1] + 0.3]], t0: SN3 + 0.15, t1: T.these - 0.5, cue: true, opts: { dir: [1, 0.2], rate: 0.9, volley: 1.3, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
-    { region: PR, pts: [[ORCH[0] + 0.0, ORCH[1] - 0.3], [ORCH[0] + 0.2, ORCH[1] + 1.4]], t0: SN3 + 0.5, t1: T.these - 0.4, cue: true, opts: { dir: [-1, -0.2], rate: 0.9, volley: 1.2, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
+    { region: PR, pts: [[ORCH[0] - 2.8, ORCH[1] - 1.4], [ORCH[0] - 2.6, ORCH[1] + 0.3]], t0: T.it2 + 0.3, t1: T.these - 0.05, cue: true, opts: { dir: [1, 0.2], rate: 0.9, volley: 1.3, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
+    { region: PR, pts: [[ORCH[0] + 0.0, ORCH[1] - 0.3], [ORCH[0] + 0.2, ORCH[1] + 1.4]], t0: SN3 + 0.05, t1: T.slip + 0.2, cue: true, opts: { dir: [-1, -0.2], rate: 0.9, volley: 1.2, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
   ],
   guns: [
     // C: Knox's guns at the head of King and Queen streets fire down the streets
-    { region: TR, preset: "field", shots: [20.7, 21.7, 22.8, 23.7, 24.4].map((t, i) => ({ t, at: [HEAD[0] - 0.1 + (i % 2) * 0.9, HEAD[1] - 0.9], dir: [0, 1], impact: [HEAD[0] + (i % 2) * 1.0, HEAD[1] + 5.5 + (i % 3) * 2.4], delay: 0.45 })) },
+    { region: TR, preset: "field", shots: [20.0, 22.4, 23.95].map((t, i) => ({ t, at: [HEAD[0] - 0.1 + (i % 2) * 0.9, HEAD[1] - 0.9], dir: [0, 1], impact: [HEAD[0] + (i % 2) * 1.0, HEAD[1] + 5.5 + (i % 3) * 2.4], delay: 0.45 })) },
     // SN3: Moulder's guns
-    { region: PR, preset: "field", shots: [SN3 + 0.9, SN3 + 2.4].map((t, i) => ({ t, at: [ORCH[0] + 1.4, ORCH[1] + 2.6], dir: [-1, -0.4], impact: [ORCH[0] - 3.8, ORCH[1] - 1.0 - i * 0.8], delay: 0.5 })) },
+    { region: PR, preset: "field", shots: [T.it2 + 0.4].map((t, i) => ({ t, at: [ORCH[0] + 1.4, ORCH[1] + 2.6], dir: [-1, -0.4], impact: [ORCH[0] - 3.8, ORCH[1] - 1.0 - i * 0.8], delay: 0.5 })) },
   ],
 };
 
@@ -236,11 +236,11 @@ window.SEQ = {
   features: { [CO]: { bridges: Array.from({ length: 60 }, () => ({ hidden: true })) } },   // the small road-bridge meshes read as crosses from altitude
   keys: [
     // A: colonies, ONE continuous push from altitude toward McConkey's Ferry (the dive's push takes over at 10.5)
-    { t: 0.0, region: CO, at: [360, 456], dist: 420, tilt: 34, yaw: -4, fov: 30 },
-    { t: 5.6, region: CO, at: [348, 464], dist: 370, tilt: 37, yaw: -3, fov: 30, ease: "lin" },
-    { t: DV.push - 0.01, region: CO, at: [326, 472], dist: 330, tilt: 40, yaw: -2, fov: 30, night: 0.15, ease: "lin" },
+    { t: 0.0, region: CO, at: [354, 462], dist: 330, tilt: 36, yaw: -4, fov: 30 },
+    { t: 5.6, region: CO, at: [342, 468], dist: 300, tilt: 38, yaw: -3, fov: 30, ease: "lin" },
+    { t: DV.push - 0.01, region: CO, at: [326, 474], dist: 270, tilt: 40, yaw: -2, fov: 30, night: 0.15, ease: "lin" },
     // B: after the emergence (land 16.5): a slow drift over the river in the storm
-    { t: CUT_C, region: CR, at: [XC[0] + XT[0] * 1.4, XC[1] + XT[1] * 1.4], dist: 27, tilt: 52, yaw: -30, fov: 30, night: NI, ease: "lin" },
+    { t: CUT_C, region: CR, at: [XC[0] + XT[0] * 1.4, XC[1] + XT[1] * 1.4], dist: 23, tilt: 52, yaw: -30, fov: 30, night: NI, ease: "lin" },
     // C: dissolve to Trenton, grey dawn
     { t: CUT_C, region: TR, at: [1356.0, 2057.0], dist: 34, tilt: 50, yaw: -6, fov: 30, night: 0.22, ease: "cut", dissolve: 0.9 },
     { t: CUT_D, region: TR, at: [1357.6, 2057.2], dist: 30, tilt: 52, yaw: -2, fov: 30, night: 0.18, ease: "lin" },
@@ -248,8 +248,8 @@ window.SEQ = {
     { t: CUT_D, region: CO, at: [BHC[0] - 1, BHC[1] + 9], dist: 130, tilt: 42, yaw: 0, fov: 30, ease: "cut" },
     { t: CUT_E, region: CO, at: [BHC[0], BHC[1] + 7], dist: 112, tilt: 44, yaw: 0, fov: 30, ease: "lin" },
     // E: dissolve: Trenton, 2 January, by day
-    { t: CUT_E, region: TR, at: [1361.0, 2063.0], dist: 56, tilt: 46, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },
-    { t: CUT_F, region: TR, at: [1362.0, 2062.0], dist: 51, tilt: 47, yaw: 2, fov: 30, ease: "lin" },
+    { t: CUT_E, region: TR, at: [1361.5, 2060.0], dist: 45, tilt: 46, yaw: 0, fov: 30, ease: "cut", dissolve: 0.9 },
+    { t: CUT_F, region: TR, at: [1362.0, 2059.5], dist: 41, tilt: 47, yaw: 2, fov: 30, ease: "lin" },
     // F: dissolve: colonies over the PA bank, a slow push in under the letter and the name
     { t: CUT_F, region: CO, at: [MKC[0] - 1, MKC[1] + 11], dist: 120, tilt: 42, yaw: -3, fov: 30, ease: "cut", dissolve: 0.9 },
     { t: SN1, region: CO, at: [MKC[0] - 2, MKC[1] + 9], dist: 98, tilt: 44, yaw: -4, fov: 30, ease: "lin" },
@@ -266,9 +266,9 @@ window.SEQ = {
   ],
   dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF,   // overTo = the over point in crossing units (z9 -> z12)
     from: { region: CO, at: [MKC[0] + 4, MKC[1] - 2], dist: 230, tilt: 42, yaw: -2, night: 0.35 },
-    to: { region: CR, at: XC, dist: 30, tilt: 52, yaw: -30, fov: 30, night: NI } }],
+    to: { region: CR, at: XC, dist: 26, tilt: 52, yaw: -30, fov: 30, night: NI } }],
   clouds: {
-    [CO]: { scatter: { seed: 3 }, keepClear: [[MKC[0], MKC[1], 60, 1, 0.85], [BHC[0], BHC[1], 55, 1, 0.9], [380, 440, 70, 1, 0.6]] },
+    [CO]: { scatter: { seed: 3, n: 10, med: 18 }, keepClear: [[MKC[0], MKC[1], 45, 1, 0.85], [BHC[0], BHC[1], 40, 1, 0.9]] },   // round 1 (critic A): visible wide clouds
     [CR]: { shadows: true, opts: {
       erode: (t) => { const e = DV.emerge; return [0, VX.lerp(0.35, 0.7, sstep(e, e + 0.6, t)) + VX.lerp(0, 2.2, sstep(e + 0.3, e + 1.5, t))]; },
       deck: (t) => { const e = DV.emerge; return { x: Math.round(XC[0]) + 4, z: Math.round(XC[1]), r: 9, front: 3 * sstep(e + 0.2, e + 0.7, t), k: 1 }; },
@@ -295,7 +295,7 @@ window.SEQ = {
   fx, build, draw: (t, ctx) => { pulses.draw(t, ctx); rain.draw(t); },
   overlay: [
     ["plaque.date", T.e1776, { month: "December 1776", day: "", weekday: "", note: "" }],
-    ["label", T.nye, T.what - 0.3, { name: "New Year's Eve", sub: "most of the army can go home", world: [PAW[0], PAW[1], 0], side: "us", marker: false, offset: [60, -150] }],
+    ["label", T.nye, T.what - 0.3, { name: "New Year's Eve", world: [PAW[0], PAW[1], 0], side: "us", marker: false, offset: [60, -150] }],
     // B
     ["plaque.date", T.christmas, { month: "December 1776", day: "25", weekday: "", note: "" }],
     ["number", T.two, CUT_C - 0.3, { value: 2400, round: 100, x: 960, y: 250, size: 116 }],
@@ -305,12 +305,13 @@ window.SEQ = {
     ["number", T.nine - 0.05, CUT_D - 0.5, { value: 900, round: 10, x: 960, y: 250, size: 120 }],
     ["label", T.prisoners - 0.05, CUT_D - 0.5, { name: "Hessian prisoners", x: 960, y: 360, marker: false, side: "uk", offset: [-190, 0] }],
     ["label", T.not, CUT_D - 0.5, { name: "Not one American killed", sub: "in the fight", x: 960, y: 450, marker: false, side: "us", offset: [-240, 0] }],
+    ["plaque.hide", CUT_D - 0.1],   // round 1 (critic B): no "25 December" over the August flashback or 2 January; the snap-cut plate brings it back
     // E
     ["label", T.british, CUT_F - 0.3, { name: "British army", world: [1369.0, 2041.0, 0], side: "uk", marker: false, offset: [60, -120] }],
     // F
-    ["film.dim", T.brother - 0.3, T.name - 0.3, 0.5],
-    ["letter", T.brother - 0.1, T.his - 0.5, { header: "A week before Christmas", title: "To his brother", sub: "", quote: "I think the game is pretty near up.", qSize: 34, height: 270,
-      cps: 24, qAt: T.think - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
+    ["film.dim", T.brother - 0.3, T.george - 0.1, 0.5],
+    ["letter", T.brother - 0.1, T.george - 0.1, { header: "A week before Christmas", title: "To his brother", sub: "", quote: "I think the game is pretty near up.", qSize: 34, height: 270,
+      cps: 40, qAt: T.think - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],   // round 1: complete by ~51.4, held to 53.7
     // G
     ["plaque.date", SN1, { month: "1776 - 1777", day: "", weekday: "", note: "" }],
     ["film.grade", SN1, "night", 0.1],

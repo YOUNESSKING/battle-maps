@@ -34,7 +34,7 @@ const held = { build() { const c = document.createElement("canvas"); c.width = 1
 
 // ---------------- units ----------------
 const units = [];
-const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 1.7, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
+const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 2.0, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
   keys: [[0, ...a], [t0, ...a], [t1, ...b]], ...o });
 // the blue army north into the hills (Pluckemin -> Morristown)
 const B0 = lerp2(PLU, MOR, 0.5), B1 = lerp2(PLU, MOR, 0.9);
@@ -60,7 +60,7 @@ window.SEQ = {
     { t: T.D, region: CO, at: [494, 366], dist: 580, tilt: 30, yaw: 3, fov: 30, ease: "lin" },          // the living map alone for the end screen
   ],
   features: { [CO]: { bridges: Array.from({ length: 60 }, () => ({ hidden: true })) } },
-  clouds: { [CO]: { scatter: { seed: 7 }, keepClear: [[460, 350, 190, 1, 1]] } },
+  clouds: { [CO]: { scatter: { seed: 7, n: 10, med: 18 }, keepClear: [[452, 300, 60, 1, 0.9], [470, 390, 60, 1, 0.9], [560, 430, 90, 1, 1]] } },   // round 1: Jackson-like scatter, lower right kept clear for the end-screen tiles
   units,
   arrows: [
     { side: "u", region: CO, width: 0.5, maxWidth: 0.5, pts: [[PRI[0] + 4, PRI[1] - 8], [PLU[0] - 2, PLU[1] + 20], lerp2(PLU, MOR, 0.35), [MOR[0] - 3, MOR[1] + 7]], t0: T.washington, dur: 2.6, t1: 9.4 },
@@ -84,7 +84,7 @@ window.SEQ = {
     ["plaque.hide", T.not + 0.7],
     ["engage.final", { moves: [["BROOKLYN", "29-30 AUGUST 1776"], ["TRENTON", "26 DECEMBER 1776"], ["PRINCETON", "3 JANUARY 1777"]], q: "WHICH WAS HIS GREATEST MOVE?", sub: "",
       tShow: T.which - 0.1, tNums: [T.one, T.two, T.three2], tAsk: T.princeton + 0.5, extra: "Tell us in the comments, and which commander we should cover next", tExtra: T.tell,
-      until: T.subscribe - 0.2, tSub: T.subscribe - 1.25, subUntil: T.one2 + 0.5 }],
+      until: T.subscribe - 0.2, tSub: T.subscribe - 0.1, subUntil: T.one2 + 0.5 }],
   ],
   start: {}, end: { fadeAt: T.D - 1.5, dur: 1.5 },
   build: (ctx) => { held.build(ctx); },

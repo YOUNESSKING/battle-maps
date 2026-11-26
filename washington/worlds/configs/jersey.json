@@ -32,7 +32,6 @@
   "blur_u": 0.8,
   "alpha": 0.85
  },
- "field_look": "gm",
  "village_cluster": {
   "spread": 1.4,
   "k": 1.4
