@@ -60,7 +60,7 @@
     "nx": -1.673,
     "ny": -0.855,
     "onScreen": false,
-    "camDist": 2078.73
+    "camDist": 2078.74
    },
    "unit": {
     "unit": 1,
@@ -86,12 +86,12 @@
     ],
     "px": [
      677,
-     380
+     381
     ],
     "nx": 0.353,
     "ny": 0.352,
     "onScreen": true,
-    "camDist": 295.99
+    "camDist": 296.06
    },
    "unit": {
     "unit": 0,
@@ -121,7 +121,7 @@
     "nx": 0.39,
     "ny": 0.249,
     "onScreen": true,
-    "camDist": 302.84
+    "camDist": 302.92
    },
    "unit": {
     "unit": 0,

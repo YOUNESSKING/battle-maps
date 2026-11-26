@@ -27,13 +27,13 @@
      397.22
     ],
     "px": [
-     -415,
-     1062
+     -413,
+     1063
     ],
-    "nx": -0.216,
+    "nx": -0.215,
     "ny": 0.984,
     "onScreen": false,
-    "camDist": 285.62
+    "camDist": 285.86
    },
    "unit": {
     "unit": 4,
@@ -64,7 +64,7 @@
     "nx": 0.387,
     "ny": 0.258,
     "onScreen": true,
-    "camDist": 297.66
+    "camDist": 297.73
    },
    "unit": {
     "unit": 0,
@@ -95,7 +95,7 @@
     "nx": 0.383,
     "ny": 0.338,
     "onScreen": true,
-    "camDist": 283.61
+    "camDist": 283.63
    },
    "unit": {
     "unit": 2,
@@ -124,7 +124,7 @@
     "nx": 0.384,
     "ny": 0.337,
     "onScreen": true,
-    "camDist": 283.55
+    "camDist": 283.56
    },
    "unit": {
     "unit": 2,
@@ -148,12 +148,12 @@
     ],
     "px": [
      600,
-     445
+     444
     ],
     "nx": 0.313,
     "ny": 0.412,
     "onScreen": true,
-    "camDist": 237.78
+    "camDist": 237.71
    },
    "unit": {
     "unit": 1,
@@ -182,7 +182,7 @@
     "nx": 0.346,
     "ny": 0.313,
     "onScreen": true,
-    "camDist": 207.02
+    "camDist": 207.06
    },
    "unit": {
     "unit": 1,
@@ -211,9 +211,9 @@
      331
     ],
     "nx": 0.421,
-    "ny": 0.307,
+    "ny": 0.306,
     "onScreen": true,
-    "camDist": 205.81
+    "camDist": 205.76
    },
    "unit": {
     "unit": 0,
@@ -243,7 +243,7 @@
     "nx": 0.389,
     "ny": 0.405,
     "onScreen": true,
-    "camDist": 196.31
+    "camDist": 196.21
    },
    "unit": {
     "unit": 2,
@@ -272,7 +272,7 @@
     "nx": 0.423,
     "ny": 0.302,
     "onScreen": true,
-    "camDist": 204.88
+    "camDist": 204.84
    },
    "unit": {
     "unit": 0,
@@ -301,7 +301,7 @@
     "nx": 0.391,
     "ny": 0.401,
     "onScreen": true,
-    "camDist": 195.25
+    "camDist": 195.16
    },
    "unit": {
     "unit": 2,
@@ -324,13 +324,13 @@
      427.14
     ],
     "px": [
-     -1348,
+     -1350,
      1946
     ],
-    "nx": -0.702,
+    "nx": -0.703,
     "ny": 1.802,
     "onScreen": false,
-    "camDist": 277.79
+    "camDist": 277.7
    },
    "unit": {
     "unit": 4,
@@ -353,13 +353,13 @@
      509.68
     ],
     "px": [
-     146,
+     145,
      782
     ],
     "nx": 0.076,
     "ny": 0.724,
     "onScreen": true,
-    "camDist": 407.6
+    "camDist": 407.38
    },
    "unit": {
     "unit": 3,
@@ -389,7 +389,7 @@
     "nx": 0.225,
     "ny": 0.477,
     "onScreen": true,
-    "camDist": 413.09
+    "camDist": 413.12
    },
    "unit": {
     "unit": 4,
@@ -413,12 +413,12 @@
     ],
     "px": [
      643,
-     -877
+     -876
     ],
     "nx": 0.335,
-    "ny": -0.812,
+    "ny": -0.811,
     "onScreen": false,
-    "camDist": 873.66
+    "camDist": 873.67
    },
    "unit": {
     "unit": 1,
