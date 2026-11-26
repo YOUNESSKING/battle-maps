@@ -62,3 +62,6 @@ flags from `washington/assets/flags/`.
 - Trenton approach: Greene's three blocks start abreast WEST of the Pennington road, walk straight south past the ring wood on open ground (facing south), hold, turn in place and walk to their deploy spots west of the guns (no block over the wood canopy; the wood is world data). The blue answer volley at the picket is dropped (the blocks face south there). Screen long-side <= 17 deg; the checker's world front-vs-velocity 58-67 deg there is the on-screen correction under the yaw-14 oblique camera.
 - Night march: camera moved so the blocks sit at ~30 % of the frame; Washington's banner 3-5 u north of the Greene block; each block walks ~8 u to the split, then 10 u along its arrow (<= 2 u/s). Jersey check 68-88: clean.
 - Crossing from 58 s: camera pushed toward the NJ bank (landing nearer mid-frame); "Delaware River" label moved east (no clip).
+
+## Round 4 fixes
+- Trenton approach: Greene's blocks make ONE straight run each (start abreast west of the road at y 2033, deploy spots moved 1.5-2 u west), faced along the run from the start: no mid-route halt, so no 90 deg snap at 95.5 / 97.5 (turns <= 34 deg/s 95.6-112, screen long-side <= 10 deg), still clear of the ring wood's west edge. Side gap 88-128: 0 / 0.
