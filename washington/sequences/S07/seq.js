@@ -234,7 +234,7 @@ window.SEQ = {
       tReveal: 0.3, until: 2.0, dim: 0.55 }],
     ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
     ["plaque.clock", T.road - 0.05, { time: "2:00", note: "the back road", header: "2 - 3 January 1777" }],   // V2: on the road by 2 a.m. (FACT G3)
-    ["plaque.note", T.froze + 0.4, "the roads froze"],
+    // v2 r2 critic B: "froze" once on screen (the plate below)
     ["label", T.froze - 0.05, 31.3, { name: "The mud froze", sub: "", world: [702.0, 1021.0], marker: false }],   // v2 r1: dark v8 plate, not a stamp
     ["plaque.clock", T.third - 0.05, { time: "7:25", note: "sunrise", header: "3 January 1777" }],   // V2: sun up ~7:25 (FACT J)
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],

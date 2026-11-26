@@ -121,9 +121,9 @@ add({ side: "r", region: TR, face: Math.atan2(-0.95, -0.3), keys: [[0, 1338.0, 2
 // round 3 (critic A): Greene's blocks stay on open ground WEST of the ring wood: abreast west of the Pennington road, straight south past
 // the wood (facing south), hold, turn in place toward their deploy spots at the head of the town, walk
 const gPos = [[1340.6, 2048.4], [1342.8, 2047.0], [1345.0, 2045.6]];
-gPos.forEach((p, i) => { const s0 = [1333.0 + i * 2.2, 2033.0];   // round 4: ONE straight run (no mid-route turn snap), clear of the wood's west edge
+gPos.forEach((p, i) => { const s0 = [1333.0 + i * 2.2 - (i === 0 ? 1.5 : 0), 2033.0];   /* v2 r2 critic B: west block clear of the farm */   // round 4: ONE straight run (no mid-route turn snap), clear of the wood's west edge
   add({ side: "u", region: TR, face: Math.atan2(p[1] - s0[1], p[0] - s0[0]), t0: 88.0, keys: [[0, ...s0], [T.burst + 0.2, ...s0], [104.6 + i * 0.4, ...p], [T.D, ...p]] }); });
-const sPos = [[1350.2, 2062.6], [1351.4, 2066.2]];
+const sPos = [[1353.4, 2062.4], [1351.4, 2066.2]];   // v2 r2 critic B: Sullivan's lead block in the frame, among the houses
 sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056.0 - i * 1.4, p[0] - 1338.5 + i * 1.2), t0: 88.0, keys: [[0, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.burst, 1338.5 - i * 1.2, 2056.0 + i * 1.4], [T.hessians + i * 0.5, ...p], [T.D, ...p]] }));
 // Knox's guns race to the head of King and Queen streets
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
@@ -180,10 +180,10 @@ const fx = {
     { region: TR, pts: [[1337.6, 2028.2], [1338.4, 2028.4]], t0: 92.5, t1: 94.7, opts: { ...VO, dir: [-0.3, -0.95] } },
     // Greene's leading block answers
     // the Hessians in the streets fire back up the streets
-    { region: TR, pts: [[HG[0][0] - 1.1, HG[0][1] - 0.2], [HG[0][0] + 1.1, HG[0][1] - 0.2]], t0: 103.5, t1: 105.70, opts: { ...VO, dir: [0, -1] } },
+    { region: TR, pts: [[1354.7, 2058.1], [1356.7, 2058.1]], t0: 103.5, t1: 105.70, opts: { ...VO, dir: [0, -1] } },
     { region: TR, pts: [[HG[1][0] - 1.1, HG[1][1] - 0.2], [HG[1][0] + 1.1, HG[1][1] - 0.2]], t0: 103.6, t1: 105.80, opts: { ...VO, dir: [0, -1] } },
     // Sullivan's men fire from the houses into the lower town
-    { region: TR, pts: [[1350.8, 2062.2], [1351.2, 2063.0]], t0: 107.75, t1: 109.95, opts: { ...VO, dir: [1, 0] } },
+    { region: TR, pts: [[1353.3, 2062.0], [1353.7, 2062.8]], t0: 107.75, t1: 109.95, opts: { ...VO, dir: [1, 0] } },
     // round the orchard: the ring fires once
     { region: TR, pts: [[1362.8, 2051.8], [1364.0, 2051.8]], t0: 116.35, t1: 118.55, opts: { ...VO, dir: [0, 1], muzzle: 5 * KF * 1.6 } },
     { region: TR, pts: [[1367.9, 2053.6], [1367.9, 2054.8]], t0: 116.65, t1: 118.85, opts: { ...VO, dir: [-1, 0], muzzle: 5 * KF * 1.6 } },
@@ -363,6 +363,7 @@ window.SEQ = {
     ["timeline.seal", CUT2 + 0.5, { at: 0.95, name: "Brooklyn" }],
     ["timeline.seal", T.about - 0.6, { at: 4.72, name: "Trenton" }],
     // V2: the small parchment result list top-right (v8) INSTEAD of the big dark result card; spoken numbers only
+    ["plaque.clock", T.about - 0.5, { time: "9:30", note: "the battle over", header: "26 December 1776" }],   // v2 r2 critic B
     ["ledger.show", T.about - 0.3, { title: "Trenton", sub: "26 December 1776" }],
     ["ledger.add", T.captured - 0.05, { who: "About 900 captured", stamp: false }],
     ["ledger.add", T.killed - 0.05, { who: "Over 100 killed or wounded", stamp: false }],

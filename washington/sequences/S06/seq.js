@@ -90,10 +90,11 @@ const seg = (c, ang, h) => [[c[0] - Math.cos(ang) * h, c[1] - Math.sin(ang) * h]
 const fdir = (a) => [Math.cos(a), Math.sin(a)];
 const KJ = 2.7, JK = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KJ, windK: 1.1, rate: 2.9 / KJ, roll: 0.9, height: 2.4 * KJ, cluster: [2.6 * KJ, 1.4 * KJ] };   // v2 r1: v14 musketry scaled to the jersey framing (dist ~78, fxScale 24)
 const KF = 0.63, VO = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KF, windK: 1.1, rate: 2.9 / KF, roll: 0.9, height: 2.4 * KF, cluster: [2.6 * KF, 1.4 * KF] };   // V2: v14 musketry at dist ~18                      // jersey wide (fxScale 40 is the default for wide)
+const E05 = (c) => [c[0] + 0.5, c[1]];   // v2 r2 critic B: first skirmish flashes on the block
 const volleys = [
-  VOL(JE, seg(RD(44.8, 1.0), FRD(44) + Math.PI / 2, 1.0), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(E05(RD(44.8, 1.0)), FRD(44) + Math.PI / 2, 0.5), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 2.4 }),
   VOL(JE, seg(RD(51.0), FRD(51) + Math.PI / 2, 1.2), 16.6, 18.8, fdir(FRD(51) + Math.PI), { ...JK, volley: 2.4 }),
-  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(E05(RD(29.8, -2.4)), FRD(29) + Math.PI / 2, 0.5), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 2.4 }),
   VOL(JE, seg(RD(40.0), FRD(40) + Math.PI / 2, 1.2), 29.4, 31.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 2.4 }),
   VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 30.95, 33.15, fdir(FRD(29)), { ...JK, volley: 2.4, roll: 0.6 }),
   // the bridge (round 1): one short wave per attack, inside the word gaps: the guns + the line, the attackers answer once
@@ -130,7 +131,7 @@ const labels = [
   { text: "Trenton", region: JE, at: [TRj[0] + 1.0, TRj[1] + 2.4], size: 18, t0: T.trenton - 0.05, t1: T.trenton + 3.5 },
   { text: "Trenton", region: TR, at: [1356.4, 2052.6], size: 19, t0: T.trentonT - 0.05, t1: T.trentonT + 3.4 },
   { text: "Assunpink Creek", region: TR, at: [1369.0, 2071.2], size: 17, river: true, t0: T.assunpink - 0.05, t1: T.assunpink + 3.6 },
-  { text: "stone bridge", region: TR, at: [1360.2, 2069.9], size: 15, t0: T.bridge - 0.1, t1: T.bridge + 3.0 },
+  { text: "stone bridge", region: TR, at: [1357.6, 2070.4], size: 15, t0: T.bridge - 0.1, t1: T.bridge + 3.0 },
 ];
 
 const NI = 1.0;   // V2: a real night (v8) + grade.night + film.grade night
