@@ -171,3 +171,45 @@ everywhere; the day palette matches in (c) / (e). Remaining before the re-render
   less of the lit near field is in frame) and keep every block out of the bottom 12 % / off the timeline (defect 9).
 - (d) princeton `winter.ice` 0.25 (17), the bridge at road level (20), the far-field haze (18), then re-snap (b) 65.2 s and (d) 75.9 s.
 If those two re-snaps clear, the film may be re-rendered with defects 3 and 21 fixed in the same worlds pass (no further test round needed).
+
+---
+
+# Round 3 (2026-11-26, sheet 12:07; r3 worlds: princeton 11:52, scenes rebuilt 12:04)
+
+Same measurements on the r3 stills (`looklead/r2/a-e`, overwritten 12:04-12:06 with r3).
+
+## Round-2 open items
+| # | item | status | evidence (r3) |
+| --- | --- | --- | --- |
+| 3 | colonies centre cooler (a) | **NOT FIXED (minor, carry-over)** | centre (78,86,76) vs v8 (90,96,81); TL (84,89,77) vs (82,89,81) and BC (103,105,93) vs (104,107,92) match. The warm ridge light is still weaker; it does not change the read of the frame. Worlds pass, no re-test |
+| 6 | night land too light (b) | **FIXED** | sectors L 13-24 (v8 night 13-24), mean (38,46,53) vs v8 (36,46,52); the field patches are now only faint shapes; lamps remain the only warm colour = v8 |
+| 9 | blocks at the timeline / bottom edge (b) | **FIXED** | lowest block 1060-1115 x 545-610 px; nothing below y 610 and nothing under the bar |
+| 17 | Stony Brook flat band (d) | **CLOSED (not a world-texture issue)** | the band is the engine water ribbon (`world.js` `wmat` 0x2f4552 with its ripple normal map, w 0.6 u), the same material v8 / v14 use; ice 0.25 changed nothing because the band is not ground ice. At (62,78,90) it reads a little lighter than v8's rivers under the morning sky, but it is the approved engine look |
+| 18 | far-field haze (d) | **CLOSED** | TL (98,105,100) L 39 S 3; v14 40 s TL is also L 39 (104,107,94, S 6): same engine haze, only ~3 points less warm. Lead's call accepted |
+| 20 | Stony Brook bridge (d) | **PARTLY FIXED (minor)** | the bridge now stands on the post road (1476.4, 1849.8) and its east end meets the road; the deck still stands on ~35 px legs (deck 28.6 m over wl 23.6 m) and the west road joins below the deck. Fix in the worlds pass: `deck` = the road height at both ends (or wl + 2 m), so the deck lies at road level like the v14 / v8 bridges |
+| 21 | cloth-fold ridge (e) | **FIXED** | trenton exag 3.0: the Assunpink bank is a rounded rise; fields and woods sit on it naturally |
+| 22 | clock note repeats "Trenton" (c) | **FIXED** | note "the storm still blowing" |
+
+## Also checked in round 3
+- (a) arrows 0.34: pale GM lines ~6 px, ending inside the frame and clear of the legend and the timeline = v14. OK.
+- (c) Greene's brigade: 2 steel-blue blocks on the Pennington road in the upper third (575-690 x 115-135 px) behind Knox's guns, the thin pale
+  arrow on to the head, the Hessians forming in King / Queen St, carved "Trenton", the creek: the frame now tells the 8 a.m. story as v8 35 s
+  does. Palette chroma 27.8 (v8 27.2), mid (106,103,86) vs v8 (114,102,84). OK.
+- (d) one block per unit: 15 blocks in frame (v14 ~16), blue (steel) and red as round 2, line gap ~2.5-3 block widths. OK.
+- (e) ledger = v8 60.5 s position / width / rows; legend out, timeline + clock in; the Trenton seal is set. OK.
+- No new defects.
+
+## Round 3 scores
+| still | score | verdict |
+| --- | --- | --- |
+| (a) S04 colonies wide | **8.5 / 10** | MATCH (carry-over 3) |
+| (b) S03 Brooklyn ferry night | **9 / 10** | MATCH |
+| (c) S05 Trenton 8:00 a.m. | **9 / 10** | MATCH |
+| (d) S07 Princeton orchard | **8.5 / 10** | MATCH (carry-over 20) |
+| (e) S05 Trenton ledger | **9 / 10** | MATCH |
+
+**OK to re-render the film: YES.** Palette, troop scale and colours, and every overlay (clock / date plate, THE ARMIES key, wax-seal timeline,
+ledger, carved names, banner) now match v8 / v6 / v14 within the allowed winter / weather / night differences. Two small carry-overs go
+into the worlds pass before the render, with no further test round: (3) warmer light on the colonies centre ridges, and (20) the Stony Brook bridge deck at road level.
+Apply the recipe rules to every scene in the film, not only the test copies: night 1 + the night veil grade, no block in the bottom 12 %, arrows 0.3-0.35, sideCol / pal steel blue,
+dawn keys <= 0.1 after sunrise, ledger instead of the big card. Then re-run the troop-motion checker per scene.
