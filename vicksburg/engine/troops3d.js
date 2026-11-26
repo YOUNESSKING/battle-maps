@@ -514,8 +514,14 @@ export function createTroops3D(o) {
       B: { dk: 0.30, h: 0.10, bev: 0.034, ao: 0.46, drop: 0, cast: true, phong: false, pen: true, tex: "B" },
       C: { dk: 0.32, h: 0.028, bev: 0.008, ao: 0.3, drop: 0.5, cast: false, phong: false, pen: false, tex: "C" },
       A2: { dk: 0.40, wk: 1.06, h: 0.06, bev: 0.012, ao: 0.35, aoM: 0.055, drop: 0, cast: true, phong: false, pen: false, tex: "A2", edgePx: 1.8, capPx: 2.3, grain: 0.06, pull: 1.2,
-        top: { u: "#3a5a94", r: "#a8432f" }, wall: { u: "#243b63", r: "#6e2a1f" }, capC: "#6e6a62", ink: "#2a1d16", guns: true, edgeFade: 26 } })[o.counter || "A"] || null;
-    const CV = { ...V, ...(o.counterOpts || {}) }, ART = { dk: 0.46 }, A2 = CV.tex === "A2";
+        top: { u: "#3a5a94", r: "#a8432f" }, wall: { u: "#243b63", r: "#6e2a1f" }, capC: "#6e6a62", ink: "#2a1d16", guns: true, edgeFade: 26 } })[o.counter === "A3" ? "A2" : o.counter || "A"] || null;
+    // round 3 "A3" (critics on A2: it read as FLAGS - saltires / bunting): no cream anywhere; facing = a thicker ink front edge + a slim
+    // darker-side-colour front strip + the lighter front wall; NATO symbol = a small plate in the lightened side colour, thin ink outline,
+    // thin crossed lines (drawn in the shader in screen px); edge width grows with the counter's size on screen; guns: side-colour crew,
+    // a flat side-colour ground disc, x1.3; captured = fully grey top, side-colour edge, held grey
+    if (o.counter === "A3") Object.assign(V, { tex: "A3", capPx: 2.5, edgeMax: 3.0, frontK: 1.4, gunK: 1.3, stripD: 0.17, plateW: 0.31, plateD: 0.5,
+      plate: { u: "#8ea2c6", r: "#d39a8c" }, strip: { u: "#2a4472", r: "#7f2f22" }, capPlate: "#9a968e", capStrip: "#55524b" });
+    const CV = { ...V, ...(o.counterOpts || {}) }, ART = { dk: 0.46 }, A3 = CV.tex === "A3", A2 = CV.tex === "A2" || A3;   /* A2 = the A2 family (A2, A3) */
     const slabG = (dk, h, bev, skirt) => { const P = [], N = [], C = [], hw = 0.5, hd = dk / 2, iw = hw - bev, id = hd - bev, yc = h - bev * 0.8, yb = -skirt;
       const tri = (a, b, c, sh) => { const u1 = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], u2 = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
         let n = [u1[1] * u2[2] - u1[2] * u2[1], u1[2] * u2[0] - u1[0] * u2[2], u1[0] * u2[1] - u1[1] * u2[0]]; const m = [(a[0] + b[0] + c[0]) / 3, (a[1] + b[1] + c[1]) / 3 - h * 0.4, (a[2] + b[2] + c[2]) / 3];
@@ -551,7 +557,15 @@ export function createTroops3D(o) {
         for (let k = 0; k < 8; k++) { g.save(); g.rotate(k * Math.PI / 4); g.fillRect(-r * 0.25, -r * 1.42, r * 0.5, r * 0.55); g.restore(); } g.fillStyle = "#00ff00"; g.beginPath(); g.arc(0, 0, r * 0.4, 0, Math.PI * 2); g.fill(); g.restore(); }
       else if (sym === "art") { const hh = ph * 0.8, ww = hh * 96 / 78, s2 = hh / 78; g.save(); g.translate(Wc / 2 - ww / 2 - 2 * s2, py0 + (ph - hh) / 2 - 18 * s2); g.scale(s2, s2); gunPath(g); g.restore(); }
       const t3 = new THREE.CanvasTexture(c); t3.colorSpace = THREE.NoColorSpace; t3.anisotropy = 8; t3.generateMipmaps = true; t3.minFilter = THREE.LinearMipmapLinearFilter; return t3; };
-    const tex = (sym, aspect) => { if (A2) return texA2(sym, aspect); const Wc = 512, Hc = Math.round(512 / aspect), c = document.createElement("canvas"); c.width = Wc; c.height = Hc; const g = c.getContext("2d"), m = Math.min(Wc, Hc);
+    // A3: the painted fill (grain, R) + the slim darker front strip (B); the plate, outline and crossed lines are drawn in the shader (screen px)
+    const texA3 = (aspect) => { const Wc = 768, Hc = Math.round(768 / aspect), c = document.createElement("canvas"); c.width = Wc; c.height = Hc; const g = c.getContext("2d");
+      const im = g.createImageData(Wc, Hc), nz = (x, y, s2, k) => { const xi = Math.floor(x / s2), yi = Math.floor(y / s2), fx2 = x / s2 - xi, fy2 = y / s2 - yi, h2 = (a, b) => hash(a * 7.13 + k, b * 3.71 + k);
+        const a = lerp(h2(xi, yi), h2(xi + 1, yi), fx2), b = lerp(h2(xi, yi + 1), h2(xi + 1, yi + 1), fx2); return lerp(a, b, fy2); };
+      const sh = Math.round(Hc * CV.stripD);
+      for (let y = 0; y < Hc; y++) for (let x = 0; x < Wc; x++) { const n = 0.55 * nz(x, y, 3, 1) + 0.3 * nz(x, y, 9, 2) + 0.15 * (hash(x, y * 1.7) > 0.5 ? 1 : 0), k = (y * Wc + x) * 4, v = Math.round(255 * (1 - CV.grain * n));
+        im.data[k] = y < sh ? 0 : v; im.data[k + 1] = 0; im.data[k + 2] = y < sh ? v : 0; im.data[k + 3] = 255; }
+      g.putImageData(im, 0, 0); const t3 = new THREE.CanvasTexture(c); t3.colorSpace = THREE.NoColorSpace; t3.anisotropy = 8; t3.generateMipmaps = true; t3.minFilter = THREE.LinearMipmapLinearFilter; return t3; };
+    const tex = (sym, aspect) => { if (A3) return texA3(aspect); if (A2) return texA2(sym, aspect); const Wc = 512, Hc = Math.round(512 / aspect), c = document.createElement("canvas"); c.width = Wc; c.height = Hc; const g = c.getContext("2d"), m = Math.min(Wc, Hc);
       const R = (k = 1) => `rgb(${Math.round(255 * k)},0,0)`, CR = "#00ff00", GD = "#0000ff", INK = "#000000";
       g.fillStyle = INK; g.fillRect(0, 0, Wc, Hc);
       const T = CV.tex, eI = T === "C" ? 0.045 * m : 0.022 * m; const gr = g.createLinearGradient(0, 0, Wc * 0.3, Hc); gr.addColorStop(0, R(1)); gr.addColorStop(1, R(T === "A" ? 0.9 : 0.95));
@@ -574,27 +588,49 @@ export function createTroops3D(o) {
     // A2: depth test ON (hills hide counters) but the counter's depth is pulled `pull` units toward the camera (screen position unchanged),
     // so tree crowns standing right round / in front of it never clip it
     const pullU = { value: (CV.pull ?? 0) * ts };
-    const opHook = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;" + (A2 ? "\nattribute vec4 iEdge; attribute vec2 iSun; varying vec4 vEdge; varying vec2 vSun; uniform float uPull;" : ""))
+    const opHook = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;" + (A2 ? "\nattribute vec4 iEdge; attribute vec2 iSun; varying vec4 vEdge; varying vec2 vSun; uniform float uPull;" : "") + (A3 ? "\nattribute vec3 iPlt; attribute vec3 iStr; varying vec3 vPlt; varying vec3 vStr;" : ""))
         .replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
       if (A2) { sh.uniforms.uPull = pullU; sh.vertexShader = sh.vertexShader.replace("#include <project_vertex>", "#include <project_vertex>\n{ float Lm = length(mvPosition.xyz); vec4 pp = projectionMatrix * vec4(mvPosition.xyz * max(0.05, 1.0 - uPull / Lm), 1.0); gl_Position.z = pp.z / pp.w * gl_Position.w; }"); }
       sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp;").replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
     const topMat = (map) => { const m = CV.phong ? new THREE.MeshPhongMaterial({ map, transparent: true, shininess: 38, specular: 0x2a2826 }) : new THREE.MeshLambertMaterial({ map, transparent: true });
       m.onBeforeCompile = (sh) => { opHook(sh); sh.uniforms.uCream = { value: new THREE.Color(A2 ? "#e9dfc6" : "#f3ecd8") }; sh.uniforms.uGold = { value: new THREE.Color(A2 ? "#efe6cf" : "#d4ab55") }; sh.uniforms.uInk = { value: new THREE.Color(A2 ? "#1e1a16" : "#16130f") };
-        if (A2) sh.vertexShader = sh.vertexShader.replace("vOp = iOp;", "vOp = iOp; vEdge = iEdge; vSun = iSun;");
+        if (A2) sh.vertexShader = sh.vertexShader.replace("vOp = iOp;", "vOp = iOp; vEdge = iEdge; vSun = iSun;" + (A3 ? " vPlt = iPlt; vStr = iStr;" : ""));
+        if (A3) sh.uniforms.uSym = { value: m.userData.sym || 0 };
         const edge = A2 ? `
 vec2 fwd = max(fwidth(vMapUv), vec2(1e-6)); vec2 dLo = vMapUv / fwd, dHi = (1.0 - vMapUv) / fwd; float EB = vEdge.a;
 #define BND(d) (smoothstep(EB - 0.3, EB + 0.2, d) * (1.0 - smoothstep(EB + 0.9, EB + 1.4, d)))
 float lit = vSun.x * (BND(dHi.x) - BND(dLo.x)) + vSun.y * (BND(dHi.y) - BND(dLo.y));
 diffuseColor.rgb *= 1.0 + max(lit, 0.0) * 0.18 + min(lit, 0.0) * 0.3;
 float dmn = min(min(dLo.x, dLo.y), min(dHi.x, dHi.y)); diffuseColor.rgb = mix(diffuseColor.rgb, vEdge.rgb, 1.0 - smoothstep(EB - 0.5, EB + 0.5, dmn));` : "";
-        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nuniform vec3 uCream; uniform vec3 uGold; uniform vec3 uInk;" + (A2 ? "\nvarying vec4 vEdge; varying vec2 vSun;" : ""))
-          .replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); float mi = clamp(1.0 - mk.r - mk.g - mk.b, 0.0, 1.0);\n#ifdef USE_COLOR\nvec3 fillC = vColor.rgb;\n#else\nvec3 fillC = diffuse;\n#endif\ndiffuseColor.rgb = mk.r * fillC + mk.g * uCream + mk.b * uGold + mi * uInk;" + edge)
+        const a3 = `vec4 mk = texture2D( map, vMapUv );
+#ifdef USE_COLOR
+vec3 fillC = vColor.rgb;
+#else
+vec3 fillC = diffuse;
+#endif
+float gr = mk.r + mk.b; vec3 c = mk.r * fillC + mk.b * vStr;
+vec2 fwd = max(fwidth(vMapUv), vec2(1e-6)); vec2 dLo = vMapUv / fwd, dHi = (1.0 - vMapUv) / fwd; float EB = vEdge.a, EF = EB * ${CV.frontK.toFixed(2)};
+vec2 p0 = vec2(${(0.5 - CV.plateW / 2).toFixed(4)}, ${((1 - CV.stripD - CV.plateD) / 2).toFixed(4)}), p1 = vec2(${(0.5 + CV.plateW / 2).toFixed(4)}, ${((1 - CV.stripD + CV.plateD) / 2).toFixed(4)});
+vec2 q = (vMapUv - p0) / fwd, qs = (p1 - p0) / fwd; float bd = min(min(q.x, q.y), min(qs.x - q.x, qs.y - q.y)), ins = smoothstep(-0.5, 0.5, bd);
+c = mix(c, vPlt * gr, ins);
+float ol = ins * (1.0 - smoothstep(0.85, 1.85, bd));
+float Ld = length(qs), d1 = abs(q.x * qs.y - q.y * qs.x) / Ld, d2 = abs(q.x * qs.y + q.y * qs.x - qs.x * qs.y) / Ld, dx = uSym < 0.5 ? min(d1, d2) : uSym < 1.5 ? d1 : 1e3;
+float xl = ins * (1.0 - smoothstep(0.25, 1.25, dx)) * 0.85;
+c = mix(c, uInk, max(ol, xl));
+#define BND(d) (smoothstep(EB - 0.3, EB + 0.2, d) * (1.0 - smoothstep(EB + 0.9, EB + 1.4, d)))
+float lit = vSun.x * (BND(dHi.x) - BND(dLo.x)) + vSun.y * (smoothstep(EF - 0.3, EF + 0.2, dHi.y) * (1.0 - smoothstep(EF + 0.9, EF + 1.4, dHi.y)) - BND(dLo.y));
+c *= 1.0 + max(lit, 0.0) * 0.18 + min(lit, 0.0) * 0.3;
+float e1 = 1.0 - smoothstep(EB - 0.5, EB + 0.5, min(min(dLo.x, dLo.y), dHi.x)), e2 = 1.0 - smoothstep(EF - 0.5, EF + 0.5, dHi.y);
+diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
+        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nuniform vec3 uCream; uniform vec3 uGold; uniform vec3 uInk;" + (A2 ? "\nvarying vec4 vEdge; varying vec2 vSun;" : "") + (A3 ? "\nvarying vec3 vPlt; varying vec3 vStr; uniform float uSym;" : ""))
+          .replace("#include <map_fragment>", A3 ? a3 : "vec4 mk = texture2D( map, vMapUv ); float mi = clamp(1.0 - mk.r - mk.g - mk.b, 0.0, 1.0);\n#ifdef USE_COLOR\nvec3 fillC = vColor.rgb;\n#else\nvec3 fillC = diffuse;\n#endif\ndiffuseColor.rgb = mk.r * fillC + mk.g * uCream + mk.b * uGold + mi * uInk;" + edge)
           .replace("#include <color_fragment>", ""); };
-      m.customProgramCacheKey = () => "ctrTop" + (CV.phong ? 1 : 0) + (A2 ? "a2" : ""); return m; };
-    const bodyMat = () => { const m = new THREE.MeshLambertMaterial({ vertexColors: true, transparent: true }); m.onBeforeCompile = opHook; m.customProgramCacheKey = () => "ctrBody" + (A2 ? "a2" : ""); return m; };
+      m.customProgramCacheKey = () => "ctrTop" + (CV.phong ? 1 : 0) + (A2 ? "a2" : "") + (A3 ? "a3" + (m.userData.sym || 0) : ""); return m; };
+    const bodyMat = () => { const m = new THREE.MeshLambertMaterial({ vertexColors: true, transparent: true }); m.onBeforeCompile = opHook; m.customProgramCacheKey = () => "ctrBody" + (A2 ? "a2" : "") + (A3 ? "a3" : ""); return m; };
     // round 1: a counter is CONVEX: with back faces culled it draws correctly without a depth test (never cut by tree crowns); A2 depth-tests (pulled)
     const mk = (geo, mat, n, cast, recv = true, ro = 2) => { if (!A2) { mat.depthTest = false; mat.depthWrite = false; } const N = Math.max(1, n), g = geo.clone(); g.setAttribute("iOp", new THREE.InstancedBufferAttribute(new Float32Array(N).fill(1), 1));
       if (A2) { g.setAttribute("iEdge", new THREE.InstancedBufferAttribute(new Float32Array(N * 4), 4)); g.setAttribute("iSun", new THREE.InstancedBufferAttribute(new Float32Array(N * 2), 2)); }
+      if (A3) { g.setAttribute("iPlt", new THREE.InstancedBufferAttribute(new Float32Array(N * 3), 3)); g.setAttribute("iStr", new THREE.InstancedBufferAttribute(new Float32Array(N * 3), 3)); }
       const m = new THREE.InstancedMesh(g, mat, N); m.castShadow = cast; m.receiveShadow = recv; m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); m.frustumCulled = false; m.count = 0; m.renderOrder = ro;   /* walls: no shadow acne stripes */
       m.setColorAt(0, new THREE.Color()); scene.add(m); ALL.push(m); return m; };
     // A2: tight contact AO, its own texture per footprint: opaque under the counter, a ~3-4 px soft falloff round it
@@ -605,7 +641,7 @@ float dmn = min(min(dLo.x, dLo.y), min(dHi.x, dHi.y)); diffuseColor.rgb = mix(di
     const K = {}, nI = infBlocks.length, nA = artBlocks.length, symOf = (u) => u.type === "art" ? "art" : u.type === "cav" ? "cav" : u.type === "eng" ? "eng" : "inf";
     const need = new Set(blocks.map((b) => symOf(b.u)).filter((s2) => !(CV.guns && s2 === "art")));
     for (const sym of need) { const dk = sym === "art" ? ART.dk : CV.dk, n = blocks.filter((b) => symOf(b.u) === sym).length;
-      K[sym] = { dk, body: mk(slabG(dk, CV.h, CV.bev, 0), bodyMat(), n, CV.cast, false), top: mk(topG(dk, CV.h, CV.bev), topMat(tex(sym, (1 - 2 * CV.bev) / (dk - 2 * CV.bev))), n, false, true, 2.02), n: 0 };
+      K[sym] = { dk, body: mk(slabG(dk, CV.h, CV.bev, 0), bodyMat(), n, CV.cast, false), top: mk(topG(dk, CV.h, CV.bev), (() => { const m3 = topMat(tex(sym, (1 - 2 * CV.bev) / (dk - 2 * CV.bev))); m3.userData.sym = sym === "inf" ? 0 : sym === "cav" ? 1 : 2; return m3; })(), n, false, true, 2.02), n: 0 };
       if (A2) { const m2 = CV.aoM, qw = 1 + 2 * m2, qd = dk + 2 * m2, am = new THREE.MeshBasicMaterial({ map: aoTex(qw, qd, m2, m2), color: 0x0b0806, transparent: true, depthWrite: false, fog: true });
         am.onBeforeCompile = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
           sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp;").replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
@@ -616,22 +652,35 @@ float dmn = min(min(dLo.x, dLo.y), min(dHi.x, dHi.y)); diffuseColor.rgb = mix(di
       const fg = new THREE.BufferGeometry(); fg.setAttribute("position", new THREE.Float32BufferAttribute([0, 0.34, 0, 0.24, 0.34, 0, 0.17, 0.285, 0, 0, 0.34, 0, 0.17, 0.285, 0, 0, 0.23, 0, 0, 0.23, 0, 0.17, 0.285, 0, 0.24, 0.23, 0], 3)); fg.computeVertexNormals();
       const fm = new THREE.MeshLambertMaterial({ side: THREE.DoubleSide, transparent: true, emissive: 0x303030 }); fm.onBeforeCompile = opHook; fm.customProgramCacheKey = () => "ctrFlag";
       return { pole, flag: mk(fg, fm, nI + nA, false, true, 2.04) }; })() : null;
-    return { CV, K, pen, symOf, A2 };
+    // A3: a flat side-colour ground disc under each gun (0.35 opacity, thin ink rim) so a battery reads as a unit of its side
+    const disc = A3 && CV.guns && nA ? (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0, 0, 128, 128);
+      g.fillStyle = "#ff0000"; g.beginPath(); g.arc(64, 64, 61, 0, Math.PI * 2); g.fill(); g.strokeStyle = "#00ff00"; g.lineWidth = 2.6; g.beginPath(); g.arc(64, 64, 61.5, 0, Math.PI * 2); g.stroke();
+      const t3 = new THREE.CanvasTexture(c); t3.colorSpace = THREE.NoColorSpace; const dm = new THREE.MeshBasicMaterial({ map: t3, transparent: true, depthWrite: false, fog: true });
+      dm.onBeforeCompile = (sh) => { sh.uniforms.uInk = { value: new THREE.Color("#2a1d16") }; sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
+        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp; uniform vec3 uInk;").replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); float rim = mk.g;\n#ifdef USE_COLOR\nvec3 fc = vColor.rgb;\n#else\nvec3 fc = diffuse;\n#endif\ndiffuseColor = vec4(mix(fc, uInk, rim), clamp(mk.r * 0.35 + rim * 0.9, 0.0, 1.0));").replace("#include <color_fragment>", "")
+          .replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
+      dm.customProgramCacheKey = () => "ctrDisc"; const qg = new THREE.PlaneGeometry(1, 1); qg.rotateX(-Math.PI / 2); const m = mk(qg, dm, nA, false, false, 1.9); m.material.depthTest = true; return m; })() : null;
+    return { CV, K, pen, symOf, A2, A3, disc };
   }
   const CK = CTR ? mkCounter() : null;
   const FRM = o.frame || [1280, 720];
   function updCounter(ST, t) {
-    const { CV, K, pen, symOf, A2 } = CK, SC = A2 ? CV.top : (o.sideCol || { u: "#2c57b7", r: "#be3a2a" }), FILL = { u: new THREE.Color(SC.u), r: new THREE.Color(SC.r) }, GRY = new THREE.Color(A2 ? CV.capC : 0x8b877e);
+    const { CV, K, pen, symOf, A2, A3, disc } = CK, SC = A2 ? CV.top : (o.sideCol || { u: "#2c57b7", r: "#be3a2a" }), FILL = { u: new THREE.Color(SC.u), r: new THREE.Color(SC.r) }, GRY = new THREE.Color(A2 ? CV.capC : 0x8b877e);
     const WALL = A2 ? { u: new THREE.Color(CV.wall.u), r: new THREE.Color(CV.wall.r) } : null, INKC = new THREE.Color(CV.ink || "#000000"), ec = new THREE.Color(), ePx = CV.edgePx ?? 1.8;
-    let nf = 0, ns = 0, np = 0, ng = 0; for (const k in K) K[k].n = 0;
+    const PLT = A3 ? { u: new THREE.Color(CV.plate.u), r: new THREE.Color(CV.plate.r) } : null, STR = A3 ? { u: new THREE.Color(CV.strip.u), r: new THREE.Color(CV.strip.r) } : null, CPL = A3 ? new THREE.Color(CV.capPlate) : null, CST = A3 ? new THREE.Color(CV.capStrip) : null;
+    let nf = 0, ns = 0, np = 0, ng = 0, nd = 0; for (const k in K) K[k].n = 0;
     for (const Q of ST) {
-      const { b, u, D, x: bx, y: by, pa, op, capd } = Q, i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31, isArt = u.type === "art", P = pal(u), sym = symOf(u), KK = K[sym];
+      const { b, u, D, x: bx, y: by, pa, op } = Q;
+      // A3: captured = held grey (round 2 faded back toward the side colour before the unit's own fade: it read as pink)
+      const capd = A3 && !u.caps ? (u.cap != null && b.i * u._bpb < u.capN ? sstep(u.cap, u.cap + 0.8, t) : 0) : Q.capd;
+      const i = b.i, seed = (blocks.indexOf(b) + 1) * 7.31, isArt = u.type === "art", P = pal(u), sym = symOf(u), KK = K[sym];
       const bk = Q.st != null ? Q.st : onBridge(bx, by), st = Q.st != null ? (isArt ? 0 : Q.st) : Q.eq && !isArt ? bk : 0;
       const fx = Math.cos(pa), fy = Math.sin(pa), px = -fy, py = fx, W = D.bw, hb = Hs(bx, by);
       if (isArt && CV.guns) {   // A2: artillery keeps the v14 gun models (carriage, barrel, wheels, limber, 4 crew; recoil per shot)
         const spd = Q.spd, mv = sstep(0.04 * ts, 0.3 * ts, spd), wk = WM ? WM(bx, by) : 0, sink = wk * (S.woodSink ?? 0.55) * (W * 0.92 / 12) * 1.9, cq = Q.c;
         { const hs = hb + 0.012 * ts, sw = W * 0.5 + 0.12 * ts, sd = D.bd * 0.6 + 0.12 * ts; setM(shadows, ns, bx, hs, by, fx, fy, sw, 1, sd); setOp(shadows, ns++, 0.27 * op * (1 - 0.5 * wk)); }
-        const k = ng++, gk = W * 0.75 / 0.78 * 1.27, lmb = Math.max(cq, mv);
+        const k = ng++, gk = W * 0.75 / 0.78 * 1.27 * (CV.gunK ?? 1), lmb = Math.max(cq, mv);
+        if (disc) { const dd = gk * 1.2; setM(disc, nd, bx - fx * 0.1 * gk, hb + 0.006 * ts, by - fy * 0.1 * gk, fx, fy, dd, 1, dd); disc.setColorAt(nd, col.copy(FILL[u.side] || FILL.u).lerp(GRY, capd)); setOp(disc, nd++, op); }
         let rec = 0; for (const s of shots) { if (s.t > t) break; if (Math.hypot(s.x - bx, s.y - by) < D.span * 0.6 + 0.5 * ts && i === 0) rec = Math.max(rec, Math.exp(-(t - s.t) * 7) * (t - s.t < 1.2 ? 1 : 0)); }
         const ga = Math.atan2(fy, fx) + Math.PI * sstep(0.2, 0.8, lmb), gfx = Math.cos(ga), gfy = Math.sin(ga);
         const gx = bx - fx * (rec * 0.08 * gk) - fx * lmb * 0.15 * gk, gy = by - fy * (rec * 0.08 * gk) - fy * lmb * 0.15 * gk, hg = Hs(gx, gy) + S.lift - sink;
@@ -642,7 +691,7 @@ float dmn = min(min(dLo.x, dLo.y), min(dHi.x, dHi.y)); diffuseColor.rgb = mix(di
         const fs = gk * 0.11;
         for (let j = 0; j < 4; j++) { const a = (j < 2 ? -1 : 1) * (0.2 + 0.05 * (j % 2)) * gk, d = ((j % 2 ? 0.28 : 0.05) + 0.03 * Math.sin(t * 3 + j) * rec - 0.2 * lmb) * gk;
           const x = gx + px * a - fx * d, y = gy + py * a - fy * d;
-          setM(coats, nf, x, Hs(x, y) + S.lift - sink, y, fx, fy, fs * 0.55, fs * 1.9, fs * 0.5); coats.setColorAt(nf, col.setHex(P.coat).lerp(GREYC, capd));
+          setM(coats, nf, x, Hs(x, y) + S.lift - sink, y, fx, fy, fs * 0.55, fs * 1.9, fs * 0.5); coats.setColorAt(nf, A3 ? col.copy(FILL[u.side] || FILL.u).lerp(GREYC, capd) : col.setHex(P.coat).lerp(GREYC, capd));   /* A3: crew in the side colour */
           setM(pales, nf, x, Hs(x, y) + S.lift - sink, y, fx, fy, fs * 0.55, fs * 1.9, fs * 0.5); pales.setColorAt(nf, col.setHex(P.pale).lerp(GREYP, capd)); setOp(coats, nf, op); setOp(pales, nf, op); nf++; }
         continue; }
       const WK = W * (CV.wk ?? 1), Dd0 = W * KK.dk;
@@ -662,7 +711,11 @@ float dmn = min(min(dLo.x, dLo.y), min(dHi.x, dHi.y)); diffuseColor.rgb = mix(di
         setM(KK.body, k, cx, y0, cy, fx, fy, WK, W, W * dS, sL, sF); KK.top.setColorAt(k, col); setOp(KK.body, k, oc);
         if (A2) KK.body.setColorAt(k, ec.copy(WALL[u.side] || WALL.u).lerp(GRY, capd)); else KK.body.setColorAt(k, col);
         setM(KK.top, k, cx, y0, cy, fx, fy, WK, W, W * dS, sL, sF); setOp(KK.top, k, oc);
-        if (A2) { ec.copy(INKC).lerp(FILL[u.side] || FILL.u, capd); const pxw = lerp(ePx, CV.capPx, capd);
+        if (A2) { ec.copy(INKC).lerp(FILL[u.side] || FILL.u, capd); let eW = ePx;
+          if (A3 && o.proj) { const hT = hb + CV.h * W, a1 = o.proj(cx + px * WK / 2, cy + py * WK / 2, hT - H(cx + px * WK / 2, cy + py * WK / 2)), a2 = o.proj(cx - px * WK / 2, cy - py * WK / 2, hT - H(cx - px * WK / 2, cy - py * WK / 2));
+            eW = clamp(ePx + (Math.hypot(a1.x - a2.x, a1.y - a2.y) - 70) * 0.015, ePx, CV.edgeMax); }   // A3: 1.8 px on the wide shot -> ~3 px on the close camera
+          const pxw = lerp(eW, Math.max(eW, CV.capPx), capd);
+          if (A3) { const cp = col.copy(PLT[u.side] || PLT.u).lerp(CPL, capd); KK.top.geometry.attributes.iPlt.array.set([cp.r, cp.g, cp.b], k * 3); const cs = col.copy(STR[u.side] || STR.u).lerp(CST, capd); KK.top.geometry.attributes.iStr.array.set([cs.r, cs.g, cs.b], k * 3); col.copy(FILL[u.side] || FILL.u).lerp(GRY, capd); }
           for (const m of [KK.body, KK.top]) { m.geometry.attributes.iEdge.array.set([ec.r, ec.g, ec.b, pxw], k * 4);
             const sx2 = -SUNG[0], sy2 = -SUNG[1]; m.geometry.attributes.iSun.array.set([sx2 * px + sy2 * py, sx2 * fx + sy2 * fy], k * 2); }
           setM(KK.ao, k, cx, hb + 0.008 * ts, cy, fx, fy, WK + W * (KK.qw - 1), 1, W * (KK.qd - KK.dk + KK.dk * dS)); setOp(KK.ao, k, CV.ao * oc); }
@@ -688,11 +741,14 @@ float dmn = min(min(dLo.x, dLo.y), min(dHi.x, dHi.y)); diffuseColor.rgb = mix(di
     }
     for (const m of ALL) m.count = 0;
     for (const k in K) { K[k].body.count = K[k].top.count = K[k].n; if (K[k].ao) K[k].ao.count = K[k].n; }
+    if (disc) disc.count = nd;
     if (pen) pen.pole.count = pen.flag.count = np;
     coats.count = pales.count = nf; shadows.count = ns; carriage.count = barrel.count = wheels.count = limber.count = ng;
     for (const m of ALL) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; m.geometry.attributes.iOp.needsUpdate = true;
-      if (m.geometry.attributes.iEdge) { m.geometry.attributes.iEdge.needsUpdate = true; m.geometry.attributes.iSun.needsUpdate = true; } }
-    // the motion checker measures what is drawn: A2 reports the counter's own footprint (frontage x wk, depth dk), guns as v14
+      if (m.geometry.attributes.iEdge) { m.geometry.attributes.iEdge.needsUpdate = true; m.geometry.attributes.iSun.needsUpdate = true; }
+      if (m.geometry.attributes.iPlt) { m.geometry.attributes.iPlt.needsUpdate = true; m.geometry.attributes.iStr.needsUpdate = true; } }
+    // the motion checker measures what is drawn: A2 reports the counter's own footprint (frontage x wk, depth dk); guns keep the v14 nominal box
+    // (0.62 x block width: the A3 x1.3 gun model is 0.39 x gk = 0.62 x W across the wheels, i.e. the same width; its ground disc is a flat decal)
     API.last = ST.map((q) => ({ k: blocks.indexOf(q.b), u: units.indexOf(q.u), x: q.x, y: q.y, hx: Math.cos(q.pa), hy: Math.sin(q.pa), sx: Math.cos(q.sa), sy: Math.sin(q.sa), str: q.st || 0,
       w: q.u.type === "art" ? q.D.bw * 0.62 : A2 ? q.D.bw * (CV.wk ?? 1) : q.f >= 0.5 ? q.D.cw : q.D.bw, d: q.u.type === "art" ? q.D.bd * 0.7 : A2 ? q.D.bw * CV.dk : q.f >= 0.5 ? q.D.cl : q.D.bd, f: q.f, c: q.c, e: q.e, op: q.op * (q.cr ? 1 - (q.st || 0) : 1), art: q.u.type === "art", cap: q.capd }));
     return { figures: nf, blocks: ST.length, guns: ng };

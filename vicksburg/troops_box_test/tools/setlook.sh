@@ -9,5 +9,6 @@ case "$2" in
   lineblocks) ;;
   A2) SCL=1; [ "$1" = S09_gm ] && SCL=$S09SC; echo "window.SEQ.troopsOpts = { ...window.SEQ.troopsOpts, look: \"counter\", counter: \"A2\", counterOpts: { scale: $SCL } };   // __TBX__" >> $SCN/seq/seq.js ;;
   A2L) SCL=1; [ "$1" = S09_gm ] && SCL=$S09SCL; echo "window.SEQ.troopsOpts = { ...window.SEQ.troopsOpts, look: \"counter\", counter: \"A2\", counterOpts: { scale: $SCL } };   // __TBX__" >> $SCN/seq/seq.js ;;
+  A3) SCL=1; [ "$1" = S09_gm ] && SCL=${S09SC3:-1}; echo "window.SEQ.troopsOpts = { ...window.SEQ.troopsOpts, look: \"counter\", counter: \"A3\", counterOpts: { scale: $SCL } };   // __TBX__" >> $SCN/seq/seq.js ;;
   *) echo "window.SEQ.troopsOpts = { ...window.SEQ.troopsOpts, look: \"counter\", counter: \"$2\" };   // __TBX__" >> $SCN/seq/seq.js ;;
 esac
