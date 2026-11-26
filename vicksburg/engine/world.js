@@ -357,7 +357,7 @@ export function initWorld(canvas, opts = {}) {
     R.sun.target.position.set(cs.at[0], ty, cs.at[1] - sd * 0.25); R.sun.position.copy(R.sun.target.position).addScaledVector(dir, sd * 2.5);
     const sc = R.sun.shadow.camera, half = sd * 0.95; sc.left = -half; sc.right = half; sc.top = half; sc.bottom = -half; sc.near = sd * 0.5; sc.far = sd * 5; sc.updateProjectionMatrix();
     const wk = R.kind === "wide" ? 1 : 0;   // clip critic: stronger relief on the wide map (more sun, less sky fill)
-    R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + 0.35 * wk * (1 - n));
+    R.sun.color.copy(DAY.sun).lerp(NIGHT.sun, n); R.sun.intensity = lerp(DAY.sunI, NIGHT.sunI, n) * (1 + (R.data.wideSunK ?? 0.35) * wk * (1 - n));   // region.js wideSunK (project configs; default = the approved 0.35)
     R.hemi.color.copy(DAY.sky).lerp(NIGHT.sky, n); R.hemi.groundColor.copy(DAY.gnd).lerp(NIGHT.gnd, n); R.hemi.intensity = lerp(DAY.hemiI, NIGHT.hemiI, n) * (1 - 0.3 * wk * (1 - n));
     // v4 haze: on the oblique close camera the far ground fades into a pale sky-blue haze (GM 640-700 / 800 / 910-950 s):
     // smoothstep over view depth 0.78 d .. 2.3 d -> ~0 at the frame centre, ~0.45 at the top edge (tilt 52, fov 30)

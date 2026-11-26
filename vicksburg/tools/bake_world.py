@@ -1138,10 +1138,11 @@ def bake(rname, G, P, creeks, preview=True):
         lam = (-dx * sun[0] + sun[1] - dz * sun[2]) / np.sqrt(dx * dx + 1 + dz * dz)
         shade += wgt * (np.clip(lam, 0, 1) / sun[1] - 1); del hb, dz, dx, lam
     if not close:
-        k = 0.9; img *= (1 + k * (shade - 1))[..., None]
+        k = cfg.get("relief_k", 0.9) if PROJ else 0.9; img *= (1 + k * (shade - 1))[..., None]
         vt = np.clip(1 - (dist_t - hw_t - 6.0) / 18.0, 0, 1)
         lit = np.clip((shade - 1.02) * 3.0, 0, 1)[..., None] * (1 - 0.8 * forest[..., None]) * (0.25 + 0.75 * vt[..., None])
-        img = img * (1 - 0.85 * lit) + hexc(WINTER.get("lit_col", "#c4c5bc") if WINTER else "#bcbe8a") * 1.12 * 0.85 * lit; del lit, vt   # winter: frost-pale (not yellow) sunlit slopes
+        lk_ = cfg.get("lit_k", 0.85) if PROJ else 0.85
+        img = img * (1 - lk_ * lit) + hexc(WINTER.get("lit_col", "#c4c5bc") if WINTER else "#bcbe8a") * 1.12 * lk_ * lit; del lit, vt   # winter: frost-pale (not yellow) sunlit slopes
         img *= np.array([0.9, 0.95, 0.98], np.float32)
     else: img *= (1 + 0.5 * (shade - 1))[..., None]
     del shade, ht
@@ -1274,6 +1275,7 @@ def bake(rname, G, P, creeks, preview=True):
              railroads=[dict(name=nm, pts=[[round(float(a), 3), round(float(b), 3)] for a, b in rd[::3]]) for rd, nm in RAILS],
              trees=trees, houses=houses, towns=towns_out, places=places, features=feat)
     if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
+    if PROJ and cfg.get("wideSunK") is not None: D["wideSunK"] = cfg["wideSunK"]
     if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees")}   # engine: bare woods, ice on the rivers
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
@@ -1297,8 +1299,8 @@ WINTER = None   # set per region by bake() from cfg "season": "winter" (+ option
 def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     """bare deciduous woods: the same dark speckled canopy mass, but a dark grey-brown twig colour (low chroma) with scattered conifer
     (cedar / pine) clumps that keep the teal"""
-    bare = hexc("#433d37" if close else "#4b4641")[None, None] * (0.86 + 0.28 * crown[..., None])   # wide: the crossing / trenton winter-wood tone as rendered (not near-black)
-    con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - 0.62) * 6, 0, 1)[..., None]
+    bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * (0.86 + 0.28 * crown[..., None])   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
+    con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - (0.62 if close else 0.62 - 0.6 * (WINTER.get("conifers_wide", 0.4) - 0.16))) * 6, 0, 1)[..., None]
     return bare * (1 - con) + fcol * con
 
 
