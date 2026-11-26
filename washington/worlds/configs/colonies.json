@@ -322,8 +322,10 @@
   "paint_km2": 400,
   "ribbon_km2": 1000000000.0
  },
- "woods": 0.08,
- "wood_scale": 3.5,
+ "woods": 0.02,
+ "wood_scale": 1.6,
+ "wide_near_k": 0.3,
+ "wide_slope_k": 0.6,
  "crown_u": 0.3,
  "villages": 6,
  "wood_soft": {

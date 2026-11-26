@@ -55,7 +55,7 @@ def write(name, cfg):
 
 
 WINTER = {"snow": 0.6, "snow_alpha": 0.66, "desat": 0.45, "ice": 1.0, "conifers": 0.16}
-WINTER_WIDE = dict(WINTER, snow_alpha=0.4, desat=0.3, conifers_wide=0.4, wood_col="#34403f", lit_col="#a9ab98")   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
+WINTER_WIDE = dict(WINTER, snow_alpha=0.28, desat=0.25, conifers_wide=0.4, wood_col="#3b4747", lit_col="#a9ab98")   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
 Z = 9
@@ -80,7 +80,7 @@ write("colonies", {
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
  "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2},
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
- "woods": 0.08, "wood_scale": 3.5, "crown_u": 0.3, "villages": 6, "wood_soft": {"blur_u": 0.22, "alpha": 0.9},   # critic A r2: crisp speckled canopy, smaller woods
+ "woods": 0.02, "wood_scale": 1.6, "wide_near_k": 0.3, "wide_slope_k": 0.6, "crown_u": 0.3, "villages": 6, "wood_soft": {"blur_u": 0.22, "alpha": 0.9},   # critic A r2: crisp speckled canopy, smaller woods
  "tex_grade": {"contrast": 1.12, "sat": 1.1, "gamma": 0.97}, "river_halo_u": 0.5,
  "rivers": [{"name": n, "geo": [n], "w": w, "step": 1.0, **({"snap": False} if w >= 1.0 else {})} for n, w in CW.items()],
  "roads": [{"geo": r["name"], "cls": "pike"} for r in G["roads"] if not r["name"].startswith(("Trenton streets", "Bear Tavern", "Birmingham", "Scotch", "Saw Mill", "Sandtown", "Quaker", "River road (PA)", "Gowanus road", "Jamaica road", "Brooklyn - Flatbush"))]
@@ -122,7 +122,7 @@ write("jersey", {
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.07, "wood_scale": 4.2, "crown_u": 0.12, "villages": 5,
+ "woods": 0.0, "wood_scale": 1.5, "wide_near_k": 0.32, "wide_slope_k": 0.7, "crown_u": 0.12, "villages": 5,   # r2b: fewer, larger masses along valleys
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
             {"name": "Shabakunk Creek", "geo": "Shabakunk Creek", "w": 0.2, "step": 0.5}, {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.25, "step": 0.5},

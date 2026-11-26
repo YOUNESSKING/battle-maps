@@ -1019,7 +1019,8 @@ def bake(rname, G, P, creeks, preview=True):
         del jag
     else:
         fm3 = fbm(TH, TW, 4, int(bw / 18 * ws_), seed + 13)
-        fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * 0.3 - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1]) + wd + swamp
+        nk_, sk_ = (cfg.get("wide_near_k", 0.12), cfg.get("wide_slope_k", 0.3)) if PROJ else (0.12, 0.3)   # project: woods biased to river valleys / steep ground
+        fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * nk_ + slope * sk_ - WT[0], fm3 * 0.55 + fm * 0.45 - WT[1]) + wd + swamp
         del fm3
     forest = np.clip(fbase * 12, 0, 1); del fbase, fm2, swamp
     MARSH = None
