@@ -14,24 +14,88 @@
  "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
  "events": [
   {
-   "type": "unit_appears",
-   "t": 88,
-   "tExcerpt": 88,
-   "tShare": 424.49,
-   "tFilm": 424.49,
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.15,
+   "t": 87.2,
+   "tExcerpt": 87.2,
+   "tShare": 423.69,
+   "tFilm": 423.69,
    "at": {
     "map": [
-     1333,
-     2033
+     1337.31,
+     2057.41
     ],
     "px": [
-     517,
-     517
+     -8416,
+     -1404
     ],
-    "nx": 0.269,
-    "ny": 0.478,
-    "onScreen": true,
-    "camDist": 14.45
+    "nx": -4.384,
+    "ny": -1.3,
+    "onScreen": false,
+    "camDist": 1278.29
+   },
+   "unit": {
+    "unit": 5,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.23,
+   "t": 87.3,
+   "tExcerpt": 87.3,
+   "tShare": 423.79,
+   "tFilm": 423.79,
+   "at": {
+    "map": [
+     1338.52,
+     2056.01
+    ],
+    "px": [
+     -8433,
+     -1404
+    ],
+    "nx": -4.392,
+    "ny": -1.3,
+    "onScreen": false,
+    "camDist": 1277.74
+   },
+   "unit": {
+    "unit": 4,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.24,
+   "t": 87.5,
+   "tExcerpt": 87.5,
+   "tShare": 423.99,
+   "tFilm": 423.99,
+   "at": {
+    "map": [
+     1333.01,
+     2033.02
+    ],
+    "px": [
+     -8723,
+     -1431
+    ],
+    "nx": -4.543,
+    "ny": -1.325,
+    "onScreen": false,
+    "camDist": 1255.69
    },
    "unit": {
     "unit": 1,
@@ -43,24 +107,26 @@
    }
   },
   {
-   "type": "unit_appears",
-   "t": 88,
-   "tExcerpt": 88,
-   "tShare": 424.49,
-   "tFilm": 424.49,
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.22,
+   "t": 87.5,
+   "tExcerpt": 87.5,
+   "tShare": 423.99,
+   "tFilm": 423.99,
    "at": {
     "map": [
-     1335.2,
-     2033
+     1335.21,
+     2033.02
     ],
     "px": [
-     720,
-     555
+     -8793,
+     -1434
     ],
-    "nx": 0.375,
-    "ny": 0.514,
-    "onScreen": true,
-    "camDist": 14.06
+    "nx": -4.58,
+    "ny": -1.328,
+    "onScreen": false,
+    "camDist": 1257
    },
    "unit": {
     "unit": 2,
@@ -72,24 +138,26 @@
    }
   },
   {
-   "type": "unit_appears",
-   "t": 88,
-   "tExcerpt": 88,
-   "tShare": 424.49,
-   "tFilm": 424.49,
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.2,
+   "t": 87.5,
+   "tExcerpt": 87.5,
+   "tShare": 423.99,
+   "tFilm": 423.99,
    "at": {
     "map": [
-     1337.4,
-     2033
+     1337.41,
+     2033.02
     ],
     "px": [
-     936,
-     589
+     -8865,
+     -1438
     ],
-    "nx": 0.488,
-    "ny": 0.545,
-    "onScreen": true,
-    "camDist": 13.94
+    "nx": -4.617,
+    "ny": -1.332,
+    "onScreen": false,
+    "camDist": 1258.31
    },
    "unit": {
     "unit": 3,
@@ -108,17 +176,104 @@
    "tFilm": 424.49,
    "at": {
     "map": [
-     1338.5,
-     2056
+     1333.39,
+     2033.78
     ],
     "px": [
-     1164,
-     -5352
+     510,
+     344
     ],
-    "nx": 0.606,
-    "ny": -4.956,
+    "nx": 0.266,
+    "ny": 0.319,
+    "onScreen": true,
+    "camDist": 16.7
+   },
+   "unit": {
+    "unit": 1,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 88,
+   "tExcerpt": 88,
+   "tShare": 424.49,
+   "tFilm": 424.49,
+   "at": {
+    "map": [
+     1335.58,
+     2033.69
+    ],
+    "px": [
+     684,
+     369
+    ],
+    "nx": 0.356,
+    "ny": 0.342,
+    "onScreen": true,
+    "camDist": 16.3
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 88,
+   "tExcerpt": 88,
+   "tShare": 424.49,
+   "tFilm": 424.49,
+   "at": {
+    "map": [
+     1337.77,
+     2033.61
+    ],
+    "px": [
+     866,
+     392
+    ],
+    "nx": 0.451,
+    "ny": 0.363,
+    "onScreen": true,
+    "camDist": 16.16
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 88,
+   "tExcerpt": 88,
+   "tShare": 424.49,
+   "tFilm": 424.49,
+   "at": {
+    "map": [
+     1339.39,
+     2056.5
+    ],
+    "px": [
+     1876,
+     -14078
+    ],
+    "nx": 0.977,
+    "ny": -13.035,
     "onScreen": false,
-    "camDist": 17.27
+    "camDist": 15.05
    },
    "unit": {
     "unit": 4,
@@ -137,17 +292,17 @@
    "tFilm": 424.49,
    "at": {
     "map": [
-     1337.3,
-     2057.4
+     1338.34,
+     2058.05
     ],
     "px": [
-     1508,
-     -4640
+     2203,
+     -8864
     ],
-    "nx": 0.786,
-    "ny": -4.296,
+    "nx": 1.148,
+    "ny": -8.207,
     "onScreen": false,
-    "camDist": 18.37
+    "camDist": 16.17
    },
    "unit": {
     "unit": 5,
@@ -161,55 +316,24 @@
   {
    "type": "march_start",
    "direction": "advance",
-   "speed": 0.22,
-   "t": 90.8,
-   "tExcerpt": 90.8,
-   "tShare": 427.29,
-   "tFilm": 427.29,
+   "speed": 0.26,
+   "t": 89.2,
+   "tExcerpt": 89.2,
+   "tShare": 425.69,
+   "tFilm": 425.69,
    "at": {
     "map": [
-     1337.31,
-     2057.41
-    ],
-    "px": [
-     1741,
-     -6433
-    ],
-    "nx": 0.907,
-    "ny": -5.957,
-    "onScreen": false,
-    "camDist": 16.85
-   },
-   "unit": {
-    "unit": 5,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.24,
-   "t": 91.1,
-   "tExcerpt": 91.1,
-   "tShare": 427.59,
-   "tFilm": 427.59,
-   "at": {
-    "map": [
-     1350.7,
+     1350.66,
      2044.22
     ],
     "px": [
-     4664,
-     3229
+     3342,
+     2096
     ],
-    "nx": 2.429,
-    "ny": 2.99,
+    "nx": 1.741,
+    "ny": 1.941,
     "onScreen": false,
-    "camDist": 16.88
+    "camDist": 16.21
    },
    "unit": {
     "unit": 6,
@@ -223,24 +347,24 @@
   {
    "type": "march_start",
    "direction": "advance",
-   "speed": 0.29,
-   "t": 91.1,
-   "tExcerpt": 91.1,
-   "tShare": 427.59,
-   "tFilm": 427.59,
+   "speed": 0.26,
+   "t": 89.2,
+   "tExcerpt": 89.2,
+   "tShare": 425.69,
+   "tFilm": 425.69,
    "at": {
     "map": [
-     1351.9,
+     1351.86,
      2043.82
     ],
     "px": [
-     4946,
-     3142
+     3570,
+     2057
     ],
-    "nx": 2.576,
-    "ny": 2.909,
+    "nx": 1.859,
+    "ny": 1.905,
     "onScreen": false,
-    "camDist": 17.87
+    "camDist": 17.21
    },
    "unit": {
     "unit": 7,
@@ -252,133 +376,9 @@
    }
   },
   {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.21,
-   "t": 92.2,
-   "tExcerpt": 92.2,
-   "tShare": 428.69,
-   "tFilm": 428.69,
-   "at": {
-    "map": [
-     1338.51,
-     2056.01
-    ],
-    "px": [
-     1479,
-     -11714
-    ],
-    "nx": 0.77,
-    "ny": -10.846,
-    "onScreen": false,
-    "camDist": 15.08
-   },
-   "unit": {
-    "unit": 4,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.2,
-   "t": 92.4,
-   "tExcerpt": 92.4,
-   "tShare": 428.89,
-   "tFilm": 428.89,
-   "at": {
-    "map": [
-     1333.01,
-     2033.01
-    ],
-    "px": [
-     492,
-     344
-    ],
-    "nx": 0.256,
-    "ny": 0.318,
-    "onScreen": true,
-    "camDist": 16.76
-   },
-   "unit": {
-    "unit": 1,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.18,
-   "t": 92.4,
-   "tExcerpt": 92.4,
-   "tShare": 428.89,
-   "tFilm": 428.89,
-   "at": {
-    "map": [
-     1335.21,
-     2033.01
-    ],
-    "px": [
-     666,
-     367
-    ],
-    "nx": 0.347,
-    "ny": 0.34,
-    "onScreen": true,
-    "camDist": 16.34
-   },
-   "unit": {
-    "unit": 2,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.16,
-   "t": 92.4,
-   "tExcerpt": 92.4,
-   "tShare": 428.89,
-   "tFilm": 428.89,
-   "at": {
-    "map": [
-     1337.41,
-     2033.01
-    ],
-    "px": [
-     848,
-     386
-    ],
-    "nx": 0.442,
-    "ny": 0.357,
-    "onScreen": true,
-    "camDist": 16.14
-   },
-   "unit": {
-    "unit": 3,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
    "type": "musket_volley",
    "style": "ripple",
-   "rippleSeconds": 0.6,
+   "rippleSeconds": 0.9,
    "lineLength": 0.63,
    "t": 92.5,
    "tExcerpt": 92.5,
@@ -390,13 +390,13 @@
      2024.3
     ],
     "px": [
-     1057,
-     82
+     959,
+     -14
     ],
-    "nx": 0.55,
-    "ny": 0.076,
-    "onScreen": true,
-    "camDist": 23.83
+    "nx": 0.499,
+    "ny": -0.013,
+    "onScreen": false,
+    "camDist": 27.1
    },
    "from": {
     "map": [
@@ -404,13 +404,13 @@
      2024.1
     ],
     "px": [
-     1020,
-     73
+     927,
+     -22
     ],
-    "nx": 0.531,
-    "ny": 0.067,
-    "onScreen": true,
-    "camDist": 23.94
+    "nx": 0.483,
+    "ny": -0.021,
+    "onScreen": false,
+    "camDist": 27.26
    },
    "to": {
     "map": [
@@ -418,13 +418,13 @@
      2024.3
     ],
     "px": [
-     1057,
-     82
+     959,
+     -14
     ],
-    "nx": 0.55,
-    "ny": 0.076,
-    "onScreen": true,
-    "camDist": 23.83
+    "nx": 0.499,
+    "ny": -0.013,
+    "onScreen": false,
+    "camDist": 27.1
    },
    "unit": {
     "unit": 0,
@@ -443,117 +443,317 @@
      "tFilm": 428.987,
      "at": {
       "map": [
-       1339.52,
-       2024.07
+       1339.33,
+       2024.01
       ],
       "px": [
-       1015,
-       72
+       913,
+       -26
       ],
-      "nx": 0.528,
-      "ny": 0.066,
-      "onScreen": true,
-      "camDist": 23.96
+      "nx": 0.476,
+      "ny": -0.024,
+      "onScreen": false,
+      "camDist": 27.33
      }
     },
     {
-     "t": 92.817,
-     "tExcerpt": 92.82,
-     "tShare": 429.304,
-     "tFilm": 429.304,
+     "t": 92.683,
+     "tExcerpt": 92.68,
+     "tShare": 429.17,
+     "tFilm": 429.17,
      "at": {
       "map": [
-       1339.71,
-       2024.14
+       1339.42,
+       2024.04
       ],
       "px": [
-       1019,
-       68
+       914,
+       -28
       ],
-      "nx": 0.531,
-      "ny": 0.063,
-      "onScreen": true,
-      "camDist": 24.1
+      "nx": 0.476,
+      "ny": -0.026,
+      "onScreen": false,
+      "camDist": 27.43
      }
     },
     {
-     "t": 92.958,
-     "tExcerpt": 92.96,
-     "tShare": 429.445,
-     "tFilm": 429.445,
+     "t": 92.737,
+     "tExcerpt": 92.74,
+     "tShare": 429.224,
+     "tFilm": 429.224,
      "at": {
       "map": [
-       1339.88,
+       1339.46,
+       2024.05
+      ],
+      "px": [
+       914,
+       -28
+      ],
+      "nx": 0.476,
+      "ny": -0.026,
+      "onScreen": false,
+      "camDist": 27.45
+     }
+    },
+    {
+     "t": 92.778,
+     "tExcerpt": 92.78,
+     "tShare": 429.265,
+     "tFilm": 429.265,
+     "at": {
+      "map": [
+       1339.63,
+       2024.11
+      ],
+      "px": [
+       923,
+       -26
+      ],
+      "nx": 0.48,
+      "ny": -0.025,
+      "onScreen": false,
+      "camDist": 27.43
+     }
+    },
+    {
+     "t": 92.885,
+     "tExcerpt": 92.88,
+     "tShare": 429.372,
+     "tFilm": 429.372,
+     "at": {
+      "map": [
+       1339.69,
+       2024.13
+      ],
+      "px": [
+       923,
+       -28
+      ],
+      "nx": 0.481,
+      "ny": -0.026,
+      "onScreen": false,
+      "camDist": 27.48
+     }
+    },
+    {
+     "t": 93.06,
+     "tExcerpt": 93.06,
+     "tShare": 429.547,
+     "tFilm": 429.547,
+     "at": {
+      "map": [
+       1339.56,
+       2024.09
+      ],
+      "px": [
+       912,
+       -32
+      ],
+      "nx": 0.475,
+      "ny": -0.03,
+      "onScreen": false,
+      "camDist": 27.63
+     }
+    },
+    {
+     "t": 93.187,
+     "tExcerpt": 93.19,
+     "tShare": 429.674,
+     "tFilm": 429.674,
+     "at": {
+      "map": [
+       1339.87,
        2024.19
       ],
       "px": [
-       1026,
-       67
+       925,
+       -30
       ],
-      "nx": 0.534,
-      "ny": 0.062,
-      "onScreen": true,
-      "camDist": 24.15
+      "nx": 0.482,
+      "ny": -0.028,
+      "onScreen": false,
+      "camDist": 27.63
      }
     },
     {
-     "t": 93.032,
-     "tExcerpt": 93.03,
-     "tShare": 429.519,
-     "tFilm": 429.519,
+     "t": 93.296,
+     "tExcerpt": 93.3,
+     "tShare": 429.783,
+     "tFilm": 429.783,
      "at": {
       "map": [
-       1340.15,
-       2024.28
+       1339.93,
+       2024.21
       ],
       "px": [
-       1041,
-       70
+       925,
+       -31
       ],
-      "nx": 0.542,
-      "ny": 0.065,
-      "onScreen": true,
-      "camDist": 24.15
+      "nx": 0.482,
+      "ny": -0.029,
+      "onScreen": false,
+      "camDist": 27.69
      }
     },
     {
-     "t": 93.033,
-     "tExcerpt": 93.03,
-     "tShare": 429.52,
-     "tFilm": 429.52,
+     "t": 93.302,
+     "tExcerpt": 93.3,
+     "tShare": 429.789,
+     "tFilm": 429.789,
      "at": {
       "map": [
-       1340.02,
+       1339.76,
+       2024.15
+      ],
+      "px": [
+       917,
+       -33
+      ],
+      "nx": 0.477,
+      "ny": -0.031,
+      "onScreen": false,
+      "camDist": 27.74
+     }
+    },
+    {
+     "t": 93.338,
+     "tExcerpt": 93.34,
+     "tShare": 429.825,
+     "tFilm": 429.825,
+     "at": {
+      "map": [
+       1340.01,
        2024.24
       ],
       "px": [
-       1032,
-       68
+       929,
+       -31
       ],
-      "nx": 0.538,
-      "ny": 0.063,
-      "onScreen": true,
-      "camDist": 24.17
+      "nx": 0.484,
+      "ny": -0.029,
+      "onScreen": false,
+      "camDist": 27.69
      }
     },
     {
-     "t": 93.275,
-     "tExcerpt": 93.28,
-     "tShare": 429.762,
-     "tFilm": 429.762,
+     "t": 93.521,
+     "tExcerpt": 93.52,
+     "tShare": 430.008,
+     "tFilm": 430.008,
      "at": {
       "map": [
-       1340.31,
+       1340.1,
+       2024.27
+      ],
+      "px": [
+       929,
+       -33
+      ],
+      "nx": 0.484,
+      "ny": -0.03,
+      "onScreen": false,
+      "camDist": 27.79
+     }
+    },
+    {
+     "t": 93.872,
+     "tExcerpt": 93.87,
+     "tShare": 430.359,
+     "tFilm": 430.359,
+     "at": {
+      "map": [
+       1340.16,
+       2024.29
+      ],
+      "px": [
+       923,
+       -38
+      ],
+      "nx": 0.481,
+      "ny": -0.035,
+      "onScreen": false,
+      "camDist": 28
+     }
+    },
+    {
+     "t": 93.889,
+     "tExcerpt": 93.89,
+     "tShare": 430.376,
+     "tFilm": 430.376,
+     "at": {
+      "map": [
+       1340.38,
+       2024.36
+      ],
+      "px": [
+       935,
+       -35
+      ],
+      "nx": 0.487,
+      "ny": -0.032,
+      "onScreen": false,
+      "camDist": 27.95
+     }
+    },
+    {
+     "t": 93.935,
+     "tExcerpt": 93.93,
+     "tShare": 430.422,
+     "tFilm": 430.422,
+     "at": {
+      "map": [
+       1340.23,
+       2024.31
+      ],
+      "px": [
+       926,
+       -38
+      ],
+      "nx": 0.482,
+      "ny": -0.035,
+      "onScreen": false,
+      "camDist": 28.02
+     }
+    },
+    {
+     "t": 94.115,
+     "tExcerpt": 94.11,
+     "tShare": 430.602,
+     "tFilm": 430.602,
+     "at": {
+      "map": [
+       1340.32,
        2024.34
       ],
       "px": [
-       1045,
-       68
+       926,
+       -39
       ],
-      "nx": 0.544,
-      "ny": 0.063,
-      "onScreen": true,
-      "camDist": 24.27
+      "nx": 0.482,
+      "ny": -0.036,
+      "onScreen": false,
+      "camDist": 28.12
+     }
+    },
+    {
+     "t": 94.242,
+     "tExcerpt": 94.24,
+     "tShare": 430.729,
+     "tFilm": 430.729,
+     "at": {
+      "map": [
+       1340.48,
+       2024.39
+      ],
+      "px": [
+       931,
+       -39
+      ],
+      "nx": 0.485,
+      "ny": -0.036,
+      "onScreen": false,
+      "camDist": 28.16
      }
     }
    ]
@@ -566,17 +766,17 @@
    "tFilm": 430.69,
    "at": {
     "map": [
-     1353.13,
-     2048.97
+     1353.6,
+     2049.97
     ],
     "px": [
-     8015,
-     6031
+     4323,
+     2894
     ],
-    "nx": 4.174,
-    "ny": 5.584,
+    "nx": 2.252,
+    "ny": 2.68,
     "onScreen": false,
-    "camDist": 18.81
+    "camDist": 17.74
    },
    "unit": {
     "unit": 6,
@@ -595,17 +795,17 @@
    "tFilm": 430.69,
    "at": {
     "map": [
-     1354.33,
-     2048.63
+     1354.82,
+     2049.68
     ],
     "px": [
-     8494,
-     5869
+     4741,
+     2883
     ],
-    "nx": 4.424,
-    "ny": 5.434,
+    "nx": 2.469,
+    "ny": 2.67,
     "onScreen": false,
-    "camDist": 19.74
+    "camDist": 18.59
    },
    "unit": {
     "unit": 7,
@@ -614,6 +814,93 @@
     "label": null,
     "blocks": 1,
     "men": 4
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 95.4,
+   "tExcerpt": 95.4,
+   "tShare": 431.89,
+   "tFilm": 431.89,
+   "at": {
+    "map": [
+     1353.2,
+     2051.6
+    ],
+    "px": [
+     715,
+     192
+    ],
+    "nx": 0.372,
+    "ny": 0.178,
+    "onScreen": true,
+    "camDist": 15.82
+   },
+   "unit": {
+    "unit": 8,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 95.4,
+   "tExcerpt": 95.4,
+   "tShare": 431.89,
+   "tFilm": 431.89,
+   "at": {
+    "map": [
+     1355.3,
+     2058.8
+    ],
+    "px": [
+     911,
+     690
+    ],
+    "nx": 0.475,
+    "ny": 0.639,
+    "onScreen": true,
+    "camDist": 10.12
+   },
+   "unit": {
+    "unit": 9,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 95.7,
+   "tExcerpt": 95.7,
+   "tShare": 432.19,
+   "tFilm": 432.19,
+   "at": {
+    "map": [
+     1356.46,
+     2059.8
+    ],
+    "px": [
+     1085,
+     812
+    ],
+    "nx": 0.565,
+    "ny": 0.752,
+    "onScreen": true,
+    "camDist": 9.75
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
    }
   },
   {
@@ -629,12 +916,12 @@
     ],
     "px": [
      340,
-     -274
+     -281
     ],
     "nx": 0.177,
-    "ny": -0.254,
+    "ny": -0.26,
     "onScreen": false,
-    "camDist": 44.28
+    "camDist": 44.25
    },
    "unit": {
     "unit": 0,
@@ -647,24 +934,24 @@
   },
   {
    "type": "march_stop",
-   "duration": 7.1,
+   "duration": 9,
    "t": 98.2,
    "tExcerpt": 98.2,
    "tShare": 434.69,
    "tFilm": 434.69,
    "at": {
     "map": [
-     1355.29,
+     1355.24,
      2053.2
     ],
     "px": [
-     835,
-     217
+     832,
+     213
     ],
-    "nx": 0.435,
-    "ny": 0.201,
+    "nx": 0.433,
+    "ny": 0.197,
     "onScreen": true,
-    "camDist": 15.37
+    "camDist": 15.35
    },
    "unit": {
     "unit": 6,
@@ -677,24 +964,24 @@
   },
   {
    "type": "march_stop",
-   "duration": 7.4,
+   "duration": 9.3,
    "t": 98.5,
    "tExcerpt": 98.5,
    "tShare": 434.99,
    "tFilm": 434.99,
    "at": {
     "map": [
-     1356.69,
+     1356.64,
      2053.3
     ],
     "px": [
-     956,
-     214
+     953,
+     209
     ],
-    "nx": 0.498,
-    "ny": 0.198,
+    "nx": 0.496,
+    "ny": 0.194,
     "onScreen": true,
-    "camDist": 15.45
+    "camDist": 15.41
    },
    "unit": {
     "unit": 7,
@@ -718,13 +1005,13 @@
      2053.2
     ],
     "px": [
-     801,
-     199
+     802,
+     194
     ],
     "nx": 0.417,
-    "ny": 0.184,
+    "ny": 0.18,
     "onScreen": true,
-    "camDist": 15.83
+    "camDist": 15.81
    },
    "unit": {
     "unit": 6,
@@ -733,7 +1020,7 @@
     "label": null,
     "blocks": 1,
     "men": 4,
-    "dist": 0.09
+    "dist": 0.05
    },
    "impact": {
     "t": 99.75,
@@ -747,13 +1034,44 @@
      ],
      "px": [
       785,
-      725
+      728
      ],
      "nx": 0.409,
-     "ny": 0.671,
+     "ny": 0.674,
      "onScreen": true,
-     "camDist": 9.79
+     "camDist": 9.81
     }
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.21,
+   "t": 100.7,
+   "tExcerpt": 100.7,
+   "tShare": 437.19,
+   "tFilm": 437.19,
+   "at": {
+    "map": [
+     1355.32,
+     2058.79
+    ],
+    "px": [
+     771,
+     493
+    ],
+    "nx": 0.402,
+    "ny": 0.456,
+    "onScreen": true,
+    "camDist": 11.69
+   },
+   "unit": {
+    "unit": 9,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
    }
   },
   {
@@ -769,13 +1087,13 @@
      2053.3
     ],
     "px": [
-     891,
-     175
+     892,
+     171
     ],
-    "nx": 0.464,
-    "ny": 0.162,
+    "nx": 0.465,
+    "ny": 0.158,
     "onScreen": true,
-    "camDist": 16.27
+    "camDist": 16.25
    },
    "unit": {
     "unit": 7,
@@ -784,7 +1102,7 @@
     "label": null,
     "blocks": 1,
     "men": 4,
-    "dist": 0.09
+    "dist": 0.05
    },
    "impact": {
     "t": 101.2,
@@ -798,64 +1116,66 @@
      ],
      "px": [
       932,
-      836
+      838
      ],
-     "nx": 0.486,
-     "ny": 0.774,
+     "nx": 0.485,
+     "ny": 0.776,
      "onScreen": true,
-     "camDist": 9.35
+     "camDist": 9.38
     }
    }
   },
   {
-   "type": "unit_appears",
-   "t": 101.25,
-   "tExcerpt": 101.25,
-   "tShare": 437.74,
-   "tFilm": 437.74,
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.2,
+   "t": 101.1,
+   "tExcerpt": 101.1,
+   "tShare": 437.59,
+   "tFilm": 437.59,
    "at": {
     "map": [
-     1355.3,
-     2061.6
+     1356.48,
+     2059.79
     ],
     "px": [
-     742,
-     719
+     902,
+     572
     ],
-    "nx": 0.386,
-    "ny": 0.666,
+    "nx": 0.47,
+    "ny": 0.529,
     "onScreen": true,
-    "camDist": 9.78
+    "camDist": 11.14
    },
    "unit": {
-    "unit": 8,
+    "unit": 10,
     "side": "Confederate",
     "type": "inf",
     "label": null,
-    "blocks": 1,
-    "men": 72
+    "blocks": 2,
+    "men": 144
    }
   },
   {
    "type": "march_stop",
-   "duration": 9.3,
-   "t": 101.5,
-   "tExcerpt": 101.5,
-   "tShare": 437.99,
-   "tFilm": 437.99,
+   "duration": 14.1,
+   "t": 101.4,
+   "tExcerpt": 101.4,
+   "tShare": 437.89,
+   "tFilm": 437.89,
    "at": {
     "map": [
-     1350.2,
-     2062.6
+     1350.19,
+     2062.59
     ],
     "px": [
      -23,
-     759
+     765
     ],
     "nx": -0.012,
-    "ny": 0.703,
+    "ny": 0.708,
     "onScreen": false,
-    "camDist": 10.54
+    "camDist": 10.52
    },
    "unit": {
     "unit": 4,
@@ -867,37 +1187,8 @@
    }
   },
   {
-   "type": "unit_appears",
-   "t": 101.65,
-   "tExcerpt": 101.65,
-   "tShare": 438.14,
-   "tFilm": 438.14,
-   "at": {
-    "map": [
-     1356.55,
-     2062.6
-    ],
-    "px": [
-     919,
-     838
-    ],
-    "nx": 0.479,
-    "ny": 0.776,
-    "onScreen": true,
-    "camDist": 9.35
-   },
-   "unit": {
-    "unit": 9,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
    "type": "march_stop",
-   "duration": 11.2,
+   "duration": 14.8,
    "t": 102,
    "tExcerpt": 102,
    "tShare": 438.49,
@@ -908,13 +1199,13 @@
      2066.2
     ],
     "px": [
-     -156,
-     1388
+     -152,
+     1394
     ],
-    "nx": -0.081,
-    "ny": 1.285,
+    "nx": -0.079,
+    "ny": 1.29,
     "onScreen": false,
-    "camDist": 8.83
+    "camDist": 8.88
    },
    "unit": {
     "unit": 5,
@@ -928,7 +1219,7 @@
   {
    "type": "musket_volley",
    "style": "ripple",
-   "rippleSeconds": 0.6,
+   "rippleSeconds": 0.9,
    "lineLength": 0.5,
    "t": 103.5,
    "tExcerpt": 103.5,
@@ -937,53 +1228,53 @@
    "at": {
     "map": [
      1355.55,
-     2061.4
+     2058.6
     ],
     "px": [
-     720,
-     607
+     734,
+     402
     ],
-    "nx": 0.375,
-    "ny": 0.562,
+    "nx": 0.382,
+    "ny": 0.372,
     "onScreen": true,
-    "camDist": 10.56
+    "camDist": 12.74
    },
    "from": {
     "map": [
      1355.05,
-     2061.4
+     2058.6
     ],
     "px": [
-     656,
-     603
+     681,
+     399
     ],
-    "nx": 0.342,
-    "ny": 0.559,
+    "nx": 0.355,
+    "ny": 0.369,
     "onScreen": true,
-    "camDist": 10.58
+    "camDist": 12.76
    },
    "to": {
     "map": [
      1355.55,
-     2061.4
+     2058.6
     ],
     "px": [
-     720,
-     607
+     734,
+     402
     ],
-    "nx": 0.375,
-    "ny": 0.562,
+    "nx": 0.382,
+    "ny": 0.372,
     "onScreen": true,
-    "camDist": 10.56
+    "camDist": 12.74
    },
    "unit": {
-    "unit": 8,
+    "unit": 9,
     "side": "Confederate",
     "type": "inf",
     "label": null,
-    "blocks": 1,
-    "men": 72,
-    "dist": 0.32
+    "blocks": 2,
+    "men": 144,
+    "dist": 1.46
    },
    "shots": [
     {
@@ -993,117 +1284,297 @@
      "tFilm": 439.987,
      "at": {
       "map": [
-       1354.88,
-       2061.4
+       1354.69,
+       2058.6
       ],
       "px": [
-       634,
-       602
+       643,
+       397
       ],
-      "nx": 0.33,
-      "ny": 0.558,
+      "nx": 0.335,
+      "ny": 0.367,
       "onScreen": true,
-      "camDist": 10.59
+      "camDist": 12.78
      }
     },
     {
-     "t": 103.575,
-     "tExcerpt": 103.57,
-     "tShare": 440.062,
-     "tFilm": 440.062,
+     "t": 103.644,
+     "tExcerpt": 103.64,
+     "tShare": 440.131,
+     "tFilm": 440.131,
      "at": {
       "map": [
-       1355.04,
-       2061.4
+       1354.84,
+       2058.6
       ],
       "px": [
-       653,
-       600
+       656,
+       394
       ],
-      "nx": 0.34,
-      "ny": 0.556,
+      "nx": 0.342,
+      "ny": 0.365,
       "onScreen": true,
-      "camDist": 10.6
+      "camDist": 12.82
      }
     },
     {
-     "t": 103.908,
-     "tExcerpt": 103.91,
-     "tShare": 440.395,
-     "tFilm": 440.395,
+     "t": 103.819,
+     "tExcerpt": 103.82,
+     "tShare": 440.306,
+     "tFilm": 440.306,
      "at": {
       "map": [
-       1355.19,
-       2061.4
+       1354.77,
+       2058.6
       ],
       "px": [
-       665,
-       589
+       645,
+       389
+      ],
+      "nx": 0.336,
+      "ny": 0.36,
+      "onScreen": true,
+      "camDist": 12.88
+     }
+    },
+    {
+     "t": 103.956,
+     "tExcerpt": 103.96,
+     "tShare": 440.443,
+     "tFilm": 440.443,
+     "at": {
+      "map": [
+       1354.93,
+       2058.6
+      ],
+      "px": [
+       659,
+       387
+      ],
+      "nx": 0.343,
+      "ny": 0.358,
+      "onScreen": true,
+      "camDist": 12.92
+     }
+    },
+    {
+     "t": 104.154,
+     "tExcerpt": 104.15,
+     "tShare": 440.641,
+     "tFilm": 440.641,
+     "at": {
+      "map": [
+       1355.02,
+       2058.6
+      ],
+      "px": [
+       664,
+       382
       ],
       "nx": 0.346,
-      "ny": 0.545,
+      "ny": 0.354,
       "onScreen": true,
-      "camDist": 10.69
+      "camDist": 12.98
      }
     },
     {
-     "t": 104.009,
-     "tExcerpt": 104.01,
-     "tShare": 440.496,
-     "tFilm": 440.496,
+     "t": 104.18,
+     "tExcerpt": 104.18,
+     "tShare": 440.667,
+     "tFilm": 440.667,
      "at": {
       "map": [
-       1355.38,
-       2061.4
+       1355.08,
+       2058.6
       ],
       "px": [
-       686,
-       586
+       670,
+       382
+      ],
+      "nx": 0.349,
+      "ny": 0.353,
+      "onScreen": true,
+      "camDist": 12.98
+     }
+    },
+    {
+     "t": 104.377,
+     "tExcerpt": 104.38,
+     "tShare": 440.864,
+     "tFilm": 440.864,
+     "at": {
+      "map": [
+       1355.27,
+       2058.6
+      ],
+      "px": [
+       685,
+       378
       ],
       "nx": 0.357,
-      "ny": 0.543,
+      "ny": 0.35,
       "onScreen": true,
-      "camDist": 10.71
+      "camDist": 13.04
      }
     },
     {
-     "t": 104.357,
-     "tExcerpt": 104.36,
-     "tShare": 440.844,
-     "tFilm": 440.844,
+     "t": 104.497,
+     "tExcerpt": 104.5,
+     "tShare": 440.984,
+     "tFilm": 440.984,
      "at": {
       "map": [
-       1355.68,
-       2061.4
+       1355.16,
+       2058.6
       ],
       "px": [
-       716,
-       576
+       672,
+       374
       ],
-      "nx": 0.373,
-      "ny": 0.533,
+      "nx": 0.35,
+      "ny": 0.347,
       "onScreen": true,
-      "camDist": 10.81
+      "camDist": 13.09
      }
     },
     {
-     "t": 104.427,
-     "tExcerpt": 104.43,
-     "tShare": 440.914,
-     "tFilm": 440.914,
+     "t": 104.57,
+     "tExcerpt": 104.57,
+     "tShare": 441.057,
+     "tFilm": 441.057,
      "at": {
       "map": [
-       1355.55,
-       2061.4
+       1355.32,
+       2058.6
       ],
       "px": [
-       698,
-       572
+       687,
+       374
       ],
-      "nx": 0.364,
-      "ny": 0.53,
+      "nx": 0.358,
+      "ny": 0.346,
       "onScreen": true,
-      "camDist": 10.83
+      "camDist": 13.11
+     }
+    },
+    {
+     "t": 105.019,
+     "tExcerpt": 105.02,
+     "tShare": 441.506,
+     "tFilm": 441.506,
+     "at": {
+      "map": [
+       1355.49,
+       2058.6
+      ],
+      "px": [
+       695,
+       364
+      ],
+      "nx": 0.362,
+      "ny": 0.337,
+      "onScreen": true,
+      "camDist": 13.25
+     }
+    },
+    {
+     "t": 105.065,
+     "tExcerpt": 105.06,
+     "tShare": 441.552,
+     "tFilm": 441.552,
+     "at": {
+      "map": [
+       1355.45,
+       2058.6
+      ],
+      "px": [
+       690,
+       363
+      ],
+      "nx": 0.359,
+      "ny": 0.336,
+      "onScreen": true,
+      "camDist": 13.27
+     }
+    },
+    {
+     "t": 105.102,
+     "tExcerpt": 105.1,
+     "tShare": 441.589,
+     "tFilm": 441.589,
+     "at": {
+      "map": [
+       1355.56,
+       2058.6
+      ],
+      "px": [
+       700,
+       362
+      ],
+      "nx": 0.365,
+      "ny": 0.335,
+      "onScreen": true,
+      "camDist": 13.28
+     }
+    },
+    {
+     "t": 105.21,
+     "tExcerpt": 105.21,
+     "tShare": 441.697,
+     "tFilm": 441.697,
+     "at": {
+      "map": [
+       1355.65,
+       2058.6
+      ],
+      "px": [
+       707,
+       360
+      ],
+      "nx": 0.368,
+      "ny": 0.334,
+      "onScreen": true,
+      "camDist": 13.32
+     }
+    },
+    {
+     "t": 105.361,
+     "tExcerpt": 105.36,
+     "tShare": 441.848,
+     "tFilm": 441.848,
+     "at": {
+      "map": [
+       1355.74,
+       2058.6
+      ],
+      "px": [
+       713,
+       358
+      ],
+      "nx": 0.371,
+      "ny": 0.331,
+      "onScreen": true,
+      "camDist": 13.37
+     }
+    },
+    {
+     "t": 105.588,
+     "tExcerpt": 105.59,
+     "tShare": 442.075,
+     "tFilm": 442.075,
+     "at": {
+      "map": [
+       1355.85,
+       2058.6
+      ],
+      "px": [
+       719,
+       353
+      ],
+      "nx": 0.375,
+      "ny": 0.327,
+      "onScreen": true,
+      "camDist": 13.45
      }
     }
    ]
@@ -1121,13 +1592,13 @@
      2053.2
     ],
     "px": [
-     721,
-     140
+     722,
+     135
     ],
     "nx": 0.376,
-    "ny": 0.129,
+    "ny": 0.125,
     "onScreen": true,
-    "camDist": 17.36
+    "camDist": 17.33
    },
    "unit": {
     "unit": 6,
@@ -1136,7 +1607,7 @@
     "label": null,
     "blocks": 1,
     "men": 4,
-    "dist": 0.09
+    "dist": 0.05
    },
    "impact": {
     "t": 103.85,
@@ -1150,19 +1621,19 @@
      ],
      "px": [
       659,
-      802
+      804
      ],
      "nx": 0.343,
-     "ny": 0.743,
+     "ny": 0.744,
      "onScreen": true,
-     "camDist": 9.31
+     "camDist": 9.33
     }
    }
   },
   {
    "type": "musket_volley",
    "style": "ripple",
-   "rippleSeconds": 0.6,
+   "rippleSeconds": 0.9,
    "lineLength": 0.5,
    "t": 103.6,
    "tExcerpt": 103.6,
@@ -1170,54 +1641,54 @@
    "tFilm": 440.09,
    "at": {
     "map": [
-     1356.8,
-     2062.4
+     1356.71,
+     2059.6
     ],
     "px": [
-     889,
-     715
+     859,
+     475
     ],
-    "nx": 0.463,
-    "ny": 0.662,
+    "nx": 0.447,
+    "ny": 0.44,
     "onScreen": true,
-    "camDist": 9.96
+    "camDist": 12.04
    },
    "from": {
     "map": [
-     1356.3,
-     2062.4
+     1356.21,
+     2059.6
     ],
     "px": [
-     818,
-     710
+     802,
+     472
     ],
-    "nx": 0.426,
-    "ny": 0.657,
+    "nx": 0.418,
+    "ny": 0.437,
     "onScreen": true,
-    "camDist": 9.91
+    "camDist": 12.01
    },
    "to": {
     "map": [
-     1356.8,
-     2062.4
+     1356.71,
+     2059.6
     ],
     "px": [
-     889,
-     715
+     859,
+     475
     ],
-    "nx": 0.463,
-    "ny": 0.662,
+    "nx": 0.447,
+    "ny": 0.44,
     "onScreen": true,
-    "camDist": 9.96
+    "camDist": 12.04
    },
    "unit": {
-    "unit": 9,
+    "unit": 10,
     "side": "Confederate",
     "type": "inf",
     "label": null,
-    "blocks": 1,
-    "men": 72,
-    "dist": 0.32
+    "blocks": 2,
+    "men": 144,
+    "dist": 1.23
    },
    "shots": [
     {
@@ -1227,141 +1698,341 @@
      "tFilm": 440.087,
      "at": {
       "map": [
-       1356.17,
-       2062.4
+       1355.87,
+       2059.6
       ],
       "px": [
-       799,
-       708
+       763,
+       469
       ],
-      "nx": 0.416,
-      "ny": 0.656,
+      "nx": 0.398,
+      "ny": 0.434,
       "onScreen": true,
-      "camDist": 9.9
+      "camDist": 11.99
      }
     },
     {
-     "t": 103.839,
-     "tExcerpt": 103.84,
-     "tShare": 440.326,
-     "tFilm": 440.326,
+     "t": 103.6,
+     "tExcerpt": 103.6,
+     "tShare": 440.087,
+     "tFilm": 440.087,
      "at": {
       "map": [
-       1356.29,
-       2062.4
+       1355.93,
+       2059.6
       ],
       "px": [
-       809,
-       699
+       770,
+       470
       ],
-      "nx": 0.421,
-      "ny": 0.647,
+      "nx": 0.401,
+      "ny": 0.435,
       "onScreen": true,
-      "camDist": 9.97
+      "camDist": 12
      }
     },
     {
-     "t": 103.963,
-     "tExcerpt": 103.96,
-     "tShare": 440.45,
-     "tFilm": 440.45,
+     "t": 103.863,
+     "tExcerpt": 103.86,
+     "tShare": 440.35,
+     "tFilm": 440.35,
      "at": {
       "map": [
-       1356.52,
-       2062.4
+       1356.08,
+       2059.6
       ],
       "px": [
-       838,
-       696
+       781,
+       463
       ],
-      "nx": 0.437,
-      "ny": 0.644,
+      "nx": 0.407,
+      "ny": 0.429,
       "onScreen": true,
-      "camDist": 10.02
+      "camDist": 12.08
      }
     },
     {
-     "t": 104.092,
-     "tExcerpt": 104.09,
-     "tShare": 440.579,
-     "tFilm": 440.579,
+     "t": 104.046,
+     "tExcerpt": 104.05,
+     "tShare": 440.533,
+     "tFilm": 440.533,
      "at": {
       "map": [
-       1356.61,
-       2062.4
+       1356.04,
+       2059.6
       ],
       "px": [
-       846,
-       691
+       772,
+       457
       ],
-      "nx": 0.441,
-      "ny": 0.64,
+      "nx": 0.402,
+      "ny": 0.423,
       "onScreen": true,
-      "camDist": 10.06
+      "camDist": 12.14
      }
     },
     {
-     "t": 104.303,
-     "tExcerpt": 104.3,
-     "tShare": 440.79,
-     "tFilm": 440.79,
+     "t": 104.079,
+     "tExcerpt": 104.08,
+     "tShare": 440.566,
+     "tFilm": 440.566,
      "at": {
       "map": [
-       1356.84,
-       2062.4
+       1356.2,
+       2059.6
       ],
       "px": [
-       872,
-       683
+       789,
+       458
       ],
-      "nx": 0.454,
-      "ny": 0.633,
+      "nx": 0.411,
+      "ny": 0.424,
       "onScreen": true,
-      "camDist": 10.14
+      "camDist": 12.16
      }
     },
     {
-     "t": 104.472,
-     "tExcerpt": 104.47,
-     "tShare": 440.959,
-     "tFilm": 440.959,
+     "t": 104.282,
+     "tExcerpt": 104.28,
+     "tShare": 440.769,
+     "tFilm": 440.769,
      "at": {
       "map": [
-       1356.92,
-       2062.4
+       1356.24,
+       2059.6
       ],
       "px": [
-       878,
-       676
+       788,
+       452
       ],
-      "nx": 0.457,
-      "ny": 0.626,
+      "nx": 0.41,
+      "ny": 0.418,
       "onScreen": true,
-      "camDist": 10.19
+      "camDist": 12.22
+     }
+    },
+    {
+     "t": 104.458,
+     "tExcerpt": 104.46,
+     "tShare": 440.945,
+     "tFilm": 440.945,
+     "at": {
+      "map": [
+       1356.36,
+       2059.6
+      ],
+      "px": [
+       798,
+       448
+      ],
+      "nx": 0.415,
+      "ny": 0.414,
+      "onScreen": true,
+      "camDist": 12.28
+     }
+    },
+    {
+     "t": 104.776,
+     "tExcerpt": 104.78,
+     "tShare": 441.263,
+     "tFilm": 441.263,
+     "at": {
+      "map": [
+       1356.41,
+       2059.6
+      ],
+      "px": [
+       795,
+       439
+      ],
+      "nx": 0.414,
+      "ny": 0.406,
+      "onScreen": true,
+      "camDist": 12.38
+     }
+    },
+    {
+     "t": 104.856,
+     "tExcerpt": 104.86,
+     "tShare": 441.343,
+     "tFilm": 441.343,
+     "at": {
+      "map": [
+       1356.5,
+       2059.6
+      ],
+      "px": [
+       803,
+       437
+      ],
+      "nx": 0.418,
+      "ny": 0.405,
+      "onScreen": true,
+      "camDist": 12.41
+     }
+    },
+    {
+     "t": 104.882,
+     "tExcerpt": 104.88,
+     "tShare": 441.369,
+     "tFilm": 441.369,
+     "at": {
+      "map": [
+       1356.57,
+       2059.6
+      ],
+      "px": [
+       810,
+       437
+      ],
+      "nx": 0.422,
+      "ny": 0.405,
+      "onScreen": true,
+      "camDist": 12.43
+     }
+    },
+    {
+     "t": 105.028,
+     "tExcerpt": 105.03,
+     "tShare": 441.515,
+     "tFilm": 441.515,
+     "at": {
+      "map": [
+       1356.76,
+       2059.6
+      ],
+      "px": [
+       828,
+       434
+      ],
+      "nx": 0.431,
+      "ny": 0.402,
+      "onScreen": true,
+      "camDist": 12.48
+     }
+    },
+    {
+     "t": 105.119,
+     "tExcerpt": 105.12,
+     "tShare": 441.606,
+     "tFilm": 441.606,
+     "at": {
+      "map": [
+       1356.66,
+       2059.6
+      ],
+      "px": [
+       814,
+       431
+      ],
+      "nx": 0.424,
+      "ny": 0.399,
+      "onScreen": true,
+      "camDist": 12.5
+     }
+    },
+    {
+     "t": 105.361,
+     "tExcerpt": 105.36,
+     "tShare": 441.848,
+     "tFilm": 441.848,
+     "at": {
+      "map": [
+       1356.88,
+       2059.6
+      ],
+      "px": [
+       832,
+       425
+      ],
+      "nx": 0.434,
+      "ny": 0.394,
+      "onScreen": true,
+      "camDist": 12.59
+     }
+    },
+    {
+     "t": 105.535,
+     "tExcerpt": 105.53,
+     "tShare": 442.022,
+     "tFilm": 442.022,
+     "at": {
+      "map": [
+       1356.85,
+       2059.6
+      ],
+      "px": [
+       824,
+       420
+      ],
+      "nx": 0.429,
+      "ny": 0.389,
+      "onScreen": true,
+      "camDist": 12.65
+     }
+    },
+    {
+     "t": 105.758,
+     "tExcerpt": 105.76,
+     "tShare": 442.245,
+     "tFilm": 442.245,
+     "at": {
+      "map": [
+       1357.08,
+       2059.6
+      ],
+      "px": [
+       844,
+       415
+      ],
+      "nx": 0.439,
+      "ny": 0.384,
+      "onScreen": true,
+      "camDist": 12.73
+     }
+    },
+    {
+     "t": 105.85,
+     "tExcerpt": 105.85,
+     "tShare": 442.337,
+     "tFilm": 442.337,
+     "at": {
+      "map": [
+       1357.02,
+       2059.6
+      ],
+      "px": [
+       835,
+       413
+      ],
+      "nx": 0.435,
+      "ny": 0.382,
+      "onScreen": true,
+      "camDist": 12.76
      }
     }
    ]
   },
   {
    "type": "march_stop",
-   "duration": 12.2,
-   "t": 104.6,
-   "tExcerpt": 104.6,
-   "tShare": 441.09,
-   "tFilm": 441.09,
+   "duration": 17,
+   "t": 104.5,
+   "tExcerpt": 104.5,
+   "tShare": 440.99,
+   "tFilm": 440.99,
    "at": {
     "map": [
      1340.6,
      2048.4
     ],
     "px": [
-     -157,
-     -34
+     -159,
+     -41
     ],
-    "nx": -0.082,
-    "ny": -0.032,
+    "nx": -0.083,
+    "ny": -0.038,
     "onScreen": false,
-    "camDist": 26.89
+    "camDist": 26.82
    },
    "unit": {
     "unit": 1,
@@ -1374,7 +2045,7 @@
   },
   {
    "type": "march_stop",
-   "duration": 12.5,
+   "duration": 17.4,
    "t": 104.9,
    "tExcerpt": 104.9,
    "tShare": 441.39,
@@ -1382,16 +2053,16 @@
    "at": {
     "map": [
      1342.8,
-     2046.99
+     2047
     ],
     "px": [
-     8,
-     -56
+     6,
+     -63
     ],
-    "nx": 0.004,
-    "ny": -0.052,
+    "nx": 0.003,
+    "ny": -0.059,
     "onScreen": false,
-    "camDist": 27
+    "camDist": 26.97
    },
    "unit": {
     "unit": 2,
@@ -1404,7 +2075,7 @@
   },
   {
    "type": "march_stop",
-   "duration": 12.9,
+   "duration": 17.8,
    "t": 105.3,
    "tExcerpt": 105.3,
    "tShare": 441.79,
@@ -1412,82 +2083,20 @@
    "at": {
     "map": [
      1345,
-     2045.59
+     2045.6
     ],
     "px": [
-     157,
-     -75
+     156,
+     -81
     ],
-    "nx": 0.082,
-    "ny": -0.07,
+    "nx": 0.081,
+    "ny": -0.075,
     "onScreen": false,
-    "camDist": 27.41
+    "camDist": 27.38
    },
    "unit": {
     "unit": 3,
     "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.27,
-   "t": 105.6,
-   "tExcerpt": 105.6,
-   "tShare": 442.09,
-   "tFilm": 442.09,
-   "at": {
-    "map": [
-     1355.32,
-     2061.58
-    ],
-    "px": [
-     642,
-     545
-    ],
-    "nx": 0.334,
-    "ny": 0.504,
-    "onScreen": true,
-    "camDist": 11.06
-   },
-   "unit": {
-    "unit": 8,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.25,
-   "t": 106,
-   "tExcerpt": 106,
-   "tShare": 442.49,
-   "tFilm": 442.49,
-   "at": {
-    "map": [
-     1356.58,
-     2062.59
-    ],
-    "px": [
-     787,
-     629
-    ],
-    "nx": 0.41,
-    "ny": 0.582,
-    "onScreen": true,
-    "camDist": 10.45
-   },
-   "unit": {
-    "unit": 9,
-    "side": "Confederate",
     "type": "inf",
     "label": null,
     "blocks": 1,
@@ -1508,12 +2117,12 @@
     ],
     "px": [
      751,
-     90
+     84
     ],
     "nx": 0.391,
-    "ny": 0.083,
+    "ny": 0.077,
     "onScreen": true,
-    "camDist": 18.77
+    "camDist": 18.73
    },
    "unit": {
     "unit": 7,
@@ -1522,7 +2131,7 @@
     "label": null,
     "blocks": 1,
     "men": 4,
-    "dist": 0.09
+    "dist": 0.05
    },
    "impact": {
     "t": 107.95,
@@ -1536,19 +2145,19 @@
      ],
      "px": [
       731,
-      498
+      497
      ],
      "nx": 0.381,
-     "ny": 0.461,
+     "ny": 0.46,
      "onScreen": true,
-     "camDist": 11.64
+     "camDist": 11.63
     }
    }
   },
   {
    "type": "musket_volley",
    "style": "ripple",
-   "rippleSeconds": 0.6,
+   "rippleSeconds": 0.9,
    "lineLength": 0.89,
    "t": 107.75,
    "tExcerpt": 107.75,
@@ -1575,12 +2184,12 @@
     ],
     "px": [
      64,
-     504
+     503
     ],
     "nx": 0.033,
-    "ny": 0.466,
+    "ny": 0.465,
     "onScreen": true,
-    "camDist": 12.56
+    "camDist": 12.55
    },
    "to": {
     "map": [
@@ -1613,28 +2222,68 @@
      "tFilm": 444.237,
      "at": {
       "map": [
+       1350.73,
+       2062.06
+      ],
+      "px": [
+       63,
+       491
+      ],
+      "nx": 0.033,
+      "ny": 0.455,
+      "onScreen": true,
+      "camDist": 12.67
+     }
+    },
+    {
+     "t": 107.75,
+     "tExcerpt": 107.75,
+     "tShare": 444.237,
+     "tFilm": 444.237,
+     "at": {
+      "map": [
        1350.8,
        2062.2
       ],
       "px": [
        64,
-       503
+       502
       ],
       "nx": 0.033,
-      "ny": 0.466,
+      "ny": 0.465,
       "onScreen": true,
       "camDist": 12.56
      }
     },
     {
-     "t": 107.764,
-     "tExcerpt": 107.76,
-     "tShare": 444.251,
-     "tFilm": 444.251,
+     "t": 107.984,
+     "tExcerpt": 107.98,
+     "tShare": 444.471,
+     "tFilm": 444.471,
      "at": {
       "map": [
-       1350.86,
-       2062.33
+       1350.76,
+       2062.13
+      ],
+      "px": [
+       62,
+       490
+      ],
+      "nx": 0.032,
+      "ny": 0.454,
+      "onScreen": true,
+      "camDist": 12.7
+     }
+    },
+    {
+     "t": 107.99,
+     "tExcerpt": 107.99,
+     "tShare": 444.477,
+     "tFilm": 444.477,
+     "at": {
+      "map": [
+       1350.91,
+       2062.41
       ],
       "px": [
        65,
@@ -1643,87 +2292,247 @@
       "nx": 0.034,
       "ny": 0.476,
       "onScreen": true,
-      "camDist": 12.45
+      "camDist": 12.46
      }
     },
     {
-     "t": 107.992,
-     "tExcerpt": 107.99,
-     "tShare": 444.479,
-     "tFilm": 444.479,
+     "t": 108.077,
+     "tExcerpt": 108.08,
+     "tShare": 444.564,
+     "tFilm": 444.564,
      "at": {
       "map": [
-       1351.04,
-       2062.67
+       1350.83,
+       2062.26
       ],
       "px": [
-       67,
-       538
+       62,
+       501
       ],
-      "nx": 0.035,
-      "ny": 0.498,
+      "nx": 0.032,
+      "ny": 0.464,
       "onScreen": true,
-      "camDist": 12.25
+      "camDist": 12.6
      }
     },
     {
-     "t": 108.022,
-     "tExcerpt": 108.02,
-     "tShare": 444.509,
-     "tFilm": 444.509,
+     "t": 108.252,
+     "tExcerpt": 108.25,
+     "tShare": 444.739,
+     "tFilm": 444.739,
      "at": {
       "map": [
-       1350.98,
-       2062.56
+       1350.94,
+       2062.48
       ],
       "px": [
-       66,
-       527
+       49,
+       520
       ],
-      "nx": 0.034,
-      "ny": 0.488,
+      "nx": 0.026,
+      "ny": 0.481,
       "onScreen": true,
-      "camDist": 12.35
+      "camDist": 12.46
      }
     },
     {
-     "t": 108.109,
-     "tExcerpt": 108.11,
-     "tShare": 444.596,
-     "tFilm": 444.596,
+     "t": 108.292,
+     "tExcerpt": 108.29,
+     "tShare": 444.779,
+     "tFilm": 444.779,
      "at": {
       "map": [
-       1351.14,
-       2062.87
-      ],
-      "px": [
-       66,
-       556
-      ],
-      "nx": 0.035,
-      "ny": 0.515,
-      "onScreen": true,
-      "camDist": 12.09
-     }
-    },
-    {
-     "t": 108.325,
-     "tExcerpt": 108.32,
-     "tShare": 444.812,
-     "tFilm": 444.812,
-     "at": {
-      "map": [
-       1351.2,
-       2062.99
+       1350.88,
+       2062.37
       ],
       "px": [
        43,
-       565
+       509
       ],
       "nx": 0.022,
-      "ny": 0.523,
+      "ny": 0.472,
       "onScreen": true,
-      "camDist": 12.08
+      "camDist": 12.58
+     }
+    },
+    {
+     "t": 108.452,
+     "tExcerpt": 108.45,
+     "tShare": 444.939,
+     "tFilm": 444.939,
+     "at": {
+      "map": [
+       1351.09,
+       2062.78
+      ],
+      "px": [
+       16,
+       545
+      ],
+      "nx": 0.008,
+      "ny": 0.505,
+      "onScreen": true,
+      "camDist": 12.34
+     }
+    },
+    {
+     "t": 108.51,
+     "tExcerpt": 108.51,
+     "tShare": 444.997,
+     "tFilm": 444.997,
+     "at": {
+      "map": [
+       1351.01,
+       2062.62
+      ],
+      "px": [
+       1,
+       530
+      ],
+      "nx": 0.001,
+      "ny": 0.491,
+      "onScreen": true,
+      "camDist": 12.52
+     }
+    },
+    {
+     "t": 108.517,
+     "tExcerpt": 108.52,
+     "tShare": 445.004,
+     "tFilm": 445.004,
+     "at": {
+      "map": [
+       1350.99,
+       2062.57
+      ],
+      "px": [
+       -1,
+       526
+      ],
+      "nx": 0,
+      "ny": 0.487,
+      "onScreen": false,
+      "camDist": 12.57
+     }
+    },
+    {
+     "t": 108.549,
+     "tExcerpt": 108.55,
+     "tShare": 445.036,
+     "tFilm": 445.036,
+     "at": {
+      "map": [
+       1351.17,
+       2062.93
+      ],
+      "px": [
+       -7,
+       558
+      ],
+      "nx": -0.004,
+      "ny": 0.517,
+      "onScreen": false,
+      "camDist": 12.3
+     }
+    },
+    {
+     "t": 108.618,
+     "tExcerpt": 108.62,
+     "tShare": 445.105,
+     "tFilm": 445.105,
+     "at": {
+      "map": [
+       1351.05,
+       2062.71
+      ],
+      "px": [
+       -27,
+       537
+      ],
+      "nx": -0.014,
+      "ny": 0.497,
+      "onScreen": false,
+      "camDist": 12.57
+     }
+    },
+    {
+     "t": 108.694,
+     "tExcerpt": 108.69,
+     "tShare": 445.181,
+     "tFilm": 445.181,
+     "at": {
+      "map": [
+       1351.13,
+       2062.85
+      ],
+      "px": [
+       -50,
+       551
+      ],
+      "nx": -0.026,
+      "ny": 0.51,
+      "onScreen": false,
+      "camDist": 12.54
+     }
+    },
+    {
+     "t": 108.833,
+     "tExcerpt": 108.83,
+     "tShare": 445.32,
+     "tFilm": 445.32,
+     "at": {
+      "map": [
+       1351.24,
+       2063.07
+      ],
+      "px": [
+       -98,
+       570
+      ],
+      "nx": -0.051,
+      "ny": 0.528,
+      "onScreen": false,
+      "camDist": 12.55
+     }
+    },
+    {
+     "t": 108.908,
+     "tExcerpt": 108.91,
+     "tShare": 445.395,
+     "tFilm": 445.395,
+     "at": {
+      "map": [
+       1351.19,
+       2062.98
+      ],
+      "px": [
+       -126,
+       563
+      ],
+      "nx": -0.066,
+      "ny": 0.521,
+      "onScreen": false,
+      "camDist": 12.75
+     }
+    },
+    {
+     "t": 109.066,
+     "tExcerpt": 109.07,
+     "tShare": 445.553,
+     "tFilm": 445.553,
+     "at": {
+      "map": [
+       1351.28,
+       2063.16
+      ],
+      "px": [
+       -190,
+       580
+      ],
+      "nx": -0.099,
+      "ny": 0.537,
+      "onScreen": false,
+      "camDist": 12.87
      }
     }
    ]
@@ -1742,12 +2551,12 @@
     ],
     "px": [
      636,
-     89
+     84
     ],
     "nx": 0.331,
-    "ny": 0.083,
+    "ny": 0.077,
     "onScreen": true,
-    "camDist": 19.09
+    "camDist": 19.05
    },
    "unit": {
     "unit": 6,
@@ -1756,7 +2565,7 @@
     "label": null,
     "blocks": 1,
     "men": 4,
-    "dist": 0.09
+    "dist": 0.05
    },
    "impact": {
     "t": 108.5,
@@ -1788,19 +2597,19 @@
    "at": {
     "map": [
      1363.4,
-     2048.8
+     2048.84
     ],
     "px": [
-     750,
-     -32
+     751,
+     -38
     ],
     "nx": 0.391,
-    "ny": -0.03,
+    "ny": -0.035,
     "onScreen": false,
-    "camDist": 23.18
+    "camDist": 23.11
    },
    "unit": {
-    "unit": 10,
+    "unit": 11,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1816,20 +2625,82 @@
    "tFilm": 447.89,
    "at": {
     "map": [
-     1371,
+     1370.93,
      2054.2
     ],
     "px": [
-     1339,
+     1334,
      133
     ],
-    "nx": 0.697,
+    "nx": 0.695,
     "ny": 0.123,
     "onScreen": true,
-    "camDist": 20.41
+    "camDist": 20.37
+   },
+   "unit": {
+    "unit": 12,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.17,
+   "t": 111.5,
+   "tExcerpt": 111.5,
+   "tShare": 447.99,
+   "tFilm": 447.99,
+   "at": {
+    "map": [
+     1363.4,
+     2048.82
+    ],
+    "px": [
+     740,
+     -34
+    ],
+    "nx": 0.385,
+    "ny": -0.031,
+    "onScreen": false,
+    "camDist": 22.95
    },
    "unit": {
     "unit": 11,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.17,
+   "t": 111.8,
+   "tExcerpt": 111.8,
+   "tShare": 448.29,
+   "tFilm": 448.29,
+   "at": {
+    "map": [
+     1370.98,
+     2054.2
+    ],
+    "px": [
+     1332,
+     137
+    ],
+    "nx": 0.694,
+    "ny": 0.127,
+    "onScreen": true,
+    "camDist": 20.25
+   },
+   "unit": {
+    "unit": 12,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1845,20 +2716,20 @@
    "tFilm": 448.29,
    "at": {
     "map": [
-     1357.6,
+     1357.7,
      2056.6
     ],
     "px": [
-     281,
-     225
+     290,
+     224
     ],
-    "nx": 0.146,
+    "nx": 0.151,
     "ny": 0.208,
     "onScreen": true,
-    "camDist": 16.29
+    "camDist": 16.26
    },
    "unit": {
-    "unit": 12,
+    "unit": 13,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1869,58 +2740,27 @@
   {
    "type": "march_start",
    "direction": "advance",
-   "speed": 0.2,
-   "t": 113.3,
-   "tExcerpt": 113.3,
-   "tShare": 449.79,
-   "tFilm": 449.79,
+   "speed": 0.17,
+   "t": 112.1,
+   "tExcerpt": 112.1,
+   "tShare": 448.59,
+   "tFilm": 448.59,
    "at": {
     "map": [
-     1363.4,
-     2048.82
+     1357.62,
+     2056.6
     ],
     "px": [
-     703,
-     -11
+     273,
+     230
     ],
-    "nx": 0.366,
-    "ny": -0.01,
-    "onScreen": false,
-    "camDist": 22.35
-   },
-   "unit": {
-    "unit": 10,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.2,
-   "t": 113.6,
-   "tExcerpt": 113.6,
-   "tShare": 450.09,
-   "tFilm": 450.09,
-   "at": {
-    "map": [
-     1370.98,
-     2054.2
-    ],
-    "px": [
-     1306,
-     159
-    ],
-    "nx": 0.68,
-    "ny": 0.147,
+    "nx": 0.142,
+    "ny": 0.213,
     "onScreen": true,
-    "camDist": 19.59
+    "camDist": 16.2
    },
    "unit": {
-    "unit": 11,
+    "unit": 13,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -1930,7 +2770,7 @@
   },
   {
    "type": "march_stop",
-   "duration": 8.3,
+   "duration": 13.2,
    "t": 113.9,
    "tExcerpt": 113.9,
    "tShare": 450.39,
@@ -1942,133 +2782,72 @@
     ],
     "px": [
      703,
-     197
+     196
     ],
     "nx": 0.366,
-    "ny": 0.183,
+    "ny": 0.182,
     "onScreen": true,
     "camDist": 16.59
-   },
-   "unit": {
-    "unit": 8,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.2,
-   "t": 113.9,
-   "tExcerpt": 113.9,
-   "tShare": 450.39,
-   "tFilm": 450.39,
-   "at": {
-    "map": [
-     1357.62,
-     2056.6
-    ],
-    "px": [
-     213,
-     267
-    ],
-    "nx": 0.111,
-    "ny": 0.247,
-    "onScreen": true,
-    "camDist": 15.75
-   },
-   "unit": {
-    "unit": 12,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_stop",
-   "duration": 8.5,
-   "t": 114.5,
-   "tExcerpt": 114.5,
-   "tShare": 450.99,
-   "tFilm": 450.99,
-   "at": {
-    "map": [
-     1364.79,
-     2057.2
-    ],
-    "px": [
-     851,
-     293
-    ],
-    "nx": 0.443,
-    "ny": 0.272,
-    "onScreen": true,
-    "camDist": 14.66
    },
    "unit": {
     "unit": 9,
     "side": "Confederate",
     "type": "inf",
     "label": null,
-    "blocks": 1,
-    "men": 72
+    "blocks": 2,
+    "men": 144
    }
   },
   {
    "type": "march_stop",
-   "duration": 2.7,
-   "t": 116,
-   "tExcerpt": 116,
-   "tShare": 452.49,
-   "tFilm": 452.49,
+   "duration": 13.5,
+   "t": 114.6,
+   "tExcerpt": 114.6,
+   "tShare": 451.09,
+   "tFilm": 451.09,
    "at": {
     "map": [
-     1363.4,
-     2051.4
+     1364.8,
+     2057.2
     ],
     "px": [
-     656,
-     97
+     850,
+     293
     ],
-    "nx": 0.341,
-    "ny": 0.09,
+    "nx": 0.443,
+    "ny": 0.272,
     "onScreen": true,
-    "camDist": 19.09
+    "camDist": 14.62
    },
    "unit": {
     "unit": 10,
-    "side": "Union",
+    "side": "Confederate",
     "type": "inf",
     "label": null,
-    "blocks": 1,
-    "men": 72
+    "blocks": 2,
+    "men": 144
    }
   },
   {
    "type": "march_stop",
-   "duration": 2.7,
-   "t": 116.3,
-   "tExcerpt": 116.3,
-   "tShare": 452.79,
-   "tFilm": 452.79,
+   "duration": 4.4,
+   "t": 115.9,
+   "tExcerpt": 115.9,
+   "tShare": 452.39,
+   "tFilm": 452.39,
    "at": {
     "map": [
-     1368.4,
-     2054.2
+     1363.4,
+     2051.39
     ],
     "px": [
-     1064,
-     201
+     658,
+     81
     ],
-    "nx": 0.554,
-    "ny": 0.186,
+    "nx": 0.343,
+    "ny": 0.075,
     "onScreen": true,
-    "camDist": 17.59
+    "camDist": 19.05
    },
    "unit": {
     "unit": 11,
@@ -2080,9 +2859,39 @@
    }
   },
   {
+   "type": "march_stop",
+   "duration": 4.4,
+   "t": 116.2,
+   "tExcerpt": 116.2,
+   "tShare": 452.69,
+   "tFilm": 452.69,
+   "at": {
+    "map": [
+     1368.41,
+     2054.2
+    ],
+    "px": [
+     1066,
+     199
+    ],
+    "nx": 0.555,
+    "ny": 0.184,
+    "onScreen": true,
+    "camDist": 17.62
+   },
+   "unit": {
+    "unit": 12,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
    "type": "musket_volley",
    "style": "ripple",
-   "rippleSeconds": 0.6,
+   "rippleSeconds": 0.9,
    "lineLength": 1.2,
    "t": 116.35,
    "tExcerpt": 116.35,
@@ -2095,12 +2904,12 @@
     ],
     "px": [
      694,
-     110
+     105
     ],
     "nx": 0.361,
-    "ny": 0.102,
+    "ny": 0.097,
     "onScreen": true,
-    "camDist": 18.63
+    "camDist": 18.6
    },
    "from": {
     "map": [
@@ -2109,12 +2918,12 @@
     ],
     "px": [
      605,
-     108
+     101
     ],
     "nx": 0.315,
-    "ny": 0.1,
+    "ny": 0.094,
     "onScreen": true,
-    "camDist": 18.54
+    "camDist": 18.51
    },
    "to": {
     "map": [
@@ -2123,15 +2932,15 @@
     ],
     "px": [
      694,
-     110
+     105
     ],
     "nx": 0.361,
-    "ny": 0.102,
+    "ny": 0.097,
     "onScreen": true,
-    "camDist": 18.63
+    "camDist": 18.6
    },
    "unit": {
-    "unit": 10,
+    "unit": 11,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -2147,144 +2956,344 @@
      "tFilm": 452.837,
      "at": {
       "map": [
-       1362.98,
+       1362.8,
        2051.8
       ],
       "px": [
-       619,
+       605,
+       101
+      ],
+      "nx": 0.315,
+      "ny": 0.094,
+      "onScreen": true,
+      "camDist": 18.51
+     }
+    },
+    {
+     "t": 116.35,
+     "tExcerpt": 116.35,
+     "tShare": 452.837,
+     "tFilm": 452.837,
+     "at": {
+      "map": [
+       1362.89,
+       2051.8
+      ],
+      "px": [
+       612,
+       102
+      ],
+      "nx": 0.319,
+      "ny": 0.094,
+      "onScreen": true,
+      "camDist": 18.51
+     }
+    },
+    {
+     "t": 116.47,
+     "tExcerpt": 116.47,
+     "tShare": 452.957,
+     "tFilm": 452.957,
+     "at": {
+      "map": [
+       1363.21,
+       2051.8
+      ],
+      "px": [
+       633,
+       104
+      ],
+      "nx": 0.33,
+      "ny": 0.097,
+      "onScreen": true,
+      "camDist": 18.49
+     }
+    },
+    {
+     "t": 116.615,
+     "tExcerpt": 116.62,
+     "tShare": 453.102,
+     "tFilm": 453.102,
+     "at": {
+      "map": [
+       1363.13,
+       2051.8
+      ],
+      "px": [
+       624,
+       106
+      ],
+      "nx": 0.325,
+      "ny": 0.098,
+      "onScreen": true,
+      "camDist": 18.44
+     }
+    },
+    {
+     "t": 116.643,
+     "tExcerpt": 116.64,
+     "tShare": 453.13,
+     "tFilm": 453.13,
+     "at": {
+      "map": [
+       1362.97,
+       2051.8
+      ],
+      "px": [
+       611,
+       106
+      ],
+      "nx": 0.318,
+      "ny": 0.098,
+      "onScreen": true,
+      "camDist": 18.42
+     }
+    },
+    {
+     "t": 116.722,
+     "tExcerpt": 116.72,
+     "tShare": 453.209,
+     "tFilm": 453.209,
+     "at": {
+      "map": [
+       1363.03,
+       2051.8
+      ],
+      "px": [
+       614,
+       108
+      ],
+      "nx": 0.32,
+      "ny": 0.1,
+      "onScreen": true,
+      "camDist": 18.4
+     }
+    },
+    {
+     "t": 116.768,
+     "tExcerpt": 116.77,
+     "tShare": 453.255,
+     "tFilm": 453.255,
+     "at": {
+      "map": [
+       1363.3,
+       2051.8
+      ],
+      "px": [
+       633,
        109
       ],
-      "nx": 0.322,
+      "nx": 0.33,
       "ny": 0.101,
       "onScreen": true,
-      "camDist": 18.56
+      "camDist": 18.4
      }
     },
     {
-     "t": 116.443,
-     "tExcerpt": 116.44,
-     "tShare": 452.93,
-     "tFilm": 452.93,
+     "t": 116.792,
+     "tExcerpt": 116.79,
+     "tShare": 453.279,
+     "tFilm": 453.279,
      "at": {
       "map": [
-       1363.1,
+       1363.35,
        2051.8
       ],
       "px": [
-       626,
-       113
+       636,
+       110
       ],
-      "nx": 0.326,
-      "ny": 0.105,
+      "nx": 0.331,
+      "ny": 0.101,
       "onScreen": true,
-      "camDist": 18.55
+      "camDist": 18.4
      }
     },
     {
-     "t": 116.476,
-     "tExcerpt": 116.48,
-     "tShare": 452.963,
-     "tFilm": 452.963,
+     "t": 116.812,
+     "tExcerpt": 116.81,
+     "tShare": 453.299,
+     "tFilm": 453.299,
      "at": {
       "map": [
-       1363.48,
+       1363.68,
+       2051.8
+      ],
+      "px": [
+       661,
+       111
+      ],
+      "nx": 0.344,
+      "ny": 0.102,
+      "onScreen": true,
+      "camDist": 18.41
+     }
+    },
+    {
+     "t": 116.822,
+     "tExcerpt": 116.82,
+     "tShare": 453.309,
+     "tFilm": 453.309,
+     "at": {
+      "map": [
+       1363.58,
        2051.8
       ],
       "px": [
        653,
-       119
+       111
       ],
       "nx": 0.34,
-      "ny": 0.11,
+      "ny": 0.102,
       "onScreen": true,
-      "camDist": 18.59
+      "camDist": 18.4
      }
     },
     {
-     "t": 116.558,
-     "tExcerpt": 116.56,
-     "tShare": 453.045,
-     "tFilm": 453.045,
+     "t": 116.874,
+     "tExcerpt": 116.87,
+     "tShare": 453.361,
+     "tFilm": 453.361,
      "at": {
       "map": [
-       1363.69,
+       1363.44,
        2051.8
       ],
       "px": [
-       666,
-       119
+       641,
+       111
+      ],
+      "nx": 0.334,
+      "ny": 0.103,
+      "onScreen": true,
+      "camDist": 18.37
+     }
+    },
+    {
+     "t": 117.02,
+     "tExcerpt": 117.02,
+     "tShare": 453.507,
+     "tFilm": 453.507,
+     "at": {
+      "map": [
+       1363.83,
+       2051.8
+      ],
+      "px": [
+       667,
+       114
       ],
       "nx": 0.347,
-      "ny": 0.11,
+      "ny": 0.106,
       "onScreen": true,
-      "camDist": 18.57
+      "camDist": 18.36
      }
     },
     {
-     "t": 116.571,
-     "tExcerpt": 116.57,
-     "tShare": 453.058,
-     "tFilm": 453.058,
+     "t": 117.034,
+     "tExcerpt": 117.03,
+     "tShare": 453.521,
+     "tFilm": 453.521,
      "at": {
       "map": [
-       1363.37,
+       1363.54,
        2051.8
       ],
       "px": [
-       643,
+       645,
+       114
+      ],
+      "nx": 0.336,
+      "ny": 0.105,
+      "onScreen": true,
+      "camDist": 18.33
+     }
+    },
+    {
+     "t": 117.054,
+     "tExcerpt": 117.05,
+     "tShare": 453.541,
+     "tFilm": 453.541,
+     "at": {
+      "map": [
+       1363.93,
+       2051.8
+      ],
+      "px": [
+       674,
+       115
+      ],
+      "nx": 0.351,
+      "ny": 0.107,
+      "onScreen": true,
+      "camDist": 18.36
+     }
+    },
+    {
+     "t": 117.248,
+     "tExcerpt": 117.25,
+     "tShare": 453.735,
+     "tFilm": 453.735,
+     "at": {
+      "map": [
+       1363.79,
+       2051.8
+      ],
+      "px": [
+       659,
+       118
+      ],
+      "nx": 0.343,
+      "ny": 0.109,
+      "onScreen": true,
+      "camDist": 18.28
+     }
+    },
+    {
+     "t": 117.304,
+     "tExcerpt": 117.3,
+     "tShare": 453.791,
+     "tFilm": 453.791,
+     "at": {
+      "map": [
+       1364.02,
+       2051.8
+      ],
+      "px": [
+       675,
        120
       ],
-      "nx": 0.335,
+      "nx": 0.352,
       "ny": 0.111,
       "onScreen": true,
-      "camDist": 18.55
-     }
-    },
-    {
-     "t": 116.855,
-     "tExcerpt": 116.86,
-     "tShare": 453.342,
-     "tFilm": 453.342,
-     "at": {
-      "map": [
-       1363.78,
-       2051.8
-      ],
-      "px": [
-       666,
-       121
-      ],
-      "nx": 0.347,
-      "ny": 0.112,
-      "onScreen": true,
-      "camDist": 18.47
+      "camDist": 18.29
      }
     }
    ]
   },
   {
    "type": "march_stop",
-   "duration": 2.7,
-   "t": 116.6,
-   "tExcerpt": 116.6,
-   "tShare": 453.09,
-   "tFilm": 453.09,
+   "duration": 4.4,
+   "t": 116.5,
+   "tExcerpt": 116.5,
+   "tShare": 452.99,
+   "tFilm": 452.99,
    "at": {
     "map": [
-     1360.2,
+     1360.19,
      2056.6
     ],
     "px": [
-     367,
-     324
+     369,
+     322
     ],
-    "nx": 0.191,
-    "ny": 0.3,
+    "nx": 0.192,
+    "ny": 0.298,
     "onScreen": true,
-    "camDist": 14.51
+    "camDist": 14.53
    },
    "unit": {
-    "unit": 12,
+    "unit": 13,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -2295,7 +3304,7 @@
   {
    "type": "musket_volley",
    "style": "ripple",
-   "rippleSeconds": 0.6,
+   "rippleSeconds": 0.9,
    "lineLength": 1.2,
    "t": 116.65,
    "tExcerpt": 116.65,
@@ -2308,10 +3317,10 @@
     ],
     "px": [
      1033,
-     231
+     230
     ],
     "nx": 0.538,
-    "ny": 0.214,
+    "ny": 0.213,
     "onScreen": true,
     "camDist": 16.8
    },
@@ -2321,13 +3330,13 @@
      2053.6
     ],
     "px": [
-     1005,
-     186
+     1006,
+     182
     ],
-    "nx": 0.523,
-    "ny": 0.173,
+    "nx": 0.524,
+    "ny": 0.168,
     "onScreen": true,
-    "camDist": 17.81
+    "camDist": 17.79
    },
    "to": {
     "map": [
@@ -2336,15 +3345,15 @@
     ],
     "px": [
      1033,
-     231
+     230
     ],
     "nx": 0.538,
-    "ny": 0.214,
+    "ny": 0.213,
     "onScreen": true,
     "camDist": 16.8
    },
    "unit": {
-    "unit": 11,
+    "unit": 12,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -2361,116 +3370,316 @@
      "at": {
       "map": [
        1367.9,
-       2053.84
+       2053.59
       ],
       "px": [
-       1010,
-       195
+       1005,
+       182
       ],
-      "nx": 0.526,
-      "ny": 0.181,
+      "nx": 0.524,
+      "ny": 0.168,
       "onScreen": true,
-      "camDist": 17.61
+      "camDist": 17.8
      }
     },
     {
-     "t": 116.653,
-     "tExcerpt": 116.65,
-     "tShare": 453.14,
-     "tFilm": 453.14,
+     "t": 116.725,
+     "tExcerpt": 116.72,
+     "tShare": 453.212,
+     "tFilm": 453.212,
+     "at": {
+      "map": [
+       1367.9,
+       2053.66
+      ],
+      "px": [
+       1006,
+       185
+      ],
+      "nx": 0.524,
+      "ny": 0.171,
+      "onScreen": true,
+      "camDist": 17.71
+     }
+    },
+    {
+     "t": 116.797,
+     "tExcerpt": 116.8,
+     "tShare": 453.284,
+     "tFilm": 453.284,
+     "at": {
+      "map": [
+       1367.9,
+       2053.82
+      ],
+      "px": [
+       1008,
+       193
+      ],
+      "nx": 0.525,
+      "ny": 0.179,
+      "onScreen": true,
+      "camDist": 17.55
+     }
+    },
+    {
+     "t": 116.849,
+     "tExcerpt": 116.85,
+     "tShare": 453.336,
+     "tFilm": 453.336,
+     "at": {
+      "map": [
+       1367.9,
+       2054.09
+      ],
+      "px": [
+       1012,
+       207
+      ],
+      "nx": 0.527,
+      "ny": 0.192,
+      "onScreen": true,
+      "camDist": 17.33
+     }
+    },
+    {
+     "t": 116.944,
+     "tExcerpt": 116.94,
+     "tShare": 453.431,
+     "tFilm": 453.431,
+     "at": {
+      "map": [
+       1367.9,
+       2053.74
+      ],
+      "px": [
+       1004,
+       192
+      ],
+      "nx": 0.523,
+      "ny": 0.178,
+      "onScreen": true,
+      "camDist": 17.57
+     }
+    },
+    {
+     "t": 116.999,
+     "tExcerpt": 117,
+     "tShare": 453.486,
+     "tFilm": 453.486,
+     "at": {
+      "map": [
+       1367.9,
+       2053.92
+      ],
+      "px": [
+       1006,
+       202
+      ],
+      "nx": 0.524,
+      "ny": 0.187,
+      "onScreen": true,
+      "camDist": 17.41
+     }
+    },
+    {
+     "t": 117.05,
+     "tExcerpt": 117.05,
+     "tShare": 453.537,
+     "tFilm": 453.537,
+     "at": {
+      "map": [
+       1367.9,
+       2054.17
+      ],
+      "px": [
+       1011,
+       212
+      ],
+      "nx": 0.527,
+      "ny": 0.197,
+      "onScreen": true,
+      "camDist": 17.19
+     }
+    },
+    {
+     "t": 117.059,
+     "tExcerpt": 117.06,
+     "tShare": 453.546,
+     "tFilm": 453.546,
+     "at": {
+      "map": [
+       1367.9,
+       2054.21
+      ],
+      "px": [
+       1012,
+       213
+      ],
+      "nx": 0.527,
+      "ny": 0.198,
+      "onScreen": true,
+      "camDist": 17.14
+     }
+    },
+    {
+     "t": 117.113,
+     "tExcerpt": 117.11,
+     "tShare": 453.6,
+     "tFilm": 453.6,
      "at": {
       "map": [
        1367.9,
        2053.97
       ],
       "px": [
-       1013,
-       200
+       1005,
+       207
       ],
-      "nx": 0.528,
-      "ny": 0.185,
+      "nx": 0.524,
+      "ny": 0.192,
       "onScreen": true,
-      "camDist": 17.5
+      "camDist": 17.33
      }
     },
     {
-     "t": 116.801,
-     "tExcerpt": 116.8,
-     "tShare": 453.288,
-     "tFilm": 453.288,
+     "t": 117.272,
+     "tExcerpt": 117.27,
+     "tShare": 453.759,
+     "tFilm": 453.759,
      "at": {
       "map": [
        1367.9,
-       2054.13
+       2054.34
+      ],
+      "px": [
+       1012,
+       219
+      ],
+      "nx": 0.527,
+      "ny": 0.202,
+      "onScreen": true,
+      "camDist": 16.94
+     }
+    },
+    {
+     "t": 117.349,
+     "tExcerpt": 117.35,
+     "tShare": 453.836,
+     "tFilm": 453.836,
+     "at": {
+      "map": [
+       1367.9,
+       2054.38
+      ],
+      "px": [
+       1012,
+       221
+      ],
+      "nx": 0.527,
+      "ny": 0.205,
+      "onScreen": true,
+      "camDist": 16.88
+     }
+    },
+    {
+     "t": 117.373,
+     "tExcerpt": 117.37,
+     "tShare": 453.86,
+     "tFilm": 453.86,
+     "at": {
+      "map": [
+       1367.9,
+       2054.48
       ],
       "px": [
        1014,
-       208
+       225
       ],
       "nx": 0.528,
-      "ny": 0.193,
+      "ny": 0.208,
       "onScreen": true,
-      "camDist": 17.32
+      "camDist": 16.79
      }
     },
     {
-     "t": 116.827,
-     "tExcerpt": 116.83,
-     "tShare": 453.314,
-     "tFilm": 453.314,
+     "t": 117.46,
+     "tExcerpt": 117.46,
+     "tShare": 453.947,
+     "tFilm": 453.947,
      "at": {
       "map": [
        1367.9,
-       2054.43
+       2054.66
       ],
       "px": [
-       1021,
-       220
+       1016,
+       238
       ],
-      "nx": 0.532,
-      "ny": 0.204,
+      "nx": 0.529,
+      "ny": 0.22,
       "onScreen": true,
-      "camDist": 17.06
+      "camDist": 16.63
      }
     },
     {
-     "t": 116.931,
-     "tExcerpt": 116.93,
-     "tShare": 453.418,
-     "tFilm": 453.418,
+     "t": 117.529,
+     "tExcerpt": 117.53,
+     "tShare": 454.016,
+     "tFilm": 454.016,
      "at": {
       "map": [
        1367.9,
-       2054.33
+       2054.71
       ],
       "px": [
-       1017,
-       218
+       1016,
+       242
       ],
-      "nx": 0.53,
-      "ny": 0.202,
+      "nx": 0.529,
+      "ny": 0.224,
       "onScreen": true,
-      "camDist": 17.1
+      "camDist": 16.57
      }
     },
     {
-     "t": 117.092,
-     "tExcerpt": 117.09,
-     "tShare": 453.579,
-     "tFilm": 453.579,
+     "t": 117.569,
+     "tExcerpt": 117.57,
+     "tShare": 454.056,
+     "tFilm": 454.056,
      "at": {
       "map": [
        1367.9,
-       2054.57
+       2054.56
       ],
       "px": [
-       1020,
-       230
+       1012,
+       233
       ],
-      "nx": 0.531,
-      "ny": 0.213,
+      "nx": 0.527,
+      "ny": 0.216,
       "onScreen": true,
-      "camDist": 16.85
+      "camDist": 16.66
+     }
+    },
+    {
+     "t": 117.715,
+     "tExcerpt": 117.71,
+     "tShare": 454.202,
+     "tFilm": 454.202,
+     "at": {
+      "map": [
+       1367.9,
+       2054.82
+      ],
+      "px": [
+       1016,
+       251
+      ],
+      "nx": 0.529,
+      "ny": 0.232,
+      "onScreen": true,
+      "camDist": 16.42
      }
     }
    ]
@@ -2488,22 +3697,22 @@
     ],
     "px": [
      624,
-     261
+     260
     ],
     "nx": 0.325,
     "ny": 0.241,
     "onScreen": true,
-    "camDist": 15.5
+    "camDist": 15.49
    },
    "unit": {
-    "unit": 8,
+    "unit": 9,
     "side": "Confederate",
     "type": "inf",
     "label": null,
-    "blocks": 1,
-    "men": 72
+    "blocks": 2,
+    "men": 144
    },
-   "boxes": 1
+   "boxes": 3
   },
   {
    "type": "capture",
@@ -2518,22 +3727,53 @@
     ],
     "px": [
      787,
-     363
+     362
     ],
     "nx": 0.41,
-    "ny": 0.336,
+    "ny": 0.335,
     "onScreen": true,
-    "camDist": 13.68
+    "camDist": 13.67
    },
    "unit": {
-    "unit": 9,
+    "unit": 10,
     "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 2,
+    "men": 144
+   },
+   "boxes": 3
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.18,
+   "t": 117.8,
+   "tExcerpt": 117.8,
+   "tShare": 454.29,
+   "tFilm": 454.29,
+   "at": {
+    "map": [
+     1350.42,
+     2067.6
+    ],
+    "px": [
+     -2968,
+     2402
+    ],
+    "nx": -1.546,
+    "ny": 2.224,
+    "onScreen": false,
+    "camDist": 14.8
+   },
+   "unit": {
+    "unit": 16,
+    "side": "Union",
     "type": "inf",
     "label": null,
     "blocks": 1,
     "men": 72
-   },
-   "boxes": 1
+   }
   },
   {
    "type": "unit_appears",
@@ -2547,16 +3787,16 @@
      2066.4
     ],
     "px": [
-     -768,
-     1799
+     -762,
+     1801
     ],
-    "nx": -0.4,
-    "ny": 1.666,
+    "nx": -0.397,
+    "ny": 1.668,
     "onScreen": false,
-    "camDist": 9.9
+    "camDist": 9.93
    },
    "unit": {
-    "unit": 13,
+    "unit": 14,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2576,16 +3816,16 @@
      2065.6
     ],
     "px": [
-     -1130,
-     1583
+     -1125,
+     1586
     ],
-    "nx": -0.588,
-    "ny": 1.466,
+    "nx": -0.586,
+    "ny": 1.468,
     "onScreen": false,
-    "camDist": 11.33
+    "camDist": 11.35
    },
    "unit": {
-    "unit": 14,
+    "unit": 15,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2601,20 +3841,20 @@
    "tFilm": 454.89,
    "at": {
     "map": [
-     1350.4,
-     2067.6
+     1351.06,
+     2067.68
     ],
     "px": [
-     -3244,
-     2570
+     -3059,
+     2590
     ],
-    "nx": -1.69,
-    "ny": 2.38,
+    "nx": -1.593,
+    "ny": 2.398,
     "onScreen": false,
-    "camDist": 14.85
+    "camDist": 14.31
    },
    "unit": {
-    "unit": 15,
+    "unit": 16,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -2625,58 +3865,27 @@
   {
    "type": "march_start",
    "direction": "advance",
-   "speed": 0.31,
-   "t": 121.3,
-   "tExcerpt": 121.3,
-   "tShare": 457.79,
-   "tFilm": 457.79,
-   "at": {
-    "map": [
-     1350.43,
-     2067.6
-    ],
-    "px": [
-     -84,
-     208
-    ],
-    "nx": -0.044,
-    "ny": 0.193,
-    "onScreen": false,
-    "camDist": 12.95
-   },
-   "unit": {
-    "unit": 15,
-    "side": "Union",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_start",
-   "direction": "advance",
-   "speed": 0.34,
-   "t": 122.5,
-   "tExcerpt": 122.5,
-   "tShare": 458.99,
-   "tFilm": 458.99,
+   "speed": 0.23,
+   "t": 122.6,
+   "tExcerpt": 122.6,
+   "tShare": 459.09,
+   "tFilm": 459.09,
    "at": {
     "map": [
      1357.08,
-     2066.42
+     2066.43
     ],
     "px": [
-     701,
-     150
+     700,
+     147
     ],
     "nx": 0.365,
-    "ny": 0.139,
+    "ny": 0.136,
     "onScreen": true,
-    "camDist": 11.86
+    "camDist": 11.85
    },
    "unit": {
-    "unit": 13,
+    "unit": 14,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2685,27 +3894,57 @@
    }
   },
   {
-   "type": "bridge_break_ranks",
-   "t": 123.1,
-   "tExcerpt": 123.1,
-   "tShare": 459.59,
-   "tFilm": 459.59,
+   "type": "march_stop",
+   "duration": 6.8,
+   "t": 124.6,
+   "tExcerpt": 124.6,
+   "tShare": 461.09,
+   "tFilm": 461.09,
    "at": {
     "map": [
-     1355.81,
-     2068.12
+     1354.59,
+     2068.1
     ],
     "px": [
-     525,
-     256
+     359,
+     257
     ],
-    "nx": 0.274,
-    "ny": 0.237,
+    "nx": 0.187,
+    "ny": 0.238,
     "onScreen": true,
-    "camDist": 10.51
+    "camDist": 10.76
    },
    "unit": {
-    "unit": 13,
+    "unit": 16,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "bridge_break_ranks",
+   "t": 124.62,
+   "tExcerpt": 124.62,
+   "tShare": 461.1,
+   "tFilm": 461.1,
+   "at": {
+    "map": [
+     1355.85,
+     2068.21
+    ],
+    "px": [
+     517,
+     265
+    ],
+    "nx": 0.269,
+    "ny": 0.245,
+    "onScreen": true,
+    "camDist": 10.4
+   },
+   "unit": {
+    "unit": 14,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2718,26 +3957,26 @@
   },
   {
    "type": "bridge_stream_first_on_deck",
-   "t": 123.55,
-   "tExcerpt": 123.55,
-   "tShare": 460.04,
-   "tFilm": 460.04,
+   "t": 125.07,
+   "tExcerpt": 125.07,
+   "tShare": 461.55,
+   "tFilm": 461.55,
    "at": {
     "map": [
      1355.93,
      2068.41
     ],
     "px": [
-     532,
-     277
+     521,
+     280
     ],
-    "nx": 0.277,
-    "ny": 0.256,
+    "nx": 0.271,
+    "ny": 0.259,
     "onScreen": true,
-    "camDist": 10.24
+    "camDist": 10.21
    },
    "unit": {
-    "unit": 13,
+    "unit": 14,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2749,58 +3988,28 @@
   },
   {
    "type": "march_stop",
-   "duration": 2.2,
-   "t": 124.7,
-   "tExcerpt": 124.7,
-   "tShare": 461.19,
-   "tFilm": 461.19,
-   "at": {
-    "map": [
-     1355.5,
-     2068.54
-    ],
-    "px": [
-     464,
-     286
-    ],
-    "nx": 0.242,
-    "ny": 0.265,
-    "onScreen": true,
-    "camDist": 10.17
-   },
-   "unit": {
-    "unit": 13,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72
-   }
-  },
-  {
-   "type": "march_stop",
    "duration": 3.4,
-   "t": 124.7,
-   "tExcerpt": 124.7,
-   "tShare": 461.19,
-   "tFilm": 461.19,
+   "t": 126,
+   "tExcerpt": 126,
+   "tShare": 462.49,
+   "tFilm": 462.49,
    "at": {
     "map": [
-     1354.6,
-     2068.1
+     1355.73,
+     2068.38
     ],
     "px": [
-     359,
-     255
+     488,
+     278
     ],
-    "nx": 0.187,
-    "ny": 0.236,
+    "nx": 0.254,
+    "ny": 0.258,
     "onScreen": true,
-    "camDist": 10.74
+    "camDist": 10.24
    },
    "unit": {
-    "unit": 15,
-    "side": "Union",
+    "unit": 14,
+    "side": "Confederate",
     "type": "inf",
     "label": null,
     "blocks": 1,
@@ -2809,57 +4018,26 @@
   },
   {
    "type": "bridge_stream_last_on_deck",
-   "t": 124.82,
-   "tExcerpt": 124.82,
-   "tShare": 461.3,
-   "tFilm": 461.3,
+   "t": 126.33,
+   "tExcerpt": 126.33,
+   "tShare": 462.82,
+   "tFilm": 462.82,
    "at": {
     "map": [
      1355.93,
      2068.41
     ],
     "px": [
-     523,
-     278
+     511,
+     280
     ],
-    "nx": 0.272,
-    "ny": 0.257,
+    "nx": 0.266,
+    "ny": 0.26,
     "onScreen": true,
-    "camDist": 10.2
+    "camDist": 10.17
    },
    "unit": {
-    "unit": 13,
-    "side": "Confederate",
-    "type": "inf",
-    "label": null,
-    "blocks": 1,
-    "men": 72,
-    "block": 0
-   },
-   "menInStream": 72
-  },
-  {
-   "type": "bridge_stream_last_off_deck",
-   "t": 125.66,
-   "tExcerpt": 125.66,
-   "tShare": 462.14,
-   "tFilm": 462.14,
-   "at": {
-    "map": [
-     1356.63,
-     2070.15
-    ],
-    "px": [
-     591,
-     397
-    ],
-    "nx": 0.308,
-    "ny": 0.367,
-    "onScreen": true,
-    "camDist": 8.57
-   },
-   "unit": {
-    "unit": 13,
+    "unit": 14,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2882,15 +4060,15 @@
     ],
     "px": [
      446,
-     105
+     101
     ],
     "nx": 0.232,
-    "ny": 0.097,
+    "ny": 0.094,
     "onScreen": true,
-    "camDist": 12.72
+    "camDist": 12.7
    },
    "unit": {
-    "unit": 14,
+    "unit": 15,
     "side": "Confederate",
     "type": "inf",
     "label": null,
@@ -2900,11 +4078,42 @@
    "boxes": 1
   },
   {
+   "type": "bridge_stream_last_off_deck",
+   "t": 128.3,
+   "tExcerpt": 128.3,
+   "tShare": 464.79,
+   "tFilm": 464.79,
+   "at": {
+    "map": [
+     1356.63,
+     2070.15
+    ],
+    "px": [
+     436,
+     786
+    ],
+    "nx": 0.227,
+    "ny": 0.728,
+    "onScreen": true,
+    "camDist": 11.5
+   },
+   "unit": {
+    "unit": 14,
+    "side": "Confederate",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72,
+    "block": 0
+   },
+   "menInStream": 72
+  },
+  {
    "type": "bridge_stream_gone",
-   "t": 129.35,
-   "tExcerpt": 129.35,
-   "tShare": 465.83,
-   "tFilm": 465.83,
+   "t": 131.99,
+   "tExcerpt": 131.99,
+   "tShare": 468.48,
+   "tFilm": 468.48,
    "at": {
     "map": [
      1358.5,
@@ -2912,15 +4121,15 @@
     ],
     "px": [
      578,
-     1429
+     1421
     ],
     "nx": 0.301,
-    "ny": 1.323,
+    "ny": 1.316,
     "onScreen": false,
-    "camDist": 13.94
+    "camDist": 14.19
    },
    "unit": {
-    "unit": 13,
+    "unit": 14,
     "side": "Confederate",
     "type": "inf",
     "label": null,
