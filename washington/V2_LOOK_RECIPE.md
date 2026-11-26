@@ -138,4 +138,4 @@ volleys (section 1), re-check troop motion, legend + timeline on map shots, carv
 (a) `_v2test_a` 22.8 s (S04 colonies, wide, legend + timeline + date plate + clouds + arrows) vs v8 3 s; (b) `_v2test_b` 65.2 s (S03 Brooklyn,
 night ferry, clock 8:00, carved "Brooklyn ferry") vs v8 35 s; (c) `_v2test_c` 89.6 s (S05 Trenton, winter dawn, clock 8:00, troops walking) vs
 v8 60.5 s; (d) `_v2test_d` 75.9 s (S07 Princeton orchard: 15 v14-scale blocks, volleys, Washington's banner, legend, clock, timeline) vs v14 40 s.
-Rebuild + snap: `python3 vicksburg/tools/make_scene.py washington/sequences/_v2test_d && bash vicksburg/tools/snap.sh washington/scenes/_v2test_d 75.9 <out>`.
+Sheet: `python3 /tmp/claude-0/-home-user-battle-maps/60769b45-58c2-54c2-9881-6e0959cf686a/scratchpad/looklead/v2sheet_looklead.py` (stills built on the v2 worlds, 11:20). Rebuild + snap: `python3 vicksburg/tools/make_scene.py washington/sequences/_v2test_d && bash vicksburg/tools/snap.sh washington/scenes/_v2test_d 75.9 <out>`.
