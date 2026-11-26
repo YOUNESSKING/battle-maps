@@ -35,3 +35,6 @@ Open issues: the town houses (two dense rows on King / Queen St) partly hide the
 
 ## Round 4
 - Cornwallis banner on the Trenton map enters 0.6 s later (T.stopped - 0.15), once the rising camera has it inside the frame.
+
+## Round 5
+- Cornwallis banner (Trenton) 3 u south (y 2059.4) and in at 54.2, inside the frame.

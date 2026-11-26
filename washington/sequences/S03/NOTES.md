@@ -58,3 +58,8 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 
 ## Round 4
 - Dive whoosh back to 1.4 (1.2 covered "simple.").
+
+## Round 5
+- Dive landing: `to` at [2487.5, 1162] dist 74 -> 60, the 11.0 key dist 62, `off.clear` 0.75 / haze 1.0: no flat world edge at the right (snaps every 0.3 s, 4.2-9 s).
+- Covering-force shots ~25 % closer (dist 33/29/30 -> 25/22/23), label 17 -> 20.
+- Checks: brooklyn FAIL rows only after the 70.9 dissolve (off-frame).
