@@ -219,7 +219,7 @@ function buildResult(c) { const st = document.createElement("style"); st.textCon
 
 const DS = 4.0, NI = 1.0, NG = 0.45;   // V2 r2: a real night (v8 / S09_gm night 1 + film.grade night 0.8)   // round 1 (critic A): night +15 % lighter than 0.85
 window.SEQ = {
-  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 } },   // V2: = the v8 clip wide grade
+  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 }, night: { veil: [12, 18, 28], vt: 0.12, vb: 0.5, sat: 0.85 } },   // V2: = the v8 clip wide grade; r3: a dark blue night veil growing to the bottom (the lit near field read L 27-28 vs v8 night 13-24)
   name: "_v2test_b", D: T.D, T, seed: 1776, date: "1776-08-29",
   regions: [CO, BK],
   troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
@@ -236,8 +236,8 @@ window.SEQ = {
     { t: 43.8, region: BK, at: [2482.0, 1150.4], dist: 47, tilt: 44, yaw: 0, fov: 30, ease: "lin" },
     { t: 47.2, region: BK, at: [2479.0, 1145.4], dist: 27, tilt: 50, yaw: -6, fov: 30, ease: "io" },         // the ferry: boats gather
     { t: 58.4, region: BK, at: [2479.6, 1146.0], dist: 25, tilt: 51, yaw: -2, fov: 30, ease: "lin" },
-    { t: 62.4, region: BK, at: [2481.0, 1150.0], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
-    { t: 67.4, region: BK, at: [2481.4, 1150.4], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
+    { t: 62.4, region: BK, at: [2481.0, 1147.8], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
+    { t: 67.4, region: BK, at: [2481.4, 1148.2], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 70.9, region: BK, at: [2482.4, 1150.6], dist: 25, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 70.9, region: BK, at: [2499.4, 1166.4], dist: 25, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force (round 2: a dissolve, no fast pan over the marching blocks)
     { t: 76.6, region: BK, at: [2498.6, 1165.6], dist: 25, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "lin" },

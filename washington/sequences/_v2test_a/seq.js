@@ -75,12 +75,12 @@ LAND.forEach((k, i) => { const a = bank(k, "NJ", HW - 0.9), b = bank(k, "PA", HW
 
 // ---------------- arrows ----------------
 const arrows = [
-  { side: "r", region: CO, width: 0.28, maxWidth: 0.28, pts: [[HARLEM[0] - 8, HARLEM[1] + 24], [HARLEM[0] - 4, HARLEM[1] - 26], [WP[0] - 22, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
+  { side: "r", region: CO, width: 0.34, maxWidth: 0.34, pts: [[HARLEM[0] - 8, HARLEM[1] + 24], [HARLEM[0] - 4, HARLEM[1] - 26], [WP[0] - 22, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
   ...[[[FW[0] + 6, FW[1] - 22], FW], [[FW[0] + 22, FW[1] + 4], FW], [[FW[0] - 3, FW[1] + 26], FW]].map(([a, b], i) =>
-    ({ side: "r", region: CO, width: 0.25, maxWidth: 0.25, pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (a[0] - b[0]) * 0.12, b[1] + (a[1] - b[1]) * 0.12]], t0: T.stormed - 0.1 + i * 0.25, dur: 1.2, t1: 16.4 })),
+    ({ side: "r", region: CO, width: 0.34, maxWidth: 0.34, pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (a[0] - b[0]) * 0.12, b[1] + (a[1] - b[1]) * 0.12]], t0: T.stormed - 0.1 + i * 0.25, dur: 1.2, t1: 16.4 })),
   // the retreat across New Jersey, the British close behind
-  { side: "u", region: CO, width: 0.3, maxWidth: 0.3, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [(NB[0] + TRc[0]) / 2 + 26, (NB[1] + TRc[1]) / 2 - 26]],   /* V2 r2: GM-width line, head short of Trenton (clear of the legend) */ t0: T.across - 0.2, dur: 2.8, t1: T.D },
-  { side: "r", region: CO, width: 0.28, maxWidth: 0.28, pts: [[FL[0] - 10, FL[1] + 26], [575, 318], [NB[0] + 14, NB[1] - 2]], t0: T.chased + 0.1, dur: 2.4, t1: T.D },
+  { side: "u", region: CO, width: 0.34, maxWidth: 0.34, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [(NB[0] + TRc[0]) / 2 + 26, (NB[1] + TRc[1]) / 2 - 26]],   /* V2 r2: GM-width line, head short of Trenton (clear of the legend) */ t0: T.across - 0.2, dur: 2.8, t1: T.D },
+  { side: "r", region: CO, width: 0.34, maxWidth: 0.34, pts: [[FL[0] - 10, FL[1] + 26], [575, 318], [NB[0] + 14, NB[1] - 2]], t0: T.chased + 0.1, dur: 2.4, t1: T.D },
 ];
 
 // ---------------- generals, banners, labels ----------------

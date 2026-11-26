@@ -484,7 +484,7 @@ class Settle:
     """Close-map settlements on an occupancy grid (the clip's close_town, generalised)."""
     def __init__(self, box, dist, hw, h, slope, seed):
         self.box = box; self.dist, self.hw, self.h, self.slope = dist, hw, h, slope
-        self.rr = np.random.default_rng(seed); x0, y0, bw, bh = box; self.G = G = 24
+        self.fs = FS; self.rr = np.random.default_rng(seed); x0, y0, bw, bh = box; self.G = G = 24
         self.occ = np.zeros((int(bh * G), int(bw * G)), np.uint8)
         self.build, self.streets, self.gardens, self.yards, self.trees, self.clear = [], [], [], [], [], []
 
@@ -648,16 +648,16 @@ class Settle:
 
     def farmstead(self, fx, fy, a=None):
         rr = self.rr; a = rr.uniform(0, math.pi) if a is None else a
-        u = np.array([math.cos(a), math.sin(a)]) * FS; v = np.array([-u[1], u[0]]); L = lambda p, q: np.array([fx, fy]) + u * p + v * q
+        u = np.array([math.cos(a), math.sin(a)]) * self.fs; v = np.array([-u[1], u[0]]); L = lambda p, q: np.array([fx, fy]) + u * p + v * q
         if not self.free(fx, fy, 0.6, 0.6, a): return False
-        self.clear.append((fx, fy, 1.1)); yc = L(0.12, 0.38); self.yards.append((float(yc[0]), float(yc[1]), 0.55 * FS, 0.42 * FS, a, 0))
+        self.clear.append((fx, fy, 1.1)); yc = L(0.12, 0.38); self.yards.append((float(yc[0]), float(yc[1]), 0.55 * self.fs, 0.42 * self.fs, a, 0))
         for (p, q, ln, rot) in ((0.12, 0.38 - 0.42, 0.95, 0), (0.12 - 0.5, 0.38, 0.8, 1), (0.12 + 0.5, 0.38, 0.8, 1)):
-            c = L(p, q); self.build.append((float(c[0]), float(c[1]), ln * FS, 0.022, a + rot * math.pi / 2, 0, 3))
-        c = L(0, 0); self.put(float(c[0]), float(c[1]), FS * rr.uniform(0.42, 0.55), FS * rr.uniform(0.19, 0.24), a, self.roof())
-        c = L(0.62, 0.42); self.put(float(c[0]), float(c[1]), FS * rr.uniform(0.62, 0.8), FS * rr.uniform(0.26, 0.32), a + math.pi / 2, int(rr.choice([3, 4, 0])))
+            c = L(p, q); self.build.append((float(c[0]), float(c[1]), ln * self.fs, 0.022, a + rot * math.pi / 2, 0, 3))
+        c = L(0, 0); self.put(float(c[0]), float(c[1]), self.fs * rr.uniform(0.42, 0.55), self.fs * rr.uniform(0.19, 0.24), a, self.roof())
+        c = L(0.62, 0.42); self.put(float(c[0]), float(c[1]), self.fs * rr.uniform(0.62, 0.8), self.fs * rr.uniform(0.26, 0.32), a + math.pi / 2, int(rr.choice([3, 4, 0])))
         for (p, q, w, d, rot) in [(0.05, 0.85, 0.34, 0.18, 0), (-0.45, 0.4, 0.28, 0.16, 1), (0.3, -0.35, 0.24, 0.15, 0), (-0.35, 0.95, 0.2, 0.14, 1)][: int(rr.integers(2, 5))]:
-            c = L(p + rr.uniform(-0.04, 0.04), q + rr.uniform(-0.04, 0.04)); self.put(float(c[0]), float(c[1]), FS * w * rr.uniform(0.85, 1.15), FS * d, a + rot * math.pi / 2, self.roof())
-        gc = L(-0.62, -0.32); self.gardens.append((float(gc[0]), float(gc[1]), 0.55 * FS, 0.42 * FS, a, int(rr.integers(0, 4))))
+            c = L(p + rr.uniform(-0.04, 0.04), q + rr.uniform(-0.04, 0.04)); self.put(float(c[0]), float(c[1]), self.fs * w * rr.uniform(0.85, 1.15), self.fs * d, a + rot * math.pi / 2, self.roof())
+        gc = L(-0.62, -0.32); self.gardens.append((float(gc[0]), float(gc[1]), 0.55 * self.fs, 0.42 * self.fs, a, int(rr.integers(0, 4))))
         for i in range(3):
             for j in range(3):
                 if rr.random() < 0.7: q = L(1.05 + i * 0.2 + rr.uniform(-0.04, 0.04), -0.45 + j * 0.2 + rr.uniform(-0.04, 0.04)); self.trees.append((float(q[0]), float(q[1]), float(rr.uniform(0.5, 0.75))))
@@ -801,7 +801,7 @@ def bake(rname, G, P, creeks, preview=True):
     WINTER = (cfg.get("winter") or {}) if (PROJ and cfg.get("season") == "winter") else None   # project mode: winter ground (configs without 'season' unchanged)
     if WINTER is not None and not WINTER: WINTER = {"on": True}
     upx_h = HW / bw
-    h = crop_prep(P, box, HW, HH, blur=1.0 if not close else 1.6)
+    h = crop_prep(P, box, HW, HH, blur=(cfg.get("dem_blur") if PROJ and cfg.get("dem_blur") else (1.0 if not close else 1.6)))   # project: dem_blur (v2 r3: soften DEM creases)
     if close:
         rn = cfg.get("relief_noise", [7.0, 1.6])
         h += (fbm(HH, HW, 5, 4, seed + 5) - 0.5) * rn[0] + (fbm(HH, HW, 4, 16, seed + 6) - 0.5) * rn[1]
@@ -1152,6 +1152,16 @@ def bake(rname, G, P, creeks, preview=True):
             cv2.polylines(sp, [np.round(np.array([Pt(p) for p in Q]) * 4).astype(np.int32)], False, 255, max(2, int(wd_ * sc * s)), cv2.LINE_AA, shift=2)
             spf = cv2.GaussianBlur(sp.astype(np.float32) / 255, (0, 0), 1.2)[..., None] * a_; img = img * (1 - spf) + hexc(col_) * spf
         W_["nrm"] = nrm
+    FROST = None
+    if WINTER and WINTER.get("frost"):   # project (v2 r3, owner "a LIGHT frost"): pale cool tint over the open fields, stronger in furrows / field edges and on
+        FR_ = WINTER["frost"]                # north-facing slopes; woods lightly touched, roads / water / sea untouched. Applied after tex_grade (keeps its saturation target).
+        fine_ = cv2.GaussianBlur(img.mean(-1), (0, 0), 0.6); hol_ = np.clip((cv2.GaussianBlur(fine_, (0, 0), 3.0) - fine_) / 6 + 0.5, 0, 1); del fine_
+        hb_ = cv2.GaussianBlur(ht, (0, 0), 0.004 * TW) * exag / MPU; nf_ = np.clip(np.gradient(hb_, axis=0) * s * FR_.get("north_k", 4.0), 0, 1); del hb_
+        FROST = FR_.get("a", 0.15) * (0.7 + FR_.get("edge", 0.5) * (hol_ - 0.5) * 2 * 0.5 + FR_.get("north", 0.5) * nf_)
+        del hol_, nf_
+        FROST *= (1 - forest * (1 - FR_.get("woods", 0.25))) * (1 - road_w) * np.clip((dist_t - hw_t) / (0.1 if close else 0.6), 0, 1)
+        if sea_w is not None: FROST *= np.clip(1 - (sea_w - 0.35) * 3.3, 0, 1)
+        FROST = np.clip(FROST, 0, 0.5).astype(np.float32)
     if WINTER: img = winter_ground(img, forest, road_w, dist_t, hw_t, close, TW, TH, bw, s, seed, WINTER, sea_w); del road_w, sea_w
     # ---------------- baked relief shading ----------------
     shade = np.ones((TH, TW), np.float32)
@@ -1177,6 +1187,8 @@ def bake(rname, G, P, creeks, preview=True):
         img = (img - mu) * tg_.get("contrast", 1.0) + mu * tg_.get("level", 1.0)
         lum = img.mean(-1, keepdims=True); img = lum + (img - lum) * tg_.get("sat", 1.0); del lum
         img = 255.0 * (np.clip(img, 0, 255) / 255.0) ** tg_.get("gamma", 1.0)
+        if tg_.get("tint"): img = img * np.array(tg_["tint"], np.float32)   # project: per-channel warmth (R, G, B multipliers)
+    if FROST is not None: img = img * (1 - FROST[..., None]) + hexc(WINTER["frost"].get("col", "#dde5ea")) * FROST[..., None]; del FROST
     img8 = np.clip(img, 0, 255)[..., ::-1].astype(np.uint8); del img
     cv2.imwrite(f"{out}/ground.jpg", img8, [cv2.IMWRITE_JPEG_QUALITY, cfg.get("jpeg_q", 88 if close else 90)])
     LOG("  ground.jpg %.1f MB" % (os.path.getsize(f"{out}/ground.jpg") / 1e6))
@@ -1253,6 +1265,15 @@ def bake(rname, G, P, creeks, preview=True):
     for b in bridges_cfg:
         p = resolve_pt(G, b)
         if p is None: continue
+        if PROJ and b.get("kind", "road") == "road" and b.get("snap_road", True):   # project (v2 r3): put a named road bridge ON the nearest road x river crossing (research points are +-100 m)
+            best_ = None
+            for rd, _, _ in RDS:
+                for rv in rivs:
+                    if rv["w"] >= 2.5: continue
+                    for (q_, _, _) in seg_intersections(rd, np.array(rv["pts"], np.float32)[:, :2]):
+                        d_ = math.hypot(q_[0] - p[0], q_[1] - p[1])
+                        if d_ < b.get("snap_u", 3.0) and (best_ is None or d_ < best_[0]): best_ = (d_, q_)
+            if best_ is not None: p = np.array(best_[1], np.float32)
         bb = bridge_at(p, b.get("kind", "road"), b.get("name", "bridge"), b.get("burn", False), b.get("len"))
         if bb: feat["bridges"].append(bb); done_b.append((bb["x"], bb["z"]))
     if cfg.get("auto_bridges", True):   # every road / railroad crossing of a ribbon river (not the Mississippi)
@@ -1560,6 +1581,7 @@ def auto_works(kind, spec, G, h, box, close):
 # ============================================================ close settlement driver ============================================================
 def settle_close(cfg, G, box, dist, hw, h, slope, RDS, seed):
     S = Settle(box, dist, hw, h, slope, cfg.get("settle_seed", 1863)); x0, y0, bw, bh = box
+    if PROJ and cfg.get("farm_scale"): S.fs = FS * float(cfg["farm_scale"])   # project (v2 r3): bigger farmsteads (houses read at the near z11 cameras)
     for rd, c_, _ in RDS: S.block_road(rd, 0.35 if c_ == "pike" else 0.25)
     pikes = [rd for rd, c_, _ in RDS if c_ == "pike"] or [rd for rd, _, _ in RDS]
     def nearest_road(p):

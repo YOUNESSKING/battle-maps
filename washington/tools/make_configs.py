@@ -57,9 +57,10 @@ def write(name, cfg):
 # v2 (owner row 22: the v8 test look): winter = the SAME warm v8 patchwork with a LIGHT frost tint (fields still ochre / green / rust, a little
 # paler / cooler), woods still dark teal (bare deciduous = teal + a touch of twig brown: bare_mix), rust roads, subtle shore ice.
 # v1 (grey ground: desat 0.45, snow_alpha 0.66, conifers 0.16 never reached the engine -> 84 % grey crowns) is in git history.
-WINTER = {"snow": 0.5, "snow_alpha": 0.22, "desat": 0.0, "ice": 0.6, "conifers": 0.55, "bare_mix": 0.35, "road_col": "#84583f", "snow_col": "#d2d0c2"}
+WINTER = {"snow": 0.5, "snow_alpha": 0.12, "desat": 0.0, "frost": {"a": 0.17, "edge": 0.6, "north": 0.5, "north_k": 4.0, "woods": 0.2, "col": "#d2dfec"},   # r3: frost tint 12-18 %
+          "ice": 0.6, "conifers": 0.55, "bare_mix": 0.35, "road_col": "#84583f", "snow_col": "#d2d0c2"}
 TG_WINTER = {"contrast": 1.06, "sat": 1.6}   # v2 r2 (critics: Trenton S 35 vs v8 66): close winter textures at v8 saturation (Vicksburg close ground.jpg S ~78-80)
-WINTER_WIDE = dict(WINTER, snow_alpha=0.10, desat=0.08, conifers_wide=0.5, wood_col="#3a3630", lit_col="#c6c4a0")   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
+WINTER_WIDE = dict(WINTER, snow_alpha=0.08, desat=0.04, frost={"a": 0.14, "edge": 0.4, "north": 0.5, "north_k": 2.0, "woods": 0.15, "col": "#d2dfec"}, conifers_wide=0.5, wood_col="#3a3630", lit_col="#c6c4a0")   # r2b: lighter woods, field strips visible   # wide maps (critic A r1): less frost wash, dark teal-grey woods   # tuned on the winter test sheet (worlds/previews/winter_test.jpg)
 
 # ============================================================ colonies (wide, zoom 9) ============================================================
 Z = 9
@@ -75,7 +76,7 @@ write("colonies", {
  "box": cb,
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
- "hm_ppu": 1.5, "tex": 8192, "exag": 5.0, "cell": 30.0, "seed": 1776,   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
+ "hm_ppu": 1.5, "tex": 8192, "exag": 5.0, "cell": 30.0, "seed": 1776, "tex_grade": {"tint": [1.03, 1.0, 0.965]},   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
@@ -245,7 +246,7 @@ write("trenton", {
  "box": tb, "focus": pl("Trenton", Z),
  "stills": [{"at": [tb[0] + tb[2] / 2, tb[1] + tb[3] / 2], "dist": 95, "tilt": 34, "yaw": 0}, {"at": pl("Trenton", Z), "dist": 40, "tilt": 48, "yaw": -8},
             {"at": qs, "dist": 22, "tilt": 56, "yaw": 15}],
- "hm_ppu": 8, "tex": 4096, "exag": 3.6, "cell": 1.8, "gm_unit": 0.45, "track_k": 0.5, "seed": 1226, "relief_noise": [2.0, 0.6],
+ "hm_ppu": 8, "tex": 4096, "exag": 3.0, "dem_blur": 3.0, "cell": 1.8, "gm_unit": 0.45, "track_k": 0.5, "seed": 1226, "relief_noise": [2.0, 0.6],
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.6, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.06, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.35, "clear_noise_u": 0.8,
@@ -267,7 +268,7 @@ write("trenton", {
            {"name": "_ferry", "at": pl("Trenton Ferry", Z), "kind": "farm"}],
  "farm_density": 0.8, "plantation_density": 0.0, "lane_p": 0.45,
  "features": {"works": [{"name": "American line (Assunpink, 2 Jan)", "geo": work_geo("American line along the Assunpink", "American line, Assunpink"), "kind": "breastwork", "side": "us", "face_to": head, "height": 1.0, "clear": 0.5}],
-              "bridges": [{"name": "Assunpink bridge (stone)", "geo": "Assunpink bridge", "kind": "road"}]},
+              "bridges": [{"name": "Assunpink bridge (stone)", "geo": "Assunpink bridge", "kind": "road", "snap_road": False}]},
  "labels": ["King Street / Queen Street head", "Old Barracks", "Assunpink bridge", "Mill Hill", "Trenton Ferry", "Hessian picket", "Rall's headquarters",
             "Hessian surrender field", "Hermitage"],
 })
@@ -275,7 +276,7 @@ write("trenton", {
 # ============================================================ princeton (close, zoom 11) ============================================================
 pb = box_ll(40.3080, -74.7160, 40.3600, -74.6460, Z)
 write("princeton", {
- "mode": "close", "zoom": Z, "season": "winter", "winter": WINTER,
+ "mode": "close", "zoom": Z, "season": "winter", "winter": dict(WINTER, ice=0.25),
  "note": "Princeton, 3 Jan 1777 (winter, frozen ground): the village on the post road + Nassau Hall, the post road to Trenton (SW) over the Stony Brook bridge "
          "(Worth's Mill), the Quaker Bridge / Saw Mill road from the south (the night march), the Thomas Clarke house and William Clarke's orchard (the "
          "clash point), the Olden house, Frog Hollow. Zoom-11 frame. Carnegie Lake (1906) and the D&R canal (1834) are modern: filled.",
@@ -286,7 +287,7 @@ write("princeton", {
  "dem_ppu": 8, "dem_margin": 6, "dem_edits": {"fill_water": True, "flat_sd": 0.15, "flat_low": 0.5, "spike_m": 25.0},
  "creek_km2": 0.4, "creeks": {"paint_km2": 0.8, "ribbon_km2": 1e9},
  "woods": 0.03, "ravine_woods": 0.6, "tree_spacing": 0.28, "clear_blur": 0.8, "clear_noise_u": 1.6,
- "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25),   # S07 is a clear day (no storm veil): less boost
+ "river_woods": {"u": 1.8, "k": 0.10}, "tex_grade": dict(TG_WINTER, sat=1.25), "farm_scale": 1.8,   # S07 is a clear day (no storm veil): less boost
  "rivers": [{"name": "Stony Brook", "geo": "Stony Brook", "w": 0.6, "step": 0.12, "snap": False, "smooth": 6, "valley": {"depth_m": 7.0, "half_u": 3.5}}],   # v2 r2: a visible valley + water
  "roads": [{"name": "Post road (King's Highway)", "geo": "New York post road", "cls": "pike", "meander": 0.12},
            {"name": "Quaker Bridge road", "geo": "Quaker Bridge road", "cls": "pike", "meander": 0.15},

@@ -153,3 +153,10 @@ the East River fix and the village clusters unchanged.
   every river: trenton u 2.6 k 0.16 + `woods` 0.06, princeton u 1.8 k 0.10) and per-river `valley: {depth_m, half_u}` (a broad valley carved
   before the water level: Stony Brook 7 m / 3.5 units, `w` 0.6). Sheet `previews/v2_ground_r2.jpg` (before | after | ref, mean HSV S printed):
   trenton 89.6 s 34 -> 65, 100 s 35 -> 63 (v8 60.5 s = 68); princeton 70 s 54 -> 67 (v14 40 s = 57); jersey 24 s 55 -> 67 (v8 35 s = 65).
+- **r3 (critic 2 round 2: "late summer, no frost"; critic 1 round 2):** a frost TINT pass (`winter.frost: {a, edge, north, north_k, woods, col}`,
+  baker, applied after `tex_grade`): pale cool #d2dfec at a = 0.17 close / 0.14 wide over the open fields, stronger in furrows / field edges and
+  on north-facing slopes, woods x0.2, roads / water / sea untouched; snow dusting down to 0.12. Trenton `exag` 3.0 + new `dem_blur` 3.0 (the
+  cloth-like fold right of the town); princeton `winter.ice` 0.25, `farm_scale` 1.8 (new: farmsteads 1.8x, the orchard house reads), named road
+  bridges snap onto the nearest road x river crossing (new, `snap_road`, off for the Assunpink stone bridge); colonies / colonieswinter
+  `tex_grade.tint` [1.03, 1, 0.965] (new: a touch warmer). Sheet `previews/v2_ground_r3.jpg`: trenton S 65 -> 52 (R-B 17 -> 12), princeton
+  67 -> 61, jersey 67 -> 61, crossing (night) unchanged.

@@ -128,6 +128,8 @@ sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056
 // Knox's guns race to the head of King and Queen streets
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
 [G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: S_, t0: 94.2, keys: [[0, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.raced - 2.5, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.streets - 0.4 + i * 0.3, ...g], [T.D, ...g]] }));
+// V2 r3 (critic 2 R2-4): Greene's leading brigade at the head of the town on the Pennington road, behind Knox's guns
+add({ side: "u", region: TR, n: 3, face: S_, t0: 95.4, arrive: false, keys: [[0, 1352.2, 2049.6]] });
 // the Hessians form in the two streets, are raked, leave the streets east into the fields, are driven to the orchard, surrender
 const H1 = KING(2058.8), H2 = QUEEN(2059.8),   /* V2 r2: up the streets, in the 8 a.m. frame */ F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.2, 2055.0], O2 = [1364.8, 2057.2];
 const rH = [[H1, F1, O1], [H2, F2, O2]].map(([h, f, o], i) => add({ side: "r", region: TR, face: N, n: 3, t0: 95.4 + i * 0.3, arrive: false,   /* V2 r2: in the town from the cut (Hessians in frame with the TRENTON name); small v14 blocks, n 3 */
@@ -349,7 +351,7 @@ window.SEQ = {
     ["plaque.date", T.schedule - 0.2, { month: "December 1776", day: "26", weekday: "Thursday", note: "hours behind schedule" }],
     ["distance", T.nine2 - 0.05, T.crossroads - 0.3, { from: [JFj[0] + 1.0, JFj[1] + 1.0], to: [TRj[0] - 1.0, TRj[1] - 1.0], value: 9, countFrom: 9, unit: "MILES", sub: "to Trenton", dash: false }],
     ["plaque.clock", T.eight - 0.05, { time: "8:00", note: "the storm still blowing", header: "26 December 1776" }],
-    ["plaque.note", T.twentysixth - 0.05, "Trenton"],   // V2: the watch stays through the fight (v8); only the note changes
+    // V2 r3: no "Trenton" note (the carved name says it); the watch keeps "the storm still blowing"   // V2: the watch stays through the fight (v8); only the note changes
     // V2: THE ARMIES key + the wax-seal campaign timeline on the map shots
     ["legend", CUT2 + 0.6, T.about - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "Hessians", sub: "Rall", color: "#9C3A35" }] }],
     ["timeline.show", CUT2 + 0.4, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.8 }],

@@ -42,6 +42,13 @@
  "exag": 5.0,
  "cell": 30.0,
  "seed": 1776,
+ "tex_grade": {
+  "tint": [
+   1.03,
+   1.0,
+   0.965
+  ]
+ },
  "dem_ppu": 2,
  "dem_margin": 24,
  "dem_edits": {

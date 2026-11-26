@@ -54,7 +54,8 @@ Per region (`regionOpts`), from the scene's main framing:
 
 ### Data changes that come with the small blocks
 - Remove every per-unit `bw` / `bd` override (they were set for the v1 big blocks: S07 `bw: 0.9-1.0, bd: 0.2`). Defaults only.
-- `n` (boxes per unit) up: infantry blocks = round(2n/3), so **n: 3 = 2 blocks, n: 4 = 3 blocks**. A brigade line = 2-3 blocks side by side;
+- **ONE block per unit (`n: 1`) and more units** (round 3: multi-block units wheel at 86-119 deg/s at the small troopScale, single blocks <= 41 deg/s):
+  a brigade line = 2-3 single-block units side by side, ~1.25 block widths apart (`LX` helper in `_v2test_d`: x0 + k x 1.07 u, staggered 0.12 s);
   the two sides' lines ~2-3 block widths apart in battle frames (v14). Test d: Mercer / Mawhood / militia n 1 -> 4, lines unchanged in x.
 - Camera: battle framings at least ~2.5 x the block spacing in view (v14 shows the whole field): S07 orchard dist 11.5-13 -> **18-20** (tilt 52-53).
   Pulling out is preferred to shrinking further (the map reads, more blocks in frame, like v14).
@@ -172,3 +173,12 @@ Engine (opt-in / bug fix only, default output unchanged for other films):
 | C2 #4 banner in the British line | Washington's banner at RY2 + 3.4 (between the lines, nearer the American line); the 30 YARDS ruler from there | S07 |
 | C2 #5 orchard house = empty red outline | world feature (farmstead footprint without roof) -> worlds agent | worlds |
 | check_troops_motion turn-rate fails (d) | orchard keys yaw held at 0 (was +-2) while blocks wheel | S07 |
+
+## 7. Round 3 (critic 1 r2: b 7, d 7; critic 2 r2: c 7, arrows at 360p)
+| finding | fix (tested) | in the film |
+| --- | --- | --- |
+| (b) night land too light (bottom row L 27-28 vs v8 13-24) | SEQ `grade.night = { veil: [12, 18, 28], vt: 0.12, vb: 0.5, sat: 0.85 }` (the engine's night veil, dark blue, growing to the bottom; the overlay `film.grade night` only weighs 0.12 and its 4th arg is a DURATION, not an amount); land sectors now L 14-16 top / middle; the bottom row carries the legend + timeline (v8 50 s has neither) | every night scene: the same `grade.night` + night 1 keys |
+| (b) blocks touching the timeline / bottom edge | the 62.4 / 67.4 s ferry keys target 0.8 u NORTH of v1 (south brought the marching regiments into the bottom 12 %); still 65.2 s: no block below y 610 | rule: check every troop still for blocks in the bottom 12 % |
+| (d) check_troops_motion (Princeton 45.5-83.8) | one block per unit (above): turn <= 41 deg/s on 17 of 18 units (one 45), 0 pops, shape 0 %, no overlaps; residual: front-vs-velocity 21-26 deg on the OUTER militia / red blocks (frame-edge Jacobian; v1 had 29-30) and the leftmost red block 54 deg on screen during its entrance under the 0.9 s dissolve | S07 data as `_v2test_d`; give the militia a turn-first key |
+| (c) no American infantry | Greene's leading brigade (one block, n 3 -> 1 recommended) at the head of the town on the Pennington road behind Knox's guns, from the 95.4 s cut; the clock note no longer repeats "Trenton" | S05 |
+| (a) arrows thin at 360p | colonies arrows width = maxWidth **0.34** (6-7 px at 720p); GM tint kept | all wide arrows 0.3-0.35 |

@@ -42,6 +42,13 @@
  "exag": 5.0,
  "cell": 30.0,
  "seed": 1776,
+ "tex_grade": {
+  "tint": [
+   1.03,
+   1.0,
+   0.965
+  ]
+ },
  "dem_ppu": 2,
  "dem_margin": 24,
  "dem_edits": {
@@ -672,8 +679,16 @@
  "season": "winter",
  "winter": {
   "snow": 0.5,
-  "snow_alpha": 0.1,
-  "desat": 0.08,
+  "snow_alpha": 0.08,
+  "desat": 0.04,
+  "frost": {
+   "a": 0.14,
+   "edge": 0.4,
+   "north": 0.5,
+   "north_k": 2.0,
+   "woods": 0.15,
+   "col": "#d2dfec"
+  },
   "ice": 0.6,
   "conifers": 0.55,
   "bare_mix": 0.35,

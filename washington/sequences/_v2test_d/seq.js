@@ -68,11 +68,14 @@ U({ side: "r", region: JE, n: 1, face: Math.atan2(postAt(46)[1] - postAt(38)[1],
 
 // princeton: the orchard (William Clarke's), Mercer v Mawhood, the militia, Washington between the lines, Nassau Hall
 const OX = 1485.9, RY0 = 1847.0, RY1 = 1850.2, RY2 = 1851.3, BY0 = 1858.6, BY1 = 1853.6, BY2 = 1856.4, MY = 1858.8, AY = 1854.6;
-const red = [1484.2, 1487.6].map((x, i) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, n: 4,
+// V2 r3: ONE block per unit (multi-block units spiked the wheel rate to 86-119 deg/s at small troopScale; single blocks <= 41 deg/s),
+// three single-block units side by side per v1 line (1.07 u apart), staggered 0.12 s
+const LX = (a, dx = 1.07) => a.flatMap((x0, i0) => [-1, 0, 1].map((k) => [x0 + k * dx, i0 + (k + 1) * 0.12]));
+const red = LX([1484.2, 1487.6]).map(([x, i]) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, n: 1,
   keys: [[0, x, RY0], [CUT3 + 0.8, x, RY0], [50.4 + i * 0.2, x, RY1], [T.charged, x, RY1], [54.6 + i * 0.2, x, RY2], [81.8 + i * 0.4, x, RY2], [85.6 + i * 0.4, x, RY2 - 6.0]], t1: CUT4 + 0.5 }));
-const merc = [1484.2, 1487.6].map((x, i) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, n: 4,
+const merc = LX([1484.2, 1487.6]).map(([x, i]) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, n: 1,
   keys: [[0, x, BY0], [CUT3 + 0.6, x, BY0], [50.0 + i * 0.2, x, BY1], [63.0 + i * 0.3, x, BY1], [66.8 + i * 0.3, x, BY2], [T.rallied + 0.2 + i * 0.2, x, BY2], [83.4 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
-const mil = [1481.0, 1490.8].map((x, i) => U({ side: "u", region: PR, face: N_, t0: T.militia - 0.4 + i * 0.3, arrive: false, n: 4,
+const mil = LX([1481.0, 1490.8]).map(([x, i]) => U({ side: "u", region: PR, face: N_, t0: T.militia - 0.4 + i * 0.3, arrive: false, n: 1,
   keys: [[0, x, MY + 2.4], [T.militia + 0.2, x, MY + 2.4], [T.waver - 0.2 + i * 0.3, x, MY], [T.rallied + 0.4 + i * 0.2, x, MY], [83.6 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
 // Nassau Hall: the last British inside, a gun, the white flag (grey)
 const NH = [1509.5, 1819.9];
@@ -205,7 +208,7 @@ window.SEQ = {
     K(36.0, JE, [731, 944], 78, 46, 0, "io", 0.1),
     K(CUT3, JE, [734, 938], 74, 47, 0, "lin", 0.05),
     // 4. princeton: the orchard
-    K(CUT3, PR, [OX, 1855.0], 19, 52, 0, "cut", 0.05, { dissolve: 0.9 }),   // V2: wider (v14 framing: ~2.4 block widths between the lines)
+    K(CUT3, PR, [OX, 1855.0], 19, 55.5, 0, "cut", 0.05, { dissolve: 0.9 }),   // V2: wider (v14 framing: ~2.4 block widths between the lines)
     K(55.0, PR, [OX, 1854.6], 18, 55.5, 0, "io", 0.03),   // V2 r2: tilt 55.5 (less horizon haze), yaw held
     K(66.0, PR, [OX, 1855.4], 18.5, 55.5, 0, "io", 0),
     K(74.0, PR, [OX, 1855.0], 18, 55.5, 0, "io", 0),

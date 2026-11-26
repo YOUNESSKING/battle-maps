@@ -4,8 +4,16 @@
  "season": "winter",
  "winter": {
   "snow": 0.5,
-  "snow_alpha": 0.22,
+  "snow_alpha": 0.12,
   "desat": 0.0,
+  "frost": {
+   "a": 0.17,
+   "edge": 0.6,
+   "north": 0.5,
+   "north_k": 4.0,
+   "woods": 0.2,
+   "col": "#d2dfec"
+  },
   "ice": 0.6,
   "conifers": 0.55,
   "bare_mix": 0.35,
@@ -54,7 +62,8 @@
  ],
  "hm_ppu": 8,
  "tex": 4096,
- "exag": 3.6,
+ "exag": 3.0,
+ "dem_blur": 3.0,
  "cell": 1.8,
  "gm_unit": 0.45,
  "track_k": 0.5,
@@ -231,7 +240,8 @@
    {
     "name": "Assunpink bridge (stone)",
     "geo": "Assunpink bridge",
-    "kind": "road"
+    "kind": "road",
+    "snap_road": false
    }
   ]
  },

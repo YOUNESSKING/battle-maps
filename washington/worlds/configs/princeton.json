@@ -4,9 +4,17 @@
  "season": "winter",
  "winter": {
   "snow": 0.5,
-  "snow_alpha": 0.22,
+  "snow_alpha": 0.12,
   "desat": 0.0,
-  "ice": 0.6,
+  "frost": {
+   "a": 0.17,
+   "edge": 0.6,
+   "north": 0.5,
+   "north_k": 4.0,
+   "woods": 0.2,
+   "col": "#d2dfec"
+  },
+  "ice": 0.25,
   "conifers": 0.55,
   "bare_mix": 0.35,
   "road_col": "#84583f",
@@ -89,6 +97,7 @@
   "contrast": 1.06,
   "sat": 1.25
  },
+ "farm_scale": 1.8,
  "rivers": [
   {
    "name": "Stony Brook",
