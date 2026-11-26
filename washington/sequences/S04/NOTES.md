@@ -37,3 +37,7 @@ Open issues: blue camp blocks are small at dist 104-134 (troopScale 3.2 = Jackso
   legend (sub Howe) all through, timeline 1.5 -> 3.5 on "sixteenth" -> 4.25 on "eighth" (Brooklyn sealed), carved Manhattan / Fort Washington /
   Hudson River; plus jersey ts 2.0 (recipe table: 0.020 x dist 54-112). Checks jersey + colonies: 0 FAIL, 0 overlaps.
 - Note: at ts 2.0 the jersey posts / camp are small (v8 wide size); the recipe value is kept.
+
+## V2 round 1 (critic A #21)
+- WHITE PLAINS / FORT WASHINGTON stamps replaced by carved names (White Plains on "White", Fort Washington on "Fort"); the Trenton gold pulse
+  removed (not in the tests). Checks jersey + colonies 0 FAIL. Wide relief comb = worlds agent.

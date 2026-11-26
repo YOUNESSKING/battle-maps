@@ -74,3 +74,13 @@ Checks: check_troops_motion brooklyn 0-153.84: 0 overlaps, 0 pops; turn spikes o
 - Kept: whooshAt 1.4, dive off (clear 1.0), word timings, no negative times, the escape decks.
 - Units stay n 2 as in the approved test (escapes over the landing decks); checker: spikes only on the 70.9 / 76.7 / 91.0 / 105.4 / 118.4 cut
   frames, FvV rows of the camp regiments after the 70.9 dissolve (off-frame); 0 overlaps.
+
+## V2 round 1 (critics A 7 / B 8.2)
+- Night march: every Brooklyn unit n 1; no walk across a camera cut (the per-leg on-screen heading correction slid the blocks at the cuts):
+  five regiments board 57-70.5 (before the 70.9 dissolve), five 77.4-90.5 (between the 76.6 and 90.9 dissolves; the last one moved next to
+  pier B), covering force out 93.0-95.6 / back 102.4-104.9 (before the 105.3 dissolve), last regiments 110.0-110.8, the British walk to the
+  works from 119.6 (after the 118.3 dissolve). Checker: no slides; turn spikes only on the cut frames (static blocks), FvV 21-36 deg on 3 rows.
+- Ledger rows / notes on their words: "About 9,000 men" (nine thousand), "Nearly all their guns" (guns), note "across in a single night"
+  (single), "A handful left behind" (handful), note "stragglers" (stragglers).
+- First-light plate = 30 August, Friday, first light (matches the ledger).
+- Close-shot clouds: BK has shadows only; the puffs left at ~6 s are the dive emergence (clear 1.0 kept for the round-6 corner fix).

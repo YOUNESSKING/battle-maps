@@ -49,3 +49,11 @@ Open issues: the town houses (two dense rows on King / Queen St) partly hide the
   (the Trenton close shots frame the blue line low); bridge keys 1 u south.
 - Checks: trenton 0 FAIL, side gap 0 (both regions); jersey: turn 46-69 deg/s on the landing blocks during the 13 s pan, FvV 20-22 deg on two
   rear red blocks, the 32.5 cut.
+
+## V2 round 1 (critics A 6 / B 8.0)
+- Bridge volleys on the block fronts: the two firing blocks (x 1352.4 / 1360.4) moved just behind the works (y 2075.0, out of the bottom
+  12 %), volley pts [1351.9-1352.9] / [1359.9-1360.9] at y 2074.6; the attackers' volleys on their own blocks.
+- All pulse / glow effects removed (red bridge pulse, gold Delaware pulses).
+- Jersey smoke: fxScale 24 + v14 opts x 2.7 (small puffs, no blob); every rifle volley fires ONCE (2.2 s, volley 2.4): cues 15.8 / 16.6 / 28.4 /
+  29.4 / 30.95 only (the unsounded second ripples are gone).
+- Checks: trenton 0 FAIL, side gap 0 both regions; jersey as before (13 s pan turn-rate, 32.5 cut).
