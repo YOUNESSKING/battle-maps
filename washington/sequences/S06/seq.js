@@ -48,23 +48,24 @@ LAND.forEach((k, i) => { const r = RV(k), near = bank(k, "PA", HW + 0.55), far =
   U({ side: "u", region: JE, face: toNJ, keys: [[0, ...bank(k, "PA", HW + 3.8 + (i % 2) * 1.0)]], escape: { road: [back, near, far, out], join: "nearest", fade: null, vanish: [0.1, 0.7], front: true, t0: 0.2 + i * 0.7 } });
   U({ side: "u", region: JE, face: Math.atan2(-RV(k).dx, RV(k).dy) + Math.PI, t0: 4.6 + i * 0.7, keys: [[0, ...bank(k, "NJ", HW + 1.4)], [4.8 + i * 0.7, ...bank(k, "NJ", HW + 1.4)], [8.6 + i * 0.7, ...bank(k, "NJ", HW + 4.6)]] }); });
 // 2 January: Cornwallis's column down the post road (head at s 62 -> halts in front of each rifle group -> s 40)
-const RED = [0, 1, 2, 3].map((i) => U({ side: "r", region: JE, n: 2, face: FRD(46 + i * 5.4) + Math.PI, t0: 11.8,
-  keys: [[0, ...RD(64 + i * 5.4)], [13.4, ...RD(64 + i * 5.4)], [17.6, ...RD(52 + i * 5.4), "lin"], [25.4, ...RD(52 + i * 5.4)], [29.6, ...RD(41 + i * 5.4), "lin"]] }));
+// V2: one block per unit: each rank of the column = two single blocks side by side (1.25 block widths apart)
+const RED = [0, 1, 2, 3].flatMap((i) => [-1.3, 1.3].map((lat) => U({ side: "r", region: JE, n: 1, face: FRD(46 + i * 5.4) + Math.PI, t0: 11.8,
+  keys: [[0, ...RD(64 + i * 5.4, lat)], [13.4, ...RD(64 + i * 5.4, lat)], [17.6, ...RD(52 + i * 5.4, lat), "lin"], [25.4, ...RD(52 + i * 5.4, lat)], [29.6, ...RD(41 + i * 5.4, lat), "lin"]] })));
 // Hand's riflemen: G1 at Five Mile Run fires, about-faces (~7 s in place) and falls back; G2 at the Shabakunk fires twice
 const G1a = RD(44, 1.0), G1b = RD(33, 3.0), G2 = RD(29, -2.4);
 U({ side: "u", region: JE, face: FRD(44), t0: 12.0, keys: [[0, ...G1a], [24.4, ...G1a], [28.4, ...G1b]] });
 U({ side: "u", region: JE, face: FRD(29), t0: 12.0, keys: [[0, ...G2]] });
 
 // trenton: the American line behind the works on the south bank; two guns covering the bridge; the British through the town
-const BLUE = [1344.6, 1348.6, 1352.4, 1360.4, 1364.4, 1368.6].map((x, i) => U({ side: "u", region: TR, face: N_, t0: 32.0, keys: [[0, x, 2076.3 + (i === 0 ? 0.5 : 0)]] }));
+const BLUE = [1344.6, 1348.6, 1352.4, 1360.4, 1364.4, 1368.6].map((x, i) => U({ side: "u", region: TR, face: N_, t0: 32.0, keys: [[0, x, (x === 1352.4 || x === 1360.4) ? 2075.0 : 2076.3 + (i === 0 ? 0.5 : 0)]] }));   // v2 r1: the two bridge firing blocks just behind the works (out of the bottom 12 %)
 const GUNS = [[1355.0, 2071.5], [1358.2, 2071.4]];   // round 1: at the south end of the bridge
 GUNS.forEach((g) => U({ side: "u", region: TR, type: "art", face: N_, t0: 32.0, keys: [[0, ...g]] }));
 // three assaults: each regiment walks down to the creek by the bridge, is thrown back (holds while it about-faces ~7 s), walks back
 // round 1 (critic B): one short fire wave per attack in the word gaps (43.0-43.4, 45.6-46.5, 49.4-50.3), nothing after 50.3
-const AS = [[1356.15, 2068.75, 37.6], [1354.4, 2067.6, 40.2], [1358.0, 2067.6, 44.0]];   // [x, y, start]; arrive start + 5
+const AS = [[1356.15, 2068.75, 39.4], [1354.4, 2067.6, 41.2], [1358.0, 2067.6, 44.6]];   // v2 r4 (critic B): block 1 arrives on "storm"   // [x, y, start]; arrive start + 5
 const WAVE = [[43.0, 43.4], [46.1, 46.6], [49.85, 50.4]];   // round 2: after the word ends
-AS.forEach(([x, y, ta], i) => { const st = [x, 2061.6 - i * 0.6];
-  U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 5.0, x, y], [ta + 14.4, x, y], [ta + 18.2, st[0], st[1] - 0.6]] }); });
+AS.forEach(([x, y, ta], i) => { const st = [x, 2064.4 - i * 0.4];   // V2: 4 u from the creek (ts 1.0 walks at ~1 u/s)
+  U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 5.0, x, y], [ta + 14.4, x, y], [ta + 19.4, st[0], st[1] - 0.4]] }); });
 // the rest of the red army in the town (comes in at dusk, camps for the night)
 [[1346.0, 2058.0], [1351.0, 2055.0], [1363.0, 2058.6], [1368.4, 2061.0]].forEach((p, i) => U({ side: "r", region: TR, face: S_, t0: 33.6 + i * 0.5, keys: [[0, ...p]] }));   // round 1: no oblique walk
 
@@ -80,24 +81,29 @@ const arrows = [
   // Cornwallis's plan: down the road, pin Washington against the river
   { side: "r", region: JE, width: 0.4, maxWidth: 0.4, pts: [RD(58), RD(36), RD(14), [TRj[0] - 2.0, TRj[1] + 4.0], bank(kT, "NJ", HW + 1.8)], t0: T.trap - 0.1, dur: 2.2, t1: T.but },
   // the bridge assaults (short red pushes onto the bridge)
-  ...AS.map(([x, y, ta]) => ({ side: "r", region: TR, width: 0.16, pts: [[x, y - 3.2], [x + (BR[0] - x) * 0.6, y + 0.6], [BR[0], BR[1] + 0.3]], t0: ta + 1.2, dur: 1.6, t1: ta + 8.0 })),
+  // v2 r3 fix (B4-2): the first push on "storm", the second on "three", the third on "Each"
+  ...AS.map(([x, y, ta], i) => { const t0 = [T.storm - 0.05, T.three - 0.05, T.each - 0.05][i]; return { side: "r", region: TR, width: 0.16, pts: [[x, y - 3.2], [x + (BR[0] - x) * 0.6, y + 0.6], [BR[0], BR[1] + 0.3]], t0, dur: 1.6, t1: Math.max(ta + 8.0, t0 + 4.0) }; }),
 ];
 
 // ---------------- fx: visible volleys + cannon only ----------------
 const VOL = (region, pts, t0, t1, dir, o = {}) => ({ region, pts, t0, t1, opts: { dir, size: 0.8, alpha: 0.09, life: 10, muzzle: 5, windK: 0.9, rate: 3.0, volley: 1.5, roll: 0.5, height: 2.0, ...o } });
 const seg = (c, ang, h) => [[c[0] - Math.cos(ang) * h, c[1] - Math.sin(ang) * h], [c[0] + Math.cos(ang) * h, c[1] + Math.sin(ang) * h]];
 const fdir = (a) => [Math.cos(a), Math.sin(a)];
-const JK = { size: 2.4, height: 5.0, life: 8 };                      // jersey wide (fxScale 40 is the default for wide)
+const KJ = 2.7, JK = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KJ, windK: 1.1, rate: 2.9 / KJ, roll: 0.9, height: 2.4, cluster: [2.6, 1.4] };   // v2 r3 fix (B4-1): unscaled cluster/height (scaled ones threw the flashes off the block)   // v2 r1: v14 musketry scaled to the jersey framing (dist ~78, fxScale 24)
+const KF = 0.63, VO = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KF, windK: 1.1, rate: 2.9 / KF, roll: 0.9, height: 2.4 * KF, cluster: [2.6 * KF, 1.4 * KF] };   // V2: v14 musketry at dist ~18                      // jersey wide (fxScale 40 is the default for wide)
+const E05 = (c) => [c[0] + 0.5, c[1]];   // v2 r2 critic B: first skirmish flashes on the block   // v2 r3 fix (B4-1): segs ~1 u back onto the blocks (the lift puts the flash ahead), red on the moving front rank
 const volleys = [
-  VOL(JE, seg(RD(44.8, 1.0), FRD(44) + Math.PI / 2, 1.0), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 1.1 }),
-  VOL(JE, seg(RD(51.0), FRD(51) + Math.PI / 2, 1.2), 16.6, 18.4, fdir(FRD(51) + Math.PI), { ...JK, volley: 1.4 }),
-  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 28.4, 29.8, fdir(FRD(29)), { ...JK, volley: 1.2 }),
-  VOL(JE, seg(RD(40.0), FRD(40) + Math.PI / 2, 1.2), 29.4, 30.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 1.2 }),
-  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 30.95, 32.0, fdir(FRD(29)), { ...JK, volley: 1.0 }),
+  VOL(JE, seg(E05(RD(43.4, 1.0)), FRD(44) + Math.PI / 2, 0.7), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(53.0), FRD(53) + Math.PI / 2, 2.0), 16.6, 18.8, fdir(FRD(51) + Math.PI), { ...JK, volley: 2.4, cluster: [1.2, 1.4] }),
+  VOL(JE, seg(E05(RD(28.4, -2.4)), FRD(29) + Math.PI / 2, 0.7), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(40.7), FRD(40) + Math.PI / 2, 2.0), 29.4, 31.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 2.4, cluster: [1.2, 1.4] })   /* red: one cluster per block of the front pair */,
+  VOL(JE, seg(E05(RD(28.4, -2.4)), FRD(29) + Math.PI / 2, 0.7), 30.95, 33.15, fdir(FRD(29)), { ...JK, volley: 2.4, roll: 0.6 }),
   // the bridge (round 1): one short wave per attack, inside the word gaps: the guns + the line, the attackers answer once
-  ...WAVE.map(([w0, w1], i) => VOL(TR, [[BR[0] - 4.0, 2075.6], [BR[0] - 1.6, 2075.6]], w0, w0 + 0.3, [0, -1], { volley: 1.5 })),
-  ...WAVE.map(([w0, w1], i) => VOL(TR, [[BR[0] + 1.6, 2075.6], [BR[0] + 4.0, 2075.6]], w0 + 0.15, w0 + 0.45, [0, -1], { volley: 1.5, roll: 0.3 })),
-  ...WAVE.map(([w0, w1], i) => VOL(TR, [[AS[i][0] - 0.55, AS[i][1] + 0.2], [AS[i][0] + 0.55, AS[i][1] + 0.2]], Math.min(w1 - 0.3, w0 + 0.35), Math.min(w1, w0 + 0.65), [0, 1], { volley: 1.5, roll: 0.25 })),
+  // V2: v14 musketry (S09_gm SMK x KF), each volley lasts 2.2 s (a real ripple of smoke) but fires ONCE (volley 2.4 > 2.2: one cue at
+  // its start, inside the word gap; roll 0.4 keeps the last flash + its shot sound before 50.4)
+  ...WAVE.map(([w0, w1], i) => VOL(TR, [[1351.9, 2074.6], [1352.9, 2074.6]], w0, w0 + 2.2,   /* v2 r1: on the block front */ [0, -1], { ...VO, volley: 2.4, roll: 0.4 })),
+  ...WAVE.map(([w0, w1], i) => VOL(TR, [[1359.9, 2074.6], [1360.9, 2074.6]], w0 + 0.15, w0 + 2.35, [0, -1], { ...VO, volley: 2.4, roll: 0.35 })),
+  ...WAVE.map(([w0, w1], i) => VOL(TR, [[AS[i][0] - 0.45, AS[i][1] + 0.2], [AS[i][0] + 0.45, AS[i][1] + 0.2]], Math.min(w1 - 0.3, w0 + 0.3), Math.min(w1 - 0.3, w0 + 0.3) + 2.2, [0, 1], { ...VO, volley: 2.4, roll: 0.15 })),
 ];
 const shot = (t, at, imp, delay = 0.5) => ({ t, at, dir: [imp[0] - at[0], imp[1] - at[1]], impact: imp, delay });
 const guns = [{ region: TR, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.6 },
@@ -126,33 +132,29 @@ const labels = [
   { text: "Trenton", region: JE, at: [TRj[0] + 1.0, TRj[1] + 2.4], size: 18, t0: T.trenton - 0.05, t1: T.trenton + 3.5 },
   { text: "Trenton", region: TR, at: [1356.4, 2052.6], size: 19, t0: T.trentonT - 0.05, t1: T.trentonT + 3.4 },
   { text: "Assunpink Creek", region: TR, at: [1369.0, 2071.2], size: 17, river: true, t0: T.assunpink - 0.05, t1: T.assunpink + 3.6 },
-  { text: "stone bridge", region: TR, at: [1360.2, 2069.9], size: 15, t0: T.bridge - 0.1, t1: T.bridge + 3.0 },
+  { text: "stone bridge", region: TR, at: [1357.6, 2070.4], size: 15, t0: T.bridge - 0.1, t1: T.bridge + 3.0 },
 ];
-const pulses = VX.pulses([
-  { region: TR, at: BR, r: 1.3, t0: T.bridge - 0.1, t1: 45.2, period: 1.4 },
-  ...[[1342.6, 2074.4], [1347.6, 2082.6], [1351.0, 2091.0]].map((p) => ({ region: TR, at: p, r: 2.2, t0: T.riverI - 0.1, t1: 74.0, period: 1.6, color: [255, 214, 120] })),
-]);
 
-const NI = 0.8;
+const NI = 1.0;   // V2: a real night (v8) + grade.night + film.grade night
 window.SEQ = {
-  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },
+  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 }, night: { veil: [12, 18, 28], vt: 0.12, vb: 0.5, sat: 0.85 } },   // V2: v8 wide grade + the tested night veil
   name: "S06", D: T.D, T, seed: 1777, date: "1777-01-02",
   regions: [JE, TR],
-  troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [JE]: { troopScale: 7, decks }, [TR]: { troopScale: 1.6 } },
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2: = v14
+  regionOpts: { [JE]: { troopScale: 2.0, fxScale: 24, decks }, [TR]: { troopScale: 1.0, fxScale: 6.2 } },   // V2 recipe table
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },
   keys: [
     { t: 0, region: JE, at: [654.0, 1024.0], dist: 88, tilt: 44, yaw: 0, fov: 30 },                       // back over the river to Trenton
     { t: 10.6, region: JE, at: [660.0, 1022.0], dist: 84, tilt: 45, yaw: 0, fov: 30, ease: "lin" },
     { t: 13.6, region: JE, at: [RD(52)[0], RD(52)[1]], dist: 60, tilt: 44, yaw: 0, fov: 30, ease: "io" },   // 2 January: the post road
     { t: 19.0, region: JE, at: [RD(47)[0], RD(47)[1]], dist: 60, tilt: 43, yaw: 0, fov: 30, ease: "io" },
-    { t: 22.4, region: JE, at: [RD(30)[0] - 4, RD(30)[1] + 4], dist: 100, tilt: 42, yaw: 0, fov: 30, ease: "io" },   // the plan: against the river
-    { t: 26.0, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 56, tilt: 45, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen
-    { t: 32.45, region: JE, at: [RD(34)[0], RD(34)[1]], dist: 54, tilt: 46, yaw: 0, fov: 30, ease: "lin" },
-    { t: 32.45, region: TR, at: [1357.0, 2064.0], dist: 46, tilt: 45, yaw: 0, fov: 30, night: 0.3, ease: "cut", dissolve: 0.9 },   // dusk: the creek, the town
-    { t: 40.0, region: TR, at: [1356.8, 2070.6], dist: 18.5, tilt: 48, yaw: 0, fov: 30, night: 0.4, ease: "io" },
-    { t: 44.8, region: TR, at: [1356.6, 2070.8], dist: 17, tilt: 49, yaw: 0, fov: 30, night: 0.45, ease: "io" },   // the bridge: three assaults
-    { t: 50.4, region: TR, at: [1356.8, 2070.6], dist: 18, tilt: 49, yaw: 2, fov: 30, night: 0.5, ease: "lin" },
+    { t: 22.4, region: JE, at: [RD(33)[0] - 3, RD(33)[1] + 3], dist: 84, tilt: 43, yaw: 0, fov: 30, ease: "io" },   // the plan: against the river
+    { t: 26.0, region: JE, at: [RD(38.5)[0], RD(38.5)[1]], dist: 37, tilt: 46, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen; v2 r4 (critic A N5): ~35 % closer (56 -> 37)
+    { t: 32.45, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 36, tilt: 47, yaw: 0, fov: 30, ease: "lin" },
+    { t: 32.45, region: TR, at: [1357.0, 2067.5], dist: 46, tilt: 45, yaw: 0, fov: 30, night: 0.3, ease: "cut", dissolve: 0.9 },   // dusk: the creek, the town   // v2 r3: 3.5 u south (the timeline stays up: the blue block on the right was in the bottom 12 %)
+    { t: 40.0, region: TR, at: [1356.8, 2071.6], dist: 18.5, tilt: 48, yaw: 0, fov: 30, night: 0.4, ease: "io" },
+    { t: 44.8, region: TR, at: [1356.6, 2071.8], dist: 17, tilt: 49, yaw: 0, fov: 30, night: 0.45, ease: "io" },   // the bridge: three assaults
+    { t: 50.4, region: TR, at: [1356.8, 2071.6], dist: 18, tilt: 49, yaw: 2, fov: 30, night: 0.5, ease: "lin" },
     { t: 55.4, region: TR, at: [1357.0, 2067.6], dist: 44, tilt: 45, yaw: 0, fov: 30, night: NI, ease: "io" },     // night: campfires both sides
     { t: 62.0, region: TR, at: [1354.0, 2070.0], dist: 54, tilt: 43, yaw: 0, fov: 30, night: NI, ease: "io" },
     { t: T.D, region: TR, at: [1353.0, 2071.0], dist: 58, tilt: 42, yaw: 0, fov: 30, night: NI, ease: "lin" },
@@ -161,6 +163,13 @@ window.SEQ = {
   units, arrows, boats, fx, generals, banners, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "December 1776", day: "", weekday: "", note: "" }],
+    // V2: THE ARMIES key on the map shots (out for the decision card); the wax-seal timeline on the jersey map (Brooklyn + Trenton sealed)
+    ["legend", 0.9, T.now - 0.4, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],
+    ["timeline.show", 0.6, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.9 }],
+    ["timeline.seal", 0.7, { at: 0.95, name: "Brooklyn" }],
+    ["timeline.seal", 0.8, { at: 4.72, name: "Trenton" }],
+    ["timeline.go", T.second - 0.05, { at: 5.1, d: 1.2 }],
+    ["timeline.hide", T.now - 0.4],   // v2 r3 (A N6): kept on every map shot (dusk + night too, v8); steps out only for the decision card
     ["label", T.six - 0.05, T.ten - 0.3, { name: "Six more weeks", sub: "", world: bank(kT, "NJ", HW + 9.0), side: "us", marker: false }],
     ["label", T.ten - 0.05, 11.2, { name: "Ten dollars each", sub: "to stay", world: bank(kT, "NJ", HW + 9.0), side: "us", marker: false }],
     ["plaque.date", T.second - 0.05, { month: "January 1777", day: "2", weekday: "Thursday", note: "the road from Princeton" }],
@@ -169,11 +178,11 @@ window.SEQ = {
     ["plaque.date", T.dark - 0.2, { month: "January 1777", day: "2", weekday: "Thursday", note: "dusk" }],
     ["label", T.three - 0.05, T.cannon, { name: "Three attacks", sub: "", world: [1356.4, 2063.0], side: "uk", marker: false }],
     ["plaque.date", T.night - 0.1, { month: "January 1777", day: "2", weekday: "Thursday", note: "night" }],
+    ["film.grade", T.stopped - 0.6, "night", 0.8],   // V2 (v8 night)
     ["engage.decide", { t: T.now - 0.05, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
       tA: T.hold - 0.05, tB: T.slip - 0.05, tNote: T.tell - 0.05, tCount: T.comments, tReveal: T.D + 50, until: T.D + 1, dim: 0.55 }],   // the reveal opens S07
     ["label", T.riverI - 0.05, T.hold - 0.3, { name: "A river full of ice", sub: "", world: [1346.0, 2086.0], side: "us", marker: false }],
   ],
-  build: (ctx) => { pulses.build(ctx); },
-  draw: (t, ctx) => { pulses.draw(t, ctx); },
+  // v2 r1: no pulse / glow effects (not in the v8 tests)
 };
 })();

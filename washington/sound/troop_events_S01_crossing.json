@@ -21,17 +21,17 @@
    "tFilm": 14.3,
    "at": {
     "map": [
-     2395.5,
-     3836.9
+     2395.12,
+     3836.4
     ],
     "px": [
-     -5149,
+     -5148,
      -9148
     ],
-    "nx": -2.682,
-    "ny": -8.471,
+    "nx": -2.681,
+    "ny": -8.47,
     "onScreen": false,
-    "camDist": 3945.55
+    "camDist": 3944.91
    },
    "unit": {
     "unit": 0,
@@ -50,17 +50,17 @@
    "tFilm": 14.3,
    "at": {
     "map": [
-     2398,
-     3842.06
+     2395.89,
+     3837.4
     ],
     "px": [
-     -5145,
-     -9146
+     -5148,
+     -9147
     ],
-    "nx": -2.68,
-    "ny": -8.468,
+    "nx": -2.681,
+    "ny": -8.47,
     "onScreen": false,
-    "camDist": 3951.23
+    "camDist": 3946.16
    },
    "unit": {
     "unit": 1,
@@ -79,20 +79,78 @@
    "tFilm": 14.3,
    "at": {
     "map": [
-     2397.17,
-     3839.04
+     2397.61,
+     3841.56
+    ],
+    "px": [
+     -5145,
+     -9145
+    ],
+    "nx": -2.679,
+    "ny": -8.468,
+    "onScreen": false,
+    "camDist": 3950.59
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 14.3,
+   "tExcerpt": 14.3,
+   "tShare": 14.3,
+   "tFilm": 14.3,
+   "at": {
+    "map": [
+     2398.38,
+     3842.55
+    ],
+    "px": [
+     -5145,
+     -9145
+    ],
+    "nx": -2.68,
+    "ny": -8.467,
+    "onScreen": false,
+    "camDist": 3951.85
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 14.3,
+   "tExcerpt": 14.3,
+   "tShare": 14.3,
+   "tFilm": 14.3,
+   "at": {
+    "map": [
+     2397.18,
+     3839.06
     ],
     "px": [
      -5149,
      -9147
     ],
     "nx": -2.682,
-    "ny": -8.47,
+    "ny": -8.469,
     "onScreen": false,
-    "camDist": 3948.24
+    "camDist": 3948.25
    },
    "unit": {
-    "unit": 2,
+    "unit": 4,
     "side": "Union",
     "type": "art",
     "label": null,
@@ -108,20 +166,20 @@
    "tFilm": 14.3,
    "at": {
     "map": [
-     2409.32,
-     3828.93
+     2408.94,
+     3828.43
     ],
     "px": [
      -5204,
      -9152
     ],
-    "nx": -2.711,
-    "ny": -8.475,
+    "nx": -2.71,
+    "ny": -8.474,
     "onScreen": false,
-    "camDist": 3946.15
+    "camDist": 3945.5
    },
    "unit": {
-    "unit": 3,
+    "unit": 5,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -130,27 +188,27 @@
    }
   },
   {
-   "type": "unit_leaves",
-   "t": 20,
-   "tExcerpt": 20,
-   "tShare": 20,
-   "tFilm": 20,
+   "type": "unit_appears",
+   "t": 14.3,
+   "tExcerpt": 14.3,
+   "tShare": 14.3,
+   "tFilm": 14.3,
    "at": {
     "map": [
-     2395.5,
-     3836.9
+     2409.71,
+     3829.43
     ],
     "px": [
-     -681,
-     -797
+     -5204,
+     -9151
     ],
-    "nx": -0.355,
-    "ny": -0.738,
+    "nx": -2.71,
+    "ny": -8.474,
     "onScreen": false,
-    "camDist": 2040.4
+    "camDist": 3946.76
    },
    "unit": {
-    "unit": 0,
+    "unit": 6,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -166,8 +224,8 @@
    "tFilm": 20,
    "at": {
     "map": [
-     2398,
-     3842.06
+     2395.12,
+     3836.4
     ],
     "px": [
      -680,
@@ -176,7 +234,36 @@
     "nx": -0.354,
     "ny": -0.738,
     "onScreen": false,
-    "camDist": 2046.1
+    "camDist": 2039.77
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 20,
+   "tExcerpt": 20,
+   "tShare": 20,
+   "tFilm": 20,
+   "at": {
+    "map": [
+     2395.89,
+     3837.4
+    ],
+    "px": [
+     -681,
+     -797
+    ],
+    "nx": -0.354,
+    "ny": -0.738,
+    "onScreen": false,
+    "camDist": 2041.02
    },
    "unit": {
     "unit": 1,
@@ -195,8 +282,66 @@
    "tFilm": 20,
    "at": {
     "map": [
-     2397.17,
-     3839.04
+     2397.61,
+     3841.56
+    ],
+    "px": [
+     -680,
+     -797
+    ],
+    "nx": -0.354,
+    "ny": -0.738,
+    "onScreen": false,
+    "camDist": 2045.47
+   },
+   "unit": {
+    "unit": 2,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 20,
+   "tExcerpt": 20,
+   "tShare": 20,
+   "tFilm": 20,
+   "at": {
+    "map": [
+     2398.38,
+     3842.55
+    ],
+    "px": [
+     -680,
+     -797
+    ],
+    "nx": -0.354,
+    "ny": -0.738,
+    "onScreen": false,
+    "camDist": 2046.72
+   },
+   "unit": {
+    "unit": 3,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 20,
+   "tExcerpt": 20,
+   "tShare": 20,
+   "tFilm": 20,
+   "at": {
+    "map": [
+     2397.18,
+     3839.06
     ],
     "px": [
      -681,
@@ -205,10 +350,10 @@
     "nx": -0.355,
     "ny": -0.738,
     "onScreen": false,
-    "camDist": 2043.08
+    "camDist": 2043.1
    },
    "unit": {
-    "unit": 2,
+    "unit": 4,
     "side": "Union",
     "type": "art",
     "label": null,
@@ -224,20 +369,49 @@
    "tFilm": 20,
    "at": {
     "map": [
-     2409.32,
-     3828.93
+     2408.94,
+     3828.43
     ],
     "px": [
      -702,
-     -798
+     -797
     ],
     "nx": -0.366,
-    "ny": -0.739,
+    "ny": -0.738,
     "onScreen": false,
-    "camDist": 2040.66
+    "camDist": 2040.02
    },
    "unit": {
-    "unit": 3,
+    "unit": 5,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 20,
+   "tExcerpt": 20,
+   "tShare": 20,
+   "tFilm": 20,
+   "at": {
+    "map": [
+     2409.71,
+     3829.43
+    ],
+    "px": [
+     -702,
+     -797
+    ],
+    "nx": -0.366,
+    "ny": -0.738,
+    "onScreen": false,
+    "camDist": 2041.27
+   },
+   "unit": {
+    "unit": 6,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -253,8 +427,8 @@
    "tFilm": 58.71,
    "at": {
     "map": [
-     2395.5,
-     3836.9
+     2395.12,
+     3836.4
     ],
     "px": [
      383,
@@ -263,10 +437,10 @@
     "nx": 0.199,
     "ny": -0.688,
     "onScreen": false,
-    "camDist": 2675.03
+    "camDist": 2674.54
    },
    "unit": {
-    "unit": 4,
+    "unit": 7,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -282,8 +456,37 @@
    "tFilm": 58.71,
    "at": {
     "map": [
-     2398,
-     3842.06
+     2395.89,
+     3837.4
+    ],
+    "px": [
+     382,
+     -743
+    ],
+    "nx": 0.199,
+    "ny": -0.688,
+    "onScreen": false,
+    "camDist": 2675.51
+   },
+   "unit": {
+    "unit": 8,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 58.71,
+   "tExcerpt": 58.71,
+   "tShare": 58.71,
+   "tFilm": 58.71,
+   "at": {
+    "map": [
+     2397.61,
+     3841.56
     ],
     "px": [
      381,
@@ -292,10 +495,10 @@
     "nx": 0.198,
     "ny": -0.688,
     "onScreen": false,
-    "camDist": 2680.11
+    "camDist": 2679.62
    },
    "unit": {
-    "unit": 5,
+    "unit": 9,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -311,8 +514,37 @@
    "tFilm": 58.71,
    "at": {
     "map": [
-     2397.17,
-     3839.04
+     2398.38,
+     3842.55
+    ],
+    "px": [
+     381,
+     -743
+    ],
+    "nx": 0.198,
+    "ny": -0.688,
+    "onScreen": false,
+    "camDist": 2680.59
+   },
+   "unit": {
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 58.71,
+   "tExcerpt": 58.71,
+   "tShare": 58.71,
+   "tFilm": 58.71,
+   "at": {
+    "map": [
+     2397.18,
+     3839.06
     ],
     "px": [
      381,
@@ -321,10 +553,10 @@
     "nx": 0.199,
     "ny": -0.688,
     "onScreen": false,
-    "camDist": 2677.11
+    "camDist": 2677.13
    },
    "unit": {
-    "unit": 6,
+    "unit": 11,
     "side": "Union",
     "type": "art",
     "label": null,
@@ -340,8 +572,8 @@
    "tFilm": 58.71,
    "at": {
     "map": [
-     2409.32,
-     3828.93
+     2408.94,
+     3828.43
     ],
     "px": [
      374,
@@ -350,7 +582,65 @@
     "nx": 0.195,
     "ny": -0.688,
     "onScreen": false,
-    "camDist": 2666.68
+    "camDist": 2666.19
+   },
+   "unit": {
+    "unit": 12,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_appears",
+   "t": 58.71,
+   "tExcerpt": 58.71,
+   "tShare": 58.71,
+   "tFilm": 58.71,
+   "at": {
+    "map": [
+     2409.71,
+     3829.43
+    ],
+    "px": [
+     373,
+     -743
+    ],
+    "nx": 0.194,
+    "ny": -0.688,
+    "onScreen": false,
+    "camDist": 2667.16
+   },
+   "unit": {
+    "unit": 13,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 63.68,
+   "tExcerpt": 63.68,
+   "tShare": 63.68,
+   "tFilm": 63.68,
+   "at": {
+    "map": [
+     2395.12,
+     3836.4
+    ],
+    "px": [
+     3343,
+     -709
+    ],
+    "nx": 1.741,
+    "ny": -0.656,
+    "onScreen": false,
+    "camDist": 2174.09
    },
    "unit": {
     "unit": 7,
@@ -369,20 +659,20 @@
    "tFilm": 63.68,
    "at": {
     "map": [
-     2395.5,
-     3836.9
+     2395.89,
+     3837.4
     ],
     "px": [
-     -466,
-     -702
+     3342,
+     -709
     ],
-    "nx": -0.243,
-    "ny": -0.65,
+    "nx": 1.741,
+    "ny": -0.656,
     "onScreen": false,
-    "camDist": 2171.11
+    "camDist": 2175.31
    },
    "unit": {
-    "unit": 4,
+    "unit": 8,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -398,20 +688,20 @@
    "tFilm": 63.68,
    "at": {
     "map": [
-     2398,
-     3842.06
+     2397.61,
+     3841.56
     ],
     "px": [
-     -466,
-     -702
+     3343,
+     -709
     ],
-    "nx": -0.243,
-    "ny": -0.65,
+    "nx": 1.741,
+    "ny": -0.656,
     "onScreen": false,
-    "camDist": 2176.83
+    "camDist": 2179.81
    },
    "unit": {
-    "unit": 5,
+    "unit": 9,
     "side": "Union",
     "type": "inf",
     "label": null,
@@ -427,20 +717,49 @@
    "tFilm": 63.68,
    "at": {
     "map": [
-     2397.17,
-     3839.04
+     2398.38,
+     3842.55
     ],
     "px": [
-     -467,
-     -702
+     3342,
+     -709
     ],
-    "nx": -0.243,
-    "ny": -0.65,
+    "nx": 1.741,
+    "ny": -0.656,
     "onScreen": false,
-    "camDist": 2173.75
+    "camDist": 2181.04
    },
    "unit": {
-    "unit": 6,
+    "unit": 10,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 63.68,
+   "tExcerpt": 63.68,
+   "tShare": 63.68,
+   "tFilm": 63.68,
+   "at": {
+    "map": [
+     2397.18,
+     3839.06
+    ],
+    "px": [
+     3341,
+     -709
+    ],
+    "nx": 1.74,
+    "ny": -0.656,
+    "onScreen": false,
+    "camDist": 2177.36
+   },
+   "unit": {
+    "unit": 11,
     "side": "Union",
     "type": "art",
     "label": null,
@@ -456,20 +775,49 @@
    "tFilm": 63.68,
    "at": {
     "map": [
-     2409.32,
-     3828.93
+     2408.94,
+     3828.43
     ],
     "px": [
-     -484,
-     -702
+     3300,
+     -709
     ],
-    "nx": -0.252,
-    "ny": -0.65,
+    "nx": 1.719,
+    "ny": -0.656,
     "onScreen": false,
-    "camDist": 2169.76
+    "camDist": 2172.61
    },
    "unit": {
-    "unit": 7,
+    "unit": 12,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 63.68,
+   "tExcerpt": 63.68,
+   "tShare": 63.68,
+   "tFilm": 63.68,
+   "at": {
+    "map": [
+     2409.71,
+     3829.43
+    ],
+    "px": [
+     3299,
+     -709
+    ],
+    "nx": 1.718,
+    "ny": -0.656,
+    "onScreen": false,
+    "camDist": 2173.84
+   },
+   "unit": {
+    "unit": 13,
     "side": "Union",
     "type": "inf",
     "label": null,

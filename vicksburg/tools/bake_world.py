@@ -484,7 +484,7 @@ class Settle:
     """Close-map settlements on an occupancy grid (the clip's close_town, generalised)."""
     def __init__(self, box, dist, hw, h, slope, seed):
         self.box = box; self.dist, self.hw, self.h, self.slope = dist, hw, h, slope
-        self.rr = np.random.default_rng(seed); x0, y0, bw, bh = box; self.G = G = 24
+        self.fs = FS; self.rr = np.random.default_rng(seed); x0, y0, bw, bh = box; self.G = G = 24
         self.occ = np.zeros((int(bh * G), int(bw * G)), np.uint8)
         self.build, self.streets, self.gardens, self.yards, self.trees, self.clear = [], [], [], [], [], []
 
@@ -569,7 +569,7 @@ class Settle:
             tw = c - nv * 0.3; self.put(float(tw[0]), float(tw[1]), 0.12, 0.12, ang, 5, 2, force=True)
 
     # ---- town kinds ----
-    def street_town(self, c, road, halfL=2.8, cross=6, rad=4.3, parallel=True):
+    def street_town(self, c, road, halfL=2.8, cross=6, rad=4.3, parallel=True, on_road=False):
         """Bovina: main street parallel to the road, a link lane, cross streets, back lanes, parallel streets, church, rows of houses"""
         rr = self.rr; bx, by = c; self.clear.append((bx, by, rad + 0.2))
         RD = densify(road, 0.05); j = int(np.hypot(RD[:, 0] - bx, RD[:, 1] - by).argmin())
@@ -577,12 +577,16 @@ class Settle:
         u = np.linspace(-halfL, halfL, int(halfL * 17))[:, None]
         main = np.array([bx, by], np.float32) + td * u + np.array([-td[1], td[0]]) * (0.12 * np.sin(u[:, :1] * 0.9))
         main = main[[not self.wet(*q) and self.inside(*q) for q in main]].astype(np.float32)
+        if on_road:   # project (v2 r4): the houses line the road itself (no separate main street / link lane beside it)
+            k_ = int(halfL / 0.05); main = RD[max(j - k_, 0):j + k_ + 1].astype(np.float32); main = main[[not self.wet(*q) and self.inside(*q) for q in main]]
+            if len(main) < 6: return
+            loc = [(main, 0.5)]
         if len(main) < 6: return
-        self.street(main, 0.2); loc = [(main, 0.2)]
-        if np.hypot(*(RD[j] - [bx, by])) > 0.6:
+        if not on_road: self.street(main, 0.2); loc = [(main, 0.2)]
+        if not on_road and np.hypot(*(RD[j] - [bx, by])) > 0.6:
             link = densify([main[int(len(main) * 0.62)], RD[min(j + 8, len(RD) - 1)]], 0.1); self.street(link, 0.16); loc.append((link, 0.16))
         cr = []
-        fr = np.linspace(0.12, 0.9, cross) if cross > 1 else [0.5]
+        fr = np.linspace(0.12, 0.9, cross) if cross > 1 else ([0.5] if cross == 1 else [])   # cross 0 (project): no cross streets
         for f in fr:
             L1, L2 = rr.uniform(1.2, 2.2), rr.uniform(1.1, 2.2)
             i = int(f * (len(main) - 1)); p = main[i]; t = self.tang(main, i); nrm = np.array([-t[1], t[0]])
@@ -648,16 +652,16 @@ class Settle:
 
     def farmstead(self, fx, fy, a=None):
         rr = self.rr; a = rr.uniform(0, math.pi) if a is None else a
-        u = np.array([math.cos(a), math.sin(a)]) * FS; v = np.array([-u[1], u[0]]); L = lambda p, q: np.array([fx, fy]) + u * p + v * q
+        u = np.array([math.cos(a), math.sin(a)]) * self.fs; v = np.array([-u[1], u[0]]); L = lambda p, q: np.array([fx, fy]) + u * p + v * q
         if not self.free(fx, fy, 0.6, 0.6, a): return False
-        self.clear.append((fx, fy, 1.1)); yc = L(0.12, 0.38); self.yards.append((float(yc[0]), float(yc[1]), 0.55 * FS, 0.42 * FS, a, 0))
+        self.clear.append((fx, fy, 1.1)); yc = L(0.12, 0.38); self.yards.append((float(yc[0]), float(yc[1]), 0.55 * self.fs, 0.42 * self.fs, a, 0))
         for (p, q, ln, rot) in ((0.12, 0.38 - 0.42, 0.95, 0), (0.12 - 0.5, 0.38, 0.8, 1), (0.12 + 0.5, 0.38, 0.8, 1)):
-            c = L(p, q); self.build.append((float(c[0]), float(c[1]), ln * FS, 0.022, a + rot * math.pi / 2, 0, 3))
-        c = L(0, 0); self.put(float(c[0]), float(c[1]), FS * rr.uniform(0.42, 0.55), FS * rr.uniform(0.19, 0.24), a, self.roof())
-        c = L(0.62, 0.42); self.put(float(c[0]), float(c[1]), FS * rr.uniform(0.62, 0.8), FS * rr.uniform(0.26, 0.32), a + math.pi / 2, int(rr.choice([3, 4, 0])))
+            c = L(p, q); self.build.append((float(c[0]), float(c[1]), ln * self.fs, 0.022, a + rot * math.pi / 2, 0, 3))
+        c = L(0, 0); self.put(float(c[0]), float(c[1]), self.fs * rr.uniform(0.42, 0.55), self.fs * rr.uniform(0.19, 0.24), a, self.roof())
+        c = L(0.62, 0.42); self.put(float(c[0]), float(c[1]), self.fs * rr.uniform(0.62, 0.8), self.fs * rr.uniform(0.26, 0.32), a + math.pi / 2, int(rr.choice([3, 4, 0])))
         for (p, q, w, d, rot) in [(0.05, 0.85, 0.34, 0.18, 0), (-0.45, 0.4, 0.28, 0.16, 1), (0.3, -0.35, 0.24, 0.15, 0), (-0.35, 0.95, 0.2, 0.14, 1)][: int(rr.integers(2, 5))]:
-            c = L(p + rr.uniform(-0.04, 0.04), q + rr.uniform(-0.04, 0.04)); self.put(float(c[0]), float(c[1]), FS * w * rr.uniform(0.85, 1.15), FS * d, a + rot * math.pi / 2, self.roof())
-        gc = L(-0.62, -0.32); self.gardens.append((float(gc[0]), float(gc[1]), 0.55 * FS, 0.42 * FS, a, int(rr.integers(0, 4))))
+            c = L(p + rr.uniform(-0.04, 0.04), q + rr.uniform(-0.04, 0.04)); self.put(float(c[0]), float(c[1]), self.fs * w * rr.uniform(0.85, 1.15), self.fs * d, a + rot * math.pi / 2, self.roof())
+        gc = L(-0.62, -0.32); self.gardens.append((float(gc[0]), float(gc[1]), 0.55 * self.fs, 0.42 * self.fs, a, int(rr.integers(0, 4))))
         for i in range(3):
             for j in range(3):
                 if rr.random() < 0.7: q = L(1.05 + i * 0.2 + rr.uniform(-0.04, 0.04), -0.45 + j * 0.2 + rr.uniform(-0.04, 0.04)); self.trees.append((float(q[0]), float(q[1]), float(rr.uniform(0.5, 0.75))))
@@ -801,7 +805,7 @@ def bake(rname, G, P, creeks, preview=True):
     WINTER = (cfg.get("winter") or {}) if (PROJ and cfg.get("season") == "winter") else None   # project mode: winter ground (configs without 'season' unchanged)
     if WINTER is not None and not WINTER: WINTER = {"on": True}
     upx_h = HW / bw
-    h = crop_prep(P, box, HW, HH, blur=1.0 if not close else 1.6)
+    h = crop_prep(P, box, HW, HH, blur=(cfg.get("dem_blur") if PROJ and cfg.get("dem_blur") else (1.0 if not close else 1.6)))   # project: dem_blur (v2 r3: soften DEM creases)
     if close:
         rn = cfg.get("relief_noise", [7.0, 1.6])
         h += (fbm(HH, HW, 5, 4, seed + 5) - 0.5) * rn[0] + (fbm(HH, HW, 4, 16, seed + 6) - 0.5) * rn[1]
@@ -852,12 +856,24 @@ def bake(rname, G, P, creeks, preview=True):
         if close and len(big) >= 8:
             pts = smooth(densify(chaikin(big[:, :2], 2), 0.12), 8); pts = meander(pts, [], amp=0.16, wl=1.6, seed=len(riv_in))
             riv_in.append(("creek", pts, float(np.clip(0.14 + 0.0016 * big[:, 2].mean(), 0.16, 0.32)), {"auto": True}))
+    if PROJ and any(e.get("valley") or e.get("bank_blur") for _, _, _, e in riv_in):   # project (Battle 21 v2 r2): carve a broad valley along a river ("valley": {depth_m, half_u}) before its water level
+        for _, pts, _, e in riv_in:
+            if not (e.get("valley") or e.get("bank_blur")): continue
+            vm = np.full((HH, HW), 255, np.uint8); Pp = np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1)
+            cv2.polylines(vm, [np.round(Pp * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
+            dv = cv2.distanceTransform(vm, cv2.DIST_L2, 5) / upx_h
+            if e.get("bank_blur"):   # v2 r4 (N8): soften cut banks / terraces along the river (heavy blur blended in a band of half_u units)
+                bb_ = e["bank_blur"]; wb_ = np.clip(1 - dv / bb_.get("half_u", 3.0), 0, 1) ** 0.7
+                h = h * (1 - wb_) + cv2.GaussianBlur(h, (0, 0), bb_.get("sigma_u", 1.0) * upx_h) * wb_; del wb_
+            if e.get("valley"): vv_ = e["valley"]; h = h - vv_.get("depth_m", 6.0) * np.clip(1 - dv / vv_.get("half_u", 3.0), 0, 1) ** 1.6
+            del vm, dv
+        hs = cv2.GaussianBlur(h, (0, 0), 2.5 * upx_h)
     rivs = []; wlimg = np.full((HH, HW), 1e4, np.float32); cl = np.full((HH, HW), 255, np.uint8); widthimg = np.zeros((HH, HW), np.float32)
     for key, pts, w, e in riv_in:
         wl = water_levels(pts, lambda p: sample(hs, box, p))
         if "wl_max" in e: wl = np.minimum(wl, e["wl_max"])
         Pp = np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1)
-        tmp = np.full((HH, HW), 1e4, np.float32); th = max(2, int((w * 2.5 + 2.0) * upx_h))
+        tmp = np.full((HH, HW), 1e4, np.float32); th = max(2, int((w * 2.5 + 2.0 + (2 * float(cfg.get("carve_reach_u", 0)) if PROJ else 0)) * upx_h))   # project (v2 r5): carve_reach_u widens the carve band (no cliff where a gentle bank_slope meets the band edge)
         for i in range(len(Pp) - 1):
             a = tuple(int(v) for v in np.round(Pp[i] * 4)); b = tuple(int(v) for v in np.round(Pp[i + 1] * 4))
             cv2.line(tmp, a, b, float(wl[i]), th, cv2.LINE_8, shift=2); cv2.line(widthimg, a, b, float(w), th, cv2.LINE_8, shift=2)
@@ -865,11 +881,25 @@ def bake(rname, G, P, creeks, preview=True):
         cv2.polylines(cl, [np.round(Pp * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
         stride = 2 if close or w < 3 else 1
         rivs.append(dict(name=key, w=round(w, 3), pts=[[round(float(p[0]), 3), round(float(p[1]), 3), round(float(l), 2)] for p, l in zip(pts[::stride], wl[::stride])]))
+        if PROJ and e.get("look"): rivs[-1]["look"] = e["look"]   # project (Battle 21 v2 r4): per-river water look for the engine (colour / roughness / ripple / env)
+    if PROJ and cfg.get("wl_smooth_u"):   # project (v2 r5): smooth the per-segment water levels (no stepped / striated banks across the carve band)
+        mw_ = (wlimg < 1e3).astype(np.float32); sg_ = float(cfg["wl_smooth_u"]) * upx_h
+        ws_ = cv2.GaussianBlur(np.where(mw_ > 0, wlimg, 0), (0, 0), sg_) / np.maximum(cv2.GaussianBlur(mw_, (0, 0), sg_), 1e-4)
+        wlimg = np.where(mw_ > 0, ws_, wlimg).astype(np.float32); del mw_, ws_
     dist = cv2.distanceTransform(cl, cv2.DIST_L2, 5) / upx_h
     hw = np.maximum(widthimg, 0.3) / 2; depth = 2.5 if not close else 3.0
     bankslope = 9.0 if not close else 14.0
+    if PROJ and cfg.get("bank_slope"): bankslope = float(cfg["bank_slope"])   # project (v2 r4): gentler cut banks (no terraced trench)
     target = np.where(dist < hw, wlimg - depth * (1 - (dist / hw) ** 2) - 0.4, wlimg - 0.4 + (dist - hw) * bankslope)
     h = np.where(wlimg < 1e3, np.minimum(h, target), h)
+    for _, pts, _, e in (riv_in if PROJ else []):   # project (v2 r4, N8): soften the carved cut bank (no terraced scarp): blur the land beside the water, never below water level
+        if not e.get("bank_blur"): continue
+        vm = np.full((HH, HW), 255, np.uint8); cv2.polylines(vm, [np.round(np.stack([(pts[:, 0] - x0) * upx_h, (pts[:, 1] - y0) * upx_h], 1) * 4).astype(np.int32)], False, 0, 1, cv2.LINE_8, shift=2)
+        dv = cv2.distanceTransform(vm, cv2.DIST_L2, 5) / upx_h; bb_ = e["bank_blur"]; hw_e = e["w"] / 2
+        wb_ = np.clip((dv - hw_e - 0.15) / 0.5, 0, 1) * np.clip(1 - (dv - hw_e) / bb_.get("half_u", 3.0), 0, 1) ** 0.7
+        hb_ = cv2.GaussianBlur(h, (0, 0), bb_.get("sigma_u", 1.0) * upx_h)
+        hb_ = np.where(wlimg < 1e3, np.maximum(hb_, wlimg + 0.3), hb_)
+        h = h * (1 - wb_) + hb_ * wb_; del vm, dv, wb_, hb_
     # creek troughs (painted creeks): 0.6-2 m
     cm = np.zeros((HH, HW), np.float32)
     for A in creek_lines:
@@ -968,8 +998,12 @@ def bake(rname, G, P, creeks, preview=True):
     del seeds, wx, wy, my_, mx_
     LOG("  fields ...")
     hedge_pts = None
-    if close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
-    elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s, r, TW, TH, seed)   # project mode: the close (chalmette) field look on a wide map
+    if close and PROJ and cfg.get("gm_unit"):   # project (Battle 21 v2): the gm field detail (strips, furrows, tracks, scrub) at gm_unit x its unit size, so a close
+        gu_ = float(cfg["gm_unit"]); img, hedge_pts = gm_fields(lab, n, cell, s * gu_, r, TW, TH, seed, track_k=cfg.get("track_k", 1.0), strip_k=cfg.get("strip_k", 1.0))   # camera 2-4x nearer (in metres) than v8's reads like v8 at 35-60 s
+        rh_ = np.random.default_rng(seed + 777).random(len(hedge_pts)); kp_ = np.where(hedge_pts[:, 2] == 2, gu_, gu_ * gu_)   # same tree density per unit area / hedge length as before
+        hedge_pts = hedge_pts[rh_ < kp_]; del rh_, kp_
+    elif close: img, hedge_pts = gm_fields(lab, n, cell, s, r, TW, TH, seed)
+    elif PROJ and cfg.get("field_look") == "gm": img, _ = gm_fields(lab, n, cell, s * float(cfg.get("gm_unit", 1.0)), r, TW, TH, seed, track_k=cfg.get("track_k", 1.0))   # gm_unit: detail size x k (v2 jersey: bigger strips for the far camera)   # project mode: the close (chalmette) field look on a wide map
     else: img = wide_fields(lab, n, cell, s, r, TW, TH, seed)
     if PROJ and cfg.get("field_feather"):   # project: feather the field patch borders (no hard Voronoi facets): blur blended in along the label edges only
         fp_ = cfg["field_feather"] * s; lf_ = lab.astype(np.float32); k3_ = np.ones((3, 3), np.uint8)
@@ -1023,6 +1057,9 @@ def bake(rname, G, P, creeks, preview=True):
     if close:
         jag = cv2.resize(fbm(TH // 4, TW // 4, 3, int(bw / 0.7), seed + 60), (TW, TH))
         fbase = np.maximum(fm * 0.7 + fm2 * 0.3 + near * 0.12 + slope * cfg.get("ravine_woods", 0.5) - 0.72, fm2 * 0.85 + fm * 0.2 - 0.69) + (jag - 0.5) * 0.16 + wd + swamp
+        if PROJ and cfg.get("river_woods"):   # project (v2 r2): teal wood masses along the river banks (band river_woods.u units, strength k, broken by noise)
+            rw_ = cfg["river_woods"]; nb_ = np.clip(1 - (dist_t - hw_t - rw_.get("gap_u", 0.15)) / rw_.get("u", 2.5), 0, 1) * (dist_t > hw_t + rw_.get("gap_u", 0.15))
+            fbase = fbase + nb_ * rw_.get("k", 0.12) * (0.6 + 0.8 * fm2); del nb_
         del jag
     else:
         fm3 = fbm(TH, TW, 4, int(bw / 18 * ws_), seed + 13)
@@ -1099,9 +1136,10 @@ def bake(rname, G, P, creeks, preview=True):
     road = np.zeros((TH, TW), np.uint8); rwpx = max(3, int((1.1 if not close else 0.32) * s))
     for rd, c_, _ in RDS:
         wpx = rwpx if (not close and c_ == "pike") or (close and c_ == "pike") else (max(2, int(0.7 * s)) if not close else max(3, int(0.2 * s)))
+        if PROJ and cfg.get("road_w_k"): wpx = max(2, int(round(wpx * cfg["road_w_k"])))   # project (v2 r4): thinner ruts (v8 width)
         cv2.polylines(road, [np.round(np.array([Pt(p) for p in rd], np.float32) * 4).astype(np.int32)], False, 255, wpx, cv2.LINE_AA, shift=2)
     if town:
-        for st, wdt in town["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(3, int(wdt * s)), cv2.LINE_AA, shift=2)
+        for st, wdt in town["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(2 if (PROJ and cfg.get("road_w_k")) else 3, int(wdt * s * ((cfg.get("road_w_k") or 1.0) if PROJ else 1.0))), cv2.LINE_AA, shift=2)
     if wplan:
         for st, wdt in wplan["streets"]: cv2.polylines(road, [np.round(np.array([Pt(p) for p in st], np.float32) * 4).astype(np.int32)], False, 255, max(2, int(wdt * s)), cv2.LINE_AA, shift=2)
     rdm = road.astype(np.float32) / 255
@@ -1137,6 +1175,16 @@ def bake(rname, G, P, creeks, preview=True):
             cv2.polylines(sp, [np.round(np.array([Pt(p) for p in Q]) * 4).astype(np.int32)], False, 255, max(2, int(wd_ * sc * s)), cv2.LINE_AA, shift=2)
             spf = cv2.GaussianBlur(sp.astype(np.float32) / 255, (0, 0), 1.2)[..., None] * a_; img = img * (1 - spf) + hexc(col_) * spf
         W_["nrm"] = nrm
+    FROST = None
+    if WINTER and WINTER.get("frost"):   # project (v2 r3, owner "a LIGHT frost"): pale cool tint over the open fields, stronger in furrows / field edges and on
+        FR_ = WINTER["frost"]                # north-facing slopes; woods lightly touched, roads / water / sea untouched. Applied after tex_grade (keeps its saturation target).
+        fine_ = cv2.GaussianBlur(img.mean(-1), (0, 0), 0.6); hol_ = np.clip((cv2.GaussianBlur(fine_, (0, 0), 3.0) - fine_) / 6 + 0.5, 0, 1); del fine_
+        hb_ = cv2.GaussianBlur(ht, (0, 0), 0.004 * TW) * exag / MPU; nf_ = np.clip(np.gradient(hb_, axis=0) * s * FR_.get("north_k", 4.0), 0, 1); del hb_
+        FROST = FR_.get("a", 0.15) * (0.7 + FR_.get("edge", 0.5) * (hol_ - 0.5) * 2 * 0.5 + FR_.get("north", 0.5) * nf_)
+        del hol_, nf_
+        FROST *= (1 - forest * (1 - FR_.get("woods", 0.25))) * (1 - road_w) * np.clip((dist_t - hw_t) / (0.1 if close else 0.6), 0, 1)
+        if sea_w is not None: FROST *= np.clip(1 - (sea_w - 0.35) * 3.3, 0, 1)
+        FROST = np.clip(FROST, 0, 0.5).astype(np.float32)
     if WINTER: img = winter_ground(img, forest, road_w, dist_t, hw_t, close, TW, TH, bw, s, seed, WINTER, sea_w); del road_w, sea_w
     # ---------------- baked relief shading ----------------
     shade = np.ones((TH, TW), np.float32)
@@ -1144,6 +1192,7 @@ def bake(rname, G, P, creeks, preview=True):
     for sig, wgt in ((0.0015, 0.22), (0.005, 0.6)) if not close else ((0.004, 0.6), (0.012, 0.4)):
         hb = cv2.GaussianBlur(ht, (0, 0), sig * TW) * exag / MPU
         dz, dx = np.gradient(hb); dx *= s; dz *= s
+        if PROJ and cfg.get("shade_gain") and not close: dx *= cfg["shade_gain"]; dz *= cfg["shade_gain"]   # project (v2 r6, critic A r4 N1): steeper SHADING slopes on a blurred (streak-free) wide DEM: v8-like hill light without more exag
         lam = (-dx * sun[0] + sun[1] - dz * sun[2]) / np.sqrt(dx * dx + 1 + dz * dz)
         shade += wgt * (np.clip(lam, 0, 1) / sun[1] - 1); del hb, dz, dx, lam
     if not close:
@@ -1162,6 +1211,19 @@ def bake(rname, G, P, creeks, preview=True):
         img = (img - mu) * tg_.get("contrast", 1.0) + mu * tg_.get("level", 1.0)
         lum = img.mean(-1, keepdims=True); img = lum + (img - lum) * tg_.get("sat", 1.0); del lum
         img = 255.0 * (np.clip(img, 0, 255) / 255.0) ** tg_.get("gamma", 1.0)
+        if tg_.get("tint"): img = img * np.array(tg_["tint"], np.float32)   # project: per-channel warmth (R, G, B multipliers)
+    if PROJ and cfg.get("tex_lift"):   # project (v2 r5, critic A r3 #5): soft local brightness lift [{box [x0, y0, x1, y1] region units, feather_u, k, wood_k}] (a dark far band of one shot)
+        xs_ = x0 + (np.arange(TW, dtype=np.float32) + 0.5) / TW * bw; ys_ = y0 + (np.arange(TH, dtype=np.float32) + 0.5) / TH * bh
+        for tl_ in cfg["tex_lift"]:
+            bx_ = tl_["box"]; f_ = float(tl_.get("feather_u", 15.0)); sm_ = lambda v: v * v * (3 - 2 * v)
+            wx_ = sm_(np.clip((xs_ - bx_[0]) / f_, 0, 1) * np.clip((bx_[2] - xs_) / f_, 0, 1)); wy_ = sm_(np.clip((ys_ - bx_[1]) / f_, 0, 1) * np.clip((bx_[3] - ys_) / f_, 0, 1))
+            img *= (1 + np.outer(wy_, wx_) * (tl_.get("k", 0.1) + tl_.get("wood_k", 0.0) * forest))[..., None]
+        img = np.clip(img, 0, 255); del xs_, ys_
+    if FROST is not None: img = img * (1 - FROST[..., None]) + hexc(WINTER["frost"].get("col", "#dde5ea")) * FROST[..., None]; del FROST
+    if PROJ and cfg.get("bank_fill"):   # project (v2 r4, critic #23): the strip between the water and the woods / frost = the river bank colour (no pale rims round ponds)
+        bf_ = cfg["bank_fill"]; u_ = bf_.get("u", 0.8 if not close else 0.15); o_ = (cfg.get("river_halo_u") or 0.0) if not close else 0.0   # starts outside the painted water halo
+        m_ = np.clip((u_ - (dist_t - hw_t)) / (0.35 * u_), 0, 1) * np.clip((dist_t - hw_t - o_ + 0.05) / 0.1, 0, 1) * bf_.get("a", 0.6)   # flat band, soft edges
+        img = img * (1 - m_[..., None]) + hexc(bf_.get("col", "#5c5c4a")) * m_[..., None]; del m_
     img8 = np.clip(img, 0, 255)[..., ::-1].astype(np.uint8); del img
     cv2.imwrite(f"{out}/ground.jpg", img8, [cv2.IMWRITE_JPEG_QUALITY, cfg.get("jpeg_q", 88 if close else 90)])
     LOG("  ground.jpg %.1f MB" % (os.path.getsize(f"{out}/ground.jpg") / 1e6))
@@ -1226,19 +1288,39 @@ def bake(rname, G, P, creeks, preview=True):
             A = np.array(rv["pts"], np.float32); dd = np.hypot(A[:, 0] - p[0], A[:, 1] - p[1]); i = int(dd.argmin())
             if dd[i] < maxd and (best is None or dd[i] < best[0]): best = (dd[i], rv, A, i)
         return best
-    def bridge_at(p, kind, name, burn=False, length=None):
+    def bridge_at(p, kind, name, burn=False, length=None, road_dir=None):
         b = river_at(p)
         if b is None: return None
         _, rv, A, i = b; t_ = A[min(i + 2, len(A) - 1), :2] - A[max(i - 2, 0), :2]; t_ /= np.linalg.norm(t_) + 1e-6
+        if road_dir is not None:   # project (v2 r6, critic A N4): the deck lies ALONG the road (not square to the river), centred on the road x river point, length = crossing + 10 %
+            rd_ = np.asarray(road_dir, np.float64); rd_ /= np.linalg.norm(rd_) + 1e-9; sn_ = max(0.35, abs(rd_[0] * t_[1] - rd_[1] * t_[0]))
+            L_ = length or round(rv["w"] * 1.08 / sn_ * 1.1 + 0.12, 3); ac_ = math.atan2(rd_[1], rd_[0]); u_ = rd_ * L_ / 2; pc_ = np.asarray(p, np.float64)
+            ends_h = float(np.mean(sample(h, box, np.array([pc_ + u_, pc_ - u_], np.float32))))
+            return dict(name=name, kind=kind, x=round(float(pc_[0]), 3), z=round(float(pc_[1]), 3), angle=round(ac_, 4), len=round(L_, 3), wl=round(float(A[i, 2]), 2),
+                        deck=round(max(min(ends_h, float(A[i, 2]) + 2.0), float(A[i, 2]) + 0.8) + 0.2, 2), river=rv["name"], burn=burn, spans=3)
         wl = float(A[i, 2]); ring = np.array([A[i, :2] + [math.cos(a) * (rv["w"] / 2 + 0.6), math.sin(a) * (rv["w"] / 2 + 0.6)] for a in np.linspace(0, 6.28, 16)], np.float32)
         bank_h = float(np.percentile(sample(h, box, ring), 70))
+        if PROJ and cfg.get("bridge_deck") == "ends":   # project (v2 r3 carry-over): deck at road level = the terrain at the bridge's two ends (not the valley floor + 4 m)
+            L_ = length or max(1.0, rv["w"] * 1.08 * 1.6 + 1.0); ac_ = math.atan2(t_[1], t_[0]) + math.pi / 2; u_ = np.array([math.cos(ac_), math.sin(ac_)]) * L_ / 2
+            ends_h = float(np.mean(sample(h, box, np.array([A[i, :2] + u_, A[i, :2] - u_], np.float32))))
+            return dict(name=name, kind=kind, x=round(float(A[i, 0]), 3), z=round(float(A[i, 1]), 3), angle=round(ac_, 4), len=round(L_, 3), wl=round(float(A[i, 2]), 2),
+                        deck=round(max(ends_h, float(A[i, 2]) + 1.0) + 0.3, 2), river=rv["name"], burn=burn)
         return dict(name=name, kind=kind, x=round(float(A[i, 0]), 3), z=round(float(A[i, 1]), 3), angle=round(math.atan2(t_[1], t_[0]) + math.pi / 2, 4),
                     len=round(length or max(1.0, rv["w"] * 1.08 * 1.6 + 1.0), 3), wl=round(wl, 2), deck=round(max(bank_h, wl + 4) + 1.0, 2), river=rv["name"], burn=burn)
     done_b = []
     for b in bridges_cfg:
-        p = resolve_pt(G, b)
+        p = resolve_pt(G, b); rdir_ = None
         if p is None: continue
-        bb = bridge_at(p, b.get("kind", "road"), b.get("name", "bridge"), b.get("burn", False), b.get("len"))
+        if PROJ and b.get("kind", "road") == "road" and b.get("snap_road", True):   # project (v2 r3): put a named road bridge ON the nearest road x river crossing (research points are +-100 m)
+            best_ = None
+            for rd, _, _ in RDS:
+                for rv in rivs:
+                    if rv["w"] >= 2.5: continue
+                    for (q_, _ia, _) in seg_intersections(rd, np.array(rv["pts"], np.float32)[:, :2]):
+                        d_ = math.hypot(q_[0] - p[0], q_[1] - p[1])
+                        if d_ < b.get("snap_u", 3.0) and (best_ is None or d_ < best_[0]): best_ = (d_, q_, rd[min(_ia + 1, len(rd) - 1)] - rd[_ia])
+            if best_ is not None: p = np.array(best_[1], np.float32); rdir_ = best_[2] if b.get("align") == "road" else None   # align "road" (project, v2 r6): deck along the road
+        bb = bridge_at(p, b.get("kind", "road"), b.get("name", "bridge"), b.get("burn", False), b.get("len"), rdir_)
         if bb: feat["bridges"].append(bb); done_b.append((bb["x"], bb["z"]))
     if cfg.get("auto_bridges", True):   # every road / railroad crossing of a ribbon river (not the Mississippi)
         for (lines, kind) in (([(rd, nm) for rd, c_, nm in RDS if c_ != "lane" or close], "road"), ([(rd, nm) for rd, nm in RAILS], "rail")):
@@ -1286,7 +1368,7 @@ def bake(rname, G, P, creeks, preview=True):
     if PROJ: D["frame"] = PROJ.frame_info(CUR_ZOOM, list(box)); D["exag_cfg"] = cfg.get("exag", 6.0 if close else 14.0)
     if PROJ and cfg.get("wideSunK") is not None: D["wideSunK"] = cfg["wideSunK"]
     if PROJ and cfg.get("detail"): D["detail"] = cfg["detail"]   # engine: procedural ground detail near the camera (opt-in)
-    if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees")}   # engine: bare woods, ice on the rivers
+    if WINTER: D["season"] = "winter"; D["winter"] = {k: v for k, v in WINTER.items() if k in ("ice", "floes", "trees", "conifers", "bare_mix")}   # v2: conifers / bare_mix reach the engine crowns   # engine: bare woods, ice on the rivers
     # compatibility with the clip's world.js (single bridge / pontoons / breastworks)
     rb = [b for b in feat["bridges"] if b.get("burn")] or [b for b in feat["bridges"] if b["kind"] == "rail"]
     if rb: D["bridge"] = {k: rb[0][k] for k in ("x", "z", "angle", "len", "wl", "deck")}
@@ -1311,6 +1393,8 @@ def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     (cedar / pine) clumps that keep the teal"""
     bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * ((0.86 + 0.28 * crown[..., None]) if close else (1 - 0.26 * WINTER.get('crown_k', 1.0) + 0.52 * WINTER.get('crown_k', 1.0) * crown[..., None]))   # wide: the Jackson canopy speckle contrast   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
     con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - (0.62 if close else 0.62 - 0.6 * (WINTER.get("conifers_wide", 0.4) - 0.16))) * 6, 0, 1)[..., None]
+    if WINTER.get("bare_mix") is not None:   # Battle 21 v2 (owner row 22): bare woods = the summer teal canopy with only a touch of grey-brown twig colour
+        bm = float(WINTER["bare_mix"]); bare = fcol * (1 - bm) + bare * (fcol.mean() / max(float(bare.mean()), 1e-3)) * bm
     return bare * (1 - con) + fcol * con
 
 
@@ -1335,6 +1419,7 @@ def winter_ground(img, forest, road, dist_t, hw_t, close, TW, TH, bw, s, seed, W
     g = g * (1 - snow) + scol * snow
     # 3) frost rim on the banks (shore ice / frozen mud)
     rim = np.clip(1 - np.abs(dist_t - hw_t - (0.05 if close else 0.4)) / (0.10 if close else 0.6), 0, 1)[..., None] * 0.35 * W.get("ice", 1.0)
+    if W.get("bare_mix") is not None: rim = rim * (1 - forest[..., None])   # v2 (bare_mix configs): no frost rim on creeks under the woods (read as pale streaks in the canopy)
     g = g * (1 - rim) + hexc("#b9c0c2") * rim
     if sea is not None:   # the painted sea stays as it was (no grey-down, no snow)
         sm = np.clip((sea - 0.35) * 3.3, 0, 1)[..., None]; g = g * (1 - sm) + img0 * sm
@@ -1411,7 +1496,7 @@ def paint_sea(img, sea, close, s, look):
     col = col * (0.97 + 0.06 * tex)
     out = img * (1 - sm[..., None]) + col * sm[..., None]
     beach = np.clip(1 - dl / look.get("beach_u", 0.5 if not close else 0.08), 0, 1)[..., None] * 0.35 * (1 - sm[..., None])
-    out = out * (1 - beach) + hexc("#b4a886") * beach
+    out = out * (1 - beach) + hexc(look.get("beach_col", "#b4a886")) * beach
     cl = np.clip(1 - np.abs(dsea - dl) / look.get("line_u", 0.18 if not close else 0.04), 0, 1)[..., None] * 0.55
     return out * (1 - cl) + hexc("#34413f") * cl
 
@@ -1542,6 +1627,7 @@ def auto_works(kind, spec, G, h, box, close):
 # ============================================================ close settlement driver ============================================================
 def settle_close(cfg, G, box, dist, hw, h, slope, RDS, seed):
     S = Settle(box, dist, hw, h, slope, cfg.get("settle_seed", 1863)); x0, y0, bw, bh = box
+    if PROJ and cfg.get("farm_scale"): S.fs = FS * float(cfg["farm_scale"])   # project (v2 r3): bigger farmsteads (houses read at the near z11 cameras)
     for rd, c_, _ in RDS: S.block_road(rd, 0.35 if c_ == "pike" else 0.25)
     pikes = [rd for rd, c_, _ in RDS if c_ == "pike"] or [rd for rd, _, _ in RDS]
     def nearest_road(p):
@@ -1555,10 +1641,15 @@ def settle_close(cfg, G, box, dist, hw, h, slope, RDS, seed):
         if p is None: continue
         if not (x0 < p[0] < x0 + bw and y0 < p[1] < y0 + bh): continue
         kind = t.get("kind", "street"); nr = nearest_road(p)
+        for pb_ in (t.get("public", []) if PROJ else []):   # project (v2 r4): a clean public building (Nassau Hall) on its own yard, placed before the houses
+            a_ = math.radians(pb_[4]); S.yards.append((pb_[0], pb_[1], pb_[2] * 0.75, pb_[3] * 1.6, a_, 1)); S.put(pb_[0], pb_[1], pb_[2], pb_[3], a_, pb_[5], 1, force=True)
         if t.get("angle") is not None: ang = math.radians(t["angle"])
         elif nr: rd, i = nr[1], nr[2]; d_ = rd[min(i + 8, len(rd) - 1)] - rd[max(i - 8, 0)]; ang = math.atan2(d_[1], d_[0])
         else: ang = 0.0
-        if kind == "street" and nr: S.street_town(p, nr[1], t.get("halfL", 2.8), t.get("cross", 6), t.get("rad", 4.3), t.get("parallel", True))
+        if kind == "street" and nr and PROJ and t.get("on_road"):   # project (v2 r4): houses along every pike through the village (no extra streets)
+            for rd_ in pikes:
+                if np.hypot(rd_[:, 0] - p[0], rd_[:, 1] - p[1]).min() < 1.5: S.street_town(p, rd_, t.get("halfL", 2.8), 0, t.get("rad", 4.3), False, True)
+        elif kind == "street" and nr: S.street_town(p, nr[1], t.get("halfL", 2.8), t.get("cross", 6), t.get("rad", 4.3), t.get("parallel", True))
         elif kind == "grid": S.grid_town(p, ang, t.get("rad", 3.0), t.get("block", 0.9))
         elif kind == "hamlet": S.hamlet(p, ang if t.get("angle") is None else math.radians(t["angle"]), t.get("len", 2.6))
         elif kind == "plantation": S.plantation(float(p[0]), float(p[1]), None if t.get("angle") is None else math.radians(t["angle"]))

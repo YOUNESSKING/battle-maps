@@ -3,11 +3,22 @@
  "zoom": 11,
  "season": "winter",
  "winter": {
-  "snow": 0.6,
-  "snow_alpha": 0.66,
-  "desat": 0.45,
-  "ice": 1.0,
-  "conifers": 0.16
+  "snow": 0.5,
+  "snow_alpha": 0.12,
+  "desat": 0.0,
+  "frost": {
+   "a": 0.17,
+   "edge": 0.6,
+   "north": 0.5,
+   "north_k": 4.0,
+   "woods": 0.2,
+   "col": "#d2dfec"
+  },
+  "ice": 0.25,
+  "conifers": 0.55,
+  "bare_mix": 0.35,
+  "road_col": "#84583f",
+  "snow_col": "#d2d0c2"
  },
  "note": "Princeton, 3 Jan 1777 (winter, frozen ground): the village on the post road + Nassau Hall, the post road to Trenton (SW) over the Stony Brook bridge (Worth's Mill), the Quaker Bridge / Saw Mill road from the south (the night march), the Thomas Clarke house and William Clarke's orchard (the clash point), the Olden house, Frog Hollow. Zoom-11 frame. Carnegie Lake (1906) and the D&R canal (1834) are modern: filled.",
  "box": [
@@ -41,22 +52,24 @@
   },
   {
    "at": [
-    1509.52,
-    1819.88
+    1476.4,
+    1849.8
    ],
-   "dist": 24,
-   "tilt": 56,
-   "yaw": 12
+   "dist": 7,
+   "tilt": 58,
+   "yaw": 20
   }
  ],
  "hm_ppu": 8,
  "tex": 4096,
- "exag": 2.6,
- "cell": 4.4,
+ "exag": 3.8,
+ "cell": 1.85,
+ "gm_unit": 0.45,
+ "track_k": 0.5,
  "seed": 1777,
  "relief_noise": [
-  0.9,
-  0.3
+  2.0,
+  0.6
  ],
  "dem_ppu": 8,
  "dem_margin": 6,
@@ -74,17 +87,41 @@
  "woods": 0.03,
  "ravine_woods": 0.6,
  "tree_spacing": 0.28,
- "rust_k": 0.85,
  "clear_blur": 0.8,
  "clear_noise_u": 1.6,
+ "river_woods": {
+  "u": 1.8,
+  "k": 0.1
+ },
+ "tex_grade": {
+  "contrast": 1.06,
+  "sat": 1.25
+ },
+ "farm_scale": 1.8,
+ "bridge_deck": "ends",
+ "road_w_k": 0.4,
+ "bank_fill": {
+  "u": 0.15,
+  "a": 0.7
+ },
  "rivers": [
   {
    "name": "Stony Brook",
    "geo": "Stony Brook",
-   "w": 0.45,
+   "w": 0.6,
    "step": 0.12,
    "snap": false,
-   "smooth": 6
+   "smooth": 200,
+   "valley": {
+    "depth_m": 7.0,
+    "half_u": 3.5
+   },
+   "look": {
+    "color": "#536f80",
+    "rough": 0.9,
+    "env": 0.08,
+    "ns": 0.04
+   }
   }
  ],
  "roads": [
@@ -118,9 +155,21 @@
    "name": "Princeton",
    "geo": "Princeton",
    "kind": "street",
-   "halfL": 4.5,
-   "cross": 4,
-   "rad": 5.0
+   "halfL": 3.5,
+   "cross": 0,
+   "parallel": false,
+   "on_road": true,
+   "rad": 3.6,
+   "public": [
+    [
+     1509.52,
+     1819.88,
+     0.95,
+     0.3,
+     -37.2,
+     5
+    ]
+   ]
   },
   {
    "name": "Thomas Clarke house",

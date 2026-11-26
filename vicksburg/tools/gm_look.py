@@ -60,7 +60,7 @@ def wide_fields(lab, n, cell, s, r, TW, TH, seed):
     img = img * (1 - 0.25 * g) + np.array([86, 98, 88], np.float32) * 0.25 * g
     return img
 
-def gm_fields(lab, n, cell, s, r, TW, TH, seed):
+def gm_fields(lab, n, cell, s, r, TW, TH, seed, track_k=1.0, strip_k=1.0):   # strip_k (Battle 21 v2 r6, default 1 = unchanged): strip + fine furrow contrast x k   # track_k (Battle 21 v2, default 1 = unchanged): pale tracks count / opacity x k
     """GM close ground (v5), measured on GM 1814 640-700 s (k-means (157,134,112) (128,121,100) (94,100,90), woods (54,71,66)):
     big warm patches of sand / tan / stubble (~45 %), rust + ploughed brown (~15 %), olive (~25 %) and dark pasture (~15 %); neighbouring fields
     share a tone (large warm vs green regions), strip fields of alternating shades, brushed streaks + furrows along the strips, soft colour
@@ -85,7 +85,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     # strip fields: most strips keep the field's crop at another shade, ~30 % take the neighbouring palette entry (tan <-> sand, olive <-> pasture)
     hop = 0   # v7: no palette hop inside a field (no candy stripes)
     crop = np.clip(cf[lab] + hop, 0, len(PAL) - 1); del hop
-    img = PAL[crop] * (0.94 + 0.10 * hs_(lab64, 4) + 0.12 * (hs_(sub, 3) - 0.5) * split[lab])[..., None]   # strips: brightness only, +-6 %
+    img = PAL[crop] * (0.94 + 0.10 * hs_(lab64, 4) + 0.12 * strip_k * (hs_(sub, 3) - 0.5) * split[lab])[..., None]   # strips: brightness only, +-6 %
     img = cv2.GaussianBlur(img, (0, 0), 1.8)   # v6: antialiased soft colour change at the edges (1.8 px at full res), no outline
     # brushed streaks along the strip direction (1-D noise across, slow drift along) + fine furrows
     nv = np.random.default_rng(seed + 50).random(int((TW + TH) * 2.2 / (0.025 * s)) + 8).astype(np.float32)
@@ -104,7 +104,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     ff = np.sin(vv / (0.055 * s) * np.pi * 2 + fbm(TH, TW, 2, 30, seed + 57) * 3)   # v7: fine furrow octave (~0.055 units), on ~half the ground
     fm_ = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, 7, seed + 58), (TW, TH)) - 0.45) * 4, 0, 1)
     fa = np.array([0.03, 0.04, 0.045, 0.05, 0.06, 0.055, 0.035, 0.03, 0.015, 0.015], np.float32)[crop]
-    img *= (1 + ff * fa * fm_)[..., None]; del ff, fm_, fa, vv, uu
+    img *= (1 + ff * fa * strip_k * fm_)[..., None]; del ff, fm_, fa, vv, uu
     # big soft damp / dry mottles (value only, no teal wash), mid mottles, fine smooth grain
     m1 = cv2.resize(fbm(TH // 4, TW // 4, 5, 5, seed + 41), (TW, TH)); m2 = cv2.resize(fbm(TH // 4, TW // 4, 4, 22, seed + 47), (TW, TH))
     mo = (m1 * 0.65 + m2 * 0.35 - 0.5)[..., None]; img *= (1 + mo * 0.33); del m1, m2, mo   # v6: big damp / dry patches back (x1.5)
@@ -122,7 +122,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
     tk = np.clip(cv2.GaussianBlur(tk, (0, 0), 0.02 * s) * 1.6, 0, 1) * 0.7   # v6: soft, no scalloped verge
     # + a few curved cart tracks across the fields
     ct = np.zeros((TH, TW), np.uint8); rt = np.random.default_rng(seed + 53)
-    for _ in range(int(TW * TH / (s * s) / 40)):   # v7: 2x more tracks across the fields
+    for _ in range(int(TW * TH / (s * s) / 40 * track_k)):   # v7: 2x more tracks across the fields
         p0 = rt.uniform(0, 1, 2) * [TW, TH]; a0 = rt.uniform(0, np.pi * 2); L = rt.uniform(3, 7) * s
         P = [p0 + np.array([math.cos(a0 + rt.normal(0, 0.25) * k), math.sin(a0 + rt.normal(0, 0.25) * k)]) * L * k / 3 for k in range(4)]
         C_ = catmull(P, 4)
@@ -131,7 +131,7 @@ def gm_fields(lab, n, cell, s, r, TW, TH, seed):
             d_ = np.gradient(C_, axis=0); nn_ = np.stack([-d_[:, 1], d_[:, 0]], 1) / (np.linalg.norm(d_, axis=1, keepdims=True) + 1e-6) * 0.03 * s
             for sg in (-1, 1): cv2.polylines(ct, [np.round((C_ + sg * nn_) * 4).astype(np.int32)], False, 255, max(1, int(0.018 * s)), cv2.LINE_AA, shift=2)
     tk = np.maximum(tk, cv2.GaussianBlur(ct.astype(np.float32) / 255, (0, 0), 0.6) * 0.8)[..., None]; del ct
-    img = img * (1 - 0.6 * tk) + np.array([172, 162, 130], np.float32) * 0.6 * tk; del tk
+    tk *= min(1.0, track_k); img = img * (1 - 0.6 * tk) + np.array([172, 162, 130], np.float32) * 0.6 * tk; del tk
     # v7: dark scrub / bush dots, 1-3 px (GM 682 s)
     sd_ = np.zeros((TH, TW), np.uint8); rs_ = np.random.default_rng(seed + 59); nS = int(TW * TH / (s * s) * 2.2)
     for (x_, y_), r_ in zip(rs_.uniform(0, 1, (nS, 2)) * [TW, TH], rs_.uniform(0.012, 0.035, nS) * s): cv2.circle(sd_, (int(x_ * 4), int(y_ * 4)), max(1, int(r_ * 4)), 255, -1, cv2.LINE_AA, shift=2)

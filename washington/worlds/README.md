@@ -126,3 +126,43 @@ node vicksburg/tools/check_troops_motion.mjs washington/scenes/S05 0 40 trenton 
 - Colonies: the Hudson / East River / tidal Delaware are the sea mask (no ribbon); Meadowlands marsh partly reads as water; modern fill at Newark
   Bay accepted. The Atlantic fills the SE quarter (true geography; frame the camera on NY - Philadelphia).
 - Trenton has ~530 houses incl. farmsteads (the 1776 town ~100 houses + outbuildings): reads as a town on two streets, not a city.
+
+## v2 ground (2026-11-26, OWNER_DECISIONS row 22): the approved v8 test look
+Reference = `research/style_tests/gm3d/clip/gm3d_clip_v8_share.mp4` (+ `vicksburg/troops_test_v14_share.mp4`), not Jackson. Sheet: `previews/v2_ground.jpg`
+(each region at a real scene camera next to the matching v8 / v14 frame). All 7 regions re-baked; boxes, frames, coordinates, rivers, roads, towns,
+the East River fix and the village clusters unchanged.
+- **Removed (the dark / flat / grey settings):** `rust_k` (rust ploughland back), `field_patch_k` / `field_feather` (patchwork contrast back),
+  `tex_grade`, wide `relief_k 0.5` / `lit_k 0.3` / `wideSunK 0.15` (back to the v8 defaults 0.9 / 0.85 / 0.35), the heavy winter
+  (`desat 0.45`, `snow_alpha 0.66`; and `conifers` never reached the engine, so 84 % of the close crowns were grey).
+- **Winter = light frost over the same patchwork:** `WINTER = {snow 0.45, snow_alpha 0.16, desat 0.10, ice 0.6, conifers 0.55, bare_mix 0.35,
+  road_col #84583f, snow_col #d2d0c2}`; wide `snow_alpha 0.10, desat 0.08, lit_col #c6c4a0`; crossing floes 0.18.
+  `bare_mix` (new, project only): bare woods = the summer teal canopy lerped 35 % toward the twig colour (baker `winter_woods`, engine crowns
+  `world.js`; absent = the old full grey-brown). With `bare_mix` set, no frost rim under the woods. `conifers` / `bare_mix` now pass to region.js.
+- **Close regions** (brooklyn / trenton / princeton / crossing): our scene cameras sit 2-4x nearer (in metres) than v8's close camera, so the gm
+  field look is scaled to read like v8 at 35-60 s: `cell` 4.2-7 -> 1.8-2.0 (fields ~100-120 m), `gm_unit` 0.45 (new: strips / furrows / tracks /
+  scrub at 0.45x their unit size; hedge / lone trees thinned to keep the old tree density), `track_k` 0.5 (new `gm_fields` kwarg, default 1 =
+  Vicksburg unchanged: half the pale cart tracks, half opacity). Relief: `exag` 2.0-2.6 -> 3.0-3.8, `relief_noise` [2.0, 0.6].
+- **jersey (wide z10):** `field_look: "gm"` (the v8 close patchwork, ~700 m fields) with `cell` 6, `gm_unit` 1.5, `exag` 4, tex 7168 (gm_fields
+  peak RSS ~7.5 GB at 7168; 8192 would exceed the 8 GB budget), speckled winter canopy (`crown_k` 1.8, `wood_col` #4b4a40, `bare_mix` 0.45).
+- **colonies / colonieswinter (wide z9):** v8 wide look (wide_fields, `exag` 5, default relief / lit / sun), `wood_scale` 2.2, `woods` 0 (smaller,
+  more numerous woods like v8 3 s).
+- Vicksburg / Jackson configs never set the new keys: their bakes are unchanged.
+- **r2 (critics v2 test 1+2: Trenton S 35 vs v8 66, no woods, Stony Brook flat):** winter `desat 0`, `snow_alpha 0.22` (frost speckle in the
+  furrows), close winter textures boosted with `tex_grade` (`TG_WINTER` contrast 1.06, sat 1.6 trenton / 1.25 princeton / 1.3 crossing; jersey 1.3)
+  because the storm/dawn grade takes ~40 % of the saturation; new project keys `river_woods: {u, k, gap_u}` (teal wood masses in a band along
+  every river: trenton u 2.6 k 0.16 + `woods` 0.06, princeton u 1.8 k 0.10) and per-river `valley: {depth_m, half_u}` (a broad valley carved
+  before the water level: Stony Brook 7 m / 3.5 units, `w` 0.6). Sheet `previews/v2_ground_r2.jpg` (before | after | ref, mean HSV S printed):
+  trenton 89.6 s 34 -> 65, 100 s 35 -> 63 (v8 60.5 s = 68); princeton 70 s 54 -> 67 (v14 40 s = 57); jersey 24 s 55 -> 67 (v8 35 s = 65).
+- **r3 (critic 2 round 2: "late summer, no frost"; critic 1 round 2):** a frost TINT pass (`winter.frost: {a, edge, north, north_k, woods, col}`,
+  baker, applied after `tex_grade`): pale cool #d2dfec at a = 0.17 close / 0.14 wide over the open fields, stronger in furrows / field edges and
+  on north-facing slopes, woods x0.2, roads / water / sea untouched; snow dusting down to 0.12. Trenton `exag` 3.0 + new `dem_blur` 3.0 (the
+  cloth-like fold right of the town); princeton `winter.ice` 0.25, `farm_scale` 1.8 (new: farmsteads 1.8x, the orchard house reads), named road
+  bridges snap onto the nearest road x river crossing (new, `snap_road`, off for the Assunpink stone bridge); colonies / colonieswinter
+  `tex_grade.tint` [1.03, 1, 0.965] (new: a touch warmer). Sheet `previews/v2_ground_r3.jpg`: trenton S 65 -> 52 (R-B 17 -> 12), princeton
+  67 -> 61, jersey 67 -> 61, crossing (night) unchanged.
+- **r3 carry-over:** `bridge_deck: "ends"` (new, princeton): a named / auto bridge's deck = the terrain at its two ends (road level), min water + 1 m
+  (Stony Brook bridge 28.6 -> 24.9 m, water 23.6 m); colonies / colonieswinter `tint` [1.07, 1, 0.93] (centre R-B -9 -> -5 / -1 -> +3; v8 3 s +7;
+  the colonies centre holds the harbour). Princeton still 3 = the bridge close-up. Sheet `previews/v2_carryover.jpg`.
+- **critic A v2 r1 (wide relief "combs of bright ridges", Long Island a flat sheet):** colonies / colonieswinter `exag` 5 -> 3.5, `dem_blur` 2.5
+  (DEM px; default wide 1.0), `lit_k` 0.55 (sunlit-slope highlight), `cell` 30 -> 12 (fields ~2.8 km = v8's; the 7 km fields + their strip
+  detail made the diagonal bands); jersey `exag` 4 -> 3, `dem_blur` 2.5, `lit_k` 0.55. Sheet `previews/v2_r1_relief.jpg`.

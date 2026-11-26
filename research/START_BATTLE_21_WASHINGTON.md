@@ -3,6 +3,8 @@
 You are the session **"Battle 21 Washington"**. Read this whole file first. Then read the files in section 1, in that order, before you write anything.
 Where this file conflicts with older rules, THIS FILE WINS.
 
+> **UPDATE (owner, 2026-11-26, v2): the LOOK reference is the approved 3D tests, NOT Jackson v4:** `research/style_tests/gm3d/clip/gm3d_clip_v8_share.mp4` (+ README: the look), `gm3d_clip_v6_share.mp4` (clouds + opening), `vicksburg/troops_test_v14_share.mp4` (+ `vicksburg/critics/troops_v2_notes.md`: the troops). Jackson v4 had drifted from them (darker, no key, no timeline). Copy Jackson's PIPELINE and SOUND, but match the tests' palette, troop scale and overlays (see `washington/OWNER_DECISIONS.md` row 22).
+
 ## 0. The owner's decisions (binding)
 - **Pre-approval:** the owner pre-approves everything ("I approve everything"): script, look, render, packaging.
   - Do not wait for answers.

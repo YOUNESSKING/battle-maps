@@ -183,7 +183,8 @@ export function initWorld(canvas, opts = {}) {
     const wmat = new THREE.MeshStandardMaterial({ color: 0x2f4552, roughness: 0.4, metalness: 0.05, envMap, envMapIntensity: 0.22, side: THREE.DoubleSide, normalMap: wnorm, normalScale: new THREE.Vector2(0.35, 0.35) });
     R.water = [];
     for (const rv of d.rivers || []) {
-      const P = rv.pts, n = P.length, w = rv.w * 1.08, vs = [], uv = [], ix = []; let arc = 0;
+      const P = rv.pts, n = P.length, w = rv.w * 1.08, vs = [], uv = [], ix = [], cx = []; let arc = 0;
+      const LK = rv.look || {}, wv = +LK.wvar || 0, edgeK = +LK.edge || 0;   // project (Battle 21 v2 r5): opt-in width wobble + darker banks (absent = unchanged)
       // round 2 (critic A "silver foil" on the siege / vicksburg Mississippi): a broad river in a close world tiles the ripple normal map
       // every ~0.9 units instead of once per river width (fine faint ripples, not metre-sized scales); narrow rivers unchanged
       const broad = d.kind !== "wide" && (rv.w || rv.width || 0) >= 2.5, uvK = broad ? w / 0.9 : 1;
@@ -191,14 +192,29 @@ export function initWorld(canvas, opts = {}) {
         const a = P[Math.max(0, i - 1)], b = P[Math.min(n - 1, i + 1)]; let tx = b[0] - a[0], tz = b[1] - a[1]; const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l;
         if (i) arc += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]);
         const y = P[i][2] * ys + 0.002 * exag;
-        vs.push(P[i][0] - tz * w / 2, y, P[i][1] + tx * w / 2, P[i][0] + tz * w / 2, y, P[i][1] - tx * w / 2);
-        uv.push(arc / w * uvK, 0, arc / w * uvK, uvK);
+        const wi = wv ? w * (1 + wv * (0.6 * Math.sin(arc * 0.9 + 1.3) + 0.4 * Math.sin(arc * 2.3 + 0.4))) : w;
+        vs.push(P[i][0] - tz * wi / 2, y, P[i][1] + tx * wi / 2, P[i][0] + tz * wi / 2, y, P[i][1] - tx * wi / 2);
+        uv.push(arc / w * uvK, 0, arc / w * uvK, uvK); cx.push(-1, 1);
         if (i) { const k = (i - 1) * 2; ix.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
       }
       const wg = new THREE.BufferGeometry(); wg.setAttribute("position", new THREE.Float32BufferAttribute(vs, 3)); wg.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2)); wg.setIndex(ix); wg.computeVertexNormals();
       const m = new THREE.Mesh(wg, wmat); m.receiveShadow = true; scene.add(m); R.water.push(m);
       m.userData.ns = broad ? 0.1 : d.kind === "wide" ? 0.2 : 0.35;   // critic A r2: calmer wide rivers
-      if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
+      if (rv.look) {   // project (Battle 21 v2 r4): per-river water look from the bake (frozen / calm creeks: own colour, matte, almost no ripple tiling)
+        const L = rv.look; m.material = wmat.clone();
+        if (L.color) m.userData.lookCol = new THREE.Color(L.color);   // the day colour; follows night like the other water (see the per-frame update)
+        if (L.rough != null) m.material.roughness = L.rough;
+        if (L.env != null) { m.material.envMapIntensity = L.env; m.userData.envK = L.env / 0.22; }
+        if (L.ns != null) m.userData.ns = L.ns;
+        if (edgeK) {   // v8 carved-river shading: darker toward both banks, a touch lighter mid-stream (matte); per-vertex cross coordinate -1..1
+          wg.setAttribute("aCross", new THREE.Float32BufferAttribute(cx, 1)); const EK = edgeK.toFixed(3), ML = (+L.mid || 0.06).toFixed(3);
+          m.material.onBeforeCompile = (sh) => {
+            sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float aCross;\nvarying float vCross;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvCross = aCross;");
+            sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vCross;").replace("#include <map_fragment>",
+              "#include <map_fragment>\n{ float e = abs(vCross); diffuseColor.rgb *= (1.0 + " + ML + " * (1.0 - e * e)) * (1.0 - " + EK + " * smoothstep(0.45, 1.0, e)); }"); };
+          m.material.customProgramCacheKey = () => "gm3d-river-edge-" + EK + ML;
+        }
+      } else if (broad) { m.material = wmat.clone(); m.material.roughness = 0.78; m.userData.envK = 0.45; }   // + matte: the specular sheet read as foil   // own material: wmat is shared, its normalScale is set per mesh each frame   // critic A4: broad rivers in close worlds read as foil at 0.35
     }
     R.wmat = wmat;
     if (d.season === "winter") buildIce(R, d, ys, exag);   // winter regions only: shore ice + drifting floes on the broad rivers
@@ -213,6 +229,7 @@ export function initWorld(canvas, opts = {}) {
     const GREENS = [0x314f52, 0x355455, 0x385656, 0x2f4c50, 0x3a5657, 0x324f51, 0x3b5858, 0x2f5052];   // v6: teal (R -10 %, B +12 %)   // v5: renders GM's teal woods ~(51-58, 68-78, 64-72) (no upward normal bias any more)
     const WINTER = d.season === "winter", WINTER_CON = 1 - ((d.winter && d.winter.conifers) ?? 0.16);
     const BARE = [0x5a5753, 0x605b55, 0x55524e, 0x5d5953, 0x66625c, 0x514e4a];   // grey-brown twig masses (winter only)
+    const BMIX = d.winter && d.winter.bare_mix != null ? +d.winter.bare_mix : null, tmpC = new THREE.Color();   // Battle 21 v2: bare crowns = teal lerped toward the twig colour by bare_mix (absent = the full grey-brown)
     const NV = 4, variants = [];
     for (let v = 0; v < NV; v++) {   // one crown cluster geometry per variant
       const lobes = 2 + (v % 3), P = [], N = [];
@@ -243,7 +260,7 @@ export function initWorld(canvas, opts = {}) {
           dummy.scale.set(s * (0.9 + hash(j, 8) * 0.3), s * (wood ? 0.42 : 0.85 + hash(j, 11) * 0.3), s * (0.9 + hash(j, 9) * 0.3)); dummy.updateMatrix(); im.setMatrixAt(i, dummy.matrix);
           col.setHex(GREENS[Math.floor(q[5] * GREENS.length) % GREENS.length]);
           const hv = hash(j, 12); if (hv < 0.12) col.lerp(olive, 0.2 + hv); else if (hv > 0.7) col.lerp(teal, 0.45);
-          if (WINTER && hash(j, 13) > WINTER_CON) col.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]);   // winter (project regions with season "winter"): bare deciduous crowns, the conifers keep their green
+          if (WINTER && hash(j, 13) > WINTER_CON) { if (BMIX != null) col.lerp(tmpC.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]), BMIX); else col.setHex(BARE[Math.floor(hash(j, 14) * BARE.length)]); }   // winter (project regions with season "winter"): bare deciduous crowns, the conifers keep their green
           col.multiplyScalar((0.9 + hash(j, 10) * 0.16) * (wood ? 0.73 + 0.06 * e : 0.72)); im.setColorAt(i, col); });   // v7: x0.88
         R.scene.add(im); R.trees.push(im); });
     }
@@ -386,7 +403,7 @@ export function initWorld(canvas, opts = {}) {
     // water motion: normal map drifts downstream
     wnorm.repeat.set(1, 1); wnorm.offset.set(-t * 0.12, Math.sin(t * 0.7) * 0.03);
     R.water.forEach((m) => { const s = m.userData.ns ?? 0.35; m.material.normalScale.set(s, s);
-      if (m.material !== R.wmat) { m.material.color.copy(R.wmat.color); m.material.envMapIntensity = R.wmat.envMapIntensity * (m.userData.envK ?? 1); } });   // clones follow day / night
+      if (m.material !== R.wmat) { if (m.userData.lookCol) m.material.color.copy(m.userData.lookCol).lerp(NIGHT.water, n); else m.material.color.copy(R.wmat.color); m.material.envMapIntensity = R.wmat.envMapIntensity * (m.userData.envK ?? 1); } });   // clones follow day / night
     // bridge burn: centre spans gone, the rest charred
     for (const B of R.bridges) { const burnt = B.burnT != null && t >= B.burnT, m0 = Math.floor((B.nSeg - 1) / 2), m1 = Math.ceil((B.nSeg - 1) / 2);   // the centre span(s) fall
       B.span.forEach((s, k) => { const mid = k >= m0 && k <= m1; s.visible = !(burnt && mid); (s.userData.rails || []).forEach((r) => (r.visible = s.visible)); });

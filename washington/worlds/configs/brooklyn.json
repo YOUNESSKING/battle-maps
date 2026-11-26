@@ -43,12 +43,14 @@
  ],
  "hm_ppu": 8,
  "tex": 4096,
- "exag": 2.4,
- "cell": 4.2,
+ "exag": 3.6,
+ "cell": 1.8,
+ "gm_unit": 0.45,
+ "track_k": 0.5,
  "seed": 1776,
  "relief_noise": [
-  0.8,
-  0.3
+  2.0,
+  0.6
  ],
  "dem_ppu": 8,
  "dem_margin": 6,
@@ -397,7 +399,6 @@
  "woods": 0.02,
  "ravine_woods": 0.4,
  "tree_spacing": 0.25,
- "rust_k": 0.85,
  "clear_blur": 0.35,
  "clear_noise_u": 0.8,
  "rivers": [

@@ -3,12 +3,23 @@
  "zoom": 12,
  "season": "winter",
  "winter": {
-  "snow": 0.6,
-  "snow_alpha": 0.66,
-  "desat": 0.45,
-  "ice": 1.0,
-  "conifers": 0.16,
-  "floes": 0.3
+  "snow": 0.5,
+  "snow_alpha": 0.12,
+  "desat": 0.0,
+  "frost": {
+   "a": 0.17,
+   "edge": 0.6,
+   "north": 0.5,
+   "north_k": 4.0,
+   "woods": 0.2,
+   "col": "#d2dfec"
+  },
+  "ice": 0.6,
+  "conifers": 0.55,
+  "bare_mix": 0.35,
+  "road_col": "#84583f",
+  "snow_col": "#d2d0c2",
+  "floes": 0.18
  },
  "note": "The Delaware crossing, night 25-26 Dec 1776 (winter, night-capable): McConkey's Ferry (PA) and Johnson's Ferry (NJ) landings, the Delaware (~270 m = ~9 units), the river roads on both banks, the Bear Tavern road up the NJ bank towards Bear Tavern, the ferry houses. Zoom-12 frame: 1 unit = ~29 m (base units x 4).",
  "box": [
@@ -52,12 +63,14 @@
  ],
  "hm_ppu": 8,
  "tex": 4608,
- "exag": 2.0,
- "cell": 7.0,
+ "exag": 3.0,
+ "cell": 2.0,
+ "gm_unit": 0.45,
+ "track_k": 0.5,
  "seed": 1225,
  "relief_noise": [
-  1.0,
-  0.35
+  2.0,
+  0.6
  ],
  "dem_ppu": 8,
  "dem_margin": 6,
@@ -75,9 +88,12 @@
  "woods": 0.06,
  "ravine_woods": 0.7,
  "tree_spacing": 0.3,
- "rust_k": 0.85,
  "clear_blur": 0.35,
  "clear_noise_u": 0.8,
+ "tex_grade": {
+  "contrast": 1.06,
+  "sat": 1.3
+ },
  "rivers": [
   {
    "name": "Delaware River",

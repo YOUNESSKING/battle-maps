@@ -70,3 +70,30 @@ flags from `washington/assets/flags/`.
 - Crossing 58-68.4: camera tilted onto the NJ bank (landing in the middle third, not a strip at the top edge).
 - Trenton approach 88-95.4: camera 5 u west, the ring wood framed out; head-of-town shot 95.4-108 shifted west/north (less of the dark field patch south-east of the town).
 - Dead cue removed: the picket fires once (92.5); no 94.3 volley without a visible flash.
+
+## V2 (owner decision 22: the approved tests are the reference; `washington/V2_LOOK_RECIPE.md`)
+Base = `_v2test_c` (critic-approved), which is this scene + the recipe: v14 troops (`size 1.44, depthK 0.44`, steel-blue pal, no bw/bd
+overrides), troopScale jersey 3.5 / crossing 0.67 / trenton 0.68 / colonies 8, fxScale 4.4, v8 wide grade + the night veil (`grade.night`),
+rain x0.5 / n x2, Trenton keys night <= 0.1, Hessians n 3 up the streets from the 95.4 cut, Greene's brigade behind Knox's guns, carved
+"Trenton" on "the town's two main streets", THE ARMIES legend (Hessians / Rall), wax-seal timeline (seal "Trenton" on "About nine hundred"),
+small parchment ledger instead of the big card (+ "a future president" on its word), no `film.dim` under the ledger.
+Added for the film: clock 18:00 on "After dark" (crossing 6 p.m., FACT C2) before 23:00 / 3:00 / 8:00 (the watch stays through the fight);
+crossing night 1.0; boats `wake: false` (lamps kept); volleys = the v14 musketry scaled (KF 0.5) with ONE ripple each (`volley` 2.4 > the
+2.2 s duration: the smoke builds but the sound cues stay in the word gaps of round 2); jersey arrows width 1.0, trenton 0.43, colonies 0.34;
+colonies clouds `seed 11, n 24, med 15`; jersey seed 9 + keepClear over the plan arrows; timeline hidden at 141.9 (method card, colonies);
+Trenton approach camera 3-4 u south (Greene's blocks out of the timeline band). Kept: whooshAt 32.25, cues in word gaps, round 1-5 fixes.
+Deviation: the jersey night-march shot runs night 0.85 (at 1.0 the troopScale-3.5 blocks vanish on the dark ground).
+Checks: jersey 68-88 clean; crossing: landing blocks 16-23 deg on screen (oblique camera); trenton 88-128: turn spikes only at the 95.4 cut,
+Sullivan's u4 67 deg on screen at 88-92 (mostly off frame); side gap 0 / 0.
+
+## V2 round 1 fixes (critics A 6.3 / B 8.2)
+- One block per unit everywhere in Trenton: Greene's leading brigade = 3 single blocks (moved west of the guns' run: no overlap), the
+  Hessians = 3 single blocks per street group (King St group west, Queen St group east), each with the same moves; Knox's guns face along
+  their run; Greene's / Sullivan's single blocks run straight, faced along the run (Sullivan's 67 deg is while he is off frame).
+- Volleys sit on the v14 blocks: Hessian street volley across each group (103.5 / 103.6); the picket moved into the 8 a.m. frame
+  ([1338.0, 2028.0]) so "Hessian outposts" shows a Hessian firing (92.5); surrender volleys muzzle x1.6 (readable flashes).
+- Red pulse at Trenton removed; jersey clouds kept off the river and Trenton (diveClear 60, keepClear Trenton / river / the plan arrows);
+  dive approach yaw -60 -> -40 (no world edge at 33.5); head-of-town shot tilt 58 (no Hessian in the timeline band).
+- Ledger rows on their words: "About 900 captured" on "captured", "Over 100 killed or wounded" on "killed", "No American killed" on
+  "killed" + note "in the battle" on "battle", "a future president" on "future" (140.65), ledger out 142.2, method card from 142.5.
+- Checks: trenton 95.6-128 no overlaps; side gap 0 / 0.

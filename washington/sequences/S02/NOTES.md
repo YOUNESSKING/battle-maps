@@ -58,3 +58,13 @@ colonies + brooklyn: no overlaps, no pops, no shape change, screen long-side-nor
 
 ## Round 3
 - No findings. Negative-time audit: all overlay times >= 3.05 s. OK.
+
+## V2 (owner decision 22, `washington/V2_LOOK_RECIPE.md`)
+- v14 troopsOpts; troopScale colonies 4.5, brooklyn 1.4 (fxScale 9); `bw` overrides removed; the brooklyn two-block lines = 2 single blocks.
+- Grade v8; colonies clouds `scatter { seed 11, n 24, med 15 }` + far-side extras; flank arrow width 0.34.
+- Overlays: THE ARMIES legend (Washington / Howe) 0.9 s -> end; timeline from 0.6 s at August, `go` 0.87 on "August" (27th).
+- Checks: motion + side gap clean (only the 37.4 dissolve cut frame).
+
+## V2 round 1 (critics A 5.5 / B 7.5 on S02)
+- Wide colonies: `clouds.shadows: false` (the hard dark cloud-shadow discs on the bay); ships `wake: false` (no dotted bead wakes).
+- Long Island wide (22.6-37.6): ground fixed by the worlds agent (same coordinates); camera and troops unchanged (blocks 3-4 % of the frame, clear of the timeline).
