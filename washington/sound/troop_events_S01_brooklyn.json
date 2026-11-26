@@ -1,0 +1,136 @@
+{
+ "scene": "S01",
+ "region": "brooklyn",
+ "window": [
+  0,
+  74.043
+ ],
+ "shareOffset": 0,
+ "filmStart": 0,
+ "render": [
+  1920,
+  1080
+ ],
+ "camDistUnits": "world units (the close shot is ~13-20 units from the ground)",
+ "events": [
+  {
+   "type": "unit_appears",
+   "t": 55.36,
+   "tExcerpt": 55.36,
+   "tShare": 55.36,
+   "tFilm": 55.36,
+   "at": {
+    "map": [
+     2482.4,
+     1151
+    ],
+    "px": [
+     -11156,
+     -1585
+    ],
+    "nx": -5.811,
+    "ny": -1.468,
+    "onScreen": false,
+    "camDist": 2269.72
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_start",
+   "direction": "advance",
+   "speed": 0.21,
+   "t": 56.1,
+   "tExcerpt": 56.1,
+   "tShare": 56.1,
+   "tFilm": 56.1,
+   "at": {
+    "map": [
+     2482.38,
+     1150.98
+    ],
+    "px": [
+     1011,
+     563
+    ],
+    "nx": 0.527,
+    "ny": 0.521,
+    "onScreen": true,
+    "camDist": 23.07
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "march_stop",
+   "duration": 2.4,
+   "t": 58.5,
+   "tExcerpt": 58.5,
+   "tShare": 58.5,
+   "tFilm": 58.5,
+   "at": {
+    "map": [
+     2481.4,
+     1149.8
+    ],
+    "px": [
+     917,
+     553
+    ],
+    "nx": 0.478,
+    "ny": 0.512,
+    "onScreen": true,
+    "camDist": 21.61
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  },
+  {
+   "type": "unit_leaves",
+   "t": 58.91,
+   "tExcerpt": 58.91,
+   "tShare": 58.91,
+   "tFilm": 58.91,
+   "at": {
+    "map": [
+     2481.4,
+     1149.8
+    ],
+    "px": [
+     1217,
+     -540
+    ],
+    "nx": 0.634,
+    "ny": -0.5,
+    "onScreen": false,
+    "camDist": 2702.55
+   },
+   "unit": {
+    "unit": 0,
+    "side": "Union",
+    "type": "inf",
+    "label": null,
+    "blocks": 1,
+    "men": 72
+   }
+  }
+ ]
+}
