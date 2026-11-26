@@ -129,7 +129,7 @@ sPos.forEach((p, i) => add({ side: "u", region: TR, face: Math.atan2(p[1] - 2056
 const G1 = [1355.2, 2053.2], G2 = [1356.6, 2053.3];
 [G1, G2].forEach((g, i) => add({ side: "u", type: "art", region: TR, face: Math.atan2(g[1] - (2044.2 - i * 0.4), g[0] - (1350.6 + i * 1.2)), t0: 94.2,   /* v2 r1: faced along the run */ keys: [[0, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.raced - 2.5, 1350.6 + i * 1.2, 2044.2 - i * 0.4], [T.streets - 0.4 + i * 0.3, ...g], [T.D, ...g]] }));
 // V2 r3 (critic 2 R2-4): Greene's leading brigade at the head of the town on the Pennington road, behind Knox's guns
-[-1, 0, 1].forEach((k) => add({ side: "u", region: TR, face: S_, t0: 95.4 + (k + 1) * 0.12, arrive: false, keys: [[0, 1353.2 + k * 0.86, 2051.6]] }));   // v2 r1: one block per unit
+[-1, 0, 1].forEach((k) => add({ side: "u", region: TR, face: S_, t0: 95.4 + (k + 1) * 0.12, arrive: false, keys: [[0, 1350.6 + k * 0.86, 2051.2]] }));   // v2 r1: one block per unit, west of the guns' run
 // the Hessians form in the two streets, are raked, leave the streets east into the fields, are driven to the orchard, surrender
 const H1 = KING(2058.8), H2 = QUEEN(2059.8),   /* V2 r2: up the streets, in the 8 a.m. frame */ F1 = [1360.6, 2061.0], F2 = [1361.4, 2063.4], O1 = [1363.2, 2055.0], O2 = [1364.8, 2057.2];
 // v2 round 1: ONE block per unit: three single blocks abreast per street group (0.8 u apart), the King St group a little west, Queen St east
@@ -340,7 +340,7 @@ window.SEQ = {
             off: { warm: 0.05, emerge: 0.1, clear: 0.28, haze: 0.85 },   // round 1 (critic A): shorter flat grey
             from: { region: JE, at: [640, 990], dist: 150, tilt: 44, yaw: -40, night: 0.32 },
             to: { region: CR, at: at(-2.0, -3.4, -0.6), dist: 18, tilt: 57, yaw: -36, fov: 30, night: NI } }],
-  clouds: { [JE]: { scatter: { seed: 9, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 60, keepClear: [[680, 1020, 30, 1, 0.8], [620, 990, 40, 1, 0.95], [650, 1015, 45, 1, 0.95]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
+  clouds: { [JE]: { scatter: { seed: 9, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 60, keepClear: [[680, 1020, 50, 1, 1.0], [620, 990, 40, 1, 0.95], [650, 1015, 45, 1, 0.95]] }, [CR]: { shadows: false }, [TR]: { shadows: false },
             [CO]: { scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[500, 380, 120, 1, 0.8], [360, 480, 110, 1, 0.9]] } },
   units, arrows, banners, boats, fx, generals, labels,
   overlay: [

@@ -163,3 +163,6 @@ the East River fix and the village clusters unchanged.
 - **r3 carry-over:** `bridge_deck: "ends"` (new, princeton): a named / auto bridge's deck = the terrain at its two ends (road level), min water + 1 m
   (Stony Brook bridge 28.6 -> 24.9 m, water 23.6 m); colonies / colonieswinter `tint` [1.07, 1, 0.93] (centre R-B -9 -> -5 / -1 -> +3; v8 3 s +7;
   the colonies centre holds the harbour). Princeton still 3 = the bridge close-up. Sheet `previews/v2_carryover.jpg`.
+- **critic A v2 r1 (wide relief "combs of bright ridges", Long Island a flat sheet):** colonies / colonieswinter `exag` 5 -> 3.5, `dem_blur` 2.5
+  (DEM px; default wide 1.0), `lit_k` 0.55 (sunlit-slope highlight), `cell` 30 -> 12 (fields ~2.8 km = v8's; the 7 km fields + their strip
+  detail made the diagonal bands); jersey `exag` 4 -> 3, `dem_blur` 2.5, `lit_k` 0.55. Sheet `previews/v2_r1_relief.jpg`.
