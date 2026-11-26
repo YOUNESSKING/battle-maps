@@ -345,7 +345,7 @@
 {
 "type": "march",
 "t": 183.12,
-"until": 188.42,
+"until": 185.62,
 "unit": 2
 },
 {
@@ -357,13 +357,13 @@
 {
 "type": "march",
 "t": 186.72,
-"until": 192.62,
+"until": 189.22,
 "unit": 4
 },
 {
 "type": "bridge_stream",
 "t": 187.33,
-"until": 189.22
+"until": 305.71
 },
 {
 "type": "march",
@@ -376,22 +376,6 @@
 "t": 190.32,
 "until": 196.32,
 "unit": 6
-},
-{
-"type": "bridge_stream",
-"t": 191.54,
-"until": 193.43
-},
-{
-"type": "march",
-"t": 193.12,
-"until": 199.12,
-"unit": 7
-},
-{
-"type": "bridge_stream",
-"t": 193.46,
-"until": 195.35
 },
 {
 "type": "bridge_stream",
@@ -411,7 +395,7 @@
 {
 "type": "bridge_stream",
 "t": 207.73,
-"until": 209.63
+"until": 209.93
 },
 {
 "type": "march",
@@ -634,7 +618,7 @@
 {
 "type": "march",
 "t": 387.79,
-"until": 393.79,
+"until": 391.89,
 "unit": 9
 },
 {
@@ -689,6 +673,12 @@
 "type": "march",
 "t": 428.89,
 "until": 431.39,
+"unit": 1
+},
+{
+"type": "march",
+"t": 428.89,
+"until": 431.39,
 "unit": 2
 },
 {
@@ -702,7 +692,7 @@
 "t": 428.99,
 "K": 6,
 "ripple": 0.77,
-"d": 0.27,
+"d": 0.33,
 "shot_times": [
 428.987,
 429.304,
@@ -712,7 +702,7 @@
 429.762
 ],
 "onset": 428.987,
-"peak_db": -14.9
+"peak_db": -15.2
 },
 {
 "type": "musket_volley",
@@ -759,6 +749,23 @@
 "t": 442.49,
 "until": 448.49,
 "unit": 9
+},
+{
+"type": "musket_volley",
+"t": 444.24,
+"K": 6,
+"ripple": 0.57,
+"d": 0.0,
+"shot_times": [
+444.237,
+444.251,
+444.479,
+444.509,
+444.596,
+444.812
+],
+"onset": 444.237,
+"peak_db": -13.2
 },
 {
 "type": "march",
