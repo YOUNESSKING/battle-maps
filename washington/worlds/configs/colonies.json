@@ -50,10 +50,11 @@
    1.0,
    0.93
   ],
-  "gamma": 0.86,
+  "gamma": 0.8,
   "sat": 1.12
  },
  "field_feather": 1.2,
+ "field_patch_k": 0.75,
  "dem_ppu": 2,
  "dem_margin": 24,
  "dem_edits": {

@@ -77,7 +77,7 @@ write("colonies", {
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
  "hm_ppu": 1.5, "tex": 8192, "exag": 3.5, "dem_blur": 2.5, "lit_k": 0.55, "cell": 12.0, "seed": 1776,   # critic A v2 r1: soft broad relief (no bright ridge combs), smaller fields (no flat sheet over Long Island)
- "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.86, "sat": 1.12}, "field_feather": 1.2,   # v2 r4 (critic A #4 / N3): lighter, greener patchwork (S02 Long Island L 23-29 -> v8 33-37), soft field borders (no flat-shaded facets)   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
+ "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.8, "sat": 1.12}, "field_feather": 1.2, "field_patch_k": 0.75,   # v2 r4 (critic A #4 / N3): lighter, greener patchwork (S02 Long Island L 23-29 -> v8 33-37), soft field borders (no flat-shaded facets)   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],

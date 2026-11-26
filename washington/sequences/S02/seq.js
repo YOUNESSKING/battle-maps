@@ -94,7 +94,7 @@ window.SEQ = {
     { t: CUT_H, ...HAND, ease: "cut", dissolve: 0.9 },
     { t: T.D, ...HAND, ease: "lin" },
   ],
-  clouds: { [CO]: { shadows: false, scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
+  clouds: { [CO]: { shadows: false, opts: { shadow: 0 }, scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
   units, arrows, boats,
   labels: [
     { text: "New York", at: [P("New York", CO)[0] - 2, P("New York", CO)[1] - 3], size: 24, t0: T.york, t1: T.york + 3.6, region: CO },
