@@ -164,3 +164,10 @@ at the mouth and past the far end blended linearly along the crossing (no jump);
 its own base height, pulled toward the camera like the box (shows on the planks / water / bank); gun discs at 0.55 (thin ink rim kept).
 Checker: identical to A6 (S10 0 screen fails, pops 0, known brushes only). `sheet_r7.jpg`: v14 | A6 | A7 (S10 21-30.5 s + crops, S09 103.5 s guns).
 Share: RunPod RTX 3090 ($0.22/h, ~$0.01; one retry), pod terminated, list empty; concat + v14 audio, crf 24.
+
+# A7b (2026-11-26): critic 1 on A7 ("the deck's planks and rails draw over the box at ~58 s")
+Cause found at 5x: the box already drew over the deck geometry, but its TOP received the bridge's sun shadow (shadow map): a dark diagonal
+band of the deck + rails across the box read as the planks crossing it. Fix (`counter: "A7b"`): the top no longer receives shadow-map
+shadows, and at the bridge (turn at the mouth, crossing, turn past the far end) the box's camera-ward depth pull grows to 4 x 1.2 u
+(per-instance `iPl`), so it always draws over the deck and rails; elsewhere the pull is unchanged (hills still hide boxes; DOM banners on top).
+Box height unchanged (walking height, level). Checker identical to A7. `sheet_r7b.jpg`: v14 | A7 | A7b at S10 23 / 25 / 27 / 29 s (+ crops).
