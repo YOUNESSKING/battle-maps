@@ -113,3 +113,6 @@ flags copied from `washington/assets/flags/` (Grand Union, 1707 Union Flag - unu
 - Checks: check_troops_motion all 5 regions clean except one 20-deg world FvV for 3 frames at the end of the New Brunswick post's walk
   (screen 14 deg); check_side_gap 0 pairs everywhere.
 - Open: at the opening dist (270-330) the posts are ~25 px wide (v8 wide size); red over brown roads reads weakly.
+
+## V2 round 1 (critics A 7 / B 8.5 on S01)
+- Princeton snap cut: camera yaw -8..-1 -> 82..89, so the north-south lines run ACROSS the frame (v14), not as columns. Motion + side gap clean.

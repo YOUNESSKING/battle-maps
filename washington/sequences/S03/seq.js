@@ -52,12 +52,14 @@ const ESC = (P, t0) => ({ road: pierRoad(P), t0, join: "north", fade: null, vani
 
 // ---------------- units ----------------
 const units = [];
-const U = (o) => { units.push({ type: "inf", n: 2, region: BK, arrive: false, ...o }); return units.length - 1; };
+const U = (o) => { units.push({ type: "inf", n: 1, region: BK,   /* v2 r1: one block per unit */ arrive: false, ...o }); return units.length - 1; };
 // the army packed inside the lines (blocks between the works and the ferry), each regiment leaves on its own, nearest the ferry first
 const CAMP = [   // [position, pier, escape t0]
-  [[2485.0, 1151.4], PA, 59.4], [[2479.0, 1152.4], PB, 60.6], [[2487.6, 1152.6], PA, 63.8], [[2481.4, 1156.0], PB, 65.0],
-  [[2485.4, 1156.4], PA, 67.4], [[2477.6, 1158.6], PB, 69.0], [[2489.6, 1156.6], PA, 71.0], [[2483.6, 1160.4], PB, 73.8],
-  [[2488.0, 1160.6], PA, 76.8], [[2492.6, 1159.8], PA, 80.0],
+  // v2 r1: no walk across a camera cut (the on-screen heading correction slid the blocks): five regiments march + board 57-70.5
+  // (before the 70.9 dissolve), five more 77.6-90.5 (between the 76.6 and 90.9 dissolves, mostly off-frame of the river shot)
+  [[2485.0, 1151.4], PA, 57.0], [[2479.0, 1152.4], PB, 57.4], [[2487.6, 1152.6], PA, 58.6], [[2481.4, 1156.0], PB, 59.2],
+  [[2485.4, 1156.4], PA, 60.6], [[2477.6, 1158.6], PB, 77.6], [[2489.6, 1156.6], PA, 77.8], [[2483.6, 1160.4], PB, 78.4],
+  [[2475.2, 1155.4], PB, 79.6], [[2491.6, 1153.6], PA, 77.4],
 ];
 // round 2 (critic A): each regiment already faces its landing (formed to march), so it walks straight there front first (no crab)
 CAMP.forEach(([p, P, t0]) => U({ side: "u", face: Math.atan2(P.near[1] - p[1], P.near[0] - p[0]), keys: [[0, ...p]], escape: ESC(P, t0) }));
@@ -66,15 +68,15 @@ U({ side: "u", n: 1, face: -Math.PI / 2, t0: T.regiment - 0.2, keys: [[0, 2481.6
 // the covering force (Mifflin): stays in the front line; ordered out by mistake (~2 a.m.), stops when met on the road, faces about, back in
 // (a ~180 deg turn in place takes ~7 s: out 93.4-96.6, about-face while Washington sends them back, back into the line from 103.8)
 const COV = [0.42, 0.56, 0.7];
-COV.forEach((k, i) => { const a = line(k, -1.0), b = lerp2(a, [2486.0, 1152.5], 0.22);
-  U({ side: "u", face: FSE, t1: 108.5, keys: [[0, ...a], [93.4 + i * 0.25, ...a], [96.6 + i * 0.25, ...b], [103.8 + i * 0.25, ...b], [107.2 + i * 0.25, ...a]] }); });
+COV.forEach((k, i) => { const a = line(k, -1.0), b = lerp2(a, [2486.0, 1152.5], 0.15);   // v2 r1: shorter, back in the line before the 105.3 dissolve
+  U({ side: "u", face: FSE, t1: 108.5, keys: [[0, ...a], [93.0 + i * 0.2, ...a], [95.6 + i * 0.2, ...b], [102.4 + i * 0.2, ...b], [104.9 + i * 0.1, ...a]] }); });
 // the last regiments, still on the Brooklyn side at first light: down to the landing in the fog
-[[[2482.6, 1150.4], PA, 110.4], [[2478.4, 1150.9], PB, 111.2], [[2485.6, 1151.2], PA, 111.8]].forEach(([p, P, t0]) =>
+[[[2481.6, 1150.6], PA, 110.0], [[2478.4, 1150.9], PB, 110.8], [[2484.4, 1150.2], PA, 110.6]].forEach(([p, P, t0]) =>
   U({ side: "u", face: -Math.PI / 2 - 0.1, t0: 102.0, keys: [[0, ...p]], escape: ESC(P, t0) }));   // already facing the ferry, waiting their turn
 // the British camp line facing the works; after the evacuation they walk up to the empty works
 const RCAMP = [0.12, 0.3, 0.48, 0.66, 0.84];
 RCAMP.forEach((k, i) => { const a = line(k, 8.0), b = line(k, 1.6);
-  U({ side: "r", face: FNW, keys: [[0, ...a], [T.walked - 0.4 + i * 0.25, ...a], [T.walked + 4.6 + i * 0.25, ...b]] }); });
+  U({ side: "r", face: FNW, keys: [[0, ...a], [T.walked + i * 0.25, ...a], [T.walked + 6.2 + i * 0.25, ...b]]   /* v2 r1: starts after the 118.3 dissolve */ }); });
 // colonies (tail): the army falls back up Manhattan; the British hold Brooklyn
 const NYC = VX.place("New York", CO), FW = VX.place("Fort Washington", CO), BKC = [OVB[0] / 4 + 1.5, OVB[1] / 4 + 1.0];
 U({ side: "u", region: CO, face: -Math.PI / 2, t0: 139.9, keys: [[0, NYC[0] + 1.0, NYC[1] - 4.0], [140.8, NYC[0] + 1.0, NYC[1] - 4.0], [151.6, 633.6, 241.0]] });
@@ -251,13 +253,15 @@ window.SEQ = {
     ["legend", T.d29 + 0.4, T.about - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
     ["timeline.show", T.d29 + 0.2, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.9 }],
     ["timeline.seal", T.lastof, { at: 0.95, name: "Brooklyn" }],
-    ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "", weekday: "", note: "" }],   // round 1: no unspoken day
+    ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "30", weekday: "Friday", note: "first light" }],   // v2 r1 (A #22): matches the ledger
     ["plaque.note", T.fog - 0.05, "fog"],
     // V2: the small parchment result list top-right (v8) INSTEAD of the big dark result card
     ["ledger.show", T.about - 0.3, { title: "Brooklyn", sub: "29 - 30 August 1776" }],
-    ["ledger.add", T.ninek, { who: "9,000 across", note: "in a single night", stamp: false }],
-    ["ledger.add", T.guns - 0.4, { who: "Nearly all the guns", stamp: false }],
-    ["ledger.add", T.handful, { who: "A handful left behind", note: "stragglers", stamp: false }],
+    ["ledger.add", T.ninek, { who: "About 9,000 men", stamp: false }],   // v2 r1 (B2-3): each row / note on its word
+    ["ledger.add", T.guns - 0.4, { who: "Nearly all their guns", stamp: false }],
+    ["ledger.note", T.single - 0.05, 1, "across in a single night"],
+    ["ledger.add", T.handful, { who: "A handful left behind", stamp: false }],
+    ["ledger.note", T.stragglers - 0.05, 3, "stragglers"],
     ["ledger.hide", 131.0],
     ["letter", T.method - 0.15, T.beginning - 0.1, { header: "Move 1 · Brooklyn", title: "The Washington Method", sub: "", marks: false, quote: "1. Save the army first", qSize: 34, cps: 30, qAt: T.save - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
     ["plaque.date", 140.25, { month: "1776", day: "", weekday: "", note: "" }],

@@ -30,7 +30,7 @@ const held = { build() { const c = document.createElement("canvas"); c.width = 1
     const W = ctx.world, k = heldK(t), poly = HELD0.map((p, i) => lerp2(p, HELD1[i], k)), Q = [];
     for (let i = 0; i < poly.length; i++) { const p0 = poly[i], p1 = poly[(i + 1) % poly.length]; for (let s = 0; s < 8; s++) { const q = W.projectMap(p0[0] + (p1[0] - p0[0]) * s / 8, p0[1] + (p1[1] - p0[1]) * s / 8, 0); Q.push([q.x, q.y]); } }
     g.beginPath(); Q.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath();
-    g.fillStyle = `rgba(190,58,42,${(0.22 * a).toFixed(3)})`; g.fill(); g.strokeStyle = `rgba(150,36,28,${(0.55 * a).toFixed(3)})`; g.lineWidth = 1.6; g.stroke(); } };
+    g.fillStyle = `rgba(190,58,42,${(0.22 * a).toFixed(3)})`; g.fill(); g.strokeStyle = `rgba(150,36,28,${(0.3 * a).toFixed(3)})`; g.lineWidth = 1.0; g.stroke(); } };   // V2 r1: softer outline
 
 // ---------------- units ----------------
 const units = [];
@@ -60,7 +60,7 @@ window.SEQ = {
     { t: T.D, region: CO, at: [494, 366], dist: 580, tilt: 30, yaw: 3, fov: 30, ease: "lin" },          // the living map alone for the end screen
   ],
   features: { [CO]: { bridges: Array.from({ length: 60 }, () => ({ hidden: true })) } },
-  clouds: { [CO]: { scatter: { seed: 7, n: 24, med: 20 }, keepClear: [[452, 300, 60, 1, 0.9], [470, 390, 60, 1, 0.9], [560, 430, 90, 1, 1]] } },   // round 1: Jackson-like scatter, lower right kept clear for the end-screen tiles
+  clouds: { [CO]: { shadows: false, scatter: { seed: 7, n: 24, med: 20 }, keepClear: [[452, 300, 50, 1, 0.9], [560, 430, 90, 1, 1], ...[[598, 205], [570, 250], [535, 300], [495, 350], [455, 400], [410, 455], [372, 505], [350, 545]].map(([x, y]) => [x, y, 40, 1, 1])] } },   // V2 r1: no cloud over the red-held belt (the 2D tint must not sit on a cloud); lower right kept clear for the end-screen tiles
   units,
   arrows: [
     { side: "u", region: CO, width: 0.34, maxWidth: 0.34, pts: [[PRI[0] + 4, PRI[1] - 8], [PLU[0] - 2, PLU[1] + 20], lerp2(PLU, MOR, 0.35), [MOR[0] - 3, MOR[1] + 7]], t0: T.washington, dur: 2.6, t1: 9.4 },

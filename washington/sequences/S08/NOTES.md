@@ -49,3 +49,7 @@ No overlaps, no pops, no shape change, screen long-side-normal <= 4 deg, turn <=
 - Overlays: legend + the timeline with all three seals (Brooklyn 0.95, Trenton 4.72, Princeton 5.25) on the map shots 0.6 -> the letter,
   again after "alive again" -> the method letter; both stay out for the final cards and the end-screen tail.
 - Checks: motion + side gap clean. Open: at dist 430-580 the lines are small (recipe size) and the red ones sit on the red-held tint.
+
+## V2 round 1 (critic A 6.5 / B 9 on S08)
+- The red-held tint (2D canvas over the map) no longer sits on clouds: no clouds over the belt (keepClear along it), cloud shadows off;
+  the outline is softer (alpha 0.3, 1 px). Motion clean.

@@ -57,7 +57,7 @@ U({ side: "u", region: JE, face: FRD(44), t0: 12.0, keys: [[0, ...G1a], [24.4, .
 U({ side: "u", region: JE, face: FRD(29), t0: 12.0, keys: [[0, ...G2]] });
 
 // trenton: the American line behind the works on the south bank; two guns covering the bridge; the British through the town
-const BLUE = [1344.6, 1348.6, 1352.4, 1360.4, 1364.4, 1368.6].map((x, i) => U({ side: "u", region: TR, face: N_, t0: 32.0, keys: [[0, x, 2076.3 + (i === 0 ? 0.5 : 0)]] }));
+const BLUE = [1344.6, 1348.6, 1352.4, 1360.4, 1364.4, 1368.6].map((x, i) => U({ side: "u", region: TR, face: N_, t0: 32.0, keys: [[0, x, (x === 1352.4 || x === 1360.4) ? 2075.0 : 2076.3 + (i === 0 ? 0.5 : 0)]] }));   // v2 r1: the two bridge firing blocks just behind the works (out of the bottom 12 %)
 const GUNS = [[1355.0, 2071.5], [1358.2, 2071.4]];   // round 1: at the south end of the bridge
 GUNS.forEach((g) => U({ side: "u", region: TR, type: "art", face: N_, t0: 32.0, keys: [[0, ...g]] }));
 // three assaults: each regiment walks down to the creek by the bridge, is thrown back (holds while it about-faces ~7 s), walks back
@@ -88,19 +88,19 @@ const arrows = [
 const VOL = (region, pts, t0, t1, dir, o = {}) => ({ region, pts, t0, t1, opts: { dir, size: 0.8, alpha: 0.09, life: 10, muzzle: 5, windK: 0.9, rate: 3.0, volley: 1.5, roll: 0.5, height: 2.0, ...o } });
 const seg = (c, ang, h) => [[c[0] - Math.cos(ang) * h, c[1] - Math.sin(ang) * h], [c[0] + Math.cos(ang) * h, c[1] + Math.sin(ang) * h]];
 const fdir = (a) => [Math.cos(a), Math.sin(a)];
-const JK = { size: 2.4, height: 5.0, life: 8 };
+const KJ = 2.7, JK = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KJ, windK: 1.1, rate: 2.9 / KJ, roll: 0.9, height: 2.4 * KJ, cluster: [2.6 * KJ, 1.4 * KJ] };   // v2 r1: v14 musketry scaled to the jersey framing (dist ~78, fxScale 24)
 const KF = 0.63, VO = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KF, windK: 1.1, rate: 2.9 / KF, roll: 0.9, height: 2.4 * KF, cluster: [2.6 * KF, 1.4 * KF] };   // V2: v14 musketry at dist ~18                      // jersey wide (fxScale 40 is the default for wide)
 const volleys = [
-  VOL(JE, seg(RD(44.8, 1.0), FRD(44) + Math.PI / 2, 1.0), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 1.1 }),
-  VOL(JE, seg(RD(51.0), FRD(51) + Math.PI / 2, 1.2), 16.6, 18.8, fdir(FRD(51) + Math.PI), { ...JK, volley: 1.4 }),
-  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 1.2 }),
-  VOL(JE, seg(RD(40.0), FRD(40) + Math.PI / 2, 1.2), 29.4, 31.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 1.2 }),
-  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 30.95, 33.15, fdir(FRD(29)), { ...JK, volley: 1.1 }),
+  VOL(JE, seg(RD(44.8, 1.0), FRD(44) + Math.PI / 2, 1.0), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(51.0), FRD(51) + Math.PI / 2, 1.2), 16.6, 18.8, fdir(FRD(51) + Math.PI), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(40.0), FRD(40) + Math.PI / 2, 1.2), 29.4, 31.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 30.95, 33.15, fdir(FRD(29)), { ...JK, volley: 2.4, roll: 0.6 }),
   // the bridge (round 1): one short wave per attack, inside the word gaps: the guns + the line, the attackers answer once
   // V2: v14 musketry (S09_gm SMK x KF), each volley lasts 2.2 s (a real ripple of smoke) but fires ONCE (volley 2.4 > 2.2: one cue at
   // its start, inside the word gap; roll 0.4 keeps the last flash + its shot sound before 50.4)
-  ...WAVE.map(([w0, w1], i) => VOL(TR, [[BR[0] - 4.0, 2075.6], [BR[0] - 1.6, 2075.6]], w0, w0 + 2.2, [0, -1], { ...VO, volley: 2.4, roll: 0.4 })),
-  ...WAVE.map(([w0, w1], i) => VOL(TR, [[BR[0] + 1.6, 2075.6], [BR[0] + 4.0, 2075.6]], w0 + 0.15, w0 + 2.35, [0, -1], { ...VO, volley: 2.4, roll: 0.35 })),
+  ...WAVE.map(([w0, w1], i) => VOL(TR, [[1351.9, 2074.6], [1352.9, 2074.6]], w0, w0 + 2.2,   /* v2 r1: on the block front */ [0, -1], { ...VO, volley: 2.4, roll: 0.4 })),
+  ...WAVE.map(([w0, w1], i) => VOL(TR, [[1359.9, 2074.6], [1360.9, 2074.6]], w0 + 0.15, w0 + 2.35, [0, -1], { ...VO, volley: 2.4, roll: 0.35 })),
   ...WAVE.map(([w0, w1], i) => VOL(TR, [[AS[i][0] - 0.45, AS[i][1] + 0.2], [AS[i][0] + 0.45, AS[i][1] + 0.2]], Math.min(w1 - 0.3, w0 + 0.3), Math.min(w1 - 0.3, w0 + 0.3) + 2.2, [0, 1], { ...VO, volley: 2.4, roll: 0.15 })),
 ];
 const shot = (t, at, imp, delay = 0.5) => ({ t, at, dir: [imp[0] - at[0], imp[1] - at[1]], impact: imp, delay });
@@ -132,10 +132,6 @@ const labels = [
   { text: "Assunpink Creek", region: TR, at: [1369.0, 2071.2], size: 17, river: true, t0: T.assunpink - 0.05, t1: T.assunpink + 3.6 },
   { text: "stone bridge", region: TR, at: [1360.2, 2069.9], size: 15, t0: T.bridge - 0.1, t1: T.bridge + 3.0 },
 ];
-const pulses = VX.pulses([
-  { region: TR, at: BR, r: 1.3, t0: T.bridge - 0.1, t1: 45.2, period: 1.4 },
-  ...[[1342.6, 2074.4], [1347.6, 2082.6], [1351.0, 2091.0]].map((p) => ({ region: TR, at: p, r: 2.2, t0: T.riverI - 0.1, t1: 74.0, period: 1.6, color: [255, 214, 120] })),
-]);
 
 const NI = 1.0;   // V2: a real night (v8) + grade.night + film.grade night
 window.SEQ = {
@@ -143,7 +139,7 @@ window.SEQ = {
   name: "S06", D: T.D, T, seed: 1777, date: "1777-01-02",
   regions: [JE, TR],
   troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2: = v14
-  regionOpts: { [JE]: { troopScale: 2.0, decks }, [TR]: { troopScale: 1.0, fxScale: 6.2 } },   // V2 recipe table
+  regionOpts: { [JE]: { troopScale: 2.0, fxScale: 24, decks }, [TR]: { troopScale: 1.0, fxScale: 6.2 } },   // V2 recipe table
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },
   keys: [
     { t: 0, region: JE, at: [654.0, 1024.0], dist: 88, tilt: 44, yaw: 0, fov: 30 },                       // back over the river to Trenton
@@ -185,7 +181,6 @@ window.SEQ = {
       tA: T.hold - 0.05, tB: T.slip - 0.05, tNote: T.tell - 0.05, tCount: T.comments, tReveal: T.D + 50, until: T.D + 1, dim: 0.55 }],   // the reveal opens S07
     ["label", T.riverI - 0.05, T.hold - 0.3, { name: "A river full of ice", sub: "", world: [1346.0, 2086.0], side: "us", marker: false }],
   ],
-  build: (ctx) => { pulses.build(ctx); },
-  draw: (t, ctx) => { pulses.draw(t, ctx); },
+  // v2 r1: no pulse / glow effects (not in the v8 tests)
 };
 })();

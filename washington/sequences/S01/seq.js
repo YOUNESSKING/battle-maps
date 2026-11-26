@@ -265,9 +265,9 @@ window.SEQ = {
     { t: SN2, region: CR, at: xo(-1.5, -0.5), dist: 22, tilt: 56, yaw: 18, fov: 30, night: NI, ease: "cut" },
     { t: SN3, region: CR, at: xo(-0.5, 0.2), dist: 20, tilt: 57, yaw: 22, fov: 30, night: NI, ease: "lin" },
     // G3: the orchard at Princeton, then a slow pull back as the promise is said
-    { t: SN3, region: PR, at: [ORCH[0] - 1.4, ORCH[1] + 0.6], dist: 15, tilt: 52, yaw: -8, fov: 30, ease: "cut" },
-    { t: T.these, region: PR, at: [ORCH[0] - 1.2, ORCH[1] + 0.8], dist: 18, tilt: 51, yaw: -5, fov: 30, ease: "lin" },
-    { t: T.D, region: PR, at: [ORCH[0] - 1.0, ORCH[1] + 1.0], dist: 25, tilt: 49, yaw: -1, fov: 30 },
+    { t: SN3, region: PR, at: [ORCH[0] - 1.4, ORCH[1] + 0.6], dist: 15, tilt: 52, yaw: 82, fov: 30, ease: "cut" },   // V2 r1: yaw ~90: the N-S lines run across the frame (v14), not as columns
+    { t: T.these, region: PR, at: [ORCH[0] - 1.2, ORCH[1] + 0.8], dist: 18, tilt: 51, yaw: 85, fov: 30, ease: "lin" },
+    { t: T.D, region: PR, at: [ORCH[0] - 1.0, ORCH[1] + 1.0], dist: 25, tilt: 49, yaw: 89, fov: 30 },
   ],
   dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF, whooshAt: 12.85,   // round 2: whoosh body in the gap before "On Christmas night"   // overTo = the over point in crossing units (z9 -> z12)
     from: { region: CO, at: [MKC[0] + 4, MKC[1] - 2], dist: 230, tilt: 42, yaw: -2, night: 0.35 },

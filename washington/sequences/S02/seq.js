@@ -31,7 +31,7 @@ const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
   for (let k = 0; k < n; k++) { const h = (j) => VX.hsh(seed * 31 + k, j), off = (h(1) - 0.5) * 2 * o.spread, drift = (h(2) - 0.5) * o.spread * 0.8;
     let acc = 0; const P = path.map((p, i) => { if (i) acc += Math.hypot(p[0] - path[i - 1][0], p[1] - path[i - 1][1]); const d = off + drift * acc / L, nv = nrm(i); return [p[0] + nv[0] * d, p[1] + nv[1] * d]; });
     const speed = o.speed * (0.9 + 0.2 * h(3)), lag = (k === 0 ? 0 : (0.25 + 0.75 * h(4)) * o.depth) + (h(5) > 0.8 ? o.depth * 0.6 : 0);
-    out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: o.wake !== false, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
+    out.push({ region: o.region, kind: "ship", n: 1, t0: o.t0, t1: o.t1, size: o.size * (0.9 + 0.2 * h(6)), lamp: false, wake: false, path: P, s0: o.s0 - lag + (o.dt || 0) * speed, speed }); }
   return out; };
 const SANDY = [[618, 412], [614, 392], [609, 372], [604, 354], [600, 343]];          // in past Sandy Hook, north toward the Narrows
 const boats = [
@@ -90,7 +90,7 @@ window.SEQ = {
     { t: CUT_H, ...HAND, ease: "cut", dissolve: 0.9 },
     { t: T.D, ...HAND, ease: "lin" },
   ],
-  clouds: { [CO]: { scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
+  clouds: { [CO]: { shadows: false, scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
   units, arrows, boats,
   labels: [
     { text: "New York", at: [P("New York", CO)[0] - 2, P("New York", CO)[1] - 3], size: 24, t0: T.york, t1: T.york + 3.6, region: CO },

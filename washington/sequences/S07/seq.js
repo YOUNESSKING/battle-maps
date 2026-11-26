@@ -82,11 +82,11 @@ const mil = LX([1481.0, 1490.8]).map(([x, i]) => U({ side: "u", region: PR, face
   keys: [[0, x, MY + 2.4], [T.militia + 0.2, x, MY + 2.4], [T.waver - 0.2 + i * 0.3, x, MY], [T.rallied + 0.4 + i * 0.2, x, MY], [83.6 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
 // Nassau Hall: the last British inside, a gun, the white flag (grey)
 const NH = [1509.5, 1819.9];
-U({ side: "r", region: PR, face: S_, bw: 0.6, t0: CUT4 - 0.4, keys: [[0, NH[0], NH[1] + 1.3]], cap: 90.55 });
+U({ side: "r", region: PR, face: S_, t0: CUT4 - 0.4, keys: [[0, NH[0], NH[1] + 1.3]], cap: 90.55 });
 U({ side: "u", region: PR, face: Math.atan2(-0.8, 0.6), t0: CUT4 - 0.4, keys: [[0, 1507.0, 1824.6]] });
 U({ side: "u", region: PR, face: Math.atan2(-0.8, -0.6), t0: CUT4 - 0.4, keys: [[0, 1512.2, 1824.8]] });
 const NG = [1509.6, 1825.0];
-U({ side: "u", region: PR, type: "art", face: N_, bw: 0.24, bd: 0.2, t0: CUT4 - 0.4, keys: [[0, ...NG]] });   // round 2: gun at half size (Jackson S07)
+U({ side: "u", region: PR, type: "art", face: N_, t0: CUT4 - 0.4, keys: [[0, ...NG]] });   // v2 r1: default size (v14 scale)
 
 // ---------------- fx ----------------
 // V2: the v14 musketry (vicksburg/sequences/S09_gm SMK) scaled to this framing: k = our frame width / v14's (11 u / 27.3 u = 0.4);
@@ -141,7 +141,7 @@ const banners = [
   { general: "washington", region: TR, keys: [[0, 1356.4, 2079.0], [6.8, 1356.4, 2079.0], [14.0, 1357.4, 2083.6]], t0: 2.1, t1: CUT1 + 0.3 },
   { general: "washington", region: JE, keys: [[0, NA[0] - 2, NA[1] - 4], [CUT1 + 0.8, NA[0] - 2, NA[1] - 4], [27.0, NB[0] - 2, NB[1] - 4]], t0: CUT1 + 0.6, t1: 31.6 },
   { general: "washington", region: JE, keys: [[0, DA[0] - 4, DA[1] + 1], [32.4, DA[0] - 4, DA[1] + 1], [CUT3 - 1.0, DB[0] - 4, DB[1] + 1]], t0: 31.8, t1: CUT3 },
-  { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 2.4]], t0: T.mercer - 0.05, t1: T.broke + 0.8, fall: T.shot + 0.05 },
+  { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 2.4]], t0: T.mercer - 0.05, t1: T.under + 0.5 },   // v2 r1: fades out (v8 banners never tilt)
   { general: "washington", region: PR, keys: [[0, OX, MY + 1.6], [T.rode, OX, MY + 1.6], [T.lines, OX, RY2 + 3.4], [T.rallied + 0.2, OX, RY2 + 3.4], [83.6, OX, AY - 0.6]], t0: T.washington - 0.05, t1: CUT4 + 0.4 },
   { general: "cornwallis", region: TR, keys: [[0, 1361.6, 2063.4], [117.6, 1361.6, 2063.4], [T.D, 1364.0, 2059.6]], t0: T.cornwallis2 - 0.05, t1: T.D + 1 },
 ];
@@ -149,7 +149,7 @@ const banners = [
 // ---------------- labels ----------------
 const labels = [
   { text: "Princeton", at: [PRj[0], PRj[1] - 5], region: JE, size: 20, t0: T.princeton - 0.05, t1: T.princeton + 3.6 },
-  { text: "Nassau Hall", at: [NH[0], NH[1] - 2.0], region: PR, size: 17, t0: T.college - 0.05, t1: T.college + 3.6 },
+  { text: "college", at: [NH[0], NH[1] - 2.0], region: PR, size: 17, t0: T.college - 0.05, t1: T.college + 3.6 },
   { text: "Princeton", at: [1442.0, 2040.0], region: TR, size: 17, t0: T.princeton2 - 0.3, t1: T.princeton2 + 3.0 },
 ];
 
@@ -217,8 +217,8 @@ window.SEQ = {
     K(74.0, PR, [OX, 1855.0], 18, 55.5, 0, "io", 0),
     K(CUT4, PR, [OX, 1853.4], 20, 52, 0, "lin", 0),
     // 5. Nassau Hall, then the result card over the town
-    K(CUT4, PR, [NH[0], 1822.8], 9.5, 56, 4, "cut", 0, { dissolve: 0.9 }),
-    K(91.0, PR, [NH[0], 1823.0], 9.0, 57, 0, "lin", 0),
+    K(CUT4, PR, [NH[0], 1823.4], 18.5, 52.5, 2, "cut", 0, { dissolve: 0.9 }),   // v2 r1: v14 framing (was dist 9.5)
+    K(91.0, PR, [NH[0], 1823.6], 18, 53, 0, "lin", 0),
     K(CUT5, PR, [NH[0] - 2.0, 1826.0], 24, 52, 0, "io", 0),
     // 6. trenton dawn: Cornwallis, empty works, the march back north-east; method card
     K(CUT5, TR, [1357.0, 2066.0], 30, 48, 0, "cut", 0.08, { dissolve: 0.9 }),
@@ -233,26 +233,28 @@ window.SEQ = {
     ["engage.decide", { t: 0, instant: true, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
       tReveal: 0.3, until: 2.0, dim: 0.55 }],
     ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
-    ["plaque.clock", T.marched2 - 0.05, { time: "2:00", note: "the back road", header: "3 January 1777" }],   // V2: on the road by 2 a.m. (FACT G3)
-    ["plaque.note", T.changed - 0.05, "hard frost"],
-    (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [702.0, 1021.0], JE)   /* round 5: clear of Washington's banner */,
+    ["plaque.clock", T.road - 0.05, { time: "2:00", note: "the back road", header: "2 - 3 January 1777" }],   // V2: on the road by 2 a.m. (FACT G3)
+    ["plaque.note", T.froze + 0.4, "the roads froze"],
+    ["label", T.froze - 0.05, 31.3, { name: "The mud froze", sub: "", world: [702.0, 1021.0], marker: false }],   // v2 r1: dark v8 plate, not a stamp
     ["plaque.clock", T.third - 0.05, { time: "7:25", note: "sunrise", header: "3 January 1777" }],   // V2: sun up ~7:25 (FACT J)
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],
     // V2: pocket-watch time plate (FACT_NOTES_jersey H2: the clash just before 8 a.m.), THE ARMIES key, the wax-seal campaign timeline
-    ["plaque.clock", CUT3 + 0.6, { time: "8:00", note: "William Clarke's orchard", header: "3 January 1777" }],
+    ["plaque.clock", T.orchard - 0.05, { time: "8:00", note: "an orchard", header: "3 January 1777" }],
     ["legend", CUT3 + 1.0, T.lost - 0.5, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Mawhood", color: "#9C3A35" }] }],
     ["timeline.show", CUT3 + 0.8, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.0 }],
     ["timeline.seal", CUT3 + 0.9, { at: 0.95, name: "Brooklyn" }],
     ["timeline.seal", CUT3 + 0.9, { at: 4.72, name: "Trenton" }],
     ["timeline.go", T.mercer, { at: 5.25, d: 1.2 }],
     ["distance", T.thirty - 0.05, T.both - 0.2, { from: [OX + 0.2, RY2 + 3.4], to: [OX + 0.2, RY2 + 0.4], value: 30, countFrom: 30, unit: "YARDS", sub: "from the British line", dash: false }],
-    ["timeline.seal", T.surrendered, { at: 5.25, name: "Princeton" }],
+    ["timeline.seal", T.surrendered, { at: 5.4, name: "Princeton" }],
     // V2: the small parchment result list top-right (v8) INSTEAD of the big dark centred result card; spoken numbers only
     ["ledger.show", T.lost - 0.4, { title: "Princeton", sub: "3 January 1777" }],
-    ["ledger.add", T.hundreds, { who: "British: hundreds lost", note: "killed, wounded or captured", stamp: false }],
-    ["ledger.add", T.almost, { who: "Almost 200 prisoners", stamp: false }],
+    ["ledger.add", T.hundreds, { who: "British: hundreds lost", stamp: false }],
+    ["ledger.note", T.killed - 0.05, 1, "killed, wounded or captured"],
+    ["ledger.add", T.prisoner - 0.05, { who: "Almost 200 prisoners", stamp: false }],
     ["ledger.add", T.fewer, { who: "Americans: under 100 lost", stamp: false }],
-    ["ledger.add", T.generalM - 0.05, { who: "General Mercer", note: "died nine days later", stamp: false }],
+    ["ledger.add", T.generalM - 0.05, { who: "General Mercer", stamp: false }],
+    ["ledger.note", T.nine - 0.05, 4, "died nine days later"],
     ["ledger.hide", CUT5 - 0.4],
     ["plaque.date", CUT5 + 0.4, { month: "January 1777", day: "3", weekday: "Friday", note: "dawn at the creek" }],
     ["plaque.date", T.heard - 0.05, { month: "January 1777", day: "3", weekday: "Friday", note: "guns heard from Princeton" }],

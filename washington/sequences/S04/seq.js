@@ -95,6 +95,7 @@ const banners = [
 ];
 const lab = (text, at, t0, d = 3.5, o = {}) => ({ text, at, t0, t1: t0 + d, region: JE, size: 15, ...o });
 const labels = [
+  { text: "White Plains", region: CO, at: [WP[0] - 6, WP[1] + 14], size: 18, t0: T.white - 0.05, t1: T.white + 3.5 },   // v2 r1: carved name instead of the stamp
   { text: "Fort Washington", region: CO, at: [FW[0] - 14, FW[1] - 4], size: 17, t0: T.fortw - 0.05, t1: T.fortw + 3.5 },   // V2 r2: on its word
   { text: "Hudson River", region: CO, at: [FW[0] - 11, FW[1] + 20], size: 17, river: true, t0: T.hudson - 0.05, t1: T.hudson + 3.5 },
   { text: "Manhattan", region: CO, at: P("Manhattan", CO), size: 20, t0: T.manhattan - 0.05, t1: T.manhattan + 3.6 },   // V2: carved place name on its word
@@ -142,9 +143,7 @@ window.SEQ = {
     ["timeline.seal", 0.7, { at: 0.95, name: "Brooklyn" }],
     ["timeline.go", T.sixteenth, { at: 3.5, d: 1.2 }],
     ["timeline.go", T.eighth, { at: 4.25, d: 1.2 }],
-    (O, c) => stamp(c, "WHITE PLAINS", T.white - 0.05, T.white + 3.4, [WP[0] - 6, WP[1] + 16]),
     ["plaque.date", T.sixteenth - 0.05, { month: "November 1776", day: "16", weekday: "Saturday", note: "Fort Washington" }],
-    (O, c) => stamp(c, "FORT WASHINGTON", T.fortw - 0.05, T.nearly - 0.2, [FW[0] + 4, FW[1] + 8]),
     ["number", T.three - 0.05, T.then - 0.2, { value: 3000, round: 1000, world: [FW[0] + 6, FW[1] + 12], size: 100 }],
     ["label", T.prisoner - 0.05, T.then + 0.2, { name: "Nearly 3,000 prisoners", sub: "", world: [FW[0] + 10, FW[1] + 30], side: "us", marker: false }],
     ["plaque.date", T.eighth - 0.05, { month: "December 1776", day: "8", weekday: "Sunday", note: "into Pennsylvania" }],
@@ -154,8 +153,8 @@ window.SEQ = {
     ["label", T.fourteen - 0.05, T.colonel - 0.3, { name: "About 1,400 men", sub: "", world: [TRj[0] + 0.6, TRj[1] - 14.0], side: "uk", marker: false }],
     ["label", T.thirtyfirst - 0.05, T.D, { name: "Enlistments end", sub: "31 December", world: bank(kT - 0.15, "PA", HW + 12.0), side: "us", marker: false }],
   ],
-  build: (ctx) => { pulses.build(ctx); },
-  draw: (t, c) => { pulses.draw(t, c); const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
+  build: (ctx) => { },   // v2 r1: no pulse (not in the v8 tests)
+  draw: (t, c) => { const sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
     for (const p of PINS) { const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },
 };
 // ---------------- red ink stamp pinned to the ground (Jackson S06 recipe) ----------------
