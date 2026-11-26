@@ -77,7 +77,7 @@ write("colonies", {
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
  "hm_ppu": 1.5, "tex": 8192, "exag": 3.5, "dem_blur": 2.5, "lit_k": 0.55, "cell": 12.0, "seed": 1776,   # critic A v2 r1: soft broad relief (no bright ridge combs), smaller fields (no flat sheet over Long Island)
- "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.8, "sat": 1.12}, "field_feather": 1.2, "field_patch_k": 0.75, "tex_lift": [{"box": [520, 150, 820, 320], "feather_u": 60, "k": 0.16}, {"box": [470, 110, 880, 292], "feather_u": 45, "k": 0.13, "wood_k": 0.1}],   # v2 r6 (A r4 #7): S02 1:37 top row L 33/30/29 -> +5 (wider, softer second lift over the far band)
+ "tex_grade": {"tint": [1.07, 1.0, 0.93], "gamma": 0.8, "sat": 1.12}, "field_feather": 1.2, "field_patch_k": 0.75, "tex_lift": [{"box": [520, 150, 820, 320], "feather_u": 60, "k": 0.16}, {"box": [470, 100, 900, 292], "feather_u": 45, "k": 0.27, "wood_k": 0.15}],   # v2 r6 (A r4 #7): S02 1:37 top row L 33/30/29 -> +5 (wider, softer second lift over the far band)
     # v2 r5 (critic A r3 #5): S02 1:37 far band (Queens / Bronx / upper Manhattan) L 28-33 -> v8 35-38   # v2 r4 (critic A #4 / N3): lighter, greener patchwork (S02 Long Island L 23-29 -> v8 33-37), soft field borders (no flat-shaded facets)   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
@@ -122,7 +122,7 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 8.0, "lit_k": 0.34, "shade_gain": 2.5,   # v2 r6 (A r4 N1): hill light back (shading slopes x2.5 on the blurred DEM, sunlit-slope lift 0.34)
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 8.0, "lit_k": 0.36, "shade_gain": 4.0,   # v2 r6 (A r4 N1): hill light back (shading slopes x4 on the blurred DEM, sunlit-slope lift 0.36)
   "cell": 6.0, "gm_unit": 1.5,   # v2 r5 (critic A r3 #3): DEM blur 2.5 -> 8 DEM px (~470 m), lit_k 0.55 -> 0.22: no pale diagonal ridge streaks
   "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)

@@ -37,8 +37,8 @@
  "jpeg_q": 92,
  "exag": 3.0,
  "dem_blur": 8.0,
- "lit_k": 0.34,
- "shade_gain": 2.5,
+ "lit_k": 0.36,
+ "shade_gain": 4.0,
  "cell": 6.0,
  "gm_unit": 1.5,
  "tex_grade": {
