@@ -106,7 +106,7 @@ window.SEQ = {
   draw: (t, ctx) => { pulses.draw(t, ctx); },
   overlay: [
     // V2: THE ARMIES key + the wax-seal campaign timeline (August)
-    ["legend", 0.9, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["legend", 0.9, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "\u00a0", color: "#9C3A35" }] }],
     ["timeline.show", 0.6, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.5 }],
     ["timeline.go", T.august, { at: 0.87, d: 1.2 }],   // 27 August
     ["plaque.date", T.e1776, { month: "Summer 1776", day: "", weekday: "", note: "" }],

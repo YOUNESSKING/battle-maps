@@ -81,22 +81,23 @@ const arrows = [
   // Cornwallis's plan: down the road, pin Washington against the river
   { side: "r", region: JE, width: 0.4, maxWidth: 0.4, pts: [RD(58), RD(36), RD(14), [TRj[0] - 2.0, TRj[1] + 4.0], bank(kT, "NJ", HW + 1.8)], t0: T.trap - 0.1, dur: 2.2, t1: T.but },
   // the bridge assaults (short red pushes onto the bridge)
-  ...AS.map(([x, y, ta]) => ({ side: "r", region: TR, width: 0.16, pts: [[x, y - 3.2], [x + (BR[0] - x) * 0.6, y + 0.6], [BR[0], BR[1] + 0.3]], t0: ta + 1.2, dur: 1.6, t1: ta + 8.0 })),
+  // v2 r3 fix (B4-2): the first push on "storm", the second on "three", the third on "Each"
+  ...AS.map(([x, y, ta], i) => { const t0 = [T.storm - 0.05, T.three - 0.05, T.each - 0.05][i]; return { side: "r", region: TR, width: 0.16, pts: [[x, y - 3.2], [x + (BR[0] - x) * 0.6, y + 0.6], [BR[0], BR[1] + 0.3]], t0, dur: 1.6, t1: Math.max(ta + 8.0, t0 + 4.0) }; }),
 ];
 
 // ---------------- fx: visible volleys + cannon only ----------------
 const VOL = (region, pts, t0, t1, dir, o = {}) => ({ region, pts, t0, t1, opts: { dir, size: 0.8, alpha: 0.09, life: 10, muzzle: 5, windK: 0.9, rate: 3.0, volley: 1.5, roll: 0.5, height: 2.0, ...o } });
 const seg = (c, ang, h) => [[c[0] - Math.cos(ang) * h, c[1] - Math.sin(ang) * h], [c[0] + Math.cos(ang) * h, c[1] + Math.sin(ang) * h]];
 const fdir = (a) => [Math.cos(a), Math.sin(a)];
-const KJ = 2.7, JK = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KJ, windK: 1.1, rate: 2.9 / KJ, roll: 0.9, height: 2.4 * KJ, cluster: [2.6 * KJ, 1.4 * KJ] };   // v2 r1: v14 musketry scaled to the jersey framing (dist ~78, fxScale 24)
+const KJ = 2.7, JK = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KJ, windK: 1.1, rate: 2.9 / KJ, roll: 0.9, height: 2.4, cluster: [2.6, 1.4] };   // v2 r3 fix (B4-1): unscaled cluster/height (scaled ones threw the flashes off the block)   // v2 r1: v14 musketry scaled to the jersey framing (dist ~78, fxScale 24)
 const KF = 0.63, VO = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KF, windK: 1.1, rate: 2.9 / KF, roll: 0.9, height: 2.4 * KF, cluster: [2.6 * KF, 1.4 * KF] };   // V2: v14 musketry at dist ~18                      // jersey wide (fxScale 40 is the default for wide)
-const E05 = (c) => [c[0] + 0.5, c[1]];   // v2 r2 critic B: first skirmish flashes on the block
+const E05 = (c) => [c[0] + 0.5, c[1]];   // v2 r2 critic B: first skirmish flashes on the block   // v2 r3 fix (B4-1): segs ~1 u back onto the blocks (the lift puts the flash ahead), red on the moving front rank
 const volleys = [
-  VOL(JE, seg(E05(RD(44.8, 1.0)), FRD(44) + Math.PI / 2, 0.5), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 2.4 }),
-  VOL(JE, seg(RD(51.0), FRD(51) + Math.PI / 2, 1.2), 16.6, 18.8, fdir(FRD(51) + Math.PI), { ...JK, volley: 2.4 }),
-  VOL(JE, seg(E05(RD(29.8, -2.4)), FRD(29) + Math.PI / 2, 0.5), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 2.4 }),
-  VOL(JE, seg(RD(40.0), FRD(40) + Math.PI / 2, 1.2), 29.4, 31.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 2.4 }),
-  VOL(JE, seg(RD(29.8, -2.4), FRD(29) + Math.PI / 2, 1.0), 30.95, 33.15, fdir(FRD(29)), { ...JK, volley: 2.4, roll: 0.6 }),
+  VOL(JE, seg(E05(RD(43.4, 1.0)), FRD(44) + Math.PI / 2, 0.7), 15.8, 18.0, fdir(FRD(44)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(53.0), FRD(53) + Math.PI / 2, 2.0), 16.6, 18.8, fdir(FRD(51) + Math.PI), { ...JK, volley: 2.4, cluster: [1.2, 1.4] }),
+  VOL(JE, seg(E05(RD(28.4, -2.4)), FRD(29) + Math.PI / 2, 0.7), 28.4, 30.6, fdir(FRD(29)), { ...JK, volley: 2.4 }),
+  VOL(JE, seg(RD(40.7), FRD(40) + Math.PI / 2, 2.0), 29.4, 31.6, fdir(FRD(40) + Math.PI), { ...JK, volley: 2.4, cluster: [1.2, 1.4] })   /* red: one cluster per block of the front pair */,
+  VOL(JE, seg(E05(RD(28.4, -2.4)), FRD(29) + Math.PI / 2, 0.7), 30.95, 33.15, fdir(FRD(29)), { ...JK, volley: 2.4, roll: 0.6 }),
   // the bridge (round 1): one short wave per attack, inside the word gaps: the guns + the line, the attackers answer once
   // V2: v14 musketry (S09_gm SMK x KF), each volley lasts 2.2 s (a real ripple of smoke) but fires ONCE (volley 2.4 > 2.2: one cue at
   // its start, inside the word gap; roll 0.4 keeps the last flash + its shot sound before 50.4)

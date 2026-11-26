@@ -81,7 +81,8 @@ const OX = 1485.9, RY0 = 1848.0, RY1 = 1850.2, RY2 = 1851.3, BY0 = 1858.6, BY1 =
 // RX(x, dy) = the x a unit starting at x reaches after dy units north (dy < 0 = south), KR tuned on check_troops_motion
 const KR = 0.06, RX = (x, dy) => +(x + (x - OX) * dy * KR).toFixed(3);
 const LX = (a, dx = 1.07) => a.flatMap((x0, i0) => [-1, 0, 1].map((k) => [x0 + k * dx, i0 + (k + 1) * 0.12]));
-const red = LX([1484.2, 1487.6]).map(([x, i]) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, n: 1,
+const red = LX([1483.95, 1487.85], 1.19).map(   // v2 r3 fix (A R6): +0.12 u per block (they touched)
+  ([x, i]) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, n: 1,
   keys: [[0, x, RY0], [CUT3 + 1.5 + i * 0.1, x, RY0], [50.6 + i * 0.1, RX(x, RY0 - RY1), RY1], [T.charged, RX(x, RY0 - RY1), RY1], [54.6 + i * 0.2, RX(x, RY0 - RY2), RY2]], t1: 83.4 }));   // v2 r3 (A #16 / #17): faded in facing south, a 1 s hold, then walk in; driven off = fade on "field" (no about-face across the 83.9 dissolve)
 const merc = LX([1484.2, 1487.6]).map(([x, i]) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, n: 1,
   keys: [[0, x, BY0], [CUT3 + 0.6, x, BY0], [50.0 + i * 0.2, x, BY1], [63.0 + i * 0.3, x, BY1], [66.8 + i * 0.3, x, BY2], [79.4 + i * 0.1, x, BY2], [82.5 + i * 0.1, RX(x, BY2 - AY), AY]], t1: CUT4 + 0.5 }));   // v2 r3 (A #16): the advance ends by CUT4 - 1.3
@@ -247,9 +248,10 @@ window.SEQ = {
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],
     // V2: pocket-watch time plate (FACT_NOTES_jersey H2: the clash just before 8 a.m.), THE ARMIES key, the wax-seal campaign timeline
     ["plaque.clock", T.orchard - 0.05, { time: "8:00", note: "an orchard", header: "3 January 1777" }],
+    ["plaque.clock", T.college - 0.05, { time: "8:00", note: "the college", header: "3 January 1777" }],   // v2 r3 fix (B4-3)
     // v2 r3 (A N6): key + timeline on EVERY map shot (v8), in once the decision card has gone, out only for the ledger / method card
     ["legend", 2.2, CUT3 - 0.2, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],
-    ["legend", CUT3 + 0.4, T.lost - 0.5, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Mawhood", color: "#9C3A35" }] }],
+    ["legend", CUT3 + 0.4, CUT5 - 0.4,   /* v2 r3 fix (A R5): kept under the ledger (v8) */ { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "", color: "#9C3A35" }] }],
     ["legend", CUT5 + 0.4, 119.0, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],
     ["timeline.show", 2.1, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.1 }],
     ["timeline.seal", 2.2, { at: 0.95, name: "Brooklyn" }],

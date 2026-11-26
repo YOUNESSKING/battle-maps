@@ -252,6 +252,9 @@ window.SEQ = {
     ["plaque.clock", T.middle - 0.1, { time: "26:00", note: "the middle of the night", header: "30 August 1776" }],
     // v2 r3 (A N6): key + timeline from the first frame (continuous from S02's end), on every map shot incl. the dive and the night
     ["legend", 0.3, T.about - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    // v2 r3 fix (B4-5): "Howe" in the key only from his word (a blank line holds the box height before, as S02's key)
+    (O) => { const els = document.querySelectorAll(".gmo .legend"), s = els[els.length - 1].querySelectorAll(".e")[1].querySelector(".s"), up = O.update;
+      O.update = (t) => { const v = t >= T.howe - 0.05 ? "Howe" : "\u00a0"; if (s.textContent !== v) s.textContent = v; up(t); }; },
     ["timeline.show", 0.2, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.87 }],
     ["timeline.go", T.d29 - 0.05, { at: 0.9, d: 1.0 }],   // 27 -> 29 August
     ["timeline.seal", T.lastof, { at: 0.95, name: "Brooklyn" }],
