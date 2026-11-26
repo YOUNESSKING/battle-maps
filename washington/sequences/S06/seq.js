@@ -62,7 +62,7 @@ const GUNS = [[1355.0, 2071.5], [1358.2, 2071.4]];   // round 1: at the south en
 GUNS.forEach((g) => U({ side: "u", region: TR, type: "art", face: N_, t0: 32.0, keys: [[0, ...g]] }));
 // three assaults: each regiment walks down to the creek by the bridge, is thrown back (holds while it about-faces ~7 s), walks back
 // round 1 (critic B): one short fire wave per attack in the word gaps (43.0-43.4, 45.6-46.5, 49.4-50.3), nothing after 50.3
-const AS = [[1356.15, 2068.75, 37.6], [1354.4, 2067.6, 40.2], [1358.0, 2067.6, 44.0]];   // [x, y, start]; arrive start + 5
+const AS = [[1356.15, 2068.75, 39.4], [1354.4, 2067.6, 41.2], [1358.0, 2067.6, 44.6]];   // v2 r4 (critic B): block 1 arrives on "storm"   // [x, y, start]; arrive start + 5
 const WAVE = [[43.0, 43.4], [46.1, 46.6], [49.85, 50.4]];   // round 2: after the word ends
 AS.forEach(([x, y, ta], i) => { const st = [x, 2064.4 - i * 0.4];   // V2: 4 u from the creek (ts 1.0 walks at ~1 u/s)
   U({ side: "r", region: TR, face: S_, t0: 32.6, keys: [[0, ...st], [ta, ...st], [ta + 5.0, x, y], [ta + 14.4, x, y], [ta + 19.4, st[0], st[1] - 0.4]] }); });

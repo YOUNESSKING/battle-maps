@@ -403,6 +403,7 @@ window.SEQ = {
     // method card (Jackson recipe): line 1 static in the sub, line 2 types on "hit them where they rest"
     ["letter", 142.5, 150.7, { header: "Move 2 · Trenton", title: "The Washington Method", sub: "1. Save the army first", marks: false, quote: "2. Hit them where they rest", qSize: 34, height: 270,
       cps: 20, qAt: T.hit2 - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
+    ["plaque.date", CUT3 + 0.3, { month: "December 1776", day: "", weekday: "", note: "" }],   // v2 r4 (critic B): the 9:30 clock leaves with the cut
     ["plaque.date", T.newyork - 0.05, { month: "December 1776", day: "", weekday: "", note: "New York" }],
     // v2 r3 (critic A N6): key + timeline back on the colonies map shot (the key's sub waits for "Cornwallis")
     ["timeline.show", CUT3 + 0.4, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 4.8 }],

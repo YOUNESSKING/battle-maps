@@ -248,7 +248,7 @@ window.SEQ = {
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],
     // V2: pocket-watch time plate (FACT_NOTES_jersey H2: the clash just before 8 a.m.), THE ARMIES key, the wax-seal campaign timeline
     ["plaque.clock", T.orchard - 0.05, { time: "8:00", note: "an orchard", header: "3 January 1777" }],
-    ["plaque.clock", T.college - 0.05, { time: "8:00", note: "the college", header: "3 January 1777" }],   // v2 r3 fix (B4-3)
+    ["plaque.date", T.college - 0.05, { month: "January 1777", day: "3", weekday: "Friday", note: "the college" }],   // v2 r4 (critic B): no unsourced clock time for the surrender
     // v2 r3 (A N6): key + timeline on EVERY map shot (v8), in once the decision card has gone, out only for the ledger / method card
     ["legend", 2.2, CUT3 - 0.2, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Cornwallis", color: "#9C3A35" }] }],
     ["legend", CUT3 + 0.4, CUT5 - 0.4,   /* v2 r3 fix (A R5): kept under the ledger (v8) */ { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "", color: "#9C3A35" }] }],
