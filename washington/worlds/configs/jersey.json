@@ -35,7 +35,9 @@
  "meshDiv": 2,
  "tex": 7168,
  "jpeg_q": 92,
- "exag": 4.0,
+ "exag": 3.0,
+ "dem_blur": 2.5,
+ "lit_k": 0.55,
  "cell": 6.0,
  "gm_unit": 1.5,
  "tex_grade": {

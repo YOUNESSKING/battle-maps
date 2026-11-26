@@ -76,7 +76,8 @@ write("colonies", {
  "box": cb,
  "stills": [{"at": [cb[0] + cb[2] / 2, cb[1] + cb[3] / 2], "dist": 760, "tilt": 30, "yaw": 0}, {"at": pl("New York", Z), "dist": 260, "tilt": 44, "yaw": 0},
             {"at": pl("Trenton", Z), "dist": 170, "tilt": 52, "yaw": -8}],
- "hm_ppu": 1.5, "tex": 8192, "exag": 5.0, "cell": 30.0, "seed": 1776, "tex_grade": {"tint": [1.07, 1.0, 0.93]},   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
+ "hm_ppu": 1.5, "tex": 8192, "exag": 3.5, "dem_blur": 2.5, "lit_k": 0.55, "cell": 12.0, "seed": 1776,   # critic A v2 r1: soft broad relief (no bright ridge combs), smaller fields (no flat sheet over Long Island)
+ "tex_grade": {"tint": [1.07, 1.0, 0.93]},   # r3: a touch warmer (critic 1: centre cooler than v8)   # v2: the v8 wide relief (baker / engine defaults relief_k 0.9, lit_k 0.85, wideSunK 0.35)
  "dem_ppu": 2, "dem_margin": 24,
  "dem_edits": {"sea": {"level": 0.5, "min_px": 300, "island_px": 40, "open_px": 3,
                        "seeds": [[40.665, -74.045], [40.53, -74.03], [40.49, -74.18], [40.67, -74.135], [40.74, -73.968], [40.83, -73.93], [40.86, -73.78],
@@ -120,7 +121,7 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 4.0, "cell": 6.0, "gm_unit": 1.5, "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 7168, "jpeg_q": 92, "exag": 3.0, "dem_blur": 2.5, "lit_k": 0.55, "cell": 6.0, "gm_unit": 1.5, "tex_grade": {"contrast": 1.05, "sat": 1.3}, "seed": 1776, "field_look": "gm",   # v2: v8 close patchwork (~760 m fields = v8's 670 m), v8 relief defaults; tex 7168 (gm_fields RAM)   # critic A r2: 2x texture not possible (16384 high > the 16k texture limit; 11264 OOM-killed at 14 GB): crisper woods + jpeg 92 instead
  "wood_soft": {"blur_u": 0.08, "alpha": 0.95}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},

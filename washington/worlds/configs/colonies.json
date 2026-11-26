@@ -39,8 +39,10 @@
  ],
  "hm_ppu": 1.5,
  "tex": 8192,
- "exag": 5.0,
- "cell": 30.0,
+ "exag": 3.5,
+ "dem_blur": 2.5,
+ "lit_k": 0.55,
+ "cell": 12.0,
  "seed": 1776,
  "tex_grade": {
   "tint": [
