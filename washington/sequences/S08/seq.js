@@ -79,7 +79,7 @@ window.SEQ = {
     ["timeline.show", 0.6, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.25 }],
     ["timeline.seal", 0.6, { at: 0.95, name: "Brooklyn" }],
     ["timeline.seal", 0.6, { at: 4.72, name: "Trenton" }],
-    ["timeline.seal", 0.6, { at: 5.25, name: "Princeton" }],
+    ["timeline.seal", 0.6, { at: 5.6, name: "Princeton" }],
     ["timeline.hide", T.wrote - 0.6],
     ["legend", T.again + 0.4, T.method - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
     ["timeline.show", T.again + 0.3, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.4 }],

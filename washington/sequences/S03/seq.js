@@ -250,8 +250,10 @@ window.SEQ = {
     ["plaque.clock", T.dark - 0.1, { time: "20:00", note: "after dark · rain", header: "29 August 1776" }],
     ["plaque.clock", T.changed - 0.05, { time: "23:00", note: "the wind changes", header: "29 August 1776" }],
     ["plaque.clock", T.middle - 0.1, { time: "26:00", note: "the middle of the night", header: "30 August 1776" }],
-    ["legend", T.d29 + 0.4, T.about - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
-    ["timeline.show", T.d29 + 0.2, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.9 }],
+    // v2 r3 (A N6): key + timeline from the first frame (continuous from S02's end), on every map shot incl. the dive and the night
+    ["legend", 0.3, T.about - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["timeline.show", 0.2, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.87 }],
+    ["timeline.go", T.d29 - 0.05, { at: 0.9, d: 1.0 }],   // 27 -> 29 August
     ["timeline.seal", T.lastof, { at: 0.95, name: "Brooklyn" }],
     ["plaque.date", T.firstlight - 0.05, { month: "August 1776", day: "30", weekday: "Friday", note: "first light" }],   // v2 r1 (A #22): matches the ledger
     ["plaque.note", T.fog - 0.05, "fog"],

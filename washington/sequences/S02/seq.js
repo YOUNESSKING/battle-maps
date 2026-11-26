@@ -42,10 +42,11 @@ const boats = [
 
 // ---------------- 27 August (colonies) ----------------
 const RIDGE = [[617.4, 306.6], [627.4, 305.8], [636.4, 302.2]];                     // Heights of Guan: Battle Hill, Flatbush pass, Bedford pass
-const WORKS = [[615.4, 294.4], [624.0, 292.8], [632.6, 291.4]];                     // behind the Brooklyn works
 const units = [];
+// v2 r3 (critic A N4): the line HOLDS facing south on the wide (the about-face to the works put the long side vertical = columns, and it
+// began before "broke"); the red flank arrow + the 1,000 card carry the break; the survivors walk into the works in the brooklyn shot
 RIDGE.forEach((p, i) => units.push({ region: CO, side: "u", type: "inf", n: 1, skirmish: false, face: Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
-  keys: [[0, ...p], [T.broke + i * 0.25, ...p], [T.broke + 4.6 + i * 0.35, ...WORKS[i]]] }));
+  keys: [[0, ...p]] }));
 // Grant (Gowanus road) and Heister's Hessians (Flatbush) in front of the ridge: close up on "fell on", halt
 [[617.4, 313.8], [627.4, 313.2]].forEach((p, i) => units.push({ region: CO, side: "r", type: "inf", n: 1, skirmish: false, face: -Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
   keys: [[0, ...p], [T.fell + i * 0.3, ...p], [T.line + 0.2 + i * 0.3, p[0], p[1] - 1.0]] }));
@@ -61,8 +62,11 @@ const BRU = [[2490.0, 1180.0, 2488.6, 1162.0], [2499.6, 1178.6, 2498.6, 1160.2],
 // V2: one block per unit (2 single blocks per v1 two-block line, 1.25 block widths apart)
 const SPB = 1.25 * 0.7 * 1.44 * 1.4;
 BRU.forEach(([x0, y0, x1, y1], i) => { const f = Math.atan2(y1 - y0, x1 - x0), ax = [-Math.sin(f), Math.cos(f)];
+  // v2 r3: the walk starts after the 37.4 cut (a block walking under the region switch snap-turned) and ends ~1.3 s before the 42.75 cut;
+  // SA / SB = 38 % / 12 % of the way from the works back to the v1 start (~3.2 u walk; the right pair drifts 0.45 u east: front on velocity at the frame edge)
+  const SA = 0.30, SB = 0.12, PW = (k2, d) => [x1 + (x0 - x1) * k2 + ax[0] * d, y1 + (y0 - y1) * k2 + ax[1] * d];
   [-0.5, 0.5].forEach((k, j) => { const d = k * SPB; units.push({ region: BR, side: "u", type: "inf", n: 1, face: f, t0: CUT_B - 0.3, t1: T.D + 1, arrive: false,
-    keys: [[0, x0 + ax[0] * d, y0 + ax[1] * d], [CUT_B - 1.2 + i * 0.3 + j * 0.12, x0 + ax[0] * d, y0 + ax[1] * d], [CUT_B + 4.6 + i * 0.3 + j * 0.12, x1 + ax[0] * d, y1 + ax[1] * d]] }); }); });
+    keys: [[0, ...PW(SA, d)], [CUT_B + 0.8 + i * 0.1 + j * 0.05, ...PW(SA, d)], [CUT_H - 1.25 + i * 0.1 + j * 0.05, PW(SB, d)[0] + (i === 2 ? 0.45 : 0), PW(SB, d)[1]]] }); }); });
 
 const pulses = VX.pulses([{ region: CO, at: [JPASS[0], JPASS[1]], t0: T.pass - 0.05, t1: T.fell, r: 5, color: [232, 196, 108], period: 1.6 }]);
 

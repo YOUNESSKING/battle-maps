@@ -150,7 +150,7 @@ window.SEQ = {
     { t: 22.4, region: JE, at: [RD(30)[0] - 4, RD(30)[1] + 4], dist: 100, tilt: 42, yaw: 0, fov: 30, ease: "io" },   // the plan: against the river
     { t: 26.0, region: JE, at: [RD(36)[0], RD(36)[1]], dist: 56, tilt: 45, yaw: 0, fov: 30, ease: "io" },    // Hand's riflemen
     { t: 32.45, region: JE, at: [RD(34)[0], RD(34)[1]], dist: 54, tilt: 46, yaw: 0, fov: 30, ease: "lin" },
-    { t: 32.45, region: TR, at: [1357.0, 2064.0], dist: 46, tilt: 45, yaw: 0, fov: 30, night: 0.3, ease: "cut", dissolve: 0.9 },   // dusk: the creek, the town
+    { t: 32.45, region: TR, at: [1357.0, 2067.5], dist: 46, tilt: 45, yaw: 0, fov: 30, night: 0.3, ease: "cut", dissolve: 0.9 },   // dusk: the creek, the town   // v2 r3: 3.5 u south (the timeline stays up: the blue block on the right was in the bottom 12 %)
     { t: 40.0, region: TR, at: [1356.8, 2071.6], dist: 18.5, tilt: 48, yaw: 0, fov: 30, night: 0.4, ease: "io" },
     { t: 44.8, region: TR, at: [1356.6, 2071.8], dist: 17, tilt: 49, yaw: 0, fov: 30, night: 0.45, ease: "io" },   // the bridge: three assaults
     { t: 50.4, region: TR, at: [1356.8, 2071.6], dist: 18, tilt: 49, yaw: 2, fov: 30, night: 0.5, ease: "lin" },
@@ -168,7 +168,7 @@ window.SEQ = {
     ["timeline.seal", 0.7, { at: 0.95, name: "Brooklyn" }],
     ["timeline.seal", 0.8, { at: 4.72, name: "Trenton" }],
     ["timeline.go", T.second - 0.05, { at: 5.1, d: 1.2 }],
-    ["timeline.hide", 32.2],   // the Trenton close shots frame the blue line low in the frame
+    ["timeline.hide", T.now - 0.4],   // v2 r3 (A N6): kept on every map shot (dusk + night too, v8); steps out only for the decision card
     ["label", T.six - 0.05, T.ten - 0.3, { name: "Six more weeks", sub: "", world: bank(kT, "NJ", HW + 9.0), side: "us", marker: false }],
     ["label", T.ten - 0.05, 11.2, { name: "Ten dollars each", sub: "to stay", world: bank(kT, "NJ", HW + 9.0), side: "us", marker: false }],
     ["plaque.date", T.second - 0.05, { month: "January 1777", day: "2", weekday: "Thursday", note: "the road from Princeton" }],
