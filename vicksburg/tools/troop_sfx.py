@@ -176,8 +176,8 @@ def render_stem(events_files, kit=False):
             gated_loop(L, out, L.march, e["tShare"], t1, -34 - 9 * dd + 2 * np.log2(max(men, 8) / 144), pan_of(e["at"]), 2600 - 1200 * dd, rng, fade=.6)
             log.append(dict(type="march", t=e["tShare"], until=round(t1, 2), unit=e["unit"]["unit"]))
         elif ty == "bridge_stream_first_on_deck":
-            last = next((x for x, _ in allev if x["type"] == "bridge_stream_last_off_deck" and x["unit"]["unit"] == e["unit"]["unit"] and x["unit"].get("block") == e["unit"].get("block") and x["tShare"] > e["tShare"]), None)
-            t1 = last["tShare"] if last else e["tShare"] + 2.2
+            last = next((x for x, dx in allev if x["type"] == "bridge_stream_last_off_deck" and dx["scene"] == d["scene"] and x["unit"]["unit"] == e["unit"]["unit"] and x["unit"].get("block") == e["unit"].get("block") and x["tShare"] > e["tShare"]), None)   # Battle 21: same scene only (unit ids repeat across scenes)
+            t1 = last["tShare"] if last else e["tShare"] + 2.2; t1 = min(t1, e["tShare"] + 12)
             gated_loop(L, out, L.march, e["tShare"], t1, -28, pan_of(e["at"]), 4200, rng, fade=.2, hp=250)   # footsteps on the planks
             log.append(dict(type="bridge_stream", t=e["tShare"], until=round(t1, 2)))
         elif ty in ("capture", "retaken") and on_screen(e["at"]):
