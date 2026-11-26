@@ -227,7 +227,7 @@ export function createTroops3D(o) {
   // (trapezoid, no overshoot), turns in place onto the deck axis while its frontage narrows to the deck (0.18 u, depth x1.35), crosses as that
   // narrow box straight along the bridge, widens back over ~1 s past the far end and fades 1.5-4 u beyond it. Queue: a box reaches the mouth
   // only once the one ahead has stepped off it by >= 1.8 s (even gaps, no squeeze). No men in this look.
-  const A5 = CTR && (o.counter === "A5" || o.counter === "A6"), A6N = CTR && o.counter === "A6", CK_DK = 0.40;   /* A6: same bridge path, the box keeps its shape */
+  const A5 = CTR && ["A5", "A6", "A7"].includes(o.counter), A6N = CTR && (o.counter === "A6" || o.counter === "A7"), A7F = CTR && o.counter === "A7", CK_DK = 0.40;   /* A6: same bridge path, the box keeps its shape */
   if (A5) for (const Q of QUEUES.values()) { let prev = null;
     for (const q of Q) { if (!q.cr) continue; const C = q.cr, sl = q.path[0], tWalk = C.LA / q.V + RAMP;
       const trav = ang(C.PA[0] - sl[0], C.PA[1] - sl[1]), hDeckT = ang(C.ax[0], C.ax[1]), Tt = clamp(Math.abs(angDiff(trav, hDeckT)) / 0.5 + 0.25, 0.8, 3.0);
@@ -297,7 +297,7 @@ export function createTroops3D(o) {
   const runHead = (u, R, s, x, y) => { const tg = runTan(u, R, s, 0.25); return corr(ang(tg[0], tg[1]), x, y) + (R.back && !RT ? Math.PI : 0); };
   function baseBox(u, i, t) {
     const D = UD.get(u), lag = i ? 0.08 + 0.14 * hash(units.indexOf(u) * 7 + i, 5) : 0, tl = t - lag, fa = u.face, F = uv(fa), L0 = [-F[1], F[0]];
-    const sl = sAt(u, tl), c0 = ptAt(u, sl); let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], h = fa, e = 0, EQ = null, EW = 0, bf, stB, abk = 0, crq = null, gone = false, a5n = 0, a5f = 1, a5d = 0, q5dH = -1e9;
+    const sl = sAt(u, tl), c0 = ptAt(u, sl); let x = c0[0] + L0[0] * D.slots[i], y = c0[1] + L0[1] * D.slots[i], h = fa, e = 0, EQ = null, EW = 0, bf, stB, abk = 0, crq = null, gone = false, a5n = 0, a5f = 1, a5d = 0, q5dH = -1e9, a5y = null;
     for (const R of D.runs) {   // in time order: turn in place, walk long side first along the smoothed path, turn back to the unit's facing
       const pS = runPt(u, R, R.s0), hS = runHead(u, R, R.s0, pS[0], pS[1]), tinD = BOXV ? R.tin : clamp(Math.abs(angDiff(h, hS)) / 0.44 + 0.25, 0.8, RT ? 9 : 6);   /* v11: turn time from the real (on-screen corrected) angle */
       if (tl < R.t0 - tinD) break;
@@ -312,7 +312,7 @@ export function createTroops3D(o) {
         if (t <= A.tArr) { const Tw = A.tArr - q.T, k = trap((t - q.T) / Tw, Math.min(0.45, RAMP / Tw)); x = s0[0] + (C.PA[0] - s0[0]) * k; y = s0[1] + (C.PA[1] - s0[1]) * k;
           const hT = corr(C.hA - Math.PI, x, y) + fo; h = h + angDiff(h, hT) * sstep(Math.max(q.t0, q.T - q.seg.tt), q.T - 0.15, t); }
         else if (t <= A.tC) { x = C.PA[0]; y = C.PA[1]; h = hApp + angDiff(hApp, hDk) * sstep(A.tArr + 0.05, A.tC - 0.05, t); a5d = sstep(A.tArr, A.tC, t); }   // steps up to the deck level while turning (no rise on the move)   // turn in place onto the deck axis
-        else if (t <= A.tX) { const k = trap((t - A.tC) / (A.tX - A.tC), Math.min(0.45, RAMP / (A.tX - A.tC))); x = C.PA[0] + C.ax[0] * A.dX * k; y = C.PA[1] + C.ax[1] * A.dX * k; h = hDk + angDiff(hDk, corr(A.hDeckT, x, y) + fo); a5n = 1; a5d = 1; }   /* on-screen corrected along the deck (as the approach leg) */   // across the deck, straight, front first
+        else if (t <= A.tX) { const k = trap((t - A.tC) / (A.tX - A.tC), Math.min(0.45, RAMP / (A.tX - A.tC))); x = C.PA[0] + C.ax[0] * A.dX * k; y = C.PA[1] + C.ax[1] * A.dX * k; h = hDk + angDiff(hDk, corr(A.hDeckT, x, y) + fo); a5n = 1; a5d = 1; if (A7F) a5y = lerp(Hs(C.PA[0], C.PA[1]), Hs(A.F2[0], A.F2[1]), k); }   /* A7: level, at the bank heights blended across the river */   /* on-screen corrected along the deck (as the approach leg) */   // across the deck, straight, front first
         else { const hX = hDk + angDiff(hDk, corr(A.hDeckT, A.F2[0], A.F2[1]) + fo), hTr = hX + angDiff(hX, corr(A.trA, A.F2[0], A.F2[1]) + fo); a5n = 1;
           if (t <= A.tW) { x = A.F2[0]; y = A.F2[1]; h = hX + angDiff(hX, hTr) * sstep(A.tX + 0.05, A.tW - 0.05, t); a5d = 1 - sstep(A.tX, A.tW, t); }   // past the deck: turn in place onto the trail
           else { const sc = ramp(t - A.tW, q.V); x = A.F2[0] + Math.cos(A.trA) * sc; y = A.F2[1] + Math.sin(A.trA) * sc; h = hTr; a5n = 1 - sstep(0.8 * ts, 0.8 * ts + q.V * 1.0, sc);   // widens back over ~1 s, walks up the trail, fades
@@ -336,7 +336,7 @@ export function createTroops3D(o) {
         if (q.sg === undefined) { const a0 = q.path[0], a1 = q.path[Math.min(q.path.length - 1, 3)]; q.sg = sgOf(fa, Math.atan2(a1[1] - a0[1], a1[0] - a0[0])); }
         h = h + adS(h, hE, q.sg) * sstep(q.t0, q.T - 0.15, t); e = Math.max(0.001, sstep(q.t0, q.t0 + 1.0, t)); if (!RT || q.seg) abk = Math.max(abk, sstep(q.T - 1.1, q.T - 0.1, t));   /* the men about-face before the block walks back */ if (w > 0) { EQ = q; EW = w; } } }
     const ar = u.t0 > 1 && u.arrive !== false ? (o.arrive ?? 1.6) * ts * (1 - trap((t - u.t0) / 3.0, 0.4)) : 0, ox = -Math.cos(h) * ar, oy = -Math.sin(h) * ar;   // walks in along its front normal
-    return { x: x + ox, y: y + oy, lx: x + ox, ly: y + oy, cx: x + ox, cy: y + oy, pa: h, sa: h + Math.PI * abk, lpa: h, cpa: h, f: 0, c: 0, e, eq: EQ, ew: EW, ab: abk, bf, st: stB, cr: crq, gone, nw: A6N ? 0 : a5n, fk: a5f, dk: a5d, dH: a5d > 0 ? q5dH : -1e9 };
+    return { x: x + ox, y: y + oy, lx: x + ox, ly: y + oy, cx: x + ox, cy: y + oy, pa: h, sa: h + Math.PI * abk, lpa: h, cpa: h, f: 0, c: 0, e, eq: EQ, ew: EW, ab: abk, bf, st: stB, cr: crq, gone, nw: A6N ? 0 : a5n, fk: a5f, dk: A7F ? 0 : a5d, dH: a5d > 0 ? q5dH : -1e9, yA: a5y };
   }
   // one man of a block funnelling over a bridge: his rank spot (moving with the block) -> drifts to his lane at the deck mouth -> straight
   // across the deck -> a short straight run past it, fading out. Returns [x, y, facing, moving 0/1, opacity]
@@ -545,22 +545,26 @@ export function createTroops3D(o) {
       B: { dk: 0.30, h: 0.10, bev: 0.034, ao: 0.46, drop: 0, cast: true, phong: false, pen: true, tex: "B" },
       C: { dk: 0.32, h: 0.028, bev: 0.008, ao: 0.3, drop: 0.5, cast: false, phong: false, pen: false, tex: "C" },
       A2: { dk: 0.40, wk: 1.06, h: 0.06, bev: 0.012, ao: 0.35, aoM: 0.055, drop: 0, cast: true, phong: false, pen: false, tex: "A2", edgePx: 1.8, capPx: 2.3, grain: 0.06, pull: 1.2,
-        top: { u: "#3a5a94", r: "#a8432f" }, wall: { u: "#243b63", r: "#6e2a1f" }, capC: "#6e6a62", ink: "#2a1d16", guns: true, edgeFade: 26 } })[["A3", "A4", "A5", "A6"].includes(o.counter) ? "A2" : o.counter || "A"] || null;
+        top: { u: "#3a5a94", r: "#a8432f" }, wall: { u: "#243b63", r: "#6e2a1f" }, capC: "#6e6a62", ink: "#2a1d16", guns: true, edgeFade: 26 } })[["A3", "A4", "A5", "A6", "A7"].includes(o.counter) ? "A2" : o.counter || "A"] || null;
     // round 3 "A3" (critics on A2: it read as FLAGS - saltires / bunting): no cream anywhere; facing = a thicker ink front edge + a slim
     // darker-side-colour front strip + the lighter front wall; NATO symbol = a small plate in the lightened side colour, thin ink outline,
     // thin crossed lines (drawn in the shader in screen px); edge width grows with the counter's size on screen; guns: side-colour crew,
     // a flat side-colour ground disc, x1.3; captured = fully grey top, side-colour edge, held grey
-    if (["A3", "A4", "A5", "A6"].includes(o.counter)) Object.assign(V, { tex: "A3", capPx: 2.5, edgeMax: 3.0, frontK: 1.4, gunK: 1.3, stripD: 0.17, plateW: 0.31, plateD: 0.5,
+    if (["A3", "A4", "A5", "A6", "A7"].includes(o.counter)) Object.assign(V, { tex: "A3", capPx: 2.5, edgeMax: 3.0, frontK: 1.4, gunK: 1.3, stripD: 0.17, plateW: 0.31, plateD: 0.5,
       plate: { u: "#8ea2c6", r: "#d39a8c" }, strip: { u: "#2a4472", r: "#7f2f22" }, capPlate: "#9a968e", capStrip: "#55524b", xInk: 0.85, xPx: 1.5 });
     // round 4 "A4" (critics on A3: 8 / 7.5): guns x1.0 in dark ink bronze, no ground disc, bigger saturated side-colour crews; a LIGHTER
     // saturated front strip (the dark one merged with the near wall); blue top / walls lifted for dark woods; crossed lines 100 % ink, 1.8 px
-    if (["A4", "A5", "A6"].includes(o.counter)) Object.assign(V, { gunK: 1.0, noDisc: true, crewK: 1.6, gunBronze: { barrel: "#4a3a2c", carriage: "#5a4432" }, stripD: 0.22,
+    if (["A4", "A5", "A6", "A7"].includes(o.counter)) Object.assign(V, { gunK: 1.0, noDisc: true, crewK: 1.6, gunBronze: { barrel: "#4a3a2c", carriage: "#5a4432" }, stripD: 0.22,
       strip: { u: "#5b80d0", r: "#e0614c" }, top: { u: "#4466a6", r: "#a8432f" }, wall: { u: "#2a4577", r: "#6e2a1f" }, xInk: 1.0, xPx: 1.8 });
     // round 5 "A5" (owner: boxes stay boxes at the bridge): A4 + crews in the counter's WALL colour at 1.3x (critic 1); the bridge narrowing is in baseBox / updCounter
-    if (o.counter === "A5" || o.counter === "A6") Object.assign(V, { crewK: 1.3, crewWall: true, flipTop: true });
+    if (["A5", "A6", "A7"].includes(o.counter)) Object.assign(V, { crewK: 1.3, crewWall: true, flipTop: true });
     // round 6 "A6" (owner: at the bridge the box keeps its shape; critic 2: guns need their side): no narrowing / widening, a side-colour ground
     // disc under each gun (#2c57b7 / #be3a2a, 0.35, thin ink rim), crews back in the side colour; guns x1.0 bronze as A4
-    if (o.counter === "A6") Object.assign(V, { crewWall: false, crewSide: true, noDisc: false, noNarrow: true, discCol: { u: "#2c57b7", r: "#be3a2a" } });
+    if (o.counter === "A6" || o.counter === "A7") Object.assign(V, { crewWall: false, crewSide: true, noDisc: false, noNarrow: true, discCol: { u: "#2c57b7", r: "#be3a2a" } });
+    // round 7 "A7" (owner: never elevated at the bridge): the box stays at its walking height, the bank heights blended across the river (no
+    // step up / down to the deck); a tight soft 40 % contact shadow right under the box wherever it is (pulled like the box, so it shows on the
+    // deck / water / bank); gun discs at 0.55
+    if (o.counter === "A7") Object.assign(V, { flatBridge: true, ao: 0.4, aoPull: true, discA: 0.55 });
     const CV = { ...V, ...(o.counterOpts || {}) }, ART = { dk: 0.46 }, A3 = CV.tex === "A3", A2 = CV.tex === "A2" || A3;   /* A2 = the A2 family (A2, A3) */
     const slabG = (dk, h, bev, skirt) => { const P = [], N = [], C = [], hw = 0.5, hd = dk / 2, iw = hw - bev, id = hd - bev, yc = h - bev * 0.8, yb = -skirt;
       const tri = (a, b, c, sh) => { const u1 = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], u2 = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
@@ -684,9 +688,10 @@ diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
       K[sym] = { dk, body: mk(slabG(dk, CV.h, CV.bev, 0), bodyMat(), n, CV.cast, false), top: mk(topG(dk, CV.h, CV.bev), (() => { const m3 = topMat(tex(sym, (1 - 2 * CV.bev) / (dk - 2 * CV.bev))); m3.userData.sym = sym === "inf" ? 0 : sym === "cav" ? 1 : 2; return m3; })(), n, false, true, 2.02), n: 0, nf: 0 };
       if (CV.flipTop) K[sym].topF = mk(topG(dk, CV.h, CV.bev), K[sym].top.material, n, false, true, 2.025);   // A5: the markings turned about (crossfaded over the about-face) so the front strip leads a retreat
       if (A2) { const m2 = CV.aoM, qw = 1 + 2 * m2, qd = dk + 2 * m2, am = new THREE.MeshBasicMaterial({ map: aoTex(qw, qd, m2, m2), color: 0x0b0806, transparent: true, depthWrite: false, fog: true });
-        am.onBeforeCompile = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
+        am.onBeforeCompile = (sh) => { sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;" + (CV.aoPull ? " uniform float uPull;" : "")).replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
+          if (CV.aoPull) { sh.uniforms.uPull = { value: pullU.value * 0.98 }; sh.vertexShader = sh.vertexShader.replace("#include <project_vertex>", "#include <project_vertex>\n{ float Lm = length(mvPosition.xyz); vec4 pp = projectionMatrix * vec4(mvPosition.xyz * max(0.05, 1.0 - uPull / Lm), 1.0); gl_Position.z = pp.z / pp.w * gl_Position.w; }"); }   // A7: the contact shadow is pulled like the box (shows on deck / water / bank)
           sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp;").replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
-        am.customProgramCacheKey = () => "ctrAO"; const qg = new THREE.PlaneGeometry(1, 1); qg.rotateX(-Math.PI / 2);
+        am.customProgramCacheKey = () => "ctrAO" + (CV.aoPull ? "p" : ""); const qg = new THREE.PlaneGeometry(1, 1); qg.rotateX(-Math.PI / 2);
         K[sym].ao = mk(qg, am, n, false, false, 1.95); K[sym].ao.material.depthTest = true; K[sym].qw = qw; K[sym].qd = qd; } }
     // a small regimental pennant on a staff at the rear-left corner (variant B)
     const pen = CV.pen ? (() => { const pole = mk(box(0.014, 0.34, 0.014, 0, 0.17, 0), (() => { const m = new THREE.MeshLambertMaterial({ color: 0x2a2018, transparent: true }); m.onBeforeCompile = opHook; m.customProgramCacheKey = () => "ctrPole"; return m; })(), nI + nA, false, true, 2.03);
@@ -698,7 +703,7 @@ diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
       g.fillStyle = "#ff0000"; g.beginPath(); g.arc(64, 64, 61, 0, Math.PI * 2); g.fill(); g.strokeStyle = "#00ff00"; g.lineWidth = 2.6; g.beginPath(); g.arc(64, 64, 61.5, 0, Math.PI * 2); g.stroke();
       const t3 = new THREE.CanvasTexture(c); t3.colorSpace = THREE.NoColorSpace; const dm = new THREE.MeshBasicMaterial({ map: t3, transparent: true, depthWrite: false, fog: true });
       dm.onBeforeCompile = (sh) => { sh.uniforms.uInk = { value: new THREE.Color("#2a1d16") }; sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float iOp; varying float vOp;").replace("#include <begin_vertex>", "#include <begin_vertex>\nvOp = iOp;");
-        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp; uniform vec3 uInk;").replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); float rim = mk.g;\n#ifdef USE_COLOR\nvec3 fc = vColor.rgb;\n#else\nvec3 fc = diffuse;\n#endif\ndiffuseColor = vec4(mix(fc, uInk, rim), clamp(mk.r * 0.35 + rim * 0.9, 0.0, 1.0));").replace("#include <color_fragment>", "")
+        sh.fragmentShader = sh.fragmentShader.replace("#include <common>", "#include <common>\nvarying float vOp; uniform vec3 uInk;").replace("#include <map_fragment>", "vec4 mk = texture2D( map, vMapUv ); float rim = mk.g;\n#ifdef USE_COLOR\nvec3 fc = vColor.rgb;\n#else\nvec3 fc = diffuse;\n#endif\ndiffuseColor = vec4(mix(fc, uInk, rim), clamp(mk.r * " + (CV.discA ?? 0.35).toFixed(2) + " + rim * 0.9, 0.0, 1.0));").replace("#include <color_fragment>", "")
           .replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a *= vOp;"); };
       dm.customProgramCacheKey = () => "ctrDisc"; const qg = new THREE.PlaneGeometry(1, 1); qg.rotateX(-Math.PI / 2); const m = mk(qg, dm, nA, false, false, 1.9); m.material.depthTest = true; return m; })() : null;
     return { CV, K, pen, symOf, A2, A3, disc };
@@ -751,7 +756,7 @@ diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
       let ef = 1; if (A2 && CV.edgeFade && o.proj) { let m = 1e9; for (const [a, c] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) { const X = cx + px * WK * 0.5 * a + fx * Dd * 0.5 * c, Y = cy + py * WK * 0.5 * a + fy * Dd * 0.5 * c, s2 = o.proj(X, Y, hb + CV.h * W - H(X, Y));
           m = Math.min(m, s2.x, FRM[0] - s2.x, s2.y, FRM[1] - s2.y); } ef = sstep(0, CV.edgeFade, m); }
       const dk5 = CV.flipTop && Q.dk ? [Q.dH, Q.dk] : null, onDk = !!dk5 && dk5[1] > 0.001;   // A5: on (and blending onto) the deck the narrow box stands level on the planks
-      const oc = op * cOp * ef, y0 = onDk ? lerp(hb + S.lift, Math.max(hb + S.lift, dk5[0]), dk5[1]) : hb + S.lift + wk * Math.max(0, (CV.wood ?? 0) - CV.h) * W;   // counterOpts.wood: lift onto the canopy in woods (round 1 only)
+      const oc = op * cOp * ef, y0 = Q.yA != null ? Q.yA + S.lift : onDk ? lerp(hb + S.lift, Math.max(hb + S.lift, dk5[0]), dk5[1]) : hb + S.lift + wk * Math.max(0, (CV.wood ?? 0) - CV.h) * W;   // counterOpts.wood: lift onto the canopy in woods (round 1 only)
       Q._zh = y0 - S.lift;   // A5: the drawn base height (on the deck: the planks) for the motion checker
       if (oc > 0.002) { const k = KK.n++; col.copy(FILL[u.side] || FILL.u).lerp(GRY, capd);
         const ab = CV.flipTop ? (Q.ab || 0) : 0, bfx = ab > 0.5 ? -fx : fx, bfy = ab > 0.5 ? -fy : fy, sL2 = onDk ? 0 : sL, sF2 = onDk ? 0 : sF;
@@ -768,7 +773,7 @@ diffuseColor.rgb = mix(c, vEdge.rgb, max(e1, e2));`;
             const sx2 = -SUNG[0], sy2 = -SUNG[1]; m.geometry.attributes.iSun.array.set([sx2 * px + sy2 * py, sx2 * fx + sy2 * fy], k * 2); }
           if (Q._kf >= 0) { const g2 = KK.topF.geometry.attributes, kf = Q._kf, sx2 = -SUNG[0], sy2 = -SUNG[1]; g2.iEdge.array.set([ec.r, ec.g, ec.b, pxw], kf * 4); g2.iSun.array.set([-(sx2 * px + sy2 * py), -(sx2 * fx + sy2 * fy)], kf * 2);
             g2.iPlt.array.set(KK.top.geometry.attributes.iPlt.array.subarray(k * 3, k * 3 + 3), kf * 3); g2.iStr.array.set(KK.top.geometry.attributes.iStr.array.subarray(k * 3, k * 3 + 3), kf * 3); }
-          setM(KK.ao, k, cx, hb + 0.008 * ts, cy, fx, fy, WK + W * (KK.qw - 1), 1, W * (KK.qd - KK.dk + KK.dk * dS)); setOp(KK.ao, k, CV.ao * oc); }
+          setM(KK.ao, k, cx, (CV.aoPull ? y0 - S.lift : hb) + 0.008 * ts, cy, fx, fy, WK + W * (KK.qw - 1), 1, W * (KK.qd - KK.dk + KK.dk * dS)); setOp(KK.ao, k, CV.ao * oc); }
         else {   // contact shadow / ambient occlusion: a soft dark rim just round the footprint; C adds a long soft drop shadow away from the sun
           setM(shadows, ns, bx, hb + 0.01 * ts, by, fx, fy, W * 1.1 + 0.06 * ts, 1, Dd * 1.45 + 0.06 * ts); setOp(shadows, ns++, CV.ao * oc);
           if (CV.drop) { const dd = W * 0.09; setM(shadows, ns, bx + SUNG[0] * dd, hb + 0.009 * ts, by + SUNG[1] * dd, fx, fy, W * 1.16 + 0.1 * ts, 1, Dd * 1.9 + 0.1 * ts); setOp(shadows, ns++, CV.drop * oc); } }

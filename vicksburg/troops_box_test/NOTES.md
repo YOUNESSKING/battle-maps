@@ -157,3 +157,9 @@ gun scale, 0.35, thin ink rim) and crews back in the side colour. THE ARMIES key
 Checker: S10 15-35 0 screen fails, pops 0, overlaps only the known south-flank self brush (0.11 u, 20 s); S09 = A4 (units 1 x 3, 0.12 u;
 Crocker's known 5 frames at 99.1 s). `sheet_r6.jpg`: S10 21-30.5 s (+ bridge crops) and S09 103.5 s guns, v14 | A5 | A6.
 Share: RunPod RTX A4000 ($0.17/h, ~$0.01), pod terminated, list empty; concat + v14 audio, crf 24, 12.5 MB.
+
+# Round 7 (2026-11-26): A7, owner "at the bridge the boxes must NOT be elevated"
+Switch: `counter: "A7"` = A6 + : no step up / down to the deck; across the river the box stays level at its walking height, the bank heights
+at the mouth and past the far end blended linearly along the crossing (no jump); a tight soft 40 % contact shadow right under the box at
+its own base height, pulled toward the camera like the box (shows on the planks / water / bank); gun discs at 0.55 (thin ink rim kept).
+Checker: identical to A6 (S10 0 screen fails, pops 0, known brushes only). `sheet_r7.jpg`: v14 | A6 | A7 (S10 21-30.5 s + crops, S09 103.5 s guns).
