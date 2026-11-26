@@ -3,7 +3,7 @@
  "region": "brooklyn",
  "window": [
   0,
-  74.043
+  73.979
  ],
  "shareOffset": 0,
  "filmStart": 0,
@@ -25,13 +25,13 @@
      1151
     ],
     "px": [
-     -11156,
-     -1585
+     -11126,
+     -1577
     ],
-    "nx": -5.811,
-    "ny": -1.468,
+    "nx": -5.795,
+    "ny": -1.46,
     "onScreen": false,
-    "camDist": 2269.72
+    "camDist": 2269.69
    },
    "unit": {
     "unit": 0,
