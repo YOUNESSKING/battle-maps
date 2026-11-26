@@ -171,7 +171,7 @@ const banners = [
 const labels = [
   { text: "East River", region: BK, at: [2471.6, 1139.6], size: 18, river: true, t0: T.east - 0.05, t1: T.east + 3.5 },
   { text: "New York", region: BK, at: [2456.0, 1131.4], size: 19, t0: T.newyork - 0.05, t1: T.newyork + 3.5 },
-  { text: "covering force", region: BK, at: line(0.56, -3.4), size: 17, t0: T.covering - 0.05, t1: T.covering + 3.6 },
+  { text: "covering force", region: BK, at: line(0.56, -3.0), size: 20, t0: T.covering - 0.05, t1: T.covering + 3.6 },
 ];
 
 // ---------------- weather: rain + the NE wind (28-29 Aug), fog only at first light (30 Aug) ----------------
@@ -225,7 +225,7 @@ window.SEQ = {
   keys: [
     { t: 0, region: CO, at: [OV[0] - 6, OV[1] + 14], dist: 300, tilt: 36, yaw: 0, fov: 30 },
     // dive 2: colonies -> Brooklyn Heights (push 0.2, swap 4.0, land 7.35)
-    { t: 11.0, region: BK, at: [2492.0, 1161.6], dist: 72, tilt: 40, yaw: 1, fov: 30, ease: "lin" },
+    { t: 11.0, region: BK, at: [2492.0, 1161.6], dist: 62, tilt: 40, yaw: 1, fov: 30, ease: "lin" },
     { t: 16.4, region: BK, at: [2483.0, 1163.0], dist: 80, tilt: 39, yaw: 0, fov: 30, ease: "io" },          // the warships' route up the river
     { t: 24.6, region: BK, at: [2484.0, 1160.0], dist: 84, tilt: 37, yaw: 0, fov: 30, ease: "io" },          // "In other words": up, the sack
     { t: 28.8, region: BK, at: [2459.0, 1171.0], dist: 34, tilt: 50, yaw: 14, fov: 30, ease: "io" },         // the ships in the rain
@@ -237,12 +237,12 @@ window.SEQ = {
     { t: 62.4, region: BK, at: [2481.0, 1148.6], dist: 23, tilt: 50, yaw: -2, fov: 30, night: NI, ease: "io" },   // night: the regiments leave, break rank, board
     { t: 67.4, region: BK, at: [2481.4, 1149.0], dist: 22, tilt: 51, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 70.9, region: BK, at: [2482.4, 1150.6], dist: 25, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
-    { t: 70.9, region: BK, at: [2499.4, 1165.4], dist: 33, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force (round 2: a dissolve, no fast pan over the marching blocks)
-    { t: 76.6, region: BK, at: [2498.6, 1164.6], dist: 33, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "lin" },
+    { t: 70.9, region: BK, at: [2499.4, 1166.4], dist: 25, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force (round 2: a dissolve, no fast pan over the marching blocks)
+    { t: 76.6, region: BK, at: [2498.6, 1165.6], dist: 25, tilt: 48, yaw: 0, fov: 30, night: NI, ease: "lin" },
     { t: 76.6, region: BK, at: [2474.8, 1139.8], dist: 28, tilt: 50, yaw: -8, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },  // the river at night (round 1: 20 % closer)
     { t: 90.9, region: BK, at: [2474.0, 1138.8], dist: 26, tilt: 50, yaw: -4, fov: 30, night: NI, ease: "lin" },
-    { t: 90.9, region: BK, at: [2498.6, 1164.4], dist: 29, tilt: 50, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force goes out and back
-    { t: 104.6, region: BK, at: [2497.0, 1163.4], dist: 30, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
+    { t: 90.9, region: BK, at: [2498.6, 1165.2], dist: 22, tilt: 50, yaw: 0, fov: 30, night: NI, ease: "cut", dissolve: 0.9 },   // the covering force goes out and back
+    { t: 104.6, region: BK, at: [2497.4, 1164.2], dist: 23, tilt: 50, yaw: 2, fov: 30, night: NI, ease: "lin" },
     { t: 105.3, region: BK, at: [2479.2, 1146.6], dist: 28, tilt: 50, yaw: -6, fov: 30, night: NG, ease: "cut", dissolve: 0.9 },   // first light
     { t: 117.8, region: BK, at: [2477.4, 1143.6], dist: 31, tilt: 49, yaw: -2, fov: 30, night: 0.3, ease: "lin" },
     { t: 118.3, region: BK, at: [2504.0, 1165.0], dist: 30, tilt: 47, yaw: 0, fov: 30, night: 0.16, ease: "cut", dissolve: 0.9 },  // empty forts
@@ -252,7 +252,7 @@ window.SEQ = {
     { t: T.D, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30, ease: "lin" },
   ],
   dives: [{ t: DS, over: OV, overTo: OVB, from: { region: CO, at: [OV[0] - 3, OV[1] + 8], dist: 230, tilt: 38, yaw: 0 },
-            to: { region: BK, at: [2493.0, 1161.0], dist: 74, tilt: 40, yaw: 0, fov: 30 },
+            to: { region: BK, at: [2493.0, 1161.0], dist: 60, tilt: 40, yaw: 0, fov: 30 },
             whooshAt: 1.4, off: { warm: 0.05, emerge: 0.1, clear: 0.4, haze: 0.85 } }],   // round 4: whoosh back to 1.4 (1.2 covered "simple."); clear 0.4 (no luma snap)   // round 2: whoosh before "General William Howe"; no flat cream hold (S05 values)
   clouds: { [CO]: { scatter: { seed: 5 } }, [BK]: { shadows: true } },
   units, arrows, boats, fx, generals, banners, labels,
