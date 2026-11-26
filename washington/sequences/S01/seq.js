@@ -146,7 +146,7 @@ U({ region: PR, side: "u", type: "art", n: 1, face: PRF + Math.PI, t0: SW3[0], t
 const XBOATS = (seed, t0, t1, n) => { const out = [];
   for (let k = 0; k < n; k++) { const h = (j) => hsh(seed * 31 + k, j), a = -6.0 + 12.0 * (k + 0.3 * h(1)) / n, back = h(2) < 0.3;
     const p0 = xo(a, -4.3), p1 = xo(a + 1.6 + 1.2 * h(3), 4.3), path = back ? [p1, p0] : [p0, p1], L = VX.len(path), v = 0.85 + 0.45 * h(4), s0 = L * (0.05 + 0.75 * h(5));
-    out.push({ region: CR, kind: "barge", n: 1, t0, t1, size: 0.9 + 0.12 * h(6), lamp: true, wake: true, path, sAt: (t) => Math.min(L, s0 + (t - t0) * v * 0.5) }); out[out.length - 1].h = onWater(CR, XWL, path, out[out.length - 1].sAt); }
+    out.push({ region: CR, kind: "durham", n: 1, t0, t1, size: 0.75, lampK: 0.5, lamp: true, wake: true, wl: XWL, h: 0.03, load: () => !back, path, sAt: (t) => Math.min(L, s0 + (t - t0) * v * 0.5) }); }   // round 2: S05's Durham boats (men aboard when loaded), lamp glow -50 %
   return out; };
 // boats pulled down the Delaware to the PA bank (colonies): separate boats, each its own start, lane and speed
 const DOWN = (() => { const out = []; const seg = DLR.slice(Math.max(0, DLI - 60), DLI + 1).map((p) => [p[0], p[1]]);
@@ -159,7 +159,7 @@ const BBOATS = (() => { const out = [], v0 = [NYL[0] - BRF[0], NYL[1] - BRF[1]],
   for (let k = 0; k < 9; k++) { const h = (j) => hsh(400 + k, j), lat = -5 + 10 * (k + 0.4 * h(1)) / 9, back = k % 2 === 1;
     const a = [BRF[0] - u[0] * 0.6 + nn[0] * lat * 0.5, BRF[1] - u[1] * 0.6 + nn[1] * lat * 0.5], b = [NYL[0] + u[0] * 0.6 + nn[0] * (lat + (h(2) - 0.5) * 3), NYL[1] + u[1] * 0.6 + nn[1] * (lat + (h(2) - 0.5) * 3)];
     const path = back ? [b, a] : [a, b], L = VX.len(path), v = 1.1 + 0.6 * h(3), s0 = L * (0.08 + 0.7 * h(4));
-    out.push({ region: BR, kind: k === 4 ? "ship" : "barge", n: 1, t0: SN1 - 0.1, t1: SN2 + 0.1, size: k === 4 ? 0.5 : 0.55, lamp: true, wake: true, path, sAt: (t) => Math.min(L, s0 + (t - SN1) * v) }); out[out.length - 1].h = onWater(BR, 0, path, out[out.length - 1].sAt); }
+    out.push({ region: BR, kind: k === 4 ? "ship" : "barge", n: 1, t0: SN1 - 0.1, t1: SN2 + 0.1, size: k === 4 ? 0.5 : 0.55, lampK: 0.5, lamp: true, wake: true, path, sAt: (t) => Math.min(L, s0 + (t - SN1) * v) }); out[out.length - 1].h = onWater(BR, 0, path, out[out.length - 1].sAt); }
   return out; })();
 // D: British ships in the bay below Brooklyn (separate ships, Jackson's FLEET helper)
 const FLEET = (path, n, seed, o) => { const L = VX.len(path), out = [];
@@ -193,18 +193,16 @@ const ERIV = [[606.5, 291.5], [611.5, 288.5], [616.0, 285.5], [620.0, 283.5], [6
 const fx = {
   smokeLines: [
     // C: the American lines fire into the town (dawn, sleet)
-    { region: TR, pts: [[GRE1[0] + 0.9, GRE1[1] + 0.9], [GRE1[0] + 2.2, GRE1[1] - 0.3]], t0: 22.0, t1: 24.5, cue: true, opts: { dir: [0.7, 0.7], rate: 0.9, volley: 1.25, roll: 0.5, size: 0.45, alpha: 0.07, life: 5, height: 2.0, muzzle: 6, cluster: [2.0, 1.0] } },
-    { region: TR, pts: [[SUL1[0] + 1.0, SUL1[1] - 0.9], [SUL1[0] + 1.9, SUL1[1] + 0.3]], t0: 22.6, t1: 24.6, cue: true, opts: { dir: [0.85, 0.5], rate: 0.9, volley: 1.3, roll: 0.5, size: 0.45, alpha: 0.07, life: 5, height: 2.0, muzzle: 6, cluster: [2.0, 1.0] } },
-    { region: TR, pts: [[1360.6, 2058.2], [1361.8, 2061.6]], t0: 22.9, t1: 24.4, cue: true, opts: { dir: [-1, 0.1], rate: 0.8, volley: 1.4, roll: 0.5, size: 0.42, alpha: 0.06, life: 5, height: 2.0, muzzle: 6, cluster: [1.8, 1.0] } },
+    { region: TR, pts: [[GRE1[0] + 0.9, GRE1[1] + 0.9], [GRE1[0] + 2.2, GRE1[1] - 0.3]], t0: 22.45, t1: 22.95, cue: true, opts: { dir: [0.7, 0.7], rate: 0.9, volley: 1.25, roll: 0.5, size: 0.45, alpha: 0.07, life: 5, height: 2.0, muzzle: 6, cluster: [2.0, 1.0] } },
+    { region: TR, pts: [[SUL1[0] + 1.0, SUL1[1] - 0.9], [SUL1[0] + 1.9, SUL1[1] + 0.3]], t0: 22.5, t1: 22.95, cue: true, opts: { dir: [0.85, 0.5], rate: 0.9, volley: 1.3, roll: 0.5, size: 0.45, alpha: 0.07, life: 5, height: 2.0, muzzle: 6, cluster: [2.0, 1.0] } },
+    { region: TR, pts: [[1360.6, 2058.2], [1361.8, 2061.6]], t0: 22.55, t1: 22.95, cue: true, opts: { dir: [-1, 0.1], rate: 0.8, volley: 1.4, roll: 0.5, size: 0.42, alpha: 0.06, life: 5, height: 2.0, muzzle: 6, cluster: [1.8, 1.0] } },
     // SN3: the orchard at Princeton (quiet before "These are")
-    { region: PR, pts: [[ORCH[0] - 2.8, ORCH[1] - 1.4], [ORCH[0] - 2.6, ORCH[1] + 0.3]], t0: T.it2 + 0.3, t1: T.these - 0.05, cue: true, opts: { dir: [1, 0.2], rate: 0.9, volley: 1.3, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
+    { region: PR, pts: [[ORCH[0] - 2.8, ORCH[1] - 1.4], [ORCH[0] - 2.6, ORCH[1] + 0.3]], t0: T.it2 + 0.3, t1: T.these - 0.4, cue: true, opts: { dir: [1, 0.2], rate: 0.9, volley: 1.3, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
     { region: PR, pts: [[ORCH[0] + 0.0, ORCH[1] - 0.3], [ORCH[0] + 0.2, ORCH[1] + 1.4]], t0: SN3 + 0.05, t1: T.slip + 0.2, cue: true, opts: { dir: [-1, -0.2], rate: 0.9, volley: 1.2, roll: 0.6, size: 0.5, alpha: 0.075, life: 6, height: 2.4, muzzle: 6, cluster: [2.4, 1.2] } },
   ],
   guns: [
     // C: Knox's guns at the head of King and Queen streets fire down the streets
-    { region: TR, preset: "field", shots: [20.0, 22.4, 23.95].map((t, i) => ({ t, at: [HEAD[0] - 0.1 + (i % 2) * 0.9, HEAD[1] - 0.9], dir: [0, 1], impact: [HEAD[0] + (i % 2) * 1.0, HEAD[1] + 5.5 + (i % 3) * 2.4], delay: 0.45 })) },
-    // SN3: Moulder's guns
-    { region: PR, preset: "field", shots: [T.it2 + 0.4].map((t, i) => ({ t, at: [ORCH[0] + 1.4, ORCH[1] + 2.6], dir: [-1, -0.4], impact: [ORCH[0] - 3.8, ORCH[1] - 1.0 - i * 0.8], delay: 0.5 })) },
+    { region: TR, preset: "field", shots: [22.45, 26.15].map((t, i) => ({ t, at: [HEAD[0] - 0.1 + (i % 2) * 0.9, HEAD[1] - 0.9], dir: [0, 1], impact: [HEAD[0] + (i % 2) * 1.0, HEAD[1] + 5.5 + (i % 3) * 2.4], delay: 0.3 })) },   // round 2: only in the word gaps after "Trenton." and "prisoners,"
   ],
 };
 
@@ -264,11 +262,11 @@ window.SEQ = {
     { t: T.these, region: PR, at: [ORCH[0] - 1.2, ORCH[1] + 0.8], dist: 18, tilt: 51, yaw: -5, fov: 30, ease: "lin" },
     { t: T.D, region: PR, at: [ORCH[0] - 1.0, ORCH[1] + 1.0], dist: 25, tilt: 49, yaw: -1, fov: 30 },
   ],
-  dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF,   // overTo = the over point in crossing units (z9 -> z12)
+  dives: [{ t: SWT, over: OVER, overTo: xo(0, 0), off: DOFF, whooshAt: 12.65,   // round 2: whoosh body in the gap before "On Christmas night"   // overTo = the over point in crossing units (z9 -> z12)
     from: { region: CO, at: [MKC[0] + 4, MKC[1] - 2], dist: 230, tilt: 42, yaw: -2, night: 0.35 },
     to: { region: CR, at: XC, dist: 26, tilt: 52, yaw: -30, fov: 30, night: NI } }],
   clouds: {
-    [CO]: { scatter: { seed: 3, n: 10, med: 18 }, keepClear: [[MKC[0], MKC[1], 50, 1, 0.9], [BHC[0], BHC[1], 85, 1, 1]] },   // round 1 (critic A): visible wide clouds
+    [CO]: { scatter: { seed: 3, n: 34, med: 12 }, diveClear: 36, keepClear: [[MKC[0], MKC[1], 24, 1, 0.9], [BHC[0], BHC[1], 70, 1, 1]], extra: [[BHC[0] + 36, BHC[1] - 6, 12, 5.2, 54, 0], [BHC[0] - 34, BHC[1] - 4, 12, 5.0, 52, 0], [BHC[0] + 6, BHC[1] - 34, 13, 5.5, 52, 0]] },   // round 2: diveClear (default 118) emptied the whole opening frame   // round 1 (critic A): visible wide clouds
     [CR]: { shadows: true, opts: {
       erode: (t) => { const e = DV.emerge; return [0, VX.lerp(0.35, 0.7, sstep(e, e + 0.6, t)) + VX.lerp(0, 2.2, sstep(e + 0.3, e + 1.5, t))]; },
       deck: (t) => { const e = DV.emerge; return { x: Math.round(XC[0]) + 4, z: Math.round(XC[1]), r: 9, front: 3 * sstep(e + 0.2, e + 0.7, t), k: 1 }; },
@@ -297,10 +295,11 @@ window.SEQ = {
     ["plaque.date", T.e1776, { month: "December 1776", day: "", weekday: "", note: "" }],
     ["label", T.nye, T.what - 0.3, { name: "New Year's Eve", world: [PAW[0], PAW[1], 0], side: "us", marker: false, offset: [60, -150] }],
     // B
-    ["plaque.date", T.christmas, { month: "December 1776", day: "25", weekday: "", note: "" }],
+    ["plaque.date", T.christmas, { month: "December 1776", day: "25", weekday: "", note: "Christmas night" }],
     ["number", T.two, CUT_C - 0.3, { value: 2400, round: 100, x: 960, y: 250, size: 116 }],
     ["film.grade", CUT_C, "day", 0.1],
     // C
+    ["plaque.date", T.dawn - 0.05, { month: "December 1776", day: "", weekday: "", note: "dawn" }],   // round 2: no "25" over the Trenton dawn (S05 gives the 26th)
     ["label", T.hessians, T.hour - 0.2, { name: "Hessians", world: [1362.4, 2061.0, 0], side: "uk", marker: false, offset: [60, -120] }],
     ["number", T.nine - 0.05, CUT_D - 0.5, { value: 900, round: 10, x: 960, y: 250, size: 120 }],
     ["label", T.prisoners - 0.05, CUT_D - 0.5, { name: "Hessian prisoners", x: 960, y: 360, marker: false, side: "uk", offset: [-190, 0] }],

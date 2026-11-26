@@ -323,11 +323,12 @@
   "ribbon_km2": 1000000000.0
  },
  "woods": 0.08,
- "wood_scale": 2.5,
+ "wood_scale": 3.5,
+ "crown_u": 0.3,
  "villages": 6,
  "wood_soft": {
-  "blur_u": 0.5,
-  "alpha": 0.85
+  "blur_u": 0.22,
+  "alpha": 0.9
  },
  "tex_grade": {
   "contrast": 1.12,

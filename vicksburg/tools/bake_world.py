@@ -1037,7 +1037,7 @@ def bake(rname, G, P, creeks, preview=True):
         ws = cfg["wood_soft"]; forest_paint = cv2.GaussianBlur(forest, (0, 0), ws.get("blur_u", 1.5) * s) * ws.get("alpha", 0.5)
     else: forest_paint = forest
     LOG("  forest cover %.3f" % float((forest > 0.5).mean()))
-    crown = fbm(TH, TW, 2, int(bw / (0.6 if not close else 0.09)), seed + 3)
+    crown = fbm(TH, TW, 2, int(bw / ((cfg.get("crown_u", 0.6) if PROJ else 0.6) if not close else 0.09)), seed + 3)   # project: crown_u = canopy speckle size (units) on wide maps
     fdark = cv2.GaussianBlur(forest, (0, 0), 0.004 * TW)
     fcol = (hexc("#2e4645") if close else hexc("#192e32"))[None, None] * (0.78 + 0.44 * crown[..., None]) * (1.08 - 0.16 * fdark[..., None])
     if WINTER: fcol = winter_woods(fcol, crown, close, TW, TH, bw, seed)
@@ -1300,7 +1300,7 @@ WINTER = None   # set per region by bake() from cfg "season": "winter" (+ option
 def winter_woods(fcol, crown, close, TW, TH, bw, seed):
     """bare deciduous woods: the same dark speckled canopy mass, but a dark grey-brown twig colour (low chroma) with scattered conifer
     (cedar / pine) clumps that keep the teal"""
-    bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * (0.86 + 0.28 * crown[..., None])   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
+    bare = hexc("#433d37" if close else WINTER.get("wood_col", "#34403f"))[None, None] * ((0.86 + 0.28 * crown[..., None]) if close else (0.74 + 0.52 * crown[..., None]))   # wide: the Jackson canopy speckle contrast   # wide: dark teal-grey (critic A r1: Jackson-like wood mass)
     con = np.clip((cv2.resize(fbm(TH // 8, TW // 8, 3, int(bw / (1.2 if close else 10)), seed + 501), (TW, TH)) - (0.62 if close else 0.62 - 0.6 * (WINTER.get("conifers_wide", 0.4) - 0.16))) * 6, 0, 1)[..., None]
     return bare * (1 - con) + fcol * con
 

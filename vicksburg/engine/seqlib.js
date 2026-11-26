@@ -84,7 +84,7 @@
     // fx.smokeLines only with cue: true
     each("smokeLines", (l) => { const isV = l.kind === "volleys" || (F.volleys || []).includes(l); if (l.cue === false || (!isV && l.cue !== true)) return;
       const every = l.every || (l.opts && l.opts.volley) || 1.6; for (let t = l.t0; t < (l.cueEnd ?? l.t1); t += every) c.push(["volley", R6(t)]); });
-    for (const d of S.dives || []) c.push(["whoosh", VX.diveTimes(d.t).deckIn + 0.15]);
+    for (const d of S.dives || []) c.push(["whoosh", d.whooshAt ?? VX.diveTimes(d.t).deckIn + 0.15]);   // (Battle 21) dives[].whooshAt: place the whoosh cue in a word gap (the dive look is unchanged)
     for (const x of S.cues || []) c.push(x);
     return c.map(([k, t]) => [k, R6(t)]); };
 

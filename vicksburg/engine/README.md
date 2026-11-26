@@ -297,3 +297,4 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   scales house footprints (wide jersey: long houses on crossed streets read as crosses). Retreat after a forward run: a ~180 deg block turn
   takes ~7.4 s and starts that long before the retreat key: hold >= ~9 s between the arrival and the retreat key, else the block flips at
   the arrival (S06 bridge assaults).
+- (Battle 21 S01 round 2) `dives[].whooshAt`: optional time of the dive's `whoosh` cue (default `deckIn + 0.15`, unchanged); lets a scene put the whoosh body into a word gap without changing the dive look (`seqlib.js` VX.cues).

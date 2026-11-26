@@ -63,15 +63,15 @@ U({ side: "u", region: JE, n: 2, face: fD, t0: 31.7, keys: [[0, ...DA], [32.4, .
 // Mawhood's brigade leaves Princeton south-west on the post road (3 January)
 const POST = VX.road(JE, "New York post road");
 const postAt = (s) => { const L = VX.len(POST), g = VX.along(POST, L - s); return [g[0], g[1]]; };   // s = distance from the Princeton end
-U({ side: "r", region: JE, n: 2, face: Math.atan2(postAt(21)[1] - postAt(12)[1], postAt(21)[0] - postAt(12)[0]), t0: 40.6, keys: [[0, ...postAt(12)], [T.marching, ...postAt(12)], [CUT3 - 0.2, ...postAt(21)]] });
+U({ side: "r", region: JE, n: 1, face: Math.atan2(postAt(46)[1] - postAt(38)[1], postAt(46)[0] - postAt(38)[0]), t0: 40.6, keys: [[0, ...postAt(38)], [T.marching + 0.9, ...postAt(38)], [CUT3 - 0.2, ...postAt(45)]] });
 
 // princeton: the orchard (William Clarke's), Mercer v Mawhood, the militia, Washington between the lines, Nassau Hall
 const OX = 1485.9, RY0 = 1847.0, RY1 = 1850.2, RY2 = 1851.9, BY0 = 1858.6, BY1 = 1853.6, BY2 = 1856.4, MY = 1858.8, AY = 1854.6;
-const red = [1484.2, 1487.6].map((x, i) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, bw: 0.6,
+const red = [1484.2, 1487.6].map((x, i) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, bw: 0.9, bd: 0.2,
   keys: [[0, x, RY0], [CUT3 + 0.8, x, RY0], [50.4 + i * 0.2, x, RY1], [T.charged, x, RY1], [54.6 + i * 0.2, x, RY2], [81.8 + i * 0.4, x, RY2], [85.6 + i * 0.4, x, RY2 - 6.0]], t1: CUT4 + 0.5 }));
-const merc = [1484.2, 1487.6].map((x, i) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2,
+const merc = [1484.2, 1487.6].map((x, i) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, bw: 1.0, bd: 0.2,
   keys: [[0, x, BY0], [CUT3 + 0.6, x, BY0], [50.0 + i * 0.2, x, BY1], [63.0 + i * 0.3, x, BY1], [66.8 + i * 0.3, x, BY2], [T.rallied + 0.2 + i * 0.2, x, BY2], [83.4 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
-const mil = [1481.0, 1490.8].map((x, i) => U({ side: "u", region: PR, face: N_, t0: T.militia - 0.4 + i * 0.3, arrive: false,
+const mil = [1481.0, 1490.8].map((x, i) => U({ side: "u", region: PR, face: N_, t0: T.militia - 0.4 + i * 0.3, arrive: false, bw: 1.0, bd: 0.2,
   keys: [[0, x, MY + 2.4], [T.militia + 0.2, x, MY + 2.4], [T.waver - 0.2 + i * 0.3, x, MY], [T.rallied + 0.4 + i * 0.2, x, MY], [83.6 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
 // Nassau Hall: the last British inside, a gun, the white flag (grey)
 const NH = [1509.5, 1819.9];
@@ -79,7 +79,7 @@ U({ side: "r", region: PR, face: S_, bw: 0.6, t0: CUT4 - 0.4, keys: [[0, NH[0], 
 U({ side: "u", region: PR, face: Math.atan2(-0.8, 0.6), t0: CUT4 - 0.4, keys: [[0, 1507.0, 1824.6]] });
 U({ side: "u", region: PR, face: Math.atan2(-0.8, -0.6), t0: CUT4 - 0.4, keys: [[0, 1512.2, 1824.8]] });
 const NG = [1509.6, 1825.0];
-U({ side: "u", region: PR, type: "art", face: N_, t0: CUT4 - 0.4, keys: [[0, ...NG]] });
+U({ side: "u", region: PR, type: "art", face: N_, bw: 0.24, bd: 0.2, t0: CUT4 - 0.4, keys: [[0, ...NG]] });   // round 2: gun at half size (Jackson S07)
 
 // ---------------- fx ----------------
 const VO = { size: 0.75, alpha: 0.085, life: 9, muzzle: 5, rate: 3.0, roll: 0.6, height: 2.0 };
@@ -97,7 +97,7 @@ const fx = {
     ...[1481.0, 1490.8].map((x, i) => ({ region: PR, pts: line(x, MY - 3.2), t0: 82.0 + i * 0.3, t1: 82.7 + i * 0.3, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } })),
   ],
   guns: [{ region: PR, h: 0.3, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.4 },
-    shots: [84.15, 90.4].map((t, i) => ({ t, at: NG, dir: [0, -1], impact: [NH[0] + (i ? 0.4 : -0.3), NH[1] + 0.2], delay: 0.25 })), impactOpts: { size: 0.6 } }],
+    shots: [87.0, 90.4].map((t, i) => ({ t, at: NG, dir: [0, -1], impact: [NH[0] + (i ? 0.4 : -0.3), NH[1] + 0.2], delay: 0.25 })), impactOpts: { size: 0.6 } }],
   campfires: [
     // S06's fires: the town + the fields north of the creek (British) and the south bank (American, kept burning, dying by dawn)
     { region: TR, pts: [[1344.2, 2060.4], [1348.6, 2057.2], [1352.0, 2061.6], [1360.6, 2061.2], [1364.4, 2057.0], [1369.4, 2063.0], [1373.6, 2058.6], [1356.4, 2058.8], [1366.0, 2064.6], [1342.0, 2054.6]],
@@ -113,7 +113,7 @@ const fx = {
 const arrows = [
   { side: "u", region: JE, pts: [[NA[0] - 4, NA[1] - 1], [NB[0] + 2, NB[1] + 0.6], [722.0, 1036.0], [726.0, 1020.0]], t0: T.back - 0.05, dur: 2.6, t1: 31.4, width: 0.5, maxWidth: 0.5 },
   { side: "u", region: JE, pts: [[DA[0] - 1, DA[1] + 6], DA, DB, [741.0, 931.0]], t0: 33.4, dur: 2.0, t1: CUT3 - 0.3, width: 0.5, maxWidth: 0.5 },
-  { side: "r", region: JE, pts: [postAt(9), postAt(17), postAt(25)], t0: T.marching - 0.05, dur: 1.6, t1: CUT3 - 0.3, width: 0.5, maxWidth: 0.5 },
+  { side: "r", region: JE, pts: [postAt(36), postAt(43), postAt(50)], t0: T.marching - 0.05, dur: 1.6, t1: CUT3 - 0.3, width: 0.5, maxWidth: 0.5 },
   { side: "r", region: PR, pts: [[OX, RY1 + 0.9], [OX, RY2 + 1.2], [OX, BY1 - 1.2]], t0: T.charged - 0.05, dur: 1.0, t1: T.mercers, width: 0.18 },
   { side: "u", region: PR, pts: [[OX, MY - 0.6], [OX, BY1 + 0.2], [OX, RY2 + 1.6]], t0: T.rallied + 0.2, dur: 1.4, t1: CUT4 - 0.2, width: 0.18 },
   { side: "r", region: TR, pts: [[1360.0, 2054.0], [1366.0, 2046.0], [1373.0, 2036.0], [1378.0, 2026.0]], t0: T.rushed - 0.05, dur: 1.8, t1: T.D + 1, width: 0.5, maxWidth: 0.5 },
@@ -127,7 +127,7 @@ const generals = {
   cornwallis: { img: "seq/cornwallis.png", flag: GB, side: "cs", name: "Cornwallis", full: "Charles Cornwallis", role: "Lieutenant General" },
 };
 const banners = [
-  { general: "washington", region: TR, keys: [[0, 1356.4, 2079.0], [6.8, 1356.4, 2079.0], [14.0, 1357.4, 2083.6]], t0: -1, t1: CUT1 + 0.3 },
+  { general: "washington", region: TR, keys: [[0, 1356.4, 2079.0], [6.8, 1356.4, 2079.0], [14.0, 1357.4, 2083.6]], t0: 2.1, t1: CUT1 + 0.3 },
   { general: "washington", region: JE, keys: [[0, NA[0] - 2, NA[1] - 4], [CUT1 + 0.8, NA[0] - 2, NA[1] - 4], [27.0, NB[0] - 2, NB[1] - 4]], t0: CUT1 + 0.6, t1: 31.6 },
   { general: "washington", region: JE, keys: [[0, DA[0] - 4, DA[1] + 1], [32.4, DA[0] - 4, DA[1] + 1], [CUT3 - 1.0, DB[0] - 4, DB[1] + 1]], t0: 31.8, t1: CUT3 },
   { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 1.4]], t0: T.mercer - 0.05, t1: T.broke + 0.8, fall: T.shot + 0.05 },

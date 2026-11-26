@@ -80,7 +80,7 @@ write("colonies", {
                "fill_water": True, "spike_m": 60.0, "sea_floor_m": 0.0},
  "sea_look": {"deep": "#33505f", "shallow": "#4a6a75", "shelf_u": 3.0, "beach_u": 0.5, "line_u": 0.2},
  "creek_km2": 120.0, "creeks": {"paint_km2": 400, "ribbon_km2": 1e9},
- "woods": 0.08, "wood_scale": 2.5, "villages": 6, "wood_soft": {"blur_u": 0.5, "alpha": 0.85},
+ "woods": 0.08, "wood_scale": 3.5, "crown_u": 0.3, "villages": 6, "wood_soft": {"blur_u": 0.22, "alpha": 0.9},   # critic A r2: crisp speckled canopy, smaller woods
  "tex_grade": {"contrast": 1.12, "sat": 1.1, "gamma": 0.97}, "river_halo_u": 0.5,
  "rivers": [{"name": n, "geo": [n], "w": w, "step": 1.0, **({"snap": False} if w >= 1.0 else {})} for n, w in CW.items()],
  "roads": [{"geo": r["name"], "cls": "pike"} for r in G["roads"] if not r["name"].startswith(("Trenton streets", "Bear Tavern", "Birmingham", "Scotch", "Saw Mill", "Sandtown", "Quaker", "River road (PA)", "Gowanus road", "Jamaica road", "Brooklyn - Flatbush"))]
@@ -115,14 +115,14 @@ write("jersey", {
  "note": "The Ten Crucial Days, 25 Dec 1776 - 3 Jan 1777 (~24 x 28 km, winter): McConkey's Ferry -> the Bear Tavern road -> Birmingham -> Trenton (River "
          "road / Pennington road), the Assunpink, the post road to Maidenhead and Princeton (Shabakunk, Stony Brook), the night march (Sandtown / "
          "Quaker Bridge / Saw Mill roads), Bordentown. Base frame (zoom 10). Modern reservoirs / Carnegie Lake / the D&R canal filled from the banks.",
- "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 8192, "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,
- "wood_soft": {"blur_u": 0.8, "alpha": 0.85}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
+ "box": jb, "hm_ppu": 2.5, "meshDiv": 2, "tex": 11264, "jpeg_q": 86,   # critic A r2: sharper (x1.375; 16384 would exceed the 16k texture limit in height) "exag": 2.0, "cell": 6.5, "seed": 1776, "relief_k": 0.5, "lit_k": 0.3, "wideSunK": 0.15,
+ "wood_soft": {"blur_u": 0.3, "alpha": 0.9}, "village_cluster": {"spread": 1.4, "k": 1.4},   # soft winter woods; compact villages (no crosses)
  "tex_grade": {"contrast": 1.2, "sat": 1.3, "gamma": 0.97}, "river_halo_u": 0.25,
  "stills": [{"at": [jb[0] + jb[2] / 2, jb[1] + jb[3] / 2], "dist": 330, "tilt": 32, "yaw": 0}, {"at": pl("Trenton"), "dist": 150, "tilt": 44, "yaw": 0},
             {"at": pl("Johnson's Ferry"), "dist": 70, "tilt": 52, "yaw": -8}],
  "dem_ppu": 2, "dem_margin": 24, "dem_edits": {"fill_water": True, "spike_m": 40.0},
  "creek_km2": 4.0, "creeks": {"paint_km2": 8, "ribbon_km2": 1e9},
- "woods": 0.07, "wood_scale": 3.0, "villages": 5,
+ "woods": 0.07, "wood_scale": 4.2, "crown_u": 0.12, "villages": 5,
  "rivers": [{"name": "Delaware River", "geo": "Delaware River (fine)", "w": 2.6, "step": 0.6, "snap": False, "keep": 2.4},
             {"name": "Assunpink Creek", "geo": "Assunpink Creek", "w": 0.35, "step": 0.5}, {"name": "Stony Brook", "geo": "Stony Brook", "w": 0.35, "step": 0.5},
             {"name": "Shabakunk Creek", "geo": "Shabakunk Creek", "w": 0.2, "step": 0.5}, {"name": "Jacobs Creek", "geo": "Jacobs Creek", "w": 0.25, "step": 0.5},

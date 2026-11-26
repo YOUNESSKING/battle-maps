@@ -129,7 +129,7 @@ window.SEQ = {
     { t: 53.0, region: JE, at: [632.0, 1004.0], dist: 104, tilt: 43, yaw: 0, fov: 30, ease: "io" },       // the blue camp across the river
     { t: T.D, region: JE, at: [640.0, 1010.0], dist: 112, tilt: 42, yaw: 0, fov: 30, ease: "lin" },
   ],
-  clouds: { [CO]: { scatter: { seed: 5 }, keepClear: [[480, 380, 200, 1, 1], [636, 224, 70, 1, 1]] }, [JE]: { scatter: { seed: 7 } } },
+  clouds: { [CO]: { scatter: { seed: 5, n: 34, med: 12 }, keepClear: [[480, 380, 40, 1, 1], [636, 224, 30, 1, 1]] }, [JE]: { scatter: { seed: 7, n: 8, med: 40 } } },   // round 2 (author A for the lead): visible wide clouds
   units, arrows, boats, generals, banners, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "1776", day: "", weekday: "", note: "" }],   // = S03's last plate (round 1: no stale 30 August)

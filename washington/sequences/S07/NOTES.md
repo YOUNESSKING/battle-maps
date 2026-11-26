@@ -33,3 +33,10 @@ leaving, the orchard, Mercer, Washington at ~30 yards, Nassau Hall ~194 surrende
 - Princeton: British withdraw and militia advance straight along their facing (no lateral shift, militia `arrive: false`); side gap 0/0.
 - Nassau Hall guns off words (84.15, 90.4), grey at 90.55; Cornwallis arrow width 0.5; method card from 119.3; plate at t 0 = S06's last ("2 Thursday night"); `plaque.note` -> `plaque.date` notes (hard frost, Princeton, dawn at the creek, guns heard from Princeton).
 - British leaving Trenton at dawn walk straight north (along their facing axis).
+
+## Round 2 fixes (critics A 7.0 / B 7.9)
+- Nassau Hall gun 84.15 -> 87.0 (in the gap "town," -> "surrendered", on screen); 90.4 kept. The gun is half size (bw 0.24, bd 0.2).
+- Washington's banner in the first trenton shot from 2.1 (not under the choice card).
+- Princeton blocks: wider and shallower (bw x1.5, bd 0.2 = thin lines, same men); side gap 0/0.
+- Mawhood's block now starts AT Princeton and walks SW down the post road (n 1); arrow moved with it.
+- Remaining checker items: Princeton 27-29 deg and the dawn withdrawal at Trenton 27-32 deg = on-screen correction (screen <= 13 deg).
