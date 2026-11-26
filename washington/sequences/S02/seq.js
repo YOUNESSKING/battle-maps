@@ -44,31 +44,34 @@ const boats = [
 const RIDGE = [[617.4, 306.6], [627.4, 305.8], [636.4, 302.2]];                     // Heights of Guan: Battle Hill, Flatbush pass, Bedford pass
 const WORKS = [[615.4, 294.4], [624.0, 292.8], [632.6, 291.4]];                     // behind the Brooklyn works
 const units = [];
-RIDGE.forEach((p, i) => units.push({ region: CO, side: "u", type: "inf", n: 1, bw: 0.56, skirmish: false, face: Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
+RIDGE.forEach((p, i) => units.push({ region: CO, side: "u", type: "inf", n: 1, skirmish: false, face: Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
   keys: [[0, ...p], [T.broke + i * 0.25, ...p], [T.broke + 4.6 + i * 0.35, ...WORKS[i]]] }));
 // Grant (Gowanus road) and Heister's Hessians (Flatbush) in front of the ridge: close up on "fell on", halt
-[[617.4, 313.8], [627.4, 313.2]].forEach((p, i) => units.push({ region: CO, side: "r", type: "inf", n: 1, bw: 0.56, skirmish: false, face: -Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
+[[617.4, 313.8], [627.4, 313.2]].forEach((p, i) => units.push({ region: CO, side: "r", type: "inf", n: 1, skirmish: false, face: -Math.PI / 2, t0: 17.8, t1: CUT_B + 0.2, arrive: false,
   keys: [[0, ...p], [T.fell + i * 0.3, ...p], [T.line + 0.2 + i * 0.3, p[0], p[1] - 1.0]] }));
 // the flank column comes in behind the American left (from the east) at first light
-units.push({ region: CO, side: "r", type: "inf", n: 1, bw: 0.56, skirmish: false, face: Math.PI, t0: T.unguarded + 0.1, t1: CUT_B + 0.2, arrive: false, keys: [[0, 650.0, 297.0], [T.unguarded + 0.4, 650.0, 297.0], [T.behind, 645.0, 297.0]] });
+units.push({ region: CO, side: "r", type: "inf", n: 1, skirmish: false, face: Math.PI, t0: T.unguarded + 0.1, t1: CUT_B + 0.2, arrive: false, keys: [[0, 650.0, 297.0], [T.unguarded + 0.4, 650.0, 297.0], [T.behind, 645.0, 297.0]] });
 const JPASS = P("Jamaica Pass", CO), FLAT = P("Flatlands", CO);
 const arrows = [
-  { region: CO, side: "r", pts: [[FLAT[0] + 1, FLAT[1] - 2], [651, 310], [JPASS[0] - 1, JPASS[1] + 2.5], [652, 297.4], [645, 297.6]], t0: T.marched, dur: 3.6, t1: T.line, width: 0.5, maxWidth: 0.5 },
+  { region: CO, side: "r", pts: [[FLAT[0] + 1, FLAT[1] - 2], [651, 310], [JPASS[0] - 1, JPASS[1] + 2.5], [652, 297.4], [645, 297.6]], t0: T.marched, dur: 3.6, t1: T.line, width: 0.34, maxWidth: 0.34 },   // V2: GM-width wide arrow
 ];
 
 // ---------------- brooklyn (z11): the survivors walk into the works ----------------
 const BRU = [[2490.0, 1180.0, 2488.6, 1162.0], [2499.6, 1178.6, 2498.6, 1160.2], [2508.8, 1173.6, 2508.0, 1155.4]];
-BRU.forEach(([x0, y0, x1, y1], i) => units.push({ region: BR, side: "u", type: "inf", n: 2, face: Math.atan2(y1 - y0, x1 - x0), t0: CUT_B - 0.3, t1: T.D + 1, arrive: false,
-  keys: [[0, x0, y0], [CUT_B - 1.2 + i * 0.3, x0, y0], [CUT_B + 4.6 + i * 0.3, x1, y1]] }));
+// V2: one block per unit (2 single blocks per v1 two-block line, 1.25 block widths apart)
+const SPB = 1.25 * 0.7 * 1.44 * 1.4;
+BRU.forEach(([x0, y0, x1, y1], i) => { const f = Math.atan2(y1 - y0, x1 - x0), ax = [-Math.sin(f), Math.cos(f)];
+  [-0.5, 0.5].forEach((k, j) => { const d = k * SPB; units.push({ region: BR, side: "u", type: "inf", n: 1, face: f, t0: CUT_B - 0.3, t1: T.D + 1, arrive: false,
+    keys: [[0, x0 + ax[0] * d, y0 + ax[1] * d], [CUT_B - 1.2 + i * 0.3 + j * 0.12, x0 + ax[0] * d, y0 + ax[1] * d], [CUT_B + 4.6 + i * 0.3 + j * 0.12, x1 + ax[0] * d, y1 + ax[1] * d]] }); }); });
 
 const pulses = VX.pulses([{ region: CO, at: [JPASS[0], JPASS[1]], t0: T.pass - 0.05, t1: T.fell, r: 5, color: [232, 196, 108], period: 1.6 }]);
 
 window.SEQ = {
-  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // Jackson: richer wide overhead maps
+  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 } },   // V2: the v8 clip wide grade
   name: "S02", D: T.D, T, seed: 1776, date: "1776-08-27",
   regions: [CO, BR],
-  troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [CO]: { troopScale: 10 }, [BR]: { troopScale: 3.0 } },
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2: = v14
+  regionOpts: { [CO]: { troopScale: 4.5 }, [BR]: { troopScale: 1.4, fxScale: 9 } },   // V2 recipe table
   keys: [
     // the harbour from altitude: the fleet below Staten Island, then New York
     { t: 0.0, region: CO, at: [604, 352], dist: 300, tilt: 38, yaw: 0, fov: 30 },
@@ -87,7 +90,7 @@ window.SEQ = {
     { t: CUT_H, ...HAND, ease: "cut", dissolve: 0.9 },
     { t: T.D, ...HAND, ease: "lin" },
   ],
-  clouds: { [CO]: { scatter: { seed: 3, n: 34, med: 12 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
+  clouds: { [CO]: { scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[619, 292, 22, 1, 0.9], [601, 345, 18, 1, 0.8], [632, 304, 20, 1, 0.9]], extra: [[606, 290, 12, 5.2, 54, 0], [668, 300, 12, 5.0, 50, 0], [640, 276, 13, 5.5, 52, 0]] }, [BR]: { shadows: true } },   // round 2: 3-6 clouds in every wide frame (extra = far-side clouds; near-side ones sit above the frame)
   units, arrows, boats,
   labels: [
     { text: "New York", at: [P("New York", CO)[0] - 2, P("New York", CO)[1] - 3], size: 24, t0: T.york, t1: T.york + 3.6, region: CO },
@@ -98,6 +101,10 @@ window.SEQ = {
   build: (ctx) => { pulses.build(ctx); },
   draw: (t, ctx) => { pulses.draw(t, ctx); },
   overlay: [
+    // V2: THE ARMIES key + the wax-seal campaign timeline (August)
+    ["legend", 0.9, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["timeline.show", 0.6, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 0.5 }],
+    ["timeline.go", T.august, { at: 0.87, d: 1.2 }],   // 27 August
     ["plaque.date", T.e1776, { month: "Summer 1776", day: "", weekday: "", note: "" }],
     ["number", T.thirty - 0.1, T.hessians - 0.4, { value: 32000, round: 1000, x: 960, y: 250, size: 116 }],
     ["label", T.soldiers - 0.05, T.hessians - 0.4, { name: "Soldiers", x: 960, y: 360, marker: false, side: "uk", offset: [-110, 0] }],

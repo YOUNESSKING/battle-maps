@@ -50,3 +50,15 @@ leaving, the orchard, Mercer, Washington at ~30 yards, Nassau Hall ~194 surrende
 
 ## Round 5 fixes
 - THE MUD FROZE stamp moved to [702, 1021] (clear of Washington's banner). `instant: true` decide kept; no negative times.
+
+## V2 (owner decision 22; `washington/V2_LOOK_RECIPE.md`)
+Base = `_v2test_d` (critic-approved: orchard dist 18-20, tilt 55.5, yaw held, ONE block per unit x 3 per v1 line (LX), ts 0.86 / fxScale 5.6,
+v14 musketry KF 0.63 with >= 2.2 s volleys, clock 8:00 "William Clarke's orchard", legend (Mawhood), timeline + seal "Princeton" on
+"surrendered", ledger instead of the big card, Washington's banner at RY2 + 3.4 + the 30 YARDS ruler from there).
+Added for the film: trenton troopScale 1.4 / fxScale 9 (table), jersey 2.2 (table 1.8: a touch bigger to read at night 0.85); the night
+march and the dawn march = two single-block units abreast each; the British camp at Trenton 4 single blocks; clocks 2:00 "the back road"
+(on "marched", FACT G3) and 7:25 "sunrise" (FACT J) before the orchard 8:00; "hard frost" as a plate note; night 1.0 + `grade.night` on
+the Trenton night, jersey night 0.85 (blocks readable); Trenton dawn night <= 0.08; arrows: jersey 1.0, trenton 0.43, princeton 0.4;
+timeline hidden at 119.0 for the method card. Kept: decide `instant: true` at t 0 (no negative times), cues in word gaps.
+Checks: princeton 46.5-83.5 turns <= 45 deg/s, no overlaps (residual: the leftmost red block 54 deg on screen at its 46 s entrance under the
+dissolve, front-vs-velocity 21-26 deg on the outer blocks); jersey: Mawhood 32 deg world (8 on screen); side gap 0 / 0.

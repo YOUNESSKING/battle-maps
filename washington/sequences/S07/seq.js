@@ -47,7 +47,7 @@ RPOS.forEach((p, i) => U({ side: "r", region: TR, face: S_, keys: [[0, ...p], [1
 
 // jersey: the British army at Trenton (north of the creek), the American column on the back road
 const TRj = [677.9, 1027.3], PRj = VX.place("Princeton, NJ", JE);
-[[675.0, 1025.0], [681.5, 1022.5]].forEach((p) => U({ side: "r", region: JE, n: 2, face: S_ + 0.5, keys: [[0, ...p]] }));
+[[673.0, 1025.8], [676.4, 1024.6], [680.0, 1023.2], [683.4, 1022.0]].forEach((p) => U({ side: "r", region: JE, n: 1,   /* V2: one block per unit */ face: S_ + 0.5, keys: [[0, ...p]] }));
 const SAND = VX.road(JE, "Sandtown road"), QB = VX.road(JE, "Quaker Bridge road"), SAW = VX.road(JE, "Saw Mill road");
 const qbi = QB.findIndex((p) => p[1] < 1006.5);
 const ROUTE = [...SAND.slice(2), ...QB.slice(qbi + 1), ...SAW.slice(1, -14)];
@@ -56,10 +56,14 @@ const SANDL = VX.len(SAND.slice(2)), QBL = SANDL + VX.len(QB.slice(qbi));
 // owner rule: no columns. Night: ONE wide line block (2 boxes) out of Trenton east on the Sandtown road (stop -> turn in place -> walk)
 const NA = [690.0, 1042.6], NB = [712.0, 1046.4];
 const fA = Math.atan2(NB[1] - NA[1], NB[0] - NA[0]);
-U({ side: "u", region: JE, n: 2, face: fA, t0: CUT1 + 0.2, t1: 31.6, keys: [[0, ...NA], [CUT1 + 0.8, ...NA], [27.0, ...NB], [T.D, ...NB]] });
+const pA = [-Math.sin(fA) * 1.25, Math.cos(fA) * 1.25];   // V2: two single-block units abreast (1.25 block widths apart)
+[-1, 1].forEach((sg, i) => { const o = (p) => [p[0] + pA[0] * sg, p[1] + pA[1] * sg];
+  U({ side: "u", region: JE, n: 1, face: fA, t0: CUT1 + 0.2 + i * 0.12, t1: 31.6, keys: [[0, ...o(NA)], [CUT1 + 0.8 + i * 0.12, ...o(NA)], [27.0 + i * 0.12, ...o(NB)], [T.D, ...o(NB)]] }); });
 // dawn: the same wide line block up the Saw Mill road toward Princeton (a new shot after the dissolve)
 const DA = [734.4, 956.0], DB = [739.4, 938.4], fD = Math.atan2(DB[1] - DA[1], DB[0] - DA[0]);
-U({ side: "u", region: JE, n: 2, face: fD, t0: 31.7, keys: [[0, ...DA], [32.4, ...DA], [CUT3 - 1.0, ...DB]] });
+const pD = [-Math.sin(fD) * 1.25, Math.cos(fD) * 1.25];
+[-1, 1].forEach((sg, i) => { const o = (p) => [p[0] + pD[0] * sg, p[1] + pD[1] * sg];
+  U({ side: "u", region: JE, n: 1, face: fD, t0: 31.7 + i * 0.12, keys: [[0, ...o(DA)], [32.4 + i * 0.12, ...o(DA)], [CUT3 - 1.0 + i * 0.12, ...o(DB)]] }); });
 // Mawhood's brigade leaves Princeton south-west on the post road (3 January)
 const POST = VX.road(JE, "New York post road");
 const postAt = (s) => { const L = VX.len(POST), g = VX.along(POST, L - s); return [g[0], g[1]]; };   // s = distance from the Princeton end
@@ -67,11 +71,14 @@ U({ side: "r", region: JE, n: 1, face: Math.atan2(postAt(46)[1] - postAt(38)[1],
 
 // princeton: the orchard (William Clarke's), Mercer v Mawhood, the militia, Washington between the lines, Nassau Hall
 const OX = 1485.9, RY0 = 1847.0, RY1 = 1850.2, RY2 = 1851.3, BY0 = 1858.6, BY1 = 1853.6, BY2 = 1856.4, MY = 1858.8, AY = 1854.6;
-const red = [1484.2, 1487.6].map((x, i) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, bw: 0.9, bd: 0.2,
+// V2 r3: ONE block per unit (multi-block units spiked the wheel rate to 86-119 deg/s at small troopScale; single blocks <= 41 deg/s),
+// three single-block units side by side per v1 line (1.07 u apart), staggered 0.12 s
+const LX = (a, dx = 1.07) => a.flatMap((x0, i0) => [-1, 0, 1].map((k) => [x0 + k * dx, i0 + (k + 1) * 0.12]));
+const red = LX([1484.2, 1487.6]).map(([x, i]) => U({ side: "r", region: PR, face: S_, t0: CUT3 + 0.2, n: 1,
   keys: [[0, x, RY0], [CUT3 + 0.8, x, RY0], [50.4 + i * 0.2, x, RY1], [T.charged, x, RY1], [54.6 + i * 0.2, x, RY2], [81.8 + i * 0.4, x, RY2], [85.6 + i * 0.4, x, RY2 - 6.0]], t1: CUT4 + 0.5 }));
-const merc = [1484.2, 1487.6].map((x, i) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, bw: 1.0, bd: 0.2,
+const merc = LX([1484.2, 1487.6]).map(([x, i]) => U({ side: "u", region: PR, face: N_, t0: CUT3 + 0.2, n: 1,
   keys: [[0, x, BY0], [CUT3 + 0.6, x, BY0], [50.0 + i * 0.2, x, BY1], [63.0 + i * 0.3, x, BY1], [66.8 + i * 0.3, x, BY2], [T.rallied + 0.2 + i * 0.2, x, BY2], [83.4 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
-const mil = [1481.0, 1490.8].map((x, i) => U({ side: "u", region: PR, face: N_, t0: T.militia - 0.4 + i * 0.3, arrive: false, bw: 1.0, bd: 0.2,
+const mil = LX([1481.0, 1490.8]).map(([x, i]) => U({ side: "u", region: PR, face: N_, t0: T.militia - 0.4 + i * 0.3, arrive: false, n: 1,
   keys: [[0, x, MY + 2.4], [T.militia + 0.2, x, MY + 2.4], [T.waver - 0.2 + i * 0.3, x, MY], [T.rallied + 0.4 + i * 0.2, x, MY], [83.6 + i * 0.2, x, AY]], t1: CUT4 + 0.5 }));
 // Nassau Hall: the last British inside, a gun, the white flag (grey)
 const NH = [1509.5, 1819.9];
@@ -82,19 +89,23 @@ const NG = [1509.6, 1825.0];
 U({ side: "u", region: PR, type: "art", face: N_, bw: 0.24, bd: 0.2, t0: CUT4 - 0.4, keys: [[0, ...NG]] });   // round 2: gun at half size (Jackson S07)
 
 // ---------------- fx ----------------
-const VO = { size: 0.75, alpha: 0.085, life: 9, muzzle: 5, rate: 3.0, roll: 0.6, height: 2.0 };
-const line = (x, y, w = 0.45) => [[x - w, y], [x + w, y]];
+// V2: the v14 musketry (vicksburg/sequences/S09_gm SMK) scaled to this framing: k = our frame width / v14's (11 u / 27.3 u = 0.4);
+// fxScale 9 x k in regionOpts shrinks the puffs; clusters / height / muzzle x k; rate / k (same puffs per on-screen length); each volley
+// lasts >= 2.2 s (one 1.6 s ripple + the next) so the curtain builds (a 0.7 s volley gave ONE puff: rate x length x time)
+const KF = 0.63;   // dist 18: 17.1 u / 27.3 u
+const VO = { size: 0.85, alpha: 0.13, life: 11, muzzle: 5 * KF, windK: 1.1, rate: 2.9 / KF, volley: 1.6, roll: 0.9, height: 2.4 * KF, cluster: [2.6 * KF, 1.4 * KF] };
+const line = (x, y, w = 1.1) => [[x - w, y], [x + w, y]];
 const fx = {
   volleys: [
     // the orchard: the British volley ("fired a volley"), Mercer's men answer once
-    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, RY1 + 0.35), t0: T.fired + 0.15 + i * 0.25, t1: T.fired + 0.9 + i * 0.25, every: 2, opts: { ...VO, dir: [0, 1], volley: 2 } })),
-    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, BY1 - 0.35), t0: T.bayonet + 0.45 + i * 0.3, t1: T.bayonet + 1.1 + i * 0.3, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } })),
+    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, RY1 + 0.35), t0: T.fired + 0.15 + i * 0.25, t1: T.fired + 2.4 + i * 0.25, opts: { ...VO, dir: [0, 1] } })),
+    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, BY1 - 0.35), t0: T.bayonet + 0.45 + i * 0.3, t1: T.bayonet + 2.6 + i * 0.3, opts: { ...VO, dir: [0, -1] } })),
     // both sides fire with Washington between them
-    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, RY2 + 0.35), t0: T.both + 0.1 + i * 0.2, t1: T.both + 0.8 + i * 0.2, every: 2, opts: { ...VO, dir: [0, 1], volley: 2 } })),
-    ...[1481.0, 1490.8].map((x, i) => ({ region: PR, pts: line(x, MY - 0.35), t0: T.both + 0.5 + i * 0.2, t1: T.both + 1.2 + i * 0.2, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } })),
-    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, BY2 - 0.35), t0: T.both + 0.65 + i * 0.2, t1: T.both + 1.3 + i * 0.2, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } })),
+    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, RY2 + 0.35), t0: T.both + 0.1 + i * 0.2, t1: T.both + 2.4 + i * 0.2, opts: { ...VO, dir: [0, 1] } })),
+    ...[1481.0, 1490.8].map((x, i) => ({ region: PR, pts: line(x, MY - 0.35), t0: T.both + 0.5 + i * 0.2, t1: T.both + 2.6 + i * 0.2, opts: { ...VO, dir: [0, -1] } })),
+    ...[1484.2, 1487.6].map((x, i) => ({ region: PR, pts: line(x, BY2 - 0.35), t0: T.both + 0.65 + i * 0.2, t1: T.both + 2.7 + i * 0.2, opts: { ...VO, dir: [0, -1] } })),
     // the advance: one more American volley as the British break
-    ...[1481.0, 1490.8].map((x, i) => ({ region: PR, pts: line(x, MY - 3.2), t0: 82.0 + i * 0.3, t1: 82.7 + i * 0.3, every: 2, opts: { ...VO, dir: [0, -1], volley: 2 } })),
+    ...[1481.0, 1490.8].map((x, i) => ({ region: PR, pts: line(x, MY - 3.2), t0: 82.0 + i * 0.3, t1: 84.2 + i * 0.3, opts: { ...VO, dir: [0, -1] } })),
   ],
   guns: [{ region: PR, h: 0.3, opts: { plume: 0.45, puffs: 7, alpha: 0.2, jet: 1.4 },
     shots: [87.0, 90.4].map((t, i) => ({ t, at: NG, dir: [0, -1], impact: [NH[0] + (i ? 0.4 : -0.3), NH[1] + 0.2], delay: 0.25 })), impactOpts: { size: 0.6 } }],
@@ -111,12 +122,12 @@ const fx = {
 
 // ---------------- arrows ----------------
 const arrows = [
-  { side: "u", region: JE, pts: [[NA[0] - 4, NA[1] - 1], [NB[0] + 2, NB[1] + 0.6], [722.0, 1036.0], [726.0, 1020.0]], t0: T.back - 0.05, dur: 2.6, t1: 31.4, width: 0.5, maxWidth: 0.5 },
-  { side: "u", region: JE, pts: [[DA[0] - 1, DA[1] + 6], DA, DB, [741.0, 931.0]], t0: 33.4, dur: 2.0, t1: CUT3 - 0.3, width: 0.5, maxWidth: 0.5 },
-  { side: "r", region: JE, pts: [postAt(36), postAt(43), postAt(50)], t0: T.marching - 0.05, dur: 1.6, t1: CUT3 - 0.3, width: 0.5, maxWidth: 0.5 },
-  { side: "r", region: PR, pts: [[OX, RY1 + 0.9], [OX, RY2 + 1.2], [OX, BY1 - 1.2]], t0: T.charged - 0.05, dur: 1.0, t1: T.mercers, width: 0.18 },
-  { side: "u", region: PR, pts: [[OX, MY - 0.6], [OX, BY1 + 0.2], [OX, RY2 + 1.6]], t0: T.rallied + 0.2, dur: 1.4, t1: CUT4 - 0.2, width: 0.18 },
-  { side: "r", region: TR, pts: [[1360.0, 2054.0], [1366.0, 2046.0], [1373.0, 2036.0], [1378.0, 2026.0]], t0: T.rushed - 0.05, dur: 1.8, t1: T.D + 1, width: 0.5, maxWidth: 0.5 },
+  { side: "u", region: JE, pts: [[NA[0] - 4, NA[1] - 1], [NB[0] + 2, NB[1] + 0.6], [722.0, 1036.0], [726.0, 1020.0]], t0: T.back - 0.05, dur: 2.6, t1: 31.4, width: 1.0, maxWidth: 1.0 },
+  { side: "u", region: JE, pts: [[DA[0] - 1, DA[1] + 6], DA, DB, [741.0, 931.0]], t0: 33.4, dur: 2.0, t1: CUT3 - 0.3, width: 1.0, maxWidth: 1.0 },
+  { side: "r", region: JE, pts: [postAt(36), postAt(43), postAt(50)], t0: T.marching - 0.05, dur: 1.6, t1: CUT3 - 0.3, width: 1.0, maxWidth: 1.0 },
+  { side: "r", region: PR, pts: [[OX, RY1 + 0.9], [OX, RY2 + 1.2], [OX, BY1 - 1.2]], t0: T.charged - 0.05, dur: 1.0, t1: T.mercers, width: 0.4, maxWidth: 0.4 },
+  { side: "u", region: PR, pts: [[OX, MY - 0.6], [OX, BY1 + 0.2], [OX, RY2 + 1.6]], t0: T.rallied + 0.2, dur: 1.4, t1: CUT4 - 0.2, width: 0.4, maxWidth: 0.4 },
+  { side: "r", region: TR, pts: [[1360.0, 2054.0], [1366.0, 2046.0], [1373.0, 2036.0], [1378.0, 2026.0]], t0: T.rushed - 0.05, dur: 1.8, t1: T.D + 1, width: 0.43, maxWidth: 0.43 },
 ];
 
 // ---------------- generals ----------------
@@ -131,7 +142,7 @@ const banners = [
   { general: "washington", region: JE, keys: [[0, NA[0] - 2, NA[1] - 4], [CUT1 + 0.8, NA[0] - 2, NA[1] - 4], [27.0, NB[0] - 2, NB[1] - 4]], t0: CUT1 + 0.6, t1: 31.6 },
   { general: "washington", region: JE, keys: [[0, DA[0] - 4, DA[1] + 1], [32.4, DA[0] - 4, DA[1] + 1], [CUT3 - 1.0, DB[0] - 4, DB[1] + 1]], t0: 31.8, t1: CUT3 },
   { general: "mercer", region: PR, keys: [[0, 1485.9, BY1 + 2.4]], t0: T.mercer - 0.05, t1: T.broke + 0.8, fall: T.shot + 0.05 },
-  { general: "washington", region: PR, keys: [[0, OX, MY + 1.6], [T.rode, OX, MY + 1.6], [T.lines, OX, RY2 + 1.5], [T.rallied + 0.2, OX, RY2 + 1.5], [83.6, OX, AY - 0.6]], t0: T.washington - 0.05, t1: CUT4 + 0.4 },
+  { general: "washington", region: PR, keys: [[0, OX, MY + 1.6], [T.rode, OX, MY + 1.6], [T.lines, OX, RY2 + 3.4], [T.rallied + 0.2, OX, RY2 + 3.4], [83.6, OX, AY - 0.6]], t0: T.washington - 0.05, t1: CUT4 + 0.4 },
   { general: "cornwallis", region: TR, keys: [[0, 1361.6, 2063.4], [117.6, 1361.6, 2063.4], [T.D, 1364.0, 2059.6]], t0: T.cornwallis2 - 0.05, t1: T.D + 1 },
 ];
 
@@ -177,41 +188,41 @@ function stamp(c, text, t0, t1, world, region) {
   c.tl.to(el, { autoAlpha: 0, duration: 0.5 }, t1); PINS.push({ el, world, region }); }
 
 // ---------------- camera ----------------
-const NI = 0.8;
+const NI = 1.0;   // V2: night 1 + grade.night
 const K = (t, region, at0, dist, tilt, yaw, ease = "io", night = 0, o = {}) => ({ t, region, at: at0, dist, tilt, yaw, fov: 30, ease, night, ...o });
 window.SEQ = {
-  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },
+  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 }, night: { veil: [12, 18, 28], vt: 0.12, vb: 0.5, sat: 0.85 } },   // V2 r3 night veil   // V2: = the v8 clip wide grade (close = engine default = v8)
   name: "S07", D: T.D, T, seed: 1777, date: "1777-01-03",
   regions: [TR, JE, PR],
-  regionOpts: { [JE]: { troopScale: 6 }, [TR]: { troopScale: 1.6 }, [PR]: { troopScale: 1.6 } },
+  regionOpts: { [JE]: { troopScale: 2.2 }, [TR]: { troopScale: 1.4, fxScale: 9 }, [PR]: { troopScale: 0.86, fxScale: 5.6 } },   // V2: v14 on-screen block size
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },
-  troops: "blocks", troopsOpts: { look: "lineblocks" },
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14 (S09_gm): 12 files x 6 ranks, +44 %
   keys: [
     // 1. trenton night (= S06's last frame), down onto the creek
     K(0, TR, [1353.0, 2071.0], 58, 42, 0, "io", NI),
     K(7.0, TR, [1355.0, 2072.6], 38, 46, 0, "io", NI),
     K(CUT1, TR, [1356.4, 2073.8], 30, 48, 2, "lin", NI),
     // 2. jersey night: the back road round the British left; the frost
-    K(CUT1, JE, [698, 1036], 100, 44, 0, "cut", 0.7, { dissolve: 0.9 }),
-    K(25.0, JE, [703, 1036], 98, 45, 2, "lin", 0.7),
-    K(31.7, JE, [708, 1034], 96, 45, 2, "lin", 0.6),
+    K(CUT1, JE, [698, 1036], 100, 44, 0, "cut", 0.85, { dissolve: 0.9 }),
+    K(25.0, JE, [703, 1036], 98, 45, 2, "lin", 0.85),
+    K(31.7, JE, [708, 1034], 96, 45, 2, "lin", 0.8),
     // 3. dawn, 3 January: up on Princeton; Mawhood's column leaves the town
     K(31.75, JE, [728, 952], 78, 46, 0, "cut", 0.3, { dissolve: 0.9 }),
     K(36.0, JE, [731, 944], 78, 46, 0, "io", 0.1),
     K(CUT3, JE, [734, 938], 74, 47, 0, "lin", 0.05),
     // 4. princeton: the orchard
-    K(CUT3, PR, [OX, 1855.0], 13, 55, 0, "cut", 0.05, { dissolve: 0.9 }),
-    K(55.0, PR, [OX, 1854.6], 11.5, 57, 2, "io", 0.03),
-    K(66.0, PR, [OX, 1855.4], 12.5, 56, 0, "io", 0),
-    K(74.0, PR, [OX, 1855.0], 11.5, 57, -2, "io", 0),
-    K(CUT4, PR, [OX, 1853.4], 15, 55, 0, "lin", 0),
+    K(CUT3, PR, [OX, 1855.0], 19, 55.5, 0, "cut", 0.05, { dissolve: 0.9 }),   // V2: wider (v14 framing: ~2.4 block widths between the lines)
+    K(55.0, PR, [OX, 1854.6], 18, 55.5, 0, "io", 0.03),   // V2 r2: tilt 55.5 (less horizon haze), yaw held
+    K(66.0, PR, [OX, 1855.4], 18.5, 55.5, 0, "io", 0),
+    K(74.0, PR, [OX, 1855.0], 18, 55.5, 0, "io", 0),
+    K(CUT4, PR, [OX, 1853.4], 20, 52, 0, "lin", 0),
     // 5. Nassau Hall, then the result card over the town
     K(CUT4, PR, [NH[0], 1822.8], 9.5, 56, 4, "cut", 0, { dissolve: 0.9 }),
     K(91.0, PR, [NH[0], 1823.0], 9.0, 57, 0, "lin", 0),
     K(CUT5, PR, [NH[0] - 2.0, 1826.0], 24, 52, 0, "io", 0),
     // 6. trenton dawn: Cornwallis, empty works, the march back north-east; method card
-    K(CUT5, TR, [1357.0, 2066.0], 30, 48, 0, "cut", 0.15, { dissolve: 0.9 }),
-    K(113.0, TR, [1358.0, 2064.0], 26, 49, 4, "io", 0.06),
+    K(CUT5, TR, [1357.0, 2066.0], 30, 48, 0, "cut", 0.08, { dissolve: 0.9 }),
+    K(113.0, TR, [1358.0, 2064.0], 26, 49, 4, "io", 0.04),
     K(T.D, TR, [1361.0, 2058.0], 32, 47, 6, "io", 0.02),
   ],
   clouds: { [JE]: { scatter: { seed: 7, box: [560, 874, 220, 255], n: 9, med: 40 }, diveClear: 40, keepClear: [[720, 980, 35, 1, 0.8]] }, [TR]: { shadows: true }, [PR]: { shadows: true } },
@@ -222,19 +233,34 @@ window.SEQ = {
     ["engage.decide", { t: 0, instant: true, sub: "2 JANUARY 1777 · YOU ARE WASHINGTON", a: "HOLD THE CREEK\nAND FIGHT", b: "SLIP AWAY\nIN THE NIGHT", real: "b",
       tReveal: 0.3, until: 2.0, dim: 0.55 }],
     ["label", T.five - 0.05, T.covering + 1.2, { name: "About 500 men", sub: "keep the fires burning and dig", world: [1356.4, 2079.6], side: "us", marker: false }],
-    ["plaque.date", T.changed - 0.05, { month: "January 1777", day: "2", weekday: "Thursday", note: "hard frost" }],
+    ["plaque.clock", T.marched2 - 0.05, { time: "2:00", note: "the back road", header: "3 January 1777" }],   // V2: on the road by 2 a.m. (FACT G3)
+    ["plaque.note", T.changed - 0.05, "hard frost"],
     (O, c) => stamp(c, "THE MUD FROZE", T.froze - 0.05, 31.3, [702.0, 1021.0], JE)   /* round 5: clear of Washington's banner */,
-    ["plaque.date", T.third - 0.05, { month: "January 1777", day: "3", weekday: "Friday", note: "sunrise" }],
+    ["plaque.clock", T.third - 0.05, { time: "7:25", note: "sunrise", header: "3 January 1777" }],   // V2: sun up ~7:25 (FACT J)
     ["distance", T.twelve - 0.05, T.brigade - 0.3, { from: [TRj[0] + 2, TRj[1] - 2], to: [740.0, 934.0], value: 12, countFrom: 12, unit: "MILES", sub: "behind the British army", dash: false }],
-    ["plaque.date", CUT3 + 0.6, { month: "January 1777", day: "3", weekday: "Friday", note: "Princeton" }],
-    ["distance", T.thirty - 0.05, T.both - 0.2, { from: [OX + 0.2, RY2 + 1.5], to: [OX + 0.2, RY2 + 0.4], value: 30, countFrom: 30, unit: "YARDS", sub: "from the British line", dash: false }],
-    ["film.dim", T.lost - 0.6, CUT5 - 0.3, 0.8],
+    // V2: pocket-watch time plate (FACT_NOTES_jersey H2: the clash just before 8 a.m.), THE ARMIES key, the wax-seal campaign timeline
+    ["plaque.clock", CUT3 + 0.6, { time: "8:00", note: "William Clarke's orchard", header: "3 January 1777" }],
+    ["legend", CUT3 + 1.0, T.lost - 0.5, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Mawhood", color: "#9C3A35" }] }],
+    ["timeline.show", CUT3 + 0.8, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.0 }],
+    ["timeline.seal", CUT3 + 0.9, { at: 0.95, name: "Brooklyn" }],
+    ["timeline.seal", CUT3 + 0.9, { at: 4.72, name: "Trenton" }],
+    ["timeline.go", T.mercer, { at: 5.25, d: 1.2 }],
+    ["distance", T.thirty - 0.05, T.both - 0.2, { from: [OX + 0.2, RY2 + 3.4], to: [OX + 0.2, RY2 + 0.4], value: 30, countFrom: 30, unit: "YARDS", sub: "from the British line", dash: false }],
+    ["timeline.seal", T.surrendered, { at: 5.25, name: "Princeton" }],
+    // V2: the small parchment result list top-right (v8) INSTEAD of the big dark centred result card; spoken numbers only
+    ["ledger.show", T.lost - 0.4, { title: "Princeton", sub: "3 January 1777" }],
+    ["ledger.add", T.hundreds, { who: "British: hundreds lost", note: "killed, wounded or captured", stamp: false }],
+    ["ledger.add", T.almost, { who: "Almost 200 prisoners", stamp: false }],
+    ["ledger.add", T.fewer, { who: "Americans: under 100 lost", stamp: false }],
+    ["ledger.add", T.generalM - 0.05, { who: "General Mercer", note: "died nine days later", stamp: false }],
+    ["ledger.hide", CUT5 - 0.4],
     ["plaque.date", CUT5 + 0.4, { month: "January 1777", day: "3", weekday: "Friday", note: "dawn at the creek" }],
     ["plaque.date", T.heard - 0.05, { month: "January 1777", day: "3", weekday: "Friday", note: "guns heard from Princeton" }],
+    ["timeline.hide", 119.0],   // V2: steps out for the method card
     ["letter", 119.3, T.D + 1, { header: "Move 3 · Princeton", title: "The Washington Method", sub: "1. Save the army first · 2. Hit them where they rest", marks: false, quote: "3. Go where they are not", qSize: 34, height: 300,
       cps: 30, qAt: T.go - 0.05, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
   ],
-  build: (c) => { FROST.build(c); buildResult(c); },
+  build: (c) => { FROST.build(c); },   // V2: no big result card (ledger)
   draw: (t, c) => { FROST.draw(t, c); const reg = c.world.cameraAt(t).region, sc = 1920 / c.world.renderer.domElement.width * (c.world.renderer.getPixelRatio ? c.world.renderer.getPixelRatio() : 1);
     for (const p of PINS) { if (p.region !== reg) { p.el.style.visibility = "hidden"; continue; } p.el.style.visibility = "";
       const s = c.world.projectMap(p.world[0], p.world[1], 0.3); p.el.style.transform = `translate(${(s.x * sc).toFixed(1)}px,${(s.y * sc).toFixed(1)}px)`; } },

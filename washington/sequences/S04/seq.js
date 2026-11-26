@@ -74,12 +74,12 @@ LAND.forEach((k, i) => { const a = bank(k, "NJ", HW - 0.9), b = bank(k, "PA", HW
 
 // ---------------- arrows ----------------
 const arrows = [
-  { side: "r", region: CO, width: 0.85, maxWidth: 0.85, pts: [[HARLEM[0] - 8, HARLEM[1] + 24], [HARLEM[0] - 4, HARLEM[1] - 26], [WP[0] - 22, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
+  { side: "r", region: CO, width: 0.34, maxWidth: 0.34, pts: [[HARLEM[0] - 8, HARLEM[1] + 24], [HARLEM[0] - 4, HARLEM[1] - 26], [WP[0] - 22, WP[1] + 30]], t0: T.drove, dur: 2.2, t1: 9.6 },
   ...[[[FW[0] + 6, FW[1] - 22], FW], [[FW[0] + 22, FW[1] + 4], FW], [[FW[0] - 3, FW[1] + 26], FW]].map(([a, b], i) =>
-    ({ side: "r", region: CO, width: 0.7, maxWidth: 0.7, pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (a[0] - b[0]) * 0.12, b[1] + (a[1] - b[1]) * 0.12]], t0: T.stormed - 0.1 + i * 0.25, dur: 1.2, t1: 16.4 })),
+    ({ side: "r", region: CO, width: 0.34, maxWidth: 0.34, pts: [a, [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], [b[0] + (a[0] - b[0]) * 0.12, b[1] + (a[1] - b[1]) * 0.12]], t0: T.stormed - 0.1 + i * 0.25, dur: 1.2, t1: 16.4 })),
   // the retreat across New Jersey, the British close behind
-  { side: "u", region: CO, width: 0.95, maxWidth: 0.95, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [TRc[0] + 40, TRc[1] - 40], [TRc[0] + 17, TRc[1] - 16]], t0: T.across - 0.2, dur: 2.8, t1: T.D },
-  { side: "r", region: CO, width: 0.8, maxWidth: 0.8, pts: [[FL[0] - 10, FL[1] + 26], [575, 318], [NB[0] + 14, NB[1] - 2]], t0: T.chased + 0.1, dur: 2.4, t1: T.D },
+  { side: "u", region: CO, width: 0.34, maxWidth: 0.34, pts: [[FL[0] - 4, FL[1] + 6], [560, 300], [NB[0] + 4, NB[1] - 4], [(NB[0] + TRc[0]) / 2 + 26, (NB[1] + TRc[1]) / 2 - 26]],   /* V2 r2: GM-width line, head short of Trenton (clear of the legend) */ t0: T.across - 0.2, dur: 2.8, t1: T.D },
+  { side: "r", region: CO, width: 0.34, maxWidth: 0.34, pts: [[FL[0] - 10, FL[1] + 26], [575, 318], [NB[0] + 14, NB[1] - 2]], t0: T.chased + 0.1, dur: 2.4, t1: T.D },
 ];
 
 // ---------------- generals, banners, labels ----------------
@@ -95,6 +95,9 @@ const banners = [
 ];
 const lab = (text, at, t0, d = 3.5, o = {}) => ({ text, at, t0, t1: t0 + d, region: JE, size: 15, ...o });
 const labels = [
+  { text: "Fort Washington", region: CO, at: [FW[0] - 14, FW[1] - 4], size: 17, t0: T.fortw - 0.05, t1: T.fortw + 3.5 },   // V2 r2: on its word
+  { text: "Hudson River", region: CO, at: [FW[0] - 11, FW[1] + 20], size: 17, river: true, t0: T.hudson - 0.05, t1: T.hudson + 3.5 },
+  { text: "Manhattan", region: CO, at: P("Manhattan", CO), size: 20, t0: T.manhattan - 0.05, t1: T.manhattan + 3.6 },   // V2: carved place name on its word
   { text: "Delaware River", region: CO, at: [TRc[0] - 14, TRc[1] + 10], size: 18, river: true, t0: T.delaware - 0.05, t1: T.D },
   lab("Delaware River", bank(kT - 0.2, "PA", HW + 2.5), 24.0, 4.0, { river: true, size: 17 }),
   lab("Trenton", [TRj[0] + 1.0, TRj[1] + 2.2], T.trenton - 0.05, 4.0, { size: 18 }),
@@ -107,11 +110,11 @@ const pulses = VX.pulses([
 ]);
 
 window.SEQ = {
-  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },
+  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 } },   // V2: = the v8 clip wide grade
   name: "S04", D: T.D, T, seed: 1776, date: "1776-11-16",
   regions: [CO, JE],
-  troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [CO]: { troopScale: 16 }, [JE]: { troopScale: 7, decks } },
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2 r2: steel blue as v14 (critic 1 #16)   // V2: = v14
+  regionOpts: { [CO]: { troopScale: 6 }, [JE]: { troopScale: 2.0, decks } },   // V2: wide blocks ~2.5 % of the frame width (v8 wide)
   features: { [JE]: { bridges: [0, 1, 2, 3, 4, 5, 6].map(() => ({ hidden: true })), houseK: 0.35 } },   // creek bridges hidden; smaller houses (long houses on crossed streets read as crosses from far away)
   keys: [
     { t: 0, region: CO, at: [610.0, 264.0], dist: 285, tilt: 35, yaw: 0, fov: 30 },                    // = S03's last camera
@@ -129,10 +132,16 @@ window.SEQ = {
     { t: 53.0, region: JE, at: [632.0, 1004.0], dist: 104, tilt: 43, yaw: 0, fov: 30, ease: "io" },       // the blue camp across the river
     { t: T.D, region: JE, at: [640.0, 1010.0], dist: 112, tilt: 42, yaw: 0, fov: 30, ease: "lin" },
   ],
-  clouds: { [CO]: { scatter: { seed: 5, n: 34, med: 12 }, keepClear: [[480, 380, 40, 1, 1], [636, 224, 30, 1, 1]] }, [JE]: { scatter: { seed: 7, n: 8, med: 40 } } },   // round 2 (author A for the lead): visible wide clouds
+  clouds: { [CO]: { scatter: { seed: 11, n: 24, med: 15 }, keepClear: [[480, 380, 40, 1, 1], [636, 224, 30, 1, 1]] }, [JE]: { scatter: { seed: 7, n: 8, med: 40 } } },   // round 2 (author A for the lead): visible wide clouds
   units, arrows, boats, generals, banners, labels,
   overlay: [
     ["plaque.date", 0.4, { month: "1776", day: "", weekday: "", note: "" }],   // = S03's last plate (round 1: no stale 30 August)
+    // V2: THE ARMIES key + the wax-seal campaign timeline on every map shot (v8: legend 1.9 s, timeline 1.4 s)
+    ["legend", 0.9, T.D + 1, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["timeline.show", 0.6, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 1.5 }],
+    ["timeline.seal", 0.7, { at: 0.95, name: "Brooklyn" }],
+    ["timeline.go", T.sixteenth, { at: 3.5, d: 1.2 }],
+    ["timeline.go", T.eighth, { at: 4.25, d: 1.2 }],
     (O, c) => stamp(c, "WHITE PLAINS", T.white - 0.05, T.white + 3.4, [WP[0] - 6, WP[1] + 16]),
     ["plaque.date", T.sixteenth - 0.05, { month: "November 1776", day: "16", weekday: "Saturday", note: "Fort Washington" }],
     (O, c) => stamp(c, "FORT WASHINGTON", T.fortw - 0.05, T.nearly - 0.2, [FW[0] + 4, FW[1] + 8]),

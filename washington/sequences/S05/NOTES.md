@@ -70,3 +70,18 @@ flags from `washington/assets/flags/`.
 - Crossing 58-68.4: camera tilted onto the NJ bank (landing in the middle third, not a strip at the top edge).
 - Trenton approach 88-95.4: camera 5 u west, the ring wood framed out; head-of-town shot 95.4-108 shifted west/north (less of the dark field patch south-east of the town).
 - Dead cue removed: the picket fires once (92.5); no 94.3 volley without a visible flash.
+
+## V2 (owner decision 22: the approved tests are the reference; `washington/V2_LOOK_RECIPE.md`)
+Base = `_v2test_c` (critic-approved), which is this scene + the recipe: v14 troops (`size 1.44, depthK 0.44`, steel-blue pal, no bw/bd
+overrides), troopScale jersey 3.5 / crossing 0.67 / trenton 0.68 / colonies 8, fxScale 4.4, v8 wide grade + the night veil (`grade.night`),
+rain x0.5 / n x2, Trenton keys night <= 0.1, Hessians n 3 up the streets from the 95.4 cut, Greene's brigade behind Knox's guns, carved
+"Trenton" on "the town's two main streets", THE ARMIES legend (Hessians / Rall), wax-seal timeline (seal "Trenton" on "About nine hundred"),
+small parchment ledger instead of the big card (+ "a future president" on its word), no `film.dim` under the ledger.
+Added for the film: clock 18:00 on "After dark" (crossing 6 p.m., FACT C2) before 23:00 / 3:00 / 8:00 (the watch stays through the fight);
+crossing night 1.0; boats `wake: false` (lamps kept); volleys = the v14 musketry scaled (KF 0.5) with ONE ripple each (`volley` 2.4 > the
+2.2 s duration: the smoke builds but the sound cues stay in the word gaps of round 2); jersey arrows width 1.0, trenton 0.43, colonies 0.34;
+colonies clouds `seed 11, n 24, med 15`; jersey seed 9 + keepClear over the plan arrows; timeline hidden at 141.9 (method card, colonies);
+Trenton approach camera 3-4 u south (Greene's blocks out of the timeline band). Kept: whooshAt 32.25, cues in word gaps, round 1-5 fixes.
+Deviation: the jersey night-march shot runs night 0.85 (at 1.0 the troopScale-3.5 blocks vanish on the dark ground).
+Checks: jersey 68-88 clean; crossing: landing blocks 16-23 deg on screen (oblique camera); trenton 88-128: turn spikes only at the 95.4 cut,
+Sullivan's u4 67 deg on screen at 88-92 (mostly off frame); side gap 0 / 0.

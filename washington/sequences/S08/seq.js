@@ -34,7 +34,7 @@ const held = { build() { const c = document.createElement("canvas"); c.width = 1
 
 // ---------------- units ----------------
 const units = [];
-const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, bw: 1.6, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
+const walk = (side, a, b, t0, t1, o = {}) => units.push({ region: CO, side, type: "inf", n: 1, skirmish: false, arrive: false, face: Math.atan2(b[1] - a[1], b[0] - a[0]),
   keys: [[0, ...a], [t0, ...a], [t1, ...b]], ...o });
 // the blue army north into the hills (Pluckemin -> Morristown)
 const B0 = lerp2(PLU, MOR, 0.5), B1 = lerp2(PLU, MOR, 0.9);
@@ -46,11 +46,11 @@ walk("r", lerp2(ETC, [PA[0] - 8, PA[1] - 7], 0.55), [PA[0] - 8, PA[1] - 7], T.pu
 walk("r", NEW, [PH[0] - 8, PH[1] + 2], T.pulled + 0.5, 14.8);
 
 window.SEQ = {
-  grade: { wide: { toe: 14, ct: 1.03, sat: 1.04 } },   // Jackson: richer wide overhead maps (the colonies world is summer-baked; grade as Jackson's ending)
+  grade: { wide: { toe: 14, ct: 0.96, sat: 0.95 } },   // V2: the v8 clip wide grade   // Jackson: richer wide overhead maps (the colonies world is summer-baked; grade as Jackson's ending)
   name: "S08", D: T.D, T, seed: 1777, date: "1777-01-06",
   regions: [CO],
-  troops: "blocks", troopsOpts: { look: "lineblocks" },
-  regionOpts: { [CO]: { troopScale: 10 } },
+  troops: "blocks", troopsOpts: { look: "lineblocks", size: 1.44, depthK: 0.44, sideCol: { u: "#3f5aa0", r: "#be3a2a" }, pal: { u: { coat: 0x6e7cab, plate: 0x7d8ec6 } } },   // V2: = v14
+  regionOpts: { [CO]: { troopScale: 9 } },   // V2 recipe table
   keys: [
     { t: 0, region: CO, at: [462, 338], dist: 540, tilt: 30, yaw: 0, fov: 30 },
     { t: 9.6, region: CO, at: [466, 334], dist: 525, tilt: 30, yaw: 0, fov: 30, ease: "lin" },
@@ -60,10 +60,10 @@ window.SEQ = {
     { t: T.D, region: CO, at: [494, 366], dist: 580, tilt: 30, yaw: 3, fov: 30, ease: "lin" },          // the living map alone for the end screen
   ],
   features: { [CO]: { bridges: Array.from({ length: 60 }, () => ({ hidden: true })) } },
-  clouds: { [CO]: { scatter: { seed: 7, n: 10, med: 18 }, keepClear: [[452, 300, 60, 1, 0.9], [470, 390, 60, 1, 0.9], [560, 430, 90, 1, 1]] } },   // round 1: Jackson-like scatter, lower right kept clear for the end-screen tiles
+  clouds: { [CO]: { scatter: { seed: 7, n: 24, med: 20 }, keepClear: [[452, 300, 60, 1, 0.9], [470, 390, 60, 1, 0.9], [560, 430, 90, 1, 1]] } },   // round 1: Jackson-like scatter, lower right kept clear for the end-screen tiles
   units,
   arrows: [
-    { side: "u", region: CO, width: 0.5, maxWidth: 0.5, pts: [[PRI[0] + 4, PRI[1] - 8], [PLU[0] - 2, PLU[1] + 20], lerp2(PLU, MOR, 0.35), [MOR[0] - 3, MOR[1] + 7]], t0: T.washington, dur: 2.6, t1: 9.4 },
+    { side: "u", region: CO, width: 0.34, maxWidth: 0.34, pts: [[PRI[0] + 4, PRI[1] - 8], [PLU[0] - 2, PLU[1] + 20], lerp2(PLU, MOR, 0.35), [MOR[0] - 3, MOR[1] + 7]], t0: T.washington, dur: 2.6, t1: 9.4 },
   ],
   generals: { washington: { img: "seq/washington.png", flag: "seq/grand_union_flag.png", side: "us", name: "Washington", full: "George Washington", role: "General" } },
   banners: [{ general: "washington", region: CO, keys: [[0, B0[0] + 7, B0[1] + 2], [0.4, B0[0] + 7, B0[1] + 2], [9.4, B1[0] + 7, B1[1] + 2]], t0: T.washington - 0.05, t1: 22.0 }],
@@ -74,6 +74,16 @@ window.SEQ = {
   fx: {},
   overlay: [
     ["plaque.date", 0.35, { month: "January 1777", day: "", weekday: "", note: "" }],
+    // V2: THE ARMIES key + the campaign timeline with all three seals; both step out for the letter cards and stay out for the final cards
+    ["legend", 0.9, T.wrote - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["timeline.show", 0.6, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.25 }],
+    ["timeline.seal", 0.6, { at: 0.95, name: "Brooklyn" }],
+    ["timeline.seal", 0.6, { at: 4.72, name: "Trenton" }],
+    ["timeline.seal", 0.6, { at: 5.25, name: "Princeton" }],
+    ["timeline.hide", T.wrote - 0.6],
+    ["legend", T.again + 0.4, T.method - 0.6, { entries: [{ name: "Americans", sub: "Washington", color: "#3C6E9E" }, { name: "British", sub: "Howe", color: "#9C3A35" }] }],
+    ["timeline.show", T.again + 0.3, { month: "1776", year: "1777", cells: ["Aug", "Sep", "Oct", "Nov", "Dec", "Jan"], at: 5.4 }],
+    ["timeline.hide", T.method - 0.6],
     ["film.dim", T.wrote - 0.5, T.again + 0.1, 0.5],
     ["letter", T.wrote - 0.3, T.again, { header: "A week before Christmas", title: "To his brother", sub: "", quote: "I think the game is pretty near up.", qSize: 34, height: 270,
       cps: 40, qAt: T.wrote - 0.2, lag: 0.05, stagger: 0.06, partDur: 0.35 }],
