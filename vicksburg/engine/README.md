@@ -308,3 +308,9 @@ whole-frame noise of 1 level; the original clip itself varies run to run by up t
   `updCounter`). At a bridge the counter dissolves into its men and the v13/v14 stream runs as before. Lesson: a counter is convex, so draw it
   with depthTest off + back-face culling (correct on its own, never cut by tree crowns: a depth-tested thin tile was clipped by the canopy);
   no below-ground skirt then (it would show). Other looks byte-identical (md5 of 7 lineblocks stills). Notes: `vicksburg/troops_box_test/NOTES.md`.
+- Troops-box test round 2 (`counter: "A2"`): screen-space ink edge (fwidth, per-instance colour + px width) and sun-side light catch /
+  dark inset on the top face; depth test ON with the counter's depth pulled `counterOpts.pull` (1.2) units toward the camera in the
+  vertex shader (hills still hide it, tree crowns never clip it); edge fade from the projected top corners (`frame: [W, H]` now passed
+  to createTroops3D); artillery keeps the v14 gun models; `counterOpts.scale` scales the whole formation (SIZE) and DOES change
+  spacing/collisions; the motion checker gets the drawn counter's footprint from `T3.last`. THE ARMIES key: `O.legendSwatch = "counter"`.
+

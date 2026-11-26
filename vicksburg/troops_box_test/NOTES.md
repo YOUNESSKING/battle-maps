@@ -55,3 +55,39 @@ Scenes are built with `bash vicksburg/tools/make_troops_test.sh` (+ `SEQ=S10`).
   only a few pixels (reads at the S10 distance).
 - C's drop shadow is subtle on the dark woods.
 - During the break-up the half-faded counter and its men overlap for ~0.8 s (as the v14 plate did).
+
+# Round 2 (2026-11-26): A2 + A2-L, from the critics' pick A (critic 1 A 5.5 / B 5 / C 4; critic 2 A 7 / C 6 / B 5)
+Main warning: on the wide shot all three still read as the rejected v10 stickers. Judge on the WIDE rows at 1:1 and on the 640x360
+phone downscale. Files: `sheet_r2.jpg` (columns v14 | A round 1 | A2 | A2-L, 5 moments + 3 crops at ~2x + a small phone row),
+`phone_r2.jpg` (S09 103.5 s and 86.2 s downscaled to 640x360, shown 1:1), `motion_r2.mp4` (S09 82-92 s crest + S10 20-32 s bridge).
+Switch: `troopsOpts: { look: "counter", counter: "A2", counterOpts: { scale } }`.
+
+| Critic point | A2 |
+| --- | --- |
+| 1 painted, not plastic | matte Lambert (no specular); top #3a5a94 / #a8432f; walls #243b63 / #6e2a1f (instance colour of the body); 6 % paper grain multiplied into the top (2-octave value noise) |
+| 2 outline | ink edge #2a1d16 drawn in the shader in SCREEN px (fwidth): 1.8 px at 720p on every counter, whatever its size; gold hairline removed; a 1 px light catch (+18 %) on the top edges that face the sun and a 1 px darker inset (x0.7) on the edges away from it (per-instance sun vector in the counter's frame) |
+| 3 front | cream #efe6cf band along the front long side (~0.2 of the depth); front wall 15 % lighter than the back wall |
+| 4 symbol | filled cream plate #e9dfc6 (40 % of the frontage x 56 % of the depth) with a solid ink X #1e1a16 (line 11.5 % of the depth, ~2 px at the wide shot); cavalry one ink slash, engineers the gear; ARTILLERY = the v14 gun models (carriage, barrel, wheels, limber, 4 crew, recoil), no gun counter |
+| 5 size | see "Size" below |
+| 6 ground | bevel 0.012 x width, height 0.06 x width, sun shadow kept; tight contact AO (own texture: solid under the counter, ~3-4 px falloff, 35 %); no drop shadow, no pennant |
+| 7 bridge | the counter shrinks from its REAR edge (the one at the bridge mouth: a routing block walks back) to 45 % depth and fades out in 0.35 s (f0+0.1 to f0+0.45); the men appear only from f0+0.27 (counter < 50 % opacity) at their rank spots and then peel off as in v14 |
+| 8 captured | top + walls #6e6a62, symbol stays cream, a 2.3 px edge in the old side colour |
+| 9 occlusion | depth test ON (hills hide counters), but the counter's depth is pulled 1.2 units toward the camera in the vertex shader (screen position unchanged), so tree crowns standing round or in front of it never clip it; counters fade out before any corner leaves the frame (full opacity only when all four top corners are >= 26 px inside) |
+| 10 ARMIES key | mini counters (wall + top colour, ink edge, cream front band, cream plate with X) in place of the arrow swatches when the counter look is on (`O.legendSwatch`) |
+
+## Size (point 5): the honest limit
+On this camera a 3:1 counter is foreshortened to ~5:1 on screen; the old blocks were ~70 x 14 px at 1280 (critic: 45 x 15 at the 720
+sheet). Scaling the formations to hit 60 x 20 / 75 x 22 (scale 1.5 / 1.9) collides heavily (checker: 19 / 27 unit pairs, up to 1.4
+units), because the v14 spacing has only a ~0.22-unit gap between blocks. What fits:
+- **A2** (formation unchanged): frontage 1.06 x the block width (fills most of the gap), depth 0.40 x width (was 0.31 in round 1;
+  the v14 plate was 0.44), so it reads ~25 % bigger in area than round 1. Checker (it now measures the drawn counter): S09 55-110 only
+  the known v14 brush (units 1 x 3 at 106.1-106.6 s, 0.12 u vs v14's 0.07 u); S10 15-35 only the south flank's own blocks turning in
+  place at 22 s (0.11 u vs 0.07 u). Screen long-side rule and pops are identical to v14 (0 new fails).
+- **A2-L**: the same counter with the S09 formation scaled x1.15 (`counterOpts.scale`). It is visibly bigger but costs NEW
+  overlaps (checker S09: 10 unit pairs, up to 0.5 u, mostly at the crest gun line 99-105 s and units 0 x 1 at 62-72 s); it would need
+  the S09 test data re-spaced. S10 is the same as A2 (the bridge queue timing depends on block size; not re-timed).
+
+## Round-2 open issues
+- RunPod: no A5000/A4000/3090/A6000/3080 supply, a 4090 pod came up without Chrome (render failed in 3 s); pods terminated, list
+  verified empty, cost ~$0.03. `render_pod.sh` no longer falls back to the A4500 (broken frames). The motion clip is a LOCAL render.
+- The ink edge is in screen pixels: at the close S10 camera it is relatively thin next to the big counter (by design).

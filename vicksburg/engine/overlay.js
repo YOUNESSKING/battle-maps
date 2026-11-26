@@ -247,6 +247,10 @@
       <path d="${p}Z" fill="url(#${id})"/><circle r="${r * 0.66}" fill="none" stroke="#5A1510" stroke-width="2.2" opacity=".75"/><circle r="${r * 0.66}" fill="none" stroke="#C25E4E" stroke-width=".8" opacity=".45" transform="translate(.8 .9)"/>
       <ellipse cx="${-r * 0.3}" cy="${-r * 0.42}" rx="${r * 0.32}" ry="${r * 0.14}" fill="#fff" opacity=".18" transform="rotate(-30 ${-r * 0.3} ${-r * 0.42})"/></svg>`; };
   const legArrow = (c) => `<svg viewBox="0 0 56 16"><path d="M2 11 C14 7 30 6 42 7.5" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="4.2" stroke-linecap="round" transform="translate(0 1.4)"/><path d="M2 11 C14 7 30 6 42 7.5" fill="none" stroke="${c}" stroke-width="4.2" stroke-linecap="round"/><path d="M40 2 L54 8 L40 14 Z" fill="${c}"/></svg>`;
+  // troops-box test (look "counter"): a mini unit counter instead of the arrow swatch (side colour, ink edge, cream front band, cream plate + ink X)
+  const legCounter = (c) => { const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i.exec(c || ""), blue = m ? parseInt(m[3], 16) > parseInt(m[1], 16) : true, f = blue ? "#3a5a94" : "#a8432f", w = blue ? "#243b63" : "#6e2a1f";
+    return `<svg viewBox="0 0 56 16"><rect x="5" y="3.6" width="46" height="12" fill="rgba(0,0,0,.28)"/><rect x="4" y="5" width="46" height="9" fill="${w}"/><rect x="4" y="1" width="46" height="11" fill="${f}" stroke="#2a1d16" stroke-width="1.3"/>` +
+      `<rect x="4.65" y="1.65" width="44.7" height="2.4" fill="#efe6cf"/><rect x="18" y="5" width="20" height="5.6" fill="#e9dfc6"/><path d="M18.8 5.6 L37.2 10 M37.2 5.6 L18.8 10" stroke="#1e1a16" stroke-width="1.2"/></svg>`; };
   // pocket watch: gold case, bow ring, white enamel dial, blued breguet hands (centre at (105,110) on the stage)
   const watchSVG = () => {
     let s = `<svg class="watch" viewBox="-44 -74 88 118"><defs><radialGradient id="gmoCase" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#F6DFA4"/><stop offset=".35" stop-color="#D2A866"/><stop offset=".7" stop-color="#A9783D"/><stop offset="1" stop-color="#6E4A22"/></radialGradient>
@@ -414,7 +418,7 @@
 
     // ---------------------------------------------------------------- 3. THE ARMIES legend (bottom-left)
     O.legend = (tIn, tOut, o) => {
-      const el = mk(Lhud, "legend", `<div class="caps t">${esc(o.title || "THE ARMIES")}</div>` + o.entries.map((e) => `<div class="e">${legArrow(e.color || "#3A3A36")}<div><div class="n">${esc(e.name)}</div>${e.sub ? `<div class="s">${esc(e.sub)}</div>` : ""}</div></div>`).join(""));
+      const el = mk(Lhud, "legend", `<div class="caps t">${esc(o.title || "THE ARMIES")}</div>` + o.entries.map((e) => `<div class="e">${(o.swatch || O.legendSwatch) === "counter" ? legCounter(e.color) : legArrow(e.color || "#3A3A36")}<div><div class="n">${esc(e.name)}</div>${e.sub ? `<div class="s">${esc(e.sub)}</div>` : ""}</div></div>`).join(""));
       fadeIn(el, tIn, 0.6, { y: 12 }, { y: 0 }); fadeOut(el, tOut, 0.5); return O; };
 
     // ---------------------------------------------------------------- 4. medallions: 'card' (portrait over an ivory plaque, leader line to the map) and 'plate' (portrait + dark plate)
